@@ -1,0 +1,257 @@
+The FindQt4 module of CMake insists on having uic, even if the QtGui
+module isn't part of the requirements to build the program. This isn't
+correct, as Qt doesn't build/install the uic program when QtGui is
+disabled (uic is used to generate some UI code).
+
+This has been fixed upstream in
+http://cmake.org/gitweb?p=cmake.git;a=commit;h=43cb9b8276a70d153d56a69d5c61daaf2bc51b78. This
+commit will be part of the upcoming 2.8.4 CMake release, but in the
+mean time, let's include it in Buildroot.
+
+From 43cb9b8276a70d153d56a69d5c61daaf2bc51b78 Mon Sep 17 00:00:00 2001
+From: Clinton Stimpson <clinton@elemtech.com>
+Date: Fri, 14 Jan 2011 21:26:19 -0700
+Subject: [PATCH] Change to use fphsa to check required variables and version.
+
+Also, set the required variables based on components, if specified.
+Also, don't make finding uic required if not using QtGui.
+---
+ Modules/FindQt4.cmake |  179 +++++++++++++------------------------------------
+ 1 files changed, 46 insertions(+), 133 deletions(-)
+
+diff --git a/Modules/FindQt4.cmake b/Modules/FindQt4.cmake
+index d9d6ea7..70e69b0 100644
+--- a/Modules/FindQt4.cmake
++++ b/Modules/FindQt4.cmake
+@@ -9,7 +9,7 @@
+ # QT_LIBRARIES variable.
+ #
+ # Typical usage could be something like:
+-#   find_package(Qt4 4.4.3 COMPONENTS QtCore QtGui QtXml REQUIRED )
++#   find_package(Qt4 4.4.3 REQUIRED QtCore QtGui QtXml)
+ #   include(${QT_USE_FILE})
+ #   add_executable(myexe main.cpp)
+ #   target_link_libraries(myexe ${QT_LIBRARIES})
+@@ -354,6 +354,7 @@ ENDIF(QT_QT_LIBRARY)
+ 
+ INCLUDE(CheckSymbolExists)
+ INCLUDE(MacroAddFileDependencies)
++INCLUDE(FindPackageHandleStandardArgs)
+ 
+ SET(QT_USE_FILE ${CMAKE_ROOT}/Modules/UseQt4.cmake)
+ 
+@@ -469,6 +470,7 @@ FIND_PROGRAM(QT_QMAKE_EXECUTABLE NAMES qmake qmake4 qmake-qt4 qmake-mac PATHS
+   DOC "The qmake executable for the Qt installation to use"
+ )
+ 
++# double check that it was a Qt4 qmake, if not, re-find with different names
+ IF (QT_QMAKE_EXECUTABLE)
+ 
+   IF(QT_QMAKE_EXECUTABLE_LAST)
+@@ -477,8 +479,6 @@ IF (QT_QMAKE_EXECUTABLE)
+ 
+   SET(QT_QMAKE_EXECUTABLE_LAST "${QT_QMAKE_EXECUTABLE}" CACHE INTERNAL "" FORCE)
+ 
+-  SET(QT4_QMAKE_FOUND FALSE)
+-  
+   _qt4_query_qmake(QT_VERSION QTVERSION)
+ 
+   # check for qt3 qmake and then try and find qmake4 or qmake-qt4 in the path
+@@ -495,74 +495,9 @@ IF (QT_QMAKE_EXECUTABLE)
+     ENDIF(QT_QMAKE_EXECUTABLE)
+   ENDIF(NOT QTVERSION)
+ 
+-  # check that we found the Qt4 qmake, Qt3 qmake output won't match here
+-  STRING(REGEX MATCH "^[0-9]+\\.[0-9]+\\.[0-9]+" qt_version_tmp "${QTVERSION}")
+-  IF (qt_version_tmp)
+-
+-    # we need at least version 4.0.0
+-    IF (NOT QT_MIN_VERSION)
+-      SET(QT_MIN_VERSION "4.0.0")
+-    ENDIF (NOT QT_MIN_VERSION)
+-
+-    #now parse the parts of the user given version string into variables
+-    STRING(REGEX MATCH "^[0-9]+\\.[0-9]+\\.[0-9]+" req_qt_major_vers "${QT_MIN_VERSION}")
+-    IF (NOT req_qt_major_vers)
+-      MESSAGE( FATAL_ERROR "Invalid Qt version string given: \"${QT_MIN_VERSION}\", expected e.g. \"4.0.1\"")
+-    ENDIF (NOT req_qt_major_vers)
+-
+-    # now parse the parts of the user given version string into variables
+-    STRING(REGEX REPLACE "^([0-9]+)\\.[0-9]+\\.[0-9]+" "\\1" req_qt_major_vers "${QT_MIN_VERSION}")
+-    STRING(REGEX REPLACE "^[0-9]+\\.([0-9])+\\.[0-9]+" "\\1" req_qt_minor_vers "${QT_MIN_VERSION}")
+-    STRING(REGEX REPLACE "^[0-9]+\\.[0-9]+\\.([0-9]+)" "\\1" req_qt_patch_vers "${QT_MIN_VERSION}")
+-
+-    # Suppport finding at least a particular version, for instance FIND_PACKAGE( Qt4 4.4.3 )
+-    # This implementation is a hack to avoid duplicating code and make sure we stay
+-    # source-compatible with CMake 2.6.x
+-    IF( Qt4_FIND_VERSION )
+-      SET( QT_MIN_VERSION ${Qt4_FIND_VERSION} )
+-      SET( req_qt_major_vers ${Qt4_FIND_VERSION_MAJOR} )
+-      SET( req_qt_minor_vers ${Qt4_FIND_VERSION_MINOR} )
+-      SET( req_qt_patch_vers ${Qt4_FIND_VERSION_PATCH} )
+-    ENDIF( Qt4_FIND_VERSION )
+-
+-    IF (NOT req_qt_major_vers EQUAL 4)
+-      MESSAGE( FATAL_ERROR "Invalid Qt version string given: \"${QT_MIN_VERSION}\", major version 4 is required, e.g. \"4.0.1\"")
+-    ENDIF (NOT req_qt_major_vers EQUAL 4)
+-
+-    # and now the version string given by qmake
+-    STRING(REGEX REPLACE "^([0-9]+)\\.[0-9]+\\.[0-9]+.*" "\\1" QT_VERSION_MAJOR "${QTVERSION}")
+-    STRING(REGEX REPLACE "^[0-9]+\\.([0-9])+\\.[0-9]+.*" "\\1" QT_VERSION_MINOR "${QTVERSION}")
+-    STRING(REGEX REPLACE "^[0-9]+\\.[0-9]+\\.([0-9]+).*" "\\1" QT_VERSION_PATCH "${QTVERSION}")
+-
+-    # compute an overall version number which can be compared at once
+-    MATH(EXPR req_vers "${req_qt_major_vers}*10000 + ${req_qt_minor_vers}*100 + ${req_qt_patch_vers}")
+-    MATH(EXPR found_vers "${QT_VERSION_MAJOR}*10000 + ${QT_VERSION_MINOR}*100 + ${QT_VERSION_PATCH}")
+-
+-    # Support finding *exactly* a particular version, for instance FIND_PACKAGE( Qt4 4.4.3 EXACT )
+-    IF( Qt4_FIND_VERSION_EXACT )
+-      IF(found_vers EQUAL req_vers)
+-        SET( QT4_QMAKE_FOUND TRUE )
+-      ELSE(found_vers EQUAL req_vers)
+-        SET( QT4_QMAKE_FOUND FALSE )
+-        IF (found_vers LESS req_vers)
+-          SET(QT4_INSTALLED_VERSION_TOO_OLD TRUE)
+-        ELSE (found_vers LESS req_vers)
+-          SET(QT4_INSTALLED_VERSION_TOO_NEW TRUE)
+-        ENDIF (found_vers LESS req_vers)
+-      ENDIF(found_vers EQUAL req_vers)
+-    ELSE( Qt4_FIND_VERSION_EXACT )
+-      IF (found_vers LESS req_vers)
+-        SET(QT4_QMAKE_FOUND FALSE)
+-        SET(QT4_INSTALLED_VERSION_TOO_OLD TRUE)
+-      ELSE (found_vers LESS req_vers)
+-        SET(QT4_QMAKE_FOUND TRUE)
+-      ENDIF (found_vers LESS req_vers)
+-    ENDIF( Qt4_FIND_VERSION_EXACT )
+-  ENDIF (qt_version_tmp)
+-
+ ENDIF (QT_QMAKE_EXECUTABLE)
+ 
+-IF (QT4_QMAKE_FOUND)
++IF (QT_QMAKE_EXECUTABLE AND QTVERSION)
+ 
+   # ask qmake for the mkspecs directory
+   # we do this first because QT_LIBINFIX might be set
+@@ -1072,32 +1007,7 @@ IF (QT4_QMAKE_FOUND)
+   # get the directory of the current file, used later on in the file
+   GET_FILENAME_COMPONENT( _qt4_current_dir  "${CMAKE_CURRENT_LIST_FILE}" PATH)
+ 
+-  ######################################
+-  #
+-  #       decide if Qt got found
+-  #
+-  ######################################
+-
+-  # if the includes,libraries,moc,uic and rcc are found then we have it
+-  IF( QT_LIBRARY_DIR AND QT_INCLUDE_DIR AND QT_MOC_EXECUTABLE AND 
+-      QT_UIC_EXECUTABLE AND QT_RCC_EXECUTABLE AND QT_QTCORE_LIBRARY)
+-    SET( QT4_FOUND "YES" )
+-    INCLUDE(FindPackageMessage)
+-    FIND_PACKAGE_MESSAGE(Qt4 "Found Qt-Version ${QTVERSION} (using ${QT_QMAKE_EXECUTABLE})"
+-      "[${QT_LIBRARY_DIR}][${QT_INCLUDE_DIR}][${QT_MOC_EXECUTABLE}][${QT_UIC_EXECUTABLE}][${QT_RCC_EXECUTABLE}]")
+-  ELSE( QT_LIBRARY_DIR AND QT_INCLUDE_DIR AND QT_MOC_EXECUTABLE AND
+-        QT_UIC_EXECUTABLE AND QT_RCC_EXECUTABLE AND QT_QTCORE_LIBRARY)
+-    SET( QT4_FOUND "NO")
+-    SET(QT_QMAKE_EXECUTABLE "${QT_QMAKE_EXECUTABLE}-NOTFOUND" CACHE FILEPATH "Invalid qmake found" FORCE)
+-    IF( Qt4_FIND_REQUIRED)
+-      MESSAGE( FATAL_ERROR "Qt libraries, includes, moc, uic or/and rcc NOT found!")
+-    ENDIF( Qt4_FIND_REQUIRED)
+-  ENDIF( QT_LIBRARY_DIR AND QT_INCLUDE_DIR AND QT_MOC_EXECUTABLE AND 
+-         QT_UIC_EXECUTABLE AND  QT_RCC_EXECUTABLE AND QT_QTCORE_LIBRARY)
+   
+-  SET(QT_FOUND ${QT4_FOUND})
+-
+-
+   ###############################################
+   #
+   #       configuration/system dependent settings  
+@@ -1189,44 +1099,47 @@ IF (QT4_QMAKE_FOUND)
+ 
+   INCLUDE("${_qt4_current_dir}/Qt4Macros.cmake")
+ 
++ENDIF(QT_QMAKE_EXECUTABLE AND QTVERSION)
+ 
+-  #######################################
+-  #
+-  #       compatibility settings 
+-  #
+-  #######################################
+-  # Backwards compatibility for CMake1.4 and 1.2
+-  SET (QT_MOC_EXE ${QT_MOC_EXECUTABLE} )
+-  SET (QT_UIC_EXE ${QT_UIC_EXECUTABLE} )
+-
+-  SET( QT_QT_LIBRARY "")
+-
+-ELSE(QT4_QMAKE_FOUND)
+-   
+-   SET(QT_QMAKE_EXECUTABLE "${QT_QMAKE_EXECUTABLE}-NOTFOUND" CACHE FILEPATH "Invalid qmake found" FORCE)
+-   
+-   # The code below is overly complex to make sure we do not break compatibility with CMake 2.6.x
+-   # For CMake 2.8, it should be simplified by getting rid of QT4_INSTALLED_VERSION_TOO_OLD and 
+-   # QT4_INSTALLED_VERSION_TOO_NEW
+-   IF(Qt4_FIND_REQUIRED)
+-      IF(QT4_INSTALLED_VERSION_TOO_OLD)
+-    IF( Qt4_FIND_VERSION_EXACT )
+-      MESSAGE(FATAL_ERROR "The installed Qt version ${QTVERSION} is too old, version ${QT_MIN_VERSION} is required")
+-    ELSE( Qt4_FIND_VERSION_EXACT )
+-      MESSAGE(FATAL_ERROR "The installed Qt version ${QTVERSION} is too old, at least version ${QT_MIN_VERSION} is required")
+-    ENDIF( Qt4_FIND_VERSION_EXACT )
+-      ELSE(QT4_INSTALLED_VERSION_TOO_OLD)
+-      IF( Qt4_FIND_VERSION_EXACT AND QT4_INSTALLED_VERSION_TOO_NEW )
+-      MESSAGE(FATAL_ERROR "The installed Qt version ${QTVERSION} is too new, version ${QT_MIN_VERSION} is required")
+-    ELSE( Qt4_FIND_VERSION_EXACT AND QT4_INSTALLED_VERSION_TOO_NEW )
+-      MESSAGE( FATAL_ERROR "Qt qmake not found!")
+-    ENDIF( Qt4_FIND_VERSION_EXACT AND QT4_INSTALLED_VERSION_TOO_NEW )
+-      ENDIF(QT4_INSTALLED_VERSION_TOO_OLD)
+-   ELSE(Qt4_FIND_REQUIRED)
+-      IF(QT4_INSTALLED_VERSION_TOO_OLD AND NOT Qt4_FIND_QUIETLY)
+-         MESSAGE(STATUS "The installed Qt version ${QTVERSION} is too old, at least version ${QT_MIN_VERSION} is required")
+-      ENDIF(QT4_INSTALLED_VERSION_TOO_OLD AND NOT Qt4_FIND_QUIETLY)
+-   ENDIF(Qt4_FIND_REQUIRED)
+- 
+-ENDIF (QT4_QMAKE_FOUND)
++#support old QT_MIN_VERSION if set, but not if version is supplied by find_package()
++IF(NOT Qt4_FIND_VERSION AND QT_MIN_VERSION)
++  SET(Qt4_FIND_VERSION ${QT_MIN_VERSION})
++ENDIF(NOT Qt4_FIND_VERSION AND QT_MIN_VERSION)
++
++IF( Qt4_FIND_COMPONENTS )
++
++  # if components specified in find_package(), make sure each of those pieces were found
++  SET(_QT4_FOUND_REQUIRED_VARS QT_QMAKE_EXECUTABLE QT_MOC_EXECUTABLE QT_RCC_EXECUTABLE QT_INCLUDE_DIR QT_LIBRARY_DIR)
++  FOREACH( component ${Qt4_FIND_COMPONENTS} )
++    STRING( TOUPPER ${component} _COMPONENT )
++    SET(_QT4_FOUND_REQUIRED_VARS ${_QT4_FOUND_REQUIRED_VARS} QT_${_COMPONENT}_INCLUDE_DIR QT_${_COMPONENT}_LIBRARY)
++  ENDFOREACH( component )
++
++  if(Qt4_FIND_COMPONENTS MATCHES QtGui)
++    SET(_QT4_FOUND_REQUIRED_VARS ${_QT4_FOUND_REQUIRED_VARS} QT_UIC_EXECUTABLE)
++  endif(Qt4_FIND_COMPONENTS MATCHES QtGui)
++
++ELSE( Qt4_FIND_COMPONENTS )
++
++  # if no components specified, we'll make a default set of required variables to say Qt is found
++  SET(_QT4_FOUND_REQUIRED_VARS QT_QMAKE_EXECUTABLE QT_MOC_EXECUTABLE QT_RCC_EXECUTABLE QT_UIC_EXECUTABLE QT_INCLUDE_DIR
++    QT_LIBRARY_DIR QT_QTCORE_LIBRARY)
++
++ENDIF( Qt4_FIND_COMPONENTS )
++
++FIND_PACKAGE_HANDLE_STANDARD_ARGS(Qt4
++  REQUIRED_VARS ${_QT4_FOUND_REQUIRED_VARS}
++  VERSION_VAR QTVERSION
++  )
++
++#######################################
++#
++#       compatibility settings
++#
++#######################################
++# Backwards compatibility for CMake1.4 and 1.2
++SET (QT_MOC_EXE ${QT_MOC_EXECUTABLE} )
++SET (QT_UIC_EXE ${QT_UIC_EXECUTABLE} )
++SET( QT_QT_LIBRARY "")
++SET(QT_FOUND ${QT4_FOUND})
+ 
+-- 
+1.7.0
