@@ -408,20 +408,20 @@
       the one used in the Linux kernel or Buildroot, appears. Make
       your configuration changes as appropriate.</li>
 
-      <li>Copy the <code>.config</code> file to
-      <code>toolchain/uClibc/uClibc.config</code> or
-      <code>toolchain/uClibc/uClibc.config-locale</code>. The former
-      is used if you haven't selected locale support in Buildroot
-      configuration, and the latter is used if you have selected
-      locale support.</li>
+      <li>Copy the <code>$(O)/toolchain/uclibc-VERSION/.config</code>
+      file to a different place
+      (like <code>toolchain/uClibc/uClibc-myconfig.config</code>,
+      or <code>board/mymanufacturer/myboard/uClibc.config</code>) and
+      adjust the uClibc configuration (configuration
+      option <code>BR2_UCLIBC_CONFIG</code>) to use this configuration
+      instead of the default one.</li>
 
       <li>Run the compilation of Buildroot again.</li>
     </ol>
 
     <p>Otherwise, you can simply change
-    <code>toolchain/uClibc/uClibc.config</code> or
-    <code>toolchain/uClibc/uClibc.config-locale</code>, without running
-    the configuration assistant.</p>
+    <code>toolchain/uClibc/uClibc.config</code>, without running the
+    configuration assistant.</p>
 
     <p>If you want to use an existing config file for uclibc, then see
     section <a href="#environment_variables">environment variables</a>.</p>
