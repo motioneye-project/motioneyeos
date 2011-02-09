@@ -191,7 +191,7 @@ endif
 #
 # Lots of other awfull sed manipulations go here, to override CT-NG's .config
 # with BR2 config options.
-# Known missing: arch variant & options, floating point (HW/SW), uClibc/eglibc config...
+# Known missing: arch options, floating point (HW/SW), uClibc/eglibc config...
 #
 CTNG_FIX_DOT_CONFIG_SED += s:^(CT_INSTALL_DIR_RO)=y:\# \1 is not set:;
 CTNG_FIX_DOT_CONFIG_SED += s:^(|\# )(CT_ARCH_[BL]E).*:\# \2 is not set:;
@@ -213,6 +213,14 @@ ifeq ($(call qstrip,$(BR2_TOOLCHAIN_CTNG_CXX)),y)
 CTNG_FIX_DOT_CONFIG_SED += s:^\# (CT_CC_LANG_CXX) is not set:\1=y:;
 else
 CTNG_FIX_DOT_CONFIG_SED += s:^(CT_CC_LANG_CXX)=.*:\# \1 is not set:;
+endif
+
+# Shoe-horn CPU variant now
+ifneq ($(call qstrip,$(BR2_GCC_TARGET_ARCH)),)
+CTNG_FIX_DOT_CONFIG_SED += s:^(CT_ARCH_ARCH)=.*:\1=$(BR2_GCC_TARGET_ARCH):;
+endif
+ifneq ($(call qstrip,$(BR2_GCC_TARGET_TUNE)),)
+CTNG_FIX_DOT_CONFIG_SED += s:^(CT_ARCH_TUNE)=.*:\1=$(BR2_GCC_TARGET_TUNE):;
 endif
 
 # Thread implementation selection
