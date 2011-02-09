@@ -96,9 +96,10 @@ MPD_CONF_OPT += --disable-wavpack
 endif
 
 define MPD_INSTALL_EXTRA_FILES
-	[ ! -f $(TARGET_DIR)/etc/mpd.conf ] && \
+	@if [ ! -f $(TARGET_DIR)/etc/mpd.conf ]; then \
 		$(INSTALL) -D package/multimedia/mpd/mpd.conf \
-			$(TARGET_DIR)/etc/mpd.conf
+			$(TARGET_DIR)/etc/mpd.conf; \
+	fi
 	$(INSTALL) -m 0755 -D package/multimedia/mpd/S95mpd \
 		$(TARGET_DIR)/etc/init.d/S95mpd
 endef
