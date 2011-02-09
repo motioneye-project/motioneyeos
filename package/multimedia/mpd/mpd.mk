@@ -18,8 +18,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_MPD_AO),y)
 MPD_DEPENDENCIES += libao
-else
-MPD_CONF_OPT += --disable-ao
+MPD_CONF_OPT += --enable-ao
 endif
 
 ifeq ($(BR2_PACKAGE_MPD_BZIP2),y)
