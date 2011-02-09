@@ -103,7 +103,7 @@ config BR2_BACKUP_SITE
 
 config BR2_SOURCEFORGE_MIRROR
 	string "Sourceforge mirror site"
-	default "easynews"
+	default "kent"
 	help
 	  Sourceforge has a system of mirror sites.  Some sites may be
 	  closer to your location, and sometimes mirror sites go down
@@ -111,7 +111,7 @@ config BR2_SOURCEFORGE_MIRROR
 	  your preferred Sourceforge mirror site.
 
 	  The list of mirrors is available here:
-	  http://prdownloads.sourceforge.net/index-sf.html?download
+	  http://sourceforge.net/apps/trac/sourceforge/wiki/Mirrors
 
 config BR2_KERNEL_MIRROR
 	string "Kernel.org mirror"
