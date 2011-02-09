@@ -3,4 +3,13 @@ config BR2_PACKAGE_LINKS
 	help
 	  Graphics and text mode WWW browser (kind of like lynx).
 
-	  http://atrey.karlin.mff.cuni.cz/~clock/twibright/links
+	  http://links.twibright.com/
+
+config BR2_PACKAGE_LINKS_GRAPHICS
+	bool "use graphics (directfb)"
+	depends on BR2_PACKAGE_LINKS
+	select BR2_PACKAGE_DIRECTFB
+	select BR2_PACKAGE_LIBPNG
+	help
+	  Enable graphics output.
+	  Otherwise links will be text-mode only.
