@@ -36,6 +36,11 @@ define MYSQL_CLIENT_REMOVE_TEST_PROGS
 	rm -rf $(TARGET_DIR)/usr/mysql-test $(TARGET_DIR)/usr/sql-bench
 endef
 
+define MYSQL_CLIENT_ADD_MYSQL_LIB_PATH
+	echo "/usr/lib/mysql" >> $(TARGET_DIR)/etc/ld.so.conf
+endef
+
 MYSQL_CLIENT_POST_INSTALL_TARGET_HOOKS += MYSQL_CLIENT_REMOVE_TEST_PROGS
+MYSQL_CLIENT_POST_INSTALL_TARGET_HOOKS += MYSQL_CLIENT_ADD_MYSQL_LIB_PATH
 
 $(eval $(call AUTOTARGETS,package,mysql_client))
