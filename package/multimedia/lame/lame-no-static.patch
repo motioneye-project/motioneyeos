@@ -1,0 +1,28 @@
+We don't want statically compiled binaries by force so nuke that.
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+diff -Nura lame-3.98.4/frontend/Makefile.am lame-3.98.4.nostatic/frontend/Makefile.am
+--- lame-3.98.4/frontend/Makefile.am	2006-09-30 06:17:05.000000000 -0300
++++ lame-3.98.4.nostatic/frontend/Makefile.am	2011-02-10 13:46:05.512559590 -0300
+@@ -52,7 +52,7 @@
+ endif
+ 
+ CFLAGS = @CFLAGS@ @GTK_CFLAGS@ @FRONTEND_CFLAGS@ @SNDFILE_CFLAGS@
+-LDFLAGS = @LDFLAGS@ @FRONTEND_LDFLAGS@ @SNDFILE_LIBS@ -static
++LDFLAGS = @LDFLAGS@ @FRONTEND_LDFLAGS@ @SNDFILE_LIBS@
+ 
+ INCLUDES = -I$(top_srcdir)/libmp3lame -I$(top_srcdir)/include -I$(top_builddir)
+ 
+diff -Nura lame-3.98.4/frontend/Makefile.in lame-3.98.4.nostatic/frontend/Makefile.in
+--- lame-3.98.4/frontend/Makefile.in	2008-06-25 09:17:51.000000000 -0300
++++ lame-3.98.4.nostatic/frontend/Makefile.in	2011-02-10 13:45:54.752559590 -0300
+@@ -152,7 +152,7 @@
+ 	$(top_builddir)/libmp3lame/libmp3lame.la \
+ 	@FRONTEND_LDADD@
+ 
+-LDFLAGS = @LDFLAGS@ @FRONTEND_LDFLAGS@ @SNDFILE_LIBS@ -static
++LDFLAGS = @LDFLAGS@ @FRONTEND_LDFLAGS@ @SNDFILE_LIBS@
+ LIBOBJS = @LIBOBJS@
+ LIBS = @LIBS@
+ LIBTOOL = @LIBTOOL@
