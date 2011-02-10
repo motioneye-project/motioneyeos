@@ -1,0 +1,8 @@
+config BR2_PACKAGE_LIBCUE
+	bool "libcue"
+	select BR2_PACKAGE_FLEX
+	select BR2_PACKAGE_FLEX_LIBFL
+	help
+	  CUE Sheet Parser Library
+
+	  http://libcue.sourceforge.net/
