@@ -3,7 +3,7 @@
 # mplayer
 #
 #############################################################
-MPLAYER_VERSION = 32710
+MPLAYER_VERSION = 32726
 # MPLAYER_SOURCE = MPlayer-$(MPLAYER_VERSION).tar.bz2
 # MPLAYER_SITE = http://www.mplayerhq.hu/MPlayer/releases
 MPLAYER_SITE = svn://svn.mplayerhq.hu/mplayer/trunk
