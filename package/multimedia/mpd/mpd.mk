@@ -44,6 +44,18 @@ else
 MPD_CONF_OPT += --disable-curl
 endif
 
+ifeq ($(BR2_PACKAGE_MPD_LAME),y)
+MPD_DEPENDENCIES += lame
+else
+MPD_CONF_OPT += --disable-lame-encoder
+endif
+
+ifeq ($(BR2_PACKAGE_MPD_LIBCUE),y)
+MPD_DEPENDENCIES += libcue
+else
+MPD_CONF_OPT += --disable-cue
+endif
+
 ifeq ($(BR2_PACKAGE_MPD_LIBSAMPLERATE),y)
 MPD_DEPENDENCIES += libsamplerate
 else

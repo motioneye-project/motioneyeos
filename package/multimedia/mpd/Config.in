@@ -53,6 +53,18 @@ config BR2_PACKAGE_MPD_FLAC
 	  Enable flac input/streaming support.
 	  Select this if you want to play back FLAC files.
 
+config BR2_PACKAGE_MPD_LAME
+	bool "lame"
+	select BR2_PACKAGE_LAME
+	help
+	  Enable lame (mp3) encoding support.
+
+config BR2_PACKAGE_MPD_LIBCUE
+	bool "libcue"
+	select BR2_PACKAGE_LIBCUE
+	help
+	  Enable cue file support.
+
 config BR2_PACKAGE_MPD_LIBSAMPLERATE
 	bool "libsamplerate"
 	select BR2_PACKAGE_LIBSAMPLERATE
@@ -86,7 +98,7 @@ config BR2_PACKAGE_MPD_MPG123
 
 config BR2_PACKAGE_MPD_MUSEPACK
 	bool "musepack"
-	select BR2_PACKAGE_LIBCUE
+	select BR2_PACKAGE_LIBCUEFILE
 	select BR2_PACKAGE_LIBREPLAYGAIN
 	select BR2_PACKAGE_MUSEPACK
 	help
