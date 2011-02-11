@@ -25,6 +25,14 @@ if [ ! -f /etc/ssh_host_dsa_key ] ; then
 	echo
         /usr/bin/ssh-keygen -t dsa -f /etc/ssh_host_dsa_key -C '' -N ''
 fi
+
+# Check for the SSH2 ECDSA key
+if [ ! -f /etc/ssh_host_ecdsa_key ]; then
+	echo Generating ECDSA Key...
+	echo THIS CAN TAKE A MINUTE OR TWO DEPENDING ON YOUR PROCESSOR!
+	echo
+	/usr/bin/ssh-keygen -t ecdsa -f /etc/ssh_host_ecdsa_key -C '' -N ''
+fi
                 
 umask 077
 
