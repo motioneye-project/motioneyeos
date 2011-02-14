@@ -1,4 +1,6 @@
-2011.02, Not yet released:
+2011.02-rc1, Released February 14th, 2011:
+
+	Fixes all over the tree and new features.
 
 	External toolchain improvements: clarification of the options,
 	and introduction of the toolchain profile concept, for
