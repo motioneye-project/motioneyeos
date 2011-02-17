@@ -1,9 +1,0 @@
-config BR2_PACKAGE_VLC
-	bool "vlc"
-	# Improper ./configure options passed compared to the
-        # multimedia libraries available in Buildroot.
-	depends on BROKEN
-	help
-	  a free cross-platform media player
-
-	  http://download.videolan.org/pub/videolan/vlc/0.8.6e
