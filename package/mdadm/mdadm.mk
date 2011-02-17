@@ -8,7 +8,6 @@ MDADM_SOURCE:=mdadm-$(MDADM_VERSION).tar.bz2
 MDADM_SITE:=http://www.kernel.org/pub/linux/utils/raid/mdadm
 
 MDADM_AUTORECONF = NO
-MDADM_LIBTOOL_PATCH = NO
 
 MDADM_INSTALL_STAGING = NO
 MDADM_INSTALL_TARGET = YES

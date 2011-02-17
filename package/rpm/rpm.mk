@@ -6,7 +6,6 @@
 RPM_VERSION = 5.2.0
 RPM_SITE = http://rpm5.org/files/rpm/rpm-5.2/
 RPM_AUTORECONF = NO
-RPM_LIBTOOL_PATCH = NO
 
 RPM_DEPENDENCIES = zlib beecrypt neon popt
 

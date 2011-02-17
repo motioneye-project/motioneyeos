@@ -9,7 +9,6 @@ CAIRO_SITE = http://cairographics.org/releases
 CAIRO_AUTORECONF = NO
 CAIRO_INSTALL_STAGING = YES
 CAIRO_INSTALL_TARGET = YES
-CAIRO_LIBTOOL_PATCH = NO
 
 CAIRO_CONF_ENV = ac_cv_func_posix_getpwuid_r=yes glib_cv_stack_grows=no \
 		glib_cv_uscore=no ac_cv_func_strtod=yes \

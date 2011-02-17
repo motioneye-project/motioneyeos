@@ -13,7 +13,6 @@
 NASM_VERSION=2.08.01
 NASM_SOURCE=nasm-$(NASM_VERSION).tar.bz2
 NASM_SITE=http://www.nasm.us/pub/nasm/releasebuilds/2.08.01/
-NASM_LIBTOOL_PATCH=NO
 
 $(eval $(call AUTOTARGETS,package,nasm))
 $(eval $(call AUTOTARGETS,package,nasm,host))

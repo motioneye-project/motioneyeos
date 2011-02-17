@@ -12,7 +12,6 @@ GVFS_INSTALL_STAGING = NO
 GVFS_INSTALL_TARGET = YES
 GVFS_AUTORECONF = NO
 GVFS_DEPENDENCIES = host-pkg-config host-libglib2 libglib2 dbus-glib shared-mime-info
-GVFS_LIBTOOL_PATCH = NO
 
 GVFS_CONF_OPT = \
 	--disable-gconf			\

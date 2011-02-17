@@ -8,7 +8,6 @@ QUAGGA_SOURCE:=quagga-$(QUAGGA_VERSION).tar.gz
 QUAGGA_SITE:=http://www.quagga.net/download/
 
 QUAGGA_DEPENDENCIES = host-gawk
-QUAGGA_LIBTOOL_PATCH = NO
 QUAGGA_CONF_OPT = --program-transform-name='' --enable-netlink
 
 ifeq ($(BR2_PACKAGE_QUAGGA_ZEBRA),y)

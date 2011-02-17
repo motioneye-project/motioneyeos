@@ -8,7 +8,6 @@ JPEG_SITE = http://www.ijg.org/files/
 JPEG_SOURCE = jpegsrc.v$(JPEG_VERSION).tar.gz
 JPEG_INSTALL_STAGING = YES
 JPEG_INSTALL_TARGET = YES
-JPEG_LIBTOOL_PATCH = NO
 JPEG_CONF_OPT = --program-prefix=
 
 define JPEG_REMOVE_USELESS_TOOLS

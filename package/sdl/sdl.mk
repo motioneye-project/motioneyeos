@@ -7,7 +7,6 @@ SDL_VERSION:=1.2.14
 SDL_SOURCE:=SDL-$(SDL_VERSION).tar.gz
 SDL_SITE:=http://www.libsdl.org/release
 
-SDL_LIBTOOL_PATCH = NO
 SDL_INSTALL_STAGING = YES
 
 ifeq ($(BR2_PACKAGE_SDL_FBCON),y)

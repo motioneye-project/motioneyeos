@@ -6,7 +6,6 @@
 
 LIGHTTPD_VERSION = 1.4.28
 LIGHTTPD_SITE = http://download.lighttpd.net/lighttpd/releases-1.4.x
-LIGHTTPD_LIBTOOL_PATCH = NO
 
 LIGHTTPD_CONF_OPT = \
 	--libdir=/usr/lib/lighttpd \
