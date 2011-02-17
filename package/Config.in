@@ -82,7 +82,6 @@ endif
 endmenu
 
 menu "Games"
-source "package/games/ace_of_penguins/Config.in"
 source "package/games/gnuchess/Config.in"
 source "package/games/prboom/Config.in"
 source "package/games/doom-wad/Config.in"
