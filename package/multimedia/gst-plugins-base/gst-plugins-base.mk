@@ -7,7 +7,6 @@ GST_PLUGINS_BASE_VERSION = 0.10.32
 GST_PLUGINS_BASE_SOURCE = gst-plugins-base-$(GST_PLUGINS_BASE_VERSION).tar.bz2
 GST_PLUGINS_BASE_SITE = http://gstreamer.freedesktop.org/src/gst-plugins-base
 GST_PLUGINS_BASE_INSTALL_STAGING = YES
-GST_PLUGINS_BASE_LIBTOOL_PATCH = NO
 
 # freetype is only used by examples, but if it is not found
 # and the host has a freetype-config script, then the host
