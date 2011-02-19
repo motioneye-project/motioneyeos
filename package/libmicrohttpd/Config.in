@@ -1,8 +1,14 @@
 config BR2_PACKAGE_LIBMICROHTTPD
 	bool "libmicrohttpd"
-	select BR2_PACKAGE_LIBGCRYPT
 	help
 	  GNU libmicrohttpd is a small C library that makes it easy to
 	  run an HTTP server as part of another application.
 
 	  http://www.gnu.org/software/libmicrohttpd/
+
+config BR2_PACKAGE_LIBMICROHTTPD_SSL
+       bool "https support"
+       depends on BR2_PACKAGE_LIBMICROHTTPD
+       select BR2_PACKAGE_LIBGCRYPT
+       help
+         Enable HTTPS (SSL) support.
