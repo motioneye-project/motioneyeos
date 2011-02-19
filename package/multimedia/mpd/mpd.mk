@@ -107,6 +107,13 @@ else
 MPD_CONF_OPT += --disable-wavpack
 endif
 
+ifeq ($(BR2_PACKAGE_MPD_FFMPEG),y)
+MPD_DEPENDENCIES += ffmpeg
+MPD_CONF_OPT += --enable-ffmpeg
+else
+MPD_CONF_OPT += --disable-ffmpeg
+endif
+
 define MPD_INSTALL_EXTRA_FILES
 	@if [ ! -f $(TARGET_DIR)/etc/mpd.conf ]; then \
 		$(INSTALL) -D package/multimedia/mpd/mpd.conf \

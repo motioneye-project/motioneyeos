@@ -144,6 +144,17 @@ config BR2_PACKAGE_MPD_WAVPACK
 	  Enable wavpack input support.
 	  Select this if you want to play back WV files.
 
+config BR2_PACKAGE_MPD_FFMPEG
+	bool "ffmpeg"
+	select BR2_PACKAGE_FFMPEG
+	depends on BR2_LARGEFILE
+	help
+	  Enable ffmpeg input support.
+	  Select this if you want to play back files supported by ffmpeg.
+
+comment "ffmpeg support requires a toolchain with LARGEFILE support"
+	depends on !BR2_LARGEFILE
+
 endif
 
 comment "mpd requires a toolchain with C++ and WCHAR support"
