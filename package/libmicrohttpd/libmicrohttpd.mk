@@ -3,9 +3,9 @@
 # libmicrohttpd
 #
 #############################################################
-LIBMICROHTTPD_VERSION:=0.4.2
-LIBMICROHTTPD_SOURCE:=libmicrohttpd-$(LIBMICROHTTPD_VERSION).tar.gz
-LIBMICROHTTPD_SITE:=$(BR2_GNU_MIRROR)/libmicrohttpd
+LIBMICROHTTPD_VERSION = 0.4.6
+LIBMICROHTTPD_SOURCE = libmicrohttpd-$(LIBMICROHTTPD_VERSION).tar.gz
+LIBMICROHTTPD_SITE = $(BR2_GNU_MIRROR)/libmicrohttpd
 LIBMICROHTTPD_INSTALL_STAGING = YES
 
 ifeq ($(BR2_PACKAGE_LIBMICROHTTPD_SSL),y)
