@@ -11,7 +11,7 @@ if BR2_PACKAGE_SQUASHFS
 config BR2_PACKAGE_SQUASHFS_GZIP
        bool "gzip support"
        default y
-       select BR2_PACKAGE_GZIP
+       select BR2_PACKAGE_ZLIB
        help
          Support GZIP compression algorithm
 
