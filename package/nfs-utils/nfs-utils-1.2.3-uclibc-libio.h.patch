@@ -1,0 +1,25 @@
+[PATCH] fix build with uClibc
+
+uClibc doesn't have/need libio.h, so don't include it from sockaddr.h
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ support/include/sockaddr.h |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+Index: nfs-utils-1.2.3/support/include/sockaddr.h
+===================================================================
+--- nfs-utils-1.2.3.orig/support/include/sockaddr.h
++++ nfs-utils-1.2.3/support/include/sockaddr.h
+@@ -20,7 +20,10 @@
+ #ifndef NFS_UTILS_SOCKADDR_H
+ #define NFS_UTILS_SOCKADDR_H
+ 
+-#include <libio.h>
++/* uClibc doesn't have/need libio.h */
++#ifndef __UCLIBC__
++#include <libio.h> 
++#endif
+ #include <stdbool.h>
+ #include <sys/socket.h>
+ #include <netinet/in.h>

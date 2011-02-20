@@ -1,0 +1,288 @@
+[PATCH] don't mix build/target compiler/linker flags
+
+Build tools should only use CFLAGS_FOR_BUILD / LDFLAGS_FOR_BUILD, and
+not the normal CFLAGS / LDFLAGS (which are used for target builds).
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ tools/locktest/Makefile.in |   12 +++---
+ tools/rpcdebug/Makefile.in |   12 +++---
+ tools/rpcgen/Makefile.in   |   84 ++++++++++++++++++++++-----------------------
+ 3 files changed, 54 insertions(+), 54 deletions(-)
+
+Index: nfs-utils-1.2.3/tools/locktest/Makefile.in
+===================================================================
+--- nfs-utils-1.2.3.orig/tools/locktest/Makefile.in
++++ nfs-utils-1.2.3/tools/locktest/Makefile.in
+@@ -67,8 +67,8 @@
+ testlk_OBJECTS = $(am_testlk_OBJECTS)
+ testlk_LDADD = $(LDADD)
+ testlk_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
+-	--mode=link $(CCLD) $(testlk_CFLAGS) $(CFLAGS) \
+-	$(testlk_LDFLAGS) $(LDFLAGS) -o $@
++	--mode=link $(CCLD) $(testlk_CFLAGS) \
++	$(testlk_LDFLAGS) -o $@
+ DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)/support/include
+ depcomp = $(SHELL) $(top_srcdir)/depcomp
+ am__depfiles_maybe = depfiles
+@@ -330,18 +330,18 @@
+ @am__fastdepCC_FALSE@	$(LTCOMPILE) -c -o $@ $<
+ 
+ testlk-testlk.o: testlk.c
+-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(testlk_CPPFLAGS) $(CPPFLAGS) $(testlk_CFLAGS) $(CFLAGS) -MT testlk-testlk.o -MD -MP -MF $(DEPDIR)/testlk-testlk.Tpo -c -o testlk-testlk.o `test -f 'testlk.c' || echo '$(srcdir)/'`testlk.c
++@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(testlk_CPPFLAGS) $(CPPFLAGS) $(testlk_CFLAGS) -MT testlk-testlk.o -MD -MP -MF $(DEPDIR)/testlk-testlk.Tpo -c -o testlk-testlk.o `test -f 'testlk.c' || echo '$(srcdir)/'`testlk.c
+ @am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/testlk-testlk.Tpo $(DEPDIR)/testlk-testlk.Po
+ @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='testlk.c' object='testlk-testlk.o' libtool=no @AMDEPBACKSLASH@
+ @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(testlk_CPPFLAGS) $(CPPFLAGS) $(testlk_CFLAGS) $(CFLAGS) -c -o testlk-testlk.o `test -f 'testlk.c' || echo '$(srcdir)/'`testlk.c
++@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(testlk_CPPFLAGS) $(CPPFLAGS) $(testlk_CFLAGS) -c -o testlk-testlk.o `test -f 'testlk.c' || echo '$(srcdir)/'`testlk.c
+ 
+ testlk-testlk.obj: testlk.c
+-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(testlk_CPPFLAGS) $(CPPFLAGS) $(testlk_CFLAGS) $(CFLAGS) -MT testlk-testlk.obj -MD -MP -MF $(DEPDIR)/testlk-testlk.Tpo -c -o testlk-testlk.obj `if test -f 'testlk.c'; then $(CYGPATH_W) 'testlk.c'; else $(CYGPATH_W) '$(srcdir)/testlk.c'; fi`
++@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(testlk_CPPFLAGS) $(CPPFLAGS) $(testlk_CFLAGS) -MT testlk-testlk.obj -MD -MP -MF $(DEPDIR)/testlk-testlk.Tpo -c -o testlk-testlk.obj `if test -f 'testlk.c'; then $(CYGPATH_W) 'testlk.c'; else $(CYGPATH_W) '$(srcdir)/testlk.c'; fi`
+ @am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/testlk-testlk.Tpo $(DEPDIR)/testlk-testlk.Po
+ @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='testlk.c' object='testlk-testlk.obj' libtool=no @AMDEPBACKSLASH@
+ @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(testlk_CPPFLAGS) $(CPPFLAGS) $(testlk_CFLAGS) $(CFLAGS) -c -o testlk-testlk.obj `if test -f 'testlk.c'; then $(CYGPATH_W) 'testlk.c'; else $(CYGPATH_W) '$(srcdir)/testlk.c'; fi`
++@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(testlk_CPPFLAGS) $(CPPFLAGS) $(testlk_CFLAGS) -c -o testlk-testlk.obj `if test -f 'testlk.c'; then $(CYGPATH_W) 'testlk.c'; else $(CYGPATH_W) '$(srcdir)/testlk.c'; fi`
+ 
+ mostlyclean-libtool:
+ 	-rm -f *.lo
+Index: nfs-utils-1.2.3/tools/rpcdebug/Makefile.in
+===================================================================
+--- nfs-utils-1.2.3.orig/tools/rpcdebug/Makefile.in
++++ nfs-utils-1.2.3/tools/rpcdebug/Makefile.in
+@@ -68,8 +68,8 @@
+ rpcdebug_OBJECTS = $(am_rpcdebug_OBJECTS)
+ rpcdebug_LDADD = $(LDADD)
+ rpcdebug_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
+-	--mode=link $(CCLD) $(rpcdebug_CFLAGS) $(CFLAGS) \
+-	$(rpcdebug_LDFLAGS) $(LDFLAGS) -o $@
++	--mode=link $(CCLD) $(rpcdebug_CFLAGS) \
++	$(rpcdebug_LDFLAGS) -o $@
+ DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)/support/include
+ depcomp = $(SHELL) $(top_srcdir)/depcomp
+ am__depfiles_maybe = depfiles
+@@ -391,18 +391,18 @@
+ @am__fastdepCC_FALSE@	$(LTCOMPILE) -c -o $@ $<
+ 
+ rpcdebug-rpcdebug.o: rpcdebug.c
+-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(rpcdebug_CPPFLAGS) $(CPPFLAGS) $(rpcdebug_CFLAGS) $(CFLAGS) -MT rpcdebug-rpcdebug.o -MD -MP -MF $(DEPDIR)/rpcdebug-rpcdebug.Tpo -c -o rpcdebug-rpcdebug.o `test -f 'rpcdebug.c' || echo '$(srcdir)/'`rpcdebug.c
++@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(rpcdebug_CPPFLAGS) $(CPPFLAGS) $(rpcdebug_CFLAGS) -MT rpcdebug-rpcdebug.o -MD -MP -MF $(DEPDIR)/rpcdebug-rpcdebug.Tpo -c -o rpcdebug-rpcdebug.o `test -f 'rpcdebug.c' || echo '$(srcdir)/'`rpcdebug.c
+ @am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/rpcdebug-rpcdebug.Tpo $(DEPDIR)/rpcdebug-rpcdebug.Po
+ @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='rpcdebug.c' object='rpcdebug-rpcdebug.o' libtool=no @AMDEPBACKSLASH@
+ @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(rpcdebug_CPPFLAGS) $(CPPFLAGS) $(rpcdebug_CFLAGS) $(CFLAGS) -c -o rpcdebug-rpcdebug.o `test -f 'rpcdebug.c' || echo '$(srcdir)/'`rpcdebug.c
++@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(rpcdebug_CPPFLAGS) $(CPPFLAGS) $(rpcdebug_CFLAGS) -c -o rpcdebug-rpcdebug.o `test -f 'rpcdebug.c' || echo '$(srcdir)/'`rpcdebug.c
+ 
+ rpcdebug-rpcdebug.obj: rpcdebug.c
+-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(rpcdebug_CPPFLAGS) $(CPPFLAGS) $(rpcdebug_CFLAGS) $(CFLAGS) -MT rpcdebug-rpcdebug.obj -MD -MP -MF $(DEPDIR)/rpcdebug-rpcdebug.Tpo -c -o rpcdebug-rpcdebug.obj `if test -f 'rpcdebug.c'; then $(CYGPATH_W) 'rpcdebug.c'; else $(CYGPATH_W) '$(srcdir)/rpcdebug.c'; fi`
++@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(rpcdebug_CPPFLAGS) $(CPPFLAGS) $(rpcdebug_CFLAGS) -MT rpcdebug-rpcdebug.obj -MD -MP -MF $(DEPDIR)/rpcdebug-rpcdebug.Tpo -c -o rpcdebug-rpcdebug.obj `if test -f 'rpcdebug.c'; then $(CYGPATH_W) 'rpcdebug.c'; else $(CYGPATH_W) '$(srcdir)/rpcdebug.c'; fi`
+ @am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/rpcdebug-rpcdebug.Tpo $(DEPDIR)/rpcdebug-rpcdebug.Po
+ @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='rpcdebug.c' object='rpcdebug-rpcdebug.obj' libtool=no @AMDEPBACKSLASH@
+ @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(rpcdebug_CPPFLAGS) $(CPPFLAGS) $(rpcdebug_CFLAGS) $(CFLAGS) -c -o rpcdebug-rpcdebug.obj `if test -f 'rpcdebug.c'; then $(CYGPATH_W) 'rpcdebug.c'; else $(CYGPATH_W) '$(srcdir)/rpcdebug.c'; fi`
++@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(rpcdebug_CPPFLAGS) $(CPPFLAGS) $(rpcdebug_CFLAGS) -c -o rpcdebug-rpcdebug.obj `if test -f 'rpcdebug.c'; then $(CYGPATH_W) 'rpcdebug.c'; else $(CYGPATH_W) '$(srcdir)/rpcdebug.c'; fi`
+ 
+ mostlyclean-libtool:
+ 	-rm -f *.lo
+Index: nfs-utils-1.2.3/tools/rpcgen/Makefile.in
+===================================================================
+--- nfs-utils-1.2.3.orig/tools/rpcgen/Makefile.in
++++ nfs-utils-1.2.3/tools/rpcgen/Makefile.in
+@@ -72,8 +72,8 @@
+ rpcgen_OBJECTS = $(am_rpcgen_OBJECTS)
+ rpcgen_LDADD = $(LDADD)
+ rpcgen_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
+-	--mode=link $(CCLD) $(rpcgen_CFLAGS) $(CFLAGS) \
+-	$(rpcgen_LDFLAGS) $(LDFLAGS) -o $@
++	--mode=link $(CCLD) $(rpcgen_CFLAGS) \
++	$(rpcgen_LDFLAGS) -o $@
+ DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)/support/include
+ depcomp = $(SHELL) $(top_srcdir)/depcomp
+ am__depfiles_maybe = depfiles
+@@ -349,144 +349,144 @@
+ @am__fastdepCC_FALSE@	$(LTCOMPILE) -c -o $@ $<
+ 
+ rpcgen-rpc_clntout.o: rpc_clntout.c
+-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) $(CFLAGS) -MT rpcgen-rpc_clntout.o -MD -MP -MF $(DEPDIR)/rpcgen-rpc_clntout.Tpo -c -o rpcgen-rpc_clntout.o `test -f 'rpc_clntout.c' || echo '$(srcdir)/'`rpc_clntout.c
++@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) -MT rpcgen-rpc_clntout.o -MD -MP -MF $(DEPDIR)/rpcgen-rpc_clntout.Tpo -c -o rpcgen-rpc_clntout.o `test -f 'rpc_clntout.c' || echo '$(srcdir)/'`rpc_clntout.c
+ @am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/rpcgen-rpc_clntout.Tpo $(DEPDIR)/rpcgen-rpc_clntout.Po
+ @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='rpc_clntout.c' object='rpcgen-rpc_clntout.o' libtool=no @AMDEPBACKSLASH@
+ @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) $(CFLAGS) -c -o rpcgen-rpc_clntout.o `test -f 'rpc_clntout.c' || echo '$(srcdir)/'`rpc_clntout.c
++@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) -c -o rpcgen-rpc_clntout.o `test -f 'rpc_clntout.c' || echo '$(srcdir)/'`rpc_clntout.c
+ 
+ rpcgen-rpc_clntout.obj: rpc_clntout.c
+-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) $(CFLAGS) -MT rpcgen-rpc_clntout.obj -MD -MP -MF $(DEPDIR)/rpcgen-rpc_clntout.Tpo -c -o rpcgen-rpc_clntout.obj `if test -f 'rpc_clntout.c'; then $(CYGPATH_W) 'rpc_clntout.c'; else $(CYGPATH_W) '$(srcdir)/rpc_clntout.c'; fi`
++@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) -MT rpcgen-rpc_clntout.obj -MD -MP -MF $(DEPDIR)/rpcgen-rpc_clntout.Tpo -c -o rpcgen-rpc_clntout.obj `if test -f 'rpc_clntout.c'; then $(CYGPATH_W) 'rpc_clntout.c'; else $(CYGPATH_W) '$(srcdir)/rpc_clntout.c'; fi`
+ @am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/rpcgen-rpc_clntout.Tpo $(DEPDIR)/rpcgen-rpc_clntout.Po
+ @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='rpc_clntout.c' object='rpcgen-rpc_clntout.obj' libtool=no @AMDEPBACKSLASH@
+ @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) $(CFLAGS) -c -o rpcgen-rpc_clntout.obj `if test -f 'rpc_clntout.c'; then $(CYGPATH_W) 'rpc_clntout.c'; else $(CYGPATH_W) '$(srcdir)/rpc_clntout.c'; fi`
++@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) -c -o rpcgen-rpc_clntout.obj `if test -f 'rpc_clntout.c'; then $(CYGPATH_W) 'rpc_clntout.c'; else $(CYGPATH_W) '$(srcdir)/rpc_clntout.c'; fi`
+ 
+ rpcgen-rpc_cout.o: rpc_cout.c
+-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) $(CFLAGS) -MT rpcgen-rpc_cout.o -MD -MP -MF $(DEPDIR)/rpcgen-rpc_cout.Tpo -c -o rpcgen-rpc_cout.o `test -f 'rpc_cout.c' || echo '$(srcdir)/'`rpc_cout.c
++@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) -MT rpcgen-rpc_cout.o -MD -MP -MF $(DEPDIR)/rpcgen-rpc_cout.Tpo -c -o rpcgen-rpc_cout.o `test -f 'rpc_cout.c' || echo '$(srcdir)/'`rpc_cout.c
+ @am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/rpcgen-rpc_cout.Tpo $(DEPDIR)/rpcgen-rpc_cout.Po
+ @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='rpc_cout.c' object='rpcgen-rpc_cout.o' libtool=no @AMDEPBACKSLASH@
+ @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) $(CFLAGS) -c -o rpcgen-rpc_cout.o `test -f 'rpc_cout.c' || echo '$(srcdir)/'`rpc_cout.c
++@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) -c -o rpcgen-rpc_cout.o `test -f 'rpc_cout.c' || echo '$(srcdir)/'`rpc_cout.c
+ 
+ rpcgen-rpc_cout.obj: rpc_cout.c
+-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) $(CFLAGS) -MT rpcgen-rpc_cout.obj -MD -MP -MF $(DEPDIR)/rpcgen-rpc_cout.Tpo -c -o rpcgen-rpc_cout.obj `if test -f 'rpc_cout.c'; then $(CYGPATH_W) 'rpc_cout.c'; else $(CYGPATH_W) '$(srcdir)/rpc_cout.c'; fi`
++@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) -MT rpcgen-rpc_cout.obj -MD -MP -MF $(DEPDIR)/rpcgen-rpc_cout.Tpo -c -o rpcgen-rpc_cout.obj `if test -f 'rpc_cout.c'; then $(CYGPATH_W) 'rpc_cout.c'; else $(CYGPATH_W) '$(srcdir)/rpc_cout.c'; fi`
+ @am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/rpcgen-rpc_cout.Tpo $(DEPDIR)/rpcgen-rpc_cout.Po
+ @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='rpc_cout.c' object='rpcgen-rpc_cout.obj' libtool=no @AMDEPBACKSLASH@
+ @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) $(CFLAGS) -c -o rpcgen-rpc_cout.obj `if test -f 'rpc_cout.c'; then $(CYGPATH_W) 'rpc_cout.c'; else $(CYGPATH_W) '$(srcdir)/rpc_cout.c'; fi`
++@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) -c -o rpcgen-rpc_cout.obj `if test -f 'rpc_cout.c'; then $(CYGPATH_W) 'rpc_cout.c'; else $(CYGPATH_W) '$(srcdir)/rpc_cout.c'; fi`
+ 
+ rpcgen-rpc_hout.o: rpc_hout.c
+-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) $(CFLAGS) -MT rpcgen-rpc_hout.o -MD -MP -MF $(DEPDIR)/rpcgen-rpc_hout.Tpo -c -o rpcgen-rpc_hout.o `test -f 'rpc_hout.c' || echo '$(srcdir)/'`rpc_hout.c
++@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) -MT rpcgen-rpc_hout.o -MD -MP -MF $(DEPDIR)/rpcgen-rpc_hout.Tpo -c -o rpcgen-rpc_hout.o `test -f 'rpc_hout.c' || echo '$(srcdir)/'`rpc_hout.c
+ @am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/rpcgen-rpc_hout.Tpo $(DEPDIR)/rpcgen-rpc_hout.Po
+ @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='rpc_hout.c' object='rpcgen-rpc_hout.o' libtool=no @AMDEPBACKSLASH@
+ @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) $(CFLAGS) -c -o rpcgen-rpc_hout.o `test -f 'rpc_hout.c' || echo '$(srcdir)/'`rpc_hout.c
++@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) -c -o rpcgen-rpc_hout.o `test -f 'rpc_hout.c' || echo '$(srcdir)/'`rpc_hout.c
+ 
+ rpcgen-rpc_hout.obj: rpc_hout.c
+-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) $(CFLAGS) -MT rpcgen-rpc_hout.obj -MD -MP -MF $(DEPDIR)/rpcgen-rpc_hout.Tpo -c -o rpcgen-rpc_hout.obj `if test -f 'rpc_hout.c'; then $(CYGPATH_W) 'rpc_hout.c'; else $(CYGPATH_W) '$(srcdir)/rpc_hout.c'; fi`
++@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) -MT rpcgen-rpc_hout.obj -MD -MP -MF $(DEPDIR)/rpcgen-rpc_hout.Tpo -c -o rpcgen-rpc_hout.obj `if test -f 'rpc_hout.c'; then $(CYGPATH_W) 'rpc_hout.c'; else $(CYGPATH_W) '$(srcdir)/rpc_hout.c'; fi`
+ @am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/rpcgen-rpc_hout.Tpo $(DEPDIR)/rpcgen-rpc_hout.Po
+ @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='rpc_hout.c' object='rpcgen-rpc_hout.obj' libtool=no @AMDEPBACKSLASH@
+ @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) $(CFLAGS) -c -o rpcgen-rpc_hout.obj `if test -f 'rpc_hout.c'; then $(CYGPATH_W) 'rpc_hout.c'; else $(CYGPATH_W) '$(srcdir)/rpc_hout.c'; fi`
++@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) -c -o rpcgen-rpc_hout.obj `if test -f 'rpc_hout.c'; then $(CYGPATH_W) 'rpc_hout.c'; else $(CYGPATH_W) '$(srcdir)/rpc_hout.c'; fi`
+ 
+ rpcgen-rpc_main.o: rpc_main.c
+-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) $(CFLAGS) -MT rpcgen-rpc_main.o -MD -MP -MF $(DEPDIR)/rpcgen-rpc_main.Tpo -c -o rpcgen-rpc_main.o `test -f 'rpc_main.c' || echo '$(srcdir)/'`rpc_main.c
++@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) -MT rpcgen-rpc_main.o -MD -MP -MF $(DEPDIR)/rpcgen-rpc_main.Tpo -c -o rpcgen-rpc_main.o `test -f 'rpc_main.c' || echo '$(srcdir)/'`rpc_main.c
+ @am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/rpcgen-rpc_main.Tpo $(DEPDIR)/rpcgen-rpc_main.Po
+ @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='rpc_main.c' object='rpcgen-rpc_main.o' libtool=no @AMDEPBACKSLASH@
+ @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) $(CFLAGS) -c -o rpcgen-rpc_main.o `test -f 'rpc_main.c' || echo '$(srcdir)/'`rpc_main.c
++@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) -c -o rpcgen-rpc_main.o `test -f 'rpc_main.c' || echo '$(srcdir)/'`rpc_main.c
+ 
+ rpcgen-rpc_main.obj: rpc_main.c
+-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) $(CFLAGS) -MT rpcgen-rpc_main.obj -MD -MP -MF $(DEPDIR)/rpcgen-rpc_main.Tpo -c -o rpcgen-rpc_main.obj `if test -f 'rpc_main.c'; then $(CYGPATH_W) 'rpc_main.c'; else $(CYGPATH_W) '$(srcdir)/rpc_main.c'; fi`
++@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) -MT rpcgen-rpc_main.obj -MD -MP -MF $(DEPDIR)/rpcgen-rpc_main.Tpo -c -o rpcgen-rpc_main.obj `if test -f 'rpc_main.c'; then $(CYGPATH_W) 'rpc_main.c'; else $(CYGPATH_W) '$(srcdir)/rpc_main.c'; fi`
+ @am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/rpcgen-rpc_main.Tpo $(DEPDIR)/rpcgen-rpc_main.Po
+ @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='rpc_main.c' object='rpcgen-rpc_main.obj' libtool=no @AMDEPBACKSLASH@
+ @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) $(CFLAGS) -c -o rpcgen-rpc_main.obj `if test -f 'rpc_main.c'; then $(CYGPATH_W) 'rpc_main.c'; else $(CYGPATH_W) '$(srcdir)/rpc_main.c'; fi`
++@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) -c -o rpcgen-rpc_main.obj `if test -f 'rpc_main.c'; then $(CYGPATH_W) 'rpc_main.c'; else $(CYGPATH_W) '$(srcdir)/rpc_main.c'; fi`
+ 
+ rpcgen-rpc_parse.o: rpc_parse.c
+-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) $(CFLAGS) -MT rpcgen-rpc_parse.o -MD -MP -MF $(DEPDIR)/rpcgen-rpc_parse.Tpo -c -o rpcgen-rpc_parse.o `test -f 'rpc_parse.c' || echo '$(srcdir)/'`rpc_parse.c
++@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) -MT rpcgen-rpc_parse.o -MD -MP -MF $(DEPDIR)/rpcgen-rpc_parse.Tpo -c -o rpcgen-rpc_parse.o `test -f 'rpc_parse.c' || echo '$(srcdir)/'`rpc_parse.c
+ @am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/rpcgen-rpc_parse.Tpo $(DEPDIR)/rpcgen-rpc_parse.Po
+ @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='rpc_parse.c' object='rpcgen-rpc_parse.o' libtool=no @AMDEPBACKSLASH@
+ @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) $(CFLAGS) -c -o rpcgen-rpc_parse.o `test -f 'rpc_parse.c' || echo '$(srcdir)/'`rpc_parse.c
++@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) -c -o rpcgen-rpc_parse.o `test -f 'rpc_parse.c' || echo '$(srcdir)/'`rpc_parse.c
+ 
+ rpcgen-rpc_parse.obj: rpc_parse.c
+-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) $(CFLAGS) -MT rpcgen-rpc_parse.obj -MD -MP -MF $(DEPDIR)/rpcgen-rpc_parse.Tpo -c -o rpcgen-rpc_parse.obj `if test -f 'rpc_parse.c'; then $(CYGPATH_W) 'rpc_parse.c'; else $(CYGPATH_W) '$(srcdir)/rpc_parse.c'; fi`
++@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) -MT rpcgen-rpc_parse.obj -MD -MP -MF $(DEPDIR)/rpcgen-rpc_parse.Tpo -c -o rpcgen-rpc_parse.obj `if test -f 'rpc_parse.c'; then $(CYGPATH_W) 'rpc_parse.c'; else $(CYGPATH_W) '$(srcdir)/rpc_parse.c'; fi`
+ @am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/rpcgen-rpc_parse.Tpo $(DEPDIR)/rpcgen-rpc_parse.Po
+ @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='rpc_parse.c' object='rpcgen-rpc_parse.obj' libtool=no @AMDEPBACKSLASH@
+ @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) $(CFLAGS) -c -o rpcgen-rpc_parse.obj `if test -f 'rpc_parse.c'; then $(CYGPATH_W) 'rpc_parse.c'; else $(CYGPATH_W) '$(srcdir)/rpc_parse.c'; fi`
++@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) -c -o rpcgen-rpc_parse.obj `if test -f 'rpc_parse.c'; then $(CYGPATH_W) 'rpc_parse.c'; else $(CYGPATH_W) '$(srcdir)/rpc_parse.c'; fi`
+ 
+ rpcgen-rpc_scan.o: rpc_scan.c
+-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) $(CFLAGS) -MT rpcgen-rpc_scan.o -MD -MP -MF $(DEPDIR)/rpcgen-rpc_scan.Tpo -c -o rpcgen-rpc_scan.o `test -f 'rpc_scan.c' || echo '$(srcdir)/'`rpc_scan.c
++@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) -MT rpcgen-rpc_scan.o -MD -MP -MF $(DEPDIR)/rpcgen-rpc_scan.Tpo -c -o rpcgen-rpc_scan.o `test -f 'rpc_scan.c' || echo '$(srcdir)/'`rpc_scan.c
+ @am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/rpcgen-rpc_scan.Tpo $(DEPDIR)/rpcgen-rpc_scan.Po
+ @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='rpc_scan.c' object='rpcgen-rpc_scan.o' libtool=no @AMDEPBACKSLASH@
+ @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) $(CFLAGS) -c -o rpcgen-rpc_scan.o `test -f 'rpc_scan.c' || echo '$(srcdir)/'`rpc_scan.c
++@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) -c -o rpcgen-rpc_scan.o `test -f 'rpc_scan.c' || echo '$(srcdir)/'`rpc_scan.c
+ 
+ rpcgen-rpc_scan.obj: rpc_scan.c
+-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) $(CFLAGS) -MT rpcgen-rpc_scan.obj -MD -MP -MF $(DEPDIR)/rpcgen-rpc_scan.Tpo -c -o rpcgen-rpc_scan.obj `if test -f 'rpc_scan.c'; then $(CYGPATH_W) 'rpc_scan.c'; else $(CYGPATH_W) '$(srcdir)/rpc_scan.c'; fi`
++@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) -MT rpcgen-rpc_scan.obj -MD -MP -MF $(DEPDIR)/rpcgen-rpc_scan.Tpo -c -o rpcgen-rpc_scan.obj `if test -f 'rpc_scan.c'; then $(CYGPATH_W) 'rpc_scan.c'; else $(CYGPATH_W) '$(srcdir)/rpc_scan.c'; fi`
+ @am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/rpcgen-rpc_scan.Tpo $(DEPDIR)/rpcgen-rpc_scan.Po
+ @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='rpc_scan.c' object='rpcgen-rpc_scan.obj' libtool=no @AMDEPBACKSLASH@
+ @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) $(CFLAGS) -c -o rpcgen-rpc_scan.obj `if test -f 'rpc_scan.c'; then $(CYGPATH_W) 'rpc_scan.c'; else $(CYGPATH_W) '$(srcdir)/rpc_scan.c'; fi`
++@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) -c -o rpcgen-rpc_scan.obj `if test -f 'rpc_scan.c'; then $(CYGPATH_W) 'rpc_scan.c'; else $(CYGPATH_W) '$(srcdir)/rpc_scan.c'; fi`
+ 
+ rpcgen-rpc_svcout.o: rpc_svcout.c
+-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) $(CFLAGS) -MT rpcgen-rpc_svcout.o -MD -MP -MF $(DEPDIR)/rpcgen-rpc_svcout.Tpo -c -o rpcgen-rpc_svcout.o `test -f 'rpc_svcout.c' || echo '$(srcdir)/'`rpc_svcout.c
++@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) -MT rpcgen-rpc_svcout.o -MD -MP -MF $(DEPDIR)/rpcgen-rpc_svcout.Tpo -c -o rpcgen-rpc_svcout.o `test -f 'rpc_svcout.c' || echo '$(srcdir)/'`rpc_svcout.c
+ @am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/rpcgen-rpc_svcout.Tpo $(DEPDIR)/rpcgen-rpc_svcout.Po
+ @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='rpc_svcout.c' object='rpcgen-rpc_svcout.o' libtool=no @AMDEPBACKSLASH@
+ @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) $(CFLAGS) -c -o rpcgen-rpc_svcout.o `test -f 'rpc_svcout.c' || echo '$(srcdir)/'`rpc_svcout.c
++@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) -c -o rpcgen-rpc_svcout.o `test -f 'rpc_svcout.c' || echo '$(srcdir)/'`rpc_svcout.c
+ 
+ rpcgen-rpc_svcout.obj: rpc_svcout.c
+-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) $(CFLAGS) -MT rpcgen-rpc_svcout.obj -MD -MP -MF $(DEPDIR)/rpcgen-rpc_svcout.Tpo -c -o rpcgen-rpc_svcout.obj `if test -f 'rpc_svcout.c'; then $(CYGPATH_W) 'rpc_svcout.c'; else $(CYGPATH_W) '$(srcdir)/rpc_svcout.c'; fi`
++@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) -MT rpcgen-rpc_svcout.obj -MD -MP -MF $(DEPDIR)/rpcgen-rpc_svcout.Tpo -c -o rpcgen-rpc_svcout.obj `if test -f 'rpc_svcout.c'; then $(CYGPATH_W) 'rpc_svcout.c'; else $(CYGPATH_W) '$(srcdir)/rpc_svcout.c'; fi`
+ @am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/rpcgen-rpc_svcout.Tpo $(DEPDIR)/rpcgen-rpc_svcout.Po
+ @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='rpc_svcout.c' object='rpcgen-rpc_svcout.obj' libtool=no @AMDEPBACKSLASH@
+ @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) $(CFLAGS) -c -o rpcgen-rpc_svcout.obj `if test -f 'rpc_svcout.c'; then $(CYGPATH_W) 'rpc_svcout.c'; else $(CYGPATH_W) '$(srcdir)/rpc_svcout.c'; fi`
++@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) -c -o rpcgen-rpc_svcout.obj `if test -f 'rpc_svcout.c'; then $(CYGPATH_W) 'rpc_svcout.c'; else $(CYGPATH_W) '$(srcdir)/rpc_svcout.c'; fi`
+ 
+ rpcgen-rpc_tblout.o: rpc_tblout.c
+-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) $(CFLAGS) -MT rpcgen-rpc_tblout.o -MD -MP -MF $(DEPDIR)/rpcgen-rpc_tblout.Tpo -c -o rpcgen-rpc_tblout.o `test -f 'rpc_tblout.c' || echo '$(srcdir)/'`rpc_tblout.c
++@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) -MT rpcgen-rpc_tblout.o -MD -MP -MF $(DEPDIR)/rpcgen-rpc_tblout.Tpo -c -o rpcgen-rpc_tblout.o `test -f 'rpc_tblout.c' || echo '$(srcdir)/'`rpc_tblout.c
+ @am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/rpcgen-rpc_tblout.Tpo $(DEPDIR)/rpcgen-rpc_tblout.Po
+ @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='rpc_tblout.c' object='rpcgen-rpc_tblout.o' libtool=no @AMDEPBACKSLASH@
+ @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) $(CFLAGS) -c -o rpcgen-rpc_tblout.o `test -f 'rpc_tblout.c' || echo '$(srcdir)/'`rpc_tblout.c
++@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) -c -o rpcgen-rpc_tblout.o `test -f 'rpc_tblout.c' || echo '$(srcdir)/'`rpc_tblout.c
+ 
+ rpcgen-rpc_tblout.obj: rpc_tblout.c
+-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) $(CFLAGS) -MT rpcgen-rpc_tblout.obj -MD -MP -MF $(DEPDIR)/rpcgen-rpc_tblout.Tpo -c -o rpcgen-rpc_tblout.obj `if test -f 'rpc_tblout.c'; then $(CYGPATH_W) 'rpc_tblout.c'; else $(CYGPATH_W) '$(srcdir)/rpc_tblout.c'; fi`
++@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) -MT rpcgen-rpc_tblout.obj -MD -MP -MF $(DEPDIR)/rpcgen-rpc_tblout.Tpo -c -o rpcgen-rpc_tblout.obj `if test -f 'rpc_tblout.c'; then $(CYGPATH_W) 'rpc_tblout.c'; else $(CYGPATH_W) '$(srcdir)/rpc_tblout.c'; fi`
+ @am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/rpcgen-rpc_tblout.Tpo $(DEPDIR)/rpcgen-rpc_tblout.Po
+ @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='rpc_tblout.c' object='rpcgen-rpc_tblout.obj' libtool=no @AMDEPBACKSLASH@
+ @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) $(CFLAGS) -c -o rpcgen-rpc_tblout.obj `if test -f 'rpc_tblout.c'; then $(CYGPATH_W) 'rpc_tblout.c'; else $(CYGPATH_W) '$(srcdir)/rpc_tblout.c'; fi`
++@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) -c -o rpcgen-rpc_tblout.obj `if test -f 'rpc_tblout.c'; then $(CYGPATH_W) 'rpc_tblout.c'; else $(CYGPATH_W) '$(srcdir)/rpc_tblout.c'; fi`
+ 
+ rpcgen-rpc_util.o: rpc_util.c
+-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) $(CFLAGS) -MT rpcgen-rpc_util.o -MD -MP -MF $(DEPDIR)/rpcgen-rpc_util.Tpo -c -o rpcgen-rpc_util.o `test -f 'rpc_util.c' || echo '$(srcdir)/'`rpc_util.c
++@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) -MT rpcgen-rpc_util.o -MD -MP -MF $(DEPDIR)/rpcgen-rpc_util.Tpo -c -o rpcgen-rpc_util.o `test -f 'rpc_util.c' || echo '$(srcdir)/'`rpc_util.c
+ @am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/rpcgen-rpc_util.Tpo $(DEPDIR)/rpcgen-rpc_util.Po
+ @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='rpc_util.c' object='rpcgen-rpc_util.o' libtool=no @AMDEPBACKSLASH@
+ @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) $(CFLAGS) -c -o rpcgen-rpc_util.o `test -f 'rpc_util.c' || echo '$(srcdir)/'`rpc_util.c
++@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) -c -o rpcgen-rpc_util.o `test -f 'rpc_util.c' || echo '$(srcdir)/'`rpc_util.c
+ 
+ rpcgen-rpc_util.obj: rpc_util.c
+-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) $(CFLAGS) -MT rpcgen-rpc_util.obj -MD -MP -MF $(DEPDIR)/rpcgen-rpc_util.Tpo -c -o rpcgen-rpc_util.obj `if test -f 'rpc_util.c'; then $(CYGPATH_W) 'rpc_util.c'; else $(CYGPATH_W) '$(srcdir)/rpc_util.c'; fi`
++@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) -MT rpcgen-rpc_util.obj -MD -MP -MF $(DEPDIR)/rpcgen-rpc_util.Tpo -c -o rpcgen-rpc_util.obj `if test -f 'rpc_util.c'; then $(CYGPATH_W) 'rpc_util.c'; else $(CYGPATH_W) '$(srcdir)/rpc_util.c'; fi`
+ @am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/rpcgen-rpc_util.Tpo $(DEPDIR)/rpcgen-rpc_util.Po
+ @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='rpc_util.c' object='rpcgen-rpc_util.obj' libtool=no @AMDEPBACKSLASH@
+ @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) $(CFLAGS) -c -o rpcgen-rpc_util.obj `if test -f 'rpc_util.c'; then $(CYGPATH_W) 'rpc_util.c'; else $(CYGPATH_W) '$(srcdir)/rpc_util.c'; fi`
++@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) -c -o rpcgen-rpc_util.obj `if test -f 'rpc_util.c'; then $(CYGPATH_W) 'rpc_util.c'; else $(CYGPATH_W) '$(srcdir)/rpc_util.c'; fi`
+ 
+ rpcgen-rpc_sample.o: rpc_sample.c
+-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) $(CFLAGS) -MT rpcgen-rpc_sample.o -MD -MP -MF $(DEPDIR)/rpcgen-rpc_sample.Tpo -c -o rpcgen-rpc_sample.o `test -f 'rpc_sample.c' || echo '$(srcdir)/'`rpc_sample.c
++@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) -MT rpcgen-rpc_sample.o -MD -MP -MF $(DEPDIR)/rpcgen-rpc_sample.Tpo -c -o rpcgen-rpc_sample.o `test -f 'rpc_sample.c' || echo '$(srcdir)/'`rpc_sample.c
+ @am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/rpcgen-rpc_sample.Tpo $(DEPDIR)/rpcgen-rpc_sample.Po
+ @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='rpc_sample.c' object='rpcgen-rpc_sample.o' libtool=no @AMDEPBACKSLASH@
+ @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) $(CFLAGS) -c -o rpcgen-rpc_sample.o `test -f 'rpc_sample.c' || echo '$(srcdir)/'`rpc_sample.c
++@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) -c -o rpcgen-rpc_sample.o `test -f 'rpc_sample.c' || echo '$(srcdir)/'`rpc_sample.c
+ 
+ rpcgen-rpc_sample.obj: rpc_sample.c
+-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) $(CFLAGS) -MT rpcgen-rpc_sample.obj -MD -MP -MF $(DEPDIR)/rpcgen-rpc_sample.Tpo -c -o rpcgen-rpc_sample.obj `if test -f 'rpc_sample.c'; then $(CYGPATH_W) 'rpc_sample.c'; else $(CYGPATH_W) '$(srcdir)/rpc_sample.c'; fi`
++@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) -MT rpcgen-rpc_sample.obj -MD -MP -MF $(DEPDIR)/rpcgen-rpc_sample.Tpo -c -o rpcgen-rpc_sample.obj `if test -f 'rpc_sample.c'; then $(CYGPATH_W) 'rpc_sample.c'; else $(CYGPATH_W) '$(srcdir)/rpc_sample.c'; fi`
+ @am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/rpcgen-rpc_sample.Tpo $(DEPDIR)/rpcgen-rpc_sample.Po
+ @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='rpc_sample.c' object='rpcgen-rpc_sample.obj' libtool=no @AMDEPBACKSLASH@
+ @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) $(CFLAGS) -c -o rpcgen-rpc_sample.obj `if test -f 'rpc_sample.c'; then $(CYGPATH_W) 'rpc_sample.c'; else $(CYGPATH_W) '$(srcdir)/rpc_sample.c'; fi`
++@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rpcgen_CFLAGS) -c -o rpcgen-rpc_sample.obj `if test -f 'rpc_sample.c'; then $(CYGPATH_W) 'rpc_sample.c'; else $(CYGPATH_W) '$(srcdir)/rpc_sample.c'; fi`
+ 
+ mostlyclean-libtool:
+ 	-rm -f *.lo
