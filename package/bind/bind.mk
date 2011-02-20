@@ -11,6 +11,7 @@ BIND_TARGET_SBINS += named-compilezone rndc rndc-confgen
 BIND_TARGET_SBINS += dnssec-keygen dnssec-signzone
 BIND_TARGET_BINS = dig host nslookup nsupdate
 BIND_TARGET_LIBS = libbind9.* libdns.* libisccc.* libisccfg.* libisc.* liblwres.*
+BIND_MAKE = $(MAKE1)
 BIND_CONF_ENV =	BUILD_CC="$(TARGET_CC)" \
 		BUILD_CFLAGS="$(TARGET_CFLAGS)"
 BIND_CONF_OPT =	\
