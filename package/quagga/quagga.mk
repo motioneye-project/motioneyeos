@@ -67,6 +67,10 @@ endif
 ifeq ($(BR2_PACKAGE_QUAGGA_SNMP),y)
 QUAGGA_CONF_OPT+=--enable-snmp
 QUAGGA_DEPENDENCIES+=netsnmp
+# SNMP support tries -lcrypto by default, disable it if we ain't got openssl
+ifneq ($(BR2_PACKAGE_OPENSSL),y)
+QUAGGA_CONF_OPT+=--without-crypto
+endif
 else
 QUAGGA_CONF_OPT+=--disable-snmp
 endif
