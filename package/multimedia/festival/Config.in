@@ -1,6 +1,7 @@
 menuconfig BR2_PACKAGE_FESTIVAL
 	bool "festival text-to-speech system"
 	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BROKEN # doesn't build
 	select BR2_PACKAGE_ALSA_LIB
 	select BR2_PACKAGE_SPEECH_TOOLS
 	help
