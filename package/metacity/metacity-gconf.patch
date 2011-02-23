@@ -1,18 +1,30 @@
---- metacity-2.17.3/src/prefs.c.orig	2007-01-12 21:42:53.000000000 -0700
-+++ metacity-2.17.3/src/prefs.c	2007-01-12 21:45:21.000000000 -0700
-@@ -2277,6 +2277,7 @@
-       key = g_strconcat (KEY_SCREEN_BINDINGS_PREFIX, "/",
-                          binding->name, NULL);
-       
-+#ifdef HAVE_GCONF
-       gconf_client_set_string (gconf_client_get_default (),
-                                key, old_setting, &err);
+[PATCH] fix build with --disable-gconf
+
+src/core/prefs.c still contain a call to gconf_client_set_bool() when
+built with --disable-gconf, breaking the build.
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ src/core/prefs.c |    2 ++
+ 1 file changed, 2 insertions(+)
+
+Index: metacity-2.25.1/src/core/prefs.c
+===================================================================
+--- metacity-2.25.1.orig/src/core/prefs.c
++++ metacity-2.25.1/src/core/prefs.c
+@@ -2949,6 +2949,7 @@
+ void
+ meta_prefs_set_compositing_manager (gboolean whether)
+ {
++#if HAVE_GCONF
+   GError *err = NULL;
  
-@@ -2287,6 +2288,7 @@
-           g_error_free (err);
-           err = NULL;
-         }
+   gconf_client_set_bool (default_client,
+@@ -2962,6 +2963,7 @@
+                     err->message);
+       g_error_free (err);
+     }
 +#endif
-       
-       g_free (old_setting);
-       g_free (key);
+ }
+ 
+ #ifndef HAVE_GCONF
