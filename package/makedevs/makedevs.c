@@ -345,14 +345,22 @@ void bb_show_usage(void)
 	fprintf(stderr, "/dev/null    c    666    0    0     1       3       0       0     -\n");
 	fprintf(stderr, "/dev/zero    c    666    0    0     1       5       0       0     -\n");
 	fprintf(stderr, "/dev/hda     b    640    0    0     3       0       0       0     -\n");
-	fprintf(stderr, "/dev/hda     b    640    0    0     3       1       1       1     15\n\n");
+	fprintf(stderr, "/dev/hda     b    640    0    0     3       1       1       1     15\n");
+	fprintf(stderr, "/dev/rtp     b    640    0    0     250     0       0       1     5\n");
+	fprintf(stderr, "/dev/gps     b    640    0    0     251     0       1       1     5\n");
+	fprintf(stderr, "/dev/uio     b    640    0    0     252     0       1       2     5\n");
+	fprintf(stderr, "/dev/uio     b    640    0    0     252     1       6       2     5\n\n");
 	fprintf(stderr, "Will Produce:\n");
 	fprintf(stderr, "/dev\n");
 	fprintf(stderr, "/dev/console\n");
 	fprintf(stderr, "/dev/null\n");
 	fprintf(stderr, "/dev/zero\n");
 	fprintf(stderr, "/dev/hda\n");
-	fprintf(stderr, "/dev/hda[0-15]\n");
+	fprintf(stderr, "/dev/hda[1-15] with minor numbers [1-15]\n");
+	fprintf(stderr, "/dev/rtp[0-4]  with minor numbers [0-4]\n");
+	fprintf(stderr, "/dev/gps[1-5]  with minor numbers [0-4]\n");
+	fprintf(stderr, "/dev/uio[1-5]  with minor numbers 0,2,4,6,8\n");
+	fprintf(stderr, "/dev/uio[6-10] with minor numbers 1,3,5,7,9\n");
 	exit(1);
 }
 
@@ -489,9 +497,9 @@ int main(int argc, char **argv)
 				char *full_name_inc;
 
 				full_name_inc = xmalloc(strlen(full_name) + 8);
-				for (i = start; i < count; i++) {
-					sprintf(full_name_inc, "%s%d", full_name, i);
-					rdev = makedev(major, minor + (i * increment - start));
+				for (i = 0; i < count; i++) {
+					sprintf(full_name_inc, "%s%d", full_name, start + i);
+					rdev = makedev(major, minor + i * increment);
 					if (mknod(full_name_inc, mode, rdev) == -1) {
 						bb_perror_msg("line %d: Couldnt create node %s", linenum, full_name_inc);
 						ret = EXIT_FAILURE;
