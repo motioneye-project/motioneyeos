@@ -1,3 +1,32 @@
+2011.02, Not yet released:
+
+	Fixes all over the tree.
+
+	Festival packages marked as broken. Unless someone steps up
+	to support them, they will be removed during the 2011.05
+	development cycle.
+
+	Updated/fixed packages: atk, avahi, bind, cairo, dbus,
+	enchant, fakeroot, gmpc, gpsd, gvfs, iperf, jpeg, libarchive,
+	libcgicc, libdaemon, libdrm, libevent, libgail, libglib2,
+	libgpg-error, libmicrohttpd, librsvg, libsoup, libxcp,
+	matchbox-fakekey, matchbox-startup-monitor, mdadm, metacity,
+	mpd, nasm, nfs-utils, olsr, popt, pthread-stubs, quagga, rpm,
+	samba, sdl, sdl_gfx, sdl_image, sdl_mixer, sdl_sound, sdl_ttf,
+	squashfs, taglib, tcpreplay, tiff, wpa_supplicant, xcb-util,
+	xdriver_xf86-input-{acepad,aiptek,evdev,joystick,keyboard},
+	xdriver_xf86-input-{mouse,synaptics,void},
+	xdriver_xf86-video-{chips,dummy,geode,glide,intel,nv,wsfb},
+	xlib_lib{ICE,SM,XScrnSaver,Xau,Xcursor,Xdmcp,Xi,Xinerama},
+	xlib_lib{Xrandr,Xt,Xtst,Xxf86dga,Xxf86vm,dmx,fontenc,pciaccess},
+	xserver_xorg-server, xz
+
+	Removed packages: ace_of_penguins, vlc
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#3283: See why nfs-utils needs fakeroot, and convert to autotools
+
 2011.02-rc1, Released February 14th, 2011:
 
 	Fixes all over the tree and new features.
