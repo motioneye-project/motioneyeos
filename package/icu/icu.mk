@@ -16,7 +16,9 @@ ICU_SUBDIR = source
 HOST_ICU_SUBDIR = source
 
 define ICU_PREFIX_FIXUP
-	$(SED) "s,^default_prefix=.*,default_prefix=\'$(STAGING_DIR)/usr\',g" $(STAGING_DIR)/usr/bin/icu-config
+	$(SED) "s,^default_prefix=.*,default_prefix=\'$(STAGING_DIR)/usr\',g" \
+		-e "s,^exec_prefix=.*,exec_prefix=\'$(STAGING_DIR)/usr\',g" \
+		$(STAGING_DIR)/usr/bin/icu-config
 endef
 
 ICU_POST_INSTALL_TARGET_HOOKS += ICU_PREFIX_FIXUP
