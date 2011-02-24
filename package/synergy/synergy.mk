@@ -11,6 +11,6 @@ SYNERGY_AUTORECONF = NO
 SYNERGY_INSTALL_STAGING = NO
 SYNERGY_INSTALL_TARGET = YES
 
-SYNERGY_DEPENDENCIES = xserver_xorg-server
+SYNERGY_DEPENDENCIES = xserver_xorg-server xlib_libXtst
 
 $(eval $(call AUTOTARGETS,package,synergy))

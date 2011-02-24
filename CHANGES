@@ -13,8 +13,8 @@
 	makedevs, matchbox-fakekey, matchbox-startup-monitor, mdadm,
 	metacity, mpd, nasm, nfs-utils, olsr, openssl, popt,
 	pthread-stubs, quagga, rpm, samba, sdl, sdl_gfx, sdl_image,
-	sdl_mixer, sdl_sound, sdl_ttf, squashfs, taglib, tcpreplay,
-	tiff, wpa_supplicant, xcb-util,
+	sdl_mixer, sdl_sound, sdl_ttf, squashfs, synergy, taglib,
+	tcpreplay, tiff, wpa_supplicant, xcb-util,
 	xdriver_xf86-input-{acepad,aiptek,evdev,joystick,keyboard},
 	xdriver_xf86-input-{mouse,synaptics,void},
 	xdriver_xf86-video-{chips,dummy,geode,glide,intel,nv,wsfb},
@@ -29,6 +29,7 @@
 	#3205: Failing chmod when running "make" in buildroot (openssl)...
 	#3277: quagga fails to build with SNMP support
 	#3283: See why nfs-utils needs fakeroot, and convert to autotools
+	#3307: synergy fails to build due to missing XTest library
 
 2011.02-rc1, Released February 14th, 2011:
 
