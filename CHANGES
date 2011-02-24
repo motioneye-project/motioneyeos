@@ -1,3 +1,13 @@
+2011.02, Not yet released:
+
+	Fixes all over the tree.
+
+	Updated/fixed packages: icu
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#3259: Unable to build webkit (on arm)
+
 2011.02-rc2, Released February 24th, 2011:
 
 	Fixes all over the tree.
