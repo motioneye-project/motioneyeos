@@ -183,6 +183,7 @@ $(GDB_HOST_DIR)/.configured: $(GDB_DIR)/.unpacked
 	(cd $(GDB_HOST_DIR); \
 		gdb_cv_func_sigsetjmp=yes \
 		bash_cv_have_mbstate_t=yes \
+		$(HOST_CONFIGURE_OPTS) \
 		$(GDB_DIR)/configure $(QUIET) \
 		--cache-file=/dev/null \
 		--prefix=$(STAGING_DIR) \
@@ -207,7 +208,7 @@ $(TARGET_CROSS)gdb: $(GDB_HOST_DIR)/gdb/gdb
 	ln -snf $(REAL_GNU_TARGET_NAME)-gdb \
 		$(HOST_DIR)/usr/bin/$(GNU_TARGET_NAME)-gdb
 
-gdbhost: $(TARGET_CROSS)gdb
+gdbhost: host-expat $(TARGET_CROSS)gdb
 
 gdbhost-source: $(DL_DIR)/$(GDB_SOURCE)
 
