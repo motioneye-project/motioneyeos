@@ -18,6 +18,8 @@ config BR2_PACKAGE_MPD_ALSA
 	bool "alsa"
 	default y
 	select BR2_PACKAGE_ALSA_LIB
+	select BR2_PACKAGE_ALSA_LIB_PCM
+	select BR2_PACKAGE_ALSA_LIB_MIXER
 	help
 	  Enable alsa output support.
 
