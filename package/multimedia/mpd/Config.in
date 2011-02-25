@@ -56,6 +56,17 @@ config BR2_PACKAGE_MPD_FLAC
 	  Enable flac input/streaming support.
 	  Select this if you want to play back FLAC files.
 
+config BR2_PACKAGE_MPD_FFMPEG
+	bool "ffmpeg"
+	select BR2_PACKAGE_FFMPEG
+	depends on BR2_LARGEFILE
+	help
+	  Enable ffmpeg input support.
+	  Select this if you want to play back files supported by ffmpeg.
+
+comment "ffmpeg support requires a toolchain with LARGEFILE support"
+	depends on !BR2_LARGEFILE
+
 config BR2_PACKAGE_MPD_LAME
 	bool "lame"
 	select BR2_PACKAGE_LAME
@@ -146,17 +157,6 @@ config BR2_PACKAGE_MPD_WAVPACK
 	help
 	  Enable wavpack input support.
 	  Select this if you want to play back WV files.
-
-config BR2_PACKAGE_MPD_FFMPEG
-	bool "ffmpeg"
-	select BR2_PACKAGE_FFMPEG
-	depends on BR2_LARGEFILE
-	help
-	  Enable ffmpeg input support.
-	  Select this if you want to play back files supported by ffmpeg.
-
-comment "ffmpeg support requires a toolchain with LARGEFILE support"
-	depends on !BR2_LARGEFILE
 
 endif
 
