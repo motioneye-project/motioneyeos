@@ -2,11 +2,12 @@
 
 	Fixes all over the tree.
 
-	Updated/fixed packages: icu
+	Updated/fixed packages: icu, nuttcp, slang, sylpheed
 
 	Issues resolved (http://bugs.uclibc.org):
 
 	#3259: Unable to build webkit (on arm)
+	#3295: slang fails to build on mipsel
 
 2011.02-rc2, Released February 24th, 2011:
 
