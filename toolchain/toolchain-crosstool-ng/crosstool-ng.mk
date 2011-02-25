@@ -395,7 +395,8 @@ $(CTNG_DIR)/.patched: $(CTNG_DIR)/.unpacked
 # considered always remade. But we do not want
 # to reconfigure and rebuild ct-ng every time
 # we need to run it...
-$(CTNG_DIR)/.configured: | host-gawk        \
+$(CTNG_DIR)/.configured: | $(if $(BR2_CCACHE),host-ccache) \
+                           host-gawk        \
                            host-automake
 
 $(CTNG_DIR)/.configured: $(CTNG_DIR)/.patched
