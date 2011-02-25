@@ -3,16 +3,22 @@
 # sylpheed
 #
 #############################################################
-SYLPHEED_VERSION = 2.4.8
+SYLPHEED_VERSION_MAJOR = 3.1
+SYLPHEED_VERSION_MINOR = 0
+SYLPHEED_VERSION = $(SYLPHEED_VERSION_MAJOR).$(SYLPHEED_VERSION_MINOR)
 SYLPHEED_SOURCE = sylpheed-$(SYLPHEED_VERSION).tar.bz2
-SYLPHEED_SITE = http://sylpheed.sraoss.jp/sylpheed/v2.4
-SYLPHEED_AUTORECONF = NO
-SYLPHEED_INSTALL_STAGING = NO
-SYLPHEED_INSTALL_TARGET = YES
+SYLPHEED_SITE = http://sylpheed.sraoss.jp/sylpheed/v$(SYLPHEED_VERSION_MAJOR)
 
-SYLPHEED_CONF_OPT = --disable-gtkspell --program-prefix=""
+SYLPHEED_CONF_OPT = --disable-gtkspell --program-prefix="" \
+                    --includedir=$(STAGING_DIR)/usr/include
 
 SYLPHEED_DEPENDENCIES = host-pkg-config libgtk2
 
-$(eval $(call AUTOTARGETS,package,sylpheed))
+ifeq ($(BR2_PACKAGE_OPENSSL),y)
+SYLPHEED_DEPENDENCIES += openssl
+SYLPHEED_CONF_OPT += --enable-ssl
+else
+SYLPHEED_CONF_OPT += --disable-ssl
+endif
 
+$(eval $(call AUTOTARGETS,package,sylpheed))
