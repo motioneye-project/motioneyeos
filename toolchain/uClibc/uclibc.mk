@@ -395,6 +395,13 @@ $(UCLIBC_DIR)/.config: $(UCLIBC_DIR)/.oldconfig
 		oldconfig
 	touch $@
 
+ifeq ($(BR2_CCACHE),y)
+# we'll need ccache for the host built before make oldconfig
+# if configured, otherwise uclibc-menuconfig will fail.
+# Use order-only dependency as host-ccache is a virtual target
+$(UCLIBC_DIR)/.config: | host-ccache
+endif
+
 $(UCLIBC_DIR)/.configured: $(LINUX_HEADERS_DIR)/.configured $(UCLIBC_DIR)/.config
 	$(MAKE1) -C $(UCLIBC_DIR) \
 		ARCH="$(UCLIBC_TARGET_ARCH)" \
