@@ -5,11 +5,6 @@ SQUASHFS_SITE=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/sq
 # no libattr/xz in BR
 SQUASHFS_MAKE_ARGS = XATTR_SUPPORT=0
 
-# we need atleast one compresser, so use gzip if none are enabled
-ifeq ($(BR2_PACKAGE_SQUASHFS_GZIP)$(BR2_PACKAGE_SQUASHFS_LZO)$(BR2_PACKAGE_SQUASHFS_LZMA),)
-BR2_PACKAGE_SQUASHFS_GZIP=y
-endif
-
 ifeq ($(BR2_PACKAGE_SQUASHFS_LZMA),y)
 SQUASHFS_DEPENDENCIES += xz
 SQUASHFS_MAKE_ARGS += XZ_SUPPORT=1 COMP_DEFAULT=lzma
