@@ -3,6 +3,8 @@ config BR2_PACKAGE_ALSAMIXERGUI
 	depends on BR2_PACKAGE_ALSA_LIB
 	depends on BR2_INSTALL_LIBSTDCPP
 	select BR2_PACKAGE_FLTK
+	select BR2_PACKAGE_ALSA_LIB_PCM
+	select BR2_PACKAGE_ALSA_LIB_MIXER
 	bool "alsamixergui"
 	help
 	  A nice GUI mixer for Alsa using fltk
