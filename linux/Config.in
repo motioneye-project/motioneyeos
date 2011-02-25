@@ -22,7 +22,7 @@ choice
 	default BR2_LINUX_KERNEL_2_6_37
 
 config BR2_LINUX_KERNEL_2_6_37
-	bool "2.6.37"
+	bool "2.6.37.2"
 
 config BR2_LINUX_KERNEL_SAME_AS_HEADERS
 	bool "Same as toolchain kernel headers"
@@ -52,7 +52,7 @@ endchoice
 config BR2_LINUX_KERNEL_CUSTOM_VERSION_VALUE
 	string "Kernel version"
 	depends on BR2_LINUX_KERNEL_CUSTOM_VERSION
-	default "2.6.37"
+	default "2.6.37.2"
 
 config BR2_LINUX_KERNEL_CUSTOM_TARBALL_LOCATION
 	string "URL of custom kernel tarball"
