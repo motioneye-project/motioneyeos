@@ -8,8 +8,10 @@ SLANG_SOURCE = slang-$(SLANG_VERSION)-mini.tar.bz2
 SLANG_SITE = http://www.uclibc.org/
 SLANG_INSTALL_STAGING = YES
 
+# We need to add -fPIC since we're busting original CFLAGS
+# that have it, see bug #3295
 define SLANG_BUILD_CMDS
-	$(MAKE1) CC="$(TARGET_CC)" CFLAGS="$(TARGET_CFLAGS)" \
+	$(MAKE1) CC="$(TARGET_CC)" CFLAGS="$(TARGET_CFLAGS) -fPIC" \
 	LDFLAGS="$(TARGET_LDFLAGS)" -C $(@D)
 endef
 
