@@ -1,0 +1,22 @@
+[PATCH] Don't hardcode uuid.h location
+
+Breaks cross compilation.
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ guid.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+Index: gdisk-0.6.14/guid.h
+===================================================================
+--- gdisk-0.6.14.orig/guid.h
++++ gdisk-0.6.14/guid.h
+@@ -22,7 +22,7 @@
+ #ifdef _WIN32
+ typedef unsigned char my_uuid_t[16];
+ #else
+-#include </usr/include/uuid/uuid.h>
++#include <uuid/uuid.h>
+ typedef uuid_t my_uuid_t;
+ #endif
+ 
