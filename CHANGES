@@ -2,7 +2,10 @@
 
 	Fixes all over the tree.
 
-	Updated/fixed packages: icu, nuttcp, slang, sylpheed
+	Updated/fixed packages: alsamixergui, icu, mpd, nuttcp, qt,
+	slang, squashfs, sylpheed, xerces
+
+	Deprecated packages: devmem2, webif
 
 	Issues resolved (http://bugs.uclibc.org):
 
