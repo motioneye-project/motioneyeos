@@ -2,8 +2,8 @@
 
 	Fixes all over the tree.
 
-	Updated/fixed packages: alsamixergui, icu, mpd, nuttcp, qt,
-	slang, squashfs, sylpheed, xerces
+	Updated/fixed packages: alsamixergui, avahi, ffmpeg, icu, mpd,
+	nuttcp, qt, slang, squashfs, sylpheed, synergy, xerces
 
 	Deprecated packages: devmem2, webif
 
@@ -11,6 +11,7 @@
 
 	#3259: Unable to build webkit (on arm)
 	#3295: slang fails to build on mipsel
+	#3325: ffmpeg fails to build
 
 2011.02-rc2, Released February 24th, 2011:
 
