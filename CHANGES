@@ -9,6 +9,7 @@
 
 	Issues resolved (http://bugs.uclibc.org):
 
+	#2911: Qt: Disable qt3support-option, if gui-module isn't selected
 	#3259: Unable to build webkit (on arm)
 	#3295: slang fails to build on mipsel
 	#3325: ffmpeg fails to build
