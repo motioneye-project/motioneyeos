@@ -124,6 +124,11 @@ else
 FFMPEG_CONF_OPT += --disable-zlib
 endif
 
+# MMX on is default for x86, disable it for lowly x86-type processors
+ifeq ($(BR2_x86_i386)$(BR2_x86_i486)$(BR2_x86_i586)$(BR2_x86_i686)$(BR2_x86_pentiumpro)$(BR2_x86_geode),y)
+FFMPEG_CONF_OPT += --disable-mmx
+endif
+
 FFMPEG_CONF_OPT += $(call qstrip,$(BR2_PACKAGE_FFMPEG_EXTRACONF))
 
 # Override FFMPEG_CONFIGURE_CMDS: FFmpeg does not support --target and others
