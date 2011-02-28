@@ -160,8 +160,19 @@ define AVAHI_INSTALL_DAEMON_INITSCRIPT
 	$(INSTALL) -m 0755 package/avahi/S50avahi-daemon $(TARGET_DIR)/etc/init.d/
 endef
 
+# avahi build sys erroneously only installs dbus service if systemd is enabled
+define AVAHI_INSTALL_DAEMON_DBUS_SERVICE
+	$(INSTALL) -m 0644 -D $(@D)/avahi-daemon/org.freedesktop.Avahi.service \
+		$(TARGET_DIR)/usr/share/dbus-1/system-services/org.freedesktop.Avahi.service
+endef
+
 ifeq ($(BR2_PACKAGE_AVAHI_DAEMON),y)
 AVAHI_POST_INSTALL_TARGET_HOOKS += AVAHI_INSTALL_DAEMON_INITSCRIPT
+
+ifeq ($(BR2_PACKAGE_DBUS),y)
+AVAHI_POST_INSTALL_TARGET_HOOKS += AVAHI_INSTALL_DAEMON_DBUS_SERVICE
+endif
+
 endif
 
 $(eval $(call AUTOTARGETS,package,avahi))
