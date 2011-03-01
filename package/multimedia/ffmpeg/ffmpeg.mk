@@ -3,17 +3,16 @@
 # ffmpeg
 #
 #############################################################
-FFMPEG_VERSION := 0.5.2
-FFMPEG_SOURCE := ffmpeg-$(FFMPEG_VERSION).tar.bz2
-FFMPEG_SITE := http://ffmpeg.org/releases
+
+FFMPEG_VERSION = 0.6.1
+FFMPEG_SOURCE = ffmpeg-$(FFMPEG_VERSION).tar.bz2
+FFMPEG_SITE = http://ffmpeg.org/releases
 FFMPEG_INSTALL_STAGING = YES
-FFMPEG_INSTALL_TARGET = YES
 
 FFMPEG_CONF_OPT = \
 	--prefix=/usr		\
 	--enable-shared 	\
 	--disable-avfilter	\
-	--disable-vhook		\
 
 ifeq ($(BR2_PACKAGE_FFMPEG_GPL),y)
 FFMPEG_CONF_OPT += --enable-gpl
@@ -129,6 +128,21 @@ ifeq ($(BR2_x86_i386)$(BR2_x86_i486)$(BR2_x86_i586)$(BR2_x86_i686)$(BR2_x86_pent
 FFMPEG_CONF_OPT += --disable-mmx
 endif
 
+# ARM defaults to v5: clear if less, add extra if more
+ifeq ($(BR2_generic_arm)$(BR2_arm7tdmi)$(BR2_arm610)$(BR2_arm710)$(BR2_arm720t)$(BR2_arm920t)$(BR2_arm922t),y)
+FFMPEG_CONF_OPT += --disable-armv5te
+endif
+ifeq ($(BR2_arm1136jf_s)$(BR2_arm1176jz_s)$(BR2_arm1176jzf-s),y)
+FFMPEG_CONF_OPT += --enable-armv6
+endif
+ifeq ($(BR2_arm10)$(BR2_arm1136jf_s)$(BR2_arm1176jz_s)$(BR2_arm1176jzf-s)$(BR2_cortex_a8)$(BR2_cortex_a9),y)
+FFMPEG_CONF_OPT += --enable-armvfp
+endif
+# NEON is optional for A9
+ifeq ($(BR2_cortex_a8),y)
+FFMPEG_CONF_OPT += --enable-neon
+endif
+
 FFMPEG_CONF_OPT += $(call qstrip,$(BR2_PACKAGE_FFMPEG_EXTRACONF))
 
 # Override FFMPEG_CONFIGURE_CMDS: FFmpeg does not support --target and others
@@ -143,8 +157,8 @@ define FFMPEG_CONFIGURE_CMDS
 		--sysroot=$(STAGING_DIR) \
 		--host-cc="$(HOSTCC)" \
 		--arch=$(BR2_ARCH) \
+		--target-os=linux \
 		--extra-cflags=-fPIC \
-		$(DISABLE_IPV6) \
 		$(FFMPEG_CONF_OPT) \
 	)
 endef

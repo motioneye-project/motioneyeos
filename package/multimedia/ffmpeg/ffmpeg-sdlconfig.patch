@@ -1,0 +1,17 @@
+We need to pass the location sdl-config so that ffmpeg picks it up.
+So just pass the whole string to make things simpler.
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+diff -Nura ffmpeg-0.6.1/configure ffmpeg-0.6.1.sdl/configure
+--- ffmpeg-0.6.1/configure	2010-06-15 16:44:30.000000000 -0300
++++ ffmpeg-0.6.1.sdl/configure	2011-02-25 17:13:12.979168176 -0300
+@@ -2640,7 +2640,7 @@
+     die "ERROR: No version of libdc1394 found "
+ fi
+ 
+-SDL_CONFIG="${cross_prefix}sdl-config"
++SDL_CONFIG="${SDL_CONFIG}"
+ if "${SDL_CONFIG}" --version > /dev/null 2>&1; then
+     sdl_cflags=$("${SDL_CONFIG}" --cflags)
+     sdl_libs=$("${SDL_CONFIG}" --libs)
