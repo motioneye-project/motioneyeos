@@ -34,16 +34,28 @@ config BR2_PACKAGE_QT_PSQL
 	  Build PostgreSQL driver
 	  If unsure, say n.
 
-config BR2_PACKAGE_QT_SQLITE
-	bool "SQLite 3 Driver"
+choice
+	prompt "SQLite 3 support"
+	default BR2_PACKAGE_QT_SQLITE_NONE
 	help
-	  Build SQLite driver
-	  If unsure, say n.
+	  Select SQLite support.
 
-config BR2_PACKAGE_QT_SQLITE2
-	bool "SQLite 2 Driver"
-	depends on BROKEN # sqlite2 not in BR
+config BR2_PACKAGE_QT_SQLITE_NONE
+	bool "No sqlite support"
 	help
-	  Build SQLite 2 driver
-	  If unsure, say n.
+	  Do not compile any kind of SQLite support.
+
+config BR2_PACKAGE_QT_SQLITE_QT
+	bool "Qt SQLite"
+	help
+	  Use Qt bundled SQLite support.
+
+config BR2_PACKAGE_QT_SQLITE_SYSTEM
+	bool "System SQLite"
+	select BR2_PACKAGE_SQLITE
+	help
+	  Use system SQLite.
+
+endchoice
+
 endif

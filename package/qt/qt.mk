@@ -295,10 +295,15 @@ endif
 ifeq ($(BR2_PACKAGE_QT_PSQL),y)
 QT_CONFIGURE+= -qt-sql-psql
 endif
-ifeq ($(BR2_PACKAGE_QT_SQLITE),y)
+ifeq ($(BR2_PACKAGE_QT_SQLITE_QT),y)
 QT_CONFIGURE+= -qt-sql-sqlite
 else
+ifeq ($(BR2_PACKAGE_QT_SQLITE_SYSTEM),y)
+QT_CONFIGURE+= -system-sqlite
+QT_DEP_LIBS+= sqlite
+else
 QT_CONFIGURE+= -no-sql-sqlite
+endif
 endif
 ifeq ($(BR2_PACKAGE_QT_SQLITE2),y)
 QT_CONFIGURE+= -qt-sql-sqlite2
