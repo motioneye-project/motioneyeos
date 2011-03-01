@@ -12,7 +12,7 @@
 #
 ######################################################################
 
-QT_VERSION:=4.7.1
+QT_VERSION:=4.7.2
 QT_SOURCE:=qt-everywhere-opensource-src-$(QT_VERSION).tar.gz
 QT_SITE:=http://get.qt.nokia.com/qt/source
 QT_CAT:=$(ZCAT)
