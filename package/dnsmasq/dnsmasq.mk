@@ -4,7 +4,7 @@
 #
 #############################################################
 
-DNSMASQ_VERSION = 2.55
+DNSMASQ_VERSION = 2.57
 DNSMASQ_SITE = http://thekelleys.org.uk/dnsmasq
 DNSMASQ_MAKE_ENV = CC="$(TARGET_CC)" LDFLAGS="$(TARGET_LDFLAGS)"
 DNSMASQ_MAKE_OPT = COPTS="$(DNSMASQ_COPTS)" PREFIX=/usr CFLAGS="$(TARGET_CFLAGS)"
@@ -25,7 +25,7 @@ endif
 ifeq ($(BR2_PACKAGE_DNSMASQ_IDN),y)
 	DNSMASQ_MAKE_OPT += all-i18n
 	DNSMASQ_DEPENDENCIES += libidn libintl
-	DNSMASQ_MAKE_ENV += LDFLAGS+="-lintl"
+	DNSMASQ_MAKE_ENV += LDFLAGS+="-lintl -lidn"
 endif
 
 ifneq ($(BR2_LARGEFILE),y)
