@@ -32,7 +32,8 @@
 # macro will automatically generate a compressed filesystem image.
 
 FAKEROOT_SCRIPT = $(BUILD_DIR)/_fakeroot.fs
-ROOTFS_DEVICE_TABLE = $(call qstrip,$(BR2_ROOTFS_DEVICE_TABLE))
+FULL_DEVICE_TABLE = $(BUILD_DIR)/_device_table.txt
+ROOTFS_DEVICE_TABLES = $(call qstrip,$(BR2_ROOTFS_DEVICE_TABLE))
 
 define ROOTFS_TARGET_INTERNAL
 
@@ -46,13 +47,14 @@ $(BINARIES_DIR)/rootfs.$(1): $(ROOTFS_$(2)_DEPENDENCIES)
 	touch $(BUILD_DIR)/.fakeroot.00000
 	cat $(BUILD_DIR)/.fakeroot* > $(FAKEROOT_SCRIPT)
 	echo "chown -R 0:0 $(TARGET_DIR)" >> $(FAKEROOT_SCRIPT)
-ifneq ($(ROOTFS_DEVICE_TABLE),)
-	echo "$(HOST_DIR)/usr/bin/makedevs -d $(ROOTFS_DEVICE_TABLE) $(TARGET_DIR)" >> $(FAKEROOT_SCRIPT)
+ifneq ($(ROOTFS_DEVICE_TABLES),)
+	cat $(ROOTFS_DEVICE_TABLES) > $(FULL_DEVICE_TABLE)
+	echo "$(HOST_DIR)/usr/bin/makedevs -d $(FULL_DEVICE_TABLE) $(TARGET_DIR)" >> $(FAKEROOT_SCRIPT)
 endif
 	echo "$(ROOTFS_$(2)_CMD)" >> $(FAKEROOT_SCRIPT)
 	chmod a+x $(FAKEROOT_SCRIPT)
 	$(HOST_DIR)/usr/bin/fakeroot -- $(FAKEROOT_SCRIPT)
-	-@rm -f $(FAKEROOT_SCRIPT)
+	-@rm -f $(FAKEROOT_SCRIPT) $(FULL_DEVICE_TABLE)
 	$(foreach hook,$(ROOTFS_$(2)_POST_GEN_HOOKS),$(call $(hook))$(sep))
 ifeq ($$(BR2_TARGET_ROOTFS_$(2)_GZIP),y)
 	gzip -9 -c $$@ > $$@.gz

@@ -36,13 +36,21 @@ config BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_UDEV
 endchoice
 
 config BR2_ROOTFS_DEVICE_TABLE
-	string "Path to the device table"
-	depends on BR2_ROOTFS_DEVICE_CREATION_STATIC
-	default "target/generic/device_table.txt"
+	string "Path to the device tables"
+	default "target/generic/device_table.txt target/generic/device_table_dev.txt" \
+		if BR2_ROOTFS_DEVICE_CREATION_STATIC
+	default "target/generic/device_table.txt" \
+		if (BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_MDEV || \
+		    BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_UDEV || \
+		    BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_DEVTMPFS)
 	help
-	  Specify the location of a device table, that will be passed
-	  to the makedevs utility to create all the special device
-	  files in the target filesystem.
+	  Specify a space-separated list of device table locations,
+	  that will be passed to the makedevs utility to create all
+	  the special device files and assign correct owners and
+	  permissions on various files in the target filesystem.
+
+	  See package/makedevs/README for details on the usage and
+	  syntax of these files.
 
 choice
 	prompt "Root FS skeleton"
