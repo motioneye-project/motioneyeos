@@ -10,12 +10,18 @@ XERCES_MAKE = $(MAKE1)
 XERCES_INSTALL_STAGING = YES
 XERCES_CONF_OPT = --enable-shared \
 		  --disable-threads \
-		  --disable-network \
 		  --with-gnu-ld
 
 ifeq ($(BR2_PACKAGE_LIBICONV),y)
 XERCES_CONF_ENV += LIBS=-liconv
 XERCES_DEPENDENCIES += libiconv
+endif
+
+ifeq ($(BR2_PACKAGE_LIBCURL),y)
+XERCES_CONF_OPT += --enable-netaccessor-curl
+XERCES_DEPENDENCIES += libcurl
+else
+XERCES_CONF_OPT += --disable-network
 endif
 
 $(eval $(call AUTOTARGETS,package,xerces))
