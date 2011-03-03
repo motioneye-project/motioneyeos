@@ -11,7 +11,7 @@ ifeq ($(BR2_TARGET_ROOTFS_SQUASHFS4_LZO),y)
 ROOTFS_SQUASHFS_ARGS += -comp lzo
 else
 ifeq ($(BR2_TARGET_ROOTFS_SQUASHFS4_LZMA),y)
-ROOTFS_SQUASHFS_ARGS += -comp lzma
+ROOTFS_SQUASHFS_ARGS += -comp xz
 else
 ROOTFS_SQUASHFS_ARGS += -comp gzip
 endif
