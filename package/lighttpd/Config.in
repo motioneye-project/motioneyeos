@@ -42,5 +42,13 @@ config BR2_PACKAGE_LIGHTTPD_PCRE
 	help
 	  Enable PCRE support. Needed to support mod_rewrite
 
+config BR2_PACKAGE_LIGHTTPD_WEBDAV
+	bool "webdav"
+	depends on BR2_PACKAGE_LIGHTTPD
+	select BR2_PACKAGE_LIBXML2
+	select BR2_PACKAGE_SQLITE
+	help
+	  Enable webdav support. Needed to support mod_webdav
+
 endmenu
 endif
