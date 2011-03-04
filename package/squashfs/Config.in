@@ -28,6 +28,12 @@ config BR2_PACKAGE_SQUASHFS_LZO
        help
          Support LZO compression algorithm
 
+config BR2_PACKAGE_SQUASHFS_XZ
+       bool "xz support"
+       select BR2_PACKAGE_XZ
+       help
+         Support XZ compression algorithm
+
 endif
 
 comment "squashfs requires a toolchain with LARGEFILE support"
