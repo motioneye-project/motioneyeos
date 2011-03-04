@@ -13,3 +13,13 @@ config BR2_PACKAGE_DROPBEAR_DISABLE_REVERSEDNS
 	  Disable reverse DNS lookups on connection. This can be handy
 	  on systems without working DNS, as connections otherwise
 	  stall until DNS times out.
+
+config BR2_PACKAGE_DROPBEAR_SMALL
+	bool "optimize for size"
+	default y
+	depends on BR2_PACKAGE_DROPBEAR
+	help
+	  Compile dropbear for the smallest possible binary size.
+
+	  Tradeoffs are slower hashes and ciphers, and disabling of the
+	  blowfish cipher.

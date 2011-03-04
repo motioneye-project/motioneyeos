@@ -4,7 +4,7 @@
 #
 #############################################################
 
-DROPBEAR_VERSION = 0.52
+DROPBEAR_VERSION = 0.53.1
 DROPBEAR_SOURCE = dropbear-$(DROPBEAR_VERSION).tar.gz
 DROPBEAR_SITE = http://matt.ucc.asn.au/dropbear/releases
 DROPBEAR_DEPENDENCIES = zlib
@@ -27,8 +27,23 @@ define DROPBEAR_DISABLE_REVERSE_DNS
 	$(SED) 's,^#define DO_HOST_LOOKUP.*,/* #define DO_HOST_LOOKUP */,' $(@D)/options.h
 endef
 
+define DROPBEAR_BUILD_SMALL
+	echo "#define DROPBEAR_SMALL_CODE" >>$(@D)/options.h
+	echo "#define NO_FAST_EXPTMOD" >>$(@D)/options.h
+endef
+
+define DROPBEAR_BUILD_FEATURED
+	echo "#define DROPBEAR_BLOWFISH" >>$(@D)/options.h
+endef
+
 ifeq ($(BR2_PACKAGE_DROPBEAR_DISABLE_REVERSEDNS),y)
 DROPBEAR_POST_EXTRACT_HOOKS += DROPBEAR_DISABLE_REVERSE_DNS
+endif
+
+ifeq ($(BR2_PACKAGE_DROPBEAR_SMALL),y)
+DROPBEAR_POST_EXTRACT_HOOKS += DROPBEAR_BUILD_SMALL
+else
+DROPBEAR_POST_EXTRACT_HOOKS += DROPBEAR_BUILD_FEATURED
 endif
 
 define DROPBEAR_INSTALL_TARGET_CMDS
