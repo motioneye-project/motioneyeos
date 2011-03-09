@@ -80,4 +80,14 @@ else
 IMAGEMAGICK_CONF_OPT += --without-tiff
 endif
 
+define IMAGEMAGICK_REMOVE_CONFIG_SCRIPTS
+	$(RM) -f $(addprefix $(TARGET_DIR)/usr/bin/,	\
+		   $(addsuffix -config,			\
+		     Magick MagickCore MagickWand Wand Magick++))
+endef
+
+ifneq ($(BR2_HAVE_DEVFILES),y)
+IMAGEMAGICK_POST_INSTALL_TARGET_HOOKS += IMAGEMAGICK_REMOVE_CONFIG_SCRIPTS
+endif
+
 $(eval $(call AUTOTARGETS,package,imagemagick))
