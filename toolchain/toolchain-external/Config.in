@@ -87,7 +87,7 @@ config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_POWERPC201009
             - 970 glibc hard-float, 64 bits
 
 config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_SH201009
-	bool "CodeSoucery PowerPC 2010.09"
+	bool "CodeSoucery SH 2010.09"
 	depends on BR2_sh
 	select BR2_TOOLCHAIN_EXTERNAL_GLIBC
 	select BR2_INSTALL_LIBSTDCPP
@@ -98,7 +98,7 @@ config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_SH201009
 	  the following variants:
             - SH4A, glibc, little endian
             - SH4A, glibc, big endian
-	    - SH4A, uClibc, little endian
+            - SH4A, uClibc, little endian
             - SH4A, uClibc, big endian
 
 config BR2_TOOLCHAIN_EXTERNAL_CUSTOM
