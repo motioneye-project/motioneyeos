@@ -1,0 +1,11 @@
+--- busybox-1.18.3/scripts/kconfig/mconf.c
++++ busybox-1.18.3-menuconfig/scripts/kconfig/mconf.c
+@@ -256,7 +256,7 @@ search_help[] = N_(
+ 	"          USB$ => find all CONFIG_ symbols ending with USB\n"
+ 	"\n");
+ 
+-static char buf[4096], *bufptr = buf;
++static char buf[4096*10], *bufptr = buf;
+ static char input_buf[4096];
+ static const char filename[] = ".config";
+ static char *args[1024], **argptr = args;
