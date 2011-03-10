@@ -4,7 +4,7 @@
 #
 #############################################################
 
-WEBKIT_VERSION = 1.2.6
+WEBKIT_VERSION = 1.2.7
 WEBKIT_SITE = http://www.webkitgtk.org
 WEBKIT_INSTALL_STAGING = YES
 WEBKIT_DEPENDENCIES = host-flex host-gperf icu libcurl libxml2 libxslt \
