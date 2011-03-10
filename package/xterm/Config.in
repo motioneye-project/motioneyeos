@@ -1,5 +1,6 @@
 config BR2_PACKAGE_XTERM
 	bool "xterm"
+	select BR2_PACKAGE_NCURSES
 	select BR2_PACKAGE_XLIB_LIBXAW
 	depends on BR2_PACKAGE_XORG7
 	help
