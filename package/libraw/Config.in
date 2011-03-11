@@ -1,0 +1,10 @@
+config BR2_PACKAGE_LIBRAW
+	bool "libraw"
+	depends on BR2_INSTALL_LIBSTDCPP
+	help
+	  libraw is a raw image manipulation library
+
+	  http://www.libraw.org/
+
+comment "libraw requires a toolchain with C++ support enabled"
+	depends on !BR2_INSTALL_LIBSTDCPP
