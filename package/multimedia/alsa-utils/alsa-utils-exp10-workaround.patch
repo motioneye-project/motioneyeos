@@ -1,0 +1,33 @@
+From da14c5ab2a6e030c5c56c979b8eb3ca071890876 Mon Sep 17 00:00:00 2001
+From: Peter Korsgaard <jacmet@sunsite.dk>
+Date: Mon, 14 Mar 2011 09:19:18 +0100
+Subject: [PATCH] alsamixer: fix build on uClibc
+
+exp10 is a glibc extension, which isn't supported on uClibc. Luckily,
+exp10() is trivial to compute based on exp(), so add a wrapper for
+the uClibc case.
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ alsamixer/volume_mapping.c |    5 +++++
+ 1 files changed, 5 insertions(+), 0 deletions(-)
+
+diff --git a/alsamixer/volume_mapping.c b/alsamixer/volume_mapping.c
+index 9cacad8..1c0d7c4 100644
+--- a/alsamixer/volume_mapping.c
++++ b/alsamixer/volume_mapping.c
+@@ -37,6 +37,11 @@
+ #include <stdbool.h>
+ #include "volume_mapping.h"
+ 
++#ifdef __UCLIBC__
++/* 10^x = 10^(log e^x) = (e^x)^log10 = e^(x * log 10) */
++#define exp10(x) (exp((x) * log(10)))
++#endif /* __UCLIBC__ */
++
+ #define MAX_LINEAR_DB_SCALE	24
+ 
+ static inline bool use_linear_dB_scale(long dBmin, long dBmax)
+-- 
+1.7.2.3
+
