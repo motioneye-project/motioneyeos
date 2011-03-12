@@ -2,8 +2,12 @@
 
 	Updated/fixed packages: avahi, busybox, dropbear, ffmpeg,
 	file, gnuconfig, gst-ffmpeg, imagemagick, libdnet, libpng,
-	libxml2, libxslt, mpg123, pkg-config, qt, samba, squashfs,
-	xerces, xorg-server, xz
+	libxml2, libxslt, makedevs, mpg123, pkg-config, qt, samba,
+	squashfs, xerces, xorg-server, xz
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#3475: Calling sync on large filesystems when not always necessary
 
 2011.02, Released February 28th, 2011:
 
