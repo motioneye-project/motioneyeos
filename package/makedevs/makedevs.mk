@@ -4,34 +4,32 @@
 #
 #############################################################
 
-MAKEDEVS_DIR=$(BUILD_DIR)/makedevs
+# source included in buildroot
+MAKEDEVS_SOURCE =
+HOST_MAKEDEVS_SOURCE =
 
-$(MAKEDEVS_DIR)/makedevs.c:
-	rm -rf $(MAKEDEVS_DIR)
-	mkdir $(MAKEDEVS_DIR)
-	cp package/makedevs/makedevs.c $(MAKEDEVS_DIR)
+define MAKEDEVS_BUILD_CMDS
+	$(TARGET_CC) $(TARGET_CFLAGS) $(TARGET_LDFLAGS) \
+		package/makedevs/makedevs.c -o $(@D)/makedevs
+endef
 
-$(MAKEDEVS_DIR)/makedevs: $(MAKEDEVS_DIR)/makedevs.c
-	$(CC) -Wall -Werror -O2 $(MAKEDEVS_DIR)/makedevs.c -o $@
+define MAKEDEVS_INSTALL_TARGET_CMDS
+	install -D -m 755 $(@D)/makedevs $(TARGET_DIR)/usr/sbin/makedevs
+endef
 
-$(TARGET_DIR)/usr/bin/makedevs: $(MAKEDEVS_DIR)/makedevs
-	$(INSTALL) -m 755 $^ $@
+define MAKEDEVS_UNINSTALL_TARGET_CMDS
+	rm -f $(TARGET_DIR)/usr/sbin/makedevs
+endef
 
-makedevs: $(TARGET_DIR)/usr/bin/makedevs
-makedevs-source:
 
-HOST_MAKEDEVS_DIR=$(BUILD_DIR)/host-makedevs
+define HOST_MAKEDEVS_BUILD_CMDS
+	$(HOSTCC) $(HOST_CFLAGS) $(HOST_LDFLAGS) \
+		package/makedevs/makedevs.c -o $(@D)/makedevs
+endef
 
-$(HOST_MAKEDEVS_DIR)/makedevs.c:
-	rm -rf $(HOST_MAKEDEVS_DIR)
-	mkdir $(HOST_MAKEDEVS_DIR)
-	cp package/makedevs/makedevs.c $(HOST_MAKEDEVS_DIR)
+define HOST_MAKEDEVS_INSTALL_CMDS
+	install -D -m 755 $(@D)/makedevs $(HOST_DIR)/usr/bin/makedevs
+endef
 
-$(HOST_MAKEDEVS_DIR)/makedevs: $(HOST_MAKEDEVS_DIR)/makedevs.c
-	$(CC) -Wall -Werror -O2 $(HOST_MAKEDEVS_DIR)/makedevs.c -o $@
-
-$(HOST_DIR)/usr/bin/makedevs: $(HOST_MAKEDEVS_DIR)/makedevs
-	$(INSTALL) -m 755 $^ $@
-
-host-makedevs: $(HOST_DIR)/usr/bin/makedevs
-host-makedevs-source:
+$(eval $(call GENTARGETS,package,makedevs))
+$(eval $(call GENTARGETS,package,makedevs,host))
