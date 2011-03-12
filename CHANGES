@@ -1,5 +1,10 @@
 2011.05, Not released yet:
 
+	Updated/fixed packages: avahi, busybox, dropbear, ffmpeg,
+	file, gnuconfig, gst-ffmpeg, imagemagick, libdnet, libpng,
+	libxml2, libxslt, mpg123, pkg-config, qt, samba, squashfs,
+	xerces, xorg-server, xz
+
 2011.02, Released February 28th, 2011:
 
 	Fixes all over the tree.
