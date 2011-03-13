@@ -1,13 +1,15 @@
 2011.05, Not released yet:
 
-	Updated/fixed packages: avahi, busybox, dropbear, fakeroot,
-	ffmpeg, file, gnuconfig, gst-ffmpeg, imagemagick, libdnet,
-	libpng, libxml2, libxslt, makedevs, mpg123, pkg-config, qt,
-	samba, squashfs, xerces, xorg-server, xz
+	Updated/fixed packages: alsamixergui, avahi, busybox,
+	dropbear, fakeroot, ffmpeg, file, gnuconfig, gst-ffmpeg,
+	imagemagick, libdnet, libpng, libxml2, libxslt, makedevs,
+	mpg123, pkg-config, qt, samba, squashfs, xerces, xorg-server,
+	xz
 
 	Issues resolved (http://bugs.uclibc.org):
 
 	#3451: fakeroot package: wrong FAKEROOT_SITE variable
+	#3457: alsamixergui: broken URL
 	#3475: Calling sync on large filesystems when not always necessary
 
 2011.02, Released February 28th, 2011:
