@@ -5,7 +5,7 @@
 #############################################################
 GRUB_SOURCE:=grub_0.97.orig.tar.gz
 GRUB_PATCH:=grub_0.97-35.diff.gz
-GRUB_SITE:=http://snapshot.debian.net/archive/2008/03/29/debian/pool/main/g/grub/
+GRUB_SITE:=http://snapshot.debian.org/archive/debian/20080329T000000Z/pool/main/g/grub/
 GRUB_PATCH_SITE:=$(GRUB_SITE)
 GRUB_CAT:=$(ZCAT)
 GRUB_DIR:=$(BUILD_DIR)/grub-0.97
