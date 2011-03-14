@@ -27,6 +27,7 @@ config BR2_PACKAGE_ALSA_UTILS_ALSAMIXER
 	select BR2_PACKAGE_NCURSES_TARGET_PANEL
 	select BR2_PACKAGE_NCURSES_TARGET_FORM
 	select BR2_PACKAGE_NCURSES_TARGET_MENU
+	select BR2_PACKAGE_ALSA_LIB_MIXER
 	depends on BR2_USE_WCHAR
 	default y
 
@@ -34,36 +35,43 @@ comment "alsamixer requires a toolchain with WCHAR support"
 	depends on !BR2_USE_WCHAR
 
 config BR2_PACKAGE_ALSA_UTILS_AMIDI
+	select BR2_PACKAGE_ALSA_LIB_RAWMIDI
 	bool "amidi"
 
 config BR2_PACKAGE_ALSA_UTILS_AMIXER
+	select BR2_PACKAGE_ALSA_LIB_MIXER
 	bool "amixer"
 
 config BR2_PACKAGE_ALSA_UTILS_APLAY
-	bool "aplay"
-
-config BR2_PACKAGE_ALSA_UTILS_ARECORD
-	bool "arecord"
+	select BR2_PACKAGE_ALSA_LIB_PCM
+	bool "aplay/arecord"
 
 config BR2_PACKAGE_ALSA_UTILS_IECSET
+	select BR2_PACKAGE_ALSA_LIB_PCM
 	bool "iecset"
 
 config BR2_PACKAGE_ALSA_UTILS_ACONNECT
+	select BR2_PACKAGE_ALSA_LIB_SEQ
 	bool "aconnect"
 
 config BR2_PACKAGE_ALSA_UTILS_APLAYMIDI
+	select BR2_PACKAGE_ALSA_LIB_SEQ
 	bool "aplaymidi"
 
 config BR2_PACKAGE_ALSA_UTILS_ARECORDMIDI
+	select BR2_PACKAGE_ALSA_LIB_SEQ
 	bool "arecordmidi"
 
 config BR2_PACKAGE_ALSA_UTILS_ASEQDUMP
+	select BR2_PACKAGE_ALSA_LIB_SEQ
 	bool "aseqdump"
 
 config BR2_PACKAGE_ALSA_UTILS_ASEQNET
+	select BR2_PACKAGE_ALSA_LIB_SEQ
 	bool "aseqnet"
 
 config BR2_PACKAGE_ALSA_UTILS_SPEAKER_TEST
+	select BR2_PACKAGE_ALSA_LIB_PCM
 	bool "speaker-test"
 
 endmenu
