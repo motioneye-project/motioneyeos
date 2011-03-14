@@ -39,6 +39,11 @@ ifeq ($(ARCH),x86_64)
 	OPENSSL_TARGET_ARCH = x86_64
 endif
 
+# Workaround for bug #3445
+ifeq ($(BR2_x86_i386),y)
+	OPENSSL_TARGET_ARCH = generic32 386
+endif
+
 define OPENSSL_CONFIGURE_CMDS
 	(cd $(@D); \
 		$(TARGET_CONFIGURE_ARGS) \

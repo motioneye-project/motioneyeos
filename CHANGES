@@ -4,12 +4,13 @@
 	avahi, busybox, dnsmasq, dropbear, ethtool, fakeroot, ffmpeg,
 	file, gnuconfig, gst-ffmpeg, gst-plugins-good, icu,
 	imagemagick, libdnet, libpng, libxml2, libxslt, makedevs,
-	mpg123, mtd-utils, ncurses, netsnmp, pkg-config, qt, samba,
-	socat, squashfs, webkit, xerces, xlib_xtrans, xorg-server,
-	xterm, xz
+	mpg123, mtd-utils, ncurses, netsnmp, openssl, pkg-config, qt,
+	samba, socat, squashfs, webkit, xerces, xlib_xtrans,
+	xorg-server, xterm, xz
 
 	Issues resolved (http://bugs.uclibc.org):
 
+	#3445: Not working openssl-10.0.0d on 386sx
 	#3451: fakeroot package: wrong FAKEROOT_SITE variable
 	#3457: alsamixergui: broken URL
 	#3475: Calling sync on large filesystems when not always necessary
