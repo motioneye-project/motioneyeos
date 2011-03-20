@@ -55,6 +55,19 @@ config BR2_PACKAGE_QT_LICENSE_APPROVED
 	  LGPL v2.1: http://doc.trolltech.com/4.5/lgpl.html
 	  GPL  v3.0: http://doc.trolltech.com/4.5/gpl.html
 
+config BR2_PACKAGE_QT_CONFIG_FILE
+	string "Config file"
+	help
+	  Configure options allow to set which modules are being
+	  compiled or not in Qt, but Qt also provide a more
+	  fine-grained mechanism to configure which features should be
+	  enabled or disabled, through a header file. Examples of such
+	  header files can be found in src/corelib/global/qconfig-*.h
+	  in the Qt sources.
+
+	  This option allows to set the path of such a configuration
+	  file, which Buildroot will give to Qt at compile time.
+
 config BR2_PACKAGE_QT_QT3SUPPORT
 	bool "Compatibility with Qt3"
 	depends on BR2_PACKAGE_QT_GUI_MODULE
@@ -239,26 +252,6 @@ config BR2_PACKAGE_QT_SYSTEMZLIB
 	help
 	  Use the shared zlib from the system.
 endchoice
-
-config BR2_PACKAGE_QT_EMB_PLATFORM
-	string "The embedded platform we are making Qt for"
-	default "arm"	if BR2_arm
-	default "arm"	if BR2_armeb
-	default "avr32"	if BR2_avr32
-	default "x86"	if BR2_i386
-	default "x86_64"	if BR2_x86_64
-	default "mips"	if BR2_mips
-	default "mips"	if BR2_mipsel
-	default "powerpc"	if BR2_powerpc
-# Not that I really believe these will work..
-	default "generic"	if BR2_alpha
-	default "generic"	if BR2_chris
-	default "generic"	if BR2_m68k
-	default "generic"	if BR2_sh
-	default "generic"	if BR2_sh64
-	default "generic"	if BR2_sparc
-	help
-	  The target platform.
 
 source "package/qt/Config.sql.in"
 if BR2_PACKAGE_QT_GUI_MODULE
