@@ -30,6 +30,9 @@ LINUX26_MAKE_FLAGS = \
 # going to be installed in the target filesystem.
 LINUX26_VERSION_PROBED = $(shell $(MAKE) $(LINUX26_MAKE_FLAGS) -C $(LINUX26_DIR) --no-print-directory -s kernelrelease)
 
+ifeq ($(BR2_LINUX_KERNEL_IMAGE_TARGET_CUSTOM),y)
+LINUX26_IMAGE_NAME=$(call qstrip,$(BR2_LINUX_KERNEL_IMAGE_TARGET_NAME))
+else
 ifeq ($(BR2_LINUX_KERNEL_UIMAGE),y)
 ifeq ($(KERNEL_ARCH),blackfin)
 # a uImage, but with a different file name
@@ -46,6 +49,7 @@ else ifeq ($(BR2_LINUX_KERNEL_VMLINUX_BIN),y)
 LINUX26_IMAGE_NAME=vmlinux.bin
 else ifeq ($(BR2_LINUX_KERNEL_VMLINUX),y)
 LINUX26_IMAGE_NAME=vmlinux
+endif
 endif
 
 # Compute the arch path, since i386 and x86_64 are in arch/x86 and not
