@@ -12,7 +12,7 @@ PKG_CONFIG_DEPENDENCIES = libglib2
 PKG_CONFIG_CONF_OPT = --with-installed-glib
 
 HOST_PKG_CONFIG_CONF_OPT = \
-		--with-pc-path="$(STAGING_DIR)/usr/lib/pkgconfig" \
+		--with-pc-path="$(STAGING_DIR)/usr/lib/pkgconfig:$(STAGING_DIR)/usr/share/pkgconfig" \
 		--with-sysroot="$(STAGING_DIR)" \
 		--disable-static
 
