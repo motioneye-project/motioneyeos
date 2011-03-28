@@ -126,13 +126,13 @@ endif
 ifndef HOSTCC
 HOSTCC:=gcc
 HOSTCC:=$(shell which $(HOSTCC) || type -p $(HOSTCC) || echo gcc)
-HOSTCC_NOCCACHE:=$(HOSTCC)
 endif
+HOSTCC_NOCCACHE:=$(HOSTCC)
 ifndef HOSTCXX
 HOSTCXX:=g++
 HOSTCXX:=$(shell which $(HOSTCXX) || type -p $(HOSTCXX) || echo g++)
-HOSTCXX_NOCCACHE:=$(HOSTCXX)
 endif
+HOSTCXX_NOCCACHE:=$(HOSTCXX)
 ifndef HOSTFC
 HOSTFC:=gfortran
 endif
