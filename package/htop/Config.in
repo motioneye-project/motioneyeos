@@ -1,0 +1,8 @@
+config BR2_PACKAGE_HTOP
+	bool "htop"
+	select BR2_PACKAGE_NCURSES
+	help
+	  htop is an interactive text-mode process viewer for Linux.
+	  It aims to be a better top.
+
+	  http://htop.sf.net
