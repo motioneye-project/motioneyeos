@@ -3,7 +3,7 @@
 # tslib
 #
 #############################################################
-TSLIB_VERSION:=860d69ca
+TSLIB_VERSION:=412d99d8b92c
 TSLIB_SITE:=git://github.com/kergoth/tslib.git
 TSLIB_AUTORECONF = YES
 TSLIB_INSTALL_STAGING = YES
