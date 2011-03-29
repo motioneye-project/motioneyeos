@@ -539,7 +539,7 @@ ifeq ($(BR2_PACKAGE_QT_SCRIPTTOOLS),y)
 QT_INSTALL_LIBS    += QtScriptTools
 endif
 ifeq ($(BR2_PACKAGE_QT_QT3SUPPORT),y)
-QT_INSTALL_LIBS    += libQt3Support
+QT_INSTALL_LIBS    += Qt3Support
 endif
 
 QT_CONF_FILE=$(HOST_DIR)/usr/bin/qt.conf
