@@ -35,12 +35,12 @@ static char* br2_symbol_printer(const char * const in)
 	char *ret;
 	if (len < 1)
 		return NULL;
-	ret = malloc(len);
+	ret = malloc(len+1);
 	if (!ret) {
 		printf("Out of memory!");
 		exit(1);
 	}
-	memset(ret, 0, len);
+	memset(ret, 0, len+1);
 	i = j = 0;
 	if (strncmp("BR2_", in, 4) == 0)
 		i += 4;
@@ -53,7 +53,7 @@ static char* br2_symbol_printer(const char * const in)
 	return ret;
 }
 
-/* write dependencies of the infividual config-symbols */
+/* write dependencies of the individual config-symbols */
 static int write_make_deps(const char *name)
 {
 	char *str;
