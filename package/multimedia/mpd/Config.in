@@ -64,8 +64,8 @@ config BR2_PACKAGE_MPD_FFMPEG
 	  Enable ffmpeg input support.
 	  Select this if you want to play back files supported by ffmpeg.
 
-comment "ffmpeg support requires a toolchain with LARGEFILE support"
-	depends on !BR2_LARGEFILE
+comment "ffmpeg support requires a toolchain with LARGEFILE and IPV6 support"
+	depends on !(BR2_LARGEFILE && BR2_INET_IPV6)
 
 config BR2_PACKAGE_MPD_LAME
 	bool "lame"
