@@ -1,0 +1,127 @@
+From d71ea65270408a45e4bec036671ec73b24b994b4 Mon Sep 17 00:00:00 2001
+From: Paul Jakma <paul@quagga.net>
+Date: Tue, 22 Mar 2011 15:23:55 +0000
+Subject: [PATCH 1/1] ospfd: Compile fix for opaque support
+
+* ospfd: Refresher logic cleanup broke OSPF opaque, which does its own thing
+  with regard to refresher logic and which also, in the protocol, requires
+  implementations to keep state of which OI an LSA is received on (rather
+  than providing information in the LSA to allow it to be looked up - as
+  other LSAs requiring such assocation were careful to do).
+* ospf_lsa.h: (struct ospf_interface) Add back the pointer to oi, but only
+  for type-9 now.
+* ospf_nsm.c: (ospf_db_summary_add) check the oi actually exists first -
+  doesn't obviate the need for opaque to ensure oi pointers get cleaned up
+  when ospf_interfaces disappear.
+* ospf_opaque.{c,h}: (ospf_opaque_functab,ospf_opaque_lsa_refresh) Refresher
+  LSA functions now need to return the LSA to the general refresh logic,
+  to indicate whether the LSA was refreshed.
+---
+ ospfd/ospf_lsa.h    |    3 +++
+ ospfd/ospf_nsm.c    |    2 +-
+ ospfd/ospf_opaque.c |   13 +++++++------
+ ospfd/ospf_opaque.h |    4 ++--
+ 4 files changed, 13 insertions(+), 9 deletions(-)
+
+diff --git a/ospfd/ospf_lsa.h b/ospfd/ospf_lsa.h
+index fee3470..72e2f8a 100644
+--- a/ospfd/ospf_lsa.h
++++ b/ospfd/ospf_lsa.h
+@@ -114,6 +114,9 @@ struct ospf_lsa
+ 
+   /* Refreshement List or Queue */
+   int refresh_list;
++  
++  /* For Type-9 Opaque-LSAs */
++  struct ospf_interface *oi;
+ };
+ 
+ /* OSPF LSA Link Type. */
+diff --git a/ospfd/ospf_nsm.c b/ospfd/ospf_nsm.c
+index 279d2a0..cbc3171 100644
+--- a/ospfd/ospf_nsm.c
++++ b/ospfd/ospf_nsm.c
+@@ -216,7 +216,7 @@ ospf_db_summary_add (struct ospf_neighbor *nbr, struct ospf_lsa *lsa)
+     {
+     case OSPF_OPAQUE_LINK_LSA:
+       /* Exclude type-9 LSAs that does not have the same "oi" with "nbr". */
+-      if (lsa->oi != nbr->oi)
++      if (nbr->oi && ospf_if_exists (lsa->oi) != nbr->oi)
+           return 0;
+       break;
+     case OSPF_OPAQUE_AREA_LSA:
+diff --git a/ospfd/ospf_opaque.c b/ospfd/ospf_opaque.c
+index 6e90011..aa126e1 100644
+--- a/ospfd/ospf_opaque.c
++++ b/ospfd/ospf_opaque.c
+@@ -251,7 +251,7 @@ struct ospf_opaque_functab
+   void (* config_write_debug )(struct vty *vty);
+   void (* show_opaque_info   )(struct vty *vty, struct ospf_lsa *lsa);
+   int  (* lsa_originator)(void *arg);
+-  void (* lsa_refresher )(struct ospf_lsa *lsa);
++  struct ospf_lsa *(* lsa_refresher )(struct ospf_lsa *lsa);
+   int (* new_lsa_hook)(struct ospf_lsa *lsa);
+   int (* del_lsa_hook)(struct ospf_lsa *lsa);
+ };
+@@ -354,7 +354,7 @@ ospf_register_opaque_functab (
+   void (* config_write_debug )(struct vty *vty),
+   void (* show_opaque_info   )(struct vty *vty, struct ospf_lsa *lsa),
+   int  (* lsa_originator)(void *arg),
+-  void (* lsa_refresher )(struct ospf_lsa *lsa),
++  struct ospf_lsa *(* lsa_refresher )(struct ospf_lsa *lsa),
+   int (* new_lsa_hook)(struct ospf_lsa *lsa),
+   int (* del_lsa_hook)(struct ospf_lsa *lsa))
+ {
+@@ -1608,12 +1608,13 @@ out:
+   return new;
+ }
+ 
+-void
++struct ospf_lsa *
+ ospf_opaque_lsa_refresh (struct ospf_lsa *lsa)
+ {
+   struct ospf *ospf;
+   struct ospf_opaque_functab *functab;
+-
++  struct ospf_lsa *new = NULL;
++  
+   ospf = ospf_lookup ();
+ 
+   if ((functab = ospf_opaque_functab_lookup (lsa)) == NULL
+@@ -1633,9 +1634,9 @@ ospf_opaque_lsa_refresh (struct ospf_lsa *lsa)
+       ospf_lsa_flush (ospf, lsa);
+     }
+   else
+-    (* functab->lsa_refresher)(lsa);
++    new = (* functab->lsa_refresher)(lsa);
+ 
+-  return;
++  return new;
+ }
+ 
+ /*------------------------------------------------------------------------*
+diff --git a/ospfd/ospf_opaque.h b/ospfd/ospf_opaque.h
+index f49fe46..2273064 100644
+--- a/ospfd/ospf_opaque.h
++++ b/ospfd/ospf_opaque.h
+@@ -120,7 +120,7 @@ ospf_register_opaque_functab (
+   void (* config_write_debug )(struct vty *vty),
+   void (* show_opaque_info   )(struct vty *vty, struct ospf_lsa *lsa),
+   int  (* lsa_originator)(void *arg),
+-  void (* lsa_refresher )(struct ospf_lsa *lsa),
++  struct ospf_lsa *(* lsa_refresher )(struct ospf_lsa *lsa),
+   int (* new_lsa_hook)(struct ospf_lsa *lsa),
+   int (* del_lsa_hook)(struct ospf_lsa *lsa)
+ );
+@@ -143,7 +143,7 @@ extern void ospf_opaque_lsa_originate_schedule (struct ospf_interface *oi,
+ 						int *init_delay);
+ extern struct ospf_lsa *ospf_opaque_lsa_install (struct ospf_lsa *,
+ 						 int rt_recalc);
+-extern void ospf_opaque_lsa_refresh (struct ospf_lsa *lsa);
++extern struct ospf_lsa *ospf_opaque_lsa_refresh (struct ospf_lsa *lsa);
+ 
+ extern void ospf_opaque_lsa_reoriginate_schedule (void *lsa_type_dependent,
+ 						  u_char lsa_type,
+-- 
+1.7.4
+

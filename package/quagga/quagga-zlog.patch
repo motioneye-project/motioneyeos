@@ -1,0 +1,43 @@
+From fc95186c30884c96543aecfc56cfe5b08774525b Mon Sep 17 00:00:00 2001
+From: Christian Hammers <ch@debian.org>
+Date: Wed, 23 Mar 2011 13:07:55 +0300
+Subject: [PATCH] lib: fix more format warnings (#637)
+
+The following patch was also neccessary to compile.
+
+* command.c: (config_logmsg_cmd) use "%s" format spec
+* if.c: (connected_log) ditto
+---
+ lib/command.c |    2 +-
+ lib/if.c      |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/lib/command.c b/lib/command.c
+index 5a13f39..264e0f7 100644
+--- a/lib/command.c
++++ b/lib/command.c
+@@ -3056,7 +3056,7 @@ DEFUN (config_logmsg,
+   if ((level = level_match(argv[0])) == ZLOG_DISABLED)
+     return CMD_ERR_NO_MATCH;
+ 
+-  zlog(NULL, level, ((message = argv_concat(argv, argc, 1)) ? message : ""));
++  zlog(NULL, level, "%s", ((message = argv_concat(argv, argc, 1)) ? message : ""));
+   if (message)
+     XFREE(MTYPE_TMP, message);
+   return CMD_SUCCESS;
+diff --git a/lib/if.c b/lib/if.c
+index b61bdbf..86f754b 100644
+--- a/lib/if.c
++++ b/lib/if.c
+@@ -664,7 +664,7 @@ connected_log (struct connected *connected, char *str)
+       strncat (logbuf, inet_ntop (p->family, &p->u.prefix, buf, BUFSIZ),
+ 	       BUFSIZ - strlen(logbuf));
+     }
+-  zlog (NULL, LOG_INFO, logbuf);
++  zlog (NULL, LOG_INFO, "%s", logbuf);
+ }
+ 
+ /* If two connected address has same prefix return 1. */
+-- 
+1.7.4
+

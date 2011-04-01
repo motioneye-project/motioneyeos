@@ -1,0 +1,48 @@
+From 3bde17f1af635c9ca19df0b3516cb8ad0376e6d3 Mon Sep 17 00:00:00 2001
+From: Paul Jakma <paul@quagga.net>
+Date: Wed, 23 Mar 2011 10:30:30 +0000
+Subject: [PATCH 1/1] bgpd: Fix compile failure if IPv6 build was disabled.
+
+* bgp_route.c: ({no_,}ipv6_bgp_network_ttl_cmd) depends on ipv6_bgp_network
+  which is HAVE_IPV6, so these should be too.
+  (bgp_route_init) and the installs should be similarly ifdefed
+---
+ bgpd/bgp_route.c |    6 +++++-
+ 1 files changed, 5 insertions(+), 1 deletions(-)
+
+diff --git a/bgpd/bgp_route.c b/bgpd/bgp_route.c
+index 8c05ba6..5c516f0 100644
+--- a/bgpd/bgp_route.c
++++ b/bgpd/bgp_route.c
+@@ -4327,6 +4327,7 @@ ALIAS_DEPRECATED (no_bgp_network_mask_natural,
+        "Specify a BGP backdoor route\n"
+        "AS-Path hopcount limit attribute\n"
+        "AS-Pathlimit TTL, in number of AS-Path hops\n")
++#ifdef HAVE_IPV6
+ ALIAS_DEPRECATED (ipv6_bgp_network,
+        ipv6_bgp_network_ttl_cmd,
+        "network X:X::X:X/M pathlimit <0-255>",
+@@ -4342,6 +4343,7 @@ ALIAS_DEPRECATED (no_ipv6_bgp_network,
+        "IPv6 prefix <network>/<length>\n"
+        "AS-Path hopcount limit attribute\n"
+        "AS-Pathlimit TTL, in number of AS-Path hops\n")
++#endif /* HAVE_IPV6 */
+ 
+ /* Aggreagete address:
+ 
+@@ -12958,9 +12960,11 @@ bgp_route_init (void)
+   install_element (BGP_IPV4M_NODE, &no_bgp_network_backdoor_ttl_cmd);
+   install_element (BGP_IPV4M_NODE, &no_bgp_network_mask_backdoor_ttl_cmd);
+   install_element (BGP_IPV4M_NODE, &no_bgp_network_mask_natural_backdoor_ttl_cmd);
+-  
++
++#ifdef HAVE_IPV6
+   install_element (BGP_IPV6_NODE, &ipv6_bgp_network_ttl_cmd);
+   install_element (BGP_IPV6_NODE, &no_ipv6_bgp_network_ttl_cmd);
++#endif
+ }
+ 
+ void
+-- 
+1.7.4
+

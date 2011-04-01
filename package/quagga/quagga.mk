@@ -3,9 +3,9 @@
 # quagga suite
 #
 #############################################################
-QUAGGA_VERSION:=0.99.17
-QUAGGA_SOURCE:=quagga-$(QUAGGA_VERSION).tar.gz
-QUAGGA_SITE:=http://www.quagga.net/download/
+
+QUAGGA_VERSION = 0.99.18
+QUAGGA_SITE = http://www.quagga.net/download
 
 QUAGGA_DEPENDENCIES = host-gawk
 QUAGGA_CONF_OPT = --program-transform-name='' --enable-netlink
