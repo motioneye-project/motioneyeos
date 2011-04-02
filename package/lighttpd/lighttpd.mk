@@ -47,7 +47,7 @@ ifeq ($(BR2_PACKAGE_LIGHTTPD_WEBDAV),y)
 LIGHTTPD_DEPENDENCIES += libxml2 sqlite
 LIGHTTPD_CONF_OPT += --with-webdav-props --with-webdav-locks
 else
-LIGHTTPD_CONF_OPT += ---without-webdav-props --without-webdav-locks
+LIGHTTPD_CONF_OPT += --without-webdav-props --without-webdav-locks
 endif
 
 define LIGHTTPD_UNINSTALL_TARGET_CMDS
