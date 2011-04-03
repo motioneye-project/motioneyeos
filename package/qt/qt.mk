@@ -481,7 +481,8 @@ define QT_CONFIGURE_CMDS
 		-no-accessibility \
 		-no-separate-debug-info \
 		-prefix /usr \
-		-hostprefix $(STAGING_DIR)/usr \
+		-plugindir /usr/lib/qt/plugins \
+		-hostprefix $(STAGING_DIR) \
 		-fast \
 		-no-rpath \
 	)
@@ -499,23 +500,19 @@ QT_HOST_PROGRAMS   += moc rcc qmake lrelease
 
 ifeq ($(BR2_PACKAGE_QT_GUI_MODULE),y)
 QT_INSTALL_LIBS    += QtGui
-QT_INSTALL_PLUGINS += imageformats
 QT_HOST_PROGRAMS   += uic
 endif
 ifeq ($(BR2_PACKAGE_QT_SQL_MODULE),y)
 QT_INSTALL_LIBS    += QtSql
-QT_INSTALL_PLUGINS += sqldrivers
 endif
 ifeq ($(BR2_PACKAGE_QT_MULTIMEDIA),y)
 QT_INSTALL_LIBS    += QtMultimedia
 endif
 ifeq ($(BR2_PACKAGE_QT_PHONON),y)
 QT_INSTALL_LIBS    += phonon
-QT_INSTALL_PLUGINS += phonon_backend
 endif
 ifeq ($(BR2_PACKAGE_QT_SVG),y)
 QT_INSTALL_LIBS    += QtSvg
-QT_INSTALL_PLUGINS += iconengines
 endif
 ifeq ($(BR2_PACKAGE_QT_NETWORK),y)
 QT_INSTALL_LIBS    += QtNetwork
@@ -582,10 +579,10 @@ endif
 
 # Plugin installation
 define QT_INSTALL_TARGET_PLUGINS
-	for plugin in $(QT_INSTALL_PLUGINS); do \
-		mkdir -p $(TARGET_DIR)/usr/plugins ; \
-		cp -dpfr $(STAGING_DIR)/usr/plugins/$$plugin $(TARGET_DIR)/usr/plugins/; \
-	done
+	if [ -d $(STAGING_DIR)/usr/lib/qt/plugins/ ] ; then \
+		mkdir -p $(TARGET_DIR)/usr/lib/qt/plugins ; \
+		cp -dpfr $(STAGING_DIR)/usr/lib/qt/plugins/* $(TARGET_DIR)/usr/lib/qt/plugins ; \
+	fi
 endef
 
 # Fonts installation
