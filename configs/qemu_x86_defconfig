@@ -2,6 +2,9 @@
 BR2_i386=y
 BR2_x86_pentiumpro=y
 
+# system
+BR2_TARGET_GENERIC_GETTY=y
+
 # filesystem
 BR2_TARGET_ROOTFS_EXT2=y
 # BR2_TARGET_ROOTFS_TAR is not set
