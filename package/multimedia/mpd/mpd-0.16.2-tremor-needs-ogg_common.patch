@@ -1,0 +1,20 @@
+[PATCH] configure: tremor needs common ogg support just like libvorbis does
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ configure.ac |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+Index: mpd-0.16.2/configure.ac
+===================================================================
+--- mpd-0.16.2.orig/configure.ac
++++ mpd-0.16.2/configure.ac
+@@ -1081,7 +1081,7 @@
+ fi
+ 
+ AM_CONDITIONAL(HAVE_OGG_COMMON,
+-	  test x$enable_vorbis = xyes || test x$enable_oggflac = xyes || test x$enable_flac = xyes)
++	  test x$enable_vorbis = xyes || test x$enable_tremor = xyes || test x$enable_oggflac = xyes || test x$enable_flac = xyes)
+ 
+ AM_CONDITIONAL(HAVE_FLAC_COMMON,
+ 	  test x$enable_flac = xyes || test x$enable_oggflac = xyes)
