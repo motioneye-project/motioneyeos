@@ -1,12 +1,13 @@
 2011.05, Not released yet:
 
 	Updated/fixed packages: alsa-lib, alsa-utils, alsamixergui,
-	avahi, busybox, dnsmasq, dropbear, ethtool, fakeroot, ffmpeg,
-	file, gnuconfig, gst-ffmpeg, gst-plugins-good, icu,
-	imagemagick, libdnet, libpng, libxml2, libxslt, makedevs,
-	mpg123, mtd-utils, ncurses, netsnmp, openssl, pkg-config, qt,
-	samba, socat, squashfs, webkit, xerces, xlib_xtrans,
-	xorg-server, xterm, xz
+	avahi, busybox, copas, dnsmasq, dropbear, ethtool, fakeroot,
+	ffmpeg, file, gnuconfig, gst-ffmpeg, gst-plugins-good, icu,
+	imagemagick, libdnet, libpng, libxml2, libxslt, lighttpd,
+	makedevs, midori, mpg123, mpd, mtd-utils, ncurses, netsnmp,
+	openssl, pkg-config, qt, quagga, readline, rsync, samba,
+	socat, squashfs, webkit, xerces, xlib_xtrans, xorg-server,
+	xterm, xz
 
 	Issues resolved (http://bugs.uclibc.org):
 
