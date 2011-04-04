@@ -214,7 +214,7 @@ ifneq ($(findstring cygwin,$(GNU_HOST_NAME)),)
 HOST_EXEEXT:=.exe
 HOST_LIBEXT:=.lib
 HOST_SHREXT:=.dll
-HOST_LOADLIBES="-lcurses -lintl"
+HOST_LOADLIBES=-lcurses -lintl
 export HOST_LOADLIBES
 endif
 ifneq ($(findstring mingw,$(GNU_HOST_NAME)),)

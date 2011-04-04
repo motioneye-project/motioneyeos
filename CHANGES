@@ -16,6 +16,7 @@
 	#3457: alsamixergui: broken URL
 	#3475: Calling sync on large filesystems when not always necessary
 	#3511: make busybox-menuconfig does not download busybox package
+	#3541: Quotes in the top Makefile:217 break buildroot/kernel config...
 
 2011.02, Released February 28th, 2011:
 
