@@ -34,6 +34,7 @@ NCURSES_CONF_OPT = \
 	--without-cxx-binding \
 	--without-ada \
 	--without-progs \
+	--without-tests \
 	--disable-big-core \
 	--without-profile \
 	--disable-rpath \
