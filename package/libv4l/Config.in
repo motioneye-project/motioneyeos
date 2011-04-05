@@ -7,5 +7,55 @@ config BR2_PACKAGE_LIBV4L
 
 	  http://freshmeat.net/projects/libv4l
 
+if BR2_PACKAGE_LIBV4L
+
+config BR2_PACKAGE_LIBV4L_DECODE_TM6000
+	bool "decode_tm6000"
+	depends on BR2_TOOLCHAIN_EXTERNAL_GLIBC || BR2_TOOLCHAIN_CTNG_glibc || BR2_TOOLCHAIN_CTNG_eglibc
+	help
+	  Tool to decode tm6000 proprietary format streams
+
+comment "decode_tm6000 requires a GLIBC based toolchain"
+	depends on !(BR2_TOOLCHAIN_EXTERNAL_GLIBC || BR2_TOOLCHAIN_CTNG_glibc || BR2_TOOLCHAIN_CTNG_eglibc)
+
+config BR2_PACKAGE_LIBV4L_IR_KEYTABLE
+	bool "ir-keytable"
+	depends on BR2_TOOLCHAIN_EXTERNAL_GLIBC || BR2_TOOLCHAIN_CTNG_glibc || BR2_TOOLCHAIN_CTNG_eglibc
+	help
+	  Tool to alter keymaps of Remote Controller devices
+
+comment "ir-keytable requires a GLIBC based toolchain"
+	depends on !(BR2_TOOLCHAIN_EXTERNAL_GLIBC || BR2_TOOLCHAIN_CTNG_glibc || BR2_TOOLCHAIN_CTNG_eglibc)
+
+config BR2_PACKAGE_LIBV4L_V4L2_COMPLIANCE
+	bool "v4l2-compliance"
+	depends on BR2_INSTALL_LIBSTDCPP
+	help
+	  Tool to test v4l2 API compliance of drivers
+
+comment "v4l2-compliance requires a toolchain with C++ support enabled"
+	depends on !BR2_INSTALL_LIBSTDCPP
+
+config BR2_PACKAGE_LIBV4L_V4L2_CTL
+	bool "v4l2-ctl"
+	depends on BR2_INSTALL_LIBSTDCPP
+	default y
+	help
+	  Tool to configure v4l2 controls from the cmdline
+
+comment "v4l2-ctl requires a toolchain with C++ support enabled"
+	depends on !BR2_INSTALL_LIBSTDCPP
+
+config BR2_PACKAGE_LIBV4L_V4L2_DBG
+	bool "v4l2-dbg"
+	depends on BR2_INSTALL_LIBSTDCPP
+	help
+	  Tool to directly get and set registers of v4l2 devices
+
+comment "v4l2-dbg requires a toolchain with C++ support enabled"
+	depends on !BR2_INSTALL_LIBSTDCPP
+
+endif
+
 comment "libv4l requires a toolchain with LARGEFILE support"
         depends on !BR2_LARGEFILE
