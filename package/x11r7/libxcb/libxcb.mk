@@ -3,7 +3,7 @@
 # libxcb
 #
 #############################################################
-LIBXCB_VERSION = 1.5
+LIBXCB_VERSION = 1.7
 LIBXCB_SOURCE = libxcb-$(LIBXCB_VERSION).tar.bz2
 LIBXCB_SITE = http://xcb.freedesktop.org/dist/
 
