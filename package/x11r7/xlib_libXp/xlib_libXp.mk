@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-XLIB_LIBXP_VERSION = 1.0.0
+XLIB_LIBXP_VERSION = 1.0.1
 XLIB_LIBXP_SOURCE = libXp-$(XLIB_LIBXP_VERSION).tar.bz2
 XLIB_LIBXP_SITE = http://xorg.freedesktop.org/releases/individual/lib
 XLIB_LIBXP_INSTALL_STAGING = YES
