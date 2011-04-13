@@ -550,12 +550,17 @@ $(TARGET_DIR)/usr/bin/gcc: $(GCC_BUILD_DIR4)/.compiled
 		cp -f $(HOST_DIR)/$(GCC_LIB_SUBDIR)/$(GCC_INCLUDE_DIR)/syslimits.h \
 			$(TARGET_DIR)/usr/$(GCC_LIB_SUBDIR)/$(GCC_INCLUDE_DIR)/; \
 	fi
+
 	# Make sure we have 'cc'.
 	if [ ! -e $(TARGET_DIR)/usr/bin/cc ]; then \
 		ln -snf gcc $(TARGET_DIR)/usr/bin/cc; \
 	fi
+
+	# Copy C runtime initialization object files
+	cp -f $(STAGING_DIR)/usr/lib/*crt*.o $(TARGET_DIR)/usr/lib
+
 	# These are in /lib, so...
-	#rm -rf $(TARGET_DIR)/usr/lib/libgcc_s*.so*
+	rm -rf $(TARGET_DIR)/usr/lib/libgcc_s*.so*
 	touch -c $@
 
 gcc_target: $(STAMP_DIR)/gcc_libs_target_installed $(GCC_TARGET_PREREQ) binutils $(TARGET_DIR)/usr/bin/gcc
