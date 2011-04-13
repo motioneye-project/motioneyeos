@@ -1,6 +1,6 @@
 config BR2_PACKAGE_GCC_TARGET
-	bool "native toolchain in the target filesystem"
-	depends on BR2_HAVE_DEVFILES
+	bool "gcc"
+	depends on BR2_HAVE_DEVFILES && BR2_TOOLCHAIN_BUILDROOT
 	select BR2_PACKAGE_BINUTILS
 	select BR2_PACKAGE_BINUTILS_TARGET
 	select BR2_PACKAGE_MPC if BR2_GCC_VERSION_4_5_X
@@ -9,6 +9,18 @@ config BR2_PACKAGE_GCC_TARGET
 	help
 	  If you want the target system to be able to run
 	  binutils/gcc and compile native code, say Y here.
+
+config BR2_GCC_CROSS_FORTRAN
+	bool "fortran support"
+	depends on !BR2_avr32 && BR2_PACKAGE_GCC_TARGET
+	help
+	  Build a Fortran compiler
+
+config BR2_GCC_CROSS_OBJC
+	bool "objective-c support"
+	depends on !BR2_avr32 && BR2_PACKAGE_GCC_TARGET
+	help
+	  Build an Objective-C compiler
 
 config BR2_EXTRA_TARGET_GCC_CONFIG_OPTIONS
 	string "Additional target gcc options"
@@ -19,5 +31,5 @@ config BR2_EXTRA_TARGET_GCC_CONFIG_OPTIONS
 	  Including, but not limited to --disable-checking etc.
 	  Refer to */configure in your gcc sources.
 
-comment "native toolchain needs development files in target filesystem"
-	depends on !BR2_HAVE_DEVFILES
+comment "gcc needs development files in target filesystem"
+	depends on !BR2_HAVE_DEVFILES && BR2_TOOLCHAIN_BUILDROOT

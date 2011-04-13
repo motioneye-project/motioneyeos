@@ -62,18 +62,6 @@ config BR2_EXTRA_GCC_CONFIG_OPTIONS
 	help
 	  Any additional gcc configure options you may want to include....
 
-config BR2_GCC_CROSS_OBJC
-	bool "Objective-C cross-compiler support"
-	depends on !BR2_avr32
-	help
-	  Build an Objective-C cross-compiler
-
-config BR2_GCC_CROSS_FORTRAN
-	bool "Fortran cross-compiler support"
-	depends on !BR2_avr32
-	help
-	  Build a Fortran cross-compiler
-
 config BR2_GCC_CROSS_JAVA
        bool
 
