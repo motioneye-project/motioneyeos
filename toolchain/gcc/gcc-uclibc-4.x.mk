@@ -53,6 +53,11 @@ else
 GCC_OPTSPACE=--enable-target-optspace
 endif
 
+# gcc 4.6.x quadmath requires wchar
+ifneq ($(BR2_TOOLCHAIN_BUILDROOT_WCHAR),y)
+GCC_QUADMATH=--disable-libquadmath
+endif
+
 #############################################################
 #
 # Setup some initial stuff
@@ -107,24 +112,33 @@ ifeq ($(BR2_INSTALL_FORTRAN),y)
 GCC_TARGET_LANGUAGES:=$(GCC_TARGET_LANGUAGES),fortran
 endif
 
+# GCC 4.x prerequisites
 GCC_WITH_HOST_GMP = --with-gmp=$(HOST_DIR)/usr
 GCC_WITH_HOST_MPFR = --with-mpfr=$(HOST_DIR)/usr
 ifeq ($(BR2_TOOLCHAIN_BUILDROOT),y)
 HOST_SOURCE += host-gmp-source host-mpfr-source
 endif
 GCC_HOST_PREREQ = host-gmp host-mpfr
+GCC_TARGET_PREREQ += mpfr gmp
 
+# GCC 4.5.x prerequisites
 ifeq ($(findstring x4.5.,x$(GCC_VERSION)),x4.5.)
 GCC_WITH_HOST_MPC = --with-mpc=$(HOST_DIR)/usr
+GCC_TARGET_PREREQ += mpc
 ifeq ($(BR2_TOOLCHAIN_BUILDROOT),y)
 HOST_SOURCE += host-mpc-source
 endif
 GCC_HOST_PREREQ += host-mpc
 endif
 
-GCC_TARGET_PREREQ += mpfr gmp
-ifeq ($(findstring x4.5.,x$(GCC_VERSION)),x4.5.)
+# GCC 4.6.x prerequisites
+ifeq ($(findstring x4.6.,x$(GCC_VERSION)),x4.6.)
+GCC_WITH_HOST_MPC = --with-mpc=$(HOST_DIR)/usr
 GCC_TARGET_PREREQ += mpc
+ifeq ($(BR2_TOOLCHAIN_BUILDROOT),y)
+HOST_SOURCE += host-mpc-source
+endif
+GCC_HOST_PREREQ += host-mpc
 endif
 
 ifeq ($(BR2_GCC_SHARED_LIBGCC),y)
@@ -219,6 +233,7 @@ $(GCC_BUILD_DIR1)/.configured: $(GCC_DIR)/.patched
 		$(BR2_CONFIGURE_DEVEL_SYSROOT) \
 		--disable-__cxa_atexit \
 		$(GCC_OPTSPACE) \
+		$(GCC_QUADMATH) \
 		--with-gnu-ld \
 		--disable-shared \
 		--disable-libssp \
@@ -285,6 +300,7 @@ $(GCC_BUILD_DIR2)/.configured: $(GCC_DIR)/.patched
 		$(BR2_CONFIGURE_DEVEL_SYSROOT) \
 		--disable-__cxa_atexit \
 		$(GCC_OPTSPACE) \
+		$(GCC_QUADMATH) \
 		--with-gnu-ld \
 		--enable-shared \
 		--disable-libssp \
@@ -362,6 +378,7 @@ $(GCC_BUILD_DIR3)/.configured: $(GCC_SRC_DIR)/.patched $(GCC_STAGING_PREREQ)
 		$(BR2_CONFIGURE_BUILD_TOOLS) \
 		--disable-__cxa_atexit \
 		$(GCC_OPTSPACE) \
+		$(GCC_QUADMATH) \
 		--with-gnu-ld \
 		--disable-libssp \
 		--disable-multilib \
@@ -504,6 +521,8 @@ $(GCC_BUILD_DIR4)/.configured: $(GCC_BUILD_DIR4)/.prepared
 		--enable-languages=$(GCC_TARGET_LANGUAGES) \
 		--with-gxx-include-dir=/usr/include/c++ \
 		--disable-__cxa_atexit \
+		$(GCC_OPTSPACE) \
+		$(GCC_QUADMATH) \
 		--with-gnu-ld \
 		--disable-libssp \
 		--disable-multilib \
