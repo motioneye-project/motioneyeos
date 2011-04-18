@@ -4,7 +4,7 @@
 #
 #############################################################
 
-LESS_VERSION = 436
+LESS_VERSION = 443
 LESS_SITE = http://www.greenwoodsoftware.com/less
 LESS_DEPENDENCIES = ncurses
 
