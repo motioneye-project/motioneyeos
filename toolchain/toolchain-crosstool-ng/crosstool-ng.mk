@@ -60,7 +60,7 @@ endif
 $(STAMP_DIR)/ct-ng-toolchain-installed: $(STAMP_DIR)/ct-ng-toolchain-built
 	$(Q)mkdir -p $(TARGET_DIR)/lib
 	$(Q)CTNG_TUPLE="$$( $(call ctng,show-tuple) )";                     \
-	    CTNG_SYSROOT="$(HOST_DIR)/usr/$${CTNG_TUPLE}/sys-root";        \
+	    CTNG_SYSROOT="$(HOST_DIR)/usr/$${CTNG_TUPLE}/sysroot";          \
 	    echo "CTNG_TUPLE='$${CTNG_TUPLE}'";                             \
 	    echo "CTNG_SYSROOT='$${CTNG_SYSROOT}'";                         \
 	    echo "Copy external toolchain libraries to target...";          \
