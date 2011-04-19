@@ -1,0 +1,12 @@
+diff --git a/config/toolchain.in b/config/toolchain.in
+--- a/config/toolchain.in
++++ b/config/toolchain.in
+@@ -20,7 +20,7 @@
+ 
+ config SYSROOT_NAME
+     string
+-    prompt "sysroot directory name"
++    prompt "sysroot directory name" if ! BACKEND
+     depends on USE_SYSROOT
+     default "sysroot"
+     help
