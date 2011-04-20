@@ -36,6 +36,7 @@ ALSA_UTILS_TARGETS_$(BR2_PACKAGE_ALSA_UTILS_ASEQNET) += usr/bin/aseqnet
 ALSA_UTILS_TARGETS_$(BR2_PACKAGE_ALSA_UTILS_SPEAKER_TEST) += usr/bin/speaker-test
 
 define ALSA_UTILS_INSTALL_TARGET_CMDS
+	mkdir -p $(TARGET_DIR)/var/lib/alsa
 	for i in $(ALSA_UTILS_TARGETS_y); do \
 		install -D -m 755 $(STAGING_DIR)/$$i $(TARGET_DIR)/$$i; \
 	done
