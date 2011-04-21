@@ -1,0 +1,8 @@
+config BR2_PACKAGE_BWM_NG
+	bool "bwm-ng"
+	help
+	  Bandwidth Monitor NG is a small and console-based live
+	  network and disk-io bandwidth monitor for Linux, BSD,
+	  Solaris, Mac OS X and others.
+
+	  http://sourceforge.net/projects/bwmng/
