@@ -36,13 +36,14 @@ endef
 
 #--------------
 # The generic system libraries (in /lib)
-CTNG_LIBS_LIB := libc.so libcrypt.so libdl.so libgcc_s.so libm.so libnsl.so libpthread.so libresolv.so librt.so libutil.so
+CTNG_LIBS_LIB := ld*.so libc.so libcrypt.so libdl.so libgcc_s.so libm.so    \
+                 libnsl.so libpthread.so libresolv.so librt.so libutil.so
 
 #--------------
 # The libc-specific system libraries (in /lib)
 # Note: it may be needed to tweak the NSS libs in the glibc and eglibc cases...
-CTNG_LIBS_uClibc := ld-uClibc.so
-CTNG_LIBS_glibc  := ld-linux.so libnss_files.so libnss_dns.so
+CTNG_LIBS_uClibc :=
+CTNG_LIBS_glibc  := libnss_files.so libnss_dns.so
 CTNG_LIBS_eglibc := $(CTNG_LIBS_glibc)
 
 #--------------
