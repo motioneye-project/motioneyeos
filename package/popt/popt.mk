@@ -3,11 +3,10 @@
 # popt
 #
 #############################################################
-POPT_VERSION:=1.15
-POPT_SITE:=http://rpm5.org/files/popt
+POPT_VERSION = 1.16
+# rpm5.org down
+POPT_SITE = http://anduin.linuxfromscratch.org/sources/BLFS/svn/p/
 POPT_INSTALL_STAGING = YES
-POPT_INSTALL_TARGET = YES
-
 
 POPT_CONF_ENV = ac_cv_va_copy=yes
 

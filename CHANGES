@@ -5,9 +5,9 @@
 	ffmpeg, file, gnuconfig, gst-ffmpeg, gst-plugins-good, icu,
 	imagemagick, iproute2, less, libdnet, libpng, libxml2,
 	libxslt, lighttpd, makedevs, midori, mpg123, mpd, mtd-utils,
-	ncurses, netsnmp, openssl, pkg-config, procps, qt, quagga,
-	readline, rsync, samba, squid, socat, squashfs, tslib, webkit,
-	xerces, xlib_xtrans, xorg-server, xterm, xz
+	ncurses, netsnmp, openssl, pkg-config, popt, procps, qt,
+	quagga, readline, rsync, samba, squid, socat, squashfs, tslib,
+	webkit, xerces, xlib_xtrans, xorg-server, xterm, xz
 
 	New packages: can-utils, htop, libv4l
 
@@ -19,6 +19,7 @@
 	#3475: Calling sync on large filesystems when not always necessary
 	#3511: make busybox-menuconfig does not download busybox package
 	#3541: Quotes in the top Makefile:217 break buildroot/kernel config...
+	#3643: popt source url is not responding
 
 2011.02, Released February 28th, 2011:
 
