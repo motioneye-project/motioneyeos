@@ -637,10 +637,6 @@ ifeq ($(O),output)
 endif
 	rm -rf $(CONFIG_DIR)/.config $(CONFIG_DIR)/.config.old $(CONFIG_DIR)/.auto.deps
 
-configured: dirs kernel-headers uclibc-config busybox-config linux26-config
-
-prepatch:	gcc-patched gdb-patched uclibc-patched
-
 cross: $(BASE_TARGETS)
 
 help:
@@ -665,7 +661,6 @@ help:
 	@echo '  randpackageconfig      - New config with random answer to package options'
 	@echo '  allyespackageconfig    - New config where pkg options are accepted with yes'
 	@echo '  allnopackageconfig     - New config where package options are answered with no'
-	@echo '  configured             - make {uclibc/busybox/linux26}-config'
 	@echo
 	@echo 'Miscellaneous:'
 	@echo '  source                 - download all sources needed for offline-build'
