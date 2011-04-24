@@ -21,10 +21,10 @@
 	gvfs, hostapd, iproute2, iptables, iw, jpeg, lame, libarchive,
 	libdnet, libdrm, libgcrypt, libgtk2, libmpeg2, libpng,
 	libsoup, lighttpd, linux-fusion, lzo, midori, mtd-utils,
-	nfs-utils, openvpn, oprofile, orc, proftpd, qt, ruby, samba,
-	sdl, shared-mime-info, sudo, sqlite, squid, synergy, udev,
-	usbmount, usbutils, util-linux, valgrind, webkit,
-	xorg-xserver, xz, zlib
+	nfs-utils, openvpn, oprofile, orc, pkg-config, proftpd, qt,
+	ruby, samba, sdl, shared-mime-info, sudo, sqlite, squid,
+	synergy, udev, usbmount, usbutils, util-linux, valgrind,
+	webkit, xorg-xserver, xz, zlib
 
 	New packages: acl, attr, ebtables, gnutls, inotify-tools,
 	ipset, libargtable2, libiqrf, libmnl, libnspr, libnss,
@@ -40,6 +40,8 @@
 	#3559: libnspr: Add new package
 	#3595: patch to add libroxml
 	#3565: libnss: Add new package
+	#3583: xfonts_font-adobe-100dpi fails due to missing map file
+	#3649: [PATCH] Add mapdir to existing pkg-config patch
 	#3907: 2011.05 - Qt 4.7.3 not building on ARM
 	#3961: Nfs-utils: Remove SUSv3-function index
 	#3985: "help" target's defconfig list needs sort

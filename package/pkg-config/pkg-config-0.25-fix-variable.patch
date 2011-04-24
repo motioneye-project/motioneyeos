@@ -8,20 +8,21 @@ so ensure the sysroot'ed files are used.
 
 Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
 ---
- main.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ main.c |    6 +++++
+ 1 file changed, 6 insertions(+)
 
 Index: pkg-config-0.25/main.c
 ===================================================================
 --- pkg-config-0.25.orig/main.c
 +++ pkg-config-0.25/main.c
-@@ -700,6 +700,11 @@
+@@ -700,6 +700,12 @@
    if (variable_name)
      {
        char *str = packages_get_var (packages, variable_name);
 +      /* include/lib variable? */
 +      if (pcsysrootdir &&
 +          (!strcmp(variable_name, "includedir") ||
++           !strcmp(variable_name, "mapdir") ||
 +           !strcmp(variable_name, "libdir")))
 +          printf ("%s/", pcsysrootdir);
        printf ("%s", str);
