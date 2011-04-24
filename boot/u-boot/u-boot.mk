@@ -159,15 +159,11 @@ $(TARGET_DIR)/usr/bin/mkimage: $(U_BOOT_DIR)/.configured
 		$(U_BOOT_DIR)/tools/os_support.c \
 		$(wildcard $(U_BOOT_DIR)/libfdt/fdt*.c $(U_BOOT_DIR)/lib/libfdt/fdt*.c)
 
-	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $@
-
 # Build manually fw_printenv for the target
 $(TARGET_DIR)/usr/sbin/fw_printenv: $(U_BOOT_DIR)/.configured
-	mkdir -p $(@D)
-	$(TARGET_CC) -I$(U_BOOT_DIR)/include -I$(LINUX_HEADERS_DIR)/include \
-		-DUSE_HOSTCC -o $@ \
-		$(U_BOOT_DIR)/tools/env/*.c $(U_BOOT_DIR)/lib*/crc32.c
-	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $@
+	$(TARGET_CONFIGURE_OPTS) \
+		$(MAKE) HOSTCC="$(TARGET_CC)" -C $(U_BOOT_DIR) env
+	$(INSTALL) -m 0755 -D $(U_BOOT_DIR)/tools/env/fw_printenv $@
 	ln -sf fw_printenv $(TARGET_DIR)/usr/sbin/fw_setenv
 
 u-boot: $(U_BOOT_TARGETS)
