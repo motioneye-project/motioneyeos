@@ -42,7 +42,7 @@ export BR2_VERSION_FULL:=$(BR2_VERSION)$(shell $(TOPDIR)/scripts/setlocalversion
 noconfig_targets:=menuconfig nconfig gconfig xconfig config oldconfig randconfig \
 	defconfig %_defconfig savedefconfig allyesconfig allnoconfig silentoldconfig release \
 	randpackageconfig allyespackageconfig allnopackageconfig \
-	source-check help
+	source-check
 
 # Strip quotes and then whitespaces
 qstrip=$(strip $(subst ",,$(1)))
@@ -661,6 +661,18 @@ help:
 	@echo '  randpackageconfig      - New config with random answer to package options'
 	@echo '  allyespackageconfig    - New config where pkg options are accepted with yes'
 	@echo '  allnopackageconfig     - New config where package options are answered with no'
+ifeq ($(BR2_PACKAGE_BUSYBOX),y)
+	@echo '  busybox-menuconfig     - Run BusyBox menuconfig'
+endif
+ifeq ($(BR2_LINUX_KERNEL),y)
+	@echo '  linux-menuconfig       - Run Linux kernel menuconfig'
+endif
+ifeq ($(BR2_TOOLCHAIN_BUILDROOT),y)
+	@echo '  uclibc-menuconfig      - Run uClibc menuconfig'
+endif
+ifeq ($(BR2_TOOLCHAIN_CTNG),y)
+	@echo '  ctng-menuconfig        - Run crosstool-NG menuconfig'
+endif
 	@echo
 	@echo 'Miscellaneous:'
 	@echo '  source                 - download all sources needed for offline-build'
