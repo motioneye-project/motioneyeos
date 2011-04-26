@@ -1,9 +1,14 @@
-diff -Nura libcap-2.19.orig/Make.Rules libcap-2.19/Make.Rules
---- libcap-2.19.orig/Make.Rules	2010-01-13 23:04:58.000000000 -0300
-+++ libcap-2.19/Make.Rules	2010-12-28 16:44:18.164052748 -0300
-@@ -45,25 +45,26 @@
+Avoid the libcap buildsys forcing CC/CFLAGS/LDFLAGS/AR/RANLIB
+Also install the shared lib +x
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+diff -Nura libcap-2.20/Make.Rules libcap-2.20-build/Make.Rules
+--- libcap-2.20/Make.Rules	2011-01-19 02:06:44.000000000 -0300
++++ libcap-2.20-build/Make.Rules	2011-04-19 14:07:53.544903094 -0300
+@@ -47,25 +47,25 @@
  KERNEL_HEADERS := $(topdir)/libcap/include
- IPATH += -I$(topdir)/libcap/include -I$(KERNEL_HEADERS)
+ IPATH += -fPIC -I$(topdir)/libcap/include -I$(KERNEL_HEADERS)
  
 -CC := gcc
 -CFLAGS := -O2
@@ -13,12 +18,12 @@ diff -Nura libcap-2.19.orig/Make.Rules libcap-2.19/Make.Rules
 -RANLIB := ranlib
 +CC ?= gcc
 +CFLAGS ?= -O2
-+CC_FOR_BUILD ?= $(CC)
-+CFLAGS_FOR_BUILD ?= $(CFLAGS)
++BUILD_CC ?= $(CC)
++BUILD_CFLAGS ?= $(CFLAGS) $(IPATH)
 +AR ?= ar
 +RANLIB ?= ranlib
  DEBUG = -g #-DDEBUG
- WARNINGS=-fPIC -Wall -Wwrite-strings \
+ WARNINGS=-Wall -Wwrite-strings \
          -Wpointer-arith -Wcast-qual -Wcast-align \
          -Wstrict-prototypes -Wmissing-prototypes \
          -Wnested-externs -Winline -Wshadow
@@ -29,25 +34,15 @@ diff -Nura libcap-2.19.orig/Make.Rules libcap-2.19/Make.Rules
  SYSTEM_HEADERS = /usr/include
  INCS=$(topdir)/libcap/include/sys/capability.h
  LDFLAGS += -L$(topdir)/libcap
- CFLAGS += -Dlinux $(WARNINGS) $(DEBUG) $(IPATH)
+ CFLAGS += -Dlinux $(WARNINGS) $(DEBUG)
 -PAM_CAP := $(shell if [ -f /usr/include/security/pam_modules.h ]; then echo yes ; else echo no ; fi)
-+CFLAGS_FOR_BUILD += $(IPATH)
-+PAM_CAP := no
++PAM_CAP = no
  INDENT := $(shell if [ -n "$(which indent 2>/dev/null)" ]; then echo "| indent -kr" ; fi)
  DYNAMIC := $(shell if [ ! -d "$(topdir)/.git" ]; then echo yes; fi)
  LIBATTR := yes
-diff -Nura libcap-2.19.orig/libcap/Makefile libcap-2.19/libcap/Makefile
---- libcap-2.19.orig/libcap/Makefile	2008-12-04 05:03:12.000000000 -0200
-+++ libcap-2.19/libcap/Makefile	2010-12-28 16:44:33.457052750 -0300
-@@ -33,7 +33,7 @@
- endif
- 
- _makenames: _makenames.c cap_names.list.h
--	$(BUILD_CC) $(BUILD_CFLAGS) $< -o $@
-+	$(CC_FOR_BUILD) $(CFLAGS_FOR_BUILD) $< -o $@
- 
- cap_names.h: _makenames
- 	./_makenames > cap_names.h
+diff -Nura libcap-2.20/libcap/Makefile libcap-2.20-build/libcap/Makefile
+--- libcap-2.20/libcap/Makefile	2010-08-08 19:26:04.000000000 -0300
++++ libcap-2.20-build/libcap/Makefile	2011-04-19 14:08:29.377146094 -0300
 @@ -65,7 +65,7 @@
  	install -m 0644 include/sys/capability.h $(INCDIR)/sys
  	mkdir -p -m 0755 $(LIBDIR)
