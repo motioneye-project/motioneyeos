@@ -4,9 +4,9 @@
 #
 #############################################################
 
-USBUTILS_VERSION = 0.91
+USBUTILS_VERSION = 002
 USBUTILS_SITE = $(BR2_KERNEL_MIRROR)/linux/utils/usb/usbutils
-USBUTILS_DEPENDENCIES = host-pkg-config libusb-compat
+USBUTILS_DEPENDENCIES = host-pkg-config libusb
 
 ifeq ($(BR2_PACKAGE_USBUTILS_ZLIB),y)
 	USBUTILS_DEPENDENCIES += zlib

@@ -5,7 +5,6 @@ config BR2_PACKAGE_USBUTILS
 	bool "usbutils"
 	depends on BR2_PROGRAM_INVOCATION
 	select BR2_PACKAGE_LIBUSB
-	select BR2_PACKAGE_LIBUSB_COMPAT
 	help
 	  USB enumeration utilities
 
