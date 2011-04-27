@@ -4,15 +4,9 @@
 #
 #############################################################
 
-OPENVPN_VERSION = 2.1.4
+OPENVPN_VERSION = 2.2.0
 OPENVPN_SITE = http://swupdate.openvpn.net/community/releases
-OPENVPN_CONF_OPT = --enable-small
-
-ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),y)
-	OPENVPN_CONF_OPT += --enable-pthread
-else
-	OPENVPN_CONF_OPT += --disable-pthread
-endif
+OPENVPN_CONF_OPT = --enable-small --disable-plugins
 
 ifeq ($(BR2_PACKAGE_OPENVPN_LZO),y)
 	OPENVPN_DEPENDENCIES += lzo
