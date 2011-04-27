@@ -1,0 +1,8 @@
+config BR2_PACKAGE_TI_UTILS
+	bool "ti-utils"
+	select BR2_PACKAGE_LIBNL
+	help
+	  The calibrator and other useful utilities for TI wireless solution,
+	  based on wl12xx driver.
+
+	  http://linuxwireless.org/en/users/Drivers/wl12xx/calibrator
