@@ -4,9 +4,9 @@
 #
 #############################################################
 
-LIBNL_VERSION = 1.1
+LIBNL_VERSION = 3.0
 LIBNL_SOURCE = libnl-$(LIBNL_VERSION).tar.gz
-LIBNL_SITE = http://distfiles.gentoo.org/distfiles
+LIBNL_SITE = http://www.infradead.org/~tgr/libnl/files/
 LIBNL_INSTALL_STAGING = YES
 
 define LIBNL_UNINSTALL_TARGET_CMDS
