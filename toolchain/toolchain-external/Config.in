@@ -189,7 +189,7 @@ config BR2_TOOLCHAIN_EXTERNAL_INET_IPV6
 	  will tell you if it's correct or not.
 
 config BR2_TOOLCHAIN_EXTERNAL_INET_RPC
-	bool "Toolchain has RPC support ?"
+	bool "Toolchain has RPC support?"
 	select BR2_INET_RPC
 	help
 	  Select this option if your external toolchain supports
