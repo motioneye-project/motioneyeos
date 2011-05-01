@@ -1,0 +1,26 @@
+dropbear: fix static build
+
+the -lcrypt is missing during the link
+
+svr-authpasswd.o: In function `svr_auth_password':
+svr-authpasswd.c:(.text+0xfc): undefined reference to `crypt'
+collect2: ld returned 1 exit status
+
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ Makefile.in |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+Index: b/Makefile.in
+===================================================================
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -77,7 +77,7 @@ STRIP=@STRIP@
+ INSTALL=@INSTALL@
+ CPPFLAGS=@CPPFLAGS@
+ CFLAGS+=-I. -I$(srcdir) $(CPPFLAGS) @CFLAGS@
+-LIBS+=@LIBS@
++LIBS+=@CRYPTLIB@ @LIBS@
+ LDFLAGS=@LDFLAGS@
+ 
+ EXEEXT=@EXEEXT@
