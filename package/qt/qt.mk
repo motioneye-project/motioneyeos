@@ -451,16 +451,16 @@ define QT_CONFIGURE_CMDS
 	$(QT_CONFIGURE_IPV6)
 	$(QT_CONFIGURE_CONFIG_FILE)
 	# Fix compiler path
-	$(call QT_QMAKE_SET,CC,$(filter-out --sysroot=%,$(TARGET_CC)),$(@D))
-	$(call QT_QMAKE_SET,CXX,$(filter-out --sysroot=%,$(TARGET_CXX)),$(@D))
+	$(call QT_QMAKE_SET,CC,$(TARGET_CC),$(@D))
+	$(call QT_QMAKE_SET,CXX,$(TARGET_CXX),$(@D))
 	$(call QT_QMAKE_SET,LINK,$(TARGET_CXX),$(@D))
 	$(call QT_QMAKE_SET,LINK_SHLIB,$(TARGET_CXX),$(@D))
 	$(call QT_QMAKE_SET,AR,$(TARGET_AR) cqs,$(@D))
 	$(call QT_QMAKE_SET,OBJCOPY,$(TARGET_OBJCOPY),$(@D))
 	$(call QT_QMAKE_SET,RANLIB,$(TARGET_RANLIB),$(@D))
 	$(call QT_QMAKE_SET,STRIP,$(TARGET_STRIP),$(@D))
-	$(call QT_QMAKE_SET,CFLAGS,$(TARGET_SYSROOT_OPT) $(TARGET_CFLAGS),$(@D))
-	$(call QT_QMAKE_SET,CXXFLAGS,$(TARGET_SYSROOT_OPT) $(TARGET_CXXFLAGS),$(@D))
+	$(call QT_QMAKE_SET,CFLAGS,$(TARGET_CFLAGS),$(@D))
+	$(call QT_QMAKE_SET,CXXFLAGS,$(TARGET_CXXFLAGS),$(@D))
 	$(call QT_QMAKE_SET,LFLAGS,$(TARGET_LDFLAGS),$(@D))
 # Don't use TARGET_CONFIGURE_OPTS here, qmake would be compiled for the target
 # instead of the host then. So set PKG_CONFIG* manually.

@@ -62,32 +62,10 @@ endif
 
 TARGET_CFLAGS=$(TARGET_OPTIMIZATION) $(TARGET_DEBUGGING)
 
-CC_TARGET_TUNE_:=$(call qstrip,$(BR2_GCC_TARGET_TUNE))
-CC_TARGET_ARCH_:=$(call qstrip,$(BR2_GCC_TARGET_ARCH))
-CC_TARGET_ABI_:=$(call qstrip,$(BR2_GCC_TARGET_ABI))
-
-ifneq ($(CC_TARGET_TUNE_),)
-TARGET_CFLAGS+=-mtune=$(CC_TARGET_TUNE_)
-endif
-ifneq ($(CC_TARGET_ARCH_),)
-TARGET_CFLAGS+=-march=$(CC_TARGET_ARCH_)
-endif
-ifneq ($(CC_TARGET_ABI_),)
-TARGET_CFLAGS+=-mabi=$(CC_TARGET_ABI_)
-endif
-
 ifneq ($(BR2_PREFER_STATIC_LIB),y)
 ifeq ($(BR2_x86_64),y)
 TARGET_CFLAGS+=-fPIC -DPIC
 endif # PIC for dynamic objects on x86_64
-endif
-
-ifeq ($(BR2_SOFT_FLOAT),y)
-TARGET_CFLAGS+=-msoft-float
-endif
-
-ifeq ($(BR2_VFP_FLOAT),y)
-TARGET_CFLAGS+=-mfpu=vfp
 endif
 
 ifeq ($(findstring yy,$(BR2_mips)$(BR2_MIPS_ABI64)),yy)
@@ -99,7 +77,6 @@ TARGET_CFLAGS+=-D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64
 endif
 
 TARGET_CXXFLAGS=$(TARGET_CFLAGS)
-TARGET_SYSROOT_OPT=--sysroot=$(STAGING_DIR)
 
 ifeq ($(BR2_TOOLCHAIN_BUILDROOT)$(BR2_TOOLCHAIN_CTNG),y)
 TARGET_CROSS=$(HOST_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)-
@@ -114,11 +91,11 @@ TARGET_PATH="$(HOST_DIR)/bin:$(HOST_DIR)/usr/bin:$(HOST_DIR)/usr/sbin/:$(PATH)"
 # including the --sysroot option where necessary.
 TARGET_AR       = $(TARGET_CROSS)ar
 TARGET_AS       = $(TARGET_CROSS)as
-TARGET_CC       = $(TARGET_CROSS)gcc $(TARGET_SYSROOT_OPT)
-TARGET_CPP      = $(TARGET_CROSS)cpp $(TARGET_SYSROOT_OPT)
-TARGET_CXX      = $(TARGET_CROSS)g++ $(TARGET_SYSROOT_OPT)
-TARGET_FC       = $(TARGET_CROSS)gfortran $(TARGET_SYSROOT_OPT)
-TARGET_LD       = $(TARGET_CROSS)ld $(TARGET_SYSROOT_OPT)
+TARGET_CC       = $(TARGET_CROSS)gcc
+TARGET_CPP      = $(TARGET_CROSS)cpp
+TARGET_CXX      = $(TARGET_CROSS)g++
+TARGET_FC       = $(TARGET_CROSS)gfortran
+TARGET_LD       = $(TARGET_CROSS)ld
 TARGET_NM       = $(TARGET_CROSS)nm
 TARGET_RANLIB   = $(TARGET_CROSS)ranlib
 TARGET_OBJCOPY  = $(TARGET_CROSS)objcopy
@@ -131,14 +108,6 @@ ifeq ($(BR2_CCACHE),y)
 TARGET_CC  := $(CCACHE) $(TARGET_CC)
 TARGET_CXX := $(CCACHE) $(TARGET_CXX)
 endif
-
-# * CMake doesn't support having the --sysroot option directly in the
-#   compiler path, so move this option to CFLAGS/CXXFLAGS variables.
-# * Don't use ccache because then CMake will fail to detect compiler.
-CMAKE_TARGET_CC = $(filter-out --sysroot=%,$(TARGET_CC_NOCCACHE))
-CMAKE_TARGET_CXX = $(filter-out --sysroot=%,$(TARGET_CXX_NOCCACHE))
-CMAKE_TARGET_CFLAGS = $(filter --sysroot=%,$(TARGET_CC_NOCCACHE)) $(TARGET_CFLAGS)
-CMAKE_TARGET_CXXFLAGS = $(filter --sysroot=%,$(TARGET_CXX_NOCCACHE)) $(TARGET_CXXFLAGS)
 
 ifeq ($(BR2_STRIP_strip),y)
 STRIP_DISCARD_ALL:=--discard-all

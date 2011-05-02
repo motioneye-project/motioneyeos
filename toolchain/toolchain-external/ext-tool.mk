@@ -126,6 +126,10 @@ TOOLCHAIN_EXTERNAL_WRAPPER_ARGS = \
 	-DBR_CROSS_PATH='"$(TOOLCHAIN_EXTERNAL_BIN)/"' \
 	-DBR_SYSROOT='"$(STAGING_DIR)"'
 
+CC_TARGET_TUNE_:=$(call qstrip,$(BR2_GCC_TARGET_TUNE))
+CC_TARGET_ARCH_:=$(call qstrip,$(BR2_GCC_TARGET_ARCH))
+CC_TARGET_ABI_:=$(call qstrip,$(BR2_GCC_TARGET_ABI))
+
 # march/mtune/floating point mode needs to be passed to the external toolchain
 # to select the right multilib variant
 ifneq ($(CC_TARGET_TUNE_),)
