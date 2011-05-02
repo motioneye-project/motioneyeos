@@ -147,6 +147,12 @@ else
 GCC_SHARED_LIBGCC:=--disable-shared
 endif
 
+ifeq ($(BR2_GCC_ENABLE_OPENMP),y)
+GCC_ENABLE_OPENMP:=--enable-libgomp
+else
+GCC_ENABLE_OPENMP:=--disable-libgomp
+endif
+
 ifeq ($(BR2_GCC_ENABLE_TLS),y)
 GCC_TLS:=--enable-tls
 else
@@ -154,7 +160,7 @@ GCC_TLS:=--disable-tls
 endif
 
 ifeq ($(BR2_PTHREADS_NONE),y)
-THREADS:=--disable-threads --disable-libgomp
+THREADS:=--disable-threads
 else
 THREADS:=--enable-threads
 endif
@@ -234,6 +240,7 @@ $(GCC_BUILD_DIR1)/.configured: $(GCC_DIR)/.patched
 		--disable-__cxa_atexit \
 		$(GCC_OPTSPACE) \
 		$(GCC_QUADMATH) \
+		$(GCC_ENABLE_OPENMP) \
 		--with-gnu-ld \
 		--disable-shared \
 		--disable-libssp \
@@ -301,6 +308,7 @@ $(GCC_BUILD_DIR2)/.configured: $(GCC_DIR)/.patched
 		--disable-__cxa_atexit \
 		$(GCC_OPTSPACE) \
 		$(GCC_QUADMATH) \
+		$(GCC_ENABLE_OPENMP) \
 		--with-gnu-ld \
 		--enable-shared \
 		--disable-libssp \
@@ -379,6 +387,7 @@ $(GCC_BUILD_DIR3)/.configured: $(GCC_SRC_DIR)/.patched $(GCC_STAGING_PREREQ)
 		--disable-__cxa_atexit \
 		$(GCC_OPTSPACE) \
 		$(GCC_QUADMATH) \
+		$(GCC_ENABLE_OPENMP) \
 		--with-gnu-ld \
 		--disable-libssp \
 		--disable-multilib \
@@ -470,6 +479,11 @@ ifeq ($(BR2_INSTALL_LIBGCJ),y)
 		$(TARGET_DIR)/usr/lib/security/
 	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libgcj.so*
 endif
+ifeq ($(BR2_GCC_ENABLE_OPENMP),y)
+	cp -dpf $(HOST_DIR)/usr/$(REAL_GNU_TARGET_NAME)/lib*/libgomp.so* $(STAGING_DIR)/usr/lib/
+	cp -dpf $(HOST_DIR)/usr/$(REAL_GNU_TARGET_NAME)/lib*/libgomp.so* $(TARGET_DIR)/usr/lib/
+	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libgomp.so*
+endif
 	mkdir -p $(@D)
 	touch $@
 
@@ -523,6 +537,7 @@ $(GCC_BUILD_DIR4)/.configured: $(GCC_BUILD_DIR4)/.prepared
 		--disable-__cxa_atexit \
 		$(GCC_OPTSPACE) \
 		$(GCC_QUADMATH) \
+		$(GCC_ENABLE_OPENMP) \
 		--with-gnu-ld \
 		--disable-libssp \
 		--disable-multilib \
