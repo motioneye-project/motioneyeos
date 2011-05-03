@@ -3,10 +3,9 @@
 # dbus-glib
 #
 #############################################################
-DBUS_GLIB_VERSION = 0.80
+DBUS_GLIB_VERSION = 0.92
 DBUS_GLIB_SOURCE = dbus-glib-$(DBUS_GLIB_VERSION).tar.gz
 DBUS_GLIB_SITE = http://dbus.freedesktop.org/releases/dbus-glib/
-DBUS_GLIB_AUTORECONF = YES
 DBUS_GLIB_INSTALL_STAGING = YES
 
 DBUS_GLIB_CONF_ENV = ac_cv_have_abstract_sockets=yes \
