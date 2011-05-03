@@ -170,6 +170,8 @@ define AUTORECONF_HOOK
 				toolchain/patch-kernel.sh $$$${i%/*} package buildroot-libtool-v1.5.patch; \
 			elif test $$$${ltmain_version} = "2.2"; then\
 				toolchain/patch-kernel.sh $$$${i%/*} package buildroot-libtool-v2.2.patch; \
+			elif test $$$${ltmain_version} = "2.4"; then\
+				toolchain/patch-kernel.sh $$$${i%/*} package buildroot-libtool-v2.4.patch; \
 			fi \
 		done \
 	fi
