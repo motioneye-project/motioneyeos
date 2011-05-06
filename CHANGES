@@ -13,6 +13,7 @@
 
 	Issues resolved (http://bugs.uclibc.org):
 
+	#2131: Add OpenMP support to the toolchain
 	#3379: New Package: bonnie++
 	#3445: Not working openssl-10.0.0d on 386sx
 	#3451: fakeroot package: wrong FAKEROOT_SITE variable
