@@ -122,6 +122,7 @@ endif
 
 TOOLCHAIN_EXTERNAL_CROSS=$(TOOLCHAIN_EXTERNAL_BIN)/$(TOOLCHAIN_EXTERNAL_PREFIX)-
 TOOLCHAIN_EXTERNAL_CC=$(TOOLCHAIN_EXTERNAL_CROSS)gcc
+TOOLCHAIN_EXTERNAL_CXX=$(TOOLCHAIN_EXTERNAL_CROSS)g++
 TOOLCHAIN_EXTERNAL_WRAPPER_ARGS = \
 	-DBR_CROSS_PATH='"$(TOOLCHAIN_EXTERNAL_BIN)/"' \
 	-DBR_SYSROOT='"$(STAGING_DIR)"'
@@ -201,7 +202,7 @@ $(TOOLCHAIN_EXTERNAL_DIR)/.extracted: $(DL_DIR)/$(TOOLCHAIN_EXTERNAL_SOURCE)
 # type of C library and all C library features.
 $(STAMP_DIR)/ext-toolchain-checked:
 	@echo "Checking external toolchain settings"
-	$(Q)$(call check_cross_compiler_exists)
+	$(Q)$(call check_cross_compiler_exists,$(TOOLCHAIN_EXTERNAL_CC))
 	$(Q)SYSROOT_DIR=`$(TOOLCHAIN_EXTERNAL_CC) -print-sysroot 2>/dev/null` ; \
 	if test -z "$${SYSROOT_DIR}" ; then \
 		SYSROOT_DIR=`readlink -f $$(LANG=C $(TOOLCHAIN_EXTERNAL_CC) -print-file-name=libc.a) |sed -r -e 's:usr/lib/libc\.a::;'` ; \
@@ -211,10 +212,10 @@ $(STAMP_DIR)/ext-toolchain-checked:
 		exit 1 ; \
 	fi ; \
 	if test x$(BR2_arm) == x"y" ; then \
-		$(call check_arm_abi) ; \
+		$(call check_arm_abi,$(TOOLCHAIN_EXTERNAL_CC)) ; \
 	fi ; \
 	if test x$(BR2_INSTALL_LIBSTDCPP) == x"y" ; then \
-		$(call check_cplusplus) ; \
+		$(call check_cplusplus,$(TOOLCHAIN_EXTERNAL_CXX)) ; \
 	fi ; \
 	if test x$(BR2_TOOLCHAIN_EXTERNAL_UCLIBC) == x"y" ; then \
 		$(call check_uclibc,$${SYSROOT_DIR}) ; \

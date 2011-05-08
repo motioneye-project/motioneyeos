@@ -201,8 +201,11 @@ check_uclibc = \
 # Check that the Buildroot configuration of the ABI matches the
 # configuration of the external toolchain.
 #
+# $1: cross-gcc path
+#
 check_arm_abi = \
-	EXT_TOOLCHAIN_TARGET=$(shell LANG=C $(TARGET_CC) -v 2>&1 | grep ^Target | cut -f2 -d ' ') ; \
+	__CROSS_CC=$(strip $1) ; \
+	EXT_TOOLCHAIN_TARGET=`LANG=C $${__CROSS_CC} -v 2>&1 | grep ^Target | cut -f2 -d ' '` ; \
 	if echo $${EXT_TOOLCHAIN_TARGET} | grep -q 'eabi$$' ; then \
 		EXT_TOOLCHAIN_ABI="eabi" ; \
 	else \
@@ -220,8 +223,11 @@ check_arm_abi = \
 #
 # Check that the external toolchain supports C++
 #
+# $1: cross-g++ path
+#
 check_cplusplus = \
-	$(TARGET_CXX) -v > /dev/null 2>&1 ; \
+	__CROSS_CXX=$(strip $1) ; \
+	$${__CROSS_CXX} -v > /dev/null 2>&1 ; \
 	if test $$? -ne 0 ; then \
 		echo "C++ support is selected but is not available in external toolchain" ; \
 		exit 1 ; \
@@ -230,9 +236,12 @@ check_cplusplus = \
 #
 # Check that the cross-compiler given in the configuration exists
 #
+# $1: cross-gcc path
+#
 check_cross_compiler_exists = \
-	$(TARGET_CC) -v > /dev/null 2>&1 ; \
+	__CROSS_CC=$(strip $1) ; \
+	$${__CROSS_CC} -v > /dev/null 2>&1 ; \
 	if test $$? -ne 0 ; then \
-		echo "Cannot execute cross-compiler '$(TARGET_CC)'" ; \
+		echo "Cannot execute cross-compiler '$${__CROSS_CC}'" ; \
 		exit 1 ; \
 	fi
