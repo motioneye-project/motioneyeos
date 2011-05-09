@@ -262,7 +262,7 @@ case $basic_machine in
 	| pdp10 | pdp11 | pj | pjl \
 	| powerpc | powerpc64 | powerpc64le | powerpcle | ppcbe \
 	| pyramid \
-	| sh | sh[1234] | sh[23]e | sh[34]eb | shbe | shle | sh[1234]le | sh3ele \
+	| sh | sh[1234] | sh[24]a | sh[24]aeb | sh[23]e | sh[34]eb | sheb | shbe | shle | sh[1234]le | sh3ele \
 	| sh64 | sh64le \
 	| sparc | sparc64 | sparc64b | sparc86x | sparclet | sparclite \
 	| sparcv8 | sparcv9 | sparcv9b \
@@ -342,8 +342,8 @@ case $basic_machine in
 	| powerpc-* | powerpc64-* | powerpc64le-* | powerpcle-* | ppcbe-* \
 	| pyramid-* \
 	| romp-* | rs6000-* \
-	| sh-* | sh[1234]-* | sh[23]e-* | sh[34]eb-* | shbe-* \
-	| shle-* | sh[1234]le-* | sh3ele-* | sh64-* | sh64le-* \
+	| sh-* | sh[1234]-* | sh[24]a-* | sh[24]aeb-* | sh[23]e-* | sh[34]eb-* \
+	| sheb-* | shbe-* | shle-* | sh[1234]le-* | sh3ele-* | sh64-* | sh64le-* \
 	| sparc-* | sparc64-* | sparc64b-* | sparc86x-* | sparclet-* \
 	| sparclite-* \
 	| sparcv8-* | sparcv9-* | sparcv9b-* | strongarm-* | sv1-* | sx?-* \
@@ -1097,7 +1097,7 @@ case $basic_machine in
 	we32k)
 		basic_machine=we32k-att
 		;;
-	sh3 | sh4 | sh[34]eb | sh[1234]le | sh[23]ele)
+	sh | sh[1234] | sh[24]a | sh[24]aeb | sh[23]e | sh[34]eb | sheb | shbe | shle | sh[1234]le | sh3ele)
 		basic_machine=sh-unknown
 		;;
 	sh64)

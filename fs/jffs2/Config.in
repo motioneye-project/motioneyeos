@@ -94,8 +94,8 @@ choice
 	prompt "Endianess"
 	default BR2_TARGET_ROOTFS_JFFS2_BE if BR2_armeb || \
 			BR2_avr32 || BR2_m68k || BR2_mips || \
-			BR2_powerpc || BR2_sh2a_nofpueb || BR2_sh2eb || \
-			BR2_sh3eb || BR2_sh4eb || BR2_sparc
+			BR2_powerpc || BR2_sh2 || BR2_sh2a || \
+			BR2_sh3eb || BR2_sh4eb || BR2_sh4aeb || BR2_sparc
 
 config BR2_TARGET_ROOTFS_JFFS2_LE
 	bool "little-endian"
