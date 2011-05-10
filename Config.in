@@ -52,6 +52,13 @@ config BR2_BZCAT
 	  Default is "bzcat"
 	  Other possible values include "bunzip2 -c" or "bzip2 -d -c".
 
+config BR2_XZCAT
+	string "xzcat command"
+	default "xzcat"
+	help
+	  Command to be used to extract a xz'ed file to stdout.
+	  Default is "xzcat"
+
 config BR2_TAR_OPTIONS
 	string "Tar options"
 	default ""
