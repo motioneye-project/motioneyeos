@@ -1,0 +1,33 @@
+config BR2_PACKAGE_LIVE555
+	bool "live555"
+	depends on BR2_INSTALL_LIBSTDCPP
+	help
+	  LIVE555 Streaming Media forms a set of C++ libraries for multimedia
+	  streaming, using open standard protocols (RTP/RTCP, RTSP, SIP).
+
+	  http://www.live555.com/liveMedia/
+
+config BR2_PACKAGE_LIVE555_OPENRTSP
+	bool "OpenRTSP"
+	depends on BR2_PACKAGE_LIVE555
+	default y
+	help
+	  Live555 RTSP Client.
+
+config BR2_PACKAGE_LIVE555_MEDIASERVER
+	bool "live555MediaServer"
+	depends on BR2_PACKAGE_LIVE555
+	default y
+	help
+	  RTSP Server. Supports numerous media formats such as H.264 and MPEG2.
+
+config BR2_PACKAGE_LIVE555_MPEG2_INDEXER
+	bool "MPEG2TransportStreamIndexer"
+	depends on BR2_PACKAGE_LIVE555
+	default y
+	help
+	  MPEG2 Transport Stream Indexer. Provides indexes allowing 'trick play'
+	  operation in the Live555MediaServer.
+
+comment "Live555 needs C++ compiler"
+	depends on !BR2_INSTALL_LIBSTDCPP
