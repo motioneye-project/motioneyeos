@@ -142,6 +142,14 @@ endif
 ifeq ($(BR2_cortex_a8),y)
 FFMPEG_CONF_OPT += --enable-neon
 endif
+# Set powerpc altivec appropriately
+ifeq ($(BR2_powerpc),y)
+ifeq ($(BR2_powerpc_7400)$(BR2_powerpc_7450)$(BR2_powerpc_970),y)
+FFMPEG_CONF_OPT -= --enable-altivec
+else
+FFMPEG_CONF_OPT += --disable-altivec
+endif
+endif
 
 FFMPEG_CONF_OPT += $(call qstrip,$(BR2_PACKAGE_FFMPEG_EXTRACONF))
 
