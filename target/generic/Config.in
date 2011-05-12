@@ -12,13 +12,10 @@ config BR2_TARGET_GENERIC_ISSUE
        help
          Select system banner (/etc/issue) to be displayed at login.
 
-menuconfig BR2_TARGET_GENERIC_GETTY
-	bool "Generic serial port config"
-
-if BR2_TARGET_GENERIC_GETTY
+if BR2_ROOTFS_SKELETON_DEFAULT
 
 config BR2_TARGET_GENERIC_GETTY_PORT
-	string "Serial port to run a getty on"
+	string "Port to run a getty (login prompt) on"
 	default "ttyS0"
 	help
 	  Specify a port to run a getty (login prompt) on.
@@ -52,6 +49,6 @@ config BR2_TARGET_GENERIC_GETTY_BAUDRATE
 	default "57600"		if BR2_TARGET_GENERIC_GETTY_BAUDRATE_57600
 	default "115200"	if BR2_TARGET_GENERIC_GETTY_BAUDRATE_115200
 
-endif # BR2_TARGET_GENERIC_GETTY
+endif # BR2_ROOTFS_SKELETON_DEFAULT
 
 endmenu
