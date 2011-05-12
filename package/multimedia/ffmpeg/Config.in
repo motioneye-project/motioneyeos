@@ -27,6 +27,7 @@ config BR2_PACKAGE_FFMPEG_NONFREE
 
 config BR2_PACKAGE_FFMPEG_FFMPEG
 	bool "Build ffmpeg (the command line application)"
+	select BR2_PACKAGE_FFMPEG_SWSCALE
 	default y
 	help
          FFmpeg is a very fast video and audio converter.
