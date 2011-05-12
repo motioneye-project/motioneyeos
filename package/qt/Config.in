@@ -23,12 +23,12 @@ config BR2_PACKAGE_QT_DEMOS
 
 choice
 	prompt "Library type"
-	default BR2_PACKAGE_QT_SHARED
 	help
 	  Selects the library type: Shared or Static
 
 config BR2_PACKAGE_QT_SHARED
 	bool "Shared library"
+	depends on !BR2_PREFER_STATIC_LIB
 	help
 	  Create and use shared Qt libraries.
 	  If you have multiple programs that depend on Qt or intend to use
