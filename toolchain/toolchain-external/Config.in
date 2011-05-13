@@ -3,6 +3,20 @@ if BR2_TOOLCHAIN_EXTERNAL
 choice
 	prompt "Toolchain"
 
+config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_ARM201103
+	bool "CodeSourcery ARM 2011.03"
+	depends on BR2_arm
+	select BR2_TOOLCHAIN_EXTERNAL_GLIBC
+	select BR2_INSTALL_LIBSTDCPP
+	help
+	  Toolchain for the ARM architecture, from CodeSourcery. It
+	  uses gcc 4.5.2, binutils 2.20.51, glibc 2.13 and gdb 7.2.50,
+	  kernel headers 2.6.38. It has support for the following
+	  variants:
+            - ARMv5TE, little endian, soft-float, glibc
+            - ARMv4T, little endian, soft-float, glibc
+            - ARMv7-A, Thumb 2, little endian, soft-float, glibc
+
 config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_ARM201009
 	bool "CodeSourcery ARM 2010.09"
 	depends on BR2_arm
@@ -44,6 +58,29 @@ config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_ARM2009Q1
             - ARMv5T, little endian, soft-float, glibc
             - ARMv4T, little endian, soft-float, glibc
             - ARMv7-A, Thumb 2, little endian, soft-float, glibc
+
+config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_MIPS201103
+	bool "CodeSourcery MIPS 2011.03"
+	depends on BR2_mips || BR2_mipsel
+	select BR2_TOOLCHAIN_EXTERNAL_GLIBC
+	select BR2_INSTALL_LIBSTDCPP
+	help
+	  Toolchain for the MIPS architecture, from CodeSourcery. It
+	  uses gcc 4.5.2, binutils 2.20.51, glibc 2.13, uClibc 0.9.30
+	  and gdb 7.2.50, kernel headers 2.6.38. It has support for
+	  the following variants:
+            - MIPS32 O32 big endian glibc
+            - MIPS32 O32 little endian glibc
+            - MIPS32 big endian soft float glibc
+            - MIPS32 little endian soft float glibc
+            - MIPS32 big endian microMIPS glibc
+            - MIPS32 little endian microMIPS glibc
+            - MIPS32 big endian soft float microMIPS glibc
+            - MIPS32 little endian soft float microMIPS glibc
+            - MIPS32 big endian uclibc
+            - MIPS32 little endian uclibc
+            - MIPS32 big endian soft float uclibc
+            - MIPS32 little endian soft float uclibc
 
 config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_MIPS44
 	bool "CodeSourcery MIPS 4.4"
@@ -135,7 +172,9 @@ config BR2_TOOLCHAIN_EXTERNAL_PREFIX
 	default "arm-none-linux-gnueabi" if BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_ARM2009Q1
 	default "arm-none-linux-gnueabi" if BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_ARM2010Q1
 	default "arm-none-linux-gnueabi" if BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_ARM201009
+	default "arm-none-linux-gnueabi" if BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_ARM201103
 	default "mips-linux-gnu"         if BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_MIPS44
+	default "mips-linux-gnu"         if BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_MIPS201103
 	default "powerpc-linux-gnu"      if BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_POWERPC201009
 	default "sh-linux-gnu"           if BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_SH201009
 	default $(BR2_TOOLCHAIN_EXTERNAL_CUSTOM_PREFIX) \
