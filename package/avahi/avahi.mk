@@ -64,7 +64,7 @@ AVAHI_CONF_ENV = ac_cv_func_strtod=yes \
 		jm_cv_func_working_re_compile_pattern=yes \
 		ac_use_included_regex=no \
 		avahi_cv_sys_cxx_works=yes \
-		DATADIR=share
+		DATADIRNAME=share
 
 AVAHI_CONF_OPT = --localstatedir=/var \
 		--disable-qt3 \
