@@ -13,6 +13,7 @@ FFMPEG_CONF_OPT = \
 	--prefix=/usr		\
 	--enable-shared 	\
 	--disable-avfilter	\
+	$(if $(BR2_HAVE_DOCUMENTATION),,--disable-doc)
 
 ifeq ($(BR2_PACKAGE_FFMPEG_GPL),y)
 FFMPEG_CONF_OPT += --enable-gpl
