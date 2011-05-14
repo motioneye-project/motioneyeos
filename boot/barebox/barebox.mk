@@ -4,7 +4,7 @@
 #
 #############################################################
 
-BAREBOX_VERSION:=2011.04.0
+BAREBOX_VERSION:=2011.05.0
 BAREBOX_SOURCE:=barebox-$(BAREBOX_VERSION).tar.bz2
 BAREBOX_SITE:=http://www.barebox.org/download/
 BAREBOX_DIR:=$(BUILD_DIR)/barebox-$(BAREBOX_VERSION)
