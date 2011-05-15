@@ -210,19 +210,6 @@ ifneq ($(wildcard $(GCC_PATCH_DIR)),)
 	toolchain/patch-kernel.sh $(GCC_DIR) $(GCC_PATCH_DIR) \*.patch $(GCC_PATCH_EXTRA)
 endif
 
-	# Note: The soft float situation has improved considerably with gcc 3.4.x.
-	# We can dispense with the custom spec files, as well as libfloat for the arm case.
-	# However, we still need a patch for arm. There's a similar patch for gcc 3.3.x
-	# which needs to be integrated so we can kill of libfloat for good, except for
-	# anyone (?) who might still be using gcc 2.95. mjn3
-ifeq ($(BR2_SOFT_FLOAT),y)
-ifeq ("$(strip $(ARCH))","arm")
-	toolchain/patch-kernel.sh $(GCC_DIR) toolchain/gcc/$(GCC_VERSION) arm-softfloat.patch.conditional
-endif
-ifeq ("$(strip $(ARCH))","armeb")
-	toolchain/patch-kernel.sh $(GCC_DIR) toolchain/gcc/$(GCC_VERSION) arm-softfloat.patch.conditional
-endif
-endif
 ifeq ($(ARCH)-$(BR2_GCC_SHARED_LIBGCC),powerpc-y)
 ifneq ($(BR2_SOFT_FLOAT),)
 	toolchain/patch-kernel.sh $(GCC_DIR) toolchain/gcc/$(GCC_VERSION) powerpc-link-with-math-lib.patch.conditional
