@@ -23,6 +23,7 @@
 	#3541: Quotes in the top Makefile:217 break buildroot/kernel config...
 	#3571: u-boot: fw_printenv does not build
 	#3643: popt source url is not responding
+	#3733: dropbear: make zlib optional
 
 2011.02, Released February 28th, 2011:
 
