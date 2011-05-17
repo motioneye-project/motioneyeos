@@ -831,7 +831,7 @@ config BR2_GCC_TARGET_ABI
 	default n32		if BR2_MIPS_ABI32
 	default eabi		if BR2_MIPS_EABI
 	default o64		if BR2_MIPS_OABI64
-	default n64		if BR2_MIPS_ABI64
+	default 64		if BR2_MIPS_ABI64
 	default mmixware	if BR2_mmix && BR2_MMIX_ABI_native
 	default gnu		if BR2_mmix && !BR2_MMIX_ABI_native
 	default altivec		if BR2_powerpc && BR2_PPC_ABI_altivec

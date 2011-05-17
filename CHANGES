@@ -60,6 +60,7 @@
 	Issues resolved (http://bugs.uclibc.org):
 
 	#2353: [lua] fix build with 2010.08-rc1
+	#3751: MIPS: fix BR2_GCC_TARGET_ABI for MIPS n64
 	#4880: New package lcdproc
 	#4886: New package protobuf
 	#5144: Patch to fix ixon bug in uemacs
