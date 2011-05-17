@@ -11,9 +11,3 @@ config BR2_PACKAGE_TCPDUMP_SMB
 	depends on BR2_PACKAGE_TCPDUMP
 	help
 	  enable possibly-buggy SMB printer
-
-config BR2_PACKAGE_DHCPDUMP
-	bool "dhcpdump"
-	select BR2_PACKAGE_LIBPCAP
-	help
-	  A tool for monitoring dhcp requests using tcpdump.
