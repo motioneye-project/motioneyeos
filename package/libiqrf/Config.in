@@ -1,0 +1,10 @@
+config BR2_PACKAGE_LIBIQRF
+	bool "libiqrf"
+	select BR2_PACKAGE_LIBUSB
+	help
+	  This library implement specific protocol
+	  which is used for communicating with iqrf devices
+	  (http://iqrf.org) over usb. For usb access is used
+	  libusb library.
+
+	  https://github.com/nandra/libiqrf
