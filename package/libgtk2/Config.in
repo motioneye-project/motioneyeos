@@ -16,5 +16,12 @@ config BR2_PACKAGE_LIBGTK2
 
 	  http://www.gtk.org/
 
+config BR2_PACKAGE_LIBGTK2_DEMO
+	bool "Install libgtk2 demo program"
+	depends on BR2_PACKAGE_LIBGTK2
+	help
+	  The GTK+ source base contains a gtk-demo program. This
+	  option allows to install this program to the target.
+
 comment "libgtk2 requires a toolchain with WCHAR and C++ support"
 	depends on !BR2_USE_WCHAR || !BR2_INSTALL_LIBSTDCPP

@@ -114,11 +114,13 @@ else
 LIBGTK2_CONF_OPT += --disable-cups
 endif
 
+ifeq ($(BR2_PACKAGE_LIBGTK2_DEMO),)
 define LIBGTK2_POST_INSTALL_TWEAKS
 	rm -rf $(TARGET_DIR)/usr/share/gtk-2.0/demo $(TARGET_DIR)/usr/bin/gtk-demo
 endef
 
 LIBGTK2_POST_INSTALL_TARGET_HOOKS += LIBGTK2_POST_INSTALL_TWEAKS
+endif
 
 # We do not build a full version of libgtk2 for the host, because that
 # requires compiling Cairo, Pango, ATK and X.org for the
