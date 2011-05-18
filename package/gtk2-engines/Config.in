@@ -1,4 +1,4 @@
-config BR2_PACKAGE_LIBGTK2_ENGINES
+config BR2_PACKAGE_GTK2_ENGINES
 	bool "gtk engines"
 	depends on BR2_PACKAGE_LIBGTK2
 	help
