@@ -34,10 +34,10 @@
 	haserl, hostapd, icu, imagemagick, iproute2, iw, kismet, less,
 	libcap, libdnet, libglade, libglib2, libgtk2, libnl, libpng,
 	libxml2, libxml2, libxslt, lighttpd, lockfile-progs, makedevs,
-	midori, mpg123, mpc, mpd, mpfr, mtd-utils, ncurses, netsnmp,
-	openssh, openssl, openvpn, pango, pkg-config, popt, procps,
-	proftpd, qt, quagga, readline, rsync, samba, sdl, socat,
-	squashfs, squid, sudo, tslib, udev, usbutils, webkit,
+	midori, mpg123, mpc, mpd, mpfr, mplayer, mtd-utils, ncurses,
+	netsnmp, openssh, openssl, openvpn, pango, pkg-config, popt,
+	procps, proftpd, qt, quagga, readline, rsync, samba, sdl,
+	socat, squashfs, squid, sudo, tslib, udev, usbutils, webkit,
 	wpa_supplicant, xerces, xfont_font-misc-misc, xlib_libX11,
 	xlib_libXfont, xlib_xtrans, xorg-server, xterm, xz
 
@@ -59,6 +59,7 @@
 	#3571: u-boot: fw_printenv does not build
 	#3643: popt source url is not responding
 	#3733: dropbear: make zlib optional
+	#3757: Buildroot can't build mplayer with libmad
 
 2011.02, Released February 28th, 2011:
 

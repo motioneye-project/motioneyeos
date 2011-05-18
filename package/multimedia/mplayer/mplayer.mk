@@ -69,7 +69,7 @@ MPLAYER_DEPENDENCIES += tremor
 MPLAYER_CONF_OPTS += --disable-tremor-internal --enable-tremor
 endif
 
-ifeq ($(BR2_PACKAGE_MAD),y)
+ifeq ($(BR2_PACKAGE_LIBMAD),y)
 MPLAYER_DEPENDENCIES += libmad
 else
 MPLAYER_CONF_OPTS += --disable-mad
