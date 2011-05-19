@@ -27,6 +27,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 	BIND_DEPENDENCIES += openssl
+	BIND_CONF_OPT += --with-openssl=$(STAGING_DIR)/usr
 else
 	BIND_CONF_OPT += --with-openssl=no
 endif
