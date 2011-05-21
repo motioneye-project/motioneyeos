@@ -20,8 +20,9 @@ CTNG_SOURCE:=crosstool-ng-$(CTNG_VERSION).tar.bz2
 CTNG_DIR:=$(BUILD_DIR)/crosstool-ng-$(CTNG_VERSION)
 CTNG_CAT:=bzcat
 CTNG_PATCH_DIR:=toolchain/toolchain-crosstool-ng
-CTNG_CONFIG_FILE:=$(call qstrip,$(BR2_TOOLCHAIN_CTNG_CONFIG))
 CTNG_UCLIBC_CONFIG_FILE := $(TOPDIR)/toolchain/toolchain-crosstool-ng/uClibc.config
+
+CTNG_CONFIG_FILE:=$(call qstrip,$(BR2_TOOLCHAIN_CTNG_CONFIG))
 
 # Hack! ct-ng is in fact a Makefile script. As such, it accepts all
 # make options, such as -C, which makes it uneeded to chdir prior
@@ -349,13 +350,24 @@ endef
 # Default configuration
 # Depends on top-level .config because it has options we have to shoe-horn
 # into crosstool-NG's .config
-# Only copy the original .config file if we don't have one already
+# Only copy the original .config file if we don't have one already.
+# Check that given config file matches selected C library.
 # We need to call oldconfig twice in a row to ensure the options
 # are correctly set ( eg. if an option is new, then the initial sed
 # can't do anything about it ) Ideally, this should go in oldconfig
 # itself, but it's much easier to handle here.
 $(CTNG_DIR)/.config: $(CTNG_CONFIG_FILE) $(CTNG_DIR)/ct-ng $(CONFIG_DIR)/.config
-	$(Q)[ -f $@ ] && cp -a $@ $@.timestamp || cp -f $< $@
+	$(Q)if [ ! -f $@ ]; then                                                        \
+	        libc="$$(awk -F '"' '$$1=="CT_LIBC=" { print $$2; }' "$<")";            \
+	        if [ "$${libc}" != "$(BR2_TOOLCHAIN_CTNG_LIBC)" ]; then                 \
+	            echo "* Inconsistency in crosstool-NG config file '$<'";            \
+	            echo "* - buildroot configured for '$(BR2_TOOLCHAIN_CTNG_LIBC)'";   \
+	            echo "* - given config file for '$${libc}'";                        \
+	            exit 1;                                                             \
+	        fi;                                                                     \
+	        cp -f $< $@;                                                            \
+	    fi
+	$(Q)cp -a $@ $@.timestamp
 	$(call ctng-oldconfig,$@)
 	$(call ctng-oldconfig,$@)
 	$(call ctng-check-config-changed,$@,$@.timestamp)

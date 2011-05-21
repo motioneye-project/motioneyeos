@@ -38,12 +38,15 @@ config BR2_TOOLCHAIN_CTNG_LIBC
 
 config BR2_TOOLCHAIN_CTNG_CONFIG
 	string "crosstool-NG configuration file to use"
-	default "toolchain/toolchain-crosstool-ng/crosstool-ng.config"
+	default "toolchain/toolchain-crosstool-ng/crosstool-ng.config-uClibc" if BR2_TOOLCHAIN_CTNG_uClibc
+	default "toolchain/toolchain-crosstool-ng/crosstool-ng.config-eglibc" if BR2_TOOLCHAIN_CTNG_eglibc
+	default "toolchain/toolchain-crosstool-ng/crosstool-ng.config-glibc"  if BR2_TOOLCHAIN_CTNG_glibc
 	help
 	  Enter here the crosstool-NG's .config file to use.
-	  If unsure, use the default.
-	  To finetune your toolchain, you can also call:
-	  make ctng-menuconfig
+	  To fine-tune your toolchain, you can also call:
+	    make ctng-menuconfig
+
+	  If unsure, keep the default value.
 
 if BR2_TOOLCHAIN_CTNG_uClibc
 
