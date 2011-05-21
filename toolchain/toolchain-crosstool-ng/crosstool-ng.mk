@@ -328,6 +328,18 @@ $(CTNG_DIR)/libc.config: $(CTNG_UCLIBC_CONFIG_FILE) $(CONFIG_DIR)/.config
 endif # LIBC is uClibc
 
 #--------------
+# glibc/eglibc specific options
+ifeq ($(BR2_TOOLCHAIN_CTNG_glibc)$(BR2_TOOLCHAIN_CTNG_eglibc),y)
+
+# Force unwind support
+CTNG_FIX_DOT_CONFIG_SED += s:^\# (CT_LIBC_GLIBC_FORCE_UNWIND) is not set:\1=y:;
+
+# Force non-fortified build
+CTNG_FIX_DOT_CONFIG_SED += s:^(CT_LIBC_ENABLE_FORTIFIED_BUILD)=y:\# \1 is not set:;
+
+endif # LIBC is glibc or eglibc
+
+#--------------
 # Small functions to shoe-horn the above into crosstool-NG's .config
 
 # Function to update the .config
