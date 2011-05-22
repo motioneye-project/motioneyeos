@@ -373,6 +373,7 @@ config BR2_PACKAGE_QT_SCRIPT
 config BR2_PACKAGE_QT_SCRIPTTOOLS
 	bool "Script Tools Module"
 	depends on BR2_PACKAGE_QT_SCRIPT
+	depends on BR2_PACKAGE_QT_GUI_MODULE
 	help
 	  Build the Qt Script Tools module.
 	  if unsure, say n.
