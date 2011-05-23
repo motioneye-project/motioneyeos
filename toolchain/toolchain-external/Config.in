@@ -45,6 +45,20 @@ config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_ARM2010Q1
              - ARMv4T, little endian, soft-float, glibc
              - ARMv7-A, Thumb 2, little endian, soft-float, glibc
 
+config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_ARM2009Q3
+	bool "CodeSourcery ARM 2009q3"
+	depends on BR2_arm
+	select BR2_TOOLCHAIN_EXTERNAL_GLIBC
+	select BR2_INSTALL_LIBSTDCPP
+	help
+	  Toolchain for the ARM architecture, from CodeSourcery. It
+	  uses gcc 4.4.1, binutils 2.19, glibc 2.10 and gdb 6.8 and
+	  kernel headers 2.6.30. It has support for the following
+	  variants:
+            - ARMv5T, little endian, soft-float, glibc
+            - ARMv4T, little endian, soft-float, glibc
+            - ARMv7-A, Thumb 2, little endian, soft-float, glibc
+
 config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_ARM2009Q1
 	bool "CodeSourcery ARM 2009q1"
 	depends on BR2_arm
