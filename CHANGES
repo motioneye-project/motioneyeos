@@ -1,3 +1,14 @@
+2011.05-rc2, Released May 24th, 2011:
+
+	Fixes all over the tree.
+
+	Toolchain: Code sourcery ARM 2009q1 download URL fixed /
+	2009q3 external toolchains added. Crosstool-NG bumped to
+	1.11.3, eglic/glibc configuration fixes. Linux kernel 2.6.38.x
+	bumped to 2.6.38.7.
+
+	Updated/fixed packages: bind, fakeroot, kbd, psmisc, qt
+
 2011.05-rc1, Released May 18th, 2011:
 
 	Fixes all over the tree and new features.
