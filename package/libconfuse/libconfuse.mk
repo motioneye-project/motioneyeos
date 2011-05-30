@@ -10,6 +10,6 @@ LIBCONFUSE_AUTORECONF:=NO
 LIBCONFUSE_INSTALL_STAGING:=YES
 LIBCONFUSE_INSTALL_TARGET:=YES
 
-LIBCONFUSE_CONF_OPT:=--enable-shared --disable-rpath
+LIBCONFUSE_CONF_OPT:=--disable-rpath
 
 $(eval $(call AUTOTARGETS,package,libconfuse))

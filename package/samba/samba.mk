@@ -45,8 +45,6 @@ SAMBA_CONF_OPT = \
 	--with-privatedir=/etc/samba \
 	\
 	--disable-cups \
-	--disable-static \
-	--enable-shared \
 	--enable-shared-libs \
 	--disable-pie \
 	--disable-relro \

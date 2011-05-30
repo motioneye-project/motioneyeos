@@ -16,9 +16,7 @@ ifneq ($(BR2_LARGEFILE),y)
 SQLITE_CONF_ENV = CFLAGS="$(TARGET_CFLAGS) -DSQLITE_DISABLE_LFS"
 endif
 
-SQLITE_CONF_OPT =	--enable-shared \
-			--enable-static \
-			--enable-tempstore=yes \
+SQLITE_CONF_OPT =	--enable-tempstore=yes \
 			--enable-threadsafe \
 			--enable-releasemode \
 			--disable-tcl \

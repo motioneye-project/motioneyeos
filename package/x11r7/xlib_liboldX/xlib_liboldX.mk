@@ -10,6 +10,6 @@ XLIB_LIBOLDX_SITE = http://xorg.freedesktop.org/releases/individual/lib
 XLIB_LIBOLDX_AUTORECONF = NO
 XLIB_LIBOLDX_INSTALL_STAGING = YES
 XLIB_LIBOLDX_DEPENDENCIES = xlib_libX11
-XLIB_LIBOLDX_CONF_OPT = --disable-malloc0returnsnull --enable-shared --disable-static
+XLIB_LIBOLDX_CONF_OPT = --disable-malloc0returnsnull
 
 $(eval $(call AUTOTARGETS,package/x11r7,xlib_liboldX))

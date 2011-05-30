@@ -6,7 +6,7 @@
 NEON_VERSION:=0.28.3
 NEON_SITE:=http://www.webdav.org/neon/
 NEON_INSTALL_STAGING:=YES
-NEON_CONF_OPT:=--enable-shared --without-gssapi --disable-rpath
+NEON_CONF_OPT:=--without-gssapi --disable-rpath
 
 NEON_DEPENDENCIES:=host-pkg-config
 

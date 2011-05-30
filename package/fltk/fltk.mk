@@ -14,7 +14,7 @@ FLTK_INSTALL_TARGET = YES
 FLTK_INSTALL_STAGING_OPT = DESTDIR=$(STAGING_DIR) STRIP=$(TARGET_STRIP) install
 FLTK_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) STRIP=$(TARGET_STRIP) install
 
-FLTK_CONF_OPT = --enable-shared --enable-threads --with-x
+FLTK_CONF_OPT = --enable-threads --with-x
 
 FLTK_DEPENDENCIES = xserver_xorg-server xlib_libXt
 

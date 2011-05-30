@@ -10,6 +10,6 @@ XLIB_LIBDMX_SITE = http://xorg.freedesktop.org/releases/individual/lib
 XLIB_LIBDMX_AUTORECONF = NO
 XLIB_LIBDMX_INSTALL_STAGING = YES
 XLIB_LIBDMX_DEPENDENCIES = xlib_libX11 xlib_libXext xproto_dmxproto
-XLIB_LIBDMX_CONF_OPT = --disable-malloc0returnsnull --enable-shared --disable-static
+XLIB_LIBDMX_CONF_OPT = --disable-malloc0returnsnull
 
 $(eval $(call AUTOTARGETS,package/x11r7,xlib_libdmx))

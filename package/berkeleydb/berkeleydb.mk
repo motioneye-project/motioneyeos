@@ -33,7 +33,6 @@ define BERKELEYDB_CONFIGURE_CMDS
 		--mandir=/usr/share/man \
 		--infodir=/usr/share/info \
 		--with-gnu-ld \
-		--enable-shared \
 		--disable-cxx \
 		--disable-java \
 		--disable-rpc \

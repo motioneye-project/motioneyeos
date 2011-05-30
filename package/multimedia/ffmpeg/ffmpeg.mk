@@ -11,7 +11,6 @@ FFMPEG_INSTALL_STAGING = YES
 
 FFMPEG_CONF_OPT = \
 	--prefix=/usr		\
-	--enable-shared 	\
 	--disable-avfilter	\
 	$(if $(BR2_HAVE_DOCUMENTATION),,--disable-doc)
 

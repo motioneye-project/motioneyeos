@@ -10,7 +10,6 @@ FLAC_SITE = http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/flac
 FLAC_INSTALL_STAGING = YES
 
 FLAC_CONF_OPT = \
-	--enable-shared \
 	--disable-cpplibs \
 	--disable-xmms-plugin
 

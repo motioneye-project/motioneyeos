@@ -43,8 +43,7 @@ CLASSPATH_CONF_ENV = ac_cv_func_posix_getpwuid_r=yes glib_cv_stack_grows=no \
 
 CLASSPATH_CONF_OPT = \
 		--libexecdir=/usr/lib --localstatedir=/var --mandir=/usr/man \
-		--infodir=/usr/info --enable-shared \
-		--enable-static \
+		--infodir=/usr/info \
 		--disable-glibtest --enable-explicit-deps=no \
 		--disable-debug \
 		--disable-gconf-peer --disable-examples --disable-plugin \

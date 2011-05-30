@@ -10,6 +10,6 @@ XLIB_LIBSM_SITE = http://xorg.freedesktop.org/releases/individual/lib
 XLIB_LIBSM_AUTORECONF = NO
 XLIB_LIBSM_INSTALL_STAGING = YES
 XLIB_LIBSM_DEPENDENCIES = xlib_libICE xlib_xtrans xproto_xproto
-XLIB_LIBSM_CONF_OPT = --enable-shared --disable-static --without-libuuid
+XLIB_LIBSM_CONF_OPT = --without-libuuid
 
 $(eval $(call AUTOTARGETS,package/x11r7,xlib_libSM))

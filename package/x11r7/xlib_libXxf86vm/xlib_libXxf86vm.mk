@@ -10,6 +10,6 @@ XLIB_LIBXXF86VM_SITE = http://xorg.freedesktop.org/releases/individual/lib
 XLIB_LIBXXF86VM_AUTORECONF = NO
 XLIB_LIBXXF86VM_INSTALL_STAGING = YES
 XLIB_LIBXXF86VM_DEPENDENCIES = xlib_libX11 xlib_libXext xproto_xf86vidmodeproto xproto_xproto
-XLIB_LIBXXF86VM_CONF_OPT = --disable-malloc0returnsnull --enable-shared --disable-static
+XLIB_LIBXXF86VM_CONF_OPT = --disable-malloc0returnsnull
 
 $(eval $(call AUTOTARGETS,package/x11r7,xlib_libXxf86vm))

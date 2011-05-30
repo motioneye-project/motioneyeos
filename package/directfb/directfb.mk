@@ -11,8 +11,6 @@ DIRECTFB_AUTORECONF = YES
 DIRECTFB_INSTALL_STAGING = YES
 DIRECTFB_CONF_OPT = \
 	--localstatedir=/var \
-	--enable-static \
-	--enable-shared \
 	--disable-explicit-deps \
 	--program-prefix='' \
 	--enable-zlib \
@@ -123,8 +121,6 @@ endif
 
 HOST_DIRECTFB_DEPENDENCIES = host-pkg-config host-libpng
 HOST_DIRECTFB_CONF_OPT = \
-		--enable-shared \
-		--disable-static \
 		--disable-debug \
 		--disable-multi \
 		--enable-png \

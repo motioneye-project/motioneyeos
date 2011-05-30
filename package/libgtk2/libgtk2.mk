@@ -66,9 +66,7 @@ LIBGTK2_CONF_ENV = ac_cv_func_posix_getpwuid_r=yes glib_cv_stack_grows=no \
 		ac_cv_prog_F77=no \
 		ac_cv_path_CUPS_CONFIG=no
 
-LIBGTK2_CONF_OPT = --enable-shared \
-		--enable-static \
-		--disable-glibtest \
+LIBGTK2_CONF_OPT = --disable-glibtest \
 		--enable-explicit-deps=no \
 		--disable-debug
 

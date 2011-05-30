@@ -23,6 +23,5 @@ XDRIVER_XF86_VIDEO_OPENCHROME_DEPENDENCIES = \
 
 
 XDRIVER_XF86_VIDEO_OPENCHROME_AUTORECONF = YES
-XDRIVER_XF86_VIDEO_OPENCHROME_CONF_OPT = --enable-shared --disable-static
 
 $(eval $(call AUTOTARGETS,package/x11r7,xdriver_xf86-video-openchrome))

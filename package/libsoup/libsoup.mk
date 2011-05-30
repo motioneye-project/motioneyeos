@@ -17,8 +17,6 @@ LIBSOUP_CONF_ENV += soup_cv_ipv6=no
 endif
 
 LIBSOUP_CONF_OPT = \
-	--enable-shared		\
-	--enable-static		\
 	--disable-explicit-deps \
 	--disable-glibtest	\
 	--disable-ssl		\

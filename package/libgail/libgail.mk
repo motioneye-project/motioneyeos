@@ -13,9 +13,6 @@ LIBGAIL_AUTORECONF = YES
 LIBGAIL_INSTALL_STAGING = YES
 LIBGAIL_INSTALL_TARGET = YES
 
-LIBGAIL_CONF_OPT = --enable-shared \
-		--enable-static
-
 ifneq ($(BR2_PACKAGE_XLIB_LIBX11),y)
 LIBGAIL_CONF_OPT += --disable-x
 endif

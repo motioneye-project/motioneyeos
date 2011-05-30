@@ -11,9 +11,7 @@ ALSA_LIB_INSTALL_TARGET = YES
 
 ALSA_LIB_CFLAGS=$(TARGET_CFLAGS)
 
-ALSA_LIB_CONF_OPT = --enable-shared \
-		    --enable-static \
-		    --with-alsa-devdir=$(call qstrip,$(BR2_PACKAGE_ALSA_LIB_DEVDIR)) \
+ALSA_LIB_CONF_OPT = --with-alsa-devdir=$(call qstrip,$(BR2_PACKAGE_ALSA_LIB_DEVDIR)) \
 		    --with-pcm-plugins="$(call qstrip,$(BR2_PACKAGE_ALSA_LIB_PCM_PLUGINS))" \
 		    --with-ctl-plugins="$(call qstrip,$(BR2_PACKAGE_ALSA_LIB_CTL_PLUGINS))" \
 		    --without-versioned

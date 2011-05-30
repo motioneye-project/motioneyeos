@@ -9,8 +9,6 @@ TIFF_SOURCE:=tiff-$(TIFF_VERSION).tar.gz
 TIFF_INSTALL_STAGING = YES
 TIFF_INSTALL_TARGET = YES
 TIFF_CONF_OPT = \
-	--enable-shared \
-	--enable-static \
 	--disable-cxx \
 	--without-x \
 

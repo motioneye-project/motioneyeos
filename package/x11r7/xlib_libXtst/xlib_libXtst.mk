@@ -15,6 +15,4 @@ XLIB_LIBXTST_DEPENDENCIES = \
 	xlib_libXi \
 	xproto_recordproto
 
-XLIB_LIBXTST_CONF_OPT = --enable-shared --disable-static
-
 $(eval $(call AUTOTARGETS,package/x11r7,xlib_libXtst))

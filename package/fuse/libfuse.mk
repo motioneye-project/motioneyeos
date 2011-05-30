@@ -10,8 +10,6 @@ LIBFUSE_SITE = http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/f
 
 LIBFUSE_INSTALL_STAGING = YES
 LIBFUSE_CONF_OPT= --program-prefix="" \
-		--enable-shared \
-		--enable-static \
 		--disable-nls \
 		--disable-example \
 		--disable-kernel-module \

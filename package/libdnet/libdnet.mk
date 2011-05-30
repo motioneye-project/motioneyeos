@@ -12,8 +12,6 @@ LIBDNET_INSTALL_TARGET = YES
 LIBDNET_AUTORECONF = YES
 LIBDNET_CONF_OPT = \
 	--with-gnu-ld \
-	--enable-shared \
-	--enable-static \
 	--with-check=no
 
 ifneq ($(BR2_PACKAGE_LIBDNET_PYTHON),)

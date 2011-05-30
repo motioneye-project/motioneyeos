@@ -11,7 +11,6 @@ TSLIB_INSTALL_TARGET = YES
 TSLIB_INSTALL_STAGING_OPT = DESTDIR=$(STAGING_DIR) LDFLAGS=-L$(STAGING_DIR)/usr/lib install
 
 TSLIB_CONF_OPT = \
-	--enable-shared	\
 	--prefix=/usr	\
 	--sysconfdir=/etc
 

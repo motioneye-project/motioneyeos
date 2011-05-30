@@ -9,7 +9,7 @@ LIBLOCKFILE_SITE:=$(BR2_DEBIAN_MIRROR)/debian/pool/main/libl/liblockfile/
 LIBLOCKFILE_PATCH:=liblockfile_$(LIBLOCKFILE_VERSION)-4.debian.tar.bz2
 
 LIBLOCKFILE_INSTALL_STAGING = YES
-LIBLOCKFILE_CONF_OPT = --enable-shared --mandir=/usr/share/man
+LIBLOCKFILE_CONF_OPT = --mandir=/usr/share/man
 
 define LIBLOCKFILE_INSTALL_STAGING_CMDS
 	mkdir -p $(addprefix $(STAGING_DIR)/usr/share/man/man,1 3)

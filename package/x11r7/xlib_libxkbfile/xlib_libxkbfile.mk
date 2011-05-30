@@ -10,10 +10,8 @@ XLIB_LIBXKBFILE_SITE = http://xorg.freedesktop.org/releases/individual/lib
 XLIB_LIBXKBFILE_AUTORECONF = NO
 XLIB_LIBXKBFILE_INSTALL_STAGING = YES
 XLIB_LIBXKBFILE_DEPENDENCIES = xlib_libX11 xproto_kbproto
-XLIB_LIBXKBFILE_CONF_OPT = --enable-shared --disable-static
 
 HOST_XLIB_LIBXKBFILE_DEPENDENCIES = host-xlib_libX11 host-xproto_kbproto
-HOST_XLIB_LIBXKBFILE_CONF_OPT = --enable-shared --disable-static
 
 $(eval $(call AUTOTARGETS,package/x11r7,xlib_libxkbfile))
 $(eval $(call AUTOTARGETS,package/x11r7,xlib_libxkbfile,host))

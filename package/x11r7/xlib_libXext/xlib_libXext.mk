@@ -10,6 +10,6 @@ XLIB_LIBXEXT_SITE = http://xorg.freedesktop.org/releases/individual/lib
 XLIB_LIBXEXT_AUTORECONF = NO
 XLIB_LIBXEXT_INSTALL_STAGING = YES
 XLIB_LIBXEXT_DEPENDENCIES = xlib_libX11 xproto_xextproto xproto_xproto
-XLIB_LIBXEXT_CONF_OPT = --disable-malloc0returnsnull --enable-shared --disable-static
+XLIB_LIBXEXT_CONF_OPT = --disable-malloc0returnsnull
 
 $(eval $(call AUTOTARGETS,package/x11r7,xlib_libXext))
