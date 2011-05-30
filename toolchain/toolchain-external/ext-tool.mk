@@ -189,6 +189,11 @@ TOOLCHAIN_EXTERNAL_SOURCE=freescale-2010.09-55-powerpc-linux-gnu-i686-pc-linux-g
 else ifeq ($(BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_SH201009),y)
 TOOLCHAIN_EXTERNAL_SITE=http://www.codesourcery.com/sgpp/lite/superh/portal/package7783/public/sh-linux-gnu/
 TOOLCHAIN_EXTERNAL_SOURCE=renesas-2010.09-45-sh-linux-gnu-i686-pc-linux-gnu.tar.bz2
+else ifeq ($(BR2_TOOLCHAIN_EXTERNAL_BLACKFIN_UCLINUX_2010RC1),y)
+TOOLCHAIN_EXTERNAL_SITE_1   = http://blackfin.uclinux.org/gf/download/frsrelease/501/8378/
+TOOLCHAIN_EXTERNAL_SOURCE_1 = blackfin-toolchain-2010R1-RC4.i386.tar.bz2
+TOOLCHAIN_EXTERNAL_SITE_2   = http://blackfin.uclinux.org/gf/download/frsrelease/501/8386/
+TOOLCHAIN_EXTERNAL_SOURCE_2 = blackfin-toolchain-uclibc-full-2010R1-RC4.i386.tar.bz2
 else
 # A value must be set (even if unused), otherwise the
 # $(DL_DIR)/$(TOOLCHAIN_EXTERNAL_SOURCE) rule would override the main
@@ -196,6 +201,37 @@ else
 TOOLCHAIN_EXTERNAL_SOURCE=none
 endif
 
+# Special handling for Blackfin toolchain, because of the split in two
+# tarballs, and the organization of tarball contents. The tarballs
+# contain ./opt/uClinux/{bfin-uclinux,bfin-linux-uclibc} directories,
+# which themselves contain the toolchain. This is why we strip more
+# components than usual.
+ifeq ($(BR2_TOOLCHAIN_EXTERNAL_BLACKFIN_UCLINUX_2010RC1),y)
+$(DL_DIR)/$(TOOLCHAIN_EXTERNAL_SOURCE_1):
+	$(call DOWNLOAD,$(TOOLCHAIN_EXTERNAL_SITE_1),$(TOOLCHAIN_EXTERNAL_SOURCE_1))
+
+$(DL_DIR)/$(TOOLCHAIN_EXTERNAL_SOURCE_2):
+	$(call DOWNLOAD,$(TOOLCHAIN_EXTERNAL_SITE_2),$(TOOLCHAIN_EXTERNAL_SOURCE_2))
+
+$(TOOLCHAIN_EXTERNAL_DIR)/.extracted: $(DL_DIR)/$(TOOLCHAIN_EXTERNAL_SOURCE_1) $(DL_DIR)/$(TOOLCHAIN_EXTERNAL_SOURCE_2)
+	mkdir -p $(@D)
+	$(INFLATE$(suffix $(TOOLCHAIN_EXTERNAL_SOURCE_1))) $(DL_DIR)/$(TOOLCHAIN_EXTERNAL_SOURCE_1) | \
+		$(TAR) $(TAR_STRIP_COMPONENTS)=3 --hard-dereference -C $(@D) $(TAR_OPTIONS) -
+	$(INFLATE$(suffix $(TOOLCHAIN_EXTERNAL_SOURCE_2))) $(DL_DIR)/$(TOOLCHAIN_EXTERNAL_SOURCE_2) | \
+		$(TAR) $(TAR_STRIP_COMPONENTS)=3 --hard-dereference -C $(@D) $(TAR_OPTIONS) -
+ifeq ($(TOOLCHAIN_EXTERNAL_PREFIX),bfin-uclinux)
+	rm -rf $(TOOLCHAIN_EXTERNAL_DIR)/bfin-linux-uclibc
+	mv $(TOOLCHAIN_EXTERNAL_DIR)/bfin-uclinux $(TOOLCHAIN_EXTERNAL_DIR)/tmp
+	mv $(TOOLCHAIN_EXTERNAL_DIR)/tmp/* $(TOOLCHAIN_EXTERNAL_DIR)/
+	rmdir $(TOOLCHAIN_EXTERNAL_DIR)/tmp
+else
+	rm -rf $(TOOLCHAIN_EXTERNAL_DIR)/bfin-uclinux
+	mv $(TOOLCHAIN_EXTERNAL_DIR)/bfin-linux-uclibc $(TOOLCHAIN_EXTERNAL_DIR)/tmp
+	mv $(TOOLCHAIN_EXTERNAL_DIR)/tmp/* $(TOOLCHAIN_EXTERNAL_DIR)/
+	rmdir $(TOOLCHAIN_EXTERNAL_DIR)/tmp
+endif
+	$(Q)touch $@
+else
 # Download and extraction of a toolchain
 $(DL_DIR)/$(TOOLCHAIN_EXTERNAL_SOURCE):
 	$(call DOWNLOAD,$(TOOLCHAIN_EXTERNAL_SITE),$(TOOLCHAIN_EXTERNAL_SOURCE))
@@ -204,6 +240,7 @@ $(TOOLCHAIN_EXTERNAL_DIR)/.extracted: $(DL_DIR)/$(TOOLCHAIN_EXTERNAL_SOURCE)
 	mkdir -p $(@D)
 	$(INFLATE$(suffix $(TOOLCHAIN_EXTERNAL_SOURCE))) $^ | $(TAR) $(TAR_STRIP_COMPONENTS)=1 -C $(@D) $(TAR_OPTIONS) -
 	$(Q)touch $@
+endif
 
 # Checks for an already installed toolchain: check the toolchain
 # location, check that it supports sysroot, and then verify that it
