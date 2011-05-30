@@ -220,6 +220,7 @@ config BR2_TOOLCHAIN_EXTERNAL_GLIBC
 	select BR2_ENABLE_LOCALE
 	select BR2_PROGRAM_INVOCATION
 	select BR2_TOOLCHAIN_HAS_THREADS
+	select BR2_TOOLCHAIN_HAS_SHADOW_PASSWORDS
 
 config BR2_TOOLCHAIN_EXTERNAL_UCLIBC
 	bool
@@ -233,6 +234,9 @@ choice
 config BR2_TOOLCHAIN_EXTERNAL_CUSTOM_UCLIBC
 	bool "uClibc"
 	select BR2_TOOLCHAIN_EXTERNAL_UCLIBC
+	# For the time being, we assume that all custom external
+	# toolchains have shadow password support.
+	select BR2_TOOLCHAIN_HAS_SHADOW_PASSWORDS
 
 config BR2_TOOLCHAIN_EXTERNAL_CUSTOM_GLIBC
 	bool "glibc"
