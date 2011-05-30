@@ -223,16 +223,6 @@ HOST_LIBEXT:=.lib
 HOST_SHREXT:=.dll
 endif
 
-# The preferred type of libs we build for the target
-ifeq ($(BR2_PREFER_STATIC_LIB),y)
-LIBTGTEXT=.a
-#PREFERRED_LIB_FLAGS:=--disable-shared --enable-static
-else
-LIBTGTEXT=.so
-#PREFERRED_LIB_FLAGS:=--disable-static --enable-shared
-endif
-PREFERRED_LIB_FLAGS:=--enable-static --enable-shared
-
 ##############################################################
 #
 # The list of stuff to build for the target toolchain
