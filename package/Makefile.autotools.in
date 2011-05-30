@@ -104,6 +104,7 @@ define $(2)_CONFIGURE_CMDS
 		$$(DISABLE_NLS) \
 		$$(DISABLE_LARGEFILE) \
 		$$(DISABLE_IPV6) \
+		$$(SHARED_STATIC_LIBS_OPTS) \
 		$$(QUIET) $$($$(PKG)_CONF_OPT) \
 	)
 endef
@@ -119,6 +120,7 @@ define $(2)_CONFIGURE_CMDS
 		./configure \
 		--prefix="$$(HOST_DIR)/usr" \
 		--sysconfdir="$$(HOST_DIR)/etc" \
+		--enable-shared --disable-static \
 		$$($$(PKG)_CONF_OPT) \
 	)
 endef
