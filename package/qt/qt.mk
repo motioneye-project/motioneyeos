@@ -398,6 +398,12 @@ else
 QT_CONFIGURE_OPTS += -no-stl
 endif
 
+ifeq ($(BR2_PACKAGE_QT_DECLARATIVE),y)
+QT_CONFIGURE_OPTS += -declarative
+else
+QT_CONFIGURE_OPTS += -no-declarative
+endif
+
 # ccache and precompiled headers don't play well together
 ifeq ($(BR2_CCACHE),y)
 QT_CONFIGURE_OPTS += -no-pch
@@ -534,6 +540,9 @@ QT_INSTALL_LIBS    += QtScript
 endif
 ifeq ($(BR2_PACKAGE_QT_SCRIPTTOOLS),y)
 QT_INSTALL_LIBS    += QtScriptTools
+endif
+ifeq ($(BR2_PACKAGE_QT_DECLARATIVE),y)
+QT_INSTALL_LIBS    += QtDeclarative
 endif
 ifeq ($(BR2_PACKAGE_QT_QT3SUPPORT),y)
 QT_INSTALL_LIBS    += Qt3Support
