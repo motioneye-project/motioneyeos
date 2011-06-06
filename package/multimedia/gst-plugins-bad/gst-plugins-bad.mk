@@ -348,6 +348,7 @@ GST_PLUGINS_BAD_CONF_OPT += --disable-oss4
 endif
 
 ifeq ($(BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_SDL),y)
+GST_PLUGINS_BAD_CONF_ENV += ac_cv_path_SDL_CONFIG=$(STAGING_DIR)/usr/bin/sdl-config
 GST_PLUGINS_BAD_CONF_OPT += --enable-sdl
 GST_PLUGINS_BAD_DEPENDENCIES += sdl
 else
