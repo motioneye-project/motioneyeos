@@ -10,6 +10,7 @@ LIBMPEG2_INSTALL_STAGING = YES
 LIBMPEG2_CONF_OPT = --without-x --disable-directx
 
 ifeq ($(BR2_PACKAGE_SDL),y)
+LIBMPEG2_CONF_ENV += ac_cv_prog_SDLCONFIG=$(STAGING_DIR)/usr/bin/sdl-config
 LIBMPEG2_CONF_OPT += --enable-sdl
 LIBMPEG2_DEPENDENCIES += sdl
 else
