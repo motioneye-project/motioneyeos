@@ -4,9 +4,8 @@
 #
 #############################################################
 
-SUDO_VERSION = 1.7.4p6
-SUDO_SITE    = $(BR2_DEBIAN_MIRROR)/debian/pool/main/s/sudo
-SUDO_SOURCE  = sudo_$(SUDO_VERSION).orig.tar.gz
+SUDO_VERSION = 1.7.6p2
+SUDO_SITE    = http://www.sudo.ws/sudo/dist
 
 SUDO_CONF_OPT = \
 		--without-lecture \
@@ -14,7 +13,6 @@ SUDO_CONF_OPT = \
 		--without-umask \
 		--with-logging=syslog \
 		--without-interfaces \
-		--disable-authentication \
 		--without-pam
 
 define SUDO_INSTALL_TARGET_CMDS

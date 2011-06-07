@@ -5,3 +5,5 @@ config BR2_PACKAGE_SUDO
 	  limited root privileges to users and log root activity.  The
 	  basic philosophy is to give as few privileges as possible
 	  but still allow people to get their work done.
+
+	  http://www.sudo.ws/sudo/
