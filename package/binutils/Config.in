@@ -1,12 +1,9 @@
 config BR2_PACKAGE_BINUTILS
-	bool "libbfd (binutils)"
-	depends on BR2_TOOLCHAIN_BUILDROOT
+	bool "binutils"
 	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE
 	select BR2_PACKAGE_LIBINTL if BR2_NEEDS_GETTEXT_IF_LOCALE
 	help
-	  Install libbfd from binutils in the target.
-
-	  This is used by oprofile to avoid a full-blown target binutils.
+	  Install binutils on the target
 
 config BR2_PACKAGE_BINUTILS_TARGET
 	bool "binutils binaries"
