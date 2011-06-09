@@ -78,6 +78,7 @@ config BR2_TOOLCHAIN_BUILDROOT_USE_SSP
 
 choice
 	prompt "Thread library implementation"
+	default BR2_PTHREADS_NATIVE if BR2_UCLIBC_VERSION_SNAPSHOT || BR2_UCLIBC_VERSION_0_9_32
 	default BR2_PTHREADS_OLD
 	help
 	  Use this option to select the thread library implementation
