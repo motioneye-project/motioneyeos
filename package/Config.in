@@ -202,6 +202,7 @@ endif
 source "package/smartmontools/Config.in"
 source "package/squashfs/Config.in"
 source "package/squashfs3/Config.in"
+source "package/sredird/Config.in"
 source "package/sshfs/Config.in"
 source "package/sysstat/Config.in"
 source "package/udev/Config.in"
