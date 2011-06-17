@@ -9,6 +9,11 @@ BMON_SOURCE = bmon-$(BMON_VERSION).tar.gz
 BMON_SITE = http://distfiles.gentoo.org/distfiles
 BMON_DEPENDENCIES = ncurses
 
+ifneq ($(BR2_PREFER_STATIC_LIB),y)
+# link dynamically unless explicitly requested otherwise
+BMON_CONF_OPT += --disable-static
+endif
+
 define BMON_UNINSTALL_TARGET_CMDS
 	rm -f $(TARGET_DIR)/usr/bin/bmon
 endef
