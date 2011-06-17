@@ -7,7 +7,12 @@
 BMON_VERSION = 2.1.0
 BMON_SOURCE = bmon-$(BMON_VERSION).tar.gz
 BMON_SITE = http://distfiles.gentoo.org/distfiles
-BMON_DEPENDENCIES = ncurses
+
+ifeq ($(BR2_PACKAGE_NCURSES),y)
+BMON_DEPENDENCIES += ncurses
+else
+BMON_CONF_OPT += --disable-curses
+endif
 
 ifneq ($(BR2_PREFER_STATIC_LIB),y)
 # link dynamically unless explicitly requested otherwise
