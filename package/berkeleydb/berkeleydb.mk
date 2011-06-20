@@ -38,6 +38,7 @@ define BERKELEYDB_CONFIGURE_CMDS
 		--disable-rpc \
 		--disable-tcl \
 		--disable-compat185 \
+		$(SHARED_STATIC_LIBS_OPTS) \
 		--with-pic \
 	)
 	$(SED) 's/\.lo/.o/g' $(@D)/build_unix/Makefile
