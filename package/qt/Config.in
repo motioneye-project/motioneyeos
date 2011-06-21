@@ -380,6 +380,7 @@ config BR2_PACKAGE_QT_SCRIPTTOOLS
 
 config BR2_PACKAGE_QT_DECLARATIVE
 	bool "Declarative module"
+	depends on BR2_PACKAGE_QT_SCRIPT
 	depends on BR2_PACKAGE_QT_GUI_MODULE
 	help
 	  Build the Qt Declarative Module for qml support
