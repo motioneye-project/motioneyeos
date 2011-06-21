@@ -1,0 +1,8 @@
+config BR2_PACKAGE_YAJL
+	bool "yajl"
+	help
+	  Yet Another JSON Library. YAJL is a small event-driven
+	  (SAX-style) JSON parser written in ANSI C, and a small
+	  validating JSON generator.
+
+	  http://lloyd.github.com/yajl/
