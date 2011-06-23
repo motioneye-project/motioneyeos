@@ -96,3 +96,8 @@ config BR2_TARGET_OPTIMIZATION
 	help
 	  Optimizations to use when building for the target host.
 	  NOTE: gcc optimization level is defined in build options.
+
+config BR2_TARGET_LDFLAGS
+	string "Target linker options"
+	help
+	  Extra options to pass to the linker when buiding for the target.
