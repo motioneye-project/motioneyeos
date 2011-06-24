@@ -13,16 +13,17 @@ Index: webkit-1.2.3/JavaScriptCore/runtime/Collector.cpp
 ===================================================================
 --- webkit-1.2.3.orig/JavaScriptCore/runtime/Collector.cpp	2010-07-22 17:16:19.000000000 +0200
 +++ webkit-1.2.3/JavaScriptCore/runtime/Collector.cpp	2010-07-22 17:25:02.000000000 +0200
-@@ -75,6 +75,18 @@
+@@ -75,6 +75,19 @@
  #endif
  #include <unistd.h>
  
 +#if defined(__UCLIBC__)
-+// versions of uClibc 0.9.31 and below do not have
++// versions of uClibc 0.9.32 and below with linuxthreads.old do not have
 +// pthread_getattr_np or pthread_attr_getstack.
 +#if __UCLIBC_MAJOR__ == 0 &&					\
 +  (__UCLIBC_MINOR__ < 9 ||					\
-+   (__UCLIBC_MINOR__ == 9 && __UCLIBC_SUBLEVEL__ <= 31))
++   (__UCLIBC_MINOR__ == 9 && __UCLIBC_SUBLEVEL__ <= 32)) &&	\
++   defined(__LINUXTHREADS_OLD__)
 +#define UCLIBC_USE_PROC_SELF_MAPS 1
 +#include <stdio_ext.h>
 +extern int *__libc_stack_end;
