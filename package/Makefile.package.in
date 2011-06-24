@@ -324,7 +324,7 @@ $(BUILD_DIR)/%/.stamp_uninstalled:
 	$($(PKG)_UNINSTALL_STAGING_CMDS)
 	rm -f $($(PKG)_TARGET_INSTALL_STAGING)
 	$($(PKG)_UNINSTALL_TARGET_CMDS)
-	rm -f $($(PKG)_TARGET_INSTALL_TARGET) $($(PKG)_HOOK_POST_INSTALL)
+	rm -f $($(PKG)_TARGET_INSTALL_TARGET)
 
 # Remove package sources
 $(BUILD_DIR)/%/.stamp_dircleaned:
