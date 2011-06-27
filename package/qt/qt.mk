@@ -28,10 +28,21 @@ ifneq ($(QT_CONFIG_FILE),)
 QT_CONFIGURE_OPTS += -config buildroot
 endif
 
+QT_CFLAGS = $(TARGET_CFLAGS)
+QT_CXXFLAGS = $(TARGET_CXXFLAGS)
+
 ifeq ($(BR2_LARGEFILE),y)
 QT_CONFIGURE_OPTS += -largefile
 else
 QT_CONFIGURE_OPTS += -no-largefile
+
+# embedded sqlite module forces FILE_OFFSET_BITS=64 unless this is defined
+# webkit internally uses this module as well
+ifneq ($(BR2_PACKAGE_QT_SQLITE_QT)$(BR2_PACKAGE_QT_WEBKIT),)
+QT_CFLAGS += -DSQLITE_DISABLE_LFS
+QT_CXXFLAGS += -DSQLITE_DISABLE_LFS
+endif
+
 endif
 
 ifeq ($(BR2_PACKAGE_QT_QT3SUPPORT),y)
@@ -465,8 +476,8 @@ define QT_CONFIGURE_CMDS
 	$(call QT_QMAKE_SET,OBJCOPY,$(TARGET_OBJCOPY),$(@D))
 	$(call QT_QMAKE_SET,RANLIB,$(TARGET_RANLIB),$(@D))
 	$(call QT_QMAKE_SET,STRIP,$(TARGET_STRIP),$(@D))
-	$(call QT_QMAKE_SET,CFLAGS,$(TARGET_CFLAGS),$(@D))
-	$(call QT_QMAKE_SET,CXXFLAGS,$(TARGET_CXXFLAGS),$(@D))
+	$(call QT_QMAKE_SET,CFLAGS,$(QT_CFLAGS),$(@D))
+	$(call QT_QMAKE_SET,CXXFLAGS,$(QT_CXXFLAGS),$(@D))
 	$(call QT_QMAKE_SET,LFLAGS,$(TARGET_LDFLAGS),$(@D))
 # Don't use TARGET_CONFIGURE_OPTS here, qmake would be compiled for the target
 # instead of the host then. So set PKG_CONFIG* manually.
