@@ -9,7 +9,7 @@
 +// pthread_getattr_np or pthread_attr_getstack.
 +#if __UCLIBC_MAJOR__ == 0 && \
 +    (__UCLIBC_MINOR__ < 9 || \
-+    (__UCLIBC_MINOR__ == 9 && __UCLIBC_SUBLEVEL__ <= 32)) &&
++    (__UCLIBC_MINOR__ == 9 && __UCLIBC_SUBLEVEL__ <= 32)) && \
 +    defined(__LINUXTHREADS_OLD__)
 +#define UCLIBC_USE_PROC_SELF_MAPS 1
 +#include <stdio_ext.h>
