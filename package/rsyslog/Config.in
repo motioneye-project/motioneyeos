@@ -1,0 +1,6 @@
+config BR2_PACKAGE_RSYSLOG
+	bool "rsyslog"
+	help
+	  Rsyslog is a powerful and flexible syslog implementation
+
+	  http://www.rsyslog.com
