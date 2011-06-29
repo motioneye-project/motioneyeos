@@ -1,0 +1,26 @@
+#!/bin/sh
+#
+# Start logging
+#
+
+case "$1" in
+  start)
+	echo -n "Starting logging :"
+	start-stop-daemon -S -q -p /var/run/syslog.pid --exec /sbin/syslogd -- -m 0
+	start-stop-daemon -S -q -p /var/run/klogd.pid --exec /sbin/klogd
+	echo "OK"
+	;;
+  stop)
+	echo -n "Stopping logging :"
+	start-stop-daemon -K -q -p /var/run/syslog.pid
+	start-stop-daemon -K -q -p /var/run/klogd.pid
+	echo "OK"
+	;;
+  restart|reload)
+	;;
+  *)
+	echo $"Usage: $0 {start|stop|restart}"
+	exit 1
+esac
+
+exit $?
