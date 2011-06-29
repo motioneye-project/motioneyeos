@@ -41,14 +41,6 @@ define BUSYBOX_SET_MDEV
 endef
 endif
 
-# If we have external syslogd, force busybox to use it
-ifeq ($(BR2_PACKAGE_SYSKLOGD),y)
-define BUSYBOX_SET_SYSKLOGD
-	@$(SED) "/#include.*busybox\.h/a#define CONFIG_SYSLOGD" \
-		$(BUSYBOX_DIR)/init/init.c
-endef
-endif
-
 ifeq ($(BR2_LARGEFILE),y)
 define BUSYBOX_SET_LARGEFILE
 	$(call KCONFIG_ENABLE_OPT,CONFIG_LFS,$(BUSYBOX_BUILD_CONFIG))
