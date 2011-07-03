@@ -5,7 +5,7 @@
 id:1:initdefault:
 
 proc::sysinit:/bin/mount -t proc proc /proc
-rwmo::sysinit:/bin/mount -o remount,rw /
+rwmo::sysinit:/bin/mount -o remount,rw / # REMOUNT_ROOTFS_RW
 dpts::sysinit:/bin/mkdir -p /dev/pts
 moun::sysinit:/bin/mount -a
 host::sysinit:/bin/hostname -F /etc/hostname

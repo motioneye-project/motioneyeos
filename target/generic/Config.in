@@ -109,6 +109,17 @@ config BR2_TARGET_GENERIC_GETTY_BAUDRATE
 	default "57600"		if BR2_TARGET_GENERIC_GETTY_BAUDRATE_57600
 	default "115200"	if BR2_TARGET_GENERIC_GETTY_BAUDRATE_115200
 
+config BR2_TARGET_GENERIC_REMOUNT_ROOTFS_RW
+	bool "remount root filesystem read-write during boot"
+	default y
+	help
+	  The root filesystem is typically mounted read-only at boot.
+	  By default, buildroot remounts it in read-write mode early during the
+	  boot process.
+	  Say no here if you would rather like your root filesystem to remain
+	  read-only.
+	  If unsure, say Y.
+
 endif # BR2_ROOTFS_SKELETON_DEFAULT
 
 config BR2_ROOTFS_POST_BUILD_SCRIPT
