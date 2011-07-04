@@ -478,6 +478,13 @@ config BR2_ARCH
 	default "i686"		if BR2_x86_pentiumpro
 	default "i686"		if BR2_x86_nocona
 	default "i686"		if BR2_x86_core2
+	default "i686"		if BR2_x86_opteron
+	default "i686"		if BR2_x86_opteron_sse3
+	default "i686"		if BR2_x86_barcelona
+	default "i686"		if BR2_x86_k6
+	default "i686"		if BR2_x86_k6_2
+	default "i686"		if BR2_x86_athlon
+	default "i686"		if BR2_x86_athlon_4
 	default "m68k"		if BR2_m68k
 	default "mips"		if BR2_mips
 	default "mipsel"	if BR2_mipsel
