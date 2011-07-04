@@ -123,8 +123,10 @@ endef
 endif
 
 define BUSYBOX_INSTALL_LOGGING_SCRIPT
-	$(INSTALL) -m 0755 -D package/busybox/S01logging \
-		$(TARGET_DIR)/etc/init.d/S01logging
+	if grep -q CONFIG_SYSLOGD=y $(@D)/.config; then \
+		$(INSTALL) -m 0755 -D package/busybox/S01logging \
+			$(TARGET_DIR)/etc/init.d/S01logging; \
+	else rm -f $(TARGET_DIR)/etc/init.d/S01logging; fi
 endef
 
 # We do this here to avoid busting a modified .config in configure
