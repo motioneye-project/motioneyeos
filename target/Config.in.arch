@@ -232,7 +232,7 @@ endchoice
 choice
 	prompt "Target Architecture Variant"
 	depends on BR2_i386
-	default BR2_x86_i386
+	default BR2_x86_i586
 	help
 	  Specific CPU variant to use
 
