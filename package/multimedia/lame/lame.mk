@@ -8,6 +8,7 @@ LAME_VERSION = 3.98.4
 LAME_SITE = http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/lame
 LAME_DEPENDENCIES = host-pkg-config
 LAME_INSTALL_STAGING = YES
+LAME_CONF_ENV = GTK_CONFIG=/bin/false
 
 ifeq ($(BR2_PACKAGE_LIBSNDFILE),y)
 LAME_DEPENDENCIES += libsndfile
