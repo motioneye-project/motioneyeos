@@ -3,43 +3,31 @@
 # U-Boot
 #
 #############################################################
-U_BOOT_VERSION:=$(call qstrip,$(BR2_TARGET_UBOOT_VERSION))
-U_BOOT_BOARD_NAME:=$(call qstrip,$(BR2_TARGET_UBOOT_BOARDNAME))
+U_BOOT_VERSION    = $(call qstrip,$(BR2_TARGET_UBOOT_VERSION))
+U_BOOT_BOARD_NAME = $(call qstrip,$(BR2_TARGET_UBOOT_BOARDNAME))
 
-# U-Boot may not be selected in the configuration, but mkimage might
-# be needed to build/prepare a kernel image. In this case, we just
-# pick some random stable U-Boot version that will be used just to
-# build mkimage.
-ifeq ($(U_BOOT_VERSION),)
-U_BOOT_VERSION=2011.03
-endif
+U_BOOT_INSTALL_IMAGES = YES
 
 ifeq ($(U_BOOT_VERSION),custom)
 # Handle custom U-Boot tarballs as specified by the configuration
-U_BOOT_TARBALL=$(call qstrip,$(BR2_TARGET_UBOOT_CUSTOM_TARBALL_LOCATION))
-U_BOOT_SITE:=$(dir $(U_BOOT_TARBALL))
-U_BOOT_SOURCE:=$(notdir $(U_BOOT_TARBALL))
+U_BOOT_TARBALL = $(call qstrip,$(BR2_TARGET_UBOOT_CUSTOM_TARBALL_LOCATION))
+U_BOOT_SITE    = $(dir $(U_BOOT_TARBALL))
+U_BOOT_SOURCE  = $(notdir $(U_BOOT_TARBALL))
 else
 # Handle stable official U-Boot versions
-U_BOOT_SITE:=ftp://ftp.denx.de/pub/u-boot
-U_BOOT_SOURCE:=u-boot-$(U_BOOT_VERSION).tar.bz2
+U_BOOT_SITE    = ftp://ftp.denx.de/pub/u-boot
+U_BOOT_SOURCE  = u-boot-$(U_BOOT_VERSION).tar.bz2
 endif
-
-U_BOOT_DIR:=$(BUILD_DIR)/u-boot-$(U_BOOT_VERSION)
-U_BOOT_CAT:=$(BZCAT)
 
 ifeq ($(BR2_TARGET_UBOOT_FORMAT_KWB),y)
-U_BOOT_BIN:=u-boot.kwb
-U_BOOT_MAKE_OPT:=$(U_BOOT_BIN)
+U_BOOT_BIN          = u-boot.kwb
+U_BOOT_MAKE_TARGET  = $(U_BOOT_BIN)
 else ifeq ($(BR2_TARGET_UBOOT_FORMAT_LDR),y)
-U_BOOT_BIN:=u-boot.ldr
+U_BOOT_BIN          = u-boot.ldr
 else
-U_BOOT_BIN:=u-boot.bin
+U_BOOT_BIN          = u-boot.bin
 endif
 
-MKIMAGE:=$(HOST_DIR)/usr/bin/mkimage
-
-U_BOOT_TARGETS:=$(BINARIES_DIR)/$(U_BOOT_BIN) $(MKIMAGE)
 U_BOOT_ARCH=$(KERNEL_ARCH)
 
 # u-boot in the past used arch=ppc for powerpc
@@ -47,139 +35,81 @@ ifneq ($(findstring x2010.03,x$(U_BOOT_VERSION)),)
 U_BOOT_ARCH=$(KERNEL_ARCH:powerpc=ppc)
 endif
 
-U_BOOT_INC_CONF_FILE:=$(U_BOOT_DIR)/include/config.h
-
-ifeq ($(BR2_TARGET_UBOOT_TOOL_MKIMAGE),y)
-U_BOOT_TARGETS+=$(TARGET_DIR)/usr/bin/mkimage
-endif
-ifeq ($(BR2_TARGET_UBOOT_TOOL_ENV),y)
-U_BOOT_TARGETS+=$(TARGET_DIR)/usr/sbin/fw_printenv
-endif
-
 U_BOOT_CONFIGURE_OPTS += CONFIG_NOSOFTFLOAT=1
+U_BOOT_MAKE_OPTS += \
+	CROSS_COMPILE="$(CCACHE) $(TARGET_CROSS)" \
+	ARCH=$(U_BOOT_ARCH)
 
-# Define a helper function
+# Helper function to fill the U-Boot config.h file.
+# Argument 1: option name
+# Argument 2: option value
+# If the option value is empty, this function does nothing.
 define insert_define
-@echo "#ifdef $(strip $(1))" >> $(U_BOOT_INC_CONF_FILE)
-@echo "#undef $(strip $(1))" >> $(U_BOOT_INC_CONF_FILE)
-@echo "#endif" >> $(U_BOOT_INC_CONF_FILE)
-@echo '#define $(strip $(1)) $(call qstrip,$(2))' >> $(U_BOOT_INC_CONF_FILE)
+$(if $(call qstrip,$(2)),
+	@echo "#ifdef $(strip $(1))" >> $(@D)/include/config.h
+	@echo "#undef $(strip $(1))" >> $(@D)/include/config.h
+	@echo "#endif" >> $(@D)/include/config.h
+	@echo '#define $(strip $(1)) $(call qstrip,$(2))' >> $(@D)/include/config.h)
 endef
 
-$(DL_DIR)/$(U_BOOT_SOURCE):
-	 $(call DOWNLOAD,$(U_BOOT_SITE),$(U_BOOT_SOURCE))
-
-$(U_BOOT_DIR)/.unpacked: $(DL_DIR)/$(U_BOOT_SOURCE)
-	mkdir -p $(@D)
-	$(INFLATE$(suffix $(U_BOOT_SOURCE))) $(DL_DIR)/$(U_BOOT_SOURCE) \
-		| tar $(TAR_STRIP_COMPONENTS)=1 -C $(@D) $(TAR_OPTIONS) -
-	touch $@
-
-$(U_BOOT_DIR)/.patched: $(U_BOOT_DIR)/.unpacked
-	toolchain/patch-kernel.sh $(U_BOOT_DIR) boot/u-boot \
-		u-boot-$(U_BOOT_VERSION)-\*.patch \
-		u-boot-$(U_BOOT_VERSION)-\*.patch.$(ARCH)
 ifneq ($(call qstrip,$(BR2_TARGET_UBOOT_CUSTOM_PATCH_DIR)),)
-	toolchain/patch-kernel.sh $(U_BOOT_DIR) $(BR2_TARGET_UBOOT_CUSTOM_PATCH_DIR) u-boot-$(U_BOOT_VERSION)-\*.patch
-endif
-	touch $@
+define U_BOOT_APPLY_CUSTOM_PATCHES
+	toolchain/patch-kernel.sh $(@D) $(BR2_TARGET_UBOOT_CUSTOM_PATCH_DIR) \
+		u-boot-$(U_BOOT_VERSION)-\*.patch
+endef
 
-$(U_BOOT_DIR)/.configured: $(U_BOOT_DIR)/.patched
-ifeq ($(U_BOOT_BOARD_NAME),)
-	$(error NO U-Boot board name set. Check your BR2_TARGET_UBOOT_BOARDNAME setting)
+U_BOOT_POST_PATCH_HOOKS += U_BOOT_APPLY_CUSTOM_PATCHES
 endif
-	$(TARGET_CONFIGURE_OPTS)		\
-		$(U_BOOT_CONFIGURE_OPTS) \
-		$(MAKE) -C $(U_BOOT_DIR) \
-		CROSS_COMPILE="$(TARGET_CROSS)" ARCH=$(U_BOOT_ARCH) \
+
+define U_BOOT_CONFIGURE_CMDS
+	$(TARGET_CONFIGURE_OPTS) $(U_BOOT_CONFIGURE_OPTS) 	\
+		$(MAKE) -C $(@D) $(U_BOOT_MAKE_OPTS)		\
 		$(U_BOOT_BOARD_NAME)_config
-	touch $@
+	@echo >> $(@D)/include/config.h
+	@echo "/* Add a wrapper around the values Buildroot sets. */" >> $(@D)/include/config.h
+	@echo "#ifndef __BR2_ADDED_CONFIG_H" >> $(@D)/include/config.h
+	@echo "#define __BR2_ADDED_CONFIG_H" >> $(@D)/include/config.h
+	$(call insert_define,DATE,$(DATE))
+	$(call insert_define,CONFIG_LOAD_SCRIPTS,1)
+	$(call insert_define,CONFIG_IPADDR,$(BR2_TARGET_UBOOT_IPADDR))
+	$(call insert_define,CONFIG_GATEWAYIP,$(BR2_TARGET_UBOOT_GATEWAY))
+	$(call insert_define,CONFIG_NETMASK,$(BR2_TARGET_UBOOT_NETMASK))
+	$(call insert_define,CONFIG_SERVERIP,$(BR2_TARGET_UBOOT_SERVERIP))
+	$(call insert_define,CONFIG_ETHADDR,$(BR2_TARGET_UBOOT_ETHADDR))
+	$(call insert_define,CONFIG_ETH1ADDR,$(BR2_TARGET_UBOOT_ETH1ADDR))
+	@echo "#endif /* __BR2_ADDED_CONFIG_H */" >> $(@D)/include/config.h
+endef
 
-$(U_BOOT_DIR)/.header_modified: $(U_BOOT_DIR)/.configured
-	# Modify configuration header in $(U_BOOT_INC_CONF_FILE)
-ifdef BR2_TARGET_UBOOT_NETWORK
-	@echo >> $(U_BOOT_INC_CONF_FILE)
-	@echo "/* Add a wrapper around the values Buildroot sets. */" >> $(U_BOOT_INC_CONF_FILE)
-	@echo "#ifndef __BR2_ADDED_CONFIG_H" >> $(U_BOOT_INC_CONF_FILE)
-	@echo "#define __BR2_ADDED_CONFIG_H" >> $(U_BOOT_INC_CONF_FILE)
-	$(call insert_define, DATE, $(DATE))
-	$(call insert_define, CONFIG_LOAD_SCRIPTS, 1)
-ifneq ($(strip $(BR2_TARGET_UBOOT_IPADDR)),"")
-	$(call insert_define, CONFIG_IPADDR, $(BR2_TARGET_UBOOT_IPADDR))
+ifeq ($(BR2_TARGET_UBOOT_TOOL_ENV),y)
+define U_BOOT_BUILD_TARGET_ENV_UTILS
+	$(TARGET_CONFIGURE_OPTS) $(MAKE) HOSTCC="$(TARGET_CC)" -C $(@D) env
+endef
 endif
-ifneq ($(strip $(BR2_TARGET_UBOOT_GATEWAY)),"")
-	$(call insert_define, CONFIG_GATEWAYIP, $(BR2_TARGET_UBOOT_GATEWAY))
-endif
-ifneq ($(strip $(BR2_TARGET_UBOOT_NETMASK)),"")
-	$(call insert_define, CONFIG_NETMASK, $(BR2_TARGET_UBOOT_NETMASK))
-endif
-ifneq ($(strip $(BR2_TARGET_UBOOT_SERVERIP)),"")
-	$(call insert_define, CONFIG_SERVERIP, $(BR2_TARGET_UBOOT_SERVERIP))
-endif
-ifneq ($(strip $(BR2_TARGET_UBOOT_ETHADDR)),"")
-	$(call insert_define, CONFIG_ETHADDR, $(BR2_TARGET_UBOOT_ETHADDR))
-endif
-ifneq ($(strip $(BR2_TARGET_UBOOT_ETH1ADDR)),"")
-	$(call insert_define, CONFIG_ETH1ADDR, $(BR2_TARGET_UBOOT_ETH1ADDR))
-endif
-	@echo "#endif /* __BR2_ADDED_CONFIG_H */" >> $(U_BOOT_INC_CONF_FILE)
-endif # BR2_TARGET_UBOOT_NETWORK
-	touch $@
 
-# Build U-Boot itself
-$(U_BOOT_DIR)/$(U_BOOT_BIN): $(U_BOOT_DIR)/.header_modified
-	$(TARGET_CONFIGURE_OPTS) \
-		$(U_BOOT_CONFIGURE_OPTS) \
-		$(MAKE) CROSS_COMPILE="$(CCACHE) $(TARGET_CROSS)" ARCH=$(U_BOOT_ARCH) \
-		$(U_BOOT_MAKE_OPT) -C $(U_BOOT_DIR)
+define U_BOOT_BUILD_CMDS
+	$(TARGET_CONFIGURE_OPTS) $(U_BOOT_CONFIGURE_OPTS) 	\
+		$(MAKE) -C $(@D) $(U_BOOT_MAKE_OPTS) 		\
+		$(U_BOOT_MAKE_TARGET)
+	$(U_BOOT_BUILD_TARGET_ENV_UTILS)
+endef
 
-# Copy the result to the images/ directory
-$(BINARIES_DIR)/$(U_BOOT_BIN): $(U_BOOT_DIR)/$(U_BOOT_BIN)
-	rm -f $(BINARIES_DIR)/$(U_BOOT_BIN)
-	cp -dpf $(U_BOOT_DIR)/$(U_BOOT_BIN) $(BINARIES_DIR)/
+define U_BOOT_INSTALL_IMAGES_CMDS
+	cp -dpf $(@D)/$(U_BOOT_BIN) $(BINARIES_DIR)/
+endef
 
-# Build just mkimage for the host. It might have already been built by
-# the U-Boot build procedure, but mkimage may also be needed even if
-# U-Boot isn't selected in the configuration, to generate a kernel
-# uImage.
-$(MKIMAGE): $(U_BOOT_DIR)/.patched
-	mkdir -p $(@D)
-	$(MAKE) -C $(U_BOOT_DIR) CROSS_COMPILE="$(TARGET_CROSS)" ARCH=$(U_BOOT_ARCH) tools
-	cp -dpf $(U_BOOT_DIR)/tools/mkimage $(@D)
-
-# Build manually mkimage for the target
-$(TARGET_DIR)/usr/bin/mkimage: $(U_BOOT_DIR)/.configured
-	mkdir -p $(@D)
-	$(TARGET_CC) -I$(U_BOOT_DIR)/include -I$(U_BOOT_DIR)/tools \
-		-DUSE_HOSTCC -o $@ \
-		$(U_BOOT_DIR)/common/image.c \
-		$(wildcard $(addprefix $(U_BOOT_DIR)/tools/,default_image.c \
-			fit_image.c imximage.c kwbimage.c mkimage.c)) \
-		$(addprefix $(U_BOOT_DIR)/lib*/,crc32.c md5.c sha1.c) \
-		$(U_BOOT_DIR)/tools/os_support.c \
-		$(wildcard $(U_BOOT_DIR)/libfdt/fdt*.c $(U_BOOT_DIR)/lib/libfdt/fdt*.c)
-
-# Build manually fw_printenv for the target
-$(TARGET_DIR)/usr/sbin/fw_printenv: $(U_BOOT_DIR)/.configured
-	$(TARGET_CONFIGURE_OPTS) \
-		$(MAKE) HOSTCC="$(TARGET_CC)" -C $(U_BOOT_DIR) env
-	$(INSTALL) -m 0755 -D $(U_BOOT_DIR)/tools/env/fw_printenv $@
+ifeq ($(BR2_TARGET_UBOOT_TOOL_ENV),y)
+define U_BOOT_INSTALL_TARGET_ENV_UTILS
+	$(INSTALL) -m 0755 -D $(@D)/tools/env/fw_printenv \
+		$(TARGET_DIR)/usr/sbin/fw_printenv
 	ln -sf fw_printenv $(TARGET_DIR)/usr/sbin/fw_setenv
+endef
+endif
 
-u-boot: $(U_BOOT_TARGETS)
+define U_BOOT_INSTALL_TARGET_CMDS
+	$(U_BOOT_INSTALL_TARGET_ENV_UTILS)
+endef
 
-u-boot-clean:
-	-$(MAKE) -C $(U_BOOT_DIR) clean
-	rm -f $(MKIMAGE)
-
-u-boot-dirclean:
-	rm -rf $(U_BOOT_DIR)
-
-u-boot-source: $(DL_DIR)/$(U_BOOT_SOURCE)
-
-u-boot-unpacked: $(U_BOOT_DIR)/.patched
-
-u-boot-configured: $(U_BOOT_DIR)/.header_modified
+$(eval $(call GENTARGETS,boot,u-boot))
 
 #############################################################
 #

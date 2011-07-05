@@ -77,11 +77,6 @@ config BR2_TARGET_UBOOT_FORMAT_LDR
 
 endchoice
 
-config BR2_TARGET_UBOOT_TOOL_MKIMAGE
-	bool "mkimage tool in target"
-	help
-	  Install mkimage tool in target.
-
 config BR2_TARGET_UBOOT_TOOL_ENV
 	bool "fw_printenv tool in target"
 	help
