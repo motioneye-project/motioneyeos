@@ -157,6 +157,9 @@ $(LINUX26_DIR)/.stamp_compiled: $(LINUX26_DIR)/.stamp_configured $(LINUX26_DIR)/
 # Installation
 $(LINUX26_DIR)/.stamp_installed: $(LINUX26_DIR)/.stamp_compiled
 	@$(call MESSAGE,"Installing kernel")
+ifeq ($(BR2_LINUX_KERNEL_INSTALL_TARGET),y)
+	install -m 0644 -D $(LINUX26_IMAGE_PATH) $(TARGET_DIR)/boot/$(LINUX26_IMAGE_NAME)
+endif
 	cp $(LINUX26_IMAGE_PATH) $(BINARIES_DIR)
 	# Install modules and remove symbolic links pointing to build
 	# directories, not relevant on the target
