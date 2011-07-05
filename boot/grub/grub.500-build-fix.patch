@@ -1,0 +1,14 @@
+--- grub-0.97.orig/netboot/main.c       2004-05-21 00:19:33.000000000 +0200
++++ grub-0.97/netboot/main.c    2007-07-20 02:31:28.000000000 +0200
+@@ -54,9 +54,9 @@
+ 
+ static int vendorext_isvalid;
+ static unsigned long netmask;
+-static struct bootpd_t bootp_data;
++struct bootpd_t bootp_data;
+ static unsigned long xid;
+-static unsigned char *end_of_rfc1533 = NULL;
++unsigned char *end_of_rfc1533 = NULL;
+
+ #ifndef        NO_DHCP_SUPPORT
+ #endif /* NO_DHCP_SUPPORT */
