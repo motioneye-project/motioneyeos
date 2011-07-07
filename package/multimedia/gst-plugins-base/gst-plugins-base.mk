@@ -156,6 +156,13 @@ else
 GST_PLUGINS_BASE_CONF_OPT += --disable-theora
 endif
 
+ifeq ($(BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_TREMOR),y)
+GST_PLUGINS_BASE_CONF_OPT += --enable-ivorbis
+GST_PLUGINS_BASE_DEPENDENCIES += tremor
+else
+GST_PLUGINS_BASE_CONF_OPT += --disable-ivorbis
+endif
+
 ifeq ($(BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_VORBIS),y)
 GST_PLUGINS_BASE_CONF_OPT += --enable-vorbis
 GST_PLUGINS_BASE_DEPENDENCIES += libvorbis

@@ -86,6 +86,10 @@ config BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_THEORA
 	bool "theora (*.ogg video)"
 	select BR2_PACKAGE_LIBTHEORA
 
+config BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_TREMOR
+	bool "tremor"
+	select BR2_PACKAGE_TREMOR
+
 config BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_VORBIS
 	bool "vorbis (*.ogg audio)"
 	select BR2_PACKAGE_LIBVORBIS
