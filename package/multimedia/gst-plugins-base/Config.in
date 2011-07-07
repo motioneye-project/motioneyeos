@@ -30,6 +30,9 @@ config BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_AUDIORESAMPLE
 config BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_AUDIOTESTSRC
 	bool "audiotestsrc"
 
+config BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_ENCODING
+	bool "encoding"
+
 config BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_FFMPEGCOLORSPACE
 	bool "ffmpegcolorspace (mandatory for video playback)"
 	default y

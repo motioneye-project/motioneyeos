@@ -69,6 +69,12 @@ else
 GST_PLUGINS_BASE_CONF_OPT += --disable-audiotestsrc
 endif
 
+ifeq ($(BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_ENCODING),y)
+GST_PLUGINS_BASE_CONF_OPT += --enable-encoding
+else
+GST_PLUGINS_BASE_CONF_OPT += --disable-encoding
+endif
+
 ifeq ($(BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_FFMPEGCOLORSPACE),y)
 GST_PLUGINS_BASE_CONF_OPT += --enable-ffmpegcolorspace
 else
