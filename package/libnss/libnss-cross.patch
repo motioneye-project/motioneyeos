@@ -1,0 +1,27 @@
+
+This patch allows us to set a value for the cross compiler via TARGETCC without
+setting CC on the command line. CC is used for host tools as well as cross
+compiled code so we cannot define it on the command line without breaking
+the host tools build.
+
+Signed-off-by: Will Newton <will.newton@imgtec.com>
+
+--- libnss-3.12.9.old/mozilla/security/coreconf/Linux.mk	2011-03-01 10:31:21.517847183 +0000
++++ libnss-3.12.9/mozilla/security/coreconf/Linux.mk	2011-03-01 10:33:42.688648237 +0000
+@@ -46,9 +46,13 @@
+ 	IMPL_STRATEGY = _PTH
+ endif
+ 
+-CC			= gcc
+-CCC			= g++
+-RANLIB			= ranlib
++TARGETCC		= gcc
++TARGETCCC		= g++
++TARGETRANLIB		= ranlib
++
++CC			= $(TARGETCC)
++CCC			= $(TARGETCCC)
++RANLIB			= $(TARGETRANLIB)
+ 
+ DEFAULT_COMPILER = gcc
+ 

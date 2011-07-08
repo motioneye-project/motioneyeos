@@ -1,0 +1,19 @@
+
+uCLibc does not define RTLD_NOLOAD.
+
+Signed-off-by: Will Newton <will.newton@imgtec.com>
+
+--- nss-3.12.9.old/mozilla/security/nss/lib/freebl/stubs.c	2011-07-08 13:32:54.964338355 +0100
++++ nss-3.12.9/mozilla/security/nss/lib/freebl/stubs.c	2011-07-08 13:33:57.255337490 +0100
+@@ -535,6 +535,11 @@
+     return SECSuccess;
+ }
+ 
++/* uClibc does not define RTLD_NOLOAD. */
++#ifndef RTLD_NOLOAD
++#define RTLD_NOLOAD 0
++#endif
++
+ /*
+  * fetch the library if it's loaded. For NSS it should already be loaded
+  */
