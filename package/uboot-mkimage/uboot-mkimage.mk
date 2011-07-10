@@ -4,8 +4,9 @@ UBOOT_MKIMAGE_SITE    = ftp://ftp.denx.de/pub/u-boot
 
 define HOST_UBOOT_MKIMAGE_BUILD_CMDS
 	$(MAKE) -C $(@D) 			\
-		CROSS_COMPILE="$(TARGET_CROSS)" \
-		ARCH=$(U_BOOT_ARCH) 		\
+		HOSTCC="$(HOSTCC)"		\
+		HOSTCFLAGS="$(HOST_CFLAGS)"	\
+		HOSTLDFLAGS="$(HOST_LDFLAGS)"	\
 		tools
 endef
 
