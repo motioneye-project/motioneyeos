@@ -33,11 +33,6 @@ endif
 
 UBOOT_ARCH=$(KERNEL_ARCH)
 
-# u-boot in the past used arch=ppc for powerpc
-ifneq ($(findstring x2010.03,x$(UBOOT_VERSION)),)
-UBOOT_ARCH=$(KERNEL_ARCH:powerpc=ppc)
-endif
-
 UBOOT_CONFIGURE_OPTS += CONFIG_NOSOFTFLOAT=1
 UBOOT_MAKE_OPTS += \
 	CROSS_COMPILE="$(CCACHE) $(TARGET_CROSS)" \
