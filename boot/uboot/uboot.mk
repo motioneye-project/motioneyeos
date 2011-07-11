@@ -13,6 +13,9 @@ ifeq ($(UBOOT_VERSION),custom)
 UBOOT_TARBALL = $(call qstrip,$(BR2_TARGET_UBOOT_CUSTOM_TARBALL_LOCATION))
 UBOOT_SITE    = $(dir $(UBOOT_TARBALL))
 UBOOT_SOURCE  = $(notdir $(UBOOT_TARBALL))
+else ifeq ($(BR2_TARGET_UBOOT_CUSTOM_GIT),y)
+UBOOT_SITE        = $(call qstrip,$(BR2_TARGET_UBOOT_CUSTOM_GIT_REPO_URL))
+UBOOT_SITE_METHOD = git
 else
 # Handle stable official U-Boot versions
 UBOOT_SITE    = ftp://ftp.denx.de/pub/u-boot
