@@ -522,10 +522,20 @@ $$($(2)_TARGET_UNINSTALL):		PKG=$(2)
 $$($(2)_TARGET_CLEAN):			PKG=$(2)
 $$($(2)_TARGET_DIRCLEAN):		PKG=$(2)
 
+# Compute the name of the Kconfig option that correspond to the
+# package being enabled. We handle three cases: the special Linux
+# kernel case, the bootloaders case, and the normal packages case.
+ifeq ($(1),linux)
+$(2)_KCONFIG_VAR = BR2_LINUX_KERNEL
+else ifeq ($(4),boot)
+$(2)_KCONFIG_VAR = BR2_TARGET_$(2)
+else
+$(2)_KCONFIG_VAR = BR2_PACKAGE_$(2)
+endif
+
 # add package to the general list of targets if requested by the buildroot
 # configuration
-
-ifeq ($$(BR2_PACKAGE_$(2)),y)
+ifeq ($$($$($(2)_KCONFIG_VAR)),y)
 
 TARGETS += $(1)
 
@@ -537,7 +547,7 @@ else ifeq ($$($(2)_SITE_METHOD),bzr)
 DL_TOOLS_DEPENDENCIES += bzr
 endif # SITE_METHOD
 
-endif # BR2_PACKAGE_$(2)
+endif # $(2)_KCONFIG_VAR
 endef # GENTARGETS_INNER
 
 ################################################################################

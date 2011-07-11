@@ -27,12 +27,3 @@ define SYSLINUX_INSTALL_IMAGES_CMDS
 endef
 
 $(eval $(call GENTARGETS,boot,syslinux))
-
-#############################################################
-#
-# Toplevel Makefile options
-#
-#############################################################
-ifeq ($(BR2_TARGET_SYSLINUX),y)
-TARGETS+=syslinux
-endif

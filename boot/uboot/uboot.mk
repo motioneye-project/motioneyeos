@@ -111,19 +111,11 @@ endef
 
 $(eval $(call GENTARGETS,boot,uboot))
 
-#############################################################
-#
-# Toplevel Makefile options
-#
-#############################################################
 ifeq ($(BR2_TARGET_UBOOT),y)
-TARGETS+=u-boot
-
 # we NEED a board name unless we're at make source
 ifeq ($(filter source,$(MAKECMDGOALS)),)
 ifeq ($(UBOOT_BOARD_NAME),)
 $(error NO U-Boot board name set. Check your BR2_TARGET_UBOOT_BOARDNAME setting)
 endif
 endif
-
 endif

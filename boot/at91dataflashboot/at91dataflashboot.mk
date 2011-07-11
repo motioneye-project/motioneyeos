@@ -20,12 +20,3 @@ define AT91DATAFLASHBOOT_INSTALL_IMAGES_CMDS
 endef
 
 $(eval $(call GENTARGETS,boot,at91dataflashboot))
-
-#############################################################
-#
-# Toplevel Makefile options
-#
-#############################################################
-ifeq ($(BR2_TARGET_AT91DATAFLASHBOOT),y)
-TARGETS+=at91dataflashboot
-endif

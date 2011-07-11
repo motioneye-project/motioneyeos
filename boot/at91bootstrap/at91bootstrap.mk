@@ -31,19 +31,11 @@ endef
 
 $(eval $(call GENTARGETS,boot,at91bootstrap))
 
-#############################################################
-#
-# Toplevel Makefile options
-#
-#############################################################
 ifeq ($(BR2_TARGET_AT91BOOTSTRAP),y)
-TARGETS+=at91bootstrap
-
 # we NEED a board name unless we're at make source
 ifeq ($(filter source,$(MAKECMDGOALS)),)
 ifeq ($(AT91BOOTSTRAP_BOARD),)
 $(error No AT91Bootstrap board name set. Check your BR2_TARGET_AT91BOOTSTRAP_BOARD setting)
 endif
 endif
-
 endif

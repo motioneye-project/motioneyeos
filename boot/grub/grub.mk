@@ -83,12 +83,3 @@ define GRUB_UNINSTALL_TARGET_CMDS
 endef
 
 $(eval $(call AUTOTARGETS,boot,grub))
-
-#############################################################
-#
-# Toplevel Makefile options
-#
-#############################################################
-ifeq ($(BR2_TARGET_GRUB),y)
-TARGETS+=grub
-endif
