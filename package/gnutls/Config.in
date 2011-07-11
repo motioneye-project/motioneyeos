@@ -1,0 +1,8 @@
+config BR2_PACKAGE_GNUTLS
+	bool "gnutls"
+	select BR2_PACKAGE_LIBGCRYPT
+	help
+	  GnuTLS is a secure communications library implementing the SSL
+	  and TLS protocols and technologies around them.
+
+	  http://www.gnu.org/software/gnutls/gnutls.html
