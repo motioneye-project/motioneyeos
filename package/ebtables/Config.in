@@ -1,0 +1,10 @@
+config BR2_PACKAGE_EBTABLES
+	bool "ebtables"
+	depends on BR2_INET_IPV6
+	help
+	  Ethernet bridge frame table administration
+
+	  http://ebtables.sourceforge.net
+
+comment "ebtables requires a toolchain with IPv6 support"
+	depends on !BR2_INET_IPV6
