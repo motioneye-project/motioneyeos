@@ -1,0 +1,56 @@
+[PATCH] valgrind: don't enable largefile support unconditionally on uClibc
+
+uClibc can be compiled without largefile support (and errors out if
+_FILE_OFFSET_BITS is set to 64), so don't define it if that combination
+is detected.
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+
+Index: valgrind-3.6.1/coregrind/m_initimg/initimg-linux.c
+===================================================================
+--- valgrind-3.6.1.orig/coregrind/m_initimg/initimg-linux.c	2011-07-06 09:45:10.203070009 +0200
++++ valgrind-3.6.1/coregrind/m_initimg/initimg-linux.c	2011-07-06 09:45:17.343070005 +0200
+@@ -54,7 +54,11 @@
+ 
+ /* --- !!! --- EXTERNAL HEADERS start --- !!! --- */
+ #define _GNU_SOURCE
++#include <features.h>
++/* uclibc without largefile support #errors on _FILE_OFFSET_BITS=64 */
++#if !(defined(__UCLIBC__) && !defined(__UCLIBC_HAS_LFS__))
+ #define _FILE_OFFSET_BITS 64
++#endif
+ /* This is for ELF types etc, and also the AT_ constants. */
+ #include <elf.h>
+ /* --- !!! --- EXTERNAL HEADERS end --- !!! --- */
+Index: valgrind-3.6.1/coregrind/m_main.c
+===================================================================
+--- valgrind-3.6.1.orig/coregrind/m_main.c	2011-07-06 09:44:22.203070033 +0200
++++ valgrind-3.6.1/coregrind/m_main.c	2011-07-06 09:44:42.803070024 +0200
+@@ -2797,7 +2797,11 @@
+ 
+ /* --- !!! --- EXTERNAL HEADERS start --- !!! --- */
+ #define _GNU_SOURCE
++#include <features.h>
++/* uclibc without largefile support #errors on _FILE_OFFSET_BITS=64 */
++#if !(defined(__UCLIBC__) && !defined(__UCLIBC_HAS_LFS__))
+ #define _FILE_OFFSET_BITS 64
++#endif
+ /* This is in order to get AT_NULL and AT_PAGESIZE. */
+ #include <elf.h>
+ /* --- !!! --- EXTERNAL HEADERS end --- !!! --- */
+Index: valgrind-3.6.1/coregrind/m_ume/elf.c
+===================================================================
+--- valgrind-3.6.1.orig/coregrind/m_ume/elf.c	2011-07-06 09:44:51.343070018 +0200
++++ valgrind-3.6.1/coregrind/m_ume/elf.c	2011-07-06 09:44:58.833070015 +0200
+@@ -48,7 +48,11 @@
+ 
+ /* --- !!! --- EXTERNAL HEADERS start --- !!! --- */
+ #define _GNU_SOURCE
++#include <features.h>
++/* uclibc without largefile support #errors on _FILE_OFFSET_BITS=64 */
++#if !(defined(__UCLIBC__) && !defined(__UCLIBC_HAS_LFS__))
+ #define _FILE_OFFSET_BITS 64
++#endif
+ /* This is for ELF types etc, and also the AT_ constants. */
+ #include <elf.h>
+ /* --- !!! --- EXTERNAL HEADERS end --- !!! --- */

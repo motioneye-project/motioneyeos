@@ -1,6 +1,7 @@
 config BR2_PACKAGE_VALGRIND
 	bool "valgrind"
-	depends on BR2_i386 || BR2_x86_64
+	depends on BR2_i386 || BR2_x86_64 || BR2_cortex_a8 || \
+		   BR2_cortex_a9 || BR2_powerpc
 	help
 	  Tool for debugging and profiling Linux programs.
 
