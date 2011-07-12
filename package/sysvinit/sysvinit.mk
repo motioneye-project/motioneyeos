@@ -10,7 +10,7 @@ SYSVINIT_SITE    = $(BR2_DEBIAN_MIRROR)/debian/pool/main/s/sysvinit
 
 # Override Busybox implementations if Busybox is enabled.
 ifeq ($(BR2_PACKAGE_BUSYBOX),y)
-SYSKLOGD_DEPENDENCIES = busybox
+SYSVINIT_DEPENDENCIES = busybox
 endif
 
 define SYSVINIT_DEBIAN_PATCHES
