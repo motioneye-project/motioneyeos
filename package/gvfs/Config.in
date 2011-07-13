@@ -3,9 +3,7 @@ config BR2_PACKAGE_GVFS
 	depends on BR2_LARGEFILE
 	depends on BR2_USE_WCHAR # glib2
 	select BR2_PACKAGE_LIBGLIB2
-	select BR2_PACKAGE_EXPAT # needed by dbus(-glib)
 	select BR2_PACKAGE_DBUS
-	select BR2_PACKAGE_DBUS_GLIB
 	select BR2_PACKAGE_SHARED_MIME_INFO
 	help
 	  gvfs is a userspace virtual filesystem where mount runs as a
