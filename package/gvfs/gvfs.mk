@@ -8,7 +8,7 @@ GVFS_VERSION_MINOR = 2
 GVFS_VERSION = $(GVFS_VERSION_MAJOR).$(GVFS_VERSION_MINOR)
 GVFS_SOURCE = gvfs-$(GVFS_VERSION).tar.gz
 GVFS_SITE = http://ftp.gnome.org/pub/GNOME/sources/gvfs/$(GVFS_VERSION_MAJOR)
-GVFS_INSTALL_STAGING = NO
+GVFS_INSTALL_STAGING = YES
 GVFS_INSTALL_TARGET = YES
 GVFS_AUTORECONF = NO
 GVFS_DEPENDENCIES = host-pkg-config host-libglib2 libglib2 dbus shared-mime-info
@@ -71,6 +71,17 @@ define GVFS_REMOVE_USELESS_BINARY
 	rm $(TARGET_DIR)/usr/bin/gvfs-less
 endef
 
-GVFS_POST_INSTALL_TARGET_HOOKS += GVFS_REMOVE_USELESS_BINARY
+define GVFS_REMOVE_TARGET_SCHEMAS
+	rm $(TARGET_DIR)/usr/share/glib-2.0/schemas/*.xml
+endef
+
+define GVFS_COMPILE_SCHEMAS
+	$(HOST_DIR)/usr/bin/glib-compile-schemas --targetdir=$(TARGET_DIR)/usr/share/glib-2.0/schemas $(STAGING_DIR)/usr/share/glib-2.0/schemas
+endef
+
+GVFS_POST_INSTALL_TARGET_HOOKS += \
+	GVFS_REMOVE_USELESS_BINARY	\
+	GVFS_REMOVE_TARGET_SCHEMAS	\
+	GVFS_COMPILE_SCHEMAS
 
 $(eval $(call AUTOTARGETS,package,gvfs))
