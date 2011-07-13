@@ -1,0 +1,25 @@
+[PATCH] fix make install if doxygen isn't available
+
+If doxygen isn't available, then man pages / html docs won't get created,
+so don't try to install them.
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ Makefile |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+Index: libroxml-2.0.3/Makefile
+===================================================================
+--- libroxml-2.0.3.orig/Makefile
++++ libroxml-2.0.3/Makefile
+@@ -153,8 +153,8 @@
+ 	$E install -D $(INC) $(DESTDIR)/usr/include
+ 	$E install -D LGPL.txt $(DESTDIR)/usr/share/doc/libroxml/
+ 	$E install -D docs/roxml.1 $(DESTDIR)/usr/share/man/man1/
+-	$E install -D docs/man/man3/* $(DESTDIR)/usr/share/man/man3/
+-	$E install -D docs/html/* $(DESTDIR)/usr/share/doc/libroxml/html/
++	$E [ ! -d docs/man/man3 ] || install -D docs/man/man3/* $(DESTDIR)/usr/share/man/man3/
++	$E [ ! -d docs/html ] || install -D docs/html/* $(DESTDIR)/usr/share/doc/libroxml/html/
+ 	$E install -m644 libroxml.pc $(DESTDIR)/usr/lib/pkgconfig
+ 	$E cp -d $(TARGET_LN) $(DESTDIR)/usr/lib
+ 

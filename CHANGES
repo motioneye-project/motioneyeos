@@ -18,6 +18,7 @@
 	Issues resolved (http://bugs.uclibc.org):
 
 	#3559: libnspr: Add new package
+	#3595: patch to add libroxml
 	#3565: libnss: Add new package
 	#3907: 2011.05 - Qt 4.7.3 not building on ARM
 

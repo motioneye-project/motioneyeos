@@ -1,0 +1,8 @@
+config BR2_PACKAGE_LIBROXML
+	bool "roxml"
+	help
+	  libroxml is a light and powerful xml parsing library with
+	  xpath handling. Roxml is a binary using libroxml to explore
+	  xml file from shell scripts.
+
+	  http://libroxml.googlecode.com
