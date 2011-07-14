@@ -60,13 +60,6 @@ else
 GST_PLUGINS_UGLY_CONF_OPT += --disable-synaesthesia
 endif
 
-ifeq ($(BR2_PACKAGE_GST_PLUGINS_UGLY_PLUGIN_ID3TAG),y)
-GST_PLUGINS_UGLY_CONF_OPT += --enable-id3tag
-GST_PLUGINS_UGLY_DEPENDENCIES += libid3tag
-else
-GST_PLUGINS_UGLY_CONF_OPT += --disable-id3tag
-endif
-
 ifeq ($(BR2_PACKAGE_GST_PLUGINS_UGLY_PLUGIN_MAD),y)
 GST_PLUGINS_UGLY_CONF_OPT += --enable-mad
 GST_PLUGINS_UGLY_DEPENDENCIES += libmad
