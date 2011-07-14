@@ -144,6 +144,12 @@ else
 GST_PLUGINS_GOOD_CONF_OPT += --disable-icydemux
 endif
 
+ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_IMAGEFREEZE),y)
+GST_PLUGINS_GOOD_CONF_OPT += --enable-imagefreeze
+else
+GST_PLUGINS_GOOD_CONF_OPT += --disable-imagefreeze
+endif
+
 ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_INTERLEAVE),y)
 GST_PLUGINS_GOOD_CONF_OPT += --enable-interleave
 else
@@ -234,6 +240,12 @@ else
 GST_PLUGINS_GOOD_CONF_OPT += --disable-rtsp
 endif
 
+ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_SHAPEWIPE),y)
+GST_PLUGINS_GOOD_CONF_OPT += --enable-shapewipe
+else
+GST_PLUGINS_GOOD_CONF_OPT += --disable-shapewipe
+endif
+
 ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_SMPTE),y)
 GST_PLUGINS_GOOD_CONF_OPT += --enable-smpte
 else
@@ -319,6 +331,12 @@ ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_OSS),y)
 GST_PLUGINS_GOOD_CONF_OPT += --enable-oss
 else
 GST_PLUGINS_GOOD_CONF_OPT += --disable-oss
+endif
+
+ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_OSS4),y)
+GST_PLUGINS_GOOD_CONF_OPT += --enable-oss4
+else
+GST_PLUGINS_GOOD_CONF_OPT += --disable-oss4
 endif
 
 ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_SOUPHTTPSRC),y)
