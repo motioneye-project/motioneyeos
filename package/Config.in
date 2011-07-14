@@ -346,6 +346,7 @@ source "package/libglib2/Config.in"
 source "package/libnspr/Config.in"
 source "package/liboil/Config.in"
 source "package/libsigc/Config.in"
+source "package/orc/Config.in"
 source "package/startup-notification/Config.in"
 endmenu
 

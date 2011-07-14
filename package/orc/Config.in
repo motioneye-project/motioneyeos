@@ -1,0 +1,7 @@
+config BR2_PACKAGE_ORC
+	bool "orc"
+	help
+	  Orc is a library and set of tools for compiling and executing
+	  very simple programs that operate on arrays of data.
+
+	  http://code.entropywave.com/projects/orc/
