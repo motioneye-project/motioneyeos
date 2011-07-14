@@ -8,15 +8,9 @@
 #-----------------------------------------------------------------------------
 # Internal variables
 
-# Crostool-NG hard-coded configuration options
-CTNG_VERSION:=1.11.3
-CTNG_SITE:=http://crosstool-ng.org/download/crosstool-ng/
-CTNG_SOURCE:=crosstool-ng-$(CTNG_VERSION).tar.bz2
-CTNG_DIR:=$(BUILD_DIR)/crosstool-ng-$(CTNG_VERSION)
-CTNG_CAT:=bzcat
-CTNG_PATCH_DIR:=toolchain/toolchain-crosstool-ng
-CTNG_UCLIBC_CONFIG_FILE := $(TOPDIR)/toolchain/toolchain-crosstool-ng/uClibc.config
+CTNG_DIR := $(BUILD_DIR)/build-toolchain
 
+CTNG_UCLIBC_CONFIG_FILE := $(TOPDIR)/toolchain/toolchain-crosstool-ng/uClibc.config
 CTNG_CONFIG_FILE:=$(call qstrip,$(BR2_TOOLCHAIN_CTNG_CONFIG))
 
 # Hack! ct-ng is in fact a Makefile script. As such, it accepts all
@@ -24,7 +18,7 @@ CTNG_CONFIG_FILE:=$(call qstrip,$(BR2_TOOLCHAIN_CTNG_CONFIG))
 # to calling ct-ng.
 # $1: the set of arguments to pass to ct-ng
 define ctng
-PATH=$(HOST_PATH) $(CTNG_DIR)/ct-ng -C $(CTNG_DIR) --no-print-directory $(1)
+PATH=$(HOST_PATH) ct-ng -C $(CTNG_DIR) --no-print-directory $(1)
 endef
 
 #-----------------------------------------------------------------------------
@@ -366,6 +360,11 @@ define ctng-oldconfig
 	$(call ctng-fix-dot-config,$(1),$(CTNG_FIX_DOT_CONFIG_PATHS_SED))
 endef
 
+# We need the host crosstool-NG before we can even begin working
+# on the toolchain. Using order-only dependency, as we do not want
+# to rebuild the toolchain for every run...
+$(CTNG_DIR)/.config: | host-crosstool-ng
+
 # Default configuration
 # Depends on top-level .config because it has options we have to shoe-horn
 # into crosstool-NG's .config
@@ -375,8 +374,10 @@ endef
 # are correctly set ( eg. if an option is new, then the initial sed
 # can't do anything about it ) Ideally, this should go in oldconfig
 # itself, but it's much easier to handle here.
-$(CTNG_DIR)/.config: $(CTNG_CONFIG_FILE) $(CTNG_DIR)/ct-ng $(CONFIG_DIR)/.config
+
+$(CTNG_DIR)/.config: $(CTNG_CONFIG_FILE) $(CONFIG_DIR)/.config
 	$(Q)if [ ! -f $@ ]; then                                                        \
+	        mkdir -p "$(CTNG_DIR)";                                                 \
 	        libc="$$(awk -F '"' '$$1=="CT_LIBC=" { print $$2; }' "$<")";            \
 	        if [ "$${libc}" != "$(BR2_TOOLCHAIN_CTNG_LIBC)" ]; then                 \
 	            echo "* Inconsistency in crosstool-NG config file '$<'";            \
@@ -403,39 +404,3 @@ ctng-menuconfig: $(CTNG_DIR)/.config
 	$(call ctng-oldconfig,$<)
 	$(call ctng-check-config-changed,$<,$<.timestamp)
 	$(Q)rm -f $<.timestamp
-
-#-----------------------------------------------------------------------------
-# Retrieving, configuring and building crosstool-NG (as a package)
-
-$(DL_DIR)/$(CTNG_SOURCE):
-	$(Q)$(call DOWNLOAD,$(CTNG_SITE),$(CTNG_SOURCE))
-
-$(CTNG_DIR)/.unpacked: $(DL_DIR)/$(CTNG_SOURCE)
-	$(Q)rm -rf $(CTNG_DIR)
-	$(Q)mkdir -p $(BUILD_DIR)
-	$(Q)$(CTNG_CAT) $(DL_DIR)/$(CTNG_SOURCE) |tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	$(Q)touch $@
-
-$(CTNG_DIR)/.patched: $(CTNG_DIR)/.unpacked
-	$(Q)toolchain/patch-kernel.sh $(CTNG_DIR)       \
-	                              $(CTNG_PATCH_DIR) \
-	                              \*.patch          \
-	                              \*.patch.$(ARCH)
-	$(Q)touch $@
-
-# Use order-only dependencies on host-* as they
-# are virtual targets with no rules, and so are
-# considered always remade. But we do not want
-# to reconfigure and rebuild ct-ng every time
-# we need to run it...
-$(CTNG_DIR)/.configured: | $(if $(BR2_CCACHE),host-ccache) \
-                           host-gawk        \
-                           host-automake
-
-$(CTNG_DIR)/.configured: $(CTNG_DIR)/.patched
-	$(Q)cd $(CTNG_DIR) && PATH=$(HOST_PATH) ./configure --local
-	$(Q)touch $@
-
-$(CTNG_DIR)/ct-ng: $(CTNG_DIR)/.configured
-	$(Q)$(MAKE) -C $(CTNG_DIR) --no-print-directory
-	$(Q)touch $@

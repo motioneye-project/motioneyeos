@@ -1,0 +1,10 @@
+--- crosstool-ng-1.11.3/configure	2011-05-21 01:10:10.000000000 +0200
++++ host-crosstool-ng-1.11.3/configure	2011-07-14 17:35:25.830403914 +0200
+@@ -260,6 +260,7 @@
+         # Skip, auto-stuff compatibility
+         --build=*|--host=*|--infodir=*|--datadir=*|--sysconfdir=*|--localstatedir=*) shift;;
+         --build|--host|--infodir|--datadir|--sysconfdir|--localstatedir)             shift 2;;
++        --enable-shared|--disable-shared|--enable-static|--disable-static)           shift;;
+         *)          printf "Unrecognised option: '${1}'\n"; do_help; exit 1;;
+     esac
+ done
