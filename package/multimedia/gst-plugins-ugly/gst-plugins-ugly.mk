@@ -62,7 +62,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_GST_PLUGINS_UGLY_PLUGIN_MAD),y)
 GST_PLUGINS_UGLY_CONF_OPT += --enable-mad
-GST_PLUGINS_UGLY_DEPENDENCIES += libmad
+GST_PLUGINS_UGLY_DEPENDENCIES += libid3tag libmad
 else
 GST_PLUGINS_UGLY_CONF_OPT += --disable-mad
 endif

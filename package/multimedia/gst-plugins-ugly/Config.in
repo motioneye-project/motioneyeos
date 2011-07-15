@@ -40,7 +40,7 @@ comment "plugins with external dependencies (there may be more available)"
 
 config BR2_PACKAGE_GST_PLUGINS_UGLY_PLUGIN_MAD
 	bool "mad (*.mp3 audio)"
-	select BR2_PACKAGE_GST_PLUGINS_UGLY_PLUGIN_ID3TAG
+	select BR2_PACKAGE_LIBID3TAG
 	select BR2_PACKAGE_LIBMAD
 
 config BR2_PACKAGE_GST_PLUGINS_UGLY_PLUGIN_MPEG2DEC
