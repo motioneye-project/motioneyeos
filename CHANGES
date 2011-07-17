@@ -31,6 +31,7 @@
 	#3595: patch to add libroxml
 	#3565: libnss: Add new package
 	#3907: 2011.05 - Qt 4.7.3 not building on ARM
+	#3985: "help" target's defconfig list needs sort
 
 2011.05, Released May 27th, 2011:
 
