@@ -1,0 +1,23 @@
+config BR2_PACKAGE_UBOOT_TOOLS
+	bool "u-boot tools"
+	help
+	  Companion tools for Das U-Boot bootloader.
+
+	  http://www.denx.de/wiki/U-Boot/WebHome
+
+if BR2_PACKAGE_UBOOT_TOOLS
+
+config BR2_PACKAGE_UBOOT_TOOLS_MKIMAGE
+	bool "mkimage"
+	help
+	  The mkimage tool from Das U-Boot bootloader, which allows
+	  generation of U-Boot images in various formats.
+
+config BR2_PACKAGE_UBOOT_TOOLS_FWPRINTENV
+	bool "fw_printenv"
+	help
+	  The fw_printenv / fw_setenv tools from Das U-Boot
+	  bootloader, which allows access to the U-Boot environment
+	  from Linux.
+
+endif

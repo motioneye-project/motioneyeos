@@ -1,7 +1,0 @@
-config BR2_PACKAGE_UBOOT_MKIMAGE
-	bool "uboot-mkimage"
-	help
-	  The mkimage tool from Das U-Boot bootloader, which allows
-	  generation of U-Boot images in various formats.
-
-	  http://www.denx.de/wiki/U-Boot/WebHome

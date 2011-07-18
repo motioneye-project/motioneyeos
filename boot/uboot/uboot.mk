@@ -78,33 +78,14 @@ define UBOOT_CONFIGURE_CMDS
 	@echo "#endif /* __BR2_ADDED_CONFIG_H */" >> $(@D)/include/config.h
 endef
 
-ifeq ($(BR2_TARGET_UBOOT_TOOL_ENV),y)
-define UBOOT_BUILD_TARGET_ENV_UTILS
-	$(TARGET_CONFIGURE_OPTS) $(MAKE) HOSTCC="$(TARGET_CC)" -C $(@D) env
-endef
-endif
-
 define UBOOT_BUILD_CMDS
 	$(TARGET_CONFIGURE_OPTS) $(UBOOT_CONFIGURE_OPTS) 	\
 		$(MAKE) -C $(@D) $(UBOOT_MAKE_OPTS) 		\
 		$(UBOOT_MAKE_TARGET)
-	$(UBOOT_BUILD_TARGET_ENV_UTILS)
 endef
 
 define UBOOT_INSTALL_IMAGES_CMDS
 	cp -dpf $(@D)/$(UBOOT_BIN) $(BINARIES_DIR)/
-endef
-
-ifeq ($(BR2_TARGET_UBOOT_TOOL_ENV),y)
-define UBOOT_INSTALL_TARGET_ENV_UTILS
-	$(INSTALL) -m 0755 -D $(@D)/tools/env/fw_printenv \
-		$(TARGET_DIR)/usr/sbin/fw_printenv
-	ln -sf fw_printenv $(TARGET_DIR)/usr/sbin/fw_setenv
-endef
-endif
-
-define UBOOT_INSTALL_TARGET_CMDS
-	$(UBOOT_INSTALL_TARGET_ENV_UTILS)
 endef
 
 $(eval $(call GENTARGETS,boot,uboot))

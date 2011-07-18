@@ -91,11 +91,6 @@ config BR2_TARGET_UBOOT_FORMAT_LDR
 
 endchoice
 
-config BR2_TARGET_UBOOT_TOOL_ENV
-	bool "fw_printenv tool in target"
-	help
-	  Install fw_printenv / fw_setenv tools in target.
-
 menuconfig BR2_TARGET_UBOOT_NETWORK
 	bool "Network Settings"
 	default y
