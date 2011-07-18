@@ -78,7 +78,7 @@ config BR2_TOOLCHAIN_BUILDROOT_USE_SSP
 
 choice
 	prompt "Thread library implementation"
-	default BR2_PTHREADS_NATIVE if BR2_UCLIBC_VERSION_SNAPSHOT || BR2_UCLIBC_VERSION_0_9_32
+	default BR2_PTHREADS_NATIVE if (BR2_UCLIBC_VERSION_SNAPSHOT || BR2_UCLIBC_VERSION_0_9_32) && !BR2_ARM_OABI
 	default BR2_PTHREADS_OLD
 	help
 	  Use this option to select the thread library implementation
@@ -102,6 +102,7 @@ choice
 		bool "Native POSIX Threading (NPTL)"
 	        select BR2_TOOLCHAIN_HAS_THREADS
 		depends on BR2_UCLIBC_VERSION_SNAPSHOT || BR2_UCLIBC_VERSION_0_9_32
+		depends on !BR2_ARM_OABI
 		depends on !BR2_x86_i386
 endchoice
 
