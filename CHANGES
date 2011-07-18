@@ -16,14 +16,16 @@
 	toolchains / crosstool-ng backend.
 
 	Updated/fixed packages: berkeleydb, bmon, bridge-utils,
-	busybox, dbus, dbus-glib, ethtool, ffmpeg, gst-plugins-bad,
-	gst-plugins-base, lame, libarchive, libdnet, libgcrypt,
-	libgtk2, libmpeg2, lighttpd, mtd-utils, oprofile, qt, ruby,
-	sudo, sqlite, synergy, usbutils, valgrind, webkit
+	busybox, cmake, dbus, dbus-glib, ethtool, ffmpeg,
+	gst-plugins-bad, gst-plugins-base, gvfs, jpeg, lame,
+	libarchive, libdnet, libgcrypt, libgtk2, libmpeg2, libpng,
+	lighttpd, linux-fusion, lzo, mtd-utils, oprofile, proftpd, qt,
+	ruby, shared-mime-info, sudo, sqlite, synergy, usbutils,
+	valgrind, webkit, xz
 
 	New packages: acl, attr, ebtables, gnutls, libargtable2,
-	libiqrf, libnspr, libnss, libroxml, live555, mxml, rsyslog,
-	sredird, statserial, stunnel, yajl
+	libiqrf, libnspr, libnss, libroxml, libyaml, live555, mxml,
+	rsyslog, sredird, statserial, stunnel, uboot-tools, yajl
 
 	Issues resolved (http://bugs.uclibc.org):
 
