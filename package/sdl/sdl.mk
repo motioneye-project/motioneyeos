@@ -40,6 +40,10 @@ ifeq ($(BR2_PACKAGE_TSLIB),y)
 SDL_DEPENDENCIES += tslib
 endif
 
+ifeq ($(BR2_PACKAGE_ALSA_LIB),y)
+SDL_DEPENDENCIES += alsa-lib
+endif
+
 SDL_CONF_OPT += --enable-pulseaudio=no \
 		--disable-arts \
 		--disable-esd \
