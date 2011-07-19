@@ -15,6 +15,7 @@ config BR2_PACKAGE_UBOOT_TOOLS_MKIMAGE
 
 config BR2_PACKAGE_UBOOT_TOOLS_FWPRINTENV
 	bool "fw_printenv"
+	default y
 	help
 	  The fw_printenv / fw_setenv tools from Das U-Boot
 	  bootloader, which allows access to the U-Boot environment
