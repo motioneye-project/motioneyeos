@@ -31,9 +31,7 @@ define HOST_ZLIB_CONFIGURE_CMDS
 	(cd $(@D); rm -rf config.cache; \
 		$(HOST_CONFIGURE_ARGS) \
 		$(HOST_CONFIGURE_OPTS) \
-		CFLAGS="$(ZLIB_PIC)" \
 		./configure \
-		$(ZLIB_SHARED) \
 		--prefix="$(HOST_DIR)/usr" \
 		--sysconfdir="$(HOST_DIR)/etc" \
 	)
