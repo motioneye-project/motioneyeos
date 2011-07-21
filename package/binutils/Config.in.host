@@ -2,7 +2,7 @@ comment "Binutils Options"
 
 choice
 	prompt "Binutils Version"
-	default BR2_BINUTILS_VERSION_2_21
+	default BR2_BINUTILS_VERSION_2_21_1
 	help
 	  Select the version of binutils you wish to use.
 
@@ -37,6 +37,10 @@ choice
 		depends on !BR2_avr32
 		bool "binutils 2.21"
 
+	config BR2_BINUTILS_VERSION_2_21_1
+		depends on !BR2_avr32
+		bool "binutils 2.21.1"
+
 endchoice
 
 config BR2_BINUTILS_VERSION
@@ -48,6 +52,7 @@ config BR2_BINUTILS_VERSION
 	default "2.20"		if BR2_BINUTILS_VERSION_2_20
 	default "2.20.1"	if BR2_BINUTILS_VERSION_2_20_1
 	default "2.21"		if BR2_BINUTILS_VERSION_2_21
+	default "2.21.1"	if BR2_BINUTILS_VERSION_2_21_1
 
 config BR2_BINUTILS_EXTRA_CONFIG_OPTIONS
 	string "Additional binutils options"
