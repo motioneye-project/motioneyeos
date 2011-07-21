@@ -1,0 +1,39 @@
+From: Andreas Henriksson <andreas@fatal.se>
+Forwarded: yes
+Subject: [PATCH] iproute2: Fix building xt module against xtables version 6
+
+
+diff --git a/tc/m_xt.c b/tc/m_xt.c
+index 651a59e..13bf19f 100644
+--- a/tc/m_xt.c
++++ b/tc/m_xt.c
+@@ -160,9 +160,13 @@ static int parse_ipt(struct action_util *a,int *argc_p,
+ 					return -1;
+ 				}
+ 				tcipt_globals.opts =
+-				    xtables_merge_options(tcipt_globals.opts,
+-				                          m->extra_opts,
+-				                          &m->option_offset);
++				    xtables_merge_options(
++#if (XTABLES_VERSION_CODE >= 6)
++				        tcipt_globals.orig_opts,
++#endif
++				        tcipt_globals.opts,
++				        m->extra_opts,
++				        &m->option_offset);
+ 			} else {
+ 				fprintf(stderr," failed to find target %s\n\n", optarg);
+ 				return -1;
+@@ -305,7 +309,11 @@ print_ipt(struct action_util *au,FILE * f, struct rtattr *arg)
+ 			}
+ 
+ 			tcipt_globals.opts =
+-			    xtables_merge_options(tcipt_globals.opts,
++			    xtables_merge_options(
++#if (XTABLES_VERSION_CODE >= 6)
++				                  tcipt_globals.orig_opts,
++#endif
++				                  tcipt_globals.opts,
+ 			                          m->extra_opts,
+ 			                          &m->option_offset);
+ 		} else {
