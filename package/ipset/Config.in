@@ -1,0 +1,12 @@
+config BR2_PACKAGE_IPSET
+	bool "ipset"
+	depends on BR2_LARGEFILE
+	select BR2_PACKAGE_LIBMNL
+	help
+	  Utility to manage IP sets in the linux kernel.
+	  Requires a patched kernel or version >=2.6.39.
+
+	  http://ipset.netfilter.org/
+
+comment "ipset requires a toolchain with LARGEFILE support"
+	depends on !BR2_LARGEFILE
