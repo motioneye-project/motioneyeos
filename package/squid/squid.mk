@@ -4,7 +4,7 @@
 #
 #############################################################
 
-SQUID_VERSION = 3.1.12
+SQUID_VERSION = 3.1.14
 SQUID_SITE = http://www.squid-cache.org/Versions/v3/3.1
 SQUID_DEPENDENCIES = libcap host-libcap
 SQUID_AUTORECONF = YES
