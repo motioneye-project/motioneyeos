@@ -34,6 +34,7 @@ define IPROUTE2_CONFIGURE_CMDS
 endef
 
 define IPROUTE2_BUILD_CMDS
+	$(SED) 's/$$(CCOPTS)//' $(@D)/netem/Makefile
 	$(MAKE) CC="$(TARGET_CC)" CCOPTS="$(TARGET_CFLAGS) -D_GNU_SOURCE" -C $(@D)
 endef
 
