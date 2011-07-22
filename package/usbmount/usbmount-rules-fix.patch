@@ -1,0 +1,19 @@
+Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
+---
+ usbmount.rules |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+Index: b/usbmount.rules
+===================================================================
+--- a/usbmount.rules
++++ b/usbmount.rules
+@@ -1,7 +1,7 @@
+ # Rules for USBmount -*- conf -*-
+
+ KERNEL=="sd*", DRIVERS=="sbp2",		ACTION=="add",	RUN+="/usr/share/usbmount/usbmount add"
+-KERNEL=="sd*", SUBSYSTEMS=="usb",	ACTION=="add",	RUN+="/usr/share/usbmount/usbmount add"
+-KERNEL=="ub*", SUBSYSTEMS=="usb",	ACTION=="add",	RUN+="/usr/share/usbmount/usbmount add"
++KERNEL=="sd*", SUBSYSTEM=="block",	ACTION=="add",	RUN+="/usr/share/usbmount/usbmount add"
++KERNEL=="ub*", SUBSYSTEM=="block",	ACTION=="add",	RUN+="/usr/share/usbmount/usbmount add"
+ KERNEL=="sd*",				ACTION=="remove",	RUN+="/usr/share/usbmount/usbmount remove"
+ KERNEL=="ub*",				ACTION=="remove",	RUN+="/usr/share/usbmount/usbmount remove"

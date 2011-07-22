@@ -1,0 +1,25 @@
+newer blkid version shows two parameter with TYPE within:
+
+/dev/sda1: VERSION="0.0" TYPE="ext2" USAGE="filesystem" PART_ENTRY_SCHEME="dos"
+PART_ENTRY_TYPE="0xc" PART_ENTRY_FLAGS="0x80" PART_ENTRY_NUMBER="1"
+
+change regular expression to take " TYPE" only
+
+Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
+---
+ usbmount |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+Index: b/usbmount
+===================================================================
+--- a/usbmount
++++ b/usbmount
+@@ -88,7 +88,7 @@
+     #   FIXME: improvement: implement mounting by label (notice that labels
+     #   can contain spaces, which makes things a little bit less comfortable).
+     DEVINFO=$(/sbin/blkid -p $DEVNAME)
+-    FSTYPE=$(echo "$DEVINFO" | sed 's/.*TYPE="\([^"]*\)".*/\1/g; s/[[:blank:]]*//g;')
++    FSTYPE=$(echo "$DEVINFO" | sed 's/.* TYPE="\([^"]*\)".*/\1/g; s/[[:blank:]]*//g;')
+     UUID=$(echo "$DEVINFO"   | sed 's/.*UUID="\([^"]*\)".*/\1/g; s/[[:blank:]]*//g;')
+     USAGE=$(echo "$DEVINFO"  | sed 's/.*USAGE="\([^"]*\)".*/\1/g; s/[[:blank:]]*//g;')
+
