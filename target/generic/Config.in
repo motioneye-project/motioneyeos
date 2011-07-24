@@ -33,18 +33,25 @@ config BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_UDEV
 endchoice
 
 config BR2_ROOTFS_DEVICE_TABLE
+	string "Path to the permission tables"
+	default "target/generic/device_table.txt"
+	help
+	  Specify a space-separated list of permission table locations,
+	  that will be passed to the makedevs utility to assign
+	  correct owners and permissions on various files in the
+	  target filesystem.
+
+	  See package/makedevs/README for details on the usage and
+	  syntax of these files.
+
+config BR2_ROOTFS_STATIC_DEVICE_TABLE
 	string "Path to the device tables"
-	default "target/generic/device_table.txt target/generic/device_table_dev.txt" \
-		if BR2_ROOTFS_DEVICE_CREATION_STATIC
-	default "target/generic/device_table.txt" \
-		if (BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_MDEV || \
-		    BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_UDEV || \
-		    BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_DEVTMPFS)
+	default "target/generic/device_table_dev.txt"
+	depends on BR2_ROOTFS_DEVICE_CREATION_STATIC
 	help
 	  Specify a space-separated list of device table locations,
 	  that will be passed to the makedevs utility to create all
-	  the special device files and assign correct owners and
-	  permissions on various files in the target filesystem.
+	  the special device files under /dev.
 
 	  See package/makedevs/README for details on the usage and
 	  syntax of these files.
