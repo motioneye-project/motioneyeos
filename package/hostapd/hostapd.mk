@@ -10,6 +10,13 @@ HOSTAPD_SUBDIR = hostapd
 HOSTAPD_CONFIG = $(HOSTAPD_DIR)/$(HOSTAPD_SUBDIR)/.config
 HOSTAPD_DEPENDENCIES = libnl
 
+HOSTAPD_LDFLAGS = $(TARGET_LDFLAGS)
+
+# libnl needs -lm (for rint) if linking statically
+ifeq ($(BR2_PREFER_STATIC_LIB),y)
+HOSTAPD_LDFLAGS += -lm
+endif
+
 define HOSTAPD_LIBNL_CONFIG
 	echo "CONFIG_LIBNL20=y" >>$(HOSTAPD_CONFIG)
 endef
@@ -72,7 +79,7 @@ define HOSTAPD_CONFIGURE_CMDS
 	cp $(@D)/$(HOSTAPD_SUBDIR)/defconfig $(HOSTAPD_CONFIG)
 	$(SED) "s/\/local//" $(@D)/$(HOSTAPD_SUBDIR)/Makefile
 	echo "CFLAGS += $(TARGET_CFLAGS)" >>$(HOSTAPD_CONFIG)
-	echo "LDFLAGS += $(TARGET_LDFLAGS)" >>$(HOSTAPD_CONFIG)
+	echo "LDFLAGS += $(HOSTAPD_LDFLAGS)" >>$(HOSTAPD_CONFIG)
 	echo "CC = $(TARGET_CC)" >>$(HOSTAPD_CONFIG)
 # Drivers
 	$(SED) "s/^#CONFIG_DRIVER_WIRED/CONFIG_DRIVER_WIRED/" $(HOSTAPD_CONFIG)
