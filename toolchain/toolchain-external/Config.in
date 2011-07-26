@@ -311,6 +311,7 @@ config BR2_TOOLCHAIN_EXTERNAL_PROGRAM_INVOCATION
 config BR2_TOOLCHAIN_EXTERNAL_HAS_THREADS
 	bool "Toolchain has threads support?"
 	select BR2_TOOLCHAIN_HAS_THREADS
+	default y
 	help
 	  Select this option if your external toolchain has thread
 	  support. If you don't know, leave the default value,
