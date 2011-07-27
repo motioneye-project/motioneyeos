@@ -15,17 +15,22 @@
 	Make source/external-deps now also works for external
 	toolchains / crosstool-ng backend.
 
-	Updated/fixed packages: berkeleydb, bmon, bridge-utils,
-	busybox, cmake, dbus, dbus-glib, ethtool, ffmpeg,
-	gst-plugins-bad, gst-plugins-base, gvfs, jpeg, lame,
-	libarchive, libdnet, libgcrypt, libgtk2, libmpeg2, libpng,
-	lighttpd, linux-fusion, lzo, mtd-utils, oprofile, proftpd, qt,
-	ruby, shared-mime-info, sudo, sqlite, synergy, usbutils,
-	valgrind, webkit, xz
+	Updated/fixed packages: berkeleydb, bind, binutils, bmon,
+	bridge-utils, busybox, cmake, dbus, dbus-glib, e2fsprogs,
+	ethtool, ffmpeg, gst-plugins-{bad,base,good,ugly}, gvfs,
+	hostapd, iproute2, iptables, jpeg, lame, libarchive, libdnet,
+	libdrm, libgcrypt, libgtk2, libmpeg2, libpng, lighttpd,
+	linux-fusion, lzo, mtd-utils, nfs-utils, oprofile, proftpd,
+	qt, ruby, sdl, shared-mime-info, sudo, sqlite, squid, synergy,
+	udev, usbmount, usbutils, util-linux, valgrind, webkit,
+	xorg-xserver, xz, zlib
 
-	New packages: acl, attr, ebtables, gnutls, libargtable2,
-	libiqrf, libnspr, libnss, libroxml, libyaml, live555, mxml,
-	rsyslog, sredird, statserial, stunnel, uboot-tools, yajl
+	New packages: acl, attr, ebtables, gnutls, inotify-tools,
+	ipset, libargtable2, libiqrf, libmnl, libnspr, libnss,
+	libroxml, libyaml, live555, mxml, orc, rsyslog, sredird,
+	statserial, stunnel, ti-utils, uboot-tools, yajl
+
+	Removed packages: hal
 
 	Issues resolved (http://bugs.uclibc.org):
 
