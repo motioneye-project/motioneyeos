@@ -56,7 +56,7 @@ config BR2_PACKAGE_BUSYBOX_CONFIG
 	  Most people will just use the default BusyBox configuration file.
 
 config BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
-	bool "Show packages that are also provided by busybox" if BR2_PACKAGE_BUSYBOX
+	bool "Show packages that are also provided by busybox"
 	help
 	  Show packages in menuconfig that are potentially also provided
 	  by busybox.
