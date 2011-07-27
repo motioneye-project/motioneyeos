@@ -1,9 +1,5 @@
-comment "usbutils requires a toolchain with PROGRAM_INVOCATION support"
-	depends on !BR2_PROGRAM_INVOCATION
-
 config BR2_PACKAGE_USBUTILS
 	bool "usbutils"
-	depends on BR2_PROGRAM_INVOCATION
 	select BR2_PACKAGE_LIBUSB
 	help
 	  USB enumeration utilities

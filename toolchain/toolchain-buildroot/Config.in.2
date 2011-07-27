@@ -41,16 +41,6 @@ config BR2_TOOLCHAIN_BUILDROOT_LOCALE
 	  Enable this option if you want your toolchain to support
 	  localization and internationalization.
 
-config BR2_TOOLCHAIN_BUILDROOT_PROGRAM_INVOCATION
-	bool "Enable 'program invocation name' support"
-	select BR2_PROGRAM_INVOCATION
-	help
-	  Enable this option if you want your toolchain to support the
-	  GNU-specific program_invocation_name and
-	  program_invocation_short_name strings.  Some GNU packages
-	  (like tar and coreutils) utilize these for extra useful
-	  output, but in general are not required.
-
 config BR2_TOOLCHAIN_BUILDROOT_CXX
 	bool "Enable C++ support"
 	select BR2_INSTALL_LIBSTDCPP

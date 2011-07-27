@@ -1,11 +1,11 @@
 config BR2_PACKAGE_TAR
 	bool "tar"
-	depends on BR2_USE_WCHAR && BR2_PROGRAM_INVOCATION
+	depends on BR2_USE_WCHAR
 	help
 	  A program that saves many files together into a single tape or disk
 	  archive, and can restore individual files from the archive.
 
 	  http://www.gnu.org/software/tar/
 
-comment "tar requires a toolchain with WCHAR and PROGRAM_INVOCATION support"
-	depends on !(BR2_USE_WCHAR && BR2_PROGRAM_INVOCATION)
+comment "tar requires a toolchain with WCHAR support"
+	depends on !BR2_USE_WCHAR

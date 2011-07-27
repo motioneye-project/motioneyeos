@@ -11,7 +11,6 @@ config BR2_PACKAGE_UDEV_ALL_EXTRAS
 	bool "enable all extras"
 	depends on BR2_LARGEFILE # acl
 	depends on BR2_USE_WCHAR # libglib2
-	depends on BR2_PROGRAM_INVOCATION # usbutils
 	select BR2_PACKAGE_ACL
 	select BR2_PACKAGE_LIBUSB
 	select BR2_PACKAGE_LIBUSB_COMPAT
@@ -22,7 +21,7 @@ config BR2_PACKAGE_UDEV_ALL_EXTRAS
 	  Enable all extras with external dependencies like
 	  libacl, libusb, libusb-compat, usbutils, hwdata
 
-comment "udev extras requires a toolchain with LARGEFILE/WCHAR/PROGRAM_INVOCATION support"
-	depends on !(BR2_LARGEFILE && BR2_USE_WCHAR && BR2_PROGRAM_INVOCATION)
+comment "udev extras requires a toolchain with LARGEFILE + WCHAR support"
+	depends on !(BR2_LARGEFILE && BR2_USE_WCHAR)
 
 endif

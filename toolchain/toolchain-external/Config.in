@@ -173,7 +173,6 @@ config BR2_TOOLCHAIN_EXTERNAL_BLACKFIN_UCLINUX_2010RC1
 	select BR2_INET_IPV6
 	select BR2_INET_RPC
 	select BR2_USE_WCHAR
-	select BR2_PROGRAM_INVOCATION
 	select BR2_TOOLCHAIN_HAS_THREADS
 	help
 	  Toolchain for the Blackfin architecture, from
@@ -231,7 +230,6 @@ config BR2_TOOLCHAIN_EXTERNAL_GLIBC
 	select BR2_INET_RPC
 	select BR2_USE_WCHAR
 	select BR2_ENABLE_LOCALE
-	select BR2_PROGRAM_INVOCATION
 	select BR2_TOOLCHAIN_HAS_THREADS
 	select BR2_TOOLCHAIN_HAS_SHADOW_PASSWORDS
 
@@ -299,14 +297,6 @@ config BR2_TOOLCHAIN_EXTERNAL_LOCALE
 	  Select this option if your external toolchain has locale
 	  support. If you don't know, leave the default value,
 	  Buildroot will tell you if it's correct or not.
-
-config BR2_TOOLCHAIN_EXTERNAL_PROGRAM_INVOCATION
-	bool "Toolchain has program invocation support?"
-	select BR2_PROGRAM_INVOCATION
-	help
-	  Select this option if your external toolchain has program
-	  invocation support. If you don't know, leave the default
-	  value, Buildroot will tell you if it's correct or not.
 
 config BR2_TOOLCHAIN_EXTERNAL_HAS_THREADS
 	bool "Toolchain has threads support?"

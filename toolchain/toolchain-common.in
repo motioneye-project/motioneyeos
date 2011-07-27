@@ -20,9 +20,6 @@ config BR2_USE_WCHAR
 config BR2_ENABLE_LOCALE
 	bool
 
-config BR2_PROGRAM_INVOCATION
-	bool
-
 config BR2_INSTALL_LIBSTDCPP
 	bool
 

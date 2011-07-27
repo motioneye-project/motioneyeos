@@ -17,7 +17,6 @@ config BR2_TOOLCHAIN_CTNG_eglibc
 	select BR2_INET_RPC
 	select BR2_ENABLE_LOCALE
 	select BR2_USE_WCHAR
-	select BR2_PROGRAM_INVOCATION
 
 config BR2_TOOLCHAIN_CTNG_glibc
 	bool "glibc"
@@ -26,7 +25,6 @@ config BR2_TOOLCHAIN_CTNG_glibc
 	select BR2_INET_RPC
 	select BR2_ENABLE_LOCALE
 	select BR2_USE_WCHAR
-	select BR2_PROGRAM_INVOCATION
 
 endchoice # C library
 
@@ -88,16 +86,6 @@ config BR2_TOOLCHAIN_CTNG_uClibc_LOCALE
 	help
 	  Enable this option if you want your toolchain to support
 	  localization and internationalization.
-
-config BR2_TOOLCHAIN_CTNG_uClibc_PROGRAM_INVOCATION
-	bool "Enable 'program invocation name' support"
-	select BR2_PROGRAM_INVOCATION
-	help
-	  Enable this option if you want your toolchain to support the
-	  GNU-specific program_invocation_name and
-	  program_invocation_short_name strings.  Some GNU packages
-	  (like tar and coreutils) utilize these for extra useful
-	  output, but in general are not required.
 
 endif # BR2_TOOLCHAIN_CTNG_uClibc
 

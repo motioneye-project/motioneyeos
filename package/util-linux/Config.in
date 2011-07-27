@@ -2,7 +2,6 @@ config BR2_PACKAGE_UTIL_LINUX
 	bool "util-linux"
 	depends on BR2_LARGEFILE
 	depends on BR2_USE_WCHAR
-	depends on BR2_PROGRAM_INVOCATION
 	help
 	  Various useful/essential Linux utilities.
 
@@ -119,5 +118,5 @@ config BR2_PACKAGE_UTIL_LINUX_WRITE
 
 endif
 
-comment "util-linux requires a toolchain with LARGEFILE/WCHAR/PROGRAM_INVOCATION support"
-	depends on !(BR2_LARGEFILE && BR2_USE_WCHAR && BR2_PROGRAM_INVOCATION)
+comment "util-linux requires a toolchain with LARGEFILE + WCHAR support"
+	depends on !(BR2_LARGEFILE && BR2_USE_WCHAR)
