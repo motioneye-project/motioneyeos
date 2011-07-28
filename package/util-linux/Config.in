@@ -33,6 +33,7 @@ config BR2_PACKAGE_UTIL_LINUX_UUIDD
 	default y
 
 config BR2_PACKAGE_UTIL_LINUX_LIBBLKID
+	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
 	bool "build libblkid and blkid utilities"
 	default y
 
