@@ -2,6 +2,10 @@
 config BR2_PACKAGE_E2FSPROGS
 	bool "e2fsprogs"
 	depends on BR2_LARGEFILE
+	depends on BR2_USE_WCHAR # util-linux
+	select BR2_PACKAGE_BUSYBOX_SHOW_OTHERS # util-linux
+	select BR2_PACKAGE_UTIL_LINUX
+	select BR2_PACKAGE_UTIL_LINUX_LIBBLKID
 	help
 	  The EXT2 file system utilities and libraries
 
@@ -16,11 +20,6 @@ if BR2_PACKAGE_E2FSPROGS_UTILS
 config BR2_PACKAGE_E2FSPROGS_BADBLOCKS
 	bool "badblocks"
 	default y
-
-config BR2_PACKAGE_E2FSPROGS_BLKID
-	bool "blkid"
-	default y
-	select BR2_PACKAGE_E2FSPROGS_LIBBLKID
 
 config BR2_PACKAGE_E2FSPROGS_CHATTR
 	bool "chattr"
@@ -41,7 +40,6 @@ config BR2_PACKAGE_E2FSPROGS_E2FREEFRAG
 config BR2_PACKAGE_E2FSPROGS_E2FSCK
 	bool "e2fsck"
 	default y
-	select BR2_PACKAGE_E2FSPROGS_LIBBLKID
 
 config BR2_PACKAGE_E2FSPROGS_E2IMAGE
 	bool "e2image"
@@ -49,7 +47,6 @@ config BR2_PACKAGE_E2FSPROGS_E2IMAGE
 config BR2_PACKAGE_E2FSPROGS_E2LABEL
 	bool "e2label"
 	default y
-	select BR2_PACKAGE_E2FSPROGS_LIBBLKID
 
 config BR2_PACKAGE_E2FSPROGS_E2UNDO
 	bool "e2undo"
@@ -67,7 +64,6 @@ config BR2_PACKAGE_E2FSPROGS_FINDFS
 config BR2_PACKAGE_E2FSPROGS_FSCK
 	bool "fsck"
 	default y
-	select BR2_PACKAGE_E2FSPROGS_LIBBLKID
 
 config BR2_PACKAGE_E2FSPROGS_LOGSAVE
 	bool "logsave"
@@ -80,7 +76,6 @@ config BR2_PACKAGE_E2FSPROGS_LSATTR
 config BR2_PACKAGE_E2FSPROGS_MKE2FS
 	bool "mke2fs"
 	default y
-	select BR2_PACKAGE_E2FSPROGS_LIBBLKID
 
 config BR2_PACKAGE_E2FSPROGS_MKLOSTFOUND
 	bool "mklost+found"
@@ -117,14 +112,8 @@ config BR2_PACKAGE_E2FSPROGS_LIBUUID
 	help
 	  The uuid library from the e2fsprogs suite
 
-config BR2_PACKAGE_E2FSPROGS_LIBBLKID
-	bool "libblkid"
-	select BR2_PACKAGE_E2FSPROGS_LIBUUID
-	help
-	  The blkid library from the e2fsprogs suite
-
 endmenu
 
-comment "e2fsprogs requires a toolchain with LARGEFILE support"
-	depends on !BR2_LARGEFILE
+comment "e2fsprogs requires a toolchain with LARGEFILE + WCHAR support"
+	depends on !(BR2_LARGEFILE && BR2_USE_WCHAR)
 

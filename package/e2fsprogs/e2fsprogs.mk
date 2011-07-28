@@ -15,6 +15,7 @@ E2FSPROGS_CONF_OPT = \
 	$(if $(BR2_PACKAGE_E2FSPROGS_E2IMAGE),,--disable-imager) \
 	$(if $(BR2_PACKAGE_E2FSPROGS_RESIZE2FS),,--disable-resizer) \
 	$(if $(BR2_PACKAGE_E2FSPROGS_UUIDD),,--disable-uuidd) \
+	--disable-blkid \
 	--enable-fsck \
 	--disable-e2initrd-helper \
 	--disable-testio-debug
@@ -30,7 +31,6 @@ endef
 
 # binaries to keep or remove
 E2FSPROGS_BINTARGETS_$(BR2_PACKAGE_E2FSPROGS_BADBLOCKS) += usr/sbin/badblocks
-E2FSPROGS_BINTARGETS_$(BR2_PACKAGE_E2FSPROGS_BLKID) += usr/sbin/blkid
 E2FSPROGS_BINTARGETS_$(BR2_PACKAGE_E2FSPROGS_CHATTR) += usr/bin/chattr
 E2FSPROGS_BINTARGETS_$(BR2_PACKAGE_E2FSPROGS_DUMPE2FS) += usr/sbin/dumpe2fs
 E2FSPROGS_BINTARGETS_$(BR2_PACKAGE_E2FSPROGS_E2FREEFRAG) += usr/sbin/e2freefrag
@@ -47,7 +47,6 @@ E2FSPROGS_BINTARGETS_$(BR2_PACKAGE_E2FSPROGS_UUIDGEN) += usr/bin/uuidgen
 
 # libraries to keep or remove
 E2FSPROGS_BINTARGETS_$(BR2_PACKAGE_E2FSPROGS_LIBUUID) += usr/lib/libuuid.so*
-E2FSPROGS_BINTARGETS_$(BR2_PACKAGE_E2FSPROGS_LIBBLKID) += usr/lib/libblkid.so*
 E2FSPROGS_BINTARGETS_$(BR2_PACKAGE_E2FSPROGS_UTILS) += usr/lib/libcom_err.so*
 E2FSPROGS_BINTARGETS_$(BR2_PACKAGE_E2FSPROGS_UTILS) += usr/lib/libe2p.so*
 E2FSPROGS_BINTARGETS_$(BR2_PACKAGE_E2FSPROGS_UTILS) += usr/lib/libext2fs.so*
@@ -115,19 +114,6 @@ endef
 
 ifeq ($(BR2_PACKAGE_E2FSPROGS_LIBUUID),y)
 E2FSPROGS_POST_INSTALL_STAGING_HOOKS += E2FSPROGS_STAGING_LIBUUID_INSTALL
-endif
-
-define E2FSPROGS_STAGING_LIBBLKID_INSTALL
-	install -D $(@D)/lib/blkid/blkid.h \
-		$(STAGING_DIR)/usr/include/blkid/blkid.h
-	install -D $(@D)/lib/blkid/blkid_types.h \
-		$(STAGING_DIR)/usr/include/blkid/blkid_types.h
-	install -D $(@D)/lib/blkid/blkid.pc \
-		$(STAGING_DIR)/usr/lib/pkgconfig/blkid.pc
-endef
-
-ifeq ($(BR2_PACKAGE_E2FSPROGS_LIBBLKID),y)
-E2FSPROGS_POST_INSTALL_STAGING_HOOKS += E2FSPROGS_STAGING_LIBBLKID_INSTALL
 endif
 
 $(eval $(call AUTOTARGETS,package,e2fsprogs))
