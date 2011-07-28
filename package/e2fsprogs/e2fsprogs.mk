@@ -19,6 +19,8 @@ E2FSPROGS_CONF_OPT = \
 	--disable-e2initrd-helper \
 	--disable-testio-debug
 
+E2FSPROGS_DEPENDENCIES = host-pkg-config
+
 E2FSPROGS_MAKE_OPT = \
 	LDCONFIG=true
 
