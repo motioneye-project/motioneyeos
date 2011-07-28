@@ -14,6 +14,7 @@ E2FSPROGS_CONF_OPT = \
 	--disable-debugfs \
 	--disable-imager \
 	--disable-resizer \
+	$(if $(BR2_PACKAGE_E2FSPROGS_UUIDD),,--disable-uuidd) \
 	--enable-fsck \
 	--disable-e2initrd-helper \
 	--disable-testio-debug
@@ -40,7 +41,6 @@ E2FSPROGS_BINTARGETS_$(BR2_PACKAGE_E2FSPROGS_LOGSAVE) += usr/sbin/logsave
 E2FSPROGS_BINTARGETS_$(BR2_PACKAGE_E2FSPROGS_LSATTR) += usr/bin/lsattr
 E2FSPROGS_BINTARGETS_$(BR2_PACKAGE_E2FSPROGS_MKE2FS) += usr/sbin/mke2fs
 E2FSPROGS_BINTARGETS_$(BR2_PACKAGE_E2FSPROGS_MKLOSTFOUND) += usr/sbin/mklost+found
-E2FSPROGS_BINTARGETS_$(BR2_PACKAGE_E2FSPROGS_UUIDD) += usr/sbin/uuidd
 E2FSPROGS_BINTARGETS_$(BR2_PACKAGE_E2FSPROGS_UUIDGEN) += usr/bin/uuidgen
 
 # libraries to keep or remove
