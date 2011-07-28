@@ -93,7 +93,7 @@ config BR2_PACKAGE_UTIL_LINUX_LAST
 	default n
 
 config BR2_PACKAGE_UTIL_LINUX_MESG
-	bool "build \"kill\""
+	bool "build \"mesg\""
 	default n
 
 config BR2_PACKAGE_UTIL_LINUX_PARTX
@@ -113,7 +113,7 @@ config BR2_PACKAGE_UTIL_LINUX_LOGIN_UTILS
 	default n
 
 config BR2_PACKAGE_UTIL_LINUX_WRITE
-	bool "build \"addpart, delpart, partx\""
+	bool "build \"write\""
 	default n
 
 endif
