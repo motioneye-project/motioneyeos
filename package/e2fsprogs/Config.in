@@ -26,6 +26,9 @@ config BR2_PACKAGE_E2FSPROGS_CHATTR
 	bool "chattr"
 	default y
 
+config BR2_PACKAGE_E2FSPROGS_DEBUGFS
+	bool "debugfs"
+
 config BR2_PACKAGE_E2FSPROGS_DUMPE2FS
 	bool "dumpe2fs"
 	default y
@@ -39,6 +42,9 @@ config BR2_PACKAGE_E2FSPROGS_E2FSCK
 	bool "e2fsck"
 	default y
 	select BR2_PACKAGE_E2FSPROGS_LIBBLKID
+
+config BR2_PACKAGE_E2FSPROGS_E2IMAGE
+	bool "e2image"
 
 config BR2_PACKAGE_E2FSPROGS_E2LABEL
 	bool "e2label"
@@ -80,6 +86,9 @@ config BR2_PACKAGE_E2FSPROGS_MKLOSTFOUND
 	bool "mklost+found"
 	default y
 	depends on BR2_PACKAGE_E2FSPROGS
+
+config BR2_PACKAGE_E2FSPROGS_RESIZE2FS
+	bool "resize2fs"
 
 config BR2_PACKAGE_E2FSPROGS_TUNE2FS
 	bool "tune2fs"

@@ -11,9 +11,9 @@ E2FSPROGS_INSTALL_STAGING = YES
 E2FSPROGS_CONF_OPT = \
 	--disable-tls \
 	--enable-elf-shlibs \
-	--disable-debugfs \
-	--disable-imager \
-	--disable-resizer \
+	$(if $(BR2_PACKAGE_E2FSPROGS_DEBUGFS),,--disable-debugfs) \
+	$(if $(BR2_PACKAGE_E2FSPROGS_E2IMAGE),,--disable-imager) \
+	$(if $(BR2_PACKAGE_E2FSPROGS_RESIZE2FS),,--disable-resizer) \
 	$(if $(BR2_PACKAGE_E2FSPROGS_UUIDD),,--disable-uuidd) \
 	--enable-fsck \
 	--disable-e2initrd-helper \
