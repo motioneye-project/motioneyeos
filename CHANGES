@@ -40,6 +40,7 @@
 	#3907: 2011.05 - Qt 4.7.3 not building on ARM
 	#3961: Nfs-utils: Remove SUSv3-function index
 	#3985: "help" target's defconfig list needs sort
+	#3997: bump libroxml to v2.1.0
 
 2011.05, Released May 27th, 2011:
 
