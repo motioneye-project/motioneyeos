@@ -14,7 +14,6 @@ config BR2_PACKAGE_GDISK
 config BR2_PACKAGE_GDISK_GDISK
 	bool "interactive gdisk"
 	depends on BR2_PACKAGE_GDISK
-	select BR2_PACKAGE_BUSYBOX_SHOW_OTHERS # util-linux
 	select BR2_PACKAGE_UTIL_LINUX
 	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
 	help
@@ -25,7 +24,6 @@ config BR2_PACKAGE_GDISK_GDISK
 config BR2_PACKAGE_GDISK_SGDISK
 	bool "command line sgdisk"
 	depends on BR2_PACKAGE_GDISK
-	select BR2_PACKAGE_BUSYBOX_SHOW_OTHERS # util-linux
 	select BR2_PACKAGE_UTIL_LINUX
 	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
 	select BR2_PACKAGE_POPT

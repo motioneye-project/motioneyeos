@@ -514,8 +514,8 @@ source "package/psmisc/Config.in"
 source "package/rsyslog/Config.in"
 source "package/sysklogd/Config.in"
 source "package/sysvinit/Config.in"
-source "package/util-linux/Config.in"
 endif
+source "package/util-linux/Config.in"
 source "package/dsp-tools/Config.in"
 endmenu
 

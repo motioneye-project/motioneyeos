@@ -18,11 +18,9 @@ if BR2_PACKAGE_UTIL_LINUX
 
 config BR2_PACKAGE_UTIL_LINUX_MOUNT
 	bool "build mount utilties"
-	default y
 
 config BR2_PACKAGE_UTIL_LINUX_FSCK
 	bool "build \"fsck\""
-	default y
 
 config BR2_PACKAGE_UTIL_LINUX_LIBUUID
 	bool "build libuuid and uuid utilities"
@@ -30,7 +28,6 @@ config BR2_PACKAGE_UTIL_LINUX_LIBUUID
 
 config BR2_PACKAGE_UTIL_LINUX_UUIDD
 	bool "build \"uuidd\""
-	default y
 
 config BR2_PACKAGE_UTIL_LINUX_LIBBLKID
 	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
@@ -39,39 +36,30 @@ config BR2_PACKAGE_UTIL_LINUX_LIBBLKID
 
 config BR2_PACKAGE_UTIL_LINUX_AGETTY
 	bool "build \"agetty\""
-	default y
 
 config BR2_PACKAGE_UTIL_LINUX_CRAMFS
 	bool "build \"fsck.cramfs, mkfs.cramfs\""
-	default y
 
 config BR2_PACKAGE_UTIL_LINUX_SWITCH_ROOT
 	bool "build \"switch_root\""
-	default y
 
 config BR2_PACKAGE_UTIL_LINUX_PIVOT_ROOT
 	bool "build \"pivot_root\""
-	default y
 
 config BR2_PACKAGE_UTIL_LINUX_FALLOCATE
 	bool "build \"fallocate\""
-	default y
 
 config BR2_PACKAGE_UTIL_LINUX_UNSHARE
 	bool "build \"unshare\""
-	default y
 
 config BR2_PACKAGE_UTIL_LINUX_RENAME
 	bool "build \"rename\""
-	default y
 
 config BR2_PACKAGE_UTIL_LINUX_SCHEDUTILS
 	bool "build \"chrt, ionice, teskset\""
-	default y
 
 config BR2_PACKAGE_UTIL_LINUX_WALL
 	bool "build \"wall\""
-	default y
 
 ############################################
 # default disabled and should be enabled by
@@ -79,43 +67,33 @@ config BR2_PACKAGE_UTIL_LINUX_WALL
 #
 config BR2_PACKAGE_UTIL_LINUX_ARCH
 	bool "build \"arch\""
-	default n
 
 config BR2_PACKAGE_UTIL_LINUX_INIT
 	bool "build \"simpleinit, shutdown, initctl\""
-	default n
 
 config BR2_PACKAGE_UTIL_LINUX_KILL
 	bool "build \"kill\""
-	default n
 
 config BR2_PACKAGE_UTIL_LINUX_LAST
 	bool "build \"last\""
-	default n
 
 config BR2_PACKAGE_UTIL_LINUX_MESG
 	bool "build \"mesg\""
-	default n
 
 config BR2_PACKAGE_UTIL_LINUX_PARTX
 	bool "build \"addpart, delpart, partx\""
-	default n
 
 config BR2_PACKAGE_UTIL_LINUX_RAW
 	bool "build \"raw\""
-	default n
 
 config BR2_PACKAGE_UTIL_LINUX_RESET
 	bool "build \"reset\""
-	default n
 
 config BR2_PACKAGE_UTIL_LINUX_LOGIN_UTILS
 	bool "build \"chfn, chsh, login, newgrp, vipw\""
-	default n
 
 config BR2_PACKAGE_UTIL_LINUX_WRITE
 	bool "build \"write\""
-	default n
 
 endif
 
