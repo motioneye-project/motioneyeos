@@ -1,0 +1,22 @@
+[PATCH] remove -Werror from CFLAGS
+
+-Werror should only be used during development, not in released SW.
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ Makefile |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+Index: libroxml-2.1.0/Makefile
+===================================================================
+--- libroxml-2.1.0.orig/Makefile
++++ libroxml-2.1.0/Makefile
+@@ -41,7 +41,7 @@
+ 
+ # options
+ override CPPFLAGS += -Iinc/
+-override CFLAGS += $(OPTIM) -fPIC -Wall -Wextra -Wno-unused -Werror -Iinc/ $(DEFINES)
++override CFLAGS += $(OPTIM) -fPIC -Wall -Wextra -Wno-unused -Iinc/ $(DEFINES)
+ override LDFLAGS += 
+ 
+ ifeq ("$(OS)", "Darwin")
