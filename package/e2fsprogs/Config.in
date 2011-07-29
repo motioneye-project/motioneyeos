@@ -6,16 +6,13 @@ config BR2_PACKAGE_E2FSPROGS
 	select BR2_PACKAGE_BUSYBOX_SHOW_OTHERS # util-linux
 	select BR2_PACKAGE_UTIL_LINUX
 	select BR2_PACKAGE_UTIL_LINUX_LIBBLKID
+	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
 	help
-	  The EXT2 file system utilities and libraries
+	  The EXT2 file system utilities.
 
-menuconfig BR2_PACKAGE_E2FSPROGS_UTILS
-	bool "e2fsprogs utilities"
-	depends on BR2_PACKAGE_E2FSPROGS
-	help
-	  e2fsprogs utilities selection
+	  http://e2fsprogs.sf.net
 
-if BR2_PACKAGE_E2FSPROGS_UTILS
+if BR2_PACKAGE_E2FSPROGS
 
 config BR2_PACKAGE_E2FSPROGS_BADBLOCKS
 	bool "badblocks"
@@ -31,7 +28,6 @@ config BR2_PACKAGE_E2FSPROGS_DEBUGFS
 config BR2_PACKAGE_E2FSPROGS_DUMPE2FS
 	bool "dumpe2fs"
 	default y
-	select BR2_PACKAGE_E2FSPROGS_LIBUUID
 
 config BR2_PACKAGE_E2FSPROGS_E2FREEFRAG
 	bool "e2freefrag"
@@ -93,27 +89,14 @@ config BR2_PACKAGE_E2FSPROGS_TUNE2FS
 config BR2_PACKAGE_E2FSPROGS_UUIDGEN
 	bool "uuidgen"
 	default y
-	select BR2_PACKAGE_E2FSPROGS_LIBUUID
 
 config BR2_PACKAGE_E2FSPROGS_UUIDD
 	bool "uuidd"
 	default y
-	select BR2_PACKAGE_E2FSPROGS_LIBUUID
 	help
 	  The uuidd daemon from the e2fsprogs suite
 
 endif
 
-menu "e2fsprogs libraries"
-	depends on BR2_PACKAGE_E2FSPROGS
-
-config BR2_PACKAGE_E2FSPROGS_LIBUUID
-	bool "libuuid"
-	help
-	  The uuid library from the e2fsprogs suite
-
-endmenu
-
 comment "e2fsprogs requires a toolchain with LARGEFILE + WCHAR support"
 	depends on !(BR2_LARGEFILE && BR2_USE_WCHAR)
-

@@ -1,6 +1,8 @@
 config BR2_PACKAGE_GDISK
 	bool "gdisk"
-	depends on BR2_LARGEFILE && BR2_INSTALL_LIBSTDCPP
+	depends on BR2_LARGEFILE
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_USE_WCHAR # util-linux
 	help
 	  GPT fdisk (consisting of the gdisk and sgdisk programs) is a
 	  text-mode partitioning tool that works on Globally Unique Identifier
@@ -12,8 +14,9 @@ config BR2_PACKAGE_GDISK
 config BR2_PACKAGE_GDISK_GDISK
 	bool "interactive gdisk"
 	depends on BR2_PACKAGE_GDISK
-	select BR2_PACKAGE_E2FSPROGS
-	select BR2_PACKAGE_E2FSPROGS_LIBUUID
+	select BR2_PACKAGE_BUSYBOX_SHOW_OTHERS # util-linux
+	select BR2_PACKAGE_UTIL_LINUX
+	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
 	help
 	  Install the interactive GUID partition table (GPT) manipulator
 	  /usr/sbin/gdisk which is modelled after and quite similar in use
@@ -22,13 +25,14 @@ config BR2_PACKAGE_GDISK_GDISK
 config BR2_PACKAGE_GDISK_SGDISK
 	bool "command line sgdisk"
 	depends on BR2_PACKAGE_GDISK
-	select BR2_PACKAGE_E2FSPROGS
-	select BR2_PACKAGE_E2FSPROGS_LIBUUID
+	select BR2_PACKAGE_BUSYBOX_SHOW_OTHERS # util-linux
+	select BR2_PACKAGE_UTIL_LINUX
+	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
 	select BR2_PACKAGE_POPT
 	help
 	  Install the command-line GUID partition table (GPT) manipulator
 	  /usr/sbin/sgdisk which is named after the traditional MBR based
 	  sfdisk tool albeit with an entirely different option syntax.
 
-comment "gdisk requires a toolchain with LARGEFILE and C++ support enabled"
-	depends on !BR2_LARGEFILE || !BR2_INSTALL_LIBSTDCPP
+comment "gdisk requires a toolchain with LARGEFILE/WCHAR/C++ support enabled"
+	depends on !(BR2_LARGEFILE && BR2_INSTALL_LIBSTDCPP && BR2_USE_WCHAR)
