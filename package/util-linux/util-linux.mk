@@ -33,6 +33,7 @@ endif
 UTIL_LINUX_CONF_OPT += \
 	$(if $(BR2_PACKAGE_UTIL_LINUX_MOUNT),,--disable-mount) \
 	$(if $(BR2_PACKAGE_UTIL_LINUX_FSCK),,--disable-fsck) \
+	$(if $(BR2_PACKAGE_UTIL_LINUX_LIBMOUNT),,--disable-libmount) \
 	$(if $(BR2_PACKAGE_UTIL_LINUX_LIBUUID),,--disable-libuuid) \
 	$(if $(BR2_PACKAGE_UTIL_LINUX_UUID),,--disable-uuid) \
 	$(if $(BR2_PACKAGE_UTIL_LINUX_LIBBLKID),,--disable-libblkid) \

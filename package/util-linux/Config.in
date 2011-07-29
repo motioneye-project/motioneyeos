@@ -24,6 +24,10 @@ config BR2_PACKAGE_UTIL_LINUX_FSCK
 	select BR2_PACKAGE_UTIL_LINUX_LIBBLKID
 	bool "build \"fsck\""
 
+config BR2_PACKAGE_UTIL_LINUX_LIBMOUNT
+	select BR2_PACKAGE_UTIL_LINUX_LIBBLKID
+	bool "build libmount"
+
 config BR2_PACKAGE_UTIL_LINUX_LIBUUID
 	bool "build libuuid and uuid utilities"
 	default y
