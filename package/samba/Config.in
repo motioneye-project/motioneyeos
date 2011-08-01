@@ -122,6 +122,13 @@ config BR2_PACKAGE_SAMBA_SMBCQUOTAS
 	help
 	  Set or get QUOTAs of NTFS 5 shares
 
+config BR2_PACKAGE_SAMBA_SMBD
+	bool "smbd"
+	default y
+	depends on BR2_PACKAGE_SAMBA
+	help
+	  The server daemon that provides filesharing and printing services
+
 config BR2_PACKAGE_SAMBA_SMBGET
 	bool "smbget"
 	default y
