@@ -120,7 +120,7 @@ config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_MIPS44
             - MIPS32 little endian soft float uclibc
 
 config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_POWERPC201009
-	bool "CodeSoucery PowerPC 2010.09"
+	bool "CodeSourcery PowerPC 2010.09"
 	depends on BR2_powerpc
 	select BR2_TOOLCHAIN_EXTERNAL_GLIBC
 	select BR2_INSTALL_LIBSTDCPP
@@ -138,7 +138,7 @@ config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_POWERPC201009
             - 970 glibc hard-float, 64 bits
 
 config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_SH201009
-	bool "CodeSoucery SH 2010.09"
+	bool "CodeSourcery SH 2010.09"
 	depends on BR2_sh4a || BR2_sh4aeb
 	select BR2_TOOLCHAIN_EXTERNAL_GLIBC
 	select BR2_INSTALL_LIBSTDCPP
@@ -153,7 +153,7 @@ config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_SH201009
             - SH4A, uClibc, big endian
 
 config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_SH2A_201009
-	bool "CodeSoucery SH 2010.09"
+	bool "CodeSourcery SH 2010.09"
 	depends on BR2_sh2a
 	select BR2_TOOLCHAIN_EXTERNAL_UCLIBC
 	select BR2_LARGEFILE
