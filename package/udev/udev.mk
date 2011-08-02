@@ -3,7 +3,7 @@
 # udev
 #
 #############################################################
-UDEV_VERSION = 172
+UDEV_VERSION = 173
 UDEV_SOURCE = udev-$(UDEV_VERSION).tar.bz2
 UDEV_SITE = $(BR2_KERNEL_MIRROR)/linux/utils/kernel/hotplug/
 
@@ -19,11 +19,11 @@ ifeq ($(BR2_PACKAGE_UDEV_ALL_EXTRAS),y)
 UDEV_DEPENDENCIES += libusb libusb-compat acl usbutils hwdata libglib2
 UDEV_CONF_OPT +=							\
 	--with-pci-ids-path=$(TARGET_DIR)/usr/share/hwdata/pci.ids	\
-	--with-usb-ids-path=$(TARGET_DIR)/usr/share/hwdata/usb.ids
+	--with-usb-ids-path=$(TARGET_DIR)/usr/share/hwdata/usb.ids	\
+	--enable-udev_acl
 else
 UDEV_CONF_OPT +=		\
 	--disable-hwdb		\
-	--disable-udev_acl	\
 	--disable-gudev
 endif
 
