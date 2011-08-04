@@ -1,4 +1,4 @@
-2011.08, Not released yet:
+2011.08-rc1, Released August 4th, 2011:
 
 	Fixes all over the tree and new features.
 
@@ -9,7 +9,7 @@
 	GENTARGETS infrastructure extended to cover bootloaders and
 	Linux kernel as well. Options to retrive Linux/U-Boot from a
 	custom git repo instead of upstream tarballs.
-	Support for Linux 3.x and release candiate tarballs.
+	Support for Linux 3.x and release candidate tarballs.
 	X-Loader bootloader for omap added.
 
 	Make source/external-deps now also works for external
