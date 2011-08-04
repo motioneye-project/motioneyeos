@@ -15,14 +15,15 @@
 	Make source/external-deps now also works for external
 	toolchains / crosstool-ng backend.
 
-	Updated/fixed packages: berkeleydb, bind, binutils, bmon,
-	bridge-utils, busybox, cmake, dbus, dbus-glib, e2fsprogs,
-	ethtool, ffmpeg, gst-plugins-{bad,base,good,ugly}, gvfs,
-	hostapd, iproute2, iptables, jpeg, lame, libarchive, libdnet,
-	libdrm, libgcrypt, libgtk2, libmpeg2, libpng, lighttpd,
-	linux-fusion, lzo, mtd-utils, nfs-utils, oprofile, proftpd,
-	qt, ruby, sdl, shared-mime-info, sudo, sqlite, squid, synergy,
-	udev, usbmount, usbutils, util-linux, valgrind, webkit,
+	Updated/fixed packages: autoconf, berkeleydb, bind, binutils,
+	bmon, bridge-utils, busybox, cmake, dbus, dbus-glib,
+	e2fsprogs, ethtool, ffmpeg, gst-plugins-{bad,base,good,ugly},
+	gvfs, hostapd, iproute2, iptables, iw, jpeg, lame, libarchive,
+	libdnet, libdrm, libgcrypt, libgtk2, libmpeg2, libpng,
+	libsoup, lighttpd, linux-fusion, lzo, midori, mtd-utils,
+	nfs-utils, openvpn, oprofile, orc, proftpd, qt, ruby, samba,
+	sdl, shared-mime-info, sudo, sqlite, squid, synergy, udev,
+	usbmount, usbutils, util-linux, valgrind, webkit,
 	xorg-xserver, xz, zlib
 
 	New packages: acl, attr, ebtables, gnutls, inotify-tools,
