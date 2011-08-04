@@ -30,6 +30,8 @@
 	libroxml, libyaml, live555, mxml, orc, rsyslog, sredird,
 	statserial, stunnel, ti-utils, uboot-tools, yajl
 
+	Deprecated packages: liboil, swfdec
+
 	Removed packages: hal
 
 	Issues resolved (http://bugs.uclibc.org):

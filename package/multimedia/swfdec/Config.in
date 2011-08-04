@@ -1,5 +1,6 @@
 config BR2_PACKAGE_SWFDEC
 	bool "swfdec"
+	depends on BR2_DEPRECATED
 	depends on BR2_USE_WCHAR # glib2
 	depends on BR2_INSTALL_LIBSTDCPP # pango
 	select BR2_PACKAGE_LIBOIL
