@@ -2,6 +2,7 @@ comment "Binutils Options"
 
 choice
 	prompt "Binutils Version"
+	default BR2_BINUTILS_VERSION_2_21 if (BR2_mips || BR2_mipsel)
 	default BR2_BINUTILS_VERSION_2_21_1
 	help
 	  Select the version of binutils you wish to use.
