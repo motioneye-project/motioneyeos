@@ -13,7 +13,6 @@ DBUS_GLIB_CONF_ENV = ac_cv_have_abstract_sockets=yes \
 		have_abstract_sockets=yes
 
 DBUS_GLIB_CONF_OPT = --localstatedir=/var \
-		--program-prefix="" \
 		--disable-tests \
 		--disable-xml-docs \
 		--with-introspect-xml=$(DBUS_HOST_INTROSPECT) \
