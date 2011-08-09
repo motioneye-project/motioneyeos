@@ -32,7 +32,7 @@ ifeq ($(BR2_x86_64),y)
 MPG123_CPU = x86-64
 endif
 
-MPG123_CONF_OPT += --program-prefix='' --with-cpu=$(MPG123_CPU)
+MPG123_CONF_OPT += --with-cpu=$(MPG123_CPU)
 
 # Check if ALSA is built, then we should configure after alsa-lib so
 # ./configure can find alsa-lib.
