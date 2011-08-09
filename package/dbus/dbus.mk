@@ -12,8 +12,7 @@ DBUS_INSTALL_TARGET = YES
 DBUS_DEPENDENCIES = host-pkg-config
 
 DBUS_CONF_ENV = ac_cv_have_abstract_sockets=yes
-DBUS_CONF_OPT = --program-prefix="" \
-		--with-dbus-user=dbus \
+DBUS_CONF_OPT = --with-dbus-user=dbus \
 		--disable-tests \
 		--disable-asserts \
 		--enable-abstract-sockets \
