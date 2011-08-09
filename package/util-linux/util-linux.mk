@@ -25,6 +25,10 @@ else
 UTIL_LINUX_CONF_OPT += --without-ncurses
 endif
 
+ifeq ($(BR2_PACKAGE_LIBINTL),y)
+UTIL_LINUX_DEPENDENCIES += libintl
+UTIL_LINUX_MAKE_OPT += LIBS=-lintl
+endif
 
 #############################################
 #
