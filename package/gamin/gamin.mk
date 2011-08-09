@@ -9,7 +9,7 @@ GAMIN_SITE = http://www.gnome.org/~veillard/gamin/sources
 GAMIN_AUTORECONF = YES
 GAMIN_INSTALL_STAGING = YES
 
-GAMIN_CONF_OPT = --program-prefix="" --disable-debug
+GAMIN_CONF_OPT = --disable-debug
 
 # python support broken
 GAMIN_CONF_OPT += --without-python
