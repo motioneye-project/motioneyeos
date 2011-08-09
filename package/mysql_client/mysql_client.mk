@@ -21,7 +21,6 @@ MYSQL_CLIENT_CONF_ENV = \
 	mysql_cv_new_rl_interface=yes
 
 MYSQL_CLIENT_CONF_OPT = \
-	--program-prefix="" \
 	--without-ndb-binlog \
 	--without-server \
 	--without-docs \
