@@ -12,7 +12,6 @@ DIRECTFB_INSTALL_STAGING = YES
 DIRECTFB_CONF_OPT = \
 	--localstatedir=/var \
 	--disable-explicit-deps \
-	--program-prefix='' \
 	--enable-zlib \
 	--enable-freetype \
 	--enable-fbdev \
