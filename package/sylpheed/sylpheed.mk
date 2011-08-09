@@ -9,7 +9,7 @@ SYLPHEED_VERSION = $(SYLPHEED_VERSION_MAJOR).$(SYLPHEED_VERSION_MINOR)
 SYLPHEED_SOURCE = sylpheed-$(SYLPHEED_VERSION).tar.bz2
 SYLPHEED_SITE = http://sylpheed.sraoss.jp/sylpheed/v$(SYLPHEED_VERSION_MAJOR)
 
-SYLPHEED_CONF_OPT = --disable-gtkspell --program-prefix="" \
+SYLPHEED_CONF_OPT = --disable-gtkspell \
                     --includedir=$(STAGING_DIR)/usr/include
 
 SYLPHEED_DEPENDENCIES = host-pkg-config libgtk2
