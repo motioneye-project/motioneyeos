@@ -1,0 +1,22 @@
+diff -r 683202530137 configure
+--- a/configure	Fri Aug 12 11:40:39 2011 +0300
++++ b/configure	Fri Aug 12 14:02:18 2011 +0200
+@@ -3055,6 +3055,7 @@ then
+ 	cygwin*) MACHDEP="cygwin";;
+ 	darwin*) MACHDEP="darwin";;
+         irix646) MACHDEP="irix6";;
++        linux*) MACHDEP="linux2";;
+ 	'')	MACHDEP="unknown";;
+ 	esac
+ fi
+diff -r 683202530137 configure.in
+--- a/configure.in	Fri Aug 12 11:40:39 2011 +0300
++++ b/configure.in	Fri Aug 12 14:02:18 2011 +0200
+@@ -307,6 +307,7 @@ then
+ 	cygwin*) MACHDEP="cygwin";;
+ 	darwin*) MACHDEP="darwin";;
+         irix646) MACHDEP="irix6";;
++        linux*) MACHDEP="linux2";;
+ 	'')	MACHDEP="unknown";;
+ 	esac
+ fi
