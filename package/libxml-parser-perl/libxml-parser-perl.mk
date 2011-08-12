@@ -18,6 +18,7 @@ define HOST_LIBXML_PARSER_PERL_CONFIGURE_CMDS
         EXPATINCPATH=$(HOST_DIR)/usr/include \
         INSTALLDIRS=site \
         INSTALLSITELIB=$(HOST_DIR)/usr/lib/perl \
+        INSTALLSITEARCH=$(HOST_DIR)/usr/lib/perl \
  )
 endef
 
