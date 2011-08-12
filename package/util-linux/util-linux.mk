@@ -68,3 +68,8 @@ UTIL_LINUX_CONF_OPT += \
 	$(if $(BR2_PACKAGE_UTIL_LINUX_WRITE),--enable-write)
 
 $(eval $(call AUTOTARGETS,package,util-linux))
+
+# MKINSTALLDIRS comes from tweaked m4/nls.m4, but autoreconf uses staging
+# one, so it disappears
+UTIL_LINUX_INSTALL_STAGING_OPT += MKINSTALLDIRS=$(@D)/config/mkinstalldirs
+UTIL_LINUX_INSTALL_TARGET_OPT += MKINSTALLDIRS=$(@D)/config/mkinstalldirs
