@@ -184,6 +184,10 @@ linux-menuconfig linux-xconfig linux-gconfig linux-nconfig linux26-menuconfig li
 		$(subst linux-,,$(subst linux26-,,$@))
 	rm -f $(LINUX_DIR)/.stamp_{built,target_installed,images_installed}
 
+linux-savedefconfig linux26-savedefconfig: dirs $(LINUX_DIR)/.stamp_configured
+	$(MAKE) $(LINUX_MAKE_FLAGS) -C $(LINUX_DIR) \
+		$(subst linux-,,$(subst linux26-,,$@))
+
 # Support for rebuilding the kernel after the initramfs file list has
 # been generated in $(BINARIES_DIR)/rootfs.initramfs.
 $(LINUX_DIR)/.stamp_initramfs_rebuilt: $(LINUX_DIR)/.stamp_target_installed $(LINUX_DIR)/.stamp_images_installed $(BINARIES_DIR)/rootfs.initramfs
