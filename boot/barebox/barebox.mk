@@ -60,4 +60,14 @@ ifeq ($(BAREBOX_BOARD_DEFCONFIG),)
 $(error No Barebox defconfig file. Check your BR2_TARGET_BAREBOX_BOARD_DEFCONFIG setting)
 endif
 endif
+
+barebox-menuconfig barebox-xconfig barebox-gconfig barebox-nconfig: barebox-configure
+	$(MAKE) $(BAREBOX_MAKE_FLAGS) -C $(BAREBOX_DIR) \
+		$(subst barebox-,,$@)
+	rm -f $(BAREBOX_DIR)/.stamp_{built,target_installed,images_installed}
+
+barebox-savedefconfig: barebox-configure
+	$(MAKE) $(BAREBOX_MAKE_FLAGS) -C $(BAREBOX_DIR) \
+		$(subst barebox-,,$@)
+
 endif
