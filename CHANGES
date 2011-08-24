@@ -1,3 +1,15 @@
+2011.08, Not yet released:
+
+	Fixes all over the tree.
+
+	Toolchain: crosstool-NG 1.12.0, use binutils 2.21 of
+	mips/sh/older uClibc, disallow uClibc 0.9.32 on avr32/sh
+	(broken).
+
+	Updated/fixed packages: barebox, directfb, libsoup,
+	libxml-parser-perl, mtd, python, ti-utils, udev, usbmount,
+	util-linux, xfont_font-misc-misc
+
 2011.08-rc1, Released August 4th, 2011:
 
 	Fixes all over the tree and new features.
