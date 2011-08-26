@@ -10,6 +10,10 @@
 	libxml-parser-perl, mtd, python, ti-utils, udev, usbmount,
 	util-linux, xfont_font-misc-misc
 
+	Issues resolved (http://bugs.uclibc.org):
+
+	#4093: Grub fails to install bz2 patch after conversion to...
+
 2011.08-rc1, Released August 4th, 2011:
 
 	Fixes all over the tree and new features.
