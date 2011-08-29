@@ -1,10 +1,16 @@
-2011.08, Not yet released:
+2011.08-rc2, Released August 29th, 2011:
 
 	Fixes all over the tree.
 
-	Toolchain: crosstool-NG 1.12.0, use binutils 2.21 of
+	Toolchain: crosstool-NG 1.12.1, use binutils 2.21 on
 	mips/sh/older uClibc, disallow uClibc 0.9.32 on avr32/sh
 	(broken).
+
+	Defconfigs: kernel updates, fix mini2440 serial port config,
+	remove old arm toolchain configs.
+
+	Bootloaders: Fix grub patching, add barebox-{n,x,menuconfig}
+	targets similar to linux/busybox.
 
 	Updated/fixed packages: barebox, directfb, libsoup,
 	libxml-parser-perl, mtd, ncurses, python, ti-utils, udev,
