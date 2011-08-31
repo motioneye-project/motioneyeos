@@ -10,7 +10,7 @@ MII_DIAG_SITE    = $(BR2_DEBIAN_MIRROR)/debian/pool/main/m/mii-diag
 
 define MII_DIAG_DEBIAN_PATCHES
 	if [ -d $(@D)/debian/patches ]; then \
-		toolchain/patch-kernel.sh $(@D) $(@D)/debian/patches \*.patch; \
+		support/scripts/apply-patches.sh $(@D) $(@D)/debian/patches \*.patch; \
 	fi
 endef
 

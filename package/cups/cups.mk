@@ -69,7 +69,7 @@ $(DL_DIR)/$(CUPS_SOURCE):
 
 $(CUPS_DIR)/.unpacked: $(DL_DIR)/$(CUPS_SOURCE)
 	$(CUPS_CAT) $(DL_DIR)/$(CUPS_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(CUPS_DIR) package/cups/ \*.patch
+	support/scripts/apply-patches.sh $(CUPS_DIR) package/cups/ \*.patch
 	$(CONFIG_UPDATE) $(CUPS_DIR)
 	touch $@
 

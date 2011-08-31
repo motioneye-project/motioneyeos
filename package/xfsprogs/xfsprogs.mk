@@ -24,7 +24,7 @@ xfsprogs-source: $(DL_DIR)/$(XFSPROGS_SOURCE)
 
 $(XFSPROGS_DIR)/.unpacked: $(DL_DIR)/$(XFSPROGS_SOURCE)
 	$(XFSPROGS_CAT) $(DL_DIR)/$(XFSPROGS_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(XFSPROGS_DIR) package/xfsprogs/ xfsprogs\*.patch
+	support/scripts/apply-patches.sh $(XFSPROGS_DIR) package/xfsprogs/ xfsprogs\*.patch
 	touch $(XFSPROGS_DIR)/.unpacked
 
 #XFSPROGS_CONFIG_SHARED:=--disable-shared

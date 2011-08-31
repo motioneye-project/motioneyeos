@@ -18,7 +18,7 @@ define LIBEXOSIP2_DEBIAN_PATCHES
 		 do $(SED) 's,^\+\+\+ .*cvs-$(LIBEXOSIP2_VERSION)/,+++ cvs-$(LIBEXOSIP2_VERSION)/,' $$i; \
 		 done; \
 		); \
-		toolchain/patch-kernel.sh $(@D) $(@D)/debian/patches \*; \
+		support/scripts/apply-patches.sh $(@D) $(@D)/debian/patches \*; \
 	fi
 endef
 endif

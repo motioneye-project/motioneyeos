@@ -18,7 +18,7 @@ fis-source: $(DL_DIR)/$(FIS_SOURCE)
 $(FIS_DIR)/.unpacked: $(DL_DIR)/$(FIS_SOURCE)
 	mkdir -p $(FIS_DIR)
 	cp -f $(DL_DIR)/$(FIS_SOURCE) $(FIS_DIR)
-	toolchain/patch-kernel.sh $(FIS_DIR) package/fis \*.patch
+	support/scripts/apply-patches.sh $(FIS_DIR) package/fis \*.patch
 	touch $@
 
 $(FIS_DIR)/$(FIS_BINARY): $(FIS_DIR)/.unpacked

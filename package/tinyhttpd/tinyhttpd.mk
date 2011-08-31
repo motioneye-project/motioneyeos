@@ -23,7 +23,7 @@ tinyhttpd-source: $(DL_DIR)/$(TINYHTTPD_SOURCE)
 #############################################################
 $(TINYHTTPD_DIR)/.unpacked: $(DL_DIR)/$(TINYHTTPD_SOURCE)
 	$(TINYHTTPD_CAT) $(DL_DIR)/$(TINYHTTPD_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(TINYHTTPD_DIR) package/tinyhttpd/ tinyhttpd\*.patch
+	support/scripts/apply-patches.sh $(TINYHTTPD_DIR) package/tinyhttpd/ tinyhttpd\*.patch
 	touch $(TINYHTTPD_DIR)/.unpacked
 
 $(TINYHTTPD_DIR)/$(TINYHTTPD_BINARY): $(TINYHTTPD_DIR)/.unpacked

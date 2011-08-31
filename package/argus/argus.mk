@@ -11,7 +11,7 @@ ARGUS_DEPENDENCIES=libpcap
 
 define ARGUS_DEBIAN_PATCH_APPLY
 	if [ -d $(@D)/debian/patches ]; then \
-		toolchain/patch-kernel.sh $(@D) $(@D)/debian/patches \*.patch; \
+		support/scripts/apply-patches.sh $(@D) $(@D)/debian/patches \*.patch; \
 	fi
 endef
 
