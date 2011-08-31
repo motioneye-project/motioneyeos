@@ -193,7 +193,7 @@ unexport CFLAGS
 unexport CXXFLAGS
 unexport GREP_OPTIONS
 
-GNU_HOST_NAME:=$(shell package/gnuconfig/config.guess)
+GNU_HOST_NAME:=$(shell support/gnuconfig/config.guess)
 
 #############################################################
 #

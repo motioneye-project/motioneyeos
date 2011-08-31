@@ -22,6 +22,22 @@
 #
 ################################################################################
 
+
+#
+# Utility function to upgrade config.sub and config.guess files
+#
+# argument 1 : directory into which config.guess and config.sub need
+# to be updated. Note that config.sub and config.guess are searched
+# recursively in this directory.
+#
+define CONFIG_UPDATE
+	for file in config.guess config.sub; do \
+		for i in $$(find $(1) -name $$file); do \
+			cp support/gnuconfig/$$file $$i; \
+		done; \
+	done
+endef
+
 ################################################################################
 # AUTOTARGETS_INNER -- defines how the configuration, compilation and
 # installation of an autotools package should be done, implements a
@@ -132,11 +148,8 @@ endif
 # Hook to update config.sub and config.guess if needed
 #
 define UPDATE_CONFIG_HOOK
-	for file in config.guess config.sub; do \
-		for i in $$$$(find $$(@D) -name $$$$file); do \
-			cp package/gnuconfig/$$$$file $$$$i; \
-		done; \
-	done
+       @$$(call MESSAGE, "Updating config.sub and config.guess")
+       $$(call CONFIG_UPDATE,$$(@D))
 endef
 
 $(2)_POST_PATCH_HOOKS += UPDATE_CONFIG_HOOK

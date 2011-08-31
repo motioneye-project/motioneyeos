@@ -14,7 +14,7 @@ $(ELF2FLT_DIR)/.unpacked:
 	touch $@
 
 $(ELF2FLT_DIR)/.patched: $(ELF2FLT_DIR)/.unpacked
-	$(CONFIG_UPDATE) $(@D)
+	$(call CONFIG_UPDATE,$(@D))
 	touch $@
 
 $(ELF2FLT_DIR)/.configured: $(ELF2FLT_DIR)/.patched

@@ -81,7 +81,6 @@ for i in $(find package/ -name '*.mk') ; do
 	$i = "package/games/games.mk" -o \
 	$i = "package/multimedia/multimedia.mk" -o \
 	$i = "package/customize/customize.mk" -o \
-	$i = "package/gnuconfig/gnuconfig.mk" -o \
 	$i = "package/matchbox/matchbox.mk" -o \
 	$i = "package/x11r7/x11r7.mk" ; then
 	echo "skipping $i" 1>&2
