@@ -32,7 +32,7 @@ export BR2_VERSION:=2011.11-git
 # absolute path
 TOPDIR:=$(shell pwd)
 CONFIG_CONFIG_IN=Config.in
-CONFIG=package/config
+CONFIG=support/kconfig
 DATE:=$(shell date +%Y%m%d)
 
 # Compute the full local version string so packages can use it as-is

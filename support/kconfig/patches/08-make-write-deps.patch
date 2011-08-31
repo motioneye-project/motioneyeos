@@ -2,10 +2,10 @@
  util.c |  117 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-
  1 file changed, 116 insertions(+), 1 deletion(-)
 
-Index: config/util.c
+Index: kconfig/util.c
 ===================================================================
---- config.orig/util.c
-+++ config/util.c
+--- kconfig.orig/util.c
++++ kconfig/util.c
 @@ -29,6 +29,121 @@
  	return file;
  }
@@ -60,7 +60,7 @@ Index: config/util.c
 +	if (!out)
 +		return 1;
 +	fprintf(out, "# ATTENTION! This does not handle 'depends', just 'select'! \n"
-+		"# See package/config/util.c write_make_deps()\n#\n");
++		"# See support/kconfig/util.c write_make_deps()\n#\n");
 +	menu = &rootmenu;//rootmenu.list;
 +	while (menu) {
 +		sym = menu->sym;

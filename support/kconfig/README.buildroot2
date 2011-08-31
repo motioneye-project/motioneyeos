@@ -1,0 +1,20 @@
+This is a copy of the kconfig code in the kernel (currently 2.6.37-rc1) tweaked
+to suit Buildroot.
+
+To update:
+	cp -r /usr/src/linux/scripts/kconfig support/kconfig.new
+	cd support/config.new
+	cp -a ../kconfig/patches ../kconfig/README.buildroot2 .
+	quilt push -a
+	# Fix any conflict
+	cd ..
+	rm -rf config
+	mv kconfig.new kconfig
+
+Then verify the toplevel targets work:
+	config
+	defconfig
+	menuconfig
+	xconfig
+	gconfig
+	oldconfig

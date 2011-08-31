@@ -79,7 +79,7 @@ static int write_make_deps(const char *name)
 	if (!out)
 		return 1;
 	fprintf(out, "# ATTENTION! This does not handle 'depends', just 'select'! \n"
-		"# See package/config/util.c write_make_deps()\n#\n");
+		"# See support/kconfig/util.c write_make_deps()\n#\n");
 	menu = &rootmenu;//rootmenu.list;
 	while (menu) {
 		sym = menu->sym;
