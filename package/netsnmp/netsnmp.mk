@@ -43,6 +43,11 @@ ifneq ($(BR2_HAVE_DOCUMENTATION),y)
 	NETSNMP_CONF_OPT += --disable-manuals
 endif
 
+ifneq ($(BR2_PACKAGE_NETSNMP_ENABLE_MIBS),y)
+	NETSNMP_CONF_OPT += --disable-mib-loading
+	NETSNMP_CONF_OPT += --disable-mibs
+endif
+
 # Remove IPv6 MIBs if there's no IPv6
 ifneq ($(BR2_INET_IPV6),y)
 define NETSNMP_REMOVE_MIBS_IPV6

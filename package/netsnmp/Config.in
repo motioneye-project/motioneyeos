@@ -6,3 +6,11 @@ config BR2_PACKAGE_NETSNMP
 
 	  http://net-snmp.sourceforge.net/
 
+config BR2_PACKAGE_NETSNMP_ENABLE_MIBS
+	bool "Install MIB files on target and enable MIB loading code"
+	default y
+	depends on BR2_PACKAGE_NETSNMP
+	help
+	  The net-snmp package contains a selection of MIB files.
+	  Say yes if you want those MIB files installed on the target
+	  and enable the code that parses the MIB files.
