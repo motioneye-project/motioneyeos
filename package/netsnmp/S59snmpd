@@ -29,7 +29,6 @@ TRAPDOPTS='-Lsd -p /var/run/snmptrapd.pid'
 [ -r /etc/default/snmpd ] && . /etc/default/snmpd
 
 ssd_oknodo="-o"
-ssd_oknodo=""
 
 # Cd to / before starting any daemons.
 cd /
