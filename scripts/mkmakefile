@@ -1,7 +1,7 @@
 #!/bin/sh
 # Generates a small Makefile used in the root of the output
 # directory, to allow make to be started from there.
-# The Makefile also allow for more convinient build of external modules
+# The Makefile also allow for more convenient build of external modules
 
 # Usage
 # $1 - Kernel src directory
