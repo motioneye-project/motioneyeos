@@ -4,7 +4,7 @@
 #
 #############################################################
 
-LIBAO_VERSION = 1.0.0
+LIBAO_VERSION = 1.1.0
 LIBAO_SITE = http://downloads.xiph.org/releases/ao
 LIBAO_DEPENDENCIES = host-pkg-config
 LIBAO_INSTALL_STAGING = YES
