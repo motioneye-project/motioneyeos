@@ -4,13 +4,12 @@
 #
 #############################################################
 
-SQUID_VERSION = 3.1.14
+SQUID_VERSION = 3.1.15
 SQUID_SITE = http://www.squid-cache.org/Versions/v3/3.1
 SQUID_DEPENDENCIES = libcap host-libcap
-SQUID_AUTORECONF = YES
 SQUID_CONF_ENV =	ac_cv_epoll_works=yes ac_cv_func_setresuid=yes \
 			ac_cv_func_va_copy=yes ac_cv_func___va_copy=yes \
-			ac_cv_func_strnstr=no
+			ac_cv_func_strnstr=no ac_cv_have_squid=yes
 SQUID_CONF_OPT =	--enable-wccp --enable-wccpv2 --enable-async-io=8 \
 			--enable-htcp --enable-snmp --enable-linux-netfilter \
 			--enable-removal-policies="lru,heap" \
