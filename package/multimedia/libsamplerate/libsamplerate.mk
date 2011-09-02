@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBSAMPLERATE_VERSION = 0.1.7
+LIBSAMPLERATE_VERSION = 0.1.8
 LIBSAMPLERATE_SITE = http://www.mega-nerd.com/SRC
 LIBSAMPLERATE_INSTALL_STAGING = YES
 LIBSAMPLERATE_DEPENDENCIES = host-pkg-config
