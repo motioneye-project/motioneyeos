@@ -131,7 +131,7 @@ define HOST_NCURSES_BUILD_CMDS
 endef
 
 HOST_NCURSES_CONF_OPT = \
-	--without-shared
+	--without-shared --without-gpm
 
 $(eval $(call AUTOTARGETS,package,ncurses))
 $(eval $(call AUTOTARGETS,package,ncurses,host))
