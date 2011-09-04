@@ -3,7 +3,7 @@
 # libevent
 #
 #############################################################
-LIBEVENT_VERSION = 1.4.12
+LIBEVENT_VERSION = 2.0.13
 LIBEVENT_SOURCE = libevent-$(LIBEVENT_VERSION)-stable.tar.gz
 LIBEVENT_SITE = http://monkey.org/~provos/
 
