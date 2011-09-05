@@ -1,0 +1,30 @@
+From 075f251b19509f588d828a81d91b40f47e63e3de Mon Sep 17 00:00:00 2001
+From: Peter Korsgaard <jacmet@sunsite.dk>
+Date: Mon, 5 Sep 2011 21:46:25 +0200
+Subject: [PATCH] script.c: drop libintl.h include
+
+Commit 8fb810ff26 (script: include-what-you-use header check) added a
+<libintl.h> #include, which isn't needed as nls.h includes it (if
+enabled) - But worse, breaks the build for systems without libintl.h
+(like some uClibc configurations).
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ term-utils/script.c |    1 -
+ 1 files changed, 0 insertions(+), 1 deletions(-)
+
+diff --git a/term-utils/script.c b/term-utils/script.c
+index d96ca2f..f708e91 100644
+--- a/term-utils/script.c
++++ b/term-utils/script.c
+@@ -55,7 +55,6 @@
+ #include <getopt.h>
+ #include <unistd.h>
+ #include <fcntl.h>
+-#include <libintl.h>
+ #include <limits.h>
+ #include <locale.h>
+ #include <stddef.h>
+-- 
+1.7.5.4
+
