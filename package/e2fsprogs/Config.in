@@ -89,12 +89,6 @@ config BR2_PACKAGE_E2FSPROGS_UUIDGEN
 	bool "uuidgen"
 	default y
 
-config BR2_PACKAGE_E2FSPROGS_UUIDD
-	bool "uuidd"
-	default y
-	help
-	  The uuidd daemon from the e2fsprogs suite
-
 endif
 
 comment "e2fsprogs requires a toolchain with LARGEFILE + WCHAR support"

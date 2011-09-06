@@ -13,7 +13,7 @@ E2FSPROGS_CONF_OPT = \
 	$(if $(BR2_PACKAGE_E2FSPROGS_DEBUGFS),,--disable-debugfs) \
 	$(if $(BR2_PACKAGE_E2FSPROGS_E2IMAGE),,--disable-imager) \
 	$(if $(BR2_PACKAGE_E2FSPROGS_RESIZE2FS),,--disable-resizer) \
-	$(if $(BR2_PACKAGE_E2FSPROGS_UUIDD),,--disable-uuidd) \
+	--disable-uuidd \
 	--disable-blkid \
 	--disable-libuuid \
 	--enable-fsck \
