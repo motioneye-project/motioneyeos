@@ -1,14 +1,16 @@
---- cramfs-1.1/mkcramfs.c.orig	2005-04-13 05:55:57.000000000 -0600
-+++ cramfs-1.1/mkcramfs.c	2005-04-13 16:19:57.000000000 -0600
-@@ -117,6 +117,7 @@
- static int opt_squash = 0;
+Index: cramfs-1.1/mkcramfs.c
+===================================================================
+--- cramfs-1.1.orig/mkcramfs.c	2002-02-20 09:03:32.000000000 +0100
++++ cramfs-1.1/mkcramfs.c	2011-09-09 15:11:00.980895119 +0200
+@@ -93,6 +93,7 @@
+ static int opt_verbose = 0;
  static char *opt_image = NULL;
  static char *opt_name = NULL;
 +static int swap_endian = 0;
  
  static int warn_dev, warn_gid, warn_namelen, warn_skip, warn_size, warn_uid;
- static const char *const memory_exhausted = "memory exhausted";
-@@ -155,6 +156,8 @@
+ 
+@@ -130,6 +131,8 @@
  		" -i file    insert a file image into the filesystem (requires >= 2.4.0)\n"
  		" -n name    set name of cramfs filesystem\n"
  		" -p         pad by %d bytes for boot code\n"
@@ -17,7 +19,7 @@
  		" -s         sort directory entries (old option, ignored)\n"
  		" -v         be more verbose\n"
  		" -z         make explicit holes (requires >= 2.3.39)\n"
-@@ -504,6 +506,50 @@
+@@ -372,6 +375,50 @@
  	return totalsize;
  }
  
@@ -68,7 +70,7 @@
  /* Returns sizeof(struct cramfs_super), which includes the root inode. */
  static unsigned int write_superblock(struct entry *root, char *base, int size)
  {
-@@ -539,6 +585,7 @@
+@@ -405,6 +452,7 @@
  	super->root.gid = root->gid;
  	super->root.size = root->size;
  	super->root.offset = offset >> 2;
@@ -76,9 +78,9 @@
  
  	return offset;
  }
-@@ -553,7 +600,10 @@
+@@ -419,7 +467,10 @@
  	if (offset >= (1 << (2 + CRAMFS_OFFSET_WIDTH))) {
- 		error_msg_and_die("filesystem too big");
+ 		die(MKFS_ERROR, 0, "filesystem too big");
  	}
 -	inode->offset = (offset >> 2);
 +	if (swap_endian)
@@ -88,7 +90,7 @@
  }
  
  /*
-@@ -638,6 +688,7 @@
+@@ -515,6 +566,7 @@
  				stack_entries++;
  			}
  			entry = entry->next;
@@ -96,7 +98,7 @@
  		}
  
  		/*
-@@ -734,6 +785,7 @@
+@@ -609,6 +661,7 @@
  		}
  
  		*(u32 *) (base + offset) = curr;
@@ -104,16 +106,16 @@
  		offset += 4;
  	} while (size);
  
-@@ -1146,7 +1198,7 @@
+@@ -699,7 +752,7 @@
  		progname = argv[0];
  
  	/* command line options */
--	while ((c = getopt(argc, argv, "hEe:i:n:psvzD:q")) != EOF) {
-+	while ((c = getopt(argc, argv, "hEe:i:n:psvzD:qlb")) != EOF) {
+-	while ((c = getopt(argc, argv, "hEe:i:n:psvz")) != EOF) {
++	while ((c = getopt(argc, argv, "hEe:i:n:psvzlb")) != EOF) {
  		switch (c) {
  		case 'h':
  			usage(MKFS_OK);
-@@ -1174,6 +1227,18 @@
+@@ -727,6 +780,18 @@
  			opt_pad = PAD_SIZE;
  			fslen_ub += PAD_SIZE;
  			break;
@@ -132,8 +134,10 @@
  		case 's':
  			/* old option, ignored */
  			break;
---- cramfs-1.1/cramfsck.c.orig	2005-04-25 11:50:31.000000000 -0700
-+++ cramfs-1.1/cramfsck.c	2005-04-25 16:53:25.000000000 -0700
+Index: cramfs-1.1/cramfsck.c
+===================================================================
+--- cramfs-1.1.orig/cramfsck.c	2002-02-23 01:00:42.000000000 +0100
++++ cramfs-1.1/cramfsck.c	2011-09-09 15:10:06.810894275 +0200
 @@ -30,6 +30,7 @@
   * 2000/07/15: Daniel Quinlan (initial support for block devices)
   * 2002/01/10: Daniel Quinlan (additional checks, test more return codes,
@@ -142,23 +146,23 @@
   */
  
  /* compile-time options */
-@@ -51,6 +52,7 @@
- #include <utime.h>
- #include <sys/ioctl.h>
+@@ -53,6 +54,7 @@
  #define _LINUX_STRING_H_
+ #include <linux/fs.h>
+ #include <linux/cramfs_fs.h>
 +#include <byteswap.h>
- #include "linux/cramfs_fs.h"
  #include <zlib.h>
  
-@@ -74,6 +76,7 @@
+ /* Exit codes used by fsck-type programs */
+@@ -73,6 +75,7 @@
  static char *filename;		/* ROM image filename */
  struct cramfs_super super;	/* just find the cramfs superblock once */
  static int opt_verbose = 0;	/* 1 = verbose (-v), 2+ = very verbose (-vv) */
 +static int need_swapping = 0;   /* fs and host dont have the same endianness */
  #ifdef INCLUDE_FS_TESTS
  static int opt_extract = 0;		/* extract cramfs (-x) */
- static char *extract_dir = "/";	/* extraction directory (-x) */
-@@ -85,6 +88,9 @@
+ static char *extract_dir = "root";	/* extraction directory (-x) */
+@@ -84,6 +87,9 @@
  static unsigned long start_data = ~0UL;	/* start of the data (256 MB = max) */
  static unsigned long end_data = 0;	/* end of the data */
  
@@ -168,7 +172,7 @@
  /* Guarantee access to at least 8kB at a time */
  #define ROMBUFFER_BITS	13
  #define ROMBUFFERSIZE	(1 << ROMBUFFER_BITS)
-@@ -166,20 +172,34 @@
+@@ -165,20 +171,34 @@
  	if (super.magic == CRAMFS_MAGIC) {
  		*start = 0;
  	}
@@ -205,7 +209,7 @@
  	if (super.flags & ~CRAMFS_SUPPORTED_FLAGS) {
  		die(FSCK_ERROR, 0, "unsupported filesystem features");
  	}
-@@ -215,7 +235,10 @@
+@@ -213,7 +233,10 @@
  		die(FSCK_USAGE, 0, "unable to test CRC: old cramfs format");
  #endif /* not INCLUDE_FS_TESTS */
  	}
@@ -217,7 +221,7 @@
  	crc = crc32(0L, Z_NULL, 0);
  
  	buf = mmap(NULL, super.size, PROT_READ | PROT_WRITE, MAP_PRIVATE, fd, 0);
-@@ -300,12 +323,23 @@
+@@ -298,12 +321,23 @@
  
  static struct cramfs_inode *cramfs_iget(struct cramfs_inode * i)
  {
@@ -242,7 +246,7 @@
  	return inode;
  }
  
-@@ -324,9 +358,9 @@
+@@ -322,9 +356,9 @@
   */
  static struct cramfs_inode *read_super(void)
  {
@@ -255,7 +259,7 @@
  		die(FSCK_UNCORRECTED, 0, "root inode is not directory");
  	if (!(super.flags & CRAMFS_FLAG_SHIFTED_ROOT_OFFSET) &&
  	    ((offset != sizeof(struct cramfs_super)) &&
-@@ -334,7 +368,7 @@
+@@ -332,7 +366,7 @@
  	{
  		die(FSCK_UNCORRECTED, 0, "bad root offset (%lu)", offset);
  	}
@@ -264,7 +268,7 @@
  }
  
  static int uncompress_block(void *src, int len)
-@@ -366,7 +400,7 @@
+@@ -364,7 +398,7 @@
  
  	do {
  		unsigned long out = PAGE_CACHE_SIZE;
@@ -273,7 +277,7 @@
  
  		if (next > end_data) {
  			end_data = next;
-@@ -529,7 +563,7 @@
+@@ -525,7 +559,7 @@
  {
  	unsigned long offset = i->offset << 2;
  	unsigned long curr = offset + 4;
