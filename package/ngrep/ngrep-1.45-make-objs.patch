@@ -1,0 +1,23 @@
+ngrep: don't include regex objects since we're using pcre
+
+Signed-off-by: Wade Berrier <wberrier@gmail.com>
+
+--- ngrep-1.45/Makefile.in.orig	2006-11-28 06:35:37.000000000 -0700
++++ ngrep-1.45/Makefile.in	2011-06-29 14:05:27.000000000 -0600
+@@ -32,13 +32,13 @@
+ 
+ INSTALL = ./install-sh
+ 
+-REGEX_DIR=@REGEX_DIR@
+-REGEX_OBJS=@REGEX_OBJS@
++REGEX_DIR=
++REGEX_OBJS=
+ 
+ 
+ all: $(TARGET) 
+ 
+-$(TARGET): $(REGEX_OBJS) $(OBJS) 
++$(TARGET): $(OBJS) 
+ 	$(CC) $(CFLAGS) $(LDFLAGS) $(STRIPFLAG) -o $(TARGET) $(OBJS) $(REGEX_OBJS) $(LIBS) 
+ 
+ debug: $(REGEX_OBJS) $(OBJS)
