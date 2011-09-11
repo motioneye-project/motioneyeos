@@ -11,6 +11,4 @@ LIBCONFUSE_INSTALL_STAGING = YES
 
 LIBCONFUSE_CONF_OPT = --disable-rpath
 
-LIBCONFUSE_DEPENDENCIES = uclibc
-
 $(eval $(call AUTOTARGETS,package,libconfuse))
