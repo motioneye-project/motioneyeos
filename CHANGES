@@ -1,5 +1,25 @@
 2011.11, Not released yet:
 
+	Fixes all over the tree and new features.
+
+	Update external codesourcery toolchain download URLs after
+	Codesourcery got bought by Mentor.
+
+	Updated/fixed packages: busybox, dbus, dbus-glib, directfb,
+	dnsmasq, e2fsprogs, ethtool, fakeroot, fbdump, freetype, fuse,
+	gamin, jpeg, leafpad, libargtable2, libao, libconfuse,
+	libcuefile, libcurl, libreplaygain, libsamplerate, libsndfile,
+	libsoup, libsvgtiny, lighttpd, lzo, lzop, mpd, mpg123,
+	musepack, mysql_client, netcat, netsnmp, ntfs-3g, ntfsprogs,
+	openssl, radvd, samba, sdl_sound, sqlite, squid, sylpheed,
+	taglib, tar, tcpreplay, util-linux, xterm
+
+	New packages: fluxbox, libev, libftdi, libgeotiff, portaudio
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#4183: Codesourcery toolchain download site has changed
+
 2011.08, Released August 31th, 2011:
 
 	Fixes all over the tree.
