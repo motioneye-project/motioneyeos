@@ -4,7 +4,7 @@
 #
 #############################################################
 
-USBUTILS_VERSION = 003
+USBUTILS_VERSION = 004
 USBUTILS_SITE = $(BR2_KERNEL_MIRROR)/linux/utils/usb/usbutils
 USBUTILS_DEPENDENCIES = host-pkg-config libusb
 USBUTILS_INSTALL_STAGING = YES
