@@ -1,18 +1,21 @@
---- a/source/client/mount.cifs.c
-+++ b/source/client/mount.cifs.c
-@@ -138,6 +138,7 @@ static size_t strlcat(char *d, const cha
- 	return ret;
+--- a/client/mount.cifs.c	2011-09-13 10:26:21.000000000 +0200
++++ b/client/mount.cifs.c	2011-09-13 10:27:16.000000000 +0200
+@@ -39,7 +39,6 @@
+ #include <mntent.h>
+ #include <fcntl.h>
+ #include <limits.h>
+-#include <fstab.h>
+ #include "mount.h"
+ 
+ #define MOUNT_CIFS_VERSION_MAJOR "1"
+@@ -255,6 +254,10 @@
+ 	return 0;
  }
- #endif
-+#endif /* __GLIBC__ && !(__UCLIBC__ && __USE_BSD) */
- 
- /* BB finish BB
- 
-@@ -178,7 +179,6 @@ static void mount_cifs_usage(void)
- 	SAFE_FREE(mountpassword);
- 	exit(EX_USAGE);
- }
--#endif /* __GLIBC__ && !(__UCLIBC__ && __USE_BSD) */
- 
- /* caller frees username if necessary */
- static char * getusername(void) {
+ #else /* CIFS_LEGACY_SETUID_CHECK */
++
++#ifndef _PATH_FSTAB
++#define _PATH_FSTAB "/etc/fstab"
++#endif
+ static int
+ check_fstab(const char *progname, char *mountpoint, char *devname,
+ 	    char **options)
