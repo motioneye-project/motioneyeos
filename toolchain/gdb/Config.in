@@ -66,9 +66,9 @@ endchoice
 
 config BR2_GDB_VERSION
 	string
-	default "6.6"      if BR2_GDB_VERSION_6_6
+	default "6.6a"     if BR2_GDB_VERSION_6_6
 	default "6.7.1-avr32-2.1.5" if BR2_GDB_VERSION_6_7_1_AVR32_2_1_5
-	default "6.8"      if BR2_GDB_VERSION_6_8
-	default "7.0.1"    if BR2_GDB_VERSION_7_0_1
-	default "7.1"      if BR2_GDB_VERSION_7_1
+	default "6.8a"     if BR2_GDB_VERSION_6_8
+	default "7.0.1a"   if BR2_GDB_VERSION_7_0_1
+	default "7.1a"     if BR2_GDB_VERSION_7_1
 	default "7.3.1"    if BR2_GDB_VERSION_7_3
