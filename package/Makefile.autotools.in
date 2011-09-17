@@ -190,11 +190,11 @@ define AUTORECONF_HOOK
 		for i in `find $$($$(PKG)_SRCDIR) -name ltmain.sh`; do \
 			ltmain_version=`sed -n '/^[ 	]*VERSION=/{s/^[ 	]*VERSION=//;p;q;}' $$$$i | sed 's/\([0-9].[0-9]*\).*/\1/'`; \
 			if test $$$${ltmain_version} = "1.5"; then \
-				support/scripts/apply-patches.sh $$$${i%/*} package buildroot-libtool-v1.5.patch; \
+				support/scripts/apply-patches.sh $$$${i%/*} support/libtool buildroot-libtool-v1.5.patch; \
 			elif test $$$${ltmain_version} = "2.2"; then\
-				support/scripts/apply-patches.sh $$$${i%/*} package buildroot-libtool-v2.2.patch; \
+				support/scripts/apply-patches.sh $$$${i%/*} support/libtool buildroot-libtool-v2.2.patch; \
 			elif test $$$${ltmain_version} = "2.4"; then\
-				support/scripts/apply-patches.sh $$$${i%/*} package buildroot-libtool-v2.4.patch; \
+				support/scripts/apply-patches.sh $$$${i%/*} support/libtool buildroot-libtool-v2.4.patch; \
 			fi \
 		done \
 	fi
