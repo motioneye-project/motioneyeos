@@ -108,4 +108,9 @@ config BR2_PACKAGE_XENOMAI_TESTSUITE
        help
          This option allows to install the Xenomai test programs.
 
+config BR2_PACKAGE_XENOMAI_RTCAN
+       bool "RTCan utilities"
+       help
+         This option allows to install the Xenomai RT-CAN utilities.
+
 endif

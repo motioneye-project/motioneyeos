@@ -79,6 +79,17 @@ endef
 XENOMAI_POST_INSTALL_TARGET_HOOKS += XENOMAI_REMOVE_TESTSUITE
 endif
 
+ifeq ($(BR2_PACKAGE_XENOMAI_RTCAN),)
+define XENOMAI_REMOVE_RTCAN_PROGS
+	for i in rtcanrecv rtcansend ; do \
+		rm -f $(TARGET_DIR)/usr/xenomai/bin/$$i ; \
+	done
+	rm -f $(TARGET_DIR)/usr/xenomai/sbin/rtcanconfig
+endef
+
+XENOMAI_POST_INSTALL_TARGET_HOOKS += XENOMAI_REMOVE_RTCAN_PROGS
+endif
+
 define XENOMAI_ADD_LD_SO_CONF
 	# Add /usr/xenomai/lib in the library search path
 	grep -q "^/usr/xenomai/lib" $(TARGET_DIR)/etc/ld.so.conf || \
