@@ -4,9 +4,30 @@
 #
 #############################################################
 
-BAREBOX_VERSION = 2011.09.0
+BAREBOX_VERSION    = $(call qstrip,$(BR2_TARGET_BAREBOX_VERSION))
+
+ifeq ($(BAREBOX_VERSION),custom)
+# Handle custom Barebox tarballs as specified by the configuration
+BAREBOX_TARBALL = $(call qstrip,$(BR2_TARGET_BAREBOX_CUSTOM_TARBALL_LOCATION))
+BAREBOX_SITE    = $(dir $(BAREBOX_TARBALL))
+BAREBOX_SOURCE  = $(notdir $(BAREBOX_TARBALL))
+else ifeq ($(BR2_TARGET_BAREBOX_CUSTOM_GIT),y)
+BAREBOX_SITE        = $(call qstrip,$(BR2_TARGET_BAREBOX_CUSTOM_GIT_REPO_URL))
+BAREBOX_SITE_METHOD = git
+else
+# Handle stable official Barebox versions
 BAREBOX_SOURCE = barebox-$(BAREBOX_VERSION).tar.bz2
 BAREBOX_SITE = http://www.barebox.org/download/
+endif
+
+ifneq ($(call qstrip,$(BR2_TARGET_BAREBOX_CUSTOM_PATCH_DIR)),)
+define BAREBOX_APPLY_CUSTOM_PATCHES
+	toolchain/patch-kernel.sh $(@D) $(BR2_TARGET_BAREBOX_CUSTOM_PATCH_DIR) \
+		barebox-$(BAREBOX_VERSION)-\*.patch
+endef
+
+BAREBOX_POST_PATCH_HOOKS += BAREBOX_APPLY_CUSTOM_PATCHES
+endif
 
 BAREBOX_INSTALL_IMAGES = YES
 ifneq ($(BR2_TARGET_BAREBOX_BAREBOXENV),y)
