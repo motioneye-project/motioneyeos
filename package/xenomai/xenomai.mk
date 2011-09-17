@@ -62,6 +62,23 @@ endef
 XENOMAI_POST_INSTALL_TARGET_HOOKS += XENOMAI_REMOVE_DEVFILES
 endif
 
+ifeq ($(BR2_PACKAGE_XENOMAI_TESTSUITE),)
+define XENOMAI_REMOVE_TESTSUITE
+	rm -rf $(TARGET_DIR)/usr/xenomai/share/xenomai/testsuite/
+	rmdir --ignore-fail-on-non-empty $(TARGET_DIR)/usr/xenomai/share/xenomai/
+	rmdir --ignore-fail-on-non-empty $(TARGET_DIR)/usr/xenomai/share/
+	for i in klatency rtdm xeno xeno-load check-vdso \
+		irqloop cond-torture-posix switchtest arith \
+		sigtest clocktest cyclictest latency wakeup-time \
+		xeno-test cond-torture-native mutex-torture-posix \
+		mutex-torture-native ; do \
+		rm -f $(TARGET_DIR)/usr/xenomai/bin/$$i ; \
+	done
+endef
+
+XENOMAI_POST_INSTALL_TARGET_HOOKS += XENOMAI_REMOVE_TESTSUITE
+endif
+
 define XENOMAI_ADD_LD_SO_CONF
 	# Add /usr/xenomai/lib in the library search path
 	grep -q "^/usr/xenomai/lib" $(TARGET_DIR)/etc/ld.so.conf || \

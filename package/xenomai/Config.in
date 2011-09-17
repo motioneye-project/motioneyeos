@@ -103,4 +103,9 @@ config BR2_PACKAGE_XENOMAI_CPU_TYPE
 	default "mx3"         if BR2_PACKAGE_XENOMAI_CPU_MX3
 	default "s3c2410"     if BR2_PACKAGE_XENOMAI_CPU_S3C2410
 
+config BR2_PACKAGE_XENOMAI_TESTSUITE
+       bool "Install testsuite"
+       help
+         This option allows to install the Xenomai test programs.
+
 endif
