@@ -176,6 +176,10 @@ config BR2_LINUX_KERNEL_INSTALL_TARGET
 	  /boot in the target root filesystem, as is typically done on
 	  x86/x86_64 systems.
 
+
+# Linux extensions
+source "linux/Config.ext.in"
+
 endif # BR2_LINUX_KERNEL
 
 endmenu

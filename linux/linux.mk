@@ -177,6 +177,8 @@ define LINUX_INSTALL_TARGET_CMDS
 	fi
 endef
 
+include linux/linux-ext-*.mk
+
 $(eval $(call GENTARGETS,,linux))
 
 linux-menuconfig linux-xconfig linux-gconfig linux-nconfig linux26-menuconfig linux26-xconfig linux26-gconfig linux26-nconfig: dirs $(LINUX_DIR)/.stamp_configured
