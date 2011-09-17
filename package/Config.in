@@ -489,6 +489,7 @@ endmenu
 
 menu "Real-Time"
 source "package/xenomai/Config.in"
+source "package/rtai/Config.in"
 endmenu
 
 menu "Shell and utilities"

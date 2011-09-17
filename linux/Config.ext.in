@@ -15,4 +15,17 @@ config BR2_LINUX_KERNEL_EXT_XENOMAI_ADEOS_PATCH
 	  Download it at http://download.gna.org/adeos/patches/v2.6/$(ARCH)/
 	  and verify that your kernel version in buildroot matches.
 
+# RTAI
+config BR2_LINUX_KERNEL_EXT_RTAI
+       bool "RTAI Real-time patch"
+       select BR2_PACKAGE_RTAI
+       help
+         RTAI Kernel part.
+
+config BR2_LINUX_KERNEL_EXT_RTAI_PATCH
+       depends on BR2_LINUX_KERNEL_EXT_RTAI
+       string "Path for RTAI patch file"
+       help
+         Optionally, explicitly specify the RTAI patch to use.
+
 endmenu
