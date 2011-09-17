@@ -113,4 +113,10 @@ config BR2_PACKAGE_XENOMAI_RTCAN
        help
          This option allows to install the Xenomai RT-CAN utilities.
 
+config BR2_PACKAGE_XENOMAI_ANALOGY
+       bool "Analogy libs and utils"
+       help
+         This option allows to install the Xenomai Analogy utilities
+         and libraries
+
 endif

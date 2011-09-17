@@ -90,6 +90,19 @@ endef
 XENOMAI_POST_INSTALL_TARGET_HOOKS += XENOMAI_REMOVE_RTCAN_PROGS
 endif
 
+ifeq ($(BR2_PACKAGE_XENOMAI_ANALOGY),)
+define XENOMAI_REMOVE_ANALOGY
+	for i in cmd_bits cmd_read cmd_write insn_write \
+		insn_bits insn_read ; do \
+		rm -f $(TARGET_DIR)/usr/xenomai/bin/$$i ; \
+	done
+	rm -f $(TARGET_DIR)/usr/xenomai/sbin/analogy_config
+	rm -f $(TARGET_DIR)/usr/xenomai/lib/libanalogy.*
+endef
+
+XENOMAI_POST_INSTALL_TARGET_HOOKS += XENOMAI_REMOVE_ANALOGY
+endif
+
 define XENOMAI_ADD_LD_SO_CONF
 	# Add /usr/xenomai/lib in the library search path
 	grep -q "^/usr/xenomai/lib" $(TARGET_DIR)/etc/ld.so.conf || \
