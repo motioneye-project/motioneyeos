@@ -487,6 +487,10 @@ source "package/rpm/Config.in"
 endif
 endmenu
 
+menu "Real-Time"
+source "package/xenomai/Config.in"
+endmenu
+
 menu "Shell and utilities"
 source "package/at/Config.in"
 if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS

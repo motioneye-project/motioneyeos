@@ -1,0 +1,11 @@
+--- a/Makefile.in	2011-06-24 16:11:23.591449817 +0200
++++ b/Makefile.in	2011-06-24 16:20:29.638129633 +0200
+@@ -719,7 +719,7 @@
+ 	  $$sudo mknod -m 666 $(DESTDIR)/dev/rtheap c 10 254 ; \
+ 	fi
+ 
+-install-exec-local: devices
++install-exec-local:
+ 
+ install-user:
+ 	$(MAKE) SUDO=false install

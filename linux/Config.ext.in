@@ -1,3 +1,18 @@
 menu "Linux Kernel Extensions"
 
+# Xenomai
+config BR2_LINUX_KERNEL_EXT_XENOMAI
+	bool "Adeos/Xenomai Real-time patch"
+	select BR2_PACKAGE_XENOMAI
+	help
+	  Xenomai Kernel part.
+
+config BR2_LINUX_KERNEL_EXT_XENOMAI_ADEOS_PATCH
+	depends on BR2_LINUX_KERNEL_EXT_XENOMAI
+	string "Path for Adeos patch file"
+	help
+	  Optionally, explicitly specify the Adeos patch to use.
+	  Download it at http://download.gna.org/adeos/patches/v2.6/$(ARCH)/
+	  and verify that your kernel version in buildroot matches.
+
 endmenu
