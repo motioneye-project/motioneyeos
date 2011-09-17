@@ -487,15 +487,15 @@ $(1)-install-host:      $(1)-build $$($(2)_TARGET_INSTALL_HOST)
 $(1)-build:		$(1)-configure \
 			$$($(2)_TARGET_BUILD)
 
-$(1)-configure:		$(1)-patch \
+$(1)-configure:		$(1)-patch $(1)-depends \
 			$$($(2)_TARGET_CONFIGURE)
 
 $(1)-patch:		$(1)-extract $$($(2)_TARGET_PATCH)
 
-$(1)-extract:		$(1)-depends \
+$(1)-extract:		$(1)-source \
 			$$($(2)_TARGET_EXTRACT)
 
-$(1)-depends:		$(1)-source $$($(2)_DEPENDENCIES)
+$(1)-depends:		$$($(2)_DEPENDENCIES)
 
 $(1)-show-depends:
 			@echo $$($(2)_DEPENDENCIES)
