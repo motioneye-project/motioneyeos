@@ -26,7 +26,19 @@ Index: Python-2.7.1/setup.py
  
          # Add paths specified in the environment variables LDFLAGS and
          # CPPFLAGS for header and library files.
-@@ -388,17 +389,6 @@
+@@ -360,10 +361,7 @@
+         # directly since an inconsistently reproducible issue comes up where
+         # the environment variable is not set even though the value were passed
+         # into configure and stored in the Makefile (issue found on OS X 10.3).
+-        for env_var, arg_name, dir_list in (
+-                ('LDFLAGS', '-R', self.compiler.runtime_library_dirs),
+-                ('LDFLAGS', '-L', self.compiler.library_dirs),
+-                ('CPPFLAGS', '-I', self.compiler.include_dirs)):
++        for env_var, arg_name, dir_list in ():
+             env_val = sysconfig.get_config_var(env_var)
+             if env_val:
+                 # To prevent optparse from raising an exception about any
+@@ -388,17 +386,6 @@
                      for directory in reversed(options.dirs):
                          add_dir_to_list(dir_list, directory)
  
@@ -44,7 +56,7 @@ Index: Python-2.7.1/setup.py
          try:
              have_unicode = unicode
          except NameError:
-@@ -407,11 +397,16 @@
+@@ -407,11 +394,16 @@
          # lib_dirs and inc_dirs are used to search for files;
          # if a file is found in one of those directories, it can
          # be assumed that no additional -I,-L directives are needed.
@@ -66,7 +78,7 @@ Index: Python-2.7.1/setup.py
          exts = []
          missing = []
  
-@@ -844,6 +839,9 @@
+@@ -844,6 +836,9 @@
              db_inc_paths.append('/pkg/db-3.%d/include' % x)
              db_inc_paths.append('/opt/db-3.%d/include' % x)
  
@@ -76,7 +88,7 @@ Index: Python-2.7.1/setup.py
          # Add some common subdirectories for Sleepycat DB to the list,
          # based on the standard include directories. This way DB3/4 gets
          # picked up when it is installed in a non-standard prefix and
-@@ -996,6 +994,9 @@
+@@ -996,6 +991,9 @@
          MIN_SQLITE_VERSION = ".".join([str(x)
                                      for x in MIN_SQLITE_VERSION_NUMBER])
  
@@ -86,7 +98,7 @@ Index: Python-2.7.1/setup.py
          # Scan the default include directories before the SQLite specific
          # ones. This allows one to override the copy of sqlite on OSX,
          # where /usr/include contains an old version of sqlite.
-@@ -1095,6 +1096,8 @@
+@@ -1095,6 +1093,8 @@
          # the more recent berkeleydb's db.h file first in the include path
          # when attempting to compile and it will fail.
          f = "/usr/include/db.h"
