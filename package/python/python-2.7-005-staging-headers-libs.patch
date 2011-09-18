@@ -12,12 +12,12 @@ Patch ported to python2.7 by Maxime Ripard <ripard@archos.com>
  setup.py |   13 +++++++++++++
  1 file changed, 13 insertions(+)
 
-Index: Python-2.7.1/setup.py
+Index: Python-2.7.2/setup.py
 ===================================================================
---- Python-2.7.1.orig/setup.py
-+++ Python-2.7.1/setup.py
-@@ -350,6 +350,19 @@
-         return sys.platform
+--- Python-2.7.2.orig/setup.py
++++ Python-2.7.2/setup.py
+@@ -372,6 +372,19 @@
+             os.unlink(tmpfile)
  
      def detect_modules(self):
 +        try:

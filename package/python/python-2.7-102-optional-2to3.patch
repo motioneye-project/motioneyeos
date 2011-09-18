@@ -11,34 +11,29 @@ Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
  setup.py        |    5 +++--
  3 files changed, 26 insertions(+), 9 deletions(-)
 
-Index: Python-2.7.1/Makefile.pre.in
+Index: Python-2.7.2/Makefile.pre.in
 ===================================================================
---- Python-2.7.1.orig/Makefile.pre.in
-+++ Python-2.7.1/Makefile.pre.in
-@@ -856,9 +856,7 @@
- 		encodings compiler hotshot \
- 		email email/mime \
+--- Python-2.7.2.orig/Makefile.pre.in
++++ Python-2.7.2/Makefile.pre.in
+@@ -862,7 +862,6 @@
  		json \
--		sqlite3 \
+ 		sqlite3 \
  		logging bsddb csv importlib wsgiref \
 -		lib2to3 lib2to3/fixes lib2to3/pgen2 \
- 		ctypes ctypes/macholib idlelib idlelib/Icons \
- 		distutils distutils/command $(XMLLIBSUBDIRS) \
+ 		ctypes  ctypes/macholib idlelib idlelib/Icons \
+ 		distutils distutils/command  $(XMLLIBSUBDIRS) \
  		multiprocessing multiprocessing/dummy \
-@@ -872,12 +870,7 @@
- 		test/decimaltestdata test/xmltestdata 	\
- 		test/tracedmodules   			\
- 		email/test email/test/data		\
--		sqlite3/test				\
- 		bsddb/test				\
--		lib2to3/tests				\
--		lib2to3/tests/data			\
--		lib2to3/tests/data/fixers		\
--		lib2to3/tests/data/fixers/myfixes	\
- 		ctypes/test distutils/tests		\
- 		unittest/test
+@@ -875,8 +874,7 @@
+ 		lib-tk/test/test_ttk test test/data \
+ 		test/cjkencodings test/decimaltestdata test/xmltestdata test/subprocessdata \
+ 		test/tracedmodules email/test email/test/data \
+-		json/tests sqlite3/test bsddb/test lib2to3/tests \
+-		lib2to3/tests/data lib2to3/tests/data/fixers lib2to3/tests/data/fixers/myfixes \
++		json/tests sqlite3/test bsddb/test \
+ 		ctypes/test distutils/tests unittest/test
  endif
-@@ -886,6 +879,23 @@
+ 
+@@ -884,6 +882,23 @@
  LIBSUBDIRS += pydoc_data
  endif
  
@@ -62,11 +57,11 @@ Index: Python-2.7.1/Makefile.pre.in
  libinstall:	build_all $(srcdir)/Lib/$(PLATDIR)
  	@for i in $(SCRIPTDIR) $(LIBDEST); \
  	do \
-Index: Python-2.7.1/configure.in
+Index: Python-2.7.2/configure.in
 ===================================================================
---- Python-2.7.1.orig/configure.in
-+++ Python-2.7.1/configure.in
-@@ -2404,6 +2404,12 @@
+--- Python-2.7.2.orig/configure.in
++++ Python-2.7.2/configure.in
+@@ -2419,6 +2419,12 @@
  	AS_HELP_STRING([--disable-test-modules], [disable test modules]),
  	[ TEST_MODULES="${enableval}" ], [ TEST_MODULES=yes ])
  
@@ -79,11 +74,11 @@ Index: Python-2.7.1/configure.in
  # Check for enable-ipv6
  AH_TEMPLATE(ENABLE_IPV6, [Define if --enable-ipv6 is specified])
  AC_MSG_CHECKING([if --enable-ipv6 is specified])
-Index: Python-2.7.1/setup.py
+Index: Python-2.7.2/setup.py
 ===================================================================
---- Python-2.7.1.orig/setup.py
-+++ Python-2.7.1/setup.py
-@@ -2073,10 +2073,11 @@
+--- Python-2.7.2.orig/setup.py
++++ Python-2.7.2/setup.py
+@@ -2093,10 +2093,11 @@
      import warnings
      warnings.filterwarnings("ignore",category=DeprecationWarning)
  

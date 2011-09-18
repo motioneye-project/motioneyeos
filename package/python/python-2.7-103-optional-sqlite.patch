@@ -6,11 +6,11 @@ Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
  configure.in |    9 +++++++++
  1 file changed, 9 insertions(+)
 
-Index: Python-2.7.1/configure.in
+Index: Python-2.7.2/configure.in
 ===================================================================
---- Python-2.7.1.orig/configure.in
-+++ Python-2.7.1/configure.in
-@@ -2392,6 +2392,15 @@
+--- Python-2.7.2.orig/configure.in
++++ Python-2.7.2/configure.in
+@@ -2407,6 +2407,15 @@
          esac])
  fi
  

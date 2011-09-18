@@ -38,11 +38,11 @@ Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
  setup.py        |    5 ++++-
  3 files changed, 11 insertions(+), 4 deletions(-)
 
-Index: Python-2.7.1/Makefile.pre.in
+Index: Python-2.7.2/Makefile.pre.in
 ===================================================================
---- Python-2.7.1.orig/Makefile.pre.in
-+++ Python-2.7.1/Makefile.pre.in
-@@ -141,6 +141,8 @@
+--- Python-2.7.2.orig/Makefile.pre.in
++++ Python-2.7.2/Makefile.pre.in
+@@ -144,6 +144,8 @@
  # configure script arguments
  CONFIG_ARGS=	@CONFIG_ARGS@
  
@@ -51,7 +51,7 @@ Index: Python-2.7.1/Makefile.pre.in
  
  # Subdirectories with code
  SRCDIRS= 	@SRCDIRS@
-@@ -406,8 +408,8 @@
+@@ -409,8 +411,8 @@
  # Build the shared modules
  sharedmods: $(BUILDPYTHON)
  	@case $$MAKEFLAGS in \
@@ -62,7 +62,7 @@ Index: Python-2.7.1/Makefile.pre.in
  	esac
  
  # Build static library
-@@ -1046,7 +1048,7 @@
+@@ -1051,7 +1053,7 @@
  # Install the dynamically loadable modules
  # This goes into $(exec_prefix)
  sharedinstall: sharedmods
@@ -71,11 +71,11 @@ Index: Python-2.7.1/Makefile.pre.in
  	   	--prefix=$(prefix) \
  		--install-scripts=$(BINDIR) \
  		--install-platlib=$(DESTSHARED) \
-Index: Python-2.7.1/configure.in
+Index: Python-2.7.2/configure.in
 ===================================================================
---- Python-2.7.1.orig/configure.in
-+++ Python-2.7.1/configure.in
-@@ -2084,6 +2084,8 @@
+--- Python-2.7.2.orig/configure.in
++++ Python-2.7.2/configure.in
+@@ -2098,6 +2098,8 @@
  
  AC_PATH_TOOL([PKG_CONFIG], [pkg-config])
  
@@ -84,10 +84,10 @@ Index: Python-2.7.1/configure.in
  # Check for use of the system expat library
  AC_MSG_CHECKING(for --with-system-expat)
  AC_ARG_WITH(system_expat,
-Index: Python-2.7.1/setup.py
+Index: Python-2.7.2/setup.py
 ===================================================================
---- Python-2.7.1.orig/setup.py
-+++ Python-2.7.1/setup.py
+--- Python-2.7.2.orig/setup.py
++++ Python-2.7.2/setup.py
 @@ -21,7 +21,10 @@
  COMPILED_WITH_PYDEBUG = hasattr(sys, 'gettotalrefcount')
  

@@ -15,11 +15,11 @@ Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
  configure.in    |    3 +++
  2 files changed, 6 insertions(+), 3 deletions(-)
 
-Index: Python-2.7.1/Makefile.pre.in
+Index: Python-2.7.2/Makefile.pre.in
 ===================================================================
---- Python-2.7.1.orig/Makefile.pre.in
-+++ Python-2.7.1/Makefile.pre.in
-@@ -406,8 +406,8 @@
+--- Python-2.7.2.orig/Makefile.pre.in
++++ Python-2.7.2/Makefile.pre.in
+@@ -409,8 +409,8 @@
  # Build the shared modules
  sharedmods: $(BUILDPYTHON)
  	@case $$MAKEFLAGS in \
@@ -30,7 +30,7 @@ Index: Python-2.7.1/Makefile.pre.in
  	esac
  
  # Build static library
-@@ -1046,7 +1046,7 @@
+@@ -1051,7 +1051,7 @@
  # Install the dynamically loadable modules
  # This goes into $(exec_prefix)
  sharedinstall: sharedmods
@@ -39,11 +39,11 @@ Index: Python-2.7.1/Makefile.pre.in
  	   	--prefix=$(prefix) \
  		--install-scripts=$(BINDIR) \
  		--install-platlib=$(DESTSHARED) \
-Index: Python-2.7.1/configure.in
+Index: Python-2.7.2/configure.in
 ===================================================================
---- Python-2.7.1.orig/configure.in
-+++ Python-2.7.1/configure.in
-@@ -4308,6 +4308,9 @@
+--- Python-2.7.2.orig/configure.in
++++ Python-2.7.2/configure.in
+@@ -4322,6 +4322,9 @@
  AC_ARG_VAR(PYTHON_FOR_BUILD,[build system Python])
  AC_ARG_VAR(PGEN_FOR_BUILD,[build system Python pgen])
  

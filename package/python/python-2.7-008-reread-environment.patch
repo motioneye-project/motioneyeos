@@ -25,11 +25,11 @@ Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
  setup.py        |    3 +++
  2 files changed, 6 insertions(+), 3 deletions(-)
 
-Index: Python-2.7.1/Makefile.pre.in
+Index: Python-2.7.2/Makefile.pre.in
 ===================================================================
---- Python-2.7.1.orig/Makefile.pre.in
-+++ Python-2.7.1/Makefile.pre.in
-@@ -408,8 +408,8 @@
+--- Python-2.7.2.orig/Makefile.pre.in
++++ Python-2.7.2/Makefile.pre.in
+@@ -411,8 +411,8 @@
  # Build the shared modules
  sharedmods: $(BUILDPYTHON)
  	@case $$MAKEFLAGS in \
@@ -40,7 +40,7 @@ Index: Python-2.7.1/Makefile.pre.in
  	esac
  
  # Build static library
-@@ -1039,7 +1039,7 @@
+@@ -1044,7 +1044,7 @@
  # Install the dynamically loadable modules
  # This goes into $(exec_prefix)
  sharedinstall: sharedmods
@@ -49,10 +49,10 @@ Index: Python-2.7.1/Makefile.pre.in
  	   	--prefix=$(prefix) \
  		--install-scripts=$(BINDIR) \
  		--install-platlib=$(DESTSHARED) \
-Index: Python-2.7.1/setup.py
+Index: Python-2.7.2/setup.py
 ===================================================================
---- Python-2.7.1.orig/setup.py
-+++ Python-2.7.1/setup.py
+--- Python-2.7.2.orig/setup.py
++++ Python-2.7.2/setup.py
 @@ -20,6 +20,9 @@
  # Were we compiled --with-pydebug or with #define Py_DEBUG?
  COMPILED_WITH_PYDEBUG = hasattr(sys, 'gettotalrefcount')

@@ -13,11 +13,11 @@ Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
  setup.py |   21 ++++++++++++++++++---
  1 file changed, 18 insertions(+), 3 deletions(-)
 
-Index: Python-2.7.1/setup.py
+Index: Python-2.7.2/setup.py
 ===================================================================
---- Python-2.7.1.orig/setup.py
-+++ Python-2.7.1/setup.py
-@@ -977,6 +977,12 @@
+--- Python-2.7.2.orig/setup.py
++++ Python-2.7.2/setup.py
+@@ -997,6 +997,12 @@
                  print "bsddb lib dir:", dblib_dir, " inc dir:", db_incdir
              db_incs = [db_incdir]
              dblibs = [dblib]
@@ -30,7 +30,7 @@ Index: Python-2.7.1/setup.py
              # We add the runtime_library_dirs argument because the
              # BerkeleyDB lib we're linking against often isn't in the
              # system dynamic library search path.  This is usually
-@@ -986,7 +992,7 @@
+@@ -1006,7 +1012,7 @@
              exts.append(Extension('_bsddb', ['_bsddb.c'],
                                    depends = ['bsddb.h'],
                                    library_dirs=dblib_dir,
@@ -39,7 +39,7 @@ Index: Python-2.7.1/setup.py
                                    include_dirs=db_incs,
                                    libraries=dblibs))
          else:
-@@ -1092,12 +1098,17 @@
+@@ -1112,12 +1118,17 @@
              else:
                  sqlite_extra_link_args = ()
  
@@ -58,7 +58,7 @@ Index: Python-2.7.1/setup.py
                                    extra_link_args=sqlite_extra_link_args,
                                    libraries=["sqlite3",]))
          else:
-@@ -1198,9 +1209,13 @@
+@@ -1218,9 +1229,13 @@
                  elif cand == "bdb":
                      if db_incs is not None:
                          print "building dbm using bdb"

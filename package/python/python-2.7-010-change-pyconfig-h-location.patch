@@ -26,10 +26,10 @@ Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
  Makefile.pre.in            |    3 ++-
  3 files changed, 5 insertions(+), 3 deletions(-)
 
-Index: Python-2.7.1/Lib/distutils/sysconfig.py
+Index: Python-2.7.2/Lib/distutils/sysconfig.py
 ===================================================================
---- Python-2.7.1.orig/Lib/distutils/sysconfig.py
-+++ Python-2.7.1/Lib/distutils/sysconfig.py
+--- Python-2.7.2.orig/Lib/distutils/sysconfig.py
++++ Python-2.7.2/Lib/distutils/sysconfig.py
 @@ -193,7 +193,8 @@
          else:
              inc_dir = project_base
@@ -40,11 +40,11 @@ Index: Python-2.7.1/Lib/distutils/sysconfig.py
      if get_python_version() < '2.2':
          config_h = 'config.h'
      else:
-Index: Python-2.7.1/Lib/sysconfig.py
+Index: Python-2.7.2/Lib/sysconfig.py
 ===================================================================
---- Python-2.7.1.orig/Lib/sysconfig.py
-+++ Python-2.7.1/Lib/sysconfig.py
-@@ -371,7 +371,7 @@
+--- Python-2.7.2.orig/Lib/sysconfig.py
++++ Python-2.7.2/Lib/sysconfig.py
+@@ -356,7 +356,7 @@
          else:
              inc_dir = _PROJECT_BASE
      else:
@@ -53,11 +53,11 @@ Index: Python-2.7.1/Lib/sysconfig.py
      return os.path.join(inc_dir, 'pyconfig.h')
  
  def get_scheme_names():
-Index: Python-2.7.1/Makefile.pre.in
+Index: Python-2.7.2/Makefile.pre.in
 ===================================================================
---- Python-2.7.1.orig/Makefile.pre.in
-+++ Python-2.7.1/Makefile.pre.in
-@@ -967,7 +967,6 @@
+--- Python-2.7.2.orig/Makefile.pre.in
++++ Python-2.7.2/Makefile.pre.in
+@@ -972,7 +972,6 @@
  		echo $(INSTALL_DATA) $$i $(INCLUDEPY); \
  		$(INSTALL_DATA) $$i $(DESTDIR)$(INCLUDEPY); \
  	done
@@ -65,7 +65,7 @@ Index: Python-2.7.1/Makefile.pre.in
  
  # Install the library and miscellaneous stuff needed for extending/embedding
  # This goes into $(exec_prefix)
-@@ -1001,6 +1000,8 @@
+@@ -1006,6 +1005,8 @@
  	$(INSTALL_DATA) Modules/python.o $(DESTDIR)$(LIBPL)/python.o
  	$(INSTALL_DATA) $(srcdir)/Modules/config.c.in $(DESTDIR)$(LIBPL)/config.c.in
  	$(INSTALL_DATA) Makefile $(DESTDIR)$(LIBPL)/Makefile

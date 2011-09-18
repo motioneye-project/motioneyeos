@@ -8,10 +8,10 @@ Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
  Lib/distutils/sysconfig.py |    7 ++++---
  1 files changed, 4 insertions(+), 3 deletions(-)
 
-Index: Python-2.7.1/Lib/distutils/sysconfig.py
+Index: Python-2.7.2/Lib/distutils/sysconfig.py
 ===================================================================
---- Python-2.7.1.orig/Lib/distutils/sysconfig.py
-+++ Python-2.7.1/Lib/distutils/sysconfig.py
+--- Python-2.7.2.orig/Lib/distutils/sysconfig.py
++++ Python-2.7.2/Lib/distutils/sysconfig.py
 @@ -19,13 +19,22 @@
  from distutils.errors import DistutilsPlatformError
  
@@ -56,11 +56,11 @@ Index: Python-2.7.1/Lib/distutils/sysconfig.py
      lib_dir = get_python_lib(plat_specific=1, standard_lib=1)
      return os.path.join(lib_dir, "config", "Makefile")
  
-Index: Python-2.7.1/configure.in
+Index: Python-2.7.2/configure.in
 ===================================================================
---- Python-2.7.1.orig/configure.in
-+++ Python-2.7.1/configure.in
-@@ -4424,6 +4424,21 @@
+--- Python-2.7.2.orig/configure.in
++++ Python-2.7.2/configure.in
+@@ -4328,6 +4328,21 @@
  CROSS_COMPILING=$cross_compiling
  AC_SUBST(CROSS_COMPILING)
  
