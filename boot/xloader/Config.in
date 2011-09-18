@@ -1,4 +1,4 @@
-menuconfig BR2_TARGET_XLOADER
+config BR2_TARGET_XLOADER
 	bool "X-loader"
 	depends on BR2_cortex_a8 || BR2_cortex_a9
 	help
