@@ -266,7 +266,7 @@ menu "Filesystem"
 source "package/gamin/Config.in"
 source "package/libconfig/Config.in"
 source "package/libconfuse/Config.in"
-source "package/fuse/Config.in"
+source "package/libfuse/Config.in"
 source "package/liblockfile/Config.in"
 source "package/libsysfs/Config.in"
 endmenu
