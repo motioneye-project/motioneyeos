@@ -1,0 +1,2 @@
+config BR2_PACKAGE_GTK2_THEME_HICOLOR
+	bool "hicolor (default theme)"

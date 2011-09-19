@@ -15,4 +15,4 @@ GTK2_THEME_HICOLOR_CONF_OPT = --target=$(GNU_TARGET_NAME) --host=$(GNU_TARGET_NA
 
 GTK2_THEME_HICOLOR_DEPENDENCIES = libgtk2
 
-$(eval $(call AUTOTARGETS,package,gtk2_theme_hicolor))
+$(eval $(call AUTOTARGETS,package/gtk2-themes,gtk2-theme-hicolor))
