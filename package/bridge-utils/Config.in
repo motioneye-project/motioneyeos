@@ -1,4 +1,4 @@
-config BR2_PACKAGE_BRIDGE
+config BR2_PACKAGE_BRIDGE_UTILS
 	bool "bridge-utils"
 	help
 	  Manage ethernet bridging; a way to connect networks together to
