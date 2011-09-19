@@ -9,7 +9,6 @@ LIBXCB_SITE = http://xcb.freedesktop.org/dist/
 
 LIBXCB_INSTALL_STAGING = YES
 
-LIBXCB_AUTORECONF = NO
 LIBXCB_DEPENDENCIES = \
 	host-libxslt pthread-stubs xcb-proto xlib_libXdmcp xlib_libXau \
 	host-xcb-proto host-python
