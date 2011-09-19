@@ -25,7 +25,7 @@ ifeq ($(RTAI_PATCH),)
 define RTAI_PREPARE_KERNEL
 	kver=`$(MAKE) $(LINUX_MAKE_FLAGS) -C $(LINUX_DIR) --no-print-directory -s kernelversion` ; \
 	if test -f $(RTAI_DIR)/base/arch/$(RTAI_ARCH)/patches/hal-linux-$${kver}-*patch ; then \
-		support/script/apply-patches.sh $(LINUX_DIR) 		\
+		support/scripts/apply-patches.sh $(LINUX_DIR) 		\
 			$(RTAI_DIR)/base/arch/$(RTAI_ARCH)/patches/ 	\
 			hal-linux-$${kver}-*patch ; \
 	else \
@@ -35,7 +35,7 @@ define RTAI_PREPARE_KERNEL
 endef
 else
 define RTAI_PREPARE_KERNEL
-	support/script/apply-patches.sh 	\
+	support/scripts/apply-patches.sh 	\
 		$(LINUX_DIR)			\
 		$(dir $(RTAI_PATCH))		\
 		$(notdir $(RTAI_PATCH))
