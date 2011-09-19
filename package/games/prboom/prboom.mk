@@ -5,7 +5,7 @@
 #############################################################
 PRBOOM_VERSION = 2.5.0
 PRBOOM_CONF_ENV = ac_cv_type_uid_t=yes
-PRBOOM_DEPENDENCIES = sdl SDL_net sdl_mixer
+PRBOOM_DEPENDENCIES = sdl sdl_net sdl_mixer
 
 ifeq ($(BR2_PACKAGE_LIBPNG),y)
 PRBOOM_DEPENDENCIES += libpng

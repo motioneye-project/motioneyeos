@@ -14,6 +14,4 @@ SDL_NET_INSTALL_STAGING = YES
 
 SDL_NET_DEPENDENCIES = sdl
 
-$(eval $(call AUTOTARGETS,package,SDL_net))
-
-sdl_net: SDL_net
+$(eval $(call AUTOTARGETS,package,sdl_net))
