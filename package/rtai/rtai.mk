@@ -8,7 +8,7 @@ RTAI_CONF_OPT = \
 	--with-linux-dir=$(LINUX_DIR) 	\
 	--disable-leds		      	\
 	--disable-rtailab		\
-	--with-module-dir=/lib/modules/$(LINUX_VERSION_PROBED)/kernel/rtai
+	--with-module-dir=/lib/modules/$(LINUX_VERSION_PROBED)/rtai
 
 RTAI_MAKE = $(MAKE1)
 
