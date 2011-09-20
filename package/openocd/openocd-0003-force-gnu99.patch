@@ -1,0 +1,19 @@
+force gnu99
+
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ configure.in |    1 +
+ 1 file changed, 1 insertion(+)
+
+Index: b/configure.in
+===================================================================
+--- a/configure.in
++++ b/configure.in
+@@ -28,6 +28,7 @@ AC_DISABLE_SHARED
+ AC_PROG_LIBTOOL
+ AC_SUBST(LIBTOOL_DEPS)
+ 
++CFLAGS="$CFLAGS -std=gnu99"
+ 
+ dnl configure checks required for Jim files (these are obsolete w/ C99)
+ AC_C_CONST

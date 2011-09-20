@@ -1,0 +1,29 @@
+config BR2_PACKAGE_OPENOCD
+	bool "openocd"
+	select BR2_PACKAGE_LIBUSB
+	select BR2_PACKAGE_LIBUSB_COMPAT
+	help
+	  OpenOCD - Open On-Chip Debugger
+
+	  http://openocd.berlios.de/web/
+
+if BR2_PACKAGE_OPENOCD
+
+comment "Adapters"
+
+config BR2_PACKAGE_OPENOCD_FT2XXX
+	bool "FT2xxx/FT4xxx Based JTAG Programmer"
+	select BR2_PACKAGE_LIBFTDI
+	help
+	  Enable building support for FT2232 based devices
+	  using the libftdi driver, opensource alternate of FTD2XX
+
+config BR2_PACKAGE_OPENOCD_JLINK
+	bool "Segger J-Link JTAG Programmer"
+	help
+	  Segger J-Link JTAG Programmer and clone such as Atmel SAM-ICE
+
+config BR2_PACKAGE_OPENOCD_VSLLINK
+	bool "Versaloon-Link JTAG Programmr"
+
+endif # BR2_PACKAGE_OPENOCD

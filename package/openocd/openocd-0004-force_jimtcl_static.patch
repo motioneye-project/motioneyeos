@@ -1,0 +1,25 @@
+force jimtcl to build static
+
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ jimtcl/auto.def |    5 -----
+ 1 file changed, 5 deletions(-)
+
+Index: b/jimtcl/auto.def
+===================================================================
+--- a/jimtcl/auto.def
++++ b/jimtcl/auto.def
+@@ -148,13 +148,8 @@ if {[opt-bool references]} {
+     msg-result "Enabling references"
+     define JIM_REFERENCES
+ }
+-if {[opt-bool shared with-jim-shared]} {
+-    msg-result "Building shared library"
+-    define JIM_LIBTYPE shared
+-} else {
+     msg-result "Building static library"
+     define JIM_LIBTYPE static
+-}
+ if {[opt-bool install-jim]} {
+     define install_jim 1
+ } else {
