@@ -148,6 +148,10 @@ config BR2_LINUX_KERNEL_VMLINUX
 	bool "vmlinux"
 	depends on BR2_mips || BR2_mipsel || BR2_powerpc
 
+config BR2_LINUX_KERNEL_VMLINUZ
+	bool "vmlinuz"
+	depends on BR2_mips || BR2_mipsel
+
 config BR2_LINUX_KERNEL_IMAGE_TARGET_CUSTOM
 	bool "custom target"
 	help
