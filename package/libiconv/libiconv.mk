@@ -3,12 +3,10 @@
 # libiconv
 #
 #############################################################
-LIBICONV_VERSION = 1.12
+LIBICONV_VERSION = 1.14
 LIBICONV_SOURCE = libiconv-$(LIBICONV_VERSION).tar.gz
 LIBICONV_SITE = $(BR2_GNU_MIRROR)/libiconv
-LIBICONV_AUTORECONF = NO
 LIBICONV_INSTALL_STAGING = YES
-LIBICONV_INSTALL_TARGET = YES
 
 # Remove not used preloadable libiconv.so
 define LIBICONV_TARGET_REMOVE_PRELOADABLE_LIBS
