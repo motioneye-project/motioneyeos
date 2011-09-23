@@ -1,3 +1,4 @@
+
 config BR2_PACKAGE_TAGLIB
 	bool "taglib"
 	depends on BR2_INSTALL_LIBSTDCPP
@@ -8,6 +9,14 @@ config BR2_PACKAGE_TAGLIB
           Vorbis comments in FLAC, MPC, Speex, WavPack and TrueAudio files.
 
 	  http://developer.kde.org/~wheeler/taglib.html
+
+config BR2_PACKAGE_TAGLIB_MP4
+	depends on BR2_PACKAGE_TAGLIB
+	bool "taglib mp4 support"
+
+config BR2_PACKAGE_TAGLIB_ASF
+	depends on BR2_PACKAGE_TAGLIB
+	bool "taglib wma support"
 
 comment "taglib requires a toolchain with C++ support enabled"
 	depends on !BR2_INSTALL_LIBSTDCPP
