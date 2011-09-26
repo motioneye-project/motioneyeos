@@ -16,19 +16,19 @@
 	Linux: Kernel extensions infrastructure support, Xenomai +
 	RTAI support.
 
-	Updated/fixed packages: busybox, dbus, dbus-glib, directfb,
-	dnsmasq, e2fsprogs, ethtool, fakeroot, fbdump, freetype, fuse,
-	gamin, gmp, jpeg, ipsec-tools, ipset, iptables, iw, leafpad,
-	libargtable2, libao, libconfuse, libcuefile, libcurl,
-	libevent, libreplaygain, libsamplerate, libsndfile, libsoup,
-	libsvgtiny, lighttpd, lzo, lzop, mpd, mpfr, mpg123, musepack,
-	mysql_client, netcat, netsnmp, ntfs-3g, ntfsprogs, openssh,
-	openssl, python, qt, radvd, samba, sdl_sound, sqlite, squid,
-	sylpheed, taglib, tar, tcpreplay, tslib, usbutils, util-linux,
-	xterm
+	Updated/fixed packages: acpid, busybox, dbus, dbus-glib,
+	directfb, dnsmasq, e2fsprogs, ethtool, fakeroot, fbdump,
+	freetype, fuse, gamin, gmp, jpeg, ipsec-tools, ipset,
+	iptables, iw, kexec, leafpad, libargtable2, libao, libconfuse,
+	libcuefile, libcurl, libevent, libreplaygain, libsamplerate,
+	libsndfile, libsoup, libsvgtiny, lighttpd, lzo, lzop, mpd,
+	mpfr, mpg123, musepack, mysql_client, netcat, netsnmp,
+	ntfs-3g, ntfsprogs, openssh, openssl, python, qt, radvd,
+	samba, sdl_sound, sqlite, squid, sylpheed, taglib, tar,
+	tcpreplay, tslib, usbutils, util-linux, valgrind, xterm
 
-	New packages: fluxbox, libev, libftdi, libgeotiff, portaudio,
-	rtai, xenomai.
+	New packages: bluez-utils, cifs-utils, fluxbox, libev,
+	libftdi, libgeotiff, ngrep, openocd, portaudio, rtai, xenomai.
 
 	Issues resolved (http://bugs.uclibc.org):
 
