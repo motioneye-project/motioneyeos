@@ -7,7 +7,7 @@ config BR2_PACKAGE_KEXEC
 	  http://www.kernel.org/pub/linux/kernel/people/horms/kexec-tools/
 
 config BR2_PACKAGE_KEXEC_ZLIB
-	bool "Kexec with zlib support"
+	bool "zlib support"
 	depends on BR2_PACKAGE_KEXEC
 	select BR2_PACKAGE_ZLIB
 	help
