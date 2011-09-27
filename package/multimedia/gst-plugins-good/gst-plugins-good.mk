@@ -54,12 +54,6 @@ else
 GST_PLUGINS_GOOD_CONF_OPT += --disable-zlib
 endif
 
-ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_VIDEOFILTER),y)
-GST_PLUGINS_GOOD_CONF_OPT += --enable-videofilter
-else
-GST_PLUGINS_GOOD_CONF_OPT += --disable-videofilter
-endif
-
 ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_ALPHA),y)
 GST_PLUGINS_GOOD_CONF_OPT += --enable-alpha
 else
@@ -132,6 +126,24 @@ else
 GST_PLUGINS_GOOD_CONF_OPT += --disable-flv
 endif
 
+ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_FLX),y)
+GST_PLUGINS_GOOD_CONF_OPT += --enable-flx
+else
+GST_PLUGINS_GOOD_CONF_OPT += --disable-flx
+endif
+
+ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_GOOM),y)
+GST_PLUGINS_GOOD_CONF_OPT += --enable-goom
+else
+GST_PLUGINS_GOOD_CONF_OPT += --disable-goom
+endif
+
+ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_GOOM2K1),y)
+GST_PLUGINS_GOOD_CONF_OPT += --enable-goom2k1
+else
+GST_PLUGINS_GOOD_CONF_OPT += --disable-goom2k1
+endif
+
 ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_ID3DEMUX),y)
 GST_PLUGINS_GOOD_CONF_OPT += --enable-id3demux
 else
@@ -154,24 +166,6 @@ ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_INTERLEAVE),y)
 GST_PLUGINS_GOOD_CONF_OPT += --enable-interleave
 else
 GST_PLUGINS_GOOD_CONF_OPT += --disable-interleave
-endif
-
-ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_FLX),y)
-GST_PLUGINS_GOOD_CONF_OPT += --enable-flx
-else
-GST_PLUGINS_GOOD_CONF_OPT += --disable-flx
-endif
-
-ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_GOOM),y)
-GST_PLUGINS_GOOD_CONF_OPT += --enable-goom
-else
-GST_PLUGINS_GOOD_CONF_OPT += --disable-goom
-endif
-
-ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_GOOM2K1),y)
-GST_PLUGINS_GOOD_CONF_OPT += --enable-goom2k1
-else
-GST_PLUGINS_GOOD_CONF_OPT += --disable-goom2k1
 endif
 
 ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_LAW),y)
@@ -274,6 +268,12 @@ ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_VIDEOCROP),y)
 GST_PLUGINS_GOOD_CONF_OPT += --enable-videocrop
 else
 GST_PLUGINS_GOOD_CONF_OPT += --disable-videocrop
+endif
+
+ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_VIDEOFILTER),y)
+GST_PLUGINS_GOOD_CONF_OPT += --enable-videofilter
+else
+GST_PLUGINS_GOOD_CONF_OPT += --disable-videofilter
 endif
 
 ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_VIDEOMIXER),y)
