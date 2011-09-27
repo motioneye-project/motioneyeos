@@ -7,5 +7,14 @@ config BR2_PACKAGE_GSTREAMER
 
 	  http://gstreamer.freedesktop.org/
 
+config BR2_PACKAGE_GSTREAMER_GST_DEBUG
+	bool "enable gst-debug trace support"
+	default y
+	depends on BR2_PACKAGE_GSTREAMER
+	help
+	  Enable support for the gst-debug tracing functionality
+	  in gstreamer. This has limited CPU overhead, but does
+	  increase the rootfs size somewhat.
+
 comment "gstreamer requires a toolchain with WCHAR support"
 	depends on !BR2_USE_WCHAR

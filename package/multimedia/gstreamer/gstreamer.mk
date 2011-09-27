@@ -1,3 +1,4 @@
+
 #############################################################
 #
 # gstreamer
@@ -19,7 +20,8 @@ GSTREAMER_CONF_OPT = \
 		--disable-examples \
 		--disable-tests \
 		--disable-failing-tests \
-		--disable-loadsave
+		--disable-loadsave \
+		$(if $(BR2_PACKAGE_GSTREAMER_GST_DEBUG),,--disable-gst-debug)
 
 GSTREAMER_DEPENDENCIES = libglib2 host-pkg-config
 
