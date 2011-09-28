@@ -37,7 +37,7 @@ define DMALLOC_INSTALL_STAGING_CMDS
 		bindir="$(STAGING_DIR)/usr/bin" \
 		libdir="$(STAGING_DIR)/usr/lib" \
 		shlibdir="$(STAGING_DIR)/usr/lib" \
-		includedir="$(STAGING_DIR)/usr/share/info/" \
+		infodir="$(STAGING_DIR)/usr/share/info/" \
 		-C $(@D) install
 endef
 
