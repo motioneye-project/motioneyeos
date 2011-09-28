@@ -338,6 +338,7 @@ source "package/libupnp/Config.in"
 endmenu
 
 menu "Other"
+source "package/fftw/Config.in"
 source "package/libargtable2/Config.in"
 source "package/argp-standalone/Config.in"
 source "package/libatomic_ops/Config.in"

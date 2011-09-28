@@ -1,0 +1,11 @@
+config BR2_PACKAGE_FFTW
+	bool "fftw"
+	help
+	  Library for computing Fast Fourier Transforms.
+
+	  This library computes Fast Fourier Transforms (FFT) in one
+	  or more dimensions.  It is extremely fast. This package
+	  contains the shared library version of the fftw libraries in
+	  double precision.
+
+	  http://www.fftw.org
