@@ -40,12 +40,6 @@ else
 GST_PLUGINS_BAD_CONF_OPT += --disable-asfmux
 endif
 
-ifeq ($(BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_AUDIOPARSERS),y)
-GST_PLUGINS_BAD_CONF_OPT += --enable-audioparsers
-else
-GST_PLUGINS_BAD_CONF_OPT += --disable-audioparsers
-endif
-
 ifeq ($(BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_AUTOCONVERT),y)
 GST_PLUGINS_BAD_CONF_OPT += --enable-autoconvert
 else
