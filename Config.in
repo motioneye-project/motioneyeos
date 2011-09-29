@@ -32,6 +32,10 @@ config BR2_GIT
 	string "Git command"
 	default "git"
 
+config BR2_LOCALFILES
+	string "Local files retrieval command"
+	default "cp"
+
 config BR2_ZCAT
 	string "zcat command"
 	default "gzip -d -c"
