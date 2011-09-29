@@ -16,4 +16,4 @@ endef
 
 GST_DSP_DEPENDENCIES = gstreamer tidsp-binaries
 
-$(eval $(call GENTARGETS,package/multimedia,gst-dsp))
+$(eval $(call GENTARGETS))

@@ -20,4 +20,4 @@ define XAVANTE_UNINSTALL_TARGET_CMDS
 	rm -f "$(TARGET_DIR)/usr/share/sajax.lua"
 endef
 
-$(eval $(call GENTARGETS,package,xavante))
+$(eval $(call GENTARGETS))

@@ -27,5 +27,5 @@ define HOST_GENROMFS_INSTALL_CMDS
   $(HOST_MAKE_ENV) $(MAKE) -C $(@D) PREFIX=$(HOST_DIR) install
 endef
 
-$(eval $(call GENTARGETS,package,genromfs))
-$(eval $(call GENTARGETS,package,genromfs,host))
+$(eval $(call GENTARGETS))
+$(eval $(call GENTARGETS,host))

@@ -26,4 +26,4 @@ define SYSLINUX_INSTALL_IMAGES_CMDS
 	done
 endef
 
-$(eval $(call GENTARGETS,boot,syslinux))
+$(eval $(call GENTARGETS))

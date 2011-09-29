@@ -31,5 +31,5 @@ define HOST_MAKEDEVS_INSTALL_CMDS
 	install -D -m 755 $(@D)/makedevs $(HOST_DIR)/usr/bin/makedevs
 endef
 
-$(eval $(call GENTARGETS,package,makedevs))
-$(eval $(call GENTARGETS,package,makedevs,host))
+$(eval $(call GENTARGETS))
+$(eval $(call GENTARGETS,host))

@@ -64,4 +64,4 @@ define DNSMASQ_UNINSTALL_TARGET_CMDS
 	rm -f $(TARGET_DIR)/usr/share/man/man8/dnsmasq.8
 endef
 
-$(eval $(call GENTARGETS,package,dnsmasq))
+$(eval $(call GENTARGETS))

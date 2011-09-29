@@ -38,4 +38,4 @@ define OLSR_CLEAN_CMDS
 	-$(MAKE) -C $(@D) clean
 endef
 
-$(eval $(call GENTARGETS,package,olsr))
+$(eval $(call GENTARGETS))

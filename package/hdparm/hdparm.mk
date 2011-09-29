@@ -33,4 +33,4 @@ define HDPARM_CLEAN_CMDS
 	-$(MAKE) -C $(@D) clean
 endef
 
-$(eval $(call GENTARGETS,package,hdparm))
+$(eval $(call GENTARGETS))

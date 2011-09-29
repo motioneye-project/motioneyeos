@@ -34,5 +34,5 @@ define HOST_LIBCAP_INSTALL_CMDS
 		prefix=/usr lib=lib install
 endef
 
-$(eval $(call GENTARGETS,package,libcap))
-$(eval $(call GENTARGETS,package,libcap,host))
+$(eval $(call GENTARGETS))
+$(eval $(call GENTARGETS,host))

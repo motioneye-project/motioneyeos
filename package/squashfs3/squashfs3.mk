@@ -25,6 +25,6 @@ define HOST_SQUASHFS3_INSTALL_CMDS
  $(HOST_MAKE_ENV) $(MAKE) -C $(@D)/squashfs-tools/ INSTALL_DIR=$(HOST_DIR)/usr/bin install
 endef
 
-$(eval $(call GENTARGETS,package,squashfs3))
-$(eval $(call GENTARGETS,package,squashfs3,host))
+$(eval $(call GENTARGETS))
+$(eval $(call GENTARGETS,host))
 

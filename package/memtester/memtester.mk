@@ -26,4 +26,4 @@ define MEMTESTER_CLEAN_CMDS
 	-$(MAKE) -C $(@D) clean
 endef
 
-$(eval $(call GENTARGETS,package,memtester))
+$(eval $(call GENTARGETS))

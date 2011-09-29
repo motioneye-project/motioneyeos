@@ -10,4 +10,4 @@ define TIDSP_BINARIES_UNINSTALL_TARGET_CMDS
 	$(RM) -r $(TARGET_DIR)/lib/dsp
 endef
 
-$(eval $(call GENTARGETS,package/multimedia,tidsp-binaries))
+$(eval $(call GENTARGETS))

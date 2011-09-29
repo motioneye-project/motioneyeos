@@ -17,5 +17,5 @@ define HOST_CMAKE_INSTALL_CMDS
  $(HOST_MAKE_ENV) $(MAKE) -C $(@D) install
 endef
 
-$(eval $(call GENTARGETS,package,cmake))
-$(eval $(call GENTARGETS,package,cmake,host))
+$(eval $(call GENTARGETS))
+$(eval $(call GENTARGETS,host))

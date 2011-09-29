@@ -24,4 +24,4 @@ define MEMSTAT_UNINSTALL_TARGET_CMDS
 	rm -f $(TARGET_DIR)/usr/bin/memstat
 endef
 
-$(eval $(call GENTARGETS,package,memstat))
+$(eval $(call GENTARGETS))

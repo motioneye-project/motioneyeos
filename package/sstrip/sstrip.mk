@@ -41,5 +41,5 @@ define HOST_SSTRIP_UNINSTALL_CMDS
 	rm -f $(HOST_DIR)/usr/bin/$(HOST_SSTRIP_BINARY)
 endef
 
-$(eval $(call GENTARGETS,package,sstrip))
-$(eval $(call GENTARGETS,package,sstrip,host))
+$(eval $(call GENTARGETS))
+$(eval $(call GENTARGETS,host))

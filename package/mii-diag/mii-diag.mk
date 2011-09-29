@@ -32,4 +32,4 @@ define MII_DIAG_CLEAN_CMDS
 	$(MAKE) -C $(@D) clean
 endef
 
-$(eval $(call GENTARGETS,package,mii-diag))
+$(eval $(call GENTARGETS))

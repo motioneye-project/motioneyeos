@@ -30,6 +30,6 @@ define HOST_LIBXML_PARSER_PERL_INSTALL_CMDS
  $(HOST_MAKE_ENV) $(MAKE) -C $(@D) install
 endef
 
-$(eval $(call GENTARGETS,package,libxml-parser-perl))
-$(eval $(call GENTARGETS,package,libxml-parser-perl,host))
+$(eval $(call GENTARGETS))
+$(eval $(call GENTARGETS,host))
 

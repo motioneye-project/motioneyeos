@@ -27,4 +27,4 @@ define LMBENCH_CLEAN_CMDS
 	$(MAKE) -C $(@D)/src clean
 endef
 
-$(eval $(call GENTARGETS,package,lmbench))
+$(eval $(call GENTARGETS))

@@ -30,4 +30,4 @@ define ACPID_CLEAN_CMDS
 	-$(MAKE) -C $(@D) clean
 endef
 
-$(eval $(call GENTARGETS,package,acpid))
+$(eval $(call GENTARGETS))

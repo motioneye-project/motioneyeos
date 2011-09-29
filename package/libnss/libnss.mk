@@ -64,4 +64,4 @@ define LIBNSS_CLEAN_CMDS
 					BUILD_OPT=1
 endef
 
-$(eval $(call GENTARGETS,package,libnss))
+$(eval $(call GENTARGETS))

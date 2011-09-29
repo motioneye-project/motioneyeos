@@ -45,4 +45,4 @@ define PCIUTILS_INSTALL_TARGET_CMDS
 		SHARED=$(PCIUTILS_SHARED) install-lib
 endef
 
-$(eval $(call GENTARGETS,package,pciutils))
+$(eval $(call GENTARGETS))

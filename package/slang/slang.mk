@@ -51,4 +51,4 @@ define SLANG_CLEAN_CMDS
 	$(MAKE) -C $(@D) clean
 endef
 
-$(eval $(call GENTARGETS,package,slang))
+$(eval $(call GENTARGETS))

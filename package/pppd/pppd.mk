@@ -102,4 +102,4 @@ define PPPD_INSTALL_TARGET_CMDS
 	done
 endef
 
-$(eval $(call GENTARGETS,package,pppd))
+$(eval $(call GENTARGETS))

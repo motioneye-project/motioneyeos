@@ -43,4 +43,4 @@ define PORTMAP_UNINSTALL_TARGET_CMDS
 		$(addsuffix .8,$(PORTMAP_SBINS)))
 endef
 
-$(eval $(call GENTARGETS,package,portmap))
+$(eval $(call GENTARGETS))

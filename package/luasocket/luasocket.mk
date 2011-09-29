@@ -33,4 +33,4 @@ define LUASOCKET_CLEAN_CMDS
 	$(MAKE) -C $(@D) -f makefile clean
 endef
 
-$(eval $(call GENTARGETS,package,luasocket))
+$(eval $(call GENTARGETS))

@@ -14,5 +14,5 @@ define HOST_CLOOP_INSTALL_CMDS
 	$(INSTALL) -m 755 $(@D)/extract_compressed_fs $(HOST_DIR)/usr/bin
 endef
 
-$(eval $(call GENTARGETS,package,cloop))
-$(eval $(call GENTARGETS,package,cloop,host))
+$(eval $(call GENTARGETS))
+$(eval $(call GENTARGETS,host))

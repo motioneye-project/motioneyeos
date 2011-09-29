@@ -22,4 +22,4 @@ define NUTTCP_UNINSTALL_TARGET_CMDS
 	rm -f $(TARGET_DIR)/usr/bin/nuttcp
 endef
 
-$(eval $(call GENTARGETS,package,nuttcp))
+$(eval $(call GENTARGETS))

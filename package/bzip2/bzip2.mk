@@ -101,5 +101,5 @@ define HOST_BZIP2_INSTALL_CMDS
 	$(MAKE) PREFIX=$(HOST_DIR)/usr -C $(@D) install
 endef
 
-$(eval $(call GENTARGETS,package,bzip2))
-$(eval $(call GENTARGETS,package,bzip2,host))
+$(eval $(call GENTARGETS))
+$(eval $(call GENTARGETS,host))

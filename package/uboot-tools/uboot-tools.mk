@@ -51,5 +51,5 @@ define HOST_UBOOT_TOOLS_INSTALL_CMDS
 	install -m 0755 -D $(@D)/tools/mkimage $(HOST_DIR)/usr/bin
 endef
 
-$(eval $(call GENTARGETS,package,uboot-tools))
-$(eval $(call GENTARGETS,package,uboot-tools,host))
+$(eval $(call GENTARGETS))
+$(eval $(call GENTARGETS,host))

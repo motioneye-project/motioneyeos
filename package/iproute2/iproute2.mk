@@ -54,4 +54,4 @@ define IPROUTE2_UNINSTALL_TARGET_CMDS
 	rm -f $(addprefix $(TARGET_DIR)/sbin/, $(IPROUTE2_TARGET_SBINS))
 endef
 
-$(eval $(call GENTARGETS,package,iproute2))
+$(eval $(call GENTARGETS))

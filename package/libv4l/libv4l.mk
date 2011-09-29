@@ -38,5 +38,5 @@ define LIBV4L_INSTALL_TARGET_CMDS
 			DESTDIR=$(TARGET_DIR) $(LIBV4L_MAKE_OPTS) install; done
 endef
 
-$(eval $(call GENTARGETS,package,libv4l))
+$(eval $(call GENTARGETS))
 

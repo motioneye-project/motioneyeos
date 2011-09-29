@@ -36,4 +36,4 @@ endef
 
 endif
 
-$(eval $(call GENTARGETS,package,gdisk))
+$(eval $(call GENTARGETS))

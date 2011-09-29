@@ -179,7 +179,7 @@ endef
 
 include linux/linux-ext-*.mk
 
-$(eval $(call GENTARGETS,,linux))
+$(eval $(call GENTARGETS))
 
 linux-menuconfig linux-xconfig linux-gconfig linux-nconfig linux26-menuconfig linux26-xconfig linux26-gconfig linux26-nconfig: dirs $(LINUX_DIR)/.stamp_configured
 	$(MAKE) $(LINUX_MAKE_FLAGS) -C $(LINUX_DIR) \

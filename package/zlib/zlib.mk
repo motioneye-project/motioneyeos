@@ -73,5 +73,5 @@ define HOST_ZLIB_UNINSTALL_TARGET_CMDS
 	$(MAKE1) -C $(@D) uninstall
 endef
 
-$(eval $(call GENTARGETS,package,zlib))
-$(eval $(call GENTARGETS,package,zlib,host))
+$(eval $(call GENTARGETS))
+$(eval $(call GENTARGETS,host))

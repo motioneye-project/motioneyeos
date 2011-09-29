@@ -39,4 +39,4 @@ define LIBSVGTINY_CLEAN_CMDS
 	$(TARGET_CONFIGURE_OPTS) $(MAKE) -C $(@D) clean
 endef
 
-$(eval $(call GENTARGETS,package,libsvgtiny))
+$(eval $(call GENTARGETS))

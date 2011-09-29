@@ -24,7 +24,7 @@ define WHETSTONE_UNINSTALL_TARGET_CMDS
 	rm -f $(TARGET_DIR)/usr/bin/whetstone
 endef
 
-$(eval $(call GENTARGETS,package,whetstone))
+$(eval $(call GENTARGETS))
 
 $(BUILD_DIR)/whetstone-$(WHETSTONE_VERSION)/.stamp_extracted:
 	@$(call MESSAGE,"Extracting")

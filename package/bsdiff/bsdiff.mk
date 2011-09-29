@@ -28,4 +28,4 @@ define BSDIFF_CLEAN_CMDS
 	rm -f $(@D)/bsdiff $(@D)/bspatch
 endef
 
-$(eval $(call GENTARGETS,package,bsdiff))
+$(eval $(call GENTARGETS))

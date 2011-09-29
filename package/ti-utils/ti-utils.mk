@@ -28,4 +28,4 @@ define TI_UTILS_UNINSTALL_TARGET_CMDS
 	rm -fr $(TARGET_DIR)/usr/share/ti-utils
 endef
 
-$(eval $(call GENTARGETS,package,ti-utils))
+$(eval $(call GENTARGETS))

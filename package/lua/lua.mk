@@ -121,4 +121,4 @@ define LUA_CLEAN_CMDS
 	-$(MAKE) -C $(@D) clean
 endef
 
-$(eval $(call GENTARGETS,package,lua))
+$(eval $(call GENTARGETS))

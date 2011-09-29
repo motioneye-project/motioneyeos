@@ -28,4 +28,4 @@ define LUAFILESYSTEM_CLEAN_CMDS
 	$(MAKE) -C $(@D) clean
 endef
 
-$(eval $(call GENTARGETS,package,luafilesystem))
+$(eval $(call GENTARGETS))

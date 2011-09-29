@@ -25,4 +25,4 @@ define PPTP_LINUX_UNINSTALL_TARGET_CMDS
 	rm -f $(TARGET_DIR)/usr/share/man/man8/pptp.8
 endef
 
-$(eval $(call GENTARGETS,package,pptp-linux))
+$(eval $(call GENTARGETS))

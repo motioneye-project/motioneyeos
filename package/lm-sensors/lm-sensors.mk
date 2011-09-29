@@ -42,4 +42,4 @@ define LM_SENSORS_CLEAN_CMDS
 	-$(MAKE) -C $(@D) clean
 endef
 
-$(eval $(call GENTARGETS,package,lm-sensors))
+$(eval $(call GENTARGETS))

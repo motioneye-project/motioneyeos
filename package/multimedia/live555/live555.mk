@@ -45,4 +45,4 @@ define LIVE555_UNINSTALL_TARGET_CMDS
 	done
 endef
 
-$(eval $(call GENTARGETS,package/multimedia,live555))
+$(eval $(call GENTARGETS))

@@ -18,4 +18,4 @@ define WSAPI_UNINSTALL_TARGET_CMDS
 	rm -rf "$(TARGET_DIR)/usr/share/lua/wsapi"
 endef
 
-$(eval $(call GENTARGETS,package,wsapi))
+$(eval $(call GENTARGETS))

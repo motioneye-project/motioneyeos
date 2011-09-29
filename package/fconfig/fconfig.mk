@@ -25,4 +25,4 @@ define FCONFIG_CLEAN_CMDS
 	-$(MAKE) -C $(@D) clean
 endef
 
-$(eval $(call GENTARGETS,package,fconfig))
+$(eval $(call GENTARGETS))

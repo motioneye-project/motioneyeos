@@ -27,4 +27,4 @@ define EBTABLES_UNINSTALL_TARGET_CMDS
 	rm -f $(TARGET_DIR)/sbin/ebtables
 endef
 
-$(eval $(call GENTARGETS,package,ebtables))
+$(eval $(call GENTARGETS))

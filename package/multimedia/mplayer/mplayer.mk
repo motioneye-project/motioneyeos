@@ -145,4 +145,4 @@ define MPLAYER_CLEAN_CMDS
 	$(MAKE) -C $(@D) clean
 endef
 
-$(eval $(call GENTARGETS,package/multimedia,mplayer))
+$(eval $(call GENTARGETS))

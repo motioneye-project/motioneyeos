@@ -18,4 +18,4 @@ define LIBERATION_CLEAN_CMDS
 	rm -rf $(LIBERATION_TARGET_DIR)
 endef
 
-$(eval $(call GENTARGETS,package,liberation))
+$(eval $(call GENTARGETS))

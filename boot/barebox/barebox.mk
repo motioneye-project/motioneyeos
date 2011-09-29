@@ -72,7 +72,7 @@ define BAREBOX_INSTALL_TARGET_CMDS
 endef
 endif
 
-$(eval $(call GENTARGETS,boot,barebox))
+$(eval $(call GENTARGETS))
 
 ifeq ($(BR2_TARGET_BAREBOX),y)
 # we NEED a board defconfig file unless we're at make source

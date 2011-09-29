@@ -39,4 +39,4 @@ define LTRACE_INSTALL_TARGET_CMDS
 	$(LTRACE_INSTALL_DOCUMENTATION)
 endef
 
-$(eval $(call GENTARGETS,package,ltrace))
+$(eval $(call GENTARGETS))

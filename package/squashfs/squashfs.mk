@@ -72,5 +72,5 @@ define HOST_SQUASHFS_INSTALL_CMDS
    -C $(@D)/squashfs-tools/ INSTALL_DIR=$(HOST_DIR)/usr/bin install
 endef
 
-$(eval $(call GENTARGETS,package,squashfs))
-$(eval $(call GENTARGETS,package,squashfs,host))
+$(eval $(call GENTARGETS))
+$(eval $(call GENTARGETS,host))

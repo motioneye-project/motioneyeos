@@ -35,4 +35,4 @@ define MIDORI_INSTALL_TARGET_CMDS
        (cd $(@D); ./waf --destdir=$(TARGET_DIR) install)
 endef
 
-$(eval $(call GENTARGETS,package,midori))
+$(eval $(call GENTARGETS))

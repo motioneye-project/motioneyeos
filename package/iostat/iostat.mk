@@ -28,4 +28,4 @@ define IOSTAT_UNINSTALL_TARGET_CMDS
 	rm -f $(TARGET_DIR)/usr/share/man/man8/iostat.8
 endef
 
-$(eval $(call GENTARGETS,package,iostat))                                                   
+$(eval $(call GENTARGETS))
