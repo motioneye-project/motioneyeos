@@ -20,5 +20,5 @@ CDRKIT_CONF_OPT += -DCMAKE_EXE_LINKER_FLAGS="$(TARGET_LDFLAGS)"
 HOST_CDRKIT_CONF_OPT += -DCMAKE_C_FLAGS="-I$(HOST_DIR)/usr/include"
 HOST_CDRKIT_CONF_OPT += -DCMAKE_EXE_LINKER_FLAGS="$(HOST_LDFLAGS)"
 
-$(eval $(call CMAKETARGETS,package,cdrkit))
-$(eval $(call CMAKETARGETS,package,cdrkit,host))
+$(eval $(call CMAKETARGETS))
+$(eval $(call CMAKETARGETS,host))

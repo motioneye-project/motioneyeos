@@ -24,4 +24,4 @@ ifneq ($(BR2_HAVE_DEVFILES),y)
 TAGLIB_POST_INSTALL_TARGET_HOOKS += TAGLIB_REMOVE_DEVFILE
 endif
 
-$(eval $(call CMAKETARGETS,package/multimedia,taglib))
+$(eval $(call CMAKETARGETS))
