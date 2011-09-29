@@ -309,6 +309,13 @@ else ifeq ($(BR2_TOOLCHAIN_CTNG),y)
 include toolchain/toolchain-crosstool-ng.mk
 endif
 
+# Include the package override file if one has been provided in the
+# configuration.
+PACKAGE_OVERRIDE_FILE=$(call qstrip,$(BR2_PACKAGE_OVERRIDE_FILE))
+ifneq ($(PACKAGE_OVERRIDE_FILE),)
+-include $(PACKAGE_OVERRIDE_FILE)
+endif
+
 include package/*/*.mk
 
 include boot/common.mk

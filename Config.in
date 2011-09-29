@@ -334,6 +334,16 @@ config BR2_HAVE_DEVFILES
 	  Install headers and static libraries in the
 	  target filesystem
 
+config BR2_PACKAGE_OVERRIDE_FILE
+	string "location of a package override file"
+	default "$(TOPDIR)/local.mk"
+	help
+	  A package override file is a short makefile that contains
+	  variable definitions of the form <pkg>_OVERRIDE_SRCDIR,
+	  which allows to tell Buildroot to use an existing directory
+	  as the source directory for a particular package. See the
+	  Buildroot documentation for more details on this feature.
+
 endmenu
 
 source "toolchain/Config.in"
