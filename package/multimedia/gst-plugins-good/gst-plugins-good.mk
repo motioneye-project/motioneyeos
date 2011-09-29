@@ -3,7 +3,7 @@
 # gst-plugins-good
 #
 #############################################################
-GST_PLUGINS_GOOD_VERSION = 0.10.28
+GST_PLUGINS_GOOD_VERSION = 0.10.30
 GST_PLUGINS_GOOD_SOURCE = gst-plugins-good-$(GST_PLUGINS_GOOD_VERSION).tar.bz2
 GST_PLUGINS_GOOD_SITE = http://gstreamer.freedesktop.org/src/gst-plugins-good
 
@@ -70,6 +70,12 @@ ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_AUDIOFX),y)
 GST_PLUGINS_GOOD_CONF_OPT += --enable-audiofx
 else
 GST_PLUGINS_GOOD_CONF_OPT += --disable-audiofx
+endif
+
+ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_AUDIOPARSERS),y)
+GST_PLUGINS_GOOD_CONF_OPT += --enable-audioparsers
+else
+GST_PLUGINS_GOOD_CONF_OPT += --disable-audioparsers
 endif
 
 ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_AUPARSE),y)
@@ -168,6 +174,12 @@ else
 GST_PLUGINS_GOOD_CONF_OPT += --disable-interleave
 endif
 
+ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_ISOMP4),y)
+GST_PLUGINS_GOOD_CONF_OPT += --enable-isomp4
+else
+GST_PLUGINS_GOOD_CONF_OPT += --disable-isomp4
+endif
+
 ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_LAW),y)
 GST_PLUGINS_GOOD_CONF_OPT += --enable-law
 else
@@ -202,12 +214,6 @@ ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_MULTIPART),y)
 GST_PLUGINS_GOOD_CONF_OPT += --enable-multipart
 else
 GST_PLUGINS_GOOD_CONF_OPT += --disable-multipart
-endif
-
-ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_QTDEMUX),y)
-GST_PLUGINS_GOOD_CONF_OPT += --enable-qtdemux
-else
-GST_PLUGINS_GOOD_CONF_OPT += --disable-qtdemux
 endif
 
 ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_REPLAYGAIN),y)
