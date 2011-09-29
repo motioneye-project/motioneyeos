@@ -26,4 +26,4 @@ endef
 LIBMPEG2_POST_INSTALL_TARGET_HOOKS += LIBMPEG2_REMOVE_BINS
 endif
 
-$(eval $(call AUTOTARGETS,package/multimedia,libmpeg2))
+$(eval $(call AUTOTARGETS))

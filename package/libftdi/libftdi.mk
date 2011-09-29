@@ -20,4 +20,4 @@ else
 LIBFDTI_CONF_OPT += --disable-libftdipp
 endif
 
-$(eval $(call AUTOTARGETS,package,libftdi))
+$(eval $(call AUTOTARGETS))

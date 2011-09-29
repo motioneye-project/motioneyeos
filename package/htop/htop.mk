@@ -10,4 +10,4 @@ HTOP_SITE = http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/htop/$(HTOP_VERS
 HTOP_DEPENDENCIES = ncurses
 HTOP_AUTORECONF = YES
 
-$(eval $(call AUTOTARGETS,package,htop))
+$(eval $(call AUTOTARGETS))

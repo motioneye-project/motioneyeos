@@ -13,5 +13,5 @@ XLIB_LIBXKBFILE_DEPENDENCIES = xlib_libX11 xproto_kbproto
 
 HOST_XLIB_LIBXKBFILE_DEPENDENCIES = host-xlib_libX11 host-xproto_kbproto
 
-$(eval $(call AUTOTARGETS,package/x11r7,xlib_libxkbfile))
-$(eval $(call AUTOTARGETS,package/x11r7,xlib_libxkbfile,host))
+$(eval $(call AUTOTARGETS))
+$(eval $(call AUTOTARGETS,host))

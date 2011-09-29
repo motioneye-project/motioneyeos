@@ -23,4 +23,4 @@ endef
 
 RSYSLOG_POST_INSTALL_TARGET_HOOKS += RSYSLOG_INSTALL_CONF_SCRIPT
 
-$(eval $(call AUTOTARGETS,package,rsyslog))
+$(eval $(call AUTOTARGETS))

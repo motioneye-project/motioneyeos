@@ -195,4 +195,4 @@ endef
 
 PHP_CONF_ENV += CFLAGS="$(PHP_CFLAGS)"
 
-$(eval $(call AUTOTARGETS,package,php))
+$(eval $(call AUTOTARGETS))

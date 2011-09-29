@@ -20,4 +20,4 @@ else
 FLAC_CONF_OPT += --disable-ogg
 endif
 
-$(eval $(call AUTOTARGETS,package/multimedia,flac))
+$(eval $(call AUTOTARGETS))

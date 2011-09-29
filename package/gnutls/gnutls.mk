@@ -11,4 +11,4 @@ GNUTLS_DEPENDENCIES = libgcrypt
 GNUTLS_CONF_OPT += --without-libgcrypt-prefix
 GNUTLS_INSTALL_STAGING = YES
 
-$(eval $(call AUTOTARGETS,package,gnutls))
+$(eval $(call AUTOTARGETS))

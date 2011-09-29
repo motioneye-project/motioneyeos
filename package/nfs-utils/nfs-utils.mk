@@ -29,4 +29,4 @@ endef
 
 NFS_UTILS_POST_INSTALL_TARGET_HOOKS += NFS_UTILS_INSTALL_FIXUP
 
-$(eval $(call AUTOTARGETS,package,nfs-utils))
+$(eval $(call AUTOTARGETS))

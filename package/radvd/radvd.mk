@@ -14,4 +14,4 @@ endef
 
 RADVD_POST_INSTALL_TARGET_HOOKS += RADVD_INSTALL_INITSCRIPT
 
-$(eval $(call AUTOTARGETS,package,radvd))
+$(eval $(call AUTOTARGETS))

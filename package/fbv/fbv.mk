@@ -33,4 +33,4 @@ define FBV_CLEAN_CMDS
 	-$(MAKE) -C $(@D) clean
 endef
 
-$(eval $(call AUTOTARGETS,package,fbv))
+$(eval $(call AUTOTARGETS))

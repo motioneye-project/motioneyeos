@@ -48,6 +48,6 @@ define CVS_INSTALL_TARGET_CMDS
 	install -D $(@D)/src/cvs $(TARGET_DIR)/usr/bin/cvs
 endef
 
-$(eval $(call AUTOTARGETS,package,cvs))
+$(eval $(call AUTOTARGETS))
 
 

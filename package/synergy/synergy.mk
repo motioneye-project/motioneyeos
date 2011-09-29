@@ -12,4 +12,4 @@ SYNERGY_CONF_OPT = --x-includes=$(STAGING_DIR)/usr/include/X11 \
 
 SYNERGY_DEPENDENCIES = xserver_xorg-server xlib_libXtst
 
-$(eval $(call AUTOTARGETS,package,synergy))
+$(eval $(call AUTOTARGETS))

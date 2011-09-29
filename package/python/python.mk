@@ -159,5 +159,5 @@ PYTHON_POST_INSTALL_TARGET_HOOKS += PYTHON_REMOVE_USELESS_FILES
 
 PYTHON_AUTORECONF = YES
 
-$(eval $(call AUTOTARGETS,package,python))
-$(eval $(call AUTOTARGETS,package,python,host))
+$(eval $(call AUTOTARGETS))
+$(eval $(call AUTOTARGETS,host))

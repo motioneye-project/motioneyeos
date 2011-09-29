@@ -10,4 +10,4 @@ XAPP_XSET_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_XSET_AUTORECONF = NO
 XAPP_XSET_DEPENDENCIES = xlib_libXfontcache xlib_libXmu
 
-$(eval $(call AUTOTARGETS,package/x11r7,xapp_xset))
+$(eval $(call AUTOTARGETS))

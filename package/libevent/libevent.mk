@@ -21,4 +21,4 @@ ifneq ($(BR2_PACKAGE_PYTHON),y)
 LIBEVENT_POST_INSTALL_TARGET_HOOKS += LIBEVENT_REMOVE_PYSCRIPT
 endif
 
-$(eval $(call AUTOTARGETS,package,libevent))
+$(eval $(call AUTOTARGETS))

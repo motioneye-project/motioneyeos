@@ -15,4 +15,4 @@ POPT_CONF_ENV += am_cv_lib_iconv=yes
 POPT_CONF_OPT += --with-libiconv-prefix=$(STAGING_DIR)/usr
 endif
 
-$(eval $(call AUTOTARGETS,package,popt))
+$(eval $(call AUTOTARGETS))

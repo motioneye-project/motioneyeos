@@ -11,4 +11,4 @@ XLIB_LIBICE_AUTORECONF = NO
 XLIB_LIBICE_INSTALL_STAGING = YES
 XLIB_LIBICE_DEPENDENCIES = xlib_xtrans xproto_xproto
 
-$(eval $(call AUTOTARGETS,package/x11r7,xlib_libICE))
+$(eval $(call AUTOTARGETS))

@@ -20,4 +20,4 @@ MATCHBOX_FAKEKEY_POST_CONFIGURE_HOOKS += MATCHBOX_FAKEKEY_POST_CONFIGURE_FIXES
 
 #############################################################
 
-$(eval $(call AUTOTARGETS,package/matchbox,matchbox-fakekey))
+$(eval $(call AUTOTARGETS))

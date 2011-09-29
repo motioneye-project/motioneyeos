@@ -10,4 +10,4 @@ XAPP_EDITRES_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_EDITRES_AUTORECONF = NO
 XAPP_EDITRES_DEPENDENCIES = xlib_libX11 xlib_libXaw xlib_libXmu xlib_libXt
 
-$(eval $(call AUTOTARGETS,package/x11r7,xapp_editres))
+$(eval $(call AUTOTARGETS))

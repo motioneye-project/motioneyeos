@@ -12,4 +12,4 @@ LIBOGG_INSTALL_TARGET = YES
 
 LIBOGG_DEPENDENCIES = host-pkg-config
 
-$(eval $(call AUTOTARGETS,package/multimedia,libogg))
+$(eval $(call AUTOTARGETS))

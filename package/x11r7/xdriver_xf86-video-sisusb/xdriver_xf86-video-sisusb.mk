@@ -10,4 +10,4 @@ XDRIVER_XF86_VIDEO_SISUSB_SITE = http://xorg.freedesktop.org/releases/individual
 XDRIVER_XF86_VIDEO_SISUSB_AUTORECONF = NO
 XDRIVER_XF86_VIDEO_SISUSB_DEPENDENCIES = xserver_xorg-server xproto_fontsproto xproto_randrproto xproto_renderproto xproto_videoproto xproto_xextproto xproto_xineramaproto xproto_xproto
 
-$(eval $(call AUTOTARGETS,package/x11r7,xdriver_xf86-video-sisusb))
+$(eval $(call AUTOTARGETS))

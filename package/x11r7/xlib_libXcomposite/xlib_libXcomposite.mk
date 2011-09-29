@@ -11,4 +11,4 @@ XLIB_LIBXCOMPOSITE_AUTORECONF = NO
 XLIB_LIBXCOMPOSITE_INSTALL_STAGING = YES
 XLIB_LIBXCOMPOSITE_DEPENDENCIES = xproto_compositeproto xlib_libX11 xlib_libXext xlib_libXfixes xproto_xproto
 
-$(eval $(call AUTOTARGETS,package/x11r7,xlib_libXcomposite))
+$(eval $(call AUTOTARGETS))

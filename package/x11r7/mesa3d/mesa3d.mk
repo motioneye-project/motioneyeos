@@ -13,4 +13,4 @@ MESA3D_INSTALL_STAGING = YES
 
 MESA3D_DEPENDENCIES = xproto_glproto xlib_libXxf86vm xlib_libXdamage xlib_libXfixes xproto_dri2proto libdrm expat
 
-$(eval $(call AUTOTARGETS,package/x11r7,mesa3d))
+$(eval $(call AUTOTARGETS))

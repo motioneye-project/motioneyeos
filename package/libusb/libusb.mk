@@ -10,4 +10,4 @@ LIBUSB_DEPENDENCIES = host-pkg-config
 LIBUSB_INSTALL_STAGING = YES
 LIBUSB_INSTALL_TARGET = YES
 
-$(eval $(call AUTOTARGETS,package,libusb))
+$(eval $(call AUTOTARGETS))

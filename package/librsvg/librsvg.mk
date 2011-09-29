@@ -14,4 +14,4 @@ LIBRSVG_INSTALL_TARGET = YES
 LIBRSVG_CONF_OPT = --disable-tools
 LIBRSVG_DEPENDENCIES = libxml2 cairo pango libglib2 libgtk2
 
-$(eval $(call AUTOTARGETS,package,librsvg))
+$(eval $(call AUTOTARGETS))

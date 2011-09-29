@@ -22,4 +22,4 @@ endif
 
 NGREP_DEPENDENCIES = libpcap pcre
 
-$(eval $(call AUTOTARGETS,package,ngrep))
+$(eval $(call AUTOTARGETS))

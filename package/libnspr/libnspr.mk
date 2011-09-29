@@ -14,4 +14,4 @@ LIBNSPR_CONF_ENV = HOST_CFLAGS="-g -O2" \
 # NSPR mixes up --build and --host
 LIBNSPR_CONF_OPT = --host=$(GNU_HOST_NAME)
 
-$(eval $(call AUTOTARGETS,package,libnspr))
+$(eval $(call AUTOTARGETS))

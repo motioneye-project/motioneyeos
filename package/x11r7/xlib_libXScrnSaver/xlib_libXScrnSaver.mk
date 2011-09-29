@@ -12,4 +12,4 @@ XLIB_LIBXSCRNSAVER_INSTALL_STAGING = YES
 XLIB_LIBXSCRNSAVER_DEPENDENCIES = xlib_libX11 xlib_libXext xproto_scrnsaverproto
 XLIB_LIBXSCRNSAVER_CONF_OPT = --disable-malloc0returnsnull
 
-$(eval $(call AUTOTARGETS,package/x11r7,xlib_libXScrnSaver))
+$(eval $(call AUTOTARGETS))

@@ -170,4 +170,4 @@ else
 GST_PLUGINS_BASE_CONF_OPT += --disable-vorbis
 endif
 
-$(eval $(call AUTOTARGETS,package/multimedia,gst-plugins-base))
+$(eval $(call AUTOTARGETS))

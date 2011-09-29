@@ -15,4 +15,4 @@ XLIB_LIBXTST_DEPENDENCIES = \
 	xlib_libXi \
 	xproto_recordproto
 
-$(eval $(call AUTOTARGETS,package/x11r7,xlib_libXtst))
+$(eval $(call AUTOTARGETS))

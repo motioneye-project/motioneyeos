@@ -13,5 +13,5 @@ XLIB_LIBXAU_DEPENDENCIES = xutil_util-macros xproto_xproto
 
 HOST_XLIB_LIBXAU_DEPENDENCIES = host-xutil_util-macros host-xproto_xproto
 
-$(eval $(call AUTOTARGETS,package/x11r7,xlib_libXau))
-$(eval $(call AUTOTARGETS,package/x11r7,xlib_libXau,host))
+$(eval $(call AUTOTARGETS))
+$(eval $(call AUTOTARGETS,host))

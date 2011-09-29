@@ -27,4 +27,4 @@ endif
 
 LAME_POST_CONFIGURE_HOOKS += LAME_BIGENDIAN_ARCH
 
-$(eval $(call AUTOTARGETS,package/multimedia,lame))
+$(eval $(call AUTOTARGETS))

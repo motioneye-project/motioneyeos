@@ -39,4 +39,4 @@ endif
 
 #############################################################
 
-$(eval $(call AUTOTARGETS,package/matchbox,matchbox-wm))
+$(eval $(call AUTOTARGETS))

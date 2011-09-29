@@ -10,4 +10,4 @@ XAPP_XMAG_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_XMAG_AUTORECONF = NO
 XAPP_XMAG_DEPENDENCIES = xlib_libXaw
 
-$(eval $(call AUTOTARGETS,package/x11r7,xapp_xmag))
+$(eval $(call AUTOTARGETS))

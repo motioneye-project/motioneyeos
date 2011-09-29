@@ -10,4 +10,4 @@ XAPP_SHOWFONT_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_SHOWFONT_AUTORECONF = NO
 XAPP_SHOWFONT_DEPENDENCIES = xlib_libFS
 
-$(eval $(call AUTOTARGETS,package/x11r7,xapp_showfont))
+$(eval $(call AUTOTARGETS))

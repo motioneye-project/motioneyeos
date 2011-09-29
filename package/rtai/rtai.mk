@@ -12,4 +12,4 @@ RTAI_CONF_OPT = \
 
 RTAI_MAKE = $(MAKE1)
 
-$(eval $(call AUTOTARGETS,package,rtai))
+$(eval $(call AUTOTARGETS))

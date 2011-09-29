@@ -11,4 +11,4 @@ DIVINE_INSTALL_STAGING = YES
 DIVINE_INSTALL_TARGET = YES
 DIVINE_DEPENDENCIES = directfb
 
-$(eval $(call AUTOTARGETS,package,divine))
+$(eval $(call AUTOTARGETS))

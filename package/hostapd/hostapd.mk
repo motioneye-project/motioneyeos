@@ -108,4 +108,4 @@ define HOSTAPD_UNINSTALL_TARGET_CMDS
 	rm -f $(TARGET_DIR)/usr/bin/hostapd
 endef
 
-$(eval $(call AUTOTARGETS,package,hostapd))
+$(eval $(call AUTOTARGETS))

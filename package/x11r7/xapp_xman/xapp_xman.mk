@@ -15,4 +15,4 @@ XAPP_XMAN_CONF_ENV = ac_cv_file__etc_man_conf=no \
 
 XAPP_XMAN_CONF_OPT = --disable-IPv6
 
-$(eval $(call AUTOTARGETS,package/x11r7,xapp_xman))
+$(eval $(call AUTOTARGETS))

@@ -83,4 +83,4 @@ GTK2_ENGINES_CONF_OPT = \
 		--disable-paranoia \
 		--disable-deprecated
 
-$(eval $(call AUTOTARGETS,package,gtk2-engines))
+$(eval $(call AUTOTARGETS))

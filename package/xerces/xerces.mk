@@ -23,4 +23,4 @@ else
 XERCES_CONF_OPT += --disable-network
 endif
 
-$(eval $(call AUTOTARGETS,package,xerces))
+$(eval $(call AUTOTARGETS))

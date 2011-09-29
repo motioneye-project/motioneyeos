@@ -18,4 +18,4 @@ LIBELF_CONF_OPT = --disable-sanity-checks \
 		$(if $(BR2_ENABLE_DEBUG),--enable-debug,--disable-debug) \
 		$(if $(BR2_LARGEFILE),--enable-elf64)
 
-$(eval $(call AUTOTARGETS,package,libelf))
+$(eval $(call AUTOTARGETS))

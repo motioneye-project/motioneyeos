@@ -22,5 +22,5 @@ endif
 
 GAMIN_DEPENDENCIES = libglib2
 
-$(eval $(call AUTOTARGETS,package,gamin))
+$(eval $(call AUTOTARGETS))
 

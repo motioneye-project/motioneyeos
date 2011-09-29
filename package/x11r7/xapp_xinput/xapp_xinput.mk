@@ -10,4 +10,4 @@ XAPP_XINPUT_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_XINPUT_AUTORECONF = NO
 XAPP_XINPUT_DEPENDENCIES = xlib_libX11 xlib_libXi
 
-$(eval $(call AUTOTARGETS,package/x11r7,xapp_xinput))
+$(eval $(call AUTOTARGETS))

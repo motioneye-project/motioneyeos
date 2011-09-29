@@ -12,5 +12,5 @@ MPFR_DEPENDENCIES = gmp
 MPFR_MAKE_OPT = RANLIB=$(TARGET_RANLIB)
 HOST_MPFR_DEPENDENCIES = host-gmp
 
-$(eval $(call AUTOTARGETS,package,mpfr))
-$(eval $(call AUTOTARGETS,package,mpfr,host))
+$(eval $(call AUTOTARGETS))
+$(eval $(call AUTOTARGETS,host))

@@ -10,8 +10,8 @@ LIBTOOL_INSTALL_STAGING = YES
 
 HOST_LIBTOOL_LIBTOOL_PATCH = NO
 
-$(eval $(call AUTOTARGETS,package,libtool))
-$(eval $(call AUTOTARGETS,package,libtool,host))
+$(eval $(call AUTOTARGETS))
+$(eval $(call AUTOTARGETS,host))
 
 # variables used by other packages
 LIBTOOL:=$(HOST_DIR)/usr/bin/libtool

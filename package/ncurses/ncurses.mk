@@ -133,5 +133,5 @@ endef
 HOST_NCURSES_CONF_OPT = \
 	--without-shared --without-gpm
 
-$(eval $(call AUTOTARGETS,package,ncurses))
-$(eval $(call AUTOTARGETS,package,ncurses,host))
+$(eval $(call AUTOTARGETS))
+$(eval $(call AUTOTARGETS,host))

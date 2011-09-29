@@ -20,4 +20,4 @@ else
 GMPC_CONF_OPT += --disable-sm
 endif
 
-$(eval $(call AUTOTARGETS,package,gmpc))
+$(eval $(call AUTOTARGETS))

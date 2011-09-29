@@ -12,4 +12,4 @@ LIBSEXY_DEPENDENCIES = libgtk2 libxml2
 LIBSEXY_INSTALL_TARGET = YES
 LIBSEXY_INSTALL_STAGING = YES
 
-$(eval $(call AUTOTARGETS,package/libsexy,libsexy))
+$(eval $(call AUTOTARGETS))

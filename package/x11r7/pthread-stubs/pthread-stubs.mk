@@ -9,6 +9,6 @@ PTHREAD_STUBS_SITE = http://xcb.freedesktop.org/dist/
 
 PTHREAD_STUBS_INSTALL_STAGING = YES
 
-$(eval $(call AUTOTARGETS,package/x11r7,pthread-stubs))
-$(eval $(call AUTOTARGETS,package/x11r7,pthread-stubs,host))
+$(eval $(call AUTOTARGETS))
+$(eval $(call AUTOTARGETS,host))
 

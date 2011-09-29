@@ -10,4 +10,4 @@ XAPP_XREFRESH_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_XREFRESH_AUTORECONF = NO
 XAPP_XREFRESH_DEPENDENCIES = xlib_libX11
 
-$(eval $(call AUTOTARGETS,package/x11r7,xapp_xrefresh))
+$(eval $(call AUTOTARGETS))

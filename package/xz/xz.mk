@@ -9,5 +9,5 @@ XZ_SITE = http://tukaani.org/xz/
 XZ_INSTALL_STAGING = YES
 XZ_CONF_ENV = ac_cv_prog_cc_c99='-std=gnu99'
 
-$(eval $(call AUTOTARGETS,package,xz))
-$(eval $(call AUTOTARGETS,package,xz,host))
+$(eval $(call AUTOTARGETS))
+$(eval $(call AUTOTARGETS,host))

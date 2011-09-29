@@ -52,4 +52,4 @@ BERKELEYDB_POST_INSTALL_TARGET_HOOKS += BERKELEYDB_REMOVE_DOCS
 
 endif
 
-$(eval $(call AUTOTARGETS,package,berkeleydb))
+$(eval $(call AUTOTARGETS))

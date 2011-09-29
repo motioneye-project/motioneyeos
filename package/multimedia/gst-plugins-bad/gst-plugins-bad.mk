@@ -519,4 +519,4 @@ else
 GST_PLUGINS_BAD_CONF_OPT += --disable-vcd
 endif
 
-$(eval $(call AUTOTARGETS,package/multimedia,gst-plugins-bad))
+$(eval $(call AUTOTARGETS))

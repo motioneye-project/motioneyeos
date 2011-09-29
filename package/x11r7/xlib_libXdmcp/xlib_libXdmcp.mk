@@ -13,5 +13,5 @@ XLIB_LIBXDMCP_DEPENDENCIES = xutil_util-macros xproto_xproto
 
 HOST_XLIB_LIBXDMCP_DEPENDENCIES = host-xutil_util-macros host-xproto_xproto
 
-$(eval $(call AUTOTARGETS,package/x11r7,xlib_libXdmcp))
-$(eval $(call AUTOTARGETS,package/x11r7,xlib_libXdmcp,host))
+$(eval $(call AUTOTARGETS))
+$(eval $(call AUTOTARGETS,host))

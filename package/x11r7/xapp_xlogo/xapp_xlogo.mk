@@ -11,4 +11,4 @@ XAPP_XLOGO_AUTORECONF = NO
 XAPP_XLOGO_DEPENDENCIES = xlib_libXaw xlib_libXprintUtil xlib_libXrender \
 			  xlib_libXft host-pkg-config
 
-$(eval $(call AUTOTARGETS,package/x11r7,xapp_xlogo))
+$(eval $(call AUTOTARGETS))

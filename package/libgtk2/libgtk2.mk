@@ -152,5 +152,5 @@ define HOST_LIBGTK2_INSTALL_CMDS
  cp $(@D)/gtk/gtk-update-icon-cache $(HOST_DIR)/usr/bin
 endef
 
-$(eval $(call AUTOTARGETS,package,libgtk2))
-$(eval $(call AUTOTARGETS,package,libgtk2,host))
+$(eval $(call AUTOTARGETS))
+$(eval $(call AUTOTARGETS,host))

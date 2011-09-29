@@ -10,4 +10,4 @@ XAPP_XBACKLIGHT_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_XBACKLIGHT_AUTORECONF = NO
 XAPP_XBACKLIGHT_DEPENDENCIES = xlib_libX11 xlib_libXrandr xlib_libXrender
 
-$(eval $(call AUTOTARGETS,package/x11r7,xapp_xbacklight))
+$(eval $(call AUTOTARGETS))

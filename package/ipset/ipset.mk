@@ -10,4 +10,4 @@ IPSET_SITE = http://ipset.netfilter.org
 IPSET_AUTORECONF = YES
 IPSET_DEPENDENCIES = libmnl host-pkg-config
 
-$(eval $(call AUTOTARGETS,package,ipset))
+$(eval $(call AUTOTARGETS))

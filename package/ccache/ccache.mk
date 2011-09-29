@@ -23,8 +23,8 @@ endef
 HOST_CCACHE_POST_CONFIGURE_HOOKS += \
 	HOST_CCACHE_FIX_CCACHE_DIR
 
-$(eval $(call AUTOTARGETS,package,ccache))
-$(eval $(call AUTOTARGETS,package,ccache,host))
+$(eval $(call AUTOTARGETS))
+$(eval $(call AUTOTARGETS,host))
 
 ifeq ($(BR2_CCACHE),y)
 ccache-stats: host-ccache

@@ -12,4 +12,4 @@ SOCAT_CONF_ENV = sc_cv_termios_ispeed=no \
 		 sc_cv_sys_tabdly_shift=11 \
 		 sc_cv_sys_csize_shift=4
 
-$(eval $(call AUTOTARGETS,package,socat))
+$(eval $(call AUTOTARGETS))

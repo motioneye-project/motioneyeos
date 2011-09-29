@@ -15,4 +15,4 @@ LIBVORBIS_CONF_OPT = --disable-oggtest
 
 LIBVORBIS_DEPENDENCIES = host-pkg-config libogg
 
-$(eval $(call AUTOTARGETS,package/multimedia,libvorbis))
+$(eval $(call AUTOTARGETS))

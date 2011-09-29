@@ -83,4 +83,4 @@ endif
 
 
 
-$(eval $(call AUTOTARGETS,package/java,classpath))
+$(eval $(call AUTOTARGETS))

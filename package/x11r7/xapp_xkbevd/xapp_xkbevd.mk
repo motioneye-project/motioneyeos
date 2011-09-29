@@ -10,4 +10,4 @@ XAPP_XKBEVD_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_XKBEVD_AUTORECONF = NO
 XAPP_XKBEVD_DEPENDENCIES = xlib_libxkbfile
 
-$(eval $(call AUTOTARGETS,package/x11r7,xapp_xkbevd))
+$(eval $(call AUTOTARGETS))

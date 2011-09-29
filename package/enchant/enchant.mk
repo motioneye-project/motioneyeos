@@ -12,4 +12,4 @@ ENCHANT_INSTALL_TARGET = YES
 
 ENCHANT_DEPENDENCIES = libglib2 host-pkg-config
 
-$(eval $(call AUTOTARGETS,package,enchant))
+$(eval $(call AUTOTARGETS))

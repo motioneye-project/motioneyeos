@@ -39,5 +39,5 @@ endef
 
 XLIB_LIBX11_POST_CONFIGURE_HOOKS += XLIB_LIBX11_BUILD_MAKEKEYS_FOR_HOST
 
-$(eval $(call AUTOTARGETS,package/x11r7,xlib_libX11))
-$(eval $(call AUTOTARGETS,package/x11r7,xlib_libX11,host))
+$(eval $(call AUTOTARGETS))
+$(eval $(call AUTOTARGETS,host))

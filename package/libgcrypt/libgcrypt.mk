@@ -17,4 +17,4 @@ LIBGCRYPT_CONF_OPT = \
 
 LIBGCRYPT_DEPENDENCIES = libgpg-error
 
-$(eval $(call AUTOTARGETS,package,libgcrypt))
+$(eval $(call AUTOTARGETS))

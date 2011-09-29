@@ -11,5 +11,5 @@ XPROTO_XEXTPROTO_AUTORECONF = NO
 XPROTO_XEXTPROTO_INSTALL_STAGING = YES
 XPROTO_XEXTPROTO_INSTALL_TARGET = NO
 
-$(eval $(call AUTOTARGETS,package/x11r7,xproto_xextproto))
-$(eval $(call AUTOTARGETS,package/x11r7,xproto_xextproto,host))
+$(eval $(call AUTOTARGETS))
+$(eval $(call AUTOTARGETS,host))

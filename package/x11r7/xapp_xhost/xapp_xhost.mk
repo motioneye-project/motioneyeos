@@ -10,4 +10,4 @@ XAPP_XHOST_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_XHOST_AUTORECONF = NO
 XAPP_XHOST_DEPENDENCIES = xlib_libX11 xlib_libXmu
 
-$(eval $(call AUTOTARGETS,package/x11r7,xapp_xhost))
+$(eval $(call AUTOTARGETS))

@@ -25,4 +25,4 @@ define MDADM_CONFIGURE_CMDS
 	# Do nothing
 endef
 
-$(eval $(call AUTOTARGETS,package,mdadm))
+$(eval $(call AUTOTARGETS))

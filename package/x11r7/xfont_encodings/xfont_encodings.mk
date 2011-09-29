@@ -12,5 +12,5 @@ XFONT_ENCODINGS_MAKE_OPT =
 XFONT_ENCODINGS_DEPENDENCIES = host-xapp_mkfontscale
 HOST_XFONT_ENCODINGS_DEPENDENCIES = host-xapp_mkfontscale
 
-$(eval $(call AUTOTARGETS,package/x11r7,xfont_encodings))
-$(eval $(call AUTOTARGETS,package/x11r7,xfont_encodings,host))
+$(eval $(call AUTOTARGETS))
+$(eval $(call AUTOTARGETS,host))

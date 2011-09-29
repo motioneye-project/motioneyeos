@@ -90,4 +90,4 @@ ifeq ($(BR2_avr32),y)
 		CC="$(STAGING_DIR)/usr/bin/avr32-linux-gcc"
 endif
 
-$(eval $(call AUTOTARGETS,package/java,jamvm))
+$(eval $(call AUTOTARGETS))

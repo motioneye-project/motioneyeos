@@ -12,4 +12,4 @@ ifeq ($(BR2_PACKAGE_OPENSSL),y)
 	WGET_DEPENDENCIES += openssl
 endif
 
-$(eval $(call AUTOTARGETS,package,wget))
+$(eval $(call AUTOTARGETS))

@@ -29,4 +29,4 @@ ifeq ($(BR2_PACKAGE_OPENOCD_VSLLINK),y)
 OPENOCD_CONF_OPT += --enable-vsllink
 endif
 
-$(eval $(call AUTOTARGETS,package,openocd))
+$(eval $(call AUTOTARGETS))

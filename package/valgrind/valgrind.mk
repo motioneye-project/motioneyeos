@@ -26,4 +26,4 @@ endef
 
 VALGRIND_POST_INSTALL_TARGET_HOOKS += VALGRIND_INSTALL_UCLIBC_SUPP
 
-$(eval $(call AUTOTARGETS,package,valgrind))
+$(eval $(call AUTOTARGETS))

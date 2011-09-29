@@ -12,4 +12,4 @@ TREMOR_AUTORECONF = YES
 TREMOR_INSTALL_STAGING = YES
 TREMOR_INSTALL_TARGET = YES
 
-$(eval $(call AUTOTARGETS,package/multimedia,tremor))
+$(eval $(call AUTOTARGETS))

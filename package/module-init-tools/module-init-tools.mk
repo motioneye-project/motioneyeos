@@ -18,6 +18,6 @@ MODULE_INIT_TOOLS_AUTORECONF=YES
 HOST_MODULE_INIT_TOOLS_AUTORECONF=YES
 HOST_MODULE_INIT_TOOLS_CONF_ENV = ac_cv_prog_DOCBOOKTOMAN=''
 
-$(eval $(call AUTOTARGETS,package,module-init-tools))
-$(eval $(call AUTOTARGETS,package,module-init-tools,host))
+$(eval $(call AUTOTARGETS))
+$(eval $(call AUTOTARGETS,host))
 

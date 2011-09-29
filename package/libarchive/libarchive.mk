@@ -24,4 +24,4 @@ else
 LIBARCHIVE_CONF_OPT += --without-xml2
 endif
 
-$(eval $(call AUTOTARGETS,package,libarchive))
+$(eval $(call AUTOTARGETS))

@@ -38,4 +38,4 @@ endef
 
 LIBOIL_POST_INSTALL_TARGET_HOOKS += LIBOIL_TARGET_CLEANUP
 
-$(eval $(call AUTOTARGETS,package,liboil))
+$(eval $(call AUTOTARGETS))

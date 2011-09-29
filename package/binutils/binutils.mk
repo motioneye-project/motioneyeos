@@ -51,5 +51,5 @@ define BINUTILS_INSTALL_TARGET_CMDS
 		DESTDIR=$(TARGET_DIR) install
 endef
 
-$(eval $(call AUTOTARGETS,package,binutils))
-$(eval $(call AUTOTARGETS,package,binutils,host))
+$(eval $(call AUTOTARGETS))
+$(eval $(call AUTOTARGETS,host))

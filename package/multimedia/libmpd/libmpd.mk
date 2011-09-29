@@ -9,4 +9,4 @@ LIBMPD_SITE = http://download.sarine.nl/download/Programs/gmpc/$(LIBMPD_VERSION)
 LIBMPD_INSTALL_STAGING = YES
 LIBMPD_DEPENDENCIES = libglib2
 
-$(eval $(call AUTOTARGETS,package/multimedia,libmpd))
+$(eval $(call AUTOTARGETS))

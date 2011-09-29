@@ -20,4 +20,4 @@ ifneq ($(BR2_ENABLE_LOCALE),y)
 BLACKBOX_DEPENDENCIES += libiconv
 endif
 
-$(eval $(call AUTOTARGETS,package,blackbox))
+$(eval $(call AUTOTARGETS))

@@ -31,5 +31,5 @@ ifeq ($(BR2_PACKAGE_ZLIB),y)
 	RUBY_DEPENDENCIES += zlib
 endif
 
-$(eval $(call AUTOTARGETS,package,ruby))
-$(eval $(call AUTOTARGETS,package,ruby,host))
+$(eval $(call AUTOTARGETS))
+$(eval $(call AUTOTARGETS,host))

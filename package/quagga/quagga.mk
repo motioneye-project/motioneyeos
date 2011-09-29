@@ -87,4 +87,4 @@ else
 QUAGGA_CONF_OPT+=--disable-opaque-lsa
 endif
 
-$(eval $(call AUTOTARGETS,package,quagga))
+$(eval $(call AUTOTARGETS))

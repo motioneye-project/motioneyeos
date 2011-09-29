@@ -18,4 +18,4 @@ define TIFF_INSTALL_TARGET_CMDS
 	-cp -a $(@D)/libtiff/.libs/libtiff.so* $(TARGET_DIR)/usr/lib/
 endef
 
-$(eval $(call AUTOTARGETS,package,tiff))
+$(eval $(call AUTOTARGETS))

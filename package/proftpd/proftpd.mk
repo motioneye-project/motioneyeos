@@ -42,4 +42,4 @@ define PROFTPD_UNINSTALL_TARGET_CMDS
 	rm -f $(TARGET_DIR)/etc/proftpd.conf
 endef
 
-$(eval $(call AUTOTARGETS,package,proftpd))
+$(eval $(call AUTOTARGETS))

@@ -30,7 +30,7 @@ endef
 
 LIBCURL_POST_INSTALL_TARGET_HOOKS += LIBCURL_TARGET_CLEANUP
 
-$(eval $(call AUTOTARGETS,package,libcurl))
+$(eval $(call AUTOTARGETS))
 
 curl: libcurl
 curl-clean: libcurl-clean

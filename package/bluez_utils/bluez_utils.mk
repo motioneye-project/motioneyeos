@@ -43,4 +43,4 @@ BLUEZ_UTILS_CONF_OPT +=	\
 	--disable-usb
 endif
 
-$(eval $(call AUTOTARGETS,package,bluez_utils))
+$(eval $(call AUTOTARGETS))

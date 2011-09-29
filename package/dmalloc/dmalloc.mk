@@ -55,4 +55,4 @@ define DMALLOC_CLEAN_CMDS
 endef
 
 
-$(eval $(call AUTOTARGETS,package,dmalloc))
+$(eval $(call AUTOTARGETS))

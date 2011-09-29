@@ -13,5 +13,5 @@ endef
 
 BISON_POST_CONFIGURE_HOOKS += BISON_DISABLE_EXAMPLES
 
-$(eval $(call AUTOTARGETS,package,bison))
-$(eval $(call AUTOTARGETS,package,bison,host))
+$(eval $(call AUTOTARGETS))
+$(eval $(call AUTOTARGETS,host))

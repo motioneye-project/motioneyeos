@@ -11,5 +11,5 @@ XUTIL_UTIL_MACROS_AUTORECONF = NO
 XUTIL_UTIL_MACROS_INSTALL_STAGING = YES
 XUTIL_UTIL_MACROS_INSTALL_TARGET = NO
 
-$(eval $(call AUTOTARGETS,package/x11r7,xutil_util-macros))
-$(eval $(call AUTOTARGETS,package/x11r7,xutil_util-macros,host))
+$(eval $(call AUTOTARGETS))
+$(eval $(call AUTOTARGETS,host))

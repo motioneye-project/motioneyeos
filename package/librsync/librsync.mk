@@ -11,4 +11,4 @@ LIBRSYNC_INSTALL_TARGET = YES
 
 LIBRSYNC_DEPENDENCIES = zlib bzip2 popt
 
-$(eval $(call AUTOTARGETS,package,librsync))
+$(eval $(call AUTOTARGETS))

@@ -10,4 +10,4 @@ XAPP_APPRES_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_APPRES_AUTORECONF = NO
 XAPP_APPRES_DEPENDENCIES = xlib_libX11 xlib_libXt
 
-$(eval $(call AUTOTARGETS,package/x11r7,xapp_appres))
+$(eval $(call AUTOTARGETS))

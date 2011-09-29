@@ -16,4 +16,4 @@ MADPLAY_CONF_OPT+=--with-alsa
 MADPLAY_DEPENDENCIES+=alsa-lib
 endif
 
-$(eval $(call AUTOTARGETS,package/multimedia,madplay))
+$(eval $(call AUTOTARGETS))

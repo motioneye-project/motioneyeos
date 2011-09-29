@@ -41,4 +41,4 @@ MPG123_CONF_OPT += --with-audio=alsa
 MPG123_DEPENDENCIES += alsa-lib
 endif
 
-$(eval $(call AUTOTARGETS,package/multimedia,mpg123))
+$(eval $(call AUTOTARGETS))

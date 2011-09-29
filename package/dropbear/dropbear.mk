@@ -62,4 +62,4 @@ define DROPBEAR_UNINSTALL_TARGET_CMDS
 	rm -f $(TARGET_DIR)/etc/init.d/S50dropbear
 endef
 
-$(eval $(call AUTOTARGETS,package,dropbear))
+$(eval $(call AUTOTARGETS))

@@ -13,5 +13,5 @@ XKEYBOARD_CONFIG_DEPENDENCIES = host-intltool host-xapp_xkbcomp
 
 XKEYBOARD_CONFIG_CONF_OPT = GMSGFMT=/usr/bin/msgfmt
 
-$(eval $(call AUTOTARGETS,package/x11r7,xkeyboard-config))
+$(eval $(call AUTOTARGETS))
 

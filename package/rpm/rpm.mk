@@ -32,4 +32,4 @@ RPM_MAKE = $(MAKE1)
 
 RPM_INSTALL_TARGET_OPT=DESTDIR=$(TARGET_DIR) program_transform_name= install
 
-$(eval $(call AUTOTARGETS,package,rpm))
+$(eval $(call AUTOTARGETS))

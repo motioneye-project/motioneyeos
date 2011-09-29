@@ -294,15 +294,13 @@ endef
 ################################################################################
 # AUTOTARGETS -- the target generator macro for autotools packages
 #
-# Argument 1 is the package directory prefix [mandatory]
-# Argument 2 is the lowercase package name   [mandatory]
-# Argument 3 is "target" or "host"           [optional, default: "target"]
+# Argument 1 is "target" or "host"           [optional, default: "target"]
 ################################################################################
 
 define AUTOTARGETS
-ifeq ($(3),host)
-$(call AUTOTARGETS_INNER,$(3)-$(2),$(call UPPERCASE,$(3)-$(2)),$(call UPPERCASE,$(2)),$(1),host)
+ifeq ($(1),host)
+$(call AUTOTARGETS_INNER,$(1)-$(call pkgname),$(call UPPERCASE,$(1)-$(call pkgname)),$(call UPPERCASE,$(call pkgname)),$(call pkgparentdir),host)
 else
-$(call AUTOTARGETS_INNER,$(2),$(call UPPERCASE,$(2)),$(call UPPERCASE,$(2)),$(1),target)
+$(call AUTOTARGETS_INNER,$(call pkgname),$(call UPPERCASE,$(call pkgname)),$(call UPPERCASE,$(call pkgname)),$(call pkgparentdir),target)
 endif
 endef

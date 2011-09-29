@@ -11,4 +11,4 @@ XAPP_XCALC_AUTORECONF = NO
 XAPP_XCALC_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install-exec install-data
 XAPP_XCALC_DEPENDENCIES = xlib_libXaw
 
-$(eval $(call AUTOTARGETS,package/x11r7,xapp_xcalc))
+$(eval $(call AUTOTARGETS))

@@ -25,8 +25,8 @@ define SHARED_MIME_INFO_INSTALL_TARGET_CMDS
 	$(INSTALL) -D $(STAGING_DIR)/usr/share/mime/mime.cache $(TARGET_DIR)/usr/share/mime/mime.cache
 endef
 
-$(eval $(call AUTOTARGETS,package,shared-mime-info))
-$(eval $(call AUTOTARGETS,package,shared-mime-info,host))
+$(eval $(call AUTOTARGETS))
+$(eval $(call AUTOTARGETS,host))
 
 # shared-mime-info for the host
 SHARED_MIME_INFO_HOST_BINARY:=$(HOST_DIR)/usr/bin/update-mime-database

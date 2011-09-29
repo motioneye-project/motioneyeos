@@ -14,4 +14,4 @@ LIBHID_INSTALL_STAGING = YES
 LIBHID_CONF_ENV = PATH=$(STAGING_DIR)/usr/bin:$(TARGET_PATH)
 LIBHID_CONF_OPT = --disable-swig --without-doxygen --disable-package-config
 
-$(eval $(call AUTOTARGETS,package,libhid))
+$(eval $(call AUTOTARGETS))

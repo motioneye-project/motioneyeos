@@ -11,4 +11,4 @@ XLIB_LIBXKBUI_AUTORECONF = NO
 XLIB_LIBXKBUI_INSTALL_STAGING = YES
 XLIB_LIBXKBUI_DEPENDENCIES = xlib_libxkbfile xlib_libXt xproto_kbproto
 
-$(eval $(call AUTOTARGETS,package/x11r7,xlib_libxkbui))
+$(eval $(call AUTOTARGETS))

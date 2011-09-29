@@ -10,4 +10,4 @@ NTFS_3G_SITE = http://tuxera.com/opensource
 NTFS_3G_CONF_OPT = --disable-ldconfig
 NTFS_3G_INSTALL_STAGING = YES
 
-$(eval $(call AUTOTARGETS,package,ntfs-3g))
+$(eval $(call AUTOTARGETS))

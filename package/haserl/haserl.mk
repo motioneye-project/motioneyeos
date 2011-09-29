@@ -19,4 +19,4 @@ endef
 
 HASERL_POST_INSTALL_TARGET_HOOKS += HASERL_REMOVE_EXAMPLES
 
-$(eval $(call AUTOTARGETS,package,haserl))
+$(eval $(call AUTOTARGETS))

@@ -23,4 +23,4 @@ define NTFSPROGS_UNINSTALL_TARGET_CMDS
 	-unlink $(TARGET_DIR)/sbin/mkfs.ntfs
 endef
 
-$(eval $(call AUTOTARGETS,package,ntfsprogs))
+$(eval $(call AUTOTARGETS))

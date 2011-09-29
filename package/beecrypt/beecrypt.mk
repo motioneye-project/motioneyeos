@@ -13,4 +13,4 @@ BEECRYPT_CONF_OPT =  --without-cplusplus \
 		--without-python  \
 		--disable-rpath
 
-$(eval $(call AUTOTARGETS,package,beecrypt))
+$(eval $(call AUTOTARGETS))

@@ -11,4 +11,4 @@ XLIB_LIBXFIXES_AUTORECONF = NO
 XLIB_LIBXFIXES_INSTALL_STAGING = YES
 XLIB_LIBXFIXES_DEPENDENCIES = xproto_fixesproto xlib_libX11 xproto_xextproto xproto_xproto
 
-$(eval $(call AUTOTARGETS,package/x11r7,xlib_libXfixes))
+$(eval $(call AUTOTARGETS))

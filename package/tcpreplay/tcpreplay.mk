@@ -11,5 +11,5 @@ TCPREPLAY_CONF_OPT = --with-libpcap=$(STAGING_DIR)/usr
 
 TCPREPLAY_DEPENDENCIES = uclibc libpcap
 
-$(eval $(call AUTOTARGETS,package,tcpreplay))
+$(eval $(call AUTOTARGETS))
 

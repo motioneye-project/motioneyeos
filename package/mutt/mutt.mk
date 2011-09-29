@@ -22,4 +22,4 @@ endef
 
 MUTT_POST_PATCH_HOOKS += MUTT_APPLY_DEBIAN_PATCHES
 
-$(eval $(call AUTOTARGETS,package,mutt))
+$(eval $(call AUTOTARGETS))

@@ -11,4 +11,4 @@ LIBUPNP_CONF_ENV = ac_cv_lib_compat_ftime=no
 
 LIBUPNP_INSTALL_STAGING:=YES
 
-$(eval $(call AUTOTARGETS,package,libupnp))
+$(eval $(call AUTOTARGETS))

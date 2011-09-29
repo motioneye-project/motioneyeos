@@ -21,4 +21,4 @@ IPERF_CONF_OPT = \
 	--disable-dependency-tracking \
 	--disable-web100
 
-$(eval $(call AUTOTARGETS,package,iperf))
+$(eval $(call AUTOTARGETS))

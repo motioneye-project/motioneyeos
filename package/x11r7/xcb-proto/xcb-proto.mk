@@ -11,6 +11,6 @@ XCB_PROTO_INSTALL_STAGING = YES
 
 XCB_PROTO_DEPENDENCIES = host-python
 
-$(eval $(call AUTOTARGETS,package/x11r7,xcb-proto))
-$(eval $(call AUTOTARGETS,package/x11r7,xcb-proto,host))
+$(eval $(call AUTOTARGETS))
+$(eval $(call AUTOTARGETS,host))
 

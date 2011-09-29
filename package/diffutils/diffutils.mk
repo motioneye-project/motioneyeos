@@ -61,4 +61,4 @@ DIFFUTILS_CONF_ENV = ac_cv_func_strtod=yes
 		jm_cv_func_working_re_compile_pattern=yes \
 		ac_use_included_regex=no
 
-$(eval $(call AUTOTARGETS,package,diffutils))
+$(eval $(call AUTOTARGETS))

@@ -24,4 +24,4 @@ define READLINE_INSTALL_TARGET_CMDS
 		$(TARGET_DIR)/usr/lib/libhistory.so.$(READLINE_VERSION)
 endef
 
-$(eval $(call AUTOTARGETS,package,readline))
+$(eval $(call AUTOTARGETS))

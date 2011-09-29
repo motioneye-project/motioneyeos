@@ -12,5 +12,5 @@ LEAFPAD_INSTALL_TARGET = YES
 
 LEAFPAD_DEPENDENCIES = libgtk2
 
-$(eval $(call AUTOTARGETS,package,leafpad))
+$(eval $(call AUTOTARGETS))
 

@@ -21,4 +21,4 @@ define SUDO_INSTALL_TARGET_CMDS
 	install -m 0440 -D $(@D)/sudoers $(TARGET_DIR)/etc/sudoers
 endef
 
-$(eval $(call AUTOTARGETS,package,sudo))
+$(eval $(call AUTOTARGETS))

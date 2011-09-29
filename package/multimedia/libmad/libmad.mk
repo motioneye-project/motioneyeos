@@ -32,4 +32,4 @@ LIBMAD_CONF_OPT = \
 		--disable-debugging \
 		--enable-speed
 
-$(eval $(call AUTOTARGETS,package/multimedia,libmad))
+$(eval $(call AUTOTARGETS))

@@ -11,5 +11,5 @@ XAPP_BDFTOPCF_AUTORECONF = NO
 XAPP_BDFTOPCF_DEPENDENCIES = xlib_libXfont
 HOST_XAPP_BDFTOPCF_DEPENDENCIES = host-xlib_libXfont
 
-$(eval $(call AUTOTARGETS,package/x11r7,xapp_bdftopcf))
-$(eval $(call AUTOTARGETS,package/x11r7,xapp_bdftopcf,host))
+$(eval $(call AUTOTARGETS))
+$(eval $(call AUTOTARGETS,host))

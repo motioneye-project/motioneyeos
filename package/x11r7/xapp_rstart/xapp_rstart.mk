@@ -10,4 +10,4 @@ XAPP_RSTART_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_RSTART_AUTORECONF = NO
 XAPP_RSTART_DEPENDENCIES = xlib_libX11
 
-$(eval $(call AUTOTARGETS,package/x11r7,xapp_rstart))
+$(eval $(call AUTOTARGETS))

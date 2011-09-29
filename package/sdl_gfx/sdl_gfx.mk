@@ -23,4 +23,4 @@ else
 SDL_GFX_CONF_OPT += --disable-mmx
 endif
 
-$(eval $(call AUTOTARGETS,package,sdl_gfx))
+$(eval $(call AUTOTARGETS))

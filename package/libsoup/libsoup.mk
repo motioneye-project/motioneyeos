@@ -30,4 +30,4 @@ else
 LIBSOUP_CONF_OPT += --disable-ssl
 endif
 
-$(eval $(call AUTOTARGETS,package,libsoup))
+$(eval $(call AUTOTARGETS))

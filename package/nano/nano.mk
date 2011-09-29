@@ -18,4 +18,4 @@ define NANO_UNINSTALL_TARGET_CMDS
 	rm -f $(TARGET_DIR)/usr/bin/nano
 endef
 
-$(eval $(call AUTOTARGETS,package,nano))
+$(eval $(call AUTOTARGETS))

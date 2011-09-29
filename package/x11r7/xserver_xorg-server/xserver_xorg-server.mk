@@ -153,4 +153,4 @@ else
 XSERVER_XORG_SERVER_CONF_OPT += --disable-glx
 endif
 
-$(eval $(call AUTOTARGETS,package/x11r7,xserver_xorg-server))
+$(eval $(call AUTOTARGETS))

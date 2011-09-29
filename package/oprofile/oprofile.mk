@@ -38,4 +38,4 @@ define OPROFILE_UNINSTALL_TARGET_CMDS
 	rm -rf $(TARGET_DIR)/usr/share/oprofile
 endef
 
-$(eval $(call AUTOTARGETS,package,oprofile))
+$(eval $(call AUTOTARGETS))

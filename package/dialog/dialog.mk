@@ -23,4 +23,4 @@ define DIALOG_POST_CLEAN
 	rm -f $(TARGET_DIR)/usr/bin/dialog
 endef
 
-$(eval $(call AUTOTARGETS,package,dialog))
+$(eval $(call AUTOTARGETS))

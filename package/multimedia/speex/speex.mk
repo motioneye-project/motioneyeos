@@ -33,4 +33,4 @@ define SPEEX_BUILD_CMDS
 	$($(PKG)_MAKE_ENV) $(MAKE) $($(PKG)_MAKE_OPT) -C $(@D)/$($(PKG)_SUBDIR)
 endef
 
-$(eval $(call AUTOTARGETS,package/multimedia,speex))
+$(eval $(call AUTOTARGETS))

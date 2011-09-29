@@ -18,4 +18,4 @@ FLTK_CONF_OPT = --enable-threads --with-x
 
 FLTK_DEPENDENCIES = xserver_xorg-server xlib_libXt
 
-$(eval $(call AUTOTARGETS,package,fltk))
+$(eval $(call AUTOTARGETS))

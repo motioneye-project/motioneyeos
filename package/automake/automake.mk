@@ -23,8 +23,8 @@ endef
 HOST_AUTOMAKE_POST_INSTALL_HOOKS += GTK_DOC_M4_INSTALL
 HOST_AUTOMAKE_POST_INSTALL_HOOKS += HOST_AUTOMAKE_MAKE_ACLOCAL
 
-$(eval $(call AUTOTARGETS,package,automake))
-$(eval $(call AUTOTARGETS,package,automake,host))
+$(eval $(call AUTOTARGETS))
+$(eval $(call AUTOTARGETS,host))
 
 # variables used by other packages
 AUTOMAKE = $(HOST_DIR)/usr/bin/automake

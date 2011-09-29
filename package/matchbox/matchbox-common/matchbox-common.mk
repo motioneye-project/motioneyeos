@@ -15,4 +15,4 @@ endif
 
 #############################################################
 
-$(eval $(call AUTOTARGETS,package/matchbox,matchbox-common))
+$(eval $(call AUTOTARGETS))

@@ -15,5 +15,5 @@ XLIB_LIBXFONT_CONF_OPT = --disable-devel-docs
 HOST_XLIB_LIBXFONT_CONF_OPT = --disable-devel-docs
 HOST_XLIB_LIBXFONT_DEPENDENCIES = host-freetype host-xlib_libfontenc host-xlib_xtrans host-xproto_fontcacheproto host-xproto_fontsproto host-xproto_xproto host-xfont_encodings
 
-$(eval $(call AUTOTARGETS,package/x11r7,xlib_libXfont))
-$(eval $(call AUTOTARGETS,package/x11r7,xlib_libXfont,host))
+$(eval $(call AUTOTARGETS))
+$(eval $(call AUTOTARGETS,host))

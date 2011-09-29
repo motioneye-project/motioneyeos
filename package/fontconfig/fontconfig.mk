@@ -27,5 +27,5 @@ HOST_FONTCONFIG_CONF_OPT = \
 		--disable-docs \
 		--disable-static
 
-$(eval $(call AUTOTARGETS,package,fontconfig))
-$(eval $(call AUTOTARGETS,package,fontconfig,host))
+$(eval $(call AUTOTARGETS))
+$(eval $(call AUTOTARGETS,host))

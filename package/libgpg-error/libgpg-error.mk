@@ -9,4 +9,4 @@ LIBGPG_ERROR_SITE:=ftp://gd.tuwien.ac.at/privacy/gnupg/libgpg-error
 
 LIBGPG_ERROR_INSTALL_STAGING = YES
 
-$(eval $(call AUTOTARGETS,package,libgpg-error))
+$(eval $(call AUTOTARGETS))

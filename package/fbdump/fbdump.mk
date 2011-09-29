@@ -8,5 +8,5 @@ FBDUMP_SOURCE:=fbdump-$(FBDUMP_VERSION).tar.gz
 FBDUMP_SITE:=http://www.rcdrummond.net/fbdump
 FBDUMP_AUTORECONF = NO
 
-$(eval $(call AUTOTARGETS,package,fbdump))
+$(eval $(call AUTOTARGETS))
 

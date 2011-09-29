@@ -18,7 +18,7 @@ HOST_PKG_CONFIG_CONF_OPT = \
 
 HOST_PKG_CONFIG_AUTORECONF = YES
 
-$(eval $(call AUTOTARGETS,package,pkg-config))
-$(eval $(call AUTOTARGETS,package,pkg-config,host))
+$(eval $(call AUTOTARGETS))
+$(eval $(call AUTOTARGETS,host))
 
 PKG_CONFIG_HOST_BINARY:=$(HOST_DIR)/usr/bin/pkg-config

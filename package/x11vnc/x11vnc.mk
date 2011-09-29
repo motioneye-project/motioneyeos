@@ -14,4 +14,4 @@ X11VNC_CONF_OPT = \
 
 X11VNC_DEPENDENCIES = xserver_xorg-server xlib_libXt
 
-$(eval $(call AUTOTARGETS,package,x11vnc))
+$(eval $(call AUTOTARGETS))

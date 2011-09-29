@@ -6,4 +6,4 @@ CROSSTOOL_NG_INSTALL_TARGET    = NO
 CROSSTOOL_NG_MAKE              = $(MAKE1)
 HOST_CROSSTOOL_NG_DEPENDENCIES = host-gawk host-automake $(if $(BR2_CCACHE),host-ccache)
 
-$(eval $(call AUTOTARGETS,package,crosstool-ng,host))
+$(eval $(call AUTOTARGETS,host))

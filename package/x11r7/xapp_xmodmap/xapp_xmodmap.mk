@@ -10,4 +10,4 @@ XAPP_XMODMAP_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_XMODMAP_AUTORECONF = NO
 XAPP_XMODMAP_DEPENDENCIES = xlib_libX11
 
-$(eval $(call AUTOTARGETS,package/x11r7,xapp_xmodmap))
+$(eval $(call AUTOTARGETS))

@@ -15,4 +15,4 @@ GREP_CONF_ENV += LIBS=-liconv
 GREP_DEPENDENCIES += libiconv
 endif
 
-$(eval $(call AUTOTARGETS,package,grep))
+$(eval $(call AUTOTARGETS))

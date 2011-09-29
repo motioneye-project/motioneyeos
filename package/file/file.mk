@@ -14,5 +14,5 @@ define FILE_UNINSTALL_TARGET_CMDS
 	rm -f $(TARGET_DIR)/usr/lib/libmagic.*
 endef
 
-$(eval $(call AUTOTARGETS,package,file))
-$(eval $(call AUTOTARGETS,package,file,host))
+$(eval $(call AUTOTARGETS))
+$(eval $(call AUTOTARGETS,host))

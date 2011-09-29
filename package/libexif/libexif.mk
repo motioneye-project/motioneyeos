@@ -11,4 +11,4 @@ LIBEXIF_INSTALL_STAGING = YES
 LIBEXIF_CONF_OPT = --disable-docs
 LIBEXIF_DEPENDENCIES = host-pkg-config
 
-$(eval $(call AUTOTARGETS,package,libexif))
+$(eval $(call AUTOTARGETS))

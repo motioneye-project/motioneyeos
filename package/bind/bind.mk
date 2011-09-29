@@ -55,4 +55,4 @@ define BIND_UNINSTALL_TARGET_CMDS
 	rm -f $(TARGET_DIR)/etc/init.d/S81named
 endef
 
-$(eval $(call AUTOTARGETS,package,bind))
+$(eval $(call AUTOTARGETS))

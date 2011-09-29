@@ -10,4 +10,4 @@ XAPP_XLSFONTS_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_XLSFONTS_AUTORECONF = NO
 XAPP_XLSFONTS_DEPENDENCIES = xlib_libX11
 
-$(eval $(call AUTOTARGETS,package/x11r7,xapp_xlsfonts))
+$(eval $(call AUTOTARGETS))

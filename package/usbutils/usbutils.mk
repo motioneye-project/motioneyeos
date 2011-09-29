@@ -45,4 +45,4 @@ ifneq ($(BR2_HAVE_DEVFILES),y)
 USBUTILS_POST_INSTALL_TARGET_HOOKS += USBUTILS_REMOVE_DEVFILES
 endif
 
-$(eval $(call AUTOTARGETS,package,usbutils))
+$(eval $(call AUTOTARGETS))

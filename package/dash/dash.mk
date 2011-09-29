@@ -17,4 +17,4 @@ define DASH_CLEAN_CMDS
 	rm -f $(TARGET_DIR)/bin/dash
 endef
 
-$(eval $(call AUTOTARGETS,package,dash))
+$(eval $(call AUTOTARGETS))

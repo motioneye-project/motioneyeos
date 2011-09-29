@@ -10,4 +10,4 @@ XAPP_XMORE_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_XMORE_AUTORECONF = NO
 XAPP_XMORE_DEPENDENCIES = xlib_libXprintUtil xlib_libXaw
 
-$(eval $(call AUTOTARGETS,package/x11r7,xapp_xmore))
+$(eval $(call AUTOTARGETS))

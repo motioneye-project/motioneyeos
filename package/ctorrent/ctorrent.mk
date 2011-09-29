@@ -14,4 +14,4 @@ else
 CTORRENT_CONF_OPT+=--with-ssl=no
 endif
 
-$(eval $(call AUTOTARGETS,package,ctorrent))
+$(eval $(call AUTOTARGETS))

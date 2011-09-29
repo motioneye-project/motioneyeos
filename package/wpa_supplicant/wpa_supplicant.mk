@@ -107,4 +107,4 @@ define WPA_SUPPLICANT_UNINSTALL_TARGET_CMDS
 	rm -f $(TARGET_DIR)/usr/share/dbus-1/system-services/$(WPA_SUPPLICANT_DBUS_SERVICE).service
 endef
 
-$(eval $(call AUTOTARGETS,package,wpa_supplicant))
+$(eval $(call AUTOTARGETS))

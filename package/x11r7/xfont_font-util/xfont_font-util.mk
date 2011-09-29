@@ -13,5 +13,5 @@ XFONT_FONT_UTIL_INSTALL_TARGET = NO
 
 HOST_XFONT_FONT_UTIL_DEPENDENCIES = host-pkg-config
 
-$(eval $(call AUTOTARGETS,package/x11r7,xfont_font-util))
-$(eval $(call AUTOTARGETS,package/x11r7,xfont_font-util,host))
+$(eval $(call AUTOTARGETS))
+$(eval $(call AUTOTARGETS,host))

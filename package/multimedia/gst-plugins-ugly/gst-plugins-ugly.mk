@@ -74,4 +74,4 @@ else
 GST_PLUGINS_UGLY_CONF_OPT += --disable-mpeg2dec
 endif
 
-$(eval $(call AUTOTARGETS,package/multimedia,gst-plugins-ugly))
+$(eval $(call AUTOTARGETS))

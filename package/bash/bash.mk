@@ -34,4 +34,4 @@ define BASH_UNINSTALL_TARGET_CMDS
 	fi
 endef
 
-$(eval $(call AUTOTARGETS,package,bash))
+$(eval $(call AUTOTARGETS))

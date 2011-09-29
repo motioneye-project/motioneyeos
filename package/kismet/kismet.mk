@@ -63,4 +63,4 @@ define KISMET_UNINSTALL_TARGET_CMDS
 	$(KISMET_UNINSTALL_TARGET_CONFIGS)
 endef
 
-$(eval $(call AUTOTARGETS,package,kismet))
+$(eval $(call AUTOTARGETS))

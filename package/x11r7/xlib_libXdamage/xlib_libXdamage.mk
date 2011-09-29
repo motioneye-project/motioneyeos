@@ -11,4 +11,4 @@ XLIB_LIBXDAMAGE_AUTORECONF = NO
 XLIB_LIBXDAMAGE_INSTALL_STAGING = YES
 XLIB_LIBXDAMAGE_DEPENDENCIES = xproto_damageproto xlib_libX11 xlib_libXfixes xproto_xproto
 
-$(eval $(call AUTOTARGETS,package/x11r7,xlib_libXdamage))
+$(eval $(call AUTOTARGETS))

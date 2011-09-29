@@ -29,7 +29,7 @@ else
 SWFDEC_CONF_OPT += --disable-gtk
 endif
 
-$(eval $(call AUTOTARGETS,package/multimedia,swfdec))
+$(eval $(call AUTOTARGETS))
 
 # swfdec uses glib-* at install time
 # Notice: must come after AUTOTARGETS as that's where these variables gets set

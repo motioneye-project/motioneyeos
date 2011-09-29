@@ -28,4 +28,4 @@ endif
 
 #############################################################
 
-$(eval $(call AUTOTARGETS,package/matchbox,matchbox-keyboard))
+$(eval $(call AUTOTARGETS))

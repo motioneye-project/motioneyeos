@@ -17,4 +17,4 @@ LIBDVDNAV_DEPENDENCIES = libdvdread
 # of cross compilation, we prefer using pkg-config.
 LIBDVDNAV_CONF_OPT = --with-dvdread-config="$(PKG_CONFIG_HOST_BINARY) dvdread"
 
-$(eval $(call AUTOTARGETS,package/multimedia,libdvdnav))
+$(eval $(call AUTOTARGETS))

@@ -25,4 +25,4 @@ endif
 
 LIBEXOSIP2_POST_PATCH_HOOKS += LIBEXOSIP2_DEBIAN_PATCHES
 
-$(eval $(call AUTOTARGETS,package,libeXosip2))
+$(eval $(call AUTOTARGETS))

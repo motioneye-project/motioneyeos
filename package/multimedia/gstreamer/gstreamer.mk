@@ -25,4 +25,4 @@ GSTREAMER_CONF_OPT = \
 
 GSTREAMER_DEPENDENCIES = libglib2 host-pkg-config
 
-$(eval $(call AUTOTARGETS,package/multimedia,gstreamer))
+$(eval $(call AUTOTARGETS))

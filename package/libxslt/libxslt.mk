@@ -40,5 +40,5 @@ ifneq ($(BR2_HAVE_DEVFILES),y)
 LIBXSLT_POST_INSTALL_TARGET_HOOKS += LIBXSLT_REMOVE_CONFIG_SCRIPTS
 endif
 
-$(eval $(call AUTOTARGETS,package,libxslt))
-$(eval $(call AUTOTARGETS,package,libxslt,host))
+$(eval $(call AUTOTARGETS))
+$(eval $(call AUTOTARGETS,host))

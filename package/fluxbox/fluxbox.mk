@@ -13,4 +13,4 @@ FLUXBOX_CONF_OPT = --x-includes=$(STAGING_DIR)/usr/include/X11 \
 
 FLUXBOX_DEPENDENCIES = xlib_libX11 $(if $(BR2_PACKAGE_LIBICONV),libiconv)
 
-$(eval $(call AUTOTARGETS,package,fluxbox))
+$(eval $(call AUTOTARGETS))

@@ -16,4 +16,4 @@ define LIBNL_UNINSTALL_TARGET_CMDS
 	rm -rf $(TARGET_DIR)/usr/lib/libnl
 endef
 
-$(eval $(call AUTOTARGETS,package,libnl))
+$(eval $(call AUTOTARGETS))

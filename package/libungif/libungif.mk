@@ -23,4 +23,4 @@ endef
 
 LIBUNGIF_POST_INSTALL_TARGET_HOOKS += LIBUNGIF_BINS_CLEANUP
 
-$(eval $(call AUTOTARGETS,package,libungif))
+$(eval $(call AUTOTARGETS))

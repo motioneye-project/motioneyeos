@@ -24,4 +24,4 @@ endef
 
 TCL_POST_INSTALL_TARGET_HOOKS += TCL_POST_INSTALL_CLEANUP
 
-$(eval $(call AUTOTARGETS,package,tcl))
+$(eval $(call AUTOTARGETS))

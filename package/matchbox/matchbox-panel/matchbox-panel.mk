@@ -21,4 +21,4 @@ endif
 
 #############################################################
 
-$(eval $(call AUTOTARGETS,package/matchbox,matchbox-panel))
+$(eval $(call AUTOTARGETS))
