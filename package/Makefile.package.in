@@ -89,9 +89,9 @@ TERM_RESET := $(shell tput rmso)
 
 # Download method commands
 WGET:=$(call qstrip,$(BR2_WGET)) $(QUIET)
-SVN:=$(call qstrip,$(BR2_SVN)) $(QUIET)
-BZR:=$(call qstrip,$(BR2_BZR)) $(QUIET)
-GIT:=$(call qstrip,$(BR2_GIT)) $(QUIET)
+SVN:=$(call qstrip,$(BR2_SVN))
+BZR:=$(call qstrip,$(BR2_BZR))
+GIT:=$(call qstrip,$(BR2_GIT))
 LOCALFILES:=$(call qstrip,$(BR2_LOCALFILES))
 
 # Default spider mode is 'DOWNLOAD'. Other possible values are 'SOURCE_CHECK'
