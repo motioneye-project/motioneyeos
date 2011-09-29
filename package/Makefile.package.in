@@ -141,7 +141,7 @@ define SOURCE_CHECK_GIT
 endef
 
 define SHOW_EXTERNAL_DEPS_GIT
-  echo "$($(PKG)_SITE) [git: $($(PKG)_DL_VERSION)]"
+	echo $($(PKG)_SOURCE)
 endef
 
 
@@ -155,7 +155,7 @@ define SOURCE_CHECK_BZR
 endef
 
 define SHOW_EXTERNAL_DEPS_BZR
-	echo "$($(PKG)_SITE) [bzr: $($(PKG)_DL_VERSION)]"
+	echo $($(PKG)_SOURCE)
 endef
 
 
@@ -173,7 +173,7 @@ define SOURCE_CHECK_SVN
 endef
 
 define SHOW_EXTERNAL_DEPS_SVN
-  echo "$($(PKG)_SITE) [svn: $($(PKG)_DL_VERSION)]"
+  echo $($(PKG)_SOURCE)
 endef
 
 
