@@ -100,6 +100,12 @@ else
 GST_PLUGINS_BAD_CONF_OPT += --disable-debugutils
 endif
 
+ifeq ($(BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_DECKLINK),y)
+GST_PLUGINS_BAD_CONF_OPT += --enable-decklink
+else
+GST_PLUGINS_BAD_CONF_OPT += --disable-decklink
+endif
+
 ifeq ($(BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_DTMF),y)
 GST_PLUGINS_BAD_CONF_OPT += --enable-dtmf
 else
@@ -230,6 +236,12 @@ ifeq ($(BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_LIBRFB),y)
 GST_PLUGINS_BAD_CONF_OPT += --enable-librfb
 else
 GST_PLUGINS_BAD_CONF_OPT += --disable-librfb
+endif
+
+ifeq ($(BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_LINSYS),y)
+GST_PLUGINS_BAD_CONF_OPT += --enable-linsys
+else
+GST_PLUGINS_BAD_CONF_OPT += --disable-linsys
 endif
 
 ifeq ($(BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_LIVEADDER),y)
@@ -482,6 +494,13 @@ ifeq ($(BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_FBDEV),y)
 GST_PLUGINS_BAD_CONF_OPT += --enable-fbdev
 else
 GST_PLUGINS_BAD_CONF_OPT += --disable-fbdev
+endif
+
+ifeq ($(BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_LIBMMS),y)
+GST_PLUGINS_BAD_CONF_OPT += --enable-libmms
+GST_PLUGINS_BAD_DEPENDENCIES += libmms
+else
+GST_PLUGINS_BAD_CONF_OPT += --disable-libmms
 endif
 
 ifeq ($(BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_NEON),y)
