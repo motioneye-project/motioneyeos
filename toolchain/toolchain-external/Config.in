@@ -137,6 +137,21 @@ config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_POWERPC201009
             - e500mc glibc, 32 bits
             - 970 glibc hard-float, 64 bits
 
+config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_SH201103
+	bool "CodeSourcery SH 2011.03"
+	depends on BR2_sh4a || BR2_sh4aeb
+	select BR2_TOOLCHAIN_EXTERNAL_GLIBC
+	select BR2_INSTALL_LIBSTDCPP
+	help
+	  Toolchain for the SuperH architecture, from CodeSourcery. It
+	  uses gcc 4.5.2, binutils 2.20, glibc 2.13, uClibc 0.9.30,
+	  gdb 7.2.50 and kernel headers 2.6.38. It has support for
+	  the following variants:
+            - SH4A, glibc, little endian
+            - SH4A, glibc, big endian
+            - SH4A, uClibc, little endian
+            - SH4A, uClibc, big endian
+
 config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_SH201009
 	bool "CodeSourcery SH 2010.09"
 	depends on BR2_sh4a || BR2_sh4aeb
@@ -238,6 +253,7 @@ config BR2_TOOLCHAIN_EXTERNAL_PREFIX
 	default "mips-linux-gnu"         if BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_MIPS201103
 	default "powerpc-linux-gnu"      if BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_POWERPC201009
 	default "sh-linux-gnu"           if BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_SH201009
+	default "sh-linux-gnu"           if BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_SH201103
 	default "sh-uclinux"             if BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_SH2A_201009
 	default "sh-uclinux"             if BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_SH2A_201103
 	default "bfin-uclinux"		 if BR2_TOOLCHAIN_EXTERNAL_BLACKFIN_UCLINUX_2010RC1 && !BR2_BFIN_FDPIC
