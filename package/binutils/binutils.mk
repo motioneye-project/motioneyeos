@@ -30,6 +30,7 @@ endif
 # We just keep the convention of "host utility" for now
 HOST_BINUTILS_CONF_OPT = --disable-multilib --disable-werror \
 			--target=$(REAL_GNU_TARGET_NAME) \
+			--disable-shared --enable-static \
 			$(BR2_CONFIGURE_STAGING_SYSROOT) \
 			$(BINUTILS_EXTRA_CONFIG_OPTIONS)
 
