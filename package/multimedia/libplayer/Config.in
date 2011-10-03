@@ -1,0 +1,30 @@
+config BR2_PACKAGE_LIBPLAYER
+	depends on BR2_LARGEFILE
+	bool "libplayer"
+	help
+	  libplayer provides a generic A/V API that relies on various multimedia
+	  player for Linux systems. It currently supports MPlayer, xine VLC and
+	  GStreamer only
+
+	  http://libplayer.geexbox.org/
+
+if BR2_PACKAGE_LIBPLAYER
+config BR2_PACKAGE_LIBPLAYER_MPLAYER
+	bool "mplayer backend"
+	select BR2_PACKAGE_MPLAYER
+
+config BR2_PACKAGE_LIBPLAYER_GSTREAMER
+	bool "gstreamer backend"
+	depends on BR2_USE_WCHAR # glib2
+	select BR2_PACKAGE_GSTREAMER
+
+comment "gstreamer backend requires a toolchain with WCHAR support"
+	depends on !BR2_USE_WCHAR
+
+config BR2_PACKAGE_LIBPLAYER_PYTHON
+	depends on BR2_PACKAGE_PYTHON
+	bool "Libplayer python bindings"
+endif
+
+comment "libplayer requires a toolchain with LARGEFILE support"
+	depends on !BR2_LARGEFILE
