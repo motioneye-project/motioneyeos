@@ -60,6 +60,13 @@ else
 GST_PLUGINS_UGLY_CONF_OPT += --disable-synaesthesia
 endif
 
+ifeq ($(BR2_PACKAGE_GST_PLUGINS_UGLY_PLUGIN_LAME),y)
+GST_PLUGINS_UGLY_CONF_OPT += --enable-lame
+GST_PLUGINS_UGLY_DEPENDENCIES += lame
+else
+GST_PLUGINS_UGLY_CONF_OPT += --disable-lame
+endif
+
 ifeq ($(BR2_PACKAGE_GST_PLUGINS_UGLY_PLUGIN_MAD),y)
 GST_PLUGINS_UGLY_CONF_OPT += --enable-mad
 GST_PLUGINS_UGLY_DEPENDENCIES += libid3tag libmad
