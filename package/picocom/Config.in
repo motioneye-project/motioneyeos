@@ -1,0 +1,8 @@
+config BR2_PACKAGE_PICOCOM
+	bool "picocom"
+	help
+	  picocom is a minimal dumb-terminal emulation program. It
+	  is, in principle, very much like minicom, only it's pico
+	  instead of mini!
+
+	  http://code.google.com/p/picocom/
