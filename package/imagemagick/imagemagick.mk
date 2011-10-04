@@ -80,6 +80,15 @@ else
 IMAGEMAGICK_CONF_OPT += --without-tiff
 endif
 
+ifeq ($(BR2_PACKAGE_FFTW),y)
+# configure script misdetects these leading to build errors
+IMAGEMAGICK_CONF_ENV += ac_cv_func_creal=yes ac_cv_func_cimag=yes
+IMAGEMAGICK_CONF_OPT += --with-fftw
+IMAGEMAGICK_DEPENDENCIES += fftw
+else
+IMAGEMAGICK_CONF_OPT += --without-fftw
+endif
+
 define IMAGEMAGICK_REMOVE_CONFIG_SCRIPTS
 	$(RM) -f $(addprefix $(TARGET_DIR)/usr/bin/,	\
 		   $(addsuffix -config,			\
