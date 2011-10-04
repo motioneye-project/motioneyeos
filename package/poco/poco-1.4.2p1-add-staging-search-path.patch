@@ -1,0 +1,22 @@
+From: Baruch Siach <baruch@tkos.co.il>
+Subject: [PATCH] poco: add the staging path to search path
+
+Add the mysql headers and client libraries to the search path of the
+preprocessor and the linker. The $MYSQL_LIBDIR variable must be set from the
+make command line.
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+--- 
+--- poco-1.4.1p1-all-dist/Data/MySQL/Makefile	2011-02-09 11:13:00.000000000 +0200
++++ poco-1.4.1p1-all/Data/MySQL/Makefile	2011-08-07 09:03:37.106161274 +0300
+@@ -8,8 +8,8 @@
+ 
+ include $(POCO_BASE)/build/rules/global
+ 
+-SYSLIBS += -L/usr/local/lib/mysql -L/usr/lib/mysql -L/usr/mysql/lib/mysql -L/usr/local/mysql/lib -lmysqlclient
+-INCLUDE += -I/usr/local/include/mysql/ -I/usr/include/mysql -I/usr/mysql/include/mysql -I/usr/local/mysql/include
++SYSLIBS += -L$(MYSQL_LIBDIR) -L/usr/local/lib/mysql -L/usr/lib/mysql -L/usr/mysql/lib/mysql -L/usr/local/mysql/lib -lmysqlclient
++INCLUDE += -I/usr/local/include/mysql/ -I/usr/include/mysql -I/usr/mysql/include/mysql -I/usr/local/mysql/include -I=/mysql
+ SYSFLAGS += -DTHREADSAFE -DNO_TCL
+ 
+ objects = Binder Extractor SessionImpl Connector \
