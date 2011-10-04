@@ -98,27 +98,27 @@ for i in $(find package/ -name '*.mk') ; do
     is_manual_target=0
     is_manual_host=0
 
-    if grep -E "\(call AUTOTARGETS,[^,]*,[^,]*,host\)" $i > /dev/null ; then
+    if grep -E "\(call AUTOTARGETS,host\)" $i > /dev/null ; then
 	is_auto_host=1
     fi
 
-    if grep -E "\(call AUTOTARGETS,[^,]*,[^,]*(,target|)\)" $i > /dev/null ; then
+    if grep -E "\(call AUTOTARGETS\)" $i > /dev/null ; then
 	is_auto_target=1
     fi
 
-    if grep -E "\(call GENTARGETS,[^,]*,[^,]*,host\)" $i > /dev/null ; then
+    if grep -E "\(call GENTARGETS,host\)" $i > /dev/null ; then
 	is_pkg_host=1
     fi
 
-    if grep -E "\(call GENTARGETS,[^,]*,[^,]*(,target|)\)" $i > /dev/null ; then
+    if grep -E "\(call GENTARGETS\)" $i > /dev/null ; then
 	is_pkg_target=1
     fi
 
-    if grep -E "\(call CMAKETARGETS,[^,]*,[^,]*,host\)" $i > /dev/null ; then
+    if grep -E "\(call CMAKETARGETS,host\)" $i > /dev/null ; then
 	is_cmake_host=1
     fi
 
-    if grep -E "\(call CMAKETARGETS,[^,]*,[^,]*(,target|)\)" $i > /dev/null ; then
+    if grep -E "\(call CMAKETARGETS\)" $i > /dev/null ; then
 	is_cmake_target=1
     fi
 
