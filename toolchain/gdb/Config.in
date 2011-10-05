@@ -57,6 +57,11 @@ choice
 		depends on !BR2_bfin
 		select BR2_PTHREAD_DEBUG if !BR2_PTHREADS_NONE
 
+	config BR2_GDB_VERSION_7_2
+		bool "gdb 7.2.x"
+		depends on !BR2_bfin
+		select BR2_PTHREAD_DEBUG if !BR2_PTHREADS_NONE
+
 	config BR2_GDB_VERSION_7_3
 		bool "gdb 7.3.x"
 		depends on !BR2_bfin
@@ -71,4 +76,5 @@ config BR2_GDB_VERSION
 	default "6.8a"     if BR2_GDB_VERSION_6_8
 	default "7.0.1a"   if BR2_GDB_VERSION_7_0_1
 	default "7.1a"     if BR2_GDB_VERSION_7_1
+	default "7.2a"     if BR2_GDB_VERSION_7_2
 	default "7.3.1"    if BR2_GDB_VERSION_7_3
