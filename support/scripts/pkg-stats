@@ -71,7 +71,8 @@ tr.correct td {
 
 convert_to_generic_target=0
 convert_to_generic_host=0
-convert_to_autotools=0
+convert_to_target_autotools=0
+convert_to_host_autotools=0
 total_patch_count=0
 cnt=0
 for i in $(find package/ -name '*.mk') ; do
