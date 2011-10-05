@@ -1,0 +1,37 @@
+[PATCH] don't force library search path / rpath settings
+
+openocd adds -L$exec_prefix/lib -Wl,rpath,$exec_prefix/lib to the compile
+LDFLAGS if it isn't installed into /usr/local, which breaks cross compilation
+as the compiler ends up using host libraries.
+---
+ configure.in |   17 -----------------
+ 1 file changed, 17 deletions(-)
+
+Index: openocd-0.5.0/configure.in
+===================================================================
+--- openocd-0.5.0.orig/configure.in
++++ openocd-0.5.0/configure.in
+@@ -174,23 +174,6 @@
+ # Let make expand exec_prefix.
+ test x"$OCDxprefix" = xNONE && OCDxprefix="$OCDprefix"
+ 
+-# what matters is the "exec-prefix"
+-if test "$OCDxprefix" != "$ac_default_prefix"
+-then
+-    # We are installing in a non-standard place
+-    # Nonstandard --prefix and/or --exec-prefix
+-    # We have an override of some sort.
+-    # use build specific install library dir
+-
+-    LDFLAGS="$LDFLAGS -L$OCDxprefix/lib"
+-    # RPATH becomes an issue on Linux only
+-    if test $host_os = linux-gnu || test $host_os = linux ; then
+-      LDFLAGS="$LDFLAGS -Wl,-rpath,$OCDxprefix/lib"
+-    fi
+-    # The "INCDIR" is also usable
+-    CFLAGS="$CFLAGS -I$includedir"
+-fi
+-
+ AC_ARG_WITH(ftd2xx,
+    AS_HELP_STRING([--with-ftd2xx=<PATH>],[This option has been removed.]),
+   [
