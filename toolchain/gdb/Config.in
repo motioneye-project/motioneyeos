@@ -26,20 +26,16 @@ config BR2_PACKAGE_GDB_HOST
 
 choice
 	prompt "GDB debugger Version"
-	default BR2_GDB_VERSION_6_8 if !BR2_avr32
+	default BR2_GDB_VERSION_6_6 if !BR2_bfin
 	default BR2_GDB_VERSION_6_7_1_AVR32_2_1_5 if BR2_avr32
+	default BR2_GDB_VERSION_7_3
 	depends on BR2_PACKAGE_GDB || BR2_PACKAGE_GDB_SERVER || BR2_PACKAGE_GDB_HOST
 	help
 	  Select the version of gdb you wish to use.
 
 	config BR2_GDB_VERSION_6_6
 		bool "gdb 6.6"
-		depends on !BR2_avr32
-		depends on BR2_DEPRECATED || BR2_bfin
-
-	config BR2_GDB_VERSION_6_7_1
-		depends on !(BR2_avr32 || BR2_bfin)
-		bool "gdb 6.7.1"
+		depends on BR2_bfin
 
 	config BR2_GDB_VERSION_6_7_1_AVR32_2_1_5
 		depends on BR2_avr32
@@ -48,10 +44,12 @@ choice
 	config BR2_GDB_VERSION_6_8
 		bool "gdb 6.8"
 		depends on !(BR2_avr32 || BR2_bfin)
+		depends on BR2_DEPRECATED
 
 	config BR2_GDB_VERSION_7_0_1
 		bool "gdb 7.0.1"
 		depends on !BR2_bfin
+		depends on BR2_DEPRECATED
 		select BR2_PTHREAD_DEBUG if !BR2_PTHREADS_NONE
 
 	config BR2_GDB_VERSION_7_1
@@ -69,7 +67,6 @@ endchoice
 config BR2_GDB_VERSION
 	string
 	default "6.6"      if BR2_GDB_VERSION_6_6
-	default "6.7.1"    if BR2_GDB_VERSION_6_7_1
 	default "6.7.1-avr32-2.1.5" if BR2_GDB_VERSION_6_7_1_AVR32_2_1_5
 	default "6.8"      if BR2_GDB_VERSION_6_8
 	default "7.0.1"    if BR2_GDB_VERSION_7_0_1
