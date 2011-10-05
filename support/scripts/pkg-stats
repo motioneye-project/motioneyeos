@@ -73,7 +73,7 @@ convert_to_generic_target=0
 convert_to_generic_host=0
 convert_to_autotools=0
 total_patch_count=0
-cnt=1
+cnt=0
 for i in $(find package/ -name '*.mk') ; do
 
     if test \
