@@ -9,6 +9,7 @@ MPG123_SOURCE = mpg123-$(MPG123_VERSION).tar.bz2
 MPG123_SITE = http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/mpg123
 MPG123_CONF_OPT = --with-optimization=0 --disable-lfs-alias
 MPG123_INSTALL_STAGING = YES
+
 MPG123_CPU = $(if $(BR2_SOFT_FLOAT),generic_nofpu,generic_fpu)
 
 ifeq ($(BR2_arm),y)
@@ -34,11 +35,26 @@ endif
 
 MPG123_CONF_OPT += --with-cpu=$(MPG123_CPU)
 
-# Check if ALSA is built, then we should configure after alsa-lib so
-# ./configure can find alsa-lib.
+MPG123_AUDIO = dummy oss
+
+ifeq ($(BR2_PACKAGE_PORTAUDIO),y)
+MPG123_AUDIO += portaudio
+MPG123_CONF_OPT += --with-default-audio=portaudio
+MPG123_DEPENDENCIES += portaudio
+endif
+
+ifeq ($(BR2_PACKAGE_SDL),y)
+MPG123_AUDIO += sdl
+MPG123_CONF_OPT += --with-default-audio=sdl
+MPG123_DEPENDENCIES += sdl
+endif
+
 ifeq ($(BR2_PACKAGE_ALSA_LIB),y)
-MPG123_CONF_OPT += --with-audio=alsa
+MPG123_AUDIO += alsa
+MPG123_CONF_OPT += --with-default-audio=alsa
 MPG123_DEPENDENCIES += alsa-lib
 endif
+
+MPG123_CONF_OPT += --with-audio=$(shell echo $(MPG123_AUDIO) | tr ' ' ,)
 
 $(eval $(call AUTOTARGETS))
