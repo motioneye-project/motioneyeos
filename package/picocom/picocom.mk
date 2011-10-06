@@ -15,4 +15,4 @@ define PICOCOM_INSTALL_TARGET_CMDS
 	install -D -m 0755 $(@D)/picocom $(TARGET_DIR)/usr/bin/picocom
 endef
 
-$(eval $(call GENTARGETS,package,picocom))
+$(eval $(call GENTARGETS))
