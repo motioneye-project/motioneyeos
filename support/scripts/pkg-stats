@@ -22,7 +22,7 @@
 #
 # Run the script from the Buildroot toplevel directory:
 #
-#  ./scripts/pkg-stats > /tmp/pkg.html
+#  ./support/scripts/pkg-stats > /tmp/pkg.html
 #
 
 echo "<head>
