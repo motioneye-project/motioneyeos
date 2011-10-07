@@ -1,0 +1,6 @@
+config BR2_PACKAGE_NOIP
+	bool "noip"
+	help
+	  Dynamic DNS update client for no-ip.com
+
+	  http://www.no-ip.com/downloads.php
