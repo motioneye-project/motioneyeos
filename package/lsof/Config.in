@@ -1,12 +1,8 @@
 config BR2_PACKAGE_LSOF
 	bool "lsof"
-	depends on BR2_INET_RPC
 	help
 	  lsof (LiSt Open Files)
 	  The lsof tool lists information about files opened by
 	  processes.
 
 	  ftp://lsof.itap.purdue.edu/pub/tools/unix/lsof/
-
-comment "lsof requires a toolchain with RPC support"
-	depends on !BR2_INET_RPC
