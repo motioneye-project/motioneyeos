@@ -3,7 +3,8 @@
 # lsof
 #
 #############################################################
-LSOF_VERSION = 4.84
+
+LSOF_VERSION = 4.85
 LSOF_SOURCE = lsof_$(LSOF_VERSION).tar.bz2
 LSOF_SITE = ftp://lsof.itap.purdue.edu/pub/tools/unix/lsof/
 
