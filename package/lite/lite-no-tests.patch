@@ -1,5 +1,5 @@
---- Makefile.in.orig	2008-07-07 13:07:12.000000000 +0200
-+++ Makefile.in	2008-07-07 13:07:05.000000000 +0200
+--- a/Makefile.in.orig	2008-07-07 13:07:12.000000000 +0200
++++ b/Makefile.in	2008-07-07 13:07:05.000000000 +0200
 @@ -202,7 +202,7 @@
  target_vendor = @target_vendor@
  top_builddir = @top_builddir@
