@@ -43,7 +43,8 @@ endef
 
 define POCO_BUILD_CMDS
 	$(MAKE) POCO_TARGET_OSARCH=$(ARCH) CROSSENV=$(TARGET_CROSS) \
-		MYSQL_LIBDIR=$(TARGET_DIR)/usr/lib/mysql -C $(@D)
+		MYSQL_LIBDIR=$(STAGING_DIR)/usr/lib/mysql \
+		MYSQL_INCDIR=$(STAGING_DIR)/usr/include/mysql -C $(@D)
 endef
 
 define POCO_INSTALL_STAGING_CMDS
