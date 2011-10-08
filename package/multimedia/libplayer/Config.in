@@ -23,6 +23,7 @@ comment "gstreamer backend requires a toolchain with WCHAR support"
 
 config BR2_PACKAGE_LIBPLAYER_PYTHON
 	depends on BR2_PACKAGE_PYTHON
+	depends on BROKEN # player_init params, builds for host
 	bool "Libplayer python bindings"
 endif
 
