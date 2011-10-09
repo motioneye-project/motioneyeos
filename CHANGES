@@ -60,6 +60,7 @@
 	#3631: Error while compiling with Xorg
 	#3925: midori not getting compile
 	#4045: Add support for downloading i386 toolchains from codesourcery
+	#4165: lrzsz-fix-symlink-at-rebuild.patch
 	#4171: makedevs-unused-but-set-variable.patch
 	#4183: Codesourcery toolchain download site has changed
 

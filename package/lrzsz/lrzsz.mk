@@ -36,10 +36,10 @@ define LRZSZ_BUILD_HOOKS
 endef
 
 define LRZSZ_INSTALL_TARGET_CMDS
-	cp $(@D)/src/lrz $(TARGET_DIR)/usr/bin/rz
-	cp $(@D)/src/lsz $(TARGET_DIR)/usr/bin/sz
-	ln -s rz $(TARGET_DIR)/usr/bin/lrz
-	ln -s sz $(TARGET_DIR)/usr/bin/lsz
+	$(INSTALL) -m 0755 -D $(@D)/src/lrz $(TARGET_DIR)/usr/bin/rz
+	$(INSTALL) -m 0755 -D $(@D)/src/lsz $(TARGET_DIR)/usr/bin/sz
+	ln -sf rz $(TARGET_DIR)/usr/bin/lrz
+	ln -sf sz $(TARGET_DIR)/usr/bin/lsz
 endef
 
 define LRZSZ_CLEAN_CMDS
