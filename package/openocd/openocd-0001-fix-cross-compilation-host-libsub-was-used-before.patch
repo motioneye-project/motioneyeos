@@ -23,7 +23,7 @@ index dfa1e8f..cfe2218 100644
 +  dnl check for libusb
 +  PKG_CHECK_MODULES(LIBUSB, libusb >= 0.1.11)
 +  CFLAGS="$CFLAGS $LIBUSB_CFLAGS"
-+  LDFLAGS="$LFFLAGS $LIBUSB_LDFLAGS"
++  LDFLAGS="$LDFLAGS $LIBUSB_LDFLAGS"
 +  LIBS="$LIBS $LIBUSB_LIBS"
    build_usb=yes
  fi
