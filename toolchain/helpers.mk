@@ -22,9 +22,8 @@ copy_toolchain_lib_root = \
 	DESTDIR="$(strip $3)" ; \
  \
 	LIBS=`(cd $${ARCH_SYSROOT_DIR}; \
-		find -L . -path "./lib/$${LIB}.*"     -o \
-			  -path "./usr/lib/$${LIB}.*" -o \
-			  -path "./usr/$(TOOLCHAIN_EXTERNAL_PREFIX)/lib*/$${LIB}.*" \
+		find -L lib* usr/lib* usr/$(TOOLCHAIN_EXTERNAL_PREFIX)/lib* \
+			-maxdepth 1 -name "$${LIB}.*" 2>/dev/null \
 		)` ; \
 	for FILE in $${LIBS} ; do \
 		LIB=`basename $${FILE}`; \
