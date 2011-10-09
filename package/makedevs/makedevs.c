@@ -536,5 +536,5 @@ loop:
 	}
 	fclose(table);
 
-	return 0;
+	return ret;
 }
