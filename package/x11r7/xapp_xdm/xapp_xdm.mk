@@ -12,4 +12,11 @@ XAPP_XDM_DEPENDENCIES = xapp_xinit xapp_sessreg xapp_xrdb xlib_libX11 xlib_libXa
 XAPP_XDM_CONF_OPT = --with-utmp-file=/var/adm/utmpx \
 		    --with-wtmp-file=/var/adm/wtmpx
 
+define XAPP_XDM_INSTALL_STARTUP_SCRIPT
+	$(INSTALL) -m 0755 -D package/x11r7/xapp_xdm/S99xdm \
+		$(TARGET_DIR)/etc/init.d/S99xdm
+endef
+
+XAPP_XDM_POST_INSTALL_TARGET_HOOKS += XAPP_XDM_INSTALL_STARTUP_SCRIPT
+
 $(eval $(call AUTOTARGETS))
