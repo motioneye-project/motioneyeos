@@ -672,6 +672,14 @@ ifeq ($(BR2_TARGET_BAREBOX),y)
 	@echo '  barebox-savedefconfig  - Run barebox savedefconfig'
 endif
 	@echo
+	@echo 'Documentation:'
+	@echo '  manual                 - build manual in HTML, split HTML, PDF and txt'
+	@echo '  manual-html            - build manual in HTML'
+	@echo '  manual-split-html      - build manual in split HTML'
+	@echo '  manual-pdf             - build manual in PDF'
+	@echo '  manual-txt             - build manual in txt'
+	@echo '  manual-epub            - build manual in ePub'
+	@echo
 	@echo 'Miscellaneous:'
 	@echo '  source                 - download all sources needed for offline-build'
 	@echo '  source-check           - check all packages for valid download URLs'
@@ -683,13 +691,47 @@ endif
 	@$(foreach b, $(sort $(notdir $(wildcard $(TOPDIR)/configs/*_defconfig))), \
 	  printf "  %-35s - Build for %s\\n" $(b) $(b:_defconfig=);)
 	@echo
-	@echo 'See docs/README and docs/buildroot.html for further details'
+	@echo 'See docs/README, or generate the Buildroot manual for further details'
 	@echo
 
 release: OUT=buildroot-$(BR2_VERSION)
 
 release:
 	git archive --format=tar --prefix=$(OUT)/ master|gzip -9 >$(OUT).tar.gz
+
+MANUAL_SOURCES = $(wildcard docs/manual/*.txt)
+
+manual: manual-html manual-split-html manual-pdf manual-txt manual-epub
+
+manual-html: $(MANUAL_SOURCES)
+	@echo "HTML manual..."
+	$(Q)mkdir -p $(O)/docs/manual
+	$(Q)a2x -f xhtml -d book -L -r docs/images -D $(O)/docs/manual/ \
+		docs/manual/manual.txt
+
+manual-split-html: $(MANUAL_SOURCES)
+	@echo "Split HTML manual..."
+	$(Q)mkdir -p $(O)/docs/manual
+	$(Q)a2x -f chunked -d book -L -r docs/images -D $(O)/docs/manual/ \
+		docs/manual/manual.txt
+
+manual-pdf: $(MANUAL_SOURCES)
+	@echo "PDF manual..."
+	$(Q)mkdir -p $(O)/docs/manual
+	$(Q)a2x --dblatex-opts "-P latex.output.revhistory=0" -f pdf -d book -L -D $(O)/docs/manual/ \
+		docs/manual/manual.txt
+
+manual-txt: $(MANUAL_SOURCES)
+	@echo "Text manual..."
+	$(Q)mkdir -p $(O)/docs/manual
+	$(Q)a2x -f text -d book -L -D $(O)/docs/manual/ \
+		docs/manual/manual.txt
+
+manual-epub: $(MANUAL_SOURCES)
+	@echo "EPUB manual..."
+	$(Q)mkdir -p $(O)/docs/manual
+	$(Q)a2x -f epub -d book -L -r docs/images/ -D $(O)/docs/manual/ \
+		docs/manual/manual.txt
 
 .PHONY: $(noconfig_targets)
 
