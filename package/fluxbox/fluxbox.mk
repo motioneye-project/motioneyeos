@@ -13,4 +13,11 @@ FLUXBOX_CONF_OPT = --x-includes=$(STAGING_DIR)/usr/include/X11 \
 
 FLUXBOX_DEPENDENCIES = xlib_libX11 $(if $(BR2_PACKAGE_LIBICONV),libiconv)
 
+define FLUXBOX_INSTALL_XSESSION_FILE
+	[ -f $(TARGET_DIR)/root/.xsession ] || $(INSTALL) -m 0755 -D \
+		package/fluxbox/xsession $(TARGET_DIR)/root/.xsession
+endef
+
+FLUXBOX_POST_INSTALL_TARGET_HOOKS += FLUXBOX_INSTALL_XSESSION_FILE
+
 $(eval $(call AUTOTARGETS))
