@@ -1,0 +1,23 @@
+Getting Buildroot
+=================
+
+Buildroot releases are made approximately every 3 months. Direct Git
+access and daily snapshots are also available, if you want more
+bleeding edge.
+
+Releases are available at http://buildroot.net/downloads/[].
+
+The latest snapshot is always available at
+http://buildroot.net/downloads/snapshots/buildroot-snapshot.tar.bz2[],
+and previous snapshots are also available at
+http://buildroot.net/downloads/snapshots/[].
+
+To download Buildroot using Git, you can simply follow the rules
+described on the "Accessing Git" page
+(http://buildroot.net/git.html[]) of the Buildroot website
+(http://buildroot.net[]).  For the impatient, here's a quick recipe:
+
+---------------------
+ $ git clone git://git.buildroot.net/buildroot
+---------------------
+

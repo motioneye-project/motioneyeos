@@ -1,0 +1,183 @@
+Using Buildroot
+===============
+
+Configuration and general usage
+-------------------------------
+
+Buildroot has a nice configuration tool similar to the one you can
+find in the http://www.kernel.org/[Linux kernel] or in
+http://www.busybox.org/[Busybox]. Note that you can (and should) build
+everything as a normal user. There is no need to be root to configure
+and use Buildroot. The first step is to run the configuration
+assistant:
+
+--------------------
+ $ make menuconfig
+--------------------
+
+to run the curses-based configurator, or
+
+--------------------
+ $ make xconfig
+--------------------
+
+or
+
+--------------------
+ $ make gconfig
+--------------------
+
+to run the Qt or GTK-based configurators.
+
+All of these "make" commands will need to build a configuration
+utility, so you may need to install "development" packages for
+relevant libraries used by the configuration utilities. On Debian-like
+systems, the +libncurses5-dev+ package is required to use the
+'menuconfig' interface, +libqt4-dev+ is required to use the 'xconfig'
+interface, and +libglib2.0-dev, libgtk2.0-dev and libglade2-dev+ are
+needed to use the 'gconfig' interface.
+
+For each menu entry in the configuration tool, you can find associated
+help that describes the purpose of the entry.
+
+Once everything is configured, the configuration tool generates a
++.config+ file that contains the description of your
+configuration. It will be used by the Makefiles to do what's needed.
+
+Let's go:
+
+--------------------
+ $ make
+--------------------
+
+You *should never* use +make -jN+ with Buildroot: it does not support
+'top-level parallel make'. Instead, use the +BR2_JLEVEL+ option to
+tell Buildroot to run each package compilation with +make -jN+.
+
+This command will generally perform the following steps:
+
+* Download source files (as required)
+* Configure, build and install the cross-compiling toolchain if an
+  internal toolchain is used, or import a toolchain if an external
+  toolchain is used
+* Build/install selected target packages
+* Build a kernel image, if selected
+* Build a bootloader image, if selected
+* Create a root filesystem in selected formats
+
+Buildroot output is stored in a single directory, +output/+.
+This directory contains several subdirectories:
+
+* +images/+ where all the images (kernel image, bootloader and root
+  filesystem images) are stored.
+
+* +build/+ where all the components except for the cross-compilation
+  toolchain are built (this includes tools needed to run Buildroot on
+  the host and packages compiled for the target). The +build/+
+  directory contains one subdirectory for each of these components.
+
+* +staging/+ which contains a hierarchy similar to a root filesystem
+  hierarchy. This directory contains the installation of the
+  cross-compilation toolchain and all the userspace packages selected
+  for the target. However, this directory is 'not' intended to be
+  the root filesystem for the target: it contains a lot of development
+  files, unstripped binaries and libraries that make it far too big
+  for an embedded system. These development files are used to compile
+  libraries and applications for the target that depend on other
+  libraries.
+
+* +target/+ which contains 'almost' the complete root filesystem for
+  the target: everything needed is present except the device files in
+  +/dev/+ (Buildroot can't create them because Buildroot doesn't run
+  as root and doesn't want to run as root). Therefore, this directory
+  *should not be used on your target*.  Instead, you should use one of
+  the images built in the +images/+ directory. If you need an
+  extracted image of the root filesystem for booting over NFS, then
+  use the tarball image generated in +images/+ and extract it as
+  root. Compared to +staging/+, +target/+ contains only the files and
+  libraries needed to run the selected target applications: the
+  development files (headers, etc.) are not present, unless the
+  +development files in target filesystem+ option is selected.
+
+* +host/+ contains the installation of tools compiled for the host
+  that are needed for the proper execution of Buildroot, including the
+  cross-compilation toolchain.
+
+* +toolchain/+ contains the build directories for the various
+  components of the cross-compilation toolchain.
+
+Offline builds
+--------------
+
+If you intend to do an offline build and just want to download
+all sources that you previously selected in the configurator
+('menuconfig', 'xconfig' or 'gconfig'), then issue:
+
+--------------------
+ $ make source
+--------------------
+
+You can now disconnect or copy the content of your +dl+
+directory to the build-host.
+
+Building out-of-tree
+--------------------
+
+Buildroot supports building out of tree with a syntax similar to the
+Linux kernel. To use it, add +O=<directory>+ to the make command line:
+
+--------------------
+ $ make O=/tmp/build
+--------------------
+
+Or:
+
+--------------------
+ $ cd /tmp/build; make O=$PWD -C path/to/buildroot
+--------------------
+
+All the output files will be located under +/tmp/build+.
+
+When using out-of-tree builds, the Buildroot +.config+ and temporary
+files are also stored in the output directory. This means that you can
+safely run multiple builds in parallel using the same source tree as
+long as they use unique output directories.
+
+For ease of use, Buildroot generates a Makefile wrapper in the output
+directory - So after the first run, you no longer need to pass +O=..+
+and +-C ..+, simply run (in the output directory):
+
+--------------------
+ $ make <target>
+--------------------
+
+Environment variables
+---------------------
+[[env-vars]]
+
+Buildroot also honors some environment variables, when they are passed
+to +make+ or set in the environment:
+
+* +HOSTCXX+, the host C++ compiler to use
+* +HOSTCC+, the host C compiler to use
+* +UCLIBC_CONFIG_FILE=<path/to/.config>+, path to
+  the uClibc configuration file, used to compile uClibc, if an
+  internal toolchain is being built
+* +BUSYBOX_CONFIG_FILE=<path/to/.config>+, path to
+  the Busybox configuration file
+* +BUILDROOT_DL_DIR+ to override the directory in which
+  Buildroot stores/retrieves downloaded files
+
+An example that uses config files located in the toplevel directory and
+in your $HOME:
+
+--------------------
+ $ make UCLIBC_CONFIG_FILE=uClibc.config BUSYBOX_CONFIG_FILE=$HOME/bb.config
+--------------------
+
+If you want to use a compiler other than the default +gcc+
+or +g+++ for building helper-binaries on your host, then do
+
+--------------------
+ $ make HOSTCXX=g++-4.3-HEAD HOSTCC=gcc-4.3-HEAD
+--------------------

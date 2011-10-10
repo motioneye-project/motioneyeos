@@ -1,0 +1,21 @@
+Using +ccache+ in Buildroot
+===========================
+
+http://ccache.samba.org[ccache] is a compiler cache. It stores the
+object files resulting from each compilation process, and is able to
+skip future compilation of the same source file (with same compiler
+and same arguments) by using the pre-existing object files. When doing
+almost identical builds from scratch a number of times, it can nicely
+speed up the build process.
+
++ccache+ support is integrated in Buildroot. You just have to enable
++Enable compiler cache+ in +Build options+. This will automatically
+build +ccache+ and use it for every host and target compilation.
+
+The cache is located in +$HOME/.buildroot-ccache+. It is stored
+outside of Buildroot output directory so that it can be shared by
+separate Buildroot builds. If you want to get rid of the cache, simply
+remove this directory.
+
+You can get statistics on the cache (its size, number of hits,
+misses, etc.) by running +make ccache-stats+.

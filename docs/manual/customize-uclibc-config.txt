@@ -1,0 +1,32 @@
+Customizing the uClibc configuration
+------------------------------------
+[[uclibc-custom]]
+
+Just like xref:busybox-custom[BusyBox], http://www.uclibc.org/[uClibc]
+offers a lot of configuration options. They allow you to select
+various functionalities depending on your needs and limitations.
+
+The easiest way to modify the configuration of uClibc is to
+follow these steps:
+
+* Do an initial compilation of Buildroot without trying to customize
+  uClibc.
+
+* Invoke +make uclibc-menuconfig+.  The nice configuration assistant,
+  similar to the one used in the Linux kernel or Buildroot,
+  appears. Make your configuration changes as appropriate.
+
+* Copy the +$(O)/toolchain/uclibc-VERSION/.config+ file to a different
+  place (like +toolchain/uClibc/uClibc-myconfig.config+, or
+  +board/mymanufacturer/myboard/uClibc.config+) and adjust the uClibc
+  configuration (configuration option +BR2_UCLIBC_CONFIG+) to use this
+  configuration instead of the default one.
+
+* Run the compilation of Buildroot again.
+
+Otherwise, you can simply change +toolchain/uClibc/uClibc.config+,
+without running the configuration assistant.
+
+If you want to use an existing config file for uclibc, then see
+xref:env-vars[].
+

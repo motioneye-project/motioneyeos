@@ -1,0 +1,59 @@
+How Buildroot works
+===================
+
+As mentioned above, Buildroot is basically a set of Makefiles that
+download, configure, and compile software with the correct options. It
+also includes patches for various software packages - mainly the ones
+involved in the cross-compilation tool chain (+gcc+, +binutils+ and
++uClibc+).
+
+There is basically one Makefile per software package, and they are
+named with the +.mk+ extension. Makefiles are split into three main
+sections:
+
+* *toolchain* (in the +toolchain/+ directory) contains the Makefiles
+  and associated files for all software related to the
+  cross-compilation toolchain: +binutils+, +gcc+, +gdb+,
+  +kernel-headers+ and +uClibc+.
+
+* *package* (in the +package/+ directory) contains the Makefiles and
+  associated files for all user-space tools that Buildroot can compile
+  and add to the target root filesystem. There is one sub-directory
+  per tool.
+
+* *target* (in the +target+ directory) contains the Makefiles and
+  associated files for software related to the generation of the
+  target root filesystem image. Four types of filesystems are
+  supported: ext2, jffs2, cramfs and squashfs. For each of them there
+  is a sub-directory with the required files. There is also a
+  +default/+ directory that contains the target filesystem skeleton.
+
+Each directory contains at least 2 files:
+
+* +something.mk+ is the Makefile that downloads, configures,
+  compiles and installs the package +something+.
+
+* +Config.in+ is a part of the configuration tool
+  description file. It describes the options related to the
+  package.
+
+The main Makefile performs the following steps (once the
+configuration is done):
+
+* Create all the output directories: +staging+, +target+, +build+,
+  +stamps+, etc. in the output directory (+output/+ by default,
+  another value can be specified using +O=+)
+
+* Generate all the targets listed in the +BASE_TARGETS+ variable. When
+  an internal toolchain is used, this means generating the
+  cross-compilation toolchain. When an external toolchain is used,
+  this means checking the features of the external toolchain and
+  importing it into the Buildroot environment.
+
+* Generate all the targets listed in the +TARGETS+ variable. This
+  variable is filled by all the individual components'
+  Makefiles. Generating these targets will trigger the compilation of
+  the userspace packages (libraries, programs), the kernel, the
+  bootloader and the generation of the root filesystem images,
+  depending on the configuration.
+

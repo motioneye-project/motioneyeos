@@ -1,0 +1,62 @@
+Understanding how to rebuild packages
+=====================================
+
+One of the most common questions asked by Buildroot users is how to
+rebuild a given package or how to remove a package without rebuilding
+everything from scratch.
+
+Removing a package is currently unsupported by Buildroot without
+rebuilding from scratch. This is because Buildroot doesn't keep track
+of which package installs what files in the +output/staging+ and
++output/target+ directories. However, implementing clean package
+removal is on the TODO-list of Buildroot developers.
+
+The easiest way to rebuild a single package from scratch is to remove
+its build directory in +output/build+. Buildroot will then re-extract,
+re-configure, re-compile and re-install this package from scratch.
+
+However, if you don't want to rebuild the package completely from
+scratch, a better understanding of the Buildroot internals is
+needed. Internally, to keep track of which steps have been done and
+which steps remain to be done, Buildroot maintains stamp files (empty
+files that just tell whether this or that action has been done). The
+problem is that these stamp files are not uniformly named and handled
+by the different packages, so some understanding of the particular
+package is needed.
+
+For packages relying on Buildroot packages infrastructures (see
+xref:add-packages[this section] for details), the following stamp
+files are relevant:
+
+* +output/build/packagename-version/.stamp_configured+. If removed,
+  Buildroot will trigger the recompilation of the package from the
+  configuration step (execution of +./configure+).
+
+* +output/build/packagename-version/.stamp_built+. If removed,
+  Buildroot will trigger the recompilation of the package from the
+  compilation step (execution of +make+).
+
+For other packages, an analysis of the specific 'package.mk' file is
+needed. For example, the zlib Makefile used to look like this (before
+it was converted to the generic package infrastructure):
+
+-----------------
+$(ZLIB_DIR)/.configured: $(ZLIB_DIR)/.patched
+	(cd $(ZLIB_DIR); rm -rf config.cache; \
+		[...]
+	)
+	touch $@
+
+$(ZLIB_DIR)/libz.a: $(ZLIB_DIR)/.configured
+	$(MAKE) -C $(ZLIB_DIR) all libz.a
+	touch -c $@
+-----------------
+
+If you want to trigger the reconfiguration, you need to remove
++output/build/zlib-version/.configured+. If you want to trigger only
+the recompilation, you need to remove
++output/build/zlib-version/libz.a+.
+
+Note that most packages, if not all, will progressively be ported over
+to the generic or autotools infrastructure, making it much easier to
+rebuild individual packages.

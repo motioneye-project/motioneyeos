@@ -1,0 +1,10 @@
+Customization
+=============
+
+include::customize-rootfs.txt[]
+
+include::customize-busybox-config.txt[]
+
+include::customize-uclibc-config.txt[]
+
+include::customize-kernel-config.txt[]

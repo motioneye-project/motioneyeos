@@ -1,0 +1,26 @@
+Location of downloaded packages
+===============================
+
+It might be useful to know that the various tarballs that are
+downloaded by the Makefiles are all stored in the +DL_DIR+ which by
+default is the +dl+ directory. It's useful, for example, if you want
+to keep a complete version of Buildroot which is known to be working
+with the associated tarballs. This will allow you to regenerate the
+toolchain and the target filesystem with exactly the same versions.
+
+If you maintain several Buildroot trees, it might be better to have a
+shared download location. This can be accessed by creating a symbolic
+link from the +dl+ directory to the shared download location:
+
+-----------------
+ $ ln -s <shared download location> dl
+-----------------
+
+Another way of accessing a shared download location is to create the
++BUILDROOT_DL_DIR+ environment variable.  If this is set, then the
+value of DL_DIR in the project is overridden. The following line
+should be added to +<~/.bashrc>+.
+
+-----------------
+ $ export BUILDROOT_DL_DIR <shared download location>
+-----------------

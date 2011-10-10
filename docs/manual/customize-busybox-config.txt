@@ -1,0 +1,24 @@
+Customizing the Busybox configuration
+-------------------------------------
+[[busybox-custom]]
+
+http://www.busybox.net/[Busybox] is very configurable, and you may
+want to customize it. You can follow these simple steps to do so. This
+method isn't optimal, but it's simple, and it works:
+
+* Do an initial compilation of Buildroot, with busybox, without
+  trying to customize it.
+
+* Invoke +make busybox-menuconfig+.
+  The nice configuration tool appears, and you can
+  customize everything.
+
+* Run the compilation of Buildroot again.
+
+Otherwise, you can simply change the
++package/busybox/busybox-<version>.config+ file, if you know the
+options you want to change, without using the configuration tool.
+
+If you want to use an existing config file for busybox, then see
+section xref:env-vars[].
+

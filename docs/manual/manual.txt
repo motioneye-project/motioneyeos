@@ -1,0 +1,32 @@
+The Buildroot user manual
+=========================
+:toc:
+
+Buildroot usage and documentation by Thomas Petazzoni. Contributions
+from Karsten Kruse, Ned Ludd, Martin Herren and others.
+
+image::logo.png[]
+
+:leveloffset: 1
+
+include::introduction.txt[]
+
+include::getting.txt[]
+
+include::using.txt[]
+
+include::customize.txt[]
+
+include::rebuilding-packages.txt[]
+
+include::how-buildroot-works.txt[]
+
+include::using-buildroot-toolchain.txt[]
+
+include::external-toolchain.txt[]
+
+include::ccache-support.txt[]
+
+include::download-location.txt[]
+
+include::adding-packages.txt[]

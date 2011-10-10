@@ -1,0 +1,44 @@
+Gettext integration and interaction with packages
+-------------------------------------------------
+
+Many packages that support internationalization use the gettext
+library. Dependencies for this library are fairly complicated and
+therefore, deserves some explanation.
+
+The 'uClibc' C library doesn't implement gettext functionality,
+therefore with this C library, a separate gettext must be compiled. On
+the other hand, the 'glibc' C library does integrate its own gettext,
+and in this case, the separate gettext library should not be compiled,
+because it creates various kinds of build failures.
+
+Additionally, some packages (such as +libglib2+) do require gettext
+unconditionally, while other packages (those who support
++--disable-nls+ in general) only require gettext when locale support
+is enabled.
+
+Therefore, Buildroot defines two configuration options:
+
+* +BR2_NEEDS_GETTEXT+, which is true as soon as the toolchain doesn't
+  provide its own gettext implementation
+
+* +BR2_NEEDS_GETTEXT_IF_LOCALE+, which is true if the toolchain
+  doesn't provide its own gettext implementation and if locale support
+  is enabled
+
+Therefore, packages that unconditionally need gettext should:
+
+* Use +select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT+ and possibly
+  +select BR2_PACKAGE_LIBINTL if BR2_NEEDS_GETTEXT+, if libintl is
+  also needed
+
+* Use +$(if $(BR2_NEEDS_GETTEXT),gettext)+ in the package
+  +DEPENDENCIES+ variable
+
+Packages that need gettext only when locale support is enabled should:
+
+* Use +select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE+ and
+  possibly +select BR2_PACKAGE_LIBINTL if
+  BR2_NEEDS_GETTEXT_IF_LOCALE+, if libintl is also needed
+
+* Use +$(if $(BR2_NEEDS_GETTEXT_IF_LOCALE),gettext)+ in the package
+  +DEPENDENCIES+ variable

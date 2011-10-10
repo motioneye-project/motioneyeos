@@ -1,0 +1,69 @@
+About Buildroot
+===============
+
+Buildroot is a set of Makefiles and patches that allows you to easily
+generate a cross-compilation toolchain, a root filesystem and a Linux
+kernel image for your target. Buildroot can be used for one, two or
+all of these options, independently.
+
+Buildroot is useful mainly for people working with embedded systems.
+Embedded systems often use processors that are not the regular x86
+processors everyone is used to having in his PC. They can be PowerPC
+processors, MIPS processors, ARM processors, etc.
+
+A compilation toolchain is the set of tools that allows you to compile
+code for your system. It consists of a compiler (in our case, +gcc+),
+binary utils like assembler and linker (in our case, +binutils+) and a
+C standard library (for example
+http://www.gnu.org/software/libc/libc.html[GNU Libc],
+http://www.uclibc.org/[uClibc] or
+http://www.fefe.de/dietlibc/[dietlibc]). The system installed on your
+development station certainly already has a compilation toolchain that
+you can use to compile an application that runs on your system. If
+you're using a PC, your compilation toolchain runs on an x86 processor
+and generates code for an x86 processor. Under most Linux systems, the
+compilation toolchain uses the GNU libc (glibc) as the C standard
+library.  This compilation toolchain is called the "host compilation
+toolchain". The machine on which it is running, and on which you're
+working, is called the "host system". The compilation toolchain is
+provided by your distribution, and Buildroot has nothing to do with it
+(other than using it to build a cross-compilation toolchain and other
+tools that are run on the development host).
+
+As said above, the compilation toolchain that comes with your system
+runs on and generates code for the processor in your host system. As
+your embedded system has a different processor, you need a
+cross-compilation toolchain - a compilation toolchain that runs on
+your host system but generates code for your target system (and target
+processor). For example, if your host system uses x86 and your target
+system uses ARM, the regular compilation toolchain on your host runs on
+x86 and generates code for x86, while the cross-compilation toolchain
+runs on x86 and generates code for ARM.
+
+Even if your embedded system uses an x86 processor, you might be
+interested in Buildroot for two reasons:
+
+* The compilation toolchain on your host certainly uses the GNU Libc
+  which is a complete but huge C standard library. Instead of using
+  GNU Libc on your target system, you can use uClibc which is a tiny C
+  standard library. If you want to use this C library, then you need a
+  compilation toolchain to generate binaries linked with it. Buildroot
+  can do that for you.
+
+* Buildroot automates the building of a root filesystem with all
+  needed tools like busybox. That makes it much easier than doing it
+  by hand.
+
+You might wonder why such a tool is needed when you can compile +gcc+,
++binutils+, +uClibc+ and all the other tools by hand. Of course doing
+so is possible but, dealing with all of the configure options and
+problems of every +gcc+ or +binutils+ version is very time-consuming
+and uninteresting.  Buildroot automates this process through the use
+of Makefiles and has a collection of patches for each +gcc+ and
++binutils+ version to make them work on most architectures.
+
+Moreover, Buildroot provides an infrastructure for reproducing the
+build process of your kernel, cross-toolchain, and embedded root
+filesystem. Being able to reproduce the build process will be useful
+when a component needs to be patched or updated or when another person
+is supposed to take over the project.

@@ -1,0 +1,21 @@
+Adding new packages to Buildroot
+================================
+
+This section covers how new packages (userspace libraries or
+applications) can be integrated into Buildroot. It also shows how
+existing packages are integrated, which is needed for fixing issues or
+tuning their configuration.
+
+include::adding-packages-directory.txt[]
+
+include::adding-packages-gentargets.txt[]
+
+include::adding-packages-autotargets.txt[]
+
+include::adding-packages-cmaketargets.txt[]
+
+include::adding-packages-handwritten.txt[]
+
+include::adding-packages-gettext.txt[]
+
+include::adding-packages-conclusion.txt[]

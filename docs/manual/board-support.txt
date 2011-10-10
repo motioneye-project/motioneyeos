@@ -1,0 +1,35 @@
+Creating your own board support
+===============================
+
+Creating your own board support in Buildroot allows users of a
+particular hardware platform to easily build a system that is known to
+work.
+
+To do so, you need to create a normal Buildroot configuration that
+builds a basic system for the hardware: toolchain, kernel, bootloader,
+filesystem and a simple Busybox-only userspace. No specific package
+should be selected: the configuration should be as minimal as
+possible, and should only build a working basic Busybox system for the
+target platform. You can of course use more complicated configurations
+for your internal projects, but the Buildroot project will only
+integrate basic board configurations. This is because package
+selections are highly application-specific.
+
+Once you have a known working configuration, run +make
+savedefconfig+. This will generate a minimal +defconfig+ file at the
+root of the Buildroot source tree. Move this file into the +configs/+
+directory, and rename it +MYBOARD_defconfig+.
+
+It is recommended to use as much as possible upstream versions of the
+Linux kernel and bootloaders, and to use as much as possible default
+kernel and bootloader configurations. If they are incorrect for your
+platform, we encourage you to send fixes to the corresponding upstream
+projects.
+
+However, in the mean time, you may want to store kernel or bootloader
+configuration or patches specific to your target platform. To do so,
+create a directory +board/MANUFACTURER+ and a subdirectory
++board/MANUFACTURER/BOARDNAME+ (after replacing, of course,
+MANUFACTURER and BOARDNAME with the appropriate values, in lower case
+letters). You can then store your patches and configurations in these
+directories, and reference them from the main Buildroot configuration.

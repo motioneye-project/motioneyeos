@@ -1,0 +1,12 @@
+Customizing the Linux kernel configuration
+------------------------------------------
+
+The Linux kernel configuration can be customized just like
+xref:busybox-custom[BusyBox] and xref:uclibc-custom[uClibc] using
++make linux-menuconfig+. Make sure you have enabled the kernel build
+in +make menuconfig+ first. Once done, run +make+ to (re)build
+everything.
+
+If you want to use an existing config file for Linux, then see
+xref:env-vars[].
+
