@@ -6,5 +6,5 @@ config BR2_PACKAGE_PORTMAP
 
 	  http://neil.brown.name/portmap/
 
-comment "portmap requires a toolchain with 'Enable RPC' selected"
+comment "portmap requires a toolchain with RPC support"
 	depends on !BR2_INET_RPC
