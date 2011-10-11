@@ -12,3 +12,6 @@ config BR2_PACKAGE_CVS_SERVER
 	depends on BR2_PACKAGE_CVS
 	help
 	  Enable cvs server code
+
+comment "cvs requires a toolchain with WCHAR support"
+	depends on !BR2_USE_WCHAR
