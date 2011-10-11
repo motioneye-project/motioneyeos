@@ -32,7 +32,7 @@
 	libevent, libglib2, libiconv, libreplaygain, libroxml,
 	libsamplerate, libsndfile, libsoup, libsvgtiny, libtool,
 	lighttpd, linux-fusion, lite, lsof, lzo, lzop, mcookie,
-	mpg123, mpd, mpfr, musepack, mysql_client, ncurses, netcat,
+	mpg123, mpd, mpfr, musepack, mysql_client, ncurses, neon, netcat,
 	netsnmp, ntfs-3g, ntfsprogs, openssh, openssl, python, qt,
 	radvd, rsync, samba, sawman, sdl_sound, smartmontools, sqlite,
 	squid, sylpheed, taglib, tar, tcpreplay, tslib, usbutils,
@@ -63,6 +63,7 @@
 	#4165: lrzsz-fix-symlink-at-rebuild.patch
 	#4171: makedevs-unused-but-set-variable.patch
 	#4183: Codesourcery toolchain download site has changed
+	#4231: libneon.so: undefined reference to `SSL_SESSION_cmp'
 
 2011.08, Released August 31th, 2011:
 
