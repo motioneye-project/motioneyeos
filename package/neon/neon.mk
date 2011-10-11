@@ -3,7 +3,7 @@
 # neon
 #
 #############################################################
-NEON_VERSION= 0.29.6
+NEON_VERSION = 0.29.6
 NEON_SITE = http://www.webdav.org/neon/
 NEON_INSTALL_STAGING = YES
 NEON_CONF_OPT = --without-gssapi --disable-rpath
