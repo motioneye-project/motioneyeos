@@ -21,7 +21,6 @@ config BR2_PACKAGE_NEON_SSL
 
 choice
 	prompt "XML Support"
-	default BR2_PACKAGE_NEON_NOXML
 	depends on BR2_PACKAGE_NEON
 	help
 	  Select which XML library to use...
