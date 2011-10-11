@@ -1,5 +1,0 @@
-config BR2_PACKAGE_SFDISK
-	bool "sfdisk"
-	depends on BR2_DEPRECATED
-	help
-	  Partition table manipulator for Linux.
