@@ -1,0 +1,79 @@
+config BR2_PACKAGE_BOOST
+	bool "boost"
+	depends on BR2_INSTALL_LIBSTDCPP
+	select BR2_PACKAGE_BZIP2
+	select BR2_PACKAGE_ZLIB
+	help
+	  A general purpose C++ library
+
+	  http://www.boost.org/
+
+if BR2_PACKAGE_BOOST
+
+config BR2_PACKAGE_BOOST_MULTITHREADED
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	bool "boost-multithreaded"
+	help
+	  Build the boost libraries as multithreaded
+
+config BR2_PACKAGE_BOOST_CHRONO
+	bool "boost-chrono"
+
+config BR2_PACKAGE_BOOST_DATE_TIME
+	bool "boost-date_time"
+
+config BR2_PACKAGE_BOOST_EXCEPTION
+	bool "boost-exception"
+
+config BR2_PACKAGE_BOOST_FILESYSTEM
+	bool "boost-filesystem"
+
+config BR2_PACKAGE_BOOST_GRAPH
+	bool "boost-graph"
+
+config BR2_PACKAGE_BOOST_GRAPH_PARALLEL
+	bool "boost-graph_parallel"
+
+config BR2_PACKAGE_BOOST_ICU
+        select BR2_PACKAGE_ICU
+	bool "boost-icu"
+
+config BR2_PACKAGE_BOOST_IOSTREAMS
+	bool "boost-iostreams"
+
+config BR2_PACKAGE_BOOST_MATH
+	bool "boost-math"
+
+config BR2_PACKAGE_BOOST_MPI
+	bool "boost-mpi"
+
+config BR2_PACKAGE_BOOST_PROGRAM_OPTIONS
+	bool "boost-program_options"
+
+config BR2_PACKAGE_BOOST_RANDOM
+	bool "boost-random"
+
+config BR2_PACKAGE_BOOST_REGEX
+	bool "boost-regex"
+
+config BR2_PACKAGE_BOOST_SERIALIZATION
+	bool "boost-serialization"
+
+config BR2_PACKAGE_BOOST_SIGNALS
+	bool "boost-signals"
+
+config BR2_PACKAGE_BOOST_SYSTEM
+	bool "boost-system"
+
+config BR2_PACKAGE_BOOST_TEST
+	bool "boost-test"
+
+config BR2_PACKAGE_BOOST_THREAD
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	bool "boost-thread"
+
+config BR2_PACKAGE_BOOST_WAVE
+	bool "boost-wave"
+
+endif
+
