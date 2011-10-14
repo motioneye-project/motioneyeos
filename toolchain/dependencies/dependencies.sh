@@ -40,6 +40,14 @@ if test -n "$PATH" ; then
 	fi
 fi;
 
+if test -n "$PERL_MM_OPT" ; then
+    /bin/echo -e "\nYou have PERL_MM_OPT defined because Perl local::lib"
+    /bin/echo -e "is installed on your system. Please unset this variable"
+    /bin/echo -e "before starting Buildroot, otherwise the compilation of"
+    /bin/echo -e "Perl related packages will fail"
+    exit 1
+fi
+
 # Verify that which is installed
 if ! which which > /dev/null ; then
 	/bin/echo -e "\nYou must install 'which' on your build machine\n";
