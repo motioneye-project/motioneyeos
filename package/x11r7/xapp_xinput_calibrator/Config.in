@@ -1,0 +1,9 @@
+config BR2_PACKAGE_XAPP_XINPUT_CALIBRATOR
+	bool "xinput-calibrator"
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBXI
+	help
+	  A generic touchscreen calibration program for X.Org.
+
+	  http://www.freedesktop.org/wiki/Software/xinput_calibrator
+
