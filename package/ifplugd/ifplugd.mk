@@ -3,18 +3,19 @@
 # ifplugd
 #
 #############################################################
+
 IFPLUGD_VERSION = 0.28
-IFPLUGD_SOURCE = ifplugd-$(IFPLUGD_VERSION).tar.gz
-IFPLUGD_SITE = http://0pointer.de/lennart/projects/ifplugd/
+IFPLUGD_SITE = http://0pointer.de/lennart/projects/ifplugd
 IFPLUGD_AUTORECONF = YES
-IFPLUGD_INSTALL_STAGING = NO
-IFPLUGD_INSTALL_TARGET = YES
 # install-strip unconditionally overwrites $(TARGET_DIR)/etc/ifplugd/ifplugd.*
 IFPLUGD_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install-exec
-
 IFPLUGD_CONF_OPT = --disable-lynx
-
 IFPLUGD_DEPENDENCIES = libdaemon
+
+# Prefer big ifplugd
+ifeq ($(BR2_PACKAGE_BUSYBOX),y)
+	IFPLUGD_DEPENDENCIES += busybox
+endif
 
 define IFPLUGD_INSTALL_FIXUP
 	$(INSTALL) -d $(TARGET_DIR)/etc/ifplugd
