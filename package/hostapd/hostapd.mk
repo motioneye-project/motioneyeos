@@ -9,7 +9,6 @@ HOSTAPD_SITE = http://hostap.epitest.fi/releases
 HOSTAPD_SUBDIR = hostapd
 HOSTAPD_CONFIG = $(HOSTAPD_DIR)/$(HOSTAPD_SUBDIR)/.config
 HOSTAPD_DEPENDENCIES = libnl
-
 HOSTAPD_LDFLAGS = $(TARGET_LDFLAGS)
 
 # libnl needs -lm (for rint) if linking statically
