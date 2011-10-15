@@ -15,6 +15,11 @@ else
 	USBUTILS_CONF_OPT = --disable-zlib
 endif
 
+# Build after busybox since it's got a lightweight lsusb
+ifeq ($(BR2_PACKAGE_BUSYBOX),y)
+	USBUTILS_DEPENDENCIES += busybox
+endif
+
 define USBUTILS_TARGET_CLEANUP
 	rm -f $(TARGET_DIR)/usr/bin/usb-devices
 	rm -f $(TARGET_DIR)/usr/sbin/update-usbids.sh
