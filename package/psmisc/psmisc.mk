@@ -4,7 +4,7 @@
 #
 #############################################################
 
-PSMISC_VERSION = 22.13
+PSMISC_VERSION = 22.14
 PSMISC_SITE = http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/psmisc
 PSMISC_DEPENDENCIES = ncurses $(if $(BR2_NEEDS_GETTEXT_IF_LOCALE),gettext libintl)
 
