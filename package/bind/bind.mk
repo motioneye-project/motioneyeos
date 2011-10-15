@@ -4,7 +4,7 @@
 #
 #############################################################
 
-BIND_VERSION = 9.6-ESV-R4
+BIND_VERSION = 9.6-ESV-R5
 BIND_SITE = ftp://ftp.isc.org/isc/bind9/$(BIND_VERSION)
 BIND_MAKE = $(MAKE1)
 BIND_TARGET_SBINS = lwresd named named-checkconf named-checkzone
@@ -40,17 +40,25 @@ endef
 
 BIND_POST_INSTALL_TARGET_HOOKS += BIND_TARGET_INSTALL_FIXES
 
+define BIND_TARGET_REMOVE_SERVER
+	rm -rf $(addprefix $(TARGET_DIR)/usr/sbin/, $(BIND_TARGET_SBINS))
+endef
+
 define BIND_TARGET_REMOVE_TOOLS
 	rm -rf $(addprefix $(TARGET_DIR)/usr/bin/, $(BIND_TARGET_BINS))
 endef
+
+ifneq ($(BR2_PACKAGE_BIND_SERVER),y)
+BIND_POST_INSTALL_TARGET_HOOKS += BIND_TARGET_REMOVE_SERVER
+endif
 
 ifneq ($(BR2_PACKAGE_BIND_TOOLS),y)
 BIND_POST_INSTALL_TARGET_HOOKS += BIND_TARGET_REMOVE_TOOLS
 endif
 
 define BIND_UNINSTALL_TARGET_CMDS
-	rm -rf $(addprefix $(TARGET_DIR)/usr/sbin/, $(BIND_TARGET_SBINS))
-	rm -rf $(addprefix $(TARGET_DIR)/usr/bin/, $(BIND_TARGET_BINS))
+	$(BIND_TARGET_REMOVE_SERVER)
+	$(BIND_TARGET_REMOVE_TOOLS)
 	rm -rf $(addprefix $(TARGET_DIR)/usr/lib/, $(BIND_TARGET_LIBS))
 	rm -f $(TARGET_DIR)/etc/init.d/S81named
 endef
