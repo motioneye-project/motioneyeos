@@ -4,9 +4,9 @@
 #
 #############################################################
 
-SYSSTAT_VERSION = 9.1.7
+SYSSTAT_VERSION = 10.0.2
 SYSSTAT_SOURCE = sysstat-$(SYSSTAT_VERSION).tar.bz2
-SYSSTAT_SITE = http://pagesperso-orange.fr/sebastien.godard/
+SYSSTAT_SITE = http://pagesperso-orange.fr/sebastien.godard
 SYSSTAT_CONF_OPT = --disable-man-group --disable-sensors
 
 ifneq ($(BR2_HAVE_DOCUMENTATION),y)
