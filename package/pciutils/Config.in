@@ -4,7 +4,4 @@ config BR2_PACKAGE_PCIUTILS
 	  Various utilities dealing with the PCI bus.
 	  Provides things like setpci and lspci.
 
-	  You'll need a copy of pci.ids or pci.ids.gz in your
-	  target skeleton to enjoy verbose output.
-
 	  http://atrey.karlin.mff.cuni.cz/~mj/pciutils.html
