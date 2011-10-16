@@ -6,22 +6,21 @@ config BR2_PACKAGE_NTP
 
 	  http://www.ntp.org/
 
+if BR2_PACKAGE_NTP
+
 config BR2_PACKAGE_NTP_SNTP
 	bool "sntp"
-	depends on BR2_PACKAGE_NTP
 	help
 	  Simple network time protocol program
 
 config BR2_PACKAGE_NTP_NTP_KEYGEN
 	bool "ntp-keygen"
-	depends on BR2_PACKAGE_NTP
 	help
 	  Create a NTP host key
 
 config BR2_PACKAGE_NTP_NTP_WAIT
 	bool "ntp-wait"
 	depends on BR2_PACKAGE_MICROPERL
-	depends on BR2_PACKAGE_NTP
 	help
 	  ntp-wait waits until the locally running ntpd is in state 4
 	  (synchronized). This could be useful at boot time, to delay the
@@ -29,7 +28,6 @@ config BR2_PACKAGE_NTP_NTP_WAIT
 
 config BR2_PACKAGE_NTP_NTPD
 	bool "ntpd"
-	depends on BR2_PACKAGE_NTP
 	default y
 	help
 	  ntpd is the time synchronization daemon keeping your local
@@ -38,29 +36,30 @@ config BR2_PACKAGE_NTP_NTPD
 
 config BR2_PACKAGE_NTP_NTPDATE
 	bool "ntpdate"
-	depends on BR2_PACKAGE_NTP
 	help
 	  The ntpdate utility program is used to set the local date and time
 	  from an NTP server given as an argument.
 
 config BR2_PACKAGE_NTP_NTPDC
 	bool "ntpdc"
-	depends on BR2_PACKAGE_NTP
 	help
 	  The ntpdc utility program is used to query an NTP daemon about
 	  its current state and to request changes in that state.
 
 config BR2_PACKAGE_NTP_NTPQ
 	bool "ntpq"
-	depends on BR2_PACKAGE_NTP
 	help
 	  The ntpq utility program is used to query NTP servers requesting
 	  information about current state and/or changes in that state.
 
+config BR2_PACKAGE_NTP_NTPSNMPD
+	bool "ntpsnmpd"
+	help
+	  Install ntpsnmpd NTP SNMP MIB agent.
+
 config BR2_PACKAGE_NTP_NTPTRACE
 	bool "ntptrace"
 	depends on BR2_PACKAGE_MICROPERL
-	depends on BR2_PACKAGE_NTP
 	help
 	  ntptrace is a perl script that uses the ntpq utility program to
 	  follow the chain of NTP servers from a given host back to the
@@ -68,6 +67,7 @@ config BR2_PACKAGE_NTP_NTPTRACE
 
 config BR2_PACKAGE_NTP_TICKADJ
 	bool "tickadj"
-	depends on BR2_PACKAGE_NTP
 	help
 	  set time-related kernel variables
+
+endif
