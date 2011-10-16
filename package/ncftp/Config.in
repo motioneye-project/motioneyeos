@@ -1,6 +1,5 @@
 config BR2_PACKAGE_NCFTP
 	bool "ncftp"
-	depends on BR2_LARGEFILE
 	help
 	  NcFTP Client (also known as just NcFTP) is a set of FREE application
 	  programs implementing the File Transfer Protocol (FTP).
@@ -31,6 +30,3 @@ config BR2_PACKAGE_NCFTP_BOOKMARKS
 	select BR2_PACKAGE_NCURSES
 
 endmenu
-
-comment "ncftp requires a toolchain with LARGEFILE support"
-	depends on !BR2_LARGEFILE
