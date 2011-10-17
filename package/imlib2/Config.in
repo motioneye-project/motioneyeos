@@ -1,0 +1,38 @@
+config BR2_PACKAGE_IMLIB2
+	bool "imlib2"
+	select BR2_PACKAGE_FREETYPE
+	help
+	  Imlib 2 is the successor to Imlib. This library provides
+	  routines to load, save and render images in various formats.
+
+	  http://freshmeat.net/projects/imlib2/
+
+if BR2_PACKAGE_IMLIB2
+
+config BR2_PACKAGE_IMLIB2_JPEG
+	bool "JPEG support"
+	select BR2_PACKAGE_JPEG
+
+config BR2_PACKAGE_IMLIB2_PNG
+	bool "PNG support"
+	select BR2_PACKAGE_LIBPNG
+
+config BR2_PACKAGE_IMLIB2_GIF
+	bool "GIF support"
+	select BR2_PACKAGE_LIBUNGIF
+
+config BR2_PACKAGE_IMLIB2_TIFF
+	bool "TIFF support"
+	select BR2_PACKAGE_TIFF
+
+config BR2_PACKAGE_IMLIB2_ID3
+	bool "ID3 support"
+	select BR2_PACKAGE_LIBID3TAG
+
+config BR2_PACKAGE_IMLIB2_X
+	bool "X support"
+	default y
+	depends on BR2_PACKAGE_XORG7
+	select BR2_PACKAGE_XLIB_LIBXEXT
+	select BR2_PACKAGE_XLIB_LIBX11
+endif
