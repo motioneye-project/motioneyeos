@@ -1,0 +1,10 @@
+config BR2_PACKAGE_GIBLIB
+	bool "giblib"
+	depends on BR2_PACKAGE_XORG7
+	select BR2_PACKAGE_IMLIB2
+	select BR2_PACKAGE_IMLIB2_X
+	help
+	  Giblib is a simple library which wraps imlib2.
+
+	  http://linuxbrit.co.uk/giblib/
+
