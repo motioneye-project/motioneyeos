@@ -49,7 +49,8 @@ UTIL_LINUX_CONF_OPT += \
 	$(if $(BR2_PACKAGE_UTIL_LINUX_UNSHARE),,--disable-unshare) \
 	$(if $(BR2_PACKAGE_UTIL_LINUX_RENAME),,--disable-rename) \
 	$(if $(BR2_PACKAGE_UTIL_LINUX_SCHEDUTILS),,--disable-schedutils) \
-	$(if $(BR2_PACKAGE_UTIL_LINUX_WALL),,--disable-wall)
+	$(if $(BR2_PACKAGE_UTIL_LINUX_WALL),,--disable-wall) \
+	$(if $(BR2_PACKAGE_UTIL_LINUX_PARTX),,--disable-partx)
 
 #############################################
 #
@@ -61,7 +62,6 @@ UTIL_LINUX_CONF_OPT += \
 	$(if $(BR2_PACKAGE_UTIL_LINUX_KILL),--enable-kill) \
 	$(if $(BR2_PACKAGE_UTIL_LINUX_LAST),--enable-last) \
 	$(if $(BR2_PACKAGE_UTIL_LINUX_MESG),--enable-mesg) \
-	$(if $(BR2_PACKAGE_UTIL_LINUX_PARTX),--enable-partx) \
 	$(if $(BR2_PACKAGE_UTIL_LINUX_RAW),--enable-raw) \
 	$(if $(BR2_PACKAGE_UTIL_LINUX_RESET),--enable-reset) \
 	$(if $(BR2_PACKAGE_UTIL_LINUX_LOGIN_UTILS),--enable-login-utils) \

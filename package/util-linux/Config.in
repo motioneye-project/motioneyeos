@@ -67,6 +67,10 @@ config BR2_PACKAGE_UTIL_LINUX_SCHEDUTILS
 config BR2_PACKAGE_UTIL_LINUX_WALL
 	bool "build \"wall\""
 
+config BR2_PACKAGE_UTIL_LINUX_PARTX
+	bool "build \"addpart, delpart, partx\""
+	select BR2_PACKAGE_UTIL_LINUX_LIBBLKID
+
 ############################################
 # default disabled and should be enabled by
 #  --enable-foo
@@ -85,9 +89,6 @@ config BR2_PACKAGE_UTIL_LINUX_LAST
 
 config BR2_PACKAGE_UTIL_LINUX_MESG
 	bool "build \"mesg\""
-
-config BR2_PACKAGE_UTIL_LINUX_PARTX
-	bool "build \"addpart, delpart, partx\""
 
 config BR2_PACKAGE_UTIL_LINUX_RAW
 	bool "build \"raw\""
