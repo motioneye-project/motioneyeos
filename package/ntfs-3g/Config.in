@@ -12,5 +12,20 @@ config BR2_PACKAGE_NTFS_3G
 
 	  http://www.ntfs-3g.org/
 
+if BR2_PACKAGE_NTFS_3G
+
+config BR2_PACKAGE_NTFS_3G_ENCRYPTED
+	bool "encrypted volumes"
+	select BR2_PACKAGE_GNUTLS
+	help
+	  Enable support for NTFS encrypted volumes.
+
+config BR2_PACKAGE_NTFS_3G_NTFSPROGS
+	bool "ntfsprogs"
+	help
+	  Install NTFS utilities.
+
+endif
+
 comment "ntfs-3g requires a toolchain with LARGEFILE and WCHAR support"
 	depends on !(BR2_LARGEFILE && BR2_USE_WCHAR)
