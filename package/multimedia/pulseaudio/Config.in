@@ -1,0 +1,21 @@
+config BR2_PACKAGE_PULSEAUDIO
+	bool "pulseaudio"
+	depends on BR2_USE_WCHAR
+	select BR2_PACKAGE_LIBTOOL
+	select BR2_PACKAGE_JSON_C
+	select BR2_PACKAGE_LIBSNDFILE
+	select BR2_PACKAGE_SPEEX
+	select BR2_PACKAGE_LIBINTL if BR2_NEEDS_GETTEXT
+	help
+	  PulseAudio is a sound system for POSIX OSes, meaning that it
+	  is a proxy for your sound applications. It allows you to do
+	  advanced operations on your sound data as it passes between
+	  your application and your hardware. Things like transferring
+	  the audio to a different machine, changing the sample format
+	  or channel count and mixing several sounds into one are
+	  easily achieved using a sound server.
+
+	  http://pulseaudio.org
+
+comment "pulseaudio requires a toolchain with WCHAR support"
+	depends on !BR2_USE_WCHAR
