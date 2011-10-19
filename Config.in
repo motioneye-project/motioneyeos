@@ -36,6 +36,14 @@ config BR2_LOCALFILES
 	string "Local files retrieval command"
 	default "cp"
 
+config BR2_SCP
+	string "Secure copy (scp) command"
+	default "scp"
+
+config BR2_SSH
+	string "Secure shell (ssh) command"
+	default "ssh"
+
 config BR2_ZCAT
 	string "zcat command"
 	default "gzip -d -c"
@@ -102,7 +110,10 @@ config BR2_PRIMARY_SITE
 	  Primary site to download from. If this option is set then buildroot
 	  will try to download package source first from this site and try the
 	  default if the file is not found.
-	  NOTE: This only works for packages using the Makefile.autotools.in
+	  Valid URIs are URIs recognized by $(WGET) and scp URIs of the form
+	  scp://[user@]host:path.
+	  NOTE: This works for all packages using the central package
+	  infrastructure (generic, autotools, cmake, ...)
 
 config BR2_BACKUP_SITE
 	string "Backup download site"
