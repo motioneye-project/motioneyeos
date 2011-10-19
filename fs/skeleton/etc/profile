@@ -46,3 +46,10 @@ if [ "$PS1" ]; then
     alias calc='calc -Cd '
     alias bc='calc -Cd '
 fi;
+
+# Source configuration files from /etc/profile.d
+for i in /etc/profile.d/*.sh ; do
+    if [ -r "$i" ]; then
+        . $i
+    fi
+done
