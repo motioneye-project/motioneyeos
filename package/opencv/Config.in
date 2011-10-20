@@ -1,0 +1,85 @@
+config BR2_PACKAGE_OPENCV
+	bool "opencv"
+	select BR2_PACKAGE_ZLIB
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_USE_WCHAR
+	help
+	  OpenCV (Open Source Computer Vision) is a library of programming
+	  functions for real time computer vision.
+
+	  http://opencv.willowgarage.com/wiki/
+
+if BR2_PACKAGE_OPENCV
+
+config BR2_PACKAGE_OPENCV_BUILD_TESTS
+	bool "build tests"
+
+config BR2_PACKAGE_OPENCV_INSTALL_DATA
+	bool "install extra data"
+	help
+	  Install various data that is used by cv libraries and/or demo
+	  applications, specifically for haarcascades and lbpcascades
+	  features.
+
+	  For further information: see OpenCV documentation.
+
+comment "Build options"
+
+config BR2_PACKAGE_OPENCV_WITH_PYTHON
+	bool "python support"
+	depends on BR2_PACKAGE_PYTHON
+
+config BR2_PACKAGE_OPENCV_WITH_FFMPEG
+	bool "ffmpeg support"
+	select BR2_PACKAGE_FFMPEG
+	select BR2_PACKAGE_FFMPEG_SWSCALE
+	help
+	  Use ffmpeg from the target system.
+
+config BR2_PACKAGE_OPENCV_WITH_GSTREAMER
+	bool "gstreamer support"
+	select BR2_PACKAGE_GSTREAMER
+	select BR2_PACKAGE_GST_PLUGINS_BASE
+	select BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_APP
+
+config BR2_PACKAGE_OPENCV_WITH_GTK
+	bool "gtk support"
+	depends on BR2_PACKAGE_LIBGTK2
+
+config BR2_PACKAGE_OPENCV_WITH_QT
+	bool "qt backend support"
+	depends on BR2_PACKAGE_QT
+	default y
+
+config BR2_PACKAGE_OPENCV_WITH_JPEG
+	bool "jpeg support"
+	select BR2_PACKAGE_JPEG
+	help
+	  Use shared libjpeg from the target system.
+
+config BR2_PACKAGE_OPENCV_WITH_PNG
+	bool "png support"
+	select BR2_PACKAGE_LIBPNG
+	help
+	  Use shared libpng from the target system.
+
+config BR2_PACKAGE_OPENCV_WITH_TIFF
+	bool "tiff support"
+	select BR2_PACKAGE_TIFF
+	help
+	  Use shared libtiff from the target system.
+
+config BR2_PACKAGE_OPENCV_WITH_V4L
+	bool "v4l support"
+	depends on BR2_LARGEFILE
+	select BR2_PACKAGE_LIBV4L
+	help
+	  Enable Video 4 Linux support.
+
+comment "v4l support requires a toolchain with LARGEFILE support"
+	depends on !BR2_LARGEFILE
+
+endif # BR2_PACKAGE_OPENCV
+
+comment "opencv requires a toolchain with C++ and WCHAR support"
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR
