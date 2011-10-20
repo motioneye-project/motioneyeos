@@ -22,6 +22,11 @@ MPD_DEPENDENCIES += libao
 MPD_CONF_OPT += --enable-ao
 endif
 
+ifeq ($(BR2_PACKAGE_MPD_PULSEAUDIO),y)
+MPD_DEPENDENCIES += pulseaudio
+MPD_CONF_OPT += --enable-pulse
+endif
+
 ifeq ($(BR2_PACKAGE_MPD_BZIP2),y)
 MPD_DEPENDENCIES += bzip2
 MPD_CONF_OPT += --enable-bzip2
