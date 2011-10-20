@@ -57,4 +57,11 @@ endif
 
 MPG123_CONF_OPT += --with-audio=$(shell echo $(MPG123_AUDIO) | tr ' ' ,)
 
+ifeq ($(BR2_PACKAGE_LIBTOOL),y)
+MPG123_DEPENDENCIES += libtool
+# .la files gets stripped unless HAVE_DEVFILES is enabled, so directly
+# load .so files rather than .la
+MPG123_CONF_OPT += --with-modules --with-module-suffix=.so
+endif
+
 $(eval $(call AUTOTARGETS))
