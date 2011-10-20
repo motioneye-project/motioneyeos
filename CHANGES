@@ -9,6 +9,10 @@
 	Updated/fixed packages: busybox, freetype, mplayer, opencv,
 	rsyslog, xapp_xf86dga
 
+	Issues resolved (http://bugs.uclibc.org):
+
+	#4369: Fix permissions on untared lsof archive
+
 2011.11-rc2, Released November 18th, 2011:
 
 	Fixes all over the tree and new features.
