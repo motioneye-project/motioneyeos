@@ -18,9 +18,11 @@ LINUX_SOURCE = linux-$(LINUX_VERSION).tar.bz2
 # In X.Y.Z, get X and Y. We replace dots and dashes by spaces in order
 # to use the $(word) function. We support versions such as 3.1,
 # 2.6.32, 2.6.32-rc1, 3.0-rc6, etc.
-LINUX_VERSION_MAJOR = $(word 1,$(subst ., ,$(subst -, ,$(LINUX_VERSION))))
-LINUX_VERSION_MINOR = $(word 2,$(subst ., ,$(subst -, ,$(LINUX_VERSION))))
-LINUX_SITE = $(BR2_KERNEL_MIRROR)/linux/kernel/v$(LINUX_VERSION_MAJOR).$(LINUX_VERSION_MINOR)/
+ifeq ($(findstring x2.6.,x$(LINUX_VERSION)),x2.6.)
+LINUX_SITE = $(BR2_KERNEL_MIRROR)/linux/kernel/v2.6/
+else
+LINUX_SITE = $(BR2_KERNEL_MIRROR)/linux/kernel/v3.x/
+endif
 # release candidates are in testing/ subdir
 ifneq ($(findstring -rc,$(LINUX_VERSION)),)
 LINUX_SITE := $(LINUX_SITE)testing/
