@@ -46,6 +46,14 @@ DROPBEAR_POST_EXTRACT_HOOKS += DROPBEAR_BUILD_FEATURED
 DROPBEAR_DEPENDENCIES += zlib
 endif
 
+ifneq ($(BR2_PACKAGE_DROPBEAR_WTMP),y)
+DROPBEAR_CONF_OPT += --disable-wtmp
+endif
+
+ifneq ($(BR2_PACKAGE_DROPBEAR_LASTLOG),y)
+DROPBEAR_CONF_OPT += --disable-lastlog
+endif
+
 define DROPBEAR_INSTALL_TARGET_CMDS
 	$(INSTALL) -m 755 $(@D)/dropbearmulti $(TARGET_DIR)/usr/sbin/dropbear
 	for f in $(DROPBEAR_TARGET_BINS); do \
