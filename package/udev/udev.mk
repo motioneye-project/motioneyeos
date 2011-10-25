@@ -6,6 +6,7 @@
 UDEV_VERSION = 173
 UDEV_SOURCE = udev-$(UDEV_VERSION).tar.bz2
 UDEV_SITE = $(BR2_KERNEL_MIRROR)/linux/utils/kernel/hotplug/
+UDEV_INSTALL_STAGING = YES
 
 UDEV_CONF_OPT =			\
 	--sbindir=/sbin		\
