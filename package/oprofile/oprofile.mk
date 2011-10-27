@@ -3,25 +3,26 @@
 # oprofile
 #
 #############################################################
-OPROFILE_VERSION := 0.9.6
-OPROFILE_CONF_OPT :=	--localstatedir=/var \
-			--with-kernel-support
 
-OPROFILE_BINARIES := utils/ophelp
-OPROFILE_BINARIES += pp/opannotate pp/oparchive pp/opgprof pp/opreport opjitconv/opjitconv
-OPROFILE_BINARIES += daemon/oprofiled
+OPROFILE_VERSION = 0.9.7
+OPROFILE_CONF_OPT = --localstatedir=/var --with-kernel-support
+OPROFILE_BINARIES = utils/ophelp pp/opannotate pp/oparchive pp/opgprof
+OPROFILE_BINARIES += pp/opreport opjitconv/opjitconv daemon/oprofiled
 
+ifeq ($(BR2_i386),y)
+OPROFILE_ARCH = i386
+endif
 ifeq ($(BR2_powerpc),y)
-OPROFILE_ARCH := ppc
+OPROFILE_ARCH = ppc
 endif
 ifeq ($(BR2_x86_64),y)
-OPROFILE_ARCH := x86-64
+OPROFILE_ARCH = x86-64
 endif
 ifeq ($(OPROFILE_ARCH),)
-OPROFILE_ARCH := $(BR2_ARCH)
+OPROFILE_ARCH = $(BR2_ARCH)
 endif
 
-OPROFILE_DEPENDENCIES := popt binutils
+OPROFILE_DEPENDENCIES = popt binutils
 
 define OPROFILE_INSTALL_TARGET_CMDS
 	$(INSTALL) -d -m 755 $(TARGET_DIR)/usr/bin
