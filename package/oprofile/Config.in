@@ -1,9 +1,5 @@
 config BR2_PACKAGE_OPROFILE
 	bool "oprofile"
-	# The dependency on binutils_target does not work with
-	# external toolchains since the binutils version was not
-	# choosen in the config. This will have to be fixed later.
-	depends on !BR2_TOOLCHAIN_EXTERNAL
 	select BR2_PACKAGE_POPT
 	select BR2_PACKAGE_BINUTILS
 	depends on BR2_INSTALL_LIBSTDCPP
