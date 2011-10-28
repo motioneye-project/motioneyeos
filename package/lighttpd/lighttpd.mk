@@ -49,6 +49,13 @@ else
 LIGHTTPD_CONF_OPT += --without-webdav-props --without-webdav-locks
 endif
 
+ifeq ($(BR2_PACKAGE_LIGHTTPD_LUA),y)
+LIGHTTPD_DEPENDENCIES += lua
+LIGHTTPD_CONF_OPT += --with-lua
+else
+LIGHTTPD_CONF_OPT += --without-lua
+endif
+
 define LIGHTTPD_UNINSTALL_TARGET_CMDS
 	rm -f $(TARGET_DIR)/usr/sbin/lighttpd
 	rm -f $(TARGET_DIR)/usr/sbin/lighttpd-angel

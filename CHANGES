@@ -69,6 +69,7 @@
 	#4171: makedevs-unused-but-set-variable.patch
 	#4183: Codesourcery toolchain download site has changed
 	#4231: libneon.so: undefined reference to `SSL_SESSION_cmp'
+	#4381: Add option to lighttpd to enable Lua support
 
 2011.08, Released August 31th, 2011:
 
