@@ -14,7 +14,7 @@ PULSEAUDIO_CONF_OPT = \
 	--disable-legacy-database-entry-format
 
 PULSEAUDIO_DEPENDENCIES = \
-	host-pkg-config libtool json-c libsndfile speex \
+	host-pkg-config libtool json-c libsndfile speex host-intltool \
 	$(if $(BR2_PACKAGE_LIBINTL),libintl) \
 	$(if $(BR2_PACKAGE_LIBATOMIC_OPS),libatomic_ops) \
 	$(if $(BR2_PACKAGE_LIBSAMPLERATE),libsamplerate) \
