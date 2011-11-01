@@ -318,9 +318,9 @@ $(STAMP_DIR)/ext-toolchain-installed: $(TOOLCHAIN_EXTERNAL_DEPENDENCIES)
 $(HOST_DIR)/usr/bin/ext-toolchain-wrapper: $(STAMP_DIR)/ext-toolchain-installed
 	mkdir -p $(HOST_DIR)/usr/bin; cd $(HOST_DIR)/usr/bin; \
 	for i in $(TOOLCHAIN_EXTERNAL_CROSS)*; do \
-		case "$$i" in \
+		base=$${i##*/}; \
+		case "$$base" in \
 		*cc|*cc-*|*++|*++-*|*cpp) \
-			base=$${i##*/}; \
 			ln -sf $(@F) $$base; \
 			;; \
 		*) \
