@@ -28,6 +28,9 @@ static char *predef_args[] = {
 #ifdef BR_TUNE
 	"-mtune=" BR_TUNE,
 #endif /* BR_TUNE */
+#ifdef BR_CPU
+	"-mcpu=" BR_CPU,
+#endif
 #ifdef BR_ABI
 	"-mabi=" BR_ABI,
 #endif
