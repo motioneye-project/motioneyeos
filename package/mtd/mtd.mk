@@ -91,10 +91,10 @@ endef
 
 define MTD_INSTALL_TARGET_CMDS
  for f in $(MTD_TARGETS_y) ; do \
-  install -m 0755 $(@D)/$$f $(TARGET_DIR)/usr/sbin/$$f ; \
+  install -D -m 0755 $(@D)/$$f $(TARGET_DIR)/usr/sbin/$$f ; \
  done ; \
  for f in $(MTD_TARGETS_UBI_y) ; do \
-  install -m 0755 $(@D)/ubi-utils/$$f $(TARGET_DIR)/usr/sbin/$$f ; \
+  install -D -m 0755 $(@D)/ubi-utils/$$f $(TARGET_DIR)/usr/sbin/$$f ; \
  done
 endef
 

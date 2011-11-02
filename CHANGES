@@ -33,7 +33,7 @@
 	libglib2, libiconv, libmpd, libreplaygain, libroxml,
 	libsamplerate, libsndfile, libsoup, libsvgtiny, libtool,
 	lighttpd, links, linux-fusion, lite, lrzsz, lsof, lzo, lzop,
-	makedevs, mcookie, mpg123, mpd, mpfr, musepack, mutt,
+	makedevs, mcookie, mpg123, mpd, mpfr, mtd, musepack, mutt,
 	mysql_client, ncftp, ncurses, neon, netcat, netsnmp, ntfs-3g,
 	ntfsprogs, ntp, openntpd, openssh, openssl, orc, pciutils,
 	psmisc, python, qt, quagga, radvd, rpm, rsync, samba, sawman,
@@ -70,6 +70,7 @@
 	#4183: Codesourcery toolchain download site has changed
 	#4231: libneon.so: undefined reference to `SSL_SESSION_cmp'
 	#4381: Add option to lighttpd to enable Lua support
+	#4387: Make sure that dest dir exists before installing mtd files
 
 2011.08, Released August 31th, 2011:
 
