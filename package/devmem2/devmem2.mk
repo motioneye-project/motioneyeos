@@ -4,39 +4,28 @@
 #
 #############################################################
 
-DEVMEM2_SOURCE:=devmem2.c
-DEVMEM2_SITE:=http://free-electrons.com/pub/mirror
-DEVMEM2_BINARY:=devmem2
-DEVMEM2_DIR:=$(BUILD_DIR)/devmem2
+DEVMEM2_SITE = http://free-electrons.com/pub/mirror
+DEVMEM2_SOURCE = devmem2.c
+DEVMEM2_VERSION = 1
 
-$(DL_DIR)/$(DEVMEM2_SOURCE):
-	$(call DOWNLOAD,$(DEVMEM2_SITE),$(DEVMEM2_SOURCE))
+define DEVMEM2_EXTRACT_CMDS
+	cp $(DL_DIR)/$($(PKG)_SOURCE) $(@D)/
+endef
 
-$(DEVMEM2_DIR)/$(DEVMEM2_SOURCE): $(DL_DIR)/$(DEVMEM2_SOURCE)
-	mkdir -p $(@D)
-	cp $^ $@
+define DEVMEM2_BUILD_CMDS
+	$(TARGET_CONFIGURE_OPTS) $(MAKE) -C $(@D) devmem2
+endef
 
-$(DEVMEM2_DIR)/$(DEVMEM2_BINARY): $(DEVMEM2_DIR)/$(DEVMEM2_SOURCE)
-	$(TARGET_CC) $(TARGET_CFLAGS) -o $@ $^
+define DEVMEM2_CLEAN_CMDS
+	rm -f $(@D)/devmem2
+endef
 
-$(TARGET_DIR)/sbin/$(DEVMEM2_BINARY): $(DEVMEM2_DIR)/$(DEVMEM2_BINARY)
-	cp $^ $@
-	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $@
+define DEVMEM2_INSTALL_TARGET_CMDS
+	$(INSTALL) -D $(@D)/devmem2 $(TARGET_DIR)/sbin/devmem2
+endef
 
-devmem2: $(TARGET_DIR)/sbin/$(DEVMEM2_BINARY)
+define DEVMEM2_UNINSTALL_TARGET_CMDS
+	rm -f $(TARGET_DIR)/sbin/devmem2
+endef
 
-devmem2-source: $(DL_DIR)/$(DEVMEM2_SOURCE)
-
-devmem2-clean:
-	rm -f $(TARGET_DIR/sbin/$(DEVMEM2_BINARY)
-
-devmem2-dirclean:
-	rm -rf $(DEVMEM2_DIR)
-#############################################################
-#
-# Toplevel Makefile options
-#
-#############################################################
-ifeq ($(BR2_PACKAGE_DEVMEM2),y)
-TARGETS+=devmem2
-endif
+$(eval $(call GENTARGETS))
