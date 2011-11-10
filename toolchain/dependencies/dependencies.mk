@@ -16,11 +16,13 @@ DL_TOOLS = \
 	$(findstring git,$(DL_TOOLS_DEPENDENCIES)) \
 	$(findstring bzr,$(DL_TOOLS_DEPENDENCIES))
 
-dependencies: $(DEPENDENCIES_HOST_PREREQ)
+core-dependencies:
 	@HOSTCC="$(firstword $(HOSTCC))" MAKE="$(MAKE)" \
 		CONFIG_FILE="$(CONFIG_DIR)/.config" \
 		DL_TOOLS="$(DL_TOOLS)" \
 		$(TOPDIR)/toolchain/dependencies/dependencies.sh
+
+dependencies: core-dependencies $(DEPENDENCIES_HOST_PREREQ)
 
 dependencies-source:
 
@@ -35,5 +37,5 @@ dependencies-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-.PHONY: dependencies
+.PHONY: dependencies core-dependencies
 
