@@ -1,0 +1,18 @@
+Check for IPV6_TCLASS instead of IPPROTO_IPV6 since
+it's present on non-IPv6 enabled toolchains too.
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+---
+
+diff -Nura dropbear-2011.54.orig/dbutil.c dropbear-2011.54/dbutil.c
+--- dropbear-2011.54.orig/dbutil.c	2011-11-08 09:48:15.000000000 -0300
++++ dropbear-2011.54/dbutil.c	2011-11-09 12:14:59.430074138 -0300
+@@ -164,7 +164,7 @@
+ 	/* set the TOS bit for either ipv4 or ipv6 */
+ #ifdef IPTOS_LOWDELAY
+ 	val = IPTOS_LOWDELAY;
+-#ifdef IPPROTO_IPV6
++#ifdef IPV6_TCLASS
+ 	setsockopt(sock, IPPROTO_IPV6, IPV6_TCLASS, (void*)&val, sizeof(val));
+ #endif
+ 	setsockopt(sock, IPPROTO_IP, IP_TOS, (void*)&val, sizeof(val));
