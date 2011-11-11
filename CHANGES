@@ -59,6 +59,7 @@
 	Issues resolved (http://bugs.uclibc.org):
 
 	#505:  live555: new package
+	#507:  Enable live and tv options in MPlayer-1.0rc2
 	#531:  let e2fsprogs package to export headers to staging dir if needed
 	#1171: Linuxthreads new cannot find sysdep.h
 	#2107: New package: input-event-daemon
