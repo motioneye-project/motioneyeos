@@ -10,6 +10,10 @@
 	Updated/fixed packages: distcc, file, gst-plugins-bad, libxcb,
 	mplayer, rpm, rrdtool, tar, tftpd
 
+	Issues resolved (http://bugs.uclibc.org):
+
+	#4021: uClibc: undefined reference to `__GI___errno_location'
+
 2011.11-rc1, Released November 11th, 2011:
 
 	Fixes all over the tree and new features.
