@@ -12,6 +12,9 @@ OPROFILE_BINARIES += pp/opreport opjitconv/opjitconv daemon/oprofiled
 ifeq ($(BR2_i386),y)
 OPROFILE_ARCH = i386
 endif
+ifeq ($(BR2_mipsel),y)
+OPROFILE_ARCH = mips
+endif
 ifeq ($(BR2_powerpc),y)
 OPROFILE_ARCH = ppc
 endif

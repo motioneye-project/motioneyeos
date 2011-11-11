@@ -73,6 +73,7 @@
 	#3343: Add file:// download SITE_METHOD
 	#3391: Add support for specifying an external kernel tree
 	#3631: Error while compiling with Xorg
+	#3709: oprofile doesn't build for mipsel
 	#3925: midori not getting compile
 	#4045: Add support for downloading i386 toolchains from codesourcery
 	#4165: lrzsz-fix-symlink-at-rebuild.patch
