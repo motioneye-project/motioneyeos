@@ -1,0 +1,11 @@
+--- uClibc-0.9.32.ori/libc/sysdeps/linux/sparc/pipe.S	2011-06-08 21:35:20.000000000 +0200
++++ uClibc-0.9.32/libc/sysdeps/linux/sparc/pipe.S	2011-11-11 15:57:25.000000000 +0100
+@@ -52,7 +52,7 @@
+ 	 restore %g0,%g0,%o0
+ 
+ .Lerror:
+-	call	HIDDEN_JUMPTARGET(__errno_location)
++	call	__errno_location
+ 	 or	%g0,EINVAL,%i0
+ 	st	%i0,[%o0]
+ 	ret
