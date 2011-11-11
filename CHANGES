@@ -62,6 +62,7 @@
 	#507:  Enable live and tv options in MPlayer-1.0rc2
 	#531:  let e2fsprogs package to export headers to staging dir if needed
 	#1171: Linuxthreads new cannot find sysdep.h
+	#1357: Add bluez to buildroot system
 	#2107: New package: input-event-daemon
 	#2599: New package: orc (Oil Runtime Compiler)
 	#2605: gstreamer: Update to 0.10.30
