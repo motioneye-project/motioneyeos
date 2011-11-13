@@ -23,7 +23,7 @@ package, with an example :
 11: LIBFOO_CONF_OPT = --enable-shared
 12: LIBFOO_DEPENDENCIES = libglib2 host-pkg-config
 13:
-14: $(eval $(call AUTOTARGETS,package,libfoo))
+14: $(eval $(call AUTOTARGETS))
 ------------------------
 
 On line 6, we declare the version of the package.

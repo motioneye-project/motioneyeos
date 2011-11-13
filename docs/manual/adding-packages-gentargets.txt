@@ -38,7 +38,7 @@ system is based on hand-written Makefiles or shell scripts.
 24: 	$(INSTALL) -d -m 0755 $(TARGET_DIR)/etc/foo.d
 25: endef
 26:
-27: $(eval $(call GENTARGETS,package,libfoo))
+27: $(eval $(call GENTARGETS))
 --------------------------------
 
 The Makefile begins on line 6 to 8 with metadata information: the
@@ -84,32 +84,19 @@ Makefile code necessary to make your package working.
 +GENTARGETS+ Reference
 ~~~~~~~~~~~~~~~~~~~~~~
 
-The +GENTARGETS+ macro takes three arguments:
-
-* The first argument is the package directory prefix. If your package
-  is in +package/libfoo+, then the directory prefix is +package+. If
-  your package is in +package/editors/foo+, then the directory prefix
-  must be +package/editors+.
-
-* The second argument is the lower-cased package name. It must match
-  the prefix of the variables in the +.mk+ file and must match the
-  configuration option name in the +Config.in+ file. For example, if
-  the package name is +libfoo+, then the variables in the +.mk+ file
-  must start with +LIBFOO_+ and the configuration option in the
-  +Config.in+ file must be +BR2_PACKAGE_LIBFOO+.
-
-* The third argument is optional. It can be used to tell if the
-  package is a target package (cross-compiled for the target) or a
-  host package (natively compiled for the host). If unspecified, it is
-  assumed that it is a target package. See below for details.
+The +GENTARGETS+ macro takes one optional argument. This argument can
+be used to tell if the package is a target package (cross-compiled for
+the target) or a host package (natively compiled for the host). If
+unspecified, it is assumed that it is a target package. See below for
+details.
 
 For a given package, in a single +.mk+ file, it is possible to call
 GENTARGETS twice, once to create the rules to generate a target
 package and once to create the rules to generate a host package:
 
 ----------------------
-$(eval $(call GENTARGETS,package,libfoo))
-$(eval $(call GENTARGETS,package,libfoo,host))
+$(eval $(call GENTARGETS))
+$(eval $(call GENTARGETS,host))
 ----------------------
 
 This might be useful if the compilation of the target package requires
