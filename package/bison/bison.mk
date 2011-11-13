@@ -4,7 +4,7 @@
 #
 #############################################################
 
-BISON_VERSION = 2.4.3
+BISON_VERSION = 2.5
 BISON_SITE = $(BR2_GNU_MIRROR)/bison
 
 define BISON_DISABLE_EXAMPLES
