@@ -1,0 +1,46 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release:	4.2
+Patch-ID:	bash42-006
+
+Bug-Reported-by:	Allan McRae <allan@archlinux.org>
+Bug-Reference-ID:	<4D6D0D0B.50908@archlinux.org>
+Bug-Reference-URL:	http://lists.gnu.org/archive/html/bug-bash/2011-03/msg00001.html
+
+Bug-Description:
+
+A problem with bash42-005 caused it to dump core if TZ was unset.
+
+Patch (apply with `patch -p0'):
+
+*** ../bash-4.2-patched/variables.c	2011-02-25 12:07:41.000000000 -0500
+--- ./variables.c	2011-03-01 10:13:04.000000000 -0500
+***************
+*** 3661,3665 ****
+  
+    v = find_variable (name);
+!   if (exported_p (v))
+      {
+        array_needs_making = 1;
+--- 3661,3665 ----
+  
+    v = find_variable (name);
+!   if (v && exported_p (v))
+      {
+        array_needs_making = 1;
+*** ../bash-4.2-patched/patchlevel.h	Sat Jun 12 20:14:48 2010
+--- ./patchlevel.h	Thu Feb 24 21:41:34 2011
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 5
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 6
+  
+  #endif /* _PATCHLEVEL_H_ */

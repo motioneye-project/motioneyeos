@@ -1,0 +1,74 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release:	4.2
+Patch-ID:	bash42-008
+
+Bug-Reported-by:	Doug McMahon <mc2man@optonline.net>
+Bug-Reference-ID:	<1299441211.2535.11.camel@doug-XPS-M1330>
+Bug-Reference-URL:	http://lists.gnu.org/archive/html/bug-bash/2011-03/msg00050.html
+
+Bug-Description:
+
+Bash-4.2 does not attempt to save the shell history on receipt of a
+terminating signal that is handled synchronously.  Unfortunately, the
+`close' button on most X11 terminal emulators sends SIGHUP, which
+kills the shell.
+
+This is a very small patch to save the history in the case that an
+interactive shell receives a SIGHUP or SIGTERM while in readline and
+reading a command.
+
+The next version of bash will do this differently.
+
+Patch (apply with `patch -p0'):
+
+*** ../bash-4.2-patched/sig.c	Tue Nov 23 08:21:22 2010
+--- ./sig.c	Tue Mar  8 21:28:32 2011
+***************
+*** 47,50 ****
+--- 47,51 ----
+  #if defined (READLINE)
+  #  include "bashline.h"
++ #  include <readline/readline.h>
+  #endif
+  
+***************
+*** 63,66 ****
+--- 64,68 ----
+  extern int history_lines_this_session;
+  #endif
++ extern int no_line_editing;
+  
+  extern void initialize_siglist ();
+***************
+*** 506,510 ****
+  #if defined (HISTORY)
+        /* XXX - will inhibit history file being written */
+!       history_lines_this_session = 0;
+  #endif
+        terminate_immediately = 0;
+--- 508,515 ----
+  #if defined (HISTORY)
+        /* XXX - will inhibit history file being written */
+! #  if defined (READLINE)
+!       if (interactive_shell == 0 || interactive == 0 || (sig != SIGHUP && sig != SIGTERM) || no_line_editing || (RL_ISSTATE (RL_STATE_READCMD) == 0))
+! #  endif
+!         history_lines_this_session = 0;
+  #endif
+        terminate_immediately = 0;
+*** ../bash-4.2-patched/patchlevel.h	Sat Jun 12 20:14:48 2010
+--- ./patchlevel.h	Thu Feb 24 21:41:34 2011
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 7
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 8
+  
+  #endif /* _PATCHLEVEL_H_ */
