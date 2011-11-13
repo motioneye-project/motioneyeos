@@ -24,6 +24,11 @@ config BR2_PACKAGE_LIBFOO
 	  http://foosoftware.org/libfoo/
 ---------------------------
 
+The +bool+ line, +help+ line and other meta-informations about the
+configuration option must be indented with one tab. The help text
+itself should be indented with one tab and two spaces, and it must
+mention the upstream URL of the project.
+
 Of course, you can add other sub-options into a +if
 BR2_PACKAGE_LIBFOO...endif+ statement to configure particular things
 in your software. You can look at examples in other packages. The
