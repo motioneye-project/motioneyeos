@@ -101,8 +101,8 @@ installed, etc.
 Depending on the package type, the +.mk+ file must be written in a
 different way, using different infrastructures:
 
-* *Makefiles for generic packages* (not using autotools): These are
-  based on an infrastructure similar to the one used for
+* *Makefiles for generic packages* (not using autotools or CMake):
+  These are based on an infrastructure similar to the one used for
   autotools-based packages, but requires a little more work from the
   developer. They specify what should be done for the configuration,
   compilation, installation and cleanup of the package. This
@@ -118,6 +118,13 @@ different way, using different infrastructures:
   be used for new packages that rely on the autotools as their build
   system. We cover them through a xref:autotargets-tutorial[tutorial]
   and xref:autotargets-reference[reference].
+
+* *Makefiles for cmake-based software*: We provide a dedicated
+   infrastructure for such packages, as CMake is a more and more
+   commonly used build system and has a standardized behaviour. This
+   infrastructure 'must' be used for new packages that rely on
+   CMake. We cover them through a xref:cmaketargets-tutorial[tutorial]
+   and xref:cmaketargets-reference[reference].
 
 * *Hand-written Makefiles:* These are currently obsolete, and no new
   manual Makefiles should be added. However, since there are still
