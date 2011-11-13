@@ -4,6 +4,7 @@ config BR2_PACKAGE_GDB
 	bool "Build gdb debugger for the Target"
 	select BR2_PACKAGE_NCURSES
 	depends on BR2_USE_WCHAR
+	depends on !BR2_sh && !BR2_sh64
 	help
 	    Build the full gdb debugger to run on the target.
 
