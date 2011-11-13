@@ -24,10 +24,11 @@ config BR2_PACKAGE_LIBFOO
 	  http://foosoftware.org/libfoo/
 ---------------------------
 
-Of course, you can add other options to configure particular things in
-your software. You can look at examples in other packages. The syntax
-of the +Config.in+ file is the same as the one for the kernel Kconfig
-file. The documentation for this syntax is available at
+Of course, you can add other sub-options into a +if
+BR2_PACKAGE_LIBFOO...endif+ statement to configure particular things
+in your software. You can look at examples in other packages. The
+syntax of the +Config.in+ file is the same as the one for the kernel
+Kconfig file. The documentation for this syntax is available at
 http://lxr.free-electrons.com/source/Documentation/kbuild/kconfig-language.txt[]
 
 Finally you have to add your new +libfoo/Config.in+ to
