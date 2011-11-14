@@ -15,10 +15,13 @@ LIBXCB_DEPENDENCIES = \
 LIBXCB_CONF_ENV = STAGING_DIR="$(STAGING_DIR)"
 LIBXCB_MAKE_OPT = XCBPROTO_XCBINCLUDEDIR=$(STAGING_DIR)/usr/share/xcb \
 	XCBPROTO_XCBPYTHONDIR=$(HOST_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR)/site-packages
+HOST_LIBXCB_CONF_OPT = --disable-build-docs
 
 HOST_LIBXCB_DEPENDENCIES = \
 	host-libxslt host-pthread-stubs host-xcb-proto host-xlib_libXdmcp \
 	host-xlib_libXau host-python
+
+HOST_LIBXCB_CONF_OPT = --disable-build-docs
 
 $(eval $(call AUTOTARGETS))
 $(eval $(call AUTOTARGETS,host))
