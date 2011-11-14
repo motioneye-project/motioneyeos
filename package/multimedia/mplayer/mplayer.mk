@@ -108,6 +108,12 @@ ifeq ($(call qstrip,$(BR2_GCC_TARGET_ARCH)),armv7-a)
 MPLAYER_CONF_OPTS += --enable-neon
 endif
 
+ifeq ($(BR2_i386),y)
+# inline asm breaks with "can't find a register in class 'GENERAL_REGS'"
+# inless we free up ebp
+MPLAYER_CFLAGS += -fomit-frame-pointer
+endif
+
 define MPLAYER_CONFIGURE_CMDS
 	(cd $(@D); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
@@ -122,6 +128,7 @@ define MPLAYER_CONFIGURE_CMDS
 		--charset=UTF-8 \
 		--extra-cflags="$(MPLAYER_CFLAGS)" \
 		--extra-ldflags="$(MPLAYER_LDFLAGS)" \
+		--yasm='' \
 		--enable-mad \
 		--enable-fbdev \
 		$(MPLAYER_CONF_OPTS) \
