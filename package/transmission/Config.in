@@ -33,6 +33,13 @@ config BR2_PACKAGE_TRANSMISSION_REMOTE
 	bool "transmission-remote"
 	help
 	  Install transmission remote management tool.
+
+config BR2_PACKAGE_TRANSMISSION_GTK
+	bool "transmission-gtk"
+	depends on BR2_PACKAGE_LIBGTK2
+	help
+	  Install transmission GTK-based GUI interface.
+
 endif
 
 comment "Transmission requires a toolchain with IPv6 support"

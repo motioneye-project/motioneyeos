@@ -14,7 +14,6 @@ TRANSMISSION_DEPENDENCIES = \
 	zlib
 
 TRANSMISSION_CONF_OPT = \
-	--disable-gtk \
 	--disable-libnotify \
 	--enable-lightweight
 
@@ -47,6 +46,13 @@ ifeq ($(BR2_PACKAGE_TRANSMISSION_REMOTE),y)
 	TRANSMISSION_CONF_OPT += --enable-remote
 else
 	TRANSMISSION_CONF_OPT += --disable-remote
+endif
+
+ifeq ($(BR2_PACKAGE_TRANSMISSION_GTK),y)
+	TRANSMISSION_CONF_OPT += --enable-gtk
+	TRANSMISSION_DEPENDENCIES += libgtk2
+else
+	TRANSMISSION_CONF_OPT += --disable-gtk
 endif
 
 $(eval $(call AUTOTARGETS))
