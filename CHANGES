@@ -12,6 +12,7 @@
 
 	Issues resolved (http://bugs.uclibc.org):
 
+	#3355: mplayer fails to build
 	#4021: uClibc: undefined reference to `__GI___errno_location'
 
 2011.11-rc1, Released November 11th, 2011:
