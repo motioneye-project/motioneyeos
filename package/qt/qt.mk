@@ -434,11 +434,11 @@ endif
 QT_QMAKE:=$(HOST_DIR)/usr/bin/qmake -spec qws/linux-$(QT_EMB_PLATFORM)-g++
 
 ################################################################################
-# QT_QMAKE_SET -- helper macro to set QMAKE_<variable> = <value> in
+# QT_QMAKE_SET -- helper macro to set <variable> = <value> in
 # the qmake.conf file. Will remove existing variable declaration if
 # available.
 #
-# Argument 1 is the variable name (without QMAKE_)
+# Argument 1 is the variable name
 # Argument 2 is the value to set variable to
 # Argument 3 is the base source directory of Qt
 #
@@ -446,8 +446,8 @@ QT_QMAKE:=$(HOST_DIR)/usr/bin/qmake -spec qws/linux-$(QT_EMB_PLATFORM)-g++
 # $(call QT_QMAKE_SET,variable,value,directory)
 ################################################################################
 define QT_QMAKE_SET
-	$(SED) '/QMAKE_$(1)/d' $(3)/mkspecs/qws/linux-$(QT_EMB_PLATFORM)-g++/qmake.conf
-	$(SED) '/include.*qws.conf/aQMAKE_$(1) = $(2)' $(3)/mkspecs/qws/linux-$(QT_EMB_PLATFORM)-g++/qmake.conf
+	$(SED) '/$(1)/d' $(3)/mkspecs/qws/linux-$(QT_EMB_PLATFORM)-g++/qmake.conf
+	$(SED) '/include.*qws.conf/a$(1) = $(2)' $(3)/mkspecs/qws/linux-$(QT_EMB_PLATFORM)-g++/qmake.conf
 endef
 
 ifneq ($(BR2_INET_IPV6),y)
@@ -468,17 +468,18 @@ define QT_CONFIGURE_CMDS
 	$(QT_CONFIGURE_IPV6)
 	$(QT_CONFIGURE_CONFIG_FILE)
 	# Fix compiler path
-	$(call QT_QMAKE_SET,CC,$(TARGET_CC),$(@D))
-	$(call QT_QMAKE_SET,CXX,$(TARGET_CXX),$(@D))
-	$(call QT_QMAKE_SET,LINK,$(TARGET_CXX),$(@D))
-	$(call QT_QMAKE_SET,LINK_SHLIB,$(TARGET_CXX),$(@D))
-	$(call QT_QMAKE_SET,AR,$(TARGET_AR) cqs,$(@D))
-	$(call QT_QMAKE_SET,OBJCOPY,$(TARGET_OBJCOPY),$(@D))
-	$(call QT_QMAKE_SET,RANLIB,$(TARGET_RANLIB),$(@D))
-	$(call QT_QMAKE_SET,STRIP,$(TARGET_STRIP),$(@D))
-	$(call QT_QMAKE_SET,CFLAGS,$(QT_CFLAGS),$(@D))
-	$(call QT_QMAKE_SET,CXXFLAGS,$(QT_CXXFLAGS),$(@D))
-	$(call QT_QMAKE_SET,LFLAGS,$(TARGET_LDFLAGS),$(@D))
+	$(call QT_QMAKE_SET,QMAKE_CC,$(TARGET_CC),$(@D))
+	$(call QT_QMAKE_SET,QMAKE_CXX,$(TARGET_CXX),$(@D))
+	$(call QT_QMAKE_SET,QMAKE_LINK,$(TARGET_CXX),$(@D))
+	$(call QT_QMAKE_SET,QMAKE_LINK_SHLIB,$(TARGET_CXX),$(@D))
+	$(call QT_QMAKE_SET,QMAKE_AR,$(TARGET_AR) cqs,$(@D))
+	$(call QT_QMAKE_SET,QMAKE_OBJCOPY,$(TARGET_OBJCOPY),$(@D))
+	$(call QT_QMAKE_SET,QMAKE_RANLIB,$(TARGET_RANLIB),$(@D))
+	$(call QT_QMAKE_SET,QMAKE_STRIP,$(TARGET_STRIP),$(@D))
+	$(call QT_QMAKE_SET,QMAKE_CFLAGS,$(QT_CFLAGS),$(@D))
+	$(call QT_QMAKE_SET,QMAKE_CXXFLAGS,$(QT_CXXFLAGS),$(@D))
+	$(call QT_QMAKE_SET,QMAKE_LFLAGS,$(TARGET_LDFLAGS),$(@D))
+	$(call QT_QMAKE_SET,PKG_CONFIG,$(HOST_DIR)/usr/bin/pkg-config,$(@D))
 # Don't use TARGET_CONFIGURE_OPTS here, qmake would be compiled for the target
 # instead of the host then. So set PKG_CONFIG* manually.
 	(cd $(@D); \

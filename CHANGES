@@ -8,12 +8,13 @@
 	crosstool-ng as well, bump crosstool-ng version, gdb fixes.
 
 	Updated/fixed packages: distcc, file, gst-plugins-bad, libxcb,
-	mplayer, rpm, rrdtool, tar, tftpd
+	mplayer, qt, rpm, rrdtool, tar, tftpd
 
 	Issues resolved (http://bugs.uclibc.org):
 
 	#3355: mplayer fails to build
 	#4021: uClibc: undefined reference to `__GI___errno_location'
+	#4297: Qt's qmake uses wrong pkg-config
 
 2011.11-rc1, Released November 11th, 2011:
 
