@@ -24,7 +24,7 @@
 #--------------------------------------------------------------
 
 # Set and export the version string
-export BR2_VERSION:=2011.11-rc1
+export BR2_VERSION:=2011.11-rc2
 
 # This top-level Makefile can *not* be executed in parallel
 .NOTPARALLEL:
