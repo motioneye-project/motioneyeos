@@ -1,0 +1,16 @@
+APF9328 needs CONFIG_MTD_CFI_INTELEXT to boot on its NOR FLASH.
+
+Signed-off-by: Julien Boibessot <julien.boibessot@armadeus.com>
+
+Index: linux-3.1.1/arch/arm/mach-imx/Kconfig
+===================================================================
+--- linux-3.1.1.orig/arch/arm/mach-imx/Kconfig	2011-11-16 14:45:55.000000000 +0100
++++ linux-3.1.1/arch/arm/mach-imx/Kconfig	2011-11-16 14:47:20.000000000 +0100
+@@ -84,6 +84,7 @@
+ 	bool "APF9328"
+ 	select SOC_IMX1
+ 	select IMX_HAVE_PLATFORM_IMX_UART
++	select MTD_CFI_INTELEXT
+ 	help
+ 	  Say Yes here if you are using the Armadeus APF9328 development board
+ 
