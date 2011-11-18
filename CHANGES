@@ -5,10 +5,11 @@
 	Updated asciidoc documentation
 
 	Toolchain: Bumped 3.x stable kernel headers, use wget in
-	crosstool-ng as well, bump crosstool-ng version, gdb fixes.
+	crosstool-ng as well, bump crosstool-ng version, gdb fixes,
+	uClibc sparc fix.
 
 	Updated/fixed packages: distcc, file, gst-plugins-bad, libxcb,
-	mplayer, qt, rpm, rrdtool, tar, tftpd
+	mplayer, newt, qt, rpm, rrdtool, tar, tftpd
 
 	Issues resolved (http://bugs.uclibc.org):
 
