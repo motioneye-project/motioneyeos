@@ -1,6 +1,5 @@
-GST_DSP_VERSION=0.8.0
-GST_DSP_SOURCE=gst-dsp-$(GST_DSP_VERSION).tar.gz
-GST_DSP_SITE=http://gst-dsp.googlecode.com/files/
+GST_DSP_VERSION = 0.9.0
+GST_DSP_SITE = http://gst-dsp.googlecode.com/files/
 
 define GST_DSP_BUILD_CMDS
 	$(TARGET_CONFIGURE_OPTS) $(MAKE) -C $(@D) -e
