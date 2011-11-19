@@ -67,8 +67,8 @@ else
 MPLAYER_CONF_OPTS += --disable-mencoder
 endif
 
-ifeq ($(BR2_PACKAGE_TREMOR),y)
-MPLAYER_DEPENDENCIES += tremor
+ifeq ($(BR2_PACKAGE_TREMOR)$(BR2_PACKAGE_LIBOGG),yy)
+MPLAYER_DEPENDENCIES += tremor libogg
 MPLAYER_CONF_OPTS += --disable-tremor-internal --enable-tremor
 endif
 
