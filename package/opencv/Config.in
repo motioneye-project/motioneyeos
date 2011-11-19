@@ -31,10 +31,15 @@ config BR2_PACKAGE_OPENCV_WITH_PYTHON
 
 config BR2_PACKAGE_OPENCV_WITH_FFMPEG
 	bool "ffmpeg support"
+	depends on BR2_LARGEFILE
+	depends on BR2_INET_IPV6
 	select BR2_PACKAGE_FFMPEG
 	select BR2_PACKAGE_FFMPEG_SWSCALE
 	help
 	  Use ffmpeg from the target system.
+
+comment "ffmpeg support requires a toolchain with LARGEFILE and IPV6 support"
+	depends on !(BR2_LARGEFILE && BR2_INET_IPV6)
 
 config BR2_PACKAGE_OPENCV_WITH_GSTREAMER
 	bool "gstreamer support"
