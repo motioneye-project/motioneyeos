@@ -1787,9 +1787,9 @@ Starting dropbear sshd: generating rsa key... generating dsa key... OK</pre>
     <p>then it means that your system is running, but didn't start a
     shell on the serial console. In order to have the system start a
     shell on your serial console, you have to go in the Buildroot
-    configuration, <code>Target options</code>, enable <code>Generic
-    serial port config</code>, and select the serial port and speed
-    you would like to use for the shell. This will automatically tune
+    configuration, <code>System configuration</code>, and modify
+    <code>Port to run a getty (login prompt) on</code> and
+    <code>Baudrate to use</code> as appropriate. This will automatically tune
     the <code>/etc/inittab</code> file of the generated system so that
     a shell starts on the correct serial port.</p>
 
