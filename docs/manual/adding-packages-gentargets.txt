@@ -131,7 +131,7 @@ information is (assuming the package name is +libfoo+) :
 
 * +LIBFOO_SOURCE+ may contain the name of the tarball of
   the package. If +HOST_LIBFOO_SOURCE+ is not specified, it
-  defaults to +LIBFOO_VERSION+. If none are specified, then
+  defaults to +LIBFOO_SOURCE+. If none are specified, then
   the value is assumed to be
   +packagename-$(LIBFOO_VERSION).tar.gz+. +
   Example: +LIBFOO_SOURCE = foobar-$(LIBFOO_VERSION).tar.bz2+
