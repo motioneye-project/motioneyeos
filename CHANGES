@@ -1,3 +1,14 @@
+2011.11, Not released yet:
+
+	Fixes all over the tree.
+
+	Toolchain: Fix gdb dependencies for external toolchains,
+	adjust uClibc patches so they don't confuse modern versions of
+	patch, bump crosstool-ng, kernel headers and linux versions.
+
+	Updated/fixed packages: busybox, freetype, mplayer, opencv,
+	rsyslog, xapp_xf86dga
+
 2011.11-rc2, Released November 18th, 2011:
 
 	Fixes all over the tree and new features.
