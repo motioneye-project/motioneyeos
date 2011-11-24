@@ -175,6 +175,7 @@ config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_SH2A_201103
 	select BR2_INET_RPC
 	select BR2_USE_WCHAR
 	select BR2_TOOLCHAIN_HAS_THREADS
+	select BR2_TOOLCHAIN_HAS_THREADS_DEBUG
 	select BR2_INSTALL_LIBSTDCPP
 	help
 	  Sourcery CodeBench toolchain for the SuperH architecture,
@@ -191,6 +192,7 @@ config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_SH2A_201009
 	select BR2_INET_RPC
 	select BR2_USE_WCHAR
 	select BR2_TOOLCHAIN_HAS_THREADS
+	select BR2_TOOLCHAIN_HAS_THREADS_DEBUG
 	select BR2_INSTALL_LIBSTDCPP
 	help
 	  Sourcery CodeBench toolchain for the SuperH architecture,
@@ -224,6 +226,7 @@ config BR2_TOOLCHAIN_EXTERNAL_BLACKFIN_UCLINUX_2010RC1
 	select BR2_INET_RPC
 	select BR2_USE_WCHAR
 	select BR2_TOOLCHAIN_HAS_THREADS
+	select BR2_TOOLCHAIN_HAS_THREADS_DEBUG
 	help
 	  Toolchain for the Blackfin architecture, from
 	  http://blackfin.uclinux.org.
@@ -285,6 +288,7 @@ config BR2_TOOLCHAIN_EXTERNAL_GLIBC
 	select BR2_USE_WCHAR
 	select BR2_ENABLE_LOCALE
 	select BR2_TOOLCHAIN_HAS_THREADS
+	select BR2_TOOLCHAIN_HAS_THREADS_DEBUG
 	select BR2_TOOLCHAIN_HAS_SHADOW_PASSWORDS
 
 config BR2_TOOLCHAIN_EXTERNAL_UCLIBC
@@ -360,6 +364,16 @@ config BR2_TOOLCHAIN_EXTERNAL_HAS_THREADS
 	  Select this option if your external toolchain has thread
 	  support. If you don't know, leave the default value,
 	  Buildroot will tell you if it's correct or not.
+
+config BR2_TOOLCHAIN_EXTERNAL_HAS_THREADS_DEBUG
+	bool "Toolchain has threads debugging support?"
+	depends on BR2_TOOLCHAIN_EXTERNAL_HAS_THREADS
+	select BR2_TOOLCHAIN_HAS_THREADS_DEBUG
+	default y
+	help
+	  Select this option if your external toolchain has thread
+	  debugging support. If you don't know, leave the default
+	  value, Buildroot will tell you if it's correct or not.
 
 endif # BR2_TOOLCHAIN_EXTERNAL_CUSTOM_UCLIBC
 

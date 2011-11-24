@@ -52,24 +52,32 @@ choice
 		bool "gdb 7.0.1"
 		depends on !BR2_bfin
 		depends on BR2_DEPRECATED
-		select BR2_PTHREAD_DEBUG if !BR2_PTHREADS_NONE
+		depends on BR2_TOOLCHAIN_HAS_THREADS_DEBUG_IF_NEEDED
+		select BR2_PTHREAD_DEBUG if (BR2_TOOLCHAIN_BUILDROOT && !BR2_PTHREADS_NONE)
 
 	config BR2_GDB_VERSION_7_1
 		bool "gdb 7.1"
 		depends on !BR2_bfin
-		select BR2_PTHREAD_DEBUG if !BR2_PTHREADS_NONE
+		depends on BR2_TOOLCHAIN_HAS_THREADS_DEBUG_IF_NEEDED
+		select BR2_PTHREAD_DEBUG if (BR2_TOOLCHAIN_BUILDROOT && !BR2_PTHREADS_NONE)
 
 	config BR2_GDB_VERSION_7_2
 		bool "gdb 7.2.x"
 		depends on !BR2_bfin
-		select BR2_PTHREAD_DEBUG if !BR2_PTHREADS_NONE
+		depends on BR2_TOOLCHAIN_HAS_THREADS_DEBUG_IF_NEEDED
+		select BR2_PTHREAD_DEBUG if (BR2_TOOLCHAIN_BUILDROOT && !BR2_PTHREADS_NONE)
 
 	config BR2_GDB_VERSION_7_3
 		bool "gdb 7.3.x"
 		depends on !BR2_bfin
-		select BR2_PTHREAD_DEBUG if !BR2_PTHREADS_NONE
+		depends on BR2_TOOLCHAIN_HAS_THREADS_DEBUG_IF_NEEDED
+		select BR2_PTHREAD_DEBUG if (BR2_TOOLCHAIN_BUILDROOT && !BR2_PTHREADS_NONE)
 
 endchoice
+
+comment "gdb 7.x support needs pthread debug support in toolchain"
+	depends on BR2_PACKAGE_GDB || BR2_PACKAGE_GDB_SERVER || BR2_PACKAGE_GDB_HOST
+	depends on !BR2_TOOLCHAIN_HAS_THREADS_DEBUG_IF_NEEDED
 
 config BR2_GDB_VERSION
 	string
