@@ -63,8 +63,6 @@ index 6e520fa..f4a9ebb 100644
  
  #  ifdef __UCLIBC_HAS_THREADS__
  /* When using threads, errno is a per-thread value.  */
-diff --git a/libc/sysdeps/linux/common/bits/uClibc_errno.h b/libc/sysdeps/linux/common/bits/uClibc_errno.h
-index 9c15618..79eb7e6 100644
 -- 
 1.7.1
 
