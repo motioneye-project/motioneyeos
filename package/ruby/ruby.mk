@@ -11,8 +11,7 @@ HOST_RUBY_AUTORECONF = YES
 RUBY_DEPENDENCIES = host-ruby
 RUBY_MAKE_ENV = $(TARGET_MAKE_ENV)
 RUBY_CONF_OPT = --disable-install-doc --disable-rpath
-
-HOST_RUBY_CONF_OPT = --disable-install-doc
+HOST_RUBY_CONF_OPT = --disable-install-doc --without-ncurses --without-readline
 
 # Force optionals to build before we do
 ifeq ($(BR2_PACKAGE_BERKELEYDB),y)
