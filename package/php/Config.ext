@@ -125,6 +125,7 @@ config BR2_PACKAGE_PHP_EXT_SYSVSHM
 
 config BR2_PACKAGE_PHP_EXT_ZIP
 	bool "zip"
+	select BR2_PACKAGE_ZLIB
 	help
 	  Zip read/write support
 
