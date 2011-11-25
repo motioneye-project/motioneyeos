@@ -10,7 +10,7 @@ RUBY_AUTORECONF = YES
 HOST_RUBY_AUTORECONF = YES
 RUBY_DEPENDENCIES = host-ruby
 RUBY_MAKE_ENV = $(TARGET_MAKE_ENV)
-RUBY_CONF_OPT = --disable-install-doc
+RUBY_CONF_OPT = --disable-install-doc --disable-rpath
 
 HOST_RUBY_CONF_OPT = --disable-install-doc
 
