@@ -7,7 +7,7 @@
 	patch, bump crosstool-ng, kernel headers and linux versions.
 
 	Updated/fixed packages: busybox, freetype, mplayer, opencv,
-	rsyslog, xapp_xf86dga
+	php, rsyslog, ruby, thttpd, xapp_xf86dga
 
 	Issues resolved (http://bugs.uclibc.org):
 
