@@ -11,6 +11,7 @@
 
 	Issues resolved (http://bugs.uclibc.org):
 
+	#4357: Prevent patch commands from accessing source control
 	#4369: Fix permissions on untared lsof archive
 
 2011.11-rc2, Released November 18th, 2011:

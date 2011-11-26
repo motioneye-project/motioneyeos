@@ -41,7 +41,7 @@ GRUB_CONFIG-$(BR2_TARGET_GRUB_w89c840) += --enable-w89c840
 define GRUB_DEBIAN_PATCHES
 	# Apply the patches from the Debian patch
 	(cd $(@D) ; for f in `cat debian/patches/00list | grep -v ^#` ; do \
-		cat debian/patches/$$f | patch -p1 ; \
+		cat debian/patches/$$f | patch -g0 -p1 ; \
 	done)
 endef
 

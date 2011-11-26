@@ -21,7 +21,7 @@ if [ ! -d "${patchdir}" ] ; then
 fi
     
 for i in `cd ${patchdir}; ls -d ${patchpattern} 2> /dev/null` ; do 
-    apply="patch -p1 -E -d"
+    apply="patch -g0 -p1 -E -d"
     uncomp_parm=""
     if [ -d "${patchdir}/$i" ] ; then
 	type="directory overlay"
