@@ -1,3 +1,11 @@
+2011.11, Released November 30th, 2011:
+
+	Fixes all over the tree.
+
+	Bump kernel headers / default Linux version to 3.1.4.
+
+	Updated/fixed packages: ruby
+
 2011.11-rc3, Released November 26th, 2011:
 
 	Fixes all over the tree.
