@@ -8,24 +8,9 @@ choice
 	help
 	  Select the version of binutils you wish to use.
 
-	config BR2_BINUTILS_VERSION_2_18
-		depends on !BR2_avr32
-		depends on BR2_DEPRECATED
-		bool "binutils 2.18"
-
 	config BR2_BINUTILS_VERSION_2_18_AVR32_1_0_1
 	       depends on BR2_avr32
 	       bool "binutils 2.18-avr32-1.0.1"
-
-	config BR2_BINUTILS_VERSION_2_19
-		depends on !BR2_avr32
-		depends on BR2_DEPRECATED
-		bool "binutils 2.19"
-
-	config BR2_BINUTILS_VERSION_2_19_1
-		depends on !BR2_avr32
-		depends on BR2_DEPRECATED
-		bool "binutils 2.19.1"
 
 	config BR2_BINUTILS_VERSION_2_20
 		depends on !BR2_avr32
@@ -47,10 +32,7 @@ endchoice
 
 config BR2_BINUTILS_VERSION
 	string
-	default "2.18"		if BR2_BINUTILS_VERSION_2_18
 	default "2.18-avr32-1.0.1" if BR2_BINUTILS_VERSION_2_18_AVR32_1_0_1
-	default "2.19"		if BR2_BINUTILS_VERSION_2_19
-	default "2.19.1"	if BR2_BINUTILS_VERSION_2_19_1
 	default "2.20"		if BR2_BINUTILS_VERSION_2_20
 	default "2.20.1"	if BR2_BINUTILS_VERSION_2_20_1
 	default "2.21"		if BR2_BINUTILS_VERSION_2_21
