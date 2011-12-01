@@ -4,9 +4,10 @@
 #
 #############################################################
 
-BASH_VERSION = 4.1
+BASH_VERSION = 4.2
 BASH_SITE = $(BR2_GNU_MIRROR)/bash
 BASH_DEPENDENCIES = ncurses
+BASH_CONF_ENV = bash_cv_job_control_missing=no
 
 # Make sure we build after busybox so that /bin/sh links to bash
 ifeq ($(BR2_PACKAGE_BUSYBOX),y)

@@ -6,3 +6,10 @@ config BR2_PACKAGE_NANO
 	  Great editor for new users.
 
 	  http://www.nano-editor.org/
+
+config BR2_PACKAGE_NANO_TINY
+	bool "optimize for size"
+	default y
+	depends on BR2_PACKAGE_NANO
+	help
+	  Disable all features for the sake of size.

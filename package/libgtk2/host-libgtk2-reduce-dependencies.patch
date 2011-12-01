@@ -8,11 +8,11 @@ Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
  configure.in |  101 ++---------------------------------------------------------
  1 file changed, 4 insertions(+), 97 deletions(-)
 
-Index: gtk+-2.22.0/configure.in
+Index: gtk+-2.24.8/configure.in
 ===================================================================
---- gtk+-2.22.0.orig/configure.in
-+++ gtk+-2.22.0/configure.in
-@@ -258,12 +258,12 @@
+--- gtk+-2.24.8.orig/configure.in
++++ gtk+-2.24.8/configure.in
+@@ -259,12 +259,12 @@
    gdktarget=x11
  fi
  
@@ -27,7 +27,7 @@ Index: gtk+-2.22.0/configure.in
    *) AC_MSG_ERROR([Invalid target for GDK: use x11, quartz, directfb or win32.]);;
  esac
  
-@@ -373,9 +373,6 @@
+@@ -374,9 +374,6 @@
  ## annoying to construct
  PKG_CHECK_MODULES(BASE_DEPENDENCIES,
    [glib-2.0 >= glib_required_version dnl
@@ -37,7 +37,7 @@ Index: gtk+-2.22.0/configure.in
     gdk-pixbuf-2.0 >= gdk_pixbuf_required_version])
  
  ## In addition to checking that cairo is present, we also need to
-@@ -388,8 +385,6 @@
+@@ -389,8 +386,6 @@
  if test "x$cairo_backend" = "xx11"; then
     cairo_backend=xlib
  fi
@@ -46,7 +46,7 @@ Index: gtk+-2.22.0/configure.in
  
  if test "$os_win32" != yes; then
      # libtool option to control which symbols are exported
-@@ -1270,50 +1265,6 @@
+@@ -1280,50 +1275,6 @@
  fi
  
  
@@ -94,10 +94,10 @@ Index: gtk+-2.22.0/configure.in
 -  GDK_PACKAGES="$PANGO_PACKAGES gio-2.0 gdk-pixbuf-2.0 cairo-$cairo_backend"
 -fi
 -
- GDK_DEP_LIBS="$GDK_EXTRA_LIBS `$PKG_CONFIG --libs $GDK_PACKAGES`"
+ GDK_DEP_LIBS="$GDK_EXTRA_LIBS `$PKG_CONFIG --libs $GDK_PACKAGES` $MATH_LIB"
  GDK_DEP_CFLAGS="`$PKG_CONFIG --cflags  gthread-2.0 $GDK_PACKAGES` $GDK_EXTRA_CFLAGS"
  #
-@@ -1321,7 +1272,7 @@
+@@ -1331,7 +1282,7 @@
  # into the pkg-config files
  #
  if test $enable_explicit_deps != yes ; then
@@ -106,7 +106,7 @@ Index: gtk+-2.22.0/configure.in
    GDK_EXTRA_LIBS=
  fi
  
-@@ -1331,37 +1282,7 @@
+@@ -1341,37 +1292,7 @@
  AC_SUBST(GDK_DEP_LIBS)
  AC_SUBST(GDK_DEP_CFLAGS)
  
@@ -145,7 +145,7 @@ Index: gtk+-2.22.0/configure.in
  if test "x$gdktarget" = "xx11"; then
    GTK_PACKAGES="$GTK_PACKAGES pangoft2"
  fi
-@@ -1517,20 +1438,6 @@
+@@ -1527,20 +1448,6 @@
  gtk_save_cppflags="$CPPFLAGS"
  CPPFLAGS="$CPPFLAGS $GTK_DEP_CFLAGS $GDK_DEP_CFLAGS"
  

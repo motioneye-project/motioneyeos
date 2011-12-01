@@ -20,14 +20,6 @@ config BR2_PACKAGE_MTD_FLASH_ERASE
 	bool "flash_erase"
 	default y
 
-config BR2_PACKAGE_MTD_FLASH_ERASEALL
-	bool "flash_eraseall"
-	default y
-
-config BR2_PACKAGE_MTD_FLASH_INFO
-	bool "flash_info"
-	default y
-
 config BR2_PACKAGE_MTD_FLASH_LOCK
 	bool "flash_lock"
 	default y

@@ -3,9 +3,10 @@
 # coreutils
 #
 #############################################################
-COREUTILS_VERSION = 8.9
-COREUTILS_SOURCE = coreutils-$(COREUTILS_VERSION).tar.gz
+
+COREUTILS_VERSION = 8.14
 COREUTILS_SITE = $(BR2_GNU_MIRROR)/coreutils
+COREUTILS_SOURCE = coreutils-$(COREUTILS_VERSION).tar.xz
 
 # If both coreutils and busybox are selected, make certain coreutils
 # wins the fight over who gets to have their utils actually installed.
@@ -20,6 +21,7 @@ COREUTILS_BIN_PROGS = cat chgrp chmod chown cp date dd df dir echo false hostnam
 COREUTILS_CONF_ENV = ac_cv_c_restrict=no \
 		ac_cv_func_chown_works=yes \
 		ac_cv_func_euidaccess=no \
+		ac_cv_func_fstatat=yes \
 		ac_cv_func_getdelim=yes \
 		ac_cv_func_getgroups=yes \
 		ac_cv_func_getgroups_works=yes \
@@ -41,6 +43,7 @@ COREUTILS_CONF_ENV = ac_cv_c_restrict=no \
 		gl_cv_func_getcwd_null=yes \
 		gl_cv_func_getcwd_path_max=yes \
 		gl_cv_func_gettimeofday_clobber=no \
+		gl_cv_func_fstatat_zero_flag=no \
 		gl_cv_func_link_follows_symlink=no \
 		gl_cv_func_re_compile_pattern_working=yes \
 		gl_cv_func_svid_putenv=yes \
