@@ -57,6 +57,7 @@ endef
 
 define DNSMASQ_INSTALL_TARGET_CMDS
 	$(DNSMASQ_MAKE_ENV) $(MAKE) -C $(@D) $(DNSMASQ_MAKE_OPT) install
+	mkdir -p $(TARGET_DIR)/var/lib/misc/
 endef
 
 define DNSMASQ_UNINSTALL_TARGET_CMDS
