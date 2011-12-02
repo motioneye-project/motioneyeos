@@ -1,0 +1,30 @@
+config BR2_PACKAGE_NETWORK_MANAGER
+	bool "NetworkManager"
+	depends on BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_UDEV
+	depends on BR2_PACKAGE_DBUS
+	depends on BR2_INET_IPV6
+	depends on BR2_LARGEFILE # acl
+	depends on BR2_USE_WCHAR # libglib2
+	select BR2_PACKAGE_DBUS_GLIB
+	select BR2_PACKAGE_UDEV
+	select BR2_PACKAGE_UDEV_ALL_EXTRAS
+	select BR2_PACKAGE_LIBNL
+	select BR2_PACKAGE_GNUTLS
+	select BR2_PACKAGE_LIBNL
+	select BR2_PACKAGE_UTIL_LINUX
+	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
+	select BR2_PACKAGE_WIRELESS_TOOLS
+	select BR2_PACKAGE_WIRELESS_TOOLS_LIB
+	help
+	  NetworkManager is a set of co-operative tools that make networking
+	  simple and straightforward. Whether WiFi, wired, 3G, or Bluetooth,
+	  NetworkManager allows you to quickly move from one network to
+	  another: once a network has been configured and joined once, it
+	  can be detected and re-joined automatically the next time it's
+	  available.
+
+	  http://projects.gnome.org/NetworkManager/
+
+comment "NetworkManager requires DBus and a toolchain with IPV6, LARGEFILE and WCHAR support"
+	depends on !BR2_INET_IPV6 || !BR2_LARGEFILE || !BR2_USE_WCHAR || !BR2_PACKAGE_DBUS
+
