@@ -23,3 +23,11 @@ config BR2_PACKAGE_WPA_SUPPLICANT_PASSPHRASE
 	help
 	  Install wpa_passphrase command line utility
 
+config BR2_PACKAGE_WPA_SUPPLICANT_AP_SUPPORT
+	bool "Enable support for soft AP"
+	depends on BR2_PACKAGE_WPA_SUPPLICANT
+	help
+	  With this option enabled, wpa_supplicant can act as
+	  access point. This can be used for open and WPA2-Personal networks
+	  (optionally, with WPS); this links in parts of hostapd functionality
+	  into wpa_supplicant.
