@@ -1,0 +1,47 @@
+config BR2_PACKAGE_CONNMAN
+	bool "connman"
+	depends on BR2_PACKAGE_DBUS
+	select BR2_PACKAGE_LIBGLIB2
+	select BR2_PACKAGE_IPTABLES
+	depends on BR2_UCLIBC_VERSION_SNAPSHOT || BR2_TOOLCHAIN_EXTERNAL_GLIBC || BR2_TOOLCHAIN_CTNG_eglibc || BR2_TOOLCHAIN_CTNG_eglibc
+	help
+	  The Connection Manager (ConnMan) project provides a daemon for
+	  managing internet connections within embedded devices running
+	  the Linux operating system.
+
+	  For more information, see http://connman.net/
+
+if BR2_PACKAGE_CONNMAN
+
+config BR2_PACKAGE_CONNMAN_THREADS
+	bool "enable threading support"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	default y
+
+config BR2_PACKAGE_CONNMAN_ETHERNET
+	bool "enable Ethernet support"
+	default y
+
+config BR2_PACKAGE_CONNMAN_WIFI
+	bool "enable WiFi support"
+	select BR2_PACKAGE_WPA_SUPPLICANT
+
+config BR2_PACKAGE_CONNMAN_BLUETOOTH
+	bool "enable Bluetooth support"
+
+config BR2_PACKAGE_CONNMAN_LOOPBACK
+	bool "enable loopback support"
+
+config BR2_PACKAGE_CONNMAN_NTPD
+	bool "enable ntpd support"
+
+config BR2_PACKAGE_CONNMAN_DEBUG
+	bool "enable compiling with debugging information"
+
+config BR2_PACKAGE_CONNMAN_CLIENT
+	bool "enable command line client"
+
+endif # BR2_PACKAGE_CONNMAN
+
+comment "connman needs DBus enabled and a toolchain with resolver support"
+	depends on !BR2_PACKAGE_DBUS || !(BR2_UCLIBC_VERSION_SNAPSHOT || BR2_TOOLCHAIN_EXTERNAL_GLIBC || BR2_TOOLCHAIN_CTNG_eglibc || BR2_TOOLCHAIN_CTNG_eglibc)
