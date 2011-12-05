@@ -10,10 +10,6 @@ choice
 	help
 	  Select the version of uClibc you wish to use.
 
-	config BR2_UCLIBC_VERSION_0_9_30
-		depends on BR2_DEPRECATED
-		bool "uClibc 0.9.30.x"
-
 	config BR2_UCLIBC_VERSION_0_9_31
 		bool "uClibc 0.9.31.x"
 
@@ -35,14 +31,12 @@ config BR2_USE_UCLIBC_SNAPSHOT
 
 config BR2_UCLIBC_VERSION_STRING
 	string
-	default 0.9.30.3	if BR2_UCLIBC_VERSION_0_9_30
 	default 0.9.31.1	if BR2_UCLIBC_VERSION_0_9_31
 	default 0.9.32		if BR2_UCLIBC_VERSION_0_9_32
 	default $BR2_USE_UCLIBC_SNAPSHOT	if BR2_UCLIBC_VERSION_SNAPSHOT
 
 config BR2_UCLIBC_CONFIG
 	string "uClibc configuration file to use?"
-	default "toolchain/uClibc/uClibc-0.9.30.config" if BR2_UCLIBC_VERSION_0_9_30
 	default "toolchain/uClibc/uClibc-0.9.31.config" if BR2_UCLIBC_VERSION_0_9_31
 	default "toolchain/uClibc/uClibc-0.9.32.config" if BR2_UCLIBC_VERSION_0_9_32
 	default "toolchain/uClibc/uClibc-snapshot.config" if BR2_UCLIBC_VERSION_SNAPSHOT
