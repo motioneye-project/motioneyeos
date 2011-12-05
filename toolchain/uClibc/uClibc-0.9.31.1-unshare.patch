@@ -1,0 +1,74 @@
+Backport of unshare() syscall.
+From uClibc git 19dd090a0f68765db87990ef8eda9bf77bb29581
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+---
+diff -Nura uClibc-0.9.31.1.orig/libc/sysdeps/linux/common/bits/sched.h uClibc-0.9.31.1/libc/sysdeps/linux/common/bits/sched.h
+--- uClibc-0.9.31.1.orig/libc/sysdeps/linux/common/bits/sched.h	2011-06-08 15:58:40.000000000 -0300
++++ uClibc-0.9.31.1/libc/sysdeps/linux/common/bits/sched.h	2011-12-05 08:10:02.491978849 -0300
+@@ -58,7 +58,13 @@
+ 				      force CLONE_PTRACE on this clone.  */
+ # define CLONE_CHILD_SETTID 0x01000000 /* Store TID in userlevel buffer in
+ 					  the child.  */
+-# define CLONE_STOPPED	0x02000000 /* Start in stopped state.  */
++# define CLONE_STOPPED 0x02000000 /* Start in stopped state.  */
++# define CLONE_NEWUTS  0x04000000      /* New utsname group.  */
++# define CLONE_NEWIPC  0x08000000      /* New ipcs.  */
++# define CLONE_NEWUSER 0x10000000      /* New user namespace.  */
++# define CLONE_NEWPID  0x20000000      /* New pid namespace.  */
++# define CLONE_NEWNET  0x40000000      /* New network namespace.  */
++# define CLONE_IO      0x80000000      /* Clone I/O context.  */
+ #endif
+ 
+ /* The official definition.  */
+@@ -74,11 +80,9 @@
+ extern int clone (int (*__fn) (void *__arg), void *__child_stack,
+ 		  int __flags, void *__arg, ...) __THROW;
+ 
+-#if 0
+ /* Unshare the specified resources.  */
+ extern int unshare (int __flags) __THROW;
+ #endif
+-#endif
+ 
+ __END_DECLS
+ 
+diff -Nura uClibc-0.9.31.1.orig/libc/sysdeps/linux/common/Makefile.in uClibc-0.9.31.1/libc/sysdeps/linux/common/Makefile.in
+--- uClibc-0.9.31.1.orig/libc/sysdeps/linux/common/Makefile.in	2011-06-08 15:58:40.000000000 -0300
++++ uClibc-0.9.31.1/libc/sysdeps/linux/common/Makefile.in	2011-12-05 08:23:28.353757602 -0300
+@@ -31,7 +31,8 @@
+ 	remap_file_pages.c sched_getaffinity.c sched_setaffinity.c \
+ 	sendfile64.c sendfile.c setfsgid.c setfsuid.c setresuid.c \
+ 	splice.c vmsplice.c tee.c signalfd.c swapoff.c swapon.c \
+-	sync_file_range.c sysctl.c sysinfo.c timerfd.c uselib.c vhangup.c,$(CSRC))
++	sync_file_range.c sysctl.c sysinfo.c timerfd.c unshare.c uselib.c \
++	vhangup.c,$(CSRC))
+ endif
+ 
+ ifneq ($(UCLIBC_BSD_SPECIFIC),y)
+diff -Nura uClibc-0.9.31.1.orig/libc/sysdeps/linux/common/unshare.c uClibc-0.9.31.1/libc/sysdeps/linux/common/unshare.c
+--- uClibc-0.9.31.1.orig/libc/sysdeps/linux/common/unshare.c	1969-12-31 21:00:00.000000000 -0300
++++ uClibc-0.9.31.1/libc/sysdeps/linux/common/unshare.c	2011-12-05 08:22:45.954453512 -0300
+@@ -0,0 +1,21 @@
++/* vi: set sw=4 ts=4: */
++/*
++ * unshare() for uClibc
++ *
++ * Copyright (C) 2011 Henning Heinold <heinold@inf.fu-berlin.de>
++ *
++ * Licensed under the LGPL v2.1, see the file COPYING.LIB in this tarball.
++ */
++
++#include <sys/syscall.h>
++#include <sched.h>
++
++#if defined __NR_unshare && defined __UCLIBC_LINUX_SPECIFIC__
++_syscall1(int, unshare, int, flags)
++#else
++int unshare(int flags) 
++{   
++    __set_errno(ENOSYS);
++    return -1;
++}
++#endif
