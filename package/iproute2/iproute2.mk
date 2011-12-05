@@ -4,8 +4,8 @@
 #
 #############################################################
 
-IPROUTE2_VERSION = 2.6.39
-IPROUTE2_SITE = http://devresources.linuxfoundation.org/dev/iproute2/download
+IPROUTE2_VERSION = 3.1.0
+IPROUTE2_SITE = $(BR2_KERNEL_MIRROR)/linux/utils/net/iproute2
 IPROUTE2_TARGET_SBINS = ctstat genl ifstat ip lnstat nstat routef routel rtacct rtmon rtpr rtstat ss tc
 
 # If both iproute2 and busybox are selected, make certain we win
