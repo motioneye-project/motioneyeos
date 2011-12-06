@@ -1,0 +1,17 @@
+Fixes runtime error with uClibc (and possibly others).
+
+Original patch and bug description:
+http://sourceforge.net/tracker/?func=detail&aid=3436528&group_id=12694&atid=312694
+
+--- net-snmp-5.7.1/agent/mibgroup/host/data_access/swinst_pkginfo.c
++++ /home/fabled//net-snmp-5.7.1.patched/agent/mibgroup/host/data_access/swinst_pkginfo.c
+@@ -140,7 +140,8 @@
+         memcpy( entry->swDate, cp, date_len );
+         entry->swDate_len = date_len;
+     }
+-    closedir( d );
++    if (d != NULL)
++        closedir( d );
+ 
+     DEBUGMSGTL(("swinst:load:arch"," loaded %d entries\n",
+                 (int)CONTAINER_SIZE(container)));
