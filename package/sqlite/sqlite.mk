@@ -16,11 +16,9 @@ ifneq ($(BR2_LARGEFILE),y)
 SQLITE_CONF_ENV = CFLAGS="$(TARGET_CFLAGS) -DSQLITE_DISABLE_LFS"
 endif
 
-SQLITE_CONF_OPT =	--enable-tempstore=yes \
-			--enable-threadsafe \
-			--enable-releasemode \
-			--disable-tcl \
-			--localstatedir=/var
+SQLITE_CONF_OPT = \
+	--enable-threadsafe \
+	--localstatedir=/var
 
 ifeq ($(BR2_PACKAGE_SQLITE_READLINE),y)
 SQLITE_DEPENDENCIES += ncurses readline
