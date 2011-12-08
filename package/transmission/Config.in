@@ -36,10 +36,12 @@ config BR2_PACKAGE_TRANSMISSION_REMOTE
 
 config BR2_PACKAGE_TRANSMISSION_GTK
 	bool "transmission-gtk"
-	depends on BR2_PACKAGE_LIBGTK2
+	depends on BR2_PACKAGE_LIBGTK2 && BR2_ENABLE_LOCALE
 	help
 	  Install transmission GTK-based GUI interface.
 
+comment "transmission-gtk requires a toolchain with locale support"
+	depends on BR2_PACKAGE_LIBGTK2 && !BR2_ENABLE_LOCALE
 endif
 
 comment "Transmission requires a toolchain with IPv6 support"
