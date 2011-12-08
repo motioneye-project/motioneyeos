@@ -1,3 +1,29 @@
+2012.02, Not yet released:
+
+	Fixes all over the tree and new features.
+
+	Gentargets: scp and mercurial support.
+
+	defconfigs: qemu configs for x86-64 and sparc.
+
+	uClibc: remove 0.9.30, backport unshare() support.
+
+	Updated/fixed packages: barebox, bash, binutils, bison,
+	coreutils, dbus-glib, diffutils, dropbear, ebtables, flex,
+	fluxbox, gawk, grep, gst-dsp, htop, iproute2, iw, lame,
+	libgpg-error, libgtk2, libroxml, m4, module-init-tools,
+	mtd-utils, nano, nbd, netsnmp, ruby, u-boot, usbmount,
+	wpa_supplicant, xdm
+
+	New packages: connman, transmission
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#743:  Add Transmission bit torrent option to buildroot
+	#3403: libgpg-error: bump to version 1.10
+	#3409: libgpg-error: download from gnupg.org
+	#3421: nano: make tiny flag optional
+
 2011.11, Released November 30th, 2011:
 
 	Fixes all over the tree.
