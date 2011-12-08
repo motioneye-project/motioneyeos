@@ -14,10 +14,6 @@ choice
 	       depends on BR2_avr32
 	       bool "gcc 4.2.2-avr32-2.1.5"
 
-	config BR2_GCC_VERSION_4_2_4
-		depends on !BR2_avr32 && !BR2_sparc_sparchfleon && !BR2_sparc_sparchfleonv8 && !BR2_sparc_sparcsfleon && !BR2_sparc_sparcsfleonv8
-		bool "gcc 4.2.4"
-
 	config BR2_GCC_VERSION_4_3_X
 		depends on !BR2_avr32 && !BR2_sparc_sparchfleon && !BR2_sparc_sparchfleonv8 && !BR2_sparc_sparcsfleon && !BR2_sparc_sparcsfleonv8
 		bool "gcc 4.3.x"
@@ -41,7 +37,7 @@ endchoice
 
 config BR2_GCC_SUPPORTS_FINEGRAINEDMTUNE
 	bool
-	default y if !BR2_GCC_VERSION_4_2_4 && !BR2_GCC_VERSION_4_2_2_AVR32_2_1_5
+	default y if !BR2_GCC_VERSION_4_2_2_AVR32_2_1_5
 
 config BR2_GCC_SNAP_DATE
 	string "GCC snapshot date"
@@ -60,7 +56,6 @@ config BR2_GCC_SNAP_DATE
 config BR2_GCC_VERSION
 	string
 	default "4.2.2-avr32-2.1.5" if BR2_GCC_VERSION_4_2_2_AVR32_2_1_5
-	default "4.2.4"     if BR2_GCC_VERSION_4_2_4
 	default "4.3.6"     if BR2_GCC_VERSION_4_3_X
 	default "4.4.6"     if BR2_GCC_VERSION_4_4_X
 	default "4.5.3"     if BR2_GCC_VERSION_4_5_X
