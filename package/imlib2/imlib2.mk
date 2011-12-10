@@ -52,5 +52,13 @@ else
 	IMLIB2_CONF_OPT += --without-id3
 endif
 
+# drop -L<dir> from linker flags
+define IMLIB2_FIXUP_IMLIB2_CONFIG
+	$(SED) 's/-L[^ ]*//g' \
+		$(STAGING_DIR)/usr/bin/imlib2-config
+endef
+
+IMLIB2_POST_INSTALL_STAGING_HOOKS += IMLIB2_FIXUP_IMLIB2_CONFIG
+
 $(eval $(call AUTOTARGETS))
 
