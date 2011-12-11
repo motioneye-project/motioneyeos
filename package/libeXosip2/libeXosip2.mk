@@ -3,7 +3,7 @@
 # libeXosip2
 #
 #############################################################
-LIBEXOSIP2_VERSION = 3.3.0
+LIBEXOSIP2_VERSION = 3.5.0
 LIBEXOSIP2_SOURCE = libexosip2_$(LIBEXOSIP2_VERSION).orig.tar.gz
 LIBEXOSIP2_PATCH = libexosip2_$(LIBEXOSIP2_VERSION)-1.diff.gz
 LIBEXOSIP2_SITE = $(BR2_DEBIAN_MIRROR)/debian/pool/main/libe/libexosip2
