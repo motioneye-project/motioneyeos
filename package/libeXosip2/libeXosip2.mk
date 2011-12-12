@@ -11,6 +11,13 @@ LIBEXOSIP2_INSTALL_STAGING = YES
 
 LIBEXOSIP2_DEPENDENCIES = host-pkg-config libosip2
 
+ifeq ($(BR2_PACKAGE_OPENSSL),y)
+LIBEXOSIP2_DEPENDENCIES += openssl
+LIBEXOSIP2_CONF_OPT += --enable-openssl
+else
+LIBEXOSIP2_CONF_OPT += --disable-openssl
+endif
+
 ifneq ($(LIBEXOSIP2_PATCH),)
 define LIBEXOSIP2_DEBIAN_PATCHES
 	if [ -d $(@D)/debian/patches ]; then \
