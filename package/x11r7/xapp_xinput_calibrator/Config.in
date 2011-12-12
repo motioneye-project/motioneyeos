@@ -1,5 +1,6 @@
 config BR2_PACKAGE_XAPP_XINPUT_CALIBRATOR
 	bool "xinput-calibrator"
+	depends on BR2_INSTALL_LIBSTDCPP
 	select BR2_PACKAGE_XLIB_LIBX11
 	select BR2_PACKAGE_XLIB_LIBXI
 	help
@@ -7,3 +8,5 @@ config BR2_PACKAGE_XAPP_XINPUT_CALIBRATOR
 
 	  http://www.freedesktop.org/wiki/Software/xinput_calibrator
 
+comment "xinput-calibrator requires a toolchain with C++ support"
+	depends on !BR2_INSTALL_LIBSTDCPP
