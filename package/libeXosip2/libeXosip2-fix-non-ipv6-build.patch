@@ -1,0 +1,22 @@
+[PATCH] Fix build on systems without IPV6_TCLASS support
+
+The wrong variable name was used.
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ src/eXtl_udp.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+Index: libeXosip2-3.6.0/src/eXtl_udp.c
+===================================================================
+--- libeXosip2-3.6.0.orig/src/eXtl_udp.c
++++ libeXosip2-3.6.0/src/eXtl_udp.c
+@@ -178,7 +178,7 @@
+ 		res = setsockopt(udp_socket, IPPROTO_IPV6, IPV6_TCLASS,
+ 			(SOCKET_OPTION_VALUE)&tos, sizeof(tos));
+ #else
+-		retval = setsockopt(udp_socket, IPPROTO_IPV6, IP_TOS,
++		res = setsockopt(udp_socket, IPPROTO_IPV6, IP_TOS,
+ 			(SOCKET_OPTION_VALUE)&tos, sizeof(tos));
+ #endif
+ 	}
