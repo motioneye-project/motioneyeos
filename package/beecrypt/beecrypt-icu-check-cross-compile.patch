@@ -1,0 +1,31 @@
+configure: Use AC_COMPILE_IFELSE for ICU check for cross compilation compat
+
+AC_RUN_IFELSE doesn't work when cross compiling, but we can do the
+check in the preprocessor instead, so use AC_COMPILE_IFELSE instead.
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ configure.ac |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+Index: beecrypt-4.2.1/configure.ac
+===================================================================
+--- beecrypt-4.2.1.orig/configure.ac
++++ beecrypt-4.2.1/configure.ac
+@@ -295,13 +295,13 @@
+ if test "$ac_with_cplusplus" = yes; then
+   AC_MSG_CHECKING([for IBM's ICU library version >= 2.8])
+   AC_LANG_PUSH(C)
+-  AC_RUN_IFELSE([
++  AC_COMPILE_IFELSE([
+     AC_LANG_PROGRAM([[#include <unicode/uversion.h>]],[[
+       #if U_ICU_VERSION_MAJOR_NUM < 2
+-      exit(1);
++      #error too old
+       #elif U_ICU_VERSION_MAJOR_NUM == 2
+       # if U_ICU_VERSION_MINOR_NUM < 8
+-      exit(1);
++      #error too old
+       # else
+       exit(0);
+       # endif
