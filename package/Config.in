@@ -322,6 +322,10 @@ source "package/java/concierge/Config.in"
 endmenu
 endif
 
+menu "Javascript"
+source "package/jquery/Config.in"
+endmenu
+
 menu "Networking"
 source "package/libcgi/Config.in"
 source "package/libcgicc/Config.in"
