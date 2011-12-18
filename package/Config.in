@@ -324,6 +324,7 @@ endif
 
 menu "Javascript"
 source "package/jquery/Config.in"
+source "package/jquery-sparkline/Config.in"
 source "package/jquery-validation/Config.in"
 endmenu
 
