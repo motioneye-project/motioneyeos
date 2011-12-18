@@ -323,6 +323,7 @@ endmenu
 endif
 
 menu "Javascript"
+source "package/explorercanvas/Config.in"
 source "package/flot/Config.in"
 source "package/jquery/Config.in"
 source "package/jquery-sparkline/Config.in"
