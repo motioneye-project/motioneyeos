@@ -328,6 +328,7 @@ source "package/flot/Config.in"
 source "package/jquery/Config.in"
 source "package/jquery-sparkline/Config.in"
 source "package/jquery-validation/Config.in"
+source "package/jsmin/Config.in"
 endmenu
 
 menu "Networking"
