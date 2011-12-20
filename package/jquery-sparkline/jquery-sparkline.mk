@@ -7,7 +7,7 @@ define JQUERY_SPARKLINE_EXTRACT_CMDS
 endef
 
 define JQUERY_SPARKLINE_INSTALL_TARGET_CMDS
-	$(INSTALL) -D $(@D)/$(JQUERY_SPARKLINE_SOURCE) \
+	$(INSTALL) -m 0644 -D $(@D)/$(JQUERY_SPARKLINE_SOURCE) \
 		$(TARGET_DIR)/var/www/jquery.sparkline.js
 endef
 

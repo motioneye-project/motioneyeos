@@ -7,7 +7,7 @@ define JQUERY_VALIDATION_EXTRACT_CMDS
 endef
 
 define JQUERY_VALIDATION_INSTALL_TARGET_CMDS
-	$(INSTALL) -D $(@D)/jquery.validate.min.js \
+	$(INSTALL) -m 0644 -D $(@D)/jquery.validate.min.js \
 		$(TARGET_DIR)/var/www/jquery.validate.js
 endef
 

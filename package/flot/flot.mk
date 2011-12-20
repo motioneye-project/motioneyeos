@@ -12,7 +12,7 @@ FLOT_FILES = jquery.flot $(addprefix jquery.flot.,\
 
 define FLOT_INSTALL_TARGET_CMDS
 	for i in $(FLOT_FILES); do \
-		$(INSTALL) -D $(@D)/$$i.min.js $(TARGET_DIR)/var/www/$$i.js; \
+		$(INSTALL) -m 0644 -D $(@D)/$$i.min.js $(TARGET_DIR)/var/www/$$i.js; \
 	done
 endef
 

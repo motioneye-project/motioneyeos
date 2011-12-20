@@ -7,7 +7,8 @@ define JQUERY_EXTRACT_CMDS
 endef
 
 define JQUERY_INSTALL_TARGET_CMDS
-	$(INSTALL) -D $(@D)/$(JQUERY_SOURCE) $(TARGET_DIR)/var/www/jquery.js
+	$(INSTALL) -m 0644 -D $(@D)/$(JQUERY_SOURCE) \
+		$(TARGET_DIR)/var/www/jquery.js
 endef
 
 define JQUERY_UNINSTALL_TARGET_CMDS
