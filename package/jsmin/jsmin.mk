@@ -9,7 +9,7 @@ define JSMIN_INSTALL_TARGET_CMDS
 	$(INSTALL) -m 0755 -D $(@D)/jsmin $(TARGET_DIR)/usr/bin/jsmin
 endef
 
-define INPUT_EVENT_DAEMON_UNINSTALL_TARGET_CMDS
+define JSMIN_UNINSTALL_TARGET_CMDS
 	rm -f $(TARGET_DIR)/usr/bin/jsmin
 endef
 
