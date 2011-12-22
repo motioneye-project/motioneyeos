@@ -1,0 +1,13 @@
+config BR2_PACKAGE_RT_TESTS
+	bool "rt-tests"
+	help
+	  Set of utilities for testing the real-time behaviour of a
+	  Linux system.
+
+	  All tools are simple C programs with no dependencies, except
+	  the hwlatdetect utility, which is a Python script and
+	  therefore requires the Python interpreter. It will only be
+	  installed if a Python interpreter has been selected in the
+	  Buildroot configuration.
+
+	  http://rt.wiki.kernel.org

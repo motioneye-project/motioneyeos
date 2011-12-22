@@ -1,0 +1,43 @@
+Fix various minor issues with rt-tests build system
+
+The issues fixed are :
+
+ * Remove the automatic NUMA detection from the host
+   architecture. This is broken when doing cross-compilation. One can
+   still set NUMA=1 if NUMA support is desired.
+
+ * Expand the CFLAGS provided through the environment instead of
+   overriding it.
+
+ * Provide a HASPYTHON variable to tell whether the target system has
+   Python or not. Otherwise, the build system simply tests whether
+   Python is available on the host. The PYLIB variable is also changed
+   so that it can be overriden from the environment, in order to
+   provide the correct Python module location for the target.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: rt-tests/Makefile
+===================================================================
+--- rt-tests.orig/Makefile
++++ rt-tests/Makefile
+@@ -14,15 +14,11 @@
+ mandir	?= $(prefix)/share/man
+ srcdir	?= $(prefix)/src
+ 
+-machinetype = $(shell uname -m | \
+-    sed -e 's/i.86/i386/' -e 's/mips.*/mips/' -e 's/ppc.*/powerpc/')
+-ifneq ($(filter x86_64 i386 ia64 mips powerpc,$(machinetype)),)
+-NUMA 	:= 1
+-endif
+-
+-CFLAGS = -D_GNU_SOURCE -Wall -Wno-nonnull -Isrc/include
++override CFLAGS += -D_GNU_SOURCE -Wall -Wno-nonnull -Isrc/include
+ 
+-PYLIB  := $(shell python -c 'import distutils.sysconfig;  print distutils.sysconfig.get_python_lib()')
++ifeq ($(HASPYTHON),1)
++PYLIB ?= $(shell python -c 'import distutils.sysconfig;  print distutils.sysconfig.get_python_lib()')
++endif
+ 
+ ifndef DEBUG
+ 	CFLAGS	+= -O2
