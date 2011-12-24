@@ -174,6 +174,7 @@ endmenu
 		source package/x11r7/xdriver_xf86-input-keyboard/Config.in
 		source package/x11r7/xdriver_xf86-input-mouse/Config.in
 		source package/x11r7/xdriver_xf86-input-synaptics/Config.in
+		source package/x11r7/xdriver_xf86-input-tslib/Config.in
 		source package/x11r7/xdriver_xf86-input-vmmouse/Config.in
 		source package/x11r7/xdriver_xf86-input-void/Config.in
 		source package/x11r7/xdriver_xf86-video-apm/Config.in
