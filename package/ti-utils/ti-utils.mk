@@ -10,8 +10,8 @@ TI_UTILS_DEPENDENCIES = libnl
 
 define TI_UTILS_BUILD_CMDS
 	$(MAKE1) NFSROOT="$(STAGING_DIR)" \
-		CC="$(TARGET_CC) $(TARGET_CFLAGS) $(TARGET_LDFLAGS)" \
-		-C $(@D) all
+		CC="$(TARGET_CC) $(TARGET_CFLAGS) $(TARGET_LDFLAGS) -I$(STAGING_DIR)/usr/include/libnl3" \
+		LIBS="-lnl-3 -lnl-genl-3 -lm" -C $(@D) all
 endef
 
 define TI_UTILS_INSTALL_TARGET_CMDS
