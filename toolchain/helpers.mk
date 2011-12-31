@@ -196,7 +196,7 @@ check_uclibc_feature = \
 #
 check_uclibc = \
 	SYSROOT_DIR="$(strip $1)"; \
-	if ! test -f $${SYSROOT_DIR}/lib/ld*-uClibc.so.* ; then \
+	if ! test -f $${SYSROOT_DIR}/usr/include/bits/uClibc_config.h ; then \
 		echo "Incorrect selection of the C library"; \
 		exit -1; \
 	fi; \
