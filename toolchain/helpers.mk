@@ -103,7 +103,14 @@ copy_toolchain_sysroot = \
 		if [ ! -d $${ARCH_SYSROOT_DIR}/usr/include ] ; then \
 			cp -a $${SYSROOT_DIR}/usr/include $(STAGING_DIR)/usr ; \
 		fi ; \
-		ln -s . $(STAGING_DIR)/$${ARCH_SUBDIR} ; \
+		mkdir -p `dirname $(STAGING_DIR)/$${ARCH_SUBDIR}` ; \
+		relpath="./" ; \
+		nbslashs=`echo -n $${ARCH_SUBDIR} | sed 's%[^/]%%g' | wc -c` ; \
+		for slash in `seq 1 $${nbslashs}` ; do \
+			relpath=$${relpath}"../" ; \
+		done ; \
+		ln -s $${relpath} $(STAGING_DIR)/$${ARCH_SUBDIR} ; \
+		echo "Symlinking $(STAGING_DIR)/$${ARCH_SUBDIR} -> $${relpath}" ; \
 	fi ; \
 	find $(STAGING_DIR) -type d | xargs chmod 755
 
