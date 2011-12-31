@@ -6,11 +6,11 @@ is detected.
 
 Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
 
-Index: valgrind-3.6.1/coregrind/m_initimg/initimg-linux.c
+Index: valgrind-3.7.0/coregrind/m_initimg/initimg-linux.c
 ===================================================================
---- valgrind-3.6.1.orig/coregrind/m_initimg/initimg-linux.c	2011-07-06 09:45:10.203070009 +0200
-+++ valgrind-3.6.1/coregrind/m_initimg/initimg-linux.c	2011-07-06 09:45:17.343070005 +0200
-@@ -54,7 +54,11 @@
+--- valgrind-3.7.0.orig/coregrind/m_initimg/initimg-linux.c	2011-10-26 23:24:43.000000000 +0200
++++ valgrind-3.7.0/coregrind/m_initimg/initimg-linux.c	2011-12-22 14:53:12.798185055 +0100
+@@ -55,7 +55,11 @@
  
  /* --- !!! --- EXTERNAL HEADERS start --- !!! --- */
  #define _GNU_SOURCE
@@ -22,11 +22,11 @@ Index: valgrind-3.6.1/coregrind/m_initimg/initimg-linux.c
  /* This is for ELF types etc, and also the AT_ constants. */
  #include <elf.h>
  /* --- !!! --- EXTERNAL HEADERS end --- !!! --- */
-Index: valgrind-3.6.1/coregrind/m_main.c
+Index: valgrind-3.7.0/coregrind/m_main.c
 ===================================================================
---- valgrind-3.6.1.orig/coregrind/m_main.c	2011-07-06 09:44:22.203070033 +0200
-+++ valgrind-3.6.1/coregrind/m_main.c	2011-07-06 09:44:42.803070024 +0200
-@@ -2797,7 +2797,11 @@
+--- valgrind-3.7.0.orig/coregrind/m_main.c	2011-10-26 23:24:45.000000000 +0200
++++ valgrind-3.7.0/coregrind/m_main.c	2011-12-22 14:53:12.798185055 +0100
+@@ -2743,7 +2743,11 @@
  
  /* --- !!! --- EXTERNAL HEADERS start --- !!! --- */
  #define _GNU_SOURCE
@@ -38,10 +38,10 @@ Index: valgrind-3.6.1/coregrind/m_main.c
  /* This is in order to get AT_NULL and AT_PAGESIZE. */
  #include <elf.h>
  /* --- !!! --- EXTERNAL HEADERS end --- !!! --- */
-Index: valgrind-3.6.1/coregrind/m_ume/elf.c
+Index: valgrind-3.7.0/coregrind/m_ume/elf.c
 ===================================================================
---- valgrind-3.6.1.orig/coregrind/m_ume/elf.c	2011-07-06 09:44:51.343070018 +0200
-+++ valgrind-3.6.1/coregrind/m_ume/elf.c	2011-07-06 09:44:58.833070015 +0200
+--- valgrind-3.7.0.orig/coregrind/m_ume/elf.c	2011-10-26 23:24:41.000000000 +0200
++++ valgrind-3.7.0/coregrind/m_ume/elf.c	2011-12-22 14:53:12.798185055 +0100
 @@ -48,7 +48,11 @@
  
  /* --- !!! --- EXTERNAL HEADERS start --- !!! --- */

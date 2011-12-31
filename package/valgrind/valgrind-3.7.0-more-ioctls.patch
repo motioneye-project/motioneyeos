@@ -4,11 +4,11 @@ Patch initially written by Eric Andersen <andersen@codepoet.org>.
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 
-Index: valgrind-3.6.1/coregrind/m_syswrap/syswrap-linux.c
+Index: valgrind-3.7.0/coregrind/m_syswrap/syswrap-linux.c
 ===================================================================
---- valgrind-3.6.1.orig/coregrind/m_syswrap/syswrap-linux.c	2011-07-06 09:50:32.243069845 +0200
-+++ valgrind-3.6.1/coregrind/m_syswrap/syswrap-linux.c	2011-07-06 09:53:39.783069751 +0200
-@@ -3900,7 +3900,33 @@
+--- valgrind-3.7.0.orig/coregrind/m_syswrap/syswrap-linux.c	2011-10-27 12:55:05.000000000 +0200
++++ valgrind-3.7.0/coregrind/m_syswrap/syswrap-linux.c	2011-12-22 14:53:16.258126390 +0100
+@@ -4058,7 +4058,33 @@
     case VKI_SG_GET_SG_TABLESIZE: /* 0x227f */
        PRE_MEM_WRITE( "ioctl(SG_GET_SG_TABLESIZE)", ARG3, sizeof(int) );
        break;
@@ -42,7 +42,7 @@ Index: valgrind-3.6.1/coregrind/m_syswrap/syswrap-linux.c
     case VKI_IIOCGETCPS:
        PRE_MEM_WRITE( "ioctl(IIOCGETCPS)", ARG3,
  		     VKI_ISDN_MAX_CHANNELS * 2 * sizeof(unsigned long) );
-@@ -4215,6 +4241,8 @@
+@@ -4373,6 +4399,8 @@
     case VKI_BLKROGET:
        PRE_MEM_WRITE( "ioctl(BLKROGET)", ARG3, sizeof(int));
        break;
@@ -51,7 +51,7 @@ Index: valgrind-3.6.1/coregrind/m_syswrap/syswrap-linux.c
     case VKI_BLKGETSIZE:
        PRE_MEM_WRITE( "ioctl(BLKGETSIZE)", ARG3, sizeof(unsigned long));
        break;
-@@ -4223,6 +4251,8 @@
+@@ -4381,6 +4409,8 @@
     case VKI_BLKRAGET:
        PRE_MEM_WRITE( "ioctl(BLKRAGET)", ARG3, sizeof(long));
        break;
@@ -60,7 +60,7 @@ Index: valgrind-3.6.1/coregrind/m_syswrap/syswrap-linux.c
     case VKI_BLKFRASET:
        break;
     case VKI_BLKFRAGET:
-@@ -4289,6 +4319,8 @@
+@@ -4447,6 +4477,8 @@
        PRE_MEM_WRITE( "ioctl(CDROMREADTOCENTRY)", ARG3, 
  		     sizeof(struct vki_cdrom_tocentry));
        break;
@@ -69,7 +69,7 @@ Index: valgrind-3.6.1/coregrind/m_syswrap/syswrap-linux.c
     case VKI_CDROMMULTISESSION: /* 0x5310 */
        PRE_MEM_WRITE( "ioctl(CDROMMULTISESSION)", ARG3,
  		     sizeof(struct vki_cdrom_multisession));
-@@ -4989,7 +5021,28 @@
+@@ -5321,7 +5353,28 @@
     case VKI_SG_GET_SG_TABLESIZE:
        POST_MEM_WRITE(ARG3, sizeof(int));
        break;      
@@ -98,7 +98,7 @@ Index: valgrind-3.6.1/coregrind/m_syswrap/syswrap-linux.c
     case VKI_IIOCGETCPS:
        POST_MEM_WRITE( ARG3, VKI_ISDN_MAX_CHANNELS * 2 * sizeof(unsigned long) );
        break;
-@@ -5210,6 +5263,8 @@
+@@ -5542,6 +5595,8 @@
     case VKI_BLKROGET:
        POST_MEM_WRITE(ARG3, sizeof(int));
        break;
@@ -107,7 +107,7 @@ Index: valgrind-3.6.1/coregrind/m_syswrap/syswrap-linux.c
     case VKI_BLKGETSIZE:
        POST_MEM_WRITE(ARG3, sizeof(unsigned long));
        break;
-@@ -5218,6 +5273,8 @@
+@@ -5550,6 +5605,8 @@
     case VKI_BLKRAGET:
        POST_MEM_WRITE(ARG3, sizeof(long));
        break;
@@ -116,7 +116,7 @@ Index: valgrind-3.6.1/coregrind/m_syswrap/syswrap-linux.c
     case VKI_BLKFRASET:
        break;
     case VKI_BLKFRAGET:
-@@ -5259,6 +5316,8 @@
+@@ -5591,6 +5648,8 @@
     case VKI_CDROMREADTOCENTRY:
        POST_MEM_WRITE(ARG3, sizeof(struct vki_cdrom_tocentry));
        break;
@@ -125,11 +125,11 @@ Index: valgrind-3.6.1/coregrind/m_syswrap/syswrap-linux.c
     case VKI_CDROMMULTISESSION:
        POST_MEM_WRITE(ARG3, sizeof(struct vki_cdrom_multisession));
        break;
-Index: valgrind-3.6.1/include/vki/vki-linux.h
+Index: valgrind-3.7.0/include/vki/vki-linux.h
 ===================================================================
---- valgrind-3.6.1.orig/include/vki/vki-linux.h	2011-07-06 09:48:16.733069914 +0200
-+++ valgrind-3.6.1/include/vki/vki-linux.h	2011-07-06 09:49:49.413069868 +0200
-@@ -1646,7 +1646,9 @@
+--- valgrind-3.7.0.orig/include/vki/vki-linux.h	2011-10-26 23:24:31.000000000 +0200
++++ valgrind-3.7.0/include/vki/vki-linux.h	2011-12-22 14:53:16.258126390 +0100
+@@ -1654,7 +1654,9 @@
  
  #define VKI_BLKROSET   _VKI_IO(0x12,93)	/* set device read-only (0 = read-write) */
  #define VKI_BLKROGET   _VKI_IO(0x12,94)	/* get read-only status (0 = read_write) */
@@ -139,7 +139,7 @@ Index: valgrind-3.6.1/include/vki/vki-linux.h
  #define VKI_BLKRASET   _VKI_IO(0x12,98)	/* set read ahead for block device */
  #define VKI_BLKRAGET   _VKI_IO(0x12,99)	/* get current read ahead setting */
  #define VKI_BLKFRASET  _VKI_IO(0x12,100)/* set filesystem (mm/filemap.c) read-ahead */
-@@ -1721,6 +1723,53 @@
+@@ -1729,6 +1731,53 @@
  //#define SG_GET_COMMAND_Q 0x2270   /* Yields 0 (queuing off) or 1 (on) */
  #define VKI_SG_SET_COMMAND_Q 0x2271   /* Change queuing state with 0 or 1 */
  
@@ -193,7 +193,7 @@ Index: valgrind-3.6.1/include/vki/vki-linux.h
  //----------------------------------------------------------------------
  // From linux-2.6.8.1/include/linux/cdrom.h
  //----------------------------------------------------------------------
-@@ -1730,6 +1779,7 @@
+@@ -1738,6 +1787,7 @@
                                             (struct cdrom_tochdr) */
  #define VKI_CDROMREADTOCENTRY	0x5306 /* Read TOC entry 
                                             (struct cdrom_tocentry) */

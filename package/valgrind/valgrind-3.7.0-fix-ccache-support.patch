@@ -1,0 +1,51 @@
+Fix link_tool_exe_linux.in to work with ccache
+
+The link_tool_exe_linux.in Perl script makes the assumption that the
+compilation command line is always:
+
+  gcc -o foobar foobar.c -someflags
+
+I.e, it assumes that the compiler is the first word of the command
+line. However, this is not true with ccache, where the command line
+is:
+
+  /path/to/ccache /path/to/crossgcc -o foobar foobar.c -someflags
+
+Since this Perl script simply needs to add additional flags to the
+command line, we simply add them at the end of the command line
+instead of trying to add them at the beginning.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: valgrind-3.6.1/coregrind/link_tool_exe_linux.in
+===================================================================
+--- valgrind-3.6.1.orig/coregrind/link_tool_exe_linux.in	2011-12-22 13:59:08.933499060 +0100
++++ valgrind-3.6.1/coregrind/link_tool_exe_linux.in	2011-12-22 13:59:50.302782709 +0100
+@@ -55,25 +55,13 @@
+     if (($#ARGV + 1) < 5);
+ 
+ my $ala = $ARGV[0];
++shift;
+ 
+ # check for plausible-ish alt load address
+ die "Bogus alt-load address"
+     if (length($ala) < 3 || index($ala, "0x") != 0);
+ 
+-# The cc invokation to do the final link
+-my $cc = $ARGV[1];
+-
+-# and the 'restargs' are argv[2 ..]
+-
+-# so, build up the complete command here:
+-# 'cc' -static -Ttext='ala' 'restargs'
+-
+-my $cmd="$cc -static -Wl,-Ttext=$ala";
+-
+-# Add the rest of the parameters
+-foreach my $n (2 .. $#ARGV) {
+-   $cmd = "$cmd $ARGV[$n]";
+-}
++my $cmd=join(" ", @ARGV) . " -static -Wl,-Ttext=$ala";
+ 
+ #print "link_tool_exe_linux: $cmd\n";
+ 
