@@ -267,10 +267,8 @@ endif
 $(STAMP_DIR)/ext-toolchain-checked:
 	@echo "Checking external toolchain settings"
 	$(Q)$(call check_cross_compiler_exists,$(TOOLCHAIN_EXTERNAL_CC))
-	$(Q)SYSROOT_DIR=`$(TOOLCHAIN_EXTERNAL_CC) -print-sysroot 2>/dev/null` ; \
-	if test -z "$${SYSROOT_DIR}" ; then \
-		SYSROOT_DIR=`readlink -f $$(LANG=C $(TOOLCHAIN_EXTERNAL_CC) -print-file-name=libc.a) |sed -r -e 's:usr/lib/libc\.a::;'` ; \
-	fi ; \
+	$(Q)LIBC_A_LOCATION=`readlink -f $$(LANG=C $(TOOLCHAIN_EXTERNAL_CC) -print-file-name=libc.a)` ; \
+	SYSROOT_DIR=`echo $${LIBC_A_LOCATION} | sed -r -e 's:usr/lib(64)?/libc\.a::'` ; \
 	if test -z "$${SYSROOT_DIR}" ; then \
 		@echo "External toolchain doesn't support --sysroot. Cannot use." ; \
 		exit 1 ; \
@@ -292,27 +290,60 @@ $(STAMP_DIR)/ext-toolchain-checked:
 # and the variant-specific sysroot, then copy the needed libraries to
 # the $(TARGET_DIR) and copy the whole sysroot (libraries and headers)
 # to $(STAGING_DIR).
+#
+# Variables are defined as follows:
+#
+#  LIBC_A_LOCATION:     location of the libc.a file in the default
+#                       multilib variant (allows to find the main
+#                       sysroot directory)
+#                       Ex: /x-tools/mips-2011.03/mips-linux-gnu/libc/usr/lib/libc.a
+#
+#  SYSROOT_DIR:         the main sysroot directory, deduced from
+#                       LIBC_A_LOCATION by removing the
+#                       usr/lib[64]/libc.a part of the path.
+#                       Ex: /x-tools/mips-2011.03/mips-linux-gnu/libc/
+#
+# ARCH_LIBC_A_LOCATION: location of the libc.a file in the selected
+#                       multilib variant (taking into account the
+#                       CFLAGS). Allows to find the sysroot of the
+#                       selected multilib variant.
+#                       Ex: /x-tools/mips-2011.03/mips-linux-gnu/libc/mips16/soft-float/el/usr/lib/libc.a
+#
+# ARCH_SYSROOT_DIR:     the sysroot of the selected multilib variant,
+#                       deduced from ARCH_LIBC_A_LOCATION by removing
+#                       usr/lib[64]/libc.a at the end of the path.
+#                       Ex: /x-tools/mips-2011.03/mips-linux-gnu/libc/mips16/soft-float/el/
+#
+# ARCH_LIB_DIR:         'lib' or 'lib64' depending on where libraries are
+#                       stored. Deduced from ARCH_LIBC_A_LOCATION by
+#                       looking at usr/lib??/libc.a.
+#                       Ex: lib
+#
+# ARCH_SUBDIR:          the relative location of the sysroot of the selected
+#                       multilib variant compared to the main sysroot.
+#			Ex: mips16/soft-float/el
+
 $(STAMP_DIR)/ext-toolchain-installed: $(TOOLCHAIN_EXTERNAL_DEPENDENCIES)
-	$(Q)SYSROOT_DIR=`$(TOOLCHAIN_EXTERNAL_CC) -print-sysroot 2>/dev/null` ; \
-	if test -z "$${SYSROOT_DIR}" ; then \
-		SYSROOT_DIR=`readlink -f $$(LANG=C $(TOOLCHAIN_EXTERNAL_CC) -print-file-name=libc.a) |sed -r -e 's:usr/lib/libc\.a::;'` ; \
-	fi ; \
+	$(Q)LIBC_A_LOCATION=`readlink -f $$(LANG=C $(TOOLCHAIN_EXTERNAL_CC) -print-file-name=libc.a)` ; \
+	SYSROOT_DIR=`echo $${LIBC_A_LOCATION} | sed -r -e 's:usr/lib(64)?/libc\.a::'` ; \
 	if test -z "$${SYSROOT_DIR}" ; then \
 		@echo "External toolchain doesn't support --sysroot. Cannot use." ; \
 		exit 1 ; \
 	fi ; \
-	ARCH_SUBDIR=`$(TOOLCHAIN_EXTERNAL_CC) $(TOOLCHAIN_EXTERNAL_CFLAGS) -print-multi-directory` ; \
-	ARCH_SYSROOT_DIR=$${SYSROOT_DIR}/$${ARCH_SUBDIR} ; \
+	ARCH_LIBC_A_LOCATION=`readlink -f $$(LANG=C $(TOOLCHAIN_EXTERNAL_CC) $(TOOLCHAIN_EXTERNAL_CFLAGS) -print-file-name=libc.a)` ; \
+	ARCH_SYSROOT_DIR=`echo $${ARCH_LIBC_A_LOCATION} | sed -r -e 's:usr/lib(64)?/libc\.a::'` ; \
+	ARCH_LIB_DIR=`echo $${ARCH_LIBC_A_LOCATION} | sed -r -e 's:.*/usr/(lib(64)?)/libc.a:\1:'` ; \
+	ARCH_SUBDIR=`echo $${ARCH_SYSROOT_DIR} | sed -r -e "s:^$${SYSROOT_DIR}(.*)/$$:\1:"` ; \
 	mkdir -p $(TARGET_DIR)/lib ; \
 	echo "Copy external toolchain libraries to target..." ; \
 	for libs in $(LIB_EXTERNAL_LIBS); do \
-		$(call copy_toolchain_lib_root,$${ARCH_SYSROOT_DIR},$$libs,/lib); \
+		$(call copy_toolchain_lib_root,$${ARCH_SYSROOT_DIR},$${ARCH_LIB_DIR},$$libs,/lib); \
 	done ; \
 	for libs in $(USR_LIB_EXTERNAL_LIBS); do \
-		$(call copy_toolchain_lib_root,$${ARCH_SYSROOT_DIR},$$libs,/usr/lib); \
+		$(call copy_toolchain_lib_root,$${ARCH_SYSROOT_DIR},$${ARCH_LIB_DIR},$$libs,/usr/lib); \
 	done ; \
 	echo "Copy external toolchain sysroot to staging..." ; \
-	$(call copy_toolchain_sysroot,$${SYSROOT_DIR},$${ARCH_SYSROOT_DIR},$${ARCH_SUBDIR}) ; \
+	$(call copy_toolchain_sysroot,$${SYSROOT_DIR},$${ARCH_SYSROOT_DIR},$${ARCH_SUBDIR},$${ARCH_LIB_DIR}) ; \
 	if [ -L $${ARCH_SYSROOT_DIR}/lib64 ] ; then \
 		$(call create_lib64_symlinks) ; \
 	fi ; \
