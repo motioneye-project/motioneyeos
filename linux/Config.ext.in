@@ -9,6 +9,12 @@ config BR2_LINUX_KERNEL_EXT_XENOMAI
 	help
 	  Xenomai Kernel part.
 
+	  In the current version of Xenomai, the following kernel
+	  versions are supported: on Blackfin, 2.6.34 and 2.6.36.9, on
+	  SH4, 2.6.32.10, on x86, 2.6.35.9, 2.6.37.6, 2.6.38.8, on
+	  ARM, 2.6.35.9, 2.6.37.6, 2.6.38.8, on NIOS2, 2.6.35, on
+	  PowerPC, 2.6.35.7, 2.6.36.4, 3.0.8.
+
 config BR2_LINUX_KERNEL_EXT_XENOMAI_ADEOS_PATCH
 	depends on BR2_LINUX_KERNEL_EXT_XENOMAI
 	string "Path for Adeos patch file"
