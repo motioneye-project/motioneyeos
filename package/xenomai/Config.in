@@ -43,66 +43,6 @@ config BR2_PACKAGE_XENOMAI_SMP
 	  This option allows to enable or disable SMP support. It has
 	  to match your kernel configuration.
 
-choice
-	prompt "Xenomai ARM CPU type"
-	depends on BR2_arm
-	default BR2_PACKAGE_XENOMAI_CPU_GENERIC_ARM
-	help
-	  On the ARM architecture, Xenomai needs to be configured for
-	  a specific sub-architecture.  Select the appropriate
-	  sub-architecture from the list.
-
-	config BR2_PACKAGE_XENOMAI_CPU_AT91RM9200
-		bool "Atmel AT91RM9200"
-
-	config BR2_PACKAGE_XENOMAI_CPU_AT91SAM926X
-		bool "Atmel AT91SAM926X"
-
-	config BR2_PACKAGE_XENOMAI_CPU_INTEGRATOR
-		bool "ARM Ltd. Integrator"
-
-	config BR2_PACKAGE_XENOMAI_CPU_IXP4XX
-		bool "Intel IXP4XX (XScale)"
-
-	config BR2_PACKAGE_XENOMAI_CPU_IMX
-		bool "Freescale i.MX (MX1/MXL)"
-
-	config BR2_PACKAGE_XENOMAI_CPU_IMX21
-		bool "Freescale i.MX21"
-
-	config BR2_PACKAGE_XENOMAI_CPU_MX2
-		bool "Freescale MXC/MX2"
-
-	config BR2_PACKAGE_XENOMAI_CPU_MX3
-		bool "Freescale MXC/MX3"
-
-	config BR2_PACKAGE_XENOMAI_CPU_SA1100
-		bool "StrongARM SA1100"
-
-	config BR2_PACKAGE_XENOMAI_CPU_S3C2410
-		bool "S3C2410"
-
-	config BR2_PACKAGE_XENOMAI_CPU_GENERIC_ARM
-		bool "Generic ARM"
-
-endchoice
-
-# Now set CPU type. We force manually selected type even if detected in case
-# user takes the risk.
-config BR2_PACKAGE_XENOMAI_CPU_TYPE
-	string
-	depends on BR2_PACKAGE_XENOMAI && BR2_arm
-	default "at91rm9200"  if BR2_PACKAGE_XENOMAI_CPU_AT91RM9200
-	default "at91sam926x" if BR2_PACKAGE_XENOMAI_CPU_AT91SAM926X
-	default "integrator"  if BR2_PACKAGE_XENOMAI_CPU_INTEGRATOR
-	default "ixp4xx"      if BR2_PACKAGE_XENOMAI_CPU_IXP4XX
-	default "generic"     if BR2_PACKAGE_XENOMAI_CPU_GENERIC_ARM
-	default "imx"         if BR2_PACKAGE_XENOMAI_CPU_IMX
-	default "imx21"       if BR2_PACKAGE_XENOMAI_CPU_IMX21
-	default "mx2"         if BR2_PACKAGE_XENOMAI_CPU_MX2
-	default "mx3"         if BR2_PACKAGE_XENOMAI_CPU_MX3
-	default "s3c2410"     if BR2_PACKAGE_XENOMAI_CPU_S3C2410
-
 config BR2_PACKAGE_XENOMAI_TESTSUITE
        bool "Install testsuite"
        help

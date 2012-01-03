@@ -1,0 +1,72 @@
+From: Gilles Chanteperdrix <gilles.chanteperdrix@xenomai.org>
+Date: Sat, 5 Nov 2011 20:59:01 +0000 (+0100)
+Subject: posix: fix compilation for LFS
+X-Git-Url: http://git.xenomai.org/?p=xenomai-2.6.git;a=commitdiff_plain;h=06ae5c5e47fbfd9d8dbbe6fcf1a1db0c14bad9de;hp=8f6feff876029244dabc1257cdf13209fbd64fb5
+
+posix: fix compilation for LFS
+---
+
+diff --git a/include/posix/sys/mman.h b/include/posix/sys/mman.h
+index 455e565..a304755 100644
+--- a/include/posix/sys/mman.h
++++ b/include/posix/sys/mman.h
+@@ -63,17 +63,16 @@ int __real_shm_open(const char *name, int oflag, mode_t mode);
+ 
+ int __real_shm_unlink(const char *name);
+ 
+-#if !defined(_FILE_OFFSET_BITS) || _FILE_OFFSET_BITS != 64
+ void *__real_mmap(void *addr,
+ 		  size_t len,
+ 		  int prot,
+ 		  int flags,
+ 		  int fildes,
+ 		  long off);
+-#else
+-#define __real_mmap __real_mmap64
+-#endif
+-#ifdef _LARGEFILE64_SOURCE
++
++#if __WORDSIZE == 32
++#if defined(_LARGEFILE64_SOURCE) \
++	|| defined(_FILE_OFFSET_BITS) && _FILE_OFFSET_BITS == 64
+ void *__real_mmap64(void *addr,
+ 		    size_t len,
+ 		    int prot,
+@@ -82,6 +81,11 @@ void *__real_mmap64(void *addr,
+ 		    long long off);
+ #endif
+ 
++#if defined(_FILE_OFFSET_BITS) && _FILE_OFFSET_BITS == 64
++#define __real_mmap __real_mmap64
++#endif
++#endif
++
+ int __real_munmap(void *addr, size_t len);
+ 
+ #ifdef __cplusplus
+diff --git a/include/posix/unistd.h b/include/posix/unistd.h
+index 49463a0..90cce86 100644
+--- a/include/posix/unistd.h
++++ b/include/posix/unistd.h
+@@ -54,13 +54,17 @@ int ftruncate(int fildes, off_t length);
+ extern "C" {
+ #endif
+ 
+-#if !defined(_FILE_OFFSET_BITS) || _FILE_OFFSET_BITS != 64
+ int __real_ftruncate(int fildes, long length);
+-#else
++
++#if __WORDSIZE == 32
++#if defined(_LARGEFILE64_SOURCE) \
++	|| defined(_FILE_OFFSET_BITS) && _FILE_OFFSET_BITS == 64
++int __real_ftruncate64(int fildes, long long length);
++#endif
++
++#if defined(_FILE_OFFSET_BITS) && _FILE_OFFSET_BITS == 64
+ #define __real_ftruncate __real_ftruncate64
+ #endif
+-#ifdef _LARGEFILE64_SOURCE
+-int __real_ftruncate64(int fildes, long long length);
+ #endif
+ 
+ ssize_t __real_read(int fd, void *buf, size_t nbyte);

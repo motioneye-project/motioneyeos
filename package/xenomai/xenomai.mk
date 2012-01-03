@@ -7,22 +7,13 @@
 
 XENOMAI_VERSION = $(call qstrip,$(BR2_PACKAGE_XENOMAI_VERSION))
 ifeq ($(XENOMAI_VERSION),)
-XENOMAI_VERSION = 2.5.6
+XENOMAI_VERSION = 2.6.0
 endif
 
 XENOMAI_SITE = http://download.gna.org/xenomai/stable/
 XENOMAI_SOURCE = xenomai-$(XENOMAI_VERSION).tar.bz2
 
 XENOMAI_INSTALL_STAGING = YES
-
-ifeq ($(BR2_arm),y)
-XENOMAI_CPU_TYPE = $(call qstrip,$(BR2_PACKAGE_XENOMAI_CPU_TYPE))
-# Set "generic" if not defined
-ifeq ($(XENOMAI_CPU_TYPE),)
-XENOMAI_CPU_TYPE = generic
-endif
-XENOMAI_CONF_OPT += --enable-arm-mach=$(XENOMAI_CPU_TYPE)
-endif #BR2_arm
 
 ifeq ($(BR2_PACKAGE_XENOMAI_SMP),y)
 XENOMAI_CONF_OPT += --enable-smp
