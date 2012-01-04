@@ -237,6 +237,12 @@ endif
 source "package/microperl/Config.in"
 source "package/php/Config.in"
 source "package/python/Config.in"
+if BR2_PACKAGE_PYTHON
+menu "external python modules"
+source "package/python-mad/Config.in"
+source "package/python-serial/Config.in"
+endmenu
+endif
 source "package/ruby/Config.in"
 source "package/tcl/Config.in"
 endmenu
@@ -313,7 +319,6 @@ source "package/libhid/Config.in"
 source "package/libiqrf/Config.in"
 source "package/libusb/Config.in"
 source "package/libusb-compat/Config.in"
-source "package/python-serial/Config.in"
 endmenu
 
 if BROKEN
