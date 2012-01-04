@@ -242,6 +242,7 @@ menu "external python modules"
 source "package/python-dpkt/Config.in"
 source "package/python-mad/Config.in"
 source "package/python-serial/Config.in"
+source "package/python-setuptools/Config.in"
 endmenu
 endif
 source "package/ruby/Config.in"
