@@ -28,7 +28,6 @@ HOST_PYTHON_CONF_OPT += 	\
 	--disable-bsddb		\
 	--disable-test-modules	\
 	--disable-bz2		\
-	--disable-zlib		\
 	--disable-ssl
 
 HOST_PYTHON_MAKE_ENV = \
@@ -52,7 +51,7 @@ endef
 
 PYTHON_DEPENDENCIES  = host-python libffi
 
-HOST_PYTHON_DEPENDENCIES = host-expat
+HOST_PYTHON_DEPENDENCIES = host-expat host-zlib
 
 PYTHON_INSTALL_STAGING = YES
 
