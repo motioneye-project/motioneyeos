@@ -1,0 +1,8 @@
+config BR2_PACKAGE_PYTHON_NETIFACES
+	bool "python-netifaces"
+	depends on BR2_PACKAGE_PYTHON
+	select BR2_PACKAGE_PYTHON_SETUPTOOLS
+	help
+	  Portable access to network interfaces from Python.
+
+	  http://alastairs-place.net/projects/netifaces

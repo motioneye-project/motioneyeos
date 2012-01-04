@@ -241,6 +241,7 @@ if BR2_PACKAGE_PYTHON
 menu "external python modules"
 source "package/python-dpkt/Config.in"
 source "package/python-mad/Config.in"
+source "package/python-netifaces/Config.in"
 source "package/python-serial/Config.in"
 source "package/python-setuptools/Config.in"
 endmenu
