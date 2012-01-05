@@ -4,7 +4,7 @@
 #
 #############################################################
 
-LINKS_VERSION = 2.3pre2
+LINKS_VERSION = 2.5
 LINKS_SITE = http://links.twibright.com/download
 LINKS_CONF_OPT = --without-x
 LINKS_DEPENDENCIES = host-pkg-config
