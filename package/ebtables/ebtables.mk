@@ -4,7 +4,7 @@
 #
 #############################################################
 
-EBTABLES_VERSION = 2.0.10-3
+EBTABLES_VERSION = 2.0.10-4
 EBTABLES_SOURCE = ebtables-v$(EBTABLES_VERSION).tar.gz
 EBTABLES_SITE = http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/ebtables
 
