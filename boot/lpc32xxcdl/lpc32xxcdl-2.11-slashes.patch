@@ -1,0 +1,521 @@
+Use slashes instead of backslashes
+
+Signed-off-by: Alexandre Belloni <abelloni@adeneo-embedded.com>
+---
+ .../bsps/common/examples/buildfiles/makefile       |   10 +++---
+ .../startup/examples/burners/makefile.burner       |   16 +++++-----
+ csps/lpc32xx/bsps/ea3250/source/makefile           |   10 +++---
+ csps/lpc32xx/bsps/fdi3250/source/makefile          |   12 ++++----
+ csps/lpc32xx/bsps/phy3250/examples/makefile        |    2 +-
+ csps/lpc32xx/bsps/phy3250/source/makefile          |    2 +-
+ .../examples/Burners/nor/kickstart/makefile        |    2 +-
+ .../startup/examples/Burners/nor/norerase/makefile |    2 +-
+ .../startup/examples/Burners/nor/s1lapp/makefile   |    2 +-
+ .../examples/Burners/spi/kickstart/makefile        |    2 +-
+ csps/lpc32xx/source/makefile                       |   10 +++---
+ lpc/source/makefile                                |   10 +++---
+ makefile                                           |    2 +-
+ makerule/common/make.rules.environment             |   30 ++++++++++----------
+ makerule/lpc32xx/make.lpc32xx.gnu                  |    2 +-
+ makerule/lpc32xx/make.lpc32xx.iar                  |   12 ++++----
+ makerule/lpc32xx/make.lpc32xx.keil                 |    6 ++--
+ makerule/lpc32xx/make.lpc32xx.rvw                  |    2 +-
+ 18 files changed, 67 insertions(+), 67 deletions(-)
+
+diff --git a/csps/lpc32xx/bsps/common/examples/buildfiles/makefile b/csps/lpc32xx/bsps/common/examples/buildfiles/makefile
+index cf4977c..1da2201 100644
+--- a/csps/lpc32xx/bsps/common/examples/buildfiles/makefile
++++ b/csps/lpc32xx/bsps/common/examples/buildfiles/makefile
+@@ -25,16 +25,16 @@
+ #
+ ########################################################################
+ 
+-include $(NXPMCU_SOFTWARE)\makerule\$(CSP)\make.$(CSP).$(TOOL)
++include $(NXPMCU_SOFTWARE)/makerule/$(CSP)/make.$(CSP).$(TOOL)
+ 
+ ########################################################################
+ #
+ # Pick up the assembler and C source files in the directory  
+ #
+ ########################################################################
+-include $(NXPMCU_SOFTWARE)\makerule\common\make.rules.ftypes
+-AFLAGS +=-I..\Include
+-CFLAGS +=-I..\Include
++include $(NXPMCU_SOFTWARE)/makerule/common/make.rules.ftypes
++AFLAGS +=-I../Include
++CFLAGS +=-I../Include
+ 
+ ########################################################################
+ #
+@@ -42,6 +42,6 @@ CFLAGS +=-I..\Include
+ #
+ ########################################################################
+ 
+-include $(NXPMCU_SOFTWARE)\makerule\common\make.rules.build
++include $(NXPMCU_SOFTWARE)/makerule/common/make.rules.build
+ 
+ 
+diff --git a/csps/lpc32xx/bsps/common/startup/examples/burners/makefile.burner b/csps/lpc32xx/bsps/common/startup/examples/burners/makefile.burner
+index fca3947..18bd703 100644
+--- a/csps/lpc32xx/bsps/common/startup/examples/burners/makefile.burner
++++ b/csps/lpc32xx/bsps/common/startup/examples/burners/makefile.burner
+@@ -22,9 +22,9 @@
+ #
+ ########################################################################
+ 
+-COMMON_BASE := $(NXPMCU_SOFTWARE)\csps\$(CSP)\bsps\common
+-include $(NXPMCU_SOFTWARE)\makerule\$(CSP)\make.$(CSP).$(TOOL)
+-include $(COMMON_BASE)\startup\examples\buildfiles\make.env
++COMMON_BASE := $(NXPMCU_SOFTWARE)/csps/$(CSP)/bsps/common
++include $(NXPMCU_SOFTWARE)/makerule/$(CSP)/make.$(CSP).$(TOOL)
++include $(COMMON_BASE)/startup/examples/buildfiles/make.env
+ 
+ ########################################################################
+ # ARM Realview
+@@ -38,7 +38,7 @@ AFLAGS += --predefine "USE_ALL_STACKS SETL {TRUE}"
+ #AFLAGS += --predefine "RW_RELOC SETL {TRUE}"
+ 
+ # This runs from IRAM
+-LDSCRIPT =$(COMMON_BASE)\startup\examples\buildfiles\ldscript_iram_rvw.ld
++LDSCRIPT =$(COMMON_BASE)/startup/examples/buildfiles/ldscript_iram_rvw.ld
+ LDFLAGS = --remove
+ MAP = --map --info=totals,sizes,unused --symbols --list
+ endif
+@@ -55,7 +55,7 @@ AFLAGS += --predefine "USE_ALL_STACKS SETL {TRUE}"
+ #AFLAGS += --predefine "RW_RELOC SETL {TRUE}"
+ 
+ # This runs from IRAM
+-LDSCRIPT =$(COMMON_BASE)\startup\examples\buildfiles\ldscript_iram_rvw.ld
++LDSCRIPT =$(COMMON_BASE)/startup/examples/buildfiles/ldscript_iram_rvw.ld
+ LDFLAGS = --remove
+ MAP = --map --info=totals,sizes,unused --symbols --list
+ endif
+@@ -72,7 +72,7 @@ AFLAGS += --defsym USE_ALL_STACKS=1
+ #AFLAGS += --defsym RW_RELOC=1
+ 
+ # This runs from IRAM
+-LDSCRIPT =$(COMMON_BASE)\startup\examples\buildfiles\ldscript_iram_gnu.ld
++LDSCRIPT =$(COMMON_BASE)/startup/examples/buildfiles/ldscript_iram_gnu.ld
+ 
+ endif
+ 
+@@ -108,7 +108,7 @@ endif
+ # Pick up the assembler and C source files in the directory  
+ #
+ ########################################################################
+-include $(NXPMCU_SOFTWARE)\makerule\common\make.rules.ftypes
++include $(NXPMCU_SOFTWARE)/makerule/common/make.rules.ftypes
+ 
+ ########################################################################
+ #
+@@ -157,6 +157,6 @@ endif
+ #
+ ########################################################################
+ 
+-include $(NXPMCU_SOFTWARE)\makerule\common\make.rules.build
++include $(NXPMCU_SOFTWARE)/makerule/common/make.rules.build
+ 
+ .PHONY: debug bin
+diff --git a/csps/lpc32xx/bsps/ea3250/source/makefile b/csps/lpc32xx/bsps/ea3250/source/makefile
+index 7cada25..2899b20 100644
+--- a/csps/lpc32xx/bsps/ea3250/source/makefile
++++ b/csps/lpc32xx/bsps/ea3250/source/makefile
+@@ -22,16 +22,16 @@
+ #
+ ########################################################################
+ 
+-include $(NXPMCU_SOFTWARE)\makerule\$(CSP)\make.$(CSP).$(TOOL)
++include $(NXPMCU_SOFTWARE)/makerule/$(CSP)/make.$(CSP).$(TOOL)
+ 
+ ########################################################################
+ #
+ # Pick up the assembler and C source files in the directory  
+ #
+ ########################################################################
+-include $(NXPMCU_SOFTWARE)\makerule\common\make.rules.ftypes
+-AFLAGS +=-I..\Include
+-CFLAGS +=-I..\Include
++include $(NXPMCU_SOFTWARE)/makerule/common/make.rules.ftypes
++AFLAGS +=-I../Include
++CFLAGS +=-I../Include
+ 
+ ########################################################################
+ #
+@@ -64,7 +64,7 @@ realclean: lib_realclean
+ #
+ ########################################################################
+ 
+-include $(NXPMCU_SOFTWARE)\makerule\common\make.rules.build
++include $(NXPMCU_SOFTWARE)/makerule/common/make.rules.build
+ 
+ .PHONY: all lib_clean lib_realclean
+ 
+diff --git a/csps/lpc32xx/bsps/fdi3250/source/makefile b/csps/lpc32xx/bsps/fdi3250/source/makefile
+index 4e153bb..11e4b63 100644
+--- a/csps/lpc32xx/bsps/fdi3250/source/makefile
++++ b/csps/lpc32xx/bsps/fdi3250/source/makefile
+@@ -22,16 +22,16 @@
+ #
+ ########################################################################
+ 
+-include $(NXPMCU_SOFTWARE)\makerule\$(CSP)\make.$(CSP).$(TOOL)
++include $(NXPMCU_SOFTWARE)/makerule/$(CSP)/make.$(CSP).$(TOOL)
+ 
+ ########################################################################
+ #
+ # Pick up the assembler and C source files in the directory  
+ #
+ ########################################################################
+-include $(NXPMCU_SOFTWARE)\makerule\common\make.rules.ftypes
+-AFLAGS +=-I..\Include
+-CFLAGS +=-I..\Include
++include $(NXPMCU_SOFTWARE)/makerule/common/make.rules.ftypes
++AFLAGS +=-I../Include
++CFLAGS +=-I../Include
+ 
+ ########################################################################
+ #
+@@ -53,7 +53,7 @@ lib_clean:
+ # delete all targets this Makefile can make and all built libraries
+ # linked in
+ lib_realclean: 
+-	-@$(RM) $(BSP_LIB_DIR)\*.a
++	-@$(RM) $(BSP_LIB_DIR)/*.a
+ 	-@$(RMDIR) $(BSP_LIB_DIR)
+ 	
+ clean: lib_clean
+@@ -65,7 +65,7 @@ realclean: lib_realclean
+ #
+ ########################################################################
+ 
+-include $(NXPMCU_SOFTWARE)\makerule\common\make.rules.build
++include $(NXPMCU_SOFTWARE)/makerule/common/make.rules.build
+ 
+ .PHONY: all lib_clean lib_realclean
+ 
+diff --git a/csps/lpc32xx/bsps/phy3250/examples/makefile b/csps/lpc32xx/bsps/phy3250/examples/makefile
+index b939252..e7feaa6 100644
+--- a/csps/lpc32xx/bsps/phy3250/examples/makefile
++++ b/csps/lpc32xx/bsps/phy3250/examples/makefile
+@@ -25,7 +25,7 @@
+ #
+ ########################################################################
+ 
+-include $(NXPMCU_SOFTWARE)\makerule\$(CSP)\make.$(CSP).$(TOOL)
++include $(NXPMCU_SOFTWARE)/makerule/$(CSP)/make.$(CSP).$(TOOL)
+ 
+ SUBDIRS = adc dram_self_refresh hstimer hsuart i2c kscan lcd_colorbars
+ SUBDIRS += lcd_tsc mi2c mstimer pwm pwm_simple rtc sdcard sdcard_dma
+diff --git a/csps/lpc32xx/bsps/phy3250/source/makefile b/csps/lpc32xx/bsps/phy3250/source/makefile
+index 7c48e7d..750b776 100644
+--- a/csps/lpc32xx/bsps/phy3250/source/makefile
++++ b/csps/lpc32xx/bsps/phy3250/source/makefile
+@@ -32,7 +32,7 @@ include $(NXPMCU_SOFTWARE)/makerule/$(CSP)/make.$(CSP).$(TOOL)
+ # Pick up the assembler and C source files in the directory  
+ #
+ ########################################################################
+-include $(NXPMCU_SOFTWARE)\makerule\common\make.rules.ftypes
++include $(NXPMCU_SOFTWARE)/makerule/common/make.rules.ftypes
+ AFLAGS +=-I../Include
+ CFLAGS +=-I../Include
+ 
+diff --git a/csps/lpc32xx/bsps/phy3250/startup/examples/Burners/nor/kickstart/makefile b/csps/lpc32xx/bsps/phy3250/startup/examples/Burners/nor/kickstart/makefile
+index 01e2b38..526d6cc 100644
+--- a/csps/lpc32xx/bsps/phy3250/startup/examples/Burners/nor/kickstart/makefile
++++ b/csps/lpc32xx/bsps/phy3250/startup/examples/Burners/nor/kickstart/makefile
+@@ -78,7 +78,7 @@ endif
+ 
+ ########################################################################
+ #
+-# Compiler\linker specific stuff
++# Compiler/linker specific stuff
+ #
+ ########################################################################
+ 
+diff --git a/csps/lpc32xx/bsps/phy3250/startup/examples/Burners/nor/norerase/makefile b/csps/lpc32xx/bsps/phy3250/startup/examples/Burners/nor/norerase/makefile
+index ce329f5..e81b8db 100644
+--- a/csps/lpc32xx/bsps/phy3250/startup/examples/Burners/nor/norerase/makefile
++++ b/csps/lpc32xx/bsps/phy3250/startup/examples/Burners/nor/norerase/makefile
+@@ -77,7 +77,7 @@ endif
+ 
+ ########################################################################
+ #
+-# Compiler\linker specific stuff
++# Compiler/linker specific stuff
+ #
+ ########################################################################
+ 
+diff --git a/csps/lpc32xx/bsps/phy3250/startup/examples/Burners/nor/s1lapp/makefile b/csps/lpc32xx/bsps/phy3250/startup/examples/Burners/nor/s1lapp/makefile
+index 4426fc7..196faec 100644
+--- a/csps/lpc32xx/bsps/phy3250/startup/examples/Burners/nor/s1lapp/makefile
++++ b/csps/lpc32xx/bsps/phy3250/startup/examples/Burners/nor/s1lapp/makefile
+@@ -77,7 +77,7 @@ endif
+ 
+ ########################################################################
+ #
+-# Compiler\linker specific stuff
++# Compiler/linker specific stuff
+ #
+ ########################################################################
+ 
+diff --git a/csps/lpc32xx/bsps/phy3250/startup/examples/Burners/spi/kickstart/makefile b/csps/lpc32xx/bsps/phy3250/startup/examples/Burners/spi/kickstart/makefile
+index dc73b64..39fc304 100644
+--- a/csps/lpc32xx/bsps/phy3250/startup/examples/Burners/spi/kickstart/makefile
++++ b/csps/lpc32xx/bsps/phy3250/startup/examples/Burners/spi/kickstart/makefile
+@@ -78,7 +78,7 @@ endif
+ 
+ ########################################################################
+ #
+-# Compiler\linker specific stuff
++# Compiler/linker specific stuff
+ #
+ ########################################################################
+ 
+diff --git a/csps/lpc32xx/source/makefile b/csps/lpc32xx/source/makefile
+index 8e05456..16bd944 100644
+--- a/csps/lpc32xx/source/makefile
++++ b/csps/lpc32xx/source/makefile
+@@ -25,16 +25,16 @@
+ #
+ ########################################################################
+ 
+-include $(NXPMCU_SOFTWARE)\makerule\$(CSP)\make.$(CSP).$(TOOL)
++include $(NXPMCU_SOFTWARE)/makerule/$(CSP)/make.$(CSP).$(TOOL)
+ 
+ ########################################################################
+ #
+ # Pick up the assembler and C source files in the directory  
+ #
+ ########################################################################
+-include $(NXPMCU_SOFTWARE)\makerule\common\make.rules.ftypes
+-AFLAGS +=-I..\Include
+-CFLAGS +=-I..\Include
++include $(NXPMCU_SOFTWARE)/makerule/common/make.rules.ftypes
++AFLAGS +=-I../Include
++CFLAGS +=-I../Include
+ 
+ 
+ ########################################################################
+@@ -68,7 +68,7 @@ realclean: lib_realclean
+ #
+ ########################################################################
+ 
+-include $(NXPMCU_SOFTWARE)\makerule\common\make.rules.build
++include $(NXPMCU_SOFTWARE)/makerule/common/make.rules.build
+ 
+ .PHONY: all lib_clean lib_realclean
+ 
+diff --git a/lpc/source/makefile b/lpc/source/makefile
+index 2860db9..ae7d612 100644
+--- a/lpc/source/makefile
++++ b/lpc/source/makefile
+@@ -25,16 +25,16 @@
+ #
+ ########################################################################
+ 
+-include $(NXPMCU_SOFTWARE)\makerule\$(CSP)\make.$(CSP).$(TOOL)
++include $(NXPMCU_SOFTWARE)/makerule/$(CSP)/make.$(CSP).$(TOOL)
+ 
+ ########################################################################
+ #
+ # Pick up the assembler and C source files in the directory  
+ #
+ ########################################################################
+-include $(NXPMCU_SOFTWARE)\makerule\common\make.rules.ftypes
+-AFLAGS +=-I..\Include
+-CFLAGS +=-I..\Include
++include $(NXPMCU_SOFTWARE)/makerule/common/make.rules.ftypes
++AFLAGS +=-I../Include
++CFLAGS +=-I../Include
+ 
+ ########################################################################
+ #
+@@ -67,7 +67,7 @@ realclean: lib_realclean
+ #
+ ########################################################################
+ 
+-include $(NXPMCU_SOFTWARE)\makerule\common\make.rules.build
++include $(NXPMCU_SOFTWARE)/makerule/common/make.rules.build
+ 
+ .PHONY: all lib_clean lib_realclean
+ 
+diff --git a/makefile b/makefile
+index 8645fcc..86fa6bc 100644
+--- a/makefile
++++ b/makefile
+@@ -34,7 +34,7 @@ TARGETS_CLN	=gen_clean csp_clean bsp_clean
+ #
+ ########################################################################
+ 
+-include $(NXPMCU_SOFTWARE)\makerule\$(CSP)\make.$(CSP).$(TOOL)
++include $(NXPMCU_SOFTWARE)/makerule/$(CSP)/make.$(CSP).$(TOOL)
+ 
+ ########################################################################
+ #
+diff --git a/makerule/common/make.rules.environment b/makerule/common/make.rules.environment
+index d5737fe..4e6df48 100644
+--- a/makerule/common/make.rules.environment
++++ b/makerule/common/make.rules.environment
+@@ -52,7 +52,7 @@ ASTYLE          =astyle --options=$(BUILD_ROOT)/tools/astyle.cfg
+ #
+ ########################################################################
+   
+-CSP_LIB_DIR  =$(BUILD_ROOT)\csps\$(CSP)\lib
++CSP_LIB_DIR  =$(BUILD_ROOT)/csps/$(CSP)/lib
+ 
+ ########################################################################
+ #
+@@ -60,7 +60,7 @@ CSP_LIB_DIR  =$(BUILD_ROOT)\csps\$(CSP)\lib
+ #
+ ########################################################################
+ 
+-BSP_LIB_DIR =$(BUILD_ROOT)\csps\$(CSP)\bsps\$(BSP)\lib
++BSP_LIB_DIR =$(BUILD_ROOT)/csps/$(CSP)/bsps/$(BSP)/lib
+ 
+ ########################################################################
+ #
+@@ -68,7 +68,7 @@ BSP_LIB_DIR =$(BUILD_ROOT)\csps\$(CSP)\bsps\$(BSP)\lib
+ #
+ ########################################################################
+ 
+-GEN_LIB_DIR =$(BUILD_ROOT)\$(GEN)\lib
++GEN_LIB_DIR =$(BUILD_ROOT)/$(GEN)/lib
+ 
+ ########################################################################
+ # 
+@@ -76,9 +76,9 @@ GEN_LIB_DIR =$(BUILD_ROOT)\$(GEN)\lib
+ # 
+ ########################################################################
+ 
+-CSP_DIR     =$(BUILD_ROOT)\csps\$(CSP)
+-CSP_SRC_DIR =$(CSP_DIR)\source
+-CSP_INC_DIR =$(CSP_DIR)\include
++CSP_DIR     =$(BUILD_ROOT)/csps/$(CSP)
++CSP_SRC_DIR =$(CSP_DIR)/source
++CSP_INC_DIR =$(CSP_DIR)/include
+ 
+ ########################################################################
+ # 
+@@ -86,9 +86,9 @@ CSP_INC_DIR =$(CSP_DIR)\include
+ # 
+ ########################################################################
+ 
+-BSP_DIR     =$(BUILD_ROOT)\csps\$(CSP)\bsps\$(BSP)
+-BSP_SRC_DIR =$(BSP_DIR)\source
+-BSP_INC_DIR =$(BSP_DIR)\include
++BSP_DIR     =$(BUILD_ROOT)/csps/$(CSP)/bsps/$(BSP)
++BSP_SRC_DIR =$(BSP_DIR)/source
++BSP_INC_DIR =$(BSP_DIR)/include
+ 
+ ########################################################################
+ # 
+@@ -96,9 +96,9 @@ BSP_INC_DIR =$(BSP_DIR)\include
+ # 
+ ########################################################################
+ 
+-GEN_DIR     =$(BUILD_ROOT)\$(GEN)
+-GEN_SRC_DIR =$(GEN_DIR)\source
+-GEN_INC_DIR =$(GEN_DIR)\include
++GEN_DIR     =$(BUILD_ROOT)/$(GEN)
++GEN_SRC_DIR =$(GEN_DIR)/source
++GEN_INC_DIR =$(GEN_DIR)/include
+ 
+ ########################################################################
+ #
+@@ -151,6 +151,6 @@ endif
+ # 
+ ########################################################################
+ 
+-TARGET_CSP_LIB =$(CSP_LIB_DIR)\$(CSP_ARCHIVE)
+-TARGET_BSP_LIB =$(BSP_LIB_DIR)\$(BSP_ARCHIVE)
+-TARGET_GEN_LIB =$(GEN_LIB_DIR)\$(GEN_ARCHIVE)
++TARGET_CSP_LIB =$(CSP_LIB_DIR)/$(CSP_ARCHIVE)
++TARGET_BSP_LIB =$(BSP_LIB_DIR)/$(BSP_ARCHIVE)
++TARGET_GEN_LIB =$(GEN_LIB_DIR)/$(GEN_ARCHIVE)
+diff --git a/makerule/lpc32xx/make.lpc32xx.gnu b/makerule/lpc32xx/make.lpc32xx.gnu
+index 3277d99..d80b98d 100644
+--- a/makerule/lpc32xx/make.lpc32xx.gnu
++++ b/makerule/lpc32xx/make.lpc32xx.gnu
+@@ -19,7 +19,7 @@
+ # use without further testing or modification. 
+ ########################################################################
+ 
+-include $(NXPMCU_SOFTWARE)\makerule\common\make.rules.environment
++include $(NXPMCU_SOFTWARE)/makerule/common/make.rules.environment
+ 
+ CPU      = arm926ej-s
+ CFLAGS   = -mcpu=arm926ej-s -Wall -Os
+diff --git a/makerule/lpc32xx/make.lpc32xx.iar b/makerule/lpc32xx/make.lpc32xx.iar
+index 238ebbf..27d163f 100644
+--- a/makerule/lpc32xx/make.lpc32xx.iar
++++ b/makerule/lpc32xx/make.lpc32xx.iar
+@@ -19,12 +19,12 @@
+ # use without further testing or modification. 
+ ########################################################################
+ 
+-include $(NXPMCU_SOFTWARE)\makerule\common\make.rules.environment
++include $(NXPMCU_SOFTWARE)/makerule/common/make.rules.environment
+ 
+-IARBASE   = $(IAR_ROOT)\ARM
+-IARTOOLS  = $(IARBASE)\bin
+-IAR_LIB   = $(IARBASE)\lib
+-IAR_INC   = $(IARBASE)\inc
++IARBASE   = $(IAR_ROOT)/ARM
++IARTOOLS  = $(IARBASE)/bin
++IAR_LIB   = $(IARBASE)/lib
++IAR_INC   = $(IARBASE)/inc
+ CC        = iccarm
+ CCP       = iccarm
+ AS        = iasmarm
+@@ -36,7 +36,7 @@ CFLAGS    += -I"$(IAR_INC)"
+ AFLAGS    = --cpu 5TEJ
+ LDFLAGS   = 
+ LK        = "$(TARGET_GEN_LIB)" "$(TARGET_CSP_LIB)" "$(TARGET_BSP_LIB)"
+-;LK        += "$(IAR_LIB)\dl4tpannl8f.r79"
++;LK        += "$(IAR_LIB)/dl4tpannl8f.r79"
+ MAP       = --map
+ LDESC     = --config
+ ENTRY     = --entry
+diff --git a/makerule/lpc32xx/make.lpc32xx.keil b/makerule/lpc32xx/make.lpc32xx.keil
+index dd27583..7334d3f 100644
+--- a/makerule/lpc32xx/make.lpc32xx.keil
++++ b/makerule/lpc32xx/make.lpc32xx.keil
+@@ -19,7 +19,7 @@
+ # use without further testing or modification. 
+ ########################################################################
+ 
+-include $(NXPMCU_SOFTWARE)\makerule\common\make.rules.environment
++include $(NXPMCU_SOFTWARE)/makerule/common/make.rules.environment
+ 
+ CC        =armcc
+ CCP       =armcc
+@@ -27,11 +27,11 @@ AS        =armasm
+ LD        =armlink
+ AR        =armar -r -s
+ CFLAGS    =--arm -O3 -g --device DARMP3 -D__MICROLIB 
+-CFLAGS    +=-I$(KEIL_RVCT)\inc -I$(CSP_INC_DIR) -I$(BSP_INC_DIR) -I$(GEN_INC_DIR) 
++CFLAGS    +=-I$(KEIL_RVCT)/inc -I$(CSP_INC_DIR) -I$(BSP_INC_DIR) -I$(GEN_INC_DIR) 
+ AFLAGS    =--arm --device=DARMP3 
+ AFLAGS    +=-I$(CSP_INC_DIR) -I$(BSP_INC_DIR) -I$(GEN_INC_DIR)
+ LDFLAGS   =--noremove
+-LK        =--device DARMP3 --libpath $(KEIL_RVCT)\lib --scan $(TARGET_CSP_LIB)
++LK        =--device DARMP3 --libpath $(KEIL_RVCT)/lib --scan $(TARGET_CSP_LIB)
+ LK        +=--scan $(TARGET_BSP_LIB) 
+ LK        +=--scan $(TARGET_GEN_LIB)
+ MAP       =--map --list
+diff --git a/makerule/lpc32xx/make.lpc32xx.rvw b/makerule/lpc32xx/make.lpc32xx.rvw
+index 59961dd..2419976 100644
+--- a/makerule/lpc32xx/make.lpc32xx.rvw
++++ b/makerule/lpc32xx/make.lpc32xx.rvw
+@@ -19,7 +19,7 @@
+ # use without further testing or modification. 
+ ########################################################################
+ 
+-include $(NXPMCU_SOFTWARE)\makerule\common\make.rules.environment
++include $(NXPMCU_SOFTWARE)/makerule/common/make.rules.environment
+ 
+ CC        =armcc
+ CCP       =armcpp
+-- 
+1.7.7.3
+
