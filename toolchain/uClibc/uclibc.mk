@@ -217,7 +217,7 @@ ifeq ($(UCLIBC_TARGET_ARCH),sparc)
 	$(SED) 's/^.*$(UCLIBC_SPARC_TYPE)[^B].*/$(UCLIBC_SPARC_TYPE)=y/g' $(UCLIBC_DIR)/.oldconfig
 endif
 ifeq ($(UCLIBC_TARGET_ARCH),powerpc)
-ifeq ($(BR2_powerpc_8540)$(BR2_powerpc_e500mc),y)
+ifeq ($(BR2_powerpc_8540)$(BR2_powerpc_8548)$(BR2_powerpc_e500mc),y)
 	/bin/echo "# CONFIG_CLASSIC is not set" >> $(UCLIBC_DIR)/.oldconfig
 	/bin/echo "CONFIG_E500=y" >> $(UCLIBC_DIR)/.oldconfig
 else
@@ -385,6 +385,7 @@ $(UCLIBC_DIR)/.config: $(UCLIBC_DIR)/.oldconfig
 		DEVEL_PREFIX=/usr/ \
 		RUNTIME_PREFIX=$(TOOLCHAIN_DIR)/uClibc_dev/ \
 		CROSS_COMPILE="$(TARGET_CROSS)" \
+		UCLIB_EXTRA_CFLAGS="$(TARGET_ABI)" \
 		HOSTCC="$(HOSTCC)" \
 		oldconfig
 	touch $@
@@ -403,6 +404,7 @@ $(UCLIBC_DIR)/.configured: $(LINUX_HEADERS_DIR)/.configured $(UCLIBC_DIR)/.confi
 		DEVEL_PREFIX=/usr/ \
 		RUNTIME_PREFIX=$(TOOLCHAIN_DIR)/uClibc_dev/ \
 		CROSS_COMPILE="$(TARGET_CROSS)" \
+		UCLIB_EXTRA_CFLAGS="$(TARGET_ABI)" \
 		HOSTCC="$(HOSTCC)" headers \
 		lib/crt1.o lib/crti.o lib/crtn.o \
 		install_headers
@@ -424,6 +426,7 @@ $(UCLIBC_DIR)/lib/libc.a: $(UCLIBC_DIR)/.configured $(gcc_intermediate) $(LIBFLO
 		DEVEL_PREFIX=/ \
 		RUNTIME_PREFIX=/ \
 		CROSS_COMPILE="$(TARGET_CROSS)" \
+		UCLIB_EXTRA_CFLAGS="$(TARGET_ABI)" \
 		HOSTCC="$(HOSTCC)" \
 		all
 	touch -c $@
@@ -435,6 +438,7 @@ uclibc-menuconfig: dirs $(UCLIBC_DIR)/.config
 		DEVEL_PREFIX=/usr/ \
 		RUNTIME_PREFIX=$(TOOLCHAIN_DIR)/uClibc_dev/ \
 		CROSS_COMPILE="$(TARGET_CROSS)" \
+		UCLIB_EXTRA_CFLAGS="$(TARGET_ABI)" \
 		HOSTCC="$(HOSTCC)" \
 		menuconfig && \
 	touch -c $(UCLIBC_DIR)/.config
@@ -447,6 +451,7 @@ $(STAGING_DIR)/usr/lib/libc.a: $(UCLIBC_DIR)/lib/libc.a
 		DEVEL_PREFIX=/usr/ \
 		RUNTIME_PREFIX=/ \
 		CROSS_COMPILE="$(TARGET_CROSS)" \
+		UCLIB_EXTRA_CFLAGS="$(TARGET_ABI)" \
 		install_runtime install_dev
 	# Install the kernel headers to the staging dir if necessary
 	if [ ! -f $(STAGING_DIR)/usr/include/linux/version.h ]; then \
@@ -477,6 +482,7 @@ $(TARGET_DIR)/lib/libc.so.0: $(STAGING_DIR)/usr/lib/libc.a
 		DEVEL_PREFIX=/usr/ \
 		RUNTIME_PREFIX=/ \
 		CROSS_COMPILE="$(TARGET_CROSS)" \
+		UCLIB_EXTRA_CFLAGS="$(TARGET_ABI)" \
 		install_runtime
 	touch -c $@
 

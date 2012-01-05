@@ -447,7 +447,9 @@ config BR2_powerpc_860
 config BR2_powerpc_970
 	bool "970"
 config BR2_powerpc_8540
-	bool "8540"
+	bool "8540 / e500v1"
+config BR2_powerpc_8548
+	bool "8548 / e500v2"
 comment "e300c2 needs gcc >= 4.4.x"
 config BR2_powerpc_e300c2
 	bool "e300c2"
@@ -457,6 +459,22 @@ config BR2_powerpc_e300c3
 comment "e500mc needs gcc >= 4.4.x"
 config BR2_powerpc_e500mc
 	bool "e500mc"
+endchoice
+
+choice
+	prompt "Target ABI"
+	depends on BR2_powerpc
+	default BR2_powerpc_CLASSIC if BR2_powerpc_e500mc
+	default BR2_powerpc_SPE if BR2_powerpc_8540 || BR2_powerpc_8548
+	help
+	  Application Binary Interface to use
+
+config BR2_powerpc_CLASSIC
+	bool "Classic"
+	depends on !(BR2_powerpc_8540 || BR2_powerpc_8548)
+config BR2_powerpc_SPE
+	bool "SPE"
+	depends on BR2_powerpc_8540 || BR2_powerpc_8548 || BR2_powerpc_e500mc
 endchoice
 
 config BR2_ARCH
@@ -614,6 +632,7 @@ config BR2_GCC_TARGET_TUNE
 	default 860		if BR2_powerpc_860
 	default 970		if BR2_powerpc_970
 	default 8540		if BR2_powerpc_8540
+	default	8548		if BR2_powerpc_8548
 	default e300c2		if BR2_powerpc_e300c2
 	default e300c3		if BR2_powerpc_e300c3
 	default e500mc		if BR2_powerpc_e500mc

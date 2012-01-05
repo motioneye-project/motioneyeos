@@ -47,6 +47,11 @@ EXTRA_GCC_CONFIG_OPTIONS+=--disable-libmudflap
 SOFT_FLOAT_CONFIG_OPTION:=
 endif
 
+# Disable mudflap and enable proper double/long double for SPE ABI
+ifeq ($(BR2_powerpc_SPE),y)
+EXTRA_GCC_CONFIG_OPTIONS+=--disable-libmudflap --enable-e500_double --with-long-double-128
+endif
+
 ifeq ($(BR2_PACKAGE_GCC_TARGET),y)
 EXTRA_TARGET_GCC_CONFIG_OPTIONS:=
 

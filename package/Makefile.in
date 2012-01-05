@@ -31,6 +31,21 @@ ABI=eabi
 endif
 endif
 
+# For FSL PowerPC there's SPE
+ifeq ($(BR2_powerpc_SPE),y)
+ABI=spe
+# MPC8540s are e500v1 with single precision FP
+ifeq ($(BR2_powerpc_8540),y)
+TARGET_ABI+=-mabi=spe -mfloat-gprs=single -Wa,-me500
+endif
+ifeq ($(BR2_powerpc_8548),y)
+TARGET_ABI+=-mabi=spe -mfloat-gprs=double -Wa,-me500x2
+endif
+ifeq ($(BR2_powerpc_e500mc),y)
+TARGET_ABI+=-mabi=spe -mfloat-gprs=double -Wa,-me500mc
+endif
+endif
+
 REAL_GNU_TARGET_NAME=$(ARCH)-unknown-linux-$(LIBC)$(ABI)
 
 STAGING_DIR=$(HOST_DIR)/usr/$(REAL_GNU_TARGET_NAME)/sysroot
@@ -60,7 +75,7 @@ ifeq ($(BR2_DEBUG_3),y)
 TARGET_DEBUGGING=-g3
 endif
 
-TARGET_CFLAGS=$(TARGET_OPTIMIZATION) $(TARGET_DEBUGGING)
+TARGET_CFLAGS=$(TARGET_ABI) $(TARGET_OPTIMIZATION) $(TARGET_DEBUGGING)
 
 ifneq ($(BR2_PREFER_STATIC_LIB),y)
 ifeq ($(BR2_x86_64),y)
