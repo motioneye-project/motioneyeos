@@ -4,7 +4,7 @@
 #
 #############################################################
 
-OPENVPN_VERSION = 2.2.1
+OPENVPN_VERSION = 2.2.2
 OPENVPN_SITE = http://swupdate.openvpn.net/community/releases
 OPENVPN_CONF_OPT = --enable-small --disable-plugins
 
