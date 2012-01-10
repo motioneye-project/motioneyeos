@@ -1,0 +1,31 @@
+[PATCH] fix compile error in ifaddrs() for HAVE_SOCKET_IOCTLS variant
+
+Used on E.G. uClibc. This variant seems to have bitrotten somewhat.
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ netifaces.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+Index: netifaces-0.6/netifaces.c
+===================================================================
+--- netifaces-0.6.orig/netifaces.c
++++ netifaces-0.6/netifaces.c
+@@ -624,7 +624,7 @@
+   if (ioctl (sock, SIOCGIFHWADDR, &ifr) == 0) {
+     found = TRUE;
+ 
+-    if (string_from_sockaddr (ifr->CNAME(ifr_addr), buffer, sizeof (buffer)) == 0) {
++    if (string_from_sockaddr ((struct sockaddr *)&ifr.CNAME(ifr_addr), buffer, sizeof (buffer)) == 0) {
+       PyObject *hwaddr = PyString_FromString (buffer);
+       PyObject *dict = PyDict_New ();
+       PyObject *list = PyList_New (1);
+@@ -633,7 +633,7 @@
+       if (!hwaddr || !dict || !list || !family) {
+         Py_XDECREF (hwaddr);
+         Py_XDECREF (dict);
+-        Py_XDECREF (list)
++        Py_XDECREF (list);
+         Py_XDECREF (family);
+         Py_XDECREF (result);
+         close (sock);
