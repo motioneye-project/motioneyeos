@@ -1,0 +1,7 @@
+config BR2_PACKAGE_SANE_BACKENDS
+	bool "sane-backends"
+	select BR2_PACKAGE_LIBUSB
+	help
+	  SANE - Scanner Access Now Easy
+
+	  http://www.sane-project.org
