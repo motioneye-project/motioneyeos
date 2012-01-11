@@ -9,10 +9,7 @@ config BR2_PACKAGE_SSHFS
 	depends on BR2_LARGEFILE
 	depends on BR2_USE_WCHAR # glib2
 	help
-	  FUSE makes it possible to implement a filesystem in a userspace
-	  program. Features include: simple yet comprehensive API, secure
-	  mounting by non-root users, support for 2.4 and 2.6 Linux
-	  kernels, multi-threaded operation. etc...
+	  FUSE filesystem client based on the SSH File Transfer Protocol.
 
 	  http://fuse.sourceforge.net/sshfs.html
 
