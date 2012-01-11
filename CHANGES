@@ -13,6 +13,9 @@
 
 	Bootloaders: U-Boot: add 2011.12, remove 2010.xx versions.
 
+	Buildroot now calls the stop function of scripts in /etc/init.d at
+	shutdown.
+
 	Updated/fixed packages: barebox, bash, beecrypt, binutils,
 	bison, busybox, cdrkit, coreutils, dbus-glib, diffutils,
 	dropbear, ebtables, ethtool, ffmpeg, flex, fluxbox, gawk,
