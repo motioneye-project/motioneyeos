@@ -28,6 +28,11 @@ ifndef BUSYBOX_CONFIG_FILE
 	BUSYBOX_CONFIG_FILE = $(call qstrip,$(BR2_PACKAGE_BUSYBOX_CONFIG))
 endif
 
+define BUSYBOX_PERMISSIONS
+/bin/busybox			 f 4755	0 0 - - - - -
+/usr/share/udhcpc/default.script f 755  0 0 - - - - -
+endef
+
 # If mdev will be used for device creation enable it and copy S10mdev to /etc/init.d
 ifeq ($(BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_MDEV),y)
 define BUSYBOX_INSTALL_MDEV_SCRIPT
