@@ -89,8 +89,12 @@ endef
 
 XENOMAI_POST_INSTALL_TARGET_HOOKS += XENOMAI_REMOVE_SKINS
 
-# If you use static /dev creation don't forget to update your
-#  device_table_dev.txt
+define XENOMAI_DEVICES
+/dev/rtheap  c  666  0  0  10  254  0  0  -
+/dev/rtscope c  666  0  0  10  253  0  0  -
+/dev/rtp     c  666  0  0  150 0    0  1  32
+endef
+
 ifeq ($(BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_UDEV),y)
 XENOMAI_DEPENDENCIES += udev
 

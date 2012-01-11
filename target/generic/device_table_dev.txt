@@ -141,8 +141,3 @@
 
 # I2C device nodes
 /dev/i2c-	c	666	0	0	89	0	0	1	4
-
-# Xenomai
-#/dev/rtheap     c       666     0       0       10      254     0       0       -
-#/dev/rtscope    c       666     0       0       10      253     0       0       -
-#/dev/rtp        c       666     0       0       150     0       0       1       32
