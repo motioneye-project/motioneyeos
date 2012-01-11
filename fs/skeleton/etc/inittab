@@ -30,8 +30,7 @@ null::sysinit:/bin/hostname -F /etc/hostname
 ::ctrlaltdel:/sbin/reboot
 
 # Stuff to do before rebooting
-null::shutdown:/usr/bin/killall klogd
-null::shutdown:/usr/bin/killall syslogd
+null::shutdown:/etc/init.d/rcK
 null::shutdown:/bin/umount -a -r
 null::shutdown:/sbin/swapoff -a
 
