@@ -1,0 +1,11 @@
+config BR2_PACKAGE_UNIONFS
+	bool "unionfs (FUSE)"
+	select BR2_PACKAGE_LIBFUSE
+	depends on BR2_LARGEFILE
+	help
+	  A userspace unionfs implementation.
+
+	  http://podgorny.cz/moin/UnionFsFuse
+
+comment "unionfs requires a toolchain with LARGEFILE support"
+	depends on !BR2_LARGEFILE
