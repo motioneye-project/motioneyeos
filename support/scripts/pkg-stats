@@ -51,7 +51,7 @@ tr.correct td {
 <tr>
 <td rowspan=\"2\">Id</td>
 <td rowspan=\"2\">Package</td>
-<td>Patch count</td>
+<td rowspan=\"2\">Patch count</td>
 <td colspan=\"2\" class=\"centered\">AUTOTARGETS</td>
 <td colspan=\"2\" class=\"centered\">GENTARGETS</td>
 <td colspan=\"2\" class=\"centered\">CMAKETARGETS</td>
