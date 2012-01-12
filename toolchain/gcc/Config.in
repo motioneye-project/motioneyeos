@@ -68,18 +68,6 @@ config BR2_EXTRA_GCC_CONFIG_OPTIONS
 	help
 	  Any additional gcc configure options you may want to include....
 
-config BR2_GCC_CROSS_JAVA
-       bool
-
-config BR2_INSTALL_LIBGCJ
-	bool "Build/install java compiler and libgcj?"
-	depends on !BR2_avr32 && BR2_INSTALL_LIBSTDCPP
-	select BR2_GCC_CROSS_JAVA
-	select BR2_LARGEFILE
-	depends on BROKEN
-	help
-	  Build/install java compiler and libgcj?
-
 config BR2_INSTALL_OBJC
 	bool "Build/install Objective-C compiler and runtime?"
 	depends on !BR2_avr32

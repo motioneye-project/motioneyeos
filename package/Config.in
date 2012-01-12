@@ -222,7 +222,6 @@ endmenu
 
 menu "Interpreter languages and scripting"
 source "package/haserl/Config.in"
-source "package/java/jamvm/Config.in"
 source "package/lua/Config.in"
 if BR2_PACKAGE_LUA
 menu "LUA libraries/modules"
@@ -326,13 +325,6 @@ source "package/libiqrf/Config.in"
 source "package/libusb/Config.in"
 source "package/libusb-compat/Config.in"
 endmenu
-
-if BROKEN
-menu "Java"
-source "package/java/classpath/Config.in"
-source "package/java/concierge/Config.in"
-endmenu
-endif
 
 menu "Javascript"
 source "package/explorercanvas/Config.in"

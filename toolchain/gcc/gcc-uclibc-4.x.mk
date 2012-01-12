@@ -75,15 +75,11 @@ endif
 ifeq ($(BR2_GCC_CROSS_FORTRAN),y)
 GCC_CROSS_LANGUAGES:=$(GCC_CROSS_LANGUAGES),fortran
 endif
-ifeq ($(BR2_GCC_CROSS_JAVA),y)
-GCC_CROSS_LANGUAGES:=$(GCC_CROSS_LANGUAGES),java
-endif
 ifeq ($(BR2_GCC_CROSS_OBJC),y)
 GCC_CROSS_LANGUAGES:=$(GCC_CROSS_LANGUAGES),objc
 endif
 
 GCC_COMMON_PREREQ=$(wildcard $(BR2_DEPENDS_DIR)/br2/install/libstdcpp*)\
-$(wildcard $(BR2_DEPENDS_DIR)/br2/install/libgcj*)\
 $(wildcard $(BR2_DEPENDS_DIR)/br2/install/objc*)\
 $(wildcard $(BR2_DEPENDS_DIR)/br2/install/fortran*)\
 $(wildcard $(BR2_DEPENDS_DIR)/br2/prefer/ima*)\
@@ -98,10 +94,6 @@ $(wildcard $(BR2_DEPENDS_DIR)/br2/gcc/cross/*)
 
 ifeq ($(BR2_INSTALL_LIBSTDCPP),y)
 GCC_TARGET_LANGUAGES:=$(GCC_TARGET_LANGUAGES),c++
-endif
-
-ifeq ($(BR2_INSTALL_LIBGCJ),y)
-GCC_TARGET_LANGUAGES:=$(GCC_TARGET_LANGUAGES),java
 endif
 
 ifeq ($(BR2_INSTALL_OBJC),y)
@@ -465,17 +457,6 @@ ifeq ($(BR2_GCC_SHARED_LIBGCC),y)
 		$(TARGET_DIR)/usr/lib/
 	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libstdc++.so*
 endif
-endif
-ifeq ($(BR2_INSTALL_LIBGCJ),y)
-	cp -dpf $(HOST_DIR)/usr/$(REAL_GNU_TARGET_NAME)/lib*/libgcj.so* $(STAGING_DIR)/usr/lib/
-	cp -dpf $(HOST_DIR)/usr/$(REAL_GNU_TARGET_NAME)/lib*/libgcj.so* $(TARGET_DIR)/usr/lib/
-	mkdir -p $(STAGING_DIR)/usr/lib/security
-	mkdir -p $(TARGET_DIR)/usr/lib/security
-	cp -dpf $(HOST_DIR)/usr/lib/security/classpath.security \
-		$(STAGING_DIR)/usr/lib/security/
-	cp -dpf $(HOST_DIR)/usr/lib/security/classpath.security \
-		$(TARGET_DIR)/usr/lib/security/
-	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libgcj.so*
 endif
 ifeq ($(BR2_GCC_ENABLE_OPENMP),y)
 	cp -dpf $(HOST_DIR)/usr/$(REAL_GNU_TARGET_NAME)/lib*/libgomp.so* $(STAGING_DIR)/usr/lib/

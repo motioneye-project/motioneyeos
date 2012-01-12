@@ -1,5 +1,0 @@
-menu "Java"
-source "package/java/classpath/Config.in"
-source "package/java/jamvm/Config.in"
-source "package/java/concierge/Config.in"
-endmenu

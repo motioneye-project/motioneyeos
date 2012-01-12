@@ -1,8 +1,0 @@
-config BR2_PACKAGE_JAMVM
-	bool "jamvm"
-        depends on BR2_PACKAGE_CLASSPATH
-	help
-	  JamVM is a new Java Virtual Machine which conforms to
-	  the JVM specification version 2 (blue book).
-
-	  http://jamvm.sourceforge.net/
