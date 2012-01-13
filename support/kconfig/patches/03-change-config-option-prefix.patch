@@ -4,10 +4,10 @@
  menu.c     |    2 +-
  3 files changed, 31 insertions(+), 30 deletions(-)
 
-Index: config/confdata.c
+Index: kconfig/confdata.c
 ===================================================================
---- config.orig/confdata.c
-+++ config/confdata.c
+--- kconfig.orig/confdata.c
++++ kconfig/confdata.c
 @@ -12,6 +12,7 @@
  #include <string.h>
  #include <time.h>
@@ -125,7 +125,7 @@ Index: config/confdata.c
  		break;
  	case S_OTHER:
  	case S_UNKNOWN:
-@@ -844,17 +845,17 @@
+@@ -830,17 +831,17 @@
  			case no:
  				break;
  			case mod:
@@ -151,7 +151,7 @@ Index: config/confdata.c
  				break;
  			}
  			break;
-@@ -864,14 +865,14 @@
+@@ -850,14 +851,14 @@
  		case S_HEX:
  			str = sym_get_string_value(sym);
  			if (str[0] != '0' || (str[1] != 'x' && str[1] != 'X')) {
@@ -170,10 +170,10 @@ Index: config/confdata.c
  			break;
  		default:
  			break;
-Index: config/lkc.h
+Index: kconfig/lkc.h
 ===================================================================
---- config.orig/lkc.h
-+++ config/lkc.h
+--- kconfig.orig/lkc.h
++++ kconfig/lkc.h
 @@ -42,7 +42,7 @@
  #define N_(text) (text)
  
@@ -183,10 +183,10 @@ Index: config/lkc.h
  #endif
  
  #define TF_COMMAND	0x0001
-Index: config/menu.c
+Index: kconfig/menu.c
 ===================================================================
---- config.orig/menu.c
-+++ config/menu.c
+--- kconfig.orig/menu.c
++++ kconfig/menu.c
 @@ -597,7 +597,7 @@
  
  	if (menu_has_help(menu)) {

@@ -4,10 +4,10 @@
  util.c     |   16 +++++++++++++--
  3 files changed, 61 insertions(+), 18 deletions(-)
 
-Index: config/conf.c
+Index: kconfig/conf.c
 ===================================================================
---- config.orig/conf.c
-+++ config/conf.c
+--- kconfig.orig/conf.c
++++ kconfig/conf.c
 @@ -503,7 +503,6 @@
  	}
  	name = av[optind];
@@ -16,10 +16,10 @@ Index: config/conf.c
  	if (sync_kconfig) {
  		name = conf_get_configname();
  		if (stat(name, &tmpstat)) {
-Index: config/confdata.c
+Index: kconfig/confdata.c
 ===================================================================
---- config.orig/confdata.c
-+++ config/confdata.c
+--- kconfig.orig/confdata.c
++++ kconfig/confdata.c
 @@ -71,9 +71,7 @@
  
  const char *conf_get_autoconfig_name(void)
@@ -31,8 +31,8 @@ Index: config/confdata.c
  }
  
  static char *conf_expand_value(const char *in)
-@@ -565,6 +563,9 @@
- 	int use_timestamp = 1;
+@@ -563,6 +561,9 @@
+ 	char dirname[PATH_MAX+1], tmpname[PATH_MAX+1], newname[PATH_MAX+1];
  	char *env;
  
 +	if (!name)
@@ -41,7 +41,7 @@ Index: config/confdata.c
  	dirname[0] = 0;
  	if (name && name[0]) {
  		struct stat st;
-@@ -671,6 +672,7 @@
+@@ -661,6 +662,7 @@
  {
  	const char *name;
  	char path[PATH_MAX+1];
@@ -49,7 +49,7 @@ Index: config/confdata.c
  	char *s, *d, c;
  	struct symbol *sym;
  	struct stat sb;
-@@ -679,8 +681,20 @@
+@@ -669,8 +671,20 @@
  	name = conf_get_autoconfig_name();
  	conf_read_simple(name, S_DEF_AUTO);
  
@@ -72,7 +72,7 @@ Index: config/confdata.c
  
  	res = 0;
  	for_all_symbols(i, sym) {
-@@ -773,9 +787,11 @@
+@@ -763,9 +777,11 @@
  		close(fd);
  	}
  out:
@@ -87,9 +87,9 @@ Index: config/confdata.c
  	return res;
  }
  
-@@ -787,25 +803,38 @@
+@@ -776,25 +792,38 @@
+ 	const char *name;
  	FILE *out, *tristate, *out_h;
- 	time_t now;
  	int i;
 +	char dir[PATH_MAX+1], buf[PATH_MAX+1];
 +	char *s;
@@ -130,7 +130,7 @@ Index: config/confdata.c
  	if (!out_h) {
  		fclose(out);
  		fclose(tristate);
-@@ -885,19 +914,22 @@
+@@ -871,19 +900,22 @@
  	name = getenv("KCONFIG_AUTOHEADER");
  	if (!name)
  		name = "include/generated/autoconf.h";
@@ -156,11 +156,11 @@ Index: config/confdata.c
  		return 1;
  
  	return 0;
-Index: config/util.c
+Index: kconfig/util.c
 ===================================================================
---- config.orig/util.c
-+++ config/util.c
-@@ -147,6 +147,8 @@
+--- kconfig.orig/util.c
++++ kconfig/util.c
+@@ -32,6 +32,8 @@
  /* write a dependency file as used by kbuild to track dependencies */
  int file_write_dep(const char *name)
  {
@@ -169,7 +169,7 @@ Index: config/util.c
  	struct symbol *sym, *env_sym;
  	struct expr *e;
  	struct file *file;
-@@ -154,7 +156,16 @@
+@@ -39,7 +41,16 @@
  
  	if (!name)
  		name = ".kconfig.d";
@@ -187,13 +187,13 @@ Index: config/util.c
  	if (!out)
  		return 1;
  	fprintf(out, "deps_config := \\\n");
-@@ -185,7 +196,8 @@
+@@ -70,7 +81,8 @@
  
  	fprintf(out, "\n$(deps_config): ;\n");
  	fclose(out);
 -	rename("..config.tmp", name);
 +	sprintf(buf2, "%s%s", dir, name);
 +	rename(buf, buf2);
- 	return write_make_deps(NULL);
+ 	return 0;
  }
  

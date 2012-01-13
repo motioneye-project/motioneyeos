@@ -29,121 +29,6 @@ struct file *file_lookup(const char *name)
 	return file;
 }
 
-static char* br2_symbol_printer(const char * const in)
-{
-	ssize_t i, j, len = strlen(in);
-	char *ret;
-	if (len < 1)
-		return NULL;
-	ret = malloc(len+1);
-	if (!ret) {
-		printf("Out of memory!");
-		exit(1);
-	}
-	memset(ret, 0, len+1);
-	i = j = 0;
-	if (strncmp("BR2_", in, 4) == 0)
-		i += 4;
-	if (strncmp("PACKAGE_", in + i, 8) == 0)
-		i += 8;
-	else if (strncmp("TARGET_", in + i, 7) == 0)
-		i += 7;
-	while (i <= len)
-		ret[j++] = tolower(in[i++]);
-	return ret;
-}
-
-/* write dependencies of the individual config-symbols */
-static int write_make_deps(const char *name)
-{
-	char *str;
-	char dir[PATH_MAX+1], buf[PATH_MAX+1], buf2[PATH_MAX+1];
-	struct menu *menu;
-	struct symbol *sym;
-	struct property *prop, *p;
-	unsigned done;
-	const char * const name_tmp = "..make.deps.tmp";
-	FILE *out;
-	if (!name)
-		name = ".auto.deps";
-
-	strcpy(dir, conf_get_configname());
-	str = strrchr(dir, '/');
-	if (str)
-		str[1] = 0;
-	else
-		dir[0] = 0;
-
-	sprintf(buf, "%s%s", dir, name_tmp);
-	out = fopen(buf, "w");
-	if (!out)
-		return 1;
-	fprintf(out, "# ATTENTION! This does not handle 'depends', just 'select'! \n"
-		"# See support/kconfig/util.c write_make_deps()\n#\n");
-	menu = &rootmenu;//rootmenu.list;
-	while (menu) {
-		sym = menu->sym;
-		if (!sym) {
-			if (!menu_is_visible(menu))
-				goto next;
-		} else if (!(sym->flags & SYMBOL_CHOICE)) {
-			sym_calc_value(sym);
-			if (sym->type == S_BOOLEAN
-			    && sym_get_tristate_value(sym) != no) {
-			    done = 0;
-			    for_all_prompts(sym, prop) {
-			        struct expr *e;
-//printf("\nname=%s\n", sym->name);
-			        for_all_properties(sym, p, P_SELECT) {
-				    e = p->expr;
-				    if (e && e->left.sym->name) {
-				        if (!done) {
-					    fprintf(out, "%s: $(BASE_TARGETS)", br2_symbol_printer(sym->name));
-					    done = 1;
-					}
-//printf("SELECTS %s\n",e->left.sym->name);
-					fprintf(out, " %s",br2_symbol_printer(e->left.sym->name));
-				    }
-				}
-				if (done)
-				    fprintf(out, "\n");
-#if 0
-				e = sym->rev_dep.expr;
-				if (e && e->type == E_SYMBOL
-					&& e->left.sym->name) {
-				    fprintf(out, "%s: %s", br2_symbol_printer(e->left.sym->name),
-						br2_symbol_printer(sym->name));
-printf("%s is Selected BY: %s", sym->name, e->left.sym->name);
-				}
-#endif
-			    }
-			}
-		}
-next:
-		if (menu->list) {
-			menu = menu->list;
-			continue;
-		}
-		if (menu->next)
-			menu = menu->next;
-		else while ((menu = menu->parent)) {
-			if (menu->next) {
-				menu = menu->next;
-				break;
-			}
-		}
-	}
-	fclose(out);
-	sprintf(buf2, "%s%s", dir, name);
-	rename(buf, buf2);
-	printf(_("#\n"
-		 "# make dependencies written to %s\n"
-		 "# ATTENTION buildroot devels!\n"
-		 "# See top of this file before playing with this auto-preprequisites!\n"
-		 "#\n"), name);
-	return 0;
-}
-
 /* write a dependency file as used by kbuild to track dependencies */
 int file_write_dep(const char *name)
 {
@@ -198,7 +83,7 @@ int file_write_dep(const char *name)
 	fclose(out);
 	sprintf(buf2, "%s%s", dir, name);
 	rename(buf, buf2);
-	return write_make_deps(NULL);
+	return 0;
 }
 
 

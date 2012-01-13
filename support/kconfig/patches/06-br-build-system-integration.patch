@@ -1,40 +1,35 @@
 ---
- Makefile |   14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ Makefile |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-Index: config/Makefile
+Index: kconfig/Makefile
 ===================================================================
---- config.orig/Makefile
-+++ config/Makefile
-@@ -174,18 +174,30 @@
- ifeq ($(MAKECMDGOALS),nconfig)
+--- kconfig.orig/Makefile
++++ kconfig/Makefile
+@@ -175,11 +175,11 @@
+ 
+ hostprogs-y := conf
+ 
+-ifeq ($(MAKECMDGOALS),nconfig)
++ifeq ($(MAKECMDGOALS),nconf)
  	hostprogs-y += nconf
  endif
-+ifeq ($(findstring nconf,$(MAKECMDGOALS)),nconf)
-+       hostprogs-y += nconf
-+endif
  
- ifeq ($(MAKECMDGOALS),menuconfig)
+-ifeq ($(MAKECMDGOALS),menuconfig)
++ifeq ($(MAKECMDGOALS),mconf)
  	hostprogs-y += mconf
  endif
-+ifeq ($(findstring mconf,$(MAKECMDGOALS)),mconf)
-+       hostprogs-y += mconf
-+endif
  
- ifeq ($(MAKECMDGOALS),xconfig)
+@@ -187,10 +187,10 @@
+ 	hostprogs-y += kxgettext
+ endif
+ 
+-ifeq ($(MAKECMDGOALS),xconfig)
++ifeq ($(MAKECMDGOALS),qconf)
  	qconf-target := 1
  endif
-+ifeq ($(findstring qconf,$(MAKECMDGOALS)),qconf)
-+	qconf-target := 1
-+endif
-+
- ifeq ($(MAKECMDGOALS),gconfig)
+-ifeq ($(MAKECMDGOALS),gconfig)
++ifeq ($(MAKECMDGOALS),gconf)
  	gconf-target := 1
  endif
--
-+ifeq ($(findstring gconf,$(MAKECMDGOALS)),gconf)
-+	gconf-target := 1
-+endif
  
- ifeq ($(qconf-target),1)
- qconf-cxxobjs	:= qconf.o

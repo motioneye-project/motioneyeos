@@ -6,7 +6,7 @@ Index: kconfig/gconf.c
 ===================================================================
 --- kconfig.orig/gconf.c
 +++ kconfig/gconf.c
-@@ -1521,7 +1521,7 @@
+@@ -1525,7 +1525,7 @@
  	/* Determine GUI path */
  	env = getenv(SRCTREE);
  	if (env)
