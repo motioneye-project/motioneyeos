@@ -105,4 +105,4 @@ config BR2_TARGET_OPTIMIZATION
 config BR2_TARGET_LDFLAGS
 	string "Target linker options"
 	help
-	  Extra options to pass to the linker when buiding for the target.
+	  Extra options to pass to the linker when building for the target.
