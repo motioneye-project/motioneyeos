@@ -240,7 +240,7 @@ config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_POWERPC201009
 	select BR2_INSTALL_LIBSTDCPP
 	help
 	  Sourcery CodeBench toolchain for the PowerPC architecture,
-	  from Sourcery CodeBench. It uses gcc 4.5.1, binutils 2.20,
+	  from Mentor Graphics. It uses gcc 4.5.1, binutils 2.20,
 	  glibc 2.11, gdb 7.2.50 and kernel headers 2.6.35.2. It has
 	  support for the following variants:
             - 603 glibc, 32 bits
