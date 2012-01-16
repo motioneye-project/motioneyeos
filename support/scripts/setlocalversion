@@ -56,9 +56,9 @@ if hgid=`hg id 2>/dev/null`; then
 fi
 
 # Check for svn and a svn repo.
-if rev=`LANG=C svn info 2>/dev/null | grep '^Last Changed Rev'`; then
+if rev=`LC_ALL=C svn info 2>/dev/null | grep '^Last Changed Rev'`; then
 	rev=`echo $rev | awk '{print $NF}'`
-	changes=`LANG=C svn status 2>/dev/null | grep '^[AMD]' | wc -l`
+	changes=`LC_ALL=C svn status 2>/dev/null | grep '^[AMD]' | wc -l`
 
 	# Are there uncommitted changes?
 	if [ $changes != 0 ]; then
