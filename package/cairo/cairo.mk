@@ -79,12 +79,4 @@ else
 	CAIRO_CONF_OPT += --disable-svg
 endif
 
-HOST_CAIRO_CONF_OPT = \
-		--enable-ps \
-		--enable-pdf \
-		--enable-xlib \
-		--with-x \
-		--disable-png \
-		--disable-svg
-
 $(eval $(call AUTOTARGETS))
