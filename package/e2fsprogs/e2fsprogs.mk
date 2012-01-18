@@ -28,6 +28,8 @@ E2FSPROGS_MAKE_OPT = \
 define HOST_E2FSPROGS_INSTALL_CMDS
  $(HOST_MAKE_ENV) $(MAKE) -C $(@D) install install-libs
 endef
+# we don't have a host-util-linux
+HOST_E2FSPROGS_DEPENDENCIES = host-pkg-config
 
 # binaries to keep or remove
 E2FSPROGS_BINTARGETS_$(BR2_PACKAGE_E2FSPROGS_BADBLOCKS) += usr/sbin/badblocks
