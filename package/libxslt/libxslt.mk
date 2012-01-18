@@ -8,17 +8,17 @@ LIBXSLT_VERSION = 1.1.26
 LIBXSLT_SITE = ftp://xmlsoft.org/libxslt
 LIBXSLT_INSTALL_STAGING = YES
 
-# If we have enabled libgcrypt then use it, else disable crypto support.
-ifeq ($(BR2_PACKAGE_LIBGCRYPT),y)
-LIBXSLT_DEPENDENCIES_EXTRA=libgcrypt
-else
-LIBXSLT_XTRA_CONF_OPT = --without-crypto
-endif
-
-LIBXSLT_CONF_OPT = --with-gnu-ld $(LIBXSLT_XTRA_CONF_OPT) --without-debug \
+LIBXSLT_CONF_OPT = --with-gnu-ld --without-debug \
 		--without-python --with-libxml-prefix=$(STAGING_DIR)/usr/
 
-LIBXSLT_DEPENDENCIES = libxml2 $(LIBXSLT_DEPENDENCIES_EXTRA)
+LIBXSLT_DEPENDENCIES = libxml2
+
+# If we have enabled libgcrypt then use it, else disable crypto support.
+ifeq ($(BR2_PACKAGE_LIBGCRYPT),y)
+LIBXSLT_DEPENDENCIES += libgcrypt
+else
+LIBXSLT_CONF_OPT = --without-crypto
+endif
 
 HOST_LIBXSLT_CONF_OPT = --without-debug --without-python --without-crypto
 
