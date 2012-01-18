@@ -17,6 +17,7 @@ HOST_PKG_CONFIG_CONF_OPT = \
 		--disable-static
 
 HOST_PKG_CONFIG_AUTORECONF = YES
+HOST_PKG_CONFIG_DEPENDENCIES =
 
 $(eval $(call AUTOTARGETS))
 $(eval $(call AUTOTARGETS,host))
