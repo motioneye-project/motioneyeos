@@ -13,6 +13,9 @@ ifeq ($(BR2_PACKAGE_BUSYBOX),y)
 GAWK_DEPENDENCIES += busybox
 endif
 
+# we don't have a host-busybox
+HOST_GAWK_DEPENDENCIES =
+
 define GAWK_CREATE_SYMLINK
 	ln -sf /usr/bin/gawk $(TARGET_DIR)/usr/bin/awk
 endef
