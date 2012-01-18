@@ -40,6 +40,8 @@ HOST_BINUTILS_CONF_OPT = --disable-multilib --disable-werror \
 			$(BR2_CONFIGURE_STAGING_SYSROOT) \
 			$(BINUTILS_EXTRA_CONFIG_OPTIONS)
 
+HOST_BINUTILS_DEPENDENCIES =
+
 # We just want libbfd and libiberty, not the full-blown binutils in staging
 define BINUTILS_INSTALL_STAGING_CMDS
 	$(MAKE) -C $(@D)/bfd DESTDIR=$(STAGING_DIR) install
