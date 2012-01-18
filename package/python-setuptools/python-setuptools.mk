@@ -8,8 +8,6 @@ PYTHON_SETUPTOOLS_VERSION = 0.6c11
 PYTHON_SETUPTOOLS_SOURCE  = setuptools-$(PYTHON_SETUPTOOLS_VERSION).tar.gz
 PYTHON_SETUPTOOLS_SITE    = http://pypi.python.org/packages/source/s/setuptools
 PYTHON_SETUPTOOLS_DEPENDENCIES = python
-HOST_PYTHON_SETUPTOOLS_DEPENDENCIES = host-python
-
 
 define HOST_PYTHON_SETUPTOOLS_BUILD_CMDS
 	(cd $(@D); $(HOST_DIR)/usr/bin/python setup.py build)
