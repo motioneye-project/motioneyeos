@@ -14,6 +14,8 @@ FLEX_INSTALL_STAGING = YES
 FLEX_DEPENDENCIES = \
 	$(if $(BR2_PACKAGE_GETTEXT),gettext) \
 	$(if $(BR2_PACKAGE_LIBINTL),libintl)
+# we don't have a host-gettext/libintl
+HOST_FLEX_DEPENDENCIES =
 
 # lex -> flex
 define FLEX_INSTALL_LEX
