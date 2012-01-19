@@ -17,7 +17,7 @@ LIBXSLT_DEPENDENCIES = libxml2
 ifeq ($(BR2_PACKAGE_LIBGCRYPT),y)
 LIBXSLT_DEPENDENCIES += libgcrypt
 else
-LIBXSLT_CONF_OPT = --without-crypto
+LIBXSLT_CONF_OPT += --without-crypto
 endif
 
 HOST_LIBXSLT_CONF_OPT = --without-debug --without-python --without-crypto
