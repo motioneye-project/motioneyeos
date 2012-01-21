@@ -442,12 +442,13 @@ $(BUILD_DIR)/%/.stamp_cleaned:
 	rm -f $(@D)/.stamp_built
 
 # Uninstall package from target and staging
+# Uninstall commands tend to fail, so remove the stamp files first
 $(BUILD_DIR)/%/.stamp_uninstalled:
 	@$(call MESSAGE,"Uninstalling")
-	$($(PKG)_UNINSTALL_STAGING_CMDS)
 	rm -f $($(PKG)_TARGET_INSTALL_STAGING)
-	$($(PKG)_UNINSTALL_TARGET_CMDS)
 	rm -f $($(PKG)_TARGET_INSTALL_TARGET)
+	$($(PKG)_UNINSTALL_STAGING_CMDS)
+	$($(PKG)_UNINSTALL_TARGET_CMDS)
 
 # Remove package sources
 $(BUILD_DIR)/%/.stamp_dircleaned:

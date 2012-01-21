@@ -285,10 +285,13 @@ endif
 #
 # Uninstall from target step. Only define it if not already defined
 # by the package .mk file.
+# Autotools Makefiles do uninstall with ( cd ...; rm -f ... )
+# Since we remove a lot of directories in target-finalize, this is likely
+# to fail.  Therefore add -k flag.
 #
 ifndef $(2)_UNINSTALL_TARGET_CMDS
 define $(2)_UNINSTALL_TARGET_CMDS
-	$$(TARGET_MAKE_ENV) $$($$(PKG)_MAKE_ENV) $$($$(PKG)_MAKE) $$($$(PKG)_UNINSTALL_TARGET_OPT) -C $$($$(PKG)_SRCDIR)
+	$$(TARGET_MAKE_ENV) $$($$(PKG)_MAKE_ENV) $$($$(PKG)_MAKE) -k $$($$(PKG)_UNINSTALL_TARGET_OPT) -C $$($$(PKG)_SRCDIR)
 endef
 endif
 
