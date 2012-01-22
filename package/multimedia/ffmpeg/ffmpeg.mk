@@ -123,9 +123,14 @@ else
 FFMPEG_CONF_OPT += --disable-zlib
 endif
 
+ifeq ($(BR2_i386)$(BR2_x86_64),y)
 # MMX on is default for x86, disable it for lowly x86-type processors
 ifeq ($(BR2_x86_i386)$(BR2_x86_i486)$(BR2_x86_i586)$(BR2_x86_i686)$(BR2_x86_pentiumpro)$(BR2_x86_geode),y)
 FFMPEG_CONF_OPT += --disable-mmx
+else
+# If it is enabled, nasm is required
+FFMPEG_DEPENDENCIES += host-nasm
+endif
 endif
 
 # ARM defaults to v5: clear if less, add extra if more
