@@ -3,11 +3,12 @@
 # libv4l
 #
 #############################################################
-LIBV4L_VERSION = 0.8.3
+LIBV4L_VERSION = 0.8.5
 LIBV4L_SOURCE = v4l-utils-$(LIBV4L_VERSION).tar.bz2
 LIBV4L_SITE = http://linuxtv.org/downloads/v4l-utils/
 LIBV4L_INSTALL_STAGING = YES
 LIBV4L_MAKE_OPTS = PREFIX=/usr
+LIBV4L_DEPENDENCIES = jpeg
 
 LIBV4L_DIRS_y += lib
 LIBV4L_DIRS_$(BR2_PACKAGE_LIBV4L_DECODE_TM6000)	+= utils/decode_tm6000
