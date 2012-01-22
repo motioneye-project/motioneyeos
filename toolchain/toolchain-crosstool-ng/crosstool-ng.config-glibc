@@ -230,12 +230,12 @@ CT_BINUTILS_EXTRA_CONFIG_ARRAY=""
 # C compiler
 #
 CT_CC="gcc"
-CT_CC_VERSION="4.4.3"
+CT_CC_VERSION="4.4.6"
 CT_CC_gcc=y
-# CT_CC_V_4_4_6 is not set
+CT_CC_V_4_4_6=y
 # CT_CC_V_4_4_5 is not set
 # CT_CC_V_4_4_4 is not set
-CT_CC_V_4_4_3=y
+# CT_CC_V_4_4_3 is not set
 # CT_CC_V_4_4_2 is not set
 # CT_CC_V_4_4_1 is not set
 # CT_CC_V_4_4_0 is not set
