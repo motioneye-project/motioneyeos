@@ -272,6 +272,7 @@ endmenu
 menu "Database"
 source "package/berkeleydb/Config.in"
 source "package/mysql_client/Config.in"
+source "package/sqlcipher/Config.in"
 source "package/sqlite/Config.in"
 endmenu
 
