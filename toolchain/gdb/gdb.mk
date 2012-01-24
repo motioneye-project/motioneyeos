@@ -195,6 +195,8 @@ $(GDB_HOST_DIR)/.configured: $(GDB_DIR)/.unpacked
 	touch $@
 
 $(GDB_HOST_DIR)/gdb/gdb: $(GDB_HOST_DIR)/.configured
+	# force ELF support since it fails due to BFD linking problems
+	gdb_cv_var_elf=yes \
 	$(MAKE) -C $(GDB_HOST_DIR)
 	strip $(GDB_HOST_DIR)/gdb/gdb
 
