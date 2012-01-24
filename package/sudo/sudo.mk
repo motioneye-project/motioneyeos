@@ -4,7 +4,7 @@
 #
 #############################################################
 
-SUDO_VERSION = 1.7.7
+SUDO_VERSION = 1.7.8p1
 SUDO_SITE    = http://www.sudo.ws/sudo/dist
 
 SUDO_CONF_OPT = \
