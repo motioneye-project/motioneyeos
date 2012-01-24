@@ -1,0 +1,46 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release:	4.2
+Patch-ID:	bash42-016
+
+Bug-Reported-by:	Martin von Gagern <Martin.vGagern@gmx.net>
+Bug-Reference-ID:	<4E43AD9E.8060501@gmx.net>
+Bug-Reference-URL:	http://lists.gnu.org/archive/html/bug-bash/2011-08/msg00141.html
+
+Bug-Description:
+
+Bash should not check for mail while executing the `eval' builtin.
+
+Patch (apply with `patch -p0'):
+
+*** ../bash-4.2-patched/parse.y	Fri Feb 25 12:07:41 2011
+--- ./parse.y	Thu Aug 11 19:02:26 2011
+***************
+*** 2500,2504 ****
+  	 is the mail alarm reset; nothing takes place in check_mail ()
+  	 except the checking of mail.  Please don't change this. */
+!       if (prompt_is_ps1 && time_to_check_mail ())
+  	{
+  	  check_mail ();
+--- 2498,2502 ----
+  	 is the mail alarm reset; nothing takes place in check_mail ()
+  	 except the checking of mail.  Please don't change this. */
+!       if (prompt_is_ps1 && parse_and_execute_level == 0 && time_to_check_mail ())
+  	{
+  	  check_mail ();
+*** ../bash-4.2-patched/patchlevel.h	Sat Jun 12 20:14:48 2010
+--- ./patchlevel.h	Thu Feb 24 21:41:34 2011
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 15
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 16
+  
+  #endif /* _PATCHLEVEL_H_ */

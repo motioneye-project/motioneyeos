@@ -1,0 +1,81 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release:	4.2
+Patch-ID:	bash42-015
+
+Bug-Reported-by:	<dnade.ext@orange-ftgroup.com>
+Bug-Reference-ID:	<728_1312188080_4E3666B0_728_118711_1_3B5D3E0F95CC5C478D6500CDCE8B691F7AAAA4AA3D@PUEXCB2B.nanterre.francetelecom.fr>
+Bug-Reference-URL:	http://lists.gnu.org/archive/html/bug-bash/2011-08/msg00000.html
+
+Bug-Description:
+
+When in a context where arithmetic evaluation is not taking place, the
+evaluator should not check for division by 0.
+
+Patch (apply with `patch -p0'):
+
+*** ../bash-4.2-patched/expr.c	2010-12-21 11:12:13.000000000 -0500
+--- ./expr.c	2011-08-02 20:58:28.000000000 -0400
+***************
+*** 477,480 ****
+--- 481,492 ----
+        if (special)
+  	{
++ 	  if ((op == DIV || op == MOD) && value == 0)
++ 	    {
++ 	      if (noeval == 0)
++ 		evalerror (_("division by 0"));
++ 	      else
++ 	        value = 1;
++ 	    }
++ 
+  	  switch (op)
+  	    {
+***************
+*** 483,493 ****
+  	      break;
+  	    case DIV:
+- 	      if (value == 0)
+- 		evalerror (_("division by 0"));
+  	      lvalue /= value;
+  	      break;
+  	    case MOD:
+- 	      if (value == 0)
+- 		evalerror (_("division by 0"));
+  	      lvalue %= value;
+  	      break;
+--- 495,501 ----
+***************
+*** 805,809 ****
+  
+        if (((op == DIV) || (op == MOD)) && (val2 == 0))
+! 	evalerror (_("division by 0"));
+  
+        if (op == MUL)
+--- 813,822 ----
+  
+        if (((op == DIV) || (op == MOD)) && (val2 == 0))
+! 	{
+! 	  if (noeval == 0)
+! 	    evalerror (_("division by 0"));
+! 	  else
+! 	    val2 = 1;
+! 	}
+  
+        if (op == MUL)
+*** ../bash-4.2-patched/patchlevel.h	Sat Jun 12 20:14:48 2010
+--- ./patchlevel.h	Thu Feb 24 21:41:34 2011
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 14
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 15
+  
+  #endif /* _PATCHLEVEL_H_ */

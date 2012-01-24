@@ -1,0 +1,74 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release:	4.2
+Patch-ID:	bash42-018
+
+Bug-Reported-by:	Thomas Cort <tcort@minix3.org>
+Bug-Reference-ID:	<BANLkTik-ebGGw3k_1YtB=RyfV1bsqdxC_g@mail.gmail.com>
+Bug-Reference-URL:	http://lists.gnu.org/archive/html/bug-bash/2011-06/msg00110.html
+
+Bug-Description:
+
+Bash fails to compile unless JOB_CONTROL is defined.
+
+Patch (apply with `patch -p0'):
+
+*** ../bash-4.2-patched/execute_cmd.c	2011-02-09 17:32:25.000000000 -0500
+--- ./execute_cmd.c	2011-11-06 15:12:48.000000000 -0500
+***************
+*** 2197,2200 ****
+--- 2315,2319 ----
+      cmd->flags |= CMD_IGNORE_RETURN;
+  
++ #if defined (JOB_CONTROL)
+    lastpipe_flag = 0;
+    begin_unwind_frame ("lastpipe-exec");
+***************
+*** 2216,2228 ****
+  	  add_unwind_protect (lastpipe_cleanup, lastpipe_jid);
+  	}
+!       cmd->flags |= CMD_LASTPIPE;
+      }	  
+    if (prev >= 0)
+      add_unwind_protect (close, prev);
+  
+    exec_result = execute_command_internal (cmd, asynchronous, prev, pipe_out, fds_to_close);
+  
+    if (lstdin > 0)
+      restore_stdin (lstdin);
+  
+    if (prev >= 0)
+--- 2335,2351 ----
+  	  add_unwind_protect (lastpipe_cleanup, lastpipe_jid);
+  	}
+!       if (cmd)
+! 	cmd->flags |= CMD_LASTPIPE;
+      }	  
+    if (prev >= 0)
+      add_unwind_protect (close, prev);
++ #endif
+  
+    exec_result = execute_command_internal (cmd, asynchronous, prev, pipe_out, fds_to_close);
+  
++ #if defined (JOB_CONTROL)
+    if (lstdin > 0)
+      restore_stdin (lstdin);
++ #endif
+  
+    if (prev >= 0)
+*** ../bash-4.2-patched/patchlevel.h	Sat Jun 12 20:14:48 2010
+--- ./patchlevel.h	Thu Feb 24 21:41:34 2011
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 17
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 18
+  
+  #endif /* _PATCHLEVEL_H_ */
