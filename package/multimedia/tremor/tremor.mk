@@ -4,12 +4,12 @@
 #
 ############################################################
 
-TREMOR_SITE:=http://svn.xiph.org/trunk/Tremor/
-TREMOR_SITE_METHOD:=svn
-TREMOR_VERSION:=16259
+TREMOR_SITE = http://svn.xiph.org/trunk/Tremor/
+TREMOR_SITE_METHOD = svn
+TREMOR_VERSION = 18153
 
 TREMOR_AUTORECONF = YES
 TREMOR_INSTALL_STAGING = YES
-TREMOR_INSTALL_TARGET = YES
+TREMOR_DEPENDENCIES = libogg
 
 $(eval $(call AUTOTARGETS))
