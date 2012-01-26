@@ -249,12 +249,12 @@ config BR2_PACKAGE_SAMBA_AVAHI
 	default y
 	depends on BR2_PACKAGE_SAMBA
 	depends on BR2_PACKAGE_AVAHI_DAEMON
-	depends on BR2_PACKAGE_DBUS
+	select BR2_PACKAGE_DBUS
 	help
 	  Include support for avahi
 
-comment "support avahi - disabled (requires avahi-daemon/dbus)"
-	depends on !BR2_PACKAGE_AVAHI_DAEMON || !BR2_PACKAGE_DBUS
+comment "support avahi - disabled (requires avahi-daemon)"
+	depends on !BR2_PACKAGE_AVAHI_DAEMON
 
 config BR2_PACKAGE_SAMBA_GAMIN
 	bool "support gamin"
