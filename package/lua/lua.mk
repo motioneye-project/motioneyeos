@@ -21,6 +21,10 @@ else
 	LUA_MYCFLAGS += -DLUA_USE_POSIX
 endif
 
+HOST_LUA_DEPENDENCIES =
+HOST_LUA_MYCFLAGS = -fPIC -DLUA_USE_DLOPEN -DLUA_USE_POSIX
+HOST_LUA_MYLIBS = -ldl
+
 define LUA_BUILD_CMDS
 	sed -i -e 's/-O2//' $(@D)/src/Makefile
 	sed -i -e 's/\/usr\/local/\/usr/' $(@D)/etc/lua.pc
@@ -28,6 +32,15 @@ define LUA_BUILD_CMDS
 	CC="$(TARGET_CC)" RANLIB="$(TARGET_RANLIB)" \
 	MYCFLAGS="$(TARGET_CFLAGS) $(LUA_MYCFLAGS)" \
 	MYLIBS="$(LUA_MYLIBS)" AR="$(TARGET_CROSS)ar rcu" \
+	PKG_VERSION=$(LUA_VERSION) -C $(@D)/src all
+endef
+
+define HOST_LUA_BUILD_CMDS
+	sed -i -e 's/-O2//' $(@D)/src/Makefile
+	sed -i -e 's/\/usr\/local/\/usr/' $(@D)/etc/lua.pc
+	$(MAKE) \
+	MYCFLAGS="$(HOST_LUA_MYCFLAGS)" \
+	MYLIBS="$(HOST_LUA_MYLIBS)" \
 	PKG_VERSION=$(LUA_VERSION) -C $(@D)/src all
 endef
 
@@ -94,6 +107,21 @@ define LUA_INSTALL_TARGET_CMDS
 	$(LUA_INSTALL_DEVFILES)
 endef
 
+define HOST_LUA_INSTALL_CMDS
+	$(INSTALL) $(@D)/src/lua $(HOST_DIR)/usr/bin
+	$(INSTALL) $(@D)/src/luac $(HOST_DIR)/usr/bin
+	$(INSTALL) $(@D)/src/liblua.so.$(LUA_VERSION) \
+		$(HOST_DIR)/usr/lib/liblua.so.$(LUA_VERSION)
+	ln -sf liblua.so.$(LUA_VERSION) $(HOST_DIR)/usr/lib/liblua.so
+	$(INSTALL) $(@D)/src/liblua.a $(HOST_DIR)/usr/lib/liblua.a
+	$(INSTALL) -m 0644 -D $(@D)/etc/lua.pc \
+		$(HOST_DIR)/usr/lib/pkgconfig/lua.pc
+	$(INSTALL) $(@D)/src/lua.h $(HOST_DIR)/usr/include
+	$(INSTALL) $(@D)/src/luaconf.h $(HOST_DIR)/usr/include
+	$(INSTALL) $(@D)/src/lualib.h $(HOST_DIR)/usr/include
+	$(INSTALL) $(@D)/src/lauxlib.h $(HOST_DIR)/usr/include
+endef
+
 LUA_INSTALLED_FILES = \
 	/usr/include/lua.h \
 	/usr/include/luaconf.h \
@@ -117,8 +145,19 @@ define LUA_UNINSTALL_TARGET_CMDS
 	done
 endef
 
+define HOST_LUA_UNINSTALL_TARGET_CMDS
+	for i in $(LUA_INSTALLED_FILES); do \
+		rm -f $(HOST_DIR)$$i; \
+	done
+endef
+
 define LUA_CLEAN_CMDS
 	-$(MAKE) -C $(@D) clean
 endef
 
+define HOST_LUA_CLEAN_CMDS
+	-$(MAKE) -C $(@D) clean
+endef
+
 $(eval $(call GENTARGETS))
+$(eval $(call GENTARGETS,host))
