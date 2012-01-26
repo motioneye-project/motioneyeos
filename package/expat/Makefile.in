@@ -1,3 +1,0 @@
-ifeq ($(BR2_PACKAGE_EXPAT),y)
-TARGETS+=expat
-endif
