@@ -4,7 +4,7 @@
 #
 #############################################################
 
-NTP_VERSION = 4.2.6p4
+NTP_VERSION = 4.2.6p5
 NTP_SITE = http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2
 NTP_CONF_ENV = ac_cv_lib_md5_MD5Init=no
 
