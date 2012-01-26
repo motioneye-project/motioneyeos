@@ -47,6 +47,9 @@ config BR2_PACKAGE_E2FSPROGS_E2UNDO
 	bool "e2undo"
 	default y
 
+config BR2_PACKAGE_E2FSPROGS_E4DEFRAG
+	bool "e4defrag"
+
 config BR2_PACKAGE_E2FSPROGS_FILEFRAG
 	bool "filefrag"
 	default y
