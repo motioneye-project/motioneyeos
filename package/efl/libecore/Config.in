@@ -1,0 +1,42 @@
+config BR2_PACKAGE_LIBECORE
+	bool "libecore"
+	select BR2_PACKAGE_LIBEINA
+	help
+	  Ecore is the event/X abstraction layer that makes doing
+	  selections, Xdnd, general X stuff, event loops, timeouts and
+	  idle handlers fast, optimized, and convenient.
+
+	  http://trac.enlightenment.org/e/wiki/Ecore
+
+if BR2_PACKAGE_LIBECORE
+
+config BR2_PACKAGE_LIBECORE_DIRECTFB
+	bool "libecore DirectFB support"
+	depends on BR2_PACKAGE_DIRECTFB
+	default y
+
+config BR2_PACKAGE_LIBECORE_FB
+	bool "libecore framebuffer support"
+
+config BR2_PACKAGE_LIBECORE_SDL
+	bool "libecore SDL support"
+	select BR2_PACKAGE_SDL
+
+config BR2_PACKAGE_LIBECORE_X
+	bool "libecore X support"
+	depends on BR2_PACKAGE_XORG7
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBXEXT
+
+config BR2_PACKAGE_LIBECORE_X_XCB
+	bool "libecore XCB support"
+	depends on BR2_PACKAGE_XORG7
+	select BR2_PACKAGE_LIBXCB
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XCB_UTIL
+
+config BR2_PACKAGE_LIBECORE_EVAS
+	bool "libecore Evas support"
+	select BR2_PACKAGE_LIBEVAS
+
+endif # BR2_PACKAGE_LIBECORE
