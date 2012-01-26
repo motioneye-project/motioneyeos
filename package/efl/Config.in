@@ -1,0 +1,16 @@
+menuconfig BR2_PACKAGE_EFL
+	bool "Enlightenment Foundation Libraries"
+	depends on BR2_USE_WCHAR
+	help
+	  Enlightenment Foundation Libraries
+
+	  http://enlightenment.org
+
+if BR2_PACKAGE_EFL
+
+source "package/efl/libeina/Config.in"
+
+endif # BR2_PACKAGE_EFL
+
+comment "EFL requires WCHAR support in toolchain"
+	depends on !BR2_USE_WCHAR
