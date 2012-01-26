@@ -1,0 +1,11 @@
+config BR2_PACKAGE_LIBEDBUS
+	bool "libedbus"
+	select BR2_PACKAGE_LIBEINA
+	select BR2_PACKAGE_LIBECORE
+	depends on BR2_PACKAGE_DBUS
+	help
+	  E_Dbus is a set of wrappers around D-Bus APIs so they can be
+	  easily used by EFL applications, automatically providing
+	  Ecore/main loop integration, as well as Eina data types.
+
+	  http://trac.enlightenment.org/e/wiki/E_Dbus
