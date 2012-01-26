@@ -1,0 +1,12 @@
+config BR2_PACKAGE_LIBELEMENTARY
+	bool "libelementary"
+	select BR2_PACKAGE_LIBEINA
+	select BR2_PACKAGE_LIBEVAS
+	select BR2_PACKAGE_LIBECORE
+	select BR2_PACKAGE_LIBEDJE
+	help
+	  Elementary is a widget toolkit and EFL wrapper and convenience
+	  library to make it easy to build applications and tools with UIs
+	  with less code.
+
+	  http://trac.enlightenment.org/e/wiki/Elementary
