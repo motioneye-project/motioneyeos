@@ -16,6 +16,7 @@ source "package/efl/libefreet/Config.in"
 source "package/efl/libevas/Config.in"
 source "package/efl/libembryo/Config.in"
 source "package/efl/libedje/Config.in"
+source "package/efl/libethumb/Config.in"
 
 endif # BR2_PACKAGE_EFL
 

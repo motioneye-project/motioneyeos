@@ -1,0 +1,11 @@
+config BR2_PACKAGE_LIBETHUMB
+	bool "libethumb"
+	select BR2_PACKAGE_LIBEINA
+	select BR2_PACKAGE_LIBEVAS
+	select BR2_PACKAGE_LIBECORE
+	select BR2_PACKAGE_LIBECORE_EVAS
+	select BR2_PACKAGE_LIBEDJE
+	help
+	  Ethumb is a library for generating thumbnail images of documents.
+
+	  http://trac.enlightenment.org/e/wiki/Ethumb
