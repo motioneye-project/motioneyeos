@@ -3,8 +3,8 @@
 # hdparm
 #
 #############################################################
-HDPARM_VERSION = 9.36
-HDPARM_SOURCE = hdparm-$(HDPARM_VERSION).tar.gz
+
+HDPARM_VERSION = 9.38
 HDPARM_SITE = http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/hdparm
 
 define HDPARM_BUILD_CMDS
