@@ -1,7 +1,7 @@
 config BR2_PACKAGE_NETWORK_MANAGER
 	bool "NetworkManager"
 	depends on BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_UDEV
-	depends on BR2_PACKAGE_DBUS
+	select BR2_PACKAGE_DBUS
 	depends on BR2_INET_IPV6
 	depends on BR2_LARGEFILE # acl
 	depends on BR2_USE_WCHAR # libglib2
@@ -25,6 +25,6 @@ config BR2_PACKAGE_NETWORK_MANAGER
 
 	  http://projects.gnome.org/NetworkManager/
 
-comment "NetworkManager requires DBus and a toolchain with IPV6, LARGEFILE and WCHAR support"
-	depends on !BR2_INET_IPV6 || !BR2_LARGEFILE || !BR2_USE_WCHAR || !BR2_PACKAGE_DBUS
+comment "NetworkManager requires a toolchain with IPV6, LARGEFILE and WCHAR support"
+	depends on !BR2_INET_IPV6 || !BR2_LARGEFILE || !BR2_USE_WCHAR
 
