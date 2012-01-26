@@ -1,0 +1,240 @@
+config BR2_PACKAGE_LIBEVAS
+	bool "libevas"
+	select BR2_PACKAGE_FREETYPE
+	select BR2_PACKAGE_LIBEINA
+	help
+	  Evas is a clean display canvas API for several target
+	  display systems that can draw anti-aliased text, smooth
+	  super and sub-sampled scaled images, alpha-blend objects
+	  much and more.
+
+if BR2_PACKAGE_LIBEVAS
+
+comment "libevas rendering options"
+
+config BR2_PACKAGE_LIBEVAS_SCALE_SAMPLE
+	bool "libevas sampling scaler"
+	help
+	  This enables the sampling scaler code. This is the fastest
+	  image scaling code, but also the lowest quality.
+
+config BR2_PACKAGE_LIBEVAS_SCALE_SMOOTH
+	bool "libevas smooth scaler"
+	help
+	  This is the nicest looking scaler that is not that much
+	  slower than tri-linear, but it looks really good.
+
+config BR2_PACKAGE_LIBEVAS_SMALL_DITHERING
+	bool "libevas small dithering"
+	help
+	  This uses a 4x4 dither mask instead of 128x128. On desktop
+	  boxes these days (Pentium, Pentium2, amd etc.) the speed
+	  difference is not really measurable, but the quality of the
+	  128x128 dither mask is quite a lot better.
+
+config BR2_PACKAGE_LIBEVAS_LINE_DITHERING
+	bool "libevas line dithering"
+
+config BR2_PACKAGE_LIBEVAS_NO_DITHERING
+	bool "libevas no dithering"
+
+
+comment "libevas backends"
+
+config BR2_PACKAGE_LIBEVAS_BUFFER
+	bool "libevas buffer backend"
+	depends on BR2_PACKAGE_XORG7
+	help
+	  This enables the software buffer rendering engine. There is
+	  no hardware assist here.
+
+config BR2_PACKAGE_LIBEVAS_DIRECTFB
+	bool "libevas DirectFB backend"
+	depends on BR2_PACKAGE_DIRECTFB
+	default y
+	help
+	  This is the DirectFB engine that uses the DirectFB library
+	  (http://www.directfb.org) on Linux to access the framebuffer
+	  with (or maybe without) acceleration.
+
+config BR2_PACKAGE_LIBEVAS_FB
+	bool "libevas frame buffer backend"
+	help
+	  This is the software framebuffer driving engine. this uses
+	  the linux framebuffer device (/dev/fb<x>) and will currently
+	  just inherit the current framebuffer settings on the fb
+	  device and use them to run in.
+
+config BR2_PACKAGE_LIBEVAS_SDL
+	bool "libevas SDL backend"
+	select BR2_PACKAGE_SDL
+	help
+	  This is the software SDL engine that uses SDL library
+	  (http://www.libsdl.org). This library should work on many
+	  operating systems.
+
+config BR2_PACKAGE_LIBEVAS_SDL_GL
+	bool "libevas SDL OpenGL backend"
+	depends on BR2_PACKAGE_SDL_X11
+	select BR2_PACKAGE_XPROTO_GLPROTO
+	help
+	  This is the SDL OpenGL engine that uses SDL library
+	  and OpenGL to render. This may be hardware accelerated.
+
+config BR2_PACKAGE_LIBEVAS_X11
+	bool "libevas X11 backend"
+	depends on BR2_PACKAGE_XORG7
+	select BR2_PACKAGE_XLIB_LIBX11
+	help
+	  This enables the software X11 rendering engine that renders
+	  to X drawable targets using highly optimised software
+	  routines. There is no hardware assist here.
+
+config BR2_PACKAGE_LIBEVAS_X11_GLX
+	bool "libevas X11 GLX backend"
+	depends on BR2_PACKAGE_XORG7
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XPROTO_GLPROTO
+	help
+	  This enables the OpenGL X11 rendering engine that renders
+	  using GLX which may be hardware accelerated.
+
+config BR2_PACKAGE_LIBEVAS_XCB
+	bool "libevas XCB backend"
+	depends on BR2_PACKAGE_XORG7
+	select BR2_PACKAGE_LIBXCB
+	select BR2_PACKAGE_XCB_UTIL
+	select BR2_PACKAGE_XCB_PROTO
+	select BR2_PACKAGE_PIXMAN
+	help
+	  This enable the software XCB rendering engine. It allows the
+	  same features than the software X11 engine.
+
+config BR2_PACKAGE_LIBEVAS_XCB_GLX
+	bool "libevas XCB GLX backend"
+	depends on BR2_PACKAGE_XORG7
+	select BR2_PACKAGE_LIBXCB
+	select BR2_PACKAGE_XCB_UTIL
+	select BR2_PACKAGE_XCB_PROTO
+	select BR2_PACKAGE_XPROTO_GLPROTO
+	help
+	  This enables the OpenGL X11 XCB rendering engine that renders
+	  using GLX which may be hardware accelerated.
+
+choice
+	prompt "libevas OpenGL flavor"
+	depends on BR2_PACKAGE_LIBEVAS_SDL_GL || BR2_PACKAGE_LIBEVAS_X11_GLX || BR2_PACKAGE_LIBEVAS_XCB_GLX
+	default BR2_PACKAGE_LIBEVAS_GL
+
+config BR2_PACKAGE_LIBEVAS_GL
+       bool "generic OpenGL"
+
+config BR2_PACKAGE_LIBEVAS_GLES_SGX
+       bool "OpenGL-ES SGX"
+
+config BR2_PACKAGE_LIBEVAS_GLES_S3C6410
+       bool "OpenGL-ES S3C6410"
+endchoice
+
+
+comment "libevas code tuning"
+
+config BR2_PACKAGE_LIBEVAS_DISABLE_C
+	bool "libevas disable C code"
+	depends on BR2_PACKAGE_LIBEVAS_MMX || BR2_PACKAGE_LIBEVAS_SSE || BR2_PACKAGE_LIBEVAS_SSE3
+	help
+	  This disables the generic C fallback code which is not required
+	  if MMX or SSE is used instead.
+
+config BR2_PACKAGE_LIBEVAS_MMX
+	bool "libevas MMX routines"
+	depends on BR2_i386 || BR2_x86_64
+	help
+	  This enables the MMX optimized routines. this works for
+	  Pentium, Pentium 2, Pentium 3, Pentium 4, Athlon and Duron
+	  processors.
+
+config BR2_PACKAGE_LIBEVAS_SSE
+	bool "libevas SSE routines"
+	depends on BR2_i386 || BR2_x86_64
+	help
+	  This enables SSE optimizations available in the Pentium 3 and
+	  4 cpus (not Athlon and Duron or Pentium 2 or Pentium cpus).
+
+config BR2_PACKAGE_LIBEVAS_SSE3
+	bool "libevas SSE3 routines"
+	depends on BR2_i386 || BR2_x86_64
+	help
+	  This enables SSE3 optimizations available in the Pentium 4 and
+	  above cpus.
+
+config BR2_PACKAGE_LIBEVAS_ALTIVEC
+	bool "libevas altivec routines"
+	depends on BR2_powerpc
+	help
+	  This enables AltiVec optimizations available in some PowerPC cpus.
+
+config BR2_PACKAGE_LIBEVAS_NEON
+	bool "libevas neon routines"
+	depends on BR2_arm
+	help
+	  This enables NEON optimizations available in some ARM cpus.
+
+
+comment "libevas loaders"
+
+config BR2_PACKAGE_LIBEVAS_PNG
+	bool "libevas png loader"
+	select BR2_PACKAGE_LIBPNG
+	help
+	  This enables the loader code that loads png files using
+	  libpng.
+
+config BR2_PACKAGE_LIBEVAS_JPEG
+	bool "libevas jpeg loader"
+	select BR2_PACKAGE_JPEG
+	help
+	  This enables the loader code that loads jpeg files using
+	  libjpeg.
+
+config BR2_PACKAGE_LIBEVAS_GIF
+	bool "libevas gif loader"
+	select BR2_PACKAGE_LIBUNGIF
+	help
+	  This enables the loader code that loads gif files using
+	  libungif.
+
+config BR2_PACKAGE_LIBEVAS_PMAPS
+	bool "libevas pmaps loader"
+	help
+	  This enables the loader code that loads pmaps files.
+
+config BR2_PACKAGE_LIBEVAS_TIFF
+	bool "libevas tiff loader"
+	select BR2_PACKAGE_TIFF
+	help
+	  This enables the loader code that loads tiff files.
+
+config BR2_PACKAGE_LIBEVAS_SVG
+	bool "libevas svg loader"
+	help
+	  This enables the loader code that loads svg files.
+
+config BR2_PACKAGE_LIBEVAS_XPM
+	bool "libevas xpm loader"
+	help
+	  This enables the loader code that loads xpm files.
+
+config BR2_PACKAGE_LIBEVAS_EET
+	bool "libevas eet image loader"
+	select BR2_PACKAGE_LIBEET
+	help
+	  This enables the loader code that loads images using libeet.
+
+config BR2_PACKAGE_LIBEVAS_EET_FONT
+	bool "libevas eet font loader"
+	select BR2_PACKAGE_LIBEET
+	help
+	  This enables the loader code that loads fonts using libeet.
+
+endif # BR2_PACKAGE_LIBEVAS
