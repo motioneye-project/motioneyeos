@@ -2,7 +2,6 @@ config BR2_PACKAGE_BLUEZ_UTILS
 	bool "bluez-utils"
 	depends on BR2_USE_WCHAR # libglib2
 	select BR2_PACKAGE_DBUS
-	select BR2_PACKAGE_EXPAT if !BR2_PACKAGE_DBUS_LIBXML2
 	select BR2_PACKAGE_LIBGLIB2
 	help
 	  bluez utils
