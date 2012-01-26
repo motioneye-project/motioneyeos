@@ -1,0 +1,44 @@
+config BR2_PACKAGE_LINUX_FIRMWARE
+	bool "linux-firmware"
+	help
+	  This package provides various binary firmware files (closed
+	  binary blobs) for such devices like LAN, WLAN cards etc.
+
+	  https://git.kernel.org/?p=linux/kernel/git/firmware/linux-firmware.git
+
+if BR2_PACKAGE_LINUX_FIRMWARE
+
+menu "Ralink"
+
+config BR2_PACKAGE_LINUX_FIRMWARE_RALINK_RT61
+	bool "Ralink rt2501/rt61"
+	help
+	  Ralink rt2501/rt61
+
+config BR2_PACKAGE_LINUX_FIRMWARE_RALINK_RT73
+	bool "Ralink rt73"
+	help
+	  Ralink rt73
+
+config BR2_PACKAGE_LINUX_FIRMWARE_RALINK_RT2XX
+	bool "Ralink rt27xx/rt28xx/rt30xx"
+	help
+	  Ralink rt27xx/rt28xx/rt30xx
+
+endmenu
+
+menu "Texas Instruments"
+
+config BR2_PACKAGE_LINUX_FIRMWARE_TI_WL127X
+	bool "wl127X"
+	help
+	  Firmware files for WLAN and Bluetooth modules wl1271 and wl1273
+
+config BR2_PACKAGE_LINUX_FIRMWARE_TI_WL128X
+	bool "wl128X"
+	help
+	  Firmware files for WLAN and Bluetooth modules wl128x
+
+endmenu
+
+endif
