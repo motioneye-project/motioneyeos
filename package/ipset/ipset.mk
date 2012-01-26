@@ -4,7 +4,7 @@
 #
 #############################################################
 
-IPSET_VERSION = 6.10
+IPSET_VERSION = 6.11
 IPSET_SOURCE = ipset-$(IPSET_VERSION).tar.bz2
 IPSET_SITE = http://ipset.netfilter.org
 IPSET_AUTORECONF = YES
