@@ -7,11 +7,30 @@
 # directory to the target directory. Also optionaly strips the
 # library.
 #
-# Most toolchains have their libraries either in /lib or /usr/lib
-# relative to their ARCH_SYSROOT_DIR. Buildroot toolchains, however,
-# have basic libraries in /lib, and libstdc++/libgcc_s in
-# /usr/<target-name>/lib(64). Thanks to ARCH_LIB_DIR we also take into
-# account toolchains that have the libraries in lib64 and usr/lib64.
+# Most toolchains (CodeSourcery ones) have their libraries either in
+# /lib or /usr/lib relative to their ARCH_SYSROOT_DIR, so we search
+# libraries in:
+#
+#  $${ARCH_LIB_DIR}
+#  usr/$${ARCH_LIB_DIR}
+#
+# Buildroot toolchains, however, have basic libraries in /lib, and
+# libstdc++/libgcc_s in /usr/<target-name>/lib(64), so we also need to
+# search libraries in:
+#
+#  usr/$(TOOLCHAIN_EXTERNAL_PREFIX)/$${ARCH_LIB_DIR}
+#
+# Finally, Linaro toolchains have the libraries in lib/<target-name>/,
+# so we need to search libraries in:
+#
+#  $${ARCH_LIB_DIR}/$(TOOLCHAIN_EXTERNAL_PREFIX)
+#
+# Thanks to ARCH_LIB_DIR we also take into account toolchains that
+# have the libraries in lib64 and usr/lib64.
+#
+# Please be very careful to check the major toolchain sources:
+# Buildroot, Crosstool-NG, CodeSourcery and Linaro before doing any
+# modification on the below logic.
 #
 # $1: arch specific sysroot directory
 # $2: library directory ('lib' or 'lib64') from which libraries must be copied
@@ -25,7 +44,7 @@ copy_toolchain_lib_root = \
 	DESTDIR="$(strip $4)" ; \
  \
 	LIBS=`(cd $${ARCH_SYSROOT_DIR}; \
-		find -L $${ARCH_LIB_DIR} usr/$${ARCH_LIB_DIR} usr/$(TOOLCHAIN_EXTERNAL_PREFIX)/$${ARCH_LIB_DIR} \
+		find -L $${ARCH_LIB_DIR} usr/$${ARCH_LIB_DIR} usr/$(TOOLCHAIN_EXTERNAL_PREFIX)/$${ARCH_LIB_DIR} $${ARCH_LIB_DIR}/$(TOOLCHAIN_EXTERNAL_PREFIX) \
 			-maxdepth 1 -name "$${LIB}.*" 2>/dev/null \
 		)` ; \
 	for FILE in $${LIBS} ; do \
