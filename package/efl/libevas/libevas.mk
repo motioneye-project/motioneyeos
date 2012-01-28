@@ -93,27 +93,28 @@ LIBEVAS_CONF_OPT += --enable-gl-flavor-gles --enable-gles-variety-s3c6410
 endif
 
 # code options
-ifeq ($(BR2_PACKAGE_LIBEVAS_DISABLE_C),y)
-LIBEVAS_CONF_OPT += --disable-cpu-c
-endif
-
-ifeq ($(BR2_PACKAGE_LIBEVAS_MMX),y)
+ifeq ($(BR2_i386)$(BR2_x86_64),y)
+# enable if cpu variant has mmx support
+ifneq ($(BR2_x86_i386)$(BR2_x86_i486)$(BR2_x86_i586)$(BR2_x86_i686)$(BR2_x86_pentiumpro)$(BR2_x86_geode),y)
 LIBEVAS_CONF_OPT += --enable-cpu-mmx
-endif
 
-ifeq ($(BR2_PACKAGE_LIBEVAS_SSE),y)
+ifneq ($(BR2_x86_pentium_mmx)$(BR2_x86_pentium2)$(BR2_x86_k6)$(BR2_x86_k6_2)$(BR2_x86_athlon)$(BR2_x86_c3)$(BR2_x86_winchip_c6)$(BR2_x86_winchip2),y)
 LIBEVAS_CONF_OPT += --enable-cpu-sse
-endif
 
-ifeq ($(BR2_PACKAGE_LIBEVAS_SSE3),y)
+ifneq ($(BR2_x86_pentium3)$(BR2_x86_pentium4)$(BR2_x86_prescott)$(BR2_x86_athlon_4)$(BR2_x86_opteron)$(BR2_x86_c32)$(BR2_x86_64_opteron),y)
 LIBEVAS_CONF_OPT += --enable-cpu-sse3
-endif
 
-ifeq ($(BR2_PACKAGE_LIBEVAS_ALTIVEC),y)
+endif # sse3
+endif # sse
+endif # mmx
+endif # x86
+
+ifeq ($(BR2_powerpc_7400)$(BR2_powerpc_7450)$(BR2_powerpc_970),y)
 LIBEVAS_CONF_OPT += --enable-cpu-altivec
 endif
 
-ifeq ($(BR2_PACKAGE_LIBEVAS_NEON),y)
+ifeq ($(BR2_cortex_a8)$(BR2_cortex_a9),y)
+# NEON is optional for A9
 LIBEVAS_CONF_OPT += --enable-cpu-neon
 endif
 

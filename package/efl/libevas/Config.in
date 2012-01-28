@@ -137,50 +137,6 @@ config BR2_PACKAGE_LIBEVAS_GLES_S3C6410
 endchoice
 
 
-comment "libevas code tuning"
-
-config BR2_PACKAGE_LIBEVAS_DISABLE_C
-	bool "libevas disable C code"
-	depends on BR2_PACKAGE_LIBEVAS_MMX || BR2_PACKAGE_LIBEVAS_SSE || BR2_PACKAGE_LIBEVAS_SSE3
-	help
-	  This disables the generic C fallback code which is not required
-	  if MMX or SSE is used instead.
-
-config BR2_PACKAGE_LIBEVAS_MMX
-	bool "libevas MMX routines"
-	depends on BR2_i386 || BR2_x86_64
-	help
-	  This enables the MMX optimized routines. this works for
-	  Pentium, Pentium 2, Pentium 3, Pentium 4, Athlon and Duron
-	  processors.
-
-config BR2_PACKAGE_LIBEVAS_SSE
-	bool "libevas SSE routines"
-	depends on BR2_i386 || BR2_x86_64
-	help
-	  This enables SSE optimizations available in the Pentium 3 and
-	  4 cpus (not Athlon and Duron or Pentium 2 or Pentium cpus).
-
-config BR2_PACKAGE_LIBEVAS_SSE3
-	bool "libevas SSE3 routines"
-	depends on BR2_i386 || BR2_x86_64
-	help
-	  This enables SSE3 optimizations available in the Pentium 4 and
-	  above cpus.
-
-config BR2_PACKAGE_LIBEVAS_ALTIVEC
-	bool "libevas altivec routines"
-	depends on BR2_powerpc
-	help
-	  This enables AltiVec optimizations available in some PowerPC cpus.
-
-config BR2_PACKAGE_LIBEVAS_NEON
-	bool "libevas neon routines"
-	depends on BR2_arm
-	help
-	  This enables NEON optimizations available in some ARM cpus.
-
-
 comment "libevas loaders"
 
 config BR2_PACKAGE_LIBEVAS_PNG
