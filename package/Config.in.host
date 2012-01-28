@@ -1,3 +1,5 @@
 menu "Host utilities"
 
+source "package/uboot-tools/Config.in.host"
+
 endmenu
