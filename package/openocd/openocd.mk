@@ -29,4 +29,14 @@ ifeq ($(BR2_PACKAGE_OPENOCD_VSLLINK),y)
 OPENOCD_CONF_OPT += --enable-vsllink
 endif
 
+HOST_OPENOCD_DEPENDENCIES = host-libusb-compat host-libftdi
+
+HOST_OPENOCD_CONF_OPT = 	\
+	--disable-doxygen-html 	\
+	--enable-dummy 		\
+	--enable-ft2232_libftdi \
+	--enable-jlink 		\
+	--enable-vsllink
+
 $(eval $(call AUTOTARGETS))
+$(eval $(call AUTOTARGETS,host))
