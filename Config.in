@@ -371,6 +371,8 @@ source "target/generic/Config.in"
 
 source "package/Config.in"
 
+source "package/Config.in.host"
+
 source "fs/Config.in"
 
 source "boot/Config.in"
