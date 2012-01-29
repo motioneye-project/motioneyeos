@@ -8,6 +8,8 @@ config BR2_PACKAGE_LIBEVAS
 	  super and sub-sampled scaled images, alpha-blend objects
 	  much and more.
 
+	  http://trac.enlightenment.org/e/wiki/Evas
+
 if BR2_PACKAGE_LIBEVAS
 
 comment "libevas rendering options"
