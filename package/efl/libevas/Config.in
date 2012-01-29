@@ -2,6 +2,8 @@ config BR2_PACKAGE_LIBEVAS
 	bool "libevas"
 	select BR2_PACKAGE_FREETYPE
 	select BR2_PACKAGE_LIBEINA
+	# required to build so far
+	select BR2_PACKAGE_LIBEVAS_SCALE_SMOOTH
 	help
 	  Evas is a clean display canvas API for several target
 	  display systems that can draw anti-aliased text, smooth
