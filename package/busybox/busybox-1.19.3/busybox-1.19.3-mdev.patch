@@ -1,0 +1,11 @@
+--- busybox-1.19.3/util-linux/mdev.c
++++ busybox-1.19.3-mdev/util-linux/mdev.c
+@@ -610,7 +610,7 @@ int mdev_main(int argc UNUSED_PARAM, cha
+ 				int seqlen;
+ 				char seqbuf[sizeof(int)*3 + 2];
+ 
+-				seqlen = open_read_close("mdev.seq", seqbuf, sizeof(seqbuf-1));
++				seqlen = open_read_close("mdev.seq", seqbuf, sizeof(seqbuf) - 1);
+ 				if (seqlen < 0) {
+ 					seq = NULL;
+ 					break;
