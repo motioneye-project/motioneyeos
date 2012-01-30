@@ -24,7 +24,7 @@ system is based on hand-written Makefiles or shell scripts.
 10: LIBFOO_DEPENDENCIES = host-libaaa libbbb
 11:
 12: define LIBFOO_BUILD_CMDS
-13: 	$(MAKE) CC=$(TARGET_CC) LD=$(TARGET_LD) -C $(@D) all
+13: 	$(MAKE) CC="$(TARGET_CC)" LD="$(TARGET_LD)" -C $(@D) all
 14: endef
 15:
 16: define LIBFOO_INSTALL_STAGING_CMDS

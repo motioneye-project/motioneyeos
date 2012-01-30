@@ -905,7 +905,7 @@ source "package/libfoo/Config.in"
 <span style="color: #000000">10:</span><span style="color: #009900"> LIBFOO_DEPENDENCIES</span> = host-libaaa libbbb
 <span style="color: #000000">11:</span>
 <span style="color: #000000">12:</span> define LIBFOO_BUILD_CMDS
-<span style="color: #000000">13:</span> 	<span style="color: #009900">$(MAKE)</span> CC=<span style="color: #009900">$(TARGET_CC)</span> LD=<span style="color: #009900">$(TARGET_LD)</span> -C <span style="color: #009900">$(@D)</span> all
+<span style="color: #000000">13:</span> 	<span style="color: #009900">$(MAKE)</span> CC=<span style="color: #009900">"$(TARGET_CC)"</span> LD=<span style="color: #009900">"$(TARGET_LD)"</span> -C <span style="color: #009900">$(@D)</span> all
 <span style="color: #000000">14:</span> endef
 <span style="color: #000000">15:</span>
 <span style="color: #000000">16:</span> define LIBFOO_INSTALL_STAGING_CMDS
