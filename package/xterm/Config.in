@@ -6,3 +6,4 @@ config BR2_PACKAGE_XTERM
 	help
 	  xterm terminal emulator
 
+	  http://invisible-island.net/xterm/
