@@ -1,0 +1,9 @@
+config BR2_PACKAGE_LIBURCU
+	bool "liburcu"
+	help
+	  Userspace implementation of the Read-Copy-Update (RCU)
+	  synchronization mechanism. This library is mainly used by
+	  the LTTng tracing infrastructure, but can be used for other
+	  purposes as well.
+
+	  http://lttng.org/urcu
