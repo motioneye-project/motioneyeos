@@ -1,0 +1,11 @@
+config BR2_PACKAGE_LIBICAL
+	bool "libical"
+	depends on BR2_USE_WCHAR
+	help
+	  libical is an Open Source (MPL/LGPL) implementation of the IETF's
+	  iCalendar Calendaring and Scheduling protocols.
+
+	  http://www.citadel.org/doku.php/documentation:featured_projects:libical
+
+comment "libical requires a toolchain with WCHAR support"
+	depends on !BR2_USE_WCHAR
