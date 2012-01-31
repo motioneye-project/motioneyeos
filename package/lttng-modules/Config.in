@@ -1,0 +1,18 @@
+config BR2_PACKAGE_LTTNG_MODULES
+	bool "lttng-modules"
+	depends on BR2_LINUX_KERNEL
+	help
+	  Kernel modules for the LTTng 2.0 kernel tracing
+	  infrastructure.
+
+	  Your kernel must have CONFIG_TRACEPOINTS enabled for this
+	  package to build something useful. You may also want to have
+	  CONFIG_PERF_EVENTS to access perf event counters from
+	  ltt-ng. Note that system call tracing is only available on
+	  architectures that support CONFIG_HAVE_SYSCALL_TRACEPOINTS.
+
+	  The packaged version is compatible with kernel 2.6.38,
+	  2.6.39, 3.0 and 3.1.0. See
+	  http://lttng.org/files/bundles/20111214/README.compatible.kernels.txt
+
+	  http://lttng.org
