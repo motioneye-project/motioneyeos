@@ -1,0 +1,20 @@
+config BR2_PACKAGE_LTTNG_TOOLS
+	bool "lttng-tools"
+	depends on BR2_PACKAGE_LTTNG_MODULES
+	select BR2_PACKAGE_LIBURCU
+	select BR2_PACKAGE_POPT
+	select BR2_PACKAGE_LTTNG_LIBUST
+	help
+	  Userspace utilities for the LTTng 2.0 tracing
+	  infrastructure.
+
+	  Those utilities are required on the target system to start
+	  and stop tracing sessions. Analysis of the trace can be done
+	  on the host machine using the babeltrace utility. This
+	  utility is automatically built by Buildroot in
+	  $(O)/host/usr/bin/babeltrace, as a dependency of
+	  lttng-tools. However, there is also a lttng-babeltrace
+	  package for the target, if babeltrace on the target is
+	  interesting.
+
+	  http://lttng.org
