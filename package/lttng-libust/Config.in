@@ -1,0 +1,10 @@
+config BR2_PACKAGE_LTTNG_LIBUST
+	bool "lttng-libust"
+	select BR2_PACKAGE_LIBURCU
+	help
+	  Userspace tracing library for the Lttng tracing
+	  infrastructure. It allows userspace programs to create
+	  custom trace events that are integrated with all other
+	  events gathered by LTTng.
+
+	  http://lttng.org
