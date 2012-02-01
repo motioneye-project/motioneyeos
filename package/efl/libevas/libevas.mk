@@ -13,7 +13,7 @@ LIBEVAS_DEPENDENCIES = host-pkg-config zlib libeina freetype
 
 HOST_LIBEVAS_DEPENDENCIES = host-pkg-config host-zlib host-libeina \
 				host-freetype host-libpng
-HOST_LIBEVAS_CONF_OPT += --enable-image-loader-png
+HOST_LIBEVAS_CONF_OPT += --enable-image-loader-png --disable-cpu-sse3
 
 # rendering options
 ifeq ($(BR2_PACKAGE_LIBEVAS_SCALE_SAMPLE),y)
