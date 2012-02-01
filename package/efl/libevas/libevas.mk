@@ -12,8 +12,21 @@ LIBEVAS_INSTALL_STAGING = YES
 LIBEVAS_DEPENDENCIES = host-pkg-config zlib libeina freetype
 
 HOST_LIBEVAS_DEPENDENCIES = host-pkg-config host-zlib host-libeina \
-				host-freetype host-libpng
-HOST_LIBEVAS_CONF_OPT += --enable-image-loader-png --disable-cpu-sse3
+				host-freetype host-libpng host-jpeg
+HOST_LIBEVAS_CONF_OPT += \
+	--enable-image-loader-png \
+	--enable-image-loader-jpeg \
+	--disable-image-loader-gif \
+	--disable-image-loader-tiff \
+	--disable-image-loader-eet \
+	--disable-font-loader-eet \
+	--disable-cpu-sse3 \
+	--disable-software-sdl \
+	--disable-gl-sdl \
+	--disable-software-xlib \
+	--disable-gl-xlib \
+	--enable-software-xcb \
+	--disable-gl-xcb
 
 # rendering options
 ifeq ($(BR2_PACKAGE_LIBEVAS_SCALE_SAMPLE),y)
