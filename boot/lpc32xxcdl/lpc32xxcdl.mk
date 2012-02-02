@@ -42,6 +42,16 @@ LPC32XXCDL_BUILD_FLAGS = \
 LPC32XXCDL_BOARD_STARTUP_DIR = \
 	csps/lpc32xx/bsps/$(BR2_TARGET_LPC32XXCDL_BOARDNAME)/startup/examples/
 
+# Source files are with dos newlines, which our patch infrastructure doesn't
+# handle. Work around it by converting the affected files to unix newlines
+# before patching
+define LPC32XXCDL_DOS2UNIX_FOR_PATCH
+	sed -n 's|^[+-]\{3\} [^/]\+\([^ \t]*\)\(.*\)|$(@D)\1|p' \
+		boot/lpc32xxcdl/*.patch| sort -u | xargs $(SED) 's/\x0D$$//'
+endef
+
+LPC32XXCDL_POST_EXTRACT_HOOKS += LPC32XXCDL_DOS2UNIX_FOR_PATCH
+
 define LPC32XXCDL_BUILD_CMDS
 	$(MAKE1) $(LPC32XXCDL_BUILD_FLAGS) -C $(@D)
 	$(MAKE1) $(LPC32XXCDL_BUILD_FLAGS) -C $(@D)/$(LPC32XXCDL_BOARD_STARTUP_DIR)/Burners/$(LPC32XXCDL_KICKSTART_BURNER)
