@@ -19,6 +19,7 @@ OPENOCD_DEPENDENCIES = libusb-compat
 # Adapters
 ifeq ($(BR2_PACKAGE_OPENOCD_FT2XXX),y)
 OPENOCD_CONF_OPT += --enable-ft2232_libftdi
+OPENOCD_DEPENDENCIES += libftdi
 endif
 
 ifeq ($(BR2_PACKAGE_OPENOCD_JLINK),y)
