@@ -10,6 +10,15 @@ config BR2_TARGET_AT91BOOTSTRAP
 
 if	BR2_TARGET_AT91BOOTSTRAP
 
+config BR2_TARGET_AT91BOOTSTRAP_CUSTOM_PATCH_DIR
+	string "custom patch dir"
+	help
+	  If your board requires custom patches, add the path to the
+	  directory containing the patches here. The patches must be
+	  named at91bootstrap-<version>-<something>.patch.
+
+	  Most users may leave this empty
+
 config BR2_TARGET_AT91BOOTSTRAP_BOARD
 	string "Bootstrap board"
 	default ""

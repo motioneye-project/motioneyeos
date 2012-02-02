@@ -59,6 +59,7 @@
 	#3403: libgpg-error: bump to version 1.10
 	#3409: libgpg-error: download from gnupg.org
 	#3421: nano: make tiny flag optional
+	#4664: Cannot patch AT91Bootstrap
 	#4700: setlocalversion not working for combination svn/ubuntu 11.10...
 
 2011.11, Released November 30th, 2011:
