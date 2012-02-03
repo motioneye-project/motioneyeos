@@ -695,8 +695,15 @@ endif
 
 release: OUT=buildroot-$(BR2_VERSION)
 
+# Create release tarballs. We need to fiddle a bit to add the generated
+# documentation to the git output
 release:
-	git archive --format=tar --prefix=$(OUT)/ master|gzip -9 >$(OUT).tar.gz
+	git archive --format=tar --prefix=$(OUT)/ master > $(OUT).tar
+	$(MAKE) O=$(OUT) manual-html manual-txt manual-pdf
+	tar rf $(OUT).tar $(OUT)
+	gzip -9 -c < $(OUT).tar > $(OUT).tar.gz
+	bzip2 -9 -c < $(OUT).tar > $(OUT).tar.bz2
+	rm -rf $(OUT) $(OUT).tar
 
 ################################################################################
 # GENDOC -- generates the make targets needed to build a specific type of
