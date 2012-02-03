@@ -56,6 +56,8 @@
 	Issues resolved (http://bugs.uclibc.org):
 
 	#743:  Add Transmission bit torrent option to buildroot
+	#755:  Add Boost libraries as a package
+	#2299: Add crypto support to libsoup
 	#2617: Pixman 0.19.2 & Cairo 1.10.0
 	#3403: libgpg-error: bump to version 1.10
 	#3409: libgpg-error: download from gnupg.org
