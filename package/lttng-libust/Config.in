@@ -1,6 +1,11 @@
 config BR2_PACKAGE_LTTNG_LIBUST
 	bool "lttng-libust"
 	select BR2_PACKAGE_LIBURCU
+	select BR2_PACKAGE_UTIL_LINUX
+	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
+	# util-linux needs wchar and largefile
+	depends on BR2_USE_WCHAR
+	depends on BR2_LARGEFILE
 	help
 	  Userspace tracing library for the Lttng tracing
 	  infrastructure. It allows userspace programs to create
@@ -8,3 +13,6 @@ config BR2_PACKAGE_LTTNG_LIBUST
 	  events gathered by LTTng.
 
 	  http://lttng.org
+
+comment "lttng-libust needs WCHAR and LARGEFILE support"
+	depends on !(BR2_USE_WCHAR || BR2_LARGEFILE)
