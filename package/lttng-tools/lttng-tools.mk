@@ -8,4 +8,6 @@ LTTNG_TOOLS_SOURCE  = lttng-tools-$(LTTNG_TOOLS_VERSION).tar.bz2
 # trace format into an human readable format.
 LTTNG_TOOLS_DEPENDENCIES = liburcu popt host-lttng-babeltrace lttng-libust
 
+LTTNG_AUTORECONF = YES
+
 $(eval $(call AUTOTARGETS))
