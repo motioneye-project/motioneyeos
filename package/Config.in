@@ -19,6 +19,7 @@ endmenu
 menu "Debugging, profiling and benchmark"
 source "package/bonnie/Config.in"
 source "package/dhrystone/Config.in"
+source "package/dstat/Config.in"
 source "package/dmalloc/Config.in"
 source "package/kexec/Config.in"
 source "package/lmbench/Config.in"

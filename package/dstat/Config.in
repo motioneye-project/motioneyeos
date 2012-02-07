@@ -1,0 +1,23 @@
+config BR2_PACKAGE_DSTAT
+	bool "dstat"
+	depends on BR2_USE_WCHAR # python
+	select BR2_PACKAGE_PYTHON
+	help
+	  Dstat, written in Python, is a versatile replacement for vmstat,
+	  iostat, netstat and ifstat. Dstat overcomes some of their limitations
+	  and adds some extra features, more counters and flexibility. Dstat is
+	  handy for monitoring systems during performance tuning tests,
+	  benchmarks or troubleshooting.
+	  Dstat allows you to view all of your system resources in real-time,
+	  you can e.g. compare disk utilization in combination with interrupts
+	  from your IDE controller, or compare the network bandwidth numbers
+	  directly with the disk throughput (in the same interval).
+
+	  Note that to get proper output, your terminal size should be known by
+	  the termios subsystem. This can be done by running the 'resize'
+	  utility of busybox.
+
+	  http://dag.wieers.com/home-made/dstat/
+
+comment "dstat requires a toolchain with WCHAR support"
+	depends on !BR2_USE_WCHAR
