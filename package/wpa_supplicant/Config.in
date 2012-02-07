@@ -31,3 +31,9 @@ config BR2_PACKAGE_WPA_SUPPLICANT_AP_SUPPORT
 	  access point. This can be used for open and WPA2-Personal networks
 	  (optionally, with WPS); this links in parts of hostapd functionality
 	  into wpa_supplicant.
+
+config BR2_PACKAGE_WPA_SUPPLICANT_WPS
+	bool "Enable support for WPS"
+	depends on BR2_PACKAGE_WPA_SUPPLICANT
+	help
+	  Enable support for Wi-Fi Protected Setup (WPS)
