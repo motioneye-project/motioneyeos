@@ -98,6 +98,10 @@ LIBEVAS_CONF_OPT += --enable-gl-sdl
 LIBEVAS_DEPENDENCIES += sdl
 endif
 
+ifeq ($(BR2_PACKAGE_LIBEVAS_GL),y)
+LIBEVAS_DEPENDENCIES += mesa3d
+endif
+
 ifeq ($(BR2_PACKAGE_LIBEVAS_GLES_SGX),y)
 LIBEVAS_CONF_OPT += --enable-gl-flavor-gles --enable-gles-variety-sgx
 endif

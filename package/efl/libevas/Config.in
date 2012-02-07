@@ -134,6 +134,7 @@ choice
 	default BR2_PACKAGE_LIBEVAS_GL
 
 config BR2_PACKAGE_LIBEVAS_GL
+       select BR2_PACKAGE_MESA3D
        bool "generic OpenGL"
 
 config BR2_PACKAGE_LIBEVAS_GLES_SGX
