@@ -14,7 +14,7 @@ core-dependencies:
 	@HOSTCC="$(firstword $(HOSTCC))" MAKE="$(MAKE)" \
 		CONFIG_FILE="$(CONFIG_DIR)/.config" \
 		DL_TOOLS="$(sort $(DL_TOOLS_DEPENDENCIES))" \
-		$(TOPDIR)/toolchain/dependencies/dependencies.sh
+		$(TOPDIR)/support/dependencies/dependencies.sh
 
 dependencies: core-dependencies $(DEPENDENCIES_HOST_PREREQ)
 
