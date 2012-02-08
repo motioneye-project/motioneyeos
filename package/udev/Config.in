@@ -1,29 +1,33 @@
 config BR2_PACKAGE_UDEV
 	bool "udev"
 	depends on BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_UDEV
+	depends on BR2_LARGEFILE # util-linux
+	depends on BR2_USE_WCHAR # util-linux
+	select BR2_PACKAGE_UTIL_LINUX
+	select BR2_PACKAGE_UTIL_LINUX_LIBBLKID
+	select BR2_PACKAGE_KMOD
 	help
 	  Userspace device daemon.
+
+	  udev requires a Linux kernel >= 2.6.34: it relies on devtmpfs.
 
 	  ftp://ftp.kernel.org/pub/linux/utils/kernel/hotplug/
 
 if BR2_PACKAGE_UDEV
 
+config BR2_PACKAGE_UDEV_RULES_GEN
+	bool "enable rules generator"
+	help
+	  Enable persistant rules generator
+
 config BR2_PACKAGE_UDEV_ALL_EXTRAS
 	bool "enable all extras"
-	depends on BR2_LARGEFILE # acl
-	depends on BR2_USE_WCHAR # libglib2
 	select BR2_PACKAGE_ACL
-	select BR2_PACKAGE_LIBUSB
-	select BR2_PACKAGE_LIBUSB_COMPAT
-	select BR2_PACKAGE_USBUTILS
 	select BR2_PACKAGE_HWDATA
 	select BR2_PACKAGE_LIBGLIB2
 	help
 	  Enable all extras with external dependencies like
-	  libacl, libusb, libusb-compat, usbutils, hwdata
-
-comment "udev extras requires a toolchain with LARGEFILE + WCHAR support"
-	depends on !(BR2_LARGEFILE && BR2_USE_WCHAR)
+	  libacl, hwdata and libglib2
 
 endif
 
