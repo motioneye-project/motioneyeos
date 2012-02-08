@@ -299,18 +299,6 @@ define DOWNLOAD
 	exit 1
 endef
 
-# Utility programs used to build packages
-TAR ?= tar
-
-# Automatically detect tar --strip-path/components option
-TAR_STRIP_COMPONENTS := \
-  $(shell $(TAR) --help | grep strip-path > /dev/null ; \
-  if test $$? = 0 ; then \
-   echo '--strip-path' ; \
-  else \
-   echo '--strip-components' ; \
-  fi)
-
 # Needed for the foreach loops to loop over the list of hooks, so that
 # each hook call is properly separated by a newline.
 define sep
