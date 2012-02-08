@@ -101,7 +101,7 @@ if [ $COMPILER_MAJOR -lt 3 -o $COMPILER_MAJOR -eq 2 -a $COMPILER_MINOR -lt 95 ] 
 fi;
 
 # check for host CXX
-CXXCOMPILER=$(which $HOSTCXX 2> /dev/null)
+CXXCOMPILER=$(which $HOSTCXX_NOCCACHE 2> /dev/null)
 if [ -z "$CXXCOMPILER" ] ; then
 	CXXCOMPILER=$(which c++ 2> /dev/null)
 fi
