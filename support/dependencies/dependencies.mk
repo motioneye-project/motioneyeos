@@ -6,6 +6,16 @@
 ######################################################################
 
 DEPENDENCIES_HOST_PREREQ:=
+
+# suitable-host-pkg: calls check-host-$(1).sh shell script. Parameter (2)
+# can be the candidate to be checked. If not present, the check-host-$(1).sh
+# script should use 'which' to find a candidate. The script should return
+# the path to the suitable host tool, or nothing if no suitable tool was found.
+define suitable-host-package
+$(shell support/dependencies/check-host-$(1).sh $(2))
+endef
+-include support/dependencies/check-host-*.mk
+
 ifeq ($(BR2_STRIP_sstrip),y)
 DEPENDENCIES_HOST_PREREQ+=host-sstrip
 endif
