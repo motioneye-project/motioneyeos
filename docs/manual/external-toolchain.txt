@@ -1,5 +1,6 @@
 Using an external toolchain
 ===========================
+[[external-toolchain]]
 
 Using an already existing toolchain is useful for different
 reasons:
