@@ -32,7 +32,9 @@ endif
 
 ifeq ($(BR2_PACKAGE_SDL_X11),y)
 SDL_CONF_OPT+=--enable-video-x11=yes
-SDL_DEPENDENCIES += xserver_xorg-server
+SDL_DEPENDENCIES += xlib_libX11 xlib_libXext \
+	$(if $(BR2_PACKAGE_XLIB_LIBXRENDER), xlib_libXrender) \
+	$(if $(BR2_PACKAGE_XLIB_LIBXRANDR), xlib_libXrandr)
 else
 SDL_CONF_OPT+=--enable-video-x11=no
 endif
