@@ -47,7 +47,6 @@ comment "libevas backends"
 
 config BR2_PACKAGE_LIBEVAS_BUFFER
 	bool "libevas buffer backend"
-	depends on BR2_PACKAGE_XORG7
 	help
 	  This enables the software buffer rendering engine. There is
 	  no hardware assist here.
