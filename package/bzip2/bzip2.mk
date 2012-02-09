@@ -59,6 +59,7 @@ define BZIP2_INSTALL_TARGET_CMDS
 	cp $(@D)/libbz2.so.$(BZIP2_SONAME) $(TARGET_DIR)/usr/lib/
 	(cd $(TARGET_DIR)/usr/lib; \
 		ln -snf libbz2.so.$(BZIP2_SONAME) libbz2.so.1.0; \
+		ln -snf libbz2.so.$(BZIP2_SONAME) libbz2.so.1; \
 		ln -snf libbz2.so.$(BZIP2_SONAME) libbz2.so; \
 	)
 	(cd $(TARGET_DIR)/usr/bin; \
