@@ -65,6 +65,7 @@
 	#3691: New EFL packages
 	#4664: Cannot patch AT91Bootstrap
 	#4700: setlocalversion not working for combination svn/ubuntu 11.10...
+	#4760: Qt: add host-pkg-config to dependency-list
 
 2011.11, Released November 30th, 2011:
 

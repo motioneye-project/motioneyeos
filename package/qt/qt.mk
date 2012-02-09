@@ -15,7 +15,7 @@
 QT_VERSION = 4.7.4
 QT_SOURCE  = qt-everywhere-opensource-src-$(QT_VERSION).tar.gz
 QT_SITE    = http://get.qt.nokia.com/qt/source
-
+QT_DEPENDENCIES = host-pkg-config
 QT_INSTALL_STAGING = YES
 
 ifeq ($(BR2_PACKAGE_QT_LICENSE_APPROVED),y)
