@@ -98,7 +98,7 @@ config BR2_PACKAGE_LIBEVAS_X11
 
 config BR2_PACKAGE_LIBEVAS_X11_GLX
 	bool "libevas X11 GLX backend"
-	depends on BR2_PACKAGE_XORG7
+	depends on BR2_PACKAGE_XSERVER_xorg # mesa needs big X
 	select BR2_PACKAGE_XLIB_LIBX11
 	select BR2_PACKAGE_XLIB_LIBXRENDER
 	select BR2_PACKAGE_XLIB_LIBXEXT
@@ -120,7 +120,7 @@ config BR2_PACKAGE_LIBEVAS_XCB
 
 config BR2_PACKAGE_LIBEVAS_XCB_GLX
 	bool "libevas XCB GLX backend"
-	depends on BR2_PACKAGE_XORG7
+	depends on BR2_PACKAGE_XSERVER_xorg # mesa needs big X
 	select BR2_PACKAGE_LIBXCB
 	select BR2_PACKAGE_XCB_UTIL
 	select BR2_PACKAGE_XCB_PROTO
