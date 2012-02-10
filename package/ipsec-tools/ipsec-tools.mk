@@ -50,12 +50,6 @@ else
 IPSEC_TOOLS_CONF_OPT+= --disable-stats
 endif
 
-ifeq ($(BR2_INET_IPV6),y)
-IPSEC_TOOLS_CONF_OPT+= --enable-ipv6
-else
-IPSEC_TOOLS_CONF_OPT+= --disable-ipv6
-endif
-
 ifneq ($(BR2_PACKAGE_IPSEC_TOOLS_READLINE), y)
 IPSEC_TOOLS_CONF_OPT+= --without-readline
 else
