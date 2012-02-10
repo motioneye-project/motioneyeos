@@ -33,6 +33,11 @@ config BR2_PACKAGE_IPSEC_TOOLS_FRAG
 	  Enable IKE fragmentation, which is a workaround for
 	  broken routers that drop fragmented packets
 
+config BR2_PACKAGE_IPSEC_TOOLS_DPD
+	bool "Enable DPD (Dead Peer Detection)"
+	help
+	  Enable dead peer detection support
+
 config BR2_PACKAGE_IPSEC_TOOLS_STATS
 	default y
 	bool "Enable statistics logging function."

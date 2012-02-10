@@ -38,6 +38,12 @@ else
 IPSEC_TOOLS_CONF_OPT+= --disable-frag
 endif
 
+ifeq ($(BR2_PACKAGE_IPSEC_TOOLS_DPD), y)
+IPSEC_TOOLS_CONF_OPT+= --enable-dpd
+else
+IPSEC_TOOLS_CONF_OPT+= --disable-dpd
+endif
+
 ifeq ($(BR2_PACKAGE_IPSEC_TOOLS_STATS), y)
 IPSEC_TOOLS_CONF_OPT+= --enable-stats
 else
