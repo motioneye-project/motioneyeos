@@ -10,7 +10,7 @@ if BR2_PACKAGE_IPSEC_TOOLS
 
 config BR2_PACKAGE_IPSEC_TOOLS_ADMINPORT
 	default y
-	bool "Enable racoonctl(8)."
+	bool "Enable racoonctl(8)"
 	help
 	  Lets racoon to listen to racoon admin port, which is to
 	  be contacted by racoonctl(8).
@@ -28,7 +28,7 @@ config BR2_PACKAGE_IPSEC_TOOLS_NATT
 	  NAT-Traversal might infringe a patent.
 
 config BR2_PACKAGE_IPSEC_TOOLS_FRAG
-	bool "Enable IKE fragmentation."
+	bool "Enable IKE fragmentation"
 	help
 	  Enable IKE fragmentation, which is a workaround for
 	  broken routers that drop fragmented packets
@@ -40,11 +40,11 @@ config BR2_PACKAGE_IPSEC_TOOLS_DPD
 
 config BR2_PACKAGE_IPSEC_TOOLS_STATS
 	default y
-	bool "Enable statistics logging function."
+	bool "Enable statistics logging function"
 
 config BR2_PACKAGE_IPSEC_TOOLS_READLINE
 	select BR2_PACKAGE_READLINE
-	bool "Enable readline input support if available."
+	bool "Enable readline input support"
 
 choice
 	prompt "Security context"
