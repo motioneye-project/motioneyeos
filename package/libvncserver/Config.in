@@ -1,0 +1,6 @@
+config BR2_PACKAGE_LIBVNCSERVER
+	bool "libvncserver"
+	help
+	  libvncserver is a VNC server/client library.
+
+	  http://libvncserver.sourceforge.net/

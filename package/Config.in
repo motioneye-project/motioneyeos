@@ -363,6 +363,7 @@ source "package/libosip2/Config.in"
 source "package/librsync/Config.in"
 source "package/libsoup/Config.in"
 source "package/libupnp/Config.in"
+source "package/libvncserver/Config.in"
 endmenu
 
 menu "Other"
