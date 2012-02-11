@@ -78,7 +78,7 @@ cnt=0
 for i in $(find package/ -name '*.mk') ; do
 
     if test \
-	$i = "package/java/java.mk" -o \
+	$i = "package/efl/efl.mk" -o \
 	$i = "package/games/games.mk" -o \
 	$i = "package/gtk2-themes/gtk2-themes.mk" -o \
 	$i = "package/multimedia/multimedia.mk" -o \
