@@ -17,6 +17,26 @@ HOST_LIBECORE_CONF_OPT += --enable-ecore-evas
 # default options
 LIBECORE_CONF_OPT = --disable-simple-x11
 
+ifeq ($(BR2_PACKAGE_TSLIB),y)
+LIBECORE_DEPENDENCIES += tslib
+endif
+
+ifeq ($(BR2_PACKAGE_LIBGLIB2),y)
+LIBECORE_DEPENDENCIES += libglib2
+endif
+
+ifeq ($(BR2_PACKAGE_OPENSSL),y)
+LIBECORE_DEPENDENCIES += openssl
+endif
+
+ifeq ($(BR2_PACKAGE_GNUTLS),y)
+LIBECORE_DEPENDENCIES += gnutls
+endif
+
+ifeq ($(BR2_PACKAGE_LIBCURL),y)
+LIBECORE_DEPENDENCIES += libcurl
+endif
+
 # libecore
 ifeq ($(BR2_PACKAGE_LIBECORE_DIRECTFB),y)
 LIBECORE_CONF_OPT += --enable-ecore-directfb
