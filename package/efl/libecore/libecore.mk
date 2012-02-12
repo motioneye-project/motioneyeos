@@ -20,13 +20,13 @@ LIBECORE_CONF_OPT = --disable-simple-x11
 # libecore
 ifeq ($(BR2_PACKAGE_LIBECORE_DIRECTFB),y)
 LIBECORE_CONF_OPT += --enable-ecore-directfb
+LIBECORE_DEPENDENCIES += directfb
 else
 LIBECORE_CONF_OPT += --disable-ecore-directfb
 endif
 
 ifeq ($(BR2_PACKAGE_LIBECORE_FB),y)
 LIBECORE_CONF_OPT += --enable-ecore-fb
-LIBECORE_DEPENDENCIES += directfb
 else
 LIBECORE_CONF_OPT += --disable-ecore-fb
 endif
