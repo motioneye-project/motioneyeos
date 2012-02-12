@@ -62,7 +62,7 @@ ifeq ($(BR2_PACKAGE_LIBECORE_X),y)
 LIBECORE_CONF_OPT += --enable-ecore-x
 LIBECORE_DEPENDENCIES += xlib_libXext xlib_libX11
 else
-LIBECORE_CONF_OPT += --disable-ecore-x
+LIBECORE_CONF_OPT += --disable-ecore-x --disable-ecore-imf-xim
 endif
 
 ifeq ($(BR2_PACKAGE_LIBECORE_X_XCB),y)
