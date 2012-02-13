@@ -24,6 +24,7 @@ LIBVNCSERVER_CONF_OPT += --without-crypto
 endif
 
 ifeq ($(BR2_PACKAGE_LIBGCRYPT),y)
+LIBVNCSERVER_CONF_ENV += LIBGCRYPT_CONFIG=$(STAGING_DIR)/usr/bin/libgcrypt-config
 LIBVNCSERVER_DEPENDENCIES += libgcrypt
 else
 LIBVNCSERVER_CONF_OPT += --without-gcrypt
