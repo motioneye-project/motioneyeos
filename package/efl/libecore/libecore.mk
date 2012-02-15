@@ -76,11 +76,10 @@ LIBECORE_DEPENDENCIES += libxcb xlib_libX11 xcb-util
 # teach it about CC_FOR_BUILD, but for now simply build makekeys by
 # hand in advance
 define LIBECORE_BUILD_MAKEKEYS_FOR_HOST
-	cd $(@D)/src/util && $(HOSTCC) $(HOST_CFLAGS) $(HOST_LDFLAGS) \
-		-o makekeys makekeys.c
+	$(HOST_CONFIGURE_OPTS) $(MAKE1) -C $(@D)/src/util makekeys.o makekeys
 endef
 
-LIBECORE_POST_CONFIGURE_HOOKS += LIBECORE_BUILD_MAKEKEYS_FOR_HOST
+LIBECORE_POST_EXTRACT_HOOKS += LIBECORE_BUILD_MAKEKEYS_FOR_HOST
 else
 LIBECORE_CONF_OPT += --disable-ecore-x-xcb
 endif
