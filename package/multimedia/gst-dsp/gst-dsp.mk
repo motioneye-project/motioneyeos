@@ -1,4 +1,4 @@
-GST_DSP_VERSION = 0.10.1
+GST_DSP_VERSION = 0.10.2
 GST_DSP_SITE = http://gst-dsp.googlecode.com/files/
 
 define GST_DSP_BUILD_CMDS
