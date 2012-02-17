@@ -210,10 +210,13 @@ information is (assuming the package name is +libfoo+) :
 
 * +LIBFOO_DEVICES+ lists the device files to be created by Buildroot
   when using the static device table. The syntax to use is the
-  makedevs one.
+  makedevs one. You can find some documentation for this syntax in the
+  xref:makedev-syntax[]. This variable is optional.
 
 * +LIBFOO_PERMISSIONS+ lists the changes of permissions to be done at
   the end of the build process. The syntax is once again the makedevs one.
+  You can find some documentation for this syntax in the xref:makedev-syntax[].
+  This variable is optional.
 
 The recommended way to define these variables is to use the following
 syntax:
