@@ -1,4 +1,17 @@
-2012.02-rc1: Released February 12th, 2012:
+2012.02-rc2, Released February 19th, 2012:
+
+	Fixes all over the tree.
+
+	Toolchain: uClibc: Added upstream post-0.9.33 fixes, Bump
+	linux-headers 3.0.x / 3.2.x stable versions.
+
+	Documentation: Added makedev / <pkg>_DEVICES /
+	<pkg>_PERMISSIONS documentation.
+
+	Updated/fixed packages: busybox, ffmpeg, gst-dsp, libecore,
+	libvncserver, mxml, python.
+
+2012.02-rc1, Released February 12th, 2012:
 
 	Fixes all over the tree and new features.
 
