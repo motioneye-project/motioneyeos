@@ -4,7 +4,7 @@
 #
 #############################################################
 
-DROPBEAR_VERSION = 2011.54
+DROPBEAR_VERSION = 2012.55
 DROPBEAR_SITE = http://matt.ucc.asn.au/dropbear/releases
 DROPBEAR_TARGET_BINS = dbclient dropbearkey dropbearconvert scp ssh
 DROPBEAR_MAKE =	$(MAKE) MULTI=1 SCPPROGRESS=1 \
