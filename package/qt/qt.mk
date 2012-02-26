@@ -201,6 +201,11 @@ endif
 
 ifeq ($(BR2_arm)$(BR2_armeb),y)
 QT_EMB_PLATFORM = arm
+ifeq ($(BR2_GCC_VERSION_4_6_X),y)
+# workaround for gcc issue
+# http://gcc.gnu.org/ml/gcc-patches/2010-11/msg02245.html
+QT_CXXFLAGS += -fno-strict-volatile-bitfields
+endif
 else ifeq ($(BR2_avr32),y)
 QT_EMB_PLATFORM = avr32
 else ifeq ($(BR2_i386),y)
