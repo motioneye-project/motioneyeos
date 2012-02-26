@@ -199,9 +199,7 @@ else
 QT_CONFIGURE_OPTS += -big-endian
 endif
 
-ifeq ($(BR2_arm),y)
-QT_EMB_PLATFORM = arm
-else ifeq ($(BR2_armeb),y)
+ifeq ($(BR2_arm)$(BR2_armeb),y)
 QT_EMB_PLATFORM = arm
 else ifeq ($(BR2_avr32),y)
 QT_EMB_PLATFORM = avr32
@@ -209,9 +207,7 @@ else ifeq ($(BR2_i386),y)
 QT_EMB_PLATFORM = x86
 else ifeq ($(BR2_x86_64),y)
 QT_EMB_PLATFORM = x86_64
-else ifeq ($(BR2_mips),y)
-QT_EMB_PLATFORM = mips
-else ifeq ($(BR2_mipsel),y)
+else ifeq ($(BR2_mips)$(BR2_mipsel),y)
 QT_EMB_PLATFORM = mips
 else ifeq ($(BR2_powerpc),y)
 QT_EMB_PLATFORM = powerpc
