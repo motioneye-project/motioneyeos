@@ -1,3 +1,18 @@
+2012.02-rc3, Released February 27th, 2012:
+
+	Fixes all over the tree.
+
+	Automatic host dependencies handling for cmake packages
+	fixed. Customize package deprecated as using a post-build
+	script is nowadays the preferred way of adding extra stuff to
+	the rootfs.
+
+	Linux-headers 3.0.x / 3.2.x stable version bumped.
+
+	QEMU defconfigs updated to 3.2.x kernels and readme fixed.
+
+	Updated/fixed packages: dropbear, ffmpeg, libpng
+
 2012.02-rc2, Released February 19th, 2012:
 
 	Fixes all over the tree.
