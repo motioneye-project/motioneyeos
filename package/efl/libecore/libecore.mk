@@ -12,7 +12,13 @@ LIBECORE_INSTALL_STAGING = YES
 LIBECORE_DEPENDENCIES = host-pkg-config libeina
 
 HOST_LIBECORE_DEPENDENCIES = host-pkg-config host-libeina host-libevas
-HOST_LIBECORE_CONF_OPT += --enable-ecore-evas
+HOST_LIBECORE_CONF_OPT += 		\
+	--enable-ecore-evas 		\
+	--disable-simple-x11 		\
+	--disable-ecore-directfb 	\
+	--disable-ecore-x 		\
+	--disable-ecore-x-xcb 		\
+	--disable-ecore-imf-xim
 
 # default options
 LIBECORE_CONF_OPT = --disable-simple-x11
