@@ -41,8 +41,15 @@ LIBGLIB2_CONF_ENV = \
 		ac_cv_func_working_mktime=yes jm_cv_func_working_re_compile_pattern=yes \
 		ac_use_included_regex=no gl_cv_c_restrict=no \
 		ac_cv_path_GLIB_GENMARSHAL=$(HOST_DIR)/usr/bin/glib-genmarshal ac_cv_prog_F77=no \
-		ac_cv_func_posix_getgrgid_r=no glib_cv_have_qsort_r=yes \
+		ac_cv_func_posix_getgrgid_r=no \
 		gt_cv_c_wchar_t=$(if $(BR2_USE_WCHAR),yes,no)
+
+# old uClibc versions don't provide qsort_r
+ifeq ($(BR2_UCLIBC_VERSION_0_9_31)$(BR2_UCLIBC_VERSION_0_9_32)$(BR2_TOOLCHAIN_CTNG_uClibc)$(BR2_TOOLCHAIN_EXTERNAL_UCLIBC),y)
+LIBGLIB2_CONF_ENV += glib_cv_have_qsort_r=no
+else
+LIBGLIB2_CONF_ENV += glib_cv_have_qsort_r=yes
+endif
 
 HOST_LIBGLIB2_CONF_OPT = \
 		--disable-gtk-doc \
