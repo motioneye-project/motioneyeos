@@ -12,9 +12,10 @@ E2FSPROGS_CONF_OPT = \
 	--enable-elf-shlibs \
 	$(if $(BR2_PACKAGE_E2FSPROGS_DEBUGFS),,--disable-debugfs) \
 	$(if $(BR2_PACKAGE_E2FSPROGS_E2IMAGE),,--disable-imager) \
+	$(if $(BR2_PACKAGE_E2FSPROGS_E4DEFRAG),,--disable-defrag) \
 	$(if $(BR2_PACKAGE_E2FSPROGS_RESIZE2FS),,--disable-resizer) \
 	--disable-uuidd \
-	--disable-blkid \
+	--disable-libblkid \
 	--disable-libuuid \
 	--enable-fsck \
 	--disable-e2initrd-helper \
