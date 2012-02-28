@@ -4,9 +4,9 @@
 #
 #############################################################
 
-LIBCURL_VERSION = 7.21.7
+LIBCURL_VERSION = 7.24.0
 LIBCURL_SOURCE = curl-$(LIBCURL_VERSION).tar.bz2
-LIBCURL_SITE = http://curl.haxx.se/download/
+LIBCURL_SITE = http://curl.haxx.se/download
 LIBCURL_INSTALL_STAGING = YES
 LIBCURL_CONF_OPT = --disable-verbose --disable-manual --enable-hidden-symbols
 
