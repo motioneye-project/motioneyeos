@@ -1,3 +1,7 @@
+2012.02, Released February 29th, 2012:
+
+	Updated/fixed packages: libecore
+
 2012.02-rc3, Released February 27th, 2012:
 
 	Fixes all over the tree.
@@ -41,7 +45,7 @@
 	Host utilities menu with commonly used host tools.
 
 	defconfigs: qemu configs for x86-64, mips and sparc, at91
-	defconfigs now use moder U-Boot / mainline Linux, added
+	defconfigs now use modern U-Boot / mainline Linux, added
 	lpc3250 defconfigs.
 
 	uClibc: remove 0.9.30, backport unshare() support, add
