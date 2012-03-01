@@ -14,6 +14,7 @@ config BR2_PACKAGE_LIBSOUP
 
 config BR2_PACKAGE_LIBSOUP_SSL
 	bool "https support"
+	select BR2_PACKAGE_GLIB_NETWORKING
 	select BR2_PACKAGE_GNUTLS
 	depends on BR2_PACKAGE_LIBSOUP
 	help

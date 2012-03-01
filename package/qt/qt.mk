@@ -12,7 +12,7 @@
 #
 ######################################################################
 
-QT_VERSION = 4.7.4
+QT_VERSION = 4.8.0
 QT_SOURCE  = qt-everywhere-opensource-src-$(QT_VERSION).tar.gz
 QT_SITE    = http://get.qt.nokia.com/qt/source
 QT_DEPENDENCIES = host-pkg-config
@@ -59,7 +59,10 @@ endif
 
 # ensure glib is built first if enabled for Qt's glib support
 ifeq ($(BR2_PACKAGE_LIBGLIB2),y)
+QT_CONFIGURE_OPTS += -glib
 QT_DEPENDENCIES += libglib2
+else
+QT_CONFIGURE_OPTS += -no-glib
 endif
 
 
@@ -196,19 +199,20 @@ else
 QT_CONFIGURE_OPTS += -big-endian
 endif
 
-ifeq ($(BR2_arm),y)
+ifeq ($(BR2_arm)$(BR2_armeb),y)
 QT_EMB_PLATFORM = arm
-else ifeq ($(BR2_armeb),y)
-QT_EMB_PLATFORM = arm
+ifeq ($(BR2_GCC_VERSION_4_6_X),y)
+# workaround for gcc issue
+# http://gcc.gnu.org/ml/gcc-patches/2010-11/msg02245.html
+QT_CXXFLAGS += -fno-strict-volatile-bitfields
+endif
 else ifeq ($(BR2_avr32),y)
 QT_EMB_PLATFORM = avr32
 else ifeq ($(BR2_i386),y)
 QT_EMB_PLATFORM = x86
 else ifeq ($(BR2_x86_64),y)
 QT_EMB_PLATFORM = x86_64
-else ifeq ($(BR2_mips),y)
-QT_EMB_PLATFORM = mips
-else ifeq ($(BR2_mipsel),y)
+else ifeq ($(BR2_mips)$(BR2_mipsel),y)
 QT_EMB_PLATFORM = mips
 else ifeq ($(BR2_powerpc),y)
 QT_EMB_PLATFORM = powerpc
@@ -222,9 +226,7 @@ ifneq ($(BR2_PACKAGE_QT_GUI_MODULE),y)
 QT_CONFIGURE_OPTS += -no-gui
 endif
 
-ifeq ($(BR2_PACKAGE_QT_GIF),y)
-QT_CONFIGURE_OPTS += -qt-gif
-else
+ifneq ($(BR2_PACKAGE_QT_GIF),y)
 QT_CONFIGURE_OPTS += -no-gif
 endif
 
@@ -490,9 +492,6 @@ define QT_CONFIGURE_CMDS
 		$(if $(VERBOSE),-verbose,-silent) \
 		-force-pkg-config \
 		$(QT_CONFIGURE_OPTS) \
-		-no-gfx-qnx \
-		-no-kbd-qnx \
-		-no-mouse-qnx \
 		-no-xinerama \
 		-no-cups \
 		-no-nis \
@@ -507,7 +506,7 @@ define QT_CONFIGURE_CMDS
 endef
 
 define QT_BUILD_CMDS
-	$(MAKE) -C $(@D)
+	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D)
 endef
 
 

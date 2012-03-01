@@ -3,10 +3,11 @@
 # zlib
 #
 #############################################################
-ZLIB_VERSION:=1.2.5
-ZLIB_SOURCE:=zlib-$(ZLIB_VERSION).tar.bz2
-ZLIB_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/libpng
-ZLIB_INSTALL_STAGING=YES
+
+ZLIB_VERSION = 1.2.6
+ZLIB_SOURCE =zlib-$(ZLIB_VERSION).tar.bz2
+ZLIB_SITE = http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/libpng
+ZLIB_INSTALL_STAGING = YES
 
 ifeq ($(BR2_PREFER_STATIC_LIB),y)
 ZLIB_PIC :=

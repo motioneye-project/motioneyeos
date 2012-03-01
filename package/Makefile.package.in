@@ -238,7 +238,7 @@ endef
 
 define DOWNLOAD_WGET
 	test -e $(DL_DIR)/$(2) || \
-	$(WGET) -P $(DL_DIR) $(call qstrip,$(1))/$(2)
+	$(WGET) -O $(DL_DIR)/$(2) $(call qstrip,$(1))/$(2)
 endef
 
 define SOURCE_CHECK_WGET
