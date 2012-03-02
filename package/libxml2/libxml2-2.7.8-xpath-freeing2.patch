@@ -1,0 +1,28 @@
+From fec31bcd452e77c10579467ca87a785b41115de6 Mon Sep 17 00:00:00 2001
+From: Daniel Veillard <veillard@redhat.com>
+Date: Thu, 18 Nov 2010 10:07:24 +0000
+Subject: Small fix for previous commit
+
+---
+diff --git a/xpath.c b/xpath.c
+index 1447be5..8b56189 100644
+--- a/xpath.c
++++ b/xpath.c
+@@ -11765,13 +11765,14 @@ xmlXPathCompOpEvalPositionalPredicate(xmlXPathParserContextPtr ctxt,
+ 	        xmlXPathObjectPtr tmp;
+ 		/* pop the result if any */
+ 		tmp = valuePop(ctxt);
+-                if (tmp != contextObj)
++                if (tmp != contextObj) {
+                     /*
+                      * Free up the result
+                      * then pop off contextObj, which will be freed later
+                      */
+                     xmlXPathReleaseObject(xpctxt, tmp);
+                     valuePop(ctxt);
++                }
+ 		goto evaluation_error;
+ 	    }
+ 
+--
+cgit v0.8.3.1

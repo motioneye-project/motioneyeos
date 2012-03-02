@@ -1,0 +1,101 @@
+From d7958b21e7f8c447a26bb2436f08402b2c308be4 Mon Sep 17 00:00:00 2001
+From: Chris Evans <scarybeasts@gmail.com>
+Date: Wed, 23 Mar 2011 00:13:06 +0000
+Subject: Fix some potential problems on reallocation failures
+
+The count was incremented before the allocation
+and not fixed in case of failure
+* xpath.c: corrects a few instances where the available count of some
+           structure is updated before we know the allocation actually
+           succeeds
+---
+diff --git a/xpath.c b/xpath.c
+index 8b56189..608fe00 100644
+--- a/xpath.c
++++ b/xpath.c
+@@ -3522,13 +3522,13 @@ xmlXPathNodeSetAddNs(xmlNodeSetPtr cur, xmlNodePtr node, xmlNsPtr ns) {
+     } else if (cur->nodeNr == cur->nodeMax) {
+         xmlNodePtr *temp;
+ 
+-        cur->nodeMax *= 2;
+-	temp = (xmlNodePtr *) xmlRealloc(cur->nodeTab, cur->nodeMax *
++	temp = (xmlNodePtr *) xmlRealloc(cur->nodeTab, cur->nodeMax * 2 *
+ 				      sizeof(xmlNodePtr));
+ 	if (temp == NULL) {
+ 	    xmlXPathErrMemory(NULL, "growing nodeset\n");
+ 	    return;
+ 	}
++        cur->nodeMax *= 2;
+ 	cur->nodeTab = temp;
+     }
+     cur->nodeTab[cur->nodeNr++] = xmlXPathNodeSetDupNs(node, ns);
+@@ -3627,14 +3627,14 @@ xmlXPathNodeSetAddUnique(xmlNodeSetPtr cur, xmlNodePtr val) {
+     } else if (cur->nodeNr == cur->nodeMax) {
+         xmlNodePtr *temp;
+ 
+-        cur->nodeMax *= 2;
+-	temp = (xmlNodePtr *) xmlRealloc(cur->nodeTab, cur->nodeMax *
++	temp = (xmlNodePtr *) xmlRealloc(cur->nodeTab, cur->nodeMax * 2 *
+ 				      sizeof(xmlNodePtr));
+ 	if (temp == NULL) {
+ 	    xmlXPathErrMemory(NULL, "growing nodeset\n");
+ 	    return;
+ 	}
+ 	cur->nodeTab = temp;
++        cur->nodeMax *= 2;
+     }
+     if (val->type == XML_NAMESPACE_DECL) {
+ 	xmlNsPtr ns = (xmlNsPtr) val;
+@@ -3738,14 +3738,14 @@ xmlXPathNodeSetMerge(xmlNodeSetPtr val1, xmlNodeSetPtr val2) {
+ 	} else if (val1->nodeNr == val1->nodeMax) {
+ 	    xmlNodePtr *temp;
+ 
+-	    val1->nodeMax *= 2;
+-	    temp = (xmlNodePtr *) xmlRealloc(val1->nodeTab, val1->nodeMax *
++	    temp = (xmlNodePtr *) xmlRealloc(val1->nodeTab, val1->nodeMax * 2 *
+ 					     sizeof(xmlNodePtr));
+ 	    if (temp == NULL) {
+ 	        xmlXPathErrMemory(NULL, "merging nodeset\n");
+ 		return(NULL);
+ 	    }
+ 	    val1->nodeTab = temp;
++	    val1->nodeMax *= 2;
+ 	}
+ 	if (n2->type == XML_NAMESPACE_DECL) {
+ 	    xmlNsPtr ns = (xmlNsPtr) n2;
+@@ -3907,14 +3907,14 @@ xmlXPathNodeSetMergeAndClear(xmlNodeSetPtr set1, xmlNodeSetPtr set2,
+ 	    } else if (set1->nodeNr >= set1->nodeMax) {
+ 		xmlNodePtr *temp;
+ 
+-		set1->nodeMax *= 2;
+ 		temp = (xmlNodePtr *) xmlRealloc(
+-		    set1->nodeTab, set1->nodeMax * sizeof(xmlNodePtr));
++		    set1->nodeTab, set1->nodeMax * 2 * sizeof(xmlNodePtr));
+ 		if (temp == NULL) {
+ 		    xmlXPathErrMemory(NULL, "merging nodeset\n");
+ 		    return(NULL);
+ 		}
+ 		set1->nodeTab = temp;
++		set1->nodeMax *= 2;
+ 	    }
+ 	    if (n2->type == XML_NAMESPACE_DECL) {
+ 		xmlNsPtr ns = (xmlNsPtr) n2;
+@@ -3991,14 +3991,14 @@ xmlXPathNodeSetMergeAndClearNoDupls(xmlNodeSetPtr set1, xmlNodeSetPtr set2,
+ 	    } else if (set1->nodeNr >= set1->nodeMax) {
+ 		xmlNodePtr *temp;
+ 
+-		set1->nodeMax *= 2;
+ 		temp = (xmlNodePtr *) xmlRealloc(
+-		    set1->nodeTab, set1->nodeMax * sizeof(xmlNodePtr));
++		    set1->nodeTab, set1->nodeMax * 2 * sizeof(xmlNodePtr));
+ 		if (temp == NULL) {
+ 		    xmlXPathErrMemory(NULL, "merging nodeset\n");
+ 		    return(NULL);
+ 		}
+ 		set1->nodeTab = temp;
++		set1->nodeMax *= 2;
+ 	    }
+ 	    set1->nodeTab[set1->nodeNr++] = n2;
+ 	}
+--
+cgit v0.9

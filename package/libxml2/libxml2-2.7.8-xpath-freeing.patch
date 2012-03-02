@@ -1,0 +1,32 @@
+From df83c17e5a2646bd923f75e5e507bc80d73c9722 Mon Sep 17 00:00:00 2001
+From: Daniel Veillard <veillard@redhat.com>
+Date: Wed, 17 Nov 2010 13:12:14 +0000
+Subject: Fix a potential freeing error in XPath
+
+---
+diff --git a/xpath.c b/xpath.c
+index 81e33f6..1447be5 100644
+--- a/xpath.c
++++ b/xpath.c
+@@ -11763,11 +11763,15 @@ xmlXPathCompOpEvalPositionalPredicate(xmlXPathParserContextPtr ctxt,
+ 
+ 	    if ((ctxt->error != XPATH_EXPRESSION_OK) || (res == -1)) {
+ 	        xmlXPathObjectPtr tmp;
+-		/* pop the result */
++		/* pop the result if any */
+ 		tmp = valuePop(ctxt);
+-		xmlXPathReleaseObject(xpctxt, tmp);
+-		/* then pop off contextObj, which will be freed later */
+-		valuePop(ctxt);
++                if (tmp != contextObj)
++                    /*
++                     * Free up the result
++                     * then pop off contextObj, which will be freed later
++                     */
++                    xmlXPathReleaseObject(xpctxt, tmp);
++                    valuePop(ctxt);
+ 		goto evaluation_error;
+ 	    }
+ 
+--
+cgit v0.8.3.1
