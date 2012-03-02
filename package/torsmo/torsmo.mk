@@ -6,7 +6,6 @@
 TORSMO_VERSION = 0.18
 TORSMO_SOURCE = torsmo-$(TORSMO_VERSION).tar.gz
 TORSMO_SITE = http://avr32linux.org/twiki/pub/Main/Torsmo
-TORSMO_INSTALL_STAGING = NO
 TORSMO_INSTALL_TARGET = YES
 
 # help2man doesn't work when cross compiling
