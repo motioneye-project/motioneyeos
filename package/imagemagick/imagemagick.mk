@@ -4,10 +4,10 @@
 #
 #############################################################
 
-IMAGEMAGICK_MAJOR = 6.6.7
-IMAGEMAGICK_VERSION = $(IMAGEMAGICK_MAJOR)-6
+IMAGEMAGICK_MAJOR = 6.7.2
+IMAGEMAGICK_VERSION = $(IMAGEMAGICK_MAJOR)-10
 IMAGEMAGICK_SOURCE = ImageMagick-$(IMAGEMAGICK_VERSION).tar.bz2
-IMAGEMAGICK_SITE = ftp://ftp.imagemagick.org/pub/ImageMagick
+IMAGEMAGICK_SITE = ftp://ftp.imagemagick.org/pub/ImageMagick/legacy
 IMAGEMAGICK_INSTALL_STAGING = YES
 IMAGEMAGICK_AUTORECONF = YES
 
@@ -29,6 +29,8 @@ IMAGEMAGICK_CONF_OPT = --program-transform-name='s,,,' \
 		--without-gslib \
 		--without-fpx \
 		--without-x
+
+IMAGEMAGICK_DEPENDENCIES = host-pkg-config
 
 ifeq ($(BR2_PACKAGE_FONTCONFIG),y)
 IMAGEMAGICK_CONF_OPT += --with-fontconfig
@@ -67,7 +69,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_LIBXML2),y)
 IMAGEMAGICK_CONF_OPT += --with-xml
-IMAGEMAGICK_CONF_ENV += ac_cv_prog_xml2_config=$(STAGING_DIR)/usr/bin/xml2-config
+IMAGEMAGICK_CONF_ENV += ac_cv_path_xml2_config=$(STAGING_DIR)/usr/bin/xml2-config
 IMAGEMAGICK_DEPENDENCIES += libxml2
 else
 IMAGEMAGICK_CONF_OPT += --without-xml
@@ -87,6 +89,20 @@ IMAGEMAGICK_CONF_OPT += --with-fftw
 IMAGEMAGICK_DEPENDENCIES += fftw
 else
 IMAGEMAGICK_CONF_OPT += --without-fftw
+endif
+
+ifeq ($(BR2_PACKAGE_ZLIB),y)
+IMAGEMAGICK_CONF_OPT += --with-zlib
+IMAGEMAGICK_DEPENDENCIES += zlib
+else
+IMAGEMAGICK_CONF_OPT += --without-zlib
+endif
+
+ifeq ($(BR2_PACKAGE_BZIP2),y)
+IMAGEMAGICK_CONF_OPT += --with-bzlib
+IMAGEMAGICK_DEPENDENCIES += bzip2
+else
+IMAGEMAGICK_CONF_OPT += --without-bzip2
 endif
 
 define IMAGEMAGICK_REMOVE_CONFIG_SCRIPTS
