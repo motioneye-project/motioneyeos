@@ -32,7 +32,7 @@ $(MICROPERL_DIR)/.source: $(DL_DIR)/$(MICROPERL_SOURCE)
 
 $(MICROPERL_DIR)/.host_configured: $(MICROPERL_DIR)/.source
 	# we need to build a perl for the host just for Errno.pm
-	(cd $(MICROPERL_DIR); ./Configure -Dcc="$(HOSTCC)" -de  )
+	(cd $(MICROPERL_DIR); ./Configure -Dcc="$(HOSTCC)" -de -A libs='-lm' )
 	touch $@
 
 
