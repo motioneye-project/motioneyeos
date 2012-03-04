@@ -8,6 +8,8 @@ config BR2_PACKAGE_GPSD
 	  making all data on the location/course/velocity of the sensors
 	  available to be queried on TCP port 2947 of the host computer.
 
+	  The D-Bus interface is included if dbus-glib is enabled.
+
 	  http://gpsd.berlios.de/
 
 config BR2_PACKAGE_GPSD_DEVICES

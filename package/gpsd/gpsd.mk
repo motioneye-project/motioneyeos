@@ -30,9 +30,9 @@ ifeq ($(BR2_PACKAGE_LIBUSB),y)
 	GPSD_DEPENDENCIES += libusb
 endif
 
-ifeq ($(strip $(BR2_PACKAGE_DBUS)),y)
+ifeq ($(BR2_PACKAGE_DBUS_GLIB),y)
 	GPSD_CONF_OPT += --enable-dbus
-	GPSD_DEPENDENCIES += dbus dbus-glib
+	GPSD_DEPENDENCIES += dbus-glib
 endif
 
 ifeq ($(BR2_PACKAGE_NCURSES),y)
