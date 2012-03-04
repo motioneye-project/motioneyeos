@@ -1,0 +1,681 @@
+[PATCH] Fix build with modern glib versions
+
+G_CONST_RETURN is deprecated, so replace with 'const' instead.
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ atk/atkaction.c            |    8 ++++----
+ atk/atkaction.h            |   16 ++++++++--------
+ atk/atkdocument.c          |    6 +++---
+ atk/atkdocument.h          |   12 ++++++------
+ atk/atkimage.c             |    4 ++--
+ atk/atkimage.h             |    8 ++++----
+ atk/atkobject.c            |   18 +++++++++---------
+ atk/atkobject.h            |   12 ++++++------
+ atk/atkrelation.c          |    2 +-
+ atk/atkrelation.h          |    2 +-
+ atk/atkstate.c             |    2 +-
+ atk/atkstate.h             |    2 +-
+ atk/atkstreamablecontent.c |    2 +-
+ atk/atkstreamablecontent.h |   10 +++++-----
+ atk/atktable.c             |    4 ++--
+ atk/atktable.h             |    8 ++++----
+ atk/atktext.c              |    4 ++--
+ atk/atktext.h              |    4 ++--
+ atk/atkutil.c              |    6 +++---
+ atk/atkutil.h              |   10 +++++-----
+ tests/testrelation.c       |    6 +++---
+ tests/teststateset.c       |    2 +-
+ 22 files changed, 74 insertions(+), 74 deletions(-)
+
+Index: atk-1.33.6/atk/atkaction.c
+===================================================================
+--- atk-1.33.6.orig/atk/atkaction.c
++++ atk-1.33.6/atk/atkaction.c
+@@ -101,7 +101,7 @@
+  * Returns a description string, or %NULL
+  * if @action does not implement this interface.
+  **/
+-G_CONST_RETURN gchar*
++const gchar*
+ atk_action_get_description (AtkAction *obj,
+                             gint      i)
+ {
+@@ -140,7 +140,7 @@
+  * Returns a name string, or %NULL
+  * if @action does not implement this interface.
+  **/
+-G_CONST_RETURN gchar*
++const gchar*
+ atk_action_get_name (AtkAction *obj,
+                      gint      i)
+ {
+@@ -166,7 +166,7 @@
+  * Returns a name string, or %NULL
+  * if @action does not implement this interface.
+  **/
+-G_CONST_RETURN gchar*
++const gchar*
+ atk_action_get_localized_name (AtkAction *obj,
+                                gint      i)
+ {
+@@ -203,7 +203,7 @@
+  * if there is no keybinding for this action.
+  *
+  **/
+-G_CONST_RETURN gchar*
++const gchar*
+ atk_action_get_keybinding (AtkAction *obj,
+                            gint      i)
+ {
+Index: atk-1.33.6/atk/atkaction.h
+===================================================================
+--- atk-1.33.6.orig/atk/atkaction.h
++++ atk-1.33.6/atk/atkaction.h
+@@ -55,16 +55,16 @@
+   gboolean                (*do_action)         (AtkAction         *action,
+                                                 gint              i);
+   gint                    (*get_n_actions)     (AtkAction         *action);
+-  G_CONST_RETURN gchar*   (*get_description)   (AtkAction         *action,
++  const gchar*   (*get_description)   (AtkAction         *action,
+                                                 gint              i);
+-  G_CONST_RETURN gchar*   (*get_name)          (AtkAction         *action,
++  const gchar*   (*get_name)          (AtkAction         *action,
+                                                 gint              i);
+-  G_CONST_RETURN gchar*   (*get_keybinding)    (AtkAction         *action,
++  const gchar*   (*get_keybinding)    (AtkAction         *action,
+                                                 gint              i);
+   gboolean                (*set_description)   (AtkAction         *action,
+                                                 gint              i,
+                                                 const gchar       *desc);
+-  G_CONST_RETURN gchar*   (*get_localized_name)(AtkAction         *action,
++  const gchar*   (*get_localized_name)(AtkAction         *action,
+ 						gint              i);
+   AtkFunction             pad2;
+ };
+@@ -85,11 +85,11 @@
+ gboolean   atk_action_do_action                (AtkAction         *action,
+                                             gint              i);
+ gint   atk_action_get_n_actions            (AtkAction *action);
+-G_CONST_RETURN gchar* atk_action_get_description  (AtkAction         *action,
++const gchar* atk_action_get_description  (AtkAction         *action,
+                                                    gint              i);
+-G_CONST_RETURN gchar* atk_action_get_name         (AtkAction         *action,
++const gchar* atk_action_get_name         (AtkAction         *action,
+                                                    gint              i);
+-G_CONST_RETURN gchar* atk_action_get_keybinding   (AtkAction         *action,
++const gchar* atk_action_get_keybinding   (AtkAction         *action,
+                                                    gint              i);
+ gboolean              atk_action_set_description  (AtkAction         *action,
+                                                    gint              i,
+@@ -97,7 +97,7 @@
+ 
+ /* NEW in ATK 1.1: */
+ 
+-G_CONST_RETURN gchar* atk_action_get_localized_name (AtkAction       *action,
++const gchar* atk_action_get_localized_name (AtkAction       *action,
+ 						     gint            i);
+ 
+ /*
+Index: atk-1.33.6/atk/atkdocument.c
+===================================================================
+--- atk-1.33.6.orig/atk/atkdocument.c
++++ atk-1.33.6/atk/atkdocument.c
+@@ -93,7 +93,7 @@
+  *
+  * Returns: a string indicating the document type
+  **/
+-G_CONST_RETURN gchar*
++const gchar*
+ atk_document_get_document_type (AtkDocument *document)
+ {
+   AtkDocumentIface *iface;
+@@ -155,7 +155,7 @@
+  *          locale of the document content as a whole, or NULL if
+  *          the document content does not specify a locale.
+  **/
+-G_CONST_RETURN gchar *
++const gchar *
+ atk_document_get_locale (AtkDocument *document)
+ {
+   AtkDocumentIface *iface;
+@@ -219,7 +219,7 @@
+  *    document, or NULL if a value for #attribute_name has not been specified
+  *    for this document.
+  */
+-G_CONST_RETURN gchar *
++const gchar *
+ atk_document_get_attribute_value (AtkDocument *document, 
+ 				  const gchar *attribute_name)
+ {
+Index: atk-1.33.6/atk/atkdocument.h
+===================================================================
+--- atk-1.33.6.orig/atk/atkdocument.h
++++ atk-1.33.6/atk/atkdocument.h
+@@ -49,12 +49,12 @@
+ struct _AtkDocumentIface
+ {
+   GTypeInterface parent;
+-  G_CONST_RETURN gchar* ( *get_document_type) (AtkDocument              *document);
++  const gchar* ( *get_document_type) (AtkDocument              *document);
+   gpointer              ( *get_document)      (AtkDocument              *document);
+ 
+-  G_CONST_RETURN gchar* ( *get_document_locale) (AtkDocument              *document);
++  const gchar* ( *get_document_locale) (AtkDocument              *document);
+   AtkAttributeSet *     ( *get_document_attributes) (AtkDocument        *document);
+-  G_CONST_RETURN gchar* ( *get_document_attribute_value) (AtkDocument   *document,
++  const gchar* ( *get_document_attribute_value) (AtkDocument   *document,
+                                                           const gchar   *attribute_name);
+   gboolean              ( *set_document_attribute) (AtkDocument         *document,
+                                                     const gchar         *attribute_name,
+@@ -68,11 +68,11 @@
+ 
+ GType  atk_document_get_type             (void);
+ 
+-G_CONST_RETURN gchar* atk_document_get_document_type (AtkDocument   *document);
++const gchar* atk_document_get_document_type (AtkDocument   *document);
+ gpointer atk_document_get_document (AtkDocument   *document);
+-G_CONST_RETURN gchar* atk_document_get_locale (AtkDocument *document);
++const gchar* atk_document_get_locale (AtkDocument *document);
+ AtkAttributeSet*      atk_document_get_attributes (AtkDocument *document);
+-G_CONST_RETURN gchar* atk_document_get_attribute_value (AtkDocument *document, 
++const gchar* atk_document_get_attribute_value (AtkDocument *document, 
+                                                         const gchar *attribute_name);
+ gboolean              atk_document_set_attribute_value (AtkDocument *document,
+                                                         const gchar *attribute_name,
+Index: atk-1.33.6/atk/atkimage.c
+===================================================================
+--- atk-1.33.6.orig/atk/atkimage.c
++++ atk-1.33.6/atk/atkimage.c
+@@ -46,7 +46,7 @@
+  *
+  * Returns: a string representing the image description
+  **/
+-G_CONST_RETURN gchar*
++const gchar*
+ atk_image_get_image_description (AtkImage *image)
+ {
+   AtkImageIface *iface;
+@@ -192,7 +192,7 @@
+  * Returns a string corresponding to the POSIX LC_MESSAGES locale used by the image description, or NULL if the image does not specify a locale. 
+  *
+  */
+-G_CONST_RETURN gchar* 
++const gchar* 
+ atk_image_get_image_locale (AtkImage   *image)
+ {
+ 	
+Index: atk-1.33.6/atk/atkimage.h
+===================================================================
+--- atk-1.33.6.orig/atk/atkimage.h
++++ atk-1.33.6/atk/atkimage.h
+@@ -53,13 +53,13 @@
+                                                    gint                  *x,
+ 				                   gint	                 *y,
+     			                           AtkCoordType	         coord_type);
+-  G_CONST_RETURN gchar* ( *get_image_description) (AtkImage              *image);
++  const gchar* ( *get_image_description) (AtkImage              *image);
+   void                  ( *get_image_size)        (AtkImage              *image,
+                                                    gint                  *width,
+                                                    gint                  *height);
+   gboolean              ( *set_image_description) (AtkImage              *image,
+                                                    const gchar           *description);
+-  G_CONST_RETURN gchar* ( *get_image_locale)      (AtkImage              *image);
++  const gchar* ( *get_image_locale)      (AtkImage              *image);
+ 
+   AtkFunction           pad1;
+ 	
+@@ -67,7 +67,7 @@
+ 
+ GType  atk_image_get_type             (void);
+ 
+-G_CONST_RETURN gchar* atk_image_get_image_description (AtkImage   *image);
++const gchar* atk_image_get_image_description (AtkImage   *image);
+ 
+ void     atk_image_get_image_size        (AtkImage           *image,
+                                           gint               *width,
+@@ -80,7 +80,7 @@
+ 					  gint	             *y,
+     					  AtkCoordType	     coord_type);
+ 
+-G_CONST_RETURN gchar* atk_image_get_image_locale (AtkImage   *image);
++const gchar* atk_image_get_image_locale (AtkImage   *image);
+ 
+ G_END_DECLS
+ 
+Index: atk-1.33.6/atk/atkobject.c
+===================================================================
+--- atk-1.33.6.orig/atk/atkobject.c
++++ atk-1.33.6/atk/atkobject.c
+@@ -285,9 +285,9 @@
+                                                      GValue          *value,
+                                                      GParamSpec      *pspec);
+ static void            atk_object_finalize          (GObject         *object);
+-static G_CONST_RETURN gchar*
++static const gchar*
+                        atk_object_real_get_name     (AtkObject       *object);
+-static G_CONST_RETURN gchar*
++static const gchar*
+                        atk_object_real_get_description    
+                                                    (AtkObject       *object);
+ static AtkObject*      atk_object_real_get_parent  (AtkObject       *object);
+@@ -692,7 +692,7 @@
+  *
+  * Returns: a character string representing the accessible name of the object.
+  **/
+-G_CONST_RETURN gchar*
++const gchar*
+ atk_object_get_name (AtkObject *accessible)
+ {
+   AtkObjectClass *klass;
+@@ -716,7 +716,7 @@
+  * of the accessible.
+  *
+  **/
+-G_CONST_RETURN gchar*
++const gchar*
+ atk_object_get_description (AtkObject *accessible)
+ {
+   AtkObjectClass *klass;
+@@ -1125,7 +1125,7 @@
+                                 AtkState  state,
+                                 gboolean  value)
+ {
+-  G_CONST_RETURN gchar* name;
++  const gchar* name;
+ 
+   g_return_if_fail (ATK_IS_OBJECT (accessible));
+ 
+@@ -1323,13 +1323,13 @@
+   G_OBJECT_CLASS (parent_class)->finalize (object);
+ }
+ 
+-static G_CONST_RETURN gchar*
++static const gchar*
+ atk_object_real_get_name (AtkObject *object)
+ {
+   return object->name;
+ }
+ 
+-static G_CONST_RETURN gchar*
++static const gchar*
+ atk_object_real_get_description (AtkObject *object)
+ {
+   return object->description;
+@@ -1491,7 +1491,7 @@
+  *
+  * Returns: the string describing the AtkRole
+  */
+-G_CONST_RETURN gchar*
++const gchar*
+ atk_role_get_name (AtkRole role)
+ {
+   if (role >= 0 && role < ATK_ROLE_LAST_DEFINED)
+@@ -1518,7 +1518,7 @@
+  *
+  * Returns: the localized string describing the AtkRole
+  **/
+-G_CONST_RETURN gchar*
++const gchar*
+ atk_role_get_localized_name (AtkRole role)
+ {
+   gettext_initialization ();
+Index: atk-1.33.6/atk/atkobject.h
+===================================================================
+--- atk-1.33.6.orig/atk/atkobject.h
++++ atk-1.33.6/atk/atkobject.h
+@@ -381,11 +381,11 @@
+   /*
+    * Gets the accessible name of the object
+    */
+-  G_CONST_RETURN gchar*    (* get_name)            (AtkObject                *accessible);
++  const gchar*    (* get_name)            (AtkObject                *accessible);
+   /*
+    * Gets the accessible description of the object
+    */
+-  G_CONST_RETURN gchar*    (* get_description)     (AtkObject                *accessible);
++  const gchar*    (* get_description)     (AtkObject                *accessible);
+   /*
+    * Gets the accessible parent of the object
+    */
+@@ -535,8 +535,8 @@
+  * Properties directly supported by AtkObject
+  */
+ 
+-G_CONST_RETURN gchar*   atk_object_get_name                       (AtkObject *accessible);
+-G_CONST_RETURN gchar*   atk_object_get_description                (AtkObject *accessible);
++const gchar*   atk_object_get_name                       (AtkObject *accessible);
++const gchar*   atk_object_get_description                (AtkObject *accessible);
+ AtkObject*              atk_object_get_parent                     (AtkObject *accessible);
+ gint                    atk_object_get_n_accessible_children      (AtkObject *accessible);
+ AtkObject*              atk_object_ref_accessible_child           (AtkObject *accessible,
+@@ -571,7 +571,7 @@
+ void                 atk_object_initialize                       (AtkObject                     *accessible,
+                                                                   gpointer                      data);
+                                     
+-G_CONST_RETURN gchar* atk_role_get_name      (AtkRole         role);
++const gchar* atk_role_get_name      (AtkRole         role);
+ AtkRole               atk_role_for_name      (const gchar     *name);
+ 
+ 
+@@ -582,7 +582,7 @@
+ gboolean              atk_object_remove_relationship           (AtkObject      *object,
+ 								AtkRelationType relationship,
+ 								AtkObject      *target);
+-G_CONST_RETURN gchar* atk_role_get_localized_name              (AtkRole     role);
++const gchar* atk_role_get_localized_name              (AtkRole     role);
+ 
+ /* */
+ 
+Index: atk-1.33.6/atk/atkrelation.c
+===================================================================
+--- atk-1.33.6.orig/atk/atkrelation.c
++++ atk-1.33.6/atk/atkrelation.c
+@@ -130,7 +130,7 @@
+  *
+  * Returns: the string describing the AtkRelationType
+  */
+-G_CONST_RETURN gchar*
++const gchar*
+ atk_relation_type_get_name (AtkRelationType type)
+ {
+   GTypeClass *type_class;
+Index: atk-1.33.6/atk/atkrelation.h
+===================================================================
+--- atk-1.33.6.orig/atk/atkrelation.h
++++ atk-1.33.6/atk/atkrelation.h
+@@ -61,7 +61,7 @@
+ GType atk_relation_get_type (void);
+ 
+ AtkRelationType       atk_relation_type_register      (const gchar     *name);
+-G_CONST_RETURN gchar* atk_relation_type_get_name      (AtkRelationType type);
++const gchar* atk_relation_type_get_name      (AtkRelationType type);
+ AtkRelationType       atk_relation_type_for_name      (const gchar     *name);
+ 
+ /*
+Index: atk-1.33.6/atk/atkstate.c
+===================================================================
+--- atk-1.33.6.orig/atk/atkstate.c
++++ atk-1.33.6/atk/atkstate.c
+@@ -57,7 +57,7 @@
+  *
+  * Returns: the string describing the AtkStateType
+  */
+-G_CONST_RETURN gchar*
++const gchar*
+ atk_state_type_get_name (AtkStateType type)
+ {
+   GTypeClass *type_class;
+Index: atk-1.33.6/atk/atkstate.h
+===================================================================
+--- atk-1.33.6.orig/atk/atkstate.h
++++ atk-1.33.6/atk/atkstate.h
+@@ -170,7 +170,7 @@
+ 
+ AtkStateType atk_state_type_register            (const gchar *name);
+ 
+-G_CONST_RETURN gchar* atk_state_type_get_name   (AtkStateType type);
++const gchar* atk_state_type_get_name   (AtkStateType type);
+ AtkStateType          atk_state_type_for_name   (const gchar  *name);
+ 
+ G_END_DECLS
+Index: atk-1.33.6/atk/atkstreamablecontent.c
+===================================================================
+--- atk-1.33.6.orig/atk/atkstreamablecontent.c
++++ atk-1.33.6/atk/atkstreamablecontent.c
+@@ -73,7 +73,7 @@
+  * Returns : a gchar* representing the specified mime type; the caller
+  * should not free the character string.
+  **/
+-G_CONST_RETURN gchar*
++const gchar*
+ atk_streamable_content_get_mime_type (AtkStreamableContent *streamable,
+                                       gint                 i)
+ {
+Index: atk-1.33.6/atk/atkstreamablecontent.h
+===================================================================
+--- atk-1.33.6.orig/atk/atkstreamablecontent.h
++++ atk-1.33.6/atk/atkstreamablecontent.h
+@@ -54,11 +54,11 @@
+    * at index 0 should be considered the "default" data type for the stream.
+    *
+    * This assumes that the strings for the mime types are stored in the
+-   * AtkStreamableContent. Alternatively the G_CONST_RETURN could be removed
++   * AtkStreamableContent. Alternatively the const could be removed
+    * and the caller would be responsible for calling g_free() on the
+    * returned value.
+    */
+-  G_CONST_RETURN gchar*     (* get_mime_type)     (AtkStreamableContent     *streamable,
++  const gchar*     (* get_mime_type)     (AtkStreamableContent     *streamable,
+                                                    gint                     i);
+   /*
+    * One possible implementation for this method is that it constructs the
+@@ -80,7 +80,7 @@
+  * constructed.  Note that it is possible for get_uri to return NULL but for
+  * get_stream to work nonetheless, since not all GIOChannels connect to URIs.
+  */
+-    G_CONST_RETURN  gchar*  (* get_uri)           (AtkStreamableContent     *streamable,
++    const  gchar*  (* get_uri)           (AtkStreamableContent     *streamable,
+                                                    const gchar              *mime_type);
+ 
+ 
+@@ -92,12 +92,12 @@
+ 
+ gint                   atk_streamable_content_get_n_mime_types (AtkStreamableContent     *streamable);
+                                                        
+-G_CONST_RETURN gchar*  atk_streamable_content_get_mime_type    (AtkStreamableContent     *streamable,
++const gchar*  atk_streamable_content_get_mime_type    (AtkStreamableContent     *streamable,
+                                                                 gint                     i);
+ GIOChannel*             atk_streamable_content_get_stream       (AtkStreamableContent     *streamable,
+                                                                  const gchar              *mime_type);
+ 
+-G_CONST_RETURN gchar*  atk_streamable_content_get_uri          (AtkStreamableContent     *streamable,
++const gchar*  atk_streamable_content_get_uri          (AtkStreamableContent     *streamable,
+                                                                 const gchar              *mime_type);
+ 
+ G_END_DECLS
+Index: atk-1.33.6/atk/atktable.c
+===================================================================
+--- atk-1.33.6.orig/atk/atktable.c
++++ atk-1.33.6/atk/atktable.c
+@@ -301,7 +301,7 @@
+  * Returns: a gchar* representing the column description, or %NULL
+  * if value does not implement this interface.
+  **/
+-G_CONST_RETURN gchar*
++const gchar*
+ atk_table_get_column_description (AtkTable *table,
+                                   gint     column)
+ {
+@@ -405,7 +405,7 @@
+  * Returns: a gchar* representing the row description, or %NULL
+  * if value does not implement this interface.
+  **/
+-G_CONST_RETURN gchar*
++const gchar*
+ atk_table_get_row_description (AtkTable *table,
+                                gint      row)
+ {
+Index: atk-1.33.6/atk/atktable.h
+===================================================================
+--- atk-1.33.6.orig/atk/atktable.h
++++ atk-1.33.6/atk/atktable.h
+@@ -69,12 +69,12 @@
+                                                   gint          column);
+   AtkObject*
+                     (* get_caption)              (AtkTable      *table);
+-  G_CONST_RETURN gchar*
++  const gchar*
+                     (* get_column_description)   (AtkTable      *table,
+                                                   gint          column);
+   AtkObject*        (* get_column_header)        (AtkTable      *table,
+ 						  gint		column);
+-  G_CONST_RETURN gchar*
++  const gchar*
+                     (* get_row_description)      (AtkTable      *table,
+                                                   gint          row);
+   AtkObject*        (* get_row_header)           (AtkTable      *table,
+@@ -163,12 +163,12 @@
+                                                   gint             column);
+ AtkObject*
+                   atk_table_get_caption          (AtkTable         *table);
+-G_CONST_RETURN gchar*
++const gchar*
+                   atk_table_get_column_description (AtkTable         *table,
+                                                   gint             column);
+ AtkObject*        atk_table_get_column_header    (AtkTable         *table,
+ 						  gint		   column);
+-G_CONST_RETURN gchar*
++const gchar*
+                   atk_table_get_row_description  (AtkTable         *table,
+                                                   gint             row);
+ AtkObject*        atk_table_get_row_header       (AtkTable         *table,
+Index: atk-1.33.6/atk/atktext.c
+===================================================================
+--- atk-1.33.6.orig/atk/atktext.c
++++ atk-1.33.6/atk/atktext.c
+@@ -1054,7 +1054,7 @@
+  *
+  * Returns: a string containing the name; this string should not be freed
+  **/
+-G_CONST_RETURN gchar*
++const gchar*
+ atk_text_attribute_get_name (AtkTextAttribute attr)
+ {
+   GTypeClass *type_class;
+@@ -1150,7 +1150,7 @@
+  * Returns: a string containing the value; this string should not be freed;
+  * NULL is returned if there are no values maintained for the attr value. 
+  **/
+-G_CONST_RETURN gchar*
++const gchar*
+ atk_text_attribute_get_value (AtkTextAttribute attr,
+                               gint             index)
+ {
+Index: atk-1.33.6/atk/atktext.h
+===================================================================
+--- atk-1.33.6.orig/atk/atktext.h
++++ atk-1.33.6/atk/atktext.h
+@@ -355,9 +355,9 @@
+                                                            AtkTextClipType  y_clip_type);
+ void          atk_text_free_ranges                        (AtkTextRange     **ranges);
+ void 	      atk_attribute_set_free                      (AtkAttributeSet  *attrib_set);
+-G_CONST_RETURN gchar*  atk_text_attribute_get_name        (AtkTextAttribute attr);
++const gchar*  atk_text_attribute_get_name        (AtkTextAttribute attr);
+ AtkTextAttribute       atk_text_attribute_for_name        (const gchar      *name);
+-G_CONST_RETURN gchar*  atk_text_attribute_get_value       (AtkTextAttribute attr,
++const gchar*  atk_text_attribute_get_value       (AtkTextAttribute attr,
+                                                            gint             index_);
+ 
+ G_END_DECLS
+Index: atk-1.33.6/atk/atkutil.c
+===================================================================
+--- atk-1.33.6.orig/atk/atkutil.c
++++ atk-1.33.6/atk/atkutil.c
+@@ -342,7 +342,7 @@
+  *
+  * Returns: name string for the GUI toolkit implementing ATK for this application
+  **/
+-G_CONST_RETURN gchar*
++const gchar*
+ atk_get_toolkit_name (void)
+ {
+   const gchar *retval;
+@@ -367,7 +367,7 @@
+  *
+  * Returns: version string for the GUI toolkit implementing ATK for this application
+  **/
+-G_CONST_RETURN gchar*
++const gchar*
+ atk_get_toolkit_version (void)
+ {
+   const gchar *retval;
+@@ -394,7 +394,7 @@
+  *
+  * Since: 1.20
+  */
+-G_CONST_RETURN gchar *
++const gchar *
+ atk_get_version (void)
+ {
+   return VERSION;
+Index: atk-1.33.6/atk/atkutil.h
+===================================================================
+--- atk-1.33.6.orig/atk/atkutil.h
++++ atk-1.33.6/atk/atkutil.h
+@@ -147,8 +147,8 @@
+ 						  gpointer data);
+    void         (* remove_key_event_listener)    (guint               listener_id);
+    AtkObject*   (* get_root)                     (void);
+-   G_CONST_RETURN gchar* (* get_toolkit_name)    (void);
+-   G_CONST_RETURN gchar* (* get_toolkit_version) (void);
++   const gchar* (* get_toolkit_name)    (void);
++   const gchar* (* get_toolkit_version) (void);
+ };
+ GType atk_util_get_type (void);
+ 
+@@ -229,17 +229,17 @@
+ /*
+  * Returns name string for the GUI toolkit.
+  */
+-G_CONST_RETURN gchar *atk_get_toolkit_name (void);
++const gchar *atk_get_toolkit_name (void);
+ 
+ /*
+  * Returns version string for the GUI toolkit.
+  */
+-G_CONST_RETURN gchar *atk_get_toolkit_version (void);
++const gchar *atk_get_toolkit_version (void);
+ 
+ /*
+  * Gets the current version of ATK
+  */
+-G_CONST_RETURN gchar *atk_get_version (void);
++const gchar *atk_get_version (void);
+ 
+ /* --- GType boilerplate --- */
+ /* convenience macros for atk type implementations, which for a type GtkGadgetAccessible will:
+Index: atk-1.33.6/tests/testrelation.c
+===================================================================
+--- atk-1.33.6.orig/tests/testrelation.c
++++ atk-1.33.6/tests/testrelation.c
+@@ -28,7 +28,7 @@
+ test_relation (void)
+ {
+   AtkRelationType type1, type2;
+-  G_CONST_RETURN gchar *name;
++  const gchar *name;
+   AtkObject *obj;
+   gboolean ret_value;
+   AtkRelationSet *set;
+@@ -169,7 +169,7 @@
+ test_role (void)
+ {
+   AtkRole role1, role2;
+-  G_CONST_RETURN gchar *name;
++  const gchar *name;
+ 
+   name = atk_role_get_name (ATK_ROLE_PAGE_TAB);
+   g_return_val_if_fail (name, FALSE);
+@@ -230,7 +230,7 @@
+ test_text_attr (void)
+ {
+   AtkTextAttribute attr1, attr2;
+-  G_CONST_RETURN gchar *name;
++  const gchar *name;
+ 
+   name = atk_text_attribute_get_name (ATK_TEXT_ATTR_PIXELS_INSIDE_WRAP);
+   g_return_val_if_fail (name, FALSE);
+Index: atk-1.33.6/tests/teststateset.c
+===================================================================
+--- atk-1.33.6.orig/tests/teststateset.c
++++ atk-1.33.6/tests/teststateset.c
+@@ -208,7 +208,7 @@
+ test_state (void)
+ {
+   AtkStateType type1, type2;
+-  G_CONST_RETURN gchar *name;
++  const gchar *name;
+ 
+   name = atk_state_type_get_name (ATK_STATE_VISIBLE);
+   g_return_val_if_fail (name, FALSE);
