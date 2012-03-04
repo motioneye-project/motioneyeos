@@ -10,6 +10,10 @@ ifeq ($(BR2_PACKAGE_MTD_MKFSJFFS2),y)
 MTD_DEPENDENCIES = zlib lzo
 endif
 
+ifeq ($(BR2_PACKAGE_BUSYBOX),y)
+MTD_DEPENDENCIES += busybox
+endif
+
 HOST_MTD_DEPENDENCIES = host-zlib host-lzo host-e2fsprogs
 
 define HOST_MTD_BUILD_CMDS
