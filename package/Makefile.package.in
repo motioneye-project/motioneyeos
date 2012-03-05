@@ -235,10 +235,14 @@ define SHOW_EXTERNAL_DEPS_HG
   echo $($(PKG)_SOURCE)
 endef
 
-
+# Download a file using wget. Only download the file if it doesn't
+# already exist in the download directory. If the download fails,
+# remove the file (because wget -O creates a 0-byte file even if the
+# download fails).
 define DOWNLOAD_WGET
 	test -e $(DL_DIR)/$(2) || \
-	$(WGET) -O $(DL_DIR)/$(2) $(call qstrip,$(1))/$(2)
+	$(WGET) -O $(DL_DIR)/$(2) $(call qstrip,$(1))/$(2) || \
+	(rm -f $(DL_DIR)/$(2) ; exit 1)
 endef
 
 define SOURCE_CHECK_WGET
