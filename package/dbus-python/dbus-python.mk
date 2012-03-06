@@ -7,7 +7,6 @@ DBUS_PYTHON_VERSION = 0.83.0
 DBUS_PYTHON_SOURCE = dbus-python-$(DBUS_PYTHON_VERSION).tar.gz
 DBUS_PYTHON_SITE = http://dbus.freedesktop.org/releases/dbus-python/
 DBUS_PYTHON_INSTALL_STAGING = YES
-DBUS_PYTHON_INSTALL_TARGET = YES
 
 DBUS_PYTHON_CONF_ENV = am_cv_pathless_PYTHON=python \
 		ac_cv_path_PYTHON=$(HOST_DIR)/usr/bin/python \
