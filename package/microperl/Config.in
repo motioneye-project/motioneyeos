@@ -3,12 +3,25 @@ config BR2_PACKAGE_MICROPERL
 	help
 	  Perl without operating-specific functions such as readdir.
 
+if BR2_PACKAGE_MICROPERL
+
 config BR2_PACKAGE_MICROPERL_MODULES
-	string "microperl modules"
-	default ""
-	depends on BR2_PACKAGE_MICROPERL
+	string "additional modules"
 	help
-	  List of microperl modules to copy to the rootfs.
-	  E.g.
-	  warnings.pm warnings/register.pm strict.pm constant.pm vars.pm
-	  Exporter.pm Exporter/Heavy.pm Carp.pm Getopt/Long.pm
+	  List of space-separated microperl modules to copy to the rootfs.
+
+	  Examples: warnings.pm Getopt/Std.pm Time::Local
+
+	  Module dependencies are not automatic so check your needs.
+	  You can't use XS modules like IO.
+
+menu "module bundles"
+
+config BR2_PACKAGE_MICROPERL_BUNDLE_CGI
+	bool "CGI"
+	help
+	  Copy required modules to do CGI scripting.
+
+endmenu
+
+endif

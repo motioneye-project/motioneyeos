@@ -1,0 +1,22 @@
+Backport of http://perl5.git.perl.org/perl.git/commitdiff/01d65469392dfc0a?hp=a82b5f080d91ffe184d8ac4795ac71e72e612c2f
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+diff -Nura perl-5.12.3/miniperlmain.c perl-5.12.3-nosig/miniperlmain.c
+--- perl-5.12.3/miniperlmain.c	2011-01-09 17:20:57.000000000 -0300
++++ perl-5.12.3-nosig/miniperlmain.c	2011-04-14 10:16:53.564639438 -0300
+@@ -116,12 +116,14 @@
+     if (!exitstatus)
+         perl_run(my_perl);
+ 
++#ifndef PERL_MICRO
+     /* Unregister our signal handler before destroying my_perl */
+     for (i = 0; PL_sig_name[i]; i++) {
+ 	if (rsignal_state(PL_sig_num[i]) == (Sighandler_t) PL_csighandlerp) {
+ 	    rsignal(PL_sig_num[i], (Sighandler_t) SIG_DFL);
+ 	}
+     }
++#endif
+ 
+     exitstatus = perl_destruct(my_perl);
+ 

@@ -1,0 +1,47 @@
+From a82b5f080d91ffe184d8ac4795ac71e72e612c2f Mon Sep 17 00:00:00 2001
+From: David Leadbeater <dgl@dgl.cx>
+Date: Mon, 7 Mar 2011 18:40:55 +0000
+Subject: [PATCH] microperl: Update generate_uudmap in Makefile.micro
+
+Makefile.micro hadn't kept up with the changes for generate_uudmap,
+make it match the real Makefile.
+---
+ Makefile.micro |    8 ++++----
+ 1 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/Makefile.micro b/Makefile.micro
+index 4b738f5..567d98a 100644
+--- a/Makefile.micro
++++ b/Makefile.micro
+@@ -35,7 +35,7 @@ H = av.h uconfig.h cop.h cv.h embed.h embedvar.h form.h gv.h handy.h \
+ HE = $(H) EXTERN.h
+ 
+ clean:
+-	-rm -f $(O) microperl generate_uudmap$(_X) uudmap.h
++	-rm -f $(O) microperl generate_uudmap$(_X) uudmap.h bitcount.h
+ 
+ distclean:	clean
+ 
+@@ -74,7 +74,7 @@ udoop$(_O):	$(HE) doop.c
+ udump$(_O):	$(HE) dump.c regcomp.h regnodes.h
+ 	$(CC) $(CCFLAGS) -o $@ $(CFLAGS) dump.c
+ 
+-uglobals$(_O):	$(H) globals.c INTERN.h perlapi.h
++uglobals$(_O):	$(H) globals.c INTERN.h perlapi.h uudmap.h bitcount.h
+ 	$(CC) $(CCFLAGS) -o $@ $(CFLAGS) globals.c
+ 
+ ugv$(_O):	$(HE) gv.c
+@@ -173,8 +173,8 @@ uutil$(_O):	$(HE) util.c
+ uperlapi$(_O):	$(HE) perlapi.c perlapi.h
+ 	$(CC) $(CCFLAGS) -o $@ $(CFLAGS) perlapi.c
+ 
+-uudmap.h: generate_uudmap$(_X)
+-	$(RUN) ./generate_uudmap$(_X) >uudmap.h
++uudmap.h bitcount.h: generate_uudmap$(_X)
++	$(RUN) ./generate_uudmap$(_X) uudmap.h bitcount.h
+ 
+ generate_uudmap$(_O): generate_uudmap.c
+ 	$(CC) $(CCFLAGS) -o $@ $(CFLAGS) generate_uudmap.c
+-- 
+1.6.5.2.74.g610f9.dirty
+
