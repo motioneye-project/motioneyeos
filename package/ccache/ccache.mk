@@ -25,10 +25,18 @@ HOST_CCACHE_CONF_ENV = \
 # has zero dependency besides the C library.
 HOST_CCACHE_CONF_OPT += ccache_cv_zlib_1_2_3=no
 
-# We directly hardcode the cache location into the binary, as it is
-# much easier to handle than passing an environment variable.
+# We directly hardcode configuration into the binary, as it is much
+# easier to handle than passing an environment variable. Our
+# configuration is:
+#  - the cache location
+#  - the fact that ccache shouldn't use the compiler binary mtime to
+#  - detect a change in the compiler, because in the context of
+#  - Buildroot, that completely defeats the purpose of ccache. Of
+#  - course, that leaves the user responsible for purging its cache
+#  - when the compiler changes.
 define HOST_CCACHE_FIX_CCACHE_DIR
 	sed -i 's,getenv("CCACHE_DIR"),"$(CCACHE_CACHE_DIR)",' $(@D)/ccache.c
+	sed -i 's,getenv("CCACHE_COMPILERCHECK"),"none",' $(@D)/ccache.c
 endef
 
 HOST_CCACHE_POST_CONFIGURE_HOOKS += \

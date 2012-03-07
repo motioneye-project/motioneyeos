@@ -191,6 +191,13 @@ config BR2_CCACHE
 	  up future builds. The cache is stored in
 	  $HOME/.buildroot-ccache.
 
+	  Note that Buildroot does not try to invalidate the cache
+	  contents when the compiler changes in an incompatible
+	  way. Therefore, if you make a change to the compiler version
+	  and/or configuration, you are responsible for purging the
+	  ccache cache by removing the $HOME/.buildroot-ccache
+	  directory.
+
 config BR2_DEPRECATED
 	bool "Show packages that are deprecated or obsolete"
 	help
