@@ -4,7 +4,7 @@
 #
 #############################################################
 
-SQUID_VERSION = 3.1.18
+SQUID_VERSION = 3.1.19
 SQUID_SITE = http://www.squid-cache.org/Versions/v3/3.1
 SQUID_DEPENDENCIES = libcap host-libcap
 SQUID_CONF_ENV =	ac_cv_epoll_works=yes ac_cv_func_setresuid=yes \
