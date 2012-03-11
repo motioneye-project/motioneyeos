@@ -6,7 +6,6 @@
 
 MPD_VERSION = 0.16.7
 MPD_SITE = http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/musicpd
-MPD_AUTORECONF = YES
 MPD_DEPENDENCIES = host-pkg-config libglib2
 
 # Some options need an explicit --disable or --enable
