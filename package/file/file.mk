@@ -4,7 +4,7 @@
 #
 #############################################################
 
-FILE_VERSION = 5.10
+FILE_VERSION = 5.11
 FILE_SITE = ftp://ftp.astron.com/pub/file
 FILE_DEPENDENCIES = host-file zlib
 HOST_FILE_DEPENDENCIES = host-zlib
