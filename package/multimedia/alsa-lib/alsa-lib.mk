@@ -3,17 +3,23 @@
 # alsa-lib
 #
 #############################################################
-ALSA_LIB_VERSION = 1.0.24.1
+
+ALSA_LIB_VERSION = 1.0.25
 ALSA_LIB_SOURCE = alsa-lib-$(ALSA_LIB_VERSION).tar.bz2
 ALSA_LIB_SITE = ftp://ftp.alsa-project.org/pub/lib
 ALSA_LIB_INSTALL_STAGING = YES
-
 ALSA_LIB_CFLAGS=$(TARGET_CFLAGS)
-
 ALSA_LIB_CONF_OPT = --with-alsa-devdir=$(call qstrip,$(BR2_PACKAGE_ALSA_LIB_DEVDIR)) \
 		    --with-pcm-plugins="$(call qstrip,$(BR2_PACKAGE_ALSA_LIB_PCM_PLUGINS))" \
 		    --with-ctl-plugins="$(call qstrip,$(BR2_PACKAGE_ALSA_LIB_CTL_PLUGINS))" \
 		    --without-versioned
+
+# Can't build with static & shared at the same time (1.0.25+)
+ifeq ($(BR2_PREFER_STATIC),y)
+ALSA_LIB_CONF_OPT += --enable-shared=no
+else
+ALSA_LIB_CONF_OPT += --enable-static=no
+endif
 
 ifneq ($(BR2_PACKAGE_ALSA_LIB_ALOAD),y)
 ALSA_LIB_CONF_OPT += --disable-aload
