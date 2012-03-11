@@ -4,8 +4,8 @@
 #
 #############################################################
 
-RADVD_VERSION = 1.8.3
-RADVD_SITE = http://www.litech.org/radvd/dist/
+RADVD_VERSION = 1.8.5
+RADVD_SITE = http://www.litech.org/radvd/dist
 RADVD_DEPENDENCIES = flex host-flex
 
 define RADVD_INSTALL_INITSCRIPT
