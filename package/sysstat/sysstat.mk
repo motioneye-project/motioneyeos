@@ -4,7 +4,7 @@
 #
 #############################################################
 
-SYSSTAT_VERSION = 10.0.2
+SYSSTAT_VERSION = 10.0.3
 SYSSTAT_SOURCE = sysstat-$(SYSSTAT_VERSION).tar.bz2
 SYSSTAT_SITE = http://pagesperso-orange.fr/sebastien.godard
 SYSSTAT_CONF_OPT = --disable-man-group --disable-sensors
