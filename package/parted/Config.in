@@ -1,0 +1,14 @@
+config BR2_PACKAGE_PARTED
+	bool "parted"
+	depends on BR2_LARGEFILE
+	depends on BR2_USE_WCHAR
+	select BR2_PACKAGE_LVM2
+	select BR2_PACKAGE_READLINE
+	select BR2_PACKAGE_UTIL_LINUX
+	help
+	  parted, the GNU partition resizing program
+
+	  http://www.gnu.org/software/parted/
+
+comment "parted requires a toolchain with LARGEFILE+WCHAR support"
+        depends on !(BR2_LARGEFILE && BR2_USE_WCHAR)
