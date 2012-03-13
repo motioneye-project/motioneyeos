@@ -133,6 +133,10 @@ CC_TARGET_ABI_:=$(call qstrip,$(BR2_GCC_TARGET_ABI))
 
 # march/mtune/floating point mode needs to be passed to the external toolchain
 # to select the right multilib variant
+ifeq ($(BR2_x86_64),y)
+TOOLCHAIN_EXTERNAL_CFLAGS += -m64
+TOOLCHAIN_EXTERNAL_WRAPPER_ARGS += -DBR_64
+endif
 ifneq ($(CC_TARGET_TUNE_),)
 TOOLCHAIN_EXTERNAL_CFLAGS += -mtune=$(CC_TARGET_TUNE_)
 TOOLCHAIN_EXTERNAL_WRAPPER_ARGS += -DBR_TUNE='"$(CC_TARGET_TUNE_)"'

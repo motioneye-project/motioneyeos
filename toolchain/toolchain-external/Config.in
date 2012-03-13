@@ -371,14 +371,15 @@ config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_X86_201109
 	  binutils 2.21.53, glibc 2.13, gdb 7.2.50 and kernel headers
 	  3.0.1. It has support for the following variants:
 	    - Intel Pentium 4, glibc, 32 bits
-              Default, nothing special to do.
-            - Intel Atom, glibc, 32 bits
-              Select an Atom core
-            - Intel Xeon, glibc, 64 bits
-              Set BR2_TARGET_OPTIMIZATION to -m64
-            - Intel Core 2, glibc, 64 bits
-              Select a Core 2 core
-              Set BR2_TARGET_OPTIMIZATION to -m64
+	      Default for x86, nothing special to do.
+	    - Intel Atom, glibc, 32 bits
+	      Select an Atom core
+	    - Intel Xeon, glibc, 64 bits
+	      Default for x86_64, nothing special to do.
+	    - Intel Core 2, glibc, 64 bits
+	      Select a Core 2 core
+	  Other architecture variants (beyond Pentium-4/Xeon) are
+	  supported as well, but glibc is not optimised for it.
 
 config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_X86_201009
 	bool "Sourcery CodeBench x86/x86_64 2010.09"
@@ -391,14 +392,15 @@ config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_X86_201009
 	  binutils 2.20, glibc 2.11, gdb 7.2.50 and kernel headers
 	  2.6.35.2. It has support for the following variants:
 	    - Intel Pentium 4, glibc, 32 bits
-              Default, nothing special to do.
-            - Intel Atom, glibc, 32 bits
-              Select an Atom core
-            - Intel Xeon, glibc, 64 bits
-              Set BR2_TARGET_OPTIMIZATION to -m64
-            - Intel Core 2, glibc, 64 bits
-              Select a Core 2 core
-              Set BR2_TARGET_OPTIMIZATION to -m64
+	      Default for x86, nothing special to do.
+	    - Intel Atom, glibc, 32 bits
+	      Select an Atom core
+	    - Intel Xeon, glibc, 64 bits
+	      Default for x86_64, nothing special to do.
+	    - Intel Core 2, glibc, 64 bits
+	      Select a Core 2 core
+	  Other architecture variants (beyond Pentium-4/Xeon) are
+	  supported as well, but glibc is not optimised for it.
 
 config BR2_TOOLCHAIN_EXTERNAL_BLACKFIN_UCLINUX_2011R1
 	bool "Blackfin.uclinux.org 2011R1-RC4"
