@@ -6,13 +6,13 @@
 # (c) 2002 Erik Andersen <andersen@codepoet.org>
 
 # Set directories from arguments, or use defaults.
-targetdir=${1-.}
+builddir=${1-.}
 patchdir=${2-../kernel-patches}
 shift 2
 patchpattern=${@-*}
 
-if [ ! -d "${targetdir}" ] ; then
-    echo "Aborting.  '${targetdir}' is not a directory."
+if [ ! -d "${builddir}" ] ; then
+    echo "Aborting.  '${builddir}' is not a directory."
     exit 1
 fi
 if [ ! -d "${patchdir}" ] ; then
@@ -22,8 +22,8 @@ fi
 
 # Remove any rejects present BEFORE patching - Because if there are
 # any, even if patches are well applied, at the end it will complain
-# about rejects in targetdir.
-find ${targetdir}/ '(' -name '*.rej' -o -name '.*.rej' ')' -print0 | \
+# about rejects in builddir.
+find ${builddir}/ '(' -name '*.rej' -o -name '.*.rej' ')' -print0 | \
     xargs -0 -r rm -f
 
 for i in `cd ${patchdir}; ls -d ${patchpattern} 2> /dev/null` ; do 
@@ -54,8 +54,8 @@ for i in `cd ${patchdir}; ls -d ${patchpattern} 2> /dev/null` ; do
     esac fi
     echo ""
     echo "Applying ${i} using ${type}: " 
-	echo ${i} | cat >> ${targetdir}/.applied_patches_list
-    ${uncomp} ${patchdir}/${i} ${uncomp_parm} | ${apply} ${targetdir} 
+	echo ${i} | cat >> ${builddir}/.applied_patches_list
+    ${uncomp} ${patchdir}/${i} ${uncomp_parm} | ${apply} ${builddir}
     if [ $? != 0 ] ; then
         echo "Patch failed!  Please fix $i!"
 	exit 1
@@ -63,10 +63,10 @@ for i in `cd ${patchdir}; ls -d ${patchpattern} 2> /dev/null` ; do
 done
 
 # Check for rejects...
-if [ "`find $targetdir/ '(' -name '*.rej' -o -name '.*.rej' ')' -print`" ] ; then
+if [ "`find $builddir/ '(' -name '*.rej' -o -name '.*.rej' ')' -print`" ] ; then
     echo "Aborting.  Reject files found."
     exit 1
 fi
 
 # Remove backup files
-find $targetdir/ '(' -name '*.orig' -o -name '.*.orig' ')' -exec rm -f {} \;
+find $builddir/ '(' -name '*.orig' -o -name '.*.orig' ')' -exec rm -f {} \;
