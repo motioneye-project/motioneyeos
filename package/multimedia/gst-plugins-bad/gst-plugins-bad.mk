@@ -3,7 +3,7 @@
 # gst-plugins-bad
 #
 #############################################################
-GST_PLUGINS_BAD_VERSION = 0.10.22
+GST_PLUGINS_BAD_VERSION = 0.10.23
 GST_PLUGINS_BAD_SOURCE = gst-plugins-bad-$(GST_PLUGINS_BAD_VERSION).tar.bz2
 GST_PLUGINS_BAD_SITE = http://gstreamer.freedesktop.org/src/gst-plugins-bad
 
@@ -38,6 +38,12 @@ ifeq ($(BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_ASFMUX),y)
 GST_PLUGINS_BAD_CONF_OPT += --enable-asfmux
 else
 GST_PLUGINS_BAD_CONF_OPT += --disable-asfmux
+endif
+
+ifeq ($(BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_AUDIOVISUALIZERS),y)
+GST_PLUGINS_BAD_CONF_OPT += --enable-audiovisualizers
+else
+GST_PLUGINS_BAD_CONF_OPT += --disable-audiovisualizers
 endif
 
 ifeq ($(BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_AUTOCONVERT),y)
@@ -124,6 +130,12 @@ else
 GST_PLUGINS_BAD_CONF_OPT += --disable-dvdspu
 endif
 
+ifeq ($(BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_FACEOVERLAY),y)
+GST_PLUGINS_BAD_CONF_OPT += --enable-faceoverlay
+else
+GST_PLUGINS_BAD_CONF_OPT += --disable-faceoverlay
+endif
+
 ifeq ($(BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_FESTIVAL),y)
 GST_PLUGINS_BAD_CONF_OPT += --enable-festival
 else
@@ -140,6 +152,12 @@ ifeq ($(BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_FREEZE),y)
 GST_PLUGINS_BAD_CONF_OPT += --enable-freeze
 else
 GST_PLUGINS_BAD_CONF_OPT += --disable-freeze
+endif
+
+ifeq ($(BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_FREEVERB),y)
+GST_PLUGINS_BAD_CONF_OPT += --enable-freeverb
+else
+GST_PLUGINS_BAD_CONF_OPT += --disable-freeverb
 endif
 
 ifeq ($(BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_FREI0R),y)
@@ -190,22 +208,16 @@ else
 GST_PLUGINS_BAD_CONF_OPT += --disable-id3tag
 endif
 
+ifeq ($(BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_INTER),y)
+GST_PLUGINS_BAD_CONF_OPT += --enable-inter
+else
+GST_PLUGINS_BAD_CONF_OPT += --disable-inter
+endif
+
 ifeq ($(BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_INTERLACE),y)
 GST_PLUGINS_BAD_CONF_OPT += --enable-interlace
 else
 GST_PLUGINS_BAD_CONF_OPT += --disable-interlace
-endif
-
-ifeq ($(BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_INVTELECINE),y)
-GST_PLUGINS_BAD_CONF_OPT += --enable-invtelecine
-else
-GST_PLUGINS_BAD_CONF_OPT += --disable-invtelecine
-endif
-
-ifeq ($(BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_INVTELECINE),y)
-GST_PLUGINS_BAD_CONF_OPT += --enable-invtelecine
-else
-GST_PLUGINS_BAD_CONF_OPT += --disable-invtelecine
 endif
 
 ifeq ($(BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_IVFPARSE),y)
@@ -274,12 +286,6 @@ else
 GST_PLUGINS_BAD_CONF_OPT += --disable-mpegtsmux
 endif
 
-ifeq ($(BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_MPEG4VIDEOPARSE),y)
-GST_PLUGINS_BAD_CONF_OPT += --enable-mpeg4videoparse
-else
-GST_PLUGINS_BAD_CONF_OPT += --disable-mpeg4videoparse
-endif
-
 ifeq ($(BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_MPEGVIDEOPARSE),y)
 GST_PLUGINS_BAD_CONF_OPT += --enable-mpegvideoparse
 else
@@ -340,6 +346,12 @@ else
 GST_PLUGINS_BAD_CONF_OPT += --disable-real
 endif
 
+ifeq ($(BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_REMOVESILENCE),y)
+GST_PLUGINS_BAD_CONF_OPT += --enable-removesilence
+else
+GST_PLUGINS_BAD_CONF_OPT += --disable-removesilence
+endif
+
 ifeq ($(BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_RTPMUX),y)
 GST_PLUGINS_BAD_CONF_OPT += --enable-rtpmux
 else
@@ -380,6 +392,12 @@ ifeq ($(BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_SIREN),y)
 GST_PLUGINS_BAD_CONF_OPT += --enable-siren
 else
 GST_PLUGINS_BAD_CONF_OPT += --disable-siren
+endif
+
+ifeq ($(BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_SMOOTH),y)
+GST_PLUGINS_BAD_CONF_OPT += --enable-smooth
+else
+GST_PLUGINS_BAD_CONF_OPT += --disable-smooth
 endif
 
 ifeq ($(BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_SPEED),y)
