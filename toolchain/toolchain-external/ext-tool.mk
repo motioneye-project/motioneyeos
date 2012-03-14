@@ -375,6 +375,20 @@ $(STAMP_DIR)/ext-toolchain-installed: $(STAMP_DIR)/ext-toolchain-checked
 	if [ -L $${ARCH_SYSROOT_DIR}/lib64 ] ; then \
 		$(call create_lib64_symlinks) ; \
 	fi ; \
+	if test x"$(BR2_TOOLCHAIN_EXTERNAL_GDB_SERVER_COPY)" == x"y"; then \
+		gdbserver_found=0 ; \
+		for d in $${ARCH_SYSROOT_DIR} $${ARCH_SYSROOT_DIR}/../debug-root/ ; do \
+			if test -f $${d}/usr/bin/gdbserver ; then \
+				install -m 0755 -D $${d}/usr/bin/gdbserver $(TARGET_DIR)/usr/bin/gdbserver ; \
+				gdbserver_found=1 ; \
+				break ; \
+			fi ; \
+		done ; \
+		if [ $${gdbserver_found} -eq 0 ] ; then \
+			echo "Could not find gdbserver in external toolchain" ; \
+			exit 1 ; \
+		fi ; \
+	fi ; \
 	touch $@
 
 # Build toolchain wrapper for preprocessor, C and C++ compiler, and setup
