@@ -26,12 +26,10 @@ fi
 find ${builddir}/ '(' -name '*.rej' -o -name '.*.rej' ')' -print0 | \
     xargs -0 -r rm -f
 
-for i in `cd ${patchdir}; ls -d ${patchpattern} 2> /dev/null` ; do 
-    apply="patch -g0 -p1 -E -d"
-    uncomp_parm=""
-    if [ -d "${patchdir}/$i" ] ; then
-	echo "${patchdir}/$i skipped"
-    else case "$i" in
+function apply_patch {
+    path=$1
+    patch=$2
+    case "$patch" in
 	*.gz)
 	type="gzip"; uncomp="gunzip -dc"; ;; 
 	*.bz)
@@ -42,22 +40,40 @@ for i in `cd ${patchdir}; ls -d ${patchpattern} 2> /dev/null` ; do
 	type="zip"; uncomp="unzip -d"; ;; 
 	*.Z)
 	type="compress"; uncomp="uncompress -c"; ;; 
-	*.tgz)
-	type="tar gzip"; uncomp="gunzip -dc"; apply="tar xvf - -C"; ;; 
-	*.tar)
-	type="tar"; uncomp="cat"; apply="tar xvf - -C"; ;; 
 	*)
 	type="plaintext"; uncomp="cat"; ;; 
-    esac fi
+    esac
     echo ""
-    echo "Applying ${i} using ${type}: " 
-	echo ${i} >> ${builddir}/.applied_patches_list
-    ${uncomp} "${patchdir}/${i}" ${uncomp_parm} | ${apply} "${builddir}"
+    echo "Applying $patch using ${type}: "
+	echo $patch >> ${builddir}/.applied_patches_list
+    ${uncomp} "${path}/$patch" | patch -g0 -p1 -E -d "${builddir}"
     if [ $? != 0 ] ; then
-        echo "Patch failed!  Please fix $i!"
+        echo "Patch failed!  Please fix ${patch}!"
 	exit 1
     fi
-done
+}
+
+function scan_patchdir {
+    path=$1
+    shift 1
+    patches=${@-*}
+
+    for i in `cd $path; ls -d $patches 2> /dev/null` ; do
+        if [ -d "${path}/$i" ] ; then
+            echo "${path}/$i skipped"
+        elif echo "$i" | grep -q -E "\.tar(\..*)?$|\.tbz2?$|\.tgz$" ; then
+            unpackedarchivedir="$builddir/.patches-$(basename $i)-unpacked"
+            rm -rf "$unpackedarchivedir" 2> /dev/null
+            mkdir "$unpackedarchivedir"
+            tar -C "$unpackedarchivedir" --strip-components=1 -xaf "${path}/$i"
+            scan_patchdir "$unpackedarchivedir"
+        else
+            apply_patch "$path" "$i" || exit 1
+        fi
+    done
+}
+
+scan_patchdir $patchdir $patchpattern
 
 # Check for rejects...
 if [ "`find $builddir/ '(' -name '*.rej' -o -name '.*.rej' ')' -print`" ] ; then
