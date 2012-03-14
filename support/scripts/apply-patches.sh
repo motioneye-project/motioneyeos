@@ -30,10 +30,7 @@ for i in `cd ${patchdir}; ls -d ${patchpattern} 2> /dev/null` ; do
     apply="patch -g0 -p1 -E -d"
     uncomp_parm=""
     if [ -d "${patchdir}/$i" ] ; then
-	type="directory overlay"
-	uncomp="tar cf - --exclude=.svn --no-anchored -C"
-	uncomp_parm="."
-	apply="tar xvf - -C"
+	echo "${patchdir}/$i skipped"
     else case "$i" in
 	*.gz)
 	type="gzip"; uncomp="gunzip -dc"; ;; 
