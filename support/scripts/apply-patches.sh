@@ -19,7 +19,13 @@ if [ ! -d "${patchdir}" ] ; then
     echo "Aborting.  '${patchdir}' is not a directory."
     exit 1
 fi
-    
+
+# Remove any rejects present BEFORE patching - Because if there are
+# any, even if patches are well applied, at the end it will complain
+# about rejects in targetdir.
+find ${targetdir}/ '(' -name '*.rej' -o -name '.*.rej' ')' -print0 | \
+    xargs -0 -r rm -f
+
 for i in `cd ${patchdir}; ls -d ${patchpattern} 2> /dev/null` ; do 
     apply="patch -g0 -p1 -E -d"
     uncomp_parm=""
