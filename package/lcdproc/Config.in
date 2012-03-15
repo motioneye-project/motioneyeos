@@ -1,0 +1,7 @@
+config BR2_PACKAGE_LCDPROC
+       bool "lcdproc"
+       select BR2_PACKAGE_NCURSES
+       help
+         LCD display driver daemon and clients
+
+         http://lcdproc.org/

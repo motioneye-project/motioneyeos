@@ -1,0 +1,18 @@
+Fix the default LCDd configuration file, so that the DriverPath
+is set to the correct lcdproc library install path, rather than
+the dummy/default path.
+
+Signed-off-by: Simon Dawson <spdawson at gmail.com>
+---
+
+--- lcdproc-0.5.3/LCDd.conf.orig       2009-06-20 14:48:34.000000000 +0100
++++ lcdproc-0.5.3/LCDd.conf    2010-05-11 10:02:21.000000000 +0100
+@@ -34,7 +34,7 @@
+ #            the driver modules and will thus not be able to
+ #            function properly.
+ # NOTE: Always place a slash as last character !
+-DriverPath=server/drivers/
++DriverPath=/usr/lib/lcdproc/
+
+ # Tells the server to load the given drivers. Multiple lines can be given.
+ # The name of the driver is case sensitive and determines the section
