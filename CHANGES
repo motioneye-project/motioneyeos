@@ -1,5 +1,40 @@
 2012.05, Not released yet:
 
+	Fixes all over the tree and new features.
+
+	Use /etc/os-release for version info rather than
+	/etc/br-version.
+
+	CMake toolchain file moved to $HOST_DIR/usr/share/buildroot.
+
+	Defconfigs: mx53qsb, use 3.2.x for atngw100,
+
+	Atom processor support.
+
+	Toolchain: Add GCC 4.4.7, 4.6.3. 64bit fixes for external
+	toolchains, linaro ext toolchains, new sourcery codebench ext
+	toolchains.
+
+	Updated/fixed packages: alsa-lib, alsa-utils, atk, avahi,
+	barebox, bluez_utils, can-utils, ccache, dhcp, dnsmasq,
+	e2fsprogs, expat, feh, file, freetype, gamin, gmp, gpsd, grep,
+	gstreamer, gst-plugins-{bad,base,good,ugly}, hdparm,
+	imagemagick, kmod, libarchive, libcurl, libethumb, libffi,
+	libfuse, libglib2, libnl, libsoup, libxml2, libxslt,
+	linux-firmware, lite, lua, microperl, mpd, mpfr, mtd, nbd,
+	network-manager, ntfs-3g, openssl, pixman, qt, radvd, sdl_net,
+	smartmontools, squashfs3, squid, sysstat, tiff, usbutils,
+	util-linux, vala, wipe, xdriver_xf86-video-fbdev, zlib,
+
+	New packages: glib-networking, lcdprog, minicom, parted,
+	zeromq
+
+	Removed packages: ntfsprogs
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#4880: New package lcdproc
+
 2012.02, Released February 29th, 2012:
 
 	Updated/fixed packages: libecore
