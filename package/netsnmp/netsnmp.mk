@@ -12,7 +12,7 @@ NETSNMP_CONF_ENV = ac_cv_NETSNMP_CAN_USE_SYSCTL=yes
 NETSNMP_CONF_OPT = --with-persistent-directory=/var/lib/snmp --disable-static \
 		--with-defaults --enable-mini-agent --without-rpm \
 		--with-logfile=none --without-kmem-usage $(DISABLE_IPV6) \
-		--enable-as-needed --disable-debugging --without-perl-modules \
+		--enable-as-needed --without-perl-modules \
 		--disable-embedded-perl --disable-perl-cc-checks \
 		--disable-scripts --with-default-snmp-version="1" \
 		--enable-silent-libtool --enable-mfd-rewrites \
@@ -53,6 +53,10 @@ ifneq ($(BR2_INET_IPV6),y)
 define NETSNMP_REMOVE_MIBS_IPV6
 	rm -f $(TARGET_DIR)/usr/share/snmp/mibs/IPV6*
 endef
+endif
+
+ifneq ($(BR2_PACKAGE_NETSNMP_ENABLE_DEBUGGING),y)
+	NETSNMP_CONF_OPT += --disable-debugging
 endif
 
 define NETSNMP_INSTALL_TARGET_CMDS

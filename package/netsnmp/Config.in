@@ -14,3 +14,12 @@ config BR2_PACKAGE_NETSNMP_ENABLE_MIBS
 	  The net-snmp package contains a selection of MIB files.
 	  Say yes if you want those MIB files installed on the target
 	  and enable the code that parses the MIB files.
+
+config BR2_PACKAGE_NETSNMP_ENABLE_DEBUGGING
+	bool "Enable debugging code"
+	depends on BR2_PACKAGE_NETSNMP
+	help
+	  By default net-snmp is compiled without debugging support
+	  (--disable-debugging). Enable this options if you need debugging
+	  support, including the ability to log with DEBUGMSG(),
+	  DEBUGMSGTL() and companion macros.
