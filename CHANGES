@@ -27,7 +27,7 @@
 	util-linux, vala, wipe, xdriver_xf86-video-fbdev, zlib,
 
 	New packages: glib-networking, lcdprog, minicom, parted,
-	zeromq
+	protobuf, zeromq
 
 	Deprecated packages: ttcp
 
@@ -36,6 +36,7 @@
 	Issues resolved (http://bugs.uclibc.org):
 
 	#4880: New package lcdproc
+	#4886: New package protobuf
 
 2012.02, Released February 29th, 2012:
 

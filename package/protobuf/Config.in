@@ -1,0 +1,11 @@
+config BR2_PACKAGE_PROTOBUF
+	bool "protobuf"
+	depends on BR2_INSTALL_LIBSTDCPP
+	help
+	  Protocol buffers are Google's language-neutral, platform-neutral,
+	  extensible mechanism for serializing structured data.
+
+	  http://code.google.com/p/protobuf/
+
+comment "protobuf requires a toolchain with C++ support enabled"
+	depends on !BR2_INSTALL_LIBSTDCPP
