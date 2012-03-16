@@ -98,7 +98,7 @@ define LINUX_DOWNLOAD_PATCHES
 	$(if $(LINUX_PATCHES),
 		@$(call MESSAGE,"Download additional patches"))
 	$(foreach patch,$(filter ftp://% http://%,$(LINUX_PATCHES)),\
-		$(call DOWNLOAD,$(dir $(patch)),$(notdir $(patch)))$(sep))
+		$(call DOWNLOAD,$(patch))$(sep))
 endef
 
 LINUX_POST_DOWNLOAD_HOOKS += LINUX_DOWNLOAD_PATCHES

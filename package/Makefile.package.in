@@ -203,11 +203,11 @@ endef
 # to prepend the path with a slash: scp://[user@]host:/absolutepath
 define DOWNLOAD_SCP
 	test -e $(DL_DIR)/$(2) || \
-	$(SCP) $(call stripurischeme,$(call qstrip,$(1)))/$(2) $(DL_DIR)
+	$(SCP) '$(call stripurischeme,$(call qstrip,$(1)))' $(DL_DIR)/$(2)
 endef
 
 define SOURCE_CHECK_SCP
-	$(SSH) $(call domain,$(1),:) ls $(call notdomain,$(1)/$(2),:) > /dev/null
+	$(SSH) $(call domain,$(1),:) ls '$(call notdomain,$(1),:)' > /dev/null
 endef
 
 define SHOW_EXTERNAL_DEPS_SCP
@@ -241,12 +241,12 @@ endef
 # download fails).
 define DOWNLOAD_WGET
 	test -e $(DL_DIR)/$(2) || \
-	$(WGET) -O $(DL_DIR)/$(2) $(call qstrip,$(1))/$(2) || \
+	$(WGET) -O $(DL_DIR)/$(2) '$(call qstrip,$(1))' || \
 	(rm -f $(DL_DIR)/$(2) ; exit 1)
 endef
 
 define SOURCE_CHECK_WGET
-  $(WGET) --spider $(call qstrip,$(1))/$(2)
+  $(WGET) --spider '$(call qstrip,$(1))'
 endef
 
 define SHOW_EXTERNAL_DEPS_WGET
@@ -280,6 +280,10 @@ endef
 ################################################################################
 
 define DOWNLOAD
+	$(call DOWNLOAD_INNER,$(1),$(if $(2),$(2),$(notdir $(1))))
+endef
+
+define DOWNLOAD_INNER
 	$(Q)if test -n "$(call qstrip,$(BR2_PRIMARY_SITE))" ; then \
 		case "$(call geturischeme,$(BR2_PRIMARY_SITE))" in \
 			scp) $(call $(DL_MODE)_SCP,$(BR2_PRIMARY_SITE),$(2)) && exit ;; \
@@ -298,7 +302,7 @@ define DOWNLOAD
 		esac ; \
 	fi ; \
 	if test -n "$(call qstrip,$(BR2_BACKUP_SITE))" ; then \
-		$(call $(DL_MODE)_WGET,$(BR2_BACKUP_SITE),$(2)) && exit ; \
+		$(call $(DL_MODE)_WGET,$(BR2_BACKUP_SITE)/$(2),$(2)) && exit ; \
 	fi ; \
 	exit 1
 endef
@@ -322,8 +326,8 @@ ifeq ($(DL_MODE),DOWNLOAD)
 		(test -z $($(PKG)_PATCH) || test -e $(DL_DIR)$($(PKG)_PATCH))) || \
 		$(call MESSAGE,"Downloading")
 endif
-	$(if $($(PKG)_SOURCE),$(call DOWNLOAD,$($(PKG)_SITE),$($(PKG)_SOURCE)))
-	$(if $($(PKG)_PATCH),$(call DOWNLOAD,$($(PKG)_SITE),$($(PKG)_PATCH)))
+	$(if $($(PKG)_SOURCE),$(call DOWNLOAD,$($(PKG)_SITE)/$($(PKG)_SOURCE)))
+	$(if $($(PKG)_PATCH),$(call DOWNLOAD,$($(PKG)_SITE)/$($(PKG)_PATCH)))
 	$(foreach hook,$($(PKG)_POST_DOWNLOAD_HOOKS),$(call $(hook))$(sep))
 ifeq ($(DL_MODE),DOWNLOAD)
 	$(Q)mkdir -p $(@D)

@@ -11,7 +11,7 @@ FIS_BINARY:=fis
 FIS_TARGET_BINARY:=sbin/fis
 
 $(DL_DIR)/$(FIS_SOURCE):
-	 $(call DOWNLOAD,$(FIS_SITE),$(FIS_SOURCE))
+	 $(call DOWNLOAD,$(FIS_SITE)/$(FIS_SOURCE))
 
 fis-source: $(DL_DIR)/$(FIS_SOURCE)
 

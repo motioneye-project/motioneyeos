@@ -65,7 +65,7 @@ else
 endif
 
 $(DL_DIR)/$(CUPS_SOURCE):
-	 $(call DOWNLOAD,$(CUPS_SITE),$(CUPS_SOURCE))
+	 $(call DOWNLOAD,$(CUPS_SITE)/$(CUPS_SOURCE))
 
 $(CUPS_DIR)/.unpacked: $(DL_DIR)/$(CUPS_SOURCE)
 	$(CUPS_CAT) $(DL_DIR)/$(CUPS_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -

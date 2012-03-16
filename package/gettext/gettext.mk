@@ -18,7 +18,7 @@ LIBINTL_TARGET_BINARY:=usr/lib/libintl.so
 endif
 
 $(DL_DIR)/$(GETTEXT_SOURCE):
-	 $(call DOWNLOAD,$(GETTEXT_SITE),$(GETTEXT_SOURCE))
+	 $(call DOWNLOAD,$(GETTEXT_SITE)/$(GETTEXT_SOURCE))
 
 gettext-source: $(DL_DIR)/$(GETTEXT_SOURCE)
 

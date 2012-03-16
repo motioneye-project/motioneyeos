@@ -22,7 +22,7 @@ existing manual makefiles and to help understand how they work.*
 11: LIBFOO_TARGET_BINARY = usr/bin/foo
 12:
 13: $(DL_DIR)/$(LIBFOO_SOURCE):
-14: 	$(call DOWNLOAD,$(LIBFOO_SITE),$(LIBFOO_SOURCE))
+14: 	$(call DOWNLOAD,$(LIBFOO_SITE)/$(LIBFOO_SOURCE))
 15:
 16: $(LIBFOO_DIR)/.source: $(DL_DIR)/$(LIBFOO_SOURCE)
 17: 	$(ZCAT) $(DL_DIR)/$(LIBFOO_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -

@@ -18,7 +18,7 @@ XFSPROGS_STRIP_LIBDEP:= \
 	repair/xfs_repair quota/xfs_quota
 
 $(DL_DIR)/$(XFSPROGS_SOURCE):
-	 $(call DOWNLOAD,$(XFSPROGS_SITE),$(XFSPROGS_SOURCE))
+	 $(call DOWNLOAD,$(XFSPROGS_SITE)/$(XFSPROGS_SOURCE))
 
 xfsprogs-source: $(DL_DIR)/$(XFSPROGS_SOURCE)
 

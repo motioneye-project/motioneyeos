@@ -10,7 +10,7 @@ DOOM_WAD_SITE = ftp://ftp.idsoftware.com/idstuff/doom/
 DOOM_WAD_DIR=$(BUILD_DIR)/doom-wad-$(DOOM_WAD_VERSION)
 
 $(DL_DIR)/$(DOOM_WAD_SOURCE):
-	 $(call DOWNLOAD,$(DOOM_WAD_SITE),$(DOOM_WAD_SOURCE))
+	 $(call DOWNLOAD,$(DOOM_WAD_SITE)/$(DOOM_WAD_SOURCE))
 
 doom-wad-source: $(DL_DIR)/$(DOOM_WAD_SOURCE)
 
