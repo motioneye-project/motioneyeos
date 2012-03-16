@@ -14,7 +14,7 @@ endef
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 VSFTPD_DEPENDENCIES += openssl
-VSFTPD_LIBS += -lssl
+VSFTPD_LIBS += -lssl -lcrypto
 VSFTPD_POST_CONFIGURE_HOOKS += VSFTPD_ENABLE_SSL
 endif
 
