@@ -4,7 +4,7 @@
 #
 #############################################################
 
-VSFTPD_VERSION = 2.3.4
+VSFTPD_VERSION = 2.3.5
 VSFTPD_SITE = https://security.appspot.com/downloads
 VSFTPD_LIBS = -lcrypt
 
