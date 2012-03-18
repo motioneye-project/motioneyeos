@@ -29,6 +29,8 @@
 	New packages: glib-networking, lcdprog, minicom, parted,
 	zeromq
 
+	Deprecated packages: ttcp
+
 	Removed packages: ntfsprogs
 
 	Issues resolved (http://bugs.uclibc.org):
