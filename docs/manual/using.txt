@@ -6,7 +6,7 @@ Configuration and general usage
 
 Buildroot has a nice configuration tool similar to the one you can
 find in the http://www.kernel.org/[Linux kernel] or in
-http://www.busybox.org/[Busybox]. Note that you can (and should) build
+http://www.busybox.net/[Busybox]. Note that you can (and should) build
 everything as a normal user. There is no need to be root to configure
 and use Buildroot. The first step is to run the configuration
 assistant:
