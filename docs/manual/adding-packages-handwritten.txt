@@ -14,12 +14,12 @@ existing manual makefiles and to help understand how they work.*
 03: # libfoo
 04: #
 05: #############################################################
-06: LIBFOO_VERSION:=1.0
-07: LIBFOO_SOURCE:=libfoo-$(LIBFOO_VERSION).tar.gz
-08: LIBFOO_SITE:=http://www.foosoftware.org/downloads
-09: LIBFOO_DIR:=$(BUILD_DIR)/foo-$(FOO_VERSION)
-10: LIBFOO_BINARY:=foo
-11: LIBFOO_TARGET_BINARY:=usr/bin/foo
+06: LIBFOO_VERSION = 1.0
+07: LIBFOO_SOURCE = libfoo-$(LIBFOO_VERSION).tar.gz
+08: LIBFOO_SITE = http://www.foosoftware.org/downloads
+09: LIBFOO_DIR = $(BUILD_DIR)/foo-$(FOO_VERSION)
+10: LIBFOO_BINARY = foo
+11: LIBFOO_TARGET_BINARY = usr/bin/foo
 12:
 13: $(DL_DIR)/$(LIBFOO_SOURCE):
 14: 	$(call DOWNLOAD,$(LIBFOO_SITE),$(LIBFOO_SOURCE))
@@ -65,7 +65,7 @@ existing manual makefiles and to help understand how they work.*
 54: #
 55: #############################################################
 56: ifeq ($(BR2_PACKAGE_LIBFOO),y)
-57: TARGETS+=libfoo
+57: TARGETS += libfoo
 58: endif
 ------------------------
 

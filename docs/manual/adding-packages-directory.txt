@@ -8,12 +8,13 @@ Some packages have been grouped by topic in a sub-directory:
 +multimedia+, +java+, +x11r7+, and +games+. If your package fits in
 one of these categories, then create your package directory in these.
 
+
 +Config.in+ file
 ~~~~~~~~~~~~~~~~
 
 Then, create a file named +Config.in+. This file will contain the
 option descriptions related to our +libfoo+ software that will be used
-and displayed in the configuration tool. It should basically contain :
+and displayed in the configuration tool. It should basically contain:
 
 ---------------------------
 config BR2_PACKAGE_LIBFOO
