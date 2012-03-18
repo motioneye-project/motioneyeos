@@ -24,7 +24,7 @@ config BR2_m68k
 config BR2_microblazeel
 	bool "Microblaze AXI (little-endian)"
 config BR2_microblazebe
-	bool "Microblaze non-AXI (big-endian)""
+	bool "Microblaze non-AXI (big-endian)"
 config BR2_mips
 	bool "mips"
 config BR2_mipsel
