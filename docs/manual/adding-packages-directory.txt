@@ -87,6 +87,59 @@ comment "acl requires a toolchain with LARGEFILE support"
 --------------------------
 
 
+Note that these two dependency types are only transitive with the
+dependencies of the same kind.
+
+This means, in the following example:
+
+--------------------------
+config BR2_PACKAGE_A
+        bool "Package A"
+
+config BR2_PACKAGE_B
+        bool "Package B"
+        depends on BR2_PACKAGE_A
+
+config BR2_PACKAGE_C
+        bool "Package C"
+        depends on BR2_PACKAGE_B
+
+config BR2_PACKAGE_D
+        bool "Package D"
+        select BR2_PACKAGE_B
+
+config BR2_PACKAGE_E
+        bool "Package E"
+        select BR2_PACKAGE_D
+--------------------------
+
+* Selecting +Package C+ will be visible if +Package B+ has been
+  selected, which in turn is only visible if +Package A+ has been
+  selected.
+
+* Selecting +Package E+ will select +Package D+, which will select
+  +Package B+, it will not check for the dependencies of +Package B+,
+  so it will not select +Package A+.
+
+* Since +Package B+ is selected but +Package A+ is not, this violates
+  the dependency of +Package B+ on +Package A+.  Therefore, in such a
+  situation, the transitive dependency has to be added explicitly:
+
+--------------------------
+config BR2_PACKAGE_D
+	bool "Package D"
+	select BR2_PACKAGE_B
+	depends on BR2_PACKAGE_A
+
+config BR2_PACKAGE_E
+	bool "Package E"
+	select BR2_PACKAGE_D
+	depends on BR2_PACKAGE_A
+--------------------------
+
+Overall, for package library dependencies, +select+ should be
+preferred.
+
 Note that such dependencies will make sure that the dependency option
 is also enabled, but not necessarily built before your package. To do
 so, the dependency also needs to be expressed in the +.mk+ file of the
