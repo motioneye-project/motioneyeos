@@ -1,4 +1,5 @@
 config BR2_PACKAGE_LIBATOMIC_OPS
 	bool "libatomic_ops"
+	depends on BR2_arm || BR2_armeb || BR2_i386 || BR2_sparc || BR2_powerpc || BR2_x86_64
 	help
 	  Atomic operations library

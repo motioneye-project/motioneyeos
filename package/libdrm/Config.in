@@ -8,7 +8,10 @@ config BR2_PACKAGE_LIBDRM
 	select BR2_PACKAGE_XLIB_LIBXMU
 	select BR2_PACKAGE_XPROTO_DRI2PROTO
 	select BR2_PACKAGE_PTHREAD_STUBS
-	select BR2_PACKAGE_LIBATOMIC_OPS if BR2_PACKAGE_XDRIVER_XF86_VIDEO_INTEL
+	# libatomic_ops is only available on a subset of the supported
+	# architectures, and we make the assumption that the intel
+	# driver can only be used on x86 and x86_64 machines.
+	select BR2_PACKAGE_LIBATOMIC_OPS if (BR2_PACKAGE_XDRIVER_XF86_VIDEO_INTEL && (BR2_i386 || BR2_x86_64))
 	help
 	  Direct Rendering Manager
 
