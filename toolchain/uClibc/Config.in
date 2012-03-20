@@ -6,7 +6,7 @@ comment "uClibc Options"
 choice
 	prompt "uClibc C library Version"
 	default BR2_UCLIBC_VERSION_0_9_31 if (BR2_avr32 || BR2_sh) # 0.9.32 broken
-	default BR2_UCLIBC_VERSION_0_9_32
+	default BR2_UCLIBC_VERSION_0_9_33
 	help
 	  Select the version of uClibc you wish to use.
 
