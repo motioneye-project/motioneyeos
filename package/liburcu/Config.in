@@ -1,5 +1,6 @@
 config BR2_PACKAGE_LIBURCU
 	bool "liburcu"
+	depends on BR2_arm || BR2_armeb || BR2_i386 || BR2_powerpc || BR2_x86_64
 	help
 	  Userspace implementation of the Read-Copy-Update (RCU)
 	  synchronization mechanism. This library is mainly used by
