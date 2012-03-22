@@ -1,0 +1,8 @@
+config BR2_PACKAGE_SOCKETCAND
+	bool "socketcand"
+	select BR2_PACKAGE_LIBCONFIG
+	help
+	  Socketcand is a daemon that provides access to CAN interfaces
+	  on a machine via a network interface.
+
+	  https://github.com/dschanoeh/socketcand
