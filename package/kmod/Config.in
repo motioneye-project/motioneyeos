@@ -3,5 +3,4 @@ config BR2_PACKAGE_KMOD
 	help
 	  handle kernel modules
 
-	  http://git.profusion.mobi/cgit.cgi/kmod.git/
-
+	  http://git.kernel.org/?p=utils/kernel/kmod/kmod.git
