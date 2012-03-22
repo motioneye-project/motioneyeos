@@ -3,7 +3,7 @@
 # poco
 #
 #############################################################
-POCO_VERSION = 1.4.2p1
+POCO_VERSION = 1.4.3p1
 POCO_SOURCE = poco-$(POCO_VERSION)-all.tar.gz
 POCO_SITE = http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/poco
 POCO_INSTALL_STAGING = YES
