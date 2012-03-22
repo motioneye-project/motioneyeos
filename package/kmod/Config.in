@@ -4,3 +4,9 @@ config BR2_PACKAGE_KMOD
 	  handle kernel modules
 
 	  http://git.kernel.org/?p=utils/kernel/kmod/kmod.git
+
+config BR2_PACKAGE_KMOD_TOOLS
+	bool "kmod utilities"
+	help
+	  Install kmod module utilities (depmod, insmod, lsmod,
+	  modinfo, modprobe, rmmod).
