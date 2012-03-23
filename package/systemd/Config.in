@@ -1,0 +1,20 @@
+config BR2_PACKAGE_SYSTEMD
+	bool "systemd"
+	depends on BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_UDEV
+	depends on BR2_INET_IPV6
+	select BR2_PACKAGE_DBUS
+	select BR2_PACKAGE_LIBCAP
+	help
+	  systemd is a system and service manager for Linux, compatible with
+	  SysV and LSB init scripts. systemd provides aggressive parallelization
+	  capabilities, uses socket and D-Bus activation for starting services,
+	  offers on-demand starting of daemons, keeps track of processes using
+	  Linux cgroups, supports snapshotting and restoring of the system
+	  state, maintains mount and automount points and implements an
+	  elaborate transactional dependency-based service control logic.
+	  It can work as a drop-in replacement for sysvinit.
+
+	  http://freedesktop.org/wiki/Software/systemd
+
+comment "systemd not available (depends on /dev management with udev and ipv6 support)"
+	depends on !(BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_UDEV && BR2_INET_IPV6)

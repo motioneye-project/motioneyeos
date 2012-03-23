@@ -35,6 +35,10 @@ UDEV_CONF_OPT +=		\
 	--disable-gudev
 endif
 
+ifeq ($(BR2_PACKAGE_SYSTEMD),y)
+	UDEV_CONF_OPT += --with-systemdsystemunitdir=/lib/systemd/system/
+endif
+
 define UDEV_INSTALL_INITSCRIPT
 	$(INSTALL) -m 0755 package/udev/S10udev $(TARGET_DIR)/etc/init.d/S10udev
 endef

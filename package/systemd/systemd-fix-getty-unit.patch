@@ -1,0 +1,34 @@
+Prefer getty to agetty in console setup systemd units
+
+Signed-off-by: Maxime Ripard <maxime.ripard@free-electrons.com>
+---
+ units/getty@.service.m4        |    2 +-
+ units/serial-getty@.service.m4 |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+Index: systemd-37/units/getty@.service.m4
+===================================================================
+--- systemd-37.orig/units/getty@.service.m4
++++ systemd-37/units/getty@.service.m4
+@@ -32,7 +32,7 @@
+ 
+ [Service]
+ Environment=TERM=linux
+-ExecStart=-/sbin/agetty %I 38400
++ExecStart=-/sbin/getty -L %I 115200 vt100
+ Restart=always
+ RestartSec=0
+ UtmpIdentifier=%I
+Index: systemd-37/units/serial-getty@.service.m4
+===================================================================
+--- systemd-37.orig/units/serial-getty@.service.m4
++++ systemd-37/units/serial-getty@.service.m4
+@@ -32,7 +32,7 @@
+ 
+ [Service]
+ Environment=TERM=vt100
+-ExecStart=-/sbin/agetty -s %I 115200,38400,9600
++ExecStart=-/sbin/getty -L %I 115200 vt100
+ Restart=always
+ RestartSec=0
+ UtmpIdentifier=%I
