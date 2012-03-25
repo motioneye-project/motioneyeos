@@ -1,0 +1,30 @@
+[PATCH] add Makefile
+
+The scons based build system doesn't handle cross compilation, special
+compiler flags or (un)installation, so add a simple makefile instead
+which does.
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ cpp/core/src/Makefile |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+Index: zxing-2.0/cpp/core/src/Makefile
+===================================================================
+--- /dev/null
++++ zxing-2.0/cpp/core/src/Makefile
+@@ -0,0 +1,14 @@
++override CXXFLAGS += -I.
++SRCS := $(shell find -name '*.cpp')
++
++libzxing.a: $(SRCS:.cpp=.o)
++	$(AR) $(ARFLAGS) $@ $^
++
++install: libzxing.a
++	install -D -m 0644 $^ $(DESTDIR)/usr/lib/$^
++	find -name '*.h' -exec install -m 0644 -D "{}" \
++		"$(DESTDIR)/usr/include/{}" ";"
++
++uninstall:
++	rm -f $(DESTDIR)/usr/lib/libzxing.a
++	rm -rf $(DESTDIR)/usr/include/zxing

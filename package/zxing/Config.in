@@ -1,0 +1,14 @@
+comment "zxing requires a toolchain with C++ support"
+	depends on !BR2_INSTALL_LIBSTDCPP
+
+config BR2_PACKAGE_ZXING
+	bool "zxing"
+	depends on BR2_INSTALL_LIBSTDCPP
+	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
+	help
+	  ZXing (pronounced "zebra crossing") is an open-source,
+	  multi-format 1D/2D barcode image processing library
+	  implemented in Java, with ports to other languages. This
+	  compiles the C++ port.
+
+	  http://code.google.com/p/zxing/
