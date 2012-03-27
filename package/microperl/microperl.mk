@@ -132,10 +132,12 @@ define MICROPERL_INSTALL_TARGET_CMDS
 	$(MICROPERL_BUILD_EXTENSIONS)
 	for i in $(MICROPERL_MODS); do \
 		j=`echo $$i|cut -d : -f 1` ; \
-		[ -d $(@D)/lib/$$j ] && cp -af $(@D)/lib/$$j \
-			$(TARGET_DIR)/$(MICROPERL_MODS_DIR) ; \
-		[ -f $(@D)/lib/$$i ] && $(INSTALL) -m 0644 -D $(@D)/lib/$$i \
-			$(TARGET_DIR)/$(MICROPERL_MODS_DIR)/$$i; \
+		if [ -d $(@D)/lib/$$j ] ; then \
+			cp -af $(@D)/lib/$$j $(TARGET_DIR)/$(MICROPERL_MODS_DIR) ; \
+		fi ; \
+		if [ -f $(@D)/lib/$$i ] ; then \
+			$(INSTALL) -m 0644 -D $(@D)/lib/$$i $(TARGET_DIR)/$(MICROPERL_MODS_DIR)/$$i; \
+		fi ; \
 	done
 	# Remove test files
 	find $(TARGET_DIR)/$(MICROPERL_MODS_DIR) -type f -name *.t \
