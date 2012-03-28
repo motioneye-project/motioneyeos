@@ -1,0 +1,8 @@
+config BR2_PACKAGE_OPENSWAN
+	bool "openswan"
+	select BR2_PACKAGE_GMP
+	select BR2_PACKAGE_IPROUTE2
+	help
+	  Openswan is an implementation of IPsec for Linux
+
+	  http://www.openswan.org
