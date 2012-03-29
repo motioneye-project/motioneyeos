@@ -5,6 +5,8 @@ config BR2_TARGET_SYSLINUX
 	  The syslinux bootloader for x86 systems.
 	  This includes: syslinux, pxelinux, extlinux.
 
+	  http://syslinux.org
+
 config BR2_TARGET_SYSLINUX_ISOLINUX
 	bool "Install isolinux"
 	depends on BR2_TARGET_SYSLINUX
