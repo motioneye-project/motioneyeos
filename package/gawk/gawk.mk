@@ -4,7 +4,7 @@
 #
 #############################################################
 
-GAWK_VERSION = 4.0.0
+GAWK_VERSION = 4.0.1
 GAWK_SITE = $(BR2_GNU_MIRROR)/gawk
 GAWK_TARGET_BINS = awk gawk igawk pgawk
 
