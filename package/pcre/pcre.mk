@@ -4,7 +4,7 @@
 #
 #############################################################
 
-PCRE_VERSION = 8.20
+PCRE_VERSION = 8.30
 PCRE_SITE = ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre
 PCRE_INSTALL_STAGING = YES
 
