@@ -24,6 +24,7 @@ define HOST_LIBXML_PARSER_PERL_CONFIGURE_CMDS
         INSTALLDIRS=site \
         INSTALLSITELIB=$(HOST_DIR)/usr/lib/perl \
         INSTALLSITEARCH=$(HOST_DIR)/usr/lib/perl \
+        USE_MM_LD_RUN_PATH=1 \
  )
 endef
 
