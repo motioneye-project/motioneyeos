@@ -41,6 +41,9 @@ else
 	SYSTEMD_CONF_OPT += --disable-acl
 endif
 
+# mq_getattr needs -lrt
+SYSTEMD_MAKE_OPT += LIBS=-lrt
+
 define SYSTEMD_INSTALL_INIT_HOOK
 	ln -fs ../bin/systemd $(TARGET_DIR)/sbin/init
 	ln -fs ../bin/systemctl $(TARGET_DIR)/sbin/halt
