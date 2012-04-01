@@ -1,0 +1,9 @@
+config BR2_PACKAGE_FMTOOLS
+	bool "fmtools"
+	help
+	  fmtools is a pair of simple command-line utilities for
+	  "video4linux" radio tuner cards under Linux. It includes
+	  fm for power control, tuning, and volume and fmscan for
+	  scanning for stations.
+
+	  http://www.stanford.edu/~blp/fmtools/
