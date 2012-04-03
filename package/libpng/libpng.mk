@@ -4,7 +4,7 @@
 #
 #############################################################
 
-LIBPNG_VERSION = 1.4.10
+LIBPNG_VERSION = 1.4.11
 LIBPNG_SERIES = 14
 LIBPNG_SITE = http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/project/libpng/libpng$(LIBPNG_SERIES)/$(LIBPNG_VERSION)
 LIBPNG_SOURCE = libpng-$(LIBPNG_VERSION).tar.bz2
