@@ -9,14 +9,15 @@ support to uClibc).
 
 Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
 ---
- src/macro.h |   15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ src/journal/journal-file.c |    2 ++
+ src/macro.h                |   15 +++++++++++++++
+ 2 files changed, 17 insertions(+)
 
-Index: systemd-37/src/macro.h
+Index: systemd-44/src/macro.h
 ===================================================================
---- systemd-37.orig/src/macro.h
-+++ systemd-37/src/macro.h
-@@ -27,6 +27,21 @@
+--- systemd-44.orig/src/macro.h
++++ systemd-44/src/macro.h
+@@ -28,6 +28,21 @@
  #include <sys/uio.h>
  #include <inttypes.h>
  
@@ -38,3 +39,21 @@ Index: systemd-37/src/macro.h
  #define _printf_attr_(a,b) __attribute__ ((format (printf, a, b)))
  #define _sentinel_ __attribute__ ((sentinel))
  #define _noreturn_ __attribute__((noreturn))
+Index: systemd-44/src/journal/journal-file.c
+===================================================================
+--- systemd-44.orig/src/journal/journal-file.c
++++ systemd-44/src/journal/journal-file.c
+@@ -229,11 +229,13 @@
+                 }
+         }
+ 
++#ifndef __UCLIBC__
+         /* Note that the glibc fallocate() fallback is very
+            inefficient, hence we try to minimize the allocation area
+            as we can. */
+         if (posix_fallocate(f->fd, old_size, new_size - old_size) < 0)
+                 return -errno;
++#endif
+ 
+         if (fstat(f->fd, &f->last_stat) < 0)
+                 return -errno;

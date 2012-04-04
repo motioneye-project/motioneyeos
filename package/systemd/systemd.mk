@@ -3,9 +3,9 @@
 # systemd
 #
 #############################################################
-SYSTEMD_VERSION = 37
+SYSTEMD_VERSION = 44
 SYSTEMD_SITE = http://www.freedesktop.org/software/systemd/
-SYSTEMD_SOURCE = systemd-$(SYSTEMD_VERSION).tar.bz2
+SYSTEMD_SOURCE = systemd-$(SYSTEMD_VERSION).tar.xz
 SYSTEMD_DEPENDENCIES = \
 	host-intltool \
 	libcap \
@@ -32,7 +32,8 @@ SYSTEMD_CONF_OPT += \
 	--with-dbusinterfacedir=/usr/share/dbus-1/interfaces \
 	--with-udevrulesdir=/etc/udev/rules.d \
 	--with-sysvinit-path=/etc/init.d/ \
-	--without-sysvrcd-path
+	--without-sysvrcd-path \
+	--enable-split-usr
 
 ifeq ($(BR2_PACKAGE_ACL),y)
 	SYSTEMD_CONF_OPT += --enable-acl
@@ -41,21 +42,26 @@ else
 	SYSTEMD_CONF_OPT += --disable-acl
 endif
 
+ifneq ($(BR2_LARGEFILE),y)
+	SYSTEMD_CONF_OPT += --disable-largefile
+endif
+
 # mq_getattr needs -lrt
 SYSTEMD_MAKE_OPT += LIBS=-lrt
+SYSTEMD_MAKE_OPT += LDFLAGS+=-ldl
 
 define SYSTEMD_INSTALL_INIT_HOOK
-	ln -fs ../bin/systemd $(TARGET_DIR)/sbin/init
-	ln -fs ../bin/systemctl $(TARGET_DIR)/sbin/halt
-	ln -fs ../bin/systemctl $(TARGET_DIR)/sbin/poweroff
-	ln -fs ../bin/systemctl $(TARGET_DIR)/sbin/reboot
+	ln -fs ../usr/lib/systemd/systemd $(TARGET_DIR)/sbin/init
+	ln -fs ../usr/bin/systemctl $(TARGET_DIR)/sbin/halt
+	ln -fs ../usr/bin/systemctl $(TARGET_DIR)/sbin/poweroff
+	ln -fs ../usr/bin/systemctl $(TARGET_DIR)/sbin/reboot
 
-	ln -fs ../../../../lib/systemd/system/multi-user.target $(TARGET_DIR)/etc/systemd/system/default.target
+	ln -fs ../../../usr/lib/systemd/system/multi-user.target $(TARGET_DIR)/etc/systemd/system/default.target
 endef
 
 define SYSTEMD_INSTALL_TTY_HOOK
 	rm -f $(TARGET_DIR)/etc/systemd/system/getty.target.wants/getty@tty1.service
-	ln -fs ../../../../lib/systemd/system/serial-getty@.service $(TARGET_DIR)/etc/systemd/system/getty.target.wants/serial-getty@$(BR2_TARGET_GENERIC_GETTY_PORT).service
+	ln -fs ../../../../usr/lib/systemd/system/serial-getty@.service $(TARGET_DIR)/etc/systemd/system/getty.target.wants/serial-getty@$(BR2_TARGET_GENERIC_GETTY_PORT).service
 endef
 
 SYSTEMD_POST_INSTALL_TARGET_HOOKS += \
