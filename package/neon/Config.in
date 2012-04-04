@@ -24,22 +24,9 @@ choice
 	depends on BR2_PACKAGE_NEON
 	help
 	  Select which XML library to use...
+	  none       do not build with XML support
 	  expat      use expat
 	  libxml2    use libxml2
-	  none       do not build with XML support
-
-config BR2_PACKAGE_NEON_EXPAT
-	bool "expat"
-	depends on BR2_PACKAGE_EXPAT
-	help
-	  expat      use expat, a library for parsing XML.
-
-config BR2_PACKAGE_NEON_LIBXML2
-	bool "libxml2"
-	depends on BR2_PACKAGE_LIBXML2
-	help
-	  libxml2    use libxml2, a library to read, modify and
-	             write XML and HTML files.
 
 config BR2_PACKAGE_NEON_NOXML
 	bool "none"
@@ -47,4 +34,17 @@ config BR2_PACKAGE_NEON_NOXML
 	  none       don't use XML, if this is the only option
 	             and you want XML support, you must choose
 		     XML handling below.
+
+config BR2_PACKAGE_NEON_EXPAT
+	bool "expat"
+	select BR2_PACKAGE_EXPAT
+	help
+	  expat      use expat, a library for parsing XML.
+
+config BR2_PACKAGE_NEON_LIBXML2
+	bool "libxml2"
+	select BR2_PACKAGE_LIBXML2
+	help
+	  libxml2    use libxml2, a library to read, modify and
+	             write XML and HTML files.
 endchoice
