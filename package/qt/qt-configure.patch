@@ -17,13 +17,17 @@ in the $(STAGING_DIR) and on the target remains the same.
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 
-Index: qt-4.7.2/configure
+---
+ configure |   18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
+
+Index: qt-everywhere-opensource-src-4.8.1/configure
 ===================================================================
---- qt-4.7.2.orig/configure	2011-03-31 22:28:16.530647168 +0200
-+++ qt-4.7.2/configure	2011-03-31 22:29:38.908081695 +0200
-@@ -4456,15 +4456,15 @@
-
-
+--- qt-everywhere-opensource-src-4.8.1.orig/configure
++++ qt-everywhere-opensource-src-4.8.1/configure
+@@ -4661,15 +4661,15 @@
+ 
+ 
  if [ ! -z "$QT_HOST_PREFIX" ]; then
 -    HOSTPREFIX_PATH_STR=`"$relpath/config.tests/unix/padstring" 268 "qt_prfxpath=$QT_HOST_PREFIX"`
 -    HOSTDOCUMENTATION_PATH_STR=`"$relpath/config.tests/unix/padstring" 268 "qt_docspath=$QT_HOST_PREFIX/doc"`

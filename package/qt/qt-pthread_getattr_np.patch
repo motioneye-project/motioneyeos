@@ -3,9 +3,15 @@ Add pthred_getattr_np / phread_attr_getstrack alternatives for uClibc
 Based on https://dev.openwrt.org/log/packages/Xorg/lib/qt4/patches/100-fix-webkit-for-uclibc.patch?rev=20371
 
 Signed-off-by: Johan Sagaert <sagaert.johan@skynet.be>
---- qt-everywhere-opensource-src-4.6.2/src/3rdparty/javascriptcore/JavaScriptCore/runtime/Collector.cpp	2010-02-11 16:55:20.000000000 +0100
-+++ qt-everywhere-opensource-src-4.6.2JS/src/3rdparty/javascriptcore/JavaScriptCore/runtime/Collector.cpp	2010-05-23 10:49:29.000000000 +0200
-@@ -75,6 +75,23 @@
+---
+ src/3rdparty/javascriptcore/JavaScriptCore/runtime/Collector.cpp |   61 ++++++++++
+ 1 file changed, 61 insertions(+)
+
+Index: qt-everywhere-opensource-src-4.8.1/src/3rdparty/javascriptcore/JavaScriptCore/runtime/Collector.cpp
+===================================================================
+--- qt-everywhere-opensource-src-4.8.1.orig/src/3rdparty/javascriptcore/JavaScriptCore/runtime/Collector.cpp
++++ qt-everywhere-opensource-src-4.8.1/src/3rdparty/javascriptcore/JavaScriptCore/runtime/Collector.cpp
+@@ -70,6 +70,23 @@
  #endif
  #include <unistd.h>
  
@@ -29,7 +35,7 @@ Signed-off-by: Johan Sagaert <sagaert.johan@skynet.be>
  #if OS(SOLARIS)
  #include <thread.h>
  #else
-@@ -667,18 +683,61 @@ static inline void* currentThreadStackBa
+@@ -648,6 +665,37 @@
      get_thread_info(find_thread(NULL), &threadInfo);
      return threadInfo.stack_end;
  #elif OS(UNIX)
@@ -67,7 +73,7 @@ Signed-off-by: Johan Sagaert <sagaert.johan@skynet.be>
      AtomicallyInitializedStatic(Mutex&, mutex = *new Mutex);
      MutexLocker locker(mutex);
      static void* stackBase = 0;
-     static size_t stackSize = 0;
+@@ -655,11 +703,23 @@
      static pthread_t stackThread;
      pthread_t thread = pthread_self();
      if (stackBase == 0 || thread != stackThread) {
@@ -91,11 +97,11 @@ Signed-off-by: Johan Sagaert <sagaert.johan@skynet.be>
  #else
          // FIXME: this function is non-portable; other POSIX systems may have different np alternatives
          pthread_getattr_np(thread, &sattr);
-@@ -690,6 +749,7 @@ static inline void* currentThreadStackBa
+@@ -671,6 +731,7 @@
          stackThread = thread;
      }
      return static_cast<char*>(stackBase) + stackSize;
 +#endif
- #elif OS(WINCE)
-     AtomicallyInitializedStatic(Mutex&, mutex = *new Mutex);
-     MutexLocker locker(mutex);
+ #else
+ #error Need a way to get the stack base on this platform
+ #endif
