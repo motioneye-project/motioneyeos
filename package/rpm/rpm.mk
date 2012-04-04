@@ -13,6 +13,7 @@ RPM_CONF_ENV = CFLAGS="$(TARGET_CFLAGS) -I$(STAGING_DIR)/usr/include/beecrypt -I
 RPM_CONF_OPT = --disable-build-versionscript --disable-rpath \
 	--without-selinux \
 	--without-python --without-perl \
+	--with-openssl=external \
 	--with-zlib=$(STAGING_DIR) \
 	--with-libbeecrypt=$(STAGING_DIR) \
 	--with-popt=$(STAGING_DIR)
