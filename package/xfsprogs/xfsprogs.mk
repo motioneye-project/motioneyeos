@@ -3,7 +3,7 @@
 # xfsprogs
 #
 #############################################################
-XFSPROGS_VERSION = 3.1.7
+XFSPROGS_VERSION = 3.1.8
 XFSPROGS_SITE=ftp://oss.sgi.com/projects/xfs/cmd_tars
 
 XFSPROGS_DEPENDENCIES = util-linux
