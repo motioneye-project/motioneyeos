@@ -1,5 +1,7 @@
 config BR2_PACKAGE_DHCP
 	bool "isc dhcp"
+	# fork()
+	depends on BR2_USE_MMU
 	help
 	  DHCP relay agent from the ISC DHCP distribution.
 
