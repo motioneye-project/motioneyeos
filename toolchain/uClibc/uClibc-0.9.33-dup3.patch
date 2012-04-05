@@ -1,0 +1,54 @@
+From: Jonas Bonn <jonas@southpole.se>
+Subject: [RFC PATCH 16/38] Add dup3 syscall
+Date: Tue,  6 Sep 2011 10:30:40 +0200
+
+Signed-off-by: Jonas Bonn <jonas@southpole.se>
+---
+ include/unistd.h                 |    4 ++++
+ libc/sysdeps/linux/common/dup3.c |   15 +++++++++++++++
+ 2 files changed, 19 insertions(+), 0 deletions(-)
+ create mode 100644 libc/sysdeps/linux/common/dup3.c
+
+diff --git a/include/unistd.h b/include/unistd.h
+index 9568790..7c2fa4a 100644
+--- a/include/unistd.h
++++ b/include/unistd.h
+@@ -513,6 +513,10 @@ extern int dup (int __fd) __THROW __wur;
+ extern int dup2 (int __fd, int __fd2) __THROW;
+ libc_hidden_proto(dup2)
+ 
++/* Duplicate FD to FD2, closing FD2 and making it open on the same file.  */
++extern int dup3 (int __fd, int __fd2, int __flags) __THROW;
++libc_hidden_proto(dup3)
++
+ /* NULL-terminated array of "NAME=VALUE" environment variables.  */
+ extern char **__environ;
+ #ifdef __USE_GNU
+diff --git a/libc/sysdeps/linux/common/dup3.c b/libc/sysdeps/linux/common/dup3.c
+new file mode 100644
+index 0000000..5fdab2e
+--- /dev/null
++++ b/libc/sysdeps/linux/common/dup3.c
+@@ -0,0 +1,15 @@
++/* vi: set sw=4 ts=4: */
++/*
++ * dup3() for uClibc
++ *
++ * Copyright (C) 2000-2006 Erik Andersen <andersen@uclibc.org>
++ *
++ * Licensed under the LGPL v2.1, see the file COPYING.LIB in this tarball.
++ */
++
++#include <sys/syscall.h>
++#include <unistd.h>
++
++
++_syscall3(int, dup3, int, oldfd, int, newfd, int, flags)
++libc_hidden_def(dup3)
+-- 
+1.7.5.4
+
+_______________________________________________
+uClibc mailing list
+uClibc@uclibc.org
+http://lists.busybox.net/mailman/listinfo/uclibc
