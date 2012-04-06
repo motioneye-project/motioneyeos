@@ -654,6 +654,8 @@ help:
 	@echo
 	@echo 'Build:'
 	@echo '  all                    - make world'
+	@echo '  <package>-rebuild      - force recompile <package>'
+	@echo '  <package>-reconfigure  - force reconfigure <package>'
 	@echo
 	@echo 'Configuration:'
 	@echo '  menuconfig             - interactive curses-based configurator'

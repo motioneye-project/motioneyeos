@@ -15,6 +15,10 @@ The easiest way to rebuild a single package from scratch is to remove
 its build directory in +output/build+. Buildroot will then re-extract,
 re-configure, re-compile and re-install this package from scratch.
 
+For convenience, most packages support the special make targets
+<package>-reconfigure and <package>-rebuild to repeat the configure
+and build steps.
+
 However, if you don't want to rebuild the package completely from
 scratch, a better understanding of the Buildroot internals is
 needed. Internally, to keep track of which steps have been done and
