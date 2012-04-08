@@ -4,9 +4,9 @@
 #
 #############################################################
 
-GDK_PIXBUF_MAJOR_VERSION = 2.22
-GDK_PIXBUF_VERSION = $(GDK_PIXBUF_MAJOR_VERSION).0
-GDK_PIXBUF_SOURCE = gdk-pixbuf-$(GDK_PIXBUF_VERSION).tar.bz2
+GDK_PIXBUF_MAJOR_VERSION = 2.24
+GDK_PIXBUF_VERSION = $(GDK_PIXBUF_MAJOR_VERSION).1
+GDK_PIXBUF_SOURCE = gdk-pixbuf-$(GDK_PIXBUF_VERSION).tar.xz
 GDK_PIXBUF_SITE = http://ftp.gnome.org/pub/gnome/sources/gdk-pixbuf/$(GDK_PIXBUF_MAJOR_VERSION)
 GDK_PIXBUF_INSTALL_STAGING = YES
 
