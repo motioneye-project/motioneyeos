@@ -410,7 +410,7 @@ int main(int argc, char **argv)
 		unsigned int count = 0;
 		unsigned int increment = 0;
 		unsigned int start = 0;
-		char name[41];
+		char name[4096];
 		char user[41];
 		char group[41];
 		char *full_name;
@@ -419,7 +419,7 @@ int main(int argc, char **argv)
 
 		linenum++;
 
-		if ((2 > sscanf(line, "%40s %c %o %40s %40s %u %u %u %u %u", name,
+		if ((2 > sscanf(line, "%4095s %c %o %40s %40s %u %u %u %u %u", name,
 						&type, &mode, user, group, &major,
 						&minor, &start, &increment, &count)) ||
 				((major | minor | start | count | increment) > 0xfffff))
