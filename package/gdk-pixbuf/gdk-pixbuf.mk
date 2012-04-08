@@ -16,10 +16,6 @@ GDK_PIXBUF_CONF_ENV = \
 
 GDK_PIXBUF_CONF_OPT = --disable-glibtest
 
-ifneq ($(BR2_LARGEFILE),y)
-GDK_PIXBUF_CONF_OPT += --disable-largefile
-endif
-
 ifneq ($(BR2_PACKAGE_LIBPNG),y)
 GDK_PIXBUF_CONF_OPT += --without-libpng
 else
