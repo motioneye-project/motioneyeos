@@ -1,0 +1,26 @@
+config BR2_PACKAGE_HIAWATHA
+	bool "hiawatha"
+	help
+	  Hiawatha is a webserver for Unix and has been built with
+	  security in mind. This resulted in a highly secure
+	  webserver, in both code and features.
+
+	  This webserver runs on Linux, BSD, MacOS X and
+	  Windows. Although it can run any kind of CGI / FastCGI
+	  application, it has been optimized for usage with PHP. Most
+	  well known PHP frameworks and CMS applications have been
+	  tested with Hiawatha and ran without a problem. Hiawatha
+	  supports many web and HTTP features such as CGI/FastCGI,
+	  HTTP authentication, virtual host support, request
+	  pipelining, keep alive connections, URL rewriting and many
+	  more.
+
+	  http://www.hiawatha-webserver.org/
+
+if BR2_PACKAGE_HIAWATHA
+
+config BR2_PACKAGE_HIAWATHA_SSL
+	bool "hiawatha SSL support"
+	select BR2_PACKAGE_POLARSSL
+
+endif
