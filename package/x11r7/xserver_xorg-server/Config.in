@@ -56,14 +56,23 @@ config BR2_PACKAGE_XSERVER_XORG_SERVER
 comment "xorg-xserver is BROKEN on AVR32"
 	depends on BR2_avr32
 
+if BR2_PACKAGE_XSERVER_XORG_SERVER
+
 config BR2_PACKAGE_XSERVER_XORG_SERVER_NULL_CURSOR
     bool "Null root cursor"
-    depends on BR2_PACKAGE_XSERVER_XORG_SERVER
     help
         Don't display root cursor.
 
 config BR2_PACKAGE_XSERVER_XORG_SERVER_AIGLX
     bool "Enable AIGLX Extension"
-    depends on BR2_PACKAGE_XSERVER_XORG_SERVER
     help
         Enable/Use AIGLX extension.
+
+comment "Optional Servers"
+
+config BR2_PACKAGE_XSERVER_XORG_SERVER_XVFB
+    bool "Xvfb server"
+    help
+        Virtual frame buffer X server.
+
+endif

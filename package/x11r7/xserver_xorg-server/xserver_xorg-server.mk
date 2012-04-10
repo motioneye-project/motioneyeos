@@ -58,11 +58,11 @@ XSERVER_XORG_SERVER_DEPENDENCIES = 	\
 	host-pkg-config
 
 XSERVER_XORG_SERVER_CONF_OPT = --disable-config-hal \
-		--disable-xnest --disable-xephyr --disable-xvfb \
-		--disable-dmx \
+		--disable-xnest --disable-xephyr --disable-dmx \
 		--with-builder-addr=buildroot@uclibc.org \
 		CFLAGS="$(TARGET_CFLAGS) -I$(STAGING_DIR)/usr/include/pixman-1" \
-		--with-fontdir=/usr/share/fonts/X11/ --localstatedir=/var
+		--with-fontdir=/usr/share/fonts/X11/ --localstatedir=/var \
+		--$(if $(BR2_PACKAGE_XSERVER_XORG_SERVER_XVFB),en,dis)able-xvfb
 
 ifeq ($(BR2_PACKAGE_XSERVER_xorg),y)
 XSERVER_XORG_SERVER_CONF_OPT += --enable-xorg
