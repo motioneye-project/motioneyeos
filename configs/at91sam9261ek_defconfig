@@ -2,6 +2,10 @@
 BR2_arm=y
 BR2_arm926t=y
 
+# Host utilities
+#
+BR2_PACKAGE_HOST_SAM_BA=y
+
 # First stage bootloader
 BR2_TARGET_AT91BOOTSTRAP=y
 BR2_TARGET_AT91BOOTSTRAP_BOARD="at91sam9261ek"
