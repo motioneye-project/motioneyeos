@@ -4,7 +4,7 @@
 #
 #############################################################
 
-SAMBA_VERSION = 3.5.12
+SAMBA_VERSION = 3.5.14
 SAMBA_SITE = http://ftp.samba.org/pub/samba/stable
 SAMBA_SUBDIR = source3
 SAMBA_INSTALL_STAGING = YES
