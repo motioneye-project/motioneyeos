@@ -5,3 +5,10 @@ config BR2_PACKAGE_LCDPROC
          LCD display driver daemon and clients
 
          http://lcdproc.org/
+
+config BR2_PACKAGE_LCDPROC_DRIVERS
+	string "List of drivers to build"
+	default "all"
+	depends on BR2_PACKAGE_LCDPROC
+	help
+	  Specify a comma-separated list of lcdproc drivers to be built
