@@ -4,7 +4,7 @@
 #
 #############################################################
 
-BOOST_VERSION = 1.47.0
+BOOST_VERSION = 1.49.0
 BOOST_FILE_VERSION = $(subst .,_,$(BOOST_VERSION))
 BOOST_SOURCE = boost_$(BOOST_FILE_VERSION).tar.bz2
 BOOST_SITE = http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/boost
