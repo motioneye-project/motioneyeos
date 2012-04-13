@@ -221,6 +221,7 @@ config BR2_ARM_EABI
 	bool "EABI"
 config BR2_ARM_OABI
 	bool "OABI"
+	depends on !BR2_GCC_VERSION_4_7_X
 endchoice
 
 choice
