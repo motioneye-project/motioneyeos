@@ -5,9 +5,10 @@ menuconfig BR2_PACKAGE_QT
 	bool "Qt"
 	depends on BR2_INSTALL_LIBSTDCPP
 	help
-	  Qt for Embedded Linux.
+	  Qt is a cross-platform application and UI framework for
+	  developers using C++.
 
-	  http://www.qtsoftware.com/products/platform/qt-for-embedded-linux
+	  http://qt-project.org
 
 if BR2_PACKAGE_QT
 
