@@ -1,0 +1,41 @@
+From 6f88b27de256266947a7f6a3e70e18510754aab2 Mon Sep 17 00:00:00 2001
+From: Peter Korsgaard <jacmet@sunsite.dk>
+Date: Sat, 14 Apr 2012 20:36:07 +0200
+Subject: [PATCH] mkspecs/common/posix: fix !largefile builds on uClibc
+
+uClibc doesn't even define O_LARGEFILE when not configured with large file
+support, so ensure this define is only used when Qt is built with
+-largefile, otherwise the build fails with:
+
+io/qtemporaryfile.cpp: In function 'bool createFileFromTemplate(
+	NativeFileHandle&, QFileSystemEntry::NativePath&, size_t, size_t,
+	QSystemError&)':
+io/qtemporaryfile.cpp:197:57: error: 'O_LARGEFILE' was not declared in
+	this scope
+
+Reported-Upstream: https://bugreports.qt-project.org/browse/QTBUG-25321
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ mkspecs/common/posix/qplatformdefs.h |    5 +++++
+ 1 files changed, 5 insertions(+), 0 deletions(-)
+
+diff --git a/mkspecs/common/posix/qplatformdefs.h b/mkspecs/common/posix/qplatformdefs.h
+index daecc00..8a796cf 100644
+--- a/mkspecs/common/posix/qplatformdefs.h
++++ b/mkspecs/common/posix/qplatformdefs.h
+@@ -123,7 +123,12 @@
+ #define QT_READ                 ::read
+ #define QT_WRITE                ::write
+ 
++#ifdef QT_LARGEFILE_SUPPORT
+ #define QT_OPEN_LARGEFILE       O_LARGEFILE
++#else
++#define QT_OPEN_LARGEFILE       0
++#endif
++
+ #define QT_OPEN_RDONLY          O_RDONLY
+ #define QT_OPEN_WRONLY          O_WRONLY
+ #define QT_OPEN_RDWR            O_RDWR
+-- 
+1.7.8.3
+
