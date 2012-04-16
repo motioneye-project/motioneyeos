@@ -87,7 +87,7 @@ function scan_patchdir {
     fi
 }
 
-scan_patchdir $patchdir $patchpattern
+scan_patchdir "$patchdir" "$patchpattern"
 
 # Check for rejects...
 if [ "`find $builddir/ '(' -name '*.rej' -o -name '.*.rej' ')' -print`" ] ; then
