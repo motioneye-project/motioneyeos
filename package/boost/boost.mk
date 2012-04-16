@@ -24,6 +24,7 @@ BOOST_WITHOUT_FLAGS += $(if $(BR2_PACKAGE_BOOST_FILESYSTEM),,filesystem)
 BOOST_WITHOUT_FLAGS += $(if $(BR2_PACKAGE_BOOST_GRAPH),,graph)
 BOOST_WITHOUT_FLAGS += $(if $(BR2_PACKAGE_BOOST_GRAPH_PARALLEL),,graph_parallel)
 BOOST_WITHOUT_FLAGS += $(if $(BR2_PACKAGE_BOOST_IOSTREAMS),,iostreams)
+BOOST_WITHOUT_FLAGS += $(if $(BR2_PACKAGE_BOOST_LOCALE),,locale)
 BOOST_WITHOUT_FLAGS += $(if $(BR2_PACKAGE_BOOST_MATH),,math)
 BOOST_WITHOUT_FLAGS += $(if $(BR2_PACKAGE_BOOST_MPI),,mpi)
 BOOST_WITHOUT_FLAGS += $(if $(BR2_PACKAGE_BOOST_PROGRAM_OPTIONS),,program_options)
@@ -34,13 +35,23 @@ BOOST_WITHOUT_FLAGS += $(if $(BR2_PACKAGE_BOOST_SIGNALS),,signals)
 BOOST_WITHOUT_FLAGS += $(if $(BR2_PACKAGE_BOOST_SYSTEM),,system)
 BOOST_WITHOUT_FLAGS += $(if $(BR2_PACKAGE_BOOST_TEST),,test)
 BOOST_WITHOUT_FLAGS += $(if $(BR2_PACKAGE_BOOST_THREAD),,thread)
+BOOST_WITHOUT_FLAGS += $(if $(BR2_PACKAGE_BOOST_TIMER),,timer)
 BOOST_WITHOUT_FLAGS += $(if $(BR2_PACKAGE_BOOST_WAVE),,wave)
 
-ifeq ($(BR2_PACKAGE_BOOST_ICU),y)
+ifeq ($(BR2_PACKAGE_ICU),y)
 BOOST_FLAGS += --with-icu
 BOOST_DEPENDENCIES += icu
 else
 BOOST_FLAGS += --without-icu
+endif
+
+ifeq ($(BR2_PACKAGE_BOOST_LOCALE),y)
+ifeq ($(BR2_TOOLCHAIN_BUILDROOT)$(BR2_TOOLCHAIN_EXTERNAL_UCLIBC)$(BR2_TOOLCHAIN_CTNG_uClibc),y)
+# posix backend needs monetary.h which isn't available on uClibc
+BOOST_OPT += boost.locale.posix=off
+endif
+
+BOOST_DEPENDENCIES += $(if $(BR2_ENABLE_LOCALE),,libiconv)
 endif
 
 BOOST_LINK = $(if $(BR2_PREFER_STATIC_LIB),static,shared)
@@ -64,6 +75,7 @@ define BOOST_INSTALL_TARGET_CMDS
 	link=$(BOOST_LINK) \
 	threading=$(BOOST_MULTI) \
 	runtime-link=$(BOOST_LINK) \
+	$(BOOST_OPT) \
 	--prefix=$(TARGET_DIR)/usr \
 	--layout=system install )
 endef
@@ -75,6 +87,7 @@ define BOOST_INSTALL_STAGING_CMDS
 	variant=$(BOOST_VARIANT) \
 	link=$(BOOST_LINK) \
 	threading=$(BOOST_MULTI) \
+	$(BOOST_OPT) \
 	runtime-link=$(BOOST_LINK) \
 	--prefix=$(STAGING_DIR)/usr \
 	--layout=system install)
