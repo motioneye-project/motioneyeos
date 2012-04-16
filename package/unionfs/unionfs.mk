@@ -4,7 +4,7 @@
 #
 #############################################################
 
-UNIONFS_VERSION = 0.24
+UNIONFS_VERSION = 0.25
 UNIONFS_SITE = http://podgorny.cz/unionfs-fuse/releases
 UNIONFS_SOURCE = unionfs-fuse-$(UNIONFS_VERSION).tar.bz2
 UNIONFS_DEPENDENCIES = libfuse
