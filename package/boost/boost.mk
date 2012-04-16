@@ -10,7 +10,7 @@ BOOST_SOURCE = boost_$(BOOST_FILE_VERSION).tar.bz2
 BOOST_SITE = http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/boost
 BOOST_INSTALL_STAGING = YES
 
-TARGET_CC_VERSION = $(shell $(TARGET_CC) --version | head -n 1 | sed -e "s/.*[[:space:]]\([[:digit:].]\+$$\)/\1/g" )
+TARGET_CC_VERSION = $(shell $(TARGET_CC) -dumpversion)
 
 BOOST_DEPENDENCIES = bzip2 zlib
 
