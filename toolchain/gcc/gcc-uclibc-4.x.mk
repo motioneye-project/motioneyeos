@@ -66,6 +66,64 @@ ifneq ($(BR2_TOOLCHAIN_BUILDROOT_WCHAR),y)
 GCC_QUADMATH=--disable-libquadmath
 endif
 
+# Determine soft-float options
+ifeq ($(BR2_SOFT_FLOAT),y)
+SOFT_FLOAT_CONFIG_OPTION:=--with-float=soft
+ifeq ($(BR2_arm)$(BR2_armeb),y) # only set float-abi for arm
+TARGET_SOFT_FLOAT:=-mfloat-abi=soft
+else
+TARGET_SOFT_FLOAT:=-msoft-float
+endif
+else # no softfloat support
+SOFT_FLOAT_CONFIG_OPTION:=
+TARGET_SOFT_FLOAT:=
+endif
+
+# Determine arch/tune/abi/cpu options
+ifneq ($(call qstrip,$(BR2_GCC_TARGET_ARCH)),)
+GCC_WITH_ARCH:=--with-arch=$(BR2_GCC_TARGET_ARCH)
+endif
+ifneq ($(call qstrip,$(BR2_GCC_TARGET_TUNE)),)
+GCC_WITH_TUNE:=--with-tune=$(BR2_GCC_TARGET_TUNE)
+endif
+ifneq ($(call qstrip,$(BR2_GCC_TARGET_ABI)),)
+GCC_WITH_ABI:=--with-abi=$(BR2_GCC_TARGET_ABI)
+endif
+ifneq ($(call qstrip,$(BR2_GCC_TARGET_CPU)),)
+GCC_WITH_CPU:=--with-cpu=$(BR2_GCC_TARGET_CPU)
+endif
+
+# AVR32 GCC special configuration
+ifeq ($(BR2_avr32),y)
+# For the cross-compiler
+EXTRA_GCC_CONFIG_OPTIONS += \
+	--disable-libmudflap
+SOFT_FLOAT_CONFIG_OPTION:=
+
+# For the target compiler
+EXTRA_TARGET_GCC_CONFIG_OPTIONS += \
+	--disable-libmudflap
+EXTRA_TARGET_GCC_CONFIG_OPTIONS += \
+	--with-build-time-tools=$(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/bin
+EXTRA_TARGET_GCC_CONFIG_OPTIONS += \
+	--with-as=$(TARGET_CROSS)as
+endif
+
+# Disable mudflap and enable proper double/long double for SPE ABI
+ifeq ($(BR2_powerpc_SPE),y)
+EXTRA_GCC_CONFIG_OPTIONS +=  \
+	--disable-libmudflap \
+	--enable-e500_double \
+	--with-long-double-128
+endif
+
+# End with user-provided options, so that they can override previously
+# defined options.
+EXTRA_GCC_CONFIG_OPTIONS += \
+	$(call qstrip,$(BR2_EXTRA_GCC_CONFIG_OPTIONS))
+EXTRA_TARGET_GCC_CONFIG_OPTIONS += \
+	$(call qstrip,$(BR2_EXTRA_TARGET_GCC_CONFIG_OPTIONS))
+
 #############################################################
 #
 # Setup some initial stuff
@@ -586,3 +644,7 @@ gcc_target-clean:
 
 gcc_target-dirclean:
 	rm -rf $(GCC_BUILD_DIR4)
+
+ifeq ($(BR2_PACKAGE_GCC_TARGET),y)
+TARGETS+=gcc_target
+endif

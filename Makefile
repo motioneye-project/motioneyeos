@@ -263,7 +263,6 @@ endif
 
 all: world
 
-include toolchain/Makefile.in
 include package/Makefile.in
 include support/dependencies/dependencies.mk
 
