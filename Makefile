@@ -195,34 +195,6 @@ unexport CONFIG_SITE
 
 GNU_HOST_NAME:=$(shell support/gnuconfig/config.guess)
 
-#############################################################
-#
-# Setup the proper filename extensions for the host
-#
-##############################################################
-ifneq ($(findstring linux,$(GNU_HOST_NAME)),)
-HOST_EXEEXT:=
-HOST_LIBEXT:=.a
-HOST_SHREXT:=.so
-endif
-ifneq ($(findstring apple,$(GNU_HOST_NAME)),)
-HOST_EXEEXT:=
-HOST_LIBEXT:=.a
-HOST_SHREXT:=.dylib
-endif
-ifneq ($(findstring cygwin,$(GNU_HOST_NAME)),)
-HOST_EXEEXT:=.exe
-HOST_LIBEXT:=.lib
-HOST_SHREXT:=.dll
-HOST_LOADLIBES=-lcurses -lintl
-export HOST_LOADLIBES
-endif
-ifneq ($(findstring mingw,$(GNU_HOST_NAME)),)
-HOST_EXEEXT:=.exe
-HOST_LIBEXT:=.lib
-HOST_SHREXT:=.dll
-endif
-
 ##############################################################
 #
 # The list of stuff to build for the target toolchain
