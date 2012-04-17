@@ -31,9 +31,7 @@ choice
 config BR2_PACKAGE_NEON_NOXML
 	bool "none"
 	help
-	  none       don't use XML, if this is the only option
-	             and you want XML support, you must choose
-		     XML handling below.
+	  none       do not build with XML support
 
 config BR2_PACKAGE_NEON_EXPAT
 	bool "expat"
