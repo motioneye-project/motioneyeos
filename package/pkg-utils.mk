@@ -1,3 +1,10 @@
+############################################################################
+#
+# This file contains various utility functions used by the package
+# infrastructure, or by the packages themselves.
+#
+############################################################################
+
 # UPPERCASE Macro -- transform its argument to uppercase and replace dots and
 # hyphens to underscores
 
@@ -15,6 +22,12 @@ UPPERCASE = $(strip $(eval __tmp := $1) \
 		$(subst $(word 1,$(subst :, ,$c)),$(word 2,$(subst :, ,$c)),\
 			$(__tmp)))) \
      $(__tmp))
+
+#
+# Manipulation of .config files based on the Kconfig
+# infrastructure. Used by the Busybox package, the Linux kernel
+# package, and more.
+#
 
 define KCONFIG_ENABLE_OPT
        $(SED) "/\\<$(1)\\>/d" $(2)

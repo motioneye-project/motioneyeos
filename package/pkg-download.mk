@@ -1,3 +1,12 @@
+############################################################################
+#
+# This file contains the download helpers for the various package
+# infrastructures. It is used to handle downloads from HTTP servers,
+# FTP servers, Git repositories, Subversion repositories, Mercurial
+# repositories, Bazaar repositories, and SCP servers.
+#
+############################################################################
+
 # Download method commands
 WGET:=$(call qstrip,$(BR2_WGET)) $(QUIET)
 SVN:=$(call qstrip,$(BR2_SVN))

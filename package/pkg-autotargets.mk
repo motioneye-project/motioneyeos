@@ -3,9 +3,7 @@
 #
 # This file implements an infrastructure that eases development of
 # package .mk files for autotools packages. It should be used for all
-# packages that use the autotools as their build system. Non-autotools
-# packages should use the generic infrastructure in
-# package/Makefile.package.in.
+# packages that use the autotools as their build system.
 #
 # See the Buildroot documentation for details on the usage of this
 # infrastructure

@@ -2,9 +2,10 @@
 # Generic package infrastructure
 #
 # This file implements an infrastructure that eases development of
-# package .mk files. It should be used for all non-autotools based
-# packages. Autotools-based packages should use the specialized
-# autotools infrastructure in package/Makefile.autotools.in.
+# package .mk files. It should be used for packages that do not rely
+# on a well-known build system for which Buildroot has a dedicated
+# infrastructure (so far, Buildroot has special support for
+# autotools-based and CMake-based packages).
 #
 # See the Buildroot documentation for details on the usage of this
 # infrastructure
@@ -17,9 +18,6 @@
 #
 #   2. Description of the commands to be executed to configure, build
 #      and install the package
-#
-# The autotools infrastructure specializes this generic infrastructure
-# by already implementing the configure, build and install steps.
 ################################################################################
 
 ################################################################################
