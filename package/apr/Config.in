@@ -1,0 +1,8 @@
+config BR2_PACKAGE_APR
+	bool "apr"
+	help
+	  The mission of the Apache Portable Runtime (APR) project is to create
+	  and maintain software libraries that provide a predictable and
+	  consistent interface to underlying platform-specific implementations
+
+	  http://apr.apache.org/
