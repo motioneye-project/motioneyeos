@@ -3,15 +3,9 @@
 # So include them in this file and arrange to include it
 # soon after invoking make from the top level.
 
-GCC_VERSION:=$(call qstrip,$(BR2_GCC_VERSION))
 TARGET_OPTIMIZATION:=$(call qstrip,$(BR2_TARGET_OPTIMIZATION))
 EXTRA_GCC_CONFIG_OPTIONS:=$(call qstrip,$(BR2_EXTRA_GCC_CONFIG_OPTIONS))
 
-ifeq ($(call qstrip,$(BR2_GCC_VERSION_SNAP)),y)
-GCC_SNAP_DATE:=$(call qstrip,$(BR2_GCC_SNAP_DATE))
-else
-GCC_SNAP_DATE:=
-endif
 
 ifeq ($(BR2_SOFT_FLOAT),y)
 SOFT_FLOAT_CONFIG_OPTION:=--with-float=soft
