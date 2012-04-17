@@ -223,7 +223,7 @@ $(GCC_BUILD_DIR1)/.configured: $(GCC_DIR)/.patched
 		--host=$(GNU_HOST_NAME) \
 		--target=$(REAL_GNU_TARGET_NAME) \
 		--enable-languages=c \
-		$(BR2_CONFIGURE_DEVEL_SYSROOT) \
+		--with-sysroot=$(TOOLCHAIN_DIR)/uClibc_dev/ \
 		--disable-__cxa_atexit \
 		$(GCC_OPTSPACE) \
 		$(GCC_QUADMATH) \
@@ -291,7 +291,7 @@ $(GCC_BUILD_DIR2)/.configured: $(GCC_DIR)/.patched
 		--host=$(GNU_HOST_NAME) \
 		--target=$(REAL_GNU_TARGET_NAME) \
 		--enable-languages=c \
-		$(BR2_CONFIGURE_DEVEL_SYSROOT) \
+		--with-sysroot=$(TOOLCHAIN_DIR)/uClibc_dev/ \
 		--disable-__cxa_atexit \
 		$(GCC_OPTSPACE) \
 		$(GCC_QUADMATH) \
@@ -369,8 +369,8 @@ $(GCC_BUILD_DIR3)/.configured: $(GCC_SRC_DIR)/.patched $(GCC_STAGING_PREREQ)
 		--host=$(GNU_HOST_NAME) \
 		--target=$(REAL_GNU_TARGET_NAME) \
 		--enable-languages=$(GCC_CROSS_LANGUAGES) \
-		$(BR2_CONFIGURE_STAGING_SYSROOT) \
-		$(BR2_CONFIGURE_BUILD_TOOLS) \
+		--with-sysroot=$(STAGING_DIR) \
+		--with-build-time-tools=$(HOST_DIR)/usr/$(REAL_GNU_TARGET_NAME)/bin \
 		--disable-__cxa_atexit \
 		$(GCC_OPTSPACE) \
 		$(GCC_QUADMATH) \
