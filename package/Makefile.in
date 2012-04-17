@@ -299,6 +299,8 @@ else
 SHARED_STATIC_LIBS_OPTS=--enable-static --enable-shared
 endif
 
+include package/pkg-utils.mk
+include package/pkg-download.mk
 include package/pkg-autotargets.mk
 include package/pkg-cmaketargets.mk
-include package/Makefile.package.in
+include package/pkg-gentargets.mk
