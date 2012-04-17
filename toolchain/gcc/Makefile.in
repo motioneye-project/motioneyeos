@@ -20,11 +20,9 @@ TARGET_SOFT_FLOAT:=-mfloat-abi=soft
 else
 TARGET_SOFT_FLOAT:=-msoft-float
 endif
-ARCH_FPU_SUFFIX:=_nofpu
 else # no softfloat support
 SOFT_FLOAT_CONFIG_OPTION:=
 TARGET_SOFT_FLOAT:=
-ARCH_FPU_SUFFIX:=
 endif
 
 # some additional defaults
