@@ -1,0 +1,13 @@
+config BR2_PACKAGE_HEIRLOOM_MAILX
+	bool "heirloom-mailx"
+	help
+	  Heirloom mailx (previously known as nail) is a mail user
+	  agent for Unix systems.
+
+	  It can be used as a command-line mail reader, but also more
+	  importantly on embedded systems, as a mail composition
+	  program and SMTP client, in order to send e-mail from shell
+	  scripts. It supports SMTP authentication (login, plain,
+	  cram-md5), SMTPS, MIME encoding of attachements, and more.
+
+	  http://heirloom.sourceforge.net/mailx.html
