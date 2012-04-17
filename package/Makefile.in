@@ -299,6 +299,6 @@ else
 SHARED_STATIC_LIBS_OPTS=--enable-static --enable-shared
 endif
 
-include package/Makefile.autotools.in
+include package/pkg-autotargets.mk
 include package/Makefile.cmake.in
 include package/Makefile.package.in
