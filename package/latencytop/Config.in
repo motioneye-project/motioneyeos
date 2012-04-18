@@ -1,0 +1,23 @@
+config BR2_PACKAGE_LATENCYTOP
+	bool "latencytop"
+	depends on BR2_USE_WCHAR
+	select BR2_PACKAGE_NCURSES
+	select BR2_PACKAGE_LIBGLIB2
+	help
+	  There are many types and causes of latency. LatencyTOP
+	  focuses on the type of latency that causes skips in audio,
+	  stutters in your desktop experience or that overloads your
+	  server (while you have plenty of CPU power left).
+
+	  LatencyTOP focuses on the cases where the applications want
+	  to run and execute useful code, but there's some resource
+	  that's not currently available (and the kernel then blocks
+	  the process). This is done both on a system level and on a
+	  per process level, so that you can see what's happening to
+	  the system, and which process is suffering and/or causing
+	  the delays.
+
+	  http://www.latencytop.org
+
+comment "latencytop requires a toolchain with WCHAR support"
+	depends on !BR2_USE_WCHAR
