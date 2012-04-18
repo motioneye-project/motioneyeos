@@ -9,6 +9,7 @@ wheel:x:10:root
 audio:x:29:
 utmp:x:43:
 staff:x:50:
+lock:x:54:
 haldaemon:x:68:
 dbus:x:81:
 netdev:x:82:
