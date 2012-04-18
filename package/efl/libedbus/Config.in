@@ -2,10 +2,31 @@ config BR2_PACKAGE_LIBEDBUS
 	bool "libedbus"
 	select BR2_PACKAGE_LIBEINA
 	select BR2_PACKAGE_LIBECORE
-	depends on BR2_PACKAGE_DBUS
+	select BR2_PACKAGE_DBUS
 	help
 	  E_Dbus is a set of wrappers around D-Bus APIs so they can be
 	  easily used by EFL applications, automatically providing
 	  Ecore/main loop integration, as well as Eina data types.
 
 	  http://trac.enlightenment.org/e/wiki/E_Dbus
+
+if BR2_PACKAGE_LIBEDBUS
+
+config BR2_PACKAGE_LIBEDBUS_BLUEZ
+	bool "bluez support"
+	select BR2_PACKAGE_BLUEZ_UTILS
+	help
+	  Bluetooth support.
+
+config BR2_PACKAGE_LIBEDBUS_CONNMAN
+	bool "connman support"
+	depends on BR2_PACKAGE_CONNMAN
+	help
+	  Connection manager support.
+
+config BR2_PACKAGE_LIBEDBUS_NOTIFY
+	bool "notify support"
+	help
+	  Notify support.
+
+endif
