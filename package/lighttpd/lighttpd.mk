@@ -56,6 +56,38 @@ else
 LIGHTTPD_CONF_OPT += --without-lua
 endif
 
+define LIGHTTPD_INSTALL_CONFIG
+	mkdir -p $(TARGET_DIR)/etc/lighttpd
+	mkdir -p $(TARGET_DIR)/etc/lighttpd/conf.d
+	mkdir -p $(TARGET_DIR)/srv/www/htdocs
+
+	[ -f $(TARGET_DIR)/etc/lighttpd/lighttpd.conf ] || \
+		$(INSTALL) -D -m 755 $(@D)/doc/config/lighttpd.conf \
+			$(TARGET_DIR)/etc/lighttpd/lighttpd.conf
+
+	[ -f $(TARGET_DIR)/etc/lighttpd/modules.conf ] || \
+		$(INSTALL) -D -m 755 $(@D)/doc/config/modules.conf \
+			$(TARGET_DIR)/etc/lighttpd/modules.conf
+
+	[ -f $(TARGET_DIR)/etc/lighttpd/conf.d/access_log.conf ] || \
+		$(INSTALL) -D -m 755 $(@D)/doc/config/conf.d/access_log.conf \
+			$(TARGET_DIR)/etc/lighttpd/conf.d/access_log.conf
+
+	[ -f $(TARGET_DIR)/etc/lighttpd/conf.d/debug.conf ] || \
+		$(INSTALL) -D -m 755 $(@D)/doc/config/conf.d/debug.conf \
+			$(TARGET_DIR)/etc/lighttpd/conf.d/debug.conf
+
+	[ -f $(TARGET_DIR)/etc/lighttpd/conf.d/dirlisting.conf ] || \
+		$(INSTALL) -D -m 755 $(@D)/doc/config/conf.d/dirlisting.conf \
+			$(TARGET_DIR)/etc/lighttpd/conf.d/dirlisting.conf
+
+	[ -f $(TARGET_DIR)/etc/lighttpd/conf.d/mime.conf ] || \
+		$(INSTALL) -D -m 755 $(@D)/doc/config/conf.d/mime.conf \
+			$(TARGET_DIR)/etc/lighttpd/conf.d/mime.conf
+endef
+
+LIGHTTPD_POST_INSTALL_TARGET_HOOKS += LIGHTTPD_INSTALL_CONFIG
+
 define LIGHTTPD_UNINSTALL_TARGET_CMDS
 	rm -f $(TARGET_DIR)/usr/sbin/lighttpd
 	rm -f $(TARGET_DIR)/usr/sbin/lighttpd-angel
