@@ -1,0 +1,47 @@
+[PATCH] events.c: add similar system headers workaround as trace.c
+
+Needed for E.G. powerpc on uClibc.
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ sysdeps/linux-gnu/events.c |   27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
+
+Index: ltrace-0.6.0/sysdeps/linux-gnu/events.c
+===================================================================
+--- ltrace-0.6.0.orig/sysdeps/linux-gnu/events.c
++++ ltrace-0.6.0/sysdeps/linux-gnu/events.c
+@@ -11,6 +11,33 @@
+ 
+ #include "common.h"
+ 
++/* If the system headers did not provide the constants, hard-code the normal
++   values.  */
++#ifndef PTRACE_EVENT_FORK
++
++#define PTRACE_OLDSETOPTIONS    21
++#define PTRACE_SETOPTIONS       0x4200
++#define PTRACE_GETEVENTMSG      0x4201
++
++/* options set using PTRACE_SETOPTIONS */
++#define PTRACE_O_TRACESYSGOOD   0x00000001
++#define PTRACE_O_TRACEFORK      0x00000002
++#define PTRACE_O_TRACEVFORK     0x00000004
++#define PTRACE_O_TRACECLONE     0x00000008
++#define PTRACE_O_TRACEEXEC      0x00000010
++#define PTRACE_O_TRACEVFORKDONE 0x00000020
++#define PTRACE_O_TRACEEXIT      0x00000040
++
++/* Wait extended result codes for the above trace options.  */
++#define PTRACE_EVENT_FORK       1
++#define PTRACE_EVENT_VFORK      2
++#define PTRACE_EVENT_CLONE      3
++#define PTRACE_EVENT_EXEC       4
++#define PTRACE_EVENT_VFORK_DONE 5
++#define PTRACE_EVENT_EXIT       6
++
++#endif /* PTRACE_EVENT_FORK */
++
+ static Event event;
+ 
+ Event *
