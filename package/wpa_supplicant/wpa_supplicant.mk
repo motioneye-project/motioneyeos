@@ -118,10 +118,18 @@ ifeq ($(BR2_PACKAGE_DBUS),y)
 WPA_SUPPLICANT_POST_INSTALL_TARGET_HOOKS += WPA_SUPPLICANT_INSTALL_DBUS
 endif
 
+define WPA_SUPPLICANT_INSTALL_CONFIG
+	$(INSTALL) -m 644 \
+	  package/wpa_supplicant/wpa_supplicant.conf  $(TARGET_DIR)/etc/wpa_supplicant.conf
+endef
+
+WPA_SUPPLICANT_POST_INSTALL_TARGET_HOOKS += WPA_SUPPLICANT_INSTALL_CONFIG
+
 define WPA_SUPPLICANT_UNINSTALL_TARGET_CMDS
 	rm -f $(addprefix $(TARGET_DIR)/usr/sbin/, $(WPA_SUPPLICANT_TARGET_BINS))
 	rm -f $(TARGET_DIR)/etc/dbus-1/system.d/wpa_supplicant.conf
 	rm -f $(TARGET_DIR)/usr/share/dbus-1/system-services/$(WPA_SUPPLICANT_DBUS_SERVICE).service
+	rm -f $(TARGET_DIR)/usr/etc/wpa_supplicant.conf
 endef
 
 $(eval $(call AUTOTARGETS))
