@@ -1,6 +1,7 @@
 menu "Audio and video libraries and applications"
 source "package/multimedia/alsa-lib/Config.in"
 source "package/multimedia/alsa-utils/Config.in"
+source "package/multimedia/audiofile/Config.in"
 source "package/multimedia/aumix/Config.in"
 source "package/multimedia/faad2/Config.in"
 source "package/multimedia/flac/Config.in"
