@@ -30,6 +30,13 @@ config BR2_PACKAGE_MPD_AO
 	help
 	  Enable libao output support.
 
+config BR2_PACKAGE_MPD_AUDIOFILE
+	bool "audiofile"
+	select BR2_PACKAGE_AUDIOFILE
+	help
+	  Enable audiofile input/streaming support.
+	  Select this if you want to play back WAV files.
+
 config BR2_PACKAGE_MPD_PULSEAUDIO
 	bool "pulseaudio"
 	select BR2_PACKAGE_PULSEAUDIO

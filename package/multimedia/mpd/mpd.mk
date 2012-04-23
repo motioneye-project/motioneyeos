@@ -21,6 +21,11 @@ MPD_DEPENDENCIES += libao
 MPD_CONF_OPT += --enable-ao
 endif
 
+ifeq ($(BR2_PACKAGE_MPD_AUDIOFILE),y)
+MPD_DEPENDENCIES += audiofile
+MPD_CONF_OPT += --enable-audiofile
+endif
+
 ifeq ($(BR2_PACKAGE_MPD_PULSEAUDIO),y)
 MPD_DEPENDENCIES += pulseaudio
 MPD_CONF_OPT += --enable-pulse
