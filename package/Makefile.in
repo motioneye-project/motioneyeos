@@ -279,7 +279,9 @@ ifneq ($(BR2_HAVE_DOCUMENTATION),y)
 DISABLE_DOCUMENTATION=--disable-gtk-doc
 endif
 
-ifneq ($(BR2_INET_IPV6),y)
+ifeq ($(BR2_INET_IPV6),y)
+DISABLE_IPV6= --enable-ipv6
+else
 DISABLE_IPV6= --disable-ipv6
 endif
 
