@@ -1,0 +1,18 @@
+config BR2_PACKAGE_BELLAGIO
+	bool "bellagio"
+	depends on BR2_INSTALL_LIBSTDCPP
+	help
+	  Bellagio is an opensource implementation of the
+	  OpenMAX IL API.
+
+	  OpenMAX Integration Layer (IL) is a standard API
+	  to access Multimedia Components on mobile platforms.
+	  It has been defined by the Khronos group.
+	  By means of the OpenMAX IL API, multimedia frameworks
+	  can access hardware accelerators on platforms that
+	  provide it.
+
+	  http://omxil.sourceforge.net/
+
+comment "bellagio requires a toolchain with C++ support enabled"
+	depends on !BR2_INSTALL_LIBSTDCPP
