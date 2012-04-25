@@ -3,13 +3,13 @@
 # berkeley db
 #
 #############################################################
-BERKELEYDB_VERSION:=5.3.15
-BERKELEYDB_SITE:=http://download.oracle.com/berkeley-db
-BERKELEYDB_SOURCE:=db-$(BERKELEYDB_VERSION).NC.tar.gz
-BERKELEYDB_SUBDIR=build_unix
+BERKELEYDB_VERSION = 5.3.15
+BERKELEYDB_SITE = http://download.oracle.com/berkeley-db
+BERKELEYDB_SOURCE = db-$(BERKELEYDB_VERSION).NC.tar.gz
+BERKELEYDB_SUBDIR = build_unix
 BERKELEYDB_INSTALL_STAGING = YES
 
-#build directory can't be the directory where configure are there, so..
+# build directory can't be the directory where configure are there, so..
 define BERKELEYDB_CONFIGURE_CMDS
 	(cd $(@D)/build_unix; rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
@@ -20,16 +20,7 @@ define BERKELEYDB_CONFIGURE_CMDS
 		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
 		--exec-prefix=/usr \
-		--bindir=/usr/bin \
-		--sbindir=/usr/sbin \
-		--libdir=/usr/lib \
-		--libexecdir=/usr/lib \
 		--sysconfdir=/etc \
-		--datadir=/usr/share \
-		--localstatedir=/var \
-		--includedir=/usr/include \
-		--mandir=/usr/share/man \
-		--infodir=/usr/share/info \
 		--with-gnu-ld \
 		--disable-cxx \
 		--disable-java \
