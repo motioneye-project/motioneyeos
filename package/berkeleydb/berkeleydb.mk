@@ -8,6 +8,9 @@ BERKELEYDB_SITE = http://download.oracle.com/berkeley-db
 BERKELEYDB_SOURCE = db-$(BERKELEYDB_VERSION).NC.tar.gz
 BERKELEYDB_SUBDIR = build_unix
 BERKELEYDB_INSTALL_STAGING = YES
+BERKELEYDB_BINARIES = db_archive db_checkpoint db_deadlock db_dump \
+	db_hotbackup db_load db_log_verify db_printlog db_recover db_replicate \
+	db_stat db_tuner db_upgrade db_verify
 
 # build directory can't be the directory where configure are there, so..
 define BERKELEYDB_CONFIGURE_CMDS
@@ -32,6 +35,16 @@ define BERKELEYDB_CONFIGURE_CMDS
 	)
 	$(SED) 's/\.lo/.o/g' $(@D)/build_unix/Makefile
 endef
+
+ifneq ($(BR2_PACKAGE_BERKELEYDB_TOOLS),y)
+
+define BERKELEYDB_REMOVE_TOOLS
+	rm -f $(addprefix $(TARGET_DIR)/usr/bin/, $(BERKELEYDB_BINARIES))
+endef
+
+BERKELEYDB_POST_INSTALL_TARGET_HOOKS += BERKELEYDB_REMOVE_TOOLS
+
+endif
 
 ifneq ($(BR2_HAVE_DOCUMENTATION),y)
 

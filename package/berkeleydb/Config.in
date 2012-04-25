@@ -5,3 +5,9 @@ config BR2_PACKAGE_BERKELEYDB
 	  applications.
 
 	  http://www.sleepycat.com/products/db.shtml
+
+config BR2_PACKAGE_BERKELEYDB_TOOLS
+	bool "install tools"
+	depends on BR2_PACKAGE_BERKELEYDB
+	help
+	  Install berkeleydb tools, mostly useful for debugging purposes.
