@@ -14,6 +14,7 @@ NFS_UTILS_CONF_OPT = \
 		--disable-gss \
 		--disable-tirpc \
 		--disable-uuid \
+		--disable-ipv6 \
 		--without-tcp-wrappers \
 		--with-rpcgen=internal
 
