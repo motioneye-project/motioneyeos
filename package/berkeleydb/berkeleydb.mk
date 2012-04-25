@@ -22,7 +22,7 @@ define BERKELEYDB_CONFIGURE_CMDS
 		--exec-prefix=/usr \
 		--sysconfdir=/etc \
 		--with-gnu-ld \
-		--disable-cxx \
+		$(if $(BR2_INSTALL_LIBSTDCPP),--enable-cxx,--disable-cxx) \
 		--disable-java \
 		--disable-tcl \
 		--disable-compat185 \
