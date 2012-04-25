@@ -3,7 +3,7 @@
 # berkeley db
 #
 #############################################################
-BERKELEYDB_VERSION:=4.4.20
+BERKELEYDB_VERSION:=5.3.15
 BERKELEYDB_SITE:=http://download.oracle.com/berkeley-db
 BERKELEYDB_SOURCE:=db-$(BERKELEYDB_VERSION).NC.tar.gz
 BERKELEYDB_SUBDIR=build_unix
@@ -33,7 +33,6 @@ define BERKELEYDB_CONFIGURE_CMDS
 		--with-gnu-ld \
 		--disable-cxx \
 		--disable-java \
-		--disable-rpc \
 		--disable-tcl \
 		--disable-compat185 \
 		$(SHARED_STATIC_LIBS_OPTS) \
