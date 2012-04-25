@@ -28,6 +28,7 @@ define BERKELEYDB_CONFIGURE_CMDS
 		--disable-compat185 \
 		$(SHARED_STATIC_LIBS_OPTS) \
 		--with-pic \
+		--enable-o_direct \
 	)
 	$(SED) 's/\.lo/.o/g' $(@D)/build_unix/Makefile
 endef
