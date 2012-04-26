@@ -1,6 +1,6 @@
 # Architecture
 BR2_powerpc=y
-BR2_powerpc_440fp=y
+BR2_powerpc_750=y
 
 # filesystem
 BR2_TARGET_ROOTFS_EXT2=y
