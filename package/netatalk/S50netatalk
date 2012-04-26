@@ -1,0 +1,43 @@
+#!/bin/sh 
+# 
+# Start netatalk daemon  (aftpd && cnid_metad)
+#
+
+AFPD_UAMLIST="-U uams_dhx2.so,uams_clrtxt.so"
+
+start() {
+    echo -n "Starting Netatalk services (this will take a while): "
+    echo "Starting afpd"
+    echo -n " afpd"
+    start-stop-daemon -S -q -p /var/run/afpd.pid --exec /usr/sbin/afpd -- $AFPD_UAMLIST -g nobody -c 50
+    echo -n " cnid_metad"
+    start-stop-daemon -S -q -p /var/run/cnid_metad.pid --exec /usr/sbin/cnid_metad -- -l log_note
+    echo "."
+}
+
+stop(){
+    echo -n "Stopping Netatalk Daemons:"
+    echo -n " afpd"
+    start-stop-daemon -K -q -p /var/run/afpd.pid
+    echo -n " cnid_metad"
+    start-stop-daemon -K -q -p /var/run/cnid_metad.pid
+}
+
+case "$1" in
+    start)
+        start
+    ;; 
+    stop)
+        stop
+    ;; 
+    restart)
+        start
+        stop
+    ;; 
+    *) 
+        echo $"Usage: $0 {start|stop|restart}"
+        exit 1
+esac
+
+exit $?
+
