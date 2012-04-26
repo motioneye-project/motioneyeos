@@ -1,0 +1,22 @@
+--- busybox-1.20.0/libbb/lineedit.c
++++ busybox-1.20.0-lineedit/libbb/lineedit.c
+@@ -1352,8 +1352,7 @@ static void load_history(line_input_t *s
+ 		/* fill temp_h[], retaining only last MAX_HISTORY lines */
+ 		memset(temp_h, 0, sizeof(temp_h));
+ 		idx = 0;
+-		if (!ENABLE_FEATURE_EDITING_SAVE_ON_EXIT)
+-			st_parm->cnt_history_in_file = 0;
++		st_parm->cnt_history_in_file = 0;
+ 		while ((line = xmalloc_fgetline(fp)) != NULL) {
+ 			if (line[0] == '\0') {
+ 				free(line);
+@@ -1361,8 +1360,7 @@ static void load_history(line_input_t *s
+ 			}
+ 			free(temp_h[idx]);
+ 			temp_h[idx] = line;
+-			if (!ENABLE_FEATURE_EDITING_SAVE_ON_EXIT)
+-				st_parm->cnt_history_in_file++;
++			st_parm->cnt_history_in_file++;
+ 			idx++;
+ 			if (idx == st_parm->max_history)
+ 				idx = 0;
