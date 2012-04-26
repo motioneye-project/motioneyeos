@@ -1,0 +1,32 @@
+[PATCH] fix build with modern uClibc
+
+uClibc has sched_getcpu since 0.9.33, so the compat workaround should only
+be used for older uClibc versions.
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ liblttng-ust/compat.h |    5 +++++
+ 1 file changed, 5 insertions(+)
+
+Index: lttng-ust-1.9.2/liblttng-ust/compat.h
+===================================================================
+--- lttng-ust-1.9.2.orig/liblttng-ust/compat.h
++++ lttng-ust-1.9.2/liblttng-ust/compat.h
+@@ -17,6 +17,10 @@
+ #include <sys/syscall.h>
+ 
+ #ifdef __UCLIBC__
++/* old uClibc versions didn't have sched_getcpu */
++#if __UCLIBC_MAJOR__ == 0 && \
++	(__UCLIBC_MINOR__ < 9 || \
++	 (__UCLIBC_MINOR__ == 9 && __UCLIBC_SUBLEVEL__ <= 32))
+ #define __getcpu(cpu, node, cache)	syscall(__NR_getcpu, cpu, node, cache)
+ static inline
+ int sched_getcpu(void)
+@@ -26,5 +30,6 @@
+ 	s = __getcpu(&c, NULL, NULL);
+ 	return (s == -1) ? s : c;
+ }
++#endif /* <= 0.9.32 */
+ #endif	/* __UCLIBC__ */
+ #endif /* _UST_COMPAT_H */
