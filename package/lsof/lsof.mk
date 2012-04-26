@@ -8,6 +8,9 @@ LSOF_VERSION = 4.85
 LSOF_SOURCE = lsof_$(LSOF_VERSION).tar.bz2
 LSOF_SITE = ftp://lsof.itap.purdue.edu/pub/tools/unix/lsof/
 
+# Make certain full-blown lsof gets built after the busybox version (1.20+)
+LSOF_DEPENDENCIES += $(if $(BR2_PACKAGE_BUSYBOX),busybox)
+
 BR2_LSOF_CFLAGS =
 ifeq ($(BR2_LARGEFILE),)
 BR2_LSOF_CFLAGS += -U_FILE_OFFSET_BITS
