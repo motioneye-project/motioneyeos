@@ -15,10 +15,6 @@ NGREP_CONF_OPT =  \
 	--with-pcre=$(STAGING_DIR)/usr \
 	--disable-dropprivs
 
-ifeq ($(BR2_INET_IPV6),y)
-NGREP_CONF_OPT += --enable-ipv6
-endif
-
 NGREP_DEPENDENCIES = libpcap pcre
 
 $(eval $(call AUTOTARGETS))
