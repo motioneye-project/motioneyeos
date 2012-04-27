@@ -17,7 +17,7 @@ choice
 	  Select the specific U-Boot version you want to use
 
 config BR2_TARGET_UBOOT_2012_04
-	bool "2012.04"
+	bool "2012.04.01"
 
 config BR2_TARGET_UBOOT_2011_12
 	bool "2011.12"
@@ -50,7 +50,7 @@ endif
 
 config BR2_TARGET_UBOOT_VERSION
 	string
-	default "2012.04"	if BR2_TARGET_UBOOT_2012_04
+	default "2012.04.01"	if BR2_TARGET_UBOOT_2012_04
 	default "2011.12"	if BR2_TARGET_UBOOT_2011_12
 	default "2011.09"	if BR2_TARGET_UBOOT_2011_09
 	default "2011.06"	if BR2_TARGET_UBOOT_2011_06
