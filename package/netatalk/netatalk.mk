@@ -20,6 +20,7 @@ NETATALK_CONF_OPT += --with-cnid-cdb-backend \
 
 ifeq ($(BR2_PACKAGE_CUPS),y)
 	NETATALK_DEPENDENCIES += cups
+	NETATALK_CONF_ENV += ac_cv_path_CUPS_CONFIG=$(STAGING_DIR)/usr/bin/cups-config
 	NETATALK_CONF_OPT += --enable-cups
 else
 	NETATALK_CONF_OPT += --disable-cups
