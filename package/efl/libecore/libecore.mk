@@ -73,7 +73,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_LIBECORE_X_XCB),y)
 LIBECORE_CONF_OPT += --enable-ecore-x-xcb
-LIBECORE_DEPENDENCIES += libxcb xlib_libX11 xcb-util
+LIBECORE_DEPENDENCIES += libxcb xlib_libX11 xcb-util pixman
 
 # src/util/makekeys is executed at build time to generate
 # ecore_xcb_keysym_table.h, so it should get compiled for the host.
