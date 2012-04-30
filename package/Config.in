@@ -267,6 +267,26 @@ endmenu
 
 menu "Libraries"
 
+menu "Audio/Sound"
+source "package/alsa-lib/Config.in"
+source "package/audiofile/Config.in"
+source "package/libao/Config.in"
+source "package/libcdaudio/Config.in"
+source "package/libcue/Config.in"
+source "package/libcuefile/Config.in"
+source "package/libid3tag/Config.in"
+source "package/libmad/Config.in"
+source "package/libmpd/Config.in"
+source "package/libreplaygain/Config.in"
+source "package/libsamplerate/Config.in"
+source "package/libsndfile/Config.in"
+source "package/libvorbis/Config.in"
+source "package/portaudio/Config.in"
+source "package/speex/Config.in"
+source "package/taglib/Config.in"
+source "package/tremor/Config.in"
+endmenu
+
 menu "Compression and decompression"
 source "package/libarchive/Config.in"
 source "package/lzo/Config.in"
