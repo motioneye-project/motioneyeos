@@ -10,7 +10,6 @@ CUPS_SITE = http://ftp.easysw.com/pub/cups/$(CUPS_VERSION)
 CUPS_INSTALL_STAGING = YES
 CUPS_INSTALL_STAGING_OPT = DESTDIR=$(STAGING_DIR) DSTROOT=$(STAGING_DIR) install
 CUPS_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) DSTROOT=$(TARGET_DIR) install
-CUPS_CONF_ENV = CFLAGS="$(TARGET_CFLAGS) $(CUPS_CFLAGS)"
 CUPS_CONF_OPT = --without-perl \
 		--without-java \
 		--disable-gnutls \
@@ -36,12 +35,10 @@ else
 endif
 
 ifeq ($(BR2_PACKAGE_PYTHON),y)
-	CUPS_CFLAGS += 		-I$(STAGING_DIR)/usr/include/python$(PYTHON_VERSION_MAJOR)
-	CUPS_CONF_ENV +=	ac_cv_path_python=$(STAGING_DIR)/usr/bin/python
-	CUPS_CONF_OPT +=	--with-python
-	CUPS_DEPENDENCIES +=	python
+	CUPS_CONF_OPT += --with-python
+	CUPS_DEPENDENCIES += python
 else
-	CUPS_CONF_OPT +=	--without-python
+	CUPS_CONF_OPT += --without-python
 endif
 
 ifeq ($(BR2_PACKAGE_CUPS_PDFTOPS),y)
