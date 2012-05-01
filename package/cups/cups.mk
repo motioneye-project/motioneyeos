@@ -15,6 +15,11 @@ CUPS_CONF_OPT = --without-perl \
 		--disable-gnutls \
 		--disable-gssapi
 
+CUPS_DEPENDENCIES = $(if $(BR2_PACKAGE_ZLIB),zlib) \
+		    $(if $(BR2_PACKAGE_LIBPNG),libpng) \
+		    $(if $(BR2_PACKAGE_JPEG),jpeg) \
+		    $(if $(BR2_PACKAGE_TIFF),tiff)
+
 ifeq ($(BR2_PACKAGE_DBUS),y)
 	CUPS_CONF_OPT += --enable-dbus
 	CUPS_DEPENDENCIES += dbus
