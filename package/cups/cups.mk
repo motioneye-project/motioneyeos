@@ -55,16 +55,10 @@ CUPS_DEPENDENCIES += host-autoconf
 
 CUPS_PRE_CONFIGURE_HOOKS += CUPS_FIXUP_AUTOCONF
 
-# Fixup prefix= and exec_prefix= in cups-config, and remove the
-# -Wl,-rpath option.
+# Fixup prefix= and exec_prefix= in cups-config
 define CUPS_FIXUP_CUPS_CONFIG
-	$(SED) 's%prefix=/usr%prefix=$(STAGING_DIR)/usr%' \
-		$(STAGING_DIR)/usr/bin/cups-config
-	$(SED) 's%exec_prefix=/usr%exec_prefix=$(STAGING_DIR)/usr%' \
-		$(STAGING_DIR)/usr/bin/cups-config
-	$(SED) "s%includedir=.*%includedir=$(STAGING_DIR)/usr/include%" \
-		 $(STAGING_DIR)/usr/bin/cups-config
-	$(SED) 's%-Wl,-rpath,\$${libdir}%%' \
+	$(SED) 's%^prefix=/usr%prefix=$(STAGING_DIR)/usr%' \
+		-e 's%^exec_prefix=/usr%exec_prefix=$(STAGING_DIR)/usr%' \
 		$(STAGING_DIR)/usr/bin/cups-config
 endef
 
