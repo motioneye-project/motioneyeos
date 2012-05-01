@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-CUPS_VERSION = 1.3.9
+CUPS_VERSION = 1.3.11
 CUPS_SOURCE = cups-$(CUPS_VERSION)-source.tar.bz2
 CUPS_SITE = http://ftp.easysw.com/pub/cups/$(CUPS_VERSION)
 CUPS_INSTALL_STAGING = YES
