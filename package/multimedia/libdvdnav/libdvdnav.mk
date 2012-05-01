@@ -6,7 +6,7 @@
 
 LIBDVDNAV_VERSION = 4.1.3
 LIBDVDNAV_SOURCE = libdvdnav-$(LIBDVDNAV_VERSION).tar.bz2
-LIBDVDNAV_SITE = http://www.mplayerhq.hu/MPlayer/releases/dvdnav
+LIBDVDNAV_SITE = http://dvdnav.mplayerhq.hu/releases
 LIBDVDNAV_AUTORECONF = YES
 LIBDVDNAV_INSTALL_STAGING = YES
 
