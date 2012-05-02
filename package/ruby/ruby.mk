@@ -4,7 +4,7 @@
 #
 #############################################################
 
-RUBY_VERSION = 1.9.2-p290
+RUBY_VERSION = 1.9.2-p320
 RUBY_SITE = ftp://ftp.ruby-lang.org/pub/ruby/1.9
 RUBY_AUTORECONF = YES
 HOST_RUBY_AUTORECONF = YES
