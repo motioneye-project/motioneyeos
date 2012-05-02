@@ -33,7 +33,7 @@ Index: polarssl-1.1.1/library/CMakeLists.txt
 +if(USE_SHARED_POLARSSL_LIBRARY)
  
  add_library(polarssl SHARED ${src})
- set_target_properties(polarssl PROPERTIES VERSION 1.1.1 SOVERSION 1)
+ set_target_properties(polarssl PROPERTIES VERSION 1.1.3 SOVERSION 1)
 +set_target_properties(polarssl PROPERTIES OUTPUT_NAME polarssl)
 +
 +endif(USE_SHARED_POLARSSL_LIBRARY)
