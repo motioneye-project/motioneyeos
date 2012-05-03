@@ -21,7 +21,7 @@
 	default to uClibc 0.9.33.x, enable
 	UCLIBC_SUPPORT_AI_ADDRCONFIG by default, static and 64bit
 	fixes for external toolchains, linaro ext toolchains, new
-	sourcery codebench ext toolchains, GCC 7.4.1.
+	sourcery codebench ext toolchains, GDB 7.4.1.
 
 	Bootloaders: U-Boot: add 2012.04.01. Barebox: add 2012.04,
 	remove 2011.12.
