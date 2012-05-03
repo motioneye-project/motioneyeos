@@ -44,7 +44,7 @@
 	samba, sam-ba, sane-backends, sawman, screen, sdl_net,
 	smartmontools, sqlite, squashfs3, squid, sshfs, sudo,
 	syslinux, sysstat, taglib, tftp-hpa, transmission, tiff,
-	tinyhttpd, udev, unionfs, usbutils, util-linux, vala,
+	tinyhttpd, udev, uemacs, unionfs, usbutils, util-linux, vala,
 	valgrind, vim, vsftpd, wipe, xdriver_xf86-video-fbdev,
 	xfsprogs, zlib,
 
@@ -62,6 +62,7 @@
 	#2353: [lua] fix build with 2010.08-rc1
 	#4880: New package lcdproc
 	#4886: New package protobuf
+	#5144: Patch to fix ixon bug in uemacs
 
 2012.02, Released February 29th, 2012:
 

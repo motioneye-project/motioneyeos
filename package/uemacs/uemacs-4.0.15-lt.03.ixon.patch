@@ -1,0 +1,28 @@
+[PATCH] clear ixon termios flag on initialization
+
+Otherwise ctrl-S/Q gets intercepted by the tty layer instead of
+handled by uemacs.
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+diff -U8 em-4.0.15-lt-orig/posix.c em-4.0.15-lt/posix.c
+--- em-4.0.15-lt-orig/posix.c	1999-05-16 02:06:19.000000000 -0500
++++ em-4.0.15-lt/posix.c	2012-04-25 16:14:25.000000000 -0500
+@@ -45,17 +45,17 @@
+ 	/*
+ 	 * base new settings on old ones - don't change things
+ 	 * we don't know about
+ 	 */
+ 	ntermios = otermios;
+ 
+ 	/* raw CR/NL etc input handling, but keep ISTRIP if we're on a 7-bit line */
+ 	ntermios.c_iflag &= ~(IGNBRK | BRKINT | IGNPAR | PARMRK
+-			      | INPCK | INLCR | IGNCR | ICRNL);
++			      | INPCK | INLCR | IGNCR | ICRNL | IXON);
+ 
+ 	/* raw CR/NR etc output handling */
+ 	ntermios.c_oflag &= ~(OPOST | ONLCR | OLCUC | OCRNL | ONOCR | ONLRET);
+ 
+ 	/* No signal handling, no echo etc */
+ 	ntermios.c_lflag &= ~(ISIG | ICANON | XCASE | ECHO | ECHOE | ECHOK
+ 			     | ECHONL | NOFLSH | TOSTOP | ECHOCTL | ECHOPRT
+ 			     | ECHOKE | FLUSHO | PENDIN | IEXTEN);
