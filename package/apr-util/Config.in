@@ -1,0 +1,11 @@
+config BR2_PACKAGE_APR_UTIL
+	bool "apr-util"
+	select BR2_PACKAGE_APR
+	select BR2_PACKAGE_SQLITE
+	select BR2_PACKAGE_NEON
+	select BR2_PACKAGE_NEON_ZLIB
+	select BR2_PACKAGE_ZLIB
+	help
+	  The utility library for the apache runtime project
+
+	  http://apr.apache.org/

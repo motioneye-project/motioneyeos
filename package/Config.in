@@ -379,6 +379,7 @@ endmenu
 
 menu "Other"
 source "package/apr/Config.in"
+source "package/apr-util/Config.in"
 source "package/fftw/Config.in"
 source "package/libargtable2/Config.in"
 source "package/argp-standalone/Config.in"
