@@ -21,18 +21,25 @@ config BR2_PACKAGE_DNSMASQ_DHCP
 	  Enable DHCP server support in dnsmasq.
 
 config BR2_PACKAGE_DNSMASQ_IDN
-	bool "IDN support (BIG!)"
+	bool "IDN support"
 	depends on BR2_USE_WCHAR
-	select BR2_PACKAGE_LIBINTL
 	select BR2_PACKAGE_LIBIDN
+	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE
+	select BR2_PACKAGE_LIBINTL if BR2_NEEDS_GETTEXT_IF_LOCALE
 	help
 	  Enable IDN support in dnsmasq.
-	  This option is a big space taker since is pulls in many libraries.
+	  This option is a big space taker since it pulls in many libraries.
 
 config BR2_PACKAGE_DNSMASQ_LUA
 	bool "Lua scripting support"
 	select BR2_PACKAGE_LUA
 	help
 	  Enable lua scripting for dnsmasq
+
+config BR2_PACKAGE_DNSMASQ_CONNTRACK
+	bool "conntrack marking support"
+	select BR2_PACKAGE_LIBNETFILTER_CONNTRACK
+	help
+	  Enable DNS query connection marking in netfilter.
 
 endif
