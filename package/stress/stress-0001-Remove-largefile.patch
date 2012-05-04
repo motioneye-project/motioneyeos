@@ -1,0 +1,22 @@
+Remove largefile
+
+Otherwise it doesn't compile in uClibc without largefile.
+
+If the toolchain does support largefile, it will still work on large files
+anyway.
+
+Signed-off-by: Arnout Vandecappelle (Essensium/Mind) <arnout@mind.be>
+---
+Upstream status: mail sent to apw@rossby.metr.ou.edu
+---
+diff -rup stress-1.0.4.orig/src/Makefile.am stress-1.0.4/src/Makefile.am
+--- stress-1.0.4.orig/src/Makefile.am	2009-12-03 02:04:05.000000000 +0100
++++ stress-1.0.4/src/Makefile.am	2012-05-04 23:09:48.229842463 +0200
+@@ -1,7 +1,5 @@
+ MAINTAINERCLEANFILES = Makefile.in
+ 
+-AM_CFLAGS = -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE
+-
+ bin_PROGRAMS = stress
+ stress_SOURCES = stress.c
+ stress_MANS = stress.1

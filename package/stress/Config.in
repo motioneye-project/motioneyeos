@@ -1,0 +1,8 @@
+config BR2_PACKAGE_STRESS
+	bool "stress"
+	help
+	  A deliberately simple workload generator for POSIX systems.
+	  It imposes a configurable amount of CPU, memory, I/O, and
+	  disk stress on the system.
+
+	  http://weather.ou.edu/~apw/projects/stress/
