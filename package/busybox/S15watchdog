@@ -1,0 +1,20 @@
+#!/bin/sh
+#
+# Start watchdog
+#
+
+case "$1" in
+ start)
+	echo "Starting watchdog..."
+	watchdog -t PERIOD /dev/watchdog
+	;;
+  stop)
+	;;
+  restart|reload)
+	;;
+  *)
+	echo $"Usage: $0 {start|stop|restart}"
+	exit 1
+esac
+
+exit $?
