@@ -23,6 +23,18 @@ config BR2_LINUX_KERNEL_EXT_XENOMAI_ADEOS_PATCH
 	  Download it at http://download.gna.org/adeos/patches/v2.6/$(ARCH)/
 	  and verify that your kernel version in buildroot matches.
 
+# ocf-linux
+config BR2_LINUX_KERNEL_EXT_OCF_LINUX
+	bool "Open Cryptographic Framework (OCF)"
+	select BR2_PACKAGE_OCF_LINUX
+	help
+	  OCF-Linux Kernel part.
+
+	  Select this option to patch your kernel with OCF for
+	  hardware-accelerated crypto support for available drivers.
+	  Some libraries need to also have OCF enabled for them,
+	  for example OpenSSL.
+
 # RTAI
 config BR2_LINUX_KERNEL_EXT_RTAI
        bool "RTAI Real-time patch"
