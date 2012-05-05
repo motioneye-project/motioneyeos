@@ -1,0 +1,6 @@
+config BR2_PACKAGE_EMPTY
+	bool "empty"
+	help
+	  Run processes and applications under pseudo-terminal (PTY) sessions.
+
+	  http://empty.sourceforge.net/

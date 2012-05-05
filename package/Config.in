@@ -468,6 +468,7 @@ endmenu
 endmenu
 
 menu "Miscellaneous"
+source "package/empty/Config.in"
 source "package/shared-mime-info/Config.in"
 endmenu
 
