@@ -25,9 +25,14 @@ config BR2_PACKAGE_OPENSSL_ENGINES
 config BR2_PACKAGE_OPENSSL_OCF
 	bool "openssl ocf support"
 	depends on BR2_PACKAGE_OPENSSL
+	select BR2_PACKAGE_OCF_LINUX
 	help
 	  Enable openssl cryptodev (OCF) hardware acceleration support.
-	  This requires kernel patches from the ocf-linux project otherwise
-	  you'll just have a bigger openssl library that works as usual.
+	  This requires the ocf linux kernel extension or you to provide a
+	  pre-patched kernel that includes it.
+	  If kernel support isn't available it'll just make the libraries
+	  a tiny bit larger with a small CPU overhead when starting up and
+	  checking for the required kernel-side support, and then falling
+	  back to regular builtin support.
 
 	  http://ocf-linux.sourceforge.net/
