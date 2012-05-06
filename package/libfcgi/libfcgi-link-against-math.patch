@@ -1,0 +1,28 @@
+Link against math libraries when needed
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/cgi-fcgi/Makefile.am
+===================================================================
+--- a/cgi-fcgi/Makefile.am
++++ b/cgi-fcgi/Makefile.am
+@@ -11,5 +11,5 @@
+ LIBDIR      = ../libfcgi
+ LIBFCGI     = $(LIBDIR)/libfcgi.la
+ 
+-LDADD = $(LIBFCGI)
++LDADD = $(LIBFCGI) -lm
+ cgi_fcgi_SOURCES = $(INCLUDE_FILES) cgi-fcgi.c
+Index: b/examples/Makefile.am
+===================================================================
+--- a/examples/Makefile.am
++++ b/examples/Makefile.am
+@@ -21,7 +21,7 @@
+ LIBDIR      = ../libfcgi
+ LIBFCGI     = $(LIBDIR)/libfcgi.la
+ 
+-LDADD = $(LIBFCGI)
++LDADD = $(LIBFCGI) -lm
+ 
+ echo_SOURCES       = $(INCLUDE_FILES) echo.c
+ echo_x_SOURCES     = $(INCLUDE_FILES) echo-x.c

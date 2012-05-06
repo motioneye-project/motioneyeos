@@ -1,0 +1,67 @@
+Make the package autoreconfigurable
+
+Adjust minor details in Makefile.am and configure.in in order to make
+the package compatible with the autoconf/automake versions we are
+using in Buildroot.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/cgi-fcgi/Makefile.am
+===================================================================
+--- a/cgi-fcgi/Makefile.am
++++ b/cgi-fcgi/Makefile.am
+@@ -2,7 +2,7 @@
+ bin_PROGRAMS     = cgi-fcgi
+ 
+ INCLUDEDIR  = ../include
+-CPPFLAGS    = @CPPFLAGS@ -I$(top_srcdir)/include
++AM_CPPFLAGS = @CPPFLAGS@ -I$(top_srcdir)/include
+ 
+ INCLUDE_FILES   = $(INCLUDEDIR)/fastcgi.h  \
+ 		  $(INCLUDEDIR)/fcgiapp.h  \
+Index: b/configure.in
+===================================================================
+--- a/configure.in
++++ b/configure.in
+@@ -4,12 +4,13 @@
+ dnl     generate the file "configure", which is run during the build
+ dnl     to configure the system for the local environment.
+ 
+-AC_INIT
+-AM_INIT_AUTOMAKE(fcgi, 2.4.0)
++AC_INIT([fcgi], [2.4.0])
++AM_INIT_AUTOMAKE([foreign])
+ 
+ AM_CONFIG_HEADER(fcgi_config.h)
+ 
+ AC_PROG_CC
++AC_PROG_CC_C_O
+ AC_PROG_CPP 
+ AC_PROG_INSTALL 
+ AC_PROG_LIBTOOL
+Index: b/examples/Makefile.am
+===================================================================
+--- a/examples/Makefile.am
++++ b/examples/Makefile.am
+@@ -11,7 +11,7 @@
+ EXTRA_PROGRAMS = threaded echo-cpp
+ 
+ INCLUDEDIR  = ../include
+-CPPFLAGS    = @CPPFLAGS@ -I$(top_srcdir)/include
++AM_CPPFLAGS = @CPPFLAGS@ -I$(top_srcdir)/include
+ 
+ INCLUDE_FILES   = $(INCLUDEDIR)/fastcgi.h    \
+                   $(INCLUDEDIR)/fcgiapp.h    \
+Index: b/libfcgi/Makefile.am
+===================================================================
+--- a/libfcgi/Makefile.am
++++ b/libfcgi/Makefile.am
+@@ -1,7 +1,7 @@
+ # $Id: Makefile.am,v 1.9 2001/12/22 03:16:20 robs Exp $
+ 
+ INCLUDEDIR  = ../include
+-CPPFLAGS    = @CPPFLAGS@ -I$(top_srcdir)/include
++AM_CPPFLAGS = @CPPFLAGS@ -I$(top_srcdir)/include
+ 
+ INCLUDE_FILES = $(INCLUDEDIR)/fastcgi.h     \
+                 $(INCLUDEDIR)/fcgiapp.h     \
