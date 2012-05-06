@@ -15,12 +15,12 @@ define LIBMAD_PREVENT_AUTOMAKE
 endef
 
 define LIBMAD_INSTALL_STAGING_PC
-	$(INSTALL) -D package/multimedia/libmad/mad.pc \
+	$(INSTALL) -D package/libmad/mad.pc \
 		$(STAGING_DIR)/usr/lib/pkgconfig/mad.pc
 endef
 
 define LIBMAD_INSTALL_TARGET_PC
-	$(INSTALL) -D package/multimedia/libmad/mad.pc \
+	$(INSTALL) -D package/libmad/mad.pc \
 		$(TARGET_DIR)/usr/lib/pkgconfig/mad.pc
 endef
 
