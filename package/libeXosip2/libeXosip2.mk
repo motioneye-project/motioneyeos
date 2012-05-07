@@ -5,7 +5,6 @@
 #############################################################
 
 LIBEXOSIP2_VERSION = 3.6.0
-LIBEXOSIP2_SOURCE = libeXosip2-$(LIBEXOSIP2_VERSION).tar.gz
 LIBEXOSIP2_SITE = http://download.savannah.gnu.org/releases/exosip/
 LIBEXOSIP2_INSTALL_STAGING = YES
 
