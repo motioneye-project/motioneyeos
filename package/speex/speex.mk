@@ -3,9 +3,8 @@
 # speex
 #
 #############################################################
-SPEEX_VERSION=1.2rc1
-SPEEX_SOURCE=speex-$(SPEEX_VERSION).tar.gz
-SPEEX_SITE=http://downloads.us.xiph.org/releases/speex
+SPEEX_VERSION = 1.2rc1
+SPEEX_SITE = http://downloads.us.xiph.org/releases/speex
 SPEEX_INSTALL_STAGING = YES
 SPEEX_DEPENDENCIES = libogg
 SPEEX_CONF_OPT = --with-ogg-libraries=$(STAGING_DIR)/usr/lib \
