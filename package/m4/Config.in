@@ -1,6 +1,8 @@
 config BR2_PACKAGE_M4
 	bool "m4"
 	depends on BR2_USE_WCHAR
+	# uses fork()
+	depends on BR2_USE_MMU
 	help
 	  An implementation of the traditional Unix macro processor.
 
