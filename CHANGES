@@ -78,6 +78,7 @@
 	#5018: dialog broken: exits with assert in uClibc
 	#5102: qt package moc, uic, rcc read from wrong place
 	#5144: Patch to fix ixon bug in uemacs
+	#5198: Line graphics output is broken in GNU Screen
 	#5204: Missing terminfo file(s) for GNU screen terminal type
 
 2012.02, Released February 29th, 2012:
