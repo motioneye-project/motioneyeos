@@ -40,15 +40,15 @@
 	libupnp, liburcu, libusb, libusb-compat, libxml2,
 	libxml-parser-perl, libxslt, linux-firmware, linux-fusion,
 	lite, lsof, ltrace, lttng-libust, lua, makedevs, microperl,
-	mpd, mpfr, mpg123, mrouted, mtd, mysql_client, nbd, neon,
-	netsnmp, network-manager, nfs-utils, ngrep, ntfs-3g, openssh,
-	openssl, parted, pango, pcre, php, pixman, poco, psmisc,
-	pulseaudio, python, qt, quagga, radvd, rpm, ruby, samba,
-	sam-ba, sane-backends, sawman, screen, sdl_net, smartmontools,
-	sqlite, squashfs3, squid, sshfs, sudo, syslinux, sysstat,
-	taglib, tcpdump, tftp-hpa, transmission, tiff, tinyhttpd,
-	uboot-tools, udev, uemacs, unionfs, usbutils, util-linux,
-	vala, valgrind, vim, vsftpd, wipe,
+	mpd, mpfr, mpg123, mrouted, mtd, mysql_client, nbd, ncurses,
+	neon, netsnmp, network-manager, nfs-utils, ngrep, ntfs-3g,
+	openssh, openssl, parted, pango, pcre, php, pixman, poco,
+	psmisc, pulseaudio, python, qt, quagga, radvd, rpm, ruby,
+	samba, sam-ba, sane-backends, sawman, screen, sdl_net,
+	smartmontools, sqlite, squashfs3, squid, sshfs, sudo,
+	syslinux, sysstat, taglib, tcpdump, tftp-hpa, transmission,
+	tiff, tinyhttpd, uboot-tools, udev, uemacs, unionfs, usbutils,
+	util-linux, vala, valgrind, vim, vsftpd, wipe,
 	xdriver_xf86-{input-vmmouse,video-fbdev}, xfsprogs, zlib
 
 	New packages: apr, audiofile, bellagio, fmtools,
@@ -78,6 +78,7 @@
 	#5018: dialog broken: exits with assert in uClibc
 	#5102: qt package moc, uic, rcc read from wrong place
 	#5144: Patch to fix ixon bug in uemacs
+	#5204: Missing terminfo file(s) for GNU screen terminal type
 
 2012.02, Released February 29th, 2012:
 
