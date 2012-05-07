@@ -90,6 +90,7 @@ endif
 $(GDB_TARGET_DIR)/gdb/gdb: $(GDB_TARGET_DIR)/.configured
 	# force ELF support since it fails due to BFD linking problems
 	gdb_cv_var_elf=yes \
+	$(TARGET_MAKE_ENV) \
 	$(MAKE) CC="$(TARGET_CC)" MT_CFLAGS="$(TARGET_CFLAGS)" \
 		-C $(GDB_TARGET_DIR)
 
