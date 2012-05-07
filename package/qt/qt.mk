@@ -24,7 +24,7 @@ endif
 QT_CONFIG_FILE=$(call qstrip,$(BR2_PACKAGE_QT_CONFIG_FILE))
 
 ifneq ($(QT_CONFIG_FILE),)
-QT_CONFIGURE_OPTS += -config buildroot
+QT_CONFIGURE_OPTS += -qconfig buildroot
 endif
 
 QT_CFLAGS = $(TARGET_CFLAGS)
