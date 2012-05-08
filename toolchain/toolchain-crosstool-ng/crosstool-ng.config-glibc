@@ -1,9 +1,9 @@
 #
 # Automatically generated make config: don't edit
-# crosstool-NG 1.13.0 Configuration
-# Sat Oct 29 16:14:07 2011
+# crosstool-NG 1.15.0 Configuration
+# Mon May  7 18:58:51 2012
 #
-CT_CONFIGURE_has_xzutils=y
+CT_CONFIGURE_has_xz=y
 CT_CONFIGURE_has_cvs=y
 CT_CONFIGURE_has_svn=y
 CT_BACKEND=y
@@ -25,7 +25,7 @@ CT_MODULES=y
 CT_LOCAL_TARBALLS_DIR=""
 CT_SAVE_TARBALLS=y
 CT_WORK_DIR="${CT_TOP_DIR}/.build"
-CT_PREFIX_DIR="${HOME}/x-tools/${CT_TARGET}"
+CT_PREFIX_DIR=""
 CT_INSTALL_DIR="${CT_PREFIX_DIR}"
 CT_REMOVE_DOCS=y
 # CT_INSTALL_DIR_RO is not set
@@ -90,10 +90,12 @@ CT_ARCH="arm"
 CT_ARCH_SUPPORTS_BOTH_MMU=y
 CT_ARCH_SUPPORTS_BOTH_ENDIAN=y
 CT_ARCH_SUPPORTS_32=y
-CT_ARCH_SUPPORT_ARCH=y
-CT_ARCH_SUPPORT_CPU=y
-CT_ARCH_SUPPORT_TUNE=y
-CT_ARCH_SUPPORT_FPU=y
+CT_ARCH_SUPPORTS_WITH_ARCH=y
+CT_ARCH_SUPPORTS_WITH_CPU=y
+CT_ARCH_SUPPORTS_WITH_TUNE=y
+CT_ARCH_SUPPORTS_WITH_FLOAT=y
+CT_ARCH_SUPPORTS_WITH_FPU=y
+CT_ARCH_SUPPORTS_SOFTFP=y
 CT_ARCH_DEFAULT_HAS_MMU=y
 CT_ARCH_DEFAULT_LE=y
 CT_ARCH_DEFAULT_32=y
@@ -101,8 +103,8 @@ CT_ARCH_ARCH=""
 CT_ARCH_CPU=""
 CT_ARCH_TUNE=""
 CT_ARCH_FPU=""
-CT_ARCH_BE=y
-# CT_ARCH_LE is not set
+# CT_ARCH_BE is not set
+CT_ARCH_LE=y
 CT_ARCH_32=y
 CT_ARCH_BITNESS=32
 # CT_ARCH_FLOAT_HW is not set
@@ -116,10 +118,13 @@ CT_ARCH_arm_AVAILABLE=y
 # Generic target options
 #
 CT_ARCH_USE_MMU=y
+CT_ARCH_ENDIAN="little"
 
 #
 # Target optimisations
 #
+# CT_ARCH_FLOAT_SOFTFP is not set
+CT_ARCH_FLOAT="soft"
 
 #
 # arm other options
@@ -148,7 +153,7 @@ CT_TOOLCHAIN_BUGURL=""
 #
 CT_TARGET_VENDOR="unknown"
 CT_TARGET_ALIAS_SED_EXPR=""
-CT_TARGET_ALIAS="armeb-linux"
+CT_TARGET_ALIAS=""
 
 #
 # Toolchain type
@@ -164,28 +169,34 @@ CT_BUILD_PREFIX=""
 CT_BUILD_SUFFIX=""
 
 #
+# Misc options
+#
+# CT_TOOLCHAIN_ENABLE_NLS is not set
+
+#
 # Operating System
 #
 CT_KERNEL_SUPPORTS_SHARED_LIBS=y
 CT_KERNEL="linux"
-CT_KERNEL_VERSION="3.0.4"
+CT_KERNEL_VERSION="3.3.4"
 CT_KERNEL_linux=y
 CT_KERNEL_linux_AVAILABLE=y
-CT_KERNEL_V_3_0_4=y
-# CT_KERNEL_V_3_0_3 is not set
-# CT_KERNEL_V_3_0_2 is not set
-# CT_KERNEL_V_3_0_1 is not set
-# CT_KERNEL_V_3_0 is not set
+CT_KERNEL_V_3_3_4=y
+# CT_KERNEL_V_3_3_3 is not set
+# CT_KERNEL_V_3_3_2 is not set
+# CT_KERNEL_V_3_3_1 is not set
+# CT_KERNEL_V_3_3 is not set
+# CT_KERNEL_V_3_2_16 is not set
+# CT_KERNEL_V_3_1_10 is not set
+# CT_KERNEL_V_3_0_30 is not set
 # CT_KERNEL_V_2_6_39_4 is not set
 # CT_KERNEL_V_2_6_38_8 is not set
 # CT_KERNEL_V_2_6_37_6 is not set
 # CT_KERNEL_V_2_6_36_4 is not set
-# CT_KERNEL_V_2_6_35_14 is not set
-# CT_KERNEL_V_2_6_34_10 is not set
-# CT_KERNEL_V_2_6_33_19 is not set
-# CT_KERNEL_V_2_6_32_46 is not set
+# CT_KERNEL_V_2_6_33_20 is not set
+# CT_KERNEL_V_2_6_32_59 is not set
 # CT_KERNEL_V_2_6_31_14 is not set
-# CT_KERNEL_V_2_6_27_59 is not set
+# CT_KERNEL_V_2_6_27_62 is not set
 # CT_KERNEL_LINUX_CUSTOM is not set
 
 #
@@ -218,6 +229,7 @@ CT_BINUTILS_VERSION="2.20.1a"
 CT_BINUTILS_2_20_or_later=y
 CT_BINUTILS_2_19_or_later=y
 CT_BINUTILS_2_18_or_later=y
+CT_BINUTILS_HAS_HASH_STYLE=y
 CT_BINUTILS_GOLD_SUPPORTS_ARCH=y
 CT_BINUTILS_HAS_PKGVERSION_BUGURL=y
 CT_BINUTILS_FORCE_LD_BFD=y
@@ -232,6 +244,15 @@ CT_BINUTILS_EXTRA_CONFIG_ARRAY=""
 CT_CC="gcc"
 CT_CC_VERSION="4.4.6"
 CT_CC_gcc=y
+# CT_CC_V_4_6_3 is not set
+# CT_CC_V_4_6_2 is not set
+# CT_CC_V_4_6_1 is not set
+# CT_CC_V_4_6_0 is not set
+# CT_CC_V_4_5_3 is not set
+# CT_CC_V_4_5_2 is not set
+# CT_CC_V_4_5_1 is not set
+# CT_CC_V_4_5_0 is not set
+# CT_CC_V_4_4_7 is not set
 CT_CC_V_4_4_6=y
 # CT_CC_V_4_4_5 is not set
 # CT_CC_V_4_4_4 is not set
@@ -306,6 +327,14 @@ CT_LIBC_VERSION="2.9"
 CT_LIBC_glibc=y
 CT_LIBC_glibc_AVAILABLE=y
 CT_LIBC_GLIBC_TARBALL=y
+# CT_LIBC_GLIBC_V_2_14_1 is not set
+# CT_LIBC_GLIBC_V_2_14 is not set
+# CT_LIBC_GLIBC_V_2_13 is not set
+# CT_LIBC_GLIBC_V_2_12_2 is not set
+# CT_LIBC_GLIBC_V_2_12_1 is not set
+# CT_LIBC_GLIBC_V_2_11_1 is not set
+# CT_LIBC_GLIBC_V_2_11 is not set
+# CT_LIBC_GLIBC_V_2_10_1 is not set
 CT_LIBC_GLIBC_V_2_9=y
 # CT_LIBC_GLIBC_V_2_8 is not set
 CT_LIBC_SUPPORT_THREADS_ANY=y
@@ -332,7 +361,7 @@ CT_LIBC_ADDONS_LIST=""
 # CT_LIBC_GLIBC_KERNEL_VERSION_NONE is not set
 CT_LIBC_GLIBC_KERNEL_VERSION_AS_HEADERS=y
 # CT_LIBC_GLIBC_KERNEL_VERSION_CHOSEN is not set
-CT_LIBC_GLIBC_MIN_KERNEL="2.6.39.4"
+CT_LIBC_GLIBC_MIN_KERNEL="3.3.4"
 
 #
 # glibc other options
