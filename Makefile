@@ -239,6 +239,9 @@ TAR_OPTIONS=$(call qstrip,$(BR2_TAR_OPTIONS)) -xf
 # packages compiled for the host go here
 HOST_DIR:=$(call qstrip,$(BR2_HOST_DIR))
 
+# locales to generate
+GENERATE_LOCALE=$(call qstrip,$(BR2_GENERATE_LOCALE))
+
 # stamp (dependency) files go here
 STAMP_DIR:=$(BASE_DIR)/stamps
 
@@ -294,6 +297,12 @@ TARGETS+=target-finalize
 
 ifeq ($(BR2_ENABLE_LOCALE_PURGE),y)
 TARGETS+=target-purgelocales
+endif
+
+ifneq ($(BR2_TOOLCHAIN_EXTERNAL_GLIBC)$(BR2_TOOLCHAIN_CTNG_eglibc)$(BR2_TOOLCHAIN_CTNG_glibc),)
+ifneq ($(GENERATE_LOCALE),)
+TARGETS+=target-generatelocales
+endif
 endif
 
 include fs/common.mk
@@ -443,6 +452,30 @@ target-purgelocales:
 		do \
 			grep -qx $$lang $(LOCALE_WHITELIST) || rm -rf $$dir/$$lang; \
 		done; \
+	done
+endif
+
+ifneq ($(GENERATE_LOCALE),)
+# Generate locale data. Basically, we call the localedef program
+# (built by the host-localedef package) for each locale. The input
+# data comes preferably from the toolchain, or if the toolchain does
+# not have them (Linaro toolchains), we use the ones available on the
+# host machine.
+target-generatelocales: host-localedef
+	$(Q)mkdir -p $(TARGET_DIR)/usr/lib/locale/
+	$(Q)for locale in $(GENERATE_LOCALE) ; do \
+		inputfile=`echo $${locale} | cut -f1 -d'.'` ; \
+		charmap=`echo $${locale} | cut -f2 -d'.'` ; \
+		if test -z "$${charmap}" ; then \
+			charmap="UTF-8" ; \
+		fi ; \
+		echo "Generating locale $${inputfile}.$${charmap}" ; \
+		I18NPATH=$(STAGING_DIR)/usr/share/i18n:/usr/share/i18n \
+		$(HOST_DIR)/usr/bin/localedef \
+			--prefix=$(TARGET_DIR) \
+			--`echo $(BR2_ENDIAN) | tr [A-Z] [a-z]`-endian \
+			-i $${inputfile} -f $${charmap} \
+			$${locale} ; \
 	done
 endif
 

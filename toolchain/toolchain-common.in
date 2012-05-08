@@ -58,6 +58,24 @@ config BR2_ENABLE_LOCALE_WHITELIST
 	  will be available on the target - That purely depends on the
 	  support for that locale in the selected packages.
 
+config BR2_GENERATE_LOCALE
+	string "Generate locale data"
+	default ""
+	# Pre-built uClibc external toolchains and uClibc toolchains
+	# built by the Crosstool-NG backend cannot be supported,
+	# because the list of locales to support must be defined at
+	# build time.
+	depends on \
+		BR2_TOOLCHAIN_BUILDROOT      || \
+		BR2_TOOLCHAIN_EXTERNAL_GLIBC || \
+		BR2_TOOLCHAIN_CTNG_eglibc    || \
+		BR2_TOOLCHAIN_CTNG_glibc
+	help
+	  Generate support for a list of locales. Locales can be
+	  specified with or without encoding, when no encoding is
+	  specified, UTF-8 is assumed. Examples of locales: en_US,
+	  fr_FR.UTF-8.
+
 # glibc and eglibc directly include gettext, so a separatly compiled
 # gettext isn't needed and shouldn't be built to avoid conflicts. Some
 # packages always need gettext, other packages only need gettext when
