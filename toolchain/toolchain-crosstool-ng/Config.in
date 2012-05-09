@@ -99,11 +99,7 @@ config BR2_TOOLCHAIN_CTNG_CXX
 
 choice
 	prompt "Thread library implementation"
-	default BR2_TOOLCHAIN_CTNG_THREADS_PTHREADS_OLD \
-		if BR2_TOOLCHAIN_CTNG_uClibc
-	default BR2_TOOLCHAIN_CTNG_THREADS_NPTL		\
-		if BR2_TOOLCHAIN_CTNG_eglibc ||		\
-		   BR2_TOOLCHAIN_CTNG_glibc
+	default BR2_TOOLCHAIN_CTNG_THREADS_NPTL
 	help
 	  Enable thread support and select thread implementation. With
 	  glibc, thread support is mandatory but several
@@ -129,8 +125,6 @@ choice
 	config BR2_TOOLCHAIN_CTNG_THREADS_NPTL
 		bool "Native POSIX Threading (NPTL)"
 		select BR2_TOOLCHAIN_HAS_THREADS
-		depends on BR2_TOOLCHAIN_CTNG_eglibc || \
-			   BR2_TOOLCHAIN_CTNG_glibc
 endchoice
 
 endif # BR2_TOOLCHAIN_CTNG

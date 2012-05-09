@@ -322,13 +322,13 @@ CT_CC_GCC_LDBL_128=m
 # C-library
 #
 CT_LIBC="uClibc"
-CT_LIBC_VERSION="0.9.32"
+CT_LIBC_VERSION="0.9.33.1"
 CT_LIBC_uClibc=y
 CT_LIBC_uClibc_AVAILABLE=y
-# CT_LIBC_UCLIBC_V_0_9_33_1 is not set
+# CT_LIBC_UCLIBC_V_0_9_33_1=y
 # CT_LIBC_UCLIBC_V_0_9_33 is not set
 # CT_LIBC_UCLIBC_V_0_9_32_1 is not set
-CT_LIBC_UCLIBC_V_0_9_32=y
+# CT_LIBC_UCLIBC_V_0_9_32 is not set
 # CT_LIBC_UCLIBC_V_0_9_30_3 is not set
 # CT_LIBC_UCLIBC_V_0_9_30_2 is not set
 # CT_LIBC_UCLIBC_V_0_9_30_1 is not set
@@ -355,8 +355,8 @@ CT_THREADS="linuxthreads"
 #
 # Common C library options
 #
-# CT_THREADS_NPTL is not set
-CT_THREADS_LINUXTHREADS=y
+CT_THREADS_NPTL=y
+# CT_THREADS_LINUXTHREADS is not set
 # CT_THREADS_NONE is not set
 CT_LIBC_XLDD=y
 
