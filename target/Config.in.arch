@@ -597,6 +597,7 @@ config BR2_ARCH
 	default "i686"		if BR2_x86_pentium4
 	default "i686"		if BR2_x86_pentium_m
 	default "i686"		if BR2_x86_pentiumpro
+	default "i686"		if BR2_x86_prescott
 	default "i686"		if BR2_x86_nocona
 	default "i686"		if BR2_x86_core2
 	default "i686"		if BR2_x86_atom
