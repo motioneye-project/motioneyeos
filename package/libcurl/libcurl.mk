@@ -4,7 +4,7 @@
 #
 #############################################################
 
-LIBCURL_VERSION = 7.24.0
+LIBCURL_VERSION = 7.25.0
 LIBCURL_SOURCE = curl-$(LIBCURL_VERSION).tar.bz2
 LIBCURL_SITE = http://curl.haxx.se/download
 LIBCURL_INSTALL_STAGING = YES
