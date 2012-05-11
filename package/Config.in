@@ -472,6 +472,7 @@ endmenu
 endmenu
 
 menu "Miscellaneous"
+source "package/collectd/Config.in"
 source "package/empty/Config.in"
 source "package/shared-mime-info/Config.in"
 endmenu
