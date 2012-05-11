@@ -4,10 +4,10 @@
 #
 #############################################################
 
-IMAGEMAGICK_MAJOR = 6.7.2
-IMAGEMAGICK_VERSION = $(IMAGEMAGICK_MAJOR)-10
+IMAGEMAGICK_MAJOR = 6.7.6
+IMAGEMAGICK_VERSION = $(IMAGEMAGICK_MAJOR)-9
 IMAGEMAGICK_SOURCE = ImageMagick-$(IMAGEMAGICK_VERSION).tar.bz2
-IMAGEMAGICK_SITE = ftp://ftp.imagemagick.org/pub/ImageMagick/legacy
+IMAGEMAGICK_SITE = ftp://ftp.imagemagick.org/pub/ImageMagick
 IMAGEMAGICK_INSTALL_STAGING = YES
 IMAGEMAGICK_AUTORECONF = YES
 
