@@ -1,4 +1,4 @@
-HIAWATHA_VERSION = 8.1
+HIAWATHA_VERSION = 8.2
 HIAWATHA_SITE = http://www.hiawatha-webserver.org/files/
 
 ifeq ($(BR2_PACKAGE_HIAWATHA_SSL),y)
@@ -8,6 +8,10 @@ endif
 
 HIAWATHA_CONF_OPT += \
 	-DENABLE_TOOLKIT=OFF \
-	-DENABLE_XSLT=OFF
+	-DENABLE_XSLT=OFF \
+	-DCONFIG_DIR=/etc/hiawatha \
+	-DLOG_DIR=/var/log \
+	-DPID_DIR=/var/run \
+	-DWEBROOT_DIR=/var/www/hiawatha
 
 $(eval $(call CMAKETARGETS))
