@@ -4,11 +4,12 @@
 #
 #############################################################
 
-HOSTAPD_VERSION = 0.7.3
+HOSTAPD_VERSION = 1.0
 HOSTAPD_SITE = http://hostap.epitest.fi/releases
 HOSTAPD_SUBDIR = hostapd
 HOSTAPD_CONFIG = $(HOSTAPD_DIR)/$(HOSTAPD_SUBDIR)/.config
 HOSTAPD_DEPENDENCIES = libnl
+HOSTAPD_CFLAGS = $(TARGET_CFLAGS) -I$(STAGING_DIR)/usr/include/libnl3/
 HOSTAPD_LDFLAGS = $(TARGET_LDFLAGS)
 
 # libnl needs -lm (for rint) if linking statically
@@ -17,8 +18,7 @@ HOSTAPD_LDFLAGS += -lm
 endif
 
 define HOSTAPD_LIBNL_CONFIG
-	echo "CONFIG_LIBNL20=y" >>$(HOSTAPD_CONFIG)
-	echo "CFLAGS += -I$(STAGING_DIR)/usr/include/libnl3/" >>$(HOSTAPD_CONFIG)
+	echo "CONFIG_LIBNL32=y" >>$(HOSTAPD_CONFIG)
 endef
 
 define HOSTAPD_CRYPTO_CONFIG
@@ -27,17 +27,23 @@ define HOSTAPD_CRYPTO_CONFIG
 	echo "CONFIG_INTERNAL_LIBTOMMATH_FAST=y" >>$(HOSTAPD_CONFIG)
 endef
 
-# Try to use openssl for TLS if it's already available
-# gnutls is also supported for TLS
+# Try to use openssl or gnutls if it's already available
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 	HOSTAPD_DEPENDENCIES += openssl
 define HOSTAPD_TLS_CONFIG
 	echo "CONFIG_TLS=openssl" >>$(HOSTAPD_CONFIG)
 endef
 else
+ifeq ($(BR2_PACKAGE_GNUTLS),y)
+	HOSTAPD_DEPENDENCIES += gnutls
+define HOSTAPD_TLS_CONFIG
+	echo "CONFIG_TLS=gnutls" >>$(HOSTAPD_CONFIG)
+endef
+else
 define HOSTAPD_TLS_CONFIG
 	echo "CONFIG_TLS=internal" >>$(HOSTAPD_CONFIG)
 endef
+endif
 endif
 
 ifeq ($(BR2_PACKAGE_HOSTAPD_EAP),y)
@@ -76,14 +82,7 @@ endef
 endif
 
 define HOSTAPD_CONFIGURE_CMDS
-	cp $(@D)/$(HOSTAPD_SUBDIR)/defconfig $(HOSTAPD_CONFIG)
-	$(SED) "s/\/local//" $(@D)/$(HOSTAPD_SUBDIR)/Makefile
-	echo "CFLAGS += $(TARGET_CFLAGS)" >>$(HOSTAPD_CONFIG)
-	echo "LDFLAGS += $(HOSTAPD_LDFLAGS)" >>$(HOSTAPD_CONFIG)
-	echo "CC = $(TARGET_CC)" >>$(HOSTAPD_CONFIG)
-# Drivers
-	$(SED) "s/^#CONFIG_DRIVER_WIRED/CONFIG_DRIVER_WIRED/" $(HOSTAPD_CONFIG)
-	$(SED) "s/^#CONFIG_DRIVER_NL80211/CONFIG_DRIVER_NL80211/" $(HOSTAPD_CONFIG)
+	cp $(@D)/hostapd/defconfig $(HOSTAPD_CONFIG)
 # Misc
 	$(SED) "s/^CONFIG_IPV6/#CONFIG_IPV6/" $(HOSTAPD_CONFIG)
 	$(SED) "s/^#CONFIG_IEEE80211N/CONFIG_IEEE80211N/" $(HOSTAPD_CONFIG)
@@ -96,6 +95,12 @@ define HOSTAPD_CONFIGURE_CMDS
 	$(HOSTAPD_LIBNL_CONFIG)
 endef
 
+define HOSTAPD_BUILD_CMDS
+	$(TARGET_MAKE_ENV) CFLAGS="$(HOSTAPD_CFLAGS)" \
+		LDFLAGS="$(TARGET_LDFLAGS)" \
+		$(MAKE) CC="$(TARGET_CC)" -C $(@D)/$(HOSTAPD_SUBDIR)
+endef
+
 define HOSTAPD_INSTALL_TARGET_CMDS
 	$(INSTALL) -m 0755 -D $(@D)/$(HOSTAPD_SUBDIR)/hostapd \
 		$(TARGET_DIR)/usr/sbin/hostapd
@@ -103,9 +108,4 @@ define HOSTAPD_INSTALL_TARGET_CMDS
 		$(TARGET_DIR)/usr/bin/hostapd_cli
 endef
 
-define HOSTAPD_UNINSTALL_TARGET_CMDS
-	rm -f $(TARGET_DIR)/usr/sbin/hostapd
-	rm -f $(TARGET_DIR)/usr/bin/hostapd
-endef
-
-$(eval $(call AUTOTARGETS))
+$(eval $(call GENTARGETS))
