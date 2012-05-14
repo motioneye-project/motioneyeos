@@ -1,0 +1,16 @@
+config BR2_PACKAGE_RTORRENT
+	bool "rtorrent"
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_USE_WCHAR
+	select BR2_PACKAGE_LIBCURL
+	select BR2_PACKAGE_LIBSIGC
+	select BR2_PACKAGE_LIBTORRENT
+	select BR2_PACKAGE_NCURSES
+	select BR2_PACKAGE_OPENSSL
+	help
+	  BitTorrent Client using libtorrent
+
+	  http://libtorrent.rakshasa.no/
+
+comment "rtorrent requires a toolchain with C++ and WCHAR support"
+	depends on !(BR2_INSTALL_LIBSTDCPP && BR2_USE_WCHAR)
