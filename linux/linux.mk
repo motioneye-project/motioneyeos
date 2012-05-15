@@ -183,6 +183,15 @@ define LINUX_INSTALL_KERNEL_IMAGE_TO_TARGET
 endef
 endif
 
+
+define LINUX_INSTALL_HOST_TOOLS
+	# Installing dtc (device tree compiler) as host tool, if selected
+	if grep -q "CONFIG_DTC=y" $(@D)/.config; then 	\
+		$(INSTALL) -D -m 0755 $(@D)/scripts/dtc/dtc $(HOST_DIR)/usr/bin/dtc ;	\
+	fi
+endef
+
+
 define LINUX_INSTALL_IMAGES_CMDS
 	cp $(LINUX_IMAGE_PATH) $(BINARIES_DIR)
 endef
@@ -197,6 +206,7 @@ define LINUX_INSTALL_TARGET_CMDS
 		rm -f $(TARGET_DIR)/lib/modules/$(LINUX_VERSION_PROBED)/build ;		\
 		rm -f $(TARGET_DIR)/lib/modules/$(LINUX_VERSION_PROBED)/source ;	\
 	fi
+	$(LINUX_INSTALL_HOST_TOOLS)
 endef
 
 include linux/linux-ext-*.mk
