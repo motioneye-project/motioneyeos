@@ -53,10 +53,6 @@ config BR2_PACKAGE_DIRECTFB_EP9X
 	bool "compile ep9x graphics driver"
 	depends on BR2_arm
 
-config BR2_PACKAGE_DIRECTFB_DAVINCI
-	bool "compile TI DaVinci graphics driver"
-	depends on BR2_arm
-
 config BR2_PACKAGE_DIRECTFB_UNICHROME
 	bool "compile unichrome graphics driver"
 	default y
