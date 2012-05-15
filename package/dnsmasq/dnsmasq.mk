@@ -42,11 +42,9 @@ endef
 endif
 
 ifeq ($(BR2_PACKAGE_DNSMASQ_LUA),y)
-	DNSMASQ_DEPENDENCIES += lua
+	DNSMASQ_DEPENDENCIES += lua host-pkg-config
 	DNSMASQ_MAKE_OPT += LDFLAGS+="-ldl"
-endif
 
-ifeq ($(BR2_PACKAGE_DNSMASQ_LUA),y)
 define DNSMASQ_ENABLE_LUA
 	$(SED) 's/lua5.1/lua/g' $(DNSMASQ_DIR)/Makefile
 	$(SED) 's^.*#define HAVE_LUASCRIPT.*^#define HAVE_LUASCRIPT^' \
