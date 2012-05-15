@@ -1,0 +1,13 @@
+config BR2_PACKAGE_OPKG
+	bool "opkg"
+	help
+	  Opkg is a lightweight package management system, based on ipkg. It is
+	  written in C and resembles apt/dpkg in operation. It is intended for
+	  use on embedded Linux devices.
+	  Opkg is maintained, stable, robust and conservative in its memory
+	  usage, despite its buggy ipkg ancestry. As best it can, opkg
+	  maintains backwards compatibility with ipkg and conforms to a subset
+	  of debian's policy manual regarding control files.
+
+	  http://code.google.com/p/opkg/
+

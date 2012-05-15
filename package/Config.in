@@ -599,6 +599,7 @@ endmenu
 
 menu "Package managers"
 source "package/ipkg/Config.in"
+source "package/opkg/Config.in"
 if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 source "package/rpm/Config.in"
 endif
