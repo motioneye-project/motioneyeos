@@ -1,0 +1,13 @@
+config BR2_PACKAGE_FBTERM
+	bool "fbterm"
+	depends on (BR2_INSTALL_LIBSTDCPP && BR2_ENABLE_LOCALE && BR2_USE_WCHAR)
+	select BR2_PACKAGE_FONTCONFIG
+	select BR2_PACKAGE_LIBERATION
+	help
+	  fbterm is a fast terminal emulator for Linux with frame buffer
+	  device or VESA video card.
+
+	  http://code.google.com/p/fbterm/
+
+comment "fbterm requires a toolchain with C++, WCHAR and locale support"
+	depends on !(BR2_INSTALL_LIBSTDCPP && BR2_ENABLE_LOCALE && BR2_USE_WCHAR)
