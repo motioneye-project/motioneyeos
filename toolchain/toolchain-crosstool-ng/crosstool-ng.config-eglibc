@@ -294,8 +294,8 @@ CT_CC_LANG_CXX=y
 # gcc other options
 #
 CT_CC_ENABLE_CXX_FLAGS=""
-CT_CC_CORE_EXTRA_CONFIG_ARRAY=""
-CT_CC_EXTRA_CONFIG_ARRAY=""
+CT_CC_CORE_EXTRA_CONFIG_ARRAY="--disable-decimal-float"
+CT_CC_EXTRA_CONFIG_ARRAY="--disable-decimal-float"
 CT_CC_STATIC_LIBSTDCXX=y
 
 #
