@@ -198,6 +198,13 @@ config BR2_CCACHE
 	  ccache cache by removing the $HOME/.buildroot-ccache
 	  directory.
 
+config BR2_CCACHE_DIR
+	string "Compiler cache location"
+	depends on BR2_CCACHE
+	default "$(HOME)/.buildroot-ccache"
+	help
+	  Where ccache should store cached files.
+
 config BR2_DEPRECATED
 	bool "Show packages that are deprecated or obsolete"
 	help
