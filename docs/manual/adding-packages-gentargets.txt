@@ -245,6 +245,27 @@ information is (assuming the package name is +libfoo+) :
   You can find some documentation for this syntax in the xref:makedev-syntax[].
   This variable is optional.
 
+* +LIBFOO_LICENSE+ defines the license (or licenses) under which the package
+  is released.
+  This name will appear in the manifest file produced by +make legal-info+.
+  If the license is one of those listed in xref:legal-info[],
+  use the same string to make the manifest file uniform.
+  Otherwise, describe the license in a precise and concise way, avoiding
+  ambiguous names such as +BSD+ which actually name a family of licenses.
+  If the root filesystem you generate contains non-opensource packages, you
+  can define their license as +PROPRIETARY+: Buildroot will not save any
+  licensing info or source code for this package.
+  This variable is optional. If it is not defined, +unknown+ will appear in
+  the +license+ field of the manifest file for this package.
+
+* +LIBFOO_LICENSE_FILES+ is a space-separated list of files in the package
+  tarball that contain the license(s) under which the package is released.
+  +make legal-info+ copies all of these files in the +legal-info+ directory.
+  See xref:legal-info[] for more information.
+  This variable is optional. If it is not defined, a warning will be produced
+  to let you know, and +not saved+ will appear in the +license files+ field
+  of the manifest file for this package.
+
 The recommended way to define these variables is to use the following
 syntax:
 
