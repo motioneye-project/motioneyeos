@@ -1,6 +1,7 @@
 menu "Host utilities"
 
 source "package/lpc3250loader/Config.in.host"
+source "package/omap-u-boot-utils/Config.in.host"
 source "package/openocd/Config.in.host"
 source "package/sam-ba/Config.in.host"
 source "package/uboot-tools/Config.in.host"
