@@ -99,6 +99,38 @@ config BR2_TARGET_UBOOT_FORMAT_LDR
 
 endchoice
 
+config BR2_TARGET_UBOOT_OMAP_IFT
+	depends on BR2_TARGET_UBOOT_FORMAT_BIN
+	depends on BR2_arm || BR2_armeb
+	select BR2_PACKAGE_HOST_OMAP_U_BOOT_UTILS
+	bool "produce a .ift signed image (OMAP)"
+	help
+	  Use gpsign to produce an image of u-boot.bin signed with
+	  a Configuration Header for booting on OMAP processors.
+	  This allows U-Boot to boot without the need for an
+	  intermediate bootloader (e.g. x-loader) if it is written
+	  on the first sector of the boot medium.
+	  This only works for some media, such as NAND. Check your
+	  chip documentation for details. You might also want to
+	  read the documentation of gpsign, the tool that generates
+	  the .ift image, at:
+	  https://github.com/nmenon/omap-u-boot-utils/blob/master/README
+
+if BR2_TARGET_UBOOT_OMAP_IFT
+
+config BR2_TARGET_UBOOT_OMAP_IFT_CONFIG
+	string "gpsign Configuration Header config file"
+	help
+	  The Configuration Header (CH) config file defines the
+	  desired content of the CH for the signed image.
+	  It usually contains external RAM settings and
+	  possibly other external devices initialization.
+	  The omap-u-boot-utils software contains example
+	  configuration files for some boards:
+	  https://github.com/nmenon/omap-u-boot-utils/tree/master/configs
+
+endif
+
 menuconfig BR2_TARGET_UBOOT_NETWORK
 	bool "Custom Network Settings"
 	help
