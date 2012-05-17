@@ -1,0 +1,24 @@
+Most of the packages that were used by Buildroot to produce the image files,
+including Buildroot itself, have open-source licenses. It is your
+responsibility to comply to the requirements of these licenses.
+To make this easier for you, Buildroot collected in this directory some
+material you may need to get it done.
+
+This material is composed of the following items.
+ * The scripts used to control compilation of the packages and the generation
+   of image files, i.e. the Buildroot sources.
+   Note: this has not been saved due to technical limitations, you must
+   collect it manually.
+ * The Buildroot configuration file; this has been saved in buildroot.config.
+ * The toolchain (cross-compiler and related tools) used to generate all the
+   compiled programs.
+   Note: this has not been saved due to technical limitations, you must
+   collect it manually.
+ * The source code for all packages; this has been saved in the sources/
+   subdirectory (except for the proprietary packages, which have not been
+   saved); patches applied to some packages by Buildroot are included in the
+   Buildroot sources and were not duplicated in the sources/ subdirectory.
+ * A manifest file listing the configured packages and related information.
+ * The license text of the packages; they have been saved in the licenses/
+   subdirectory.
+

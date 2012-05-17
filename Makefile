@@ -257,6 +257,14 @@ TARGET_DIR:=$(BASE_DIR)/target
 TOOLCHAIN_DIR=$(BASE_DIR)/toolchain
 TARGET_SKELETON=$(TOPDIR)/fs/skeleton
 
+LEGAL_INFO_DIR=$(BASE_DIR)/legal-info
+REDIST_SOURCES_DIR=$(LEGAL_INFO_DIR)/sources
+LICENSE_FILES_DIR=$(LEGAL_INFO_DIR)/licenses
+LEGAL_MANIFEST_CSV=$(LEGAL_INFO_DIR)/manifest.csv
+LEGAL_LICENSES_TXT=$(LEGAL_INFO_DIR)/licenses.txt
+LEGAL_WARNINGS=$(LEGAL_INFO_DIR)/.warnings
+LEGAL_REPORT=$(LEGAL_INFO_DIR)/README
+
 ifeq ($(BR2_CCACHE),y)
 CCACHE:=$(HOST_DIR)/usr/bin/ccache
 BUILDROOT_CACHE_DIR = $(call qstrip,$(BR2_CCACHE_DIR))
@@ -338,6 +346,9 @@ HOST_DEPS = $(sort $(foreach dep,\
 		$($(dep))))
 HOST_SOURCE += $(addsuffix -source,$(sort $(TARGETS_HOST_DEPS) $(HOST_DEPS)))
 
+TARGETS_LEGAL_INFO:=$(patsubst %,%-legal-info,\
+		$(TARGETS) $(BASE_TARGETS) $(TARGETS_HOST_DEPS) $(HOST_DEPS))))
+
 # all targets depend on the crosscompiler and it's prerequisites
 $(TARGETS_ALL): __real_tgt_%: $(BASE_TARGETS) %
 
@@ -354,8 +365,9 @@ prepare: $(BUILD_DIR)/buildroot-config/auto.conf
 world: prepare dirs dependencies $(BASE_TARGETS) $(TARGETS_ALL)
 
 .PHONY: all world dirs clean distclean source outputmakefile \
+	legal-info legal-info-prepare legal-info-clean \
 	$(BASE_TARGETS) $(TARGETS) $(TARGETS_ALL) \
-	$(TARGETS_CLEAN) $(TARGETS_DIRCLEAN) $(TARGETS_SOURCE) \
+	$(TARGETS_CLEAN) $(TARGETS_DIRCLEAN) $(TARGETS_SOURCE) $(TARGETS_LEGAL_INFO) \
 	$(DL_DIR) $(TOOLCHAIN_DIR) $(BUILD_DIR) $(STAGING_DIR) $(TARGET_DIR) \
 	$(HOST_DIR) $(BINARIES_DIR) $(STAMP_DIR)
 
@@ -365,7 +377,7 @@ world: prepare dirs dependencies $(BASE_TARGETS) $(TARGETS_ALL)
 # dependencies anywhere else
 #
 #############################################################
-$(DL_DIR) $(TOOLCHAIN_DIR) $(BUILD_DIR) $(HOST_DIR) $(BINARIES_DIR) $(STAMP_DIR):
+$(DL_DIR) $(TOOLCHAIN_DIR) $(BUILD_DIR) $(HOST_DIR) $(BINARIES_DIR) $(STAMP_DIR) $(LEGAL_INFO_DIR) $(REDIST_SOURCES_DIR):
 	@mkdir -p $@
 
 $(STAGING_DIR):
@@ -498,6 +510,28 @@ source: dirs $(TARGETS_SOURCE) $(HOST_SOURCE)
 external-deps:
 	@$(MAKE) -Bs DL_MODE=SHOW_EXTERNAL_DEPS $(EXTRAMAKEARGS) source | sort -u
 
+legal-info-clean:
+	@rm -fr $(LEGAL_INFO_DIR)
+
+legal-info-prepare: $(LEGAL_INFO_DIR)
+	@$(call MESSAGE,"Collecting legal info")
+	@$(call legal-license-file,buildroot,COPYING,COPYING)
+	@$(call legal-manifest,PACKAGE,VERSION,LICENSE,LICENSE FILES,SOURCE ARCHIVE)
+	@$(call legal-manifest,buildroot,$(BR2_VERSION_FULL),GPLv2+,COPYING,not saved)
+	@$(call legal-warning,the Buildroot source code has not been saved)
+	@$(call legal-warning,the toolchain has not been saved)
+	@cp $(CONFIG_DIR)/.config $(LEGAL_INFO_DIR)/buildroot.config
+
+legal-info: dirs legal-info-clean legal-info-prepare $(REDIST_SOURCES_DIR) \
+		$(TARGETS_LEGAL_INFO)
+	@cat support/legal-info/README.header >>$(LEGAL_REPORT)
+	@if [ -r $(LEGAL_WARNINGS) ]; then \
+		cat support/legal-info/README.warnings-header \
+			$(LEGAL_WARNINGS) >>$(LEGAL_REPORT); \
+		cat $(LEGAL_WARNINGS); fi
+	@echo "Legal info produced in $(LEGAL_INFO_DIR)"
+	@rm -f $(LEGAL_WARNINGS)
+
 show-targets:
 	@echo $(TARGETS)
 
@@ -619,7 +653,8 @@ endif
 
 clean:
 	rm -rf $(STAGING_DIR) $(TARGET_DIR) $(BINARIES_DIR) $(HOST_DIR) \
-		$(STAMP_DIR) $(BUILD_DIR) $(TOOLCHAIN_DIR) $(BASE_DIR)/staging
+		$(STAMP_DIR) $(BUILD_DIR) $(TOOLCHAIN_DIR) $(BASE_DIR)/staging \
+		$(LEGAL_INFO_DIR)
 
 distclean: clean
 ifeq ($(DL_DIR),$(TOPDIR)/dl)
@@ -687,6 +722,7 @@ endif
 	@echo '  source                 - download all sources needed for offline-build'
 	@echo '  source-check           - check selected packages for valid download URLs'
 	@echo '  external-deps          - list external packages used'
+	@echo '  legal-info             - generate info about license compliance'
 	@echo
 	@echo '  make V=0|1             - 0 => quiet build (default), 1 => verbose build'
 	@echo '  make O=dir             - Locate all output files in "dir", including .config'

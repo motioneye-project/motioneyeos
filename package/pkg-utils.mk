@@ -92,3 +92,28 @@ define sep
 
 
 endef
+
+#
+# legal-info helper functions
+#
+LEGAL_INFO_SEPARATOR="::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
+legal-warning=echo "WARNING: $(1)" >>$(LEGAL_WARNINGS)
+legal-warning-pkg=echo "WARNING: $(1): $(2)" >>$(LEGAL_WARNINGS)
+define legal-warning-pkg-savednothing # pkg, {local|override}
+	$(call legal-warning-pkg,$(1),sources and license files not saved ($(2) packages not handled))
+endef
+legal-manifest=echo "$(1),$(2),$(3),$(4),$(5)" >>$(LEGAL_MANIFEST_CSV)
+define legal-license-header
+	echo -e "$(LEGAL_INFO_SEPARATOR)\n\t$(1):" \
+		"$(2)\n$(LEGAL_INFO_SEPARATOR)\n\n" >>$(LEGAL_LICENSES_TXT)
+endef
+define legal-license-nofiles
+	$(call legal-license-header,$(1),unknown license file(s))
+endef
+define legal-license-file # pkg, filename, file-fullpath
+	$(call legal-license-header,$(1),$(2) file) && \
+	cat $(3) >>$(LEGAL_LICENSES_TXT) && \
+	echo >>$(LEGAL_LICENSES_TXT) && \
+	mkdir -p $(LICENSE_FILES_DIR)/$(1)/ && \
+	cp $(3) $(LICENSE_FILES_DIR)/$(1)/
+endef

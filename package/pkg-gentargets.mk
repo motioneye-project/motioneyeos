@@ -180,6 +180,7 @@ define GENTARGETS_INNER
 
 $(2)_TYPE                       =  $(5)
 $(2)_NAME			=  $(1)
+$(2)_RAWNAME			=  $(patsubst host-%,%,$(1))
 
 # Keep the package version that may contain forward slashes in the _DL_VERSION
 # variable, then replace all forward slashes ('/') by underscores ('_') to
@@ -244,6 +245,20 @@ ifeq ($$($(2)_OVERRIDE_SRCDIR),)
 $(2)_OVERRIDE_SRCDIR = $($(2)_SITE)
 endif
 endif
+
+ifndef $(2)_LICENSE
+ ifdef $(3)_LICENSE
+  $(2)_LICENSE = $($(3)_LICENSE)
+ endif
+endif
+
+ifndef $(2)_LICENSE_FILES
+ ifdef $(3)_LICENSE_FILES
+  $(2)_LICENSE_FILES = $($(3)_LICENSE_FILES)
+ endif
+endif
+
+$(2)_LICENSE			?= unknown
 
 $(2)_DEPENDENCIES ?= $(filter-out $(1),$(patsubst host-host-%,host-%,$(addprefix host-,$($(3)_DEPENDENCIES))))
 
@@ -411,6 +426,52 @@ $(2)_KCONFIG_VAR = BR2_TARGET_$(2)
 else
 $(2)_KCONFIG_VAR = BR2_PACKAGE_$(2)
 endif
+
+# legal-info: declare dependencies and set values used later for the manifest
+ifneq ($$($(2)_LICENSE),PROPRIETARY)
+ifneq ($$($(2)_SITE_METHOD),local)
+ifneq ($$($(2)_SITE_METHOD),override)
+# Packages that have a tarball need it downloaded and extracted beforehand
+$(1)-legal-info: $(1)-extract $(REDIST_SOURCES_DIR)
+$(2)_MANIFEST_TARBALL = $$($(2)_SOURCE)
+ifneq ($$($(2)_LICENSE_FILES),)
+$(2)_MANIFEST_LICENSE_FILES = $$($(2)_LICENSE_FILES)
+endif
+endif
+endif
+endif
+# defaults for packages without tarball or license files
+$(2)_MANIFEST_TARBALL ?= not saved
+$(2)_MANIFEST_LICENSE_FILES ?= not saved
+
+# legal-info: produce legally relevant info.
+$(1)-legal-info:
+# Packages without a source are assumed to be part of Buildroot, skip them.
+ifneq ($(call qstrip,$$($(2)_SOURCE)),)
+ifeq ($$($(2)_LICENSE),PROPRIETARY)
+# Proprietary packages: nothing to save
+else ifeq ($$($(2)_SITE_METHOD),local)
+# Packages without a tarball: don't save and warn
+	@$(call legal-warning-pkg-savednothing,$$($(2)_RAWNAME),local)
+else ifeq ($$($(2)_SITE_METHOD),override)
+	@$(call legal-warning-pkg-savednothing,$$($(2)_RAWNAME),override)
+else
+# Other packages
+# Save license files if defined
+ifeq ($(call qstrip,$$($(2)_LICENSE_FILES)),)
+	@$(call legal-license-nofiles,$$($(2)_RAWNAME))
+	@$(call legal-warning-pkg,$$($(2)_RAWNAME),cannot save license ($(2)_LICENSE_FILES not defined))
+else
+	@for F in $$($(2)_LICENSE_FILES); do \
+		$(call legal-license-file,$$($(2)_RAWNAME),$$$${F},$$($(2)_DIR)/$$$${F}); \
+		done
+endif
+# Copy the source tarball (just hardlink if possible)
+	@cp -l $(DL_DIR)/$$($(2)_SOURCE) $(REDIST_SOURCES_DIR) 2>/dev/null || \
+	   cp $(DL_DIR)/$$($(2)_SOURCE) $(REDIST_SOURCES_DIR)
+endif
+	@$(call legal-manifest,$$($(2)_RAWNAME),$$($(2)_VERSION),$$($(2)_LICENSE),$$($(2)_MANIFEST_LICENSE_FILES),$$($(2)_MANIFEST_TARBALL))
+endif # ifneq ($(call qstrip,$$($(2)_SOURCE)),)
 
 # add package to the general list of targets if requested by the buildroot
 # configuration
