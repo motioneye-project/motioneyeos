@@ -27,6 +27,9 @@ $(TTCP_DIR)/ttcp: $(TTCP_DIR)/.configured
 $(TARGET_DIR)/usr/bin/ttcp: $(TTCP_DIR)/ttcp
 	cp -af $(TTCP_DIR)/ttcp $(TARGET_DIR)/usr/bin/
 
+ttcp-legal-info:
+	@$(call legal-warning-pkg,ttcp,legal-info not yet implemented)
+
 ttcp: $(TARGET_DIR)/usr/bin/ttcp
 
 ttcp-source: $(DL_DIR)/$(TTCP_SOURCE)
