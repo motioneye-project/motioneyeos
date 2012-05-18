@@ -1,4 +1,16 @@
-2012.05-rc1, Released May 10th, 2012
+2012.05-rc2, Released May 18th, 2012:
+
+	Fixes all over the tree.
+
+	Toolchain: uClibc: Use 0.9.33.2, Crosstool-ng: fix gperf
+	dependency, disable decimal floats support, Linux 3.2.17 /
+	3.3.6 kernel headers. Fix sysroot copy handling for toolchains
+	without C++ support.
+
+	Updated/fixed packages: apr, apr-util, ccache, dnsmasq,
+	heirloom-mailx, gdb, ndisc6, opencv, openssl, socat, vala
+
+2012.05-rc1, Released May 10th, 2012:
 
 	Fixes all over the tree and new features.
 
