@@ -4,6 +4,29 @@
 # -Erik
 #
 # (c) 2002 Erik Andersen <andersen@codepoet.org>
+#
+# Parameters:
+# - the build directory, optional, default value is '.'. The place where are
+# the package sources.
+# - the patch directory, optional, default '../kernel-patches'. The place
+# where are the scripts you want to apply.
+# - other parameters are the patch name patterns, optional, default value is
+# '*'. Pattern(s) describing the patch names you want to apply.
+#
+# The script will look recursively for patches from the patch directory. If a
+# file is named 'series' then only patches mentionned into it will be applied.
+# If not, the script will look for file names matching pattern(s). If the name
+# ends with '.tar.*', '.tbz2' or '.tgz', the file is considered as an archive
+# and will be uncompressed into a directory named
+# '.patches-name_of_the_archive-unpacked'. It's the turn of this directory to
+# be scanned with '*' as pattern. Remember that scanning is recursive. Other
+# files than series file and archives are considered as a patch.
+#
+# Once a patch is found, the script will try to apply it. If its name doesn't
+# end with '.gz', '.bz', '.bz2', '.zip', '.Z', '.diff*' or '.patch*', it will
+# be skipped. If necessary, the patch will be uncompressed before being
+# applied. The list of the patches applied is stored in '.applied_patches_list'
+# file in the build directory.
 
 # Set directories from arguments, or use defaults.
 builddir=${1-.}
