@@ -288,6 +288,7 @@ source "package/portaudio/Config.in"
 source "package/speex/Config.in"
 source "package/taglib/Config.in"
 source "package/tremor/Config.in"
+source "package/webrtc-audio-processing/Config.in"
 endmenu
 
 menu "Compression and decompression"
