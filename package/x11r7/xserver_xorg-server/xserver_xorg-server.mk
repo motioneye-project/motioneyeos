@@ -58,6 +58,7 @@ XSERVER_XORG_SERVER_DEPENDENCIES = 	\
 
 XSERVER_XORG_SERVER_CONF_OPT = --disable-config-hal \
 		--disable-xnest --disable-xephyr --disable-xvfb \
+		--disable-dmx \
 		--with-builder-addr=buildroot@uclibc.org \
 		CFLAGS="$(TARGET_CFLAGS) -I$(STAGING_DIR)/usr/include/pixman-1" \
 		--with-fontdir=/usr/share/fonts/X11/ --localstatedir=/var
