@@ -8,7 +8,12 @@
 # If not, we do like other packages
 BINUTILS_VERSION = $(call qstrip,$(BR2_BINUTILS_VERSION))
 ifeq ($(BINUTILS_VERSION),)
+ifeq ($(BR2_avr32),y)
+# avr32 uses a special version
+BINUTILS_VERSION = 2.18-avr32-1.0.1
+else
 BINUTILS_VERSION = 2.21
+endif
 endif
 
 BINUTILS_SOURCE = binutils-$(BINUTILS_VERSION).tar.bz2
