@@ -11,7 +11,8 @@ PULSEAUDIO_CONF_OPT = \
 	--localstatedir=/var \
 	--disable-default-build-tests \
 	--disable-legacy-runtime-dir \
-	--disable-legacy-database-entry-format
+	--disable-legacy-database-entry-format \
+	$(if $(BR2_HAVE_DOCUMENTATION),,--disable-manpages)
 
 PULSEAUDIO_DEPENDENCIES = \
 	host-pkg-config libtool json-c libsndfile speex host-intltool \
