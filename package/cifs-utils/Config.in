@@ -1,5 +1,7 @@
 config BR2_PACKAGE_CIFS_UTILS
 	bool "cifs-utils"
+	# uses fork()
+	depends on BR2_USE_MMU
 	help
 	  The in-kernel CIFS filesystem is generally the preferred
 	  method for mounting SMB/CIFS shares on Linux. The in-kernel
