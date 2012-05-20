@@ -3,6 +3,7 @@ config BR2_PACKAGE_CONNMAN
 	select BR2_PACKAGE_DBUS
 	select BR2_PACKAGE_LIBGLIB2
 	select BR2_PACKAGE_IPTABLES
+	select BR2_PACKAGE_GNUTLS
 	depends on !(BR2_UCLIBC_VERSION_0_9_31 || BR2_UCLIBC_VERSION_0_9_32)
 	help
 	  The Connection Manager (ConnMan) project provides a daemon for
