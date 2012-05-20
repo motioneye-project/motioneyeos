@@ -1,0 +1,72 @@
+--- busybox-1.20.0/util-linux/mdev.c
++++ busybox-1.20.0-mdev/util-linux/mdev.c
+@@ -661,37 +661,45 @@ static int FAST_FUNC dirAction(const cha
+ static void load_firmware(const char *firmware, const char *sysfs_path)
+ {
+ 	int cnt;
+-	int firmware_fd, loading_fd, data_fd;
++	int firmware_fd, loading_fd;
+ 
+ 	/* check for /lib/firmware/$FIRMWARE */
+ 	xchdir("/lib/firmware");
+-	firmware_fd = xopen(firmware, O_RDONLY);
+-
+-	/* in case we goto out ... */
+-	data_fd = -1;
++	firmware_fd = open(firmware, O_RDONLY); /* can fail */
+ 
+ 	/* check for /sys/$DEVPATH/loading ... give 30 seconds to appear */
+ 	xchdir(sysfs_path);
+ 	for (cnt = 0; cnt < 30; ++cnt) {
+ 		loading_fd = open("loading", O_WRONLY);
+-		if (loading_fd != -1)
++		if (loading_fd >= 0)
+ 			goto loading;
+ 		sleep(1);
+ 	}
+ 	goto out;
+ 
+  loading:
+-	/* tell kernel we're loading by "echo 1 > /sys/$DEVPATH/loading" */
+-	if (full_write(loading_fd, "1", 1) != 1)
+-		goto out;
+-
+-	/* load firmware into /sys/$DEVPATH/data */
+-	data_fd = open("data", O_WRONLY);
+-	if (data_fd == -1)
+-		goto out;
+-	cnt = bb_copyfd_eof(firmware_fd, data_fd);
++	cnt = 0;
++	if (firmware_fd >= 0) {
++		int data_fd;
++
++		/* tell kernel we're loading by "echo 1 > /sys/$DEVPATH/loading" */
++		if (full_write(loading_fd, "1", 1) != 1)
++			goto out;
++
++		/* load firmware into /sys/$DEVPATH/data */
++		data_fd = open("data", O_WRONLY);
++		if (data_fd < 0)
++			goto out;
++		cnt = bb_copyfd_eof(firmware_fd, data_fd);
++		if (ENABLE_FEATURE_CLEAN_UP)
++			close(data_fd);
++	}
+ 
+-	/* tell kernel result by "echo [0|-1] > /sys/$DEVPATH/loading" */
++	/* Tell kernel result by "echo [0|-1] > /sys/$DEVPATH/loading"
++	 * Note: we emit -1 if firmware file wasn't found.
++	 * There are cases when otherwise kernel would wait for minutes
++	 * before timing out.
++	 */
+ 	if (cnt > 0)
+ 		full_write(loading_fd, "0", 1);
+ 	else
+@@ -701,7 +709,6 @@ static void load_firmware(const char *fi
+ 	if (ENABLE_FEATURE_CLEAN_UP) {
+ 		close(firmware_fd);
+ 		close(loading_fd);
+-		close(data_fd);
+ 	}
+ }
+ 
