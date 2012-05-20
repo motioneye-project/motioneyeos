@@ -1,0 +1,44 @@
+[PATCH] fix build on uClibc without UCLIBC_HAS_BACKTRACE
+
+Backtrace support is only used for logging on signal errors, which
+isn't really critical, so simply remove backtrace info if not
+available in uClibc.
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ src/log.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
+
+Index: connman-0.78/src/log.c
+===================================================================
+--- connman-0.78.orig/src/log.c
++++ connman-0.78/src/log.c
+@@ -30,7 +30,12 @@
+ #include <stdlib.h>
+ #include <string.h>
+ #include <syslog.h>
++#include <features.h>
++/* backtrace support is optional on uClibc */
++#if !(defined(__UCLIBC__) && !defined (__UCLIBC_HAS_BACKTRACE__))
++#define HAVE_BACKTRACE
+ #include <execinfo.h>
++#endif
+ #include <dlfcn.h>
+ 
+ #include "connman.h"
+@@ -112,6 +117,7 @@
+ 
+ static void print_backtrace(unsigned int offset)
+ {
++#ifdef HAVE_BACKTRACE
+ 	void *frames[99];
+ 	size_t n_ptrs;
+ 	unsigned int i;
+@@ -210,6 +216,7 @@
+ 
+ 	close(outfd[1]);
+ 	close(infd[0]);
++#endif /* HAVE_BACKTRACE */
+ }
+ 
+ static void signal_handler(int signo)
