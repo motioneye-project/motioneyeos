@@ -1,6 +1,8 @@
 config BR2_PACKAGE_IPERF
 	bool "iperf"
 	depends on BR2_INSTALL_LIBSTDCPP
+	# uses fork()
+	depends on BR2_USE_MMU
 	help
 	  Internet Protocol bandwidth measuring tool for measuring
 	  TCP/UDP performance.
