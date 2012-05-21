@@ -1,28 +1,21 @@
-menu "PHP Extensions"
+menu "Extensions"
 
-config BR2_PACKAGE_PHP_CONFIG
-	string "PHP configuration file to use"
-	default "$(PHP_DIR)/php.ini-dist"
+config BR2_PACKAGE_PHP_EXT_CALENDAR
+	bool "Calendar"
 	help
-	  If you want to use a different php.ini file define it here.
-	  Otherwise it'll just copy the default php.ini-dist from PHP.
+	  Calendar and event support
 
-config BR2_PACKAGE_PHP_EXT_SOCKETS
-	bool "socket"
+config BR2_PACKAGE_PHP_EXT_FILEINFO
+	bool "Fileinfo"
 	help
-	  Sockets support
+	  File Information support
 
-config BR2_PACKAGE_PHP_EXT_POSIX
-	bool "posix"
-	default y
+config BR2_PACKAGE_PHP_EXT_READLINE
+	bool "Readline"
+	select BR2_PACKAGE_NCURSES
+	select BR2_PACKAGE_READLINE
 	help
-	  POSIX support
-
-config BR2_PACKAGE_PHP_EXT_SPL
-	bool "SPL"
-	default y
-	help
-	  Standard PHP library support
+	  Readline support
 
 config BR2_PACKAGE_PHP_EXT_SESSION
 	bool "Session"
@@ -30,98 +23,13 @@ config BR2_PACKAGE_PHP_EXT_SESSION
 	help
 	  Session support
 
-config BR2_PACKAGE_PHP_EXT_OPENSSL
-	bool "openssl"
-	select BR2_PACKAGE_OPENSSL
+comment "Compression extensions"
+
+config BR2_PACKAGE_PHP_EXT_BZIP2
+	bool "bzip2"
+	select BR2_PACKAGE_BZIP2
 	help
-	  openssl support
-
-config BR2_PACKAGE_PHP_EXT_LIBXML2
-	bool "xml2"
-	select BR2_PACKAGE_LIBXML2
-	help
-	  libxml2 support
-
-config BR2_PACKAGE_PHP_EXT_SIMPLEXML
-	bool "simplexml"
-	select BR2_PACKAGE_PHP_EXT_LIBXML2
-	help
-	  SimpleXML support
-
-config BR2_PACKAGE_PHP_EXT_ZLIB
-        bool "zlib"
-        select BR2_PACKAGE_ZLIB
-        default y
-        help
-          zlib support
-
-config BR2_PACKAGE_PHP_EXT_EXIF
-	bool "EXIF"
-	help
-	  EXIF support
-
-config BR2_PACKAGE_PHP_EXT_FTP
-	bool "FTP"
-	help
-	  FTP Support
-
-config BR2_PACKAGE_PHP_EXT_GETTEXT
-	bool "gettext"
-	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT
-	depends on BR2_USE_WCHAR
-	help
-	  gettext support
-
-comment "gettext support requires a toolchain with WCHAR support"
-	depends on !BR2_USE_WCHAR
-
-config BR2_PACKAGE_PHP_EXT_GMP
-	bool "gmp"
-	select BR2_PACKAGE_GMP
-	help
-	  GMP support
-
-config BR2_PACKAGE_PHP_EXT_JSON
-	bool "JSON"
-	help
-	  JavaScript Object Serialization support
-
-config BR2_PACKAGE_PHP_EXT_READLINE
-	bool "readline"
-	depends on (BR2_PACKAGE_PHP_CLI || BR2_PACKAGE_PHP_CGI) && BR2_PACKAGE_READLINE
-	help
-	  readline support
-
-config BR2_PACKAGE_PHP_EXT_NCURSES
-	bool "ncurses"
-	depends on (BR2_PACKAGE_PHP_CLI || BR2_PACKAGE_PHP_CGI) && BR2_PACKAGE_NCURSES
-	help
-	  ncurses support
-
-config BR2_PACKAGE_PHP_EXT_PCRE
-	bool "PCRE"
-	help
-	  Perl Compatible Regular Expressions support
-
-config BR2_PACKAGE_PHP_EXT_PCNTL
-	bool "PCNTL"
-	help
-	  Process Control Support
-
-config BR2_PACKAGE_PHP_EXT_SYSVMSG
-	bool "sysvmsg - System V Message queue"
-	help
-	  System V Message queue support
-
-config BR2_PACKAGE_PHP_EXT_SYSVSEM
-	bool "sysvsem - System V Semaphores"
-	help
-	  System V Sempahore support
-
-config BR2_PACKAGE_PHP_EXT_SYSVSHM
-	bool "sysvshm - System V Shared memory"
-	help
-	  System V Shared memory support
+	  bzip2 read/write support
 
 config BR2_PACKAGE_PHP_EXT_ZIP
 	bool "zip"
@@ -129,18 +37,59 @@ config BR2_PACKAGE_PHP_EXT_ZIP
 	help
 	  Zip read/write support
 
-config BR2_PACKAGE_PHP_EXT_FILTER
-	bool "filter"
-	select BR2_PACKAGE_PHP_EXT_PCRE
+config BR2_PACKAGE_PHP_EXT_ZLIB
+	bool "zlib"
+	select BR2_PACKAGE_ZLIB
+	default y
 	help
-	  Input filter support
+	  zlib support
 
-config BR2_PACKAGE_PHP_EXT_CALENDAR
-	bool "calendar"
+comment "Cryptography extensions"
+
+config BR2_PACKAGE_PHP_EXT_HASH
+	bool "hash"
 	help
-	  Calendar and event support
+	  HASH message digest framework
+
+config BR2_PACKAGE_PHP_EXT_OPENSSL
+	bool "openssl"
+	select BR2_PACKAGE_OPENSSL
+	help
+	  openssl support
 
 comment "Database extensions"
+
+config BR2_PACKAGE_PHP_EXT_DBA
+	bool "DBA"
+	help
+	  Database Abstraction Layer
+
+if BR2_PACKAGE_PHP_EXT_DBA
+
+config BR2_PACKAGE_PHP_EXT_DBA_CDB
+	bool "cdb"
+	help
+	  CDB handler
+
+config BR2_PACKAGE_PHP_EXT_DBA_DB4
+	bool "db4/5"
+	select BR2_PACKAGE_BERKELEYDB
+	help
+	  BerkeleyDB version 4/5 handler
+
+config BR2_PACKAGE_PHP_EXT_DBA_FLAT
+	bool "flat"
+	default y
+	help
+	  Flat file handler
+
+config BR2_PACKAGE_PHP_EXT_DBA_INI
+	bool "ini"
+	default y
+	help
+	  INI file handler
+
+endif
 
 config BR2_PACKAGE_PHP_EXT_SQLITE
 	bool "SQLite"
@@ -151,35 +100,243 @@ config BR2_PACKAGE_PHP_EXT_SQLITE_UTF8
 	bool "sqlite UTF8 support"
 	depends on BR2_PACKAGE_PHP_EXT_SQLITE
 	help
-	  UTF8 Support for sqlite
+	  UTF8 support for sqlite
+
+config BR2_PACKAGE_PHP_EXT_MYSQL
+	bool "Mysql"
+	depends on BR2_INSTALL_LIBSTDCPP
+	select BR2_PACKAGE_MYSQL_CLIENT
+	help
+	  MySQL support
+
+config BR2_PACKAGE_PHP_EXT_MYSQLI
+	bool "Mysqli"
+	depends on BR2_INSTALL_LIBSTDCPP
+	select BR2_PACKAGE_MYSQL_CLIENT
+	select BR2_PACKAGE_PHP_EXT_MYSQL
+	help
+	  MySQL Improved extension support
 
 config BR2_PACKAGE_PHP_EXT_PDO
 	bool "PDO"
 	help
 	  PHP Data Objects support
 
-config BR2_PACKAGE_PHP_EXT_PDO_SQLITE
-	bool "PDO_SQLite"
-	depends on BR2_PACKAGE_PHP_EXT_PDO
-	help
-	  SQLite driver for PDO
-
-config BR2_PACKAGE_PHP_EXT_PDO_SQLITE_EXTERNAL
-	bool "PDO_SQLite external"
-	depends on BR2_PACKAGE_PHP_EXT_PDO_SQLITE
-	select BR2_PACKAGE_SQLITE
-	help
-	  Use external sqlite3 library
+if BR2_PACKAGE_PHP_EXT_PDO
 
 config BR2_PACKAGE_PHP_EXT_PDO_MYSQL
-	bool "PDO_MySQL"
-	depends on BR2_PACKAGE_PHP_EXT_PDO
+	bool "MySQL"
 	depends on BR2_INSTALL_LIBSTDCPP
 	select BR2_PACKAGE_MYSQL_CLIENT
 	help
 	  PDO driver for MySQL
 
-comment "PDO_MySQL requires a toolchain with C++ support"
-	depends on !BR2_INSTALL_LIBSTDCPP && BR2_PACKAGE_PHP_EXT_PDO
+comment "MySQL drivers require a toolchain with C++ support"
+	depends on !BR2_INSTALL_LIBSTDCPP
+
+config BR2_PACKAGE_PHP_EXT_PDO_SQLITE
+	bool "SQLite3"
+	select BR2_PACKAGE_SQLITE
+	help
+	  SQLite3 driver for PDO
+
+endif
+
+comment "Human language and character encoding support"
+
+config BR2_PACKAGE_PHP_EXT_GETTEXT
+	bool "Gettext"
+	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT
+	depends on BR2_USE_WCHAR
+	help
+	  Gettext support
+
+comment "Gettext support requires a toolchain with WCHAR support"
+	depends on !BR2_USE_WCHAR
+
+config BR2_PACKAGE_PHP_EXT_ICONV
+	bool "iconv"
+	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
+	help
+	  iconv character set conversion support
+
+config BR2_PACKAGE_PHP_EXT_INTL
+	bool "intl"
+	select BR2_PACKAGE_ICU
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_USE_WCHAR
+	help
+	  Internationalization support
+
+comment "intl support requires a toolchain with C++ and WCHAR support"
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR
+
+comment "Image processing"
+
+config BR2_PACKAGE_PHP_EXT_EXIF
+	bool "EXIF"
+	help
+	  EXIF support
+
+comment "Mathematical extensions"
+
+config BR2_PACKAGE_PHP_EXT_BCMATH
+	bool "BC math"
+	help
+	  BCMath arbitrary precision mathematics support
+
+config BR2_PACKAGE_PHP_EXT_GMP
+	bool "GMP"
+	select BR2_PACKAGE_GMP
+	help
+	  GNU Multiple Precision support
+
+comment "Other basic extensions"
+
+config BR2_PACKAGE_PHP_EXT_JSON
+	bool "JSON"
+	help
+	  JavaScript Object Serialization support
+
+config BR2_PACKAGE_PHP_EXT_TOKENIZER
+	bool "Tokenizer"
+	help
+	  Tokenizer functions support
+
+comment "Other services"
+
+config BR2_PACKAGE_PHP_EXT_CURL
+	bool "cURL"
+	select BR2_PACKAGE_LIBCURL
+	help
+	  cURL for URL streams
+
+config BR2_PACKAGE_PHP_EXT_FTP
+	bool "FTP"
+	help
+	  FTP support
+
+config BR2_PACKAGE_PHP_EXT_SNMP
+	bool "SNMP"
+	select BR2_PACKAGE_NETSNMP
+	help
+	  SNMP support
+
+config BR2_PACKAGE_PHP_EXT_SOCKETS
+	bool "sockets"
+	help
+	  Sockets support
+
+comment "Process Control"
+
+config BR2_PACKAGE_PHP_EXT_PCNTL
+	bool "PCNTL"
+	help
+	  Process control support
+
+config BR2_PACKAGE_PHP_EXT_POSIX
+	bool "Posix"
+	default y
+	help
+	  POSIX.1 (IEEE 1003.1) function support
+
+config BR2_PACKAGE_PHP_EXT_SHMOP
+	bool "shmop"
+	help
+	  Shared memory support
+
+config BR2_PACKAGE_PHP_EXT_SYSVMSG
+	bool "sysvmsg"
+	help
+	  System V message queue support
+
+config BR2_PACKAGE_PHP_EXT_SYSVSEM
+	bool "sysvsem"
+	help
+	  System V semaphore support
+
+config BR2_PACKAGE_PHP_EXT_SYSVSHM
+	bool "sysvshm"
+	help
+	  System V shared memory support
+
+comment "Variable and Type related"
+
+config BR2_PACKAGE_PHP_EXT_CTYPE
+	bool "Ctype"
+	help
+	  Character type checking support
+
+config BR2_PACKAGE_PHP_EXT_FILTER
+	bool "Filter"
+	help
+	  Input filter support
+
+comment "Web services"
+
+config BR2_PACKAGE_PHP_EXT_SOAP
+	bool "SOAP"
+	select BR2_PACKAGE_PHP_EXT_LIBXML2
+	help
+	  SOAP support
+
+config BR2_PACKAGE_PHP_EXT_XMLRPC
+	bool "XML-RPC"
+	select BR2_PACKAGE_PHP_EXT_LIBXML2
+	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
+	help
+	  XML-RPC support
+
+comment "XML manipulation"
+
+config BR2_PACKAGE_PHP_EXT_DOM
+	bool "DOM"
+	select BR2_PACKAGE_PHP_EXT_LIBXML2
+	help
+	  Document Object Model support
+
+config BR2_PACKAGE_PHP_EXT_LIBXML2
+	bool "libxml"
+	select BR2_PACKAGE_LIBXML2
+	help
+	  libxml2 support
+
+config BR2_PACKAGE_PHP_EXT_SIMPLEXML
+	bool "SimpleXML"
+	select BR2_PACKAGE_PHP_EXT_LIBXML2
+	help
+	  SimpleXML support
+
+config BR2_PACKAGE_PHP_EXT_WDDX
+	bool "WDDX"
+	select BR2_PACKAGE_PHP_EXT_LIBXML2
+	help
+	  WDDX support
+
+config BR2_PACKAGE_PHP_EXT_XML
+	bool "XML Parser"
+	select BR2_PACKAGE_PHP_EXT_LIBXML2
+	help
+	  XML Parser support
+
+config BR2_PACKAGE_PHP_EXT_XMLREADER
+	bool "XMLReader"
+	select BR2_PACKAGE_PHP_EXT_LIBXML2
+	help
+	  XMLReader support
+
+config BR2_PACKAGE_PHP_EXT_XMLWRITER
+	bool "XMLWriter"
+	select BR2_PACKAGE_PHP_EXT_LIBXML2
+	help
+	  XMLWriter support
+
+config BR2_PACKAGE_PHP_EXT_XSL
+	bool "XSL"
+	select BR2_PACKAGE_PHP_EXT_DOM
+	select BR2_PACKAGE_PHP_EXT_LIBXML2
+	select BR2_PACKAGE_LIBXSLT
+	help
+	  XSL transformation support
 
 endmenu

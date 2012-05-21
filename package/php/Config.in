@@ -9,6 +9,8 @@ config BR2_PACKAGE_PHP
 
 if BR2_PACKAGE_PHP
 
+source "package/php/Config.ext"
+
 config BR2_PACKAGE_PHP_CLI
        bool
 
@@ -16,38 +18,30 @@ config BR2_PACKAGE_PHP_CGI
        bool
 
 choice
-        prompt "PHP interface"
+        prompt "Interface"
         default BR2_PACKAGE_PHP_SAPI_CGI
         help
           Select the PHP interface(s).
 
+config BR2_PACKAGE_PHP_SAPI_CGI
+	bool "CGI"
+	select BR2_PACKAGE_PHP_CGI
+	help
+	  Common Gateway Interface
+
 config BR2_PACKAGE_PHP_SAPI_CLI
-        bool "cli interface"
+        bool "CLI"
 	select BR2_PACKAGE_PHP_CLI
         help
-          Command line interface for PHP.
-
-config BR2_PACKAGE_PHP_SAPI_CGI
-        bool "cgi interface"
-        select BR2_PACKAGE_PHP_CGI
-        help
-          CGI interface for PHP.
+          Command Line Interface
 
 config BR2_PACKAGE_PHP_SAPI_CLI_CGI
-        bool "cli and cgi interfaces"
+        bool "CGI and CLI"
 	select BR2_PACKAGE_PHP_CLI
 	select BR2_PACKAGE_PHP_CGI
 	help
-	  Command line and CGI interfaces for PHP.
+	  Command line and Common gateway interfaces
 
 endchoice
 
-config BR2_PACKAGE_PHP_FASTCGI
-        bool "fastcgi"
-        depends on BR2_PACKAGE_PHP_CGI
-        default y
-        help
-          fast cgi interface for php
-
-source "package/php/Config.ext"
 endif
