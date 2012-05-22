@@ -21,6 +21,7 @@ ifeq ($(BR2_PACKAGE_UTIL_LINUX_LIBUUID),y)
 endif
 
 ifeq ($(BR2_PACKAGE_NTFS_3G_ENCRYPTED),y)
+	NTFS_3G_CONF_ENV += LIBGCRYPT_CONFIG=$(STAGING_DIR)/usr/bin/libgcrypt-config
 	NTFS_3G_CONF_OPT += --enable-crypto
 	NTFS_3G_DEPENDENCIES += gnutls
 endif
