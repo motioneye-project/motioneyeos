@@ -2,6 +2,8 @@ config BR2_PACKAGE_BISON
 	bool "bison"
 	depends on BR2_USE_WCHAR
 	select BR2_PACKAGE_M4
+	# m4 uses fork()
+	depends on BR2_USE_MMU
 	help
 	  General-purpose parser generator that converts a
 	  grammar description for an LALR context-free grammar into a C
