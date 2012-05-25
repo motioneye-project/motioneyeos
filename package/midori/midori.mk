@@ -4,10 +4,18 @@
 #
 #############################################################
 
-MIDORI_VERSION = 0.3.6
+MIDORI_VERSION = 0.4.6
 MIDORI_SOURCE = midori-$(MIDORI_VERSION).tar.bz2
-MIDORI_SITE = http://archive.xfce.org/src/apps/midori/0.3/
-MIDORI_DEPENDENCIES = host-pkg-config host-intltool webkit libsexy libgtk2
+MIDORI_SITE = http://archive.xfce.org/src/apps/midori/0.4/
+MIDORI_DEPENDENCIES = \
+	host-intltool \
+	host-pkg-config \
+	host-vala \
+	libgtk2 \
+	libsexy \
+	webkit \
+	$(if $(BR2_NEEDS_GETTEXT_IF_LOCALE),gettext libintl) \
+	$(if $(BR2_PACKAGE_LIBICONV),libiconv)
 
 ifneq ($(BR2_PACKAGE_XORG7),y)
 define MIDORI_WITHOUT_X11
@@ -21,7 +29,7 @@ define MIDORI_CONFIGURE_CMDS
 		$(TARGET_CONFIGURE_OPTS)	\
 		./waf configure			\
 		--prefix=/usr			\
-		--disable-vala			\
+		--disable-libnotify		\
        )
 endef
 
