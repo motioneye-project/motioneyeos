@@ -1,3 +1,16 @@
+2012.05-rc3, Released May 25th, 2012:
+
+	Minor fixes around the tree.
+
+	Infra: Fix for DOWNLOAD macro when using primary mirrors with
+	scp targets.
+
+	Toolchain: Kernel headers 3.2.18 / 3.3.7.
+
+	Updated/fixed packages: binutils, bison, busybox, cifs-utils,
+	gnuchess, gpsd, iperf, libmpeg2, mtd, ntfs-3g, oprofile,
+	xserver-xorg
+
 2012.05-rc2, Released May 18th, 2012:
 
 	Fixes all over the tree.
