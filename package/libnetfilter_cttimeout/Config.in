@@ -1,0 +1,13 @@
+config BR2_PACKAGE_LIBNETFILTER_CTTIMEOUT
+	bool "libnetfilter_cttimeout"
+	depends on BR2_LARGEFILE
+	select BR2_PACKAGE_LIBMNL
+	help
+	  libnetfilter_cttimeout is the userspace library that provides
+	  the programming interface to the fine-grain
+	  connection tracking timeout infrastructure.
+
+	  http://www.netfilter.org/projects/libnetfilter_cttimeout/
+
+comment "libnetfilter_cttimout requires a toolchain with LARGEFILE support"
+	depends on !BR2_LARGEFILE
