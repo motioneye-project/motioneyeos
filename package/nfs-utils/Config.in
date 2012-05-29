@@ -2,6 +2,7 @@ config BR2_PACKAGE_NFS_UTILS
 	bool "nfs-utils"
 	depends on BR2_INET_RPC
 	depends on BR2_LARGEFILE
+	select BR2_PACKAGE_PORTMAP
 	help
 	  The NFS Linux kernel server.
 	  Warning: We do not force largefile support on here on purpose.

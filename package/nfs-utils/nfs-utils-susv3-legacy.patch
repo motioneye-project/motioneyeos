@@ -1,0 +1,59 @@
+Switch legacy index() in favour of strchr()
+Updated for 1.2.6 from the previous patch by Frederik Pasch.
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+diff -Nura nfs-utils-1.2.6.orig/support/nfs/nfs_mntent.c nfs-utils-1.2.6/support/nfs/nfs_mntent.c
+--- nfs-utils-1.2.6.orig/support/nfs/nfs_mntent.c	2012-05-29 10:06:37.901255998 -0300
++++ nfs-utils-1.2.6/support/nfs/nfs_mntent.c	2012-05-29 10:06:45.726312410 -0300
+@@ -9,7 +9,7 @@
+  */
+ 
+ #include <stdio.h>
+-#include <string.h>		/* for index */
++#include <string.h>		/* for strchr */
+ #include <ctype.h>		/* for isdigit */
+ #include <sys/stat.h>		/* for umask */
+ #include <unistd.h>		/* for ftruncate */
+@@ -172,7 +172,7 @@
+ 			return NULL;
+ 
+ 		mfp->mntent_lineno++;
+-		s = index (buf, '\n');
++		s = strchr (buf, '\n');
+ 		if (s == NULL) {
+ 			/* Missing final newline?  Otherwise extremely */
+ 			/* long line - assume file was corrupted */
+@@ -180,7 +180,7 @@
+ 				fprintf(stderr, _("[mntent]: warning: no final "
+ 					"newline at the end of %s\n"),
+ 					mfp->mntent_file);
+-				s = index (buf, 0);
++				s = strchr (buf, 0);
+ 			} else {
+ 				mfp->mntent_errs = 1;
+ 				goto err;
+diff -Nura nfs-utils-1.2.6.orig/utils/mount/error.c nfs-utils-1.2.6/utils/mount/error.c
+--- nfs-utils-1.2.6.orig/utils/mount/error.c	2012-05-29 10:06:37.946256325 -0300
++++ nfs-utils-1.2.6/utils/mount/error.c	2012-05-29 10:06:45.727312416 -0300
+@@ -62,7 +62,7 @@
+ 	char *tmp;
+ 
+ 	if (estr) {
+-		if ((ptr = index(estr, ':')))
++		if ((ptr = strchr(estr, ':')))
+ 			estr = ++ptr;
+ 
+ 		tmp = &errbuf[spos];
+diff -Nura nfs-utils-1.2.6.orig/utils/mountd/fsloc.c nfs-utils-1.2.6/utils/mountd/fsloc.c
+--- nfs-utils-1.2.6.orig/utils/mountd/fsloc.c	2012-05-29 10:06:37.911256072 -0300
++++ nfs-utils-1.2.6/utils/mountd/fsloc.c	2012-05-29 10:07:11.140322564 -0300
+@@ -127,7 +127,7 @@
+ 	bool v6esc = false;
+ 
+ 	xlog(L_NOTICE, "method_list(%s)", data);
+-	for (ptr--, listsize=1; ptr; ptr=index(ptr, ':'), listsize++)
++	for (ptr--, listsize=1; ptr; ptr=strchr(ptr, ':'), listsize++)
+ 		ptr++;
+ 	list = malloc(listsize * sizeof(char *));
+ 	copy = strdup(data);
