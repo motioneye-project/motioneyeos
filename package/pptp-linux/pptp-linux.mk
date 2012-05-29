@@ -7,6 +7,7 @@
 PPTP_LINUX_VERSION = 1.7.2
 PPTP_LINUX_SITE = http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/pptpclient
 PPTP_LINUX_SOURCE = pptp-$(PPTP_LINUX_VERSION).tar.gz
+PPTP_LINUX_MAKE = $(MAKE1)
 
 define PPTP_LINUX_BUILD_CMDS
 	$(MAKE) -C $(@D) OPTIMIZE= DEBUG= \
