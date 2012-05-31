@@ -4,7 +4,7 @@
 #
 #############################################################
 
-LIBXML2_VERSION = 2.7.8
+LIBXML2_VERSION = 2.8.0
 LIBXML2_SITE = ftp://xmlsoft.org/libxml2
 LIBXML2_INSTALL_STAGING = YES
 LIBXML2_AUTORECONF = YES
