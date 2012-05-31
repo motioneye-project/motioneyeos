@@ -3,8 +3,8 @@
 # mxml
 #
 #############################################################
-MXML_VERSION = 2.6
-MXML_SITE = http://ftp.easysw.com/pub/mxml/2.6
+MXML_VERSION = 2.7
+MXML_SITE = http://ftp.easysw.com/pub/mxml/$(MXML_VERSION)
 MXML_INSTALL_STAGING = YES
 
 MXML_INSTALL_STAGING_OPT = DSTROOT=$(STAGING_DIR) install

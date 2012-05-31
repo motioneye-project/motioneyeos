@@ -1,0 +1,11 @@
+config BR2_PACKAGE_LIBTORRENT
+	bool "libtorrent"
+	depends on BR2_INSTALL_LIBSTDCPP
+	select BR2_PACKAGE_LIBSIGC
+	help
+	  BitTorrent library written in C++ for *nix
+
+	  http://libtorrent.rakshasa.no/
+
+comment "libtorrent requires a toolchain with C++ support enabled"
+	depends on !BR2_INSTALL_LIBSTDCPP

@@ -4,14 +4,15 @@
 #
 ################################################################################
 
-PULSEAUDIO_VERSION = 1.1
+PULSEAUDIO_VERSION = 2.0
 PULSEAUDIO_SITE = http://freedesktop.org/software/pulseaudio/releases/
 PULSEAUDIO_INSTALL_STAGING = YES
 PULSEAUDIO_CONF_OPT = \
 	--localstatedir=/var \
 	--disable-default-build-tests \
 	--disable-legacy-runtime-dir \
-	--disable-legacy-database-entry-format
+	--disable-legacy-database-entry-format \
+	$(if $(BR2_HAVE_DOCUMENTATION),,--disable-manpages)
 
 PULSEAUDIO_DEPENDENCIES = \
 	host-pkg-config libtool json-c libsndfile speex host-intltool \
@@ -27,7 +28,9 @@ PULSEAUDIO_DEPENDENCIES = \
 	$(if $(BR2_PACKAGE_UDEV),udev) \
 	$(if $(BR2_PACKAGE_OPENSSL),openssl) \
 	$(if $(BR2_PACKAGE_FFTW),fftw) \
-	$(if $(BR2_PACKAGE_ORC),orc)
+	$(if $(BR2_PACKAGE_ORC),orc) \
+	$(if $(BR2_PACKAGE_WEBRTC_AUDIO_PROCESSING),webrtc-audio-processing) \
+	$(if $(BR2_PACKAGE_SYSTEMD),systemd)
 
 # pulseaudio alsa backend needs pcm/mixer apis
 ifneq ($(BR2_PACKAGE_ALSA_LIB_PCM)$(BR2_PACKAGE_ALSA_LIB_MIXER),yy)

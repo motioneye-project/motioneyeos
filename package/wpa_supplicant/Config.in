@@ -5,27 +5,25 @@ config BR2_PACKAGE_WPA_SUPPLICANT
 
 	  http://hostap.epitest.fi/wpa_supplicant/
 
+if BR2_PACKAGE_WPA_SUPPLICANT
+
 config BR2_PACKAGE_WPA_SUPPLICANT_EAP
 	bool "Enable EAP"
-	depends on BR2_PACKAGE_WPA_SUPPLICANT
 	help
 	  Enable support for EAP.
 
 config BR2_PACKAGE_WPA_SUPPLICANT_CLI
 	bool "Install wpa_cli binary"
-	depends on BR2_PACKAGE_WPA_SUPPLICANT
 	help
 	  Install wpa_cli command line utility
 
 config BR2_PACKAGE_WPA_SUPPLICANT_PASSPHRASE
 	bool "Install wpa_passphrase binary"
-	depends on BR2_PACKAGE_WPA_SUPPLICANT
 	help
 	  Install wpa_passphrase command line utility
 
 config BR2_PACKAGE_WPA_SUPPLICANT_AP_SUPPORT
 	bool "Enable support for soft AP"
-	depends on BR2_PACKAGE_WPA_SUPPLICANT
 	help
 	  With this option enabled, wpa_supplicant can act as
 	  access point. This can be used for open and WPA2-Personal networks
@@ -34,6 +32,7 @@ config BR2_PACKAGE_WPA_SUPPLICANT_AP_SUPPORT
 
 config BR2_PACKAGE_WPA_SUPPLICANT_WPS
 	bool "Enable support for WPS"
-	depends on BR2_PACKAGE_WPA_SUPPLICANT
 	help
 	  Enable support for Wi-Fi Protected Setup (WPS)
+
+endif

@@ -1,0 +1,21 @@
+Don't push LDFLAGS/CFLAGS for iconv.
+Just assume they're covered somewhere else.
+Otherwise we get -L/usr/lib and -I/usr/include search paths with uClibc
+internal iconv support, which breaks things.
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+diff -Nura php-5.3.13/configure php-5.3.13-iconv/configure
+--- php-5.3.13/configure	2012-05-08 06:41:23.000000000 -0300
++++ php-5.3.13-iconv/configure	2012-05-18 22:18:21.313975849 -0300
+@@ -47885,8 +47885,8 @@
+       PHP_ICONV_PREFIX="$ICONV_DIR"
+     fi
+ 
+-    CFLAGS="-I$PHP_ICONV_PREFIX/include $CFLAGS"
+-    LDFLAGS="-L$PHP_ICONV_PREFIX/$PHP_LIBDIR $LDFLAGS"
++    #CFLAGS="-I$PHP_ICONV_PREFIX/include $CFLAGS"
++    #LDFLAGS="-L$PHP_ICONV_PREFIX/$PHP_LIBDIR $LDFLAGS"
+ 
+     if test -r "$PHP_ICONV_PREFIX/include/giconv.h"; then
+       PHP_ICONV_H_PATH="$PHP_ICONV_PREFIX/include/giconv.h"

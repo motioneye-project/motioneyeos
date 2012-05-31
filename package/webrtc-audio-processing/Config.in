@@ -1,0 +1,11 @@
+config BR2_PACKAGE_WEBRTC_AUDIO_PROCESSING
+	bool "webrtc-audio-processing"
+	depends on BR2_INSTALL_LIBSTDCPP
+	help
+	  AudioProcessing library based on Google's implementation of
+	  WebRTC.
+
+	  http://freedesktop.org/software/pulseaudio/webrtc-audio-processing/
+
+comment "webrtc-audio-processing requires a toolchain with C++ support enabled"
+	depends on !BR2_INSTALL_LIBSTDCPP

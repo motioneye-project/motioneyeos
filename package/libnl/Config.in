@@ -4,3 +4,9 @@ config BR2_PACKAGE_LIBNL
 	  A library for applications dealing with netlink socket.
 
 	  http://people.suug.ch/~tgr/libnl/
+
+config BR2_PACKAGE_LIBNL_TOOLS
+	bool "install tools"
+	depends on BR2_PACKAGE_LIBNL
+	help
+	  Install binary tools.

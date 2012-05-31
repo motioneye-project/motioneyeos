@@ -1,0 +1,8 @@
+config BR2_PACKAGE_LIBNFC
+	bool "libnfc"
+	select BR2_PACKAGE_LIBUSB
+	select BR2_PACKAGE_LIBUSB_COMPAT
+	help
+	  Public platform independent Near Field Communication (NFC) library.
+
+	  http://www.libnfc.org/

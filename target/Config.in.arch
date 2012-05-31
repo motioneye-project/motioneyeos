@@ -172,7 +172,6 @@ config BR2_arm1176jz_s
 	bool "arm1176jz-s"
 config BR2_arm1176jzf_s
 	bool "arm1176jzf-s"
-comment "cortex-A8/A9 needs gcc >= 4.4.x"
 config BR2_cortex_a8
 	bool "cortex-A8"
 config BR2_cortex_a9
@@ -361,7 +360,6 @@ config BR2_x86_core2
 	bool "core2"
 config BR2_x86_atom
 	bool "atom"
-comment "atom needs gcc >= 4.5.x"
 config BR2_x86_k6
 	bool "k6"
 config BR2_x86_k6_2
@@ -409,7 +407,6 @@ config BR2_x86_64_core2
 	bool "core2"
 config BR2_x86_64_atom
 	bool "atom"
-comment "atom needs gcc >= 4.5.x"
 endchoice
 
 choice
@@ -425,7 +422,6 @@ config BR2_sparc_cypress
 	bool "cypress"
 config BR2_sparc_v8
 	bool "v8"
-comment "LEON SPARC needs gcc = 4.4.x"
 config BR2_sparc_sparchfleon
 	bool "hfleon"
 config BR2_sparc_sparchfleonv8
@@ -549,13 +545,10 @@ config BR2_powerpc_8540
 	bool "8540 / e500v1"
 config BR2_powerpc_8548
 	bool "8548 / e500v2"
-comment "e300c2 needs gcc >= 4.4.x"
 config BR2_powerpc_e300c2
 	bool "e300c2"
-comment "e300c3 needs gcc >= 4.4.x"
 config BR2_powerpc_e300c3
 	bool "e300c3"
-comment "e500mc needs gcc >= 4.4.x"
 config BR2_powerpc_e500mc
 	bool "e500mc"
 endchoice

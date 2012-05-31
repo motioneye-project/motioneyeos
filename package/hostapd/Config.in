@@ -10,14 +10,16 @@ config BR2_PACKAGE_HOSTAPD
 
 	  http://hostap.epitest.fi/
 
+if BR2_PACKAGE_HOSTAPD
+
 config BR2_PACKAGE_HOSTAPD_EAP
 	bool "Enable EAP"
-	depends on BR2_PACKAGE_HOSTAPD
 	help
 	  Enable support for EAP and RADIUS.
 
 config BR2_PACKAGE_HOSTAPD_WPS
 	bool "Enable WPS"
-	depends on BR2_PACKAGE_HOSTAPD
 	help
 	  Enable support for Wi-Fi Protected Setup.
+
+endif

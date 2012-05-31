@@ -22,6 +22,11 @@ config BR2_PACKAGE_QUAGGA_TCP_ZEBRA
 	  You'll want this enabled if zebra and the protocol daemon(s) run
 	  on different hosts.
 
+config BR2_PACKAGE_QUAGGA_BABELD
+	bool "BABEL protocol"
+	help
+	  Build babeld daemon.
+
 config BR2_PACKAGE_QUAGGA_BGPD
 	bool "BPGv4+ protocol"
 	help

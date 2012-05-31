@@ -15,11 +15,11 @@ choice
 	       bool "gcc 4.2.2-avr32-2.1.5"
 
 	config BR2_GCC_VERSION_4_3_X
-		depends on !BR2_avr32 && !BR2_sparc_sparchfleon && !BR2_sparc_sparchfleonv8 && !BR2_sparc_sparcsfleon && !BR2_sparc_sparcsfleonv8
+		depends on !BR2_avr32 && !BR2_sparc_sparchfleon && !BR2_sparc_sparchfleonv8 && !BR2_sparc_sparcsfleon && !BR2_sparc_sparcsfleonv8 && !BR2_cortex_a8 && !BR2_cortex_a9 && !BR2_x86_atom && !BR2_x86_64_atom && !BR2_powerpc_e300c2 && !BR2_powerpc_e300c3 && !BR2_powerpc_e500mc
 		bool "gcc 4.3.x"
 
 	config BR2_GCC_VERSION_4_4_X
-		depends on !BR2_avr32
+		depends on !BR2_avr32 && !BR2_x86_atom && !BR2_x86_64_atom
 		bool "gcc 4.4.x"
 
 	config BR2_GCC_VERSION_4_5_X
@@ -45,7 +45,7 @@ config BR2_GCC_SUPPORTS_FINEGRAINEDMTUNE
 
 config BR2_GCC_SNAP_DATE
 	string "GCC snapshot date"
-	default "4.7-20110430"
+	default "4.8-20120429"
 	depends on BR2_GCC_VERSION_SNAP
 	help
 	  Enter snapshot date to use for gcc.

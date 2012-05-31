@@ -1,0 +1,27 @@
+Fix cross compilation, based on OpenWRT patch.
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+diff -Nura libtorrent-0.13.2/configure.ac libtorrent-0.13.2-cross/configure.ac
+--- libtorrent-0.13.2/configure.ac	2012-04-20 03:55:10.000000000 -0300
++++ libtorrent-0.13.2-cross/configure.ac	2012-05-09 10:57:49.671175421 -0300
+@@ -17,7 +17,6 @@
+ 
+ AM_INIT_AUTOMAKE
+ AM_CONFIG_HEADER(config.h)
+-AM_PATH_CPPUNIT(1.9.6)
+ AC_DISABLE_STATIC
+ 
+ AM_DISABLE_STATIC
+diff -Nura libtorrent-0.13.2/scripts/checks.m4 libtorrent-0.13.2-cross/scripts/checks.m4
+--- libtorrent-0.13.2/scripts/checks.m4	2012-04-12 06:44:23.000000000 -0300
++++ libtorrent-0.13.2-cross/scripts/checks.m4	2012-05-09 10:42:32.642728917 -0300
+@@ -96,7 +96,7 @@
+ AC_DEFUN([TORRENT_CHECK_KQUEUE_SOCKET_ONLY], [
+   AC_MSG_CHECKING(whether kqueue supports pipes and ptys)
+ 
+-  AC_RUN_IFELSE([AC_LANG_SOURCE([
++  AC_LINK_IFELSE([AC_LANG_SOURCE([
+       #include <fcntl.h>
+       #include <stdlib.h>
+       #include <unistd.h>
