@@ -4,7 +4,7 @@
 #
 #############################################################
 
-XAVANTE_VERSION = 2.2.0
+XAVANTE_VERSION = 2.2.1
 XAVANTE_SITE = http://github.com/downloads/keplerproject/xavante
 XAVANTE_DEPENDENCIES = cgilua copas coxpcall lua luafilesystem luasocket wsapi
 
