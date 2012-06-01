@@ -6,4 +6,4 @@ config BR2_PACKAGE_CGILUA
 	  CGILua is a tool for creating dynamic HTML pages
 	  and manipulating input data from Web forms.
 
-	  http://luaforge.net/projects/cgilua/
+	  http://keplerproject.github.com/cgilua

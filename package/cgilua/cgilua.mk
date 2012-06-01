@@ -4,8 +4,8 @@
 #
 #############################################################
 
-CGILUA_VERSION = 5.1.3
-CGILUA_SITE = http://luaforge.net/frs/download.php/3970
+CGILUA_VERSION = 5.1.4
+CGILUA_SITE = http://github.com/downloads/keplerproject/cgilua
 CGILUA_DEPENDENCIES = luafilesystem
 
 define CGILUA_INSTALL_TARGET_CMDS
