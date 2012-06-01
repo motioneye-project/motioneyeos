@@ -4,7 +4,7 @@
 #
 #############################################################
 
-WSAPI_VERSION = 1.3.4
+WSAPI_VERSION = 1.5
 WSAPI_SITE = http://github.com/downloads/keplerproject/wsapi
 WSAPI_DEPENDENCIES = coxpcall luafilesystem rings
 
