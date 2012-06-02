@@ -138,6 +138,7 @@ source "package/qt/Config.in"
 
 if BR2_PACKAGE_QT
 comment "QT libraries and helper libraries"
+source "package/qextserialport/Config.in"
 source "package/qtuio/Config.in"
 endif
 

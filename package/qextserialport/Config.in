@@ -1,0 +1,9 @@
+config BR2_PACKAGE_QEXTSERIALPORT
+	bool "qextserialport"
+	# Qt is a big library, we don't want to select it
+	# automatically without the user knowing
+	depends on BR2_PACKAGE_QT
+	help
+	  A Qt library to manage serial ports
+
+	  http://code.google.com/p/qextserialport/
