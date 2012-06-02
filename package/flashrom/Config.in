@@ -1,0 +1,11 @@
+config BR2_PACKAGE_FLASHROM
+	bool "flashrom"
+	select BR2_PACKAGE_PCIUTILS
+	# dmidecode is only a runtime dependency
+	select BR2_PACKAGE_DMIDECODE
+	depends on BR2_i386 || BR2_x86_64
+	help
+	  BIOS-updating utility.
+	  Requires PCIUtils libraries.
+
+	  http://flashrom.org/
