@@ -1,0 +1,22 @@
+config BR2_PACKAGE_QWT
+	bool "qwt"
+	depends on BR2_PACKAGE_QT_GUI_MODULE
+	help
+	  Qwt is a graphics extension to the Qt GUI application
+	  framework. It provides a 2D plotting widget and more.
+
+	  http://http://sourceforge.net/projects/qwt
+
+if BR2_PACKAGE_QWT
+
+config BR2_PACKAGE_QWT_SVG
+	bool "SVG support"
+	select BR2_PACKAGE_QT_SVG
+
+config BR2_PACKAGE_QWT_MATHML
+	bool "MathML support"
+
+endif
+
+comment "qwt depends on QT gui module"
+	depends on !BR2_PACKAGE_QT_GUI_MODULE
