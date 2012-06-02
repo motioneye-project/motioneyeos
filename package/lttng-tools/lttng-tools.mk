@@ -1,5 +1,10 @@
-LTTNG_TOOLS_VERSION = 2.0-pre15
-LTTNG_TOOLS_SITE    = http://lttng.org/files/bundles/20111214/
+#############################################################
+#
+# LTTng-Tools: the trace control client
+#
+#############################################################
+LTTNG_TOOLS_VERSION = 2.0.1
+LTTNG_TOOLS_SITE    = http://lttng.org/files/lttng-tools/
 LTTNG_TOOLS_SOURCE  = lttng-tools-$(LTTNG_TOOLS_VERSION).tar.bz2
 
 # The host-lttng-babeltrace technically isn't a required build

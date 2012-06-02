@@ -1,0 +1,50 @@
+Make sync_file_range() usage optional
+
+Under uClibc, sync_file_range() is not available under all
+architectures, so we fall back to fdatasync() in this case.
+
+Inspired by the patch done by Thomas Petazzoni for the
+2.0-pre25 version.
+
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+---
+ configure.ac              |    2 +-
+ src/common/compat/fcntl.h |    5 +++++
+ 2 files changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index 5808c79..065b9cf 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -120,7 +120,7 @@ AS_IF([test "x$lttng_ust_support" = "xyes"], [
+
+ AM_CONDITIONAL([HAVE_LIBLTTNG_UST_CTL], [ test "x$ac_cv_lib_lttng_ust_ctl_ustctl_create_session" = "xyes" ])
+
+-AC_CHECK_FUNCS([sched_getcpu sysconf])
++AC_CHECK_FUNCS([sched_getcpu sysconf sync_file_range])
+
+ # check for dlopen
+ AC_CHECK_LIB([dl], [dlopen],
+diff --git a/src/common/compat/fcntl.h b/src/common/compat/fcntl.h
+index 58c1579..dafb33e 100644
+--- a/src/common/compat/fcntl.h
++++ b/src/common/compat/fcntl.h
+@@ -23,10 +23,15 @@
+
+ #ifdef __linux__
+
++#if defined(HAVE_SYNC_FILE_RANGE)
+ extern int compat_sync_file_range(int fd, off64_t offset, off64_t nbytes,
+ 		unsigned int flags);
+ #define lttng_sync_file_range(fd, offset, nbytes, flags) \
+ 	compat_sync_file_range(fd, offset, nbytes, flags)
++#else
++#define lttng_sync_file_range(fd, offset, nbytes, flags) \
++	fdatasync(fd);
++#endif
+
+ #elif defined(__FreeBSD__)
+
+--
+1.7.10
+
