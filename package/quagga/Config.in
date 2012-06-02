@@ -10,11 +10,16 @@ if BR2_PACKAGE_QUAGGA
 
 config BR2_PACKAGE_QUAGGA_ZEBRA
 	bool "zebra daemon"
+	depends on BR2_INET_IPV6
 	help
 	  Build zebra daemon.
 
+comment "Zebra daemon requires a toolchain with IPV6 support"
+	depends on BR2_PACKAGE_QUAGGA && !BR2_INET_IPV6
+
 config BR2_PACKAGE_QUAGGA_TCP_ZEBRA
 	bool "Use TCP sockets between zebra and protocol daemons"
+	depends on BR2_PACKAGE_QUAGGA_ZEBRA
 	help
 	  Use a TCP socket to communicate between zebra (supervisor) and
 	  the different protocol daemons.
@@ -24,6 +29,7 @@ config BR2_PACKAGE_QUAGGA_TCP_ZEBRA
 
 config BR2_PACKAGE_QUAGGA_BABELD
 	bool "BABEL protocol"
+	depends on BR2_INET_IPV6
 	help
 	  Build babeld daemon.
 
