@@ -38,7 +38,6 @@ PHP_CONF_OPT += $(if $(BR2_PACKAGE_PHP_EXT_SOCKETS),--enable-sockets) \
 		$(if $(BR2_PACKAGE_PHP_EXT_DOM),--enable-dom) \
 		$(if $(BR2_PACKAGE_PHP_EXT_SIMPLEXML),--enable-simplexml) \
 		$(if $(BR2_PACKAGE_PHP_EXT_SOAP),--enable-soap) \
-		$(if $(BR2_PACKAGE_PHP_EXT_WDDX),--enable-wddx) \
 		$(if $(BR2_PACKAGE_PHP_EXT_XML),--enable-xml) \
 		$(if $(BR2_PACKAGE_PHP_EXT_XMLREADER),--enable-xmlreader) \
 		$(if $(BR2_PACKAGE_PHP_EXT_XMLWRITER),--enable-xmlwriter) \
@@ -66,6 +65,11 @@ endif
 ifeq ($(BR2_PACKAGE_PHP_EXT_LIBXML2),y)
 	PHP_CONF_OPT += --enable-libxml --with-libxml-dir=${STAGING_DIR}/usr
 	PHP_DEPENDENCIES += libxml2
+endif
+
+ifeq ($(BR2_PACKAGE_PHP_EXT_WDDX),y)
+	PHP_CONF_OPT += --enable-wddx --with-libexpat-dir=$(STAGING_DIR)/usr
+	PHP_DEPENDENCIES += expat
 endif
 
 ifeq ($(BR2_PACKAGE_PHP_EXT_XMLRPC),y)
