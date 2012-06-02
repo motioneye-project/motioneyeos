@@ -4,8 +4,14 @@ config BR2_PACKAGE_GDB
 	bool "Build gdb debugger for the Target"
 	select BR2_PACKAGE_NCURSES
 	depends on BR2_USE_WCHAR
-	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on !BR2_sh && !BR2_sh64 && !BR2_avr32 && !BR2_microblaze
+	# The newest versions of gdb require thread debugging in the
+	# toolchain. The only cases for which this is not needed is if
+	# we use gdb 6.8 (marked deprecated)
+	depends on \
+		BR2_TOOLCHAIN_HAS_THREADS_DEBUG_IF_NEEDED || \
+		BR2_DEPRECATED || \
+		BR2_bfin
 	help
 	    Build the full gdb debugger to run on the target.
 
@@ -90,9 +96,8 @@ choice
 
 endchoice
 
-comment "gdb 7.x support needs pthread debug support in toolchain"
-	depends on BR2_PACKAGE_GDB || BR2_PACKAGE_GDB_SERVER || BR2_PACKAGE_GDB_HOST
-	depends on !BR2_TOOLCHAIN_HAS_THREADS_DEBUG_IF_NEEDED
+comment "gdb support needs pthread debug support in toolchain"
+	depends on !BR2_DEPRECATED && !BR2_bfin && !BR2_TOOLCHAIN_HAS_THREADS_DEBUG_IF_NEEDED
 
 config BR2_GDB_VERSION
 	string
