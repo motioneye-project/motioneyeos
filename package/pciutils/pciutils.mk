@@ -6,6 +6,7 @@
 
 PCIUTILS_VERSION = 3.1.9
 PCIUTILS_SITE = ftp://atrey.karlin.mff.cuni.cz/pub/linux/pci
+PCIUTILS_INSTALL_STAGING = YES
 ifeq ($(BR2_PACKAGE_ZLIB),y)
 	PCIUTILS_ZLIB=yes
 	PCIUTILS_DEPENDENCIES += zlib
@@ -47,6 +48,13 @@ define PCIUTILS_INSTALL_TARGET_CMDS
 	$(MAKE) BUILDDIR=$(@D) -C $(@D) PREFIX=$(TARGET_DIR)/usr \
 		SHARED=$(PCIUTILS_SHARED) install
 	$(MAKE) BUILDDIR=$(@D) -C $(@D) PREFIX=$(TARGET_DIR)/usr \
+		SHARED=$(PCIUTILS_SHARED) install-lib
+endef
+
+define PCIUTILS_INSTALL_STAGING_CMDS
+	$(MAKE) BUILDDIR=$(@D) -C $(@D) PREFIX=$(STAGING_DIR)/usr \
+		SHARED=$(PCIUTILS_SHARED) install
+	$(MAKE) BUILDDIR=$(@D) -C $(@D) PREFIX=$(STAGING_DIR)/usr \
 		SHARED=$(PCIUTILS_SHARED) install-lib
 endef
 
