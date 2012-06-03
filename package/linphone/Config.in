@@ -2,6 +2,9 @@ config BR2_PACKAGE_LINPHONE
 	bool "linphone"
 	select BR2_PACKAGE_LIBEXOSIP2
 	select BR2_PACKAGE_SPEEX
+	select BR2_PACKAGE_ORTP
+	select BR2_PACKAGE_MEDIASTREAMER
+	depends on BR2_INSTALL_LIBSTDCPP # mediastreamer
 	help
 	  Linphone is an internet phone or Voice Over IP phone (VoIP).
 
@@ -19,3 +22,6 @@ config BR2_PACKAGE_LINPHONE
 	  client, linphonec, and video support is not enabled.
 
 	  http://www.linphone.org/
+
+comment "linphone requires a toolchain with C++ support enabled"
+	depends on !BR2_INSTALL_LIBSTDCPP
