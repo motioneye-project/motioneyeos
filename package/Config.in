@@ -418,6 +418,7 @@ source "package/libsoup/Config.in"
 source "package/libtorrent/Config.in"
 source "package/libupnp/Config.in"
 source "package/libvncserver/Config.in"
+source "package/ortp/Config.in"
 source "package/zeromq/Config.in"
 endmenu
 

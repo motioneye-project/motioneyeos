@@ -1,0 +1,6 @@
+config BR2_PACKAGE_ORTP
+	bool "oRTP"
+	help
+	  oRTP, a Real-time Transport Protocol (RTP,RFC3550) library
+
+	  http://www.linphone.org/eng/documentation/dev/ortp.html
