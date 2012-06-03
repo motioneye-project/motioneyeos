@@ -27,7 +27,7 @@
  exec_prefix = @exec_prefix@
  
 -SHAREDOPT = -shared
-+SHAREDOPT = -shared -fPIC,-Wl,-soname,libcgi.so.0
++SHAREDOPT = -shared -fPIC -Wl,-soname,libcgi.so.0
  LIBDIR = $(prefix)/lib
 -INCDIR = $(prefix)/include
 +INCDIR = $(prefix)/include/libcgi/
