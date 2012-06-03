@@ -388,6 +388,7 @@ source "package/libogg/Config.in"
 source "package/libplayer/Config.in"
 source "package/libtheora/Config.in"
 source "package/live555/Config.in"
+source "package/mediastreamer/Config.in"
 endmenu
 
 menu "Networking"

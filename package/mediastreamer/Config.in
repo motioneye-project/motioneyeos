@@ -1,0 +1,16 @@
+config BR2_PACKAGE_MEDIASTREAMER
+	bool "mediastreamer"
+	select BR2_PACKAGE_ORTP
+	depends on BR2_INSTALL_LIBSTDCPP # until fixed
+	help
+	  Mediastreamer is a powerful and lightweighted streaming
+	  engine specialized for voice/video telephony applications.
+
+	  It is the library that is responsible for all the receiving
+	  and sending of multimedia streams in linphone, including
+	  voice/video capture, encoding and decoding, and rendering.
+
+	  http://www.linphone.org/eng/documentation/dev/mediastreamer2.html
+
+comment "mediastreamer requires a toolchain with C++ support enabled"
+	depends on !BR2_INSTALL_LIBSTDCPP
