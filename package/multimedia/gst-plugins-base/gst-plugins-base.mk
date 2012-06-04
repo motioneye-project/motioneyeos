@@ -17,14 +17,24 @@ GST_PLUGINS_BASE_CONF_ENV =
 
 GST_PLUGINS_BASE_CONF_OPT = \
 		--disable-examples \
-		--disable-x \
-		--disable-xvideo \
-		--disable-xshm \
 		--disable-oggtest \
 		--disable-vorbistest \
 		--disable-freetypetest
 
 GST_PLUGINS_BASE_DEPENDENCIES = gstreamer
+
+ifeq ($(BR2_PACKAGE_XORG7),y)
+GST_PLUGINS_BASE_DEPENDENCIES += xlib_libX11 xlib_libXext xlib_libXv
+GST_PLUGINS_BASE_CONF_OPT += \
+	--enable-x \
+	--enable-xshm \
+	--enable-xvideo
+else
+GST_PLUGINS_BASE_CONF_OPT += \
+	--disable-x \
+	--disable-xshm \
+	--disable-xvideo
+endif
 
 ifeq ($(BR2_PACKAGE_ORC),y)
 GST_PLUGINS_BASE_DEPENDENCIES += orc
