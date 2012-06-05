@@ -2,6 +2,8 @@ MEDIASTREAMER_VERSION = 2.8.2
 MEDIASTREAMER_SITE = http://download.savannah.nongnu.org/releases/linphone/mediastreamer
 MEDIASTREAMER_INSTALL_STAGING = YES
 MEDIASTREAMER_DEPENDENCIES = host-intltool host-pkg-config ortp
+# tests fail linking on some architectures, so disable them
+MEDIASTREAMER_CONF_OPT = --disable-tests
 
 ifeq ($(BR2_PACKAGE_ALSA_LIB),y)
 MEDIASTREAMER_CONF_OPT += --enable-alsa
