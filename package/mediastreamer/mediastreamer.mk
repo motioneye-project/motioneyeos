@@ -50,16 +50,15 @@ endif
 ifeq ($(BR2_PACKAGE_XLIB_LIBX11),y)
 MEDIASTREAMER_CONF_OPT += --enable-x11
 MEDIASTREAMER_DEPENDENCIES += xlib_libX11
+else
+MEDIASTREAMER_CONF_OPT += --disable-x11
+endif
 
 ifeq ($(BR2_PACKAGE_XLIB_LIBXV),y)
 MEDIASTREAMER_CONF_OPT += --enable-xv
 MEDIASTREAMER_DEPENDENCIES += xlib_libXv
 else
 MEDIASTREAMER_CONF_OPT += --disable-xv
-endif
-
-else
-MEDIASTREAMER_CONF_OPT += --disable-x11
 endif
 
 ifeq ($(BR2_PACKAGE_LIBTHEORA),y)
