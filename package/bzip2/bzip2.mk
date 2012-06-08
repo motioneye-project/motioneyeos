@@ -3,15 +3,14 @@
 # bzip2
 #
 #############################################################
-BZIP2_VERSION:=1.0.5
-BZIP2_SONAME=1.0.4
-BZIP2_SOURCE:=bzip2-$(BZIP2_VERSION).tar.gz
-BZIP2_SITE:=http://www.bzip.org/$(BZIP2_VERSION)
-BZIP2_INSTALL_STAGING=YES
+
+BZIP2_VERSION = 1.0.6
+BZIP2_SITE = http://www.bzip.org/$(BZIP2_VERSION)
+BZIP2_INSTALL_STAGING = YES
 
 define BZIP2_FIX_MAKEFILE
 	$(SED) "s,ln \$$(,ln -snf \$$(,g" $(@D)/Makefile
-	$(SED) "s,ln -s (lib.*),ln -snf \$$1; ln -snf libbz2.so.$(BZIP2_SONAME) \
+	$(SED) "s,ln -s (lib.*),ln -snf \$$1; ln -snf libbz2.so.$(BZIP2_VERSION)) \
 	    libbz2.so,g" $(@D)/Makefile-libbz2_so
 	$(SED) "s:-O2:$(TARGET_CFLAGS):" $(@D)/Makefile
 	$(SED) "s:-O2:$(TARGET_CFLAGS):" $(@D)/Makefile-libbz2_so
@@ -42,12 +41,12 @@ define BZIP2_INSTALL_STAGING_CMDS
 	$(TARGET_MAKE_ENV) $(TARGET_CONFIGURE_OPTS) \
 	$(MAKE) PREFIX=$(STAGING_DIR)/usr -C $(@D) install
 	$(INSTALL) -m 0755 -d $(STAGING_DIR)/usr/lib
-	cp $(@D)/libbz2.so.$(BZIP2_SONAME) $(STAGING_DIR)/usr/lib/
+	cp $(@D)/libbz2.so.$(BZIP2_VERSION) $(STAGING_DIR)/usr/lib/
 	cp $(@D)/libbz2.a $(STAGING_DIR)/usr/lib/
 	(cd $(STAGING_DIR)/usr/lib/; \
-		ln -snf libbz2.so.$(BZIP2_SONAME) libbz2.so; \
-		ln -snf libbz2.so.$(BZIP2_SONAME) libbz2.so.1.0; \
-		ln -snf libbz2.so.$(BZIP2_SONAME) libbz2.so.1; \
+		ln -snf libbz2.so.$(BZIP2_VERSION) libbz2.so; \
+		ln -snf libbz2.so.$(BZIP2_VERSION) libbz2.so.1.0; \
+		ln -snf libbz2.so.$(BZIP2_VERSION) libbz2.so.1; \
 	)
 endef
 
@@ -56,11 +55,11 @@ define BZIP2_INSTALL_TARGET_CMDS
 	rm -f $(addprefix $(TARGET_DIR)/usr/bin/,bzip2 bunzip2 bzcat)
 	$(TARGET_MAKE_ENV) $(TARGET_CONFIGURE_OPTS) \
 	$(MAKE) PREFIX=$(TARGET_DIR)/usr -C $(@D) install
-	cp $(@D)/libbz2.so.$(BZIP2_SONAME) $(TARGET_DIR)/usr/lib/
+	cp $(@D)/libbz2.so.$(BZIP2_VERSION) $(TARGET_DIR)/usr/lib/
 	(cd $(TARGET_DIR)/usr/lib; \
-		ln -snf libbz2.so.$(BZIP2_SONAME) libbz2.so.1.0; \
-		ln -snf libbz2.so.$(BZIP2_SONAME) libbz2.so.1; \
-		ln -snf libbz2.so.$(BZIP2_SONAME) libbz2.so; \
+		ln -snf libbz2.so.$(BZIP2_VERSION) libbz2.so.1.0; \
+		ln -snf libbz2.so.$(BZIP2_VERSION) libbz2.so.1; \
+		ln -snf libbz2.so.$(BZIP2_VERSION) libbz2.so; \
 	)
 	(cd $(TARGET_DIR)/usr/bin; \
 		ln -snf bzip2 bunzip2; \
@@ -84,7 +83,7 @@ endef
 
 define HOST_BZIP2_FIX_MAKEFILE
 	$(SED) "s,ln \$$(,ln -snf \$$(,g" $(@D)/Makefile
-	$(SED) "s,ln -s (lib.*),ln -snf \$$1; ln -snf libbz2.so.$(BZIP2_SONAME) \
+	$(SED) "s,ln -s (lib.*),ln -snf \$$1; ln -snf libbz2.so.$(BZIP2_VERSION) \
 	    libbz2.so,g" $(@D)/Makefile-libbz2_so
 	$(SED) "s:-O2:$(HOST_CFLAGS):" $(@D)/Makefile
 	$(SED) "s:-O2:$(HOST_CFLAGS):" $(@D)/Makefile-libbz2_so
