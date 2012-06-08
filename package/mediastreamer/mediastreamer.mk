@@ -5,7 +5,7 @@ MEDIASTREAMER_DEPENDENCIES = host-intltool host-pkg-config ortp
 # tests fail linking on some architectures, so disable them
 MEDIASTREAMER_CONF_OPT = --disable-tests
 
-ifeq ($(BR2_PACKAGE_ALSA_LIB),y)
+ifeq ($(BR2_PACKAGE_ALSA_LIB_MIXER)$(BR2_PACKAGE_ALSA_LIB_PCM),yy)
 MEDIASTREAMER_CONF_OPT += --enable-alsa
 MEDIASTREAMER_DEPENDENCIES += alsa-lib
 else
