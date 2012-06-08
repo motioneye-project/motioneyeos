@@ -1,0 +1,7 @@
+config BR2_PACKAGE_LIBFREEFARE
+	bool "libfreefare"
+	select BR2_PACKAGE_LIBNFC
+	help
+	  Library for high level manipulation of MIFARE cards.
+
+	  http://code.google.com/p/nfc-tools/wiki/libfreefare
