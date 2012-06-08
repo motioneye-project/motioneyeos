@@ -9,7 +9,7 @@ MICROPERL_SITE = http://www.cpan.org/src/5.0
 MICROPERL_SOURCE = perl-$(MICROPERL_VERSION).tar.bz2
 MICROPERL_DEPENDENCIES = host-microperl
 MICROPERL_MODS_DIR = /usr/lib/perl5/$(MICROPERL_VERSION)
-MICROPERL_ARCH_DIR = $(MICROPERL_MODS_DIR)/$(REAL_GNU_TARGET_NAME)
+MICROPERL_ARCH_DIR = $(MICROPERL_MODS_DIR)/$(GNU_TARGET_NAME)
 MICROPERL_MODS = $(call qstrip,$(BR2_PACKAGE_MICROPERL_MODULES))
 
 # Minimal set of modules required for 'perl -V' to work
@@ -72,7 +72,7 @@ define MICROPERL_CONFIGURE_CMDS
 	echo "archlib='$(MICROPERL_ARCH_DIR)'" >>$(@D)/uconfig.sh
 	echo "archlibexp='$(MICROPERL_ARCH_DIR)'" >>$(@D)/uconfig.sh
 	echo "d_archlib='define'" >>$(@D)/uconfig.sh
-	echo "archname='$(REAL_GNU_TARGET_NAME)'" >>$(@D)/uconfig.sh
+	echo "archname='$(GNU_TARGET_NAME)'" >>$(@D)/uconfig.sh
 	echo "osname='linux'" >>$(@D)/uconfig.sh
 	echo "cc='$(TARGET_CC)'" >>$(@D)/uconfig.sh
 	echo "ccflags='$(TARGET_CFLAGS)'" >>$(@D)/uconfig.sh

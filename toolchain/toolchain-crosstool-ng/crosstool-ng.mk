@@ -187,7 +187,7 @@ endif
 # CT_LOCAL_TARBALLS_DIR     : share downloads with BR
 # CT_SYSROOT_DIR_PREFIX     : no prefix needed, really
 # CT_TARGET_VENDOR          : try to set a unique vendor string, to avoid clashing with BR's vendor string
-# CT_TARGET_ALIAS           : set the target tuple alias to REAL_GNU_TARGET_NAME so that packages' ./configure find the compiler
+# CT_TARGET_ALIAS           : set the target tuple alias to GNU_TARGET_NAME so that packages' ./configure find the compiler
 # CT_DEBUG_gdb              : deselect gdb+gdbserver if buildroot builds its own
 # CT_CC_LANG_CXX            : required if we copy libstdc++.so, and build C++
 # CT_LIBC_UCLIBC_CONFIG_FILE: uClibc config file, if needed
@@ -202,7 +202,7 @@ CTNG_FIX_DOT_CONFIG_SED += s:^\# (CT_ARCH_$(CTNG_ENDIAN)) is not set:\1=y:;
 CTNG_FIX_DOT_CONFIG_SED += s:^(|\# )(CT_ARCH_(32|64)).*:\# \2 is not set:;
 CTNG_FIX_DOT_CONFIG_SED += s:^\# (CT_ARCH_$(CTNG_BIT)) is not set:\1=y:;
 CTNG_FIX_DOT_CONFIG_SED += s:^(CT_TARGET_VENDOR)=.*:\1="unknown":;
-CTNG_FIX_DOT_CONFIG_SED += s:^(CT_TARGET_ALIAS)=.*:\1="$(GNU_TARGET_NAME)":;
+CTNG_FIX_DOT_CONFIG_SED += s:^(CT_TARGET_ALIAS)=.*:\1="$(ARCH)-linux":;
 CTNG_FIX_DOT_CONFIG_SED += s:^(CT_TOOLCHAIN_PKGVERSION)="(.*)":\1="buildroot $(BR2_VERSION_FULL)":;
 ifneq ($(call qstrip,$(BR2_USE_MMU)),)
 CTNG_FIX_DOT_CONFIG_SED += s:^\# (CT_ARCH_USE_MMU) is not set:\1=y:;
