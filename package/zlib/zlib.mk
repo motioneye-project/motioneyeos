@@ -4,7 +4,7 @@
 #
 #############################################################
 
-ZLIB_VERSION = 1.2.6
+ZLIB_VERSION = 1.2.7
 ZLIB_SOURCE =zlib-$(ZLIB_VERSION).tar.bz2
 ZLIB_SITE = http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/libpng
 ZLIB_INSTALL_STAGING = YES
