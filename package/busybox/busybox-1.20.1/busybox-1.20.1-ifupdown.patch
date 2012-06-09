@@ -1,0 +1,75 @@
+--- busybox-1.20.1/networking/ifupdown.c
++++ busybox-1.20.1-ifupdown/networking/ifupdown.c
+@@ -140,8 +140,6 @@ static const char keywords_up_down[] ALI
+ 	"up\0"
+ 	"down\0"
+ 	"pre-up\0"
+-	"pre-down\0"
+-	"post-up\0"
+ 	"post-down\0"
+ ;
+ 
+@@ -895,6 +893,11 @@ static struct interfaces_file_t *read_in
+ 				if (rest_of_line[0] == '\0')
+ 					bb_error_msg_and_die("option with empty value \"%s\"", buf);
+ 
++				if (strcmp(first_word, "post-up") == 0)
++					first_word += 5; /* "up" */
++				else if (strcmp(first_word, "pre-down") == 0)
++					first_word += 4; /* "down" */
++
+ 				/* If not one of "up", "down",... words... */
+ 				if (index_in_strings(keywords_up_down, first_word) < 0) {
+ 					int i;
+@@ -963,7 +966,7 @@ static char *setlocalenv(const char *for
+ 	return result;
+ }
+ 
+-static void set_environ(struct interface_defn_t *iface, const char *mode)
++static void set_environ(struct interface_defn_t *iface, const char *mode, const char *opt)
+ {
+ 	int i;
+ 	char **pp;
+@@ -976,7 +979,7 @@ static void set_environ(struct interface
+ 	}
+ 
+ 	/* note: last element will stay NULL: */
+-	G.my_environ = xzalloc(sizeof(char *) * (iface->n_options + 6));
++	G.my_environ = xzalloc(sizeof(char *) * (iface->n_options + 7));
+ 	pp = G.my_environ;
+ 
+ 	for (i = 0; i < iface->n_options; i++) {
+@@ -990,6 +993,7 @@ static void set_environ(struct interface
+ 	*pp++ = setlocalenv("%s=%s", "ADDRFAM", iface->address_family->name);
+ 	*pp++ = setlocalenv("%s=%s", "METHOD", iface->method->name);
+ 	*pp++ = setlocalenv("%s=%s", "MODE", mode);
++	*pp++ = setlocalenv("%s=%s", "PHASE", opt);
+ 	if (G.startup_PATH)
+ 		*pp++ = setlocalenv("%s=%s", "PATH", G.startup_PATH);
+ }
+@@ -1044,21 +1048,21 @@ static int check(char *str)
+ static int iface_up(struct interface_defn_t *iface)
+ {
+ 	if (!iface->method->up(iface, check)) return -1;
+-	set_environ(iface, "start");
++	set_environ(iface, "start", "pre-up");
+ 	if (!execute_all(iface, "pre-up")) return 0;
+ 	if (!iface->method->up(iface, doit)) return 0;
++	set_environ(iface, "start", "post-up");
+ 	if (!execute_all(iface, "up")) return 0;
+-	if (!execute_all(iface, "post-up")) return 0;
+ 	return 1;
+ }
+ 
+ static int iface_down(struct interface_defn_t *iface)
+ {
+ 	if (!iface->method->down(iface,check)) return -1;
+-	set_environ(iface, "stop");
+-	if (!execute_all(iface, "pre-down")) return 0;
++	set_environ(iface, "stop", "pre-down");
+ 	if (!execute_all(iface, "down")) return 0;
+ 	if (!iface->method->down(iface, doit)) return 0;
++	set_environ(iface, "stop", "post-down");
+ 	if (!execute_all(iface, "post-down")) return 0;
+ 	return 1;
+ }
