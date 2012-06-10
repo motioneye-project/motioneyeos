@@ -1,0 +1,98 @@
+From 40a4871b171293d98acb40cf54be9ee9b78a3244 Mon Sep 17 00:00:00 2001
+From: Samuel Martin <s.martin49@gmail.com>
+Date: Wed, 6 Jun 2012 00:49:25 +0200
+Subject: [PATCH 1/1] build systems: make example build optional
+
+This patch makes example build optional for both cmake and autotools build
+systems.
+
+In order to keep the former behavior, example build is enabled by default.
+
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index dd7904d..0e35229 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -27,6 +27,7 @@ INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/incl
+ SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules/")
+ 
+ # Options
++SET(BUILD_EXAMPLES ON CACHE BOOL "Build examples")
+ SET(LIBNFC_DEBUG_OUTPUT OFF CACHE BOOL "Debug output of communication with the NFC chip")
+ IF(LIBNFC_DEBUG_OUTPUT)
+   ADD_DEFINITIONS(-DDEBUG -g3)
+@@ -84,7 +85,7 @@ IF(NOT WIN32)
+   ENDIF(LIBNFC_DRIVER_ACR122)
+   # CMake lists are separated by a semi colon, replace with colon
+   STRING(REPLACE ";" "," PKG_CONFIG_REQUIRES "${PKG_REQ}")
+-  CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/libnfc.pc.in ${CMAKE_CURRENT_BINARY_DIR}/libnfc.pc @ONLY) 
++  CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/libnfc.pc.in ${CMAKE_CURRENT_BINARY_DIR}/libnfc.pc @ONLY)
+   INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/libnfc.pc DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
+ ENDIF(NOT WIN32)
+ 
+@@ -101,7 +102,10 @@ ENDIF(LIBUSB_INCLUDE_DIRS)
+ ADD_SUBDIRECTORY(libnfc)
+ ADD_SUBDIRECTORY(include)
+ ADD_SUBDIRECTORY(utils)
+-ADD_SUBDIRECTORY(examples)
++
++IF(BUILD_EXAMPLES)
++  ADD_SUBDIRECTORY(examples)
++ENDIF(BUILD_EXAMPLES)
+ 
+ # Binary Package
+ IF(WIN32)
+diff --git a/Makefile.am b/Makefile.am
+index 3671cb6..59fd75a 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -2,7 +2,13 @@ ACLOCAL_AMFLAGS = -I m4
+ 
+ AM_CFLAGS = $(LIBNFC_CFLAGS)
+ 
+-SUBDIRS = libnfc utils examples include contrib cmake test
++SUBDIRS = libnfc utils
++
++if EXAMPLE_ENABLED
++SUBDIRS += examples
++endif
++
++SUBDIRS += include contrib cmake test
+ 
+ pkgconfigdir = $(libdir)/pkgconfig
+ pkgconfig_DATA = libnfc.pc
+diff --git a/configure.ac b/configure.ac
+index 0a222a8..6988164 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -111,6 +111,14 @@ then
+ fi
+ AM_CONDITIONAL(DOC_ENABLED, [test x"$enable_doc" = xyes])
+ 
++# Example build (default: yes)
++AC_ARG_ENABLE([example],AS_HELP_STRING([--enable-example],[Enable example build.]),[enable_example=$enableval],[enable_example="yes"])
++
++AC_MSG_CHECKING(for example build)
++AC_MSG_RESULT($enable_example)
++
++AM_CONDITIONAL(EXAMPLE_ENABLED, [test x"$enable_example" = xyes])
++
+ # Dependencies
+ PKG_CONFIG_REQUIRES=""
+ 
+@@ -129,7 +137,11 @@ if test x$ac_cv_with_cutter = xyes -a x$ac_cv_use_cutter = xno; then
+ fi
+ AM_CONDITIONAL([WITH_CUTTER], [test "$ac_cv_use_cutter" != "no"])
+ 
++
++if test x"$enable_example" = "xyes"
++then
+ AC_CHECK_READLINE
++fi
+ 
+ # Help us to write great code ;-)
+ CFLAGS="$CFLAGS -Wall -pedantic -Wextra"
+-- 
+1.7.10.3
+

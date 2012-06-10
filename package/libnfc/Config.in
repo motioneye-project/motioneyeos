@@ -6,3 +6,8 @@ config BR2_PACKAGE_LIBNFC
 	  Public platform independent Near Field Communication (NFC) library.
 
 	  http://www.libnfc.org/
+
+config BR2_PACKAGE_LIBNFC_EXAMPLES
+	bool "build libnfc examples"
+	depends on BR2_PACKAGE_LIBNFC
+	select BR2_PACKAGE_READLINE
