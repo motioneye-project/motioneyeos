@@ -6,8 +6,10 @@ HOSTMAKE=$(MAKE)
 endif
 HOSTMAKE :=$(shell which $(HOSTMAKE) || type -p $(HOSTMAKE) || echo make)
 
+PARALLEL_JOBS:=$(BR2_JLEVEL)
+
 MAKE1:=$(HOSTMAKE) -j1
-MAKE:=$(HOSTMAKE) -j$(BR2_JLEVEL)
+MAKE:=$(HOSTMAKE) -j$(PARALLEL_JOBS)
 
 # Compute GNU_TARGET_NAME
 GNU_TARGET_NAME=$(ARCH)-unknown-linux-$(LIBC)$(ABI)
