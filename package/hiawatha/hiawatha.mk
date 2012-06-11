@@ -1,4 +1,4 @@
-HIAWATHA_VERSION = 8.3
+HIAWATHA_VERSION = 8.4
 HIAWATHA_SITE = http://www.hiawatha-webserver.org/files/
 
 ifeq ($(BR2_PACKAGE_HIAWATHA_SSL),y)
@@ -7,6 +7,7 @@ HIAWATHA_DEPENDENCIES += polarssl
 endif
 
 HIAWATHA_CONF_OPT += \
+	$(if $(BR2_INET_IPV6),,-DENABLE_IPV6=OFF) \
 	-DENABLE_TOOLKIT=OFF \
 	-DENABLE_XSLT=OFF \
 	-DCONFIG_DIR=/etc/hiawatha \
