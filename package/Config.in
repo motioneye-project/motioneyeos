@@ -469,6 +469,7 @@ source "package/slang/Config.in"
 endmenu
 
 menu "JSON/XML"
+source "package/cjson/Config.in"
 source "package/expat/Config.in"
 source "package/ezxml/Config.in"
 source "package/json-c/Config.in"
