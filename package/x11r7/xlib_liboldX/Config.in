@@ -1,5 +1,0 @@
-config BR2_PACKAGE_XLIB_LIBOLDX
-	bool "liboldX"
-	select BR2_PACKAGE_XLIB_LIBX11
-	help
-	  X.Org oldX library
