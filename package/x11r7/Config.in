@@ -198,7 +198,6 @@ if BR2_PACKAGE_XORG7
 		source package/x11r7/xfont_font-bh-type1/Config.in
 		source package/x11r7/xfont_font-bitstream-100dpi/Config.in
 		source package/x11r7/xfont_font-bitstream-75dpi/Config.in
-		source package/x11r7/xfont_font-bitstream-speedo/Config.in
 		source package/x11r7/xfont_font-bitstream-type1/Config.in
 		source package/x11r7/xfont_font-cronyx-cyrillic/Config.in
 		source package/x11r7/xfont_font-cursor-misc/Config.in
