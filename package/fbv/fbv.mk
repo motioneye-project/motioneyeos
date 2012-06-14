@@ -7,7 +7,24 @@ FBV_VERSION:=1.0b
 FBV_SOURCE:=fbv-$(FBV_VERSION).tar.gz
 FBV_SITE:=http://s-tech.elsat.net.pl/fbv
 
-FBV_DEPENDENCIES = libpng jpeg libungif
+### image format dependencies and configure options
+FBV_DEPENDENCIES = # empty
+FBV_CONFIGURE_OPTS = # empty
+ifeq ($(BR2_PACKAGE_FBV_PNG),y)
+FBV_DEPENDENCIES += libpng
+else
+FBV_CONFIGURE_OPTS += --without-libpng
+endif
+ifeq ($(BR2_PACKAGE_FBV_JPEG),y)
+FBV_DEPENDENCIES += jpeg
+else
+FBV_CONFIGURE_OPTS += --without-libjpeg
+endif
+ifeq ($(BR2_PACKAGE_FBV_GIF),y)
+FBV_DEPENDENCIES += libungif
+else
+FBV_CONFIGURE_OPTS += --without-libungif
+endif
 
 #fbv donesn't support cross-compilation
 define FBV_CONFIGURE_CMDS
@@ -16,7 +33,7 @@ define FBV_CONFIGURE_CMDS
 		$(TARGET_CONFIGURE_ARGS) \
 		./configure \
 		--prefix=/usr \
-		--libs="-lz -lm" \
+		$(FBV_CONFIGURE_OPTS) \
 	)
 endef
 
