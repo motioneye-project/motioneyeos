@@ -1,0 +1,14 @@
+config BR2_PACKAGE_JQUERY_UI_THEMES
+	bool "jQuery UI themes"
+	depends on BR2_PACKAGE_JQUERY_UI
+	help
+	  Themes for jQuery UI.
+
+	  http://jqueryui.com/
+
+config BR2_PACKAGE_JQUERY_UI_THEMES_THEME
+	string "theme to install"
+	default "base"
+	depends on BR2_PACKAGE_JQUERY_UI_THEMES
+	help
+	  Specify the name of the jQuery UI theme to install.
