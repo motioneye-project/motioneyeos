@@ -1,7 +1,0 @@
-config BR2_PACKAGE_XLIB_LIBXKBUI
-	bool "libxkbui"
-	select BR2_PACKAGE_XLIB_LIBXKBFILE
-	select BR2_PACKAGE_XLIB_LIBXT
-	select BR2_PACKAGE_XPROTO_KBPROTO
-	help
-	  X.Org xkbui library
