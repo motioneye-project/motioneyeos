@@ -6,7 +6,15 @@ HOSTMAKE=$(MAKE)
 endif
 HOSTMAKE :=$(shell which $(HOSTMAKE) || type -p $(HOSTMAKE) || echo make)
 
+# If BR2_LEVEL is 0, scale the maximum concurrency with the number of
+# CPUs.  A coefficient of 2 is used in order to keep processors busy
+# while waiting on I/O.
+ifeq ($(BR2_JLEVEL),0)
+PARALLEL_JOBS:=$(shell echo \
+	$$((2 * `getconf _NPROCESSORS_ONLN 2>/dev/null || echo 1`)))
+else
 PARALLEL_JOBS:=$(BR2_JLEVEL)
+endif
 
 MAKE1:=$(HOSTMAKE) -j1
 MAKE:=$(HOSTMAKE) -j$(PARALLEL_JOBS)

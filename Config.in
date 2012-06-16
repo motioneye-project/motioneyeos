@@ -178,10 +178,12 @@ config BR2_DEBIAN_MIRROR
 endmenu
 
 config BR2_JLEVEL
-	int "Number of jobs to run simultaneously"
-	default "2"
+	int "Number of jobs to run simultaneously (0 for auto)"
+	default "0"
 	help
-	  Number of jobs to run simultaneously
+	  Number of jobs to run simultaneously.  If 0, determine
+	  automatically according to number of CPUs on the host
+	  system.
 
 config BR2_CCACHE
 	bool "Enable compiler cache"
