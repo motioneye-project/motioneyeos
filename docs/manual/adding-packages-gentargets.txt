@@ -156,13 +156,18 @@ information is (assuming the package name is +libfoo+) :
   package directory inside Buildroot will be applied to the package
   after extraction.
 
-* +LIBFOO_SITE+ may contain the Internet location of the package. It
-  can either be the HTTP, FTP or SCP location of a tarball, or the URL
-  of a Git, Subversion, Mercurial or Bazaar repository (see
-  +LIBFOO_SITE_METHOD+ below). +
-  SCP URLs should be of the form +scp://[user@]host:filepath+. Note
-  that filepath is relative to the user's home directory, so you may want
-  to prepend the path with a slash for absolute paths:
+* +LIBFOO_SITE+ provides the location of the package, which can be a
+  URL or a local filesystem path. HTTP, FTP and SCP are supported URL
+  types for retrieving package tarballs. Git, Subversion, Mercurial,
+  and Bazaar are supported URL types for retrieving packages directly
+  from source code management systems. A filesystem path may be used
+  to specify either a tarball or a directory containing the package
+  source code. See +LIBFOO_SITE_METHOD+ below for more details on how
+  retrieval works. +
+  Note that SCP URLs should be of the form
+  +scp://[user@]host:filepath+, and that filepath is relative to the
+  user's home directory, so you may want to prepend the path with a
+  slash for absolute paths:
   +scp://[user@]host:/absolutepath+. +
   If +HOST_LIBFOO_SITE+ is not specified, it defaults to
   +LIBFOO_SITE+. If none are specified, then the location is assumed
@@ -172,6 +177,8 @@ information is (assuming the package name is +libfoo+) :
     +LIBFOO_SITE=http://www.libfoosoftware.org/libfoo+ +
     +LIBFOO_SITE=http://svn.xiph.org/trunk/Tremor/+ +
     +LIBFOO_SITE=git://github.com/kergoth/tslib.git+
+    +LIBFOO_SITE=/opt/software/libfoo.tar.gz+
+    +LIBFOO_SITE=$(TOPDIR)/../src/libfoo/+
 
 * +LIBFOO_SITE_METHOD+ may contain the method to fetch the package
   source code. It can either be +wget+ (for normal FTP/HTTP downloads
