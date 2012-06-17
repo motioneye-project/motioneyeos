@@ -209,6 +209,14 @@ information is (assuming the package name is +libfoo+) :
   ** +bzr+ for retrieving source code from a Bazaar repository. Used
      by default when +LIBFOO_SITE+ begins with +bzr://+. The
      downloaded source code is cached as with the +svn+ method.
+  ** +file+ for a local tarball.  One should use this when
+     +LIBFOO_SITE+ specifies a package tarball as a local filename.
+     Useful for software that isn't available publicly or in version
+     control.
+  ** +local+ for a local source code directory.  One should use this
+     when +LIBFOO_SITE+ specifies a local directory path containing
+     the package source code.  Buildroot copies the contents of the
+     source directory into the package's build directory.
 
 * +LIBFOO_DEPENDENCIES+ lists the dependencies (in terms of package
   name) that are required for the current target package to
