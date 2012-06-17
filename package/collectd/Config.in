@@ -1,5 +1,6 @@
 config BR2_PACKAGE_COLLECTD
 	bool "collectd"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
 	help
 	  collectd is a daemon which collects system performance
 	  statistics periodically and provides mechanisms to store
@@ -380,3 +381,6 @@ config BR2_PACKAGE_COLLECTD_WRITEHTTP
 endmenu
 
 endif
+
+comment "collectd needs a toolchain with thread support"
+        depends on !BR2_TOOLCHAIN_HAS_THREADS
