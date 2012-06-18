@@ -141,3 +141,6 @@
 
 # I2C device nodes
 /dev/i2c-	c	666	0	0	89	0	0	1	4
+
+# v4l device nodes
+/dev/video	c	666	0	0	81	0	0	1	4
