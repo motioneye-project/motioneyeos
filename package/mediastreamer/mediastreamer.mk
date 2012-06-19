@@ -12,9 +12,10 @@ else
 MEDIASTREAMER_CONF_OPT += --disable-alsa
 endif
 
-ifeq ($(BR2_PACKAGE_PORTAUDIO),y)
+# portaudio backend needs speex as well
+ifeq ($(BR2_PACKAGE_PORTAUDIO)$(BR2_PACKAGE_SPEEX),yy)
 MEDIASTREAMER_CONF_OPT += --enable-portaudio
-MEDIASTREAMER_DEPENDENCIES += portaudio
+MEDIASTREAMER_DEPENDENCIES += portaudio speex
 else
 MEDIASTREAMER_CONF_OPT += --disable-portaudio
 endif
