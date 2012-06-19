@@ -1,7 +1,6 @@
 ######################################################################
 #
 # Qt Embedded for Linux
-# http://www.qtsoftware.com/
 #
 # This makefile was originally composed by Thomas Lundquist <thomasez@zelow.no>
 # Later heavily modified by buildroot developers
