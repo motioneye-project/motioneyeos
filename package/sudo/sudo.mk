@@ -14,12 +14,4 @@ SUDO_CONF_OPT = \
 		--without-interfaces \
 		--without-pam
 
-define SUDO_INSTALL_TARGET_CMDS
-	install -m 4555 -D $(@D)/src/sudo $(TARGET_DIR)/usr/bin/sudo
-	install -m 0555 -D $(@D)/plugins/sudoers/visudo  \
-		$(TARGET_DIR)/usr/sbin/visudo
-	install -m 0440 -D $(@D)/plugins/sudoers/sudoers \
-		$(TARGET_DIR)/etc/sudoers
-endef
-
 $(eval $(call AUTOTARGETS))
