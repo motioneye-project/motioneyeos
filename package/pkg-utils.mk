@@ -76,6 +76,15 @@ MESSAGE = echo "$(TERM_BOLD)>>> $($(PKG)_NAME) $($(PKG)_VERSION) $(1)$(TERM_RESE
 TERM_BOLD := $(shell tput smso)
 TERM_RESET := $(shell tput rmso)
 
+# Utility functions for 'find'
+# findfileclauses(filelist) => -name 'X' -o -name 'Y'
+findfileclauses = $(call notfirstword,$(patsubst %,-o -name '%',$(1)))
+# finddirclauses(base, dirlist) => -path 'base/dirX' -o -path 'base/dirY'
+finddirclauses = $(call notfirstword,$(patsubst %,-o -path '$(1)/%',$(2)))
+
+# Miscellaneous utility functions
+# notfirstword(wordlist): returns all but the first word in wordlist
+notfirstword = $(wordlist 2,$(words $(1)),$(1))
 
 # Needed for the foreach loops to loop over the list of hooks, so that
 # each hook call is properly separated by a newline.
