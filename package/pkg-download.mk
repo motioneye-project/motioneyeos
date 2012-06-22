@@ -177,16 +177,16 @@ define SHOW_EXTERNAL_DEPS_WGET
 endef
 
 define DOWNLOAD_LOCALFILES
-	test -e $(DL_DIR)/$($(PKG)_SOURCE) || \
-		$(LOCALFILES) $(call qstrip,$(subst file://,,$($(PKG)_SITE)))/$($(PKG)_SOURCE) $(DL_DIR)
+	test -e $(DL_DIR)/$(2) || \
+		$(LOCALFILES) $(call qstrip,$(subst file://,,$(1))) $(DL_DIR)
 endef
 
 define SOURCE_CHECK_LOCALFILES
-  test -e $(call qstrip,$(subst file://,,$($(PKG)_SITE)))/$($(PKG)_SOURCE)
+  test -e $(call qstrip,$(subst file://,,$(1)))
 endef
 
 define SHOW_EXTERNAL_DEPS_LOCALFILES
-  echo $($(PKG)_SITE)/$($(PKG)_SOURCE)
+  echo $(2)
 endef
 
 ################################################################################
