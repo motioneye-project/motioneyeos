@@ -14,11 +14,10 @@
 #
 # The basic principle is the following
 #
-#  1. a. For toolchains downloaded from the Web, Buildroot already
-#  knows their configuration, so it just downloads them and extract
-#  them in $(TOOLCHAIN_EXTERNAL_DIR).
+#  1. If the toolchain is not pre-installed, download and extract it
+#  in $(TOOLCHAIN_EXTERNAL_DIR).
 #
-#  1. b. For pre-installed toolchains, perform some checks on the
+#  2. For all external toolchains, perform some checks on the
 #  conformity between the toolchain configuration described in the
 #  Buildroot menuconfig system, and the real configuration of the
 #  external toolchain. This is for example important to make sure that
@@ -30,19 +29,19 @@
 #  options. And at configuration time, we are not able to retrieve the
 #  external toolchain configuration.
 #
-#  2. Copy the libraries needed at runtime to the target directory,
+#  3. Copy the libraries needed at runtime to the target directory,
 #  $(TARGET_DIR). Obviously, things such as the C library, the dynamic
 #  loader and a few other utility libraries are needed if dynamic
 #  applications are to be executed on the target system.
 #
-#  3. Copy the libraries and headers to the staging directory. This
+#  4. Copy the libraries and headers to the staging directory. This
 #  will allow all further calls to gcc to be made using --sysroot
 #  $(STAGING_DIR), which greatly simplifies the compilation of the
 #  packages when using external toolchains. So in the end, only the
 #  cross-compiler binaries remains external, all libraries and headers
 #  are imported into the Buildroot tree.
 #
-#  4. Build a toolchain wrapper which executes the external toolchain
+#  5. Build a toolchain wrapper which executes the external toolchain
 #  with a number of arguments (sysroot/march/mtune/..) hardcoded,
 #  so we're sure the correct configuration is always used and the
 #  toolchain behaves similar to an internal toolchain.
