@@ -252,10 +252,16 @@ else ifeq ($(BR2_TOOLCHAIN_EXTERNAL_XILINX_MICROBLAZEBE_V2),y)
 TOOLCHAIN_EXTERNAL_SITE=http://git.xilinx.com/?p=xldk/microblaze_v2.0.git;a=blob;h=71e031ae990e063a5718f90d30cf97ad85e2f565;hb=569081301f0f1d8d3b24335a364e8ff1774190d4;f=
 TOOLCHAIN_EXTERNAL_SOURCE=microblaze-unknown-linux-gnu.tgz
 else
+# Custom toolchain
+TOOLCHAIN_EXTERNAL_SITE=$(dir $(call qstrip,$(BR2_TOOLCHAIN_EXTERNAL_URL)))
+TOOLCHAIN_EXTERNAL_SOURCE=$(notdir $(call qstrip,$(BR2_TOOLCHAIN_EXTERNAL_URL)))
+
 # A value must be set (even if unused), otherwise the
 # $(DL_DIR)/$(TOOLCHAIN_EXTERNAL_SOURCE) rule would override the main
 # $(DL_DIR) rule
+ifeq (,$(TOOLCHAIN_EXTERNAL_SOURCE))
 TOOLCHAIN_EXTERNAL_SOURCE=none
+endif
 endif
 
 # Special handling for Blackfin toolchain, because of the split in two

@@ -492,21 +492,36 @@ config BR2_TOOLCHAIN_EXTERNAL_CUSTOM
 
 endchoice
 
+choice
+	prompt "Toolchain origin"
+
 config BR2_TOOLCHAIN_EXTERNAL_DOWNLOAD
-	bool "Download toolchain automatically"
-	default y
-	depends on !BR2_TOOLCHAIN_EXTERNAL_CUSTOM
+	bool "Toolchain to be downloaded and installed"
 	help
-	  When enabled, Buildroot will automatically download and
-	  install the selected external toolchain. When disabled,
-	  Buildroot will use a pre-installed toolchain.
+	  Select this option if you want Buildroot to download and install the
+	  toolchain. If you have selected a custom toolchain, specify the URL
+	  in BR2_TOOLCHAIN_EXTERNAL_URL.
+
+config BR2_TOOLCHAIN_EXTERNAL_PREINSTALLED
+	bool "Pre-installed toolchain"
+	help
+	  Select this option if you want to use a pre-installed toolchain.
+	  Specify the path to this toolchain in BR2_TOOLCHAIN_EXTERNAL_PATH.
+
+endchoice
 
 config BR2_TOOLCHAIN_EXTERNAL_PATH
 	string "Toolchain path"
 	default "/path/to/toolchain/usr"
-	depends on !BR2_TOOLCHAIN_EXTERNAL_DOWNLOAD
+	depends on BR2_TOOLCHAIN_EXTERNAL_PREINSTALLED
 	help
 	  Path to where the external toolchain is installed.
+
+config BR2_TOOLCHAIN_EXTERNAL_URL
+	string "Toolchain URL"
+	depends on BR2_TOOLCHAIN_EXTERNAL_CUSTOM && BR2_TOOLCHAIN_EXTERNAL_DOWNLOAD
+	help
+	  URL of the custom toolchain tarball to download and install.
 
 config BR2_TOOLCHAIN_EXTERNAL_CUSTOM_PREFIX
 	string "Toolchain prefix"
