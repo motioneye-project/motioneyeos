@@ -123,6 +123,22 @@ config BR2_PRIMARY_SITE
 	  NOTE: This works for all packages using the central package
 	  infrastructure (generic, autotools, cmake, ...)
 
+config BR2_PRIMARY_SITE_ONLY
+	bool "Only allow downloads from primary download site"
+	depends on BR2_PRIMARY_SITE != ""
+	help
+	  If this option is enabled, downloads will only be attempted
+	  from the primary download site. Other locations, like the
+	  package's official download location or the backup download
+	  site, will not be considered. Therefore, if the package is
+	  not present on the primary site, the download fails.
+
+	  This is useful for project developers who want to ensure
+	  that the project can be built even if the upstream tarball
+	  locations disappear.
+
+if !BR2_PRIMARY_SITE_ONLY
+
 config BR2_BACKUP_SITE
 	string "Backup download site"
 	default "http://sources.buildroot.net/"
@@ -178,6 +194,8 @@ config BR2_DEBIAN_MIRROR
 
 	  Usually, just add your country code like XX here:
 	  http://ftp.XX.debian.org
+
+endif
 
 endmenu
 

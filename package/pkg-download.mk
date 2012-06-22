@@ -192,8 +192,8 @@ endef
 ################################################################################
 # DOWNLOAD -- Download helper. Will try to download source from:
 # 1) BR2_PRIMARY_SITE if enabled
-# 2) Download site
-# 3) BR2_BACKUP_SITE if enabled
+# 2) Download site, unless BR2_PRIMARY_SITE_ONLY is set
+# 3) BR2_BACKUP_SITE if enabled, unless BR2_PRIMARY_SITE_ONLY is set
 #
 # Argument 1 is the source location
 # Argument 2 is the source filename
@@ -212,6 +212,9 @@ define DOWNLOAD_INNER
 			scp) $(call $(DL_MODE)_SCP,$(BR2_PRIMARY_SITE)/$(2),$(2)) && exit ;; \
 			*) $(call $(DL_MODE)_WGET,$(BR2_PRIMARY_SITE)/$(2),$(2)) && exit ;; \
 		esac ; \
+	fi ; \
+	if test "$(BR2_PRIMARY_SITE_ONLY)" = "y" ; then \
+		exit 1 ; \
 	fi ; \
 	if test -n "$(1)" ; then \
 		if test -z "$($(PKG)_SITE_METHOD)" ; then \
