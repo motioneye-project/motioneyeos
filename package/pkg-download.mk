@@ -178,11 +178,11 @@ endef
 
 define DOWNLOAD_LOCALFILES
 	test -e $(DL_DIR)/$(2) || \
-		$(LOCALFILES) $(call qstrip,$(subst file://,,$(1))) $(DL_DIR)
+		$(LOCALFILES) $(call stripurischeme,$(call qstrip,$(1))) $(DL_DIR)
 endef
 
 define SOURCE_CHECK_LOCALFILES
-  test -e $(call qstrip,$(subst file://,,$(1)))
+  test -e $(call stripurischeme,$(call qstrip,$(1)))
 endef
 
 define SHOW_EXTERNAL_DEPS_LOCALFILES
