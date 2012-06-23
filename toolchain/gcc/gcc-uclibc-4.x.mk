@@ -482,6 +482,10 @@ endif
 	if [ ! -e $(HOST_DIR)/usr/$(GNU_TARGET_NAME)/bin/cc ]; then \
 		ln -snf gcc $(HOST_DIR)/usr/$(GNU_TARGET_NAME)/bin/cc; \
 	fi
+	# arch-linux-* symlinks
+	cd $(HOST_DIR)/usr/bin; for i in $(GNU_TARGET_NAME)-*; do \
+		ln -snf $$i $(ARCH)-linux$${i##$(GNU_TARGET_NAME)}; \
+	done
 
 	mkdir -p $(TARGET_DIR)/usr/lib $(TARGET_DIR)/usr/sbin
 	touch $@
