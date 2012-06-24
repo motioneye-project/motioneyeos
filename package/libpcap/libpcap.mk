@@ -4,7 +4,7 @@
 #
 #############################################################
 
-LIBPCAP_VERSION = 1.2.1
+LIBPCAP_VERSION = 1.3.0
 LIBPCAP_SITE = http://www.tcpdump.org/release
 LIBPCAP_INSTALL_STAGING = YES
 # doesn't have an install-strip
