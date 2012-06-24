@@ -7,7 +7,10 @@
 IMAGEMAGICK_MAJOR = 6.7.6
 IMAGEMAGICK_VERSION = $(IMAGEMAGICK_MAJOR)-9
 IMAGEMAGICK_SOURCE = ImageMagick-$(IMAGEMAGICK_VERSION).tar.bz2
-IMAGEMAGICK_SITE = ftp://ftp.imagemagick.org/pub/ImageMagick
+# The official ImageMagick site only keeps the latest versions
+# available, which is annoying. Use an alternate site that keeps all
+# older versions.
+IMAGEMAGICK_SITE = ftp://ftp.nluug.nl/pub/ImageMagick/
 IMAGEMAGICK_INSTALL_STAGING = YES
 IMAGEMAGICK_AUTORECONF = YES
 
