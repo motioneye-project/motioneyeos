@@ -1,0 +1,22 @@
+[PATCH] configure.ac: Recognize linux-uclibc as well
+
+Ltrace works on uClibc as well as on glibc, so accept it.
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ configure.ac |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+Index: ltrace-0.6.0/configure.ac
+===================================================================
+--- ltrace-0.6.0.orig/configure.ac
++++ ltrace-0.6.0/configure.ac
+@@ -11,7 +11,7 @@
+ AC_CANONICAL_HOST
+ 
+ case "${host_os}" in
+-    linux-gnu*)	HOST_OS="linux-gnu" ;;
++    linux-gnu* | linux-uclibc*)	HOST_OS="linux-gnu" ;;
+     *)		AC_MSG_ERROR([unkown host-os ${host_osx}]) ;;
+ esac
+ AC_SUBST(HOST_OS)
