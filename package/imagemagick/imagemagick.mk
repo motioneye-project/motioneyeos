@@ -44,6 +44,8 @@ endif
 
 ifeq ($(BR2_PACKAGE_FREETYPE),y)
 IMAGEMAGICK_CONF_OPT += --with-freetype
+IMAGEMAGICK_CONF_ENV += \
+	ac_cv_path_freetype_config=$(STAGING_DIR)/usr/bin/freetype-config
 IMAGEMAGICK_DEPENDENCIES += freetype
 else
 IMAGEMAGICK_CONF_OPT += --without-freetype
