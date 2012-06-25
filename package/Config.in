@@ -489,6 +489,7 @@ source "package/jquery-keyboard/Config.in"
 source "package/jquery-sparkline/Config.in"
 source "package/jquery-validation/Config.in"
 source "package/jsmin/Config.in"
+source "package/json-javascript/Config.in"
 endmenu
 
 menu "Multimedia"
