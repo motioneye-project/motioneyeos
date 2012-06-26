@@ -1,7 +1,11 @@
 config BR2_PACKAGE_GZIP
 	bool "gzip"
+	depends on BR2_USE_WCHAR
 	help
 	  Standard GNU compressor.  Provides things like gzip,
 	  gunzip, gzcat, etc...
 
 	  http://www.gnu.org/software/gzip/gzip.html
+
+comment "gzip requires a toolchain with WCHAR support"
+	depends on !BR2_USE_WCHAR
