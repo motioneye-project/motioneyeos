@@ -16,7 +16,7 @@ VALGRIND_CONF_OPT = --disable-tls
 # only be selected on Cortex A8 and Cortex A9 platforms.
 ifeq ($(BR2_cortex_a8)$(BR2_cortex_a9),y)
 VALGRIND_CONF_OPT += \
-	--host=$(patsubst arm-%,armv7-unknown-%,$(GNU_TARGET_NAME))
+	--host=$(patsubst arm-%,armv7-%,$(GNU_TARGET_NAME))
 endif
 
 define VALGRIND_INSTALL_UCLIBC_SUPP
