@@ -2,7 +2,11 @@ config BR2_PACKAGE_WGET
 	bool "wget"
 	# fork()
 	depends on BR2_USE_MMU
+	depends on BR2_USE_WCHAR
 	help
 	  Network utility to retrieve files from http, https and ftp.
 
 	  http://www.gnu.org/software/wget/
+
+comment "wget requires a toolchain with WCHAR support"
+	depends on !BR2_USE_WCHAR
