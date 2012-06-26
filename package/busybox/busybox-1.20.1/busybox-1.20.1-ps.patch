@@ -1,0 +1,84 @@
+--- busybox-1.20.1/procps/ps.c
++++ busybox-1.20.1-ps/procps/ps.c
+@@ -69,6 +69,31 @@
+ /* Absolute maximum on output line length */
+ enum { MAX_WIDTH = 2*1024 };
+ 
++#if ENABLE_FEATURE_PS_TIME || ENABLE_FEATURE_PS_LONG
++static long get_uptime(void)
++{
++#ifdef __linux__
++	struct sysinfo info;
++	if (sysinfo(&info) < 0)
++		return 0;
++	return info.uptime;
++#elif 1
++	char buf[64];
++	long uptime;
++	if (open_read_close("/proc/uptime", buf, sizeof(buf)) <= 0)
++		bb_perror_msg_and_die("can't read %s", "/proc/uptime");
++	buf[sizeof(buf)-1] = '\0';
++	sscanf(buf, "%l", &uptime);
++	return uptime;
++#else
++	struct timespec ts;
++	if (clock_gettime(CLOCK_MONOTONIC, &ts) < 0)
++		return 0;
++	return ts.tv_sec;
++#endif
++}
++#endif
++
+ #if ENABLE_DESKTOP
+ 
+ #include <sys/times.h> /* for times() */
+@@ -197,8 +222,6 @@ static inline unsigned get_HZ_by_waiting
+ 
+ static unsigned get_kernel_HZ(void)
+ {
+-	//char buf[64];
+-	struct sysinfo info;
+ 
+ 	if (kernel_HZ)
+ 		return kernel_HZ;
+@@ -208,12 +231,7 @@ static unsigned get_kernel_HZ(void)
+ 	if (kernel_HZ == (unsigned)-1)
+ 		kernel_HZ = get_HZ_by_waiting();
+ 
+-	//if (open_read_close("/proc/uptime", buf, sizeof(buf)) <= 0)
+-	//	bb_perror_msg_and_die("can't read %s", "/proc/uptime");
+-	//buf[sizeof(buf)-1] = '\0';
+-	///sscanf(buf, "%llu", &seconds_since_boot);
+-	sysinfo(&info);
+-	seconds_since_boot = info.uptime;
++	seconds_since_boot = get_uptime();
+ 
+ 	return kernel_HZ;
+ }
+@@ -635,7 +653,7 @@ int ps_main(int argc UNUSED_PARAM, char 
+ 	};
+ #if ENABLE_FEATURE_PS_LONG
+ 	time_t now = now;
+-	struct sysinfo info;
++	long uptime;
+ #endif
+ 	int opts = 0;
+ 	/* If we support any options, parse argv */
+@@ -695,7 +713,7 @@ int ps_main(int argc UNUSED_PARAM, char 
+ 		puts("S   UID   PID  PPID   VSZ   RSS TTY   STIME TIME     CMD");
+ #if ENABLE_FEATURE_PS_LONG
+ 		now = time(NULL);
+-		sysinfo(&info);
++		uptime = get_uptime();
+ #endif
+ 	}
+ 	else {
+@@ -727,7 +745,7 @@ int ps_main(int argc UNUSED_PARAM, char 
+ 				char tty[2 * sizeof(int)*3 + 2];
+ 				char *endp;
+ 				unsigned sut = (p->stime + p->utime) / 100;
+-				unsigned elapsed = info.uptime - (p->start_time / 100);
++				unsigned elapsed = uptime - (p->start_time / 100);
+ 				time_t start = now - elapsed;
+ 				struct tm *tm = localtime(&start);
+ 

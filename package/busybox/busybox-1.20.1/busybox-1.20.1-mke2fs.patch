@@ -1,0 +1,58 @@
+--- busybox-1.20.1/include/bb_e2fs_defs.h
++++ busybox-1.20.1-mke2fs/include/bb_e2fs_defs.h
+@@ -422,9 +422,27 @@ struct ext2_super_block {
+ 	uint16_t	s_reserved_word_pad;
+ 	uint32_t	s_default_mount_opts;
+ 	uint32_t	s_first_meta_bg;	/* First metablock group */
++	/* ext3 additions */
+ 	uint32_t	s_mkfs_time;		/* When the filesystem was created */
+ 	uint32_t	s_jnl_blocks[17];	/* Backup of the journal inode */
+-	uint32_t	s_reserved[172];	/* Padding to the end of the block */
++	/* 64bit support valid if EXT4_FEATURE_COMPAT_64BIT */
++/*150*/	uint32_t	s_blocks_count_hi;	/* Blocks count */
++	uint32_t	s_r_blocks_count_hi;	/* Reserved blocks count */
++	uint32_t	s_free_blocks_count_hi;	/* Free blocks count */
++	uint16_t	s_min_extra_isize;	/* All inodes have at least # bytes */
++	uint16_t	s_want_extra_isize; 	/* New inodes should reserve # bytes */
++	uint32_t	s_flags;		/* Miscellaneous flags */
++	uint16_t	s_raid_stride;		/* RAID stride */
++	uint16_t	s_mmp_interval;		/* # seconds to wait in MMP checking */
++	uint64_t	s_mmp_block;		/* Block for multi-mount protection */
++	uint32_t	s_raid_stripe_width;	/* blocks on all data disks (N*stride)*/
++	uint8_t		s_log_groups_per_flex;	/* FLEX_BG group size */
++	uint8_t		s_reserved_char_pad2;
++	uint16_t	s_reserved_pad;
++	uint32_t	s_reserved[162];	/* Padding to the end of the block */
++};
++struct BUG_ext2_super_block {
++        char bug[sizeof(struct ext2_super_block) == 1024 ? 1 : -1];
+ };
+ 
+ /*
+--- busybox-1.20.1/util-linux/mkfs_ext2.c
++++ busybox-1.20.1-mke2fs/util-linux/mkfs_ext2.c
+@@ -53,11 +53,6 @@
+ #define ENABLE_FEATURE_MKFS_EXT2_RESERVED_GDT 0
+ #define ENABLE_FEATURE_MKFS_EXT2_DIR_INDEX    1
+ 
+-// from e2fsprogs
+-#define s_reserved_gdt_blocks s_padding1
+-#define s_mkfs_time           s_reserved[0]
+-#define s_flags               s_reserved[22]
+-
+ #define EXT2_HASH_HALF_MD4       1
+ #define EXT2_FLAGS_SIGNED_HASH   0x0001
+ #define EXT2_FLAGS_UNSIGNED_HASH 0x0002
+@@ -482,8 +477,10 @@ int mkfs_ext2_main(int argc UNUSED_PARAM
+ 	STORE_LE(sb->s_magic, EXT2_SUPER_MAGIC);
+ 	STORE_LE(sb->s_inode_size, inodesize);
+ 	// set "Required extra isize" and "Desired extra isize" fields to 28
+-	if (inodesize != sizeof(*inode))
+-		STORE_LE(sb->s_reserved[21], 0x001C001C);
++	if (inodesize != sizeof(*inode)) {
++		STORE_LE(sb->s_min_extra_isize, 0x001c);
++		STORE_LE(sb->s_want_extra_isize, 0x001c);
++	}
+ 	STORE_LE(sb->s_first_ino, EXT2_GOOD_OLD_FIRST_INO);
+ 	STORE_LE(sb->s_log_block_size, blocksize_log2 - EXT2_MIN_BLOCK_LOG_SIZE);
+ 	STORE_LE(sb->s_log_frag_size, blocksize_log2 - EXT2_MIN_BLOCK_LOG_SIZE);
