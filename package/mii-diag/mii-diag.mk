@@ -8,6 +8,12 @@ MII_DIAG_SOURCE  = mii-diag_$(MII_DIAG_VERSION).orig.tar.gz
 MII_DIAG_PATCH   = mii-diag_$(MII_DIAG_VERSION)-3.diff.gz
 MII_DIAG_SITE    = $(BR2_DEBIAN_MIRROR)/debian/pool/main/m/mii-diag
 
+MII_DIAG_MAKE_OPT = $(TARGET_CONFIGURE_OPTS)
+
+ifeq ($(BR2_PREFER_STATIC_LIB),y)
+MII_DIAG_MAKE_OPT += CFLAGS="$(TARGET_CFLAGS) -static"
+endif
+
 define MII_DIAG_DEBIAN_PATCHES
 	if [ -d $(@D)/debian/patches ]; then \
 		support/scripts/apply-patches.sh $(@D) $(@D)/debian/patches \*.patch; \
@@ -17,7 +23,7 @@ endef
 MII_DIAG_POST_PATCH_HOOKS = MII_DIAG_DEBIAN_PATCHES
 
 define MII_DIAG_BUILD_CMDS
-	$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(@D)
+	$(MAKE) $(MII_DIAG_MAKE_OPT) -C $(@D)
 endef
 
 define MII_DIAG_INSTALL_TARGET_CMDS
