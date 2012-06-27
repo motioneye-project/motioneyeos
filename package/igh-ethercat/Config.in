@@ -17,6 +17,9 @@ config BR2_PACKAGE_IGH_ETHERCAT_E100
 config BR2_PACKAGE_IGH_ETHERCAT_E1000
 	bool "e1000 driver"
 
+config BR2_PACKAGE_IGH_ETHERCAT_E1000E
+	bool "e1000e driver"
+
 config BR2_PACKAGE_IGH_ETHERCAT_R8169
 	bool "r8169 driver"
 
