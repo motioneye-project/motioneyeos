@@ -1,5 +1,6 @@
 config BR2_PACKAGE_LIBNFC_LLCP
 	bool "libnfc-llcp"
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libusb
 	select BR2_PACKAGE_LIBNFC
 	help
 	  Library extending libnfc with support for Logical Link Control

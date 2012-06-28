@@ -1,6 +1,10 @@
 config BR2_PACKAGE_LIBUSB
 	bool "libusb"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
 	help
 	  Userspace library for accessing USB devices
 
 	  http://libusb.sourceforge.net/
+
+comment "libusb needs a toolchain with thread support"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS

@@ -25,6 +25,7 @@ config BR2_PACKAGE_BLUEZ_UTILS_AUDIO
 
 config BR2_PACKAGE_BLUEZ_UTILS_USB
 	bool "USB support"
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libusb
 	select BR2_PACKAGE_LIBUSB
 	help
 	  USB support

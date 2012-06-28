@@ -1,5 +1,6 @@
 config BR2_PACKAGE_USBUTILS
 	bool "usbutils"
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libusb
 	select BR2_PACKAGE_LIBUSB
 	help
 	  USB enumeration utilities
@@ -15,3 +16,6 @@ config BR2_PACKAGE_USBUTILS_ZLIB
 	  This makes the data file smaller if you're not using a compressed
 	  filesystem, but it also makes lsusb slower since it has
 	  to decompress the file every time it's run.
+
+comment "usbutils needs a toolchain with thread support"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS

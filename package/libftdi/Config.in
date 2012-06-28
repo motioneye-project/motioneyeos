@@ -1,5 +1,6 @@
 config BR2_PACKAGE_LIBFTDI
 	bool "libftdi"
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libusb
 	select BR2_PACKAGE_LIBUSB
 	select BR2_PACKAGE_LIBUSB_COMPAT
 	help
@@ -16,3 +17,6 @@ config BR2_PACKAGE_LIBTFDI_CPP
 	  C++ bindings for libftdi
 
 endif # BR2_PACKAGE_LIBFTDI
+
+comment "libftdi needs a toolchain with thread support"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS

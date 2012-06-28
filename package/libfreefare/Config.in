@@ -1,8 +1,12 @@
 config BR2_PACKAGE_LIBFREEFARE
 	bool "libfreefare"
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libusb
 	select BR2_PACKAGE_OPENSSL
 	select BR2_PACKAGE_LIBNFC
 	help
 	  Library for high level manipulation of MIFARE cards.
 
 	  http://code.google.com/p/nfc-tools/wiki/libfreefare
+
+comment "libfreefare needs a toolchain with thread support"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS

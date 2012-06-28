@@ -1,5 +1,6 @@
 config BR2_PACKAGE_LIBIQRF
 	bool "libiqrf"
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libusb
 	select BR2_PACKAGE_LIBUSB
 	help
 	  This library implement specific protocol
@@ -8,3 +9,6 @@ config BR2_PACKAGE_LIBIQRF
 	  libusb library.
 
 	  https://github.com/nandra/libiqrf
+
+comment "libiqrf needs a toolchain with thread support"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
