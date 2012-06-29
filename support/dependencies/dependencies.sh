@@ -48,6 +48,12 @@ if test -n "$PERL_MM_OPT" ; then
     exit 1
 fi
 
+if test -n "$DESTDIR" ; then
+    /bin/echo -e "\nYou have the DESTDIR environment variable set. Please"
+    /bin/echo -e "unset it so that Buildroot can work properly."
+    exit 1
+fi
+
 # Verify that which is installed
 if ! which which > /dev/null ; then
 	/bin/echo -e "\nYou must install 'which' on your build machine\n";
