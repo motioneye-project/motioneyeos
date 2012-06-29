@@ -10,8 +10,7 @@ RAMSPEED_ARCH = $(if $(BR2_i386),i386)$(if $(BR2_x86_64),x86_64)
 
 define RAMSPEED_BUILD_CMDS
 	cp -f package/ramspeed/Makefile $(@D)
-	CC="$(TARGET_CC)" CFLAGS="$(TARGET_CFLAGS)" \
-		make -C $(@D) $(RAMSPEED_ARCH)
+	$(TARGET_CONFIGURE_OPTS) make -C $(@D) $(RAMSPEED_ARCH)
 endef
 
 define RAMSPEED_INSTALL_TARGET_CMDS
