@@ -24,10 +24,12 @@ INPUT_TOOLS_POST_PATCH_HOOKS = INPUT_TOOLS_DEBIAN_PATCHES
 # jscal needs -lm
 define INPUT_TOOLS_BUILD_CMDS
 	for i in $(filter-out jscal,$(INPUT_TOOLS_TARGETS_y)); do \
-		$(TARGET_CC) $(TARGET_CFLAGS) -o $(@D)/$$i $(@D)/utils/$$i.c; \
+		$(TARGET_CC) $(TARGET_CFLAGS) -o $(@D)/$$i $(@D)/utils/$$i.c \
+			$(TARGET_LDFLAGS); \
 	done
 	for i in $(filter jscal,$(INPUT_TOOLS_TARGETS_y)); do \
-		$(TARGET_CC) $(TARGET_CFLAGS) -o $(@D)/$$i $(@D)/utils/$$i.c -lm; \
+		$(TARGET_CC) $(TARGET_CFLAGS) -o $(@D)/$$i $(@D)/utils/$$i.c \
+			$(TARGET_LDFLAGS) -lm; \
 	done
 endef
 
