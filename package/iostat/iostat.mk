@@ -10,7 +10,7 @@ IOSTAT_SITE = http://www.linuxinsight.com/files
 iostat-source: $(DL_DIR)/$(IOSTAT_SOURCE)
 
 define IOSTAT_BUILD_CMDS
-	$(MAKE) -C $(@D) CC="$(TARGET_CC)" CFLAGS="$(TARGET_CFLAGS)"
+	$(MAKE) -C $(@D) $(TARGET_CONFIGURE_OPTS)
 endef
 
 define IOSTAT_CLEAN_CMDS
