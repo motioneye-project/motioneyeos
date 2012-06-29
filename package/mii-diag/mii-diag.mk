@@ -10,10 +10,6 @@ MII_DIAG_SITE    = $(BR2_DEBIAN_MIRROR)/debian/pool/main/m/mii-diag
 
 MII_DIAG_MAKE_OPT = $(TARGET_CONFIGURE_OPTS)
 
-ifeq ($(BR2_PREFER_STATIC_LIB),y)
-MII_DIAG_MAKE_OPT += CFLAGS="$(TARGET_CFLAGS) -static"
-endif
-
 define MII_DIAG_DEBIAN_PATCHES
 	if [ -d $(@D)/debian/patches ]; then \
 		support/scripts/apply-patches.sh $(@D) $(@D)/debian/patches \*.patch; \
