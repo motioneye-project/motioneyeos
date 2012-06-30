@@ -158,11 +158,14 @@ endef
 # Download a file using wget. Only download the file if it doesn't
 # already exist in the download directory. If the download fails,
 # remove the file (because wget -O creates a 0-byte file even if the
-# download fails).
+# download fails).  To handle an interrupted download as well, download
+# to a temporary file first.  The temporary file will be overwritten
+# the next time the download is tried.
 define DOWNLOAD_WGET
 	test -e $(DL_DIR)/$(2) || \
-	$(WGET) -O $(DL_DIR)/$(2) '$(call qstrip,$(1))' || \
-	(rm -f $(DL_DIR)/$(2) ; exit 1)
+	($(WGET) -O $(DL_DIR)/$(2).tmp '$(call qstrip,$(1))' && \
+	 mv $(DL_DIR)/$(2).tmp $(DL_DIR)/$(2)) || \
+	(rm -f $(DL_DIR)/$(2).tmp ; exit 1)
 endef
 
 define SOURCE_CHECK_WGET
