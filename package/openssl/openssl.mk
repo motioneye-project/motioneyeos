@@ -48,13 +48,14 @@ define OPENSSL_CONFIGURE_CMDS
 			--openssldir=/etc/ssl \
 			--libdir=/lib \
 			threads \
-			shared \
+			$(if $(BR2_PREFER_STATIC_LIB),no-shared,shared) \
 			no-idea \
 			no-rc5 \
 			enable-camellia \
 			enable-mdc2 \
 			enable-tlsext \
-			zlib-dynamic \
+			$(if $(BR2_PREFER_STATIC_LIB),zlib,zlib-dynamic) \
+			$(if $(BR2_PREFER_STATIC_LIB),no-dso) \
 	)
 	$(SED) "s:-march=[-a-z0-9] ::" -e "s:-mcpu=[-a-z0-9] ::g" $(@D)/Makefile
 	$(SED) "s:-O[0-9]:$(OPENSSL_CFLAGS):" $(@D)/Makefile
@@ -91,13 +92,22 @@ endif
 
 define OPENSSL_INSTALL_FIXUPS
 	rm -f $(TARGET_DIR)/usr/bin/c_rehash
-	# libraries gets installed read only, so strip fails
+endef
+
+OPENSSL_POST_INSTALL_TARGET_HOOKS += OPENSSL_INSTALL_FIXUPS
+
+ifneq ($(BR2_PREFER_STATIC_LIB),y)
+
+# libraries gets installed read only, so strip fails
+define OPENSSL_INSTALL_FIXUPS_SHARED
 	chmod +w $(TARGET_DIR)/usr/lib/engines/lib*.so
 	for i in $(addprefix $(TARGET_DIR)/usr/lib/,libcrypto.so.* libssl.so.*); \
 	do chmod +w $$i; done
 endef
 
-OPENSSL_POST_INSTALL_TARGET_HOOKS += OPENSSL_INSTALL_FIXUPS
+OPENSSL_POST_INSTALL_TARGET_HOOKS += OPENSSL_INSTALL_FIXUPS_SHARED
+
+endif
 
 define OPENSSL_REMOVE_OPENSSL_ENGINES
 	rm -rf $(TARGET_DIR)/usr/lib/engines
