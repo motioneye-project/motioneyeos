@@ -21,4 +21,4 @@ else
 SYLPHEED_CONF_OPT += --disable-ssl
 endif
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

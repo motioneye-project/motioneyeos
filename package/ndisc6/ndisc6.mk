@@ -39,4 +39,4 @@ endef
 
 NDISC6_POST_INSTALL_TARGET_HOOKS += NDISC6_REMOVE_UNNEEDED
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

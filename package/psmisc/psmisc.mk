@@ -18,4 +18,4 @@ ifeq ($(BR2_PACKAGE_BUSYBOX),y)
 PSMISC_DEPENDENCIES += busybox
 endif
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

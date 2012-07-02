@@ -18,4 +18,4 @@ else
 LIBAO_CONF_OPT += --disable-alsa
 endif
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

@@ -34,4 +34,4 @@ endef
 
 NETATALK_POST_INSTALL_TARGET_HOOKS += NETATALK_INSTALL_EXTRA_FILES
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

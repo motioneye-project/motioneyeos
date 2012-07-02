@@ -20,4 +20,4 @@ endef
 
 KEXEC_POST_INSTALL_TARGET_HOOKS += KEXEC_REMOVE_LIB_TOOLS
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

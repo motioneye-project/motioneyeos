@@ -14,4 +14,4 @@ SUDO_CONF_OPT = \
 		--without-interfaces \
 		--without-pam
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

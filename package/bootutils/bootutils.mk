@@ -8,4 +8,4 @@ BOOTUTILS_SITE = http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge
 
 BOOTUTILS_CONF_OPT = --prefix=/ --exec-prefix=/
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

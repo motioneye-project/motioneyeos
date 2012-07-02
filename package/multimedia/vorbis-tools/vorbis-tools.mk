@@ -17,4 +17,4 @@ ifeq ($(BR2_PACKAGE_SPEEX),y)
 VORBIS_TOOLS_DEPENDENCIES += speex
 endif
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

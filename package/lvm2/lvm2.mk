@@ -51,4 +51,4 @@ define LVM2_UNINSTALL_TARGET_CMDS
 	rm -f $(addprefix $(TARGET_DIR)/usr/lib/,libdevmapper.so*)
 endef
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

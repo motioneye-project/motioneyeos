@@ -67,4 +67,4 @@ define LPC32XXCDL_INSTALL_IMAGES_CMDS
 	cp $(@D)/$(LPC32XXCDL_BOARD_STARTUP_DIR)/$(LPC32XXCDL_S1L)/*gnu.bin $(BINARIES_DIR)
 endef
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))

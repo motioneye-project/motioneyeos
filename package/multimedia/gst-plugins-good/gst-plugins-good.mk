@@ -375,4 +375,4 @@ else
 GST_PLUGINS_GOOD_CONF_OPT += --disable-speex
 endif
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

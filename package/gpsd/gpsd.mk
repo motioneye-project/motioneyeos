@@ -182,4 +182,4 @@ define GPSD_UNINSTALL_TARGET_CMDS
 	rm -f $(TARGET_DIR)/etc/init.d/S50gpsd
 endef
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

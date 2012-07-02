@@ -18,4 +18,4 @@ define PYTHON_ID3_INSTALL_TARGET_CMDS
     (cd $(@D); $(HOST_DIR)/usr/bin/python setup.py install --prefix=$(TARGET_DIR)/usr)
 endef
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))

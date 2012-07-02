@@ -28,4 +28,4 @@ define DEVMEM2_UNINSTALL_TARGET_CMDS
 	rm -f $(TARGET_DIR)/sbin/devmem2
 endef
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))

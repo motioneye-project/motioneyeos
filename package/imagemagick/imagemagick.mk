@@ -120,4 +120,4 @@ ifneq ($(BR2_HAVE_DEVFILES),y)
 IMAGEMAGICK_POST_INSTALL_TARGET_HOOKS += IMAGEMAGICK_REMOVE_CONFIG_SCRIPTS
 endif
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

@@ -15,4 +15,4 @@ SYNERGY_CONF_OPT = --x-includes=$(STAGING_DIR)/usr/include/X11 \
 SYNERGY_DEPENDENCIES = xlib_libXtst \
 		$(if $(BR2_PACKAGE_XLIB_LIBXINERAMA),xlib_libXinerama)
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

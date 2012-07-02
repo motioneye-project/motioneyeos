@@ -15,4 +15,4 @@ define DMIDECODE_INSTALL_TARGET_CMDS
 	$(MAKE) -C $(@D) prefix=/usr DESTDIR=$(TARGET_DIR) install
 endef
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))

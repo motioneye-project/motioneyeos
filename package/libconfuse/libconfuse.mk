@@ -9,4 +9,4 @@ LIBCONFUSE_SITE = http://savannah.nongnu.org/download/confuse/
 LIBCONFUSE_INSTALL_STAGING = YES
 LIBCONFUSE_CONF_OPT = --disable-rpath
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

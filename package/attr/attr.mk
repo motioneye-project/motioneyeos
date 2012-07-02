@@ -24,4 +24,4 @@ ATTR_INSTALL_TARGET_OPT = 			\
 	exec_prefix=$(TARGET_DIR)/usr 		\
 	install install-lib
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

@@ -31,4 +31,4 @@ else
 LIBEDBUS_CONF_OPT += --disable-enotify
 endif
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

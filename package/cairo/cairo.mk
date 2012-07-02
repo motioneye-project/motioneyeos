@@ -77,4 +77,4 @@ else
 	CAIRO_CONF_OPT += --disable-svg
 endif
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

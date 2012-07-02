@@ -8,4 +8,4 @@ SOCKETCAND_SITE = git://github.com/dschanoeh/socketcand.git
 SOCKETCAND_AUTORECONF = YES
 SOCKETCAND_DEPENDENCIES = libconfig
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

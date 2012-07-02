@@ -10,4 +10,4 @@ FAAD2_SITE = http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/faa
 FAAD2_CONF_ENV = LIBS=-lm
 FAAD2_INSTALL_STAGING = YES
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

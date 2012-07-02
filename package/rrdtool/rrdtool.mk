@@ -26,4 +26,4 @@ define RRDTOOL_UNINSTALL_TARGET_CMDS
 	rm -f $(TARGET_DIR)/usr/lib/librrd*
 endef
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

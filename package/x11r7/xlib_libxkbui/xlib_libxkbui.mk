@@ -10,4 +10,4 @@ XLIB_LIBXKBUI_SITE = http://xorg.freedesktop.org/releases/individual/lib
 XLIB_LIBXKBUI_INSTALL_STAGING = YES
 XLIB_LIBXKBUI_DEPENDENCIES = xlib_libxkbfile xlib_libXt xproto_kbproto
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

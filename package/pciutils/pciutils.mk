@@ -54,4 +54,4 @@ define PCIUTILS_INSTALL_STAGING_CMDS
 		SHARED=$(PCIUTILS_SHARED) install install-lib
 endef
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))

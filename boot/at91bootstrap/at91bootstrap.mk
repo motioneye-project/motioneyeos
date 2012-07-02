@@ -38,7 +38,7 @@ define AT91BOOTSTRAP_INSTALL_IMAGES_CMDS
 	cp $(@D)/$(AT91BOOTSTRAP_BINARY) $(BINARIES_DIR)
 endef
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))
 
 ifeq ($(BR2_TARGET_AT91BOOTSTRAP),y)
 # we NEED a board name unless we're at make source

@@ -10,4 +10,4 @@ XPROTO_DRI2PROTO_SITE = http://xorg.freedesktop.org/releases/individual/proto
 XPROTO_DRI2PROTO_INSTALL_STAGING = YES
 XPROTO_DRI2PROTO_INSTALL_TARGET = NO
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

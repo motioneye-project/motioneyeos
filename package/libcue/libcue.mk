@@ -10,4 +10,4 @@ LIBCUE_SOURCE = libcue-$(LIBCUE_VERSION).tar.bz2
 LIBCUE_DEPENDENCIES = flex
 LIBCUE_INSTALL_STAGING = YES
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

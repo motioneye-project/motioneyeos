@@ -21,5 +21,5 @@ define RT_TESTS_INSTALL_TARGET_CMDS
 		install
 endef
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))
 

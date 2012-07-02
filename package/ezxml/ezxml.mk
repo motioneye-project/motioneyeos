@@ -37,4 +37,4 @@ define EZXML_CLEAN_CMDS
 	-$(MAKE) -C $(@D) -f GNUmakefile clean
 endef
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))

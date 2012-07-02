@@ -9,4 +9,4 @@ RTORRENT_SITE = http://libtorrent.rakshasa.no/downloads
 RTORRENT_DEPENDENCIES = host-pkg-config libcurl libsigc libtorrent ncurses
 RTORRENT_AUTORECONF = YES
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

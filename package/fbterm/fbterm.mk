@@ -9,4 +9,4 @@ FBTERM_SITE = http://fbterm.googlecode.com/files/
 
 FBTERM_DEPENDENCIES = fontconfig liberation
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

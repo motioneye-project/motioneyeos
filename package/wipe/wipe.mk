@@ -19,4 +19,4 @@ define WIPE_UNINSTALL_TARGET_CMDS
 	rm -f $(TARGET_DIR)/usr/share/man/man1/wipe.1
 endef
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

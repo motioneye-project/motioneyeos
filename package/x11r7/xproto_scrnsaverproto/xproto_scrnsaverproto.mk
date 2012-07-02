@@ -10,4 +10,4 @@ XPROTO_SCRNSAVERPROTO_SITE = http://xorg.freedesktop.org/releases/individual/pro
 XPROTO_SCRNSAVERPROTO_INSTALL_STAGING = YES
 XPROTO_SCRNSAVERPROTO_INSTALL_TARGET = NO
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

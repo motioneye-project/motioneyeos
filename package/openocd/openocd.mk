@@ -39,5 +39,5 @@ HOST_OPENOCD_CONF_OPT = 	\
 	--enable-jlink 		\
 	--enable-vsllink
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))
 $(eval $(host-autotools-package))

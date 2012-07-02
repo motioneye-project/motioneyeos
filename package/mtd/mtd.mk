@@ -85,5 +85,5 @@ define MTD_INSTALL_TARGET_CMDS
  done
 endef
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))
 $(eval $(host-generic-package))

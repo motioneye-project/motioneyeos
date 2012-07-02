@@ -36,4 +36,4 @@ ifneq ($(BR2_HAVE_DEVFILES),y)
 LIBDNET_POST_INSTALL_TARGET_HOOKS += LIBDNET_REMOVE_CONFIG_SCRIPT
 endif
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

@@ -10,5 +10,5 @@ XPROTO_XF86BIGFONTPROTO_SITE = http://xorg.freedesktop.org/releases/individual/p
 XPROTO_XF86BIGFONTPROTO_INSTALL_STAGING = YES
 XPROTO_XF86BIGFONTPROTO_INSTALL_TARGET = NO
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))
 $(eval $(host-autotools-package))

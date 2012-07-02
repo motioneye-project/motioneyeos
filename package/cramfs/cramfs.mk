@@ -28,5 +28,5 @@ define HOST_CRAMFS_INSTALL_CMDS
  install -D -m 755 $(@D)/cramfsck $(HOST_DIR)/usr/bin/cramfsck
 endef
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))
 $(eval $(host-generic-package))

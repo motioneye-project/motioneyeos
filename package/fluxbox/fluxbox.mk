@@ -20,4 +20,4 @@ endef
 
 FLUXBOX_POST_INSTALL_TARGET_HOOKS += FLUXBOX_INSTALL_XSESSION_FILE
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

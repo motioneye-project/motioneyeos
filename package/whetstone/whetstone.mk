@@ -28,4 +28,4 @@ define WHETSTONE_UNINSTALL_TARGET_CMDS
 	rm -f $(TARGET_DIR)/usr/bin/whetstone
 endef
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))

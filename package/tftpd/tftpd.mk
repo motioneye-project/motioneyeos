@@ -18,4 +18,4 @@ define TFTPD_INSTALL_TARGET_CMDS
 	$(INSTALL) -D package/tftpd/S80tftpd-hpa $(TARGET_DIR)/etc/init.d/
 endef
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

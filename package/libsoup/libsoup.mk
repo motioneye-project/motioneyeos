@@ -27,4 +27,4 @@ else
 LIBSOUP_CONF_OPT += --disable-tls-check
 endif
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

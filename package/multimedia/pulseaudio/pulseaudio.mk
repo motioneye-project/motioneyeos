@@ -65,4 +65,4 @@ endef
 PULSEAUDIO_POST_INSTALL_TARGET_HOOKS += PULSEAUDIO_REMOVE_VALA
 endif
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

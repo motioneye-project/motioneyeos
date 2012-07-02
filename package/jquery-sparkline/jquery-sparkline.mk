@@ -15,4 +15,4 @@ define JQUERY_SPARKLINE_UNINSTALL_TARGET_CMDS
 	rm -f $(TARGET_DIR)/var/www/jquery.sparkline.js
 endef
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))

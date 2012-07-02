@@ -10,4 +10,4 @@ CONNTRACK_TOOLS_SITE = http://www.netfilter.org/projects/conntrack-tools/files
 CONNTRACK_TOOLS_DEPENDENCIES = host-pkg-config \
 	libnetfilter_conntrack libnetfilter_cttimeout
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

@@ -30,4 +30,4 @@ ifneq ($(BR2_PACKAGE_NTFS_3G_NTFSPROGS),y)
 	NTFS_3G_CONF_OPT += --disable-ntfsprogs
 endif
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

@@ -43,4 +43,4 @@ define IPTABLES_UNINSTALL_TARGET_CMDS
 	rm -rf $(TARGET_DIR)/usr/lib/xtables
 endef
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

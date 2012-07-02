@@ -9,5 +9,5 @@ GNUCHESS_SITE = $(BR2_GNU_MIRROR)/chess
 
 GNUCHESS_DEPENDENCIES = $(if $(BR2_PACKAGE_READLINE),readline)
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))
 

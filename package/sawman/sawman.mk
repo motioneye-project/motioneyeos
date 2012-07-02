@@ -9,4 +9,4 @@ SAWMAN_SITE = http://www.directfb.org/downloads/Extras
 SAWMAN_INSTALL_STAGING = YES
 SAWMAN_DEPENDENCIES = directfb
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

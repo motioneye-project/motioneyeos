@@ -53,4 +53,4 @@ define SDL_SOUND_UNINSTALL_TARGET_CMDS
 	rm -f $(TARGET_DIR)/usr/lib/libSDL_sound*so*
 endef
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

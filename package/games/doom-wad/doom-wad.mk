@@ -21,4 +21,4 @@ define DOOM_WAD_UNINSTALL_TARGET_CMDS
 	rm -f $(TARGET_DIR)/usr/share/games/doom/doom1.wad
 endef
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))

@@ -55,4 +55,4 @@ define POCO_INSTALL_TARGET_CMDS
 	$(MAKE) DESTDIR=$(TARGET_DIR) POCO_TARGET_OSARCH=$(ARCH) install -C $(@D)
 endef
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))

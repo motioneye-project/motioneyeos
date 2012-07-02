@@ -29,4 +29,4 @@ define HEIRLOOM_MAILX_INSTALL_TARGET_CMDS
 		install
 endef
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))

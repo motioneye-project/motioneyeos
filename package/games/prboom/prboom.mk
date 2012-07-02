@@ -41,4 +41,4 @@ define PRBOOM_UINSTALL_TARGET_CMDS
 		$(TARGET_DIR)/usr/games/prboom
 endef
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

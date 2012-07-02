@@ -11,5 +11,5 @@ LIBEMBRYO_INSTALL_STAGING = YES
 
 LIBEMBRYO_DEPENDENCIES = host-pkg-config libeina
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))
 $(eval $(host-autotools-package))

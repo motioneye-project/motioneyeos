@@ -10,5 +10,5 @@ XUTIL_MAKEDEPEND_SITE = http://xorg.freedesktop.org/releases/individual/util
 
 XUTIL_MAKEDEPEND_DEPENDENCIES = xproto_xproto
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))
 $(eval $(host-autotools-package))

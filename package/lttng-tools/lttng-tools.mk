@@ -22,4 +22,4 @@ else
 LTTNG_TOOLS_CONF_OPT += --disable-lttng-ust
 endif
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

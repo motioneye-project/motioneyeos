@@ -9,5 +9,5 @@ POLARSSL_CONF_OPT = \
 
 POLARSSL_INSTALL_STAGING = YES
 
-$(eval $(call CMAKETARGETS))
+$(eval $(cmake-package))
 

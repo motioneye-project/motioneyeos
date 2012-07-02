@@ -13,4 +13,4 @@ LIBCGICC_CONF_OPT = \
 	--disable-demos \
 	--disable-doc
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

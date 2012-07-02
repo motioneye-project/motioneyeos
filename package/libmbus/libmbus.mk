@@ -12,4 +12,4 @@ LIBMBUS_INSTALL_STAGING = YES
 #   cannot find input file: `test/Makefile.in'
 LIBMBUS_AUTORECONF = YES
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

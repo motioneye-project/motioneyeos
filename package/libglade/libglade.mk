@@ -16,4 +16,4 @@ endef
 
 LIBGLADE_POST_INSTALL_TARGET_HOOKS += LIBGLADE_INSTALL_FIX
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

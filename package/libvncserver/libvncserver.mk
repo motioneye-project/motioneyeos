@@ -48,4 +48,4 @@ else
 LIBVNCSERVER_CONF_OPT += --without-zlib
 endif
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

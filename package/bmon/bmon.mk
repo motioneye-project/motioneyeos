@@ -29,4 +29,4 @@ define BMON_UNINSTALL_TARGET_CMDS
 	rm -f $(TARGET_DIR)/usr/bin/bmon
 endef
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

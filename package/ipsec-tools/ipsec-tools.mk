@@ -66,4 +66,4 @@ ifeq ($(BR2_PACKAGE_IPSEC_SECCTX_KERNEL),y)
 IPSEC_TOOLS_CONF_OPT+= --enable-security-context=kernel
 endif
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

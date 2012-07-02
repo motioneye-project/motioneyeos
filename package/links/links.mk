@@ -33,4 +33,4 @@ ifeq ($(BR2_PACKAGE_ZLIB),y)
 LINKS_DEPENDENCIES += zlib
 endif
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

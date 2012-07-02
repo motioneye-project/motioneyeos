@@ -94,4 +94,4 @@ define LIGHTTPD_UNINSTALL_TARGET_CMDS
 	rm -rf $(TARGET_DIR)/usr/lib/lighttpd
 endef
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

@@ -14,4 +14,4 @@ XDRIVER_XF86_INPUT_TSLIB_DEPENDENCIES = \
 	xproto_xproto \
 	tslib
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

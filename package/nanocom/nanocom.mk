@@ -24,4 +24,4 @@ define NANOCOM_UNINSTALL_TARGET_CMDS
 	$(RM) $(TARGET_DIR)/usr/bin/nanocom
 endef
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))

@@ -160,5 +160,5 @@ define HOST_LUA_CLEAN_CMDS
 	-$(MAKE) -C $(@D) clean
 endef
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))
 $(eval $(host-generic-package))

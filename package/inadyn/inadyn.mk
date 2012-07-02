@@ -20,4 +20,4 @@ define INADYN_INSTALL_TARGET_CMDS
 		$(TARGET_DIR)/etc/init.d/S70inadyn
 endef
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))

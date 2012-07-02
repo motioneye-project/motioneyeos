@@ -10,4 +10,4 @@ LIBNETFILTER_CONNTRACK_SITE = http://www.netfilter.org/projects/libnetfilter_con
 LIBNETFILTER_CONNTRACK_INSTALL_STAGING = YES
 LIBNETFILTER_CONNTRACK_DEPENDENCIES = host-pkg-config libnfnetlink
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

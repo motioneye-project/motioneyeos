@@ -11,4 +11,4 @@ LIBEFREET_INSTALL_STAGING = YES
 
 LIBEFREET_DEPENDENCIES = libeina libeet libecore
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

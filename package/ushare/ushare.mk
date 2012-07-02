@@ -33,4 +33,4 @@ define USHARE_INSTALL_TARGET_CMDS
 endef
 
 # Even though configure is called it's not autoconf
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))

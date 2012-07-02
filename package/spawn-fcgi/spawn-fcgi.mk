@@ -12,4 +12,4 @@ ifneq ($(BR2_INET_IPV6),y)
 SPAWN_FCGI_CONF_OPT = --disable-ipv6
 endif
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

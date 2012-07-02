@@ -12,4 +12,4 @@ XAPP_XMAN_CONF_ENV = ac_cv_file__etc_man_conf=no \
 		ac_cv_file__etc_man_config=no \
 		ac_cv_file__etc_manpath_config=no
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

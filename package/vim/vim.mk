@@ -38,4 +38,4 @@ ifeq ($(BR2_PACKAGE_VIM_RUNTIME),y)
 VIM_POST_INSTALL_TARGET_HOOKS += VIM_INSTALL_RUNTIME_CMDS
 endif
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

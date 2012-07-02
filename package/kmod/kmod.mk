@@ -30,4 +30,4 @@ else
 KMOD_CONF_OPT += --disable-tools
 endif
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

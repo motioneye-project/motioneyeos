@@ -17,4 +17,4 @@ endif
 
 LIBGAIL_DEPENDENCIES = host-pkg-config libgtk2 pango
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

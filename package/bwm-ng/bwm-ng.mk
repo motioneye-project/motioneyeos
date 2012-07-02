@@ -13,4 +13,4 @@ BWM_NG_CONF_OPT += --with-ncurses
 BWM_NG_DEPENDENCIES += ncurses
 endif
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

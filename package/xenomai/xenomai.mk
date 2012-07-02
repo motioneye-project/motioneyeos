@@ -119,4 +119,4 @@ endef
 
 XENOMAI_POST_UNINSTALL_TARGET_HOOKS += XENOMAI_REMOVE_UDEV_RULES
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

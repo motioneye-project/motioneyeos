@@ -190,4 +190,4 @@ else
 GST_PLUGINS_BASE_CONF_OPT += --disable-zlib
 endif
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

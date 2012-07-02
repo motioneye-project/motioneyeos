@@ -16,4 +16,4 @@ else
 LIBMICROHTTPD_CONF_OPT += --disable-https
 endif
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

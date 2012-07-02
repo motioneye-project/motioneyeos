@@ -10,4 +10,4 @@ LIBUPNP_SITE = http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/project/pupnp
 LIBUPNP_CONF_ENV = ac_cv_lib_compat_ftime=no
 LIBUPNP_INSTALL_STAGING = YES
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

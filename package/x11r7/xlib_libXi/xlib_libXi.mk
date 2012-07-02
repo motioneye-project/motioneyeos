@@ -11,4 +11,4 @@ XLIB_LIBXI_INSTALL_STAGING = YES
 XLIB_LIBXI_DEPENDENCIES = xproto_inputproto xlib_libX11 xlib_libXext xproto_xproto
 XLIB_LIBXI_CONF_OPT = --disable-malloc0returnsnull
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

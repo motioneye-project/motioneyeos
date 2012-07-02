@@ -11,4 +11,4 @@ LCDPROC_CONF_OPT = --enable-drivers=$(BR2_PACKAGE_LCDPROC_DRIVERS)
 
 LCDPROC_DEPENDENCIES = ncurses
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

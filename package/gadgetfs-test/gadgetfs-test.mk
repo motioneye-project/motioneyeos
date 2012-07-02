@@ -29,4 +29,4 @@ define GADGETFS_TEST_CLEAN_CMDS
 	-$(MAKE) -C $(@D) $(GADGETFS_TEST_MAKEOPTS) clean
 endef
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))

@@ -34,7 +34,7 @@ ifneq ($(BR2_HAVE_DEVFILES),y)
 LIBXML2_POST_INSTALL_TARGET_HOOKS += LIBXML2_REMOVE_CONFIG_SCRIPTS
 endif
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))
 $(eval $(host-autotools-package))
 
 # libxml2 for the host

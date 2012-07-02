@@ -32,4 +32,4 @@ endef
 
 SQUID_POST_INSTALL_TARGET_HOOKS += SQUID_CLEANUP_TARGET
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

@@ -17,4 +17,4 @@ define CGILUA_UNINSTALL_TARGET_CMDS
 	rm -f "$(TARGET_DIR)/usr/share/lua/cgilua.lua"
 endef
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))

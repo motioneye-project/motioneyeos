@@ -56,4 +56,4 @@ else
 	TRANSMISSION_CONF_OPT += --disable-gtk
 endif
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

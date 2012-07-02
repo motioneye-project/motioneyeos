@@ -14,4 +14,4 @@ ifeq ($(BR2_PACKAGE_LIBSNDFILE),y)
 LIBSAMPLERATE_DEPENDENCIES += libsndfile
 endif
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

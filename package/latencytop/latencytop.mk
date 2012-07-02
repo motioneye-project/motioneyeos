@@ -18,4 +18,4 @@ define LATENCYTOP_INSTALL_TARGET_CMDS
 	$(MAKE) install -C $(@D) DESTDIR=$(TARGET_DIR) HAS_GTK_GUI=
 endef
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))

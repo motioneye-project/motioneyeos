@@ -21,4 +21,4 @@ endif
 
 WEBKIT_CONF_OPT += --disable-video
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

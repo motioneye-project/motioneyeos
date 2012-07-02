@@ -17,4 +17,4 @@ define FLASHROM_INSTALL_TARGET_CMDS
 	$(INSTALL) -m 0755 -D $(@D)/flashrom $(TARGET_DIR)/usr/sbin/flashrom
 endef
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))

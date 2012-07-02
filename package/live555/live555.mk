@@ -74,4 +74,4 @@ define LIVE555_UNINSTALL_TARGET_CMDS
 	done
 endef
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))

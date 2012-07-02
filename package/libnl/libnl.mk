@@ -26,4 +26,4 @@ ifneq ($(BR2_PACKAGE_LIBNL_TOOLS),y)
 LIBNL_POST_INSTALL_TARGET_HOOKS += LIBNL_REMOVE_TOOLS
 endif
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

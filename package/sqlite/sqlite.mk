@@ -45,4 +45,4 @@ define SQLITE_UNINSTALL_STAGING_CMDS
 	rm -f $(STAGING_DIR)/usr/include/sqlite3*.h
 endef
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

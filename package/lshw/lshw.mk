@@ -20,4 +20,4 @@ define LSHW_INSTALL_TARGET_CMDS
 		$(LSHW_MAKE_OPT) install
 endef
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))

@@ -81,4 +81,4 @@ COREUTILS_POST_INSTALL_TARGET_HOOKS += COREUTILS_POST_INSTALL
 # If both coreutils and busybox are selected, the corresponding applets
 # may need to be reinstated by the clean targets.
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

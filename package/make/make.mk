@@ -13,4 +13,4 @@ MAKE_CONF_ENV = make_cv_sys_gnu_glob=no \
 		GLOBINC='-I$(@D)/glob' \
 		GLOBLIB=glob/libglob.a
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

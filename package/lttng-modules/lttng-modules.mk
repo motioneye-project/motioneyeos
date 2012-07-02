@@ -17,4 +17,4 @@ define LTTNG_MODULES_INSTALL_TARGET_CMDS
 	$(MAKE) -C $(@D) $(LINUX_MAKE_FLAGS) KERNELDIR=$(LINUX_DIR) modules_install
 endef
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))

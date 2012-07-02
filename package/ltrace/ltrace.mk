@@ -9,4 +9,4 @@ LTRACE_DEPENDENCIES = libelf
 LTRACE_AUTORECONF   = YES
 LTRACE_CONF_OPT     += --disable-werror
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

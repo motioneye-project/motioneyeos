@@ -16,4 +16,4 @@ define LESS_UNINSTALL_TARGET_CMDS
 	rm -f $(TARGET_DIR)/usr/bin/less
 endef
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

@@ -10,4 +10,4 @@ XPROTO_XF86VIDMODEPROTO_SITE = http://xorg.freedesktop.org/releases/individual/p
 XPROTO_XF86VIDMODEPROTO_INSTALL_STAGING = YES
 XPROTO_XF86VIDMODEPROTO_INSTALL_TARGET = NO
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

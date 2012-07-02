@@ -36,7 +36,7 @@ endef
 
 LIBCURL_POST_INSTALL_STAGING_HOOKS += LIBCURL_STAGING_FIXUP_CURL_CONFIG
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))
 
 curl: libcurl
 curl-clean: libcurl-clean

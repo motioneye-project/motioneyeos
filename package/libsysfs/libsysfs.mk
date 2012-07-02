@@ -26,4 +26,4 @@ LIBSYSFS_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/l
 LIBSYSFS_SOURCE:=sysfsutils-$(LIBSYSFS_VERSION).tar.gz
 LIBSYSFS_INSTALL_STAGING=YES
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

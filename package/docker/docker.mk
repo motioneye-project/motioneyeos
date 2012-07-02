@@ -18,4 +18,4 @@ DOCKER_INSTALL_TARGET_OPT = PREFIX=$(TARGET_DIR)/usr install
 
 DOCKER_DEPENDENCIES = host-pkg-config libglib2 xserver_xorg-server
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

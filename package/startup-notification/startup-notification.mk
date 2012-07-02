@@ -13,5 +13,5 @@ STARTUP_NOTIFICATION_CONF_OPT = --with-x \
 	--x-includes="$(STAGING_DIR)/usr/include/X11" \
 	--x-libraries="$(STAGING_DIR)/usr/lib"
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))
 

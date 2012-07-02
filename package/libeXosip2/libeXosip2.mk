@@ -17,4 +17,4 @@ else
 LIBEXOSIP2_CONF_OPT += --disable-openssl
 endif
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

@@ -17,4 +17,4 @@ define UNIONFS_INSTALL_TARGET_CMDS
 	$(MAKE) -C $(@D) PREFIX=/usr DESTDIR=$(TARGET_DIR) install
 endef
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))

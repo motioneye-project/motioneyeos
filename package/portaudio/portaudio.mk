@@ -18,4 +18,4 @@ PORTAUDIO_CONF_OPT = \
 	$(if $(BR2_PACKAGE_PORTAUDIO_OSS),--with-oss,--without-oss) \
 	$(if $(BR2_PACKAGE_PORTAUDIO_CXX),--enable-cxx,--disable-cxx)
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

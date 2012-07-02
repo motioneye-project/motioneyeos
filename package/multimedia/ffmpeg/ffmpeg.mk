@@ -177,4 +177,4 @@ define FFMPEG_CONFIGURE_CMDS
 	)
 endef
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

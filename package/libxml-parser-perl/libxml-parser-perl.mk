@@ -36,6 +36,6 @@ define HOST_LIBXML_PARSER_PERL_INSTALL_CMDS
  $(HOST_MAKE_ENV) $(MAKE) -C $(@D) install
 endef
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))
 $(eval $(host-generic-package))
 

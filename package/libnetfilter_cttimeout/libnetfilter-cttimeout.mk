@@ -10,4 +10,4 @@ LIBNETFILTER_CTTIMEOUT_SITE = http://www.netfilter.org/projects/libnetfilter_ctt
 LIBNETFILTER_CTTIMEOUT_INSTALL_STAGING = YES
 LIBNETFILTER_CTTIMEOUT_DEPENDENCIES = host-pkg-config libmnl
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

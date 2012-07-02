@@ -27,4 +27,4 @@ else
 MONIT_CONF_OPT += --without-largefiles
 endif
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

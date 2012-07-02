@@ -25,4 +25,4 @@ define NETPLUG_CLEAN_CMDS
 	-$(MAKE) -C $(@D) clean
 endef
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))

@@ -14,4 +14,4 @@ ifeq ($(BR2_PACKAGE_BUSYBOX),y)
 DIFFUTILS_DEPENDENCIES += busybox
 endif
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

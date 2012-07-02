@@ -10,4 +10,4 @@ LIBESMTP_INSTALL_STAGING = YES
 
 LIBESMTP_DEPENDENCIES = $(if $(BR2_PACKAGE_OPENSSL),openssl)
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

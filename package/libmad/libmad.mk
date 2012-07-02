@@ -36,4 +36,4 @@ LIBMAD_CONF_OPT = \
 		--$(if $(BR2_PACKAGE_LIBMAD_ASO),enable,disable)-aso \
 		--$(if $(BR2_PACKAGE_LIBMAD_STRICT_ISO),enable,disable)-strict-iso
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

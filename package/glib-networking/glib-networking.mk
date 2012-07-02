@@ -25,4 +25,4 @@ else
 GLIB_NETWORKING_CONF_OPT += --without-gnutls
 endif
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

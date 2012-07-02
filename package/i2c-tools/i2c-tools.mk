@@ -19,4 +19,4 @@ define I2C_TOOLS_INSTALL_TARGET_CMDS
 	done
 endef
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))

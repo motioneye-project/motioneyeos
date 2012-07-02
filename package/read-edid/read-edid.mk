@@ -16,4 +16,4 @@ define READ_EDID_INSTALL_TARGET_CMDS
 	$(INSTALL) -D -m 0755 $(@D)/parse-edid $(TARGET_DIR)/sbin/parse-edid
 endef
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

@@ -21,4 +21,4 @@ define FIS_UNINSTALL_TARGET_CMDS
 	rm -f $(TARGET_DIR)/sbin/fis
 endef
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))

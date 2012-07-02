@@ -13,4 +13,4 @@ LIBRAW_CONF_OPT += --disable-examples --disable-lcms \
 			--disable-openmp --disable-demosaic-pack-gpl2 \
 			--disable-demosaic-pack-gpl3
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

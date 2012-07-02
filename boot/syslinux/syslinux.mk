@@ -42,5 +42,5 @@ define HOST_SYSLINUX_CLEAN_CMDS
 	$(HOST_MAKE_ENV) $(MAKE) -C $(@D) clean
 endef
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))
 $(eval $(host-generic-package))

@@ -11,5 +11,5 @@ HOST_LTTNG_BABELTRACE_AUTORECONF = YES
 
 LTTNG_BABELTRACE_DEPENDENCIES = popt util-linux libglib2
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))
 $(eval $(host-autotools-package))

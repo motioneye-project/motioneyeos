@@ -15,4 +15,4 @@ MINICOM_CONF_ENV = PKG_CONFIG=/bin/false
 
 MINICOM_DEPENDENCIES = ncurses $(if $(BR2_ENABLE_LOCALE),,libiconv)
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

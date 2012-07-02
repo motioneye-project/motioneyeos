@@ -9,5 +9,5 @@ XCB_UTIL_SITE = http://xcb.freedesktop.org/dist/
 XCB_UTIL_INSTALL_STAGING = YES
 XCB_UTIL_DEPENDENCIES = host-gperf
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))
 

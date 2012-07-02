@@ -15,4 +15,4 @@ define FBGRAB_UNINSTALL_TARGET_CMDS
 	rm -f $(TARGET_DIR)/usr/bin/fbgrab
 endef
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))

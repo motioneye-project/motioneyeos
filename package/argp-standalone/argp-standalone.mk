@@ -18,4 +18,4 @@ define ARGP_STANDALONE_INSTALL_TARGET_CMDS
 	$(INSTALL) -D $(@D)/argp.h $(TARGET_DIR)/usr/include/argp.h
 endef
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

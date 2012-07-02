@@ -9,4 +9,4 @@ XAPP_XGAMMA_SOURCE = xgamma-$(XAPP_XGAMMA_VERSION).tar.bz2
 XAPP_XGAMMA_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_XGAMMA_DEPENDENCIES = xlib_libXxf86vm
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

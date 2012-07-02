@@ -13,4 +13,4 @@ ifneq ($(BR2_ENABLE_LOCALE),y)
 WAVPACK_DEPENDENCIES += libiconv
 endif
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

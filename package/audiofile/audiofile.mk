@@ -16,4 +16,4 @@ endef
 
 AUDIOFILE_POST_PATCH_HOOKS += AUDIOFILE_DISABLE_EXAMPLES
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

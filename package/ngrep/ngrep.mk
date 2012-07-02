@@ -17,4 +17,4 @@ NGREP_CONF_OPT =  \
 
 NGREP_DEPENDENCIES = libpcap pcre
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

@@ -15,4 +15,4 @@ define BONNIE_UNINSTALL_TARGET_CMDS
 	rm -f $(TARGET_DIR)/usr/sbin/bonnie++ $(TARGET_DIR)/usr/sbin/zcav
 endef
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

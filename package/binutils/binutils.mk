@@ -61,5 +61,5 @@ define BINUTILS_INSTALL_TARGET_CMDS
 endef
 endif
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))
 $(eval $(host-autotools-package))

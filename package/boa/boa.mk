@@ -25,4 +25,4 @@ define BOA_UNINSTALL_TARGET_CMDS
 		$(TARGET_DIR)/etc/mime.types $(TARGET_DIR)/etc/boa
 endef
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

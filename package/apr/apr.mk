@@ -15,4 +15,4 @@ APR_CONF_ENV = \
 	ac_cv_sizeof_struct_iovec=8 \
 	apr_cv_mutex_recursive=yes
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

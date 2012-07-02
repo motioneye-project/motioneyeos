@@ -19,7 +19,7 @@ define XLOADER_INSTALL_IMAGES_CMDS
 	$(INSTALL) -D -m 0755 $(@D)/MLO $(BINARIES_DIR)/
 endef
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))
 
 #############################################################
 #

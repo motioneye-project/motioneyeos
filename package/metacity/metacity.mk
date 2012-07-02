@@ -25,4 +25,4 @@ endef
 
 METACITY_POST_INSTALL_TARGET_HOOKS += METACITY_INSTALL_XSESSION
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

@@ -13,4 +13,4 @@ LIBTORRENT_CONF_OPT = --enable-aligned \
 LIBTORRENT_INSTALL_STAGING = YES
 LIBTORRENT_AUTORECONF = YES
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

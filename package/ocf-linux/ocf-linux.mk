@@ -18,4 +18,4 @@ define OCF_LINUX_INSTALL_TARGET_CMDS
 		$(TARGET_DIR)/usr/include/crypto/cryptodev.h
 endef
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))

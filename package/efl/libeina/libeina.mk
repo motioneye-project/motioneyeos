@@ -11,5 +11,5 @@ LIBEINA_INSTALL_STAGING = YES
 
 LIBEINA_DEPENDENCIES = host-pkg-config
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))
 $(eval $(host-autotools-package))

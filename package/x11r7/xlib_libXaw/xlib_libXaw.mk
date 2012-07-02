@@ -11,4 +11,4 @@ XLIB_LIBXAW_INSTALL_STAGING = YES
 XLIB_LIBXAW_DEPENDENCIES = xlib_libX11 xlib_libXt xlib_libXmu xlib_libXpm xproto_xproto xlib_libXp
 XLIB_LIBXAW_CONF_OPT = --disable-docs
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

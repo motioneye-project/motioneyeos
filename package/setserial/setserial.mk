@@ -19,4 +19,4 @@ endef
 
 SETSERIAL_POST_PATCH_HOOKS += SETSERIAL_APPLY_DEBIAN_PATCHES
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

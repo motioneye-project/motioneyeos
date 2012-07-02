@@ -15,4 +15,4 @@ define EXPLORERCANVAS_UNINSTALL_TARGET_CMDS
 	rm -f $(TARGET_DIR)/var/www/excanvas.js
 endef
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))

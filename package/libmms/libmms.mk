@@ -11,4 +11,4 @@ LIBMMS_INSTALL_STAGING = YES
 
 LIBMMS_DEPENDENCIES = host-pkg-config libglib2
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

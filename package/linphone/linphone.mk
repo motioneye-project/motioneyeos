@@ -19,4 +19,4 @@ else
 LINPHONE_CONF_OPT += --disable-gtk_ui
 endif
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

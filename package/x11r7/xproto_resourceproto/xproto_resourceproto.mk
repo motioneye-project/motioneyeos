@@ -10,4 +10,4 @@ XPROTO_RESOURCEPROTO_SITE = http://xorg.freedesktop.org/releases/individual/prot
 XPROTO_RESOURCEPROTO_INSTALL_STAGING = YES
 XPROTO_RESOURCEPROTO_INSTALL_TARGET = NO
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

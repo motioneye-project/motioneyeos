@@ -12,4 +12,4 @@ ifneq ($(BR2_INSTALL_LIBSTDCPP),y)
 LIBCONFIG_CONF_OPT += --disable-cxx
 endif
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

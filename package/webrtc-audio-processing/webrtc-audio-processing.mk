@@ -7,4 +7,4 @@ ifeq ($(BR2_SOFT_FLOAT),y)
 WEBRTC_AUDIO_PROCESSING_CONF_OPT += --with-ns-mode=fixed
 endif
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

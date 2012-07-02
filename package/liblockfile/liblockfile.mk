@@ -29,4 +29,4 @@ define LIBLOCKFILE_CLEAN_CMDS
 	-$(MAKE) -C $(@D) clean
 endef
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

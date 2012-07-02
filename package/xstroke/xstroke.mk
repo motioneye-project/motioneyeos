@@ -9,5 +9,5 @@ XSTROKE_SITE = http://avr32linux.org/twiki/pub/Main/XStroke
 
 XSTROKE_DEPENDENCIES = xlib_libXft xlib_libXtst xlib_libXpm
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))
 

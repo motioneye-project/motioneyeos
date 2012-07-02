@@ -15,4 +15,4 @@ endef
 
 GST_DSP_DEPENDENCIES = gstreamer tidsp-binaries host-pkg-config
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))

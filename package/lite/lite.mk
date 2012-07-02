@@ -21,4 +21,4 @@ endef
 
 LITE_POST_INSTALL_TARGET_HOOKS += LITE_FINALIZE_INSTALL
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

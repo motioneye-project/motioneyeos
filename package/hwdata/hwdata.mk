@@ -18,4 +18,4 @@ define HWDATA_UNINSTALL_TARGET_CMDS
 	rmdir --ignore-fail-on-non-empty $(TARGET_DIR)/usr/share
 endef
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))

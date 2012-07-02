@@ -33,4 +33,4 @@ else
 QUAGGA_CONF_OPT +=--disable-snmp
 endif
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

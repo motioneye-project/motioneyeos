@@ -16,4 +16,4 @@ define STATSERIAL_INSTALL_TARGET_CMDS
 	$(INSTALL) -D -m 0755 $(@D)/statserial $(TARGET_DIR)/usr/bin/statserial
 endef
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))

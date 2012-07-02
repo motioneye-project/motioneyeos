@@ -38,4 +38,4 @@ define AT_UNINSTALL_TARGET_CMDS
 		at.1 atq.1 atrm.1 batch.1 at_allow.5 at_deny.5 atd.8 atrun.8)
 endef
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

@@ -8,4 +8,4 @@ MOBILE_BROADBAND_PROVIDER_INFO_SITE = http://ftp.gnome.org/pub/GNOME/sources/mob
 MOBILE_BROADBAND_PROVIDER_INFO_INSTALL_STAGING = YES
 MOBILE_BROADBAND_PROVIDER_INFO_DEPENDENCIES = host-pkg-config
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

@@ -76,4 +76,4 @@ GVFS_POST_INSTALL_TARGET_HOOKS += \
 	GVFS_REMOVE_TARGET_SCHEMAS	\
 	GVFS_COMPILE_SCHEMAS
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

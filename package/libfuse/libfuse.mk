@@ -26,4 +26,4 @@ define LIBFUSE_CLEAN_CMDS
 	rm -f $(TARGET_DIR)/usr/bin/fusermount $(TARGET_DIR)/usr/lib/libfuse.so*
 endef
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

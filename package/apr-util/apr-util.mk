@@ -10,4 +10,4 @@ APR_UTIL_DEPENDENCIES = apr sqlite neon zlib
 APR_UTIL_CONF_OPT = \
 	--with-apr=$(BUILD_DIR)/apr-$(APR_VERSION) \
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

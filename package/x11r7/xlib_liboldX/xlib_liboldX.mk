@@ -11,4 +11,4 @@ XLIB_LIBOLDX_INSTALL_STAGING = YES
 XLIB_LIBOLDX_DEPENDENCIES = xlib_libX11
 XLIB_LIBOLDX_CONF_OPT = --disable-malloc0returnsnull
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

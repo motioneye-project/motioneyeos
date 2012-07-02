@@ -8,4 +8,4 @@ endef
 
 CIFS_UTILS_POST_PATCH_HOOKS += CIFS_UTILS_NO_WERROR
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

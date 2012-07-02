@@ -13,5 +13,5 @@ TORSMO_CONF_OPT = --x-includes="-I$(STAGING_DIR)/usr/include/X11" --x-libraries=
 
 TORSMO_DEPENDENCIES = xserver_xorg-server
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))
 

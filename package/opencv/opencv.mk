@@ -183,4 +183,4 @@ endef
 OPENCV_POST_INSTALL_TARGET_HOOKS += OPENCV_CLEAN_INSTALL_DATA
 endif
 
-$(eval $(call CMAKETARGETS))
+$(eval $(cmake-package))

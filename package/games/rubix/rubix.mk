@@ -12,5 +12,5 @@ RUBIX_MAKE_OPT = CC="$(TARGET_CC)" XINC="-I$(STAGING_DIR)/usr/include/X11" XLIB=
 
 RUBIX_DEPENDENCIES = xserver_xorg-server
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))
 

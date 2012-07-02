@@ -10,5 +10,5 @@ XPROTO_FONTCACHEPROTO_SITE = http://xorg.freedesktop.org/releases/individual/pro
 XPROTO_FONTCACHEPROTO_INSTALL_STAGING = YES
 XPROTO_FONTCACHEPROTO_INSTALL_TARGET = NO
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))
 $(eval $(host-autotools-package))

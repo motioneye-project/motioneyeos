@@ -31,4 +31,4 @@ define USBMOUNT_UNINSTALL_TARGET_CMDS
 		$(TARGET_DIR)/media/usb?
 endef
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))

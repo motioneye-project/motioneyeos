@@ -18,4 +18,4 @@ LIBPCAP_CONF_ENV = ac_cv_linux_vers=2 \
 		ac_cv_header_linux_wireless_h=yes # configure misdetects this
 LIBPCAP_CONF_OPT = --disable-yydebug --with-pcap=linux
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

@@ -21,4 +21,4 @@ else
 LIBNFC_CONF_OPT += --disable-example
 endif
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

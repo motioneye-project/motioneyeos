@@ -36,4 +36,4 @@ define ZXING_UNINSTALL_TARGET_CMDS
 	$(MAKE) -C $(@D)/cpp/core/src DESTDIR=$(TARGET_DIR) uninstall
 endef
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))

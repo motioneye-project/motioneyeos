@@ -61,4 +61,4 @@ define DHCP_INSTALL_TARGET_CMDS
 	$(DHCP_INSTALL_CLIENT)
 endef
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

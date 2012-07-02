@@ -17,4 +17,4 @@ LIBTHEORA_CONF_OPT = \
 
 LIBTHEORA_DEPENDENCIES = libogg libvorbis host-pkg-config
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

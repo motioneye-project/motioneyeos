@@ -12,4 +12,4 @@ MATCHBOX_STARTUP_MONITOR_CONF_OPT =
 
 #############################################################
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

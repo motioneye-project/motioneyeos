@@ -29,4 +29,4 @@ endef
 
 NBD_POST_INSTALL_TARGET_HOOKS += NBD_CLEANUP_AFTER_INSTALL
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

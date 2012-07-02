@@ -33,4 +33,4 @@ define RP_PPPOE_UNINSTALL_TARGET_CMDS
 	done
 endef
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

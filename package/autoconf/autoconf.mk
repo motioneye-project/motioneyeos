@@ -17,7 +17,7 @@ HOST_AUTOCONF_CONF_ENV = ac_cv_path_M4=$(HOST_DIR)/usr/bin/m4 \
 
 HOST_AUTOCONF_DEPENDENCIES = host-m4 host-libtool
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))
 $(eval $(host-autotools-package))
 
 # variables used by other packages

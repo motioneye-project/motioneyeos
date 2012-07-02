@@ -13,4 +13,4 @@ endif
 
 XINETD_MAKE_OPT = AR="$(TARGET_AR)"
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

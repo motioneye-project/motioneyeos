@@ -18,4 +18,4 @@ define DHCPDUMP_INSTALL_TARGET_CMDS
 	install -m 0755 -D $(@D)/dhcpdump $(TARGET_DIR)/usr/bin/dhcpdump
 endef
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))

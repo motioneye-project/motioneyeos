@@ -47,4 +47,4 @@ define INPUT_TOOLS_CLEAN_CMDS
 	rm -f $(addprefix $(@D)/,$(INPUT_TOOLS_TARGETS_y))
 endef
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))

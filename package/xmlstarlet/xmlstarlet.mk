@@ -15,4 +15,4 @@ XMLSTARLET_CONF_OPT += --disable-static-libs \
 	--with-libxslt-prefix=${STAGING_DIR}/usr \
 	--with-libiconv-prefix=${STAGING_DIR}/usr
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

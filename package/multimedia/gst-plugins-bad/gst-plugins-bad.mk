@@ -556,4 +556,4 @@ else
 GST_PLUGINS_BAD_CONF_OPT += --disable-vcd
 endif
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

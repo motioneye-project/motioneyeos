@@ -85,4 +85,4 @@ define BOOST_INSTALL_STAGING_CMDS
 	--layout=system install)
 endef
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))

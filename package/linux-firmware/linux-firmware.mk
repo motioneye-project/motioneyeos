@@ -70,4 +70,4 @@ endef
 
 endif
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))

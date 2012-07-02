@@ -28,4 +28,4 @@ ifneq ($(BR2_PACKAGE_XDRIVER_XF86_VIDEO_ATI),y)
 LIBDRM_CONF_OPT += --disable-radeon
 endif
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

@@ -17,4 +17,4 @@ endef
 
 ARGUS_POST_PATCH_HOOKS += ARGUS_DEBIAN_PATCH_APPLY
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

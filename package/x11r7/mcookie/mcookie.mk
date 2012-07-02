@@ -19,4 +19,4 @@ define MCOOKIE_INSTALL_TARGET_CMDS
 	install -m 0755 -D $(@D)/mcookie $(TARGET_DIR)/usr/bin/mcookie
 endef
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))

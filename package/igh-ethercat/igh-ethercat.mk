@@ -26,4 +26,4 @@ endef
 
 IGH_ETHERCAT_POST_INSTALL_TARGET_HOOKS += IGH_ETHERCAT_INSTALL_MODULES
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

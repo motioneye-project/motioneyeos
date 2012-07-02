@@ -20,4 +20,4 @@ endef
 
 TCPDUMP_POST_INSTALL_TARGET_HOOKS += TCPDUMP_REMOVE_DUPLICATED_BINARY
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

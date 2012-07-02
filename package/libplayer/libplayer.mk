@@ -41,4 +41,4 @@ ifeq ($(BR2_PACKAGE_LIBPLAYER_PYTHON),y)
 	LIBPLAYER_CONF_OPT += --enable-binding-python
 endif
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

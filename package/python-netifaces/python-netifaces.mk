@@ -22,4 +22,4 @@ define PYTHON_NETIFACES_INSTALL_TARGET_CMDS
 	$(HOST_DIR)/usr/bin/python setup.py install --prefix=$(TARGET_DIR)/usr)
 endef
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))

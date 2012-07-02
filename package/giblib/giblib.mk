@@ -13,4 +13,4 @@ GIBLIB_AUTORECONF_OPT = --install
 GIBLIB_CONF_OPT = --with-imlib2-prefix=$(STAGING_DIR)/usr \
 		  --with-imlib2-exec-prefix=$(STAGING_DIR)/usr
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

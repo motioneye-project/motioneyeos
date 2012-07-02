@@ -10,4 +10,4 @@ LZOP_LICENSE = GPLv2+
 LZOP_LICENSE_FILES = COPYING
 LZOP_DEPENDENCIES = lzo
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

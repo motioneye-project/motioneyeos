@@ -23,4 +23,4 @@ define UEMACS_UNINSTALL_TARGET_CMDS
 	rm -f $(TARGET_DIR)/usr/bin/em
 endef
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))

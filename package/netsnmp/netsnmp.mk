@@ -90,4 +90,4 @@ endef
 
 NETSNMP_POST_INSTALL_STAGING_HOOKS += NETSNMP_STAGING_NETSNMP_CONFIG_FIXUP
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

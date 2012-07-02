@@ -14,4 +14,4 @@ define OPENNTPD_UNINSTALL_TARGET_CMDS
 	rm -f $(TARGET_DIR)/usr/share/man/man?/ntpd*
 endef
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

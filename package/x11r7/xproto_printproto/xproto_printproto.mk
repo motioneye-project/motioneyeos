@@ -10,4 +10,4 @@ XPROTO_PRINTPROTO_SITE = http://xorg.freedesktop.org/releases/individual/proto
 XPROTO_PRINTPROTO_INSTALL_STAGING = YES
 XPROTO_PRINTPROTO_INSTALL_TARGET = NO
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

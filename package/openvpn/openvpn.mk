@@ -34,4 +34,4 @@ define OPENVPN_UNINSTALL_TARGET_CMDS
 	rm -f $(TARGET_DIR)/etc/init.d/openvpn
 endef
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

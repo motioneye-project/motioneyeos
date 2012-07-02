@@ -105,4 +105,4 @@ define HOSTAPD_INSTALL_TARGET_CMDS
 		$(TARGET_DIR)/usr/bin/hostapd_cli
 endef
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))

@@ -9,4 +9,4 @@ XAPP_XMH_SOURCE = xmh-$(XAPP_XMH_VERSION).tar.bz2
 XAPP_XMH_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_XMH_DEPENDENCIES = xlib_libXaw
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

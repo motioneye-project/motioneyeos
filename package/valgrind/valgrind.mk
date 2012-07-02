@@ -120,4 +120,4 @@ endef
 VALGRIND_POST_INSTALL_TARGET_HOOKS += VALGRIND_REMOVE_NULGRIND
 endif
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

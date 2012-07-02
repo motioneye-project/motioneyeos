@@ -40,4 +40,4 @@ define CJSON_CLEAN_CMDS
 	cd $(@D)/cJSON && rm -f libcJSON.so
 endef
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))

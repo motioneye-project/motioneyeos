@@ -25,5 +25,5 @@ define USB_MODESWITCH_CLEAN_CMDS
 	rm -f $(TARGET_DIR)/usr/share/man/man1/usb_modeswitch.1
 endef
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))
 

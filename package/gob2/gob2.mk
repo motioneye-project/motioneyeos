@@ -9,7 +9,7 @@ GOB2_SITE = http://ftp.5z.com/pub/gob
 GOB2_DEPENDENCIES = libglib2 flex bison host-pkg-config host-flex
 HOST_GOB2_DEPENDENCIES = host-libglib2
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))
 $(eval $(host-autotools-package))
 
 # gob2 for the host

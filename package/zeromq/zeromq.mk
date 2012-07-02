@@ -9,4 +9,4 @@ ZEROMQ_SITE = http://download.zeromq.org/
 ZEROMQ_INSTALL_STAGING = YES
 ZEROMQ_DEPENDENCIES = util-linux
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

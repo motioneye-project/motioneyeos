@@ -108,4 +108,4 @@ define PYTHON_PYGAME_UNINSTALL_TARGET_CMDS
 	rm -rf $(TARGET_DIR)/usr/lib/python*/site-packages/pygame*
 endef
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))

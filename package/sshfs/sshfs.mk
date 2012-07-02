@@ -12,4 +12,4 @@ SSHFS_DEPENDENCIES = \
 	$(if $(BR2_NEEDS_GETTEXT_IF_LOCALE),gettext libintl) \
 	$(if $(BR2_ENABLE_LOCALE),,libiconv)
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

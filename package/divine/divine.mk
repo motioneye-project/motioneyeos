@@ -10,4 +10,4 @@ DIVINE_SOURCE = DiVine-$(DIVINE_VERSION).tar.gz
 DIVINE_INSTALL_STAGING = YES
 DIVINE_DEPENDENCIES = directfb
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

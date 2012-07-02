@@ -13,4 +13,4 @@ GMPC_DEPENDENCIES = host-gob2 host-intltool host-pkg-config host-vala \
 	xlib_libICE xlib_libSM xlib_libX11 \
 	$(if $(BR2_NEEDS_GETTEXT_IF_LOCALE),gettext libintl)
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

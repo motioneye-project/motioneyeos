@@ -10,4 +10,4 @@ XAPP_XLOGO_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_XLOGO_DEPENDENCIES = xlib_libXaw xlib_libXprintUtil xlib_libXrender \
 			  xlib_libXft host-pkg-config
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

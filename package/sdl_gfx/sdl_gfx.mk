@@ -14,4 +14,4 @@ SDL_GFX_CONF_OPT = \
 	--enable-static \
 	$(if $(BR2_X86_CPU_HAS_MMX),--enable-mmx,--disable-mmx)
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

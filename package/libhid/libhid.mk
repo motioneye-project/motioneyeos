@@ -18,4 +18,4 @@ LIBHID_CONF_OPT = \
 	--without-doxygen \
 	--disable-package-config
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

@@ -22,4 +22,4 @@ endif
 # among other things. So we don't install it.
 SYSSTAT_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) INSTALL_ISAG=n install
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

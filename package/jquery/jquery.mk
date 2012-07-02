@@ -15,4 +15,4 @@ define JQUERY_UNINSTALL_TARGET_CMDS
 	rm -f $(TARGET_DIR)/var/www/jquery.js
 endef
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))

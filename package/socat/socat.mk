@@ -25,4 +25,4 @@ endef
 
 SOCAT_PRE_CONFIGURE_HOOKS += SOCAT_RUN_AUTOCONF
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

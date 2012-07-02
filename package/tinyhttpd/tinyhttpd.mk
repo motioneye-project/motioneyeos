@@ -23,4 +23,4 @@ define TINYHTTPD_CLEAN_CMDS
 	rm -f $(TARGET_DIR)/etc/init.d/S85tinyhttpd
 endef
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))

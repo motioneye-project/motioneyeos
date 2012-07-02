@@ -33,4 +33,4 @@ SDL_IMAGE_DEPENDENCIES:=sdl \
 	$(if $(BR2_PACKAGE_SDL_IMAGE_PNG),libpng) \
 	$(if $(BR2_PACKAGE_SDL_IMAGE_TIFF),tiff)
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

@@ -12,4 +12,4 @@ LTTNG_LIBUST_DEPENDENCIES    = liburcu util-linux
 
 LTTNG_LIBUST_AUTORECONF = YES
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

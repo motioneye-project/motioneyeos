@@ -60,5 +60,5 @@ endef
 
 IMLIB2_POST_INSTALL_STAGING_HOOKS += IMLIB2_FIXUP_IMLIB2_CONFIG
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))
 

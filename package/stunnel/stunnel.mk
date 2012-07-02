@@ -21,4 +21,4 @@ endef
 
 STUNNEL_POST_INSTALL_TARGET_HOOKS += STUNNEL_INSTALL_CONF_SCRIPT
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

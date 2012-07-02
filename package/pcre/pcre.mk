@@ -31,4 +31,4 @@ ifneq ($(BR2_HAVE_DEVFILES),y)
 PCRE_POST_INSTALL_TARGET_HOOKS += PCRE_TARGET_REMOVE_PCRE_CONFIG
 endif
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

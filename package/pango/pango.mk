@@ -59,4 +59,4 @@ endef
 
 PANGO_POST_INSTALL_TARGET_HOOKS += PANGO_INSTALL_INITSCRIPT
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

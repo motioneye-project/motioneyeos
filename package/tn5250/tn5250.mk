@@ -29,4 +29,4 @@ define TN5250_UNINSTALL_TARGET_CMDS
 	rm -rf $(TARGET_DIR)/usr/share/tn5250
 endef
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

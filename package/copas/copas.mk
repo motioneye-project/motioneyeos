@@ -17,4 +17,4 @@ define COPAS_UNINSTALL_TARGET_CMDS
 	rm -f "$(TARGET_DIR)/usr/share/lua/copas.lua"
 endef
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))

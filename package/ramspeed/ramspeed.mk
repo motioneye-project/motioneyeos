@@ -17,4 +17,4 @@ define RAMSPEED_INSTALL_TARGET_CMDS
 	$(INSTALL) -m 0755 -D $(@D)/ramspeed $(TARGET_DIR)/usr/bin/ramspeed
 endef
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))

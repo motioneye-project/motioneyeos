@@ -70,4 +70,4 @@ endef
 
 CUPS_POST_INSTALL_STAGING_HOOKS += CUPS_FIXUP_CUPS_CONFIG
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

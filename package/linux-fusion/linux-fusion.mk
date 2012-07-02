@@ -48,4 +48,4 @@ define LINUX_FUSION_UNINSTALL_TARGET_CMDS
 	rm -f $(LINUX_FUSION_ETC_DIR)/40-fusion.rules
 endef
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))

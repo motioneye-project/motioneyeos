@@ -18,4 +18,4 @@ AUMIX_CONF_OPT = \
 
 AUMIX_DEPENDENCIES = ncurses
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

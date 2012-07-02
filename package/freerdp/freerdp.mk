@@ -59,4 +59,4 @@ else
 FREERDP_CONF_OPT += -DWITH_XV=OFF
 endif
 
-$(eval $(call CMAKETARGETS))
+$(eval $(cmake-package))

@@ -14,4 +14,4 @@ LIBARGTABLE2_CONF_OPT= --disable-example \
 		--enable-lib \
 		--enable-util
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

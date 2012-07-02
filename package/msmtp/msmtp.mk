@@ -29,4 +29,4 @@ MSMTP_CONF_OPT += \
 	--without-libgsasl \
 	--without-gnome-keyring
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

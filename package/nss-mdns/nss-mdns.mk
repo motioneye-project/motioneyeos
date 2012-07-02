@@ -12,4 +12,4 @@ endef
 
 NSS_MDNS_POST_INSTALL_TARGET_HOOKS += NSS_MDNS_INSTALL_CONFIG
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

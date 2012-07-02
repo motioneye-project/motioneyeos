@@ -64,4 +64,4 @@ MPG123_DEPENDENCIES += libtool
 MPG123_CONF_OPT += --with-modules --with-module-suffix=.so
 endif
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

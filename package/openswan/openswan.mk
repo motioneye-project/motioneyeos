@@ -32,4 +32,4 @@ define OPENSWAN_INSTALL_TARGET_CMDS
 	$(MAKE) -C $(@D) $(OPENSWAN_MAKE_OPT) DESTDIR=$(TARGET_DIR) install
 endef
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))

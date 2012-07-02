@@ -33,4 +33,4 @@ define INPUT_EVENT_DAEMON_UNINSTALL_TARGET_CMDS
 	rm -f $(TARGET_DIR)/etc/input-event-daemon.conf
 endef
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))

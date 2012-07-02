@@ -30,4 +30,4 @@ ifneq ($(BR2_PACKAGE_OPENSSL),y)
 endif
 endif
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

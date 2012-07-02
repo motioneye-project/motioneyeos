@@ -10,7 +10,7 @@ LIBTOOL_INSTALL_STAGING = YES
 
 HOST_LIBTOOL_LIBTOOL_PATCH = NO
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))
 $(eval $(host-autotools-package))
 
 # variables used by other packages

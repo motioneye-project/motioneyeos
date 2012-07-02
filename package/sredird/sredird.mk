@@ -24,4 +24,4 @@ define SREDIRD_CLEAN_CMDS
 	rm -f $(@D)/sredird
 endef
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))

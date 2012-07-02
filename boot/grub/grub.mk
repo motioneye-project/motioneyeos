@@ -82,4 +82,4 @@ define GRUB_UNINSTALL_TARGET_CMDS
 	rm -rf $(TARGET_DIR)/boot/grub
 endef
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

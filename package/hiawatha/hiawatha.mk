@@ -16,4 +16,4 @@ HIAWATHA_CONF_OPT += \
 	-DWEBROOT_DIR=/var/www/hiawatha \
 	-DWORK_DIR=/var/lib/hiawatha
 
-$(eval $(call CMAKETARGETS))
+$(eval $(cmake-package))

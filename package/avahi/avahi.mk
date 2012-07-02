@@ -163,4 +163,4 @@ ifeq ($(BR2_PACKAGE_AVAHI_DAEMON),y)
 AVAHI_POST_INSTALL_TARGET_HOOKS += AVAHI_INSTALL_DAEMON_INITSCRIPT
 endif
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

@@ -15,4 +15,4 @@ XAPP_XF86DGA_DEPENDENCIES = \
 	xlib_libXaw \
 	xlib_libXmu
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

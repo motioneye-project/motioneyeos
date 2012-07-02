@@ -9,4 +9,4 @@ LIBRSYNC_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/l
 LIBRSYNC_INSTALL_STAGING = YES
 LIBRSYNC_DEPENDENCIES = zlib bzip2 popt
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

@@ -9,4 +9,4 @@ ENCHANT_SITE = http://www.abisource.com/downloads/enchant/$(ENCHANT_VERSION)
 ENCHANT_INSTALL_STAGING = YES
 ENCHANT_DEPENDENCIES = libglib2 host-pkg-config
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

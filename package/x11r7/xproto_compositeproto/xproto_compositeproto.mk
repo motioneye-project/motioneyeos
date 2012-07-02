@@ -10,4 +10,4 @@ XPROTO_COMPOSITEPROTO_SITE = http://xorg.freedesktop.org/releases/individual/pro
 XPROTO_COMPOSITEPROTO_INSTALL_STAGING = YES
 XPROTO_COMPOSITEPROTO_INSTALL_TARGET = NO
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

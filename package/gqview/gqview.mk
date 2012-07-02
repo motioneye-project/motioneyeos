@@ -8,5 +8,5 @@ GQVIEW_SOURCE = gqview-$(GQVIEW_VERSION).tar.gz
 GQVIEW_SITE = http://prdownloads.sourceforge.net/gqview
 GQVIEW_DEPENDENCIES = host-pkg-config libgtk2
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))
 

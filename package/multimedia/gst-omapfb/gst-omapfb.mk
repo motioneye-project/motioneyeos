@@ -16,4 +16,4 @@ endef
 
 GST_OMAPFB_DEPENDENCIES = gstreamer
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))

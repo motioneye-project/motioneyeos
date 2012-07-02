@@ -20,4 +20,4 @@ QUOTA_INSTALL_TARGET_OPT = \
 	ROOTDIR=$(TARGET_DIR) \
 	install
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

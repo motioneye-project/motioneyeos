@@ -25,7 +25,7 @@ define SHARED_MIME_INFO_INSTALL_TARGET_CMDS
 	$(INSTALL) -D $(STAGING_DIR)/usr/share/mime/mime.cache $(TARGET_DIR)/usr/share/mime/mime.cache
 endef
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))
 $(eval $(host-autotools-package))
 
 # shared-mime-info for the host

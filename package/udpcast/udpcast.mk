@@ -26,4 +26,4 @@ ifneq ($(BR2_PACKAGE_UDPCAST_RECEIVER),y)
 UDPCAST_POST_INSTALL_TARGET_HOOKS += UDPCAST_REMOVE_UDP_RECEIVER
 endif
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

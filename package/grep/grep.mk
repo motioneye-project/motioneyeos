@@ -21,4 +21,4 @@ ifeq ($(BR2_PACKAGE_BUSYBOX),y)
 GREP_DEPENDENCIES += busybox
 endif
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

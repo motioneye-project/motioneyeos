@@ -18,4 +18,4 @@ define FEH_UNINSTALL_TARGET_CMDS
 		DESTDIR=$(TARGET_DIR) -C $(@D) uninstall
 endef
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))

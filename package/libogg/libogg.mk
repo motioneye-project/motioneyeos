@@ -9,4 +9,4 @@ LIBOGG_INSTALL_STAGING = YES
 
 LIBOGG_DEPENDENCIES = host-pkg-config
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

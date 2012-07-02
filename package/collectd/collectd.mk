@@ -125,4 +125,4 @@ define COLLECTD_INSTALL_TARGET_CMDS
 	rm -f $(TARGET_DIR)/usr/share/collectd/postgresql_default.conf
 endef
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

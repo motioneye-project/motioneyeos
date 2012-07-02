@@ -26,4 +26,4 @@ LOGSURFER_POST_INSTALL_TARGET_HOOKS += LOGSURFER_INSTALL_TARGET_MAN
 
 endif
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

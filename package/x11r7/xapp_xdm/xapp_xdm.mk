@@ -19,4 +19,4 @@ endef
 
 XAPP_XDM_POST_INSTALL_TARGET_HOOKS += XAPP_XDM_INSTALL_STARTUP_SCRIPT
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

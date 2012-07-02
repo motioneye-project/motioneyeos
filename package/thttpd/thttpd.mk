@@ -48,4 +48,4 @@ define THTTPD_UNINSTALL_TARGET_CMDS
 	rm -f $(TARGET_DIR)/usr/bin/syslogtocern
 endef
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

@@ -20,4 +20,4 @@ DBUS_PYTHON_CONF_OPT = --disable-html-docs --disable-api-docs
 
 DBUS_PYTHON_DEPENDENCIES = dbus-glib python host-python
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

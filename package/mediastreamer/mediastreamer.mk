@@ -76,4 +76,4 @@ else
 MEDIASTREAMER_CONF_OPT += --disable-libv4l1 --disable-libv4l2
 endif
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

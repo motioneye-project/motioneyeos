@@ -16,4 +16,4 @@ else
 LIBOAUTH_CONF_OPT += --disable-libcurl
 endif
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

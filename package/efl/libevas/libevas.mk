@@ -212,5 +212,5 @@ ifneq ($(BR2_HAVE_DOCUMENTATION),y)
 LIBEVAS_CONF_OPT += --disable-doc
 endif
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))
 $(eval $(host-autotools-package))

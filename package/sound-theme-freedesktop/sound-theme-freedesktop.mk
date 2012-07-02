@@ -10,4 +10,4 @@ SOUND_THEME_FREEDESKTOP_SOURCE = \
 	sound-theme-freedesktop-$(SOUND_THEME_FREEDESKTOP_VERSION).tar.bz2
 SOUND_THEME_FREEDESKTOP_DEPENDENCIES = host-intltool
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

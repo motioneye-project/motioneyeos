@@ -15,4 +15,4 @@ define BRIDGE_UTILS_UNINSTALL_TARGET_CMDS
 		include/libbridge.h share/man/man8/brctl.8 sbin/brctl)
 endef
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

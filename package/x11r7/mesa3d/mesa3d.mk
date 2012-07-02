@@ -28,4 +28,4 @@ MESA3D_DEPENDENCIES = \
 	libdrm \
 	expat
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

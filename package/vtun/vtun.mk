@@ -16,4 +16,4 @@ VTUN_CONF_OPT = \
 		--with-lzo-headers=$(STAGING_DIR)/usr/include/lzo \
 		--with-lzo-lib=$(STAGING_DIR)/usr/lib
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

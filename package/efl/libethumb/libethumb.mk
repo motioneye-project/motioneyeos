@@ -21,4 +21,4 @@ ifeq ($(BR2_PACKAGE_LIBEDBUS),y)
 LIBETHUMB_DEPENDENCIES += libedbus
 endif
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

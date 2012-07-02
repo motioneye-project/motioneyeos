@@ -17,4 +17,4 @@ endef
 
 OPKG_POST_INSTALL_TARGET_HOOKS += OPKG_CREATE_LOCKDIR
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

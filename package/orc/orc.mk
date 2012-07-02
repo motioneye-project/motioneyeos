@@ -22,5 +22,5 @@ ifneq ($(BR2_HAVE_DEVFILES),y)
 ORC_POST_INSTALL_TARGET_HOOKS += ORC_REMOVE_DEVFILES
 endif
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))
 $(eval $(host-autotools-package))

@@ -10,5 +10,5 @@ LIBIQRF_INSTALL_STAGING = YES
 
 LIBIQRF_DEPENDENCIES = libusb
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))
 

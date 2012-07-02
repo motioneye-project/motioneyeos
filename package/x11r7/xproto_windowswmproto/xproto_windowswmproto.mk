@@ -10,4 +10,4 @@ XPROTO_WINDOWSWMPROTO_SITE = http://xorg.freedesktop.org/releases/individual/pro
 XPROTO_WINDOWSWMPROTO_INSTALL_STAGING = YES
 XPROTO_WINDOWSWMPROTO_INSTALL_TARGET = NO
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

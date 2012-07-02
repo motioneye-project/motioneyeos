@@ -10,4 +10,4 @@ XPROTO_XINERAMAPROTO_SITE = http://xorg.freedesktop.org/releases/individual/prot
 XPROTO_XINERAMAPROTO_INSTALL_STAGING = YES
 XPROTO_XINERAMAPROTO_INSTALL_TARGET = NO
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

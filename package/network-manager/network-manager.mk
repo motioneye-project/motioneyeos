@@ -47,4 +47,4 @@ endef
 
 NETWORK_MANAGER_POST_INSTALL_TARGET_HOOKS += NETWORK_MANAGER_INSTALL_INITSCRIPT
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

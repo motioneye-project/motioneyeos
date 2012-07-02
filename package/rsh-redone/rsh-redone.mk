@@ -33,4 +33,4 @@ define RSH_REDONE_UNINSTALL_TARGET_CMDS
 		$(addprefix $(TARGET_DIR)/usr/sbin/,$(rsh-redone-sbin-y))
 endef
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))

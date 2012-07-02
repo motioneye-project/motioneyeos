@@ -30,4 +30,4 @@ define LIBIDN_UNINSTALL_TARGET_CMDS
 	rm -f $(TARGET_DIR)/usr/bin/idn
 endef
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

@@ -37,4 +37,4 @@ else
 SANE_BACKENDS_CONF_OPT += --without-snmp
 endif
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

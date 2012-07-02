@@ -29,4 +29,4 @@ define DHRYSTONE_UNINSTALL_TARGET_CMDS
 	rm -f $(TARGET_DIR)/usr/bin/dhrystone
 endef
 
-$(eval $(call GENTARGETS))
+$(eval $(generic-package))

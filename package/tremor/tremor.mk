@@ -12,4 +12,4 @@ TREMOR_AUTORECONF = YES
 TREMOR_INSTALL_STAGING = YES
 TREMOR_DEPENDENCIES = libogg
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

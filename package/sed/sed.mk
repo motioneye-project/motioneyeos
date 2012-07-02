@@ -23,4 +23,4 @@ endef
 
 SED_POST_INSTALL_TARGET_HOOKS = SED_MOVE_BINARY
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

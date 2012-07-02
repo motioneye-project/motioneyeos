@@ -65,4 +65,4 @@ endef
 
 NTP_POST_PATCH_HOOKS += NTP_PATCH_FIXUPS
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

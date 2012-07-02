@@ -30,5 +30,5 @@ define GAWK_UNINSTALL_TARGET_CMDS
 	rm -rf $(TARGET_DIR)/usr/share/awk
 endef
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))
 $(eval $(host-autotools-package))

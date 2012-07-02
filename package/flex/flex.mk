@@ -43,5 +43,5 @@ FLEX_POST_INSTALL_HOOKS += FLEX_INSTALL_LIBFL
 FLEX_POST_CLEAN_HOOKS += FLEX_UNINSTALL_LIBFL
 endif
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))
 $(eval $(host-autotools-package))

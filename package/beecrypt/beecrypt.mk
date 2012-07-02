@@ -33,4 +33,4 @@ endef
 BEECRYPT_POST_CONFIGURE_HOOKS += BEECRYPT_LINK_WITH_CC
 endif
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

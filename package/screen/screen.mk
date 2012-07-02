@@ -20,4 +20,4 @@ endef
 
 SCREEN_POST_INSTALL_TARGET_HOOKS += SCREEN_INSTALL_SCREENRC
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

@@ -10,4 +10,4 @@ XPROTO_XF86RUSHPROTO_SITE = http://xorg.freedesktop.org/releases/individual/prot
 XPROTO_XF86RUSHPROTO_INSTALL_STAGING = YES
 XPROTO_XF86RUSHPROTO_INSTALL_TARGET = NO
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

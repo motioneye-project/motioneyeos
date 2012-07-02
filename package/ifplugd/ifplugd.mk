@@ -33,4 +33,4 @@ endef
 
 IFPLUGD_POST_INSTALL_TARGET_HOOKS += IFPLUGD_INSTALL_FIXUP
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))

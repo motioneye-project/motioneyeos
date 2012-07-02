@@ -83,4 +83,4 @@ define ALSA_LIB_UNINSTALL_STAGING_CMDS
 	-rm -rf $(STAGING_DIR)/usr/share/alsa
 endef
 
-$(eval $(call AUTOTARGETS))
+$(eval $(autotools-package))
