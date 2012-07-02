@@ -3,7 +3,7 @@ Infrastructure for CMake-based packages
 
 [[cmaketargets-tutorial]]
 
-+CMAKETARGETS+ tutorial
++cmake-package+ tutorial
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 First, let's see how to write a +.mk+ file for a CMake-based package,
@@ -23,7 +23,7 @@ with an example :
 11: LIBFOO_CONF_OPT = -DBUILD_DEMOS=ON
 12: LIBFOO_DEPENDENCIES = libglib2 host-pkg-config
 13:
-14: $(eval $(CMAKETARGETS))
+14: $(eval $(cmake-package))
 ------------------------
 
 On line 6, we declare the version of the package.
@@ -56,22 +56,22 @@ configuring the package.
 On line 12, we declare our dependencies, so that they are built
 before the build process of our package starts.
 
-Finally, on line line 14, we invoke the +CMAKETARGETS+
+Finally, on line line 14, we invoke the +cmake-package+
 macro that generates all the Makefile rules that actually allows the
 package to be built.
 
 [[cmaketargets-reference]]
 
-+CMAKETARGETS+ reference
++cmake-package+ reference
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 The main macro of the CMake package infrastructure is
-+CMAKETARGETS+. It is similar to the +GENTARGETS+ macro. The ability to
++cmake-package+. It is similar to the +generic-package+ macro. The ability to
 have target and host packages is also available, with the
 +host-cmake-package+ macro.
 
 Just like the generic infrastructure, the CMake infrastructure works
-by defining a number of variables before calling the +CMAKETARGETS+
+by defining a number of variables before calling the +cmake-package+
 macro.
 
 First, all the package metadata information variables that exist in

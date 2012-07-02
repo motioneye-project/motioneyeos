@@ -3,7 +3,7 @@ Infrastructure for autotools-based packages
 
 [[autotargets-tutorial]]
 
-+AUTOTARGETS+ tutorial
++autotools-package+ tutorial
 ~~~~~~~~~~~~~~~~~~~~~~
 
 First, let's see how to write a +.mk+ file for an autotools-based
@@ -23,7 +23,7 @@ package, with an example :
 11: LIBFOO_CONF_OPT = --enable-shared
 12: LIBFOO_DEPENDENCIES = libglib2 host-pkg-config
 13:
-14: $(eval $(AUTOTARGETS))
+14: $(eval $(autotools-package))
 ------------------------
 
 On line 6, we declare the version of the package.
@@ -57,23 +57,23 @@ and building the package.
 On line 12, we declare our dependencies, so that they are built
 before the build process of our package starts.
 
-Finally, on line line 14, we invoke the +AUTOTARGETS+
+Finally, on line line 14, we invoke the +autotools-package+
 macro that generates all the Makefile rules that actually allows the
 package to be built.
 
 [[autotargets-reference]]
 
-+AUTOTARGETS+ reference
++autotools-package+ reference
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 The main macro of the autotools package infrastructure is
-+AUTOTARGETS+. It is similar to the +GENTARGETS+ macro. The ability to
++autotools-package+. It is similar to the +generic-package+ macro. The ability to
 have target and host packages is also available, with the
 +host-autotools-package+ macro.
 
 Just like the generic infrastructure, the autotools infrastructure
 works by defining a number of variables before calling the
-+AUTOTARGETS+ macro.
++autotools-package+ macro.
 
 First, all the package metadata information variables that exist in the
 generic infrastructure also exist in the autotools infrastructure:

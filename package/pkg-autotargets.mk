@@ -37,7 +37,7 @@ define CONFIG_UPDATE
 endef
 
 ################################################################################
-# AUTOTARGETS_INNER -- defines how the configuration, compilation and
+# inner-autotools-package -- defines how the configuration, compilation and
 # installation of an autotools package should be done, implements a
 # few hooks to tune the build process for autotools specifities and
 # calls the generic package infrastructure to generate the necessary
@@ -52,7 +52,7 @@ endef
 #  argument 5 is the type (target or host)
 ################################################################################
 
-define AUTOTARGETS_INNER
+define inner-autotools-package
 
 # define package-specific variables to default values
 ifndef $(2)_SUBDIR
@@ -198,7 +198,7 @@ define AUTORECONF_HOOK
 	fi
 endef
 
-# This must be repeated from GENTARGETS_INNER, otherwise we get an empty
+# This must be repeated from inner-generic-package, otherwise we get an empty
 # _DEPENDENCIES if _AUTORECONF is YES.  Also filter the result of _AUTORECONF
 # away from the non-host rule
 $(2)_DEPENDENCIES ?= $(filter-out host-automake host-autoconf host-libtool $(1),\
@@ -295,15 +295,13 @@ endif
 
 # Call the generic package infrastructure to generate the necessary
 # make targets
-$(call GENTARGETS_INNER,$(1),$(2),$(3),$(4),$(5))
+$(call inner-generic-package,$(1),$(2),$(3),$(4),$(5))
 
 endef
 
 ################################################################################
-# AUTOTARGETS -- the target generator macro for autotools packages
-#
-# Argument 1 is "target" or "host"           [optional, default: "target"]
+# autotools-package -- the target generator macro for autotools packages
 ################################################################################
 
-AUTOTARGETS = $(call AUTOTARGETS_INNER,$(call pkgname),$(call UPPERCASE,$(call pkgname)),$(call UPPERCASE,$(call pkgname)),$(call pkgparentdir),target)
-host-autotools-package = $(call AUTOTARGETS_INNER,host-$(call pkgname),$(call UPPERCASE,host-$(call pkgname)),$(call UPPERCASE,$(call pkgname)),$(call pkgparentdir),host)
+autotools-package = $(call inner-autotools-package,$(call pkgname),$(call UPPERCASE,$(call pkgname)),$(call UPPERCASE,$(call pkgname)),$(call pkgparentdir),target)
+host-autotools-package = $(call inner-autotools-package,host-$(call pkgname),$(call UPPERCASE,host-$(call pkgname)),$(call UPPERCASE,$(call pkgname)),$(call pkgparentdir),host)

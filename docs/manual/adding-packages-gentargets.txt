@@ -8,7 +8,7 @@ system is based on hand-written Makefiles or shell scripts.
 
 [[gentargets-tutorial]]
 
-+GENTARGETS+ Tutorial
++generic-package+ Tutorial
 ~~~~~~~~~~~~~~~~~~~~~
 
 ------------------------------
@@ -46,7 +46,7 @@ system is based on hand-written Makefiles or shell scripts.
 32: 	/bin/foo  f  4755  0  0  -  -  -  -  -
 33: endef
 34:
-35: $(eval $(GENTARGETS))
+35: $(eval $(generic-package))
 --------------------------------
 
 The Makefile begins on line 6 to 8 with metadata information: the
@@ -83,16 +83,16 @@ All these steps rely on the +$(@D)+ variable, which
 contains the directory where the source code of the package has been
 extracted.
 
-Finally, on line 35, we call the +GENTARGETS+ which
+Finally, on line 35, we call the +generic-package+ which
 generates, according to the variables defined previously, all the
 Makefile code necessary to make your package working.
 
 [[gentargets-reference]]
 
-+GENTARGETS+ Reference
++generic-package+ Reference
 ~~~~~~~~~~~~~~~~~~~~~~
 
-There are two variants of the generic target. The +GENTARGETS+ macro is
+There are two variants of the generic target. The +generic-package+ macro is
 used for packages to be cross-compiled for the target.  The
 +host-generic-package+ macro is used for host packages, natively compiled
 for the host.  It is possible to call both of them in a single +.mk+
@@ -100,7 +100,7 @@ file: once to create the rules to generate a target
 package and once to create the rules to generate a host package:
 
 ----------------------
-$(eval $(GENTARGETS))
+$(eval $(generic-package))
 $(eval $(host-generic-package))
 ----------------------
 
@@ -112,10 +112,10 @@ some tools to be installed on the host. If the package name is
 variables of other packages, if they depend on +libfoo+ or
 +host-libfoo+.
 
-The call to the +GENTARGETS+ and/or +host-generic-package+ macro *must* be
+The call to the +generic-package+ and/or +host-generic-package+ macro *must* be
 at the end of the +.mk+ file, after all variable definitions.
 
-For the target package, the +GENTARGETS+ uses the variables defined by
+For the target package, the +generic-package+ uses the variables defined by
 the .mk file and prefixed by the uppercased package name:
 +LIBFOO_*+. +host-generic-package+ uses the +HOST_LIBFOO_*+ variables. For
 'some' variables, if the +HOST_LIBFOO_+ prefixed variable doesn't

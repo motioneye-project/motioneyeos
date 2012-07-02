@@ -157,7 +157,7 @@ $(BUILD_DIR)/%/.stamp_dircleaned:
 	rm -Rf $(@D)
 
 ################################################################################
-# GENTARGETS_INNER -- generates the make targets needed to build a
+# inner-generic-package -- generates the make targets needed to build a
 # generic package
 #
 #  argument 1 is the lowercase package name
@@ -169,7 +169,7 @@ $(BUILD_DIR)/%/.stamp_dircleaned:
 #  argument 5 is the type (target or host)
 ################################################################################
 
-define GENTARGETS_INNER
+define inner-generic-package
 
 # Define default values for various package-related variables, if not
 # already defined. For some variables (version, source, site and
@@ -496,17 +496,15 @@ endif # SITE_METHOD
 DL_TOOLS_DEPENDENCIES += $(firstword $(INFLATE$(suffix $($(2)_SOURCE))))
 
 endif # $(2)_KCONFIG_VAR
-endef # GENTARGETS_INNER
+endef # inner-generic-package
 
 ################################################################################
-# GENTARGETS -- the target generator macro for generic packages
-#
-# Argument 1 is "target" or "host"           [optional, default: "target"]
+# generic-package -- the target generator macro for generic packages
 ################################################################################
 
 # In the case of target packages, keep the package name "pkg"
-GENTARGETS = $(call GENTARGETS_INNER,$(call pkgname),$(call UPPERCASE,$(call pkgname)),$(call UPPERCASE,$(call pkgname)),$(call pkgparentdir),target)
+generic-package = $(call inner-generic-package,$(call pkgname),$(call UPPERCASE,$(call pkgname)),$(call UPPERCASE,$(call pkgname)),$(call pkgparentdir),target)
 # In the case of host packages, turn the package name "pkg" into "host-pkg"
-host-generic-package = $(call GENTARGETS_INNER,host-$(call pkgname),$(call UPPERCASE,host-$(call pkgname)),$(call UPPERCASE,$(call pkgname)),$(call pkgparentdir),host)
+host-generic-package = $(call inner-generic-package,host-$(call pkgname),$(call UPPERCASE,host-$(call pkgname)),$(call UPPERCASE,$(call pkgname)),$(call pkgparentdir),host)
 
 # :mode=makefile:

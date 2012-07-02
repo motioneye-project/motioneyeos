@@ -1,12 +1,12 @@
 --- HOWTO ---
 If your package uses config.guess and/or config.sub, then it probably
 relies on the autotools as its build system. In this case, you should
-use the AUTOTARGETS infrastructure, which will take care of updating
+use the autotools-package infrastructure, which will take care of updating
 the config.guess and/or config.sub files appropriately. See the
-Buildroot documentation for details about the AUTOTARGETS
+Buildroot documentation for details about the autotools-package
 infrastructure.
 
-If for some reason your package does not use the AUTOTARGETS
+If for some reason your package does not use the autotools-package
 infrastructure, you can request the config.guess and/or config.sub
 files of your package to be updated by using:
 

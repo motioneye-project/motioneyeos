@@ -21,7 +21,7 @@
 ################################################################################
 
 ################################################################################
-# CMAKETARGETS_INNER -- defines how the configuration, compilation and
+# inner-cmake-package -- defines how the configuration, compilation and
 # installation of a CMake package should be done, implements a few hooks to
 # tune the build process and calls the generic package infrastructure to
 # generate the necessary make targets
@@ -35,7 +35,7 @@
 #  argument 5 is the type (target or host)
 ################################################################################
 
-define CMAKETARGETS_INNER
+define inner-cmake-package
 
 # define package-specific variables to default values
 ifndef $(2)_SUBDIR
@@ -96,7 +96,7 @@ endef
 endif
 endif
 
-# This must be repeated from GENTARGETS_INNER, otherwise we only get
+# This must be repeated from inner-generic-package, otherwise we only get
 # host-cmake in _DEPENDENCIES because of the following line
 $(2)_DEPENDENCIES ?= $(filter-out $(1),$(patsubst host-host-%,host-%,$(addprefix host-,$($(3)_DEPENDENCIES))))
 
@@ -180,18 +180,16 @@ endif
 
 # Call the generic package infrastructure to generate the necessary
 # make targets
-$(call GENTARGETS_INNER,$(1),$(2),$(3),$(4),$(5))
+$(call inner-generic-package,$(1),$(2),$(3),$(4),$(5))
 
 endef
 
 ################################################################################
-# CMAKETARGETS -- the target generator macro for CMake packages
-#
-# Argument 1 is "target" or "host"           [optional, default: "target"]
+# cmake-package -- the target generator macro for CMake packages
 ################################################################################
 
-CMAKETARGETS = $(call CMAKETARGETS_INNER,$(call pkgname),$(call UPPERCASE,$(call pkgname)),$(call UPPERCASE,$(call pkgname)),$(call pkgparentdir),target)
-host-cmake-package = $(call CMAKETARGETS_INNER,host-$(call pkgname),$(call UPPERCASE,host-$(call pkgname)),$(call UPPERCASE,$(call pkgname)),$(call pkgparentdir),host)
+cmake-package = $(call inner-cmake-package,$(call pkgname),$(call UPPERCASE,$(call pkgname)),$(call UPPERCASE,$(call pkgname)),$(call pkgparentdir),target)
+host-cmake-package = $(call inner-cmake-package,host-$(call pkgname),$(call UPPERCASE,host-$(call pkgname)),$(call UPPERCASE,$(call pkgname)),$(call pkgparentdir),host)
 
 ################################################################################
 # Generation of the CMake toolchain file
