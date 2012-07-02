@@ -9,10 +9,10 @@ BSDIFF_SITE = http://www.daemonology.net/bsdiff
 BSDIFF_DEPENDENCIES = bzip2
 
 define BSDIFF_BUILD_CMDS
-	$(TARGET_CC) $(TARGET_CFLAGS) $(TARGET_LDFLAGS) -lbz2 \
-		$(@D)/bsdiff.c -o $(@D)/bsdiff
-	$(TARGET_CC) $(TARGET_CFLAGS) $(TARGET_LDFLAGS) -lbz2 \
-		$(@D)/bspatch.c -o $(@D)/bspatch
+	$(TARGET_CC) $(TARGET_CFLAGS) $(TARGET_LDFLAGS) \
+		$(@D)/bsdiff.c -lbz2 -o $(@D)/bsdiff
+	$(TARGET_CC) $(TARGET_CFLAGS) $(TARGET_LDFLAGS) \
+		$(@D)/bspatch.c -lbz2 -o $(@D)/bspatch
 endef
 
 define BSDIFF_INSTALL_TARGET_CMDS
