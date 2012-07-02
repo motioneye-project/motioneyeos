@@ -139,4 +139,4 @@ HOST_NCURSES_CONF_OPT = \
 	--without-shared --without-gpm
 
 $(eval $(call AUTOTARGETS))
-$(eval $(call AUTOTARGETS,host))
+$(eval $(host-autotools-package))

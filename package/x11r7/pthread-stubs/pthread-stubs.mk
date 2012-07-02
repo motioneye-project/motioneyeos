@@ -10,5 +10,5 @@ PTHREAD_STUBS_SITE = http://xcb.freedesktop.org/dist/
 PTHREAD_STUBS_INSTALL_STAGING = YES
 
 $(eval $(call AUTOTARGETS))
-$(eval $(call AUTOTARGETS,host))
+$(eval $(host-autotools-package))
 

@@ -18,4 +18,4 @@ define HOST_OMAP_U_BOOT_UTILS_INSTALL_CMDS
 	done
 endef
 
-$(eval $(call GENTARGETS,host))
+$(eval $(host-generic-package))

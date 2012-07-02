@@ -17,4 +17,4 @@ PIXMAN_CONF_OPT += --disable-arm-iwmmxt
 endif
 
 $(eval $(call AUTOTARGETS))
-$(eval $(call AUTOTARGETS,host))
+$(eval $(host-autotools-package))

@@ -14,4 +14,4 @@ VALA_DEPENDENCIES = host-flex libglib2 \
 HOST_VALA_DEPENDENCIES = host-flex host-libglib2
 
 $(eval $(call AUTOTARGETS))
-$(eval $(call AUTOTARGETS,host))
+$(eval $(host-autotools-package))

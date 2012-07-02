@@ -40,4 +40,4 @@ HOST_OPENOCD_CONF_OPT = 	\
 	--enable-vsllink
 
 $(eval $(call AUTOTARGETS))
-$(eval $(call AUTOTARGETS,host))
+$(eval $(host-autotools-package))

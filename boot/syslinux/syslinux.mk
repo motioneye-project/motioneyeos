@@ -43,4 +43,4 @@ define HOST_SYSLINUX_CLEAN_CMDS
 endef
 
 $(eval $(call GENTARGETS))
-$(eval $(call GENTARGETS,host))
+$(eval $(host-generic-package))

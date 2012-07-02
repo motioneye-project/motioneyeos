@@ -37,5 +37,5 @@ define HOST_LIBXML_PARSER_PERL_INSTALL_CMDS
 endef
 
 $(eval $(call GENTARGETS))
-$(eval $(call GENTARGETS,host))
+$(eval $(host-generic-package))
 

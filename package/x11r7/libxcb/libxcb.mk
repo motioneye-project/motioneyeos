@@ -20,5 +20,5 @@ LIBXCB_CONF_OPT = --disable-build-docs
 HOST_LIBXCB_CONF_OPT = --disable-build-docs
 
 $(eval $(call AUTOTARGETS))
-$(eval $(call AUTOTARGETS,host))
+$(eval $(host-autotools-package))
 

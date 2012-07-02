@@ -9,4 +9,4 @@ FAKEROOT_SITE = http://snapshot.debian.org/archive/debian/20111201T093630Z/pool/
 FAKEROOT_LICENSE = GPLv3+
 FAKEROOT_LICENSE_FILES = COPYING
 
-$(eval $(call AUTOTARGETS,host))
+$(eval $(host-autotools-package))

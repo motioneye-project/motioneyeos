@@ -25,4 +25,4 @@ define HOST_TAR_EXTRACT_CMDS
 	mv $(@D)/tar-$(TAR_VERSION)/* $(@D)
 	rmdir $(@D)/tar-$(TAR_VERSION)
 endef
-$(eval $(call AUTOTARGETS,host))
+$(eval $(host-autotools-package))

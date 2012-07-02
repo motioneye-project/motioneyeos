@@ -19,4 +19,4 @@ define HOST_SAM_BA_INSTALL_CMDS
 	ln -s ../../opt/sam-ba/sam-ba $(HOST_DIR)/usr/bin/sam-ba
 endef
 
-$(eval $(call GENTARGETS,host))
+$(eval $(host-generic-package))

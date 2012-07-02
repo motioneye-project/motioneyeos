@@ -17,4 +17,4 @@ define HOST_LOCALEDEF_INSTALL_CMDS
 	$(INSTALL) -D -m 0755 $(@D)/localedef $(HOST_DIR)/usr/bin/localedef
 endef
 
-$(eval $(call AUTOTARGETS,host))
+$(eval $(host-autotools-package))

@@ -54,4 +54,4 @@ HOST_GDK_PIXBUF_CONF_OPT = \
 
 HOST_GDK_PIXBUF_DEPENDENCIES = host-libpng
 
-$(eval $(call AUTOTARGETS,host))
+$(eval $(host-autotools-package))

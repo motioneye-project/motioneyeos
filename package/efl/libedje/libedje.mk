@@ -21,4 +21,4 @@ endif
 HOST_LIBEDJE_CONF_OPT = --enable-edje-cc
 
 $(eval $(call AUTOTARGETS))
-$(eval $(call AUTOTARGETS,host))
+$(eval $(host-autotools-package))

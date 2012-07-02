@@ -21,4 +21,4 @@ LIBFDTI_CONF_OPT += --disable-libftdipp
 endif
 
 $(eval $(call AUTOTARGETS))
-$(eval $(call AUTOTARGETS,host))
+$(eval $(host-autotools-package))

@@ -32,4 +32,4 @@ ifeq ($(BR2_PACKAGE_ZLIB),y)
 endif
 
 $(eval $(call AUTOTARGETS))
-$(eval $(call AUTOTARGETS,host))
+$(eval $(host-autotools-package))

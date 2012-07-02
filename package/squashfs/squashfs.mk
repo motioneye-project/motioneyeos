@@ -73,4 +73,4 @@ define HOST_SQUASHFS_INSTALL_CMDS
 endef
 
 $(eval $(call GENTARGETS))
-$(eval $(call GENTARGETS,host))
+$(eval $(host-generic-package))

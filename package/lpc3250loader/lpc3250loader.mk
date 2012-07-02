@@ -6,4 +6,4 @@ define HOST_LPC3250LOADER_INSTALL_CMDS
 		$(HOST_DIR)/usr/bin/LPC3250loader.py
 endef
 
-$(eval $(call GENTARGETS,host))
+$(eval $(host-generic-package))

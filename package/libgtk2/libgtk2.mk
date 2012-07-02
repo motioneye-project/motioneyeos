@@ -152,4 +152,4 @@ define HOST_LIBGTK2_INSTALL_CMDS
 endef
 
 $(eval $(call AUTOTARGETS))
-$(eval $(call AUTOTARGETS,host))
+$(eval $(host-autotools-package))

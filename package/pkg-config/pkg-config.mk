@@ -20,6 +20,6 @@ HOST_PKG_CONFIG_AUTORECONF = YES
 HOST_PKG_CONFIG_DEPENDENCIES =
 
 $(eval $(call AUTOTARGETS))
-$(eval $(call AUTOTARGETS,host))
+$(eval $(host-autotools-package))
 
 PKG_CONFIG_HOST_BINARY:=$(HOST_DIR)/usr/bin/pkg-config

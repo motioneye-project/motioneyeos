@@ -18,4 +18,4 @@ define HOST_PYTHON_DISTUTILSCROSS_INSTALL_CMDS
 	(cd $(@D); $(HOST_DIR)/usr/bin/python setup.py install --prefix=$(HOST_DIR)/usr)
 endef
 
-$(eval $(call GENTARGETS,host))
+$(eval $(host-generic-package))

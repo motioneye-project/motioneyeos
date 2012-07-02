@@ -99,4 +99,4 @@ LIBECORE_CONF_OPT += --disable-ecore-evas
 endif
 
 $(eval $(call AUTOTARGETS))
-$(eval $(call AUTOTARGETS,host))
+$(eval $(host-autotools-package))

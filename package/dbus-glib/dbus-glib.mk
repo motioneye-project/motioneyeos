@@ -33,7 +33,7 @@ HOST_DBUS_GLIB_CONF_OPT = \
 		--enable-asserts=yes
 
 $(eval $(call AUTOTARGETS))
-$(eval $(call AUTOTARGETS,host))
+$(eval $(host-autotools-package))
 
 # dbus-glib for the host
 DBUS_GLIB_HOST_BINARY:=$(HOST_DIR)/usr/bin/dbus-binding-tool

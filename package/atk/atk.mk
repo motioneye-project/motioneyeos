@@ -55,4 +55,4 @@ HOST_ATK_CONF_OPT = \
 		--disable-glibtest
 
 $(eval $(call AUTOTARGETS))
-$(eval $(call AUTOTARGETS,host))
+$(eval $(host-autotools-package))

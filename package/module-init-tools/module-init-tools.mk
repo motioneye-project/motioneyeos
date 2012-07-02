@@ -21,5 +21,5 @@ HOST_MODULE_INIT_TOOLS_CONF_ENV = ac_cv_prog_DOCBOOKTOMAN=''
 HOST_MODULE_INIT_TOOLS_CONF_OPT = --disable-static-utils
 
 $(eval $(call AUTOTARGETS))
-$(eval $(call AUTOTARGETS,host))
+$(eval $(host-autotools-package))
 

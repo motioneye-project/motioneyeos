@@ -14,4 +14,4 @@ MPC_AUTORECONF = YES
 HOST_MPC_AUTORECONF = YES
 
 $(eval $(call AUTOTARGETS))
-$(eval $(call AUTOTARGETS,host))
+$(eval $(host-autotools-package))

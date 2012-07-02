@@ -12,4 +12,4 @@ LIBEET_INSTALL_STAGING = YES
 LIBEET_DEPENDENCIES = host-pkg-config zlib jpeg libeina
 
 $(eval $(call AUTOTARGETS))
-$(eval $(call AUTOTARGETS,host))
+$(eval $(host-autotools-package))

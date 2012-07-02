@@ -213,4 +213,4 @@ LIBEVAS_CONF_OPT += --disable-doc
 endif
 
 $(eval $(call AUTOTARGETS))
-$(eval $(call AUTOTARGETS,host))
+$(eval $(host-autotools-package))

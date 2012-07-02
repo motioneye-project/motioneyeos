@@ -18,4 +18,4 @@ endif
 HOST_M4_CONF_OPT = --disable-static
 
 $(eval $(call AUTOTARGETS))
-$(eval $(call AUTOTARGETS,host))
+$(eval $(host-autotools-package))

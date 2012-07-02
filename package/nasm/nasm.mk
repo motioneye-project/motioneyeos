@@ -8,4 +8,5 @@ NASM_VERSION = 2.10.01
 NASM_SOURCE  = nasm-$(NASM_VERSION).tar.bz2
 NASM_SITE    = http://www.nasm.us/pub/nasm/releasebuilds/$(NASM_VERSION)
 
-$(eval $(call AUTOTARGETS,host))
+$(eval $(call AUTOTARGETS))
+$(eval $(host-autotools-package))
