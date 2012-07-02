@@ -504,14 +504,9 @@ endef # GENTARGETS_INNER
 # Argument 1 is "target" or "host"           [optional, default: "target"]
 ################################################################################
 
-define GENTARGETS
-ifeq ($(1),host)
-# In the case of host packages, turn the package name "pkg" into "host-pkg"
-$(call GENTARGETS_INNER,$(1)-$(call pkgname),$(call UPPERCASE,$(1)-$(call pkgname)),$(call UPPERCASE,$(call pkgname)),$(call pkgparentdir),host)
-else
 # In the case of target packages, keep the package name "pkg"
-$(call GENTARGETS_INNER,$(call pkgname),$(call UPPERCASE,$(call pkgname)),$(call UPPERCASE,$(call pkgname)),$(call pkgparentdir),target)
-endif
-endef
+GENTARGETS = $(call GENTARGETS_INNER,$(call pkgname),$(call UPPERCASE,$(call pkgname)),$(call UPPERCASE,$(call pkgname)),$(call pkgparentdir),target)
+# In the case of host packages, turn the package name "pkg" into "host-pkg"
+host-generic-package = $(call GENTARGETS_INNER,host-$(call pkgname),$(call UPPERCASE,host-$(call pkgname)),$(call UPPERCASE,$(call pkgname)),$(call pkgparentdir),host)
 
 # :mode=makefile:

@@ -23,7 +23,7 @@ with an example :
 11: LIBFOO_CONF_OPT = -DBUILD_DEMOS=ON
 12: LIBFOO_DEPENDENCIES = libglib2 host-pkg-config
 13:
-14: $(eval $(call CMAKETARGETS))
+14: $(eval $(CMAKETARGETS))
 ------------------------
 
 On line 6, we declare the version of the package.
@@ -66,10 +66,9 @@ package to be built.
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 The main macro of the CMake package infrastructure is
-+CMAKETARGETS+. It has the same number of arguments and the same
-semantic as the +GENTARGETS+ macro, which is the main macro of the
-generic package infrastructure. For CMake packages, the ability to
-have target and host packages is also available.
++CMAKETARGETS+. It is similar to the +GENTARGETS+ macro. The ability to
+have target and host packages is also available, with the
++host-cmake-package+ macro.
 
 Just like the generic infrastructure, the CMake infrastructure works
 by defining a number of variables before calling the +CMAKETARGETS+

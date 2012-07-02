@@ -46,7 +46,7 @@ system is based on hand-written Makefiles or shell scripts.
 32: 	/bin/foo  f  4755  0  0  -  -  -  -  -
 33: endef
 34:
-35: $(eval $(call GENTARGETS))
+35: $(eval $(GENTARGETS))
 --------------------------------
 
 The Makefile begins on line 6 to 8 with metadata information: the
@@ -92,19 +92,16 @@ Makefile code necessary to make your package working.
 +GENTARGETS+ Reference
 ~~~~~~~~~~~~~~~~~~~~~~
 
-The +GENTARGETS+ macro takes one optional argument. This argument can
-be used to tell if the package is a target package (cross-compiled for
-the target) or a host package (natively compiled for the host). If
-unspecified, it is assumed that it is a target package. See below for
-details.
-
-For a given package, in a single +.mk+ file, it is possible to call
-GENTARGETS twice, once to create the rules to generate a target
+There are two variants of the generic target. The +GENTARGETS+ macro is
+used for packages to be cross-compiled for the target.  The
++host-generic-package+ macro is used for host packages, natively compiled
+for the host.  It is possible to call both of them in a single +.mk+
+file: once to create the rules to generate a target
 package and once to create the rules to generate a host package:
 
 ----------------------
-$(eval $(call GENTARGETS))
-$(eval $(call GENTARGETS,host))
+$(eval $(GENTARGETS))
+$(eval $(host-generic-package))
 ----------------------
 
 This might be useful if the compilation of the target package requires
@@ -115,12 +112,12 @@ some tools to be installed on the host. If the package name is
 variables of other packages, if they depend on +libfoo+ or
 +host-libfoo+.
 
-The call to the +GENTARGETS+ macro *must* be at the end of the +.mk+
-file, after all variable definitions.
+The call to the +GENTARGETS+ and/or +host-generic-package+ macro *must* be
+at the end of the +.mk+ file, after all variable definitions.
 
 For the target package, the +GENTARGETS+ uses the variables defined by
 the .mk file and prefixed by the uppercased package name:
-+LIBFOO_*+. For the host package, it uses the +HOST_LIBFOO_*+. For
++LIBFOO_*+. +host-generic-package+ uses the +HOST_LIBFOO_*+ variables. For
 'some' variables, if the +HOST_LIBFOO_+ prefixed variable doesn't
 exist, the package infrastructure uses the corresponding variable
 prefixed by +LIBFOO_+. This is done for variables that are likely to

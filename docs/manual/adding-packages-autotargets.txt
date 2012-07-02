@@ -23,7 +23,7 @@ package, with an example :
 11: LIBFOO_CONF_OPT = --enable-shared
 12: LIBFOO_DEPENDENCIES = libglib2 host-pkg-config
 13:
-14: $(eval $(call AUTOTARGETS))
+14: $(eval $(AUTOTARGETS))
 ------------------------
 
 On line 6, we declare the version of the package.
@@ -67,11 +67,9 @@ package to be built.
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 The main macro of the autotools package infrastructure is
-+AUTOTARGETS+. It has the same number of arguments and the
-same semantic as the +GENTARGETS+ macro, which is the main
-macro of the generic package infrastructure. For autotools packages, the
-ability to have target and host packages is also available (and is
-actually widely used).
++AUTOTARGETS+. It is similar to the +GENTARGETS+ macro. The ability to
+have target and host packages is also available, with the
++host-autotools-package+ macro.
 
 Just like the generic infrastructure, the autotools infrastructure
 works by defining a number of variables before calling the
