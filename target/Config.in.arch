@@ -556,8 +556,8 @@ endchoice
 choice
 	prompt "Target ABI"
 	depends on BR2_powerpc
-	default BR2_powerpc_CLASSIC if BR2_powerpc_e500mc
 	default BR2_powerpc_SPE if BR2_powerpc_8540 || BR2_powerpc_8548
+	default BR2_powerpc_CLASSIC
 	help
 	  Application Binary Interface to use
 
@@ -566,7 +566,7 @@ config BR2_powerpc_CLASSIC
 	depends on !(BR2_powerpc_8540 || BR2_powerpc_8548)
 config BR2_powerpc_SPE
 	bool "SPE"
-	depends on BR2_powerpc_8540 || BR2_powerpc_8548 || BR2_powerpc_e500mc
+	depends on BR2_powerpc_8540 || BR2_powerpc_8548
 endchoice
 
 config BR2_ARCH
