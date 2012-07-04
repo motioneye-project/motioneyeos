@@ -1,10 +1,14 @@
 config BR2_PACKAGE_BEECRYPT
 	bool "beecrypt"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
 	select BR2_PACKAGE_ICU if BR2_INSTALL_LIBSTDCPP && BR2_USE_WCHAR
 	help
 	  Beecrypt is a general-purpose cryptography library.
 
 	  http://beecrypt.sf.net
 
+comment "beecrypt needs a toolchain with thread support"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
+
 comment "beecrypt C++ support requires a toolchain with WCHAR enabled"
-	depends on BR2_INSTALL_LIBSTDCPP && !BR2_USE_WCHAR
+	depends on BR2_INSTALL_LIBSTDCPP && !BR2_USE_WCHAR && BR2_TOOLCHAIN_HAS_THREADS
