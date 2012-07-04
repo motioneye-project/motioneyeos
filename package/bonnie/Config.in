@@ -1,6 +1,7 @@
 config BR2_PACKAGE_BONNIE
 	bool "bonnie++"
 	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_USE_MMU # fork()
 	help
 	  Filesystem tester
 
