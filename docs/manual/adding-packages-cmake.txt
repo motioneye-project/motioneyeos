@@ -1,7 +1,7 @@
 Infrastructure for CMake-based packages
 ---------------------------------------
 
-[[cmaketargets-tutorial]]
+[[cmake-package-tutorial]]
 
 +cmake-package+ tutorial
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -60,7 +60,7 @@ Finally, on line line 14, we invoke the +cmake-package+
 macro that generates all the Makefile rules that actually allows the
 package to be built.
 
-[[cmaketargets-reference]]
+[[cmake-package-reference]]
 
 +cmake-package+ reference
 ~~~~~~~~~~~~~~~~~~~~~~~~

@@ -1,7 +1,7 @@
 Infrastructure for autotools-based packages
 -------------------------------------------
 
-[[autotargets-tutorial]]
+[[autotools-package-tutorial]]
 
 +autotools-package+ tutorial
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -61,7 +61,7 @@ Finally, on line line 14, we invoke the +autotools-package+
 macro that generates all the Makefile rules that actually allows the
 package to be built.
 
-[[autotargets-reference]]
+[[autotools-package-reference]]
 
 +autotools-package+ reference
 ~~~~~~~~~~~~~~~~~~~~~~~

@@ -163,22 +163,22 @@ different way, using different infrastructures:
   infrastructure must be used for all packages that do not use the
   autotools as their build system. In the future, other specialized
   infrastructures might be written for other build systems.  We cover
-  them through in a xref:gentargets-tutorial[tutorial] and a
-  xref:gentargets-reference[reference].
+  them through in a xref:generic-package-tutorial[tutorial] and a
+  xref:generic-package-reference[reference].
 
 * *Makefiles for autotools-based software* (autoconf, automake, etc.):
   We provide a dedicated infrastructure for such packages, since
   autotools is a very common build system. This infrastructure 'must'
   be used for new packages that rely on the autotools as their build
-  system. We cover them through a xref:autotargets-tutorial[tutorial]
-  and xref:autotargets-reference[reference].
+  system. We cover them through a xref:autotools-package-tutorial[tutorial]
+  and xref:autotools-package-reference[reference].
 
 * *Makefiles for cmake-based software*: We provide a dedicated
    infrastructure for such packages, as CMake is a more and more
    commonly used build system and has a standardized behaviour. This
    infrastructure 'must' be used for new packages that rely on
-   CMake. We cover them through a xref:cmaketargets-tutorial[tutorial]
-   and xref:cmaketargets-reference[reference].
+   CMake. We cover them through a xref:cmake-package-tutorial[tutorial]
+   and xref:cmake-package-reference[reference].
 
 * *Hand-written Makefiles:* These are currently obsolete, and no new
   manual Makefiles should be added. However, since there are still

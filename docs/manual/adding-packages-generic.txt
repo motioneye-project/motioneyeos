@@ -6,7 +6,7 @@ whose build system is not one of the standard ones, such as
 'autotools' or 'CMake'. This typically includes packages whose build
 system is based on hand-written Makefiles or shell scripts.
 
-[[gentargets-tutorial]]
+[[generic-package-tutorial]]
 
 +generic-package+ Tutorial
 ~~~~~~~~~~~~~~~~~~~~~
@@ -87,7 +87,7 @@ Finally, on line 35, we call the +generic-package+ which
 generates, according to the variables defined previously, all the
 Makefile code necessary to make your package working.
 
-[[gentargets-reference]]
+[[generic-package-reference]]
 
 +generic-package+ Reference
 ~~~~~~~~~~~~~~~~~~~~~~

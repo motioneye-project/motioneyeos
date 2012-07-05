@@ -8,11 +8,11 @@ tuning their configuration.
 
 include::adding-packages-directory.txt[]
 
-include::adding-packages-gentargets.txt[]
+include::adding-packages-generic.txt[]
 
-include::adding-packages-autotargets.txt[]
+include::adding-packages-autotools.txt[]
 
-include::adding-packages-cmaketargets.txt[]
+include::adding-packages-cmake.txt[]
 
 include::adding-packages-handwritten.txt[]
 

@@ -306,6 +306,6 @@ endif
 
 include package/pkg-utils.mk
 include package/pkg-download.mk
-include package/pkg-autotargets.mk
-include package/pkg-cmaketargets.mk
-include package/pkg-gentargets.mk
+include package/pkg-autotools.mk
+include package/pkg-cmake.mk
+include package/pkg-generic.mk
