@@ -1,0 +1,15 @@
+Author: Micah Gersten <micahg@ubuntu.com>
+Description: Fix build failure with --as-needed (Closes: #654838).
+
+diff -Naurp syslinux.orig/utils/Makefile syslinux/utils/Makefile
+--- syslinux.orig/utils/Makefile       2011-12-23 14:53:26.653571511 +0100
++++ syslinux/utils/Makefile    2012-01-22 18:55:03.849466924 +0100
+@@ -51,7 +51,7 @@ isohdpfx.c: $(ISOHDPFX) isohdpfxarray.pl
+ 	$(PERL) isohdpfxarray.pl $(ISOHDPFX) > $@
+
+ isohybrid: isohybrid.o isohdpfx.o
+-	$(CC) $(LDFLAGS) -luuid -o $@ $^
++	$(CC) $(LDFLAGS) -o $@ $^ -luuid
+
+ gethostip: gethostip.o
+ 	$(CC) $(LDFLAGS) -o $@ $^
