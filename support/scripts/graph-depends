@@ -128,6 +128,8 @@ if mode == FULL_MODE:
     for tg in targets:
         # Skip uninteresting targets
         if tg == 'target-generic-issue' or \
+                tg == 'target-generic-getty-busybox' or \
+                tg == 'target-generic-do-remount-rw' or \
                 tg == 'target-finalize' or \
                 tg == 'erase-fakeroots' or \
                 tg == 'target-generic-hostname':
