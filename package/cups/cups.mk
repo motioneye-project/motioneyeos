@@ -14,7 +14,7 @@ CUPS_CONF_OPT = --without-perl \
 		--without-java \
 		--disable-gnutls \
 		--disable-gssapi \
-		--libdir=/usr/$(if $(BR2_ARCH_IS_64),lib64,lib)
+		--libdir=/usr/lib
 
 CUPS_DEPENDENCIES = $(if $(BR2_PACKAGE_ZLIB),zlib) \
 		    $(if $(BR2_PACKAGE_LIBPNG),libpng) \
