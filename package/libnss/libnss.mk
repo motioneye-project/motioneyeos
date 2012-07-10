@@ -28,6 +28,10 @@ LIBNSS_BUILD_VARS = MOZILLA_CLIENT=1 \
 		OS_RELEASE="2.6" \
 		OS_TEST="$(ARCH)"
 
+ifeq ($(BR2_ARCH_IS_64),y)
+LIBNSS_BUILD_VARS += USE_64=1
+endif
+
 
 define LIBNSS_BUILD_CMDS
 	$(MAKE1) -C $(@D)/$(LIBNSS_SUBDIR)/nss build_coreconf build_dbm all \
