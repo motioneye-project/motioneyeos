@@ -135,8 +135,6 @@ define HOST_NCURSES_BUILD_CMDS
 	$(MAKE) -C $(@D)/progs tic
 endef
 
-HOST_NCURSES_DEPENDENCIES =
-
 HOST_NCURSES_CONF_OPT = \
 	--without-shared --without-gpm
 
