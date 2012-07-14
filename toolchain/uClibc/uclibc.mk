@@ -158,7 +158,7 @@ ifeq ($(UCLIBC_TARGET_ARCH),mips)
 ifeq ($(BR2_MIPS_OABI),y)
 	$(SED) 's/.*\(CONFIG_MIPS_O32_ABI\).*/\1=y/' $(UCLIBC_DIR)/.oldconfig
 endif
-ifeq ($(BR2_MIPS_EABI),y)
+ifeq ($(BR2_MIPS_ABI32),y)
 	$(SED) 's/.*\(CONFIG_MIPS_N32_ABI\).*/\1=y/' $(UCLIBC_DIR)/.oldconfig
 endif
 ifeq ($(BR2_MIPS_ABI64),y)

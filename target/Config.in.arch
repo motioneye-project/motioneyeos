@@ -280,9 +280,6 @@ config BR2_MIPS_OABI32
 config BR2_MIPS_ABI32
 	bool "n32"
 	depends on BR2_mips_3 || BR2_mips_4 || BR2_mips_64 || BR2_mips_64r2 || BR2_mips_16
-config BR2_MIPS_EABI
-	bool "eabi"
-	depends on BR2_mips_3 || BR2_mips_4 || BR2_mips_64 || BR2_mips_64r2 || BR2_mips_16
 config BR2_MIPS_ABI64
 	bool "n64"
 	depends on BR2_mips_3 || BR2_mips_4 || BR2_mips_64 || BR2_mips_64r2 || BR2_mips_16
