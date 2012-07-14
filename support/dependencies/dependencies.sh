@@ -153,7 +153,7 @@ if grep ^BR2_TOOLCHAIN_BUILDROOT=y $CONFIG_FILE > /dev/null && \
        /bin/echo -e "\nYou need locale support on your build machine to build a toolchain supporting locales\n"
        exit 1 ;
    fi
-   if ! locale -a | grep -i utf8$ ; then
+   if ! locale -a | grep -q -i utf8$ ; then
        /bin/echo -e "\nYou need at least one UTF8 locale to build a toolchain supporting locales\n"
        exit 1 ;
    fi
