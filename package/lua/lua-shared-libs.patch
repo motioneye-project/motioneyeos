@@ -1,6 +1,7 @@
-diff -Naur lua-5.1.4.org/Makefile lua-5.1.4/Makefile
---- lua-5.1.4.org/Makefile	2009-11-24 23:49:28.232820455 +0100
-+++ lua-5.1.4/Makefile	2009-11-24 23:50:35.452817115 +0100
+Index: b/Makefile
+===================================================================
+--- a/Makefile
++++ b/Makefile
 @@ -43,7 +43,7 @@
  # What to install.
  TO_BIN= lua luac
@@ -18,9 +19,10 @@ diff -Naur lua-5.1.4.org/Makefile lua-5.1.4/Makefile
  	cd doc && $(INSTALL_DATA) $(TO_MAN) $(INSTALL_MAN)
  
  ranlib:
-diff -Naur lua-5.1.4.org/src/ldo.h lua-5.1.4/src/ldo.h
---- lua-5.1.4.org/src/ldo.h	2009-11-24 23:49:28.232820455 +0100
-+++ lua-5.1.4/src/ldo.h	2009-11-24 23:49:54.244818140 +0100
+Index: b/src/ldo.h
+===================================================================
+--- a/src/ldo.h
++++ b/src/ldo.h
 @@ -46,7 +46,7 @@
  LUAI_FUNC int luaD_poscall (lua_State *L, StkId firstResult);
  LUAI_FUNC void luaD_reallocCI (lua_State *L, int newsize);
@@ -30,9 +32,10 @@ diff -Naur lua-5.1.4.org/src/ldo.h lua-5.1.4/src/ldo.h
  
  LUAI_FUNC void luaD_throw (lua_State *L, int errcode);
  LUAI_FUNC int luaD_rawrunprotected (lua_State *L, Pfunc f, void *ud);
-diff -Naur lua-5.1.4.org/src/lfunc.h lua-5.1.4/src/lfunc.h
---- lua-5.1.4.org/src/lfunc.h	2009-11-24 23:49:28.236815431 +0100
-+++ lua-5.1.4/src/lfunc.h	2009-11-24 23:49:54.244818140 +0100
+Index: b/src/lfunc.h
+===================================================================
+--- a/src/lfunc.h
++++ b/src/lfunc.h
 @@ -18,7 +18,7 @@
                           cast(int, sizeof(TValue *)*((n)-1)))
  
@@ -42,9 +45,10 @@ diff -Naur lua-5.1.4.org/src/lfunc.h lua-5.1.4/src/lfunc.h
  LUAI_FUNC Closure *luaF_newCclosure (lua_State *L, int nelems, Table *e);
  LUAI_FUNC Closure *luaF_newLclosure (lua_State *L, int nelems, Table *e);
  LUAI_FUNC UpVal *luaF_newupval (lua_State *L);
-diff -Naur lua-5.1.4.org/src/lmem.h lua-5.1.4/src/lmem.h
---- lua-5.1.4.org/src/lmem.h	2009-11-24 23:49:28.236815431 +0100
-+++ lua-5.1.4/src/lmem.h	2009-11-24 23:49:54.244818140 +0100
+Index: b/src/lmem.h
+===================================================================
+--- a/src/lmem.h
++++ b/src/lmem.h
 @@ -38,9 +38,9 @@
     ((v)=cast(t *, luaM_reallocv(L, v, oldn, n, sizeof(t))))
  
@@ -57,9 +61,10 @@ diff -Naur lua-5.1.4.org/src/lmem.h lua-5.1.4/src/lmem.h
  LUAI_FUNC void *luaM_growaux_ (lua_State *L, void *block, int *size,
                                 size_t size_elem, int limit,
                                 const char *errormsg);
-diff -Naur lua-5.1.4.org/src/lstring.h lua-5.1.4/src/lstring.h
---- lua-5.1.4.org/src/lstring.h	2009-11-24 23:49:28.236815431 +0100
-+++ lua-5.1.4/src/lstring.h	2009-11-24 23:49:54.244818140 +0100
+Index: b/src/lstring.h
+===================================================================
+--- a/src/lstring.h
++++ b/src/lstring.h
 @@ -25,7 +25,7 @@
  
  LUAI_FUNC void luaS_resize (lua_State *L, int newsize);
@@ -69,9 +74,10 @@ diff -Naur lua-5.1.4.org/src/lstring.h lua-5.1.4/src/lstring.h
  
  
  #endif
-diff -Naur lua-5.1.4.org/src/lundump.h lua-5.1.4/src/lundump.h
---- lua-5.1.4.org/src/lundump.h	2009-11-24 23:49:28.232820455 +0100
-+++ lua-5.1.4/src/lundump.h	2009-11-24 23:49:54.244818140 +0100
+Index: b/src/lundump.h
+===================================================================
+--- a/src/lundump.h
++++ b/src/lundump.h
 @@ -17,7 +17,7 @@
  LUAI_FUNC void luaU_header (char* h);
  
@@ -81,9 +87,10 @@ diff -Naur lua-5.1.4.org/src/lundump.h lua-5.1.4/src/lundump.h
  
  #ifdef luac_c
  /* print one chunk; from print.c */
-diff -Naur lua-5.1.4.org/src/Makefile lua-5.1.4/src/Makefile
---- lua-5.1.4.org/src/Makefile	2009-11-24 23:49:28.236815431 +0100
-+++ lua-5.1.4/src/Makefile	2009-11-24 23:49:54.244818140 +0100
+Index: b/src/Makefile
+===================================================================
+--- a/src/Makefile
++++ b/src/Makefile
 @@ -23,6 +23,7 @@
  PLATS= aix ansi bsd freebsd generic linux macosx mingw posix solaris
  
@@ -114,22 +121,20 @@ diff -Naur lua-5.1.4.org/src/Makefile lua-5.1.4/src/Makefile
 +so:	$(ALL_SO)
 +
  $(LUA_A): $(CORE_O) $(LIB_O)
- 	$(AR) $@ $?
+ 	$(AR) $@ $(CORE_O) $(LIB_O)	# DLL needs all object files
  	$(RANLIB) $@
  
--$(LUA_T): $(LUA_O) $(LUA_A)
--	$(CC) -o $@ $(MYLDFLAGS) $(LUA_O) $(LUA_A) $(LIBS)
 +$(LUA_SO): $(CORE_O) $(LIB_O)
 +	$(CC) -o $@.$(PKG_VERSION) -shared -Wl,-soname="$@.$(PKG_VERSION)" $? -nostdlib -lgcc
 +	ln -fs $@.$(PKG_VERSION) $@
 +
-+$(LUA_T): $(LUA_O) $(LUA_SO)
-+	$(CC) -o $@ -L. -llua $(MYLDFLAGS) $(LUA_O) $(LIBS)
-+
-+$(LUAC_T): $(LUAC_O) $(LUA_SO)
-+	$(CC) -o $@ -L. -llua $(MYLDFLAGS) $(LUAC_O) $(LIBS)
+ $(LUA_T): $(LUA_O) $(LUA_A)
+-	$(CC) -o $@ $(MYLDFLAGS) $(LUA_O) $(LUA_A) $(LIBS)
++	$(CC) -o $@ -L. -llua $(MYLDFLAGS) $(LUA_O) $(LUA_A) $(LIBS)
  
--$(LUAC_T): $(LUAC_O) $(LUA_A)
+ $(LUAC_T): $(LUAC_O) $(LUA_A)
++	$(CC) -o $@ -L. -llua $(MYLDFLAGS) $(LUAC_O) $(LUA_A) $(LIBS)
++
 +$(LUAC_T)-host: $(LUAC_O) $(LUA_A)
  	$(CC) -o $@ $(MYLDFLAGS) $(LUAC_O) $(LUA_A) $(LIBS)
  

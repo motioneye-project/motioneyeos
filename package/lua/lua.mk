@@ -4,7 +4,7 @@
 #
 #############################################################
 
-LUA_VERSION = 5.1.4
+LUA_VERSION = 5.1.5
 LUA_SITE = http://www.lua.org/ftp
 LUA_INSTALL_STAGING = YES
 
