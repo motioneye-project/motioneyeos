@@ -115,8 +115,9 @@ config BR2_LINUX_KERNEL_DEFCONFIG
 	string "Defconfig name"
 	depends on BR2_LINUX_KERNEL_USE_DEFCONFIG
 	help
-	 Name of the defconfig file to use, without the trailing
-	 _defconfig
+	 Name of the kernel defconfig file to use, without the
+	 trailing _defconfig.  The defconfig is located in
+	 arch/<arch>/configs in the kernel tree.
 
 config BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE
 	string "Configuration file path"
