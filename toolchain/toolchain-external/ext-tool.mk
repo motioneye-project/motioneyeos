@@ -121,9 +121,17 @@ endif
 TOOLCHAIN_EXTERNAL_CROSS=$(TOOLCHAIN_EXTERNAL_BIN)/$(TOOLCHAIN_EXTERNAL_PREFIX)-
 TOOLCHAIN_EXTERNAL_CC=$(TOOLCHAIN_EXTERNAL_CROSS)gcc
 TOOLCHAIN_EXTERNAL_CXX=$(TOOLCHAIN_EXTERNAL_CROSS)g++
-TOOLCHAIN_EXTERNAL_WRAPPER_ARGS = \
-	-DBR_CROSS_PATH='"$(TOOLCHAIN_EXTERNAL_BIN)/"' \
-	-DBR_SYSROOT='"$(STAGING_DIR)"'
+TOOLCHAIN_EXTERNAL_WRAPPER_ARGS = -DBR_SYSROOT='"$(STAGING_SUBDIR)"'
+
+ifeq ($(filter $(HOST_DIR)/%,$(TOOLCHAIN_EXTERNAL_BIN)),)
+# TOOLCHAIN_EXTERNAL_BIN points outside HOST_DIR => absolute path
+TOOLCHAIN_EXTERNAL_WRAPPER_ARGS += \
+	-DBR_CROSS_PATH_ABS='"$(TOOLCHAIN_EXTERNAL_BIN)"'
+else
+# TOOLCHAIN_EXTERNAL_BIN points inside HOST_DIR => relative path
+TOOLCHAIN_EXTERNAL_WRAPPER_ARGS += \
+	-DBR_CROSS_PATH_REL='"$(TOOLCHAIN_EXTERNAL_BIN:$(HOST_DIR)/%=%)"'
+endif
 
 CC_TARGET_TUNE_:=$(call qstrip,$(BR2_GCC_TARGET_TUNE))
 CC_TARGET_CPU_:=$(call qstrip,$(BR2_GCC_TARGET_CPU))
@@ -456,7 +464,7 @@ $(HOST_DIR)/usr/bin/ext-toolchain-wrapper: $(STAMP_DIR)/ext-toolchain-installed
 			ln -sf $(@F) $$base; \
 			;; \
 		*) \
-			ln -sf $$i .; \
+			ln -sf $$(echo $$i | sed 's%^$(HOST_DIR)%../..%') .; \
 			;; \
 		esac; \
 	done ;
