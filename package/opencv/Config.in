@@ -1,4 +1,4 @@
-config BR2_PACKAGE_OPENCV
+menuconfig BR2_PACKAGE_OPENCV
 	bool "opencv"
 	select BR2_PACKAGE_ZLIB
 	depends on BR2_INSTALL_LIBSTDCPP
@@ -11,28 +11,124 @@ config BR2_PACKAGE_OPENCV
 
 if BR2_PACKAGE_OPENCV
 
+comment "OpenCV modules"
+
+config BR2_PACKAGE_OPENCV_LIB_CALIB3D
+	bool "calib3d"
+	default y
+	help
+	  Include opencv_calib3d module into the OpenCV build.
+
+config BR2_PACKAGE_OPENCV_LIB_CONTRIB
+	bool "contrib"
+	default y
+	help
+	  Include opencv_contrib module into the OpenCV build.
+
+config BR2_PACKAGE_OPENCV_LIB_CORE
+	bool "core"
+	default y
+	help
+	  Include opencv_core module into the OpenCV build.
+
+config BR2_PACKAGE_OPENCV_LIB_FEATURES2D
+	bool "features2d"
+	default y
+	help
+	  Include opencv_features2d module into the OpenCV build.
+
+config BR2_PACKAGE_OPENCV_LIB_FLANN
+	bool "flann"
+	default y
+	help
+	  Include opencv_flann module into the OpenCV build.
+
+config BR2_PACKAGE_OPENCV_LIB_GPU
+	bool "gpu"
+	help
+	  Include opencv_gpu module into the OpenCV build.
+
+config BR2_PACKAGE_OPENCV_LIB_HIGHGUI
+	bool "highgui"
+	default y
+	help
+	  Include opencv_highgui module into the OpenCV build.
+
+config BR2_PACKAGE_OPENCV_LIB_IMGPROC
+	bool "imgproc"
+	default y
+	help
+	  Include opencv_imgproc module into the OpenCV build.
+
+config BR2_PACKAGE_OPENCV_LIB_LEGACY
+	bool "legacy"
+	default y
+	help
+	  Include opencv_legacy module into the OpenCV build.
+
+config BR2_PACKAGE_OPENCV_LIB_ML
+	bool "ml (machine learning)"
+	default y
+	help
+	  Include opencv_ml module into the OpenCV build.
+
+config BR2_PACKAGE_OPENCV_LIB_NONFREE
+	bool "nonfree"
+	help
+	  Include opencv_nonfree module into the OpenCV build.
+
+config BR2_PACKAGE_OPENCV_LIB_OBJDETECT
+	bool "objdetect"
+	default y
+	help
+	  Include opencv_objdetect module into the OpenCV build.
+
+config BR2_PACKAGE_OPENCV_LIB_PHOTO
+	bool "photo"
+	default y
+	help
+	  Include opencv_photo module into the OpenCV build.
+
+comment "opencv_python module requires numpy which is not yet available."
+
+config BR2_PACKAGE_OPENCV_LIB_STITCHING
+	bool "stitching"
+	default y
+	help
+	  Include opencv_stitching module into the OpenCV build.
+
+config BR2_PACKAGE_OPENCV_LIB_TS
+	bool "ts (touchscreen)"
+	default y
+	help
+	  Include opencv_ts module into the OpenCV build.
+
+config BR2_PACKAGE_OPENCV_LIB_VIDEO
+	bool "video"
+	default y
+	help
+	  Include opencv_video module into the OpenCV build.
+
+config BR2_PACKAGE_OPENCV_LIB_VIDEOSTAB
+	bool "videostab"
+	default y
+	help
+	  Include opencv_videostab module into the OpenCV build.
+
+comment "Test sets"
 config BR2_PACKAGE_OPENCV_BUILD_TESTS
 	bool "build tests"
 
-config BR2_PACKAGE_OPENCV_INSTALL_DATA
-	bool "install extra data"
-	help
-	  Install various data that is used by cv libraries and/or demo
-	  applications, specifically for haarcascades and lbpcascades
-	  features.
+config BR2_PACKAGE_OPENCV_BUILD_PERF_TESTS
+	bool "build performance tests"
 
-	  For further information: see OpenCV documentation.
-
-comment "Build options"
-
-config BR2_PACKAGE_OPENCV_WITH_PYTHON
-	bool "python support"
-	depends on BR2_PACKAGE_PYTHON
+comment "3rd party support"
 
 config BR2_PACKAGE_OPENCV_WITH_FFMPEG
 	bool "ffmpeg support"
 	depends on BR2_LARGEFILE
 	depends on BR2_INET_IPV6
+	select BR2_PACKAGE_BZIP2
 	select BR2_PACKAGE_FFMPEG
 	select BR2_PACKAGE_FFMPEG_SWSCALE
 	help
@@ -43,18 +139,17 @@ comment "ffmpeg support requires a toolchain with LARGEFILE and IPV6 support"
 
 config BR2_PACKAGE_OPENCV_WITH_GSTREAMER
 	bool "gstreamer support"
+	depends on BR2_USE_WCHAR
 	select BR2_PACKAGE_GSTREAMER
 	select BR2_PACKAGE_GST_PLUGINS_BASE
 	select BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_APP
 
 config BR2_PACKAGE_OPENCV_WITH_GTK
 	bool "gtk support"
-	depends on BR2_PACKAGE_LIBGTK2
-
-config BR2_PACKAGE_OPENCV_WITH_QT
-	bool "qt backend support"
-	depends on BR2_PACKAGE_QT
-	default y
+	depends on BR2_PACKAGE_XORG7||BR2_PACKAGE_DIRECTFB
+	depends on BR2_USE_WCHAR
+	depends on BR2_INSTALL_LIBSTDCPP
+	select BR2_PACKAGE_LIBGTK2
 
 config BR2_PACKAGE_OPENCV_WITH_JPEG
 	bool "jpeg support"
@@ -67,6 +162,15 @@ config BR2_PACKAGE_OPENCV_WITH_PNG
 	select BR2_PACKAGE_LIBPNG
 	help
 	  Use shared libpng from the target system.
+
+config BR2_PACKAGE_OPENCV_WITH_QT
+	bool "qt backend support"
+	depends on BR2_INSTALL_LIBSTDCPP
+	select BR2_PACKAGE_QT
+	select BR2_PACKAGE_QT_STL
+	default y
+	help
+	  Use Qt with STL support
 
 config BR2_PACKAGE_OPENCV_WITH_TIFF
 	bool "tiff support"
@@ -84,7 +188,18 @@ config BR2_PACKAGE_OPENCV_WITH_V4L
 comment "v4l support requires a toolchain with LARGEFILE support"
 	depends on !BR2_LARGEFILE
 
+comment "Install options"
+
+config BR2_PACKAGE_OPENCV_INSTALL_DATA
+	bool "install extra data"
+	help
+	  Install various data that is used by cv libraries and/or demo
+	  applications, specifically for haarcascades and lbpcascades
+	  features.
+
+	  For further information: see OpenCV documentation.
+
 endif # BR2_PACKAGE_OPENCV
 
 comment "opencv requires a toolchain with C++ and WCHAR support"
-	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR
+	depends on !(BR2_INSTALL_LIBSTDCPP  && BR2_USE_WCHAR)
