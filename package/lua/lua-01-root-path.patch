@@ -1,5 +1,29 @@
 Adjust installation location to /usr.
+Remove version in module paths.
 
+Signed-off-by: Francois Perrad <francois.perrad@gadz.org>
+
+Index: b/etc/lua.pc
+===================================================================
+--- a/etc/lua.pc
++++ b/etc/lua.pc
+@@ -8,13 +8,13 @@
+ R= 5.1.5
+ 
+ # grep '^INSTALL_.*=' ../Makefile | sed 's/INSTALL_TOP/prefix/'
+-prefix= /usr/local
++prefix= /usr
+ INSTALL_BIN= ${prefix}/bin
+ INSTALL_INC= ${prefix}/include
+ INSTALL_LIB= ${prefix}/lib
+ INSTALL_MAN= ${prefix}/man/man1
+-INSTALL_LMOD= ${prefix}/share/lua/${V}
+-INSTALL_CMOD= ${prefix}/lib/lua/${V}
++INSTALL_LMOD= ${prefix}/share/lua
++INSTALL_CMOD= ${prefix}/lib/lua
+ 
+ # canonical vars
+ exec_prefix=${prefix}
 Index: b/src/luaconf.h
 ===================================================================
 --- a/src/luaconf.h

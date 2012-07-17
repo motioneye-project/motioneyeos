@@ -28,7 +28,6 @@ HOST_LUA_MYLIBS = -ldl
 
 define LUA_BUILD_CMDS
 	sed -i -e 's/-O2//' $(@D)/src/Makefile
-	sed -i -e 's/\/usr\/local/\/usr/' $(@D)/etc/lua.pc
 	$(MAKE) \
 	CC="$(TARGET_CC)" RANLIB="$(TARGET_RANLIB)" \
 	MYCFLAGS="$(TARGET_CFLAGS) $(LUA_MYCFLAGS)" \
@@ -38,7 +37,6 @@ endef
 
 define HOST_LUA_BUILD_CMDS
 	sed -i -e 's/-O2//' $(@D)/src/Makefile
-	sed -i -e 's/\/usr\/local/\/usr/' $(@D)/etc/lua.pc
 	$(MAKE) \
 	MYCFLAGS="$(HOST_LUA_MYCFLAGS)" \
 	MYLIBS="$(HOST_LUA_MYLIBS)" \
