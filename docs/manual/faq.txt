@@ -1,0 +1,38 @@
+Frequently Asked Questions
+==========================
+
+The boot hangs after 'Starting network...'
+------------------------------------------
+
+If the boot process seems to hand after the following messages
+(messages not necessarily exactly similar, depending on the list of
+packages selected):
+
+------------------------
+Freeing init memory: 3972K
+Initializing random number generator... done.
+Starting network...
+Starting dropbear sshd: generating rsa key... generating dsa key... OK
+------------------------
+
+then it means that your system is running, but didn't start a shell on
+the serial console. In order to have the system start a shell on your
+serial console, you have to go in the Buildroot configuration, +System
+configuration+, and modify +Port to run a getty (login prompt) on+ and
++Baudrate to use+ as appropriate. This will automatically tune the
++/etc/inittab+ file of the generated system so that a shell starts on
+the correct serial port.
+
+module-init-tools fails to build with 'cannot find -lc'
+-------------------------------------------------------
+
+If the build of +module-init-tools+ for the host fails with:
+
+------------------------
+/usr/bin/ld: cannot find -lc
+------------------------
+
+then probably you are running a Fedora (or similar) distribution, and
+you should install the +glibc-static+ package. This is because the
++module-init-tools+ build process wants to link statically against the
+C library.

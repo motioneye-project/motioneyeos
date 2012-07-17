@@ -31,4 +31,6 @@ include::download-location.txt[]
 
 include::adding-packages.txt[]
 
+include::faq.txt[]
+
 include::appendix.txt[]
