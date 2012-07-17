@@ -5,16 +5,16 @@ config BR2_PACKAGE_LUA
 
 	  http://www.lua.org/
 
+if BR2_PACKAGE_LUA
+
 config BR2_PACKAGE_LUA_COMPILER
 	bool "lua compiler"
-	depends on BR2_PACKAGE_LUA
 	select BR2_PACKAGE_LUA_SHARED_LIBRARY
 	help
 	  Install luac binary
 
 config BR2_PACKAGE_LUA_INTERPRETER
 	bool "lua interpreter"
-	depends on BR2_PACKAGE_LUA
 	select BR2_PACKAGE_LUA_SHARED_LIBRARY
 	help
 	  Install lua binary
@@ -29,6 +29,7 @@ config BR2_PACKAGE_LUA_INTERPRETER_READLINE
 
 config BR2_PACKAGE_LUA_SHARED_LIBRARY
 	bool "shared library"
-	depends on BR2_PACKAGE_LUA
 	help
 	  Install shared liblua.so
+
+endif
