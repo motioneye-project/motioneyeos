@@ -1,3 +1,5 @@
+Adjust installation location to /usr.
+
 Index: b/src/luaconf.h
 ===================================================================
 --- a/src/luaconf.h
