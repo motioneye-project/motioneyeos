@@ -23,8 +23,13 @@ endif
 SQLITE_CONF_ENV = CFLAGS="$(TARGET_CFLAGS) $(SQLITE_CFLAGS)"
 
 SQLITE_CONF_OPT = \
-	--enable-threadsafe \
 	--localstatedir=/var
+
+ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),y)
+SQLITE_CONF_OPT += --enable-threadsafe
+else
+SQLITE_CONF_OPT += --disable-threadsafe
+endif
 
 ifeq ($(BR2_PACKAGE_SQLITE_READLINE),y)
 SQLITE_DEPENDENCIES += ncurses readline
