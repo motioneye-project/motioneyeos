@@ -10,6 +10,10 @@ config BR2_VERSION
 	string
 	option env="BR2_VERSION_FULL"
 
+config BR2_HOSTARCH
+	string
+	option env="HOSTARCH"
+
 source "target/Config.in.arch"
 
 menu "Build options"
