@@ -1,0 +1,40 @@
+Do not use a symlink for the binary, simply name if luajit
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/Makefile
+===================================================================
+--- a/Makefile
++++ b/Makefile
+@@ -41,8 +41,7 @@
+ INSTALL_MAN= $(INSTALL_SHARE)/man/man1
+ INSTALL_PKGCONFIG= $(INSTALL_LIB)/pkgconfig
+ 
+-INSTALL_TNAME= luajit-$(VERSION)
+-INSTALL_TSYMNAME= luajit
++INSTALL_TNAME= luajit
+ INSTALL_ANAME= libluajit-$(ABIVER).a
+ INSTALL_SONAME= libluajit-$(ABIVER).so.$(MAJVER).$(MINVER).$(RELVER)
+ INSTALL_SOSHORT= libluajit-$(ABIVER).so
+@@ -56,7 +55,6 @@
+ INSTALL_SHORT1= $(INSTALL_LIB)/$(INSTALL_SOSHORT)
+ INSTALL_SHORT2= $(INSTALL_LIB)/$(INSTALL_SOSHORT)
+ INSTALL_T= $(INSTALL_BIN)/$(INSTALL_TNAME)
+-INSTALL_TSYM= $(INSTALL_BIN)/$(INSTALL_TSYMNAME)
+ INSTALL_PC= $(INSTALL_PKGCONFIG)/$(INSTALL_PCNAME)
+ 
+ INSTALL_DIRS= $(INSTALL_BIN) $(INSTALL_LIB) $(INSTALL_INC) $(INSTALL_MAN) \
+@@ -114,13 +112,6 @@
+ 	  $(RM) $(FILE_PC).tmp
+ 	cd src && $(INSTALL_F) $(FILES_INC) $(INSTALL_INC)
+ 	cd lib && $(INSTALL_F) $(FILES_JITLIB) $(INSTALL_JITLIB)
+-	@echo "==== Successfully installed LuaJIT $(VERSION) to $(PREFIX) ===="
+-	@echo ""
+-	@echo "Note: the beta releases deliberately do NOT install a symlink for luajit"
+-	@echo "You can do this now by running this command (with sudo):"
+-	@echo ""
+-	@echo "  $(SYMLINK) $(INSTALL_TNAME) $(INSTALL_TSYM)"
+-	@echo ""
+ 
+ ##############################################################################
+ 
