@@ -2,7 +2,6 @@ config BR2_PACKAGE_COPAS
 	bool "copas"
 	select BR2_PACKAGE_COXPCALL
 	select BR2_PACKAGE_LUASOCKET
-	select BR2_PACKAGE_LUA_SHARED_LIBRARY # for luasocket
 	help
 	  Copas is a dispatcher based on coroutines that
 	  can be used by TCP/IP servers.
