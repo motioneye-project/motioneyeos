@@ -1,0 +1,26 @@
+Add simple setup.py
+
+Having a setup.py allows to easily get the .py files compiled into
+.pyc, which is good because by default, Buildroot only keeps .pyc
+files on the target.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/setup.py
+===================================================================
+--- /dev/null
++++ b/setup.py
+@@ -0,0 +1,13 @@
++#!/usr/bin/env python
++
++from distutils.core import setup
++
++setup(name='NFC',
++      version='1.0',
++      description='Python NFC',
++      author='Stephen Tiedemann',
++      author_email='stephen.tiedemann@googlemail.com',
++      url='https://launchpad.net/nfcpy',
++      packages=['nfc', 'nfc/dev', 'nfc/llcp', 'nfc/ndef',
++                'nfc/npp', 'nfc/snep'],
++      )

@@ -1,0 +1,9 @@
+config BR2_PACKAGE_PYTHON_NFC
+	bool "python-nfc"
+	depends on BR2_PACKAGE_PYTHON
+	select BR2_PACKAGE_LIBUSB
+	select BR2_PACKAGE_LIBUSB_COMPAT
+	help
+	  Python module for near field communication.
+
+	  https://launchpad.net/nfcpy
