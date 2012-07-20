@@ -1,0 +1,21 @@
+Kernel commit b81693d9149c598302e8eb9c20cb20330d922c8e changed the
+net_device_ops structure, removing the ndo_set_multicast_list callback. The
+ndo_set_rx_mode has also been added to this structure.
+
+The upshot of these changes is that owl-linux fails to compile with 3.3.x
+and later kernels.
+
+Signed-off-by: Simon Dawson <spdawson@gmail.com>
+diff -Nurp a/owl_net.c b/owl_net.c
+--- a/owl_net.c	2012-06-14 10:51:45.000000000 +0100
++++ b/owl_net.c	2012-07-20 13:16:28.772351464 +0100
+@@ -384,7 +384,9 @@ static const struct net_device_ops netde
+ #endif /* OWL_CONFIG_IFUPDOWN */
+         .ndo_start_xmit         = owl_net_tx,
+         .ndo_get_stats          = owl_net_get_stats,
++#if LINUX_VERSION_CODE < KERNEL_VERSION(3,3,0)
+         .ndo_set_multicast_list = NULL,
++#endif /* LINUX_VERSION_CODE < KERNEL_VERSION(3,3,0) */
+         .ndo_tx_timeout         = owl_net_tx_timeout,
+         .ndo_set_mac_address    = NULL,
+ };

@@ -1,0 +1,16 @@
+Fix the owl-linux Makefile so that it protects spaces in the CROSS_COMPILE
+variable. For example, this variable will contain spaces if ccache is used.
+
+Signed-off-by: Simon Dawson <spdawson@gmail.com>
+diff -Nurp a/Makefile b/Makefile
+--- a/Makefile	2012-06-14 10:51:45.000000000 +0100
++++ b/Makefile	2012-07-20 10:46:41.636752148 +0100
+@@ -35,7 +35,7 @@ else
+ 	PWD := $(shell pwd)
+ 
+ default:
+-	$(MAKE) -C $(KERNELDIR) ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) M=$(PWD) MODE=$(MODE) modules
++	$(MAKE) -C $(KERNELDIR) ARCH=$(ARCH) CROSS_COMPILE="$(CROSS_COMPILE)" M=$(PWD) MODE=$(MODE) modules
+ 
+ clean: 
+ 	-rm -f *.o *.mod.c *.ko modules.order Module.symvers

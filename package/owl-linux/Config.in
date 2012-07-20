@@ -1,0 +1,17 @@
+config BR2_PACKAGE_OWL_LINUX
+	bool "owl-linux"
+	depends on BR2_LINUX_KERNEL
+	depends on (BR2_arm920t || BR2_arm922t || BR2_arm926t)
+	depends on BR2_ARM_EABI
+	help
+	  Linux kernel driver for the H&D Wireless SPB104 SD-card WiFi SIP.
+
+	  http://linux.hd-wireless.se/bin/view/Linux/GettingStarted
+
+comment "owl-linux requires a Linux kernel"
+	depends on !BR2_LINUX_KERNEL
+	depends on BR2_arm || BR2_armeb
+
+comment "owl-linux is only supported on ARM9 architecture with EABI"
+	depends on !(BR2_arm920t || BR2_arm922t || BR2_arm926t) || !BR2_ARM_EABI
+	depends on BR2_arm || BR2_armeb
