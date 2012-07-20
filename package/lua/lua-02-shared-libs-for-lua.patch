@@ -43,7 +43,7 @@ Index: b/src/Makefile
 +	ln -fs $@.$(PKG_VERSION) $@
 +
 +$(LUA_T): $(LUA_O) $(LUA_SO)
-+	$(CC) -o $@ -L. -llua $(MYLDFLAGS) $(LUA_O) $(LIBS)
++	$(CC) -o $@ -L. $(MYLDFLAGS) $(LUA_O) -llua $(LIBS)
  
  $(LUAC_T): $(LUAC_O) $(LUA_A)
  	$(CC) -o $@ $(MYLDFLAGS) $(LUAC_O) $(LUA_A) $(LIBS)
