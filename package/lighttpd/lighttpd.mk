@@ -57,9 +57,8 @@ LIGHTTPD_CONF_OPT += --without-lua
 endif
 
 define LIGHTTPD_INSTALL_CONFIG
-	mkdir -p $(TARGET_DIR)/etc/lighttpd
-	mkdir -p $(TARGET_DIR)/etc/lighttpd/conf.d
-	mkdir -p $(TARGET_DIR)/srv/www/htdocs
+	$(INSTALL) -d -m 0755 $(TARGET_DIR)/etc/lighttpd/conf.d
+	$(INSTALL) -d -m 0755 $(TARGET_DIR)/var/www
 
 	[ -f $(TARGET_DIR)/etc/lighttpd/lighttpd.conf ] || \
 		$(INSTALL) -D -m 755 $(@D)/doc/config/lighttpd.conf \
@@ -89,9 +88,9 @@ endef
 LIGHTTPD_POST_INSTALL_TARGET_HOOKS += LIGHTTPD_INSTALL_CONFIG
 
 define LIGHTTPD_UNINSTALL_TARGET_CMDS
-	rm -f $(TARGET_DIR)/usr/sbin/lighttpd
-	rm -f $(TARGET_DIR)/usr/sbin/lighttpd-angel
-	rm -rf $(TARGET_DIR)/usr/lib/lighttpd
+	$(RM) $(TARGET_DIR)/usr/sbin/lighttpd
+	$(RM) $(TARGET_DIR)/usr/sbin/lighttpd-angel
+	$(RM) -r $(TARGET_DIR)/usr/lib/lighttpd
 endef
 
 $(eval $(autotools-package))
