@@ -573,6 +573,10 @@ endchoice
 
 choice
 	prompt "Toolchain origin"
+	# Keep compatibility with old defconfig files that are using
+	# custom toolchains, and which are therefore assuming that
+	# "preinstalled" in the default choice.
+	default BR2_TOOLCHAIN_EXTERNAL_PREINSTALLED if BR2_TOOLCHAIN_EXTERNAL_CUSTOM
 
 config BR2_TOOLCHAIN_EXTERNAL_DOWNLOAD
 	bool "Toolchain to be downloaded and installed"
