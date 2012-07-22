@@ -8,7 +8,7 @@ ELFTOSB_SOURCE = elftosb-$(ELFTOSB_VERSION).tar.gz
 ELFTOSB_SITE = http://repository.timesys.com/buildsources/e/elftosb/elftosb-$(ELFTOSB_VERSION)
 
 define HOST_ELFTOSB_BUILD_CMDS
-	$(HOST_MAKE_ENV) $(MAKE) -C $(@D) all
+	$(HOST_CONFIGURE_OPTS) $(MAKE) -C $(@D) all
 endef
 
 define HOST_ELFTOSB_INSTALL_CMDS
