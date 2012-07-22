@@ -37,15 +37,6 @@
 
 define inner-cmake-package
 
-# define package-specific variables to default values
-ifndef $(2)_SUBDIR
- ifdef $(3)_SUBDIR
-  $(2)_SUBDIR = $($(3)_SUBDIR)
- else
-  $(2)_SUBDIR ?=
- endif
-endif
-
 $(2)_CONF_ENV			?=
 $(2)_CONF_OPT			?=
 $(2)_MAKE			?= $(MAKE)
