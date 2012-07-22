@@ -1,0 +1,47 @@
+Since the 2.16 release of the glibc, 'gets' is not any more defined in the gnulib.
+No tar version synchronized with gnulib since [1] has been released yet.
+
+This patch avoids the following error occurs when building tar <=1.4.16 on host using
+a glibc >=2.16:
+
+make[5]: Entering directory `/home/samuel/data/workspace/src/buildroot/master/output/build/host-tar-1.26/gnu'
+  CC     areadlink.o
+  CC     areadlinkat.o
+  CC     argp-ba.o
+  CC     argp-eexst.o
+  CC     argp-fmtstream.o
+  CC     argp-fs-xinl.o
+In file included from argp.h:24:0,
+                 from argp-eexst.c:27:
+./stdio.h:479:1: error ‘gets’ undeclared here (not in a function)
+make[5]: *** [argp-eexst.o] Error 1
+make[5]: *** Waiting for unfinished jobs....
+In file included from argp-fmtstream.h:29:0,
+                 from argp-fs-xinl.c:28:
+./stdio.h:479:1: error ‘gets’ undeclared here (not in a function)
+make[5]: *** [argp-fs-xinl.o] Error 1
+In file included from argp-fmtstream.h:29:0,
+                 from argp-fmtstream.c:35:
+./stdio.h:479:1: error ‘gets’ undeclared here (not in a function)
+make[5]: *** [argp-fmtstream.o] Error 1
+
+References:
+[1] http://git.savannah.gnu.org/gitweb/?p=gnulib.git;a=commitdiff;h=66712c23388e93e5c518ebc8515140fa0c807348
+[2] http://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/sys-devel/m4/files/m4-1.4.16-no-gets.patch?diff_format=h&revision=1.1&view=markup
+
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+
+---
+diff -purN host-tar-1.26.orig/gnu/stdio.in.h host-tar-1.26/gnu/stdio.in.h
+--- host-tar-1.26.orig/gnu/stdio.in.h	2012-07-21 21:17:12.392403084 +0200
++++ host-tar-1.26/gnu/stdio.in.h	2012-07-21 21:18:27.991993525 +0200
+@@ -164,7 +164,9 @@ _GL_WARN_ON_USE (fflush, "fflush is not
+    so any use of gets warrants an unconditional warning.  Assume it is
+    always declared, since it is required by C89.  */
+ #undef gets
++#if defined(__GLIBC__) && !defined(__UCLIBC__) && !__GLIBC_PREREQ(2, 16)
+ _GL_WARN_ON_USE (gets, "gets is a security hole - use fgets instead");
++#endif
+ 
+ #if @GNULIB_FOPEN@
+ # if @REPLACE_FOPEN@
