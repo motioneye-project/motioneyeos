@@ -101,7 +101,11 @@ config BR2_USE_MMU
 
 config BR2_PREFER_SOFT_FLOAT
 	bool
-	default y if BR2_arm || BR2_armeb || BR2_avr32 || BR2_mips || BR2_mipsel
+	default y if (BR2_arm && !BR2_cortex_a8 && !BR2_cortex_a9)
+	default y if BR2_armeb
+	default y if BR2_avr32
+	default y if BR2_mips
+	default y if BR2_mipsel
 
 config BR2_SOFT_FLOAT
 	bool "Use software floating point by default"
