@@ -85,7 +85,7 @@ define LUA_INSTALL_LIBRARY
 endef
 else
 define LUA_INSTALL_LIBRARY
-	$(INSTALL) -m 0644 -D$(@D)/src/liblua.a $(TARGET_DIR)/usr/lib/liblua.a
+	$(INSTALL) -m 0644 -D $(@D)/src/liblua.a $(TARGET_DIR)/usr/lib/liblua.a
 endef
 endif
 
