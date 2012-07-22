@@ -87,6 +87,14 @@ endef
 
 LIGHTTPD_POST_INSTALL_TARGET_HOOKS += LIGHTTPD_INSTALL_CONFIG
 
+define LIGHTTPD_INSTALL_INIT_SCRIPT
+	[ -f $(TARGET_DIR)/etc/init.d/S50lighttpd ] || \
+		$(INSTALL) -D -m 755 package/lighttpd/S50lighttpd \
+			$(TARGET_DIR)/etc/init.d/S50lighttpd
+endef
+
+LIGHTTPD_POST_INSTALL_TARGET_HOOKS += LIGHTTPD_INSTALL_INIT_SCRIPT
+
 define LIGHTTPD_UNINSTALL_TARGET_CMDS
 	$(RM) $(TARGET_DIR)/usr/sbin/lighttpd
 	$(RM) $(TARGET_DIR)/usr/sbin/lighttpd-angel
