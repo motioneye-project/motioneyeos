@@ -11,3 +11,6 @@ define HOST_SCONS_INSTALL_CMDS
 endef
 
 $(eval $(host-generic-package))
+
+# variables used by other packages
+SCONS = $(HOST_DIR)/usr/bin/scons
