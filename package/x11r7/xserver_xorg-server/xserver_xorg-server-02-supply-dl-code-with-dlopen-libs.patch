@@ -1,0 +1,87 @@
+From d30637339963950910e5f5fb755b8465ac7dddb4 Mon Sep 17 00:00:00 2001
+From: Mikhail Gusarov <dottedmag@dottedmag.net>
+Date: Thu, 29 Oct 2009 18:46:22 +0000
+Subject: Supply all code using dl*() with DLOPEN_LIBS
+
+Previously DLOPEN_LIBS was managed in top-level configure.ac.
+Instead bundle it with the code using dl*() functions to
+avoid breakages in uncommon configurations.
+
+Signed-off-by: Mikhail Gusarov <dottedmag@dottedmag.net>
+Reviewed-by: Dan Nicholson <dbn.lists@gmail.com>
+Signed-off-by: Keith Packard <keithp@keithp.com>
+---
+Index: b/configure.ac
+===================================================================
+--- a/configure.ac
++++ b/configure.ac
+@@ -196,6 +196,7 @@
+ dnl has it in libc), or if libdl is needed to get it.
+ AC_CHECK_FUNC([dlopen], [],
+ 	AC_CHECK_LIB([dl], [dlopen], DLOPEN_LIBS="-ldl"))
++AC_SUBST(DLOPEN_LIBS)
+ 
+ dnl Checks for library functions.
+ AC_FUNC_VPRINTF
+@@ -927,7 +928,7 @@
+ 	AC_SUBST(XLIB_CFLAGS)
+ 	AC_DEFINE(GLXEXT, 1, [Build GLX extension])
+ 	GLX_LIBS='$(top_builddir)/glx/libglx.la'
+-	GLX_SYS_LIBS="$GLX_SYS_LIBS $DLOPEN_LIBS"
++	GLX_SYS_LIBS="$GLX_SYS_LIBS"
+ else
+         GLX=no
+ fi
+@@ -1483,7 +1484,7 @@
+ 	AC_CHECK_FUNCS([pci_device_vgaarb_init])
+ 	LIBS=$SAVE_LIBS
+ 	CFLAGS=$SAVE_CFLAGS
+-	XORG_SYS_LIBS="$XORG_SYS_LIBS $PCIACCESS_LIBS $DLOPEN_LIBS $GLX_SYS_LIBS $SELINUX_LIB"
++	XORG_SYS_LIBS="$XORG_SYS_LIBS $PCIACCESS_LIBS $GLX_SYS_LIBS $SELINUX_LIB"
+ 	XORG_CFLAGS="$XORG_CFLAGS $PCIACCESS_CFLAGS"
+ 
+ 	case $host_os in
+Index: b/glx/Makefile.am
+===================================================================
+--- a/glx/Makefile.am
++++ b/glx/Makefile.am
+@@ -58,6 +58,8 @@
+ libglxdri_la_SOURCES += glxdri2.c
+ endif
+ 
++libglxdri_la_LIBADD = $(DLOPEN_LIBS)
++
+ libglx_la_SOURCES = \
+ 	$(indirect_sources) \
+ 	$(glapi_sources) \
+@@ -95,3 +97,5 @@
+         swap_interval.c \
+         unpack.h \
+         xfont.c
++
++libglx_la_LIBADD = $(DLOPEN_LIBS)
+Index: b/hw/xfree86/loader/Makefile.am
+===================================================================
+--- a/hw/xfree86/loader/Makefile.am
++++ b/hw/xfree86/loader/Makefile.am
+@@ -21,6 +21,7 @@
+         dlloader.c \
+ 	os.c \
+ 	sdksyms.c
++libloader_la_LIBADD = $(DLOPEN_LIBS)
+ 
+ CLEANFILES = sdksyms.c sdksyms.dep
+ 
+Index: b/os/Makefile.am
+===================================================================
+--- a/os/Makefile.am
++++ b/os/Makefile.am
+@@ -26,6 +26,8 @@
+ 	xprintf.c	\
+ 	$(XORG_SRCS)
+ 
++libos_la_LIBADD = $(DLOPEN_LIBS)
++
+ if SECURE_RPC
+ libos_la_SOURCES += $(SECURERPC_SRCS)
+ endif
