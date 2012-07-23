@@ -48,9 +48,10 @@ else
 MEDIASTREAMER_CONF_OPT += --disable-sdl
 endif
 
-ifeq ($(BR2_PACKAGE_XLIB_LIBX11),y)
+# mediastreamer assumes SDL has X11 support if --enable-x11 (and X11 support
+# is only used for SDL output)
+ifeq ($(BR2_PACKAGE_SDL_X11),y)
 MEDIASTREAMER_CONF_OPT += --enable-x11
-MEDIASTREAMER_DEPENDENCIES += xlib_libX11
 else
 MEDIASTREAMER_CONF_OPT += --disable-x11
 endif
