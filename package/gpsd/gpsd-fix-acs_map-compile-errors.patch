@@ -1,0 +1,29 @@
+Hack gpsd to prevent undefined references to acs_map from ncurses.
+
+Signed-off-by: Simon Dawson <spdawson@gmail.com>
+diff -Nurp a/gpsmon.c b/gpsmon.c
+--- a/gpsmon.c	2012-05-18 09:45:37.000000000 +0100
++++ b/gpsmon.c	2012-06-07 12:41:31.257807969 +0100
+@@ -24,6 +24,9 @@
+ #include <unistd.h>
+ #endif /* S_SPLINT_S */
+ 
++/* Ugly hack to prevent undefined reference to acs_map */
++unsigned long acs_map[128];
++
+ #include "gpsd_config.h"
+ #ifdef HAVE_BLUEZ
+ #include <bluetooth/bluetooth.h>
+diff -Nurp a/monitor_nmea.c b/monitor_nmea.c
+--- a/monitor_nmea.c	2011-11-22 08:49:33.000000000 +0000
++++ b/monitor_nmea.c	2012-06-07 12:41:37.081807709 +0100
+@@ -15,6 +15,9 @@
+ #include <unistd.h>
+ #endif /* S_SPLINT_S */
+ 
++/* Ugly hack to prevent undefined reference to acs_map */
++unsigned long acs_map[128];
++
+ #include "gpsd.h"
+ #include "gpsmon.h"
+ #include "gpsdclient.h"

@@ -38,10 +38,6 @@ config BR2_PACKAGE_GPSD_NTP_SHM
 config BR2_PACKAGE_GPSD_PPS
 	bool "PPS time syncing support"
 
-config BR2_PACKAGE_GPSD_PPS_ON_CTS
-	bool "PPS pulse on CTS rather than DCD"
-	depends on BR2_PACKAGE_GPSD_PPS
-
 config BR2_PACKAGE_GPSD_USER
 	bool "GPSD privilege revocation user"
 config BR2_PACKAGE_GPSD_USER_VALUE
@@ -85,9 +81,6 @@ config BR2_PACKAGE_GPSD_CONTROLSEND
 	bool "allow gpsctl/gpsmon to change device settings"
 	default y
 
-config BR2_PACKAGE_GPSD_RAW
-	bool "enable raw measurement processing"
-
 config BR2_PACKAGE_GPSD_SQUELCH
 	bool "squelch gpsd_report and gpsd_hexdump to save cpu"
 
@@ -116,6 +109,11 @@ config BR2_PACKAGE_GPSD_EVERMORE
 	help
 	  EverMore binary support
 
+config BR2_PACKAGE_GPSD_FURY
+	bool "Fury"
+	help
+	  Jackson Labs Fury and Firefly support
+
 config BR2_PACKAGE_GPSD_FV18
 	bool "FV-18"
 	help
@@ -130,6 +128,11 @@ config BR2_PACKAGE_GPSD_GARMIN_SIMPLE_TXT
 	bool "Garmin (simple text)"
 	help
 	  Garmin Simple Text support
+
+config BR2_PACKAGE_GPSD_GEOSTAR
+	bool "Geostar"
+	help
+	  Geostar Protocol support
 
 config BR2_PACKAGE_GPSD_GPSCLOCK
 	bool "GPSClock"
@@ -161,6 +164,11 @@ config BR2_PACKAGE_GPSD_NAVCOM
 	bool "Navcom"
 	help
 	  Navcom binary support
+
+config BR2_PACKAGE_GPSD_NMEA2000
+	bool "nmea2000"
+	help
+	  NMEA2000/CAN support
 
 config BR2_PACKAGE_GPSD_OCEANSERVER
 	bool "OceanServer"

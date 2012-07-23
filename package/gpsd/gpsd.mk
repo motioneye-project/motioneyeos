@@ -3,183 +3,230 @@
 # gpsd
 #
 #############################################################
-
-GPSD_VERSION = 2.95
-GPSD_SITE = http://download.berlios.de/gpsd
+GPSD_VERSION = 3.7
+GPSD_SITE = http://download-mirror.savannah.gnu.org/releases/gpsd/
+GPSD_LICENSE = BSD-3c
+GPSD_LICENSE_FILES = COPYING
 GPSD_INSTALL_STAGING = YES
-GPSD_TARGET_BINS = cgps gpsctl gpsdecode gpsmon gpspipe gpxlogger lcdgps
+
+GPSD_DEPENDENCIES = host-scons
+
+GPSD_LDFLAGS = $(TARGET_LDFLAGS)
+
+GPSD_SCONS_ENV = $(TARGET_CONFIGURE_OPTS)
+
+GPSD_SCONS_OPTS = \
+	arch=$(ARCH)\
+	prefix=$(TARGET_DIR)/usr\
+	chrpath=no\
+	strip=no
+
+ifeq ($(BR2_PACKAGE_NCURSES),y)
+	GPSD_DEPENDENCIES += ncurses
+else
+	GPSD_SCONS_OPTS += ncurses=no
+endif
+
+ifeq ($(BR2_PACKAGE_PYTHON),y)
+	GPSD_DEPENDENCIES += python
+else
+	GPSD_SCONS_OPTS += python=no
+endif
+
+# Disable IPv6, if we don't support it
+ifneq ($(BR2_INET_IPV6),y)
+	GPSD_SCONS_OPTS += ipv6=no
+endif
 
 # Build libgpsmm if we've got C++
 ifeq ($(BR2_INSTALL_LIBSTDCPP),y)
-	GPSD_CONF_OPT += --enable-libgpsmm LDFLAGS="$(TARGET_LDFLAGS) -lstdc++"
+	GPSD_LDFLAGS += -lstdc++
+	GPSD_SCONS_OPTS += libgpsmm=yes
 else
-	GPSD_CONF_OPT += --disable-libgpsmm
+	GPSD_SCONS_OPTS += libgpsmm=no
 endif
 
 # Enable or disable Qt binding
 ifeq ($(BR2_PACKAGE_QT_NETWORK),y)
-	GPSD_CONF_ENV += QMAKE="$(QT_QMAKE)"
-	GPSD_CONF_OPT += --enable-libQgpsmm
+	GPSD_SCONS_ENV += QMAKE="$(QT_QMAKE)"
 	GPSD_DEPENDENCIES += qt host-pkg-config
 else
-	GPSD_CONF_OPT += --disable-libQgpsmm
+	GPSD_SCONS_OPTS += libQgpsmm=no
 endif
 
 # If libusb is available build it before so the package can use it
 ifeq ($(BR2_PACKAGE_LIBUSB),y)
 	GPSD_DEPENDENCIES += libusb
+else
+	GPSD_SCONS_OPTS += usb=no
+endif
+
+# If bluetooth is available build it before so the package can use it
+ifeq ($(BR2_PACKAGE_BLUEZ_UTILS),y)
+	GPSD_DEPENDENCIES += bluez_utils
+else
+	GPSD_SCONS_OPTS += bluez=no
 endif
 
 ifeq ($(BR2_PACKAGE_DBUS_GLIB),y)
-	GPSD_CONF_OPT += --enable-dbus
+	GPSD_SCONS_OPTS += dbus_export=yes
 	GPSD_DEPENDENCIES += dbus-glib
-endif
-
-ifeq ($(BR2_PACKAGE_NCURSES),y)
-	GPSD_DEPENDENCIES += ncurses
 endif
 
 # Protocol support
 ifneq ($(BR2_PACKAGE_GPSD_ASHTECH),y)
-	GPSD_CONF_OPT += --disable-ashtech
+	GPSD_SCONS_OPTS += ashtech=no
 endif
 ifneq ($(BR2_PACKAGE_GPSD_AIVDM),y)
-	GPSD_CONF_OPT += --disable-aivdm
+	GPSD_SCONS_OPTS += aivdm=no
 endif
 ifneq ($(BR2_PACKAGE_GPSD_EARTHMATE),y)
-	GPSD_CONF_OPT += --disable-earthmate
+	GPSD_SCONS_OPTS += earthmate=no
 endif
 ifneq ($(BR2_PACKAGE_GPSD_EVERMORE),y)
-	GPSD_CONF_OPT += --disable-evermore
+	GPSD_SCONS_OPTS += evermore=no
+endif
+ifneq ($(BR2_PACKAGE_GPSD_FURY),y)
+	GPSD_SCONS_OPTS += fury=no
 endif
 ifneq ($(BR2_PACKAGE_GPSD_FV18),y)
-	GPSD_CONF_OPT += --disable-fv18
+	GPSD_SCONS_OPTS += fv18=no
 endif
 ifneq ($(BR2_PACKAGE_GPSD_GARMIN),y)
-	GPSD_CONF_OPT += --disable-garmin
+	GPSD_SCONS_OPTS += garmin=no
 endif
 ifneq ($(BR2_PACKAGE_GPSD_GARMIN_SIMPLE_TXT),y)
-	GPSD_CONF_OPT += --disable-garmintxt
+	GPSD_SCONS_OPTS += garmintxt=no
+endif
+ifneq ($(BR2_PACKAGE_GPSD_GEOSTAR),y)
+	GPSD_SCONS_OPTS += geostar=no
 endif
 ifneq ($(BR2_PACKAGE_GPSD_GPSCLOCK),y)
-	GPSD_CONF_OPT += --disable-gpsclock
+	GPSD_SCONS_OPTS += gpsclock=no
 endif
 ifneq ($(BR2_PACKAGE_GPSD_ITRAX),y)
-	GPSD_CONF_OPT += --disable-itrax
+	GPSD_SCONS_OPTS += itrax=no
 endif
 ifneq ($(BR2_PACKAGE_GPSD_MTK3301),y)
-	GPSD_CONF_OPT += --disable-mtk3301
+	GPSD_SCONS_OPTS += mtk3301=no
 endif
 ifneq ($(BR2_PACKAGE_GPSD_NMEA),y)
-	GPSD_CONF_OPT += --disable-nmea
+	GPSD_SCONS_OPTS += nmea=no
 endif
 ifneq ($(BR2_PACKAGE_GPSD_NTRIP),y)
-	GPSD_CONF_OPT += --disable-ntrip
+	GPSD_SCONS_OPTS += ntrip=no
 endif
 ifneq ($(BR2_PACKAGE_GPSD_NAVCOM),y)
-	GPSD_CONF_OPT += --disable-navcom
+	GPSD_SCONS_OPTS += navcom=no
+endif
+ifneq ($(BR2_PACKAGE_GPSD_NMEA2000),y)
+	GPSD_SCONS_OPTS += nmea2000=no
 endif
 ifneq ($(BR2_PACKAGE_GPSD_OCEANSERVER),y)
-	GPSD_CONF_OPT += --disable-oceanserver
+	GPSD_SCONS_OPTS += oceanserver=no
 endif
 ifneq ($(BR2_PACKAGE_GPSD_ONCORE),y)
-	GPSD_CONF_OPT += --disable-oncore
+	GPSD_SCONS_OPTS += oncore=no
 endif
 ifneq ($(BR2_PACKAGE_GPSD_RTCM104V2),y)
-	GPSD_CONF_OPT += --disable-rtcm104v2
+	GPSD_SCONS_OPTS += rtcm104v2=no
 endif
 ifneq ($(BR2_PACKAGE_GPSD_RTCM104V3),y)
-	GPSD_CONF_OPT += --disable-rtcm104v3
+	GPSD_SCONS_OPTS += rtcm104v3=no
 endif
 ifneq ($(BR2_PACKAGE_GPSD_SIRF),y)
-	GPSD_CONF_OPT += --disable-sirf
+	GPSD_SCONS_OPTS += sirf=no
 endif
 ifneq ($(BR2_PACKAGE_GPSD_SUPERSTAR2),y)
-	GPSD_CONF_OPT += --disable-superstar2
+	GPSD_SCONS_OPTS += superstar2=no
 endif
 ifneq ($(BR2_PACKAGE_GPSD_TRIMBLE_TSIP),y)
-	GPSD_CONF_OPT += --disable-tsip
+	GPSD_SCONS_OPTS += tsip=no
 endif
 ifneq ($(BR2_PACKAGE_GPSD_TRIPMATE),y)
-	GPSD_CONF_OPT += --disable-tripmate
+	GPSD_SCONS_OPTS += tripmate=no
 endif
-ifeq ($(BR2_PACKAGE_GPSD_TRUE_NORTH),y)
-	GPSD_CONF_OPT += --enable-tnt
+ifneq ($(BR2_PACKAGE_GPSD_TRUE_NORTH),y)
+	GPSD_SCONS_OPTS += tnt=no
 endif
 ifneq ($(BR2_PACKAGE_GPSD_UBX),y)
-	GPSD_CONF_OPT += --disable-ubx
+	GPSD_SCONS_OPTS += ubx=no
 endif
 
 # Features
 ifneq ($(BR2_PACKAGE_GPSD_NTP_SHM),y)
-	GPSD_CONF_OPT += --disable-ntpshm
+	GPSD_SCONS_OPTS += ntpshm=no
 endif
 ifneq ($(BR2_PACKAGE_GPSD_PPS),y)
-	GPSD_CONF_OPT += --disable-pps
-endif
-ifeq ($(BR2_PACKAGE_GPSD_PPS_ON_CTS),y)
-	GPSD_CONF_OPT += --enable-pps-on-cts
+	GPSD_SCONS_OPTS += pps=no
 endif
 ifeq ($(BR2_PACKAGE_GPSD_SQUELCH),y)
-	GPSD_CONF_OPT += --enable-squelch
+	GPSD_SCONS_OPTS += squelch=yes
 endif
 ifneq ($(BR2_PACKAGE_GPSD_RECONFIGURE),y)
-	GPSD_CONF_OPT += --disable-reconfigure
+	GPSD_SCONS_OPTS += reconfigure=no
 endif
 ifneq ($(BR2_PACKAGE_GPSD_CONTROLSEND),y)
-	GPSD_CONF_OPT += --disable-controlsend
-endif
-ifeq ($(BR2_PACKAGE_GPSD_RAW),y)
-	GPSD_CONF_OPT += --enable-raw
+	GPSD_SCONS_OPTS += controlsend=no
 endif
 ifneq ($(BR2_PACKAGE_GPSD_OLDSTYLE),y)
-	GPSD_CONF_OPT += --disable-oldstyle
+	GPSD_SCONS_OPTS += oldstyle=no
 endif
 ifeq ($(BR2_PACKAGE_GPSD_PROFILING),y)
-	GPSD_CONF_OPT += --enable-profiling
+	GPSD_SCONS_OPTS += profiling=yes
 endif
-ifneq ($(BR2_PACKAGE_GPSD_TIMING),y)
-	GPSD_CONF_OPT += --disable-timing
+ifeq ($(BR2_PACKAGE_GPSD_TIMING),y)
+	GPSD_SCONS_OPTS += timing=yes
 endif
 ifneq ($(BR2_PACKAGE_GPSD_CLIENT_DEBUG),y)
-	GPSD_CONF_OPT += --disable-clientdebug
+	GPSD_SCONS_OPTS += clientdebug=no
 endif
 ifeq ($(BR2_PACKAGE_GPSD_USER),y)
-	GPSD_CONF_OPT += --enable-gpsd-user=$(BR2_PACKAGE_GPSD_USER_VALUE)
+	GPSD_SCONS_OPTS += gpsd_user=$(BR2_PACKAGE_GPSD_USER_VALUE)
 endif
 ifeq ($(BR2_PACKAGE_GPSD_GROUP),y)
-	GPSD_CONF_OPT += --enable-gpsd-group=$(BR2_PACKAGE_GPSD_GROUP_VALUE)
+	GPSD_SCONS_OPTS += gpsd_group=$(BR2_PACKAGE_GPSD_GROUP_VALUE)
 endif
 ifeq ($(BR2_PACKAGE_GPSD_FIXED_PORT_SPEED),y)
-	GPSD_CONF_OPT += --enable-fixed-port-speed=$(BR2_PACKAGE_GPSD_FIXED_PORT_SPEED_VALUE)
+	GPSD_SCONS_OPTS += fixed_port_speed=$(BR2_PACKAGE_GPSD_FIXED_PORT_SPEED_VALUE)
 endif
 ifeq ($(BR2_PACKAGE_GPSD_MAX_CLIENT),y)
-	GPSD_CONF_OPT += --enable-max-clients=$(BR2_PACKAGE_GPSD_MAX_CLIENT_VALUE)
+	GPSD_SCONS_OPTS += limited_max_clients=$(BR2_PACKAGE_GPSD_MAX_CLIENT_VALUE)
 endif
 ifeq ($(BR2_PACKAGE_GPSD_MAX_DEV),y)
-	GPSD_CONF_OPT += --enable-max-devices=$(BR2_PACKAGE_GPSD_MAX_DEV_VALUE)
+	GPSD_SCONS_OPTS += limited_max_devices=$(BR2_PACKAGE_GPSD_MAX_DEV_VALUE)
 endif
 
-define GPSD_BUILDS_CMDS
-	$(SED) 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' $(GPSD_DIR)/libtool
-	$(SED) 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' $(GPSD_DIR)/libtool
-	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) all libgpsmm
+GPSD_SCONS_ENV += LDFLAGS="$(GPSD_LDFLAGS)"
+
+define GPSD_BUILD_CMDS
+	(cd $(@D); \
+		$(GPSD_SCONS_ENV) \
+		$(SCONS) \
+		$(GPSD_SCONS_OPTS))
 endef
 
 define GPSD_INSTALL_TARGET_CMDS
-	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) DESTDIR=$(TARGET_DIR) install
+	(cd $(@D); \
+		$(GPSD_SCONS_ENV) \
+		$(SCONS) \
+		$(GPSD_SCONS_OPTS) \
+		destdir=$(TARGET_DIR) \
+		install)
 	if [ ! -f $(TARGET_DIR)/etc/init.d/S50gpsd ]; then \
 		$(INSTALL) -m 0755 -D package/gpsd/S50gpsd $(TARGET_DIR)/etc/init.d/S50gpsd; \
 		$(SED) 's,^DEVICES=.*,DEVICES=$(BR2_PACKAGE_GPSD_DEVICES),' $(TARGET_DIR)/etc/init.d/S50gpsd; \
 	fi
 endef
 
-define GPSD_UNINSTALL_TARGET_CMDS
-	rm -f $(addprefix $(TARGET_DIR)/usr/bin/, $(GPSD_TARGET_BINS))
-	rm -f $(TARGET_DIR)/usr/lib/libgps.*
-	rm -f $(TARGET_DIR)/usr/lib/libgpsd.*
-	rm -f $(TARGET_DIR)/usr/sbin/gpsd
-	rm -f $(TARGET_DIR)/etc/init.d/S50gpsd
+define GPSD_INSTALL_STAGING_CMDS
+	(cd $(@D); \
+		$(GPSD_SCONS_ENV) \
+		$(SCONS) \
+		$(GPSD_SCONS_OPTS) \
+		destdir=$(STAGING_DIR) \
+		includedir="$(STAGING_DIR)/usr/include" \
+		install)
 endef
 
-$(eval $(autotools-package))
+$(eval $(generic-package))
