@@ -204,11 +204,11 @@ $(2)_BASE_NAME	=  $(1)-$$($(2)_VERSION)
 $(2)_DL_DIR	=  $$(DL_DIR)/$$($(2)_BASE_NAME)
 $(2)_DIR	=  $$(BUILD_DIR)/$$($(2)_BASE_NAME)
 
-ifndef $(3)_SUBDIR
- ifdef $(2)_SUBDIR
-  $(3)_SUBDIR = $$($(2)_SUBDIR)
+ifndef $(2)_SUBDIR
+ ifdef $(3)_SUBDIR
+  $(2)_SUBDIR = $$($(3)_SUBDIR)
  else
-  $(3)_SUBDIR ?=
+  $(2)_SUBDIR ?=
  endif
 endif
 
