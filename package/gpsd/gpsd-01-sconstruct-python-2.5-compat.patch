@@ -1,0 +1,79 @@
+Remove all the with ... as foo constructs
+
+Those constructs have been introduced in Python 2.6, and some of our
+autobuilders still use Python 2.5, so replace them with constructs
+that are compatible with Python 2.5.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/SConstruct
+===================================================================
+--- a/SConstruct
++++ b/SConstruct
+@@ -366,8 +366,8 @@
+ 
+ def CheckXsltproc(context):
+     context.Message('Checking that xsltproc can make man pages... ')
+-    with open("xmltest.xml", "w") as ofp:
+-        ofp.write('''
++    ofp = open("xmltest.xml", "w")
++    ofp.write('''
+        <refentry id="foo.1">
+       <refmeta>
+         <refentrytitle>foo</refentrytitle>
+@@ -380,6 +380,7 @@
+       </refnamediv>
+     </refentry>
+ ''')
++    ofp.close()
+     probe = "xsltproc --nonet --noout '%s' xmltest.xml" % (docbook_man_uri,)
+     ret = context.TryAction(probe)[0]
+     os.remove("xmltest.xml")
+@@ -1042,8 +1043,9 @@
+ # build timebase.h
+ def timebase_h(target, source, env):
+     from leapsecond import make_leapsecond_include
+-    with open(target[0].abspath, 'w') as f:
+-        f.write(make_leapsecond_include(source[0].abspath))
++    f = open(target[0].abspath, 'w')
++    f.write(make_leapsecond_include(source[0].abspath))
++    f.close()
+ env.Command(target="timebase.h", source="leapseconds.cache",
+             action=timebase_h)
+ 
+@@ -1116,15 +1118,17 @@
+         ('@DEVMAIL@',    devmail),
+         ('@LIBGPSVERSION@', libgps_version),
+         )
+-    with open(str(source[0])) as sfp:
+-        content = sfp.read()
++    sfp = open(str(source[0]))
++    content = sfp.read()
++    sfp.close()
+     for (s, t) in substmap:
+         content = content.replace(s, t)
+     m = re.search("@[A-Z]+@", content)
+     if m and m.group(0) not in map(lambda x: x[0], substmap):
+         print >>sys.stderr, "Unknown subst token %s in %s." % (m.group(0), sfp.name)
+-    with open(str(target[0]), "w") as tfp:
+-        tfp.write(content)
++    tfp = open(str(target[0]), "w")
++    tfp.write(content)
++    tfp.close()
+ 
+ templated = glob.glob("*.in") + glob.glob("*/*.in") + glob.glob("*/*/*.in")
+ 
+@@ -1560,9 +1564,10 @@
+ def validation_list(target, source, env):
+     for page in glob.glob("www/*.html"):
+         if not '-head' in page:
+-            with open(page) as fp:
+-                if "Valid HTML" in fp.read():
+-                    print os.path.join(website, os.path.basename(page))
++            fp = open(page)
++            if "Valid HTML" in fp.read():
++                print os.path.join(website, os.path.basename(page))
++            fp.close()
+ Utility("validation-list", [www], validation_list)
+ 
+ # How to update the website
