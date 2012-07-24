@@ -1,0 +1,17 @@
+Disable addition of RPATH to the generated libraries
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/SConstruct
+===================================================================
+--- a/SConstruct
++++ b/SConstruct
+@@ -273,8 +273,6 @@
+     env.Prepend(LIBPATH=[installdir('libdir')])
+ else:
+     env.Prepend(LIBPATH=[env["sysroot"] + installdir('libdir')])
+-if env["shared"]:
+-    env.Prepend(RPATH=[installdir('libdir')])
+ 
+ # Give deheader a way to set compiler flags
+ if 'MORECFLAGS' in os.environ:
