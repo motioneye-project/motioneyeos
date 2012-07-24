@@ -17,8 +17,9 @@ GPSD_SCONS_ENV = $(TARGET_CONFIGURE_OPTS)
 
 GPSD_SCONS_OPTS = \
 	arch=$(ARCH)\
-	prefix=$(TARGET_DIR)/usr\
+	prefix=/usr\
 	chrpath=no\
+	sysroot=$(STAGING_DIR)\
 	strip=no
 
 ifeq ($(BR2_PACKAGE_NCURSES),y)
@@ -207,9 +208,9 @@ endef
 define GPSD_INSTALL_TARGET_CMDS
 	(cd $(@D); \
 		$(GPSD_SCONS_ENV) \
+		DESTDIR=$(TARGET_DIR) \
 		$(SCONS) \
 		$(GPSD_SCONS_OPTS) \
-		destdir=$(TARGET_DIR) \
 		install)
 	if [ ! -f $(TARGET_DIR)/etc/init.d/S50gpsd ]; then \
 		$(INSTALL) -m 0755 -D package/gpsd/S50gpsd $(TARGET_DIR)/etc/init.d/S50gpsd; \
@@ -220,10 +221,9 @@ endef
 define GPSD_INSTALL_STAGING_CMDS
 	(cd $(@D); \
 		$(GPSD_SCONS_ENV) \
+		DESTDIR=$(STAGING_DIR) \
 		$(SCONS) \
 		$(GPSD_SCONS_OPTS) \
-		destdir=$(STAGING_DIR) \
-		includedir="$(STAGING_DIR)/usr/include" \
 		install)
 endef
 
