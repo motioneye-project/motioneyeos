@@ -176,9 +176,6 @@ endif
 ifeq ($(BR2_PACKAGE_GPSD_PROFILING),y)
 	GPSD_SCONS_OPTS += profiling=yes
 endif
-ifeq ($(BR2_PACKAGE_GPSD_TIMING),y)
-	GPSD_SCONS_OPTS += timing=yes
-endif
 ifneq ($(BR2_PACKAGE_GPSD_CLIENT_DEBUG),y)
 	GPSD_SCONS_OPTS += clientdebug=no
 endif
