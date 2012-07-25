@@ -1,5 +1,6 @@
 config BR2_PACKAGE_DBUS
 	bool "dbus"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
 	help
 	  The D-Bus message bus system.
 
@@ -23,3 +24,6 @@ choice
 		select BR2_PACKAGE_LIBXML2
 
 endchoice
+
+comment "dbus requires a toolchain with thread support"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS

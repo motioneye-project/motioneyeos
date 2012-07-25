@@ -285,8 +285,12 @@ endif
 config BR2_PACKAGE_QT_DBUS
 	bool "DBus Module"
 	select BR2_PACKAGE_DBUS
+	depends on BR2_TOOLCHAIN_HAS_THREADS # dbus
 	help
 	  Build the Qt DBus module.
+
+comment "DBus Module requires a toolchain with thread support"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
 
 config BR2_PACKAGE_QT_XML
 	bool "XML Module"

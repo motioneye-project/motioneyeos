@@ -225,12 +225,13 @@ config BR2_PACKAGE_SAMBA_AVAHI
 	bool "support avahi"
 	default y
 	depends on BR2_PACKAGE_AVAHI_DAEMON
+	depends on BR2_TOOLCHAIN_HAS_THREADS # dbus
 	select BR2_PACKAGE_DBUS
 	help
 	  Include support for avahi
 
-comment "support avahi - disabled (requires avahi-daemon)"
-	depends on !BR2_PACKAGE_AVAHI_DAEMON
+comment "support avahi - disabled (requires avahi-daemon and thread support in toolchain)"
+	depends on !BR2_PACKAGE_AVAHI_DAEMON || !BR2_TOOLCHAIN_HAS_THREADS
 
 config BR2_PACKAGE_SAMBA_GAMIN
 	bool "support gamin"

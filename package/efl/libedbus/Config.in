@@ -3,6 +3,7 @@ config BR2_PACKAGE_LIBEDBUS
 	select BR2_PACKAGE_LIBEINA
 	select BR2_PACKAGE_LIBECORE
 	select BR2_PACKAGE_DBUS
+	depends on BR2_TOOLCHAIN_HAS_THREADS # dbus
 	help
 	  E_Dbus is a set of wrappers around D-Bus APIs so they can be
 	  easily used by EFL applications, automatically providing
@@ -30,3 +31,6 @@ config BR2_PACKAGE_LIBEDBUS_NOTIFY
 	  Notify support.
 
 endif
+
+comment "libedbus requires a toolchain with thread support"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS

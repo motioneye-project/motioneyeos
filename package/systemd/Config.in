@@ -2,6 +2,7 @@ config BR2_PACKAGE_SYSTEMD
 	bool "systemd"
 	depends on BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_UDEV
 	depends on BR2_INET_IPV6
+	depends on BR2_TOOLCHAIN_HAS_THREADS # dbus
 	select BR2_PACKAGE_DBUS
 	select BR2_PACKAGE_LIBCAP
 	help
@@ -16,5 +17,6 @@ config BR2_PACKAGE_SYSTEMD
 
 	  http://freedesktop.org/wiki/Software/systemd
 
-comment "systemd not available (depends on /dev management with udev and ipv6 support)"
-	depends on !(BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_UDEV && BR2_INET_IPV6)
+comment "systemd not available (depends on /dev management with udev and ipv6 support, and thread support in toolchain)"
+	depends on !BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_UDEV || !BR2_INET_IPV6 || \\
+		!BR2_TOOLCHAIN_HAS_THREADS
