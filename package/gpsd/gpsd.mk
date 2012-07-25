@@ -20,19 +20,14 @@ GPSD_SCONS_OPTS = \
 	prefix=/usr\
 	chrpath=no\
 	sysroot=$(STAGING_DIR)\
-	strip=no
+	strip=no\
+	python=no
 
 ifeq ($(BR2_PACKAGE_NCURSES),y)
 	GPSD_DEPENDENCIES += ncurses
 	GPSD_SCONS_OPTS += ncurses_config=$(STAGING_DIR)/usr/bin/ncurses5-config
 else
 	GPSD_SCONS_OPTS += ncurses=no
-endif
-
-ifeq ($(BR2_PACKAGE_PYTHON),y)
-	GPSD_DEPENDENCIES += python
-else
-	GPSD_SCONS_OPTS += python=no
 endif
 
 # Disable IPv6, if we don't support it
