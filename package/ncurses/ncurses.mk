@@ -23,7 +23,7 @@
 # USA
 
 # TARGETS
-NCURSES_VERSION = 5.7
+NCURSES_VERSION = 5.9
 NCURSES_SITE = $(BR2_GNU_MIRROR)/ncurses
 NCURSES_INSTALL_STAGING = YES
 NCURSES_DEPENDENCIES = host-ncurses
@@ -38,10 +38,11 @@ NCURSES_CONF_OPT = \
 	--disable-big-core \
 	--without-profile \
 	--disable-rpath \
+	--disable-rpath-hack \
 	--enable-echo \
 	--enable-const \
 	--enable-overwrite \
-	--enable-broken_linker
+	--enable-pc-files
 
 ifneq ($(BR2_ENABLE_DEBUG),y)
 NCURSES_CONF_OPT += --without-debug
