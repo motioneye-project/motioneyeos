@@ -1,7 +1,11 @@
 config BR2_PACKAGE_IW
 	bool "iw"
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libnl
 	select BR2_PACKAGE_LIBNL
 	help
 	  Utility for wireless devices using the mac80211 kernel stack
 
 	  http://wireless.kernel.org/en/users/Documentation/iw
+
+comment "iw requires a toolchain with thread support"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
