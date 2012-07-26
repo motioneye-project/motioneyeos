@@ -9,7 +9,7 @@ GPSD_LICENSE = BSD-3c
 GPSD_LICENSE_FILES = COPYING
 GPSD_INSTALL_STAGING = YES
 
-GPSD_DEPENDENCIES = host-scons
+GPSD_DEPENDENCIES = host-scons host-pkg-config
 
 GPSD_LDFLAGS = $(TARGET_LDFLAGS)
 
@@ -25,7 +25,6 @@ GPSD_SCONS_OPTS = \
 
 ifeq ($(BR2_PACKAGE_NCURSES),y)
 	GPSD_DEPENDENCIES += ncurses
-	GPSD_SCONS_OPTS += ncurses_config=$(STAGING_DIR)/usr/bin/ncurses5-config
 else
 	GPSD_SCONS_OPTS += ncurses=no
 endif
