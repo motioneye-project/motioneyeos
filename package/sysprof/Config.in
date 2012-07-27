@@ -1,0 +1,24 @@
+config BR2_PACKAGE_SYSPROF
+	bool "sysprof"
+	select BR2_PACKAGE_LIBGLIB2
+	depends on BR2_USE_WCHAR # glib2
+	# In its util.h file, sysprof contains architecture-specific
+	# code
+	depends on BR2_i386 || BR2_x86_64 || BR2_powerpc || BR2_sh4a || BR2_sh4aeb
+	help
+	  Sysprof is a statistical, system-wide profiler that can
+	  profile user and kernel code using the perf API.
+
+	  http://sysprof.com
+
+config BR2_PACKAGE_SYSPROF_GUI
+	bool "sysprof GUI"
+	depends on BR2_PACKAGE_SYSPROF
+	depends on BR2_PACKAGE_LIBGTK2
+	select BR2_PACKAGE_LIBGLADE
+	select BR2_PACKAGE_GDK_PIXBUF
+	help
+	  GUI for the sysprof system-wide statistical profiler.
+
+comment "sysprof requires a toolchain with WCHAR support"
+        depends on !BR2_USE_WCHAR
