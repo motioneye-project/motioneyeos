@@ -30,6 +30,7 @@ case "$1" in
         echo -n "Populating ${udev_root:-/dev} using udev: "
         echo -e '\000\000\000\000' > /proc/sys/kernel/hotplug
         $UDEV_BIN -d || (echo "FAIL" && exit 1)
+        udevadm trigger
         echo "done"
         ;;
     stop)
