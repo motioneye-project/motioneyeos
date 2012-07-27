@@ -34,7 +34,7 @@ case "$1" in
         ;;
     stop)
         # Stop execution of events
-        udevadm control --stop_exec_queue
+        udevadm control --stop-exec-queue
         killall udevd
         ;;
     *)
