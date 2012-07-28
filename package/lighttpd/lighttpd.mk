@@ -87,13 +87,22 @@ endef
 
 LIGHTTPD_POST_INSTALL_TARGET_HOOKS += LIGHTTPD_INSTALL_CONFIG
 
-define LIGHTTPD_INSTALL_INIT_SCRIPT
+define LIGHTTPD_INSTALL_INIT_SYSV
 	[ -f $(TARGET_DIR)/etc/init.d/S50lighttpd ] || \
 		$(INSTALL) -D -m 755 package/lighttpd/S50lighttpd \
 			$(TARGET_DIR)/etc/init.d/S50lighttpd
 endef
 
-LIGHTTPD_POST_INSTALL_TARGET_HOOKS += LIGHTTPD_INSTALL_INIT_SCRIPT
+define LIGHTTPD_INSTALL_INIT_SYSTEMD
+	[ -f $(TARGET_DIR)/etc/systemd/system/lighttpd.service ] || \
+		$(INSTALL) -D -m 755 package/lighttpd/lighttpd.service \
+			$(TARGET_DIR)/etc/systemd/system/lighttpd.service
+
+	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
+
+	ln -fs ../lighttpd.service \
+		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/lighttpd.service
+endef
 
 define LIGHTTPD_UNINSTALL_TARGET_CMDS
 	$(RM) $(TARGET_DIR)/usr/sbin/lighttpd
