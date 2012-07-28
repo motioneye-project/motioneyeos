@@ -311,6 +311,13 @@ different steps of the build process.
 * +LIBFOO_UNINSTALL_STAGING_CMDS+, used to list the actions to
   uninstall the package from the staging directory +$(STAGING_DIR)+.
 
+* +LIBFOO_INSTALL_INIT_SYSV+ and +LIBFOO_INSTALL_INIT_SYSTEMD+, used
+  to install init scripts either for the systemV-like init systems
+  (busybox, sysvinit, etc.) or for the systemd units. These commands
+  will be run only when the relevant init system is installed (i.e. if
+  systemd is selected as the init system in the configuration, only
+  +LIBFOO_INSTALL_INIT_SYSTEMD+ will be run).
+
 The preferred way to define these variables is:
 
 ----------------------
