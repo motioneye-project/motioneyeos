@@ -37,6 +37,35 @@ comment "udev requires a toolchain with LARGEFILE + WCHAR support"
 
 endchoice
 
+choice
+	prompt "Init system"
+	default BR2_INIT_BUSYBOX
+
+config BR2_INIT_BUSYBOX
+	bool "Busybox"
+	select BR2_PACKAGE_BUSYBOX
+
+config BR2_INIT_SYSV
+	bool "systemV"
+	select BR2_PACKAGE_SYSVINIT
+
+config BR2_INIT_SYSTEMD
+	bool "systemd"
+	depends on BR2_LARGEFILE
+	depends on BR2_USE_WCHAR
+	depends on BR2_INET_IPV6
+	depends on BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_UDEV
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	select BR2_PACKAGE_DBUS
+	select BR2_PACKAGE_SYSTEMD
+
+comment 'systemd requires largefile, wchar, IPv6, threads and udev support'
+	depends on !(BR2_LARGEFILE && BR2_USE_WCHAR && \
+		     BR2_INET_IPV6 && BR2_TOOLCHAIN_HAS_THREADS && \
+		     BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_UDEV)
+
+endchoice
+
 config BR2_ROOTFS_DEVICE_TABLE
 	string "Path to the permission tables"
 	default "target/generic/device_table.txt"
