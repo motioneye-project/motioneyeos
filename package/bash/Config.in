@@ -1,6 +1,8 @@
 config BR2_PACKAGE_BASH
 	bool "bash"
 	select BR2_PACKAGE_NCURSES
+	# uses fork()
+	depends on BR2_USE_MMU
 	help
 	  The standard GNU Bourne again shell.
 
