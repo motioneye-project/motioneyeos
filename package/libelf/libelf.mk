@@ -10,7 +10,7 @@ LIBELF_INSTALL_STAGING = YES
 LIBELF_INSTALL_STAGING_OPT = instroot=$(STAGING_DIR) install
 LIBELF_INSTALL_TARGET_OPT = instroot=$(TARGET_DIR) install
 
-LIBELD_CONF_ENV = libelf_cv_working_memmove=yes \
+LIBELF_CONF_ENV = libelf_cv_working_memmove=yes \
 		mr_cv_target_elf=yes \
 		libelf_64bit=yes
 
