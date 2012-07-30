@@ -140,6 +140,13 @@ config BR2_LINUX_KERNEL_UIMAGE
 	depends on BR2_arm || BR2_armeb || BR2_bfin || BR2_powerpc || BR2_avr32 || BR2_sh || BR2_sh64
 	select BR2_LINUX_KERNEL_UBOOT_IMAGE
 
+config BR2_LINUX_KERNEL_APPENDED_UIMAGE
+	bool "uImage with appended DT"
+	depends on BR2_arm || BR2_armeb
+	select BR2_LINUX_KERNEL_DTS_SUPPORT
+	select BR2_LINUX_KERNEL_APPENDED_DTB
+	select BR2_LINUX_KERNEL_UBOOT_IMAGE
+
 config BR2_LINUX_KERNEL_BZIMAGE
 	bool "bzImage"
 	depends on BR2_i386 || BR2_x86_64
@@ -147,6 +154,12 @@ config BR2_LINUX_KERNEL_BZIMAGE
 config BR2_LINUX_KERNEL_ZIMAGE
 	bool "zImage"
 	depends on BR2_arm || BR2_armeb || BR2_powerpc || BR2_sparc || BR2_sh || BR2_sh64 || BR2_xtensa
+
+config BR2_LINUX_KERNEL_APPENDED_ZIMAGE
+	bool "zImage with appended DT"
+	depends on BR2_arm || BR2_armeb
+	select BR2_LINUX_KERNEL_DTS_SUPPORT
+	select BR2_LINUX_KERNEL_APPENDED_DTB
 
 config BR2_LINUX_KERNEL_VMLINUX_BIN
 	bool "vmlinux.bin"
@@ -186,6 +199,26 @@ config BR2_LINUX_KERNEL_DTS_SUPPORT
 	  Select the dts file to compile in the options below.
 
 if BR2_LINUX_KERNEL_DTS_SUPPORT
+
+# We have mainly three cases when it comes to device tree support:
+#   1) We don't want any support at all. Then the ..DTS_SUPPORT
+#      variable won't be set
+#   2) We want device tree support, so we need the user to enter
+#      the device tree name or the the path to the custom device
+#      he uses, but the kernel abstracts this from us and only
+#      build an image that looks like a regular kernel image. In
+#      this case, we only need to derive the kernel image name from
+#      the given device tree name, and all the rest is as usual
+#   3) We want device tree support, but the kernel requires us to
+#      build the device tree blob separately. In this case, some
+#      more logic will be needed.
+# The variable below address the second case, were you only want
+# limited actions from buildroot.
+config BR2_LINUX_KERNEL_DTB_IS_SELF_BUILT
+	bool
+
+config BR2_LINUX_KERNEL_APPENDED_DTB
+	bool
 
 choice
 	prompt "Device tree source"
