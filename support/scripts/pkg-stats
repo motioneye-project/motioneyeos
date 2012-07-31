@@ -105,6 +105,7 @@ for i in $(find boot/ linux/ package/ -name '*.mk' | sort) ; do
 
     hashost=0
     hastarget=0
+    infratype=""
 
     # Determine package infrastructure
     if grep -E "\(host-autotools-package\)" $i > /dev/null ; then
