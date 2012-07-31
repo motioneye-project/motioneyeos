@@ -34,8 +34,14 @@
 	By default, automatic detection of the number of compilation
 	jobs to use, depending on the number of CPUs available.
 
-	Improvements to support systems with static libraries only
+	Improvements to generate systems with static libraries only
 	(infrastructure and package fixes).
+
+	Add proper support in the Linux kernel package to generate
+	Device Tree Blobs or combined Device Tree / Kernel
+	images. This will be useful on Microblaze, PowerPC and ARM,
+	which are architectures making extensive use of the Device
+	Tree.
 
 	Updated/fixed packages: audiofile, autoconf, automake, axel,
 	barebox, bash, beecrypt, berkeleydb, bind, bison, bluez_utils,
