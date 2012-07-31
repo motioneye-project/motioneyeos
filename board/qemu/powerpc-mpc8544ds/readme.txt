@@ -4,3 +4,4 @@ Run the emulation with:
 
 The login prompt will appear in the terminal that started Qemu.
 
+Tested with QEMU 1.1.1
