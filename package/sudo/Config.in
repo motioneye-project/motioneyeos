@@ -1,5 +1,7 @@
 config BR2_PACKAGE_SUDO
 	bool "sudo"
+	# uses fork()
+	depends on BR2_USE_MMU
 	help
 	  Sudo is a program designed to allow a sysadmin to give
 	  limited root privileges to users and log root activity.  The
