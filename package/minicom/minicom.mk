@@ -6,6 +6,8 @@
 MINICOM_VERSION = 2.6.1
 MINICOM_SOURCE = minicom-$(MINICOM_VERSION).tar.gz
 MINICOM_SITE = http://alioth.debian.org/frs/download.php/3700/
+MINICOM_LICENSE = GPLv2+
+MINICOM_LICENSE_FILES = COPYING
 
 # pkg-config is only used to check for liblockdev, which we don't have
 # in BR, so instead of adding host-pkg-config as a dependency, simply
