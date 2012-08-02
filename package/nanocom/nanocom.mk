@@ -6,6 +6,8 @@
 NANOCOM_VERSION = 2.6.1
 NANOCOM_SOURCE = nanocom.tar.gz
 NANOCOM_SITE = http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/project/nanocom/nanocom/v1.0
+NANOCOM_LICENSE = GPLv2+
+NANOCOM_LICENSE_FILES = COPYING
 
 # N.B. Don't strip any path components during extraction.
 define NANOCOM_EXTRACT_CMDS
