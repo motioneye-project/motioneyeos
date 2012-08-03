@@ -1,0 +1,27 @@
+From fe6432a9728b62bce3db73c5a4efe026018fd495 Mon Sep 17 00:00:00 2001
+From: Gregory Hermant <gregory.hermant@calao-systems.com>
+Date: Fri, 3 Aug 2012 16:45:37 +0200
+Subject: [PATCH] QIL-A9260: rtc modalias m41t48 renamed to rtc-m41t48
+
+
+Signed-off-by: Gregory Hermant <gregory.hermant@calao-systems.com>
+---
+ arch/arm/mach-at91/board-qil-a9260.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/arch/arm/mach-at91/board-qil-a9260.c b/arch/arm/mach-at91/board-qil-a9260.c
+index bf351e2..c0df05c 100644
+--- a/arch/arm/mach-at91/board-qil-a9260.c
++++ b/arch/arm/mach-at91/board-qil-a9260.c
+@@ -78,7 +78,7 @@ static struct at91_udc_data __initdata ek_udc_data = {
+ static struct spi_board_info ek_spi_devices[] = {
+ #if defined(CONFIG_RTC_DRV_M41T94)
+ 	{	/* M41T94 RTC */
+-		.modalias	= "m41t94",
++		.modalias	= "rtc-m41t94",
+ 		.chip_select	= 0,
+ 		.max_speed_hz	= 1 * 1000 * 1000,
+ 		.bus_num	= 0,
+-- 
+1.5.6.3
+
