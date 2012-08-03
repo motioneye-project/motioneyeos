@@ -4,7 +4,7 @@
 #
 #############################################################
 
-SUDO_VERSION = 1.8.5p1
+SUDO_VERSION = 1.8.5p2
 SUDO_SITE    = http://www.sudo.ws/sudo/dist
 SUDO_CONF_OPT = \
 		--without-lecture \
