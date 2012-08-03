@@ -3,10 +3,12 @@
 # luacjson
 #
 #############################################################
-LUACJSON_VERSION      = 2.1.0
-LUACJSON_SOURCE       = lua-cjson-$(LUACJSON_VERSION).tar.gz
-LUACJSON_SITE         = http://www.kyne.com.au/~mark/software/download
-LUACJSON_DEPENDENCIES = lua
+LUACJSON_VERSION       = 2.1.0
+LUACJSON_SOURCE        = lua-cjson-$(LUACJSON_VERSION).tar.gz
+LUACJSON_SITE          = http://www.kyne.com.au/~mark/software/download
+LUACJSON_DEPENDENCIES  = lua
+LUACJSON_LICENSE       = MIT
+LUACJSON_LICENSE_FILES = LICENSE
 
 define LUACJSON_BUILD_CMDS
 	$(MAKE) -C $(@D) \
