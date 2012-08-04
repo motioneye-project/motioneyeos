@@ -14,4 +14,8 @@ SUDO_CONF_OPT = \
 		--without-interfaces \
 		--without-pam
 
+define SUDO_PERMISSIONS
+/usr/bin/sudo			 f 4755	0 0 - - - - -
+endef
+
 $(eval $(autotools-package))
