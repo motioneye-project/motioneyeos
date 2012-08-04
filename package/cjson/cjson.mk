@@ -7,6 +7,7 @@ CJSON_VERSION         = undefined
 CJSON_SOURCE          = cJSONFiles.zip
 CJSON_SITE            = http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/project/cjson/
 CJSON_INSTALL_STAGING = YES
+CJSON_LICENSE         = MIT
 
 define CJSON_EXTRACT_CMDS
 	unzip -d $(@D) $(DL_DIR)/$(CJSON_SOURCE)
