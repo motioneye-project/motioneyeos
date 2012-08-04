@@ -7,6 +7,7 @@
 LUAEXPAT_VERSION      = 1.2.0
 LUAEXPAT_SITE         = http://matthewwild.co.uk/projects/luaexpat
 LUAEXPAT_DEPENDENCIES = lua expat
+LUAEXPAT_LICENSE      = MIT
 
 
 LUAEXPAT_MFLAGS += LUA_VERSION_NUM=501
