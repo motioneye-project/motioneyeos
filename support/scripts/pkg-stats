@@ -155,7 +155,7 @@ for i in $(find boot/ linux/ package/ -name '*.mk' | sort) ; do
 	generic_packages=$(($generic_packages+1))
     fi
 
-    if grep -qE "^${pkgvariable}_LICENSE =" $i ; then
+    if grep -qE "^${pkgvariable}_LICENSE[ ]*=" $i ; then
 	packages_with_license=$(($packages_with_license+1))
 	license=1
     else
