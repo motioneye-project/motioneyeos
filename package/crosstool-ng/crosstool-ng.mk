@@ -1,4 +1,4 @@
-CROSSTOOL_NG_VERSION           = 1.15.3
+CROSSTOOL_NG_VERSION           = 1.16.0
 CROSSTOOL_NG_SOURCE            = crosstool-ng-$(CROSSTOOL_NG_VERSION).tar.bz2
 CROSSTOOL_NG_SITE              = http://crosstool-ng.org/download/crosstool-ng/
 CROSSTOOL_NG_INSTALL_TARGET    = NO
