@@ -7,6 +7,7 @@
 WSAPI_VERSION = 1.5
 WSAPI_SITE = http://github.com/downloads/keplerproject/wsapi
 WSAPI_DEPENDENCIES = coxpcall luafilesystem rings
+WSAPI_LICENSE = MIT
 
 define WSAPI_INSTALL_TARGET_CMDS
 	mkdir -p $(TARGET_DIR)/usr/share/lua/wsapi
