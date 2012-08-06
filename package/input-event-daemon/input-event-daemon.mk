@@ -6,6 +6,8 @@
 
 INPUT_EVENT_DAEMON_VERSION = v0.1.3
 INPUT_EVENT_DAEMON_SITE = git://github.com/gandro/input-event-daemon.git
+INPUT_EVENT_DAEMON_LICENSE = input-event-daemon license
+INPUT_EVENT_DAEMON_LICENSE_FILES = README
 
 define INPUT_EVENT_DAEMON_BUILD_CMDS
 	touch  $(@D)/input-event-table.h
