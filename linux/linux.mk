@@ -69,12 +69,7 @@ ifeq ($(BR2_LINUX_KERNEL_IMAGE_TARGET_CUSTOM),y)
 LINUX_IMAGE_NAME=$(call qstrip,$(BR2_LINUX_KERNEL_IMAGE_TARGET_NAME))
 else
 ifeq ($(BR2_LINUX_KERNEL_UIMAGE),y)
-ifeq ($(KERNEL_ARCH),blackfin)
-# a uImage, but with a different file name
-LINUX_IMAGE_NAME=vmImage
-else
 LINUX_IMAGE_NAME=uImage
-endif
 else ifeq ($(BR2_LINUX_KERNEL_APPENDED_UIMAGE),y)
 LINUX_IMAGE_NAME=uImage
 else ifeq ($(BR2_LINUX_KERNEL_BZIMAGE),y)
