@@ -34,6 +34,11 @@ else
 GDK_PIXBUF_DEPENDENCIES += tiff
 endif
 
+ifeq ($(BR2_PACKAGE_XLIB_LIBX11),y)
+GDK_PIXBUF_CONF_OPT += --with-x11
+GDK_PIXBUF_DEPENDENCIES += xlib_libX11
+endif
+
 GDK_PIXBUF_DEPENDENCIES += \
 	$(if $(BR2_NEEDS_GETTEXT_IF_LOCALE),gettext libintl) \
 	$(if $(BR2_ENABLE_LOCALE),,libiconv) \
