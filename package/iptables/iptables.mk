@@ -4,11 +4,13 @@
 #
 #############################################################
 
-IPTABLES_VERSION = 1.4.14
+IPTABLES_VERSION = 1.4.15
 IPTABLES_SOURCE = iptables-$(IPTABLES_VERSION).tar.bz2
 IPTABLES_SITE = http://ftp.netfilter.org/pub/iptables
 IPTABLES_INSTALL_STAGING = YES
 IPTABLES_DEPENDENCIES = host-pkg-config
+IPTABLES_LICENSE = GPLv2
+IPTABLES_LICENSE_FILES = COPYING
 
 IPTABLES_CONF_OPT = --libexecdir=/usr/lib --with-kernel=$(LINUX_HEADERS_DIR)
 
