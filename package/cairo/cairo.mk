@@ -77,4 +77,10 @@ else
 	CAIRO_CONF_OPT += --disable-svg
 endif
 
+ifeq ($(BR2_PACKAGE_CAIRO_TEE),y)
+	CAIRO_CONF_OPT += --enable-tee
+else
+	CAIRO_CONF_OPT += --disable-tee
+endif
+
 $(eval $(autotools-package))
