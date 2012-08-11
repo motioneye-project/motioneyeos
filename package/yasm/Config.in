@@ -7,3 +7,4 @@ config BR2_PACKAGE_YASM
 	  and GAS assembler syntaxes and outputs binary, ELF32 and ELF64
 	  object formats.
 
+	  http://www.tortall.net/projects/yasm/

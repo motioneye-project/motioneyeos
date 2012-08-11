@@ -6,7 +6,6 @@
 YASM_VERSION = 1.2.0
 YASM_SOURCE = yasm-$(YASM_VERSION).tar.gz
 YASM_SITE = http://www.tortall.net/projects/yasm/releases/
-YASM_CONF_OPT = --disable-static
 
 define YASM_PRE_CONFIGURE_FIXUP
 # This sed prevents it compiling 2 programs (vsyasm and ytasm) 
@@ -15,6 +14,7 @@ define YASM_PRE_CONFIGURE_FIXUP
 endef
 
 YASM_PRE_CONFIGURE_HOOKS += YASM_PRE_CONFIGURE_FIXUP
+HOST_YASM_PRE_CONFIGURE_HOOKS += YASM_PRE_CONFIGURE_FIXUP
 
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
