@@ -1,0 +1,26 @@
+Conditionally compile per innetgr availability
+
+innetgr is not available/functional in uclibc, provide conditions for compilation.
+
+Signed-off-by: Dmitry Golubovsky <golubovsky@gmail.com>
+
+Index: linux-pam-1.1.4/modules/pam_time/pam_time.c
+============================================================================
+--- linux-pam-1.1.4/modules/pam_time/pam_time.c	2011-06-21 05:04:56.000000000 -0400
++++ linux-pam-1.1.4/modules/pam_time/pam_time.c	2012-08-09 21:02:29.000000000 -0400
+@@ -554,8 +554,14 @@
+ 	       continue;
+ 	  }
+ 	  /* If buffer starts with @, we are using netgroups */
+-	  if (buffer[0] == '@')
++	  if (buffer[0] == '@') {
++#ifdef HAVE_INNETGR
+ 	    good &= innetgr (&buffer[1], NULL, user, NULL);
++#else
++	    good = 0;
++	    pam_syslog (pamh, LOG_ERR, "pam_time does not have netgroup support");
++#endif /* HAVE_INNETGR */
++	  }
+ 	  else
+ 	    good &= logic_field(pamh, user, buffer, count, is_same);
+ 	  D(("with user: %s", good ? "passes":"fails" ));

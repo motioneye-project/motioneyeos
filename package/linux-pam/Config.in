@@ -1,0 +1,15 @@
+config BR2_PACKAGE_LINUX_PAM
+	bool "linux-pam"
+	select BR2_PACKAGE_LIBINTL if BR2_NEEDS_GETTEXT_IF_LOCALE
+	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE
+	select BR2_PACKAGE_FLEX
+	select BR2_PACKAGE_FLEX_LIBFL
+	depends on (BR2_ENABLE_LOCALE && BR2_USE_WCHAR)
+	help
+	  A Security Framework that Provides Authentication for Applications
+
+	  http://linux-pam.org
+
+comment "linux-pam requires a toolchain with WCHAR and locale support"
+	depends on !(BR2_ENABLE_LOCALE && BR2_USE_WCHAR)
+

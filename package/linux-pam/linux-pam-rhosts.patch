@@ -1,0 +1,24 @@
+Conditionally compile per ruserok availability
+
+ruserok is not available/functional in uclibc, provide conditions for compilation.
+
+Signed-off-by: Dmitry Golubovsky <golubovsky@gmail.com>
+
+Index: linux-pam-1.1.4/modules/pam_rhosts/pam_rhosts.c
+============================================================================
+--- linux-pam-1.1.4/modules/pam_rhosts/pam_rhosts.c	2011-06-21 05:04:56.000000000 -0400
++++ linux-pam-1.1.4/modules/pam_rhosts/pam_rhosts.c	2012-08-09 21:19:34.000000000 -0400
+@@ -114,8 +114,12 @@
+ #ifdef HAVE_RUSEROK_AF
+     retval = ruserok_af (rhost, as_root, ruser, luser, PF_UNSPEC);
+ #else
++  #ifdef HAVE_RUSEROK
+     retval = ruserok (rhost, as_root, ruser, luser);
+-#endif
++  #else
++    retval = -1;
++  #endif  /* HAVE_RUSEROK */
++#endif  /*HAVE_RUSEROK_AF */
+     if (retval != 0) {
+       if (!opt_silent || opt_debug)
+ 	pam_syslog(pamh, LOG_WARNING, "denied access to %s@%s as %s",
