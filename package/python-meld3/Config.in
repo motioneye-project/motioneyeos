@@ -1,0 +1,8 @@
+config BR2_PACKAGE_PYTHON_MELD3
+	bool "python-meld3"
+	depends on BR2_PACKAGE_PYTHON
+	select BR2_PACKAGE_PYTHON_PYEXPAT
+	help
+	  A HTML/XML templating system.
+
+	  https://github.com/supervisor/meld3
