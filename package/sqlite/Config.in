@@ -22,3 +22,37 @@ config BR2_PACKAGE_SQLITE_STAT3
 	  planner that can help SQLite to choose a better query plan under
 	  certain situations.
 
+config BR2_PACKAGE_SQLITE_ENABLE_FTS3
+	bool "Enable version 3 of the full-text search engine"
+	depends on BR2_PACKAGE_SQLITE
+	help
+	  When this option is defined in the amalgamation
+	  (see http://www.sqlite.org/amalgamation.html), version 3 of
+	  the full-text search engine is added to the build automatically.
+
+config BR2_PACKAGE_SQLITE_ENABLE_UNLOCK_NOTIFY
+	bool "Enable sqlite3_unlock_notify() interface"
+	depends on BR2_PACKAGE_SQLITE
+	help
+	  This option enables the sqlite3_unlock_notify() interface and its
+	  accosiated functionality. See the documentation
+	  http://www.sqlite.org/unlock_notify.html for additional information.
+
+config BR2_PACKAGE_SQLITE_SECURE_DELETE
+	bool "Set the secure_delete pragma on by default"
+	depends on BR2_PACKAGE_SQLITE
+	help
+	  This compile-time option changes the default settings of the
+	  secure_delete pragma. When this option is not used, secure_delete
+	  defaults to off. When this option is present, secure_delete defaults
+	  to on.
+
+	  The secure_delete setting causes deleted content to be overwritten
+	  with zeros. There is a small performance penalty for this since
+	  additional I/O must occur. On the other hand, secure_delete can
+	  prevent sensitive information from lingering in unused parts
+	  of the database file after it has allegedly been deleted.
+	  See the documentation on the
+	  http://www.sqlite.org/pragma.html#pragma_secure_delete
+	  for additional information.
+
