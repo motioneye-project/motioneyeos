@@ -108,6 +108,10 @@ else
 PYTHON_CONF_OPT += --disable-zlib
 endif
 
+ifeq ($(BR2_PACKAGE_PYTHON_HASHLIB),y)
+PYTHON_DEPENDENCIES += openssl
+endif
+
 PYTHON_CONF_ENV += \
 	PYTHON_FOR_BUILD=$(HOST_PYTHON_DIR)/python \
 	PGEN_FOR_BUILD=$(HOST_PYTHON_DIR)/Parser/pgen \

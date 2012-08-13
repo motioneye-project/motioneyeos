@@ -95,6 +95,12 @@ config BR2_PACKAGE_PYTHON_ZLIB
 	help
 	  zlib support in Python
 
+config BR2_PACKAGE_PYTHON_HASHLIB
+	bool "hashlib module"
+	select BR2_PACKAGE_OPENSSL
+	help
+	  hashlib support in Python
+
 endmenu
 
 endif
