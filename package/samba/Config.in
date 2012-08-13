@@ -168,6 +168,13 @@ config BR2_PACKAGE_SAMBA_SWAT
 	help
 	  Samba Web Administration Tool
 
+config BR2_PACKAGE_SAMBA_SMBTA_UTIL
+	bool "smbta-util"
+	default y
+	help
+	  Tool to ease the configuration of the vfs_smb_traffic_analyzer
+	  module regarding data encryption.
+
 config BR2_PACKAGE_SAMBA_SMBTAR
 	bool "smbtar"
 	default y
