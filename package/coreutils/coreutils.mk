@@ -4,7 +4,7 @@
 #
 #############################################################
 
-COREUTILS_VERSION = 8.16
+COREUTILS_VERSION = 8.18
 COREUTILS_SITE = $(BR2_GNU_MIRROR)/coreutils
 COREUTILS_SOURCE = coreutils-$(COREUTILS_VERSION).tar.xz
 
