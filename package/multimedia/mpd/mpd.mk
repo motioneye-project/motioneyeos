@@ -4,7 +4,7 @@
 #
 #############################################################
 
-MPD_VERSION = 0.17
+MPD_VERSION = 0.17.1
 MPD_SITE = http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/project/musicpd/mpd/$(MPD_VERSION)
 MPD_DEPENDENCIES = host-pkg-config libglib2
 MPD_LICENSE = GPLv2
