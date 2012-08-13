@@ -1,0 +1,45 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release:	4.2
+Patch-ID:	bash42-024
+
+Bug-Reported-by:	Jim Avera <james_avera@yahoo.com>
+Bug-Reference-ID:	<4F29E07A.80405@yahoo.com>
+Bug-Reference-URL:	http://lists.gnu.org/archive/html/bug-bash/2012-02/msg00001.html
+
+Bug-Description:
+
+When `printf -v' is used to set an array element, the format string contains
+`%b', and the corresponding argument is the empty string, the buffer used
+to store the value to be assigned can be NULL, which results in NUL being
+assigned to the array element.  This causes a seg fault when it's used later.
+
+Patch (apply with `patch -p0'):
+
+*** ../bash-4.2-patched/builtins/printf.def	2011-02-25 12:07:41.000000000 -0500
+--- ./builtins/printf.def	2012-02-02 08:37:12.000000000 -0500
+***************
+*** 256,259 ****
+--- 257,262 ----
+  	    {
+  	      vflag = 1;
++ 	      if (vbsize == 0)
++ 		vbuf = xmalloc (vbsize = 16);
+  	      vblen = 0;
+  	      if (vbuf)
+*** ../bash-4.2-patched/patchlevel.h	Sat Jun 12 20:14:48 2010
+--- ./patchlevel.h	Thu Feb 24 21:41:34 2011
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 23
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 24
+  
+  #endif /* _PATCHLEVEL_H_ */

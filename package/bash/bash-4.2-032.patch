@@ -1,0 +1,75 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release:	4.2
+Patch-ID:	bash42-032
+
+Bug-Reported-by:	Ruediger Kuhlmann <RKuhlmann@orga-systems.com>
+Bug-Reference-ID:	<OFDE975207.0C3622E5-ONC12579F3.00361A06-C12579F3.00365E39@orga-systems.com>
+Bug-Reference-URL:	http://lists.gnu.org/archive/html/bug-bash/2012-05/msg00010.html
+
+Bug-Description:
+
+Bash-4.2 has problems with DEL characters in the expanded value of variables
+used in the same quoted string as variables that expand to nothing.
+
+Patch (apply with `patch -p0'):
+
+*** ../bash-20120427/subst.c	2012-04-22 16:19:10.000000000 -0400
+--- ./subst.c	2012-05-07 16:06:35.000000000 -0400
+***************
+*** 8152,8155 ****
+--- 8152,8163 ----
+  	  dispose_word_desc (tword);
+  
++ 	  /* Kill quoted nulls; we will add them back at the end of
++ 	     expand_word_internal if nothing else in the string */
++ 	  if (had_quoted_null && temp && QUOTED_NULL (temp))
++ 	    {
++ 	      FREE (temp);
++ 	      temp = (char *)NULL;
++ 	    }
++ 
+  	  goto add_string;
+  	  break;
+***************
+*** 8556,8560 ****
+        if (quoted & (Q_HERE_DOCUMENT|Q_DOUBLE_QUOTES))
+  	tword->flags |= W_QUOTED;
+!       if (had_quoted_null)
+  	tword->flags |= W_HASQUOTEDNULL;
+        list = make_word_list (tword, (WORD_LIST *)NULL);
+--- 8564,8568 ----
+        if (quoted & (Q_HERE_DOCUMENT|Q_DOUBLE_QUOTES))
+  	tword->flags |= W_QUOTED;
+!       if (had_quoted_null && QUOTED_NULL (istring))
+  	tword->flags |= W_HASQUOTEDNULL;
+        list = make_word_list (tword, (WORD_LIST *)NULL);
+***************
+*** 8587,8591 ****
+  	  if (word->flags & W_NOEXPAND)
+  	    tword->flags |= W_NOEXPAND;
+! 	  if (had_quoted_null)
+  	    tword->flags |= W_HASQUOTEDNULL;	/* XXX */
+  	  list = make_word_list (tword, (WORD_LIST *)NULL);
+--- 8595,8599 ----
+  	  if (word->flags & W_NOEXPAND)
+  	    tword->flags |= W_NOEXPAND;
+! 	  if (had_quoted_null && QUOTED_NULL (istring))
+  	    tword->flags |= W_HASQUOTEDNULL;	/* XXX */
+  	  list = make_word_list (tword, (WORD_LIST *)NULL);
+*** ../bash-4.2-patched/patchlevel.h	Sat Jun 12 20:14:48 2010
+--- ./patchlevel.h	Thu Feb 24 21:41:34 2011
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 31
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 32
+  
+  #endif /* _PATCHLEVEL_H_ */

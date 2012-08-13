@@ -1,0 +1,143 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release:	4.2
+Patch-ID:	bash42-025
+
+Bug-Reported-by:	Bill Gradwohl <bill@ycc.com>
+Bug-Reference-ID:	<CAFyvKis-UfuOWr5THBRKh=vYHDoKEEgdW8hN1RviTuYQ00Lu5A@mail.gmail.com>
+Bug-Reference-URL:	http://lists.gnu.org/archive/html/help-bash/2012-03/msg00078.html
+
+Bug-Description:
+
+When used in a shell function, `declare -g -a array=(compound assignment)'
+creates a local variable instead of a global one.
+
+Patch (apply with `patch -p0'):
+
+*** ../bash-4.2-patched/command.h	2010-08-02 19:36:51.000000000 -0400
+--- ./command.h	2012-04-01 12:38:35.000000000 -0400
+***************
+*** 98,101 ****
+--- 98,102 ----
+  #define W_ASSIGNASSOC	0x400000	/* word looks like associative array assignment */
+  #define W_ARRAYIND	0x800000	/* word is an array index being expanded */
++ #define W_ASSNGLOBAL	0x1000000	/* word is a global assignment to declare (declare/typeset -g) */
+  
+  /* Possible values for subshell_environment */
+*** ../bash-4.2-patched/execute_cmd.c	2011-11-21 18:03:41.000000000 -0500
+--- ./execute_cmd.c	2012-04-01 12:42:03.000000000 -0400
+***************
+*** 3581,3585 ****
+    WORD_LIST *w;
+    struct builtin *b;
+!   int assoc;
+  
+    if (words == 0)
+--- 3581,3585 ----
+    WORD_LIST *w;
+    struct builtin *b;
+!   int assoc, global;
+  
+    if (words == 0)
+***************
+*** 3587,3591 ****
+  
+    b = 0;
+!   assoc = 0;
+  
+    for (w = words; w; w = w->next)
+--- 3587,3591 ----
+  
+    b = 0;
+!   assoc = global = 0;
+  
+    for (w = words; w; w = w->next)
+***************
+*** 3604,3607 ****
+--- 3604,3609 ----
+  	if (assoc)
+  	  w->word->flags |= W_ASSIGNASSOC;
++ 	if (global)
++ 	  w->word->flags |= W_ASSNGLOBAL;
+  #endif
+        }
+***************
+*** 3609,3613 ****
+      /* Note that we saw an associative array option to a builtin that takes
+         assignment statements.  This is a bit of a kludge. */
+!     else if (w->word->word[0] == '-' && strchr (w->word->word, 'A'))
+        {
+  	if (b == 0)
+--- 3611,3618 ----
+      /* Note that we saw an associative array option to a builtin that takes
+         assignment statements.  This is a bit of a kludge. */
+!     else if (w->word->word[0] == '-' && (strchr (w->word->word+1, 'A') || strchr (w->word->word+1, 'g')))
+! #else
+!     else if (w->word->word[0] == '-' && strchr (w->word->word+1, 'g'))
+! #endif
+        {
+  	if (b == 0)
+***************
+*** 3619,3626 ****
+  	      words->word->flags |= W_ASSNBLTIN;
+  	  }
+! 	if (words->word->flags & W_ASSNBLTIN)
+  	  assoc = 1;
+        }
+- #endif
+  }
+  
+--- 3624,3632 ----
+  	      words->word->flags |= W_ASSNBLTIN;
+  	  }
+! 	if ((words->word->flags & W_ASSNBLTIN) && strchr (w->word->word+1, 'A'))
+  	  assoc = 1;
++ 	if ((words->word->flags & W_ASSNBLTIN) && strchr (w->word->word+1, 'g'))
++ 	  global = 1;
+        }
+  }
+  
+*** ../bash-4.2-patched/subst.c	2012-03-11 17:35:13.000000000 -0400
+--- ./subst.c	2012-04-01 12:38:35.000000000 -0400
+***************
+*** 367,370 ****
+--- 367,375 ----
+        fprintf (stderr, "W_ASSNBLTIN%s", f ? "|" : "");
+      }
++   if (f & W_ASSNGLOBAL)
++     {
++       f &= ~W_ASSNGLOBAL;
++       fprintf (stderr, "W_ASSNGLOBAL%s", f ? "|" : "");
++     }
+    if (f & W_COMPASSIGN)
+      {
+***************
+*** 2804,2808 ****
+    else if (assign_list)
+      {
+!       if (word->flags & W_ASSIGNARG)
+  	aflags |= ASS_MKLOCAL;
+        if (word->flags & W_ASSIGNASSOC)
+--- 2809,2813 ----
+    else if (assign_list)
+      {
+!       if ((word->flags & W_ASSIGNARG) && (word->flags & W_ASSNGLOBAL) == 0)
+  	aflags |= ASS_MKLOCAL;
+        if (word->flags & W_ASSIGNASSOC)
+
+*** ../bash-4.2-patched/patchlevel.h	Sat Jun 12 20:14:48 2010
+--- ./patchlevel.h	Thu Feb 24 21:41:34 2011
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 24
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 25
+  
+  #endif /* _PATCHLEVEL_H_ */

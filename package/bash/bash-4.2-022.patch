@@ -1,0 +1,61 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release:	4.2
+Patch-ID:	bash42-022
+
+Bug-Reported-by:	Gregory Margo <gmargo@pacbell.net>
+Bug-Reference-ID:	<20110727174529.GA3333@pacbell.net>
+Bug-Reference-URL:	http://lists.gnu.org/archive/html/bug-bash/2011-07/msg00102.html
+
+Bug-Description:
+
+The return value from lseek is `off_t'.  This can cause corrupted return
+values when the file offset is greater than 2**31 - 1.
+
+Patch (apply with `patch -p0'):
+
+*** ../bash-4.2-patched/lib/sh/zread.c	Mon Mar  2 08:54:45 2009
+--- ./lib/sh/zread.c	Thu Jul 28 18:16:53 2011
+***************
+*** 161,166 ****
+       int fd;
+  {
+!   off_t off;
+!   int r;
+  
+    off = lused - lind;
+--- 161,165 ----
+       int fd;
+  {
+!   off_t off, r;
+  
+    off = lused - lind;
+***************
+*** 169,173 ****
+      r = lseek (fd, -off, SEEK_CUR);
+  
+!   if (r >= 0)
+      lused = lind = 0;
+  }
+--- 168,172 ----
+      r = lseek (fd, -off, SEEK_CUR);
+  
+!   if (r != -1)
+      lused = lind = 0;
+  }
+*** ../bash-4.2-patched/patchlevel.h	Sat Jun 12 20:14:48 2010
+--- ./patchlevel.h	Thu Feb 24 21:41:34 2011
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 21
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 22
+  
+  #endif /* _PATCHLEVEL_H_ */

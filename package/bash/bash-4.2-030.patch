@@ -1,0 +1,178 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release:	4.2
+Patch-ID:	bash42-030
+
+Bug-Reported-by:	Roman Rakus <rrakus@redhat.com>
+Bug-Reference-ID:	<4D7DD91E.7040808@redhat.com>
+Bug-Reference-URL:	http://lists.gnu.org/archive/html/bug-bash/2011-03/msg00126.html
+
+Bug-Description:
+
+When attempting to glob strings in a multibyte locale, and those strings
+contain invalid multibyte characters that cause mbsnrtowcs to return 0,
+the globbing code loops infinitely.
+
+Patch (apply with `patch -p0'):
+
+*** ../bash-4.2-patched/lib/glob/xmbsrtowcs.c	2010-05-30 18:36:27.000000000 -0400
+--- ./lib/glob/xmbsrtowcs.c	2011-03-22 16:06:47.000000000 -0400
+***************
+*** 36,39 ****
+--- 36,41 ----
+  #if HANDLE_MULTIBYTE
+  
++ #define WSBUF_INC 32
++ 
+  #ifndef FREE
+  #  define FREE(x)	do { if (x) free (x); } while (0)
+***************
+*** 149,153 ****
+    size_t wcnum;		/* Number of wide characters in WSBUF */
+    mbstate_t state;	/* Conversion State */
+!   size_t wcslength;	/* Number of wide characters produced by the conversion. */
+    const char *end_or_backslash;
+    size_t nms;	/* Number of multibyte characters to convert at one time. */
+--- 151,155 ----
+    size_t wcnum;		/* Number of wide characters in WSBUF */
+    mbstate_t state;	/* Conversion State */
+!   size_t n, wcslength;	/* Number of wide characters produced by the conversion. */
+    const char *end_or_backslash;
+    size_t nms;	/* Number of multibyte characters to convert at one time. */
+***************
+*** 172,176 ****
+        tmp_p = p;
+        tmp_state = state;
+!       wcslength = mbsnrtowcs(NULL, &tmp_p, nms, 0, &tmp_state);
+  
+        /* Conversion failed. */
+--- 174,189 ----
+        tmp_p = p;
+        tmp_state = state;
+! 
+!       if (nms == 0 && *p == '\\')	/* special initial case */
+! 	nms = wcslength = 1;
+!       else
+! 	wcslength = mbsnrtowcs (NULL, &tmp_p, nms, 0, &tmp_state);
+! 
+!       if (wcslength == 0)
+! 	{
+! 	  tmp_p = p;		/* will need below */
+! 	  tmp_state = state;
+! 	  wcslength = 1;	/* take a single byte */
+! 	}
+  
+        /* Conversion failed. */
+***************
+*** 187,191 ****
+  	  wchar_t *wstmp;
+  
+! 	  wsbuf_size = wcnum+wcslength+1;	/* 1 for the L'\0' or the potential L'\\' */
+  
+  	  wstmp = (wchar_t *) realloc (wsbuf, wsbuf_size * sizeof (wchar_t));
+--- 200,205 ----
+  	  wchar_t *wstmp;
+  
+! 	  while (wsbuf_size < wcnum+wcslength+1) /* 1 for the L'\0' or the potential L'\\' */
+! 	    wsbuf_size += WSBUF_INC;
+  
+  	  wstmp = (wchar_t *) realloc (wsbuf, wsbuf_size * sizeof (wchar_t));
+***************
+*** 200,207 ****
+  
+        /* Perform the conversion. This is assumed to return 'wcslength'.
+!        * It may set 'p' to NULL. */
+!       mbsnrtowcs(wsbuf+wcnum, &p, nms, wsbuf_size-wcnum, &state);
+  
+!       wcnum += wcslength;
+  
+        if (mbsinit (&state) && (p != NULL) && (*p == '\\'))
+--- 214,229 ----
+  
+        /* Perform the conversion. This is assumed to return 'wcslength'.
+! 	 It may set 'p' to NULL. */
+!       n = mbsnrtowcs(wsbuf+wcnum, &p, nms, wsbuf_size-wcnum, &state);
+  
+!       /* Compensate for taking single byte on wcs conversion failure above. */
+!       if (wcslength == 1 && (n == 0 || n == (size_t)-1))
+! 	{
+! 	  state = tmp_state;
+! 	  p = tmp_p;
+! 	  wsbuf[wcnum++] = *p++;
+! 	}
+!       else
+!         wcnum += wcslength;
+  
+        if (mbsinit (&state) && (p != NULL) && (*p == '\\'))
+***************
+*** 231,236 ****
+     of DESTP and INDICESP are NULL. */
+  
+- #define WSBUF_INC 32
+- 
+  size_t
+  xdupmbstowcs (destp, indicesp, src)
+--- 253,256 ----
+*** ../bash-4.2-patched/lib/glob/glob.c	2009-11-14 18:39:30.000000000 -0500
+--- ./lib/glob/glob.c	2012-07-07 12:09:56.000000000 -0400
+***************
+*** 201,206 ****
+    size_t pat_n, dn_n;
+  
+    pat_n = xdupmbstowcs (&pat_wc, NULL, pat);
+!   dn_n = xdupmbstowcs (&dn_wc, NULL, dname);
+  
+    ret = 0;
+--- 201,209 ----
+    size_t pat_n, dn_n;
+  
++   pat_wc = dn_wc = (wchar_t *)NULL;
++ 
+    pat_n = xdupmbstowcs (&pat_wc, NULL, pat);
+!   if (pat_n != (size_t)-1)
+!     dn_n = xdupmbstowcs (&dn_wc, NULL, dname);
+  
+    ret = 0;
+***************
+*** 222,225 ****
+--- 225,230 ----
+  	ret = 1;
+      }
++   else
++     ret = skipname (pat, dname, flags);
+  
+    FREE (pat_wc);
+***************
+*** 267,272 ****
+    n = xdupmbstowcs (&wpathname, NULL, pathname);
+    if (n == (size_t) -1)
+!     /* Something wrong. */
+!     return;
+    orig_wpathname = wpathname;
+  
+--- 272,280 ----
+    n = xdupmbstowcs (&wpathname, NULL, pathname);
+    if (n == (size_t) -1)
+!     {
+!       /* Something wrong.  Fall back to single-byte */
+!       udequote_pathname (pathname);
+!       return;
+!     }
+    orig_wpathname = wpathname;
+  
+*** ../bash-4.2-patched/patchlevel.h	Sat Jun 12 20:14:48 2010
+--- ./patchlevel.h	Thu Feb 24 21:41:34 2011
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 29
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 30
+  
+  #endif /* _PATCHLEVEL_H_ */
