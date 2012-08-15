@@ -1,3 +1,21 @@
+2012.08-rc2, Released August 15th, 2012
+
+	Updated/fixed packages: imagemagick, sudo, crosstool-ng.
+
+	Added license informations for: mxml, nanocom, empty, expat,
+	lua, lucjson, xinetd, cjson, luaexpat, lmbench, bwm-ng,
+	input-event-daemon, luajit, cgilua, copas, coxpcall,
+	luafilesystem, luasocket, rings, wsapi, xavante, libtpl,
+	avahi, busybox, libfcgi, ifplugd, libcgicc, libcurl,
+	libdaemon, libdnet, libgpg-error, libpcap, libpng, lighttpd,
+	mtd, openssl, psmisc, socat, spawn-fcgi.
+
+	Fixes to Microblaze external toolchains
+	configuration. Improvements of the pkg-stats
+	script. Out-of-tree fix for the graph-depends script.
+
+	Kernel headers version bump.
+
 2012.08-rc1, Released August 1st, 2012
 
 	Fixes all over the tree and new features.
