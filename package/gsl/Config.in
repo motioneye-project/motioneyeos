@@ -7,4 +7,4 @@ config BR2_PACKAGE_GSL
 	  special functions and least-squares fitting. There are over
 	  1000 functions in total with an extensive test suite.
 
- 	  http://www.gnu.org/software/gsl
+	  http://www.gnu.org/software/gsl
