@@ -1,6 +1,7 @@
 menu "Bootloaders"
 
 source "boot/at91bootstrap/Config.in"
+source "boot/at91bootstrap3/Config.in"
 source "boot/at91dataflashboot/Config.in"
 source "boot/barebox/Config.in"
 source "boot/grub/Config.in"
