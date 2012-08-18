@@ -1,5 +1,6 @@
 Adding new packages to Buildroot
 ================================
+[[adding-packages]]
 
 This section covers how new packages (userspace libraries or
 applications) can be integrated into Buildroot. It also shows how

@@ -29,7 +29,7 @@ by the different packages, so some understanding of the particular
 package is needed.
 
 For packages relying on Buildroot packages infrastructures (see
-xref:add-packages[this section] for details), the following stamp
+xref:adding-packages[this section] for details), the following stamp
 files are relevant:
 
 * +output/build/packagename-version/.stamp_configured+. If removed,
