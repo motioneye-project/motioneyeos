@@ -6,6 +6,8 @@
 
 NANO_VERSION = 2.3.1
 NANO_SITE = http://www.nano-editor.org/dist/v2.3
+NANO_LICENSE = GPLv3+
+NANO_LICENSE_FILES = COPYING
 NANO_MAKE_ENV = CURSES_LIB="-lncurses"
 NANO_CONF_OPT = --without-slang
 NANO_DEPENDENCIES = ncurses
