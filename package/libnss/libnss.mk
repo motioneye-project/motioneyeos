@@ -49,6 +49,10 @@ define LIBNSS_INSTALL_STAGING_CMDS
 		$(@D)/$(LIBNSS_DISTDIR)/public/nss/*
 	$(INSTALL) -m 755 -t $(STAGING_DIR)/usr/lib/ \
 		$(@D)/$(LIBNSS_DISTDIR)/lib/*.a
+	$(INSTALL) -D -m 0644 $(TOPDIR)/package/libnss/nss.pc.in \
+		$(STAGING_DIR)/usr/lib/pkgconfig/nss.pc
+	$(SED) 's/@VERSION@/$(LIBNSS_VERSION)/g;' \
+		$(STAGING_DIR)/usr/lib/pkgconfig/nss.pc
 endef
 
 define LIBNSS_INSTALL_TARGET_CMDS
@@ -59,6 +63,10 @@ define LIBNSS_INSTALL_TARGET_CMDS
 		$(@D)/$(LIBNSS_DISTDIR)/public/nss/*
 	$(INSTALL) -m 755 -t $(TARGET_DIR)/usr/lib/ \
 		$(@D)/$(LIBNSS_DISTDIR)/lib/*.a
+	$(INSTALL) -D -m 0644 $(TOPDIR)/package/libnss/nss.pc.in \
+		$(TARGET_DIR)/usr/lib/pkgconfig/nss.pc
+	$(SED) 's/@VERSION@/$(LIBNSS_VERSION)/g;' \
+		$(TARGET_DIR)/usr/lib/pkgconfig/nss.pc
 endef
 
 define LIBNSS_CLEAN_CMDS
