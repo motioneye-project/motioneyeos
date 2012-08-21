@@ -16,4 +16,20 @@ LIBNSPR_CONF_OPT  = --host=$(GNU_HOST_NAME)
 LIBNSPR_CONF_OPT += --$(if $(BR2_ARCH_IS_64),en,dis)able-64bit
 LIBNSPR_CONF_OPT += --$(if $(BR2_INET_IPV6),en,dis)able-ipv6
 
+define LIBNSPR_INSTALL_STAGING_PC
+	$(INSTALL) -D -m 0644 $(TOPDIR)/package/libnspr/nspr.pc.in \
+		$(STAGING_DIR)/usr/lib/pkgconfig/nspr.pc
+	$(SED) 's/@VERSION@/$(LIBNSPR_VERSION)/g;' \
+		$(STAGING_DIR)/usr/lib/pkgconfig/nspr.pc
+endef
+LIBNSPR_POST_INSTALL_STAGING_HOOKS += LIBNSPR_INSTALL_STAGING_PC
+
+define LIBNSPR_INSTALL_TARGET_PC
+	$(INSTALL) -D -m 0644 $(TOPDIR)/package/libnspr/nspr.pc.in \
+		$(TARGET_DIR)/usr/lib/pkgconfig/nspr.pc
+	$(SED) 's/@VERSION@/$(LIBNSPR_VERSION)/g;' \
+		$(TARGET_DIR)/usr/lib/pkgconfig/nspr.pc
+endef
+LIBNSPR_POST_INSTALL_TARGET_HOOKS += LIBNSPR_INSTALL_TARGET_PC
+
 $(eval $(autotools-package))
