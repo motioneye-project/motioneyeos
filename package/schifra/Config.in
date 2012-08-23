@@ -1,0 +1,18 @@
+config BR2_PACKAGE_SCHIFRA
+	bool "schifra"
+	depends on BR2_INSTALL_LIBSTDCPP
+	help
+	  Schifra is a very robust, highly optimized and extremely configurable
+	  Reed-Solomon error correcting code library for both software and IP
+	  core based applications with implementations in C++ and VHDL.
+
+	  http://www.schifra.com/
+
+config BR2_PACKAGE_SCHIFRA_EXAMPLES
+	bool "schifra examples"
+	depends on BR2_PACKAGE_SCHIFRA
+	help
+	  Build and install the schifra example applications.
+
+comment "schifra requires a toolchain with C++ support enabled"
+	depends on !BR2_INSTALL_LIBSTDCPP
