@@ -1,0 +1,17 @@
+config BR2_PACKAGE_ERLANG
+	bool "erlang"
+	help
+	  Erlang is a programming language used to build massively scalable
+	  soft real-time systems with requirements on high availability.
+	  Some of its uses are in telecoms, banking, e-commerce, computer
+	  telephony and instant messaging. Erlang's runtime system has
+	  built-in support for concurrency, distribution and fault tolerance.
+
+config BR2_PACKAGE_ERLANG_MEGACO
+	bool "install megaco application"
+	depends on BR2_PACKAGE_ERLANG
+	help
+	  The Megaco application is a framework for building applications
+	  on top of the Megaco/H.248 protocol. It is approximately 14MB in
+	  size so if you do not need it then it is recommended not to
+	  enable it.
