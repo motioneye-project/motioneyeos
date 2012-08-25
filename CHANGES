@@ -1,3 +1,13 @@
+2012.08-rc3, Released August 25th, 2012
+
+	Updated/fixed packages: libglib2, netsnmp, freetype, libfuse,
+	libpng, x11vnc, zlib, gpsd, ifplugd, bash, distcc.
+
+	Added license informations for: barebox, grub, syslinux,
+	uboot, xloader, yajl, zlib, zxing, alsa-lib, alsa-utils,
+	faad2, nano, fbdump, rsync, librsync, fontconfig,
+	inotify-tools,
+
 2012.08-rc2, Released August 15th, 2012
 
 	Updated/fixed packages: imagemagick, sudo, crosstool-ng.
