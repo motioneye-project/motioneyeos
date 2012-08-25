@@ -1,0 +1,33 @@
+Do not pass -D_REENTRANT
+
+This flag is not needed to build this library, and prevents to build
+it with toolchains that don't have thread support.
+
+Since the Makefile.in change is a one-liner, we also do it in the
+patch to avoid having to autoreconfigure the package.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/Makefile.am
+===================================================================
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -1,4 +1,4 @@
+-AM_CFLAGS = -Wall -Wwrite-strings -Werror -std=gnu99 -D_GNU_SOURCE -D_REENTRANT
++AM_CFLAGS = -Wall -Wwrite-strings -Werror -std=gnu99 -D_GNU_SOURCE
+ 
+ EXTRA_DIST = README.html README-WIN32.html config.h.win32 doc
+ 
+Index: b/Makefile.in
+===================================================================
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -219,7 +219,7 @@
+ top_build_prefix = @top_build_prefix@
+ top_builddir = @top_builddir@
+ top_srcdir = @top_srcdir@
+-AM_CFLAGS = -Wall -Wwrite-strings -Werror -std=gnu99 -D_GNU_SOURCE -D_REENTRANT
++AM_CFLAGS = -Wall -Wwrite-strings -Werror -std=gnu99 -D_GNU_SOURCE
+ EXTRA_DIST = README.html README-WIN32.html config.h.win32 doc
+ lib_LTLIBRARIES = libjson.la
+ pkgconfigdir = $(libdir)/pkgconfig
