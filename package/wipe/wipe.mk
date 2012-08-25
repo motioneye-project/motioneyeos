@@ -5,7 +5,7 @@
 #############################################################
 
 WIPE_VERSION = 2.3.1
-WIPE_SITE = http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/wipe
+WIPE_SITE = http://downloads.sourceforge.net/project/wipe/wipe/$(WIPE_VERSION)
 WIPE_SOURCE = wipe-$(WIPE_VERSION).tar.bz2
 WIPE_AUTORECONF = YES
 

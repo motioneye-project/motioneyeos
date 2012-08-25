@@ -5,7 +5,7 @@
 #############################################################
 
 PSMISC_VERSION = 22.16
-PSMISC_SITE = http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/project/psmisc/psmisc
+PSMISC_SITE = http://downloads.sourceforge.net/project/psmisc/psmisc
 PSMISC_LICENSE = GPLv2
 PSMISC_LICENSE_FILES = COPYING
 PSMISC_DEPENDENCIES = ncurses $(if $(BR2_NEEDS_GETTEXT_IF_LOCALE),gettext libintl)

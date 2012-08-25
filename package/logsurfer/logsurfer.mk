@@ -6,7 +6,7 @@
 
 LOGSURFER_VERSION = 1.8
 LOGSURFER_SOURCE = logsurfer-$(LOGSURFER_VERSION).tar.gz
-LOGSURFER_SITE = http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/logsurfer/logsurfer/logsurfer-$(LOGSURFER_VERSION)
+LOGSURFER_SITE = http://downloads.sourceforge.net/project/logsurfer/logsurfer/logsurfer-$(LOGSURFER_VERSION)
 
 define LOGSURFER_INSTALL_TARGET_CMDS
 	$(INSTALL) -D -m 0755 $(@D)/src/logsurfer \

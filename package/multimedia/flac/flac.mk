@@ -6,7 +6,7 @@
 
 FLAC_VERSION = 1.2.1
 FLAC_SOURCE = flac-$(FLAC_VERSION).tar.gz
-FLAC_SITE = http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/flac/
+FLAC_SITE = http://downloads.sourceforge.net/project/flac/flac-src/flac-$(FLAC_VERSION)-src
 FLAC_INSTALL_STAGING = YES
 
 FLAC_CONF_OPT = \

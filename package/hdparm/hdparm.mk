@@ -5,7 +5,7 @@
 #############################################################
 
 HDPARM_VERSION = 9.39
-HDPARM_SITE = http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/hdparm
+HDPARM_SITE = http://downloads.sourceforge.net/project/hdparm/hdparm
 
 define HDPARM_BUILD_CMDS
 	$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(@D) \

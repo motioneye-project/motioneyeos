@@ -6,7 +6,7 @@
 
 CRAMFS_VERSION=1.1
 CRAMFS_SOURCE=cramfs-$(CRAMFS_VERSION).tar.gz
-CRAMFS_SITE=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/cramfs
+CRAMFS_SITE=http://downloads.sourceforge.net/project/cramfs/cramfs/$(CRAMFS_VERSION)
 
 CRAMFS_DEPENDENCIES = zlib
 

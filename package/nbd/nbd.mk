@@ -6,7 +6,7 @@
 
 NBD_VERSION = 3.1
 NBD_SOURCE = nbd-$(NBD_VERSION).tar.bz2
-NBD_SITE = http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/project/nbd/nbd/$(NBD_VERSION)
+NBD_SITE = http://downloads.sourceforge.net/project/nbd/nbd/$(NBD_VERSION)
 NBD_CONF_OPT = $(if $(BR2_LARGEFILE),--enable-lfs,--disable-lfs)
 NBD_DEPENDENCIES = libglib2
 

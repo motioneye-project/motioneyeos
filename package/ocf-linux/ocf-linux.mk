@@ -5,7 +5,7 @@
 #############################################################
 
 OCF_LINUX_VERSION = 20120127
-OCF_LINUX_SITE = http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/project/ocf-linux/ocf-linux/$(OCF_LINUX_VERSION)
+OCF_LINUX_SITE = http://downloads.sourceforge.net/project/ocf-linux/ocf-linux/$(OCF_LINUX_VERSION)
 OCF_LINUX_INSTALL_STAGING = YES
 
 define OCF_LINUX_INSTALL_STAGING_CMDS

@@ -5,7 +5,7 @@
 ################################################################################
 
 FAAD2_VERSION = 2.7
-FAAD2_SITE = http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/faac
+FAAD2_SITE = http://downloads.sourceforge.net/project/faac/faad2-src/faad2-$(FAAD2_VERSION)
 FAAD2_LICENSE = GPLv2
 FAAD2_LICENSE_FILES = COPYING
 # frontend/faad calls frexp()

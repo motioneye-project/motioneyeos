@@ -4,7 +4,7 @@
 #
 #############################################################
 NETATALK_VERSION = 2.2.2
-NETATALK_SITE = http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/project/netatalk/netatalk/$(NETATALK_VERSION)/
+NETATALK_SITE = http://downloads.sourceforge.net/project/netatalk/netatalk/$(NETATALK_VERSION)/
 NETATALK_SOURCE = netatalk-$(NETATALK_VERSION).tar.bz2
 
 NETATALK_DEPENDENCIES = openssl berkeleydb libgcrypt libgpg-error
