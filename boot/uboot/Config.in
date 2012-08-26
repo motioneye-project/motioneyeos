@@ -9,6 +9,8 @@ config BR2_TARGET_UBOOT_BOARDNAME
 	help
 	  One of U-Boot supported boards to be built.
 	  This will be suffixed with _config to meet U-Boot standard naming.
+	  See boards.cfg in U-Boot source code for the list of available
+	  configurations.
 
 choice
 	prompt "U-Boot Version"
