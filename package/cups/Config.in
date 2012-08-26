@@ -1,5 +1,7 @@
 config BR2_PACKAGE_CUPS
 	bool "cups"
+	# needs fork()
+	depends on BR2_USE_MMU
 	help
 	  The Common Unix Printing System
 
