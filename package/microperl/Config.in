@@ -1,5 +1,7 @@
 config BR2_PACKAGE_MICROPERL
 	bool "microperl"
+	# needs fork()
+	depends on BR2_USE_MMU
 	help
 	  Perl without operating-specific functions such as readdir.
 
