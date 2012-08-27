@@ -14,7 +14,7 @@ define CJSON_EXTRACT_CMDS
 endef
 
 define CJSON_BUILD_CMDS
-	cd $(@D)/cJSON && $(TARGET_CC) $(TARGET_CFLAGS) -shared -fpic cJSON.c -o libcJSON.so
+	cd $(@D)/cJSON && $(TARGET_CC) $(TARGET_CFLAGS) -shared -fPIC cJSON.c -o libcJSON.so
 endef
 
 define CJSON_INSTALL_STAGING_CMDS
