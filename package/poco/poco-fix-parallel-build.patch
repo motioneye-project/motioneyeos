@@ -1,0 +1,71 @@
+poco: fix parallel build
+
+The makefile rule for generating objects implicitly depends on the existence
+of the containing directory. The makefile dependecies do not reflect this,
+however. Instead, the final compilation producs depend on one of libdirs,
+bindirs, or static_bindirs, which in turn depend on objdirs. This breaks
+parallel build since the objdirs target may not complete before the object
+files build starts as follows (abbreviated):
+
+make[2]: Entering directory `/home/test/test/output/build/poco-1.4.3p1/Zip'
+mkdir -p /home/test/test/output/build/poco-1.4.3p1/Zip/obj/Linux/powerpc/release_static
+mkdir -p /home/test/test/output/build/poco-1.4.3p1/Zip/obj/Linux/powerpc/debug_static
+mkdir -p /home/test/test/output/build/poco-1.4.3p1/Zip/obj/Linux/powerpc/release_shared
+mkdir -p /home/test/test/output/build/poco-1.4.3p1/Zip/obj/Linux/powerpc/debug_shared
+** Compiling src/AutoDetectStream.cpp (release, shared)
+...
+Assembler messages:
+Fatal error: can't create /home/test/test/output/build/poco-1.4.3p1/Zip/obj/Linux/powerpc/release_shared/AutoDetectStream.o: No such file or directory
+
+Add direct dependency on the objects directories to fix this.
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+
+diff -Nur poco-1.4.3p1-all.orig/build/rules/compile poco-1.4.3p1-all/build/rules/compile
+--- poco-1.4.3p1-all.orig/build/rules/compile	2012-01-23 16:12:26.000000000 +0200
++++ poco-1.4.3p1-all/build/rules/compile	2012-08-28 13:10:17.000000000 +0300
+@@ -33,35 +32,35 @@
+ #
+ # Rules for compiling
+ #	
+-$(OBJPATH_DEBUG_STATIC)/%.o: $(SRCDIR)/%.cpp $(DEPPATH)/%.d
++$(OBJPATH_DEBUG_STATIC)/%.o: $(SRCDIR)/%.cpp $(DEPPATH)/%.d objdirs
+ 	@echo "** Compiling" $< "(debug, static)"
+ 	$(CXX) $(INCLUDE) $(CXXFLAGS) $(DEBUGOPT_CXX) $(STATICOPT_CXX) -c $< -o $@
+ 
+-$(OBJPATH_RELEASE_STATIC)/%.o: $(SRCDIR)/%.cpp $(DEPPATH)/%.d
++$(OBJPATH_RELEASE_STATIC)/%.o: $(SRCDIR)/%.cpp $(DEPPATH)/%.d objdirs
+ 	@echo "** Compiling" $< "(release, static)"
+ 	$(CXX) $(INCLUDE) $(CXXFLAGS) $(RELEASEOPT_CXX) $(STATICOPT_CXX) -c $< -o $@
+ 
+-$(OBJPATH_DEBUG_STATIC)/%.o: $(SRCDIR)/%.c $(DEPPATH)/%.d
++$(OBJPATH_DEBUG_STATIC)/%.o: $(SRCDIR)/%.c $(DEPPATH)/%.d objdirs
+ 	@echo "** Compiling" $< "(debug, static)"
+ 	$(CC) $(INCLUDE) $(CFLAGS) $(DEBUGOPT_CC) $(STATICOPT_CC) -c $< -o $@
+ 
+-$(OBJPATH_RELEASE_STATIC)/%.o: $(SRCDIR)/%.c $(DEPPATH)/%.d
++$(OBJPATH_RELEASE_STATIC)/%.o: $(SRCDIR)/%.c $(DEPPATH)/%.d objdirs
+ 	@echo "** Compiling" $< "(release, static)"
+ 	$(CC) $(INCLUDE) $(CFLAGS) $(RELEASEOPT_CC) $(STATICOPT_CC) -c $< -o $@
+ 
+-$(OBJPATH_DEBUG_SHARED)/%.o: $(SRCDIR)/%.cpp $(DEPPATH)/%.d
++$(OBJPATH_DEBUG_SHARED)/%.o: $(SRCDIR)/%.cpp $(DEPPATH)/%.d objdirs
+ 	@echo "** Compiling" $< "(debug, shared)"
+ 	$(CXX) $(INCLUDE) $(CXXFLAGS) $(DEBUGOPT_CXX) $(SHAREDOPT_CXX) -c $< -o $@
+ 
+-$(OBJPATH_RELEASE_SHARED)/%.o: $(SRCDIR)/%.cpp $(DEPPATH)/%.d
++$(OBJPATH_RELEASE_SHARED)/%.o: $(SRCDIR)/%.cpp $(DEPPATH)/%.d objdirs
+ 	@echo "** Compiling" $< "(release, shared)"
+ 	$(CXX) $(INCLUDE) $(CXXFLAGS) $(RELEASEOPT_CXX) $(SHAREDOPT_CXX) -c $< -o $@
+ 
+-$(OBJPATH_DEBUG_SHARED)/%.o: $(SRCDIR)/%.c $(DEPPATH)/%.d
++$(OBJPATH_DEBUG_SHARED)/%.o: $(SRCDIR)/%.c $(DEPPATH)/%.d objdirs
+ 	@echo "** Compiling" $< "(debug, shared)"
+ 	$(CC) $(INCLUDE) $(CFLAGS) $(DEBUGOPT_CC) $(SHAREDOPT_CC) -c $< -o $@
+ 
+-$(OBJPATH_RELEASE_SHARED)/%.o: $(SRCDIR)/%.c $(DEPPATH)/%.d
++$(OBJPATH_RELEASE_SHARED)/%.o: $(SRCDIR)/%.c $(DEPPATH)/%.d objdirs
+ 	@echo "** Compiling" $< "(release, shared)"
+ 	$(CC) $(INCLUDE) $(CFLAGS) $(RELEASEOPT_CC) $(SHAREDOPT_CC) -c $< -o $@
+ 
