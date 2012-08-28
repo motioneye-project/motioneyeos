@@ -147,22 +147,6 @@ config BR2_BACKUP_SITE
 	  will fall back to download package sources from here if the
 	  normal location fails.
 
-config BR2_SOURCEFORGE_MIRROR
-	string "Sourceforge mirror site"
-	default "kent"
-	help
-	  Note: the usage of this variable is deprecated. Packages
-	  should instead use the http://downloads.sourceforge.net/ URL
-	  which automatically chooses a working mirror
-
-	  Sourceforge has a system of mirror sites.  Some sites may be
-	  closer to your location, and sometimes mirror sites go down
-	  and are no longer available.  This option allows you to select
-	  your preferred Sourceforge mirror site.
-
-	  The list of mirrors is available here:
-	  http://sourceforge.net/apps/trac/sourceforge/wiki/Mirrors
-
 config BR2_KERNEL_MIRROR
 	string "Kernel.org mirror"
 	default "http://www.kernel.org/pub/"

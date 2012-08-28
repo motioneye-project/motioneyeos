@@ -244,9 +244,6 @@ endif
 ifndef $(2)_SITE
  ifdef $(3)_SITE
   $(2)_SITE = $($(3)_SITE)
- else
-  $(2)_SITE			?= \
-	http://$$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/$(1)
  endif
 endif
 
