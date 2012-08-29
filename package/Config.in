@@ -387,6 +387,7 @@ source "package/libnfc-llcp/Config.in"
 source "package/libusb/Config.in"
 source "package/libusb-compat/Config.in"
 source "package/libv4l/Config.in"
+source "package/mtdev/Config.in"
 endmenu
 
 menu "Javascript"
