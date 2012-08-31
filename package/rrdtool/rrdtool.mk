@@ -13,6 +13,7 @@ RRDTOOL_CONF_ENV = rd_cv_ieee_works=yes rd_cv_null_realloc=nope \
 			ac_cv_func_mmap_fixed_mapped=yes
 RRDTOOL_CONF_OPT = --disable-perl --disable-python --disable-ruby \
 			--disable-tcl --program-transform-name=''
+RRDTOOL_MAKE = $(MAKE1)
 
 define RRDTOOL_REMOVE_EXAMPLES
 	rm -rf $(TARGET_DIR)/usr/share/rrdtool/examples
