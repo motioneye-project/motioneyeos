@@ -1,3 +1,15 @@
+2012.08, Release August 31th, 2012
+
+	Updated/fixed packages: microperl, cups, luajit, rrdtool,
+	prboom, oprofile.
+
+	Added license information for: sqlite.
+
+	Changed the source URLs of all packages located on Sourceforge
+	in order to use the automatic mirror selection URL
+	downloads.sourceforge.net, and get rid of the
+	BR2_SOURCEFORGE_MIRROR option.
+
 2012.08-rc3, Released August 25th, 2012
 
 	Updated/fixed packages: libglib2, netsnmp, freetype, libfuse,
