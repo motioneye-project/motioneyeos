@@ -106,6 +106,16 @@
 	sound-theme-freedesktop, sysprof, webrtc-audio-processing,
 	xinetd, zxing
 
+	Issues resolved (http://bugs.uclibc.org):
+
+	#1315: Allow use of older external toolchains without sysroot
+               support [won't fix]
+	#5276: Hiawatha needs to manage IPV6 if so [fixed]
+	#5360: buildroot fails when building "host-libglib2 2.30.2
+               Building" [won't fix, upstream problem]
+	#5384: Can't build packages relying on gets on newer glibc
+               [fixed]
+
 2012.05, Released May 30th, 2012:
 
 	Updated/fixed packages: busybox, netsnmp, pptp-linux
