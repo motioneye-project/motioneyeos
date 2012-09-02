@@ -3,7 +3,7 @@
 # linux-firmware
 #
 #############################################################
-LINUX_FIRMWARE_VERSION = 8ccddee5ee23a0e192da38d98bcbbbb41bf385dd
+LINUX_FIRMWARE_VERSION = 7560108a2c94a62056fa82d912282b901aa0904f
 LINUX_FIRMWARE_SITE = git://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git
 LINUX_FIRMWARE_SITE_METHOD = git
 
@@ -41,6 +41,9 @@ LINUX_FIRMWARE_FILES_$(BR2_PACKAGE_LINUX_FIRMWARE_TI_WL127X) += \
 	ti-connectivity/wl127x-fw-4-mr.bin			\
 	ti-connectivity/wl127x-fw-4-plt.bin			\
 	ti-connectivity/wl127x-fw-4-sr.bin			\
+	ti-connectivity/wl127x-fw-5-mr.bin			\
+	ti-connectivity/wl127x-fw-5-plt.bin			\
+	ti-connectivity/wl127x-fw-5-sr.bin			\
 	ti-connectivity/TIInit_7.2.31.bts 			\
 	LICENCE.ti-connectivity
 
@@ -56,6 +59,9 @@ LINUX_FIRMWARE_FILES_$(BR2_PACKAGE_LINUX_FIRMWARE_TI_WL128X) += \
 	ti-connectivity/wl128x-fw-4-mr.bin			\
 	ti-connectivity/wl128x-fw-4-plt.bin			\
 	ti-connectivity/wl128x-fw-4-sr.bin			\
+	ti-connectivity/wl128x-fw-5-mr.bin			\
+	ti-connectivity/wl128x-fw-5-plt.bin			\
+	ti-connectivity/wl128x-fw-5-sr.bin			\
 	ti-connectivity/TIInit_7.2.31.bts 			\
 	LICENCE.ti-connectivity
 
