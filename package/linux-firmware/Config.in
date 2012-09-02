@@ -41,6 +41,20 @@ config BR2_PACKAGE_LINUX_FIRMWARE_RALINK_RT2XX
 
 endmenu
 
+menu "Realtek"
+
+config BR2_PACKAGE_LINUX_FIRMWARE_RTL_8192
+	bool "Realtek 8192"
+	help
+	  Realtek 8192
+
+config BR2_PACKAGE_LINUX_FIRMWARE_RTL_8712
+	bool "Realtek 8712"
+	help
+	  Realtek 8712
+
+endmenu
+
 menu "Texas Instruments"
 
 config BR2_PACKAGE_LINUX_FIRMWARE_TI_WL127X

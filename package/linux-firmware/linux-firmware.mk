@@ -21,6 +21,17 @@ LINUX_FIRMWARE_FILES_$(BR2_PACKAGE_LINUX_FIRMWARE_RALINK_RT2XX) += \
 	rt2860.bin rt2870.bin rt3070.bin rt3071.bin rt3090.bin 	\
 	LICENCE.ralink-firmware.txt
 
+# rtl8192
+LINUX_FIRMWARE_FILES_$(BR2_PACKAGE_LINUX_FIRMWARE_RTL_8192) += \
+	rtlwifi/rtl8192cfw.bin rtlwifi/rtl8192cfwU.bin 		\
+	rtlwifi/rtl8192cfwU_B.bin rtlwifi/rtl8192cufw.bin	\
+	rtlwifi/rtl8192defw.bin rtlwifi/rtl8192sefw.bin		\
+	LICENCE.rtlwifi_firmware.txt
+
+# rtl8712
+LINUX_FIRMWARE_FILES_$(BR2_PACKAGE_LINUX_FIRMWARE_RTL_8712) += \
+	rtlwifi/rtl8712u.bin LICENCE.rtlwifi_firmware.txt
+
 # ar7010
 LINUX_FIRMWARE_FILES_$(BR2_PACKAGE_LINUX_FIRMWARE_ATHEROS_7010) += \
 	LICENCE.atheros_firmware ar7010.fw ar7010_1_1.fw htc_7010.fw
