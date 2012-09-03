@@ -1,0 +1,27 @@
+Fixed Makefile install sections to not reload udev rules. In a 
+cross-compiler environment, it is not wanted to reload the host udev rules.
+
+Signed-off-by: J.C. Woltz <jwoltz@gmail.com>
+--- usb_modeswitch_data-20120120.orig/Makefile	2012-01-20 17:25:32.000000000 -0500
++++ usb_modeswitch_data-20120120/Makefile	2012-02-06 14:20:47.000000000 -0500
+@@ -12,9 +12,9 @@
+ 
+ clean:
+ 
+-install: files-install db-install rules-reload
++install: files-install db-install
+ 
+-install-packed: files-install db-install-packed rules-reload
++install-packed: files-install db-install-packed
+ 
+ files-install:
+ 	install -d $(PREFIX)/share/usb_modeswitch
+@@ -50,7 +50,7 @@
+ 		fi \
+ 	fi
+ 
+-uninstall: files-uninstall rules-reload
++uninstall: files-uninstall
+ 
+ files-uninstall:
+ 	$(RM) $(RULESDIR)/40-usb_modeswitch.rules

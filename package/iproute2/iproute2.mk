@@ -4,9 +4,11 @@
 #
 #############################################################
 
-IPROUTE2_VERSION = 3.4.0
+IPROUTE2_VERSION = 3.5.0
 IPROUTE2_SITE = $(BR2_KERNEL_MIRROR)/linux/utils/net/iproute2
 IPROUTE2_TARGET_SBINS = ctstat genl ifstat ip lnstat nstat routef routel rtacct rtmon rtpr rtstat ss tc
+IPROUTE2_LICENSE = GPLv2
+IPROUTE2_LICENSE_FILES = COPYING
 
 # If both iproute2 and busybox are selected, make certain we win
 # the fight over who gets to have their utils actually installed.

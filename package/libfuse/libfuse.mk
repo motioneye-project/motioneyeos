@@ -4,9 +4,11 @@
 #
 #############################################################
 
-LIBFUSE_VERSION = 2.9.0
+LIBFUSE_VERSION = 2.9.1
 LIBFUSE_SOURCE = fuse-$(LIBFUSE_VERSION).tar.gz
 LIBFUSE_SITE = http://downloads.sourceforge.net/project/fuse/fuse-2.X/$(LIBFUSE_VERSION)
+LIBFUSE_LICENSE = GPLv2 LGPLv2.1
+LIBFUSE_LICENSE_FILES = COPYING COPYING.LIB
 
 LIBFUSE_INSTALL_STAGING = YES
 LIBFUSE_CONF_OPT= --disable-nls \

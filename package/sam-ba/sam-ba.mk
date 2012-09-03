@@ -1,5 +1,5 @@
 SAM_BA_SITE    = http://www.atmel.com/dyn/resources/prod_documents/
-SAM_BA_VERSION = 2.11
+SAM_BA_VERSION = 2.12
 SAM_BA_SOURCE  = sam-ba_$(SAM_BA_VERSION).zip
 
 define HOST_SAM_BA_EXTRACT_CMDS

@@ -1,0 +1,13 @@
+config BR2_PACKAGE_SUPERVISOR
+	bool "supervisor"
+	depends on BR2_PACKAGE_PYTHON
+	select BR2_PACKAGE_PYTHON_SETUPTOOLS
+	select BR2_PACKAGE_PYTHON_MELD3
+	help
+	  A client/server system that allows its users to control a
+	  number of processes on UNIX-like operating systems.
+
+	  http://supervisord.org/
+
+comment "supervisor needs the python interpreter"
+	depends on !BR2_PACKAGE_PYTHON

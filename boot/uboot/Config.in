@@ -79,6 +79,14 @@ endif
 
 choice
 	prompt "U-Boot binary format"
+	default BR2_TARGET_UBOOT_FORMAT_BIN
+
+config BR2_TARGET_UBOOT_FORMAT_AIS
+	bool "u-boot.ais"
+	help
+	  AIS (Application Image Script) is a format defined by TI.
+	  It is required to load code/data on OMAP-L1 processors.
+	  u-boot.ais contains U-Boot with the SPL support.
 
 config BR2_TARGET_UBOOT_FORMAT_BIN
 	bool "u-boot.bin"
