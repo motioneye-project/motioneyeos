@@ -22,6 +22,25 @@ config BR2_PACKAGE_LINUX_FIRMWARE_ATHEROS_9271
 
 endmenu
 
+menu "Marvell Libertas"
+
+config BR2_PACKAGE_LINUX_FIRMWARE_LIBERTAS_SD8686_V8
+       bool "Libertas SD 8686 v8"
+       help
+         Firmware files (version 8) for the Marvell SD8686 module
+
+config BR2_PACKAGE_LINUX_FIRMWARE_LIBERTAS_SD8686_V9
+       bool "Libertas SD 8686 v9"
+       help
+         Firmware files (version 9) for the Marvell SD8686 module
+
+config BR2_PACKAGE_LINUX_FIRMWARE_LIBERTAS_SD8688
+       bool "Libertas SD 8688"
+       help
+         Firmware files for the Marvell SD8688 module
+
+endmenu
+
 menu "Ralink"
 
 config BR2_PACKAGE_LINUX_FIRMWARE_RALINK_RT61
