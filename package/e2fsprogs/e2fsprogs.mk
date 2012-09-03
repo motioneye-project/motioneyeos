@@ -5,7 +5,7 @@
 #############################################################
 
 E2FSPROGS_VERSION = 1.42.5
-E2FSPROGS_SITE = http://downloads.sourceforge.net/project/e2fsprogs/e2fsprogs/$(E2FSPROGS_VERSION)
+E2FSPROGS_SITE = http://downloads.sourceforge.net/project/e2fsprogs/e2fsprogs/v$(E2FSPROGS_VERSION)
 
 E2FSPROGS_CONF_OPT = \
 	--disable-tls \
