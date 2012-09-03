@@ -10,11 +10,7 @@ LUA_INSTALL_STAGING = YES
 LUA_LICENSE = MIT
 LUA_LICENSE_FILES = COPYRIGHT
 
-LUA_CFLAGS = -Wall
-ifeq ($(BR2_PACKAGE_LUA_SHARED_LIBRARY),y)
-	LUA_CFLAGS += -fPIC
-endif
-
+LUA_CFLAGS = -Wall -fPIC
 LUA_MYLIBS += -ldl
 
 ifeq ($(BR2_PACKAGE_LUA_INTERPRETER_READLINE),y)
@@ -46,13 +42,11 @@ define HOST_LUA_BUILD_CMDS
 	PKG_VERSION=$(LUA_VERSION) -C $(@D)/src all
 endef
 
-ifeq ($(BR2_PACKAGE_LUA_SHARED_LIBRARY),y)
 define LUA_INSTALL_STAGING_SHARED_LIB
 	$(INSTALL) -m 0755 -D $(@D)/src/liblua.so.$(LUA_VERSION) \
 		$(STAGING_DIR)/usr/lib/liblua.so.$(LUA_VERSION)
 	ln -sf liblua.so.$(LUA_VERSION) $(STAGING_DIR)/usr/lib/liblua.so
 endef
-endif
 
 define LUA_INSTALL_STAGING_CMDS
 	$(INSTALL) -m 0644 -D $(@D)/etc/lua.pc \
@@ -66,29 +60,19 @@ define LUA_INSTALL_STAGING_CMDS
 	$(INSTALL) -m 0644 -D $(@D)/src/lauxlib.h $(STAGING_DIR)/usr/include/lauxlib.h
 endef
 
-ifeq ($(BR2_PACKAGE_LUA_INTERPRETER),y)
 define LUA_INSTALL_INTERPRETER
 	$(INSTALL) -m 0755 -D $(@D)/src/lua $(TARGET_DIR)/usr/bin/lua
 endef
-endif
 
-ifeq ($(BR2_PACKAGE_LUA_COMPILER),y)
 define LUA_INSTALL_COMPILER
 	$(INSTALL) -m 0755 -D $(@D)/src/luac $(TARGET_DIR)/usr/bin/luac
 endef
-endif
 
-ifeq ($(BR2_PACKAGE_LUA_SHARED_LIBRARY),y)
 define LUA_INSTALL_LIBRARY
 	$(INSTALL) -m 0755 -D $(@D)/src/liblua.so.$(LUA_VERSION) \
 		$(TARGET_DIR)/usr/lib/liblua.so.$(LUA_VERSION)
 	ln -sf liblua.so.$(LUA_VERSION) $(TARGET_DIR)/usr/lib/liblua.so
 	$(INSTALL) -m 0644 -D $(@D)/src/liblua.a $(TARGET_DIR)/usr/lib/liblua.a
-endef
-else
-define LUA_INSTALL_LIBRARY
-	$(INSTALL) -m 0644 -D $(@D)/src/liblua.a $(TARGET_DIR)/usr/lib/liblua.a
-endef
 endif
 
 ifeq ($(BR2_HAVE_DEVFILES),y)

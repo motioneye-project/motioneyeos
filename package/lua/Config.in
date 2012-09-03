@@ -7,29 +7,11 @@ config BR2_PACKAGE_LUA
 
 if BR2_PACKAGE_LUA
 
-config BR2_PACKAGE_LUA_COMPILER
-	bool "lua compiler"
-	select BR2_PACKAGE_LUA_SHARED_LIBRARY
-	help
-	  Install luac binary
-
-config BR2_PACKAGE_LUA_INTERPRETER
-	bool "lua interpreter"
-	select BR2_PACKAGE_LUA_SHARED_LIBRARY
-	help
-	  Install lua binary
-
 config BR2_PACKAGE_LUA_INTERPRETER_READLINE
 	bool "readline support"
-	depends on BR2_PACKAGE_LUA_INTERPRETER
 	select BR2_PACKAGE_READLINE
 	select BR2_PACKAGE_NCURSES
 	help
 	  Enables command-line editing in the lua interpreter.
-
-config BR2_PACKAGE_LUA_SHARED_LIBRARY
-	bool "shared library"
-	help
-	  Install shared liblua.so
 
 endif
