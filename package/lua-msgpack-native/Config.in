@@ -1,0 +1,7 @@
+config BR2_PACKAGE_LUA_MSGPACK_NATIVE
+	bool "lua-msgpack-native"
+	help
+	  This is a native, C language implementation of msgpack
+	  (http://msgpack.org) library/protocol for Lua language
+
+	  https://github.com/kengonakajima/lua-msgpack-native
