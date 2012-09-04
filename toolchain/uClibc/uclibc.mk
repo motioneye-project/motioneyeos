@@ -41,22 +41,9 @@ UCLIBC_TARGET_ARCH:=$(shell $(SHELL) -c "echo $(ARCH) | sed \
 		-e 's/cris.*/cris/' \
 		-e 's/xtensa.*/xtensa/' \
 ")
-# just handle the ones that can be big or little
-UCLIBC_TARGET_ENDIAN:=$(shell $(SHELL) -c "echo $(ARCH) | sed \
-		-e 's/armeb/BIG/' \
-		-e 's/arm/LITTLE/' \
-		-e 's/mipsel/LITTLE/' \
-		-e 's/mips/BIG/' \
-		-e 's/sh.*eb/BIG/' \
-		-e 's/sh.*/LITTLE/' \
-		-e 's/sparc.*/BIG/' \
-")
 
-ifneq ($(UCLIBC_TARGET_ENDIAN),LITTLE)
-ifneq ($(UCLIBC_TARGET_ENDIAN),BIG)
-UCLIBC_TARGET_ENDIAN:=
-endif
-endif
+UCLIBC_TARGET_ENDIAN:=$(call qstrip,$(BR2_ENDIAN))
+
 ifeq ($(UCLIBC_TARGET_ENDIAN),LITTLE)
 UCLIBC_NOT_TARGET_ENDIAN:=BIG
 else
