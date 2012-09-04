@@ -499,11 +499,6 @@ config BR2_sparc_tsc701
 	bool "tsc701"
 endchoice
 
-config BR2_SPARC_TYPE
-	string
-	default V7	if BR2_sparc_v7 || BR2_sparc_cypress || BR2_sparc_sparclite || BR2_sparc_f930 || BR2_sparc_f934 || BR2_sparc_sparclite86x || BR2_sparc_sparclet || BR2_sparc_tsc701 || BR2_sparc_sparchfleon || BR2_sparc_sparcsfleon
-	default V8	if BR2_sparc_v8 || BR2_sparc_supersparc || BR2_sparc_hypersparc || BR2_sparc_sparchfleonv8 || BR2_sparc_sparcsfleonv8
-
 choice
 	prompt "Target Architecture Variant"
 	depends on BR2_xtensa
