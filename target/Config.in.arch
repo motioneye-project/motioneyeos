@@ -202,27 +202,6 @@ config BR2_iwmmxt
 	bool "iwmmxt"
 endchoice
 
-config BR2_ARM_TYPE
-	string
-	default GENERIC_ARM	if BR2_generic_arm
-	default ARM610		if BR2_arm610
-	default ARM710		if BR2_arm710
-	default ARM7TDMI	if BR2_arm7tdmi
-	default ARM720T		if BR2_arm720t
-	default ARM920T		if BR2_arm920t
-	default ARM922T		if BR2_arm922t
-	default ARM926T		if BR2_arm926t
-	default ARM10T		if BR2_arm10t
-	default ARM1136JF_S	if BR2_arm1136jf_s
-	default ARM1176JZ_S	if BR2_arm1176jz_s
-	default ARM1176JZF_S	if BR2_arm1176jzf_s
-	default ARM_SA110	if BR2_sa110
-	default ARM_SA1100	if BR2_sa1100
-	default ARM_XSCALE	if BR2_xscale
-	default ARM_IWMMXT	if BR2_iwmmxt
-	default ARM_CORTEXA8	if BR2_cortex_a8
-	default ARM_CORTEXA9	if BR2_cortex_a9
-
 choice
 	prompt "Target ABI"
 	depends on BR2_arm || BR2_armeb
