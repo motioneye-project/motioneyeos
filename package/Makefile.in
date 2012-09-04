@@ -87,7 +87,7 @@ endif
 
 TARGET_CFLAGS=$(TARGET_ABI) $(TARGET_OPTIMIZATION) $(TARGET_DEBUGGING)
 
-ifeq ($(findstring yy,$(BR2_mips)$(BR2_MIPS_ABI64)),yy)
+ifeq ($(findstring yy,$(BR2_mips)$(BR2_MIPS_NABI64)),yy)
 TARGET_CFLAGS+=-fno-pic -mno-abicalls
 endif
 
