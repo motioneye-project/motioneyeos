@@ -138,13 +138,6 @@ config BR2_x86_64
 	  architecture compatible microprocessor).
 	  http://en.wikipedia.org/wiki/X86_64
 
-config BR2_xtensa
-	bool "Xtensa"
-	depends on BR2_DEPRECATED
-	help
-	  Xtensa is a Tensilica processor IP architecture.
-	  http://en.wikipedia.org/wiki/Xtensa
-	  http://www.tensilica.com/
 endchoice
 
 config BR2_microblaze
@@ -501,38 +494,6 @@ endchoice
 
 choice
 	prompt "Target Architecture Variant"
-	depends on BR2_xtensa
-	default BR2_xtensa_dc232b
-	help
-	  Specific CPU variant to use
-
-config BR2_xtensa_custom
-	bool "Custom Xtensa processor configuration"
-config BR2_xtensa_dc232a
-	bool "dc232a - Diamond 232L Standard Core Rev.A (LE)"
-config BR2_xtensa_dc232b
-	bool "dc232b - Diamond 232L Standard Core Rev.B (LE)"
-#config BR2_xtensa_s5000
-#	bool "s5000 - Stretch S5000"
-endchoice
-
-config BR2_xtensa_custom_name
-	string "Custom Xtensa processor configuration name"
-	depends on BR2_xtensa_custom
-	default ""
-	help
-	  Name given to a custom Xtensa processor configuration.
-	  This is used to select the correct overlay.
-
-config BR2_xtensa_core_name
-	string
-	default BR2_xtensa_custom_name	if BR2_xtensa_custom
-	default "dc232a"		if BR2_xtensa_dc232a
-	default "dc232b"		if BR2_xtensa_dc232b
-#	default "s5000"			if BR2_xtensa_s5000
-
-choice
-	prompt "Target Architecture Variant"
 	depends on BR2_powerpc
 	default BR2_generic_powerpc
 	help
@@ -665,7 +626,6 @@ config BR2_ARCH
 	default "sh4aeb"	if BR2_sh4aeb
 	default "sh64"		if BR2_sh64
 	default "sparc"		if BR2_sparc
-	default "xtensa"	if BR2_xtensa
 
 
 config BR2_ENDIAN

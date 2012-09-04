@@ -38,7 +38,6 @@ UCLIBC_TARGET_ARCH:=$(shell $(SHELL) -c "echo $(ARCH) | sed \
 		-e 's/sh[234].*/sh/' \
 		-e 's/mips.*/mips/' \
 		-e 's/cris.*/cris/' \
-		-e 's/xtensa.*/xtensa/' \
 ")
 
 UCLIBC_TARGET_ENDIAN:=$(call qstrip,$(BR2_ENDIAN))
