@@ -1,17 +1,19 @@
---- rp-pppoe-3.10/src/configure.theorig  2008-02-05 13:57:15.000000000 -0800
-+++ rp-pppoe-3.10/src/configure  2008-02-05 13:24:36.000000000 -0800
-@@ -6151,7 +6151,7 @@ modprobe ppp_synctty > /dev/null 2>&1
+diff -Nura rp-pppoe-3.11.orig/src/configure rp-pppoe-3.11/src/configure
+--- rp-pppoe-3.11.orig/src/configure	2012-08-21 10:01:10.536440032 -0300
++++ rp-pppoe-3.11/src/configure	2012-08-21 10:01:45.353442397 -0300
+@@ -4517,7 +4517,7 @@
  modprobe pppoe > /dev/null 2>&1
  fi
- if test "$cross_compiling" = yes; then
+ if test "$cross_compiling" = yes; then :
 -  ac_cv_linux_kernel_pppoe=no; $ECHO "cross-compiling, default: "
 +  ac_cv_linux_kernel_pppoe=yes; $ECHO "cross-compiling, default: "
  else
-   cat >conftest.$ac_ext <<_ACEOF
- /* confdefs.h.  */
---- rp-pppoe-3.10/src/pppoe-server.c.theorig     2006-04-02 07:29:42.000000000 -0700
-+++ rp-pppoe-3.10/src/pppoe-server.c     2008-02-05 13:52:15.000000000 -0800
-@@ -20,6 +20,9 @@ static char const RCSID[] =
+   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+ /* end confdefs.h.  */
+diff -Nura rp-pppoe-3.11.orig/src/pppoe-server.c rp-pppoe-3.11/src/pppoe-server.c
+--- rp-pppoe-3.11.orig/src/pppoe-server.c	2012-08-21 10:01:10.535440032 -0300
++++ rp-pppoe-3.11/src/pppoe-server.c	2012-08-21 10:02:02.597443569 -0300
+@@ -20,6 +20,9 @@
  
  #include "config.h"
  

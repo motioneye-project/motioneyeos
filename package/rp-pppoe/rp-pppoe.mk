@@ -4,8 +4,10 @@
 #
 #############################################################
 
-RP_PPPOE_VERSION = 3.10
+RP_PPPOE_VERSION = 3.11
 RP_PPPOE_SITE = http://www.roaringpenguin.com/files/download
+RP_PPPOE_LICENSE = GPLv2
+RP_PPPOE_LICENSE_FILES = doc/LICENSE
 RP_PPPOE_DEPENDENCIES = pppd
 RP_PPPOE_SUBDIR = src
 RP_PPPOE_TARGET_FILES = pppoe pppoe-server pppoe-relay pppoe-sniff
