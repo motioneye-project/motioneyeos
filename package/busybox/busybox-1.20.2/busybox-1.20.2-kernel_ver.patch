@@ -1,0 +1,25 @@
+--- busybox-1.20.2/libbb/kernel_version.c
++++ busybox-1.20.2-kernel_ver/libbb/kernel_version.c
+@@ -20,18 +20,15 @@
+ int FAST_FUNC get_linux_version_code(void)
+ {
+ 	struct utsname name;
+-	char *s;
++	char *s, *t;
+ 	int i, r;
+ 
+-	if (uname(&name) == -1) {
+-		bb_perror_msg("can't get system information");
+-		return 0;
+-	}
+-
++	uname(&name); /* never fails */
+ 	s = name.release;
+ 	r = 0;
+ 	for (i = 0; i < 3; i++) {
+-		r = r * 256 + atoi(strtok(s, "."));
++		t = strtok(s, ".");
++		r = r * 256 + (t ? atoi(t) : 0);
+ 		s = NULL;
+ 	}
+ 	return r;
