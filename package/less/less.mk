@@ -4,8 +4,10 @@
 #
 #############################################################
 
-LESS_VERSION = 444
+LESS_VERSION = 451
 LESS_SITE = http://www.greenwoodsoftware.com/less
+LESS_LICENSE = GPLv3+
+LESS_LICENSE_FILES = COPYING
 # Build after busybox, full-blown is better
 LESS_DEPENDENCIES = ncurses $(if $(BR2_PACKAGE_BUSYBOX),busybox)
 
