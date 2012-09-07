@@ -4,8 +4,10 @@
 #
 #############################################################
 
-AUTOMAKE_VERSION = 1.11.5
+AUTOMAKE_VERSION = 1.11.6
 AUTOMAKE_SITE = $(BR2_GNU_MIRROR)/automake
+AUTOMAKE_LICENSE = GPLv2+
+AUTOMAKE_LICENSE_FILES = COPYING
 
 AUTOMAKE_DEPENDENCIES = host-autoconf autoconf microperl
 
