@@ -22,10 +22,19 @@ LOCALFILES:=$(call qstrip,$(BR2_LOCALFILES))
 # external-deps target.
 DL_MODE=DOWNLOAD
 
-DL_DIR=$(call qstrip,$(BR2_DL_DIR))
+# Override BR2_DL_DIR if shell variable defined
+ifneq ($(BUILDROOT_DL_DIR),)
+DL_DIR:=$(BUILDROOT_DL_DIR)
+else
+DL_DIR:=$(call qstrip,$(BR2_DL_DIR))
+endif
+
 ifeq ($(DL_DIR),)
 DL_DIR:=$(TOPDIR)/dl
 endif
+
+# ensure it exists and a absolute path
+DL_DIR:=$(shell mkdir -p $(DL_DIR) && cd $(DL_DIR) >/dev/null && pwd)
 
 #
 # URI scheme helper functions
