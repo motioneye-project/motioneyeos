@@ -12,6 +12,7 @@ LINUX_PAM_CONF_OPT = \
 	--disable-prelude \
 	--disable-isadir \
 	--disable-nis \
+	--disable-db \
 	--disable-regenerate-docu \
 	--enable-securedir=/lib/security \
 	--libdir=/lib
