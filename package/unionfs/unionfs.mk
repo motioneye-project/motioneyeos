@@ -4,10 +4,12 @@
 #
 #############################################################
 
-UNIONFS_VERSION = 0.25
+UNIONFS_VERSION = 0.26
 UNIONFS_SITE = http://podgorny.cz/unionfs-fuse/releases
-UNIONFS_SOURCE = unionfs-fuse-$(UNIONFS_VERSION).tar.bz2
+UNIONFS_SOURCE = unionfs-fuse-$(UNIONFS_VERSION).tar.xz
 UNIONFS_DEPENDENCIES = libfuse
+UNIONFS_LICENSE = BSD-3c
+UNIONFS_LICENSE_FILES = LICENSE
 
 define UNIONFS_BUILD_CMDS
 	$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(@D)
