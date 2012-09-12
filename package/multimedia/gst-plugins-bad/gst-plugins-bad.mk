@@ -521,6 +521,13 @@ else
 GST_PLUGINS_BAD_CONF_OPT += --disable-libmms
 endif
 
+ifeq ($(BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_MUSEPACK),y)
+GST_PLUGINS_BAD_CONF_OPT += --enable-musepack
+GST_PLUGINS_BAD_DEPENDENCIES += musepack
+else
+GST_PLUGINS_BAD_CONF_OPT += --disable-musepack
+endif
+
 ifeq ($(BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_NEON),y)
 GST_PLUGINS_BAD_CONF_OPT += --enable-neon
 GST_PLUGINS_BAD_DEPENDENCIES += neon
