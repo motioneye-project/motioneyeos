@@ -27,18 +27,14 @@ Therefore, Buildroot defines two configuration options:
 
 Therefore, packages that unconditionally need gettext should:
 
-* Use +select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT+ and possibly
-  +select BR2_PACKAGE_LIBINTL if BR2_NEEDS_GETTEXT+, if libintl is
-  also needed
+* Use +select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT+
 
 * Use +$(if $(BR2_NEEDS_GETTEXT),gettext)+ in the package
   +DEPENDENCIES+ variable
 
 Packages that need gettext only when locale support is enabled should:
 
-* Use +select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE+ and
-  possibly +select BR2_PACKAGE_LIBINTL if
-  BR2_NEEDS_GETTEXT_IF_LOCALE+, if libintl is also needed
+* Use +select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE+
 
 * Use +$(if $(BR2_NEEDS_GETTEXT_IF_LOCALE),gettext)+ in the package
   +DEPENDENCIES+ variable
