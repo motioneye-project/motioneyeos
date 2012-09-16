@@ -112,7 +112,7 @@ $(STAGING_DIR)/$(GETTEXT_TARGET_BINARY): $(GETTEXT_DIR)/$(GETTEXT_BINARY)
 gettext-legal-info:
 	@$(call legal-warning-pkg,gettext,legal-info not yet implemented)
 
-gettext: host-pkg-config $(if $(BR2_PACKAGE_LIBICONV),libiconv) $(STAGING_DIR)/$(GETTEXT_TARGET_BINARY)
+gettext: host-pkg-config $(if $(BR2_PACKAGE_LIBICONV),libiconv) $(STAGING_DIR)/$(GETTEXT_TARGET_BINARY) $(TARGET_DIR)/$(LIBINTL_TARGET_BINARY)
 
 gettext-unpacked: $(GETTEXT_DIR)/.unpacked
 
@@ -139,16 +139,11 @@ $(TARGET_DIR)/usr/lib/libintl.so: $(STAGING_DIR)/$(GETTEXT_TARGET_BINARY)
 		libgettext*.so*.la libintl*.so*.la)
 	touch -c $@
 
-libintl: $(TARGET_DIR)/$(LIBINTL_TARGET_BINARY)
-
 #############################################################
 #
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(BR2_PACKAGE_LIBINTL),y)
-TARGETS+=libintl
-endif
 ifeq ($(BR2_PACKAGE_GETTEXT),y)
 TARGETS+=gettext
 endif

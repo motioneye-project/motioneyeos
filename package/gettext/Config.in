@@ -7,17 +7,15 @@ config BR2_PACKAGE_GETTEXT
 	  framework to help other GNU packages produce multi-lingual
 	  messages.
 
+	  Only the gettext libraries will be installed in the
+	  target. The full gettext suite, including tools, will be
+	  installed in the staging directory.
+
 	  http://www.gnu.org/software/gettext/
 
 comment "gettext requires a toolchain with WCHAR support"
 	depends on BR2_NEEDS_GETTEXT && !BR2_USE_WCHAR
 
 config BR2_PACKAGE_LIBINTL
-	bool "libintl"
-	depends on BR2_NEEDS_GETTEXT
-	depends on BR2_USE_WCHAR
-	help
-	  Selecting this package installs all of gettext in the staging
-	  directory and the shared library for it's use in the target.
-
-	  http://www.gnu.org/software/gettext/
+	bool
+	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT
