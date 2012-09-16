@@ -14,7 +14,7 @@ MIDORI_DEPENDENCIES = \
 	libgtk2 \
 	libsexy \
 	webkit \
-	$(if $(BR2_NEEDS_GETTEXT_IF_LOCALE),gettext libintl) \
+	$(if $(BR2_NEEDS_GETTEXT_IF_LOCALE),gettext) \
 	$(if $(BR2_PACKAGE_LIBICONV),libiconv)
 
 ifneq ($(BR2_PACKAGE_XORG7),y)

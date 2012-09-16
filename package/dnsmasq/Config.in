@@ -25,7 +25,6 @@ config BR2_PACKAGE_DNSMASQ_IDN
 	depends on BR2_USE_WCHAR
 	select BR2_PACKAGE_LIBIDN
 	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE
-	select BR2_PACKAGE_LIBINTL if BR2_NEEDS_GETTEXT_IF_LOCALE
 	help
 	  Enable IDN support in dnsmasq.
 	  This option is a big space taker since it pulls in many libraries.

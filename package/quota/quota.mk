@@ -11,7 +11,7 @@ QUOTA_SITE = http://downloads.sourceforge.net/project/linuxquota/quota-tools/$(Q
 QUOTA_MAKE_OPT = $(TARGET_CONFIGURE_OPTS) CFLAGS="$(TARGET_CFLAGS) -D_GNU_SOURCE"
 
 ifeq ($(BR2_NEEDS_GETTEXT_IF_LOCALE),y)
-QUOTA_DEPENDENCIES = gettext libintl
+QUOTA_DEPENDENCIES = gettext
 QUOTA_MAKE_OPT += LDFLAGS="$(TARGET_LDFLAGS) -lintl"
 endif
 

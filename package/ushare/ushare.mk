@@ -10,7 +10,7 @@ USHARE_SITE = http://ushare.geexbox.org/releases
 USHARE_DEPENDENCIES = host-pkg-config libupnp
 
 ifeq ($(BR2_NEEDS_GETTEXT_IF_LOCALE),y)
-USHARE_DEPENDENCIES += gettext libintl
+USHARE_DEPENDENCIES += gettext
 USHARE_LDFLAGS += -lintl
 endif
 

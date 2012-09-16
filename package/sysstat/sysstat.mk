@@ -14,7 +14,7 @@ SYSSTAT_CONF_OPT += --disable-documentation
 endif
 
 ifeq ($(BR2_NEEDS_GETTEXT_IF_LOCALE),y)
-SYSSTAT_DEPENDENCIES += gettext libintl
+SYSSTAT_DEPENDENCIES += gettext
 SYSSTAT_MAKE_OPT += CFLAGS+=-lintl
 endif
 

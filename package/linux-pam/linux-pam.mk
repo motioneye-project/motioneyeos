@@ -15,12 +15,12 @@ LINUX_PAM_CONF_OPT = \
 	--disable-regenerate-docu \
 	--enable-securedir=/lib/security \
 	--libdir=/lib
-LINUX_PAM_DEPENDENCIES = $(if $(BR2_NEEDS_GETTEXT_IF_LOCALE),gettext libintl) flex
+LINUX_PAM_DEPENDENCIES = $(if $(BR2_NEEDS_GETTEXT_IF_LOCALE),gettext) flex
 LINUX_PAM_AUTORECONF = YES
 LINUX_PAM_LICENSE = BSD-3c
 LINUX_PAM_LICENSE_FILES = Copyright
 
-ifeq ($(BR2_PACKAGE_LIBINTL),y)
+ifeq ($(BR2_NEEDS_GETTEXT_IF_LOCALE),y)
 	LINUX_PAM_MAKE_OPT += LIBS=-lintl
 endif
 

@@ -15,7 +15,3 @@ config BR2_PACKAGE_GETTEXT
 
 comment "gettext requires a toolchain with WCHAR support"
 	depends on BR2_NEEDS_GETTEXT && !BR2_USE_WCHAR
-
-config BR2_PACKAGE_LIBINTL
-	bool
-	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT

@@ -10,7 +10,7 @@ AXEL_SITE = https://alioth.debian.org/frs/download.php/3015
 AXEL_LDFLAGS = -lpthread
 
 ifeq ($(BR2_NEEDS_GETTEXT_IF_LOCALE),y)
-AXEL_DEPENDENCIES += gettext libintl
+AXEL_DEPENDENCIES += gettext
 AXEL_LDFLAGS += -lintl
 endif
 
