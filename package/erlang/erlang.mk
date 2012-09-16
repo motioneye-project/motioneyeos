@@ -17,6 +17,7 @@ ERLANG_LICENSE_FILES = EPLICENCE
 ERLANG_CONF_ENV = ac_cv_func_isnan=yes ac_cv_func_isinf=yes
 
 ERLANG_CONF_OPT = --without-javac
+HOST_ERLANG_CONF_OPT = --without-javac
 
 ifeq ($(BR2_PACKAGE_NCURSES),y)
 ERLANG_CONF_OPT += --with-termcap
