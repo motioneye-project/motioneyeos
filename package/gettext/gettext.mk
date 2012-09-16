@@ -11,11 +11,7 @@ GETTEXT_CAT:=$(ZCAT)
 GETTEXT_BINARY:=gettext-runtime/src/gettext
 GETTEXT_TARGET_BINARY:=usr/bin/gettext
 
-ifeq ($(BR2_PACKAGE_GETTEXT_STATIC),y)
-LIBINTL_TARGET_BINARY:=usr/lib/libintl.a
-else
 LIBINTL_TARGET_BINARY:=usr/lib/libintl.so
-endif
 
 $(DL_DIR)/$(GETTEXT_SOURCE):
 	 $(call DOWNLOAD,$(GETTEXT_SITE)/$(GETTEXT_SOURCE))
@@ -145,11 +141,6 @@ $(TARGET_DIR)/usr/lib/libintl.so: $(STAGING_DIR)/$(GETTEXT_TARGET_BINARY)
 	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libintl*.so*
 	rm -f $(addprefix $(TARGET_DIR)/usr/lib/, \
 		libgettext*.so*.la libintl*.so*.la)
-	touch -c $@
-
-$(TARGET_DIR)/usr/lib/libintl.a: $(STAGING_DIR)/$(GETTEXT_TARGET_BINARY)
-	cp -dpf $(STAGING_DIR)/usr/lib/libgettext*.a $(TARGET_DIR)/usr/lib/
-	cp -dpf $(STAGING_DIR)/usr/lib/libintl*.a $(TARGET_DIR)/usr/lib/
 	touch -c $@
 
 libintl: $(TARGET_DIR)/$(LIBINTL_TARGET_BINARY)
