@@ -10,9 +10,10 @@ config BR2_PACKAGE_ALSA_LIB
 
 	  http://www.alsa-project.org/
 
+if BR2_PACKAGE_ALSA_LIB
+
 config BR2_PACKAGE_ALSA_LIB_PYTHON
 	bool "Python support for alsa-lib"
-	depends on BR2_PACKAGE_ALSA_LIB
 	depends on BR2_PACKAGE_PYTHON
 	help
 	  Add python support for alsa-lib.
@@ -20,7 +21,6 @@ config BR2_PACKAGE_ALSA_LIB_PYTHON
 	  in the target directory
 	  http://www.alsa-project.org/
 
-if BR2_PACKAGE_ALSA_LIB
 menu "ALSA lib selection"
 
 config BR2_PACKAGE_ALSA_LIB_DEVDIR
