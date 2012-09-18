@@ -1,15 +1,16 @@
 config BR2_PACKAGE_ALSAMIXERGUI
 	depends on BR2_PACKAGE_XORG7
-	depends on BR2_PACKAGE_ALSA_LIB
 	depends on BR2_INSTALL_LIBSTDCPP
 	select BR2_PACKAGE_FLTK
+	select BR2_PACKAGE_ALSA_LIB
 	select BR2_PACKAGE_ALSA_LIB_PCM
 	select BR2_PACKAGE_ALSA_LIB_MIXER
+	depends on BR2_TOOLCHAIN_HAS_THREADS # alsa-lib
 	bool "alsamixergui"
 	help
 	  A nice GUI mixer for Alsa using fltk
 
 	  http://www.iua.upf.es/~mdeboer/projects/alsamixergui/
 
-comment "alsamixergui requires a toolchain with C++ support enabled"
-	depends on !BR2_INSTALL_LIBSTDCPP && BR2_PACKAGE_XORG7 && BR2_PACKAGE_ALSA_LIB
+comment "alsamixergui requires a toolchain with C++ and threads support enabled"
+	depends on (!BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS) && BR2_PACKAGE_XORG7
