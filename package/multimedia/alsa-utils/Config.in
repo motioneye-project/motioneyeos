@@ -1,6 +1,7 @@
 config BR2_PACKAGE_ALSA_UTILS
 	bool "alsa-utils"
 	depends on BR2_LARGEFILE
+	depends on BR2_TOOLCHAIN_HAS_THREADS # alsa-lib
 	select BR2_PACKAGE_ALSA_LIB
 	help
 	  This package contains the command line utilities for the ALSA
@@ -8,8 +9,8 @@ config BR2_PACKAGE_ALSA_UTILS
 
 	  http://www.alsa-project.org/
 
-comment "alsa-utils requires a toolchain with LARGEFILE support"
-	depends on !BR2_LARGEFILE
+comment "alsa-utils requires a toolchain with LARGEFILE and threads support"
+	depends on !BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_THREADS
 
 if BR2_PACKAGE_ALSA_UTILS
 menu "ALSA utils selection"

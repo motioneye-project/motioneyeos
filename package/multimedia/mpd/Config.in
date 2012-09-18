@@ -21,6 +21,7 @@ config BR2_PACKAGE_MPD_ALSA
 	select BR2_PACKAGE_ALSA_LIB
 	select BR2_PACKAGE_ALSA_LIB_PCM
 	select BR2_PACKAGE_ALSA_LIB_MIXER
+	depends on BR2_TOOLCHAIN_HAS_THREADS # alsa-lib
 	help
 	  Enable alsa output support.
 
