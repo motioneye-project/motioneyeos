@@ -36,3 +36,24 @@ then probably you are running a Fedora (or similar) distribution, and
 you should install the +glibc-static+ package. This is because the
 +module-init-tools+ build process wants to link statically against the
 C library.
+
+How to add package from github
+------------------------------
+
+If the package has no release version, or its version cannot be
+identified using tag, then the sha1 of the particular commit should be
+used to identify the version (the first 7 characters of the sha1 are
+enough):
+
+------------------------
+FOO_VERSION = 1234567
+FOO_SITE = http://github.com/<user>/<package>/tarball/<branch>
+------------------------
+
+If the package version matches a tag, then this tag should be used to
+identify the version:
+
+------------------------
+FOO_VERSION = v1.0
+FOO_SITE = http://github.com/<user>/<package>/tarball/$(FOO_VERSION)
+------------------------
