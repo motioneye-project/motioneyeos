@@ -1,5 +1,5 @@
-JSMIN_VERSION = a9b47554d5684a55301a2eb7ca8480b7ee7630d4
-JSMIN_SITE = git://github.com/douglascrockford/JSMin.git
+JSMIN_VERSION = a9b4755
+JSMIN_SITE = http://github.com/douglascrockford/JSMin/tarball/master
 
 define JSMIN_BUILD_CMDS
 	$(TARGET_CONFIGURE_OPTS) $(MAKE) -C $(@D) jsmin

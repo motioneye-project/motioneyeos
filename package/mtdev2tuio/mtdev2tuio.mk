@@ -3,8 +3,8 @@
 # mtdev2tuio
 #
 #############################################################
-MTDEV2TUIO_VERSION = e1e7378d86
-MTDEV2TUIO_SITE = git://github.com/olivopaolo/mtdev2tuio.git
+MTDEV2TUIO_VERSION = e1e7378
+MTDEV2TUIO_SITE = http://github.com/olivopaolo/mtdev2tuio/tarball/master
 MTDEV2TUIO_DEPENDENCIES = mtdev liblo
 MTDEV2TUIO_LICENSE = GPLv3+
 MTDEV2TUIO_LICENSE_FILES = COPYING

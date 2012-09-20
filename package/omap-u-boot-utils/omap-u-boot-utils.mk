@@ -4,9 +4,8 @@
 #
 #############################################################
 
-OMAP_U_BOOT_UTILS_VERSION = 8aff852322
-OMAP_U_BOOT_UTILS_SITE = http://github.com/nmenon/omap-u-boot-utils.git
-OMAP_U_BOOT_UTILS_SITE_METHOD = git
+OMAP_U_BOOT_UTILS_VERSION = 8aff852
+OMAP_U_BOOT_UTILS_SITE = http://github.com/nmenon/omap-u-boot-utils/tarball/master
 
 define HOST_OMAP_U_BOOT_UTILS_BUILD_CMDS
 	$(MAKE) -C $(@D)
