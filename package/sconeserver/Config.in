@@ -1,0 +1,88 @@
+menuconfig BR2_PACKAGE_SCONESERVER
+	bool "sconeserver"
+	depends on BR2_INSTALL_LIBSTDCPP
+	select BR2_PACKAGE_PCRE
+	help
+	  Sconeserver is a modular, object-orientated and extremely versatile
+	  network server framework for GNU/Linux and UNIX-like platforms.
+
+	  http://www.sconemad.com/sconeserver/
+
+if BR2_PACKAGE_SCONESERVER
+
+comment "Sconeserver modules"
+
+config BR2_PACKAGE_SCONESERVER_EXAMPLES
+	bool "examples"
+	help
+	  Example modules for Sconeserver
+
+config BR2_PACKAGE_SCONESERVER_HTTP_SCONESITE
+	bool "http::sconesite"
+	select BR2_PACKAGE_LIBXML2
+	help
+	  http::sconesite module for Sconeserver
+
+config BR2_PACKAGE_SCONESERVER_HTTP_SCONESITE_IMAGE
+	bool "http::sconesite::image"
+	depends on BR2_PACKAGE_SCONESERVER_HTTP_SCONESITE
+	select BR2_PACKAGE_IMAGEMAGICK
+	help
+	  http::sconesite::image module for Sconeserver
+
+config BR2_PACKAGE_SCONESERVER_MYSQL
+	bool "mysql"
+	select BR2_PACKAGE_MYSQL_CLIENT
+	help
+	  MySQL module for Sconeserver
+
+config BR2_PACKAGE_SCONESERVER_BLUETOOTH
+	bool "bluetooth"
+	select BR2_PACKAGE_BLUEZ_UTILS
+	help
+	  Bluetooth module for Sconeserver
+
+config BR2_PACKAGE_SCONESERVER_RSS
+	bool "rss"
+	select BR2_PACKAGE_LIBXML2
+	help
+	  RSS module for Sconeserver
+
+config BR2_PACKAGE_SCONESERVER_LOCATION
+	bool "location"
+	select BR2_PACKAGE_GPSD
+	help
+	  Location module for Sconeserver
+
+config BR2_PACKAGE_SCONESERVER_LETTUCE
+	bool "lettuce"
+	help
+	  Sconeserver module for Lettuce embedded automation platform
+
+	  http://www.sconemad.com/lettuce/
+
+config BR2_PACKAGE_SCONESERVER_MATHS
+	bool "maths"
+	select BR2_PACKAGE_MPFR
+	help
+	  Mathematics module for Sconeserver
+
+config BR2_PACKAGE_SCONESERVER_TESTBUILDER
+	bool "testbuilder"
+	help
+	  Testbuilder module for Sconeserver
+
+config BR2_PACKAGE_SCONESERVER_UI
+	bool "ui"
+	depends on BR2_PACKAGE_XORG7
+	select BR2_PACKAGE_XLIB_LIBX11
+	help
+	  UI module for Sconeserver
+
+comment "ui module requires X.org"
+	depends on !BR2_PACKAGE_XORG7
+
+endif # BR2_PACKAGE_SCONESERVER
+
+comment "sconeserver requires a toolchain with C++ support enabled"
+	depends on !BR2_INSTALL_LIBSTDCPP
