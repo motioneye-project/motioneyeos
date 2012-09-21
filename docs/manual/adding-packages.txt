@@ -15,8 +15,6 @@ include::adding-packages-autotools.txt[]
 
 include::adding-packages-cmake.txt[]
 
-include::adding-packages-handwritten.txt[]
-
 include::adding-packages-gettext.txt[]
 
 include::adding-packages-conclusion.txt[]
