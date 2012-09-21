@@ -44,6 +44,7 @@ config BR2_PACKAGE_CONNMAN_DEBUG
 
 config BR2_PACKAGE_CONNMAN_CLIENT
 	bool "enable command line client"
+	select BR2_PACKAGE_READLINE
 
 endif # BR2_PACKAGE_CONNMAN
 
