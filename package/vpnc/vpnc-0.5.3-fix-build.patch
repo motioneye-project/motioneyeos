@@ -1,0 +1,71 @@
+Misc. Makefile cleanup and fix the VERSION definition.
+
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+
+---
+diff -purN vpnc-0.5.3.orig/Makefile vpnc-0.5.3/Makefile
+--- vpnc-0.5.3.orig/Makefile	2012-08-06 00:03:22.677914146 +0200
++++ vpnc-0.5.3/Makefile	2012-08-06 00:06:58.506744901 +0200
+@@ -19,21 +19,19 @@
+ #
+ # $Id: Makefile 312 2008-06-15 18:09:42Z Joerg Mayer $
+ 
+-DESTDIR=
+-PREFIX=/usr/local
+-ETCDIR=/etc/vpnc
+-BINDIR=$(PREFIX)/bin
+-SBINDIR=$(PREFIX)/sbin
+-MANDIR=$(PREFIX)/share/man
+-DOCDIR=$(PREFIX)/share/doc/vpnc
+-
+-SRCS = sysdep.c vpnc-debug.c isakmp-pkt.c tunip.c config.c dh.c math_group.c supp.c decrypt-utils.c
+-BINS = vpnc cisco-decrypt
+-OBJS = $(addsuffix .o,$(basename $(SRCS)))
++DESTDIR =
++PREFIX ?= /usr/local
++ETCDIR  = /etc/vpnc
++BINDIR  = $(PREFIX)/bin
++SBINDIR = $(PREFIX)/sbin
++MANDIR  = $(PREFIX)/share/man
++DOCDIR  = $(PREFIX)/share/doc/vpnc
++
++SRCS    = sysdep.c vpnc-debug.c isakmp-pkt.c tunip.c config.c dh.c math_group.c supp.c decrypt-utils.c
++BINS    = vpnc cisco-decrypt
++OBJS    = $(addsuffix .o,$(basename $(SRCS)))
+ BINOBJS = $(addsuffix .o,$(BINS))
+ BINSRCS = $(addsuffix .c,$(BINS))
+-VERSION := $(shell sh mk-version)
+-RELEASE_VERSION := $(shell cat VERSION)
+ 
+ # The license of vpnc (Gpl >= 2) is quite likely incompatible with the
+ # openssl license. Openssl is currently used to provide certificate
+@@ -50,13 +48,13 @@ RELEASE_VERSION := $(shell cat VERSION)
+ #OPENSSL_GPL_VIOLATION = -DOPENSSL_GPL_VIOLATION
+ #OPENSSLLIBS = -lcrypto
+ 
+-CC=gcc
+-CFLAGS ?= -O3 -g
+-CFLAGS += -W -Wall -Wmissing-declarations -Wwrite-strings
+-CFLAGS +=  $(shell libgcrypt-config --cflags)
+-CPPFLAGS += -DVERSION=\"$(VERSION)\" $(OPENSSL_GPL_VIOLATION)
+-LDFLAGS ?= -g
+-LDFLAGS += $(shell libgcrypt-config --libs) $(OPENSSLLIBS)
++CC       ?= gcc
++CFLAGS   ?= -O3 -g
++CFLAGS   += -W -Wall -Wmissing-declarations -Wwrite-strings
++CFLAGS   += $(shell libgcrypt-config --cflags)
++CPPFLAGS += $(OPENSSL_GPL_VIOLATION)
++LDFLAGS  ?= -g
++LDFLAGS  += $(shell libgcrypt-config --libs) $(OPENSSLLIBS)
+ 
+ ifeq ($(shell uname -s), SunOS)
+ LDFLAGS += -lnsl -lresolv -lsocket
+@@ -84,7 +82,7 @@ cisco-decrypt : cisco-decrypt.o decrypt-
+ 	$(CC) -o $@ $^ $(LDFLAGS)
+ 
+ .depend: $(SRCS) $(BINSRCS)
+-	$(CC) -MM $(SRCS) $(BINSRCS) $(CFLAGS) $(CPPFLAGS) > $@
++	$(CC) -MM $(SRCS) $(BINSRCS) $(CPPFLAGS) $(CFLAGS) > $@
+ 
+ vpnc-debug.c vpnc-debug.h : isakmp.h enum2debug.pl
+ 	LC_ALL=C perl -w ./enum2debug.pl isakmp.h >vpnc-debug.c 2>vpnc-debug.h

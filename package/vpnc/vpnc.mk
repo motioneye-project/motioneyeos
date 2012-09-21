@@ -4,62 +4,25 @@
 #
 #############################################################
 
-VPNC_VERSION=0.5.3
-VPNC_SOURCE=vpnc-$(VPNC_VERSION).tar.gz
-VPNC_SITE=http://www.unix-ag.uni-kl.de/~massar/vpnc
-VPNC_DIR=$(BUILD_DIR)/vpnc-$(VPNC_VERSION)
-VPNC_CAT:=$(ZCAT)
-VPNC_BINARY:=$(VPNC_DIR)/vpnc
-VPNC_DEST_DIR:=$(TARGET_DIR)/usr/local/sbin
-VPNC_TARGET_BINARY:=$(VPNC_DEST_DIR)/vpnc
-VPNC_TARGET_SCRIPT:=$(TARGET_DIR)/etc/vpnc/default.conf
+VPNC_VERSION       = 0.5.3
+VPNC_SITE          = http://www.unix-ag.uni-kl.de/~massar/vpnc
+VPNC_LICENSE       = GPLv2+
+VPNC_LICENSE_FILES = COPYING
 
-$(DL_DIR)/$(VPNC_SOURCE):
-	$(call DOWNLOAD,$(VPNC_SITE)/$(VPNC_SOURCE))
+VPNC_DEPENDENCIES  = libgcrypt libgpg-error
 
-$(VPNC_DIR)/.unpacked: $(DL_DIR)/$(VPNC_SOURCE)
-	$(VPNC_CAT) $(DL_DIR)/$(VPNC_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	support/scripts/apply-patches.sh $(VPNC_DIR) package/vpnc vpnc-$(VPNC_VERSION)\*.patch
-	touch $@
+VPNC_LDFLAGS  = $(TARGET_LDFLAGS) -lgcrypt -lgpg-error
+VPNC_CPPFLAGS = -DVERSION=\\\"$(VPNC_VERSION)\\\"
 
-$(VPNC_BINARY): $(VPNC_DIR)/.unpacked
-	rm -f $@
-	$(MAKE) $(TARGET_CONFIGURE_OPTS) INCLUDE=$(STAGING_DIR)/usr/include \
-		CFLAGS="$(TARGET_CFLAGS)" \
-		LDFLAGS+=-lgcrypt LDFLAGS+=-lgpg-error LDFLAGS+="$(TARGET_CFLAGS)" \
-		CC="$(TARGET_CC)" -C $(VPNC_DIR)
+define VPNC_BUILD_CMDS
+	$(MAKE)	-C $(@D) $(TARGET_CONFIGURE_OPTS) \
+		CPPFLAGS="$(VPNC_CPPFLAGS)" LDFLAGS="$(VPNC_LDFLAGS)"
+endef
 
-$(VPNC_TARGET_BINARY): $(VPNC_BINARY)
-	$(MAKE) $(TARGET_CONFIGURE_OPTS) \
-		DESTDIR=$(TARGET_DIR) \
-		BINDIR=/usr/local/bin \
-		SBINDIR=/usr/local/sbin \
-		ETCDIR=/etc/vpnc \
-		MANDIR=/usr/share/man \
-		VERSION=$(VPNC_VERSION) \
-		INCLUDE=$(STAGING_DIR)/usr/include \
-		LDFLAGS="-lgcrypt -lgpg-error $(TARGET_CFLAGS)" \
-		-C $(VPNC_DIR) install
-	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(VPNC_TARGET_BINARY)
+define VPNC_INSTALL_TARGET_CMDS
+	$(MAKE) -C $(@D) install $(TARGET_CONFIGURE_OPTS) \
+		CPPFLAGS="$(VPNC_CPPFLAGS)" LDFLAGS="$(VPNC_LDFLAGS)" \
+		DESTDIR="$(TARGET_DIR)" PREFIX=/usr
+endef
 
-vpnc-legal-info:
-	@$(call legal-warning-pkg,vpnc,legal-info not yet implemented)
-
-vpnc: libgcrypt $(VPNC_TARGET_BINARY)
-
-vpnc-source: $(DL_DIR)/$(VPNC_SOURCE)
-
-vpnc-clean:
-	-$(MAKE) -C $(VPNC_DIR) clean
-	rm -f $(STAGING_DIR)/usr/bin/vpnc
-
-vpnc-dirclean:
-	rm -rf $(VPNC_DIR)
-#############################################################
-#
-# Toplevel Makefile options
-#
-#############################################################
-ifeq ($(BR2_PACKAGE_VPNC),y)
-TARGETS+=vpnc
-endif
+$(eval $(generic-package))
