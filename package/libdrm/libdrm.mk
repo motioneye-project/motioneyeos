@@ -3,7 +3,7 @@
 # libdrm
 #
 #############################################################
-LIBDRM_VERSION = 2.4.19
+LIBDRM_VERSION = 2.4.23
 LIBDRM_SOURCE = libdrm-$(LIBDRM_VERSION).tar.bz2
 LIBDRM_SITE = http://dri.freedesktop.org/libdrm/
 LIBDRM_INSTALL_STAGING = YES
@@ -26,6 +26,13 @@ endif
 
 ifneq ($(BR2_PACKAGE_XDRIVER_XF86_VIDEO_ATI),y)
 LIBDRM_CONF_OPT += --disable-radeon
+endif
+
+ifeq ($(BR2_PACKAGE_UDEV),y)
+LIBDRM_CONF_OPT += --enable-udev
+LIBDRM_DEPENDENCIES += udev
+else
+LIBDRM_CONF_OPT += --disable-udev
 endif
 
 $(eval $(autotools-package))
