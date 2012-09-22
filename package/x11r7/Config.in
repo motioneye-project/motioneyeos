@@ -1,5 +1,5 @@
 menuconfig BR2_PACKAGE_XORG7
-	bool "X.org X Window System, X11R7, release 7.5"
+	bool "X.org X Window System"
 	select BR2_PACKAGE_ZLIB
 	select BR2_PACKAGE_LIBPNG
 	select BR2_PACKAGE_EXPAT
@@ -8,6 +8,8 @@ menuconfig BR2_PACKAGE_XORG7
 	help
 	  Support for X11R7 libraries, servers, drivers, and/or
 	  applications in the target.
+
+	  http://xorg.freedesktop.org
 
 if BR2_PACKAGE_XORG7
 
