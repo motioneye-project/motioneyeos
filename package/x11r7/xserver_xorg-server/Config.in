@@ -50,8 +50,9 @@ config BR2_PACKAGE_XSERVER_XORG_SERVER
 	select BR2_PACKAGE_XKEYBOARD_CONFIG
 	depends on !BR2_avr32
 	help
-	  xorg-server 1.7.5
-	  No description available
+	  X.Org X server
+
+	  http://xorg.freedesktop.org
 
 comment "xorg-xserver is BROKEN on AVR32"
 	depends on BR2_avr32

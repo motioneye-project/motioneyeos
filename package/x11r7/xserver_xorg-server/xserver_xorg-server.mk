@@ -4,14 +4,12 @@
 #
 ################################################################################
 
-XSERVER_XORG_SERVER_VERSION = 1.7.5
+XSERVER_XORG_SERVER_VERSION = 1.9.4
 XSERVER_XORG_SERVER_SOURCE = xorg-server-$(XSERVER_XORG_SERVER_VERSION).tar.bz2
 XSERVER_XORG_SERVER_SITE = http://xorg.freedesktop.org/releases/individual/xserver
 XSERVER_XORG_SERVER_MAKE = $(MAKE1) # make install fails with parallel make
 XSERVER_XORG_SERVER_INSTALL_STAGING = YES
 XSERVER_XORG_SERVER_INSTALL_STAGING_OPT = DESTDIR=$(STAGING_DIR) install install-data
-XSERVER_XORG_SERVER_AUTORECONF = YES
-
 XSERVER_XORG_SERVER_DEPENDENCIES = 	\
 	xutil_util-macros 		\
 	xlib_libXfont 			\
@@ -109,6 +107,13 @@ endif
 ifeq ($(BR2_PACKAGE_DBUS),y)
 XSERVER_XORG_SERVER_DEPENDENCIES += dbus
 XSERVER_XORG_SERVER_CONF_OPT += --enable-config-dbus
+endif
+
+ifeq ($(BR2_PACKAGE_UDEV),y)
+XSERVER_XORG_SERVER_CONF_OPT += --enable-config-udev
+XSERVER_XORG_SERVER_DEPENDENCIES += udev
+else
+XSERVER_XORG_SERVER_CONF_OPT += --disable-config-udev
 endif
 
 ifeq ($(BR2_PACKAGE_FREETYPE),y)
