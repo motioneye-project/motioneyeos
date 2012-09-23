@@ -104,16 +104,14 @@ XSERVER_XORG_SERVER_DEPENDENCIES += tslib
 XSERVER_XORG_SERVER_CONF_OPT += --enable-tslib LDFLAGS="-lts"
 endif
 
+ifeq ($(BR2_PACKAGE_UDEV),y)
+XSERVER_XORG_SERVER_DEPENDENCIES += udev
+XSERVER_XORG_SERVER_CONF_OPT += --enable-config-udev
+else
 ifeq ($(BR2_PACKAGE_DBUS),y)
 XSERVER_XORG_SERVER_DEPENDENCIES += dbus
 XSERVER_XORG_SERVER_CONF_OPT += --enable-config-dbus
 endif
-
-ifeq ($(BR2_PACKAGE_UDEV),y)
-XSERVER_XORG_SERVER_CONF_OPT += --enable-config-udev
-XSERVER_XORG_SERVER_DEPENDENCIES += udev
-else
-XSERVER_XORG_SERVER_CONF_OPT += --disable-config-udev
 endif
 
 ifeq ($(BR2_PACKAGE_FREETYPE),y)
