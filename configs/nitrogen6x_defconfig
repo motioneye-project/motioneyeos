@@ -1,0 +1,26 @@
+# architecture
+BR2_arm=y
+BR2_cortex_a9=y
+
+# system
+BR2_TARGET_GENERIC_GETTY=y
+BR2_TARGET_GENERIC_GETTY_PORT="ttymxc1"
+BR2_ROOTFS_POST_BUILD_SCRIPT="board/boundarydevices/nitrogen6x/post-build.sh"
+
+# filesystem
+BR2_TARGET_ROOTFS_EXT2=y
+
+# bootloader
+BR2_TARGET_UBOOT=y
+BR2_TARGET_UBOOT_BOARDNAME="mx6q_sabrelite"
+BR2_TARGET_UBOOT_CUSTOM_GIT=y
+BR2_TARGET_UBOOT_CUSTOM_GIT_REPO_URL="git://github.com/boundarydevices/u-boot-2009-08.git"
+BR2_TARGET_UBOOT_CUSTOM_GIT_VERSION="1f7edab0ac5ebf564e9ad9797fedc2a668149b96"
+
+# kernel
+BR2_LINUX_KERNEL=y
+BR2_LINUX_KERNEL_CUSTOM_GIT=y
+BR2_LINUX_KERNEL_CUSTOM_GIT_REPO_URL="git://github.com/boundarydevices/linux-imx6.git"
+BR2_LINUX_KERNEL_CUSTOM_GIT_VERSION="cb1a536f4583af7e1572d39cabd4ac597a8916a5"
+BR2_LINUX_KERNEL_DEFCONFIG="nitrogen6x"
+BR2_LINUX_KERNEL_INSTALL_TARGET=y
