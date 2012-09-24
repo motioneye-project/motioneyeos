@@ -1,6 +1,8 @@
 config BR2_PACKAGE_CVS
 	bool "cvs"
 	depends on BR2_USE_WCHAR
+	# needs fork()
+	depends on BR2_USE_MMU
 	select BR2_PACKAGE_NCURSES
 	help
 	  Concurrent Versions System - source code revision control tools.
