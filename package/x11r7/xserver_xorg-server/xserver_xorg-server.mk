@@ -39,7 +39,6 @@ XSERVER_XORG_SERVER_DEPENDENCIES = 	\
 	xproto_inputproto 		\
 	xproto_kbproto 			\
 	xproto_randrproto 		\
-	xproto_recordproto 		\
 	xproto_renderproto 		\
 	xproto_resourceproto 		\
 	xproto_videoproto 		\
@@ -122,6 +121,8 @@ endif
 ifeq ($(BR2_PACKAGE_XPROTO_RECORDPROTO),y)
 XSERVER_XORG_SERVER_DEPENDENCIES += xproto_recordproto
 XSERVER_XORG_SERVER_CONF_OPT += --enable-record
+else
+XSERVER_XORG_SERVER_CONF_OPT += --disable-record
 endif
 
 ifneq ($(BR2_PACKAGE_XLIB_LIBXVMC),y)
