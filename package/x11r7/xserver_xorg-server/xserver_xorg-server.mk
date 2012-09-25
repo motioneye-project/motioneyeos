@@ -39,6 +39,7 @@ XSERVER_XORG_SERVER_DEPENDENCIES = 	\
 	xproto_inputproto 		\
 	xproto_kbproto 			\
 	xproto_randrproto 		\
+	xproto_recordproto 		\
 	xproto_renderproto 		\
 	xproto_resourceproto 		\
 	xproto_videoproto 		\
