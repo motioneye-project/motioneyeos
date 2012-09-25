@@ -2,5 +2,8 @@ config BR2_PACKAGE_X11VNC
 	bool "x11vnc"
 	depends on BR2_PACKAGE_XORG7
 	select BR2_PACKAGE_XLIB_LIBXT
+	select BR2_PACKAGE_XLIB_LIBXEXT
 	help
 	  VNC server for X11 display
+
+	  http://www.karlrunge.com/x11vnc/
