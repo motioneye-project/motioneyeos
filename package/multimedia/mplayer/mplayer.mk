@@ -42,6 +42,21 @@ else
 MPLAYER_CONF_OPTS += --disable-freetype
 endif
 
+ifeq ($(BR2_PACKAGE_LIBDVDREAD),y)
+MPLAYER_CONF_OPTS +=  \
+	--enable-dvdread \
+	--disable-dvdread-internal \
+	--with-dvdread-config=$(STAGING_DIR)/usr/bin/dvdread-config
+MPLAYER_DEPENDENCIES += libdvdread
+endif
+
+ifeq ($(BR2_PACKAGE_LIBDVDNAV),y)
+MPLAYER_CONF_OPTS +=  \
+	--enable-dvdnav \
+	--with-dvdnav-config=$(STAGING_DIR)/usr/bin/dvdnav-config
+MPLAYER_DEPENDENCIES += libdvdnav
+endif
+
 ifeq ($(BR2_PACKAGE_MPLAYER_MPLAYER),y)
 MPLAYER_CONF_OPTS += --enable-mplayer
 else
