@@ -11,4 +11,10 @@ X11VNC_CONF_OPT = \
 
 X11VNC_DEPENDENCIES = xlib_libXt xlib_libXext
 
+ifneq ($(BR2_INET_IPV6),y)
+# configure option only used for libvncserver
+X11VNC_CONF_OPT += --without-ipv6
+X11VNC_CONF_ENV += CFLAGS='$(TARGET_CFLAGS) -DX11VNC_IPV6=0'
+endif
+
 $(eval $(autotools-package))
