@@ -1,9 +1,13 @@
 config BR2_PACKAGE_GENEXT2FS
-       bool "genext2fs"
-       help
-         genext2fs generates an ext2 filesystem as a normal (non-root)
-	 user.  It does not require you to mount the image file to
-	 copy files on it, nor does it require that you become the
-	 superuser to make device nodes.
+	bool "genext2fs"
+	depends on BR2_LARGEFILE
+	help
+	  genext2fs generates an ext2 filesystem as a normal (non-root)
+	  user.  It does not require you to mount the image file to
+	  copy files on it, nor does it require that you become the
+	  superuser to make device nodes.
 
-	 http://genext2fs.sourceforge.net/
+	  http://genext2fs.sourceforge.net/
+
+comment "genext2fs requires a toolchain with LARGEFILE support"
+	depends on !BR2_LARGEFILE
