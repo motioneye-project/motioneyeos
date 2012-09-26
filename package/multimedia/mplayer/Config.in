@@ -3,6 +3,7 @@ config BR2_PACKAGE_MPLAYER
 	# "Error: unsupported architecture sh4a" says mplayer
 	# configure script.
 	depends on !BR2_sh4a && !BR2_sh4aeb
+	depends on BR2_LARGEFILE
 	help
 	  MPlayer is a movie player which runs on many systems and supports
 	  many different file formats.
@@ -23,3 +24,6 @@ config BR2_PACKAGE_MPLAYER_MENCODER
 	  This will install the video encoder.
 
 endif
+
+comment "mplayer requires a toolchain with LARGEFILE support"
+	depends on !BR2_LARGEFILE
