@@ -4,9 +4,11 @@
 #
 #############################################################
 
-LIBXSLT_VERSION = 1.1.26
+LIBXSLT_VERSION = 1.1.27
 LIBXSLT_SITE = ftp://xmlsoft.org/libxslt
 LIBXSLT_INSTALL_STAGING = YES
+LIBXSLT_LICENSE = MIT
+LIBXSLT_LICENSE_FILES = COPYING
 
 LIBXSLT_CONF_OPT = --with-gnu-ld --without-debug \
 		--without-python --with-libxml-prefix=$(STAGING_DIR)/usr/
