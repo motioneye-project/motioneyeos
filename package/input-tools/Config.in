@@ -4,13 +4,6 @@ config BR2_PACKAGE_INPUT_TOOLS
 	  Tools for the Linux kernel input layer.
 	  http://linuxconsole.sourceforge.net/
 
-config BR2_PACKAGE_INPUT_TOOLS_EVTEST
-        bool "evtest"
-        depends on BR2_PACKAGE_INPUT_TOOLS
-        default y
-        help
-	  Input event interface test program.
-
 config BR2_PACKAGE_INPUT_TOOLS_INPUTATTACH
         bool "inputattach"
         depends on BR2_PACKAGE_INPUT_TOOLS
