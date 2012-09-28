@@ -81,6 +81,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_LIBMAD),y)
 MPLAYER_DEPENDENCIES += libmad
+MPLAYER_CONF_OPTS += --enable-mad
 else
 MPLAYER_CONF_OPTS += --disable-mad
 endif
@@ -136,7 +137,6 @@ define MPLAYER_CONFIGURE_CMDS
 		--extra-cflags="$(MPLAYER_CFLAGS)" \
 		--extra-ldflags="$(MPLAYER_LDFLAGS)" \
 		--yasm='' \
-		--enable-mad \
 		--enable-fbdev \
 		$(MPLAYER_CONF_OPTS) \
 		--enable-cross-compile \
