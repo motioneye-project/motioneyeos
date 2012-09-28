@@ -197,6 +197,7 @@ endif
 source "package/dmidecode/Config.in"
 source "package/dmraid/Config.in"
 source "package/eeprog/Config.in"
+source "package/evtest/Config.in"
 source "package/flashrom/Config.in"
 source "package/fconfig/Config.in"
 source "package/fis/Config.in"
