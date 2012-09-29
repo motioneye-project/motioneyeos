@@ -1,0 +1,25 @@
+[PATCH] fix build on uClibc without IPv6 support
+
+Some systems (like uClibc) defines AF_INET6 even when configured without
+IPv6 support, so don't use that to decide if IPv6 support should be enabled.
+
+Instead use the X11VNC_IPV6 define like elsewhere in the code.
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ x11vnc/enc.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+Index: x11vnc-0.9.13/x11vnc/enc.h
+===================================================================
+--- x11vnc-0.9.13.orig/x11vnc/enc.h
++++ x11vnc-0.9.13/x11vnc/enc.h
+@@ -1733,7 +1733,7 @@
+ 	}
+ 
+ 	try6:
+-#ifdef AF_INET6
++#if X11VNC_IPV6
+ 	if (!getenv("ULTRAVNC_DSM_HELPER_NOIPV6")) {
+ 		struct sockaddr_in6 sin;
+ 		int one = 1, sock = -1;
