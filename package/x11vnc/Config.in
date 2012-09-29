@@ -3,6 +3,7 @@ config BR2_PACKAGE_X11VNC
 	depends on BR2_PACKAGE_XORG7
 	select BR2_PACKAGE_XLIB_LIBXT
 	select BR2_PACKAGE_XLIB_LIBXEXT
+	select BR2_PACKAGE_XLIB_LIBXTST
 	help
 	  VNC server for X11 display
 
