@@ -6,7 +6,16 @@
 
 OPENVPN_VERSION = 2.2.2
 OPENVPN_SITE = http://swupdate.openvpn.net/community/releases
-OPENVPN_CONF_OPT = --enable-small --disable-plugins
+OPENVPN_CONF_OPT = --enable-small --disable-plugins \
+			--with-ifconfig-path=/sbin/ifconfig \
+			--with-route-path=/sbin/route \
+			--with-netstat-path=/bin/netstat
+
+ifeq ($(BR2_PACKAGE_IPROUTE2),y)
+OPENVPN_CONF_OPT += --with-iproute-path=/sbin/ip
+else
+OPENVPN_CONF_OPT += --with-iproute-path=/bin/ip
+endif
 
 ifeq ($(BR2_PACKAGE_OPENVPN_LZO),y)
 	OPENVPN_DEPENDENCIES += lzo
