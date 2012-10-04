@@ -12,6 +12,10 @@ LCDPROC_MAKE = $(MAKE1)
 
 LCDPROC_CONF_OPT = --enable-drivers=$(BR2_PACKAGE_LCDPROC_DRIVERS)
 
+ifeq ($(BR2_PACKAGE_LCDPROC_MENUS),y)
+LCDPROC_CONF_OPT += --enable-lcdproc-menus
+endif
+
 LCDPROC_DEPENDENCIES = ncurses
 
 $(eval $(autotools-package))

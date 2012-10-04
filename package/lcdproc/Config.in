@@ -12,3 +12,9 @@ config BR2_PACKAGE_LCDPROC_DRIVERS
 	depends on BR2_PACKAGE_LCDPROC
 	help
 	  Specify a comma-separated list of lcdproc drivers to be built
+
+config BR2_PACKAGE_LCDPROC_MENUS
+	bool "Menu support"
+	depends on BR2_PACKAGE_LCDPROC
+	help
+	  Enable support for lcdproc menus
