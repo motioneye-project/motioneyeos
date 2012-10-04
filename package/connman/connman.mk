@@ -32,6 +32,8 @@ define CONNMAN_INSTALL_CM
 endef
 
 CONNMAN_POST_INSTALL_TARGET_HOOKS += CONNMAN_INSTALL_CM
+else
+CONNMAN_CONF_OPT += --disable-client
 endif
 
 $(eval $(autotools-package))
