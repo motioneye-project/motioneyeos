@@ -1,0 +1,38 @@
+Calling client_add_key as follows
+
+  client_add_key -
+
+will fail. However using an explicit -shared option, like this:
+
+  client_add_key -shared -
+
+will succeed. This is caused by a failure to parse the - key token, which is
+mistaken for the first character of an option argument.
+
+The client_add_key command also returns a spurious "success" message when a
+malformed option is supplied.
+
+This patch fixes both issues.
+
+Signed-off-by: Simon Dawson <spdawson@gmail.com>
+
+diff -Nurp a/server/commands/client_commands.c b/server/commands/client_commands.c
+--- a/server/commands/client_commands.c	2011-08-14 13:29:16.000000000 +0100
++++ b/server/commands/client_commands.c	2012-10-05 07:50:40.357795535 +0100
+@@ -181,7 +181,7 @@ client_add_key_func(Client *c, int argc,
+ 	}
+ 
+ 	argnr = 1;
+-	if (argv[argnr][0] == '-') {
++	if (argv[argnr][0] == '-' && strcmp(argv[argnr], "-") != 0) {
+ 		if (strcmp( argv[argnr], "-shared") == 0) {
+ 			exclusively = 0;
+ 		}
+@@ -190,6 +190,7 @@ client_add_key_func(Client *c, int argc,
+ 		}
+ 		else {
+ 			sock_printf_error(c->sock, "Invalid option: %s\n", argv[argnr]);
++			return 0;
+ 		}
+ 		argnr++;
+ 	}
