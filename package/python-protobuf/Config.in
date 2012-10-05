@@ -1,0 +1,10 @@
+config BR2_PACKAGE_PYTHON_PROTOBUF
+	bool "python-protobuf"
+	depends on BR2_PACKAGE_PYTHON
+	help
+	  Python implementation of the Google Protocol Buffers.
+
+	  Protocol buffers are Google's language-neutral, platform-neutral,
+	  extensible mechanism for serializing structured data.
+
+	  http://code.google.com/p/protobuf/
