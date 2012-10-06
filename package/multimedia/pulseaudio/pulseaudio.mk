@@ -57,6 +57,25 @@ ifneq ($(BR2_PACKAGE_LIBGTK2)$(BR2_PACKAGE_XORG),yy)
 PULSEAUDIO_CONF_OPT += --disable-gtk2
 endif
 
+ifeq ($(BR2_PACKAGE_LIBXCB)$(BR2_PACKAGE_XLIB_LIBSM)$(BR2_PACKAGE_XLIB_LIBXTST),yyy)
+PULSEAUDIO_DEPENDENCIES += libxcb xlib_libSM xlib_libXtst
+
+# .desktop file generation needs nls support, so fake it for !locale builds
+# https://bugs.freedesktop.org/show_bug.cgi?id=54658
+ifneq ($(BR2_ENABLE_LOCALE),y)
+define PULSEAUDIO_FIXUP_DESKTOP_FILES
+	cp $(@D)/src/daemon/pulseaudio.desktop.in \
+	   $(@D)/src/daemon/pulseaudio.desktop
+	cp $(@D)/src/daemon/pulseaudio-kde.desktop.in \
+	   $(@D)/src/daemon/pulseaudio-kde.desktop
+endef
+PULSEAUDIO_POST_PATCH_HOOKS += PULSEAUDIO_FIXUP_DESKTOP_FILES
+endif
+
+else
+PULSEAUDIO_CONF_OPT += --disable-x11
+endif
+
 ifneq ($(BR2_PACKAGE_VALA),y)
 define PULSEAUDIO_REMOVE_VALA
 	rm -rf $(TARGET_DIR)/usr/share/vala
