@@ -1,0 +1,35 @@
+From deb5143e8e4580d7767de59a2e983dda262b0669 Mon Sep 17 00:00:00 2001
+From: Peter Korsgaard <jacmet@sunsite.dk>
+Date: Wed, 10 Oct 2012 14:38:13 +0200
+Subject: [PATCH] allow custom CFLAGS to passed on the make command line
+
+Ensure the required CFLAGS are appended to what is provided on the
+command line.
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ Makefile |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 057d539..c3102ea 100644
+--- a/Makefile
++++ b/Makefile
+@@ -11,10 +11,10 @@ else
+ 	CFLAGS=-O2 -Wall
+ endif
+ 
+-CFLAGS += -DVERSION=$(VERSION)
+-CFLAGS += -DPATCHLEVEL=$(PATCHLEVEL)
+-CFLAGS += -DSUBLEVEL=$(SUBLEVEL)
+-CFLAGS += -DVERSION_NAME=\"$(NAME)\"
++override CFLAGS += -DVERSION=$(VERSION)
++override CFLAGS += -DPATCHLEVEL=$(PATCHLEVEL)
++override CFLAGS += -DSUBLEVEL=$(SUBLEVEL)
++override CFLAGS += -DVERSION_NAME=\"$(NAME)\"
+ 
+ PROGS=perf rect fb-test offset
+ 
+-- 
+1.7.10.4
+
