@@ -9,8 +9,8 @@ config BR2_TARGET_ROOTFS_INITRAMFS
 
 	  A rootfs.cpio file will be generated in the images/ directory.
 	  This is the archive that will be included in the kernel image.
-	  The rootfs in the kernel will always be gzip'ed, regardless
-	  of how buildroot's cpio archive is configured.
+	  The default rootfs compression set in the kernel configuration
+	  is used, regardless of how buildroot's cpio archive is configured.
 
 	  Note that enabling initramfs together with another filesystem
 	  formats doesn't make sense: you would end up having two
