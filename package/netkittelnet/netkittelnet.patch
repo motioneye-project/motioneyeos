@@ -24,14 +24,25 @@
         ) >/dev/null 2>&1 || continue;
         CXX=$TRY
         break;
-@@ -141,7 +138,6 @@
-     echo -n 'Checking if C++ compiler works... '
-     if (
-           $CXX __conftest.cc -o __conftest || exit 1
+@@ -138,18 +135,5 @@
+     fi
+     echo "$CXX"
+-else
+-    echo -n 'Checking if C++ compiler works... '
+-    if (
+-          $CXX __conftest.cc -o __conftest || exit 1
 -          ./__conftest || exit 1
-        ) >/dev/null 2>&1; then
-          echo 'yes'
-      else
+-       ) >/dev/null 2>&1; then
+-         echo 'yes'
+-     else
+-         echo 'no'
+-         echo 'Compiler '"$CXX"' does not exist or cannot compile C++; try another.'
+-         rm -f __conftest*
+-         exit
+-     fi
+ fi
+ 
+ echo -n "Checking if $CXX accepts gcc warnings... "
 @@ -278,13 +274,11 @@
  EOF
  if (

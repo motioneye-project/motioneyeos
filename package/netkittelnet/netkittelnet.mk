@@ -14,6 +14,8 @@ define NETKITTELNET_CONFIGURE_CMDS
 	$(SED) "s/main()/main(void)/;" $(@D)/configure
 	# Disable termcap support
 	$(SED) "s~\(.*termcap\.h.*\)~/* \1 */~;" $(@D)/telnetd/telnetd.c
+	# C++ support not needed for telnetd
+	$(SED) 's/CXX/CC/g' -e 's/conftest.cc/conftest.c/g' $(@D)/configure
 	(cd $(@D); \
 		$(TARGET_CONFIGURE_OPTS) \
 		./configure \
