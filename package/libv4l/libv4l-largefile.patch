@@ -1,0 +1,39 @@
+[PATCH] fixup lfs mismatch in preload libraries
+
+Ensure that the lfs variants are not transparently used instead of the !lfs
+ones so both can be wrapped, independently of any custom CFLAGS/CPPFLAGS.
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ lib/libv4l1/v4l1compat.c  |    3 +++
+ lib/libv4l2/v4l2convert.c |    3 +++
+ 2 files changed, 6 insertions(+)
+
+Index: v4l-utils-0.8.5/lib/libv4l1/v4l1compat.c
+===================================================================
+--- v4l-utils-0.8.5.orig/lib/libv4l1/v4l1compat.c
++++ v4l-utils-0.8.5/lib/libv4l1/v4l1compat.c
+@@ -19,6 +19,9 @@
+ # Foundation, Inc., 51 Franklin Street, Suite 500, Boston, MA  02110-1335  USA
+  */
+ 
++/* ensure we see *64 variants and they aren't transparently used */
++#undef _LARGEFILE_SOURCE
++#undef _FILE_OFFSET_BITS
+ #define _LARGEFILE64_SOURCE 1
+ 
+ #include <stdlib.h>
+Index: v4l-utils-0.8.5/lib/libv4l2/v4l2convert.c
+===================================================================
+--- v4l-utils-0.8.5.orig/lib/libv4l2/v4l2convert.c
++++ v4l-utils-0.8.5/lib/libv4l2/v4l2convert.c
+@@ -20,6 +20,9 @@
+ # Foundation, Inc., 51 Franklin Street, Suite 500, Boston, MA  02110-1335  USA
+ */
+ 
++/* ensure we see *64 variants and they aren't transparently used */
++#undef _LARGEFILE_SOURCE
++#undef _FILE_OFFSET_BITS
+ #define _LARGEFILE64_SOURCE 1
+ 
+ #include <stdarg.h>
