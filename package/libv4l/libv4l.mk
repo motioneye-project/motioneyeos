@@ -23,19 +23,19 @@ endif
 
 define LIBV4L_BUILD_CMDS
 	for i in $(LIBV4L_DIRS_y); do \
-		$(TARGET_CONFIGURE_OPTS) $(MAKE) -C $(@D)/$$i \
+		$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(@D)/$$i \
 			$(LIBV4L_MAKE_OPTS); done
 endef
 
 define LIBV4L_INSTALL_STAGING_CMDS
 	for i in $(LIBV4L_DIRS_y); do \
-		$(TARGET_CONFIGURE_OPTS) $(MAKE) -C $(@D)/$$i \
+		$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(@D)/$$i \
 			DESTDIR=$(STAGING_DIR) $(LIBV4L_MAKE_OPTS) install; done
 endef
 
 define LIBV4L_INSTALL_TARGET_CMDS
 	for i in $(LIBV4L_DIRS_y); do \
-		$(TARGET_CONFIGURE_OPTS) $(MAKE) -C $(@D)/$$i \
+		$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(@D)/$$i \
 			DESTDIR=$(TARGET_DIR) $(LIBV4L_MAKE_OPTS) install; done
 endef
 
