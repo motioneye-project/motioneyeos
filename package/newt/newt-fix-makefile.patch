@@ -1,0 +1,42 @@
+Fix Makefile.in
+
+* Remove -Os from the CFLAGS (already handled by Buildroot)
+* Use $(CC) instead of $(CPP) to generate .depend file because
+  '$(CPP) -M' call does not support multiple input files.
+  This avoid the following error:
+
+make[1]: Entering directory `/opt/br/output/build/newt-0.51.0'
+/opt/br/output/host/usr/bin/arm-none-linux-gnueabi-cpp -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -D_GNU_SOURCE -M newt.c button.c form.c checkbox.c entry.c label.c listbox.c scrollbar.c textbox.c scale.c grid.c windows.c buttonbar.c checkboxtree.c > .depend
+arm-none-linux-gnueabi-cpp: too many input files
+make[1]: *** [depend] Error 1
+make[1]: Leaving directory 
+`/opt/br/output/build/newt-0.51.0'
+make: *** 
+[/opt/br/output/build/newt-0.51.0/.stamp_built] Error 2
+
+
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+
+---
+Index: newt-0.51.0/Makefile.in
+===================================================================
+--- newt-0.51.0.orig/Makefile.in	2012-10-10 22:43:42.042318041 +0200
++++ newt-0.51.0/Makefile.in	2012-10-11 21:25:44.063873277 +0200
+@@ -3,7 +3,7 @@ SHLIBS = -lslang -lm -lc
+ 
+ GPM_SUPPORT=@gpm_support@
+ 
+-CFLAGS = -Wall -Os -D_GNU_SOURCE
++CFLAGS += -D_GNU_SOURCE
+ 
+ VERSION = @VERSION@
+ CVSTAG = r$(subst .,-,$(VERSION))
+@@ -86,7 +86,7 @@ clean:
+ 		$(SHAREDOBJS) *.so*
+ 
+ depend:
+-	$(CPP) $(CFLAGS) -M $(SOURCES) > .depend
++	$(CC) $(CFLAGS) -M $(SOURCES) > .depend
+ 
+ $(SHAREDDIR):
+ 	mkdir -p $(SHAREDDIR)
