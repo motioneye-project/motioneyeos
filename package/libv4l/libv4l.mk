@@ -3,7 +3,7 @@
 # libv4l
 #
 #############################################################
-LIBV4L_VERSION = 0.8.5
+LIBV4L_VERSION = 0.8.9
 LIBV4L_SOURCE = v4l-utils-$(LIBV4L_VERSION).tar.bz2
 LIBV4L_SITE = http://linuxtv.org/downloads/v4l-utils/
 LIBV4L_INSTALL_STAGING = YES
