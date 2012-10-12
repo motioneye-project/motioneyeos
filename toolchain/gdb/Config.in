@@ -5,7 +5,7 @@ config BR2_PACKAGE_GDB
 	select BR2_PACKAGE_NCURSES
 	depends on BR2_USE_WCHAR
 	depends on BR2_TOOLCHAIN_HAS_THREADS
-	depends on !BR2_sh && !BR2_sh64 && !BR2_avr32
+	depends on !BR2_sh && !BR2_sh64 && !BR2_avr32 && !BR2_microblaze
 	help
 	    Build the full gdb debugger to run on the target.
 
