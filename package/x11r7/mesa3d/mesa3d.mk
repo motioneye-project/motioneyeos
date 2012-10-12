@@ -27,6 +27,7 @@ MESA3D_DEPENDENCIES = \
 	xlib_libXfixes \
 	xproto_dri2proto \
 	libdrm \
-	expat
+	expat \
+	host-xutil_makedepend
 
 $(eval $(autotools-package))
