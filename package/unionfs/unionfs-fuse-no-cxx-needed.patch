@@ -1,0 +1,19 @@
+By default, CMake assumes a project uses the C and C++ languages, so
+it checks for both the C and the C++ compiler to exist.
+
+However, unionfs-fuse is written purely in C, so checking for a C++
+compiler is useless, and even prevents unionfs-fuse from building
+properly on targets for which no C++ compiler is available.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/CMakeLists.txt
+===================================================================
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -1,4 +1,4 @@
+-project(unionfs-fuse)
++project(unionfs-fuse C)
+ 
+ cmake_minimum_required(VERSION 2.0)
+ INCLUDE (CheckIncludeFiles)
