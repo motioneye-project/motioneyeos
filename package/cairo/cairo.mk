@@ -34,6 +34,10 @@ CAIRO_CONF_ENV = ac_cv_func_posix_getpwuid_r=yes glib_cv_stack_grows=no \
 		ac_cv_func_working_mktime=yes jm_cv_func_working_re_compile_pattern=yes \
 		ac_use_included_regex=no gl_cv_c_restrict=no
 
+CAIRO_CONF_OPT = \
+	--enable-trace=no \
+	--enable-interpreter=no
+
 CAIRO_DEPENDENCIES = host-pkg-config fontconfig pixman
 
 ifeq ($(BR2_PACKAGE_DIRECTFB),y)
