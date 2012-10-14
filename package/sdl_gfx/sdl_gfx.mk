@@ -11,7 +11,14 @@ SDL_GFX_DEPENDENCIES = sdl
 SDL_GFX_CONF_OPT = \
 	--with-sdl-prefix=$(STAGING_DIR)/usr \
 	--disable-sdltest \
-	--enable-static \
-	$(if $(BR2_X86_CPU_HAS_MMX),--enable-mmx,--disable-mmx)
+	--enable-static
+
+# Even though x86_64 processors support MMX, the MMX-specific assembly
+# code in sdl_gfx is IA32 specific, and does not build for x86_64.
+ifeq ($(BR2_i386)$(BR2_X86_CPU_HAS_MMX),yy)
+SDL_GFX_CONF_OPT += --enable-mmx
+else
+SDL_GFX_CONF_OPT += --disable-mmx
+endif
 
 $(eval $(autotools-package))
