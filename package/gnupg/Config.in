@@ -1,0 +1,35 @@
+config BR2_PACKAGE_GNUPG
+	bool "gnupg"
+	select BR2_PACKAGE_ZLIB
+	select BR2_PACKAGE_NCURSES
+	help
+	  GnuPG is the GNU project's complete and free implementation
+	  of the OpenPGP standard as defined by RFC4880. GnuPG allows
+	  to encrypt and sign your data and communication, features a
+	  versatile key management system as well as access modules
+	  for all kinds of public key directories. GnuPG, also known
+	  as GPG, is a command line tool with features for easy
+	  integration with other applications.
+
+	  http://gnupg.org/
+
+if BR2_PACKAGE_GNUPG
+
+config BR2_PACKAGE_GNUPG_GPGV
+	bool "gpgv"
+	help
+	  gpgv is an OpenPGP signature verification tool.
+
+	  This program is actually a stripped-down version of gpg
+	  which is only able to check signatures. It is somewhat
+	  smaller than the fully-blown gpg and uses a different (and
+	  simpler) way to check that the public keys used to make the
+	  signature are valid. There are no configuration files and
+	  only a few options are implemented.
+
+config BR2_PACKAGE_GNUPG_GPGSPLIT
+	bool "gpgsplit"
+	help
+	  gpgsplit splits an OpenPGP message into packets.
+
+endif
