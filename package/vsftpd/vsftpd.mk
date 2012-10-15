@@ -4,9 +4,11 @@
 #
 #############################################################
 
-VSFTPD_VERSION = 2.3.5
+VSFTPD_VERSION = 3.0.2
 VSFTPD_SITE = https://security.appspot.com/downloads
 VSFTPD_LIBS = -lcrypt
+VSFTPD_LICENSE = GPLv2
+VSFTPD_LICENSE_FILES = COPYING
 
 define VSFTPD_ENABLE_SSL
 	$(SED) 's/.*VSF_BUILD_SSL/#define VSF_BUILD_SSL/' $(@D)/builddefs.h
