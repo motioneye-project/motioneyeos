@@ -91,15 +91,15 @@ endmenu
 menu "Protocols"
 	depends on BR2_PACKAGE_GPSD
 
-config BR2_PACKAGE_GPSD_ASHTECH
-	bool "Ashtech"
-	help
-	  Ashtech support
-
 config BR2_PACKAGE_GPSD_AIVDM
 	bool "Aivdm"
 	help
 	  Aivdm support
+
+config BR2_PACKAGE_GPSD_ASHTECH
+	bool "Ashtech"
+	help
+	  Ashtech support
 
 config BR2_PACKAGE_GPSD_EARTHMATE
 	bool "Earthmate"
@@ -151,26 +151,27 @@ config BR2_PACKAGE_GPSD_MTK3301
 	help
 	  Mediatek MTK-3301 support
 
+config BR2_PACKAGE_GPSD_NAVCOM
+	bool "Navcom"
+	help
+	  Navcom binary support
+
 config BR2_PACKAGE_GPSD_NMEA
 	bool "NMEA"
 	default y
 	help
 	  Generic NMEA support
 
+config BR2_PACKAGE_GPSD_NMEA2000
+	bool "NMEA2000"
+	select BR2_PACKAGE_GPSD_NAVCOM
+	help
+	  NMEA2000/CAN support
+
 config BR2_PACKAGE_GPSD_NTRIP
 	bool "NTRIP"
 	help
 	  NTRIP support
-
-config BR2_PACKAGE_GPSD_NAVCOM
-	bool "Navcom"
-	help
-	  Navcom binary support
-
-config BR2_PACKAGE_GPSD_NMEA2000
-	bool "nmea2000"
-	help
-	  NMEA2000/CAN support
 
 config BR2_PACKAGE_GPSD_OCEANSERVER
 	bool "OceanServer"
