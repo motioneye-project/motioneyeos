@@ -1,0 +1,7 @@
+config BR2_PACKAGE_MACCHANGER
+	bool "macchanger"
+	help
+	  A GNU/Linux utility for viewing/manipulating the MAC address of
+	  network interfaces
+
+	  http://www.alobbs.com/macchanger

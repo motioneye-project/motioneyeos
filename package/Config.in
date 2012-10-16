@@ -573,6 +573,7 @@ endif
 source "package/links/Config.in"
 source "package/linphone/Config.in"
 source "package/lrzsz/Config.in"
+source "package/macchanger/Config.in"
 source "package/mii-diag/Config.in"
 source "package/mrouted/Config.in"
 source "package/msmtp/Config.in"
