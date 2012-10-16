@@ -10,6 +10,7 @@ GNUPG_SITE = ftp://ftp.gnupg.org/gcrypt/gnupg
 GNUPG_LICENSE = GPLv3+
 GNUPG_LICENSE_FILES = COPYING
 GNUPG_DEPENDENCIES = zlib ncurses
+GNUPG_CONF_ENV = ac_cv_sys_symbol_underscore=no
 GNUPG_CONF_OPT = --disable-rpath --enable-minimal --disable-regex
 
 ifeq ($(BR2_PACKAGE_BZIP2),y)
