@@ -41,6 +41,7 @@ config BR2_PACKAGE_XENOMAI_VERSION
 
 config BR2_PACKAGE_XENOMAI_SMP
 	bool "Enable SMP support"
+	depends on BR2_cortex_a9 || !BR2_arm # only A9 has SMP support
 	help
 	  This option allows to enable or disable SMP support. It has
 	  to match your kernel configuration.
