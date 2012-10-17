@@ -28,7 +28,7 @@ section (0) {
 	//----------------------------------------------------------
 
         load barebox;
-        load ivt (entry = barebox:exception_vectors) > 0x8000;
+        load ivt (entry = barebox:start) > 0x8000;
 	hab call 0x8000;
 
 }
