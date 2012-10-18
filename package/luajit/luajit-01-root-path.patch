@@ -7,10 +7,10 @@ Index: b/src/luaconf.h
 ===================================================================
 --- a/src/luaconf.h
 +++ b/src/luaconf.h
-@@ -22,9 +22,9 @@
- #define LUA_CPATH_DEFAULT \
-   ".\\?.dll;" LUA_CDIR"?.dll;" LUA_CDIR"loadall.dll"
- #else
+@@ -26,9 +26,9 @@
+ ** Note to distribution maintainers: do NOT patch the following line!
+ ** Please read ../doc/install.html#distro and pass PREFIX=/usr instead.
+ */
 -#define LUA_ROOT	"/usr/local/"
 -#define LUA_LDIR	LUA_ROOT "share/lua/5.1/"
 -#define LUA_CDIR	LUA_ROOT "lib/lua/5.1/"
@@ -18,5 +18,5 @@ Index: b/src/luaconf.h
 +#define LUA_LDIR	LUA_ROOT "share/lua/"
 +#define LUA_CDIR	LUA_ROOT "lib/lua/"
  #ifdef LUA_XROOT
- #define LUA_JDIR	LUA_XROOT "share/luajit-2.0.0-beta10/"
+ #define LUA_JDIR	LUA_XROOT "share/luajit-2.0.0-beta11/"
  #define LUA_XPATH \

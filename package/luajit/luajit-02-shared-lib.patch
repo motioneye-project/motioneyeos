@@ -6,7 +6,7 @@ Index: b/src/Makefile
 ===================================================================
 --- a/src/Makefile
 +++ b/src/Makefile
-@@ -629,7 +629,7 @@
+@@ -669,7 +669,7 @@
  
  $(LUAJIT_T): $(TARGET_O) $(LUAJIT_O) $(TARGET_DEP)
  	$(E) "LINK      $@"

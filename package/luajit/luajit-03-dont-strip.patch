@@ -8,7 +8,7 @@ Index: b/src/Makefile
 ===================================================================
 --- a/src/Makefile
 +++ b/src/Makefile
-@@ -625,12 +625,10 @@
+@@ -665,12 +665,10 @@
  $(LUAJIT_SO): $(LJVMCORE_O)
  	$(E) "DYNLINK   $@"
  	$(Q)$(TARGET_LD) $(TARGET_ASHLDFLAGS) -o $@ $(LJVMCORE_DYNO) $(TARGET_ALIBS)

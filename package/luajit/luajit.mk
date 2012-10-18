@@ -4,7 +4,7 @@
 #
 #############################################################
 
-LUAJIT_VERSION = 2.0.0-beta10
+LUAJIT_VERSION = 2.0.0-beta11
 LUAJIT_SOURCE  = LuaJIT-$(LUAJIT_VERSION).tar.gz
 LUAJIT_SITE    = http://luajit.org/download
 LUAJIT_LICENSE = MIT
@@ -12,12 +12,8 @@ LUAJIT_LICENSE_FILES = COPYRIGHT
 
 LUAJIT_INSTALL_STAGING = YES
 
-define LUAJIT_NOLARGEFILE_FIX_MAKEFILE
-	$(SED) 's/TARGET_XCFLAGS= -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE/TARGET_XCFLAGS=/' $(@D)/src/Makefile
-endef
-
 ifneq ($(BR2_LARGEFILE),y)
-LUAJIT_POST_PATCH_HOOKS += LUAJIT_NOLARGEFILE_FIX_MAKEFILE
+LUAJIT_NO_LARGEFILE = TARGET_LFSFLAGS=
 endif
 
 # The luajit build procedure requires the host compiler to have the
@@ -47,6 +43,7 @@ define LUAJIT_BUILD_CMDS
 		HOST_CC="$(LUAJIT_HOST_CC)" \
 		HOST_CFLAGS="$(HOST_CFLAGS)" \
 		HOST_LDFLAGS="$(HOST_LDFLAGS)" \
+		$(LUAJIT_NO_LARGEFILE) \
 		-C $(@D) amalg
 endef
 
@@ -56,6 +53,14 @@ endef
 
 define LUAJIT_INSTALL_TARGET_CMDS
 	$(MAKE) PREFIX="/usr" DESTDIR="$(TARGET_DIR)" -C $(@D) install
+endef
+
+define LUAJIT_UNINSTALL_STAGING_CMDS
+	$(MAKE) PREFIX="/usr" DESTDIR="$(STAGING_DIR)" -C $(@D) uninstall
+endef
+
+define LUAJIT_UNINSTALL_TARGET_CMDS
+	$(MAKE) PREFIX="/usr" DESTDIR="$(TARGET_DIR)" -C $(@D) uninstall
 endef
 
 define LUAJIT_CLEAN_CMDS
