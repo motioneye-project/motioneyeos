@@ -36,12 +36,12 @@ config BR2_PACKAGE_SAMBA_FINDSMB
 	default y
 	depends on BR2_PACKAGE_SAMBA_SMBCLIENT
 	depends on BR2_PACKAGE_SAMBA_NMBLOOKUP
-	depends on BR2_PACKAGE_MICROPERL
+	depends on BR2_PACKAGE_PERL
 	help
 	  Script to browse network
 
 comment "findsmb       - disabled (requires nmblookup, smbclient and perl)"
-	depends on !BR2_PACKAGE_SAMBA_SMBCLIENT || !BR2_PACKAGE_SAMBA_NMBLOOKUP || !BR2_PACKAGE_MICROPERL
+	depends on !BR2_PACKAGE_SAMBA_SMBCLIENT || !BR2_PACKAGE_SAMBA_NMBLOOKUP || !BR2_PACKAGE_PERL
 
 config BR2_PACKAGE_SAMBA_NET
 	bool "net"

@@ -9,7 +9,7 @@ AUTOMAKE_SITE = $(BR2_GNU_MIRROR)/automake
 AUTOMAKE_LICENSE = GPLv2+
 AUTOMAKE_LICENSE_FILES = COPYING
 
-AUTOMAKE_DEPENDENCIES = host-autoconf autoconf microperl
+AUTOMAKE_DEPENDENCIES = host-autoconf autoconf perl
 
 HOST_AUTOMAKE_DEPENDENCIES = host-autoconf
 
