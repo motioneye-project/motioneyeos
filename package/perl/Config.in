@@ -1,0 +1,18 @@
+config BR2_PACKAGE_PERL
+	bool "perl"
+	depends on !BR2_avr32
+	depends on !BR2_bfin
+	depends on !BR2_sh2
+	depends on !BR2_sh2a
+	depends on !BR2_sh3
+	depends on !BR2_sh3eb
+	depends on !BR2_sh64
+	help
+	  Larry Wall's Practical Extraction and Report Language
+	  An interpreted scripting language, known among some as "Unix's Swiss
+	  Army Chainsaw".
+
+	  http://www.perl.org/
+
+comment "perl requires an architecture supported by qemu"
+	depends on BR2_avr32 || BR2_bfin || BR2_sh2 || BR2_sh2a || BR2_sh3 || BR2_sh3eb || BR2_sh64

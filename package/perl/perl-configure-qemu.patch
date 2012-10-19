@@ -1,0 +1,53 @@
+Add qemu support
+
+see https://rt.perl.org/rt3//Public/Bug/Display.html?id=114798
+
+Signed-off-by: Francois Perrad <francois.perrad@gadz.org>
+
+Index: b/Configure
+===================================================================
+--- a/Configure
++++ b/Configure
+@@ -2837,6 +2837,9 @@
+             ;;
+         *)  echo "Using usrinc $usrinc." >&4 ;;
+ 	esac
++	case "$targetrun" in
++	*qemu*) targethost=dummy ;;
++	esac
+ 	case "$targethost" in
+ 	'') echo "Targethost not defined." >&4; croak=y ;;
+         *)  echo "Using targethost $targethost." >&4
+@@ -2868,7 +2871,7 @@
+ 	case "$targetfrom" in
+ 	'') targetfrom=scp ;;
+ 	esac
+-    	run=$run-$targetrun
++    	run=$run-`basename $targetrun`
+     	to=$to-$targetto
+     	from=$from-$targetfrom
+ 	case "$targetdir" in
+@@ -2908,6 +2911,14 @@
+ $targetrun -l $targetuser $targethost "cd \$cwd && ./\$exe \$@"
+ EOF
+ 	    ;;
++	*qemu*)
++	    to=:
++	    from=:
++	    cat >$run <<EOF
++#!/bin/sh
++$targetrun -L $qemulib "\$@"
++EOF
++	    ;;
+ 	*)  echo "Unknown targetrun '$targetrun'" >&4
+ 	    exit 1
+ 	    ;;
+@@ -5048,7 +5059,7 @@
+ echo " ";
+ echo "Checking if your compiler accepts $flag" 2>&1;
+ echo "int main(void) { return 0; }" > gcctest.c;
+-if $cc -O2 $flag -o gcctest gcctest.c 2>gcctest.out && ./gcctest; then
++if $cc -O2 $flag -o gcctest gcctest.c 2>gcctest.out && $run ./gcctest; then
+     echo "Yes, it does." 2>&1;
+     if $test -s gcctest.out ; then
+         echo "But your platform does not like it:";
