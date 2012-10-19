@@ -14,5 +14,15 @@ config BR2_PACKAGE_PERL
 
 	  http://www.perl.org/
 
+if BR2_PACKAGE_PERL
+
+config BR2_PACKAGE_PERL_DB_FILE
+	bool "DB_File"
+	select BR2_PACKAGE_BERKELEYDB
+	help
+	  Build the DB_File module.
+
+endif
+
 comment "perl requires an architecture supported by qemu"
 	depends on BR2_avr32 || BR2_bfin || BR2_sh2 || BR2_sh2a || BR2_sh3 || BR2_sh3eb || BR2_sh64

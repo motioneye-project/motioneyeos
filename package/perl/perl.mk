@@ -11,7 +11,11 @@ PERL_SOURCE = perl-$(PERL_VERSION).tar.bz2
 PERL_LICENSE = Artistic
 PERL_LICENSE_FILES = Artistic
 PERL_INSTALL_STAGING = YES
+
 PERL_DEPENDENCIES = host-qemu
+ifeq ($(BR2_PACKAGE_BERKELEYDB),y)
+    PERL_DEPENDENCIES += berkeleydb
+endif
 
 PERL_CONF_OPT = -des \
 		-Dusecrosscompile \
