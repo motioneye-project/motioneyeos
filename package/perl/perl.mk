@@ -16,6 +16,9 @@ PERL_DEPENDENCIES = host-qemu
 ifeq ($(BR2_PACKAGE_BERKELEYDB),y)
     PERL_DEPENDENCIES += berkeleydb
 endif
+ifeq ($(BR2_PACKAGE_GDBM),y)
+    PERL_DEPENDENCIES += gdbm
+endif
 
 PERL_CONF_OPT = -des \
 		-Dusecrosscompile \
