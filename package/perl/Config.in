@@ -16,6 +16,22 @@ config BR2_PACKAGE_PERL
 
 if BR2_PACKAGE_PERL
 
+config BR2_PACKAGE_PERL_CUSTOM_INSTALL
+	bool "custom install"
+	help
+	  Don't use the full install target
+	  Install only a selection of modules (like microperl).
+
+config BR2_PACKAGE_PERL_MODULES
+	string "additional modules"
+	depends on BR2_PACKAGE_PERL_CUSTOM_INSTALL
+	help
+	  List of space-separated perl modules to copy to the rootfs.
+
+	  Examples: constant.pm Getopt/Std.pm Time/Local.pm
+
+	  Module dependencies are not automatic so check your needs.
+
 config BR2_PACKAGE_PERL_DB_FILE
 	bool "DB_File"
 	select BR2_PACKAGE_BERKELEYDB

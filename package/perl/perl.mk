@@ -89,7 +89,38 @@ PERL_RUN_PERL = $(QEMU_USER) $(@D)/perl -Ilib
 PERL_ARCHNAME = $(shell $(PERL_RUN_PERL) -MConfig -e "print Config->{archname}")
 PERL_LIB = $(TARGET_DIR)/usr/lib/perl5/$(PERL_VERSION)
 PERL_ARCHLIB = $(PERL_LIB)/$(PERL_ARCHNAME)
+PERL_MODS = $(call qstrip,$(BR2_PACKAGE_PERL_MODULES))
+# Minimal set of modules required for 'perl -V' to work
+PERL_ARCH_MODS = Config.pm Config_git.pl Config_heavy.pl
+PERL_BASE_MODS = strict.pm vars.pm warnings.pm warnings/register.pm
 
+define PERL_INSTALL_MODULES
+	for i in $(PERL_ARCH_MODS); do \
+		$(INSTALL) -m 0644 -D $(@D)/lib/$$i $(PERL_ARCHLIB)/$$i; \
+	done
+	for i in $(PERL_BASE_MODS); do \
+		$(INSTALL) -m 0644 -D $(@D)/lib/$$i $(PERL_LIB)/$$i; \
+	done
+	for i in $(PERL_MODS); do \
+		j=`echo $$i|cut -d : -f 1` ; \
+		if [ -d $(@D)/lib/$$j ] ; then \
+			cp -af $(@D)/lib/$$j $(PERL_LIB) ; \
+		fi ; \
+		if [ -f $(@D)/lib/$$i ] ; then \
+			$(INSTALL) -m 0644 -D $(@D)/lib/$$i $(PERL_LIB)/$$i; \
+		fi ; \
+	done
+	# Remove test files
+	find $(PERL_LIB) -type f -name *.t -exec rm -f {} \;
+endef
+
+ifeq ($(BR2_PACKAGE_PERL_CUSTOM_INSTALL),y)
+define PERL_INSTALL_TARGET_CMDS
+	$(INSTALL) -m 0755 -D $(@D)/perl $(TARGET_DIR)/usr/bin/perl
+	$(INSTALL) -m 0755 -D $(@D)/libperl.so $(PERL_ARCHLIB)/CORE/libperl.so
+	$(PERL_INSTALL_MODULES)
+endef
+else
 define PERL_INSTALL_TARGET_CMDS
 	$(MAKE) INSTALL_DEPENDENCE= \
 		INSTALLFLAGS=-p \
@@ -98,6 +129,7 @@ define PERL_INSTALL_TARGET_CMDS
 	rm -f $(PERL_ARCHLIB)/CORE/*.h
 	find $(PERL_ARCHLIB) -type f -name *.bs -exec rm -f {} \;
 endef
+endif
 
 define PERL_CLEAN_CMDS
 	-$(MAKE) -C $(@D) clean
