@@ -4,7 +4,7 @@
 #
 #############################################################
 
-MPD_VERSION = 0.17.1
+MPD_VERSION = 0.17.2
 MPD_SITE = http://downloads.sourceforge.net/project/musicpd/mpd/$(MPD_VERSION)
 MPD_DEPENDENCIES = host-pkg-config libglib2
 MPD_LICENSE = GPLv2
