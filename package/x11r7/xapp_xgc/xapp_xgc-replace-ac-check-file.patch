@@ -1,0 +1,29 @@
+From ff668395fc408f540604bd534e323b483f52a4ea Mon Sep 17 00:00:00 2001
+From: Gaetan Nadon <memsize@videotron.ca>
+Date: Mon, 01 Nov 2010 17:19:23 +0000
+Subject: config: replace AC_CHECK_FILE with test -f
+
+* AC_CHECK_FILE doesn't work for cross compilation
+
+Signed-off-by: Gaetan Nadon <memsize@videotron.ca>
+---
+diff --git a/configure.ac b/configure.ac
+index 667a3e7..0644050 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -36,8 +36,11 @@ XORG_DEFAULT_OPTIONS
+ AC_PROG_LEX
+ AC_PROG_YACC
+ AC_PATH_PROG([YACC_INST], $YACC)
+-AC_CHECK_FILE([$srcdir/gram.c], [],
+-              [test -z "$YACC_INST" && AC_MSG_ERROR([yacc not found - unable to compile gram.y])])
++if test ! -f "gram.c"; then
++   if test -z "$YACC_INST"; then
++      AC_MSG_ERROR([yacc not found - unable to compile gram.y])
++   fi
++fi
+ 
+ PKG_CHECK_MODULES(XGC, xaw7 xt)
+ xt_appdefaultdir=`$PKG_CONFIG --variable=appdefaultdir xt`
+--
+cgit v0.9.0.2-2-gbebe
