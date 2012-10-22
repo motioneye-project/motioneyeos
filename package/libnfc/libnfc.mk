@@ -11,7 +11,7 @@ LIBNFC_LICENSE_FILES = COPYING
 LIBNFC_AUTORECONF = YES
 LIBNFC_INSTALL_STAGING = YES
 
-LIBNFC_DEPENDENCIES = host-pkg-config libusb libusb-compat
+LIBNFC_DEPENDENCIES = host-pkgconf libusb libusb-compat
 
 # N.B. The acr122 driver requires pcsc-lite.
 LIBNFC_CONF_OPT = --with-drivers=arygon,pn53x_usb

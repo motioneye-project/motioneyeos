@@ -11,7 +11,7 @@ LIBXCB_INSTALL_STAGING = YES
 
 LIBXCB_DEPENDENCIES = \
 	host-libxslt pthread-stubs xcb-proto xlib_libXdmcp xlib_libXau \
-	host-xcb-proto host-python host-pkg-config
+	host-xcb-proto host-python host-pkgconf
 LIBXCB_CONF_ENV = STAGING_DIR="$(STAGING_DIR)"
 LIBXCB_MAKE_OPT = XCBPROTO_XCBINCLUDEDIR=$(STAGING_DIR)/usr/share/xcb \
 	XCBPROTO_XCBPYTHONDIR=$(HOST_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR)/site-packages

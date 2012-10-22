@@ -31,7 +31,7 @@ LIBVNCSERVER_CONF_OPT += --without-gcrypt
 endif
 
 ifeq ($(BR2_PACKAGE_GNUTLS),y)
-LIBVNCSERVER_DEPENDENCIES += gnutls host-pkg-config
+LIBVNCSERVER_DEPENDENCIES += gnutls host-pkgconf
 else
 LIBVNCSERVER_CONF_OPT += --without-gnutls
 endif

@@ -80,7 +80,7 @@ endif
 endif
 
 ifeq ($(BR2_PACKAGE_DBUS),y)
-	WPA_SUPPLICANT_DEPENDENCIES += host-pkg-config dbus
+	WPA_SUPPLICANT_DEPENDENCIES += host-pkgconf dbus
 	WPA_SUPPLICANT_MAKE_ENV = \
 		PKG_CONFIG_SYSROOT_DIR="$(STAGING_DIR)"	\
 		PKG_CONFIG_PATH="$(STAGING_DIR)/usr/lib/pkgconfig"

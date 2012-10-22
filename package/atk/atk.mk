@@ -49,7 +49,7 @@ else
 ATK_CONF_OPT += --without-x
 endif
 
-ATK_DEPENDENCIES = libglib2 host-pkg-config
+ATK_DEPENDENCIES = libglib2 host-pkgconf
 
 HOST_ATK_CONF_OPT = \
 		--disable-glibtest

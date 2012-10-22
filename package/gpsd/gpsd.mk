@@ -9,7 +9,7 @@ GPSD_LICENSE = BSD-3c
 GPSD_LICENSE_FILES = COPYING
 GPSD_INSTALL_STAGING = YES
 
-GPSD_DEPENDENCIES = host-scons host-pkg-config
+GPSD_DEPENDENCIES = host-scons host-pkgconf
 
 GPSD_LDFLAGS = $(TARGET_LDFLAGS)
 
@@ -45,7 +45,7 @@ endif
 # Enable or disable Qt binding
 ifeq ($(BR2_PACKAGE_QT_NETWORK),y)
 	GPSD_SCONS_ENV += QMAKE="$(QT_QMAKE)"
-	GPSD_DEPENDENCIES += qt host-pkg-config
+	GPSD_DEPENDENCIES += qt host-pkgconf
 else
 	GPSD_SCONS_OPTS += libQgpsmm=no
 endif

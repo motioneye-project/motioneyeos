@@ -15,6 +15,6 @@ LIBTHEORA_CONF_OPT = \
 		--disable-examples \
 		--disable-spec
 
-LIBTHEORA_DEPENDENCIES = libogg libvorbis host-pkg-config
+LIBTHEORA_DEPENDENCIES = libogg libvorbis host-pkgconf
 
 $(eval $(autotools-package))

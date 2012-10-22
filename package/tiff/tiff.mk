@@ -11,7 +11,7 @@ TIFF_CONF_OPT = \
 	--disable-cxx \
 	--without-x \
 
-TIFF_DEPENDENCIES = host-pkg-config
+TIFF_DEPENDENCIES = host-pkgconf
 
 TIFF_TOOLS_LIST =
 ifeq ($(BR2_PACKAGE_TIFF_TIFF2PDF),y)

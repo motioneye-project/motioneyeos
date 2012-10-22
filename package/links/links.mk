@@ -7,7 +7,7 @@
 LINKS_VERSION = 2.5
 LINKS_SITE = http://links.twibright.com/download
 LINKS_CONF_OPT = --without-x
-LINKS_DEPENDENCIES = host-pkg-config
+LINKS_DEPENDENCIES = host-pkgconf
 
 ifeq ($(BR2_PACKAGE_LINKS_GRAPHICS),y)
 LINKS_CONF_OPT += --enable-graphics

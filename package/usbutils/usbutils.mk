@@ -7,7 +7,7 @@
 USBUTILS_VERSION = 006
 USBUTILS_SITE = $(BR2_KERNEL_MIRROR)/linux/utils/usb/usbutils/
 USBUTILS_SOURCE = usbutils-$(USBUTILS_VERSION).tar.gz
-USBUTILS_DEPENDENCIES = host-pkg-config libusb
+USBUTILS_DEPENDENCIES = host-pkgconf libusb
 USBUTILS_INSTALL_STAGING = YES
 # no configure in tarball
 USBUTILS_AUTORECONF = YES

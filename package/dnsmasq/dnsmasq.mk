@@ -33,7 +33,7 @@ ifeq ($(BR2_PACKAGE_DNSMASQ_IDN),y)
 endif
 
 ifeq ($(BR2_PACKAGE_DNSMASQ_CONNTRACK),y)
-	DNSMASQ_DEPENDENCIES += host-pkg-config libnetfilter_conntrack
+	DNSMASQ_DEPENDENCIES += host-pkgconf libnetfilter_conntrack
 endif
 
 ifeq ($(BR2_PACKAGE_DNSMASQ_CONNTRACK),y)
@@ -44,7 +44,7 @@ endef
 endif
 
 ifeq ($(BR2_PACKAGE_DNSMASQ_LUA),y)
-	DNSMASQ_DEPENDENCIES += lua host-pkg-config
+	DNSMASQ_DEPENDENCIES += lua host-pkgconf
 	DNSMASQ_MAKE_OPT += LDFLAGS+="-ldl"
 
 define DNSMASQ_ENABLE_LUA
@@ -59,7 +59,7 @@ ifneq ($(BR2_LARGEFILE),y)
 endif
 
 ifeq ($(BR2_PACKAGE_DBUS),y)
-	DNSMASQ_DEPENDENCIES += host-pkg-config dbus
+	DNSMASQ_DEPENDENCIES += host-pkgconf dbus
 endif
 
 define DNSMASQ_FIX_PKGCONFIG

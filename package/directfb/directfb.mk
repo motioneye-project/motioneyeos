@@ -120,7 +120,7 @@ ifeq ($(BR2_PACKAGE_DIRECTB_TESTS),y)
 DIRECTFB_CONF_OPT += --with-tests
 endif
 
-HOST_DIRECTFB_DEPENDENCIES = host-pkg-config host-libpng
+HOST_DIRECTFB_DEPENDENCIES = host-pkgconf host-libpng
 HOST_DIRECTFB_CONF_OPT = \
 		--disable-debug \
 		--disable-multi \

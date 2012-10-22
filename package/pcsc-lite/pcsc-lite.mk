@@ -7,7 +7,7 @@ PCSC_LITE_VERSION = 1.8.6
 PCSC_LITE_SOURCE = pcsc-lite-$(PCSC_LITE_VERSION).tar.bz2
 PCSC_LITE_SITE = http://alioth.debian.org/frs/download.php/3757
 PCSC_LITE_INSTALL_STAGING = YES
-PCSC_LITE_DEPENDENCIES = host-pkg-config
+PCSC_LITE_DEPENDENCIES = host-pkgconf
 
 # - libudev and libusb are optional
 # - libudev and libusb can't be used together

@@ -10,7 +10,7 @@ LIBDVDNAV_SITE = http://dvdnav.mplayerhq.hu/releases
 LIBDVDNAV_AUTORECONF = YES
 LIBDVDNAV_INSTALL_STAGING = YES
 
-LIBDVDNAV_DEPENDENCIES = libdvdread host-pkg-config
+LIBDVDNAV_DEPENDENCIES = libdvdread host-pkgconf
 
 # By default libdvdnav tries to find dvdread-config in $PATH. Because
 # of cross compilation, we prefer using pkg-config.

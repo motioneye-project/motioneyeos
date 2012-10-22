@@ -14,7 +14,7 @@
 QT_VERSION = 4.8.3
 QT_SOURCE  = qt-everywhere-opensource-src-$(QT_VERSION).tar.gz
 QT_SITE    = http://releases.qt-project.org/qt4/source
-QT_DEPENDENCIES = host-pkg-config
+QT_DEPENDENCIES = host-pkgconf
 QT_INSTALL_STAGING = YES
 
 ifeq ($(BR2_PACKAGE_QT_LICENSE_APPROVED),y)

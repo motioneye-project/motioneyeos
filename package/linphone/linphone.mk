@@ -10,7 +10,7 @@ LINPHONE_CONF_OPT = \
 	--enable-external-ortp \
 	--enable-external-mediastreamer
 
-LINPHONE_DEPENDENCIES = host-pkg-config ortp mediastreamer libeXosip2 speex
+LINPHONE_DEPENDENCIES = host-pkgconf ortp mediastreamer libeXosip2 speex
 
 ifeq ($(BR2_PACKAGE_LIBGTK2)$(BR2_PACKAGE_XORG7),yy)
 LINPHONE_CONF_OPT += --enable-gtk_ui

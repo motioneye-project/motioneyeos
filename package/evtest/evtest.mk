@@ -10,7 +10,7 @@ EVTEST_SOURCE = evtest-$(EVTEST_VERSION).tar.bz2
 EVTEST_SITE = http://pkgs.fedoraproject.org/repo/pkgs/evtest/evtest-1.30.tar.bz2/27c0902839babfd07136f232c63c895c/
 EVTEST_LICENSE = GPLv2
 EVTEST_LICENSE_FILES = COPYING
-EVTEST_DEPENDENCIES = host-pkg-config
+EVTEST_DEPENDENCIES = host-pkgconf
 
 ifeq ($(BR2_PACKAGE_EVTEST_CAPTURE),y)
 EVTEST_DEPENDENCIES += libxml2

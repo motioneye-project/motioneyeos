@@ -14,7 +14,7 @@ GLIB_NETWORKING_INSTALL_STAGING = YES
 
 GLIB_NETWORKING_DEPENDENCIES = \
 	$(if $(BR2_NEEDS_GETTEXT_IF_LOCALE),gettext) \
-	host-pkg-config \
+	host-pkgconf \
 	host-intltool \
 	libglib2
 

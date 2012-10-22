@@ -9,9 +9,9 @@ LIBEVAS_SOURCE = evas-$(LIBEVAS_VERSION).tar.bz2
 LIBEVAS_SITE = http://download.enlightenment.org/releases/
 LIBEVAS_INSTALL_STAGING = YES
 
-LIBEVAS_DEPENDENCIES = host-pkg-config zlib libeina freetype
+LIBEVAS_DEPENDENCIES = host-pkgconf zlib libeina freetype
 
-HOST_LIBEVAS_DEPENDENCIES = host-pkg-config host-zlib host-libeina \
+HOST_LIBEVAS_DEPENDENCIES = host-pkgconf host-zlib host-libeina \
 				host-freetype host-libpng host-jpeg
 HOST_LIBEVAS_CONF_OPT += \
 	--enable-image-loader-png \

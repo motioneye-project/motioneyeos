@@ -53,7 +53,7 @@ XSERVER_XORG_SERVER_DEPENDENCIES = 	\
 	pixman 				\
 	openssl 			\
 	mcookie 			\
-	host-pkg-config
+	host-pkgconf
 
 XSERVER_XORG_SERVER_CONF_OPT = --disable-config-hal \
 		--disable-xnest --disable-xephyr --disable-dmx \

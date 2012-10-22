@@ -7,7 +7,7 @@ TRANSMISSION_VERSION = 2.33
 TRANSMISSION_SITE = http://download.transmissionbt.com/files/
 TRANSMISSION_SOURCE = transmission-$(TRANSMISSION_VERSION).tar.bz2
 TRANSMISSION_DEPENDENCIES = \
-	host-pkg-config \
+	host-pkgconf \
 	host-intltool \
 	libcurl \
 	libevent \

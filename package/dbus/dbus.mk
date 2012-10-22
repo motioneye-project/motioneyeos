@@ -7,7 +7,7 @@ DBUS_VERSION = 1.4.20
 DBUS_SITE = http://dbus.freedesktop.org/releases/dbus/
 DBUS_INSTALL_STAGING = YES
 
-DBUS_DEPENDENCIES = host-pkg-config
+DBUS_DEPENDENCIES = host-pkgconf
 
 DBUS_CONF_ENV = ac_cv_have_abstract_sockets=yes
 DBUS_CONF_OPT = --with-dbus-user=dbus \
@@ -65,7 +65,7 @@ endef
 
 DBUS_POST_INSTALL_TARGET_HOOKS += DBUS_INSTALL_TARGET_FIXUP
 
-HOST_DBUS_DEPENDENCIES = host-pkg-config host-expat
+HOST_DBUS_DEPENDENCIES = host-pkgconf host-expat
 HOST_DBUS_CONF_OPT = \
 		--with-dbus-user=dbus \
 		--disable-tests \

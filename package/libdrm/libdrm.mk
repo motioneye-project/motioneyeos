@@ -15,7 +15,7 @@ LIBDRM_DEPENDENCIES = \
 	xlib_libXmu \
 	xproto_dri2proto \
 	pthread-stubs \
-	host-pkg-config
+	host-pkgconf
 
 ifeq ($(BR2_PACKAGE_XDRIVER_XF86_VIDEO_INTEL),y)
 LIBDRM_CONF_OPT += --enable-intel

@@ -6,7 +6,7 @@
 
 LIBTORRENT_VERSION = 0.13.2
 LIBTORRENT_SITE = http://libtorrent.rakshasa.no/downloads
-LIBTORRENT_DEPENDENCIES = host-pkg-config libsigc \
+LIBTORRENT_DEPENDENCIES = host-pkgconf libsigc \
 	$(if $(BR2_PACKAGE_OPENSSL),openssl)
 LIBTORRENT_CONF_OPT = --enable-aligned \
 	$(if $(BR2_PACKAGE_OPENSSL),--enable-openssl,--disable-openssl)

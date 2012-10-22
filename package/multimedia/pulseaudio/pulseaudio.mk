@@ -15,7 +15,7 @@ PULSEAUDIO_CONF_OPT = \
 	$(if $(BR2_HAVE_DOCUMENTATION),,--disable-manpages)
 
 PULSEAUDIO_DEPENDENCIES = \
-	host-pkg-config libtool json-c libsndfile speex host-intltool \
+	host-pkgconf libtool json-c libsndfile speex host-intltool \
 	$(if $(BR2_NEEDS_GETTEXT),gettext) \
 	$(if $(BR2_PACKAGE_LIBATOMIC_OPS),libatomic_ops) \
 	$(if $(BR2_PACKAGE_LIBSAMPLERATE),libsamplerate) \

@@ -11,6 +11,6 @@ LIBVORBIS_INSTALL_STAGING = YES
 
 LIBVORBIS_CONF_OPT = --disable-oggtest
 
-LIBVORBIS_DEPENDENCIES = host-pkg-config libogg
+LIBVORBIS_DEPENDENCIES = host-pkgconf libogg
 
 $(eval $(autotools-package))

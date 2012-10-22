@@ -11,7 +11,7 @@ SYLPHEED_SITE = http://sylpheed.sraoss.jp/sylpheed/v$(SYLPHEED_VERSION_MAJOR)
 
 SYLPHEED_CONF_OPT = --disable-gtkspell
 
-SYLPHEED_DEPENDENCIES = host-pkg-config libgtk2
+SYLPHEED_DEPENDENCIES = host-pkgconf libgtk2
 
 # Remove the -I$(includedir) from the Makefiles
 # because it refers to the host /usr/include.

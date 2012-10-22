@@ -8,7 +8,7 @@ NEON_SITE = http://www.webdav.org/neon/
 NEON_INSTALL_STAGING = YES
 NEON_CONF_OPT = --without-gssapi --disable-rpath
 
-NEON_DEPENDENCIES = host-pkg-config
+NEON_DEPENDENCIES = host-pkgconf
 
 ifeq ($(BR2_PACKAGE_NEON_ZLIB),y)
 NEON_CONF_OPT += --with-zlib=$(STAGING_DIR)

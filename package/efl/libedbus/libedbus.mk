@@ -9,7 +9,7 @@ LIBEDBUS_SOURCE = e_dbus-$(LIBEDBUS_VERSION).tar.bz2
 LIBEDBUS_SITE = http://download.enlightenment.org/releases/
 LIBEDBUS_INSTALL_STAGING = YES
 
-LIBEDBUS_DEPENDENCIES = host-pkg-config dbus libeina libecore
+LIBEDBUS_DEPENDENCIES = host-pkgconf dbus libeina libecore
 
 ifeq ($(BR2_PACKAGE_LIBEDBUS_BLUEZ),y)
 LIBEDBUS_CONF_OPT += --enable-ebluez

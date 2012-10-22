@@ -7,7 +7,7 @@ NETWORK_MANAGER_VERSION = 0.9.2.0
 NETWORK_MANAGER_SOURCE = NetworkManager-$(NETWORK_MANAGER_VERSION).tar.bz2
 NETWORK_MANAGER_SITE = http://ftp.gnome.org/pub/GNOME/sources/NetworkManager/0.9/
 NETWORK_MANAGER_INSTALL_STAGING = YES
-NETWORK_MANAGER_DEPENDENCIES = host-pkg-config udev dbus-glib libnl wireless_tools gnutls util-linux
+NETWORK_MANAGER_DEPENDENCIES = host-pkgconf udev dbus-glib libnl wireless_tools gnutls util-linux
 
 NETWORK_MANAGER_CONF_ENV = \
 	ac_cv_path_LIBGCRYPT_CONFIG=$(STAGING_DIR)/usr/bin/libgcrypt-config

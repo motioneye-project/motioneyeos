@@ -15,6 +15,6 @@ ifneq ($(BR2_PACKAGE_XLIB_LIBX11),y)
 LIBGAIL_CONF_OPT += --disable-x
 endif
 
-LIBGAIL_DEPENDENCIES = host-pkg-config libgtk2 pango
+LIBGAIL_DEPENDENCIES = host-pkgconf libgtk2 pango
 
 $(eval $(autotools-package))

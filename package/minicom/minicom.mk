@@ -10,7 +10,7 @@ MINICOM_LICENSE = GPLv2+
 MINICOM_LICENSE_FILES = COPYING
 
 # pkg-config is only used to check for liblockdev, which we don't have
-# in BR, so instead of adding host-pkg-config as a dependency, simply
+# in BR, so instead of adding host-pkgconf as a dependency, simply
 # make sure the host version isn't used so we don't end up with problems
 # if people have liblockdev1-dev installed
 MINICOM_CONF_ENV = PKG_CONFIG=/bin/false

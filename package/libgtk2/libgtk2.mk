@@ -69,7 +69,7 @@ LIBGTK2_CONF_OPT = --disable-glibtest \
 		--enable-explicit-deps=no \
 		--disable-debug
 
-LIBGTK2_DEPENDENCIES = host-pkg-config host-libgtk2 libglib2 cairo pango atk gdk-pixbuf
+LIBGTK2_DEPENDENCIES = host-pkgconf host-libgtk2 libglib2 cairo pango atk gdk-pixbuf
 
 ifeq ($(BR2_PACKAGE_DIRECTFB),y)
 	LIBGTK2_CONF_OPT += --with-gdktarget=directfb

@@ -20,7 +20,7 @@ UDEV_CONF_OPT =			\
 	--with-firmware-path=/lib/firmware		\
 	--disable-introspection
 
-UDEV_DEPENDENCIES = host-gperf host-pkg-config util-linux kmod
+UDEV_DEPENDENCIES = host-gperf host-pkgconf util-linux kmod
 
 ifeq ($(BR2_PACKAGE_UDEV_RULES_GEN),y)
 UDEV_CONF_OPT += --enable-rule_generator

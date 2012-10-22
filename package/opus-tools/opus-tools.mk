@@ -7,7 +7,7 @@
 OPUS_TOOLS_VERSION = 0.1.5
 OPUS_TOOLS_SITE = http://downloads.xiph.org/releases/opus
 OPUS_TOOLS_CONF_OPT = --disable-oggtest --disable-opustest
-OPUS_TOOLS_DEPENDENCIES = opus libogg host-pkg-config
+OPUS_TOOLS_DEPENDENCIES = opus libogg host-pkgconf
 
 ifeq ($(BR2_PACKAGE_LIBPCAP),y)
 OPUS_TOOLS_DEPENDENCIES += libpcap

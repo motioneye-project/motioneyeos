@@ -9,6 +9,6 @@ LIBMMS_SITE = http://downloads.sourceforge.net/project/libmms/libmms/$(LIBMMS_VE
 
 LIBMMS_INSTALL_STAGING = YES
 
-LIBMMS_DEPENDENCIES = host-pkg-config libglib2
+LIBMMS_DEPENDENCIES = host-pkgconf libglib2
 
 $(eval $(autotools-package))

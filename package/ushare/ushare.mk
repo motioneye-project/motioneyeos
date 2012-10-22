@@ -7,7 +7,7 @@
 USHARE_VERSION = 1.1a
 USHARE_SOURCE = ushare-$(USHARE_VERSION).tar.bz2
 USHARE_SITE = http://ushare.geexbox.org/releases
-USHARE_DEPENDENCIES = host-pkg-config libupnp
+USHARE_DEPENDENCIES = host-pkgconf libupnp
 
 ifeq ($(BR2_NEEDS_GETTEXT_IF_LOCALE),y)
 USHARE_DEPENDENCIES += gettext

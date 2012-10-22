@@ -33,7 +33,7 @@ IMAGEMAGICK_CONF_OPT = --program-transform-name='s,,,' \
 		--without-fpx \
 		--without-x
 
-IMAGEMAGICK_DEPENDENCIES = host-pkg-config
+IMAGEMAGICK_DEPENDENCIES = host-pkgconf
 
 ifeq ($(BR2_PACKAGE_FONTCONFIG),y)
 IMAGEMAGICK_CONF_OPT += --with-fontconfig
