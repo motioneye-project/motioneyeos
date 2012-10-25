@@ -3,6 +3,8 @@ config BR2_PACKAGE_FLUXBOX
 	depends on BR2_PACKAGE_XORG7
 	depends on BR2_INSTALL_LIBSTDCPP
 	select BR2_PACKAGE_XLIB_LIBX11
+	# Runtime dependency, needed by startup script
+	select BR2_PACKAGE_XAPP_XMODMAP
 	help
 	  The Fluxbox lightweight window manager for X
 
