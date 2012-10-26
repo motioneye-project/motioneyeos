@@ -1,0 +1,11 @@
+config BR2_PACKAGE_LCDAPI
+	bool "lcdapi"
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	help
+	  C++ client API for lcdproc, containing a set of widget classes.
+
+	  https://github.com/spdawson/lcdapi
+
+comment "lcdapi requires a toolchain with C++ and thread support enabled"
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS
