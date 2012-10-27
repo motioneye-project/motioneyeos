@@ -5,7 +5,7 @@
 #############################################################
 # Release 0.6.0 doesn't build cleanly, so use a recent
 # Subversion trunk snapshot.
-SCONESERVER_VERSION = 178
+SCONESERVER_VERSION = 180
 SCONESERVER_SITE = \
 	https://sconeserver.svn.sourceforge.net/svnroot/sconeserver/trunk
 SCONESERVER_SITE_METHOD = svn
