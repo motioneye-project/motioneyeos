@@ -23,6 +23,13 @@ config BR2_armeb
 	  http://www.arm.com/
 	  http://en.wikipedia.org/wiki/ARM
 
+config BR2_aarch64
+	bool "AArch64"
+	help
+	  Aarch64 is a 64-bit architecture developed by ARM Holdings.
+	  http://www.arm.com/products/processors/instruction-set-architectures/armv8-architecture.php
+	  http://en.wikipedia.org/wiki/ARM
+
 config BR2_avr32
 	bool "AVR32"
 	select BR2_SOFT_FLOAT
@@ -580,6 +587,7 @@ config BR2_ARCH
 	string
 	default "arm"		if BR2_arm
 	default "armeb"		if BR2_armeb
+	default "aarch64"       if BR2_aarch64
 	default "avr32"		if BR2_avr32
 	default "bfin"		if BR2_bfin
 	default "i386"		if BR2_x86_i386
