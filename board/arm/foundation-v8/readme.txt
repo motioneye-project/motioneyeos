@@ -1,0 +1,26 @@
+This is the support for the ARM Foundation v8 machine emulated by the
+ARM software simulator of the AArch64 architecture.
+
+First, one has to download the AArch64 software simulator from:
+
+  https://silver.arm.com/download/download.tm?pv=1317469
+
+Then, use the arm_foundationv8_defconfig configuration to build your
+Buildroot system.
+
+Note that the Busybox build will fail due to the lack of rpc/rpc.h
+(the AArch64 toolchain does not have RPC support). Run 'make
+busybox-menuconfig', and in 'Linux System Utilities', disable the
+option 'Support mounting NFS file systems on Linux < 2.6.23' and
+restart the build. This problem will be fix in upcomins versions of
+Buildroot.
+
+Finally, boot your system with:
+
+ ${LOCATION_OF_FOUNDATIONV8_SIMULATOR}/Foundation_v8 \
+    --image output/images/linux-system.axf \
+    --block-device output/images/rootfs.ext2 \
+    --network=nat
+
+You can get network access from within the simulated environment
+by requesting an IP address using DHCP (run the command 'udhcpc').
