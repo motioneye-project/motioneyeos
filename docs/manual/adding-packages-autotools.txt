@@ -21,7 +21,7 @@ package, with an example :
 09: LIBFOO_INSTALL_STAGING = YES
 10: LIBFOO_INSTALL_TARGET = YES
 11: LIBFOO_CONF_OPT = --enable-shared
-12: LIBFOO_DEPENDENCIES = libglib2 host-pkg-config
+12: LIBFOO_DEPENDENCIES = libglib2 host-pkgconf
 13:
 14: $(eval $(autotools-package))
 ------------------------
