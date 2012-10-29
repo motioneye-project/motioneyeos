@@ -3,7 +3,7 @@
 # lcdapi
 #
 #############################################################
-LCDAPI_VERSION = v0.3
+LCDAPI_VERSION = v0.4
 LCDAPI_SITE = http://github.com/spdawson/lcdapi/tarball/$(LCDAPI_VERSION)
 LCDAPI_LICENSE = LGPLv2.1+
 LCDAPI_LICENSE_FILES = COPYING
