@@ -5,6 +5,8 @@ config BR2_PACKAGE_SQUID
 	bool "squid"
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_INET_IPV6
+	# needs fork()
+	depends on BR2_USE_MMU
 	select BR2_PACKAGE_LIBCAP
 	help
 	  Caching proxy for the Web supporting HTTP, HTTPS, FTP, and more.

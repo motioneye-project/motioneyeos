@@ -4,19 +4,29 @@
 #
 #############################################################
 
-SQUID_VERSION = 3.1.20
-SQUID_SITE = http://www.squid-cache.org/Versions/v3/3.1
-SQUID_DEPENDENCIES = libcap host-libcap
+SQUID_VERSION = 3.2.3
+SQUID_SITE = http://www.squid-cache.org/Versions/v3/3.2
+SQUID_LICENSE = GPLv2+
+SQUID_LICENSE_FILES = COPYING
+SQUID_DEPENDENCIES = libcap host-libcap host-pkgconf \
+	$(if $(BR2_PACKAGE_LIBNETFILTER_CONNTRACK),libnetfilter_conntrack)
 SQUID_CONF_ENV =	ac_cv_epoll_works=yes ac_cv_func_setresuid=yes \
 			ac_cv_func_va_copy=yes ac_cv_func___va_copy=yes \
 			ac_cv_func_strnstr=no ac_cv_have_squid=yes
-SQUID_CONF_OPT =	--enable-wccp --enable-wccpv2 --enable-async-io=8 \
-			--enable-htcp --enable-snmp --enable-linux-netfilter \
+SQUID_CONF_OPT =	--enable-async-io=8 --enable-linux-netfilter \
 			--enable-removal-policies="lru,heap" \
 			--with-filedescriptors=1024 --disable-ident-lookups \
-			--enable-auth="digest" --disable-strict-error-checking \
-			--enable-digest-auth-helpers="password" \
+			--enable-auth-basic="fake getpwnam" \
+			--enable-auth-digest="file" \
+			--enable-auth-negotiate="wrapper" \
+			--enable-auth-ntlm="fake" \
+			--disable-strict-error-checking \
 			--enable-external-acl-helpers="ip_user"
+
+# On uClibc librt needs libpthread
+ifeq ($(BR2_TOOLCHAIN_HAS_THREADS)$(BR2_TOOLCHAIN_BUILDROOT)$(BR2_TOOLCHAIN_EXTERNAL_UCLIBC)$(BR2_TOOLCHAIN_CTNG_uClibc),yy)
+	SQUID_CONF_ENV += ac_cv_search_shm_open="-lrt -lpthread"
+endif
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 	SQUID_CONF_OPT += --enable-ssl
