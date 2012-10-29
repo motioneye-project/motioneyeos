@@ -1,4 +1,4 @@
-CMAKE_VERSION = 2.8.5
+CMAKE_VERSION = 2.8.9
 CMAKE_SITE = http://www.cmake.org/files/v2.8/
 
 define HOST_CMAKE_CONFIGURE_CMDS
