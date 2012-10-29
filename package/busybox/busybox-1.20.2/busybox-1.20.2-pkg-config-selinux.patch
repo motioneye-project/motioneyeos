@@ -1,0 +1,67 @@
+From b1cec5003b73080a8aa7ea277621bf1c71c3e8d6 Mon Sep 17 00:00:00 2001
+From: Mike Frysinger <vapier@gentoo.org>
+Date: Sat, 20 Oct 2012 15:01:26 -0400
+Subject: [PATCH] build system: use pkg-config to look up selinux libs
+
+Newer versions of libselinux has started linking against more libs.
+Rather than continuing hardcoding things, switch to using pkg-config
+to query for its dependencies.
+
+Signed-off-by: Mike Frysinger <vapier@gentoo.org>
+---
+ Makefile       |  1 +
+ Makefile.flags | 12 +++++++++++-
+ 2 files changed, 12 insertions(+), 1 deletion(-)
+
+diff --git a/Makefile b/Makefile
+index fccde4a..3a0a5e1 100644
+--- a/Makefile
++++ b/Makefile
+@@ -297,6 +297,7 @@ NM		= $(CROSS_COMPILE)nm
+ STRIP		= $(CROSS_COMPILE)strip
+ OBJCOPY		= $(CROSS_COMPILE)objcopy
+ OBJDUMP		= $(CROSS_COMPILE)objdump
++PKG_CONFIG	?= $(CROSS_COMPILE)pkg-config
+ AWK		= awk
+ GENKSYMS	= scripts/genksyms/genksyms
+ DEPMOD		= /sbin/depmod
+diff --git a/Makefile.flags b/Makefile.flags
+index c43c8dc..15dcc1f 100644
+--- a/Makefile.flags
++++ b/Makefile.flags
+@@ -74,6 +74,12 @@ ARCH_FPIC ?= -fpic
+ ARCH_FPIE ?= -fpie
+ ARCH_PIE ?= -pie
+ 
++# Usage: $(eval $(call pkg_check_modules,VARIABLE-PREFIX,MODULES))
++define pkg_check_modules
++$(1)_CFLAGS := $(shell $(PKG_CONFIG) $(PKG_CONFIG_FLAGS) --cflags $(2))
++$(1)_LIBS := $(shell $(PKG_CONFIG) $(PKG_CONFIG_FLAGS) --libs $(2))
++endef
++
+ ifeq ($(CONFIG_BUILD_LIBBUSYBOX),y)
+ # on i386: 14% smaller libbusybox.so
+ # (code itself is 9% bigger, we save on relocs/PLT/GOT)
+@@ -85,6 +91,7 @@ endif
+ 
+ ifeq ($(CONFIG_STATIC),y)
+ CFLAGS_busybox += -static
++PKG_CONFIG_FLAGS += --static
+ endif
+ 
+ ifeq ($(CONFIG_PIE),y)
+@@ -127,7 +134,10 @@ LDLIBS += pam pam_misc pthread
+ endif
+ 
+ ifeq ($(CONFIG_SELINUX),y)
+-LDLIBS += selinux sepol
++SELINUX_PC_MODULES = libselinux libsepol
++$(eval $(call pkg_check_modules,SELINUX,$(SELINUX_PC_MODULES)))
++CPPFLAGS += $(SELINUX_CFLAGS)
++LDLIBS += $(if $(SELINUX_LIBS),$(SELINUX_LIBS:-l%=%),$(SELINUX_PC_MODULES:lib%=%))
+ endif
+ 
+ ifeq ($(CONFIG_EFENCE),y)
+-- 
+1.7.12
+
