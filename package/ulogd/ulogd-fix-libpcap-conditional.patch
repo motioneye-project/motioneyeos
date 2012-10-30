@@ -1,0 +1,29 @@
+From 08387386821f356834bac14c7c5ea7296fb0f428 Mon Sep 17 00:00:00 2001
+From: Gustavo Zacarias <gustavo@zacarias.com.ar>
+Date: Tue, 9 Oct 2012 16:23:12 -0300
+Subject: [PATCH] autoconf/ulogd: fix broken libpcap AM_CONDITIONAL
+
+The AM_CONDITIONAL lacks the opening bracket, hence it always evaluates
+as true, even if there's no libpcap found thus causing build breakage.
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+---
+ configure.ac |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 10b6e1f..57c596c 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -21,7 +21,7 @@ AC_SEARCH_LIBS([dlopen], [dl], [libdl_LIBS="$LIBS"; LIBS=""])
+ AC_SUBST([libdl_LIBS])
+ AC_SEARCH_LIBS([pcap_close], [pcap], [libpcap_LIBS="-lpcap"; LIBS=""])
+ AC_SUBST([libpcap_LIBS])
+-AM_CONDITIONAL([HAVE_PCAP], test -n "$libpcap_LIBS"])
++AM_CONDITIONAL([HAVE_PCAP],[test -n "$libpcap_LIBS"])
+ 
+ dnl Checks for header files.
+ AC_HEADER_DIRENT
+-- 
+1.7.8.6
+
