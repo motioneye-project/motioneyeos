@@ -9,8 +9,7 @@ STRACE_SOURCE = strace-$(STRACE_VERSION).tar.xz
 STRACE_SITE = http://downloads.sourceforge.net/project/strace/strace/$(STRACE_VERSION)
 
 STRACE_CONF_ENV = ac_cv_header_linux_if_packet_h=yes \
-		  ac_cv_header_linux_netlink_h=yes \
-	          $(if $(BR2_LARGEFILE),ac_cv_type_stat64=yes,ac_cv_type_stat64=no)
+		  ac_cv_header_linux_netlink_h=yes
 
 ifeq ($(BR2_LARGEFILE),y)
 # strace gets confused when lfs mode is forced, so don't
