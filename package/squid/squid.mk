@@ -16,6 +16,7 @@ SQUID_CONF_ENV =	ac_cv_epoll_works=yes ac_cv_func_setresuid=yes \
 SQUID_CONF_OPT =	--enable-async-io=8 --enable-linux-netfilter \
 			--enable-removal-policies="lru,heap" \
 			--with-filedescriptors=1024 --disable-ident-lookups \
+			--with-krb5-config=no \
 			--enable-auth-basic="fake getpwnam" \
 			--enable-auth-digest="file" \
 			--enable-auth-negotiate="wrapper" \
