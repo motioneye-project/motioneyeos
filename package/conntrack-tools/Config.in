@@ -1,9 +1,12 @@
 config BR2_PACKAGE_CONNTRACK_TOOLS
 	bool "conntrack-tools"
 	depends on BR2_INET_IPV6
+	depends on BR2_INET_RPC
 	depends on BR2_LARGEFILE
 	select BR2_PACKAGE_LIBNETFILTER_CONNTRACK
+	select BR2_PACKAGE_LIBNETFILTER_CTHELPER
 	select BR2_PACKAGE_LIBNETFILTER_CTTIMEOUT
+	select BR2_PACKAGE_LIBNETFILTER_QUEUE
 	help
 	  The conntrack-tools are a set of tools targeted at
 	  system administrators.
@@ -12,5 +15,5 @@ config BR2_PACKAGE_CONNTRACK_TOOLS
 
 	  http://www.netfilter.org/projects/conntrack-tools/
 
-comment "conntrack-tools requires a toolchain with IPV6 and LARGEFILE support"
-	depends on !BR2_INET_IPV6 || !BR2_LARGEFILE
+comment "conntrack-tools requires a toolchain with IPV6, LARGEFILE and RPC support"
+	depends on !BR2_INET_IPV6 || !BR2_LARGEFILE || !BR2_INET_RPC
