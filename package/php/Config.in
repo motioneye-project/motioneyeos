@@ -25,6 +25,8 @@ choice
 
 config BR2_PACKAGE_PHP_SAPI_CGI
 	bool "CGI"
+	# CGI uses fork()
+	depends on BR2_USE_MMU
 	select BR2_PACKAGE_PHP_CGI
 	help
 	  Common Gateway Interface
@@ -37,6 +39,8 @@ config BR2_PACKAGE_PHP_SAPI_CLI
 
 config BR2_PACKAGE_PHP_SAPI_CLI_CGI
         bool "CGI and CLI"
+	# CGI uses fork()
+	depends on BR2_USE_MMU
 	select BR2_PACKAGE_PHP_CLI
 	select BR2_PACKAGE_PHP_CGI
 	help
