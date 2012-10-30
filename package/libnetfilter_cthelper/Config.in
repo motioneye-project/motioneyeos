@@ -1,0 +1,13 @@
+config BR2_PACKAGE_LIBNETFILTER_CTHELPER
+	bool "libnetfilter_cthelper"
+	depends on BR2_LARGEFILE
+	select BR2_PACKAGE_LIBMNL
+	help
+	  libnetfilter_cthelper is the userspace library that provides
+	  the programming interface to the user-space helper infrastructure
+	  available since Linux kernel 3.6.
+
+	  http://www.netfilter.org/projects/libnetfilter_cthelper/
+
+comment "libnetfilter_cthelper requires a toolchain with LARGEFILE support"
+	depends on !BR2_LARGEFILE
