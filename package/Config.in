@@ -550,6 +550,7 @@ endmenu
 
 menu "Networking applications"
 source "package/argus/Config.in"
+source "package/arptables/Config.in"
 source "package/avahi/Config.in"
 source "package/axel/Config.in"
 source "package/bluez_utils/Config.in"

@@ -1,0 +1,6 @@
+config BR2_PACKAGE_ARPTABLES
+	bool "arptables"
+	help
+	  Tool to set up, maintain, and inspect the tables of ARP rules.
+
+	  http://ebtables.sourceforge.net
