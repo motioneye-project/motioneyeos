@@ -1,0 +1,9 @@
+config BR2_PACKAGE_GRANTLEE
+	bool "grantlee"
+	select BR2_PACKAGE_QT_STL
+	select BR2_PACKAGE_QT_SCRIPT
+	select BR2_PACKAGE_QT_GUI_MODULE
+	help
+	  Qt implemantation of the Django template framework
+
+	  http://www.grantlee.org
