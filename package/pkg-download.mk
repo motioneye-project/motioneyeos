@@ -73,10 +73,13 @@ domainseparator=$(if $(1),$(1),/)
 # "external dependencies" of a given build configuration.
 ################################################################################
 
+# Try a shallow clone - but that only works if the version is a ref (tag or
+# branch). Fall back on a full clone if it's a generic sha1.
 define DOWNLOAD_GIT
 	test -e $(DL_DIR)/$($(PKG)_SOURCE) || \
 	(pushd $(DL_DIR) > /dev/null && \
-	$(GIT) clone --bare $($(PKG)_SITE) $($(PKG)_BASE_NAME) && \
+	 ($(GIT) clone --depth 1 -b $($(PKG)_DL_VERSION) --bare $($(PKG)_SITE) $($(PKG)_BASE_NAME) || \
+	  $(GIT) clone --bare $($(PKG)_SITE) $($(PKG)_BASE_NAME)) && \
 	pushd $($(PKG)_BASE_NAME) > /dev/null && \
 	$(GIT) archive --format=tar --prefix=$($(PKG)_BASE_NAME)/ $($(PKG)_DL_VERSION) | \
 		gzip -c > $(DL_DIR)/$($(PKG)_SOURCE) && \
