@@ -135,10 +135,7 @@ else
 AVAHI_CONF_OPT += --disable-python
 endif
 
-ifeq ($(BR2_PACKAGE_GETTEXT),y)
-AVAHI_DEPENDENCIES += gettext
-AVAHI_MAKE_OPT = LIBS=-lintl
-endif
+AVAHI_MAKE_OPT += $(if $(BR2_NEEDS_GETTEXT_IF_LOCALE),LIBS=-lintl)
 
 define AVAHI_REMOVE_INITSCRIPT
 	rm -rf $(TARGET_DIR)/etc/init.d/avahi-*
