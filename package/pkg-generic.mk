@@ -268,13 +268,13 @@ ifndef $(2)_LICENSE
  endif
 endif
 
+$(2)_LICENSE			?= unknown
+
 ifndef $(2)_LICENSE_FILES
  ifdef $(3)_LICENSE_FILES
   $(2)_LICENSE_FILES = $($(3)_LICENSE_FILES)
  endif
 endif
-
-$(2)_LICENSE			?= unknown
 
 $(2)_DEPENDENCIES ?= $(filter-out $(1),$(patsubst host-host-%,host-%,$(addprefix host-,$($(3)_DEPENDENCIES))))
 
