@@ -67,11 +67,32 @@ config BR2_TARGET_BAREBOX_CUSTOM_GIT_VERSION
 
 endif
 
+
+choice
+	prompt "Barebox configuration"
+	default BR2_TARGET_BAREBOX_USE_DEFCONFIG
+
+config BR2_TARGET_BAREBOX_USE_DEFCONFIG
+	bool "Using a defconfig"
+
+config BR2_TARGET_BAREBOX_USE_CUSTOM_CONFIG
+	bool "Using a custom config file"
+
+endchoice
+
 config BR2_TARGET_BAREBOX_BOARD_DEFCONFIG
 	string "board defconfig"
+	depends on BR2_TARGET_BAREBOX_USE_DEFCONFIG
 	help
 	  Name of the board for which Barebox should be built, without
 	  the _defconfig suffix.
+
+
+config BR2_TARGET_BAREBOX_CUSTOM_CONFIG_FILE
+	string "Configuration file path"
+	depends on BR2_TARGET_BAREBOX_USE_CUSTOM_CONFIG
+	help
+	  Path to the barebox configuration file
 
 config BR2_TARGET_BAREBOX_BAREBOXENV
 	bool "bareboxenv tool in target"
