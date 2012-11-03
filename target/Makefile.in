@@ -1,3 +1,0 @@
-# make sure to put everything that is board-specific before the tarroot targets
-include target/generic/Makefile.in
-

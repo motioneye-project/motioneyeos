@@ -259,7 +259,7 @@ STAMP_DIR:=$(BASE_DIR)/stamps
 BINARIES_DIR:=$(BASE_DIR)/images
 TARGET_DIR:=$(BASE_DIR)/target
 TOOLCHAIN_DIR=$(BASE_DIR)/toolchain
-TARGET_SKELETON=$(TOPDIR)/fs/skeleton
+TARGET_SKELETON=$(TOPDIR)/system/skeleton
 
 LEGAL_INFO_DIR=$(BASE_DIR)/legal-info
 REDIST_SOURCES_DIR=$(LEGAL_INFO_DIR)/sources
@@ -310,7 +310,6 @@ endif
 include package/*/*.mk
 
 include boot/common.mk
-include target/Makefile.in
 include linux/linux.mk
 
 TARGETS+=target-finalize
@@ -325,6 +324,7 @@ TARGETS+=target-generatelocales
 endif
 endif
 
+include system/system.mk
 include fs/common.mk
 
 TARGETS_CLEAN:=$(patsubst %,%-clean,$(TARGETS))

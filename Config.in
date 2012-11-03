@@ -419,7 +419,7 @@ endmenu
 
 source "toolchain/Config.in"
 
-source "target/generic/Config.in"
+source "system/Config.in"
 
 source "package/Config.in"
 

@@ -11,8 +11,8 @@ There are a few ways to customize the resulting target filesystem:
   rebuild your toolchain and tools, these changes will be lost.
 
 * Create your own 'target skeleton'. You can start with the default
-  skeleton available under +fs/skeleton+ and then customize it to suit
-  your needs. The +BR2_ROOTFS_SKELETON_CUSTOM+ and
+  skeleton available under +system/skeleton+ and then customize it to
+  suit your needs. The +BR2_ROOTFS_SKELETON_CUSTOM+ and
   +BR2_ROOTFS_SKELETON_CUSTOM_PATH+ will allow you to specify the
   location of your custom skeleton. At build time, the contents of the
   skeleton are copied to output/target before any package
