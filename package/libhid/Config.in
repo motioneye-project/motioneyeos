@@ -1,6 +1,7 @@
 config BR2_PACKAGE_LIBHID
 	bool "libhid"
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libusb
+	depends on !BR2_avr32 # timerfd not in uClibc-0.9.31
 	select BR2_PACKAGE_LIBUSB
 	select BR2_PACKAGE_LIBUSB_COMPAT
 	help
@@ -9,4 +10,4 @@ config BR2_PACKAGE_LIBHID
 	  http://libhid.alioth.debian.org
 
 comment "libhid needs a toolchain with thread support"
-	depends on !BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_TOOLCHAIN_HAS_THREADS && !BR2_avr32
