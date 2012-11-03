@@ -349,7 +349,8 @@ of the package construction. The hooks are more useful for packages
 using the autotools infrastructure described below.  However, since
 they are provided by the generic infrastructure, they are documented
 here. The exception is +LIBFOO_POST_PATCH_HOOKS+.  Patching the
-package is not user definable, so +LIBFOO_POST_PATCH_HOOKS+ will be
+package and producing legal info are not user definable, so
++LIBFOO_POST_PATCH_HOOKS+ and +LIBFOO_POST_LEGAL_INFO_HOOKS+ will be
 userful for generic packages.
 
 The following hook points are available:
@@ -361,6 +362,7 @@ The following hook points are available:
 * +LIBFOO_POST_INSTALL_HOOKS+ (for host packages only)
 * +LIBFOO_POST_INSTALL_STAGING_HOOKS+ (for target packages only)
 * +LIBFOO_POST_INSTALL_TARGET_HOOKS+ (for target packages only)
+* +LIBFOO_POST_LEGAL_INFO_HOOKS+
 
 These variables are 'lists' of variable names containing actions to be
 performed at this hook point. This allows several hooks to be
