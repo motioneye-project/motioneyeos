@@ -7,4 +7,4 @@ config BR2_PACKAGE_XSTROKE
 	help
 	  Handwriting recognition for X
 
-	  http://avr32linux.org/twiki/pub/Main/XStroke
+	  http://mirror.egtvedt.no/avr32linux.org/twiki/pub/Main/XStroke

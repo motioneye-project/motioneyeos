@@ -4,4 +4,4 @@ config BR2_PACKAGE_TORSMO
 	help
 	  Torsmo is a system monitor that sits in the corner of your desktop.
 
-	  http://avr32linux.org/twiki/pub/Main/Torsmo
+	  http://mirror.egtvedt.no/avr32linux.org/twiki/pub/Main/Torsmo
