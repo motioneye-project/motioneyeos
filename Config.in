@@ -14,7 +14,7 @@ config BR2_HOSTARCH
 	string
 	option env="HOSTARCH"
 
-source "target/Config.in.arch"
+source "arch/Config.in"
 
 menu "Build options"
 

@@ -1,0 +1,62 @@
+choice
+	prompt "Target Architecture Variant"
+	depends on BR2_arm || BR2_armeb
+	default BR2_generic_arm
+	help
+	  Specific CPU variant to use
+
+config BR2_generic_arm
+	bool "generic_arm"
+config BR2_arm7tdmi
+	bool "arm7tdmi"
+config BR2_arm610
+	bool "arm610"
+config BR2_arm710
+	bool "arm710"
+config BR2_arm720t
+	bool "arm720t"
+config BR2_arm920t
+	bool "arm920t"
+config BR2_arm922t
+	bool "arm922t"
+config BR2_arm926t
+	bool "arm926t"
+config BR2_arm10t
+	bool "arm10t"
+config BR2_arm1136jf_s
+	bool "arm1136jf_s"
+config BR2_arm1176jz_s
+	bool "arm1176jz-s"
+config BR2_arm1176jzf_s
+	bool "arm1176jzf-s"
+config BR2_cortex_a8
+	bool "cortex-A8"
+config BR2_cortex_a9
+	bool "cortex-A9"
+config BR2_sa110
+	bool "sa110"
+config BR2_sa1100
+	bool "sa1100"
+config BR2_xscale
+	bool "xscale"
+config BR2_iwmmxt
+	bool "iwmmxt"
+endchoice
+
+choice
+	prompt "Target ABI"
+	depends on BR2_arm || BR2_armeb
+	default BR2_ARM_EABI
+	help
+	  Application Binary Interface to use
+
+	  Note:
+	    Using OABI is discouraged.
+
+config BR2_ARM_EABI
+	bool "EABI"
+config BR2_ARM_OABI
+	bool "OABI"
+	depends on !BR2_GCC_VERSION_4_7_X
+endchoice
+

@@ -1,0 +1,38 @@
+choice
+	prompt "Target Architecture Variant"
+	depends on BR2_sparc
+	default BR2_sparc_v7
+	help
+	  Specific CPU variant to use
+
+config BR2_sparc_v7
+	bool "v7"
+config BR2_sparc_cypress
+	bool "cypress"
+config BR2_sparc_v8
+	bool "v8"
+config BR2_sparc_sparchfleon
+	bool "hfleon"
+config BR2_sparc_sparchfleonv8
+	bool "hfleonv8"
+config BR2_sparc_sparcsfleon
+	bool "sfleon"
+config BR2_sparc_sparcsfleonv8
+	bool "sfleonv8"
+config BR2_sparc_supersparc
+	bool "supersparc"
+config BR2_sparc_sparclite
+	bool "sparclite"
+config BR2_sparc_f930
+	bool "f930"
+config BR2_sparc_f934
+	bool "f934"
+config BR2_sparc_hypersparc
+	bool "hypersparc"
+config BR2_sparc_sparclite86x
+	bool "sparclite86x"
+config BR2_sparc_sparclet
+	bool "sparclet"
+config BR2_sparc_tsc701
+	bool "tsc701"
+endchoice

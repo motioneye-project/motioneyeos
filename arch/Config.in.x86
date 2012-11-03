@@ -1,0 +1,146 @@
+# i386/x86_64 cpu features
+config BR2_X86_CPU_HAS_MMX
+	bool
+config BR2_X86_CPU_HAS_SSE
+	bool
+config BR2_X86_CPU_HAS_SSE2
+	bool
+config BR2_X86_CPU_HAS_SSE3
+	bool
+config BR2_X86_CPU_HAS_SSSE3
+	bool
+
+choice
+	prompt "Target Architecture Variant"
+	depends on BR2_i386 || BR2_x86_64
+	default BR2_x86_i586 if BR2_i386
+	default BR2_x86_generic if BR2_x86_64
+	help
+	  Specific CPU variant to use
+
+config BR2_x86_generic
+	bool "generic"
+config BR2_x86_i386
+	bool "i386"
+	depends on !BR2_x86_64
+config BR2_x86_i486
+	bool "i486"
+	depends on !BR2_x86_64
+config BR2_x86_i586
+	bool "i586"
+	depends on !BR2_x86_64
+config BR2_x86_i686
+	bool "i686"
+	depends on !BR2_x86_64
+config BR2_x86_pentiumpro
+	bool "pentium pro"
+	depends on !BR2_x86_64
+config BR2_x86_pentium_mmx
+	bool "pentium MMX"
+	select BR2_X86_CPU_HAS_MMX
+	depends on !BR2_x86_64
+config BR2_x86_pentium_m
+	bool "pentium mobile"
+	select BR2_X86_CPU_HAS_MMX
+	select BR2_X86_CPU_HAS_SSE
+	depends on !BR2_x86_64
+config BR2_x86_pentium2
+	bool "pentium2"
+	select BR2_X86_CPU_HAS_MMX
+	depends on !BR2_x86_64
+config BR2_x86_pentium3
+	bool "pentium3"
+	select BR2_X86_CPU_HAS_MMX
+	select BR2_X86_CPU_HAS_SSE
+	depends on !BR2_x86_64
+config BR2_x86_pentium4
+	bool "pentium4"
+	select BR2_X86_CPU_HAS_MMX
+	select BR2_X86_CPU_HAS_SSE
+	select BR2_X86_CPU_HAS_SSE2
+	depends on !BR2_x86_64
+config BR2_x86_prescott
+	bool "prescott"
+	select BR2_X86_CPU_HAS_MMX
+	select BR2_X86_CPU_HAS_SSE
+	select BR2_X86_CPU_HAS_SSE2
+	select BR2_X86_CPU_HAS_SSE3
+	depends on !BR2_x86_64
+config BR2_x86_nocona
+	bool "nocona"
+	select BR2_X86_CPU_HAS_MMX
+	select BR2_X86_CPU_HAS_SSE
+	select BR2_X86_CPU_HAS_SSE2
+	select BR2_X86_CPU_HAS_SSE3
+config BR2_x86_core2
+	bool "core2"
+	select BR2_X86_CPU_HAS_MMX
+	select BR2_X86_CPU_HAS_SSE
+	select BR2_X86_CPU_HAS_SSE2
+	select BR2_X86_CPU_HAS_SSE3
+	select BR2_X86_CPU_HAS_SSSE3
+config BR2_x86_atom
+	bool "atom"
+	select BR2_X86_CPU_HAS_MMX
+	select BR2_X86_CPU_HAS_SSE
+	select BR2_X86_CPU_HAS_SSE2
+	select BR2_X86_CPU_HAS_SSE3
+	select BR2_X86_CPU_HAS_SSSE3
+config BR2_x86_k6
+	bool "k6"
+	select BR2_X86_CPU_HAS_MMX
+	depends on !BR2_x86_64
+config BR2_x86_k6_2
+	bool "k6-2"
+	select BR2_X86_CPU_HAS_MMX
+	depends on !BR2_x86_64
+config BR2_x86_athlon
+	bool "athlon"
+	select BR2_X86_CPU_HAS_MMX
+	depends on !BR2_x86_64
+config BR2_x86_athlon_4
+	bool "athlon-4"
+	select BR2_X86_CPU_HAS_MMX
+	select BR2_X86_CPU_HAS_SSE
+	depends on !BR2_x86_64
+config BR2_x86_opteron
+	bool "opteron"
+	select BR2_X86_CPU_HAS_MMX
+	select BR2_X86_CPU_HAS_SSE
+	select BR2_X86_CPU_HAS_SSE2
+config BR2_x86_opteron_sse3
+	bool "opteron w/ SSE3"
+	select BR2_X86_CPU_HAS_MMX
+	select BR2_X86_CPU_HAS_SSE
+	select BR2_X86_CPU_HAS_SSE2
+	select BR2_X86_CPU_HAS_SSE3
+config BR2_x86_barcelona
+	bool "barcelona"
+	select BR2_X86_CPU_HAS_MMX
+	select BR2_X86_CPU_HAS_SSE
+	select BR2_X86_CPU_HAS_SSE2
+	select BR2_X86_CPU_HAS_SSE3
+config BR2_x86_geode
+	bool "geode"
+	# Don't include MMX support because there several variant of geode
+	# processor, some with MMX support, some without.
+	# See: http://en.wikipedia.org/wiki/Geode_%28processor%29
+	depends on !BR2_x86_64
+config BR2_x86_c3
+	bool "Via/Cyrix C3 (Samuel/Ezra cores)"
+	select BR2_X86_CPU_HAS_MMX
+	depends on !BR2_x86_64
+config BR2_x86_c32
+	bool "Via C3-2 (Nehemiah cores)"
+	select BR2_X86_CPU_HAS_MMX
+	select BR2_X86_CPU_HAS_SSE
+	depends on !BR2_x86_64
+config BR2_x86_winchip_c6
+	bool "IDT Winchip C6"
+	select BR2_X86_CPU_HAS_MMX
+	depends on !BR2_x86_64
+config BR2_x86_winchip2
+	bool "IDT Winchip 2"
+	select BR2_X86_CPU_HAS_MMX
+	depends on !BR2_x86_64
+endchoice
