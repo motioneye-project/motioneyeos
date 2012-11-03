@@ -24,6 +24,11 @@ define IPROUTE2_WITH_IPTABLES
 	$(SED) "s/-DIPT/-DXT/" $(IPROUTE2_DIR)/tc/Makefile
 	echo "TC_CONFIG_XT:=y" >>$(IPROUTE2_DIR)/Config
 endef
+else
+define IPROUTE2_WITH_IPTABLES
+	# em_ipset needs xtables, but configure misdetects it
+	echo "TC_CONFIG_IPSET:=n" >>$(IPROUTE2_DIR)/Config
+endef
 endif
 
 define IPROUTE2_CONFIGURE_CMDS
