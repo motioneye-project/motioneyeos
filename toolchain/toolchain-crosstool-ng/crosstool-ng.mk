@@ -268,7 +268,7 @@ CTNG_FIX_DOT_CONFIG_PATHS_SED += s:^(CT_SYSROOT_DIR_PREFIX)=.*:\1="":;
 ifeq ($(BR2_TOOLCHAIN_CTNG_uClibc),y)
 
 # Handle the locales option
-ifneq ($(call qstrip,$(BR2_ENABLE_LOCALE)),)
+ifneq ($(call qstrip,$(BR2_TOOLCHAIN_CTNG_uClibc_LOCALE)),)
 CTNG_FIX_DOT_CONFIG_SED += s:^\# (CT_LIBC_UCLIBC_LOCALES) is not set:\1=y\n\# CT_LIBC_UCLIBC_LOCALES_PREGEN_DATA is not set:;
 CTNG_FIX_DOT_CONFIG_SED += s:^(CT_LIBC_UCLIBC_LOCALES_PREGEN_DATA)=.*:\# \1 is not set:;
 else
@@ -276,28 +276,28 @@ CTNG_FIX_DOT_CONFIG_SED += s:^(CT_LIBC_UCLIBC_LOCALES)=.*:\# \1 is not set:;
 endif
 
 # Handle the wide-char option
-ifneq ($(call qstrip,$(BR2_USE_WCHAR)),)
+ifneq ($(call qstrip,$(BR2_TOOLCHAIN_CTNG_uClibc_WCHAR)),)
 CTNG_FIX_DOT_CONFIG_SED += s:^\# (CT_LIBC_UCLIBC_WCHAR) is not set:\1=y:;
 else
 CTNG_FIX_DOT_CONFIG_SED += s:^(CT_LIBC_UCLIBC_WCHAR)=.*:\# \1 is not set:;
 endif
 
 # Handle the LFS option
-ifneq ($(call qstrip,$(BR2_LARGEFILE)),)
+ifneq ($(call qstrip,$(BR2_TOOLCHAIN_CTNG_uClibc_LARGEFILE)),)
 CTNG_FIX_DOT_CONFIG_LIBC_SED += s:^\# (UCLIBC_HAS_LFS) is not set:\1=y:;
 else
 CTNG_FIX_DOT_CONFIG_LIBC_SED += s:^(UCLIBC_HAS_LFS)=.*:\# \1 is not set:;
 endif
 
 # Handle the IPv6 option
-ifneq ($(call qstrip,$(BR2_INET_IPV6)),)
+ifneq ($(call qstrip,$(BR2_TOOLCHAIN_CTNG_uClibc_INET_IPV6)),)
 CTNG_FIX_DOT_CONFIG_LIBC_SED += s:^\# (UCLIBC_HAS_IPV6) is not set:\1=y:;
 else
 CTNG_FIX_DOT_CONFIG_LIBC_SED += s:^(UCLIBC_HAS_IPV6)=.*:\# \1 is not set:;
 endif
 
 # Handle the RPC option
-ifneq ($(call qstrip,$(BR2_INET_RPC)),)
+ifneq ($(call qstrip,$(BR2_TOOLCHAIN_CTNG_uClibc_INET_RPC)),)
 CTNG_FIX_DOT_CONFIG_LIBC_SED += s:^\# (UCLIBC_HAS_RPC) is not set:\1=y\nUCLIBC_HAS_FULL_RPC=y\nUCLIBC_HAS_REENTRANT_RPC=y:;
 CTNG_FIX_DOT_CONFIG_LIBC_SED += s:^\# (UCLIBC_HAS_FULL_RPC) is not set:\1=y:;
 CTNG_FIX_DOT_CONFIG_LIBC_SED += s:^\# (UCLIBC_HAS_REENTRANT_RPC) is not set:\1=y:;
