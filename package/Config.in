@@ -543,9 +543,7 @@ source "package/argus/Config.in"
 source "package/avahi/Config.in"
 source "package/axel/Config.in"
 source "package/bluez_utils/Config.in"
-if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 source "package/boa/Config.in"
-endif
 source "package/bind/Config.in"
 source "package/bmon/Config.in"
 source "package/bridge-utils/Config.in"
@@ -563,9 +561,7 @@ source "package/dropbear/Config.in"
 source "package/ebtables/Config.in"
 source "package/ethtool/Config.in"
 source "package/heirloom-mailx/Config.in"
-if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 source "package/hiawatha/Config.in"
-endif
 source "package/hostapd/Config.in"
 if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 source "package/ifplugd/Config.in"
@@ -579,9 +575,7 @@ source "package/ipset/Config.in"
 source "package/iptables/Config.in"
 source "package/iw/Config.in"
 source "package/kismet/Config.in"
-if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 source "package/lighttpd/Config.in"
-endif
 source "package/links/Config.in"
 source "package/linphone/Config.in"
 source "package/lrzsz/Config.in"
@@ -635,9 +629,9 @@ source "package/tcpdump/Config.in"
 source "package/tcpreplay/Config.in"
 if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 source "package/tftpd/Config.in"
+endif
 source "package/thttpd/Config.in"
 source "package/tinyhttpd/Config.in"
-endif
 source "package/tn5250/Config.in"
 source "package/transmission/Config.in"
 source "package/ttcp/Config.in"
