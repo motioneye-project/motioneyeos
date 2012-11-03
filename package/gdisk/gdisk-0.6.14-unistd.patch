@@ -1,0 +1,19 @@
+[PATCH] close(2) needs unistd.h
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ diskio-unix.cc |    1 +
+ 1 file changed, 1 insertion(+)
+
+Index: gdisk-0.6.14/diskio-unix.cc
+===================================================================
+--- gdisk-0.6.14.orig/diskio-unix.cc
++++ gdisk-0.6.14/diskio-unix.cc
+@@ -22,6 +22,7 @@
+ #include <errno.h>
+ #include <fcntl.h>
+ #include <sys/stat.h>
++#include <unistd.h>
+ #include <iostream>
+ 
+ #include "diskio.h"
