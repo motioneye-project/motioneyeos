@@ -51,7 +51,7 @@ SAMBA_CONF_OPT = \
 	\
 	--without-cluster-support \
 	--without-dnsupdate \
-	$(if $(BR2_INET_RPC),--with-sys-quotas,--without-sys-quotas) \
+	$(if $(BR2_TOOLCHAIN_HAS_NATIVE_RPC),--with-sys-quotas,--without-sys-quotas) \
 	--without-ads \
 	--without-ldap \
 	--with-included-iniparser \

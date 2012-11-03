@@ -9,7 +9,7 @@ XINETD_SITE          = http://www.xinetd.org
 XINETD_LICENSE       = xinetd license
 XINETD_LICENSE_FILES = COPYRIGHT
 
-ifneq ($(BR2_INET_RPC),y)
+ifneq ($(BR2_TOOLCHAIN_HAS_NATIVE_RPC),y)
 XINETD_CONF_ENV = CFLAGS="$(TARGET_CFLAGS) -DNO_RPC"
 endif
 

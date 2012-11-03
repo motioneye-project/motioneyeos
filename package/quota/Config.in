@@ -1,6 +1,6 @@
 config BR2_PACKAGE_QUOTA
 	bool "quota"
-	depends on BR2_INET_RPC
+	depends on BR2_TOOLCHAIN_HAS_NATIVE_RPC
 	depends on BR2_LARGEFILE
 	depends on BR2_USE_WCHAR
 	select BR2_PACKAGE_UTIL_LINUX
@@ -12,4 +12,4 @@ config BR2_PACKAGE_QUOTA
 	  http://sourceforge.net/projects/linuxquota/
 
 comment "quota requires a toolchain with RPC + LARGEFILE + WCHAR support"
-	depends on !(BR2_INET_RPC && BR2_LARGEFILE && BR2_USE_WCHAR)
+	depends on !(BR2_TOOLCHAIN_HAS_NATIVE_RPC && BR2_LARGEFILE && BR2_USE_WCHAR)

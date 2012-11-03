@@ -1,10 +1,10 @@
 config BR2_PACKAGE_PORTMAP
 	bool "portmap"
-	depends on BR2_INET_RPC
+	depends on BR2_TOOLCHAIN_HAS_NATIVE_RPC
 	help
 	  The standard portmapper for RPC services.
 
 	  http://neil.brown.name/portmap/
 
 comment "portmap requires a toolchain with RPC support"
-	depends on !BR2_INET_RPC
+	depends on !BR2_TOOLCHAIN_HAS_NATIVE_RPC

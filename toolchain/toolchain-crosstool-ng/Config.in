@@ -14,7 +14,9 @@ config BR2_TOOLCHAIN_CTNG_eglibc
 	bool "eglibc"
 	select BR2_LARGEFILE
 	select BR2_INET_IPV6
-	select BR2_INET_RPC
+	# Our default ct-ng configuration uses eglibc 2.12, which has
+	# native RPC support
+	select BR2_TOOLCHAIN_HAS_NATIVE_RPC
 	select BR2_ENABLE_LOCALE
 	select BR2_USE_WCHAR
 
@@ -22,7 +24,9 @@ config BR2_TOOLCHAIN_CTNG_glibc
 	bool "glibc"
 	select BR2_LARGEFILE
 	select BR2_INET_IPV6
-	select BR2_INET_RPC
+	# Our default ct-ng configuration uses glibc 2.9, which has
+	# native RPC support
+	select BR2_TOOLCHAIN_HAS_NATIVE_RPC
 	select BR2_ENABLE_LOCALE
 	select BR2_USE_WCHAR
 
@@ -66,7 +70,7 @@ config BR2_TOOLCHAIN_CTNG_uClibc_INET_IPV6
 
 config BR2_TOOLCHAIN_CTNG_uClibc_INET_RPC
 	bool "Enable RPC support"
-	select BR2_INET_RPC
+	select BR2_TOOLCHAIN_HAS_NATIVE_RPC
 	help
 	  Enable this option if you want your toolchain to support
 	  RPC (needed for NFS, for example).

@@ -20,7 +20,7 @@ config BR2_TOOLCHAIN_BUILDROOT_INET_IPV6
 
 config BR2_TOOLCHAIN_BUILDROOT_INET_RPC
 	bool "Enable RPC support"
-	select BR2_INET_RPC
+	select BR2_TOOLCHAIN_HAS_NATIVE_RPC
 	help
 	  Enable this option if you want your toolchain to support
 	  RPC (needed for NFS, for example).

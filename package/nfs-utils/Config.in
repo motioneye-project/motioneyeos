@@ -1,6 +1,6 @@
 config BR2_PACKAGE_NFS_UTILS
 	bool "nfs-utils"
-	depends on BR2_INET_RPC
+	depends on BR2_TOOLCHAIN_HAS_NATIVE_RPC
 	depends on BR2_LARGEFILE
 	select BR2_PACKAGE_PORTMAP
 	help
@@ -11,7 +11,7 @@ config BR2_PACKAGE_NFS_UTILS
 	  http://sourceforge.net/projects/nfs
 
 comment "nfs-utils requires a toolchain with RPC and LARGEFILE support"
-	depends on !BR2_INET_RPC || !BR2_LARGEFILE
+	depends on !BR2_TOOLCHAIN_HAS_NATIVE_RPC || !BR2_LARGEFILE
 
 menu "NFS utilities selection"
 	depends on BR2_PACKAGE_NFS_UTILS

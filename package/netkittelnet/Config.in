@@ -1,6 +1,6 @@
 config BR2_PACKAGE_NETKITTELNET
 	bool "netkittelnet"
-	depends on BR2_INET_RPC
+	depends on BR2_TOOLCHAIN_HAS_NATIVE_RPC
 	select BR2_PACKAGE_NETKITBASE
 	help
 	  Standard Linux telnet client and server.
@@ -8,4 +8,4 @@ config BR2_PACKAGE_NETKITTELNET
 	  ftp://ftp.uk.linux.org/pub/linux/Networking/netkit/
 
 comment "netkittelnet requires a toolchain with RPC support"
-	depends on !BR2_INET_RPC
+	depends on !BR2_TOOLCHAIN_HAS_NATIVE_RPC

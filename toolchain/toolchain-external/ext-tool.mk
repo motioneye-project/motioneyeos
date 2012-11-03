@@ -24,10 +24,10 @@
 #  the Buildroot configuration system knows whether the toolchain
 #  supports RPC, IPv6, locales, large files, etc. Unfortunately, these
 #  things cannot be detected automatically, since the value of these
-#  options (such as BR2_INET_RPC) are needed at configuration time
-#  because these options are used as dependencies for other
-#  options. And at configuration time, we are not able to retrieve the
-#  external toolchain configuration.
+#  options (such as BR2_TOOLCHAIN_HAS_NATIVE_RPC) are needed at
+#  configuration time because these options are used as dependencies
+#  for other options. And at configuration time, we are not able to
+#  retrieve the external toolchain configuration.
 #
 #  3. Copy the libraries needed at runtime to the target directory,
 #  $(TARGET_DIR). Obviously, things such as the C library, the dynamic

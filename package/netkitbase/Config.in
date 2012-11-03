@@ -1,10 +1,10 @@
 config BR2_PACKAGE_NETKITBASE
 	bool "netkitbase"
-	depends on BR2_INET_RPC
+	depends on BR2_TOOLCHAIN_HAS_NATIVE_RPC
 	help
 	  Old-style inetd.
 
 	  ftp://ftp.uk.linux.org/pub/linux/Networking/netkit/
 
 comment "netkitbase requires a toolchain with RPC support"
-        depends on !BR2_INET_RPC
+        depends on !BR2_TOOLCHAIN_HAS_NATIVE_RPC
