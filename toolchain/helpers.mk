@@ -172,9 +172,10 @@ create_lib64_symlinks = \
 	(cd $(STAGING_DIR)/usr ; ln -s lib lib64)
 
 #
-# Check the availability of a particular glibc feature. We assume that
-# all Buildroot toolchain options are supported by glibc, so we just
-# check that they are enabled.
+# Check the availability of a particular glibc feature. This function
+# is used to check toolchain options that are always supported by
+# glibc, so we simply check that the corresponding option is properly
+# enabled.
 #
 # $1: Buildroot option name
 # $2: feature description
@@ -182,6 +183,22 @@ create_lib64_symlinks = \
 check_glibc_feature = \
 	if [ x$($(1)) != x"y" ] ; then \
 		echo "$(2) available in C library, please enable $(1)" ; \
+		exit 1 ; \
+	fi
+
+#
+# Check the availability of RPC support in a glibc toolchain
+#
+# $1: sysroot directory
+#
+check_glibc_rpc_feature = \
+	IS_IN_LIBC=`test -f $(1)/usr/include/rpc/rpc.h && echo y` ; \
+	if [ "$(BR2_TOOLCHAIN_HAS_NATIVE_RPC)" != "y" -a "$${IS_IN_LIBC}" = "y" ] ; then \
+		echo "RPC support available in C library, please enable BR2_TOOLCHAIN_HAS_NATIVE_RPC" ; \
+		exit 1 ; \
+	fi ; \
+	if [ "$(BR2_TOOLCHAIN_HAS_NATIVE_RPC)" = "y" -a "$${IS_IN_LIBC}" != "y" ] ; then \
+		echo "RPC support not available in C library, please disable BR2_TOOLCHAIN_HAS_NATIVE_RPC" ; \
 		exit 1 ; \
 	fi
 
@@ -202,10 +219,10 @@ check_glibc = \
 	fi; \
 	$(call check_glibc_feature,BR2_LARGEFILE,Large file support) ;\
 	$(call check_glibc_feature,BR2_INET_IPV6,IPv6 support) ;\
-	$(call check_glibc_feature,BR2_TOOLCHAIN_HAS_NATIVE_RPC,RPC support) ;\
 	$(call check_glibc_feature,BR2_ENABLE_LOCALE,Locale support) ;\
 	$(call check_glibc_feature,BR2_USE_MMU,MMU support) ;\
-	$(call check_glibc_feature,BR2_USE_WCHAR,Wide char support)
+	$(call check_glibc_feature,BR2_USE_WCHAR,Wide char support) ;\
+	$(call check_glibc_rpc_feature,$${SYSROOT_DIR})
 
 #
 # Check the conformity of Buildroot configuration with regard to the
