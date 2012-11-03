@@ -27,6 +27,8 @@ endef
 endif
 
 define IPROUTE2_CONFIGURE_CMDS
+	$(SED) 's/gcc/$$CC $$CFLAGS/g' $(@D)/configure
+	cd $(@D) && $(TARGET_CONFIGURE_OPTS) ./configure
 	# arpd needs berkeleydb
 	$(SED) "/^TARGETS=/s: arpd : :" $(IPROUTE2_DIR)/misc/Makefile
 	echo "IPT_LIB_DIR:=/usr/lib/xtables" >>$(IPROUTE2_DIR)/Config
