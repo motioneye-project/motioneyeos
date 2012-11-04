@@ -71,7 +71,7 @@ endchoice
 
 config BR2_ROOTFS_DEVICE_TABLE
 	string "Path to the permission tables"
-	default "target/generic/device_table.txt"
+	default "system/device_table.txt"
 	help
 	  Specify a space-separated list of permission table locations,
 	  that will be passed to the makedevs utility to assign
@@ -83,7 +83,7 @@ config BR2_ROOTFS_DEVICE_TABLE
 
 config BR2_ROOTFS_STATIC_DEVICE_TABLE
 	string "Path to the device tables"
-	default "target/generic/device_table_dev.txt"
+	default "system/device_table_dev.txt"
 	depends on BR2_ROOTFS_DEVICE_CREATION_STATIC
 	help
 	  Specify a space-separated list of device table locations,
