@@ -9,6 +9,15 @@ LMBENCH_SITE:=http://downloads.sourceforge.net/project/lmbench/development/lmben
 LMBENCH_LICENSE =  lmbench license (based on GPLv2)
 LMBENCH_LICENSE_FILES = COPYING COPYING-2
 
+LMBENCH_CFLAGS = $(TARGET_CFLAGS)
+LMBENCH_LDLIBS = $(TARGET_LDFLAGS)
+
+ifeq ($(BR2_PACKAGE_LIBTIRPC),y)
+LMBENCH_DEPENDENCIES += libtirpc
+LMBENCH_CFLAGS += -I$(STAGING_DIR)/usr/include/tirpc/
+LMBENCH_LDFLAGS += -ltirpc
+endif
+
 define LMBENCH_CONFIGURE_CMDS
 	$(call CONFIG_UPDATE,$(@D))
 	sed -i 's/CFLAGS=/CFLAGS+=/g' $(@D)/src/Makefile
@@ -18,7 +27,7 @@ define LMBENCH_CONFIGURE_CMDS
 endef
 
 define LMBENCH_BUILD_CMDS
-	$(MAKE) CFLAGS="$(TARGET_CFLAGS)" OS=$(ARCH) CC="$(TARGET_CC)" -C $(@D)/src
+	$(MAKE) CFLAGS="$(LMBENCH_CFLAGS)" LDFLAGS="$(LMBENCH_LDFLAGS)" OS=$(ARCH) CC="$(TARGET_CC)" -C $(@D)/src
 endef
 
 define LMBENCH_INSTALL_TARGET_CMDS

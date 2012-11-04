@@ -1,12 +1,8 @@
 config BR2_PACKAGE_LMBENCH
 	bool "lmbench"
-	# Uses pmap_set, pmap__unset, pmap_getport, etc.
-	depends on BR2_TOOLCHAIN_HAS_NATIVE_RPC
+	select BR2_PACKAGE_LIBTIRPC if !BR2_TOOLCHAIN_HAS_NATIVE_RPC
 	help
 	  LMbench is a suite of simple, portable,
 	  ANSI/C microbenchmarks for UNIX/POSIX.
 
 	  http://sourceforge.net/projects/lmbench/
-
-comment "lmbench requires a toolchain with RPC support"
-	depends on !BR2_TOOLCHAIN_HAS_NATIVE_RPC
