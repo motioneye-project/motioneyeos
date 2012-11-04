@@ -9,9 +9,24 @@ XINETD_SITE          = http://www.xinetd.org
 XINETD_LICENSE       = xinetd license
 XINETD_LICENSE_FILES = COPYRIGHT
 
-ifneq ($(BR2_TOOLCHAIN_HAS_NATIVE_RPC),y)
-XINETD_CONF_ENV = CFLAGS="$(TARGET_CFLAGS) -DNO_RPC"
+XINETD_CFLAGS = $(TARGET_CFLAGS)
+
+# Three cases here:
+#  1. We have libtirpc, use it by passing special flags
+#  2. We have native RPC support, use it, no need to pass special
+#     flags (so this case 2 is implicit and not visible below)
+#  3. We don't have RPC support, pass -DNO_RPC to disable it
+ifeq ($(BR2_PACKAGE_LIBTIRPC),y)
+XINETD_DEPENDENCIES += libtirpc
+XINETD_CFLAGS += -I$(STAGING_DIR)/usr/include/tirpc/
+XINETD_LIBS += -ltirpc
+else ifeq ($(BR2_TOOLCHAIN_HAS_NATIVE_RPC),)
+XINETD_CFLAGS += -DNO_RPC
 endif
+
+XINETD_CONF_ENV += \
+	CFLAGS="$(XINETD_CFLAGS)" \
+	LIBS="$(XINETD_LIBS)"
 
 XINETD_MAKE_OPT = AR="$(TARGET_AR)"
 
