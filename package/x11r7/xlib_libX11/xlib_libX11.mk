@@ -19,21 +19,14 @@ HOST_XLIB_LIBX11_CONF_OPT = \
 
 # src/util/makekeys is executed at build time to generate ks_tables.h, so
 # it should get compiled for the host. The libX11 makefile unfortunately
-# doesn't know about cross compilation so this doesn't work.
-# Long term, we should probably teach it about HOSTCC / HOST_CFLAGS, but for
-# now simply disable the src/util Makefile and build makekeys by hand in
-# advance
-define XLIB_LIBX11_DISABLE_MAKEKEYS_BUILD
-	echo '' > $(@D)/src/util/Makefile.am
+# doesn't have X11_CFLAGS_FOR_BUILD so this doesn't work.  For buildroot,
+# we know the X11 includes are in $(HOST_DIR)/usr/include, which are already
+# in the CFLAGS_FOR_BUILD, so we can just remove the X11_CFLAGS
+define XLIB_LIBX11_DISABLE_MAKEKEYS_X11_CFLAGS
+	$(SED) '/X11_CFLAGS/d' $(@D)/src/util/Makefile*
 endef
 
-XLIB_LIBX11_POST_EXTRACT_HOOKS += XLIB_LIBX11_DISABLE_MAKEKEYS_BUILD
-
-define XLIB_LIBX11_BUILD_MAKEKEYS_FOR_HOST
-	cd $(@D)/src/util && $(HOSTCC) $(HOST_CFLAGS) -o makekeys makekeys.c
-endef
-
-XLIB_LIBX11_POST_CONFIGURE_HOOKS += XLIB_LIBX11_BUILD_MAKEKEYS_FOR_HOST
+XLIB_LIBX11_POST_PATCH_HOOKS += XLIB_LIBX11_DISABLE_MAKEKEYS_X11_CFLAGS
 
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
