@@ -227,6 +227,7 @@ for i in $(find boot/ linux/ package/ -name '*.mk' | sort) ; do
 done
 echo "</table>"
 
+echo "<a id="results"></a>"
 echo "<table>"
 echo "<tr>"
 echo "<td>Packages using the <i>generic</i> infrastructure</td>"
