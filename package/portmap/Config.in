@@ -4,6 +4,8 @@ config BR2_PACKAGE_PORTMAP
 	help
 	  The standard portmapper for RPC services.
 
+	  Note that portmap is being deprecated in favour of rpcbind.
+
 	  http://neil.brown.name/portmap/
 
 comment "portmap requires a toolchain with RPC support"
