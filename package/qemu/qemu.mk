@@ -8,7 +8,7 @@ QEMU_VERSION = 1.2.0
 QEMU_SOURCE = qemu-$(QEMU_VERSION).tar.bz2
 QEMU_SITE = http://wiki.qemu.org/download
 
-QEMU_DEPENDENCIES = host-pkgconf zlib
+QEMU_DEPENDENCIES = host-pkgconf zlib libglib2
 
 #       BR ARCH         qemu
 #       -------         ----
