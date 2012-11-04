@@ -1,0 +1,8 @@
+config BR2_PACKAGE_RPCBIND
+	bool "rpcbind"
+	# We really need libtirpc and can't work with the native RPC
+	# implementation of toolchains.
+	select BR2_PACKAGE_LIBTIRPC
+	help
+	  The rpcbind utility is a server that converts RPC program numbers
+	  into universal addresses.
