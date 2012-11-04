@@ -176,28 +176,6 @@ config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_ARM201009
 	      Select BR2_SOFT_FLOAT
 	      Set BR2_TARGET_OPTIMIZATION to -mthumb
 
-config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_ARM2010Q1
-	bool "Sourcery CodeBench ARM 2010q1"
-	depends on BR2_arm
-	select BR2_TOOLCHAIN_EXTERNAL_GLIBC
-	select BR2_TOOLCHAIN_HAS_NATIVE_RPC
-	select BR2_INSTALL_LIBSTDCPP
-	help
-	  Sourcery CodeBench toolchain for the ARM architecture, from
-	  Mentor Graphics. It uses gcc 4.4.1, binutils 2.19, glibc
-	  2.11, gdb 7.0.50 and kernel headers 2.6.32. It has support
-	  for the following variants:
-	     - ARMv5T, little endian, soft-float, glibc
-	       Select ARM926T, ARM10T, XScale or another ARMv5 core
-	       Select BR2_SOFT_FLOAT
-	     - ARMv4T, little endian, soft-float, glibc
-	       Select ARM720T, ARM920T, ARM922T or another ARMv4 core
-	       Select BR2_SOFT_FLOAT
-	     - ARMv7-A, Thumb 2, little endian, soft-float, glibc
-	       Select Cortex-A8, Cortex-A9 or another ARMv7-A core
-	       Select BR2_SOFT_FLOAT
-	       Set BR2_TARGET_OPTIMIZATION to -mthumb
-
 config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_MIPS201109
 	bool "Sourcery CodeBench MIPS 2011.09"
 	depends on BR2_mips || BR2_mipsel
@@ -749,7 +727,6 @@ config BR2_TOOLCHAIN_EXTERNAL_PREFIX
 	default "arm-linux-gnueabihf"	 if BR2_TOOLCHAIN_EXTERNAL_LINARO_2012_08
 	default "arm-linux-gnueabihf"	 if BR2_TOOLCHAIN_EXTERNAL_LINARO_2012_09
 	default "arm-linux-gnueabihf"	 if BR2_TOOLCHAIN_EXTERNAL_LINARO_2012_10
-	default "arm-none-linux-gnueabi" if BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_ARM2010Q1
 	default "arm-none-linux-gnueabi" if BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_ARM201009
 	default "arm-none-linux-gnueabi" if BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_ARM201103
 	default "arm-none-linux-gnueabi" if BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_ARM201109
