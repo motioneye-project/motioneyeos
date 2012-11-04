@@ -16,7 +16,6 @@ NFS_UTILS_CONF_OPT = \
 		--disable-nfsv4 \
 		--disable-nfsv41 \
 		--disable-gss \
-		--disable-tirpc \
 		--disable-uuid \
 		--disable-ipv6 \
 		--without-tcp-wrappers \
@@ -25,6 +24,13 @@ NFS_UTILS_CONF_OPT = \
 NFS_UTILS_TARGETS_$(BR2_PACKAGE_NFS_UTILS_RPCDEBUG) += usr/sbin/rpcdebug
 NFS_UTILS_TARGETS_$(BR2_PACKAGE_NFS_UTILS_RPC_LOCKD) += usr/sbin/rpc.lockd
 NFS_UTILS_TARGETS_$(BR2_PACKAGE_NFS_UTILS_RPC_RQUOTAD) += usr/sbin/rpc.rquotad
+
+ifeq ($(BR2_PACKAGE_LIBTIRPC),y)
+NFS_UTILS_CONF_OPT += --enable-tirpc --with-tirpcinclude=$(STAGING_DIR)/usr/include/tirpc/
+NFS_UTILS_DEPENDENCIES += libtirpc
+else
+NFS_UTILS_CONF_OPT += --disable-tirpc
+endif
 
 define NFS_UTILS_INSTALL_FIXUP
 	$(INSTALL) -m 0755 package/nfs-utils/S60nfs \

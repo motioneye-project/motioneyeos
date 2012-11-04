@@ -1,8 +1,7 @@
 config BR2_PACKAGE_NFS_UTILS
 	bool "nfs-utils"
-	depends on BR2_TOOLCHAIN_HAS_NATIVE_RPC
+	select BR2_PACKAGE_LIBTIRPC if !BR2_TOOLCHAIN_HAS_NATIVE_RPC
 	depends on BR2_LARGEFILE
-	select BR2_PACKAGE_PORTMAP
 	help
 	  The NFS Linux kernel server.
 	  Warning: We do not force largefile support on here on purpose.
@@ -10,8 +9,8 @@ config BR2_PACKAGE_NFS_UTILS
 
 	  http://sourceforge.net/projects/nfs
 
-comment "nfs-utils requires a toolchain with RPC and LARGEFILE support"
-	depends on !BR2_TOOLCHAIN_HAS_NATIVE_RPC || !BR2_LARGEFILE
+comment "nfs-utils requires a toolchain with LARGEFILE support"
+	depends on !BR2_LARGEFILE
 
 menu "NFS utilities selection"
 	depends on BR2_PACKAGE_NFS_UTILS
