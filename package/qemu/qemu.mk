@@ -8,6 +8,8 @@ QEMU_VERSION = 1.2.0
 QEMU_SOURCE = qemu-$(QEMU_VERSION).tar.bz2
 QEMU_SITE = http://wiki.qemu.org/download
 
+QEMU_DEPENDENCIES = host-pkgconf
+
 #       BR ARCH         qemu
 #       -------         ----
 #       arm             arm
@@ -53,7 +55,7 @@ endif
 HOST_QEMU_TARGETS=$(QEMU_ARCH)-linux-user
 
 define HOST_QEMU_CONFIGURE_CMDS
-	(cd $(@D); ./configure                          \
+	(cd $(@D); $(HOST_CONFIGURE_OPTS) ./configure   \
 		--target-list="$(HOST_QEMU_TARGETS)"    \
 		--prefix="$(HOST_DIR)/usr"              \
 		--interp-prefix=$(STAGING_DIR)          \
