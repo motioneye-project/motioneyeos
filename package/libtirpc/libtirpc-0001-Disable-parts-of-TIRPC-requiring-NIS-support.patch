@@ -1,0 +1,70 @@
+From f4c022c526ce061dfdd3c46f544a9495a3a3a97e Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Sat, 23 Jun 2012 21:57:39 +0200
+Subject: [PATCH 1/4] Disable parts of TIRPC requiring NIS support
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ src/Makefile.am  |    3 +--
+ src/rpc_soc.c    |    2 ++
+ tirpc/rpc/auth.h |    3 +++
+ 3 files changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/src/Makefile.am b/src/Makefile.am
+index 7ee8cbc..6d36b93 100644
+--- a/src/Makefile.am
++++ b/src/Makefile.am
+@@ -49,8 +49,7 @@ libtirpc_la_SOURCES = auth_none.c auth_unix.c authunix_prot.c bindresvport.c cln
+         pmap_prot.c pmap_prot2.c pmap_rmt.c rpc_prot.c rpc_commondata.c \
+         rpc_callmsg.c rpc_generic.c rpc_soc.c rpcb_clnt.c rpcb_prot.c \
+         rpcb_st_xdr.c svc.c svc_auth.c svc_dg.c svc_auth_unix.c svc_generic.c \
+-        svc_raw.c svc_run.c svc_simple.c svc_vc.c getpeereid.c \
+-        auth_time.c auth_des.c authdes_prot.c des_crypt.c
++        svc_raw.c svc_run.c svc_simple.c svc_vc.c getpeereid.c
+ 
+ ## XDR
+ libtirpc_la_SOURCES += xdr.c xdr_rec.c xdr_array.c xdr_float.c xdr_mem.c xdr_reference.c xdr_stdio.c
+diff --git a/src/rpc_soc.c b/src/rpc_soc.c
+index c678429..27f2136 100644
+--- a/src/rpc_soc.c
++++ b/src/rpc_soc.c
+@@ -515,6 +515,7 @@ clnt_broadcast(prog, vers, proc, xargs, argsp, xresults, resultsp, eachresult)
+ 	    (resultproc_t) rpc_wrap_bcast, "udp");
+ }
+ 
++#if 0
+ /*
+  * Create the client des authentication object. Obsoleted by
+  * authdes_seccreate().
+@@ -546,6 +547,7 @@ fallback:
+ 	dummy = authdes_seccreate(servername, window, NULL, ckey);
+ 	return (dummy);
+ }
++#endif
+ 
+ /*
+  * Create a client handle for a unix connection. Obsoleted by clnt_vc_create()
+diff --git a/tirpc/rpc/auth.h b/tirpc/rpc/auth.h
+index 734e6b9..6e7e54e 100644
+--- a/tirpc/rpc/auth.h
++++ b/tirpc/rpc/auth.h
+@@ -282,6 +282,8 @@ extern AUTH *authunix_create(char *, uid_t, uid_t, int, uid_t *);
+ extern AUTH *authunix_create_default(void);	/* takes no parameters */
+ extern AUTH *authnone_create(void);		/* takes no parameters */
+ __END_DECLS
++
++#if 0
+ /*
+  * DES style authentication
+  * AUTH *authsecdes_create(servername, window, timehost, ckey)
+@@ -295,6 +297,7 @@ extern AUTH *authdes_create (char *, u_int, struct sockaddr *, des_block *);
+ extern AUTH *authdes_seccreate (const char *, const u_int, const  char *,
+     const  des_block *);
+ __END_DECLS
++#endif
+ 
+ __BEGIN_DECLS
+ extern bool_t xdr_opaque_auth		(XDR *, struct opaque_auth *);
+-- 
+1.7.9.5
+

@@ -1,0 +1,26 @@
+From c91721dc289397dfe38fdae175f4ee37e824667c Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Sat, 23 Jun 2012 21:58:07 +0200
+Subject: [PATCH 2/4] uClibc without RPC support does not install rpcent.h
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ tirpc/rpc/rpcent.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tirpc/rpc/rpcent.h b/tirpc/rpc/rpcent.h
+index 7fd93d9..df1f5ed 100644
+--- a/tirpc/rpc/rpcent.h
++++ b/tirpc/rpc/rpcent.h
+@@ -47,7 +47,7 @@
+ __BEGIN_DECLS
+ 
+ /* These are defined in /usr/include/rpc/netdb.h */
+-#if 0
++#if __UCLIBC__
+ struct rpcent {
+ 	char	*r_name;	/* name of server for this rpc program */
+ 	char	**r_aliases;	/* alias list */
+-- 
+1.7.9.5
+

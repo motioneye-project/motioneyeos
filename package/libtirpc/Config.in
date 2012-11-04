@@ -1,0 +1,7 @@
+config BR2_PACKAGE_LIBTIRPC
+	bool "libtirpc"
+	help
+	  Libtirpc is a port of Sun's Transport-Independent RPC
+	  library to Linux.
+
+	  http://sourceforge.net/projects/libtirpc/
