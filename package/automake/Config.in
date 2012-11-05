@@ -1,5 +1,6 @@
 config BR2_PACKAGE_AUTOMAKE
 	bool "automake"
+	depends on !(BR2_avr32 || BR2_bfin || BR2_sh2 || BR2_sh2a || BR2_sh3 || BR2_sh3eb || BR2_sh64)
 	select BR2_PACKAGE_AUTOCONF
 	select BR2_PACKAGE_PERL
 	help
@@ -7,3 +8,6 @@ config BR2_PACKAGE_AUTOMAKE
 	  configure scripts (made by autoconf).
 
 	  http://www.gnu.org/software/automake/
+
+comment "automake requires an architecture supported by qemu"
+	depends on BR2_avr32 || BR2_bfin || BR2_sh2 || BR2_sh2a || BR2_sh3 || BR2_sh3eb || BR2_sh64
