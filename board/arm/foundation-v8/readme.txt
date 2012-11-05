@@ -8,13 +8,6 @@ First, one has to download the AArch64 software simulator from:
 Then, use the arm_foundationv8_defconfig configuration to build your
 Buildroot system.
 
-Note that the Busybox build will fail due to the lack of rpc/rpc.h
-(the AArch64 toolchain does not have RPC support). Run 'make
-busybox-menuconfig', and in 'Linux System Utilities', disable the
-option 'Support mounting NFS file systems on Linux < 2.6.23' and
-restart the build. This problem will be fix in upcomins versions of
-Buildroot.
-
 Finally, boot your system with:
 
  ${LOCATION_OF_FOUNDATIONV8_SIMULATOR}/Foundation_v8 \
