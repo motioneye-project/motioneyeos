@@ -97,10 +97,10 @@ source "package/yasm/Config.in"
 endmenu
 
 menu "Games"
-source "package/games/gnuchess/Config.in"
-source "package/games/prboom/Config.in"
-source "package/games/doom-wad/Config.in"
-source "package/games/rubix/Config.in"
+source "package/gnuchess/Config.in"
+source "package/prboom/Config.in"
+source "package/doom-wad/Config.in"
+source "package/rubix/Config.in"
 endmenu
 
 menu "Graphic libraries and applications (graphic/text)"
