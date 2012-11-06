@@ -13,6 +13,9 @@ LIBTIRPC_LICENSE_FILES = COPYING
 LIBTIRPC_INSTALL_STAGING = YES
 LIBTIRPC_AUTORECONF = YES
 
+# getrpcby{number,name} are only provided if 'GQ' is defined
+LIBTIRPC_CONF_ENV = CFLAGS="$(TARGET_CFLAGS) -DGQ"
+
 # We need host-pkgconf because the configure.ac contains a
 # PKG_CHECK_MODULES macro call, and since we're autoreconfiguring this
 # package, we need the source for this PKG_CHECK_MODULES macro, which
