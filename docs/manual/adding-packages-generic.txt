@@ -167,9 +167,7 @@ information is (assuming the package name is +libfoo+) :
   slash for absolute paths:
   +scp://[user@]host:/absolutepath+. +
   If +HOST_LIBFOO_SITE+ is not specified, it defaults to
-  +LIBFOO_SITE+. If none are specified, then the location is assumed
-  to be
-  +http://$$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/packagename+. +
+  +LIBFOO_SITE+.
   Examples: +
     +LIBFOO_SITE=http://www.libfoosoftware.org/libfoo+ +
     +LIBFOO_SITE=http://svn.xiph.org/trunk/Tremor/+ +
