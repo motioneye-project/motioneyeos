@@ -4,9 +4,11 @@
 #
 #############################################################
 
-QEXTSERIALPORT_VERSION     = ef4af2a2ee3f
-QEXTSERIALPORT_SITE        = https://qextserialport.googlecode.com/hg/
-QEXTSERIALPORT_SITE_METHOD = hg
+QEXTSERIALPORT_VERSION     = f83b4e7ca922e53
+QEXTSERIALPORT_SITE        = https://qextserialport.googlecode.com/git/
+QEXTSERIALPORT_SITE_METHOD = git
+
+QEXTSERIALPORT_LICENSE = MIT
 
 QEXTSERIALPORT_DEPENDENCIES = qt
 
@@ -24,12 +26,12 @@ define QEXTSERIALPORT_INSTALL_STAGING_CMDS
 	mkdir -p $(STAGING_DIR)/usr/include/QExtSerialPort
 	cp $(@D)/src/*.h $(STAGING_DIR)/usr/include/QExtSerialPort/
 	cp $(@D)/src/QExtSerialPort $(STAGING_DIR)/usr/include/QExtSerialPort/
-	cp -a $(@D)/src/build/*.so* $(STAGING_DIR)/usr/lib/
+	cp -a $(@D)/*.so* $(STAGING_DIR)/usr/lib/
 	cp $(@D)/qextserialport.pc $(STAGING_DIR)/usr/lib/pkgconfig/
 endef
 
 define QEXTSERIALPORT_INSTALL_TARGET_CMDS
-	cp -a $(@D)/src/build/*.so.* $(TARGET_DIR)/usr/lib
+	cp -a $(@D)/*.so.* $(TARGET_DIR)/usr/lib
 endef
 
 $(eval $(generic-package))
