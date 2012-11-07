@@ -1,0 +1,26 @@
+Enables verbose output when building modules
+
+Patch borrowed from OpenBricks.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+---
+ Makefile.pre.in |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+Index: Python-3.3.0/Makefile.pre.in
+===================================================================
+--- Python-3.3.0.orig/Makefile.pre.in
++++ Python-3.3.0/Makefile.pre.in
+@@ -476,10 +476,9 @@
+ 
+ # Build the shared modules
+ sharedmods: $(BUILDPYTHON) pybuilddir.txt
+-	case $$MAKEFLAGS in *s*) quiet=-q; esac; \
+ 	$(RUNSHARED) CC='$(CC)' LDSHARED='$(BLDSHARED)' OPT='$(OPT)' \
+ 		CONFIG_ARGS="$(CONFIG_ARGS)" \
+-		$(PYTHON_FOR_BUILD) $(srcdir)/setup.py $$quiet build
++		$(PYTHON_FOR_BUILD) $(srcdir)/setup.py build
+ 
+ # Build static library
+ # avoid long command lines, same as LIBRARY_OBJS

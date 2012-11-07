@@ -1,0 +1,76 @@
+Change the location of pyconfig.h
+
+The Python interpreter has a really strange behaviour: at *runtime*,
+it reads a Makefile and a header file named pyconfig.h to get some
+information about the configuration.
+
+The Makefile is located in usr/lib/python3.3/config-3.3m, which is fine
+since this location is kept on the target.
+
+However, by default, the pyconfig.h is installed in
+usr/include/python3.3m, but we completely remove the usr/include
+directory for the target. Since making an exception just for
+pyconfig.h is annoying, this patch also installs pyconfig.h to
+usr/lib/python3.3/config-3.3m, and modifies the sysconfig module so that it
+looks in this location instead of usr/include.
+
+The pyconfig.h is still kept in usr/include/python3.3m, because it is
+needed in the $(STAGING_DIR) when building third-party Python
+extensions that contain C code.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+---
+ Lib/distutils/sysconfig.py |    3 ++-
+ Lib/sysconfig.py           |    2 +-
+ Makefile.pre.in            |    3 ++-
+ 3 files changed, 5 insertions(+), 3 deletions(-)
+
+Index: Python-3.3.0/Lib/distutils/sysconfig.py
+===================================================================
+--- Python-3.3.0.orig/Lib/distutils/sysconfig.py
++++ Python-3.3.0/Lib/distutils/sysconfig.py
+@@ -239,7 +239,8 @@
+         else:
+             inc_dir = _sys_home or project_base
+     else:
+-        inc_dir = get_python_inc(plat_specific=1)
++        lib_dir = get_python_lib(plat_specific=1, standard_lib=1)
++        inc_dir = os.path.join(lib_dir, "config")
+     if get_python_version() < '2.2':
+         config_h = 'config.h'
+     else:
+Index: Python-3.3.0/Lib/sysconfig.py
+===================================================================
+--- Python-3.3.0.orig/Lib/sysconfig.py
++++ Python-3.3.0/Lib/sysconfig.py
+@@ -467,7 +467,7 @@
+         else:
+             inc_dir = _sys_home or _PROJECT_BASE
+     else:
+-        inc_dir = get_path('platinclude')
++        inc_dir = os.path.join(get_path('stdlib'), "config")
+     return os.path.join(inc_dir, 'pyconfig.h')
+ 
+ 
+Index: Python-3.3.0/Makefile.pre.in
+===================================================================
+--- Python-3.3.0.orig/Makefile.pre.in
++++ Python-3.3.0/Makefile.pre.in
+@@ -1123,7 +1123,6 @@
+ 		echo $(INSTALL_DATA) $$i $(INCLUDEPY); \
+ 		$(INSTALL_DATA) $$i $(DESTDIR)$(INCLUDEPY); \
+ 	done
+-	$(INSTALL_DATA) pyconfig.h $(DESTDIR)$(CONFINCLUDEPY)/pyconfig.h
+ 
+ # Install the library and miscellaneous stuff needed for extending/embedding
+ # This goes into $(exec_prefix)
+@@ -1157,6 +1156,8 @@
+ 	$(INSTALL_DATA) Modules/python.o $(DESTDIR)$(LIBPL)/python.o
+ 	$(INSTALL_DATA) $(srcdir)/Modules/config.c.in $(DESTDIR)$(LIBPL)/config.c.in
+ 	$(INSTALL_DATA) Makefile $(DESTDIR)$(LIBPL)/Makefile
++	$(INSTALL_DATA) pyconfig.h $(DESTDIR)$(LIBPL)/pyconfig.h
++	$(INSTALL_DATA) pyconfig.h $(DESTDIR)$(CONFINCLUDEPY)/pyconfig.h
+ 	$(INSTALL_DATA) Modules/Setup $(DESTDIR)$(LIBPL)/Setup
+ 	$(INSTALL_DATA) Modules/Setup.local $(DESTDIR)$(LIBPL)/Setup.local
+ 	$(INSTALL_DATA) Modules/Setup.config $(DESTDIR)$(LIBPL)/Setup.config

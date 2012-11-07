@@ -1,0 +1,71 @@
+Add some cross-compilation fixes to distutils
+
+Inspired by work done by Marc Kleine-Budde <mkl@pengutronix.de> in
+PTXdist.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ Lib/distutils/sysconfig.py |   17 +++++++++++++----
+ configure.ac               |    8 +++++++-
+ 2 files changed, 20 insertions(+), 5 deletions(-)
+
+Index: Python-3.3.0/Lib/distutils/sysconfig.py
+===================================================================
+--- Python-3.3.0.orig/Lib/distutils/sysconfig.py
++++ Python-3.3.0/Lib/distutils/sysconfig.py
+@@ -16,15 +16,24 @@
+ from .errors import DistutilsPlatformError
+ 
+ # These are needed in a couple of spots, so just compute them once.
+-PREFIX = os.path.normpath(sys.prefix)
+-EXEC_PREFIX = os.path.normpath(sys.exec_prefix)
++EXECUTABLE_DIRNAME = os.path.dirname(os.path.realpath(sys.executable))
++if os.environ.get('CROSS_COMPILING') == 'yes':
++    _sysroot=os.environ.get('_python_sysroot')
++    PREFIX = os.path.normpath(_sysroot + os.environ.get('_python_prefix'))
++    EXEC_PREFIX = os.path.normpath(_sysroot + os.environ.get('_python_exec_prefix'))
++    if '_python_srcdir' in os.environ:
++        EXECUTABLE_DIRNAME = os.path.normpath(os.environ['_python_srcdir'])
++else:
++    PREFIX = os.path.normpath(sys.prefix)
++    EXEC_PREFIX = os.path.normpath(sys.exec_prefix)
++
+ BASE_PREFIX = os.path.normpath(sys.base_prefix)
+ BASE_EXEC_PREFIX = os.path.normpath(sys.base_exec_prefix)
+ 
+ # Path to the base directory of the project. On Windows the binary may
+ # live in project/PCBuild9.  If we're dealing with an x64 Windows build,
+ # it'll live in project/PCbuild/amd64.
+-project_base = os.path.dirname(os.path.abspath(sys.executable))
++project_base = EXECUTABLE_DIRNAME
+ if os.name == "nt" and "pcbuild" in project_base[-8:].lower():
+     project_base = os.path.abspath(os.path.join(project_base, os.path.pardir))
+ # PC/VS7.1
+@@ -98,7 +107,7 @@
+             # the build directory may not be the source directory, we
+             # must use "srcdir" from the makefile to find the "Include"
+             # directory.
+-            base = _sys_home or os.path.dirname(os.path.abspath(sys.executable))
++            base = _sys_home or EXECUTABLE_DIRNAME
+             if plat_specific:
+                 return base
+             if _sys_home:
+Index: Python-3.3.0/configure.ac
+===================================================================
+--- Python-3.3.0.orig/configure.ac
++++ Python-3.3.0/configure.ac
+@@ -963,7 +963,13 @@
+ fi
+ 
+ if test "$cross_compiling" = yes; then
+-	RUNSHARED=
++	RUNSHARED=" \
++		CROSS_COMPILING=yes \
++		_python_cross_host=${ac_cv_host} \
++		_python_sysroot=\"\$(sysroot)\" \
++		_python_srcdir=\"\$(srcdir)\" \
++		_python_prefix=\"\$(prefix)\" \
++		_python_exec_prefix=\"\$(exec_prefix)\""
+ fi
+ 
+ AC_MSG_RESULT($LDLIBRARY)
