@@ -1,12 +1,5 @@
 config BR2_PACKAGE_PERL
 	bool "perl"
-	depends on !BR2_avr32
-	depends on !BR2_bfin
-	depends on !BR2_sh2
-	depends on !BR2_sh2a
-	depends on !BR2_sh3
-	depends on !BR2_sh3eb
-	depends on !BR2_sh64
 	help
 	  Larry Wall's Practical Extraction and Report Language
 	  An interpreted scripting language, known among some as "Unix's Swiss
@@ -16,35 +9,18 @@ config BR2_PACKAGE_PERL
 
 if BR2_PACKAGE_PERL
 
-config BR2_PACKAGE_PERL_CUSTOM_INSTALL
-	bool "custom install"
-	help
-	  Don't use the full install target
-	  Install only a selection of modules (like microperl).
-
 config BR2_PACKAGE_PERL_MODULES
-	string "additional modules"
-	depends on BR2_PACKAGE_PERL_CUSTOM_INSTALL
+	string "custom module selection"
 	help
-	  List of space-separated perl modules to copy to the rootfs.
+	  List of space-separated perl modules (without .pm) to copy to the
+	  rootfs.
 
-	  Examples: constant.pm Getopt/Std.pm Time/Local.pm
+	  Examples: constant Getopt/Std Time/Local
 
-	  Module dependencies are not automatic so check your needs.
+	  Module dependencies on external libraries are not automatic so
+	  check your needs.
 
-config BR2_PACKAGE_PERL_DB_FILE
-	bool "DB_File"
-	select BR2_PACKAGE_BERKELEYDB
-	help
-	  Build the DB_File module.
-
-config BR2_PACKAGE_PERL_GDBM_FILE
-	bool "GDBM_File"
-	select BR2_PACKAGE_GDBM
-	help
-	  Build the GDBM_File module.
+	  Leave empty for all modules (as far as the external libraries
+	  are available).
 
 endif
-
-comment "perl requires an architecture supported by qemu"
-	depends on BR2_avr32 || BR2_bfin || BR2_sh2 || BR2_sh2a || BR2_sh3 || BR2_sh3eb || BR2_sh64
