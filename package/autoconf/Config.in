@@ -1,12 +1,8 @@
 config BR2_PACKAGE_AUTOCONF
 	bool "autoconf"
-	depends on !(BR2_avr32 || BR2_bfin || BR2_sh2 || BR2_sh2a || BR2_sh3 || BR2_sh3eb || BR2_sh64)
 	select BR2_PACKAGE_PERL
 	help
 	  Extensible program for developing configure scripts.  These
 	  scripts handle all the mundane system/feature detection.
 
 	  http://www.gnu.org/software/autoconf/
-
-comment "autoconf requires an architecture supported by qemu"
-	depends on BR2_avr32 || BR2_bfin || BR2_sh2 || BR2_sh2a || BR2_sh3 || BR2_sh3eb || BR2_sh64
