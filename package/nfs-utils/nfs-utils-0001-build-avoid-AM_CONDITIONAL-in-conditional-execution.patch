@@ -1,8 +1,7 @@
-From 869d37a16d1e409cedd95b03cea29a6db65f9276 Mon Sep 17 00:00:00 2001
+From 2a44ed7558f981e15db58dcda799ff7cd3827a6e Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Diego=20Elio=20Petten=C3=B2?= <flameeyes@flameeyes.eu>
 Date: Thu, 17 May 2012 16:26:44 -0700
-Subject: [nfs-utils PATCH] build: avoid AM_CONDITIONAL in conditional
- execution.
+Subject: [PATCH] build: avoid AM_CONDITIONAL in conditional execution.
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -20,7 +19,7 @@ Signed-off-by: Diego Elio Pettenò <flameeyes@flameeyes.eu>
 ---
  aclocal/libsqlite3.m4 |    1 -
  configure.ac          |    3 +--
- 2 files changed, 1 insertions(+), 3 deletions(-)
+ 2 files changed, 1 insertion(+), 3 deletions(-)
 
 diff --git a/aclocal/libsqlite3.m4 b/aclocal/libsqlite3.m4
 index 73d1e46..8c38993 100644
@@ -54,5 +53,5 @@ index 9ba53e2..b408f1b 100644
  
  
 -- 
-1.7.8.6
+1.7.9.5
 

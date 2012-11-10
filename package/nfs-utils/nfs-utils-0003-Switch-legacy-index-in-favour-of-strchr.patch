@@ -1,11 +1,20 @@
-Switch legacy index() in favour of strchr()
-Updated for 1.2.6 from the previous patch by Frederik Pasch.
+From 636e78e4c9bc8be174805bde2f3ae7f940dc3d0e Mon Sep 17 00:00:00 2001
+From: Gustavo Zacarias <gustavo@zacarias.com.ar>
+Date: Sat, 10 Nov 2012 18:58:15 +0100
+Subject: [PATCH] Switch legacy index() in favour of strchr() Updated for
+ 1.2.6 from the previous patch by Frederik Pasch.
 
 Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+---
+ support/nfs/nfs_mntent.c |    6 +++---
+ utils/mount/error.c      |    2 +-
+ utils/mountd/fsloc.c     |    2 +-
+ 3 files changed, 5 insertions(+), 5 deletions(-)
 
-diff -Nura nfs-utils-1.2.6.orig/support/nfs/nfs_mntent.c nfs-utils-1.2.6/support/nfs/nfs_mntent.c
---- nfs-utils-1.2.6.orig/support/nfs/nfs_mntent.c	2012-05-29 10:06:37.901255998 -0300
-+++ nfs-utils-1.2.6/support/nfs/nfs_mntent.c	2012-05-29 10:06:45.726312410 -0300
+diff --git a/support/nfs/nfs_mntent.c b/support/nfs/nfs_mntent.c
+index a2118a2..7496ed6 100644
+--- a/support/nfs/nfs_mntent.c
++++ b/support/nfs/nfs_mntent.c
 @@ -9,7 +9,7 @@
   */
  
@@ -15,7 +24,7 @@ diff -Nura nfs-utils-1.2.6.orig/support/nfs/nfs_mntent.c nfs-utils-1.2.6/support
  #include <ctype.h>		/* for isdigit */
  #include <sys/stat.h>		/* for umask */
  #include <unistd.h>		/* for ftruncate */
-@@ -172,7 +172,7 @@
+@@ -172,7 +172,7 @@ nfs_getmntent (mntFILE *mfp) {
  			return NULL;
  
  		mfp->mntent_lineno++;
@@ -24,7 +33,7 @@ diff -Nura nfs-utils-1.2.6.orig/support/nfs/nfs_mntent.c nfs-utils-1.2.6/support
  		if (s == NULL) {
  			/* Missing final newline?  Otherwise extremely */
  			/* long line - assume file was corrupted */
-@@ -180,7 +180,7 @@
+@@ -180,7 +180,7 @@ nfs_getmntent (mntFILE *mfp) {
  				fprintf(stderr, _("[mntent]: warning: no final "
  					"newline at the end of %s\n"),
  					mfp->mntent_file);
@@ -33,10 +42,11 @@ diff -Nura nfs-utils-1.2.6.orig/support/nfs/nfs_mntent.c nfs-utils-1.2.6/support
  			} else {
  				mfp->mntent_errs = 1;
  				goto err;
-diff -Nura nfs-utils-1.2.6.orig/utils/mount/error.c nfs-utils-1.2.6/utils/mount/error.c
---- nfs-utils-1.2.6.orig/utils/mount/error.c	2012-05-29 10:06:37.946256325 -0300
-+++ nfs-utils-1.2.6/utils/mount/error.c	2012-05-29 10:06:45.727312416 -0300
-@@ -62,7 +62,7 @@
+diff --git a/utils/mount/error.c b/utils/mount/error.c
+index 83ad1d2..428deef 100644
+--- a/utils/mount/error.c
++++ b/utils/mount/error.c
+@@ -62,7 +62,7 @@ static int rpc_strerror(int spos)
  	char *tmp;
  
  	if (estr) {
@@ -45,10 +55,11 @@ diff -Nura nfs-utils-1.2.6.orig/utils/mount/error.c nfs-utils-1.2.6/utils/mount/
  			estr = ++ptr;
  
  		tmp = &errbuf[spos];
-diff -Nura nfs-utils-1.2.6.orig/utils/mountd/fsloc.c nfs-utils-1.2.6/utils/mountd/fsloc.c
---- nfs-utils-1.2.6.orig/utils/mountd/fsloc.c	2012-05-29 10:06:37.911256072 -0300
-+++ nfs-utils-1.2.6/utils/mountd/fsloc.c	2012-05-29 10:07:11.140322564 -0300
-@@ -127,7 +127,7 @@
+diff --git a/utils/mountd/fsloc.c b/utils/mountd/fsloc.c
+index bc737d1..ddbe92f 100644
+--- a/utils/mountd/fsloc.c
++++ b/utils/mountd/fsloc.c
+@@ -127,7 +127,7 @@ static struct servers *method_list(char *data)
  	bool v6esc = false;
  
  	xlog(L_NOTICE, "method_list(%s)", data);
@@ -57,3 +68,6 @@ diff -Nura nfs-utils-1.2.6.orig/utils/mountd/fsloc.c nfs-utils-1.2.6/utils/mount
  		ptr++;
  	list = malloc(listsize * sizeof(char *));
  	copy = strdup(data);
+-- 
+1.7.9.5
+

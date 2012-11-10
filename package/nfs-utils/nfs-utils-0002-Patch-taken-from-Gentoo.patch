@@ -1,7 +1,17 @@
-Patch taken from Gentoo.
+From 971389625c9602085d399d8ae7fc42b75efcfb7c Mon Sep 17 00:00:00 2001
+From: Gustavo Zacarias <gustavo@zacarias.com.ar>
+Date: Sat, 10 Nov 2012 18:56:12 +0100
+Subject: [PATCH] Patch taken from Gentoo
 
 Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+---
+ tools/locktest/Makefile.am |    7 +++----
+ tools/rpcdebug/Makefile.am |    7 +++----
+ tools/rpcgen/Makefile.am   |    8 +++-----
+ 3 files changed, 9 insertions(+), 13 deletions(-)
 
+diff --git a/tools/locktest/Makefile.am b/tools/locktest/Makefile.am
+index 3156815..efe6fcd 100644
 --- a/tools/locktest/Makefile.am
 +++ b/tools/locktest/Makefile.am
 @@ -1,12 +1,11 @@
@@ -20,6 +30,8 @@ Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
 -testlk_LDFLAGS=$(LDFLAGS_FOR_BUILD)
  
  MAINTAINERCLEANFILES = Makefile.in
+diff --git a/tools/rpcdebug/Makefile.am b/tools/rpcdebug/Makefile.am
+index 39b70c9..0056597 100644
 --- a/tools/rpcdebug/Makefile.am
 +++ b/tools/rpcdebug/Makefile.am
 @@ -1,15 +1,14 @@
@@ -41,6 +53,8 @@ Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
 -rpcdebug_LDFLAGS=$(LDFLAGS_FOR_BUILD)
  
  MAINTAINERCLEANFILES = Makefile.in
+diff --git a/tools/rpcgen/Makefile.am b/tools/rpcgen/Makefile.am
+index 8a9ec89..5a5b4d3 100644
 --- a/tools/rpcgen/Makefile.am
 +++ b/tools/rpcgen/Makefile.am
 @@ -1,7 +1,9 @@
@@ -54,7 +68,7 @@ Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
  
  noinst_PROGRAMS = rpcgen
  rpcgen_SOURCES = rpc_clntout.c rpc_cout.c rpc_hout.c rpc_main.c \
-@@ -9,10 +11,6 @@
+@@ -9,10 +11,6 @@ rpcgen_SOURCES = rpc_clntout.c rpc_cout.c rpc_hout.c rpc_main.c \
  		 rpc_util.c rpc_sample.c rpc_output.h rpc_parse.h \
  		 rpc_scan.h rpc_util.h
  
@@ -65,4 +79,6 @@ Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
  
  MAINTAINERCLEANFILES = Makefile.in
  
- EXTRA_DIST = rpcgen.new.1
+-- 
+1.7.9.5
+
