@@ -1,0 +1,70 @@
+From a4c15a4f9f49fd2ae5eee7eef54c67f4842952b2 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Sat, 10 Nov 2012 18:42:28 +0100
+Subject: [PATCH] Allow usage of getrpcbynumber() when getrpcbynumber_r() is
+ not available
+
+getrpcbynumber_r() is not implemented by libtirpc at the moment, only
+the non-reentrant getrpcbynumber() is available. Since nfs-utils seems
+to only be using getrpcbynumber_r() is a non multithreaded context,
+using getrpcbynumber() should work just as well.
+
+We also take this opportunity to adjust the autoconf checks to verify
+whether any of getrpcbynumber() or getrpcbynumber_r() is available,
+and error out if none of them is available.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ configure.ac             |    8 ++++----
+ support/nfs/svc_socket.c |    6 ++++++
+ 2 files changed, 10 insertions(+), 4 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index b408f1b..41216c9 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -246,9 +246,6 @@ AC_CHECK_FUNC([connect], ,
+ AC_CHECK_FUNC([getaddrinfo], ,
+               [AC_MSG_ERROR([Function 'getaddrinfo' not found.])])
+ 
+-AC_CHECK_FUNC([getrpcbynumber], ,
+-              [AC_MSG_ERROR([Function 'getrpcbynumber' not found.])])
+-
+ AC_CHECK_FUNC([getservbyname], ,
+               [AC_MSG_ERROR([Function 'getservbyname' not found.])])
+ 
+@@ -393,8 +390,11 @@ AC_CHECK_FUNCS([alarm atexit dup2 fdatasync ftruncate getcwd \
+                getnameinfo getrpcbyname getifaddrs \
+                gettimeofday hasmntopt inet_ntoa innetgr memset mkdir pathconf \
+                realpath rmdir select socket strcasecmp strchr strdup \
+-               strerror strrchr strtol strtoul sigprocmask])
++               strerror strrchr strtol strtoul sigprocmask getrpcbynumber getrpcbynumber_r])
+ 
++if test "$ac_cv_func_getrpcbynumber_r" != "yes" -a "$ac_cv_func_getrpcbynumber" != "yes"; then
++   AC_MSG_ERROR([Neither getrpcbynumber_r nor getrpcbynumber are available])
++fi
+ 
+ dnl *************************************************************
+ dnl Check for data sizes
+diff --git a/support/nfs/svc_socket.c b/support/nfs/svc_socket.c
+index f56f310..61ccf5b 100644
+--- a/support/nfs/svc_socket.c
++++ b/support/nfs/svc_socket.c
+@@ -42,8 +42,14 @@ int getservport(u_long number, const char *proto)
+ 	struct servent servbuf, *servp = NULL;
+ 	int ret;
+ 
++#if HAVE_GETRPCBYNUMBER_R
+ 	ret = getrpcbynumber_r(number, &rpcbuf, rpcdata, sizeof rpcdata,
+ 				&rpcp);
++#else
++	rpcp = getrpcbynumber(number);
++	ret = 0;
++#endif
++
+ 	if (ret == 0 && rpcp != NULL) {
+ 		/* First try name.  */
+ 		ret = getservbyname_r(rpcp->r_name, proto, &servbuf, servdata,
+-- 
+1.7.9.5
+
