@@ -1,7 +1,7 @@
-From c91721dc289397dfe38fdae175f4ee37e824667c Mon Sep 17 00:00:00 2001
+From c2e96bdc453334f10faf8db0eb06e41ab3ca4fe9 Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Date: Sat, 23 Jun 2012 21:58:07 +0200
-Subject: [PATCH 2/4] uClibc without RPC support does not install rpcent.h
+Subject: [PATCH] uClibc without RPC support does not install rpcent.h
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 ---

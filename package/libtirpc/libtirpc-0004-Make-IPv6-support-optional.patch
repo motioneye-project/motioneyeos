@@ -1,7 +1,7 @@
-From 1f36736733eac5080f3a4f3abd1c3a04ac42f1dd Mon Sep 17 00:00:00 2001
+From 5ce585bed328fafc99800effb5e9d1b07dbac2b7 Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Date: Sun, 24 Jun 2012 21:40:21 +0200
-Subject: [PATCH 4/4] Make IPv6 support optional
+Subject: [PATCH] Make IPv6 support optional
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 ---

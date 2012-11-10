@@ -1,7 +1,7 @@
-From a4852bd653ac917165de1d41b60168cd88dc6672 Mon Sep 17 00:00:00 2001
+From a40e00a16cf43245953ad6d43a4f260a47e6d198 Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Date: Sat, 23 Jun 2012 21:58:36 +0200
-Subject: [PATCH 3/4] Add missing INET6 conditional
+Subject: [PATCH] Add missing INET6 conditional
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 ---

@@ -1,7 +1,7 @@
-From f4c022c526ce061dfdd3c46f544a9495a3a3a97e Mon Sep 17 00:00:00 2001
+From cc4ec3294cb06724c83d4c4e1ea9fc2e38923c98 Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Date: Sat, 23 Jun 2012 21:57:39 +0200
-Subject: [PATCH 1/4] Disable parts of TIRPC requiring NIS support
+Subject: [PATCH] Disable parts of TIRPC requiring NIS support
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 ---
