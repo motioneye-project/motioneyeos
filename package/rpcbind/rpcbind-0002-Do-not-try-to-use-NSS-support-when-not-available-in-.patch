@@ -1,0 +1,60 @@
+From cfc70fb4c54e044f724516e9352f974187adb448 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Sat, 10 Nov 2012 22:04:12 +0100
+Subject: [PATCH] Do not try to use NSS support when not available in the C
+ library
+
+uClibc does not have NSS support, so it is unnecessary to tell the C
+library to use the "files" as the source for "services", since it is
+the only possible choice.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ src/rpcbind.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/src/rpcbind.c b/src/rpcbind.c
+index 525ffba..cde8685 100644
+--- a/src/rpcbind.c
++++ b/src/rpcbind.c
+@@ -67,7 +67,9 @@
+ #include <pwd.h>
+ #include <string.h>
+ #include <errno.h>
++#ifdef HAVE_NSS_H
+ #include <nss.h>
++#endif
+ #include "config.h"
+ #include "rpcbind.h"
+ 
+@@ -156,11 +158,13 @@ main(int argc, char *argv[])
+ 		exit(1);
+ 	}
+ 
++#ifdef HAVE_NSS_H
+ 	/*
+ 	 * Make sure we use the local service file 
+ 	 * for service lookkups
+ 	 */
+ 	__nss_configure_lookup("services", "files");
++#endif
+ 
+ 	nc_handle = setnetconfig(); 	/* open netconfig file */
+ 	if (nc_handle == NULL) {
+@@ -222,11 +226,13 @@ main(int argc, char *argv[])
+ 		struct passwd *p;
+ 		char *id = runasdaemon ? RUN_AS : rpcbinduser;
+ 
++#ifdef HAVE_NSS_H
+ 		/*
+ 		 * Make sure we use the local password file
+ 		 * for these lookups.
+ 		 */
+ 		__nss_configure_lookup("passwd", "files");
++#endif
+ 
+ 		if((p = getpwnam(id)) == NULL) {
+ 			syslog(LOG_ERR, "cannot get uid of '%s': %m", id);
+-- 
+1.7.9.5
+
