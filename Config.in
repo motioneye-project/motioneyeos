@@ -393,6 +393,8 @@ config BR2_PREFER_STATIC_LIB
 
 config BR2_HAVE_DOCUMENTATION
 	bool "documentation on the target"
+	# We no longer want to support a toolchain on the target
+	depends on BR2_DEPRECATED
 	help
 	  Install the documentation, including manual pages and info
 	  pages, on the target.
@@ -401,6 +403,8 @@ config BR2_HAVE_DOCUMENTATION
 
 config BR2_HAVE_DEVFILES
 	bool "development files in target filesystem"
+	# We no longer want to support a toolchain on the target
+	depends on BR2_DEPRECATED
 	help
 	  Install headers and static libraries in the
 	  target filesystem

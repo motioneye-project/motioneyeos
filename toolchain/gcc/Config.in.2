@@ -1,5 +1,7 @@
 config BR2_PACKAGE_GCC_TARGET
 	bool "gcc"
+	# We no longer want to support a toolchain on the target
+	depends on BR2_DEPRECATED
 	depends on BR2_HAVE_DEVFILES && BR2_TOOLCHAIN_BUILDROOT
 	select BR2_PACKAGE_BINUTILS
 	select BR2_PACKAGE_BINUTILS_TARGET
@@ -30,6 +32,3 @@ config BR2_EXTRA_TARGET_GCC_CONFIG_OPTIONS
 	  Any additional target gcc options you may want to include....
 	  Including, but not limited to --disable-checking etc.
 	  Refer to */configure in your gcc sources.
-
-comment "gcc needs development files in target filesystem"
-	depends on !BR2_HAVE_DEVFILES && BR2_TOOLCHAIN_BUILDROOT
