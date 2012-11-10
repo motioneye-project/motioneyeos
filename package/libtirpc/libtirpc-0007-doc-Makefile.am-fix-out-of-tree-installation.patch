@@ -1,0 +1,24 @@
+From 4cf0371c96abf83483835daf50d3fc3bf793bdc4 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Sat, 10 Nov 2012 17:29:12 +0100
+Subject: [PATCH] doc/Makefile.am: fix out-of-tree installation
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ doc/Makefile.am |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/doc/Makefile.am b/doc/Makefile.am
+index cc4fa76..bac7c0f 100644
+--- a/doc/Makefile.am
++++ b/doc/Makefile.am
+@@ -1,5 +1,5 @@
+ 
+ install: install-am
+ 	$(mkinstalldirs) $(DESTDIR)/etc
+-	cp -p ./etc_netconfig $(DESTDIR)/etc/netconfig
++	cp -p $(srcdir)/etc_netconfig $(DESTDIR)/etc/netconfig
+ 	chmod 0644 $(DESTDIR)/etc/netconfig
+-- 
+1.7.9.5
+

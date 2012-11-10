@@ -1,0 +1,33 @@
+From 8e02780905a3e13405a5a1b9f5b2e77655d5c7fb Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Sat, 10 Nov 2012 00:05:23 +0100
+Subject: [PATCH] rpcent: remove prototypes of reentrant variants
+
+The reentrant variants of getrpcbynumber() and al. are not implemented
+by libtirpc, so there is no point in advertising them in this header
+file.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ tirpc/rpc/rpcent.h |    5 -----
+ 1 file changed, 5 deletions(-)
+
+diff --git a/tirpc/rpc/rpcent.h b/tirpc/rpc/rpcent.h
+index 120801d..45775ed 100644
+--- a/tirpc/rpc/rpcent.h
++++ b/tirpc/rpc/rpcent.h
+@@ -55,11 +55,6 @@ struct rpcent {
+ 	int	r_number;	/* rpc program number */
+ };
+ 
+-extern struct rpcent *getrpcbyname_r(const char *, struct rpcent *,
+-					char *, int);
+-extern struct rpcent *getrpcbynumber_r(int, struct rpcent *, char *, int);
+-extern struct rpcent *getrpcent_r(struct rpcent *, char *, int);
+-
+ /* Old interfaces that return a pointer to a static area;  MT-unsafe */
+ extern struct rpcent *getrpcbyname(const char *);
+ extern struct rpcent *getrpcbynumber(int);
+-- 
+1.7.9.5
+

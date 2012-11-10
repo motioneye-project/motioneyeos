@@ -1,0 +1,6504 @@
+From 8a1ee148ea860c20fa4e076839e5681412a11f7e Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Sat, 10 Nov 2012 16:21:01 +0100
+Subject: [PATCH] Add rpcgen program from nfs-utils sources
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ Makefile.am          |    2 +-
+ configure.ac         |   12 +-
+ rpcgen/Makefile.am   |   22 ++
+ rpcgen/rpc_clntout.c |  217 ++++++++++
+ rpcgen/rpc_cout.c    |  706 +++++++++++++++++++++++++++++++++
+ rpcgen/rpc_hout.c    |  490 +++++++++++++++++++++++
+ rpcgen/rpc_main.c    | 1067 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ rpcgen/rpc_output.h  |   16 +
+ rpcgen/rpc_parse.c   |  609 ++++++++++++++++++++++++++++
+ rpcgen/rpc_parse.h   |  166 ++++++++
+ rpcgen/rpc_sample.c  |  247 ++++++++++++
+ rpcgen/rpc_scan.c    |  474 ++++++++++++++++++++++
+ rpcgen/rpc_scan.h    |  103 +++++
+ rpcgen/rpc_svcout.c  |  882 +++++++++++++++++++++++++++++++++++++++++
+ rpcgen/rpc_tblout.c  |  165 ++++++++
+ rpcgen/rpc_util.c    |  479 ++++++++++++++++++++++
+ rpcgen/rpc_util.h    |  166 ++++++++
+ rpcgen/rpcgen.1      |  521 ++++++++++++++++++++++++
+ 18 files changed, 6342 insertions(+), 2 deletions(-)
+ create mode 100644 rpcgen/Makefile.am
+ create mode 100644 rpcgen/rpc_clntout.c
+ create mode 100644 rpcgen/rpc_cout.c
+ create mode 100644 rpcgen/rpc_hout.c
+ create mode 100644 rpcgen/rpc_main.c
+ create mode 100644 rpcgen/rpc_output.h
+ create mode 100644 rpcgen/rpc_parse.c
+ create mode 100644 rpcgen/rpc_parse.h
+ create mode 100644 rpcgen/rpc_sample.c
+ create mode 100644 rpcgen/rpc_scan.c
+ create mode 100644 rpcgen/rpc_scan.h
+ create mode 100644 rpcgen/rpc_svcout.c
+ create mode 100644 rpcgen/rpc_tblout.c
+ create mode 100644 rpcgen/rpc_util.c
+ create mode 100644 rpcgen/rpc_util.h
+ create mode 100644 rpcgen/rpcgen.1
+
+diff --git a/Makefile.am b/Makefile.am
+index 1a7596b..afb4e38 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -1,4 +1,4 @@
+-SUBDIRS = src man doc
++SUBDIRS = src man doc rpcgen
+ ACLOCAL_AMFLAGS = -I m4
+ 
+ nobase_include_HEADERS = tirpc/netconfig.h \
+diff --git a/configure.ac b/configure.ac
+index 487ec83..7f35b48 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -29,6 +29,16 @@ AC_CHECK_HEADER(netinet/ip6.h,
+ 
+ AC_CHECK_LIB([pthread], [pthread_create])
+ 
++AM_CONDITIONAL(CROSS_COMPILING, test $cross_compiling = yes)
+ 
+-AC_CONFIG_FILES([Makefile src/Makefile man/Makefile doc/Makefile])
++AC_MSG_CHECKING([for a C compiler for build tools])
++if test $cross_compiling = yes; then
++  AC_CHECK_PROGS(CC_FOR_BUILD, gcc cc)
++else
++  CC_FOR_BUILD=$CC
++fi
++AC_MSG_RESULT([$CC_FOR_BUILD])
++AC_SUBST(CC_FOR_BUILD)
++
++AC_CONFIG_FILES([Makefile src/Makefile man/Makefile doc/Makefile rpcgen/Makefile])
+ AC_OUTPUT(libtirpc.pc)
+diff --git a/rpcgen/Makefile.am b/rpcgen/Makefile.am
+new file mode 100644
+index 0000000..2277b6f
+--- /dev/null
++++ b/rpcgen/Makefile.am
+@@ -0,0 +1,22 @@
++COMPILE = $(CC_FOR_BUILD) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
++	$(CPPFLAGS_FOR_BUILD) $(AM_CFLAGS) $(CFLAGS_FOR_BUILD)
++LINK = $(CC_FOR_BUILD) $(AM_CFLAGS) $(CFLAGS_FOR_BUILD) $(AM_LDFLAGS) $(LDFLAGS_FOR_BUILD) -o $@
++
++bin_PROGRAMS = rpcgen
++
++rpcgen_SOURCES = \
++	rpc_clntout.c \
++	rpc_cout.c \
++	rpc_hout.c \
++	rpc_main.c \
++	rpc_parse.c \
++	rpc_sample.c \
++	rpc_scan.c \
++	rpc_svcout.c \
++	rpc_tblout.c \
++	rpc_util.c \
++	rpc_parse.h \
++	rpc_scan.h \
++	rpc_util.h
++
++dist_man1_MANS = rpcgen.1
+diff --git a/rpcgen/rpc_clntout.c b/rpcgen/rpc_clntout.c
+new file mode 100644
+index 0000000..e2f4382
+--- /dev/null
++++ b/rpcgen/rpc_clntout.c
+@@ -0,0 +1,217 @@
++/*
++ * Copyright (c) 2009, Sun Microsystems, Inc.
++ * All rights reserved.
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions are met:
++ * - Redistributions of source code must retain the above copyright notice,
++ *   this list of conditions and the following disclaimer.
++ * - Redistributions in binary form must reproduce the above copyright notice,
++ *   this list of conditions and the following disclaimer in the documentation
++ *   and/or other materials provided with the distribution.
++ * - Neither the name of Sun Microsystems, Inc. nor the names of its
++ *   contributors may be used to endorse or promote products derived
++ *   from this software without specific prior written permission.
++ *
++ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
++ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
++ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
++ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
++ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
++ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
++ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
++ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
++ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
++ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
++ * POSSIBILITY OF SUCH DAMAGE.
++ */
++
++#if 0
++static char sccsid[] = "@(#)rpc_clntout.c 1.11 89/02/22 (C) 1987 SMI";
++#endif
++
++/*
++ * rpc_clntout.c, Client-stub outputter for the RPC protocol compiler
++ * Copyright (C) 1987, Sun Microsytsems, Inc.
++ */
++#include <stdio.h>
++#include <string.h>
++#include <rpc/types.h>
++#include "rpc_parse.h"
++#include "rpc_util.h"
++#include "rpc_output.h"
++
++/* extern pdeclaration(); */
++/* void printarglist(); */
++
++#define DEFAULT_TIMEOUT 25	/* in seconds */
++static char RESULT[] = "clnt_res";
++
++static void	write_program(definition *def);
++static void	printbody(proc_list *proc);
++
++
++void
++write_stubs(void)
++{
++	list *l;
++	definition *def;
++
++	f_print(fout, 
++		"\n/* Default timeout can be changed using clnt_control() */\n");
++	f_print(fout, "static struct timeval TIMEOUT = { %d, 0 };\n",
++		DEFAULT_TIMEOUT);
++	for (l = defined; l != NULL; l = l->next) {
++		def = (definition *) l->val;
++		if (def->def_kind == DEF_PROGRAM) {
++			write_program(def);
++		}
++	}
++}
++
++static void
++write_program(definition *def)
++{
++	version_list   *vp;
++	proc_list      *proc;
++
++	for (vp = def->def.pr.versions; vp != NULL; vp = vp->next) {
++		for (proc = vp->procs; proc != NULL; proc = proc->next) {
++			f_print(fout, "\n");
++			ptype(proc->res_prefix, proc->res_type, 1);
++			f_print(fout, "*\n");
++			pvname(proc->proc_name, vp->vers_num);
++			printarglist(proc, "clnt", "CLIENT *");
++			f_print(fout, "{\n");
++			printbody(proc);
++			f_print(fout, "}\n");
++		}
++	}
++}
++
++/*
++ * Writes out declarations of procedure's argument list.
++ * In either ANSI C style, in one of old rpcgen style (pass by reference),
++ * or new rpcgen style (multiple arguments, pass by value);
++ */
++
++/* sample addargname = "clnt"; sample addargtype = "CLIENT * " */
++
++void
++printarglist(proc_list *proc, char *addargname, char *addargtype)
++{
++
++	decl_list      *l;
++
++	if (!newstyle) {	/* old style: always pass arg by reference */
++		if (Cflag) {	/* C++ style heading */
++			f_print(fout, "(");
++			ptype(proc->args.decls->decl.prefix, proc->args.decls->decl.type, 1);
++			f_print(fout, "*argp, %s%s)\n", addargtype, addargname);
++		} else {
++			f_print(fout, "(argp, %s)\n", addargname);
++			f_print(fout, "\t");
++			ptype(proc->args.decls->decl.prefix, proc->args.decls->decl.type, 1);
++			f_print(fout, "*argp;\n");
++		}
++	} else if (streq(proc->args.decls->decl.type, "void")) {
++		/* newstyle, 0 argument */
++		if (Cflag)
++			f_print(fout, "(%s%s)\n", addargtype, addargname);
++		else
++			f_print(fout, "(%s)\n", addargname);
++	} else {
++		/* new style, 1 or multiple arguments */
++		if (!Cflag) {
++			f_print(fout, "(");
++			for (l = proc->args.decls; l != NULL; l = l->next)
++				f_print(fout, "%s, ", l->decl.name);
++			f_print(fout, "%s)\n", addargname);
++			for (l = proc->args.decls; l != NULL; l = l->next) {
++				pdeclaration(proc->args.argname, &l->decl, 1, ";\n");
++			}
++		} else {	/* C++ style header */
++			f_print(fout, "(");
++			for (l = proc->args.decls; l != NULL; l = l->next) {
++				pdeclaration(proc->args.argname, &l->decl, 0, ", ");
++			}
++			f_print(fout, " %s%s)\n", addargtype, addargname);
++		}
++	}
++
++	if (!Cflag)
++		f_print(fout, "\t%s%s;\n", addargtype, addargname);
++}
++
++
++
++static char *
++ampr(char *type)
++{
++	if (isvectordef(type, REL_ALIAS)) {
++		return ("");
++	} else {
++		return ("&");
++	}
++}
++
++static void
++printbody(proc_list *proc)
++{
++	decl_list      *l;
++	bool_t          args2 = (proc->arg_num > 1);
++
++	/* For new style with multiple arguments, need a structure in which
++         * to stuff the arguments. */
++	if (newstyle && args2) {
++		f_print(fout, "\t%s", proc->args.argname);
++		f_print(fout, " arg;\n");
++	}
++	f_print(fout, "\tstatic ");
++	if (streq(proc->res_type, "void")) {
++		f_print(fout, "char ");
++	} else {
++		ptype(proc->res_prefix, proc->res_type, 0);
++	}
++	f_print(fout, "%s;\n", RESULT);
++	f_print(fout, "\n");
++	f_print(fout, "\tmemset((char *)%s%s, 0, sizeof(%s));\n",
++		ampr(proc->res_type), RESULT, RESULT);
++	if (newstyle && !args2 && (streq(proc->args.decls->decl.type, "void"))) {
++		/* newstyle, 0 arguments */
++		f_print(fout,
++			"\tif (clnt_call(clnt, %s, (xdrproc_t) xdr_void, (caddr_t) NULL, "
++			"(xdrproc_t) xdr_%s, (caddr_t) %s%s, TIMEOUT) != RPC_SUCCESS) {\n",
++			proc->proc_name,
++			stringfix(proc->res_type), ampr(proc->res_type), RESULT);
++
++	} else if (newstyle && args2) {
++		/* newstyle, multiple arguments:  stuff arguments into structure */
++		for (l = proc->args.decls; l != NULL; l = l->next) {
++			f_print(fout, "\targ.%s = %s;\n",
++				l->decl.name, l->decl.name);
++		}
++		f_print(fout,
++			"\tif (clnt_call(clnt, %s, (xdrproc_t) xdr_%s, (caddr_t) &arg, "
++			"(xdrproc_t) xdr_%s, (caddr_t) %s%s, TIMEOUT) != RPC_SUCCESS) {\n",
++			proc->proc_name, proc->args.argname,
++			stringfix(proc->res_type), ampr(proc->res_type), RESULT);
++	} else {		/* single argument, new or old style */
++		f_print(fout,
++			"\tif (clnt_call(clnt, %s, (xdrproc_t) xdr_%s, "
++			"(caddr_t) %s%s, (xdrproc_t) xdr_%s, (caddr_t) %s%s, TIMEOUT) != RPC_SUCCESS) {\n",
++			proc->proc_name,
++			stringfix(proc->args.decls->decl.type),
++			(newstyle ? "&" : ""),
++			(newstyle ? proc->args.decls->decl.name : "argp"),
++			stringfix(proc->res_type), ampr(proc->res_type), RESULT);
++	}
++	f_print(fout, "\t\treturn (NULL);\n");
++	f_print(fout, "\t}\n");
++	if (streq(proc->res_type, "void")) {
++		f_print(fout, "\treturn ((void *)%s%s);\n",
++			ampr(proc->res_type), RESULT);
++	} else {
++		f_print(fout, "\treturn (%s%s);\n", ampr(proc->res_type), RESULT);
++	}
++}
+diff --git a/rpcgen/rpc_cout.c b/rpcgen/rpc_cout.c
+new file mode 100644
+index 0000000..a61214f
+--- /dev/null
++++ b/rpcgen/rpc_cout.c
+@@ -0,0 +1,706 @@
++/*
++ * Copyright (c) 2009, Sun Microsystems, Inc.
++ * All rights reserved.
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions are met:
++ * - Redistributions of source code must retain the above copyright notice,
++ *   this list of conditions and the following disclaimer.
++ * - Redistributions in binary form must reproduce the above copyright notice,
++ *   this list of conditions and the following disclaimer in the documentation
++ *   and/or other materials provided with the distribution.
++ * - Neither the name of Sun Microsystems, Inc. nor the names of its
++ *   contributors may be used to endorse or promote products derived
++ *   from this software without specific prior written permission.
++ *
++ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
++ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
++ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
++ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
++ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
++ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
++ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
++ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
++ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
++ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
++ * POSSIBILITY OF SUCH DAMAGE.
++ */
++
++#if 0
++static char sccsid[] = "@(#)rpc_cout.c 1.13 89/02/22 (C) 1987 SMI";
++#endif
++
++/*
++ * rpc_cout.c, XDR routine outputter for the RPC protocol compiler 
++ */
++#include <stdio.h>
++#include <string.h>
++#include <stdlib.h>
++#include <malloc.h>
++#include <ctype.h>
++#include "rpc_parse.h"
++#include "rpc_util.h"
++
++static int	findtype(definition *def, char *type);
++static int	undefined(char *type);
++static void	print_generic_header(char *procname, int pointerp);
++static void	print_header(definition *def);
++static void	print_prog_header(proc_list *plist);
++static void	print_trailer(void);
++static void	print_ifopen(int indent, char *name);
++static void	print_ifarg(char *arg);
++static void	print_ifsizeof(char *prefix, char *type);
++static void	print_ifclose(int indent);
++static void	print_ifstat(int indent, char *prefix, char *type, relation rel,
++			char *amax, char *objname, char *name);
++static void	emit_enum(definition *def);
++static void	emit_program(definition *def);
++static void	emit_union(definition *def);
++static void	emit_struct(definition *def);
++static void	emit_typedef(definition *def);
++static void	print_stat(int indent, declaration *dec);
++static void	emit_inline(declaration *decl, int flag);
++static void	emit_single_in_line(declaration *decl, int flag, relation rel);
++static char *	upcase(char *str);
++
++/*
++ * Emit the C-routine for the given definition 
++ */
++void
++emit(definition *def)
++{
++	if (def->def_kind == DEF_CONST) {
++		return;
++	}
++	if (def->def_kind == DEF_PROGRAM) {
++		emit_program(def);
++		return;
++	}
++	if (def->def_kind == DEF_TYPEDEF) {
++		/* now we need to handle declarations like
++		 * struct typedef foo foo;
++		 * since we dont want this to be expanded into 2 calls
++		 * to xdr_foo */
++
++		if (strcmp(def->def.ty.old_type, def->def_name) == 0)
++			return;
++	};
++
++	print_header(def);
++	switch (def->def_kind) {
++	case DEF_UNION:
++		emit_union(def);
++		break;
++	case DEF_ENUM:
++		emit_enum(def);
++		break;
++	case DEF_STRUCT:
++		emit_struct(def);
++		break;
++	case DEF_TYPEDEF:
++		emit_typedef(def);
++		break;
++	default:
++		break;
++	}
++	print_trailer();
++}
++
++static int
++findtype(definition *def, char *type)
++{
++
++	if (def->def_kind == DEF_PROGRAM || def->def_kind == DEF_CONST) {
++		return (0);
++	} else {
++		return (streq(def->def_name, type));
++	}
++}
++
++static int
++undefined(char *type)
++{
++	definition     *def;
++
++	def = (definition *) FINDVAL(defined, type, findtype);
++
++	return (def == NULL);
++}
++
++
++static void
++print_generic_header(char *procname, int pointerp)
++{
++	f_print(fout, "\n");
++	f_print(fout, "bool_t\n");
++	if (Cflag) {
++		f_print(fout, "xdr_%s(", procname);
++		f_print(fout, "XDR *xdrs, ");
++		f_print(fout, "%s ", procname);
++		if (pointerp)
++			f_print(fout, "*");
++		f_print(fout, "objp)\n{\n\n");
++	} else {
++		f_print(fout, "xdr_%s(xdrs, objp)\n", procname);
++		f_print(fout, "\tXDR *xdrs;\n");
++		f_print(fout, "\t%s ", procname);
++		if (pointerp)
++			f_print(fout, "*");
++		f_print(fout, "objp;\n{\n\n");
++	}
++}
++
++static void
++print_header(definition *def)
++{
++	print_generic_header(def->def_name,
++		def->def_kind != DEF_TYPEDEF ||
++		!isvectordef(def->def.ty.old_type, def->def.ty.rel));
++
++	/* Now add Inline support */
++
++
++	if (Inline == 0)
++		return;
++}
++
++static void
++print_prog_header(proc_list *plist)
++{
++	print_generic_header(plist->args.argname, 1);
++}
++
++static void
++print_trailer(void)
++{
++	f_print(fout, "\treturn (TRUE);\n");
++	f_print(fout, "}\n");
++}
++
++
++static void
++print_ifopen(int indent, char *name)
++{
++	tabify(fout, indent);
++	f_print(fout, " if (!xdr_%s(xdrs", name);
++}
++
++static void
++print_ifarg(char *arg)
++{
++	f_print(fout, ", %s", arg);
++}
++
++static void
++print_ifsizeof(char *prefix, char *type)
++{
++	if (streq(type, "bool")) {
++		f_print(fout, ", sizeof(bool_t), (xdrproc_t)xdr_bool");
++	} else {
++		f_print(fout, ", sizeof(");
++		if (undefined(type) && prefix) {
++			f_print(fout, "%s ", prefix);
++		}
++		f_print(fout, "%s), (xdrproc_t)xdr_%s", type, type);
++	}
++}
++
++static void
++print_ifclose(int indent)
++{
++	f_print(fout, ")) {\n");
++	tabify(fout, indent);
++	f_print(fout, "\t return (FALSE);\n");
++	tabify(fout, indent);
++	f_print(fout, " }\n");
++}
++
++static void
++print_ifstat(int indent, char *prefix, char *type, relation rel,
++			char *amax, char *objname, char *name)
++{
++	char *alt = NULL;
++
++	switch (rel) {
++	case REL_POINTER:
++		print_ifopen(indent, "pointer");
++		print_ifarg("(char **)");
++		f_print(fout, "%s", objname);
++		print_ifsizeof(prefix, type);
++		break;
++	case REL_VECTOR:
++		if (streq(type, "string")) {
++			alt = "string";
++		} else if (streq(type, "opaque")) {
++			alt = "opaque";
++		}
++		if (alt) {
++			print_ifopen(indent, alt);
++			print_ifarg(objname);
++		} else {
++			print_ifopen(indent, "vector");
++			print_ifarg("(char *)");
++			f_print(fout, "%s", objname);
++		}
++		print_ifarg(amax);
++		if (!alt) {
++			print_ifsizeof(prefix, type);
++		}
++		break;
++	case REL_ARRAY:
++		if (streq(type, "string")) {
++			alt = "string";
++		} else if (streq(type, "opaque")) {
++			alt = "bytes";
++		}
++		if (streq(type, "string")) {
++			print_ifopen(indent, alt);
++			print_ifarg(objname);
++		} else {
++			if (alt) {
++				print_ifopen(indent, alt);
++			} else {
++				print_ifopen(indent, "array");
++			}
++			/* The (void*) avoids a gcc-4.1 warning */
++			print_ifarg("(char **)(void*)");
++			if (*objname == '&') {
++				f_print(fout, "%s.%s_val, (u_int *)%s.%s_len",
++					objname, name, objname, name);
++			} else {
++				f_print(fout, "&%s->%s_val, (u_int *)&%s->%s_len",
++					objname, name, objname, name);
++			}
++		}
++		print_ifarg(amax);
++		if (!alt) {
++			print_ifsizeof(prefix, type);
++		}
++		break;
++	case REL_ALIAS:
++		print_ifopen(indent, type);
++		print_ifarg(objname);
++		break;
++	}
++	print_ifclose(indent);
++}
++
++static void
++emit_enum(definition *def)
++{
++	print_ifopen(1, "enum");
++	print_ifarg("(enum_t *)objp");
++	print_ifclose(1);
++}
++
++static void
++emit_program(definition *def)
++{
++	decl_list      *dl;
++	version_list   *vlist;
++	proc_list      *plist;
++
++	for (vlist = def->def.pr.versions; vlist != NULL; vlist = vlist->next)
++		for (plist = vlist->procs; plist != NULL; plist = plist->next) {
++			if (!newstyle || plist->arg_num < 2)
++				continue;/* old style, or single argument */
++			print_prog_header(plist);
++			for (dl = plist->args.decls; dl != NULL; dl = dl->next)
++				print_stat(1, &dl->decl);
++			print_trailer();
++		}
++}
++
++
++static void
++emit_union(definition *def)
++{
++  declaration *dflt;
++  case_list *cl;
++  declaration *cs;
++  char *object;
++  char *vecformat = "objp->%s_u.%s";
++  char *format = "&objp->%s_u.%s";
++
++  print_stat(1,&def->def.un.enum_decl);
++  f_print(fout, "\tswitch (objp->%s) {\n", def->def.un.enum_decl.name);
++  for (cl = def->def.un.cases; cl != NULL; cl = cl->next) {
++
++    f_print(fout, "\tcase %s:\n", cl->case_name);
++    if(cl->contflag == 1)	/* a continued case statement */
++      continue;
++    cs = &cl->case_decl;
++    if (!streq(cs->type, "void")) {
++      object = alloc(strlen(def->def_name) + strlen(format) +
++		     strlen(cs->name) + 1);
++      if (isvectordef (cs->type, cs->rel)) {
++	s_print(object, vecformat, def->def_name, 
++		cs->name);
++      } else {
++	s_print(object, format, def->def_name, 
++		cs->name);
++      }
++      print_ifstat(2, cs->prefix, cs->type, cs->rel, cs->array_max,
++		   object, cs->name);
++      free(object);
++    }
++    f_print(fout, "\t\tbreak;\n");
++  }
++  dflt = def->def.un.default_decl;
++  if (dflt != NULL) {
++    if (!streq(dflt->type, "void")) {
++      f_print(fout, "\tdefault:\n");
++      object = alloc(strlen(def->def_name) + strlen(format) +
++		     strlen(dflt->name) + 1);
++      if (isvectordef (dflt->type, dflt->rel)) {
++	s_print(object, vecformat, def->def_name, 
++		dflt->name);
++      } else {
++	s_print(object, format, def->def_name, 
++		dflt->name);
++      }
++
++      print_ifstat(2, dflt->prefix, dflt->type, dflt->rel,
++		   dflt->array_max, object, dflt->name);
++      free(object);
++      f_print(fout, "\t\tbreak;\n");
++    } else {
++      /* Avoid gcc warnings about `value not handled in switch' */
++      f_print(fout, "\tdefault:\n");
++      f_print(fout, "\t\tbreak;\n");
++    }
++  } else {
++    f_print(fout, "\tdefault:\n");
++    f_print(fout, "\t\treturn (FALSE);\n");
++  }
++
++  f_print(fout, "\t}\n");
++}
++
++static void
++emit_struct(definition *def)
++{
++	decl_list      *dl;
++	int             i, j, size, flag;
++	decl_list      *cur = NULL, *psav;
++	bas_type       *ptr;
++	char           *sizestr, *plus;
++	char            ptemp[256];
++	int             can_inline;
++	const char	*buf_declaration;
++
++
++	if (Inline == 0) {
++		for (dl = def->def.st.decls; dl != NULL; dl = dl->next)
++			print_stat(1, &dl->decl);
++	} else {
++		size = 0;
++		can_inline = 0;
++		for (dl = def->def.st.decls; dl != NULL; dl = dl->next)
++			if ((dl->decl.prefix == NULL) && ((ptr = find_type(dl->decl.type)) != NULL) && ((dl->decl.rel == REL_ALIAS) || (dl->decl.rel == REL_VECTOR))) {
++
++				if (dl->decl.rel == REL_ALIAS)
++					size += ptr->length;
++				else {
++					can_inline = 1;
++					break;	/* can be inlined */
++				};
++			} else {
++				if (size >= Inline) {
++					can_inline = 1;
++					break;	/* can be inlined */
++				}
++				size = 0;
++			}
++		if (size > Inline)
++			can_inline = 1;
++
++		if (can_inline == 0) {	/* can not inline, drop back to old mode */
++			for (dl = def->def.st.decls; dl != NULL; dl = dl->next)
++				print_stat(1, &dl->decl);
++			return;
++		};
++
++
++
++
++		flag = PUT;
++		for (j = 0; j < 2; j++) {
++
++			if (flag == PUT)
++				f_print(fout, "\n\t if (xdrs->x_op == XDR_ENCODE) {\n");
++			else
++				f_print(fout, "\n \t return (TRUE);\n\t} else if (xdrs->x_op == XDR_DECODE) {\n");
++
++
++			i = 0;
++			size = 0;
++			sizestr = NULL;
++			buf_declaration = "int32_t *";
++			for (dl = def->def.st.decls; dl != NULL; dl = dl->next) {	/* xxx */
++
++				/* now walk down the list and check for basic types */
++				if ((dl->decl.prefix == NULL) && ((ptr = find_type(dl->decl.type)) != NULL) && ((dl->decl.rel == REL_ALIAS) || (dl->decl.rel == REL_VECTOR))) {
++					if (i == 0)
++						cur = dl;
++					i++;
++
++					if (dl->decl.rel == REL_ALIAS)
++						size += ptr->length;
++					else {
++						/* this is required to handle arrays */
++
++						if (sizestr == NULL)
++							plus = " ";
++						else
++							plus = "+";
++
++						if (ptr->length != 1)
++							s_print(ptemp, " %s %s * %d", plus, dl->decl.array_max, ptr->length);
++						else
++							s_print(ptemp, " %s %s ", plus, dl->decl.array_max);
++
++						/*now concatenate to sizestr !!!! */
++						if (sizestr == NULL)
++							sizestr = strdup(ptemp);
++						else {
++							sizestr = realloc(sizestr, strlen(sizestr) + strlen(ptemp) + 1);
++							if (sizestr == NULL) {
++
++								f_print(stderr, "Fatal error : no memory \n");
++								crash();
++							};
++							sizestr = strcat(sizestr, ptemp);	/*build up length of array */
++
++						}
++					}
++
++				} else {
++					if (i > 0)
++					    {
++						if (sizestr == NULL && size < Inline) {
++							/* don't expand into inline code if size < inline */
++							while (cur != dl) {
++								print_stat(1, &cur->decl);
++								cur = cur->next;
++							}
++						} else {
++
++
++
++							/* were already looking at a xdr_inlineable structure */
++							if (sizestr == NULL)
++								f_print(fout, "\t %sbuf = XDR_INLINE(xdrs,%d * BYTES_PER_XDR_UNIT);",
++									buf_declaration, size);
++							else if (size == 0)
++								f_print(fout,
++									"\t %sbuf = XDR_INLINE(xdrs,%s * BYTES_PER_XDR_UNIT);",
++									buf_declaration, sizestr);
++							else
++								f_print(fout,
++									"\t %sbuf = XDR_INLINE(xdrs,(%d + %s)* BYTES_PER_XDR_UNIT);",
++									buf_declaration, size, sizestr);
++							buf_declaration = "";
++
++							f_print(fout, "\n\t   if (buf == NULL) {\n");
++
++							psav = cur;
++							while (cur != dl) {
++								print_stat(2, &cur->decl);
++								cur = cur->next;
++							}
++
++							f_print(fout, "\n\t  }\n\t  else {\n");
++
++							cur = psav;
++							while (cur != dl) {
++								emit_inline(&cur->decl, flag);
++								cur = cur->next;
++							}
++
++							f_print(fout, "\t  }\n");
++						}
++					    }
++					size = 0;
++					i = 0;
++					sizestr = NULL;
++					print_stat(1, &dl->decl);
++				}
++
++			}
++			if (i > 0)
++			    {
++				if (sizestr == NULL && size < Inline) {
++					/* don't expand into inline code if size < inline */
++					while (cur != dl) {
++						print_stat(1, &cur->decl);
++						cur = cur->next;
++					}
++				} else {
++
++					/* were already looking at a xdr_inlineable structure */
++					if (sizestr == NULL)
++						f_print(fout, "\t\t%sbuf = XDR_INLINE(xdrs,%d * BYTES_PER_XDR_UNIT);",
++							buf_declaration, size);
++					else if (size == 0)
++						f_print(fout,
++							"\t\t%sbuf = XDR_INLINE(xdrs,%s * BYTES_PER_XDR_UNIT);",
++							buf_declaration, sizestr);
++					else
++						f_print(fout,
++							"\t\t%sbuf = XDR_INLINE(xdrs,(%d + %s)* BYTES_PER_XDR_UNIT);",
++							buf_declaration, size, sizestr);
++					buf_declaration = "";
++
++					f_print(fout, "\n\t\tif (buf == NULL) {\n");
++
++					psav = cur;
++					while (cur != NULL) {
++						print_stat(2, &cur->decl);
++						cur = cur->next;
++					}
++					f_print(fout, "\n\t  }\n\t  else {\n");
++
++					cur = psav;
++					while (cur != dl) {
++						emit_inline(&cur->decl, flag);
++						cur = cur->next;
++					}
++
++					f_print(fout, "\t  }\n");
++
++				}
++			    }
++			flag = GET;
++		}
++		f_print(fout, "\t return(TRUE);\n\t}\n\n");
++
++		/* now take care of XDR_FREE case */
++
++		for (dl = def->def.st.decls; dl != NULL; dl = dl->next)
++			print_stat(1, &dl->decl);
++	}
++}
++ 
++
++
++
++static void
++emit_typedef(definition *def)
++{
++	char *prefix = def->def.ty.old_prefix;
++	char *type = def->def.ty.old_type;
++	char *amax = def->def.ty.array_max;
++	relation rel = def->def.ty.rel;
++
++
++	  print_ifstat(1, prefix, type, rel, amax, "objp", def->def_name);
++}
++
++static void
++print_stat(int indent, declaration *dec)
++{
++	char *prefix = dec->prefix;
++	char *type = dec->type;
++	char *amax = dec->array_max;
++	relation rel = dec->rel;
++	char name[256];
++
++	if (isvectordef(type, rel)) {
++		s_print(name, "objp->%s", dec->name);
++	} else {
++		s_print(name, "&objp->%s", dec->name);
++	}
++	print_ifstat(indent, prefix, type, rel, amax, name, dec->name);
++}
++
++
++static void
++emit_inline(declaration *decl, int flag)
++{
++
++	/*check whether an array or not */
++
++	switch (decl->rel) {
++	case REL_ALIAS:
++		emit_single_in_line(decl, flag, REL_ALIAS);
++		break;
++	case REL_VECTOR:
++		f_print(fout, "\t\t{ register %s *genp; \n", decl->type);
++		f_print(fout, "\t\t  int i;\n");
++		f_print(fout, "\t\t  for ( i = 0,genp=objp->%s;\n \t\t\ti < %s; i++){\n\t\t",
++			decl->name, decl->array_max);
++		emit_single_in_line(decl, flag, REL_VECTOR);
++		f_print(fout, "\t\t   }\n\t\t };\n");
++		break;
++	default:
++		break;
++	}
++}
++
++static void
++emit_single_in_line(declaration *decl, int flag, relation rel)
++{
++	char *upp_case;
++	int freed=0;
++
++	if(flag == PUT)
++		f_print(fout,"\t\t (void) IXDR_PUT_");
++	else    
++		if(rel== REL_ALIAS)
++			f_print(fout,"\t\t objp->%s = IXDR_GET_",decl->name);
++		else
++			f_print(fout,"\t\t *genp++ = IXDR_GET_");
++
++	upp_case=upcase(decl->type);
++
++	/* hack  - XX */
++	if(strcmp(upp_case,"INT") == 0)
++	{
++		free(upp_case);
++		freed=1;
++		upp_case="INT32";
++	}
++
++	if(strcmp(upp_case,"U_INT") == 0)
++	{
++		free(upp_case);
++		freed=1;
++		upp_case="U_INT32";
++	}
++
++
++	if(flag == PUT) 
++		if(rel== REL_ALIAS)
++			f_print(fout,"%s(buf,objp->%s);\n",upp_case,decl->name);
++		else
++			f_print(fout,"%s(buf,*genp++);\n",upp_case);
++
++	else
++		f_print(fout,"%s(buf);\n",upp_case);
++	if(!freed)
++		free(upp_case);
++
++}
++
++
++static char *
++upcase(char *str)
++{
++	char           *ptr, *hptr;
++
++
++	ptr = (char *) malloc(strlen(str)+1);
++	if (ptr == (char *) NULL) {
++		f_print(stderr, "malloc failed \n");
++		exit(1);
++	};
++
++	hptr = ptr;
++	while (*str != '\0')
++		*ptr++ = toupper(*str++);
++
++	*ptr = '\0';
++	return (hptr);
++
++}
+diff --git a/rpcgen/rpc_hout.c b/rpcgen/rpc_hout.c
+new file mode 100644
+index 0000000..ea1cb24
+--- /dev/null
++++ b/rpcgen/rpc_hout.c
+@@ -0,0 +1,490 @@
++/*
++ * Copyright (c) 2009, Sun Microsystems, Inc.
++ * All rights reserved.
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions are met:
++ * - Redistributions of source code must retain the above copyright notice,
++ *   this list of conditions and the following disclaimer.
++ * - Redistributions in binary form must reproduce the above copyright notice,
++ *   this list of conditions and the following disclaimer in the documentation
++ *   and/or other materials provided with the distribution.
++ * - Neither the name of Sun Microsystems, Inc. nor the names of its
++ *   contributors may be used to endorse or promote products derived
++ *   from this software without specific prior written permission.
++ *
++ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
++ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
++ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
++ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
++ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
++ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
++ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
++ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
++ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
++ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
++ * POSSIBILITY OF SUCH DAMAGE.
++ */
++
++#if 0
++static char sccsid[] = "@(#)rpc_hout.c 1.12 89/02/22 (C) 1987 SMI";
++#endif
++
++/*
++ * rpc_hout.c, Header file outputter for the RPC protocol compiler 
++ */
++#include <stdio.h>
++#include <ctype.h>
++#include "rpc_parse.h"
++#include "rpc_util.h"
++#include "rpc_output.h"
++
++
++static int	undefined2(char *type, char *stop);
++static void	pxdrfuncdecl(char *name, int pointerp);
++static void	pconstdef(definition *def);
++static void	pargdef(definition *def);
++static void	pstructdef(definition *def);
++static void	puniondef(definition *def);
++static void	pdefine(char *name, char *num);
++static void	puldefine(char *name, char *num);
++static int	define_printed(proc_list *stop, version_list *start);
++static void	pprogramdef(definition *def);
++static void	pprocdef(proc_list *proc, version_list *vp,
++				char *addargtype, int server_p, int mode);
++static void	parglist(proc_list *proc, char *addargtype);
++static void	penumdef(definition *def);
++static void	ptypedef(definition *def);
++
++/*
++ * Print the C-version of an xdr definition 
++ */
++void
++print_datadef(definition *def)
++{
++
++	if (def->def_kind == DEF_PROGRAM )  /* handle data only */
++	        return;
++
++	if (def->def_kind != DEF_CONST) {
++		f_print(fout, "\n");
++	}
++	switch (def->def_kind) {
++	case DEF_STRUCT:
++		pstructdef(def);
++		break;
++	case DEF_UNION:
++		puniondef(def);
++		break;
++	case DEF_ENUM:
++		penumdef(def);
++		break;
++	case DEF_TYPEDEF:
++		ptypedef(def);
++		break;
++	case DEF_PROGRAM:
++		pprogramdef(def);
++		break;
++	case DEF_CONST:
++		pconstdef(def);
++		break;
++	}
++	if (def->def_kind != DEF_PROGRAM && def->def_kind != DEF_CONST) {
++	  pxdrfuncdecl( def->def_name,
++		       def->def_kind != DEF_TYPEDEF ||
++		       !isvectordef(def->def.ty.old_type, def->def.ty.rel));
++
++	}
++}
++
++
++void
++print_funcdef(definition *def)
++{
++	switch (def->def_kind) {
++	case DEF_PROGRAM:
++		f_print(fout, "\n");
++		pprogramdef(def);
++		break;
++	default:
++		break;
++	}
++}
++
++static void
++pxdrfuncdecl(char *name, int pointerp)
++{
++	f_print(fout,
++	"#ifdef __cplusplus \n"
++	"extern \"C\" bool_t xdr_%s(XDR *, %s%s);\n"
++	"#elif __STDC__ \n"
++	"extern  bool_t xdr_%s(XDR *, %s%s);\n"
++	"#else /* Old Style C */ \n"
++	"bool_t xdr_%s();\n"
++	"#endif /* Old Style C */ \n\n",
++	name, name, pointerp ? "*" : "",
++	name, name, pointerp ? "*" : "",
++	name);
++}
++
++
++static void
++pconstdef(definition *def)
++{
++	pdefine(def->def_name, def->def.co);
++}
++
++/* print out the definitions for the arguments of functions in the 
++   header file 
++*/
++static  void
++pargdef(definition *def)
++{
++	decl_list *l;
++	version_list *vers;
++	char *name;
++	proc_list *plist;
++
++	
++	for (vers = def->def.pr.versions; vers != NULL; vers = vers->next) {
++			for(plist = vers->procs; plist != NULL; 
++			    plist = plist->next) {
++				
++				if (!newstyle || plist->arg_num < 2) {
++					continue; /* old style or single args */
++				}
++				name = plist->args.argname;
++				f_print(fout, "struct %s {\n", name);
++				for (l = plist->args.decls; 
++				     l != NULL; l = l->next) {
++					pdeclaration(name, &l->decl, 1, ";\n" );
++				}
++				f_print(fout, "};\n");
++				f_print(fout, "typedef struct %s %s;\n", name, name);
++				pxdrfuncdecl(name, 0);
++				f_print( fout, "\n" );
++			}
++		}
++
++}
++
++
++static void
++pstructdef(definition *def)
++{
++	decl_list *l;
++	char *name = def->def_name;
++
++	f_print(fout, "struct %s {\n", name);
++	for (l = def->def.st.decls; l != NULL; l = l->next) {
++		pdeclaration(name, &l->decl, 1, ";\n");
++	}
++	f_print(fout, "};\n");
++	f_print(fout, "typedef struct %s %s;\n", name, name);
++}
++
++static void
++puniondef(definition *def)
++{
++	case_list      *l;
++	char           *name = def->def_name;
++	declaration    *decl;
++
++	f_print(fout, "struct %s {\n", name);
++	decl = &def->def.un.enum_decl;
++	if (streq(decl->type, "bool")) {
++		f_print(fout, "\tbool_t %s;\n", decl->name);
++	} else {
++		f_print(fout, "\t%s %s;\n", decl->type, decl->name);
++	}
++	f_print(fout, "\tunion {\n");
++	for (l = def->def.un.cases; l != NULL; l = l->next) {
++		if (l->contflag == 0)
++			pdeclaration(name, &l->case_decl, 2, ";\n");
++	}
++	decl = def->def.un.default_decl;
++	if (decl && !streq(decl->type, "void")) {
++		pdeclaration(name, decl, 2, ";\n");
++	}
++	f_print(fout, "\t} %s_u;\n", name);
++	f_print(fout, "};\n");
++	f_print(fout, "typedef struct %s %s;\n", name, name);
++}
++
++static void
++pdefine(char *name, char *num)
++{
++	f_print(fout, "#define %s %s\n", name, num);
++}
++
++static void
++puldefine(char *name, char *num)
++{
++	f_print(fout, "#define %s ((u_int32_t)%s)\n", name, num);
++}
++
++static int
++define_printed(proc_list *stop, version_list *start)
++{
++	version_list *vers;
++	proc_list *proc;
++
++	for (vers = start; vers != NULL; vers = vers->next) {
++		for (proc = vers->procs; proc != NULL; proc = proc->next) {
++			if (proc == stop) {
++				return (0);
++			} else if (streq(proc->proc_name, stop->proc_name)) {
++				return (1);
++			}
++		}
++	}
++	abort();
++	/* NOTREACHED */
++}
++
++static void
++pprogramdef(definition *def)
++{
++	version_list   *vers;
++	proc_list      *proc;
++	int             i;
++	char           *ext;
++
++	pargdef(def);
++
++	puldefine(def->def_name, def->def.pr.prog_num);
++	for (vers = def->def.pr.versions; vers != NULL; vers = vers->next) {
++		if (tblflag) {
++			f_print(fout, "extern struct rpcgen_table %s_%s_table[];\n",
++				locase(def->def_name), vers->vers_num);
++			f_print(fout, "extern %s_%s_nproc;\n",
++				locase(def->def_name), vers->vers_num);
++		}
++		puldefine(vers->vers_name, vers->vers_num);
++
++		/*
++		 * Print out 3 definitions, one for ANSI-C, another for C++,
++		 * a third for old style C
++		 */
++
++		for (i = 0; i < 3; i++) {
++			if (i == 0) {
++				f_print(fout, "\n#ifdef __cplusplus\n");
++				ext = "extern \"C\" ";
++			} else if (i == 1) {
++				f_print(fout, "\n#elif __STDC__\n");
++				ext = "extern  ";
++			} else {
++				f_print(fout, "\n#else /* Old Style C */ \n");
++				ext = "extern  ";
++			}
++
++
++			for (proc = vers->procs; proc != NULL; proc = proc->next) {
++				if (!define_printed(proc, def->def.pr.versions)) {
++					puldefine(proc->proc_name, proc->proc_num);
++				}
++				f_print(fout, "%s", ext);
++				pprocdef(proc, vers, "CLIENT *", 0, i);
++				f_print(fout, "%s", ext);
++				pprocdef(proc, vers, "struct svc_req *", 1, i);
++
++			}
++
++		}
++		f_print(fout, "#endif /* Old Style C */ \n");
++	}
++}
++
++static void
++pprocdef(proc_list *proc, version_list *vp, char *addargtype,
++				int server_p, int mode)
++{
++	ptype(proc->res_prefix, proc->res_type, 1);
++	f_print(fout, "* ");
++	if (server_p)
++		pvname_svc(proc->proc_name, vp->vers_num);
++	else
++		pvname(proc->proc_name, vp->vers_num);
++
++	/*
++	 * mode  0 == cplusplus, mode  1 = ANSI-C, mode 2 = old style C
++	 */
++	if (mode == 0 || mode == 1)
++		parglist(proc, addargtype);
++	else
++		f_print(fout, "();\n");
++}
++
++
++
++/* print out argument list of procedure */
++static void
++parglist(proc_list *proc, char *addargtype)
++{
++	decl_list      *dl;
++
++	f_print(fout, "(");
++
++	if (proc->arg_num < 2 && newstyle &&
++		streq(proc->args.decls->decl.type, "void")) {
++		/* 0 argument in new style:  do nothing */
++	} else {
++		for (dl = proc->args.decls; dl != NULL; dl = dl->next) {
++			ptype(dl->decl.prefix, dl->decl.type, 1);
++			if (!newstyle)
++				f_print(fout, "*");	/* old style passes by reference */
++
++			f_print(fout, ", ");
++		}
++	}
++
++	f_print(fout, "%s);\n", addargtype);
++}
++
++static void
++penumdef(definition *def)
++{
++	char *name = def->def_name;
++	enumval_list *l;
++	char *last = NULL;
++	int count = 0;
++
++	f_print(fout, "enum %s {\n", name);
++	for (l = def->def.en.vals; l != NULL; l = l->next) {
++		f_print(fout, "\t%s", l->name);
++		if (l->assignment) {
++			f_print(fout, " = %s", l->assignment);
++			last = l->assignment;
++			count = 1;
++		} else {
++			if (last == NULL) {
++				f_print(fout, " = %d", count++);
++			} else {
++				f_print(fout, " = %s + %d", last, count++);
++			}
++		}
++		f_print(fout, ",\n");
++	}
++	f_print(fout, "};\n");
++	f_print(fout, "typedef enum %s %s;\n", name, name);
++}
++
++static void
++ptypedef(definition *def)
++{
++	char *name = def->def_name;
++	char *old = def->def.ty.old_type;
++	char prefix[8];	/* enough to contain "struct ", including NUL */
++	relation rel = def->def.ty.rel;
++
++
++	if (!streq(name, old)) {
++		if (streq(old, "string")) {
++			old = "char";
++			rel = REL_POINTER;
++		} else if (streq(old, "opaque")) {
++			old = "char";
++		} else if (streq(old, "bool")) {
++			old = "bool_t";
++		}
++		if (undefined2(old, name) && def->def.ty.old_prefix) {
++			s_print(prefix, "%s ", def->def.ty.old_prefix);
++		} else {
++			prefix[0] = 0;
++		}
++		f_print(fout, "typedef ");
++		switch (rel) {
++		case REL_ARRAY:
++			f_print(fout, "struct {\n");
++			f_print(fout, "\tu_int %s_len;\n", name);
++			f_print(fout, "\t%s%s *%s_val;\n", prefix, old, name);
++			f_print(fout, "} %s", name);
++			break;
++		case REL_POINTER:
++			f_print(fout, "%s%s *%s", prefix, old, name);
++			break;
++		case REL_VECTOR:
++			f_print(fout, "%s%s %s[%s]", prefix, old, name,
++				def->def.ty.array_max);
++			break;
++		case REL_ALIAS:
++			f_print(fout, "%s%s %s", prefix, old, name);
++			break;
++		}
++		f_print(fout, ";\n");
++	}
++}
++
++void
++pdeclaration(char *name, declaration *dec, int tab, char *separator)
++{
++	char buf[8];	/* enough to hold "struct ", include NUL */
++	char *prefix;
++	char *type;
++
++	if (streq(dec->type, "void")) {
++		return;
++	}
++	tabify(fout, tab);
++	if (streq(dec->type, name) && !dec->prefix) {
++		f_print(fout, "struct ");
++	}
++	if (streq(dec->type, "string")) {
++		f_print(fout, "char *%s", dec->name);
++	} else {
++		prefix = "";
++		if (streq(dec->type, "bool")) {
++			type = "bool_t";
++		} else if (streq(dec->type, "opaque")) {
++			type = "char";
++		} else {
++			if (dec->prefix) {
++				s_print(buf, "%s ", dec->prefix);
++				prefix = buf;
++			}
++			type = dec->type;
++		}
++		switch (dec->rel) {
++		case REL_ALIAS:
++			f_print(fout, "%s%s %s", prefix, type, dec->name);
++			break;
++		case REL_VECTOR:
++			f_print(fout, "%s%s %s[%s]", prefix, type, dec->name,
++				dec->array_max);
++			break;
++		case REL_POINTER:
++			f_print(fout, "%s%s *%s", prefix, type, dec->name);
++			break;
++		case REL_ARRAY:
++			f_print(fout, "struct {\n");
++			tabify(fout, tab);
++			f_print(fout, "\tu_int %s_len;\n", dec->name);
++			tabify(fout, tab);
++			f_print(fout, "\t%s%s *%s_val;\n", prefix, type, dec->name);
++			tabify(fout, tab);
++			f_print(fout, "} %s", dec->name);
++			break;
++		}
++	}
++	f_print(fout, separator );
++}
++
++static int
++undefined2(char *type, char *stop)
++{
++	list *l;
++	definition *def;
++
++	for (l = defined; l != NULL; l = l->next) {
++		def = (definition *) l->val;
++		if (def->def_kind != DEF_PROGRAM) {
++			if (streq(def->def_name, stop)) {
++				return (1);
++			} else if (streq(def->def_name, type)) {
++				return (0);
++			}
++		}
++	}
++	return (1);
++}
+diff --git a/rpcgen/rpc_main.c b/rpcgen/rpc_main.c
+new file mode 100644
+index 0000000..28aa60c
+--- /dev/null
++++ b/rpcgen/rpc_main.c
+@@ -0,0 +1,1067 @@
++/*
++ * Copyright (c) 2009, Sun Microsystems, Inc.
++ * All rights reserved.
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions are met:
++ * - Redistributions of source code must retain the above copyright notice,
++ *   this list of conditions and the following disclaimer.
++ * - Redistributions in binary form must reproduce the above copyright notice,
++ *   this list of conditions and the following disclaimer in the documentation
++ *   and/or other materials provided with the distribution.
++ * - Neither the name of Sun Microsystems, Inc. nor the names of its
++ *   contributors may be used to endorse or promote products derived
++ *   from this software without specific prior written permission.
++ *
++ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
++ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
++ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
++ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
++ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
++ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
++ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
++ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
++ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
++ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
++ * POSSIBILITY OF SUCH DAMAGE.
++ */
++
++#if 0
++static char sccsid[] = "@(#)rpc_main.c 1.30 89/03/30 (C) 1987 SMI";
++#endif
++
++/*
++ * rpc_main.c, Top level of the RPC protocol compiler. 
++ */
++
++#include <sys/types.h>
++#include <sys/param.h>
++#include <sys/file.h>
++#include <sys/stat.h>
++#include <stdio.h>
++#include <string.h>
++#include <stdlib.h>
++#include <unistd.h>
++#include <ctype.h>
++#include <errno.h>
++#include "rpc_parse.h"
++#include "rpc_util.h"
++#include "rpc_scan.h"
++
++struct commandline {
++	int cflag;		/* xdr C routines */
++	int hflag;		/* header file */
++	int lflag;		/* client side stubs */
++	int mflag;		/* server side stubs */
++	int nflag;		/* netid flag */
++	int sflag;		/* server stubs for the given transport */
++	int tflag;		/* dispatch Table file */
++	int Ssflag;		/* produce server sample code */
++	int Scflag;		/* produce client sample code */
++	char *infile;		/* input module name */
++	char *outfile;		/* output module name */
++};
++
++static char *	extendfile(char *file, char *ext);
++static void	open_output(char *infile, char *outfile);
++static void	add_warning(void);
++static void	clear_args(void);
++static void	open_input(char *infile, char *define);
++static int	check_nettype(char *name, char **list_to_check);
++static void	c_output(char *infile, char *define, int extend, char *outfile);
++static void	c_initialize(void);
++static char *	generate_guard(char *pathname);
++static void	h_output(char *infile, char *define, int extend, char *outfile);
++static void	s_output(int argc, char **argv, char *infile,
++			char *define, int extend, char *outfile,
++			int nomain, int netflag);
++static void	l_output(char *infile, char *define, int extend, char *outfile);
++static void	t_output(char *infile, char *define, int extend, char *outfile);
++static void	svc_output(char *, char *, int, char *);
++static void	clnt_output(char *, char *, int, char *);
++static int	do_registers(int argc, char **argv);
++static void	addarg(char *cp);
++static void	putarg(int where, char *cp);
++static void	checkfiles(char *infile, char *outfile);
++static int	parseargs(int argc, char **argv, struct commandline *cmd);
++static void	usage(void);
++static void	options_usage(void);
++
++/*
++extern void  write_sample_svc();
++int write_sample_clnt();
++void write_sample_clnt_main();
++
++static svc_output();
++ */
++
++#define EXTEND	1		/* alias for TRUE */
++#define DONT_EXTEND	0		/* alias for FALSE */
++
++#define SVR4_CPP "/usr/ccs/lib/cpp"
++#define SUNOS_CPP "/lib/cpp"
++static int cppDefined = 0;          /* explicit path for C preprocessor */
++
++
++static char *cmdname;
++
++static char *svcclosetime = "120";
++static char *CPP = SVR4_CPP;
++static char CPPFLAGS[] = "-C";
++static char pathbuf[MAXPATHLEN + 1];
++static char *allv[] = {
++	"rpcgen", "-s", "udp", "-s", "tcp",
++};
++static int allc = sizeof(allv)/sizeof(allv[0]);
++static char *allnv[] = {
++	"rpcgen", "-s", "netpath",
++};
++static int allnc = sizeof(allnv)/sizeof(allnv[0]);
++
++/*
++ * machinations for handling expanding argument list
++ */
++#if 0
++static void addarg();		/* add another argument to the list */
++static void putarg();		/* put argument at specified location  */
++static void clear_args();	/* clear argument list */
++static void checkfiles();	/* check if out file already exists */
++#endif
++
++
++
++#define ARGLISTLEN	20
++#define FIXEDARGS         2
++
++static char *arglist[ARGLISTLEN];
++static int argcount = FIXEDARGS;
++
++
++int nonfatalerrors;	/* errors */
++int inetdflag/* = 1*/;	/* Support for inetd */ /* is now the default */
++int pmflag;		/* Support for port monitors */
++int logflag;		/* Use syslog instead of fprintf for errors */
++int tblflag;		/* Support for dispatch table file */
++
++/* length at which to start doing an inline */
++#define INLINE 3
++
++int Inline = INLINE;	/* length at which to start doing an inline. 3 = default
++			 * if 0, no xdr_inline code */
++
++int indefinitewait;	/* If started by port monitors, hang till it wants */
++int exitnow;		/* If started by port monitors, exit after the call */
++int timerflag;		/* TRUE if !indefinite && !exitnow */
++int newstyle;           /* newstyle of passing arguments (by value) */
++int Cflag = 0 ;         /* ANSI C syntax */
++static int allfiles;    /* generate all files */
++#ifdef linux
++int tirpcflag = 0;	/* no tirpc by default */
++#else
++int tirpcflag = 1;      /* generating code for tirpc, by default */
++#endif
++
++int
++main(int argc, char **argv)
++{
++	struct commandline cmd;
++
++	(void) memset((char *) &cmd, 0, sizeof(struct commandline));
++	clear_args();
++	if (!parseargs(argc, argv, &cmd))
++		usage();
++
++	if (cmd.cflag || cmd.hflag || cmd.lflag || cmd.tflag || cmd.sflag ||
++		cmd.mflag || cmd.nflag || cmd.Ssflag || cmd.Scflag) {
++		checkfiles(cmd.infile, cmd.outfile);
++	} else
++		checkfiles(cmd.infile, NULL);
++
++	if (cmd.cflag) {
++		c_output(cmd.infile, "-DRPC_XDR", DONT_EXTEND, cmd.outfile);
++	} else if (cmd.hflag) {
++		h_output(cmd.infile, "-DRPC_HDR", DONT_EXTEND, cmd.outfile);
++	} else if (cmd.lflag) {
++		l_output(cmd.infile, "-DRPC_CLNT", DONT_EXTEND, cmd.outfile);
++	} else if (cmd.sflag || cmd.mflag || (cmd.nflag)) {
++		s_output(argc, argv, cmd.infile, "-DRPC_SVC", DONT_EXTEND,
++			cmd.outfile, cmd.mflag, cmd.nflag);
++	} else if (cmd.tflag) {
++		t_output(cmd.infile, "-DRPC_TBL", DONT_EXTEND, cmd.outfile);
++	} else if (cmd.Ssflag) {
++		svc_output(cmd.infile, "-DRPC_SERVER", DONT_EXTEND, cmd.outfile);
++	} else if (cmd.Scflag) {
++		clnt_output(cmd.infile, "-DRPC_CLIENT", DONT_EXTEND, cmd.outfile);
++	} else {
++		/* the rescans are required, since cpp may effect input */
++		c_output(cmd.infile, "-DRPC_XDR", EXTEND, "_xdr.c");
++		reinitialize();
++		h_output(cmd.infile, "-DRPC_HDR", EXTEND, ".h");
++		reinitialize();
++		l_output(cmd.infile, "-DRPC_CLNT", EXTEND, "_clnt.c");
++		reinitialize();
++		if (inetdflag || !tirpcflag)
++			s_output(allc, allv, cmd.infile, "-DRPC_SVC", EXTEND,
++				"_svc.c", cmd.mflag, cmd.nflag);
++		else
++			s_output(allnc, allnv, cmd.infile, "-DRPC_SVC",
++				EXTEND, "_svc.c", cmd.mflag, cmd.nflag);
++		if (tblflag) {
++			reinitialize();
++			t_output(cmd.infile, "-DRPC_TBL", EXTEND, "_tbl.i");
++		}
++		if (allfiles) {
++			reinitialize();
++			svc_output(cmd.infile, "-DRPC_SERVER", EXTEND, "_server.c");
++		}
++		if (allfiles) {
++			reinitialize();
++			clnt_output(cmd.infile, "-DRPC_CLIENT", EXTEND, "_client.c");
++		}
++	}
++	exit(nonfatalerrors);
++	/* NOTREACHED */
++}
++
++/*
++ * add extension to filename 
++ */
++static char *
++extendfile(char *file, char *ext)
++{
++	char *res;
++	char *p;
++
++	res = alloc(strlen(file) + strlen(ext) + 1);
++	if (res == NULL) {
++		abort();
++	}
++	p = strrchr(file, '.');
++	if (p == NULL) {
++		p = file + strlen(file);
++	}
++	(void) strcpy(res, file);
++	(void) strcpy(res + (p - file), ext);
++	return (res);
++}
++
++/*
++ * Open output file with given extension 
++ */
++static void
++open_output(char *infile, char *outfile)
++{
++
++	if (outfile == NULL) {
++		fout = stdout;
++		return;
++	}
++
++	if (infile != NULL && streq(outfile, infile)) {
++		f_print(stderr, "%s: output would overwrite %s\n", cmdname,
++			infile);
++		crash();
++	}
++	fout = fopen(outfile, "w");
++	if (fout == NULL) {
++		f_print(stderr, "%s: unable to open ", cmdname);
++		perror(outfile);
++		crash();
++	}
++	record_open(outfile);
++
++}
++
++static void
++add_warning(void)
++{
++	f_print(fout, "/*\n");
++	f_print(fout, " * Please do not edit this file.\n");
++	f_print(fout, " * It was generated using rpcgen.\n");
++	f_print(fout, " */\n\n");
++}
++
++/* clear list of arguments */
++static void
++clear_args(void)
++{
++  int i;
++  for( i=FIXEDARGS; i<ARGLISTLEN; i++ )
++    arglist[i] = NULL;
++  argcount = FIXEDARGS;
++}
++
++/*
++ * Open input file with given define for C-preprocessor 
++ */
++static void
++open_input(char *infile, char *define)
++{
++	int pd[2];
++
++	infilename = (infile == NULL) ? "<stdin>" : infile;
++	(void) pipe(pd);
++	switch (fork()) {
++	case 0:
++		putarg(0, "cpp");
++		putarg(1, CPPFLAGS);
++		addarg(define);
++		addarg(infile);
++		addarg((char *)NULL);
++		(void) close(1);
++		(void) dup2(pd[1], 1);
++		(void) close(pd[0]);
++		if (cppDefined)
++			execv(CPP, arglist);
++		else {
++			execvp("cpp", arglist);
++			if (errno == ENOENT)
++				execvp(SVR4_CPP, arglist);
++			if (errno == ENOENT)
++				execvp(SUNOS_CPP, arglist);
++		}
++		perror("execv");
++		exit(1);
++	case -1:
++		perror("fork");
++		exit(1);
++	}
++	(void) close(pd[1]);
++	fin = fdopen(pd[0], "r");
++	if (fin == NULL) {
++		f_print(stderr, "%s: ", cmdname);
++		perror(infilename);
++		crash();
++	}
++}
++
++/* valid tirpc nettypes */
++static char*	valid_ti_nettypes[] =
++{
++	"netpath",
++	"visible",
++	"circuit_v",
++	"datagram_v",
++	"circuit_n",
++	"datagram_n",
++	"udp",
++	"tcp",
++	"raw",
++	NULL
++};
++
++/* valid inetd nettypes */
++static char* valid_i_nettypes[] =
++{
++	"udp",
++	"tcp",
++	NULL
++};
++
++static int
++check_nettype(char *name, char **list_to_check)
++{
++  int i;
++  for( i = 0; list_to_check[i] != NULL; i++ ) {
++	  if( strcmp( name, list_to_check[i] ) == 0 ) {
++	    return 1;
++	  }
++  }
++  f_print( stderr, "illegal nettype :\'%s\'\n", name );
++  return 0;
++}
++
++/*
++ * Compile into an XDR routine output file
++ */
++
++static void
++c_output(char *infile, char *define, int extend, char *outfile)
++{
++	definition *def;
++	char *include;
++	char *outfilename;
++	long tell;
++
++	c_initialize();
++	open_input(infile, define);	
++	outfilename = extend ? extendfile(infile, outfile) : outfile;
++	open_output(infile, outfilename);
++	add_warning();
++	if (infile && (include = extendfile(infile, ".h"))) {
++		f_print(fout, "#include \"%s\"\n", include);
++		free(include);
++		/* .h file already contains rpc/rpc.h */
++	} else
++	  f_print(fout, "#include <rpc/rpc.h>\n");
++	tell = ftell(fout);
++	while ((def = get_definition()) != NULL) {
++		emit(def);
++	}
++	if (extend && tell == ftell(fout)) {
++		(void) unlink(outfilename);
++	}
++}
++
++
++static void
++c_initialize(void)
++{
++
++  /* add all the starting basic types */
++
++  add_type(1,"int");
++  add_type(1,"int32_t");
++  add_type(1,"short");
++  add_type(1,"bool");
++
++  add_type(1,"u_int");
++  add_type(1,"u_int32_t");
++  add_type(1,"u_short");
++
++}
++
++char rpcgen_table_dcl[] = "struct rpcgen_table {\n\
++	char	*(*proc)();\n\
++	xdrproc_t	xdr_arg;\n\
++	unsigned	len_arg;\n\
++	xdrproc_t	xdr_res;\n\
++	unsigned	len_res;\n\
++};\n";
++
++
++static char *
++generate_guard(char *pathname)
++{
++        char* filename, *guard, *tmp;
++
++	filename = strrchr(pathname, '/' );  /* find last component */
++	filename = ((filename == 0) ? pathname : filename+1);
++	guard = strdup(filename);
++	/* convert to upper case */
++	tmp = guard;
++	while (*tmp) {
++		if (islower(*tmp))
++			*tmp = toupper(*tmp);
++		tmp++;
++	}
++		
++	guard = extendfile(guard, "_H_RPCGEN");
++	return( guard );
++}
++
++/*
++ * Compile into an XDR header file
++ */
++static void
++h_output(char *infile, char *define, int extend, char *outfile)
++{
++	definition *def;
++	char *outfilename;
++	long tell;
++	char *guard;
++	list *l;
++
++	open_input(infile, define);
++	outfilename =  extend ? extendfile(infile, outfile) : outfile;
++	open_output(infile, outfilename);
++	add_warning();
++	guard = generate_guard(  outfilename ? outfilename: infile );
++
++	f_print(fout,"#ifndef _%s\n#define _%s\n\n", guard,
++		guard);
++
++	f_print(fout, "#include <rpc/rpc.h>\n\n");
++
++	f_print(fout, "#ifndef IXDR_GET_INT32\n");
++	f_print(fout, "#define IXDR_GET_INT32(buf) IXDR_GET_LONG((buf))\n");
++	f_print(fout, "#endif\n");
++	f_print(fout, "#ifndef IXDR_PUT_INT32\n");
++	f_print(fout, "#define IXDR_PUT_INT32(buf, v) IXDR_PUT_LONG((buf), (v))\n");
++	f_print(fout, "#endif\n");
++	f_print(fout, "#ifndef IXDR_GET_U_INT32\n");
++	f_print(fout, "#define IXDR_GET_U_INT32(buf) IXDR_GET_U_LONG((buf))\n");
++	f_print(fout, "#endif\n");
++	f_print(fout, "#ifndef IXDR_PUT_U_INT32\n");
++	f_print(fout, "#define IXDR_PUT_U_INT32(buf, v) IXDR_PUT_U_LONG((buf), (v))\n");
++	f_print(fout, "#endif\n");
++
++	tell = ftell(fout);
++	/* print data definitions */
++	while ((def = get_definition()) != NULL) {
++		print_datadef(def);
++	}
++
++	/* print function declarations.  
++	   Do this after data definitions because they might be used as
++	   arguments for functions */
++	for (l = defined; l != NULL; l = l->next) {
++		print_funcdef(l->val);
++	}
++	if (extend && tell == ftell(fout)) {
++		(void) unlink(outfilename);
++	} else if (tblflag) {
++		f_print(fout, rpcgen_table_dcl);
++	}
++	f_print(fout, "\n#endif /* !_%s */\n", guard);
++}
++
++/*
++ * Compile into an RPC service
++ */
++static void
++s_output(int argc, char **argv, char *infile, char *define, int extend,
++			char *outfile, int nomain, int netflag)
++{
++	char *include;
++	definition *def;
++	int foundprogram = 0;
++	char *outfilename;
++
++	open_input(infile, define);
++	outfilename = extend ? extendfile(infile, outfile) : outfile;
++	open_output(infile, outfilename);
++	add_warning();
++	if (infile && (include = extendfile(infile, ".h"))) {
++		f_print(fout, "#include \"%s\"\n", include);
++		free(include);
++	} else
++	  f_print(fout, "#include <rpc/rpc.h>\n");
++
++	f_print(fout, "#include <stdio.h>\n");
++	f_print(fout, "#include <stdlib.h>/* getenv, exit */\n"); 
++	if (Cflag) {
++		f_print (fout, "#include <rpc/pmap_clnt.h> /* for pmap_unset */\n");
++		f_print (fout, "#include <string.h> /* strcmp */ \n"); 
++	}
++	if (strcmp(svcclosetime, "-1") == 0)
++		indefinitewait = 1;
++	else if (strcmp(svcclosetime, "0") == 0)
++		exitnow = 1;
++	else if (inetdflag || pmflag) {
++		f_print(fout, "#include <signal.h>\n");
++	  timerflag = 1;
++	}
++
++#ifndef linux
++	if( !tirpcflag && inetdflag )
++	  f_print(fout, "#include <sys/ttycom.h>/* TIOCNOTTY */\n");
++#else
++	if( !tirpcflag )
++	  f_print(fout, "#include <sys/ioctl.h>/* TIOCNOTTY */\n");
++#endif
++	if( Cflag && (inetdflag || pmflag ) ) {
++	  f_print(fout, "#ifdef __cplusplus\n");
++	  f_print(fout, "#include <sysent.h> /* getdtablesize, open */\n"); 
++	  f_print(fout, "#endif /* __cplusplus */\n");
++	  
++	  if( tirpcflag )
++	    f_print(fout, "#include <unistd.h> /* setsid */\n");
++	}
++	if( tirpcflag )
++	  f_print(fout, "#include <sys/types.h>\n");
++
++	f_print(fout, "#include <memory.h>\n");
++#ifndef linux
++	f_print(fout, "#include <stropts.h>\n");
++#endif
++	if (inetdflag || !tirpcflag ) {
++		f_print(fout, "#include <sys/socket.h>\n");
++		f_print(fout, "#include <netinet/in.h>\n");
++	} 
++
++	if ( (netflag || pmflag) && tirpcflag ) {
++		f_print(fout, "#include <netconfig.h>\n");
++	}
++	if (/*timerflag &&*/ tirpcflag)
++		f_print(fout, "#include <sys/resource.h> /* rlimit */\n");
++	if (logflag || inetdflag || pmflag) {
++#ifdef linux
++		f_print(fout, "#include <syslog.h>\n");
++#else
++		f_print(fout, "#ifdef SYSLOG\n");
++		f_print(fout, "#include <syslog.h>\n");
++		f_print(fout, "#else\n");
++		f_print(fout, "#define LOG_ERR 1\n");
++		f_print(fout, "#define openlog(a, b, c)\n");
++		f_print(fout, "#endif\n");
++#endif
++	}
++
++	/* for ANSI-C */
++	f_print(fout, "\n#ifdef __STDC__\n#define SIG_PF void(*)(int)\n#endif\n");
++
++	f_print(fout, "\n#ifdef DEBUG\n#define RPC_SVC_FG\n#endif\n");
++	if (timerflag)
++		f_print(fout, "\n#define _RPCSVC_CLOSEDOWN %s\n", svcclosetime);
++	while ((def = get_definition()) != NULL) {
++		foundprogram |= (def->def_kind == DEF_PROGRAM);
++	}
++	if (extend && !foundprogram) {
++		(void) unlink(outfilename);
++		return;
++	}
++	write_most(infile, netflag, nomain);
++	if (!nomain) {
++		if( !do_registers(argc, argv) ) {
++		  if (outfilename)
++		    (void) unlink(outfilename);
++		  usage();
++		}
++		write_rest();
++	}
++}
++
++/*
++ * generate client side stubs
++ */
++static void
++l_output(char *infile, char *define, int extend, char *outfile)
++{
++	char *include;
++	definition *def;
++	int foundprogram = 0;
++	char *outfilename;
++
++	open_input(infile, define);
++	outfilename = extend ? extendfile(infile, outfile) : outfile;
++	open_output(infile, outfilename);
++	add_warning();
++	if (Cflag)
++	  f_print (fout, "#include <memory.h> /* for memset */\n");
++	if (infile && (include = extendfile(infile, ".h"))) {
++		f_print(fout, "#include \"%s\"\n", include);
++		free(include);
++	} else
++	  f_print(fout, "#include <rpc/rpc.h>\n");
++	while ((def = get_definition()) != NULL) {
++		foundprogram |= (def->def_kind == DEF_PROGRAM);
++	}
++	if (extend && !foundprogram) {
++		(void) unlink(outfilename);
++		return;
++	}
++	write_stubs();
++}
++
++/*
++ * generate the dispatch table
++ */
++static void
++t_output(char *infile, char *define, int extend, char *outfile)
++{
++	definition *def;
++	int foundprogram = 0;
++	char *outfilename;
++
++	open_input(infile, define);
++	outfilename = extend ? extendfile(infile, outfile) : outfile;
++	open_output(infile, outfilename);
++	add_warning();
++	while ((def = get_definition()) != NULL) {
++		foundprogram |= (def->def_kind == DEF_PROGRAM);
++	}
++	if (extend && !foundprogram) {
++		(void) unlink(outfilename);
++		return;
++	}
++	write_tables();
++}
++
++/* sample routine for the server template */
++static  void
++svc_output(char *infile, char *define, int extend, char *outfile)
++{
++  definition *def;
++  char *include;
++  char *outfilename;
++  long tell;
++  
++  open_input(infile, define);	
++  outfilename = extend ? extendfile(infile, outfile) : outfile;
++  checkfiles(infile,outfilename); /*check if outfile already exists.
++				  if so, print an error message and exit*/
++  open_output(infile, outfilename);
++  add_sample_msg();
++
++  if (infile && (include = extendfile(infile, ".h"))) {
++    f_print(fout, "#include \"%s\"\n", include);
++    free(include);
++  } else
++    f_print(fout, "#include <rpc/rpc.h>\n");
++
++  tell = ftell(fout);
++  while ((def = get_definition()) != NULL) {
++	  write_sample_svc(def);
++  }
++  if (extend && tell == ftell(fout)) {
++	  (void) unlink(outfilename);
++  }
++}
++
++
++/* sample main routine for client */
++static  void
++clnt_output(char *infile, char *define, int extend, char *outfile)
++{
++	definition     *def;
++	char           *include;
++	char           *outfilename;
++	long            tell;
++	int             has_program = 0;
++
++	open_input(infile, define);
++	outfilename = extend ? extendfile(infile, outfile) : outfile;
++	checkfiles(infile, outfilename);	/*check if outfile already exists.
++				  if so, print an error message and exit*/
++
++	open_output(infile, outfilename);
++	add_sample_msg();
++	if (infile && (include = extendfile(infile, ".h"))) {
++		f_print(fout, "#include \"%s\"\n", include);
++		free(include);
++	} else
++		f_print(fout, "#include <rpc/rpc.h>\n");
++	tell = ftell(fout);
++	while ((def = get_definition()) != NULL) {
++		has_program += write_sample_clnt(def);
++	}
++
++	if (has_program)
++		write_sample_clnt_main();
++
++	if (extend && tell == ftell(fout)) {
++		(void) unlink(outfilename);
++	}
++}
++
++/*
++ * Perform registrations for service output 
++ * Return 0 if failed; 1 otherwise.
++ */
++static int
++do_registers(int argc, char **argv)
++{
++	int             i;
++
++	if (inetdflag || !tirpcflag) {
++		for (i = 1; i < argc; i++) {
++			if (streq(argv[i], "-s")) {
++				if (!check_nettype(argv[i + 1], valid_i_nettypes))
++					return 0;
++				write_inetd_register(argv[i + 1]);
++				i++;
++			}
++		}
++	} else {
++		for (i = 1; i < argc; i++)
++			if (streq(argv[i], "-s")) {
++				if (!check_nettype(argv[i + 1], valid_ti_nettypes))
++					return 0;
++				write_nettype_register(argv[i + 1]);
++				i++;
++			} else if (streq(argv[i], "-n")) {
++				write_netid_register(argv[i + 1]);
++				i++;
++			}
++	}
++	return 1;
++}
++
++/*
++ * Add another argument to the arg list
++ */
++static void
++addarg(char *cp)
++{
++	if (argcount >= ARGLISTLEN) {
++		f_print(stderr, "rpcgen: too many defines\n");
++		crash();
++		/*NOTREACHED*/
++	}
++	arglist[argcount++] = cp;
++
++}
++
++static void
++putarg(int where, char *cp)
++{
++	if (where >= ARGLISTLEN) {
++		f_print(stderr, "rpcgen: arglist coding error\n");
++		crash();
++		/*NOTREACHED*/
++	}
++	arglist[where] = cp;
++	
++}
++
++/*
++ * if input file is stdin and an output file is specified then complain
++ * if the file already exists. Otherwise the file may get overwritten
++ * If input file does not exist, exit with an error 
++ */
++
++static void
++checkfiles(char *infile, char *outfile) 
++{
++
++  struct stat buf;
++
++  if(infile)			/* infile ! = NULL */
++    if(stat(infile,&buf) < 0)
++      {
++	perror(infile);
++	crash();
++      };
++  if (outfile) {
++    if (stat(outfile, &buf) < 0) 
++      return;			/* file does not exist */
++    else {
++      f_print(stderr, 
++	      "file '%s' already exists and may be overwritten\n", outfile);
++      crash();
++    }
++  }
++}
++
++/*
++ * Parse command line arguments 
++ */
++static int
++parseargs(int argc, char **argv, struct commandline *cmd)
++{
++	int i;
++	int j;
++	char c;
++	char flag[(1 << 8 * sizeof(char))];
++	int nflags;
++
++	cmdname = argv[0];
++	cmd->infile = cmd->outfile = NULL;
++	if (argc < 2) {
++		return (0);
++	}
++	allfiles = 0;
++	flag['c'] = 0;
++	flag['h'] = 0;
++	flag['l'] = 0;
++	flag['m'] = 0;
++	flag['o'] = 0;
++	flag['s'] = 0;
++	flag['n'] = 0;
++	flag['t'] = 0;
++	flag['S'] = 0;
++	flag['C'] = 0;
++	for (i = 1; i < argc; i++) {
++		if (argv[i][0] != '-') {
++			if (cmd->infile) {
++			        f_print( stderr, "Cannot specify more than one input file!\n");
++
++				return (0);
++			}
++			cmd->infile = argv[i];
++		} else {
++			for (j = 1; argv[i][j] != 0; j++) {
++				c = argv[i][j];
++				switch (c) {
++				case 'a':
++					allfiles = 1;
++					break;
++				case 'c':
++				case 'h':
++				case 'l':
++				case 'm':
++				case 't':
++					if (flag[(int) c]) {
++						return (0);
++					}
++					flag[(int) c] = 1;
++					break;
++				case 'S':  
++					/* sample flag: Ss or Sc.
++					   Ss means set flag['S'];
++					   Sc means set flag['C']; */
++					c = argv[i][++j];  /* get next char */
++					if( c == 's' )
++					  c = 'S';
++					else if( c == 'c' )
++					  c = 'C';
++					else
++					  return( 0 );
++
++					if (flag[(int) c]) {
++						return (0);
++					}
++					flag[(int) c] = 1;
++					break;
++				case 'C':  /* ANSI C syntax */
++					Cflag = 1;
++					break;
++
++				case 'b':  /* turn TIRPC flag off for
++					    generating backward compatible
++					    */
++					tirpcflag = 0;
++					break;
++
++				case 'I':
++					inetdflag = 1;
++					break;
++				case 'N':
++					newstyle = 1;
++					break;
++				case 'L':
++					logflag = 1;
++					break;
++				case 'K':
++					if (++i == argc) {
++						return (0);
++					}
++					svcclosetime = argv[i];
++					goto nextarg;
++				case 'T':
++					tblflag = 1;
++					break;
++				case 'i' :
++				  	if (++i == argc) {
++						return (0);
++					}
++					Inline = atoi(argv[i]);
++					goto nextarg;
++				case 'n':
++				case 'o':
++				case 's':
++					if (argv[i][j - 1] != '-' || 
++					    argv[i][j + 1] != 0) {
++						return (0);
++					}
++					flag[(int) c] = 1;
++					if (++i == argc) {
++						return (0);
++					}
++					if (c == 's') {
++						if (!streq(argv[i], "udp") &&
++						    !streq(argv[i], "tcp")) {
++							return (0);
++						}
++					} else if (c == 'o') {
++						if (cmd->outfile) {
++							return (0);
++						}
++						cmd->outfile = argv[i];
++					}
++					goto nextarg;
++				case 'D':
++					if (argv[i][j - 1] != '-') {
++						return (0);
++					}
++					(void) addarg(argv[i]);
++					goto nextarg;
++				case 'Y':
++					if (++i == argc) {
++						return (0);
++					}
++					(void) strcpy(pathbuf, argv[i]);
++					(void) strcat(pathbuf, "/cpp");
++					CPP = pathbuf;
++					cppDefined = 1;
++					goto nextarg;
++
++
++
++				default:
++					return (0);
++				}
++			}
++	nextarg:
++			;
++		}
++	}
++
++	cmd->cflag = flag['c'];
++	cmd->hflag = flag['h'];
++	cmd->lflag = flag['l'];
++	cmd->mflag = flag['m'];
++	cmd->nflag = flag['n'];
++	cmd->sflag = flag['s'];
++	cmd->tflag = flag['t'];
++	cmd->Ssflag = flag['S'];
++	cmd->Scflag = flag['C'];
++
++	if( tirpcflag ) {
++	  pmflag = inetdflag ? 0 : 1;	  /* pmflag or inetdflag is always TRUE */
++	  if( (inetdflag && cmd->nflag)) { /* netid not allowed with inetdflag */
++	    f_print(stderr, "Cannot use netid flag with inetd flag!\n");
++	    return (0);
++	  }
++	} else {  /* 4.1 mode */
++	  pmflag = 0;               /* set pmflag only in tirpcmode */
++	  inetdflag = 1;            /* inetdflag is TRUE by default */
++	  if( cmd->nflag ) {          /* netid needs TIRPC */
++	    f_print( stderr, "Cannot use netid flag without TIRPC!\n");
++	    return( 0 );
++	  }
++	}
++
++	if( newstyle && ( tblflag || cmd->tflag) ) {
++	  f_print( stderr, "Cannot use table flags with newstyle!\n");
++	  return( 0 );
++	}
++
++	/* check no conflicts with file generation flags */
++	nflags = cmd->cflag + cmd->hflag + cmd->lflag + cmd->mflag +
++		cmd->sflag + cmd->nflag + cmd->tflag + cmd->Ssflag + cmd->Scflag;
++
++	if (nflags == 0) {
++		if (cmd->outfile != NULL || cmd->infile == NULL) {
++			return (0);
++		}
++	} else if (nflags > 1) {
++	        f_print( stderr, "Cannot have more than one file generation flag!\n");
++		return (0);
++	}
++	return (1);
++}
++
++static void
++usage(void)
++{
++	f_print(stderr, "usage:  %s infile\n", cmdname);
++	f_print(stderr, "\t%s [-a][-b][-C][-Dname[=value]] -i size  [-I [-K seconds]] [-L][-N][-T] infile\n",
++			cmdname);
++	f_print(stderr, "\t%s [-c | -h | -l | -m | -t | -Sc | -Ss] [-o outfile] [infile]\n",
++			cmdname);
++	f_print(stderr, "\t%s [-s nettype]* [-o outfile] [infile]\n", cmdname);
++	f_print(stderr, "\t%s [-n netid]* [-o outfile] [infile]\n", cmdname);
++	options_usage();
++	exit(1);
++}
++
++static void
++options_usage(void)
++{
++	f_print(stderr, "options:\n");
++	f_print(stderr, "-a\t\tgenerate all files, including samples\n");
++	f_print(stderr, "-b\t\tbackward compatibility mode (generates code for SunOS 4.1)\n");
++	f_print(stderr, "-c\t\tgenerate XDR routines\n");
++	f_print(stderr, "-C\t\tANSI C mode\n");
++	f_print(stderr, "-Dname[=value]\tdefine a symbol (same as #define)\n");
++	f_print(stderr, "-h\t\tgenerate header file\n");
++	f_print(stderr, "-i size\t\tsize at which to start generating inline code\n");
++	f_print(stderr, "-I\t\tgenerate code for inetd support in server (for SunOS 4.1)\n");
++	f_print(stderr, "-K seconds\tserver exits after K seconds of inactivity\n");
++	f_print(stderr, "-l\t\tgenerate client side stubs\n");
++	f_print(stderr, "-L\t\tserver errors will be printed to syslog\n");
++	f_print(stderr, "-m\t\tgenerate server side stubs\n");
++	f_print(stderr, "-n netid\tgenerate server code that supports named netid\n");
++	f_print(stderr, "-N\t\tsupports multiple arguments and call-by-value\n");
++	f_print(stderr, "-o outfile\tname of the output file\n");
++	f_print(stderr, "-s nettype\tgenerate server code that supports named nettype\n");
++	f_print(stderr, "-Sc\t\tgenerate sample client code that uses remote procedures\n");
++	f_print(stderr, "-Ss\t\tgenerate sample server code that defines remote procedures\n");
++	f_print(stderr, "-t\t\tgenerate RPC dispatch table\n");
++	f_print(stderr, "-T\t\tgenerate code to support RPC dispatch tables\n");
++	f_print(stderr, "-Y path\t\tdirectory name to find C preprocessor (cpp)\n");
++
++	exit(1);
++}
+diff --git a/rpcgen/rpc_output.h b/rpcgen/rpc_output.h
+new file mode 100644
+index 0000000..eb25a60
+--- /dev/null
++++ b/rpcgen/rpc_output.h
+@@ -0,0 +1,16 @@
++/*
++ * rpc_output.h
++ *
++ * Declarations for output functions
++ *
++ */
++
++#ifndef RPCGEN_NEW_OUTPUT_H
++#define RPCGEN_NEW_OUTPUT_H
++
++void	write_msg_out(void);
++int	nullproc(proc_list *);
++void	printarglist(proc_list *, char *, char *);
++void	pdeclaration(char *, declaration *, int, char *);
++
++#endif /* RPCGEN_NEW_OUTPUT_H */
+diff --git a/rpcgen/rpc_parse.c b/rpcgen/rpc_parse.c
+new file mode 100644
+index 0000000..b53a553
+--- /dev/null
++++ b/rpcgen/rpc_parse.c
+@@ -0,0 +1,609 @@
++/*
++ * Copyright (c) 2009, Sun Microsystems, Inc.
++ * All rights reserved.
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions are met:
++ * - Redistributions of source code must retain the above copyright notice,
++ *   this list of conditions and the following disclaimer.
++ * - Redistributions in binary form must reproduce the above copyright notice,
++ *   this list of conditions and the following disclaimer in the documentation
++ *   and/or other materials provided with the distribution.
++ * - Neither the name of Sun Microsystems, Inc. nor the names of its
++ *   contributors may be used to endorse or promote products derived
++ *   from this software without specific prior written permission.
++ *
++ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
++ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
++ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
++ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
++ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
++ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
++ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
++ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
++ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
++ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
++ * POSSIBILITY OF SUCH DAMAGE.
++ */
++
++#if 0
++static char sccsid[] = "@(#)rpc_parse.c 1.8 89/02/22 (C) 1987 SMI";
++#endif
++
++/*
++ * rpc_parse.c, Parser for the RPC protocol compiler 
++ * Copyright (C) 1987 Sun Microsystems, Inc.
++ */
++#include <stdio.h>
++#include <string.h>
++#include "rpc/types.h"
++#include "rpc_scan.h"
++#include "rpc_parse.h"
++#include "rpc_util.h"
++
++#define ARGNAME "arg"
++
++/*
++extern char *make_argname();
++extern char *strdup();
++ */
++
++static void	isdefined(definition *defp);
++static void	def_struct(definition *defp);
++static void	def_program(definition *defp);
++static void	def_enum(definition *defp);
++static void	def_const(definition *defp);
++static void	def_union(definition *defp);
++static void	check_type_name(char *name, int new_type);
++static void	def_typedef(definition *defp);
++static void	get_declaration(declaration *dec, defkind dkind);
++static void	get_prog_declaration(declaration *dec, defkind dkind, int num);
++static void	get_type(char **prefixp, char **typep, defkind dkind);
++static void	unsigned_dec(char **typep);
++
++/*
++ * return the next definition you see
++ */
++definition *
++get_definition(void)
++{
++	definition *defp;
++	token tok;
++
++	defp = ALLOC(definition);
++	get_token(&tok);
++	switch (tok.kind) {
++	case TOK_STRUCT:
++		def_struct(defp);
++		break;
++	case TOK_UNION:
++		def_union(defp);
++		break;
++	case TOK_TYPEDEF:
++		def_typedef(defp);
++		break;
++	case TOK_ENUM:
++		def_enum(defp);
++		break;
++	case TOK_PROGRAM:
++		def_program(defp);
++		break;
++	case TOK_CONST:
++		def_const(defp);
++		break;
++	case TOK_EOF:
++		free(defp);
++		return (NULL);
++	default:
++		error("definition keyword expected");
++	}
++	scan(TOK_SEMICOLON, &tok);
++	isdefined(defp);
++	return (defp);
++}
++
++static void
++isdefined(definition *defp)
++{
++	STOREVAL(&defined, defp);
++}
++
++static void
++def_struct(definition *defp)
++{
++	token tok;
++	declaration dec;
++	decl_list *decls;
++	decl_list **tailp;
++
++	defp->def_kind = DEF_STRUCT;
++
++	scan(TOK_IDENT, &tok);
++	defp->def_name = tok.str;
++	scan(TOK_LBRACE, &tok);
++	tailp = &defp->def.st.decls;
++	do {
++		get_declaration(&dec, DEF_STRUCT);
++		decls = ALLOC(decl_list);
++		decls->decl = dec;
++		*tailp = decls;
++		tailp = &decls->next;
++		scan(TOK_SEMICOLON, &tok);
++		peek(&tok);
++	} while (tok.kind != TOK_RBRACE);
++	get_token(&tok);
++	*tailp = NULL;
++}
++
++static void
++def_program(definition *defp)
++{
++	token tok;
++	declaration dec;
++	decl_list *decls;
++	decl_list **tailp;
++	version_list *vlist;
++	version_list **vtailp;
++	proc_list *plist;
++	proc_list **ptailp;
++	int num_args;
++	bool_t isvoid = FALSE; /* whether first argument is void */
++	defp->def_kind = DEF_PROGRAM;
++	scan(TOK_IDENT, &tok);
++	defp->def_name = tok.str;
++	scan(TOK_LBRACE, &tok);
++	vtailp = &defp->def.pr.versions;
++	tailp = &defp->def.st.decls;
++	scan(TOK_VERSION, &tok);
++	do {
++		scan(TOK_IDENT, &tok);
++		vlist = ALLOC(version_list);
++		vlist->vers_name = tok.str;
++		scan(TOK_LBRACE, &tok);
++		ptailp = &vlist->procs;
++		do {
++			/* get result type */
++			plist = ALLOC(proc_list);
++			get_type(&plist->res_prefix, &plist->res_type, 
++				 DEF_PROGRAM);
++			if (streq(plist->res_type, "opaque")) {
++				error("illegal result type");
++			}
++			scan(TOK_IDENT, &tok);
++			plist->proc_name = tok.str;
++			scan(TOK_LPAREN, &tok);
++			/* get args - first one*/
++			num_args = 1;
++			isvoid = FALSE;
++			/* type of DEF_PROGRAM in the first 
++			 * get_prog_declaration and DEF_STURCT in the next
++			 * allows void as argument if it is the only argument
++			 */
++			get_prog_declaration(&dec, DEF_PROGRAM, num_args);
++			if (streq(dec.type, "void"))
++			  isvoid = TRUE;
++			decls = ALLOC(decl_list);
++			plist->args.decls = decls;
++			decls->decl = dec;
++			tailp = &decls->next;
++			/* get args */
++			while(peekscan(TOK_COMMA, &tok)) {
++			  num_args++;
++			  get_prog_declaration(&dec, DEF_STRUCT, 
++					       num_args);
++			  decls = ALLOC(decl_list);
++			  decls->decl = dec;
++			  *tailp = decls;
++			  if (streq(dec.type, "void"))
++			    isvoid = TRUE;
++			  tailp = &decls->next;
++			}
++			/* multiple arguments are only allowed in newstyle */
++			if( !newstyle && num_args > 1 ) {
++			  error("only one argument is allowed" );
++			}
++			if (isvoid && num_args > 1) { 
++			  error("illegal use of void in program definition");
++			}
++			*tailp = NULL;
++			scan(TOK_RPAREN, &tok);
++			scan(TOK_EQUAL, &tok);
++			scan_num(&tok);
++			scan(TOK_SEMICOLON, &tok);
++			plist->proc_num = tok.str;
++			plist->arg_num = num_args;
++			*ptailp = plist;
++			ptailp = &plist->next;
++			peek(&tok);
++		} while (tok.kind != TOK_RBRACE);
++		*ptailp = NULL;
++		*vtailp = vlist;
++		vtailp = &vlist->next;
++		scan(TOK_RBRACE, &tok);
++		scan(TOK_EQUAL, &tok);
++		scan_num(&tok);
++		vlist->vers_num = tok.str;
++		/* make the argument structure name for each arg*/
++		for(plist = vlist->procs; plist != NULL; 
++		    plist = plist->next) {
++			plist->args.argname = make_argname(plist->proc_name,
++							   vlist->vers_num); 
++			/* free the memory ??*/
++		}
++		scan(TOK_SEMICOLON, &tok);
++		scan2(TOK_VERSION, TOK_RBRACE, &tok);
++	} while (tok.kind == TOK_VERSION);
++	scan(TOK_EQUAL, &tok);
++	scan_num(&tok);
++	defp->def.pr.prog_num = tok.str;
++	*vtailp = NULL;
++}
++
++
++static void
++def_enum(definition *defp)
++{
++	token tok;
++	enumval_list *elist;
++	enumval_list **tailp;
++
++	defp->def_kind = DEF_ENUM;
++	scan(TOK_IDENT, &tok);
++	defp->def_name = tok.str;
++	scan(TOK_LBRACE, &tok);
++	tailp = &defp->def.en.vals;
++	do {
++		scan(TOK_IDENT, &tok);
++		elist = ALLOC(enumval_list);
++		elist->name = tok.str;
++		elist->assignment = NULL;
++		scan3(TOK_COMMA, TOK_RBRACE, TOK_EQUAL, &tok);
++		if (tok.kind == TOK_EQUAL) {
++			scan_num(&tok);
++			elist->assignment = tok.str;
++			scan2(TOK_COMMA, TOK_RBRACE, &tok);
++		}
++		*tailp = elist;
++		tailp = &elist->next;
++	} while (tok.kind != TOK_RBRACE);
++	*tailp = NULL;
++}
++
++static void
++def_const(definition *defp)
++{
++	token tok;
++
++	defp->def_kind = DEF_CONST;
++	scan(TOK_IDENT, &tok);
++	defp->def_name = tok.str;
++	scan(TOK_EQUAL, &tok);
++	scan2(TOK_IDENT, TOK_STRCONST, &tok);
++	defp->def.co = tok.str;
++}
++
++static void
++def_union(definition *defp)
++{
++  token tok;
++  declaration dec;
++  case_list *cases;
++  case_list **tailp;
++
++  defp->def_kind = DEF_UNION;
++  scan(TOK_IDENT, &tok);
++  defp->def_name = tok.str;
++  scan(TOK_SWITCH, &tok);
++  scan(TOK_LPAREN, &tok);
++  get_declaration(&dec, DEF_UNION);
++  defp->def.un.enum_decl = dec;
++  tailp = &defp->def.un.cases;
++  scan(TOK_RPAREN, &tok);
++  scan(TOK_LBRACE, &tok);
++  scan(TOK_CASE, &tok);
++  while (tok.kind == TOK_CASE) {
++    scan2(TOK_IDENT, TOK_CHARCONST, &tok);
++    cases = ALLOC(case_list);
++    cases->case_name = tok.str;
++    scan(TOK_COLON, &tok);
++    /* now peek at next token */
++    if(peekscan(TOK_CASE,&tok))
++      {
++
++	do 
++	  {
++	    scan2(TOK_IDENT, TOK_CHARCONST, &tok);
++	    cases->contflag=1;	/* continued case statement */
++	    *tailp = cases;
++	    tailp = &cases->next;
++	    cases = ALLOC(case_list);
++	    cases->case_name = tok.str;
++	    scan(TOK_COLON, &tok);
++      
++	  }while(peekscan(TOK_CASE,&tok));
++      }
++
++    get_declaration(&dec, DEF_UNION);
++    cases->case_decl = dec;
++    cases->contflag=0;		/* no continued case statement */
++    *tailp = cases;
++    tailp = &cases->next;
++    scan(TOK_SEMICOLON, &tok);
++
++    scan3(TOK_CASE, TOK_DEFAULT, TOK_RBRACE, &tok);
++  }
++  *tailp = NULL;
++  if (tok.kind == TOK_DEFAULT) {
++    scan(TOK_COLON, &tok);
++    get_declaration(&dec, DEF_UNION);
++    defp->def.un.default_decl = ALLOC(declaration);
++    *defp->def.un.default_decl = dec;
++    scan(TOK_SEMICOLON, &tok);
++    scan(TOK_RBRACE, &tok);
++  } else {
++    defp->def.un.default_decl = NULL;
++  }
++}
++
++static char* reserved_words[] =
++{
++  "array",
++  "bytes",
++  "destroy",
++  "free",
++  "getpos",
++  "inline",
++  "pointer",
++  "reference",
++  "setpos",
++  "sizeof",
++  "union",
++  "vector",
++  NULL
++  };
++
++static char* reserved_types[] =
++{
++  "opaque",
++  "string",
++  NULL
++  };
++
++/* check that the given name is not one that would eventually result in
++   xdr routines that would conflict with internal XDR routines. */
++static void
++check_type_name(char *name, int new_type)
++{
++  int i;
++  char tmp[100];
++
++  for( i = 0; reserved_words[i] != NULL; i++ ) {
++    if( strcmp( name, reserved_words[i] ) == 0 ) {
++      sprintf(tmp, 
++	      "illegal (reserved) name :\'%s\' in type definition", name );
++      error(tmp);
++    }
++  }
++  if( new_type ) {
++    for( i = 0; reserved_types[i] != NULL; i++ ) {
++      if( strcmp( name, reserved_types[i] ) == 0 ) {
++	sprintf(tmp, 
++		"illegal (reserved) name :\'%s\' in type definition", name );
++	error(tmp);
++      }
++    }
++  }
++}
++
++static void
++def_typedef(definition *defp)
++{
++	declaration dec;
++
++	defp->def_kind = DEF_TYPEDEF;
++	get_declaration(&dec, DEF_TYPEDEF);
++	defp->def_name = dec.name;
++	check_type_name( dec.name, 1 );
++	defp->def.ty.old_prefix = dec.prefix;
++	defp->def.ty.old_type = dec.type;
++	defp->def.ty.rel = dec.rel;
++	defp->def.ty.array_max = dec.array_max;
++}
++
++static void
++get_declaration(declaration *dec, defkind dkind)
++{
++	token tok;
++
++	get_type(&dec->prefix, &dec->type, dkind);
++	dec->rel = REL_ALIAS;
++	if (streq(dec->type, "void")) {
++		return;
++	}
++
++	check_type_name( dec->type, 0 );
++
++	scan2(TOK_STAR, TOK_IDENT, &tok);
++	if (tok.kind == TOK_STAR) {
++		dec->rel = REL_POINTER;
++		scan(TOK_IDENT, &tok);
++	}
++	dec->name = tok.str;
++	if (peekscan(TOK_LBRACKET, &tok)) {
++		if (dec->rel == REL_POINTER) {
++			error("no array-of-pointer declarations -- use typedef");
++		}
++		dec->rel = REL_VECTOR;
++		scan_num(&tok);
++		dec->array_max = tok.str;
++		scan(TOK_RBRACKET, &tok);
++	} else if (peekscan(TOK_LANGLE, &tok)) {
++		if (dec->rel == REL_POINTER) {
++			error("no array-of-pointer declarations -- use typedef");
++		}
++		dec->rel = REL_ARRAY;
++		if (peekscan(TOK_RANGLE, &tok)) {
++			dec->array_max = "~0";	/* unspecified size, use max */
++		} else {
++			scan_num(&tok);
++			dec->array_max = tok.str;
++			scan(TOK_RANGLE, &tok);
++		}
++	}
++	if (streq(dec->type, "opaque")) {
++		if (dec->rel != REL_ARRAY && dec->rel != REL_VECTOR) {
++			error("array declaration expected");
++		}
++	} else if (streq(dec->type, "string")) {
++		if (dec->rel != REL_ARRAY) {
++			error("variable-length array declaration expected");
++		}
++	}
++}
++
++
++static void
++get_prog_declaration(declaration *dec, defkind dkind, int num)
++{
++	token tok;
++	char name[10]; /* argument name */
++
++	if (dkind == DEF_PROGRAM) { 
++	  peek(&tok);
++	  if (tok.kind == TOK_RPAREN) { /* no arguments */
++	    	dec->rel = REL_ALIAS;
++		dec->type = "void";
++		dec->prefix = NULL;
++		dec->name = NULL;
++		return;
++	      }
++	}
++	get_type(&dec->prefix, &dec->type, dkind);
++	dec->rel = REL_ALIAS;
++	if (peekscan(TOK_IDENT, &tok))  /* optional name of argument */
++		strcpy(name, tok.str);
++	else 
++		sprintf(name, "%s%d", ARGNAME, num); /* default name of argument */
++
++	dec->name = (char *) strdup(name); 
++	
++	if (streq(dec->type, "void")) {
++		return;
++	}
++
++	if (streq(dec->type, "opaque")) {
++		error("opaque -- illegal argument type");
++	}
++	if (peekscan(TOK_STAR, &tok)) { 
++	  if (streq(dec->type, "string")) {
++	    error("pointer to string not allowed in program arguments\n");
++	  }
++		dec->rel = REL_POINTER;
++		if (peekscan(TOK_IDENT, &tok))  /* optional name of argument */
++		  dec->name = strdup(tok.str);
++      }
++	  if (peekscan(TOK_LANGLE, &tok)) {
++	    if (!streq(dec->type, "string")) {
++	      error("arrays cannot be declared as arguments to procedures -- use typedef");
++	    }
++		dec->rel = REL_ARRAY;
++		if (peekscan(TOK_RANGLE, &tok)) {
++			dec->array_max = "~0";/* unspecified size, use max */
++		} else {
++			scan_num(&tok);
++			dec->array_max = tok.str;
++			scan(TOK_RANGLE, &tok);
++		}
++	}
++	if (streq(dec->type, "string")) {
++		if (dec->rel != REL_ARRAY) {  /* .x specifies just string as
++					       * type of argument 
++					       * - make it string<>
++					       */
++			dec->rel = REL_ARRAY;
++			dec->array_max = "~0";/* unspecified size, use max */
++		}
++	}
++}
++
++
++
++static void
++get_type(char **prefixp, char **typep, defkind dkind)
++{
++	token tok;
++
++	*prefixp = NULL;
++	get_token(&tok);
++	switch (tok.kind) {
++	case TOK_IDENT:
++		*typep = tok.str;
++		break;
++	case TOK_STRUCT:
++	case TOK_ENUM:
++	case TOK_UNION:
++		*prefixp = tok.str;
++		scan(TOK_IDENT, &tok);
++		*typep = tok.str;
++		break;
++	case TOK_UNSIGNED:
++		unsigned_dec(typep);
++		break;
++	case TOK_SHORT:
++		*typep = "short";
++		(void) peekscan(TOK_INT, &tok);
++		break;
++	case TOK_INT32:
++		*typep = "int32_t";
++		(void) peekscan(TOK_INT, &tok);
++		break;
++	case TOK_VOID:
++		if (dkind != DEF_UNION && dkind != DEF_PROGRAM) {
++			error("voids allowed only inside union and program definitions with one argument");
++		}
++		*typep = tok.str;
++		break;
++	case TOK_STRING:
++	case TOK_OPAQUE:
++	case TOK_CHAR:
++	case TOK_INT:
++	case TOK_FLOAT:
++	case TOK_DOUBLE:
++	case TOK_BOOL:
++		*typep = tok.str;
++		break;
++	default:
++		error("expected type specifier");
++	}
++}
++
++static void
++unsigned_dec(char **typep)
++{
++	token tok;
++
++	peek(&tok);
++	switch (tok.kind) {
++	case TOK_CHAR:
++		get_token(&tok);
++		*typep = "u_char";
++		break;
++	case TOK_SHORT:
++		get_token(&tok);
++		*typep = "u_short";
++		(void) peekscan(TOK_INT, &tok);
++		break;
++	case TOK_INT32:
++		get_token(&tok);
++		*typep = "u_int32_";
++		(void) peekscan(TOK_INT, &tok);
++		break;
++	case TOK_INT:
++		get_token(&tok);
++		*typep = "u_int";
++		break;
++	default:
++		*typep = "u_int";
++		break;
++	}
++}
+diff --git a/rpcgen/rpc_parse.h b/rpcgen/rpc_parse.h
+new file mode 100644
+index 0000000..2afae10
+--- /dev/null
++++ b/rpcgen/rpc_parse.h
+@@ -0,0 +1,166 @@
++/*
++ * Copyright (c) 2009, Sun Microsystems, Inc.
++ * All rights reserved.
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions are met:
++ * - Redistributions of source code must retain the above copyright notice,
++ *   this list of conditions and the following disclaimer.
++ * - Redistributions in binary form must reproduce the above copyright notice,
++ *   this list of conditions and the following disclaimer in the documentation
++ *   and/or other materials provided with the distribution.
++ * - Neither the name of Sun Microsystems, Inc. nor the names of its
++ *   contributors may be used to endorse or promote products derived
++ *   from this software without specific prior written permission.
++ *
++ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
++ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
++ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
++ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
++ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
++ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
++ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
++ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
++ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
++ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
++ * POSSIBILITY OF SUCH DAMAGE.
++ */
++
++/*      @(#)rpc_parse.h  1.3  90/08/29  (C) 1987 SMI   */
++
++/*
++ * rpc_parse.h, Definitions for the RPCL parser 
++ */
++
++enum defkind {
++	DEF_CONST,
++	DEF_STRUCT,
++	DEF_UNION,
++	DEF_ENUM,
++	DEF_TYPEDEF,
++	DEF_PROGRAM
++};
++typedef enum defkind defkind;
++
++typedef char *const_def;
++
++enum relation {
++	REL_VECTOR,	/* fixed length array */
++	REL_ARRAY,	/* variable length array */
++	REL_POINTER,	/* pointer */
++	REL_ALIAS,	/* simple */
++};
++typedef enum relation relation;
++
++struct typedef_def {
++	char *old_prefix;
++	char *old_type;
++	relation rel;
++	char *array_max;
++};
++typedef struct typedef_def typedef_def;
++
++struct enumval_list {
++	char *name;
++	char *assignment;
++	struct enumval_list *next;
++};
++typedef struct enumval_list enumval_list;
++
++struct enum_def {
++	enumval_list *vals;
++};
++typedef struct enum_def enum_def;
++
++struct declaration {
++	char *prefix;
++	char *type;
++	char *name;
++	relation rel;
++	char *array_max;
++};
++typedef struct declaration declaration;
++
++struct decl_list {
++	declaration decl;
++	struct decl_list *next;
++};
++typedef struct decl_list decl_list;
++
++struct struct_def {
++	decl_list *decls;
++};
++typedef struct struct_def struct_def;
++
++struct case_list {
++	char *case_name;
++	int contflag;
++	declaration case_decl;
++	struct case_list *next;
++};
++typedef struct case_list case_list;
++
++struct union_def {
++	declaration enum_decl;
++	case_list *cases;
++	declaration *default_decl;
++};
++typedef struct union_def union_def;
++
++struct arg_list {
++	char *argname; /* name of struct for arg*/
++	decl_list *decls;
++};
++	
++typedef struct arg_list arg_list;
++
++struct proc_list {
++	char *proc_name;
++	char *proc_num;
++	arg_list args;
++	int arg_num;
++	char *res_type;
++	char *res_prefix;
++	struct proc_list *next;
++};
++typedef struct proc_list proc_list;
++
++struct version_list {
++	char *vers_name;
++	char *vers_num;
++	proc_list *procs;
++	struct version_list *next;
++};
++typedef struct version_list version_list;
++
++struct program_def {
++	char *prog_num;
++	version_list *versions;
++};
++typedef struct program_def program_def;
++
++struct definition {
++	char *def_name;
++	defkind def_kind;
++	union {
++		const_def co;
++		struct_def st;
++		union_def un;
++		enum_def en;
++		typedef_def ty;
++		program_def pr;
++	} def;
++};
++typedef struct definition definition;
++
++definition *get_definition();
++
++
++struct bas_type
++{
++  char *name;
++  int length;
++  struct bas_type *next;
++};
++
++typedef struct bas_type bas_type;
+diff --git a/rpcgen/rpc_sample.c b/rpcgen/rpc_sample.c
+new file mode 100644
+index 0000000..2b5c81b
+--- /dev/null
++++ b/rpcgen/rpc_sample.c
+@@ -0,0 +1,247 @@
++/*
++ * Copyright (c) 2009, Sun Microsystems, Inc.
++ * All rights reserved.
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions are met:
++ * - Redistributions of source code must retain the above copyright notice,
++ *   this list of conditions and the following disclaimer.
++ * - Redistributions in binary form must reproduce the above copyright notice,
++ *   this list of conditions and the following disclaimer in the documentation
++ *   and/or other materials provided with the distribution.
++ * - Neither the name of Sun Microsystems, Inc. nor the names of its
++ *   contributors may be used to endorse or promote products derived
++ *   from this software without specific prior written permission.
++ *
++ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
++ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
++ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
++ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
++ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
++ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
++ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
++ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
++ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
++ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
++ * POSSIBILITY OF SUCH DAMAGE.
++ */
++
++#if 0
++static char sccsid[] = "@(#)rpc_sample.c  1.1  90/08/30  (C) 1987 SMI";
++
++#endif
++
++/*
++ * rpc_sample.c, Sample client-server code outputter for the RPC protocol compiler
++ */
++
++#include <stdio.h>
++#include <string.h>
++#include "rpc_parse.h"
++#include "rpc_util.h"
++
++
++static char RQSTP[] = "rqstp";
++
++static void	write_sample_client(char *program_name, version_list *vp);
++static void	write_sample_server(definition * def);
++static void	return_type(proc_list *plist);
++
++void
++write_sample_svc(definition *def)
++{
++	if (def->def_kind != DEF_PROGRAM)
++		return;
++	write_sample_server(def);
++}
++
++
++int
++write_sample_clnt(definition *def)
++{
++	version_list   *vp;
++	int             count = 0;
++
++	if (def->def_kind != DEF_PROGRAM)
++		return (0);
++	/* generate sample code for each version */
++	for (vp = def->def.pr.versions; vp != NULL; vp = vp->next) {
++		write_sample_client(def->def_name, vp);
++		++count;
++	}
++	return (count);
++}
++
++
++static void
++write_sample_client(char *program_name, version_list *vp)
++{
++	proc_list      *proc;
++	int             i;
++	decl_list      *l;
++
++	f_print(fout, "\n\nvoid\n");
++	pvname(program_name, vp->vers_num);
++	if (Cflag)
++		f_print(fout, "( char* host )\n{\n");
++	else
++		f_print(fout, "(host)\nchar *host;\n{\n");
++	f_print(fout, "\tCLIENT *clnt;\n");
++
++	i = 0;
++	for (proc = vp->procs; proc != NULL; proc = proc->next) {
++		f_print(fout, "\t");
++		ptype(proc->res_prefix, proc->res_type, 1);
++		f_print(fout, " *result_%d;\n", ++i);
++		/* print out declarations for arguments */
++		if (proc->arg_num < 2 && !newstyle) {
++			f_print(fout, "\t");
++			if (!streq(proc->args.decls->decl.type, "void"))
++				ptype(proc->args.decls->decl.prefix, proc->args.decls->decl.type, 1);
++			else
++				f_print(fout, "char* ");	/* cannot have "void" type */
++			f_print(fout, " ");
++			pvname(proc->proc_name, vp->vers_num);
++			f_print(fout, "_arg;\n");
++		} else if (!streq(proc->args.decls->decl.type, "void")) {
++			for (l = proc->args.decls; l != NULL; l = l->next) {
++				f_print(fout, "\t");
++				ptype(l->decl.prefix, l->decl.type, 1);
++				f_print(fout, " ");
++				pvname(proc->proc_name, vp->vers_num);
++				f_print(fout, "_%s;\n", l->decl.name);
++				/*	  pdeclaration(proc->args.argname, &l->decl, 1, ";\n" );*/
++			}
++		}
++	}
++
++	/* generate creation of client handle */
++	f_print(fout, "\tclnt = clnt_create(host, %s, %s, \"%s\");\n",
++		program_name, vp->vers_name, tirpcflag ? "netpath" : "udp");
++	f_print(fout, "\tif (clnt == NULL) {\n");
++	f_print(fout, "\t\tclnt_pcreateerror(host);\n");
++	f_print(fout, "\t\texit(1);\n\t}\n");
++
++	/* generate calls to procedures */
++	i = 0;
++	for (proc = vp->procs; proc != NULL; proc = proc->next) {
++		f_print(fout, "\tresult_%d = ", ++i);
++		pvname(proc->proc_name, vp->vers_num);
++		if (proc->arg_num < 2 && !newstyle) {
++			f_print(fout, "(");
++			if (streq(proc->args.decls->decl.type, "void"))	/* cast to void* */
++				f_print(fout, "(void*)");
++			f_print(fout, "&");
++			pvname(proc->proc_name, vp->vers_num);
++			f_print(fout, "_arg, clnt);\n");
++		} else if (streq(proc->args.decls->decl.type, "void")) {
++			f_print(fout, "(clnt);\n");
++		} else {
++			f_print(fout, "(");
++			for (l = proc->args.decls; l != NULL; l = l->next) {
++				pvname(proc->proc_name, vp->vers_num);
++				f_print(fout, "_%s, ", l->decl.name);
++			}
++			f_print(fout, "clnt);\n");
++		}
++		f_print(fout, "\tif (result_%d == NULL) {\n", i);
++		f_print(fout, "\t\tclnt_perror(clnt, \"call failed:\");\n");
++		f_print(fout, "\t}\n");
++	}
++
++	f_print(fout, "\tclnt_destroy( clnt );\n");
++	f_print(fout, "}\n");
++}
++
++static void
++write_sample_server(definition * def)
++{
++	version_list   *vp;
++	proc_list      *proc;
++
++	for (vp = def->def.pr.versions; vp != NULL; vp = vp->next) {
++		for (proc = vp->procs; proc != NULL; proc = proc->next) {
++			f_print(fout, "\n");
++			/*			if( Cflag )
++			  f_print( fout, "extern \"C\"{\n");
++*/
++			return_type(proc);
++			f_print(fout, "* \n");
++			if (Cflag)
++				pvname_svc(proc->proc_name, vp->vers_num);
++			else
++				pvname(proc->proc_name, vp->vers_num);
++			printarglist(proc, RQSTP, "struct svc_req *");
++
++			f_print(fout, "{\n");
++			f_print(fout, "\n\tstatic ");
++			if (!streq(proc->res_type, "void"))
++				return_type(proc);
++			else
++				f_print(fout, "char*");	/* cannot have void type */
++			/* f_print(fout, " result;\n", proc->res_type); */
++			f_print(fout, " result;\n");
++			f_print(fout,
++				"\n\t/*\n\t * insert server code here\n\t */\n\n");
++			if (!streq(proc->res_type, "void"))
++				f_print(fout, "\treturn(&result);\n}\n");
++			else	/* cast back to void * */
++				f_print(fout, "\treturn((void*) &result);\n}\n");
++			/*			if( Cflag)
++			  f_print( fout, "};\n");
++*/
++
++		}
++	}
++}
++
++
++
++static void
++return_type(proc_list *plist)
++{
++	ptype( plist->res_prefix, plist->res_type, 1 );
++}
++
++void
++add_sample_msg(void)
++{
++	f_print(fout, "/*\n");
++	f_print(fout, " * This is sample code generated by rpcgen.\n");
++	f_print(fout, " * These are only templates and you can use them\n");
++	f_print(fout, " * as a guideline for developing your own functions.\n");
++	f_print(fout, " */\n\n");
++}
++
++void
++write_sample_clnt_main(void)
++{
++  list *l;
++  definition *def;
++  version_list *vp;
++
++  f_print(fout, "\n\n" );
++  if( Cflag )
++    f_print(fout,"main( int argc, char* argv[] )\n{\n" );
++  else
++    f_print(fout, "main(argc, argv)\nint argc;\nchar *argv[];\n{\n" );
++
++  f_print(fout, "\tchar *host;");
++  f_print(fout, "\n\n\tif(argc < 2) {");
++  f_print(fout, "\n\t\tprintf(\"usage: %%s server_host\\n\", argv[0]);\n" );
++  f_print(fout, "\t\texit(1);\n\t}");
++  f_print(fout, "\n\thost = argv[1];\n");
++
++  for (l = defined; l != NULL; l = l->next) {
++		def = l->val;
++		if (def->def_kind != DEF_PROGRAM) {
++			continue;
++		}
++		for (vp = def->def.pr.versions; vp != NULL; vp = vp->next) {
++		        f_print( fout, "\t" );
++			pvname(def->def_name, vp->vers_num);
++			f_print( fout, "( host );\n" );
++		      }
++		}
++  f_print(fout, "}\n");
++}
+diff --git a/rpcgen/rpc_scan.c b/rpcgen/rpc_scan.c
+new file mode 100644
+index 0000000..f58fa9f
+--- /dev/null
++++ b/rpcgen/rpc_scan.c
+@@ -0,0 +1,474 @@
++/*
++ * Copyright (c) 2009, Sun Microsystems, Inc.
++ * All rights reserved.
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions are met:
++ * - Redistributions of source code must retain the above copyright notice,
++ *   this list of conditions and the following disclaimer.
++ * - Redistributions in binary form must reproduce the above copyright notice,
++ *   this list of conditions and the following disclaimer in the documentation
++ *   and/or other materials provided with the distribution.
++ * - Neither the name of Sun Microsystems, Inc. nor the names of its
++ *   contributors may be used to endorse or promote products derived
++ *   from this software without specific prior written permission.
++ *
++ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
++ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
++ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
++ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
++ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
++ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
++ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
++ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
++ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
++ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
++ * POSSIBILITY OF SUCH DAMAGE.
++ */
++
++#if 0
++static char sccsid[] = "@(#)rpc_scan.c 1.11 89/02/22 (C) 1987 SMI";
++#endif
++
++/*
++ * rpc_scan.c, Scanner for the RPC protocol compiler 
++ * Copyright (C) 1987, Sun Microsystems, Inc. 
++ */
++#include <stdio.h>
++#include <ctype.h>
++#include <string.h>
++#include "rpc_scan.h"
++#include "rpc_parse.h"
++#include "rpc_util.h"
++
++static void	unget_token(token *tokp);
++static void	findstrconst(char **str, char **val);
++static void	findchrconst(char **str, char **val);
++static void	findconst(char **str, char **val);
++static void	findkind(char **mark, token *tokp);
++static int	cppline(char *line);
++static int	directive(char *line);
++static void	printdirective(char *line);
++static void	docppline(char *line, int *lineno, char **fname);
++
++#define startcomment(where) (where[0] == '/' && where[1] == '*')
++#define endcomment(where) (where[-1] == '*' && where[0] == '/')
++
++static int pushed = 0;	/* is a token pushed */
++static token lasttok;	/* last token, if pushed */
++
++/*
++ * scan expecting 1 given token 
++ */
++void
++scan(tok_kind expect, token *tokp)
++{
++	get_token(tokp);
++	if (tokp->kind != expect) {
++		expected1(expect);
++	}
++}
++
++/*
++ * scan expecting any of the 2 given tokens 
++ */
++void
++scan2(tok_kind expect1, tok_kind expect2, token *tokp)
++{
++	get_token(tokp);
++	if (tokp->kind != expect1 && tokp->kind != expect2) {
++		expected2(expect1, expect2);
++	}
++}
++
++/*
++ * scan expecting any of the 3 given token 
++ */
++void
++scan3(tok_kind expect1, tok_kind expect2, tok_kind expect3, token *tokp)
++{
++	get_token(tokp);
++	if (tokp->kind != expect1 && tokp->kind != expect2
++	    && tokp->kind != expect3) {
++		expected3(expect1, expect2, expect3);
++	}
++}
++
++/*
++ * scan expecting a constant, possibly symbolic 
++ */
++void
++scan_num(token *tokp)
++{
++	get_token(tokp);
++	switch (tokp->kind) {
++	case TOK_IDENT:
++		break;
++	default:
++		error("constant or identifier expected");
++	}
++}
++
++/*
++ * Peek at the next token 
++ */
++void
++peek(token *tokp)
++{
++	get_token(tokp);
++	unget_token(tokp);
++}
++
++/*
++ * Peek at the next token and scan it if it matches what you expect 
++ */
++int
++peekscan(tok_kind expect, token *tokp)
++{
++	peek(tokp);
++	if (tokp->kind == expect) {
++		get_token(tokp);
++		return (1);
++	}
++	return (0);
++}
++
++/*
++ * Get the next token, printing out any directive that are encountered. 
++ */
++void
++get_token(token *tokp)
++{
++	int commenting;
++
++	if (pushed) {
++		pushed = 0;
++		*tokp = lasttok;
++		return;
++	}
++	commenting = 0;
++	for (;;) {
++		if (*where == 0) {
++			for (;;) {
++				if (!fgets(curline, MAXLINESIZE, fin)) {
++					tokp->kind = TOK_EOF;
++					*where = 0;
++					return;
++				}
++				linenum++;
++				if (commenting) {
++					break;
++				} else if (cppline(curline)) {
++					docppline(curline, &linenum, 
++						  &infilename);
++				} else if (directive(curline)) {
++					printdirective(curline);
++				} else {
++					break;
++				}
++			}
++			where = curline;
++		} else if (isspace(*where)) {
++			while (isspace(*where)) {
++				where++;	/* eat */
++			}
++		} else if (commenting) {
++			for (where++; *where; where++) {
++				if (endcomment(where)) {
++					where++;
++					commenting--;
++					break;
++				}
++			}
++		} else if (startcomment(where)) {
++			where += 2;
++			commenting++;
++		} else {
++			break;
++		}
++	}
++
++	/*
++	 * 'where' is not whitespace, comment or directive Must be a token! 
++	 */
++	switch (*where) {
++	case ':':
++		tokp->kind = TOK_COLON;
++		where++;
++		break;
++	case ';':
++		tokp->kind = TOK_SEMICOLON;
++		where++;
++		break;
++	case ',':
++		tokp->kind = TOK_COMMA;
++		where++;
++		break;
++	case '=':
++		tokp->kind = TOK_EQUAL;
++		where++;
++		break;
++	case '*':
++		tokp->kind = TOK_STAR;
++		where++;
++		break;
++	case '[':
++		tokp->kind = TOK_LBRACKET;
++		where++;
++		break;
++	case ']':
++		tokp->kind = TOK_RBRACKET;
++		where++;
++		break;
++	case '{':
++		tokp->kind = TOK_LBRACE;
++		where++;
++		break;
++	case '}':
++		tokp->kind = TOK_RBRACE;
++		where++;
++		break;
++	case '(':
++		tokp->kind = TOK_LPAREN;
++		where++;
++		break;
++	case ')':
++		tokp->kind = TOK_RPAREN;
++		where++;
++		break;
++	case '<':
++		tokp->kind = TOK_LANGLE;
++		where++;
++		break;
++	case '>':
++		tokp->kind = TOK_RANGLE;
++		where++;
++		break;
++
++	case '"':
++		tokp->kind = TOK_STRCONST;
++		findstrconst(&where, &tokp->str);
++		break;
++	case '\'':
++		tokp->kind = TOK_CHARCONST;
++		findchrconst(&where, &tokp->str);
++		break;
++
++	case '-':
++	case '0':
++	case '1':
++	case '2':
++	case '3':
++	case '4':
++	case '5':
++	case '6':
++	case '7':
++	case '8':
++	case '9':
++		tokp->kind = TOK_IDENT;
++		findconst(&where, &tokp->str);
++		break;
++
++	default:
++		if (!(isalpha(*where) || *where == '_')) {
++			char buf[100];
++			char *p;
++
++			s_print(buf, "illegal character in file: ");
++			p = buf + strlen(buf);
++			if (isprint(*where)) {
++				s_print(p, "%c", *where);
++			} else {
++				s_print(p, "%d", *where);
++			}
++			error(buf);
++		}
++		findkind(&where, tokp);
++		break;
++	}
++}
++
++static void
++unget_token(token *tokp)
++{
++	lasttok = *tokp;
++	pushed = 1;
++}
++
++static void
++findstrconst(char **str, char **val)
++{
++	char *p;
++	int size;
++
++	p = *str;
++	do {
++		*p++;
++	} while (*p && *p != '"');
++	if (*p == 0) {
++		error("unterminated string constant");
++	}
++	p++;
++	size = p - *str;
++	*val = alloc(size + 1);
++	(void) strncpy(*val, *str, size);
++	(*val)[size] = 0;
++	*str = p;
++}
++
++static void
++findchrconst(char **str, char **val)
++{
++	char *p;
++	int size;
++
++	p = *str;
++	do {
++		*p++;
++	} while (*p && *p != '\'');
++	if (*p == 0) {
++		error("unterminated string constant");
++	}
++	p++;
++	size = p - *str;
++	if (size != 3) {
++		error("empty char string");
++	}
++	*val = alloc(size + 1);
++	(void) strncpy(*val, *str, size);
++	(*val)[size] = 0;
++	*str = p;
++}
++
++static void
++findconst(char **str, char **val)
++{
++	char *p;
++	int size;
++
++	p = *str;
++	if (*p == '0' && *(p + 1) == 'x') {
++		p++;
++		do {
++			p++;
++		} while (isxdigit(*p));
++	} else {
++		do {
++			p++;
++		} while (isdigit(*p));
++	}
++	size = p - *str;
++	*val = alloc(size + 1);
++	(void) strncpy(*val, *str, size);
++	(*val)[size] = 0;
++	*str = p;
++}
++
++static token symbols[] = {
++			  {TOK_CONST, "const"},
++			  {TOK_UNION, "union"},
++			  {TOK_SWITCH, "switch"},
++			  {TOK_CASE, "case"},
++			  {TOK_DEFAULT, "default"},
++			  {TOK_STRUCT, "struct"},
++			  {TOK_TYPEDEF, "typedef"},
++			  {TOK_ENUM, "enum"},
++			  {TOK_OPAQUE, "opaque"},
++			  {TOK_BOOL, "bool"},
++			  {TOK_VOID, "void"},
++			  {TOK_CHAR, "char"},
++			  {TOK_INT, "int"},
++			  {TOK_UNSIGNED, "unsigned"},
++			  {TOK_SHORT, "short"},
++			  {TOK_INT32, "int32"},
++			  {TOK_FLOAT, "float"},
++			  {TOK_DOUBLE, "double"},
++			  {TOK_STRING, "string"},
++			  {TOK_PROGRAM, "program"},
++			  {TOK_VERSION, "version"},
++			  {TOK_EOF, "??????"},
++};
++
++static void
++findkind(char **mark, token *tokp)
++{
++	int len;
++	token *s;
++	char *str;
++
++	str = *mark;
++	for (s = symbols; s->kind != TOK_EOF; s++) {
++		len = strlen(s->str);
++		if (strncmp(str, s->str, len) == 0) {
++			if (!isalnum(str[len]) && str[len] != '_') {
++				tokp->kind = s->kind;
++				tokp->str = s->str;
++				*mark = str + len;
++				return;
++			}
++		}
++	}
++	tokp->kind = TOK_IDENT;
++	for (len = 0; isalnum(str[len]) || str[len] == '_'; len++);
++	tokp->str = alloc(len + 1);
++	(void) strncpy(tokp->str, str, len);
++	tokp->str[len] = 0;
++	*mark = str + len;
++}
++
++static int
++cppline(char *line)
++{
++	return (line == curline && *line == '#');
++}
++
++static int
++directive(char *line)
++{
++	return (line == curline && *line == '%');
++}
++
++static void
++printdirective(char *line)
++{
++	f_print(fout, "%s", line + 1);
++}
++
++static void
++docppline(char *line, int *lineno, char **fname)
++{
++	char *file;
++	int num;
++	char *p;
++
++	line++;
++	while (isspace(*line)) {
++		line++;
++	}
++	num = atoi(line);
++	while (isdigit(*line)) {
++		line++;
++	}
++	while (isspace(*line)) {
++		line++;
++	}
++	if (*line != '"') {
++		error("preprocessor error");
++	}
++	line++;
++	p = file = alloc(strlen(line) + 1);
++	while (*line && *line != '"') {
++		*p++ = *line++;
++	}
++	if (*line == 0) {
++		error("preprocessor error");
++	}
++	*p = 0;
++	if (*file == 0) {
++		*fname = NULL;
++		free(file);
++	} else {
++		*fname = file;
++	}
++	*lineno = num - 1;
++}
+diff --git a/rpcgen/rpc_scan.h b/rpcgen/rpc_scan.h
+new file mode 100644
+index 0000000..16f688c
+--- /dev/null
++++ b/rpcgen/rpc_scan.h
+@@ -0,0 +1,103 @@
++/*
++ * Copyright (c) 2009, Sun Microsystems, Inc.
++ * All rights reserved.
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions are met:
++ * - Redistributions of source code must retain the above copyright notice,
++ *   this list of conditions and the following disclaimer.
++ * - Redistributions in binary form must reproduce the above copyright notice,
++ *   this list of conditions and the following disclaimer in the documentation
++ *   and/or other materials provided with the distribution.
++ * - Neither the name of Sun Microsystems, Inc. nor the names of its
++ *   contributors may be used to endorse or promote products derived
++ *   from this software without specific prior written permission.
++ *
++ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
++ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
++ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
++ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
++ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
++ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
++ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
++ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
++ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
++ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
++ * POSSIBILITY OF SUCH DAMAGE.
++ */
++
++/*      @(#)rpc_scan.h  1.3  90/08/29  (C) 1987 SMI   */
++
++/*
++ * rpc_scan.h, Definitions for the RPCL scanner 
++ */
++
++/*
++ * kinds of tokens 
++ */
++enum tok_kind {
++	TOK_IDENT,
++	TOK_CHARCONST,
++	TOK_STRCONST,
++	TOK_LPAREN,
++	TOK_RPAREN,
++	TOK_LBRACE,
++	TOK_RBRACE,
++	TOK_LBRACKET,
++	TOK_RBRACKET,
++	TOK_LANGLE,
++	TOK_RANGLE,
++	TOK_STAR,
++	TOK_COMMA,
++	TOK_EQUAL,
++	TOK_COLON,
++	TOK_SEMICOLON,
++	TOK_CONST,
++	TOK_STRUCT,
++	TOK_UNION,
++	TOK_SWITCH,
++	TOK_CASE,
++	TOK_DEFAULT,
++	TOK_ENUM,
++	TOK_TYPEDEF,
++	TOK_INT,
++	TOK_SHORT,
++	TOK_INT32,
++	TOK_UNSIGNED,
++	TOK_FLOAT,
++	TOK_DOUBLE,
++	TOK_OPAQUE,
++	TOK_CHAR,
++	TOK_STRING,
++	TOK_BOOL,
++	TOK_VOID,
++	TOK_PROGRAM,
++	TOK_VERSION,
++	TOK_EOF
++};
++typedef enum tok_kind tok_kind;
++
++/*
++ * a token 
++ */
++struct token {
++	tok_kind kind;
++	char *str;
++};
++typedef struct token token;
++
++
++/*
++ * routine interface 
++ */
++void            scan();
++void            scan2();
++void            scan3();
++void            scan_num();
++void            peek();
++int             peekscan();
++void            get_token();
++void            expected1(tok_kind);
++void            expected2(tok_kind, tok_kind);
++void            expected3(tok_kind, tok_kind, tok_kind);
++
+diff --git a/rpcgen/rpc_svcout.c b/rpcgen/rpc_svcout.c
+new file mode 100644
+index 0000000..284a529
+--- /dev/null
++++ b/rpcgen/rpc_svcout.c
+@@ -0,0 +1,882 @@
++/*
++ * Copyright (c) 2009, Sun Microsystems, Inc.
++ * All rights reserved.
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions are met:
++ * - Redistributions of source code must retain the above copyright notice,
++ *   this list of conditions and the following disclaimer.
++ * - Redistributions in binary form must reproduce the above copyright notice,
++ *   this list of conditions and the following disclaimer in the documentation
++ *   and/or other materials provided with the distribution.
++ * - Neither the name of Sun Microsystems, Inc. nor the names of its
++ *   contributors may be used to endorse or promote products derived
++ *   from this software without specific prior written permission.
++ *
++ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
++ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
++ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
++ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
++ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
++ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
++ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
++ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
++ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
++ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
++ * POSSIBILITY OF SUCH DAMAGE.
++ */
++
++#if 0
++ static char sccsid[] = "@(#)rpc_svcout.c 1.29 89/03/30 (C) 1987 SMI";
++#endif
++
++/*
++ * rpc_svcout.c, Server-skeleton outputter for the RPC protocol compiler
++ */
++#include <stdio.h>
++#include <string.h>
++#include "rpc_parse.h"
++#include "rpc_util.h"
++#include "rpc_output.h"
++
++static void	write_real_program(definition *def);
++static void	write_program(definition *def, char *storage);
++static void	printerr(char *err, char *transp);
++static void	printif(char *proc, char *transp, char *prefix, char *arg);
++static void	write_inetmost(char *infile);
++static void	print_return(char *space);
++static void	print_pmapunset(char *space);
++static void	print_err_message(char *space);
++static void	write_timeout_func(void);
++static void	write_pm_most(char *infile, int netflag);
++static void	write_rpc_svc_fg(char *infile, char *sp);
++static void	open_log_file(char *infile, char *sp);
++
++static char RQSTP[] = "rqstp";
++static char TRANSP[] = "transp";
++static char ARG[] = "argument";
++static char RESULT[] = "result";
++static char ROUTINE[] = "local";
++
++char _errbuf[256];	/* For all messages */
++
++static void
++p_xdrfunc(char *rname, char *typename)
++{
++	if (Cflag)
++		f_print(fout, "\t\txdr_%s = (xdrproc_t) xdr_%s;\n", rname,
++			stringfix(typename));
++	else
++		f_print(fout, "\t\txdr_%s = xdr_%s;\n", rname, stringfix(typename));
++}
++
++void
++internal_proctype(proc_list *plist)
++{
++	f_print(fout, "static ");
++	ptype( plist->res_prefix, plist->res_type, 1 );
++	f_print( fout, "*" );
++}
++
++
++/*
++ * write most of the service, that is, everything but the registrations. 
++ */
++void
++write_most(char *infile, int netflag, int nomain)
++{
++	if (inetdflag || pmflag) {
++	        char* var_type;
++		var_type = (nomain? "extern" : "static");
++		f_print(fout, "%s int _rpcpmstart;", var_type );
++		f_print(fout, "\t\t/* Started by a port monitor ? */\n"); 
++		f_print(fout, "%s int _rpcfdtype;", var_type );
++		f_print(fout, "\t\t/* Whether Stream or Datagram ? */\n");
++		if (timerflag) {
++			f_print(fout, "%s int _rpcsvcdirty;", var_type );
++			f_print(fout, "\t/* Still serving ? */\n");
++		}
++		write_svc_aux( nomain );
++	}
++	/* write out dispatcher and stubs */
++	write_programs( nomain? (char *)NULL : "static" );
++
++        if( nomain ) 
++	  return;
++
++	f_print(fout, "\nmain()\n");
++	f_print(fout, "{\n");
++	if (inetdflag) {
++		write_inetmost(infile); /* Includes call to write_rpc_svc_fg() */
++	} else {
++	  if( tirpcflag ) {
++		if (netflag) {
++			f_print(fout, "\tregister SVCXPRT *%s;\n", TRANSP);
++			f_print(fout, "\tstruct netconfig *nconf = NULL;\n");
++		}
++		f_print(fout, "\tpid_t pid;\n");
++		f_print(fout, "\tint i;\n");
++		f_print(fout, "\tchar mname[FMNAMESZ + 1];\n\n");
++		write_pm_most(infile, netflag);
++		f_print(fout, "\telse {\n");
++		write_rpc_svc_fg(infile, "\t\t");
++		f_print(fout, "\t}\n");
++	      } else {
++		f_print(fout, "\tregister SVCXPRT *%s;\n", TRANSP);
++		f_print(fout, "\n");
++		print_pmapunset("\t");
++	      }
++	}
++
++	if (logflag && !inetdflag) {
++		open_log_file(infile, "\t");
++	}
++}
++
++/*
++ * write a registration for the given transport 
++ */
++void
++write_netid_register(char *transp)
++{
++	list *l;
++	definition *def;
++	version_list *vp;
++	char *sp;
++	char tmpbuf[32];
++
++	sp = "";
++	f_print(fout, "\n");
++	f_print(fout, "%s\tnconf = getnetconfigent(\"%s\");\n", sp, transp);
++	f_print(fout, "%s\tif (nconf == NULL) {\n", sp);
++	(void) sprintf(_errbuf, "cannot find %s netid.", transp);
++	sprintf(tmpbuf, "%s\t\t", sp);
++	print_err_message(tmpbuf);
++	f_print(fout, "%s\t\texit(1);\n", sp);
++	f_print(fout, "%s\t}\n", sp);
++	f_print(fout, "%s\t%s = svc_tli_create(RPC_ANYFD, nconf, 0, 0, 0);\n",
++			sp, TRANSP);
++	f_print(fout, "%s\tif (%s == NULL) {\n", sp, TRANSP);
++	(void) sprintf(_errbuf, "cannot create %s service.", transp);
++	print_err_message(tmpbuf);
++	f_print(fout, "%s\t\texit(1);\n", sp);
++	f_print(fout, "%s\t}\n", sp);
++
++	for (l = defined; l != NULL; l = l->next) {
++		def = (definition *) l->val;
++		if (def->def_kind != DEF_PROGRAM) {
++			continue;
++		}
++		for (vp = def->def.pr.versions; vp != NULL; vp = vp->next) {
++			f_print(fout,
++				"%s\t(void) rpcb_unset(%s, %s, nconf);\n",
++				sp, def->def_name, vp->vers_name);
++			f_print(fout,
++				"%s\tif (!svc_reg(%s, %s, %s, ",
++				sp, TRANSP, def->def_name, vp->vers_name);
++			pvname(def->def_name, vp->vers_num);
++			f_print(fout, ", nconf)) {\n");
++			(void) sprintf(_errbuf, "unable to register (%s, %s, %s).",
++					def->def_name, vp->vers_name, transp);
++			print_err_message(tmpbuf);
++			f_print(fout, "%s\t\texit(1);\n", sp);
++			f_print(fout, "%s\t}\n", sp);
++		}
++	}
++	f_print(fout, "%s\tfreenetconfigent(nconf);\n", sp);
++}
++
++/*
++ * write a registration for the given transport for TLI
++ */
++void
++write_nettype_register(char *transp)
++{
++	list *l;
++	definition *def;
++	version_list *vp;
++
++	for (l = defined; l != NULL; l = l->next) {
++		def = (definition *) l->val;
++		if (def->def_kind != DEF_PROGRAM) {
++			continue;
++		}
++		for (vp = def->def.pr.versions; vp != NULL; vp = vp->next) {
++			f_print(fout, "\tif (!svc_create(");
++			pvname(def->def_name, vp->vers_num);
++			f_print(fout, ", %s, %s, \"%s\")) {\n ",
++				def->def_name, vp->vers_name, transp);
++			(void) sprintf(_errbuf,
++				"unable to create (%s, %s) for %s.",
++					def->def_name, vp->vers_name, transp);
++			print_err_message("\t\t");
++			f_print(fout, "\t\texit(1);\n");
++			f_print(fout, "\t}\n");
++		}
++	}
++}
++
++/*
++ * write the rest of the service 
++ */
++void
++write_rest(void)
++{
++	f_print(fout, "\n");
++	if (inetdflag) {
++		f_print(fout, "\tif (%s == (SVCXPRT *)NULL) {\n", TRANSP);
++		(void) sprintf(_errbuf, "could not create a handle");
++		print_err_message("\t\t");
++		f_print(fout, "\t\texit(1);\n");
++		f_print(fout, "\t}\n");
++		if (timerflag) {
++			f_print(fout, "\tif (_rpcpmstart) {\n");
++			f_print(fout, 
++				"\t\t(void) signal(SIGALRM, %s closedown);\n",
++				Cflag? "(SIG_PF)" : "(void(*)())" );
++			f_print(fout, "\t\t(void) alarm(_RPCSVC_CLOSEDOWN);\n");
++			f_print(fout, "\t}\n");
++		}
++	}
++	f_print(fout, "\tsvc_run();\n");
++	(void) sprintf(_errbuf, "svc_run returned");
++	print_err_message("\t");
++	f_print(fout, "\texit(1);\n");
++	f_print(fout, "\t/* NOTREACHED */\n");
++	f_print(fout, "}\n");
++}
++
++void
++write_programs(char *storage)
++{
++	list *l;
++	definition *def;
++
++	/* write out stubs for procedure  definitions */
++	for (l = defined; l != NULL; l = l->next) {
++		def = (definition *) l->val;
++		if (def->def_kind == DEF_PROGRAM) {
++			write_real_program(def);
++		}
++	}
++
++	/* write out dispatcher for each program */
++	for (l = defined; l != NULL; l = l->next) {
++		def = (definition *) l->val;
++		if (def->def_kind == DEF_PROGRAM) {
++			write_program(def, storage);
++		}
++	}
++
++
++}
++
++/* write out definition of internal function (e.g. _printmsg_1(...))
++   which calls server's defintion of actual function (e.g. printmsg_1(...)).
++   Unpacks single user argument of printmsg_1 to call-by-value format
++   expected by printmsg_1. */
++static void
++write_real_program(definition *def)
++{
++	version_list *vp;
++	proc_list *proc;
++	decl_list *l;
++
++	if( !newstyle ) return;  /* not needed for old style */
++	for (vp = def->def.pr.versions; vp != NULL; vp = vp->next) {
++		for (proc = vp->procs; proc != NULL; proc = proc->next) {
++			f_print(fout, "\n");
++			internal_proctype(proc);
++			f_print(fout, "\n_");
++			pvname(proc->proc_name, vp->vers_num);
++			if( Cflag ) {
++			  f_print(fout, "(" );
++			  /* arg name */
++			  if (proc->arg_num > 1)
++			    f_print(fout, proc->args.argname);
++			  else
++			    ptype(proc->args.decls->decl.prefix, 
++				  proc->args.decls->decl.type, 0);
++			  f_print(fout, " *argp, struct svc_req *%s)\n", 
++				  RQSTP);
++			} else {
++			  f_print(fout, "(argp, %s)\n", RQSTP );
++			  /* arg name */
++			  if (proc->arg_num > 1)
++			    f_print(fout, "\t%s *argp;\n", proc->args.argname);
++			  else {
++			    f_print(fout, "\t");
++			    ptype(proc->args.decls->decl.prefix, 
++				  proc->args.decls->decl.type, 0);
++			    f_print(fout, " *argp;\n");
++			  }
++			  f_print(fout, "	struct svc_req *%s;\n", RQSTP);
++			}
++
++			f_print(fout, "{\n");
++			f_print(fout, "\treturn(");
++			if( Cflag )
++			  pvname_svc(proc->proc_name, vp->vers_num);
++			else
++			  pvname(proc->proc_name, vp->vers_num);
++			f_print(fout, "(");
++			if (proc->arg_num < 2) { /* single argument */
++			  if (!streq( proc->args.decls->decl.type, "void"))
++			    f_print(fout, "*argp, ");  /* non-void */
++			} else {
++			  for (l = proc->args.decls;  l != NULL; l = l->next) 
++			    f_print(fout, "argp->%s, ", l->decl.name);
++			}
++			f_print(fout, "%s));\n}\n", RQSTP);
++		} 		
++	}
++}
++
++static void
++write_program(definition *def, char *storage)
++{
++	version_list *vp;
++	proc_list *proc;
++	int filled;
++
++	for (vp = def->def.pr.versions; vp != NULL; vp = vp->next) {
++		f_print(fout, "\n");
++		if (storage != NULL) {
++			f_print(fout, "%s ", storage);
++		}
++		f_print(fout, "void\n");
++		pvname(def->def_name, vp->vers_num);
++
++		if (Cflag) {
++		   f_print(fout, "(struct svc_req *%s, ", RQSTP);
++		   f_print(fout, "register SVCXPRT *%s)\n", TRANSP);
++		} else {
++		   f_print(fout, "(%s, %s)\n", RQSTP, TRANSP);
++		   f_print(fout, "	struct svc_req *%s;\n", RQSTP);
++		   f_print(fout, "	register SVCXPRT *%s;\n", TRANSP);
++		}
++
++		f_print(fout, "{\n");
++
++		filled = 0;
++		f_print(fout, "\tunion {\n");
++		for (proc = vp->procs; proc != NULL; proc = proc->next) {
++			if (proc->arg_num < 2) { /* single argument */
++				if (streq(proc->args.decls->decl.type, 
++					  "void")) {
++					continue;
++				}
++				filled = 1;
++				f_print(fout, "\t\t");
++				ptype(proc->args.decls->decl.prefix, 
++				      proc->args.decls->decl.type, 0);
++				pvname(proc->proc_name, vp->vers_num);
++				f_print(fout, "_arg;\n");
++
++			}
++			else {
++				filled = 1;
++				f_print(fout, "\t\t%s", proc->args.argname);
++				f_print(fout, " ");
++				pvname(proc->proc_name, vp->vers_num);
++				f_print(fout, "_arg;\n");
++			}
++		}
++		if (!filled) {
++			f_print(fout, "\t\tint fill;\n");
++		}
++		f_print(fout, "\t} %s;\n", ARG);
++		f_print(fout, "\tchar *%s;\n", RESULT);
++
++		if (Cflag) {
++		    f_print(fout, "\txdrproc_t xdr_%s, xdr_%s;\n", ARG, RESULT);
++		    f_print(fout,
++			    "\tchar *(*%s)(char *, struct svc_req *);\n",
++			    ROUTINE);
++		} else {
++		    f_print(fout, "\tbool_t (*xdr_%s)(), (*xdr_%s)();\n", ARG, RESULT);
++		    f_print(fout, "\tchar *(*%s)();\n", ROUTINE);
++		}
++
++		f_print(fout, "\n");
++
++		if (timerflag)
++			f_print(fout, "\t_rpcsvcdirty = 1;\n");
++		f_print(fout, "\tswitch (%s->rq_proc) {\n", RQSTP);
++		if (!nullproc(vp->procs)) {
++			f_print(fout, "\tcase NULLPROC:\n");
++			f_print(fout,
++			"\t\t(void) svc_sendreply(%s, (xdrproc_t) xdr_void, (char *)NULL);\n",
++					TRANSP);
++			print_return("\t\t");
++			f_print(fout, "\n");
++		}
++		for (proc = vp->procs; proc != NULL; proc = proc->next) {
++			f_print(fout, "\tcase %s:\n", proc->proc_name);
++			if (proc->arg_num < 2) { /* single argument */
++			  p_xdrfunc( ARG, proc->args.decls->decl.type);
++			} else {
++			  p_xdrfunc( ARG, proc->args.argname);
++			}
++			p_xdrfunc( RESULT, proc->res_type);
++			if( Cflag )
++			    f_print(fout,
++				    "\t\t%s = (char *(*)(char *, struct svc_req *)) ",
++				    ROUTINE);
++			else
++			    f_print(fout, "\t\t%s = (char *(*)()) ", ROUTINE);
++
++			if (newstyle) { /* new style: calls internal routine */
++				f_print(fout,"_");
++			}
++			/* Not sure about the following...
++			 * rpc_hout always generates foobar_1_svc for
++			 * the service procedure, so why should we use
++			 * foobar_1 here?! --okir */
++#if 0
++			if( Cflag && !newstyle )
++			  pvname_svc(proc->proc_name, vp->vers_num);
++			else
++			  pvname(proc->proc_name, vp->vers_num);
++#else
++			pvname_svc(proc->proc_name, vp->vers_num);
++#endif
++			f_print(fout, ";\n");
++			f_print(fout, "\t\tbreak;\n\n");
++		}
++		f_print(fout, "\tdefault:\n");
++		printerr("noproc", TRANSP);
++		print_return("\t\t");
++		f_print(fout, "\t}\n");
++
++		f_print(fout, "\t(void) memset((char *)&%s, 0, sizeof (%s));\n", ARG, ARG);
++		if (Cflag)
++		    printif("getargs", TRANSP, "(caddr_t) &", ARG);
++		else
++		    printif("getargs", TRANSP, "&", ARG);
++		printerr("decode", TRANSP);
++		print_return("\t\t");
++		f_print(fout, "\t}\n");
++
++		if (Cflag)
++		    f_print(fout, "\t%s = (*%s)((char *)&%s, %s);\n",
++			    RESULT, ROUTINE, ARG, RQSTP);
++		else
++		    f_print(fout, "\t%s = (*%s)(&%s, %s);\n",
++			    RESULT, ROUTINE, ARG, RQSTP);
++		f_print(fout, 
++			"\tif (%s != NULL && !svc_sendreply(%s, "
++			"(xdrproc_t) xdr_%s, %s)) {\n",
++			RESULT, TRANSP, RESULT, RESULT);
++		printerr("systemerr", TRANSP);
++		f_print(fout, "\t}\n");
++
++		if (Cflag)
++		    printif("freeargs", TRANSP, "(caddr_t) &", ARG);
++		else
++		    printif("freeargs", TRANSP, "&", ARG);
++		(void) sprintf(_errbuf, "unable to free arguments");
++		print_err_message("\t\t");
++		f_print(fout, "\t\texit(1);\n");
++		f_print(fout, "\t}\n");
++		print_return("\t");
++		f_print(fout, "}\n");
++	}
++}
++
++static void
++printerr(char *err, char *transp)
++{
++	f_print(fout, "\t\tsvcerr_%s(%s);\n", err, transp);
++}
++
++static void
++printif(char *proc, char *transp, char *prefix, char *arg)
++{
++	f_print(fout, "\tif (!svc_%s(%s, (xdrproc_t) xdr_%s, (caddr_t) %s%s)) {\n",
++		proc, transp, arg, prefix, arg);
++}
++
++int
++nullproc(proc_list *proc)
++{
++	for (; proc != NULL; proc = proc->next) {
++		if (streq(proc->proc_num, "0")) {
++			return (1);
++		}
++	}
++	return (0);
++}
++
++static void
++write_inetmost(char *infile)
++{
++	f_print(fout, "\tregister SVCXPRT *%s;\n", TRANSP);
++	f_print(fout, "\tint sock;\n");
++	f_print(fout, "\tint proto;\n");
++	f_print(fout, "\tstruct sockaddr_in saddr;\n");
++	f_print(fout, "\tint asize = sizeof (saddr);\n");
++	f_print(fout, "\n");
++	f_print(fout, 
++	"\tif (getsockname(0, (struct sockaddr *)&saddr, &asize) == 0) {\n");
++	f_print(fout, "\t\tint ssize = sizeof (int);\n\n");
++	f_print(fout, "\t\tif (saddr.sin_family != AF_INET)\n");
++	f_print(fout, "\t\t\texit(1);\n");
++	f_print(fout, "\t\tif (getsockopt(0, SOL_SOCKET, SO_TYPE,\n");
++	f_print(fout, "\t\t\t\t(char *)&_rpcfdtype, &ssize) == -1)\n");
++	f_print(fout, "\t\t\texit(1);\n");
++	f_print(fout, "\t\tsock = 0;\n");
++	f_print(fout, "\t\t_rpcpmstart = 1;\n");
++	f_print(fout, "\t\tproto = 0;\n");
++	open_log_file(infile, "\t\t");
++	f_print(fout, "\t} else {\n");
++	write_rpc_svc_fg(infile, "\t\t");
++	f_print(fout, "\t\tsock = RPC_ANYSOCK;\n");
++	print_pmapunset("\t\t");
++	f_print(fout, "\t}\n");
++}
++
++static void
++print_return(char *space)
++{
++	if (exitnow)
++		f_print(fout, "%sexit(0);\n", space);
++	else {
++		if (timerflag)
++			f_print(fout, "%s_rpcsvcdirty = 0;\n", space);
++		f_print(fout, "%sreturn;\n", space);
++	}
++}
++
++static void
++print_pmapunset(char *space)
++{
++	list *l;
++	definition *def;
++	version_list *vp;
++
++	for (l = defined; l != NULL; l = l->next) {
++		def = (definition *) l->val;
++		if (def->def_kind == DEF_PROGRAM) {
++			for (vp = def->def.pr.versions; vp != NULL;
++					vp = vp->next) {
++				f_print(fout, "%s(void) pmap_unset(%s, %s);\n",
++					space, def->def_name, vp->vers_name);
++			}
++		}
++	}
++}
++
++static void
++print_err_message(char *space)
++{
++	if (logflag)
++		f_print(fout, "%ssyslog(LOG_ERR, \"%s\");\n", space, _errbuf);
++	else if (inetdflag || pmflag)
++		f_print(fout, "%s_msgout(\"%s\");\n", space, _errbuf);
++	else
++		f_print(fout, "%sfprintf(stderr, \"%s\");\n", space, _errbuf);
++}
++
++/*
++ * Write the server auxiliary function ( _msgout, timeout)
++ */
++void
++write_svc_aux(int nomain)
++{
++	if (!logflag)
++		write_msg_out();
++	if( !nomain )
++	  write_timeout_func();
++}
++
++/*
++ * Write the _msgout function
++ */
++void
++write_msg_out(void)
++{
++	f_print(fout, "\n");
++	f_print(fout, "static\n");
++	if( !Cflag ) {
++	  f_print(fout, "void _msgout(msg)\n");
++	  f_print(fout, "\tchar *msg;\n");
++	} else {
++	  f_print(fout, "void _msgout(char* msg)\n");
++	}
++	f_print(fout, "{\n");
++	f_print(fout, "#ifdef RPC_SVC_FG\n");
++	if (inetdflag || pmflag)
++		f_print(fout, "\tif (_rpcpmstart)\n");
++	f_print(fout, "\t\tsyslog(LOG_ERR, \"%%s\", msg);\n");
++	f_print(fout, "\telse\n");
++	f_print(fout, "\t\t(void) fprintf(stderr, \"%%s\\n\", msg);\n");
++	f_print(fout, "#else\n");
++	f_print(fout, "\tsyslog(LOG_ERR, \"%%s\", msg);\n");
++	f_print(fout, "#endif\n");
++	f_print(fout, "}\n");
++}
++
++/*
++ * Write the timeout function
++ */
++static void
++write_timeout_func(void)
++{
++	if (!timerflag)
++		return;
++	f_print(fout, "\n");
++	f_print(fout, "static void\n");
++	f_print(fout, "closedown()\n");
++	f_print(fout, "{\n");
++	f_print(fout, "\tif (_rpcsvcdirty == 0) {\n");
++	f_print(fout, "\t\tstatic int size;\n");
++	f_print(fout, "\t\tint i, openfd;\n");
++	if (tirpcflag && pmflag) {
++		f_print(fout, "\t\tstruct t_info tinfo;\n\n");
++		f_print(fout, "\t\tif (!t_getinfo(0, &tinfo) && (tinfo.servtype == T_CLTS))\n");
++	} else {
++		f_print(fout, "\n\t\tif (_rpcfdtype == SOCK_DGRAM)\n");
++	}
++	f_print(fout, "\t\t\texit(0);\n");
++	f_print(fout, "\t\tif (size == 0) {\n");
++	if( tirpcflag ) {
++	  f_print(fout, "\t\t\tstruct rlimit rl;\n\n");
++	  f_print(fout, "\t\t\trl.rlim_max = 0;\n");
++	  f_print(fout, "\t\t\tgetrlimit(RLIMIT_NOFILE, &rl);\n");
++	  f_print(fout, "\t\t\tif ((size = rl.rlim_max) == 0)\n");
++	  f_print(fout, "\t\t\t\treturn;\n");
++	} else {
++	  f_print(fout, "\t\t\tsize = getdtablesize();\n");
++	}
++	f_print(fout, "\t\t}\n");
++	f_print(fout, "\t\tfor (i = 0, openfd = 0; i < size && openfd < 2; i++)\n");
++	f_print(fout, "\t\t\tif (FD_ISSET(i, &svc_fdset))\n");
++	f_print(fout, "\t\t\t\topenfd++;\n");
++	f_print(fout, "\t\tif (openfd <= 1)\n");
++	f_print(fout, "\t\t\texit(0);\n");
++	f_print(fout, "\t}\n");
++	f_print(fout, "\t(void) alarm(_RPCSVC_CLOSEDOWN);\n");
++	f_print(fout, "}\n");
++}
++
++/*
++ * Write the most of port monitor support
++ */
++static void
++write_pm_most(char *infile, int netflag)
++{
++	list *l;
++	definition *def;
++	version_list *vp;
++
++	f_print(fout, "\tif (!ioctl(0, I_LOOK, mname) &&\n");
++	f_print(fout, "\t\t(!strcmp(mname, \"sockmod\") ||");
++	f_print(fout, " !strcmp(mname, \"timod\"))) {\n");
++	f_print(fout, "\t\tchar *netid;\n");
++	if (!netflag) {	/* Not included by -n option */
++		f_print(fout, "\t\tstruct netconfig *nconf = NULL;\n");
++		f_print(fout, "\t\tSVCXPRT *%s;\n", TRANSP);
++	}
++	if( timerflag )
++	  f_print(fout, "\t\tint pmclose;\n");
++/* not necessary, defined in /usr/include/stdlib */
++/*	f_print(fout, "\t\textern char *getenv();\n");*/
++	f_print(fout, "\n");
++	f_print(fout, "\t\t_rpcpmstart = 1;\n");
++	if (logflag)
++		open_log_file(infile, "\t\t");
++	f_print(fout, "\t\tif ((netid = getenv(\"NLSPROVIDER\")) == NULL) {\n");
++	sprintf(_errbuf, "cannot get transport name");
++	print_err_message("\t\t\t");
++	f_print(fout, "\t\t} else if ((nconf = getnetconfigent(netid)) == NULL) {\n");
++	sprintf(_errbuf, "cannot get transport info");
++	print_err_message("\t\t\t");
++	f_print(fout, "\t\t}\n");
++	/*
++	 * A kludgy support for inetd services. Inetd only works with
++	 * sockmod, and RPC works only with timod, hence all this jugglery
++	 */
++	f_print(fout, "\t\tif (strcmp(mname, \"sockmod\") == 0) {\n");
++	f_print(fout, "\t\t\tif (ioctl(0, I_POP, 0) || ioctl(0, I_PUSH, \"timod\")) {\n");
++	sprintf(_errbuf, "could not get the right module");
++	print_err_message("\t\t\t\t");
++	f_print(fout, "\t\t\t\texit(1);\n");
++	f_print(fout, "\t\t\t}\n");
++	f_print(fout, "\t\t}\n");
++	if( timerflag )
++	  f_print(fout, "\t\tpmclose = (t_getstate(0) != T_DATAXFER);\n");
++	f_print(fout, "\t\tif ((%s = svc_tli_create(0, nconf, NULL, 0, 0)) == NULL) {\n",
++			TRANSP);
++	sprintf(_errbuf, "cannot create server handle");
++	print_err_message("\t\t\t");
++	f_print(fout, "\t\t\texit(1);\n");
++	f_print(fout, "\t\t}\n");
++	f_print(fout, "\t\tif (nconf)\n");
++	f_print(fout, "\t\t\tfreenetconfigent(nconf);\n");
++	for (l = defined; l != NULL; l = l->next) {
++		def = (definition *) l->val;
++		if (def->def_kind != DEF_PROGRAM) {
++			continue;
++		}
++		for (vp = def->def.pr.versions; vp != NULL; vp = vp->next) {
++			f_print(fout,
++				"\t\tif (!svc_reg(%s, %s, %s, ",
++				TRANSP, def->def_name, vp->vers_name);
++			pvname(def->def_name, vp->vers_num);
++			f_print(fout, ", 0)) {\n");
++			(void) sprintf(_errbuf, "unable to register (%s, %s).",
++					def->def_name, vp->vers_name);
++			print_err_message("\t\t\t");
++			f_print(fout, "\t\t\texit(1);\n");
++			f_print(fout, "\t\t}\n");
++		}
++	}
++	if (timerflag) {
++		f_print(fout, "\t\tif (pmclose) {\n");
++		f_print(fout, "\t\t\t(void) signal(SIGALRM, %s closedown);\n",
++				Cflag? "(SIG_PF)" : "(void(*)())" );
++		f_print(fout, "\t\t\t(void) alarm(_RPCSVC_CLOSEDOWN);\n");
++		f_print(fout, "\t\t}\n");
++	}
++	f_print(fout, "\t\tsvc_run();\n");
++	f_print(fout, "\t\texit(1);\n");
++	f_print(fout, "\t\t/* NOTREACHED */\n");
++	f_print(fout, "\t}\n");
++}
++
++/*
++ * Support for backgrounding the server if self started.
++ */
++static void
++write_rpc_svc_fg(char *infile, char *sp)
++{
++	f_print(fout, "#ifndef RPC_SVC_FG\n");
++	f_print(fout, "%sint size;\n", sp);
++	if( tirpcflag )
++	        f_print(fout, "%sstruct rlimit rl;\n", sp);
++	if (inetdflag)
++		f_print(fout, "%sint pid, i;\n\n", sp);
++	f_print(fout, "%spid = fork();\n", sp);
++	f_print(fout, "%sif (pid < 0) {\n", sp);
++	f_print(fout, "%s\tperror(\"cannot fork\");\n", sp);
++	f_print(fout, "%s\texit(1);\n", sp);
++	f_print(fout, "%s}\n", sp);
++	f_print(fout, "%sif (pid)\n", sp);
++	f_print(fout, "%s\texit(0);\n", sp);
++	/* get number of file descriptors */
++	if( tirpcflag ) {
++	  f_print(fout, "%srl.rlim_max = 0;\n", sp);
++	  f_print(fout, "%sgetrlimit(RLIMIT_NOFILE, &rl);\n", sp);
++	  f_print(fout, "%sif ((size = rl.rlim_max) == 0)\n", sp);
++	  f_print(fout, "%s\texit(1);\n", sp);
++	} else {
++	  f_print(fout, "%ssize = getdtablesize();\n", sp);
++	}
++
++	f_print(fout, "%sfor (i = 0; i < size; i++)\n", sp);
++	f_print(fout, "%s\t(void) close(i);\n", sp);
++	/* Redirect stderr and stdout to console */
++	f_print(fout, "%si = open(\"/dev/console\", 2);\n", sp);
++	f_print(fout, "%s(void) dup2(i, 1);\n", sp);
++	f_print(fout, "%s(void) dup2(i, 2);\n", sp);
++	/* This removes control of the controlling terminal */
++	if( tirpcflag )
++	  f_print(fout, "%ssetsid();\n", sp);
++	else {
++	  f_print(fout, "%si = open(\"/dev/tty\", 2);\n", sp);
++	  f_print(fout, "%sif (i >= 0) {\n", sp);
++	  f_print(fout, "%s\t(void) ioctl(i, TIOCNOTTY, (char *)NULL);\n", sp);;
++	  f_print(fout, "%s\t(void) close(i);\n", sp);
++	  f_print(fout, "%s}\n", sp);
++	}
++	if (!logflag)
++		open_log_file(infile, sp);
++	f_print(fout, "#endif\n");
++	if (logflag)
++		open_log_file(infile, sp);
++}
++
++static void
++open_log_file(char *infile, char *sp)
++{
++	char *s;
++
++	s = strrchr(infile, '.');
++	if (s) 
++		*s = '\0';
++	f_print(fout,"%sopenlog(\"%s\", LOG_PID, LOG_DAEMON);\n", sp, infile);
++	if (s)
++		*s = '.';
++}
++
++
++
++
++/*
++ * write a registration for the given transport for Inetd
++ */
++void
++write_inetd_register(char *transp)
++{
++	list *l;
++	definition *def;
++	version_list *vp;
++	char *sp;
++	int isudp;
++	char tmpbuf[32];
++
++	if (inetdflag)
++		sp = "\t";
++	else
++		sp = "";
++	if (streq(transp, "udp"))
++		isudp = 1;
++	else
++		isudp = 0;
++	f_print(fout, "\n");
++	if (inetdflag) {
++		f_print(fout, "\tif ((_rpcfdtype == 0) || (_rpcfdtype == %s)) {\n",
++				isudp ? "SOCK_DGRAM" : "SOCK_STREAM");
++	}
++	f_print(fout, "%s\t%s = svc%s_create(%s",
++		sp, TRANSP, transp, inetdflag? "sock": "RPC_ANYSOCK");
++	if (!isudp)
++		f_print(fout, ", 0, 0");
++	f_print(fout, ");\n");
++	f_print(fout, "%s\tif (%s == NULL) {\n", sp, TRANSP);
++	(void) sprintf(_errbuf, "cannot create %s service.", transp);
++	(void) sprintf(tmpbuf, "%s\t\t", sp);
++	print_err_message(tmpbuf);
++	f_print(fout, "%s\t\texit(1);\n", sp);
++	f_print(fout, "%s\t}\n", sp);
++
++	if (inetdflag) {
++		f_print(fout, "%s\tif (!_rpcpmstart)\n\t", sp);
++		f_print(fout, "%s\tproto = IPPROTO_%s;\n",
++				sp, isudp ? "UDP": "TCP");
++	}
++	for (l = defined; l != NULL; l = l->next) {
++		def = (definition *) l->val;
++		if (def->def_kind != DEF_PROGRAM) {
++			continue;
++		}
++		for (vp = def->def.pr.versions; vp != NULL; vp = vp->next) {
++			f_print(fout, "%s\tif (!svc_register(%s, %s, %s, ",
++				sp, TRANSP, def->def_name, vp->vers_name);
++			pvname(def->def_name, vp->vers_num);
++			if (inetdflag)
++				f_print(fout, ", proto)) {\n");
++			else 
++				f_print(fout, ", IPPROTO_%s)) {\n",
++					isudp ? "UDP": "TCP");
++			(void) sprintf(_errbuf, "unable to register (%s, %s, %s).",
++					def->def_name, vp->vers_name, transp);
++			print_err_message(tmpbuf);
++			f_print(fout, "%s\t\texit(1);\n", sp);
++			f_print(fout, "%s\t}\n", sp);
++		}
++	}
++	if (inetdflag)
++		f_print(fout, "\t}\n");
++}
+diff --git a/rpcgen/rpc_tblout.c b/rpcgen/rpc_tblout.c
+new file mode 100644
+index 0000000..ae002f7
+--- /dev/null
++++ b/rpcgen/rpc_tblout.c
+@@ -0,0 +1,165 @@
++/*
++ * Copyright (c) 2009, Sun Microsystems, Inc.
++ * All rights reserved.
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions are met:
++ * - Redistributions of source code must retain the above copyright notice,
++ *   this list of conditions and the following disclaimer.
++ * - Redistributions in binary form must reproduce the above copyright notice,
++ *   this list of conditions and the following disclaimer in the documentation
++ *   and/or other materials provided with the distribution.
++ * - Neither the name of Sun Microsystems, Inc. nor the names of its
++ *   contributors may be used to endorse or promote products derived
++ *   from this software without specific prior written permission.
++ *
++ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
++ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
++ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
++ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
++ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
++ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
++ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
++ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
++ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
++ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
++ * POSSIBILITY OF SUCH DAMAGE.
++ */
++
++#if 0
++static char sccsid[] = "@(#)rpc_tblout.c 1.4 89/02/22 (C) 1988 SMI";
++#endif
++
++/*
++ * rpc_tblout.c, Dispatch table outputter for the RPC protocol compiler
++ */
++#include <stdio.h>
++#include <string.h>
++#include "rpc_parse.h"
++#include "rpc_util.h"
++#include "rpc_output.h"
++
++static void	write_table(definition *def);
++static void	printit(char *prefix, char *type);
++
++#define TABSIZE		8
++#define TABCOUNT	5
++#define TABSTOP		(TABSIZE*TABCOUNT)
++
++static char tabstr[TABCOUNT+1] = "\t\t\t\t\t";
++
++static char tbl_hdr[] = "struct rpcgen_table %s_table[] = {\n";
++static char tbl_end[] = "};\n";
++
++static char null_entry[] = "\n\t(char *(*)())0,\n\
++ \t(xdrproc_t) xdr_void,\t\t\t0,\n\
++ \t(xdrproc_t) xdr_void,\t\t\t0,\n";
++
++
++static char tbl_nproc[] = "int %s_nproc =\n\tsizeof(%s_table)/sizeof(%s_table[0]);\n\n";
++
++void
++write_tables(void)
++{
++	list *l;
++	definition *def;
++
++	f_print(fout, "\n");
++	for (l = defined; l != NULL; l = l->next) {
++		def = (definition *) l->val;
++		if (def->def_kind == DEF_PROGRAM) {
++			write_table(def);
++		}
++	}
++}
++
++static void
++write_table(definition *def)
++{
++	version_list *vp;
++	proc_list *proc;
++	int current;
++	int expected;
++	char progvers[100];
++	int warning;
++
++	for (vp = def->def.pr.versions; vp != NULL; vp = vp->next) {
++		warning = 0;
++		s_print(progvers, "%s_%s",
++		    locase(def->def_name), vp->vers_num);
++		/* print the table header */
++		f_print(fout, tbl_hdr, progvers);
++
++		if (nullproc(vp->procs)) {
++			expected = 0;
++		} else {
++			expected = 1;
++			f_print(fout, null_entry);
++		}
++		for (proc = vp->procs; proc != NULL; proc = proc->next) {
++			current = atoi(proc->proc_num);
++			if (current != expected++) {
++				f_print(fout,
++			"\n/*\n * WARNING: table out of order\n */\n");
++				if (warning == 0) {
++					f_print(stderr,
++				    "WARNING %s table is out of order\n",
++					    progvers);
++					warning = 1;
++					nonfatalerrors = 1;
++				}
++				expected = current + 1;
++			}
++			f_print(fout, "\n\t(char *(*)())RPCGEN_ACTION(");
++
++			/* routine to invoke */
++			if( Cflag && !newstyle )
++			  pvname_svc(proc->proc_name, vp->vers_num);
++			else {
++			  if( newstyle )
++			    f_print( fout, "_");   /* calls internal func */
++			  pvname(proc->proc_name, vp->vers_num);
++			}
++			f_print(fout, "),\n");
++
++			/* argument info */
++			if( proc->arg_num > 1 )
++			  printit((char*) NULL, proc->args.argname );
++			else  
++			  /* do we have to do something special for newstyle */
++			  printit( proc->args.decls->decl.prefix,
++				  proc->args.decls->decl.type );
++			/* result info */
++			printit(proc->res_prefix, proc->res_type);
++		}
++
++		/* print the table trailer */
++		f_print(fout, tbl_end);
++		f_print(fout, tbl_nproc, progvers, progvers, progvers);
++	}
++}
++
++static void
++printit(char *prefix, char *type)
++{
++	int len;
++	int tabs;
++
++
++ 	len = fprintf(fout, "\txdr_%s,", stringfix(type));
++	/* account for leading tab expansion */
++	len += TABSIZE - 1;
++	/* round up to tabs required */
++	tabs = (TABSTOP - len + TABSIZE - 1)/TABSIZE;
++	f_print(fout, "%s", &tabstr[TABCOUNT-tabs]);
++
++	if (streq(type, "void")) {
++		f_print(fout, "0");
++	} else {
++		f_print(fout, "sizeof ( ");
++		/* XXX: should "follow" be 1 ??? */
++		ptype(prefix, type, 0);
++		f_print(fout, ")");
++	}
++	f_print(fout, ",\n");
++}
+diff --git a/rpcgen/rpc_util.c b/rpcgen/rpc_util.c
+new file mode 100644
+index 0000000..b67be57
+--- /dev/null
++++ b/rpcgen/rpc_util.c
+@@ -0,0 +1,479 @@
++/*
++ * Copyright (c) 2009, Sun Microsystems, Inc.
++ * All rights reserved.
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions are met:
++ * - Redistributions of source code must retain the above copyright notice,
++ *   this list of conditions and the following disclaimer.
++ * - Redistributions in binary form must reproduce the above copyright notice,
++ *   this list of conditions and the following disclaimer in the documentation
++ *   and/or other materials provided with the distribution.
++ * - Neither the name of Sun Microsystems, Inc. nor the names of its
++ *   contributors may be used to endorse or promote products derived
++ *   from this software without specific prior written permission.
++ *
++ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
++ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
++ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
++ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
++ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
++ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
++ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
++ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
++ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
++ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
++ * POSSIBILITY OF SUCH DAMAGE.
++ */
++
++#if 0
++static char sccsid[] = "@(#)rpc_util.c 1.11 89/02/22 (C) 1987 SMI";
++#endif
++
++/*
++ * rpc_util.c, Utility routines for the RPC protocol compiler 
++ */
++#include <stdio.h>
++#include <memory.h>
++#include <ctype.h>
++#include <unistd.h>
++#include "rpc_scan.h"
++#include "rpc_parse.h"
++#include "rpc_util.h"
++
++static void	printwhere(void);
++
++
++#define ARGEXT "argument"
++
++char curline[MAXLINESIZE];	/* current read line */
++char *where = curline;		/* current point in line */
++int linenum = 0;		/* current line number */
++
++char *infilename;		/* input filename */
++
++#define NFILES 7
++char *outfiles[NFILES];		/* output file names */
++int nfiles;
++
++FILE *fout;			/* file pointer of current output */
++FILE *fin;			/* file pointer of current input */
++
++list *defined;			/* list of defined things */
++
++/*
++ * Reinitialize the world 
++ */
++void
++reinitialize(void)
++{
++	memset(curline, 0, MAXLINESIZE);
++	where = curline;
++	linenum = 0;
++	defined = NULL;
++}
++
++/*
++ * string equality 
++ */
++int
++streq(char *a, char *b)
++{
++	return (strcmp(a, b) == 0);
++}
++
++/*
++ * find a value in a list 
++ */
++definition *
++findval(list *lst, char *val, int (*cmp)(definition *, char *))
++{
++         
++	for (; lst != NULL; lst = lst->next) {
++		if ((*cmp) (lst->val, val)) {
++			return (lst->val);
++		}
++	}
++	return (NULL);
++}
++
++/*
++ * store a value in a list 
++ */
++void
++storeval(lstp, val)
++	list **lstp;
++	definition *val;
++{
++	list **l;
++	list *lst;
++
++	
++	for (l = lstp; *l != NULL; l = (list **) & (*l)->next);
++	lst = ALLOC(list);
++	lst->val = val;
++	lst->next = NULL;
++	*l = lst;
++}
++
++static int
++findit(definition *def, char *type)
++{
++	return (streq(def->def_name, type));
++}
++
++static char *
++fixit(char *type, char *orig)
++{
++	definition *def;
++
++	def = (definition *) FINDVAL(defined, type, findit);
++	if (def == NULL || def->def_kind != DEF_TYPEDEF) {
++		return (orig);
++	}
++	switch (def->def.ty.rel) {
++	case REL_VECTOR:
++		return (def->def.ty.old_type);
++	case REL_ALIAS:
++		return (fixit(def->def.ty.old_type, orig));
++	default:
++		return (orig);
++	}
++}
++
++char *
++fixtype(char *type)
++{
++	return (fixit(type, type));
++}
++
++char *
++stringfix(char *type)
++{
++	if (streq(type, "string")) {
++		return ("wrapstring");
++	} else {
++		return (type);
++	}
++}
++
++void
++ptype(char *prefix, char *type, int follow)
++{
++	if (prefix != NULL) {
++		if (streq(prefix, "enum")) {
++			f_print(fout, "enum ");
++		} else {
++			f_print(fout, "struct ");
++		}
++	}
++	if (streq(type, "bool")) {
++		f_print(fout, "bool_t ");
++	} else if (streq(type, "string")) {
++		f_print(fout, "char *");
++	} else {
++		f_print(fout, "%s ", follow ? fixtype(type) : type);
++	}
++}
++
++static int
++typedefed(definition *def, char *type)
++{
++	if (def->def_kind != DEF_TYPEDEF || def->def.ty.old_prefix != NULL) {
++		return (0);
++	} else {
++		return (streq(def->def_name, type));
++	}
++}
++
++int
++isvectordef(char *type, relation rel)
++{
++	definition *def;
++
++	for (;;) {
++		switch (rel) {
++		case REL_VECTOR:
++			return (!streq(type, "string"));
++		case REL_ARRAY:
++			return (0);
++		case REL_POINTER:
++			return (0);
++		case REL_ALIAS:
++			def = (definition *) FINDVAL(defined, type, typedefed);
++			if (def == NULL) {
++				return (0);
++			}
++			type = def->def.ty.old_type;
++			rel = def->def.ty.rel;
++		}
++	}
++}
++
++char *
++locase(char *str)
++{
++	char c;
++	static char buf[100];
++	char *p = buf;
++
++	while ((c = *str++) != '\0') {
++		*p++ = (c >= 'A' && c <= 'Z') ? (c - 'A' + 'a') : c;
++	}
++	*p = 0;
++	return (buf);
++}
++
++void
++pvname_svc(char *pname, char *vnum)
++{
++	f_print(fout, "%s_%s_svc", locase(pname), vnum);
++}
++
++void
++pvname(char *pname, char *vnum)
++{
++	f_print(fout, "%s_%s", locase(pname), vnum);
++}
++
++/*
++ * print a useful (?) error message, and then die 
++ */
++void
++error(char *msg)
++{
++	printwhere();
++	f_print(stderr, "%s, line %d: ", infilename, linenum);
++	f_print(stderr, "%s\n", msg);
++	crash();
++}
++
++/*
++ * Something went wrong, unlink any files that we may have created and then
++ * die. 
++ */
++void
++crash(void)
++{
++	int i;
++
++	for (i = 0; i < nfiles; i++) {
++		(void) unlink(outfiles[i]);
++	}
++	exit(1);
++}
++
++void
++record_open(char *file)
++{
++	if (nfiles < NFILES) {
++		outfiles[nfiles++] = file;
++	} else {
++		f_print(stderr, "too many files!\n");
++		crash();
++	}
++}
++
++static char expectbuf[100];
++static char *toktostr();
++
++/*
++ * error, token encountered was not the expected one 
++ */
++void
++expected1(exp1)
++	tok_kind exp1;
++{
++	s_print(expectbuf, "expected '%s'",
++		toktostr(exp1));
++	error(expectbuf);
++}
++
++/*
++ * error, token encountered was not one of two expected ones 
++ */
++void
++expected2(exp1, exp2)
++	tok_kind exp1, exp2;
++{
++	s_print(expectbuf, "expected '%s' or '%s'",
++		toktostr(exp1),
++		toktostr(exp2));
++	error(expectbuf);
++}
++
++/*
++ * error, token encountered was not one of 3 expected ones 
++ */
++void
++expected3(exp1, exp2, exp3)
++	tok_kind exp1, exp2, exp3;
++{
++	s_print(expectbuf, "expected '%s', '%s' or '%s'",
++		toktostr(exp1),
++		toktostr(exp2),
++		toktostr(exp3));
++	error(expectbuf);
++}
++
++void
++tabify(f, tab)
++	FILE *f;
++	int tab;
++{
++	while (tab--) {
++		(void) fputc('\t', f);
++	}
++}
++
++
++static token tokstrings[] = {
++			     {TOK_IDENT, "identifier"},
++			     {TOK_CONST, "const"},
++			     {TOK_RPAREN, ")"},
++			     {TOK_LPAREN, "("},
++			     {TOK_RBRACE, "}"},
++			     {TOK_LBRACE, "{"},
++			     {TOK_LBRACKET, "["},
++			     {TOK_RBRACKET, "]"},
++			     {TOK_STAR, "*"},
++			     {TOK_COMMA, ","},
++			     {TOK_EQUAL, "="},
++			     {TOK_COLON, ":"},
++			     {TOK_SEMICOLON, ";"},
++			     {TOK_UNION, "union"},
++			     {TOK_STRUCT, "struct"},
++			     {TOK_SWITCH, "switch"},
++			     {TOK_CASE, "case"},
++			     {TOK_DEFAULT, "default"},
++			     {TOK_ENUM, "enum"},
++			     {TOK_TYPEDEF, "typedef"},
++			     {TOK_INT, "int"},
++			     {TOK_SHORT, "short"},
++			     {TOK_INT32, "int32"},
++			     {TOK_UNSIGNED, "unsigned"},
++			     {TOK_DOUBLE, "double"},
++			     {TOK_FLOAT, "float"},
++			     {TOK_CHAR, "char"},
++			     {TOK_STRING, "string"},
++			     {TOK_OPAQUE, "opaque"},
++			     {TOK_BOOL, "bool"},
++			     {TOK_VOID, "void"},
++			     {TOK_PROGRAM, "program"},
++			     {TOK_VERSION, "version"},
++			     {TOK_EOF, "??????"}
++};
++
++static char *
++toktostr(kind)
++	tok_kind kind;
++{
++	token *sp;
++
++	for (sp = tokstrings; sp->kind != TOK_EOF && sp->kind != kind; sp++);
++	return (sp->str);
++}
++
++static void
++printbuf(void)
++{
++	char c;
++	int i;
++	int cnt;
++
++#	define TABSIZE 4
++
++	for (i = 0; (c = curline[i]) != '\0'; i++) {
++		if (c == '\t') {
++			cnt = 8 - (i % TABSIZE);
++			c = ' ';
++		} else {
++			cnt = 1;
++		}
++		while (cnt--) {
++			(void) fputc(c, stderr);
++		}
++	}
++}
++
++static void
++printwhere(void)
++{
++	int i;
++	char c;
++	int cnt;
++
++	printbuf();
++	for (i = 0; i < where - curline; i++) {
++		c = curline[i];
++		if (c == '\t') {
++			cnt = 8 - (i % TABSIZE);
++		} else {
++			cnt = 1;
++		}
++		while (cnt--) {
++			(void) fputc('^', stderr);
++		}
++	}
++	(void) fputc('\n', stderr);
++}
++
++char * 
++make_argname(char *pname, char *vname) 
++{
++	char *name;
++	
++	name = malloc(strlen(pname) + strlen(vname) + strlen(ARGEXT) + 3);
++	if (!name) {
++		fprintf(stderr, "failed in malloc");
++		exit(1);
++	}
++	sprintf(name, "%s_%s_%s", locase(pname), vname, ARGEXT);
++	return(name);
++}
++
++bas_type *typ_list_h;
++bas_type *typ_list_t;
++
++void
++add_type(int len, char *type)
++{
++	bas_type       *ptr;
++
++
++	if ((ptr = (bas_type *) malloc(sizeof(bas_type))) == (bas_type *) NULL) {
++		fprintf(stderr, "failed in malloc");
++		exit(1);
++	}
++	ptr->name = type;
++	ptr->length = len;
++	ptr->next = NULL;
++	if (typ_list_t == NULL) {
++
++		typ_list_t = ptr;
++		typ_list_h = ptr;
++	} else {
++
++		typ_list_t->next = ptr;
++		typ_list_t = ptr;
++	}
++}
++
++
++bas_type *
++find_type(char *type)
++{
++	bas_type       *ptr;
++
++	ptr = typ_list_h;
++
++
++	while (ptr != NULL) {
++		if (strcmp(ptr->name, type) == 0)
++			return (ptr);
++		else
++			ptr = ptr->next;
++	};
++	return (NULL);
++}
++
+diff --git a/rpcgen/rpc_util.h b/rpcgen/rpc_util.h
+new file mode 100644
+index 0000000..fa115be
+--- /dev/null
++++ b/rpcgen/rpc_util.h
+@@ -0,0 +1,166 @@
++/*
++ * Copyright (c) 2009, Sun Microsystems, Inc.
++ * All rights reserved.
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions are met:
++ * - Redistributions of source code must retain the above copyright notice,
++ *   this list of conditions and the following disclaimer.
++ * - Redistributions in binary form must reproduce the above copyright notice,
++ *   this list of conditions and the following disclaimer in the documentation
++ *   and/or other materials provided with the distribution.
++ * - Neither the name of Sun Microsystems, Inc. nor the names of its
++ *   contributors may be used to endorse or promote products derived
++ *   from this software without specific prior written permission.
++ *
++ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
++ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
++ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
++ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
++ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
++ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
++ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
++ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
++ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
++ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
++ * POSSIBILITY OF SUCH DAMAGE.
++ */
++
++/*      @(#)rpc_util.h  1.5  90/08/29  (C) 1987 SMI   */
++
++/*
++ * rpc_util.h, Useful definitions for the RPC protocol compiler 
++ */
++
++#include <stdlib.h>
++
++#define alloc(size)		malloc((unsigned)(size))
++#define ALLOC(object)   (object *) malloc(sizeof(object))
++
++#define s_print	(void) sprintf
++#define f_print (void) fprintf
++
++struct list {
++	definition *val;
++	struct list *next;
++};
++typedef struct list list;
++
++#define PUT 1
++#define GET 2
++
++/*
++ * Global variables 
++ */
++#define MAXLINESIZE 1024
++extern char curline[MAXLINESIZE];
++extern char *where;
++extern int linenum;
++
++extern char *infilename;
++extern FILE *fout;
++extern FILE *fin;
++
++extern list *defined;
++
++
++extern bas_type *typ_list_h;
++extern bas_type *typ_list_t;
++
++/*
++ * All the option flags
++ */
++extern int inetdflag;
++extern int pmflag;   
++extern int tblflag;
++extern int logflag;
++extern int newstyle;
++extern int Cflag;	/* C++ flag */
++extern int tirpcflag;	/* flag for generating tirpc code */
++extern int Inline;	/* if this is 0, then do not generate inline code */
++
++/*
++ * Other flags related with inetd jumpstart.
++ */
++extern int indefinitewait;
++extern int exitnow;
++extern int timerflag;
++
++extern int nonfatalerrors;
++
++/*
++ * rpc_util routines 
++ */
++void storeval();
++
++#define STOREVAL(list,item)	\
++	storeval(list,item)
++
++definition *findval();
++
++#define FINDVAL(list,item,finder) \
++	findval(list, item, finder)
++
++
++/*
++ * rpc_cout routines
++ */
++void            cprint(void);
++void            emit(definition *);
++
++/*
++ * rpc_hout routines
++ */
++void            print_datadef(definition *);
++void            print_funcdef(definition *);
++
++/*
++ * rpc_svcout routines
++ */
++void            write_most(char *, int, int);
++void            write_register(void);
++void		write_netid_register(char *);
++void		write_nettype_register(char *);
++void		write_inetd_register(char *);
++void            write_rest(void);
++void            write_programs(char *);
++void            write_svc_aux(int);
++
++/*
++ * rpc_clntout routines
++ */
++void            write_stubs(void);
++void		printarglist(proc_list *, char *, char *);
++
++/*
++ * rpc_tblout routines
++ */
++void            write_tables(void);
++
++/*
++ * rpc_util
++ */
++void            pvname_svc(char *, char *);
++void            pvname(char *, char *);
++void            ptype(char *, char *, int);
++char *		make_argname(char *, char *);
++void		add_type(int, char *);
++void		reinitialize(void);
++void		crash(void);
++void		error(char *);
++char           *fixtype(char *);
++char           *stringfix(char *);
++char           *locase(char *);
++int             isvectordef(char *, relation);
++int             streq(char *, char *);
++void            tabify(FILE *, int);
++void            record_open(char *);
++bas_type       *find_type(char *type);
++
++/*
++ * rpc_sample
++ */
++void		write_sample_svc(definition *);
++int		write_sample_clnt(definition *);
++void		write_sample_clnt_main(void);
++void		add_sample_msg(void);
+diff --git a/rpcgen/rpcgen.1 b/rpcgen/rpcgen.1
+new file mode 100644
+index 0000000..89df7ed
+--- /dev/null
++++ b/rpcgen/rpcgen.1
+@@ -0,0 +1,521 @@
++.\" @(#)rpcgen.1 1.35 93/06/02 SMI
++.\" $FreeBSD: src/usr.bin/rpcgen/rpcgen.1,v 1.12.2.4 2002/06/21 15:28:50 charnier Exp $
++.\" Copyright 1985-1993 Sun Microsystems, Inc.
++.Dd March 28, 1993
++.Dt RPCGEN 1
++.Os
++.Sh NAME
++.Nm rpcgen
++.Nd an RPC protocol compiler
++.Sh SYNOPSIS
++.Nm
++.Ar infile
++.Nm
++.Op Fl a
++.Op Fl b
++.Op Fl C
++.Oo
++.Fl D Ns Ar name Ns Op Ar =value
++.Oc
++.Op Fl i Ar size
++.Op Fl I Op Fl K Ar seconds
++.Op Fl L
++.Op Fl M
++.Op Fl N
++.Op Fl T
++.Op Fl Y Ar pathname
++.Ar infile
++.Nm
++.Oo
++.Fl c |
++.Fl h |
++.Fl l |
++.Fl m |
++.Fl t |
++.Fl \&Sc |
++.Fl \&Ss |
++.Fl \&Sm
++.Oc
++.Op Fl o Ar outfile
++.Op Ar infile
++.Nm
++.Op Fl s Ar nettype
++.Op Fl o Ar outfile
++.Op Ar infile
++.Nm
++.Op Fl n Ar netid
++.Op Fl o Ar outfile
++.Op Ar infile
++.\" .SH AVAILABILITY
++.\" .LP
++.\" SUNWcsu
++.Sh DESCRIPTION
++The
++.Nm
++utility is a tool that generates C code to implement an
++.Tn RPC
++protocol.
++The input to
++.Nm
++is a language similar to C known as
++.Tn RPC
++Language (Remote Procedure Call Language).
++.Pp
++The
++.Nm
++utility is normally used as in the first synopsis where
++it takes an input file and generates three output files.
++If the
++.Ar infile
++is named
++.Pa proto.x ,
++then
++.Nm
++generates a header in
++.Pa proto.h ,
++XDR routines in
++.Pa proto_xdr.c ,
++server-side stubs in
++.Pa proto_svc.c ,
++and client-side stubs in
++.Pa proto_clnt.c .
++With the
++.Fl T
++option,
++it also generates the
++.Tn RPC
++dispatch table in
++.Pa proto_tbl.i .
++.Pp
++The
++.Nm
++utility can also generate sample client and server files
++that can be customized to suit a particular application.
++The
++.Fl \&Sc ,
++.Fl \&Ss
++and
++.Fl \&Sm
++options generate sample client, server and makefile, respectively.
++The
++.Fl a
++option generates all files, including sample files.
++If the
++.Ar infile
++is
++.Pa proto.x ,
++then the client side sample file is written to
++.Pa proto_client.c ,
++the server side sample file to
++.Pa proto_server.c
++and the sample makefile to
++.Pa makefile.proto .
++.Pp
++The server created can be started both by the port monitors
++(for example,
++.Xr inetd 8 )
++or by itself.
++When it is started by a port monitor,
++it creates servers only for the transport for which
++the file descriptor
++.Em 0
++was passed.
++The name of the transport must be specified
++by setting up the environment variable
++.Ev PM_TRANSPORT .
++When the server generated by
++.Nm
++is executed,
++it creates server handles for all the transports
++specified in
++.Ev NETPATH
++environment variable,
++or if it is unset,
++it creates server handles for all the visible transports from
++.Pa /etc/netconfig
++file.
++Note:
++the transports are chosen at run time and not at compile time.
++When the server is self-started,
++it backgrounds itself by default.
++A special define symbol
++.Em RPC_SVC_FG
++can be used to run the server process in foreground.
++.Pp
++The second synopsis provides special features which allow
++for the creation of more sophisticated
++.Tn RPC
++servers.
++These features include support for user provided
++.Em #defines
++and
++.Tn RPC
++dispatch tables.
++The entries in the
++.Tn RPC
++dispatch table contain:
++.Bl -bullet -offset indent -compact
++.It
++pointers to the service routine corresponding to that procedure,
++.It
++a pointer to the input and output arguments,
++.It
++the size of these routines.
++.El
++A server can use the dispatch table to check authorization
++and then to execute the service routine;
++a client library may use it to deal with the details of storage
++management and XDR data conversion.
++.Pp
++The other three synopses shown above are used when
++one does not want to generate all the output files,
++but only a particular one.
++See the
++.Sx EXAMPLES
++section below for examples of
++.Nm
++usage.
++When
++.Nm
++is executed with the
++.Fl s
++option,
++it creates servers for that particular class of transports.
++When
++executed with the
++.Fl n
++option,
++it creates a server for the transport specified by
++.Ar netid .
++If
++.Ar infile
++is not specified,
++.Nm
++accepts the standard input.
++.Pp
++The C preprocessor,
++.Em cc -E
++is run on the input file before it is actually interpreted by
++.Nm .
++For each type of output file,
++.Nm
++defines a special preprocessor symbol for use by the
++.Nm
++programmer:
++.Bl -tag -width indent
++.It RPC_HDR
++defined when compiling into headers
++.It RPC_XDR
++defined when compiling into XDR routines
++.It RPC_SVC
++defined when compiling into server-side stubs
++.It RPC_CLNT
++defined when compiling into client-side stubs
++.It RPC_TBL
++defined when compiling into RPC dispatch tables
++.El
++.Pp
++Any line beginning with
++.Dq %
++is passed directly into the output file,
++uninterpreted by
++.Nm .
++To specify the path name of the C preprocessor use
++.Fl Y
++flag.
++.Pp
++For every data type referred to in
++.Ar infile ,
++.Nm
++assumes that there exists a
++routine with the string
++.Em xdr_
++prepended to the name of the data type.
++If this routine does not exist in the
++.Tn RPC/XDR
++library, it must be provided.
++Providing an undefined data type
++allows customization of
++.Xr xdr 3
++routines.
++.Sh OPTIONS
++The following options are available:
++.Bl -tag -width indent
++.It Fl a
++Generate all files, including sample files.
++.It Fl b
++Backward compatibility mode.
++Generate transport specific
++.Tn RPC
++code for older versions
++of the operating system.
++.Pp
++Note: in
++.Fx ,
++this compatibility flag is turned on by
++default since
++.Fx
++supports only the older
++.Tn ONC RPC
++library.
++.It Fl c
++Compile into
++.Tn XDR
++routines.
++.It Fl C
++Generate header and stub files which can be used with
++.Tn ANSI
++C compilers.  Headers generated with this flag can also be
++used with C++ programs.
++.It Fl D Ns Ar name
++.It Fl D Ns Ar name=value
++.\".It Fl D Ns Ar name Ns Op Ar =value
++Define a symbol
++.Ar name .
++Equivalent to the
++.Em #define
++directive in the source.
++If no
++.Ar value
++is given,
++.Ar value
++is defined as
++.Em 1 .
++This option may be specified more than once.
++.It Fl h
++Compile into C data-definitions (a header).
++.Fl T
++option can be used in conjunction to produce a
++header which supports
++.Tn RPC
++dispatch tables.
++.It Fl i Ar size
++Size at which to start generating inline code.
++This option is useful for optimization.
++The default size is 5.
++.Pp
++Note: in order to provide backwards compatibility with the older
++.Nm
++on the
++.Fx
++platform, the default is actually 0 (which means
++that inline code generation is disabled by default). You must specify
++a non-zero value explicitly to override this default.
++.It Fl I
++Compile support for
++.Xr inetd 8
++in the server side stubs.
++Such servers can be self-started or can be started by
++.Nm inetd .
++When the server is self-started, it backgrounds itself by default.
++A special define symbol
++.Em RPC_SVC_FG
++can be used to run the
++server process in foreground, or the user may simply compile without
++the
++.Fl I
++option.
++.Pp
++If there are no pending client requests, the
++.Nm inetd
++servers exit after 120 seconds (default).
++The default can be changed with the
++.Fl K
++option.
++All the error messages for
++.Nm inetd
++servers
++are always logged with
++.Xr syslog 3 .
++.\" .IP
++.\" Note:
++.\" this option is supported for backward compatibility only.
++.\" By default,
++.\" .B rpcgen
++.\" generates servers that can be invoked through portmonitors.
++.Pp
++.It Fl K Ar seconds
++By default, services created using
++.Nm
++and invoked through
++port monitors wait 120 seconds
++after servicing a request before exiting.
++That interval can be changed using the
++.Fl K
++flag.
++To create a server that exits immediately upon servicing a request,
++use
++.Fl K Ar 0 .
++To create a server that never exits, the appropriate argument is
++.Fl k Ar -1 .
++.Pp
++When monitoring for a server,
++some portmonitors
++.Em always
++spawn a new process in response to a service request.
++If it is known that a server will be used with such a monitor, the
++server should exit immediately on completion.
++For such servers,
++.Nm
++should be used with
++.Fl K Ar 0 .
++.It Fl l
++Compile into client-side stubs.
++.It Fl L
++When the servers are started in foreground, use
++.Xr syslog 3
++to log the server errors instead of printing them on the standard
++error.
++.It Fl m
++Compile into server-side stubs,
++but do not generate a
++.Qq main
++routine.
++This option is useful for doing callback-routines
++and for users who need to write their own
++.Qq main
++routine to do initialization.
++.It Fl M
++Generate multithread-safe stubs for passing arguments and results between
++rpcgen generated code and user written code.
++This option is useful
++for users who want to use threads in their code.
++However, the
++.Xr rpc_svc_calls 3
++functions are not yet MT-safe, which means that rpcgen generated server-side
++code will not be MT-safe.
++.It Fl N
++This option allows procedures to have multiple arguments.
++It also uses the style of parameter passing that closely resembles C.
++So, when passing an argument to a remote procedure, you do not have to
++pass a pointer to the argument, but can pass the argument itself.
++This behavior is different from the old style of
++.Nm
++generated code.
++To maintain backward compatibility,
++this option is not the default.
++.It Fl n Ar netid
++Compile into server-side stubs for the transport
++specified by
++.Ar netid .
++There should be an entry for
++.Ar netid
++in the
++netconfig database.
++This option may be specified more than once,
++so as to compile a server that serves multiple transports.
++.It Fl o Ar outfile
++Specify the name of the output file.
++If none is specified,
++standard output is used
++(
++.Fl c ,
++.Fl h ,
++.Fl l ,
++.Fl m ,
++.Fl n ,
++.Fl s ,
++.Fl \&Sc ,
++.Fl \&Sm ,
++.Fl \&Ss ,
++and
++.Fl t
++modes only).
++.It Fl s Ar nettype
++Compile into server-side stubs for all the
++transports belonging to the class
++.Ar nettype .
++The supported classes are
++.Em netpath ,
++.Em visible ,
++.Em circuit_n ,
++.Em circuit_v ,
++.Em datagram_n ,
++.Em datagram_v ,
++.Em tcp ,
++and
++.Em udp
++(see
++.Xr rpc 3
++for the meanings associated with these classes).
++This option may be specified more than once.
++Note:
++the transports are chosen at run time and not at compile time.
++.It Fl \&Sc
++Generate sample client code that uses remote procedure calls.
++.It Fl \&Sm
++Generate a sample
++.Pa Makefile
++which can be used for compiling the application.
++.It Fl \&Ss
++Generate sample server code that uses remote procedure calls.
++.It Fl t
++Compile into
++.Tn RPC
++dispatch table.
++.It Fl T
++Generate the code to support
++.Tn RPC
++dispatch tables.
++.Pp
++The options
++.Fl c ,
++.Fl h ,
++.Fl l ,
++.Fl m ,
++.Fl s ,
++.Fl \&Sc ,
++.Fl \&Sm ,
++.Fl \&Ss ,
++and
++.Fl t
++are used exclusively to generate a particular type of file,
++while the options
++.Fl D
++and
++.Fl T
++are global and can be used with the other options.
++.It Fl Y Ar pathname
++Give the name of the directory where
++.Nm
++will start looking for the C-preprocessor.
++.El
++.Sh EXAMPLES
++The following example:
++.Dl example% rpcgen -T prot.x
++.Pp
++generates all the five files:
++.Pa prot.h ,
++.Pa prot_clnt.c ,
++.Pa prot_svc.c ,
++.Pa prot_xdr.c
++and
++.Pa prot_tbl.i .
++.Pp
++The following example sends the C data-definitions (header)
++to the standard output.
++.Dl example% rpcgen -h prot.x
++.Pp
++To send the test version of the
++.Fl D Ns Ar TEST ,
++server side stubs for
++all the transport belonging to the class
++.Ar datagram_n
++to standard output, use:
++.Dl example% rpcgen -s datagram_n -DTEST prot.x
++.Pp
++To create the server side stubs for the transport indicated
++by
++.Ar netid
++tcp,
++use:
++.Dl example% rpcgen -n tcp -o prot_svc.c prot.x
++.Sh SEE ALSO
++.Xr cc 1 ,
++.Xr rpc 3 ,
++.Xr syslog 3 ,
++.Xr inetd 8
++.\" .BR rpc_svc_calls (3)
++.Rs
++.%T The rpcgen chapter in the NETP manual
++.Re
+-- 
+1.7.9.5
+
