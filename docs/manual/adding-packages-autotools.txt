@@ -1,10 +1,12 @@
+// -*- mode:doc; -*-
+
 Infrastructure for autotools-based packages
--------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 [[autotools-package-tutorial]]
 
 +autotools-package+ tutorial
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 First, let's see how to write a +.mk+ file for an autotools-based
 package, with an example :
@@ -64,7 +66,7 @@ package to be built.
 [[autotools-package-reference]]
 
 +autotools-package+ reference
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The main macro of the autotools package infrastructure is
 +autotools-package+. It is similar to the +generic-package+ macro. The ability to

@@ -1,0 +1,6 @@
+Going further in Buildroot's innards
+====================================
+
+include::how-buildroot-works.txt[]
+
+include::advanced.txt[]

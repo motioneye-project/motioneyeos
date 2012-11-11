@@ -1,5 +1,7 @@
+// -*- mode:doc; -*-
+
 Gettext integration and interaction with packages
--------------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Many packages that support internationalization use the gettext
 library. Dependencies for this library are fairly complicated and

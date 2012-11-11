@@ -1,6 +1,8 @@
-Using an external toolchain
-===========================
+// -*- mode:doc -*- ;
+
 [[external-toolchain]]
+Using an external toolchain
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Using an already existing toolchain is useful for different
 reasons:

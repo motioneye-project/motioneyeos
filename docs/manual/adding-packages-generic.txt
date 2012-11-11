@@ -1,5 +1,7 @@
+// -*- mode:doc; -*-
+
 Infrastructure for packages with specific build systems
--------------------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 By 'packages with specific build systems' we mean all the packages
 whose build system is not one of the standard ones, such as
@@ -9,7 +11,7 @@ system is based on hand-written Makefiles or shell scripts.
 [[generic-package-tutorial]]
 
 +generic-package+ Tutorial
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 ------------------------------
 01: #############################################################
@@ -90,7 +92,7 @@ Makefile code necessary to make your package working.
 [[generic-package-reference]]
 
 +generic-package+ Reference
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 There are two variants of the generic target. The +generic-package+ macro is
 used for packages to be cross-compiled for the target.  The

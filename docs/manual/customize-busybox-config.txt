@@ -1,6 +1,8 @@
-Customizing the Busybox configuration
--------------------------------------
+// -*- mode:doc -*- ;
+
 [[busybox-custom]]
+Customizing the Busybox configuration
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 http://www.busybox.net/[Busybox] is very configurable, and you may
 want to customize it. You can follow these simple steps to do so. This
@@ -20,5 +22,5 @@ Otherwise, you can simply change the
 options you want to change, without using the configuration tool.
 
 If you want to use an existing config file for busybox, then see
-section xref:env-vars[].
+xref:env-vars[].
 

@@ -1,5 +1,7 @@
+// -*- mode:doc; -*-
+
 Customization
-=============
+-------------
 
 include::customize-rootfs.txt[]
 

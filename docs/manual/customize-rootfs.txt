@@ -1,5 +1,8 @@
+// -*- mode:doc -*- ;
+
+[[rootfs-custom]]
 Customizing the generated target filesystem
--------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 There are a few ways to customize the resulting target filesystem:
 

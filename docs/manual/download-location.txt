@@ -1,5 +1,7 @@
+// -*- mode:doc; -*-
+
 Location of downloaded packages
-===============================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 It might be useful to know that the various tarballs that are
 downloaded by the Makefiles are all stored in the +DL_DIR+ which by

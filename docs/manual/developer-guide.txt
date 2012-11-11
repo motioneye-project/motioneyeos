@@ -1,0 +1,8 @@
+// -*- mode:doc; -*-
+
+Developer Guidelines
+====================
+
+include::adding-packages.txt[]
+
+include::board-support.txt[]

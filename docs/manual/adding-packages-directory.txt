@@ -1,5 +1,7 @@
+// -*- mode:doc; -*-
+
 Package directory
------------------
+~~~~~~~~~~~~~~~~~
 
 First of all, create a directory under the +package+ directory for
 your software, for example +libfoo+.
@@ -10,7 +12,7 @@ one of these categories, then create your package directory in these.
 
 
 +Config.in+ file
-~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^
 
 Then, create a file named +Config.in+. This file will contain the
 option descriptions related to our +libfoo+ software that will be used
@@ -146,7 +148,7 @@ so, the dependency also needs to be expressed in the +.mk+ file of the
 package.
 
 The +.mk+ file
-~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^
 
 Finally, here's the hardest part. Create a file named +libfoo.mk+. It
 describes how the package should be downloaded, configured, built,

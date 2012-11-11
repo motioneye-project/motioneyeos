@@ -1,5 +1,7 @@
+// -*- mode:doc -*- ;
+
 Understanding how to rebuild packages
-=====================================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 One of the most common questions asked by Buildroot users is how to
 rebuild a given package or how to remove a package without rebuilding

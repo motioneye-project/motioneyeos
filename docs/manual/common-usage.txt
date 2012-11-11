@@ -1,0 +1,6 @@
+// -*- mode:doc; -*-
+
+Daily use
+---------
+
+include::rebuilding-packages.txt[]

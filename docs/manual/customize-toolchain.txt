@@ -1,12 +1,14 @@
-Customizing the toolchain
--------------------------
+// -*- mode:doc -*- ;
+
 [[toolchain-custom]]
+Customizing the toolchain
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
 There are three distinct types of toolchain backend supported in Buildroot,
 available under the menu +Toolchain+, invoking +make menuconfig+.
 
 Using the external toolchain backend
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 There is no way of tuning an external toolchain since Buildroot does not
 generate it.
@@ -15,7 +17,7 @@ It also requires to set the Buildroot settings according to the toolchain ones
 (see xref:external-toolchain[]).
 
 Using the internal Buildroot toolchain backend
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The internal Buildroot toolchain backend *only* allows to generate
 *http://www.uclibc.org/[uClibc]-based toolchains*.
@@ -32,7 +34,7 @@ This is directly available after selecting the +Buildroot toolchain+ type in
 the menu +Toolchain+.
 
 Using the Crosstool-NG backend
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The http://crosstool-ng.org[crosstool-NG] toolchain backend enables a rather
 limited set of settings under the Buildroot +Toolchain+ menu (ie. when invoking

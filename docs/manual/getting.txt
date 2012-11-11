@@ -1,5 +1,8 @@
+// -*- mode:doc -*- ;
+
+[[getting-buildroot]]
 Getting Buildroot
-=================
+-----------------
 
 Buildroot releases are made approximately every 3 months. Direct Git
 access and daily snapshots are also available, if you want more

@@ -1,5 +1,8 @@
+// -*- mode:doc -*- ;
+
+[[board-support]]
 Creating your own board support
-===============================
+-------------------------------
 
 Creating your own board support in Buildroot allows users of a
 particular hardware platform to easily build a system that is known to

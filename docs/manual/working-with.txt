@@ -1,0 +1,21 @@
+// -*- mode:doc; -*-
+
+Working with Buildroot
+======================
+
+This section explains how you can customize Buildroot to fit your
+needs.
+
+include::customize.txt[]
+
+include::common-usage.txt[]
+
+Hacking Buildroot
+-----------------
+
+If Buildroot does not yet fit all your requirements, you may be
+interested in hacking it to add:
+
+* new packages: refer to the xref:adding-packages[Developer guide]
+
+* new board support: refer to the xref:board-support[Developer guide]

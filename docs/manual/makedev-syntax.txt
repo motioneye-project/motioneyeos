@@ -1,3 +1,5 @@
+// -*- mode:doc -*- ;
+
 [[makedev-syntax]]
 Makedev syntax documentation
 ----------------------------

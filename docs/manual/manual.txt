@@ -1,3 +1,5 @@
+// -*- mode:doc; -*-
+
 The Buildroot user manual
 =========================
 :toc:
@@ -11,25 +13,13 @@ image::logo.png[]
 
 include::introduction.txt[]
 
-include::getting.txt[]
+include::starting-up.txt[]
 
-include::using.txt[]
+include::working-with.txt[]
 
-include::customize.txt[]
+include::going-further.txt[]
 
-include::rebuilding-packages.txt[]
-
-include::how-buildroot-works.txt[]
-
-include::using-buildroot-toolchain.txt[]
-
-include::external-toolchain.txt[]
-
-include::ccache-support.txt[]
-
-include::download-location.txt[]
-
-include::adding-packages.txt[]
+include::developer-guide.txt[]
 
 include::faq.txt[]
 

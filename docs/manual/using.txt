@@ -1,8 +1,7 @@
-Using Buildroot
-===============
+// -*- mode:doc; -*-
 
-Configuration and general usage
--------------------------------
+Using Buildroot
+---------------
 
 Buildroot has a nice configuration tool similar to the one you can
 find in the http://www.kernel.org/[Linux kernel] or in

@@ -1,5 +1,8 @@
+// -*- mode:doc -*- ;
+
+[[kernel-custom]]
 Customizing the Linux kernel configuration
-------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The Linux kernel configuration can be customized just like
 xref:busybox-custom[BusyBox] and xref:uclibc-custom[uClibc] using
