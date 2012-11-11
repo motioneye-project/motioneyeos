@@ -3,6 +3,8 @@
 Starting up
 ===========
 
+include::prerequisite.txt[]
+
 include::getting.txt[]
 
 include::using.txt[]
