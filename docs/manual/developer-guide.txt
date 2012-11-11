@@ -3,6 +3,8 @@
 Developer Guidelines
 ====================
 
+include::writing-rules.txt[]
+
 include::adding-packages.txt[]
 
 include::board-support.txt[]
