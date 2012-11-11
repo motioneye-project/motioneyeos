@@ -16,6 +16,6 @@ ifeq ($(BR2_PACKAGE_LCDPROC_MENUS),y)
 LCDPROC_CONF_OPT += --enable-lcdproc-menus
 endif
 
-LCDPROC_DEPENDENCIES = ncurses
+LCDPROC_DEPENDENCIES = freetype ncurses zlib
 
 $(eval $(autotools-package))
