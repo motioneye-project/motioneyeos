@@ -17,10 +17,10 @@ include::starting-up.txt[]
 
 include::working-with.txt[]
 
+include::faq-troubleshooting.txt[]
+
 include::going-further.txt[]
 
 include::developer-guide.txt[]
-
-include::faq.txt[]
 
 include::appendix.txt[]
