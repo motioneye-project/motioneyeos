@@ -23,6 +23,8 @@ include::going-further.txt[]
 
 include::developer-guide.txt[]
 
+include::legal-notice.txt[]
+
 include::get-involved.txt[]
 
 include::contribute.txt[]
