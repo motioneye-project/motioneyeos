@@ -1,0 +1,46 @@
+// -*- mode:doc -*- ;
+
+[[deprecated]]
+Deprecated list
+---------------
+
+The following stuff are marked as _deprecated_ in Buildroot due to
+their status either too old or unmaintained.
+
+// list generated using the followings command:
+// $ git grep -EB4 'depends on BR2_DEPRECATED'
+// and
+// $ git grep -EB4 'depends on BR2_DEPRECATED' | \
+//     grep -Eo '(:|-).*?(config|comment) BR2_.*'
+//
+// Need manual checks and sorting.
+
+* Packages:
+
+** +busybox+ 1.18.x
+** +customize+
+** +lzma+
+** +microperl+
+** +netkitbase+
+** +netkittelnet+
+** +pkg-config+
+** +squashfs3+
+** +ttcp+
+
+* Toolchain:
+
+** +gdb+ 6.8
+** +gdb+ 7.0.1
+** +gdb+ 7.1
+** +kernel headers+ 2.6.37
+** +kernel headers+ 2.6.38
+** +kernel headers+ 2.6.39
+
+* Bootloaders:
+
+** +u-boot+ 2011-06
+** +u-boot+ 2011-09
+
+* Output images:
+
+** squashfs3 image
