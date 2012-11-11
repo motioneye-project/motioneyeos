@@ -61,7 +61,7 @@ using +wget+, few are only available through their +git+, +mercurial+,
 or +svn+ repository.
 +
 All other source fetching methods are implemented and may be used in a
-development context.
+development context (further details: refer to xref:download-infra[]).
 +
 ** +bazaar+
 ** +cvs+

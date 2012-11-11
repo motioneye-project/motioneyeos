@@ -7,4 +7,6 @@ include::writing-rules.txt[]
 
 include::adding-packages.txt[]
 
+include::download-infra.txt[]
+
 include::board-support.txt[]
