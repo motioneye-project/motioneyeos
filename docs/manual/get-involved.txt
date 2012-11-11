@@ -1,0 +1,98 @@
+// -*- mode:doc; -*-
+
+Getting involved
+================
+
+Like any open source project, Buildroot has different ways to share
+information in its community and outside.
+
+One piece of it is the document you are currently reading ;-).
+
+Each of those ways may interest you if you are looking for some help,
+want to understand Buildroot or contribute to the project.
+
+Mailing List
+------------
+
+Buildroot has a mailing list
+http://lists.busybox.net/pipermail/buildroot[] for discussion and
+development.
+
+[[mailing-list-subscribe]]
+
+Subscribing to the mailing list
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can subscribe by visiting
+http://lists.busybox.net/mailman/listinfo/buildroot[].
+Only subscribers to the Buildroot mailing list are allowed to post to
+this list.
+
+The list is also available through _Gmane_ http://gmane.org[], at
++gmane.comp.lib.uclibc.buildroot+
+http://dir.gmane.org/gmane.comp.lib.uclibc.buildroot[].
+
+Searching the List Archives
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Please search the mailing list archives before asking questions on the
+mailing list, since there is a good chance someone else has asked the
+same question before. Checking the archives is a great way to avoid
+annoying everyone on the list with frequently asked questions...
+
+IRC
+---
+
+The Buildroot IRC is irc://freenode.net/#buildroot[].
+The channel +#buildroot+ is hosted on Freenode
+http://webchat.freenode.net[].
+
+When asking for help on IRC, share relevant logs or pieces of code
+using a code sharing website (see
+http://en.wikipedia.org/wiki/Comparison_of_pastebins[], and pick one).
+
+[[patchwork]]
+Patchwork
+---------
+
+The Buildroot patch management interface is at
+http://patchwork.buildroot.org[].
+
+All patches and comments sent through the mailing list are
+automatically indexed in http://patchwork.buildroot.org[patchwork].
+
+Bugtracker
+----------
+
+The Buildroot bugtracker is at https://bugs.busybox.net[].
+
+Buildroot wikipage
+------------------
+
+After the Buildroot developer day on February 3, 2012,
+a page dedicated to Buildroot has been created on
+http://elinux.org[elinux.org].
+
+This page is reachable at http://elinux.org/Buildroot[].
+
+Currently, this page is mainly used as a _todo-list_.
+
+[[events]]
+Events
+------
+
+Buildroot Developer Days aside ELC-E 2012 (November 3-4, 2012 - Barcelona)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+* Event page: http://elinux.org/Buildroot:DeveloperDaysELCE2012[]
+
+Buildroot presentation at LSM 2012 (July 12-14, 2012 - Geneva)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+* Announcement: http://lists.busybox.net/pipermail/buildroot/2012-May/053845.html[]
+
+Buildroot Developer Days aside FOSDEM 2012 (February 3, 2012 - Brussels)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+* Announcement & agenda thread: http://lists.busybox.net/pipermail/buildroot/2012-January/049340.html[]
+* Report: http://lists.busybox.net/pipermail/buildroot/2012-February/050371.html[]

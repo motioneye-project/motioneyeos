@@ -23,4 +23,6 @@ include::going-further.txt[]
 
 include::developer-guide.txt[]
 
+include::get-involved.txt[]
+
 include::appendix.txt[]
