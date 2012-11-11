@@ -10,3 +10,5 @@ include::external-toolchain.txt[]
 include::ccache-support.txt[]
 
 include::download-location.txt[]
+
+include::package-make-target.txt[]

@@ -83,3 +83,7 @@ Buildroot infrastructures.
 use any Buildroot infrastructure).
 - Most packages and toolchain packages, if not all, will progressively
 be ported over to the generic, autotools or CMake infrastructure,
+making it much easier to rebuild individual packages.
+
+Further details about package special make target at the
+xref:pkg-build-steps[].
