@@ -25,4 +25,6 @@ include::developer-guide.txt[]
 
 include::get-involved.txt[]
 
+include::contribute.txt[]
+
 include::appendix.txt[]

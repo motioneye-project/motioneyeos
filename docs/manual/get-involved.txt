@@ -61,10 +61,13 @@ http://patchwork.buildroot.org[].
 All patches and comments sent through the mailing list are
 automatically indexed in http://patchwork.buildroot.org[patchwork].
 
+[[bugtracker]]
 Bugtracker
 ----------
 
 The Buildroot bugtracker is at https://bugs.busybox.net[].
+
+To open a bug, see xref:reporting-bugs[].
 
 Buildroot wikipage
 ------------------
