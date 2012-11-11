@@ -19,4 +19,6 @@ include::adding-packages-cmake.txt[]
 
 include::adding-packages-gettext.txt[]
 
+include::adding-packages-tips.txt[]
+
 include::adding-packages-conclusion.txt[]
