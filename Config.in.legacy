@@ -48,6 +48,21 @@ if BR2_LEGACY_CHECK_2012_11
 # Legacy options from 2012.08
 #
 
+config BR2_PACKAGE_GETTEXT_STATIC
+	bool "libgettext.a is now selected by BR2_PREFER_STATIC_LIB"
+	select BR2_LEGACY
+	help
+	  To build a static gettext library, select BR2_PREFER_STATIC_LIB.
+
+
+config BR2_PACKAGE_LIBINTL
+	bool "libintl"
+	select BR2_LEGACY
+	select BR2_PACKAGE_GETTEXT
+	help
+	  libintl is now installed by selecting BR2_PACKAGE_GETTEXT. This now
+	  only installs the library, not the executables.
+
 config BR2_PACKAGE_INPUT_TOOLS_EVTEST
 	bool "input-tools evtest is now a separate package evtest"
 	select BR2_LEGACY
