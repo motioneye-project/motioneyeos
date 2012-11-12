@@ -434,3 +434,5 @@ source "fs/Config.in"
 source "boot/Config.in"
 
 source "linux/Config.in"
+
+source "Config.in.legacy"

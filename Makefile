@@ -290,6 +290,12 @@ endif
 
 all: world
 
+# Include legacy before the other things, because package .mk files
+# may rely on it.
+ifneq ($(BR2_DEPRECATED),y)
+include Makefile.legacy
+endif
+
 include package/Makefile.in
 include support/dependencies/dependencies.mk
 
@@ -762,4 +768,3 @@ print-version:
 include docs/manual/manual.mk
 
 .PHONY: $(noconfig_targets)
-

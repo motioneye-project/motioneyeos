@@ -1,0 +1,51 @@
+#
+# Config.in.legacy - support for backward compatibility
+#
+# When an existing Config.in symbol is removed, it should be added again in this
+# file, and take appropriate action to approximate backward compatibility. If
+# there is an equivalent (set of) new symbols, these can just be select'ed by
+# the old symbol. This makes sure that running 'make oldconfig' will make things
+# "just work" when upgrading to a new buildroot version. If the change is too
+# fundamental and cannot be fixed by a simple select, then the old symbol should
+# select BR2_LEGACY.  If that symbol is set, the build will issue an error.
+#
+# When adding legacy symbols to this file, add them to the front. The oldest
+# symbols will be removed again after about two years.
+#
+# The symbol should be copied as-is from the place where it was previously
+# defined, but the help text should be removed or replaced with something that
+# explains how to fix it.
+
+config BR2_LEGACY
+	bool
+	help
+	  This option is selected automatically when your old .config uses an
+	  option that no longer exists in current buildroot. In that case, the
+	  build will fail. Look for config options which are selected in the
+	  menu below: they no longer exist and should be replaced by something
+	  else.
+
+# This comment fits exactly in a 80-column display
+comment "Legacy detected: check the content of the menu below"
+	depends on BR2_LEGACY
+
+# This option should get a new name with every buildroot release, so it defaults
+# to y again for people who upgrade.
+menuconfig BR2_LEGACY_CHECK_2012_11
+	bool "Check for legacy config options"
+	default y
+	help
+	  Select this option to see the config options that are present in your
+	  current .config but are no longer supported by buildroot. If any of
+	  the options in this menu is selected, they should be replaced with
+	  something else. As long as they stay selected, the build will fail.
+	  Just de-select this option to automatically remove all the legacy
+	  configuration.
+
+if BR2_LEGACY_CHECK_2012_11
+
+#
+# Legacy options from 2012.08
+#
+
+endif
