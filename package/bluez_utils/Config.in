@@ -1,5 +1,6 @@
 config BR2_PACKAGE_BLUEZ_UTILS
 	bool "bluez-utils"
+	depends on !BR2_avr32
 	depends on BR2_USE_WCHAR # libglib2
 	depends on BR2_TOOLCHAIN_HAS_THREADS # dbus, alsa-lib
 	select BR2_PACKAGE_DBUS
