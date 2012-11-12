@@ -48,4 +48,11 @@ if BR2_LEGACY_CHECK_2012_11
 # Legacy options from 2012.08
 #
 
+config BR2_PACKAGE_INPUT_TOOLS_EVTEST
+	bool "input-tools evtest is now a separate package evtest"
+	select BR2_LEGACY
+	select BR2_PACKAGE_EVTEST
+	help
+	  The evtest program from input-tools is now a separate package.
+
 endif
