@@ -1,5 +1,6 @@
 config BR2_PACKAGE_KEXEC
 	bool "kexec"
+	depends on !BR2_avr32
 	help
 	  Kexec is a user space utiltity for loading another kernel
 	  and asking the currently running kernel to do something with it.
