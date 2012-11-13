@@ -7,6 +7,8 @@ POPT_VERSION = 1.16
 # rpm5.org down
 POPT_SITE = http://anduin.linuxfromscratch.org/sources/BLFS/svn/p/
 POPT_INSTALL_STAGING = YES
+POPT_LICENSE = MIT
+POPT_LICENSE_FILES = COPYING
 
 POPT_CONF_ENV = ac_cv_va_copy=yes
 
