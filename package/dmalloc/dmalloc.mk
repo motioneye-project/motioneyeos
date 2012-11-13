@@ -7,6 +7,10 @@ DMALLOC_VERSION:=5.4.3
 DMALLOC_SOURCE:=dmalloc-$(DMALLOC_VERSION).tgz
 DMALLOC_SITE:=http://dmalloc.com/releases
 
+DMALLOC_LICENSE = MIT-like
+# license is in each file, dmalloc.h.1 is the smallest one
+DMALLOC_LICENSE_FILES = dmalloc.h.1
+
 DMALLOC_INSTALL_STAGING = YES
 DMALLOC_CONF_OPT:= --enable-shlib
 
