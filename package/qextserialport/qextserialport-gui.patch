@@ -1,0 +1,16 @@
+Don't require Qt GUI module
+
+Signed-off-by: Arnout Vandecappelle (Essensium/Mind) <arnout@mind.be>
+---
+diff -Nrup qextserialport-f83b4e7ca922e53.orig/qextserialport.pro qextserialport-f83b4e7ca922e53/qextserialport.pro
+--- qextserialport-f83b4e7ca922e53.orig/qextserialport.pro	2012-10-17 09:13:53.000000000 +0200
++++ qextserialport-f83b4e7ca922e53/qextserialport.pro	2012-11-13 22:48:29.249431510 +0100
+@@ -41,6 +41,8 @@ macx:qesp_mac_framework {
+ 
+ win32|mac:!wince*:!win32-msvc:!macx-xcode:CONFIG += debug_and_release build_all
+ 
++!win32*:!wince*:QT -= gui
++
+ #generate proper library name
+ greaterThan(QT_MAJOR_VERSION, 4) {
+     QESP_LIB_BASENAME = QtExtSerialPort
