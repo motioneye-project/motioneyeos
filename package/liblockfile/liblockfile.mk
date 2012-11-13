@@ -8,6 +8,9 @@ LIBLOCKFILE_SOURCE:=liblockfile_$(LIBLOCKFILE_VERSION).orig.tar.gz
 LIBLOCKFILE_SITE:=$(BR2_DEBIAN_MIRROR)/debian/pool/main/libl/liblockfile/
 LIBLOCKFILE_PATCH:=liblockfile_$(LIBLOCKFILE_VERSION)-4.debian.tar.bz2
 
+LIBLOCKFILE_LICENSE = LGPLv2+, dotlockfile GPLv2+
+# No license file included, it refers to the gnu.org website
+
 LIBLOCKFILE_INSTALL_STAGING = YES
 LIBLOCKFILE_CONF_OPT = --mandir=/usr/share/man
 
