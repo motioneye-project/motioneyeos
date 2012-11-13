@@ -6,6 +6,8 @@
 
 PROCPS_VERSION = 3.2.8
 PROCPS_SITE = http://procps.sourceforge.net/
+PROCPS_LICENSE = GPLv2+, libproc and libps LGPLv2+
+PROCPS_LICENSE_FILES = COPYING COPYING.LIB
 
 PROCPS_DEPENDENCIES = ncurses
 
