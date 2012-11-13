@@ -7,6 +7,9 @@
 VALGRIND_VERSION = 3.7.0
 VALGRIND_SITE    = http://valgrind.org/downloads/
 VALGRIND_SOURCE  = valgrind-$(VALGRIND_VERSION).tar.bz2
+VALGRIND_LICENSE = GPLv2 GFDLv1.2
+VALGRIND_LICENSE_FILES = COPYING COPYING.DOCS
+
 VALGRIND_CONF_OPT = --disable-tls
 
 # On ARM, Valgrind only supports ARMv7, and uses the arch part of the
