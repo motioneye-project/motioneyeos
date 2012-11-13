@@ -7,6 +7,9 @@
 AUTOCONF_VERSION = 2.68
 AUTOCONF_SITE = $(BR2_GNU_MIRROR)/autoconf
 
+AUTOCONF_LICENSE = GPLv3+ with exceptions
+AUTOCONF_LICENSE_FILES = COPYINGv3 COPYING.EXCEPTION
+
 AUTOCONF_CONF_ENV = EMACS="no" ac_cv_path_M4=$(HOST_DIR)/usr/bin/m4 \
 		    ac_cv_prog_gnu_m4_gnu=no
 
