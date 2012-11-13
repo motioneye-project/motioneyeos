@@ -3,9 +3,9 @@
 # libnfc
 #
 #############################################################
-LIBNFC_VERSION = 1446
-LIBNFC_SITE = http://libnfc.googlecode.com/svn/trunk/
-LIBNFC_SITE_METHOD = svn
+LIBNFC_VERSION = fda8d60ce062
+LIBNFC_SITE = http://libnfc.googlecode.com/git/
+LIBNFC_SITE_METHOD = git
 LIBNFC_LICENSE = LGPLv3+
 LIBNFC_LICENSE_FILES = COPYING
 LIBNFC_AUTORECONF = YES
