@@ -7,6 +7,9 @@
 BASH_VERSION = 4.2
 BASH_SITE = $(BR2_GNU_MIRROR)/bash
 BASH_DEPENDENCIES = ncurses
+BASH_LICENSE = GPLv3+
+BASH_LICENSE_FILES = COPYING
+
 BASH_CONF_ENV +=                       \
    bash_cv_job_control_missing=present \
    bash_cv_sys_named_pipes=present     \
