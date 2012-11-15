@@ -4,7 +4,7 @@
 #
 #############################################################
 
-CAN_UTILS_VERSION = 50775159276d896d8b3102b6dbc658a91a2a1d53
+CAN_UTILS_VERSION = 836d3cc0122ce31a1b732d369cbd27b690c3110f
 CAN_UTILS_SITE = git://gitorious.org/linux-can/can-utils.git
 CAN_UTILS_AUTORECONF = YES
 
