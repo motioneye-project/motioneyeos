@@ -42,8 +42,8 @@ This will generate patch files in the +outgoing+ subdirectory,
 automatically adding the +signed-off-by+ line.
 
 If you want to present the whole patch set in a separate mail, add
-+--cover-letter --summary+ to the previous command line (+man
-git-format-patch+ for further information).
++--cover-letter+ to the previous command line (+man git-format-patch+
+for further information).
 
 Once patch files are generated, you can review/edit the commit message
 before submitting them using your favorite text editor.
