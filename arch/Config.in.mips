@@ -51,3 +51,28 @@ config BR2_MIPS_NABI64
 	bool "n64"
 	depends on BR2_ARCH_IS_64
 endchoice
+
+config BR2_ARCH
+	default "mips"		if BR2_mips
+	default "mipsel"	if BR2_mipsel
+	default "mips64"	if BR2_mips64
+	default "mips64el"	if BR2_mips64el
+
+config BR2_ENDIAN
+	default "LITTLE"	if BR2_mipsel || BR2_mips64el
+	default "BIG" 	    	if BR2_mips || BR2_mips64
+
+config BR2_GCC_TARGET_TUNE
+	default mips1		if BR2_mips_1
+	default mips2		if BR2_mips_2
+	default mips3		if BR2_mips_3
+	default mips4		if BR2_mips_4
+	default mips32		if BR2_mips_32
+	default mips32r2	if BR2_mips_32r2
+	default mips64		if BR2_mips_64
+	default mips64r2	if BR2_mips_64r2
+
+config BR2_GCC_TARGET_ABI
+	default 32		if BR2_MIPS_OABI32
+	default n32		if BR2_MIPS_NABI32
+	default 64		if BR2_MIPS_NABI64

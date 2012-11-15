@@ -8,3 +8,9 @@ config BR2_BFIN_FLAT
 	bool "FLAT"
 	select BR2_PREFER_STATIC_LIB
 endchoice
+
+config BR2_ARCH
+	default "bfin"
+
+config BR2_ENDIAN
+        default "LITTLE"

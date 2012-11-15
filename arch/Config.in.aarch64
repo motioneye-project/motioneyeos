@@ -1,0 +1,5 @@
+config BR2_ARCH
+	default "aarch64"	if BR2_aarch64
+
+config BR2_ENDIAN
+	default "LITTLE"

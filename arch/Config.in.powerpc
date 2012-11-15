@@ -81,3 +81,48 @@ config BR2_powerpc_SPE
 	bool "SPE"
 	depends on BR2_powerpc_8540 || BR2_powerpc_8548
 endchoice
+
+config BR2_ARCH
+	default "powerpc"	if BR2_powerpc
+
+config BR2_ENDIAN
+	default "BIG"
+
+config BR2_GCC_TARGET_TUNE
+	default 401		if BR2_powerpc_401
+	default 403		if BR2_powerpc_403
+	default 405		if BR2_powerpc_405
+	default 405fp		if BR2_powerpc_405fp
+	default 440		if BR2_powerpc_440
+	default 440fp		if BR2_powerpc_440fp
+	default 505		if BR2_powerpc_505
+	default 601		if BR2_powerpc_601
+	default 602		if BR2_powerpc_602
+	default 603		if BR2_powerpc_603
+	default 603e		if BR2_powerpc_603e
+	default 604		if BR2_powerpc_604
+	default 604e		if BR2_powerpc_604e
+	default 620		if BR2_powerpc_620
+	default 630		if BR2_powerpc_630
+	default 740		if BR2_powerpc_740
+	default 7400		if BR2_powerpc_7400
+	default 7450		if BR2_powerpc_7450
+	default 750		if BR2_powerpc_750
+	default 801		if BR2_powerpc_801
+	default 821		if BR2_powerpc_821
+	default 823		if BR2_powerpc_823
+	default 860		if BR2_powerpc_860
+	default 970		if BR2_powerpc_970
+	default 8540		if BR2_powerpc_8540
+	default	8548		if BR2_powerpc_8548
+	default e300c2		if BR2_powerpc_e300c2
+	default e300c3		if BR2_powerpc_e300c3
+	default e500mc		if BR2_powerpc_e500mc
+
+config BR2_GCC_TARGET_ABI
+	default altivec		if BR2_PPC_ABI_altivec
+	default no-altivec	if BR2_PPC_ABI_no-altivec
+	default spe		if BR2_PPC_ABI_spe
+	default no-spe		if BR2_PPC_ABI_no-spe
+	default ibmlongdouble	if BR2_PPC_ABI_ibmlongdouble
+	default ieeelongdouble	if BR2_PPC_ABI_ieeelongdouble
