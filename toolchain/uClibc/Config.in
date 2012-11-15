@@ -12,14 +12,15 @@ choice
 
 	config BR2_UCLIBC_VERSION_0_9_31
 		bool "uClibc 0.9.31.x"
+		depends on !BR2_xtensa
 
 	config BR2_UCLIBC_VERSION_0_9_32
 		bool "uClibc 0.9.32.x"
-		depends on !(BR2_avr32 || BR2_sh)
+		depends on !(BR2_avr32 || BR2_sh || BR2_xtensa)
 
 	config BR2_UCLIBC_VERSION_0_9_33
 		bool "uClibc 0.9.33.x"
-		depends on !BR2_avr32
+		depends on !(BR2_avr32 || BR2_xtensa)
 
 	config BR2_UCLIBC_VERSION_SNAPSHOT
 		bool "daily snapshot"

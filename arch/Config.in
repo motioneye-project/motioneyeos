@@ -145,6 +145,13 @@ config BR2_x86_64
 	  architecture compatible microprocessor).
 	  http://en.wikipedia.org/wiki/X86_64
 
+config BR2_xtensa
+	bool "Xtensa"
+	help
+	  Xtensa is a Tensilica processor IP architecture.
+	  http://en.wikipedia.org/wiki/Xtensa
+	  http://www.tensilica.com/
+
 endchoice
 
 # The following string values are defined by the individual
@@ -209,4 +216,8 @@ endif
 
 if BR2_i386 || BR2_x86_64
 source "arch/Config.in.x86"
+endif
+
+if BR2_xtensa
+source "arch/Config.in.xtensa"
 endif
