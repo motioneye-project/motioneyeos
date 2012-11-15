@@ -5,3 +5,7 @@ Run the emulation with:
 The login prompt will appear in the terminal that started Qemu. The
 graphical window is the framebuffer. No keyboard support has been
 enabled.
+
+This configuration is known to be flaky.
+
+Tested with QEMU 1.2.0
