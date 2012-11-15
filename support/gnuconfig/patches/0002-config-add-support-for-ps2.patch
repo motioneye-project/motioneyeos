@@ -1,15 +1,27 @@
---- config.sub
-+++ config.sub
-@@ -253,7 +253,7 @@ case $basic_machine in
- 	| arc | arm | arm[bl]e | arme[lb] | armv[2345] | armv[345][lb] | avr | avr32 \
+From 144194fe916a14b630324c19f7b098109122bca2 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Thu, 15 Nov 2012 17:01:25 +0100
+Subject: [PATCH 2/2] config: add support for ps2
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ config.sub |   22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
+
+diff --git a/config.sub b/config.sub
+index 89b1286..8509813 100755
+--- a/config.sub
++++ b/config.sub
+@@ -265,7 +265,7 @@ case $basic_machine in
+ 	| be32 | be64 \
  	| bfin \
  	| c4x | clipper \
 -	| d10v | d30v | dlx | dsp16xx \
 +	| d10v | d30v | dlx | dsp16xx | dvp \
+ 	| epiphany \
  	| fido | fr30 | frv \
  	| h8300 | h8500 | hppa | hppa1.[01] | hppa2.0 | hppa2.0[nw] | hppa64 \
- 	| i370 | i860 | i960 | ia64 \
-@@ -773,6 +773,24 @@ case $basic_machine in
+@@ -813,6 +813,24 @@ case $basic_machine in
  		basic_machine=m68k-atari
  		os=-mint
  		;;
@@ -34,7 +46,7 @@
  	mips3*-*)
  		basic_machine=`echo $basic_machine | sed -e 's/mips3/mips64/'`
  		;;
-@@ -1325,7 +1343,7 @@ case $os in
+@@ -1375,7 +1393,7 @@ case $os in
  	      | -os2* | -vos* | -palmos* | -uclinux* | -nucleus* \
  	      | -morphos* | -superux* | -rtmk* | -rtmk-nova* | -windiss* \
  	      | -powermax* | -dnix* | -nx6 | -nx7 | -sei* | -dragonfly* \
@@ -43,3 +55,6 @@
  	# Remember, each alternative MUST END IN *, to match a version number.
  		;;
  	-qnx*)
+-- 
+1.7.9.5
+

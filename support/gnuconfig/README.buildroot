@@ -17,9 +17,12 @@ GNU config is now managed in git, so to update:
 
 # git clone git://git.savannah.gnu.org/config.git
 # cp config/config.* .
-# for p in $(ls patches/*.patch); do patch -p0 < $p; done
+# for p in $(ls patches/*.patch); do patch -p1 < $p; done
 # rm -rf config
 
 A few local customizations are used to support uClibc so you may
 have to make sure they're still needed.  The patches are broken
 out in the patches/ dir to keep things simple.
+
+The current Buildroot version is based on the Git commit
+9582436dfae5755279f96898ce30bde28e4e69ea of the config.git repository.
