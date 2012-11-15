@@ -68,5 +68,14 @@ define BINUTILS_INSTALL_TARGET_CMDS
 endef
 endif
 
+XTENSA_CORE_NAME = $(call qstrip, $(BR2_xtensa_core_name))
+ifneq ($(XTENSA_CORE_NAME),)
+define BINUTILS_XTENSA_PRE_PATCH
+	tar xf $(BR2_xtensa_overlay_dir)/xtensa_$(XTENSA_CORE_NAME).tar \
+		-C $(@D) bfd include ld
+endef
+HOST_BINUTILS_PRE_PATCH_HOOKS += BINUTILS_XTENSA_PRE_PATCH
+endif
+
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
