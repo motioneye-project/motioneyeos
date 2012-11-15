@@ -42,6 +42,7 @@ Mandatory packages
 ** +python+ (version 2.6 or 2.7)
 ** +unzip+
 ** +rsync+
+** +texinfo+ (required for internal Buildroot toolchain backend)
 
 * Source fetching tools:
 ** +wget+
