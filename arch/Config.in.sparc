@@ -44,26 +44,26 @@ config BR2_ENDIAN
 	default "BIG"
 
 config BR2_GCC_TARGET_TUNE
-	default v7		if BR2_sparc_v7
-	default cypress		if BR2_sparc_cypress
-	default v8		if BR2_sparc_v8
-	default supersparc	if BR2_sparc_supersparc
-	default hypersparc	if BR2_sparc_hypersparc
-	default sparclite	if BR2_sparc_sparclite
-	default f930		if BR2_sparc_f930
-	default f934		if BR2_sparc_f934
-	default sparclite86x	if BR2_sparc_sparclite86x
-	default sparclet	if BR2_sparc_sparclet
-	default tsc701		if BR2_sparc_tsc701
-	default v9		if BR2_sparc_v9
-	default v9		if BR2_sparc_v9a
-	default v9		if BR2_sparc_v9b
-	default ultrasparc	if BR2_sparc_ultrasparc
-	default ultrasparc3	if BR2_sparc_ultrasparc3
-	default niagara		if BR2_sparc_niagara
+	default "v7"		if BR2_sparc_v7
+	default "cypress"	if BR2_sparc_cypress
+	default "v8"		if BR2_sparc_v8
+	default "supersparc"	if BR2_sparc_supersparc
+	default "hypersparc"	if BR2_sparc_hypersparc
+	default "sparclite"	if BR2_sparc_sparclite
+	default "f930"		if BR2_sparc_f930
+	default "f934"		if BR2_sparc_f934
+	default "sparclite86x"	if BR2_sparc_sparclite86x
+	default "sparclet"	if BR2_sparc_sparclet
+	default "tsc701"	if BR2_sparc_tsc701
+	default "v9"		if BR2_sparc_v9
+	default "v9"		if BR2_sparc_v9a
+	default "v9"		if BR2_sparc_v9b
+	default "ultrasparc"	if BR2_sparc_ultrasparc
+	default "ultrasparc3"	if BR2_sparc_ultrasparc3
+	default "niagara"	if BR2_sparc_niagara
 
 config BR2_GCC_TARGET_CPU
-	default sparchfleon	if BR2_sparc_sparchfleon
-	default sparchfleonv8	if BR2_sparc_sparchfleonv8
-	default sparcsfleon	if BR2_sparc_sparcsfleon
-	default sparcsfleonv8	if BR2_sparc_sparcsfleonv8
+	default "sparchfleon"	if BR2_sparc_sparchfleon
+	default "sparchfleonv8"	if BR2_sparc_sparchfleonv8
+	default "sparcsfleon"	if BR2_sparc_sparcsfleon
+	default "sparcsfleonv8"	if BR2_sparc_sparcsfleonv8
