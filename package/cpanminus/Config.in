@@ -1,5 +1,9 @@
 config BR2_PACKAGE_CPANMINUS
 	bool "cpanminus"
+	# Requires host-qemu, which cannot work properly due to kernel
+	# headers mismatch between the build environment and the
+	# target.
+	depends on BR2_BROKEN
 	help
 	  cpanminus is a script to get, unpack, build and install Perl modules
 	  from CPAN.
