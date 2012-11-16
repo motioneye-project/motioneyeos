@@ -3,9 +3,8 @@
 # lua-msgpack-native
 #
 #############################################################
-LUA_MSGPACK_NATIVE_VERSION = 41cce91ab6
-LUA_MSGPACK_NATIVE_SITE = git://github.com/kengonakajima/lua-msgpack-native.git
-LUA_MSGPACK_NATIVE_METHOD = git
+LUA_MSGPACK_NATIVE_VERSION = g41cce91
+LUA_MSGPACK_NATIVE_SITE = http://github.com/kengonakajima/lua-msgpack-native/tarball/master
 LUA_MSGPACK_NATIVE_DEPENDENCIES = lua
 LUA_MSGPACK_NATIVE_LICENSE = Apache-2.0
 LUA_MSGPACK_NATIVE_LICENSE_FILES = LICENSE.txt
