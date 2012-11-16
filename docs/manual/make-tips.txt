@@ -4,18 +4,18 @@
 'make' tips
 -----------
 
-Because Buildroot is a set of Makefiles and patches, there are few
-things useful to know, such as:
+Because Buildroot is a set of Makefiles and patches, there are a few
+things that are useful to know, such as:
 
 +make *config+ commands offer a search tool. Read the help message in
-the different frontend menu to know how to use it:
+the different frontend menus to know how to use it:
 
 * in _menuconfig_, search tool is called by pressing +/+;
 * in _xconfig_, search tool is called by pressing +ctrl+ + +f+.
 
-The result of the search show the help message of the matching items.
+The result of the search shows the help message of the matching items.
 
-Display all command executed by make:
+Display all commands executed by make:
 
 --------------------
  $ make V=0|1 <target>
@@ -54,5 +54,5 @@ Delete all build products as well as the configuration:
 --------------------
 
 Note that if +ccache+ is enabled, running +make clean|distclean+ does
-not empty the cache of compiler used by Buildroot. To delete it, refer
+not empty the compiler cache used by Buildroot. To delete it, refer
 to xref:ccache[].

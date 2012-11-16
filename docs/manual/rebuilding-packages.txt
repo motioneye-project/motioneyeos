@@ -10,7 +10,7 @@ A full rebuild is achieved by running:
 $ make clean all
 ---------------
 
-In what cases, a full rebuild is mandatory:
+In some cases, a full rebuild is mandatory:
 
 * each time the toolchain properties are changed, this includes:
 
@@ -22,14 +22,14 @@ In what cases, a full rebuild is mandatory:
 
 * after removing some libraries from the package selection.
 
-In what cases, a full rebuild is recommended:
+In some cases, a full rebuild is recommended:
 
 * after adding some libraries to the package selection (otherwise,
   some packages that can be optionally linked against those libraries
   won't be rebuilt, so they won't support those new available
   features).
 
-In other cases, it is up to you to decide if you should or not run a
+In other cases, it is up to you to decide if you should run a
 full rebuild, but you should know what is impacted and understand what
 you are doing anyway.
 
@@ -81,7 +81,7 @@ files are relevant:
 Buildroot infrastructures.
 - Only toolchain packages remain using custom makefiles (i.e. do not
 use any Buildroot infrastructure).
-- Most packages and toolchain packages, if not all, will progressively
+- Most, if not all, packages and toolchain packages will progressively
 be ported over to the generic, autotools or CMake infrastructure,
 making it much easier to rebuild individual packages.
 

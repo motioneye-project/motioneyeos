@@ -14,7 +14,7 @@ follow these steps:
 * Do an initial compilation of Buildroot without trying to customize
   uClibc.
 
-* Invoke +make uclibc-menuconfig+.  The nice configuration assistant,
+* Invoke +make uclibc-menuconfig+. The nice configuration assistant,
   similar to the one used in the Linux kernel or Buildroot,
   appears. Make your configuration changes as appropriate.
 

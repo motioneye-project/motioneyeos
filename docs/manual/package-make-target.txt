@@ -82,7 +82,7 @@ uninstall the package from both the target and the staging directory
 | +rebuild+         | Rebuild only necessary binaries and install them
 again
 
-| +reconfigure+     | Run again the configure command, then rebuild
+| +reconfigure+     | Re-run the configure command, then rebuild
 only necessary binaries, and lastly install them again
 
 |===================================================

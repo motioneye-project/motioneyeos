@@ -56,8 +56,7 @@ This command will generally perform the following steps:
 
 * Download source files (as required)
 * Configure, build and install the cross-compiling toolchain using the
-  appropriate toolchain backend is used, or simply import a toolchain
-  if an external toolchain
+  appropriate toolchain backend, or simply import an external toolchain
 * Build/install selected target packages
 * Build a kernel image, if selected
 * Build a bootloader image, if selected

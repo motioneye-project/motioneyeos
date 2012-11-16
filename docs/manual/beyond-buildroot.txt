@@ -12,7 +12,7 @@ NFS boot
 To achieve NFS-boot, enable _tar root filesystem_ in the _Filesystem
 images_ menu.
 
-After complete build, just run the following commands to setup the
+After a complete build, just run the following commands to setup the
 NFS-root directory:
 
 -------------------

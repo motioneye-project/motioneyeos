@@ -5,12 +5,12 @@ Gettext integration and interaction with packages
 
 Many packages that support internationalization use the gettext
 library. Dependencies for this library are fairly complicated and
-therefore, deserves some explanation.
+therefore, deserve some explanation.
 
-The 'uClibc' C library doesn't implement gettext functionality,
+The 'uClibc' C library doesn't implement gettext functionality;
 therefore with this C library, a separate gettext must be compiled. On
 the other hand, the 'glibc' C library does integrate its own gettext,
-and in this case, the separate gettext library should not be compiled,
+and in this case the separate gettext library should not be compiled,
 because it creates various kinds of build failures.
 
 Additionally, some packages (such as +libglib2+) do require gettext

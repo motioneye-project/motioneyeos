@@ -7,7 +7,7 @@ Tips and tricks
 Package name, config entry name and makefile variable relationship
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-In Buildroot, there are some relation between:
+In Buildroot, there is some relationship between:
 
 * the _package name_, which is the package directory name (and the
   name of the +*.mk+ file);
@@ -16,8 +16,8 @@ In Buildroot, there are some relation between:
 
 * the makefile variable prefix.
 
-Thus, it is mandatory to keep consistency between all this stuff,
-matching the following rules:
+It is mandatory to maintain consistency between these elements,
+using the following rules:
 
 * the _make_ target name will be the _package name_ itself (e.g.:
   +foo-bar_boo+);

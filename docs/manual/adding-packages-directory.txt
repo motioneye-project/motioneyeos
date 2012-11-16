@@ -154,12 +154,12 @@ config BR2_PACKAGE_E
 Overall, for package library dependencies, +select+ should be
 preferred.
 
-Note that such dependencies will make sure that the dependency option
+Note that such dependencies will ensure that the dependency option
 is also enabled, but not necessarily built before your package. To do
 so, the dependency also needs to be expressed in the +.mk+ file of the
 package.
 
-Further formating details: see xref:writing-rules-config-in[the
+Further formatting details: see xref:writing-rules-config-in[the
 writing rules].
 
 The +.mk+ file
@@ -174,7 +174,7 @@ different way, using different infrastructures:
 
 * *Makefiles for generic packages* (not using autotools or CMake):
   These are based on an infrastructure similar to the one used for
-  autotools-based packages, but requires a little more work from the
+  autotools-based packages, but require a little more work from the
   developer. They specify what should be done for the configuration,
   compilation, installation and cleanup of the package. This
   infrastructure must be used for all packages that do not use the

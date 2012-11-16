@@ -4,7 +4,7 @@ Embedded system basics
 ----------------------
 
 When developing an embedded system, there are a number of choices to
-do:
+address:
 
 * the cross-toolchain: target architecture/C library/...
 * the bootloader
@@ -14,14 +14,14 @@ do:
 * the package selection (busybox vs. "real" programs, ...)
 * ...
 
-Some of them may be influenced by the target hardware.
+Some of these may be influenced by the target hardware.
 
-Some of them may also add some constraints when you will develop the
-final application for what your target is designed (e.g. some
-functions may be provided by soem C libraries and missing in some
-others, ...). So, these choices should be carefully done.
+Some of the choices may also add some constraints when you develop the
+final application for which your target is designed (e.g. some
+functions may be provided by some C libraries and missing in some
+others, ...). So, these choices should be carefully made.
 
-Buildroot allows to set most of these options to fit your needs.
+Buildroot allows you to set most of these options to fit your needs.
 
 Moreover, Buildroot provides an infrastructure for reproducing the
 build process of your kernel, cross-toolchain, and embedded root

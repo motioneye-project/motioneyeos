@@ -3,7 +3,7 @@
 Writing rules
 -------------
 
-Overall, those writing rules are here to help you add new files in
+Overall, these writing rules are here to help you add new files in
 Buildroot or refactor existing ones.
 
 If you slightly modify some existing file, the important thing is

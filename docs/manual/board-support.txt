@@ -23,10 +23,10 @@ savedefconfig+. This will generate a minimal +defconfig+ file at the
 root of the Buildroot source tree. Move this file into the +configs/+
 directory, and rename it +MYBOARD_defconfig+.
 
-It is recommended to use as much as possible upstream versions of the
-Linux kernel and bootloaders, and to use as much as possible default
-kernel and bootloader configurations. If they are incorrect for your
-platform, we encourage you to send fixes to the corresponding upstream
+It is recommended to use upstream versions of the Linux kernel and
+bootloaders where possible, and also to use default kernel and bootloader
+configurations if possible. If the defaults are incorrect for
+your platform, we encourage you to send fixes to the corresponding upstream
 projects.
 
 However, in the mean time, you may want to store kernel or bootloader

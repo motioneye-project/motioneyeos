@@ -3,10 +3,10 @@
 About Buildroot
 ===============
 
-Buildroot provides a full featured environment for cross-development.
+Buildroot provides a full-featured environment for cross-development.
 Buildroot is able to generate a cross-compilation toolchain, a root
 filesystem, a Linux kernel image and a bootloader for your target.
-Buildroot can be used for any combinaison of these options,
+Buildroot can be used for any combination of these options,
 independently.
 
 Buildroot is useful mainly for people working with embedded systems.
@@ -15,7 +15,7 @@ processors everyone is used to having in his PC. They can be PowerPC
 processors, MIPS processors, ARM processors, etc.
 
 Buildroot supports numerous processors and their variants; it also
-comes with default configuration for several boards available
-off-the-shelf. Besides, a number of third-party projects are based on
+comes with default configurations for several boards available
+off-the-shelf. Besides this, a number of third-party projects are based on,
 or develop their BSP footnote:[BSP: Board Software Package] or
 SDK footnote:[SDK: Standard Development Kit] on top of Buildroot.

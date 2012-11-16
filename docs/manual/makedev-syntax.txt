@@ -4,12 +4,11 @@
 Makedev syntax documentation
 ----------------------------
 
-The makedev syntax is used across several places in Buildroot to
-define changes to be made for permissions or which device files to
-create and how to create them, in order to avoid to call mkdnod every
-now and then.
+The makedev syntax is used in several places in Buildroot to
+define changes to be made for permissions, or which device files to
+create and how to create them, in order to avoid calls to mknod.
 
-This syntax is derived from the makedev utility, and a more complete
+This syntax is derived from the makedev utility, and more complete
 documentation can be found in the +package/makedevs/README+ file.
 
 It takes the form of a line for each file, with the following layout:
@@ -18,7 +17,7 @@ It takes the form of a line for each file, with the following layout:
 |name |type |mode |uid |gid |major |minor |start |inc |count
 |===========================================================
 
-There is a few non-trivial blocks here:
+There are a few non-trivial blocks here:
 
 - +name+ is the path to the file you want to create/modify
 - +type+ is the type of the file, being one of :
@@ -27,13 +26,13 @@ There is a few non-trivial blocks here:
   * c: a character device file
   * b: a block device file
   * p: a named pipe
-- +mode+, +uid+ and +gid+ are the usual permissions stuff
+- +mode+, +uid+ and +gid+ are the usual permissions settings
 - +major+ and +minor+ are here for device files
-- +start+, +inc+ and +count+ are when you want to create a whole batch
+- +start+, +inc+ and +count+ are for when you want to create a batch
   of files, and can be reduced to a loop, beginning at +start+,
   incrementing its counter by +inc+ until it reaches +count+
 
-Let's say you want to change the permissions of a given file, using
+Let's say you want to change the permissions of a given file; using
 this syntax, you will need to put:
 -------------------------------------------------------------------
 /usr/bin/foobar	f	644	0	0	-	-	-	-	-

@@ -7,7 +7,7 @@ Frequently Asked Questions & Troubleshooting
 The boot hangs after 'Starting network...'
 ------------------------------------------
 
-If the boot process seems to hand after the following messages
+If the boot process seems to hang after the following messages
 (messages not necessarily exactly similar, depending on the list of
 packages selected):
 
@@ -20,7 +20,7 @@ Starting dropbear sshd: generating rsa key... generating dsa key... OK
 
 then it means that your system is running, but didn't start a shell on
 the serial console. In order to have the system start a shell on your
-serial console, you have to go in the Buildroot configuration, +System
+serial console, you have to go into the Buildroot configuration, +System
 configuration+, and modify +Port to run a getty (login prompt) on+ and
 +Baudrate to use+ as appropriate. This will automatically tune the
 +/etc/inittab+ file of the generated system so that a shell starts on
@@ -42,21 +42,21 @@ you should install the +glibc-static+ package. This is because the
 C library.
 
 [[faq-no-compiler-on-target]]
-Why there is no compiler on the target?
+Why is there no compiler on the target?
 ---------------------------------------
 
-It has been decided that the support of the _native compiler for the
-target_ would be stopped since the Buildroot-2012.11 release because:
+It has been decided that support for the _native compiler on the
+target_ would be stopped from the Buildroot-2012.11 release because:
 
-* this feature was not maintained nor tested and often broken;
+* this feature was neither maintained nor tested, and often broken;
 * this feature was only available for Buildroot toolchains;
 * Buildroot mostly targets _small_ or _very small_ target hardware
-  with limited resource onboard (CPU, ram, mass-storage), on which
+  with limited resource onboard (CPU, ram, mass-storage), for which
   compiling does not make much sense.
 
 If you need a compiler on your target anyway, then Buildroot is not
 suitable for your purpose. In such case, you need a _real
-distribution_ and you should for something like:
+distribution_ and you should opt for something like:
 
 * http://www.openembedded.org[openembedded]
 * https://www.yoctoproject.org[yocto]
@@ -67,8 +67,8 @@ distribution_ and you should for something like:
 * ...
 
 [[faq-no-dev-files-on-target]]
-Why there is no development files on the target?
-------------------------------------------------
+Why are there no development files on the target?
+-------------------------------------------------
 
 Since there is no compiler available on the target (see
 xref:faq-no-compiler-on-target[]), it does not make sense to waste
@@ -78,7 +78,7 @@ Therefore, those files are always removed from the target since the
 Buildroot-2012.11 release.
 
 [[faq-no-doc-on-target]]
-Why there is no documentation on the target?
+Why is there no documentation on the target?
 --------------------------------------------
 
 Because Buildroot mostly targets _small_ or _very small_ target
@@ -101,21 +101,21 @@ semantics.
 See xref:depends-on-vs-select[].
 
 [[faq-why-not-visible-package]]
-Why some packages are not visible in the Buildroot config menu?
+Why are some packages not visible in the Buildroot config menu?
 ---------------------------------------------------------------
 
-If a package exists in the Buildroot tree and does not appears in the
+If a package exists in the Buildroot tree and does not appear in the
 config menu, this most likely means that some of the package's
 dependencies are not met.
 
-To know more about the dependencies of a package, search the package
-symbol using in teh config menu (see xref:make-tips[]).
+To know more about the dependencies of a package, search for the
+package symbol in the config menu (see xref:make-tips[]).
 
 Then, you may have to recursively enable several options (which
-correspond to the unmeet dependencies) to finally be able to select
+correspond to the unmet dependencies) to finally be able to select
 the package.
 
-If the package is not visible due to some unmeet toolchain options,
+If the package is not visible due to some unmet toolchain options,
 then you should certainly run a full rebuild (see xref:make-tips[] for
 more explanations).
 
@@ -123,12 +123,12 @@ more explanations).
 Why not use the target directory as a chroot directory?
 -------------------------------------------------------
 
-There are plenty of reason to *not* use the target directory a chroot
+There are plenty of reasons to *not* use the target directory a chroot
 one, among these:
 
-* files' owners, modes and permissions are not correctly set in the
+* file ownerships, modes and permissions are not correctly set in the
   target directory;
-* devices nodes are not created in the target directory.
+* device nodes are not created in the target directory.
 
-Because of that, commands run in through chroot, using the target
-directory as new root, will fail.
+For these reasons, commands run through chroot, using the target
+directory as the new root, would fail.

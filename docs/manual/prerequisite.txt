@@ -4,13 +4,13 @@
 System requirements
 -------------------
 
-Buildroot is design to run on Linux system.
+Buildroot is designed to run on Linux systems.
 
 Buildroot needs some software to be already installed on the host
-system; hereafter the lists of the mandatory and optional packages
+system; here are the lists of the mandatory and optional packages
 (package names may vary between distributions).
 
-Take care of _installing both runtime and development data_, especially
+Take care to _install both runtime and development data_, especially
 for the libraries that may be packaged in 2 distinct packages.
 
 
@@ -58,7 +58,7 @@ Optional packages
 * Source fetching tools:
 +
 In the official tree, most of the package sources are retrieved
-using +wget+, few are only available through their +git+, +mercurial+,
+using +wget+; a few are only available through their +git+, +mercurial+,
 or +svn+ repository.
 +
 All other source fetching methods are implemented and may be used in a

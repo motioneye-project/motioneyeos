@@ -4,8 +4,8 @@ Location of downloaded packages
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 It might be useful to know that the various tarballs that are
-downloaded by the Makefiles are all stored in the +DL_DIR+ which by
-default is the +dl+ directory. It's useful, for example, if you want
+downloaded by the Makefiles are all stored in +DL_DIR+ which by
+default is the +dl+ directory. This is useful, for example, if you want
 to keep a complete version of Buildroot which is known to be working
 with the associated tarballs. This will allow you to regenerate the
 toolchain and the target filesystem with exactly the same versions.

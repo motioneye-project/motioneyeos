@@ -12,17 +12,18 @@ All of the end products of Buildroot (toolchain, root filesystem, kernel,
 bootloaders) contain opensource software, released under various licenses.
 
 Using opensource software gives you the freedom to build rich embedded
-systems choosing from a wide range of packages, but also gives some
+systems, choosing from a wide range of packages, but also imposes some
 obligations that you must know and honour.
 Some licenses require you to publish the license text in the documentation of
-your product. Other require you to redistribute the source code of the
+your product. Others require you to redistribute the source code of the
 software to those that receive your product.
 
-The exact requirements of each license is documented in each package, and it is
-your (or your legal office's) responsibility to comply with these requirements.
+The exact requirements of each license are documented in each package, and
+it is your responsibility (or that of your legal office) to comply with those
+requirements.
 To make this easier for you, Buildroot can collect for you some material you
-will probably need. To produce this material, after you configured Buildroot
-with +make menuconfig+, +make xconfig+ or +make gconfig+, run:
+will probably need. To produce this material, after you have configured
+Buildroot with +make menuconfig+, +make xconfig+ or +make gconfig+, run:
 
 --------------------
 make legal-info
@@ -44,8 +45,8 @@ There you will find:
   Buildroot sources and are not duplicated in the +sources/+ subdirectory.
 * A manifest file listing the configured packages, their version, license and
   related information.
-  Some of these information might be not defined in Buildroot; in this case
-  they are clearly marked as "unknown" or similar.
+  Some of this information might not be defined in Buildroot; such items are
+  clearly marked as "unknown" or similar.
 * A +licenses/+ subdirectory, which contains the license text of packages.
   If the license file(s) are not defined in Buildroot, the file is not produced
   and a warning in the +README+ indicates this.
@@ -53,7 +54,7 @@ There you will find:
 Please note that the aim of the +legal-info+ feature of Buildroot is to
 produce all the material that is somehow relevant for legal compliance with the
 package licenses. Buildroot does not try to produce the exact material that
-you must somehow make public. It does surely produce some more material than is
+you must somehow make public. Certainly, more material is produced than is
 needed for a strict legal compliance. For example, it produces the source code
 for packages released under BSD-like licenses, that you might not want to
 redistribute in source form.
@@ -132,5 +133,5 @@ Buildroot is part of the 'scripts used to control compilation and
 installation of the executable', and as such it is considered part of the
 material that must be redistributed.
 
-Keep in mind this is only the Buildroot developers' opinion, and you should
-consult your legal department or lawyer in case of any doubt.
+Keep in mind that this is only the Buildroot developers' opinion, and you
+should consult your legal department or lawyer in case of any doubt.

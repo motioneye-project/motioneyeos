@@ -23,7 +23,7 @@ Building out-of-tree
 ~~~~~~~~~~~~~~~~~~~~
 
 As default, everything built by Buildroot is stored in the directory
-+output+ in the buildroot tree.
++output+ in the Buildroot tree.
 
 Buildroot also supports building out of tree with a syntax similar to
 the Linux kernel. To use it, add +O=<directory>+ to the make command
@@ -70,21 +70,21 @@ to +make+ or set in the environment:
   +
   Note that the uClibc configuration file can also be set from the
   configuration interface, so through the Buildroot .config file; this
-  the actual recommended way of setting it.
+  is the recommended way of setting it.
   +
 * +BUSYBOX_CONFIG_FILE=<path/to/.config>+, path to
   the Busybox configuration file.
   +
   Note that the Busybox configuration file can also be set from the
   configuration interface, so through the Buildroot .config file; this
-  the actual recommended way of setting it.
+  is the recommended way of setting it.
   +
 * +BUILDROOT_DL_DIR+ to override the directory in which
   Buildroot stores/retrieves downloaded files
   +
   Note that the Buildroot download directory can also be set from the
   configuration interface, so through the Buildroot .config file; this
-  the actual recommended way of setting it.
+  is the recommended way of setting it.
 
 An example that uses config files located in the toplevel directory and
 in your $HOME:

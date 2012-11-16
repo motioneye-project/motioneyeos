@@ -48,8 +48,7 @@ The channel +#buildroot+ is hosted on Freenode
 http://webchat.freenode.net[].
 
 When asking for help on IRC, share relevant logs or pieces of code
-using a code sharing website (see
-http://en.wikipedia.org/wiki/Comparison_of_pastebins[], and pick one).
+using a code sharing website.
 
 [[patchwork]]
 Patchwork

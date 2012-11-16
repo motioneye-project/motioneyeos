@@ -57,7 +57,7 @@ Lastly, send/submit your patch set to the Buildroot mailing list:
 Note that +git+ should be configured to use your mail account.
 To configure +git+, see +man git-send-email+ or google it.
 
-Make sure posted *patches are not line-wrapped*, otherwise it cannot
+Make sure posted *patches are not line-wrapped*, otherwise they cannot
 easily be applied. In such a case, fix your e-mail client, or better,
 use +git send-email+ to send your patches.
 
@@ -79,11 +79,11 @@ Tested-by:: Indicates that the patch has been tested. It is useful
 Autobuild
 ---------
 
-The Buildroot community is currently setting up automatic build i
-order to test more and more configuration. All build results are
+The Buildroot community is currently setting up automatic builds in
+order to test more and more configurations. All build results are
 available at http://autobuild.buildroot.org[]
 
-A way to contribute is fixing broken builds.
+A good way to contribute is by fixing broken builds.
 
 In the commit message of a patch fixing an _autobuild_, add a
 reference to the _build result directory_ (the +dir+ link in the _data
@@ -97,17 +97,17 @@ Fixes http://autobuild.buildroot.org/results/51000a9d4656afe9e0ea6f07b9f8ed374c2
 Reporting issues/bugs, get help
 -------------------------------
 
-Before reporting some issues, please chek
-xref:mailing-list-subscribe[the mailing list archive] in case someone had
+Before reporting any issue, please check
+xref:mailing-list-subscribe[the mailing list archive] in case someone has
 already reported and fixed a similar problem.
 
-Whatever the way you choose to report some bugs or get help,
+However you choose to report bugs or get help,
 xref:bugtracker[opening a bug] or
-xref:mailing-list-subscribe[send a mail to the mailing list], there is
-a number of detail to provide in order to help people reproduce and
+xref:mailing-list-subscribe[send a mail to the mailing list], there are
+a number of details to provide in order to help people reproduce and
 find a solution to the issue.
 
-Try to think as you would be the one who will help someone else; in
+Try to think as if you were trying to help someone else; in
 that case, what would you need?
 
 Here is a short list of details to provide in such case:
@@ -121,6 +121,5 @@ Here is a short list of details to provide in such case:
 
 Additionnally, your can add the +.config+ file.
 
-If some of these details are too large, do not hesitate to use some
-pastebin service (see
-http://en.wikipedia.org/wiki/Comparison_of_pastebins[]).
+If some of these details are too large, do not hesitate to use a
+pastebin service (see http://www.similarsitesearch.com/alternatives-to/pastebin.com[]).
