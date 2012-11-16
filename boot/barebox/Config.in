@@ -8,12 +8,9 @@ config BR2_TARGET_BAREBOX
 if BR2_TARGET_BAREBOX
 choice
 	prompt "version"
-	default BR2_TARGET_BAREBOX_2012_10
+	default BR2_TARGET_BAREBOX_2012_11
 	help
 	  Select the specific Barebox version you want to use
-
-config BR2_TARGET_BAREBOX_2012_07
-	bool "2012.07"
 
 config BR2_TARGET_BAREBOX_2012_08
 	bool "2012.08"
@@ -23,6 +20,9 @@ config BR2_TARGET_BAREBOX_2012_09
 
 config BR2_TARGET_BAREBOX_2012_10
 	bool "2012.10"
+
+config BR2_TARGET_BAREBOX_2012_11
+	bool "2012.11"
 
 config BR2_TARGET_BAREBOX_CUSTOM_TARBALL
 	bool "Custom tarball"
