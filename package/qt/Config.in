@@ -286,6 +286,7 @@ config BR2_PACKAGE_QT_DBUS
 	bool "DBus Module"
 	select BR2_PACKAGE_DBUS
 	depends on BR2_TOOLCHAIN_HAS_THREADS # dbus
+	depends on BR2_USE_MMU # dbus
 	help
 	  Build the Qt DBus module.
 
