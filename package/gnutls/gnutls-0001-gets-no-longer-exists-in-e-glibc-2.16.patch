@@ -1,0 +1,56 @@
+From 855f72c4fe7f4bbf2137ab60357ae3b27bb65185 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Sat, 17 Nov 2012 17:45:41 +0100
+Subject: [PATCH] gets() no longer exists in (e)glibc >= 2.16
+
+gnutls has already updated gnulib upstream in more recent versions
+(3.x) but apparently not in the 2.x branch that we are using.
+
+This patch comes from OpenEmbedded, and has originally been written by
+Khem Raj <raj.khem@gmail.com>.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ gl/stdio.in.h     |    2 ++
+ lib/gl/stdio.in.h |    2 ++
+ 2 files changed, 4 insertions(+)
+
+diff --git a/gl/stdio.in.h b/gl/stdio.in.h
+index 9dc7c4a..8cb19d7 100644
+--- a/gl/stdio.in.h
++++ b/gl/stdio.in.h
+@@ -710,11 +710,13 @@ _GL_CXXALIAS_RPL (gets, char *, (char *s));
+ _GL_CXXALIAS_SYS (gets, char *, (char *s));
+ #  undef gets
+ # endif
++# if defined gets
+ _GL_CXXALIASWARN (gets);
+ /* It is very rare that the developer ever has full control of stdin,
+    so any use of gets warrants an unconditional warning.  Assume it is
+    always declared, since it is required by C89.  */
+ _GL_WARN_ON_USE (gets, "gets is a security hole - use fgets instead");
++# endif
+ #endif
+ 
+ 
+diff --git a/lib/gl/stdio.in.h b/lib/gl/stdio.in.h
+index 03bea2a..cb6483b 100644
+--- a/lib/gl/stdio.in.h
++++ b/lib/gl/stdio.in.h
+@@ -710,11 +710,13 @@ _GL_CXXALIAS_RPL (gets, char *, (char *s));
+ _GL_CXXALIAS_SYS (gets, char *, (char *s));
+ #  undef gets
+ # endif
++# if defined gets
+ _GL_CXXALIASWARN (gets);
+ /* It is very rare that the developer ever has full control of stdin,
+    so any use of gets warrants an unconditional warning.  Assume it is
+    always declared, since it is required by C89.  */
+ _GL_WARN_ON_USE (gets, "gets is a security hole - use fgets instead");
++# endif
+ #endif
+ 
+ 
+-- 
+1.7.9.5
+
