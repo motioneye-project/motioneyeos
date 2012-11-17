@@ -17,6 +17,7 @@ PYTHON_LICENSE_FILES = LICENSE
 # third-party Python modules.
 
 HOST_PYTHON_CONF_OPT += 	\
+	--enable-static		\
 	--without-cxx-main 	\
 	--disable-sqlite3	\
 	--disable-tk		\
@@ -37,19 +38,6 @@ HOST_PYTHON_MAKE_ENV = \
 	PYTHON_MODULES_LIB="$(HOST_DIR)/lib $(HOST_DIR)/usr/lib"
 
 HOST_PYTHON_AUTORECONF = YES
-
-define HOST_PYTHON_CONFIGURE_CMDS
-	(cd $(@D) && rm -rf config.cache; \
-	        $(HOST_CONFIGURE_OPTS) \
-		CFLAGS="$(HOST_CFLAGS)" \
-		LDFLAGS="$(HOST_LDFLAGS)" \
-                $(HOST_PYTHON_CONF_ENV) \
-		./configure \
-		--prefix="$(HOST_DIR)/usr" \
-		--sysconfdir="$(HOST_DIR)/etc" \
-		$(HOST_PYTHON_CONF_OPT) \
-	)
-endef
 
 PYTHON_DEPENDENCIES  = host-python libffi
 
