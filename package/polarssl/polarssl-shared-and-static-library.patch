@@ -9,21 +9,22 @@ This patch adds the USE_STATIC_POLARSSL_LIBRARY (which defaults to ON)
 in addition to the existing USE_SHARED_POLARSSL_LIBRARY (which
 defaults to OFF). Both options can be manipulated independently.
 
+[Gustavo: update for polarssl 1.2.0]
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
 
-Index: polarssl-1.1.1/library/CMakeLists.txt
-===================================================================
---- polarssl-1.1.1.orig/library/CMakeLists.txt
-+++ polarssl-1.1.1/library/CMakeLists.txt
+diff -Nura polarssl-1.2.0.orig/library/CMakeLists.txt polarssl-1.2.0/library/CMakeLists.txt
+--- polarssl-1.2.0.orig/library/CMakeLists.txt	2012-11-15 15:01:58.239248830 -0300
++++ polarssl-1.2.0/library/CMakeLists.txt	2012-11-15 15:00:10.310806353 -0300
 @@ -1,4 +1,5 @@
  option(USE_SHARED_POLARSSL_LIBRARY "Build PolarSSL as a shared library." OFF)
 +option(USE_STATIC_POLARSSL_LIBRARY "Build PolarSSL as a static library." ON)
  
  set(src
       aes.c
-@@ -40,17 +41,21 @@
-      xtea.c
- )
+@@ -50,19 +51,23 @@
+ set(libs ws2_32)
+ endif(WIN32)
  
 -if(NOT USE_SHARED_POLARSSL_LIBRARY)
 -
@@ -33,7 +34,7 @@ Index: polarssl-1.1.1/library/CMakeLists.txt
 +if(USE_SHARED_POLARSSL_LIBRARY)
  
  add_library(polarssl SHARED ${src})
- set_target_properties(polarssl PROPERTIES VERSION 1.1.3 SOVERSION 1)
+ set_target_properties(polarssl PROPERTIES VERSION 1.2.0 SOVERSION 2)
 +set_target_properties(polarssl PROPERTIES OUTPUT_NAME polarssl)
 +
 +endif(USE_SHARED_POLARSSL_LIBRARY)
@@ -45,6 +46,8 @@ Index: polarssl-1.1.1/library/CMakeLists.txt
  
 -endif(NOT USE_SHARED_POLARSSL_LIBRARY)
 +endif(USE_STATIC_POLARSSL_LIBRARY)
+ 
+ target_link_libraries(polarssl ${libs})
  
 -install(TARGETS polarssl
 +install(TARGETS polarssl polarssl-static
