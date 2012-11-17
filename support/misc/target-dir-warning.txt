@@ -1,0 +1,29 @@
+Warning!
+========
+
+This directory does *not* contain the root filesystem that you can use
+on your embedded system. Since Buildroot does not run as root, it
+cannot create device files and set the permissions and ownership of
+files correctly in this directory to make it usable as a root
+filesystem.
+
+For that reason, do *not* use the contents of this directory to mount
+your root filesystem over NFS or copy the contents of this directory
+to a SD card or USB key, thinking it will work as the root filesystem
+for your embedded system. It will simply *not* work.
+
+Instead, if you need a usable root filesystem, please select one of
+the filesystem image formats available in the Buildroot configuration
+interface (make menuconfig or others) in the "Filesystem images"
+sub-menu. If you want to get a filesystem image that you can easily
+extract to your SD card or to some directory exposed through NFS,
+please use the "tar the root filesystem" option. It will generate a
+images/rootfs.tar image in your Buildroot output directory, which you
+can extract as root:
+
+  sudo tar -C /destination/of/extraction -xf images/rootfs.tar
+
+Those image files are created using the contents of the target/
+directory, but there is a post-processing step to create device files
+and set owernship/permissions properly even if Buildroot does not run
+as root.
