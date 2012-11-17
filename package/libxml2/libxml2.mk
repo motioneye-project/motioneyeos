@@ -26,7 +26,15 @@ LIBXML2_POST_INSTALL_STAGING_HOOKS += LIBXML2_STAGING_LIBXML2_CONFIG_FIXUP
 
 HOST_LIBXML2_DEPENDENCIES = host-pkgconf
 
-HOST_LIBXML2_CONF_OPT = --without-debug --without-python
+HOST_LIBXML2_CONF_OPT = --without-debug
+
+ifeq ($(BR2_PACKAGE_HOST_LIBXML2_PYTHON),y)
+HOST_LIBXML2_DEPENDENCIES += host-python
+HOST_LIBXML2_CONF_OPT += --with-python=$(HOST_DIR)/usr
+else
+HOST_LIBXML2_CONF_OPT += --without-python
+endif
+
 
 define LIBXML2_REMOVE_CONFIG_SCRIPTS
 	$(RM) -f $(TARGET_DIR)/usr/bin/xml2-config
