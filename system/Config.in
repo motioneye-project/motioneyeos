@@ -170,15 +170,16 @@ config BR2_ROOTFS_POST_BUILD_SCRIPT
 	string "Custom script to run before creating filesystem images"
 	default ""
 	help
-	  Specify a script to be run after the build has finished and before
-	  Buildroot starts packing the files into selected filesystem images.
+	  Specify a space-separated list of scripts to be run after the build
+	  has finished and before Buildroot starts packing the files into
+	  selected filesystem images.
 
 	  This gives users the oportunity to do board-specific cleanups,
 	  add-ons and the like, so the generated files can be used directly
 	  without further processing.
 
-	  The script is called with the target directory name as first and
-	  only argument. Make sure the exit code of that script is 0,
-	  otherwise make will stop after calling it.
+	  These scripts are called with the target directory name as first and
+	  only argument. Make sure the exit code of those scripts are 0,
+	  otherwise make will stop after calling them.
 
 endmenu
