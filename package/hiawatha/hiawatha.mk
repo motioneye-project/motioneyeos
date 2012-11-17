@@ -1,5 +1,5 @@
-HIAWATHA_VERSION = 8.5
-HIAWATHA_SITE = http://www.hiawatha-webserver.org/files/
+HIAWATHA_VERSION = 8.6
+HIAWATHA_SITE = http://www.hiawatha-webserver.org/files
 HIAWATHA_LICENSE = GPLv2
 HIAWATHA_LICENSE_FILES = LICENSE
 
