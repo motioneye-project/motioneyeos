@@ -41,6 +41,10 @@ uclibc-source: $(CTNG_DIR)/.config
 CTNG_LIBS_LIB := ld*.so libc.so libcrypt.so libdl.so libgcc_s.so libm.so    \
                  libnsl.so libpthread.so libresolv.so librt.so libutil.so
 
+ifeq ($(BR2_PACKAGE_GDB_SERVER),y)
+CTNG_LIBS_LIB += libthread_db.so
+endif
+
 #--------------
 # The libc-specific system libraries (in /lib)
 # Note: it may be needed to tweak the NSS libs in the glibc and eglibc cases...
