@@ -61,7 +61,7 @@ endif
 
 ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),y)
 LIB_EXTERNAL_LIBS+=libpthread.so
-ifeq ($(BR2_PACKAGE_GDB_SERVER),y)
+ifneq ($(BR2_PACKAGE_GDB_SERVER)$(BR2_TOOLCHAIN_EXTERNAL_GDB_SERVER_COPY),)
 LIB_EXTERNAL_LIBS+=libthread_db.so
 endif # gdbserver
 endif # ! no threads
