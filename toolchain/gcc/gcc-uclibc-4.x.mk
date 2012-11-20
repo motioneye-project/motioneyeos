@@ -251,9 +251,9 @@ $(GCC_DIR)/.unpacked: $(DL_DIR)/$(GCC_SOURCE)
 	rm -rf $(GCC_DIR)
 	$(GCC_CAT) $(DL_DIR)/$(GCC_SOURCE) | tar -C $(TOOLCHAIN_DIR) $(TAR_OPTIONS) -
 	$(call CONFIG_UPDATE,$(@D))
-ifneq ($(call qstrip, $(BR2_xtensa_core_name)),)
-	tar xf $(BR2_xtensa_overlay_dir)/xtensa_$(call qstrip,\
-		$(BR2_xtensa_core_name)).tar -C $(@D) include
+ifneq ($(call qstrip, $(BR2_XTENSA_CORE_NAME)),)
+	tar xf $(BR2_XTENSA_OVERLAY_DIR)/xtensa_$(call qstrip,\
+		$(BR2_XTENSA_CORE_NAME)).tar -C $(@D) --strip-components=1 gcc
 endif
 	touch $@
 

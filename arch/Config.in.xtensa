@@ -2,32 +2,36 @@ choice
 	prompt "Target Architecture Variant"
 	depends on BR2_xtensa
 	default BR2_xtensa_fsf
-config BR2_xtensa_custom
+config BR2_XTENSA_CUSTOM
 	bool "Custom Xtensa processor configuration"
 config BR2_xtensa_fsf
 	bool "fsf - Default configuration"
 endchoice
 
-config BR2_xtensa_custom_name
-	string "Custom Xtensa processor configuration anme"
-	depends on BR2_xtensa_custom
+config BR2_XTENSA_CUSTOM_NAME
+	string "Custom Xtensa processor configuration name"
+	depends on BR2_XTENSA_CUSTOM
 	default ""
 	help
 	  Name given to a custom Xtensa processor configuration.
 
-config BR2_xtensa_core_name
+config BR2_XTENSA_CORE_NAME
 	string
-	default BR2_xtensa_custom_name	if BR2_xtensa_custom
+	default BR2_XTENSA_CUSTOM_NAME	if BR2_XTENSA_CUSTOM
 	default ""			if BR2_xtensa_fsf
 
-config BR2_xtensa_overlay_dir
+config BR2_XTENSA_OVERLAY_DIR
 	string "Overlay directory for custom configuration"
-	depends on BR2_xtensa_custom
+	depends on BR2_XTENSA_CUSTOM
 	default ""
 	help
-	  Provide a directory path that contains the overlay files
-	  for the custom configuration. The path is based on the
-	  buildroot top directory.
+	  Provide the directory path that contains the overlay file
+	  for a custom processor configuration. The path is relative
+	  to the top directory of buildroot.
+	  These overlay files are tar packages with updated configuration
+	  files for various toolchain packages and Xtensa processor
+	  configurations. They are provided by the processor vendor or
+	  directly from Tensilica.
 
 config BR2_ARCH
 	default "xtensa"	if BR2_xtensa
