@@ -1,5 +1,7 @@
 config BR2_PACKAGE_ARPTABLES
 	bool "arptables"
+	# needs fork()
+	depends on BR2_USE_MMU
 	help
 	  Tool to set up, maintain, and inspect the tables of ARP rules.
 
