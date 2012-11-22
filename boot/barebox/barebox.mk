@@ -72,7 +72,11 @@ define BAREBOX_BUILD_CMDS
 endef
 
 define BAREBOX_INSTALL_IMAGES_CMDS
-	cp $(@D)/barebox.bin $(BINARIES_DIR)
+	if test -h $(@D)/barebox-flash-image ; then \
+		cp -L $(@D)/barebox-flash-image $(BINARIES_DIR)/barebox.bin ; \
+	else \
+		cp $(@D)/barebox.bin $(BINARIES_DIR);\
+	fi
 endef
 
 ifeq ($(BR2_TARGET_BAREBOX_BAREBOXENV),y)
