@@ -11,5 +11,9 @@ LIBUSB_LICENSE_FILES = COPYING
 LIBUSB_DEPENDENCIES = host-pkgconf
 LIBUSB_INSTALL_STAGING = YES
 
+ifeq ($(BR2_avr32),y)
+LIBUSB_CONF_OPT += --disable-timerfd
+endif
+
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
