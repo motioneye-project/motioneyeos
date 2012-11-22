@@ -1,6 +1,8 @@
 SCONS_VERSION = 2.0.1
 SCONS_SOURCE = scons-$(SCONS_VERSION).tar.gz
 SCONS_SITE = http://downloads.sourceforge.net/project/scons/scons/$(SCONS_VERSION)
+SCONS_LICENSE = MIT
+SCONS_LICENSE_FILES = LICENSE.txt
 
 define HOST_SCONS_BUILD_CMDS
 	(cd $(@D); python setup.py build)
