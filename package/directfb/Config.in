@@ -1,5 +1,6 @@
 config BR2_PACKAGE_DIRECTFB
 	bool "directfb"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
 	select BR2_PACKAGE_FREETYPE
 	select BR2_PACKAGE_ZLIB
 	help
@@ -107,3 +108,6 @@ config BR2_PACKAGE_DIRECTB_TESTS
 	bool "build directfb tests"
 
 endif # BR2_PACKAGE_DIRECTFB
+
+comment "directfb needs a toolchain with thread support"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
