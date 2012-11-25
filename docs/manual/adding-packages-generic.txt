@@ -358,6 +358,9 @@ useful for generic packages.
 
 The following hook points are available:
 
+* +LIBFOO_POST_DOWNLOAD_HOOKS+
+* +LIBFOO_POST_EXTRACT_HOOKS+
+* +LIBFOO_PRE_PATCH_HOOKS+
 * +LIBFOO_POST_PATCH_HOOKS+
 * +LIBFOO_PRE_CONFIGURE_HOOKS+
 * +LIBFOO_POST_CONFIGURE_HOOKS+
