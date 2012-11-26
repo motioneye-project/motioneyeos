@@ -12,9 +12,17 @@ config BR2_PACKAGE_GSTREAMER_GST_DEBUG
 	default y
 	depends on BR2_PACKAGE_GSTREAMER
 	help
-	  Enable support for the gst-debug tracing functionality
-	  in gstreamer. This has limited CPU overhead, but does
-	  increase the rootfs size somewhat.
+	  Enable support for the gst-debug tracing functionality in gstreamer.
+	  This has limited CPU overhead, but does increase the rootfs size
+	  somewhat.
+
+config BR2_PACKAGE_GSTREAMER_PLUGIN_REGISTRY
+	bool "enable plugin registry"
+	default y
+	depends on BR2_PACKAGE_GSTREAMER
+	help
+	  Enable support for the GStreamer plugin registry. This may increase
+	  the launch-time for a GStreamer application.
 
 comment "gstreamer requires a toolchain with WCHAR support"
 	depends on !BR2_USE_WCHAR
