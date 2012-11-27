@@ -15,6 +15,8 @@ LINUX_DEPENDENCIES += ocf-linux
 define OCF_LINUX_PREPARE_KERNEL
 	support/scripts/apply-patches.sh $(LINUX_DIR) \
 		$(OCF_LINUX_DIR)/patches/ linux-3.2.1-ocf.patch ; \
+	grep -q __mix_pool_bytes $(LINUX_DIR)/drivers/char/random.c && \
+	$(SED) 's:wordcount\*4:&, NULL:' $(LINUX_DIR)/drivers/char/random.c ; \
 	cp -rf $(OCF_LINUX_DIR)/ocf $(LINUX_DIR)/crypto/ocf ;
 endef
 
