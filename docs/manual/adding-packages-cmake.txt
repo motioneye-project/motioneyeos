@@ -21,7 +21,7 @@ with an example :
 07: LIBFOO_SOURCE = libfoo-$(LIBFOO_VERSION).tar.gz
 08: LIBFOO_SITE = http://www.foosoftware.org/download
 09: LIBFOO_INSTALL_STAGING = YES
-10: LIBFOO_INSTALL_TARGET = YES
+10: LIBFOO_INSTALL_TARGET = NO
 11: LIBFOO_CONF_OPT = -DBUILD_DEMOS=ON
 12: LIBFOO_DEPENDENCIES = libglib2 host-pkgconf
 13:
@@ -44,13 +44,13 @@ other libraries or applications depending on them. Also by default, when
 staging installation is enabled, packages are installed in this location
 using the +make install+ command.
 
-On line 10, we tell Buildroot to also install the package to the
+On line 10, we tell Buildroot to not install the package to the
 target directory. This directory contains what will become the root
-filesystem running on the target. Usually, we try not to install header
-files and to install stripped versions of the binary. By default, target
-installation is enabled, so in fact, this line is not strictly
-necessary. Also by default, packages are installed in this location
-using the +make install+ command.
+filesystem running on the target. For purely static libraries, it is
+not necessary to install them in the target directory because they will
+not be used at runtime. By default, target installation is enabled; setting
+this variable to NO is almost never needed. Also by default, packages are
+installed in this location using the +make install+ command.
 
 On line 11, we tell Buildroot to pass custom options to CMake when it is
 configuring the package.
