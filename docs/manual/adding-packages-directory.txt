@@ -13,7 +13,7 @@ New subdirectories are discouraged, however.
 
 
 +Config.in+ file
-^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~
 
 Then, create a file named +Config.in+. This file will contain the
 option descriptions related to our +libfoo+ software that will be used
@@ -51,6 +51,9 @@ source "package/libfoo/Config.in"
 --------------------------
 
 [[depends-on-vs-select]]
+Choosing +depends on+ or +select+
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 The +Config.in+ file of your package must also ensure that
 dependencies are enabled. Typically, Buildroot uses the following
 rules:
@@ -164,7 +167,7 @@ Further formatting details: see xref:writing-rules-config-in[the
 coding style].
 
 The +.mk+ file
-^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~
 
 Finally, here's the hardest part. Create a file named +libfoo.mk+. It
 describes how the package should be downloaded, configured, built,
