@@ -1,0 +1,28 @@
+Patch from Gentoo:
+http://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/media-libs/gd/files/gd-2.0.35-fontconfig.patch?view=log
+
+fix from upstream
+
+http://bugs.gentoo.org/363367
+
+# HG changeset patch
+# User tabe
+# Date 1239812355 0
+# Node ID 3ea283efcdafcb2acc1dd0ace1d3d48da6d8cec8
+# Parent  4f29a877875f63cee5a64e7bea406a61882a565e
+fixed FS#199
+
+199, Fixed useFontConfig() to work as documented (Ethan Merritt)
+ 
+diff -r 4f29a877875f -r 3ea283efcdaf gdft.c
+--- a/gdft.c	Sat Apr 04 12:00:37 2009 +0000
++++ b/gdft.c	Wed Apr 15 16:19:15 2009 +0000
+@@ -1659,7 +1659,7 @@
+ BGD_DECLARE(int) gdFTUseFontConfig(int flag)
+ {
+ #ifdef HAVE_LIBFONTCONFIG
+-	fontConfigFlag = 1;
++	fontConfigFlag = flag;
+ 	return 1;
+ #else
+ 	return 0;
