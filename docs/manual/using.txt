@@ -93,8 +93,8 @@ This directory contains several subdirectories:
   use the tarball image generated in +images/+ and extract it as
   root. Compared to +staging/+, +target/+ contains only the files and
   libraries needed to run the selected target applications: the
-  development files (headers, etc.) are not present, unless the
-  +development files in target filesystem+ option is selected.
+  development files (headers, etc.) are not present, the binaries are
+  stripped.
 
 * +host/+ contains the installation of tools compiled for the host
   that are needed for the proper execution of Buildroot, including the

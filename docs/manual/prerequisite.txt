@@ -47,9 +47,6 @@ Mandatory packages
 * Source fetching tools:
 ** +wget+
 
-* Configuration interface dependencies (requires development libraries):
-** +ncurses5+
-
 [[requirement-optional]]
 
 Optional packages
@@ -73,6 +70,7 @@ development context (further details: refer to xref:download-infra[]).
 ** +subversion+
 
 * Configuration interface dependencies (requires development libraries):
+** +ncurses5+ to use the 'menuconfig' interface
 ** +qt4+ to use the 'xconfig' interface
 ** +glib2+, +gtk2+ and +glade2+ to use the 'gconfig' interface
 

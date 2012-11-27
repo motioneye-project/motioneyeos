@@ -98,7 +98,7 @@ deal with expressing the dependencies of this package.
 
 In the +Config.in+ file, dependencies may be expressed following two
 semantics.
-See xref:depends-on-vs-select[].
+See xref:depends-on-vs-select[choosing between _depends_ and _select_].
 
 [[faq-why-not-visible-package]]
 Why are some packages not visible in the Buildroot config menu?
@@ -131,4 +131,8 @@ one, among these:
 * device nodes are not created in the target directory.
 
 For these reasons, commands run through chroot, using the target
-directory as the new root, would fail.
+directory as the new root, will most likely fail.
+
+If you want to run the target filesystem inside a chroot, or as an NFS
+root, then use the tarball image generated in +images/+ and extract it
+as root.

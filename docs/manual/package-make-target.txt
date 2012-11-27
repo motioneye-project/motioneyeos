@@ -2,20 +2,13 @@
 
 [[pkg-build-steps]]
 
-Package make targets
-~~~~~~~~~~~~~~~~~~~~
+Package-specific _make_ targets
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-A +make <package>+ call achieves several _make targets_ with, as a
-result, this particular package and its dependencies built, installed
-in their destination directory (target, staging or host directory).
+Running +make <package>+ builds and installs that particular package
+and its dependencies.
 
-For packages based on the Buildroot infrastructures (+generic-package+,
-+autotools-package+ or +cmake-package+), each of those
-actions/steps/commands. For packages relying on other build system,
-then there is no other choice than looking at the +.mk+ file (see also
-the xref:rebuild-pkg[]).
-
-For packages relying on the Buildroot infrastructures, there are
+For packages relying on the Buildroot infrastructure, there are
 numerous special make targets that can be called independently like
 this:
 
@@ -23,7 +16,7 @@ this:
 make <package>-<target>
 ------------
 
-In order, the package build commands are:
+The package build targets are (in the order they are executed):
 
 [width="90%",cols="^1,4",options="header"]
 |===================================================
@@ -38,27 +31,22 @@ build the package
 | +extract+         | Put the source in the package build directory
 (extract the tarball, copy the source, etc)
 
-| +patch+           | Apply the patches if any
+| +patch+           | Apply the patches, if any
 
-| +configure+       | Run the configure command
+| +configure+       | Run the configure commands, if any
 
-| +build+           | Compile the source
+| +build+           | Run the compilation commands
 
 | +install-staging+ |
 *target package:* Run the installation of the package in the
-staging directory
-
-*host package:* Does nothing
+staging directory, if necessary
 
 | +install-target+  |
 *target package:* Run the installation of the package in the
-staging directory
-
-*host package:* Does nothing
+target directory, if necessary
 
 | +install+         |
-*target package:* Run the 2 previous installation commands for the
-target packages
+*target package:* Run the 2 previous installation commands
 
 *host package:* Run the installation of the package in the host
 directory
@@ -74,15 +62,18 @@ Additionally, there are some other useful make targets:
 | +show-depends+    | Displays the dependencies required to build the
 package
 
-| +clean+           | Clean the package build directory, also
-uninstall the package from both the target and the staging directory
+| +clean+           | Run the clean command of the package, also
+uninstall the package from both the target and the staging directory; _note
+that this is not implemented for all packages_
 
 | +dirclean+        | Remove the whole package build directory
 
-| +rebuild+         | Rebuild only necessary binaries and install them
-again
+| +rebuild+         | Re-run the compilation commands - this only makes
+sense when using the +OVERRIDE_SRCDIR+ feature or when you modified a file
+directly in the build directory
 
-| +reconfigure+     | Re-run the configure command, then rebuild
-only necessary binaries, and lastly install them again
+| +reconfigure+     | Re-run the configure commands, then rebuild - this only
+makes sense when using the +OVERRIDE_SRCDIR+ feature or when you modified a
+file directly in the build directory
 
 |===================================================

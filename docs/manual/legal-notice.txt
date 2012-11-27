@@ -73,52 +73,51 @@ License abbreviations
 Here is a list of the licenses that are most widely used by packages in
 Buildroot, with the name used in the manifest file:
 
-* +GPLv2+:
+* `GPLv2`:
   http://www.gnu.org/licenses/old-licenses/gpl-2.0.html[
   GNU General Public License, version 2];
-* +GPLv2++:
+* `GPLv2+`:
   http://www.gnu.org/licenses/old-licenses/gpl-2.0.html[
   GNU General Public License, version 2]
   or (at your option) any later version;
-* +GPLv3+:
+* `GPLv3`:
   http://www.gnu.org/licenses/gpl.html[
   GNU General Public License, version 3];
-* +GPLv3++:
+* `GPLv3+`:
   http://www.gnu.org/licenses/gpl.html[
   GNU General Public License, version 3]
   or (at your option) any later version;
-* +GPL+:
+* `GPL`:
   http://www.gnu.org/licenses/gpl.html[
   GNU General Public License] (any version);
-* +LGPLv2+:
+* `LGPLv2`:
   http://www.gnu.org/licenses/old-licenses/lgpl-2.0.html[
   GNU Library General Public License, version 2];
-* +LGPLv2++:
+* `LGPLv2+`:
   http://www.gnu.org/licenses/old-licenses/lgpl-2.0.html[
   GNU Library General Public License, version 2.1]
   or (at your option) any later version;
-* +LGPLv2.1+:
+* `LGPLv2.1`:
   http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html[
   GNU Lesser General Public License, version 2.1];
-* +LGPLv2.1++:
+* `LGPLv2.1+`:
   http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html[
   GNU Lesser General Public License, version 2.1]
   or (at your option) any later version;
-* +LGPLv3+:
+* `LGPLv3`:
   http://www.gnu.org/licenses/lgpl.html[
   GNU Lesser General Public License, version 3];
-* +LGPLv3++:
+* `LGPLv3+`:
   http://www.gnu.org/licenses/lgpl.html[
   GNU Lesser General Public License, version 3]
   or (at your option) any later version;
-* +LGPL+:
+* `LGPL`:
   http://www.gnu.org/licenses/lgpl.html[
   GNU Lesser General Public License] (any version);
-* +BSD-4c+: Original BSD 4-clause license;
-* +BSD-3c+: BSD 3-clause license;
-* +BSD-2c+: BSD 2-clause license;
-* +PROPRIETARY+: marks a non-opensource package;
-  Buildroot does not save any licensing info or source code for these packages.
+* `BSD-4c`: Original BSD 4-clause license;
+* `BSD-3c`: BSD 3-clause license;
+* `BSD-2c`: BSD 2-clause license;
+* `MIT`: MIT-style license.
 
 Complying with the Buildroot license
 ------------------------------------

@@ -8,5 +8,6 @@ matter of writing a Makefile using an existing example and modifying it
 according to the compilation process required by the package.
 
 If you package software that might be useful for other people, don't
-forget to send a patch to the Buildroot mailing list!
+forget to send a patch to the Buildroot mailing list (see
+xref:submitting-patches[])!
 

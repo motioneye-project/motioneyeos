@@ -19,7 +19,10 @@ In Buildroot, there is some relationship between:
 It is mandatory to maintain consistency between these elements,
 using the following rules:
 
-* the _make_ target name will be the _package name_ itself (e.g.:
+* the package directory and the +*.mk+ name are the _package name_
+  itself (e.g.: +package/foo-bar_boo/foo-bar_boo.mk+);
+
+* the _make_ target name is the _package name_ itself (e.g.:
   +foo-bar_boo+);
 
 * the config entry is the upper case _package name_ with `.` and `-`
@@ -35,15 +38,9 @@ using the following rules:
 How to add a package from github
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-If the package has no release version, or its version cannot be
-identified using tag, then the sha1 of the particular commit should be
-used to identify the version (the first 7 characters of the sha1 are
-enough):
-
-------------------------
-FOO_VERSION = 1234567
-FOO_SITE = http://github.com/<user>/<package>/tarball/<branch>
-------------------------
+Packages on github often don't have a download area with release tarballs.
+However, it is possible to download tarballs directly from the repository
+on github.
 
 If the package version matches a tag, then this tag should be used to
 identify the version:
@@ -52,3 +49,16 @@ identify the version:
 FOO_VERSION = v1.0
 FOO_SITE = http://github.com/<user>/<package>/tarball/$(FOO_VERSION)
 ------------------------
+
+If the package has no release version, or its version cannot be
+identified using tag, then the SHA1 of the particular commit should be
+used to identify the version (the first 7 characters of the SHA1 are
+enough):
+
+------------------------
+FOO_VERSION = 1234567
+FOO_SITE = http://github.com/<user>/<package>/tarball/<branch>
+------------------------
+
+Note that the name of the tarball is the default +foo-1234567.tar.gz+
+so it is not necessary to specify it in the +.mk+ file.

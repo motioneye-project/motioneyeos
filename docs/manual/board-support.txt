@@ -26,8 +26,8 @@ directory, and rename it +BOARDNAME_defconfig+.
 It is recommended to use upstream versions of the Linux kernel and
 bootloaders where possible, and also to use default kernel and bootloader
 configurations if possible. If the defaults are incorrect for
-your platform, we encourage you to send fixes to the corresponding upstream
-projects.
+your board, or no default exists, we encourage you to send fixes to the
+corresponding upstream projects.
 
 However, in the mean time, you may want to store kernel or bootloader
 configuration or patches specific to your target platform. To do so,

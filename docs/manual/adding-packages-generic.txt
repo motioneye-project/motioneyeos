@@ -151,11 +151,11 @@ information is (assuming the package name is +libfoo+) :
 * +LIBFOO_PATCH+ may contain the name of a patch, that will be
   downloaded from the same location as the tarball indicated in
   +LIBFOO_SOURCE+. If +HOST_LIBFOO_PATCH+ is not specified, it
-  defaults to +LIBFOO_PATCH+. Also note that another mechanism is
-  available to patch a package: all files of the form
-  +packagename-packageversion-description.patch+ present in the
-  package directory inside Buildroot will be applied to the package
-  after extraction.
+  defaults to +LIBFOO_PATCH+. Note that patches that are included
+  in Buildroot itself use a different mechanism: all files of the
+  form +<packagename>-*.patch+ present in the package directory inside
+  Buildroot will be applied to the package after extraction (see
+  xref:patch-policy[patching a package]).
 
 * +LIBFOO_SITE+ provides the location of the package, which can be a
   URL or a local filesystem path. HTTP, FTP and SCP are supported URL
@@ -251,9 +251,6 @@ information is (assuming the package name is +libfoo+) :
   use the same string to make the manifest file uniform.
   Otherwise, describe the license in a precise and concise way, avoiding
   ambiguous names such as +BSD+ which actually name a family of licenses.
-  If the root filesystem you generate contains non-opensource packages, you
-  can define their license as +PROPRIETARY+: Buildroot will not save any
-  licensing info or source code for this package.
   This variable is optional. If it is not defined, +unknown+ will appear in
   the +license+ field of the manifest file for this package.
 
@@ -264,6 +261,11 @@ information is (assuming the package name is +libfoo+) :
   This variable is optional. If it is not defined, a warning will be produced
   to let you know, and +not saved+ will appear in the +license files+ field
   of the manifest file for this package.
+
+* +LIBFOO_REDISTRIBUTE+ can be set to +YES+ (default) or +NO+ to indicate if
+  the package source code is allowed to be redistributed. Set it to +NO+ for
+  non-opensource packages: Buildroot will not save the source code for this
+  package when collecting the +legal-info+.
 
 The recommended way to define these variables is to use the following
 syntax:
@@ -292,10 +294,9 @@ different steps of the build process.
   performed to install the package to the target directory, when the
   package is a target package. The package must install its files to
   the directory given by +$(TARGET_DIR)+. Only the files required for
-  'documentation' and 'execution' of the package should be
-  installed. Header files should not be installed, they will be copied
-  to the target, if the +development files in target filesystem+
-  option is selected.
+  'execution' of the package have to be
+  installed. Header files, static libraries and documentation will be
+  removed again when the target filesystem is finalized.
 
 * +LIBFOO_INSTALL_STAGING_CMDS+ lists the actions to be
   performed to install the package to the staging directory, when the

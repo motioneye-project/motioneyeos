@@ -49,7 +49,9 @@ processor. Under most Linux systems, the compilation toolchain uses
 the GNU libc (glibc) as the C standard library. This compilation
 toolchain is called the "host compilation toolchain". The machine on
 which it is running, and on which you're working, is called the "host
-system".
+system" footnote:[This terminology differs from what is used by GNU
+configure, where the host is the machine on which the application will
+run (which is usually the same as target)].
 
 The compilation toolchain is provided by your distribution, and
 Buildroot has nothing to do with it (other than using it to build a

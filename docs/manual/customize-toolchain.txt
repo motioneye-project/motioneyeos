@@ -37,8 +37,7 @@ Using the Crosstool-NG backend
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The http://crosstool-ng.org[crosstool-NG] toolchain backend enables a rather
-limited set of settings under the Buildroot +Toolchain+ menu (ie. when invoking
-+make menuconfig+); mostly:
+limited set of settings under the Buildroot +Toolchain+ menu:
 
 * The http://crosstool-ng.org[crosstool-NG] configuration file
 

@@ -19,6 +19,8 @@ NFS-root directory:
 sudo tar -xavf /path/to/output_dir/rootfs.tar -C /path/to/nfs_root_dir
 -------------------
 
+Remember to add this path to +/etc/exports+.
+
 Then, you can execute a NFS-boot from your target.
 
 Chroot

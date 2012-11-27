@@ -9,6 +9,7 @@ your software, for example +libfoo+.
 Some packages have been grouped by topic in a sub-directory:
 +multimedia+, +x11r7+, +efl+ and +matchbox+. If your package fits in
 one of these categories, then create your package directory in these.
+New subdirectories are discouraged, however.
 
 
 +Config.in+ file
@@ -32,12 +33,12 @@ configuration option must be indented with one tab. The help text
 itself should be indented with one tab and two spaces, and it must
 mention the upstream URL of the project.
 
-Of course, you can add other sub-options into a +if
+You can add other sub-options into a +if
 BR2_PACKAGE_LIBFOO...endif+ statement to configure particular things
 in your software. You can look at examples in other packages. The
 syntax of the +Config.in+ file is the same as the one for the kernel
 Kconfig file. The documentation for this syntax is available at
-http://lxr.free-electrons.com/source/Documentation/kbuild/kconfig-language.txt[]
+http://kernel.org/doc/Documentation/kbuild/kconfig-language.txt[]
 
 Finally you have to add your new +libfoo/Config.in+ to
 +package/Config.in+ (or in a category subdirectory if you decided to
@@ -68,9 +69,9 @@ rules:
   dependency for dependencies on toolchain options (target
   architecture, MMU support, C library, C++ support, large file
   support, thread support, RPC support, IPV6 support, WCHAR support),
-  or for dependencies on "big" things, such as the X.org system. In
-  some cases, especially dependency on toolchain options, it is
-  recommended to add a +comment+ displayed when the option is not
+  or for dependencies on "big" things, such as the X.org system. For
+  dependencies on toolchain options, there should be a +comment+ that
+  is displayed when the option is not
   enabled, so that the user knows why the package is not available.
   The +depends on+ keyword express the dependency with a forward
   semantic.
@@ -160,7 +161,7 @@ so, the dependency also needs to be expressed in the +.mk+ file of the
 package.
 
 Further formatting details: see xref:writing-rules-config-in[the
-writing rules].
+coding style].
 
 The +.mk+ file
 ^^^^^^^^^^^^^^

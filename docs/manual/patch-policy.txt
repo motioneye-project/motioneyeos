@@ -2,8 +2,8 @@
 
 [[patch-policy]]
 
-Patch Policy
-------------
+Patching a package
+------------------
 
 While integrating a new package or updating an existing one, it may be
 necessary to patch the source of the software to get it cross-built within
@@ -16,15 +16,15 @@ and patches supplied within buildroot.
 Providing patches
 ~~~~~~~~~~~~~~~~~
 
-Additional tarball
-^^^^^^^^^^^^^^^^^^
+Downloaded
+^^^^^^^^^^
 
-If it is necessary to apply a patch set available as a downloadable
-tarball, then add the patch tarball to the +<packagename>_PATCH+
-variable.
+If it is necessary to apply a patch that is available for download, then it
+to the +<packagename>_PATCH+ variable. It is downloaded from the same site
+as the package itself. It can be a single patch, or a tarball containing a
+patch series.
 
-Note that the patch tarballs are downloaded from the same site as the
-sources.
+This method is typically used for packages from Debian.
 
 Within Buildroot
 ^^^^^^^^^^^^^^^^
@@ -72,14 +72,15 @@ modified.
 A message explaining what the patch does, and why it is needed, should
 be added in the header commentary of the patch.
 
-You should add a +signed-off-by+ statement in the header of the each
-patch to help with keeping track of the changes.
+You should add a +Signed-off-by+ statement in the header of the each
+patch to help with keeping track of the changes and to certify that the
+patch is released under the same license as the software that is modified.
 
 If the software is under version control, it is recommended to use the
-SCM software to generate the patch set.
+upstream SCM software to generate the patch set.
 
 Otherwise, concatenate the header with the output of the
-+diff -purN source.c.orig source.c+ command.
++diff -purN package-version.orig/ package-version/+ command.
 
 At the end, the patch should look like:
 
