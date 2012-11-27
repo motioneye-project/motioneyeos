@@ -121,5 +121,5 @@ The documentation
 The documentation uses the
 http://www.methods.co.nz/asciidoc/[asciidoc] format.
 
-Further details about the http://www.methods.co.nz/asciidoc/[asciidoc]
-syntax: refer to http://www.methods.co.nz/asciidoc/userguide.html[].
+For further details about the http://www.methods.co.nz/asciidoc/[asciidoc]
+syntax, refer to http://www.methods.co.nz/asciidoc/userguide.html[].

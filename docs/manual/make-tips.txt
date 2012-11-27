@@ -4,55 +4,61 @@
 'make' tips
 -----------
 
-Because Buildroot is a set of Makefiles and patches, there are a few
-things that are useful to know, such as:
+This is a collection of tips that help you make the most of Buildroot.
 
-+make *config+ commands offer a search tool. Read the help message in
+.Configuration searches:
+
+The +make *config+ commands offer a search tool. Read the help message in
 the different frontend menus to know how to use it:
 
-* in _menuconfig_, search tool is called by pressing +/+;
-* in _xconfig_, search tool is called by pressing +ctrl+ + +f+.
+* in _menuconfig_, the search tool is called by pressing +/+;
+* in _xconfig_, the search tool is called by pressing +Ctrl+ + +f+.
 
 The result of the search shows the help message of the matching items.
 
-Display all commands executed by make:
+.Display all commands executed by make:
 
 --------------------
- $ make V=0|1 <target>
+ $ make V=1 <target>
 --------------------
 
-Display all available targets:
+.Display all available targets:
 
 --------------------
  $ make help
 --------------------
 
-Note that some settings in the +.config+ file may hide some targets:
+.Not all targets are always available,
 
-* +busybox-menuconfig+ depends on whether +busybox+ is enabled or not
-  in the +Package selection+ menu
-* +linux-menuconfig+ and +linux-savedefconfig+ depend on whether
-  +linux+ is enabled or not
-* +uclibc-menuconfig+ depends on whether the toolchain uses the
-  Buildroot internal toolchain backend or not
-* +ctng-menuconfig+ depends on whether the toolchain uses the
-  crosstool-NG backend or not
-* +barebox-menuconfig+ and +barebox-savedefconfig+ depend on whether
-  +barebox+ bootloader is enabled or not
+some settings in the +.config+ file may hide some targets:
 
-Delete all build products (including build directories, host, staging
+* +linux-menuconfig+ and +linux-savedefconfig+ only work when
+  +linux+ is enabled;
+* +uclibc-menuconfig+ is only available when the
+  Buildroot internal toolchain backend is used;
+* +ctng-menuconfig+ is only available when the
+  crosstool-NG backend is used;
+* +barebox-menuconfig+ and +barebox-savedefconfig+ only work when the
+  +barebox+ bootloader is enabled.
+
+.Cleaning:
+
+Explicit cleaning is required when any of the architecture or toolchain
+configuration options are changed.
+
+To delete all build products (including build directories, host, staging
 and target trees, the images and the toolchain):
 
 --------------------
  $ make clean
 --------------------
 
-Delete all build products as well as the configuration:
+To delete all build products as well as the configuration:
 
 --------------------
  $ make distclean
 --------------------
 
-Note that if +ccache+ is enabled, running +make clean|distclean+ does
+Note that if +ccache+ is enabled, running +make clean+ or +distclean+ does
 not empty the compiler cache used by Buildroot. To delete it, refer
 to xref:ccache[].

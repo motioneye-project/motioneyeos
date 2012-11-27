@@ -6,7 +6,7 @@ How Buildroot works
 As mentioned above, Buildroot is basically a set of Makefiles that
 download, configure, and compile software with the correct options. It
 also includes patches for various software packages - mainly the ones
-involved in the cross-compilation tool chain (+gcc+, +binutils+ and
+involved in the cross-compilation toolchain (+gcc+, +binutils+ and
 +uClibc+).
 
 There is basically one Makefile per software package, and they are

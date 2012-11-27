@@ -17,5 +17,5 @@ processors, MIPS processors, ARM processors, etc.
 Buildroot supports numerous processors and their variants; it also
 comes with default configurations for several boards available
 off-the-shelf. Besides this, a number of third-party projects are based on,
-or develop their BSP footnote:[BSP: Board Software Package] or
-SDK footnote:[SDK: Standard Development Kit] on top of Buildroot.
+or develop their BSP footnote:[BSP: Board Support Package] or
+SDK footnote:[SDK: Software Development Kit] on top of Buildroot.

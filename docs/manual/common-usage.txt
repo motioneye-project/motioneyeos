@@ -47,7 +47,7 @@ safely run multiple builds in parallel using the same source tree as
 long as they use unique output directories.
 
 For ease of use, Buildroot generates a Makefile wrapper in the output
-directory - So after the first run, you no longer need to pass +O=..+
+directory - so after the first run, you no longer need to pass +O=..+
 and +-C ..+, simply run (in the output directory):
 
 --------------------
@@ -69,21 +69,21 @@ to +make+ or set in the environment:
   internal toolchain is being built.
   +
   Note that the uClibc configuration file can also be set from the
-  configuration interface, so through the Buildroot .config file; this
+  configuration interface, so through the Buildroot +.config+ file; this
   is the recommended way of setting it.
   +
 * +BUSYBOX_CONFIG_FILE=<path/to/.config>+, path to
   the Busybox configuration file.
   +
   Note that the Busybox configuration file can also be set from the
-  configuration interface, so through the Buildroot .config file; this
+  configuration interface, so through the Buildroot +.config+ file; this
   is the recommended way of setting it.
   +
 * +BUILDROOT_DL_DIR+ to override the directory in which
   Buildroot stores/retrieves downloaded files
   +
   Note that the Buildroot download directory can also be set from the
-  configuration interface, so through the Buildroot .config file; this
+  configuration interface, so through the Buildroot +.config+ file; this
   is the recommended way of setting it.
 
 An example that uses config files located in the toplevel directory and

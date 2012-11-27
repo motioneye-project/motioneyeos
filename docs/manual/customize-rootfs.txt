@@ -5,7 +5,7 @@ Customizing the generated target filesystem
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Besides changing one or another configuration through +make *config+,
-there are a few ways to customize the resulting target filesystem:
+there are a few ways to customize the resulting target filesystem.
 
 * Customize the target filesystem directly and rebuild the image.  The
   target filesystem is available under +output/target/+.  You can
@@ -13,7 +13,7 @@ there are a few ways to customize the resulting target filesystem:
   rebuild the target filesystem image. This method allows you to do
   anything to the target filesystem, but if you decide to completely
   rebuild your toolchain and tools, these changes will be lost.
-  _Changes are not resistent to the +make clean+ command_.
+  _Changes do not survive the +make clean+ command_.
 
 * Create your own 'target skeleton'. You can start with the default
   skeleton available under +system/skeleton+ and then customize it to
@@ -30,13 +30,13 @@ there are a few ways to customize the resulting target filesystem:
   assembled. The +BR2_ROOTFS_POST_BUILD_SCRIPT+ will allow you to
   specify the location of your post-build script. This option can be
   found in the +System configuration+ menu. The destination root
-  filesystem folder *is given as the first argument to this script,
+  filesystem folder is given as the first argument to this script,
   and this script can then be used to copy programs, static data or
   any other needed file to your target filesystem. You should,
   however, use this feature with care. Whenever you find that a
   certain package generates wrong or unneeded files, you should fix
   that package rather than work around it with a post-build cleanup
-  script. _Among these first 3 methods, this one should be prefere_d.
+  script. _Among these first 3 methods, this one should be preferred_.
 
 * A special package, 'customize', stored in +package/customize+ can be
   used. You can put all the files that you want to see in the final

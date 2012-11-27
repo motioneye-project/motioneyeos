@@ -175,8 +175,8 @@ information is (assuming the package name is +libfoo+) :
   Examples: +
     +LIBFOO_SITE=http://www.libfoosoftware.org/libfoo+ +
     +LIBFOO_SITE=http://svn.xiph.org/trunk/Tremor/+ +
-    +LIBFOO_SITE=git://github.com/kergoth/tslib.git+
-    +LIBFOO_SITE=/opt/software/libfoo.tar.gz+
+    +LIBFOO_SITE=git://github.com/kergoth/tslib.git+ +
+    +LIBFOO_SITE=/opt/software/libfoo.tar.gz+ +
     +LIBFOO_SITE=$(TOPDIR)/../src/libfoo/+
 
 * +LIBFOO_SITE_METHOD+ determines the method used to fetch or copy the
@@ -221,7 +221,7 @@ information is (assuming the package name is +libfoo+) :
   name) that are required for the current target package to
   compile. These dependencies are guaranteed to be compiled and
   installed before the configuration of the current package starts. In
-  a similar way, +HOST_LIBFOO_DEPENDENCIES+ lists the dependency for
+  a similar way, +HOST_LIBFOO_DEPENDENCIES+ lists the dependencies for
   the current host package.
 
 * +LIBFOO_INSTALL_STAGING+ can be set to +YES+ or +NO+ (default). If
@@ -275,20 +275,20 @@ LIBFOO_VERSION = 2.32
 Now, the variables that define what should be performed at the
 different steps of the build process.
 
-* +LIBFOO_CONFIGURE_CMDS+, used to list the actions to be performed to
-  configure the package before its compilation
+* +LIBFOO_CONFIGURE_CMDS+ lists the actions to be performed to
+  configure the package before its compilation.
 
-* +LIBFOO_BUILD_CMDS+, used to list the actions to be performed to
-  compile the package
+* +LIBFOO_BUILD_CMDS+ lists the actions to be performed to
+  compile the package.
 
-* +HOST_LIBFOO_INSTALL_CMDS+, used to list the actions to be performed
+* +HOST_LIBFOO_INSTALL_CMDS+ lists the actions to be performed
   to install the package, when the package is a host package. The
   package must install its files to the directory given by
   +$(HOST_DIR)+. All files, including development files such as
   headers should be installed, since other packages might be compiled
   on top of this package.
 
-* +LIBFOO_INSTALL_TARGET_CMDS+, used to list the actions to be
+* +LIBFOO_INSTALL_TARGET_CMDS+ lists the actions to be
   performed to install the package to the target directory, when the
   package is a target package. The package must install its files to
   the directory given by +$(TARGET_DIR)+. Only the files required for
@@ -297,24 +297,24 @@ different steps of the build process.
   to the target, if the +development files in target filesystem+
   option is selected.
 
-* +LIBFOO_INSTALL_STAGING_CMDS+, used to list the actions to be
+* +LIBFOO_INSTALL_STAGING_CMDS+ lists the actions to be
   performed to install the package to the staging directory, when the
   package is a target package. The package must install its files to
   the directory given by +$(STAGING_DIR)+. All development files
   should be installed, since they might be needed to compile other
   packages.
 
-* +LIBFOO_CLEAN_CMDS+, used to list the actions to perform to clean up
+* +LIBFOO_CLEAN_CMDS+, lists the actions to perform to clean up
   the build directory of the package.
 
-* +LIBFOO_UNINSTALL_TARGET_CMDS+, used to list the actions to
+* +LIBFOO_UNINSTALL_TARGET_CMDS+ lists the actions to
   uninstall the package from the target directory +$(TARGET_DIR)+
 
-* +LIBFOO_UNINSTALL_STAGING_CMDS+, used to list the actions to
+* +LIBFOO_UNINSTALL_STAGING_CMDS+ lists the actions to
   uninstall the package from the staging directory +$(STAGING_DIR)+.
 
-* +LIBFOO_INSTALL_INIT_SYSV+ and +LIBFOO_INSTALL_INIT_SYSTEMD+, used
-  to install init scripts either for the systemV-like init systems
+* +LIBFOO_INSTALL_INIT_SYSV+ and +LIBFOO_INSTALL_INIT_SYSTEMD+ list the
+  actions to install init scripts either for the systemV-like init systems
   (busybox, sysvinit, etc.) or for the systemd units. These commands
   will be run only when the relevant init system is installed (i.e. if
   systemd is selected as the init system in the configuration, only
@@ -352,8 +352,8 @@ using the autotools infrastructure described below.  However, since
 they are provided by the generic infrastructure, they are documented
 here. The exception is +LIBFOO_POST_PATCH_HOOKS+.  Patching the
 package and producing legal info are not user definable, so
-+LIBFOO_POST_PATCH_HOOKS+ and +LIBFOO_POST_LEGAL_INFO_HOOKS+ will be
-userful for generic packages.
++LIBFOO_POST_PATCH_HOOKS+ and +LIBFOO_POST_LEGAL_INFO_HOOKS+ are
+useful for generic packages.
 
 The following hook points are available:
 

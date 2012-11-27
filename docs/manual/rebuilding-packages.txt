@@ -14,7 +14,7 @@ In some cases, a full rebuild is mandatory:
 
 * each time the toolchain properties are changed, this includes:
 
-** after changing some toolchain option under the _Toolchain_ menu (if
+** after changing any toolchain option under the _Toolchain_ menu (if
    the internal Buildroot backend is used);
 ** after running +make ctng-menuconfig+ (if the crosstool-NG backend
    is used);
@@ -25,7 +25,7 @@ In some cases, a full rebuild is mandatory:
 In some cases, a full rebuild is recommended:
 
 * after adding some libraries to the package selection (otherwise,
-  some packages that can be optionally linked against those libraries
+  packages that can be optionally linked against those libraries
   won't be rebuilt, so they won't support those new available
   features).
 

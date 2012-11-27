@@ -32,8 +32,8 @@ using the following rules:
 
 
 [[github-download-url]]
-How to add package from github
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+How to add a package from github
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 If the package has no release version, or its version cannot be
 identified using tag, then the sha1 of the particular commit should be

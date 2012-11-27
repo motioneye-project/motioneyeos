@@ -6,11 +6,12 @@ Patch Policy
 ------------
 
 While integrating a new package or updating an existing one, it may be
-necessary to patch the source of the software to get it built within
+necessary to patch the source of the software to get it cross-built within
 Buildroot.
 
 Buildroot offers an infrastructure to automatically handle this during
-the builds. It supports several ways of applying patch sets:
+the builds. It supports two ways of applying patch sets: downloaded patches
+and patches supplied within buildroot.
 
 Providing patches
 ~~~~~~~~~~~~~~~~~
@@ -29,10 +30,10 @@ Within Buildroot
 ^^^^^^^^^^^^^^^^
 
 Most patches are provided within Buildroot, in the package
-directory; these typically aim to fix cross-compilation, +libc+ support,
+directory; these typically aim to fix cross-compilation, libc support,
 or other such issues.
 
-These patch files should have the extension +*.patch+.
+These patch files should be named +<packagename>-*.patch+.
 
 A +series+ file, as used by +quilt+, may also be added in the
 package directory. In that case, the +series+ file defines the patch

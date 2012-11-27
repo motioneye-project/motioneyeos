@@ -31,9 +31,9 @@ to run the Qt or GTK-based configurators.
 All of these "make" commands will need to build a configuration
 utility (including the interface), so you may need to install
 "development" packages for relevant libraries used by the
-configuration utilities. Check the xref:requirement[] to know what
-Buildroot needs, and specifically the xref:requirement-optional[system requirements]
-to get the dependencies of favorite interface.
+configuration utilities. Check xref:requirement[] to know what
+Buildroot needs, and specifically the xref:requirement-optional[optional requirements]
+to get the dependencies of your favorite interface.
 
 For each menu entry in the configuration tool, you can find associated
 help that describes the purpose of the entry.
@@ -52,15 +52,15 @@ You *should never* use +make -jN+ with Buildroot: it does not support
 'top-level parallel make'. Instead, use the +BR2_JLEVEL+ option to
 tell Buildroot to run each package compilation with +make -jN+.
 
-This command will generally perform the following steps:
+The `make` command will generally perform the following steps:
 
-* Download source files (as required)
-* Configure, build and install the cross-compiling toolchain using the
-  appropriate toolchain backend, or simply import an external toolchain
-* Build/install selected target packages
-* Build a kernel image, if selected
-* Build a bootloader image, if selected
-* Create a root filesystem in selected formats
+* download source files (as required);
+* configure, build and install the cross-compiling toolchain using the
+  appropriate toolchain backend, or simply import an external toolchain;
+* build/install selected target packages;
+* build a kernel image, if selected;
+* build a bootloader image, if selected;
+* create a root filesystem in selected formats.
 
 Buildroot output is stored in a single directory, +output/+.
 This directory contains several subdirectories:

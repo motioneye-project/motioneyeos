@@ -82,7 +82,7 @@ interested in Buildroot for two reasons:
 
 You might wonder why such a tool is needed when you can compile +gcc+,
 +binutils+, +uClibc+ and all the other tools by hand. Of course doing
-so is possible but, dealing with all of the configure options and
+so is possible, but dealing with all of the configure options and
 problems of every +gcc+ or +binutils+ version is very time-consuming
 and uninteresting.  Buildroot automates this process through the use
 of Makefiles and has a collection of patches for each +gcc+ and

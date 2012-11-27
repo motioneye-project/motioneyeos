@@ -5,13 +5,13 @@
 Legal notice and licensing
 ==========================
 
-Complying with opensource licenses
-----------------------------------
+Complying with open source licenses
+-----------------------------------
 
 All of the end products of Buildroot (toolchain, root filesystem, kernel,
-bootloaders) contain opensource software, released under various licenses.
+bootloaders) contain open source software, released under various licenses.
 
-Using opensource software gives you the freedom to build rich embedded
+Using open source software gives you the freedom to build rich embedded
 systems, choosing from a wide range of packages, but also imposes some
 obligations that you must know and honour.
 Some licenses require you to publish the license text in the documentation of
@@ -46,7 +46,7 @@ There you will find:
 * A manifest file listing the configured packages, their version, license and
   related information.
   Some of this information might not be defined in Buildroot; such items are
-  clearly marked as "unknown" or similar.
+  marked as "unknown".
 * A +licenses/+ subdirectory, which contains the license text of packages.
   If the license file(s) are not defined in Buildroot, the file is not produced
   and a warning in the +README+ indicates this.
@@ -56,16 +56,20 @@ produce all the material that is somehow relevant for legal compliance with the
 package licenses. Buildroot does not try to produce the exact material that
 you must somehow make public. Certainly, more material is produced than is
 needed for a strict legal compliance. For example, it produces the source code
-for packages released under BSD-like licenses, that you might not want to
+for packages released under BSD-like licenses, that you are not required to
 redistribute in source form.
 
 Moreover, due to technical limitations, Buildroot does not produce some
 material that you will or may need, such as the toolchain source code and the
-Buildroot source code itself.
+Buildroot source code itself (including patches to packages for which source
+distribution is required).
 When you run +make legal-info+, Buildroot produces warnings in the +README+
 file to inform you of relevant material that could not be saved.
 
 [[legal-info-list-licenses]]
+License abbreviations
+---------------------
+
 Here is a list of the licenses that are most widely used by packages in
 Buildroot, with the name used in the manifest file:
 
@@ -86,6 +90,13 @@ Buildroot, with the name used in the manifest file:
 * +GPL+:
   http://www.gnu.org/licenses/gpl.html[
   GNU General Public License] (any version);
+* +LGPLv2+:
+  http://www.gnu.org/licenses/old-licenses/lgpl-2.0.html[
+  GNU Library General Public License, version 2];
+* +LGPLv2++:
+  http://www.gnu.org/licenses/old-licenses/lgpl-2.0.html[
+  GNU Library General Public License, version 2.1]
+  or (at your option) any later version;
 * +LGPLv2.1+:
   http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html[
   GNU Lesser General Public License, version 2.1];
@@ -112,7 +123,7 @@ Buildroot, with the name used in the manifest file:
 Complying with the Buildroot license
 ------------------------------------
 
-Buildroot itself is an opensource software, released under the
+Buildroot itself is an open source software, released under the
 http://www.gnu.org/licenses/old-licenses/gpl-2.0.html[GNU General Public
 License, version 2] or (at your option) any later version.
 However, being a build system, it is not normally part of the end product:

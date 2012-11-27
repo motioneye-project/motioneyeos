@@ -23,7 +23,7 @@ Mandatory packages
 
 ** +which+
 ** +sed+
-** +make+ (version 3.82 or any later)
+** +make+ (version 3.81 or any later)
 ** +binutils+
 ** +build-essential+ (only for Debian based systems)
 ** +gcc+ (version 2.95 or any later)
