@@ -54,6 +54,10 @@ config BR2_TOOLCHAIN_EXTERNAL_LINARO_2012_09
 
 	  To use this toolchain, you must disable soft float usage.
 
+comment "Linaro toolchains available for Cortex-A{8,9}"
+	depends on BR2_arm
+	depends on !BR2_cortex_a8 && !BR2_cortex_a9
+
 config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_ARM201203
 	bool "Sourcery CodeBench ARM 2012.03"
 	depends on BR2_arm
