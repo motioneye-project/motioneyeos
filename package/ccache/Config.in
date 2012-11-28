@@ -5,5 +5,5 @@ config BR2_PACKAGE_CCACHE
 	  caching previous compilations and detecting when the same
 	  compilation is being done again
 
-	  http://samba.ccache.org
+	  http://ccache.samba.org
 
