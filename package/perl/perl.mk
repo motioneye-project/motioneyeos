@@ -47,19 +47,10 @@ ifeq ($(BR2_PACKAGE_GDBM),y)
     PERL_DEPENDENCIES += gdbm
 endif
 
-# Normally, --mode=cross should automatically do the two steps
-# below, but it doesn't work for some reason.
-PERL_HOST_CONF_OPT = \
-	--mode=buildmini \
-	--target=$(GNU_TARGET_NAME) \
-	--target-arch=$(GNU_TARGET_NAME) \
-	--set-target-name=$(GNU_TARGET_NAME)
-
 # We have to override LD, because an external multilib toolchain ld is not
 # wrapped to provide the required sysroot options.  We also can't use ccache
 # because the configure script doesn't support it.
 PERL_CONF_OPT = \
-	--mode=target \
 	--target=$(GNU_TARGET_NAME) \
 	--target-tools-prefix=$(TARGET_CROSS) \
 	--prefix=/usr \
@@ -71,7 +62,7 @@ PERL_CONF_OPT = \
 	-A myuname="Buildroot $(BR2_VERSION_FULL)" \
 	-A osname=linux \
 	-A osvers=$(LINUX_VERSION) \
-	-A perlamdin=root
+	-A perladmin=root
 
 ifeq ($(shell expr $(PERL_VERSION_MAJOR) % 2), 1)
     PERL_CONF_OPT += -Dusedevel
@@ -87,8 +78,7 @@ PERL_CONF_OPT += --only-mod=$(subst $(space),$(comma),$(PERL_MODULES))
 endif
 
 define PERL_CONFIGURE_CMDS
-	(cd $(@D); HOSTCC='$(HOSTCC_NOCACHE)' ./configure $(PERL_HOST_CONF_OPT))
-	(cd $(@D); ./configure $(PERL_CONF_OPT))
+	(cd $(@D); HOSTCC='$(HOSTCC_NOCACHE)' ./configure $(PERL_CONF_OPT))
 	$(SED) 's/UNKNOWN-/Buildroot $(BR2_VERSION_FULL) /' $(@D)/patchlevel.h
 endef
 
