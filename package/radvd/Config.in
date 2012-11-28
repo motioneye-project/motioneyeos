@@ -1,5 +1,7 @@
 config BR2_PACKAGE_RADVD
 	bool "radvd"
+	# libdaemon uses fork()
+	depends on BR2_USE_MMU
 	select BR2_PACKAGE_FLEX
 	select BR2_PACKAGE_FLEX_LIBFL
 	select BR2_PACKAGE_LIBDAEMON
