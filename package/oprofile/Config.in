@@ -3,6 +3,7 @@ config BR2_PACKAGE_OPROFILE
 	select BR2_PACKAGE_POPT
 	select BR2_PACKAGE_BINUTILS
 	depends on BR2_INSTALL_LIBSTDCPP
+	depends on !BR2_aarch64 # binutils
 	help
 	  OProfile is a system-wide profiler for Linux systems,
 	  capable of profiling all running code at low overhead.
