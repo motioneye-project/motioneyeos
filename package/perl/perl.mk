@@ -55,14 +55,14 @@ PERL_CONF_OPT = \
 	--target-tools-prefix=$(TARGET_CROSS) \
 	--prefix=/usr \
 	-Dld="$(TARGET_CC_NOCCACHE)" \
-	-A ccflags="$(TARGET_CFLAGS)" \
-	-A ldflags="$(TARGET_LDFLAGS) -lm" \
-	-A mydomain="" \
-	-A myhostname="$(BR2_TARGET_GENERIC_HOSTNAME)" \
-	-A myuname="Buildroot $(BR2_VERSION_FULL)" \
-	-A osname=linux \
-	-A osvers=$(LINUX_VERSION) \
-	-A perladmin=root
+	-Dccflags="$(TARGET_CFLAGS)" \
+	-Dldflags="$(TARGET_LDFLAGS) -lm" \
+	-A define:mydomain="" \
+	-A define:myhostname="$(BR2_TARGET_GENERIC_HOSTNAME)" \
+	-A define:myuname="Buildroot $(BR2_VERSION_FULL)" \
+	-A define:osname=linux \
+	-A define:osvers=$(LINUX_VERSION) \
+	-A define:perladmin=root
 
 ifeq ($(shell expr $(PERL_VERSION_MAJOR) % 2), 1)
     PERL_CONF_OPT += -Dusedevel
