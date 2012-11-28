@@ -435,6 +435,7 @@ endmenu
 menu "Multimedia"
 source "package/libdvdread/Config.in"
 source "package/libdvdnav/Config.in"
+source "package/libebml/Config.in"
 source "package/libmms/Config.in"
 source "package/libmpeg2/Config.in"
 source "package/libogg/Config.in"
