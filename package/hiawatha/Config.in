@@ -1,5 +1,7 @@
 config BR2_PACKAGE_HIAWATHA
 	bool "hiawatha"
+	# needs fork()
+	depends on BR2_USE_MMU
 	help
 	  Hiawatha is a webserver for Unix and has been built with
 	  security in mind. This resulted in a highly secure
