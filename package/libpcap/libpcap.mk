@@ -10,11 +10,16 @@ LIBPCAP_LICENSE = BSD-3c
 LIBPCAP_LICENSE_FILES = LICENSE
 LIBPCAP_INSTALL_STAGING = YES
 
-# doesn't have an install-strip
-LIBPCAP_INSTALL_TARGET_OPT= DESTDIR="$(TARGET_DIR)" \
-	$(if $(BR2_PREFER_STATIC_LIB),install,install-shared)
-LIBPCAP_INSTALL_STAGING_OPT= DESTDIR="$(STAGING_DIR)" install \
-	$(if $(BR2_PREFER_STATIC_LIB),,install-shared)
+# The configure.in file contains the necessary code to handle
+# --enable-shared/--disable-shared properly, but the configure script
+# bundled with the libpcap tarball is not up-to-date with the
+# configure.in file. In order to get proper handling of
+# --enable-shared/--disable-shared, which is needed when doing a
+# static library build, we autoreconfigure this package. This can be
+# removed when bumping libpcap, after checking that the bundled
+# configure script correctly handles --enable-shared/--disable-shared.
+LIBPCAP_AUTORECONF = YES
+
 LIBPCAP_DEPENDENCIES = zlib \
 	$(if $(BR2_PACKAGE_LIBUSB),libusb)
 LIBPCAP_CONF_ENV = ac_cv_linux_vers=2 \
