@@ -7,10 +7,10 @@ Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
  Makefile |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Index: libroxml-2.1.0/Makefile
+Index: a/Makefile
 ===================================================================
---- libroxml-2.1.0.orig/Makefile
-+++ libroxml-2.1.0/Makefile
+--- a/Makefile
++++ b/Makefile
 @@ -41,7 +41,7 @@
  
  # options
