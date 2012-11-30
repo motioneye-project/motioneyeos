@@ -4,9 +4,13 @@
 
 	Various manual updates and fixes.
 
-	Updated/fixed packages: arptables, binutils, busybox, ccache,
-	cjson, directfb, gdb, hiawatha, lcdproc, libdaemon, libecore,
-	libhid, libpcap, libusb, linux-fusion, ocf-linux, strace,
+	Add checks for legacy features.
+
+	Updated/fixed packages: acpid, alsa-lib, arptables, binutils,
+	busybox, ccache, cjson, cramfs, directfb, flex, gdb, hiawatha,
+	imagemagick, lcdproc, libdaemon, libecore, libhid, libmad,
+	libpcap, libusb, linux-fusion, matchbox, ocf-linux, owl-linux,
+	scons, strace
 
 	Issues resolved (http://bugs.uclibc.org):
 
