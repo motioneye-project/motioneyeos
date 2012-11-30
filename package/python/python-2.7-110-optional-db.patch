@@ -5,6 +5,7 @@ able to build Python without it, this patch adds an option to disable
 the build/installation of this Python module.
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
 
 ---
  Makefile.pre.in |   10 ++++++++--
@@ -28,8 +29,8 @@ Index: Python-2.7.2/Makefile.pre.in
  LIBSUBDIRS +=   test test/data \
  		test/cjkencodings test/decimaltestdata test/xmltestdata test/subprocessdata \
  		test/tracedmodules email/test email/test/data \
--		json/tests sqlite3/test bsddb/test \
-+		json/tests sqlite3/test \
+-		json/tests  bsddb/test \
++		json/tests \
  		ctypes/test distutils/tests unittest/test
  endif
  
@@ -44,7 +45,7 @@ Index: Python-2.7.2/Makefile.pre.in
 +endif
 +endif
 +
- libinstall:	build_all $(srcdir)/Lib/$(PLATDIR)
+ libinstall:	build_all $(srcdir)/Lib/$(PLATDIR) $(srcdir)/Modules/xxmodule.c
  	@for i in $(SCRIPTDIR) $(LIBDEST); \
  	do \
 Index: Python-2.7.2/configure.in

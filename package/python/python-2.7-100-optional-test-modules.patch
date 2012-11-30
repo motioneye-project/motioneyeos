@@ -4,6 +4,7 @@ The Python standard distribution comes with many test modules, that
 are not necessarly useful on embedded targets.
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
 
 ---
  Makefile.pre.in |   40 +++++++++++++++++++++++++++-------------
@@ -55,7 +56,7 @@ Index: Python-2.7.2/Makefile.pre.in
 +		ctypes/test distutils/tests unittest/test
 +endif
 +
- libinstall:	build_all $(srcdir)/Lib/$(PLATDIR)
+ libinstall:	build_all $(srcdir)/Lib/$(PLATDIR) $(srcdir)/Modules/xxmodule.c
  	@for i in $(SCRIPTDIR) $(LIBDEST); \
  	do \
 Index: Python-2.7.2/configure.in

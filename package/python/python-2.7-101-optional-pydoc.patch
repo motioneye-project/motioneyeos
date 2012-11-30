@@ -4,6 +4,7 @@ It removes 0.5 MB of data from the target plus the pydoc script
 itself.
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
 
 ---
  Makefile.pre.in |    6 +++++-
@@ -32,7 +33,7 @@ Index: Python-2.7.2/Makefile.pre.in
 +LIBSUBDIRS += pydoc_data
 +endif
 +
- libinstall:	build_all $(srcdir)/Lib/$(PLATDIR)
+ libinstall:	build_all $(srcdir)/Lib/$(PLATDIR) $(srcdir)/Modules/xxmodule.c
  	@for i in $(SCRIPTDIR) $(LIBDEST); \
  	do \
 Index: Python-2.7.2/configure.in

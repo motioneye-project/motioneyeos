@@ -4,6 +4,7 @@ lib2to3 is a library to convert Python 2.x code to Python 3.x. As
 such, it is probably not very useful on embedded system targets.
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
 
 ---
  Makefile.pre.in |   24 +++++++++++++++++-------
@@ -33,7 +34,7 @@ Index: Python-2.7.2/Makefile.pre.in
  		ctypes/test distutils/tests unittest/test
  endif
  
-@@ -884,6 +882,23 @@
+@@ -884,6 +882,16 @@
  LIBSUBDIRS += pydoc_data
  endif
  
@@ -47,14 +48,7 @@ Index: Python-2.7.2/Makefile.pre.in
 +endif
 +endif
 +
-+ifeq (@SQLITE3@,yes)
-+LIBSUBDIRS += sqlite3
-+ifeq (@TEST_MODULES@,yes)
-+LIBSUBDIRS += sqlite3/test
-+endif
-+endif
-+
- libinstall:	build_all $(srcdir)/Lib/$(PLATDIR)
+ libinstall:	build_all $(srcdir)/Lib/$(PLATDIR) $(srcdir)/Modules/xxmodule.c
  	@for i in $(SCRIPTDIR) $(LIBDEST); \
  	do \
 Index: Python-2.7.2/configure.in

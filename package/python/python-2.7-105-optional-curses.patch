@@ -1,6 +1,7 @@
 Add an option to disable the curses module
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
 
 ---
  Makefile.pre.in |    6 +++++-
@@ -28,7 +29,7 @@ Index: Python-2.7.2/Makefile.pre.in
 +LIBSUBDIRS += curses
 +endif
 +
- libinstall:	build_all $(srcdir)/Lib/$(PLATDIR)
+ libinstall:	build_all $(srcdir)/Lib/$(PLATDIR) $(srcdir)/Modules/xxmodule.c
  	@for i in $(SCRIPTDIR) $(LIBDEST); \
  	do \
 Index: Python-2.7.2/configure.in
