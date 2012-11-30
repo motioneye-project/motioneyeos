@@ -1,0 +1,14 @@
+config BR2_PACKAGE_SNOWBALL_INIT
+	bool "snowball-init"
+	# Runtime dependency, needed by snowball startup script
+	select BR2_PACKAGE_BLUEZ_UTILS
+	depends on !BR2_avr32
+	depends on BR2_USE_WCHAR # libglib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # dbus, alsa-lib
+	depends on BR2_USE_MMU # dbus
+	select BR2_PACKAGE_UX500_FIRMWARE
+	help
+	  Snowball init scripts
+
+	  http://www.igloocommunity.org
+
