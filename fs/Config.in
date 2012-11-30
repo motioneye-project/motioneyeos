@@ -1,15 +1,15 @@
 menu "Filesystem images"
 
-source "fs/cramfs/Config.in"
 source "fs/cloop/Config.in"
+source "fs/cpio/Config.in"
+source "fs/cramfs/Config.in"
 source "fs/ext2/Config.in"
+source "fs/initramfs/Config.in"
+source "fs/iso9660/Config.in"
 source "fs/jffs2/Config.in"
-source "fs/ubifs/Config.in"
+source "fs/romfs/Config.in"
 source "fs/squashfs/Config.in"
 source "fs/tar/Config.in"
-source "fs/cpio/Config.in"
-source "fs/iso9660/Config.in"
-source "fs/initramfs/Config.in"
-source "fs/romfs/Config.in"
+source "fs/ubifs/Config.in"
 
 endmenu
