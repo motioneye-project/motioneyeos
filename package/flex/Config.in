@@ -6,10 +6,10 @@ config BR2_PACKAGE_FLEX
 
 	  http://www.gnu.org/software/flex/
 
-config BR2_PACKAGE_FLEX_LIBFL
-	bool "Install libfl.a under staging_dir/usr/lib"
-	default y
+config BR2_PACKAGE_FLEX_BINARY
+	bool "Install tool in the target"
+	# needs fork()
+	depends on BR2_USE_MMU
 	depends on BR2_PACKAGE_FLEX
 	help
-	  Install libfl.a under staging_dir/usr/lib for further development
-	  on a host machine.
+	  Install the flex binary tool in the target filesystem.
