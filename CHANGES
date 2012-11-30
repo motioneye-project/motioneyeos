@@ -1,3 +1,13 @@
+2012.11, Not released yet:
+
+	Minor fixes around the tree.
+
+	Various manual updates and fixes.
+
+	Updated/fixed packages: arptables, binutils, busybox, ccache,
+	cjson, directfb, gdb, hiawatha, lcdproc, libdaemon, libecore,
+	libhid, libpcap, libusb, linux-fusion, ocf-linux, strace,
+
 2012.11-rc1, Released November 17th, 2012
 
 	Fixes all over the tree and new features.
