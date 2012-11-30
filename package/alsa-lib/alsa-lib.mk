@@ -17,7 +17,7 @@ ALSA_LIB_CONF_OPT = --with-alsa-devdir=$(call qstrip,$(BR2_PACKAGE_ALSA_LIB_DEVD
 		    --without-versioned
 
 # Can't build with static & shared at the same time (1.0.25+)
-ifeq ($(BR2_PREFER_STATIC),y)
+ifeq ($(BR2_PREFER_STATIC_LIB),y)
 ALSA_LIB_CONF_OPT += --enable-shared=no
 else
 ALSA_LIB_CONF_OPT += --enable-static=no

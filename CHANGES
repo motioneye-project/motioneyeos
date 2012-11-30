@@ -8,6 +8,10 @@
 	cjson, directfb, gdb, hiawatha, lcdproc, libdaemon, libecore,
 	libhid, libpcap, libusb, linux-fusion, ocf-linux, strace,
 
+	Issues resolved (http://bugs.uclibc.org):
+
+	#5732: Error : package/alsa-lib/alsa-lib.mk
+
 2012.11-rc1, Released November 17th, 2012
 
 	Fixes all over the tree and new features.
