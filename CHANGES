@@ -1,3 +1,13 @@
+2012.11, Released December 2nd, 2012:
+
+	Git shallow clone fix for older git version.
+
+	Updated/fixed packages: ctuio, libtool
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#5726: List all the available hook points
+
 2012.11-rc2, Released November 30th, 2012:
 
 	Minor fixes around the tree.
