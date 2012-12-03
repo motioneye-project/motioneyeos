@@ -4,13 +4,15 @@
 #
 #############################################################
 
-HOSTAPD_VERSION = 1.0
+HOSTAPD_VERSION = 1.1
 HOSTAPD_SITE = http://hostap.epitest.fi/releases
 HOSTAPD_SUBDIR = hostapd
 HOSTAPD_CONFIG = $(HOSTAPD_DIR)/$(HOSTAPD_SUBDIR)/.config
 HOSTAPD_DEPENDENCIES = libnl
 HOSTAPD_CFLAGS = $(TARGET_CFLAGS) -I$(STAGING_DIR)/usr/include/libnl3/
 HOSTAPD_LDFLAGS = $(TARGET_LDFLAGS)
+HOSTAPD_LICENSE = GPLv2/BSD-3c
+HOSTAPD_LICENSE_FILES = README
 
 # libnl needs -lm (for rint) if linking statically
 ifeq ($(BR2_PREFER_STATIC_LIB),y)
