@@ -4,9 +4,11 @@
 #
 #############################################################
 
-LINKS_VERSION = 2.5
+LINKS_VERSION = 2.7
 LINKS_SITE = http://links.twibright.com/download
 LINKS_DEPENDENCIES = host-pkgconf
+LINKS_LICNSE = GPLv2+
+LINKS_LICENSE_FILES = COPYING
 
 ifeq ($(BR2_PACKAGE_LINKS_GRAPHICS),y)
 LINKS_CONF_OPT += --enable-graphics
