@@ -477,7 +477,7 @@ ifneq ($(call qstrip,$$($(2)_SOURCE)),)
 ifeq ($$($(2)_SITE_METHOD),local)
 # Packages without a tarball: don't save and warn
 	@$(call legal-warning-pkg-savednothing,$$($(2)_RAWNAME),local)
-else ifeq ($$($(2)_SITE_METHOD),override)
+else ifneq ($$($(2)_OVERRIDE_SRCDIR),)
 	@$(call legal-warning-pkg-savednothing,$$($(2)_RAWNAME),override)
 else
 # Other packages
