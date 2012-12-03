@@ -6,7 +6,7 @@ Index: b/Makefile
 ===================================================================
 --- a/Makefile
 +++ b/Makefile
-@@ -43,8 +43,7 @@
+@@ -42,8 +42,7 @@
  INSTALL_MAN= $(INSTALL_SHARE)/man/man1
  INSTALL_PKGCONFIG= $(INSTALL_LIB)/pkgconfig
  
@@ -16,7 +16,7 @@ Index: b/Makefile
  INSTALL_ANAME= libluajit-$(ABIVER).a
  INSTALL_SONAME= libluajit-$(ABIVER).so.$(MAJVER).$(MINVER).$(RELVER)
  INSTALL_SOSHORT= libluajit-$(ABIVER).so
-@@ -58,7 +57,6 @@
+@@ -57,7 +56,6 @@
  INSTALL_SHORT1= $(INSTALL_LIB)/$(INSTALL_SOSHORT)
  INSTALL_SHORT2= $(INSTALL_LIB)/$(INSTALL_SOSHORT)
  INSTALL_T= $(INSTALL_BIN)/$(INSTALL_TNAME)
@@ -24,17 +24,3 @@ Index: b/Makefile
  INSTALL_PC= $(INSTALL_PKGCONFIG)/$(INSTALL_PCNAME)
  
  INSTALL_DIRS= $(INSTALL_BIN) $(INSTALL_LIB) $(INSTALL_INC) $(INSTALL_MAN) \
-@@ -120,13 +118,6 @@
- 	  $(RM) $(FILE_PC).tmp
- 	cd src && $(INSTALL_F) $(FILES_INC) $(INSTALL_INC)
- 	cd src/jit && $(INSTALL_F) $(FILES_JITLIB) $(INSTALL_JITLIB)
--	@echo "==== Successfully installed LuaJIT $(VERSION) to $(PREFIX) ===="
--	@echo ""
--	@echo "Note: the beta releases deliberately do NOT install a symlink for luajit"
--	@echo "You can do this now by running this command (with sudo):"
--	@echo ""
--	@echo "  $(SYMLINK) $(INSTALL_TNAME) $(INSTALL_TSYM)"
--	@echo ""
- 
- uninstall:
- 	@echo "==== Uninstalling LuaJIT $(VERSION) from $(PREFIX) ===="

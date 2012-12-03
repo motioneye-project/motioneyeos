@@ -18,5 +18,5 @@ Index: b/src/luaconf.h
 +#define LUA_LDIR	LUA_ROOT "share/lua/"
 +#define LUA_CDIR	LUA_ROOT "lib/lua/"
  #ifdef LUA_XROOT
- #define LUA_JDIR	LUA_XROOT "share/luajit-2.0.0-beta11/"
+ #define LUA_JDIR	LUA_XROOT "share/luajit-2.0.0/"
  #define LUA_XPATH \
