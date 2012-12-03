@@ -13,8 +13,11 @@ PERL_LICENSE_FILES = Artistic
 PERL_INSTALL_STAGING = YES
 
 PERL_CROSS_VERSION = 0.7
+PERL_CROSS_BASE_VERSION = 5.$(PERL_VERSION_MAJOR).0
 PERL_CROSS_SITE    = http://download.berlios.de/perlcross
-PERL_CROSS_SOURCE  = perl-5.$(PERL_VERSION_MAJOR).0-cross-$(PERL_CROSS_VERSION).tar.gz
+PERL_CROSS_SOURCE  = perl-$(PERL_CROSS_BASE_VERSION)-cross-$(PERL_CROSS_VERSION).tar.gz
+PERL_CROSS_OLD_POD = perl$(subst .,,$(PERL_CROSS_BASE_VERSION))delta.pod
+PERL_CROSS_NEW_POD = perl$(subst .,,$(PERL_VERSION))delta.pod
 
 # We use the perlcross hack to cross-compile perl. It should
 # be extracted over the perl sources, so we don't define that
@@ -32,6 +35,11 @@ define PERL_CROSS_EXTRACT
 endef
 PERL_POST_EXTRACT_HOOKS += PERL_CROSS_EXTRACT
 
+define PERL_CROSS_SET_POD
+	$(SED) s/$(PERL_CROSS_OLD_POD)/$(PERL_CROSS_NEW_POD)/g $(@D)/Makefile
+endef
+PERL_POST_PATCH_HOOKS += PERL_CROSS_SET_POD
+
 ifeq ($(BR2_PACKAGE_BERKELEYDB),y)
     PERL_DEPENDENCIES += berkeleydb
 endif
@@ -39,31 +47,22 @@ ifeq ($(BR2_PACKAGE_GDBM),y)
     PERL_DEPENDENCIES += gdbm
 endif
 
-# Normally, --mode=cross should automatically do the two steps
-# below, but it doesn't work for some reason.
-PERL_HOST_CONF_OPT = \
-	--mode=buildmini \
-	--target=$(GNU_TARGET_NAME) \
-	--target-arch=$(GNU_TARGET_NAME) \
-	--set-target-name=$(GNU_TARGET_NAME)
-
 # We have to override LD, because an external multilib toolchain ld is not
 # wrapped to provide the required sysroot options.  We also can't use ccache
 # because the configure script doesn't support it.
 PERL_CONF_OPT = \
-	--mode=target \
 	--target=$(GNU_TARGET_NAME) \
 	--target-tools-prefix=$(TARGET_CROSS) \
 	--prefix=/usr \
 	-Dld="$(TARGET_CC_NOCCACHE)" \
-	-A ccflags="$(TARGET_CFLAGS)" \
-	-A ldflags="$(TARGET_LDFLAGS) -lm" \
-	-A mydomain="" \
-	-A myhostname="$(BR2_TARGET_GENERIC_HOSTNAME)" \
-	-A myuname="Buildroot $(BR2_VERSION_FULL)" \
-	-A osname=linux \
-	-A osvers=$(LINUX_VERSION) \
-	-A perlamdin=root
+	-Dccflags="$(TARGET_CFLAGS)" \
+	-Dldflags="$(TARGET_LDFLAGS) -lm" \
+	-A define:mydomain="" \
+	-A define:myhostname="$(BR2_TARGET_GENERIC_HOSTNAME)" \
+	-A define:myuname="Buildroot $(BR2_VERSION_FULL)" \
+	-A define:osname=linux \
+	-A define:osvers=$(LINUX_VERSION) \
+	-A define:perladmin=root
 
 ifeq ($(shell expr $(PERL_VERSION_MAJOR) % 2), 1)
     PERL_CONF_OPT += -Dusedevel
@@ -79,8 +78,7 @@ PERL_CONF_OPT += --only-mod=$(subst $(space),$(comma),$(PERL_MODULES))
 endif
 
 define PERL_CONFIGURE_CMDS
-	(cd $(@D); HOSTCC='$(HOSTCC_NOCACHE)' ./configure $(PERL_HOST_CONF_OPT))
-	(cd $(@D); ./configure $(PERL_CONF_OPT))
+	(cd $(@D); HOSTCC='$(HOSTCC_NOCACHE)' ./configure $(PERL_CONF_OPT))
 	$(SED) 's/UNKNOWN-/Buildroot $(BR2_VERSION_FULL) /' $(@D)/patchlevel.h
 endef
 

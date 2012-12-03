@@ -1,0 +1,12 @@
+config BR2_PACKAGE_LIBMATROSKA
+	bool "libmatroska"
+	select BR2_PACKAGE_LIBEBML
+	depends on BR2_INSTALL_LIBSTDCPP
+	help
+	  Extensible open standard audio/video container format access
+	  library.
+
+	  http://matroska.org
+
+comment "libmatroska requires a toolchain with C++ support"
+	depends on !BR2_INSTALL_LIBSTDCPP

@@ -1,0 +1,20 @@
+Patch from Gentoo:
+http://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/media-libs/gd/files/gd-2.0.35-maxcolors.patch?view=log
+
+http://bugs.gentoo.org/292130
+
+fix in usptream repo already
+
+--- gd-2.0.35/gd_gd.c
++++ gd-2.0.35/gd_gd.c
+@@ -44,6 +44,10 @@
+ 	    {
+ 	      goto fail1;
+ 	    }
++	  if (im->colorsTotal > gdMaxColors)
++	    {
++		   goto fail1;
++		 }
+ 	}
+       /* Int to accommodate truecolor single-color transparency */
+       if (!gdGetInt (&im->transparent, in))

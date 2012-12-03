@@ -1,0 +1,11 @@
+config BR2_PACKAGE_LIBEBML
+	bool "libebml"
+	depends on BR2_INSTALL_LIBSTDCPP
+	help
+	  Access library for the EBML (Extensible Binary Meta
+	  Language, a binary derivative of XML) format.
+
+	  http://matroska.org
+
+comment "libebml requires a toolchain with C++ support"
+	depends on !BR2_INSTALL_LIBSTDCPP
