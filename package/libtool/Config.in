@@ -1,7 +1,5 @@
 config BR2_PACKAGE_LIBTOOL
 	bool "libtool"
-	# We no longer support a toolchain on the target
-	depends on BR2_DEPRECATED
 	help
 	  Library that hides the complexity of using shared/static libraries
 	  on different platforms behind a consistent, portable interface.
