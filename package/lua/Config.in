@@ -7,11 +7,28 @@ config BR2_PACKAGE_LUA
 
 if BR2_PACKAGE_LUA
 
+choice
+	prompt "Lua Interpreter command-line editing"
+	default BR2_PACKAGE_LUA_INTERPRETER_EDITING_NONE
+
+config BR2_PACKAGE_LUA_INTERPRETER_EDITING_NONE
+	bool "none"
+	help
+	  None.
+
 config BR2_PACKAGE_LUA_INTERPRETER_READLINE
 	bool "readline support"
 	select BR2_PACKAGE_READLINE
 	select BR2_PACKAGE_NCURSES
 	help
 	  Enables command-line editing in the lua interpreter.
+
+config BR2_PACKAGE_LUA_INTERPRETER_LINENOISE
+	bool "linenoise support"
+	select BR2_PACKAGE_LINENOISE
+	help
+	  Enables command-line editing in the lua interpreter.
+
+endchoice
 
 endif

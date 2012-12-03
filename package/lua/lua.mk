@@ -16,9 +16,15 @@ LUA_MYLIBS += -ldl
 ifeq ($(BR2_PACKAGE_LUA_INTERPRETER_READLINE),y)
 	LUA_DEPENDENCIES = readline ncurses
 	LUA_MYLIBS += -lreadline -lhistory -lncurses
-	LUA_CFLAGS += -DLUA_USE_LINUX
+	LUA_CFLAGS += -DLUA_USE_POSIX -DLUA_USE_DLOPEN -DLUA_USE_READLINE
+else
+ifeq ($(BR2_PACKAGE_LUA_INTERPRETER_LINENOISE),y)
+	LUA_DEPENDENCIES = linenoise
+	LUA_MYLIBS += -llinenoise
+	LUA_CFLAGS += -DLUA_USE_POSIX -DLUA_USE_DLOPEN -DLUA_USE_LINENOISE
 else
 	LUA_CFLAGS += -DLUA_USE_POSIX -DLUA_USE_DLOPEN
+endif
 endif
 
 # We never want to have host-readline and host-ncurses as dependencies
