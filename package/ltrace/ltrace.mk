@@ -3,10 +3,14 @@
 # ltrace
 #
 #############################################################
-LTRACE_VERSION      = 0.6.0
-LTRACE_SITE         = git://anonscm.debian.org/collab-maint/ltrace.git
+
+LTRACE_VERSION = 0.7.1
+LTRACE_SITE = http://alioth.debian.org/frs/download.php/3844
+LTRACE_SOURCE = ltrace-$(LTRACE_VERSION).tar.bz2
 LTRACE_DEPENDENCIES = libelf
-LTRACE_AUTORECONF   = YES
-LTRACE_CONF_OPT     += --disable-werror
+LTRACE_AUTORECONF = YES
+LTRACE_CONF_OPT = --disable-werror
+LTRACE_LICENSE = GPLv2
+LTRACE_LICENSE_FILES = COPYING
 
 $(eval $(autotools-package))
