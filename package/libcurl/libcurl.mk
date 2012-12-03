@@ -4,7 +4,7 @@
 #
 #############################################################
 
-LIBCURL_VERSION = 7.27.0
+LIBCURL_VERSION = 7.28.1
 LIBCURL_SOURCE = curl-$(LIBCURL_VERSION).tar.bz2
 LIBCURL_SITE = http://curl.haxx.se/download
 LIBCURL_LICENSE = ICS
