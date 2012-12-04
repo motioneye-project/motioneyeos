@@ -1,0 +1,14 @@
+config BR2_PACKAGE_CLASSPATH
+	bool "classpath"
+	depends on BR2_PACKAGE_JAMVM
+	depends on BR2_INET_IPV6
+	help
+	  GNU Classpath, Essential Libraries for Java, is a GNU
+	  project to create free core class libraries for use with
+	  virtual machines and compilers for the java programming
+	  language.
+
+	  http://classpath.org
+
+comment "classpath requires a toolchain with IPV6 support"
+	depends on !BR2_INET_IPV6
