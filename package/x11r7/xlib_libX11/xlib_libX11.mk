@@ -12,10 +12,12 @@ XLIB_LIBX11_DEPENDENCIES = libxcb xutil_util-macros xlib_xtrans xlib_libXau xlib
 XLIB_LIBX11_CONF_OPT = \
 	--disable-malloc0returnsnull \
 	--with-xcb \
-	--disable-specs
+	--disable-specs \
+	--without-perl
 
 HOST_XLIB_LIBX11_CONF_OPT = \
-	--disable-specs
+	--disable-specs \
+	--without-perl
 
 # src/util/makekeys is executed at build time to generate ks_tables.h, so
 # it should get compiled for the host. The libX11 makefile unfortunately
