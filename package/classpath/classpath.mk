@@ -24,6 +24,10 @@ else
 CLASSPATH_CONF_OPT += --disable-gmp
 endif
 
+ifeq ($(BR2_PACKAGE_LIBGTK2)$(BR2_PACKAGE_XORG7),yy)
+CLASSPATH_CONF_OPT += --enable-gtk-peer
+CLASSPATH_DEPENDENCIES += libgtk2
+
 ifeq ($(BR2_PACKAGE_GST_PLUGINS_BASE),y)
 CLASSPATH_CONF_OPT += --enable-gstreamer-peer
 CLASSPATH_DEPENDENCIES += gst-plugins-base
@@ -31,11 +35,8 @@ else
 CLASSPATH_CONF_OPT += --disable-gstreamer-peer
 endif
 
-ifeq ($(BR2_PACKAGE_LIBGTK2)$(BR2_PACKAGE_XORG7),yy)
-CLASSPATH_CONF_OPT += --enable-gtk-peer
-CLASSPATH_DEPENDENCIES += libgtk2
 else
-CLASSPATH_CONF_OPT += --disable-gtk-peer
+CLASSPATH_CONF_OPT += --disable-gtk-peer --disable-gstreamer-peer
 endif
 
 ifeq ($(BR2_PACKAGE_QT),y)
