@@ -1,4 +1,4 @@
-JQUERY_VERSION = 1.7.1
+JQUERY_VERSION = 1.8.3
 JQUERY_SITE = http://code.jquery.com
 JQUERY_SOURCE = jquery-$(JQUERY_VERSION).min.js
 
