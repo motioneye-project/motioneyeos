@@ -159,7 +159,7 @@ if grep ^BR2_TOOLCHAIN_BUILDROOT=y $CONFIG_FILE > /dev/null && \
    fi
 fi
 if grep -q ^BR2_PACKAGE_CLASSPATH=y $CONFIG_FILE ; then
-    for prog in java javac jar; do
+    for prog in javac jar; do
 	if ! which $prog > /dev/null ; then
 	    /bin/echo -e "\nYou must install '$prog' on your build machine\n" >&2
 	    exit 1
