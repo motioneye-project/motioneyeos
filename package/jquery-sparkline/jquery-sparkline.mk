@@ -1,4 +1,4 @@
-JQUERY_SPARKLINE_VERSION = 1.6
+JQUERY_SPARKLINE_VERSION = 2.1
 JQUERY_SPARKLINE_SITE = http://www.omnipotent.net/jquery.sparkline/$(JQUERY_SPARKLINE_VERSION)
 JQUERY_SPARKLINE_SOURCE = jquery.sparkline.min.js
 
