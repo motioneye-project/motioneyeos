@@ -56,6 +56,15 @@ TARGET_ABI+=-mabi=spe -mfloat-gprs=double -Wa,-me500mc
 endif
 endif
 
+# Use longcalls option for Xtensa globally.
+# The 'longcalls' option allows calls across a greater range of addresses,
+# and is required for some packages. While this option can degrade both
+# code size and performance, the linker can usually optimize away the
+# overhead when a call ends up within a certain range.
+ifeq ($(BR2_xtensa),y)
+TARGET_ABI += -mlongcalls
+endif
+
 STAGING_DIR=$(HOST_DIR)/usr/$(GNU_TARGET_NAME)/sysroot
 
 TARGET_OPTIMIZATION:=$(call qstrip,$(BR2_TARGET_OPTIMIZATION))
