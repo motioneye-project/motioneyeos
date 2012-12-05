@@ -8,4 +8,10 @@ JAMVM_CONF_OPT = \
 	--disable-shared \
 	--without-pic
 
+# jamvm has ARM assembly code that cannot be compiled in Thumb2 mode,
+# so we must force traditional ARM mode.
+ifeq ($(BR2_arm),y)
+JAMVM_CONF_ENV = CFLAGS="$(TARGET_CFLAGS) -marm"
+endif
+
 $(eval $(autotools-package))
