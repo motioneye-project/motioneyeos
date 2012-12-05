@@ -1,0 +1,20 @@
+returns the default value (80) when a real value is not available
+(0 is not an acceptable value for COLUMNS, the width of the screen).
+
+see pull request on upstream : http://github.com/antirez/linenoise/pull/31
+
+Signed-off-by: Francois Perrad <francois.perrad@gadz.org>
+
+Index: b/linenoise.c
+===================================================================
+--- a/linenoise.c
++++ b/linenoise.c
+@@ -182,7 +182,7 @@
+ static int getColumns(void) {
+     struct winsize ws;
+ 
+-    if (ioctl(1, TIOCGWINSZ, &ws) == -1) return 80;
++    if (ioctl(1, TIOCGWINSZ, &ws) == -1 || ws.ws_col == 0) return 80;
+     return ws.ws_col;
+ }
+ 
