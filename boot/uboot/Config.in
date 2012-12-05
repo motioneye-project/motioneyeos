@@ -101,6 +101,10 @@ config BR2_TARGET_UBOOT_FORMAT_LDR
 config BR2_TARGET_UBOOT_FORMAT_ELF
 	bool "u-boot.elf"
 
+config BR2_TARGET_UBOOT_FORMAT_SB
+	depends on BR2_arm
+	bool "u-boot.sb"
+
 config BR2_TARGET_UBOOT_FORMAT_CUSTOM
 	bool "Custom (specify below)"
 	help
