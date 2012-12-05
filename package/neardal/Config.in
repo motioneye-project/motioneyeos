@@ -1,0 +1,15 @@
+config BR2_PACKAGE_NEARDAL
+	bool "neardal"
+	depends on BR2_USE_WCHAR # glib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # dbus
+	depends on BR2_USE_MMU # dbus
+	select BR2_PACKAGE_DBUS
+	select BR2_PACKAGE_DBUS_GLIB
+	help
+	  Provides a simple C API to exchange data with the neard NFC
+	  manager daemon.
+
+	  https://github.com/connectivity/neardal
+
+comment "neardal requires a toolchain with WCHAR and threads support"
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
