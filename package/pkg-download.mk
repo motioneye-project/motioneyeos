@@ -82,7 +82,7 @@ domainseparator=$(if $(1),$(1),/)
 define DOWNLOAD_GIT
 	test -e $(DL_DIR)/$($(PKG)_SOURCE) || \
 	(pushd $(DL_DIR) > /dev/null && \
-	 ((test `git ls-remote  $($(PKG)_SITE) | cut -f 2- | grep $($(PKG)_DL_VERSION)` && \
+	 ((test "`git ls-remote $($(PKG)_SITE) $($(PKG)_DL_VERSION)`" && \
 	   echo "Doing shallow clone" && \
 	   $(GIT) clone --depth 1 -b $($(PKG)_DL_VERSION) --bare $($(PKG)_SITE) $($(PKG)_BASE_NAME)) || \
 	  (echo "Doing full clone" && \
