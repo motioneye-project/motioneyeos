@@ -390,6 +390,9 @@ $(1)-configure:		$(1)-depends \
 
 $(1)-depends:		$(1)-rsync $$($(2)_DEPENDENCIES)
 
+$(1)-patch:		$(1)-rsync
+$(1)-extract:		$(1)-rsync
+
 $(1)-rsync:		$$($(2)_TARGET_RSYNC)
 
 $(1)-source:		$$($(2)_TARGET_RSYNC_SOURCE)
