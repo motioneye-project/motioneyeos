@@ -313,6 +313,11 @@ endmenu
 endif
 source "package/ruby/Config.in"
 source "package/tcl/Config.in"
+if BR2_PACKAGE_TCL
+menu "tcl libraries/modules"
+source "package/tcllib/Config.in"
+endmenu
+endif
 endmenu
 
 menu "Libraries"
