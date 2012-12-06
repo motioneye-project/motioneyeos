@@ -70,6 +70,12 @@ ifeq ($(BR2_SOFT_FLOAT),y)
 ALSA_LIB_CONF_OPT += --with-softfloat
 endif
 
+ifeq ($(BR2_bfin),y)
+# blackfin external toolchains don't have versionsort. Fake it using alphasort
+# instead
+ALSA_LIB_CFLAGS += -Dversionsort=alphasort
+endif
+
 ALSA_LIB_CONF_ENV = CFLAGS="$(ALSA_LIB_CFLAGS)" \
 		    LDFLAGS="$(TARGET_LDFLAGS) -lm"
 
