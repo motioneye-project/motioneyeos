@@ -5,7 +5,7 @@
 #############################################################
 # Release 0.6.0 doesn't build cleanly, so use a recent
 # Subversion trunk snapshot.
-SCONESERVER_VERSION = 180
+SCONESERVER_VERSION = 183
 SCONESERVER_SITE = \
 	https://sconeserver.svn.sourceforge.net/svnroot/sconeserver/trunk
 SCONESERVER_SITE_METHOD = svn
@@ -51,7 +51,7 @@ else
 endif
 
 ifeq ($(BR2_PACKAGE_SCONESERVER_HTTP_SCONESITE_IMAGE),y)
-	SCONESERVER_DEPENDENCIES += imagemagick
+	SCONESERVER_DEPENDENCIES += imagemagick host-pkgconf
 	SCONESERVER_CONF_OPT += --with-sconesite-image
 else
 	SCONESERVER_CONF_OPT += --without-sconesite-image
