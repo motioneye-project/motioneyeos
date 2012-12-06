@@ -57,12 +57,12 @@ PERL_CONF_OPT = \
 	-Dld="$(TARGET_CC_NOCCACHE)" \
 	-Dccflags="$(TARGET_CFLAGS)" \
 	-Dldflags="$(TARGET_LDFLAGS) -lm" \
-	-A define:mydomain="" \
-	-A define:myhostname="$(BR2_TARGET_GENERIC_HOSTNAME)" \
-	-A define:myuname="Buildroot $(BR2_VERSION_FULL)" \
-	-A define:osname=linux \
-	-A define:osvers=$(LINUX_VERSION) \
-	-A define:perladmin=root
+	-Dmydomain="" \
+	-Dmyhostname="$(BR2_TARGET_GENERIC_HOSTNAME)" \
+	-Dmyuname="Buildroot $(BR2_VERSION_FULL)" \
+	-Dosname=linux \
+	-Dosvers=$(LINUX_VERSION) \
+	-Dperladmin=root
 
 ifeq ($(shell expr $(PERL_VERSION_MAJOR) % 2), 1)
     PERL_CONF_OPT += -Dusedevel
