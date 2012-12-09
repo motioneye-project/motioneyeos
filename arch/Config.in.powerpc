@@ -18,6 +18,14 @@ config BR2_powerpc_440
 	bool "440"
 config BR2_powerpc_440fp
 	bool "440 with FPU"
+config BR2_powerpc_464
+	bool "464"
+config BR2_powerpc_464fp
+	bool "464 with FPU"
+config BR2_powerpc_476
+	bool "476"
+config BR2_powerpc_476fp
+	bool "476 with FPU"
 config BR2_powerpc_505
 	bool "505"
 config BR2_powerpc_601
@@ -44,8 +52,6 @@ config BR2_powerpc_7450
 	bool "7450"
 config BR2_powerpc_750
 	bool "750"
-config BR2_powerpc_801
-	bool "801"
 config BR2_powerpc_821
 	bool "821"
 config BR2_powerpc_823
@@ -95,6 +101,10 @@ config BR2_GCC_TARGET_TUNE
 	default "405fp"		if BR2_powerpc_405fp
 	default "440"		if BR2_powerpc_440
 	default "440fp"		if BR2_powerpc_440fp
+	default "464"		if BR2_powerpc_464
+	default "464fp"		if BR2_powerpc_464fp
+	default "476"		if BR2_powerpc_476
+	default "476fp"		if BR2_powerpc_476fp
 	default "505"		if BR2_powerpc_505
 	default "601"		if BR2_powerpc_601
 	default "602"		if BR2_powerpc_602
@@ -108,7 +118,6 @@ config BR2_GCC_TARGET_TUNE
 	default "7400"		if BR2_powerpc_7400
 	default "7450"		if BR2_powerpc_7450
 	default "750"		if BR2_powerpc_750
-	default "801"		if BR2_powerpc_801
 	default "821"		if BR2_powerpc_821
 	default "823"		if BR2_powerpc_823
 	default "860"		if BR2_powerpc_860
