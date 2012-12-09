@@ -5,7 +5,7 @@
 #############################################################
 SANE_BACKENDS_VERSION = 1.0.22
 SANE_BACKENDS_SOURCE = sane-backends-$(SANE_BACKENDS_VERSION).tar.gz
-SANE_BACKENDS_SITE = ftp://ftp2.sane-project.org/pub/sane/sane-backends-$(SANE_BACKENDS_VERSION)
+SANE_BACKENDS_SITE = https://alioth.debian.org/frs/download.php/3503
 
 ifeq ($(BR2_PACKAGE_LIBUSB),y)
 SANE_BACKENDS_DEPENDENCIES += libusb
@@ -36,5 +36,11 @@ SANE_BACKENDS_DEPENDENCIES += netsnmp
 else
 SANE_BACKENDS_CONF_OPT += --without-snmp
 endif
+
+define SANE_BACKENDS_DISABLE_DOCS
+	$(SED) 's/ doc//' $(@D)/Makefile
+endef
+
+SANE_BACKENDS_POST_CONFIGURE_HOOKS += SANE_BACKENDS_DISABLE_DOCS
 
 $(eval $(autotools-package))
