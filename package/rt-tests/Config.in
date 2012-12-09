@@ -1,6 +1,9 @@
 config BR2_PACKAGE_RT_TESTS
 	bool "rt-tests"
 	depends on BR2_TOOLCHAIN_HAS_THREADS
+	# Too old uClibc, does not provide priority-inheritance
+	# mutexes
+	depends on !BR2_avr32
 	help
 	  Set of utilities for testing the real-time behaviour of a
 	  Linux system.
