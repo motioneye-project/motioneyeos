@@ -29,10 +29,14 @@ config BR2_arm1176jz_s
 	bool "arm1176jz-s"
 config BR2_arm1176jzf_s
 	bool "arm1176jzf-s"
+config BR2_cortex_a5
+	bool "cortex-A5"
 config BR2_cortex_a8
 	bool "cortex-A8"
 config BR2_cortex_a9
 	bool "cortex-A9"
+config BR2_cortex_a15
+	bool "cortex-A15"
 config BR2_sa110
 	bool "sa110"
 config BR2_sa1100
@@ -83,8 +87,10 @@ config BR2_GCC_TARGET_TUNE
 	default "arm1136jf-s"	if BR2_arm1136jf_s
 	default "arm1176jz-s"	if BR2_arm1176jz_s
 	default "arm1176jzf-s"	if BR2_arm1176jzf_s
+	default "cortex-a5"	if BR2_cortex_a5
 	default "cortex-a8"	if BR2_cortex_a8
 	default "cortex-a9"	if BR2_cortex_a9
+	default "cortex-a15"	if BR2_cortex_a15
 	default "strongarm110"	if BR2_sa110
 	default "strongarm1100"	if BR2_sa1100
 	default "xscale"	if BR2_xscale
@@ -102,8 +108,10 @@ config BR2_GCC_TARGET_ARCH
 	default "armv6j"	if BR2_arm1136jf_s
 	default "armv6zk"	if BR2_arm1176jz_s
 	default "armv6zk"	if BR2_arm1176jzf_s
+	default "armv7-a"	if BR2_cortex_a5
 	default "armv7-a"	if BR2_cortex_a8
 	default "armv7-a"	if BR2_cortex_a9
+	default "armv7-a"	if BR2_cortex_a15
 	default "armv4"		if BR2_sa110
 	default "armv4"		if BR2_sa1100
 	default "armv5te"	if BR2_xscale
