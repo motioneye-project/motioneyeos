@@ -1,5 +1,6 @@
 config BR2_PACKAGE_RT_TESTS
 	bool "rt-tests"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
 	help
 	  Set of utilities for testing the real-time behaviour of a
 	  Linux system.
@@ -11,3 +12,6 @@ config BR2_PACKAGE_RT_TESTS
 	  Buildroot configuration.
 
 	  http://rt.wiki.kernel.org
+
+comment "rt-tests requires a toolchain with threads support"
+	!BR2_TOOLCHAIN_HAS_THREADS
