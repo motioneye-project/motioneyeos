@@ -30,4 +30,10 @@ define LIBROXML_CLEAN_CMDS
 	-$(MAKE) -C $(@D) clean
 endef
 
+define LIBROXML_DISABLE_DOXYGEN
+	$(SED) 's:) doxy:):' $(@D)/Makefile
+endef
+
+LIBROXML_POST_PATCH_HOOKS += LIBROXML_DISABLE_DOXYGEN
+
 $(eval $(generic-package))
