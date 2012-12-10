@@ -4,7 +4,7 @@
 #
 #############################################################
 
-SQLITE_VERSION = 3071300
+SQLITE_VERSION = 3071401
 SQLITE_SOURCE = sqlite-autoconf-$(SQLITE_VERSION).tar.gz
 SQLITE_SITE = http://www.sqlite.org
 SQLITE_LICENSE = Public domain
