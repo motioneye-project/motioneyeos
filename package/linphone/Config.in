@@ -5,6 +5,7 @@ config BR2_PACKAGE_LINPHONE
 	select BR2_PACKAGE_ORTP
 	select BR2_PACKAGE_MEDIASTREAMER
 	depends on BR2_INSTALL_LIBSTDCPP # mediastreamer
+	depends on BR2_TOOLCHAIN_HAS_THREADS # ortp
 	help
 	  Linphone is an internet phone or Voice Over IP phone (VoIP).
 
@@ -23,5 +24,5 @@ config BR2_PACKAGE_LINPHONE
 
 	  http://www.linphone.org/
 
-comment "linphone requires a toolchain with C++ support enabled"
-	depends on !BR2_INSTALL_LIBSTDCPP
+comment "linphone requires a toolchain with threads and C++ support enabled"
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS
