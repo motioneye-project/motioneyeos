@@ -62,7 +62,7 @@ config BR2_PACKAGE_UTIL_LINUX_RENAME
 	bool "build \"rename\""
 
 config BR2_PACKAGE_UTIL_LINUX_SCHEDUTILS
-	bool "build \"chrt, ionice, teskset\""
+	bool "build \"chrt, ionice, taskset\""
 
 config BR2_PACKAGE_UTIL_LINUX_WALL
 	bool "build \"wall\""
