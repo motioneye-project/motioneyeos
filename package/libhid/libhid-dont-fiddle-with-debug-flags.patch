@@ -1,0 +1,29 @@
+Don't do horrible magic with CFLAGS and CXXFLAGS
+
+The purpose of the lines being removed is to suppress the
+-g<something> option from the CFLAGS or CXXFLAGS, when --enable-debug
+is not used. This is stupid because it is up to the user to pass these
+flags or not.
+
+But it is not only stupid, but utterly broken: if your CFLAGS contains
+a flags like -mfloat-gprs=double, then this option gets truncated to
+-mfloat simply because the option contained the -g string!
+
+Completely ridiculous piece of code, so get rid of it.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: libhid-0.2.16/m4/md_conf_debugging.m4
+===================================================================
+--- libhid-0.2.16.orig/m4/md_conf_debugging.m4	2004-11-08 18:16:25.000000000 +0100
++++ libhid-0.2.16/m4/md_conf_debugging.m4	2012-12-12 20:24:50.000000000 +0100
+@@ -1,7 +1,7 @@
+ AC_DEFUN([MD_CONF_DEBUGGING],
+   [
+-    CFLAGS=$(echo $CFLAGS | sed -e 's,-g[[^[:space:]]]*,,g')
+-    CXXFLAGS=$(echo $CXXFLAGS | sed -e 's,-g[[^[:space:]]]*,,g')
++#    CFLAGS=$(echo $CFLAGS | sed -e 's,-g[[^[:space:]]]*,,g')
++#    CXXFLAGS=$(echo $CXXFLAGS | sed -e 's,-g[[^[:space:]]]*,,g')
+     MD_CHECK_ARG_ENABLE(debug,
+       [
+         DEBUG_FLAG=-g
