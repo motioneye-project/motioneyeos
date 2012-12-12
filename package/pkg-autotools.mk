@@ -116,6 +116,9 @@ endef
 else
 
 # Configure package for host
+# disable all kind of documentation generation in the process,
+# because it often relies on host tools which may or may not be
+# installed.
 define $(2)_CONFIGURE_CMDS
 	(cd $$($$(PKG)_SRCDIR) && rm -rf config.cache; \
 	        $$(HOST_CONFIGURE_OPTS) \
@@ -126,6 +129,12 @@ define $(2)_CONFIGURE_CMDS
 		--prefix="$$(HOST_DIR)/usr" \
 		--sysconfdir="$$(HOST_DIR)/etc" \
 		--enable-shared --disable-static \
+		--disable-gtk-doc \
+		--disable-doc \
+		--disable-docs \
+		--disable-documentation \
+		--with-xmlto=no \
+		--with-fop=no \
 		$$($$(PKG)_CONF_OPT) \
 	)
 endef
