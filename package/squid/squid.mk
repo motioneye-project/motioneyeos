@@ -4,7 +4,7 @@
 #
 #############################################################
 
-SQUID_VERSION = 3.2.4
+SQUID_VERSION = 3.2.5
 SQUID_SITE = http://www.squid-cache.org/Versions/v3/3.2
 SQUID_LICENSE = GPLv2+
 SQUID_LICENSE_FILES = COPYING
