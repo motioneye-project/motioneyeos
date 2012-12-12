@@ -1,6 +1,13 @@
+#############################################################
+#
+# uboot-tools
+#
+#############################################################
 UBOOT_TOOLS_VERSION = 2012.07
 UBOOT_TOOLS_SOURCE  = u-boot-$(UBOOT_TOOLS_VERSION).tar.bz2
 UBOOT_TOOLS_SITE    = ftp://ftp.denx.de/pub/u-boot
+UBOOT_TOOLS_LICENSE = GPLv2+
+UBOOT_TOOLS_LICENSE_FILES = COPYING
 
 define UBOOT_TOOLS_BUILD_CMDS
 	$(MAKE) -C $(@D) 			\
@@ -32,11 +39,6 @@ endef
 define UBOOT_TOOLS_UNINSTALL_TARGET_CMDS
 	rm -f $(addprefix $(TARGET_DIR)/,\
 		usr/bin/mkimage usr/sbin/fw_printenv usr/sbin/fw_setenv)
-endef
-
-
-define BUSYBOX_UNINSTALL_TARGET_CMDS
-	$(BUSYBOX_MAKE_ENV) $(MAKE) $(BUSYBOX_MAKE_OPTS) -C $(@D) uninstall
 endef
 
 define HOST_UBOOT_TOOLS_BUILD_CMDS
