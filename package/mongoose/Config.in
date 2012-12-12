@@ -1,0 +1,10 @@
+config BR2_PACKAGE_MONGOOSE
+	bool "mongoose"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	help
+	  Mongoose is a small and easy to use web server
+
+	  https://github.com/valenok/mongoose
+
+comment "mongoose needs a toolchain with thread support"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
