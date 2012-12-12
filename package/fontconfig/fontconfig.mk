@@ -24,7 +24,6 @@ FONTCONFIG_CONF_OPT = --with-arch=$(GNU_TARGET_NAME) \
 FONTCONFIG_DEPENDENCIES = freetype expat
 
 HOST_FONTCONFIG_CONF_OPT = \
-		--disable-docs \
 		--disable-static
 
 $(eval $(autotools-package))

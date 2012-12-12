@@ -210,10 +210,5 @@ else
 LIBEVAS_CONF_OPT += --disable-font-loader-eet
 endif
 
-# documentation
-ifneq ($(BR2_HAVE_DOCUMENTATION),y)
-LIBEVAS_CONF_OPT += --disable-doc
-endif
-
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
