@@ -142,8 +142,7 @@ else
 LIBEVAS_CONF_OPT += --disable-cpu-altivec
 endif
 
-ifeq ($(BR2_cortex_a8)$(BR2_cortex_a9),y)
-# NEON is optional for A9
+ifeq ($(BR2_ARM_CPU_HAS_NEON),y)
 LIBEVAS_CONF_OPT += --enable-cpu-neon
 else
 LIBEVAS_CONF_OPT += --disable-cpu-neon

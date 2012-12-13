@@ -112,7 +112,7 @@ ifeq ($(call qstrip,$(BR2_GCC_TARGET_ARCH)),armv6j)
 MPLAYER_CONF_OPTS += --enable-armv6
 endif
 
-ifeq ($(call qstrip,$(BR2_GCC_TARGET_ARCH)),armv7-a)
+ifeq ($(BR2_ARM_CPU_HAS_NEON),y)
 MPLAYER_CONF_OPTS += --enable-neon
 endif
 

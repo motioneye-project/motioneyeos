@@ -143,8 +143,7 @@ endif
 ifeq ($(BR2_arm10)$(BR2_arm1136jf_s)$(BR2_arm1176jz_s)$(BR2_arm1176jzf-s)$(BR2_cortex_a8)$(BR2_cortex_a9),y)
 FFMPEG_CONF_OPT += --enable-armvfp
 endif
-# NEON is optional for A9
-ifeq ($(BR2_cortex_a8),y)
+ifeq ($(BR2_ARM_CPU_HAS_NEON),y)
 FFMPEG_CONF_OPT += --enable-neon
 endif
 # Set powerpc altivec appropriately
