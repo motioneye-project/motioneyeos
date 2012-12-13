@@ -1,3 +1,11 @@
+# arm cpu features
+config BR2_ARM_CPU_HAS_NEON
+	bool
+
+# for some cores, NEON support is optional
+config BR2_ARM_CPU_MAYBE_HAS_NEON
+	bool
+
 choice
 	prompt "Target Architecture Variant"
 	depends on BR2_arm || BR2_armeb
@@ -31,12 +39,16 @@ config BR2_arm1176jzf_s
 	bool "arm1176jzf-s"
 config BR2_cortex_a5
 	bool "cortex-A5"
+	select BR2_ARM_CPU_MAYBE_HAS_NEON
 config BR2_cortex_a8
 	bool "cortex-A8"
+	select BR2_ARM_CPU_HAS_NEON
 config BR2_cortex_a9
 	bool "cortex-A9"
+	select BR2_ARM_CPU_MAYBE_HAS_NEON
 config BR2_cortex_a15
 	bool "cortex-A15"
+	select BR2_ARM_CPU_HAS_NEON
 config BR2_sa110
 	bool "sa110"
 config BR2_sa1100
@@ -63,6 +75,15 @@ config BR2_ARM_OABI
 	bool "OABI"
 	depends on !BR2_GCC_VERSION_4_7_X
 endchoice
+
+config BR2_ARM_ENABLE_NEON
+	bool "Enable NEON SIMD extension support"
+	depends on BR2_ARM_CPU_MAYBE_HAS_NEON
+	select BR2_ARM_CPU_HAS_NEON
+	help
+	  For some CPU cores, the NEON SIMD extension is optional.
+	  Select this option if you are certain your particular
+	  implementation has NEON support and you want to use it.
 
 config BR2_ARCH
 	default "arm"	if BR2_arm
