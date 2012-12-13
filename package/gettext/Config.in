@@ -16,6 +16,9 @@ config BR2_PACKAGE_GETTEXT
 config BR2_PACKAGE_GETTEXT_TOOLS
 	bool "Install gettext tools"
 	depends on BR2_PACKAGE_GETTEXT
+	depends on BR2_USE_MMU # fork()
+	depends on BR2_LARGEFILE
+	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
 	help
 	  This option allows to install the complete gettext suite in
 	  the target filesystem. This is typically not useful for
