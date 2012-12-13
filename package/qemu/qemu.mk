@@ -16,7 +16,7 @@ QEMU_LICENSE_FILES = COPYING COPYING.LIB
 #-------------------------------------------------------------
 # Host-qemu
 
-HOST_QEMU_DEPENDENCIES = host-pkgconf zlib libglib2
+HOST_QEMU_DEPENDENCIES = host-pkgconf host-zlib host-libglib2
 
 #       BR ARCH         qemu
 #       -------         ----
