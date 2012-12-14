@@ -1,0 +1,37 @@
+From f1d9376b383f4ee7ec2d7c5a1728d38cdb692df6 Mon Sep 17 00:00:00 2001
+From: Peter Korsgaard <jacmet@sunsite.dk>
+Date: Sat, 15 Dec 2012 00:05:41 +0100
+Subject: [PATCH] audio-in.c: Don't force largefile support
+
+Buildroot ensures the correct defines are enabled depending on toolchain
+configuration, so don't hard code largefile support here.
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ src/audio-in.c |   10 ----------
+ 1 file changed, 10 deletions(-)
+
+diff --git a/src/audio-in.c b/src/audio-in.c
+index 9bf4f6f..e404629 100644
+--- a/src/audio-in.c
++++ b/src/audio-in.c
+@@ -32,16 +32,6 @@
+ # include <config.h>
+ #endif
+ 
+-#if !defined(_LARGEFILE_SOURCE)
+-# define _LARGEFILE_SOURCE
+-#endif
+-#if !defined(_LARGEFILE64_SOURCE)
+-# define _LARGEFILE64_SOURCE
+-#endif
+-#if !defined(_FILE_OFFSET_BITS)
+-# define _FILE_OFFSET_BITS 64
+-#endif
+-
+ #include <stdlib.h>
+ #include <stdio.h>
+ #include <string.h>
+-- 
+1.7.10.4
+
