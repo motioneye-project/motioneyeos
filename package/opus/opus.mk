@@ -4,7 +4,7 @@
 #
 #############################################################
 
-OPUS_VERSION = 1.0.1
+OPUS_VERSION = 1.0.2
 OPUS_SITE = http://downloads.xiph.org/releases/opus
 OPUS_INSTALL_STAGING = YES
 OPUS_CONF_OPT = --disable-doc
