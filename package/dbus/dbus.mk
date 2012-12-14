@@ -18,10 +18,15 @@ DBUS_CONF_OPT = --with-dbus-user=dbus \
 		--disable-xml-docs \
 		--disable-doxygen-docs \
 		--disable-static \
-		--enable-dnotify \
+		--disable-dnotify \
 		--localstatedir=/var \
 		--with-system-socket=/var/run/dbus/system_bus_socket \
 		--with-system-pid-file=/var/run/messagebus.pid
+
+ifeq ($(BR2_microblaze),y)
+# microblaze toolchain doesn't provide inotify_rm_* but does have sys/inotify.h
+DBUS_CONF_OPT += --disable-inotify
+endif
 
 ifeq ($(BR2_DBUS_EXPAT),y)
 DBUS_CONF_OPT += --with-xml=expat
