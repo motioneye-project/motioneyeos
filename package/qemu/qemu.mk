@@ -89,4 +89,4 @@ endef
 $(eval $(host-generic-package))
 
 # variable used by other packages
-QEMU_USER = $(HOST_DIR)/usr/bin/qemu-$(QEMU_ARCH)
+QEMU_USER = $(HOST_DIR)/usr/bin/qemu-$(HOST_QEMU_ARCH)
