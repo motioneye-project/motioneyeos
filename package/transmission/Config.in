@@ -1,6 +1,7 @@
 config BR2_PACKAGE_TRANSMISSION
 	bool "transmission"
 	depends on BR2_INET_IPV6
+	depends on BR2_TOOLCHAIN_HAS_THREADS
 	select BR2_PACKAGE_ZLIB
 	select BR2_PACKAGE_OPENSSL
 	select BR2_PACKAGE_LIBCURL
@@ -44,5 +45,5 @@ comment "transmission-gtk requires a toolchain with locale support"
 	depends on BR2_PACKAGE_LIBGTK2 && !BR2_ENABLE_LOCALE
 endif
 
-comment "Transmission requires a toolchain with IPv6 support"
-	depends on !BR2_INET_IPV6
+comment "Transmission requires a toolchain with IPv6 and threads support"
+	depends on !BR2_INET_IPV6 || !BR2_TOOLCHAIN_HAS_THREADS
