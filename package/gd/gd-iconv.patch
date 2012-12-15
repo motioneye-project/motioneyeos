@@ -1,0 +1,17 @@
+Seems gd is using an ancient gettext for m4 sources which has issues.
+Idea from OpenWRT patch and general knowledge on the internetweb.
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+diff -Nura gd-2.0.35.orig/configure.ac gd-2.0.35/configure.ac
+--- gd-2.0.35.orig/configure.ac	2012-12-15 08:36:07.165683957 -0300
++++ gd-2.0.35/configure.ac	2012-12-15 08:42:59.354213570 -0300
+@@ -61,7 +61,7 @@
+ AC_HEADER_STDC
+ AC_CHECK_HEADERS([errno.h limits.h stddef.h stdlib.h string.h unistd.h])
+ 
+-AM_ICONV
++m4_pattern_allow([AM_ICONV])
+ # if test -n "$LIBICONV" ; then
+ #   LIBS="$LIBS $LIBICONV"
+ # fi
