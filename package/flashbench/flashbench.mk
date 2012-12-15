@@ -9,8 +9,16 @@ FLASHBENCH_SITE = git://git.linaro.org/people/arnd/flashbench.git
 FLASHBENCH_LICENSE = GPLv2
 FLASHBENCH_LICENSE_FILES = COPYING
 
+FLASHBENCH_CFLAGS = $(TARGET_CFLAGS)
+
+ifeq ($(BR2_microblaze),y)
+# microblaze toolchain only provides LLONG_MAX when used with gnu99 dialect
+FLASHBENCH_CFLAGS += -std=gnu99
+endif
+
 define FLASHBENCH_BUILD_CMDS
 	$(MAKE) -C $(@D) $(TARGET_CONFIGURE_OPTS) \
+		CFLAGS="$(FLASHBENCH_CFLAGS)" \
 		LDFLAGS="$(TARGET_LDFLAGS) -lrt"
 endef
 
