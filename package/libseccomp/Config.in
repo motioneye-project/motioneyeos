@@ -1,5 +1,6 @@
 config BR2_PACKAGE_LIBSECCOMP
 	bool "libseccomp"
+	depends on BR2_i386 || BR2_x86_64
 	help
 	  High level interface to the Linux Kernel's seccomp filter
 	  
