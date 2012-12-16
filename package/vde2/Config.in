@@ -1,0 +1,8 @@
+config BR2_PACKAGE_VDE2
+	bool "vde2"
+	help
+	  VDE is an ethernet compliant virtual network that can be
+	  spawned over a set of physical computers over the Internet.
+	  VDE is part of the virtualsquare project.
+	  
+	  http://vde.sourceforge.net/

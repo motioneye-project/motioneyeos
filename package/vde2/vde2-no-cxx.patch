@@ -1,0 +1,22 @@
+configure: do not test for CXX, it's not needed
+
+There is no C++ source file, so no reason to require a C++ compiler.
+
+Reported-by: Peter Korsgaard <jacmet@uclibc.org>
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+
+---
+Patch sent upstream
+( not yet in archives, awaits moderator approval... :-/ )
+
+diff -durN vde2-2.3.2.orig/configure.ac vde2-2.3.2/configure.ac
+--- vde2-2.3.2.orig/configure.ac	2011-11-23 17:41:19.000000000 +0100
++++ vde2-2.3.2/configure.ac	2012-12-14 21:56:47.146319686 +0100
+@@ -11,7 +11,6 @@
+ AC_CONFIG_LIBOBJ_DIR(src/common)
+ 
+ # Checks for programs.
+-AC_PROG_CXX
+ AC_PROG_CC
+ AC_PROG_INSTALL
+ AC_PROG_LN_S
