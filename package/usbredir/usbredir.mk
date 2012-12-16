@@ -4,7 +4,7 @@
 #
 #############################################################
 
-USBREDIR_VERSION         = 0.4.3
+USBREDIR_VERSION         = 0.4.4
 USBREDIR_SOURCE          = usbredir-$(USBREDIR_VERSION).tar.bz2
 USBREDIR_SITE            = http://spice-space.org/download/usbredir
 USBREDIR_LICENSE         = LGPLv2.1+
