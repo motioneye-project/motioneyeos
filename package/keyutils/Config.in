@@ -1,0 +1,7 @@
+config BR2_PACKAGE_KEYUTILS
+	bool "keyutils"
+	help
+	  These tools are used to control the key management system
+	  built into the Linux kernel.
+	  
+	  http://people.redhat.com/~dhowells/keyutils/
