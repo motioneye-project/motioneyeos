@@ -33,4 +33,12 @@ config BR2_PACKAGE_SPICE_CLIENT
 	select BR2_PACKAGE_XLIB_LIBXFIXES
 	select BR2_PACKAGE_XLIB_LIBXRANDR
 
+config BR2_PACKAGE_SPICE_GUI
+	bool "Enable GUI"
+	depends on BR2_PACKAGE_SPICE_CLIENT
+	select BR2_PACKAGE_CEGUI06
+	help
+	  Say 'y' here to enable the Graphical User Interface (GUI)
+	  start dialog.
+
 endif # BR2_PACKAGE_SPICE

@@ -23,7 +23,6 @@ SPICE_DEPENDENCIES    = \
 # quite deep if we try to enable some features, and I have not tested that.
 SPICE_CONF_OPT =            \
   --disable-tunnel          \
-  --disable-gui             \
   --disable-opengl          \
   --disable-smartcard       \
   --disable-automated-tests \
@@ -36,6 +35,13 @@ SPICE_CONF_OPT += --enable-client
 SPICE_DEPENDENCIES += xlib_libXfixes xlib_libXrandr
 else
 SPICE_CONF_OPT += --disable-client
+endif
+
+ifeq ($(BR2_PACKAGE_SPICE_GUI),y)
+SPICE_CONF_OPT += --enable-gui
+SPICE_DEPENDENCIES += cegui06
+else
+SPICE_CONF_OPT += --disable-gui
 endif
 
 SPICE_CONF_ENV = PYTHONPATH=$(TARGET_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR)/site-packages
