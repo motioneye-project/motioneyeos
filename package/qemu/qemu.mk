@@ -62,6 +62,9 @@ ifeq ($(HOST_QEMU_ARCH),powerpc)
 endif
 HOST_QEMU_TARGETS=$(HOST_QEMU_ARCH)-linux-user
 
+# Note: although QEMU has a ./configure script, it is not a real autotools
+# package, and ./configure chokes on options such as --host or --target.
+# So, provide out own _CONFIGURE_CMDS to override the defaults.
 define HOST_QEMU_CONFIGURE_CMDS
 	(cd $(@D); $(HOST_CONFIGURE_OPTS) ./configure   \
 		--target-list="$(HOST_QEMU_TARGETS)"    \
@@ -74,19 +77,7 @@ define HOST_QEMU_CONFIGURE_CMDS
 	)
 endef
 
-define HOST_QEMU_BUILD_CMDS
-	$(MAKE) -C $(@D) all
-endef
-
-define HOST_QEMU_INSTALL_CMDS
-	$(MAKE) -C $(@D) install
-endef
-
-define HOST_QEMU_CLEAN_CMDS
-	$(MAKE) -C $(@D) clean
-endef
-
-$(eval $(host-generic-package))
+$(eval $(host-autotools-package))
 
 # variable used by other packages
 QEMU_USER = $(HOST_DIR)/usr/bin/qemu-$(HOST_QEMU_ARCH)
