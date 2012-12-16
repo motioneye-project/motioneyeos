@@ -1,0 +1,26 @@
+includes: ptrdiff_t is defined in stddef.h
+
+ptrdiff_t is defined in the stddef.h header, so this
+header must be included.
+
+Do the #include in a common header to avoid doing it
+all over the place.
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+
+---
+Patch not sent upstream, it's a no-longer-maintained branch.
+To be noted, however, is that the current devel branch is
+still missing that include.
+
+diff -durN cegui06-0.6.2.orig/include/CEGUIBase.h cegui06-0.6.2/include/CEGUIBase.h
+--- cegui06-0.6.2.orig//include/CEGUIBase.h	2008-02-11 15:38:27.000000000 +0100
++++ cegui06-0.6.2/include/CEGUIBase.h	2012-08-19 22:51:50.260385978 +0200
+@@ -34,6 +34,7 @@
+ #define _CEGUIBase_h_
+ 
+ #include <cassert>
++#include <stddef.h>
+ 
+ // bring in configuration options
+ #include "CEGUIConfig.h"

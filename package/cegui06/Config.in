@@ -1,0 +1,19 @@
+comment "cegui06 needs a toolchain with C++ and threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_INSTALL_LIBSTDCPP
+
+config BR2_PACKAGE_CEGUI06
+	bool "cegui06"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_INSTALL_LIBSTDCPP
+	select BR2_PACKAGE_EXPAT
+	select BR2_PACKAGE_FREETYPE
+	select BR2_PACKAGE_PCRE
+	help
+	  Crazy Eddie's GUI System is a free library providing windowing and
+	  widgets for graphics APIs / engines where such functionality is not
+	  natively available, or severely lacking. The library is object
+	  orientated, written in C++, and targeted at games developers who
+	  should be spending their time creating great games, not building
+	  GUI sub-systems!
+	  
+	  http://www.cegui.org.uk/

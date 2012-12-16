@@ -109,6 +109,7 @@ comment "Graphic applications"
 source "package/rrdtool/Config.in"
 
 comment "graphic libraries"
+source "package/cegui06/Config.in"
 source "package/directfb/Config.in"
 source "package/directfb-examples/Config.in"
 source "package/divine/Config.in"
