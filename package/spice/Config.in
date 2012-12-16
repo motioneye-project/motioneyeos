@@ -1,8 +1,10 @@
 comment "spice server depends on python (for pyparsing)"
+	depends on BR2_i386 || BR2_x86_64
 	depends on !BR2_PACKAGE_PYTHON
 
 config BR2_PACKAGE_SPICE
 	bool "spice server"
+	depends on BR2_i386 || BR2_x86_64
 	depends on BR2_PACKAGE_PYTHON
 	select BR2_PACKAGE_ALSA_LIB
 	select BR2_PACKAGE_CELT051
