@@ -26,11 +26,17 @@ SPICE_CONF_OPT =            \
   --disable-gui             \
   --disable-opengl          \
   --disable-smartcard       \
-  --disable-client          \
   --disable-automated-tests \
   --without-sasl            \
 
 SPICE_DEPENDENCIES += host-pkgconf
+
+ifeq ($(BR2_PACKAGE_SPICE_CLIENT),y)
+SPICE_CONF_OPT += --enable-client
+SPICE_DEPENDENCIES += xlib_libXfixes xlib_libXrandr
+else
+SPICE_CONF_OPT += --disable-client
+endif
 
 SPICE_CONF_ENV = PYTHONPATH=$(TARGET_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR)/site-packages
 SPICE_MAKE_ENV = PYTHONPATH=$(TARGET_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR)/site-packages
