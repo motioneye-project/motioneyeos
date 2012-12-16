@@ -22,7 +22,6 @@ SPICE_DEPENDENCIES    = \
 # We disable everything for now, because the dependency tree can become
 # quite deep if we try to enable some features, and I have not tested that.
 SPICE_CONF_OPT =            \
-  --disable-tunnel          \
   --disable-opengl          \
   --disable-smartcard       \
   --disable-automated-tests \
@@ -42,6 +41,13 @@ SPICE_CONF_OPT += --enable-gui
 SPICE_DEPENDENCIES += cegui06
 else
 SPICE_CONF_OPT += --disable-gui
+endif
+
+ifeq ($(BR2_PACKAGE_SPICE_TUNNEL),y)
+SPICE_CONF_OPT += --enable-tunnel
+SPICE_DEPENDENCIES += slirp
+else
+SPICE_CONF_OPT += --disable-tunnel
 endif
 
 SPICE_CONF_ENV = PYTHONPATH=$(TARGET_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR)/site-packages

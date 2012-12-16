@@ -41,4 +41,11 @@ config BR2_PACKAGE_SPICE_GUI
 	  Say 'y' here to enable the Graphical User Interface (GUI)
 	  start dialog.
 
+config BR2_PACKAGE_SPICE_TUNNEL
+	bool "Enable network redirection"
+	select BR2_PACKAGE_SLIRP
+	help
+	  Say 'y' here to enable network redirection, aka tunnelling
+	  through a SLIP/SLIRP session.
+
 endif # BR2_PACKAGE_SPICE
