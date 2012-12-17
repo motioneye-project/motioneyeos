@@ -30,6 +30,25 @@ config BR2_PACKAGE_WPA_SUPPLICANT_AP_SUPPORT
 	  (optionally, with WPS); this links in parts of hostapd functionality
 	  into wpa_supplicant.
 
+config BR2_PACKAGE_WPA_SUPPLICANT_DBUS_OLD
+	bool "Enable support for old DBus control interface"
+	depends on BR2_PACKAGE_DBUS
+	help
+	  Enable support for old DBus control interface
+	  (fi.epitest.hostap.WPASupplicant).
+
+config BR2_PACKAGE_WPA_SUPPLICANT_DBUS_NEW
+	bool "Enable support for new DBus control interface"
+	depends on BR2_PACKAGE_DBUS
+	help
+	  Enable support for new DBus control interface (fi.w1.wpa_supplicant1).
+
+config BR2_PACKAGE_WPA_SUPPLICANT_DBUS_INTROSPECTION
+	bool "Introspection support"
+	depends on BR2_PACKAGE_WPA_SUPPLICANT_DBUS_NEW
+	help
+	  Add introspection support for new DBus control interface.
+
 config BR2_PACKAGE_WPA_SUPPLICANT_WPS
 	bool "Enable support for WPS"
 	help
