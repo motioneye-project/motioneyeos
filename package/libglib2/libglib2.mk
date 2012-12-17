@@ -40,7 +40,8 @@ LIBGLIB2_CONF_ENV = \
 		ac_cv_func_working_mktime=yes jm_cv_func_working_re_compile_pattern=yes \
 		ac_use_included_regex=no gl_cv_c_restrict=no \
 		ac_cv_path_GLIB_GENMARSHAL=$(HOST_DIR)/usr/bin/glib-genmarshal ac_cv_prog_F77=no \
-		ac_cv_func_posix_getgrgid_r=no \
+		ac_cv_func_posix_getgrgid_r=no glib_cv_long_long_format=ll \
+		ac_cv_func_printf_unix98=yes ac_cv_func_vsnprintf_c99=yes \
 		gt_cv_c_wchar_t=$(if $(BR2_USE_WCHAR),yes,no)
 
 # old uClibc versions don't provide qsort_r
