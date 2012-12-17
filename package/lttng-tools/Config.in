@@ -3,8 +3,9 @@ config BR2_PACKAGE_LTTNG_TOOLS
 	depends on BR2_PACKAGE_LTTNG_MODULES
 	select BR2_PACKAGE_LIBURCU
 	select BR2_PACKAGE_POPT
-	# liburcu only works on some architectures
+	# liburcu only works on some architectures and requires thread support
 	depends on BR2_arm || BR2_armeb || BR2_i386 || BR2_powerpc || BR2_x86_64
+	depends on BR2_TOOLCHAIN_HAS_THREADS
 	help
 	  Userspace utilities for the LTTng 2.0 tracing
 	  infrastructure.
@@ -22,3 +23,7 @@ config BR2_PACKAGE_LTTNG_TOOLS
 	  lttng-libust.
 
 	  http://lttng.org
+
+comment "lttng-tools needs threads support"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
+
