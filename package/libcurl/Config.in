@@ -1,5 +1,6 @@
 config BR2_PACKAGE_LIBCURL
 	bool "libcurl"
+	depends on BR2_USE_MMU # Uses fork()
 	help
 	  cURL is a tool for getting files from FTP, HTTP, Gopher, Telnet,
 	  and Dict servers, using any of the supported protocols.
