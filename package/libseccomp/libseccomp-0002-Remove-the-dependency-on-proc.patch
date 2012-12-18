@@ -32,7 +32,7 @@ index 6162900..eb61ead 100644
 -		$(INSTALL) -o $(INSTALL_OWNER) -g $(INSTALL_GROUP) -m 0644 \
 -			"$$(cat /proc/$$$$/cmdline | awk '{print $$(NF)}')" \
 -			"$(INSTALL_LIB_DIR)/pkgconfig"; \#
-+		$(INSTALL) -t -o $(INSTALL_OWNER) -g $(INSTALL_GROUP) -m 0644 \
++		$(INSTALL) -o $(INSTALL_OWNER) -g $(INSTALL_GROUP) -m 0644 -t \
 +			"$(INSTALL_LIB_DIR)/pkgconfig"
  
  ifeq ($(V),0)
