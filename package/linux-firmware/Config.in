@@ -41,6 +41,15 @@ config BR2_PACKAGE_LINUX_FIRMWARE_LIBERTAS_SD8688
 
 endmenu
 
+menu "Marvell WiFi-Ex"
+
+config BR2_PACKAGE_LINUX_FIRMWARE_MWIFIEX_SD8787
+	bool "Marvell Wifi-Ex SD 8787"
+	help
+	  Firmware files for the Marvell Wifi-Ex 8787 module on SDIO.
+
+endmenu
+
 menu "Ralink"
 
 config BR2_PACKAGE_LINUX_FIRMWARE_RALINK_RT61
