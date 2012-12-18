@@ -4,7 +4,7 @@
 #
 #############################################################
 
-BISON_VERSION = 2.6.3
+BISON_VERSION = 2.7
 BISON_SITE = $(BR2_GNU_MIRROR)/bison
 BISON_LICENSE = GPLv3+
 BISON_LICENSE_FILES = COPYING
