@@ -1,0 +1,20 @@
+Link against libX11
+
+fm-desktop.c uses XSendEvent, so we should link against libX11.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/configure.in
+===================================================================
+--- a/configure.in
++++ b/configure.in
+@@ -12,7 +12,8 @@
+ 
+ pkg_modules="gtk+-2.0 >= 2.6.0 \
+              gthread-2.0 \
+-             libstartup-notification-1.0"
++             libstartup-notification-1.0 \
++	     x11"
+ 
+ AC_FUNC_MMAP
+ 
