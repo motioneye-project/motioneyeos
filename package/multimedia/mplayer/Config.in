@@ -1,8 +1,7 @@
 config BR2_PACKAGE_MPLAYER
 	bool "mplayer"
-	# "Error: unsupported architecture sh4a" says mplayer
-	# configure script.
-	depends on !BR2_sh4a && !BR2_sh4aeb
+	# Those architectures are not supported by MPlayer
+	depends on !BR2_sh4a && !BR2_sh4aeb && !BR2_microblaze && !BR2_aarch64
 	depends on BR2_LARGEFILE
 	help
 	  MPlayer is a movie player which runs on many systems and supports
