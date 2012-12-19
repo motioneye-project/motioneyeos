@@ -1,0 +1,13 @@
+comment "libfslvpuwrap needs an imx-specific kernel to be built"
+	depends on BR2_arm && !BR2_LINUX_KERNEL
+
+config BR2_PACKAGE_LIBFSLVPUWRAP
+	bool "libfslvpuwrap"
+	depends on BR2_LINUX_KERNEL
+	depends on BR2_arm # Only relevant for i.MX
+	select BR2_PACKAGE_IMX_LIB
+	help
+	  Wrapper library for the vpu library, giving it a different API.
+
+	  This library is provided by Freescale as-is and doesn't have
+	  an upstream.
