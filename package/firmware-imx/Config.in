@@ -1,0 +1,13 @@
+config BR2_PACKAGE_FIRMWARE_IMX
+	bool "firmware-imx"
+	depends on BR2_arm # Only relevant for i.MX
+	help
+	  Firmware blobs for the Freescale i.MX SoCs.
+
+	  It contains blobs for Atheros AR6003, SDMA and VPU.
+
+	  Note: it also contains a blob for ar3k/30101 but upstream
+	  linux-firmware has that as well.
+
+	  This library is provided by Freescale as-is and doesn't have
+	  an upstream.
