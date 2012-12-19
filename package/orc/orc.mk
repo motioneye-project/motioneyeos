@@ -3,7 +3,7 @@
 # orc
 #
 #############################################################
-ORC_VERSION = 0.4.14
+ORC_VERSION = 0.4.16
 ORC_SITE = http://code.entropywave.com/download/orc/
 ORC_INSTALL_STAGING = YES
 ORC_DEPENDENCIES = host-orc
