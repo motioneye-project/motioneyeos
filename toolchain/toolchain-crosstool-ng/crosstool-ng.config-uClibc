@@ -445,18 +445,22 @@ CT_MPFR_V_2_4_2=y
 # CT_MPFR_V_2_4_1 is not set
 # CT_MPFR_V_2_4_0 is not set
 CT_MPFR_VERSION="2.4.2"
-# CT_PPL_V_0_11_2 is not set
+CT_PPL_V_0_11_2=y
 # CT_PPL_V_0_11_1 is not set
 # CT_PPL_V_0_11 is not set
-CT_PPL_V_0_10_2=y
-CT_PPL_VERSION="0.10.2"
-# CT_CLOOG_V_0_15_11 is not set
+# CT_PPL_V_0_10_2 is not set
+CT_PPL_VERSION="0.11.2"
+CT_PPL_0_11=y
+CT_PPL_NEEDS_LIBPWL=y
+CT_CLOOG_V_0_15_11=y
 # CT_CLOOG_V_0_15_10 is not set
-CT_CLOOG_V_0_15_9=y
+# CT_CLOOG_V_0_15_9 is not set
 # CT_CLOOG_V_0_15_8 is not set
 # CT_CLOOG_V_0_15_7 is not set
 # CT_CLOOG_V_0_15_6 is not set
-CT_CLOOG_VERSION="0.15.9"
+CT_CLOOG_VERSION="0.15.11"
+CT_CLOOG_0_15_1x=y
+CT_CLOOG_NEEDS_AUTORECONF=y
 CT_MPC_V_0_9=y
 # CT_MPC_V_0_8_2 is not set
 # CT_MPC_V_0_8_1 is not set
