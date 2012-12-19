@@ -28,6 +28,10 @@ config BR2_PACKAGE_CAIRO_PNG
 	select BR2_PACKAGE_LIBPNG
 	select BR2_PACKAGE_ZLIB
 
+config BR2_PACKAGE_CAIRO_SCRIPT
+	bool "script support"
+	select BR2_PACKAGE_ZLIB
+
 config BR2_PACKAGE_CAIRO_SVG
 	bool "svg support"
 	select BR2_PACKAGE_CAIRO_PNG
@@ -35,5 +39,10 @@ config BR2_PACKAGE_CAIRO_SVG
 
 config BR2_PACKAGE_CAIRO_TEE
 	bool "tee support"
+
+config BR2_PACKAGE_CAIRO_XML
+	bool "xml support"
+	select BR2_PACKAGE_CAIRO_PNG
+
 endif
 
