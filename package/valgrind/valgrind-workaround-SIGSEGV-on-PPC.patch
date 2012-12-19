@@ -8,10 +8,10 @@ Signed-off-by: Pierre Habouzit <madcoder@debian.org>
  coregrind/m_machine.c |    4 ++++
  1 files changed, 4 insertions(+), 0 deletions(-)
 
-Index: valgrind-3.7.0/coregrind/m_machine.c
+Index: b/coregrind/m_machine.c
 ===================================================================
---- valgrind-3.7.0.orig/coregrind/m_machine.c	2011-10-27 12:45:52.000000000 +0200
-+++ valgrind-3.7.0/coregrind/m_machine.c	2011-12-22 14:53:19.758067046 +0100
+--- a/coregrind/m_machine.c
++++ b/coregrind/m_machine.c
 @@ -27,6 +27,10 @@
     The GNU General Public License is contained in the file COPYING.
  */

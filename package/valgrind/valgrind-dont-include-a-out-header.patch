@@ -20,7 +20,7 @@ Index: b/coregrind/m_debuginfo/readstabs.c
 ===================================================================
 --- a/coregrind/m_debuginfo/readstabs.c
 +++ b/coregrind/m_debuginfo/readstabs.c
-@@ -52,7 +52,21 @@
+@@ -53,7 +53,21 @@
  
  /* --- !!! --- EXTERNAL HEADERS start --- !!! --- */
  #if defined(VGO_linux)
