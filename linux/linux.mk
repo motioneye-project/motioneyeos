@@ -187,10 +187,13 @@ endef
 ifeq ($(BR2_LINUX_KERNEL_DTS_SUPPORT),y)
 ifeq ($(BR2_LINUX_KERNEL_DTB_IS_SELF_BUILT),)
 define LINUX_BUILD_DTB
-	$(TARGET_MAKE_ENV) $(MAKE) $(LINUX_MAKE_FLAGS) -C $(@D) $(KERNEL_DTS_NAME).dtb
+	$(TARGET_MAKE_ENV) $(MAKE) $(LINUX_MAKE_FLAGS) -C $(@D) \
+		$(addsuffix .dtb, $(call qstrip, $(KERNEL_DTS_NAME)))
 endef
 define LINUX_INSTALL_DTB
-	cp $(KERNEL_ARCH_PATH)/boot/$(KERNEL_DTS_NAME).dtb $(BINARIES_DIR)/
+	cp $(addprefix $(KERNEL_ARCH_PATH)/boot/, \
+		$(addsuffix .dtb, $(call qstrip, $(KERNEL_DTS_NAME)))) \
+		$(BINARIES_DIR)/
 endef
 endif
 endif

@@ -261,11 +261,12 @@ config BR2_LINUX_KERNEL_USE_CUSTOM_DTS
 endchoice
 
 config BR2_LINUX_KERNEL_INTREE_DTS_NAME
-	string "Device Tree Source file name"
+	string "Device Tree Source file names"
 	depends on BR2_LINUX_KERNEL_USE_INTREE_DTS
 	help
 	 Name of the device tree source file, without
-	 the trailing .dts
+	 the trailing .dts. You can provide a list of
+	 dts files to build, separated by spaces.
 
 config BR2_LINUX_KERNEL_CUSTOM_DTS_PATH
 	string "Device Tree Source file path"
