@@ -40,8 +40,7 @@ ifeq ($(BR2_PACKAGE_ORC),y)
 GST_PLUGINS_BASE_DEPENDENCIES += orc
 endif
 
-# alsa support needs pcm+mixer support, but configure fails to check for it
-ifeq ($(BR2_PACKAGE_ALSA_LIB)$(BR2_PACKAGE_ALSA_LIB_MIXER)$(BR2_PACKAGE_ALSA_LIB_PCM),yyy)
+ifeq ($(BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_ALSA),y)
 GST_PLUGINS_BASE_DEPENDENCIES += alsa-lib
 else
 GST_PLUGINS_BASE_CONF_OPT += --disable-alsa

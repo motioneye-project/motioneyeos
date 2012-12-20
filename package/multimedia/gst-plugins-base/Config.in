@@ -73,6 +73,12 @@ config BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_VOLUME
 
 comment "plugins with external dependencies (there may be more available)"
 
+config BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_ALSA
+	bool "alsa (mandatory for audio playback)"
+	select BR2_PACKAGE_ALSA_LIB
+	select BR2_PACKAGE_ALSA_LIB_MIXER
+	select BR2_PACKAGE_ALSA_LIB_PCM
+
 config BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_OGG
 	bool "ogg (*.ogg audio/video)"
 	select BR2_PACKAGE_LIBOGG
