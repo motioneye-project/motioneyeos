@@ -173,6 +173,7 @@ config BR2_ARCH
 	default "i686"		if BR2_x86_athlon
 	default "i686"		if BR2_x86_athlon_4
 	default "x86_64"	if BR2_x86_64
+	default "i386"		if BR2_x86_generic
 
 config BR2_ENDIAN
 	default "LITTLE"
