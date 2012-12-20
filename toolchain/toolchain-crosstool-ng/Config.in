@@ -24,9 +24,8 @@ config BR2_TOOLCHAIN_CTNG_glibc
 	bool "glibc"
 	select BR2_LARGEFILE
 	select BR2_INET_IPV6
-	# Our default ct-ng configuration uses glibc 2.9, which has
-	# native RPC support
-	select BR2_TOOLCHAIN_HAS_NATIVE_RPC
+	# Our default ct-ng configuration uses glibc 2.14.1, which
+	# does not have native RPC support
 	select BR2_ENABLE_LOCALE
 	select BR2_USE_WCHAR
 

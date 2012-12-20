@@ -356,13 +356,13 @@ CT_CC_GCC_LDBL_128=m
 # C-library
 #
 CT_LIBC="glibc"
-CT_LIBC_VERSION="2.9"
+CT_LIBC_VERSION="2.14.1"
 # CT_LIBC_eglibc is not set
 CT_LIBC_glibc=y
 # CT_LIBC_uClibc is not set
 CT_LIBC_eglibc_AVAILABLE=y
 CT_LIBC_glibc_AVAILABLE=y
-# CT_LIBC_GLIBC_V_2_14_1 is not set
+CT_LIBC_GLIBC_V_2_14_1
 # CT_LIBC_GLIBC_V_2_14 is not set
 # CT_LIBC_GLIBC_V_2_13 is not set
 # CT_LIBC_GLIBC_V_2_12_2 is not set
@@ -370,7 +370,7 @@ CT_LIBC_glibc_AVAILABLE=y
 # CT_LIBC_GLIBC_V_2_11_1 is not set
 # CT_LIBC_GLIBC_V_2_11 is not set
 # CT_LIBC_GLIBC_V_2_10_1 is not set
-CT_LIBC_GLIBC_V_2_9=y
+# CT_LIBC_GLIBC_V_2_9 is not set
 # CT_LIBC_GLIBC_V_2_8 is not set
 CT_LIBC_mingw_AVAILABLE=y
 CT_LIBC_newlib_AVAILABLE=y
