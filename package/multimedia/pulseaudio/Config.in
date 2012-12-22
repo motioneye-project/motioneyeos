@@ -1,6 +1,7 @@
 config BR2_PACKAGE_PULSEAUDIO
 	bool "pulseaudio"
 	depends on BR2_USE_WCHAR
+	depends on BR2_TOOLCHAIN_HAS_THREADS
 	select BR2_PACKAGE_LIBTOOL
 	select BR2_PACKAGE_JSON_C
 	select BR2_PACKAGE_LIBSNDFILE
@@ -17,5 +18,5 @@ config BR2_PACKAGE_PULSEAUDIO
 
 	  http://pulseaudio.org
 
-comment "pulseaudio requires a toolchain with WCHAR support"
-	depends on !BR2_USE_WCHAR
+comment "pulseaudio requires a toolchain with WCHAR and threads support"
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS

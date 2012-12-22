@@ -40,6 +40,7 @@ config BR2_PACKAGE_MPD_AUDIOFILE
 
 config BR2_PACKAGE_MPD_PULSEAUDIO
 	bool "pulseaudio"
+	depends on BR2_TOOLCHAIN_HAS_THREADS # pulseaudio
 	select BR2_PACKAGE_PULSEAUDIO
 	help
 	  Enable pulseaudio output support.
