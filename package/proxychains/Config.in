@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PROXYCHAINS
+	bool "proxychains"
+	help
+	  force any tcp connections to flow through a proxy (or proxy chain)
+
+	  http://proxychains.sourceforge.net
+
