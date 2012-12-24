@@ -1,0 +1,37 @@
+config BR2_PACKAGE_ENLIGHTENMENT
+	bool "enlightenment"
+	select BR2_PACKAGE_LIBECORE
+	select BR2_PACKAGE_LIBECORE_X
+	select BR2_PACKAGE_LIBEINA
+	select BR2_PACKAGE_LIBEET
+	select BR2_PACKAGE_LIBEVAS
+	select BR2_PACKAGE_LIBEVAS_JPEG
+	select BR2_PACKAGE_LIBEVAS_PNG
+	select BR2_PACKAGE_LIBEVAS_EET
+	select BR2_PACKAGE_LIBECORE_EVAS
+	select BR2_PACKAGE_LIBEDJE
+	select BR2_PACKAGE_LIBEFREET
+	select BR2_PACKAGE_LIBEDBUS
+	select BR2_PACKAGE_LIBEIO
+	select BR2_PACKAGE_XCB_UTIL_KEYSYMS
+	select BR2_PACKAGE_LIBEVAS_GENERIC_LOADERS
+	select BR2_PACKAGE_LIBEVAS_GENERIC_LOADERS_SVG
+	# libevas-generic-loaders-svg -> librsvg -> glib2
+	depends on BR2_USE_WCHAR
+	# libedbus -> dbus
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	# libedbus -> dbus
+	depends on BR2_USE_MMU
+	depends on BR2_PACKAGE_XORG7
+	help
+	  Enlightenment, also known simply as E, is a stacking window
+	  manager for the X Window System which can be used alone or
+	  in conjunction with a desktop environment such as GNOME or
+	  KDE. Enlightenment can be used as a substitute for a full
+	  desktop environment.
+
+	  http://www.enlightenment.org/
+
+comment "enlightenment requires WCHAR and thread support in toolchain"
+	depends on BR2_PACKAGE_XORG7
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
