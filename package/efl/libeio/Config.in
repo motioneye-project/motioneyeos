@@ -1,0 +1,18 @@
+config BR2_PACKAGE_LIBEIO
+	bool "libeio"
+	select BR2_PACKAGE_LIBEET
+	select BR2_PACKAGE_LIBEINA
+	select BR2_PACKAGE_LIBECORE
+	help
+	  Eio integrates with EFL (Ecore, Eina) to provide efficient
+	  filesystem Input/Output (I/O). It use the best techniques to
+	  achieve such purpose, like using at-variants, splice,
+	  properly handling errors and doing it in an asynchronous
+	  fashion by means of worker threads. It is also ported to
+	  Windows, so multi-platform.
+
+	  Whenever you need to list a directory, copy, move or delete
+	  files, Eio will do that task better than you'd achieve with
+	  naive implementations, and it is easy to use.
+
+	  http://trac.enlightenment.org/e/wiki/Eio
