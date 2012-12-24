@@ -4,7 +4,7 @@
 #
 #############################################################
 
-LIBECORE_VERSION = 1.1.0
+LIBECORE_VERSION = 1.7.4
 LIBECORE_SOURCE = ecore-$(LIBECORE_VERSION).tar.bz2
 LIBECORE_SITE = http://download.enlightenment.org/releases/
 LIBECORE_LICENSE = BSD-2c
