@@ -5,7 +5,7 @@
 #############################################################
 
 DOSFSTOOLS_VERSION = 3.0.12
-DOSFSTOOLS_SITE = http://www.daniel-baumann.ch/software/dosfstools
+DOSFSTOOLS_SITE = http://fossies.org/linux/misc/
 MKDOSFS_BINARY = mkdosfs
 DOSFSCK_BINARY = dosfsck
 DOSFSLABEL_BINARY = dosfslabel
