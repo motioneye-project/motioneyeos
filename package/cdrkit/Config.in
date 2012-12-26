@@ -3,6 +3,7 @@ config BR2_PACKAGE_CDRKIT
 	select BR2_PACKAGE_BZIP2
 	select BR2_PACKAGE_LIBCAP
 	depends on BR2_LARGEFILE
+	depends on BR2_USE_MMU # fork
 	bool "cdrkit"
 	help
 	  cdrkit is a suite of programs for recording CDs and DVDs,
