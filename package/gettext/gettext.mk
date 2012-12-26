@@ -4,7 +4,7 @@
 #
 #############################################################
 
-GETTEXT_VERSION = 0.18.1.1
+GETTEXT_VERSION = 0.18.2
 GETTEXT_SITE = $(BR2_GNU_MIRROR)/gettext
 GETTEXT_INSTALL_STAGING = YES
 GETTEXT_LICENSE = GPLv2+
