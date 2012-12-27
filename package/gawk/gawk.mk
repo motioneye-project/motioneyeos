@@ -4,9 +4,11 @@
 #
 #############################################################
 
-GAWK_VERSION = 4.0.1
+GAWK_VERSION = 4.0.2
 GAWK_SITE = $(BR2_GNU_MIRROR)/gawk
 GAWK_TARGET_BINS = awk gawk igawk pgawk
+GAWK_LICENSE = GPLv3
+GAWK_LICENSE_FILES = COPYING
 
 # Prefer full-blown gawk over busybox awk
 ifeq ($(BR2_PACKAGE_BUSYBOX),y)
