@@ -4,7 +4,7 @@
 #
 #############################################################
 
-IW_VERSION = 3.7
+IW_VERSION = 3.8
 IW_SOURCE = iw-$(IW_VERSION).tar.bz2
 IW_SITE = http://wireless.kernel.org/download/iw
 IW_LICENSE = iw license
