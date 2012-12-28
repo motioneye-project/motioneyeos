@@ -17,6 +17,7 @@ if BR2_PACKAGE_NTFS_3G
 config BR2_PACKAGE_NTFS_3G_ENCRYPTED
 	bool "encrypted volumes"
 	select BR2_PACKAGE_GNUTLS
+	select BR2_PACKAGE_LIBGCRYPT
 	help
 	  Enable support for NTFS encrypted volumes.
 
