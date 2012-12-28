@@ -1,5 +1,6 @@
 config BR2_PACKAGE_DIALOG
 	bool "dialog"
+	depends on BR2_TOOLCHAIN_HAS_THREADS # fork()
 	select BR2_PACKAGE_NCURSES
 	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
 	help
