@@ -158,6 +158,7 @@ if grep ^BR2_TOOLCHAIN_BUILDROOT=y $CONFIG_FILE > /dev/null && \
        exit 1 ;
    fi
 fi
+
 if grep -q ^BR2_PACKAGE_CLASSPATH=y $CONFIG_FILE ; then
     for prog in javac jar; do
 	if ! which $prog > /dev/null ; then
@@ -165,4 +166,12 @@ if grep -q ^BR2_PACKAGE_CLASSPATH=y $CONFIG_FILE ; then
 	    exit 1
 	fi
     done
+fi
+
+if grep -E '^BR2_TARGET_GENERIC_ROOT_PASSWD=".+"$' $CONFIG_FILE > /dev/null 2>&1; then
+    if ! which mkpasswd > /dev/null 2>&1; then
+        /bin/echo -e "\nYou need the 'mkpasswd' utility to set the root password\n"
+        /bin/echo -e "(in Debian/ubuntu, 'mkpasswd' provided by the whois package)\n"
+        exit 1
+    fi
 fi
