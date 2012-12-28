@@ -1,5 +1,6 @@
 config BR2_PACKAGE_VSFTPD
 	bool "vsftpd"
+	depends on BR2_TOOLCHAIN_HAS_THREADS # fork()
 	help
 	  vsftpd is an ftp daemon written with security in mind.
 	  http://vsftpd.beasts.org/
