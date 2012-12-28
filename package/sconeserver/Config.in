@@ -32,12 +32,16 @@ config BR2_PACKAGE_SCONESERVER_HTTP_SCONESITE_IMAGE
 
 config BR2_PACKAGE_SCONESERVER_MYSQL
 	bool "mysql"
+	depends on BR2_USE_MMU # mysql
 	select BR2_PACKAGE_MYSQL_CLIENT
 	help
 	  MySQL module for Sconeserver
 
 config BR2_PACKAGE_SCONESERVER_BLUETOOTH
 	bool "bluetooth"
+	depends on BR2_USE_WCHAR # bluez->libglib2
+	depends on BR2_USE_MMU # bluez->dbus
+	depends on BR2_TOOLCHAIN_HAS_THREADS # bluez->dbus
 	select BR2_PACKAGE_BLUEZ_UTILS
 	help
 	  Bluetooth module for Sconeserver
@@ -50,6 +54,8 @@ config BR2_PACKAGE_SCONESERVER_RSS
 
 config BR2_PACKAGE_SCONESERVER_LOCATION
 	bool "location"
+	depends on BR2_USE_MMU # gpsd
+	depends on BR2_TOOLCHAIN_HAS_THREADS # gpsd
 	select BR2_PACKAGE_GPSD
 	help
 	  Location module for Sconeserver
