@@ -181,11 +181,6 @@ config BR2_PACKAGE_LIBEVAS_TIFF
 	help
 	  This enables the loader code that loads tiff files.
 
-config BR2_PACKAGE_LIBEVAS_SVG
-	bool "libevas svg loader"
-	help
-	  This enables the loader code that loads svg files.
-
 config BR2_PACKAGE_LIBEVAS_XPM
 	bool "libevas xpm loader"
 	help

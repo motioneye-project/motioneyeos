@@ -176,12 +176,6 @@ else
 LIBEVAS_CONF_OPT += --disable-image-loader-pmaps
 endif
 
-ifeq ($(BR2_PACKAGE_LIBEVAS_SVG),y)
-LIBEVAS_CONF_OPT += --enable-image-loader-svg
-else
-LIBEVAS_CONF_OPT += --disable-image-loader-svg
-endif
-
 ifeq ($(BR2_PACKAGE_LIBEVAS_TIFF),y)
 LIBEVAS_CONF_OPT += --enable-image-loader-tiff
 LIBEVAS_DEPENDENCIES += tiff
