@@ -59,7 +59,7 @@ define WPA_SUPPLICANT_LIBTOMMATH_CONFIG
 	$(SED) 's/\(#\)\(CONFIG_INTERNAL_LIBTOMMATH.*\)/\2/' $(WPA_SUPPLICANT_CONFIG)
 endef
 
-# Try to use openssl or gnutls if it's already available
+# Try to use openssl if it's already available
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 	WPA_SUPPLICANT_DEPENDENCIES += openssl
 define WPA_SUPPLICANT_TLS_CONFIG
@@ -67,16 +67,9 @@ define WPA_SUPPLICANT_TLS_CONFIG
 	$(SED) 's/\(#\)\(CONFIG_EAP_PWD.*\)/\2/' $(WPA_SUPPLICANT_CONFIG)
 endef
 else
-ifeq ($(BR2_PACKAGE_GNUTLS),y)
-	WPA_SUPPLICANT_DEPENDENCIES += gnutls
-define WPA_SUPPLICANT_TLS_CONFIG
-	$(SED) 's/\(#\)\(CONFIG_TLS=\).*/\2gnutls/' $(WPA_SUPPLICANT_CONFIG)
-endef
-else
 define WPA_SUPPLICANT_TLS_CONFIG
 	$(SED) 's/\(#\)\(CONFIG_TLS=\).*/\2internal/' $(WPA_SUPPLICANT_CONFIG)
 endef
-endif
 endif
 
 ifeq ($(BR2_PACKAGE_DBUS),y)
