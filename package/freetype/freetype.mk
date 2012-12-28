@@ -10,7 +10,7 @@ FREETYPE_SITE = http://downloads.sourceforge.net/project/freetype/freetype2/$(FR
 FREETYPE_INSTALL_STAGING = YES
 FREETYPE_MAKE_OPT = CCexe="$(HOSTCC)"
 FREETYPE_LICENSE = Dual FTL/GPLv2+
-FREETYPE_LICENSE_FILES = docs/FTL.txt docs/GPLv2.txt
+FREETYPE_LICENSE_FILES = docs/FTL.TXT docs/GPLv2.TXT
 FREETYPE_DEPENDENCIES = host-pkgconf \
 	$(if $(BR2_PACKAGE_ZLIB),zlib) \
 	$(if $(BR2_PACKAGE_BZIP2),bzip2)
