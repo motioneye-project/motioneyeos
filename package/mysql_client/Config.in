@@ -1,6 +1,7 @@
 config BR2_PACKAGE_MYSQL_CLIENT
 	bool "MySQL client"
 	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_USE_MMU # fork()
 	select BR2_PACKAGE_NCURSES
 	select BR2_PACKAGE_READLINE
 	help
