@@ -8,8 +8,13 @@ LIBFFI_VERSION = 3.0.11
 LIBFFI_SITE    = ftp://sources.redhat.com/pub/libffi/
 LIBFFI_LICENSE = MIT
 LIBFFI_LICENSE_FILES = LICENSE
-
 LIBFFI_INSTALL_STAGING = YES
+
+# Newer CS MIPS toolchains use a different (compact) eh_frame format
+# libffi don't like them, just switch to the older format
+ifeq ($(BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_MIPS201209)$(BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_MIPS201203),y)
+LIBFFI_CONF_ENV = CFLAGS="$(TARGET_CFLAGS) -mno-compact-eh"
+endif
 
 # Move the headers to the usual location, and adjust the .pc file
 # accordingly
