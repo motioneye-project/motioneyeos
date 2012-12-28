@@ -4,12 +4,14 @@
 #
 #############################################################
 
-MYSQL_CLIENT_VERSION = 5.1.66
+MYSQL_CLIENT_VERSION = 5.1.67
 MYSQL_CLIENT_SOURCE = mysql-$(MYSQL_CLIENT_VERSION).tar.gz
 MYSQL_CLIENT_SITE = http://downloads.skysql.com/archives/mysql-5.1
 MYSQL_CLIENT_INSTALL_STAGING = YES
 MYSQL_CLIENT_DEPENDENCIES = readline ncurses
-MYSQL_CLIENT_AUTORECONF=YES
+MYSQL_CLIENT_AUTORECONF = YES
+MYSQL_CLIENT_LICENSE = GPLv2
+MYSQL_CLIENT_LICENSE_FILES = README COPYING
 
 MYSQL_CLIENT_CONF_ENV = \
 	ac_cv_sys_restartable_syscalls=yes \
