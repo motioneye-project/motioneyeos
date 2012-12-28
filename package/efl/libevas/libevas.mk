@@ -203,5 +203,13 @@ else
 LIBEVAS_CONF_OPT += --disable-font-loader-eet
 endif
 
+# libevas installs the source code of examples on the target, which
+# are generally not useful.
+define LIBEVAS_REMOVE_EXAMPLES
+	rm -rf $(TARGET_DIR)/usr/share/evas/examples/
+endef
+
+LIBEVAS_POST_INSTALL_TARGET_HOOKS += LIBEVAS_REMOVE_EXAMPLES
+
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
