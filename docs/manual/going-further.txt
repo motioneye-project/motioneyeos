@@ -3,8 +3,6 @@
 Going further in Buildroot's innards
 ====================================
 
-include::embedded-basics.txt[]
-
 include::how-buildroot-works.txt[]
 
 include::advanced.txt[]

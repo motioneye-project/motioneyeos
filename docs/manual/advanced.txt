@@ -5,8 +5,6 @@ Advanced usage
 
 include::using-buildroot-toolchain.txt[]
 
-include::external-toolchain.txt[]
-
 include::ccache-support.txt[]
 
 include::download-location.txt[]
