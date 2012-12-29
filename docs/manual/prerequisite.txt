@@ -74,10 +74,5 @@ development context (further details: refer to xref:download-infra[]).
 ** +qt4+ to use the 'xconfig' interface
 ** +glib2+, +gtk2+ and +glade2+ to use the 'gconfig' interface
 
-* Development libraries:
-** +zlib1+
-** +netpbm10+ (for +fbtest+)
-** +python-xcbgen+ (for +Matchbox+ on Debian based system)
-
 * Documentation generation tools:
 ** +asciidoc+
