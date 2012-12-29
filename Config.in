@@ -14,6 +14,12 @@ config BR2_HOSTARCH
 	string
 	option env="HOSTARCH"
 
+# Hidden boolean selected by pre-built packages for x86, when they
+# need to run on x86-64 machines (example: pre-built external
+# toolchains, binary tools like SAM-BA, etc.).
+config BR2_HOSTARCH_NEEDS_IA32_LIBS
+	bool
+
 source "arch/Config.in"
 
 menu "Build options"
