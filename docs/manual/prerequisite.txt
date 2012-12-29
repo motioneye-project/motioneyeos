@@ -74,5 +74,10 @@ development context (further details: refer to xref:download-infra[]).
 ** +qt4+ to use the 'xconfig' interface
 ** +glib2+, +gtk2+ and +glade2+ to use the 'gconfig' interface
 
+* Java-related packages, if the Java Classpath needs to be built for
+  the target system:
+** The +javac+ compiler
+** The +jar+ tool
+
 * Documentation generation tools:
 ** +asciidoc+
