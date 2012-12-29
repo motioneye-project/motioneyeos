@@ -89,17 +89,6 @@ If you need documentation data on your target anyway, then Buildroot
 is not suitable for your purpose, and you should look for a _real
 distribution_ (see: xref:faq-no-compiler-on-target[]).
 
-[[faq-depends-on-vs-select]]
-+Config.in+: _depends on_ vs _select_
--------------------------------------
-
-When adding a new package to Buildroot, you will most likely have to
-deal with expressing the dependencies of this package.
-
-In the +Config.in+ file, dependencies may be expressed following two
-semantics.
-See xref:depends-on-vs-select[choosing between _depends_ and _select_].
-
 [[faq-why-not-visible-package]]
 Why are some packages not visible in the Buildroot config menu?
 ---------------------------------------------------------------
