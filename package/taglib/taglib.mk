@@ -4,10 +4,11 @@
 #
 #############################################################
 
-TAGLIB_VERSION = 1.7.1
-TAGLIB_SOURCE = taglib-$(TAGLIB_VERSION).tar.gz
-TAGLIB_SITE = http://developer.kde.org/~wheeler/files/src
+TAGLIB_VERSION = 1.8
+TAGLIB_SITE = http://github.com/downloads/taglib/taglib
 TAGLIB_INSTALL_STAGING = YES
+TAGLIB_LICENSE = LGPLv2.1 MPL
+TAGLIB_LICENSE_FILES = COPYING.LGPL COPYING.MPL
 
 ifeq ($(BR2_PACKAGE_TAGLIB_ASF),y)
 TAGLIB_CONF_OPT += -DWITH_ASF=ON
