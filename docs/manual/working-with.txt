@@ -6,6 +6,8 @@ Working with Buildroot
 This section explains how you can customize Buildroot to fit your
 needs.
 
+include::configure.txt[]
+
 include::make-tips.txt[]
 
 include::customize.txt[]
