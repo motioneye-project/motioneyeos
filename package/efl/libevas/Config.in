@@ -91,6 +91,7 @@ config BR2_PACKAGE_LIBEVAS_X11
 	bool "libevas X11 backend"
 	depends on BR2_PACKAGE_XORG7
 	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBXEXT
 	help
 	  This enables the software X11 rendering engine that renders
 	  to X drawable targets using highly optimised software
@@ -180,11 +181,6 @@ config BR2_PACKAGE_LIBEVAS_TIFF
 	select BR2_PACKAGE_TIFF
 	help
 	  This enables the loader code that loads tiff files.
-
-config BR2_PACKAGE_LIBEVAS_SVG
-	bool "libevas svg loader"
-	help
-	  This enables the loader code that loads svg files.
 
 config BR2_PACKAGE_LIBEVAS_XPM
 	bool "libevas xpm loader"
