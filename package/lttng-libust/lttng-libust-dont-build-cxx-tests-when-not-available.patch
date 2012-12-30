@@ -38,15 +38,16 @@ index 26227cb..56d84db 100644
 +AM_CONDITIONAL([CXX_WORKS], [test "x$rw_cv_prog_cxx_works" = "xyes"])
 +
  ## Checks for libraries.
- AC_CHECK_LIB([dl], [dlopen])
- AC_CHECK_LIB([pthread], [pthread_create])
+ AC_CHECK_LIB([dl], [dlopen],
+ [
 diff --git a/tests/Makefile.am b/tests/Makefile.am
-index e79ab7c..1a8b795 100644
+index 2b12422..7365ce4 100644
 --- a/tests/Makefile.am
 +++ b/tests/Makefile.am
-@@ -1,6 +1,10 @@
--SUBDIRS = . hello hello-static-lib fork ust-basic-tracing ust-multi-test demo hello.cxx
-+SUBDIRS = . hello hello-static-lib fork ust-basic-tracing ust-multi-test demo
+@@ -1,7 +1,11 @@
+ SUBDIRS = . hello hello-static-lib fork ust-basic-tracing ust-multi-test \
+-		demo hello.cxx daemon
++		demo daemon
  #SUBDIRS = . hello2 basic basic_long simple_include snprintf test-nevents test-libustinstr-malloc dlopen same_line_marker trace_event register_test tracepoint libustctl_function_tests exit-fast
  
 +if CXX_WORKS
