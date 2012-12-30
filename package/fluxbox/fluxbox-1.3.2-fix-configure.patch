@@ -1,0 +1,19 @@
+Avoid to call the imlib2-config that may be installed on the host system
+(even when --with-imlib2-prefix or --with-imlib2-exec-prefix is passed to
+the configure script), which totally screws up the resulting linker flags.
+
+Inspired by: http://git.fluxbox.org/fluxbox.git/commit/?id=b178bed60b5bd8b2c9ed0cbc67fd729ff3820589
+
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+
+--- fluxbox-1.3.2.orig/configure.in	2012-10-21 16:11:59.445749396 +0200
++++ fluxbox-1.3.2/configure.in	2012-10-21 16:35:27.658390856 +0200
+@@ -443,8 +443,6 @@ if test x$enable_imlib2 = "xyes"; then
+       [
+          IMLIB2=true
+          AC_DEFINE(HAVE_IMLIB2, [], [Imlib2 support])
+-         IMLIB2_LIBS=`imlib2-config --libs`
+-         IMLIB2_CFLAGS=`imlib2-config --cflags`
+          LIBS="$LIBS $IMLIB2_LIBS"
+          CXXFLAGS="$CXXFLAGS $IMLIB2_CFLAGS"
+        ], [ AC_MSG_RESULT(no)]
