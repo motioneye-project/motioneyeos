@@ -5,8 +5,8 @@
 #############################################################
 
 DVB_APPS_VERSION        = 3fc7dfa68484
-DVB_APPS_SOURCE         = dvb-apps-$(DVB_APPS_VERSION).tar.bz2
-DVB_APPS_SITE           = http://linuxtv.org/hg/dvb-apps/archive/
+DVB_APPS_SITE           = http://linuxtv.org/hg/dvb-apps
+DVB_APPS_SITE_METHOD    = hg
 
 # We just install the transponders data. As this is not a 'work' as per
 # traditional copyright, but just a collection of 'facts', there's probably
