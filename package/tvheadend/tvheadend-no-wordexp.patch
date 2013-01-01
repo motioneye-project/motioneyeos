@@ -1,0 +1,20 @@
+epggrab: do not include wordexp.h
+
+Nothing from wordexp.h is needed (stray include?)
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+---
+Patch sent upstream, but no mailing-list. :-(
+Status: awaiting feedback.
+
+diff -durN tvheadend-v3.3.orig/src/epggrab.c tvheadend-v3.3/src/epggrab.c
+--- tvheadend-v3.3.orig/src/epggrab.c	2012-09-25 15:32:31.000000000 +0200
++++ tvheadend-v3.3/src/epggrab.c	2012-12-31 19:22:29.768431849 +0100
+@@ -20,7 +20,6 @@
+ #include <stdlib.h>
+ #include <string.h>
+ #include <assert.h>
+-#include <wordexp.h>
+ #include <unistd.h>
+ #include <sys/types.h>
+ #include <sys/un.h>
