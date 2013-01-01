@@ -7,8 +7,12 @@ config BR2_PACKAGE_LIBRSVG
 	select BR2_PACKAGE_LIBGLIB2
 	select BR2_PACKAGE_GDK_PIXBUF
 	depends on BR2_USE_WCHAR # glib2
+	depends on BR2_INSTALL_LIBSTDCPP # pango
 	help
 	  The rsvg library is an efficient renderer for Scalable
 	  Vector Graphics (SVG) pictures.
 
 	  http://librsvg.sourceforge.net/
+
+comment "librsvg requires a toolchain with WCHAR and C++ support"
+	depends on !BR2_USE_WCHAR || !BR2_INSTALL_LIBSTDCPP
