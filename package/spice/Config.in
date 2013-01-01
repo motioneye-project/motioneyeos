@@ -32,17 +32,17 @@ comment "client depends on X.org"
 config BR2_PACKAGE_SPICE_CLIENT
 	bool "Enable client"
 	depends on BR2_PACKAGE_XORG7
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_INSTALL_LIBSTDCPP
 	select BR2_PACKAGE_XLIB_LIBXFIXES
 	select BR2_PACKAGE_XLIB_LIBXRANDR
 
-comment "GUI requires a toolchain with threads and C++"
-	depends on BR2_PACKAGE_SPICE_CLIENT
+comment "client requires a toolchain with threads and C++"
+	depends on BR2_PACKAGE_XORG7
 	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_INSTALL_LIBSTDCPP
 
 config BR2_PACKAGE_SPICE_GUI
 	bool "Enable GUI"
-	depends on BR2_TOOLCHAIN_HAS_THREADS    # cegui06
-	depends on BR2_INSTALL_LIBSTDCPP        # cegui06
 	depends on BR2_PACKAGE_SPICE_CLIENT
 	select BR2_PACKAGE_CEGUI06
 	help
