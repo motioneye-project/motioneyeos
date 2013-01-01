@@ -14,5 +14,13 @@ LIBEET_INSTALL_STAGING = YES
 
 LIBEET_DEPENDENCIES = host-pkgconf zlib jpeg libeina
 
+ifeq ($(BR2_PACKAGE_GNUTLS)$(BR2_PACKAGE_LIBGCRYPT),yy)
+LIBEET_DEPENDENCIES += gnutls libgcrypt
+LIBEET_CONF_ENV += LIBGCRYPT_CONFIG=$(STAGING_DIR)/usr/bin/libgcrypt-config
+LIBEET_CONF_OPT += --enable-gnutls
+else
+LIBEET_CONF_OPT += --disable-gnutls
+endif
+
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
