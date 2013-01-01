@@ -36,10 +36,16 @@ endif
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 LIBECORE_DEPENDENCIES += openssl
+LIBECORE_CONF_OPT += --enable-openssl
+else
+LIBECORE_CONF_OPT += --disable-openssl
 endif
 
-ifeq ($(BR2_PACKAGE_GNUTLS),y)
-LIBECORE_DEPENDENCIES += gnutls
+ifeq ($(BR2_PACKAGE_GNUTLS)$(BR2_PACKAGE_LIBGCRYPT),yy)
+LIBECORE_DEPENDENCIES += gnutls libgcrypt
+LIBECORE_CONF_OPT += --enable-gnutls --with-libgcrypt-prefix=$(STAGING_DIR)/usr
+else
+LIBECORE_CONF_OPT += --disable-gnutls
 endif
 
 ifeq ($(BR2_PACKAGE_LIBCURL),y)
