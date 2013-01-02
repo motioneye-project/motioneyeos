@@ -17,7 +17,7 @@
 #    dependencies as they are with the current Buildroot
 #    configuration.
 #
-# Copyright (C) 2010 Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+# Copyright (C) 2010-2013 Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 
 import sys
 import subprocess
