@@ -41,7 +41,6 @@ else:
     sys.exit(1)
 
 allpkgs = []
-unknownpkgs = []
 
 # Execute the "make show-targets" command to get the list of the main
 # Buildroot TARGETS and return it formatted as a Python list. This
@@ -108,14 +107,6 @@ def get_all_depends(pkgs):
     deps = set()
     for pkg in filtered_pkgs:
         pkg_deps = depends[pkg]
-
-        # We couldn't get the dependencies of this package, because it
-        # doesn't use the generic or autotools infrastructure. Add it to
-        # unknownpkgs so that it is later rendered in red color to warn
-        # the user.
-        if pkg_deps == None:
-            unknownpkgs.append(pkg)
-            continue
 
         # This package has no dependency.
         if pkg_deps == []:
@@ -219,9 +210,7 @@ for pkg in allpkgs:
 
     print "%s [label = \"%s\"]" % (pkg_node_name(pkg), pkg)
 
-    if pkg in unknownpkgs:
-        print "%s [color=red,style=filled]" % pkg_node_name(pkg)
-    elif mode == PKG_MODE and pkg == rootpkg:
+    if mode == PKG_MODE and pkg == rootpkg:
         print "%s [color=lightblue,style=filled]" % pkg_node_name(rootpkg)
     else:
         print "%s [color=grey,style=filled]" % pkg_node_name(pkg)
