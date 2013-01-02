@@ -10,7 +10,7 @@ LIBXCB_SITE = http://xcb.freedesktop.org/dist/
 LIBXCB_INSTALL_STAGING = YES
 
 LIBXCB_DEPENDENCIES = \
-	host-libxslt pthread-stubs xcb-proto xlib_libXdmcp xlib_libXau \
+	host-libxslt xlib_libpthread-stubs xcb-proto xlib_libXdmcp xlib_libXau \
 	host-xcb-proto host-python host-pkgconf
 LIBXCB_CONF_ENV = STAGING_DIR="$(STAGING_DIR)"
 LIBXCB_MAKE_OPT = XCBPROTO_XCBINCLUDEDIR=$(STAGING_DIR)/usr/share/xcb \

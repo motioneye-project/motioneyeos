@@ -37,7 +37,6 @@ endmenu
 	menu "X11R7 Libraries"
 		source package/x11r7/libxcb/Config.in
 		source package/x11r7/mesa3d/Config.in
-		source package/x11r7/pthread-stubs/Config.in
 		source package/x11r7/xcb-util/Config.in
 		source package/x11r7/xcb-util-keysyms/Config.in
 		source package/x11r7/xlib_libFS/Config.in
@@ -79,6 +78,7 @@ endmenu
 		source package/x11r7/xlib_libxkbui/Config.in
 		source package/x11r7/xlib_xtrans/Config.in
 		source package/x11r7/xlib_libpciaccess/Config.in
+		source package/x11r7/xlib_libpthread-stubs/Config.in
 	endmenu
 	menu "X11R7 Applications"
 		source package/x11r7/xapp_appres/Config.in
