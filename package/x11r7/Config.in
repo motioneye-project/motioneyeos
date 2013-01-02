@@ -132,7 +132,7 @@ endmenu
 		source package/x11r7/xapp_xhost/Config.in
 		source package/x11r7/xapp_xinit/Config.in
 		source package/x11r7/xapp_xinput/Config.in
-		source package/x11r7/xapp_xinput_calibrator/Config.in
+		source package/x11r7/xapp_xinput-calibrator/Config.in
 		source package/x11r7/xapp_xkbcomp/Config.in
 		source package/x11r7/xapp_xkbevd/Config.in
 		source package/x11r7/xapp_xkbprint/Config.in
