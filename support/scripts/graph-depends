@@ -119,6 +119,37 @@ def get_all_depends(pkg):
 def pkg_node_name(pkg):
     return pkg.replace("-","")
 
+# Helper function for remove_redundant_deps(). This function tells
+# whether package "pkg" is the dependency of another package that is
+# not the special "all" package.
+def has_redundant_deps(deps, pkg):
+    for dep in deps:
+        if dep[0] != "all" and dep[1] == pkg:
+            return True
+    return False
+
+# This function removes redundant dependencies of the special "all"
+# package. This "all" package is created to reflect the origin of the
+# selection for all packages that are not themselves selected by any
+# other package. So for example if you enable libpng, zlib is enabled
+# as a dependency. But zlib being selected by libpng, it also appears
+# as a dependency of the "all" package. This needlessly complicates
+# the generated dependency graph. So when we have the dependency list
+# (all -> zlib, all -> libpn, libpng -> zlib), we get rid of the 'all
+# -> zlib' dependency, because zlib is already a dependency of a
+# regular package.
+def remove_redundant_deps(deps):
+    newdeps = []
+    for dep in deps:
+        if dep[0] != "all":
+            newdeps.append(dep)
+            continue
+        if not has_redundant_deps(deps, dep[1]):
+            newdeps.append(dep)
+            continue
+        sys.stderr.write("Removing redundant dep all -> %s\n" % dep[1])
+    return newdeps
+
 # In full mode, start with the result of get_targets() to get the main
 # targets and then use get_all_depends() for each individual target.
 if mode == FULL_MODE:
@@ -143,6 +174,8 @@ if mode == FULL_MODE:
 # package
 elif mode == PKG_MODE:
     dependencies = get_all_depends(rootpkg)
+
+dependencies = remove_redundant_deps(dependencies)
 
 # Start printing the graph data
 print "digraph G {"
