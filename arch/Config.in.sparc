@@ -1,14 +1,10 @@
 choice
 	prompt "Target Architecture Variant"
 	depends on BR2_sparc
-	default BR2_sparc_v7
+	default BR2_sparc_v8
 	help
 	  Specific CPU variant to use
 
-config BR2_sparc_v7
-	bool "v7"
-config BR2_sparc_cypress
-	bool "cypress"
 config BR2_sparc_v8
 	bool "v8"
 config BR2_sparc_sparchfleon
@@ -19,22 +15,6 @@ config BR2_sparc_sparcsfleon
 	bool "sfleon"
 config BR2_sparc_sparcsfleonv8
 	bool "sfleonv8"
-config BR2_sparc_supersparc
-	bool "supersparc"
-config BR2_sparc_sparclite
-	bool "sparclite"
-config BR2_sparc_f930
-	bool "f930"
-config BR2_sparc_f934
-	bool "f934"
-config BR2_sparc_hypersparc
-	bool "hypersparc"
-config BR2_sparc_sparclite86x
-	bool "sparclite86x"
-config BR2_sparc_sparclet
-	bool "sparclet"
-config BR2_sparc_tsc701
-	bool "tsc701"
 endchoice
 
 config BR2_ARCH
@@ -44,17 +24,7 @@ config BR2_ENDIAN
 	default "BIG"
 
 config BR2_GCC_TARGET_TUNE
-	default "v7"		if BR2_sparc_v7
-	default "cypress"	if BR2_sparc_cypress
 	default "v8"		if BR2_sparc_v8
-	default "supersparc"	if BR2_sparc_supersparc
-	default "hypersparc"	if BR2_sparc_hypersparc
-	default "sparclite"	if BR2_sparc_sparclite
-	default "f930"		if BR2_sparc_f930
-	default "f934"		if BR2_sparc_f934
-	default "sparclite86x"	if BR2_sparc_sparclite86x
-	default "sparclet"	if BR2_sparc_sparclet
-	default "tsc701"	if BR2_sparc_tsc701
 	default "v9"		if BR2_sparc_v9
 	default "v9"		if BR2_sparc_v9a
 	default "v9"		if BR2_sparc_v9b
