@@ -17,6 +17,9 @@ GNUTLS_CONF_ENV = gl_cv_socket_ipv6=$(if $(BR2_INET_IPV6),yes,no) \
 	gt_cv_c_wint_t=$(if $(BR2_USE_WCHAR),yes,no)
 GNUTLS_INSTALL_STAGING = YES
 
+# libpthread autodetection poisons the linkpath
+GNUTLS_CONF_OPT += $(if $(BR2_TOOLCHAIN_HAS_THREADS),--with-libpthread-prefix=$(STAGING_DIR)/usr)
+
 # Some examples in doc/examples use wchar
 define GNUTLS_DISABLE_DOCS
 	$(SED) 's/ doc / /' $(@D)/Makefile.in
