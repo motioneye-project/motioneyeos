@@ -13,6 +13,7 @@ LIBEET_LICENSE_FILES = COPYING
 LIBEET_INSTALL_STAGING = YES
 
 LIBEET_DEPENDENCIES = host-pkgconf zlib jpeg libeina
+HOST_LIBEET_DEPENDENCIES = host-pkgconf host-zlib host-jpeg host-libeina
 
 ifeq ($(BR2_PACKAGE_GNUTLS)$(BR2_PACKAGE_LIBGCRYPT),yy)
 LIBEET_DEPENDENCIES += gnutls libgcrypt
