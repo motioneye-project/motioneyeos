@@ -167,6 +167,7 @@ TARGET_EXCEPTIONS = [
     "target-finalize",
     "erase-fakeroots",
     "target-generic-hostname",
+    "target-root-passwd",
 ]
 
 # In full mode, start with the result of get_targets() to get the main
