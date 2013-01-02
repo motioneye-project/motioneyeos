@@ -17,11 +17,6 @@
 #    dependencies as they are with the current Buildroot
 #    configuration.
 #
-#  * The X.org package definitions are only included when
-#    BR2_PACKAGE_XORG7 is enabled, so if this option is not enabled,
-#    it isn't possible to graph the dependencies of X.org stack
-#    components.
-#
 # Copyright (C) 2010 Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 
 import sys
