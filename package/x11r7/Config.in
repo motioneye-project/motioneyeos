@@ -209,8 +209,6 @@ endmenu
 		source package/x11r7/xdriver_xf86-video-vmware/Config.in
 		source package/x11r7/xdriver_xf86-video-voodoo/Config.in
 		source package/x11r7/xdriver_xf86-video-wsfb/Config.in
-		source package/x11r7/xdriver_xf86-video-xgi/Config.in
-		source package/x11r7/xdriver_xf86-video-xgixp/Config.in
 	endmenu
 	endif
 	menu "X11R7 Fonts"
