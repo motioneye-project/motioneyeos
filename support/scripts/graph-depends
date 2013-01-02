@@ -150,6 +150,15 @@ def remove_redundant_deps(deps):
         sys.stderr.write("Removing redundant dep all -> %s\n" % dep[1])
     return newdeps
 
+TARGET_EXCEPTIONS = [
+    "target-generic-issue",
+    "target-generic-getty-busybox",
+    "target-generic-do-remount-rw",
+    "target-finalize",
+    "erase-fakeroots",
+    "target-generic-hostname",
+]
+
 # In full mode, start with the result of get_targets() to get the main
 # targets and then use get_all_depends() for each individual target.
 if mode == FULL_MODE:
@@ -158,12 +167,7 @@ if mode == FULL_MODE:
     allpkgs.append('all')
     for tg in targets:
         # Skip uninteresting targets
-        if tg == 'target-generic-issue' or \
-                tg == 'target-generic-getty-busybox' or \
-                tg == 'target-generic-do-remount-rw' or \
-                tg == 'target-finalize' or \
-                tg == 'erase-fakeroots' or \
-                tg == 'target-generic-hostname':
+        if tg in TARGET_EXCEPTIONS:
             continue
         dependencies.append(('all', tg))
         deps = get_all_depends(tg)
