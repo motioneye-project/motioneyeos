@@ -77,4 +77,23 @@ config BR2_PACKAGE_LINUX_FIRMWARE_TI_WL128X
 
 endmenu
 
+menu "DVB firmwares"
+
+config BR2_PACKAGE_LINUX_FIRMWARE_DIB0700
+	bool "DiBcom dib0700"
+	help
+	  Firmware file for dib0700-based USB DVB tuner driver
+
+config BR2_PACKAGE_LINUX_FIRMWARE_H5_DRXK
+	bool "Terratec H5 DRX-K"
+	help
+	  Firmware file for Terratec H5 DRX-K based DVB tuner driver
+
+config BR2_PACKAGE_LINUX_FIRMWARE_XC5000
+	bool "Xceive xc5000"
+	help
+	  Firmware file for xc5000-based DVB tuner driver
+
+endmenu
+
 endif
