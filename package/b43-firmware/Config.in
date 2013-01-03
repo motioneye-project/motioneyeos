@@ -1,5 +1,5 @@
 config BR2_PACKAGE_B43_FIRMWARE
-	bool "b43-firware"
+	bool "b43-firmware"
 	help
 	  Firmware for the Broadcom Wifi devices supported by the b43
 	  kernel driver.
