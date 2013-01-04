@@ -16,8 +16,9 @@ config BR2_PACKAGE_ENLIGHTENMENT
 	select BR2_PACKAGE_XCB_UTIL_KEYSYMS
 	select BR2_PACKAGE_LIBEVAS_GENERIC_LOADERS
 	select BR2_PACKAGE_LIBEVAS_GENERIC_LOADERS_SVG
-	# libevas-generic-loaders-svg -> librsvg -> glib2
+	# libevas-generic-loaders-svg -> librsvg -> glib2 / pango
 	depends on BR2_USE_WCHAR
+	depends on BR2_INSTALL_LIBSTDCPP
 	# libedbus -> dbus
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	# libedbus -> dbus
@@ -32,6 +33,6 @@ config BR2_PACKAGE_ENLIGHTENMENT
 
 	  http://www.enlightenment.org/
 
-comment "enlightenment requires WCHAR and thread support in toolchain"
+comment "enlightenment requires WCHAR, C++ and thread support in toolchain"
 	depends on BR2_PACKAGE_XORG7
-	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || !BR2_INSTALL_LIBSTDCPP
