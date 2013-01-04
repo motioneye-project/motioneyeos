@@ -4,8 +4,8 @@
 #
 #############################################################
 
-GMP_VERSION = 5.0.5
-GMP_SITE = $(BR2_GNU_MIRROR)/gmp
+GMP_VERSION = 5.1.0
+GMP_SITE = ftp://ftp.gmplib.org/pub/gmp-$(GMP_VERSION)
 GMP_SOURCE = gmp-$(GMP_VERSION).tar.bz2
 GMP_INSTALL_STAGING = YES
 GMP_LICENSE = LGPLv3+
