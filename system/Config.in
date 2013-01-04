@@ -145,6 +145,7 @@ config BR2_TARGET_GENERIC_GETTY_PORT
 	default "ttyS0"
 	help
 	  Specify a port to run a getty (login prompt) on.
+	  Set to the empty string to not run a getty.
 
 choice
 	prompt "Baudrate to use"

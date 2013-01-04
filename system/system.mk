@@ -49,12 +49,15 @@ endif
 
 TARGETS += target-root-passwd
 
+ifneq ($(TARGET_GENERIC_GETTY),)
 ifeq ($(BR2_ROOTFS_SKELETON_DEFAULT),y)
 ifeq ($(BR2_PACKAGE_SYSVINIT),y)
 TARGETS += target-generic-getty-sysvinit
 else
 TARGETS += target-generic-getty-busybox
 endif
+endif
+
 ifeq ($(BR2_TARGET_GENERIC_REMOUNT_ROOTFS_RW),y)
 TARGETS += target-generic-do-remount-rw
 else
