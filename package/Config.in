@@ -203,6 +203,7 @@ menu "Misc devices firmwares"
 source "package/b43-firmware/Config.in"
 source "package/linux-firmware/Config.in"
 source "package/ux500-firmware/Config.in"
+source "package/zd1211-firmware/Config.in"
 endmenu
 source "package/acpid/Config.in"
 source "package/cdrkit/Config.in"
