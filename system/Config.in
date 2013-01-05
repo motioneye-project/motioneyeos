@@ -13,6 +13,60 @@ config BR2_TARGET_GENERIC_ISSUE
          Select system banner (/etc/issue) to be displayed at login.
 
 choice
+	bool "Passwords encoding"
+	default BR2_TARGET_GENERIC_PASSWD_MD5
+	help
+	  Choose the password encoding scheme to use when Buildroot
+	  needs to encode a password (eg. the root password, below).
+	  
+	  Note: this is used at build-time, and *not* at runtime.
+
+config BR2_TARGET_GENERIC_PASSWD_DES
+	bool "des"
+	help
+	  Use standard 56-bit DES-based crypt(3) to encode passwords.
+	  
+	  Old, wildly available, but also the weakest, very susceptible to
+	  brute-force attacks.
+
+config BR2_TARGET_GENERIC_PASSWD_MD5
+	bool "md5"
+	help
+	  Use MD5 to encode passwords.
+	  
+	  The default. Wildly available, and pretty good.
+	  Although pretty strong, MD5 is now an old hash function, and
+	  suffers from some weaknesses, which makes it susceptible to
+	  brute-force attacks.
+
+config BR2_TARGET_GENERIC_PASSWD_SHA256
+	bool "sha-256"
+	help
+	  Use SHA256 to encode passwords.
+	  
+	  Very strong, but not ubiquitous, although available in glibc
+	  for some time now. Choose only if you are sure your C library
+	  understands SHA256 passwords.
+
+config BR2_TARGET_GENERIC_PASSWD_SHA512
+	bool "sha-512"
+	help
+	  Use SHA512 to encode passwords.
+	  
+	  Extremely strong, but not ubiquitous, although available in glibc
+	  for some time now. Choose only if you are sure your C library
+	  understands SHA512 passwords.
+
+endchoice # Passwd encoding
+
+config BR2_TARGET_GENERIC_PASSWD_METHOD
+	string
+	default "des"       if BR2_TARGET_GENERIC_PASSWD_DES
+	default "md5"       if BR2_TARGET_GENERIC_PASSWD_MD5
+	default "sha-256"   if BR2_TARGET_GENERIC_PASSWD_SHA256
+	default "sha-512"   if BR2_TARGET_GENERIC_PASSWD_SHA512
+
+choice
 	prompt "/dev management"
 	default BR2_ROOTFS_DEVICE_CREATION_STATIC
 
