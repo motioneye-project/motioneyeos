@@ -54,7 +54,7 @@ diff -durN tvheadend-v3.3.orig//support/posix.mk tvheadend-v3.3/support/posix.mk
  	done
 -
 +	mkdir -p ${DESTDIR}${datadir}/tvheadend/data
-+	ln -s /usr/share/dvb-apps/scan ${DESTDIR}${datadir}/tvheadend/data/dvb-scan
++	ln -sf /usr/share/dvb ${DESTDIR}${datadir}/tvheadend/data/dvb-scan
  
  uninstall:
  	rm -f ${DESTDIR}${bindir)/tvheadend

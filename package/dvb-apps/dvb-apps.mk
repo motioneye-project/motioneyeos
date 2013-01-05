@@ -18,11 +18,30 @@ DVB_APPS_SITE_METHOD    = hg
 # apply to us.
 DVB_APPS_LICENSE        = unknown (probably public domain)
 
+ifeq ($(BR2_PACKAGE_DVB_APPS_UTILS),y)
+# Utilitiess are selected, build and install everything
+DVB_APPS_INSTALL_STAGING = YES
+
+define DVB_APPS_BUILD_CMDS
+	$(TARGET_CONFIGURE_OPTS) $(MAKE) -C $(@D) V=1
+endef
+
+define DVB_APPS_INSTALL_STAGING_CMDS
+	$(MAKE) -C $(@D) V=1 DESTDIR=$(STAGING_DIR) install
+endef
+
+define DVB_APPS_INSTALL_TARGET_CMDS
+	$(MAKE) -C $(@D) V=1 DESTDIR=$(TARGET_DIR) install
+endef
+
+else
+# Utilities are not selected, just install the scan files
 define DVB_APPS_INSTALL_TARGET_CMDS
 	for i in atsc dvb-c dvb-s dvb-t; do \
-		mkdir -p $(TARGET_DIR)/usr/share/dvb-apps/scan/$$i; \
-		$(INSTALL) $(@D)/util/scan/$$i/* $(TARGET_DIR)/usr/share/dvb-apps/scan/$$i; \
+		mkdir -p $(TARGET_DIR)/usr/share/dvb/$$i; \
+		$(INSTALL) $(@D)/util/scan/$$i/* $(TARGET_DIR)/usr/share/dvb/$$i; \
 	done
 endef
+endif
 
 $(eval $(generic-package))
