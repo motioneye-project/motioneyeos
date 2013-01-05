@@ -18,6 +18,14 @@ XORG_VERSION_KEY = "xorg-version"
 BR_VERSION_KEY = "br-version"
 BR_NAME_KEY = "br-name"
 
+# Packages part of X.org releases that we do not want to package in
+# Buildroot (old drivers for hardware unlikely to be used in embedded
+# contexts).
+XORG_EXCEPTIONS = [
+    'xf86-video-suncg6',
+    'xf86-video-sunffb',
+]
+
 # Get the list of tarballs of a X.org release, parse it, and return a
 # dictionary of dictionaries, of the form:
 #
@@ -43,6 +51,9 @@ def get_xorg_release_pkgs():
             continue
         name = groups.group(1)
         version = groups.group(2)
+        # Skip packages we don't want to hear about
+        if name in XORG_EXCEPTIONS:
+            continue
         packages[name] = { XORG_VERSION_KEY : version }
     return packages
 
