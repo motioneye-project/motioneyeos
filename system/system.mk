@@ -47,7 +47,9 @@ ifneq ($(TARGET_GENERIC_ISSUE),)
 TARGETS += target-generic-issue
 endif
 
+ifeq ($(BR2_ROOTFS_SKELETON_DEFAULT),y)
 TARGETS += target-root-passwd
+endif
 
 ifneq ($(TARGET_GENERIC_GETTY),)
 ifeq ($(BR2_ROOTFS_SKELETON_DEFAULT),y)

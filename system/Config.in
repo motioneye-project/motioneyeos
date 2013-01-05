@@ -12,27 +12,6 @@ config BR2_TARGET_GENERIC_ISSUE
        help
          Select system banner (/etc/issue) to be displayed at login.
 
-config BR2_TARGET_GENERIC_ROOT_PASSWD
-	string "Root password"
-	default ""
-	help
-	  Set the initial root password (in clear). It will be md5-encrypted.
-	  
-	  If set to empty (the default), then no root password will be set,
-	  and root will need no password to log in.
-	  
-	  WARNING! WARNING!
-	  Although pretty strong, MD5 is now an old hash function, and
-	  suffers from some weaknesses, which makes it susceptible to attacks.
-	  It is showing its age, so this root password should not be trusted
-	  to properly secure any product that can be shipped to the wide,
-	  hostile world.
-	  
-	  WARNING! WARNING!
-	  The password appears in clear in the .config file, and may appear
-	  in the build log! Avoid using a valuable password if either the
-	  .config file or the build log may be distributed!
-
 choice
 	prompt "/dev management"
 	default BR2_ROOTFS_DEVICE_CREATION_STATIC
@@ -139,6 +118,27 @@ config BR2_ROOTFS_SKELETON_CUSTOM_PATH
 endif
 
 if BR2_ROOTFS_SKELETON_DEFAULT
+
+config BR2_TARGET_GENERIC_ROOT_PASSWD
+	string "Root password"
+	default ""
+	help
+	  Set the initial root password (in clear). It will be md5-encrypted.
+	  
+	  If set to empty (the default), then no root password will be set,
+	  and root will need no password to log in.
+	  
+	  WARNING! WARNING!
+	  Although pretty strong, MD5 is now an old hash function, and
+	  suffers from some weaknesses, which makes it susceptible to attacks.
+	  It is showing its age, so this root password should not be trusted
+	  to properly secure any product that can be shipped to the wide,
+	  hostile world.
+	  
+	  WARNING! WARNING!
+	  The password appears in clear in the .config file, and may appear
+	  in the build log! Avoid using a valuable password if either the
+	  .config file or the build log may be distributed!
 
 config BR2_TARGET_GENERIC_GETTY_PORT
 	string "Port to run a getty (login prompt) on"
