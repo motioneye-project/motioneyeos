@@ -7,7 +7,7 @@ config BR2_PACKAGE_LIBDRM
 	select BR2_PACKAGE_XLIB_LIBXXF86VM
 	select BR2_PACKAGE_XLIB_LIBXMU
 	select BR2_PACKAGE_XPROTO_DRI2PROTO
-	select BR2_PACKAGE_PTHREAD_STUBS
+	select BR2_PACKAGE_XLIB_LIBPTHREAD_STUBS
 	# libatomic_ops is only available on a subset of the supported
 	# architectures, and we make the assumption that the intel
 	# driver can only be used on x86 and x86_64 machines.
