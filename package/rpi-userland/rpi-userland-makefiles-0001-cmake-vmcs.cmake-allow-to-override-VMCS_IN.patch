@@ -1,0 +1,26 @@
+From fec2560cfcb8d3398e4f1ccc3de7923365873676 Mon Sep 17 00:00:00 2001
+From: Samuel Martin <s.martin49@gmail.com>
+Date: Sat, 5 Jan 2013 16:04:55 +0100
+Subject: [PATCH] makefiles/cmake/vmcs.cmake: allow to override
+ VMCS_INSTALL_PREFIX
+
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+---
+ makefiles/cmake/vmcs.cmake | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/makefiles/cmake/vmcs.cmake b/makefiles/cmake/vmcs.cmake
+index 0f8641b..cc70cca 100644
+--- a/makefiles/cmake/vmcs.cmake
++++ b/makefiles/cmake/vmcs.cmake
+@@ -9,7 +9,7 @@ INCLUDE(CPack)
+ # Where shall we install?
+ if (ANDROID)
+   SET(VMCS_INSTALL_PREFIX "/vendor/brcm/islands" CACHE PATH "Prefix prepended to install directories" FORCE)
+-else()
++elseif(NOT DEFINED VMCS_INSTALL_PREFIX)
+   SET(VMCS_INSTALL_PREFIX "/opt/vc" CACHE PATH "Prefix prepended to install directories" FORCE)
+ endif()
+ 
+-- 
+1.8.1

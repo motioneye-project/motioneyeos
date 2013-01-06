@@ -1,0 +1,16 @@
+config BR2_PACKAGE_RPI_USERLAND
+	bool "rpi-userland"
+	depends on BR2_arm
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_LARGEFILE
+	help
+	  Raspberry Pi Userland contains the necessary library to use the
+	  VideoCore driver.
+
+	  Includes source for the ARM side code to interface to:
+	  EGL, mmal, GLESv2, vcos, openmaxil, vchiq_arm, bcm_host, WFC, OpenVG.
+
+	  https://github.com/raspberrypi/userland/
+
+comment "rpi-userland requires a toolchain with C++ and LARGEFILE support"
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_LARGEFILE
