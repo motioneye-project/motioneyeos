@@ -12,8 +12,6 @@ PERF_DEPENDENCIES = linux
 
 PERF_MAKE_FLAGS = \
 	$(LINUX_MAKE_FLAGS) \
-	NO_LIBELF=1 \
-	NO_DWARF=1 \
 	NO_LIBAUDIT=1 \
 	NO_NEWT=1 \
 	NO_GTK2=1 \
@@ -22,6 +20,12 @@ PERF_MAKE_FLAGS = \
 	DESTDIR=$(TARGET_DIR) \
 	prefix=/usr \
 	WERROR=0
+
+ifeq ($(BR2_PACKAGE_ELFUTILS),y)
+	PERF_DEPENDENCIES += elfutils
+else
+	PERF_MAKE_FLAGS += NO_LIBELF=1 NO_DWARF=1
+endif
 
 define PERF_BUILD_CMDS
 	$(MAKE) -C $(LINUX_DIR)/tools/perf \
