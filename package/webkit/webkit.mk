@@ -19,7 +19,7 @@ WEBKIT_CONF_ENV = ac_cv_path_icu_config=$(STAGING_DIR)/usr/bin/icu-config \
 
 ifeq ($(BR2_PACKAGE_XORG7),y)
 	WEBKIT_CONF_OPT += --with-target=x11
-	WEBKIT_DEPENDENCIES += xserver_xorg-server xlib_libXt
+	WEBKIT_DEPENDENCIES += xlib_libXt
 else
 	WEBKIT_CONF_OPT += --with-target=directfb
 	WEBKIT_DEPENDENCIES += directfb
