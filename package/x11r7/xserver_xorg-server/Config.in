@@ -73,7 +73,7 @@ comment "X.org requires largefile and C++ support"
 	depends on !(BR2_LARGEFILE && BR2_INSTALL_LIBSTDCPP)
 
 config BR2_PACKAGE_XSERVER_tinyx
-	bool "TinyX"
+	bool "KDrive / TinyX"
 
 endchoice
 
