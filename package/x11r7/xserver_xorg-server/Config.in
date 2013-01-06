@@ -87,6 +87,35 @@ config BR2_PACKAGE_XSERVER_XORG_SERVER_AIGLX
     help
         Enable/Use AIGLX extension.
 
+if BR2_PACKAGE_XSERVER_XORG_SERVER_KDRIVE
+
+config BR2_PACKAGE_XSERVER_XORG_SERVER_KDRIVE_EVDEV
+	bool "Enable KDrive/TinyX evdev input driver"
+	help
+	  Enable evdev input driver in KDrive. This allows KDrive to
+	  use input devices that are integrated in the Linux input
+	  subsystem, i.e have a /dev/input/eventX device file. This is
+	  most likely the input driver you want to use.
+
+	  This driver can then be enabled by running the X server
+	  using:
+
+	  Xfbdev -keybd evdev,,device=/dev/input/eventX -mouse evdev,,device=/dev/input/eventY.
+
+config BR2_PACKAGE_XSERVER_XORG_SERVER_KDRIVE_KBD
+	bool "Enable KDrive/TinyX kbd input driver"
+	help
+	  Enable kbd input driver in KDrive. It uses the console
+	  keyboard as input device.
+
+config BR2_PACKAGE_XSERVER_XORG_SERVER_KDRIVE_MOUSE
+	bool "Enable KDrive/TinyX mouse input driver"
+	help
+	  Enable mouse input driver in KDrive. It supports PS/2 mice
+	  and serial port mice.
+
+endif
+
 comment "Optional Servers"
 
 config BR2_PACKAGE_XSERVER_XORG_SERVER_XVFB
