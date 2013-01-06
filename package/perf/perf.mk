@@ -28,6 +28,18 @@ else
 endif
 
 define PERF_BUILD_CMDS
+	$(Q)if test ! -f $(LINUX_DIR)/tools/perf/Makefile ; then \
+		echo "Your kernel version is too old and does not have the perf tool." ; \
+		echo "At least kernel 2.6.31 must be used." ; \
+		exit 1 ; \
+	fi
+	$(Q)if test "$(BR2_PACKAGE_ELFUTILS)" = "" ; then \
+		if ! grep -q NO_LIBELF $(LINUX_DIR)/tools/perf/Makefile ; then \
+			echo "The perf tool in your kernel cannot be built without libelf." ; \
+			echo "Either upgrade your kernel to >= 3.7, or enable the elfutils package." ; \
+			exit 1 ; \
+		fi \
+	fi
 	$(MAKE) -C $(LINUX_DIR)/tools/perf \
 		$(PERF_MAKE_FLAGS) O=$(@D)
 endef
