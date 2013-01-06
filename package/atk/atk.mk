@@ -41,14 +41,6 @@ ATK_CONF_ENV = ac_cv_func_posix_getpwuid_r=yes \
 ATK_CONF_OPT =  --disable-glibtest --enable-explicit-deps=no \
 		--disable-debug
 
-ifeq ($(BR2_PACKAGE_XORG7),y)
-ATK_CONF_OPT += --with-x \
-		--x-includes=$(STAGING_DIR)/usr/include/X11 \
-		--x-libraries=$(STAGING_DIR)/usr/lib --disable-glibtest
-else
-ATK_CONF_OPT += --without-x
-endif
-
 ATK_DEPENDENCIES = libglib2 host-pkgconf
 
 HOST_ATK_CONF_OPT = \
