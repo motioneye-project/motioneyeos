@@ -12,10 +12,9 @@ menuconfig BR2_PACKAGE_XORG7
 	  http://xorg.freedesktop.org
 
 if BR2_PACKAGE_XORG7
-
-menu "X11R7 Servers"
-	source package/x11r7/xserver_xorg-server/Config.in
-endmenu
+	menu "X11R7 Servers"
+		source package/x11r7/xserver_xorg-server/Config.in
+	endmenu
 	menu "X11R7 Libraries"
 		source package/x11r7/libxcb/Config.in
 		source package/x11r7/mesa3d/Config.in
