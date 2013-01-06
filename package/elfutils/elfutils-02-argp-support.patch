@@ -1,0 +1,92 @@
+Allow the usage of an external implementation of the argp functions
+
+uClibc lack the argp family of functions that glibc has. Therefore, we
+add a check in the configure script to see if argp_parse is available
+in the C library. If not, we look if it is available in the additional
+'argp' library. If so, we link against that library. If not, we error
+out.
+
+This allows to build elfutils against uClibc with an external argp
+library.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/configure.ac
+===================================================================
+--- a/configure.ac
++++ b/configure.ac
+@@ -269,6 +269,13 @@
+ 	enable_progs=yes)
+ AM_CONDITIONAL(ENABLE_PROGS, test "$enable_progs" = yes)
+ 
++AC_CHECK_FUNC([argp_parse])
++if test "$ac_cv_func_argp_parse" != yes; then
++   AC_CHECK_LIB([argp],[argp_parse],ARGP_LIBS=-largp,
++		AC_MSG_ERROR([No argp_parse function available.]))
++fi
++AC_SUBST(ARGP_LIBS)
++
+ dnl Test for zlib and bzlib, gives ZLIB/BZLIB .am
+ dnl conditional and config.h USE_ZLIB/USE_BZLIB #define.
+ save_LIBS="$LIBS"
+Index: b/src/Makefile.am
+===================================================================
+--- a/src/Makefile.am
++++ b/src/Makefile.am
+@@ -98,26 +98,29 @@
+ # Buggy old compilers.
+ readelf_no_Werror = yes
+ 
+-readelf_LDADD = $(libdw) $(libebl) $(libelf) $(libeu) $(libmudflap) -ldl
++readelf_LDADD = $(libdw) $(libebl) $(libelf) $(libeu) $(libmudflap) -ldl \
++	$(ARGP_LIBS)
+ nm_LDADD = $(libdw) $(libebl) $(libelf) $(libeu) $(libmudflap) -ldl \
+-	   $(demanglelib)
+-size_LDADD = $(libelf) $(libeu) $(libmudflap)
+-strip_LDADD = $(libebl) $(libelf) $(libeu) $(libmudflap) -ldl
+-ld_LDADD = $(libebl) $(libelf) $(libeu) $(libmudflap) -ldl
++	   $(demanglelib) $(ARGP_LIBS)
++size_LDADD = $(libelf) $(libeu) $(libmudflap) $(ARGP_LIBS)
++strip_LDADD = $(libebl) $(libelf) $(libeu) $(libmudflap) -ldl $(ARGP_LIBS)
++ld_LDADD = $(libebl) $(libelf) $(libeu) $(libmudflap) -ldl $(ARGP_LIBS)
+ if NATIVE_LD
+ # -ldl is always needed for libebl.
+ ld_LDADD += libld_elf.a
+ endif
+ ld_LDFLAGS = -rdynamic
+-elflint_LDADD  = $(libebl) $(libelf) $(libeu) $(libmudflap) -ldl
+-findtextrel_LDADD = $(libdw) $(libelf) $(libmudflap)
+-addr2line_LDADD = $(libdw) $(libelf) $(libmudflap)
+-elfcmp_LDADD = $(libebl) $(libelf) $(libmudflap) -ldl
+-objdump_LDADD  = $(libasm) $(libebl) $(libelf) $(libeu) $(libmudflap) -ldl
+-ranlib_LDADD = libar.a $(libelf) $(libeu) $(libmudflap)
+-strings_LDADD = $(libelf) $(libeu) $(libmudflap)
+-ar_LDADD = libar.a $(libelf) $(libeu) $(libmudflap)
+-unstrip_LDADD = $(libebl) $(libelf) $(libdw) $(libeu) $(libmudflap) -ldl
++elflint_LDADD  = $(libebl) $(libelf) $(libeu) $(libmudflap) -ldl $(ARGP_LIBS)
++findtextrel_LDADD = $(libdw) $(libelf) $(libmudflap) $(ARGP_LIBS)
++addr2line_LDADD = $(libdw) $(libelf) $(libmudflap) $(ARGP_LIBS)
++elfcmp_LDADD = $(libebl) $(libelf) $(libmudflap) -ldl $(ARGP_LIBS)
++objdump_LDADD  = $(libasm) $(libebl) $(libelf) $(libeu) $(libmudflap) -ldl \
++	$(ARGP_LIBS)
++ranlib_LDADD = libar.a $(libelf) $(libeu) $(libmudflap) $(ARGP_LIBS)
++strings_LDADD = $(libelf) $(libeu) $(libmudflap) $(ARGP_LIBS)
++ar_LDADD = libar.a $(libelf) $(libeu) $(libmudflap) $(ARGP_LIBS)
++unstrip_LDADD = $(libebl) $(libelf) $(libdw) $(libeu) $(libmudflap) -ldl \
++	$(ARGP_LIBS)
+ 
+ ldlex.o: ldscript.c
+ ldlex_no_Werror = yes
+Index: b/libdw/Makefile.am
+===================================================================
+--- a/libdw/Makefile.am
++++ b/libdw/Makefile.am
+@@ -111,7 +111,7 @@
+ 		-Wl,--enable-new-dtags,-rpath,$(pkglibdir) \
+ 		-Wl,--version-script,$<,--no-undefined \
+ 		-Wl,--whole-archive $(filter-out $<,$^) -Wl,--no-whole-archive\
+-		-ldl $(zip_LIBS)
++		-ldl $(zip_LIBS) $(ARGP_LIBS)
+ 	if readelf -d $@ | fgrep -q TEXTREL; then exit 1; fi
+ 	ln -fs $@ $@.$(VERSION)
+ 
