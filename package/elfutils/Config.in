@@ -12,4 +12,17 @@ config BR2_PACKAGE_ELFUTILS
 	  Libraries/utilities to handle ELF objects (drop in
 	  replacement for libelf).
 
+	  Note that this option only installs the libraries, and not
+	  the programs.
+
 	  https://fedorahosted.org/elfutils
+
+if BR2_PACKAGE_ELFUTILS
+
+config BR2_PACKAGE_ELFUTILS_PROGS
+	bool "Install programs"
+	help
+	  This option tells elfutils to not only install the libelf
+	  libraries, but also the elfutils programs.
+
+endif

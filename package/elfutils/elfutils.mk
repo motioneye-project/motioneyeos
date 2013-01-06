@@ -46,4 +46,10 @@ else
  ELFUTILS_CONF_OPT += --without-lzma
 endif
 
+ifeq ($(BR2_PACKAGE_ELFUTILS_PROGS),y)
+ ELFUTILS_CONF_OPT += --enable-progs
+else
+ ELFUTILS_CONF_OPT += --disable-progs
+endif
+
 $(eval $(autotools-package))
