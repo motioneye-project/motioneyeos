@@ -50,15 +50,9 @@ endif
 
 ifeq ($(BR2_ROOTFS_SKELETON_DEFAULT),y)
 TARGETS += target-root-passwd
-endif
 
 ifneq ($(TARGET_GENERIC_GETTY),)
-ifeq ($(BR2_ROOTFS_SKELETON_DEFAULT),y)
-ifeq ($(BR2_PACKAGE_SYSVINIT),y)
-TARGETS += target-generic-getty-sysvinit
-else
-TARGETS += target-generic-getty-busybox
-endif
+TARGETS += target-generic-getty-$(if $(BR2_PACKAGE_SYSVINIT),sysvinit,busybox)
 endif
 
 ifeq ($(BR2_TARGET_GENERIC_REMOUNT_ROOTFS_RW),y)
