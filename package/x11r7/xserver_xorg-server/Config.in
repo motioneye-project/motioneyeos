@@ -59,6 +59,24 @@ comment "xorg-xserver is BROKEN on AVR32"
 
 if BR2_PACKAGE_XSERVER_XORG_SERVER
 
+choice
+	prompt "X Window System server type"
+	default BR2_PACKAGE_XSERVER_tinyx
+	help
+	  Select the X Window System server to use
+
+config BR2_PACKAGE_XSERVER_xorg
+	bool "Modular X.org"
+	depends on BR2_LARGEFILE && BR2_INSTALL_LIBSTDCPP
+
+comment "X.org requires largefile and C++ support"
+	depends on !(BR2_LARGEFILE && BR2_INSTALL_LIBSTDCPP)
+
+config BR2_PACKAGE_XSERVER_tinyx
+	bool "TinyX"
+
+endchoice
+
 config BR2_PACKAGE_XSERVER_XORG_SERVER_NULL_CURSOR
     bool "Null root cursor"
     help
