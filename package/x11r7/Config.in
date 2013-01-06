@@ -149,7 +149,7 @@ if BR2_PACKAGE_XORG7
 		source package/x11r7/xapp_xwininfo/Config.in
 		source package/x11r7/xapp_xwud/Config.in
 	endmenu
-	if BR2_PACKAGE_XSERVER_xorg
+	if BR2_PACKAGE_XSERVER_XORG_SERVER_MODULAR
 	menu "X11R7 Drivers"
 		source package/x11r7/xdriver_xf86-input-evdev/Config.in
 		source package/x11r7/xdriver_xf86-input-joystick/Config.in

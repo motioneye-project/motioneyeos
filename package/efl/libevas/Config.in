@@ -79,13 +79,13 @@ config BR2_PACKAGE_LIBEVAS_SDL
 config BR2_PACKAGE_LIBEVAS_SDL_GL
 	bool "libevas SDL OpenGL backend"
 	depends on BR2_PACKAGE_SDL_X11
-	depends on BR2_PACKAGE_XSERVER_xorg # mesa needs big X
+	depends on BR2_PACKAGE_XSERVER_XORG_SERVER_MODULAR # mesa needs big X
 	help
 	  This is the SDL OpenGL engine that uses SDL library
 	  and OpenGL to render. This may be hardware accelerated.
 
 comment "SDL OpenGL backend needs modular X.org and X11 support in SDL"
-	depends on !(BR2_PACKAGE_SDL_X11 && BR2_PACKAGE_XSERVER_xorg)
+	depends on !(BR2_PACKAGE_SDL_X11 && BR2_PACKAGE_XSERVER_XORG_SERVER_MODULAR)
 
 config BR2_PACKAGE_LIBEVAS_X11
 	bool "libevas X11 backend"
@@ -99,7 +99,7 @@ config BR2_PACKAGE_LIBEVAS_X11
 
 config BR2_PACKAGE_LIBEVAS_X11_GLX
 	bool "libevas X11 GLX backend"
-	depends on BR2_PACKAGE_XSERVER_xorg # mesa needs big X
+	depends on BR2_PACKAGE_XSERVER_XORG_SERVER_MODULAR # mesa needs big X
 	select BR2_PACKAGE_XLIB_LIBX11
 	select BR2_PACKAGE_XLIB_LIBXRENDER
 	select BR2_PACKAGE_XLIB_LIBXEXT
@@ -121,7 +121,7 @@ config BR2_PACKAGE_LIBEVAS_XCB
 
 config BR2_PACKAGE_LIBEVAS_XCB_GLX
 	bool "libevas XCB GLX backend"
-	depends on BR2_PACKAGE_XSERVER_xorg # mesa needs big X
+	depends on BR2_PACKAGE_XSERVER_XORG_SERVER_MODULAR # mesa needs big X
 	select BR2_PACKAGE_LIBXCB
 	select BR2_PACKAGE_XCB_UTIL
 	select BR2_PACKAGE_XCB_PROTO
