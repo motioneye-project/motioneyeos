@@ -1,9 +1,5 @@
 menuconfig BR2_PACKAGE_XORG7
 	bool "X.org X Window System"
-	select BR2_PACKAGE_ZLIB
-	select BR2_PACKAGE_LIBPNG
-	select BR2_PACKAGE_EXPAT
-	select BR2_PACKAGE_FONTCONFIG
 	depends on BR2_USE_WCHAR
 	help
 	  Support for X11R7 libraries, servers, drivers, and/or
