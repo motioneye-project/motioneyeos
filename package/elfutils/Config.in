@@ -1,0 +1,15 @@
+comment "elfutils requires a glibc toolchain"
+	depends on !(BR2_TOOLCHAIN_EXTERNAL_GLIBC || \
+		     BR2_TOOLCHAIN_CTNG_glibc     || \
+		     BR2_TOOLCHAIN_CTNG_eglibc)
+
+config BR2_PACKAGE_ELFUTILS
+	bool "elfutils"
+	depends on BR2_TOOLCHAIN_EXTERNAL_GLIBC || \
+		   BR2_TOOLCHAIN_CTNG_glibc     || \
+		   BR2_TOOLCHAIN_CTNG_eglibc
+	help
+	  Libraries/utilities to handle ELF objects (drop in
+	  replacement for libelf).
+
+	  https://fedorahosted.org/elfutils

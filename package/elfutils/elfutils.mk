@@ -1,0 +1,49 @@
+#############################################################
+#
+# elfutils
+#
+#############################################################
+ELFUTILS_VERSION = 0.155
+ELFUTILS_SOURCE = elfutils-$(ELFUTILS_VERSION).tar.bz2
+ELFUTILS_SITE = https://fedorahosted.org/releases/e/l/elfutils/$(ELFUTILS_VERSION)
+ELFUTILS_LICENSE = GPLv3 GPLv2 LGPLv3
+ELFUTILS_LICENSE_FILES = COPYING COPYING-GPLV2 COPYING-LGPLV3
+
+# The tarball does not have a generated configure script
+ELFUTILS_AUTORECONF = YES
+ELFUTILS_CONF_OPT += --disable-werror
+ELFUTILS_PATCH = \
+	elfutils-portability.patch \
+	elfutils-robustify.patch
+
+ELFUTILS_INSTALL_STAGING = YES
+
+ifeq ($(BR2_LARGEFILE),y)
+# elfutils gets confused when lfs mode is forced, so don't
+ELFUTILS_CONF_ENV += \
+        CFLAGS="$(filter-out -D_FILE_OFFSET_BITS=64,$(TARGET_CFLAGS))" \
+        CPPFLAGS="$(filter-out -D_FILE_OFFSET_BITS=64,$(TARGET_CPPFLAGS))"
+endif
+
+ifeq ($(BR2_PACKAGE_ZLIB),y)
+ ELFUTILS_DEPENDENCIES += zlib
+ ELFUTILS_CONF_OPT += --with-zlib
+else
+ ELFUTILS_CONF_OPT += --without-zlib
+endif
+
+ifeq ($(BR2_PACKAGE_BZIP2),y)
+ ELFUTILS_DEPENDENCIES += bzip2
+ ELFUTILS_CONF_OPT += --with-bzlib
+else
+ ELFUTILS_CONF_OPT += --without-bzlib
+endif
+
+ifeq ($(BR2_PACKAGE_XZ),y)
+ ELFUTILS_DEPENDENCIES += xz
+ ELFUTILS_CONF_OPT += --with-lzma
+else
+ ELFUTILS_CONF_OPT += --without-lzma
+endif
+
+$(eval $(autotools-package))
