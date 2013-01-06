@@ -43,8 +43,4 @@ ATK_CONF_OPT =  --disable-glibtest --enable-explicit-deps=no \
 
 ATK_DEPENDENCIES = libglib2 host-pkgconf
 
-HOST_ATK_CONF_OPT = \
-		--disable-glibtest
-
 $(eval $(autotools-package))
-$(eval $(host-autotools-package))
