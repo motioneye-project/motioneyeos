@@ -3,6 +3,7 @@ config BR2_PACKAGE_DOCKER
 	depends on BR2_PACKAGE_XORG7
 	depends on BR2_USE_WCHAR # glib2
 	select BR2_PACKAGE_LIBGLIB2
+	select BR2_PACKAGE_XLIB_LIBX11
 	help
 	  a system tray dock for X
 
