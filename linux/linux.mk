@@ -203,14 +203,21 @@ endif
 
 ifeq ($(BR2_LINUX_KERNEL_APPENDED_UIMAGE),y)
 define LINUX_APPEND_DTB
-	cat $(KERNEL_ARCH_PATH)/boot/$(KERNEL_DTS_NAME).dtb >> $(KERNEL_ARCH_PATH)/boot/zImage
+define LINUX_APPEND_DTB
+	# dtbs moved from arch/$ARCH/boot to arch/$ARCH/boot/dts since 3.8-rc1
+	cat $(wildcard $(addprefix $(KERNEL_ARCH_PATH)/boot/,\
+		$(KERNEL_DTS_NAME).dtb dts/$(KERNEL_DTS_NAME).dtb)) \
+		>> $(KERNEL_ARCH_PATH)/boot/zImage
 	# We need to generate the uImage here after that so that the uImage is
 	# generated with the right image size.
 	$(TARGET_MAKE_ENV) $(MAKE) $(LINUX_MAKE_FLAGS) -C $(@D) uImage
 endef
 else ifeq ($(BR2_LINUX_KERNEL_APPENDED_ZIMAGE),y)
 define LINUX_APPEND_DTB
-	cat $(KERNEL_ARCH_PATH)/boot/$(KERNEL_DTS_NAME).dtb >> $(KERNEL_ARCH_PATH)/boot/zImage
+	# dtbs moved from arch/$ARCH/boot to arch/$ARCH/boot/dts since 3.8-rc1
+	cat $(wildcard $(addprefix $(KERNEL_ARCH_PATH)/boot/,\
+		$(KERNEL_DTS_NAME).dtb dts/$(KERNEL_DTS_NAME).dtb)) \
+		>> $(KERNEL_ARCH_PATH)/boot/zImage
 endef
 endif
 
