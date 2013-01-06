@@ -41,15 +41,24 @@ PANGO_CONF_ENV = ac_cv_func_posix_getpwuid_r=yes glib_cv_stack_grows=no \
 
 PANGO_CONF_OPT = --enable-explicit-deps=no --disable-debug
 
-PANGO_DEPENDENCIES = $(if $(BR2_NEEDS_GETTEXT_IF_LOCALE),gettext) host-pkgconf libglib2 cairo
+PANGO_DEPENDENCIES = $(if $(BR2_NEEDS_GETTEXT_IF_LOCALE),gettext) \
+	host-pkgconf \
+	libglib2 \
+	cairo \
+	fontconfig \
+	freetype
 
 ifeq ($(BR2_PACKAGE_XORG7),y)
         PANGO_CONF_OPT += --with-x \
 		--x-includes=$(STAGING_DIR)/usr/include/X11 \
 		--x-libraries=$(STAGING_DIR)/usr/lib --disable-glibtest
-	PANGO_DEPENDENCIES += xserver_xorg-server
+	PANGO_DEPENDENCIES += xlib_libX11
 else
         PANGO_CONF_OPT += --without-x
+endif
+
+ifeq ($(BR2_PACKAGE_XLIB_LIBXFT)$(BR2_PACKAGE_XLIB_LIBXRENDER),yy)
+	PANGO_DEPENDENCIES += xlib_libXft xlib_libXrender
 endif
 
 define PANGO_INSTALL_INITSCRIPT
