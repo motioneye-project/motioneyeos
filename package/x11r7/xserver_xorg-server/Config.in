@@ -68,12 +68,23 @@ choice
 config BR2_PACKAGE_XSERVER_XORG_SERVER_MODULAR
 	bool "Modular X.org"
 	depends on BR2_LARGEFILE && BR2_INSTALL_LIBSTDCPP
+	help
+	  This variant of the X.org server is the full-blown variant,
+	  as used by desktop GNU/Linux distributions. The drivers (for
+	  input and graphics) are built separately from the X.org
+	  server (see the xdriver* packages).
 
-comment "X.org requires largefile and C++ support"
+comment "Modular X.org requires largefile and C++ support"
 	depends on !(BR2_LARGEFILE && BR2_INSTALL_LIBSTDCPP)
 
 config BR2_PACKAGE_XSERVER_XORG_SERVER_KDRIVE
 	bool "KDrive / TinyX"
+	help
+	  This variant of the X.org server is a lightweight version
+	  intended for embedded systems. The drivers (for input and
+	  graphics) are built into the server. It is generally used
+	  directly on top of the Linux framebuffer without DRM or
+	  video card specific drivers.
 
 endchoice
 
