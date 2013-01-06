@@ -10,7 +10,7 @@ RUBIX_INSTALL_TARGET_OPT = GAMESDIR=$(TARGET_DIR)/usr/games install
 
 RUBIX_MAKE_OPT = CC="$(TARGET_CC)" XINC="-I$(STAGING_DIR)/usr/include/X11" XLIB="-L$(STAGING_DIR)/usr/lib -lX11"
 
-RUBIX_DEPENDENCIES = xserver_xorg-server
+RUBIX_DEPENDENCIES = xlib_libX11
 
 $(eval $(autotools-package))
 
