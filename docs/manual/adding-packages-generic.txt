@@ -156,14 +156,17 @@ information is (assuming the package name is +libfoo+) :
   +packagename-$(LIBFOO_VERSION).tar.gz+. +
   Example: +LIBFOO_SOURCE = foobar-$(LIBFOO_VERSION).tar.bz2+
 
-* +LIBFOO_PATCH+ may contain the name of a patch, that will be
-  downloaded from the same location as the tarball indicated in
-  +LIBFOO_SOURCE+. If +HOST_LIBFOO_PATCH+ is not specified, it
-  defaults to +LIBFOO_PATCH+. Note that patches that are included
-  in Buildroot itself use a different mechanism: all files of the
-  form +<packagename>-*.patch+ present in the package directory inside
+* +LIBFOO_PATCH+ may contain a space-separated list of patch file
+  names, that will be downloaded from the same location as the tarball
+  indicated in +LIBFOO_SOURCE+, and then applied to the package source
+  code. If +HOST_LIBFOO_PATCH+ is not specified, it defaults to
+  +LIBFOO_PATCH+. Note that patches that are included in Buildroot
+  itself use a different mechanism: all files of the form
+  +<packagename>-*.patch+ present in the package directory inside
   Buildroot will be applied to the package after extraction (see
-  xref:patch-policy[patching a package]).
+  xref:patch-policy[patching a package]). Finally, patches listed in
+  the +LIBFOO_PATCH+ variable are applied _before_ the patches stored
+  in the Buildroot package directory.
 
 * +LIBFOO_SITE+ provides the location of the package, which can be a
   URL or a local filesystem path. HTTP, FTP and SCP are supported URL
