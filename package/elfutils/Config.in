@@ -1,13 +1,5 @@
-comment "elfutils requires a glibc toolchain"
-	depends on !(BR2_TOOLCHAIN_EXTERNAL_GLIBC || \
-		     BR2_TOOLCHAIN_CTNG_glibc     || \
-		     BR2_TOOLCHAIN_CTNG_eglibc)
-
 config BR2_PACKAGE_ELFUTILS
 	bool "elfutils"
-	depends on BR2_TOOLCHAIN_EXTERNAL_GLIBC || \
-		   BR2_TOOLCHAIN_CTNG_glibc     || \
-		   BR2_TOOLCHAIN_CTNG_eglibc
 	select BR2_PACKAGE_ARGP_STANDALONE if \
 	       BR2_TOOLCHAIN_BUILDROOT   || \
 	       BR2_TOOLCHAIN_CTNG_uClibc || \
@@ -27,6 +19,9 @@ if BR2_PACKAGE_ELFUTILS
 
 config BR2_PACKAGE_ELFUTILS_PROGS
 	bool "Install programs"
+	depends on BR2_TOOLCHAIN_EXTERNAL_GLIBC || \
+		   BR2_TOOLCHAIN_CTNG_glibc     || \
+		   BR2_TOOLCHAIN_CTNG_eglibc
 	help
 	  This option tells elfutils to not only install the libelf
 	  libraries, but also the elfutils programs.
