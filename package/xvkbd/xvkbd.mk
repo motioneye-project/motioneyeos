@@ -7,8 +7,16 @@ XVKBD_VERSION = 3.2
 XVKBD_SOURCE = xvkbd-$(XVKBD_VERSION).tar.gz
 XVKBD_SITE = http://homepage3.nifty.com/tsato/xvkbd
 
-XVKBD_MAKE_OPT = CC="$(TARGET_CC)" CXX="$(TARGET_CXX)" LD="$(TARGET_CC)" \
-				CFLAGS="-O2 -I$(STAGING_DIR)/usr/include" USRLIBDIR="$(STAGING_DIR)/usr/lib"
+# Passing USRLIBDIR ensures that the stupid Makefile doesn't add
+# /usr/lib to the library search path.
+define XVKBD_BUILD_CMDS
+	$(MAKE) -C $(@D) $(TARGET_CONFIGURE_OPTS) \
+		USRLIBDIR="$(STAGING_DIR)/usr/lib"
+endef
+
+define XVKBD_INSTALL_TARGET_CMDS
+	$(MAKE) -C $(@D) DESTDIR=$(TARGET_DIR) install
+endef
 
 XVKBD_DEPENDENCIES = \
 	xlib_libICE \
@@ -21,5 +29,5 @@ XVKBD_DEPENDENCIES = \
 	xlib_libXt \
 	xlib_libXtst
 
-$(eval $(autotools-package))
+$(eval $(generic-package))
 
