@@ -12,6 +12,7 @@ config BR2_PACKAGE_ELFUTILS
 	       BR2_TOOLCHAIN_BUILDROOT   || \
 	       BR2_TOOLCHAIN_CTNG_uClibc || \
 	       BR2_TOOLCHAIN_EXTERNAL_UCLIBC
+	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT
 	depends on BR2_LARGEFILE
 	help
 	  Libraries/utilities to handle ELF objects (drop in
