@@ -51,7 +51,6 @@ XSERVER_XORG_SERVER_DEPENDENCIES = 	\
 	xproto_xproto 			\
 	xkeyboard-config		\
 	pixman 				\
-	openssl 			\
 	mcookie 			\
 	host-pkgconf
 
@@ -176,6 +175,17 @@ ifeq ($(BR2_PACKAGE_MESA3D),y)
 XSERVER_XORG_SERVER_CONF_OPT += --enable-glx
 else
 XSERVER_XORG_SERVER_CONF_OPT += --disable-glx
+endif
+
+ifeq ($(BR2_PACKAGE_OPENSSL),y)
+XSERVER_XORG_SERVER_CONF_OPT += --with-sha1=libcrypto
+XSERVER_XORG_SERVER_DEPENDENCIES += openssl
+else ifeq ($(BR2_PACKAGE_LIBGCRYPT),y)
+XSERVER_XORG_SERVER_CONF_OPT += --with-sha1=libgcrypt
+XSERVER_XORG_SERVER_DEPENDENCIES += libgcrypt
+else
+XSERVER_XORG_SERVER_CONF_OPT += --with-sha1=libsha1
+XSERVER_XORG_SERVER_DEPENDENCIES += libsha1
 endif
 
 $(eval $(autotools-package))
