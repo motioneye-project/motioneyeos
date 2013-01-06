@@ -1,0 +1,9 @@
+config BR2_PACKAGE_RPI_FIRMWARE
+	bool "rpi-firmware"
+	depends on BR2_arm
+	help
+	  RaspberryPi Firmware
+	  Pre-compiled binaries of the current bootloader and GPU firmware
+
+	  https://github.com/raspberrypi/firmware
+
