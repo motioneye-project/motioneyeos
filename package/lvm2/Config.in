@@ -21,5 +21,12 @@ config BR2_PACKAGE_LVM2_DMSETUP_ONLY
 	help
 	  Install dmsetup only and skip the LVM2 suite.
 
+config BR2_PACKAGE_LVM2_APP_LIBRARY
+	bool "install application library"
+	depends on BR2_PACKAGE_LVM2
+	depends on !BR2_PACKAGE_LVM2_DMSETUP_ONLY
+	help
+	  Install application library (liblvm2app).
+
 comment "lvm2 requires a toolchain with LARGEFILE support"
         depends on !BR2_LARGEFILE

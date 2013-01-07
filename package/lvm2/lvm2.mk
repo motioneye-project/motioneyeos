@@ -41,6 +41,12 @@ LVM2_INSTALL_STAGING_OPT = DESTDIR=$(STAGING_DIR) install_device-mapper
 LVM2_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install_device-mapper
 endif
 
+ifeq ($(BR2_PACKAGE_LVM2_APP_LIBRARY),y)
+LVM2_CONF_OPT += --enable-applib
+else
+LVM2_CONF_OPT += --disable-applib
+endif
+
 define LVM2_UNINSTALL_STAGING_CMDS
 	rm -f $(addprefix $(STAGING_DIR)/usr/sbin/,$(LVM2_BINS))
 	rm -f $(addprefix $(STAGING_DIR)/usr/lib/,libdevmapper.so*)
