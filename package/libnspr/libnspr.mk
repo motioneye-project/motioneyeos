@@ -16,10 +16,12 @@ LIBNSPR_CONF_OPT  = --host=$(GNU_HOST_NAME)
 LIBNSPR_CONF_OPT += --$(if $(BR2_ARCH_IS_64),en,dis)able-64bit
 LIBNSPR_CONF_OPT += --$(if $(BR2_INET_IPV6),en,dis)able-ipv6
 
+ifeq ($(BR2_arm),y)
 ifeq ($(BR2_cortex_a8)$(BR2_cortex_a9),y)
 LIBNSPR_CONF_OPT += --enable-thumb2
 else
 LIBNSPR_CONF_OPT += --disable-thumb2
+endif
 endif
 
 define LIBNSPR_STAGING_LIBNSPR_CONFIG_FIXUP
