@@ -201,23 +201,20 @@ endef
 endif
 endif
 
+ifeq ($(BR2_LINUX_KERNEL_APPENDED_DTB),y)
+# dtbs moved from arch/$ARCH/boot to arch/$ARCH/boot/dts since 3.8-rc1
+define LINUX_APPEND_DTB
+	if [ -e $(KERNEL_ARCH_PATH)/boot/$(KERNEL_DTS_NAME).dtb ]; then \
+		cat $(KERNEL_ARCH_PATH)/boot/$(KERNEL_DTS_NAME).dtb; \
+	else \
+		cat $(KERNEL_ARCH_PATH)/boot/dts/$(KERNEL_DTS_NAME).dtb; \
+	fi >> $(KERNEL_ARCH_PATH)/boot/zImage
+endef
 ifeq ($(BR2_LINUX_KERNEL_APPENDED_UIMAGE),y)
-define LINUX_APPEND_DTB
-	# dtbs moved from arch/$ARCH/boot to arch/$ARCH/boot/dts since 3.8-rc1
-	cat $(wildcard $(addprefix $(KERNEL_ARCH_PATH)/boot/,\
-		$(KERNEL_DTS_NAME).dtb dts/$(KERNEL_DTS_NAME).dtb)) \
-		>> $(KERNEL_ARCH_PATH)/boot/zImage
-	# We need to generate the uImage here after that so that the uImage is
-	# generated with the right image size.
-	$(TARGET_MAKE_ENV) $(MAKE) $(LINUX_MAKE_FLAGS) -C $(@D) uImage
-endef
-else ifeq ($(BR2_LINUX_KERNEL_APPENDED_ZIMAGE),y)
-define LINUX_APPEND_DTB
-	# dtbs moved from arch/$ARCH/boot to arch/$ARCH/boot/dts since 3.8-rc1
-	cat $(wildcard $(addprefix $(KERNEL_ARCH_PATH)/boot/,\
-		$(KERNEL_DTS_NAME).dtb dts/$(KERNEL_DTS_NAME).dtb)) \
-		>> $(KERNEL_ARCH_PATH)/boot/zImage
-endef
+# We need to generate the uImage here after that so that the uImage is
+# generated with the right image size.
+LINUX_APPEND_DTB += $(sep)$(TARGET_MAKE_ENV) $(MAKE) $(LINUX_MAKE_FLAGS) -C $(@D) uImage
+endif
 endif
 
 # Compilation. We make sure the kernel gets rebuilt when the
