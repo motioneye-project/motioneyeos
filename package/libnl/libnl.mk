@@ -4,7 +4,7 @@
 #
 #############################################################
 
-LIBNL_VERSION = 3.2.17
+LIBNL_VERSION = 3.2.18
 LIBNL_SITE = http://www.infradead.org/~tgr/libnl/files
 LIBNL_LICENSE = LGPLv2.1+
 LIBNL_LICENSE_FILES = COPYING
@@ -22,6 +22,7 @@ endef
 
 define LIBNL_REMOVE_TOOLS
 	rm -rf $(addprefix $(TARGET_DIR)/usr/sbin/nl-, $(LIBNL_BINARIES))
+	rm -rf $(TARGET_DIR)/usr/sbin/genl-ctrl-list
 endef
 
 ifneq ($(BR2_PACKAGE_LIBNL_TOOLS),y)
