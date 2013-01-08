@@ -203,7 +203,6 @@ endif
 
 ifeq ($(BR2_LINUX_KERNEL_APPENDED_UIMAGE),y)
 define LINUX_APPEND_DTB
-define LINUX_APPEND_DTB
 	# dtbs moved from arch/$ARCH/boot to arch/$ARCH/boot/dts since 3.8-rc1
 	cat $(wildcard $(addprefix $(KERNEL_ARCH_PATH)/boot/,\
 		$(KERNEL_DTS_NAME).dtb dts/$(KERNEL_DTS_NAME).dtb)) \
