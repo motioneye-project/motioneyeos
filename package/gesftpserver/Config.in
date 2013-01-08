@@ -1,0 +1,16 @@
+config BR2_PACKAGE_GESFTPSERVER
+	bool "gesftpserver"
+	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
+	depends on BR2_USE_WCHAR
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	help
+	  Green End SFTP Server
+
+	  This is an SFTP server supporting up to protocol version 6.
+	  It is possible to use it as a drop-in replacement for the
+	  OpenSSH server, or to provide sftp support for Dropbear.
+
+	  http://www.greenend.org.uk/rjk/sftpserver/
+
+comment "gesftpserver requires a toolchain with WCHAR and threads support"
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
