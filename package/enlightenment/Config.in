@@ -1,5 +1,6 @@
 config BR2_PACKAGE_ENLIGHTENMENT
 	bool "enlightenment"
+	select BR2_PACKAGE_EFL
 	select BR2_PACKAGE_LIBECORE
 	select BR2_PACKAGE_LIBECORE_X
 	select BR2_PACKAGE_LIBEINA
