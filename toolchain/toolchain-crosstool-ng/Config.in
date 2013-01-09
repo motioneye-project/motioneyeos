@@ -43,10 +43,12 @@ config BR2_TOOLCHAIN_CTNG_CONFIG
 	default "toolchain/toolchain-crosstool-ng/crosstool-ng.config-eglibc" if BR2_TOOLCHAIN_CTNG_eglibc
 	default "toolchain/toolchain-crosstool-ng/crosstool-ng.config-glibc"  if BR2_TOOLCHAIN_CTNG_glibc
 	help
-	  Enter here the crosstool-NG's .config file to use.
-	  To fine-tune your toolchain, you can also call:
-	    make ctng-menuconfig
-
+	  Enter here the path to the crosstool-NG .config file to use.
+	  
+	  Generally, the default crosstool-NG configuration files bundled with
+	  Buildroot work fine in most situations. Use 'make ctng-menuconfig'
+	  from the command line, for expert customization of your toolchain.
+	  
 	  If unsure, keep the default value.
 
 if BR2_TOOLCHAIN_CTNG_uClibc
