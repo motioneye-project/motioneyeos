@@ -322,6 +322,7 @@ include package/*/*.mk
 
 include boot/common.mk
 include linux/linux.mk
+include system/system.mk
 
 TARGETS+=target-finalize
 
@@ -335,7 +336,6 @@ TARGETS+=target-generatelocales
 endif
 endif
 
-include system/system.mk
 include fs/common.mk
 
 TARGETS_CLEAN:=$(patsubst %,%-clean,$(TARGETS))
