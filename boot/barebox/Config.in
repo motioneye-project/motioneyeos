@@ -8,12 +8,9 @@ config BR2_TARGET_BAREBOX
 if BR2_TARGET_BAREBOX
 choice
 	prompt "version"
-	default BR2_TARGET_BAREBOX_2012_12
+	default BR2_TARGET_BAREBOX_2013_01
 	help
 	  Select the specific Barebox version you want to use
-
-config BR2_TARGET_BAREBOX_2012_09
-	bool "2012.09"
 
 config BR2_TARGET_BAREBOX_2012_10
 	bool "2012.10"
@@ -23,6 +20,9 @@ config BR2_TARGET_BAREBOX_2012_11
 
 config BR2_TARGET_BAREBOX_2012_12
 	bool "2012.12.1"
+
+config BR2_TARGET_BAREBOX_2013_01
+	bool "2013.01.0"
 
 config BR2_TARGET_BAREBOX_CUSTOM_TARBALL
 	bool "Custom tarball"
@@ -41,10 +41,10 @@ endif
 
 config BR2_TARGET_BAREBOX_VERSION
 	string
-	default "2012.09.0"	if BR2_TARGET_BAREBOX_2012_09
 	default "2012.10.0"	if BR2_TARGET_BAREBOX_2012_10
 	default "2012.11.0"	if BR2_TARGET_BAREBOX_2012_11
 	default "2012.12.1"	if BR2_TARGET_BAREBOX_2012_12
+	default "2013.01.0"	if BR2_TARGET_BAREBOX_2013_01
 	default "custom"	if BR2_TARGET_BAREBOX_CUSTOM_TARBALL
 	default $BR2_TARGET_BAREBOX_CUSTOM_GIT_VERSION if BR2_TARGET_BAREBOX_CUSTOM_GIT
 
