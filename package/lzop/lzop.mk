@@ -11,3 +11,4 @@ LZOP_LICENSE_FILES = COPYING
 LZOP_DEPENDENCIES = lzo
 
 $(eval $(autotools-package))
+$(eval $(host-autotools-package))
