@@ -30,6 +30,12 @@ config BR2_PACKAGE_MTD_FLASH_OTP_DUMP
 config BR2_PACKAGE_MTD_FLASH_OTP_INFO
 	bool "flash_otp_info"
 
+config BR2_PACKAGE_MTD_FLASH_OTP_LOCK
+	bool "flash_otp_lock"
+
+config BR2_PACKAGE_MTD_FLASH_OTP_WRITE
+	bool "flash_otp_write"
+
 config BR2_PACKAGE_MTD_FLASH_UNLOCK
 	bool "flash_unlock"
 	default y
