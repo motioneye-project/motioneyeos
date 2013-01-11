@@ -18,4 +18,11 @@ LIBELEMENTARY_DEPENDENCIES = libeina libevas libecore libedje host-libedje \
 LIBELEMENTARY_CONF_OPT = --with-edje-cc=$(HOST_DIR)/usr/bin/edje_cc \
 			 --with-eet-eet=$(HOST_DIR)/usr/bin/eet
 
+ifeq ($(BR2_PACKAGE_LIBETHUMB),y)
+LIBELEMENTARY_DEPENDENCIES += libethumb
+LIBELEMENTARY_CONF_OPT += --enable-ethumb
+else
+LIBELEMENTARY_CONF_OPT += --disable-ethumb
+endif
+
 $(eval $(autotools-package))
