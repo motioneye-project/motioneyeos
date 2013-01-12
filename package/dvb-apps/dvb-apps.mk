@@ -20,10 +20,18 @@ DVB_APPS_LICENSE        = unknown (probably public domain)
 
 ifeq ($(BR2_PACKAGE_DVB_APPS_UTILS),y)
 # Utilitiess are selected, build and install everything
+
+DVB_APPS_LDFLAGS = $(TARGET_LDFLAGS)
+
+ifeq ($(BR2_ENABLE_LOCALE),)
+DVB_APPS_DEPENDENCIES    = libiconv
+DVB_APPS_LDFLAGS        += -liconv
+endif
+
 DVB_APPS_INSTALL_STAGING = YES
 
 define DVB_APPS_BUILD_CMDS
-	$(TARGET_CONFIGURE_OPTS) $(MAKE) -C $(@D) V=1
+	$(TARGET_CONFIGURE_OPTS) LDFLAGS="$(DVB_APPS_LDFLAGS)" $(MAKE) -C $(@D) V=1
 endef
 
 define DVB_APPS_INSTALL_STAGING_CMDS
