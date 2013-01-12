@@ -21,6 +21,9 @@ DVB_APPS_LICENSE        = unknown (probably public domain)
 ifeq ($(BR2_PACKAGE_DVB_APPS_UTILS),y)
 # Utilitiess are selected, build and install everything
 
+DVB_APPS_LICENSE       += GPLv2 GPLv2+ LGPLv2.1+
+DVB_APPS_LICENSE_FILES += COPYING COPYING.LGPL
+
 DVB_APPS_LDFLAGS = $(TARGET_LDFLAGS)
 
 ifeq ($(BR2_ENABLE_LOCALE),)
