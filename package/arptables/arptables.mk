@@ -4,10 +4,10 @@
 #
 #############################################################
 
-ARPTABLES_VERSION = 0.0.3
-ARPTABLES_VERSION_MINOR = 4
-ARPTABLES_SOURCE = arptables-v$(ARPTABLES_VERSION)-$(ARPTABLES_VERSION_MINOR).tar.gz
+ARPTABLES_VERSION = 0.0.4
+ARPTABLES_SOURCE = arptables-v$(ARPTABLES_VERSION).tar.gz
 ARPTABLES_SITE = http://downloads.sourceforge.net/project/ebtables/arptables/arptables-v$(ARPTABLES_VERSION)
+ARPTABLES_LICENSE = GPLv2+
 
 define ARPTABLES_BUILD_CMDS
 	$(MAKE) -C $(@D) \
