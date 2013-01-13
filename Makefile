@@ -347,6 +347,10 @@ TARGETS+=target-generatelocales
 endif
 endif
 
+ifeq ($(BR2_ECLIPSE_REGISTER),y)
+TARGETS+=toolchain-eclipse-register
+endif
+
 include fs/common.mk
 
 TARGETS_CLEAN:=$(patsubst %,%-clean,$(TARGETS))
@@ -541,6 +545,9 @@ target-generatelocales: host-localedef
 			$${locale} ; \
 	done
 endif
+
+toolchain-eclipse-register:
+	./support/scripts/eclipse-register-toolchain `readlink -f $(O)` $(notdir $(TARGET_CROSS)) $(BR2_ARCH)
 
 source: dirs $(TARGETS_SOURCE) $(HOST_SOURCE)
 

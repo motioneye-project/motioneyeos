@@ -131,3 +131,10 @@ config BR2_TARGET_LDFLAGS
 	string "Target linker options"
 	help
 	  Extra options to pass to the linker when building for the target.
+
+config BR2_ECLIPSE_REGISTER
+	bool "Register toolchain within Eclipse Buildroot plug-in"
+	help
+	  This options tells Buildroot to generate the necessary
+	  configuration files to make your toolchain appear within
+	  Eclipse, through the Eclipse Buildroot plugin.
