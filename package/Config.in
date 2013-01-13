@@ -218,6 +218,7 @@ endif
 source "package/dmidecode/Config.in"
 source "package/dmraid/Config.in"
 source "package/dvb-apps/Config.in"
+source "package/dvbsnoop/Config.in"
 source "package/eeprog/Config.in"
 source "package/evtest/Config.in"
 source "package/flashrom/Config.in"
