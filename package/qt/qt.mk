@@ -11,7 +11,7 @@
 #
 ######################################################################
 
-QT_VERSION = 4.8.3
+QT_VERSION = 4.8.4
 QT_SOURCE  = qt-everywhere-opensource-src-$(QT_VERSION).tar.gz
 QT_SITE    = http://releases.qt-project.org/qt4/source
 QT_DEPENDENCIES = host-pkgconf
