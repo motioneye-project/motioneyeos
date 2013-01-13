@@ -14,6 +14,8 @@ include::customize.txt[]
 
 include::common-usage.txt[]
 
+include::eclipse-integration.txt[]
+
 Hacking Buildroot
 -----------------
 
