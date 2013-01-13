@@ -1,0 +1,11 @@
+config BR2_PACKAGE_LIBGSASL
+	bool "libgsasl"
+	help
+	  Simple Authentication and Security Layer framework Library.
+	  GNU SASL is an implementation of the Simple Authentication and
+	  Security Layer framework and a few common SASL mechanisms.
+	  SASL is used by network servers (e.g., IMAP, SMTP) to request
+	  authentication from clients, and in clients to authenticate
+	  against servers.
+
+	  http://www.gnu.org/software/gsasl
