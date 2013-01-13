@@ -91,6 +91,8 @@ EXTRAMAKEARGS = O=$(O)
 NEED_WRAPPER=y
 endif
 
+BUILDROOT_CONFIG=$(CONFIG_DIR)/.config
+
 # Pull in the user's configuration file
 ifeq ($(filter $(noconfig_targets),$(MAKECMDGOALS)),)
 -include $(CONFIG_DIR)/.config
@@ -281,6 +283,15 @@ export BUILDROOT_CACHE_DIR
 HOSTCC  := $(CCACHE) $(HOSTCC)
 HOSTCXX := $(CCACHE) $(HOSTCXX)
 endif
+
+# Scripts in support/ or post-build scripts may need to reference
+# these locations, so export them so it is easier to use
+export BUILDROOT_CONFIG
+export TARGET_DIR
+export STAGING_DIR
+export HOST_DIR
+export BINARIES_DIR
+export BASE_DIR O   # O and BASE_DIR are the same
 
 #############################################################
 #
