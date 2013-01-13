@@ -147,8 +147,8 @@ for prog in awk bison flex msgfmt makeinfo patch gzip bzip2 perl tar wget cpio p
     fi
 done
 
-if grep ^BR2_TOOLCHAIN_BUILDROOT=y $CONFIG_FILE > /dev/null && \
-   grep ^BR2_ENABLE_LOCALE=y       $CONFIG_FILE > /dev/null ; then
+if grep ^BR2_TOOLCHAIN_BUILDROOT=y $BUILDROOT_CONFIG > /dev/null && \
+   grep ^BR2_ENABLE_LOCALE=y       $BUILDROOT_CONFIG > /dev/null ; then
    if ! which locale > /dev/null ; then
        /bin/echo -e "\nYou need locale support on your build machine to build a toolchain supporting locales\n"
        exit 1 ;
@@ -159,7 +159,7 @@ if grep ^BR2_TOOLCHAIN_BUILDROOT=y $CONFIG_FILE > /dev/null && \
    fi
 fi
 
-if grep -q ^BR2_PACKAGE_CLASSPATH=y $CONFIG_FILE ; then
+if grep -q ^BR2_PACKAGE_CLASSPATH=y $BUILDROOT_CONFIG ; then
     for prog in javac jar; do
 	if ! which $prog > /dev/null ; then
 	    /bin/echo -e "\nYou must install '$prog' on your build machine\n" >&2
@@ -168,7 +168,7 @@ if grep -q ^BR2_PACKAGE_CLASSPATH=y $CONFIG_FILE ; then
     done
 fi
 
-if grep -E '^BR2_TARGET_GENERIC_ROOT_PASSWD=".+"$' $CONFIG_FILE > /dev/null 2>&1; then
+if grep -E '^BR2_TARGET_GENERIC_ROOT_PASSWD=".+"$' $BUILDROOT_CONFIG > /dev/null 2>&1; then
     if ! which mkpasswd > /dev/null 2>&1; then
         /bin/echo -e "\nYou need the 'mkpasswd' utility to set the root password\n"
         /bin/echo -e "(in Debian/ubuntu, 'mkpasswd' provided by the whois package)\n"
@@ -176,7 +176,7 @@ if grep -E '^BR2_TARGET_GENERIC_ROOT_PASSWD=".+"$' $CONFIG_FILE > /dev/null 2>&1
     fi
 fi
 
-if grep -q ^BR2_HOSTARCH_NEEDS_IA32_LIBS=y $CONFIG_FILE ; then
+if grep -q ^BR2_HOSTARCH_NEEDS_IA32_LIBS=y $BUILDROOT_CONFIG ; then
     if test ! -f /lib/ld-linux.so.2 ; then
 	/bin/echo -e "\nYour Buildroot configuration uses pre-built tools for the x86 architecture,"
 	/bin/echo -e "but your build machine uses the x86-64 architecture without the 32 bits compatibility"
