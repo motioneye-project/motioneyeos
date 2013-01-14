@@ -43,7 +43,7 @@ there are a few ways to customize the resulting target filesystem.
       xref:generic-package-reference[]
     - +BINARIES_DIR+: the place where all binary files (aka images) are
       stored
-    - +BASE_DIR+ (or +O+): the base output directory
+    - +BASE_DIR+: the base output directory
 
 * A special package, 'customize', stored in +package/customize+ can be
   used. You can put all the files that you want to see in the final

@@ -291,7 +291,7 @@ export TARGET_DIR
 export STAGING_DIR
 export HOST_DIR
 export BINARIES_DIR
-export BASE_DIR O   # O and BASE_DIR are the same
+export BASE_DIR
 
 #############################################################
 #
