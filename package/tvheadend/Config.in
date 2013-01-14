@@ -1,9 +1,9 @@
-comment "tvheadend requires a toolchain with LARGEFILE support"
-    depends on !BR2_LARGEFILE
+comment "tvheadend requires a toolchain with LARGEFILE and IPv6 support"
+    depends on !BR2_LARGEFILE || !BR2_INET_IPV6
 
 config BR2_PACKAGE_TVHEADEND
 	bool "tvheadend"
-	depends on BR2_LARGEFILE
+	depends on BR2_LARGEFILE && BR2_INET_IPV6
 	select BR2_PACKAGE_DVB_APPS
 	select BR2_PACKAGE_OPENSSL
 	help
