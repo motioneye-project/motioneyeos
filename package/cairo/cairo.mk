@@ -86,7 +86,6 @@ endif
 
 ifeq ($(BR2_PACKAGE_CAIRO_SCRIPT),y)
 	CAIRO_CONF_OPT += --enable-script
-	CAIRO_DEPENDENCIES += zlib
 else
 	CAIRO_CONF_OPT += --disable-script
 endif

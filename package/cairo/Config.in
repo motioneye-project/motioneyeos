@@ -30,7 +30,7 @@ config BR2_PACKAGE_CAIRO_PNG
 
 config BR2_PACKAGE_CAIRO_SCRIPT
 	bool "script support"
-	select BR2_PACKAGE_ZLIB
+	select BR2_PACKAGE_CAIRO_PNG
 
 config BR2_PACKAGE_CAIRO_SVG
 	bool "svg support"
