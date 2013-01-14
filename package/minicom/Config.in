@@ -1,6 +1,7 @@
 config BR2_PACKAGE_MINICOM
 	bool "minicom"
 	depends on BR2_USE_WCHAR
+	depends on BR2_USE_MMU # fork
 	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
 	select BR2_PACKAGE_NCURSES
 	help
