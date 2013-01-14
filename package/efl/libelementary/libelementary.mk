@@ -18,7 +18,9 @@ LIBELEMENTARY_DEPENDENCIES = libeina libevas libecore libedje host-libedje \
 LIBELEMENTARY_CONF_OPT = --with-edje-cc=$(HOST_DIR)/usr/bin/edje_cc \
 			 --with-eet-eet=$(HOST_DIR)/usr/bin/eet
 
-ifeq ($(BR2_PACKAGE_LIBETHUMB),y)
+# libethumb_client is only built when ethumbd is built.
+# ethumbd is only built if edbus is built.
+ifeq ($(BR2_PACKAGE_LIBETHUMB)$(BR2_PACKAGE_LIBEDBUS),yy)
 LIBELEMENTARY_DEPENDENCIES += libethumb
 LIBELEMENTARY_CONF_OPT += --enable-ethumb
 else
