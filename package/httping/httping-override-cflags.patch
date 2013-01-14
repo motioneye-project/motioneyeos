@@ -1,0 +1,53 @@
+From 66f5811dd45fa27a7bfacf946dfefd16d765bb4d Mon Sep 17 00:00:00 2001
+From: Gilles Talis <gilles.talis@gmail.com>
+Date: Mon, 14 Jan 2013 11:48:00 -0800
+Subject: [PATCH] allow CFLAGS/LDFLAGS to be overriden from command line
+
+Ensure required CFLAGS/LDFLAGS are appended to those provided in command line
+
+Signed-off-by: Gilles Talis <gilles.talis@gmail.com>
+---
+ Makefile |   12 ++++++------
+ 1 files changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 4c4f6a8..fdbb4cb 100644
+--- a/Makefile
++++ b/Makefile
+@@ -19,7 +19,7 @@ TARGET=httping
+ DEBUG=yes
+ WFLAGS=-Wall -W
+ OFLAGS=-O3
+-CFLAGS+=$(WFLAGS) $(OFLAGS) -DVERSION=\"$(VERSION)\"
++override CFLAGS+=$(WFLAGS) $(OFLAGS) -DVERSION=\"$(VERSION)\"
+
+ PACKAGE=$(TARGET)-$(VERSION)
+ PREFIX=/usr
+@@ -48,19 +48,19 @@ DOCS=license.txt license.OpenSSL readme.txt
+ # TFO=yes
+
+ ifeq ($(SSL),no)
+-CFLAGS+=-DNO_SSL
++override CFLAGS+=-DNO_SSL
+ else
+ OBJS+=mssl.o
+-LDFLAGS+=-lssl -lcrypto
++override LDFLAGS+=-lssl -lcrypto
+ endif
+
+ ifeq ($(TFO),yes)
+-CFLAGS+=-DTCP_TFO
++override CFLAGS+=-DTCP_TFO
+ endif
+
+ ifeq ($(DEBUG),yes)
+-CFLAGS+=-D_DEBUG -ggdb
+-LDFLAGS+=-g
++override CFLAGS+=-D_DEBUG -ggdb
++override LDFLAGS+=-g
+ endif
+
+ ifeq ($(ARM),yes)
+--
+1.7.4.1
+
