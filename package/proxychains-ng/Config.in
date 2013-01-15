@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PROXYCHAINS_NG
+	bool "proxychains-ng"
+	help
+	  force any tcp connections to flow through a proxy (or proxy chain)
+
+	  https://github.com/rofl0r/proxychains
+
