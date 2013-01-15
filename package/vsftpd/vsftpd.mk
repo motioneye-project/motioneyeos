@@ -44,6 +44,9 @@ define VSFTPD_INSTALL_TARGET_CMDS
 	test -f $(TARGET_DIR)/etc/init.d/S70vsftpd || \
 		$(INSTALL) -D -m 755 package/vsftpd/vsftpd-init \
 			$(TARGET_DIR)/etc/init.d/S70vsftpd
+	test -f $(TARGET_DIR)/etc/vsftpd.conf || \
+		$(INSTALL) -D -m 644 $(@D)/vsftpd.conf \
+			$(TARGET_DIR)/etc/vsftpd.conf
 endef
 
 define VSFTPD_UNINSTALL_TARGET_CMDS
