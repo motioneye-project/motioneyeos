@@ -4,9 +4,9 @@
 #
 #############################################################
 
-GNUTLS_VERSION = 3.1.5
+GNUTLS_VERSION = 3.1.6
 GNUTLS_SOURCE = gnutls-$(GNUTLS_VERSION).tar.xz
-GNUTLS_SITE = $(BR2_GNU_MIRROR)/gnutls
+GNUTLS_SITE = ftp://ftp.gnutls.org/gcrypt/gnutls/v3.1
 GNUTLS_LICENSE = GPLv3+ LGPLv3
 GNUTLS_LICENSE_FILES = COPYING COPYING.LESSER
 GNUTLS_DEPENDENCIES = host-pkgconf nettle $(if $(BR2_PACKAGE_ZLIB),zlib)
