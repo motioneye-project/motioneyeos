@@ -42,15 +42,13 @@ endif
 define OPENVPN_INSTALL_TARGET_CMDS
 	$(INSTALL) -m 755 $(@D)/src/openvpn/openvpn \
 		$(TARGET_DIR)/usr/sbin/openvpn
-	if [ ! -f $(TARGET_DIR)/etc/init.d/openvpn ]; then \
-		$(INSTALL) -m 755 -D package/openvpn/openvpn.init \
-			$(TARGET_DIR)/etc/init.d/openvpn; \
-	fi
+	$(INSTALL) -m 755 -D package/openvpn/S60openvpn \
+		$(TARGET_DIR)/etc/init.d/S60openvpn
 endef
 
 define OPENVPN_UNINSTALL_TARGET_CMDS
 	rm -f $(TARGET_DIR)/usr/sbin/openvpn
-	rm -f $(TARGET_DIR)/etc/init.d/openvpn
+	rm -f $(TARGET_DIR)/etc/init.d/S60openvpn
 endef
 
 $(eval $(autotools-package))
