@@ -4,17 +4,23 @@
 #
 #############################################################
 
-OPENVPN_VERSION = 2.2.2
+OPENVPN_VERSION = 2.3.0
 OPENVPN_SITE = http://swupdate.openvpn.net/community/releases
-OPENVPN_CONF_OPT = --enable-small --disable-plugins \
-			--with-ifconfig-path=/sbin/ifconfig \
-			--with-route-path=/sbin/route \
-			--with-netstat-path=/bin/netstat
+OPENVPN_DEPENDENCIES = host-pkgconf
+OPENVPN_CONF_OPT = --disable-plugin-auth-pam --enable-iproute2
+OPENVPN_CONF_ENV = IFCONFIG=/sbin/ifconfig \
+	NETSTAT=/bin/netstat \
+	ROUTE=/sbin/route
+
+ifeq ($(BR2_PACKAGE_OPENVPN_SMALL),y)
+OPENVPN_CONF_OPT += --enable-small --disable-plugins \
+	--disable-debug --disable-eurephia
+endif
 
 ifeq ($(BR2_PACKAGE_IPROUTE2),y)
-OPENVPN_CONF_OPT += --with-iproute-path=/sbin/ip
+OPENVPN_CONF_ENV += IPROUTE=/sbin/ip
 else
-OPENVPN_CONF_OPT += --with-iproute-path=/bin/ip
+OPENVPN_CONF_ENV += IPROUTE=/bin/ip
 endif
 
 ifeq ($(BR2_PACKAGE_OPENVPN_LZO),y)
@@ -23,14 +29,18 @@ else
 	OPENVPN_CONF_OPT += --disable-lzo
 endif
 
-ifeq ($(BR2_PACKAGE_OPENVPN_OPENSSL),y)
+ifeq ($(BR2_PACKAGE_OPENVPN_CRYPTO_OPENSSL),y)
+	OPENVPN_CONF_OPT += --with-crypto-library=openssl
 	OPENVPN_DEPENDENCIES += openssl
-else
-	OPENVPN_CONF_OPT += --disable-crypto --disable-ssl
+endif
+
+ifeq ($(BR2_PACKAGE_OPENVPN_CRYPTO_POLARSSL),y)
+	OPENVPN_CONF_OPT += --with-crypto-library=polarssl
+	OPENVPN_DEPENDENCIES += polarssl
 endif
 
 define OPENVPN_INSTALL_TARGET_CMDS
-	$(INSTALL) -m 755 $(@D)/openvpn \
+	$(INSTALL) -m 755 $(@D)/src/openvpn/openvpn \
 		$(TARGET_DIR)/usr/sbin/openvpn
 	if [ ! -f $(TARGET_DIR)/etc/init.d/openvpn ]; then \
 		$(INSTALL) -m 755 -D package/openvpn/openvpn.init \
