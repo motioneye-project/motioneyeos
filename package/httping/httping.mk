@@ -10,16 +10,17 @@ HTTPING_SITE = http://www.vanheusden.com/httping
 HTTPING_LICENSE = GPLv2
 HTTPING_LICENSE_FILES = license.txt
 HTTPING_DEPENDENCIES = $(if $(BR2_PACKAGE_OPENSSL),openssl)
+HTTPING_MAKE_OPT = $(TARGET_CONFIGURE_OPTS) \
+	SSL=$(if $(BR2_PACKAGE_OPENSSL),yes,no) \
+	TFO=$(if $(BR2_PACKAGE_HTTPING_TFO),yes,no) \
+	DEBUG=no
 
 define HTTPING_BUILD_CMDS
-	$(MAKE) $(TARGET_CONFIGURE_OPTS) \
-		SSL=$(if $(BR2_PACKAGE_OPENSSL),yes,no) \
-		TFO=$(if $(BR2_PACKAGE_HTTPING_TFO),yes,no) \
-		DEBUG=no -C $(@D)
+	$(MAKE) $(HTTPING_MAKE_OPT) -C $(@D)
 endef
 
 define HTTPING_INSTALL_TARGET_CMDS
-	$(MAKE) DESTDIR=$(TARGET_DIR) -C $(@D) install
+	$(MAKE) $(HTTPING_MAKE_OPT) DESTDIR=$(TARGET_DIR) -C $(@D) install
 endef
 
 define HTTPING_CLEAN_CMDS
