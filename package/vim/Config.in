@@ -1,5 +1,6 @@
 config BR2_PACKAGE_VIM
 	bool "vim"
+	depends on BR2_USE_MMU # uses fork()
 	select BR2_PACKAGE_NCURSES
 	help
 	  VIM Text editor
