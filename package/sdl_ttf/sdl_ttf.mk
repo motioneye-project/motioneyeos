@@ -3,9 +3,12 @@
 # SDL_ttf
 #
 #############################################################
-SDL_TTF_VERSION:=2.0.9
-SDL_TTF_SOURCE:=SDL_ttf-$(SDL_TTF_VERSION).tar.gz
-SDL_TTF_SITE:=http://www.libsdl.org/projects/SDL_ttf/release/
+
+SDL_TTF_VERSION = 2.0.11
+SDL_TTF_SOURCE = SDL_ttf-$(SDL_TTF_VERSION).tar.gz
+SDL_TTF_SITE = http://www.libsdl.org/projects/SDL_ttf/release/
+SDL_TTF_LICENSE = zlib
+SDL_TTF_LICENSE_FILES = COPYING
 
 SDL_TTF_INSTALL_STAGING = YES
 SDL_TTF_DEPENDENCIES = sdl freetype
