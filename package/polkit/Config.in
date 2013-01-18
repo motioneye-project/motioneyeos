@@ -1,0 +1,11 @@
+config BR2_PACKAGE_POLKIT
+	bool "polkit"
+	depends on BR2_USE_WCHAR # libglib2
+	select BR2_PACKAGE_LIBGLIB2
+	select BR2_PACKAGE_EXPAT
+	help
+	  PolicyKit is a toolkit for defining and handling
+	  authorizations.  It is used for allowing unprivileged
+	  processes to speak to privileged processes.
+
+	  http://www.freedesktop.org/wiki/Software/polkit
