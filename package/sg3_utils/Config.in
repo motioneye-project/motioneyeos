@@ -1,0 +1,16 @@
+config BR2_PACKAGE_SG3_UTILS
+	bool "sg3-utils"
+	depends on BR2_LARGEFILE
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	help
+	  Low level utilities for devices that use a SCSI command set.
+	  This option install only libsgutils2 library not programs.
+
+	  http://sg.danny.cz/sg/sg3_utils.html
+
+config BR2_PACKAGE_SG3_UTILS_PROGS
+	bool "install programs"
+	depends on BR2_PACKAGE_SG3_UTILS
+
+comment "sg3-utils requires a toolchain with LARGEFILE and threads support"
+	depends on !BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_THREADS
