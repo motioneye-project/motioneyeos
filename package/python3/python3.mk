@@ -148,5 +148,12 @@ PYTHON3_POST_INSTALL_TARGET_HOOKS += PYTHON3_REMOVE_USELESS_FILES
 
 PYTHON3_AUTORECONF = YES
 
+define PYTHON3_INSTALL_SYMLINK
+	ln -fs python3 $(TARGET_DIR)/usr/bin/python
+endef
+
+ifneq ($(BR2_PACKAGE_PYTHON),y)
+PYTHON3_POST_INSTALL_TARGET_HOOKS += PYTHON3_INSTALL_SYMLINK
+endif
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
