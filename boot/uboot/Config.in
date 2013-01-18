@@ -14,9 +14,12 @@ config BR2_TARGET_UBOOT_BOARDNAME
 
 choice
 	prompt "U-Boot Version"
-	default BR2_TARGET_UBOOT_2012_10
+	default BR2_TARGET_UBOOT_2013_01
 	help
 	  Select the specific U-Boot version you want to use
+
+config BR2_TARGET_UBOOT_2013_01
+	bool "2013.01"
 
 config BR2_TARGET_UBOOT_2012_10
 	bool "2012.10"
@@ -55,6 +58,7 @@ endif
 
 config BR2_TARGET_UBOOT_VERSION
 	string
+	default "2013.01"	if BR2_TARGET_UBOOT_2013_01
 	default "2012.10"	if BR2_TARGET_UBOOT_2012_10
 	default "2012.07"	if BR2_TARGET_UBOOT_2012_07
 	default "2012.04.01"	if BR2_TARGET_UBOOT_2012_04
