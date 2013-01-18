@@ -1,0 +1,30 @@
+Call the libpng12-confg and libpng-config specified by
+$LIBPNG12_CONFIG and $LIBPNG_CONFIG variables that are set by
+ac_cv_path_LIBPNG12_CONFIG and ac_cv_path_LIBPNG_CONFIG. This is
+important for cross compiler that need to get the staging settings
+instead of the host settings.
+
+Signed-off-by: Jean-Christian de Rivaz <jc@eclis.ch>
+
+diff -Nura gd-2.0.35.orig/configure.ac gd-2.0.35/configure.ac
+--- gd-2.0.35.orig/configure.ac	2013-01-18 02:00:59.000000000 +0100
++++ gd-2.0.35/configure.ac	2013-01-18 02:01:44.000000000 +0100
+@@ -353,14 +353,14 @@
+   AC_PATH_PROG([LIBPNG12_CONFIG], [libpng12-config])
+   AC_PATH_PROG([LIBPNG_CONFIG], [libpng-config])
+   if test -n "$LIBPNG12_CONFIG"; then
+-    libpng_CPPFLAGS=`libpng12-config --cflags`
++    libpng_CPPFLAGS=`$LIBPNG12_CONFIG --cflags`
+     # should be --ldopts, but it's currently broken
+-    libpng_LDFLAGS=`libpng12-config --ldflags`
++    libpng_LDFLAGS=`$LIBPNG12_CONFIG --ldflags`
+     libpng_LDFLAGS=`echo " $libpng_LDFLAGS" | sed 's/ -l[[^ ]][[^ ]]*//g'`
+   elif test -n "$LIBPNG_CONFIG"; then
+-    libpng_CPPFLAGS=`libpng-config --cflags`
++    libpng_CPPFLAGS=`$LIBPNG_CONFIG --cflags`
+     # should be --ldopts, but it's currently broken
+-    libpng_LDFLAGS=`libpng-config --ldflags`
++    libpng_LDFLAGS=`$LIBPNG_CONFIG --ldflags`
+     libpng_LDFLAGS=`echo " $libpng_LDFLAGS" | sed 's/ -l[[^ ]][[^ ]]*//g'`
+   elif test -d "$withval"; then
+     libpng_CPPFLAGS="-I$withval/include"

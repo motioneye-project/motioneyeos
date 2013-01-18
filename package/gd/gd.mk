@@ -33,6 +33,10 @@ endif
 ifeq ($(BR2_PACKAGE_LIBPNG),y)
 GD_DEPENDENCIES += libpng
 GD_CONF_OPT += --with-png
+GD_CONF_ENV += ac_cv_path_LIBPNG12_CONFIG=""
+GD_CONF_ENV += ac_cv_path_LIBPNG_CONFIG=$(STAGING_DIR)/usr/bin/libpng-config
+else
+GD_CONF_OPT += --without-png
 endif
 
 ifeq ($(BR2_PACKAGE_XLIB_LIBXPM),y)
