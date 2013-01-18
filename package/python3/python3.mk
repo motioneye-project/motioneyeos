@@ -155,5 +155,27 @@ endef
 ifneq ($(BR2_PACKAGE_PYTHON),y)
 PYTHON3_POST_INSTALL_TARGET_HOOKS += PYTHON3_INSTALL_SYMLINK
 endif
+
+ifeq ($(BR2_PACKAGE_PYTHON3_PY_ONLY),y)
+define PYTHON3_REMOVE_MODULES_FILES
+	for i in `find $(TARGET_DIR)/usr/lib/python$(PYTHON3_VERSION_MAJOR) \
+		 -name __pycache__` ; do \
+		rm -rf $$i ; \
+	done
+endef
+endif
+
+ifeq ($(BR2_PACKAGE_PYTHON3_PYC_ONLY),y)
+define PYTHON3_REMOVE_MODULES_FILES
+	for i in `find $(TARGET_DIR)/usr/lib/python$(PYTHON3_VERSION_MAJOR) \
+		 -name *.py` ; do \
+		rm -f $$i ; \
+	done
+endef
+endif
+
+PYTHON3_POST_INSTALL_TARGET_HOOKS += PYTHON3_REMOVE_MODULES_FILES
+
+
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
