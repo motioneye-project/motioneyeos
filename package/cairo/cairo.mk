@@ -51,7 +51,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_XORG7),y)
 	CAIRO_CONF_OPT += --enable-xlib --enable-xcb --with-x
-	CAIRO_DEPENDENCIES += xlib_libX11
+	CAIRO_DEPENDENCIES += xlib_libX11 xlib_libXext
 else
 	CAIRO_CONF_OPT += --disable-xlib --disable-xcb --without-x
 endif
