@@ -35,9 +35,12 @@ endif
 # When the gettext tools are not enabled in the configuration, we only
 # install libintl to the target.
 ifeq ($(BR2_PACKAGE_GETTEXT_TOOLS),)
+# When static libs are preferred the .so files aren't created
+ifeq ($(BR2_PREFER_STATIC_LIB),)
 define GETTEXT_INSTALL_TARGET_CMDS
 	cp -dpf $(STAGING_DIR)/usr/lib/libintl*.so* $(TARGET_DIR)/usr/lib/
 endef
+endif
 # Ditch the tools since they're off and pull other dependencies
 define GETTEXT_DISABLE_TOOLS
 	$(SED) 's/runtime gettext-tools/runtime/' $(@D)/Makefile.in
