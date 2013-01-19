@@ -3,7 +3,7 @@
 # cairo
 #
 #############################################################
-CAIRO_VERSION = 1.12.8
+CAIRO_VERSION = 1.12.10
 CAIRO_SOURCE = cairo-$(CAIRO_VERSION).tar.xz
 CAIRO_LICENSE = LGPLv2.1+
 CAIRO_LICENSE_FILES = COPYING
