@@ -1,5 +1,13 @@
+#############################################################
+#
+# cmake
+#
+#############################################################
+
 CMAKE_VERSION = 2.8.9
 CMAKE_SITE = http://www.cmake.org/files/v2.8/
+CMAKE_LICENSE = BSD-3c
+CMAKE_LICENSE_FILES = Copyright.txt
 
 define HOST_CMAKE_CONFIGURE_CMDS
  (cd $(@D); \
