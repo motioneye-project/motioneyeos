@@ -3,9 +3,10 @@
 # fbv
 #
 #############################################################
-FBV_VERSION:=1.0b
-FBV_SOURCE:=fbv-$(FBV_VERSION).tar.gz
-FBV_SITE:=http://s-tech.elsat.net.pl/fbv
+
+FBV_VERSION = 1.0b
+FBV_SOURCE = fbv-$(FBV_VERSION).tar.gz
+FBV_SITE = http://s-tech.elsat.net.pl/fbv
 
 FBV_LICENSE = GPLv2
 FBV_LICENSE_FILES = COPYING

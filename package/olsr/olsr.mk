@@ -4,16 +4,16 @@
 #
 #############################################################
 
-OLSR_VERSION_MAJOR=0.5
-OLSR_VERSION_MINOR=6
-OLSR_VERSION:=$(OLSR_VERSION_MAJOR).$(OLSR_VERSION_MINOR)
-OLSR_SOURCE:=olsrd-$(OLSR_VERSION).tar.bz2
-OLSR_SITE:=http://www.olsr.org/releases/$(OLSR_VERSION_MAJOR)
-OLSR_BINARY:=olsrd
-OLSR_TARGET_BINARY:=usr/sbin/olsrd
+OLSR_VERSION_MAJOR = 0.5
+OLSR_VERSION_MINOR = 6
+OLSR_VERSION = $(OLSR_VERSION_MAJOR).$(OLSR_VERSION_MINOR)
+OLSR_SOURCE = olsrd-$(OLSR_VERSION).tar.bz2
+OLSR_SITE = http://www.olsr.org/releases/$(OLSR_VERSION_MAJOR)
+OLSR_BINARY = olsrd
+OLSR_TARGET_BINARY = usr/sbin/olsrd
 #OLSR_PLUGINS=httpinfo tas dot_draw nameservice dyn_gw dyn_gw_plain pgraph bmf quagga secure
-OLSR_PLUGINS=dot_draw dyn_gw secure
-OLSR_TARGET_PLUGIN=usr/lib/
+OLSR_PLUGINS = dot_draw dyn_gw secure
+OLSR_TARGET_PLUGIN = usr/lib/
 
 define OLSR_BUILD_CMDS
  $(TARGET_CONFIGURE_OPTS) $(MAKE) ARCH=$(KERNEL_ARCH) -C $(@D) olsrd $(OLSR_PLUGINS)

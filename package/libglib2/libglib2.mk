@@ -94,4 +94,4 @@ endif
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
 
-LIBGLIB2_HOST_BINARY:=$(HOST_DIR)/usr/bin/glib-genmarshal
+LIBGLIB2_HOST_BINARY = $(HOST_DIR)/usr/bin/glib-genmarshal

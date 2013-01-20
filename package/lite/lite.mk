@@ -3,9 +3,10 @@
 # LiTE
 #
 #############################################################
-LITE_VERSION:=0.8.10
-LITE_SOURCE:=LiTE-$(LITE_VERSION).tar.gz
-LITE_SITE:=http://www.directfb.org/downloads/Libs
+
+LITE_VERSION = 0.8.10
+LITE_SOURCE = LiTE-$(LITE_VERSION).tar.gz
+LITE_SITE = http://www.directfb.org/downloads/Libs
 LITE_INSTALL_STAGING = YES
 LITE_INSTALL_STAGING_OPT = DESTDIR=$(STAGING_DIR) LDFLAGS=-L$(STAGING_DIR)/usr/lib install
 LITE_CONF_ENV = DFB_CFLAGS=-I$(STAGING_DIR)/usr/include/directfb

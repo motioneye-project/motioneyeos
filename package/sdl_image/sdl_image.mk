@@ -3,12 +3,13 @@
 # SDL_image addon for SDL
 #
 #############################################################
-SDL_IMAGE_VERSION:=1.2.6
-SDL_IMAGE_SOURCE:=SDL_image-$(SDL_IMAGE_VERSION).tar.gz
-SDL_IMAGE_SITE:=http://www.libsdl.org/projects/SDL_image/release
-SDL_IMAGE_INSTALL_STAGING:=YES
 
-SDL_IMAGE_CONF_OPT:=--with-sdl-prefix=$(STAGING_DIR)/usr \
+SDL_IMAGE_VERSION = 1.2.6
+SDL_IMAGE_SOURCE = SDL_image-$(SDL_IMAGE_VERSION).tar.gz
+SDL_IMAGE_SITE = http://www.libsdl.org/projects/SDL_image/release
+SDL_IMAGE_INSTALL_STAGING = YES
+
+SDL_IMAGE_CONF_OPT = --with-sdl-prefix=$(STAGING_DIR)/usr \
 		--with-sdl-exec-prefix=$(STAGING_DIR)/usr \
 		--disable-sdltest \
 		--disable-static \
@@ -28,7 +29,7 @@ SDL_IMAGE_CONF_OPT:=--with-sdl-prefix=$(STAGING_DIR)/usr \
 		--enable-xpm=$(if $(BR2_PACKAGE_SDL_IMAGE_XPM),yes,no) \
 		--enable-xv=$(if $(BR2_PACKAGE_SDL_IMAGE_XV),yes,no) \
 
-SDL_IMAGE_DEPENDENCIES:=sdl \
+SDL_IMAGE_DEPENDENCIES = sdl \
 	$(if $(BR2_PACKAGE_SDL_IMAGE_JPEG),jpeg) \
 	$(if $(BR2_PACKAGE_SDL_IMAGE_PNG),libpng) \
 	$(if $(BR2_PACKAGE_SDL_IMAGE_TIFF),tiff)

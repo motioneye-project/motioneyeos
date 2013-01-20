@@ -16,5 +16,5 @@ $(eval $(autotools-package))
 $(eval $(host-autotools-package))
 
 # variables used by other packages
-LIBTOOL:=$(HOST_DIR)/usr/bin/libtool
-LIBTOOLIZE:=$(HOST_DIR)/usr/bin/libtoolize
+LIBTOOL = $(HOST_DIR)/usr/bin/libtool
+LIBTOOLIZE = $(HOST_DIR)/usr/bin/libtoolize

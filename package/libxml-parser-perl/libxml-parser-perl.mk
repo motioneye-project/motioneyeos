@@ -3,9 +3,10 @@
 # libxml-parser-perl
 #
 #############################################################
-LIBXML_PARSER_PERL_VERSION:=2.36
-LIBXML_PARSER_PERL_SOURCE:=XML-Parser-$(LIBXML_PARSER_PERL_VERSION).tar.gz
-LIBXML_PARSER_PERL_SITE:=http://www.cpan.org/modules/by-module/XML/
+
+LIBXML_PARSER_PERL_VERSION = 2.36
+LIBXML_PARSER_PERL_SOURCE = XML-Parser-$(LIBXML_PARSER_PERL_VERSION).tar.gz
+LIBXML_PARSER_PERL_SITE = http://www.cpan.org/modules/by-module/XML/
 
 LIBXML_PARSER_PERL_DEPENDENCIES = expat
 

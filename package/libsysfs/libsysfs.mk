@@ -21,9 +21,9 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
 # USA
 
-LIBSYSFS_VERSION:=2.1.0
-LIBSYSFS_SITE:=http://downloads.sourceforge.net/project/linux-diag/sysfsutils/$(LIBSYSFS_VERSION)
-LIBSYSFS_SOURCE:=sysfsutils-$(LIBSYSFS_VERSION).tar.gz
-LIBSYSFS_INSTALL_STAGING=YES
+LIBSYSFS_VERSION = 2.1.0
+LIBSYSFS_SITE = http://downloads.sourceforge.net/project/linux-diag/sysfsutils/$(LIBSYSFS_VERSION)
+LIBSYSFS_SOURCE = sysfsutils-$(LIBSYSFS_VERSION).tar.gz
+LIBSYSFS_INSTALL_STAGING = YES
 
 $(eval $(autotools-package))

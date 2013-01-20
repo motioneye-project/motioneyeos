@@ -52,7 +52,7 @@ else
 DIRECTFB_CONF_OPT += --disable-unique
 endif
 
-DIRECTFB_GFX := \
+DIRECTFB_GFX = \
 	$(if $(BR2_PACKAGE_DIRECTFB_ATI128),ati128) \
 	$(if $(BR2_PACKAGE_DIRECTFB_CLE266),cle266) \
 	$(if $(BR2_PACKAGE_DIRECTFB_CYBER5K),cyber5k) \
@@ -63,14 +63,14 @@ DIRECTFB_GFX := \
 	$(if $(BR2_PACKAGE_DIRECTFB_EP9X),ep9x)
 
 ifeq ($(strip $(DIRECTFB_GFX)),)
-DIRECTFB_GFX:=none
+DIRECTFB_GFX = none
 else
-DIRECTFB_GFX:=$(subst $(space),$(comma),$(strip $(DIRECTFB_GFX)))
+DIRECTFB_GFX = $(subst $(space),$(comma),$(strip $(DIRECTFB_GFX)))
 endif
 
 DIRECTFB_CONF_OPT += --with-gfxdrivers=$(DIRECTFB_GFX)
 
-DIRECTFB_INPUT := \
+DIRECTFB_INPUT = \
 	$(if $(BR2_PACKAGE_DIRECTFB_LINUXINPUT),linuxinput) \
 	$(if $(BR2_PACKAGE_DIRECTFB_KEYBOARD),keyboard) \
 	$(if $(BR2_PACKAGE_DIRECTFB_PS2MOUSE),ps2mouse) \
@@ -82,9 +82,9 @@ DIRECTFB_DEPENDENCIES += tslib
 endif
 
 ifeq ($(strip $(DIRECTFB_INPUT)),)
-DIRECTFB_INPUT:=none
+DIRECTFB_INPUT = none
 else
-DIRECTFB_INPUT:=$(subst $(space),$(comma),$(strip $(DIRECTFB_INPUT)))
+DIRECTFB_INPUT = $(subst $(space),$(comma),$(strip $(DIRECTFB_INPUT)))
 endif
 
 DIRECTFB_CONF_OPT += --with-inputdrivers=$(DIRECTFB_INPUT)
@@ -146,4 +146,4 @@ $(eval $(autotools-package))
 $(eval $(host-autotools-package))
 
 # directfb-csource for the host
-DIRECTFB_HOST_BINARY:=$(HOST_DIR)/usr/bin/directfb-csource
+DIRECTFB_HOST_BINARY = $(HOST_DIR)/usr/bin/directfb-csource

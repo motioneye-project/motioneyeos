@@ -13,4 +13,4 @@ $(eval $(autotools-package))
 $(eval $(host-autotools-package))
 
 # gob2 for the host
-GOB2_HOST_BINARY:=$(HOST_DIR)/usr/bin/gob2
+GOB2_HOST_BINARY = $(HOST_DIR)/usr/bin/gob2

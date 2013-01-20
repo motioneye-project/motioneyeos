@@ -6,9 +6,10 @@
 # to enable that within busybox
 #
 #############################################################
-VTUN_VERSION:=3.0.2
-VTUN_SOURCE:=vtun-$(VTUN_VERSION).tar.gz
-VTUN_SITE:=http://downloads.sourceforge.net/project/vtun/vtun/$(VTUN_VERSION)
+
+VTUN_VERSION = 3.0.2
+VTUN_SOURCE = vtun-$(VTUN_VERSION).tar.gz
+VTUN_SITE = http://downloads.sourceforge.net/project/vtun/vtun/$(VTUN_VERSION)
 VTUN_DEPENDENCIES = zlib lzo openssl
 
 VTUN_CONF_OPT = \

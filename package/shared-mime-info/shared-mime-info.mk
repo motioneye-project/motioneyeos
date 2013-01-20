@@ -29,4 +29,4 @@ $(eval $(autotools-package))
 $(eval $(host-autotools-package))
 
 # shared-mime-info for the host
-SHARED_MIME_INFO_HOST_BINARY:=$(HOST_DIR)/usr/bin/update-mime-database
+SHARED_MIME_INFO_HOST_BINARY = $(HOST_DIR)/usr/bin/update-mime-database
