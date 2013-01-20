@@ -68,9 +68,7 @@ $(STAMP_DIR)/ct-ng-toolchain-installed: $(STAMP_DIR)/ct-ng-toolchain-built
 	$(Q)mkdir -p $(TARGET_DIR)/lib
 	$(Q)CTNG_TUPLE="$$( $(call ctng,show-tuple 2>&1) )";                \
 	    CTNG_SYSROOT="$(HOST_DIR)/usr/$${CTNG_TUPLE}/sysroot";          \
-	    echo "CTNG_TUPLE='$${CTNG_TUPLE}'";                             \
-	    echo "CTNG_SYSROOT='$${CTNG_SYSROOT}'";                         \
-	    echo "Copy external toolchain libraries to target...";          \
+	    $(call MESSAGE,"Copying toolchain libraries to target...");     \
 	    for libs in $(CTNG_LIBS_LIB); do                                \
 	        $(call copy_toolchain_lib_root,$${CTNG_SYSROOT},,lib,$$libs,/lib); \
 	    done;                                                           \
@@ -85,6 +83,7 @@ $(STAMP_DIR)/ct-ng-toolchain-installed: $(STAMP_DIR)/ct-ng-toolchain-built
 #       depending on the selected C library. Those deps are added later
 
 $(STAMP_DIR)/ct-ng-toolchain-built: $(CTNG_DIR)/.config
+	$(Q)$(call MESSAGE,"Building the crosstool-NG toolchain")
 	$(Q)$(call ctng,build.$(PARALLEL_JOBS))
 	$(Q)printf "\n"
 	$(Q)touch $@
