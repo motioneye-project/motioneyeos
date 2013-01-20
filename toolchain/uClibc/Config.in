@@ -5,7 +5,6 @@ comment "uClibc Options"
 
 choice
 	prompt "uClibc C library Version"
-	default BR2_UCLIBC_VERSION_0_9_31 if BR2_avr32 # 0.9.32 broken
 	default BR2_UCLIBC_VERSION_0_9_33
 	help
 	  Select the version of uClibc you wish to use.
@@ -20,7 +19,7 @@ choice
 
 	config BR2_UCLIBC_VERSION_0_9_33
 		bool "uClibc 0.9.33.x"
-		depends on !(BR2_avr32 || BR2_xtensa)
+		depends on !BR2_xtensa
 
 	config BR2_UCLIBC_VERSION_SNAPSHOT
 		bool "daily snapshot"
