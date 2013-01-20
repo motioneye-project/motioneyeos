@@ -9,6 +9,9 @@ LIBCAP_VERSION = 2.22
 #LIBCAP_SITE = http://www.kernel.org/pub/linux/libs/security/linux-privs/libcap2
 LIBCAP_SITE = $(BR2_DEBIAN_MIRROR)/debian/pool/main/libc/libcap2
 LIBCAP_SOURCE = libcap2_$(LIBCAP_VERSION).orig.tar.gz
+LIBCAP_LICENSE = GPLv2 or BSD-3c
+LIBCAP_LICENSE_FILES = License
+
 LIBCAP_DEPENDENCIES = host-libcap
 LIBCAP_INSTALL_STAGING = YES
 
