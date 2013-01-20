@@ -21,7 +21,7 @@ endif
 ROOTFS_EXT2_DEPENDENCIES = host-genext2fs
 
 define ROOTFS_EXT2_CMD
-	PATH=$(TARGET_PATH) fs/ext2/genext2fs.sh -d $(TARGET_DIR) $(EXT2_OPTS) $$@
+	PATH=$(TARGET_PATH) fs/ext2/genext2fs.sh -d $(TARGET_DIR) $(EXT2_OPTS) $@
 endef
 
 $(eval $(call ROOTFS_TARGET,ext2))

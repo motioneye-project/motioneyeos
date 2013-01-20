@@ -28,7 +28,7 @@ endif # BR2_ROOTFS_DEVICE_CREATION_STATIC
 ROOTFS_CPIO_PRE_GEN_HOOKS += ROOTFS_CPIO_ADD_INIT
 
 define ROOTFS_CPIO_CMD
-	cd $(TARGET_DIR) && find . | cpio --quiet -o -H newc > $$@
+	cd $(TARGET_DIR) && find . | cpio --quiet -o -H newc > $@
 endef
 
 $(eval $(call ROOTFS_TARGET,cpio))

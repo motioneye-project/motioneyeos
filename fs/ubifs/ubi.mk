@@ -14,9 +14,9 @@ ROOTFS_UBI_DEPENDENCIES = rootfs-ubifs
 
 define ROOTFS_UBI_CMD
 	cp fs/ubifs/ubinize.cfg . ;\
-	echo "image=$$@fs" \
+	echo "image=$@fs" \
 		>> ./ubinize.cfg ;\
-	$(HOST_DIR)/usr/sbin/ubinize -o $$@ $(UBI_UBINIZE_OPTS) ubinize.cfg ;\
+	$(HOST_DIR)/usr/sbin/ubinize -o $@ $(UBI_UBINIZE_OPTS) ubinize.cfg ;\
 	rm ubinize.cfg
 endef
 
