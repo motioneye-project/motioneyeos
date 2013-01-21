@@ -7,6 +7,8 @@
 COREUTILS_VERSION = 8.18
 COREUTILS_SITE = $(BR2_GNU_MIRROR)/coreutils
 COREUTILS_SOURCE = coreutils-$(COREUTILS_VERSION).tar.xz
+COREUTILS_LICENSE = GPLv3+
+COREUTILS_LICENSE_FILES = COPYING
 
 # If both coreutils and busybox are selected, make certain coreutils
 # wins the fight over who gets to have their utils actually installed.
