@@ -47,6 +47,7 @@ define VSFTPD_INSTALL_TARGET_CMDS
 	test -f $(TARGET_DIR)/etc/vsftpd.conf || \
 		$(INSTALL) -D -m 644 $(@D)/vsftpd.conf \
 			$(TARGET_DIR)/etc/vsftpd.conf
+	install -d -m 700 $(TARGET_DIR)/usr/share/empty
 endef
 
 define VSFTPD_UNINSTALL_TARGET_CMDS
