@@ -3,7 +3,8 @@
 # neardal
 #
 #############################################################
-NEARDAL_VERSION = 0.7
+
+NEARDAL_VERSION = 0.8
 NEARDAL_SITE = http://github.com/connectivity/neardal/tarball/$(NEARDAL_VERSION)
 NEARDAL_SOURCE = connectivity-neardal-$(NEARDAL_VERSION).tar.gz
 NEARDAL_INSTALL_STAGING = YES
