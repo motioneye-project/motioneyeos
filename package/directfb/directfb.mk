@@ -63,12 +63,11 @@ DIRECTFB_GFX = \
 	$(if $(BR2_PACKAGE_DIRECTFB_EP9X),ep9x)
 
 ifeq ($(strip $(DIRECTFB_GFX)),)
-DIRECTFB_GFX = none
+DIRECTFB_CONF_OPT += --with-gfxdrivers=none
 else
-DIRECTFB_GFX = $(subst $(space),$(comma),$(strip $(DIRECTFB_GFX)))
+DIRECTFB_CONF_OPT += \
+	--with-gfxdrivers=$(subst $(space),$(comma),$(strip $(DIRECTFB_GFX)))
 endif
-
-DIRECTFB_CONF_OPT += --with-gfxdrivers=$(DIRECTFB_GFX)
 
 DIRECTFB_INPUT = \
 	$(if $(BR2_PACKAGE_DIRECTFB_LINUXINPUT),linuxinput) \
@@ -82,12 +81,11 @@ DIRECTFB_DEPENDENCIES += tslib
 endif
 
 ifeq ($(strip $(DIRECTFB_INPUT)),)
-DIRECTFB_INPUT = none
+DIRECTFB_CONF_OPT += --with-inputdrivers=none
 else
-DIRECTFB_INPUT = $(subst $(space),$(comma),$(strip $(DIRECTFB_INPUT)))
+DIRECTFB_CONF_OPT += \
+	--with-inputdrivers=$(subst $(space),$(comma),$(strip $(DIRECTFB_INPUT)))
 endif
-
-DIRECTFB_CONF_OPT += --with-inputdrivers=$(DIRECTFB_INPUT)
 
 ifeq ($(BR2_PACKAGE_DIRECTFB_GIF),y)
 DIRECTFB_CONF_OPT += --enable-gif
