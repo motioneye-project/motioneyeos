@@ -14,3 +14,5 @@ XZ_LICENSE_FILES = COPYING.GPLv2 COPYING.GPLv3 COPYING.LGPLv2.1
 
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
+
+XZ = $(HOST_DIR)/usr/bin/xz
