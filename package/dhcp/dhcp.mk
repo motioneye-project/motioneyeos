@@ -4,8 +4,10 @@
 #
 #############################################################
 
-DHCP_VERSION  = 4.1-ESV-R7
-DHCP_SITE     = http://ftp.isc.org/isc/dhcp/$(DHCP_VERSION)
+DHCP_VERSION = 4.1-ESV-R7
+DHCP_SITE = http://ftp.isc.org/isc/dhcp/$(DHCP_VERSION)
+DHCP_LICENSE = ISC
+DHCP_LICENSE_FILES = LICENSE
 DHCP_CONF_ENV = ac_cv_file__dev_random=yes
 DHCP_CONF_OPT = \
 	--localstatedir=/var/lib/dhcp \
