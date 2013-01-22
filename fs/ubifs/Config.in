@@ -75,6 +75,16 @@ config BR2_TARGET_ROOTFS_UBIFS_LZMA
 	help
 	  Do compress the ubifs filesystem with lzma.
 
+config BR2_TARGET_ROOTFS_UBIFS_LZO
+	bool "lzo"
+	help
+	  Do compress the ubifs filesystem with lzop.
+
+config BR2_TARGET_ROOTFS_UBIFS_XZ
+	bool "xz"
+	help
+	  Do compress the ubifs filesystem with xz.
+
 endchoice
 
 config BR2_TARGET_ROOTFS_UBI

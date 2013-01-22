@@ -18,22 +18,32 @@ choice
 config BR2_TARGET_ROOTFS_CPIO_NONE
         bool "no compression"
         help
-         Do not compress the cpio filesystem.
+          Do not compress the cpio filesystem.
 
 config BR2_TARGET_ROOTFS_CPIO_GZIP
         bool "gzip"
         help
-         Do compress the cpio filesystem with gzip.
+          Do compress the cpio filesystem with gzip.
 
 config BR2_TARGET_ROOTFS_CPIO_BZIP2
         bool "bzip2"
         help
-         Do compress the cpio filesystem with bzip2.
+          Do compress the cpio filesystem with bzip2.
 
 config BR2_TARGET_ROOTFS_CPIO_LZMA
         bool "lzma"
         help
-         Do compress the cpio filesystem with lzma.
+          Do compress the cpio filesystem with lzma.
+
+config BR2_TARGET_ROOTFS_CPIO_LZO
+	bool "lzo"
+	help
+	  Do compress the cpio filesystem with lzop.
+
+config BR2_TARGET_ROOTFS_CPIO_XZ
+	bool "xz"
+	help
+	  Do compress the cpio filesystem with xz.
 
 endchoice
 

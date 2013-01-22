@@ -14,22 +14,32 @@ choice
 config BR2_TARGET_ROOTFS_TAR_NONE
 	bool "no compression"
 	help
-	 Do not compress the tarball.
+	  Do not compress the tarball.
 
 config BR2_TARGET_ROOTFS_TAR_GZIP
 	bool "gzip"
 	help
-	 Do compress the tarball with gzip.
+	  Do compress the tarball with gzip.
 
 config BR2_TARGET_ROOTFS_TAR_BZIP2
 	bool "bzip2"
 	help
-	 Do compress the tarball with bzip2.
+	  Do compress the tarball with bzip2.
 
 config BR2_TARGET_ROOTFS_TAR_LZMA
 	bool "lzma"
 	help
-	 Do compress the tarball with lzma.
+	  Do compress the tarball with lzma.
+
+config BR2_TARGET_ROOTFS_TAR_LZO
+	bool "lzo"
+	help
+	  Do compress the tarball with lzop.
+
+config BR2_TARGET_ROOTFS_TAR_XZ
+	bool "xz"
+	help
+	  Do compress the tarball with xz.
 
 endchoice
 

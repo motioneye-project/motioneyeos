@@ -39,7 +39,7 @@ ROOTFS_DEVICE_TABLES = $(call qstrip,$(BR2_ROOTFS_DEVICE_TABLE) \
 define ROOTFS_TARGET_INTERNAL
 
 # extra deps
-ROOTFS_$(2)_DEPENDENCIES += host-fakeroot host-makedevs $$(if $$(BR2_TARGET_ROOTFS_$(2)_LZMA),host-lzma)
+ROOTFS_$(2)_DEPENDENCIES += host-fakeroot host-makedevs $$(if $$(BR2_TARGET_ROOTFS_$(2)_LZMA),host-lzma) $$(if $$(BR2_TARGET_ROOTFS_$(2)_LZO),host-lzop) $$(if $$(BR2_TARGET_ROOTFS_$(2)_XZ),host-xz)
 
 $$(BINARIES_DIR)/rootfs.$(1): $$(ROOTFS_$(2)_DEPENDENCIES)
 	@$$(call MESSAGE,"Generating root filesystem image rootfs.$(1)")
@@ -69,6 +69,12 @@ ifeq ($$(BR2_TARGET_ROOTFS_$(2)_BZIP2),y)
 endif
 ifeq ($$(BR2_TARGET_ROOTFS_$(2)_LZMA),y)
 	$$(LZMA) -9 -c $$@ > $$@.lzma
+endif
+ifeq ($$(BR2_TARGET_ROOTFS_$(2)_LZO),y)
+	$$(LZOP) -9 -c $$@ > $$@.lzo
+endif
+ifeq ($$(BR2_TARGET_ROOTFS_$(2)_XZ),y)
+	$(XZ) -9 -C crc32 -c $$@ > $$@.xz
 endif
 
 rootfs-$(1)-show-depends:
