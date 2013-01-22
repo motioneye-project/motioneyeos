@@ -7,6 +7,8 @@
 QUAGGA_VERSION = 0.99.21
 QUAGGA_SITE = http://download.savannah.gnu.org/releases/quagga
 QUAGGA_DEPENDENCIES = host-gawk
+QUAGGA_LICENSE = GPLv2+
+QUAGGA_LICENSE_FILES = COPYING
 QUAGGA_CONF_OPT = --program-transform-name='' --enable-netlink
 
 QUAGGA_CONF_OPT += $(if $(BR2_PACKAGE_QUAGGA_ZEBRA),--enable-zebra,--disable-zebra)
