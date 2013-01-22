@@ -6,6 +6,8 @@
 
 TAR_VERSION = 1.26
 TAR_SITE = $(BR2_GNU_MIRROR)/tar
+TAR_LICENSE = GPLv3+
+TAR_LICENSE_FILES = COPYING
 
 # Prefer full-blown tar over buybox's version
 ifeq ($(BR2_PACKAGE_BUSYBOX),y)
