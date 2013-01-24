@@ -452,6 +452,7 @@ source "package/poppler/Config.in"
 source "package/tiff/Config.in"
 source "package/wayland/Config.in"
 source "package/webkit/Config.in"
+source "package/webp/Config.in"
 source "package/zxing/Config.in"
 endmenu
 
