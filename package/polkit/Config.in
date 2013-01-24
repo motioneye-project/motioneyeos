@@ -9,3 +9,6 @@ config BR2_PACKAGE_POLKIT
 	  processes to speak to privileged processes.
 
 	  http://www.freedesktop.org/wiki/Software/polkit
+
+comment "polkit requires a toolchain with WCHAR support"
+	depends on !BR2_USE_WCHAR
