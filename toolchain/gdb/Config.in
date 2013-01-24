@@ -58,34 +58,17 @@ choice
 		depends on BR2_avr32
 		bool "gdb 6.7.1-avr32-2.1.5"
 
-	config BR2_GDB_VERSION_6_8
-		bool "gdb 6.8"
-		depends on !(BR2_avr32 || BR2_bfin)
-		depends on BR2_DEPRECATED
-
-	config BR2_GDB_VERSION_7_0_1
-		bool "gdb 7.0.1"
-		depends on !BR2_bfin
-		depends on BR2_DEPRECATED
-		depends on BR2_TOOLCHAIN_HAS_THREADS_DEBUG_IF_NEEDED
-		select BR2_PTHREAD_DEBUG if (BR2_TOOLCHAIN_BUILDROOT && !BR2_PTHREADS_NONE)
-
-	config BR2_GDB_VERSION_7_1
-		bool "gdb 7.1"
-		depends on !BR2_bfin
-		depends on BR2_DEPRECATED
-		depends on BR2_TOOLCHAIN_HAS_THREADS_DEBUG_IF_NEEDED
-		select BR2_PTHREAD_DEBUG if (BR2_TOOLCHAIN_BUILDROOT && !BR2_PTHREADS_NONE)
-
 	config BR2_GDB_VERSION_7_2
 		bool "gdb 7.2.x"
 		depends on !BR2_bfin
+		depends on BR2_DEPRECATED
 		depends on BR2_TOOLCHAIN_HAS_THREADS_DEBUG_IF_NEEDED
 		select BR2_PTHREAD_DEBUG if (BR2_TOOLCHAIN_BUILDROOT && !BR2_PTHREADS_NONE)
 
 	config BR2_GDB_VERSION_7_3
 		bool "gdb 7.3.x"
 		depends on !BR2_bfin
+		depends on BR2_DEPRECATED
 		depends on BR2_TOOLCHAIN_HAS_THREADS_DEBUG_IF_NEEDED
 		select BR2_PTHREAD_DEBUG if (BR2_TOOLCHAIN_BUILDROOT && !BR2_PTHREADS_NONE)
 
@@ -110,9 +93,6 @@ config BR2_GDB_VERSION
 	string
 	default "6.6a"     if BR2_GDB_VERSION_6_6
 	default "6.7.1-avr32-2.1.5" if BR2_GDB_VERSION_6_7_1_AVR32_2_1_5
-	default "6.8a"     if BR2_GDB_VERSION_6_8
-	default "7.0.1a"   if BR2_GDB_VERSION_7_0_1
-	default "7.1a"     if BR2_GDB_VERSION_7_1
 	default "7.2a"     if BR2_GDB_VERSION_7_2
 	default "7.3.1"    if BR2_GDB_VERSION_7_3
 	default "7.4.1"    if BR2_GDB_VERSION_7_4
