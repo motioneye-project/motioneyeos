@@ -4,12 +4,14 @@
 #
 #############################################################
 
-NTFS_3G_VERSION = 2012.1.15
+NTFS_3G_VERSION = 2013.1.13
 NTFS_3G_SOURCE = ntfs-3g_ntfsprogs-$(NTFS_3G_VERSION).tgz
 NTFS_3G_SITE = http://tuxera.com/opensource
 NTFS_3G_CONF_OPT = --disable-ldconfig
 NTFS_3G_INSTALL_STAGING = YES
 NTFS_3G_DEPENDENCIES = host-pkgconf
+NTFS_3G_LICENSE = GPLv2+ LGPLv2+
+NTSF_3G_LICENSE_FILES = COPYING COPYING.LIB
 
 ifeq ($(BR2_PACKAGE_LIBFUSE),y)
 	NTFS_3G_CONF_OPT += --with-fuse=external
