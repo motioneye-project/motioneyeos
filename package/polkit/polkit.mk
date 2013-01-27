@@ -16,6 +16,8 @@ POLKIT_DEPENDENCIES = libglib2 host-intltool expat
 # We could also support --with-authfw=pam
 POLKIT_CONF_OPT = \
 	--with-authfw=shadow \
-	--with-os-type=unknown
+	--with-os-type=unknown \
+	--disable-man-pages \
+	--disable-examples
 
 $(eval $(autotools-package))
