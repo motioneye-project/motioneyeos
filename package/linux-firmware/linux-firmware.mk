@@ -92,6 +92,13 @@ LINUX_FIRMWARE_FILES_$(BR2_PACKAGE_LINUX_FIRMWARE_TI_WL128X) += \
 	ti-connectivity/TIInit_7.2.31.bts 			\
 	LICENCE.ti-connectivity
 
+# iwlwifi 5000. Multiple files are available (iwlwifi-5000-1.ucode,
+# iwlwifi-5000-2.ucode, iwlwifi-5000-5.ucode), corresponding to
+# different versions of the firmware API. For now, we only install the
+# most recent one.
+LINUX_FIRMWARE_FILES_$(BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_5000) += \
+	iwlwifi-5000-5.ucode LICENCE.iwlwifi_firmware
+
 LINUX_FIRMWARE_FILES_$(BR2_PACKAGE_LINUX_FIRMWARE_XC5000) += \
 	dvb-fe-xc5000-1.6.114.fw
 
