@@ -7,6 +7,8 @@
 KISMET_VERSION = 2011-03-R2
 KISMET_SITE = http://www.kismetwireless.net/code
 KISMET_DEPENDENCIES = libpcap ncurses
+KISMET_LICENSE = GPLv2+
+KISMET_LICENSE_FILES = GPL
 
 ifeq ($(BR2_PACKAGE_LIBNL),y)
 	KISMET_DEPENDENCIES += libnl
