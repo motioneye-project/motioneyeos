@@ -20,8 +20,8 @@ NETSNMP_CONF_OPT = --with-persistent-directory=/var/lib/snmp --disable-static \
 		--enable-silent-libtool --enable-mfd-rewrites \
 		--with-sys-contact="root@localhost" \
 		--with-sys-location="Unknown" \
-		--with-mib-modules="host ucd-snmp/dlmod" \
-		--with-out-mib-modules="disman/event disman/schedule utilities" \
+		--with-mib-modules="$(call qstrip,$(BR2_PACKAGE_NETSNMP_WITH_MIB_MODULES))" \
+		--with-out-mib-modules="$(call qstrip,$(BR2_PACKAGE_NETSNMP_WITHOUT_MIB_MODULES))" \
 		--with-out-transports="Unix"
 NETSNMP_MAKE = $(MAKE1)
 NETSNMP_BLOAT_MIBS = BRIDGE DISMAN-EVENT DISMAN-SCHEDULE DISMAN-SCRIPT EtherLike RFC-1215 RFC1155-SMI RFC1213 SCTP SMUX
