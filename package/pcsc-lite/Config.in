@@ -1,6 +1,7 @@
 config BR2_PACKAGE_PCSC_LITE
 	bool "pcsc-lite"
 	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_USE_MMU # fork()
 	help
 	  Middleware to access smart card using SCard API (PC/SC).
 
