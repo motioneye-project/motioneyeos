@@ -4,6 +4,12 @@ comment "tvheadend requires a toolchain with LARGEFILE and IPv6 support"
 config BR2_PACKAGE_TVHEADEND
 	bool "tvheadend"
 	depends on BR2_LARGEFILE && BR2_INET_IPV6
+	# tvheadend requires an atomic_add operation. Either you have
+	# a gcc >= 4.3 toolchain and it uses the gcc intrinsics, or it
+	# has special code for x86, x86-64, PPC and ARM. So in the
+	# context of Buildroot, the only really problematic
+	# architecture is avr32, which uses gcc 4.2.
+	depends on !BR2_avr32
 	select BR2_PACKAGE_DVB_APPS
 	select BR2_PACKAGE_OPENSSL
 	help
