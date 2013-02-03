@@ -1,5 +1,7 @@
 config BR2_PACKAGE_HEIRLOOM_MAILX
 	bool "heirloom-mailx"
+	# uses fork()
+	depends on BR2_USE_MMU
 	help
 	  Heirloom mailx (previously known as nail) is a mail user
 	  agent for Unix systems.
