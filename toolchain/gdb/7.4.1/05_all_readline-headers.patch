@@ -1,0 +1,42 @@
+--- a/readline/complete.c
++++ b/readline/complete.c
+@@ -25,6 +25,11 @@
+ #  include <config.h>
+ #endif
+ 
++#ifdef HAVE_WCHAR_H /* wcwidth() */
++# define _GNU_SOURCE
++# include <wchar.h>
++#endif
++
+ #include <sys/types.h>
+ #include <fcntl.h>
+ #if defined (HAVE_SYS_FILE_H)
+--- a/readline/display.c
++++ b/readline/display.c
+@@ -25,6 +25,11 @@
+ #  include <config.h>
+ #endif
+ 
++#ifdef HAVE_WCHAR_H /* wcwidth() */
++# define _GNU_SOURCE
++# include <wchar.h>
++#endif
++
+ #include <sys/types.h>
+ 
+ #if defined (HAVE_UNISTD_H)
+--- a/readline/mbutil.c
++++ b/readline/mbutil.c
+@@ -25,6 +25,11 @@
+ #  include <config.h>
+ #endif
+ 
++#ifdef HAVE_WCHAR_H /* wcwidth() */
++# define _GNU_SOURCE
++# include <wchar.h>
++#endif
++
+ #include <sys/types.h>
+ #include <fcntl.h>
+ #include "posixjmp.h"
