@@ -1,6 +1,7 @@
 config BR2_PACKAGE_LVM2
 	bool "lvm2 & device mapper"
 	depends on BR2_LARGEFILE
+	depends on BR2_USE_MMU # needs fork()
 	help
 	  This is LVM2, the rewrite of The Linux Logical Volume Manager.
 	  LVM supports enterprise level volume management of disk and disk
