@@ -1,0 +1,11 @@
+config BR2_PACKAGE_EXFAT_UTILS
+	bool "exfat-utils"
+	depends on BR2_LARGEFILE
+	depends on BR2_USE_WCHAR
+	help
+	  exFAT filesystem utilities.
+
+	  http://code.google.com/p/exfat/
+
+comment "exfat-utils requires a toolchain with LARGEFILE and WCHAR support"
+	depends on !BR2_LARGEFILE || !BR2_USE_WCHAR
