@@ -20,13 +20,15 @@ Buildroot configuration
 ^^^^^^^^^^^^^^^^^^^^^^^
 
 For storing the buildroot configuration itself, buildroot offers the
-following command: +make savedefconfig+
+following command: +make savedefconfig+.
 
 This strips the buildroot configuration down by removing configuration
 options that are at their default value. The result is stored in a file
-called +defconfig+. Copy this file to +foo_defconfig+ in the +configs+
-directory. The configuration can then be rebuilt by running
-+make foo_defconfig+
+called +defconfig+.  If you want to save it in another place, change
+the +BR2_DEFCONFIG+ option, or call make with +make savedefconfig
+BR2_DEFCONFIG=<path-to-defconfig>+.  The usual place is
++configs/<boardname>_defconfig+. The configuration can then be rebuilt by
+running +make <boardname>_defconfig+.
 
 Alternatively, you can copy the file to any other place and rebuild with
 +make defconfig BR2_DEFCONFIG=<path-to-defconfig-file>+.
