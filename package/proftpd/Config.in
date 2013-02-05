@@ -4,3 +4,9 @@ config BR2_PACKAGE_PROFTPD
 	  ProFTPD, a highly configurable FTP server.
 
 	  http://www.proftpd.org/
+
+config BR2_PACKAGE_PROFTPD_MOD_REWRITE
+	bool "mod_rewrite support"
+	depends on BR2_PACKAGE_PROFTPD
+	help
+	  Compile ProFTPD with mod_rewrite support
