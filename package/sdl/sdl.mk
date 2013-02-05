@@ -70,8 +70,4 @@ endef
 
 SDL_POST_INSTALL_STAGING_HOOKS+=SDL_FIXUP_SDL_CONFIG
 
-define SDL_INSTALL_TARGET_CMDS
-	cp -dpf $(STAGING_DIR)/usr/lib/libSDL*.so* $(TARGET_DIR)/usr/lib/
-endef
-
 $(eval $(autotools-package))
