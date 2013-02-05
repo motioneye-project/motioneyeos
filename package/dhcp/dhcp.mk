@@ -4,7 +4,7 @@
 #
 #############################################################
 
-DHCP_VERSION = 4.1-ESV-R7
+DHCP_VERSION = 4.1-ESV-R8
 DHCP_SITE = http://ftp.isc.org/isc/dhcp/$(DHCP_VERSION)
 DHCP_LICENSE = ISC
 DHCP_LICENSE_FILES = LICENSE
