@@ -10,7 +10,7 @@ config BR2_PACKAGE_GNUTLS
 
 config BR2_PACKAGE_GNUTLS_TOOLS
 	bool "install tools"
-	depends on BR2_USE_WCHAR
+	depends on BR2_PACKAGE_GNUTLS
 	help
 	  Install GnuTLS command line tools for various cryptographic tasks.
 
