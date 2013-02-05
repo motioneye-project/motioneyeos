@@ -136,15 +136,12 @@ you can skip the steps that are not relevant for your use case.
 1. Create +board/<manufacturer>/<boardname>/fs-overlay/+ and fill it
    with additional files you need on your rootfs, e.g.
    +board/<manufacturer>/<boardname>/fs-overlay/etc/inittab+.
+   Set +BR2_ROOTFS_OVERLAY+
+   to +board/<manufacturer>/<boardname>/fs-overlay+.
 1. Create a post-build script
-   +board/<manufacturer>/<boardname>/post-build.sh+.  It should contain
-   the following command:
-+
-------------
-rsync -a --exclude .empty --exclude '*~' ${0%/*}/fs-overlay $1
-------------
-+
-1. Set +BR2_ROOTFS_POST_BUILD_SCRIPT+ to +board/<manufacturer>/<boardname>/post-build.sh+
+   +board/<manufacturer>/<boardname>/post-build.sh+.  Set
+   +BR2_ROOTFS_POST_BUILD_SCRIPT+ to
+   +board/<manufacturer>/<boardname>/post-build.sh+
 1. If additional setuid permissions have to be set or device nodes have
    to be created, create +board/<manufacturer>/<boardname>/device_table.txt+
    and add that path to +BR2_ROOTFS_DEVICE_TABLE+.

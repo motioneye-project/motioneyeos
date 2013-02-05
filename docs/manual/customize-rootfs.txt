@@ -24,6 +24,12 @@ there are a few ways to customize the resulting target filesystem.
   skeleton are copied to output/target before any package
   installation.
 
+* Create a filesystem overlay: a tree of files that are copied directly
+  over the target filesystem after it has been built.  Set
+  +BR2_ROOTFS_OVERLAY+ to the top of the tree.  +.git+, +.svn+,
+  +.hg+ directories and files ending with +~+ are excluded.
+  _Among these first 3 methods, this one should be preferred_.
+
 * In the Buildroot configuration, you can specify the path to a
   *post-build script*, that gets called 'after' Buildroot builds all the
   selected software, but 'before' the rootfs packages are
@@ -31,12 +37,11 @@ there are a few ways to customize the resulting target filesystem.
   specify the location of your post-build script. This option can be
   found in the +System configuration+ menu. The destination root
   filesystem folder is given as the first argument to this script,
-  and this script can then be used to copy programs, static data or
-  any other needed file to your target filesystem. You should,
-  however, use this feature with care. Whenever you find that a
-  certain package generates wrong or unneeded files, you should fix
-  that package rather than work around it with a post-build cleanup
-  script. _Among these first 3 methods, this one should be preferred_.
+  and this script can then be used to remove or modify any file in your
+  target filesystem. You should, however, use this feature with care.
+  Whenever you find that a certain package generates wrong or unneeded
+  files, you should fix that package rather than work around it with a
+  post-build cleanup script.
   You may also use these variables in your post-build script:
     - +BUILDROOT_CONFIG+: the path to the Buildroot .config file
     - +HOST_DIR+, +STAGING_DIR+, +TARGET_DIR+: see
