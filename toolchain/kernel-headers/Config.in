@@ -43,7 +43,7 @@ choice
 		bool "Linux 3.7.x kernel headers"
 
 	config BR2_KERNEL_HEADERS_VERSION
-		bool "Linux 2.6 (manually specified version)"
+		bool "Manually specified Linux version"
 
 	config BR2_KERNEL_HEADERS_SNAP
 		bool "Local Linux snapshot (linux-2.6.tar.bz2)"
