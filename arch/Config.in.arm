@@ -68,6 +68,7 @@ config BR2_arm1136jf_s
 choice
 	prompt "Target ABI"
 	depends on BR2_arm || BR2_armeb
+	depends on BR2_DEPRECATED
 	default BR2_ARM_EABI
 	help
 	  Application Binary Interface to use
@@ -81,6 +82,10 @@ config BR2_ARM_OABI
 	bool "OABI"
 	depends on !BR2_GCC_VERSION_4_7_X
 endchoice
+
+config BR2_ARM_EABI
+	default y
+	depends on !BR2_DEPRECATED
 
 config BR2_ARM_ENABLE_NEON
 	bool "Enable NEON SIMD extension support"
