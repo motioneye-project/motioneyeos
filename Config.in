@@ -22,18 +22,6 @@ config BR2_HOSTARCH_NEEDS_IA32_LIBS
 
 source "arch/Config.in"
 
-config BR2_DEFCONFIG_FROM_ENV
-	string
-	option env="BR2_DEFCONFIG"
-
-config BR2_DEFCONFIG
-	string "Location to save buildroot config"
-	default BR2_DEFCONFIG_FROM_ENV if BR2_DEFCONFIG_FROM_ENV != ""
-	default "$(CONFIG_DIR)/defconfig"
-	help
-	  When running 'make savedefconfig', the defconfig file will be saved
-	  in this location.
-
 menu "Build options"
 
 menu "Commands"
@@ -106,6 +94,18 @@ config BR2_TAR_OPTIONS
 	  and to be verbose.
 
 endmenu
+
+config BR2_DEFCONFIG_FROM_ENV
+	string
+	option env="BR2_DEFCONFIG"
+
+config BR2_DEFCONFIG
+	string "Location to save buildroot config"
+	default BR2_DEFCONFIG_FROM_ENV if BR2_DEFCONFIG_FROM_ENV != ""
+	default "$(CONFIG_DIR)/defconfig"
+	help
+	  When running 'make savedefconfig', the defconfig file will be saved
+	  in this location.
 
 config BR2_DL_DIR
 	string "Download dir"
