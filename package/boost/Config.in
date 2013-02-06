@@ -21,6 +21,9 @@ if BR2_PACKAGE_BOOST
 config BR2_PACKAGE_BOOST_CHRONO
 	bool "boost-chrono"
 
+config BR2_PACKAGE_BOOST_CONTEXT
+	bool "boost-context"
+
 config BR2_PACKAGE_BOOST_DATE_TIME
 	bool "boost-date_time"
 
