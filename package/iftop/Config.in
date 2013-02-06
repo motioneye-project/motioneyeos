@@ -3,6 +3,7 @@ config BR2_PACKAGE_IFTOP
 	select BR2_PACKAGE_NCURSES
 	select BR2_PACKAGE_LIBPCAP
 	depends on BR2_INET_IPV6
+	depends on BR2_TOOLCHAIN_HAS_THREADS
 	help
 	  iftop does for network usage what top(1) does for CPU usage.
 	  It listens to network traffic on a named interface and displays
@@ -11,5 +12,5 @@ config BR2_PACKAGE_IFTOP
 
 	  http://www.ex-parrot.com/pdw/iftop/
 
-comment "iftop requires IPv6 support in toolchain"
-	depends on !BR2_INET_IPV6
+comment "iftop requires IPv6 and threads support in toolchain"
+	depends on !BR2_INET_IPV6 || !BR2_TOOLCHAIN_HAS_THREADS
