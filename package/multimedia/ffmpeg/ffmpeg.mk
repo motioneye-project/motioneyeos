@@ -9,6 +9,13 @@ FFMPEG_SOURCE = ffmpeg-$(FFMPEG_VERSION).tar.bz2
 FFMPEG_SITE = http://ffmpeg.org/releases
 FFMPEG_INSTALL_STAGING = YES
 
+FFMPEG_LICENSE = LGPLv2.1+, libjpeg license
+FFMPEG_LICENSE_FILES = LICENSE COPYING.LGPLv2.1
+ifeq ($(BR2_PACKAGE_FFMPEG_GPL),y)
+FFMPEG_LICENSE += and GPLv2+
+FFMPEG_LICENSE_FILES += COPYING.GPLv2
+endif
+
 FFMPEG_CONF_OPT = \
 	--prefix=/usr		\
 	--disable-avfilter	\
