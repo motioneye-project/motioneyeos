@@ -76,7 +76,7 @@ choice
 	  Note:
 	    Using OABI is discouraged.
 
-config BR2_ARM_EABI
+config BR2_ARM_EABI_CHOICE
 	bool "EABI"
 config BR2_ARM_OABI
 	bool "OABI"
@@ -84,8 +84,8 @@ config BR2_ARM_OABI
 endchoice
 
 config BR2_ARM_EABI
-	default y
-	depends on !BR2_DEPRECATED
+	def_bool y
+	depends on !BR2_ARM_OABI
 
 config BR2_ARM_ENABLE_NEON
 	bool "Enable NEON SIMD extension support"
