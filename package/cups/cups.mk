@@ -15,6 +15,7 @@ CUPS_CONF_OPT = --without-perl \
 		--disable-gnutls \
 		--disable-gssapi \
 		--libdir=/usr/lib
+CUPS_CONFIG_SCRIPTS = cups-config
 
 CUPS_DEPENDENCIES = $(if $(BR2_PACKAGE_ZLIB),zlib) \
 		    $(if $(BR2_PACKAGE_LIBPNG),libpng) \
@@ -60,14 +61,5 @@ endef
 CUPS_DEPENDENCIES += host-autoconf
 
 CUPS_PRE_CONFIGURE_HOOKS += CUPS_FIXUP_AUTOCONF
-
-# Fixup prefix= and exec_prefix= in cups-config
-define CUPS_FIXUP_CUPS_CONFIG
-	$(SED) 's%^prefix=/usr%prefix=$(STAGING_DIR)/usr%' \
-		-e 's%^exec_prefix=/usr%exec_prefix=$(STAGING_DIR)/usr%' \
-		$(STAGING_DIR)/usr/bin/cups-config
-endef
-
-CUPS_POST_INSTALL_STAGING_HOOKS += CUPS_FIXUP_CUPS_CONFIG
 
 $(eval $(autotools-package))

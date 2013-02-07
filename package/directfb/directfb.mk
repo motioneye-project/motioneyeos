@@ -23,6 +23,7 @@ DIRECTFB_CONF_OPT = \
 	--disable-video4linux \
 	--disable-video4linux2 \
 	--without-tools
+DIRECTFB_CONFIG_SCRIPTS = directfb-config
 
 DIRECTFB_DEPENDENCIES = freetype zlib
 
@@ -130,14 +131,6 @@ HOST_DIRECTFB_BUILD_CMDS = \
 
 HOST_DIRECTFB_INSTALL_CMDS = \
 	$(INSTALL) -m 0755 $(@D)/tools/directfb-csource $(HOST_DIR)/usr/bin
-
-define DIRECTFB_STAGING_CONFIG_FIXUP
-	$(SED) "s,^prefix=.*,prefix=\'$(STAGING_DIR)/usr\',g" \
-		-e "s,^exec_prefix=.*,exec_prefix=\'$(STAGING_DIR)/usr\',g" \
-		$(STAGING_DIR)/usr/bin/directfb-config
-endef
-
-DIRECTFB_POST_INSTALL_STAGING_HOOKS += DIRECTFB_STAGING_CONFIG_FIXUP
 
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))

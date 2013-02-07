@@ -7,7 +7,7 @@ NEON_VERSION = 0.29.6
 NEON_SITE = http://www.webdav.org/neon/
 NEON_INSTALL_STAGING = YES
 NEON_CONF_OPT = --without-gssapi --disable-rpath
-
+NEON_CONFIG_SCRIPTS = neon-config
 NEON_DEPENDENCIES = host-pkgconf
 
 ifeq ($(BR2_PACKAGE_NEON_ZLIB),y)
@@ -43,21 +43,5 @@ ifeq ($(BR2_PACKAGE_NEON_NOXML),y)
 # webdav needs xml support
 NEON_CONF_OPT += --disable-webdav
 endif
-
-define NEON_REMOVE_CONFIG_SCRIPTS
-	$(RM) -f $(TARGET_DIR)/usr/bin/neon-config
-endef
-
-ifneq ($(BR2_HAVE_DEVFILES),y)
-NEON_POST_INSTALL_TARGET_HOOKS += NEON_REMOVE_CONFIG_SCRIPTS
-endif
-
-define NEON_STAGING_NEON_CONFIG_FIXUP
-	$(SED) "s,^prefix=.*,prefix=\'$(STAGING_DIR)/usr\',g" \
-		-e "s,^exec_prefix=.*,exec_prefix=\'$(STAGING_DIR)/usr\',g" \
-		$(STAGING_DIR)/usr/bin/neon-config
-endef
-
-NEON_POST_INSTALL_STAGING_HOOKS += NEON_STAGING_NEON_CONFIG_FIXUP
 
 $(eval $(autotools-package))
