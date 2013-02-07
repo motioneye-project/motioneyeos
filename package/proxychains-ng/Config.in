@@ -1,7 +1,10 @@
 config BR2_PACKAGE_PROXYCHAINS_NG
 	bool "proxychains-ng"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
 	help
-	  force any tcp connections to flow through a proxy (or proxy chain)
+	  Force any tcp connections to flow through a proxy (or proxy chain)
 
 	  https://github.com/rofl0r/proxychains
 
+comment "proxychains-ng needs a toolchain with thread support"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
