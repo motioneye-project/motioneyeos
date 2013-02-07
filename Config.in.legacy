@@ -44,6 +44,14 @@ endif
 #
 # Legacy options since 2012.11
 #
+config BR2_PACKAGE_CUSTOMIZE
+	bool "customize package has been removed"
+	select BR2_LEGACY
+	help
+	  The 'customize' special package has been removed. Instead,
+	  we recommend to create either your own packages, or use a
+	  post-build script to customize your root filesystem. See
+	  Buildroot's documentation for more details.
 
 config BR2_PACKAGE_XSERVER_xorg
 	bool "X.org modular server"

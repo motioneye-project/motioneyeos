@@ -1,7 +1,0 @@
-config BR2_PACKAGE_CUSTOMIZE
-	bool "customize"
-	depends on BR2_DEPRECATED
-	help
-	  Add custom stuff to your buildroot.
-
-	  (edit package/customize/customize.mk)
