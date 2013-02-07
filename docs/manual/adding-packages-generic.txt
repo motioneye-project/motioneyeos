@@ -25,7 +25,7 @@ system is based on hand-written Makefiles or shell scripts.
 09: LIBFOO_LICENSE = GPLv3+
 10: LIBFOO_LICENSE_FILES = COPYING
 11: LIBFOO_INSTALL_STAGING = YES
-12: LIBFOO_CONFIG_FIXUP = libfoo-config
+12: LIBFOO_CONFIG_SCRIPTS = libfoo-config
 13: LIBFOO_DEPENDENCIES = host-libaaa libbbb
 14:
 15: define LIBFOO_BUILD_CMDS
@@ -86,7 +86,7 @@ or:		'-L/usr/lib' instead of '-L$(STAGING_DIR)/usr/lib'
 
 So some sed magic is done to these scripts to make them give correct
 flags.
-The argument to be given to +LIBFOO_CONFIG_FIXUP+ is the file name(s)
+The argument to be given to +LIBFOO_CONFIG_SCRIPTS+ is the file name(s)
 of the shell script(s) needing fixing. All these names are relative to
 '$(STAGING_DIR)/usr/bin' and if needed multiple names can be given.
 
@@ -96,7 +96,7 @@ Package divine installs shell script '$(STAGING_DIR)/usr/bin/divine-config'.
 
 So it's fixup would be:
 
-DIVINE_CONFIG = divine-config
+DIVINE_CONFIG_SCRIPTS = divine-config
 
 Example 2:
 
@@ -105,8 +105,9 @@ Package imagemagick installs the following scripts:
 
 So it's fixup would be:
 
-IMAGEMAGICK_CONFIG_FIXUP = Magick-config Magick++-config \
-			   MagickCore-config MagickWand-config Wand-config
+IMAGEMAGICK_CONFIG_SCRIPTS = \
+   Magick-config Magick++-config \
+   MagickCore-config MagickWand-config Wand-config
 
 On line 13, we specify the list of dependencies this package relies
 on. These dependencies are listed in terms of lower-case package names,
@@ -284,10 +285,10 @@ information is (assuming the package name is +libfoo+) :
   variables are executed to install the package into the target
   directory.
 
-* +LIBFOO_CONFIG_FIXUP+ lists the names of the files in
+* +LIBFOO_CONFIG_SCRIPTS+ lists the names of the files in
   '$(STAGING_DIR)/usr/bin' that need some special fixing to make them
-  cross-compiling friendly. Multiple file names separated by space can be
-  given and all are relative to '$(STAGING_DIR)/usr/bin'.
+  cross-compiling friendly. Multiple file names separated by space can
+  be given and all are relative to '$(STAGING_DIR)/usr/bin'.
 
 * +LIBFOO_DEVICES+ lists the device files to be created by Buildroot
   when using the static device table. The syntax to use is the

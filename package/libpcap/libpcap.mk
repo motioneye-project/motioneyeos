@@ -24,7 +24,7 @@ LIBPCAP_DEPENDENCIES = zlib
 LIBPCAP_CONF_ENV = ac_cv_linux_vers=2 \
 		ac_cv_header_linux_wireless_h=yes # configure misdetects this
 LIBPCAP_CONF_OPT = --disable-yydebug --with-pcap=linux
-LIBPCAP_CONFIG_FIXUP = pcap-config
+LIBPCAP_CONFIG_SCRIPTS = pcap-config
 
 ifeq ($(BR2_PACKAGE_LIBUSB),y)
 LIBPCAP_CONF_OPT += --enable-canusb
