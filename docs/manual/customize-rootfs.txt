@@ -12,17 +12,11 @@ there are a few ways to customize the resulting target filesystem.
   simply make your changes here and run make afterwards - this will
   rebuild the target filesystem image. This method allows you to do
   anything to the target filesystem, but if you decide to completely
-  rebuild your toolchain and tools, these changes will be lost.
-  _Changes do not survive the +make clean+ command_.
-
-* Create your own 'target skeleton'. You can start with the default
-  skeleton available under +system/skeleton+ and then customize it to
-  suit your needs. The +BR2_ROOTFS_SKELETON_CUSTOM+ and
-  +BR2_ROOTFS_SKELETON_CUSTOM_PATH+ will allow you to specify the
-  location of your custom skeleton. These options can be found in the
-  +System configuration+ menu. At build time, the contents of the
-  skeleton are copied to output/target before any package
-  installation.
+  rebuild your toolchain and tools, these changes will be lost. This
+  solution is therefore only useful for quick tests only: _changes do
+  not survive the +make clean+ command_. Once you have validated your
+  changes, you should make sure that they will persist after a +make
+  clean+ by using one of the following methods.
 
 * Create a filesystem overlay: a tree of files that are copied directly
   over the target filesystem after it has been built.  Set
@@ -49,6 +43,19 @@ there are a few ways to customize the resulting target filesystem.
     - +BINARIES_DIR+: the place where all binary files (aka images) are
       stored
     - +BASE_DIR+: the base output directory
+
+* Create your own 'target skeleton'. You can start with the default
+  skeleton available under +system/skeleton+ and then customize it to
+  suit your needs. The +BR2_ROOTFS_SKELETON_CUSTOM+ and
+  +BR2_ROOTFS_SKELETON_CUSTOM_PATH+ will allow you to specify the
+  location of your custom skeleton. These options can be found in the
+  +System configuration+ menu. At build time, the contents of the
+  skeleton are copied to output/target before any package
+  installation. Note that this method is *not recommended*, as it
+  duplicates the entire skeleton, which prevents from taking advantage
+  of the fixes or improvements brought to the default Buildroot
+  skeleton. The recommended method is to use the _post-build script_
+  mechanism described in the previous item.
 
 Note also that if you want to perform some specific actions *after*
 all filesystem images have been created (for example to automatically
