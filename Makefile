@@ -353,6 +353,8 @@ endif
 
 include fs/common.mk
 
+TARGETS+=target-post-image
+
 TARGETS_CLEAN:=$(patsubst %,%-clean,$(TARGETS))
 TARGETS_SOURCE:=$(patsubst %,%-source,$(TARGETS) $(BASE_TARGETS))
 TARGETS_DIRCLEAN:=$(patsubst %,%-dirclean,$(TARGETS))
@@ -553,6 +555,13 @@ target-generatelocales: host-localedef
 			-i $${inputfile} -f $${charmap} \
 			$${locale} ; \
 	done
+endif
+
+target-post-image:
+ifneq ($(BR2_ROOTFS_POST_IMAGE_SCRIPT),"")
+	@$(call MESSAGE,"Executing post-image script\(s\)")
+	@$(foreach s, $(call qstrip,$(BR2_ROOTFS_POST_IMAGE_SCRIPT)), \
+		$(s) $(BINARIES_DIR)$(sep))
 endif
 
 toolchain-eclipse-register:
