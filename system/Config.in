@@ -261,7 +261,7 @@ config BR2_ROOTFS_OVERLAY
 	  ~ and .git, .svn and .hg directories.
 
 config BR2_ROOTFS_POST_BUILD_SCRIPT
-	string "Custom script to run before creating filesystem images"
+	string "Custom scripts to run before creating filesystem images"
 	default ""
 	help
 	  Specify a space-separated list of scripts to be run after the build
