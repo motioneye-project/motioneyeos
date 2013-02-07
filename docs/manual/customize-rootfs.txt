@@ -20,8 +20,8 @@ there are a few ways to customize the resulting target filesystem.
 
 * Create a filesystem overlay: a tree of files that are copied directly
   over the target filesystem after it has been built.  Set
-  +BR2_ROOTFS_OVERLAY+ to the top of the tree.  +.git+, +.svn+,
-  +.hg+ directories and files ending with +~+ are excluded.
+  +BR2_ROOTFS_OVERLAY+ to the top of the tree.  +.git+, +.svn+, +.hg+
+  directories, +.empty+ files and files ending with +~+ are excluded.
   _Among these first 3 methods, this one should be preferred_.
 
 * In the Buildroot configuration, you can specify the path to a

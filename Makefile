@@ -506,7 +506,8 @@ endif
 	@for dir in $(call qstrip,$(BR2_ROOTFS_OVERLAY)); do \
 		$(call MESSAGE,"Copying overlay $${dir}"); \
 		rsync -a \
-			--exclude .svn --exclude .git --exclude .hg --exclude '*~' \
+			--exclude .empty --exclude .svn --exclude .git \
+			--exclude .hg --exclude '*~' \
 			$${dir}/ $(TARGET_DIR); \
 	done
 
