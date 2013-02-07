@@ -39,7 +39,7 @@ BOOST_WITHOUT_FLAGS += $(if $(BR2_PACKAGE_BOOST_TIMER),,timer)
 BOOST_WITHOUT_FLAGS += $(if $(BR2_PACKAGE_BOOST_WAVE),,wave)
 
 ifeq ($(BR2_PACKAGE_ICU),y)
-BOOST_FLAGS += --with-icu
+BOOST_FLAGS += --with-icu=$(STAGING_DIR)/usr
 BOOST_DEPENDENCIES += icu
 else
 BOOST_FLAGS += --without-icu
