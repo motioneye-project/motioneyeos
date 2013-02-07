@@ -55,3 +55,25 @@ there are a few ways to customize the resulting target filesystem.
   target root filesystem in +package/customize/source+, and then
   enable this special package in the configuration system. _This
   method is marked as deprecated_.
+
+Note also that if you want to perform some specific actions *after*
+all filesystem images have been created (for example to automatically
+extract your root filesystem tarball in a location exported by your
+NFS server, or to create a special firmware image that bundles your
+root filesystem and kernel image, or any other custom action), you can
+specify a space-separated list of scripts in the
++BR2_ROOTFS_POST_IMAGE_SCRIPT+ configuration option.
+
+Each of those scripts will be called with the path to the +images+
+output directory as first and unique argument, and will be executed
+with the main Buildroot source directory as the current
+directory. Those scripts will be executed as the user that executes
+Buildroot, which should normally not be the root user. Therefore, any
+action requiring root permissions in one of these post-image script
+will require special handling (usage of fakeroot or sudo), which is
+left to the script developer.
+
+Just like for the _post-build scripts_ mentioned above, you also have
+access to the following environment variables from your _post-image
+scripts_: +BUILDROOT_CONFIG+, +HOST_DIR+, +STAGING_DIR+, +TARGET_DIR+,
++BINARIES_DIR+ and +BASE_DIR+.
