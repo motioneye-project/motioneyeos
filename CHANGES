@@ -1,4 +1,4 @@
-2013.02, Not released yet:
+2013.02-rc1, Released February 10th, 2013
 
 	Toolchain: Crosstool-ng 1.17.0, default to GCC 4.6.3, target
 	libraries install fixed. Add Linaro ARM
