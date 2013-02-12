@@ -36,8 +36,16 @@ define VIM_INSTALL_RUNTIME_CMDS
 		$(MAKE) DESTDIR=$(TARGET_DIR) installmacros
 endef
 
+define VIM_REMOVE_DOCS
+	find $(TARGET_DIR)/usr/share/vim -type f -name "*.txt" -delete
+endef
+
 ifeq ($(BR2_PACKAGE_VIM_RUNTIME),y)
 VIM_POST_INSTALL_TARGET_HOOKS += VIM_INSTALL_RUNTIME_CMDS
+endif
+
+ifneq ($(BR2_HAVE_DOCUMENTATION),y)
+VIM_POST_INSTALL_TARGET_HOOKS += VIM_REMOVE_DOCS
 endif
 
 $(eval $(autotools-package))
