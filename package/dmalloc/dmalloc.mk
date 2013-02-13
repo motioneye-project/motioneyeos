@@ -47,7 +47,7 @@ define DMALLOC_INSTALL_STAGING_CMDS
 endef
 
 define DMALLOC_INSTALL_TARGET_CMDS
-	mv $(STAGING_DIR)/usr/lib/libdmalloc*.so $(TARGET_DIR)/usr/lib
+	cp -dpf $(STAGING_DIR)/usr/lib/libdmalloc*.so $(TARGET_DIR)/usr/lib
 	cp -dpf $(STAGING_DIR)/usr/bin/dmalloc $(TARGET_DIR)/usr/bin/dmalloc
 endef
 
