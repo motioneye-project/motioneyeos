@@ -20,6 +20,11 @@ if BR2_PACKAGE_FLOT
 
 comment "flot plugins"
 
+config BR2_PACKAGE_FLOT_FILLBETWEEN
+	bool "fillbetween"
+	help
+	  Flot plugin for computing bottoms for filled line and bar charts
+
 config BR2_PACKAGE_FLOT_NAVIGATE
 	bool "navigate"
 	help
