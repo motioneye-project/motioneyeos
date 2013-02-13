@@ -34,7 +34,7 @@ Most patches are provided within Buildroot, in the package
 directory; these typically aim to fix cross-compilation, libc support,
 or other such issues.
 
-These patch files should be named +<packagename>-*.patch+.
+These patch files should be named +<packagename>-<description>.patch+.
 
 A +series+ file, as used by +quilt+, may also be added in the
 package directory. In that case, the +series+ file defines the patch
@@ -56,9 +56,8 @@ How patches are applied
 * If a +series+ file exists in the package directory, then patches are
   applied according to the +series+ file;
 +
-* Otherwise, patch files matching `<packagename>-*.patch` or
-  `<packagename>-*.patch.<arch>` (where +<arch>+ is the architecture
-  name) are applied following the +ls+ command order.
+* Otherwise, patch files matching `<packagename>-*.patch` are applied
+  following the +ls+ command order.
 
 . Run the +<packagename>_POST_PATCH_HOOKS+ commands if defined.
 
