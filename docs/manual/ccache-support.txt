@@ -1,4 +1,5 @@
-// -*- mode:doc -*- ;
+// -*- mode:doc; -*-
+// vim: set syntax=asciidoc:
 
 [[ccache]]
 Using +ccache+ in Buildroot

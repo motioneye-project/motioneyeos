@@ -1,4 +1,5 @@
-// -*- mode:doc -*- ;
+// -*- mode:doc; -*-
+// vim: set syntax=asciidoc:
 
 [[makedev-syntax]]
 Makedev syntax documentation
