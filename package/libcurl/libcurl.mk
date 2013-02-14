@@ -10,7 +10,13 @@ LIBCURL_SITE = http://curl.haxx.se/download
 LIBCURL_LICENSE = ICS
 LIBCURL_LICENSE_FILES = COPYING
 LIBCURL_INSTALL_STAGING = YES
-LIBCURL_CONF_OPT = --disable-verbose --disable-manual --enable-hidden-symbols
+
+# We disable NTLM support because it uses fork(), which doesn't work
+# on non-MMU platforms. Moreover, this authentication method is
+# probably almost never used. See
+# http://curl.haxx.se/docs/manpage.html#--ntlm.
+LIBCURL_CONF_OPT = --disable-verbose --disable-manual \
+	--enable-hidden-symbols --disable-ntlm-wb
 LIBCURL_CONFIG_SCRIPTS = curl-config
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
