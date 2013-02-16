@@ -8,17 +8,26 @@ As a workaround until all reasonable toolchains get this header
 included, add a configure check in neard to test whether this header
 is available or not, and if not, use our own private copy of it.
 
+Since symbols from the v3.7 kernel header are used, but linux/nfc.h
+already exists since the v3.1 kernel, check for one of the most
+recently added symbols: NFC_LLCP_RAW_HEADER_SIZE.
+
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Signed-off-by: Arnout Vandecappelle (Essensium/Mind) <arnout@mind.be>
 
 Index: b/configure.ac
 ===================================================================
 --- a/configure.ac
 +++ b/configure.ac
-@@ -88,6 +88,8 @@
+@@ -88,6 +88,12 @@
  AC_SUBST(NETLINK_CFLAGS)
  AC_SUBST(NETLINK_LIBS)
  
-+AC_CHECK_HEADER(linux/nfc.h, [AC_DEFINE(HAVE_LINUX_NFC_H, 1, [Defines if linux/nfc.h header is available])], [], [#include <sys/socket.h>])
++AC_TRY_COMPILE([
++#include <sys/socket.h>
++#include <linux/nfc.h>
++	], [int err[NFC_LLCP_RAW_HEADER_SIZE-2];],
++	[AC_DEFINE(HAVE_LINUX_NFC_H, 1, [Defines if linux/nfc.h header is available])], [])
 +
  AC_ARG_ENABLE(test, AC_HELP_STRING([--enable-test],
  					[enable test/example scripts]),
