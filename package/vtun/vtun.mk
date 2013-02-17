@@ -7,10 +7,11 @@
 #
 #############################################################
 
-VTUN_VERSION = 3.0.2
+VTUN_VERSION = 3.0.3
 VTUN_SOURCE = vtun-$(VTUN_VERSION).tar.gz
 VTUN_SITE = http://downloads.sourceforge.net/project/vtun/vtun/$(VTUN_VERSION)
 VTUN_DEPENDENCIES = zlib lzo openssl
+VTUN_AUTORECONF = YES
 
 VTUN_CONF_OPT = \
 		--with-ssl-headers=$(STAGING_DIR)/usr/include/openssl \
