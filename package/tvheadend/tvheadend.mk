@@ -4,7 +4,7 @@
 #
 ##############################################################
 
-TVHEADEND_VERSION           = v3.3
+TVHEADEND_VERSION           = v3.5
 TVHEADEND_SITE              = http://github.com/tvheadend/tvheadend/tarball/$(TVHEADEND_VERSION)
 TVHEADEND_LICENSE           = GPLv3+
 TVHEADEND_LICENSE_FILES     = LICENSE
