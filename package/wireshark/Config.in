@@ -1,0 +1,14 @@
+config BR2_PACKAGE_WIRESHARK
+	bool "wireshark"
+	select BR2_PACKAGE_LIBPCAP
+	select BR2_PACKAGE_LIBGCRYPT
+	select BR2_PACKAGE_LIBGLIB2
+	depends on BR2_USE_WCHAR # glib2
+	help
+	  Network traffic sniffer and protocol decoder. Currently only tshark,
+	  the console interface, is enabled.
+
+	  http://www.wireshark.org
+
+comment "wireshark requires a toolchain with WCHAR support"
+	depends on !BR2_USE_WCHAR
