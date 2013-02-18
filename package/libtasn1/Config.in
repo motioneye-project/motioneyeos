@@ -1,0 +1,6 @@
+config BR2_PACKAGE_LIBTASN1
+	bool "libtasn1"
+	help
+	  ASN.1 library
+
+	  http://www.gnu.org/software/libtasn1
