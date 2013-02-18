@@ -1,0 +1,14 @@
+config BR2_PACKAGE_JSON_GLIB
+	bool "json-glib"
+	depends on BR2_USE_WCHAR # glib2
+	select BR2_PACKAGE_LIBGLIB2
+	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT
+	help
+	  JSON-GLib is a library providing serialization and
+	  deserialization support for the JavaScript Object Notation
+	  (JSON) format described by RFC 4627.
+
+	  https://live.gnome.org/JsonGlib/
+
+comment "json-glib requires a toolchain with WCHAR support"
+	depends on !BR2_USE_WCHAR
