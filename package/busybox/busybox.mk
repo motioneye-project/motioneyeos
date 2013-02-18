@@ -168,7 +168,7 @@ define BUSYBOX_INSTALL_WATCHDOG_SCRIPT
 	[ -f $(TARGET_DIR)/etc/init.d/S15watchdog ] || \
 		install -D -m 0755 package/busybox/S15watchdog \
 			$(TARGET_DIR)/etc/init.d/S15watchdog && \
-		sed -i s/PERIOD/$(BR2_PACKAGE_BUSYBOX_WATCHDOG_PERIOD)/ \
+		sed -i s/PERIOD/$(call qstrip,$(BR2_PACKAGE_BUSYBOX_WATCHDOG_PERIOD))/ \
 			$(TARGET_DIR)/etc/init.d/S15watchdog
 endef
 endif

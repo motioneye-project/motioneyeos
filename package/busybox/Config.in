@@ -64,11 +64,13 @@ config BR2_PACKAGE_BUSYBOX_WATCHDOG
 if BR2_PACKAGE_BUSYBOX_WATCHDOG
 
 config BR2_PACKAGE_BUSYBOX_WATCHDOG_PERIOD
-	int "Delay between reset"
+	string "Delay between reset"
 	default "5"
 	help
 	  Select the number of seconds between each
 	  reset of the watchdog (default 5)
+
+	  Use ms suffix to specify milliseconds (e.g. 500ms)
 
 endif
 
