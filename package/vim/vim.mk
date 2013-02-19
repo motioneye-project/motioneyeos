@@ -42,10 +42,9 @@ endef
 
 ifeq ($(BR2_PACKAGE_VIM_RUNTIME),y)
 VIM_POST_INSTALL_TARGET_HOOKS += VIM_INSTALL_RUNTIME_CMDS
-endif
-
 ifneq ($(BR2_HAVE_DOCUMENTATION),y)
 VIM_POST_INSTALL_TARGET_HOOKS += VIM_REMOVE_DOCS
+endif
 endif
 
 $(eval $(autotools-package))
