@@ -1,6 +1,7 @@
 config BR2_PACKAGE_INOTIFY_TOOLS
 	bool "inotify-tools"
 	depends on BR2_LARGEFILE
+	depends on BR2_USE_MMU # fork()
 	help
 	  inotify-tools is a C library and a set of command-line
 	  programs for Linux providing a simple interface to inotify.
