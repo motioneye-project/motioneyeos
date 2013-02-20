@@ -498,6 +498,7 @@ define QT_CONFIGURE_CMDS
 		-no-separate-debug-info \
 		-prefix /usr \
 		-plugindir /usr/lib/qt/plugins \
+		-importdir /usr/lib/qt/imports \
 		-hostprefix $(STAGING_DIR) \
 		-fast \
 		-no-rpath \
@@ -610,6 +611,14 @@ define QT_INSTALL_TARGET_PLUGINS
 	fi
 endef
 
+# Import installation
+define QT_INSTALL_TARGET_IMPORTS
+	if [ -d $(STAGING_DIR)/usr/lib/qt/imports/ ] ; then \
+		mkdir -p $(TARGET_DIR)/usr/lib/qt/imports ; \
+		cp -dpfr $(STAGING_DIR)/usr/lib/qt/imports/* $(TARGET_DIR)/usr/lib/qt/imports ; \
+	fi
+endef
+
 # Fonts installation
 ifneq ($(QT_FONTS),)
 define QT_INSTALL_TARGET_FONTS
@@ -628,6 +637,7 @@ endif
 define QT_INSTALL_TARGET_CMDS
 	$(QT_INSTALL_TARGET_LIBS)
 	$(QT_INSTALL_TARGET_PLUGINS)
+	$(QT_INSTALL_TARGET_IMPORTS)
 	$(QT_INSTALL_TARGET_FONTS)
 	$(QT_INSTALL_TARGET_FONTS_TTF)
 endef
