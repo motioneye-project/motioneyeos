@@ -117,7 +117,10 @@ endef
 
 HOST_NCURSES_CONF_OPT = \
 	--without-shared --without-gpm \
-	--without-manpages
+	--without-manpages \
+	--without-cxx \
+	--without-cxx-binding \
+	--without-ada
 
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
