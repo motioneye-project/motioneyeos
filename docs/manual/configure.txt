@@ -64,6 +64,7 @@ Type+ option in the +Toolchain+ menu. Once one solution has been
 chosen, a number of configuration options appear, they are detailed in
 the following sections.
 
+[[internal-toolchain-backend]]
 Internal toolchain backend
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -138,6 +139,7 @@ Drawbacks of this backend:
   using the _External toolchain backend_.
 * Limited to the _uClibc_ C library.
 
+[[external-toolchain-backend]]
 External toolchain backend
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -240,6 +242,7 @@ Drawbacks of this backend:
   fix from the toolchain vendor, unless you build your external
   toolchain by yourself using Crosstool-NG.
 
+[[crosstool-ng-toolchain-backend]]
 Crosstool-NG toolchain backend
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 

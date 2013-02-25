@@ -15,7 +15,7 @@ There is no way of tuning an external toolchain since Buildroot does not
 generate it.
 
 It also requires to set the Buildroot settings according to the toolchain ones
-(see xref:external-toolchain[]).
+(see xref:external-toolchain-backend[]).
 
 Using the internal Buildroot toolchain backend
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

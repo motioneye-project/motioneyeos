@@ -13,10 +13,13 @@ consists of the buildroot configuration, the configuration files for
 packages that you use (kernel, busybox, uClibc, ...), and your rootfs
 modifications.
 
+
+[[customize-store-basics]]
 Basics for storing the configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-[[customize-store-basics]]
 
+
+[[customize-store-buildroot-config]]
 Buildroot configuration
 ^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -35,6 +38,7 @@ Alternatively, you can copy the file to any other place and rebuild with
 +make defconfig BR2_DEFCONFIG=<path-to-defconfig-file>+.
 
 
+[[customize-store-package-config]]
 Other package configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -71,6 +75,7 @@ configuration files easier.
   resp. +BR2_TARGET_AT91BOOTSTRAP3_CUSTOM_CONFIG_FILE+.
 
 
+[[customize-store-board-support]]
 Creating your own board support
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
