@@ -25,5 +25,5 @@ interested in hacking it to add:
 
 * new packages: refer to the xref:adding-packages[Developer guide]
 
-* new board support: refer to the xref:customize-store[], more specifically
-  xref:customize-store-board-support[].
+* new board support: refer to the
+  xref:customize-store-board-support[Developer guide].
