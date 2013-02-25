@@ -1,0 +1,12 @@
+config BR2_PACKAGE_F2FS_TOOLS
+	bool "f2fs-tools"
+	select BR2_PACKAGE_UTIL_LINUX
+	depends on BR2_LARGEFILE
+	depends on BR2_USE_WCHAR # util-linux
+	help
+	  Tools for Flash-Friendly File System (F2FS)
+
+	  http://sourceforge.net/projects/f2fs-tools/
+
+comment "f2fs-tools requires a toolchain with LARGEFILE and WCHAR support"
+	depends on !(BR2_LARGEFILE && BR2_USE_WCHAR)
