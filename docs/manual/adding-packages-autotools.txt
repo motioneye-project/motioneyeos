@@ -18,24 +18,25 @@ package, with an example :
 03: # libfoo
 04: #
 05: #############################################################
-06: LIBFOO_VERSION = 1.0
-07: LIBFOO_SOURCE = libfoo-$(LIBFOO_VERSION).tar.gz
-08: LIBFOO_SITE = http://www.foosoftware.org/download
-09: LIBFOO_INSTALL_STAGING = YES
-10: LIBFOO_INSTALL_TARGET = NO
-11: LIBFOO_CONF_OPT = --disable-shared
-12: LIBFOO_DEPENDENCIES = libglib2 host-pkgconf
-13:
-14: $(eval $(autotools-package))
+06:
+07: LIBFOO_VERSION = 1.0
+08: LIBFOO_SOURCE = libfoo-$(LIBFOO_VERSION).tar.gz
+09: LIBFOO_SITE = http://www.foosoftware.org/download
+10: LIBFOO_INSTALL_STAGING = YES
+11: LIBFOO_INSTALL_TARGET = NO
+12: LIBFOO_CONF_OPT = --disable-shared
+13: LIBFOO_DEPENDENCIES = libglib2 host-pkgconf
+14:
+15: $(eval $(autotools-package))
 ------------------------
 
-On line 6, we declare the version of the package.
+On line 7, we declare the version of the package.
 
-On line 7 and 8, we declare the name of the tarball and the location
+On line 8 and 9, we declare the name of the tarball and the location
 of the tarball on the Web. Buildroot will automatically download the
 tarball from this location.
 
-On line 9, we tell Buildroot to install the package to the staging
+On line 10, we tell Buildroot to install the package to the staging
 directory. The staging directory, located in +output/staging/+
 is the directory where all the packages are installed, including their
 development files, etc. By default, packages are not installed to the
@@ -45,7 +46,7 @@ other libraries or applications depending on them. Also by default, when
 staging installation is enabled, packages are installed in this location
 using the +make install+ command.
 
-On line 10, we tell Buildroot to not install the package to the
+On line 11, we tell Buildroot to not install the package to the
 target directory. This directory contains what will become the root
 filesystem running on the target. For purely static libraries, it is
 not necessary to install them in the target directory because they will
@@ -53,14 +54,14 @@ not be used at runtime. By default, target installation is enabled; setting
 this variable to NO is almost never needed. Also by default, packages are
 installed in this location using the +make install+ command.
 
-On line 11, we tell Buildroot to pass a custom configure option, that
+On line 12, we tell Buildroot to pass a custom configure option, that
 will be passed to the +./configure+ script before configuring
 and building the package.
 
-On line 12, we declare our dependencies, so that they are built
+On line 13, we declare our dependencies, so that they are built
 before the build process of our package starts.
 
-Finally, on line line 14, we invoke the +autotools-package+
+Finally, on line line 15, we invoke the +autotools-package+
 macro that generates all the Makefile rules that actually allows the
 package to be built.
 
