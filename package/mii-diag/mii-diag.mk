@@ -21,11 +21,11 @@ endef
 MII_DIAG_POST_PATCH_HOOKS = MII_DIAG_DEBIAN_PATCHES
 
 define MII_DIAG_BUILD_CMDS
-	$(MAKE) $(MII_DIAG_MAKE_OPT) -C $(@D)
+	$(MAKE) $(MII_DIAG_MAKE_OPT) -C $(@D) mii-diag
 endef
 
 define MII_DIAG_INSTALL_TARGET_CMDS
-	$(MAKE) DESTDIR=$(TARGET_DIR) -C $(@D) install
+	$(MAKE) DESTDIR=$(TARGET_DIR) -C $(@D) install-mii-diag
 endef
 
 define MII_DIAG_UNINSTALL_TARGET_CMDS
