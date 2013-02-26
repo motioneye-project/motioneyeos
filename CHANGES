@@ -1,3 +1,16 @@
+2013.02-rc3, Released February 26th, 2013
+
+	Minor fixes.
+
+	Updated/fixed packages: conntrack-tools, dialog,
+	enlightenment, haserl, keyutils, libfif, libmad,
+	linux-firmware, linux-fusion, matchbox-desktop, matchbox-wm,
+	ruby, spawn-fcgi, vtun
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#5960: fusion.ko driver does not install to target rootfs
+
 2013.02-rc2, Released February 19th, 2013
 
 	Fixes all over the tree.
