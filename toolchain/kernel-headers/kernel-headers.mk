@@ -36,15 +36,6 @@ LINUX_HEADERS_CAT:=$(BZCAT)
 LINUX_HEADERS_UNPACK_DIR:=$(TOOLCHAIN_DIR)/linux-$(LINUX_HEADERS_VERSION)
 LINUX_HEADERS_DIR:=$(TOOLCHAIN_DIR)/linux
 
-# long term support kernels are stored in a longterm/v2.6.x subdir
-ifeq ($(BR2_KERNEL_HEADERS_2_6_35),y)
-DEFAULT_KERNEL_HEADERS_MAJOR := \
-	$(shell echo $(DEFAULT_KERNEL_HEADERS) | sed 's/\.[0-9]*$$//')
-# += adds a space between
-LINUX_HEADERS_SITE:= \
-	$(LINUX_HEADERS_SITE)longterm/v$(DEFAULT_KERNEL_HEADERS_MAJOR)/
-endif
-
 LINUX_HEADERS_DEPENDS:=
 
 $(LINUX_HEADERS_UNPACK_DIR)/.unpacked: $(DL_DIR)/$(LINUX_HEADERS_SOURCE)
