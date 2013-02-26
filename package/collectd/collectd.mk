@@ -122,6 +122,14 @@ ifeq ($(BR2_PACKAGE_LIBGCRYPT),y)
 	COLLECTD_CONF_OPT += --with-libgcrypt=$(STAGING_DIR)/usr
 endif
 
+# released software should not break on minor warnings
+define COLLECTD_DROP_WERROR
+	$(SED) 's/-Werror//' \
+		$(@D)/src/Makefile.in $(@D)/src/libcollectdclient/Makefile.in
+endef
+
+COLLECTD_POST_PATCH_HOOKS += COLLECTD_DROP_WERROR
+
 define COLLECTD_INSTALL_TARGET_CMDS
 	$(MAKE) DESTDIR=$(TARGET_DIR) -C $(@D) install
 	rm -f $(TARGET_DIR)/usr/bin/collectd-nagios
