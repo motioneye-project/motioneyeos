@@ -1,6 +1,7 @@
 config BR2_PACKAGE_USHARE
 	bool "ushare"
 	depends on BR2_LARGEFILE
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libupnp
 	select BR2_PACKAGE_LIBUPNP
 	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE
 	help
@@ -10,5 +11,5 @@ config BR2_PACKAGE_USHARE
 
 	  http://ushare.geexbox.org/
 
-comment "ushare requires a toolchain with LARGEFILE support"
-	depends on !BR2_LARGEFILE
+comment "ushare requires a toolchain with LARGEFILE and thread support"
+	depends on !(BR2_LARGEFILE && BR2_TOOLCHAIN_HAS_THREADS)
