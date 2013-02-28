@@ -29,3 +29,6 @@ config BR2_PACKAGE_LIBGTK2_DEMO
 
 comment "libgtk2 requires a toolchain with WCHAR and C++ support"
 	depends on !BR2_USE_WCHAR || !BR2_INSTALL_LIBSTDCPP
+
+comment "WARNING: Libgtk2 directfb backend is deprecated"
+	depends on BR2_PACKAGE_LIBGTK2 && !BR2_PACKAGE_XORG7
