@@ -1,0 +1,29 @@
+Disable controllers testcases.
+This fix is carried over from 20101031 version.
+
+The cpuset controllers testcases do not build due to bug
+https://sourceforge.net/tracker/?func=detail&aid=3126942&group_id=3382&atid=103382.
+Disabling just the cpuset controllers do not seem to be easily possible, and
+those controller features are rarely used on embedded systems anyway.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Signed-off-by: Jerin Jacob  <jerinjacobk@gmail.com>
+---
+ testcases/kernel/Makefile |    1 -
+ 1 files changed, 0 insertions(+), 1 deletions(-)
+
+diff --git a/testcases/kernel/Makefile b/testcases/kernel/Makefile
+index 4b4800d..d6ab7b6 100644
+--- a/testcases/kernel/Makefile
++++ b/testcases/kernel/Makefile
+@@ -37,7 +37,6 @@ ifneq ($(UCLINUX),1)
+ # KEEP THIS LIST ALPHABETIZED PLEASE!
+ SUBDIRS			+= connectors \
+ 			   containers \
+-			   controllers \
+ 			   fs \
+ 			   hotplug \
+ 			   io \
+-- 
+1.7.6.5
+
