@@ -11,3 +11,13 @@ config BR2_PACKAGE_OPKG
 
 	  http://code.google.com/p/opkg/
 
+if BR2_PACKAGE_OPKG
+
+config BR2_PACKAGE_OPKG_GPG_SIGN
+	bool "gnupg support"
+	select BR2_PACKAGE_LIBGPGME
+	help
+	  Enable opkg package signature checking support using
+	  gnupg/libgpgme.
+
+endif
