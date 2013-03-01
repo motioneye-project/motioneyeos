@@ -1,5 +1,6 @@
 config BR2_PACKAGE_LIBEXOSIP2
 	bool "libeXosip2"
+	depends on BR2_USE_MMU # fork()
 	select BR2_PACKAGE_LIBOSIP2
 	help
 	  eXosip is a library that hides the complexity of using the
