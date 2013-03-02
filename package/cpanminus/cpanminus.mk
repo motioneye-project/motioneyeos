@@ -4,9 +4,9 @@
 #
 #############################################################
 
-CPANMINUS_VERSION = 1.5018
-CPANMINUS_SOURCE = miyagawa-cpanminus-$(CPANMINUS_VERSION)-0-gee6cd30.tar.gz
-CPANMINUS_SITE = https://github.com/miyagawa/cpanminus/tarball/$(CPANMINUS_VERSION)
+CPANMINUS_VERSION = 1.6002
+CPANMINUS_SOURCE = $(CPANMINUS_VERSION).tar.gz
+CPANMINUS_SITE = https://github.com/miyagawa/cpanminus/archive
 CPANMINUS_DEPENDENCIES = host-qemu perl $(call qstrip,$(BR2_PACKAGE_CPANMINUS_NATIVE_DEPENDENCIES))
 
 CPANMINUS_RUN_PERL = $(QEMU_USER) $(STAGING_DIR)/usr/bin/perl
