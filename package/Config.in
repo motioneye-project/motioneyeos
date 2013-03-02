@@ -316,7 +316,6 @@ menu "Perl libraries/modules"
 source "package/cpanminus/Config.in"
 endmenu
 endif
-source "package/microperl/Config.in"
 source "package/php/Config.in"
 source "package/python/Config.in"
 source "package/python3/Config.in"
