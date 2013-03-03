@@ -23,3 +23,12 @@ config BR2_PACKAGE_ZEROMQ
 	  ØMQ is from iMatix and is LGPL open source.
 
 	  http://www.zeromq.org/
+
+config BR2_PACKAGE_ZEROMQ_PGM
+	bool "PGM/EPGM support"
+	depends on BR2_PACKAGE_ZEROMQ
+	select BR2_PACKAGE_OPENPGM
+	help
+	  Add support for Pragmatic General Multicast protocol (RFC 3208)
+	  implemented either over raw IP packets or UDP datagrams
+	  (encapsulated PGM). This requires OpenPGM library.
