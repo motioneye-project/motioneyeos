@@ -1,0 +1,16 @@
+config BR2_PACKAGE_OPENPGM
+	bool "openpgm"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_INET_IPV6
+	depends on BR2_USE_WCHAR
+	help
+	  OpenPGM is an open source implementation of the Pragmatic General
+	  Multicast (PGM) specification in RFC 3208 available at www.ietf.org.
+	  PGM is a reliable and scalable multicast protocol that enables
+	  receivers to detect loss, request retransmission of lost data, or
+	  notify an application of unrecoverable loss.
+
+	  http://code.google.com/p/openpgm/
+
+comment "openpgm needs a toolchain with WCHAR, threads and IPv6 support"
+	depends on !(BR2_TOOLCHAIN_HAS_THREADS && BR2_INET_IPV6 && BR2_USE_WCHAR)
