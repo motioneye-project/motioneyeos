@@ -4,7 +4,7 @@
 #
 #############################################################
 
-DOSFSTOOLS_VERSION = 3.0.15
+DOSFSTOOLS_VERSION = 3.0.16
 DOSFSTOOLS_SITE = http://fossies.org/linux/misc
 DOSFSTOOLS_LICENSE = GPLv3+
 DOSFSTOOLS_LICENSE_FILES = COPYING
