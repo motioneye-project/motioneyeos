@@ -1,5 +1,6 @@
 config BR2_PACKAGE_HTOP
 	bool "htop"
+	depends on BR2_USE_MMU # fork()
 	select BR2_PACKAGE_NCURSES
 	help
 	  htop is an interactive text-mode process viewer for Linux.
