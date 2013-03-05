@@ -168,6 +168,7 @@ TARGET_EXCEPTIONS = [
     "erase-fakeroots",
     "target-generic-hostname",
     "target-root-passwd",
+    "target-post-image",
 ]
 
 # In full mode, start with the result of get_targets() to get the main
