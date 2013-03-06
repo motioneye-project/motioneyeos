@@ -1,6 +1,28 @@
 config BR2_PACKAGE_PCRE
 	bool "pcre"
+	# Ensure at least the default 8-bit library is enabled.
+	select BR2_PACKAGE_PCRE_8 if \
+	       (!BR2_PACKAGE_PCRE_16 && !BR2_PACKAGE_PCRE_32)
 	help
 	  Perl Compatible Regular Expressions
 
 	  http://www.pcre.org/
+
+if BR2_PACKAGE_PCRE
+
+config BR2_PACKAGE_PCRE_8
+	bool "8-bit pcre"
+	help
+	  This option builds the 8-bits pcre library, i.e 'libpcre'
+
+config BR2_PACKAGE_PCRE_16
+	bool "16-bit pcre"
+	help
+	  This option builds the 16-bits pcre library, i.e 'libpcre16'
+
+config BR2_PACKAGE_PCRE_32
+	bool "32-bit pcre"
+	help
+	  This option builds the 32-bits pcre library, i.e 'libpcre32'
+
+endif
