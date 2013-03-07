@@ -3,6 +3,9 @@ config BR2_PACKAGE_GPTFDISK
 	depends on BR2_LARGEFILE
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_USE_WCHAR # util-linux
+	select BR2_PACKAGE_UTIL_LINUX
+	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
+	select BR2_PACKAGE_GPTFDISK_GDISK if !BR2_PACKAGE_GPTFDISK_SGDISK
 	help
 	  GPT fdisk (consisting of the gdisk and sgdisk programs) is a
 	  text-mode partitioning tool that works on Globally Unique Identifier
@@ -14,8 +17,6 @@ config BR2_PACKAGE_GPTFDISK
 config BR2_PACKAGE_GPTFDISK_GDISK
 	bool "interactive gdisk"
 	depends on BR2_PACKAGE_GPTFDISK
-	select BR2_PACKAGE_UTIL_LINUX
-	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
 	help
 	  Install the interactive GUID partition table (GPT) manipulator
 	  /usr/sbin/gdisk which is modelled after and quite similar in use
@@ -24,8 +25,6 @@ config BR2_PACKAGE_GPTFDISK_GDISK
 config BR2_PACKAGE_GPTFDISK_SGDISK
 	bool "command line sgdisk"
 	depends on BR2_PACKAGE_GPTFDISK
-	select BR2_PACKAGE_UTIL_LINUX
-	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
 	select BR2_PACKAGE_POPT
 	help
 	  Install the command-line GUID partition table (GPT) manipulator
