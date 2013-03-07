@@ -41,6 +41,12 @@ QT5BASE_CONFIGURE_OPTS += \
 	-system-pcre \
 	-no-pch
 
+ifeq ($(BR2_ENABLE_DEBUG),y)
+QT5BASE_CONFIGURE_OPTS += -debug
+else
+QT5BASE_CONFIGURE_OPTS += -release
+endif
+
 ifeq ($(BR2_LARGEFILE),y)
 QT5BASE_CONFIGURE_OPTS += -largefile
 else
