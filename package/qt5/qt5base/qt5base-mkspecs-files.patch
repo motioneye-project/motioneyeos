@@ -1,0 +1,61 @@
+Add a Buildroot 'device' to ease cross-compilation
+
+Qt5 has a mechanism to support "device" profiles, so that people can
+specify the compiler, compiler flags and so on for a specific device.
+
+We leverage this mechanism in the Buildroot packaging of qt5 to
+simplify cross-compilation: we have our own "device" definition, which
+allows us to easily pass the cross-compiler paths and flags from our
+qt5.mk.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/mkspecs/devices/linux-buildroot-g++/qmake.conf
+===================================================================
+--- /dev/null
++++ b/mkspecs/devices/linux-buildroot-g++/qmake.conf
+@@ -0,0 +1,38 @@
++MAKEFILE_GENERATOR      = UNIX
++CONFIG                  += incremental gdb_dwarf_index
++QMAKE_INCREMENTAL_STYLE = sublib
++
++include(../../common/linux.conf)
++include(../../common/gcc-base-unix.conf)
++include(../../common/g++-unix.conf)
++
++load(device_config)
++
++QT_QPA_DEFAULT_PLATFORM = eglfs
++
++CROSS_COMPILE =
++COMPILER_CFLAGS =
++COMPILER_CXXFLAGS =
++
++# modifications to g++.conf
++QMAKE_CC                = $${CROSS_COMPILE}gcc
++QMAKE_CXX               = $${CROSS_COMPILE}g++
++QMAKE_LINK              = $${QMAKE_CXX}
++QMAKE_LINK_SHLIB        = $${QMAKE_CXX}
++
++# modifications to linux.conf
++QMAKE_AR                = $${CROSS_COMPILE}ar cqs
++QMAKE_OBJCOPY           = $${CROSS_COMPILE}objcopy
++QMAKE_STRIP             = $${CROSS_COMPILE}strip
++
++#modifications to gcc-base.conf
++QMAKE_CFLAGS           += $${COMPILER_CFLAGS}
++QMAKE_CXXFLAGS         += $${COMPILER_CXXFLAGS}
++QMAKE_CXXFLAGS_RELEASE += -O3
++
++QMAKE_LIBS             += -lrt -lpthread -ldl
++
++# Sanity check
++deviceSanityCheckCompiler()
++
++load(qt_config)
+Index: b/mkspecs/devices/linux-buildroot-g++/qplatformdefs.h
+===================================================================
+--- /dev/null
++++ b/mkspecs/devices/linux-buildroot-g++/qplatformdefs.h
+@@ -0,0 +1 @@
++#include "../../linux-g++/qplatformdefs.h"

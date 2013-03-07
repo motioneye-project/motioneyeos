@@ -14,5 +14,5 @@ menuconfig BR2_PACKAGE_QT5
 	  http://qt-project.org
 
 if BR2_PACKAGE_QT5
-
+source "package/qt5/qt5base/Config.in"
 endif

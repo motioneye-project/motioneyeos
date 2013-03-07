@@ -1,0 +1,56 @@
+config BR2_PACKAGE_QT5BASE
+	bool "qt5base"
+	select BR2_PACKAGE_ZLIB
+	select BR2_PACKAGE_PCRE
+	select BR2_PACKAGE_PCRE_16
+	help
+	  Qt is a cross-platform application and UI framework for
+	  developers using C++.
+
+	  This package corresponds to the qt5base module, which
+	  contains the base Qt libraries: QtCore, QtNetwork, QtGui,
+	  QtWidgets, etc.
+
+	  http://qt-project.org
+
+if BR2_PACKAGE_QT5BASE
+
+config BR2_PACKAGE_QT5BASE_LICENSE_APPROVED
+	bool "Approve free license"
+	help
+	  Select this if you approve one of the available free licenses for the
+	  Qt5 library.
+	  By doing this you will not be asked while the library is compiled.
+	  Please read and understand the license terms before approving this.
+
+	  LGPL v2.1: http://qt-project.org/doc/qt-5.0/qtdoc/lgpl.html
+	  GPL  v3.0: http://qt-project.org/doc/qt-5.0/qtdoc/gpl.html
+
+	  See also http://qt-project.org/doc/qt-5.0/qtdoc/licensing.html
+
+config BR2_PACKAGE_QT5BASE_NETWORK
+	bool "network module"
+	help
+	  This options enables the Qt5Network library.
+
+config BR2_PACKAGE_QT5BASE_CONCURRENT
+	bool "concurrent module"
+	help
+	  This options enables the Qt5Concurrent library.
+
+config BR2_PACKAGE_QT5BASE_SQL
+	bool "sql module"
+	help
+	  This options enables the Qt5Sql library.
+
+config BR2_PACKAGE_QT5BASE_TEST
+	bool "test module"
+	help
+	  This options enables the Qt5Test library.
+
+config BR2_PACKAGE_QT5BASE_XML
+	bool "XML module"
+	help
+	  This options enables the Qt5Xml library.
+
+endif
