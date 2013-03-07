@@ -1,0 +1,53 @@
+Add .pc files for the OpenGLESv2 and EGL libraries
+
+Those pkg-config files make it easier for Qt5 to find those libraries
+and the appropriate link flags.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/interface/khronos/egl/egl.pc.in
+===================================================================
+--- /dev/null
++++ b/interface/khronos/egl/egl.pc.in
+@@ -0,0 +1,10 @@
++prefix=@CMAKE_INSTALL_PREFIX@
++exec_prefix=${prefix}
++libdir=${exec_prefix}/lib
++includedir=${prefix}/include
++
++Name: egl
++Description: RasberryPi implementation of EGL
++Version: 1.0
++Libs: -L${libdir} -lEGL -lGLESv2
++Cflags: -I${includedir}/ -I${includedir}/interface/vcos/pthreads/
+Index: b/interface/khronos/CMakeLists.txt
+===================================================================
+--- a/interface/khronos/CMakeLists.txt
++++ b/interface/khronos/CMakeLists.txt
+@@ -73,3 +73,11 @@
+ 
+ install(TARGETS EGL GLESv2 OpenVG WFC khrn_client DESTINATION lib)
+ install(TARGETS EGL_static GLESv2_static khrn_static DESTINATION lib)
++configure_file("${CMAKE_CURRENT_SOURCE_DIR}/egl/egl.pc.in"
++  "${CMAKE_CURRENT_BINARY_DIR}/egl/egl.pc" @ONLY)
++install(FILES "${CMAKE_CURRENT_BINARY_DIR}/egl/egl.pc"
++  DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig")
++configure_file("${CMAKE_CURRENT_SOURCE_DIR}/glxx/glesv2.pc.in"
++  "${CMAKE_CURRENT_BINARY_DIR}/glxx/glesv2.pc" @ONLY)
++install(FILES "${CMAKE_CURRENT_BINARY_DIR}/glxx/glesv2.pc"
++  DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig")
+Index: b/interface/khronos/glxx/glesv2.pc.in
+===================================================================
+--- /dev/null
++++ b/interface/khronos/glxx/glesv2.pc.in
+@@ -0,0 +1,10 @@
++prefix=@CMAKE_INSTALL_PREFIX@
++exec_prefix=${prefix}
++libdir=${exec_prefix}/lib
++includedir=${prefix}/include
++
++Name: glesv2
++Description: RasberryPi implementation of OpenGL ESv2
++Version: 2.0
++Libs: -L${libdir} -lGLESv2
++Cflags: -I${includedir}/
