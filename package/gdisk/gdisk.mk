@@ -4,9 +4,9 @@
 #
 #############################################################
 
-GDISK_VERSION = 0.6.14
-GDISK_SITE = http://downloads.sourceforge.net/project/gptfdisk/gptfdisk/$(GDISK_VERSION)
-GDISK_SOURCE = gdisk-$(GDISK_VERSION).tgz
+GDISK_VERSION = 0.8.6
+GDISK_SITE = http://downloads.sourceforge.net/sourceforge/gptfdisk
+GDISK_SOURCE = gptfdisk-$(GDISK_VERSION).tar.gz
 
 GDISK_TARGETS_$(BR2_PACKAGE_GDISK_GDISK) += gdisk
 GDISK_TARGETS_$(BR2_PACKAGE_GDISK_SGDISK) += sgdisk
