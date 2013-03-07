@@ -1,0 +1,20 @@
+config BR2_PACKAGE_TZDATA
+	bool "tzdata"
+	depends on BR2_TOOLCHAIN_EXTERNAL_GLIBC || BR2_TOOLCHAIN_CTNG_eglibc || BR2_TOOLCHAIN_CTNG_glibc
+	help
+	  Time zone database
+
+	  http://www.iana.org/time-zones/repository/tz-link.html
+
+config BR2_PACKAGE_TZDATA_ZONELIST
+	string "Time zone list"
+	depends on BR2_PACKAGE_TZDATA
+	default "default"
+	help
+	  Space-separated list of time zones to compile.
+
+	  The value "default" includes all commonly used time zones. Note
+	  that this set consumes around 5.5M.
+
+	  The full list is the list of files in the time zone database source,
+	  not including the build and .tab files.
