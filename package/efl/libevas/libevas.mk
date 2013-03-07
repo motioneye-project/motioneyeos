@@ -15,7 +15,7 @@ LIBEVAS_INSTALL_STAGING = YES
 LIBEVAS_DEPENDENCIES = host-pkgconf zlib libeina freetype
 
 HOST_LIBEVAS_DEPENDENCIES = host-pkgconf host-zlib host-libeina \
-				host-freetype host-libpng host-jpeg
+				host-freetype host-libpng host-libjpeg
 HOST_LIBEVAS_CONF_OPT += \
 	--enable-image-loader-png \
 	--enable-image-loader-jpeg \
