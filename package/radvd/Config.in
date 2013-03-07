@@ -3,7 +3,6 @@ config BR2_PACKAGE_RADVD
 	# libdaemon uses fork()
 	depends on BR2_USE_MMU
 	select BR2_PACKAGE_FLEX
-	select BR2_PACKAGE_FLEX_LIBFL
 	select BR2_PACKAGE_LIBDAEMON
 	depends on BR2_INET_IPV6
 	help
