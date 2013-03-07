@@ -40,6 +40,32 @@ comment "As long as these options stay selected, the build   "
 comment "will fail.                                          "
 endif
 
+#
+# Legacy options since 2013.02
+#
+
+config BR2_PACKAGE_GDISK
+	bool "gdisk has been replaced by gptfdisk"
+	select BR2_LEGACY
+	select BR2_PACKAGE_GPTFDISK
+	help
+	  The option has been renamed BR2_PACKAGE_GPTFDISK.
+
+config BR2_PACKAGE_GDISK_GDISK
+	bool "gdisk tool from gdisk has been replaced by gdisk in gptfdisk"
+	select BR2_LEGACY
+	select BR2_PACKAGE_GPTFDISK
+	select BR2_PACKAGE_GPTFDISK_GDISK
+	help
+	  The option has been renamed BR2_PACKAGE_GPTFDISK_GDISK.
+
+config BR2_PACKAGE_GDISK_SGDISK
+	bool "sgdisk tool from gdisk has been replaced by sgdisk in gptfdisk"
+	select BR2_LEGACY
+	select BR2_PACKAGE_GPTFDISK
+	select BR2_PACKAGE_GPTFDISK_SGDISK
+	help
+	  The option has been renamed BR2_PACKAGE_GPTFDISK_SGDISK.
 
 #
 # Legacy options since 2012.11

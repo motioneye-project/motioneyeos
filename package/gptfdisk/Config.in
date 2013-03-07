@@ -1,5 +1,5 @@
-config BR2_PACKAGE_GDISK
-	bool "gdisk"
+config BR2_PACKAGE_GPTFDISK
+	bool "gptfdisk"
 	depends on BR2_LARGEFILE
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_USE_WCHAR # util-linux
@@ -11,9 +11,9 @@ config BR2_PACKAGE_GDISK
 
 	  http://www.rodsbooks.com/gdisk/
 
-config BR2_PACKAGE_GDISK_GDISK
+config BR2_PACKAGE_GPTFDISK_GDISK
 	bool "interactive gdisk"
-	depends on BR2_PACKAGE_GDISK
+	depends on BR2_PACKAGE_GPTFDISK
 	select BR2_PACKAGE_UTIL_LINUX
 	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
 	help
@@ -21,9 +21,9 @@ config BR2_PACKAGE_GDISK_GDISK
 	  /usr/sbin/gdisk which is modelled after and quite similar in use
 	  to the traditional MBR based fdisk tool.
 
-config BR2_PACKAGE_GDISK_SGDISK
+config BR2_PACKAGE_GPTFDISK_SGDISK
 	bool "command line sgdisk"
-	depends on BR2_PACKAGE_GDISK
+	depends on BR2_PACKAGE_GPTFDISK
 	select BR2_PACKAGE_UTIL_LINUX
 	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
 	select BR2_PACKAGE_POPT
@@ -32,5 +32,5 @@ config BR2_PACKAGE_GDISK_SGDISK
 	  /usr/sbin/sgdisk which is named after the traditional MBR based
 	  sfdisk tool albeit with an entirely different option syntax.
 
-comment "gdisk requires a toolchain with LARGEFILE/WCHAR/C++ support enabled"
+comment "gptfdisk requires a toolchain with LARGEFILE/WCHAR/C++ support enabled"
 	depends on !(BR2_LARGEFILE && BR2_INSTALL_LIBSTDCPP && BR2_USE_WCHAR)
