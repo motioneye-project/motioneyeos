@@ -5,7 +5,8 @@ config BR2_PACKAGE_GPTFDISK
 	depends on BR2_USE_WCHAR # util-linux
 	select BR2_PACKAGE_UTIL_LINUX
 	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
-	select BR2_PACKAGE_GPTFDISK_GDISK if !BR2_PACKAGE_GPTFDISK_SGDISK
+	select BR2_PACKAGE_GPTFDISK_GDISK if \
+	       !(BR2_PACKAGE_GPTFDISK_SGDISK || BR2_PACKAGE_GPTFDISK_CGDISK)
 	help
 	  GPT fdisk (consisting of the gdisk and sgdisk programs) is a
 	  text-mode partitioning tool that works on Globally Unique Identifier
@@ -30,6 +31,14 @@ config BR2_PACKAGE_GPTFDISK_SGDISK
 	  Install the command-line GUID partition table (GPT) manipulator
 	  /usr/sbin/sgdisk which is named after the traditional MBR based
 	  sfdisk tool albeit with an entirely different option syntax.
+
+config BR2_PACKAGE_GPTFDISK_CGDISK
+	bool "ncurses cgdisk"
+	depends on BR2_PACKAGE_GPTFDISK
+	select BR2_PACKAGE_NCURSES
+	help
+	  Install the ncurses-based GUID partition table (GPT)
+	  manipulator /usr/sbin/cgdisk.
 
 comment "gptfdisk requires a toolchain with LARGEFILE/WCHAR/C++ support enabled"
 	depends on !(BR2_LARGEFILE && BR2_INSTALL_LIBSTDCPP && BR2_USE_WCHAR)
