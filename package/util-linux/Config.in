@@ -3,7 +3,7 @@ config BR2_PACKAGE_UTIL_LINUX
 	depends on BR2_LARGEFILE
 	depends on BR2_USE_WCHAR
 	help
-	  Various useful/essential Linux utilities.
+	  Various useful/essential linux libraries and utilities.
 
 	  Things like mkfs, mkswap, swapon, fdisk, mount, dmesg, etc...
 
@@ -11,96 +11,165 @@ config BR2_PACKAGE_UTIL_LINUX
 
 if BR2_PACKAGE_UTIL_LINUX
 
-############################################
-# default enabled and should be disabled by
-#  --disable-foo
-#
-
-config BR2_PACKAGE_UTIL_LINUX_MOUNT
-	bool "build mount utilties"
-	select BR2_PACKAGE_UTIL_LINUX_LIBBLKID
-
-config BR2_PACKAGE_UTIL_LINUX_FSCK
-	select BR2_PACKAGE_UTIL_LINUX_LIBBLKID
-	bool "build \"fsck\""
+config BR2_PACKAGE_UTIL_LINUX_LIBBLKID
+	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
+	bool "libblkid"
+	help
+	  Install libblkid.
 
 config BR2_PACKAGE_UTIL_LINUX_LIBMOUNT
 	select BR2_PACKAGE_UTIL_LINUX_LIBBLKID
-	bool "build libmount"
+	# libc lacks UTIME_NOW & UTIME_COMMIT
+	depends on !(BR2_microblazeel || BR2_microblazebe)
+	bool "libmount"
+	help
+	  Install libmount.
 
 config BR2_PACKAGE_UTIL_LINUX_LIBUUID
-	bool "build libuuid and uuid utilities"
-	default y
+	bool "libuuid"
+	help
+	  Install libuuid.
 
-config BR2_PACKAGE_UTIL_LINUX_UUIDD
-	bool "build \"uuidd\""
-
-config BR2_PACKAGE_UTIL_LINUX_LIBBLKID
+config BR2_PACKAGE_UTIL_LINUX_BINARIES
+	bool "install utilities"
+	depends on BR2_USE_MMU # fork()
+	# libc lacks UTIME_NOW & UTIME_COMMIT for libmount
+	depends on !(BR2_microblazeel || BR2_microblazebe)
+	select BR2_PACKAGE_UTIL_LINUX_LIBBLKID
+	select BR2_PACKAGE_UTIL_LINUX_LIBMOUNT
 	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
-	bool "build libblkid and blkid utilities"
-	default y
+	help
+	  Install the basic set of util-linux binaries.
+
+if BR2_PACKAGE_UTIL_LINUX_BINARIES
 
 config BR2_PACKAGE_UTIL_LINUX_AGETTY
-	bool "build \"agetty\""
+	bool "agetty"
+	help
+	  Alternative linux getty
+
+config BR2_PACKAGE_UTIL_LINUX_ARCH
+	bool "arch"
+	help
+	  Print machine architecture
 
 config BR2_PACKAGE_UTIL_LINUX_CRAMFS
-	bool "build \"fsck.cramfs, mkfs.cramfs\""
+	bool "cramfs utilities"
+	select BR2_PACKAGE_ZLIB
+	help
+	  Build fsck.cramfs and mkfs.cramfs
 
-config BR2_PACKAGE_UTIL_LINUX_SWITCH_ROOT
-	bool "build \"switch_root\""
+config BR2_PACKAGE_UTIL_LINUX_DDATE
+	bool "ddate"
+	help
+	  Convert Gregorian dates to Discordian dates
 
-config BR2_PACKAGE_UTIL_LINUX_PIVOT_ROOT
-	bool "build \"pivot_root\""
+config BR2_PACKAGE_UTIL_LINUX_EJECT
+	bool "eject"
+	help
+	  Eject removable media
 
 config BR2_PACKAGE_UTIL_LINUX_FALLOCATE
-	bool "build \"fallocate\""
+	bool "fallocate"
+	help
+	  Preallocate space to a file
 
-config BR2_PACKAGE_UTIL_LINUX_UNSHARE
-	bool "build \"unshare\""
-
-config BR2_PACKAGE_UTIL_LINUX_RENAME
-	bool "build \"rename\""
-
-config BR2_PACKAGE_UTIL_LINUX_SCHEDUTILS
-	bool "build \"chrt, ionice, taskset\""
-
-config BR2_PACKAGE_UTIL_LINUX_WALL
-	bool "build \"wall\""
-
-config BR2_PACKAGE_UTIL_LINUX_PARTX
-	bool "build \"addpart, delpart, partx\""
-	select BR2_PACKAGE_UTIL_LINUX_LIBBLKID
-
-############################################
-# default disabled and should be enabled by
-#  --enable-foo
-#
-config BR2_PACKAGE_UTIL_LINUX_ARCH
-	bool "build \"arch\""
-
-config BR2_PACKAGE_UTIL_LINUX_INIT
-	bool "build \"simpleinit, shutdown, initctl\""
+config BR2_PACKAGE_UTIL_LINUX_FSCK
+	bool "fsck"
+	help
+	  Check and repair a linux filesystem
 
 config BR2_PACKAGE_UTIL_LINUX_KILL
-	bool "build \"kill\""
-
-config BR2_PACKAGE_UTIL_LINUX_LAST
-	bool "build \"last\""
-
-config BR2_PACKAGE_UTIL_LINUX_MESG
-	bool "build \"mesg\""
-
-config BR2_PACKAGE_UTIL_LINUX_RAW
-	bool "build \"raw\""
-
-config BR2_PACKAGE_UTIL_LINUX_RESET
-	bool "build \"reset\""
+	bool "kill"
+	help
+	  Send a signal to a process
 
 config BR2_PACKAGE_UTIL_LINUX_LOGIN_UTILS
-	bool "build \"chfn, chsh, login, newgrp, vipw\""
+	bool "login utilities"
+	depends on BR2_ENABLE_LOCALE # linux-pam
+	select BR2_PACKAGE_LINUX_PAM
+	help
+	  Build login utilities (last, login, su, sulogin)
+
+comment "login utilities require a toolchain with locale support"
+	depends on !BR2_ENABLE_LOCALE
+
+config BR2_PACKAGE_UTIL_LINUX_MESG
+	bool "mesg"
+	help
+	  Control write access to your terminal
+
+config BR2_PACKAGE_UTIL_LINUX_MOUNT
+	bool "mount/umount"
+	help
+	  Mount/unmount filesystems
+
+config BR2_PACKAGE_UTIL_LINUX_PIVOT_ROOT
+	bool "pivot_root"
+	help
+	  Change the root filesystem
+
+config BR2_PACKAGE_UTIL_LINUX_PARTX
+	bool "partition utilities"
+	help
+	  Partition tools (addpart, delpart, partx)
+
+config BR2_PACKAGE_UTIL_LINUX_RAW
+	bool "raw"
+	help
+	  Build a linux raw character device
+
+config BR2_PACKAGE_UTIL_LINUX_RENAME
+	bool "rename"
+	help
+	  Rename files
+
+config BR2_PACKAGE_UTIL_LINUX_RESET
+	bool "reset"
+	help
+	  Reset the terminal
+
+config BR2_PACKAGE_UTIL_LINUX_SCHEDUTILS
+	bool "schedutils"
+	help
+	  Scheduling utilities (chrt, ionice, taskset)
+
+config BR2_PACKAGE_UTIL_LINUX_SWITCH_ROOT
+	bool "switch_root"
+	help
+	  Switch to another filesystem as the root of the mount tree
+
+config BR2_PACKAGE_UTIL_LINUX_UNSHARE
+	bool "unshare"
+	help
+	  Run program with some namespaces unshared from parent
+
+config BR2_PACKAGE_UTIL_LINUX_UTMPDUMP
+	bool "utmpdump"
+	help
+	  Dump UTMP and WTMP files in raw format
+
+config BR2_PACKAGE_UTIL_LINUX_UUIDD
+	bool "uuidd"
+	help
+	 UUID generation daemon
+
+config BR2_PACKAGE_UTIL_LINUX_WALL
+	bool "wall"
+	help
+	  Send a message to everybody's terminal
+
+config BR2_PACKAGE_WDCTL
+	bool "wdctl"
+	help
+	  Shows hardware watchdog status
 
 config BR2_PACKAGE_UTIL_LINUX_WRITE
-	bool "build \"write\""
+	bool "write"
+	help
+	  Send a message to another user
+
+endif
 
 endif
 
