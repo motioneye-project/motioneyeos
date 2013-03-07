@@ -1,3 +1,6 @@
+comment "gptfdisk requires a toolchain with LARGEFILE/WCHAR/C++ support enabled"
+	depends on !(BR2_LARGEFILE && BR2_INSTALL_LIBSTDCPP && BR2_USE_WCHAR)
+
 config BR2_PACKAGE_GPTFDISK
 	bool "gptfdisk"
 	depends on BR2_LARGEFILE
@@ -15,9 +18,10 @@ config BR2_PACKAGE_GPTFDISK
 
 	  http://www.rodsbooks.com/gdisk/
 
+if BR2_PACKAGE_GPTFDISK
+
 config BR2_PACKAGE_GPTFDISK_GDISK
 	bool "interactive gdisk"
-	depends on BR2_PACKAGE_GPTFDISK
 	help
 	  Install the interactive GUID partition table (GPT) manipulator
 	  /usr/sbin/gdisk which is modelled after and quite similar in use
@@ -25,7 +29,6 @@ config BR2_PACKAGE_GPTFDISK_GDISK
 
 config BR2_PACKAGE_GPTFDISK_SGDISK
 	bool "command line sgdisk"
-	depends on BR2_PACKAGE_GPTFDISK
 	select BR2_PACKAGE_POPT
 	help
 	  Install the command-line GUID partition table (GPT) manipulator
@@ -34,11 +37,9 @@ config BR2_PACKAGE_GPTFDISK_SGDISK
 
 config BR2_PACKAGE_GPTFDISK_CGDISK
 	bool "ncurses cgdisk"
-	depends on BR2_PACKAGE_GPTFDISK
 	select BR2_PACKAGE_NCURSES
 	help
 	  Install the ncurses-based GUID partition table (GPT)
 	  manipulator /usr/sbin/cgdisk.
 
-comment "gptfdisk requires a toolchain with LARGEFILE/WCHAR/C++ support enabled"
-	depends on !(BR2_LARGEFILE && BR2_INSTALL_LIBSTDCPP && BR2_USE_WCHAR)
+endif
