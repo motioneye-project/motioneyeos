@@ -9,11 +9,11 @@ Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
  mdadm.h |    4 ++++
  1 file changed, 4 insertions(+)
 
-Index: mdadm-2.6.7.1/mdadm.h
+Index: mdadm-3.2.6/mdadm.h
 ===================================================================
---- mdadm-2.6.7.1.orig/mdadm.h
-+++ mdadm-2.6.7.1/mdadm.h
-@@ -28,7 +28,11 @@
+--- mdadm-3.2.6.orig/mdadm.h
++++ mdadm-3.2.6/mdadm.h
+@@ -23,7 +23,11 @@
   */
  
  #define	_GNU_SOURCE

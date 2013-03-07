@@ -1,0 +1,27 @@
+From 9c63360a2db71882cc548305774ce87af5f52b6e Mon Sep 17 00:00:00 2001
+From: Christophe Vu-Brugier <cvubrugier@lacie.com>
+Date: Thu, 7 Mar 2013 10:37:09 +0100
+Subject: [PATCH] uClibc: redefine off64_t as off_t if largefile support is
+ disabled
+
+
+Signed-off-by: Christophe Vu-Brugier <cvubrugier@lacie.com>
+---
+ mdadm.h |    1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/mdadm.h b/mdadm.h
+index 216c31d..1c72cc4 100644
+--- a/mdadm.h
++++ b/mdadm.h
+@@ -1008,6 +1008,7 @@ struct stat64;
+ # include <features.h>
+ # ifndef __UCLIBC_HAS_LFS__
+ #  define lseek64 lseek
++#  define off64_t off_t
+ # endif
+ # ifndef  __UCLIBC_HAS_FTW__
+ #  undef HAVE_FTW
+-- 
+1.7.10.4
+
