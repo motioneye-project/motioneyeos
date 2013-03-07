@@ -1,0 +1,18 @@
+comment "Qt5 needs a toolchain with WCHAR, IPv6, thread and C++ support"
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR || !BR2_INET_IPV6 || !BR2_TOOLCHAIN_HAS_THREADS
+
+menuconfig BR2_PACKAGE_QT5
+	bool "Qt5"
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_USE_WCHAR
+	depends on BR2_INET_IPV6
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	help
+	  This option enables the Qt5 framework. Sub-options allow to
+	  select which modules should be built.
+
+	  http://qt-project.org
+
+if BR2_PACKAGE_QT5
+
+endif
