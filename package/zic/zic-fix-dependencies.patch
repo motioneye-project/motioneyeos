@@ -1,0 +1,27 @@
+From 4a2a55a640dd9316dac5f31832064f28f59ab0ae Mon Sep 17 00:00:00 2001
+From: Richard Braun <rbraun@sceen.net>
+Date: Fri, 4 Jan 2013 10:57:24 +0100
+Subject: [PATCH] zic: fix dependencies
+
+The yearistype script is provided by the tzdata package, and is required
+at runtime only.
+---
+ Makefile |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index d76a81e..30df7dc 100644
+--- a/Makefile
++++ b/Makefile
+@@ -349,7 +349,7 @@ version.h:
+ zdump:		$(TZDOBJS)
+ 		$(CC) -o $@ $(CFLAGS) $(LDFLAGS) $(TZDOBJS) $(LDLIBS)
+ 
+-zic:		$(TZCOBJS) yearistype
++zic:		$(TZCOBJS)
+ 		$(CC) -o $@ $(CFLAGS) $(LDFLAGS) $(TZCOBJS) $(LDLIBS)
+ 
+ yearistype:	yearistype.sh
+-- 
+1.7.2.5
+
