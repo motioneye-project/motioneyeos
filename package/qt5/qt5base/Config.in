@@ -53,4 +53,48 @@ config BR2_PACKAGE_QT5BASE_XML
 	help
 	  This options enables the Qt5Xml library.
 
+config BR2_PACKAGE_QT5BASE_GUI
+	bool "gui module"
+	# At least one graphic backend must be enabled, so enable
+	# linuxfb if nothing is enabled.
+	select BR2_PACKAGE_QT5BASE_LINUXFB if \
+	       !BR2_PACKAGE_QT5BASE_DIRECTFB && \
+	       !BR2_PACKAGE_QT5BASE_XCB
+	help
+	  This option enables the Qt5Gui library.
+
+if BR2_PACKAGE_QT5BASE_GUI
+
+config BR2_PACKAGE_QT5BASE_WIDGETS
+	bool "widgets module"
+	help
+	  This option enables the Qt5Widgets library.
+
+config BR2_PACKAGE_QT5BASE_LINUXFB
+	bool "linuxfb support"
+
+config BR2_PACKAGE_QT5BASE_DIRECTFB
+	bool "directfb support"
+	select BR2_PACKAGE_DIRECTFB
+
+config BR2_PACKAGE_QT5BASE_XCB
+	bool "X.org XCB support"
+	depends on BR2_PACKAGE_XORG7
+	select BR2_PACKAGE_LIBX11
+	select BR2_PACKAGE_LIBXCB
+	select BR2_PACKAGE_XCB_UTIL_IMAGE
+	select BR2_PACKAGE_XCB_UTIL_KEYSYMS
+	select BR2_PACKAGE_XCB_UTIL_WM
+
+comment "X.org XCB backend available if X.org is enabled"
+	depends on !BR2_PACKAGE_XORG7
+
+config BR2_PACKAGE_QT5BASE_PRINTSUPPORT
+	bool "print support module"
+	select BR2_PACKAGE_QT5BASE_WIDGETS
+	help
+	  This option enables the Qt5PrintSupport
+
+endif
+
 endif
