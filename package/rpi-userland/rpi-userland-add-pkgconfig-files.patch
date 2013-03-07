@@ -9,7 +9,7 @@ Index: b/interface/khronos/egl/egl.pc.in
 ===================================================================
 --- /dev/null
 +++ b/interface/khronos/egl/egl.pc.in
-@@ -0,0 +1,10 @@
+@@ -0,0 +1,11 @@
 +prefix=@CMAKE_INSTALL_PREFIX@
 +exec_prefix=${prefix}
 +libdir=${exec_prefix}/lib
@@ -18,8 +18,9 @@ Index: b/interface/khronos/egl/egl.pc.in
 +Name: egl
 +Description: RasberryPi implementation of EGL
 +Version: 1.0
-+Libs: -L${libdir} -lEGL -lGLESv2
-+Cflags: -I${includedir}/ -I${includedir}/interface/vcos/pthreads/
++Libs: -L${libdir} -lEGL -lGLESv2 -lbcm_host
++Cflags: -I${includedir}/ -I${includedir}/interface/vcos/pthreads/ \
++        -I${includedir}/interface/vmcs_host/linux/
 Index: b/interface/khronos/CMakeLists.txt
 ===================================================================
 --- a/interface/khronos/CMakeLists.txt
