@@ -1,5 +1,6 @@
 config BR2_PACKAGE_XAVANTE
 	bool "xavante"
+	# Runtime dependency only
 	select BR2_PACKAGE_CGILUA
 	select BR2_PACKAGE_COPAS
 	select BR2_PACKAGE_COXPCALL

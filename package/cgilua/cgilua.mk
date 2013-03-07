@@ -6,7 +6,6 @@
 
 CGILUA_VERSION = 5.1.4
 CGILUA_SITE = http://github.com/downloads/keplerproject/cgilua
-CGILUA_DEPENDENCIES = luafilesystem
 CGILUA_LICENSE = MIT
 
 define CGILUA_INSTALL_TARGET_CMDS

@@ -6,7 +6,6 @@
 
 COPAS_VERSION = 1.1.6
 COPAS_SITE = http://github.com/downloads/keplerproject/copas
-COPAS_DEPENDENCIES = lua coxpcall luasocket
 COPAS_LICENSE = MIT
 
 define COPAS_INSTALL_TARGET_CMDS
