@@ -43,7 +43,7 @@ case "$1" in
     restart|force-reload)
         "${0}" stop
         sleep 2
-        "${0}" stop
+        "${0}" start
         ;;
     *)
         echo "Usage: $SCRIPTNAME {start|stop|restart|force-reload}" >&2
