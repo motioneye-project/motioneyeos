@@ -1,8 +1,12 @@
 config BR2_PACKAGE_SER2NET
 	bool "ser2net"
+	depends on BR2_USE_MMU # fork()
+	depends on BR2_INET_IPV6
 	help
 	  Ser2net provides a way for a user to connect from a network
 	  connection to a serial port..
 
 	  http://ser2net.sourceforge.net
 
+comment "ser2net requires a toolchain with IPV6 support"
+	depends on !BR2_INET_IPV6
