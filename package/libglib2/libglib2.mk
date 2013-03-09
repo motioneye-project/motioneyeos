@@ -9,6 +9,8 @@ LIBGLIB2_VERSION = $(LIBGLIB2_VERSION_MAJOR).$(LIBGLIB2_VERSION_MINOR)
 LIBGLIB2_SOURCE = glib-$(LIBGLIB2_VERSION).tar.xz
 LIBGLIB2_SITE = http://ftp.gnome.org/pub/gnome/sources/glib/$(LIBGLIB2_VERSION_MAJOR)
 
+LIBGLIB2_AUTORECONF = YES
+HOST_LIBGLIB2_AUTORECONF = YES
 LIBGLIB2_INSTALL_STAGING = YES
 LIBGLIB2_INSTALL_STAGING_OPT = DESTDIR=$(STAGING_DIR) LDFLAGS=-L$(STAGING_DIR)/usr/lib install
 
@@ -61,7 +63,10 @@ HOST_LIBGLIB2_CONF_OPT = \
 		--enable-debug=no \
 		--disable-dtrace \
 		--disable-systemtap \
-		--disable-gcov
+		--disable-gcov \
+		--disable-tests
+
+LIBGLIB2_CONF_OPT += --disable-tests
 
 LIBGLIB2_DEPENDENCIES = host-pkgconf host-libglib2 libffi zlib $(if $(BR2_NEEDS_GETTEXT),gettext)
 
