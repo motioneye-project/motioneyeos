@@ -81,6 +81,13 @@ LIBGLIB2_CONF_OPT += --with-libiconv=gnu
 LIBGLIB2_DEPENDENCIES += libiconv
 endif
 
+ifeq ($(BR2_PACKAGE_PCRE),y)
+LIBGLIB2_CONF_OPT += --with-pcre=system
+LIBGLIB2_DEPENDENCIES += pcre
+else
+LIBGLIB2_CONF_OPT += --with-pcre=internal
+endif
+
 define LIBGLIB2_REMOVE_DEV_FILES
 	rm -rf $(TARGET_DIR)/usr/lib/glib-2.0
 	rm -rf $(TARGET_DIR)/usr/share/glib-2.0/gettext
