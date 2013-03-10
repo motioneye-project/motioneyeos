@@ -99,6 +99,18 @@ config BR2_PACKAGE_DIRECTFB_EXAMPLES_LAYER
 	help
 	  Simple videoplayer with layers.
 
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_MATRIX
+	bool "usr/bin/df_matrix"
+	depends on BR2_PACKAGE_DIRECTFB_EXAMPLES
+	help
+	  Testing SetMatrix() for free transforms.
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_MATRIX_WATER
+	bool "usr/bin/df_matrix_water"
+	depends on BR2_PACKAGE_DIRECTFB_EXAMPLES
+	help
+	  Same as df_matrix, but using new Water API.
+
 config BR2_PACKAGE_DIRECTFB_EXAMPLES_NEO
 	bool "usr/bin/df_neo"
 	depends on BR2_PACKAGE_DIRECTFB_EXAMPLES
