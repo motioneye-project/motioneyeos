@@ -49,10 +49,21 @@ config BR2_PACKAGE_DIRECTFB_MATROX
 config BR2_PACKAGE_DIRECTFB_PXA3XX
 	bool "compile pxa3xx graphics driver"
 	depends on BR2_arm
+	help
+	  The Marvell PXA3xx Processor Family is a system-on-chip based
+	  on XScale® microarchitecture. This option enables the graphic
+	  driver support for the PXA3xx processor family.
+
+	  http://www.marvell.com/application-processors/pxa-family/
 
 config BR2_PACKAGE_DIRECTFB_EP9X
 	bool "compile ep9x graphics driver"
 	depends on BR2_arm
+	help
+	  Enable the graphic driver support for the EP93xx ARMv9 based
+	  processors from Cirrus Logic.
+
+	  http://cirrus.com/en/products/arm9.html
 
 config BR2_PACKAGE_DIRECTFB_UNICHROME
 	bool "compile unichrome graphics driver"
