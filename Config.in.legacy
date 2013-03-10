@@ -92,6 +92,22 @@ config BR2_PACKAGE_GDB_HOST
 	  the BR2_PACKAGE_GDB_HOST option has been renamed
 	  BR2_PACKAGE_HOST_GDB.
 
+config BR2_PACKAGE_DIRECTB_DITHER_RGB16
+	bool "DirectFB RGB16 dithering option has been renamed"
+	select BR2_PACKAGE_DIRECTFB_DITHER_RGB16
+	select BR2_LEGACY
+	help
+	  The option has been renamed
+	  BR2_PACKAGE_DIRECTFB_DITHER_RGB16.
+
+config BR2_PACKAGE_DIRECTB_TESTS
+	bool "DirectFB Tests option has been renamed"
+	select BR2_PACKAGE_DIRECTFB_TESTS
+	select BR2_LEGACY
+	help
+	  The option has been renamed
+	  BR2_PACKAGE_DIRECTFB_TESTS.
+
 #
 # Legacy options since 2012.11
 #
