@@ -108,13 +108,13 @@ else
 DIRECTFB_CONF_OPT += --disable-jpeg
 endif
 
-ifeq ($(BR2_PACKAGE_DIRECTB_DITHER_RGB16),y)
+ifeq ($(BR2_PACKAGE_DIRECTFB_DITHER_RGB16),y)
 DIRECTFB_CONF_OPT += --with-dither-rgb16=advanced
 else
 DIRECTFB_CONF_OPT += --with-dither-rgb16=none
 endif
 
-ifeq ($(BR2_PACKAGE_DIRECTB_TESTS),y)
+ifeq ($(BR2_PACKAGE_DIRECTFB_TESTS),y)
 DIRECTFB_CONF_OPT += --with-tests
 endif
 

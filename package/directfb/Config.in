@@ -109,13 +109,13 @@ config BR2_PACKAGE_DIRECTFB_PNG
 	default y
 	select BR2_PACKAGE_LIBPNG
 
-config BR2_PACKAGE_DIRECTB_DITHER_RGB16
+config BR2_PACKAGE_DIRECTFB_DITHER_RGB16
 	bool "enable advanced dithering of RGB16 surfaces"
 	help
 	  Enable dithering when loading images to RGB16 surfaces.
 	  This increases the data section by 64 KBytes.
 
-config BR2_PACKAGE_DIRECTB_TESTS
+config BR2_PACKAGE_DIRECTFB_TESTS
 	bool "build directfb tests"
 
 endif # BR2_PACKAGE_DIRECTFB
