@@ -1,0 +1,15 @@
+Fix build against bluez4.
+
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+
+--- ussp-push-0.11.orig/src/obex_socket.c	2012-11-01 09:58:51.049538708 +0100
++++ ussp-push-0.11/src/obex_socket.c	2012-11-01 12:10:10.719506951 +0100
+@@ -197,7 +197,7 @@ static int bt_sock_name2bth(int devid, c
+ 	for (i = 0; i < niinf; i++) {
+ 		char devname[128];
+ 
+-		if (hci_remote_name(dd, &piinf[i].bdaddr, sizeof(devname) - 1,
++		if (hci_read_remote_name(dd, &piinf[i].bdaddr, sizeof(devname) - 1,
+ 				    devname, 100000) >= 0) {
+ 			if (strcasecmp(devname, btname) == 0) {
+ 				*btaddr = piinf[i].bdaddr;
