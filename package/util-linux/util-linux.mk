@@ -79,11 +79,12 @@ UTIL_LINUX_CONF_OPT += \
 # and none of the util-linux utilities, so we disable all of them.
 HOST_UTIL_LINUX_CONF_OPT += \
 	--enable-libuuid \
-	--disable-mount --disable-fsck --disable-libmount \
-	--disable-uuidd --disable-libblkid --disable-agetty \
-	--disable-cramfs --disable-switch_root --disable-pivot_root \
-	--disable-fallocate --disable-unshare --disable-rename \
-	--disable-schedutils --disable-wall --disable-partx
+	--disable-agetty --disable-cramfs --disable-fallocate \
+	--disable-fsck --disable-libblkid --disable-libmount \
+	--disable-login --disable-mount --disable-partx \
+	--disable-pivot_root --disable-rename --disable-schedutils \
+	--disable-su --disable-switch_root --disable-unshare \
+	--disable-uuidd --disable-wall
 
 # Avoid building the tools if they are disabled since we can't install on
 # a per-directory basis.
