@@ -464,6 +464,7 @@ source "package/libv4l/Config.in"
 source "package/mtdev/Config.in"
 source "package/neardal/Config.in"
 source "package/pcsc-lite/Config.in"
+source "package/urg/Config.in"
 endmenu
 
 menu "Javascript"
