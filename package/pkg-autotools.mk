@@ -145,7 +145,7 @@ endif
 # Hook to update config.sub and config.guess if needed
 #
 define UPDATE_CONFIG_HOOK
-       @$$(call MESSAGE, "Updating config.sub and config.guess")
+       @$$(call MESSAGE,"Updating config.sub and config.guess")
        $$(call CONFIG_UPDATE,$$(@D))
 endef
 
