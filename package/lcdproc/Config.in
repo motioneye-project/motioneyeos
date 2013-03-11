@@ -1,12 +1,13 @@
 config BR2_PACKAGE_LCDPROC
-       bool "lcdproc"
-       select BR2_PACKAGE_FREETYPE
-       select BR2_PACKAGE_NCURSES
-       select BR2_PACKAGE_ZLIB
-       help
-         LCD display driver daemon and clients
+	bool "lcdproc"
+	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_FREETYPE
+	select BR2_PACKAGE_NCURSES
+	select BR2_PACKAGE_ZLIB
+	help
+	  LCD display driver daemon and clients
 
-         http://lcdproc.org/
+	  http://lcdproc.org/
 
 config BR2_PACKAGE_LCDPROC_DRIVERS
 	string "List of drivers to build"
