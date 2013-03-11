@@ -1,0 +1,32 @@
+
+redis-002-lua-AR.patch: Improve redis Makefiles to handle Lua's unusual
+definition of AR.  Patch originates from:
+
+  Define AR to help with lua cross-compilation
+  https://github.com/antirez/redis/pull/997
+  Daniel Price, daniel.price@gmail.com
+
+Signed-off-by: Daniel Price <daniel.price@gmail.com>
+
+=========================================================================
+diff --git a/deps/Makefile b/deps/Makefile
+index d58ee56..c9d7116 100644
+--- a/deps/Makefile
++++ b/deps/Makefile
+@@ -60,10 +60,15 @@ endif
+ 
+ LUA_CFLAGS+= -O2 -Wall -DLUA_ANSI $(CFLAGS)
+ LUA_LDFLAGS+= $(LDFLAGS)
++# lua's Makefile defines AR="ar rcu", which is unusual, and makes it more
++# challenging to cross-compile lua (and redis).  These defines make it easier
++# to fit redis into cross-compilation environments, which typically set AR.
++AR = ar
++ARFLAGS = rcu
+ 
+ lua: .make-prerequisites
+ 	@printf '%b %b\n' $(MAKECOLOR)MAKE$(ENDCOLOR) $(BINCOLOR)$@$(ENDCOLOR)
+-	cd lua/src && $(MAKE) all CFLAGS="$(LUA_CFLAGS)" MYLDFLAGS="$(LUA_LDFLAGS)"
++	cd lua/src && $(MAKE) all CFLAGS="$(LUA_CFLAGS)" MYLDFLAGS="$(LUA_LDFLAGS)" AR="$(AR) $(ARFLAGS)"
+ 
+ .PHONY: lua
+ 
