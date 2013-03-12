@@ -5,7 +5,7 @@
 #############################################################
 
 EEPROG_VERSION = 0.7.6
-EEPROG_SITE = http://codesink.org/download
+EEPROG_SITE = http://www.codesink.org/download
 
 define EEPROG_BUILD_CMDS
 	$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(@D)
