@@ -1,6 +1,7 @@
 config BR2_PACKAGE_LIBV4L
 	bool "libv4l"
 	depends on BR2_LARGEFILE
+	select BR2_PACKAGE_JPEG
 	help
 	  libv4l is an accompanying collection of libraries that adds a thin
 	  abstraction layer on top of video4linux2 (V4L2) devices.
