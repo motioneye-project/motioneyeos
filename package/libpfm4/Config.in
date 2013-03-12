@@ -1,0 +1,7 @@
+config BR2_PACKAGE_LIBPFM4
+	bool "libpfm4"
+	help
+	  A helper library to help encode Performance Events to use with
+	  Operating system kernels performance monitoring interfaces.
+
+	  http://perfmon2.sourceforge.net/
