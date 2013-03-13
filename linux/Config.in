@@ -213,6 +213,19 @@ config BR2_LINUX_KERNEL_IMAGE_TARGET_NAME
 	  Specify the kernel make target to build the kernel that you
 	  need.
 
+config BR2_LINUX_KERNEL_UIMAGE_LOADADDR
+	string "load address (for 3.7+ multi-platform image)"
+	depends on BR2_arm || BR2_armeb
+	depends on BR2_LINUX_KERNEL_UIMAGE || BR2_LINUX_KERNEL_APPENDED_UIMAGE
+	help
+	  If your ARM system's Linux kernel is configured with the new (3.7+)
+	  multi-architecture support (CONFIG_ARCH_MULTIPLATFORM=y in your
+	  kernel config), then it is necessary to specify a kernel load address
+	  when building the uImage. This should be a hexadecimal string
+	  beginning with 0x, for example: 0x00008000.
+
+	  If unsure, let this option empty.
+
 config BR2_LINUX_KERNEL_DTS_SUPPORT
 	bool "Device tree support"
 	help
