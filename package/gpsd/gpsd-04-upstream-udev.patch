@@ -1,0 +1,31 @@
+Commit 102e29d16c3fd9b414eeac53c794302f902ae8da reverted the DESTDIR
+logic when upgrading the udev path handling.
+
+It also slightly broke the mkdir setup by not creating the rules.d
+subdir under the udev path.
+
+Signed-off-by: Mike Frysinger <vapier@gentoo.org>
+Signed-off-by: Simon Dawson <spdawson@gmail.com>
+---
+ SConstruct | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/SConstruct b/SConstruct
+index a56fa9b..1c187f3 100644
+--- a/SConstruct
++++ b/SConstruct
+@@ -1662,10 +1662,10 @@ if env['python']:
+ # is plugged in.
+ 
+ Utility('udev-install', 'install', [
+-    'mkdir -p ' + env['udevdir'],
+-    'cp $SRCDIR/gpsd.rules ' + env['udevdir'] + '/rules.d/25-gpsd.rules',
+-    'cp $SRCDIR/gpsd.hotplug ' + env['udevdir'],
+-    'chmod a+x ' + env['udevdir'] + '/gpsd.hotplug',
++    'mkdir -p ' + DESTDIR + env['udevdir'] + '/rules.d',
++    'cp $SRCDIR/gpsd.rules ' + DESTDIR + env['udevdir'] + '/rules.d/25-gpsd.rules',
++    'cp $SRCDIR/gpsd.hotplug ' + DESTDIR + env['udevdir'],
++    'chmod a+x ' + DESTDIR + env['udevdir'] + '/gpsd.hotplug',
+         ])
+ 
+ Utility('udev-uninstall', '', [

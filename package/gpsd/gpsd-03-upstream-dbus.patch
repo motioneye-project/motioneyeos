@@ -1,0 +1,31 @@
+The current libgps.a logic doesn't pass down pkg-config output from
+dbus and such which breaks building when compiling:
+
+gcc -o libgps_dbus.o -c -D_GNU_SOURCE -Wextra -Wall -Wno-uninitialized \
+	-Wno-missing-field-initializers -Wcast-align -Wmissing-declarations \
+	-Wmissing-prototypes -Wstrict-prototypes -Wpointer-arith -Wreturn-type \
+	-O2 libgps_dbus.c
+libgps_dbus.c:26:23: fatal error: dbus/dbus.h: No such file or directory
+compilation terminated.
+
+Signed-off-by: Mike Frysinger <vapier@gentoo.org>
+Signed-off-by: Simon Dawson <spdawson@gmail.com>
+---
+ SConstruct | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/SConstruct b/SConstruct
+index e5d1f54..a56fa9b 100644
+--- a/SConstruct
++++ b/SConstruct
+@@ -886,7 +886,9 @@ gpsdlibs = ["-lgpsd"] + usblibs + bluezlibs + gpslibs + caplibs
+ #          linking
+ # The final executable will build but not be portable.
+ 
+-env.StaticLibrary(target = 'libgps.a', source = libgps_sources)
++env.StaticLibrary(target='libgps.a',
++                  source=libgps_sources,
++                  parse_flags=dbus_libs + rtlibs)
+ 
+ # Source groups
+ 
