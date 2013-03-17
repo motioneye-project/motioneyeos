@@ -57,13 +57,10 @@ SDL_CONF_OPT += --enable-pulseaudio=no \
 		--disable-nasm \
 		--disable-video-ps3
 
-# Fixup prefix= and exec_prefix= in sdl-config, and remove the
-# -Wl,-rpath option.
+SDL_CONFIG_SCRIPTS = sdl-config
+
+# Remove the -Wl,-rpath option.
 define SDL_FIXUP_SDL_CONFIG
-	$(SED) 's%prefix=/usr%prefix=$(STAGING_DIR)/usr%' \
-		$(STAGING_DIR)/usr/bin/sdl-config
-	$(SED) 's%exec_prefix=/usr%exec_prefix=$(STAGING_DIR)/usr%' \
-		$(STAGING_DIR)/usr/bin/sdl-config
 	$(SED) 's%-Wl,-rpath,\$${libdir}%%' \
 		$(STAGING_DIR)/usr/bin/sdl-config
 endef
