@@ -17,6 +17,8 @@ URG_DEPENDENCIES = sdl sdl_net
 URG_CONF_OPT = --with-sdl-prefix=$(STAGING_DIR)/usr \
 		--with-sdl-exec-prefix=$(STAGING_DIR)/usr
 
+URG_CONFIG_SCRIPTS = c_urg-config urg-config
+
 define URG_EXTRACT_CMDS
 	$(RM) -rf $(URG_DIR)
 	unzip -q -d $(BUILD_DIR)/ $(DL_DIR)/$(URG_SOURCE)
