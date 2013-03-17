@@ -15,3 +15,5 @@ include::customize-kernel-config.txt[]
 include::customize-toolchain.txt[]
 
 include::customize-store.txt[]
+
+include::customize-packages.txt[]

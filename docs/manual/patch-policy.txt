@@ -11,8 +11,9 @@ necessary to patch the source of the software to get it cross-built within
 Buildroot.
 
 Buildroot offers an infrastructure to automatically handle this during
-the builds. It supports two ways of applying patch sets: downloaded patches
-and patches supplied within buildroot.
+the builds. It supports three ways of applying patch sets: downloaded patches,
+patches supplied within buildroot and patches located in a user-defined
+global patch directory.
 
 Providing patches
 ~~~~~~~~~~~~~~~~~
@@ -45,6 +46,13 @@ application order.
 reference in their filename.
 - The field +<number>+ in the patch file name refers to the 'apply order'.
 
+Global patch directory
+^^^^^^^^^^^^^^^^^^^^^^
+
+The +BR2_GLOBAL_PATCH_DIR+ configuration file option can be
+used to specify a directory containing global package patches. See
+xref:packages-custom[] for details.
+
 
 How patches are applied
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -57,7 +65,7 @@ How patches are applied
   tarballs are applied;
 
 . If there are some +*.patch+ files in the package directory or in the
-  a package subdirectory named +<packagename>-<packageversion>+, then:
+  a package subdirectory named +<packageversion>+, then:
 +
 * If a +series+ file exists in the package directory, then patches are
   applied according to the +series+ file;

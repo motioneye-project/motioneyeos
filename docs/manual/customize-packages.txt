@@ -1,0 +1,23 @@
+// -*- mode:doc -*- ;
+
+[[packages-custom]]
+Customizing packages
+~~~~~~~~~~~~~~~~~~~~
+
+It is sometimes useful to apply 'extra' patches to packages - over and
+above those provided in Buildroot. This might be used to support custom
+features in a project, for example, or when working on a new architecture.
+
+The +BR2_GLOBAL_PATCH_DIR+ configuration file option can be
+used to specify a directory containing global package patches.
+
+For a specific version <packageversion> of a specific package <packagename>,
+patches are applied as follows.
+
+First, the default Buildroot patch set for the package is applied.
+
+If the directory +$(BR2_GLOBAL_PATCH_DIR)/<packagename>/<packageversion>+
+exists, then all +*.patch+ files in the directory will be applied.
+
+Otherwise, if the directory +$(BR2_GLOBAL_PATCH_DIR)/<packagename>+
+exists, then all +*.patch+ files in the directory will be applied.
