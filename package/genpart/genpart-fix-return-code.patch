@@ -1,0 +1,25 @@
+genpart: return 0 if partition writen OK, with no do_magic
+
+If do_magic is false, we don't won't write the 0xaa55 magic.
+However, if we succesfully wrote the partition entry, we still
+want to return 0 to indicate success.
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+Cc: Robert Schwebel <r.schwebel@pengutronix.de>
+
+--
+Patch sent upstream, but no mailing list.
+Status: accepted upstream, not yet released.
+
+diff -durN host-genpart-1.0.2.orig/src/genpart.c host-genpart-1.0.2/src/genpart.c
+--- host-genpart-1.0.2.orig/src/genpart.c	2009-12-20 21:54:56.000000000 +0100
++++ host-genpart-1.0.2/src/genpart.c	2013-01-22 23:13:24.109752579 +0100
+@@ -92,6 +92,8 @@
+ 		if (do_magic) {
+ 			if (fwrite(&magic, 2, 1, stdout) > 0)
+ 				rc=0;
++		} else {
++			rc=0;
+ 		}
+ 	}
+ 	return rc;
