@@ -362,32 +362,28 @@ endef
 $(CTNG_DIR)/.config: | host-crosstool-ng
 
 # Default configuration
-# Depends on top-level .config because it has options we have to shoe-horn
-# into crosstool-NG's .config
 # Only copy the original .config file if we don't have one already.
 # Check that given config file matches selected C library.
 # We need to call oldconfig twice in a row to ensure the options
 # are correctly set ( eg. if an option is new, then the initial sed
 # can't do anything about it ) Ideally, this should go in oldconfig
 # itself, but it's much easier to handle here.
-
-$(CTNG_DIR)/.config: $(CTNG_CONFIG_FILE) $(BUILDROOT_CONFIG)
+$(CTNG_DIR)/.config:
 	$(Q)if [ ! -f $@ ]; then                                                        \
 	        mkdir -p "$(CTNG_DIR)";                                                 \
-	        libc="$$(awk -F '"' '$$1=="CT_LIBC=" { print $$2; }' "$<")";            \
+	        libc="$$(awk -F '"' '$$1=="CT_LIBC=" { print $$2; }'                    \
+	                        "$(CTNG_CONFIG_FILE)"                                   \
+	                )";                                                             \
 	        if [ "$${libc}" != "$(BR2_TOOLCHAIN_CTNG_LIBC)" ]; then                 \
-	            echo "* Inconsistency in crosstool-NG config file '$<'";            \
+	            echo "* Inconsistency in crosstool-NG config file '$(CTNG_CONFIG_FILE)'"; \
 	            echo "* - buildroot configured for '$(BR2_TOOLCHAIN_CTNG_LIBC)'";   \
 	            echo "* - given config file for '$${libc}'";                        \
 	            exit 1;                                                             \
 	        fi;                                                                     \
-	        cp -f $< $@;                                                            \
+	        cp -f $(CTNG_CONFIG_FILE) $@;                                                            \
 	    fi
-	$(Q)cp -a $@ $@.timestamp
 	$(call ctng-oldconfig,$@)
 	$(call ctng-oldconfig,$@)
-	$(call ctng-check-config-changed,$@,$@.timestamp)
-	$(Q)rm -f $@.timestamp
 
 # Manual configuration
 ctng-menuconfig: $(CTNG_DIR)/.config
