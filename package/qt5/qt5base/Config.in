@@ -59,7 +59,8 @@ config BR2_PACKAGE_QT5BASE_GUI
 	# linuxfb if nothing is enabled.
 	select BR2_PACKAGE_QT5BASE_LINUXFB if \
 	       !BR2_PACKAGE_QT5BASE_DIRECTFB && \
-	       !BR2_PACKAGE_QT5BASE_XCB
+	       !BR2_PACKAGE_QT5BASE_XCB && \
+	       !BR2_PACKAGE_QT5BASE_EGLFS
 	help
 	  This option enables the Qt5Gui library.
 
@@ -88,6 +89,14 @@ config BR2_PACKAGE_QT5BASE_XCB
 
 comment "X.org XCB backend available if X.org is enabled"
 	depends on !BR2_PACKAGE_XORG7
+
+config BR2_PACKAGE_QT5BASE_EGLFS
+	bool "eglfs support"
+	depends on BR2_PACKAGE_HAS_OPENGL_EGL
+	depends on BR2_PACKAGE_HAS_OPENGL_ES
+
+comment "eglfs backend available if OpenGLES and EGL are enabled"
+	depends on !BR2_PACKAGE_HAS_OPENGL_EGL || !BR2_PACKAGE_HAS_OPENGL_ES
 
 config BR2_PACKAGE_QT5BASE_PRINTSUPPORT
 	bool "print support module"

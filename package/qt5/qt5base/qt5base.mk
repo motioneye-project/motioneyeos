@@ -20,9 +20,7 @@ QT5BASE_INSTALL_STAGING = YES
 #    want to use the one packaged in Buildroot
 QT5BASE_CONFIGURE_OPTS += \
 	-optimized-qmake \
-	-no-eglfs \
 	-no-kms \
-	-no-opengl \
 	-no-glib \
 	-no-cups \
 	-no-nis \
@@ -79,6 +77,13 @@ QT5BASE_DEPENDENCIES   += \
 	xlib_libX11
 else
 QT5BASE_CONFIGURE_OPTS += -no-xcb
+endif
+
+ifeq ($(BR2_PACKAGE_QT5BASE_EGLFS),y)
+QT5BASE_CONFIGURE_OPTS += -opengl es2 -eglfs
+QT5BASE_DEPENDENCIES   += libgles libegl
+else
+QT5BASE_CONFIGURE_OPTS += -no-opengl -no-eglfs
 endif
 
 QT5BASE_CONFIGURE_OPTS += $(if $(BR2_PACKAGE_OPENSSL),-openssl,-no-openssl)
