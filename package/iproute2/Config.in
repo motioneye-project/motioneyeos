@@ -1,5 +1,6 @@
 config BR2_PACKAGE_IPROUTE2
 	bool "iproute2"
+	depends on BR2_USE_MMU # fork()
 	help
 	  Kernel routing and traffic control utilities.  Provides things
 	  like ip and tc.
