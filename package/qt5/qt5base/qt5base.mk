@@ -4,7 +4,7 @@
 #
 #############################################################
 
-QT5BASE_VERSION = 5.0.1
+QT5BASE_VERSION = $(QT5_VERSION)
 QT5BASE_SITE = http://releases.qt-project.org/qt5/$(QT5BASE_VERSION)/submodules_tar/
 QT5BASE_SOURCE = qtbase-opensource-src-$(QT5BASE_VERSION).tar.xz
 

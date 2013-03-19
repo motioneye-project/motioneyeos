@@ -1,3 +1,4 @@
+QT5_VERSION = 5.0.1
 include package/qt5/*/*.mk
 
 define QT5_LA_PRL_FILES_FIXUP
