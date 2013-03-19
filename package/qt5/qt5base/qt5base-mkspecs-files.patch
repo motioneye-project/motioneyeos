@@ -14,7 +14,7 @@ Index: b/mkspecs/devices/linux-buildroot-g++/qmake.conf
 ===================================================================
 --- /dev/null
 +++ b/mkspecs/devices/linux-buildroot-g++/qmake.conf
-@@ -0,0 +1,38 @@
+@@ -0,0 +1,41 @@
 +MAKEFILE_GENERATOR      = UNIX
 +CONFIG                  += incremental gdb_dwarf_index
 +QMAKE_INCREMENTAL_STYLE = sublib
@@ -48,6 +48,9 @@ Index: b/mkspecs/devices/linux-buildroot-g++/qmake.conf
 +QMAKE_CXXFLAGS_RELEASE += -O3
 +
 +QMAKE_LIBS             += -lrt -lpthread -ldl
++
++# device specific glue code
++EGLFS_PLATFORM_HOOKS_SOURCES =
 +
 +# Sanity check
 +deviceSanityCheckCompiler()
