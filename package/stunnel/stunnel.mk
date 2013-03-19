@@ -4,12 +4,12 @@
 #
 #############################################################
 
-STUNNEL_VERSION = 4.44
+STUNNEL_VERSION = 4.55
 STUNNEL_SITE = http://ftp.nluug.nl/pub/networking/stunnel
 STUNNEL_DEPENDENCIES = openssl
-STUNNEL_CONF_OPT += \
-	--with-ssl=$(STAGING_DIR)/usr \
-	--with-threads=fork
+STUNNEL_CONF_OPT = --with-ssl=$(STAGING_DIR)/usr --with-threads=fork
+STUNNEL_LICENSE = GPLv2+
+STUNNEL_LICENSE_FILES = COPYING COPYRIGHT.GPL
 
 define STUNNEL_INSTALL_CONF_SCRIPT
 	$(INSTALL) -m 0755 -D package/stunnel/S50stunnel $(TARGET_DIR)/etc/init.d/S50stunnel
