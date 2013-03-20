@@ -128,7 +128,6 @@ if BR2_PACKAGE_XORG7
 		source package/x11r7/xapp_xmh/Config.in
 		source package/x11r7/xapp_xmodmap/Config.in
 		source package/x11r7/xapp_xmore/Config.in
-		source package/x11r7/xapp_xplsprinters/Config.in
 		source package/x11r7/xapp_xpr/Config.in
 		source package/x11r7/xapp_xprehashprinterlist/Config.in
 		source package/x11r7/xapp_xprop/Config.in
