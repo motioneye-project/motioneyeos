@@ -1,0 +1,28 @@
+Backported from 56b5a5887349e9d0e1d28da157fe6441ca691f56
+
+Signed-off-by: Jesper Baekdahl <jbb@gamblify.com>
+---
+From 56b5a5887349e9d0e1d28da157fe6441ca691f56 Mon Sep 17 00:00:00 2001
+From: Jeremy Huddleston <jeremyhu@apple.com>
+Date: Thu, 08 Mar 2012 19:49:36 +0000
+Subject: Build fix when sizeof(off_t) > sizeof(void *)
+
+https://trac.macports.org/ticket/33532
+
+Signed-off-by: Jeremy Huddleston <jeremyhu@apple.com>
+---
+diff --git a/src/XF86DGA2.c b/src/XF86DGA2.c
+index e81b486..32f455b 100644
+--- a/src/XF86DGA2.c
++++ b/src/XF86DGA2.c
+@@ -928,7 +928,7 @@ DGAMapPhysical(
+     if ((pMap->fd = open(name, O_RDWR)) < 0)
+ 	return False;
+     pMap->virtual = mmap(NULL, size, PROT_READ | PROT_WRITE,
+-			MAP_FILE | MAP_SHARED, pMap->fd, (off_t)base);
++			MAP_FILE | MAP_SHARED, pMap->fd, (off_t)(uintptr_t)base);
+     if (pMap->virtual == (void *)-1)
+ 	return False;
+     mprotect(pMap->virtual, size, PROT_READ | PROT_WRITE);
+--
+cgit v0.9.0.2-2-gbebe
