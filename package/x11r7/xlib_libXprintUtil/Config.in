@@ -1,8 +1,0 @@
-config BR2_PACKAGE_XLIB_LIBXPRINTUTIL
-	bool "libXprintUtil"
-	select BR2_PACKAGE_XLIB_LIBX11
-	select BR2_PACKAGE_XLIB_LIBXP
-	select BR2_PACKAGE_XLIB_LIBXT
-	select BR2_PACKAGE_XPROTO_PRINTPROTO
-	help
-	  X.Org XprintUtil library

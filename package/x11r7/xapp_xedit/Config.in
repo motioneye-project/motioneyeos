@@ -1,6 +1,5 @@
 config BR2_PACKAGE_XAPP_XEDIT
 	bool "xedit"
 	select BR2_PACKAGE_XLIB_LIBXAW
-	select BR2_PACKAGE_XLIB_LIBXPRINTUTIL
 	help
 	  simple text editor for X
