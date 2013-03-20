@@ -103,7 +103,6 @@ if BR2_PACKAGE_XORG7
 		source package/x11r7/xapp_xgamma/Config.in
 		source package/x11r7/xapp_xgc/Config.in
 		source package/x11r7/xapp_xhost/Config.in
-		source package/x11r7/xapp_xinit/Config.in
 		source package/x11r7/xapp_xinput/Config.in
 		source package/x11r7/xapp_xinput-calibrator/Config.in
 		source package/x11r7/xapp_xkbcomp/Config.in
