@@ -1,5 +1,6 @@
 config BR2_PACKAGE_HPLIP
 	bool "hplip"
+	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_PACKAGE_CUPS
 	select BR2_PACKAGE_LIBUSB
 	select BR2_PACKAGE_JPEG
