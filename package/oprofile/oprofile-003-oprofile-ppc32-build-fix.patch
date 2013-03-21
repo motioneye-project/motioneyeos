@@ -1,0 +1,32 @@
+Upstream-Status: Backport
+
+From fa889ea74b6b931e241a8cd57e90edc23cd7ab03 Mon Sep 17 00:00:00 2001
+From: William Cohen <wcohen@redhat.com>
+Date: Mon, 15 Oct 2012 15:09:55 -0500
+Subject: [PATCH] OProfile doesn't build for 32-bit ppc; the operf_utils.cpp
+ compile fails. Need to be able to build the 32-bit ppc
+ version of oprofile to provide the 32-bit ppc java support
+ libraries. The configure only handles the case of ppc64
+ with perf support.
+
+Signed-off-by: William Cohen <wcohen@redhat.com>
+---
+ configure.ac |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index b739133..7449854 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -104,7 +104,7 @@ AC_DEFINE_UNQUOTED(HAVE_PERF_EVENTS, $HAVE_PERF_EVENTS, [Kernel support for perf
+ if test "$HAVE_PERF_EVENTS" = "1"; then
+ 	PFM_LIB=
+ 	arch="`uname -m`"
+-	if test "$arch" = "ppc64"; then
++	if test "$arch" = "ppc64" || test "$arch" = "ppc"; then
+ 		AC_CHECK_HEADER(perfmon/pfmlib.h,,[AC_MSG_ERROR([pfmlib.h not found; usually provided in papi devel package])])
+ 		AC_CHECK_LIB(pfm,pfm_get_event_name, HAVE_LIBPFM3='1'; HAVE_LIBPFM='1', [
+ 			AC_CHECK_LIB(pfm,pfm_get_os_event_encoding, HAVE_LIBPFM3='0'; HAVE_LIBPFM='1',
+-- 
+1.7.9.7
+

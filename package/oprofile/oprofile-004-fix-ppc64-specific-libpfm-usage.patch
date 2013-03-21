@@ -1,0 +1,105 @@
+From 8e36ad01ceb1257d05773b684dbe9358aecd3f71 Mon Sep 17 00:00:00 2001
+From: Maynard Johnson <maynardj@us.ibm.com>
+Date: Tue, 26 Feb 2013 13:41:27 -0600
+Subject: [PATCH] Fix PPC64-specific libpfm usage so it doesn't break ppc32
+ architecture
+
+The configure check to determine whether we should use libpfm or not
+is intended only for the ppc64 architecture, but was incorrectly
+hitting on the ppc32 architecture, too.  Not only that, but it was using
+'uname' which is not a good idea in cross-compile situtations.
+
+Then, aside from that, we had several instances in the source code
+of the following:
+   #if (defined(__powerpc__) || defined(__powerpc64__))
+which incorrectly included ppc32 architecutre also, when it was intended
+for use as PPC64 architecture.
+
+This patch fixes both errors.
+
+Signed-off-by: Maynard Johnson <maynardj@us.ibm.com
+---
+ configure.ac                   |    5 ++---
+ libperf_events/operf_utils.cpp |    4 ++--
+ libperf_events/operf_utils.h   |    6 ++++++
+ pe_profiling/operf.cpp         |   10 +++++-----
+ 4 files changed, 15 insertions(+), 10 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+--- a/configure.ac
++++ b/configure.ac
+@@ -100,11 +100,10 @@ else
+ 	HAVE_PERF_EVENTS='0'
+ fi
+ AC_DEFINE_UNQUOTED(HAVE_PERF_EVENTS, $HAVE_PERF_EVENTS, [Kernel support for perf_events exists])
+-
++AC_CANONICAL_HOST
+ if test "$HAVE_PERF_EVENTS" = "1"; then
+ 	PFM_LIB=
+-	arch="`uname -m`"
+-	if test "$arch" = "ppc64" || test "$arch" = "ppc"; then
++	if test "$host_cpu" = "powerpc64"; then
+ 		AC_CHECK_HEADER(perfmon/pfmlib.h,,[AC_MSG_ERROR([pfmlib.h not found; usually provided in papi devel package])])
+ 		AC_CHECK_LIB(pfm,pfm_get_event_name, HAVE_LIBPFM3='1'; HAVE_LIBPFM='1', [
+ 			AC_CHECK_LIB(pfm,pfm_get_os_event_encoding, HAVE_LIBPFM3='0'; HAVE_LIBPFM='1',
+diff --git a/libperf_events/operf_utils.cpp b/libperf_events/operf_utils.cpp
+--- a/libperf_events/operf_utils.cpp
++++ b/libperf_events/operf_utils.cpp
+@@ -82,7 +82,7 @@ static event_t comm_event;
+  * the following method is to map the operf-record event value to a value that
+  * opreport can understand.
+  */
+-#if (defined(__powerpc__) || defined(__powerpc64__))
++#if PPC64_ARCH
+ #define NIL_CODE ~0U
+ 
+ #if HAVE_LIBPFM3
+@@ -708,7 +708,7 @@ static void __handle_sample_event(event_
+ 	} else if (event->header.misc == PERF_RECORD_MISC_USER) {
+ 		in_kernel = false;
+ 	}
+-#if (defined(__powerpc__) || defined(__powerpc64__))
++#if PPC64_ARCH
+ 	else if (event->header.misc == PERF_RECORD_MISC_HYPERVISOR) {
+ #define MAX_HYPERVISOR_ADDRESS 0xfffffffULL
+ 		if (data.ip > MAX_HYPERVISOR_ADDRESS) {
+diff --git a/libperf_events/operf_utils.h b/libperf_events/operf_utils.h
+--- a/libperf_events/operf_utils.h
++++ b/libperf_events/operf_utils.h
+@@ -45,6 +45,12 @@ extern bool throttled;
+ #define MMAP_WINDOW_SZ (32 * 1024 * 1024ULL)
+ #endif
+ 
++/* A macro to be used for ppc64 architecture-specific code.  The '__powerpc__' macro
++ * is defined for both ppc64 and ppc32 architectures, so we must further qualify by
++ * including the 'HAVE_LIBPFM' macro, since that macro will be defined only for ppc64.
++ */
++#define PPC64_ARCH (HAVE_LIBPFM) && ((defined(__powerpc__) || defined(__powerpc64__)))
++
+ extern unsigned int op_nr_counters;
+ 
+ static inline size_t align_64bit(u64 x)
+diff --git a/pe_profiling/operf.cpp b/pe_profiling/operf.cpp
+--- a/pe_profiling/operf.cpp
++++ b/pe_profiling/operf.cpp
+@@ -1197,9 +1197,9 @@ static void _process_events_list(void)
+ 		_get_event_code(&event);
+ 		events.push_back(event);
+ 	}
+-#if (defined(__powerpc__) || defined(__powerpc64__))
++#if PPC64_ARCH
+ 	{
+-		/* This section of code is for architectures such as ppc[64] for which
++		/* This section of code is soley for the ppc64 architecture for which
+ 		 * the oprofile event code needs to be converted to the appropriate event
+ 		 * code to pass to the perf_event_open syscall.
+ 		 */
+@@ -1244,7 +1244,7 @@ static void get_default_event(void)
+ 	_get_event_code(&dft_evt);
+ 	events.push_back(dft_evt);
+ 
+-#if (defined(__powerpc__) || defined(__powerpc64__))
++#if PPC64_ARCH
+ 	{
+ 		/* This section of code is for architectures such as ppc[64] for which
+ 		 * the oprofile event code needs to be converted to the appropriate event
