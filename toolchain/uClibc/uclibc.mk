@@ -62,7 +62,7 @@ UCLIBC_LOCALES = $(foreach locale,$(GENERATE_LOCALE),\
 endif
 
 $(DL_DIR)/$(UCLIBC_SOURCE):
-	$(call MESSAGE,"Downloading uClibc")
+	$(Q)$(call MESSAGE,"Downloading uClibc")
 	$(call DOWNLOAD,$(UCLIBC_SITE)/$(UCLIBC_SOURCE))
 
 uclibc-unpacked: $(UCLIBC_DIR)/.unpacked
