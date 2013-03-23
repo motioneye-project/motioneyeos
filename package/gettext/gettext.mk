@@ -56,3 +56,4 @@ GETTEXT_POST_PATCH_HOOKS += GETTEXT_DISABLE_TOOLS
 GETTEXT_POST_PATCH_HOOKS += GETTEXT_DISABLE_TESTS
 
 $(eval $(autotools-package))
+$(eval $(host-autotools-package))
