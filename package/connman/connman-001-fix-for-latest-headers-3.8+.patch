@@ -1,0 +1,19 @@
+tethering: fix build with kernel headers 3.8+
+
+Highly inspired by:
+    package/bridge-utils/bridge-utils-001-fix-for-kernel-headers-3.8+.patch
+    http://www.redhat.com/archives/libvir-list/2013-January/msg01253.html
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+
+diff -durN connman-1.11.orig/src/tethering.c connman-1.11/src/tethering.c
+--- connman-1.11.orig/src/tethering.c	2012-12-22 22:52:47.000000000 +0100
++++ connman-1.11/src/tethering.c	2013-03-21 19:39:17.036029270 +0100
+@@ -35,6 +35,7 @@
+ #include <string.h>
+ #include <fcntl.h>
+ #include <linux/if_tun.h>
++#include <netinet/in.h>
+ #include <linux/if_bridge.h>
+ 
+ #include "connman.h"
