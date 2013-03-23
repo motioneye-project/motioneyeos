@@ -116,7 +116,7 @@ define HOST_NCURSES_BUILD_CMDS
 endef
 
 HOST_NCURSES_CONF_OPT = \
-	--without-shared --without-gpm \
+	--with-shared --without-gpm \
 	--without-manpages \
 	--without-cxx \
 	--without-cxx-binding \
