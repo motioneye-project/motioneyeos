@@ -131,9 +131,11 @@ if ! $SHELL --version 2>&1 | grep -q '^GNU bash'; then
 fi;
 
 # Check that a few mandatory programs are installed
+missing_progs="no"
 for prog in patch perl tar wget cpio python unzip rsync ${DL_TOOLS} ; do
     if ! which $prog > /dev/null ; then
 	/bin/echo -e "You must install '$prog' on your build machine";
+	missing_progs="yes"
 	if test $prog = "svn" ; then
 	    /bin/echo -e "  svn is usually part of the subversion package in your distribution"
 	elif test $prog = "hg" ; then
@@ -143,9 +145,12 @@ for prog in patch perl tar wget cpio python unzip rsync ${DL_TOOLS} ; do
 	elif test $prog = "bzcat" ; then
             /bin/echo -e "  bzcat is usually part of the bzip2 package in your distribution"
 	fi
-	exit 1;
     fi
 done
+
+if test "${missing_progs}" = "yes" ; then
+    exit 1
+fi
 
 if grep ^BR2_TOOLCHAIN_BUILDROOT=y $BUILDROOT_CONFIG > /dev/null && \
    grep ^BR2_ENABLE_LOCALE=y       $BUILDROOT_CONFIG > /dev/null ; then
