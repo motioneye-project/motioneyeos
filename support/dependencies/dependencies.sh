@@ -192,3 +192,11 @@ if grep -q ^BR2_HOSTARCH_NEEDS_IA32_LIBS=y $BUILDROOT_CONFIG ; then
 	exit 1
     fi
 fi
+
+# Check that the Perl installation is complete enough to build
+# host-autoconf.
+if ! perl  -e "require Data::Dumper" > /dev/null 2>&1 ; then
+    /bin/echo -e "Your Perl installation is not complete enough, at least Data::Dumper is missing."
+    /bin/echo -e "On Debian/Ubuntu distributions, install the 'perl' package."
+    exit 1
+fi
