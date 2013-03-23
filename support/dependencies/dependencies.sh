@@ -133,11 +133,9 @@ fi;
 # Check that a few mandatory programs are installed
 for prog in patch perl tar wget cpio python unzip rsync ${DL_TOOLS} ; do
     if ! which $prog > /dev/null ; then
-	/bin/echo -e "\nYou must install '$prog' on your build machine";
+	/bin/echo -e "You must install '$prog' on your build machine";
 	if test $prog = "svn" ; then
-	    /bin/echo -e "svn is usually part of the subversion package in your distribution\n"
-	else
-	    /bin/echo -e "\n"
+	    /bin/echo -e "svn is usually part of the subversion package in your distribution"
 	fi
 	exit 1;
     fi
