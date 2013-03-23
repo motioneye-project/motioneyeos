@@ -131,14 +131,10 @@ if ! $SHELL --version 2>&1 | grep -q '^GNU bash'; then
 fi;
 
 # Check that a few mandatory programs are installed
-for prog in awk bison flex msgfmt makeinfo patch gzip bzip2 perl tar wget cpio python unzip rsync ${DL_TOOLS} ; do
+for prog in patch perl tar wget cpio python unzip rsync ${DL_TOOLS} ; do
     if ! which $prog > /dev/null ; then
 	/bin/echo -e "\nYou must install '$prog' on your build machine";
-	if test $prog = "makeinfo" ; then
-	    /bin/echo -e "makeinfo is usually part of the texinfo package in your distribution\n"
-	elif test $prog = "msgfmt" ; then
-	    /bin/echo -e "msgfmt is usually part of the gettext package in your distribution\n"
-	elif test $prog = "svn" ; then
+	if test $prog = "svn" ; then
 	    /bin/echo -e "svn is usually part of the subversion package in your distribution\n"
 	else
 	    /bin/echo -e "\n"

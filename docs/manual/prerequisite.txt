@@ -30,10 +30,6 @@ Mandatory packages
 ** +gcc+ (version 2.95 or any later)
 ** `g++` (version 2.95 or any later)
 ** +bash+
-** +gawk+
-** +bison+
-** +flex+
-** +gettext+
 ** +patch+
 ** +gzip+
 ** +bzip2+
@@ -43,7 +39,6 @@ Mandatory packages
 ** +python+ (version 2.6 or 2.7)
 ** +unzip+
 ** +rsync+
-** +texinfo+ (required for internal Buildroot toolchain backend)
 
 * Source fetching tools:
 ** +wget+
