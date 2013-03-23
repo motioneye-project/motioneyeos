@@ -11,6 +11,8 @@ GMP_INSTALL_STAGING = YES
 GMP_LICENSE = LGPLv3+
 GMP_LICENSE_FILES = COPYING.LIB
 
+GMP_DEPENDENCIES = host-m4
+
 # Bad ARM assembly breaks on pure thumb
 ifeq ($(ARCH),arm)
 GMP_MAKE_OPT += CFLAGS="$(TARGET_CFLAGS) -marm"
