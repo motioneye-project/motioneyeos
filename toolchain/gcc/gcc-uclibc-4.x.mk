@@ -211,7 +211,7 @@ endif
 
 $(DL_DIR)/$(GCC_SOURCE):
 	mkdir -p $(DL_DIR)
-	$(call MESSAGE,"Downloading gcc")
+	$(Q)$(call MESSAGE,"Downloading gcc")
 	$(call DOWNLOAD,$(GCC_SITE)/$(GCC_SOURCE))
 
 gcc-unpacked: $(GCC_DIR)/.patched
