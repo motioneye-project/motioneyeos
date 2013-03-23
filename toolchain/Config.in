@@ -28,7 +28,7 @@ config BR2_TOOLCHAIN_CTNG
 	select BR2_TOOLCHAIN_HAS_THREADS_DEBUG_IF_NEEDED
 	help
 	  Say 'y' if you want to generate the toolchain with crosstool-NG
-	  ( http://ymorin.is-a-geek.org/projects/crosstool )
+	  (http://crosstool-ng.org).
 
 	  This is considered experimental, and you can expect some breakage.
 
