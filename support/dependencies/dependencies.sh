@@ -200,3 +200,12 @@ if ! perl  -e "require Data::Dumper" > /dev/null 2>&1 ; then
     /bin/echo -e "On Debian/Ubuntu distributions, install the 'perl' package."
     exit 1
 fi
+
+# Check that we have the SSL certificates to make https:// downloads
+# work.
+if ! test -d /etc/ssl/certs; then
+    /bin/echo -e "Your system lacks Common CA certificates for SSL."
+    /bin/echo -e "This prevents https:// downloads from succeeding."
+    /bin/echo -e "On Debian/Ubuntu distributions, install 'ca-certificates' package."
+    exit 1
+fi
