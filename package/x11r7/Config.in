@@ -32,15 +32,11 @@ if BR2_PACKAGE_XORG7
 		source package/x11r7/xlib_libXext/Config.in
 		source package/x11r7/xlib_libXfixes/Config.in
 		source package/x11r7/xlib_libXfont/Config.in
-		source package/x11r7/xlib_libXfontcache/Config.in
 		source package/x11r7/xlib_libXft/Config.in
 		source package/x11r7/xlib_libXi/Config.in
 		source package/x11r7/xlib_libXinerama/Config.in
 		source package/x11r7/xlib_libXmu/Config.in
-		source package/x11r7/xlib_libXp/Config.in
 		source package/x11r7/xlib_libXpm/Config.in
-		source package/x11r7/xlib_libXprintAppUtil/Config.in
-		source package/x11r7/xlib_libXprintUtil/Config.in
 		source package/x11r7/xlib_libXrandr/Config.in
 		source package/x11r7/xlib_libXrender/Config.in
 		source package/x11r7/xlib_libXres/Config.in
@@ -52,9 +48,7 @@ if BR2_PACKAGE_XORG7
 		source package/x11r7/xlib_libXxf86vm/Config.in
 		source package/x11r7/xlib_libdmx/Config.in
 		source package/x11r7/xlib_libfontenc/Config.in
-		source package/x11r7/xlib_liboldX/Config.in
 		source package/x11r7/xlib_libxkbfile/Config.in
-		source package/x11r7/xlib_libxkbui/Config.in
 		source package/x11r7/xlib_xtrans/Config.in
 		source package/x11r7/xlib_libpciaccess/Config.in
 		source package/x11r7/xlib_libpthread-stubs/Config.in
@@ -109,7 +103,6 @@ if BR2_PACKAGE_XORG7
 		source package/x11r7/xapp_xgamma/Config.in
 		source package/x11r7/xapp_xgc/Config.in
 		source package/x11r7/xapp_xhost/Config.in
-		source package/x11r7/xapp_xinit/Config.in
 		source package/x11r7/xapp_xinput/Config.in
 		source package/x11r7/xapp_xinput-calibrator/Config.in
 		source package/x11r7/xapp_xkbcomp/Config.in
@@ -128,9 +121,7 @@ if BR2_PACKAGE_XORG7
 		source package/x11r7/xapp_xmh/Config.in
 		source package/x11r7/xapp_xmodmap/Config.in
 		source package/x11r7/xapp_xmore/Config.in
-		source package/x11r7/xapp_xplsprinters/Config.in
 		source package/x11r7/xapp_xpr/Config.in
-		source package/x11r7/xapp_xprehashprinterlist/Config.in
 		source package/x11r7/xapp_xprop/Config.in
 		source package/x11r7/xapp_xrandr/Config.in
 		source package/x11r7/xapp_xrdb/Config.in
@@ -206,7 +197,6 @@ if BR2_PACKAGE_XORG7
 		source package/x11r7/xfont_font-bh-type1/Config.in
 		source package/x11r7/xfont_font-bitstream-100dpi/Config.in
 		source package/x11r7/xfont_font-bitstream-75dpi/Config.in
-		source package/x11r7/xfont_font-bitstream-speedo/Config.in
 		source package/x11r7/xfont_font-bitstream-type1/Config.in
 		source package/x11r7/xfont_font-cronyx-cyrillic/Config.in
 		source package/x11r7/xfont_font-cursor-misc/Config.in
@@ -242,7 +232,6 @@ if BR2_PACKAGE_XORG7
 		source package/x11r7/xproto_glproto/Config.in
 		source package/x11r7/xproto_inputproto/Config.in
 		source package/x11r7/xproto_kbproto/Config.in
-		source package/x11r7/xproto_printproto/Config.in
 		source package/x11r7/xproto_randrproto/Config.in
 		source package/x11r7/xproto_recordproto/Config.in
 		source package/x11r7/xproto_renderproto/Config.in
@@ -255,7 +244,6 @@ if BR2_PACKAGE_XORG7
 		source package/x11r7/xproto_xf86bigfontproto/Config.in
 		source package/x11r7/xproto_xf86dgaproto/Config.in
 		source package/x11r7/xproto_xf86driproto/Config.in
-		source package/x11r7/xproto_xf86rushproto/Config.in
 		source package/x11r7/xproto_xf86vidmodeproto/Config.in
 		source package/x11r7/xproto_xineramaproto/Config.in
 		source package/x11r7/xproto_xproto/Config.in

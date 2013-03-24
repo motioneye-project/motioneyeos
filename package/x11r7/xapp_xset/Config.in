@@ -1,6 +1,5 @@
 config BR2_PACKAGE_XAPP_XSET
 	bool "xset"
-	select BR2_PACKAGE_XLIB_LIBXFONTCACHE
 	select BR2_PACKAGE_XLIB_LIBXMU
 	help
 	  X.Org xset application

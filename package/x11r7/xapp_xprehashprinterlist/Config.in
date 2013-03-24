@@ -1,6 +1,0 @@
-config BR2_PACKAGE_XAPP_XPREHASHPRINTERLIST
-	bool "xprehashprinterlist"
-	select BR2_PACKAGE_XLIB_LIBX11
-	select BR2_PACKAGE_XLIB_LIBXP
-	help
-	  Recomputes the list of available printers.

@@ -1,0 +1,27 @@
+Backported from d4f89f7f42484963575b4c7d2fa694051e111e76 
+
+Signed-off-by: Jesper Baekdahl <jbb@gamblify.com>
+---
+From d4f89f7f42484963575b4c7d2fa694051e111e76 Mon Sep 17 00:00:00 2001
+From: Jeremy Huddleston <jeremyhu@apple.com>
+Date: Fri, 09 Mar 2012 10:48:14 +0000
+Subject: Include <stdint.h> for uintptr_t
+
+Found-by: Tinderbox
+
+Signed-off-by: Jeremy Huddleston <jeremyhu@apple.com>
+---
+diff --git a/src/XF86DGA2.c b/src/XF86DGA2.c
+index 32f455b..964de18 100644
+--- a/src/XF86DGA2.c
++++ b/src/XF86DGA2.c
+@@ -21,6 +21,7 @@ Copyright (c) 1995,1996  The XFree86 Project, Inc
+ #include <X11/extensions/extutil.h>
+ #include <stdio.h>
+ 
++#include <stdint.h>
+ 
+ /* If you change this, change the Bases[] array below as well */
+ #define MAX_HEADS 16
+--
+cgit v0.9.0.2-2-gbebe
