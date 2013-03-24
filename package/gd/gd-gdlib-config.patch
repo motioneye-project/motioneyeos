@@ -1,0 +1,32 @@
+Fix gdlib-config
+
+Since the @LIBICONV@ macro doesn't get replaced at compile time, we
+end up installing an invalid gdlib-config: the gdlib-config --libs
+says that one should link against @LIBICONV@ which obviously doesn't
+work.
+
+Use the OpenWRT patch from
+https://dev.openwrt.org/browser/packages/libs/gd/patches/101-gdlib-config.patch
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+--- a/config/gdlib-config.in
++++ b/config/gdlib-config.in
+@@ -71,7 +71,7 @@ while test $# -gt 0; do
+ 	echo @LDFLAGS@
+ 	;;
+     --libs)
+-	echo @LIBS@ @LIBICONV@
++	echo @LIBS@
+ 	;;
+     --cflags|--includes)
+ 	echo -I@includedir@
+@@ -84,7 +84,7 @@ while test $# -gt 0; do
+ 	echo "includedir: $includedir"
+ 	echo "cflags:     -I@includedir@"
+ 	echo "ldflags:    @LDFLAGS@"
+-	echo "libs:       @LIBS@ @LIBICONV@"
++	echo "libs:       @LIBS@"
+ 	echo "libdir:     $libdir"
+ 	echo "features:   @FEATURES@"
+ 	;;
