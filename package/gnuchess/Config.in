@@ -1,6 +1,7 @@
 config BR2_PACKAGE_GNUCHESS
 	bool "gnuchess"
 	depends on BR2_TOOLCHAIN_HAS_THREADS
+	select BR2_PACKAGE_FLEX
 	help
 	  GNU Chess lets most modern computers play a full game of chess.
 
