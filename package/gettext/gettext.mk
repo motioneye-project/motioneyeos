@@ -11,6 +11,7 @@ GETTEXT_LICENSE = GPLv2+
 GETTEXT_LICENSE_FILES = COPYING
 
 GETTEXT_DEPENDENCIES = $(if $(BR2_PACKAGE_LIBICONV),libiconv)
+HOST_GETTEXT_DEPENDENCIES = # we don't want the libiconv dependency
 
 GETTEXT_CONF_OPT += \
 	--disable-libasprintf \
