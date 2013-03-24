@@ -6,6 +6,9 @@
 
 OPENSWAN_VERSION = 2.6.38
 OPENSWAN_SITE = http://download.openswan.org/openswan
+OPENSWAN_LICENSE = GPLv2+, BSD-3c
+OPENSWAN_LICENSE_FILES = COPYING LICENSE
+
 OPENSWAN_DEPENDENCIES = host-bison gmp iproute2
 OPENSWAN_MAKE_OPT = ARCH=$(BR2_ARCH) CC="$(TARGET_CC)" \
 	USERCOMPILE="$(TARGET_CFLAGS)" INC_USRLOCAL=/usr \
@@ -25,11 +28,13 @@ endif
 endif
 
 define OPENSWAN_BUILD_CMDS
-	$(MAKE) -C $(@D) $(OPENSWAN_MAKE_OPT) programs
+	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) \
+		$(OPENSWAN_MAKE_OPT) programs
 endef
 
 define OPENSWAN_INSTALL_TARGET_CMDS
-	$(MAKE) -C $(@D) $(OPENSWAN_MAKE_OPT) DESTDIR=$(TARGET_DIR) install
+	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) \
+		$(OPENSWAN_MAKE_OPT) DESTDIR=$(TARGET_DIR) install
 endef
 
 $(eval $(generic-package))
