@@ -1,0 +1,66 @@
+Add options to enable/disable docs and demos
+
+Originally written by Anthony Viallard
+<viallard@syscom-instruments.com>.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: gnuplot-4.6.0/configure.in
+===================================================================
+--- gnuplot-4.6.0.orig/configure.in	2012-03-08 05:34:42.000000000 +0100
++++ gnuplot-4.6.0/configure.in	2013-01-07 11:50:03.003804463 +0100
+@@ -748,6 +748,16 @@
+ AC_ARG_WITH(lisp-files,dnl
+ [  --without-lisp-files    do not build emacs lisp files])
+ 
++dnl Whether we want to build the demo files
++dnl Does nothing here, is passed on to the demo subdir
++AC_ARG_ENABLE(demo,dnl
++[  --disable-demo    do not build demo files])
++
++dnl Whether we want to build the doc files
++dnl Does nothing here, is passed on to the doc subdir
++AC_ARG_ENABLE(doc,dnl
++[  --disable-doc    do not build doc files])
++
+ dnl Sort help/subtopic tables by row or column
+ AC_ARG_WITH(row-help,dnl
+ [  --with-row-help         format help and subtopic tables by row (default)
+@@ -1200,6 +1210,24 @@
+ fi
+ AC_SUBST(LISPDIR)
+ 
++dnl build demo files
++if test "$enable_demo" != no; then
++  AC_CONFIG_SUBDIRS(demo)
++  DEMOSUBDIR=demo
++else
++  DEMOSUBDIR=
++fi
++AC_SUBST(DEMOSUBDIR)
++
++dnl build doc files
++if test "$enable_doc" != no; then
++  AC_CONFIG_SUBDIRS(docs)
++  DOCSUBDIR=docs
++else
++  DOCSUBDIR=
++fi
++AC_SUBST(DOCSUBDIR)
++
+ dnl Substitute variables
+ AC_SUBST(PACKAGE)
+ AC_SUBST(VERSION_MAJOR)
+Index: gnuplot-4.6.0/Makefile.am
+===================================================================
+--- gnuplot-4.6.0.orig/Makefile.am	2013-01-04 14:07:02.239120935 +0100
++++ gnuplot-4.6.0/Makefile.am	2013-01-07 11:51:12.034846363 +0100
+@@ -1,7 +1,7 @@
+ ## Process this file with automake to produce Makefile.in -*-Makefile-*-
+ AUTOMAKE_OPTIONS = foreign 1.2h
+ 
+-SUBDIRS = config m4 term src docs $(LISPDIR) man demo tutorial share
++SUBDIRS = config m4 term src $(DOCSUBDIR) $(LISPDIR) man $(DEMOSUBDIR) tutorial share
+ 
+ EXTRA_DIST = BUGS CodeStyle Copyright FAQ.pdf GNUmakefile INSTALL INSTALL.gnu \
+ Makefile.maint PATCHLEVEL PGPKEYS PORTING README README.1ST \
