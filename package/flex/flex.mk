@@ -10,9 +10,9 @@ FLEX_INSTALL_STAGING = YES
 FLEX_LICENSE = FLEX
 FLEX_LICENSE_FILES = COPYING
 FLEX_DEPENDENCIES = \
-	$(if $(BR2_PACKAGE_GETTEXT),gettext)
+	$(if $(BR2_PACKAGE_GETTEXT),gettext) host-m4
 # we don't have a host-gettext/libintl
-HOST_FLEX_DEPENDENCIES =
+HOST_FLEX_DEPENDENCIES = host-m4
 
 ifeq ($(BR2_PACKAGE_FLEX_BINARY),y)
 # lex -> flex
