@@ -268,6 +268,7 @@ if BR2_PACKAGE_XORG7
 	menu "X11R7 Other data"
 		source package/x11r7/xdata_xbitmaps/Config.in
 		source package/x11r7/xdata_xcursor-themes/Config.in
+		source package/x11r7/xcursor-transparent-theme/Config.in
 		source package/x11r7/xkeyboard-config/Config.in
 	endmenu
 endif
