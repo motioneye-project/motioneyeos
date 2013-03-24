@@ -1,0 +1,22 @@
+config BR2_PACKAGE_BCUSDK
+	bool "bcusdk"
+	depends on BR2_INSTALL_LIBSTDCPP
+	select BR2_PACKAGE_LIBPTHSEM
+	help
+	  A free development environment for the Bus Coupling Units of
+	  the European Installation Bus.
+
+	  The European Installation Bus EIB is a home and building
+	  automation bus system. It is optimized for low-speed control
+	  applications like lighting and blinds control.
+
+	  BCUs (Bus Coupling Units) are standardized, generic
+	  platforms for embedded EIB devices. They include the entire
+	  physical layer network interface, power supply and a
+	  microcontroller with an implementation of the EIB protocol
+	  stack stored in the ROM.
+
+	  http://www.auto.tuwien.ac.at/~mkoegler/eib/
+
+comment "bcusdk requires a toolchain with C++ support"
+	depends on !BR2_INSTALL_LIBSTDCPP
