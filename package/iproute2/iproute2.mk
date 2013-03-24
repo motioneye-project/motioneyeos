@@ -10,7 +10,7 @@ IPROUTE2_TARGET_SBINS = ctstat genl ifstat ip lnstat nstat routef routel rtacct 
 IPROUTE2_LICENSE = GPLv2
 IPROUTE2_LICENSE_FILES = COPYING
 
-IPROUTE2_DEPENDENCIES += host-bison
+IPROUTE2_DEPENDENCIES += host-bison host-flex
 
 # If both iproute2 and busybox are selected, make certain we win
 # the fight over who gets to have their utils actually installed.
