@@ -15,6 +15,6 @@ APR_UTIL_CONFIG_SCRIPTS = apu-1-config
 
 # When iconv is available, then use it to provide charset conversion
 # features.
-APR_UTIL_DEPENDENCIES = $(if $(BR2_PACKAGE_LIBICONV),libiconv)
+APR_UTIL_DEPENDENCIES += $(if $(BR2_PACKAGE_LIBICONV),libiconv)
 
 $(eval $(autotools-package))
