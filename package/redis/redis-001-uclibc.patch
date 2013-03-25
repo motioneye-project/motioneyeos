@@ -15,7 +15,7 @@ diff -ur old/src/config.h new/src/config.h
  #ifndef __CONFIG_H
  #define __CONFIG_H
  
-+#ifdef __unix
++#if defined(__unix) || defined(__linux__)
 +#include <features.h>
 +#endif
 +
