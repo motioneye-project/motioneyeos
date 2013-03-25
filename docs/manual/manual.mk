@@ -1,3 +1,8 @@
+manual-update-lists:
+	$(Q)$(call MESSAGE,"Updating the manual lists...")
+	$(Q)BR2_DEFCONFIG="" TOPDIR=$(TOPDIR) O=$(O)/docs/manual/.build \
+		$(TOPDIR)/support/scripts/gen-manual-lists.py
+
 ################################################################################
 # GENDOC -- generates the make targets needed to build a specific type of
 #           asciidoc documentation.
@@ -17,11 +22,15 @@ $(1): $(1)-$(3)
 .PHONY: $(1)-$(3)
 $(1)-$(3): $$(O)/docs/$(1)/$(1).$(4)
 
-$$(O)/docs/$(1)/$(1).$(4): docs/$(1)/$(1).txt $$($(call UPPERCASE,$(1))_SOURCES)
-	@$(call MESSAGE,"Generating $(5) $(1)...")
-	$(Q)mkdir -p $$(@D)
+$$(O)/docs/$(1)/$(1).$(4): docs/$(1)/$(1).txt \
+			   $$($(call UPPERCASE,$(1))_SOURCES) \
+			   manual-update-lists
+	$(Q)$(call MESSAGE,"Generating $(5) $(1)...")
+	$(Q)mkdir -p $$(@D)/.build
+	$(Q)rsync -au docs/$(1)/*.txt $$(@D)/.build
 	$(Q)a2x $(6) -f $(2) -d book -L -r $(TOPDIR)/docs/images \
-	  -D $$(@D) $$<
+	        -D $$(@D) $$(@D)/.build/$(1).txt
+	-$(Q)rm -rf $$(@D)/.build
 endef
 
 ################################################################################
@@ -41,7 +50,7 @@ $(call GENDOC_INNER,$(1),epub,epub,epub,EPUB)
 clean: $(1)-clean
 $(1)-clean:
 	$(Q)$(RM) -rf $(O)/docs/$(1)
-.PHONY: $(1) $(1)-clean
+.PHONY: $(1) $(1)-clean manual-update-lists
 endef
 
 MANUAL_SOURCES = $(wildcard docs/manual/*.txt) $(wildcard docs/images/*)

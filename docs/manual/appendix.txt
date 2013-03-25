@@ -20,6 +20,8 @@ include::package-list.txt[]
 Host utilities
 --------------
 
+The following packages are all available in the menu +Host utilities+.
+
 include::host-package-list.txt[]
 
 [[deprecated-list]]
