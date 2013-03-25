@@ -7,15 +7,26 @@ Appendix
 include::makedev-syntax.txt[]
 include::makeusers-syntax.txt[]
 
-[[package-list]]
-Available packages
-------------------
-// docs/manaual/pkg-list.txt is generated using the following command:
-// $ git grep -E '\((autotools|cmake|generic)-package\)' package/ |  \
-//     cut -d':' -f1 | grep '\.mk$' | \
-//     sed -e 's;.*\?/\(.*\?\).mk;* \1;' | \
-//     sort > docs/manual/pkg-list.txt
 
-include::pkg-list.txt[]
+// Automatically generated lists:
+
+[[package-list]]
+Package Selection for the target
+--------------------------------
+
+include::package-list.txt[]
+
+[[host-package-list]]
+Host utilities
+--------------
+
+include::host-package-list.txt[]
+
+[[deprecated-list]]
+Deprecated features
+-------------------
+
+The following features are marked as _deprecated_ in Buildroot due to
+their status either too old or unmaintained.
 
 include::deprecated-list.txt[]

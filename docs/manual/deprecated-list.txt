@@ -4,7 +4,7 @@
 Deprecated list
 ---------------
 
-The following stuff are marked as _deprecated_ in Buildroot due to
+The following features are marked as _deprecated_ in Buildroot due to
 their status either too old or unmaintained.
 
 // list generated using the followings command:
