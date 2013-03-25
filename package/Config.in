@@ -538,6 +538,7 @@ source "package/ortp/Config.in"
 source "package/slirp/Config.in"
 source "package/usbredir/Config.in"
 source "package/zeromq/Config.in"
+source "package/zmqpp/Config.in"
 endmenu
 
 menu "Other"

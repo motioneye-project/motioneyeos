@@ -1,0 +1,46 @@
+Fix a couple of typos in the zmqpp source code.
+
+Signed-off-by: Simon Dawson <spdawson@gmail.com>
+
+diff -Nurp a/src/zmqpp/socket.cpp b/src/zmqpp/socket.cpp
+--- a/src/zmqpp/socket.cpp	2012-12-11 11:06:23.000000000 +0000
++++ b/src/zmqpp/socket.cpp	2013-03-18 17:32:01.464761776 +0000
+@@ -587,7 +587,7 @@ void socket::get(socket_option const& op
+ 	}
+ }
+ 
+-socket::socket(socket&& source) noexcept
++socket::socket(socket& source) noexcept
+ 	: _socket(source._socket)
+ 	, _type(source._type)
+ 	, _recv_buffer()
+@@ -601,7 +601,7 @@ socket::socket(socket&& source) noexcept
+ 	source._socket = nullptr;
+ }
+ 
+-socket& socket::operator=(socket&& source) noexcept
++socket& socket::operator=(socket& source) noexcept
+ {
+ 	_socket = source._socket;
+ 	source._socket = nullptr;
+diff -Nurp a/src/zmqpp/socket.hpp b/src/zmqpp/socket.hpp
+--- a/src/zmqpp/socket.hpp	2012-12-11 11:06:23.000000000 +0000
++++ b/src/zmqpp/socket.hpp	2013-03-18 17:31:53.556790457 +0000
+@@ -400,7 +400,7 @@ public:
+ 	 *
+ 	 * \param source target socket to steal internals from
+ 	 */
+-	socket(socket&& source) noexcept;
++	socket(socket& source) noexcept;
+ 
+ 	/*!
+ 	 * Move operator
+@@ -413,7 +413,7 @@ public:
+ 	 * \param source target socket to steal internals from
+ 	 * \return socket reference to this
+ 	 */
+-	socket& operator=(socket&& source) noexcept;
++	socket& operator=(socket& source) noexcept;
+ 
+ 	/*!
+ 	 * Check the socket is still valid
