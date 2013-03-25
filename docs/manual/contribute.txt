@@ -1,7 +1,7 @@
 // -*- mode:doc; -*-
 // vim: set syntax=asciidoc:
 
-Contibuting to Buildroot
+Contributing to Buildroot
 ========================
 
 If you want to contribute to Buildroot, you will need a git view of
