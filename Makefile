@@ -431,7 +431,7 @@ $(BUILD_DIR)/.root:
 	mkdir -p $(TARGET_DIR)
 	if ! [ -d "$(TARGET_DIR)/bin" ]; then \
 		if [ -d "$(TARGET_SKELETON)" ]; then \
-			cp -fa $(TARGET_SKELETON)/* $(TARGET_DIR)/; \
+			rsync -au $(TARGET_SKELETON)/ $(TARGET_DIR)/; \
 		fi; \
 	fi
 	cp support/misc/target-dir-warning.txt $(TARGET_DIR_WARNING_FILE)
