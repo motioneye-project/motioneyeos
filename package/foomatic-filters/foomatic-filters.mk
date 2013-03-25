@@ -1,0 +1,22 @@
+#############################################################
+#
+# foomatic_filters
+#
+#############################################################
+
+FOOMATIC_FILTERS_VERSION = 4.0.17
+FOOMATIC_FILTERS_SITE = http://www.openprinting.org/download/foomatic
+FOOMATIC_FILTERS_LICENSE = GPLv2+
+FOOMATIC_FILTERS_LICENSE_FILES = COPYING
+FOOMATIC_FILTERS_DEPENDENCIES = cups libusb enscript
+
+FOOMATIC_FILTERS_CONF_OPT = --with-file-converter=enscript
+
+ifeq ($(BR2_PACKAGE_DBUS),y)
+FOOMATIC_FILTERS_CONF_OPT += --enable-dbus
+FOOMATIC_FILTERS_DEPENDENCIES += dbus
+else
+FOOMATIC_FILTERS_CONF_OPT += --disable-dbus
+endif
+
+$(eval $(autotools-package))

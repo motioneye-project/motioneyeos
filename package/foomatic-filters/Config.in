@@ -1,0 +1,18 @@
+comment "foomatic-filters requires a toolchain with support for THREADS"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
+
+config BR2_PACKAGE_FOOMATIC_FILTERS
+	bool "foomatic_filters"
+	depends on BR2_PACKAGE_CUPS
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libusb
+	select BR2_PACKAGE_LIBUSB
+	select BR2_PACKAGE_ENSCRIPT
+	help
+	  Foomatic Filters
+	  Foomatic is a database-driven system for integrating free software
+	  printer drivers with common spoolers under Unix. It supports CUPS,
+	  LPRng, LPD, GNUlpr, Solaris LP, PPR, PDQ, CPS, and direct printing
+	  with every free software printer driver known to us and every
+	  printer known to work with these drivers.
+
+	  http://www.linuxfoundation.org/collaborate/workgroups/openprinting/database/foomatic
