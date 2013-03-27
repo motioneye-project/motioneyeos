@@ -1,6 +1,8 @@
 config BR2_PACKAGE_XKEYBOARD_CONFIG
 	bool "xkeyboard-config"
 	select BR2_PACKAGE_XAPP_XKBCOMP
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XPROTO_XPROTO
 	help
 	  keyboard configuration database for X
 
