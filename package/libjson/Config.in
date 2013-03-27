@@ -1,0 +1,11 @@
+config BR2_PACKAGE_LIBJSON
+	bool "libjson"
+	depends on BR2_INSTALL_LIBSTDCPP
+	help
+	  A JSON reader and writer which is super-efficient and usually
+	  runs circles around other JSON libraries.
+
+	  http://sourceforge.net/projects/libjson/
+
+comment "libjson requires a toolchain with C++ support"
+	depends on !BR2_INSTALL_LIBSTDCPP
