@@ -1,0 +1,22 @@
+[PATCH]: ioport.cpp: close(2) needs unistd.h
+
+Fixed in upstream CVS:
+http://linknx.cvs.sourceforge.net/viewvc/linknx/linknx/linknx/src/ioport.cpp?revision=1.20&view=markup
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ src/ioport.cpp |    1 +
+ 1 file changed, 1 insertion(+)
+
+Index: linknx-0.0.1.30/src/ioport.cpp
+===================================================================
+--- linknx-0.0.1.30.orig/src/ioport.cpp
++++ linknx-0.0.1.30/src/ioport.cpp
+@@ -21,6 +21,7 @@
+ #include <iomanip>
+ #include "ioport.h"
+ #include <fcntl.h>
++#include <unistd.h>
+ 
+ Logger& IOPort::logger_m(Logger::getInstance("IOPort"));
+ Logger& RxThread::logger_m(Logger::getInstance("RxThread"));

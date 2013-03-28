@@ -1,0 +1,12 @@
+config BR2_PACKAGE_LINKNX
+	bool "linknx"
+	select BR2_PACKAGE_LIBPTHSEM
+	depends on BR2_INSTALL_LIBSTDCPP
+	help
+	  Linknx is an automation platform providing high level functionalities
+	  to EIB/KNX installation.
+
+	  http://linknx.sourceforge.net/
+
+comment "linknx requires a toolchain with C++ support"
+	depends on !BR2_INSTALL_LIBSTDCPP
