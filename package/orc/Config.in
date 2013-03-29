@@ -1,7 +1,11 @@
 config BR2_PACKAGE_ORC
 	bool "orc"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
 	help
 	  Orc is a library and set of tools for compiling and executing
 	  very simple programs that operate on arrays of data.
 
 	  http://code.entropywave.com/projects/orc/
+
+comment "orc requires a toolchain with thread support"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
