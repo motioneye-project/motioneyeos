@@ -1,6 +1,10 @@
 config BR2_PACKAGE_SOCAT
 	bool "socat"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
 	help
 	  Multipurpose socket relay program.
 
 	  http://www.dest-unreach.org/socat/
+
+comment "socat requires a toolchain with thread support"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
