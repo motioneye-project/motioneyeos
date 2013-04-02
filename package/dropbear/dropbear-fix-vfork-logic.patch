@@ -1,0 +1,21 @@
+
+# HG changeset patch
+# User Matt Johnston <matt@ucc.asn.au>
+# Date 1364743743 -28800
+# Node ID fedfb8ede1fdebad5d19df7bd4d452c3264d9545
+# Parent  f27058078d61a8c3a057530d3ddcd19bd5062569
+Fix incorrect logic for USE_VFORK and calling arg_setup()
+
+diff -r f27058078d61 -r fedfb8ede1fd scp.c
+--- a/scp.c	Sun Mar 31 23:15:35 2013 +0800
++++ b/scp.c	Sun Mar 31 23:29:03 2013 +0800
+@@ -230,7 +230,7 @@
+ 		close(pin[0]);
+ 		close(pout[1]);
+ 
+-#ifdef USE_VFORK
++#ifndef USE_VFORK
+ 		arg_setup(host, remuser, cmd);
+ #endif
+ 
+
