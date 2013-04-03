@@ -24,7 +24,7 @@ GNUPLOT_CONF_OPT = --without-x \
 		--without-latex \
 	        --without-cairo
 
-ifeq ($(BR2_PACKAGE_GD),y)
+ifeq ($(BR2_PACKAGE_GD)$(BR2_PACKAGE_LIBPNG),yy)
 GNUPLOT_CONF_OPT += --with-gd
 GNUPLOT_DEPENDENCIES += gd
 GNUPLOT_CONF_ENV += \
