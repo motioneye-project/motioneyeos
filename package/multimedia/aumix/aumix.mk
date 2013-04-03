@@ -16,6 +16,6 @@ AUMIX_CONF_OPT = \
 	--without-gpm \
 	--without-sysmouse
 
-AUMIX_DEPENDENCIES = ncurses
+AUMIX_DEPENDENCIES = host-gettext ncurses
 
 $(eval $(autotools-package))
