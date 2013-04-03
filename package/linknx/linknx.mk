@@ -9,7 +9,7 @@ LINKNX_SITE = http://downloads.sourceforge.net/project/linknx/linknx/linknx-$(LI
 LINKNX_LICENSE = GPLv2+
 LINKNX_INSTALL_STAGING = YES
 LINKNX_CONF_OPT = --without-lua --without-log4cpp --without-pth-test \
-		  --with-pth=$(STAGING_DIR)/usr
+		  --with-pth=$(STAGING_DIR)/usr --disable-smtp
 
 LINKNX_DEPENDENCIES = libpthsem
 
