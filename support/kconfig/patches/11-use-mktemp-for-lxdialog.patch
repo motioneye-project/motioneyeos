@@ -2,11 +2,11 @@
  lxdialog/check-lxdialog.sh |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Index: config/lxdialog/check-lxdialog.sh
+Index: b/lxdialog/check-lxdialog.sh
 ===================================================================
---- config.orig/lxdialog/check-lxdialog.sh
-+++ config/lxdialog/check-lxdialog.sh
-@@ -33,7 +33,7 @@
+--- a/lxdialog/check-lxdialog.sh
++++ b/lxdialog/check-lxdialog.sh
+@@ -34,7 +34,7 @@
  }
  
  # Temp file, try to clean up after us

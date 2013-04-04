@@ -2,11 +2,11 @@
  confdata.c |   22 +++++++++++++++++++---
  1 file changed, 19 insertions(+), 3 deletions(-)
 
-Index: kconfig/confdata.c
+Index: b/confdata.c
 ===================================================================
---- kconfig.orig/confdata.c
-+++ kconfig/confdata.c
-@@ -982,7 +982,16 @@
+--- a/confdata.c
++++ b/confdata.c
+@@ -1107,7 +1107,16 @@
  void conf_set_all_new_symbols(enum conf_def_mode mode)
  {
  	struct symbol *sym, *csym;
@@ -24,7 +24,7 @@ Index: kconfig/confdata.c
  
  	for_all_symbols(i, sym) {
  		if (sym_has_value(sym))
-@@ -1001,8 +1010,15 @@
+@@ -1126,8 +1135,15 @@
  				sym->def[S_DEF_USER].tri = no;
  				break;
  			case def_random:

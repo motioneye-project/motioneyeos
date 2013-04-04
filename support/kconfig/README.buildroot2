@@ -1,4 +1,4 @@
-This is a copy of the kconfig code in the kernel (currently 2.6.37-rc1) tweaked
+This is a copy of the kconfig code in the kernel (currently 3.9-rc2) tweaked
 to suit Buildroot.
 
 To update:

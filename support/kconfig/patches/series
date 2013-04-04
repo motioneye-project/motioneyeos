@@ -7,3 +7,4 @@
 11-use-mktemp-for-lxdialog.patch
 12-fix-glade-file-path.patch
 14-support-out-of-tree-config.patch
+15-fix-qconf-moc-rule.patch

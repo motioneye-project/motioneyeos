@@ -4,18 +4,18 @@
  menu.c     |    2 +-
  3 files changed, 31 insertions(+), 30 deletions(-)
 
-Index: kconfig/confdata.c
+Index: b/confdata.c
 ===================================================================
---- kconfig.orig/confdata.c
-+++ kconfig/confdata.c
-@@ -12,6 +12,7 @@
+--- a/confdata.c
++++ b/confdata.c
+@@ -13,6 +13,7 @@
  #include <string.h>
  #include <time.h>
  #include <unistd.h>
 +#include <libgen.h>
  
- #define LKC_DIRECT_LINK
  #include "lkc.h"
+ 
 @@ -25,7 +26,7 @@
  static const char *conf_filename;
  static int conf_lineno, conf_warnings, conf_unsaved;
@@ -34,7 +34,7 @@ Index: kconfig/confdata.c
  
  	return name ? name : ".config";
  }
-@@ -249,20 +250,20 @@
+@@ -309,20 +310,20 @@
  		if (line[0] == '#') {
  			if (memcmp(line + 2, CONFIG_, strlen(CONFIG_)))
  				continue;
@@ -58,7 +58,7 @@ Index: kconfig/confdata.c
  				if (sym->type == S_UNKNOWN)
  					sym->type = S_BOOLEAN;
  			}
-@@ -278,8 +279,8 @@
+@@ -338,8 +339,8 @@
  			default:
  				;
  			}
@@ -69,7 +69,7 @@ Index: kconfig/confdata.c
  			if (!p)
  				continue;
  			*p++ = 0;
-@@ -290,13 +291,13 @@
+@@ -350,13 +351,13 @@
  					*p2 = 0;
  			}
  			if (def == S_DEF_USER) {
@@ -85,114 +85,88 @@ Index: kconfig/confdata.c
  				if (sym->type == S_UNKNOWN)
  					sym->type = S_OTHER;
  			}
-@@ -423,9 +424,9 @@
- {
- 	int l;
- 	if (headerfile)
--		fprintf(out, "#define %s%s \"", CONFIG_, name);
-+		fprintf(out, "#define %s \"", name);
- 	else
--		fprintf(out, "%s%s=\"", CONFIG_, name);
-+		fprintf(out, "%s=\"", name);
+@@ -484,8 +485,8 @@
+ 			bool skip_unset = (arg != NULL);
  
- 	while (1) {
- 		l = strcspn(str, "\"\\");
-@@ -450,14 +451,14 @@
- 		switch (sym_get_tristate_value(sym)) {
- 		case no:
- 			if (write_no)
--				fprintf(out, "# %s%s is not set\n",
+ 			if (!skip_unset)
+-				fprintf(fp, "# %s%s is not set\n",
 -				    CONFIG_, sym->name);
-+				fprintf(out, "# %s is not set\n",
++				fprintf(fp, "# %s is not set\n",
 +				    sym->name);
- 			break;
- 		case mod:
--			fprintf(out, "%s%s=m\n", CONFIG_, sym->name);
-+			fprintf(out, "%s=m\n", sym->name);
- 			break;
- 		case yes:
--			fprintf(out, "%s%s=y\n", CONFIG_, sym->name);
-+			fprintf(out, "%s=y\n", sym->name);
- 			break;
+ 			return;
  		}
  		break;
-@@ -467,7 +468,7 @@
- 	case S_HEX:
- 	case S_INT:
- 		str = sym_get_string_value(sym);
--		fprintf(out, "%s%s=%s\n", CONFIG_, sym->name, str);
-+		fprintf(out, "%s=%s\n", sym->name, str);
+@@ -493,7 +494,7 @@
  		break;
- 	case S_OTHER:
- 	case S_UNKNOWN:
-@@ -830,17 +831,17 @@
- 			case no:
- 				break;
- 			case mod:
--				fprintf(tristate, "%s%s=M\n",
--				    CONFIG_, sym->name);
--				fprintf(out_h, "#define %s%s_MODULE 1\n",
--				    CONFIG_, sym->name);
-+				fprintf(tristate, "%s=M\n",
-+				    sym->name);
-+				fprintf(out_h, "#define %s_MODULE 1\n",
-+				    sym->name);
- 				break;
- 			case yes:
- 				if (sym->type == S_TRISTATE)
--					fprintf(tristate,"%s%s=Y\n",
--					    CONFIG_, sym->name);
--				fprintf(out_h, "#define %s%s 1\n",
--				    CONFIG_, sym->name);
-+					fprintf(tristate,"%s=Y\n",
-+					    sym->name);
-+				fprintf(out_h, "#define %s 1\n",
-+				    sym->name);
- 				break;
- 			}
- 			break;
-@@ -850,14 +851,14 @@
- 		case S_HEX:
- 			str = sym_get_string_value(sym);
- 			if (str[0] != '0' || (str[1] != 'x' && str[1] != 'X')) {
--				fprintf(out_h, "#define %s%s 0x%s\n",
--				    CONFIG_, sym->name, str);
-+				fprintf(out_h, "#define %s 0x%s\n",
-+				    sym->name, str);
- 				break;
- 			}
- 		case S_INT:
- 			str = sym_get_string_value(sym);
--			fprintf(out_h, "#define %s%s %s\n",
--			    CONFIG_, sym->name, str);
-+			fprintf(out_h, "#define %s %s\n",
-+			    sym->name, str);
- 			break;
+ 	}
+ 
+-	fprintf(fp, "%s%s=%s\n", CONFIG_, sym->name, value);
++	fprintf(fp, "%s=%s\n", sym->name, value);
+ }
+ 
+ static void
+@@ -543,8 +544,8 @@
+ 			suffix = "_MODULE";
+ 			/* fall through */
  		default:
- 			break;
-Index: kconfig/lkc.h
+-			fprintf(fp, "#define %s%s%s 1\n",
+-			    CONFIG_, sym->name, suffix);
++			fprintf(fp, "#define %s%s 1\n",
++			    sym->name, suffix);
+ 		}
+ 		break;
+ 	}
+@@ -553,14 +554,14 @@
+ 
+ 		if (value[0] != '0' || (value[1] != 'x' && value[1] != 'X'))
+ 			prefix = "0x";
+-		fprintf(fp, "#define %s%s %s%s\n",
+-		    CONFIG_, sym->name, prefix, value);
++		fprintf(fp, "#define %s %s%s\n",
++		    sym->name, prefix, value);
+ 		break;
+ 	}
+ 	case S_STRING:
+ 	case S_INT:
+-		fprintf(fp, "#define %s%s %s\n",
+-		    CONFIG_, sym->name, value);
++		fprintf(fp, "#define %s %s\n",
++		    sym->name, value);
+ 		break;
+ 	default:
+ 		break;
+@@ -606,7 +607,7 @@
+ {
+ 
+ 	if (sym->type == S_TRISTATE && *value != 'n')
+-		fprintf(fp, "%s%s=%c\n", CONFIG_, sym->name, (char)toupper(*value));
++		fprintf(fp, "%s=%c\n", sym->name, (char)toupper(*value));
+ }
+ 
+ static struct conf_printer tristate_printer_cb =
+Index: b/lkc.h
 ===================================================================
---- kconfig.orig/lkc.h
-+++ kconfig/lkc.h
-@@ -42,7 +42,7 @@
+--- a/lkc.h
++++ b/lkc.h
+@@ -37,7 +37,7 @@
  #define N_(text) (text)
  
  #ifndef CONFIG_
 -#define CONFIG_ "CONFIG_"
 +#define CONFIG_ "BR2_"
  #endif
- 
- #define TF_COMMAND	0x0001
-Index: kconfig/menu.c
+ static inline const char *CONFIG_prefix(void)
+ {
+Index: b/menu.c
 ===================================================================
---- kconfig.orig/menu.c
-+++ kconfig/menu.c
-@@ -597,7 +597,7 @@
+--- a/menu.c
++++ b/menu.c
+@@ -635,7 +635,7 @@
  
  	if (menu_has_help(menu)) {
- 		if (sym->name) {
+ 		if (sym->name)
 -			str_printf(help, "%s%s:\n\n", CONFIG_, sym->name);
 +			str_printf(help, "%s:\n\n", sym->name);
- 			str_append(help, _(menu_get_help(menu)));
- 			str_append(help, "\n");
- 		}
+ 		help_text = menu_get_help(menu);
+ 	}
+ 	str_printf(help, "%s\n", _(help_text));

@@ -10,7 +10,9 @@
 extern "C" {
 #endif
 
+#include <assert.h>
 #include <stdio.h>
+#include "list.h"
 #ifndef __cplusplus
 #include <stdbool.h>
 #endif
@@ -172,7 +174,14 @@ struct menu {
 #define MENU_CHANGED		0x0001
 #define MENU_ROOT		0x0002
 
-#ifndef SWIG
+struct jump_key {
+	struct list_head entries;
+	size_t offset;
+	struct menu *target;
+	int index;
+};
+
+#define JUMP_NB			9
 
 extern struct file *file_list;
 extern struct file *current_file;
@@ -218,7 +227,6 @@ static inline int expr_is_no(struct expr *e)
 {
 	return e && (e->type == E_SYMBOL && e->left.sym == &symbol_no);
 }
-#endif
 
 #ifdef __cplusplus
 }
