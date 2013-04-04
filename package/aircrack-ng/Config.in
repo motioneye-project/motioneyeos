@@ -4,11 +4,12 @@ config BR2_PACKAGE_AIRCRACK_NG
 	depends on BR2_USE_MMU # uses fork()
 	select BR2_PACKAGE_OPENSSL
 	select BR2_PACKAGE_IW # runtime
+	depends on BR2_TOOLCHAIN_HAS_THREADS
 	help
 	  A set of tools for auditing wireless networks
 
 	  http://www.aircrack-ng.org/
 
-comment "aircrack-ng needs a toolchain with largefile support"
-	depends on !BR2_LARGEFILE
+comment "aircrack-ng needs a toolchain with largefile and threads support"
+	depends on !BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_THREADS
 
