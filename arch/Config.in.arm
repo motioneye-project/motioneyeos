@@ -9,18 +9,12 @@ config BR2_ARM_CPU_MAYBE_HAS_NEON
 choice
 	prompt "Target Architecture Variant"
 	depends on BR2_arm || BR2_armeb
-	default BR2_generic_arm
+	default BR2_arm926t
 	help
 	  Specific CPU variant to use
 
-config BR2_generic_arm
-	bool "generic_arm"
 config BR2_arm7tdmi
 	bool "arm7tdmi"
-config BR2_arm610
-	bool "arm610"
-config BR2_arm710
-	bool "arm710"
 config BR2_arm720t
 	bool "arm720t"
 config BR2_arm920t
@@ -51,10 +45,10 @@ config BR2_cortex_a9
 config BR2_cortex_a15
 	bool "cortex-A15"
 	select BR2_ARM_CPU_HAS_NEON
-config BR2_sa110
-	bool "sa110"
-config BR2_sa1100
-	bool "sa1100"
+config BR2_fa526
+	bool "fa526/626"
+config BR2_strongarm
+	bool "strongarm sa110/sa1100"
 config BR2_xscale
 	bool "xscale"
 config BR2_iwmmxt
@@ -105,9 +99,6 @@ config BR2_ENDIAN
 	default "BIG"	 if BR2_armeb
 
 config BR2_GCC_TARGET_TUNE
-	default "arm600"	if BR2_arm600
-	default "arm610"	if BR2_arm610
-	default "arm620"	if BR2_arm620
 	default "arm7tdmi"	if BR2_arm7tdmi
 	default "arm7tdmi"	if BR2_arm720t
 	default "arm7tdmi"	if BR2_arm740t
@@ -123,15 +114,13 @@ config BR2_GCC_TARGET_TUNE
 	default "cortex-a8"	if BR2_cortex_a8
 	default "cortex-a9"	if BR2_cortex_a9
 	default "cortex-a15"	if BR2_cortex_a15
-	default "strongarm110"	if BR2_sa110
-	default "strongarm1100"	if BR2_sa1100
+	default "fa526"		if BR2_fa526
+	default "strongarm"	if BR2_strongarm
 	default "xscale"	if BR2_xscale
 	default "iwmmxt"	if BR2_iwmmxt
 
 config BR2_GCC_TARGET_ARCH
 	default "armv4t"	if BR2_arm7tdmi
-	default "armv3"		if BR2_arm610
-	default "armv3"		if BR2_arm710
 	default "armv4t"	if BR2_arm720t
 	default "armv4t"	if BR2_arm920t
 	default "armv4t"	if BR2_arm922t
@@ -145,8 +134,8 @@ config BR2_GCC_TARGET_ARCH
 	default "armv7-a"	if BR2_cortex_a8
 	default "armv7-a"	if BR2_cortex_a9
 	default "armv7-a"	if BR2_cortex_a15
-	default "armv4"		if BR2_sa110
-	default "armv4"		if BR2_sa1100
+	default "armv4"		if BR2_fa526
+	default "armv4"		if BR2_strongarm
 	default "armv5te"	if BR2_xscale
 	default "iwmmxt"	if BR2_iwmmxt
 

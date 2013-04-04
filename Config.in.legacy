@@ -44,6 +44,22 @@ endif
 # Legacy options since 2013.02
 #
 
+config BR2_sa110
+	bool "sa110 ARM target switched to strongarm"
+	select BR2_LEGACY
+	select BR2_strongarm
+	help
+	  The SA110 is the same as a generic StrongARM, it just differs
+	  in speed, peripherals and cache.
+
+config BR2_sa1100
+	bool "sa1100 ARM target switched to strongarm"
+	select BR2_LEGACY
+	select BR2_strongarm
+	help
+	  The SA1100 is the same as a generic StrongARM, it just differs
+	  in speed, peripherals and cache.
+
 config BR2_PACKAGE_GDISK
 	bool "gdisk has been replaced by gptfdisk"
 	select BR2_LEGACY

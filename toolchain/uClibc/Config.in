@@ -81,9 +81,7 @@ config BR2_UCLIBC_INSTALL_TEST_SUITE
 config BR2_UCLIBC_ARM_TYPE
 	string
 	depends on BR2_arm || BR2_armeb
-	default GENERIC_ARM	if BR2_generic_arm
-	default ARM610		if BR2_arm610
-	default ARM710		if BR2_arm710
+	default GENERIC_ARM	if BR2_fa526
 	default ARM7TDMI	if BR2_arm7tdmi
 	default ARM720T		if BR2_arm720t
 	default ARM920T		if BR2_arm920t
@@ -93,8 +91,7 @@ config BR2_UCLIBC_ARM_TYPE
 	default ARM1136JF_S	if BR2_arm1136jf_s
 	default ARM1176JZ_S	if BR2_arm1176jz_s
 	default ARM1176JZF_S	if BR2_arm1176jzf_s
-	default ARM_SA110	if BR2_sa110
-	default ARM_SA1100	if BR2_sa1100
+	default ARM_SA1100	if BR2_strongarm
 	default ARM_XSCALE	if BR2_xscale
 	default ARM_IWMMXT	if BR2_iwmmxt
 	default ARM_CORTEXA8	if BR2_cortex_a8

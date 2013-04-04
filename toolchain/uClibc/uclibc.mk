@@ -130,6 +130,9 @@ ifeq ($(BR2_ARM_OABI),y)
 	/bin/echo "CONFIG_ARM_OABI=y" >> $(UCLIBC_DIR)/.oldconfig
 	/bin/echo "# CONFIG_ARM_EABI is not set" >> $(UCLIBC_DIR)/.oldconfig
 endif
+ifeq ($(BR2_fa526)$(BR2_strongarm),y)
+	$(SED) 's,USE_BX=y,# USE_BX is not set,' $(UCLIBC_DIR)/.oldconfig
+endif
 endif
 ifeq ($(UCLIBC_TARGET_ARCH),mips)
 	$(SED) '/CONFIG_MIPS_[NO].._ABI/d' $(UCLIBC_DIR)/.oldconfig
