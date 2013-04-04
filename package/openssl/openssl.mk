@@ -29,13 +29,7 @@ endif
 
 # Some architectures are optimized in OpenSSL
 ifeq ($(ARCH),arm)
-ifneq ($(BR2_generic_arm),y)
-ifneq ($(BR2_arm610),y)
-ifneq ($(BR2_arm710),y)
 	OPENSSL_TARGET_ARCH = armv4
-endif
-endif
-endif
 endif
 ifeq ($(ARCH),powerpc)
 # 4xx cores seem to have trouble with openssl's ASM optimizations
