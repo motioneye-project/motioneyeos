@@ -4,15 +4,15 @@
 #
 #############################################################
 
-KISMET_VERSION = 2011-03-R2
+KISMET_VERSION = 2013-03-R1a
 KISMET_SITE = http://www.kismetwireless.net/code
-KISMET_DEPENDENCIES = libpcap ncurses
+KISMET_DEPENDENCIES = host-pkgconf libpcap ncurses
 KISMET_LICENSE = GPLv2+
 KISMET_LICENSE_FILES = GPL
 
 ifeq ($(BR2_PACKAGE_LIBNL),y)
 	KISMET_DEPENDENCIES += libnl
-	KISMET_CONF_ENV += CFLAGS="$(TARGET_CFLAGS) -I$(STAGING_DIR)/usr/include/libnl3/"
+	KISMET_CONF_OPT += --with-netlink-version=3
 endif
 ifeq ($(BR2_PACKAGE_PCRE),y)
 	KISMET_DEPENDENCIES += pcre
