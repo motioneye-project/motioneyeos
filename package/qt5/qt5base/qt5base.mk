@@ -37,6 +37,14 @@ else
 QT5BASE_CONFIGURE_OPTS += -release
 endif
 
+ifeq ($(BR2_PREFER_STATIC_LIB),y)
+QT5BASE_CONFIGURE_OPTS += -static
+else
+# We apparently can't build both the shared and static variants of the
+# library.
+QT5BASE_CONFIGURE_OPTS += -shared
+endif
+
 ifeq ($(BR2_LARGEFILE),y)
 QT5BASE_CONFIGURE_OPTS += -largefile
 else
@@ -179,10 +187,16 @@ define QT5BASE_INSTALL_TARGET_FONTS
 	fi
 endef
 
+ifeq ($(BR2_PREFER_STATIC_LIB),y)
+define QT5BASE_INSTALL_TARGET_CMDS
+	$(QT5BASE_INSTALL_TARGET_FONTS)
+endef
+else
 define QT5BASE_INSTALL_TARGET_CMDS
 	$(QT5BASE_INSTALL_TARGET_LIBS)
 	$(QT5BASE_INSTALL_TARGET_PLUGINS)
 	$(QT5BASE_INSTALL_TARGET_FONTS)
 endef
+endif
 
 $(eval $(generic-package))
