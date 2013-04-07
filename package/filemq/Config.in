@@ -7,10 +7,12 @@ config BR2_PACKAGE_FILEMQ
 	depends on BR2_INET_IPV6 # zeromq
 	depends on BR2_LARGEFILE # util-linux
 	depends on BR2_USE_WCHAR # util-linux
+	depends on BR2_TOOLCHAIN_HAS_THREADS # zeromq
 	help
 	  FileMQ is a publish-subscribe file service based on 0MQ.
 
 	  http://github.com/zeromq/filemq
 
-comment "filemq requires a toolchain with C++, IPv6, LARGEFILE and WCHAR support"
-	depends on !(BR2_INSTALL_LIBSTDCPP && BR2_INET_IPV6 && BR2_LARGEFILE && BR2_USE_WCHAR)
+comment "filemq requires a toolchain with C++, IPv6, LARGEFILE, WCHAR & thread support"
+	depends on !(BR2_INSTALL_LIBSTDCPP && BR2_INET_IPV6 && BR2_LARGEFILE \
+		&& BR2_USE_WCHAR && BR2_TOOLCHAIN_HAS_THREADS)

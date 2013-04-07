@@ -1,5 +1,6 @@
-comment "zeromq requires a toolchain with C++, IPV6, LARGEFILE and WCHAR support"
-	depends on !(BR2_INSTALL_LIBSTDCPP && BR2_INET_IPV6 && BR2_LARGEFILE && BR2_USE_WCHAR)
+comment "zeromq requires a toolchain with C++, IPV6, LARGEFILE, WCHAR & thread support"
+	depends on !(BR2_INSTALL_LIBSTDCPP && BR2_INET_IPV6 && BR2_LARGEFILE \
+		&& BR2_USE_WCHAR && BR2_TOOLCHAIN_HAS_THREADS)
 
 config BR2_PACKAGE_ZEROMQ
 	bool "zeromq"
@@ -7,6 +8,7 @@ config BR2_PACKAGE_ZEROMQ
 	depends on BR2_INET_IPV6
 	depends on BR2_LARGEFILE # util-linux
 	depends on BR2_USE_WCHAR # util-linux
+	depends on BR2_TOOLCHAIN_HAS_THREADS
 	select BR2_PACKAGE_UTIL_LINUX
 	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
 	help

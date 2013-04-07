@@ -4,6 +4,7 @@ config BR2_PACKAGE_CPPZMQ
 	depends on BR2_INET_IPV6 # zeromq
 	depends on BR2_LARGEFILE # util-linux
 	depends on BR2_USE_WCHAR # util-linux
+	depends on BR2_TOOLCHAIN_HAS_THREADS # zeromq
 	select BR2_PACKAGE_ZEROMQ
 	help
 	  C++ binding for zeromq (ZeroMQ, 0MQ, zmq).
@@ -12,4 +13,4 @@ config BR2_PACKAGE_CPPZMQ
 
 comment "cppzmq requires a toolchain with C++, IPV6, LARGEFILE and WCHAR support"
 	depends on !(BR2_INSTALL_LIBSTDCPP && BR2_INET_IPV6 && BR2_LARGEFILE \
-		&& BR2_USE_WCHAR)
+		&& BR2_USE_WCHAR && BR2_TOOLCHAIN_HAS_THREADS)
