@@ -913,5 +913,12 @@ config BR2_TOOLCHAIN_EXTRA_EXTERNAL_LIBS
 
 endif # BR2_TOOLCHAIN_EXTERNAL_CUSTOM
 
+config BR2_TOOLCHAIN_EXTERNAL_GDB_SERVER_COPY
+	bool "Copy gdb server to the Target"
+	depends on BR2_TOOLCHAIN_EXTERNAL
+	help
+	  Copy the gdbserver provided by the external toolchain to the
+	  target.
+
 endif # BR2_TOOLCHAIN_EXTERNAL
 

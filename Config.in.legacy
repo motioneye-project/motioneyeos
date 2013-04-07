@@ -83,6 +83,15 @@ config BR2_PACKAGE_GDISK_SGDISK
 	help
 	  The option has been renamed BR2_PACKAGE_GPTFDISK_SGDISK.
 
+config BR2_PACKAGE_GDB_HOST
+	bool "gdb for the host option has been renamed"
+	select BR2_PACKAGE_HOST_GDB
+	select BR2_LEGACY
+	help
+	  Due to the conversion of gdb to the package infrastructure,
+	  the BR2_PACKAGE_GDB_HOST option has been renamed
+	  BR2_PACKAGE_HOST_GDB.
+
 #
 # Legacy options since 2012.11
 #

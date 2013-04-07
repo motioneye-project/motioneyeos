@@ -1,0 +1,56 @@
+config BR2_PACKAGE_HOST_GDB
+	bool "Build cross gdb for the host"
+	help
+	  Build a cross gdb that runs on the host machine and debugs
+	  programs running on the target. It requires 'gdbserver'
+	  installed on the target, see BR2_PACKAGE_GDB_SERVER to
+	  enable it.
+
+if BR2_PACKAGE_HOST_GDB
+
+choice
+	prompt "GDB debugger Version"
+	default BR2_GDB_VERSION_6_6 if BR2_bfin
+	default BR2_GDB_VERSION_6_7_1_AVR32_2_1_5 if BR2_avr32
+	default BR2_GDB_VERSION_7_5
+	help
+	  Select the version of gdb you wish to use.
+
+	config BR2_GDB_VERSION_6_6
+		bool "gdb 6.6"
+		depends on BR2_bfin
+
+	config BR2_GDB_VERSION_6_7_1_AVR32_2_1_5
+		depends on BR2_avr32
+		bool "gdb 6.7.1-avr32-2.1.5"
+
+	config BR2_GDB_VERSION_7_2
+		bool "gdb 7.2.x"
+		depends on !BR2_bfin
+		depends on BR2_DEPRECATED
+
+	config BR2_GDB_VERSION_7_3
+		bool "gdb 7.3.x"
+		depends on !BR2_bfin
+		depends on BR2_DEPRECATED
+
+	config BR2_GDB_VERSION_7_4
+		bool "gdb 7.4.x"
+		depends on !BR2_bfin
+
+	config BR2_GDB_VERSION_7_5
+		bool "gdb 7.5.x"
+		depends on !BR2_bfin
+
+endchoice
+
+config BR2_GDB_VERSION
+	string
+	default "6.6a"     if BR2_GDB_VERSION_6_6
+	default "6.7.1-avr32-2.1.5" if BR2_GDB_VERSION_6_7_1_AVR32_2_1_5
+	default "7.2a"     if BR2_GDB_VERSION_7_2
+	default "7.3.1"    if BR2_GDB_VERSION_7_3
+	default "7.4.1"    if BR2_GDB_VERSION_7_4
+	default "7.5.1"    if BR2_GDB_VERSION_7_5
+
+endif

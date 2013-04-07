@@ -1,0 +1,101 @@
+#############################################################
+#
+# gdb
+#
+#############################################################
+
+GDB_VERSION = $(call qstrip,$(BR2_GDB_VERSION))
+GDB_SITE    = $(BR2_GNU_MIRROR)/gdb
+
+# When no version is defined, it means that cross-gdb for the host has
+# not been enabled, and we will only build gdbserver or gdb for the
+# target. In this case, use the latest available version
+# automatically.
+ifeq ($(GDB_VERSION),)
+ifeq ($(BR2_bfin),y)
+GDB_VERSION = 6.6a
+else ifeq ($(BR2_avr32),y)
+GDB_VERSION = 6.7.1-avr32-2.1.5
+GDB_SITE    = ftp://www.at91.com/pub/buildroot/
+else
+GDB_VERSION = 7.5.1
+endif
+endif
+
+GDB_SOURCE = gdb-$(GDB_VERSION).tar.bz2
+GDB_LICENSE = GPLv2+ LGPLv2+ GPLv3+ LGPLv3+
+GDB_LICENSE_FILES = COPYING COPYING.LIB COPYING3 COPYING3.LIB
+
+# We only want gdbserver and not the entire debugger.
+ifeq ($(BR2_PACKAGE_GDB_DEBUGGER),)
+GDB_SUBDIR = gdb/gdbserver
+HOST_GDB_SUBDIR = .
+else
+GDB_DEPENDENCIES = ncurses
+endif
+
+# For the host variant, we really want to build with XML support,
+# which is needed to read XML descriptions of target architectures.
+HOST_GDB_DEPENDENCIES = host-expat
+
+# Apply the Xtensa specific patches
+XTENSA_CORE_NAME = $(call qstrip, $(BR2_XTENSA_CORE_NAME))
+ifneq ($(XTENSA_CORE_NAME),)
+define GDB_XTENSA_PRE_PATCH
+	tar xf $(BR2_XTENSA_OVERLAY_DIR)/xtensa_$(XTENSA_CORE_NAME).tar \
+		-C $(@D) --strip-components=1 gdb
+endef
+HOST_GDB_PRE_PATCH_HOOKS += GDB_XTENSA_PRE_PATCH
+endif
+
+GDB_CONF_ENV = \
+	ac_cv_type_uintptr_t=yes \
+	gt_cv_func_gettext_libintl=yes \
+	ac_cv_func_dcgettext=yes \
+	gdb_cv_func_sigsetjmp=yes \
+	bash_cv_func_strcoll_broken=no \
+	bash_cv_must_reinstall_sighandlers=no \
+	bash_cv_func_sigsetjmp=present \
+	bash_cv_have_mbstate_t=yes \
+	gdb_cv_func_sigsetjmp=yes
+
+GDB_CONF_OPT = \
+	--without-uiout \
+	--disable-tui \
+	--disable-gdbtk \
+	--without-x \
+	--disable-sim \
+	$(if $(BR2_PACKAGE_GDB_SERVER),--enable-gdbserver) \
+	--with-curses \
+	--without-included-gettext \
+	--disable-werror
+
+# This removes some unneeded Python scripts and XML target description
+# files that are not useful for a normal usage of the debugger.
+define GDB_REMOVE_UNNEEDED_FILES
+	$(RM) -rf $(TARGET_DIR)/usr/share/gdb
+endef
+
+GDB_POST_INSTALL_TARGET_HOOKS += GDB_REMOVE_UNNEEDED_FILES
+
+# A few notes:
+#  * --target, because we're doing a cross build rather than a real
+#    host build.
+#  * --enable-static because gdb really wants to use libbfd.a
+#  * --disable-shared, otherwise the old 6.7 version specific to AVR32
+#    doesn't build because it wants to link a shared libbfd.so against
+#    non-PIC liberty.a.
+HOST_GDB_CONF_OPT = \
+	--target=$(GNU_TARGET_NAME) \
+	--enable-static --disable-shared \
+	--without-uiout \
+	--disable-tui \
+	--disable-gdbtk \
+	--without-x \
+	--enable-threads \
+	--disable-werror \
+	--without-included-gettext \
+	--disable-sim
+
+$(eval $(autotools-package))
+$(eval $(host-autotools-package))

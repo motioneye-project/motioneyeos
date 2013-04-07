@@ -99,6 +99,13 @@ choice
 		depends on !BR2_xtensa
 endchoice
 
+config BR2_PTHREAD_DEBUG
+	bool "Thread library debugging"
+	depends on BR2_PTHREADS || BR2_PTHREADS_OLD || BR2_PTHREADS_NATIVE
+	select BR2_TOOLCHAIN_HAS_THREADS_DEBUG
+	help
+	  Build the thread library with debugging enabled.
+
 source "toolchain/elf2flt/Config.in"
 
 config BR2_VFP_FLOAT

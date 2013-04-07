@@ -3,7 +3,7 @@
 # we want gdb config in the middle of both source and external
 # toolchains, but mconf won't let us source the same file twice,
 # so put it here instead
-source "toolchain/gdb/Config.in"
+source "package/gdb/Config.in.host"
 
 config BR2_LARGEFILE
 	bool
@@ -27,11 +27,6 @@ config BR2_TOOLCHAIN_HAS_THREADS
 	bool
 
 config BR2_TOOLCHAIN_HAS_THREADS_DEBUG
-	select BR2_TOOLCHAIN_HAS_THREADS_DEBUG_IF_NEEDED
-	bool
-
-config BR2_TOOLCHAIN_HAS_THREADS_DEBUG_IF_NEEDED
-	default y if !BR2_TOOLCHAIN_HAS_THREADS
 	bool
 
 config BR2_TOOLCHAIN_HAS_SHADOW_PASSWORDS
