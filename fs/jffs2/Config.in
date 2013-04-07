@@ -92,10 +92,7 @@ config BR2_TARGET_ROOTFS_JFFS2_PADSIZE
 
 choice
 	prompt "Endianess"
-	default BR2_TARGET_ROOTFS_JFFS2_BE if BR2_armeb || \
-			BR2_avr32 || BR2_m68k || BR2_mips || \
-			BR2_powerpc || BR2_sh2 || BR2_sh2a || \
-			BR2_sh3eb || BR2_sh4eb || BR2_sh4aeb || BR2_sparc
+	default BR2_TARGET_ROOTFS_JFFS2_BE if BR2_ENDIAN = "BIG"
 
 config BR2_TARGET_ROOTFS_JFFS2_LE
 	bool "little-endian"
