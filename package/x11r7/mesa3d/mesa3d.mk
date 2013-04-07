@@ -30,6 +30,8 @@ MESA3D_DEPENDENCIES = \
 	expat \
 	host-xutil_makedepend \
 	host-libxml2 \
-	host-python
+	host-python \
+	host-bison \
+	host-flex
 
 $(eval $(autotools-package))
