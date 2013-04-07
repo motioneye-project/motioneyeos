@@ -1,0 +1,29 @@
+Only import bz2 python module when needed
+
+The js2c.py script imports the bz2 module unconditionnally, which
+would require us to build the bzip2 support in host-python. Since in
+fact bzip2 support is not technically used when building this package,
+we ensure that the bz2 module is only imported when needed.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/src/3rdparty/v8/tools/js2c.py
+===================================================================
+--- a/src/3rdparty/v8/tools/js2c.py
++++ b/src/3rdparty/v8/tools/js2c.py
+@@ -33,7 +33,6 @@
+ 
+ import os, re, sys, string
+ import jsmin
+-import bz2
+ 
+ 
+ def ToCAsciiArray(lines):
+@@ -344,6 +343,7 @@
+   else:
+     raw_sources_declaration = RAW_SOURCES_COMPRESSION_DECLARATION
+     if env['COMPRESSION'] == 'bz2':
++      import bz2
+       all_sources = bz2.compress("".join(all_sources))
+     total_length = len(all_sources)
+     sources_data = ToCArray(all_sources)
