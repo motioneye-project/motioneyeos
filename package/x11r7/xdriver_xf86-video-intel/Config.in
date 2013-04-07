@@ -7,5 +7,6 @@ config BR2_PACKAGE_XDRIVER_XF86_VIDEO_INTEL
 	select BR2_PACKAGE_XLIB_LIBPCIACCESS
 	select BR2_PACKAGE_LIBDRM
 	select BR2_PACKAGE_MESA3D
+	depends on (BR2_i386 || BR2_x86_64)
 	help
 	  Intel video driver
