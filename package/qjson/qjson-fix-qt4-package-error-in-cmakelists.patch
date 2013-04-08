@@ -1,0 +1,29 @@
+From 529e50939316abc3c4190f89a482b17a4d4b3355 Mon Sep 17 00:00:00 2001
+From: Zoltan Gyarmati <mr.zoltan.gyarmati@gmail.com>
+Date: Sat, 6 Apr 2013 16:54:25 +0200
+Subject: [PATCH] fix Qt4 package error in CMakeLists.txt
+
+Avoid checking for uic executable by cmake as it results configure
+time error if QtGui isn't installed.
+
+Signed-off-by: Zoltan Gyarmati <mr.zoltan.gyarmati@gmail.com>
+---
+ CMakeLists.txt |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 13e65f1..447f209 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -32,7 +32,7 @@ SET(FRAMEWORK_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/Library/Frameworks"
+ SET(QT_USE_IMPORTED_TARGETS TRUE)
+ 
+ # Find Qt4
+-FIND_PACKAGE( Qt4 REQUIRED )
++find_package(Qt4 COMPONENTS QtCore REQUIRED )
+ 
+ IF (NOT WIN32)
+   SET( QT_DONT_USE_QTGUI TRUE )
+-- 
+1.7.10.4
+

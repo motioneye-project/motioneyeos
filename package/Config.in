@@ -144,6 +144,7 @@ if BR2_PACKAGE_QT
 comment "QT libraries and helper libraries"
 source "package/grantlee/Config.in"
 source "package/qextserialport/Config.in"
+source "package/qjson/Config.in"
 source "package/qtuio/Config.in"
 source "package/qwt/Config.in"
 endif
