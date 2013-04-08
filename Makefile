@@ -555,11 +555,9 @@ target-generatelocales: host-localedef
 endif
 
 target-post-image:
-ifneq ($(BR2_ROOTFS_POST_IMAGE_SCRIPT),"")
-	@$(call MESSAGE,"Executing post-image script\(s\)")
 	@$(foreach s, $(call qstrip,$(BR2_ROOTFS_POST_IMAGE_SCRIPT)), \
+		$(call MESSAGE,"Executing post-image script $(s)"); \
 		$(s) $(BINARIES_DIR)$(sep))
-endif
 
 toolchain-eclipse-register:
 	./support/scripts/eclipse-register-toolchain `readlink -f $(O)` $(notdir $(TARGET_CROSS)) $(BR2_ARCH)
