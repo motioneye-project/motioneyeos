@@ -501,13 +501,12 @@ endif
 		echo "PRETTY_NAME=\"Buildroot $(BR2_VERSION)\"" \
 	) >  $(TARGET_DIR)/etc/os-release
 
-	@for dir in $(call qstrip,$(BR2_ROOTFS_OVERLAY)); do \
-		$(call MESSAGE,"Copying overlay $${dir}"); \
+	@$(foreach d, $(call qstrip,$(BR2_ROOTFS_OVERLAY)), \
+		$(call MESSAGE,"Copying overlay $(d)"); \
 		rsync -a \
 			--exclude .empty --exclude .svn --exclude .git \
 			--exclude .hg --exclude '*~' \
-			$${dir}/ $(TARGET_DIR); \
-	done
+			$(d)/ $(TARGET_DIR)$(sep))
 
 	@$(foreach s, $(call qstrip,$(BR2_ROOTFS_POST_BUILD_SCRIPT)), \
 		$(call MESSAGE,"Executing post-build script $(s)"); \
