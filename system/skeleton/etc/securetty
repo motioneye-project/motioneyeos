@@ -22,6 +22,8 @@ ttyUL0
 ttyUL1
 ttyUL2
 ttyUL3
+ttyPS0
+ttyPS1
 ttyPSC0
 ttyPSC1
 ttyPSC2
