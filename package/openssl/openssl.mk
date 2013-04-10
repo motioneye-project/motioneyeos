@@ -46,6 +46,18 @@ ifeq ($(BR2_x86_i386),y)
 	OPENSSL_TARGET_ARCH = generic32 386
 endif
 
+define HOST_OPENSSL_CONFIGURE_CMDS
+	(cd $(@D); \
+		$(HOST_CONFIGURE_OPTS) \
+		./config \
+		--prefix=/usr \
+		--openssldir=/etc/ssl \
+		--libdir=/lib \
+		shared \
+		no-zlib \
+	)
+endef
+
 define OPENSSL_CONFIGURE_CMDS
 	(cd $(@D); \
 		$(TARGET_CONFIGURE_ARGS) \
@@ -69,12 +81,20 @@ define OPENSSL_CONFIGURE_CMDS
 	$(SED) "s:-O[0-9]:$(OPENSSL_CFLAGS):" $(@D)/Makefile
 endef
 
+define HOST_OPENSSL_BUILD_CMDS
+	$(MAKE1) -C $(@D)
+endef
+
 define OPENSSL_BUILD_CMDS
 	$(MAKE1) -C $(@D)
 endef
 
 define OPENSSL_INSTALL_STAGING_CMDS
 	$(MAKE1) -C $(@D) INSTALL_PREFIX=$(STAGING_DIR) install
+endef
+
+define HOST_OPENSSL_INSTALL_CMDS
+	$(MAKE1) -C $(@D) INSTALL_PREFIX=$(HOST_DIR) install
 endef
 
 define OPENSSL_INSTALL_TARGET_CMDS
@@ -124,3 +144,4 @@ define OPENSSL_UNINSTALL_CMDS
 endef
 
 $(eval $(generic-package))
+$(eval $(host-generic-package))
