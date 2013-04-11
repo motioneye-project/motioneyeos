@@ -4,16 +4,13 @@
 #
 #############################################################
 
-KISMET_VERSION = 2013-03-R1a
+KISMET_VERSION = 2013-03-R1b
 KISMET_SITE = http://www.kismetwireless.net/code
-KISMET_DEPENDENCIES = host-pkgconf libpcap ncurses
+KISMET_DEPENDENCIES = host-pkgconf libpcap ncurses libnl
+KISMET_CONF_OPT += --with-netlink-version=3
 KISMET_LICENSE = GPLv2+
 KISMET_LICENSE_FILES = debian/copyright
 
-ifeq ($(BR2_PACKAGE_LIBNL),y)
-	KISMET_DEPENDENCIES += libnl
-	KISMET_CONF_OPT += --with-netlink-version=3
-endif
 ifeq ($(BR2_PACKAGE_PCRE),y)
 	KISMET_DEPENDENCIES += pcre
 endif
