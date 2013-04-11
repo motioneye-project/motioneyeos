@@ -1,9 +1,31 @@
 config BR2_TARGET_ROOTFS_EXT2
-	bool "ext2 root filesystem"
+	bool "ext2/3/4 root filesystem"
+	select BR2_PACKAGE_HOST_E2FSPROGS
 	help
-	  Build an ext2 root filesystem
+	  Build an ext2/3/4 root filesystem
 
 if BR2_TARGET_ROOTFS_EXT2
+
+choice
+	bool "ext2/3/4 variant"
+	default BR2_TARGET_ROOTFS_EXT2_2
+
+config BR2_TARGET_ROOTFS_EXT2_2
+	bool "ext2"
+
+config BR2_TARGET_ROOTFS_EXT2_3
+	bool "ext3"
+
+config BR2_TARGET_ROOTFS_EXT2_4
+	bool "ext4"
+
+endchoice
+
+config BR2_TARGET_ROOTFS_EXT2_GEN
+	int
+	default 2 if BR2_TARGET_ROOTFS_EXT2_2
+	default 3 if BR2_TARGET_ROOTFS_EXT2_3
+	default 4 if BR2_TARGET_ROOTFS_EXT2_4
 
 config BR2_TARGET_ROOTFS_EXT2_BLOCKS
 	int "size in blocks (leave at 0 for auto calculation)"
@@ -21,27 +43,27 @@ choice
 	prompt "Compression method"
 	default BR2_TARGET_ROOTFS_EXT2_NONE
 	help
-	  Select compressor for ext2 filesystem of the root filesystem
+	  Select compressor for ext2/3/4 filesystem of the root filesystem
 
 config BR2_TARGET_ROOTFS_EXT2_NONE
 	bool "no compression"
 	help
-	  Do not compress the ext2 filesystem.
+	  Do not compress the ext2/3/4 filesystem.
 
 config BR2_TARGET_ROOTFS_EXT2_GZIP
 	bool "gzip"
 	help
-	  Do compress the ext2 filesystem with gzip.
+	  Do compress the ext2/3/4 filesystem with gzip.
 
 config BR2_TARGET_ROOTFS_EXT2_BZIP2
 	bool "bzip2"
 	help
-	  Do compress the ext2 filesystem with bzip2.
+	  Do compress the ext2/3/4 filesystem with bzip2.
 
 config BR2_TARGET_ROOTFS_EXT2_LZMA
 	bool "lzma"
 	help
-	  Do compress the ext2 filesystem with lzma.
+	  Do compress the ext2/3/4 filesystem with lzma.
 
 endchoice
 
