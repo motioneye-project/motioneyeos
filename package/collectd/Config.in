@@ -2,6 +2,7 @@ config BR2_PACKAGE_COLLECTD
 	bool "collectd"
 	# Uses fork()
 	depends on BR2_USE_MMU
+	depends on BR2_INET_IPV6
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	help
 	  collectd is a daemon which collects system performance
@@ -42,11 +43,26 @@ endmenu
 
 menu "misc plugins"
 
+config BR2_PACKAGE_COLLECTD_AGGREGATION
+	bool "aggregation"
+	help
+	  The Aggregate plugin allows to aggregate multiple values into
+	  a single value using one or several consolidation functions,
+	  e.g. summation and average.
+
 config BR2_PACKAGE_COLLECTD_LOGFILE
 	bool "logfile"
 	default y
 	help
 	  Writes log messages to a file or STDOUT/STDERR.
+
+config BR2_PACKAGE_COLLECTD_NOTIFY_EMAIL
+	bool "notify_email"
+	select BR2_PACKAGE_LIBESMTP
+	select BR2_PACKAGE_OPENSSL
+	help
+	  Send an E-mail with the notification message to the
+	  configured recipients.
 
 config BR2_PACKAGE_COLLECTD_SYSLOG
 	bool "syslog"
@@ -282,6 +298,12 @@ config BR2_PACKAGE_COLLECTD_TAIL
 	  Tails log files and each line is given to one or more matches
 	  which test if the line is relevant for any statistics.
 
+config BR2_PACKAGE_COLLECTD_TAIL_CSV
+	bool "tail csv"
+	help
+	  Follows (tails) files in CSV format, parses each line and submits
+	  extracted values.
+
 config BR2_PACKAGE_COLLECTD_TCPCONNS
 	bool "tcpconns"
 	help
@@ -373,6 +395,13 @@ config BR2_PACKAGE_COLLECTD_RRDTOOL
 comment "rrdtool support requires a toolchain with WCHAR support"
 	depends on !BR2_USE_WCHAR
 
+config BR2_PACKAGE_COLLECTD_RIEMANN
+	bool "riemann"
+	depends on BR2_INSTALL_LIBSTDCPP # protobuf
+	select BR2_PACKAGE_PROTOBUF_C
+	help
+	  Sends data to Riemann, a stream processing and monitoring system.
+
 config BR2_PACKAGE_COLLECTD_UNIXSOCK
 	bool "unixsock"
 	help
@@ -389,5 +418,5 @@ endmenu
 
 endif
 
-comment "collectd needs a toolchain with thread support"
-        depends on !BR2_TOOLCHAIN_HAS_THREADS
+comment "collectd needs a toolchain with IPv6 and thread support"
+        depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_INET_IPV6
