@@ -3,25 +3,23 @@ config BR2_TARGET_ROOTFS_EXT2
 	help
 	  Build an ext2 root filesystem
 
+if BR2_TARGET_ROOTFS_EXT2
+
 config BR2_TARGET_ROOTFS_EXT2_BLOCKS
 	int "size in blocks (leave at 0 for auto calculation)"
-	depends on BR2_TARGET_ROOTFS_EXT2
 	default 0
 
 config BR2_TARGET_ROOTFS_EXT2_INODES
 	int "inodes (leave at 0 for auto calculation)"
-	depends on BR2_TARGET_ROOTFS_EXT2
 	default 0
 
 config BR2_TARGET_ROOTFS_EXT2_RESBLKS
 	int "reserved blocks percentage"
-	depends on BR2_TARGET_ROOTFS_EXT2
 	default 0
 
 choice
 	prompt "Compression method"
 	default BR2_TARGET_ROOTFS_EXT2_NONE
-	depends on BR2_TARGET_ROOTFS_EXT2
 	help
 	  Select compressor for ext2 filesystem of the root filesystem
 
@@ -47,3 +45,4 @@ config BR2_TARGET_ROOTFS_EXT2_LZMA
 
 endchoice
 
+endif # BR2_TARGET_ROOTFS_EXT2
