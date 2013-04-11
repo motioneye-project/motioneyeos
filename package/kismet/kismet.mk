@@ -8,7 +8,7 @@ KISMET_VERSION = 2013-03-R1a
 KISMET_SITE = http://www.kismetwireless.net/code
 KISMET_DEPENDENCIES = host-pkgconf libpcap ncurses
 KISMET_LICENSE = GPLv2+
-KISMET_LICENSE_FILES = GPL
+KISMET_LICENSE_FILES = debian/copyright
 
 ifeq ($(BR2_PACKAGE_LIBNL),y)
 	KISMET_DEPENDENCIES += libnl
