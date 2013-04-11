@@ -1,5 +1,5 @@
 config BR2_PACKAGE_TSLIB
-	bool "libts - The Touchscreen tslib Library"
+	bool "tslib"
 	help
 	    http://tslib.berlios.de/
 
