@@ -78,14 +78,20 @@ e2tunefsck() {
 }
 
 # Check we know what generation to generate
-case "${GEN}" in
-    2|3|4)
+case "${GEN}:${REV}" in
+    2:0|2:1|3:1|4:1)
 	;;
     *)
-	printf "%s: unknown ext generation to generate\n" "${0##*/}" >&2
+	printf "%s: unknown ext generation '%s' and/or revision '%s'\n" \
+	       "${0##*/}" "${GEN}" "${REV}" >&2
 	exit 1
 	;;
 esac
+
+# Upgrade to rev1 if needed
+if [ ${REV} -ge 1 ]; then
+    EXT_OPTS_O="${EXT_OPTS_O},filetype"
+fi
 
 # Add a journal for ext3 and above
 if [ ${GEN} -ge 3 ]; then

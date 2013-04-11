@@ -6,12 +6,20 @@ config BR2_TARGET_ROOTFS_EXT2
 
 if BR2_TARGET_ROOTFS_EXT2
 
+config BR2_TARGET_ROOTFS_EXT2_2
+	bool
+
 choice
 	bool "ext2/3/4 variant"
-	default BR2_TARGET_ROOTFS_EXT2_2
+	default BR2_TARGET_ROOTFS_EXT2_2r0
 
-config BR2_TARGET_ROOTFS_EXT2_2
-	bool "ext2"
+config BR2_TARGET_ROOTFS_EXT2_2r0
+	bool "ext2 (rev0)"
+	select BR2_TARGET_ROOTFS_EXT2_2
+
+config BR2_TARGET_ROOTFS_EXT2_2r1
+	bool "ext2 (rev1)"
+	select BR2_TARGET_ROOTFS_EXT2_2
 
 config BR2_TARGET_ROOTFS_EXT2_3
 	bool "ext3"
@@ -26,6 +34,12 @@ config BR2_TARGET_ROOTFS_EXT2_GEN
 	default 2 if BR2_TARGET_ROOTFS_EXT2_2
 	default 3 if BR2_TARGET_ROOTFS_EXT2_3
 	default 4 if BR2_TARGET_ROOTFS_EXT2_4
+
+# All ext generations are revision 1, except ext2r0, which is revision 0
+config BR2_TARGET_ROOTFS_EXT2_REV
+    int
+    default 0   if BR2_TARGET_ROOTFS_EXT2_2r0
+    default 1   if !BR2_TARGET_ROOTFS_EXT2_2r0
 
 config BR2_TARGET_ROOTFS_EXT2_BLOCKS
 	int "size in blocks (leave at 0 for auto calculation)"
