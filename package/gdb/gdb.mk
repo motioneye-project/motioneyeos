@@ -111,5 +111,13 @@ HOST_GDB_CONF_OPT = \
 	--without-included-gettext \
 	--disable-sim
 
+# legacy $arch-linux-gdb symlink
+define HOST_GDB_ADD_SYMLINK
+	cd $(HOST_DIR)/usr/bin && \
+		ln -snf $(GNU_TARGET_NAME)-gdb $(ARCH)-linux-gdb
+endef
+
+HOST_GDB_POST_INSTALL_HOOKS += HOST_GDB_ADD_SYMLINK
+
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
