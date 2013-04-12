@@ -5,6 +5,7 @@ Appendix
 ========
 
 include::makedev-syntax.txt[]
+include::makeusers-syntax.txt[]
 
 [[package-list]]
 Available packages
