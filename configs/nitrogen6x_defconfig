@@ -9,6 +9,7 @@ BR2_ROOTFS_POST_BUILD_SCRIPT="board/boundarydevices/nitrogen6x/post-build.sh"
 
 # filesystem
 BR2_TARGET_ROOTFS_EXT2=y
+BR2_TARGET_ROOTFS_EXT2_2r1=y
 
 # bootloader
 BR2_TARGET_UBOOT=y
