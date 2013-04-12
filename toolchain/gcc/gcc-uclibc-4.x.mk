@@ -30,7 +30,7 @@ ifneq ($(GCC_SNAP_DATE),)
 else ifeq ($(findstring avr32,$(GCC_VERSION)),avr32)
  GCC_SITE:=ftp://www.at91.com/pub/buildroot/
 else
- GCC_SITE:=$(BR2_GNU_MIRROR)/gcc/gcc-$(GCC_VERSION)
+ GCC_SITE:=$(BR2_GNU_MIRROR:/=)/gcc/gcc-$(GCC_VERSION)
 endif
 
 GCC_SOURCE:=gcc-$(GCC_VERSION).tar.bz2
@@ -212,7 +212,7 @@ endif
 $(DL_DIR)/$(GCC_SOURCE):
 	mkdir -p $(DL_DIR)
 	$(Q)$(call MESSAGE,"Downloading gcc")
-	$(call DOWNLOAD,$(GCC_SITE)/$(GCC_SOURCE))
+	$(call DOWNLOAD,$(GCC_SITE:/=)/$(GCC_SOURCE))
 
 gcc-unpacked: $(GCC_DIR)/.patched
 $(GCC_DIR)/.unpacked: $(DL_DIR)/$(GCC_SOURCE)

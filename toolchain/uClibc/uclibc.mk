@@ -63,7 +63,7 @@ endif
 
 $(DL_DIR)/$(UCLIBC_SOURCE):
 	$(Q)$(call MESSAGE,"Downloading uClibc")
-	$(call DOWNLOAD,$(UCLIBC_SITE)/$(UCLIBC_SOURCE))
+	$(call DOWNLOAD,$(UCLIBC_SITE:/=)/$(UCLIBC_SOURCE))
 
 uclibc-unpacked: $(UCLIBC_DIR)/.unpacked
 $(UCLIBC_DIR)/.unpacked: $(DL_DIR)/$(UCLIBC_SOURCE)
