@@ -34,14 +34,11 @@ then
     # we scale inodes / blocks with 10% to compensate for bitmaps size + slack
     BLOCKS=$(du -s -c -k $TARGET_DIR | grep total | sed -e "s/total//")
     BLOCKS=$(expr 500 + \( $BLOCKS + $INODES / 8 \) \* 11 / 10)
-    # we add 1081 blocks (a bit more than 1 MiB, assuming 1KiB blocks) for
+    # we add 1300 blocks (a bit more than 1 MiB, assuming 1KiB blocks) for
     # the journal if ext3/4
-    # Note: I came to 1081 blocks after trial-and-error checks. With 1080 or
-    # less additional blocks, and tune2fs would refuse to add the journal;
-    # with 1081 additional blocks or above, tune2fs wil happily add a journal.
-    # YMMV.
+    # Note: I came to 1300 blocks after trial-and-error checks. YMMV.
     if [ ${GEN} -ge 3 ]; then
-        BLOCKS=$(expr 1081 + $BLOCKS )
+        BLOCKS=$(expr 1300 + $BLOCKS )
     fi
     set -- $@ -b $BLOCKS
 fi
