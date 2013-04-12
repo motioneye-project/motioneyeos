@@ -1,6 +1,9 @@
-FLOT_VERSION = 0.7
-FLOT_SITE = http://flot.googlecode.com/files
+FLOT_VERSION = 0.8.0
+FLOT_SITE = http://www.flotcharts.org/downloads
+FLOT_LICENSE = MIT
+FLOT_LICENSE_FILES = LICENSE.txt
 FLOT_FILES = jquery.flot $(addprefix jquery.flot.,\
+	$(if $(BR2_PACKAGE_FLOT_CANVAS),canvas) \
 	$(if $(BR2_PACKAGE_FLOT_FILLBETWEEN),fillbetween) \
 	$(if $(BR2_PACKAGE_FLOT_NAVIGATE),navigate) \
 	$(if $(BR2_PACKAGE_FLOT_PIE),pie) \

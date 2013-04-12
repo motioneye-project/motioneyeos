@@ -14,11 +14,16 @@ config BR2_PACKAGE_FLOT
 	  Safari 3.0+, Opera 9.5+ and Konqueror 4.x+ with the HTML
 	  canvas tag.
 
-	  https://code.google.com/p/flot/
+	  http://www.flotcharts.org/
 
 if BR2_PACKAGE_FLOT
 
 comment "flot plugins"
+
+config BR2_PACKAGE_FLOT_CANVAS
+	bool "canvas"
+	help
+	  Flot plugin to render axis tick labels directly to the canvas
 
 config BR2_PACKAGE_FLOT_FILLBETWEEN
 	bool "fillbetween"
