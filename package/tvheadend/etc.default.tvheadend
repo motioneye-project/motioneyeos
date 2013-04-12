@@ -1,6 +1,5 @@
-# Once we have a real user, we'll use it
-TVH_USER=root
-TVH_GROUP=root
+TVH_USER=tvheadend
+TVH_GROUP=tvheadend
 #TVH_ADAPTERS=
 #TVH_HTTP_PORT=9981
 #TVH_HTSP_PORT=9982
