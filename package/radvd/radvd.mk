@@ -4,7 +4,7 @@
 #
 #############################################################
 
-RADVD_VERSION = 1.9.2
+RADVD_VERSION = 1.9.3
 RADVD_SITE = http://www.litech.org/radvd/dist
 RADVD_DEPENDENCIES = host-bison flex libdaemon host-flex host-pkgconf
 RADVD_AUTORECONF = YES
