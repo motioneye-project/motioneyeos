@@ -4,7 +4,7 @@
 #
 #############################################################
 
-NETPERF_VERSION = 2.5.0
+NETPERF_VERSION = 2.6.0
 NETPERF_SITE = ftp://ftp.netperf.org/netperf
 NETPERF_CONF_ENV = ac_cv_func_setpgrp_void=set
 
