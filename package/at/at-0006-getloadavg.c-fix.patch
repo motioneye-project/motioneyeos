@@ -1,6 +1,6 @@
 [PATCH]: fix getloadavg.c compilation, revert to 3.1.10 version
 
-getloadavg.c shipped with 3.1.12 doesn't compile because it references
+getloadavg.c shipped with 3.1.13 doesn't compile because it references
 headers not shipped. Fix it by simply reverting to the 3.1.10 version.
 
 Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
@@ -8,10 +8,10 @@ Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
  getloadavg.c |    7 ++++---
  1 file changed, 4 insertions(+), 3 deletions(-)
 
-Index: at-3.1.12/getloadavg.c
+Index: at-3.1.13/getloadavg.c
 ===================================================================
---- at-3.1.12.orig/getloadavg.c
-+++ at-3.1.12/getloadavg.c
+--- at-3.1.13.orig/getloadavg.c
++++ at-3.1.13/getloadavg.c
 @@ -66,11 +66,12 @@ Boston, MA  02110-1301  USA */
  
  /* This should always be first.  */

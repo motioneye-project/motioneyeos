@@ -3,7 +3,8 @@
 # at
 #
 #############################################################
-AT_VERSION = 3.1.12
+
+AT_VERSION = 3.1.13
 AT_SOURCE = at_$(AT_VERSION).orig.tar.gz
 AT_SITE = $(BR2_DEBIAN_MIRROR)/debian/pool/main/a/at
 # missing deps for parsetime.l
