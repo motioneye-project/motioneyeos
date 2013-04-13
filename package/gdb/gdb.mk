@@ -16,10 +16,13 @@ ifeq ($(BR2_bfin),y)
 GDB_VERSION = 6.6a
 else ifeq ($(BR2_avr32),y)
 GDB_VERSION = 6.7.1-avr32-2.1.5
-GDB_SITE    = ftp://www.at91.com/pub/buildroot/
 else
 GDB_VERSION = 7.5.1
 endif
+endif
+
+ifeq ($(GDB_VERSION),6.7.1-avr32-2.1.5)
+GDB_SITE = ftp://www.at91.com/pub/buildroot/
 endif
 
 GDB_SOURCE = gdb-$(GDB_VERSION).tar.bz2
