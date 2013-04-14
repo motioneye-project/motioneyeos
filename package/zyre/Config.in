@@ -1,0 +1,17 @@
+config BR2_PACKAGE_ZYRE
+	bool "zyre"
+	depends on BR2_INSTALL_LIBSTDCPP # filemq
+	depends on BR2_INET_IPV6 # filemq
+	depends on BR2_LARGEFILE # filemq
+	depends on BR2_USE_WCHAR # filemq
+	depends on BR2_TOOLCHAIN_HAS_THREADS # filemq
+	select BR2_PACKAGE_FILEMQ
+	help
+	  An open-source framework for proximity-based peer-to-peer
+	  applications.
+
+	  http://zyre.org
+
+comment "zyre requires a toolchain with C++, IPv6, LARGEFILE, WCHAR & thread support"
+	depends on !(BR2_INSTALL_LIBSTDCPP && BR2_INET_IPV6 && BR2_LARGEFILE \
+		&& BR2_USE_WCHAR && BR2_TOOLCHAIN_HAS_THREADS)
