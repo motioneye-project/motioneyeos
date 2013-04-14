@@ -3,8 +3,11 @@
 # ofono
 #
 #############################################################
+
 OFONO_VERSION = 1.12
 OFONO_SITE = $(BR2_KERNEL_MIRROR)/linux/network/ofono
+OFONO_LICENSE = GPLv2
+OFONO_LICENSE_FILES = COPYING
 OFONO_DEPENDENCIES = \
 	host-pkgconf \
 	dbus \
