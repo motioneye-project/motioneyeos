@@ -1,9 +1,10 @@
 ---
+ confdata.c          |    4 ++--
  gconf.glade         |    2 +-
  mconf.c             |    4 ++--
  zconf.tab.c_shipped |    2 +-
  zconf.y             |    2 +-
- 4 files changed, 5 insertions(+), 5 deletions(-)
+ 5 files changed, 7 insertions(+), 7 deletions(-)
 
 Index: b/gconf.glade
 ===================================================================
@@ -60,3 +61,25 @@ Index: b/zconf.y
  
  	if (getenv("ZCONF_DEBUG"))
  		zconfdebug = 1;
+Index: b/confdata.c
+===================================================================
+--- a/confdata.c
++++ b/confdata.c
+@@ -25,7 +26,7 @@
+ static const char *conf_filename;
+ static int conf_lineno, conf_warnings, conf_unsaved;
+ 
+-const char conf_defname[] = "arch/$ARCH/defconfig";
++const char conf_defname[] = ".defconfig";
+ 
+ static void conf_warning(const char *fmt, ...)
+ {
+@@ -63,7 +64,7 @@
+ 
+ const char *conf_get_configname(void)
+ {
+-	char *name = getenv("KCONFIG_CONFIG");
++	char *name = getenv("BUILDROOT_CONFIG");
+ 
+ 	return name ? name : ".config";
+ }

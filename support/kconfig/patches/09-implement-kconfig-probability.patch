@@ -6,7 +6,7 @@ Index: b/confdata.c
 ===================================================================
 --- a/confdata.c
 +++ b/confdata.c
-@@ -1107,7 +1107,16 @@
+@@ -1106,7 +1106,16 @@
  void conf_set_all_new_symbols(enum conf_def_mode mode)
  {
  	struct symbol *sym, *csym;
@@ -24,7 +24,7 @@ Index: b/confdata.c
  
  	for_all_symbols(i, sym) {
  		if (sym_has_value(sym))
-@@ -1126,8 +1135,15 @@
+@@ -1125,8 +1134,15 @@
  				sym->def[S_DEF_USER].tri = no;
  				break;
  			case def_random:

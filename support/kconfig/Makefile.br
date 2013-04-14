@@ -19,7 +19,7 @@ host-cxxmulti := $(foreach m,$(__hostprogs),\
 host-cobjs := $(addprefix $(obj)/,$(sort $(foreach m,$(__hostprogs),$($(m)-objs))))
 host-cxxobjs := $(addprefix $(obj)/,$(sort $(foreach m,$(__hostprogs),$($(m)-cxxobjs))))
 
-HOST_EXTRACFLAGS += -I$(obj)
+HOST_EXTRACFLAGS += -I$(obj) -DCONFIG_=\"\"
 
 $(host-csingle): %: %.c
 	$(HOSTCC) $(HOST_EXTRACFLAGS) $(HOSTCFLAGS) $(HOSTCFLAGS_$@) $< -o $(obj)/$@

@@ -13,7 +13,6 @@
 #include <string.h>
 #include <time.h>
 #include <unistd.h>
-#include <libgen.h>
 
 #include "lkc.h"
 
@@ -308,20 +307,20 @@ load:
 		if (line[0] == '#') {
 			if (memcmp(line + 2, CONFIG_, strlen(CONFIG_)))
 				continue;
-			p = strchr(line + 2, ' ');
+			p = strchr(line + 2 + strlen(CONFIG_), ' ');
 			if (!p)
 				continue;
 			*p++ = 0;
 			if (strncmp(p, "is not set", 10))
 				continue;
 			if (def == S_DEF_USER) {
-				sym = sym_find(line + 2);
+				sym = sym_find(line + 2 + strlen(CONFIG_));
 				if (!sym) {
 					sym_add_change_count(1);
 					goto setsym;
 				}
 			} else {
-				sym = sym_lookup(line + 2, 0);
+				sym = sym_lookup(line + 2 + strlen(CONFIG_), 0);
 				if (sym->type == S_UNKNOWN)
 					sym->type = S_BOOLEAN;
 			}
@@ -337,8 +336,8 @@ load:
 			default:
 				;
 			}
-		} else if (isupper(line[0])) {
-			p = strchr(line, '=');
+		} else if (memcmp(line, CONFIG_, strlen(CONFIG_)) == 0) {
+			p = strchr(line + strlen(CONFIG_), '=');
 			if (!p)
 				continue;
 			*p++ = 0;
@@ -349,13 +348,13 @@ load:
 					*p2 = 0;
 			}
 			if (def == S_DEF_USER) {
-				sym = sym_find(line);
+				sym = sym_find(line + strlen(CONFIG_));
 				if (!sym) {
 					sym_add_change_count(1);
 					goto setsym;
 				}
 			} else {
-				sym = sym_lookup(line, 0);
+				sym = sym_lookup(line + strlen(CONFIG_), 0);
 				if (sym->type == S_UNKNOWN)
 					sym->type = S_OTHER;
 			}
@@ -483,8 +482,8 @@ kconfig_print_symbol(FILE *fp, struct symbol *sym, const char *value, void *arg)
 			bool skip_unset = (arg != NULL);
 
 			if (!skip_unset)
-				fprintf(fp, "# %s is not set\n",
-				    sym->name);
+				fprintf(fp, "# %s%s is not set\n",
+				    CONFIG_, sym->name);
 			return;
 		}
 		break;
@@ -492,7 +491,7 @@ kconfig_print_symbol(FILE *fp, struct symbol *sym, const char *value, void *arg)
 		break;
 	}
 
-	fprintf(fp, "%s=%s\n", sym->name, value);
+	fprintf(fp, "%s%s=%s\n", CONFIG_, sym->name, value);
 }
 
 static void
@@ -542,8 +541,8 @@ header_print_symbol(FILE *fp, struct symbol *sym, const char *value, void *arg)
 			suffix = "_MODULE";
 			/* fall through */
 		default:
-			fprintf(fp, "#define %s%s 1\n",
-			    sym->name, suffix);
+			fprintf(fp, "#define %s%s%s 1\n",
+			    CONFIG_, sym->name, suffix);
 		}
 		break;
 	}
@@ -552,14 +551,14 @@ header_print_symbol(FILE *fp, struct symbol *sym, const char *value, void *arg)
 
 		if (value[0] != '0' || (value[1] != 'x' && value[1] != 'X'))
 			prefix = "0x";
-		fprintf(fp, "#define %s %s%s\n",
-		    sym->name, prefix, value);
+		fprintf(fp, "#define %s%s %s%s\n",
+		    CONFIG_, sym->name, prefix, value);
 		break;
 	}
 	case S_STRING:
 	case S_INT:
-		fprintf(fp, "#define %s %s\n",
-		    sym->name, value);
+		fprintf(fp, "#define %s%s %s\n",
+		    CONFIG_, sym->name, value);
 		break;
 	default:
 		break;
@@ -605,7 +604,7 @@ tristate_print_symbol(FILE *fp, struct symbol *sym, const char *value, void *arg
 {
 
 	if (sym->type == S_TRISTATE && *value != 'n')
-		fprintf(fp, "%s=%c\n", sym->name, (char)toupper(*value));
+		fprintf(fp, "%s%s=%c\n", CONFIG_, sym->name, (char)toupper(*value));
 }
 
 static struct conf_printer tristate_printer_cb =

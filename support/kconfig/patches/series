@@ -1,6 +1,5 @@
 01-kconfig-kernel-to-buildroot.patch
 02-cpp-comments-to-c-comments.patch
-03-change-config-option-prefix.patch
 06-br-build-system-integration.patch
 09-implement-kconfig-probability.patch
 10-br-build-system.patch
