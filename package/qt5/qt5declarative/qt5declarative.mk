@@ -5,7 +5,7 @@
 #############################################################
 
 QT5DECLARATIVE_VERSION = $(QT5_VERSION)
-QT5DECLARATIVE_SITE = http://releases.qt-project.org/qt5/$(QT5DECLARATIVE_VERSION)/submodules_tar/
+QT5DECLARATIVE_SITE = $(QT5_SITE)
 QT5DECLARATIVE_SOURCE = qtdeclarative-opensource-src-$(QT5DECLARATIVE_VERSION).tar.xz
 QT5DECLARATIVE_DEPENDENCIES = qt5base qt5xmlpatterns qt5jsbackend
 QT5DECLARATIVE_INSTALL_STAGING = YES

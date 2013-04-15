@@ -5,7 +5,7 @@
 #############################################################
 
 QT5SCRIPT_VERSION = $(QT5_VERSION)
-QT5SCRIPT_SITE = http://releases.qt-project.org/qt5/$(QT5SCRIPT_VERSION)/submodules_tar/
+QT5SCRIPT_SITE = $(QT5_SITE)
 QT5SCRIPT_SOURCE = qtscript-opensource-src-$(QT5SCRIPT_VERSION).tar.xz
 QT5SCRIPT_DEPENDENCIES = qt5base
 QT5SCRIPT_INSTALL_STAGING = YES

@@ -5,7 +5,7 @@
 #############################################################
 
 QT5JSBACKEND_VERSION = $(QT5_VERSION)
-QT5JSBACKEND_SITE = http://releases.qt-project.org/qt5/$(QT5JSBACKEND_VERSION)/submodules_tar/
+QT5JSBACKEND_SITE = $(QT5_SITE)
 QT5JSBACKEND_SOURCE = qtjsbackend-opensource-src-$(QT5JSBACKEND_VERSION).tar.xz
 QT5JSBACKEND_DEPENDENCIES = qt5base
 QT5JSBACKEND_INSTALL_STAGING = YES

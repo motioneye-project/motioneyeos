@@ -5,7 +5,7 @@
 #############################################################
 
 QT5QUICK1_VERSION = $(QT5_VERSION)
-QT5QUICK1_SITE = http://releases.qt-project.org/qt5/$(QT5QUICK1_VERSION)/submodules_tar/
+QT5QUICK1_SITE = $(QT5_SITE)
 QT5QUICK1_SOURCE = qtquick1-opensource-src-$(QT5QUICK1_VERSION).tar.xz
 QT5QUICK1_DEPENDENCIES = qt5base qt5xmlpatterns qt5script qt5declarative qt5jsbackend qt5webkit
 QT5QUICK1_INSTALL_STAGING = YES

@@ -5,7 +5,7 @@
 #############################################################
 
 QT5SVG_VERSION = $(QT5_VERSION)
-QT5SVG_SITE = http://releases.qt-project.org/qt5/$(QT5SVG_VERSION)/submodules_tar/
+QT5SVG_SITE = $(QT5_SITE)
 QT5SVG_SOURCE = qtsvg-opensource-src-$(QT5SVG_VERSION).tar.xz
 QT5SVG_DEPENDENCIES = qt5base
 QT5SVG_INSTALL_STAGING = YES

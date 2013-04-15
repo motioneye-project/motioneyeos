@@ -5,7 +5,7 @@
 #############################################################
 
 QT5XMLPATTERNS_VERSION = $(QT5_VERSION)
-QT5XMLPATTERNS_SITE = http://releases.qt-project.org/qt5/$(QT5XMLPATTERNS_VERSION)/submodules_tar/
+QT5XMLPATTERNS_SITE = $(QT5_SITE)
 QT5XMLPATTERNS_SOURCE = qtxmlpatterns-opensource-src-$(QT5XMLPATTERNS_VERSION).tar.xz
 QT5XMLPATTERNS_DEPENDENCIES = qt5base
 QT5XMLPATTERNS_INSTALL_STAGING = YES

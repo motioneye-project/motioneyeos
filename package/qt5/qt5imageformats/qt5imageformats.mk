@@ -5,7 +5,7 @@
 #############################################################
 
 QT5IMAGEFORMATS_VERSION = $(QT5_VERSION)
-QT5IMAGEFORMATS_SITE = http://releases.qt-project.org/qt5/$(QT5IMAGEFORMATS_VERSION)/submodules_tar/
+QT5IMAGEFORMATS_SITE = $(QT5_SITE)
 QT5IMAGEFORMATS_SOURCE = qtimageformats-opensource-src-$(QT5IMAGEFORMATS_VERSION).tar.xz
 QT5IMAGEFORMATS_DEPENDENCIES = qt5base
 QT5IMAGEFORMATS_INSTALL_STAGING = YES

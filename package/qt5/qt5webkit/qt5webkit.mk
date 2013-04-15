@@ -5,7 +5,7 @@
 #############################################################
 
 QT5WEBKIT_VERSION = $(QT5_VERSION)
-QT5WEBKIT_SITE = http://releases.qt-project.org/qt5/$(QT5WEBKIT_VERSION)/submodules_tar/
+QT5WEBKIT_SITE = $(QT5_SITE)
 QT5WEBKIT_SOURCE = qtwebkit-opensource-src-$(QT5WEBKIT_VERSION).tar.xz
 QT5WEBKIT_DEPENDENCIES = qt5base sqlite host-ruby host-gperf
 QT5WEBKIT_INSTALL_STAGING = YES

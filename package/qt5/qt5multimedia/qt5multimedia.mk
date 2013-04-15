@@ -5,7 +5,7 @@
 #############################################################
 
 QT5MULTIMEDIA_VERSION = $(QT5_VERSION)
-QT5MULTIMEDIA_SITE = http://releases.qt-project.org/qt5/$(QT5MULTIMEDIA_VERSION)/submodules_tar/
+QT5MULTIMEDIA_SITE = $(QT5_SITE)
 QT5MULTIMEDIA_SOURCE = qtmultimedia-opensource-src-$(QT5MULTIMEDIA_VERSION).tar.xz
 QT5MULTIMEDIA_DEPENDENCIES = qt5base qt5declarative
 QT5MULTIMEDIA_INSTALL_STAGING = YES
