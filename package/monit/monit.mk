@@ -6,6 +6,8 @@
 
 MONIT_VERSION = 5.4
 MONIT_SITE = http://mmonit.com/monit/dist/
+MONIT_LICENSE = AGPLv3 with OpenSSL exception
+MONIT_LICENSE_FILES = COPYING
 
 MONIT_CONF_ENV = \
 	libmonit_cv_setjmp_available=yes \
