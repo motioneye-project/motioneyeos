@@ -84,4 +84,7 @@ config BR2_PACKAGE_QUAGGA_SNMP
 	help
 	  Make quagga information available via SNMP SMUX.
 
+comment "AgentX support must be enabled in net-snmp or the build will break"
+	depends on BR2_PACKAGE_QUAGGA_SNMP
+
 endif

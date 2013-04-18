@@ -26,10 +26,8 @@ QUAGGA_CONF_OPT += $(if $(BR2_PACKAGE_QUAGGA_OPAQUE_LSA),--enable-opaque-lsa,--d
 
 ifeq ($(BR2_PACKAGE_QUAGGA_SNMP),y)
 QUAGGA_CONF_ENV += ac_cv_path_NETSNMP_CONFIG=$(STAGING_DIR)/usr/bin/net-snmp-config
-QUAGGA_CONF_OPT += --enable-snmp
+QUAGGA_CONF_OPT += --enable-snmp=agentx
 QUAGGA_DEPENDENCIES += netsnmp
-else
-QUAGGA_CONF_OPT +=--disable-snmp
 endif
 
 $(eval $(autotools-package))
