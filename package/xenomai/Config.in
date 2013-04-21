@@ -39,13 +39,6 @@ config BR2_PACKAGE_XENOMAI_VERSION
 	  BR2_LINUX_KERNEL_EXT_XENOMAI_ADEOS_PATCH, in the Linux
 	  Kernel -> Linux Kernel Extensions menu.
 
-config BR2_PACKAGE_XENOMAI_SMP
-	bool "Enable SMP support"
-	depends on BR2_cortex_a9 || !BR2_arm # only A9 has SMP support
-	help
-	  This option allows to enable or disable SMP support. It has
-	  to match your kernel configuration.
-
 config BR2_PACKAGE_XENOMAI_TESTSUITE
        bool "Install testsuite"
        help
