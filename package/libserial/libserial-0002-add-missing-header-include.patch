@@ -1,0 +1,15 @@
+Add a missing header include, to fix a build error.
+
+Signed-off-by: Simon Dawson <spdawson@gmail.com>
+
+diff -Nurp a/src/SerialPort.cpp b/src/SerialPort.cpp
+--- a/src/SerialPort.cpp	2008-11-12 01:27:30.000000000 +0000
++++ b/src/SerialPort.cpp	2013-04-23 15:43:41.537495852 +0100
+@@ -27,6 +27,7 @@
+ #include <cassert>
+ #include <termios.h>
+ #include <fcntl.h>
++#include <unistd.h>
+ #include <sys/ioctl.h>
+ #include <sys/time.h>
+ #include <signal.h>

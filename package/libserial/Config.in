@@ -1,0 +1,11 @@
+config BR2_PACKAGE_LIBSERIAL
+	bool "libserial"
+	depends on BR2_INSTALL_LIBSTDCPP
+	help
+	  Simplified serial port programming in C++ under POSIX operating
+	  systems.
+
+	  http://libserial.sourceforge.net/
+
+comment "libserial requires a toolchain with C++ support enabled"
+	depends on !BR2_INSTALL_LIBSTDCPP
