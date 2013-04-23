@@ -7,4 +7,3 @@ config BR2_PACKAGE_WIRELESS_REGDB
 	  allowed radio frequencies for each local jurisdiction.
 
 	  http://linuxwireless.org/en/developers/Regulatory
-
