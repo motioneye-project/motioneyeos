@@ -3,21 +3,20 @@ config BR2_TARGET_ROOTFS_UBIFS
 	help
 	  Build a ubifs root filesystem
 
+if BR2_TARGET_ROOTFS_UBIFS
+
 config BR2_TARGET_ROOTFS_UBIFS_LEBSIZE
 	hex "UBI logical erase block size"
-	depends on BR2_TARGET_ROOTFS_UBIFS
 	default 0x1f800
 
 config BR2_TARGET_ROOTFS_UBIFS_MINIOSIZE
 	hex "UBI minimum I/O size"
-	depends on BR2_TARGET_ROOTFS_UBIFS
 	default 0x800
 	help
 	  Some comment required here
 
 config BR2_TARGET_ROOTFS_UBIFS_MAXLEBCNT
 	int "Maximum LEB count"
-	depends on BR2_TARGET_ROOTFS_UBIFS
 	default 2048
 	help
 	  Some comment required here
@@ -25,7 +24,6 @@ config BR2_TARGET_ROOTFS_UBIFS_MAXLEBCNT
 choice
 	prompt "ubifs runtime compression"
 	default BR2_TARGET_ROOTFS_UBIFS_RT_LZO
-	depends on BR2_TARGET_ROOTFS_UBIFS
 	help
 	  Select which compression format to use at run-time within
 	  the ubifs file system.
@@ -50,7 +48,6 @@ endchoice
 choice
 	prompt "Compression method"
 	default BR2_TARGET_ROOTFS_UBIFS_NONE
-	depends on BR2_TARGET_ROOTFS_UBIFS
 	help
 	  Select which compression format to compress the final image
 	  into.
@@ -89,19 +86,18 @@ endchoice
 
 config BR2_TARGET_ROOTFS_UBIFS_OPTS
 	string "Additional mkfs.ubifs options"
-	depends on BR2_TARGET_ROOTFS_UBIFS
 	help
 	  Any additional mkfs.ubifs options you may want to include.
 
 config BR2_TARGET_ROOTFS_UBI
-	depends on BR2_TARGET_ROOTFS_UBIFS
 	bool "Embed into an UBI image"
 	help
 	  Build an ubi image from the ubifs one (with ubinize).
 
+if BR2_TARGET_ROOTFS_UBI
+
 config BR2_TARGET_ROOTFS_UBI_PEBSIZE
 	hex "UBI physical erase block size"
-	depends on BR2_TARGET_ROOTFS_UBI
 	default 0x20000
 	help
 	  Tells ubinize the physical eraseblock size of the flash chip
@@ -109,7 +105,6 @@ config BR2_TARGET_ROOTFS_UBI_PEBSIZE
 
 config BR2_TARGET_ROOTFS_UBI_SUBSIZE
 	int "UBI sub-page size"
-	depends on BR2_TARGET_ROOTFS_UBI
 	default 512
 	help
 	  Tells ubinize that the flash supports sub-pages and the sub-page
@@ -117,6 +112,9 @@ config BR2_TARGET_ROOTFS_UBI_SUBSIZE
 
 config BR2_TARGET_ROOTFS_UBI_OPTS
 	string "Additional ubinize options"
-	depends on BR2_TARGET_ROOTFS_UBI
 	help
 	  Any additional ubinize options you may want to include.
+
+endif # BR2_TARGET_ROOTFS_UBI
+
+endif # BR2_TARGET_ROOTFS_UBIFS
