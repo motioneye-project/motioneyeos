@@ -87,6 +87,12 @@ config BR2_TARGET_ROOTFS_UBIFS_XZ
 
 endchoice
 
+config BR2_TARGET_ROOTFS_UBIFS_OPTS
+	string "Additional mkfs.ubifs options"
+	depends on BR2_TARGET_ROOTFS_UBIFS
+	help
+	  Any additional mkfs.ubifs options you may want to include.
+
 config BR2_TARGET_ROOTFS_UBI
 	depends on BR2_TARGET_ROOTFS_UBIFS
 	bool "Embed into an UBI image"
@@ -108,3 +114,9 @@ config BR2_TARGET_ROOTFS_UBI_SUBSIZE
 	help
 	  Tells ubinize that the flash supports sub-pages and the sub-page
 	  size. Use 0 if subpages are not supported on flash chip.
+
+config BR2_TARGET_ROOTFS_UBI_OPTS
+	string "Additional ubinize options"
+	depends on BR2_TARGET_ROOTFS_UBI
+	help
+	  Any additional ubinize options you may want to include.
