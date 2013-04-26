@@ -4,7 +4,7 @@
 #
 #############################################################
 
-PCIUTILS_VERSION = 3.1.10
+PCIUTILS_VERSION = 3.2.0
 PCIUTILS_SITE = ftp://atrey.karlin.mff.cuni.cz/pub/linux/pci
 PCIUTILS_INSTALL_STAGING = YES
 PCIUTILS_LICENSE = GPLv2+
@@ -22,6 +22,13 @@ PCIUTILS_SHARED=yes
 # Build after busybox since it's got a lightweight lspci
 ifeq ($(BR2_PACKAGE_BUSYBOX),y)
 	PCIUTILS_DEPENDENCIES += busybox
+endif
+
+ifeq ($(BR2_PACKAGE_KMOD),y)
+	PCIUTILS_DEPENDENCIES += kmod
+	PCIUTILS_KMOD = yes
+else
+	PCIUTILS_KMOD = no
 endif
 
 define PCIUTILS_CONFIGURE_CMDS
@@ -43,6 +50,7 @@ define PCIUTILS_BUILD_CMDS
 		SHARED=$(PCIUTILS_SHARED) \
 		ZLIB=$(PCIUTILS_ZLIB) \
 		DNS=$(PCIUTILS_DNS) \
+		LIBKMOD=$(PCIUTILS_KMOD) \
 		PREFIX=/usr
 endef
 
