@@ -14,5 +14,11 @@ config BR2_PACKAGE_NEARD
 
 	  https://01.org/linux-nfc/documentation/how-start-linux-nfc-code...
 
+config BR2_PACKAGE_NEARD_TOOLS
+	bool "neard tools"
+	depends on BR2_PACKAGE_NEARD
+	help
+	  Build and install neard tools.
+
 comment "neard requires a toolchain with WCHAR and threads support"
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
