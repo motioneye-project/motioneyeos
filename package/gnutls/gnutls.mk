@@ -24,6 +24,11 @@ GNUTLS_CONF_OPT += $(if $(BR2_TOOLCHAIN_HAS_THREADS),--with-libpthread-prefix=$(
 GNUTLS_CONF_OPT += $(if $(BR2_USE_MMU),,--disable-crywrap)
 GNUTLS_DEPENDENCIES += $(if $(BR2_PACKAGE_LIBIDN),libidn)
 
+ifeq ($(BR2_PACKAGE_CRYPTODEV_LINUX),y)
+	GNUTLS_CONF_OPT += --enable-cryptodev
+	GNUTLS_DEPENDENCIES += cryptodev-linux
+endif
+
 # Some examples in doc/examples use wchar
 define GNUTLS_DISABLE_DOCS
 	$(SED) 's/ doc / /' $(@D)/Makefile.in
