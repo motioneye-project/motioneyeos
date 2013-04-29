@@ -155,6 +155,7 @@ source "package/x11r7/Config.in"
 comment "X libraries and helper libraries"
 source "package/liberation/Config.in"
 source "package/libsexy/Config.in"
+source "package/x11r7/xkeyboard-config/Config.in"
 
 comment "X Window managers"
 source "package/enlightenment/Config.in"
