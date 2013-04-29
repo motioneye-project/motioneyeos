@@ -151,6 +151,7 @@ endif
 
 source "package/qt5/Config.in"
 source "package/x11r7/Config.in"
+source "package/weston/Config.in"
 
 comment "X libraries and helper libraries"
 source "package/liberation/Config.in"

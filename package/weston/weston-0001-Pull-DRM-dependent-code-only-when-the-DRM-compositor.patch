@@ -1,0 +1,47 @@
+From b8a831387a37f09ea5479eeb1d435a26680299c6 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Fri, 19 Apr 2013 06:19:05 +0200
+Subject: [PATCH] Pull DRM dependent code only when the DRM compositor is
+ enabled
+
+The <xf86drm.h> header and the drm*() functions may not be available
+at all when the DRM compositor is not enabled, so they should not be
+used. Fixes build failures when building the fbdev compositor on
+systems where DRM is not available.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ src/launcher-util.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/src/launcher-util.c b/src/launcher-util.c
+index 9196e4f..d2fb160 100644
+--- a/src/launcher-util.c
++++ b/src/launcher-util.c
+@@ -31,7 +31,9 @@
+ #include <sys/uio.h>
+ #include <fcntl.h>
+ 
++#ifdef BUILD_DRM_COMPOSITOR
+ #include <xf86drm.h>
++#endif
+ 
+ #include "compositor.h"
+ #include "launcher-util.h"
+@@ -103,6 +105,7 @@ weston_launcher_open(struct weston_compositor *compositor,
+ 	return data->fd;
+ }
+ 
++#ifdef BUILD_DRM_COMPOSITOR
+ int
+ weston_launcher_drm_set_master(struct weston_compositor *compositor,
+ 			       int drm_fd, char master)
+@@ -157,4 +160,4 @@ weston_launcher_drm_set_master(struct weston_compositor *compositor,
+ 
+ 	return ret;
+ }
+-
++#endif
+-- 
+1.7.9.5
+

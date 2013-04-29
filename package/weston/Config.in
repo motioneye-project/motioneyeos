@@ -1,0 +1,31 @@
+comment "weston requires udev"
+	depends on !BR2_PACKAGE_UDEV
+
+config BR2_PACKAGE_WESTON
+	bool "weston"
+	select BR2_PACKAGE_WAYLAND
+	select BR2_PACKAGE_LIBXKBCOMMON
+	select BR2_PACKAGE_CAIRO
+	select BR2_PACKAGE_CAIRO_PNG
+	select BR2_PACKAGE_LIBPNG
+	select BR2_PACKAGE_JPEG
+	select BR2_PACKAGE_MTDEV
+	depends on BR2_PACKAGE_UDEV
+	# Runtime dependency
+	select BR2_PACKAGE_XKEYBOARD_CONFIG
+	# Make sure at least one backend is selected
+	select BR2_PACKAGE_WESTON_FBDEV
+	help
+	  Weston is the reference implementation of a Wayland
+	  compositor, and a useful compositor in its own right.
+	  Weston has various backends that lets it run on Linux kernel
+	  modesetting and evdev input as well as under X11.
+
+	  http://wayland.freedesktop.org/
+
+if BR2_PACKAGE_WESTON
+
+config BR2_PACKAGE_WESTON_FBDEV
+	bool "fbdev compositor"
+
+endif
