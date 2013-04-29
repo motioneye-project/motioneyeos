@@ -1,10 +1,12 @@
 config BR2_PACKAGE_MAKE
 	bool "make"
 	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE
-	# We no longer support a toolchain on the target
-	depends on BR2_DEPRECATED
 	help
 	  A tool which controls the generation of executables and other
 	  non-source files of a program from the program's source files.
+
+	  While Buildroot no longer supports building a toolchain for
+	  the target, we keep a make package that is for example
+	  useful to run the uClibc test suite on the target.
 
 	  http://www.gnu.org/software/make/
