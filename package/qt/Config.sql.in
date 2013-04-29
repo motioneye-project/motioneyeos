@@ -9,6 +9,7 @@ config BR2_PACKAGE_QT_MYSQL
 	select BR2_PACKAGE_MYSQL_CLIENT
 	select BR2_PACKAGE_NCURSES
 	select BR2_PACKAGE_READLINE
+	depends on BR2_USE_MMU # mysql
 	help
 	  Build MySQL driver
 	  If unsure, say n.
