@@ -47,6 +47,8 @@ config BR2_cortex_a15
 	select BR2_ARM_CPU_HAS_NEON
 config BR2_fa526
 	bool "fa526/626"
+config BR2_pj4
+	bool "pj4"
 config BR2_strongarm
 	bool "strongarm sa110/sa1100"
 config BR2_xscale
@@ -115,6 +117,7 @@ config BR2_GCC_TARGET_TUNE
 	default "cortex-a9"	if BR2_cortex_a9
 	default "cortex-a15"	if BR2_cortex_a15
 	default "fa526"		if BR2_fa526
+	default "marvell-pj4"	if BR2_pj4
 	default "strongarm"	if BR2_strongarm
 	default "xscale"	if BR2_xscale
 	default "iwmmxt"	if BR2_iwmmxt
@@ -135,6 +138,7 @@ config BR2_GCC_TARGET_ARCH
 	default "armv7-a"	if BR2_cortex_a9
 	default "armv7-a"	if BR2_cortex_a15
 	default "armv4"		if BR2_fa526
+	default "armv7-a"	if BR2_pj4
 	default "armv4"		if BR2_strongarm
 	default "armv5te"	if BR2_xscale
 	default "iwmmxt"	if BR2_iwmmxt
