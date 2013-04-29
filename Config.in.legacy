@@ -140,6 +140,7 @@ config BR2_PACKAGE_PTHREAD_STUBS
 	bool "pthread-stubs option has been renamed"
 	select BR2_LEGACY
 	select BR2_PACKAGE_XLIB_LIBPTHREAD_STUBS
+	depends on BR2_PACKAGE_XORG7
 	help
 	  For consistency reason, the pthread-stubs package has been
 	  renamed to xlib_libpthread-stubs.
