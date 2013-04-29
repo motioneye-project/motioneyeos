@@ -1,0 +1,10 @@
+config BR2_PACKAGE_WAYLAND
+	bool "wayland"
+	select BR2_PACKAGE_LIBFFI
+	select BR2_PACKAGE_EXPAT
+	help
+	  Wayland is a project to define a protocol for a compositor
+	  to talk to its clients as well as a library implementation
+	  of the protocol.
+
+	  http://wayland.freedesktop.org/
