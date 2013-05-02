@@ -1,0 +1,92 @@
+This patch fixes builderrors while using '--with-gfxdrivers' and
+'--with-inputdrivers' with the current DirectFB version 1.6.3.
+
+Patch is taken from
+http://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/dev-libs/DirectFB/files/DirectFB-1.6.3-setregion.patch
+
+Signed-off-by: Carsten Schoenert <c.schoenert@gmail.com>
+
+--- directfb-1.6.3/gfxdrivers/cyber5k/cyber5k.c
++++ directfb-1.6.3/gfxdrivers/cyber5k/cyber5k.c
+@@ -636,7 +636,8 @@ osdSetRegion( CoreLayer
+               CoreLayerRegionConfigFlags  updated,
+               CoreSurface                *surface,
+               CorePalette                *palette,
+-              CoreSurfaceBufferLock      *lock )
++              CoreSurfaceBufferLock      *left_lock,
++              CoreSurfaceBufferLock      *right_lock )
+ {
+      DFBResult ret;
+ 
+@@ -644,7 +645,7 @@ osdSetRegion( CoreLayer
+      ret = oldPrimaryFuncs.SetRegion( layer, oldPrimaryDriverData,
+                                       layer_data, region_data,
+                                       config, updated, surface,
+-                                      palette, lock );
++                                      palette, left_lock, right_lock );
+      if (ret)
+           return ret;
+ 
+--- directfb-1.6.3/gfxdrivers/radeon/radeon_crtc1.c
++++ directfb-1.6.3/gfxdrivers/radeon/radeon_crtc1.c
+@@ -147,14 +147,15 @@ crtc1SetRegion( CoreLayer
+                 CoreLayerRegionConfigFlags  updated,
+                 CoreSurface                *surface,
+                 CorePalette                *palette,
+-                CoreSurfaceBufferLock      *lock )
++                CoreSurfaceBufferLock      *left_lock,
++                CoreSurfaceBufferLock      *right_lock )
+ {
+      
+      if (updated & ~CLRCF_OPTIONS) {
+           return OldPrimaryLayerFuncs.SetRegion( layer,
+                                                  OldPrimaryLayerDriverData,
+                                                  layer_data, region_data,
+-                                                 config, updated, surface, palette, lock );
++                                                 config, updated, surface, palette, left_lock, right_lock );
+      }
+ 
+      return DFB_OK;
+--- directfb-1.6.3/gfxdrivers/cle266/uc_primary.c
++++ directfb-1.6.3/gfxdrivers/cle266/uc_primary.c
+@@ -138,7 +138,8 @@ osdSetRegion( CoreLayer
+               CoreLayerRegionConfigFlags  updated,
+               CoreSurface                *surface,
+               CorePalette                *palette,
+-              CoreSurfaceBufferLock      *lock )
++              CoreSurfaceBufferLock      *left_lock,
++              CoreSurfaceBufferLock      *right_lock )
+ {
+      DFBResult     ret;
+      UcDriverData *ucdrv = (UcDriverData*) driver_data;
+@@ -147,7 +148,7 @@ osdSetRegion( CoreLayer
+      ret = ucOldPrimaryFuncs.SetRegion( layer, ucOldPrimaryDriverData,
+                                         layer_data, region_data,
+                                         config, updated, surface,
+-                                        palette, lock );
++                                        palette, left_lock, right_lock );
+      if (ret)
+           return ret;
+ 
+--- directfb-1.6.3/gfxdrivers/unichrome/uc_primary.c
++++ directfb-1.6.3/gfxdrivers/unichrome/uc_primary.c
+@@ -135,7 +135,8 @@ osdSetRegion( CoreLayer
+               CoreLayerRegionConfigFlags  updated,
+               CoreSurface                *surface,
+               CorePalette                *palette,
+-              CoreSurfaceBufferLock      *lock )
++              CoreSurfaceBufferLock      *left_lock,
++              CoreSurfaceBufferLock      *right_lock )
+ {
+      DFBResult     ret;
+      UcDriverData *ucdrv = (UcDriverData*) driver_data;
+@@ -144,7 +145,7 @@ osdSetRegion( CoreLayer
+      ret = ucOldPrimaryFuncs.SetRegion( layer, ucOldPrimaryDriverData,
+                                         layer_data, region_data,
+                                         config, updated, surface,
+-                                        palette, lock );
++                                        palette, left_lock, right_lock );
+      if (ret)
+           return ret;
+ 
+
