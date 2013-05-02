@@ -7,6 +7,20 @@ choice
 	help
 	  Select the target architecture family to build for.
 
+config BR2_arcle
+	bool "ARC (little endian)"
+	help
+	  Synopsys' DesignWare ARC Processor Cores are a family of 32-bit CPUs
+	  that can be used from deeply embedded to high performance host
+	  applications. Little endian.
+
+config BR2_arceb
+	bool "ARC (big endian)"
+	help
+	  Synopsys' DesignWare ARC Processor Cores are a family of 32-bit CPUs
+	  that can be used from deeply embedded to high performance host
+	  applications. Big endian.
+
 config BR2_arm
 	bool "ARM (little endian)"
 	help
@@ -174,6 +188,10 @@ config BR2_GCC_TARGET_ABI
 
 config BR2_GCC_TARGET_CPU
 	string
+
+if BR2_arcle || BR2_arceb
+source "arch/Config.in.arc"
+endif
 
 if BR2_arm || BR2_armeb
 source "arch/Config.in.arm"
