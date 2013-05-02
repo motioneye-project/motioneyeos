@@ -26,6 +26,9 @@ BINUTILS_SITE = $(BR2_GNU_MIRROR)/binutils
 ifeq ($(ARCH),avr32)
 BINUTILS_SITE = ftp://www.at91.com/pub/buildroot
 endif
+ifeq ($(BR2_arc),y)
+BINUTILS_SITE = $(BR2_ARC_SITE)
+endif
 BINUTILS_EXTRA_CONFIG_OPTIONS = $(call qstrip,$(BR2_BINUTILS_EXTRA_CONFIG_OPTIONS))
 BINUTILS_INSTALL_STAGING = YES
 BINUTILS_DEPENDENCIES = $(if $(BR2_NEEDS_GETTEXT_IF_LOCALE),gettext)
@@ -52,7 +55,11 @@ HOST_BINUTILS_CONF_OPT = --disable-multilib --disable-werror \
 			--with-sysroot=$(STAGING_DIR) \
 			$(BINUTILS_EXTRA_CONFIG_OPTIONS)
 
+ifeq ($(BINUTILS_VERSION),2.19-arc)
+HOST_BINUTILS_DEPENDENCIES = host-flex host-bison
+else
 HOST_BINUTILS_DEPENDENCIES =
+endif
 
 # We just want libbfd and libiberty, not the full-blown binutils in staging
 define BINUTILS_INSTALL_STAGING_CMDS

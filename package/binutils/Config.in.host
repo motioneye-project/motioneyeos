@@ -2,6 +2,7 @@ comment "Binutils Options"
 
 choice
 	prompt "Binutils Version"
+	depends on !BR2_arc
 	default BR2_BINUTILS_VERSION_2_21 if (BR2_mips || BR2_mipsel || BR2_sh)
 	default BR2_BINUTILS_VERSION_2_21_1 if (!BR2_UCLIBC_VERSION_0_9_31)
 	default BR2_BINUTILS_VERSION_2_21
@@ -41,6 +42,7 @@ endchoice
 config BR2_BINUTILS_VERSION
 	string
 	default "2.18-avr32-1.0.1" if BR2_BINUTILS_VERSION_2_18_AVR32_1_0_1
+	default "2.19-arc"	if BR2_arc
 	default "2.20.1"	if BR2_BINUTILS_VERSION_2_20_1
 	default "2.21"		if BR2_BINUTILS_VERSION_2_21
 	default "2.21.1"	if BR2_BINUTILS_VERSION_2_21_1
