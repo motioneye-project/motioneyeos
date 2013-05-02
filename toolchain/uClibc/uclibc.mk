@@ -17,6 +17,9 @@ UCLIBC_VERSION:=$(call qstrip,$(BR2_UCLIBC_VERSION_STRING))
 ifeq ($(BR2_UCLIBC_VERSION_SNAPSHOT),y)
 UCLIBC_SITE:=http://www.uclibc.org/downloads/snapshots
 UCLIBC_DIR:=$(TOOLCHAIN_DIR)/uClibc
+else ifeq ($(findstring arc,$(UCLIBC_VERSION)),arc)
+UCLIBC_SITE:=$(BR2_ARC_SITE)
+UCLIBC_DIR:=$(TOOLCHAIN_DIR)/uClibc-$(UCLIBC_VERSION)
 else
 UCLIBC_SITE:=http://www.uclibc.org/downloads
 UCLIBC_DIR:=$(TOOLCHAIN_DIR)/uClibc-$(UCLIBC_VERSION)
@@ -31,6 +34,7 @@ UCLIBC_TARGET_ARCH:=$(shell $(SHELL) -c "echo $(ARCH) | sed \
 		-e 's/-.*//' \
 		-e 's/i.86/i386/' \
 		-e 's/sparc.*/sparc/' \
+		-e 's/arc.*/arc/g' \
 		-e 's/arm.*/arm/g' \
 		-e 's/m68k.*/m68k/' \
 		-e 's/ppc/powerpc/g' \
