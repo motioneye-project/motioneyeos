@@ -4,7 +4,7 @@
 #
 #############################################################
 
-MONGOOSE_VERSION = 3.3
+MONGOOSE_VERSION = 3.7
 MONGOOSE_SOURCE = mongoose-$(MONGOOSE_VERSION).tgz
 MONGOOSE_SITE = https://mongoose.googlecode.com/files
 MONGOOSE_LICENSE = MIT
