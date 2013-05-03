@@ -84,4 +84,16 @@ endef
 PULSEAUDIO_POST_INSTALL_TARGET_HOOKS += PULSEAUDIO_REMOVE_VALA
 endif
 
+ifeq ($(BR2_PACKAGE_PULSEAUDIO_DAEMON),y)
+define PULSEAUDIO_USERS
+	pulse -1 pulse -1 * /var/run/pulse - audio,pulse-access
+endef
+
+define PULSEAUDIO_INSTALL_INIT_SYSV
+	$(INSTALL) -D -m 755 package/multimedia/pulseaudio/S50pulseaudio \
+		$(TARGET_DIR)/etc/init.d/S50pulseaudio
+endef
+
+endif
+
 $(eval $(autotools-package))
