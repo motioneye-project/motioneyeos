@@ -1,6 +1,7 @@
 config BR2_PACKAGE_GSTREAMER
 	bool "gstreamer"
 	depends on BR2_USE_WCHAR # glib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS
 	select BR2_PACKAGE_LIBGLIB2
 	help
 	  GStreamer is an open source multimedia framework.
@@ -24,5 +25,5 @@ config BR2_PACKAGE_GSTREAMER_PLUGIN_REGISTRY
 	  Enable support for the GStreamer plugin registry. This may increase
 	  the launch-time for a GStreamer application.
 
-comment "gstreamer requires a toolchain with WCHAR support"
-	depends on !BR2_USE_WCHAR
+comment "gstreamer requires a toolchain with WCHAR and threads support"
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
