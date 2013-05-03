@@ -97,3 +97,11 @@ config BR2_GCC_TARGET_CPU
 	default bf548		if BR2_bf548
 	default bf549		if BR2_bf549
 	default bf561		if BR2_bf561
+
+config BR2_GCC_TARGET_CPU_REVISION
+	string "Target CPU revision"
+	help
+	  Specify a target CPU revision, which will be appended to the
+	  value of the -mcpu option. For example, if the selected CPU is
+	  bf609, and then selected CPU revision is "0.0", then gcc will
+	  receive the -mcpu=bf609-0.0 option.

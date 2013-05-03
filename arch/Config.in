@@ -189,6 +189,9 @@ config BR2_GCC_TARGET_ABI
 config BR2_GCC_TARGET_CPU
 	string
 
+config BR2_GCC_TARGET_CPU_REVISION
+	string
+
 # Set up target binary format
 choice
 	prompt "Target Binary Format"
