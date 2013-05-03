@@ -172,4 +172,14 @@ config BR2_PACKAGE_INPUT_TOOLS_EVTEST
 	help
 	  The evtest program from input-tools is now a separate package.
 
+config BR2_BFIN_FDPIC
+	bool "BR2_BFIN_FDPIC is now BR2_BINFMT_FDPIC"
+	select BR2_BINFMT_FDPIC
+	select BR2_LEGACY
+
+config BR2_BFIN_FLAT
+	bool "BR2_BFIN_FLAT is now BR2_BINFMT_FLAT"
+	select BR2_BINFMT_FLAT
+	select BR2_LEGACY
+
 endmenu
