@@ -1,5 +1,6 @@
 config BR2_PACKAGE_LIBPLAYER
 	depends on BR2_LARGEFILE
+	depends on BR2_TOOLCHAIN_HAS_THREADS
 	bool "libplayer"
 	help
 	  libplayer provides a generic A/V API that relies on various multimedia
@@ -31,5 +32,5 @@ config BR2_PACKAGE_LIBPLAYER_PYTHON
 	bool "Libplayer python bindings"
 endif
 
-comment "libplayer requires a toolchain with LARGEFILE support"
-	depends on !BR2_LARGEFILE
+comment "libplayer requires a toolchain with LARGEFILE and threads support"
+	depends on !BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_THREADS
