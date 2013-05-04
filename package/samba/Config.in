@@ -13,6 +13,14 @@ config BR2_PACKAGE_SAMBA
 
 if BR2_PACKAGE_SAMBA
 
+config BR2_PACKAGE_SAMBA_MAX_DEBUGLEVEL
+	int "Maximum level of compiled-in debug messages"
+	range -1 10000
+	default -1
+	help
+	  Define the level of compiled-in debug messages.
+	  This allows for big space savings, -1 being the lowest (none).
+
 config BR2_PACKAGE_SAMBA_LIBICONV
 	bool "extended encodings (libiconv)"
 	depends on !BR2_ENABLE_LOCALE
