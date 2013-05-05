@@ -10,8 +10,8 @@ ifeq ($(BR2_arm7tdmi)$(BR2_arm720t)$(BR2_arm920t)$(BR2_arm922t)$(BR2_arm926t)$(B
 NETTLE_CONF_OPT += --disable-assembler
 endif
 
-# ARM NEON
-ifeq ($(BR2_ARM_CPU_HAS_NEON),y)
+# ARM NEON, requires binutils 2.21+
+ifeq ($(BR2_ARM_CPU_HAS_NEON)$(BR2_TOOLCHAIN_BUILDROOT)$(BR2_BINUTILS_VERSION_2_20_1),yy)
 NETTLE_CONF_OPT += --enable-arm-neon
 else
 NETTLE_CONF_OPT += --disable-arm-neon
