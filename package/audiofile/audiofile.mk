@@ -10,6 +10,8 @@ AUDIOFILE_INSTALL_STAGING = YES
 AUDIOFILE_CONF_ENV = ac_cv_prog_cc_c99='-std=gnu99'
 AUDIOFILE_CONF_OPT = --disable-examples --disable-docs
 AUDIOFILE_DEPENDENCIES = host-pkgconf
+# configure is outdated and has old bugs because of it
+AUDIOFILE_AUTORECONF = YES
 AUDIOFILE_LICENSE = GPLv2+ LGPLv2.1+
 AUDIOFILE_LICENSE_FILES = COPYING COPYING.GPL
 
