@@ -4,8 +4,8 @@
 #
 #############################################################
 
-JQUERY_UI_VERSION = 1.8.21
-JQUERY_UI_SITE = http://jquery-ui.googlecode.com/files
+JQUERY_UI_VERSION = 1.10.3
+JQUERY_UI_SITE = http://jqueryui.com/resources/download
 JQUERY_UI_SOURCE = jquery-ui-$(JQUERY_UI_VERSION).zip
 
 define JQUERY_UI_EXTRACT_CMDS
