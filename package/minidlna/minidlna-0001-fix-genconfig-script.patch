@@ -1,0 +1,95 @@
+Fix the genconfig.sh script, which has a hard-coded host prefix.
+
+N.B. The upstream CVS HEAD has been converted to GNU autotools, but a
+tarball has not yet been released. When the next release tarball is made
+available, this patch can be removed.
+
+Signed-off-by: Simon Dawson <spdawson@gmail.com>
+
+diff -Nurp a/genconfig.sh b/genconfig.sh
+--- a/genconfig.sh	2012-01-21 00:34:13.000000000 +0000
++++ b/genconfig.sh	2013-05-04 21:05:12.025002800 +0100
+@@ -27,6 +27,8 @@ CONFIGMACRO="__CONFIG_H__"
+ DB_PATH="/tmp/minidlna"
+ # Log path
+ LOG_PATH="${DB_PATH}"
++# Host prefix
++PREFIX=${PREFIX:-/usr}
+ 
+ # detecting the OS name and version
+ OS_NAME=`uname -s`
+@@ -40,22 +42,22 @@ ${RM} ${CONFIGFILE}
+ 
+ # Detect if there are missing headers
+ # NOTE: This check only works with a normal distro
+-[ ! -e "/usr/include/sqlite3.h" ] && MISSING="libsqlite3 $MISSING"
+-[ ! -e "/usr/include/jpeglib.h" ] && MISSING="libjpeg $MISSING"
+-[ ! -e "/usr/include/libexif/exif-loader.h" ] && MISSING="libexif $MISSING"
+-[ ! -e "/usr/include/id3tag.h" ] && MISSING="libid3tag $MISSING"
+-[ ! -e "/usr/include/ogg/ogg.h" ] && MISSING="libogg $MISSING"
+-[ ! -e "/usr/include/vorbis/codec.h" ] && MISSING="libvorbis $MISSING"
+-[ ! -e "/usr/include/FLAC/metadata.h" ] && MISSING="libflac $MISSING"
+-[ ! -e "/usr/include/ffmpeg/avutil.h" -a \
+-  ! -e "/usr/include/libavutil/avutil.h" -a \
+-  ! -e "/usr/include/ffmpeg/libavutil/avutil.h" ] && MISSING="libavutil $MISSING"
+-[ ! -e "/usr/include/ffmpeg/avformat.h" -a \
+-  ! -e "/usr/include/libavformat/avformat.h" -a \
+-  ! -e "/usr/include/ffmpeg/libavformat/avformat.h" ] && MISSING="libavformat $MISSING"
+-[ ! -e "/usr/include/ffmpeg/avcodec.h" -a \
+-  ! -e "/usr/include/libavcodec/avcodec.h" -a \
+-  ! -e "/usr/include/ffmpeg/libavcodec/avcodec.h" ] && MISSING="libavcodec $MISSING"
++[ ! -e "$PREFIX/include/sqlite3.h" ] && MISSING="libsqlite3 $MISSING"
++[ ! -e "$PREFIX/include/jpeglib.h" ] && MISSING="libjpeg $MISSING"
++[ ! -e "$PREFIX/include/libexif/exif-loader.h" ] && MISSING="libexif $MISSING"
++[ ! -e "$PREFIX/include/id3tag.h" ] && MISSING="libid3tag $MISSING"
++[ ! -e "$PREFIX/include/ogg/ogg.h" ] && MISSING="libogg $MISSING"
++[ ! -e "$PREFIX/include/vorbis/codec.h" ] && MISSING="libvorbis $MISSING"
++[ ! -e "$PREFIX/include/FLAC/metadata.h" ] && MISSING="libflac $MISSING"
++[ ! -e "$PREFIX/include/ffmpeg/avutil.h" -a \
++  ! -e "$PREFIX/include/libavutil/avutil.h" -a \
++  ! -e "$PREFIX/include/ffmpeg/libavutil/avutil.h" ] && MISSING="libavutil $MISSING"
++[ ! -e "$PREFIX/include/ffmpeg/avformat.h" -a \
++  ! -e "$PREFIX/include/libavformat/avformat.h" -a \
++  ! -e "$PREFIX/include/ffmpeg/libavformat/avformat.h" ] && MISSING="libavformat $MISSING"
++[ ! -e "$PREFIX/include/ffmpeg/avcodec.h" -a \
++  ! -e "$PREFIX/include/libavcodec/avcodec.h" -a \
++  ! -e "$PREFIX/include/ffmpeg/libavcodec/avcodec.h" ] && MISSING="libavcodec $MISSING"
+ if [ -n "$MISSING" ]; then
+ 	echo -e "\nERROR!  Cannot continue."
+ 	echo -e "The following required libraries are either missing, or are missing development headers:\n"
+@@ -88,7 +90,7 @@ case $OS_NAME in
+ 		OS_URL=http://www.openbsd.org/
+ 		;;
+ 	FreeBSD)
+-		VER=`grep '#define __FreeBSD_version' /usr/include/sys/param.h | awk '{print $3}'`
++		VER=`grep '#define __FreeBSD_version' $PREFIX/include/sys/param.h | awk '{print $3}'`
+ 		if [ $VER -ge 700049 ]; then
+ 			echo "#define PFRULE_INOUT_COUNTS" >> ${CONFIGFILE}
+ 		fi
+@@ -175,7 +177,7 @@ echo "#define USE_DAEMON" >> ${CONFIGFIL
+ echo "" >> ${CONFIGFILE}
+ 
+ echo "/* Enable if the system inotify.h exists.  Otherwise our own inotify.h will be used. */" >> ${CONFIGFILE}
+-if [ -f /usr/include/sys/inotify.h ]; then
++if [ -f $PREFIX/include/sys/inotify.h ]; then
+ echo "#define HAVE_INOTIFY_H" >> ${CONFIGFILE}
+ else
+ echo "/*#define HAVE_INOTIFY_H*/" >> ${CONFIGFILE}
+@@ -183,7 +185,7 @@ fi
+ echo "" >> ${CONFIGFILE}
+ 
+ echo "/* Enable if the system iconv.h exists.  ID3 tag reading in various character sets will not work properly otherwise. */" >> ${CONFIGFILE}
+-if [ -f /usr/include/iconv.h ]; then
++if [ -f $PREFIX/include/iconv.h ]; then
+ echo "#define HAVE_ICONV_H" >> ${CONFIGFILE}
+ else
+ echo -e "\nWARNING!!  Iconv support not found.  ID3 tag reading may not work."
+@@ -192,7 +194,7 @@ fi
+ echo "" >> ${CONFIGFILE}
+ 
+ echo "/* Enable if the system libintl.h exists for NLS support. */" >> ${CONFIGFILE}
+-if [ -f /usr/include/libintl.h ]; then
++if [ -f $PREFIX/include/libintl.h ]; then
+ echo "#define ENABLE_NLS" >> ${CONFIGFILE}
+ else
+ echo "/*#define ENABLE_NLS*/" >> ${CONFIGFILE}

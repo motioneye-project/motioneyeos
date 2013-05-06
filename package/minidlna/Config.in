@@ -1,0 +1,21 @@
+config BR2_PACKAGE_MINIDLNA
+	bool "minidlna"
+	depends on BR2_LARGEFILE # ffmpeg
+	depends on BR2_INET_IPV6 # ffmpeg
+	depends on BR2_USE_MMU # fork
+	select BR2_PACKAGE_FFMPEG
+	select BR2_PACKAGE_FLAC
+	select BR2_PACKAGE_LIBVORBIS # selects libogg
+	select BR2_PACKAGE_LIBOGG
+	select BR2_PACKAGE_LIBID3TAG # selects zlib
+	select BR2_PACKAGE_LIBEXIF
+	select BR2_PACKAGE_LIBJPEG
+	select BR2_PACKAGE_SQLITE
+	help
+	  MiniDLNA (aka ReadyDLNA) is server software with the aim of being
+	  fully compliant with DLNA/UPnP-AV clients.
+
+	  http://minidlna.sourceforge.net/
+
+comment "minidlna requires a toolchain with LARGEFILE and IPV6 support"
+	depends on !(BR2_LARGEFILE && BR2_INET_IPV6)

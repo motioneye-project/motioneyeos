@@ -1,0 +1,20 @@
+Work around a broken test for libavformat version.
+
+N.B. This change is in the upstream CVS HEAD, but is not in the latest
+released tarball. When the next release tarball is made available, this
+patch can be removed.
+
+Signed-off-by: Simon Dawson <spdawson@gmail.com>
+
+diff -Nurp a/metadata.c b/metadata.c
+--- a/metadata.c	2012-06-29 22:11:29.000000000 +0100
++++ b/metadata.c	2013-05-04 22:22:47.128202396 +0100
+@@ -110,7 +110,7 @@ lav_open(AVFormatContext **ctx, const ch
+ static inline void
+ lav_close(AVFormatContext *ctx)
+ {
+-#if LIBAVFORMAT_VERSION_INT >= ((53<<16)+(2<<8)+0)
++#if LIBAVFORMAT_VERSION_INT >= ((53<<16)+(17<<8)+0)
+ 	avformat_close_input(&ctx);
+ #else
+ 	av_close_input_file(ctx);
