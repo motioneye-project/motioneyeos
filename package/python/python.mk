@@ -142,6 +142,13 @@ endef
 
 PYTHON_POST_INSTALL_STAGING_HOOKS += PYTHON_FIXUP_LIBDIR
 
+# Bad shebang, normally not used
+define PYTHON_REMOVE_SMTPD
+	rm -f $(TARGET_DIR)/usr/bin/smtpd.py
+endef
+
+PYTHON_POST_INSTALL_TARGET_HOOKS += PYTHON_REMOVE_SMTPD
+
 #
 # Development files removal
 #
