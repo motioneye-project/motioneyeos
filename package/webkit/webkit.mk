@@ -5,7 +5,7 @@
 #############################################################
 
 WEBKIT_VERSION = 1.2.7
-WEBKIT_SITE = http://www.webkitgtk.org
+WEBKIT_SITE = http://www.webkitgtk.org/releases
 WEBKIT_INSTALL_STAGING = YES
 WEBKIT_DEPENDENCIES = host-flex host-bison host-gperf icu libcurl libxml2 \
 	libxslt libgtk2 sqlite enchant libsoup jpeg libgail
