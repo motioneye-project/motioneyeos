@@ -8,7 +8,7 @@ config BR2_PACKAGE_JQUERY_UI_THEMES
 
 config BR2_PACKAGE_JQUERY_UI_THEMES_THEME
 	string "theme to install"
-	default "base"
+	default "ui-lightness"
 	depends on BR2_PACKAGE_JQUERY_UI_THEMES
 	help
 	  Specify the name of the jQuery UI theme to install.
