@@ -7,6 +7,8 @@
 JQUERY_UI_VERSION = 1.10.3
 JQUERY_UI_SITE = http://jqueryui.com/resources/download
 JQUERY_UI_SOURCE = jquery-ui-$(JQUERY_UI_VERSION).zip
+JQUERY_UI_LICENSE = MIT
+JQUERY_UI_LICENSE_FILES = MIT-LICENSE.txt
 
 define JQUERY_UI_EXTRACT_CMDS
 	unzip -d $(@D) $(DL_DIR)/$(JQUERY_UI_SOURCE)
