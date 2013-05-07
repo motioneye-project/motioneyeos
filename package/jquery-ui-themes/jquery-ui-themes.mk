@@ -19,10 +19,10 @@ endef
 
 define JQUERY_UI_THEMES_INSTALL_TARGET_CMDS
 	$(INSTALL) -m 0644 -D \
-		$(@D)/themes/$(BR2_PACKAGE_JQUERY_UI_THEMES_THEME)/jquery-ui.css \
+		$(@D)/themes/$(call qstrip,$(BR2_PACKAGE_JQUERY_UI_THEMES_THEME))/jquery-ui.css \
 		$(TARGET_DIR)/var/www/jquery-ui.css
 	$(INSTALL) -d $(TARGET_DIR)/var/www/images
-	cp -a $(@D)/themes/$(BR2_PACKAGE_JQUERY_UI_THEMES_THEME)/images/*.png \
+	cp -a $(@D)/themes/$(call qstrip,$(BR2_PACKAGE_JQUERY_UI_THEMES_THEME))/images/*.png \
 		$(TARGET_DIR)/var/www/images
 	chmod 0644 $(TARGET_DIR)/var/www/images/*.png
 endef
