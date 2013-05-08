@@ -1,4 +1,4 @@
-2013.05, Not released yet:
+2013.05-rc1, Released May 8th, 2013:
 
 	Architectures: ARC support, Blackfin support, FLAT binary
 	format, ARM: Drop old CPU variants, add fa526/626, Marvell PJ4
