@@ -3,8 +3,11 @@
 # dbus
 #
 #############################################################
+
 DBUS_VERSION = 1.4.24
 DBUS_SITE = http://dbus.freedesktop.org/releases/dbus/
+DBUS_LICENSE = AFLv2.1 GPLv2+
+DBUS_LICENSE_FILES = COPYING
 DBUS_INSTALL_STAGING = YES
 
 DBUS_DEPENDENCIES = host-pkgconf
