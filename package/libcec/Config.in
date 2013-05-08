@@ -1,0 +1,12 @@
+config BR2_PACKAGE_LIBCEC
+	bool "libcec"
+	depends on BR2_INSTALL_LIBSTDCPP
+	help
+	  libcec allows you in combination with the right hardware to
+	  control your home theater devices with your TV remote
+	  control utilizing existing HDMI cabling.
+
+	  http://libcec.pulse-eight.com
+
+comment "libcec requires C++ support in toolchain"
+	depends on !BR2_INSTALL_LIBSTDCPP
