@@ -5,6 +5,9 @@
 ################################################################################
 PIXMAN_VERSION = 0.28.2
 PIXMAN_SITE = http://xorg.freedesktop.org/releases/individual/lib
+PIXMAN_LICENSE = MIT
+PIXMAN_LICENSE_FILES = COPYING
+
 PIXMAN_INSTALL_STAGING = YES
 PIXMAN_DEPENDENCIES = host-pkgconf
 # don't build gtk based demos
