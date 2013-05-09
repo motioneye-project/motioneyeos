@@ -8,26 +8,49 @@ DTC_VERSION         = e4b497f367a3b2ae99cc52089a14a221b13a76ef
 DTC_SITE            = git://git.jdl.com/software/dtc.git
 DTC_LICENSE         = GPLv2+/BSD-2c
 DTC_LICENSE_FILES   = README.license GPL
-# Note: the dual-license only applies to the library.
-#       The DT compiler (dtc) is GPLv2+, but we do not install it.
 DTC_INSTALL_STAGING = YES
+
+define DTC_POST_INSTALL_TARGET_RM_DTDIFF
+	rm -f $(TARGET_DIR)/usr/bin/dtdiff
+endef
+
+ifeq ($(BR2_PACKAGE_DTC_PROGRAMS),y)
+
+DTC_LICENSE        += (for the library), GPLv2+ (for the executables)
+# Use default goal to build everything
+DTC_BUILD_GOAL      =
+DTC_INSTALL_GOAL    = install
+DTC_CLEAN_GOAL      = clean
+ifeq ($(BR2_PACKAGE_BASH),)
+DTC_POST_INSTALL_TARGET_HOOKS += DTC_POST_INSTALL_TARGET_RM_DTDIFF
+endif
+
+else # $(BR2_PACKAGE_DTC_PROGRAMS) != y
+
+DTC_BUILD_GOAL      = libfdt
+# libfdt_install is our own install rule added by our patch
+DTC_INSTALL_GOAL    = libfdt_install
+DTC_CLEAN_GOAL      = libfdt_clean
+
+endif # $(BR2_PACKAGE_DTC_PROGRAMS) != y
 
 define DTC_BUILD_CMDS
 	$(TARGET_CONFIGURE_OPTS)    \
-	$(MAKE) -C $(@D) PREFIX=/usr libfdt
+	CFLAGS="$(TARGET_CFLAGS)"   \
+	$(MAKE) -C $(@D) PREFIX=/usr $(DTC_BUILD_GOAL)
 endef
 
-# libfdt_install is our own install rule added by our patch
+# For staging, only the library is needed
 define DTC_INSTALL_STAGING_CMDS
 	$(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) PREFIX=/usr libfdt_install
 endef
 
 define DTC_INSTALL_TARGET_CMDS
-	$(MAKE) -C $(@D) DESTDIR=$(TARGET_DIR) PREFIX=/usr libfdt_install
+	$(MAKE) -C $(@D) DESTDIR=$(TARGET_DIR) PREFIX=/usr $(DTC_INSTALL_GOAL)
 endef
 
 define DTC_CLEAN_CMDS
-	$(MAKE) -C $(@D) libfdt_clean
+	$(MAKE) -C $(@D) $(DTC_CLEAN_GOAL)
 endef
 
 $(eval $(generic-package))
