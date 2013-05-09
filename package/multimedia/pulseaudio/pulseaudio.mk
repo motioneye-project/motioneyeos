@@ -32,6 +32,12 @@ PULSEAUDIO_DEPENDENCIES = \
 	$(if $(BR2_PACKAGE_WEBRTC_AUDIO_PROCESSING),webrtc-audio-processing) \
 	$(if $(BR2_PACKAGE_SYSTEMD),systemd)
 
+# One patch touches configure.ac. We unconditionnally need libglib2
+# because configure.ac uses AM_GLIB_GNU_GETTEXT. This unconditionnal
+# dependency can be removed once the patch is removed.
+PULSEAUDIO_AUTORECONF = YES
+PULSEAUDIO_DEPENDENCIES += libglib2
+
 ifneq ($(BR2_INSTALL_LIBSTDCPP),y)
 # The optional webrtc echo canceller is written in C++, causing auto* to want
 # to link module-echo-cancel.so with CXX even if webrtc ISN'T used.
