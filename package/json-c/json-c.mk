@@ -4,8 +4,10 @@
 #
 ################################################################################
 
-JSON_C_VERSION = 0.10
-JSON_C_SITE = https://github.com/downloads/json-c/json-c
+JSON_C_VERSION = 0.11
+JSON_C_SITE = https://s3.amazonaws.com/json-c_releases/releases/
 JSON_C_INSTALL_STAGING = YES
+JSON_C_MAKE = $(MAKE1)
+JSON_C_CONF_OPT = --disable-oldname-compat
 
 $(eval $(autotools-package))
