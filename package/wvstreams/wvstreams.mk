@@ -18,7 +18,11 @@ WVSTREAMS_MAKE = $(MAKE1)
 # Needed to work around problem with wvassert.h
 WVSTREAMS_CONF_OPT += CPPFLAGS=-DNDEBUG
 
-WVSTREAMS_CONF_OPT += --with-openssl --with-zlib --without-pam
+WVSTREAMS_CONF_OPT += \
+	--with-openssl \
+	--with-zlib \
+	--without-pam \
+	--disable-warnings
 
 ifeq ($(BR2_PACKAGE_DBUS),y)
 	WVSTREAMS_DEPENDENCIES += dbus
