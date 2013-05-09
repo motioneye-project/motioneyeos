@@ -180,6 +180,10 @@ endif
 GCC_HOST_PREREQ += host-mpc
 endif
 
+ifeq ($(BR2_GCC_VERSION_4_4_7_ARC),y)
+GCC_HOST_PREREQ += host-flex host-bison
+endif
+
 ifeq ($(BR2_GCC_SHARED_LIBGCC),y)
 GCC_SHARED_LIBGCC:=--enable-shared
 else
