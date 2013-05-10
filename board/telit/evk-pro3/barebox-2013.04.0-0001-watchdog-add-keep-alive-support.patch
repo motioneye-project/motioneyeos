@@ -1,0 +1,88 @@
+From b5e57a9f158a293b1151638336478af8a5aad0f0 Mon Sep 17 00:00:00 2001
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Date: Wed, 14 Nov 2012 19:16:35 +0800
+Subject: [PATCH 1/5] watchdog: add keep alive support
+
+this will allow to ping the watchdog via poller
+
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ drivers/watchdog/Kconfig   |  1 +
+ drivers/watchdog/wd_core.c | 21 +++++++++++++++++++++
+ include/watchdog.h         |  2 ++
+ 3 files changed, 24 insertions(+)
+
+diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
+index 2e2900c..0b4dc84 100644
+--- a/drivers/watchdog/Kconfig
++++ b/drivers/watchdog/Kconfig
+@@ -4,6 +4,7 @@ config WATCHDOG_IMX_RESET_SOURCE
+ 
+ menuconfig WATCHDOG
+ 	bool "Watchdog support"
++	select GENERIC_POLLER
+ 	help
+ 	  Many platforms support a watchdog to keep track of a working machine.
+ 	  This framework provides routines to handle these watchdogs.
+diff --git a/drivers/watchdog/wd_core.c b/drivers/watchdog/wd_core.c
+index 3d0cfc6..a1b9e28 100644
+--- a/drivers/watchdog/wd_core.c
++++ b/drivers/watchdog/wd_core.c
+@@ -17,18 +17,39 @@
+ #include <errno.h>
+ #include <linux/ctype.h>
+ #include <watchdog.h>
++#include <poller.h>
+ 
+ /*
+  * Note: this simple framework supports one watchdog only.
+  */
+ static struct watchdog *watchdog;
+ 
++static void watchdog_poller_func(struct poller_struct *poller)
++{
++	watchdog->keep_alive(watchdog);
++}
++
++static struct poller_struct watchdog_poller = {
++	.func = watchdog_poller_func,
++};
++
+ int watchdog_register(struct watchdog *wd)
+ {
+ 	if (watchdog != NULL)
+ 		return -EBUSY;
+ 
+ 	watchdog = wd;
++
++	if (watchdog->keep_alive) {
++		int ret;
++
++		ret = poller_register(&watchdog_poller);
++		if (ret) {
++			watchdog = NULL;
++			return ret;
++		}
++	}
++
+ 	return 0;
+ }
+ EXPORT_SYMBOL(watchdog_register);
+diff --git a/include/watchdog.h b/include/watchdog.h
+index 3e2d08e..d5ecf2f 100644
+--- a/include/watchdog.h
++++ b/include/watchdog.h
+@@ -13,8 +13,10 @@
+ #ifndef INCLUDE_WATCHDOG_H
+ # define INCLUDE_WATCHDOG_H
+ 
++
+ struct watchdog {
+ 	int (*set_timeout)(struct watchdog *, unsigned);
++	void (*keep_alive)(struct watchdog *);
+ };
+ 
+ int watchdog_register(struct watchdog *);
+-- 
+1.8.1.4
+

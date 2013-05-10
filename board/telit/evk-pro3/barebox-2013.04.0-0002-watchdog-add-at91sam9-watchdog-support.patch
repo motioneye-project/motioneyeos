@@ -1,0 +1,228 @@
+From e1d54ffb987c346c45c20968be34c50c62a91c07 Mon Sep 17 00:00:00 2001
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Date: Wed, 14 Nov 2012 19:17:47 +0800
+Subject: [PATCH 2/5] watchdog: add at91sam9 watchdog support
+
+with keep alive support
+
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ drivers/watchdog/Kconfig        |   7 +++
+ drivers/watchdog/Makefile       |   1 +
+ drivers/watchdog/at91sam9_wdt.c | 131 ++++++++++++++++++++++++++++++++++++++++
+ drivers/watchdog/at91sam9_wdt.h |  38 ++++++++++++
+ 4 files changed, 177 insertions(+)
+ create mode 100644 drivers/watchdog/at91sam9_wdt.c
+ create mode 100644 drivers/watchdog/at91sam9_wdt.h
+
+diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
+index 0b4dc84..98a21d7 100644
+--- a/drivers/watchdog/Kconfig
++++ b/drivers/watchdog/Kconfig
+@@ -11,6 +11,13 @@ menuconfig WATCHDOG
+ 
+ if WATCHDOG
+ 
++config WATCHDOG_AT91SAM9X
++	tristate "AT91SAM9X / AT91CAP9 watchdog"
++	depends on ARCH_AT91
++	help
++	  Watchdog timer embedded into AT91SAM9X and AT91CAP9 chips. This will
++	  reboot your system when the timeout is reached.
++
+ config WATCHDOG_MXS28
+ 	bool "i.MX28"
+ 	depends on ARCH_IMX28
+diff --git a/drivers/watchdog/Makefile b/drivers/watchdog/Makefile
+index f522b88..3d15d52 100644
+--- a/drivers/watchdog/Makefile
++++ b/drivers/watchdog/Makefile
+@@ -1,3 +1,4 @@
+ obj-$(CONFIG_WATCHDOG) += wd_core.o
++obj-$(CONFIG_WATCHDOG_AT91SAM9X) += at91sam9_wdt.o
+ obj-$(CONFIG_WATCHDOG_MXS28) += im28wd.o
+ obj-$(CONFIG_WATCHDOG_IMX_RESET_SOURCE) += imxwd.o
+diff --git a/drivers/watchdog/at91sam9_wdt.c b/drivers/watchdog/at91sam9_wdt.c
+new file mode 100644
+index 0000000..203d83a
+--- /dev/null
++++ b/drivers/watchdog/at91sam9_wdt.c
+@@ -0,0 +1,131 @@
++/*
++ * (c) 2012 Juergen Beisert <kernel@pengutronix.de>
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * Note: this driver works for the i.MX28 SoC. It might work for the
++ * i.MX23 Soc as well, but is not tested yet.
++ */
++
++#include <common.h>
++#include <init.h>
++#include <io.h>
++#include <errno.h>
++#include <malloc.h>
++#include <watchdog.h>
++
++#include "at91sam9_wdt.h"
++
++struct at91sam9_wdt {
++	struct watchdog wdt;
++	void __iomem *base;
++};
++
++#define to_at91sam9_wdt(h) container_of(h, struct at91sam9_wdt, wdt)
++
++#define wdt_read(at91wdt, field) \
++	__raw_readl(at91wdt->base + field)
++#define wdt_write(at91wdt, field, val) \
++	__raw_writel((val), at91wdt->base + field)
++
++static void at91sam9_wdt_keep_alive(struct watchdog *wdt)
++{
++	struct at91sam9_wdt *at91wdt = to_at91sam9_wdt(wdt);
++
++	wdt_write(at91wdt, AT91_WDT_CR, AT91_WDT_KEY | AT91_WDT_WDRSTT);
++}
++
++static int at91sam9_wdt_settimeout(struct watchdog *wdt, unsigned int timeout)
++{
++	struct at91sam9_wdt *at91wdt = to_at91sam9_wdt(wdt);
++	unsigned int reg;
++	unsigned int mr;
++
++	/* Check if disabled */
++	mr = wdt_read(at91wdt, AT91_WDT_MR);
++	if (mr & AT91_WDT_WDDIS) {
++		pr_err("sorry, watchdog is disabled\n");
++		return -EIO;
++	}
++
++	if (!timeout) {
++		wdt_write(at91wdt, AT91_WDT_MR, AT91_WDT_WDDIS);
++		return 0;
++	}
++
++	/*
++	 * All counting occurs at SLOW_CLOCK / 128 = 256 Hz
++	 *
++	 * Since WDV is a 12-bit counter, the maximum period is
++	 * 4096 / 256 = 16 seconds.
++	 */
++	reg = AT91_WDT_WDRSTEN	/* causes watchdog reset */
++		/* | AT91_WDT_WDRPROC	causes processor reset only */
++		| AT91_WDT_WDDBGHLT	/* disabled in debug mode */
++		| AT91_WDT_WDD		/* restart at any time */
++		| (timeout & AT91_WDT_WDV);  /* timer value */
++	wdt_write(at91wdt, AT91_WDT_MR, reg);
++
++	return 0;
++}
++
++static int at91sam9_wdt_probe(struct device_d *dev)
++{
++	struct at91sam9_wdt *priv;
++	struct watchdog *wdt;
++	int ret;
++	unsigned int mr;
++
++	priv = xzalloc(sizeof(struct at91sam9_wdt));
++	priv->base = dev_request_mem_region(dev, 0);
++	wdt = &priv->wdt;
++
++	wdt->set_timeout = at91sam9_wdt_settimeout;
++	wdt->keep_alive = at91sam9_wdt_keep_alive;
++
++	/* Check if disabled */
++	mr = wdt_read(priv, AT91_WDT_MR);
++	if (mr & AT91_WDT_WDDIS) {
++		dev_err(dev, "sorry, watchdog is disabled\n");
++		ret = -EIO;
++		goto err;
++	}
++
++	ret = watchdog_register(wdt);
++	if (ret != 0)
++		goto err;
++
++	dev->priv = priv;
++	return 0;
++
++err:
++	free(priv);
++	return ret;
++}
++
++static void at91sam9_wdt_remove(struct device_d *dev)
++{
++	struct at91sam9_wdt *priv= dev->priv;
++	watchdog_deregister(&priv->wdt);
++	free(priv);
++}
++
++static struct driver_d at91sam9_wdt_driver = {
++	.name	= "at91sam9_wdt",
++	.probe	= at91sam9_wdt_probe,
++	.remove = at91sam9_wdt_remove,
++};
++
++static int at91sam9_wdt_init(void)
++{
++	return platform_driver_register(&at91sam9_wdt_driver);
++}
++coredevice_initcall(at91sam9_wdt_init);
+diff --git a/drivers/watchdog/at91sam9_wdt.h b/drivers/watchdog/at91sam9_wdt.h
+new file mode 100644
+index 0000000..2b68c1a
+--- /dev/null
++++ b/drivers/watchdog/at91sam9_wdt.h
+@@ -0,0 +1,38 @@
++/*
++ * drivers/watchdog/at91sam9_wdt.h
++ *
++ * Copyright (C) 2007 Andrew Victor
++ * Copyright (C) 2007 Atmel Corporation.
++ *
++ * Watchdog Timer (WDT) - System peripherals regsters.
++ * Based on AT91SAM9261 datasheet revision D.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ */
++
++#ifndef AT91_WDT_H
++#define AT91_WDT_H
++
++#define AT91_WDT_CR		0x00			/* Watchdog Control Register */
++#define		AT91_WDT_WDRSTT		(1    << 0)		/* Restart */
++#define		AT91_WDT_KEY		(0xa5 << 24)		/* KEY Password */
++
++#define AT91_WDT_MR		0x04			/* Watchdog Mode Register */
++#define		AT91_WDT_WDV		(0xfff << 0)		/* Counter Value */
++#define		AT91_WDT_WDFIEN		(1     << 12)		/* Fault Interrupt Enable */
++#define		AT91_WDT_WDRSTEN	(1     << 13)		/* Reset Processor */
++#define		AT91_WDT_WDRPROC	(1     << 14)		/* Timer Restart */
++#define		AT91_WDT_WDDIS		(1     << 15)		/* Watchdog Disable */
++#define		AT91_WDT_WDD		(0xfff << 16)		/* Delta Value */
++#define		AT91_WDT_WDDBGHLT	(1     << 28)		/* Debug Halt */
++#define		AT91_WDT_WDIDLEHLT	(1     << 29)		/* Idle Halt */
++
++#define AT91_WDT_SR		0x08			/* Watchdog Status Register */
++#define		AT91_WDT_WDUNF		(1 << 0)		/* Watchdog Underflow */
++#define		AT91_WDT_WDERR		(1 << 1)		/* Watchdog Error */
++
++
++#endif
+-- 
+1.8.1.4
+

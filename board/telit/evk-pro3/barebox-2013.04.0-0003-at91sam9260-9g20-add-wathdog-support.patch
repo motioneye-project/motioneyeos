@@ -1,0 +1,40 @@
+From 3338bcb05479f1149420d4a0ea3904cb9e42eef5 Mon Sep 17 00:00:00 2001
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Date: Wed, 14 Nov 2012 19:18:22 +0800
+Subject: [PATCH 3/5] at91sam9260/9g20: add wathdog support
+
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ arch/arm/mach-at91/at91sam9260_devices.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/arch/arm/mach-at91/at91sam9260_devices.c b/arch/arm/mach-at91/at91sam9260_devices.c
+index 1c375ee..5885f91 100644
+--- a/arch/arm/mach-at91/at91sam9260_devices.c
++++ b/arch/arm/mach-at91/at91sam9260_devices.c
+@@ -10,6 +10,7 @@
+  *
+  */
+ #include <common.h>
++#include <init.h>
+ #include <sizes.h>
+ #include <asm/armlinux.h>
+ #include <asm/hardware.h>
+@@ -397,3 +398,14 @@ void at91_add_device_mci(short mmc_id, struct atmel_mci_platform_data *data)
+ #else
+ void at91_add_device_mci(short mmc_id, struct atmel_mci_platform_data *data) {}
+ #endif
++
++#ifdef CONFIG_WATCHDOG_AT91SAM9X
++static int at91_add_device_watchdog(void)
++{
++	add_generic_device("at91sam9_wdt", DEVICE_ID_SINGLE, NULL,
++		AT91_WDT + AT91_BASE_SYS, 16, IORESOURCE_MEM, NULL);
++
++	return 0;
++}
++coredevice_initcall(at91_add_device_watchdog);
++#endif
+-- 
+1.8.1.4
+
