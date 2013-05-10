@@ -12,5 +12,6 @@ FLTK_INSTALL_STAGING_OPT = DESTDIR=$(STAGING_DIR) STRIP=$(TARGET_STRIP) install
 FLTK_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) STRIP=$(TARGET_STRIP) install
 FLTK_CONF_OPT = --enable-threads --with-x
 FLTK_DEPENDENCIES = xlib_libX11 xlib_libXext xlib_libXt
+FLTK_CONFIG_SCRIPTS = fltk-config
 
 $(eval $(autotools-package))
