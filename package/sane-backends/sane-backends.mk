@@ -6,6 +6,7 @@
 SANE_BACKENDS_VERSION = 1.0.22
 SANE_BACKENDS_SOURCE = sane-backends-$(SANE_BACKENDS_VERSION).tar.gz
 SANE_BACKENDS_SITE = https://alioth.debian.org/frs/download.php/3503
+SANE_BACKENDS_CONFIG_SCRIPTS = sane-config
 
 ifeq ($(BR2_PACKAGE_LIBUSB),y)
 SANE_BACKENDS_DEPENDENCIES += libusb
