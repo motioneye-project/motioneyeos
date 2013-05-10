@@ -1,6 +1,5 @@
 config BR2_PACKAGE_LTTNG_TOOLS
 	bool "lttng-tools"
-	depends on BR2_PACKAGE_LTTNG_MODULES
 	select BR2_PACKAGE_LIBURCU
 	select BR2_PACKAGE_POPT
 	# liburcu only works on some architectures and requires thread support
