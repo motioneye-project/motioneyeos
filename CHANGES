@@ -6,6 +6,10 @@
 	libcurl, pulseaudio, python-nfc, qt5imageformats, strace,
 	wvstreams
 
+	Issues resolved (http://bugs.uclibc.org):
+
+	#5054: amd64: cannot find init - due to missing /lib64 folder
+
 2013.05-rc1, Released May 8th, 2013:
 
 	Architectures: ARC support, Blackfin support, FLAT binary
