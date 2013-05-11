@@ -23,6 +23,7 @@ GUTENPRINT_DEPENDENCIES += host-gutenprint
 
 GUTENPRINT_CONF_OPT = --disable-libgutenprintui2 \
                       --disable-samples \
+                      --without-doc \
                       --without-gimp2 \
                       --without-foomatic \
                       --without-foomatic3 \
