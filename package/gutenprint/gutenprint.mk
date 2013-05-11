@@ -41,6 +41,13 @@ HOST_GUTENPRINT_DEPENDENCIES =
 # The host-gutenprint shall create the required header
 HOST_GUTENPRINT_MAKE_ENV =
 
+# Even with --without-cups, gutenprint will still add the output of
+# cups-config --cflags / --ldflags to it's compiler/linker flags if
+# available on host.
+# Notice: Because of the configure logic, it needs to be set to the
+# empty string to to disable this, not just to /bin/false like elsewhere.
+HOST_GUTENPRINT_CONF_ENV = ac_cv_path_CUPS_CONFIG=''
+
 HOST_GUTENPRINT_CONF_OPT = --disable-libgutenprintui2 \
                            --disable-samples \
                            --without-gimp2 \
@@ -51,7 +58,8 @@ HOST_GUTENPRINT_CONF_OPT = --disable-libgutenprintui2 \
                            --without-foomatic3 \
                            --disable-escputil \
                            --disable-test \
-                           --disable-testpattern
+                           --disable-testpattern \
+                           --without-cups
 
 # Needed by autoreconf
 define GUTENPRINT_CREATE_M4_DIR
