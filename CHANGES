@@ -1,3 +1,11 @@
+2013.05, Not released yet:
+
+	Fixes all over the tree.
+
+	Updated/fixed packages: dbus, gutenprint, hplip, json-c,
+	libcurl, pulseaudio, python-nfc, qt5imageformats, strace,
+	wvstreams
+
 2013.05-rc1, Released May 8th, 2013:
 
 	Architectures: ARC support, Blackfin support, FLAT binary
