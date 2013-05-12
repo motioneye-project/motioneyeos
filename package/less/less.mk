@@ -4,7 +4,7 @@
 #
 #############################################################
 
-LESS_VERSION = 451
+LESS_VERSION = 458
 LESS_SITE = http://www.greenwoodsoftware.com/less
 LESS_LICENSE = GPLv3+
 LESS_LICENSE_FILES = COPYING
