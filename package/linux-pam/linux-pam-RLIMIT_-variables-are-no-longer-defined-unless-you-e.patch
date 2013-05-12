@@ -1,0 +1,28 @@
+Date: Mon, 9 Jul 2012 09:43:11 +0200
+Subject: [PATCH] RLIMIT_* variables are no longer defined unless you
+ explicitly include sys/resource.h.
+
+Signed-off-by: Diego Elio Pettenò <flameeyes@flameeyes.eu>
+
+modules/pam_unix/pam_unix_acct.c: Include sys/resource.h.
+Signed-off-by: Arnout Vandecappelle (Essensium/Mind) <arnout@mind.be>
+[This patch is in linux-pam 1.1.6]
+---
+ modules/pam_unix/pam_unix_acct.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/modules/pam_unix/pam_unix_acct.c b/modules/pam_unix/pam_unix_acct.c
+index 8e90cc9..4a362f8 100644
+--- a/modules/pam_unix/pam_unix_acct.c
++++ b/modules/pam_unix/pam_unix_acct.c
+@@ -41,6 +41,7 @@
+ #include <string.h>
+ #include <unistd.h>
+ #include <sys/types.h>
++#include <sys/resource.h>
+ #include <syslog.h>
+ #include <pwd.h>
+ #include <shadow.h>
+-- 
+1.8.2.1
+
