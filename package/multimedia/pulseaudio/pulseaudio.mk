@@ -28,7 +28,6 @@ PULSEAUDIO_DEPENDENCIES = \
 	$(if $(BR2_PACKAGE_UDEV),udev) \
 	$(if $(BR2_PACKAGE_OPENSSL),openssl) \
 	$(if $(BR2_PACKAGE_FFTW),fftw) \
-	$(if $(BR2_PACKAGE_ORC),orc) \
 	$(if $(BR2_PACKAGE_WEBRTC_AUDIO_PROCESSING),webrtc-audio-processing) \
 	$(if $(BR2_PACKAGE_SYSTEMD),systemd)
 
@@ -37,6 +36,14 @@ PULSEAUDIO_DEPENDENCIES = \
 # dependency can be removed once the patch is removed.
 PULSEAUDIO_AUTORECONF = YES
 PULSEAUDIO_DEPENDENCIES += libglib2
+
+ifeq ($(BR2_PACKAGE_ORC),y)
+PULSEAUDIO_DEPENDENCIES += orc
+PULSEAUDIO_CONF_ENV += ORCC=$(HOST_DIR)/usr/bin/orcc
+PULSEAUDIO_CONF_OPT += --enable-orc
+else
+PULSEAUDIO_CONF_OPT += --disable-orc
+endif
 
 ifneq ($(BR2_INSTALL_LIBSTDCPP),y)
 # The optional webrtc echo canceller is written in C++, causing auto* to want
