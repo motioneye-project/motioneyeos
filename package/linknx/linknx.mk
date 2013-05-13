@@ -15,7 +15,7 @@ LINKNX_DEPENDENCIES = libpthsem
 
 ifeq ($(BR2_PACKAGE_MYSQL_CLIENT),y)
 LINKNX_CONF_OPT += --with-mysql=$(STAGING_DIR)/usr/bin/mysql_config
-LINKNX_DEPENDENCIES = mysql_client
+LINKNX_DEPENDENCIES += mysql_client
 else
 LINKNX_CONF_OPT += --without-mysql
 endif
