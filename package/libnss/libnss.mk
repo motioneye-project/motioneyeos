@@ -3,14 +3,17 @@
 # libnss
 #
 #############################################################
-LIBNSS_VERSION = 3.12.9
+
+LIBNSS_VERSION = 3.14.3
 LIBNSS_SOURCE = nss-$(LIBNSS_VERSION).tar.gz
 LIBNSS_SITE_VERSION = $(subst .,_,$(LIBNSS_VERSION))
-LIBNSS_SITE = https://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_$(LIBNSS_SITE_VERSION)_RTM/src/
+LIBNSS_SITE = https://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_$(LIBNSS_SITE_VERSION)_RTM/src
 LIBNSS_SUBDIR = mozilla/security
 LIBNSS_DISTDIR = mozilla/dist
 LIBNSS_INSTALL_STAGING = YES
 LIBNSS_DEPENDENCIES = libnspr sqlite zlib
+LIBNSS_LICENSE = MPLv2.0
+LIBNSS_LICENSE_FILES = mozilla/security/nss/COPYING
 
 LIBNSS_BUILD_VARS = MOZILLA_CLIENT=1 \
 		NSPR_INCLUDE_DIR=$(STAGING_DIR)/usr/include/nspr \
