@@ -164,6 +164,7 @@ TARGET_EXCEPTIONS = [
     "target-generic-issue",
     "target-generic-getty-busybox",
     "target-generic-do-remount-rw",
+    "target-generic-dont-remount-rw",
     "target-finalize",
     "erase-fakeroots",
     "target-generic-hostname",
