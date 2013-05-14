@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 # Usage (the graphviz package must be installed in your distribution)
-#  ./scripts/graph-depends [package-name] > test.dot
+#  ./support/scripts/graph-depends [package-name] > test.dot
 #  dot -Tpdf test.dot -o test.pdf
 #
 # With no arguments, graph-depends will draw a complete graph of
