@@ -20,9 +20,12 @@ else
 	AIRCRACK_NG_MAKE_OPTS = sqlite=false
 endif
 
+AIRCRACK_NG_LDFLAGS = -lz \
+	$(if $(BR2_PREFER_STATIC_LIB),-ldl -lpthread)
+
 define AIRCRACK_NG_BUILD_CMDS
 	$(TARGET_CONFIGURE_OPTS) $(MAKE1) CC="$(TARGET_CC)" LD="$(TARGET_LD)" \
-		LDFLAGS="$(TARGET_LDFLAGS) -lz" \
+		LDFLAGS="$(AIRCRACK_NG_LDFLAGS)" \
 		-C $(@D) $(AIRCRACK_NG_MAKE_OPTS) all
 endef
 
