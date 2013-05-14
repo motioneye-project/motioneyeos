@@ -67,6 +67,9 @@ HOST_LIBGLIB2_CONF_OPT = \
 		--disable-tests
 
 LIBGLIB2_CONF_OPT += --disable-tests
+ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),)
+	LIBGLIB2_CONF_OPT += --with-threads=none --disable-threads
+endif
 
 LIBGLIB2_DEPENDENCIES = host-pkgconf host-libglib2 libffi zlib $(if $(BR2_NEEDS_GETTEXT),gettext) host-gettext
 
