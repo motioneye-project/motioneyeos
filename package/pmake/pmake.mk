@@ -39,7 +39,7 @@ define HOST_PMAKE_INSTALL_CMDS
 	for mk in $(@D)/mk/*; do                                        \
 	    $(INSTALL) -m 0644 $${mk} $(HOST_DIR)/usr/share/pmake/mk;   \
 	done
-	printf '#!/bin/sh\nexec $${0%%/*}/bmake -m $${0%%/pmake}/../../usr/share/pmake/mk "$$@"\n'  \
+	printf '#!/bin/bash\nexec -a "$${0}" $${0%%/*}/bmake -m $${0%%/*}/../../usr/share/pmake/mk "$$@"\n'  \
 	       >$(HOST_DIR)/usr/bin/pmake
 	chmod 0755 $(HOST_DIR)/usr/bin/pmake
 endef
