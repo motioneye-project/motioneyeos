@@ -1,0 +1,9 @@
+config BR2_PACKAGE_LIBEDIT
+	bool "libedit"
+	select BR2_PACKAGE_LIBBSD
+	select BR2_PACKAGE_NCURSES
+	help
+	  The editline library (from BSD) provides generic line editing
+	  and history functions. It slightly resembles GNU readline.
+
+	  http://ftp.netbsd.org/pub/NetBSD/NetBSD-release-5-0/src/lib/libedit/
