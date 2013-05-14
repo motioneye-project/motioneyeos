@@ -213,6 +213,7 @@ endmenu
 
 menu "Hardware handling"
 menu "Misc devices firmwares"
+source "package/am33x-cm3/Config.in"
 source "package/b43-firmware/Config.in"
 source "package/firmware-imx/Config.in"
 source "package/linux-firmware/Config.in"
