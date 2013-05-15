@@ -98,6 +98,9 @@ config BR2_TARGET_UBOOT_FORMAT_LDR
 	depends on BR2_bfin
 	bool "u-boot.ldr"
 
+config BR2_TARGET_UBOOT_FORMAT_ELF
+	bool "u-boot.elf"
+
 endchoice
 
 config BR2_TARGET_UBOOT_OMAP_IFT

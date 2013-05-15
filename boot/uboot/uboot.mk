@@ -26,7 +26,9 @@ UBOOT_SITE    = ftp://ftp.denx.de/pub/u-boot
 UBOOT_SOURCE  = u-boot-$(UBOOT_VERSION).tar.bz2
 endif
 
-ifeq ($(BR2_TARGET_UBOOT_FORMAT_KWB),y)
+ifeq ($(BR2_TARGET_UBOOT_FORMAT_ELF),y)
+UBOOT_BIN          = u-boot
+else ifeq ($(BR2_TARGET_UBOOT_FORMAT_KWB),y)
 UBOOT_BIN          = u-boot.kwb
 UBOOT_MAKE_TARGET  = $(UBOOT_BIN)
 else ifeq ($(BR2_TARGET_UBOOT_FORMAT_AIS),y)
