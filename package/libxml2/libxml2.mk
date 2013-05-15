@@ -34,6 +34,21 @@ else
 HOST_LIBXML2_CONF_OPT += --without-python
 endif
 
+ifeq ($(BR2_PACKAGE_ZLIB),y)
+LIBXML2_DEPENDENCIES += zlib
+LIBXML2_CONF_OPT += --with-zlib
+else
+LIBXML2_CONF_OPT += --without-zlib
+endif
+
+LIBXML2_DEPENDENCIES += $(if $(BR2_PACKAGE_LIBICONV),libiconv)
+
+ifeq ($(BR2_ENABLE_LOCALE)$(BR2_PACKAGE_LIBICONV),y)
+LIBXML2_CONF_OPT += --with-iconv
+else
+LIBXML2_CONF_OPT += --without-iconv
+endif
+
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
 
