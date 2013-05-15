@@ -6,13 +6,14 @@
 
 	Defconfigs: Add Telit EVK-PRO3, AT91SAM9260-EK Nand flash.
 
-	Updated/fixed packages: busybox, cairo, classpath, curlftpfs,
-	czmq, dbus, f2fs-tools, fan-ctrl, filemq, gst-plugin-bad,
-	gutenprint, hplip, json-c, libatomic_ops, libcurl, libdrm,
-	libnspr, libnss, libsha1, libsigsegv, libxcb, linknx,
-	linux-pam, lttng-modules, lttng-tools, matchbox-lib, mcookie,
-	mesa3d, neon, pixman, pulseaudio, python-nfc, qt5imageformats,
-	quota, openssl, sconeserver, strace, sylpheed, wvstreams,
+	Updated/fixed packages: aircrack-ng, busybox, cairo,
+	classpath, curlftpfs, czmq, dbus, f2fs-tools, fan-ctrl,
+	filemq, gst-plugin-bad, gutenprint, hplip, json-c,
+	libatomic_ops, libcurl, libdrm, libglib2, libnspr, libnss,
+	libsha1, libsigsegv, libxcb, linknx, linux-pam, lttng-modules,
+	lttng-tools, matchbox-lib, mcookie, mesa3d, neon, pixman,
+	pulseaudio, python-nfc, qt5imageformats, quota, openssl,
+	sconeserver, strace, sylpheed, wvstreams,
 	xapp_{appres,bdftopcf,beforelight,bitmap,edires,fonttosfnt},
 	xapp_{fslsfonts,fstobdf,iceauth,ico,listres,luit,mkfontdir},
 	xapp_{mkfontscale,oclock,rgb,rstart,scripts,sessreg,setxkbmap},
@@ -50,6 +51,8 @@
 	xproto_{resource,scrnsaver,video,windowswm,xcmisc,xext}proto,
 	xproto_{xf86bigfont,xf86dga,xf86dri,xf86vidmode,xinerama,x}proto,
 	xserver_xorg-server, xutil_{makedepend,util-macros}
+
+	Readded Packages: xapp_xinit
 
 	Issues resolved (http://bugs.uclibc.org):
 
