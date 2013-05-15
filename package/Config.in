@@ -652,6 +652,7 @@ endmenu
 endmenu
 
 menu "Miscellaneous"
+source "package/aespipe/Config.in"
 source "package/collectd/Config.in"
 source "package/empty/Config.in"
 source "package/googlefontdirectory/Config.in"
