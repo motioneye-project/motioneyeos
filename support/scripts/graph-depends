@@ -170,6 +170,7 @@ TARGET_EXCEPTIONS = [
     "target-generic-hostname",
     "target-root-passwd",
     "target-post-image",
+    "target-purgelocales",
 ]
 
 # In full mode, start with the result of get_targets() to get the main
