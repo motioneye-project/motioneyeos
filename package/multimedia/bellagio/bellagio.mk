@@ -8,5 +8,7 @@ BELLAGIO_SOURCE = libomxil-bellagio-$(BELLAGIO_VERSION).tar.gz
 BELLAGIO_SITE = http://downloads.sourceforge.net/project/omxil/omxil/Bellagio%20$(BELLAGIO_VERSION)
 BELLAGIO_AUTORECONF = YES
 BELLAGIO_INSTALL_STAGING = YES
+BELLAGIO_LICENSE = LGPLv2.1+
+BELLAGIO_LICENSE_FILES = COPYING
 
 $(eval $(autotools-package))
