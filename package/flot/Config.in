@@ -25,10 +25,31 @@ config BR2_PACKAGE_FLOT_CANVAS
 	help
 	  Flot plugin to render axis tick labels directly to the canvas
 
+config BR2_PACKAGE_FLOT_CATEGORIES
+	bool "categories"
+	help
+	  Flot plugin for plotting textual data or categories
+
+config BR2_PACKAGE_FLOT_CROSSHAIR
+	bool "crosshair"
+	help
+	  Flot plugin for showing crosshairs when the mouse hovers
+	  over the plot
+
+config BR2_PACKAGE_FLOT_ERRORBARS
+	bool "errorbars"
+	help
+	  Flot plugin for plotting error bars
+
 config BR2_PACKAGE_FLOT_FILLBETWEEN
 	bool "fillbetween"
 	help
 	  Flot plugin for computing bottoms for filled line and bar charts
+
+config BR2_PACKAGE_FLOT_IMAGE
+	bool "image"
+	help
+	  Flot plugin for plotting images
 
 config BR2_PACKAGE_FLOT_NAVIGATE
 	bool "navigate"
@@ -65,5 +86,10 @@ config BR2_PACKAGE_FLOT_THRESHOLD
 	bool "threshold"
 	help
 	  Flot plugin for thresholding data
+
+config BR2_PACKAGE_FLOT_TIME
+	bool "time"
+	help
+	  Flot plugin for handling time axes
 
 endif
