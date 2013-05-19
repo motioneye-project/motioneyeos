@@ -108,14 +108,4 @@ endef
 XENOMAI_POST_INSTALL_TARGET_HOOKS += XENOMAI_INSTALL_UDEV_RULES
 endif # udev
 
-define XENOMAI_REMOVE_UDEV_RULES
-	if test -d $(TARGET_DIR)/etc/udev/rules.d ; then \
-		for f in $(@D)/ksrc/nucleus/udev/*.rules ; do \
-			rm -f $(TARGET_DIR)/etc/udev/rules.d/$$f ; \
-		done ; \
-	fi;
-endef
-
-XENOMAI_POST_UNINSTALL_TARGET_HOOKS += XENOMAI_REMOVE_UDEV_RULES
-
 $(eval $(autotools-package))

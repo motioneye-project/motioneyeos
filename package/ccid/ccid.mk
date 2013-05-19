@@ -19,11 +19,4 @@ endef
 CCID_POST_INSTALL_TARGET_HOOKS += CCID_INSTALL_UDEV_RULES
 endif
 
-define CCID_REMOVE_UDEV_RULES
-	if test -d $(TARGET_DIR)/etc/udev/rules.d ; then \
-		rm -f $(TARGET_DIR)/etc/udev/rules.d/92_pcscd_ccid.rules ; \
-	fi;
-endef
-CCID_POST_UNINSTALL_TARGET_HOOKS += CCID_REMOVE_UDEV_RULES
-
 $(eval $(autotools-package))
