@@ -7,6 +7,8 @@ PIXMAN_VERSION = 0.30.0
 PIXMAN_SITE = http://xorg.freedesktop.org/releases/individual/lib
 PIXMAN_INSTALL_STAGING = YES
 PIXMAN_DEPENDENCIES = host-pkgconf
+PIXMAN_AUTORECONF = YES
+
 # don't build gtk based demos
 PIXMAN_CONF_OPT = --disable-gtk
 
