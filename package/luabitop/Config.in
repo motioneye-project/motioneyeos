@@ -1,0 +1,7 @@
+config BR2_PACKAGE_LUABITOP
+	bool "luabitop"
+	help
+	  Lua BitOp is a C extension module for Lua 5.1/5.2 which adds bitwise
+	  operations on numbers.
+
+	  http://bitop.luajit.org
