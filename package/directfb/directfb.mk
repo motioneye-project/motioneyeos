@@ -108,6 +108,14 @@ else
 DIRECTFB_CONF_OPT += --disable-jpeg
 endif
 
+ifeq ($(BR2_PACKAGE_DIRECTFB_IMLIB2),y)
+DIRECTFB_CONF_OPT += --enable-imlib2
+DIRECTFB_DEPENDENCIES += imlib2
+DIRECTFB_CONF_ENV += ac_cv_path_IMLIB2_CONFIG=$(STAGING_DIR)/usr/bin/imlib2-config
+else
+DIRECTFB_CONF_OPT += --disable-imlib2
+endif
+
 ifeq ($(BR2_PACKAGE_DIRECTFB_DITHER_RGB16),y)
 DIRECTFB_CONF_OPT += --with-dither-rgb16=advanced
 else
