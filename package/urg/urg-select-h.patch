@@ -1,0 +1,11 @@
+--- urg-0.8.18/src/c/connection/serial_ctrl_lin.c	2010-11-22 01:48:01.000000000 +0000
++++ urg-0.8.18.mod/src/c/connection/serial_ctrl_lin.c	2013-05-21 20:56:35.822025969 +0100
+@@ -17,7 +17,7 @@
+ #include <fcntl.h>
+ #include <errno.h>
+ #include <string.h>
+-
++#include <sys/select.h>
+ //#include <ctype.h>
+ 
+ enum {
