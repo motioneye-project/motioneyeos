@@ -23,6 +23,8 @@ config BR2_PACKAGE_BOOST_CHRONO
 
 config BR2_PACKAGE_BOOST_CONTEXT
 	bool "boost-context"
+	depends on (BR2_arm || BR2_armeb || BR2_i386 || BR2_mips || BR2_mipsel \
+			|| BR2_powerpc || BR2_sparc || BR2_x86_64)
 
 config BR2_PACKAGE_BOOST_DATE_TIME
 	bool "boost-date_time"
