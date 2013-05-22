@@ -1,9 +1,10 @@
-comment "tvheadend requires a toolchain with LARGEFILE and IPv6 support"
-    depends on !BR2_LARGEFILE || !BR2_INET_IPV6
+comment "tvheadend needs a toolchain with LARGEFILE, IPv6 and THREADS support"
+    depends on !BR2_LARGEFILE || !BR2_INET_IPV6 || !BR2_TOOLCHAIN_HAS_THREADS
 
 config BR2_PACKAGE_TVHEADEND
 	bool "tvheadend"
 	depends on BR2_LARGEFILE && BR2_INET_IPV6
+	depends on BR2_TOOLCHAIN_HAS_THREADS
 	# tvheadend requires an atomic_add operation. Either you have
 	# a gcc >= 4.3 toolchain and it uses the gcc intrinsics, or it
 	# has special code for x86, x86-64, PPC and ARM. So in the
