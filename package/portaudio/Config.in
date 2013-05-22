@@ -1,5 +1,9 @@
+comment "portaudio needs a toolchain threads support"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
+
 config BR2_PACKAGE_PORTAUDIO
 	bool "portaudio"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
 	help
 	  PortAudio is a free, cross-platform, open-source,
 	  audio I/O library.
