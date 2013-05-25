@@ -1,3 +1,12 @@
+2013.05-rc3, Released May 25th, 2013:
+
+	Minor fixes.
+
+	Updated/fixed packages: aircrack-ng, bellagio, boost, crda,
+	dvb-apps, flot, libatomic_ops, libeXosip2, libosip2, libxml2,
+	mongrel2, poco, portaudio, pptp-linux, tvheadend, urg, weston,
+	wireshark
+
 2013.05-rc2, Released May 15th, 2013:
 
 	Fixes all over the tree.
