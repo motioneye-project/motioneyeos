@@ -12,5 +12,7 @@ config BR2_PACKAGE_FLEX_BINARY
 	# needs fork()
 	depends on BR2_USE_MMU
 	depends on BR2_PACKAGE_FLEX
+	# runtime dependency
+	select BR2_PACKAGE_M4
 	help
 	  Install the flex binary tool in the target filesystem.
