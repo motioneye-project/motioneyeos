@@ -1,4 +1,6 @@
 menu "Freescale i.MX libraries"
 	depends on BR2_arm
 
+source "package/freescale-imx/imx-lib/Config.in"
+
 endmenu
