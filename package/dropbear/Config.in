@@ -6,9 +6,10 @@ config BR2_PACKAGE_DROPBEAR
 
 	  http://matt.ucc.asn.au/dropbear/dropbear.html
 
+if BR2_PACKAGE_DROPBEAR
+
 config BR2_PACKAGE_DROPBEAR_DISABLE_REVERSEDNS
 	bool "disable reverse DNS lookups"
-	depends on BR2_PACKAGE_DROPBEAR
 	help
 	  Disable reverse DNS lookups on connection. This can be handy
 	  on systems without working DNS, as connections otherwise
@@ -17,7 +18,6 @@ config BR2_PACKAGE_DROPBEAR_DISABLE_REVERSEDNS
 config BR2_PACKAGE_DROPBEAR_SMALL
 	bool "optimize for size"
 	default y
-	depends on BR2_PACKAGE_DROPBEAR
 	help
 	  Compile dropbear for the smallest possible binary size.
 
@@ -26,14 +26,14 @@ config BR2_PACKAGE_DROPBEAR_SMALL
 
 config BR2_PACKAGE_DROPBEAR_WTMP
 	bool "log dropbear access to wtmp"
-	depends on BR2_PACKAGE_DROPBEAR
 	help
 	  Enable logging of dropbear access to wtmp. Notice that
 	  Buildroot does not generate wtmp by default.
 
 config BR2_PACKAGE_DROPBEAR_LASTLOG
 	bool "log dropbear access to lastlog"
-	depends on BR2_PACKAGE_DROPBEAR
 	help
 	  Enable logging of dropbear access to lastlog. Notice that
 	  Buildroot does not generate lastlog by default.
+
+endif
