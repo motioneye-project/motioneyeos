@@ -19,7 +19,7 @@ $(ELF2FLT_DIR)/.patched: $(ELF2FLT_DIR)/.unpacked
 
 $(ELF2FLT_DIR)/.configured: $(ELF2FLT_DIR)/.patched
 	(cd $(ELF2FLT_DIR); rm -rf config.cache; \
-		LDFLAGS=-lz \
+		LDFLAGS="$(HOST_LDFLAGS) -lz" \
 		$(ELF2FLT_DIR)/configure $(QUIET) \
 		--with-bfd-include-dir=$(HOST_BINUTILS_DIR)/bfd/ \
 		--with-binutils-include-dir=$(HOST_BINUTILS_DIR)/include/ \
@@ -33,7 +33,7 @@ $(ELF2FLT_DIR)/$(ELF2FLT_BINARY): $(ELF2FLT_DIR)/.configured
 	$(MAKE) -C $(ELF2FLT_DIR) all
 	$(MAKE) -C $(ELF2FLT_DIR) install
 
-elf2flt: uclibc_target uclibc-configured binutils gcc $(ELF2FLT_DIR)/$(ELF2FLT_BINARY)
+elf2flt: uclibc_target uclibc-configured binutils gcc host-zlib $(ELF2FLT_DIR)/$(ELF2FLT_BINARY)
 
 elf2flt-clean:
 	rm -rf $(ELF2FLT_SOURCE)
