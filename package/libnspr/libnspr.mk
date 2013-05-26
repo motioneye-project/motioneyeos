@@ -9,6 +9,8 @@ LIBNSPR_SITE = https://ftp.mozilla.org/pub/mozilla.org/nspr/releases/v$(LIBNSPR_
 LIBNSPR_SUBDIR = mozilla/nsprpub
 LIBNSPR_INSTALL_STAGING = YES
 LIBNSPR_CONFIG_SCRIPTS = nspr-config
+LIBNSPR_LICENSE = MPLv2.0
+LIBNSPR_LICENSE_FILES = mozilla/nsprpub/LICENSE
 
 # Set the host CFLAGS and LDFLAGS so NSPR does not guess wrongly
 LIBNSPR_CONF_ENV = HOST_CFLAGS="-g -O2" \
