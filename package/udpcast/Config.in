@@ -1,14 +1,15 @@
 config BR2_PACKAGE_UDPCAST
 	bool "udpcast"
 	depends on BR2_LARGEFILE
+	depends on BR2_TOOLCHAIN_HAS_THREADS
 	help
 	  A multicast protocol implementation which happens to
 	  be very handy for imaging drives over the network.
 
 	  http://www.udpcast.linux.lu/
 
-comment "udpcast requires a toolchain with LARGEFILE support"
-	depends on !BR2_LARGEFILE
+comment "udpcast requires a toolchain with LARGEFILE and threads support"
+	depends on !BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_THREADS
 
 menu "udpcast tools selection"
 depends on BR2_PACKAGE_UDPCAST
