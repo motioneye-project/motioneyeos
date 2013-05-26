@@ -1,0 +1,4 @@
+menu "Freescale i.MX libraries"
+	depends on BR2_arm
+
+endmenu
