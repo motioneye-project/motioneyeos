@@ -1,0 +1,25 @@
+gettext-runtime: use @SHELL@ for the SHELL variable definition
+
+The gettext-runtime/Makefile.in uses an hardcoded SHELL = /bin/sh
+variable. This causes problems at build time, because libtool is then
+called with the 'sh' shell, which does not support the += construct
+that the libtool script is using.
+
+Instead, this Makefile.in should be definining SHELL = @SHELL@, just
+like all other Makefile.in of gettext.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/gettext-runtime/intl/Makefile.in
+===================================================================
+--- a/gettext-runtime/intl/Makefile.in
++++ b/gettext-runtime/intl/Makefile.in
+@@ -17,7 +17,7 @@
+ PACKAGE = @PACKAGE@
+ VERSION = @VERSION@
+ 
+-SHELL = /bin/sh
++SHELL = @SHELL@
+ 
+ srcdir = @srcdir@
+ top_srcdir = @top_srcdir@

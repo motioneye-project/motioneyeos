@@ -9,11 +9,25 @@ GETTEXT_SITE = $(BR2_GNU_MIRROR)/gettext
 GETTEXT_INSTALL_STAGING = YES
 GETTEXT_LICENSE = GPLv2+
 GETTEXT_LICENSE_FILES = COPYING
+GETTEXT_AUTORECONF = YES
+HOST_GETTEXT_AUTORECONF = YES
 
 GETTEXT_DEPENDENCIES = $(if $(BR2_PACKAGE_LIBICONV),libiconv)
 HOST_GETTEXT_DEPENDENCIES = # we don't want the libiconv dependency
 
 GETTEXT_CONF_OPT += \
+	--disable-libasprintf \
+	--disable-acl \
+	--disable-openmp \
+	--disable-rpath \
+	--disable-java \
+	--disable-native-java \
+	--disable-csharp \
+	--disable-relocatable \
+	--without-emacs \
+	--disable-tools
+
+HOST_GETTEXT_CONF_OPT = \
 	--disable-libasprintf \
 	--disable-acl \
 	--disable-openmp \
@@ -42,19 +56,7 @@ define GETTEXT_INSTALL_TARGET_CMDS
 	cp -dpf $(STAGING_DIR)/usr/lib/libintl*.so* $(TARGET_DIR)/usr/lib/
 endef
 endif
-# Ditch the tools since they're off and pull other dependencies
-define GETTEXT_DISABLE_TOOLS
-	$(SED) 's/runtime gettext-tools/runtime/' $(@D)/Makefile.in
-endef
 endif # GETTEXT_TOOLS = n
-
-# The tools tests build fails with full toolchain without threads
-define GETTEXT_DISABLE_TESTS
-	$(SED) 's/m4 tests/m4/' $(@D)/gettext-tools/Makefile.in
-endef
-
-GETTEXT_POST_PATCH_HOOKS += GETTEXT_DISABLE_TOOLS
-GETTEXT_POST_PATCH_HOOKS += GETTEXT_DISABLE_TESTS
 
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
