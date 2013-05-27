@@ -1,3 +1,14 @@
+2013.05, Not yet released:
+
+	Minor fixes.
+
+	Updated/fixed packages: elf2flt, flex, udpcast
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#4988: flex and m4 problems
+	#5912: obsolete CVS files
+
 2013.05-rc3, Released May 25th, 2013:
 
 	Minor fixes.
