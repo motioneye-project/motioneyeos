@@ -1,0 +1,28 @@
+From 1897fda94190498573f9d1b72bc6b7b58c720957 Mon Sep 17 00:00:00 2001
+From: Alexandre Pereira da Silva <aletes.xgr@gmail.com>
+Date: Sat, 6 Apr 2013 10:42:10 -0300
+Subject: [PATCH 1/1] ARM: dts: imx23-olinuxino: mark sdcard cd as broken
+
+The imx23-olinuxino sdcard doesn't have card detect.
+
+Signed-off-by: Alexandre Pereira da Silva <aletes.xgr@gmail.com>
+Signed-off-by: Shawn Guo <shawn.guo@linaro.org>
+---
+ arch/arm/boot/dts/imx23-olinuxino.dts | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/arm/boot/dts/imx23-olinuxino.dts b/arch/arm/boot/dts/imx23-olinuxino.dts
+index e7484e4..d107c4a 100644
+--- a/arch/arm/boot/dts/imx23-olinuxino.dts
++++ b/arch/arm/boot/dts/imx23-olinuxino.dts
+@@ -29,6 +29,7 @@
+ 				pinctrl-names = "default";
+ 				pinctrl-0 = <&mmc0_4bit_pins_a &mmc0_pins_fixup>;
+ 				bus-width = <4>;
++				broken-cd;
+ 				status = "okay";
+ 			};
+
+--
+1.8.1.5
+
