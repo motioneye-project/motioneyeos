@@ -4,7 +4,7 @@
 #
 #############################################################
 
-ACL_VERSION = 2.2.51
+ACL_VERSION = 2.2.52
 ACL_SOURCE = acl-$(ACL_VERSION).src.tar.gz
 ACL_SITE = http://download.savannah.gnu.org/releases/acl
 ACL_INSTALL_STAGING = YES
