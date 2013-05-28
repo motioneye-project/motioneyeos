@@ -43,6 +43,42 @@ config BR2_PACKAGE_QT5BASE_SQL
 	help
 	  This options enables the Qt5Sql library.
 
+if BR2_PACKAGE_QT5BASE_SQL
+config BR2_PACKAGE_QT5BASE_MYSQL
+	bool "MySQL Plugin"
+	select BR2_PACKAGE_MYSQL_CLIENT
+	select BR2_PACKAGE_NCURSES
+	select BR2_PACKAGE_READLINE
+	depends on BR2_USE_MMU # mysql
+	help
+	  Build MySQL plugin
+	  If unsure, say n.
+choice
+	prompt "SQLite 3 support"
+	default BR2_PACKAGE_QT5BASE_SQLITE_NONE
+	help
+	  Select SQLite support.
+
+config BR2_PACKAGE_QT5BASE_SQLITE_NONE
+	bool "No sqlite support"
+	help
+	  Do not compile any kind of SQLite support.
+
+config BR2_PACKAGE_QT5BASE_SQLITE_QT
+	bool "Qt SQLite"
+	help
+	  Use Qt bundled SQLite support.
+
+config BR2_PACKAGE_QT5BASE_SQLITE_SYSTEM
+	bool "System SQLite"
+	select BR2_PACKAGE_SQLITE
+	help
+	  Use system SQLite.
+
+endchoice
+
+endif
+
 config BR2_PACKAGE_QT5BASE_TEST
 	bool "test module"
 	help
