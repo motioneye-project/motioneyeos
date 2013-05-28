@@ -4,7 +4,7 @@
 #
 #############################################################
 
-GMP_VERSION = 5.1.1
+GMP_VERSION = 5.1.2
 GMP_SITE = ftp://ftp.gmplib.org/pub/gmp-$(GMP_VERSION)
 GMP_SOURCE = gmp-$(GMP_VERSION).tar.bz2
 GMP_INSTALL_STAGING = YES
