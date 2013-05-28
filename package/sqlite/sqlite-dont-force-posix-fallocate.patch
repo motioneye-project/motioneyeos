@@ -1,0 +1,23 @@
+This is checked by configure and passed as a define directive when building.
+There's no need to check again and potentially override a failed check
+(uClibc <= 0.9.33.2 for example lacks posix_fallocate).
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+diff -Nura sqlite-autoconf-3071700.orig/sqlite3.c sqlite-autoconf-3071700/sqlite3.c
+--- sqlite-autoconf-3071700.orig/sqlite3.c	2013-05-23 03:17:27.170459400 -0300
++++ sqlite-autoconf-3071700/sqlite3.c	2013-05-23 03:25:01.839227616 -0300
+@@ -22931,13 +22931,6 @@
+ */
+ #if SQLITE_OS_UNIX              /* This file is used on unix only */
+
+-/* Use posix_fallocate() if it is available
+-*/
+-#if !defined(HAVE_POSIX_FALLOCATE) \
+-      && (_XOPEN_SOURCE >= 600 || _POSIX_C_SOURCE >= 200112L)
+-# define HAVE_POSIX_FALLOCATE 1
+-#endif
+-
+ /*
+ ** There are various methods for file locking used for concurrency
+ ** control:
