@@ -14,5 +14,9 @@ config BR2_PACKAGE_FLEX_BINARY
 	depends on BR2_PACKAGE_FLEX
 	# runtime dependency
 	select BR2_PACKAGE_M4
+	depends on BR2_USE_WCHAR # m4
 	help
 	  Install the flex binary tool in the target filesystem.
+
+comment "flex binary requires a toolchain with WCHAR support"
+	depends on !BR2_USE_WCHAR
