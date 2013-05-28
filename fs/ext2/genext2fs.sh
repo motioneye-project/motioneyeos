@@ -70,11 +70,14 @@ e2tunefsck() {
            "${IMG##*/}" "${GEN}"
 
     # e2fsck will force a *random* UUID, which is bad
-    # for reproducibility, so we do not want it.
+    # for reproducibility, so we do not want it. Asking
+    # tune2fs to 'clear' the UUID makes for an invalid
+    # fs, so we explicitly set a NULL UUID, which works.
     # Remove count- and time-based checks, they are not welcome
     # on embedded devices, where they can cause serious boot-time
     # issues by tremendously slowing down the boot.
-    tune2fs -U clear -c 0 -i 0 "${IMG}"
+    tune2fs -U 00000000-0000-0000-0000-000000000000 "${IMG}"
+    tune2fs -c 0 -i 0 "${IMG}"
 }
 
 # Check we know what generation to generate
