@@ -3,6 +3,10 @@ config BR2_PACKAGE_RPCBIND
 	# We really need libtirpc and can't work with the native RPC
 	# implementation of toolchains.
 	select BR2_PACKAGE_LIBTIRPC
+	# uClibc toolchains provided by ADI don't have AI_ADDRCONFIG
+	# support, needed for libtirpc
+	depends on !BR2_TOOLCHAIN_EXTERNAL_BLACKFIN_UCLINUX_2012R2 && \
+		!BR2_TOOLCHAIN_EXTERNAL_BLACKFIN_UCLINUX_2012R1
 	help
 	  The rpcbind utility is a server that converts RPC program numbers
 	  into universal addresses.
