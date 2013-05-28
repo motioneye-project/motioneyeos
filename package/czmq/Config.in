@@ -6,6 +6,10 @@ config BR2_PACKAGE_CZMQ
 	depends on BR2_LARGEFILE # util-linux
 	depends on BR2_USE_WCHAR # util-linux
 	depends on BR2_TOOLCHAIN_HAS_THREADS # zeromq
+	# uClibc toolchains provided by ADI don't have AI_ADDRCONFIG
+	# support
+	depends on !BR2_TOOLCHAIN_EXTERNAL_BLACKFIN_UCLINUX_2012R2 && \
+		!BR2_TOOLCHAIN_EXTERNAL_BLACKFIN_UCLINUX_2012R1
 	help
 	  High-level C Binding for 0MQ
 

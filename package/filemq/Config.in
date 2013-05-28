@@ -8,6 +8,10 @@ config BR2_PACKAGE_FILEMQ
 	depends on BR2_LARGEFILE # util-linux
 	depends on BR2_USE_WCHAR # util-linux
 	depends on BR2_TOOLCHAIN_HAS_THREADS # zeromq
+	# uClibc toolchains provided by ADI don't have AI_ADDRCONFIG
+	# support, which is needed by czmq
+	depends on !BR2_TOOLCHAIN_EXTERNAL_BLACKFIN_UCLINUX_2012R2 && \
+		!BR2_TOOLCHAIN_EXTERNAL_BLACKFIN_UCLINUX_2012R1
 	help
 	  FileMQ is a publish-subscribe file service based on 0MQ.
 

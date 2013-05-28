@@ -5,6 +5,10 @@ config BR2_PACKAGE_ZYRE
 	depends on BR2_LARGEFILE # filemq
 	depends on BR2_USE_WCHAR # filemq
 	depends on BR2_TOOLCHAIN_HAS_THREADS # filemq
+	# uClibc toolchains provided by ADI don't have AI_ADDRCONFIG
+	# support, needed by filemq -> czmq
+	depends on !BR2_TOOLCHAIN_EXTERNAL_BLACKFIN_UCLINUX_2012R2 && \
+		!BR2_TOOLCHAIN_EXTERNAL_BLACKFIN_UCLINUX_2012R1
 	select BR2_PACKAGE_FILEMQ
 	help
 	  An open-source framework for proximity-based peer-to-peer
