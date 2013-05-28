@@ -61,7 +61,7 @@ int main(int argc, char **argv)
 	char *relbasedir, *absbasedir;
 	char *progpath = argv[0];
 	char *basename;
-	int ret;
+	int ret, i, count = 0;
 
 	/* Calculate the relative paths */
 	basename = strrchr(progpath, '/');
@@ -77,7 +77,20 @@ int main(int argc, char **argv)
 		absbasedir = realpath(relbasedir, NULL);
 	} else {
 		basename = progpath;
-		absbasedir = realpath("../..", NULL);
+		absbasedir = malloc(PATH_MAX + 1);
+		ret = readlink("/proc/self/exe", absbasedir, PATH_MAX);
+		if (ret < 0) {
+			perror(__FILE__ ": readlink");
+			return 2;
+		}
+		absbasedir[ret] = '\0';
+		for (i = ret; i > 0; i--) {
+			if (absbasedir[i] == '/') {
+				absbasedir[i] = '\0';
+				if (++count == 3)
+					break;
+			}
+		}
 	}
 	if (absbasedir == NULL) {
 		perror(__FILE__ ": realpath");
