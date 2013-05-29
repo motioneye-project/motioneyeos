@@ -1,0 +1,64 @@
+Add option to disable the sqlite3 module
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+
+---
+ Makefile.pre.in |    9 +++++++--
+ configure.ac    |    9 +++++++++
+ 2 files changed, 16 insertions(+), 2 deletions(-)
+
+Index: cpython/configure.ac
+===================================================================
+--- cpython.orig/configure.ac
++++ cpython/configure.ac
+@@ -2448,6 +2448,15 @@
+         esac])
+ fi
+ 
++AC_SUBST(SQLITE3)
++AC_ARG_ENABLE(sqlite3,
++	AS_HELP_STRING([--disable-sqlite3], [disable sqlite3]),
++	[ SQLITE3="${enableval}" ], [ SQLITE3=yes ])
++
++if test "$SQLITE3" = "no" ; then
++   DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} _sqlite3"
++fi
++
+ AC_SUBST(PYDOC)
+ 
+ AC_ARG_ENABLE(pydoc,
+Index: cpython/Makefile.pre.in
+===================================================================
+--- cpython.orig/Makefile.pre.in
++++ cpython/Makefile.pre.in
+@@ -985,7 +985,6 @@
+ 		collections concurrent concurrent/futures encodings \
+ 		email email/mime \
+ 		html json http dbm xmlrpc \
+-		sqlite3 \
+ 		logging csv wsgiref urllib \
+ 		ctypes ctypes/macholib idlelib idlelib/Icons \
+ 		distutils distutils/command $(XMLLIBSUBDIRS) \
+@@ -1025,7 +1024,6 @@
+ 		test/namespace_pkgs/module_and_namespace_package/a_test \
+ 		test/test_email test/test_email/data \
+ 		test/json_tests \
+-		sqlite3/test \
+ 		ctypes/test \
+ 		distutils/tests \
+ 		test/test_importlib test/test_importlib/builtin \
+@@ -1048,6 +1046,13 @@
+ endif
+ endif
+ 
++ifeq (@SQLITE3@,yes)
++LIBSUBDIRS += sqlite3
++ifeq (@TEST_MODULES@,yes)
++LIBSUBDIRS += sqlite3/test
++endif
++endif
++
+ libinstall:	build_all $(srcdir)/Lib/$(PLATDIR) $(srcdir)/Modules/xxmodule.c
+ 	@for i in $(SCRIPTDIR) $(LIBDEST); \
+ 	do \

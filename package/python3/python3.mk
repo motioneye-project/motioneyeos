@@ -24,12 +24,8 @@ HOST_PYTHON3_CONF_OPT += 	\
 	--disable-codecs-cjk	\
 	--disable-nis		\
 	--disable-unicodedata	\
-	--disable-dbm		\
-	--disable-gdbm		\
-	--disable-bsddb		\
 	--disable-test-modules	\
-	--disable-bz2		\
-	--disable-ssl
+	--disable-idle3
 
 HOST_PYTHON3_MAKE_ENV = \
 	PYTHON_MODULES_INCLUDE=$(HOST_DIR)/usr/include \
@@ -62,6 +58,8 @@ endif
 
 ifeq ($(BR2_PACKAGE_PYTHON3_CURSES),y)
 PYTHON3_DEPENDENCIES += ncurses
+else
+PYTHON3_CONF_OPT += --disable-curses
 endif
 
 ifeq ($(BR2_PACKAGE_PYTHON3_PYEXPAT),y)
@@ -77,14 +75,24 @@ endif
 
 ifeq ($(BR2_PACKAGE_PYTHON3_SQLITE),y)
 PYTHON3_DEPENDENCIES += sqlite
+else
+PYTHON3_CONF_OPT += --disable-sqlite3
 endif
 
 ifeq ($(BR2_PACKAGE_PYTHON3_SSL),y)
-PYTHON_DEPENDENCIES += openssl
+PYTHON3_DEPENDENCIES += openssl
+endif
+
+ifneq ($(BR2_PACKAGE_PYTHON3_CODECSCJK),y)
+PYTHON3_CONF_OPT += --disable-codecs-cjk
+endif
+
+ifneq ($(BR2_PACKAGE_PYTHON3_UNICODEDATA),y)
+PYTHON3_CONF_OPT += --disable-unicodedata
 endif
 
 ifeq ($(BR2_PACKAGE_PYTHON3_BZIP2),y)
-PYTHON_DEPENDENCIES += bzip2
+PYTHON3_DEPENDENCIES += bzip2
 endif
 
 ifeq ($(BR2_PACKAGE_PYTHON3_ZLIB),y)
@@ -106,10 +114,9 @@ PYTHON3_CONF_OPT += \
 	--disable-pydoc		\
 	--disable-test-modules	\
 	--disable-lib2to3	\
-	--disable-gdbm		\
 	--disable-tk		\
 	--disable-nis		\
-	--disable-dbm
+	--disable-idle3
 
 PYTHON3_MAKE_ENV = \
 	_PROJECT_BASE=$(PYTHON3_DIR) \

@@ -1,0 +1,111 @@
+Add an option to disable lib2to3
+
+lib2to3 is a library to convert Python 2.x code to Python 3.x. As
+such, it is probably not very useful on embedded system targets.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+
+---
+ Makefile.pre.in |   18 ++++++++++++++----
+ configure.ac    |    6 ++++++
+ setup.py        |    5 +++--
+ 3 files changed, 23 insertions(+), 6 deletions(-)
+
+Index: cpython/Makefile.pre.in
+===================================================================
+--- cpython.orig/Makefile.pre.in
++++ cpython/Makefile.pre.in
+@@ -956,7 +956,9 @@
+ 	(cd $(DESTDIR)$(BINDIR); $(LN) -s pydoc$(VERSION) pydoc3)
+ endif
+ 	-rm -f $(DESTDIR)$(BINDIR)/2to3
++ifeq (@LIB2TO3@,yes)
+ 	(cd $(DESTDIR)$(BINDIR); $(LN) -s 2to3-$(VERSION) 2to3)
++endif
+ 	-rm -f $(DESTDIR)$(BINDIR)/pyvenv
+ 	(cd $(DESTDIR)$(BINDIR); $(LN) -s pyvenv-$(VERSION) pyvenv)
+ 
+@@ -985,7 +987,6 @@
+ 		html json http dbm xmlrpc \
+ 		sqlite3 \
+ 		logging csv wsgiref urllib \
+-		lib2to3 lib2to3/fixes lib2to3/pgen2 \
+ 		ctypes ctypes/macholib idlelib idlelib/Icons \
+ 		distutils distutils/command $(XMLLIBSUBDIRS) \
+ 		importlib \
+@@ -1025,9 +1026,6 @@
+ 		test/test_email test/test_email/data \
+ 		test/json_tests \
+ 		sqlite3/test \
+-		lib2to3/tests \
+-		lib2to3/tests/data lib2to3/tests/data/fixers \
+-		lib2to3/tests/data/fixers/myfixes \
+ 		ctypes/test \
+ 		distutils/tests \
+ 		test/test_importlib test/test_importlib/builtin \
+@@ -1040,6 +1038,16 @@
+ LIBSUBDIRS += pydoc_data
+ endif
+ 
++ifeq (@LIB2TO3@,yes)
++LIBSUBDIRS += lib2to3 lib2to3/fixes lib2to3/pgen2
++ifeq (@TEST_MODULES@,yes)
++LIBSUBDIRS += 	lib2to3/tests				\
++		lib2to3/tests/data			\
++		lib2to3/tests/data/fixers		\
++		lib2to3/tests/data/fixers/myfixes
++endif
++endif
++
+ libinstall:	build_all $(srcdir)/Lib/$(PLATDIR) $(srcdir)/Modules/xxmodule.c
+ 	@for i in $(SCRIPTDIR) $(LIBDEST); \
+ 	do \
+@@ -1109,10 +1117,12 @@
+ 		$(PYTHON_FOR_BUILD) -Wi $(DESTDIR)$(LIBDEST)/compileall.py \
+ 		-d $(LIBDEST)/site-packages -f \
+ 		-x badsyntax $(DESTDIR)$(LIBDEST)/site-packages
++ifeq (@LIB2TO3@,yes)
+ 	-PYTHONPATH=$(DESTDIR)$(LIBDEST) $(RUNSHARED) \
+ 		$(PYTHON_FOR_BUILD) -m lib2to3.pgen2.driver $(DESTDIR)$(LIBDEST)/lib2to3/Grammar.txt
+ 	-PYTHONPATH=$(DESTDIR)$(LIBDEST) $(RUNSHARED) \
+ 		$(PYTHON_FOR_BUILD) -m lib2to3.pgen2.driver $(DESTDIR)$(LIBDEST)/lib2to3/PatternGrammar.txt
++endif
+ 
+ # Create the PLATDIR source directory, if one wasn't distributed..
+ $(srcdir)/Lib/$(PLATDIR):
+Index: cpython/setup.py
+===================================================================
+--- cpython.orig/setup.py
++++ cpython/setup.py
+@@ -2124,10 +2124,11 @@
+     import warnings
+     warnings.filterwarnings("ignore",category=DeprecationWarning)
+ 
+-    scripts = ['Tools/scripts/idle3', 'Tools/scripts/2to3',
+-               'Lib/smtpd.py']
++    scripts = ['Tools/scripts/idle3', 'Lib/smtpd.py']
+     if not '--disable-pydoc' in sysconfig.get_config_var("CONFIG_ARGS"):
+         scripts += [ 'Tools/scripts/pydoc3' ]
++    if not '--disable-lib2to3' in sysconfig.get_config_var("CONFIG_ARGS"):
++        scripts += [ 'Tools/scripts/2to3' ]
+ 
+     setup(# PyPI Metadata (PEP 301)
+           name = "Python",
+Index: cpython/configure.ac
+===================================================================
+--- cpython.orig/configure.ac
++++ cpython/configure.ac
+@@ -2460,6 +2460,12 @@
+ 	AS_HELP_STRING([--disable-test-modules], [disable test modules]),
+ 	[ TEST_MODULES="${enableval}" ], [ TEST_MODULES=yes ])
+ 
++AC_SUBST(LIB2TO3)
++
++AC_ARG_ENABLE(lib2to3,
++	AS_HELP_STRING([--disable-lib2to3], [disable lib2to3]),
++	[ LIB2TO3="${enableval}" ], [ LIB2TO3=yes ])
++
+ # Check for enable-ipv6
+ AH_TEMPLATE(ENABLE_IPV6, [Define if --enable-ipv6 is specified])
+ AC_MSG_CHECKING([if --enable-ipv6 is specified])

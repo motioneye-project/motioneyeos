@@ -1,0 +1,85 @@
+Add an option to disable expat
+
+This patch replaces the existing --with-system-expat option with a
+--with-expat={system,builtin,none} option, which allows to tell Python
+whether we want to use the system expat (already installed), the expat
+builtin the Python sources, or no expat at all (which disables the
+installation of XML modules).
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+
+---
+ Makefile.pre.in |    6 +++++-
+ configure.ac    |   18 +++++++++++++-----
+ setup.py        |    2 +-
+ 3 files changed, 19 insertions(+), 7 deletions(-)
+
+Index: cpython/Makefile.pre.in
+===================================================================
+--- cpython.orig/Makefile.pre.in
++++ cpython/Makefile.pre.in
+@@ -987,7 +987,7 @@
+ 		html json http dbm xmlrpc \
+ 		logging csv wsgiref urllib \
+ 		ctypes ctypes/macholib idlelib idlelib/Icons \
+-		distutils distutils/command $(XMLLIBSUBDIRS) \
++		distutils distutils/command \
+ 		importlib \
+ 		turtledemo \
+ 		multiprocessing multiprocessing/dummy \
+@@ -1065,6 +1065,10 @@
+ LIBSUBDIRS += curses
+ endif
+ 
++ifeq (@EXPAT@,yes)
++LIBSUBDIRS += $(XMLLIBSUBDIRS)
++endif
++
+ libinstall:	build_all $(srcdir)/Lib/$(PLATDIR) $(srcdir)/Modules/xxmodule.c
+ 	@for i in $(SCRIPTDIR) $(LIBDEST); \
+ 	do \
+Index: cpython/configure.ac
+===================================================================
+--- cpython.orig/configure.ac
++++ cpython/configure.ac
+@@ -2178,13 +2178,21 @@
+ AC_SUBST(DISABLED_EXTENSIONS)
+ 
+ # Check for use of the system expat library
+-AC_MSG_CHECKING(for --with-system-expat)
+-AC_ARG_WITH(system_expat,
+-            AS_HELP_STRING([--with-system-expat], [build pyexpat module using an installed expat library]),
++AC_MSG_CHECKING(for --with-expat)
++AC_ARG_WITH(expat,
++            AS_HELP_STRING([--with-expat], [select which expat version to use: system, builtin, none]),
+             [],
+-            [with_system_expat="no"])
++            [with_expat="builtin"])
+ 
+-AC_MSG_RESULT($with_system_expat)
++AC_MSG_RESULT($with_expat)
++
++if test "$with_expat" != "none"; then
++   EXPAT=yes
++else
++   DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} pyexpat"
++   EXPAT=no
++fi
++AC_SUBST(EXPAT)
+ 
+ # Check for use of the system libffi library
+ AC_MSG_CHECKING(for --with-system-ffi)
+Index: cpython/setup.py
+===================================================================
+--- cpython.orig/setup.py
++++ cpython/setup.py
+@@ -1404,7 +1404,7 @@
+         #
+         # More information on Expat can be found at www.libexpat.org.
+         #
+-        if '--with-system-expat' in sysconfig.get_config_var("CONFIG_ARGS"):
++        if '--with-expat=system' in sysconfig.get_config_var("CONFIG_ARGS"):
+             expat_inc = []
+             define_macros = []
+             expat_lib = ['expat']
