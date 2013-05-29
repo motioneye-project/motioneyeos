@@ -18,7 +18,7 @@ define LIBPLAYER_CONFIGURE_CMDS
 		--prefix=/usr \
 		--cross-compile \
 		$(SHARED_STATIC_LIBS_OPTS) \
-		$(QUIET) $(LIBPLAYER_CONF_OPT) \
+		$(LIBPLAYER_CONF_OPT) \
 	)
 endef
 
