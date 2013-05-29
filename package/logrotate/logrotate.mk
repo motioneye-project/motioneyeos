@@ -3,7 +3,7 @@
 # logrotate
 #
 #############################################################
-LOGROTATE_VERSION = 3.7.9
+LOGROTATE_VERSION = 3.8.4
 LOGROTATE_SOURCE = logrotate-$(LOGROTATE_VERSION).tar.gz
 LOGROTATE_SITE = https://fedorahosted.org/releases/l/o/logrotate/
 LOGROTATE_LICENSE = GPLv2+
