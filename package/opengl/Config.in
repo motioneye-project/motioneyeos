@@ -6,3 +6,6 @@ config BR2_PACKAGE_HAS_OPENGL_ES
 
 config BR2_PACKAGE_HAS_OPENVG
 	bool
+
+config BR2_PACKAGE_HAS_OPENMAX
+	bool
