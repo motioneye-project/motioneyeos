@@ -1,0 +1,22 @@
+config BR2_PACKAGE_ECRYPTFS_UTILS
+	bool "ecryptfs-utils"
+	select BR2_PACKAGE_KEYUTILS
+	select BR2_PACKAGE_LIBNSS
+	depends on BR2_USE_MMU # keyutils
+	depends on !BR2_avr32 && !BR2_microblaze # keyutils
+	depends on BR2_LARGEFILE # libnss
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libnss -> libnspr
+	help
+	  eCryptfs is a POSIX-compliant enterprise cryptographic
+	  filesystem for Linux. It is stacked on top of any other
+	  Linux filesystem, it stores cryptographic metadata in the header
+	  of each file written.
+
+	  The eCryptfs kernel module is available in all Linux kernels
+	  since version 2.6.19. This package provides userspace utilities
+	  needed to mount eCryptfs.
+
+	  Files are encrypted using a passphrase. Consider building openssl
+	  for another method.
+
+	  http://ecryptfs.org
