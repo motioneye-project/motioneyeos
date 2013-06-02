@@ -175,12 +175,6 @@ HOST_LIBGTK2_CONF_OPT = \
 		--disable-cups \
 		--disable-debug
 
-define HOST_LIBGTK2_PATCH_REDUCE_DEPENDENCIES_HOOK
- support/scripts/apply-patches.sh $(@D) $($(PKG)_DIR_PREFIX)/$(RAWNAME) host-*.patch
-endef
-
-HOST_LIBGTK2_POST_PATCH_HOOKS += HOST_LIBGTK2_PATCH_REDUCE_DEPENDENCIES_HOOK
-
 define HOST_LIBGTK2_BUILD_CMDS
  $(HOST_MAKE_ENV) make -C $(@D)/gtk gtk-update-icon-cache
 endef

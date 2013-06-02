@@ -1,0 +1,28 @@
+Makefile: add a rule to only install libfdt
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+
+---
+Patch not sent upstream.
+
+It's really specific to buildroot, and is probably not
+good (aka generic) enough to be pushed upstream.
+
+diff --git a/Makefile b/Makefile
+index 1169e6c..39e7190 100644
+--- a/Makefile
++++ b/Makefile
+@@ -160,10 +160,12 @@ endif
+ # intermediate target and building them again "for real"
+ .SECONDARY: $(DTC_GEN_SRCS) $(CONVERT_GEN_SRCS)
+ 
+-install: all $(SCRIPTS)
++install: all $(SCRIPTS) libfdt_install
+ 	@$(VECHO) INSTALL
+ 	$(INSTALL) -d $(DESTDIR)$(BINDIR)
+ 	$(INSTALL) $(BIN) $(SCRIPTS) $(DESTDIR)$(BINDIR)
++
++libfdt_install: libfdt
+ 	$(INSTALL) -d $(DESTDIR)$(LIBDIR)
+ 	$(INSTALL) $(LIBFDT_lib) $(DESTDIR)$(LIBDIR)
+ 	ln -sf $(notdir $(LIBFDT_lib)) $(DESTDIR)$(LIBDIR)/$(LIBFDT_soname)

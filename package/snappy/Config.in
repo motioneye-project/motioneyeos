@@ -1,0 +1,13 @@
+config BR2_PACKAGE_SNAPPY
+	bool "snappy"
+	depends on BR2_INSTALL_LIBSTDCPP
+	help
+	  Snappy is a compression/decompression library. It does not aim for
+	  maximum compression, or compatibility with any other compression
+	  library; instead, it aims for very high speeds and reasonable
+	  compression.
+
+	  http://code.google.com/p/snappy/
+
+comment "snappy requires a toolchain with C++ support"
+	depends on !BR2_INSTALL_LIBSTDCPP

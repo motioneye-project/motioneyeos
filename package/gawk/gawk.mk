@@ -4,10 +4,10 @@
 #
 #############################################################
 
-GAWK_VERSION = 4.0.1
+GAWK_VERSION = 4.1.0
 GAWK_SITE = $(BR2_GNU_MIRROR)/gawk
-GAWK_TARGET_BINS = awk gawk igawk pgawk
-GAWK_LICENSE = GPLv3
+GAWK_DEPENDENCIES = host-gawk $(if $(BR2_PACKAGE_MPFR),mpfr)
+GAWK_LICENSE = GPLv3+
 GAWK_LICENSE_FILES = COPYING
 
 # Prefer full-blown gawk over busybox awk
@@ -15,7 +15,7 @@ ifeq ($(BR2_PACKAGE_BUSYBOX),y)
 GAWK_DEPENDENCIES += busybox
 endif
 
-# we don't have a host-busybox
+# We don't have a host-busybox
 HOST_GAWK_DEPENDENCIES =
 
 define GAWK_CREATE_SYMLINK
@@ -24,13 +24,13 @@ endef
 
 GAWK_POST_INSTALL_TARGET_HOOKS += GAWK_CREATE_SYMLINK
 
-define GAWK_UNINSTALL_TARGET_CMDS
-	rm -f $(addprefix $(TARGET_DIR)/usr/bin/, $(GAWK_TARGET_BINS))
-	rm -f $(TARGET_DIR)/usr/share/info/gawk*.info
-	rm -f $(TARGET_DIR)/usr/share/man/man*/*gawk.1
-	rm -rf $(TARGET_DIR)/usr/libexec/awk
-	rm -rf $(TARGET_DIR)/usr/share/awk
+# Assume we support shared libs
+# The check isn't cross-compile friendly and it's mandatory anyway
+define GAWK_DISABLE_SHARED_CHECK
+	$(SED) 's/ check-for-shared-lib-support//' $(@D)/extension/Makefile.in
 endef
+
+GAWK_POST_PATCH_HOOKS += GAWK_DISABLE_SHARED_CHECK
 
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))

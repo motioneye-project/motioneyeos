@@ -1,0 +1,28 @@
+Makefile: append the CFLAGS to existing ones
+
+Allow the user to pass custom CFLAGS (eg. optimisation flags).
+
+Do not use EXTRA_CFLAGS, append to existing CFLAGS with +=  (Arnout)
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+Cc: Arnout Vandecappelle <arnout@mind.be>
+
+---
+Patch not sent upstream.
+
+Although not specific to buildroot, I am not sure this is the best
+way to handle user-supplied CFLAGS.
+
+diff -durN dtc-e4b497f367a3b2ae99cc52089a14a221b13a76ef.orig/Makefile dtc-e4b497f367a3b2ae99cc52089a14a221b13a76ef/Makefile
+--- dtc-e4b497f367a3b2ae99cc52089a14a221b13a76ef.orig/Makefile	2012-10-22 22:02:47.541240846 +0200
++++ dtc-e4b497f367a3b2ae99cc52089a14a221b13a76ef/Makefile	2012-10-22 22:03:21.151047833 +0200
+@@ -18,7 +18,8 @@
+ CPPFLAGS = -I libfdt -I .
+ WARNINGS = -Werror -Wall -Wpointer-arith -Wcast-qual -Wnested-externs \
+ 	-Wstrict-prototypes -Wmissing-prototypes -Wredundant-decls
+-CFLAGS = -g -Os -fPIC -Werror $(WARNINGS)
++CFLAGS ?= -g -Os
++CFLAGS += -fPIC $(WARNINGS)
+ 
+ BISON = bison
+ LEX = flex

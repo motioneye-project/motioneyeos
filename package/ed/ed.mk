@@ -11,4 +11,20 @@ ED_CONF_OPT = CC="$(TARGET_CC)" CFLAGS="$(TARGET_CFLAGS)" \
 ED_LICENSE = GPLv3+
 ED_LICENSE_FILES = COPYING
 
-$(eval $(autotools-package))
+define ED_CONFIGURE_CMDS
+	(cd $(@D); \
+		./configure \
+		--prefix=/usr \
+		$(TARGET_CONFIGURE_OPTS) \
+	)
+endef
+
+define ED_BUILD_CMDS
+	$(MAKE)	-C $(@D)
+endef
+
+define ED_INSTALL_TARGET_CMDS
+	$(MAKE) -C $(@D) DESTDIR="$(TARGET_DIR)" install
+endef
+
+$(eval $(generic-package))

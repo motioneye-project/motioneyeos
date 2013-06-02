@@ -1,12 +1,11 @@
 #############################################################
 #
-# buildroot makefile for firmware-imx
+# firmware-imx
 #
 #############################################################
 
-FIRMWARE_IMX_VERSION = 12.09.01
-# No official download site from freescale, just this mirror
-FIRMWARE_IMX_SITE = http://download.ossystems.com.br/bsp/freescale/source
+FIRMWARE_IMX_VERSION = $(FREESCALE_IMX_VERSION)
+FIRMWARE_IMX_SITE = $(FREESCALE_IMX_MIRROR_SITE)
 FIRMWARE_IMX_SOURCE = firmware-imx-$(FIRMWARE_IMX_VERSION).bin
 FIRMWARE_IMX_LICENSE = Freescale Semiconductor Software License Agreement, \
 	Atheros license (ath6k)

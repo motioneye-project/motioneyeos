@@ -10,5 +10,6 @@ LIBCDAUDIO_SITE = http://downloads.sourceforge.net/project/libcdaudio/libcdaudio
 LIBCDAUDIO_AUTORECONF = YES
 LIBCDAUDIO_LIBTOOL_PATCH = YES
 LIBCDAUDIO_INSTALL_STAGING = YES
+LIBCDAUDIO_CONFIG_SCRIPTS = libcdaudio-config
 
 $(eval $(autotools-package))

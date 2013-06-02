@@ -1,0 +1,7 @@
+config BR2_PACKAGE_LIBVPX
+	bool "libvpx"
+	help
+	  A high-quality, open video format that's freely available to
+	  everyone.
+
+	  http://webmproject.org

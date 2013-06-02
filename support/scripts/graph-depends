@@ -161,6 +161,7 @@ def remove_redundant_deps(deps):
     return newdeps
 
 TARGET_EXCEPTIONS = [
+    "target-generic-securetty",
     "target-generic-issue",
     "target-generic-getty-busybox",
     "target-generic-do-remount-rw",

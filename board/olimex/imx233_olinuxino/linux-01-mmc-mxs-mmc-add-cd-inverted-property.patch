@@ -1,0 +1,47 @@
+From 4c0c9be05004d1eb674b7586216b3d93cc04531c Mon Sep 17 00:00:00 2001
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+Date: Wed, 10 Apr 2013 11:13:43 +0200
+Subject: [PATCH 1/3] mmc: mxs-mmc: add cd-inverted property
+
+The card-detect GPIO is inverted on some boards. Handle such case.
+
+Acked-by: Shawn Guo <shawn.guo@linaro.org>
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Chris Ball <cjb@laptop.org>
+---
+ drivers/mmc/host/mxs-mmc.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/mmc/host/mxs-mmc.c b/drivers/mmc/host/mxs-mmc.c
+index 4efe302..0cdf1f6 100644
+--- a/drivers/mmc/host/mxs-mmc.c
++++ b/drivers/mmc/host/mxs-mmc.c
+@@ -72,6 +72,7 @@ struct mxs_mmc_host {
+ 	int				sdio_irq_en;
+ 	int				wp_gpio;
+ 	bool				wp_inverted;
++	bool				cd_inverted;
+ };
+
+ static int mxs_mmc_get_ro(struct mmc_host *mmc)
+@@ -96,7 +97,7 @@ static int mxs_mmc_get_cd(struct mmc_host *mmc)
+ 	struct mxs_ssp *ssp = &host->ssp;
+
+ 	return !(readl(ssp->base + HW_SSP_STATUS(ssp)) &
+-		 BM_SSP_STATUS_CARD_DETECT);
++		 BM_SSP_STATUS_CARD_DETECT)) ^ host->cd_inverted;
+ }
+
+ static void mxs_mmc_reset(struct mxs_mmc_host *host)
+@@ -691,6 +692,8 @@ static int mxs_mmc_probe(struct platform_device *pdev)
+ 	if (flags & OF_GPIO_ACTIVE_LOW)
+ 		host->wp_inverted = 1;
+
++	host->cd_inverted = of_property_read_bool(np, "cd-inverted");
++
+ 	mmc->f_min = 400000;
+ 	mmc->f_max = 288000000;
+ 	mmc->ocr_avail = MMC_VDD_32_33 | MMC_VDD_33_34;
+--
+1.8.1.5
+

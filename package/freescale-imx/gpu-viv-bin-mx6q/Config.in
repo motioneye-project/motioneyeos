@@ -1,0 +1,35 @@
+comment "gpu-viv-bin-mx6q requires a glibc toolchain"
+	depends on !(BR2_TOOLCHAIN_CTNG_glibc || \
+		BR2_TOOLCHAIN_CTNG_eglibc || \
+		BR2_TOOLCHAIN_EXTERNAL_GLIBC)
+
+config BR2_PACKAGE_GPU_VIV_BIN_MX6Q
+	bool "gpu-viv-bin-mx6q"
+	select BR2_PACKAGE_HAS_OPENGL_EGL
+	select BR2_PACKAGE_HAS_OPENGL_ES
+	depends on BR2_arm # Only relevant for i.MX6
+	 # Library binaries are linked against libc.so.6
+	depends on BR2_TOOLCHAIN_CTNG_glibc || \
+		BR2_TOOLCHAIN_CTNG_eglibc || \
+		BR2_TOOLCHAIN_EXTERNAL_GLIBC
+	help
+	  Userspace libraries for Vivante GPU on i.MX6 platforms
+
+	  It contains libraries and headers for GLES, OpenCL, and
+	  OpenVG.  It also contains a DRI plugin for X11. It also
+	  contains a plugin for DirectFB-1.4.0, but that doesn't work
+	  together with buildroot's DirectFB version.
+
+	  This library is provided by Freescale as-is and doesn't have
+	  an upstream.
+
+if BR2_PACKAGE_GPU_VIV_BIN_MX6Q
+
+config BR2_PACKAGE_GPU_VIV_BIN_MX6Q_EXAMPLES
+	bool "install examples"
+	help
+	  Copy the Vivante examples to the target.
+
+	  Warning: examples take approximately 150 MB of disk space.
+
+endif

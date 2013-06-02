@@ -4,9 +4,8 @@
 #
 #############################################################
 
-IMX_LIB_VERSION = 12.09.01
-# No official download site from freescale, just this mirror
-IMX_LIB_SITE    = http://download.ossystems.com.br/bsp/freescale/source
+IMX_LIB_VERSION = $(FREESCALE_IMX_VERSION)
+IMX_LIB_SITE    = $(FREESCALE_IMX_MIRROR_SITE)
 IMX_LIB_LICENSE = LGPLv2.1+
 # No license file included
 

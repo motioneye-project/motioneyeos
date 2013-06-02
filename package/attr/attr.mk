@@ -4,7 +4,7 @@
 #
 #############################################################
 
-ATTR_VERSION = 2.4.46
+ATTR_VERSION = 2.4.47
 ATTR_SOURCE = attr-$(ATTR_VERSION).src.tar.gz
 ATTR_SITE = http://download.savannah.gnu.org/releases/attr
 ATTR_INSTALL_STAGING = YES

@@ -1,0 +1,33 @@
+# Architecture
+BR2_arm=y
+BR2_arm926t=y
+
+# Patches (mxs-bootlets)
+BR2_GLOBAL_PATCH_DIR="board/olimex/imx233_olinuxino"
+
+# System
+BR2_TARGET_GENERIC_GETTY=y
+BR2_TARGET_GENERIC_GETTY_PORT="ttyAMA0"
+
+# Filesystem
+BR2_TARGET_ROOTFS_EXT2=y
+# BR2_TARGET_ROOTFS_TAR is not set
+
+# Lock to 3.9 headers to avoid breaking with newer kernels
+BR2_KERNEL_HEADERS_3_9=y
+
+# Bootloader
+BR2_TARGET_MXS_BOOTLETS=y
+BR2_TARGET_MXS_BOOTLETS_CUSTOM_PATCH_DIR="board/olimex/imx233_olinuxino"
+BR2_TARGET_MXS_BOOTLETS_CUSTOM_BOARD=y
+BR2_TARGET_MXS_BOOTLETS_CUSTOM_BOARD_NAME="imx23_olinuxino_dev"
+
+# Kernel
+BR2_LINUX_KERNEL=y
+BR2_LINUX_KERNEL_CUSTOM_VERSION=y
+BR2_LINUX_KERNEL_CUSTOM_VERSION_VALUE="3.9.4"
+BR2_LINUX_KERNEL_USE_CUSTOM_CONFIG=y
+BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE="board/olimex/imx233_olinuxino/linux-3.9.config"
+BR2_LINUX_KERNEL_PATCH="board/olimex/imx233_olinuxino"
+BR2_LINUX_KERNEL_APPENDED_ZIMAGE=y
+BR2_LINUX_KERNEL_INTREE_DTS_NAME="imx23-olinuxino"

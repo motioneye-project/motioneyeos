@@ -1,0 +1,11 @@
+config BR2_PACKAGE_GIT
+	bool "git"
+	depends on BR2_LARGEFILE
+	help
+	  Git is a free and open source distributed version control system
+	  designed to handle everything from small to very large projects.
+
+	  http://git-scm.com
+
+comment "git requires a toolchain with LARGEFILE support"
+	depends on !BR2_LARGEFILE
