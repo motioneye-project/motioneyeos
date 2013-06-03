@@ -2,6 +2,7 @@ config BR2_PACKAGE_GIT
 	bool "git"
 	depends on BR2_LARGEFILE
 	select BR2_PACKAGE_ZLIB
+	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
 	help
 	  Git is a free and open source distributed version control system
 	  designed to handle everything from small to very large projects.
