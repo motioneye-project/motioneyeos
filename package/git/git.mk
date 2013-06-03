@@ -8,10 +8,7 @@ GIT_VERSION         = 1.8.3
 GIT_SITE            = http://git-core.googlecode.com/files/
 GIT_LICENSE         = GPLv2 LGPLv2.1+
 GIT_LICENSE_FILES   = COPYING LGPL-2.1
-
-ifeq ($(BR2_PACKAGE_ZLIB),y)
-	GIT_DEPENDENCIES += zlib
-endif
+GIT_DEPENDENCIES    = zlib host-gettext
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 	GIT_DEPENDENCIES += openssl
