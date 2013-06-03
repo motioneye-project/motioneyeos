@@ -11,13 +11,13 @@ Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
 diff -durN tvheadend-v3.5.orig/configure tvheadend-v3.5/configure
 --- tvheadend-v3.5.orig/configure	2013-02-15 14:41:26.000000000 +0100
 +++ tvheadend-v3.5/configure	2013-02-16 15:41:16.675556099 +0100
-@@ -178,15 +178,16 @@
+@@ -179,15 +179,16 @@
  #
  # DVB scan
  #
 -if enabled linuxdvb && enabled dvbscan; then
 -  printf "${TAB}" "fetching dvb-scan files ..."
--  ${ROOTDIR}/support/getmuxlist
+-  "${ROOTDIR}/support/getmuxlist"
 -  if [ $? -ne 0 ]; then
 -    echo "fail"
 -    die "Failed to fetch dvb-scan data (use --disable-dvbscan)"
@@ -27,7 +27,7 @@ diff -durN tvheadend-v3.5.orig/configure tvheadend-v3.5/configure
 +# For buildroot, we already installed those files via the dvb-apps package
 +#if enabled linuxdvb && enabled dvbscan; then
 +#  printf "${TAB}" "fetching dvb-scan files ..."
-+#  ${ROOTDIR}/support/getmuxlist
++#  "${ROOTDIR}/support/getmuxlist"
 +#  if [ $? -ne 0 ]; then
 +#    echo "fail"
 +#    die "Failed to fetch dvb-scan data (use --disable-dvbscan)"
@@ -37,11 +37,10 @@ diff -durN tvheadend-v3.5.orig/configure tvheadend-v3.5/configure
  
  # ###########################################################################
  # Write config
-Binary files tvheadend-v3.5.orig/.configure.swp and tvheadend-v3.5/.configure.swp differ
 diff -durN tvheadend-v3.5.orig/Makefile tvheadend-v3.5/Makefile
 --- tvheadend-v3.5.orig/Makefile	2013-02-15 14:41:26.000000000 +0100
 +++ tvheadend-v3.5/Makefile	2013-02-16 15:41:38.218821287 +0100
-@@ -207,7 +207,7 @@
+@@ -211,7 +211,7 @@
  SRCS-${CONFIG_BUNDLE}     += bundle.c
  BUNDLES-yes               += docs/html docs/docresources src/webui/static
  BUNDLES-yes               += data/conf
@@ -62,5 +61,5 @@ diff -durN tvheadend-v3.5.orig/support/posix.mk tvheadend-v3.5/support/posix.mk
 +	ln -sf /usr/share/dvb ${DESTDIR}${datadir}/tvheadend/data/dvb-scan
 +
  uninstall:
- 	rm -f ${DESTDIR}${bindir)/tvheadend
- 	rm -f ${DESTDIR}${mandir)/tvheadend.1
+ 	rm -f ${DESTDIR}${bindir}/tvheadend
+ 	rm -f ${DESTDIR}${mandir}/tvheadend.1

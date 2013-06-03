@@ -12,8 +12,8 @@ Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
 diff -durN tvheadend-v3.5.orig/Makefile tvheadend-v3.5/Makefile
 --- tvheadend-v3.5.orig/Makefile	2013-02-17 15:15:03.228749505 +0100
 +++ tvheadend-v3.5/Makefile	2013-02-17 15:15:51.591923062 +0100
-@@ -246,7 +246,7 @@
- 	$(CURDIR)/configure $(CONFIGURE_ARGS)
+@@ -250,7 +250,7 @@
+ 	$(ROOTDIR)/configure $(CONFIGURE_ARGS)
  
  # Binary
 -${PROG}: check_config $(OBJS) $(ALLDEPS)
