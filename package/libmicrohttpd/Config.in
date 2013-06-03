@@ -10,7 +10,6 @@ config BR2_PACKAGE_LIBMICROHTTPD
 config BR2_PACKAGE_LIBMICROHTTPD_SSL
        bool "https support"
        depends on BR2_PACKAGE_LIBMICROHTTPD
-       depends on BR2_USE_WCHAR
        select BR2_PACKAGE_GNUTLS
        select BR2_PACKAGE_LIBGCRYPT
        help
@@ -18,6 +17,3 @@ config BR2_PACKAGE_LIBMICROHTTPD_SSL
 
 comment "libmicrohttpd needs a toolchain with thread support"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS
-
-comment "libmicrohttpd https support needs a toolchain with wchar support"
-	depends on BR2_PACKAGE_LIBMICROHTTPD && !BR2_USE_WCHAR

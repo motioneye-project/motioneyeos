@@ -2,18 +2,21 @@ config BR2_PACKAGE_GNUTLS
 	bool "gnutls"
 	select BR2_PACKAGE_NETTLE
 	select BR2_PACKAGE_PCRE
-	depends on BR2_USE_WCHAR
 	help
 	  GnuTLS is a secure communications library implementing the SSL
 	  and TLS protocols and technologies around them.
 
 	  http://www.gnutls.org
 
+if BR2_PACKAGE_GNUTLS
+
 config BR2_PACKAGE_GNUTLS_TOOLS
 	bool "install tools"
-	depends on BR2_PACKAGE_GNUTLS
+	depends on BR2_USE_WCHAR
 	help
 	  Install GnuTLS command line tools for various cryptographic tasks.
 
-comment "gnutls requires a toolchain with WCHAR support"
+comment "gnutls tools requires a toolchain with WCHAR support"
 	depends on !BR2_USE_WCHAR
+
+endif
