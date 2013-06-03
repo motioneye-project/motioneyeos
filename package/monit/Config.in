@@ -1,5 +1,6 @@
 config BR2_PACKAGE_MONIT
 	bool "monit"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
 	help
 	  Monit is a free open source utility for managing and
 	  monitoring, processes, programs, files, directories and
@@ -8,3 +9,6 @@ config BR2_PACKAGE_MONIT
 	  actions in error situations.
 
 	  http://mmonit.com/monit/
+
+comment "monit requires a toolchain with threads support"
+       depends on !BR2_TOOLCHAIN_HAS_THREADS
