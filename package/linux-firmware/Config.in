@@ -61,15 +61,15 @@ config BR2_PACKAGE_LINUX_FIRMWARE_RALINK_RT2XX
 	help
 	  Ralink rt27xx/rt28xx/rt30xx
 
-config BR2_PACKAGE_LINUX_FIRMWARE_RTL_8192
-	bool "Realtek 8192"
+config BR2_PACKAGE_LINUX_FIRMWARE_RTL_81XX
+	bool "Realtek 81xx"
 	help
-	  Realtek 8192
+	  Realtek 8188/8192
 
-config BR2_PACKAGE_LINUX_FIRMWARE_RTL_8712
-	bool "Realtek 8712"
+config BR2_PACKAGE_LINUX_FIRMWARE_RTL_87XX
+	bool "Realtek 87xx"
 	help
-	  Realtek 8712
+	  Realtek 8712/8723
 
 config BR2_PACKAGE_LINUX_FIRMWARE_TI_WL127X
 	bool "TI wl127X"
