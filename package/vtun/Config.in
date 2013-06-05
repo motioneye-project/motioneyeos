@@ -9,4 +9,7 @@ config BR2_PACKAGE_VTUN
 
 	  It supports IP, PPP, SLIP, Ethernet and other tunnel types.
 
+	  NOTE: It uses start-stop-daemon in init script, so be sure
+	  to enable that within busybox
+
 	  http://vtun.sourceforge.net/

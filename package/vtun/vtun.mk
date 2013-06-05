@@ -2,9 +2,6 @@
 #
 # vtun
 #
-# NOTE: Uses start-stop-daemon in init script, so be sure
-# to enable that within busybox
-#
 #############################################################
 
 VTUN_VERSION = 3.0.3

@@ -6,6 +6,7 @@ config BR2_PACKAGE_SQLCIPHER
 	  SQLCipher is an SQLite extension that provides 256 bits AES
 	  encryption of database files.  Note that it is a fork of SQLite
 	  and they cannot be installed side-by-side.
+
 	  http://sqlcipher.net
 
 config BR2_PACKAGE_SQLCIPHER_READLINE

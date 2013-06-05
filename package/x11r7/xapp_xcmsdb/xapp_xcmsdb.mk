@@ -1,6 +1,6 @@
 ################################################################################
 #
-# xapp_xcmsdb -- Device Color Characterization utility for X Color Management System
+# xapp_xcmsdb
 #
 ################################################################################
 

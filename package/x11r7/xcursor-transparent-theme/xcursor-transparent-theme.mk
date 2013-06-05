@@ -1,6 +1,6 @@
 #############################################################
 #
-# xcursor-transparent-theme - No description available
+# xcursor-transparent-theme
 #
 #############################################################
 
