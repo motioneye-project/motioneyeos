@@ -106,6 +106,6 @@ define legal-license-file # pkg, filename, file-fullpath
 	$(call legal-license-header,$(1),$(2) file) && \
 	cat $(3) >>$(LEGAL_LICENSES_TXT) && \
 	echo >>$(LEGAL_LICENSES_TXT) && \
-	mkdir -p $(LICENSE_FILES_DIR)/$(1)/ && \
-	cp $(3) $(LICENSE_FILES_DIR)/$(1)/
+	mkdir -p $(LICENSE_FILES_DIR)/$(1)/$(dir $(2)) && \
+	cp $(3) $(LICENSE_FILES_DIR)/$(1)/$(2)
 endef
