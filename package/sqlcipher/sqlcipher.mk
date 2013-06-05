@@ -1,6 +1,6 @@
 #############################################################
 #
-# Sqlcipher extension of sqlite
+# sqlcipher extension of sqlite
 # http://sqlcipher.net
 #
 #############################################################
