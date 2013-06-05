@@ -1,4 +1,4 @@
-######################################################################
+################################################################################
 #
 # Qt Embedded for Linux
 #
@@ -9,7 +9,7 @@
 # the kernels FPU emulation so it's better to choose soft float in the
 # buildroot config (and uClibc.config of course, if you have your own.)
 #
-######################################################################
+################################################################################
 
 QT_VERSION = 4.8.4
 QT_SOURCE  = qt-everywhere-opensource-src-$(QT_VERSION).tar.gz

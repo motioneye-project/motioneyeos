@@ -1,9 +1,9 @@
-############################################################################
+################################################################################
 #
 # This file contains various utility functions used by the package
 # infrastructure, or by the packages themselves.
 #
-############################################################################
+################################################################################
 
 # UPPERCASE Macro -- transform its argument to uppercase and replace dots and
 # hyphens to underscores

@@ -1,8 +1,8 @@
-#############################################################
+################################################################################
 #
 # mobile broadband provider info
 #
-#############################################################
+################################################################################
 
 MOBILE_BROADBAND_PROVIDER_INFO_VERSION = 20120614
 MOBILE_BROADBAND_PROVIDER_INFO_SITE = http://ftp.gnome.org/pub/GNOME/sources/mobile-broadband-provider-info/$(MOBILE_BROADBAND_PROVIDER_INFO_VERSION)
