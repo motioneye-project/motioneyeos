@@ -37,6 +37,11 @@ GNUTLS_CONF_OPT += --with-regex-header=pcreposix.h \
 	--with-libregex-cflags="`$(PKG_CONFIG_HOST_BINARY) libpcreposix --cflags`" \
 	--with-libregex-libs="`$(PKG_CONFIG_HOST_BINARY) libpcreposix --libs`"
 
+# Consider crywrap as part of tools because it needs WCHAR, and it's so too
+ifeq ($(BR2_PACKAGE_GNUTLS_TOOLS),)
+	GNUTLS_CONF_OPT += --disable-crywrap
+endif
+
 # libidn support for nommu must exclude the crywrap wrapper (uses fork)
 GNUTLS_CONF_OPT += $(if $(BR2_USE_MMU),,--disable-crywrap)
 GNUTLS_DEPENDENCIES += $(if $(BR2_PACKAGE_LIBIDN),libidn)
