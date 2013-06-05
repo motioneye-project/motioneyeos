@@ -3,6 +3,7 @@
 # gvfs
 #
 #############################################################
+
 GVFS_VERSION_MAJOR = 1.8
 GVFS_VERSION_MINOR = 2
 GVFS_VERSION = $(GVFS_VERSION_MAJOR).$(GVFS_VERSION_MINOR)

@@ -3,6 +3,7 @@
 # fxload
 #
 #############################################################
+
 FXLOAD_VERSION = 2008_10_13
 FXLOAD_SITE = http://downloads.sourceforge.net/project/linux-hotplug/fxload/$(FXLOAD_VERSION)
 FXLOAD_LICENSE = GPLv2+

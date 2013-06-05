@@ -3,6 +3,7 @@
 # popt
 #
 #############################################################
+
 POPT_VERSION = 1.16
 # rpm5.org down
 POPT_SITE = http://anduin.linuxfromscratch.org/sources/BLFS/svn/p/

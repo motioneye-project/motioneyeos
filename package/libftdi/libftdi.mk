@@ -3,6 +3,7 @@
 # libftdi
 #
 #############################################################
+
 LIBFTDI_VERSION = 0.19
 LIBFTDI_SOURCE = libftdi-$(LIBFTDI_VERSION).tar.gz
 LIBFTDI_SITE = http://www.intra2net.com/en/developer/libftdi/download/

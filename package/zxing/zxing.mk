@@ -3,6 +3,7 @@
 # zxing
 #
 #############################################################
+
 ZXING_VERSION = 2.0
 ZXING_SITE = http://zxing.googlecode.com/files
 ZXING_SOURCE = ZXing-$(ZXING_VERSION).zip

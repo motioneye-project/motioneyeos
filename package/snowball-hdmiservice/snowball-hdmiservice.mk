@@ -3,6 +3,7 @@
 # snowball-hdmiservice
 #
 #############################################################
+
 SNOWBALL_HDMISERVICE_VERSION = f75c99d1c52707240a78b4ba78e41d20d3aa3b08
 SNOWBALL_HDMISERVICE_SITE = git://igloocommunity.org/git/bsp/hdmiservice.git
 SNOWBALL_HDMISERVICE_LICENSE = MIT

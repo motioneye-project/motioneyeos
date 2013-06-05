@@ -3,6 +3,7 @@
 # qTUIO
 #
 #############################################################
+
 QTUIO_VERSION = abe4973ff6
 QTUIO_SITE = git://github.com/x29a/qTUIO.git
 QTUIO_INSTALL_STAGING = YES

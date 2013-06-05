@@ -3,6 +3,7 @@
 # boa
 #
 #############################################################
+
 BOA_VERSION = 0.94.14rc21
 BOA_SOURCE = boa-$(BOA_VERSION).tar.gz
 BOA_SITE = http://www.boa.org/

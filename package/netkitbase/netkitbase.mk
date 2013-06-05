@@ -3,6 +3,7 @@
 # netkitbase
 #
 #############################################################
+
 NETKITBASE_VERSION = 0.17
 NETKITBASE_SOURCE  = netkit-base-$(NETKITBASE_VERSION).tar.gz
 NETKITBASE_SITE    = ftp://ftp.uk.linux.org/pub/linux/Networking/netkit/

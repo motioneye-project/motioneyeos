@@ -3,6 +3,7 @@
 # mii-diag
 #
 #############################################################
+
 MII_DIAG_VERSION = 2.11
 MII_DIAG_SOURCE  = mii-diag_$(MII_DIAG_VERSION).orig.tar.gz
 MII_DIAG_PATCH   = mii-diag_$(MII_DIAG_VERSION)-3.diff.gz

@@ -3,6 +3,7 @@
 # yasm
 #
 #############################################################
+
 YASM_VERSION = 1.2.0
 YASM_SOURCE = yasm-$(YASM_VERSION).tar.gz
 YASM_SITE = http://www.tortall.net/projects/yasm/releases/

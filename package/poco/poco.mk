@@ -3,6 +3,7 @@
 # poco
 #
 #############################################################
+
 POCO_VERSION_MAJOR = 1.4.6
 POCO_VERSION = $(POCO_VERSION_MAJOR)p1
 POCO_SOURCE = poco-$(POCO_VERSION)-all.tar.gz

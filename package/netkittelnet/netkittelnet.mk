@@ -3,6 +3,7 @@
 # netkittelnet
 #
 #############################################################
+
 NETKITTELNET_VERSION = 0.17
 NETKITTELNET_SOURCE  = netkit-telnet-$(NETKITTELNET_VERSION).tar.gz
 NETKITTELNET_SITE    = ftp://ftp.uk.linux.org/pub/linux/Networking/netkit/

@@ -3,6 +3,7 @@
 # pango
 #
 #############################################################
+
 PANGO_VERSION_MAJOR = 1.28
 PANGO_VERSION_MINOR = 4
 PANGO_VERSION = $(PANGO_VERSION_MAJOR).$(PANGO_VERSION_MINOR)

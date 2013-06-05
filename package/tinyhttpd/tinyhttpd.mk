@@ -3,6 +3,7 @@
 # tinyhttpd
 #
 #############################################################
+
 TINYHTTPD_VERSION = 0.1.0
 TINYHTTPD_SITE = http://downloads.sourceforge.net/project/tinyhttpd/tinyhttpd%20source/tinyhttpd%20$(TINYHTTPD_VERSION)
 

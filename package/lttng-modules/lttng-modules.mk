@@ -3,6 +3,7 @@
 # LTTng-modules: the kernel modules (requires at least Linux 2.6.38)
 #
 #############################################################
+
 LTTNG_MODULES_VERSION = 2.1.0
 LTTNG_MODULES_SITE    = http://lttng.org/files/lttng-modules/
 LTTNG_MODULES_SOURCE  = lttng-modules-$(LTTNG_MODULES_VERSION).tar.bz2

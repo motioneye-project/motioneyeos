@@ -3,6 +3,7 @@
 # bsdiff
 #
 #############################################################
+
 BSDIFF_VERSION = 4.3
 BSDIFF_SOURCE = bsdiff-$(BSDIFF_VERSION).tar.gz
 BSDIFF_SITE = http://www.daemonology.net/bsdiff

@@ -3,6 +3,7 @@
 # libgtk2.0
 #
 #############################################################
+
 LIBGTK2_VERSION_MAJOR = 2.24
 LIBGTK2_VERSION_MINOR = 10
 LIBGTK2_VERSION = $(LIBGTK2_VERSION_MAJOR).$(LIBGTK2_VERSION_MINOR)

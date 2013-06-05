@@ -3,6 +3,7 @@
 # libnfc
 #
 #############################################################
+
 LIBNFC_VERSION = fda8d60ce062
 LIBNFC_SITE = http://libnfc.googlecode.com/git/
 LIBNFC_SITE_METHOD = git

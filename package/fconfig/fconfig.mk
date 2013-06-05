@@ -3,6 +3,7 @@
 # fconfig
 #
 #############################################################
+
 FCONFIG_VERSION = 20080329
 FCONFIG_SOURCE = fconfig-$(FCONFIG_VERSION).tar.gz
 FCONFIG_SITE = http://andrzejekiert.ovh.org/software/fconfig/

@@ -3,6 +3,7 @@
 # startup-notification
 #
 #############################################################
+
 STARTUP_NOTIFICATION_VERSION = 0.9
 STARTUP_NOTIFICATION_SOURCE = startup-notification-$(STARTUP_NOTIFICATION_VERSION).tar.gz
 STARTUP_NOTIFICATION_SITE = http://freedesktop.org/software/startup-notification/releases

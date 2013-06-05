@@ -3,6 +3,7 @@
 # gdbm
 #
 #############################################################
+
 GDBM_VERSION = 1.10
 GDBM_SITE = $(BR2_GNU_MIRROR)/gdbm
 GDBM_LICENSE = GPLv3

@@ -3,6 +3,7 @@
 # sound-theme-freedesktop
 #
 #############################################################
+
 SOUND_THEME_FREEDESKTOP_VERSION = 0.7
 SOUND_THEME_FREEDESKTOP_SITE = \
 	http://people.freedesktop.org/~mccann/dist

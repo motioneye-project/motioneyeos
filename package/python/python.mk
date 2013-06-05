@@ -3,6 +3,7 @@
 # python
 #
 #############################################################
+
 PYTHON_VERSION_MAJOR = 2.7
 PYTHON_VERSION       = $(PYTHON_VERSION_MAJOR).3
 PYTHON_SOURCE        = Python-$(PYTHON_VERSION).tar.bz2

@@ -3,6 +3,7 @@
 # mplayer
 #
 #############################################################
+
 MPLAYER_VERSION = 1.1
 MPLAYER_SOURCE = MPlayer-$(MPLAYER_VERSION).tar.xz
 MPLAYER_SITE = http://www.mplayerhq.hu/MPlayer/releases

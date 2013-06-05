@@ -3,6 +3,7 @@
 # lua-msgpack-native
 #
 #############################################################
+
 LUA_MSGPACK_NATIVE_VERSION = g41cce91
 LUA_MSGPACK_NATIVE_SITE = http://github.com/kengonakajima/lua-msgpack-native/tarball/master
 LUA_MSGPACK_NATIVE_DEPENDENCIES = lua

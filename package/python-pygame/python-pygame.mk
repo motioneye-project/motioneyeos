@@ -3,6 +3,7 @@
 # Pygame
 #
 #############################################################
+
 # stable 1.9.1 release requires V4L which has been wiped out of recent Linux
 # kernels, so use latest mercurial revision until next stable release is out.
 PYTHON_PYGAME_VERSION = f0bb4a4b365d

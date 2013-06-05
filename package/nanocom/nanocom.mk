@@ -3,6 +3,7 @@
 # nanocom
 #
 #############################################################
+
 NANOCOM_VERSION = 2.6.1
 NANOCOM_SOURCE = nanocom.tar.gz
 NANOCOM_SITE = http://downloads.sourceforge.net/project/nanocom/nanocom/v1.0

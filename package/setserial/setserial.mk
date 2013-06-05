@@ -3,6 +3,7 @@
 # Setserial
 #
 #############################################################
+
 SETSERIAL_VERSION            = 2.17
 SETSERIAL_PATCH              = setserial_2.17-45.2.diff.gz
 SETSERIAL_SOURCE             = setserial_$(SETSERIAL_VERSION).orig.tar.gz

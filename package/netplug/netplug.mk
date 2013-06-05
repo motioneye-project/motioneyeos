@@ -3,6 +3,7 @@
 # netplug
 #
 #############################################################
+
 NETPLUG_VERSION=1.2.9.2
 NETPLUG_SOURCE=netplug-$(NETPLUG_VERSION).tar.bz2
 NETPLUG_SITE=http://www.red-bean.com/~bos/netplug

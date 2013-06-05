@@ -3,6 +3,7 @@
 # gadgetfs-test
 #
 #############################################################
+
 GADGETFS_TEST_SOURCE=gadgetfs-test.tar.bz2
 GADGETFS_TEST_SITE=http://mirror.egtvedt.no/avr32linux.org/twiki/pub/Main/GadgetFsTest/
 

@@ -3,6 +3,7 @@
 # directfb
 #
 #############################################################
+
 DIRECTFB_VERSION_MAJOR = 1.6
 DIRECTFB_VERSION = $(DIRECTFB_VERSION_MAJOR).3
 DIRECTFB_SITE = http://www.directfb.org/downloads/Core/DirectFB-$(DIRECTFB_VERSION_MAJOR)

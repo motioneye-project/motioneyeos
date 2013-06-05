@@ -3,6 +3,7 @@
 # at91bootstrap3
 #
 #############################################################
+
 AT91BOOTSTRAP3_VERSION = 3.2
 AT91BOOTSTRAP3_SITE = \
 	ftp://www.at91.com/pub/at91bootstrap/AT91Bootstrap$(AT91BOOTSTRAP3_VERSION)

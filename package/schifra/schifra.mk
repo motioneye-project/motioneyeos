@@ -3,6 +3,7 @@
 # schifra
 #
 #############################################################
+
 SCHIFRA_VERSION = 0.0.1
 SCHIFRA_SITE = http://www.schifra.com/downloads
 SCHIFRA_SOURCE = schifra.tgz

@@ -3,6 +3,7 @@
 # python-nfc
 #
 #############################################################
+
 PYTHON_NFC_VERSION = 142
 PYTHON_NFC_SITE = https://launchpad.net/nfcpy
 PYTHON_NFC_SITE_METHOD = bzr

@@ -3,6 +3,7 @@
 # lvm2
 #
 #############################################################
+
 LVM2_VERSION = 2.02.79
 LVM2_SOURCE = LVM2.$(LVM2_VERSION).tgz
 LVM2_SITE = ftp://sources.redhat.com/pub/lvm2/releases

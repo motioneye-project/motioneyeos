@@ -3,6 +3,7 @@
 # slang
 #
 #############################################################
+
 SLANG_VERSION = 1.4.5
 SLANG_SOURCE = slang-$(SLANG_VERSION)-mini.tar.bz2
 SLANG_SITE = http://www.uclibc.org/

@@ -3,6 +3,7 @@
 # input-tools
 #
 #############################################################
+
 INPUT_TOOLS_VERSION = 20051019
 INPUT_TOOLS_SOURCE  = joystick_$(INPUT_TOOLS_VERSION).orig.tar.gz
 INPUT_TOOLS_PATCH   = joystick_$(INPUT_TOOLS_VERSION)-5.diff.gz

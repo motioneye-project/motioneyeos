@@ -3,6 +3,7 @@
 # newt
 #
 #############################################################
+
 NEWT_VERSION         = 0.51.0
 NEWT_SITE            = http://www.uclibc.org/
 NEWT_SOURCE          = newt-$(NEWT_VERSION).tar.bz2

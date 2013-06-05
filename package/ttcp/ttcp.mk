@@ -3,6 +3,7 @@
 # ttcp
 #
 #############################################################
+
 #
 TTCP_VERSION =
 TTCP_SITE    = http://ftp.sunet.se/pub/network/monitoring/ttcp

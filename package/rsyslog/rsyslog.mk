@@ -3,6 +3,7 @@
 # rsyslog
 #
 #############################################################
+
 RSYSLOG_VERSION = 5.8.0
 RSYSLOG_SITE = http://rsyslog.com/files/download/rsyslog/
 RSYSLOG_DEPENDENCIES = zlib

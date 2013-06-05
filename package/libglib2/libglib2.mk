@@ -3,6 +3,7 @@
 # libglib2
 #
 #############################################################
+
 LIBGLIB2_VERSION_MAJOR = 2.30
 LIBGLIB2_VERSION_MINOR = 3
 LIBGLIB2_VERSION = $(LIBGLIB2_VERSION_MAJOR).$(LIBGLIB2_VERSION_MINOR)

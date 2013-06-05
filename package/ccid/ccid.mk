@@ -3,6 +3,7 @@
 # CCID
 #
 ##########################################################
+
 CCID_VERSION = 1.4.8
 CCID_SOURCE = ccid-$(CCID_VERSION).tar.bz2
 CCID_SITE = http://alioth.debian.org/frs/download.php/3768
