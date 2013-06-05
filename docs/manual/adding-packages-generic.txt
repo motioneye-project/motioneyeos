@@ -342,6 +342,12 @@ information is (assuming the package name is +libfoo+) :
   non-opensource packages: Buildroot will not save the source code for this
   package when collecting the +legal-info+.
 
+* +LIBFOO_FLAT_STACKSIZE+ defines the stack size of an application built into
+  the FLAT binary format. The application stack size on the NOMMU architecture
+  processors can't be enlarged at run time. The default stack size for the
+  FLAT binary format is only 4k bytes. If the application consumes more stack,
+  append the required number here.
+
 The recommended way to define these variables is to use the following
 syntax:
 
