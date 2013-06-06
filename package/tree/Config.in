@@ -1,0 +1,13 @@
+config BR2_PACKAGE_TREE
+	bool "tree"
+	depends on BR2_USE_WCHAR
+	help
+	  Tree is a recursive directory listing command that produces
+	  a depth indented listing of files, which is colorized ala
+	  dircolors if the LS_COLORS environment variable is set and
+	  output is to tty.
+
+	  http://mama.indstate.edu/users/ice/tree/
+
+comment "tree requires a toolchain with WCHAR support"
+	depends on !BR2_USE_WCHAR
