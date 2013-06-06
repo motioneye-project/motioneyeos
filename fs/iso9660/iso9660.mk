@@ -1,11 +1,11 @@
-#############################################################
+################################################################################
 #
 # Build the iso96600 root filesystem image
 #
 # Cannot be converted to the ROOTFS_TARGET infrastructure, because of
 # the temporary construction in ISO9660_TARGET_DIR.
 #
-#############################################################
+################################################################################
 
 ISO9660_TARGET_DIR=$(BUILD_DIR)/iso9660
 ISO9660_BOOT_MENU:=$(call qstrip,$(BR2_TARGET_ROOTFS_ISO9660_BOOT_MENU))
