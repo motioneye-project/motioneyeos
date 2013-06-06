@@ -3,6 +3,7 @@
 # Build the cramfs root filesystem image
 #
 #############################################################
+
 ifeq ($(BR2_ENDIAN),"BIG")
 CRAMFS_OPTS=-b
 else
