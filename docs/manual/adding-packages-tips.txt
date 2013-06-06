@@ -58,7 +58,7 @@ enough):
 
 ------------------------
 FOO_VERSION = 1234567
-FOO_SITE = http://github.com/<user>/<package>/tarball/<branch>
+FOO_SITE = http://github.com/<user>/<package>/tarball/$(FOO_VERSION)
 ------------------------
 
 Note that the name of the tarball is the default +foo-1234567.tar.gz+
