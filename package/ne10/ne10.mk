@@ -7,7 +7,7 @@
 # We use a Git commit ID because the last tagged version is more than
 # one year old.
 NE10_VERSION = 88c18f0
-NE10_SITE = http://github.com/projectNe10/Ne10/tarball/master
+NE10_SITE = http://github.com/projectNe10/Ne10/tarball/$(NE10_VERSION)
 NE10_LICENSE = BSD-3c or Apache 2.0
 NE10_LICENSE_FILES = doc/LICENSE
 
