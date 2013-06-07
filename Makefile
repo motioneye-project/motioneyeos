@@ -193,11 +193,11 @@ BUILD_DIR:=$(BASE_DIR)/build
 
 ifeq ($(BR2_HAVE_DOT_CONFIG),y)
 
-#############################################################
+################################################################################
 #
 # Hide troublesome environment variables from sub processes
 #
-#############################################################
+################################################################################
 unexport CROSS_COMPILE
 unexport ARCH
 unexport CC
@@ -212,12 +212,12 @@ unexport TERMINFO
 
 GNU_HOST_NAME:=$(shell support/gnuconfig/config.guess)
 
-##############################################################
+################################################################################
 #
 # The list of stuff to build for the target toolchain
 # along with the packages to build for the target.
 #
-##############################################################
+################################################################################
 
 ifeq ($(BR2_CCACHE),y)
 BASE_TARGETS += host-ccache
@@ -296,12 +296,12 @@ export HOST_DIR
 export BINARIES_DIR
 export BASE_DIR
 
-#############################################################
+################################################################################
 #
 # You should probably leave this stuff alone unless you know
 # what you are doing.
 #
-#############################################################
+################################################################################
 
 all: world
 
@@ -408,12 +408,12 @@ world: toolchain $(TARGETS_ALL)
 	$(TOOLCHAIN_DIR) $(BUILD_DIR) $(STAGING_DIR) $(TARGET_DIR) \
 	$(HOST_DIR) $(BINARIES_DIR) $(STAMP_DIR)
 
-#############################################################
+################################################################################
 #
 # staging and target directories do NOT list these as
 # dependencies anywhere else
 #
-#############################################################
+################################################################################
 $(TOOLCHAIN_DIR) $(BUILD_DIR) $(HOST_DIR) $(BINARIES_DIR) $(STAMP_DIR) $(LEGAL_INFO_DIR) $(REDIST_SOURCES_DIR):
 	@mkdir -p $@
 
@@ -716,11 +716,11 @@ source-check:
 
 .PHONY: defconfig savedefconfig
 
-#############################################################
+################################################################################
 #
 # Cleanup and misc junk
 #
-#############################################################
+################################################################################
 
 # outputmakefile generates a Makefile in the output directory, if using a
 # separate output directory. This allows convenient use of make in the

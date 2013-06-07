@@ -576,12 +576,12 @@ uclibc-test-clean:
 uclibc-test-dirclean:
 	rm -rf $(TARGET_DIR)/root/uClibc
 
-#############################################################
+################################################################################
 #
 # uClibc for the target just needs its header files
 # and whatnot installed.
 #
-#############################################################
+################################################################################
 
 $(TARGET_DIR)/usr/lib/libc.a: $(STAGING_DIR)/usr/lib/libc.a
 	$(Q)$(call MESSAGE,"Installing uClibc development files to target dir")

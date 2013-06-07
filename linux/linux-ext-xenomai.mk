@@ -1,8 +1,8 @@
-##################################################
+################################################################################
 # Linux Adeos/Xenomai extensions
 #
 # Patch the linux kernel with xenomai extension
-##################################################
+################################################################################
 
 ifeq ($(BR2_LINUX_KERNEL_EXT_XENOMAI),y)
 # Add dependency to xenomai (user-space) which provide ksrc part

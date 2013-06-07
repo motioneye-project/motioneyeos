@@ -133,11 +133,11 @@ EXTRA_GCC_CONFIG_OPTIONS += \
 EXTRA_TARGET_GCC_CONFIG_OPTIONS += \
 	$(call qstrip,$(BR2_EXTRA_TARGET_GCC_CONFIG_OPTIONS))
 
-#############################################################
+################################################################################
 #
 # Setup some initial stuff
 #
-#############################################################
+################################################################################
 
 GCC_STAGING_PREREQ+=$(STAGING_DIR)/usr/lib/libc.a
 
@@ -260,11 +260,11 @@ endif
 endif
 	touch $@
 
-#############################################################
+################################################################################
 #
 # build the first pass gcc compiler
 #
-#############################################################
+################################################################################
 GCC_BUILD_DIR1:=$(TOOLCHAIN_DIR)/gcc-$(GCC_VERSION)-initial
 
 $(GCC_BUILD_DIR1)/.configured: $(GCC_DIR)/.patched
@@ -327,11 +327,11 @@ gcc_initial-clean:
 gcc_initial-dirclean:
 	rm -rf $(GCC_BUILD_DIR1) $(GCC_DIR)
 
-#############################################################
+################################################################################
 #
 # build the second pass gcc compiler
 #
-#############################################################
+################################################################################
 GCC_BUILD_DIR2:=$(TOOLCHAIN_DIR)/gcc-$(GCC_VERSION)-intermediate
 
 # The --without-headers option stopped working with gcc 3.0 and has never been
@@ -403,12 +403,12 @@ gcc_intermediate-clean:
 gcc_intermediate-dirclean:
 	rm -rf $(GCC_BUILD_DIR2) $(GCC_DIR)
 
-#############################################################
+################################################################################
 #
 # third pass compiler build. Build the compiler targeting
 # the newly built shared uClibc library.
 #
-#############################################################
+################################################################################
 #
 # Sigh... I had to rework things because using --with-gxx-include-dir
 # causes issues with include dir search order for g++. This seems to
@@ -538,11 +538,11 @@ gcc-clean:
 gcc-dirclean: gcc_initial-dirclean
 	rm -rf $(GCC_BUILD_DIR3)
 
-#############################################################
+################################################################################
 #
 # Next build target gcc compiler
 #
-#############################################################
+################################################################################
 GCC_BUILD_DIR4:=$(BUILD_DIR)/gcc-$(GCC_VERSION)-target
 
 $(GCC_BUILD_DIR4)/.prepared: $(STAMP_DIR)/gcc_libs_target_installed

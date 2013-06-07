@@ -1,8 +1,8 @@
-##################################################
+################################################################################
 # Linux RTAI extensions
 #
 # Patch the linux kernel with RTAI extension
-##################################################
+################################################################################
 
 ifeq ($(BR2_LINUX_KERNEL_EXT_RTAI),y)
 # Add dependency to RTAI (user-space) which provide kernel patches

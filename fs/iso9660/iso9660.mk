@@ -36,11 +36,11 @@ $(BINARIES_DIR)/rootfs.iso9660: host-cdrkit host-fakeroot linux rootfs-cpio grub
 
 rootfs-iso9660: $(BINARIES_DIR)/rootfs.iso9660
 
-#############################################################
+################################################################################
 #
 # Toplevel Makefile options
 #
-#############################################################
+################################################################################
 ifeq ($(BR2_TARGET_ROOTFS_ISO9660),y)
 TARGETS+=rootfs-iso9660
 endif

@@ -258,7 +258,7 @@ HOST_MAKE_ENV=PATH=$(HOST_PATH) \
 		PERLLIB="$(HOST_DIR)/usr/lib/perl"
 
 
-#######################################################################
+################################################################################
 # settings we need to pass to configure
 
 # does unaligned access trap?
@@ -294,7 +294,7 @@ TARGET_CONFIGURE_ARGS= \
 	lt_cv_sys_lib_search_path_spec="" \
 	$(BR2_AC_CV_C_BIGENDIAN)
 
-#######################################################################
+################################################################################
 
 ifeq ($(BR2_ENABLE_LOCALE),y)
 DISABLE_NLS:=
