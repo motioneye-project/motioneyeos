@@ -5,7 +5,7 @@
 ################################################################################
 
 LIBGTK2_VERSION_MAJOR = 2.24
-LIBGTK2_VERSION_MINOR = 10
+LIBGTK2_VERSION_MINOR = 18
 LIBGTK2_VERSION = $(LIBGTK2_VERSION_MAJOR).$(LIBGTK2_VERSION_MINOR)
 
 LIBGTK2_SOURCE = gtk+-$(LIBGTK2_VERSION).tar.xz
@@ -74,19 +74,14 @@ LIBGTK2_CONF_OPT = --disable-glibtest \
 
 LIBGTK2_DEPENDENCIES = host-pkgconf host-libgtk2 libglib2 cairo pango atk gdk-pixbuf
 
-ifeq ($(BR2_PACKAGE_DIRECTFB),y)
-	LIBGTK2_CONF_OPT += --with-gdktarget=directfb
-	LIBGTK2_DEPENDENCIES += directfb
-endif
-
-ifeq ($(BR2_PACKAGE_XORG7),y)
-	LIBGTK2_CONF_OPT += \
-		--with-x \
-		--x-includes=$(STAGING_DIR)/usr/include/X11 \
-		--x-libraries=$(STAGING_DIR)/usr/lib \
-		--with-gdktarget=x11
-	LIBGTK2_DEPENDENCIES += xlib_libXcomposite fontconfig xlib_libX11 \
-		xlib_libXext xlib_libXrender
+# Xorg dependencies
+LIBGTK2_CONF_OPT += \
+	--with-x \
+	--x-includes=$(STAGING_DIR)/usr/include/X11 \
+	--x-libraries=$(STAGING_DIR)/usr/lib \
+	--with-gdktarget=x11
+LIBGTK2_DEPENDENCIES += xlib_libXcomposite fontconfig xlib_libX11 \
+	xlib_libXext xlib_libXrender
 
 ifeq ($(BR2_PACKAGE_XLIB_LIBXINERAMA),y)
 	LIBGTK2_CONF_OPT += --enable-xinerama
@@ -120,10 +115,6 @@ endif
 
 ifeq ($(BR2_PACKAGE_XLIB_LIBXDAMAGE),y)
 	LIBGTK2_DEPENDENCIES += xlib_libXdamage
-endif
-
-else
-	LIBGTK2_CONF_OPT += --without-x
 endif
 
 ifeq ($(BR2_PACKAGE_LIBPNG),y)
