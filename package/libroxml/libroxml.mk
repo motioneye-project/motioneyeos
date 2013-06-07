@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBROXML_VERSION = 2.2.1
+LIBROXML_VERSION = 2.2.2
 LIBROXML_SITE = http://libroxml.googlecode.com/files
 LIBROXML_INSTALL_STAGING = YES
 
