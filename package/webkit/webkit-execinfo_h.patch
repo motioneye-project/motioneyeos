@@ -1,0 +1,28 @@
+Fixes uclibc build as uclibc does not include backtrace functionality
+
+Signed-of-by: Spenser Gilliland <spenser@gillilanding.com>
+----
+Index: webkit-1.9.6/Source/WTF/wtf/Assertions.cpp
+===================================================================
+--- webkit-1.9.6.orig/Source/WTF/wtf/Assertions.cpp
++++ webkit-1.9.6/Source/WTF/wtf/Assertions.cpp
+@@ -61,8 +61,10 @@
+ #if (OS(DARWIN) || OS(LINUX)) && !OS(ANDROID)
+ #include <cxxabi.h>
+ #include <dlfcn.h>
++#if !defined(__UCLIBC__)
+ #include <execinfo.h>
+ #endif
++#endif
+ 
+ #if OS(ANDROID)
+ #include "android/log.h"
+@@ -268,7 +270,7 @@ void WTFReportArgumentAssertionFailure(c
+ 
+ void WTFGetBacktrace(void** stack, int* size)
+ {
+-#if (OS(DARWIN) || OS(LINUX)) && !OS(ANDROID)
++#if (OS(DARWIN) || OS(LINUX)) && !OS(ANDROID) && !defined(__UCLIBC__)
+     *size = backtrace(stack, *size);
+ #elif OS(WINDOWS) && !OS(WINCE)
+     // The CaptureStackBackTrace function is available in XP, but it is not defined
