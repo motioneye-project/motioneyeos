@@ -1,27 +1,29 @@
 Fix gio/gcancellable.c build when thread support is disabled
 
+Changes:
+	Updated for 2.36.1
+
 Signed-off-by: "Samuel Martin" <s.martin49@gmail.com>
+Signed-off-by: "Spenser Gilliland" <spenser@gillilanding.com>
 ---
---- a/gio/gcancellable.c	2013-05-14 23:08:25.514461348 +0200
-+++ b/gio/gcancellable.c	2013-05-14 23:10:23.347789625 +0200
-@@ -270,8 +270,10 @@ g_cancellable_reset (GCancellable *cance
+--- libglib2-2.36.1.orig/gio/gcancellable.c	2013-03-13 08:39:09.000000000 -0500
++++ libglib2-2.36.1/gio/gcancellable.c	2013-05-26 10:49:32.366019891 -0500
+@@ -267,7 +267,9 @@
    while (priv->cancelled_running)
      {
        priv->cancelled_running_waiting = TRUE;
 +#if defined(G_THREADS_ENABLED)
-       g_cond_wait (cancellable_cond,
-                    g_static_mutex_get_mutex (& G_LOCK_NAME (cancellable)));
+       g_cond_wait (&cancellable_cond, &cancellable_mutex);
 +#endif
      }
  
    if (priv->cancelled)
-@@ -619,8 +621,10 @@ g_cancellable_disconnect (GCancellable
+@@ -620,7 +622,9 @@
    while (priv->cancelled_running)
      {
        priv->cancelled_running_waiting = TRUE;
 +#if defined(G_THREADS_ENABLED)
-       g_cond_wait (cancellable_cond,
-                    g_static_mutex_get_mutex (& G_LOCK_NAME (cancellable)));
+       g_cond_wait (&cancellable_cond, &cancellable_mutex);
 +#endif
      }
  

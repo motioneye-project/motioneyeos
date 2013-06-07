@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-GLIBMM_VERSION_MAJOR = 2.30
+GLIBMM_VERSION_MAJOR = 2.36
 GLIBMM_VERSION_MINOR = 1
 GLIBMM_VERSION = $(GLIBMM_VERSION_MAJOR).$(GLIBMM_VERSION_MINOR)
 GLIBMM_LICENSE = LGPLv2.1+ (library), GPLv2+ (tools)
