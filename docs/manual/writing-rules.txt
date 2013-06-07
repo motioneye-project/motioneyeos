@@ -52,6 +52,18 @@ http://kernel.org/doc/Documentation/kbuild/kconfig-language.txt[].
 The +.mk+ file
 ~~~~~~~~~~~~~~
 
+* Header: The file starts with a header. It contains the module name,
+preferably in lowercase, enclosed between separators made of 80 hashes. A
+blank line is mandatory after the header:
++
+---------------------
+################################################################################
+#
+# libfoo
+#
+################################################################################
+---------------------
++
 * Assignment: use +=+ preceded and followed by one space:
 +
 ---------------------
