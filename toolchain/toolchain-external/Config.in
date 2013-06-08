@@ -6,7 +6,7 @@ choice
 config BR2_TOOLCHAIN_EXTERNAL_LINARO_2013_05
 	bool "Linaro 2013.05"
 	depends on BR2_arm
-	depends on BR2_cortex_a5 || BR2_cortex_a8 || BR2_cortex_a9 || BR2_cortex_a15
+	depends on BR2_GCC_TARGET_ARCH = "armv7-a"
 	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86"
 	select BR2_TOOLCHAIN_EXTERNAL_GLIBC
 	select BR2_TOOLCHAIN_HAS_NATIVE_RPC
@@ -25,7 +25,7 @@ config BR2_TOOLCHAIN_EXTERNAL_LINARO_2013_05
 config BR2_TOOLCHAIN_EXTERNAL_LINARO_2013_04
 	bool "Linaro 2013.04"
 	depends on BR2_arm
-	depends on BR2_cortex_a5 || BR2_cortex_a8 || BR2_cortex_a9 || BR2_cortex_a15
+	depends on BR2_GCC_TARGET_ARCH = "armv7-a"
 	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86"
 	select BR2_TOOLCHAIN_EXTERNAL_GLIBC
 	select BR2_TOOLCHAIN_HAS_NATIVE_RPC
@@ -44,7 +44,7 @@ config BR2_TOOLCHAIN_EXTERNAL_LINARO_2013_04
 config BR2_TOOLCHAIN_EXTERNAL_LINARO_2013_03
 	bool "Linaro 2013.03"
 	depends on BR2_arm
-	depends on BR2_cortex_a5 || BR2_cortex_a8 || BR2_cortex_a9 || BR2_cortex_a15
+	depends on BR2_GCC_TARGET_ARCH = "armv7-a"
 	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86"
 	select BR2_TOOLCHAIN_EXTERNAL_GLIBC
 	select BR2_TOOLCHAIN_HAS_NATIVE_RPC
@@ -62,7 +62,7 @@ config BR2_TOOLCHAIN_EXTERNAL_LINARO_2013_03
 
 comment "Linaro toolchains available for Cortex-A{5,8,9,15}"
 	depends on BR2_arm
-	depends on !BR2_cortex_a5 && !BR2_cortex_a8 && !BR2_cortex_a9 && !BR2_cortex_a15
+	depends on BR2_GCC_TARGET_ARCH != "armv7-a"
 
 config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_ARM201305
 	bool "Sourcery CodeBench ARM 2013.05"
@@ -140,7 +140,7 @@ config BR2_TOOLCHAIN_EXTERNAL_ARAGO_ARMV7A_201109
 	bool "Arago ARMv7 2011.09"
 	depends on BR2_arm
 	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86"
-	depends on BR2_cortex_a5 || BR2_cortex_a8 || BR2_cortex_a9 || BR2_cortex_a15
+	depends on BR2_GCC_TARGET_ARCH = "armv7-a"
 	select BR2_TOOLCHAIN_EXTERNAL_GLIBC
 	select BR2_TOOLCHAIN_HAS_NATIVE_RPC
 	select BR2_INSTALL_LIBSTDCPP
