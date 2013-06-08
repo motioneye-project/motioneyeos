@@ -1,0 +1,16 @@
+Remove hardcoded path to libnl3 include directory
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/configure.in
+===================================================================
+--- a/configure.in
++++ b/configure.in
+@@ -445,7 +445,6 @@
+ 			AC_DEFINE(HAVE_LIBNL_3_x,1,[if libnl exists and is version 3.x])
+ 			AC_DEFINE(HAVE_LIBNL_NLE,1,[libnl has NLE_FAILURE])
+ 			AC_DEFINE(HAVE_LIBNL_SOCKETS,1,[libnl has new-style socket api])
+-			V_INCLS="$V_INCLS -I/usr/include/libnl3"
+ 			have_any_nl="yes"
+ 		])
+ 
