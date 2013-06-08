@@ -472,7 +472,7 @@ RSYNC_VCS_EXCLUSIONS = \
 
 $(BUILD_DIR)/.root:
 	mkdir -p $(TARGET_DIR)
-	rsync -a $(RSYNC_VCS_EXCLUSIONS) \
+	rsync -a --ignore-times $(RSYNC_VCS_EXCLUSIONS) \
 		--chmod=Du+w --exclude .empty --exclude '*~' \
 		$(TARGET_SKELETON)/ $(TARGET_DIR)/
 	$(INSTALL) -m 0644 support/misc/target-dir-warning.txt $(TARGET_DIR_WARNING_FILE)
