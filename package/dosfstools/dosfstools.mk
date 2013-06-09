@@ -5,7 +5,7 @@
 ################################################################################
 
 DOSFSTOOLS_VERSION = 3.0.16
-DOSFSTOOLS_SITE = http://fossies.org/linux/misc
+DOSFSTOOLS_SITE = http://daniel-baumann.ch/files/software/dosfstools
 DOSFSTOOLS_LICENSE = GPLv3+
 DOSFSTOOLS_LICENSE_FILES = COPYING
 DOSFSTOOLS_LDFLAGS = $(TARGET_LDFLAGS)
