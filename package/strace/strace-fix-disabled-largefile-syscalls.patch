@@ -1,8 +1,8 @@
 --- a/syscall.c
 +++ b/syscall.c
 @@ -125,6 +125,18 @@
- #define TP TRACE_PROCESS
- #define TS TRACE_SIGNAL
+ #define NF SYSCALL_NEVER_FAILS
+ #define MA MAX_ARGS
  
 +#ifndef HAVE_STATFS64
 +/*
@@ -16,6 +16,6 @@
 +#define sys_fstatfs64   sys_fstatfs
 +#endif
 +
- static const struct sysent sysent0[] = {
+ const struct_sysent sysent0[] = {
  #include "syscallent.h"
  };
