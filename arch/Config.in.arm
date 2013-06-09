@@ -36,6 +36,9 @@ config BR2_arm1176jzf_s
 config BR2_cortex_a5
 	bool "cortex-A5"
 	select BR2_ARM_CPU_MAYBE_HAS_NEON
+config BR2_cortex_a7
+	bool "cortex-A7"
+	select BR2_ARM_CPU_HAS_NEON
 config BR2_cortex_a8
 	bool "cortex-A8"
 	select BR2_ARM_CPU_HAS_NEON
@@ -113,6 +116,7 @@ config BR2_GCC_TARGET_TUNE
 	default "arm1176jz-s"	if BR2_arm1176jz_s
 	default "arm1176jzf-s"	if BR2_arm1176jzf_s
 	default "cortex-a5"	if BR2_cortex_a5
+	default "cortex-a7"	if BR2_cortex_a7
 	default "cortex-a8"	if BR2_cortex_a8
 	default "cortex-a9"	if BR2_cortex_a9
 	default "cortex-a15"	if BR2_cortex_a15
@@ -134,6 +138,7 @@ config BR2_GCC_TARGET_ARCH
 	default "armv6zk"	if BR2_arm1176jz_s
 	default "armv6zk"	if BR2_arm1176jzf_s
 	default "armv7-a"	if BR2_cortex_a5
+	default "armv7-a"	if BR2_cortex_a7
 	default "armv7-a"	if BR2_cortex_a8
 	default "armv7-a"	if BR2_cortex_a9
 	default "armv7-a"	if BR2_cortex_a15
