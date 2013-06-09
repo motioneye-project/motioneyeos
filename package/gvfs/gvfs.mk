@@ -4,10 +4,10 @@
 #
 ################################################################################
 
-GVFS_VERSION_MAJOR = 1.8
+GVFS_VERSION_MAJOR = 1.16
 GVFS_VERSION_MINOR = 2
 GVFS_VERSION = $(GVFS_VERSION_MAJOR).$(GVFS_VERSION_MINOR)
-GVFS_SOURCE = gvfs-$(GVFS_VERSION).tar.gz
+GVFS_SOURCE = gvfs-$(GVFS_VERSION).tar.xz
 GVFS_SITE = http://ftp.gnome.org/pub/GNOME/sources/gvfs/$(GVFS_VERSION_MAJOR)
 GVFS_INSTALL_STAGING = YES
 GVFS_DEPENDENCIES = host-pkgconf host-libglib2 libglib2 dbus shared-mime-info
