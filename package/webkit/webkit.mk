@@ -8,8 +8,8 @@ WEBKIT_VERSION = 1.9.6
 WEBKIT_SITE = http://www.webkitgtk.org/releases
 WEBKIT_SOURCE = webkit-$(WEBKIT_VERSION).tar.xz
 WEBKIT_INSTALL_STAGING = YES
-WEBKIT_DEPENDENCIES = host-flex host-bison host-gperf icu libcurl libxml2 \
-	libxslt libgtk2 sqlite enchant libsoup jpeg libgail
+WEBKIT_DEPENDENCIES = host-ruby host-flex host-bison host-gperf icu libcurl \
+	libxml2 libxslt libgtk2 sqlite enchant libsoup jpeg libgail
 
 # webkit-disable-tests.patch changes configure.ac therefore autoreconf required
 WEBKIT_AUTORECONF = YES
