@@ -4,9 +4,11 @@
 #
 ################################################################################
 
-PULSEAUDIO_VERSION = 3.0
+PULSEAUDIO_VERSION = 4.0
 PULSEAUDIO_SITE = http://freedesktop.org/software/pulseaudio/releases/
 PULSEAUDIO_INSTALL_STAGING = YES
+PULSEAUDIO_LICENSE = LGPLv2.1+ (specific license for modules, see LICENSE file)
+PULSEAUDIO_LICENSE_FILES = LICENSE GPL LGPL
 PULSEAUDIO_CONF_OPT = \
 	--localstatedir=/var \
 	--disable-default-build-tests \
@@ -21,7 +23,6 @@ PULSEAUDIO_DEPENDENCIES = \
 	$(if $(BR2_PACKAGE_LIBSAMPLERATE),libsamplerate) \
 	$(if $(BR2_PACKAGE_ALSA_LIB),alsa-lib) \
 	$(if $(BR2_PACKAGE_LIBGLIB2),libglib2) \
-	$(if $(BR2_PACKAGE_LIBGTK2),libgtk2) \
 	$(if $(BR2_PACKAGE_AVAHI_DAEMON),avahi) \
 	$(if $(BR2_PACKAGE_DBUS),dbus) \
 	$(if $(BR2_PACKAGE_BLUEZ_UTILS),bluez_utils) \
@@ -31,11 +32,6 @@ PULSEAUDIO_DEPENDENCIES = \
 	$(if $(BR2_PACKAGE_WEBRTC_AUDIO_PROCESSING),webrtc-audio-processing) \
 	$(if $(BR2_PACKAGE_SYSTEMD),systemd)
 
-# One patch touches configure.ac. We unconditionnally need libglib2
-# because configure.ac uses AM_GLIB_GNU_GETTEXT. This unconditionnal
-# dependency can be removed once the patch is removed.
-PULSEAUDIO_AUTORECONF = YES
-PULSEAUDIO_DEPENDENCIES += libglib2
 
 ifeq ($(BR2_PACKAGE_ORC),y)
 PULSEAUDIO_DEPENDENCIES += orc
@@ -64,11 +60,6 @@ PULSEAUDIO_CONF_OPT += $(if $(BR2_ARM_ENABLE_NEON),--enable-neon-opt=yes,--enabl
 # pulseaudio alsa backend needs pcm/mixer apis
 ifneq ($(BR2_PACKAGE_ALSA_LIB_PCM)$(BR2_PACKAGE_ALSA_LIB_MIXER),yy)
 PULSEAUDIO_CONF_OPT += --disable-alsa
-endif
-
-# gtk support needs x backend
-ifneq ($(BR2_PACKAGE_LIBGTK2)$(BR2_PACKAGE_XORG),yy)
-PULSEAUDIO_CONF_OPT += --disable-gtk2
 endif
 
 ifeq ($(BR2_PACKAGE_LIBXCB)$(BR2_PACKAGE_XLIB_LIBSM)$(BR2_PACKAGE_XLIB_LIBXTST),yyy)
