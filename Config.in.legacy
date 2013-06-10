@@ -41,6 +41,31 @@ comment "will fail.                                          "
 endif
 
 #
+# Legacy options since 2013.08
+#
+
+config BR2_PACKAGE_DOSFSTOOLS_DOSFSCK
+	bool "dosfstools dosfsck renamed to fsck.fat"
+	select BR2_LEGACY
+	select BR2_PACKAGE_DOSFSTOOLS_FSCK_FAT
+	help
+	  dosfsck was renamed upstream to fsck.fat for consistency.
+
+config BR2_PACKAGE_DOSFSTOOLS_DOSFSLABEL
+	bool "dosfstools dosfslabel renamed to fatlabel"
+	select BR2_LEGACY
+	select BR2_PACKAGE_DOSFSTOOLS_FATLABEL
+	help
+	  doslabel was renamed upstream to fatlabel for consistency.
+
+config BR2_PACKAGE_DOSFSTOOLS_MKDOSFS
+	bool "dosfstools mkdosfs renamed to mkfs.fat"
+	select BR2_LEGACY
+	select BR2_PACKAGE_DOSFSTOOLS_MKFS_FAT
+	help
+	  mkdosfs was renamed upstream to mkfs.fat for consistency.
+
+#
 # Legacy options since 2013.05
 #
 

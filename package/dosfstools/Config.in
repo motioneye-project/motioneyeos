@@ -8,23 +8,24 @@ config BR2_PACKAGE_DOSFSTOOLS
 
 	  http://www.daniel-baumann.ch/software/dosfstools/
 
-config BR2_PACKAGE_DOSFSTOOLS_MKDOSFS
-	bool "mkdosfs"
-	depends on BR2_PACKAGE_DOSFSTOOLS
+if BR2_PACKAGE_DOSFSTOOLS
+
+config BR2_PACKAGE_DOSFSTOOLS_FATLABEL
+	bool "fatlabel"
+	help
+	  Get or set the DOS FAT filesystem label.
+
+config BR2_PACKAGE_DOSFSTOOLS_FSCK_FAT
+	bool "fsck.fat"
+	help
+	  Check a DOS FAT filesystem.
+
+config BR2_PACKAGE_DOSFSTOOLS_MKFS_FAT
+	bool "mkfs.fat"
 	help
 	  Creates a DOS FAT filesystem on a device.
 
-config BR2_PACKAGE_DOSFSTOOLS_DOSFSCK
-	bool "dosfsck"
-	depends on BR2_PACKAGE_DOSFSTOOLS
-	help
-	  Checks a DOS FAT filesystem.
-
-config BR2_PACKAGE_DOSFSTOOLS_DOSFSLABEL
-	bool "dosfslabel"
-	depends on BR2_PACKAGE_DOSFSTOOLS
-	help
-	  Get or set the DOS FAT filesystem label.
+endif
 
 comment "dosfstools requires a toolchain with LARGEFILE and WCHAR support"
 	depends on !BR2_LARGEFILE || !BR2_USE_WCHAR
