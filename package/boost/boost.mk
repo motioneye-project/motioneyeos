@@ -12,7 +12,7 @@ BOOST_INSTALL_STAGING = YES
 
 TARGET_CC_VERSION = $(shell $(TARGET_CC) -dumpversion)
 
-BOOST_DEPENDENCIES = bzip2 zlib
+BOOST_DEPENDENCIES =
 
 BOOST_FLAGS =
 
@@ -46,6 +46,10 @@ BOOST_FLAGS += --with-icu=$(STAGING_DIR)/usr
 BOOST_DEPENDENCIES += icu
 else
 BOOST_FLAGS += --without-icu
+endif
+
+ifeq ($(BR2_PACKAGE_BOOST_IOSTREAMS),y)
+BOOST_DEPENDENCIES += bzip2 zlib
 endif
 
 BOOST_OPT += toolset=gcc \
