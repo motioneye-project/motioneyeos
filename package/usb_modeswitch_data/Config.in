@@ -1,9 +1,6 @@
 config BR2_PACKAGE_USB_MODESWITCH_DATA
 	bool "usb_modeswitch_data"
 	select BR2_PACKAGE_USB_MODESWITCH
-	# tcl is a runtime dependency
-	select BR2_PACKAGE_TCL
-	select BR2_PACKAGE_TCL_TCLSH
 	help
 	  USB mode switch data
 	  Contains udev rules and events to allow usb_modeswitch to
