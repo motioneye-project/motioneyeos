@@ -42,6 +42,10 @@ config BR2_PACKAGE_SDL_IMAGE_TIFF
 	bool "enable TIFF file format support"
 	select BR2_PACKAGE_TIFF
 
+config BR2_PACKAGE_SDL_IMAGE_WEBP
+	bool "enable WEBP file format support"
+	select BR2_PACKAGE_WEBP
+
 config BR2_PACKAGE_SDL_IMAGE_XCF
 	bool "enable XCF file format support"
 
