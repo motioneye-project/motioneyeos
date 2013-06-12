@@ -34,6 +34,9 @@ patchdir=${2-../kernel-patches}
 shift 2
 patchpattern=${@-*}
 
+# use a well defined sorting order
+export LC_COLLATE=C
+
 if [ ! -d "${builddir}" ] ; then
     echo "Aborting.  '${builddir}' is not a directory."
     exit 1
