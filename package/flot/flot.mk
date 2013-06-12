@@ -1,4 +1,4 @@
-FLOT_VERSION = 0.8.0
+FLOT_VERSION = 0.8.1
 FLOT_SITE = http://www.flotcharts.org/downloads
 FLOT_LICENSE = MIT
 FLOT_LICENSE_FILES = LICENSE.txt
