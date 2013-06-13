@@ -18,5 +18,13 @@ FREETYPE_CONFIG_SCRIPTS = freetype-config
 
 HOST_FREETYPE_DEPENDENCIES = host-pkgconf
 
+# Extra fixing since includedir and libdir are expanded from configure values
+define FREETYPE_FIX_CONFIG_FILE
+	$(SED) 's:^includedir=.*:includedir="$${prefix}/include":' \
+		-e 's:^libdir=.*:libdir="$${exec_prefix}/lib":' \
+		$(STAGING_DIR)/usr/bin/freetype-config
+endef
+FREETYPE_POST_INSTALL_STAGING_HOOKS += FREETYPE_FIX_CONFIG_FILE
+
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
