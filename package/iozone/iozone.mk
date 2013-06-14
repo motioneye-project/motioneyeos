@@ -11,13 +11,12 @@ IOZONE_LICENSE = IOzone license (NO DERIVED WORKS ALLOWED)
 # IOzone license details can be found at:
 # http://www.iozone.org/docs/Iozone_License.txt
 
-ifeq ($(BR2_TOOLCHAIN_BUILDROOT)$(BR2_TOOLCHAIN_EXTERNAL_UCLIBC)$(BR2_TOOLCHAIN_CTNG_uClibc),y)
-# aio.h is not available on uClibc. Select "generic" target that does not use it.
-IOZONE_TARGET = generic
-else ifeq ($(BR2_powerpc),y)
-IOZONE_TARGET = linux-powerpc
-else ifeq ($(BR2_sparc),y)
-IOZONE_TARGET = linux-sparc
+# No threading target is non-AIO as well
+ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),)
+IOZONE_TARGET = linux-noth
+# AIO support not available on uClibc, use the linux (non-aio) target.
+else ifeq ($(BR2_TOOLCHAIN_BUILDROOT)$(BR2_TOOLCHAIN_EXTERNAL_UCLIBC)$(BR2_TOOLCHAIN_CTNG_uClibc),y)
+IOZONE_TARGET = linux-noaio
 else
 IOZONE_TARGET = linux
 endif
