@@ -44,18 +44,10 @@ config BR2_TOOLCHAIN_BUILDROOT_LOCALE
 config BR2_TOOLCHAIN_BUILDROOT_CXX
 	bool "Enable C++ support"
 	select BR2_INSTALL_LIBSTDCPP
-	depends on !(! BR2_GCC_SUPPORTS_FINEGRAINEDMTUNE && \
-		       BR2_TOOLCHAIN_BUILDROOT_LOCALE    && \
-		       BR2_UCLIBC_VERSION_0_9_31)
 	help
 	  Enable this option if you want your toolchain to support the
 	  C++ language and you want C++ libraries to be installed on
 	  your target system.
-
-comment "C++ support broken in uClibc 0.9.31 with locale enabled with gcc 4.2"
-	depends on !BR2_GCC_SUPPORTS_FINEGRAINEDMTUNE && \
-		    BR2_TOOLCHAIN_BUILDROOT_LOCALE    && \
-		    BR2_UCLIBC_VERSION_0_9_31
 
 config BR2_TOOLCHAIN_BUILDROOT_USE_SSP
 	bool "Enable stack protection support"
@@ -68,7 +60,7 @@ config BR2_TOOLCHAIN_BUILDROOT_USE_SSP
 
 choice
 	prompt "Thread library implementation"
-	default BR2_PTHREADS_NATIVE if (!BR2_UCLIBC_VERSION_0_9_31) && !BR2_ARM_OABI && !(BR2_avr32 || BR2_xtensa)
+	default BR2_PTHREADS_NATIVE if !BR2_ARM_OABI && !(BR2_avr32 || BR2_xtensa)
 	default BR2_PTHREADS_OLD
 	help
 	  Use this option to select the thread library implementation
@@ -92,7 +84,6 @@ choice
 	config BR2_PTHREADS_NATIVE
 		bool "Native POSIX Threading (NPTL)"
 	        select BR2_TOOLCHAIN_HAS_THREADS
-		depends on !BR2_UCLIBC_VERSION_0_9_31
 		depends on !BR2_ARM_OABI
 		depends on !BR2_x86_i386
 		depends on !BR2_avr32

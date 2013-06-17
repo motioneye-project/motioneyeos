@@ -4,8 +4,7 @@ choice
 	prompt "Binutils Version"
 	depends on !BR2_arc
 	default BR2_BINUTILS_VERSION_2_21 if (BR2_mips || BR2_mipsel || BR2_sh)
-	default BR2_BINUTILS_VERSION_2_21_1 if (!BR2_UCLIBC_VERSION_0_9_31)
-	default BR2_BINUTILS_VERSION_2_21
+	default BR2_BINUTILS_VERSION_2_21_1
 	help
 	  Select the version of binutils you wish to use.
 
@@ -22,19 +21,19 @@ choice
 		bool "binutils 2.21"
 
 	config BR2_BINUTILS_VERSION_2_21_1
-		depends on !(BR2_avr32 || BR2_UCLIBC_VERSION_0_9_31)
+		depends on !BR2_avr32
 		bool "binutils 2.21.1"
 
 	config BR2_BINUTILS_VERSION_2_22
-		depends on !(BR2_avr32 || BR2_UCLIBC_VERSION_0_9_31)
+		depends on !BR2_avr32
 		bool "binutils 2.22"
 
 	config BR2_BINUTILS_VERSION_2_23_1
-		depends on !(BR2_avr32 || BR2_UCLIBC_VERSION_0_9_31)
+		depends on !BR2_avr32
 		bool "binutils 2.23.1"
 
 	config BR2_BINUTILS_VERSION_2_23_2
-		depends on !(BR2_avr32 || BR2_UCLIBC_VERSION_0_9_31)
+		depends on !BR2_avr32
 		bool "binutils 2.23.2"
 
 endchoice
