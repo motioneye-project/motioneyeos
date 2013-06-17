@@ -1,0 +1,6 @@
+config BR2_PACKAGE_LBASE64
+	bool "lbase64"
+	help
+	  A base64 library for Lua
+
+	  http://luaforge.net/projects/lbase64/
