@@ -1,0 +1,7 @@
+config BR2_PACKAGE_LUA_EV
+	bool "lua-ev"
+	select BR2_PACKAGE_LIBEV
+	help
+	  Get access to the libev library from Lua.
+
+	  https://github.com/brimworks/lua-ev
