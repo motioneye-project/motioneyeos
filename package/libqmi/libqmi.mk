@@ -1,0 +1,16 @@
+################################################################################
+#
+# libqmi
+#
+################################################################################
+
+LIBQMI_VERSION = 1.4.0
+LIBQMI_SITE    = http://www.freedesktop.org/software/libqmi/
+LIBQMI_SOURCE  = libqmi-$(LIBQMI_VERSION).tar.xz
+LIBQMI_LICENSE = LGPLv2+ (library), GPLv2+ (programs)
+LIBQMI_LICENSE_FILES = COPYING
+LIBQMI_INSTALL_STAGING = YES
+
+LIBQMI_DEPENDENCIES = libglib2
+
+$(eval $(autotools-package))
