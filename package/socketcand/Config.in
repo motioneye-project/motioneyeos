@@ -1,6 +1,5 @@
 config BR2_PACKAGE_SOCKETCAND
 	bool "socketcand"
-	select BR2_PACKAGE_LIBCONFIG
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	help
 	  Socketcand is a daemon that provides access to CAN interfaces
