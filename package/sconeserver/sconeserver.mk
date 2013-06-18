@@ -6,7 +6,7 @@
 
 # Release 0.6.0 doesn't build cleanly, so use a recent
 # Subversion trunk snapshot.
-SCONESERVER_VERSION = 211
+SCONESERVER_VERSION = 212
 SCONESERVER_SITE = svn://svn.code.sf.net/p/sconeserver/code/trunk
 SCONESERVER_SITE_METHOD = svn
 SCONESERVER_LICENSE = GPLv2+
