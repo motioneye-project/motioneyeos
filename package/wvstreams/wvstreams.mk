@@ -6,7 +6,7 @@
 
 WVSTREAMS_VERSION = 4.6.1
 WVSTREAMS_SITE = http://wvstreams.googlecode.com/files
-WVSTREAMS_DEPENDENCIES = openssl zlib
+WVSTREAMS_DEPENDENCIES = openssl zlib host-pkgconf
 WVSTREAMS_INSTALL_STAGING = YES
 
 WVSTREAMS_LICENSE = LGPLv2+
