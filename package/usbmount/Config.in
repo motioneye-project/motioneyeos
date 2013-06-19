@@ -1,16 +1,12 @@
 config BR2_PACKAGE_USBMOUNT
 	bool "usbmount"
-	depends on BR2_LARGEFILE # util-linux
-	depends on BR2_USE_WCHAR # util-linux
 	depends on BR2_PACKAGE_UDEV
 	select BR2_PACKAGE_LOCKFILE_PROGS
-	select BR2_PACKAGE_UTIL_LINUX
-	select BR2_PACKAGE_UTIL_LINUX_LIBBLKID
 	help
 	  The usbmount package automatically mounts USB mass storage devices
 	  when they are plugged in, and unmounts them when they are removed.
 
 	  http://usbmount.alioth.debian.org/
 
-comment "usbmount requires a toolchain with LARGEFILE + WCHAR support"
-	depends on !(BR2_LARGEFILE && BR2_USE_WCHAR) && BR2_PACKAGE_UDEV
+comment "usbmount requires udev to be enabled"
+	depends on !BR2_PACKAGE_UDEV
