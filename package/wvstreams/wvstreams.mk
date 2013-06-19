@@ -24,6 +24,9 @@ WVSTREAMS_CONF_OPT += \
 	--without-pam \
 	--disable-warnings
 
+# needed for openssl detection when statically linking (as ssl needs lz)
+WVSTREAMS_CONF_ENV += LIBS=-lz
+
 ifeq ($(BR2_PACKAGE_DBUS),y)
 	WVSTREAMS_DEPENDENCIES += dbus
 	WVSTREAMS_CONF_OPT += --with-dbus
