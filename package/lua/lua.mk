@@ -44,6 +44,7 @@ endef
 define HOST_LUA_BUILD_CMDS
 	$(MAKE) \
 	CFLAGS="$(HOST_LUA_CFLAGS)" \
+	MYLDFLAGS="$(HOST_LDFLAGS)" \
 	MYLIBS="$(HOST_LUA_MYLIBS)" \
 	PKG_VERSION=$(LUA_VERSION) -C $(@D)/src all
 endef
