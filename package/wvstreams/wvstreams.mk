@@ -27,6 +27,10 @@ WVSTREAMS_CONF_OPT += \
 # needed for openssl detection when statically linking (as ssl needs lz)
 WVSTREAMS_CONF_ENV += LIBS=-lz
 
+ifneq ($(BR2_PREFER_STATIC_LIB),y)
+	WVSTREAMS_CONF_ENV += CFLAGS="$(TARGET_CFLAGS) -fPIC"
+endif
+
 ifeq ($(BR2_PACKAGE_DBUS),y)
 	WVSTREAMS_DEPENDENCIES += dbus
 	WVSTREAMS_CONF_OPT += --with-dbus
