@@ -1,3 +1,9 @@
+################################################################################
+#
+# explorercanvas
+#
+################################################################################
+
 EXPLORERCANVAS_VERSION = r3
 EXPLORERCANVAS_SITE = http://explorercanvas.googlecode.com/files/
 EXPLORERCANVAS_SOURCE = excanvas_$(EXPLORERCANVAS_VERSION).zip

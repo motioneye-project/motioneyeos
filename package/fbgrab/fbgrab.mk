@@ -1,3 +1,9 @@
+################################################################################
+#
+# fbgrab
+#
+################################################################################
+
 FBGRAB_VERSION = 1.0
 FBGRAB_SOURCE = fbgrab-$(FBGRAB_VERSION).tar.gz
 FBGRAB_SITE = http://hem.bredband.net/gmogmo/fbgrab

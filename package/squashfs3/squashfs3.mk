@@ -1,3 +1,9 @@
+################################################################################
+#
+# squashfs3
+#
+################################################################################
+
 SQUASHFS3_VERSION=3.4
 SQUASHFS3_SOURCE=squashfs$(SQUASHFS3_VERSION).tar.gz
 SQUASHFS3_SITE=http://downloads.sourceforge.net/project/squashfs/squashfs/$(SQUASHFS3_VERSION)

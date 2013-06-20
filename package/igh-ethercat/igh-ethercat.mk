@@ -1,3 +1,9 @@
+################################################################################
+#
+# igh-ethercat
+#
+################################################################################
+
 IGH_ETHERCAT_VERSION = 1.5.1
 IGH_ETHERCAT_SITE    = http://etherlab.org/download/ethercat/
 IGH_ETHERCAT_SOURCE  = ethercat-$(IGH_ETHERCAT_VERSION).tar.bz2

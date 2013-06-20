@@ -1,3 +1,9 @@
+################################################################################
+#
+# cifs-utils
+#
+################################################################################
+
 CIFS_UTILS_VERSION = 6.0
 CIFS_UTILS_SOURCE  = cifs-utils-$(CIFS_UTILS_VERSION).tar.bz2
 CIFS_UTILS_SITE    = http://ftp.samba.org/pub/linux-cifs/cifs-utils

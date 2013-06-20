@@ -1,3 +1,9 @@
+################################################################################
+#
+# lttng-babeltrace
+#
+################################################################################
+
 LTTNG_BABELTRACE_SITE    = http://lttng.org/files/babeltrace/
 LTTNG_BABELTRACE_VERSION = 1.0.2
 LTTNG_BABELTRACE_SOURCE  = babeltrace-$(LTTNG_BABELTRACE_VERSION).tar.bz2
