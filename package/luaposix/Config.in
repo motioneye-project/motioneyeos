@@ -1,0 +1,11 @@
+config BR2_PACKAGE_LUAPOSIX
+	bool "luaposix"
+	help
+	  luaposix is a POSIX binding, including curses, for Lua 5.1
+	  and 5.2; Like most libraries it simply binds to C APIs on
+	  the underlying system, so it won't work on a non-POSIX
+	  system. However, it does try to detect the level of POSIX
+	  conformance of the underlying system and bind only available
+	  APIs
+
+	  https://github.com/luaposix/luaposix
