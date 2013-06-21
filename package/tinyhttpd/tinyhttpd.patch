@@ -73,7 +73,7 @@ diff -ur tinyhttpd-0.1.0/Makefile tinyhttpd-0.1.0-patched/Makefile
  
  httpd: httpd.c
 -	gcc -W -Wall -lsocket -lpthread -o httpd httpd.c
-+	$(CC) $(CFLAGS) $(LDFLAGS) -W -Wall -lpthread -o httpd httpd.c
++	$(CC) $(CFLAGS) $(LDFLAGS) -W -Wall -o httpd httpd.c
  
  clean:
 -	rm httpd
