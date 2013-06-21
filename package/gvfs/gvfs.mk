@@ -12,6 +12,10 @@ GVFS_SITE = http://ftp.gnome.org/pub/GNOME/sources/gvfs/$(GVFS_VERSION_MAJOR)
 GVFS_INSTALL_STAGING = YES
 GVFS_DEPENDENCIES = host-pkgconf host-libglib2 libglib2 dbus shared-mime-info
 
+# Export ac_cv_path_LIBGCRYPT_CONFIG unconditionally to prevent
+# build system from searching the host paths.
+GVFS_CONF_ENV = ac_cv_path_LIBGCRYPT_CONFIG=$(STAGING_DIR)/usr/bin/libgcrypt-config
+
 GVFS_CONF_OPT = \
 	--disable-gconf			\
 	--disable-cdda			\
@@ -40,6 +44,10 @@ GVFS_DEPENDENCIES += libfuse
 GVFS_CONF_OPT += --enable-fuse
 else
 GVFS_CONF_OPT += --disable-fuse
+endif
+
+ifeq ($(BR2_PACKAGE_LIBGCRYPT),y)
+GVFS_DEPENDENCIES += libgcrypt
 endif
 
 ifeq ($(BR2_PACKAGE_LIBSOUP),y)
