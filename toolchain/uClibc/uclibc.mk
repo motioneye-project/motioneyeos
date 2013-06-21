@@ -287,6 +287,18 @@ endif
 	$(SED) '/LINUXTHREADS_OLD/d' $(UCLIBC_DIR)/.oldconfig
 	$(SED) '/PTHREADS_DEBUG_SUPPORT/d' $(UCLIBC_DIR)/.oldconfig
 	$(SED) '/UCLIBC_HAS_THREADS_NATIVE/d' $(UCLIBC_DIR)/.oldconfig
+	$(SED) '/DODEBUG /d' $(UCLIBC_DIR)/.oldconfig
+	$(SED) '/DOSTRIP/d' $(UCLIBC_DIR)/.oldconfig
+ifeq ($(BR2_STRIP_none),y)
+	echo "# DOSTRIP is not set" >> $(UCLIBC_DIR)/.oldconfig
+else
+	echo "DOSTRIP=y" >> $(UCLIBC_DIR)/.oldconfig
+endif
+ifeq ($(BR2_ENABLE_DEBUG),y)
+	echo "DODEBUG=y" >> $(UCLIBC_DIR)/.oldconfig
+else
+	echo "# DODEBUG is not set" >> $(UCLIBC_DIR)/.oldconfig
+endif
 ifeq ($(BR2_PTHREADS_NONE),y)
 	echo "# UCLIBC_HAS_THREADS is not set" >> $(UCLIBC_DIR)/.oldconfig
 else
