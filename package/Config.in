@@ -301,6 +301,7 @@ source "package/usb_modeswitch_data/Config.in"
 source "package/usbmount/Config.in"
 source "package/usbutils/Config.in"
 source "package/wipe/Config.in"
+source "package/w_scan/Config.in"
 endmenu
 
 menu "Interpreter languages and scripting"
