@@ -42,5 +42,12 @@ endef
 TCL_POST_INSTALL_TARGET_HOOKS += TCL_SYMLINK_TCLSH
 endif
 
+# library get installed read only, so strip fails
+define TCL_FIXUP_RO_LIB
+	chmod +w $(TARGET_DIR)/usr/lib/libtcl*
+endef
+
+TCL_POST_INSTALL_TARGET_HOOKS += TCL_FIXUP_RO_LIB
+
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
