@@ -4,14 +4,16 @@
 #
 ################################################################################
 
-HIAWATHA_VERSION = 9.1
+HIAWATHA_VERSION = 9.2
 HIAWATHA_SITE = http://www.hiawatha-webserver.org/files
 HIAWATHA_LICENSE = GPLv2
 HIAWATHA_LICENSE_FILES = LICENSE
 
 ifeq ($(BR2_PACKAGE_HIAWATHA_SSL),y)
-HIAWATHA_CONF_OPT += -DENABLE_SSL_EXTERNAL=ON -DENABLE_SSL=ON
+HIAWATHA_CONF_OPT += -DUSE_SYSTEM_POLARSSL=ON
 HIAWATHA_DEPENDENCIES += polarssl
+else
+HIAWATHA_CONF_OPT += -DENABLE_SSL=OFF
 endif
 
 HIAWATHA_CONF_OPT += \
