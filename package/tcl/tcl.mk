@@ -12,6 +12,7 @@ TCL_SITE = http://downloads.sourceforge.net/project/tcl/Tcl/$(TCL_VERSION_MAJOR)
 TCL_LICENSE = tcl license
 TCL_LICENSE_FILES = license.terms
 TCL_SUBDIR = unix
+TCL_INSTALL_STAGING = YES
 TCL_CONF_OPT = \
 		--disable-symbols \
 		--disable-langinfo \
