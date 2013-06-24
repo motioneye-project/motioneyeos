@@ -35,6 +35,11 @@ define TCL_REMOVE_TCLSH
 	rm -f $(TARGET_DIR)/usr/bin/tclsh$(TCL_VERSION_MAJOR)
 endef
 TCL_POST_INSTALL_TARGET_HOOKS += TCL_REMOVE_TCLSH
+else
+define TCL_SYMLINK_TCLSH
+	ln -s tclsh$(TCL_VERSION_MAJOR) $(TARGET_DIR)/usr/bin/tclsh
+endef
+TCL_POST_INSTALL_TARGET_HOOKS += TCL_SYMLINK_TCLSH
 endif
 
 $(eval $(autotools-package))
