@@ -1,0 +1,8 @@
+config BR2_PACKAGE_LIBUNWIND
+	bool "libunwind"
+	depends on BR2_arm || BR2_armeb || BR2_mips || BR2_mipsel || BR2_mips64 || \
+		BR2_mips64el || BR2_powerpc || BR2_sh || BR2_sh64 || BR2_i386 || BR2_x86_64
+	help
+	  C API to determine the call-chain of a program.
+
+	  http://www.nongnu.org/libunwind/index.html
