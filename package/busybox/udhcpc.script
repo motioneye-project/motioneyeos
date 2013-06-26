@@ -10,10 +10,29 @@ RESOLV_CONF="/etc/resolv.conf"
 
 case "$1" in
 	deconfig)
-		/sbin/ifconfig $interface 0.0.0.0
+		grep -q -v ip= /proc/cmdline
+		if [ $? -eq 0 ]; then
+			/sbin/ifconfig $interface up
+		fi
+		grep -q -v nfsroot= /proc/cmdline
+		if [ $? -eq 0 ]; then
+			/sbin/ifconfig $interface 0.0.0.0
+		fi
+		if [ -x /usr/sbin/avahi-autoipd ]; then
+			/usr/sbin/avahi-autoipd -k $interface
+		fi
+		;;
+
+	leasefail|nak)
+		if [ -x /usr/sbin/avahi-autoipd ]; then
+			/usr/sbin/avahi-autoipd -wD $interface --no-chroot
+		fi
 		;;
 
 	renew|bound)
+		if [ -x /usr/sbin/avahi-autoipd ]; then
+			/usr/sbin/avahi-autoipd -k $interface
+		fi
 		/sbin/ifconfig $interface $ip $BROADCAST $NETMASK
 
 		if [ -n "$router" ] ; then
