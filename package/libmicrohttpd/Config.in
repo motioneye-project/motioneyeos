@@ -8,13 +8,13 @@ config BR2_PACKAGE_LIBMICROHTTPD
 	  http://www.gnu.org/software/libmicrohttpd/
 
 config BR2_PACKAGE_LIBMICROHTTPD_SSL
-       bool "https support"
-       depends on BR2_PACKAGE_LIBMICROHTTPD
-       depends on BR2_USE_WCHAR
-       select BR2_PACKAGE_GNUTLS
-       select BR2_PACKAGE_LIBGCRYPT
-       help
-         Enable HTTPS (SSL) support.
+	bool "https support"
+	depends on BR2_PACKAGE_LIBMICROHTTPD
+	depends on BR2_USE_WCHAR
+	select BR2_PACKAGE_GNUTLS
+	select BR2_PACKAGE_LIBGCRYPT
+	help
+	  Enable HTTPS (SSL) support.
 
 comment "libmicrohttpd needs a toolchain with thread support"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS
