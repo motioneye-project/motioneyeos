@@ -10,14 +10,9 @@ RESOLV_CONF="/etc/resolv.conf"
 
 case "$1" in
 	deconfig)
-		grep -q -v ip= /proc/cmdline
-		if [ $? -eq 0 ]; then
-			/sbin/ifconfig $interface up
-		fi
-		grep -q -v nfsroot= /proc/cmdline
-		if [ $? -eq 0 ]; then
-			/sbin/ifconfig $interface 0.0.0.0
-		fi
+		/sbin/ifconfig $interface up
+		/sbin/ifconfig $interface 0.0.0.0
+
 		if [ -x /usr/sbin/avahi-autoipd ]; then
 			/usr/sbin/avahi-autoipd -k $interface
 		fi
