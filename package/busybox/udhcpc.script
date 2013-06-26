@@ -13,6 +13,13 @@ case "$1" in
 		/sbin/ifconfig $interface up
 		/sbin/ifconfig $interface 0.0.0.0
 
+		# drop info from this interface
+		# resolv.conf may be a symlink to /tmp/, so take care
+		TMPFILE=$(mktemp)
+		grep -vE "# $interface\$" $RESOLV_CONF > $TMPFILE
+		cat $TMPFILE > $RESOLV_CONF
+		rm -f $TMPFILE
+
 		if [ -x /usr/sbin/avahi-autoipd ]; then
 			/usr/sbin/avahi-autoipd -k $interface
 		fi
@@ -41,11 +48,17 @@ case "$1" in
 			done
 		fi
 
-		echo -n > $RESOLV_CONF
-		[ -n "$domain" ] && echo search $domain >> $RESOLV_CONF
+		# drop info from this interface
+		# resolv.conf may be a symlink to /tmp/, so take care
+		TMPFILE=$(mktemp)
+		grep -vE "# $interface\$" $RESOLV_CONF > $TMPFILE
+		cat $TMPFILE > $RESOLV_CONF
+		rm -f $TMPFILE
+
+		[ -n "$domain" ] && echo "search $domain # $interface" >> $RESOLV_CONF
 		for i in $dns ; do
 			echo adding dns $i
-			echo nameserver $i >> $RESOLV_CONF
+			echo "nameserver $i # $interface" >> $RESOLV_CONF
 		done
 		;;
 esac
