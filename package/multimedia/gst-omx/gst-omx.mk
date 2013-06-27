@@ -9,7 +9,7 @@ GST_OMX_SOURCE = gst-omx-$(GST_OMX_VERSION).tar.xz
 GST_OMX_SITE = http://gstreamer.freedesktop.org/src/gst-omx/
 
 GST_OMX_LICENSE = LGPLv2.1
-GST_OMX_LICENSE_FILE = COPYING
+GST_OMX_LICENSE_FILES = COPYING
 
 ifeq ($(BR2_PACKAGE_RPI_USERLAND),y)
 GST_OMX_CONF_OPT = \
