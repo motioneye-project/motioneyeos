@@ -3,6 +3,7 @@ comment "qt requires a toolchain with C++ support enabled"
 
 menuconfig BR2_PACKAGE_QT
 	bool "Qt"
+	depends on !BR2_avr32 # lacks TLS
 	depends on BR2_INSTALL_LIBSTDCPP
 	help
 	  Qt is a cross-platform application and UI framework for
