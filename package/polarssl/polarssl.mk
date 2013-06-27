@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-POLARSSL_SITE = https://polarssl.org/download
+POLARSSL_SITE = https://polarssl.org/code/releases
 POLARSSL_VERSION = 1.2.8
 POLARSSL_SOURCE = polarssl-$(POLARSSL_VERSION)-gpl.tgz
 POLARSSL_CONF_OPT = \
