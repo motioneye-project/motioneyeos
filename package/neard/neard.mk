@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-NEARD_VERSION = 0.11
+NEARD_VERSION = 0.12
 NEARD_SITE = $(BR2_KERNEL_MIRROR)/linux/network/nfc
 NEARD_LICENSE = GPLv2
 NEARD_LICENSE_FILES = COPYING
