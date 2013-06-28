@@ -13,9 +13,7 @@ QT5JSBACKEND_INSTALL_STAGING = YES
 ifeq ($(BR2_PACKAGE_QT5BASE_LICENSE_APPROVED),y)
 QT5JSBACKEND_CONFIGURE_OPTS += -opensource -confirm-license
 QT5JSBACKEND_LICENSE = LGPLv2.1 or GPLv3.0
-# Here we would like to get license files from qt5base, but qt5base
-# may not be extracted at the time we get the legal-info for
-# qt5script.
+QT5JSBACKEND_LICENSE_FILES = LICENSE.GPL LICENSE.LGPL LGPL_EXCEPTION.txt
 else
 QT5JSBACKEND_LICENSE = Commercial license
 QT5JSBACKEND_REDISTRIBUTE = NO
