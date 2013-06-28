@@ -7,6 +7,8 @@
 PROFTPD_VERSION = 1.3.3g
 PROFTPD_SOURCE = proftpd-$(PROFTPD_VERSION).tar.bz2
 PROFTPD_SITE = ftp://ftp.proftpd.org/distrib/source/
+PROFTPD_LICENSE = GPLv2+
+PROFTPD_LICENSE_FILES = COPYING
 
 PROFTPD_CONF_ENV = ac_cv_func_setpgrp_void=yes \
 		ac_cv_func_setgrent_void=yes
