@@ -7,7 +7,6 @@ config BR2_PACKAGE_QT5QUICK1
 	select BR2_PACKAGE_QT5XMLPATTERNS
 	select BR2_PACKAGE_QT5DECLARATIVE
 	select BR2_PACKAGE_QT5JSBACKEND
-	select BR2_PACKAGE_QT5WEBKIT
 	# This module does not support static linking
 	depends on !BR2_PREFER_STATIC_LIB
 	depends on BR2_PACKAGE_HAS_OPENGL_EGL
