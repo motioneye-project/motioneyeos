@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-ZIC_VERSION = 2012j
+ZIC_VERSION = 2013c
 ZIC_SOURCE = tzcode$(ZIC_VERSION).tar.gz
-ZIC_SITE = http://www.iana.org/time-zones/repository/releases
+ZIC_SITE = ftp://ftp.iana.org/tz/releases
 ZIC_LICENSE = Public domain
 
 # Don't strip any path components during extraction.
