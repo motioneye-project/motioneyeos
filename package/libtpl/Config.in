@@ -3,4 +3,4 @@ config BR2_PACKAGE_LIBTPL
 	help
 	  Easily store and retrieve binary data in C
 
-	  http://tpl.sourceforge.net/
+	  http://troydhanson.github.io/tpl/

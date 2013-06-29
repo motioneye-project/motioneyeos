@@ -4,11 +4,18 @@
 #
 ################################################################################
 
-LIBTPL_VERSION = 1.5
-LIBTPL_SOURCE = libtpl-$(LIBTPL_VERSION).tar.bz2
-LIBTPL_SITE = http://downloads.sourceforge.net/project/tpl/tpl/libtpl-$(LIBTPL_VERSION)
+LIBTPL_VERSION = 445b4e9f236a48e274eaace31acf56d700da142a
+LIBTPL_SITE = http://github.com/troydhanson/tpl/tarball/$(LIBTPL_VERSION)
 LIBTPL_INSTALL_STAGING = YES
 LIBTPL_LICENSE = BSD-like
 LIBTPL_LICENSE_FILES = LICENSE
+
+LIBTPL_AUTORECONF = YES
+LIBTPL_AUTORECONF_OPT = --install --force
+
+define LIBTPL_CREATE_MISSING_FILES
+	touch $(@D)/NEWS $(@D)/AUTHORS $(@D)/ChangeLog $(@D)/COPYING
+endef
+LIBTPL_POST_EXTRACT_HOOKS += LIBTPL_CREATE_MISSING_FILES
 
 $(eval $(autotools-package))
