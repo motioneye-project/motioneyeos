@@ -10,21 +10,19 @@ commonly done in buildroot).
 The affect is that autoconf gets built as being version 2.65-dirty, which
 breaks programs (like Python) which explicitly checks for autoconf-2.65.
 
+[Gustavo: update for autoconf 2.69]
 Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
----
- build-aux/git-version-gen |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
 
-Index: autoconf-2.65/build-aux/git-version-gen
-===================================================================
---- autoconf-2.65.orig/build-aux/git-version-gen
-+++ autoconf-2.65/build-aux/git-version-gen
-@@ -135,7 +135,7 @@ case "$dirty" in
-     *) # Append the suffix only if there isn't one already.
- 	case $v in
- 	  *-dirty) ;;
--	  *) v="$v-dirty" ;;
-+	  #*) v="$v-dirty" ;;
- 	esac ;;
- esac
- 
+diff -Nura autoconf-2.69.orig/build-aux/git-version-gen autoconf-2.69/build-aux/git-version-gen
+--- autoconf-2.69.orig/build-aux/git-version-gen	2013-06-27 11:31:02.340200154 -0300
++++ autoconf-2.69/build-aux/git-version-gen	2013-06-27 11:31:13.734577033 -0300
+@@ -203,7 +203,7 @@
+       *) # Append the suffix only if there isn't one already.
+           case $v in
+             *-dirty) ;;
+-            *) v="$v-dirty" ;;
++            #*) v="$v-dirty" ;;
+           esac ;;
+   esac
+ fi

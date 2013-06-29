@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-AUTOCONF_VERSION = 2.68
+AUTOCONF_VERSION = 2.69
 AUTOCONF_SITE = $(BR2_GNU_MIRROR)/autoconf
 
 AUTOCONF_LICENSE = GPLv3+ with exceptions
