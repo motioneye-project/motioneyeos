@@ -38,6 +38,10 @@ comment "Please look at the options which have been selected "
 comment "and read their help text.                           "
 comment "As long as these options stay selected, the build   "
 comment "will fail.                                          "
+comment "Note: at some point in the future, the oldest legacy"
+comment "options will be removed, and configuration files    "
+comment "that still have those options set, will fail to     "
+comment "build, or run, in unpredictable ways.               "
 endif
 
 ###############################################################################
