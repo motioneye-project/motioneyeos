@@ -35,7 +35,7 @@ config BR2_BUSYBOX_VERSION
 	string
 	default "1.19.4"	if BR2_BUSYBOX_VERSION_1_19_X
 	default "1.20.2"	if BR2_BUSYBOX_VERSION_1_20_X
-	default "1.21.0"	if BR2_BUSYBOX_VERSION_1_21_X
+	default "1.21.1"	if BR2_BUSYBOX_VERSION_1_21_X
 
 config BR2_PACKAGE_BUSYBOX_CONFIG
 	string "BusyBox configuration file to use?"
