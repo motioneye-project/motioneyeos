@@ -43,6 +43,23 @@ define HOST_GCC_APPLY_PATCHES
 endef
 
 #
+# Custom extract command to save disk space
+#
+
+define HOST_GCC_EXTRACT_CMDS
+	$(BZCAT) $(DL_DIR)/$(GCC_SOURCE) | \
+		$(TAR) $(TAR_STRIP_COMPONENTS)=1 -C $(@D) \
+		--exclude='libjava/*' \
+		--exclude='libgo/*' \
+		--exclude='gcc/testsuite/*' \
+		--exclude='libstdc++-v3/testsuite/*' \
+		$(TAR_OPTIONS) -
+	mkdir -p $(@D)/libstdc++-v3/testsuite/
+	echo "all:" > $(@D)/libstdc++-v3/testsuite/Makefile.in
+	echo "install:" >> $(@D)/libstdc++-v3/testsuite/Makefile.in
+endef
+
+#
 # Create 'build' directory and configure symlink
 #
 
