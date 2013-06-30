@@ -98,7 +98,7 @@ $(UCLIBC_DIR)/.oldconfig: $(UCLIBC_DIR)/.patched $(UCLIBC_CONFIG_FILE)
 	$(SED) 's,^CROSS_COMPILER_PREFIX=.*,CROSS_COMPILER_PREFIX="$(TARGET_CROSS)",g' \
 		-e 's,# TARGET_$(UCLIBC_TARGET_ARCH) is not set,TARGET_$(UCLIBC_TARGET_ARCH)=y,g' \
 		-e 's,^TARGET_ARCH=".*",TARGET_ARCH=\"$(UCLIBC_TARGET_ARCH)\",g' \
-		-e 's,^KERNEL_HEADERS=.*,KERNEL_HEADERS=\"$(LINUX_HEADERS_DIR)/include\",g' \
+		-e 's,^KERNEL_HEADERS=.*,KERNEL_HEADERS=\"$(STAGING_DIR)/usr/include\",g' \
 		-e 's,^RUNTIME_PREFIX=.*,RUNTIME_PREFIX=\"/\",g' \
 		-e 's,^DEVEL_PREFIX=.*,DEVEL_PREFIX=\"/usr/\",g' \
 		-e 's,^SHARED_LIB_LOADER_PREFIX=.*,SHARED_LIB_LOADER_PREFIX=\"/lib\",g' \
@@ -426,7 +426,7 @@ ifeq ($(BR2_arc),y)
 REALLY_NOSTDLIB=-really-nostdlib
 endif
 
-$(UCLIBC_DIR)/.configured: $(LINUX_HEADERS_DIR)/.configured $(UCLIBC_DIR)/.config
+$(UCLIBC_DIR)/.configured: $(UCLIBC_DIR)/.config
 	$(Q)$(call MESSAGE,"Installing uClibc headers")
 	$(MAKE1) -C $(UCLIBC_DIR) \
 		ARCH="$(UCLIBC_TARGET_ARCH)" \
@@ -441,7 +441,7 @@ $(UCLIBC_DIR)/.configured: $(LINUX_HEADERS_DIR)/.configured $(UCLIBC_DIR)/.confi
 	# Install the kernel headers to the first stage gcc include dir
 	# if necessary
 	if [ ! -f $(TOOLCHAIN_DIR)/uClibc_dev/usr/include/linux/version.h ]; then \
-		cp -pLR $(LINUX_HEADERS_DIR)/include/* \
+		cp -pLR $(STAGING_DIR)/usr/include/* \
 			$(TOOLCHAIN_DIR)/uClibc_dev/usr/include/; \
 	fi
 	$(TARGET_CROSS)gcc -nostdlib $(REALLY_NOSTDLIB) -nostartfiles -shared -x c /dev/null -o $(TOOLCHAIN_DIR)/uClibc_dev/usr/lib/libc.so
@@ -485,11 +485,6 @@ $(STAGING_DIR)/usr/lib/libc.a: $(UCLIBC_DIR)/lib/libc.a
 		CROSS_COMPILE="$(TARGET_CROSS)" \
 		UCLIBC_EXTRA_CFLAGS="$(TARGET_ABI)" \
 		install_runtime install_dev
-	# Install the kernel headers to the staging dir if necessary
-	if [ ! -f $(STAGING_DIR)/usr/include/linux/version.h ]; then \
-		cp -pLR $(LINUX_HEADERS_DIR)/include/* \
-			$(STAGING_DIR)/usr/include/; \
-	fi
 	# Build the host utils. Need to add an install target...
 	$(MAKE1) -C $(UCLIBC_DIR)/utils \
 		PREFIX=$(HOST_DIR) \
@@ -548,7 +543,7 @@ uclibc-oldconfig: $(UCLIBC_DIR)/.oldconfig
 uclibc-update-config: uclibc-config
 	cp -f $(UCLIBC_DIR)/.config $(UCLIBC_CONFIG_FILE)
 
-uclibc-configured: gcc_initial kernel-headers $(UCLIBC_DIR)/.configured
+uclibc-configured: gcc_initial linux-headers $(UCLIBC_DIR)/.configured
 
 uclibc-configured-source: uclibc-source
 

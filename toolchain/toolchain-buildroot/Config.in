@@ -1,7 +1,7 @@
 # Config entries for internal toolchain backend
 
 if BR2_TOOLCHAIN_BUILDROOT
-source "toolchain/kernel-headers/Config.in"
+source "package/linux-headers/Config.in.host"
 source "toolchain/uClibc/Config.in"
 source "package/binutils/Config.in.host"
 source "toolchain/gcc/Config.in"

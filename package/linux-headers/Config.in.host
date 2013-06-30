@@ -1,6 +1,5 @@
-# Choose the kernel headers to use for kernel-headers target. This is
-# ignored if you are building your own kernel or using the system kernel.
-#
+config BR2_PACKAGE_HOST_LINUX_HEADERS
+	bool
 
 comment "Kernel Header Options"
 
