@@ -1,3 +1,5 @@
+if BR2_TOOLCHAIN_BUILDROOT_UCLIBC
+
 comment "uClibc Options"
 
 choice
@@ -241,3 +243,5 @@ config BR2_UCLIBC_X86_TYPE
 	default PENTIUMIII if BR2_x86_pentium3
 	default PENTIUM4   if BR2_x86_pentium4 || BR2_x86_pentium_m || \
 			      BR2_x86_nocona || BR2_x86_core2
+
+endif # BR2_TOOLCHAIN_BUILDROOT_UCLIBC

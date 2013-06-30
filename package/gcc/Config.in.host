@@ -114,9 +114,9 @@ config BR2_GCC_SHARED_LIBGCC
 	  Build/install a shared libgcc library
 
 config BR2_GCC_ENABLE_TLS
-	bool "Enable compiler tls support"
+	bool "Enable compiler tls support" if BR2_TOOLCHAIN_BUILDROOT_UCLIBC
 	default y
-	depends on BR2_PTHREADS_NATIVE
+	depends on BR2_PTHREADS_NATIVE || BR2_TOOLCHAIN_BUILDROOT_EGLIBC
 	help
 	  Enable the compiler to generate code for accessing
 	  thread local storage variables
