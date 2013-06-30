@@ -419,14 +419,6 @@ config BR2_HAVE_DOCUMENTATION
 	  If you say n here, your target will not contain any
 	  documentation.
 
-config BR2_HAVE_DEVFILES
-	bool "development files in target filesystem"
-	# We no longer want to support a toolchain on the target
-	depends on BR2_DEPRECATED
-	help
-	  Install headers and static libraries in the
-	  target filesystem
-
 config BR2_PACKAGE_OVERRIDE_FILE
 	string "location of a package override file"
 	default "$(TOPDIR)/local.mk"

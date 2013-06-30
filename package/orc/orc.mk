@@ -20,10 +20,7 @@ define ORC_REMOVE_DEVFILES
 endef
 
 ORC_POST_INSTALL_TARGET_HOOKS += ORC_REMOVE_BUGREPORT
-
-ifneq ($(BR2_HAVE_DEVFILES),y)
 ORC_POST_INSTALL_TARGET_HOOKS += ORC_REMOVE_DEVFILES
-endif
 
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))

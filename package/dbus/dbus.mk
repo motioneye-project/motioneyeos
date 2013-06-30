@@ -61,9 +61,7 @@ define DBUS_REMOVE_DEVFILES
 	rm -rf $(TARGET_DIR)/usr/lib/dbus-1.0
 endef
 
-ifneq ($(BR2_HAVE_DEVFILES),y)
 DBUS_POST_INSTALL_TARGET_HOOKS += DBUS_REMOVE_DEVFILES
-endif
 
 define DBUS_INSTALL_TARGET_FIXUP
 	mkdir -p $(TARGET_DIR)/var/lib

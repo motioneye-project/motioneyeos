@@ -19,7 +19,6 @@ XENOMAI_INSTALL_STAGING = YES
 
 XENOMAI_CONF_OPT += --includedir=/usr/include/xenomai/
 
-ifeq ($(BR2_HAVE_DEVFILES),)
 define XENOMAI_REMOVE_DEVFILES
 	for i in xeno-config xeno-info wrap-link.sh ; do \
 		rm -f $(TARGET_DIR)/usr/bin/$$i ; \
@@ -27,7 +26,6 @@ define XENOMAI_REMOVE_DEVFILES
 endef
 
 XENOMAI_POST_INSTALL_TARGET_HOOKS += XENOMAI_REMOVE_DEVFILES
-endif
 
 ifeq ($(BR2_PACKAGE_XENOMAI_TESTSUITE),)
 define XENOMAI_REMOVE_TESTSUITE

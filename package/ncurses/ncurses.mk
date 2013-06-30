@@ -38,25 +38,6 @@ define NCURSES_BUILD_CMDS
 	$(MAKE1) -C $(@D) DESTDIR=$(STAGING_DIR)
 endef
 
-ifeq ($(BR2_HAVE_DEVFILES),y)
-define NCURSES_INSTALL_TARGET_DEVFILES
-	mkdir -p $(TARGET_DIR)/usr/include
-	cp -dpf $(NCURSES_DIR)/include/curses.h $(TARGET_DIR)/usr/include/curses.h
-	cp -dpf $(NCURSES_DIR)/include/ncurses_dll.h $(TARGET_DIR)/usr/include/ncurses_dll.h
-	cp -dpf $(NCURSES_DIR)/include/term.h $(TARGET_DIR)/usr/include/
-	cp -dpf $(NCURSES_DIR)/include/unctrl.h $(TARGET_DIR)/usr/include/
-	cp -dpf $(NCURSES_DIR)/include/termcap.h $(TARGET_DIR)/usr/include/
-	cp -dpf $(NCURSES_DIR)/lib/libncurses.a $(TARGET_DIR)/usr/lib/
-	(cd $(TARGET_DIR)/usr/lib; \
-	 ln -fs libncurses.a libcurses.a; \
-	 ln -fs libncurses.a libtermcap.a; \
-	)
-	(cd $(TARGET_DIR)/usr/include; ln -fs curses.h ncurses.h)
-	rm -f $(TARGET_DIR)/usr/lib/libncurses.so
-	(cd $(TARGET_DIR)/usr/lib; ln -fs libncurses.so.$(NCURSES_VERSION) libncurses.so)
-endef
-endif
-
 ifneq ($(BR2_PREFER_STATIC_LIB),y)
 
 ifeq ($(BR2_PACKAGE_NCURSES_TARGET_PANEL),y)
@@ -101,7 +82,6 @@ define NCURSES_INSTALL_TARGET_CMDS
 	cp -dpf $(STAGING_DIR)/usr/share/terminfo/l/linux $(TARGET_DIR)/usr/share/terminfo/l
 	mkdir -p $(TARGET_DIR)/usr/share/terminfo/s
 	cp -dpf $(STAGING_DIR)/usr/share/terminfo/s/screen $(TARGET_DIR)/usr/share/terminfo/s
-	$(NCURSES_INSTALL_TARGET_DEVFILES)
 endef # NCURSES_INSTALL_TARGET_CMDS
 
 #

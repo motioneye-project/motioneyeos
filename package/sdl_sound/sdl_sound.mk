@@ -48,7 +48,7 @@ SDL_SOUND_POST_INSTALL_TARGET_HOOKS += SDL_SOUND_REMOVE_PLAYSOUND
 endif
 
 # target shared libs doesn't get removed by make uninstall if the .la
-# files are removed (E.G. if BR2_HAVE_DEVFILES isn't set)
+# files are removed
 define SDL_SOUND_UNINSTALL_TARGET_CMDS
 	$(MAKE) DESTDIR=$(TARGET_DIR) uninstall -C $(@D)
 	rm -f $(TARGET_DIR)/usr/lib/libSDL_sound*so*
