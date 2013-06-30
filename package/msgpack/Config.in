@@ -1,0 +1,13 @@
+config BR2_PACKAGE_MSGPACK
+	bool "msgpack"
+	depends on BR2_INSTALL_LIBSTDCPP
+	help
+	  MessagePack is an efficient binary serialization format.
+
+	  It lets you exchange data among multiple languages like JSON but
+	  it's faster and smaller.
+
+	  http://msgpack.org/
+
+comment "msgpack requires a toolchain with C++ support enabled"
+	depends on !BR2_INSTALL_LIBSTDCPP
