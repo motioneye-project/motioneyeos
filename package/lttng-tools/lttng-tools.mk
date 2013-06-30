@@ -7,6 +7,9 @@
 LTTNG_TOOLS_VERSION = 2.2.0
 LTTNG_TOOLS_SITE    = http://lttng.org/files/lttng-tools/
 LTTNG_TOOLS_SOURCE  = lttng-tools-$(LTTNG_TOOLS_VERSION).tar.bz2
+LTTNG_TOOLS_LICENSE = GPLv2; LGPLv2.1 for include/lttng/* and src/lib/lttng-ctl/*
+# gpl-2.0.txt and lgpl-2.1.txt files are missing from the sources
+LTTNG_TOOLS_LICENSE_FILES = LICENSE
 
 # The host-lttng-babeltrace technically isn't a required build
 # dependency. However, having the babeltrace utilities built for the
