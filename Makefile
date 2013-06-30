@@ -225,9 +225,12 @@ endif
 
 ifeq ($(BR2_TOOLCHAIN_BUILDROOT),y)
 BASE_TARGETS += toolchain-buildroot
-else
-BASE_TARGETS += uclibc
+else ifeq ($(BR2_TOOLCHAIN_EXTERNAL),y)
+BASE_TARGETS += toolchain-external
+else ifeq ($(BR2_TOOLCHAIN_CTNG),y)
+BASE_TARGETS += toolchain-crosstool-ng
 endif
+
 TARGETS:=
 
 # silent mode requested?

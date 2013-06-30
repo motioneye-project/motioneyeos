@@ -22,15 +22,13 @@ PATH=$(HOST_PATH) ct-ng -C $(CTNG_DIR) --no-print-directory $(1)
 endef
 
 #-----------------------------------------------------------------------------
-# 'uclibc' is the target to depend on to get the toolchain and prepare
-# the staging directory and co.
-uclibc: dependencies $(STAMP_DIR)/ct-ng-toolchain-installed
+toolchain-crosstool-ng: dependencies $(STAMP_DIR)/ct-ng-toolchain-installed
 
-# 'uclibc-source' is the target used by the infra structure to mean
-# "we just want to download the toolchain's sources, not build it"
-# For crosstool-NG, we need it to be configured before we can download;
-# then we have to override a config option to just do the download
-uclibc-source: $(CTNG_DIR)/.config
+# The target used by the infra structure to mean "we just want to
+# download the toolchain's sources, not build it" For crosstool-NG, we
+# need it to be configured before we can download; then we have to
+# override a config option to just do the download
+toolchain-crosstool-ng-source: $(CTNG_DIR)/.config
 	$(Q)$(call ctng,build CT_ONLY_DOWNLOAD=y)
 
 #-----------------------------------------------------------------------------
