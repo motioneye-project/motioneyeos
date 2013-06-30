@@ -43,7 +43,6 @@ GCC_SOURCE:=gcc-$(GCC_VERSION).tar.bz2
 GCC_PATCH_DIR:=toolchain/gcc/$(GCC_VERSION)
 GCC_DIR:=$(TOOLCHAIN_DIR)/gcc-$(GCC_VERSION)
 GCC_CAT:=$(BZCAT)
-GCC_STRIP_HOST_BINARIES:=nope
 GCC_SRC_DIR:=$(GCC_DIR)
 
 # Branding works on >= 4.3
@@ -472,10 +471,6 @@ $(GCC_BUILD_DIR3)/.installed: $(GCC_BUILD_DIR3)/.compiled
 		rmdir "$(STAGING_DIR)/lib64"; \
 		rm "$(STAGING_DIR)/usr/$(GNU_TARGET_NAME)/lib64";\
 	fi
-	# Strip the host binaries
-ifeq ($(GCC_STRIP_HOST_BINARIES),true)
-	strip --strip-all -R .note -R .comment $(filter-out %-gccbug %-embedspu,$(wildcard $(HOST_DIR)/usr/bin/$(GNU_TARGET_NAME)-*))
-endif
 	# Make sure we have 'cc'.
 	if [ ! -e $(HOST_DIR)/usr/bin/$(GNU_TARGET_NAME)-cc ]; then \
 		ln -snf $(GNU_TARGET_NAME)-gcc \
