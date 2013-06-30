@@ -1,4 +1,4 @@
-config BR2_ELF2FLT
+config BR2_PACKAGE_HOST_ELF2FLT
 	bool "Enable elf2flt support?"
 	depends on BR2_arm || BR2_sh || BR2_sparc
 	help

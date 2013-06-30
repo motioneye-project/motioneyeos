@@ -98,7 +98,7 @@ config BR2_PTHREAD_DEBUG
 	help
 	  Build the thread library with debugging enabled.
 
-source "toolchain/elf2flt/Config.in"
+source "package/elf2flt/Config.in.host"
 
 config BR2_VFP_FLOAT
 	bool "Use ARM Vector Floating Point unit"

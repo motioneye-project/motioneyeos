@@ -68,6 +68,14 @@ config BR2_PACKAGE_DOSFSTOOLS_MKDOSFS
 	help
 	  mkdosfs was renamed upstream to mkfs.fat for consistency.
 
+config BR2_ELF2FLT
+	bool "the elf2flt option has been renamed"
+	select BR2_LEGACY
+	help
+	  The BR2_ELF2FLT option has been renamed to
+	  BR2_PACKAGE_HOST_ELF2FLT due to the conversion of elf2flt to
+	  the package infrastructure.
+
 ###############################################################################
 comment "Legacy options removed in 2013.05"
 
