@@ -15,7 +15,7 @@ IOZONE_LICENSE = IOzone license (NO DERIVED WORKS ALLOWED)
 ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),)
 IOZONE_TARGET = linux-noth
 # AIO support not available on uClibc, use the linux (non-aio) target.
-else ifeq ($(BR2_TOOLCHAIN_BUILDROOT)$(BR2_TOOLCHAIN_EXTERNAL_UCLIBC)$(BR2_TOOLCHAIN_CTNG_uClibc),y)
+else ifeq ($(BR2_TOOLCHAIN_USES_UCLIBC),y)
 IOZONE_TARGET = linux-noaio
 else
 IOZONE_TARGET = linux

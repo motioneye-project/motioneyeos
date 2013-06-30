@@ -9,9 +9,7 @@ config BR2_PACKAGE_MONGREL2
 	# {get,make,swap}context functions present in
 	# {e,}glibc and in uClibc's master branch. Source has arm workaround
 	depends on BR2_UCLIBC_VERSION_SNAPSHOT || \
-		BR2_TOOLCHAIN_EXTERNAL_GLIBC || \
-		BR2_TOOLCHAIN_CTNG_eglibc || \
-		BR2_TOOLCHAIN_CTNG_glibc || \
+		BR2_TOOLCHAIN_USES_GLIBC || \
 		BR2_arm
 	help
 	  Mongrel2 is an application, language, and network architecture

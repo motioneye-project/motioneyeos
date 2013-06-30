@@ -7,27 +7,22 @@ choice
 
 config BR2_TOOLCHAIN_CTNG_uClibc
 	bool "uClibc"
+	select BR2_TOOLCHAIN_USES_UCLIBC
 
 # Although eglibc can be configured to opt-out some features,
 # let's not deal with that for the time being, it's complex...
 config BR2_TOOLCHAIN_CTNG_eglibc
 	bool "eglibc"
-	select BR2_LARGEFILE
-	select BR2_INET_IPV6
 	# Our default ct-ng configuration uses eglibc 2.12, which has
 	# native RPC support
 	select BR2_TOOLCHAIN_HAS_NATIVE_RPC
-	select BR2_ENABLE_LOCALE
-	select BR2_USE_WCHAR
+	select BR2_TOOLCHAIN_USES_GLIBC
 
 config BR2_TOOLCHAIN_CTNG_glibc
 	bool "glibc"
-	select BR2_LARGEFILE
-	select BR2_INET_IPV6
 	# Our default ct-ng configuration uses glibc 2.14.1, which
 	# does not have native RPC support
-	select BR2_ENABLE_LOCALE
-	select BR2_USE_WCHAR
+	select BR2_TOOLCHAIN_USES_GLIBC
 
 endchoice # C library
 

@@ -1,6 +1,6 @@
 comment "ltp-testsuite needs specific uClibc options, see help"
 	depends on BR2_PACKAGE_LTP_TESTSUITE
-	depends on BR2_TOOLCHAIN_BUILDROOT || BR2_TOOLCHAIN_EXTERNAL_UCLIBC || BR2_TOOLCHAIN_CTNG_uClibc
+	depends on BR2_TOOLCHAIN_USES_UCLIBC
 
 config BR2_PACKAGE_LTP_TESTSUITE
 	bool "ltp-testsuite"

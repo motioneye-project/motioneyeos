@@ -1,4 +1,19 @@
 menu "Toolchain"
+
+# Should be selected for glibc or eglibc
+config BR2_TOOLCHAIN_USES_GLIBC
+	bool
+	select BR2_LARGEFILE
+	select BR2_INET_IPV6
+	select BR2_USE_WCHAR
+	select BR2_ENABLE_LOCALE
+	select BR2_TOOLCHAIN_HAS_THREADS
+	select BR2_TOOLCHAIN_HAS_THREADS_DEBUG
+	select BR2_TOOLCHAIN_HAS_SHADOW_PASSWORDS
+
+config BR2_TOOLCHAIN_USES_UCLIBC
+	bool
+
 choice
 	prompt "Toolchain type"
 	help
@@ -12,6 +27,7 @@ config BR2_TOOLCHAIN_BUILDROOT
 	bool "Buildroot toolchain"
 	depends on !BR2_microblaze && !BR2_aarch64
 	select BR2_TOOLCHAIN_HAS_SHADOW_PASSWORDS
+	select BR2_TOOLCHAIN_USES_UCLIBC
 
 config BR2_TOOLCHAIN_EXTERNAL
 	bool "External toolchain"

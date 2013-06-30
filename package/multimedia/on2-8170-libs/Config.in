@@ -1,9 +1,7 @@
 config BR2_PACKAGE_ON2_8170_LIBS
 	#This is a binary only package which has been compiled for glibc
 	depends on BR2_arm926t
-	depends on (BR2_TOOLCHAIN_EXTERNAL_GLIBC || \
-		BR2_TOOLCHAIN_CTNG_eglibc || \
-		BR2_TOOLCHAIN_CTNG_glibc)
+	depends on BR2_TOOLCHAIN_USES_GLIBC
 	depends on BR2_LINUX_KERNEL # on2-8170-modules
 	select BR2_PACKAGE_ON2_8170_MODULES # runtime
 	bool "on2-8170-libs"

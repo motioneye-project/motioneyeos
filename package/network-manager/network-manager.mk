@@ -35,7 +35,7 @@ NETWORK_MANAGER_CONF_OPT = \
 		--disable-ifnet
 
 # uClibc by default doesn't have backtrace support, so don't use it
-ifeq ($(BR2_TOOLCHAIN_BUILDROOT)$(BR2_TOOLCHAIN_EXTERNAL_UCLIBC)$(BR2_TOOLCHAIN_CTNG_uClibc),y)
+ifeq ($(BR2_TOOLCHAIN_USES_UCLIBC),y)
 NETWORK_MANAGER_CONF_OPT += --disable-crashtrace
 endif
 

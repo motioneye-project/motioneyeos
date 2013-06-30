@@ -59,7 +59,7 @@ BOOST_OPT += toolset=gcc \
 	     runtime-link=$(if $(BR2_PREFER_STATIC_LIB),static,shared)
 
 ifeq ($(BR2_PACKAGE_BOOST_LOCALE),y)
-ifeq ($(BR2_TOOLCHAIN_BUILDROOT)$(BR2_TOOLCHAIN_EXTERNAL_UCLIBC)$(BR2_TOOLCHAIN_CTNG_uClibc),y)
+ifeq ($(BR2_TOOLCHAIN_USES_UCLIBC),y)
 # posix backend needs monetary.h which isn't available on uClibc
 BOOST_OPT += boost.locale.posix=off
 endif

@@ -2,9 +2,7 @@ config BR2_PACKAGE_GST_PLUGIN_X170
 	bool "gst-plugin-x170"
 	depends on BR2_PACKAGE_GSTREAMER
 	depends on BR2_arm926t
-	depends on (BR2_TOOLCHAIN_EXTERNAL_GLIBC || \
-		BR2_TOOLCHAIN_CTNG_eglibc || \
-		BR2_TOOLCHAIN_CTNG_glibc) # on2-8170-libs
+	depends on BR2_TOOLCHAIN_USES_GLIBC # on2-8170-libs
 	select BR2_PACKAGE_ON2_8170_LIBS
 	help
 	  GStreamer plug-in to use the Hantro X170 video decoder present on

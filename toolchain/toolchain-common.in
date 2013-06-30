@@ -62,9 +62,7 @@ config BR2_GENERATE_LOCALE
 	# build time.
 	depends on \
 		BR2_TOOLCHAIN_BUILDROOT      || \
-		BR2_TOOLCHAIN_EXTERNAL_GLIBC || \
-		BR2_TOOLCHAIN_CTNG_eglibc    || \
-		BR2_TOOLCHAIN_CTNG_glibc
+		BR2_TOOLCHAIN_USES_GLIBC
 	help
 	  Generate support for a list of locales. Locales can be
 	  specified with or without encoding, when no encoding is
@@ -79,9 +77,7 @@ config BR2_GENERATE_LOCALE
 
 config BR2_NEEDS_GETTEXT
 	bool
-	default y if BR2_TOOLCHAIN_BUILDROOT
-	default y if BR2_TOOLCHAIN_EXTERNAL_UCLIBC
-	default y if BR2_TOOLCHAIN_CTNG_uClibc
+	default y if BR2_TOOLCHAIN_USES_UCLIBC
 
 config BR2_NEEDS_GETTEXT_IF_LOCALE
 	bool

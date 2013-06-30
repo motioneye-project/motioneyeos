@@ -3,10 +3,7 @@ comment "elfutils requires a toolchain with LARGEFILE and WCHAR support"
 
 config BR2_PACKAGE_ELFUTILS
 	bool "elfutils"
-	select BR2_PACKAGE_ARGP_STANDALONE if \
-	       BR2_TOOLCHAIN_BUILDROOT   || \
-	       BR2_TOOLCHAIN_CTNG_uClibc || \
-	       BR2_TOOLCHAIN_EXTERNAL_UCLIBC
+	select BR2_PACKAGE_ARGP_STANDALONE if BR2_TOOLCHAIN_USES_UCLIBC
 	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT
 	depends on BR2_LARGEFILE
 	depends on BR2_USE_WCHAR
@@ -23,9 +20,7 @@ if BR2_PACKAGE_ELFUTILS
 
 config BR2_PACKAGE_ELFUTILS_PROGS
 	bool "Install programs"
-	depends on BR2_TOOLCHAIN_EXTERNAL_GLIBC || \
-		   BR2_TOOLCHAIN_CTNG_glibc     || \
-		   BR2_TOOLCHAIN_CTNG_eglibc
+	depends on BR2_TOOLCHAIN_USES_GLIBC
 	help
 	  This option tells elfutils to not only install the libelf
 	  libraries, but also the elfutils programs.

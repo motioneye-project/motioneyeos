@@ -13,21 +13,21 @@ if BR2_PACKAGE_LIBV4L
 
 config BR2_PACKAGE_LIBV4L_DECODE_TM6000
 	bool "decode_tm6000"
-	depends on BR2_TOOLCHAIN_EXTERNAL_GLIBC || BR2_TOOLCHAIN_CTNG_glibc || BR2_TOOLCHAIN_CTNG_eglibc
+	depends on BR2_TOOLCHAIN_USES_GLIBC
 	help
 	  Tool to decode tm6000 proprietary format streams
 
 comment "decode_tm6000 requires a GLIBC based toolchain"
-	depends on !(BR2_TOOLCHAIN_EXTERNAL_GLIBC || BR2_TOOLCHAIN_CTNG_glibc || BR2_TOOLCHAIN_CTNG_eglibc)
+	depends on !BR2_TOOLCHAIN_USES_GLIBC
 
 config BR2_PACKAGE_LIBV4L_IR_KEYTABLE
 	bool "ir-keytable"
-	depends on BR2_TOOLCHAIN_EXTERNAL_GLIBC || BR2_TOOLCHAIN_CTNG_glibc || BR2_TOOLCHAIN_CTNG_eglibc
+	depends on BR2_TOOLCHAIN_USES_GLIBC
 	help
 	  Tool to alter keymaps of Remote Controller devices
 
 comment "ir-keytable requires a GLIBC based toolchain"
-	depends on !(BR2_TOOLCHAIN_EXTERNAL_GLIBC || BR2_TOOLCHAIN_CTNG_glibc || BR2_TOOLCHAIN_CTNG_eglibc)
+	depends on !BR2_TOOLCHAIN_USES_GLIBC
 
 config BR2_PACKAGE_LIBV4L_V4L2_COMPLIANCE
 	bool "v4l2-compliance"

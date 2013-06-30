@@ -1,6 +1,6 @@
 config BR2_PACKAGE_TZDATA
 	bool "tzdata"
-	depends on BR2_TOOLCHAIN_EXTERNAL_GLIBC || BR2_TOOLCHAIN_CTNG_eglibc || BR2_TOOLCHAIN_CTNG_glibc
+	depends on BR2_TOOLCHAIN_USES_GLIBC
 	help
 	  Time zone database
 
