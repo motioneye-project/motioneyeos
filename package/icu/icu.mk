@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-ICU_VERSION = 4.8.1.1
+ICU_VERSION = 51.2
 ICU_SOURCE = icu4c-$(subst .,_,$(ICU_VERSION))-src.tgz
 ICU_SITE = http://download.icu-project.org/files/icu4c/$(ICU_VERSION)
 ICU_LICENSE = ICU License
@@ -20,7 +20,8 @@ HOST_ICU_CONF_OPT = \
 	--disable-tests \
 	--disable-extras \
 	--disable-icuio \
-	--disable-layout
+	--disable-layout \
+	--disable-renaming
 ICU_MAKE = $(MAKE1)
 ICU_SUBDIR = source
 HOST_ICU_SUBDIR = source

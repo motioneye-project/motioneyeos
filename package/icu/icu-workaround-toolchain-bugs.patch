@@ -10,27 +10,27 @@ is trivial in this case. So it will avoid our users falling into this
 internal compiler error, and allow our autobuilders to test more
 packages using this Sourcery CodeBench toolchain.qq
 
+[Gustavo: update for ICU4C 51.2]
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 
-Index: b/source/configure
-===================================================================
---- a/source/configure
-+++ b/source/configure
-@@ -4320,7 +4320,7 @@
-                 echo "# Note: We are not using '-ansi' with HP/UX GCC because int64_t broke, see <http://bugs.icu-project.org/trac/ticket/8493>"
-                 CFLAGS="$CFLAGS -Wall -pedantic -Wshadow -Wpointer-arith -Wmissing-prototypes -Wwrite-strings -Wno-long-long";;
-             *)
--                CFLAGS="$CFLAGS -Wall -ansi -pedantic -Wshadow -Wpointer-arith -Wmissing-prototypes -Wwrite-strings -Wno-long-long";;
-+                CFLAGS="$CFLAGS -ansi -pedantic -Wshadow -Wpointer-arith -Wmissing-prototypes -Wwrite-strings -Wno-long-long";;
-             esac
+diff -Nura icu.orig/source/configure icu/source/configure
+--- icu.orig/source/configure	2013-05-23 17:06:32.000000000 -0300
++++ icu/source/configure	2013-06-29 15:43:04.202320953 -0300
+@@ -4066,7 +4066,7 @@
+         then
+             # Do not use -ansi. It limits us to C90, and it breaks some platforms.
+             # We use -std=c99 to disable the gnu99 defaults and its associated warnings
+-            CFLAGS="$CFLAGS -Wall -std=c99 -pedantic -Wshadow -Wpointer-arith -Wmissing-prototypes -Wwrite-strings"
++            CFLAGS="$CFLAGS -std=c99 -pedantic -Wshadow -Wpointer-arith -Wmissing-prototypes -Wwrite-strings"
          else
              case "${host}" in
-@@ -4333,7 +4333,7 @@
+             *-*-cygwin)
+@@ -4078,7 +4078,7 @@
          fi
          if test "$GXX" = yes
          then
--            CXXFLAGS="$CXXFLAGS -W -Wall -ansi -pedantic -Wpointer-arith -Wwrite-strings -Wno-long-long"
-+            CXXFLAGS="$CXXFLAGS -ansi -pedantic -Wpointer-arith -Wwrite-strings -Wno-long-long"
+-            CXXFLAGS="$CXXFLAGS -W -Wall -pedantic -Wpointer-arith -Wwrite-strings -Wno-long-long"
++            CXXFLAGS="$CXXFLAGS -pedantic -Wpointer-arith -Wwrite-strings -Wno-long-long"
+         else
              case "${host}" in
-             *-*-solaris*)
-                 CXXFLAGS="$CXXFLAGS -D__STDC__=0";;
+             *-*-cygwin)
