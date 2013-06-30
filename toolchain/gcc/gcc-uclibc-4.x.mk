@@ -519,8 +519,7 @@ endif
 cross_compiler:=$(HOST_DIR)/usr/bin/$(GNU_TARGET_NAME)-gcc
 cross_compiler gcc: gcc_intermediate \
 	uclibc $(GCC_BUILD_DIR3)/.installed \
-	$(STAMP_DIR)/gcc_libs_target_installed \
-	$(GCC_TARGETS)
+	$(STAMP_DIR)/gcc_libs_target_installed
 
 gcc-source: $(DL_DIR)/$(GCC_SOURCE)
 
