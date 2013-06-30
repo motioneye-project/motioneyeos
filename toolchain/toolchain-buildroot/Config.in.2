@@ -4,43 +4,6 @@ if BR2_TOOLCHAIN_BUILDROOT
 
 comment "Toolchain Options"
 
-config BR2_TOOLCHAIN_BUILDROOT_LARGEFILE
-	bool "Enable large file (files > 2 GB) support"
-	select BR2_LARGEFILE
-	help
-	  Enable this option if you want your toolchain to support
-	  files bigger than 2 GB.
-
-config BR2_TOOLCHAIN_BUILDROOT_INET_IPV6
-	bool "Enable IPv6 support"
-	select BR2_INET_IPV6
-	help
-	  Enable this option if you want your toolchain to support
-	  IPv6.
-
-config BR2_TOOLCHAIN_BUILDROOT_INET_RPC
-	bool "Enable RPC support"
-	select BR2_TOOLCHAIN_HAS_NATIVE_RPC
-	help
-	  Enable this option if you want your toolchain to support
-	  RPC (needed for NFS, for example).
-
-config BR2_TOOLCHAIN_BUILDROOT_WCHAR
-	bool "Enable WCHAR support"
-	select BR2_USE_WCHAR
-	help
-	  Enable this option if you want your toolchain to support
-	  wide characters (i.e characters longer than 8 bits, needed
-	  for locale support).
-
-config BR2_TOOLCHAIN_BUILDROOT_LOCALE
-	bool "Enable toolchain locale/i18n support"
-	select BR2_TOOLCHAIN_BUILDROOT_WCHAR
-	select BR2_ENABLE_LOCALE
-	help
-	  Enable this option if you want your toolchain to support
-	  localization and internationalization.
-
 config BR2_TOOLCHAIN_BUILDROOT_CXX
 	bool "Enable C++ support"
 	select BR2_INSTALL_LIBSTDCPP
@@ -57,46 +20,6 @@ config BR2_TOOLCHAIN_BUILDROOT_USE_SSP
 
 	  See http://www.linuxfromscratch.org/hints/downloads/files/ssp.txt
 	  for details.
-
-choice
-	prompt "Thread library implementation"
-	default BR2_PTHREADS_NATIVE if !BR2_ARM_OABI && !(BR2_avr32 || BR2_xtensa)
-	default BR2_PTHREADS_OLD
-	help
-	  Use this option to select the thread library implementation
-	  that should be used in your toolchain. Not all thread
-	  variants work with all versions of uClibc, the "linuxthreads
-	  (stable/old)" may be a working fallback if you need
-	  threading at all.
-
-	config BR2_PTHREADS_NONE
-		bool "none"
-
-	config BR2_PTHREADS
-		bool "linuxthreads"
-		depends on !BR2_xtensa
-	        select BR2_TOOLCHAIN_HAS_THREADS
-
-	config BR2_PTHREADS_OLD
-		bool "linuxthreads (stable/old)"
-	        select BR2_TOOLCHAIN_HAS_THREADS
-
-	config BR2_PTHREADS_NATIVE
-		bool "Native POSIX Threading (NPTL)"
-	        select BR2_TOOLCHAIN_HAS_THREADS
-		depends on !BR2_ARM_OABI
-		depends on !BR2_x86_i386
-		depends on !BR2_avr32
-		depends on !BR2_xtensa
-		depends on !BR2_arc
-endchoice
-
-config BR2_PTHREAD_DEBUG
-	bool "Thread library debugging"
-	depends on BR2_PTHREADS || BR2_PTHREADS_OLD || BR2_PTHREADS_NATIVE
-	select BR2_TOOLCHAIN_HAS_THREADS_DEBUG
-	help
-	  Build the thread library with debugging enabled.
 
 source "package/elf2flt/Config.in.host"
 
