@@ -19,14 +19,14 @@ follow these steps:
   similar to the one used in the Linux kernel or Buildroot,
   appears. Make your configuration changes as appropriate.
 
-* Copy the +$(O)/toolchain/uClibc-VERSION/.config+ file to a different
+* Copy the +$(O)/build/uClibc-VERSION/.config+ file to a different
   place (e.g. +board/MANUFACTURER/BOARDNAME/uClibc.config+) and adjust
   the uClibc configuration file option +BR2_UCLIBC_CONFIG+ to refer to this
   configuration instead of the default one.
 
 * Run the compilation of Buildroot again.
 
-Otherwise, you can simply change +toolchain/uClibc/uClibc-VERSION.config+,
+Otherwise, you can simply change +package/uclibc/uClibc-VERSION.config+,
 without running the configuration assistant.
 
 If you want to use an existing config file for uClibc, then see
