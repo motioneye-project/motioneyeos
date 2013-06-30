@@ -394,14 +394,14 @@ endif
 $(UCLIBC_DIR)/.config: $(UCLIBC_DIR)/.oldconfig
 	$(Q)$(call MESSAGE,"Configuring uClibc")
 	cp -f $(UCLIBC_DIR)/.oldconfig $(UCLIBC_DIR)/.config
-	mkdir -p $(TOOLCHAIN_DIR)/uClibc_dev/usr/include
-	mkdir -p $(TOOLCHAIN_DIR)/uClibc_dev/usr/lib
-	mkdir -p $(TOOLCHAIN_DIR)/uClibc_dev/lib
+	mkdir -p $(STAGING_DIR)/usr/include
+	mkdir -p $(STAGING_DIR)/usr/lib
+	mkdir -p $(STAGING_DIR)/lib
 	$(MAKE1) -C $(UCLIBC_DIR) \
 		ARCH="$(UCLIBC_TARGET_ARCH)" \
-		PREFIX=$(TOOLCHAIN_DIR)/uClibc_dev/ \
+		PREFIX=$(STAGING_DIR) \
 		DEVEL_PREFIX=/usr/ \
-		RUNTIME_PREFIX=$(TOOLCHAIN_DIR)/uClibc_dev/ \
+		RUNTIME_PREFIX=$(STAGING_DIR) \
 		CROSS_COMPILE="$(TARGET_CROSS)" \
 		UCLIBC_EXTRA_CFLAGS="$(TARGET_ABI)" \
 		HOSTCC="$(HOSTCC)" \
@@ -430,26 +430,20 @@ $(UCLIBC_DIR)/.configured: $(UCLIBC_DIR)/.config
 	$(Q)$(call MESSAGE,"Installing uClibc headers")
 	$(MAKE1) -C $(UCLIBC_DIR) \
 		ARCH="$(UCLIBC_TARGET_ARCH)" \
-		PREFIX=$(TOOLCHAIN_DIR)/uClibc_dev/ \
+		PREFIX=$(STAGING_DIR) \
 		DEVEL_PREFIX=/usr/ \
-		RUNTIME_PREFIX=$(TOOLCHAIN_DIR)/uClibc_dev/ \
+		RUNTIME_PREFIX=$(STAGING_DIR) \
 		CROSS_COMPILE="$(TARGET_CROSS)" \
 		UCLIBC_EXTRA_CFLAGS="$(TARGET_ABI)" \
 		HOSTCC="$(HOSTCC)" headers \
 		lib/crt1.o lib/crti.o lib/crtn.o \
 		install_headers
-	# Install the kernel headers to the first stage gcc include dir
-	# if necessary
-	if [ ! -f $(TOOLCHAIN_DIR)/uClibc_dev/usr/include/linux/version.h ]; then \
-		cp -pLR $(STAGING_DIR)/usr/include/* \
-			$(TOOLCHAIN_DIR)/uClibc_dev/usr/include/; \
-	fi
-	$(TARGET_CROSS)gcc -nostdlib $(REALLY_NOSTDLIB) -nostartfiles -shared -x c /dev/null -o $(TOOLCHAIN_DIR)/uClibc_dev/usr/lib/libc.so
-	$(TARGET_CROSS)gcc -nostdlib $(REALLY_NOSTDLIB) -nostartfiles -shared -x c /dev/null -o $(TOOLCHAIN_DIR)/uClibc_dev/usr/lib/libm.so
-	cp -pLR $(UCLIBC_DIR)/lib/crt[1in].o $(TOOLCHAIN_DIR)/uClibc_dev/usr/lib/
+	$(TARGET_CROSS)gcc -nostdlib $(REALLY_NOSTDLIB) -nostartfiles -shared -x c /dev/null -o $(STAGING_DIR)/usr/lib/libc.so
+	$(TARGET_CROSS)gcc -nostdlib $(REALLY_NOSTDLIB) -nostartfiles -shared -x c /dev/null -o $(STAGING_DIR)/usr/lib/libm.so
+	cp -pLR $(UCLIBC_DIR)/lib/crt[1in].o $(STAGING_DIR)/usr/lib/
 	touch $@
 
-$(UCLIBC_DIR)/lib/libc.a: $(UCLIBC_DIR)/.configured $(gcc_intermediate)
+$(UCLIBC_DIR)/lib/libc.a: $(UCLIBC_DIR)/.configured $(HOST_GCC_INTERMEDIATE_TARGET_INSTALL_HOST)
 	$(Q)$(call MESSAGE,"Building uClibc")
 	$(MAKE1) -C $(UCLIBC_DIR) \
 		ARCH="$(UCLIBC_TARGET_ARCH)" \
@@ -465,9 +459,9 @@ $(UCLIBC_DIR)/lib/libc.a: $(UCLIBC_DIR)/.configured $(gcc_intermediate)
 uclibc-menuconfig: dirs $(UCLIBC_DIR)/.config
 	$(MAKE1) -C $(UCLIBC_DIR) \
 		ARCH="$(UCLIBC_TARGET_ARCH)" \
-		PREFIX=$(TOOLCHAIN_DIR)/uClibc_dev/ \
+		PREFIX=$(STAGING_DIR) \
 		DEVEL_PREFIX=/usr/ \
-		RUNTIME_PREFIX=$(TOOLCHAIN_DIR)/uClibc_dev/ \
+		RUNTIME_PREFIX=$(STAGING_DIR) \
 		CROSS_COMPILE="$(TARGET_CROSS)" \
 		UCLIBC_EXTRA_CFLAGS="$(TARGET_ABI)" \
 		HOSTCC="$(HOSTCC)" \
@@ -530,7 +524,7 @@ UCLIBC_TARGETS+=uclibc-test
 endif
 endif
 
-uclibc: $(gcc_intermediate) $(STAGING_DIR)/usr/lib/libc.a $(UCLIBC_TARGETS)
+uclibc: host-gcc-intermediate $(STAGING_DIR)/usr/lib/libc.a $(UCLIBC_TARGETS)
 
 uclibc-source: $(DL_DIR)/$(UCLIBC_SOURCE)
 
@@ -543,7 +537,7 @@ uclibc-oldconfig: $(UCLIBC_DIR)/.oldconfig
 uclibc-update-config: uclibc-config
 	cp -f $(UCLIBC_DIR)/.config $(UCLIBC_CONFIG_FILE)
 
-uclibc-configured: gcc_initial linux-headers $(UCLIBC_DIR)/.configured
+uclibc-configured: host-gcc-initial linux-headers $(UCLIBC_DIR)/.configured
 
 uclibc-configured-source: uclibc-source
 

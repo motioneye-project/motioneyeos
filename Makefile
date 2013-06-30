@@ -224,7 +224,7 @@ BASE_TARGETS += host-ccache
 endif
 
 ifeq ($(BR2_TOOLCHAIN_BUILDROOT),y)
-BASE_TARGETS += uclibc-configured host-binutils cross_compiler uclibc-target-utils kernel-headers
+BASE_TARGETS += toolchain-buildroot
 else
 BASE_TARGETS += uclibc
 endif

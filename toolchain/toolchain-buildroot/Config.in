@@ -4,5 +4,5 @@ if BR2_TOOLCHAIN_BUILDROOT
 source "package/linux-headers/Config.in.host"
 source "toolchain/uClibc/Config.in"
 source "package/binutils/Config.in.host"
-source "toolchain/gcc/Config.in"
+source "package/gcc/Config.in.host"
 endif
