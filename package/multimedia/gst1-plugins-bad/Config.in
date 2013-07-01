@@ -400,9 +400,13 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_NEON
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_OPENCV
 	bool "opencv"
+	depends on BR2_INSTALL_LIBSTDCPP
 	select BR2_PACKAGE_OPENCV
 	help
 	  GStreamer OpenCV Plugins
+
+comment "opencv plugin requires a toolchain with C++ support"
+	depends on !BR2_INSTALL_LIBSTDCPP
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_OPUS
 	bool "opus"
