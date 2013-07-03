@@ -15,9 +15,6 @@ LTTNG_TOOLS_LICENSE_FILES = LICENSE
 # dependency. However, having the babeltrace utilities built for the
 # host is very useful, since those tools allow to convert the binary
 # trace format into an human readable format.
-# Since the 2.1.0 release, lttng-tools depends on flex and bison,
-# but they are not added to the dependency list since they are
-# already Buildroot dependencies.
 LTTNG_TOOLS_DEPENDENCIES = liburcu popt host-lttng-babeltrace util-linux
 
 LTTNG_AUTORECONF = YES
