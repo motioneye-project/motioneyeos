@@ -18,7 +18,7 @@ LTTNG_TOOLS_LICENSE_FILES = LICENSE
 # Since the 2.1.0 release, lttng-tools depends on flex and bison,
 # but they are not added to the dependency list since they are
 # already Buildroot dependencies.
-LTTNG_TOOLS_DEPENDENCIES = liburcu popt host-lttng-babeltrace
+LTTNG_TOOLS_DEPENDENCIES = liburcu popt host-lttng-babeltrace util-linux
 
 LTTNG_AUTORECONF = YES
 
