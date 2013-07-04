@@ -124,6 +124,11 @@ TARGET_CFLAGS += -msep-data
 TARGET_CXXFLAGS += -msep-data
 endif
 
+ifeq ($(BR2_TOOLCHAIN_BUILDROOT_USE_SSP),y)
+TARGET_CFLAGS += -fstack-protector-all
+TARGET_CXXFLAGS += -fstack-protector-all
+endif
+
 ifeq ($(BR2_TOOLCHAIN_BUILDROOT)$(BR2_TOOLCHAIN_CTNG),y)
 TARGET_CROSS=$(HOST_DIR)/usr/bin/$(GNU_TARGET_NAME)-
 else
