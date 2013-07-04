@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-FBGRAB_VERSION = 1.0
+FBGRAB_VERSION = 1.1
 FBGRAB_SOURCE = fbgrab-$(FBGRAB_VERSION).tar.gz
-FBGRAB_SITE = http://hem.bredband.net/gmogmo/fbgrab
+FBGRAB_SITE = http://fbgrab.monells.se
 FBGRAB_DEPENDENCIES = libpng
 FBGRAB_LICENSE = GPLv2
 FBGRAB_LICENSE_FILES = COPYING
