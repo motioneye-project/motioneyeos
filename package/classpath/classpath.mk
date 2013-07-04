@@ -22,7 +22,9 @@ CLASSPATH_AUTORECONF = YES
 CLASSPATH_LICENSE = GPLv2+ with exception
 CLASSPATH_LICENSE_FILES = COPYING
 
-ifeq ($(BR2_PACKAGE_ALSA_LIB),y)
+# Needs ALSA pcm and sequencer (midi) support
+# pcm is always on for alsa-lib
+ifeq ($(BR2_PACKAGE_ALSA_LIB_SEQ),y)
 CLASSPATH_CONF_OPT += --enable-alsa
 CLASSPATH_DEPENDENCIES += alsa-lib
 else
