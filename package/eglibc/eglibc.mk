@@ -19,7 +19,7 @@ EGLIBC_SUBDIR = build
 
 EGLIBC_INSTALL_STAGING = YES
 
-+EGLIBC_INSTALL_STAGING_OPT = install_root=$(STAGING_DIR) install
+EGLIBC_INSTALL_STAGING_OPT = install_root=$(STAGING_DIR) install
 
 # Even though we use the autotools-package infrastructure, we have to
 # override the default configure commands for several reasons:
