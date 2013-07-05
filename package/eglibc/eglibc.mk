@@ -7,6 +7,8 @@
 EGLIBC_VERSION = 2.17-svnr22064
 EGLIBC_SITE = http://downloads.yoctoproject.org/releases/eglibc/
 EGLIBC_SOURCE = eglibc-$(EGLIBC_VERSION).tar.bz2
+EGLIBC_LICENSE = GPLv2+ (programs), LGPLv2.1+, BSD-3c, MIT (library)
+EGLIBC_LICENSE_FILES = libc/COPYING libc/COPYING.LIB libc/LICENSES
 
 # Before eglibc is configured, we must have the first stage
 # cross-compiler and the kernel headers
