@@ -38,8 +38,17 @@ endef
 # Apply patches
 #
 
+ifeq ($(ARCH)-$(BR2_GCC_SHARED_LIBGCC),powerpc-y)
+ifneq ($(BR2_SOFT_FLOAT),)
+define HOST_GCC_APPLY_POWERPC_PATCH
+	support/scripts/apply-patches.sh $(@D) package/gcc/$(GCC_VERSION) powerpc-link-with-math-lib.patch.conditional
+endef
+endif
+endif
+
 define HOST_GCC_APPLY_PATCHES
 	support/scripts/apply-patches.sh $(@D) package/gcc/$(GCC_VERSION) \*.patch
+	$(HOST_GCC_APPLY_POWERPC_PATCH)
 endef
 
 #
