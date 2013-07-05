@@ -114,7 +114,7 @@ ifeq ($(UCLIBC_TARGET_ARCH),sh)
 UCLIBC_SH_TYPE = CONFIG_$(call qstrip,$(BR2_UCLIBC_SH_TYPE))
 define UCLIBC_SH_TYPE_CONFIG
 	$(SED) '/CONFIG_SH[234A]*/d' $(@D)/.config
-	$(call UCLIBC_OPT_SET,$(UCLIBC_SH_TYPE),y,$(@Ð))
+	$(call UCLIBC_OPT_SET,$(UCLIBC_SH_TYPE),y,$(@D))
 endef
 endif # sh
 
@@ -126,7 +126,7 @@ ifeq ($(UCLIBC_TARGET_ARCH),sparc)
 UCLIBC_SPARC_TYPE = CONFIG_SPARC_$(call qstrip,$(BR2_UCLIBC_SPARC_TYPE))
 define UCLIBC_SPARC_TYPE_CONFIG
 	$(SED) 's/^\(CONFIG_[^_]*[_]*SPARC[^=]*\)=.*/# \1 is not set/g' \
-		 $(@Ð)/.config
+		 $(@D)/.config
 	$(call UCLIBC_OPT_SET,$(UCLIBC_SPARC_TYPE),y,$(@D))
 endef
 endif # sparc
