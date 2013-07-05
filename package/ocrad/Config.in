@@ -1,0 +1,14 @@
+config BR2_PACKAGE_OCRAD
+	bool "ocrad"
+	depends on BR2_INSTALL_LIBSTDCPP
+	help
+	  GNU Ocrad is an OCR (Optical Character Recognition) program
+	  based on a feature extraction method.
+	  It reads images in pbm (bitmap), pgm (greyscale) or
+	  ppm (color) formats and produces text in byte (8-bit) or
+	  UTF-8 formats.
+
+	  http://www.gnu.org/software/ocrad/
+
+comment "ocrad needs a toolchain with C++ support"
+	depends on !BR2_INSTALL_LIBSTDCPP
