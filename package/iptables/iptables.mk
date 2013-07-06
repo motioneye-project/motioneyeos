@@ -12,7 +12,7 @@ IPTABLES_DEPENDENCIES = host-pkgconf
 IPTABLES_LICENSE = GPLv2
 IPTABLES_LICENSE_FILES = COPYING
 
-IPTABLES_CONF_OPT = --libexecdir=/usr/lib --with-kernel=$(LINUX_HEADERS_DIR)
+IPTABLES_CONF_OPT = --libexecdir=/usr/lib --with-kernel=$(STAGING_DIR)/usr
 
 define IPTABLES_TARGET_SYMLINK_CREATE
 	ln -sf xtables-multi $(TARGET_DIR)/usr/sbin/iptables
