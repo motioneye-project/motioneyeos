@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBETHUMB_VERSION = 1.7.4
+LIBETHUMB_VERSION = $(EFL_VERSION)
 LIBETHUMB_SOURCE = ethumb-$(LIBETHUMB_VERSION).tar.bz2
 LIBETHUMB_SITE = http://download.enlightenment.org/releases/
 LIBETHUMB_LICENSE = LGPLv2.1+

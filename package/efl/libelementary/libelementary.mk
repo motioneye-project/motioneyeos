@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBELEMENTARY_VERSION = 1.7.4
+LIBELEMENTARY_VERSION = $(EFL_VERSION)
 LIBELEMENTARY_SOURCE = elementary-$(LIBELEMENTARY_VERSION).tar.bz2
 LIBELEMENTARY_SITE = http://download.enlightenment.org/releases/
 LIBELEMENTARY_LICENSE = LGPLv2.1

@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBEMBRYO_VERSION = 1.7.4
+LIBEMBRYO_VERSION = $(EFL_VERSION)
 LIBEMBRYO_SOURCE = embryo-$(LIBEMBRYO_VERSION).tar.bz2
 LIBEMBRYO_SITE = http://download.enlightenment.org/releases/
 LIBEMBRYO_LICENSE = BSD-2c, Embryo license

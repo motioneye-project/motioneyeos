@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBEFREET_VERSION = 1.7.4
+LIBEFREET_VERSION = $(EFL_VERSION)
 LIBEFREET_SOURCE = efreet-$(LIBEFREET_VERSION).tar.bz2
 LIBEFREET_SITE = http://download.enlightenment.org/releases/
 LIBEFREET_LICENSE = BSD-2c
