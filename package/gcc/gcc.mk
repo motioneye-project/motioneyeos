@@ -40,7 +40,7 @@ endef
 # Apply patches
 #
 
-ifeq ($(ARCH)-$(BR2_GCC_SHARED_LIBGCC),powerpc-y)
+ifeq ($(ARCH),powerpc)
 ifneq ($(BR2_SOFT_FLOAT),)
 define HOST_GCC_APPLY_POWERPC_PATCH
 	support/scripts/apply-patches.sh $(@D) package/gcc/$(GCC_VERSION) powerpc-link-with-math-lib.patch.conditional

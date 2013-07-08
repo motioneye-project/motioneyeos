@@ -49,12 +49,6 @@ else
 HOST_GCC_FINAL_CONF_OPT += --disable-libgomp
 endif
 
-ifeq ($(BR2_GCC_SHARED_LIBGCC),y)
-HOST_GCC_FINAL_CONF_OPT += --enable-shared
-else
-HOST_GCC_FINAL_CONF_OPT += --disable-shared
-endif
-
 # End with user-provided options, so that they can override previously
 # defined options.
 HOST_GCC_FINAL_CONF_OPT += \
@@ -99,7 +93,6 @@ HOST_GCC_FINAL_POST_INSTALL_HOOKS += HOST_GCC_FINAL_CREATE_SIMPLE_SYMLINKS
 # Cannot use the HOST_GCC_FINAL_USR_LIBS mechanism below, because we want
 # libgcc_s to be installed in /lib and not /usr/lib. We add +x on
 # libgcc_s to ensure it will be stripped.
-ifeq ($(BR2_GCC_SHARED_LIBGCC),y)
 define HOST_GCC_FINAL_INSTALL_LIBGCC
 	-cp -dpf $(HOST_DIR)/usr/$(GNU_TARGET_NAME)/lib*/libgcc_s* \
 		$(STAGING_DIR)/lib/
@@ -109,12 +102,11 @@ define HOST_GCC_FINAL_INSTALL_LIBGCC
 endef
 
 HOST_GCC_FINAL_POST_INSTALL_HOOKS += HOST_GCC_FINAL_INSTALL_LIBGCC
-endif
 
 # Handle the installation of libraries in /usr/lib
 HOST_GCC_FINAL_USR_LIBS =
 
-ifeq ($(BR2_GCC_SHARED_LIBGCC)$(BR2_INSTALL_LIBSTDCPP),yy)
+ifeq ($(BR2_INSTALL_LIBSTDCPP),y)
 HOST_GCC_FINAL_USR_LIBS += libstdc++
 endif
 

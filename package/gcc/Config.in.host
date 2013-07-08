@@ -105,14 +105,6 @@ config BR2_INSTALL_FORTRAN
 	  Note that it is highly recommended NOT to use gfortran
 	  from gcc older than 4.2.0
 
-config BR2_GCC_SHARED_LIBGCC
-	bool "Build/install a shared libgcc?"
-	depends on !BR2_PREFER_STATIC_LIB
-	default y
-	depends on !BR2_sparc
-	help
-	  Build/install a shared libgcc library
-
 config BR2_GCC_ENABLE_TLS
 	bool "Enable compiler tls support" if BR2_TOOLCHAIN_BUILDROOT_UCLIBC
 	default y
