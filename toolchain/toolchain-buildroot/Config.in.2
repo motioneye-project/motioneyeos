@@ -7,10 +7,15 @@ comment "Toolchain Options"
 config BR2_TOOLCHAIN_BUILDROOT_CXX
 	bool "Enable C++ support"
 	select BR2_INSTALL_LIBSTDCPP
+	depends on !(BR2_GCC_VERSION_4_2_2_AVR32_2_1_5 && \
+		     BR2_TOOLCHAIN_BUILDROOT_LOCALE)
 	help
 	  Enable this option if you want your toolchain to support the
 	  C++ language and you want C++ libraries to be installed on
 	  your target system.
+
+comment "C++ support broken in uClibc with locale enabled with gcc 4.2"
+	depends on BR2_GCC_VERSION_4_2_2_AVR32_2_1_5 && BR2_TOOLCHAIN_BUILDROOT_LOCALE
 
 config BR2_TOOLCHAIN_BUILDROOT_USE_SSP
 	bool "Enable stack protection support"
