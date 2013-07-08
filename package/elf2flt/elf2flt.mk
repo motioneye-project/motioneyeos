@@ -21,6 +21,8 @@ HOST_ELF2FLT_CONF_OPT = \
 	--with-libiberty=$(HOST_BINUTILS_DIR)/libiberty/libiberty.a \
 	--target=$(GNU_TARGET_NAME)
 
+HOST_ELF2FLT_CONF_ENV = LIBS=-lz
+
 define HOST_ELF2FLT_EXTRACT_CMDS
 	cp -r package/elf2flt/src/* $(@D)
 endef
