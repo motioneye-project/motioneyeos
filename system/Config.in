@@ -272,9 +272,9 @@ config BR2_ROOTFS_POST_BUILD_SCRIPT
 	  add-ons and the like, so the generated files can be used directly
 	  without further processing.
 
-	  These scripts are called with the target directory name as first and
-	  only argument. Make sure the exit code of those scripts are 0,
-	  otherwise make will stop after calling them.
+	  These scripts are called with the target directory name as first
+	  argument. Make sure the exit code of those scripts are 0, otherwise
+	  make will stop after calling them.
 
 config BR2_ROOTFS_POST_IMAGE_SCRIPT
 	string "Custom scripts to run after creating filesystem images"
@@ -291,7 +291,23 @@ config BR2_ROOTFS_POST_IMAGE_SCRIPT
 	  action.
 
 	  These scripts are called with the images directory name as
-	  first and only argument. The script is executed from the
-	  main Buildroot source directory as the current directory.
+	  first argument. The script is executed from the main Buildroot
+	  source directory as the current directory.
+
+config BR2_ROOTFS_POST_SCRIPT_ARGS
+	string "Extra post-{build,image} arguments"
+	depends on BR2_ROOTFS_POST_BUILD_SCRIPT != "" || BR2_ROOTFS_POST_IMAGE_SCRIPT != ""
+	help
+	  Pass these aditional arguments to each post-build or post-image
+	  scripts.
+
+	  Note that all the post-build and post-image scripts will be passed
+	  the same set of arguments, you can not pass different arguments to
+	  each script.
+
+	  Note also, as stated in their respective help text, that the first
+	  argument to each post-build or post-image script is the target
+	  directory / images directory. The arguments in this option will be
+	  passed *after* those.
 
 endmenu

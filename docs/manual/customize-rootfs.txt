@@ -69,15 +69,20 @@ specify a space-separated list of scripts in the
 found in the +System configuration+ menu as well.
 
 Each of those scripts will be called with the path to the +images+
-output directory as first and unique argument, and will be executed
-with the main Buildroot source directory as the current
-directory. Those scripts will be executed as the user that executes
-Buildroot, which should normally not be the root user. Therefore, any
-action requiring root permissions in one of these _post-image scripts_
-will require special handling (usage of fakeroot or sudo), which is
-left to the script developer.
+output directory as first argument, and will be executed with the main
+Buildroot source directory as the current directory. Those scripts will
+be executed as the user that executes Buildroot, which should normally
+not be the root user. Therefore, any action requiring root permissions
+in one of these _post-image scripts_ will require special handling
+(usage of fakeroot or sudo), which is left to the script developer.
 
 Just like for the _post-build scripts_ mentioned above, you also have
 access to the following environment variables from your _post-image
 scripts_: +BUILDROOT_CONFIG+, +HOST_DIR+, +STAGING_DIR+, +TARGET_DIR+,
 +BINARIES_DIR+ and +BASE_DIR+.
+
+Additionally, each of the +BR2_ROOTFS_POST_BUILD_SCRIPT+ and
++BR2_ROOTFS_POST_IMAGE_SCRIPT+ scripts will be passed the arguments
+specified in +BR2_ROOTFS_POST_SCRIPT_ARGS+ (if that is not empty).
+All the scripts will be passed the exact same set of arguments, it
+is not possible to pass different sets of arguments to each script.
