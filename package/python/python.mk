@@ -143,21 +143,18 @@ endef
 
 PYTHON_POST_INSTALL_STAGING_HOOKS += PYTHON_FIXUP_LIBDIR
 
-# Bad shebang, normally not used
-define PYTHON_REMOVE_SMTPD
-	rm -f $(TARGET_DIR)/usr/bin/smtpd.py
-endef
-
-PYTHON_POST_INSTALL_TARGET_HOOKS += PYTHON_REMOVE_SMTPD
-
 #
 # Remove useless files. In the config/ directory, only the Makefile
 # and the pyconfig.h files are needed at runtime.
 #
+# idle & smtpd.py have bad shebangs and are mostly samples
+#
 define PYTHON_REMOVE_USELESS_FILES
+	rm -f $(TARGET_DIR)/usr/bin/idle
 	rm -f $(TARGET_DIR)/usr/bin/python$(PYTHON_VERSION_MAJOR)-config
 	rm -f $(TARGET_DIR)/usr/bin/python2-config
 	rm -f $(TARGET_DIR)/usr/bin/python-config
+	rm -f $(TARGET_DIR)/usr/bin/smtpd.py
 	for i in `find $(TARGET_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR)/config/ \
 		-type f -not -name pyconfig.h -a -not -name Makefile` ; do \
 		rm -f $$i ; \
