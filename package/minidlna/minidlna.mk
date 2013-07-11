@@ -19,12 +19,18 @@ MINIDLNA_CFLAGS=$(TARGET_CFLAGS) \
 	-I"$(STAGING_DIR)/usr/include/libavcodec" \
 	-I"$(STAGING_DIR)/usr/include/libavformat"
 
+ifeq ($(BR2_PACKAGE_GETTEXT),y)
+MINIDLNA_DEPENDENCIES += gettext
+# we need to link with libintl
+MINIDLNA_MAKE_OPTS += LIBS='-lpthread -lexif -ljpeg -lsqlite3 -lavformat -lavutil -lavcodec -lid3tag -lFLAC -logg -lvorbis -lintl'
+endif
+
 define MINIDLNA_BUILD_CMDS
 	PREFIX=$(STAGING_DIR)/usr \
 		$(TARGET_MAKE_ENV) $(MAKE) $(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(MINIDLNA_CFLAGS)" -C $(@D) depend
 	$(TARGET_MAKE_ENV) $(MAKE) $(TARGET_CONFIGURE_OPTS) \
-		CFLAGS="$(MINIDLNA_CFLAGS)" -C $(@D) all
+		CFLAGS="$(MINIDLNA_CFLAGS)" $(MINIDLNA_MAKE_OPTS) -C $(@D) all
 endef
 
 define MINIDLNA_INSTALL_TARGET_CMDS
