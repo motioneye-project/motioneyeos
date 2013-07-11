@@ -180,6 +180,9 @@ unexport PKG_CONFIG_SYSROOT_DIR
 # steps of some packages.
 unexport DESTDIR
 
+# Causes breakage with packages that needs host-ruby
+unexport RUBYOPT
+
 # bash prints the name of the directory on 'cd <dir>' if CDPATH is
 # set, so unset it here to not cause problems. Notice that the export
 # line doesn't affect the environment of $(shell ..) calls, so
