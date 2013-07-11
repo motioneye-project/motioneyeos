@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-JQUERY_SPARKLINE_VERSION = 2.1.1
+JQUERY_SPARKLINE_VERSION = 2.1.2
 JQUERY_SPARKLINE_SITE = http://www.omnipotent.net/jquery.sparkline/$(JQUERY_SPARKLINE_VERSION)
 JQUERY_SPARKLINE_SOURCE = jquery.sparkline.min.js
 JQUERY_SPARKLINE_LICENSE = BSD-3c
