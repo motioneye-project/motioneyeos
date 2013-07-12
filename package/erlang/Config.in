@@ -8,6 +8,8 @@ config BR2_PACKAGE_ERLANG
 	  telephony and instant messaging. Erlang's runtime system has
 	  built-in support for concurrency, distribution and fault tolerance.
 
+	  http://www.erlang.org
+
 config BR2_PACKAGE_ERLANG_MEGACO
 	bool "install megaco application"
 	depends on BR2_PACKAGE_ERLANG
