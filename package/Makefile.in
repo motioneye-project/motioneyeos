@@ -30,11 +30,10 @@ LIBC=gnu
 endif
 
 # The ABI suffix is a bit special on ARM, as it needs to be
-# -uclibcgnueabi for uClibc EABI, -uclibc for uClibc OABI, -gnueabi
-# for glibc EABI and -gnu for glibc OABI. This means that the LIBC and
-# ABI aren't strictly orthogonal, which explains why we need the test
-# on LIBC below.
-ifeq ($(BR2_ARM_EABI),y)
+# -uclibcgnueabi for uClibc EABI, and -gnueabi for glibc EABI.
+# This means that the LIBC and ABI aren't strictly orthogonal,
+# which explains why we need the test on LIBC below.
+ifeq ($(BR2_arm)$(BR2_armeb),y)
 ifeq ($(LIBC),uclibc)
 ABI=gnueabi
 else
