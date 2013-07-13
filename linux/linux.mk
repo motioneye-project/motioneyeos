@@ -170,9 +170,8 @@ define LINUX_CONFIGURE_CMDS
 	cp $(KERNEL_SOURCE_CONFIG) $(KERNEL_ARCH_PATH)/configs/buildroot_defconfig
 	$(TARGET_MAKE_ENV) $(MAKE1) $(LINUX_MAKE_FLAGS) -C $(@D) buildroot_defconfig
 	rm $(KERNEL_ARCH_PATH)/configs/buildroot_defconfig
-	$(if $(BR2_ARM_EABI),
-		$(call KCONFIG_ENABLE_OPT,CONFIG_AEABI,$(@D)/.config),
-		$(call KCONFIG_DISABLE_OPT,CONFIG_AEABI,$(@D)/.config))
+	$(if $(BR2_arm)$(BR2_armeb),
+		$(call KCONFIG_ENABLE_OPT,CONFIG_AEABI,$(@D)/.config))
 	# As the kernel gets compiled before root filesystems are
 	# built, we create a fake cpio file. It'll be
 	# replaced later by the real cpio archive, and the kernel will be
