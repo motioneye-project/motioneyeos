@@ -285,10 +285,6 @@ check_arm_abi = \
 	else \
 		EXT_TOOLCHAIN_ABI="oabi" ; \
 	fi ; \
-	if [ x$(BR2_ARM_OABI) = x"y" -a $${EXT_TOOLCHAIN_ABI} = "eabi" ] ; then \
-		echo "Incorrect ABI setting" ; \
-		exit 1 ; \
-	fi ; \
 	if [ x$(BR2_ARM_EABI) = x"y" -a $${EXT_TOOLCHAIN_ABI} = "oabi" ] ; then \
 		echo "Incorrect ABI setting" ; \
 		exit 1 ; \
