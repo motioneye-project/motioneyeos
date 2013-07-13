@@ -72,19 +72,12 @@ choice
 	help
 	  Application Binary Interface to use
 
-	  Note:
-	    Using OABI is discouraged.
-
 config BR2_ARM_EABI_CHOICE
 	bool "EABI"
-config BR2_ARM_OABI
-	bool "OABI"
-	depends on !BR2_GCC_VERSION_4_7_X
 endchoice
 
 config BR2_ARM_EABI
 	def_bool y
-	depends on !BR2_ARM_OABI
 
 config BR2_ARM_ENABLE_NEON
 	bool "Enable NEON SIMD extension support"
