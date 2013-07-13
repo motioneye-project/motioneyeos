@@ -142,5 +142,4 @@ config BR2_GCC_TARGET_ARCH
 	default "iwmmxt"	if BR2_iwmmxt
 
 config BR2_GCC_TARGET_ABI
-	default "apcs-gnu"	if BR2_ARM_OABI
-	default "aapcs-linux"	if BR2_ARM_EABI
+	default "aapcs-linux"
