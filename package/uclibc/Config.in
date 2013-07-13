@@ -90,7 +90,7 @@ config BR2_TOOLCHAIN_BUILDROOT_LOCALE
 
 choice
 	prompt "Thread library implementation"
-	default BR2_PTHREADS_NATIVE if !BR2_ARM_OABI && !(BR2_avr32 || BR2_xtensa)
+	default BR2_PTHREADS_NATIVE if !(BR2_avr32 || BR2_xtensa)
 	default BR2_PTHREADS_OLD
 	help
 	  Use this option to select the thread library implementation
@@ -114,7 +114,6 @@ choice
 	config BR2_PTHREADS_NATIVE
 		bool "Native POSIX Threading (NPTL)"
 		select BR2_TOOLCHAIN_HAS_THREADS
-		depends on !BR2_ARM_OABI
 		depends on !BR2_x86_i386
 		depends on !BR2_avr32
 		depends on !BR2_xtensa
@@ -186,7 +185,6 @@ config BR2_UCLIBC_ARM_TYPE
 config BR2_UCLIBC_ARM_ABI
 	string
 	depends on BR2_UCLIBC_TARGET_ARCH = "arm"
-	default OABI if BR2_ARM_OABI
 	default EABI if BR2_ARM_EABI
 
 config BR2_UCLIBC_ARM_BX
