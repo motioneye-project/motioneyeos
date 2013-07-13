@@ -69,11 +69,9 @@ define UCLIBC_ARM_TYPE_CONFIG
 	$(call UCLIBC_OPT_SET,$(UCLIBC_ARM_TYPE),y,$(@D))
 endef
 
-UCLIBC_ARM_ABI = CONFIG_ARM_$(call qstrip,$(BR2_UCLIBC_ARM_ABI))
-
 define UCLIBC_ARM_ABI_CONFIG
 	$(SED) '/CONFIG_ARM_.ABI/d' $(@D)/.config
-	$(call UCLIBC_OPT_SET,$(UCLIBC_ARM_ABI),y,$(@D))
+	$(call UCLIBC_OPT_SET,CONFIG_ARM_EABI,y,$(@D))
 endef
 
 ifeq ($(BR2_UCLIBC_ARM_BX),y)

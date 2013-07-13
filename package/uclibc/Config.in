@@ -182,11 +182,6 @@ config BR2_UCLIBC_ARM_TYPE
 	default ARM_CORTEXA8	if BR2_cortex_a8
 	default ARM_CORTEXA9	if BR2_cortex_a9
 
-config BR2_UCLIBC_ARM_ABI
-	string
-	depends on BR2_UCLIBC_TARGET_ARCH = "arm"
-	default EABI if BR2_ARM_EABI
-
 config BR2_UCLIBC_ARM_BX
 	bool
 	depends on BR2_UCLIBC_TARGET_ARCH = "arm"
