@@ -31,7 +31,8 @@ HOST_GCC_INITIAL_CONF_OPT = \
 	--without-headers \
 	--with-newlib \
 	--disable-largefile \
-	--disable-nls
+	--disable-nls \
+	$(call qstrip,$(BR2_EXTRA_GCC_CONFIG_OPTIONS))
 
 HOST_GCC_INITIAL_MAKE_OPT = all-gcc
 HOST_GCC_INITIAL_INSTALL_OPT = install-gcc

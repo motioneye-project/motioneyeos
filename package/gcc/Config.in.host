@@ -88,7 +88,9 @@ config BR2_EXTRA_GCC_CONFIG_OPTIONS
 	string "Additional gcc options"
 	default ""
 	help
-	  Any additional gcc configure options you may want to include....
+	  Any additional gcc configure options you may want to
+	  include. Those options are applied for all of the gcc
+	  initial, gcc intermediate and gcc final passes.
 
 config BR2_INSTALL_OBJC
 	bool "Build/install Objective-C compiler and runtime?"

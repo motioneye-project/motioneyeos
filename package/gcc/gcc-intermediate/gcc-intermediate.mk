@@ -30,7 +30,8 @@ HOST_GCC_INTERMEDIATE_CONF_OPT = \
 	$(HOST_GCC_COMMON_CONF_OPT) \
 	--enable-languages=c \
 	--disable-largefile \
-	--disable-nls
+	--disable-nls \
+	$(call qstrip,$(BR2_EXTRA_GCC_CONFIG_OPTIONS))
 
 HOST_GCC_INTERMEDIATE_MAKE_OPT = all-gcc
 ifeq ($(BR2_GCC_SUPPORTS_FINEGRAINEDMTUNE),y)
