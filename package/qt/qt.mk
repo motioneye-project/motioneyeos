@@ -136,7 +136,11 @@ QT_DEPENDENCIES += directfb
 else
 QT_CONFIGURE_OPTS += -no-gfx-directfb
 endif
-
+ifeq ($(BR2_PACKAGE_QT_GFX_POWERVR),y)
+QT_CONFIGURE_OPTS += \
+	-plugin-gfx-powervr -D QT_NO_QWS_CURSOR -D QT_QWS_CLIENTBLIT
+QT_DEPENDENCIES += powervr
+endif
 
 ### Mouse drivers
 ifeq ($(BR2_PACKAGE_QT_MOUSE_PC),y)
@@ -311,6 +315,13 @@ QT_CONFIGURE_OPTS += -openssl
 QT_DEPENDENCIES   += openssl
 else
 QT_CONFIGURE_OPTS += -no-openssl
+endif
+
+ifeq ($(BR2_PACKAGE_QT_OPENGL_ES),y)
+QT_CONFIGURE_OPTS += -opengl es2 -egl
+QT_DEPENDENCIES   += libgles libegl
+else
+QT_CONFIGURE_OPTS += -no-opengl
 endif
 
 # Qt SQL Drivers
@@ -564,6 +575,12 @@ endif
 ifeq ($(BR2_PACKAGE_QT_QT3SUPPORT),y)
 QT_INSTALL_LIBS    += Qt3Support
 endif
+ifeq ($(BR2_PACKAGE_QT_OPENGL_ES),y)
+QT_INSTALL_LIBS    += QtOpenGL
+endif
+ifeq ($(BR2_PACKAGE_QT_GFX_POWERVR),y)
+QT_INSTALL_LIBS    += pvrQWSWSEGL
+endif
 
 QT_CONF_FILE=$(HOST_DIR)/usr/bin/qt.conf
 
@@ -640,12 +657,22 @@ define QT_INSTALL_TARGET_FONTS_TTF
 endef
 endif
 
+ifeq ($(BR2_PACKAGE_QT_GFX_POWERVR),y)
+define QT_INSTALL_TARGET_POWERVR
+	# Note: this overwrites the default powervr.ini provided by the ti-gfx
+	# package.
+	$(INSTALL) -D -m 0644 package/qt/powervr.ini \
+		$(TARGET_DIR)/etc/powervr.ini
+endef
+endif
+
 define QT_INSTALL_TARGET_CMDS
 	$(QT_INSTALL_TARGET_LIBS)
 	$(QT_INSTALL_TARGET_PLUGINS)
 	$(QT_INSTALL_TARGET_IMPORTS)
 	$(QT_INSTALL_TARGET_FONTS)
 	$(QT_INSTALL_TARGET_FONTS_TTF)
+	$(QT_INSTALL_TARGET_POWERVR)
 endef
 
 define QT_CLEAN_CMDS
