@@ -11,5 +11,6 @@ source "fs/romfs/Config.in"
 source "fs/squashfs/Config.in"
 source "fs/tar/Config.in"
 source "fs/ubifs/Config.in"
+source "fs/yaffs2/Config.in"
 
 endmenu
