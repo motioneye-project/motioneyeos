@@ -10,10 +10,11 @@ config BR2_PACKAGE_AVAHI
 
 	  http://www.avahi.org/
 
+if BR2_PACKAGE_AVAHI
+
 config BR2_PACKAGE_AVAHI_AUTOIPD
 	bool "IPv4LL network address configuration daemon"
 	default y
-	depends on BR2_PACKAGE_AVAHI
 	select BR2_PACKAGE_LIBDAEMON
 	help
 	  Avahi-autoipd implements IPv4LL, "Dynamic Configuration of
@@ -25,7 +26,6 @@ config BR2_PACKAGE_AVAHI_AUTOIPD
 
 config BR2_PACKAGE_AVAHI_DAEMON
 	bool "mDNS/DNS-SD daemon"
-	depends on BR2_PACKAGE_AVAHI
 	select BR2_PACKAGE_LIBDAEMON
 	select BR2_PACKAGE_EXPAT
 	help
@@ -33,6 +33,8 @@ config BR2_PACKAGE_AVAHI_DAEMON
 	  architecture (also known as "Rendezvous" or "Bonjour").
 	  The daemon registers local IP addresses and services using
 	  mDNS/DNS-SD.
+
+endif
 
 comment "avahi requires a toolchain with thread support"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS
