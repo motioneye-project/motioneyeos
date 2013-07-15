@@ -2,6 +2,7 @@ config BR2_PACKAGE_DOCKER
 	bool "docker"
 	depends on BR2_PACKAGE_XORG7
 	depends on BR2_USE_WCHAR # glib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # glib2
 	select BR2_PACKAGE_LIBGLIB2
 	select BR2_PACKAGE_XLIB_LIBX11
 	help
@@ -9,5 +10,6 @@ config BR2_PACKAGE_DOCKER
 
 	  http://icculus.org/openbox/2/docker
 
-comment "docker requires a toolchain with WCHAR support"
-	depends on BR2_PACKAGE_XORG7 && !BR2_USE_WCHAR
+comment "docker requires a toolchain with WCHAR and threading support"
+	depends on BR2_PACKAGE_XORG7 && \
+		(!BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS)

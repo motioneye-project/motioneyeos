@@ -1,11 +1,12 @@
 config BR2_PACKAGE_GAMIN
 	bool "gamin"
 	depends on BR2_USE_WCHAR # glib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # glib2
 	select BR2_PACKAGE_LIBGLIB2
 	help
 	  the File Alteration Monitor
 
 	  http://www.gnome.org/~veillard/gamin/sources
 
-comment "gamin requires a toolchain with WCHAR support"
-	depends on !BR2_USE_WCHAR
+comment "gamin requires a toolchain with WCHAR and threading support"
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS

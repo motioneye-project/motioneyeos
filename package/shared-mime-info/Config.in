@@ -1,6 +1,7 @@
 config BR2_PACKAGE_SHARED_MIME_INFO
 	bool "shared-mime-info"
 	depends on BR2_USE_WCHAR # glib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # glib2
 	select BR2_PACKAGE_LIBGLIB2
 	select BR2_PACKAGE_LIBXML2
 	help
@@ -10,5 +11,5 @@ config BR2_PACKAGE_SHARED_MIME_INFO
 
 	  http://freedesktop.org/wiki/Software/shared-mime-info
 
-comment "shared-mime-info requires a toolchain with WCHAR support"
-	depends on !BR2_USE_WCHAR
+comment "shared-mime-info requires a toolchain with WCHAR and threading support"
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS

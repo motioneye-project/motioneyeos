@@ -25,9 +25,14 @@ config BR2_PACKAGE_UDEV_ALL_EXTRAS
 	select BR2_PACKAGE_ACL
 	select BR2_PACKAGE_HWDATA
 	select BR2_PACKAGE_LIBGLIB2
+	depends on BR2_USE_WCHAR # libglib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libglib2
 	help
 	  Enable all extras with external dependencies like
 	  libacl, hwdata and libglib2
+
+comment "enabling all extras requires a toolchain with WCHAR and threading support"
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_USE_THREADS
 
 endif
 

@@ -1,6 +1,7 @@
 config BR2_PACKAGE_LIBSOUP
 	bool "libsoup"
 	depends on BR2_USE_WCHAR # glib2 and gnutls
+	depends on BR2_TOOLCHAIN_HAS_THREADS # glib2
 	select BR2_PACKAGE_LIBXML2
 	select BR2_PACKAGE_LIBGLIB2
 	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT
@@ -12,13 +13,16 @@ config BR2_PACKAGE_LIBSOUP
 
 	  http://live.gnome.org/LibSoup
 
+if BR2_PACKAGE_LIBSOUP
+
 config BR2_PACKAGE_LIBSOUP_SSL
 	bool "https support"
 	select BR2_PACKAGE_GLIB_NETWORKING
 	select BR2_PACKAGE_GNUTLS
-	depends on BR2_PACKAGE_LIBSOUP
 	help
 	  Enable HTTPS (SSL) support.
 
-comment "libsoup requires a toolchain with WCHAR support"
-	depends on !BR2_USE_WCHAR
+endif
+
+comment "libsoup requires a toolchain with WCHAR and threading support"
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS

@@ -3,6 +3,7 @@ config BR2_PACKAGE_BUSTLE
 	select BR2_PACKAGE_LIBPCAP
 	select BR2_PACKAGE_LIBGLIB2
 	depends on BR2_USE_WCHAR # libglib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libglib2
 	depends on BR2_PACKAGE_DBUS # runtime
 	help
 	  Bustle is a better dbus-monitor! It records and draws
@@ -18,5 +19,5 @@ config BR2_PACKAGE_BUSTLE
 
 	  http://www.willthompson.co.uk/bustle/
 
-comment "bustle requires a toolchain with WCHAR support"
-	depends on !BR2_USE_WCHAR
+comment "bustle requires a toolchain with WCHAR support and threading support"
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS

@@ -5,11 +5,12 @@ config BR2_PACKAGE_WIRESHARK
 	select BR2_PACKAGE_LIBGLIB2
 	depends on BR2_USE_MMU # fork()
 	depends on BR2_USE_WCHAR # glib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # glib2
 	help
 	  Network traffic sniffer and protocol decoder. Currently only tshark,
 	  the console interface, is enabled.
 
 	  http://www.wireshark.org
 
-comment "wireshark requires a toolchain with WCHAR support"
-	depends on !BR2_USE_WCHAR
+comment "wireshark requires a toolchain with WCHAR and threading support"
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS

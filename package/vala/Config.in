@@ -3,6 +3,7 @@ config BR2_PACKAGE_VALA
 	# We no longer support a toolchain on the target
 	depends on BR2_DEPRECATED
 	depends on BR2_USE_WCHAR # glib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # glib2
 	select BR2_PACKAGE_LIBGLIB2
 	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE
 	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
@@ -11,5 +12,5 @@ config BR2_PACKAGE_VALA
 
 	  http://live.gnome.org/Vala
 
-comment "vala requires a toolchain with WCHAR support"
-	depends on !BR2_USE_WCHAR
+comment "vala requires a toolchain with WCHAR and threading support"
+	depends on BR2_DEPRECATED && (!BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS)

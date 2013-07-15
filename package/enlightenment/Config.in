@@ -21,6 +21,7 @@ config BR2_PACKAGE_ENLIGHTENMENT
 	depends on BR2_USE_WCHAR
 	depends on BR2_INSTALL_LIBSTDCPP
 	# libedbus -> dbus
+	# libedbus -> glib2
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	# libedbus -> dbus
 	depends on BR2_USE_MMU

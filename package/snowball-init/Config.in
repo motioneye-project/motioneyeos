@@ -4,7 +4,7 @@ config BR2_PACKAGE_SNOWBALL_INIT
 	select BR2_PACKAGE_BLUEZ_UTILS
 	depends on !BR2_avr32
 	depends on BR2_USE_WCHAR # libglib2
-	depends on BR2_TOOLCHAIN_HAS_THREADS # dbus, alsa-lib
+	depends on BR2_TOOLCHAIN_HAS_THREADS # dbus, alsa-lib, libglib2
 	depends on BR2_USE_MMU # dbus
 	select BR2_PACKAGE_UX500_FIRMWARE
 	help
@@ -12,3 +12,6 @@ config BR2_PACKAGE_SNOWBALL_INIT
 
 	  http://www.igloocommunity.org
 
+comment "snowball-init requires a toolchain with WCHAR and threading support"
+	depends on !BR2_avr32 && \
+		(!BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS)

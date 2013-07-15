@@ -42,7 +42,7 @@ config BR2_PACKAGE_SCONESERVER_BLUETOOTH
 	bool "bluetooth"
 	depends on BR2_USE_WCHAR # bluez->libglib2
 	depends on BR2_USE_MMU # bluez->dbus
-	depends on BR2_TOOLCHAIN_HAS_THREADS # bluez->dbus
+	depends on BR2_TOOLCHAIN_HAS_THREADS # bluez->dbus, bluez->libglib2
 	depends on !BR2_avr32 # bluez_utils
 	select BR2_PACKAGE_BLUEZ_UTILS
 	help

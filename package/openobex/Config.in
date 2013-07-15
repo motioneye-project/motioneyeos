@@ -1,6 +1,3 @@
-comment "openobex requires a toolchain with IPV6 support"
-	depends on !BR2_INET_IPV6
-
 config BR2_PACKAGE_OPENOBEX
 	bool "openobex"
 	depends on BR2_INET_IPV6
@@ -12,24 +9,24 @@ config BR2_PACKAGE_OPENOBEX
 
 if BR2_PACKAGE_OPENOBEX
 
-comment "bluez support require a toolchain with WCHAR and thread support"
-	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
-
 config BR2_PACKAGE_OPENOBEX_BLUEZ
 	bool "enable bluez support"
 	depends on !BR2_avr32
 	depends on BR2_USE_WCHAR # libglib2
-	depends on BR2_TOOLCHAIN_HAS_THREADS # dbus, alsa-lib
+	depends on BR2_TOOLCHAIN_HAS_THREADS # dbus, alsa-lib, libglib2
 	depends on BR2_USE_MMU # dbus
 	select BR2_PACKAGE_BLUEZ_UTILS
 
-comment "libusb support require a toolchain with thread support"
-	depends on !BR2_TOOLCHAIN_HAS_THREADS
+comment "bluez support require a toolchain with WCHAR and thread support"
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
 
 config BR2_PACKAGE_OPENOBEX_LIBUSB
 	bool "enable libusb support"
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	select BR2_PACKAGE_LIBUSB
+
+comment "libusb support require a toolchain with thread support"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
 
 config BR2_PACKAGE_OPENOBEX_APPS
 	bool "install test applications"
@@ -43,3 +40,6 @@ config BR2_PACKAGE_OPENOBEX_DUMP
 	bool "enable protocol dumping for debugging"
 
 endif
+
+comment "openobex requires a toolchain with IPV6 support"
+	depends on !BR2_INET_IPV6

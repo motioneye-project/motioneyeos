@@ -1,7 +1,7 @@
 config BR2_PACKAGE_GSTREAMER1
 	bool "gstreamer1"
 	depends on BR2_USE_WCHAR # glib2
-	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_TOOLCHAIN_HAS_THREADS # glib2
 	select BR2_PACKAGE_LIBGLIB2
 	help
 	  GStreamer is an open source multimedia framework. This 1.x version of
@@ -49,5 +49,5 @@ config BR2_PACKAGE_GSTREAMER1_INSTALL_TOOLS
 
 endif
 
-comment "gstreamer1 requires a toolchain with WCHAR and threads support"
+comment "gstreamer1 requires a toolchain with WCHAR and threading support"
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS

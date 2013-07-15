@@ -4,9 +4,10 @@ config BR2_PACKAGE_LTTNG_BABELTRACE
 	select BR2_PACKAGE_UTIL_LINUX
 	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
 	select BR2_PACKAGE_LIBGLIB2
-	# libglib2 needs gettext which needs wchar support, and we
-	# also depends on util-linux which needs wchar
+	# libglib2 needs thread support and gettext which needs wchar support, and 
+	# we also depends on util-linux which needs wchar
 	depends on BR2_USE_WCHAR
+	depends on BR2_TOOLCHAIN_HAS_THREADS
 	# util-linux depends on largefile support
 	depends on BR2_LARGEFILE
 	help
@@ -26,5 +27,6 @@ config BR2_PACKAGE_LTTNG_BABELTRACE
 
 	  http://lttng.org
 
-comment "lttng-babeltrace needs WCHAR and LARGEFILE support"
-	depends on BR2_PACKAGE_LTTNG_TOOLS && !(BR2_USE_WCHAR || BR2_LARGEFILE)
+comment "lttng-babeltrace needs WCHAR, threading and LARGEFILE support"
+	depends on BR2_PACKAGE_LTTNG_TOOLS && \
+		(!BR2_USE_WCHAR || !BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_THREADS)

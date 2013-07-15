@@ -2,6 +2,7 @@ config BR2_PACKAGE_PCMANFM
 	bool "pcmanfm"
 	depends on BR2_PACKAGE_XORG7
 	depends on BR2_USE_WCHAR # glib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # glib2
 	select BR2_PACKAGE_GAMIN
 	select BR2_PACKAGE_STARTUP_NOTIFICATION
 	select BR2_PACKAGE_XLIB_LIBX11
@@ -12,5 +13,6 @@ config BR2_PACKAGE_PCMANFM
 
 	  http://internap.dl.sourceforge.net/sourceforge/pcmanfm
 
-comment "pcmanfm requires a toolchain with WCHAR support"
-	depends on BR2_PACKAGE_XORG7 && !BR2_USE_WCHAR
+comment "pcmanfm requires a toolchain with WCHAR and threading support"
+	depends on BR2_PACKAGE_XORG7 && \
+	(!BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS)

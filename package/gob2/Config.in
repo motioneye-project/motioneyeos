@@ -1,6 +1,7 @@
 config BR2_PACKAGE_GOB2
 	bool "gob2"
 	depends on BR2_USE_WCHAR # glib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # glib2
 	# m4 uses fork(), so does bison then
 	depends on BR2_USE_MMU
 	select BR2_PACKAGE_LIBGLIB2
@@ -13,4 +14,4 @@ config BR2_PACKAGE_GOB2
 	  http://www.jirka.org/gob.html
 
 comment "gob2 requires a toolchain with WCHAR support"
-	depends on !BR2_USE_WCHAR
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS

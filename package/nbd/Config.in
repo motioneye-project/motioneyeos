@@ -1,15 +1,13 @@
 config BR2_PACKAGE_NBD
 	bool "nbd"
 	depends on BR2_USE_WCHAR # glib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # glib2
 	select BR2_PACKAGE_LIBGLIB2
 	help
 	  NBD is a set of utilities to configure network block devices,
 	  allowing access to remote block devices over TCP/IP network.
 
 	  http://nbd.sf.net/
-
-comment "nbd requires a toolchain with WCHAR support"
-	depends on !BR2_USE_WCHAR
 
 if BR2_PACKAGE_NBD
 
@@ -25,3 +23,6 @@ config BR2_NBD_SERVER
 	  the server part of NBD.
 
 endif
+
+comment "nbd requires a toolchain with WCHAR and threading support"
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS

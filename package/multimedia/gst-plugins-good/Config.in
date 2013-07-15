@@ -188,7 +188,12 @@ config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_FLAC
 
 config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_GDKPIXBUF
 	bool "gdkpixbuf"
+	depends on BR2_USE_WCHAR # gdk-pixbuf -> libglib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # gdk-pixbuf -> libglib2
 	select BR2_PACKAGE_GDK_PIXBUF
+
+comment "gdkpixbuf requires a toolchain with WCHAR and threading support"
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
 
 config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_OSS
 	bool "ossaudio (OSS audio)"
@@ -204,7 +209,12 @@ config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_PULSE
 
 config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_SOUPHTTPSRC
 	bool "souphttpsrc (http client)"
+	depends on BR2_USE_WCHAR # libsoup -> glib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libsoup -> glib2
 	select BR2_PACKAGE_LIBSOUP
+
+comment "souphttpsrc requires a toolchain with WCHAR and threading support"
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREAD
 
 config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_SPEEX
 	bool "speex"

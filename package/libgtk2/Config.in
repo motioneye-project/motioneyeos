@@ -14,18 +14,23 @@ config BR2_PACKAGE_LIBGTK2
 	select BR2_PACKAGE_XLIB_LIBXRENDER
 	depends on BR2_PACKAGE_XORG7
 	depends on BR2_USE_WCHAR # glib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # glib2
 	depends on BR2_INSTALL_LIBSTDCPP # pango
 	help
 	  The GTK+ version 2 graphical user interface library
 
 	  http://www.gtk.org/
 
+if BR2_PACKAGE_LIBGTK2
+
 config BR2_PACKAGE_LIBGTK2_DEMO
 	bool "Install libgtk2 demo program"
-	depends on BR2_PACKAGE_LIBGTK2
 	help
 	  The GTK+ source base contains a gtk-demo program. This
 	  option allows to install this program to the target.
 
-comment "libgtk2 requires a toolchain with WCHAR and C++ support"
-	depends on !BR2_USE_WCHAR || !BR2_INSTALL_LIBSTDCPP
+endif
+
+comment "libgtk2 requires a toolchain with WCHAR, threading and C++ support"
+	depends on !BR2_USE_WCHAR || !BR2_INSTALL_LIBSTDCPP || \
+		!BR2_TOOLCHAIN_HAS_THREADS

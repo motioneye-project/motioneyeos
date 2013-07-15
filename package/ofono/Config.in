@@ -1,7 +1,7 @@
 config BR2_PACKAGE_OFONO
 	bool "ofono"
-	depends on BR2_USE_WCHAR # gettext/libglib2
-	depends on BR2_TOOLCHAIN_HAS_THREADS # dbus
+	depends on BR2_USE_WCHAR # gettext, libglib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # dbus, libglib2
 	depends on BR2_USE_MMU # dbus
 	select BR2_PACKAGE_LIBCAP_NG
 	select BR2_PACKAGE_DBUS
@@ -15,5 +15,4 @@ config BR2_PACKAGE_OFONO
 	  http://ofono.org/
 
 comment "ofono requires a toolchain with WCHAR and thread support"
-	depends on !BR2_USE_WCHAR || \
-		!BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS

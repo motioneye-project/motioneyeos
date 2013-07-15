@@ -2,6 +2,7 @@ config BR2_PACKAGE_GMPC
 	bool "gmpc"
 	depends on BR2_PACKAGE_LIBGTK2
 	depends on BR2_USE_WCHAR # glib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # glib2
 	depends on BR2_PACKAGE_XORG7
 	select BR2_PACKAGE_LIBGLIB2
 	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE
@@ -19,5 +20,6 @@ config BR2_PACKAGE_GMPC
 
 	  http://gmpcwiki.sarine.nl/index.php?title=GMPC
 
-comment "gmpc requires a toolchain with WCHAR support"
-	depends on BR2_PACKAGE_LIBGTK2 && !BR2_USE_WCHAR
+comment "gmpc requires a toolchain with WCHAR and threading support"
+	depends on BR2_PACKAGE_LIBGTK2 && !BR2_USE_WCHAR || \
+		!BR2_TOOLCHAIN_HAS_THREADS

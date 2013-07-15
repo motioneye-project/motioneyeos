@@ -1,12 +1,13 @@
 config BR2_PACKAGE_UDISKS
 	bool "udisks"
 	depends on BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_UDEV
-	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_TOOLCHAIN_HAS_THREADS # dbus-glib -> glib2
 	depends on BR2_USE_MMU # lvm2
 	select BR2_PACKAGE_UDEV
 	select BR2_PACKAGE_UDEV_ALL_EXTRAS
 	select BR2_PACKAGE_DBUS
 	select BR2_PACKAGE_DBUS_GLIB
+	depends on BR2_USE_WCHAR # dbus-glib -> glib2
 	select BR2_PACKAGE_SG3_UTILS
 	select BR2_PACKAGE_POLKIT
 	select BR2_PACKAGE_PARTED
@@ -24,12 +25,16 @@ config BR2_PACKAGE_UDISKS
 
 	  http://www.freedesktop.org/wiki/Software/udisks
 
+if BR2_PACKAGE_UDISKS
+
 config BR2_PACKAGE_UDISKS_LVM2
 	bool "lvm2 support"
-	depends on BR2_PACKAGE_UDISKS
 	select BR2_PACKAGE_LVM2_APP_LIBRARY
 	help
 	  Enable LVM2 support
 
-comment "udisks requires /dev mgmnt set to udev under System configuration"
-	depends on !BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_UDEV
+endif
+
+comment "udisks requires /dev mgmnt set to udev under System configuration and a toolchain with WCHAR and threading support"
+	depends on !BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_UDEV || \
+		!BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS

@@ -1,7 +1,7 @@
 config BR2_PACKAGE_NEARDAL
 	bool "neardal"
 	depends on BR2_USE_WCHAR # glib2
-	depends on BR2_TOOLCHAIN_HAS_THREADS # dbus
+	depends on BR2_TOOLCHAIN_HAS_THREADS # dbus, glib2
 	depends on BR2_USE_MMU # dbus
 	select BR2_PACKAGE_DBUS
 	select BR2_PACKAGE_DBUS_GLIB
@@ -11,11 +11,14 @@ config BR2_PACKAGE_NEARDAL
 
 	  https://github.com/connectivity/neardal
 
+if BR2_PACKAGE_NEARDAL
+
 config BR2_PACKAGE_NEARDAL_NCL
 	bool "ncl tool"
-	depends on BR2_PACKAGE_NEARDAL
 	help
 	  Build and install neardal ncl command line interpreter tool.
 
-comment "neardal requires a toolchain with WCHAR and threads support"
+endif
+
+comment "neardal requires a toolchain with WCHAR and threading support"
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS

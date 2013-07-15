@@ -2,6 +2,7 @@ config BR2_PACKAGE_LIBGLADE
 	bool "libglade"
 	depends on BR2_PACKAGE_LIBGTK2
 	depends on BR2_USE_WCHAR # glib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # glib2
 	select BR2_PACKAGE_LIBGLIB2
 	select BR2_PACKAGE_ATK
 	select BR2_PACKAGE_LIBXML2
@@ -12,5 +13,6 @@ config BR2_PACKAGE_LIBGLADE
 
 	  http://ftp.gnome.org/pub/GNOME/sources/libglade/
 
-comment "libglade requires a toolchain with WCHAR support"
-	depends on BR2_PACKAGE_LIBGTK2 && !BR2_USE_WCHAR
+comment "libglade requires a toolchain with WCHAR and threading support"
+	depends on BR2_PACKAGE_LIBGTK2 && \
+		(!BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS)
