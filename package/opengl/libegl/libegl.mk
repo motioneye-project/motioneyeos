@@ -10,6 +10,10 @@ ifeq ($(BR2_PACKAGE_RPI_USERLAND),y)
 LIBEGL_DEPENDENCIES += rpi-userland
 endif
 
+ifeq ($(BR2_PACKAGE_TI_GFX),y)
+LIBEGL_DEPENDENCIES += ti-gfx
+endif
+
 ifeq ($(LIBEGL_DEPENDENCIES),)
 define LIBEGL_CONFIGURE_CMDS
 	echo "No libEGL implementation selected. Configuration error."

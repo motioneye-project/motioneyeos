@@ -1,0 +1,19 @@
+Patch to add modules_install target to the modules makefile.  This makes
+installation a little easier.
+
+Signed-off-by: Spenser Gilliland <spenser@gillilanding.com>
+----
+Index: ti-gfx-4_09_00_01/GFX_Linux_KM/Makefile
+===================================================================
+--- ti-gfx-4_09_00_01.orig/GFX_Linux_KM/Makefile	2013-03-07 11:00:11.000000000 -0600
++++ ti-gfx-4_09_00_01/GFX_Linux_KM/Makefile	2013-05-23 01:36:29.356676281 -0500
+@@ -479,6 +479,9 @@
+ all:
+ 	$(MAKE) -C $(KERNELDIR) M=`pwd` $*
+ 
++install:
++	$(MAKE) -C $(KERNELDIR) M=`pwd` modules_install
++
+ clean:
+ 	@find . -name "*.o" -exec rm -r {} \;
+ 	@find . -name "*.ko" -exec rm -r {} \;

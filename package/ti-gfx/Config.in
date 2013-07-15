@@ -1,0 +1,69 @@
+config BR2_PACKAGE_TI_GFX
+	bool "ti-gfx"
+	select BR2_PACKAGE_HAS_OPENGL_EGL
+	select BR2_PACKAGE_HAS_OPENGL_ES
+	select BR2_PACKAGE_HAS_POWERVR
+	depends on BR2_LINUX_KERNEL && BR2_TOOLCHAIN_USES_GLIBC && BR2_arm
+	help
+	  Graphics libraries for TI boards.
+
+	  http://downloads.ti.com/dsps/dsps_public_sw/gfxsdk/
+
+if BR2_PACKAGE_TI_GFX
+
+config BR2_PACKAGE_TI_GFX_DEBUG
+	bool "enable debug support"
+	help
+	  Turns on debugging in the kernel module, install libraries built with
+	  debugging enabled, installs various tests and installs esrev script.
+
+config BR2_PACKAGE_TI_GFX_DEMOS
+	bool "install demos"
+	default y
+	help
+	  Install the OGLES2ChameleonMan and OGLES2MagicLantern demos
+
+config BR2_PACKAGE_TI_GFX_EGLIMAGE
+	bool "install eglimage version of libraries"
+	help
+	  Installs OpenGL libaries which support the eglimage api.
+
+config BR2_PACKAGE_TI_GFX_HARD_FLOAT
+	bool "use hard float binaries"
+	help
+	  Install hard float binaries (required if using a hard float toolchain)
+
+choice
+	prompt "Target"
+	default BR2_PACKAGE_TI_GFX_ES3
+	help
+	  Select the SOC for which you would like to install drivers. Please use the
+	  chart at
+	  http://processors.wiki.ti.com/index.php/OMAP35x_Graphics_SDK_Getting_Started_Guide
+
+config BR2_PACKAGE_TI_GFX_ES3
+	bool "es3.x (OMAP35xx, AM35xx Rev 3.1+)"
+	help
+	 OMAP35xx, AM35xx Rev 3.1+
+
+config BR2_PACKAGE_TI_GFX_ES5
+	bool "es5.x (AM37xx, DM37xx)"
+	help
+	  AM37xx, DM37xx
+
+config BR2_PACKAGE_TI_GFX_ES6
+	bool "es6.x (AM387x, DMA814x, AM389x, DM816x)"
+	help
+	  AM387x, DM814x, AM389x, DM816x
+
+config BR2_PACKAGE_TI_GFX_ES8
+	bool "es8.x (AM335x)"
+	help
+	  AM335x
+
+endchoice
+
+endif
+
+comment "ti-gfx requires an eglibc/glibc based toolchain and the linux kernel"
+	depends on !(BR2_LINUX_KERNEL && BR2_TOOLCHAIN_USES_GLIBC) && BR2_arm
