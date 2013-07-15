@@ -1,0 +1,2 @@
+config BR2_PACKAGE_HAS_POWERVR
+	bool
