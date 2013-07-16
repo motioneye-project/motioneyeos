@@ -38,6 +38,12 @@ static char *predef_args[] = {
 #ifdef BR_ABI
 	"-mabi=" BR_ABI,
 #endif
+#ifdef BR_FLOAT_ABI
+	"-mfloat-abi=" BR_FLOAT_ABI,
+#endif
+#ifdef BR2_FPU
+	"-mfpu=" BR_FPU,
+#endif
 #ifdef BR_SOFTFLOAT
 	"-msoft-float",
 #endif /* BR_SOFTFLOAT */

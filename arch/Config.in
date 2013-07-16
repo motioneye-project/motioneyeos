@@ -192,6 +192,18 @@ config BR2_GCC_TARGET_CPU
 config BR2_GCC_TARGET_CPU_REVISION
 	string
 
+# The value of this option will be passed as --with-fpu=<value> when
+# building gcc (internal backend) or -mfpu=<value> in the toolchain
+# wrapper (external toolchain)
+config BR2_GCC_TARGET_FPU
+	string
+
+# The value of this option will be passed as --with-float=<value> when
+# building gcc (internal backend) or -mfloat-abi=<value> in the toolchain
+# wrapper (external toolchain)
+config BR2_GCC_TARGET_FLOAT_ABI
+	string
+
 # Set up target binary format
 choice
 	prompt "Target Binary Format"
