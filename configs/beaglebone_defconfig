@@ -1,8 +1,7 @@
 # architecture
 BR2_arm=y
 BR2_cortex_a8=y
-BR2_EXTRA_GCC_CONFIG_OPTIONS="--with-fpu=vfpv3 --with-float=hard"
-# BR2_SOFT_FLOAT is not set
+BR2_ARM_EABIHF=y
 
 # system
 BR2_TARGET_GENERIC_HOSTNAME="beaglebone"
