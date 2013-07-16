@@ -1,7 +1,7 @@
-From 3d1b82c7d9dce11c733fe23a85df7f975c7e2486 Mon Sep 17 00:00:00 2001
+From bb08cd16cb0353b3d4116ca8959dbecd2e78f545 Mon Sep 17 00:00:00 2001
 From: Peter Korsgaard <jacmet@sunsite.dk>
 Date: Tue, 3 Jul 2012 15:54:57 +0200
-Subject: [PATCH] bits/time.h: sync with glibc 2.16
+Subject: [PATCH 1/8] bits/time.h: sync with glibc 2.16
 
 CLOCK_MONOTONIC_RAW is available since 2.6.28
 (2d42244ae71d: clocksource: introduce CLOCK_MONOTONIC_RAW), and
@@ -10,8 +10,9 @@ CLOCK_REALTIME_COARSE).
 
 Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
 Signed-off-by: Bernhard Reutner-Fischer <rep.dot.nop@gmail.com>
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 ---
- libc/sysdeps/linux/common/bits/time.h |    6 ++++++
+ libc/sysdeps/linux/common/bits/time.h | 6 ++++++
  1 file changed, 6 insertions(+)
 
 diff --git a/libc/sysdeps/linux/common/bits/time.h b/libc/sysdeps/linux/common/bits/time.h
@@ -32,5 +33,5 @@ index 7ed54bf..c871223 100644
  /* Flag to indicate time is absolute.  */
  #   define TIMER_ABSTIME		1
 -- 
-1.7.10.4
+1.8.1.2
 

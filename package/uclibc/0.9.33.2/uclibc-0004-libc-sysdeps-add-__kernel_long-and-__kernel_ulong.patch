@@ -1,7 +1,7 @@
-From 6a76edddaa62ff06f178143b582167734cb55c18 Mon Sep 17 00:00:00 2001
+From 7fef6b983456e4c529a5239ea90715050e6f4452 Mon Sep 17 00:00:00 2001
 From: Chris Packham <chris.packham@alliedtelesis.co.nz>
 Date: Mon, 1 Oct 2012 18:12:54 +1300
-Subject: [PATCH] libc/sysdeps: add __kernel_long and __kernel_ulong
+Subject: [PATCH 4/8] libc/sysdeps: add __kernel_long and __kernel_ulong
 
 Linux 3.4 added __kernel_long_t and __kernel_ulong_t and various
 exported header files were updated to use these new types. Add the
@@ -50,6 +50,7 @@ I can break this up per arch or per maintainer if requested.
  22 files changed, 50 insertions(+)
 Signed-off-by: Bernhard Reutner-Fischer <rep.dot.nop@gmail.com>
 Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 ---
  libc/sysdeps/linux/alpha/bits/kernel_types.h      | 2 ++
  libc/sysdeps/linux/arm/bits/kernel_types.h        | 2 ++
@@ -388,5 +389,5 @@ index 44f1075..ed38f2e 100644
  
  /* Beginning in 2.6 kernels, which is the first version that includes the
 -- 
-1.8.1.5
+1.8.1.2
 

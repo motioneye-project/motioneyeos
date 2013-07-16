@@ -1,16 +1,18 @@
+From 518bc50ae42540574bba360225c8a65b56b79148 Mon Sep 17 00:00:00 2001
 From: Jonas Bonn <jonas@southpole.se>
-Subject: [RFC PATCH 16/38] Add dup3 syscall
-Date: Tue,  6 Sep 2011 10:30:40 +0200
+Date: Tue, 6 Sep 2011 10:30:40 +0200
+Subject: [PATCH 3/8] Add dup3 syscall
 
 Signed-off-by: Jonas Bonn <jonas@southpole.se>
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 ---
- include/unistd.h                 |    4 ++++
- libc/sysdeps/linux/common/dup3.c |   15 +++++++++++++++
- 2 files changed, 19 insertions(+), 0 deletions(-)
+ include/unistd.h                 |  4 ++++
+ libc/sysdeps/linux/common/dup3.c | 17 +++++++++++++++++
+ 2 files changed, 21 insertions(+)
  create mode 100644 libc/sysdeps/linux/common/dup3.c
 
 diff --git a/include/unistd.h b/include/unistd.h
-index 9568790..7c2fa4a 100644
+index 1b2fd4d..f7d070b 100644
 --- a/include/unistd.h
 +++ b/include/unistd.h
 @@ -513,6 +513,10 @@ extern int dup (int __fd) __THROW __wur;
@@ -26,7 +28,7 @@ index 9568790..7c2fa4a 100644
  #ifdef __USE_GNU
 diff --git a/libc/sysdeps/linux/common/dup3.c b/libc/sysdeps/linux/common/dup3.c
 new file mode 100644
-index 0000000..5fdab2e
+index 0000000..7b57438
 --- /dev/null
 +++ b/libc/sysdeps/linux/common/dup3.c
 @@ -0,0 +1,17 @@
@@ -48,9 +50,5 @@ index 0000000..5fdab2e
 +libc_hidden_def(dup3)
 +#endif
 -- 
-1.7.5.4
+1.8.1.2
 
-_______________________________________________
-uClibc mailing list
-uClibc@uclibc.org
-http://lists.busybox.net/mailman/listinfo/uclibc
