@@ -76,6 +76,15 @@ config BR2_ELF2FLT
 	  BR2_PACKAGE_HOST_ELF2FLT due to the conversion of elf2flt to
 	  the package infrastructure.
 
+config BR2_VFP_FLOAT
+	bool "the ARM VFP floating point option has been renamed"
+	select BR2_LEGACY
+	help
+	  Due to a major refactoring of the floating-point handling of
+	  the ARM architecture support, the BR2_VFP_FLOAT option has
+	  been replaced with a choice of options that allows to select
+	  between various VFP versions/capabilities.
+
 ###############################################################################
 comment "Legacy options removed in 2013.05"
 

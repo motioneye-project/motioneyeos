@@ -28,16 +28,4 @@ config BR2_TOOLCHAIN_BUILDROOT_USE_SSP
 
 source "package/elf2flt/Config.in.host"
 
-config BR2_VFP_FLOAT
-	bool "Use ARM Vector Floating Point unit"
-	depends on !BR2_SOFT_FLOAT
-	depends on BR2_arm || BR2_armeb
-	help
-	  Setting this option will enable the "-mfpu=vfp" option.
-	  If your ARM CPU has a Vector Floating Point Unit (VFP)
-	  and the toolchain supports the option, then the
-	  code can be optimized.
-
-	  Most people will answer N.
-
 endif
