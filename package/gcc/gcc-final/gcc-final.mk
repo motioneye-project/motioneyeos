@@ -90,6 +90,18 @@ endef
 
 HOST_GCC_FINAL_POST_INSTALL_HOOKS += HOST_GCC_FINAL_CREATE_SIMPLE_SYMLINKS
 
+# In gcc 4.7.x, the ARM EABIhf library loader path for eglibc was not
+# correct, so we create a symbolic link to make things work
+# properly. eglibc installs the library loader as ld-linux-armhf.so.3,
+# but gcc creates binaries that reference ld-linux.so.3.
+ifeq ($(BR2_arm)$(BR2_ARM_EABIHF)$(BR2_GCC_VERSION_4_7_X)$(BR2_TOOLCHAIN_BUILDROOT_EGLIBC),yyyy)
+define HOST_GCC_FINAL_LD_LINUX_LINK
+	ln -sf ld-linux-armhf.so.3 $(TARGET_DIR)/lib/ld-linux.so.3
+	ln -sf ld-linux-armhf.so.3 $(STAGING_DIR)/lib/ld-linux.so.3
+endef
+HOST_GCC_FINAL_POST_INSTALL_HOOKS += HOST_GCC_FINAL_LD_LINUX_LINK
+endif
+
 # Cannot use the HOST_GCC_FINAL_USR_LIBS mechanism below, because we want
 # libgcc_s to be installed in /lib and not /usr/lib. We add +x on
 # libgcc_s to ensure it will be stripped.
