@@ -39,6 +39,12 @@ ABI=gnueabi
 else
 ABI=eabi
 endif
+else ifeq ($(BR2_ARM_EABIHF),y)
+ifeq ($(LIBC),uclibc)
+ABI=gnueabihf
+else
+ABI=eabihf
+endif
 endif
 
 # For FSL PowerPC there's SPE
