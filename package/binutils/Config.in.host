@@ -14,14 +14,17 @@ choice
 
 	config BR2_BINUTILS_VERSION_2_20_1
 		depends on !BR2_avr32
+		depends on !BR2_ARM_EABIHF
 		bool "binutils 2.20.1"
 
 	config BR2_BINUTILS_VERSION_2_21
 		depends on !BR2_avr32
+		depends on !BR2_ARM_EABIHF
 		bool "binutils 2.21"
 
 	config BR2_BINUTILS_VERSION_2_21_1
 		depends on !BR2_avr32
+		depends on !BR2_ARM_EABIHF
 		bool "binutils 2.21.1"
 
 	config BR2_BINUTILS_VERSION_2_22
