@@ -52,6 +52,16 @@ config BR2_MIPS_NABI64
 	depends on BR2_ARCH_IS_64
 endchoice
 
+config BR2_MIPS_SOFT_FLOAT
+	bool "Use soft-float"
+	default y
+	select BR2_SOFT_FLOAT
+	help
+	  If your target CPU does not have a Floating Point Unit (FPU)
+	  or a kernel FPU emulator, but you still wish to support
+	  floating point functions, then everything will need to be
+	  compiled with soft floating point support (-msoft-float).
+
 config BR2_ARCH
 	default "mips"		if BR2_mips
 	default "mipsel"	if BR2_mipsel

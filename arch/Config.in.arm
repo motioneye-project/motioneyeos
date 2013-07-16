@@ -79,6 +79,16 @@ endchoice
 config BR2_ARM_EABI
 	def_bool y
 
+config BR2_ARM_SOFT_FLOAT
+	bool "Use soft-float"
+	default y
+	select BR2_SOFT_FLOAT
+	help
+	  If your target CPU does not have a Floating Point Unit (FPU)
+	  or a kernel FPU emulator, but you still wish to support
+	  floating point functions, then everything will need to be
+	  compiled with soft floating point support (-msoft-float).
+
 config BR2_ARM_ENABLE_NEON
 	bool "Enable NEON SIMD extension support"
 	depends on BR2_ARM_CPU_MAYBE_HAS_NEON

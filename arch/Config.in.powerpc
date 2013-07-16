@@ -88,6 +88,15 @@ config BR2_powerpc_SPE
 	depends on BR2_powerpc_8540 || BR2_powerpc_8548
 endchoice
 
+config BR2_POWERPC_SOFT_FLOAT
+	bool "Use soft-float"
+	select BR2_SOFT_FLOAT
+	help
+	  If your target CPU does not have a Floating Point Unit (FPU)
+	  or a kernel FPU emulator, but you still wish to support
+	  floating point functions, then everything will need to be
+	  compiled with soft floating point support (-msoft-float).
+
 config BR2_ARCH
 	default "powerpc"	if BR2_powerpc
 

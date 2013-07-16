@@ -1,6 +1,9 @@
 config BR2_ARCH_IS_64
        bool
 
+config BR2_SOFT_FLOAT
+	bool
+
 choice
 	prompt "Target Architecture"
 	default BR2_i386
