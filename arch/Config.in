@@ -1,5 +1,5 @@
 config BR2_ARCH_IS_64
-       bool
+	bool
 
 config BR2_SOFT_FLOAT
 	bool

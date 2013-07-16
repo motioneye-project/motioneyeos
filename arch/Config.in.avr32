@@ -1,5 +1,5 @@
 config BR2_ARCH
-       default "avr32"
+	default "avr32"
 
 config BR2_ENDIAN
-       default "BIG"
+	default "BIG"
