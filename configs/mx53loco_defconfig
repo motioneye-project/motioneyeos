@@ -1,8 +1,7 @@
 # Architecture
 BR2_arm=y
 BR2_cortex_a8=y
-# BR2_SOFT_FLOAT is not set
-BR2_VFP_FLOAT=y
+BR2_ARM_FPU_VFPV3D16=y
 
 # System
 BR2_TARGET_GENERIC_GETTY_PORT="ttymxc0"
