@@ -279,9 +279,24 @@ check_uclibc = \
 #
 check_arm_abi = \
 	__CROSS_CC=$(strip $1) ; \
+	__CROSS_READELF=$(strip $2) ; \
 	EXT_TOOLCHAIN_TARGET=`LANG=C $${__CROSS_CC} -v 2>&1 | grep ^Target | cut -f2 -d ' '` ; \
 	if ! echo $${EXT_TOOLCHAIN_TARGET} | grep -qE 'eabi(hf)?$$' ; then \
 		echo "External toolchain uses the unsuported OABI" ; \
+		exit 1 ; \
+	fi ; \
+	EXT_TOOLCHAIN_CRT1=`LANG=C $${__CROSS_CC} -print-file-name=crt1.o` ; \
+	if $${__CROSS_READELF} -A $${EXT_TOOLCHAIN_CRT1} | grep -q "Tag_ABI_VFP_args:" ; then \
+		EXT_TOOLCHAIN_ABI="eabihf" ; \
+	else \
+		EXT_TOOLCHAIN_ABI="eabi" ; \
+	fi ; \
+	if [ "$(BR2_ARM_EABI)" = "y" -a "$${EXT_TOOLCHAIN_ABI}" = "eabihf" ] ; then \
+		echo "Incorrect ABI setting: EABI selected, but toolchain uses EABIhf" ; \
+		exit 1 ; \
+	fi ; \
+	if [ "$(BR2_ARM_EABIHF)" = "y" -a "$${EXT_TOOLCHAIN_ABI}" = "eabi" ] ; then \
+		echo "Incorrect ABI setting: EABIhf selected, but toolchain uses EABI" ; \
 		exit 1 ; \
 	fi
 
