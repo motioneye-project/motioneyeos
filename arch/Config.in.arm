@@ -193,8 +193,9 @@ config BR2_ARM_FPU_VFPV2
 	depends on BR2_ARM_CPU_HAS_VFPV2 || BR2_ARM_CPU_MAYBE_HAS_VFPV2
 	help
 	  This option allows to use the VFPv2 floating point unit, as
-	  available in some ARMv6 processors (ARM1136JF-S,
-	  ARM1176JZF-S and ARM11 MPCore).
+	  available in some ARMv5 processors (ARM926EJ-S) and some
+	  ARMv6 processors (ARM1136JF-S, ARM1176JZF-S and ARM11
+	  MPCore).
 
 	  Note that this option is also safe to use for newer cores
 	  such as Cortex-A, because the VFPv3 and VFPv4 units are
