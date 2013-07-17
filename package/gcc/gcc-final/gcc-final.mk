@@ -128,6 +128,7 @@ endif
 
 ifneq ($(HOST_GCC_FINAL_USR_LIBS),)
 define HOST_GCC_FINAL_INSTALL_USR_LIBS
+	mkdir -p $(TARGET_DIR)/usr/lib
 	for i in $(HOST_GCC_FINAL_USR_LIBS) ; do \
 		cp -dpf $(HOST_DIR)/usr/$(GNU_TARGET_NAME)/lib*/$${i}.so* \
 			$(STAGING_DIR)/usr/lib/ ; \
