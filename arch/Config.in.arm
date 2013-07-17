@@ -51,6 +51,7 @@ config BR2_arm922t
 	bool "arm922t"
 config BR2_arm926t
 	bool "arm926t"
+	select BR2_ARM_CPU_MAYBE_HAS_VFPV2
 config BR2_arm10t
 	bool "arm10t"
 config BR2_arm1136jf_s_r0
