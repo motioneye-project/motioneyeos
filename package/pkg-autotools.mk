@@ -136,7 +136,7 @@ define $(2)_CONFIGURE_CMDS
 		--disable-documentation \
 		--with-xmlto=no \
 		--with-fop=no \
-		$$($$(PKG)_CONF_OPT) \
+		$$(QUIET) $$($$(PKG)_CONF_OPT) \
 	)
 endef
 endif
