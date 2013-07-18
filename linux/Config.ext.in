@@ -3,6 +3,7 @@ menu "Linux Kernel Extensions"
 # Xenomai
 config BR2_LINUX_KERNEL_EXT_XENOMAI
 	bool "Adeos/Xenomai Real-time patch"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_i386 || BR2_x86_64 || BR2_arm || \
 		   BR2_bfin || BR2_powerpc || BR2_sh4
 	select BR2_PACKAGE_XENOMAI
@@ -14,6 +15,9 @@ config BR2_LINUX_KERNEL_EXT_XENOMAI
 	  SH4, 2.6.32.10, on x86, 2.6.35.9, 2.6.37.6, 2.6.38.8, on
 	  ARM, 2.6.35.9, 2.6.37.6, 2.6.38.8, on NIOS2, 2.6.35, on
 	  PowerPC, 2.6.35.7, 2.6.36.4, 3.0.8.
+
+comment "xenomai requires thread support in toolchain"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
 
 config BR2_LINUX_KERNEL_EXT_XENOMAI_ADEOS_PATCH
 	depends on BR2_LINUX_KERNEL_EXT_XENOMAI
