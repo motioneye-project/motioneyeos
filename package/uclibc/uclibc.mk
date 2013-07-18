@@ -163,13 +163,6 @@ endef
 endif
 
 #
-# ARC definitions
-#
-ifeq ($(UCLIBC_TARGET_ARCH),arc)
-REALLY_NOSTDLIB = -really-nostdlib
-endif
-
-#
 # Endianess
 #
 
@@ -407,9 +400,9 @@ define UCLIBC_CONFIGURE_CMDS
 		RUNTIME_PREFIX=$(STAGING_DIR) \
 		headers lib/crt1.o lib/crti.o lib/crtn.o \
 		install_headers
-	$(TARGET_CROSS)gcc -nostdlib $(REALLY_NOSTDLIB) \
+	$(TARGET_CROSS)gcc -nostdlib \
 		-nostartfiles -shared -x c /dev/null -o $(STAGING_DIR)/usr/lib/libc.so
-	$(TARGET_CROSS)gcc -nostdlib $(REALLY_NOSTDLIB) \
+	$(TARGET_CROSS)gcc -nostdlib \
 		-nostartfiles -shared -x c /dev/null -o $(STAGING_DIR)/usr/lib/libm.so
 	cp -pLR $(UCLIBC_DIR)/lib/crt[1in].o $(STAGING_DIR)/usr/lib/
 endef

@@ -61,7 +61,7 @@ define EGLIBC_CONFIGURE_CMDS
 	cp $(@D)/build/csu/crt1.o $(STAGING_DIR)/usr/lib/
 	cp $(@D)/build/csu/crti.o $(STAGING_DIR)/usr/lib/
 	cp $(@D)/build/csu/crtn.o $(STAGING_DIR)/usr/lib/
-	$(TARGET_CROSS)gcc -nostdlib $(REALLY_NOSTDLIB) \
+	$(TARGET_CROSS)gcc -nostdlib \
 		-nostartfiles -shared -x c /dev/null -o $(STAGING_DIR)/usr/lib/libc.so
 endef
 
