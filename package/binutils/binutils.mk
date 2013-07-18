@@ -55,11 +55,7 @@ HOST_BINUTILS_CONF_OPT = --disable-multilib --disable-werror \
 			--with-sysroot=$(STAGING_DIR) \
 			$(BINUTILS_EXTRA_CONFIG_OPTIONS)
 
-ifeq ($(BINUTILS_VERSION),2.19-arc)
-HOST_BINUTILS_DEPENDENCIES = host-flex host-bison
-else
 HOST_BINUTILS_DEPENDENCIES =
-endif
 
 # We just want libbfd and libiberty, not the full-blown binutils in staging
 define BINUTILS_INSTALL_STAGING_CMDS
