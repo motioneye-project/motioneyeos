@@ -24,7 +24,7 @@ index ff602c0..b3ca4c4 100644
  		  if (op0 != cmp0)
   		    cc_clob_rtx = gen_rtx_REG (CC_ZNmode, CC_REG);
 - 		  else if ((offset >= -140 && offset < 140)
-+ 		  else if ((offset >= -120 && offset < 120)
++		  else if ((offset >= -120 && offset < 120)
  			   && rtx_equal_p (op1, const0_rtx)
  			   && compact_register_operand (op0, VOIDmode)
  			   && (GET_CODE (op) == EQ

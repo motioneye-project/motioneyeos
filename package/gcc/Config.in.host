@@ -7,14 +7,10 @@ choice
 	prompt "GCC compiler Version"
 	default BR2_GCC_VERSION_4_4_X if BR2_sparc_sparchfleon || BR2_sparc_sparchfleonv8 || BR2_sparc_sparcsfleon || BR2_sparc_sparcsfleonv8
 	default BR2_GCC_VERSION_4_2_2_AVR32_2_1_5 if BR2_avr32
-	default BR2_GCC_VERSION_4_4_7_ARC if BR2_arc
+	default BR2_GCC_VERSION_4_8_ARC if BR2_arc
 	default BR2_GCC_VERSION_4_7_X
 	help
 	  Select the version of gcc you wish to use.
-
-	config BR2_GCC_VERSION_4_4_7_ARC
-		depends on BR2_arc
-		bool "gcc 4.4.7-arc"
 
 	config BR2_GCC_VERSION_4_2_2_AVR32_2_1_5
 		depends on BR2_avr32
@@ -55,6 +51,11 @@ choice
 		select BR2_GCC_NEEDS_MPC
 		bool "gcc 4.8.x"
 
+	config BR2_GCC_VERSION_4_8_ARC
+		depends on BR2_arc
+		select BR2_GCC_NEEDS_MPC
+		bool "gcc 4.8-arc"
+
 	config BR2_GCC_VERSION_SNAP
 		depends on !BR2_arc && !BR2_avr32 && !BR2_sparc_sparchfleon && !BR2_sparc_sparchfleonv8 && !BR2_sparc_sparcsfleon && !BR2_sparc_sparcsfleonv8
 		select BR2_GCC_NEEDS_MPC
@@ -84,11 +85,11 @@ config BR2_GCC_VERSION
 	default "4.2.2-avr32-2.1.5" if BR2_GCC_VERSION_4_2_2_AVR32_2_1_5
 	default "4.3.6"     if BR2_GCC_VERSION_4_3_X
 	default "4.4.7"     if BR2_GCC_VERSION_4_4_X
-	default "4.4.7-arc" if BR2_GCC_VERSION_4_4_7_ARC
 	default "4.5.4"     if BR2_GCC_VERSION_4_5_X
 	default "4.6.4"     if BR2_GCC_VERSION_4_6_X
 	default "4.7.3"     if BR2_GCC_VERSION_4_7_X
 	default "4.8.1"     if BR2_GCC_VERSION_4_8_X
+	default "4.8-arc"   if BR2_GCC_VERSION_4_8_ARC
 	default $BR2_GCC_SNAP_DATE if BR2_GCC_VERSION_SNAP
 
 config BR2_EXTRA_GCC_CONFIG_OPTIONS

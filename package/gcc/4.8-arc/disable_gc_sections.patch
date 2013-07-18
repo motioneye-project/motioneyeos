@@ -1,0 +1,145 @@
+From be904b178fc0858ad41a3c2fbc13b388bd1ff465 Mon Sep 17 00:00:00 2001
+From: Mischa Jonker <mjonker@synopsys.com>
+Date: Mon, 15 Jul 2013 11:50:20 +0200
+Subject: [PATCH] libstdc++: Disable gc-sections to work around binutils bug
+
+This is to work around the following error message:
+BFD (GNU Binutils) 2.23.2 assertion fail elf32-arc.c:2140
+
+Signed-off-by: Mischa Jonker <mjonker@synopsys.com>
+---
+ libstdc++-v3/acinclude.m4 |    3 ---
+ libstdc++-v3/configure    |   33 ---------------------------------
+ 2 files changed, 36 deletions(-)
+
+diff --git a/libstdc++-v3/acinclude.m4 b/libstdc++-v3/acinclude.m4
+index e131214..aa2e375 100644
+--- a/libstdc++-v3/acinclude.m4
++++ b/libstdc++-v3/acinclude.m4
+@@ -296,9 +296,6 @@ AC_DEFUN([GLIBCXX_CHECK_LINKER_FEATURES], [
+       fi
+       rm -f conftest.c conftest.o conftest
+     fi
+-    if test "$ac_gcsections" = "yes"; then
+-      SECTION_LDFLAGS="-Wl,--gc-sections $SECTION_LDFLAGS"
+-    fi
+     AC_MSG_RESULT($ac_gcsections)
+ 
+     if test "$ac_test_CFLAGS" = set; then
+diff --git a/libstdc++-v3/configure b/libstdc++-v3/configure
+index ed049cf..d325e3e 100755
+--- a/libstdc++-v3/configure
++++ b/libstdc++-v3/configure
+@@ -20653,9 +20653,6 @@ rm -f core conftest.err conftest.$ac_objext \
+       fi
+       rm -f conftest.c conftest.o conftest
+     fi
+-    if test "$ac_gcsections" = "yes"; then
+-      SECTION_LDFLAGS="-Wl,--gc-sections $SECTION_LDFLAGS"
+-    fi
+     { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_gcsections" >&5
+ $as_echo "$ac_gcsections" >&6; }
+ 
+@@ -27688,9 +27685,6 @@ rm -f core conftest.err conftest.$ac_objext \
+       fi
+       rm -f conftest.c conftest.o conftest
+     fi
+-    if test "$ac_gcsections" = "yes"; then
+-      SECTION_LDFLAGS="-Wl,--gc-sections $SECTION_LDFLAGS"
+-    fi
+     { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_gcsections" >&5
+ $as_echo "$ac_gcsections" >&6; }
+ 
+@@ -33619,9 +33613,6 @@ rm -f core conftest.err conftest.$ac_objext \
+       fi
+       rm -f conftest.c conftest.o conftest
+     fi
+-    if test "$ac_gcsections" = "yes"; then
+-      SECTION_LDFLAGS="-Wl,--gc-sections $SECTION_LDFLAGS"
+-    fi
+     { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_gcsections" >&5
+ $as_echo "$ac_gcsections" >&6; }
+ 
+@@ -45496,9 +45487,6 @@ rm -f core conftest.err conftest.$ac_objext \
+       fi
+       rm -f conftest.c conftest.o conftest
+     fi
+-    if test "$ac_gcsections" = "yes"; then
+-      SECTION_LDFLAGS="-Wl,--gc-sections $SECTION_LDFLAGS"
+-    fi
+     { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_gcsections" >&5
+ $as_echo "$ac_gcsections" >&6; }
+ 
+@@ -45710,9 +45698,6 @@ rm -f core conftest.err conftest.$ac_objext \
+       fi
+       rm -f conftest.c conftest.o conftest
+     fi
+-    if test "$ac_gcsections" = "yes"; then
+-      SECTION_LDFLAGS="-Wl,--gc-sections $SECTION_LDFLAGS"
+-    fi
+     { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_gcsections" >&5
+ $as_echo "$ac_gcsections" >&6; }
+ 
+@@ -46185,9 +46170,6 @@ rm -f core conftest.err conftest.$ac_objext \
+       fi
+       rm -f conftest.c conftest.o conftest
+     fi
+-    if test "$ac_gcsections" = "yes"; then
+-      SECTION_LDFLAGS="-Wl,--gc-sections $SECTION_LDFLAGS"
+-    fi
+     { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_gcsections" >&5
+ $as_echo "$ac_gcsections" >&6; }
+ 
+@@ -52470,9 +52452,6 @@ rm -f core conftest.err conftest.$ac_objext \
+       fi
+       rm -f conftest.c conftest.o conftest
+     fi
+-    if test "$ac_gcsections" = "yes"; then
+-      SECTION_LDFLAGS="-Wl,--gc-sections $SECTION_LDFLAGS"
+-    fi
+     { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_gcsections" >&5
+ $as_echo "$ac_gcsections" >&6; }
+ 
+@@ -58386,9 +58365,6 @@ rm -f core conftest.err conftest.$ac_objext \
+       fi
+       rm -f conftest.c conftest.o conftest
+     fi
+-    if test "$ac_gcsections" = "yes"; then
+-      SECTION_LDFLAGS="-Wl,--gc-sections $SECTION_LDFLAGS"
+-    fi
+     { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_gcsections" >&5
+ $as_echo "$ac_gcsections" >&6; }
+ 
+@@ -58553,9 +58529,6 @@ rm -f core conftest.err conftest.$ac_objext \
+       fi
+       rm -f conftest.c conftest.o conftest
+     fi
+-    if test "$ac_gcsections" = "yes"; then
+-      SECTION_LDFLAGS="-Wl,--gc-sections $SECTION_LDFLAGS"
+-    fi
+     { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_gcsections" >&5
+ $as_echo "$ac_gcsections" >&6; }
+ 
+@@ -58781,9 +58754,6 @@ rm -f core conftest.err conftest.$ac_objext \
+       fi
+       rm -f conftest.c conftest.o conftest
+     fi
+-    if test "$ac_gcsections" = "yes"; then
+-      SECTION_LDFLAGS="-Wl,--gc-sections $SECTION_LDFLAGS"
+-    fi
+     { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_gcsections" >&5
+ $as_echo "$ac_gcsections" >&6; }
+ 
+@@ -64697,9 +64667,6 @@ rm -f core conftest.err conftest.$ac_objext \
+       fi
+       rm -f conftest.c conftest.o conftest
+     fi
+-    if test "$ac_gcsections" = "yes"; then
+-      SECTION_LDFLAGS="-Wl,--gc-sections $SECTION_LDFLAGS"
+-    fi
+     { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_gcsections" >&5
+ $as_echo "$ac_gcsections" >&6; }
+ 
+-- 
+1.7.9.5
+
