@@ -136,6 +136,15 @@ int main(int argc, char **argv)
 	/* finish with NULL termination */
 	*cur = NULL;
 
+	if (getenv("BR_DEBUG_WRAPPER")) {
+		fprintf(stderr, "Executing");
+
+		for (i = 0; args[i]; i++)
+			fprintf(stderr, " %s", args[i]);
+
+		fprintf(stderr, "\n");
+	}
+
 	if (execv(path, args))
 		perror(path);
 
