@@ -7,7 +7,7 @@
 TI_GFX_VERSION = 4_09_00_01
 TI_GFX_SO_VERSION = 1.9.2188537
 
-ifeq ($(BR2_PACKAGE_TI_GFX_HARD_FLOAT),y)
+ifeq ($(BR2_ARM_EABIHF),y)
 TI_GFX_SOURCE = Graphics_SDK_setuplinux_$(TI_GFX_VERSION)_hardfp_minimal_demos.bin
 else
 TI_GFX_SOURCE = Graphics_SDK_setuplinux_$(TI_GFX_VERSION)_minimal_demos.bin

@@ -28,11 +28,6 @@ config BR2_PACKAGE_TI_GFX_EGLIMAGE
 	help
 	  Installs OpenGL libaries which support the eglimage api.
 
-config BR2_PACKAGE_TI_GFX_HARD_FLOAT
-	bool "use hard float binaries"
-	help
-	  Install hard float binaries (required if using a hard float toolchain)
-
 choice
 	prompt "Target"
 	default BR2_PACKAGE_TI_GFX_ES3
