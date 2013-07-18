@@ -20,6 +20,11 @@ config BR2_PACKAGE_LINUX_FIRMWARE_ATHEROS_9271
 	help
 	  Firmware files for the Atheros 9271 module
 
+config BR2_PACKAGE_LINUX_FIRMWARE_BRCM_BCM43XX
+	bool "Broadcom BRCM bcm43xx"
+	help
+	  Firmware files for the Broadcom BRCM bcm43xx
+
 config BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_5000
 	bool "Intel iwlwifi 5000"
 	help
