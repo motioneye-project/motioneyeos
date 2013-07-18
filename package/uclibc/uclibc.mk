@@ -358,7 +358,7 @@ UCLIBC_MAKE_FLAGS = \
 	UCLIBC_EXTRA_CFLAGS="$(TARGET_ABI)" \
 	HOSTCC="$(HOSTCC)"
 
-define UCLIBC_CONFIGURE_CMDS
+define UCLIBC_SETUP_DOT_CONFIG
 	cp -f $(UCLIBC_CONFIG_FILE) $(@D)/.config
 	$(call UCLIBC_OPT_SET,CROSS_COMPILER_PREFIX,"$(TARGET_CROSS)",$(@D))
 	$(call UCLIBC_OPT_SET,TARGET_$(UCLIBC_TARGET_ARCH),y,$(@D))
@@ -395,6 +395,11 @@ define UCLIBC_CONFIGURE_CMDS
 		DEVEL_PREFIX=/usr/ \
 		RUNTIME_PREFIX=$(STAGING_DIR) \
 		oldconfig
+endef
+
+UCLIBC_POST_PATCH_HOOKS += UCLIBC_SETUP_DOT_CONFIG
+
+define UCLIBC_CONFIGURE_CMDS
 	$(MAKE1) -C $(UCLIBC_DIR) \
 		$(UCLIBC_MAKE_FLAGS) \
 		PREFIX=$(STAGING_DIR) \
@@ -470,13 +475,13 @@ define UCLIBC_INSTALL_STAGING_CMDS
 	ln -sf ldconfig $(HOST_DIR)/usr/bin/$(GNU_TARGET_NAME)-ldconfig
 endef
 
-uclibc-menuconfig: dirs uclibc-configure
+uclibc-menuconfig: dirs uclibc-patch
 	$(MAKE1) -C $(UCLIBC_DIR) \
 		$(UCLIBC_MAKE_FLAGS) \
 		PREFIX=$(STAGING_DIR) \
 		DEVEL_PREFIX=/usr/ \
 		RUNTIME_PREFIX=$(STAGING_DIR)/ \
 		menuconfig
-	rm -f $(UCLIBC_DIR)/.stamp_{built,target_installed,staging_installed}
+	rm -f $(UCLIBC_DIR)/.stamp_{configured,built,target_installed,staging_installed}
 
 $(eval $(generic-package))
