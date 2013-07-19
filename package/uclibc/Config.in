@@ -185,7 +185,7 @@ config BR2_UCLIBC_ARM_TYPE
 config BR2_UCLIBC_ARM_BX
 	bool
 	depends on BR2_UCLIBC_TARGET_ARCH = "arm"
-	default y if !BR2_fa265 && !BR2_strongarm
+	default y if (BR2_ARM_CPU_HAS_THUMB || BR2_ARM_CPU_HAS_THUMB2)
 
 config BR2_UCLIBC_MIPS_ABI
 	string
