@@ -17,6 +17,10 @@ DHCP_CONF_OPT = \
 	--with-cli-pid-file=/var/run/dhclient.pid \
 	--with-relay-pid-file=/var/run/dhcrelay.pid
 
+ifeq ($(BR2_PACKAGE_DHCP_SERVER_DELAYED_ACK),y)
+        DHCP_CONF_OPT += --enable-delayed-ack
+endif
+
 ifneq ($(BR2_INET_IPV6),y)
         DHCP_CONF_OPT += --disable-dhcpv6
 endif

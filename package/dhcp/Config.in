@@ -13,6 +13,11 @@ config BR2_PACKAGE_DHCP_SERVER
 	help
 	  DHCP server from the ISC DHCP distribution.
 
+config BR2_PACKAGE_DHCP_SERVER_DELAYED_ACK
+	bool "Enable delayed ACK feature"
+	depends on BR2_PACKAGE_DHCP_SERVER
+	help
+	  Enable delayed ACK feature in the ISC DHCP server.
 
 config BR2_PACKAGE_DHCP_RELAY
 	bool "dhcp relay"
