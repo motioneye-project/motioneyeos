@@ -50,7 +50,7 @@ case "$1" in
 		;;
 	*)
 		echo "Usage: $0 {start|stop|restart|reload|force-reload}"
-		exit 1 
+		exit 1
 esac
 
 exit 0

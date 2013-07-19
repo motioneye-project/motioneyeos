@@ -1,10 +1,10 @@
-################################################################################
+###############################################################################
 #
 # bind
 #
 ################################################################################
 
-BIND_VERSION = 9.6-ESV-R8
+BIND_VERSION = 9.6-ESV-R9-P1
 BIND_SITE = ftp://ftp.isc.org/isc/bind9/$(BIND_VERSION)
 BIND_MAKE = $(MAKE1)
 BIND_LICENSE = ISC
@@ -35,9 +35,13 @@ else
 	BIND_CONF_OPT += --with-openssl=no
 endif
 
+define BIND_INSTALL_INIT_SYSV
+	$(INSTALL) -m 0755 -D package/bind/S81named \
+		$(TARGET_DIR)/etc/init.d/S81named
+endef
+
 define BIND_TARGET_INSTALL_FIXES
 	rm -f $(TARGET_DIR)/usr/bin/isc-config.sh
-	$(INSTALL) -m 0755 -D package/bind/bind.sysvinit $(TARGET_DIR)/etc/init.d/S81named
 endef
 
 BIND_POST_INSTALL_TARGET_HOOKS += BIND_TARGET_INSTALL_FIXES
@@ -61,8 +65,8 @@ endif
 define BIND_UNINSTALL_TARGET_CMDS
 	$(BIND_TARGET_REMOVE_SERVER)
 	$(BIND_TARGET_REMOVE_TOOLS)
-	rm -rf $(addprefix $(TARGET_DIR)/usr/lib/, $(BIND_TARGET_LIBS))
 	rm -f $(TARGET_DIR)/etc/init.d/S81named
+	rm -rf $(addprefix $(TARGET_DIR)/usr/lib/, $(BIND_TARGET_LIBS))
 endef
 
 $(eval $(autotools-package))
