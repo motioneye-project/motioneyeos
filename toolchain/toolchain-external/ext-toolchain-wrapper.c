@@ -8,6 +8,7 @@
  * (C) 2011 Peter Korsgaard <jacmet@sunsite.dk>
  * (C) 2011 Daniel Nyström <daniel.nystrom@timeterminal.se>
  * (C) 2012 Arnout Vandecappelle (Essensium/Mind) <arnout@mind.be>
+ * (C) 2013 Spenser Gilliland <spenser@gillilanding.com>
  *
  * This file is licensed under the terms of the GNU General Public License
  * version 2.  This program is licensed "as is" without any warranty of any
@@ -23,6 +24,15 @@
 static char path[PATH_MAX];
 static char sysroot[PATH_MAX];
 
+/**
+ * GCC errors out with certain combinations of arguments (examples are
+ * -mabi-float={hard|soft} and -m{little|big}-endian), so we have to ensure
+ * that we only pass the predefined one to the real compiler if the inverse
+ * option isn't in the argument list.
+ * This specifies the worst case number of extra arguments we might pass
+ */
+#define EXCLUSIVE_ARGS	1
+
 static char *predef_args[] = {
 	path,
 	"--sysroot", sysroot,
@@ -37,9 +47,6 @@ static char *predef_args[] = {
 #endif
 #ifdef BR_ABI
 	"-mabi=" BR_ABI,
-#endif
-#ifdef BR_FLOAT_ABI
-	"-mfloat-abi=" BR_FLOAT_ABI,
 #endif
 #ifdef BR_FPU
 	"-mfpu=" BR_FPU,
@@ -119,7 +126,8 @@ int main(int argc, char **argv)
 		return 3;
 	}
 
-	cur = args = malloc(sizeof(predef_args) + (sizeof(char *) * argc));
+	cur = args = malloc(sizeof(predef_args) +
+			    (sizeof(char *) * (argc + EXCLUSIVE_ARGS)));
 	if (args == NULL) {
 		perror(__FILE__ ": malloc");
 		return 2;
@@ -128,6 +136,19 @@ int main(int argc, char **argv)
 	/* start with predefined args */
 	memcpy(cur, predef_args, sizeof(predef_args));
 	cur += sizeof(predef_args) / sizeof(predef_args[0]);
+
+#ifdef BR_FLOAT_ABI
+	/* add float abi if not overridden in args */
+	for (i = 1; i < argc; i++) {
+		if (!strncmp(argv[i], "-mfloat-abi=", strlen("-mfloat-abi=")) ||
+		    !strcmp(argv[i], "-msoft-float") ||
+		    !strcmp(argv[i], "-mhard-float"))
+			break;
+	}
+
+	if (i == argc)
+		*cur++ = "-mfloat-abi=" BR_FLOAT_ABI;
+#endif
 
 	/* append forward args */
 	memcpy(cur, &argv[1], sizeof(char *) * (argc - 1));
