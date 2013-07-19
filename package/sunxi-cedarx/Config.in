@@ -1,0 +1,14 @@
+config BR2_PACKAGE_SUNXI_CEDARX
+	bool "sunxi-cedarx"
+	depends on BR2_TOOLCHAIN_USES_GLIBC && BR2_arm
+	help
+	  Sunxi CedarX decoder libraries. CedarX is Allwinner's
+	  multimedia co-processing technology for hardware accelerated
+	  video and image decoding, as used inside their A10 SoC's and
+	  others.
+
+	  http://github.com/linux-sunxi/cedarx-libs
+	  http://linux-sunxi.org/CedarX
+
+comment "sunxi-cedarx requires an eglibc/glibc based toolchain"
+	depends on !BR2_TOOLCHAIN_USES_GLIBC && BR2_arm
