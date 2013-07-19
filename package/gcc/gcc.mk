@@ -194,6 +194,11 @@ ifeq ($(BR2_avr32),y)
 HOST_GCC_COMMON_CONF_OPT += --disable-libmudflap
 endif
 
+# ARM Thumb and mudflap aren't friends
+ifeq ($(BR2_ARM_INSTRUCTIONS_THUMB),y)
+HOST_GCC_COMMON_CONF_OPT += --disable-libmudflap
+endif
+
 # Disable mudflap and enable proper double/long double for SPE ABI
 ifeq ($(BR2_powerpc_SPE),y)
 HOST_GCC_COMMON_CONF_OPT += \
