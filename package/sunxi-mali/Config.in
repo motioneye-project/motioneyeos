@@ -1,0 +1,61 @@
+config BR2_PACKAGE_SUNXI_MALI
+	bool "sunxi-mali"
+	select BR2_PACKAGE_HAS_OPENGL_EGL
+	select BR2_PACKAGE_HAS_OPENGL_ES
+	# The egl/gles mali libraries are provided as a git submodule of the
+	# sunxi-mali repo and are downloaded by the sunxi-mali-prop package.
+	select BR2_PACKAGE_SUNXI_MALI_PROP
+	depends on BR2_TOOLCHAIN_USES_GLIBC
+	depends on BR2_arm
+	help
+	  Install the ARM Mali drivers for sunxi based systems (i.e
+	  systems based on ARM Allwinner SoCs). This driver requires
+	  either the sunxi-kernel with the ARM Mali driver enabled or
+	  the installation of the ARM Mali drivers as an external
+	  module.
+
+	  http://github.com/linux-sunxi/sunxi-mali
+
+if BR2_PACKAGE_SUNXI_MALI
+
+config BR2_PACKAGE_SUNXI_MALI_DBG
+	bool "install malitest and maliver tools"
+	help
+	  Install 3D triangle demo malitest application and the maliver application
+	  which describes the kernel module version.
+
+choice
+	prompt "Version"
+	default BR2_PACKAGE_SUNXI_MALI_R3P0
+	help
+	  Select the version of the kernel module.  For the sunxi-kernel, the
+	  appropriate version number is r3p0. For other kernels, use the maliver
+	  application to determine the appropriate version.
+
+config BR2_PACKAGE_SUNXI_MALI_R2P4
+	bool "r2p4"
+	depends on BR2_ARM_EABI
+
+comment "r2p4 requires an EABI toolchain"
+	depends on !BR2_ARM_EABI
+
+config BR2_PACKAGE_SUNXI_MALI_R3P0
+	bool "r3p0"
+	depends on BR2_ARM_EABIHF
+
+comment "r3p0 requires an EABIhf toolchain"
+	depends on !BR2_ARM_EABIHF
+
+config BR2_PACKAGE_SUNXI_MALI_R3P1
+	depends on BR2_ARM_EABIHF
+	bool "r3p1"
+
+comment "r3p1 requires an EABIhf toolchain"
+	depends on !BR2_ARM_EABIHF
+
+endchoice
+
+endif
+
+comment "sunxi-mali requires an eglibc/glibc based toolchain"
+	depends on BR2_arm && !BR2_TOOLCHAIN_USES_GLIBC
