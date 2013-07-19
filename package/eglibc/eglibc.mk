@@ -23,6 +23,11 @@ EGLIBC_INSTALL_STAGING = YES
 
 EGLIBC_INSTALL_STAGING_OPT = install_root=$(STAGING_DIR) install
 
+# Thumb build is broken, build in ARM mode
+ifeq ($(BR2_ARM_INSTRUCTIONS_THUMB),y)
+EGLIBC_EXTRA_CFLAGS += -marm
+endif
+
 # Even though we use the autotools-package infrastructure, we have to
 # override the default configure commands for several reasons:
 #
@@ -36,7 +41,8 @@ define EGLIBC_CONFIGURE_CMDS
 	# Do the configuration
 	(cd $(@D)/build; \
 		$(TARGET_CONFIGURE_OPTS) \
-		CFLAGS="-O2" CPPFLAGS="" CXXFLAGS="-O2" \
+		CFLAGS="-O2 $(EGLIBC_EXTRA_CFLAGS)" CPPFLAGS="" \
+		CXXFLAGS="-O2 $(EGLIBC_EXTRA_CFLAGS)" \
 		$(SHELL) $(@D)/libc/configure \
 		ac_cv_path_BASH_SHELL=/bin/bash \
 		libc_cv_forced_unwind=yes \
