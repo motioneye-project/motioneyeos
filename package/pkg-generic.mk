@@ -269,7 +269,7 @@ ifndef $(2)_SITE_METHOD
   $(2)_SITE_METHOD = $($(3)_SITE_METHOD)
  else
 	# Try automatic detection using the scheme part of the URI
-	$(2)_SITE_METHOD = $(firstword $(subst ://, ,$(call qstrip,$($(2)_SITE))))
+	$(2)_SITE_METHOD = $(call geturischeme,$($(2)_SITE))
  endif
 endif
 
