@@ -1,5 +1,5 @@
 config BR2_PACKAGE_EXPAT
-	bool"expat"
+	bool "expat"
 	help
 	  The Expat XML Parser.
 
