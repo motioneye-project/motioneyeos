@@ -451,6 +451,16 @@ define UCLIBC_INSTALL_TEST_SUITE
 endef
 endif
 
+ifeq ($(BR2_UCLIBC_INSTALL_UTILS),y)
+define UCLIBC_INSTALL_UTILS_TARGET
+	$(MAKE1) -C $(@D) \
+		CC="$(TARGET_CC)" CPP="$(TARGET_CPP)" LD="$(TARGET_LD)" \
+		ARCH="$(UCLIBC_TARGET_ARCH)" \
+		PREFIX=$(TARGET_DIR) \
+		utils install_utils
+endef
+endif
+
 define UCLIBC_INSTALL_TARGET_CMDS
 	$(MAKE1) -C $(@D) \
 		$(UCLIBC_MAKE_FLAGS) \
@@ -458,11 +468,7 @@ define UCLIBC_INSTALL_TARGET_CMDS
 		DEVEL_PREFIX=/usr/ \
 		RUNTIME_PREFIX=/ \
 		install_runtime
-	$(MAKE1) -C $(@D) \
-		CC="$(TARGET_CC)" CPP="$(TARGET_CPP)" LD="$(TARGET_LD)" \
-		ARCH="$(UCLIBC_TARGET_ARCH)" \
-		PREFIX=$(TARGET_DIR) \
-		utils install_utils
+	$(UCLIBC_INSTALL_UTILS_TARGET)
 	$(UCLIBC_INSTALL_TEST_SUITE)
 endef
 

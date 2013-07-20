@@ -129,6 +129,17 @@ config BR2_PTHREAD_DEBUG
 	help
 	  Build the thread library with debugging enabled.
 
+config BR2_UCLIBC_INSTALL_UTILS
+	bool "Compile and install uClibc utilities"
+	depends on !BR2_bfin
+	default y
+	help
+	  Enabling this option will compile and install the getconf,
+	  ldconfig and ldd uClibc utilities for the target.
+
+	  You can save ~32 KiB in target space by disabling them since
+	  they're normally not needed.
+
 config BR2_UCLIBC_INSTALL_TEST_SUITE
 	bool "Compile and install uClibc tests"
 	select BR2_PACKAGE_MAKE
