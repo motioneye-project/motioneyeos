@@ -104,6 +104,7 @@ choice
 
 	config BR2_PTHREADS
 		bool "linuxthreads"
+		depends on !BR2_bfin
 		depends on !BR2_xtensa
 	        select BR2_TOOLCHAIN_HAS_THREADS
 
@@ -116,6 +117,7 @@ choice
 		select BR2_TOOLCHAIN_HAS_THREADS
 		depends on !BR2_x86_i386
 		depends on !BR2_avr32
+		depends on !BR2_bfin
 		depends on !BR2_xtensa
 		depends on !BR2_arc
 endchoice
