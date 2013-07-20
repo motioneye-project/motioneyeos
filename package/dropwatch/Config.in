@@ -1,0 +1,7 @@
+config BR2_PACKAGE_DROPWATCH
+	bool "dropwatch"
+	help
+	  Dropwatch is a project I am tinkering with to improve the visibility
+	  developers and sysadmins have into the Linux networking stack.
+
+	  https://git.fedorahosted.org/git/dropwatch.git
