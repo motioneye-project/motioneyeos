@@ -409,13 +409,12 @@ define UCLIBC_CONFIGURE_CMDS
 		PREFIX=$(STAGING_DIR) \
 		DEVEL_PREFIX=/usr/ \
 		RUNTIME_PREFIX=$(STAGING_DIR) \
-		headers lib/crt1.o lib/crti.o lib/crtn.o \
-		install_headers
+		headers startfiles \
+		install_headers install_startfiles
 	$(TARGET_CROSS)gcc -nostdlib \
 		-nostartfiles -shared -x c /dev/null -o $(STAGING_DIR)/usr/lib/libc.so
 	$(TARGET_CROSS)gcc -nostdlib \
 		-nostartfiles -shared -x c /dev/null -o $(STAGING_DIR)/usr/lib/libm.so
-	cp -pLR $(UCLIBC_DIR)/lib/crt[1in].o $(STAGING_DIR)/usr/lib/
 endef
 
 ifeq ($(BR2_UCLIBC_INSTALL_TEST_SUITE),y)
