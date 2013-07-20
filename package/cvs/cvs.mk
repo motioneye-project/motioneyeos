@@ -12,14 +12,14 @@ CVS_DEPENDENCIES = ncurses
 
 CVS_CONF_ENV = cvs_cv_func_printf_ptr=yes
 
-CVS_CONFIGURE_ARGS=--disable-old-info-format-support
+CVS_CONFIGURE_ARGS = --disable-old-info-format-support
 ifeq ($(BR2_PACKAGE_CVS_SERVER),y)
-CVS_CONFIGURE_ARGS+=--enable-server
+CVS_CONFIGURE_ARGS += --enable-server
 else
-CVS_CONFIGURE_ARGS+=--disable-server
+CVS_CONFIGURE_ARGS += --disable-server
 endif
 ifeq ($(BR2_PACKAGE_ZLIB),y)
-CVS_CONFIGURE_ARGS+=--with-external-zlib
+CVS_CONFIGURE_ARGS += --with-external-zlib
 endif
 
 CVS_CONF_OPT = $(CVS_CONFIGURE_ARGS)

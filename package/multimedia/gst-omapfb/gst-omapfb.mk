@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-GST_OMAPFB_VERSION=1.0
-GST_OMAPFB_SOURCE=gst-omapfb-$(GST_OMAPFB_VERSION).tar.gz
-GST_OMAPFB_SITE=http://gst-dsp.googlecode.com/files/
+GST_OMAPFB_VERSION = 1.0
+GST_OMAPFB_SOURCE = gst-omapfb-$(GST_OMAPFB_VERSION).tar.gz
+GST_OMAPFB_SITE = http://gst-dsp.googlecode.com/files/
 
 define GST_OMAPFB_BUILD_CMDS
 	$(TARGET_CONFIGURE_OPTS) $(MAKE) -C $(@D) -e

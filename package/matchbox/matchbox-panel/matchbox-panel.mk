@@ -16,10 +16,10 @@ MATCHBOX_PANEL_CONF_OPT = --enable-expat
 ################################################################################
 
 ifeq ($(BR2_PACKAGE_STARTUP_NOTIFICATION),y)
-  MATCHBOX_PANEL_CONF_OPT+=--enable-startup-notification
-  MATCHBOX_PANEL_DEPENDENCIES+=startup-notification matchbox-startup-monitor
+  MATCHBOX_PANEL_CONF_OPT += --enable-startup-notification
+  MATCHBOX_PANEL_DEPENDENCIES += startup-notification matchbox-startup-monitor
 else
-  MATCHBOX_PANEL_CONF_OPT+=--disable-startup-notification
+  MATCHBOX_PANEL_CONF_OPT += --disable-startup-notification
 endif
 
 ################################################################################

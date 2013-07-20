@@ -15,8 +15,8 @@ MADPLAY_DEPENDENCIES = libmad libid3tag
 # Check if ALSA is built, then we should configure after alsa-lib so
 # ./configure can find alsa-lib.
 ifeq ($(BR2_PACKAGE_MADPLAY_ALSA),y)
-MADPLAY_CONF_OPT+=--with-alsa
-MADPLAY_DEPENDENCIES+=alsa-lib
+MADPLAY_CONF_OPT += --with-alsa
+MADPLAY_DEPENDENCIES += alsa-lib
 endif
 
 $(eval $(autotools-package))

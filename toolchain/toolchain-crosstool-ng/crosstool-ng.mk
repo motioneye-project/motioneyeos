@@ -11,7 +11,7 @@
 CTNG_DIR := $(BUILD_DIR)/build-toolchain
 
 CTNG_UCLIBC_CONFIG_FILE := $(TOPDIR)/package/uclibc/uClibc-0.9.33.config
-CTNG_CONFIG_FILE:=$(call qstrip,$(BR2_TOOLCHAIN_CTNG_CONFIG))
+CTNG_CONFIG_FILE := $(call qstrip,$(BR2_TOOLCHAIN_CTNG_CONFIG))
 
 # Hack! ct-ng is in fact a Makefile script. As such, it accepts all
 # make options, such as -C, which makes it uneeded to chdir prior

@@ -8,14 +8,14 @@
 ################################################################################
 
 # Download method commands
-WGET:=$(call qstrip,$(BR2_WGET)) $(QUIET)
-SVN:=$(call qstrip,$(BR2_SVN))
-BZR:=$(call qstrip,$(BR2_BZR))
-GIT:=$(call qstrip,$(BR2_GIT))
-HG:=$(call qstrip,$(BR2_HG)) $(QUIET)
-SCP:=$(call qstrip,$(BR2_SCP)) $(QUIET)
-SSH:=$(call qstrip,$(BR2_SSH)) $(QUIET)
-LOCALFILES:=$(call qstrip,$(BR2_LOCALFILES))
+WGET := $(call qstrip,$(BR2_WGET)) $(QUIET)
+SVN := $(call qstrip,$(BR2_SVN))
+BZR := $(call qstrip,$(BR2_BZR))
+GIT := $(call qstrip,$(BR2_GIT))
+HG := $(call qstrip,$(BR2_HG)) $(QUIET)
+SCP := $(call qstrip,$(BR2_SCP)) $(QUIET)
+SSH := $(call qstrip,$(BR2_SSH)) $(QUIET)
+LOCALFILES := $(call qstrip,$(BR2_LOCALFILES))
 
 # Default spider mode is 'DOWNLOAD'. Other possible values are 'SOURCE_CHECK'
 # used by the _source-check target and 'SHOW_EXTERNAL_DEPS', used by the
@@ -24,17 +24,17 @@ DL_MODE=DOWNLOAD
 
 # Override BR2_DL_DIR if shell variable defined
 ifneq ($(BUILDROOT_DL_DIR),)
-DL_DIR:=$(BUILDROOT_DL_DIR)
+DL_DIR := $(BUILDROOT_DL_DIR)
 else
-DL_DIR:=$(call qstrip,$(BR2_DL_DIR))
+DL_DIR := $(call qstrip,$(BR2_DL_DIR))
 endif
 
 ifeq ($(DL_DIR),)
-DL_DIR:=$(TOPDIR)/dl
+DL_DIR := $(TOPDIR)/dl
 endif
 
 # ensure it exists and a absolute path
-DL_DIR:=$(shell mkdir -p $(DL_DIR) && cd $(DL_DIR) >/dev/null && pwd)
+DL_DIR := $(shell mkdir -p $(DL_DIR) && cd $(DL_DIR) >/dev/null && pwd)
 
 #
 # URI scheme helper functions

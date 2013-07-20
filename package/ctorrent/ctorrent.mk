@@ -11,10 +11,10 @@ CTORRENT_LICENSE = GPLv2
 CTORRENT_LICENSE_FILES = COPYING
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
-CTORRENT_CONF_OPT+=--with-ssl=yes
-CTORRENT_DEPENDENCIES+=openssl
+CTORRENT_CONF_OPT += --with-ssl=yes
+CTORRENT_DEPENDENCIES += openssl
 else
-CTORRENT_CONF_OPT+=--with-ssl=no
+CTORRENT_CONF_OPT += --with-ssl=no
 endif
 
 $(eval $(autotools-package))

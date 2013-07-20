@@ -7,8 +7,8 @@
 #
 ################################################################################
 
-ISO9660_TARGET_DIR=$(BUILD_DIR)/iso9660
-ISO9660_BOOT_MENU:=$(call qstrip,$(BR2_TARGET_ROOTFS_ISO9660_BOOT_MENU))
+ISO9660_TARGET_DIR = $(BUILD_DIR)/iso9660
+ISO9660_BOOT_MENU := $(call qstrip,$(BR2_TARGET_ROOTFS_ISO9660_BOOT_MENU))
 
 ISO9660_CPIO_EXT-$(BR2_TARGET_ROOTFS_CPIO_GZIP)  = .gz
 ISO9660_CPIO_EXT-$(BR2_TARGET_ROOTFS_CPIO_BZIP2) = .bz2

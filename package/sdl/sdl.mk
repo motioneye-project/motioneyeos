@@ -12,33 +12,33 @@ SDL_LICENSE_FILES = COPYING
 SDL_INSTALL_STAGING = YES
 
 ifeq ($(BR2_PACKAGE_SDL_FBCON),y)
-SDL_CONF_OPT+=--enable-video-fbcon=yes
+SDL_CONF_OPT += --enable-video-fbcon=yes
 else
-SDL_CONF_OPT+=--enable-video-fbcon=no
+SDL_CONF_OPT += --enable-video-fbcon=no
 endif
 
 ifeq ($(BR2_PACKAGE_SDL_DIRECTFB),y)
 SDL_DEPENDENCIES += directfb
-SDL_CONF_OPT+=--enable-video-directfb=yes
+SDL_CONF_OPT += --enable-video-directfb=yes
 SDL_CONF_ENV = ac_cv_path_DIRECTFBCONFIG=$(STAGING_DIR)/usr/bin/directfb-config
 else
-SDL_CONF_OPT=--enable-video-directfb=no
+SDL_CONF_OPT = --enable-video-directfb=no
 endif
 
 ifeq ($(BR2_PACKAGE_SDL_QTOPIA),y)
-SDL_CONF_OPT+=--enable-video-qtopia=yes
+SDL_CONF_OPT += --enable-video-qtopia=yes
 SDL_DEPENDENCIES += qt
 else
-SDL_CONF_OPT+=--enable-video-qtopia=no
+SDL_CONF_OPT += --enable-video-qtopia=no
 endif
 
 ifeq ($(BR2_PACKAGE_SDL_X11),y)
-SDL_CONF_OPT+=--enable-video-x11=yes
+SDL_CONF_OPT += --enable-video-x11=yes
 SDL_DEPENDENCIES += xlib_libX11 xlib_libXext \
 	$(if $(BR2_PACKAGE_XLIB_LIBXRENDER), xlib_libXrender) \
 	$(if $(BR2_PACKAGE_XLIB_LIBXRANDR), xlib_libXrandr)
 else
-SDL_CONF_OPT+=--enable-video-x11=no
+SDL_CONF_OPT += --enable-video-x11=no
 endif
 
 ifeq ($(BR2_PACKAGE_TSLIB),y)
@@ -67,6 +67,6 @@ define SDL_FIXUP_SDL_CONFIG
 		$(STAGING_DIR)/usr/bin/sdl-config
 endef
 
-SDL_POST_INSTALL_STAGING_HOOKS+=SDL_FIXUP_SDL_CONFIG
+SDL_POST_INSTALL_STAGING_HOOKS += SDL_FIXUP_SDL_CONFIG
 
 $(eval $(autotools-package))

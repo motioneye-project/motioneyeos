@@ -23,9 +23,9 @@ MATCHBOX_KEYBOARD_POST_INSTALL_TARGET_HOOKS += MATCHBOX_KEYBOARD_POST_INSTALL_FI
 ################################################################################
 
 ifeq ($(BR2_PACKAGE_PANGO),y)
-  MATCHBOX_PKEYBOARD_CONF_OPT+=--enable-pango
+  MATCHBOX_PKEYBOARD_CONF_OPT += --enable-pango
 else
-  MATCHBOX_KEYBOARD_DEPENDENCIES+=xlib_libXft
+  MATCHBOX_KEYBOARD_DEPENDENCIES += xlib_libXft
 endif
 
 ################################################################################

@@ -11,7 +11,7 @@ LIBFUSE_LICENSE = GPLv2 LGPLv2.1
 LIBFUSE_LICENSE_FILES = COPYING COPYING.LIB
 LIBFUSE_INSTALL_STAGING = YES
 LIBFUSE_DEPENDENCIES = $(if $(BR2_PACKAGE_LIBICONV),libiconv)
-LIBFUSE_CONF_OPT= --disable-nls \
+LIBFUSE_CONF_OPT = --disable-nls \
 		--disable-example \
 		--disable-kernel-module \
 		--enable-lib \

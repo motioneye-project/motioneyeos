@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-GENROMFS_VERSION=0.5.2
-GENROMFS_SOURCE=genromfs-$(GENROMFS_VERSION).tar.gz
-GENROMFS_SITE=http://downloads.sourceforge.net/project/romfs/genromfs/$(GENROMFS_VERSION)
+GENROMFS_VERSION = 0.5.2
+GENROMFS_SOURCE = genromfs-$(GENROMFS_VERSION).tar.gz
+GENROMFS_SITE = http://downloads.sourceforge.net/project/romfs/genromfs/$(GENROMFS_VERSION)
 
 define GENROMFS_BUILD_CMDS
  $(TARGET_MAKE_ENV) $(MAKE) -C $(@D) \
