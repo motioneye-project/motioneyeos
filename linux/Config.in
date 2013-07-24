@@ -68,7 +68,6 @@ config BR2_LINUX_KERNEL_CUSTOM_GIT_REPO_URL
 
 config BR2_LINUX_KERNEL_CUSTOM_GIT_VERSION
 	string "Custom Git version"
-	default "HEAD"
 	depends on BR2_LINUX_KERNEL_CUSTOM_GIT
 	help
 	  Git revision to use in the format used by git rev-parse,
