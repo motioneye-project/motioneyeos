@@ -101,7 +101,23 @@ config BR2_TARGET_UBOOT_FORMAT_LDR
 config BR2_TARGET_UBOOT_FORMAT_ELF
 	bool "u-boot.elf"
 
+config BR2_TARGET_UBOOT_FORMAT_CUSTOM
+	bool "Custom (specify below)"
+	help
+	  On some platforms, the standard U-Boot binary is not called
+	  u-boot.bin, but u-boot<something>.bin. If this is your case,
+	  you should select this option and specify the correct name
+	  in BR2_TARGET_UBOOT_FORMAT_CUSTOM_NAME.
+
 endchoice
+
+config BR2_TARGET_UBOOT_FORMAT_CUSTOM_NAME
+	string "U-Boot binary format: custom name"
+	depends on BR2_TARGET_UBOOT_FORMAT_CUSTOM
+	help
+	  Specify the correct name of the output binary created by
+	  U-Boot, if it is not one of the default names. For example:
+	  u-boot_magic.bin
 
 config BR2_TARGET_UBOOT_OMAP_IFT
 	depends on BR2_TARGET_UBOOT_FORMAT_BIN
