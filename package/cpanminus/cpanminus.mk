@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-CPANMINUS_VERSION = 1.6002
+CPANMINUS_VERSION = 1.6109
 CPANMINUS_SOURCE = $(CPANMINUS_VERSION).tar.gz
 CPANMINUS_SITE = https://github.com/miyagawa/cpanminus/archive
 CPANMINUS_DEPENDENCIES = host-qemu perl $(call qstrip,$(BR2_PACKAGE_CPANMINUS_NATIVE_DEPENDENCIES))
