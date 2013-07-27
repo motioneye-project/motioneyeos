@@ -15,3 +15,6 @@ config BR2_PACKAGE_TSTOOLS
 	  used to store data on DVDs.
 
 	  http://tstools.berlios.de/
+
+comment "tstools needs largefile support in toolchain"
+	depends on !BR2_LARGEFILE
