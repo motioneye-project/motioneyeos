@@ -3,14 +3,14 @@ Just assume it works ok since we're using a modern OpenSSL version.
 
 Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
 
-diff -Nura squid-3.3.5.orig/configure.ac squid-3.3.5/configure.ac
---- squid-3.3.5.orig/configure.ac	2013-06-03 09:37:44.016398185 -0300
-+++ squid-3.3.5/configure.ac	2013-06-03 09:37:55.926784556 -0300
-@@ -1261,7 +1261,6 @@
+diff -Nura squid-3.3.8.orig/configure.ac squid-3.3.8/configure.ac
+--- squid-3.3.8.orig/configure.ac	2013-07-26 08:57:50.177259534 -0300
++++ squid-3.3.8/configure.ac	2013-07-26 08:57:55.997448040 -0300
+@@ -1265,7 +1265,6 @@
  AC_SUBST(SSLLIB)
-
+ 
  if test "x$with_openssl" = "xyes"; then
 -SQUID_CHECK_OPENSSL_GETCERTIFICATE_WORKS
+ SQUID_CHECK_OPENSSL_CONST_SSL_METHOD
  SQUID_CHECK_OPENSSL_TXTDB
  fi
-
