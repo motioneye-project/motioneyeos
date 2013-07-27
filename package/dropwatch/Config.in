@@ -1,10 +1,15 @@
 config BR2_PACKAGE_DROPWATCH
 	bool "dropwatch"
 	select BR2_PACKAGE_BINUTILS
+	depends on !BR2_aarch64 # binutils
 	select BR2_PACKAGE_READLINE
 	select BR2_PACKAGE_LIBNL
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libnl
 	help
 	  Dropwatch is an interactive utility for monitoring and
 	  recording packets that are dropped by the kernel
 
 	  https://fedorahosted.org/dropwatch/
+
+comment "dropwatch requires threading support in toolchain"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
