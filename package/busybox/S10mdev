@@ -6,6 +6,7 @@
 case "$1" in
   start)
 	echo "Starting mdev..."
+	echo /sbin/mdev >/proc/sys/kernel/hotplug
 	/sbin/mdev -s
 	;;
   stop)
