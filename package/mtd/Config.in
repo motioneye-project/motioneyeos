@@ -54,6 +54,18 @@ config BR2_PACKAGE_MTD_MKFSJFFS2
 	select BR2_PACKAGE_ZLIB
 	select BR2_PACKAGE_LZO
 
+config BR2_PACKAGE_MTD_MKFSUBIFS
+	bool "mkfs.ubifs"
+	select BR2_PACKAGE_ZLIB
+	select BR2_PACKAGE_LZO
+	select BR2_PACKAGE_UTIL_LINUX
+	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
+	depends on BR2_LARGEFILE # util-linux
+	depends on BR2_USE_WCHAR # util-linux
+
+comment "mkfs.ubifs requires largefile and wchar support in toolchain"
+	depends on !BR2_LARGEFILE || !BR2_USE_WCHAR
+
 config BR2_PACKAGE_MTD_MTD_DEBUG
 	bool "mtd_debug"
 	default y
