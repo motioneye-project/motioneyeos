@@ -1,0 +1,9 @@
+config BR2_PACKAGE_KOBS_NG
+	bool "kobs-ng"
+	depends on BR2_arm
+	help
+	  The kobs-ng tool is used for writing images to NAND on i.MX
+	  platforms.
+
+	  This utility is provided by Freescale as-is and doesn't have an
+	  upstream.
