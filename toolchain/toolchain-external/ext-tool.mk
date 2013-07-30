@@ -531,8 +531,9 @@ ifeq ($(BR2_BFIN_INSTALL_FLAT_SHARED),y)
 TOOLCHAIN_EXTERNAL_INSTALL += $(STAMP_DIR)/ext-toolchain-bfin-shared-flat-installed
 endif
 
-# Build toolchain wrapper for preprocessor, C and C++ compiler, and setup
-# symlinks for everything else
+# Build toolchain wrapper for preprocessor, C and C++ compiler and setup
+# symlinks for everything else. Skip gdb symlink when we are building our
+# own gdb to prevent two gdb's in output/host/usr/bin.
 $(HOST_DIR)/usr/bin/ext-toolchain-wrapper: $(TOOLCHAIN_EXTERNAL_INSTALL)
 	$(Q)$(call MESSAGE,"Building ext-toolchain wrapper")
 	mkdir -p $(HOST_DIR)/usr/bin; cd $(HOST_DIR)/usr/bin; \
@@ -541,6 +542,11 @@ $(HOST_DIR)/usr/bin/ext-toolchain-wrapper: $(TOOLCHAIN_EXTERNAL_INSTALL)
 		case "$$base" in \
 		*cc|*cc-*|*++|*++-*|*cpp) \
 			ln -sf $(@F) $$base; \
+			;; \
+		*gdb|*gdbtui) \
+			if test "$(BR2_PACKAGE_HOST_GDB)" != "y"; then \
+				ln -sf $$(echo $$i | sed 's%^$(HOST_DIR)%../..%') .; \
+			fi \
 			;; \
 		*) \
 			ln -sf $$(echo $$i | sed 's%^$(HOST_DIR)%../..%') .; \
