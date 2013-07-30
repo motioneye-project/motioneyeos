@@ -21,6 +21,10 @@ GDB_VERSION = 7.5.1
 endif
 endif
 
+ifeq ($(BR2_arc),y)
+GDB_SITE = $(BR2_ARC_SITE)
+endif
+
 ifeq ($(GDB_VERSION),6.7.1-avr32-2.1.5)
 GDB_SITE = ftp://www.at91.com/pub/buildroot/
 endif

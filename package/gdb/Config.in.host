@@ -15,6 +15,7 @@ if BR2_PACKAGE_HOST_GDB
 
 choice
 	prompt "GDB debugger Version"
+	depends on !BR2_arc
 	default BR2_GDB_VERSION_6_6 if BR2_bfin
 	default BR2_GDB_VERSION_6_7_1_AVR32_2_1_5 if BR2_avr32
 	default BR2_GDB_VERSION_7_5
@@ -57,5 +58,6 @@ config BR2_GDB_VERSION
 	default "7.3.1"    if BR2_GDB_VERSION_7_3
 	default "7.4.1"    if BR2_GDB_VERSION_7_4
 	default "7.5.1"    if BR2_GDB_VERSION_7_5
+	default "7.5.1-arc" if BR2_arc
 
 endif
