@@ -110,6 +110,7 @@ config BR2_PACKAGE_STRONGSWAN_TOOLS
 
 config BR2_PACKAGE_STRONGSWAN_SCRIPTS
 	bool "Enable additional utilities (found in directory scripts)"
+	depends on BR2_PACKAGE_STRONGSWAN_CHARON || BR2_PACKAGE_STRONGSWAN_TOOLS
 	default y
 
 endif
