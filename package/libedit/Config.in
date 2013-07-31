@@ -1,5 +1,6 @@
 config BR2_PACKAGE_LIBEDIT
 	bool "libedit"
+	depends on BR2_USE_WCHAR
 	select BR2_PACKAGE_NCURSES
 	help
 	  The editline library (from BSD) provides generic line editing
@@ -12,3 +13,6 @@ config BR2_PACKAGE_LIBEDIT
 	  in Buildroot as it makes it much simpler than using the upstream
 	  sources which require pmake:
 	  http://www.thrysoee.dk/editline/
+
+comment "libedit requires a toolchain with WCHAR support"
+	depends on !BR2_USE_WCHAR
