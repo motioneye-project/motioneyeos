@@ -1,0 +1,16 @@
+config BR2_PACKAGE_TRACE_CMD
+	bool "trace-cmd"
+	depends on BR2_LARGEFILE
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	help
+	  Command line reader for ftrace.
+
+	  To use this profiling tool, you should enable ftrace in your kernel
+	  configuration. This command collect traces on your target.
+	  You can analyse these traces on the target or on the host via the gui
+	  "kernel shark"
+
+	  http://git.kernel.org/cgit/linux/kernel/git/rostedt/trace-cmd.git
+
+comment "trace-cmd needs a toolchain with largefile and threads support"
+	depends on !BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_THREADS
