@@ -20,6 +20,10 @@ ifeq ($(BR2_STRIP_sstrip),y)
 DEPENDENCIES_HOST_PREREQ+=host-sstrip
 endif
 
+ifeq ($(BR2_CCACHE),y)
+DEPENDENCIES_HOST_PREREQ += host-ccache
+endif
+
 core-dependencies:
 	@HOSTCC="$(firstword $(HOSTCC))" MAKE="$(MAKE)" \
 		DL_TOOLS="$(sort $(DL_TOOLS_DEPENDENCIES))" \

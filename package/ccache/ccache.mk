@@ -10,12 +10,6 @@ CCACHE_SOURCE  = ccache-$(CCACHE_VERSION).tar.bz2
 CCACHE_LICENSE = GPLv3+, others
 CCACHE_LICENSE_FILES = LICENSE.txt GPL-3.0.txt
 
-# When ccache is being built for the host, ccache is not yet
-# available, so we have to use the special C compiler without the
-# cache.
-HOST_CCACHE_CONF_ENV = \
-	CC="$(HOSTCC_NOCCACHE)"
-
 # Force ccache to use its internal zlib. The problem is that without
 # this, ccache would link against the zlib of the build system, but we
 # might build and install a different version of zlib in $(O)/host
