@@ -7,7 +7,7 @@
 LIBCEC_VERSION = libcec-2.1.1
 LIBCEC_SITE = http://github.com/Pulse-Eight/libcec/tarball/$(LIBCEC_VERSION)
 LIBCEC_LICENSE = GPLv2+
-LIBCEC_LICENSE_FILE = COPYING
+LIBCEC_LICENSE_FILES = COPYING
 
 # Autoreconf required due to being a dev tarball and not a release tarball.
 LIBCEC_AUTORECONF = YES
