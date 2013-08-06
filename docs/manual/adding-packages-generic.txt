@@ -358,6 +358,13 @@ LIBFOO_VERSION = 2.32
 Now, the variables that define what should be performed at the
 different steps of the build process.
 
+* +LIBFOO_EXTRACT_CMDS+ lists the actions to be performed to extract
+  the package. This is generally not needed as tarballs are
+  automatically handled by Buildroot. However, if the package uses a
+  non-standard archive format, such as a ZIP or RAR file, or has a
+  tarball with a non-standard organization, this variable allows to
+  override the package infrastructure default behavior.
+
 * +LIBFOO_CONFIGURE_CMDS+ lists the actions to be performed to
   configure the package before its compilation.
 
