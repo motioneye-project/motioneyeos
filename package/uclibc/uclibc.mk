@@ -85,7 +85,7 @@ define UCLIBC_ARM_BX_CONFIG
 endef
 else
 define UCLIBC_ARM_BX_CONFIG
-	$(call UCLIBC_OPT_UNSET,USE_BX,y,$(@D))
+	$(call UCLIBC_OPT_UNSET,USE_BX,$(@D))
 endef
 endif
 
