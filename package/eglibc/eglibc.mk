@@ -36,6 +36,9 @@ endif
 #
 #  2. We have to execute the configure script with bash and not sh.
 #
+# Note that as mentionned in
+# http://patches.openembedded.org/patch/38849/, eglibc must be built
+# with -O2, so we pass our own CFLAGS and CXXFLAGS below.
 define EGLIBC_CONFIGURE_CMDS
 	mkdir -p $(@D)/build
 	# Do the configuration
