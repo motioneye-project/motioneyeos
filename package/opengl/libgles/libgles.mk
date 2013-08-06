@@ -18,6 +18,10 @@ ifeq ($(BR2_PACKAGE_SUNXI_MALI),y)
 LIBGLES_DEPENDENCIES += sunxi-mali
 endif
 
+ifeq ($(BR2_PACKAGE_GPU_VIV_BIN_MX6Q),y)
+LIBGLES_DEPENDENCIES += gpu-viv-bin-mx6q
+endif
+
 ifeq ($(LIBGLES_DEPENDENCIES),)
 define LIBGLES_CONFIGURE_CMDS
 	echo "No libGLES implementation selected. Configuration error."
