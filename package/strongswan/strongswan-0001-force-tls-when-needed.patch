@@ -1,0 +1,72 @@
+Force libtls when libpttls is enabled
+
+The libpttls library expects libtls.la to be present:
+libpttls_la_LIBADD = $(top_builddir)/src/libtls/libtls.la
+but there is no expressed dependency between them. Therefore, it is possible to
+create a configuration where libpttls is enabled and libtls is not, causing a
+build failure:
+
+make[4]: *** No rule to make target `../../src/libtls/libtls.la', needed by `libpttls.la'.  Stop.
+
+libpttls is enabled through USE_PTTLS, set when tnc_tnccs == true.
+  tnc_tnccs is true when any of tnc-imc, tnc_imv, tnccs_11, tnccs_dynamic or eap_tnc is true.
+
+libtls is enabled through USE_TLS, set when tls == true.
+  tls is true when any of eap_tls, eap_ttls or eap_peap is true.
+
+This patch forces tls to true, when tnc_tnccs is true, so that the required libtls.la dependency
+is built before it is used by libpttls.
+
+Signed-off-by: Thomas De Schampheleire <thomas.de.schampheleire@gmail.com>
+Upstream-status: will be submitted
+
+diff --git a/configure b/configure
+--- a/configure
++++ b/configure
+@@ -15900,10 +15900,6 @@ if test x$eap_sim = xtrue; then
+ 	simaka=true;
+ fi
+ 
+-if test x$eap_tls = xtrue -o x$eap_ttls = xtrue -o x$eap_peap = xtrue; then
+-	tls=true;
+-fi
+-
+ if test x$eap_radius = xtrue -o x$radattr = xtrue -o x$tnc_pdp = xtrue; then
+ 	radius=true;
+ fi
+@@ -15912,6 +15908,10 @@ if test x$tnc_imc = xtrue -o x$tnc_imv =
+ 	tnc_tnccs=true;
+ fi
+ 
++if test x$eap_tls = xtrue -o x$eap_ttls = xtrue -o x$eap_peap = xtrue -o x$tnc_tnccs = xtrue; then
++	tls=true;
++fi
++
+ if test x$imc_test = xtrue -o x$imv_test = xtrue -o x$imc_scanner = xtrue -o x$imv_scanner = xtrue -o x$imc_os = xtrue -o x$imv_os = xtrue -o x$imc_attestation = xtrue -o x$imv_attestation = xtrue; then
+ 	imcv=true;
+ fi
+diff --git a/configure.in b/configure.in
+--- a/configure.in
++++ b/configure.in
+@@ -313,10 +313,6 @@ if test x$eap_sim = xtrue; then
+ 	simaka=true;
+ fi
+ 
+-if test x$eap_tls = xtrue -o x$eap_ttls = xtrue -o x$eap_peap = xtrue; then
+-	tls=true;
+-fi
+-
+ if test x$eap_radius = xtrue -o x$radattr = xtrue -o x$tnc_pdp = xtrue; then
+ 	radius=true;
+ fi
+@@ -325,6 +321,10 @@ if test x$tnc_imc = xtrue -o x$tnc_imv =
+ 	tnc_tnccs=true;
+ fi
+ 
++if test x$eap_tls = xtrue -o x$eap_ttls = xtrue -o x$eap_peap = xtrue -o x$tnc_tnccs = xtrue; then
++	tls=true;
++fi
++
+ if test x$imc_test = xtrue -o x$imv_test = xtrue -o x$imc_scanner = xtrue -o x$imv_scanner = xtrue -o x$imc_os = xtrue -o x$imv_os = xtrue -o x$imc_attestation = xtrue -o x$imv_attestation = xtrue; then
+ 	imcv=true;
+ fi

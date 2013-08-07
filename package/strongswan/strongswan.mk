@@ -66,4 +66,12 @@ STRONGSWAN_DEPENDENCIES +=                               \
       $(if $(BR2_PACKAGE_MYSQL_CLIENT),mysql_client)
 endif
 
+# Strongswan uses AC_LIB_PREFIX, which is relatively new.
+# Avoid make to try reconfiguring due to timestamp changes,
+# after patching configure{,.in}.
+define STRONGSWAN_AVOID_RECONF_HOOK
+	touch $(@D)/aclocal.m4
+endef
+STRONGSWAN_POST_PATCH_HOOKS += STRONGSWAN_AVOID_RECONF_HOOK
+
 $(eval $(autotools-package))
