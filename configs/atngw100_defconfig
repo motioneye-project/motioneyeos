@@ -1,6 +1,10 @@
 # Architecture
 BR2_avr32=y
 
+# Lock down kernel headers version, to match the kernel version used
+# below.
+BR2_KERNEL_HEADERS_3_9=y
+
 # Filesystems
 BR2_TARGET_ROOTFS_JFFS2=y
 BR2_TARGET_ROOTFS_JFFS2_FLASH_128=y
@@ -17,6 +21,10 @@ BR2_TARGET_UBOOT_BOARDNAME="atngw100"
 BR2_TARGET_UBOOT_CUSTOM_VERSION=y
 BR2_TARGET_UBOOT_CUSTOM_VERSION_VALUE="2010.09"
 
-# Kernel
+# Kernel. Locked to 3.9.x, because 3.10.x fails to build with
+# relocation truncated to fit: R_AVR32_16N_PCREL against symbol
+# `_ctype'
 BR2_LINUX_KERNEL=y
+BR2_LINUX_KERNEL_CUSTOM_VERSION=y
+BR2_LINUX_KERNEL_CUSTOM_VERSION_VALUE="3.9.11"
 BR2_LINUX_KERNEL_DEFCONFIG="atngw100"
