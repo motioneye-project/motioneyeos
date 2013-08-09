@@ -1,0 +1,20 @@
+libstdc++-v3: fix the effects of pre-applied 300-libstdc++-pic.patch
+
+This version of GCC comes with a number of pre-applied patches, among which is
+300-libstdc++-pic.patch that makes a PIC version of libstdc++. The resulting
+Makefile.in incorrectly refers to object files that should be insde the library.
+
+Signed-off-by: Alexander Lukichev <alexander.lukichev@gmail.com>
+
+diff -uNrp host-gcc-final-4.2.2-avr32-2.1.5.orig/libstdc++-v3/src/Makefile.in host-gcc-final-4.2.2-avr32-2.1.5/libstdc++-v3/src/Makefile.in
+--- host-gcc-final-4.2.2-avr32-2.1.5.orig/libstdc++-v3/src/Makefile.in	2008-07-04 00:18:42.000000000 +0300
++++ host-gcc-final-4.2.2-avr32-2.1.5/libstdc++-v3/src/Makefile.in	2013-08-08 16:15:56.201258882 +0300
+@@ -804,7 +804,7 @@ install_debug:
+ 
+ install-exec-local:
+ ifeq ($(enable_shared),yes)
+-	$(AR) cru libstdc++_pic.a *.o $(top_builddir)/libsupc++/*.o
++	$(AR) cru libstdc++_pic.a .libs/*.o $(top_builddir)/libsupc++/*.o
+ 	$(INSTALL_DATA) libstdc++_pic.a $(DESTDIR)$(toolexeclibdir)
+ endif
+ 
