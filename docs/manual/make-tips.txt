@@ -54,6 +54,23 @@ and target trees, the images and the toolchain):
  $ make clean
 --------------------
 
+.Generating the manual:
+
+The present manual sources are located in the 'docs/manual' directory.
+To generate the manual:
+
+---------------------------------
+ $ make manual-clean
+ $ make manual
+---------------------------------
+
+The manual outputs will be generated in 'output/docs/manual'.
+
+.Notes
+- +asciidoc+ is required to build the documentation (see:
+  xref:requirement-optional[]).
+- There is a known issue that you can't build it under Debian Squeeze.
+
 To delete all build products as well as the configuration:
 
 --------------------
