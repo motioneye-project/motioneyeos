@@ -242,6 +242,20 @@ endef
 endif
 
 #
+# MMU
+#
+
+ifeq ($(BR2_USE_MMU),y)
+define UCLIBC_MMU_CONFIG
+	$(call UCLIBC_OPT_SET,ARCH_USE_MMU,y,$(@D))
+endef
+else
+define UCLIBC_MMU_CONFIG
+	$(call UCLIBC_OPT_UNSET,ARCH_USE_MMU,$(@D))
+endef
+endif
+
+#
 # IPv6
 #
 
