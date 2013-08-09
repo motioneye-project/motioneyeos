@@ -99,24 +99,30 @@ of the shell script(s) needing fixing. All these names are relative to
 In addition, the scripts listed in +LIBFOO_CONFIG_SCRIPTS+ are removed
 from +$(TARGET_DIR)/usr/bin+, since they are not needed on the target.
 
-Example 1:
-
+.Config script: 'divine' package
+================================
 Package divine installs shell script '$(STAGING_DIR)/usr/bin/divine-config'.
 
-So it's fixup would be:
+So its fixup would be:
 
+--------------------------------
 DIVINE_CONFIG_SCRIPTS = divine-config
+--------------------------------
+================================
 
-Example 2:
-
+.Config script: 'imagemagick' package:
+================================
 Package imagemagick installs the following scripts:
 '$(STAGING_DIR)/usr/bin/{Magick,Magick++,MagickCore,MagickWand,Wand}-config'
 
 So it's fixup would be:
 
+--------------------------------
 IMAGEMAGICK_CONFIG_SCRIPTS = \
    Magick-config Magick++-config \
    MagickCore-config MagickWand-config Wand-config
+--------------------------------
+================================
 
 On line 14, we specify the list of dependencies this package relies
 on. These dependencies are listed in terms of lower-case package names,

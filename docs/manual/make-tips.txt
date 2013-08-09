@@ -29,8 +29,7 @@ The result of the search shows the help message of the matching items.
  $ make help
 --------------------
 
-.Not all targets are always available,
-
+Not all targets are always available,
 some settings in the +.config+ file may hide some targets:
 
 * +linux-menuconfig+ and +linux-savedefconfig+ only work when
@@ -71,12 +70,15 @@ The manual outputs will be generated in 'output/docs/manual'.
   xref:requirement-optional[]).
 - There is a known issue that you can't build it under Debian Squeeze.
 
+.Reseting Buildroot for a new target:
+
 To delete all build products as well as the configuration:
 
 --------------------
  $ make distclean
 --------------------
 
-Note that if +ccache+ is enabled, running +make clean+ or +distclean+ does
+.Notes
+If +ccache+ is enabled, running +make clean+ or +distclean+ does
 not empty the compiler cache used by Buildroot. To delete it, refer
 to xref:ccache[].

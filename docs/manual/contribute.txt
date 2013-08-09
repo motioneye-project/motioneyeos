@@ -27,8 +27,8 @@ _rebase_ your development branch on top of the upstream tree before
 generating the patch set. To do so, run:
 
 ---------------------
- $ git fetch --all --tags
- $ git rebase origin/master
+$ git fetch --all --tags
+$ git rebase origin/master
 ---------------------
 
 Here, you are ready to generate then submit your patch set.
@@ -36,7 +36,7 @@ Here, you are ready to generate then submit your patch set.
 To generate it, run:
 
 ---------------------
- $ git format-patch -M -n -s -o outgoing origin/master
+$ git format-patch -M -n -s -o outgoing origin/master
 ---------------------
 
 This will generate patch files in the +outgoing+ subdirectory,
@@ -48,7 +48,7 @@ before submitting them using your favorite text editor.
 Lastly, send/submit your patch set to the Buildroot mailing list:
 
 ---------------------
- $ git send-email --to buildroot@busybox.net outgoing/*
+$ git send-email --to buildroot@busybox.net outgoing/*
 ---------------------
 
 Note that +git+ should be configured to use your mail account.
