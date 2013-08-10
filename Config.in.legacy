@@ -47,6 +47,17 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2013.08"
 
+config BR2_ARM_OABI
+	bool "ARM OABI support has been removed"
+	select BR2_LEGACY
+	help
+	  The support for the ARM OABI was deprecated since a while,
+	  and has been removed completely from Buildroot. It is also
+	  deprecated in upstream gcc, since gcc 4.7. People should
+	  switch to EABI instead, which should not be a problem as
+	  long as you don't have pre-built OABI binaries in your
+	  system that you can't recompile.
+
 config BR2_PACKAGE_DOSFSTOOLS_DOSFSCK
 	bool "dosfstools dosfsck renamed to fsck.fat"
 	select BR2_LEGACY
