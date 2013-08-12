@@ -150,7 +150,7 @@ comment "gstreamer support requires a toolchain with WCHAR and threading support
 
 config BR2_PACKAGE_OPENCV_WITH_GTK
 	bool "gtk support"
-	depends on BR2_PACKAGE_XORG7||BR2_PACKAGE_DIRECTFB
+	depends on BR2_PACKAGE_XORG7
 	depends on BR2_USE_WCHAR # libgtk2 -> libglib2
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libgtk2 -> libglib2
 	depends on BR2_INSTALL_LIBSTDCPP
