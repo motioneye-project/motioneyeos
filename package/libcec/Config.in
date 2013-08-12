@@ -1,6 +1,7 @@
 config BR2_PACKAGE_LIBCEC
 	bool "libcec"
 	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_TOOLCHAIN_HAS_THREADS
 	help
 	  libcec allows you in combination with the right hardware to
 	  control your home theater devices with your TV remote
@@ -8,5 +9,5 @@ config BR2_PACKAGE_LIBCEC
 
 	  http://libcec.pulse-eight.com
 
-comment "libcec requires C++ support in toolchain"
-	depends on !BR2_INSTALL_LIBSTDCPP
+comment "libcec requires C++ and threading support in toolchain"
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS
