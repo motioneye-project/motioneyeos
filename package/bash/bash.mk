@@ -16,6 +16,11 @@ BASH_CONF_ENV +=                       \
    bash_cv_func_sigsetjmp=present      \
    bash_cv_printf_a_format=yes
 
+# The static build needs some trickery
+ifeq ($(BR2_PREFER_STATIC_LIB),y)
+BASH_CONF_OPT += --enable-static-link --without-bash-malloc
+endif
+
 # Make sure we build after busybox so that /bin/sh links to bash
 ifeq ($(BR2_PACKAGE_BUSYBOX),y)
 BASH_DEPENDENCIES += busybox
