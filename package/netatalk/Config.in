@@ -1,5 +1,6 @@
 config BR2_PACKAGE_NETATALK
 	bool "netatalk"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
 	select BR2_PACKAGE_BERKELEYDB
 	select BR2_PACKAGE_OPENSSL
 	select BR2_PACKAGE_LIBGCRYPT
@@ -9,3 +10,6 @@ config BR2_PACKAGE_NETATALK
 	  high-performance and reliable file server for Macintosh computers.
 
 	  http://netatalk.sourceforge.net/
+
+comment "netatalk requires a toolchain with thread support"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
