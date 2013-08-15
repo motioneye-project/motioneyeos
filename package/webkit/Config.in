@@ -26,5 +26,5 @@ config BR2_PACKAGE_WEBKIT
 	  http://webkit.org/
 
 comment "webkit requires libgtk2 and a toolchain with C++, WCHAR, threading support"
-	depends on BR2_PACKAGE_LIBGTK2 || !BR2_INSTALL_LIBSTDCPP || \
+	depends on !BR2_PACKAGE_LIBGTK2 || !BR2_INSTALL_LIBSTDCPP || \
 		!BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
