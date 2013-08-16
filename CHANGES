@@ -1,3 +1,19 @@
+2013.08-rc2, Released August 16th 2013:
+
+	Documentation improvements.
+
+	External toolchains fixes.
+
+	Updated/fixed packages: aircrack-ng, bash, boost, cairo,
+	cppcms, eglibc, ffmpeg, gcc, git, gnupg, imagemagick, libcec,
+	libffi, libgcrypt, linux, linux-headers, ltrace, netatalk,
+	opencv, opengl, readline, samba, strongswan, sunxi-cedarx,
+	uclibc, udev, wayland, webkit, zeromq.
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#6440: typo in ffmpeg makefile
+
 2013.08-rc1, Released August 5th, 2013:
 
 	Architectures:
