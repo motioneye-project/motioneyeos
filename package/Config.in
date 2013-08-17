@@ -1,4 +1,4 @@
-menu "Package Selection for the target"
+menu "Target packages"
 
 source "package/busybox/Config.in"
 

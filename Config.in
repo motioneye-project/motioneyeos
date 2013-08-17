@@ -450,14 +450,14 @@ source "toolchain/Config.in"
 
 source "system/Config.in"
 
-source "package/Config.in"
+source "linux/Config.in"
 
-source "package/Config.in.host"
+source "package/Config.in"
 
 source "fs/Config.in"
 
 source "boot/Config.in"
 
-source "linux/Config.in"
+source "package/Config.in.host"
 
 source "Config.in.legacy"
