@@ -1,0 +1,20 @@
+baudrate=115200
+bootcmd=mmc dev ${mmcdev}; if mmc rescan; then if run loadbootscript; then run bootscript; else if run loaduimage; then run mmcboot; else run netboot; fi; fi; else run netboot; fi
+bootdelay=3
+bootscript=echo Running bootscript from mmc ...; source
+console=ttymxc0
+ethact=FEC
+ethaddr=00:1f:7b:b2:05:ee
+ethprime=FEC
+loadaddr=0x12000000
+loadbootscript=ext2load mmc ${mmcdev}:${mmcpart} ${loadaddr} ${script};
+loaduimage=ext2load mmc ${mmcdev}:${mmcpart} ${loadaddr} ${uimage}
+mmcargs=setenv bootargs console=${console},${baudrate} root=${mmcroot}
+mmcboot=echo Booting from mmc ...; run mmcargs;  bootm; 
+mmcdev=0
+mmcpart=1
+mmcroot=/dev/mmcblk0p1 rootwait rw
+netargs=setenv bootargs console=${console},${baudrate} root=/dev/nfs ip=dhcp nfsroot=${serverip}:${nfsroot},v3,tcp
+netboot=echo Booting from net ...; run netargs; if test ${ip_dyn} = yes; then setenv get_cmd dhcp; else setenv get_cmd tftp; fi; ${get_cmd} ${uimage}; if test ${boot_fdt} = yes || test ${boot_fdt} = try; then if ${get_cmd} ${fdt_addr} ${fdt_file}; then bootm ${loadaddr} - ${fdt_addr}; else if test ${boot_fdt} = try; then bootm; else echo WARN: Cannot load the DT; fi; fi; else bootm; fi;
+script=boot/boot.scr
+uimage=boot/uImage
