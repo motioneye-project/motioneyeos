@@ -476,8 +476,9 @@ ifeq ($(BR2_PACKAGE_PYTHON_PYC_ONLY),y)
 	find $(TARGET_DIR)/usr/lib/ -name '*.py' -print0 | xargs -0 rm -f
 endif
 	$(STRIP_FIND_CMD) | xargs $(STRIPCMD) 2>/dev/null || true
-	find $(TARGET_DIR)/lib/modules -type f -name '*.ko' | \
-		xargs -r $(KSTRIPCMD) || true
+	test -d $(TARGET_DIR)/lib/modules && \
+		find $(TARGET_DIR)/lib/modules -type f -name '*.ko' | \
+		xargs -r $(KSTRIPCMD)
 
 # See http://sourceware.org/gdb/wiki/FAQ, "GDB does not see any threads
 # besides the one in which crash occurred; or SIGTRAP kills my program when
