@@ -20,19 +20,18 @@ endef
 
 define PYTHON_SETUPTOOLS_BUILD_CMDS
 	(cd $(@D); \
-	PYTHONPATH="/usr/lib/python$(PYTHON_VERSION_MAJOR)/site-packages" \
+	PYTHONPATH="$(TARGET_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR)/site-packages" \
 	$(HOST_DIR)/usr/bin/python setup.py build)
 endef
 
 define HOST_PYTHON_SETUPTOOLS_INSTALL_CMDS
 	(cd $(@D); \
-	PYTHONPATH="$(HOST_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR)/site-packages" \
 	$(HOST_DIR)/usr/bin/python setup.py install --prefix=$(HOST_DIR)/usr)
 endef
 
 define PYTHON_SETUPTOOLS_INSTALL_TARGET_CMDS
 	(cd $(@D); \
-	PYTHONPATH="/usr/lib/python$(PYTHON_VERSION_MAJOR)/site-packages" \
+	PYTHONPATH="$(TARGET_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR)/site-packages" \
 	$(HOST_DIR)/usr/bin/python setup.py install --executable=/usr/bin/python \
 	--single-version-externally-managed --root=/ --prefix=$(TARGET_DIR)/usr)
 endef
