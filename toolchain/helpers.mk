@@ -125,7 +125,7 @@ copy_toolchain_lib_root = \
 # $1: main sysroot directory of the toolchain
 # $2: arch specific sysroot directory of the toolchain
 # $3: arch specific subdirectory in the sysroot
-# $4: directory of libraries ('lib' or 'lib64')
+# $4: directory of libraries ('lib', 'lib32' or 'lib64')
 # $5: support lib directories (for toolchains storing libgcc_s,
 #     libstdc++ and other gcc support libraries outside of the
 #     sysroot)
@@ -135,9 +135,11 @@ copy_toolchain_sysroot = \
 	ARCH_SUBDIR="$(strip $3)"; \
 	ARCH_LIB_DIR="$(strip $4)" ; \
 	SUPPORT_LIB_DIR="$(strip $5)" ; \
-	for i in etc $${ARCH_LIB_DIR} sbin usr ; do \
+	for i in etc $${ARCH_LIB_DIR} sbin usr usr/$${ARCH_LIB_DIR}; do \
 		if [ -d $${ARCH_SYSROOT_DIR}/$$i ] ; then \
-			rsync -au --chmod=Du+w --exclude 'usr/lib/locale' $${ARCH_SYSROOT_DIR}/$$i $(STAGING_DIR)/ ; \
+			rsync -au --chmod=Du+w --exclude 'usr/lib/locale' \
+				--exclude lib --exclude lib32 --exclude lib64 \
+				$${ARCH_SYSROOT_DIR}/$$i/ $(STAGING_DIR)/$$i/ ; \
 		fi ; \
 	done ; \
 	if [ `readlink -f $${SYSROOT_DIR}` != `readlink -f $${ARCH_SYSROOT_DIR}` ] ; then \
@@ -157,19 +159,6 @@ copy_toolchain_sysroot = \
 		cp -a $${SUPPORT_LIB_DIR}/* $(STAGING_DIR)/lib/ ; \
 	fi ; \
 	find $(STAGING_DIR) -type d | xargs chmod 755
-
-#
-# Create lib64 -> lib and usr/lib64 -> usr/lib symbolic links in the
-# target and staging directories. This is needed for some 64 bits
-# toolchains such as the Crosstool-NG toolchains, for which the path
-# to the dynamic loader and other libraries is /lib64, but the
-# libraries are stored in /lib.
-#
-create_lib64_symlinks = \
-	(cd $(TARGET_DIR) ;      ln -s lib lib64) ; \
-	(cd $(TARGET_DIR)/usr ;  ln -s lib lib64) ; \
-	(cd $(STAGING_DIR) ;     ln -s lib lib64) ; \
-	(cd $(STAGING_DIR)/usr ; ln -s lib lib64)
 
 #
 # Check the availability of a particular glibc feature. This function
