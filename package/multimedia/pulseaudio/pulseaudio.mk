@@ -55,7 +55,19 @@ endef
 PULSEAUDIO_POST_PATCH_HOOKS += PULSEAUDIO_FORCE_CC
 endif
 
-PULSEAUDIO_CONF_OPT += $(if $(BR2_ARM_ENABLE_NEON),--enable-neon-opt=yes,--enable-neon-opt=no)
+# neon intrinsics not available with float-abi=soft
+ifeq ($(BR2_ARM_SOFT_FLOAT),)
+ifeq ($(BR2_ARM_CPU_HAS_NEON),y)
+PULSEAUDIO_USE_NEON = y
+endif
+endif
+
+ifeq ($(PULSEAUDIO_USE_NEON),y)
+PULSEAUDIO_CONF_OPT += --enable-neon-opt=yes
+else
+PULSEAUDIO_CONF_OPT += --enable-neon-opt=no
+endif
+
 # pulseaudio alsa backend needs pcm/mixer apis
 ifneq ($(BR2_PACKAGE_ALSA_LIB_PCM)$(BR2_PACKAGE_ALSA_LIB_MIXER),yy)
 PULSEAUDIO_CONF_OPT += --disable-alsa
