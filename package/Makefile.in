@@ -46,11 +46,9 @@ ABI=gnueabi
 else
 ABI=eabi
 endif
-else ifeq ($(BR2_ARM_EABIHF),y)
-ifeq ($(LIBC),uclibc)
-ABI=gnueabihf
-else
-ABI=eabihf
+
+ifeq ($(BR2_ARM_EABIHF),y)
+ABI:=$(ABI)hf
 endif
 endif
 
