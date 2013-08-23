@@ -85,6 +85,7 @@ define OPENSSL_CONFIGURE_CMDS
 	)
 	$(SED) "s:-march=[-a-z0-9] ::" -e "s:-mcpu=[-a-z0-9] ::g" $(@D)/Makefile
 	$(SED) "s:-O[0-9]:$(OPENSSL_CFLAGS):" $(@D)/Makefile
+	$(SED) "s: build_tests::" $(@D)/Makefile
 endef
 
 define HOST_OPENSSL_BUILD_CMDS
