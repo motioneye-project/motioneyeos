@@ -5,7 +5,7 @@ install_driver() {
 	OPTS=$2
 
 	modprobe $DRIVER $OPTS
-	maj=$(awk "$$2==\"${DRIVER}\" { print $$1; }" /proc/devices)
+	maj=$(awk "\$2==\"${DRIVER}\" { print \$1; }" /proc/devices)
 
 	rm -f /dev/${DRIVER}
 
