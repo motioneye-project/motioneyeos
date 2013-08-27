@@ -19,31 +19,23 @@ config BR2_PACKAGE_NEON_SSL
 	help
 	  build with SSL support
 
-choice
-	prompt "XML Support"
-	help
-	  Select which XML library to use...
-	  none       do not build with XML support
-	  expat      use expat
-	  libxml2    use libxml2
-
-config BR2_PACKAGE_NEON_NOXML
-	bool "none"
-	help
-	  none       do not build with XML support
+# This is an hidden symbol other packages can select to ensure that
+# Neon has XML support, either provided by Expat or libxml2.
+config BR2_PACKAGE_NEON_XML
+	bool
+	select BR2_PACKAGE_NEON_EXPAT if !BR2_PACKAGE_NEON_LIBXML2
 
 config BR2_PACKAGE_NEON_EXPAT
-	bool "expat"
+	bool "XML support with expat"
 	select BR2_PACKAGE_EXPAT
+	depends on !BR2_PACKAGE_NEON_LIBXML2
 	help
-	  expat      use expat, a library for parsing XML.
+	  Enable XML support in neon, using the Expat XML library.
 
 config BR2_PACKAGE_NEON_LIBXML2
-	bool "libxml2"
+	bool "XML support with libxml2"
 	select BR2_PACKAGE_LIBXML2
 	help
-	  libxml2    use libxml2, a library to read, modify and
-	             write XML and HTML files.
-endchoice
+	  Enable XML support in neon, using the libxml2 XML library.
 
 endif
