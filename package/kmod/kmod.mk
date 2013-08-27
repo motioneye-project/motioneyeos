@@ -47,8 +47,9 @@ KMOD_DEPENDENCIES += \
 	$(if $(BR2_PACKAGE_MODULE_INIT_TOOLS),module-init-tools)
 
 define KMOD_INSTALL_TOOLS
-	for i in depmod insmod lsmod modinfo modprobe rmmod; \
-	do ln -sf ../usr/bin/kmod $(TARGET_DIR)/sbin/$$i; done
+	for i in depmod insmod lsmod modinfo modprobe rmmod; do \
+		ln -sf ../usr/bin/kmod $(TARGET_DIR)/sbin/$$i; \
+	done
 endef
 
 KMOD_POST_INSTALL_TARGET_HOOKS += KMOD_INSTALL_TOOLS
