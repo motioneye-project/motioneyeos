@@ -10,8 +10,9 @@ KMOD_SITE = $(BR2_KERNEL_MIRROR)/linux/utils/kernel/kmod/
 KMOD_INSTALL_STAGING = YES
 KMOD_DEPENDENCIES = host-pkgconf
 
-# Some patches are touching configure.in
+# Some patches are touching configure.ac
 KMOD_AUTORECONF = YES
+HOST_KMOD_AUTORECONF = YES
 
 # license info for libkmod only, conditionally add more below
 KMOD_LICENSE = LGPLv2.1+
@@ -57,4 +58,14 @@ else
 KMOD_CONF_OPT += --disable-tools
 endif
 
+# We only install depmod, since that's the only tool used for the
+# host.
+define HOST_KMOD_INSTALL_TOOLS
+	mkdir -p $(HOST_DIR)/sbin/
+	ln -sf ../usr/bin/kmod $(HOST_DIR)/sbin/depmod
+endef
+
+HOST_KMOD_POST_INSTALL_HOOKS += HOST_KMOD_INSTALL_TOOLS
+
 $(eval $(autotools-package))
+$(eval $(host-autotools-package))
