@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-ORC_VERSION = 0.4.16
+ORC_VERSION = 0.4.18
 ORC_SITE = http://code.entropywave.com/download/orc/
 ORC_LICENSE = BSD-2c, BSD-3c
 ORC_LICENSE_FILES = COPYING
