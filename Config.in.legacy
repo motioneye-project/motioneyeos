@@ -45,6 +45,17 @@ comment "build, or run, in unpredictable ways.               "
 endif
 
 ###############################################################################
+comment "Legacy options removed in 2013.11"
+
+config BR2_PACKAGE_MODULE_INIT_TOOLS
+	bool "module-init-tools replaced by kmod"
+	select BR2_PACKAGE_KMOD
+	select BR2_PACKAGE_KMOD_TOOLS
+	help
+	  The 'module-init-tools' package has been removed, since it
+	  has been depracated upstream and replaced by 'kmod'.
+
+###############################################################################
 comment "Legacy options removed in 2013.08"
 
 config BR2_ARM_OABI

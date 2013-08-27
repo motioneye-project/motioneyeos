@@ -907,9 +907,6 @@ source "package/htop/Config.in"
 source "package/keyutils/Config.in"
 source "package/kmod/Config.in"
 source "package/lxc/Config.in"
-if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
-source "package/module-init-tools/Config.in"
-endif
 source "package/monit/Config.in"
 source "package/ncdu/Config.in"
 source "package/numactl/Config.in"
