@@ -10,6 +10,9 @@ KMOD_SITE = $(BR2_KERNEL_MIRROR)/linux/utils/kernel/kmod/
 KMOD_INSTALL_STAGING = YES
 KMOD_DEPENDENCIES = host-pkgconf
 
+# Some patches are touching configure.in
+KMOD_AUTORECONF = YES
+
 # license info for libkmod only, conditionally add more below
 KMOD_LICENSE = LGPLv2.1+
 KMOD_LICENSE_FILES = libkmod/COPYING
