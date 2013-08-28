@@ -2,6 +2,7 @@ config BR2_PACKAGE_QT5WEBKIT
 	bool "qt5webkit"
 	select BR2_PACKAGE_QT5BASE
 	select BR2_PACKAGE_QT5BASE_ICU
+	select BR2_PACKAGE_QT5BASE_GUI
 	select BR2_PACKAGE_SQLITE
 	# This module does not support static linking
 	depends on !BR2_PREFER_STATIC_LIB
