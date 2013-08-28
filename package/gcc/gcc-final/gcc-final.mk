@@ -55,20 +55,6 @@ endif
 HOST_GCC_FINAL_CONF_OPT += \
 	$(call qstrip,$(BR2_EXTRA_GCC_CONFIG_OPTIONS))
 
-# Handle lib64
-define HOST_GCC_FINAL_HANDLE_LIB64
-	if [ -d "$(STAGING_DIR)/lib64" ]; then \
-		if [ ! -e "$(STAGING_DIR)/lib" ]; then \
-			mkdir -p "$(STAGING_DIR)/lib"; \
-		fi; \
-		mv "$(STAGING_DIR)/lib64/"* "$(STAGING_DIR)/lib/"; \
-		rmdir "$(STAGING_DIR)/lib64"; \
-		rm "$(STAGING_DIR)/usr/$(GNU_TARGET_NAME)/lib64";\
-	fi
-endef
-
-HOST_GCC_FINAL_POST_INSTALL_HOOKS += HOST_GCC_FINAL_HANDLE_LIB64
-
 # Make sure we have 'cc'
 define HOST_GCC_FINAL_CREATE_CC_SYMLINKS
 	if [ ! -e $(HOST_DIR)/usr/bin/$(GNU_TARGET_NAME)-cc ]; then \
