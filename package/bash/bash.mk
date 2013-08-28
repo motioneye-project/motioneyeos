@@ -16,6 +16,10 @@ BASH_CONF_ENV +=                       \
    bash_cv_func_sigsetjmp=present      \
    bash_cv_printf_a_format=yes
 
+# Parallel build sometimes fails because some of the generator tools
+# are built twice (i.e. while executing).
+BASH_MAKE = $(MAKE1)
+
 # The static build needs some trickery
 ifeq ($(BR2_PREFER_STATIC_LIB),y)
 BASH_CONF_OPT += --enable-static-link --without-bash-malloc
