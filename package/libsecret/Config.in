@@ -1,0 +1,15 @@
+config BR2_PACKAGE_LIBSECRET
+	bool "libsecret"
+	select BR2_PACKAGE_LIBGLIB2
+	depends on BR2_USE_WCHAR # gettext dep in libglib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libglib2
+	help
+	  libsecret is a library for storing and retrieving passwords and other
+	  secrets. It communicates with the "Secret Service" using DBus.
+	  gnome-keyring and ksecretservice are both implementations of a Secret
+	  Service.
+
+	  https://wiki.gnome.org/Libsecret
+
+comment "libsecret requires a toolchain with WCHAR and threading support."
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
