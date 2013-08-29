@@ -1,3 +1,18 @@
+2013.08, Not yet released:
+
+	Fixes all over the tree.
+
+	External toolchain lib32/lib64 handling, ABI name for EABIhf,
+	misc fixes for generatelocales, apply-patches and module
+	stripping.
+
+	Top level menu names reordered and renamed for clarity.
+
+	Updated/fixed packages: acl, attr, bash, directfb, dvb-apps,
+	kexec, kmod, libbsd, linux-fusion, mesa3d, minidlna, openssh,
+	openssl, pulseaudio, python-setuptools, qt5, qt5webkit, redis,
+	strongswan, sunxi-mali
+
 2013.08-rc2, Released August 16th 2013:
 
 	Documentation improvements.
