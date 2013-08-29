@@ -7,7 +7,7 @@ config BR2_PACKAGE_KEXEC
 	  Kexec is a user space utiltity for loading another kernel
 	  and asking the currently running kernel to do something with it.
 
-	  http://www.kernel.org/pub/linux/kernel/people/horms/kexec-tools/
+	  https://www.kernel.org/pub/linux/utils/kernel/kexec/
 
 config BR2_PACKAGE_KEXEC_ZLIB
 	bool "zlib support"
