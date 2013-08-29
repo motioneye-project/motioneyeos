@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-MYSQL_CLIENT_VERSION = 5.1.67
+MYSQL_CLIENT_VERSION = 5.1.70
 MYSQL_CLIENT_SOURCE = mysql-$(MYSQL_CLIENT_VERSION).tar.gz
 MYSQL_CLIENT_SITE = http://downloads.skysql.com/archives/mysql-5.1
 MYSQL_CLIENT_INSTALL_STAGING = YES
