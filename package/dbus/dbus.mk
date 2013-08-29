@@ -10,6 +10,10 @@ DBUS_LICENSE = AFLv2.1 GPLv2+
 DBUS_LICENSE_FILES = COPYING
 DBUS_INSTALL_STAGING = YES
 
+define DBUS_PERMISSIONS
+/usr/libexec/dbus-daemon-launch-helper f 4755 0 0 - - - - -
+endef
+
 DBUS_DEPENDENCIES = host-pkgconf
 
 DBUS_CONF_ENV = ac_cv_have_abstract_sockets=yes

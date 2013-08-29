@@ -8,10 +8,14 @@
 
 	Top level menu names reordered and renamed for clarity.
 
-	Updated/fixed packages: acl, attr, bash, directfb, dvb-apps,
-	kexec, kmod, libbsd, linux-fusion, mesa3d, minidlna, openssh,
-	openssl, pulseaudio, python-setuptools, qt5, qt5webkit, redis,
-	strongswan, sunxi-mali
+	Updated/fixed packages: acl, attr, bash, dbus, directfb,
+	dvb-apps, kexec, kmod, libbsd, linux-fusion, mesa3d, minidlna,
+	openssh, openssl, pulseaudio, python-setuptools, qt5,
+	qt5webkit, redis, strongswan, sunxi-mali
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#6464: dbus-daemon-launch-helper needs setuid
 
 2013.08-rc2, Released August 16th 2013:
 
