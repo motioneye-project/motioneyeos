@@ -185,7 +185,7 @@ class Buildroot:
     list_info = {
         'target-packages': {
             'filename': "package-list",
-            'root_menu': "Package Selection for the target",
+            'root_menu': "Target packages",
             'filter': "_is_package",
             'sorted': True,
             'sub_menu': True,
