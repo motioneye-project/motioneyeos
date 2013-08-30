@@ -96,6 +96,23 @@ config BR2_VFP_FLOAT
 	  been replaced with a choice of options that allows to select
 	  between various VFP versions/capabilities.
 
+config BR2_PACKAGE_GCC_TARGET
+	bool "gcc on the target filesystem has been removed"
+	select BR2_LEGACY
+	help
+	  The support for gcc in the target filesystem was deprecated
+	  since a while, and has been removed completely from Buildroot.
+	  See Buildroot's documentation for more explanations.
+
+config BR2_HAVE_DEVFILES
+	bool "development files in target filesystem has been removed"
+	select BR2_LEGACY
+	help
+	  The installation of the development files in the target
+	  filesystem was deprecated since a while, and has been removed
+	  completely from Buildroot.
+	  See Buildroot's documentation for more explanations.
+
 ###############################################################################
 comment "Legacy options removed in 2013.05"
 
