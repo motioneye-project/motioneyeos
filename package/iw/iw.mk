@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-IW_VERSION = 3.10
+IW_VERSION = 3.11
 IW_SOURCE = iw-$(IW_VERSION).tar.bz2
 IW_SITE = $(BR2_KERNEL_MIRROR)/software/network/iw
 IW_LICENSE = iw license
