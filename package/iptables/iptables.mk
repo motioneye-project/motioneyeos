@@ -4,15 +4,17 @@
 #
 ################################################################################
 
-IPTABLES_VERSION = 1.4.19.1
+IPTABLES_VERSION = 1.4.20
 IPTABLES_SOURCE = iptables-$(IPTABLES_VERSION).tar.bz2
 IPTABLES_SITE = http://ftp.netfilter.org/pub/iptables
 IPTABLES_INSTALL_STAGING = YES
-IPTABLES_DEPENDENCIES = host-pkgconf
+IPTABLES_DEPENDENCIES = host-pkgconf \
+	$(if $(BR2_PACKAGE_LIBNETFILTER_CONNTRACK),libnetfilter_conntrack)
 IPTABLES_LICENSE = GPLv2
 IPTABLES_LICENSE_FILES = COPYING
-
 IPTABLES_CONF_OPT = --libexecdir=/usr/lib --with-kernel=$(STAGING_DIR)/usr
+# Because of iptables-01-fix-static-link.patch
+IPTABLES_AUTORECONF = YES
 
 define IPTABLES_TARGET_SYMLINK_CREATE
 	ln -sf xtables-multi $(TARGET_DIR)/usr/sbin/iptables
