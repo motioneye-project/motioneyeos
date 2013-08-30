@@ -105,6 +105,11 @@ config BR2_PACKAGE_COLLECTD_BIND
 	help
 	  Collects BIND DNS statistics.
 
+config BR2_PACKAGE_COLLECTD_CGROUPS
+	bool "cgroups"
+	help
+	  Collects CGroups CPU usage accounting.
+
 config BR2_PACKAGE_COLLECTD_CONNTRACK
 	bool "conntrack"
 	help
@@ -276,6 +281,11 @@ config BR2_PACKAGE_COLLECTD_SERIAL
 	help
 	  Collects the traffic on serial interfaces.
 
+config BR2_PACKAGE_COLLECTD_STATSD
+	bool "StatsD"
+	help
+	  StatsD network protocol to allow clients to report "events".
+
 config BR2_PACKAGE_COLLECTD_SNMP
 	bool "snmp"
 	select BR2_PACKAGE_NETSNMP
@@ -420,3 +430,4 @@ endif
 
 comment "collectd needs a toolchain with IPv6 and thread support"
         depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_INET_IPV6
+	depends on BR2_USE_MMU
