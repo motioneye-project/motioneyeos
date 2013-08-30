@@ -11,6 +11,7 @@ STRONGSWAN_LICENSE = GPLv2+
 STRONGSWAN_LICENSE_FILES = COPYING LICENSE
 STRONGSWAN_DEPENDENCIES = host-pkgconf
 STRONGSWAN_CONF_OPT +=                                                             \
+      --without-lib-prefix                                                         \
       --enable-pkcs11=yes                                                          \
       --enable-kernel-netlink=$(if $(BR2_INET_IPV6),yes,no)                        \
       --enable-socket-default=$(if $(BR2_INET_IPV6),yes,no)                        \
