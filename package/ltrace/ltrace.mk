@@ -13,6 +13,13 @@ LTRACE_CONF_OPT = --disable-werror
 LTRACE_LICENSE = GPLv2
 LTRACE_LICENSE_FILES = COPYING
 
+# symlink missing from tarball
+define LTRACE_MIPS_SYMLINK
+	cd $(@D)/sysdeps/linux-gnu; ln -sf mipsel mips
+endef
+
+LTRACE_POST_EXTRACT_HOOKS += LTRACE_MIPS_SYMLINK
+
 # ltrace can use libunwind only if libc has backtrace() support
 # We don't normally do so for uClibc and we can't know if it's external
 ifeq ($(BR2_PACKAGE_LIBUNWIND),y)
