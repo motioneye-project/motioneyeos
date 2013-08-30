@@ -47,6 +47,14 @@ LIBCURL_CONF_OPT += --without-ssl --without-gnutls \
 	--without-polarssl --without-nss
 endif
 
+# Configure curl to support libssh2
+ifeq ($(BR2_PACKAGE_LIBSSH2),y)
+LIBCURL_DEPENDENCIES += libssh2
+LIBCURL_CONF_OPT += --with-libssh2
+else
+LIBCURL_CONF_OPT += --without-libssh2
+endif
+
 define LIBCURL_FIX_DOT_PC
 	printf 'Requires: openssl\n' >>$(@D)/libcurl.pc.in
 endef
