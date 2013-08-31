@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-ATK_VERSION_MAJOR = 1.33
-ATK_VERSION = $(ATK_VERSION_MAJOR).6
-ATK_SOURCE = atk-$(ATK_VERSION).tar.bz2
+ATK_VERSION_MAJOR = 2.9
+ATK_VERSION = $(ATK_VERSION_MAJOR).3
+ATK_SOURCE = atk-$(ATK_VERSION).tar.xz
 ATK_SITE = http://ftp.gnome.org/pub/gnome/sources/atk/$(ATK_VERSION_MAJOR)/
 ATK_LICENSE = LGPLv2+
 ATK_LICENSE_FILES = COPYING

@@ -173,14 +173,6 @@ if grep -q ^BR2_PACKAGE_CLASSPATH=y $BUILDROOT_CONFIG ; then
     done
 fi
 
-if grep -E '^BR2_TARGET_GENERIC_ROOT_PASSWD=".+"$' $BUILDROOT_CONFIG > /dev/null 2>&1; then
-    if ! which mkpasswd > /dev/null 2>&1; then
-        /bin/echo -e "\nYou need the 'mkpasswd' utility to set the root password\n"
-        /bin/echo -e "(in Debian/ubuntu, 'mkpasswd' provided by the whois package)\n"
-        exit 1
-    fi
-fi
-
 if grep -q ^BR2_HOSTARCH_NEEDS_IA32_LIBS=y $BUILDROOT_CONFIG ; then
     if test ! -f /lib/ld-linux.so.2 ; then
 	/bin/echo -e "\nYour Buildroot configuration uses pre-built tools for the x86 architecture,"

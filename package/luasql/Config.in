@@ -1,0 +1,21 @@
+config BR2_PACKAGE_LUASQL
+	bool "luasql"
+	help
+	  LuaSQL is a simple interface from Lua to a DBMS.
+
+	  http://www.keplerproject.org/luasql
+
+if BR2_PACKAGE_LUASQL
+choice
+	prompt "LuaSQL Driver"
+	help
+	  Select backend driver for LuaSQL.
+
+config BR2_PACKAGE_LUASQL_DRIVER_SQLITE3
+	bool "SQLite3"
+	select BR2_PACKAGE_SQLITE
+	help
+	  Select if you wish to use the SQLite3 LuaSQL driver.
+
+endchoice
+endif

@@ -1,0 +1,11 @@
+config BR2_PACKAGE_SUBVERSION
+	bool "subversion"
+	select BR2_PACKAGE_APR_UTIL
+	# apr really needs shared library support
+	depends on !BR2_PREFER_STATIC_LIB
+	select BR2_PACKAGE_NEON
+	select BR2_PACKAGE_NEON_XML
+	help
+	  Subversion is an open source version control system
+
+	  http://subversion.apache.org/

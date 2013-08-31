@@ -1,0 +1,14 @@
+config BR2_PACKAGE_LXC
+	bool "lxc"
+	select BR2_PACKAGE_LIBCAP
+	depends on BR2_INET_IPV6
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	help
+	  Linux Containers (LXC), provides the ability to group and isolate
+	  of a set of processes in a jail by virtualizing and accounting the
+	  kernel resources. It is similar to Linux-Vserver or Openvz.
+
+	  http://lxc.sourceforge.net/
+
+comment "lxc requires a toolchain with IPv6 and thread support"
+	depends on !BR2_INET_IPV6 || !BR2_TOOLCHAIN_HAS_THREADS

@@ -11,7 +11,7 @@ CROSSTOOL_NG_INSTALL_TARGET    = NO
 CROSSTOOL_NG_MAKE              = $(MAKE1)
 
 HOST_CROSSTOOL_NG_DEPENDENCIES = \
-	$(if $(BR2_CCACHE),host-ccache) host-gawk \
+	host-gawk \
 	host-automake host-gperf host-bison host-flex \
 	host-texinfo
 
