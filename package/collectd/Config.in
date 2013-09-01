@@ -429,5 +429,5 @@ endmenu
 endif
 
 comment "collectd needs a toolchain with IPv6 and thread support"
-        depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_INET_IPV6
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_INET_IPV6
 	depends on BR2_USE_MMU
