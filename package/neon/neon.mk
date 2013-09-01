@@ -42,7 +42,7 @@ else
 NEON_CONF_OPT += --with-libxml2=no
 endif
 
-ifeq ($(BR2_PACKAGE_NEON_NOXML),y)
+ifeq ($(BR2_PACKAGE_NEON_EXPAT)$(BR2_PACKAGE_NEON_LIBXML2),)
 # webdav needs xml support
 NEON_CONF_OPT += --disable-webdav
 endif
