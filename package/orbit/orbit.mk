@@ -7,7 +7,7 @@
 ORBIT_VERSION = 2.2.0
 ORBIT_SITE = http://github.com/downloads/keplerproject/orbit
 ORBIT_LICENSE = MIT
-ORBIT_LICENSE_FILES = COPYRIGHT
+ORBIT_LICENSE_FILES = doc/us/license.md
 
 define ORBIT_INSTALL_TARGET_CMDS
 	$(MAKE) -C $(@D) \
