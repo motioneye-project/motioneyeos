@@ -109,6 +109,36 @@ config BR2_PACKAGE_MODULE_INIT_TOOLS
 	  The 'module-init-tools' package has been removed, since it
 	  has been depracated upstream and replaced by 'kmod'.
 
+config BR2_LINUX_KERNEL_CUSTOM_GIT_REPO_URL
+	string "linux: the git repository URL option has been renamed"
+	help
+	  The option BR2_LINUX_KERNEL_CUSTOM_GIT_REPO_URL has
+	  been renamed to
+	  BR2_LINUX_KERNEL_CUSTOM_REPO_URL.
+
+config BR2_LINUX_KERNEL_CUSTOM_GIT_REPO_URL_WRAP
+	bool
+	default y if BR2_LINUX_KERNEL_CUSTOM_GIT_REPO_URL != ""
+	select BR2_LEGACY
+
+# Note: BR2_LINUX_KERNEL_CUSTOM_GIT_REPO_URL is still referenced from
+# linux/Config.in
+
+config BR2_LINUX_KERNEL_CUSTOM_GIT_VERSION
+	string "linux: the git repository version option has been renamed"
+	help
+	  The option BR2_LINUX_KERNEL_CUSTOM_GIT_VERSION has
+	  been renamed to
+	  BR2_LINUX_KERNEL_CUSTOM_REPO_VERSION.
+
+config BR2_LINUX_KERNEL_CUSTOM_GIT_VERSION_WRAP
+	bool
+	default y if BR2_LINUX_KERNEL_CUSTOM_GIT_VERSION != ""
+	select BR2_LEGACY
+
+# Note: BR2_LINUX_KERNEL_CUSTOM_GIT_VERSION is still referenced from
+# linux/Config.in
+
 ###############################################################################
 comment "Legacy options removed in 2013.08"
 
