@@ -35,12 +35,34 @@ config BR2_TOOLCHAIN_BUILDROOT_EGLIBC
 
 	  http://eglibc.org
 
+config BR2_TOOLCHAIN_BUILDROOT_GLIBC
+	bool "glibc (experimental)"
+	depends on BR2_arm    || BR2_armeb    || BR2_aarch64 || \
+		   BR2_i386   || BR2_mips     || BR2_mipsel  || \
+		   BR2_mips64 || BR2_mips64el || BR2_powerpc || \
+		   BR2_sh     || BR2_sh64     || BR2_sparc   || \
+		   BR2_x86_64
+	select BR2_TOOLCHAIN_USES_GLIBC
+	# our glibc.mk enables RPC support
+	select BR2_TOOLCHAIN_HAS_NATIVE_RPC
+	help
+	  This option selects glibc as the C library for the
+	  cross-compilation toolchain.
+
+	  The glibc support in the Buildroot toolchain backend is
+	  very recent, and therefore marked experimental.
+
+	  http://www.gnu.org/software/libc/
+
 endchoice
 
 config BR2_TOOLCHAIN_BUILDROOT_LIBC
 	string
 	default "uclibc" if BR2_TOOLCHAIN_BUILDROOT_UCLIBC
-	default "eglibc" if BR2_TOOLCHAIN_BUILDROOT_EGLIBC
+	# Both glibc and eglibc are handled by the package called
+	# 'glibc'
+	default "glibc"  if BR2_TOOLCHAIN_BUILDROOT_EGLIBC
+	default "glibc"  if BR2_TOOLCHAIN_BUILDROOT_GLIBC
 
 source "package/uclibc/Config.in"
 
