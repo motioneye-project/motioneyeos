@@ -113,10 +113,12 @@ config BR2_EXTRA_GCC_CONFIG_OPTIONS
 	  initial, gcc intermediate and gcc final passes.
 
 config BR2_INSTALL_OBJC
-	bool "Build/install Objective-C compiler and runtime?"
+	bool "Enable Objective-C support"
 	depends on !BR2_avr32
 	help
-	  Build/install Objective-C compiler and runtime?
+	  Enable the support for the Objective-C language in the
+	  cross-compiler, and install the Objective-C runtime to the
+	  target.
 
 config BR2_INSTALL_FORTRAN
 	bool "Enable Fortran support"
