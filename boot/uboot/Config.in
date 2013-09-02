@@ -40,10 +40,24 @@ config BR2_TARGET_UBOOT_CUSTOM_VERSION_VALUE
 	string "U-Boot version"
 	depends on BR2_TARGET_UBOOT_CUSTOM_VERSION
 
-if BR2_TARGET_UBOOT_CUSTOM_TARBALL
-
 config BR2_TARGET_UBOOT_CUSTOM_TARBALL_LOCATION
 	string "URL of custom U-Boot tarball"
+	depends on BR2_TARGET_UBOOT_CUSTOM_TARBALL
+
+if BR2_TARGET_UBOOT_CUSTOM_GIT || BR2_TARGET_UBOOT_CUSTOM_HG
+
+config BR2_TARGET_UBOOT_CUSTOM_REPO_URL
+	string "URL of custom repository"
+	default BR2_TARGET_UBOOT_CUSTOM_GIT_REPO_URL \
+		if BR2_TARGET_UBOOT_CUSTOM_GIT_REPO_URL != ""  # legacy
+
+config BR2_TARGET_UBOOT_CUSTOM_REPO_VERSION
+	string "Custom repository version"
+	default BR2_TARGET_UBOOT_CUSTOM_GIT_VERSION \
+		if BR2_TARGET_UBOOT_CUSTOM_GIT_VERSION != ""  # legacy
+	help
+	  Revision to use in the typical format used by Git/Mercurial
+	  E.G. a sha id, a tag, branch, ..
 
 endif
 
@@ -64,20 +78,6 @@ config BR2_TARGET_UBOOT_CUSTOM_PATCH_DIR
 	  named uboot-<something>.patch.
 
 	  Most users may leave this empty
-
-if BR2_TARGET_UBOOT_CUSTOM_GIT || BR2_TARGET_UBOOT_CUSTOM_HG
-
-config BR2_TARGET_UBOOT_CUSTOM_REPO_URL
-	string "URL of custom repository"
-	default BR2_TARGET_UBOOT_CUSTOM_GIT_REPO_URL \
-		if BR2_TARGET_UBOOT_CUSTOM_GIT_REPO_URL != ""  # legacy
-
-config BR2_TARGET_UBOOT_CUSTOM_REPO_VERSION
-	string "Custom repository version"
-	default BR2_TARGET_UBOOT_CUSTOM_GIT_VERSION \
-		if BR2_TARGET_UBOOT_CUSTOM_GIT_VERSION != ""  # legacy
-
-endif
 
 choice
 	prompt "U-Boot binary format"

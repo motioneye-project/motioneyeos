@@ -47,7 +47,7 @@ config BR2_LINUX_KERNEL_CUSTOM_TARBALL
 	  specific kernel source tarball
 
 config BR2_LINUX_KERNEL_CUSTOM_GIT
-	bool "Custom Git tree"
+	bool "Custom Git repository"
 	help
 	  This option allows Buildroot to get the Linux kernel source
 	  code from a Git repository.
