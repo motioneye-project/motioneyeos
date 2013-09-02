@@ -119,13 +119,13 @@ config BR2_INSTALL_OBJC
 	  Build/install Objective-C compiler and runtime?
 
 config BR2_INSTALL_FORTRAN
-	bool "Build/install Fortran compiler and runtime?"
+	bool "Enable Fortran support"
 	depends on !BR2_avr32
 	select BR2_PACKAGE_LIBMPFR
 	help
-	  Build/install Fortran compiler and runtime?
-	  Note that it is highly recommended NOT to use gfortran
-	  from gcc older than 4.2.0
+	  Enable the support for the Fortran language in the
+	  cross-compiler, and install the Fortran runtime to the
+	  target.
 
 config BR2_GCC_ENABLE_TLS
 	bool "Enable compiler tls support" if BR2_TOOLCHAIN_BUILDROOT_UCLIBC
