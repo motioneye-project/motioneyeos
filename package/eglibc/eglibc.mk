@@ -14,8 +14,9 @@ EGLIBC_LICENSE_FILES = libc/COPYING libc/COPYING.LIB libc/LICENSES
 # cross-compiler and the kernel headers
 EGLIBC_DEPENDENCIES = host-gcc-initial linux-headers host-gawk
 
-# Before eglibc is built, we must have the second stage cross-compiler
-eglibc-build: host-gcc-intermediate
+# Before eglibc is built, we must have the second stage
+# cross-compiler, for some gcc versions
+eglibc-build: $(if $(BR2_TOOLCHAIN_NEEDS_THREE_STAGE_BUILD),host-gcc-intermediate)
 
 EGLIBC_SUBDIR = build
 
