@@ -1,13 +1,9 @@
 #
 # Config.in.legacy - support for backward compatibility
 #
-# When an existing Config.in symbol is removed, it should be added again in this
-# file, and take appropriate action to approximate backward compatibility. If
-# there is an equivalent (set of) new symbols, these can just be select'ed by
-# the old symbol. This makes sure that running 'make oldconfig' will make things
-# "just work" when upgrading to a new buildroot version. If the change is too
-# fundamental and cannot be fixed by a simple select, then the old symbol should
-# select BR2_LEGACY.  If that symbol is set, the build will issue an error.
+# When an existing Config.in symbol is removed, it should be added again in
+# this file, and take appropriate action to approximate backward compatibility.
+# This will make the transition for the user more convenient.
 #
 # When adding legacy symbols to this file, add them to the front. The oldest
 # symbols will be removed again after about two years.
@@ -15,6 +11,46 @@
 # The symbol should be copied as-is from the place where it was previously
 # defined, but the help text should be removed or replaced with something that
 # explains how to fix it.
+#
+# For bool options, the old symbol should select BR2_LEGACY, so that the user
+# is informed at build-time about selected legacy options.
+# If there is an equivalent (set of) new symbols, these should be select'ed by
+# the old symbol for backwards compatibility.
+#
+# For string options, it is not possible to directly select another symbol. In
+# this case, a hidden wrap bool option has to be added, that defaults to y if
+# the old string is not set at its default value. The wrap symbol should select
+# BR2_LEGACY.
+# If the original symbol has been renamed, the new symbol should use the value
+# of the old symbol as default. This requires a change outside of
+# Config.in.legacy, and this should be clearly marked as such below, so that
+# removal of legacy options also include the removal of these external
+# references.
+#
+# [Example: renaming a string option from FOO to BAR]
+# original symbol:
+#     config BR2_FOO_STRING
+#             string "Some foo string"
+#
+# becomes:
+#     config BR2_BAR_STRING
+#             string "Some bar string"
+#             default BR2_FOO_STRING if BR2_FOO_STRING != ""  # legacy
+#
+# and in Config.in.legacy:
+#     config BR2_FOO_STRING
+#             string "The foo string has been renamed"
+#             help
+#               <suitable help text>
+#
+#     config BR2_FOO_STRING_WRAP
+#             bool
+#             default y if BR2_FOO_STRING != ""
+#             select BR2_LEGACY
+#
+#     # Note: BR2_FOO_STRING is still referenced from package/foo/Config.in
+#
+# [End of example]
 
 config BR2_LEGACY
 	bool
