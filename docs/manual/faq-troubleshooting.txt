@@ -27,21 +27,6 @@ configuration+, and modify +Port to run a getty (login prompt) on+ and
 +/etc/inittab+ file of the generated system so that a shell starts on
 the correct serial port.
 
-[[faq-module-init-tool-build-failure]]
-module-init-tools fails to build with 'cannot find -lc'
--------------------------------------------------------
-
-If the build of +module-init-tools+ for the host fails with:
-
-------------------------
-/usr/bin/ld: cannot find -lc
-------------------------
-
-then probably you are running a Fedora (or similar) distribution, and
-you should install the +glibc-static+ package. This is because the
-+module-init-tools+ build process wants to link statically against the
-C library.
-
 [[faq-no-compiler-on-target]]
 Why is there no compiler on the target?
 ---------------------------------------

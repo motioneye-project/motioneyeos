@@ -42,10 +42,8 @@ ifeq ($(BR2_PACKAGE_KMOD_TOOLS),y)
 KMOD_LICENSE += GPLv2+
 KMOD_LICENSE_FILES += COPYING
 
-# take precedence over busybox / module-init-tools implementations
-KMOD_DEPENDENCIES += \
-	$(if $(BR2_PACKAGE_BUSYBOX),busybox) \
-	$(if $(BR2_PACKAGE_MODULE_INIT_TOOLS),module-init-tools)
+# take precedence over busybox implementation
+KMOD_DEPENDENCIES += $(if $(BR2_PACKAGE_BUSYBOX),busybox)
 
 define KMOD_INSTALL_TOOLS
 	for i in depmod insmod lsmod modinfo modprobe rmmod; do \
