@@ -68,6 +68,7 @@ comment "Legacy detected: check the content of the menu below"
 menu "Legacy config options"
 
 if BR2_LEGACY
+comment "----------------------------------------------------"
 comment "Your old configuration uses legacy options that no  "
 comment "longer exist in buildroot, as indicated in the menu "
 comment "below. As long as these options stay selected, or in"
@@ -94,6 +95,7 @@ comment "Note: at some point in the future, the oldest legacy"
 comment "options will be removed, and configuration files    "
 comment "that still have those options set, will fail to     "
 comment "build, or run, in unpredictable ways.               "
+comment "----------------------------------------------------"
 endif
 
 ###############################################################################
