@@ -89,16 +89,9 @@ ifeq ($(BR2_PACKAGE_GDB_SERVER),y)
 EGLIBC_LIBS_LIB += libthread_db.so
 endif
 
-ifeq ($(BR2_INSTALL_LIBSTDCPP),y)
-EGLIBC_LIBS_USR_LIB += libstdc++.so
-endif
-
 define EGLIBC_INSTALL_TARGET_CMDS
 	for libs in $(EGLIBC_LIBS_LIB); do \
 		$(call copy_toolchain_lib_root,$(STAGING_DIR)/,,lib,$$libs,/lib) ; \
-	done
-	for libs in $(EGLIBC_LIBS_USR_LIB); do \
-		$(call copy_toolchain_lib_root,$(STAGING_DIR)/,,lib,$$libs,/usr/lib) ; \
 	done
 endef
 
