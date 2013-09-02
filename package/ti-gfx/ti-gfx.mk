@@ -29,7 +29,7 @@ TI_GFX_OMAPES = 5.x
 TI_GFX_PLATFORM = omap3630
 endif
 ifeq ($(BR2_PACKAGE_TI_GFX_ES6),y)
-TI_GFX_OMPAES = 6.x
+TI_GFX_OMAPES = 6.x
 TI_GFX_PLATFORM = ti81xx
 endif
 ifeq ($(BR2_PACKAGE_TI_GFX_ES8),y)
