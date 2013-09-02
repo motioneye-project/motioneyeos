@@ -76,7 +76,7 @@ endef
 
 define HOST_GCC_CONFIGURE_SYMLINK
 	mkdir -p $(@D)/build
-	ln -s ../configure $(@D)/build/configure
+	ln -sf ../configure $(@D)/build/configure
 endef
 
 #
