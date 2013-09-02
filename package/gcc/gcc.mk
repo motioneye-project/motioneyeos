@@ -125,6 +125,12 @@ else
 HOST_GCC_COMMON_CONF_OPT += --disable-tls
 endif
 
+ifeq ($(BR2_GCC_ENABLE_LIBMUDFLAP),y)
+HOST_GCC_COMMON_CONF_OPT += --enable-libmudflap
+else
+HOST_GCC_COMMON_CONF_OPT += --disable-libmudflap
+endif
+
 ifeq ($(BR2_PTHREADS_NONE),y)
 HOST_GCC_COMMON_CONF_OPT += \
 	--disable-threads \
@@ -198,25 +204,9 @@ HOST_GCC_COMMON_CONF_OPT += \
 	--with-bugurl="http://bugs.buildroot.net/"
 endif
 
-# AVR32 GCC special configuration
-ifeq ($(BR2_avr32),y)
-HOST_GCC_COMMON_CONF_OPT += --disable-libmudflap
-endif
-
-# ARM Thumb and mudflap aren't friends
-ifeq ($(BR2_ARM_INSTRUCTIONS_THUMB),y)
-HOST_GCC_COMMON_CONF_OPT += --disable-libmudflap
-endif
-
-# Blackfin doesn't do mudflap
-ifeq ($(BR2_bfin),y)
-HOST_GCC_COMMON_CONF_OPT += --disable-libmudflap
-endif
-
-# Disable mudflap and enable proper double/long double for SPE ABI
+# Enable proper double/long double for SPE ABI
 ifeq ($(BR2_powerpc_SPE),y)
 HOST_GCC_COMMON_CONF_OPT += \
-	--disable-libmudflap \
 	--enable-e500_double \
 	--with-long-double-128
 endif
