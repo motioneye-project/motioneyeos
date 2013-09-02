@@ -15,13 +15,13 @@ BR2_TARGET_ROOTFS_EXT2_BLOCKS=475000
 BR2_TARGET_UBOOT=y
 BR2_TARGET_UBOOT_BOARDNAME="GNUBLIN"
 BR2_TARGET_UBOOT_CUSTOM_GIT=y
-BR2_TARGET_UBOOT_CUSTOM_GIT_REPO_URL="git://gitorious.org/u-boot-gnublin-support/u-boot-gnublin-support.git"
-BR2_TARGET_UBOOT_CUSTOM_GIT_VERSION="2009.11_gnublin_support_v2"
+BR2_TARGET_UBOOT_CUSTOM_REPO_URL="git://gitorious.org/u-boot-gnublin-support/u-boot-gnublin-support.git"
+BR2_TARGET_UBOOT_CUSTOM_REPO_VERSION="2009.11_gnublin_support_v2"
 
 # Kernel
 BR2_LINUX_KERNEL=y
 BR2_LINUX_KERNEL_CUSTOM_GIT=y
-BR2_LINUX_KERNEL_CUSTOM_GIT_REPO_URL="git://gitorious.org/linux-3-7-gnublin/linux-3-7-gnublin.git"
-BR2_LINUX_KERNEL_CUSTOM_GIT_VERSION="v3.7-gnublin-2"
+BR2_LINUX_KERNEL_CUSTOM_REPO_URL="git://gitorious.org/linux-3-7-gnublin/linux-3-7-gnublin.git"
+BR2_LINUX_KERNEL_CUSTOM_REPO_VERSION="v3.7-gnublin-2"
 BR2_LINUX_KERNEL_DEFCONFIG="gnublin"
 BR2_LINUX_KERNEL_INSTALL_TARGET=y
