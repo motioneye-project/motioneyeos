@@ -402,6 +402,23 @@ config BR2_OPTIMIZE_S
 
 endchoice
 
+config BR2_ENABLE_SSP
+	bool "build code with Stack Smashing Protection"
+	depends on BR2_TOOLCHAIN_HAS_SSP
+	help
+	  Enable stack smashing protection support using GCCs
+	  -fstack-protector-all option.
+
+	  See http://www.linuxfromscratch.org/hints/downloads/files/ssp.txt
+          for details.
+
+	  Note that this requires the toolchain to have SSP
+	  support. This is always the case for glibc and eglibc
+	  toolchain, but is optional in uClibc toolchains.
+
+comment "enabling Stack Smashing Protection requires support in the toolchain"
+	depends on !BR2_TOOLCHAIN_HAS_SSP
+
 config BR2_PREFER_STATIC_LIB
 	bool "prefer static libraries"
 	help

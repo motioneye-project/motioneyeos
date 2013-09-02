@@ -935,6 +935,15 @@ config BR2_TOOLCHAIN_EXTERNAL_HAS_THREADS_DEBUG
 	  debugging support. If you don't know, leave the default
 	  value, Buildroot will tell you if it's correct or not.
 
+config BR2_TOOLCHAIN_EXTERNAL_HAS_SSP
+	bool "Toolchain has SSP support?"
+	select BR2_TOOLCHAIN_HAS_SSP
+	help
+	  Selection this option if your external toolchain has Stack
+	  Smashing Protection support enabled. If you don't know,
+	  leave the default value, Buildroot will tell you if it's
+	  correct or not.
+
 endif # BR2_TOOLCHAIN_EXTERNAL_CUSTOM_UCLIBC
 
 config BR2_TOOLCHAIN_EXTERNAL_INET_RPC
