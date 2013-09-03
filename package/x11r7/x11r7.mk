@@ -1,1 +1,1 @@
-include package/x11r7/*/*.mk
+include $(sort $(wildcard package/x11r7/*/*.mk))

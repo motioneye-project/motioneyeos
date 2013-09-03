@@ -281,7 +281,7 @@ define LINUX_INSTALL_TARGET_CMDS
 	$(LINUX_INSTALL_HOST_TOOLS)
 endef
 
-include linux/linux-ext-*.mk
+include $(sort $(wildcard linux/linux-ext-*.mk))
 
 $(eval $(generic-package))
 

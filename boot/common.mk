@@ -1,1 +1,1 @@
-include boot/*/*.mk
+include $(sort $(wildcard boot/*/*.mk))

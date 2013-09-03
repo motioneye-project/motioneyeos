@@ -53,5 +53,5 @@ $(1)-clean:
 .PHONY: $(1) $(1)-clean manual-update-lists
 endef
 
-MANUAL_SOURCES = $(wildcard docs/manual/*.txt) $(wildcard docs/images/*)
+MANUAL_SOURCES = $(sort $(wildcard docs/manual/*.txt) $(wildcard docs/images/*))
 $(eval $(call GENDOC,manual))

@@ -1,1 +1,1 @@
-include package/gtk2-themes/*/*.mk
+include $(sort $(wildcard package/gtk2-themes/*/*.mk))

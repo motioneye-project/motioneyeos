@@ -1,1 +1,1 @@
-include package/opengl/*/*.mk
+include $(sort $(wildcard package/opengl/*/*.mk))

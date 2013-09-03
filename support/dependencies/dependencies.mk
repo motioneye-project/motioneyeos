@@ -14,7 +14,7 @@ DEPENDENCIES_HOST_PREREQ :=
 define suitable-host-package
 $(shell support/dependencies/check-host-$(1).sh $(2))
 endef
--include support/dependencies/check-host-*.mk
+-include $(sort $(wildcard support/dependencies/check-host-*.mk))
 
 ifeq ($(BR2_STRIP_sstrip),y)
 DEPENDENCIES_HOST_PREREQ+=host-sstrip
