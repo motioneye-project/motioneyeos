@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-CPPCMS_VERSION = 1.0.3
+CPPCMS_VERSION = 1.0.4
 CPPCMS_SOURCE = cppcms-$(CPPCMS_VERSION).tar.bz2
 CPPCMS_LICENSE = LGPLv3
 CPPCMS_LICENSE_FILES = COPYING.TXT
