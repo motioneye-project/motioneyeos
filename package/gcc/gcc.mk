@@ -97,6 +97,7 @@ HOST_GCC_COMMON_CONF_OPT = \
 	--disable-multilib \
 	--with-gmp=$(HOST_DIR)/usr \
 	--with-mpfr=$(HOST_DIR)/usr \
+	MAKEINFO=missing
 
 # http://gcc.gnu.org/bugzilla/show_bug.cgi?id=43810
 # Workaround until it's fixed in 4.5.4 or later
