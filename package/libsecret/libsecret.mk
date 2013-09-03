@@ -16,7 +16,8 @@ LIBSECRET_CONF_OPT = --disable-manpages --disable-strict --disable-coverage --en
 
 ifeq ($(BR2_PACKAGE_LIBGCRYPT),y)
 	LIBSECRET_DEPENDENCIES += libgcrypt
-	LIBSECRET_CONF_OPT += --enable-gcrypt
+	LIBSECRET_CONF_OPT += --enable-gcrypt \
+		--with-libgcrypt-prefix=$(STAGING_DIR)/usr
 else
 	LIBSECRET_CONF_OPT += --disable-gcrypt
 endif
