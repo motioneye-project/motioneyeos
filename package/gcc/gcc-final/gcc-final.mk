@@ -55,6 +55,9 @@ endif
 HOST_GCC_FINAL_CONF_OPT += \
 	$(call qstrip,$(BR2_EXTRA_GCC_CONFIG_OPTIONS))
 
+HOST_GCC_FINAL_CONF_ENV = \
+	$(HOST_GCC_COMMON_CONF_ENV)
+
 # Make sure we have 'cc'
 define HOST_GCC_FINAL_CREATE_CC_SYMLINKS
 	if [ ! -e $(HOST_DIR)/usr/bin/$(GNU_TARGET_NAME)-cc ]; then \
