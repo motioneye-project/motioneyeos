@@ -4,10 +4,9 @@ Generation of documentation is not necessary in Buildroot, disable it completely
 
 Signed-off-by: Dmitry Golubovsky <golubovsky@gmail.com>
 
-Index: linux-pam-1.1.4/doc/Makefile.am
-============================================================================
---- linux-pam-1.1.4/doc/Makefile.am	2011-06-21 05:04:56.000000000 -0400
-+++ linux-pam-1.1.4/doc/Makefile.am	2012-08-09 05:59:23.000000000 -0400
+diff -urN a/doc/Makefile.am b/doc/Makefile.am
+--- a/doc/Makefile.am	2012-08-15 06:08:43.000000000 -0500
++++ b/doc/Makefile.am	2013-07-17 09:54:53.000000000 -0500
 @@ -2,8 +2,6 @@
  # Copyright (c) 2005, 2006 Thorsten Kukuk <kukuk@suse.de>
  #
@@ -17,7 +16,7 @@ Index: linux-pam-1.1.4/doc/Makefile.am
  CLEANFILES = *~
  
  dist_html_DATA = index.html
-@@ -11,12 +9,4 @@
+@@ -11,11 +9,4 @@
  #######################################################
  
  releasedocs: all
@@ -29,5 +28,4 @@ Index: linux-pam-1.1.4/doc/Makefile.am
 -	make -C sag releasedocs
 -	make -C adg releasedocs
 -	make -C mwg releasedocs
--	
 +	/bin/true
