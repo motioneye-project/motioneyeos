@@ -1,3 +1,5 @@
+menu "Target options"
+
 config BR2_ARCH_IS_64
 	bool
 
@@ -335,3 +337,5 @@ endif
 if BR2_xtensa
 source "arch/Config.in.xtensa"
 endif
+
+endmenu # Target options
