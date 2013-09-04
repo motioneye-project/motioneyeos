@@ -203,6 +203,11 @@ else
 LIBEVAS_CONF_OPT += --disable-font-loader-eet
 endif
 
+# async image preload support needs threads support in toolchain
+ifneq ($(BR2_TOOLCHAIN_HAS_THREADS),y)
+LIBEVAS_CONF_OPT += --disable-async-preload
+endif
+
 # libevas installs the source code of examples on the target, which
 # are generally not useful.
 define LIBEVAS_REMOVE_EXAMPLES
