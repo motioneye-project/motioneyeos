@@ -9,6 +9,7 @@ KMOD_SOURCE = kmod-$(KMOD_VERSION).tar.xz
 KMOD_SITE = $(BR2_KERNEL_MIRROR)/linux/utils/kernel/kmod/
 KMOD_INSTALL_STAGING = YES
 KMOD_DEPENDENCIES = host-pkgconf
+HOST_KMOD_DEPENDENCIES = host-pkgconf
 
 # Some patches are touching configure.ac
 KMOD_AUTORECONF = YES
