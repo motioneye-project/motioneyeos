@@ -23,6 +23,9 @@ KMOD_LICENSE_FILES = libkmod/COPYING
 # https://git.kernel.org/cgit/utils/kernel/kmod/kmod.git/commit/?id=b7016153ec8
 KMOD_CONF_OPT = --disable-static --enable-shared
 
+# manpages not installed to host and needs xsltproc
+HOST_KMOD_CONF_OPT = --disable-manpages
+
 ifneq ($(BR2_HAVE_DOCUMENTATION),y)
 KMOD_CONF_OPT += --disable-manpages
 endif
