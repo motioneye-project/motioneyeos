@@ -1,0 +1,13 @@
+config BR2_PACKAGE_EIGEN
+	bool "eigen"
+	help
+	  Eigen is a C++ template library for linear algebra: vectors,
+	  matrices, and related algorithms. It is versatile, fast, elegant
+	  and works on many platforms (OS/Compilers).
+
+	  This package only installs header files to the include path.
+	  If you just want to use Eigen, you can use the header files
+	  right away. There is no binary to link to. Eigen is a pure
+	  template library defined in the headers.
+
+	  http://eigen.tuxfamily.org/
