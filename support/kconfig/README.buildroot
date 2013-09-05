@@ -4,7 +4,7 @@ to suit Buildroot.
 To update:
 	cp -r /usr/src/linux/scripts/kconfig support/kconfig.new
 	cd support/config.new
-	cp -a ../kconfig/patches ../kconfig/README.buildroot2 .
+	cp -a ../kconfig/patches ../kconfig/README.buildroot .
 	quilt push -a
 	# Fix any conflict
 	cd ..
