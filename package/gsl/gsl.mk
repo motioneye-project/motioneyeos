@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-GSL_VERSION = 1.15
+GSL_VERSION = 1.16
 GSL_SOURCE = gsl-$(GSL_VERSION).tar.gz
 GSL_SITE = $(BR2_GNU_MIRROR)/gsl
 GSL_INSTALL_STAGING = YES
