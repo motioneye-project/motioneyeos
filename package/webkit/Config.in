@@ -6,16 +6,19 @@ config BR2_PACKAGE_WEBKIT
 	depends on BR2_PACKAGE_LIBGTK2
 	depends on (BR2_arm || BR2_armeb || BR2_i386 || BR2_mips || BR2_mipsel || \
 		    BR2_powerpc || BR2_sh || BR2_sparc || BR2_x86_64)
+	select BR2_PACKAGE_CAIRO_PNG
+	select BR2_PACKAGE_ENCHANT
+	select BR2_PACKAGE_HARFBUZZ
 	select BR2_PACKAGE_ICU
+	select BR2_PACKAGE_JPEG
 	select BR2_PACKAGE_LIBCURL
+	select BR2_PACKAGE_LIBGAIL
+	select BR2_PACKAGE_LIBSECRET
+	select BR2_PACKAGE_LIBSOUP
 	select BR2_PACKAGE_LIBXML2
 	select BR2_PACKAGE_LIBXSLT
 	select BR2_PACKAGE_SQLITE
-	select BR2_PACKAGE_ENCHANT
-	select BR2_PACKAGE_LIBSOUP
-	select BR2_PACKAGE_JPEG
-	select BR2_PACKAGE_CAIRO_PNG
-	select BR2_PACKAGE_LIBGAIL
+	select BR2_PACKAGE_WEBP
 	select BR2_PACKAGE_XLIB_LIBXT if BR2_PACKAGE_XORG7
 	help
 	  WebKit is an open source, standards compliant web browser engine.

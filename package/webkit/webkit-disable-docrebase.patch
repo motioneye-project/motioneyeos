@@ -2,12 +2,13 @@ This patch prevents documentation from being rebased or installed. This
 prevents an error when gtk-doc --rebase is called.
 
 Signed-off-by: Spenser Gilliland <spenser@gillilanding.com>
-----
-Index: webkit-1.9.6/Tools/GNUmakefile.am
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+
+Index: webkit-1.11.5/Tools/GNUmakefile.am
 ===================================================================
---- webkit-1.9.6.orig/Tools/GNUmakefile.am	2012-08-06 07:34:49.000000000 -0500
-+++ webkit-1.9.6/Tools/GNUmakefile.am	2013-05-28 21:29:54.135112927 -0500
-@@ -262,6 +262,8 @@
+--- webkit-1.11.5.orig/Tools/GNUmakefile.am
++++ webkit-1.11.5/Tools/GNUmakefile.am
+@@ -308,6 +308,8 @@ EXTRA_DIST += \
  	Tools/Scripts/webkit-build-directory \
  	Tools/Scripts/webkitdirs.pm
  
@@ -16,7 +17,7 @@ Index: webkit-1.9.6/Tools/GNUmakefile.am
  docs: docs-build.stamp
  .PHONY : docs
  DISTCLEANFILES += docs-build.stamp
-@@ -362,7 +364,6 @@
+@@ -412,7 +414,6 @@ if ENABLE_WEBKIT2
  	rm -rf $${installdir}
  endif
  
