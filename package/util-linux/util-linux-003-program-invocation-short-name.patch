@@ -1,6 +1,6 @@
---- a/configure.ac	2013-07-30 03:39:26.188738061 -0500
-+++ b/configure.ac	2013-08-27 16:20:09.882953093 -0500
-@@ -386,7 +386,7 @@
+--- a/configure.ac	2013-09-05 15:31:21.590981268 -0500
++++ b/configure.ac	2013-09-05 15:31:29.160981049 -0500
+@@ -387,7 +387,7 @@
  
  AC_MSG_CHECKING([whether program_invocation_short_name is defined])
  AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
