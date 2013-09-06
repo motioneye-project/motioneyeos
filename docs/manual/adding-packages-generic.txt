@@ -62,8 +62,8 @@ system is based on hand-written Makefiles or shell scripts.
 
 The Makefile begins on line 7 to 11 with metadata information: the
 version of the package (+LIBFOO_VERSION+), the name of the
-tarball containing the package (+LIBFOO_SOURCE+) the
-Internet location at which the tarball can be downloaded from
+tarball containing the package (+LIBFOO_SOURCE+) (xz-ed tarball recommended)
+the Internet location at which the tarball can be downloaded from
 (+LIBFOO_SITE+), the license (+LIBFOO_LICENSE+) and file with the
 license text (+LIBFOO_LICENSE_FILES+). All variables must start with
 the same prefix, +LIBFOO_+ in this case. This prefix is always the

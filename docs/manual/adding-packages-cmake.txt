@@ -32,9 +32,9 @@ with an example :
 
 On line 7, we declare the version of the package.
 
-On line 8 and 9, we declare the name of the tarball and the location
-of the tarball on the Web. Buildroot will automatically download the
-tarball from this location.
+On line 8 and 9, we declare the name of the tarball (xz-ed tarball recommended)
+and the location of the tarball on the Web. Buildroot will automatically
+download the tarball from this location.
 
 On line 10, we tell Buildroot to install the package to the staging
 directory. The staging directory, located in +output/staging/+

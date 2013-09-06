@@ -5,6 +5,7 @@
 ################################################################################
 
 WGET_VERSION = 1.14
+WGET_SOURCE = wget-$(WGET_VERSION).tar.xz
 WGET_SITE = $(BR2_GNU_MIRROR)/wget
 WGET_LICENSE = GPLv3+
 WGET_LICENSE_FILES = COPYING

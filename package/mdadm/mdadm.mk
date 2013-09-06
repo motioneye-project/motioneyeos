@@ -5,7 +5,7 @@
 ################################################################################
 
 MDADM_VERSION = 3.2.6
-MDADM_SOURCE = mdadm-$(MDADM_VERSION).tar.bz2
+MDADM_SOURCE = mdadm-$(MDADM_VERSION).tar.xz
 MDADM_SITE = $(BR2_KERNEL_MIRROR)/linux/utils/raid/mdadm
 MDADM_LICENSE = GPLv2+
 MDADM_LICENSE_FILES = COPYING

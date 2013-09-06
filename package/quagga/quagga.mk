@@ -5,6 +5,7 @@
 ################################################################################
 
 QUAGGA_VERSION = 0.99.22.1
+QUAGGA_SOURCE = quagga-$(QUAGGA_VERSION).tar.xz
 QUAGGA_SITE = http://download.savannah.gnu.org/releases/quagga
 QUAGGA_DEPENDENCIES = host-gawk
 QUAGGA_LICENSE = GPLv2+

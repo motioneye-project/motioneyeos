@@ -5,6 +5,7 @@
 ################################################################################
 
 SG3_UTILS_VERSION = 1.34
+SG3_UTILS_SOURCE = sg3_utils-$(SG3_UTILS_VERSION).tar.xz
 SG3_UTILS_SITE    = http://sg.danny.cz/sg/p/
 SG3_UTILS_LICENSE = BSD-3c
 # utils progs are GPLv2+ licenced

@@ -5,6 +5,7 @@
 ################################################################################
 
 SQUID_VERSION = 3.3.8
+SQUID_SOURCE = squid-$(SQUID_VERSION).tar.xz
 SQUID_SITE = http://www.squid-cache.org/Versions/v3/3.3
 SQUID_LICENSE = GPLv2+
 SQUID_LICENSE_FILES = COPYING

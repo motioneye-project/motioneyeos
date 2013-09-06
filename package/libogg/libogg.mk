@@ -5,6 +5,7 @@
 ################################################################################
 
 LIBOGG_VERSION = 1.3.0
+LIBOGG_SOURCE = libogg-$(LIBOGG_VERSION).tar.xz
 LIBOGG_SITE = http://downloads.xiph.org/releases/ogg
 LIBOGG_LICENSE = BSD-3c
 LIBOGG_LICENSE_FILES = COPYING

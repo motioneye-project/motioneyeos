@@ -5,7 +5,7 @@
 ################################################################################
 
 UDEV_VERSION = 182
-UDEV_SOURCE = udev-$(UDEV_VERSION).tar.bz2
+UDEV_SOURCE = udev-$(UDEV_VERSION).tar.xz
 UDEV_SITE = $(BR2_KERNEL_MIRROR)/linux/utils/kernel/hotplug/
 UDEV_LICENSE = GPLv2+
 UDEV_LICENSE_FILES = COPYING

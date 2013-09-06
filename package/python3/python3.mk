@@ -6,7 +6,7 @@
 
 PYTHON3_VERSION_MAJOR = 3.3
 PYTHON3_VERSION       = $(PYTHON3_VERSION_MAJOR).0
-PYTHON3_SOURCE        = Python-$(PYTHON3_VERSION).tar.bz2
+PYTHON3_SOURCE        = Python-$(PYTHON3_VERSION).tar.xz
 PYTHON3_SITE          = http://python.org/ftp/python/$(PYTHON3_VERSION)
 
 # Python needs itself and a "pgen" program to build itself, both being

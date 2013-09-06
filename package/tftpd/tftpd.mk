@@ -5,7 +5,7 @@
 ################################################################################
 
 TFTPD_VERSION  = 5.2
-TFTPD_SOURCE   = tftp-hpa-$(TFTPD_VERSION).tar.bz2
+TFTPD_SOURCE   = tftp-hpa-$(TFTPD_VERSION).tar.xz
 TFTPD_SITE     = $(BR2_KERNEL_MIRROR)/software/network/tftp/tftp-hpa
 TFTPD_CONF_OPT = --without-tcpwrappers
 
