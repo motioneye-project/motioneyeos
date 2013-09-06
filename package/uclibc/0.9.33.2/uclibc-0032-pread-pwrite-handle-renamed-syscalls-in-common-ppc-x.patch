@@ -1,0 +1,114 @@
+From 923e6f201b1d792cf069ca7f13c3715f4e9c9353 Mon Sep 17 00:00:00 2001
+From: Mike Frysinger <vapier@gentoo.org>
+Date: Wed, 30 May 2012 01:15:03 -0400
+Subject: [PATCH] pread/pwrite: handle renamed syscalls in common/ppc/xtensa
+ code
+
+Some arches got this fix, but many did not.  So copy the ifdef logic to
+the ones that missed it to fix behavior in linux-2.6+.
+
+URL: https://bugs.busybox.net/show_bug.cgi?id=5258
+Reported-by: David Laight <david.laight@aculab.com>
+Signed-off-by: Mike Frysinger <vapier@gentoo.org>
+---
+ libc/sysdeps/linux/common/pread_write.c  |   12 +++++++++++-
+ libc/sysdeps/linux/powerpc/pread_write.c |   13 +++++++++++++
+ libc/sysdeps/linux/xtensa/pread_write.c  |   14 ++++++++++++++
+ 3 files changed, 38 insertions(+), 1 deletion(-)
+
+diff --git a/libc/sysdeps/linux/common/pread_write.c b/libc/sysdeps/linux/common/pread_write.c
+index c142038..b13de66 100644
+--- a/libc/sysdeps/linux/common/pread_write.c
++++ b/libc/sysdeps/linux/common/pread_write.c
+@@ -35,6 +35,11 @@ extern __typeof(pread64) __libc_pread64;
+ extern __typeof(pwrite64) __libc_pwrite64;
+ #endif
+ 
++#ifdef __NR_pread64             /* Newer kernels renamed but it's the same.  */
++# undef __NR_pread
++# define __NR_pread __NR_pread64
++#endif
++
+ #include <bits/kernel_types.h>
+ 
+ # define __NR___syscall_pread __NR_pread64
+@@ -64,7 +69,12 @@ ssize_t __libc_pread64(int fd, void *buf, size_t count, off64_t offset)
+ weak_alias(__libc_pread64,pread64)
+ # endif /* __UCLIBC_HAS_LFS__  */
+ 
+-# define __NR___syscall_pwrite __NR_pwrite64
++#ifdef __NR_pwrite64             /* Newer kernels renamed but it's the same.  */
++# undef __NR_pwrite
++# define __NR_pwrite __NR_pwrite64
++#endif
++
++# define __NR___syscall_pwrite __NR_pwrite
+ static __inline__ _syscall5(ssize_t, __syscall_pwrite, int, fd, const void *, buf,
+ 		size_t, count, off_t, offset_hi, off_t, offset_lo)
+ 
+diff --git a/libc/sysdeps/linux/powerpc/pread_write.c b/libc/sysdeps/linux/powerpc/pread_write.c
+index 7f988d3..23f256f 100644
+--- a/libc/sysdeps/linux/powerpc/pread_write.c
++++ b/libc/sysdeps/linux/powerpc/pread_write.c
+@@ -20,6 +20,13 @@
+ # define off64_t off_t
+ #endif
+ 
++#ifdef __NR_pread64             /* Newer kernels renamed but it's the same.  */
++# ifdef __NR_pread
++#  error "__NR_pread and __NR_pread64 both defined???"
++# endif
++# define __NR_pread __NR_pread64
++#endif
++
+ #ifdef __NR_pread
+ extern __typeof(pread) __libc_pread;
+ # define __NR___syscall_pread __NR_pread
+@@ -42,6 +49,12 @@ weak_alias(__libc_pread64,pread64)
+ # endif /* __UCLIBC_HAS_LFS__  */
+ #endif /* __NR_pread */
+ 
++#ifdef __NR_pwrite64            /* Newer kernels renamed but it's the same.  */
++# ifdef __NR_pwrite
++#  error "__NR_pwrite and __NR_pwrite64 both defined???"
++# endif
++# define __NR_pwrite __NR_pwrite64
++#endif
+ 
+ #ifdef __NR_pwrite
+ extern __typeof(pwrite) __libc_pwrite;
+diff --git a/libc/sysdeps/linux/xtensa/pread_write.c b/libc/sysdeps/linux/xtensa/pread_write.c
+index 71ba22b..bcf7dee 100644
+--- a/libc/sysdeps/linux/xtensa/pread_write.c
++++ b/libc/sysdeps/linux/xtensa/pread_write.c
+@@ -27,6 +27,13 @@ extern __typeof(pwrite64) __libc_pwrite64;
+ 
+ #include <bits/kernel_types.h>
+ 
++#ifdef __NR_pread64             /* Newer kernels renamed but it's the same.  */
++# ifdef __NR_pread
++#  error "__NR_pread and __NR_pread64 both defined???"
++# endif
++# define __NR_pread __NR_pread64
++#endif
++
+ #ifdef __NR_pread
+ 
+ # define __NR___syscall_pread __NR_pread
+@@ -52,6 +59,13 @@ weak_alias(__libc_pread64,pread64)
+ 
+ #endif /* __NR_pread */
+ 
++#ifdef __NR_pwrite64            /* Newer kernels renamed but it's the same.  */
++# ifdef __NR_pwrite
++#  error "__NR_pwrite and __NR_pwrite64 both defined???"
++# endif
++# define __NR_pwrite __NR_pwrite64
++#endif
++
+ #ifdef __NR_pwrite
+ 
+ # define __NR___syscall_pwrite __NR_pwrite
+-- 
+1.7.10.4
+

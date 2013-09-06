@@ -1,0 +1,35 @@
+From 569d1423ac2b585b5cb38bee545b5e0ae2bd7f67 Mon Sep 17 00:00:00 2001
+From: James Hogan <james.hogan@imgtec.com>
+Date: Thu, 17 May 2012 12:42:54 +0100
+Subject: [PATCH] mmap()->sys_mmap2: do unsigned shift of offset
+
+Fix the implementation of mmap based on the mmap2 system call, to
+construct pgoffset from offset with an unsigned shift rather than a
+signed (off_t) shift. The mmap2 test in the testsuite catches this case
+by mmap'ing with a large offset (with the sign bit set). The signed
+shift repeats the sign bit making the page shift way out of range. This
+is already fixed similarly in mmap64().
+
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Signed-off-by: Mike Frysinger <vapier@gentoo.org>
+---
+ libc/sysdeps/linux/common/mmap.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/libc/sysdeps/linux/common/mmap.c b/libc/sysdeps/linux/common/mmap.c
+index 8995898..d53eabb 100644
+--- a/libc/sysdeps/linux/common/mmap.c
++++ b/libc/sysdeps/linux/common/mmap.c
+@@ -63,7 +63,8 @@ __ptr_t mmap(__ptr_t addr, size_t len, int prot, int flags, int fd, __off_t offs
+ 		__set_errno(EINVAL);
+ 		return MAP_FAILED;
+ 	}
+-	return __syscall_mmap2(addr, len, prot, flags, fd, offset >> MMAP2_PAGE_SHIFT);
++	return __syscall_mmap2(addr, len, prot, flags,
++	                       fd, ((__u_long) offset >> MMAP2_PAGE_SHIFT));
+ }
+ 
+ libc_hidden_def(mmap)
+-- 
+1.7.10.4
+

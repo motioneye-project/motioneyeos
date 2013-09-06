@@ -1,0 +1,117 @@
+From 4b7f3716b8678c9ff423445f41e6ffb47fd295cd Mon Sep 17 00:00:00 2001
+From: Mike Frysinger <vapier@gentoo.org>
+Date: Sat, 26 Jan 2013 17:40:24 -0500
+Subject: [PATCH] libc/sysdeps: sync bits/in.h with glibc
+
+URL: https://bugs.busybox.net/show_bug.cgi?id=5888
+Signed-off-by: Mike Frysinger <vapier@gentoo.org>
+---
+ libc/sysdeps/linux/common/bits/in.h |   61 +++++++++++++++++++++++------------
+ 1 file changed, 41 insertions(+), 20 deletions(-)
+
+diff --git a/libc/sysdeps/linux/common/bits/in.h b/libc/sysdeps/linux/common/bits/in.h
+index 1f2b817..d9c5e2b 100644
+--- a/libc/sysdeps/linux/common/bits/in.h
++++ b/libc/sysdeps/linux/common/bits/in.h
+@@ -1,4 +1,4 @@
+-/* Copyright (C) 1991-1999, 2000, 2004 Free Software Foundation, Inc.
++/* Copyright (C) 1991-2013 Free Software Foundation, Inc.
+    This file is part of the GNU C Library.
+ 
+    The GNU C Library is free software; you can redistribute it and/or
+@@ -43,31 +43,49 @@
+ #define IP_ADD_SOURCE_MEMBERSHIP 39 /* ip_mreq_source: join source group */
+ #define IP_DROP_SOURCE_MEMBERSHIP 40 /* ip_mreq_source: leave source group */
+ #define IP_MSFILTER 41
+-#define MCAST_JOIN_GROUP 42	/* group_req: join any-source group */
+-#define MCAST_BLOCK_SOURCE 43	/* group_source_req: block from given group */
+-#define MCAST_UNBLOCK_SOURCE 44	/* group_source_req: unblock from given group*/
+-#define MCAST_LEAVE_GROUP 45	/* group_req: leave any-source group */
+-#define MCAST_JOIN_SOURCE_GROUP 46 /* group_source_req: join source-spec gr */
+-#define MCAST_LEAVE_SOURCE_GROUP 47 /* group_source_req: leave source-spec gr*/
+-#define MCAST_MSFILTER 48
+-
+-#define MCAST_EXCLUDE   0
+-#define MCAST_INCLUDE   1
+-
+-#define IP_ROUTER_ALERT    5	/* bool */
+-#define IP_PKTINFO         8	/* bool */
+-#define IP_PKTOPTIONS      9
+-#define IP_PMTUDISC        10	/* obsolete name? */
+-#define IP_MTU_DISCOVER    10	/* int; see below */
+-#define IP_RECVERR         11	/* bool */
+-#define IP_RECVTTL         12	/* bool */
+-#define IP_RECVTOS         13	/* bool */
++#if defined __USE_MISC || defined __USE_GNU
++# define MCAST_JOIN_GROUP 42	/* group_req: join any-source group */
++# define MCAST_BLOCK_SOURCE 43	/* group_source_req: block from given group */
++# define MCAST_UNBLOCK_SOURCE 44 /* group_source_req: unblock from given group*/
++# define MCAST_LEAVE_GROUP 45	/* group_req: leave any-source group */
++# define MCAST_JOIN_SOURCE_GROUP 46 /* group_source_req: join source-spec gr */
++# define MCAST_LEAVE_SOURCE_GROUP 47 /* group_source_req: leave source-spec gr*/
++# define MCAST_MSFILTER 48
++# define IP_MULTICAST_ALL 49
++# define IP_UNICAST_IF 50
++
++# define MCAST_EXCLUDE   0
++# define MCAST_INCLUDE   1
++#endif
++
++#define IP_ROUTER_ALERT	5	/* bool */
++#define IP_PKTINFO	8	/* bool */
++#define IP_PKTOPTIONS	9
++#define IP_PMTUDISC	10	/* obsolete name? */
++#define IP_MTU_DISCOVER	10	/* int; see below */
++#define IP_RECVERR	11	/* bool */
++#define IP_RECVTTL	12	/* bool */
++#define IP_RECVTOS	13	/* bool */
++#define IP_MTU		14	/* int */
++#define IP_FREEBIND	15
++#define IP_IPSEC_POLICY 16
++#define IP_XFRM_POLICY	17
++#define IP_PASSSEC	18
++#define IP_TRANSPARENT	19
++#define IP_MULTICAST_ALL 49	/* bool */
++
++/* TProxy original addresses */
++#define IP_ORIGDSTADDR       20
++#define IP_RECVORIGDSTADDR   IP_ORIGDSTADDR
++
++#define IP_MINTTL       21
+ 
+ 
+ /* IP_MTU_DISCOVER arguments.  */
+ #define IP_PMTUDISC_DONT   0	/* Never send DF frames.  */
+ #define IP_PMTUDISC_WANT   1	/* Use per route hints.  */
+ #define IP_PMTUDISC_DO     2	/* Always DF.  */
++#define IP_PMTUDISC_PROBE  3	/* Ignore dst pmtu.  */
+ 
+ /* To select the IP level.  */
+ #define SOL_IP	0
+@@ -76,6 +94,7 @@
+ #define IP_DEFAULT_MULTICAST_LOOP       1
+ #define IP_MAX_MEMBERSHIPS              20
+ 
++#if defined __USE_MISC || defined __USE_GNU
+ /* Structure used to describe IP options for IP_OPTIONS and IP_RETOPTS.
+    The `ip_dst' field is used for the first-hop gateway when using a
+    source route (this gets put into the header proper).  */
+@@ -100,6 +119,7 @@ struct in_pktinfo
+     struct in_addr ipi_spec_dst;	/* Routing destination address  */
+     struct in_addr ipi_addr;		/* Header destination address  */
+   };
++#endif
+ 
+ #ifdef __UCLIBC_HAS_IPV6__
+ /* Options for use with `getsockopt' and `setsockopt' at the IPv6 level.
+@@ -159,6 +179,7 @@ struct in_pktinfo
+ #define IPV6_PMTUDISC_DONT	0	/* Never send DF frames.  */
+ #define IPV6_PMTUDISC_WANT	1	/* Use per route hints.  */
+ #define IPV6_PMTUDISC_DO	2	/* Always DF.  */
++#define IPV6_PMTUDISC_PROBE	3	/* Ignore dst pmtu.  */
+ 
+ /* Socket level values for IPv6.  */
+ #define SOL_IPV6        41
+-- 
+1.7.10.4
+

@@ -1,0 +1,200 @@
+From fb1b8fc191bffd6b3bc6db6bfa824b2d41e18485 Mon Sep 17 00:00:00 2001
+From: Bernhard Reutner-Fischer <rep.dot.nop@gmail.com>
+Date: Tue, 5 Feb 2013 19:13:06 +0100
+Subject: [PATCH] mman: rename MAP_UNINITIALIZE to MAP_UNINITIALIZED
+
+The name was changed to include a trailing 'D' when it went into the
+kernel.
+
+Signed-off-by: Bernhard Reutner-Fischer <rep.dot.nop@gmail.com>
+---
+ ldso/ldso/dl-elf.c                           |    2 +-
+ ldso/ldso/ldso.c                             |    2 +-
+ libc/stdlib/malloc-simple/alloc.c            |    4 ++--
+ libc/stdlib/malloc-standard/malloc.h         |    6 +++---
+ libc/stdlib/malloc/malloc.c                  |    2 +-
+ libc/sysdeps/linux/alpha/bits/mman.h         |    2 +-
+ libc/sysdeps/linux/common/bits/mman-common.h |    2 +-
+ libc/sysdeps/linux/hppa/bits/mman.h          |    2 +-
+ libc/sysdeps/linux/mips/bits/mman.h          |    2 +-
+ libc/sysdeps/linux/powerpc/bits/mman.h       |    2 +-
+ libc/sysdeps/linux/sparc/bits/mman.h         |    2 +-
+ libc/sysdeps/linux/xtensa/bits/mman.h        |    2 +-
+ 12 files changed, 15 insertions(+), 15 deletions(-)
+
+diff --git a/ldso/ldso/dl-elf.c b/ldso/ldso/dl-elf.c
+index 9e2a12c..0e6d2cd 100644
+--- a/ldso/ldso/dl-elf.c
++++ b/ldso/ldso/dl-elf.c
+@@ -500,7 +500,7 @@ struct elf_resolve *_dl_load_elf_shared_library(unsigned rflags,
+ 		return NULL;
+ 	}
+ 	header = _dl_mmap((void *) 0, _dl_pagesize, PROT_READ | PROT_WRITE,
+-			MAP_PRIVATE | MAP_ANONYMOUS | MAP_UNINITIALIZE, -1, 0);
++			MAP_PRIVATE | MAP_ANONYMOUS | MAP_UNINITIALIZED, -1, 0);
+ 	if (_dl_mmap_check_error(header)) {
+ 		_dl_dprintf(2, "%s:%i: can't map '%s'\n", _dl_progname, __LINE__, libname);
+ 		_dl_internal_error_number = LD_ERROR_MMAP_FAILED;
+diff --git a/ldso/ldso/ldso.c b/ldso/ldso/ldso.c
+index 85d27a3..df46e24 100644
+--- a/ldso/ldso/ldso.c
++++ b/ldso/ldso/ldso.c
+@@ -245,7 +245,7 @@ void *_dl_malloc(size_t size)
+ 
+ 		_dl_debug_early("mmapping more memory\n");
+ 		_dl_mmap_zero = _dl_malloc_addr = _dl_mmap((void *) 0, rounded_size,
+-				PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS | MAP_UNINITIALIZE, -1, 0);
++				PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS | MAP_UNINITIALIZED, -1, 0);
+ 		if (_dl_mmap_check_error(_dl_mmap_zero)) {
+ 			_dl_dprintf(_dl_debug_file, "%s: mmap of a spare page failed!\n", _dl_progname);
+ 			_dl_exit(20);
+diff --git a/libc/stdlib/malloc-simple/alloc.c b/libc/stdlib/malloc-simple/alloc.c
+index 914c89d..ec49781 100644
+--- a/libc/stdlib/malloc-simple/alloc.c
++++ b/libc/stdlib/malloc-simple/alloc.c
+@@ -36,7 +36,7 @@ void *malloc(size_t size)
+ #ifdef __ARCH_USE_MMU__
+ # define MMAP_FLAGS MAP_PRIVATE | MAP_ANONYMOUS
+ #else
+-# define MMAP_FLAGS MAP_SHARED | MAP_ANONYMOUS | MAP_UNINITIALIZE
++# define MMAP_FLAGS MAP_SHARED | MAP_ANONYMOUS | MAP_UNINITIALIZED
+ #endif
+ 
+ 	result = mmap((void *) 0, size + sizeof(size_t), PROT_READ | PROT_WRITE,
+@@ -63,7 +63,7 @@ void * calloc(size_t nmemb, size_t lsize)
+ 	result = malloc(size);
+ 
+ #ifndef __ARCH_USE_MMU__
+-	/* mmap'd with MAP_UNINITIALIZE, we have to blank memory ourselves */
++	/* mmap'd with MAP_UNINITIALIZED, we have to blank memory ourselves */
+ 	if (result != NULL) {
+ 		memset(result, 0, size);
+ 	}
+diff --git a/libc/stdlib/malloc-standard/malloc.h b/libc/stdlib/malloc-standard/malloc.h
+index 73d4b12..e6ae544 100644
+--- a/libc/stdlib/malloc-standard/malloc.h
++++ b/libc/stdlib/malloc-standard/malloc.h
+@@ -349,13 +349,13 @@ __UCLIBC_MUTEX_EXTERN(__malloc_lock);
+ #endif
+ 
+ #ifdef __ARCH_USE_MMU__
+-# define _MAP_UNINITIALIZE 0
++# define _MAP_UNINITIALIZED 0
+ #else
+-# define _MAP_UNINITIALIZE MAP_UNINITIALIZE
++# define _MAP_UNINITIALIZED MAP_UNINITIALIZED
+ #endif
+ 
+ #define MMAP(addr, size, prot) \
+- (mmap((addr), (size), (prot), MAP_PRIVATE|MAP_ANONYMOUS|_MAP_UNINITIALIZE, 0, 0))
++ (mmap((addr), (size), (prot), MAP_PRIVATE|MAP_ANONYMOUS|_MAP_UNINITIALIZED, 0, 0))
+ 
+ 
+ /* -----------------------  Chunk representations ----------------------- */
+diff --git a/libc/stdlib/malloc/malloc.c b/libc/stdlib/malloc/malloc.c
+index d58a7d0..2b47077 100644
+--- a/libc/stdlib/malloc/malloc.c
++++ b/libc/stdlib/malloc/malloc.c
+@@ -124,7 +124,7 @@ __malloc_from_heap (size_t size, struct heap_free_area **heap
+ 		    MAP_PRIVATE | MAP_ANONYMOUS, 0, 0);
+ #else
+       block = mmap ((void *)0, block_size, PROT_READ | PROT_WRITE,
+-		    MAP_SHARED | MAP_ANONYMOUS | MAP_UNINITIALIZE, 0, 0);
++		    MAP_SHARED | MAP_ANONYMOUS | MAP_UNINITIALIZED, 0, 0);
+ #endif
+ 
+ #endif /* MALLOC_USE_SBRK */
+diff --git a/libc/sysdeps/linux/alpha/bits/mman.h b/libc/sysdeps/linux/alpha/bits/mman.h
+index cafad4a..31327ed 100644
+--- a/libc/sysdeps/linux/alpha/bits/mman.h
++++ b/libc/sysdeps/linux/alpha/bits/mman.h
+@@ -71,7 +71,7 @@
+ # define MAP_NORESERVE	  0x10000	/* Don't check for reservations.  */
+ # define MAP_POPULATE	  0x20000	/* Populate (prefault) pagetables.  */
+ # define MAP_NONBLOCK	  0x40000	/* Do not block on IO.  */
+-# define MAP_UNINITIALIZE 0x4000000     /* For anonymous mmap, memory could
++# define MAP_UNINITIALIZED 0x4000000    /* For anonymous mmap, memory could
+ 					   be uninitialized. */
+ #endif
+ 
+diff --git a/libc/sysdeps/linux/common/bits/mman-common.h b/libc/sysdeps/linux/common/bits/mman-common.h
+index f00cb1a..c733a87 100644
+--- a/libc/sysdeps/linux/common/bits/mman-common.h
++++ b/libc/sysdeps/linux/common/bits/mman-common.h
+@@ -64,7 +64,7 @@
+ # define MAP_POPULATE	0x08000		/* Populate (prefault) pagetables.  */
+ # define MAP_NONBLOCK	0x10000		/* Do not block on IO.  */
+ # define MAP_STACK	0x20000		/* Allocation is for a stack.  */
+-# define MAP_UNINITIALIZE 0x4000000     /* For anonymous mmap, memory could
++# define MAP_UNINITIALIZED 0x4000000    /* For anonymous mmap, memory could
+ 					   be uninitialized. */
+ #endif
+ 
+diff --git a/libc/sysdeps/linux/hppa/bits/mman.h b/libc/sysdeps/linux/hppa/bits/mman.h
+index 7f9bf4e..fc73c91 100644
+--- a/libc/sysdeps/linux/hppa/bits/mman.h
++++ b/libc/sysdeps/linux/hppa/bits/mman.h
+@@ -45,7 +45,7 @@
+ #define MAP_GROWSDOWN	0x8000		/* stack-like segment */
+ #define MAP_POPULATE	0x10000		/* populate (prefault) pagetables */
+ #define MAP_NONBLOCK	0x20000		/* do not block on IO */
+-#define MAP_UNINITIALIZE 0x4000000     /* For anonymous mmap, memory could
++#define MAP_UNINITIALIZED 0x4000000     /* For anonymous mmap, memory could
+ 					  be uninitialized. */
+ 
+ #define MS_SYNC		1		/* synchronous memory sync */
+diff --git a/libc/sysdeps/linux/mips/bits/mman.h b/libc/sysdeps/linux/mips/bits/mman.h
+index c480be4..f9a8128 100644
+--- a/libc/sysdeps/linux/mips/bits/mman.h
++++ b/libc/sysdeps/linux/mips/bits/mman.h
+@@ -66,7 +66,7 @@
+ # define MAP_LOCKED	0x8000		/* pages are locked */
+ # define MAP_POPULATE   0x10000         /* populate (prefault) pagetables */
+ # define MAP_NONBLOCK   0x20000         /* do not block on IO */
+-# define MAP_UNINITIALIZE 0x4000000     /* For anonymous mmap, memory could
++# define MAP_UNINITIALIZED 0x4000000    /* For anonymous mmap, memory could
+ 					   be uninitialized. */
+ #endif
+ 
+diff --git a/libc/sysdeps/linux/powerpc/bits/mman.h b/libc/sysdeps/linux/powerpc/bits/mman.h
+index 2d234c5..b766cb6 100644
+--- a/libc/sysdeps/linux/powerpc/bits/mman.h
++++ b/libc/sysdeps/linux/powerpc/bits/mman.h
+@@ -63,7 +63,7 @@
+ # define MAP_NORESERVE	0x00040		/* Don't check for reservations.  */
+ # define MAP_POPULATE	0x08000		/* Populate (prefault) pagetables.  */
+ # define MAP_NONBLOCK	0x10000		/* Do not block on IO.  */
+-# define MAP_UNINITIALIZE 0x4000000     /* For anonymous mmap, memory could
++# define MAP_UNINITIALIZED 0x4000000    /* For anonymous mmap, memory could
+ 					   be uninitialized. */
+ #endif
+ 
+diff --git a/libc/sysdeps/linux/sparc/bits/mman.h b/libc/sysdeps/linux/sparc/bits/mman.h
+index 74921e4..2463e7d 100644
+--- a/libc/sysdeps/linux/sparc/bits/mman.h
++++ b/libc/sysdeps/linux/sparc/bits/mman.h
+@@ -65,7 +65,7 @@
+ # define _MAP_NEW	0x80000000	/* Binary compatibility with SunOS.  */
+ # define MAP_POPULATE	0x8000		/* Populate (prefault) pagetables.  */
+ # define MAP_NONBLOCK	0x10000		/* Do not block on IO.  */
+-# define MAP_UNINITIALIZE 0x4000000     /* For anonymous mmap, memory could
++# define MAP_UNINITIALIZED 0x4000000    /* For anonymous mmap, memory could
+ 					   be uninitialized. */
+ #endif
+ 
+diff --git a/libc/sysdeps/linux/xtensa/bits/mman.h b/libc/sysdeps/linux/xtensa/bits/mman.h
+index fead3ac..dfd9e4c 100644
+--- a/libc/sysdeps/linux/xtensa/bits/mman.h
++++ b/libc/sysdeps/linux/xtensa/bits/mman.h
+@@ -64,7 +64,7 @@
+ # define MAP_NORESERVE	0x0400		/* Don't check for reservations.  */
+ # define MAP_POPULATE	0x10000		/* Populate (prefault) pagetables.  */
+ # define MAP_NONBLOCK	0x20000		/* Do not block on IO.  */
+-# define MAP_UNINITIALIZE 0x4000000     /* For anonymous mmap, memory could
++# define MAP_UNINITIALIZED 0x4000000    /* For anonymous mmap, memory could
+ 					   be uninitialized. */
+ #endif
+ 
+-- 
+1.7.10.4
+

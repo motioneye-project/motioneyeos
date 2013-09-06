@@ -1,0 +1,37 @@
+From b7cc54be07412f02ff464aa47a8871ba7a910e3e Mon Sep 17 00:00:00 2001
+From: Bernhard Reutner-Fischer <rep.dot.nop@gmail.com>
+Date: Tue, 8 Jan 2013 10:14:22 +0100
+Subject: [PATCH] pread/pwrite: fix for !threads
+
+This is done properly via cancel.h on master.
+
+Signed-off-by: Bernhard Reutner-Fischer <rep.dot.nop@gmail.com>
+---
+ libc/sysdeps/linux/common/pread_write.c |   11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
+
+diff --git a/libc/sysdeps/linux/common/pread_write.c b/libc/sysdeps/linux/common/pread_write.c
+index baf8691..c142038 100644
+--- a/libc/sysdeps/linux/common/pread_write.c
++++ b/libc/sysdeps/linux/common/pread_write.c
+@@ -17,7 +17,16 @@
+ #include <unistd.h>
+ #include <stdint.h>
+ #include <endian.h>
+-#include <sysdep-cancel.h>
++#ifdef __UCLIBC_HAS_THREADS_NATIVE__
++#include "sysdep-cancel.h"
++#else
++/* No multi-thread handling enabled.  */
++#define SINGLE_THREAD_P (1)
++#define RTLD_SINGLE_THREAD_P (1)
++#define LIBC_CANCEL_ASYNC()	0 /* Just a dummy value.  */
++#define LIBC_CANCEL_RESET(val)	((void)(val)) /* Nothing, but evaluate it.  */
++#define LIBC_CANCEL_HANDLED()	/* Nothing.  */
++#endif
+ 
+ extern __typeof(pread) __libc_pread;
+ extern __typeof(pwrite) __libc_pwrite;
+-- 
+1.7.10.4
+

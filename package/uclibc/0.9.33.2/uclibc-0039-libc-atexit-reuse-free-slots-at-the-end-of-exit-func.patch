@@ -1,0 +1,43 @@
+From 893d4fb45bb0811bcc939054e60e37a47a1786c5 Mon Sep 17 00:00:00 2001
+From: Ronald Wahl <ronald.wahl@raritan.com>
+Date: Mon, 4 Feb 2013 14:51:46 +0100
+Subject: [PATCH] libc: atexit: reuse free slots at the end of exit functions
+ table
+
+Continuosly dlopen and dlclose of shared object will cause a memory leak
+in atexit function. This fix reuse free slots at the end of the list.
+
+For further detail see https://bugs.busybox.net/show_bug.cgi?id=2455
+
+Signed-off-by: Ronald Wahl <ronald.wahl@raritan.com>
+Tested-by: Filippo Arcidiacono <filippo.arcidiacono@st.com>
+Signed-off-by: Carmelo Amoroso <carmelo.amoroso@st.com>
+(cherry picked from commit 389cd96704f21549cafc0b5bdcd0ef762b98bc08)
+---
+ libc/stdlib/_atexit.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/libc/stdlib/_atexit.c b/libc/stdlib/_atexit.c
+index 48b97ff..0af8c57 100644
+--- a/libc/stdlib/_atexit.c
++++ b/libc/stdlib/_atexit.c
+@@ -240,6 +240,16 @@ struct exit_function attribute_hidden *__new_exitfn(void)
+ 
+     __UCLIBC_MUTEX_LOCK(__atexit_lock);
+ 
++	/*
++	 * Reuse free slots at the end of the list.
++	 * This avoids eating memory when dlopen and dlclose modules multiple times.
++	*/
++	while (__exit_count > 0) {
++		if (__exit_function_table[__exit_count-1].type == ef_free) {
++			--__exit_count;
++		} else break;
++	}
++
+ #ifdef __UCLIBC_DYNAMIC_ATEXIT__
+     /* If we are out of function table slots, make some more */
+     if (__exit_slots < __exit_count+1) {
+-- 
+1.7.10.4
+

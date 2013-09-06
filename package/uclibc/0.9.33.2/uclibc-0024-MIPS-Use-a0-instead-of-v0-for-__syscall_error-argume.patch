@@ -1,0 +1,63 @@
+From c8f9e946bc2a0a42e84b5f97f272932de6485b54 Mon Sep 17 00:00:00 2001
+From: Kevin Cernekee <cernekee@gmail.com>
+Date: Tue, 5 Jun 2012 15:05:20 -0700
+Subject: [PATCH] MIPS: Use $a0 instead of $v0 for __syscall_error() argument
+
+$a0 is saved across _dl_runtime_resolve(); $v0 is not.  Unfortunately,
+__syscall_error() uses $v0 for its argument, not $a0 as is the MIPS ABI
+standard.  This means that if lazy binding was used for __syscall_error(),
+the errno value in $v0 could get corrupted.
+
+The problem can be easily seen in testcases where syscalls in librt fail;
+when librt tries to call __syscall_error() in libc, the argument gets
+lost and errno gets set to a bogus value:
+
+    # ./tst-mqueue1 ; echo $?
+    mq_receive on O_WRONLY mqd_t did not fail with EBADF: Unknown error 2004684208
+    1
+    # ./tst-mqueue2 ; echo $?
+    mq_timedreceive with too small msg_len did not fail with EMSGSIZE: Unknown error 1997360560
+    1
+    # ./tst-mqueue4 ; echo $?
+    mq_timedsend did not fail with ETIMEDOUT: Unknown error 2008747440
+    1
+
+When _dl_runtime_resolve() was taken out of the equation, the same test
+cases passed:
+
+    # LD_BIND_NOW=y ./tst-mqueue1 ; echo $?
+    0
+    # LD_BIND_NOW=y ./tst-mqueue2 ; echo $?
+    0
+    # LD_BIND_NOW=y ./tst-mqueue4 ; echo $?
+    0
+
+Changing __syscall_error() to look at $a0 instead of $v0 fixed the
+problem.
+
+(Note that there is also a "__syscall_error.c" file which presumably
+uses the standard C calling conventions, but I do not think it is used
+on MIPS.)
+
+Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
+Signed-off-by: Bernhard Reutner-Fischer <rep.dot.nop@gmail.com>
+---
+ libc/sysdeps/linux/mips/syscall_error.S |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/libc/sysdeps/linux/mips/syscall_error.S b/libc/sysdeps/linux/mips/syscall_error.S
+index 51a8efa..0cc20da 100644
+--- a/libc/sysdeps/linux/mips/syscall_error.S
++++ b/libc/sysdeps/linux/mips/syscall_error.S
+@@ -43,7 +43,7 @@ ENTRY(__syscall_error)
+ #ifdef __PIC__
+ 	SAVE_GP(GPOFF)
+ #endif
+-	REG_S	v0, V0OFF(sp)
++	REG_S	a0, V0OFF(sp)
+ 	REG_S	ra, RAOFF(sp)
+ 
+ 	/* Find our per-thread errno address  */
+-- 
+1.7.10.4
+

@@ -1,0 +1,57 @@
+From f5108ce0c0f72a285e4cb198426e477295c84517 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Timo=20Ter=C3=A4s?= <timo.teras@iki.fi>
+Date: Tue, 8 Jan 2013 11:55:26 +0200
+Subject: [PATCH] dl: fix dlsym lookups with RTLD_NEXT
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+The current code for dlsym() when invoked with RTLD_NEXT lookup
+searches for the module where it's being called from, and executes the
+_dl_find_hash only for the next module in the chain. However, if the
+looked symbol is not there, the rest of the modules are not checked.
+
+Generally this is not a problem as symbols are merged for the parent
+modules; so this affects only RTLD_NEXT.
+
+This patch adds a loop iterating through all the following modules.
+
+Signed-off-by: Timo Teräs <timo.teras@iki.fi>
+Reviewed-by: Filippo ARCIDIACONO <filippo.arcidiacono@st.com>
+Tested-by: Florian Fainelli <florian@openwrt.org>
+Signed-off-by: Bernhard Reutner-Fischer <rep.dot.nop@gmail.com>
+---
+ ldso/libdl/libdl.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/ldso/libdl/libdl.c b/ldso/libdl/libdl.c
+index 51bcf7d..71ade1f 100644
+--- a/ldso/libdl/libdl.c
++++ b/ldso/libdl/libdl.c
+@@ -671,7 +671,7 @@ static void *do_dlsym(void *vhandle, const char *name, void *caller_address)
+ {
+ 	struct elf_resolve *tpnt, *tfrom;
+ 	struct dyn_elf *handle;
+-	ElfW(Addr) from;
++	ElfW(Addr) from = 0;
+ 	struct dyn_elf *rpnt;
+ 	void *ret;
+ 	struct symbol_ref sym_ref = { NULL, NULL };
+@@ -729,7 +729,13 @@ static void *do_dlsym(void *vhandle, const char *name, void *caller_address)
+ 	tpnt = NULL;
+ 	if (handle == _dl_symbol_tables)
+ 		tpnt = handle->dyn; /* Only search RTLD_GLOBAL objs if global object */
+-	ret = _dl_find_hash(name2, &handle->dyn->symbol_scope, tpnt, ELF_RTYPE_CLASS_DLSYM, &sym_ref);
++
++	do {
++		ret = _dl_find_hash(name2, &handle->dyn->symbol_scope, tpnt, ELF_RTYPE_CLASS_DLSYM, &sym_ref);
++		if (ret != NULL)
++			break;
++		handle = handle->next;
++	} while (from && handle);
+ 
+ #if defined(USE_TLS) && USE_TLS && defined SHARED
+ 	if (sym_ref.sym && (ELF_ST_TYPE(sym_ref.sym->st_info) == STT_TLS) && (sym_ref.tpnt)) {
+-- 
+1.7.10.4
+

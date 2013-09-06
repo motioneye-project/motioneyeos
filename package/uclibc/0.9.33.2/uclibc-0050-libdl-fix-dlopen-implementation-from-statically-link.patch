@@ -1,0 +1,60 @@
+From 7f82a682a730899d30d8640b6af5178919339837 Mon Sep 17 00:00:00 2001
+From: Filippo Arcidiacono <filippo.arcidiacono@st.com>
+Date: Thu, 9 May 2013 09:04:20 +0200
+Subject: [PATCH] libdl: fix dlopen implementation from statically linked
+ application
+
+Calling dlopen from statically linked application is actually broken,
+because _dl_find_hash enters into an infinite loop when trying to
+resolve symbols. In this case it doesn't need to extend the global
+scope, it is readyto be used as it is, because _dl_loaded_modules already points
+to the dlopened library.
+
+The patch also fixesi a typo in __LDSO_LD_LIBRARY_PATH__ macro, that was
+preventing to get the actual value of the LD_LIBRARY_PATH.
+
+Signed-off-by: Filippo Arcidiacono <filippo.arcidiacono@st.com>
+Signed-off-by: Carmelo Amoroso <carmelo.amoroso@st.com>
+(cherry picked from commit 231e4a9b4b972662a6832f714a05525a3754892d)
+
+Signed-off-by: Carmelo Amoroso <carmelo.amoroso@st.com>
+---
+ ldso/libdl/libdl.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
+
+diff --git a/ldso/libdl/libdl.c b/ldso/libdl/libdl.c
+index 018c720..49711a8 100644
+--- a/ldso/libdl/libdl.c
++++ b/ldso/libdl/libdl.c
+@@ -374,7 +374,7 @@ static void *do_dlopen(const char *libname, int flag, ElfW(Addr) from)
+ 	if (getenv("LD_BIND_NOW"))
+ 		now_flag = RTLD_NOW;
+ 
+-#if !defined SHARED && defined __LDSO_LIBRARY_PATH__
++#if !defined SHARED && defined __LDSO_LD_LIBRARY_PATH__
+ 	/* When statically linked, the _dl_library_path is not yet initialized */
+ 	_dl_library_path = getenv("LD_LIBRARY_PATH");
+ #endif
+@@ -541,11 +541,18 @@ static void *do_dlopen(const char *libname, int flag, ElfW(Addr) from)
+ 	 * to the GOT tables.  We need to do this in reverse order so that COPY
+ 	 * directives work correctly */
+ 
+-	/* Get the tail of the list */
++#ifdef SHARED
++	/*
++	 * Get the tail of the list.
++	 * In the static case doesn't need to extend the global scope, it is
++	 * ready to be used as it is, because _dl_loaded_modules already points
++	 * to the dlopened library.
++	 */
+ 	for (ls = &_dl_loaded_modules->symbol_scope; ls && ls->next; ls = ls->next);
+ 
+ 	/* Extend the global scope by adding the local scope of the dlopened DSO. */
+ 	ls->next = &dyn_chain->dyn->symbol_scope;
++#endif
+ #ifdef __mips__
+ 	/*
+ 	 * Relocation of the GOT entries for MIPS have to be done
+-- 
+1.7.10.4
+

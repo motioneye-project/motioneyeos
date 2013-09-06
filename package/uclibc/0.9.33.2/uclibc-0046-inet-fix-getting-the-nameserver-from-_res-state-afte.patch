@@ -1,0 +1,34 @@
+From 41063cebafa7b90427837757db00cdbfe2690f82 Mon Sep 17 00:00:00 2001
+From: Felix Fietkau <nbd@openwrt.org>
+Date: Fri, 21 Sep 2012 17:29:12 +0200
+Subject: [PATCH] inet: fix getting the nameserver from _res state after
+ res_init.
+
+Fixes displaying the nameserver in busybox nslookup.
+
+Signed-off-by: Felix Fietkau <nbd@openwrt.org>
+Signed-off-by: Bernhard Reutner-Fischer <rep.dot.nop@gmail.com>
+---
+ libc/inet/resolv.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/libc/inet/resolv.c b/libc/inet/resolv.c
+index 7bd634c..6f58260 100644
+--- a/libc/inet/resolv.c
++++ b/libc/inet/resolv.c
+@@ -3653,11 +3653,11 @@ res_init(void)
+ 	 */
+ 	if (!_res.id)
+ 		_res.id = res_randomid();
+-	__res_sync = res_sync_func;
+ 
+ 	__UCLIBC_MUTEX_UNLOCK(__resolv_lock);
+ 
+ 	__res_vinit(&_res, 1);
++	__res_sync = res_sync_func;
+ 
+ 	return 0;
+ }
+-- 
+1.7.10.4
+

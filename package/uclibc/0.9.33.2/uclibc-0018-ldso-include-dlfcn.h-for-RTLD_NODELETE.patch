@@ -1,0 +1,52 @@
+From 2f09c67232cebca62f3afa4fc296c83aa813427c Mon Sep 17 00:00:00 2001
+From: Mike Frysinger <vapier@gentoo.org>
+Date: Sun, 18 Nov 2012 04:41:06 -0500
+Subject: [PATCH] ldso: include dlfcn.h for RTLD_NODELETE
+
+Building with NPTL enabled and shared library support disabled we hit:
+In file included from libpthread/nptl/sysdeps/generic/dl-tls.c:30:0:
+./ldso/include/dl-elf.h: In function '__dl_parse_dynamic_info':
+./ldso/include/dl-elf.h:173:20: error: 'RTLD_NODELETE' undeclared (first use in this function)
+./ldso/include/dl-elf.h:173:20: note: each undeclared identifier is reported only once for each function it appears in
+make: *** [libpthread/nptl/sysdeps/generic/dl-tls.os] Error 1
+
+A previous commit (f26c5f6952ce9bf8edec9c1571c47addb1bcc442) touched
+on a similar issue, but added the include to the incorrect location.
+
+Reported-by: Christophe Lyon <christophe.lyon@st.com> [arm nommu]
+Reported-by: Daniel Beecham <daniel@lunix.se> [static x86_64]
+Signed-off-by: Mike Frysinger <vapier@gentoo.org>
+Signed-off-by: Carmelo Amoroso <carmelo.amoroso@st.com>
+---
+ ldso/include/dl-elf.h |    2 ++
+ ldso/include/ldso.h   |    1 -
+ 2 files changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/ldso/include/dl-elf.h b/ldso/include/dl-elf.h
+index 29d1a00..e1185f7 100644
+--- a/ldso/include/dl-elf.h
++++ b/ldso/include/dl-elf.h
+@@ -18,6 +18,8 @@ struct elf_resolve;
+ struct r_scope_elem;
+ 
+ #include <dl-defs.h>
++#include <dlfcn.h>
++
+ #ifdef __LDSO_CACHE_SUPPORT__
+ extern int _dl_map_cache(void);
+ extern int _dl_unmap_cache(void);
+diff --git a/ldso/include/ldso.h b/ldso/include/ldso.h
+index 6f3b728..e250e30 100644
+--- a/ldso/include/ldso.h
++++ b/ldso/include/ldso.h
+@@ -42,7 +42,6 @@
+ #ifndef __ARCH_HAS_NO_SHARED__
+ #include <dl-syscall.h>
+ #include <dl-string.h>
+-#include <dlfcn.h>
+ /* Now the ldso specific headers */
+ #include <dl-elf.h>
+ #ifdef __UCLIBC_HAS_TLS__
+-- 
+1.7.10.4
+

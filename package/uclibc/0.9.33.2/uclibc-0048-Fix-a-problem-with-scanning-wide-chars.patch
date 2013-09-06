@@ -1,0 +1,66 @@
+From 12846e741d925630a4079ac02290b28c6f00b887 Mon Sep 17 00:00:00 2001
+From: Nathan Sidwell <nathan@codesourcery.com>
+Date: Fri, 22 Mar 2013 17:46:52 +0100
+Subject: [PATCH] Fix a problem with scanning wide chars.
+
+We found that the testcase
+
+int
+main (void)
+{
+  wchar_t s[10];
+  memset (s, 0, sizeof (s));
+  int r = sscanf ("s", "%ls", s);
+  printf ("%d\n", r);
+  printf ("%ls\n", s);
+  return 0;
+}
+
+printed
+0
+<blankline>
+
+rather than the expected
+1
+s
+
+The problem was the enum in _scanf.c, which has had a 'CONV_m' value
+inserted. The attached patch fixes the problem in __psfs_parse_spec by
+not presuming a particular displacement between the two sets of
+char-like conversion values. With this patch the above program produces
+the expected output.
+
+Signed-off-by: Nathan Sidwell <nathan@codesourcery.com>
+Signed-off-by: Bernd Schmidt <bernds@codesourcery.com>
+Signed-off-by: Bernhard Reutner-Fischer <rep.dot.nop@gmail.com>
+---
+ libc/stdio/_scanf.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/libc/stdio/_scanf.c b/libc/stdio/_scanf.c
+index 952853c..3848a09 100644
+--- a/libc/stdio/_scanf.c
++++ b/libc/stdio/_scanf.c
+@@ -429,8 +429,8 @@ libc_hidden_def(vswscanf)
+ /*                       npxXoudif eEgG  CS  cs[ */
+ /* NOTE: the 'm' flag must come before any convs that support it */
+ 
+-/* NOTE: Ordering is important!  In particular, CONV_LEFTBRACKET
+- * must immediately precede CONV_c. */
++/* NOTE: Ordering is important!  The CONV_{C,S,LEFTBRACKET} must map
++   simply to their lowercase equivalents.  */
+ 
+ enum {
+ 	CONV_n = 0,
+@@ -921,7 +921,7 @@ int attribute_hidden __psfs_parse_spec(register psfs_t *psfs)
+ 				psfs->dataargtype = PA_FLAG_LONG;
+ 			} else if ((p_m_spec_chars >= CONV_c)
+ 				&& (psfs->dataargtype & PA_FLAG_LONG)) {
+-				p_m_spec_chars -= 3; /* lc -> C, ls -> S, l[ -> ?? */
++				p_m_spec_chars -= CONV_c - CONV_C; /* lc -> C, ls -> S, l[ -> ?? */
+ 			}
+ 
+ 			psfs->conv_num = p_m_spec_chars;
+-- 
+1.7.10.4
+

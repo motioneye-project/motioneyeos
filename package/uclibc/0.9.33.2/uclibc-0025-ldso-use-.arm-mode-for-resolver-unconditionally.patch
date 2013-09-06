@@ -1,0 +1,29 @@
+From 753e4e4cd9177f25981e81f82cd9fe8612a95ba6 Mon Sep 17 00:00:00 2001
+From: Bernhard Reutner-Fischer <rep.dot.nop@gmail.com>
+Date: Fri, 15 Jun 2012 13:44:35 +0200
+Subject: [PATCH] ldso: use .arm mode for resolver unconditionally
+
+as per comment in the file.
+Fixes runtime with __THUMB_INTERWORK__ enabled.
+
+Signed-off-by: Bernhard Reutner-Fischer <rep.dot.nop@gmail.com>
+---
+ ldso/ldso/arm/resolve.S |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/ldso/ldso/arm/resolve.S b/ldso/ldso/arm/resolve.S
+index 08889d0..b0907f7 100644
+--- a/ldso/ldso/arm/resolve.S
++++ b/ldso/ldso/arm/resolve.S
+@@ -101,7 +101,7 @@
+ 
+  .text
+  .align 4      @ 16 byte boundary and there are 32 bytes below (arm case)
+- #if !defined(__thumb__) || defined(__thumb2__)
++#if 1 /*(!defined(__thumb__) || defined __THUMB_INTERWORK__) || defined(__thumb2__)*/
+  .arm
+  .globl _dl_linux_resolve
+  .type _dl_linux_resolve,%function
+-- 
+1.7.10.4
+

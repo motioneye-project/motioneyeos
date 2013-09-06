@@ -1,0 +1,78 @@
+From 929b1a121c5ff0daa33b2107b4c1a68b650d93ee Mon Sep 17 00:00:00 2001
+From: Mike Frysinger <vapier@gentoo.org>
+Date: Mon, 30 Apr 2012 00:40:49 -0400
+Subject: [PATCH] rpmatch: backport function
+
+rpmatch will match ^[Yy] and ^[Nn] regardless of locale
+
+Signed-off-by: Mike Frysinger <vapier@gentoo.org>
+Signed-off-by: Bernhard Reutner-Fischer <rep.dot.nop@gmail.com>
+---
+ include/stdlib.h        |    2 +-
+ libc/stdlib/Makefile.in |    2 +-
+ libc/stdlib/rpmatch.c   |    7 +++++++
+ libc/stdlib/stdlib.c    |    8 ++++++++
+ 4 files changed, 17 insertions(+), 2 deletions(-)
+ create mode 100644 libc/stdlib/rpmatch.c
+
+diff --git a/include/stdlib.h b/include/stdlib.h
+index 4aa1227..42b585c 100644
+--- a/include/stdlib.h
++++ b/include/stdlib.h
+@@ -851,7 +851,7 @@ __END_NAMESPACE_STD
+ #endif /* __UCLIBC_HAS_WCHAR__ */
+ 
+ 
+-#if 0 /*def __USE_SVID*/
++#ifdef __USE_SVID
+ /* Determine whether the string value of RESPONSE matches the affirmation
+    or negative response expression as specified by the LC_MESSAGES category
+    in the program's current locale.  Returns 1 if affirmative, 0 if
+diff --git a/libc/stdlib/Makefile.in b/libc/stdlib/Makefile.in
+index f219d21..e802441 100644
+--- a/libc/stdlib/Makefile.in
++++ b/libc/stdlib/Makefile.in
+@@ -33,7 +33,7 @@ endif
+ 
+ # multi source stdlib.c
+ CSRC-y += abs.c labs.c atoi.c atol.c strtol.c strtoul.c _stdlib_strto_l.c \
+-	qsort.c qsort_r.c bsearch.c \
++	qsort.c qsort_r.c bsearch.c rpmatch.c \
+ 	llabs.c atoll.c strtoll.c strtoull.c _stdlib_strto_ll.c
+ # (aliases) strtoq.o strtouq.o
+ CSRC-$(UCLIBC_HAS_FLOATS) += atof.c
+diff --git a/libc/stdlib/rpmatch.c b/libc/stdlib/rpmatch.c
+new file mode 100644
+index 0000000..dce06b6
+--- /dev/null
++++ b/libc/stdlib/rpmatch.c
+@@ -0,0 +1,7 @@
++/* Copyright (C) 2012 Bernhard Reutner-Fischer <uclibc@uclibc.org>
++ *
++ * Licensed under the LGPL v2.1+, see the file COPYING.LIB in this tarball.
++ */
++
++#define L_rpmatch
++#include "stdlib.c"
+diff --git a/libc/stdlib/stdlib.c b/libc/stdlib/stdlib.c
+index 9e8c347..de8f084 100644
+--- a/libc/stdlib/stdlib.c
++++ b/libc/stdlib/stdlib.c
+@@ -318,6 +318,14 @@ long long atoll(const char *nptr)
+ 
+ #endif
+ /**********************************************************************/
++#ifdef L_rpmatch
++int rpmatch (__const char *__response)
++{
++	return (__response[0] == 'y' || __response[0] == 'Y') ? 1 :
++		(__response[0] == 'n' || __response[0] == 'N') ? 0 : -1;
++}
++#endif
++/**********************************************************************/
+ #if defined(L_strtol) || defined(L_strtol_l)
+ 
+ libc_hidden_proto(__XL_NPP(strtol))
+-- 
+1.7.10.4
+

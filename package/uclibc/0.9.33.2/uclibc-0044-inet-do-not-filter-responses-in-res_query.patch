@@ -1,0 +1,46 @@
+From 5e40582d549b4a186de2fea9efafadd06904424c Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Timo=20Ter=C3=A4s?= <timo.teras@iki.fi>
+Date: Thu, 18 Jun 2009 06:55:46 +0000
+Subject: [PATCH] inet: do not filter responses in res_query
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Fixes bug #5342
+
+res_query was silently rejecting responses against T_ANY DNS
+questions.
+
+Remove the type-filtering from res_query altogether.
+__dns_lookup is supposed to return the proper stuff that you asked
+for (and only that).
+
+Signed-off-by: Timo Teräs <timo.teras@iki.fi>
+Signed-off-by: Bernhard Reutner-Fischer <rep.dot.nop@gmail.com>
+---
+ libc/inet/resolv.c |    9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
+
+diff --git a/libc/inet/resolv.c b/libc/inet/resolv.c
+index e738098..7bd634c 100644
+--- a/libc/inet/resolv.c
++++ b/libc/inet/resolv.c
+@@ -3740,11 +3740,10 @@ int res_query(const char *dname, int class, int type,
+ 
+ 	free(a.dotted);
+ 
+-	if (a.atype == type) { /* CNAME */
+-		if (i > anslen)
+-			i = anslen;
+-		memcpy(answer, packet, i);
+-	}
++	if (i > anslen)
++		i = anslen;
++	memcpy(answer, packet, i);
++
+ 	free(packet);
+ 	return i;
+ }
+-- 
+1.7.10.4
+
