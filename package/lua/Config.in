@@ -21,13 +21,13 @@ config BR2_PACKAGE_LUA_INTERPRETER_READLINE
 	select BR2_PACKAGE_READLINE
 	select BR2_PACKAGE_NCURSES
 	help
-	  Enables command-line editing in the lua interpreter.
+	  Enables command-line editing in the Lua interpreter.
 
 config BR2_PACKAGE_LUA_INTERPRETER_LINENOISE
 	bool "linenoise support"
 	select BR2_PACKAGE_LINENOISE
 	help
-	  Enables command-line editing in the lua interpreter.
+	  Enables command-line editing in the Lua interpreter.
 
 endchoice
 

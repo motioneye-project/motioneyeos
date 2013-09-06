@@ -33,7 +33,7 @@ config BR2_PACKAGE_DNSMASQ_LUA
 	bool "Lua scripting support"
 	select BR2_PACKAGE_LUA
 	help
-	  Enable lua scripting for dnsmasq
+	  Enable Lua scripting for dnsmasq
 
 config BR2_PACKAGE_DNSMASQ_CONNTRACK
 	bool "conntrack marking support"
