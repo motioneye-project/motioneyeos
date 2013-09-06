@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-SWIG_VERSION = 2.0.9
+SWIG_VERSION = 2.0.10
 SWIG_SITE = http://downloads.sourceforge.net/project/swig/swig/swig-$(SWIG_VERSION)
 SWIG_DEPENDENCIES = host-bison
 HOST_SWIG_CONF_OPT = --without-pcre --disable-ccache
