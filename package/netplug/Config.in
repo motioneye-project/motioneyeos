@@ -1,5 +1,6 @@
 config BR2_PACKAGE_NETPLUG
 	bool "netplug"
+	depends on BR2_USE_MMU # fork()
 	help
 	  A Linux daemon that manages network interfaces in
 	  response to network cables being plugged in and out.
