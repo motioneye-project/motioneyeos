@@ -129,10 +129,10 @@ endif
 
 define MPD_INSTALL_EXTRA_FILES
 	@if [ ! -f $(TARGET_DIR)/etc/mpd.conf ]; then \
-		$(INSTALL) -D package/multimedia/mpd/mpd.conf \
+		$(INSTALL) -D package/mpd/mpd.conf \
 			$(TARGET_DIR)/etc/mpd.conf; \
 	fi
-	$(INSTALL) -m 0755 -D package/multimedia/mpd/S95mpd \
+	$(INSTALL) -m 0755 -D package/mpd/S95mpd \
 		$(TARGET_DIR)/etc/init.d/S95mpd
 endef
 
