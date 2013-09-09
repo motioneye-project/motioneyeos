@@ -107,7 +107,7 @@ define PULSEAUDIO_USERS
 endef
 
 define PULSEAUDIO_INSTALL_INIT_SYSV
-	$(INSTALL) -D -m 755 package/multimedia/pulseaudio/S50pulseaudio \
+	$(INSTALL) -D -m 755 package/pulseaudio/S50pulseaudio \
 		$(TARGET_DIR)/etc/init.d/S50pulseaudio
 endef
 
