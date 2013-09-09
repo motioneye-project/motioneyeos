@@ -15,6 +15,9 @@ WEBKIT_DEPENDENCIES = host-ruby host-flex host-bison host-gperf enchant harfbuzz
 WEBKIT_AUTORECONF = YES
 WEBKIT_AUTORECONF_OPT = -I $(@D)/Source/autotools
 
+# parallel make install deadlocks with make 3.81
+WEBKIT_INSTALL_STAGING_OPT = -j1 DESTDIR=$(STAGING_DIR) install
+
 # Does not build and it's disabled by default
 # in newer releases
 define DISABLE_INDEXED_DATABASE
