@@ -5,7 +5,6 @@
 ################################################################################
 
 FB_TEST_APP_VERSION = v1.0.0
-FB_TEST_APP_SOURCE = fb-test-app-$(FB_TEST_APP_VERSION).tar.xz
 FB_TEST_APP_SITE = http://github.com/prpplague/fb-test-app/tarball/$(FB_TEST_APP_VERSION)
 FB_TEST_APP_LICENSE = GPLv2
 FB_TEST_APP_LICENSE_FILES = COPYING
