@@ -19,4 +19,10 @@ else
 OPUS_TOOLS_CONF_OPT += --disable-sse
 endif
 
+ifeq ($(BR2_PACKAGE_FLAC),y)
+OPUS_TOOLS_DEPENDENCIES += flac
+else
+OPUS_TOOLS_CONF_OPT += --without-flac
+endif
+
 $(eval $(autotools-package))
