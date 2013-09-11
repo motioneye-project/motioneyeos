@@ -39,4 +39,4 @@ endef
 # NOTE: Even though this package has a configure script, it is not generated
 # using the autotools, so we have to use the generic package infrastructure.
 
-$(eval $(call generic-package))
+$(eval $(generic-package))

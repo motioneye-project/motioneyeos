@@ -22,4 +22,4 @@ define JQUERY_KEYBOARD_INSTALL_TARGET_CMDS
 		$(TARGET_DIR)/var/www/layouts
 endef
 
-$(eval $(call generic-package))
+$(eval $(generic-package))

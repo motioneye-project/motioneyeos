@@ -20,4 +20,4 @@ WIRESHARK_CONF_OPT = --disable-wireshark --without-krb5 --disable-usr-local \
 		     --enable-static=no --with-gnutls=no --with-libsmi=no \
 		     --includedir=$(STAGING_DIR)/usr/include
 
-$(eval $(call autotools-package))
+$(eval $(autotools-package))
