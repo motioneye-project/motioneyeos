@@ -52,7 +52,7 @@ Optional packages
 +
 In the official tree, most of the package sources are retrieved
 using +wget+; a few are only available through their +git+, +mercurial+,
-or +svn+ repository.
++svn+ or +cvs+ repository.
 +
 All other source fetching methods are implemented and may be used in a
 development context (further details: refer to xref:download-infra[]).

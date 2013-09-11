@@ -266,6 +266,13 @@ information is (assuming the package name is +libfoo+) :
      Buildroot performs a checkout which is preserved as a tarball in
      the download cache; subsequent builds use the tarball instead of
      performing another checkout.
+  ** +cvs+ for retrieving source code from a CVS repository.
+     Used by default when +LIBFOO_SITE+ begins with +cvs://+.
+     The downloaded source code is cached as with the +svn+ method.
+     Only anonymous pserver mode is supported.
+     +LIBFOO_SITE+ 'must' contain the source URL as well as the remote
+     repository directory. The module is the package name.
+     +LIBFOO_VERSION+ is 'mandatory' and 'must' be a timestamp.
   ** +git+ for retrieving source code from a Git repository.  Used by
      default when +LIBFOO_SITE+ begins with +git://+. The downloaded
      source code is cached as with the +svn+
