@@ -87,18 +87,21 @@ for i in $(find boot/ linux/ package/ -name '*.mk' | sort) ; do
 	$i = "boot/common.mk" -o \
 	$i = "linux/linux-ext-xenomai.mk" -o \
 	$i = "linux/linux-ext-rtai.mk" -o \
-	$i = "linux/linux-ext-ocf-linux.mk" -o \
 	$i = "package/efl/efl.mk" -o \
-	$i = "package/games/games.mk" -o \
+	$i = "package/freescale-imx/freescale-imx.mk" -o \
+	$i = "package/gcc/gcc.mk" -o \
+	$i = "package/gstreamer/gstreamer.mk" -o \
+	$i = "package/gstreamer1/gstreamer1.mk" -o \
 	$i = "package/gtk2-themes/gtk2-themes.mk" -o \
-	$i = "package/multimedia/multimedia.mk" -o \
+	$i = "package/matchbox/matchbox.mk" -o \
+	$i = "package/opengl/opengl.mk" -o \
+	$i = "package/qt5/qt5.mk" -o \
+	$i = "package/x11r7/x11r7.mk" -o \
  	$i = "package/pkg-autotools.mk" -o \
  	$i = "package/pkg-cmake.mk" -o \
+	$i = "package/pkg-download.mk" -o \
  	$i = "package/pkg-generic.mk" -o \
- 	$i = "package/pkg-utils.mk" -o \
- 	$i = "package/pkg-download.mk" -o \
-	$i = "package/matchbox/matchbox.mk" -o \
-	$i = "package/x11r7/x11r7.mk" ; then
+ 	$i = "package/pkg-utils.mk" ; then
 	echo "skipping $i" 1>&2
 	continue
     fi
