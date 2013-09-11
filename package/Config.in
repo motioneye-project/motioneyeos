@@ -694,6 +694,10 @@ source "package/liblog4c-localtime/Config.in"
 source "package/tzdata/Config.in"
 endmenu
 
+menu "Security"
+source "package/libsepol/Config.in"
+endmenu
+
 menu "Text and terminal handling"
 source "package/enchant/Config.in"
 source "package/libfribidi/Config.in"
