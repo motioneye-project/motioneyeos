@@ -42,6 +42,10 @@ config BR2_GIT
 	string "Git command"
 	default "git"
 
+config BR2_CVS
+	string "CVS command"
+	default "cvs"
+
 config BR2_LOCALFILES
 	string "Local files retrieval command"
 	default "cp"

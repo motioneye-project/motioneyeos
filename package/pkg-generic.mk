@@ -542,6 +542,8 @@ else ifeq ($$($(2)_SITE_METHOD),scp)
 DL_TOOLS_DEPENDENCIES += scp ssh
 else ifeq ($$($(2)_SITE_METHOD),hg)
 DL_TOOLS_DEPENDENCIES += hg
+else ifeq ($$($(2)_SITE_METHOD),cvs)
+DL_TOOLS_DEPENDENCIES += cvs
 endif # SITE_METHOD
 
 # $(firstword) is used here because the extractor can have arguments, like

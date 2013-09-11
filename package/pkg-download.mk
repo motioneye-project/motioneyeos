@@ -10,6 +10,7 @@
 # Download method commands
 WGET := $(call qstrip,$(BR2_WGET)) $(QUIET)
 SVN := $(call qstrip,$(BR2_SVN))
+CVS := $(call qstrip,$(BR2_CVS))
 BZR := $(call qstrip,$(BR2_BZR))
 GIT := $(call qstrip,$(BR2_GIT))
 HG := $(call qstrip,$(BR2_HG)) $(QUIET)
@@ -55,22 +56,21 @@ notdomain=$(patsubst $(call domain,$(1),$(2))$(call domainseparator,$(2))%,%,$(c
 domainseparator=$(if $(1),$(1),/)
 
 ################################################################################
-# The DOWNLOAD_{GIT,SVN,BZR,HG,LOCALFILES} helpers are in charge of getting a
-# working copy of the source repository for their corresponding SCM,
+# The DOWNLOAD_* helpers are in charge of getting a working copy
+# of the source repository for their corresponding SCM,
 # checking out the requested version / commit / tag, and create an
 # archive out of it. DOWNLOAD_SCP uses scp to obtain a remote file with
 # ssh authentication. DOWNLOAD_WGET is the normal wget-based download
 # mechanism.
 #
-# The SOURCE_CHECK_{GIT,SVN,BZR,HG,WGET,LOCALFILES,SCP} helpers are in charge of
-# simply checking that the source is available for download. This can be used
-# to make sure one will be able to get all the sources needed for
-# one's build configuration.
+# The SOURCE_CHECK_* helpers are in charge of simply checking that the source
+# is available for download. This can be used to make sure one will be able
+# to get all the sources needed for one's build configuration.
 #
-# The SHOW_EXTERNAL_DEPS_{GIT,SVN,BZR,HG,WGET,LOCALFILES,SCP} helpers simply
-# output to the console the names of the files that will be downloaded, or path
-# and revision of the source repositories, producing a list of all the
-# "external dependencies" of a given build configuration.
+# The SHOW_EXTERNAL_DEPS_* helpers simply output to the console the names
+# of the files that will be downloaded, or path and revision of the
+# source repositories, producing a list of all the "external dependencies"
+# of a given build configuration.
 ################################################################################
 
 # Try a shallow clone - but that only works if the version is a ref (tag or
@@ -119,6 +119,24 @@ define SHOW_EXTERNAL_DEPS_BZR
 	echo $($(PKG)_SOURCE)
 endef
 
+define DOWNLOAD_CVS
+	test -e $(DL_DIR)/$($(PKG)_SOURCE) || \
+	(pushd $(DL_DIR) > /dev/null && \
+	$(CVS) -z3 -d:pserver:anonymous@$(call stripurischeme,$(call qstrip,$($(PKG)_SITE))) \
+		co -d $($(PKG)_BASE_NAME) -r :$($(PKG)_DL_VERSION) -P $($(PKG)_RAWNAME) && \
+	$(TAR) czf $($(PKG)_SOURCE) $($(PKG)_BASE_NAME)/ && \
+	rm -rf $($(PKG)_DL_DIR) && \
+	popd > /dev/null)
+endef
+
+# Not all CVS servers support ls/rls, use login to see if we can connect
+define SOURCE_CHECK_CVS
+	$(CVS) -d:pserver:anonymous:@$(call stripurischeme,$(call qstrip,$($(PKG)_SITE))) login
+endef
+
+define SHOW_EXTERNAL_DEPS_CVS
+	echo $($(PKG)_SOURCE)
+endef
 
 define DOWNLOAD_SVN
 	test -e $(DL_DIR)/$($(PKG)_SOURCE) || \
@@ -244,6 +262,7 @@ define DOWNLOAD_INNER
 		case "$$scheme" in \
 			git) $($(DL_MODE)_GIT) && exit ;; \
 			svn) $($(DL_MODE)_SVN) && exit ;; \
+			cvs) $($(DL_MODE)_CVS) && exit ;; \
 			bzr) $($(DL_MODE)_BZR) && exit ;; \
 			file) $($(DL_MODE)_LOCALFILES) && exit ;; \
 			scp) $($(DL_MODE)_SCP) && exit ;; \
