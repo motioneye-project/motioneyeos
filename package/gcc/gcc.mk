@@ -86,7 +86,8 @@ endef
 HOST_GCC_COMMON_DEPENDENCIES = \
 	host-binutils \
 	host-gmp \
-	host-mpfr
+	host-mpfr \
+	$(if $(BR2_BINFMT_FLAT),host-elf2flt)
 
 HOST_GCC_COMMON_CONF_OPT = \
 	--target=$(GNU_TARGET_NAME) \
