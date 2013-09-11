@@ -175,6 +175,7 @@ export HOSTCC_NOCCACHE HOSTCXX_NOCCACHE
 # Make sure pkg-config doesn't look outside the buildroot tree
 unexport PKG_CONFIG_PATH
 unexport PKG_CONFIG_SYSROOT_DIR
+unexport PKG_CONFIG_LIBDIR
 
 # Having DESTDIR set in the environment confuses the installation
 # steps of some packages.
