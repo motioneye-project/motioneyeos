@@ -12,4 +12,3 @@ LIBSOC_AUTORECONF = YES
 LIBSOC_INSTALL_STAGING = YES
 
 $(eval $(autotools-package))
-
