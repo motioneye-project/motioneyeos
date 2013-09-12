@@ -516,6 +516,7 @@ define QT_CONFIGURE_CMDS
 		-prefix /usr \
 		-plugindir /usr/lib/qt/plugins \
 		-importdir /usr/lib/qt/imports \
+		-translationdir /usr/share/qt/translations \
 		-hostprefix $(STAGING_DIR) \
 		-fast \
 		-no-rpath \
@@ -666,6 +667,13 @@ define QT_INSTALL_TARGET_POWERVR
 endef
 endif
 
+define QT_INSTALL_TARGET_TRANSLATIONS
+	if [ -d $(STAGING_DIR)/usr/share/qt/translations/ ] ; then \
+		mkdir -p $(TARGET_DIR)/usr/share/qt/translations ; \
+		cp -dpfr $(STAGING_DIR)/usr/share/qt/translations/* $(TARGET_DIR)/usr/share/qt/translations ; \
+	fi
+endef
+
 define QT_INSTALL_TARGET_CMDS
 	$(QT_INSTALL_TARGET_LIBS)
 	$(QT_INSTALL_TARGET_PLUGINS)
@@ -673,6 +681,7 @@ define QT_INSTALL_TARGET_CMDS
 	$(QT_INSTALL_TARGET_FONTS)
 	$(QT_INSTALL_TARGET_FONTS_TTF)
 	$(QT_INSTALL_TARGET_POWERVR)
+	$(QT_INSTALL_TARGET_TRANSLATIONS)
 endef
 
 define QT_CLEAN_CMDS
