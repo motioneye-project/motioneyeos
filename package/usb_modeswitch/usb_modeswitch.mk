@@ -4,10 +4,10 @@
 #
 ################################################################################
 
-USB_MODESWITCH_VERSION = 1.2.6
+USB_MODESWITCH_VERSION = 2.0.1
 USB_MODESWITCH_SOURCE = usb-modeswitch-$(USB_MODESWITCH_VERSION).tar.bz2
 USB_MODESWITCH_SITE = http://www.draisberghof.de/usb_modeswitch
-USB_MODESWITCH_DEPENDENCIES = libusb-compat
+USB_MODESWITCH_DEPENDENCIES = libusb
 USB_MODESWITCH_LICENSE = GPLv2+
 USB_MODESWITCH_LICENSE_FILES = COPYING
 
