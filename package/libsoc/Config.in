@@ -1,0 +1,7 @@
+config BR2_PACKAGE_LIBSOC
+	bool "libsoc"
+	help
+	  libsoc is a C library for interfacing with common SoC
+	  peripherals through generic kernel interfaces
+
+	  https://github.com/jackmitch/libsoc
