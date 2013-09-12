@@ -1,0 +1,13 @@
+config BR2_PACKAGE_IGMPPROXY
+	bool "igmpproxy"
+	depends on BR2_USE_WCHAR
+	help
+	  A simple dynamic Multicast Routing Daemon
+	  using only IGMP signalling. It's intended
+	  for simple forwarding of Multicast traffic
+	  between networks.
+
+	  http://sourceforge.net/projects/igmpproxy/
+
+comment "igmpproxy needs a toolchain with wchar support"
+	depends on !BR2_USE_WCHAR
