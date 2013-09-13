@@ -7,8 +7,12 @@ config BR2_PACKAGE_LIBTIRPC
 	# used instead of libtirpc.
 	depends on !BR2_TOOLCHAIN_EXTERNAL_BLACKFIN_UCLINUX_2012R2 && \
 		!BR2_TOOLCHAIN_EXTERNAL_BLACKFIN_UCLINUX_2012R1
+	depends on BR2_TOOLCHAIN_HAS_THREADS
 	help
 	  Libtirpc is a port of Sun's Transport-Independent RPC
 	  library to Linux.
 
 	  http://sourceforge.net/projects/libtirpc/
+
+comment "libtirpc requires a toolchain with threading support"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS

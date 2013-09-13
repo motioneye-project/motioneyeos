@@ -2,6 +2,7 @@ config BR2_PACKAGE_RPCBIND
 	bool "rpcbind"
 	# We really need libtirpc and can't work with the native RPC
 	# implementation of toolchains.
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libtirpc
 	select BR2_PACKAGE_LIBTIRPC
 	# uClibc toolchains provided by ADI don't have AI_ADDRCONFIG
 	# support, needed for libtirpc
@@ -10,3 +11,6 @@ config BR2_PACKAGE_RPCBIND
 	help
 	  The rpcbind utility is a server that converts RPC program numbers
 	  into universal addresses.
+
+comment "rpcbind requires a toolchain with threading support"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
