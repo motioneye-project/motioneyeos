@@ -25,4 +25,3 @@ endif
 GAMIN_DEPENDENCIES = libglib2
 
 $(eval $(autotools-package))
-

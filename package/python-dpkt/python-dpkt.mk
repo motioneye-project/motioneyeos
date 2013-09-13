@@ -19,4 +19,3 @@ define PYTHON_DPKT_INSTALL_TARGET_CMDS
 endef
 
 $(eval $(generic-package))
-

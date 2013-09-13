@@ -18,4 +18,3 @@ POLARSSL_LICENSE = GPLv2
 POLARSSL_LICENSE_FILES = LICENSE
 
 $(eval $(cmake-package))
-

@@ -28,4 +28,3 @@ define MONGREL2_UNINSTALL_TARGET_CMDS
 endef
 
 $(eval $(generic-package))
-

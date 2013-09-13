@@ -32,4 +32,3 @@ endef
 
 $(eval $(generic-package))
 $(eval $(host-generic-package))
-

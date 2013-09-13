@@ -11,4 +11,3 @@ LIBIQRF_INSTALL_STAGING = YES
 LIBIQRF_DEPENDENCIES = libusb
 
 $(eval $(cmake-package))
-

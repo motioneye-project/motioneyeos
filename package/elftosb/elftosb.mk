@@ -23,4 +23,3 @@ define HOST_ELFTOSB_CLEAN_CMDS
 endef
 
 $(eval $(host-generic-package))
-

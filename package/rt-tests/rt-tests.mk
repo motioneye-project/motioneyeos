@@ -28,4 +28,3 @@ define RT_TESTS_INSTALL_TARGET_CMDS
 endef
 
 $(eval $(generic-package))
-

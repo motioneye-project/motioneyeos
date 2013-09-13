@@ -14,4 +14,3 @@ GNUCHESS_DEPENDENCIES = host-flex flex
 GNUCHESS_DEPENDENCIES += $(if $(BR2_PACKAGE_READLINE),readline)
 
 $(eval $(autotools-package))
-

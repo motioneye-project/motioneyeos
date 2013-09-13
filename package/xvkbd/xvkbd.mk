@@ -31,4 +31,3 @@ XVKBD_DEPENDENCIES = \
 	xlib_libXtst
 
 $(eval $(generic-package))
-

@@ -15,4 +15,3 @@ XCB_UTIL_INSTALL_STAGING = YES
 XCB_UTIL_DEPENDENCIES = host-gperf libxcb
 
 $(eval $(autotools-package))
-

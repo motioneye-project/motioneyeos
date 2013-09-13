@@ -15,4 +15,3 @@ TORSMO_CONF_OPT = --x-includes="-I$(STAGING_DIR)/usr/include/X11" --x-libraries=
 TORSMO_DEPENDENCIES = xlib_libX11 xlib_libXext
 
 $(eval $(autotools-package))
-

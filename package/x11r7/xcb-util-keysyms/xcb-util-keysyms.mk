@@ -14,4 +14,3 @@ XCB_UTIL_KEYSYMS_LICENSE = MIT
 XCB_UTIL_KEYSYMS_INSTALL_STAGING = YES
 
 $(eval $(autotools-package))
-

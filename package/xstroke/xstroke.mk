@@ -12,4 +12,3 @@ XSTROKE_DEPENDENCIES = xlib_libXft xlib_libXtst xlib_libXpm xlib_libXrender xlib
 XSTROKE_AUTORECONF = YES
 
 $(eval $(autotools-package))
-

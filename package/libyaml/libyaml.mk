@@ -10,4 +10,3 @@ LIBYAML_SITE = http://pyyaml.org/download/libyaml/
 LIBYAML_INSTALL_STAGING = YES
 
 $(eval $(autotools-package))
-

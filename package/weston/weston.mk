@@ -30,4 +30,3 @@ WESTON_CONF_OPT += --disable-fbdev-compositor
 endif
 
 $(eval $(autotools-package))
-

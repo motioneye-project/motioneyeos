@@ -50,5 +50,3 @@ define CVS_INSTALL_TARGET_CMDS
 endef
 
 $(eval $(autotools-package))
-
-

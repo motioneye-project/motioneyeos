@@ -16,4 +16,3 @@ ALSAMIXERGUI_CONF_ENV = ac_cv_lib_fltk_numericsort=yes \
 ALSAMIXERGUI_DEPENDENCIES = fltk alsa-lib
 
 $(eval $(autotools-package))
-

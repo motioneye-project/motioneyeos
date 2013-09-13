@@ -9,4 +9,3 @@ LIBICAL_SITE = http://downloads.sourceforge.net/project/freeassociation/libical/
 LIBICAL_INSTALL_STAGING = YES
 
 $(eval $(autotools-package))
-

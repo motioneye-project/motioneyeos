@@ -11,4 +11,3 @@ GQVIEW_DEPENDENCIES = host-pkgconf libgtk2
 GQVIEW_CONF_ENV = LIBS="-lm"
 
 $(eval $(autotools-package))
-

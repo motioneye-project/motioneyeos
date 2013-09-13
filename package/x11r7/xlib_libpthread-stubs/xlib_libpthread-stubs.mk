@@ -14,4 +14,3 @@ XLIB_LIBPTHREAD_STUBS_INSTALL_STAGING = YES
 
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
-

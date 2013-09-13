@@ -10,4 +10,3 @@ GTKPERF_SITE = http://downloads.sourceforge.net/project/gtkperf/gtkperf/$(GTKPER
 GTKPERF_DEPENDENCIES = libgtk2
 
 $(eval $(autotools-package))
-

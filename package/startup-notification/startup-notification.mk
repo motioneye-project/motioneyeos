@@ -15,4 +15,3 @@ STARTUP_NOTIFICATION_CONF_OPT = --with-x \
 	--x-libraries="$(STAGING_DIR)/usr/lib"
 
 $(eval $(autotools-package))
-

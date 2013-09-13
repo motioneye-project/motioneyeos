@@ -45,4 +45,3 @@ ifeq ($(BR2_CCACHE),y)
 ccache-stats: host-ccache
 	$(Q)$(CCACHE) -s
 endif
-

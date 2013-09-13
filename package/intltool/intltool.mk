@@ -16,4 +16,3 @@ HOST_INTLTOOL_CONF_OPT = \
 
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
-

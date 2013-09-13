@@ -10,4 +10,3 @@ GRANTLEE_INSTALL_STAGING = YES
 GRANTLEE_DEPENDENCIES =  qt
 
 $(eval $(cmake-package))
-

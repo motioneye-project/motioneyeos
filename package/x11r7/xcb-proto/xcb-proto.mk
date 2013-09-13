@@ -16,4 +16,3 @@ XCB_PROTO_DEPENDENCIES = host-python
 
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
-

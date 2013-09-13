@@ -12,4 +12,3 @@ PCMANFM_DEPENDENCIES = host-pkgconf libgtk2 gamin startup-notification xlib_libX
 PCMANFM_AUTORECONF = YES
 
 $(eval $(autotools-package))
-

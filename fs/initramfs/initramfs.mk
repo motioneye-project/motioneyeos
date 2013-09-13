@@ -20,4 +20,3 @@ rootfs-initramfs-show-depends:
 ifeq ($(BR2_TARGET_ROOTFS_INITRAMFS),y)
 TARGETS += rootfs-initramfs
 endif
-

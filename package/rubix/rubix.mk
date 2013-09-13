@@ -14,4 +14,3 @@ RUBIX_MAKE_OPT = CC="$(TARGET_CC)" XINC="-I$(STAGING_DIR)/usr/include/X11" XLIB=
 RUBIX_DEPENDENCIES = xlib_libX11
 
 $(eval $(autotools-package))
-

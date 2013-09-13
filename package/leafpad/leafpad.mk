@@ -10,4 +10,3 @@ LEAFPAD_SITE = http://savannah.nongnu.org/download/leafpad
 LEAFPAD_DEPENDENCIES = libgtk2 host-intltool
 
 $(eval $(autotools-package))
-

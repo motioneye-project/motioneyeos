@@ -202,4 +202,3 @@ $(HOST_DIR)/usr/share/buildroot/toolchainfile.cmake:
 	set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)\n\
 	set(ENV{PKG_CONFIG_SYSROOT_DIR} \"$(STAGING_DIR)\")\n\
 	" > $@
-
