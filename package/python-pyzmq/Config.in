@@ -1,0 +1,17 @@
+config BR2_PACKAGE_PYTHON_PYZMQ
+	bool "python-pyzmq"
+	depends on BR2_LARGEFILE # zeromq
+	depends on BR2_INET_IPV6 # zeromq
+	depends on BR2_USE_WCHAR # zeromq
+	depends on BR2_INSTALL_LIBSTDCPP # zeromq
+	depends on BR2_TOOLCHAIN_HAS_THREADS # zeromq
+	depends on BR2_PACKAGE_PYTHON
+	select BR2_PACKAGE_ZEROMQ
+	help
+	  This package contains the python language binding for zeromq.
+
+	  http://zeromq.org/bindings:python
+
+comment "python-pyzmq requires a toolchain with C++, IPV6, LARGEFILE, WCHAR & thread support"
+	depends on !(BR2_INSTALL_LIBSTDCPP && BR2_INET_IPV6 && BR2_LARGEFILE \
+		&& BR2_USE_WCHAR && BR2_TOOLCHAIN_HAS_THREADS)
