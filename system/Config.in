@@ -198,15 +198,20 @@ config BR2_TARGET_GENERIC_ROOT_PASSWD
 	  in the build log! Avoid using a valuable password if either the
 	  .config file or the build log may be distributed!
 
+config BR2_TARGET_GENERIC_GETTY
+       bool "Run a getty (login prompt) after boot"
+       default y
+
+if BR2_TARGET_GENERIC_GETTY
+menu "getty options"
 config BR2_TARGET_GENERIC_GETTY_PORT
-	string "Port to run a getty (login prompt) on"
+	string "TTY port"
 	default "ttyS0"
 	help
-	  Specify a port to run a getty (login prompt) on.
-	  Set to the empty string to not run a getty.
+	  Specify a port to run a getty on.
 
 choice
-	prompt "Baudrate to use"
+	prompt "Baudrate"
 	default BR2_TARGET_GENERIC_GETTY_BAUDRATE_115200
 	help
 	  Select a baudrate to use.
@@ -235,10 +240,12 @@ config BR2_TARGET_GENERIC_GETTY_BAUDRATE
 	default "115200"	if BR2_TARGET_GENERIC_GETTY_BAUDRATE_115200
 
 config BR2_TARGET_GENERIC_GETTY_TERM
-	string "Value to assign the TERM environment variable"
+	string "TERM environment variable"
 	default "vt100"
 	help
 	  Specify a TERM type.
+endmenu
+endif
 
 config BR2_TARGET_GENERIC_REMOUNT_ROOTFS_RW
 	bool "remount root filesystem read-write during boot"
