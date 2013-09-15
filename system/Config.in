@@ -68,7 +68,7 @@ config BR2_TARGET_GENERIC_PASSWD_METHOD
 
 choice
 	prompt "/dev management"
-	default BR2_ROOTFS_DEVICE_CREATION_STATIC
+	default BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_DEVTMPFS
 
 config BR2_ROOTFS_DEVICE_CREATION_STATIC
 	bool "Static using device table"
