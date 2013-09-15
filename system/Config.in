@@ -244,6 +244,13 @@ config BR2_TARGET_GENERIC_GETTY_TERM
 	default "vt100"
 	help
 	  Specify a TERM type.
+
+config BR2_TARGET_GENERIC_GETTY_OPTIONS
+	string "other options to pass to getty"
+	default ""
+	help
+	  Any other flags you want to pass to getty,
+	  Refer to getty --help for details.
 endmenu
 endif
 
