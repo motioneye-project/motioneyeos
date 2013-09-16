@@ -40,7 +40,7 @@ $ git format-patch -M -n -s -o outgoing origin/master
 ---------------------
 
 This will generate patch files in the +outgoing+ subdirectory,
-automatically adding the +signed-off-by+ line.
+automatically adding the +Signed-off-by+ line.
 
 Once patch files are generated, you can review/edit the commit message
 before submitting them using your favorite text editor.
@@ -106,7 +106,7 @@ Some more paragraph giving some more details.
 
 And yet another paragraph giving more details.
 
-Signed-off-by John Doe <john.doe@noname.org>
+Signed-off-by: John Doe <john.doe@noname.org>
 ---
 Changes v2 -> v3:
   - foo bar  (suggested by Jane)

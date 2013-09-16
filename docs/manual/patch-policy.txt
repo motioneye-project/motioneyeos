@@ -105,7 +105,7 @@ At the end, the patch should look like:
 ---------------
 configure.ac: add C++ support test
 
-signed-off-by John Doe <john.doe@noname.org>
+Signed-off-by: John Doe <john.doe@noname.org>
 
 --- configure.ac.orig
 +++ configure.ac
