@@ -21,7 +21,7 @@ Providing patches
 Downloaded
 ^^^^^^^^^^
 
-If it is necessary to apply a patch that is available for download, then it
+If it is necessary to apply a patch that is available for download, then add it
 to the +<packagename>_PATCH+ variable. It is downloaded from the same site
 as the package itself. It can be a single patch, or a tarball containing a
 patch series.
