@@ -1,5 +1,6 @@
 config BR2_PACKAGE_LUAPOSIX
 	bool "luaposix"
+	depends on BR2_INET_IPV6
 	help
 	  luaposix is a POSIX binding, including curses, for Lua 5.1
 	  and 5.2; Like most libraries it simply binds to C APIs on
@@ -9,3 +10,6 @@ config BR2_PACKAGE_LUAPOSIX
 	  APIs
 
 	  https://github.com/luaposix/luaposix
+
+comment "luaposix requires a toolchain with IPv6 support"
+	depends on !BR2_INET_IPV6
