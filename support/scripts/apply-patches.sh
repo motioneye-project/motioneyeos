@@ -73,8 +73,8 @@ function apply_patch {
 	*.patch*)
 	type="patch"; uncomp="cat"; ;;
 	*)
-	echo "Unsupported format file for ${path}/${patch}";
-	exit 1;
+	echo "Unsupported file type for ${path}/${patch}, skipping";
+	return 0
 	;;
     esac
     echo ""
