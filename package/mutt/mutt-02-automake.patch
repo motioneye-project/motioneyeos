@@ -1,0 +1,16 @@
+Fix for automake 1.12+
+http://dev.mutt.org/trac/ticket/3579
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+diff -Nura mutt-1.5.21.orig/configure.ac mutt-1.5.21/configure.ac
+--- mutt-1.5.21.orig/configure.ac	2013-09-16 11:07:25.699781892 -0300
++++ mutt-1.5.21/configure.ac	2013-09-16 11:07:45.120419960 -0300
+@@ -27,7 +27,6 @@
+ 
+ AC_PROG_CC
+ AC_ISC_POSIX
+-AM_C_PROTOTYPES
+ if test "x$U" != "x"; then
+   AC_MSG_ERROR(Compiler not ANSI compliant)
+ fi
