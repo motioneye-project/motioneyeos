@@ -2,6 +2,7 @@ config BR2_PACKAGE_AICCU
 	bool "aiccu"
 	depends on BR2_INET_IPV6
 	depends on BR2_USE_WCHAR
+	depends on BR2_TOOLCHAIN_HAS_THREADS
 	select BR2_PACKAGE_GNUTLS
 	help
 	  SixXS Automatic IPv6 Connectivity Client Utility
@@ -17,5 +18,5 @@ config BR2_PACKAGE_AICCU
 
 	  http://www.sixxs.net/tools/aiccu/
 
-comment "aiccu requires a toolchain with IPv6 and WCHAR support"
-	depends on !(BR2_INET_IPV6 && BR2_USE_WCHAR)
+comment "aiccu requires a toolchain with IPv6, WCHAR and thread support"
+	depends on !(BR2_INET_IPV6 && BR2_USE_WCHAR && BR2_TOOLCHAIN_HAS_THREADS)
