@@ -1,6 +1,6 @@
 config BR2_PACKAGE_LTRACE
 	bool "ltrace"
-	depends on !(BR2_avr32 || BR2_mips || BR2_sh || BR2_sh64 || BR2_xtensa || BR2_aarch64 || BR2_arc)
+	depends on !(BR2_avr32 || BR2_sh || BR2_sh64 || BR2_xtensa || BR2_aarch64 || BR2_arc)
 	select BR2_PACKAGE_LIBELF
 	help
 	  Debugging program which runs a specified command until it exits.
@@ -8,4 +8,4 @@ config BR2_PACKAGE_LTRACE
 	  the dynamic library calls which are called by the executed
 	  process and the signals received by that process.
 
-	  http://packages.debian.org/unstable/utils/ltrace.html
+	  http://ltrace.org
