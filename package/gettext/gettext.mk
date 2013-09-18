@@ -58,5 +58,12 @@ endef
 endif
 endif # GETTEXT_TOOLS = n
 
+# Library lacks +x so strip skips it
+define GETTEXT_FIX_LIBRARY_MODE
+	-chmod +x $(TARGET_DIR)/usr/lib/libintl.so*
+endef
+
+GETTEXT_POST_INSTALL_TARGET_HOOKS += GETTEXT_FIX_LIBRARY_MODE
+
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
