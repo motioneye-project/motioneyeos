@@ -8,7 +8,7 @@ First of all, create a directory under the +package+ directory for
 your software, for example +libfoo+.
 
 Some packages have been grouped by topic in a sub-directory:
-+multimedia+, +x11r7+, +efl+ and +matchbox+. If your package fits in
++x11r7+, +efl+ and +matchbox+. If your package fits in
 one of these categories, then create your package directory in these.
 New subdirectories are discouraged, however.
 
