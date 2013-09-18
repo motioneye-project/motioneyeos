@@ -65,4 +65,12 @@ define PCIUTILS_INSTALL_STAGING_CMDS
 		SHARED=$(PCIUTILS_SHARED) install install-lib
 endef
 
+
+# Library lacks +x so strip skips it
+define PCIUTILS_FIX_LIBRARY_MODE
+	-chmod +x $(TARGET_DIR)/usr/lib/libpci.so*
+endef
+
+PCIUTILS_POST_INSTALL_TARGET_HOOKS += PCIUTILS_FIX_LIBRARY_MODE
+
 $(eval $(generic-package))
