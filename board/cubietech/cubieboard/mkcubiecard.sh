@@ -14,6 +14,7 @@
 
 IMAGES_DIR=$1
 SPL_IMG=$IMAGES_DIR/sunxi-spl.bin
+SPL_UBOOT=$IMAGES_DIR/u-boot-sunxi-with-spl.bin
 UBOOT_IMG=$IMAGES_DIR/u-boot.bin
 UIMAGE=$IMAGES_DIR/uImage
 BIN_BOARD_FILE=$IMAGES_DIR/script.bin
@@ -32,7 +33,7 @@ if [ $EUID -ne 0 ]; then
 	exit 1
 fi
 
-if [ ! -f $SPL_IMG ] ||
+if [ ! -f $SPL_IMG  -a ! -f $SPL_UBOOT ] ||
    [ ! -f $UBOOT_IMG ] ||
    [ ! -f $UIMAGE ] ||
    [ ! -f $BIN_BOARD_FILE ] ||
@@ -113,7 +114,11 @@ umount $D2
 rm -fr $P1
 rm -fr $P2
 
-# write SPL
-dd if=$SPL_IMG of=$DRIVE bs=1024 seek=8
-# write mele u-boot
-dd if=$UBOOT_IMG of=$DRIVE bs=1024 seek=32
+if [ -e $SPL_UBOOT ]; then
+	dd if=$SPL_UBOOT of=$DRIVE bs=1024 seek=8
+else
+	# write SPL
+	dd if=$SPL_IMG of=$DRIVE bs=1024 seek=8
+	# write mele u-boot
+	dd if=$UBOOT_IMG of=$DRIVE bs=1024 seek=32
+fi

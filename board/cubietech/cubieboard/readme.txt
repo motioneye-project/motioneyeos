@@ -1,4 +1,4 @@
-cubieboard
+cubieboard and cubieboard2
 
 -----
 Intro
@@ -13,8 +13,10 @@ For more information, please see http://linux-sunxi.org/FirstSteps
 How to build it
 ---------------
 
-You need to use the cubieboard_defconfig, to do so:
+You need to use the cubieboard_defconfig or cubieboard2_defconfig, to do so:
  * make cubieboard_defconfig
+or
+ * make cubieboard2_defconfig
 
 And to compile:
  * make
@@ -31,6 +33,7 @@ After building, you should obtain this tree:
     +-- script.bin
     +-- sunxi-spl.bin
     +-- u-boot.bin
+    +-- u-boot-sunxi-with-spl.bin (optional)
     `-- uImage
 
 --------------------------
