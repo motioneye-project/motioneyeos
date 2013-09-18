@@ -65,7 +65,7 @@ rules:
   dependencies are selected. For example, the _libgtk2_ package uses
   +select BR2_PACKAGE_LIBGLIB2+ to make sure this library is also
   enabled.
-  The +select+ keyword express the dependency with a backward
+  The +select+ keyword expresses the dependency with a backward
   semantic.
 
 * Use a +depends on+ type of dependency when the user really needs to
@@ -77,7 +77,7 @@ rules:
   dependencies on toolchain options, there should be a +comment+ that
   is displayed when the option is not
   enabled, so that the user knows why the package is not available.
-  The +depends on+ keyword express the dependency with a forward
+  The +depends on+ keyword expresses the dependency with a forward
   semantic.
 
 .Note
