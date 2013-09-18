@@ -21,6 +21,10 @@ QT5WEBKIT_LICENSE = Commercial license
 QT5WEBKIT_REDISTRIBUTE = NO
 endif
 
+ifeq ($(BR2_PACKAGE_QT5BASE_XCB),y)
+QT5WEBKIT_DEPENDENCIES += xlib_libXext xlib_libXrender
+endif
+
 define QT5WEBKIT_CONFIGURE_CMDS
 	(cd $(@D); $(TARGET_MAKE_ENV) $(HOST_DIR)/usr/bin/qmake)
 endef
