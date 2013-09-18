@@ -21,6 +21,14 @@ endef
 LIBICONV_POST_INSTALL_TARGET_HOOKS += LIBICONV_TARGET_REMOVE_PRELOADABLE_LIBS
 LIBICONV_POST_INSTALL_STAGING_HOOKS += LIBICONV_STAGING_REMOVE_PRELOADABLE_LIBS
 
+# Library lacks +x so strip skips it
+define LIBICONV_FIX_LIBRARY_MODE
+	-chmod +x $(TARGET_DIR)/usr/lib/libcharset.so*
+	-chmod +x $(TARGET_DIR)/usr/lib/libiconv.so*
+endef
+
+LIBICONV_POST_INSTALL_TARGET_HOOKS += LIBICONV_FIX_LIBRARY_MODE
+
 $(eval $(autotools-package))
 
 # Configurations where the toolchain supports locales and the libiconv
