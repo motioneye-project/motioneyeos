@@ -12,7 +12,7 @@ OLA_LICENSE_FILES = LICENCE GPL LGPL
 OLA_INSTALL_STAGING = YES
 
 # util-linux provides uuid lib
-OLA_DEPENDENCIES = protobuf util-linux
+OLA_DEPENDENCIES = protobuf util-linux host-bison host-flex
 
 OLA_CONF_OPT = \
 	--disable-gcov \
