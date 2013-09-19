@@ -12,4 +12,8 @@ LUAPOSIX_LICENSE_FILES = COPYING
 LUAPOSIX_DEPENDENCIES = lua host-lua
 LUAPOSIX_CONF_OPT = --libdir="/usr/lib/lua" --datarootdir="/usr/share/lua"
 
+ifeq ($(BR2_PACKAGE_NCURSES),y)
+    LUAPOSIX_DEPENDENCIES += ncurses
+endif
+
 $(eval $(autotools-package))
