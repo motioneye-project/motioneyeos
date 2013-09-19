@@ -128,6 +128,7 @@ comment "C++ support broken in uClibc with locale enabled with gcc 4.2"
 config BR2_INSTALL_OBJC
 	bool "Enable Objective-C support"
 	depends on !BR2_avr32
+	depends on BR2_DEPRECATED
 	help
 	  Enable the support for the Objective-C language in the
 	  cross-compiler, and install the Objective-C runtime to the
@@ -136,6 +137,7 @@ config BR2_INSTALL_OBJC
 config BR2_INSTALL_FORTRAN
 	bool "Enable Fortran support"
 	depends on !BR2_avr32
+	depends on BR2_DEPRECATED
 	select BR2_PACKAGE_LIBMPFR
 	help
 	  Enable the support for the Fortran language in the
