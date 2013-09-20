@@ -17,6 +17,17 @@ generate it.
 It also requires to set the Buildroot settings according to the toolchain ones
 (see xref:external-toolchain-backend[]).
 
+When using an external toolchain, Buildroot generates a wrapper program, that
+passes the appropriate options (according to the configuration) to the
+external toolchain programs. In case you need to debug this wrapper, you can
+set the environment variable BR_DEBUG_WRAPPER to either one of:
+
+* +0+, empty or not set: no debug
+
+* +1+: trace all arguments on a single line
+
+* +2+: trace one argument per line
+
 Using the internal Buildroot toolchain backend
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
