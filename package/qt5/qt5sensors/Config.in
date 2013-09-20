@@ -1,0 +1,10 @@
+config BR2_PACKAGE_QT5SENSORS
+	bool "qt5sensors"
+	select BR2_PACKAGE_QT5BASE
+	help
+	  Qt is a cross-platform application and UI framework for
+	  developers using C++.
+
+	  This package corresponds to the qt5sensors module.
+
+	  http://qt-project.org
