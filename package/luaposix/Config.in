@@ -1,6 +1,5 @@
 config BR2_PACKAGE_LUAPOSIX
 	bool "luaposix"
-	depends on BR2_INET_IPV6
 	select BR2_PACKAGE_LUABITOP if BR2_PACKAGE_LUA
 	# LuaBitOp is already included in LuaJIT
 	help
@@ -13,5 +12,3 @@ config BR2_PACKAGE_LUAPOSIX
 
 	  https://github.com/luaposix/luaposix
 
-comment "luaposix requires a toolchain with IPv6 support"
-	depends on !BR2_INET_IPV6

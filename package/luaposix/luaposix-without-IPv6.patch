@@ -1,0 +1,55 @@
+fix without IPv6
+
+see https://github.com/luaposix/luaposix/pull/117
+
+Signed-off-by: Francois Perrad <francois.perrad@gadz.org>
+
+Index: b/ext/posix/posix.c
+===================================================================
+--- a/ext/posix/posix.c
++++ b/ext/posix/posix.c
+@@ -3637,6 +3637,7 @@
+ 					break;
+ 			}
+ 			break;
++#if defined(IPV6_JOIN_GROUP) && defined(IPV6_LEAVE_GROUP)
+ 		case IPPROTO_IPV6:
+ 			switch(optname) {
+ 				case IPV6_JOIN_GROUP:
+@@ -3650,6 +3651,7 @@
+ 					break;
+ 			}
+ 			break;
++#endif
+ 		case IPPROTO_TCP:
+ 			switch(optname) {
+ 				default:
+@@ -4697,13 +4699,27 @@
+ 	MENTRY( AI_V4MAPPED	);
+ 	MENTRY( AI_ALL		);
+ 	MENTRY( AI_ADDRCONFIG	);
++#endif
+ 
++#ifdef IPV6_JOIN_GROUP
+ 	MENTRY( IPV6_JOIN_GROUP		);
++#endif
++#ifdef IPV6_LEAVE_GROUP
+ 	MENTRY( IPV6_LEAVE_GROUP	);
++#endif
++#ifdef IPV6_MULTICAST_HOPS
+ 	MENTRY( IPV6_MULTICAST_HOPS	);
++#endif
++#ifdef IPV6_MULTICAST_IF
+ 	MENTRY( IPV6_MULTICAST_IF	);
++#endif
++#ifdef IPV6_MULTICAST_LOOP
+ 	MENTRY( IPV6_MULTICAST_LOOP	);
++#endif
++#ifdef IPV6_UNICAST_HOPS
+ 	MENTRY( IPV6_UNICAST_HOPS	);
++#endif
++#ifdef IPV6_V6ONLY
+ 	MENTRY( IPV6_V6ONLY		);
+ #endif
+ #undef MENTRY
+
