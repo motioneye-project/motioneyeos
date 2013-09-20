@@ -14,9 +14,9 @@ Index: b/mkspecs/devices/linux-buildroot-g++/qmake.conf
 ===================================================================
 --- /dev/null
 +++ b/mkspecs/devices/linux-buildroot-g++/qmake.conf
-@@ -0,0 +1,43 @@
+@@ -0,0 +1,44 @@
 +MAKEFILE_GENERATOR      = UNIX
-+CONFIG                  += incremental gdb_dwarf_index
++CONFIG                 += incremental gdb_dwarf_index
 +QMAKE_INCREMENTAL_STYLE = sublib
 +
 +include(../../common/linux.conf)
@@ -41,6 +41,7 @@ Index: b/mkspecs/devices/linux-buildroot-g++/qmake.conf
 +# modifications to linux.conf
 +QMAKE_AR                = $${BUILDROOT_CROSS_COMPILE}ar cqs
 +QMAKE_OBJCOPY           = $${BUILDROOT_CROSS_COMPILE}objcopy
++QMAKE_NM                = $${BUILDROOT_CROSS_COMPILE}nm -P
 +QMAKE_STRIP             = $${BUILDROOT_CROSS_COMPILE}strip
 +
 +#modifications to gcc-base.conf
