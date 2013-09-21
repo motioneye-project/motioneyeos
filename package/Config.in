@@ -910,8 +910,8 @@ endif
 endmenu
 
 menu "Real-Time"
-source "package/xenomai/Config.in"
 source "package/rtai/Config.in"
+source "package/xenomai/Config.in"
 endmenu
 
 menu "Shell and utilities"
