@@ -1,0 +1,29 @@
+The configure bails out when cross-compiling, because it is over-cautious
+about ANSI support in the C compiler. Work around this by disabling the
+bail-out code.
+
+Signed-off-by: Simon Dawson <spdawson@gmail.com>
+
+diff -Nurp a/configure b/configure
+--- a/configure	2013-07-16 10:23:32.000000000 +0100
++++ b/configure	2013-09-22 14:50:07.186953454 +0100
+@@ -3537,9 +3537,7 @@ $as_echo "Solaris: adding -D__EXTENSIONS
+   { $as_echo "$as_me:$LINENO: checking whether the compiler works on ANSI C" >&5
+ $as_echo_n "checking whether the compiler works on ANSI C... " >&6; }
+   if test "$cross_compiling" = yes; then
+-  { { $as_echo "$as_me:$LINENO: error: Couldn't build even a trivial ANSI C program: check CC." >&5
+-$as_echo "$as_me: error: Couldn't build even a trivial ANSI C program: check CC." >&2;}
+-   { (exit 1); exit 1; }; }
++  :
+ else
+   cat >conftest.$ac_ext <<_ACEOF
+ /* confdefs.h.  */
+@@ -8616,7 +8614,7 @@ fi
+ $as_echo "$ac_cv_xpointer" >&6; }
+   if test "$ac_cv_xpointer" != yes; then
+    cat >>confdefs.h <<\_ACEOF
+-#define XPointer char*
++/* #define XPointer char* */
+ _ACEOF
+ 
+   fi
