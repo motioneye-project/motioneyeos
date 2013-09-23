@@ -170,7 +170,7 @@ int main(int argc, char **argv)
 			fprintf(stderr, "Toolchain wrapper executing:");
 			for (i = 0; args[i]; i++)
 				fprintf(stderr, "%s'%s'",
-					(debug == 2)?"\n    ":" ", args[i]);
+					(debug == 2) ? "\n    " : " ", args[i]);
 			fprintf(stderr, "\n");
 		}
 	}
