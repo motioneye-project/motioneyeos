@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-NEARD_VERSION = 0.12
+NEARD_VERSION = 0.13
 NEARD_SOURCE = neard-$(NEARD_VERSION).tar.xz
 NEARD_SITE = $(BR2_KERNEL_MIRROR)/linux/network/nfc
 NEARD_LICENSE = GPLv2
