@@ -203,5 +203,5 @@ different way, using different infrastructures:
    CMake. We cover them through a xref:cmake-package-tutorial[tutorial]
    and xref:cmake-package-reference[reference].
 
-Further formating details: see xref:writing-rules-mk[the writing
+Further formatting details: see xref:writing-rules-mk[the writing
 rules].
