@@ -5,7 +5,6 @@
 ################################################################################
 
 MADPLAY_VERSION = 0.15.2b
-MADPLAY_SOURCE = madplay-$(MADPLAY_VERSION).tar.gz
 MADPLAY_SITE = http://downloads.sourceforge.net/project/mad/madplay/$(MADPLAY_VERSION)
 MADPLAY_LICENSE = GPLv2+
 MADPLAY_LICENSE_FILES = COPYING COPYRIGHT

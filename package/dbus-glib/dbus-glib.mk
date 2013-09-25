@@ -5,7 +5,6 @@
 ################################################################################
 
 DBUS_GLIB_VERSION = 0.98
-DBUS_GLIB_SOURCE = dbus-glib-$(DBUS_GLIB_VERSION).tar.gz
 DBUS_GLIB_SITE = http://dbus.freedesktop.org/releases/dbus-glib/
 DBUS_GLIB_INSTALL_STAGING = YES
 

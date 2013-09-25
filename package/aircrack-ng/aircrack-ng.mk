@@ -5,7 +5,6 @@
 ################################################################################
 
 AIRCRACK_NG_VERSION = 1.1
-AIRCRACK_NG_SOURCE = aircrack-ng-$(AIRCRACK_NG_VERSION).tar.gz
 AIRCRACK_NG_SITE = http://download.aircrack-ng.org
 AIRCRACK_NG_LICENSE = GPLv2+
 AIRCRACK_NG_LICENSE_FILES = LICENSE

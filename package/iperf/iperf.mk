@@ -5,7 +5,6 @@
 ################################################################################
 
 IPERF_VERSION = 2.0.5
-IPERF_SOURCE = iperf-$(IPERF_VERSION).tar.gz
 IPERF_SITE = http://downloads.sourceforge.net/project/iperf
 
 IPERF_CONF_ENV = \

@@ -5,7 +5,6 @@
 ################################################################################
 
 BMON_VERSION = 2.1.0
-BMON_SOURCE = bmon-$(BMON_VERSION).tar.gz
 BMON_SITE = http://distfiles.gentoo.org/distfiles
 
 ifeq ($(BR2_PACKAGE_NCURSES),y)

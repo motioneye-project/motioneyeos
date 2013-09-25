@@ -5,7 +5,6 @@
 ################################################################################
 
 SYNERGY_VERSION = 1.3.1
-SYNERGY_SOURCE = synergy-$(SYNERGY_VERSION).tar.gz
 SYNERGY_SITE = http://downloads.sourceforge.net/project/synergy2/Sources/$(SYNERGY_VERSION)
 
 SYNERGY_AUTORECONF = YES

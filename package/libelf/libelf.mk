@@ -5,7 +5,6 @@
 ################################################################################
 
 LIBELF_VERSION = 0.8.12
-LIBELF_SOURCE = libelf-$(LIBELF_VERSION).tar.gz
 LIBELF_SITE = http://www.mr511.de/software/
 LIBELF_INSTALL_STAGING = YES
 LIBELF_INSTALL_STAGING_OPT = instroot=$(STAGING_DIR) install

@@ -6,7 +6,6 @@
 
 LRZSZ_VERSION = 0.12.20
 LRZSZ_SITE = http://www.ohse.de/uwe/releases
-LRZSZ_SOURCE = lrzsz-$(LRZSZ_VERSION).tar.gz
 
 LRZSR_CONF_OPT = --disable-timesync
 

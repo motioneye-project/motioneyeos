@@ -5,7 +5,6 @@
 ################################################################################
 
 LIBBSD_VERSION         = 0.4.2
-LIBBSD_SOURCE          = libbsd-$(LIBBSD_VERSION).tar.gz
 LIBBSD_SITE            = http://libbsd.freedesktop.org/releases
 LIBBSD_LICENSE         = BSD-3c MIT
 LIBBSD_LICENSE_FILES   = COPYING

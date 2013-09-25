@@ -5,7 +5,6 @@
 ################################################################################
 
 LIBOAUTH_VERSION = 0.9.6
-LIBOAUTH_SOURCE = liboauth-$(LIBOAUTH_VERSION).tar.gz
 LIBOAUTH_SITE = http://liboauth.sourceforge.net/pool
 LIBOAUTH_INSTALL_STAGING = YES
 

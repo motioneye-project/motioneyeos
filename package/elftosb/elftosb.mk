@@ -5,7 +5,6 @@
 ################################################################################
 
 ELFTOSB_VERSION = 10.12.01
-ELFTOSB_SOURCE = elftosb-$(ELFTOSB_VERSION).tar.gz
 ELFTOSB_SITE = http://repository.timesys.com/buildsources/e/elftosb/elftosb-$(ELFTOSB_VERSION)
 
 define HOST_ELFTOSB_BUILD_CMDS

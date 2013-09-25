@@ -12,7 +12,6 @@
 # later version.
 
 AVAHI_VERSION = 0.6.31
-AVAHI_SOURCE = avahi-$(AVAHI_VERSION).tar.gz
 AVAHI_SITE = http://www.avahi.org/download/
 AVAHI_LICENSE = LGPLv2.1+
 AVAHI_LICENSE_FILES = LICENSE

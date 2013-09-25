@@ -5,7 +5,6 @@
 ################################################################################
 
 LIBDNET_VERSION = 1.11
-LIBDNET_SOURCE = libdnet-$(LIBDNET_VERSION).tar.gz
 LIBDNET_SITE = http://downloads.sourceforge.net/project/libdnet/libdnet/libdnet-$(LIBDNET_VERSION)
 LIBDNET_LICENSE = BSD-3c
 LIBDNET_LICENSE_FILES = LICENSE

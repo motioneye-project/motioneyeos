@@ -5,7 +5,6 @@
 ################################################################################
 
 X11VNC_VERSION = 0.9.13
-X11VNC_SOURCE = x11vnc-$(X11VNC_VERSION).tar.gz
 X11VNC_SITE = http://downloads.sourceforge.net/project/libvncserver/x11vnc/$(X11VNC_VERSION)
 # sdl support is not used in x11vnc, but host include / library search paths
 # leak in if host has sdl-config

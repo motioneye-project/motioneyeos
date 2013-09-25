@@ -5,7 +5,6 @@
 ################################################################################
 
 OPKG_VERSION = 635
-OPKG_SOURCE = opkg-$(OPKG_VERSION).tar.gz
 OPKG_SITE = http://opkg.googlecode.com/svn/trunk/
 OPKG_SITE_METHOD = svn
 OPKG_INSTALL_STAGING = YES

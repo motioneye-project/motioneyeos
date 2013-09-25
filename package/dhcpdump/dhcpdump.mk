@@ -6,7 +6,6 @@
 
 DHCPDUMP_VERSION = 1.8
 DHCPDUMP_SITE    = http://www.mavetju.org/download/
-DHCPDUMP_SOURCE  = dhcpdump-$(DHCPDUMP_VERSION).tar.gz
 
 DHCPDUMP_DEPENDENCIES = libpcap
 

@@ -5,7 +5,6 @@
 ################################################################################
 
 LIBICONV_VERSION = 1.14
-LIBICONV_SOURCE = libiconv-$(LIBICONV_VERSION).tar.gz
 LIBICONV_SITE = $(BR2_GNU_MIRROR)/libiconv
 LIBICONV_INSTALL_STAGING = YES
 

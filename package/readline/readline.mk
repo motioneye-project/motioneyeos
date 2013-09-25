@@ -5,7 +5,6 @@
 ################################################################################
 
 READLINE_VERSION = 6.2
-READLINE_SOURCE = readline-$(READLINE_VERSION).tar.gz
 READLINE_SITE = $(BR2_GNU_MIRROR)/readline
 READLINE_INSTALL_STAGING = YES
 READLINE_DEPENDENCIES = ncurses

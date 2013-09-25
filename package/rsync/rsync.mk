@@ -5,7 +5,6 @@
 ################################################################################
 
 RSYNC_VERSION = 3.1.0
-RSYNC_SOURCE = rsync-$(RSYNC_VERSION).tar.gz
 RSYNC_SITE = http://rsync.samba.org/ftp/rsync/src
 RSYNC_LICENSE = GPLv3+
 RSYNC_LICENSE_FILES = COPYING
