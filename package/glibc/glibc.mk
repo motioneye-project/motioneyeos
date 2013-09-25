@@ -43,6 +43,16 @@ ifeq ($(BR2_ARM_INSTRUCTIONS_THUMB),y)
 GLIBC_EXTRA_CFLAGS += -marm
 endif
 
+# MIPS64 defaults to n32 so pass the correct -mabi if
+# we are using a different ABI. OABI32 is also used
+# in MIPS so we pass -mabi=32 in this case as well
+# even though it's not strictly necessary.
+ifeq ($(BR2_MIPS_NABI64),y)
+GLIBC_EXTRA_CFLAGS += -mabi=64
+else ifeq ($(BR2_MIPS_OABI32),y)
+GLIBC_EXTRA_CFLAGS += -mabi=32
+endif
+
 # Even though we use the autotools-package infrastructure, we have to
 # override the default configure commands for several reasons:
 #
