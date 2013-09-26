@@ -15,10 +15,14 @@ LIBSSH2_CONF_OPT = --disable-examples-build
 # Only select openssl if libgcrypt is not selected
 ifeq ($(BR2_PACKAGE_LIBGCRYPT),y)
 LIBSSH2_DEPENDENCIES += libgcrypt
-LIBSSH2_CONF_OPT += --with-libgcrypt --without-openssl
+LIBSSH2_CONF_OPT += --with-libgcrypt \
+	--with-libgcrypt-prefix=$(STAGING_DIR)/usr \
+	--without-openssl
 else
 LIBSSH2_DEPENDENCIES += openssl
-LIBSSH2_CONF_OPT += --with-openssl --without-libgcrypt
+LIBSSH2_CONF_OPT += --with-openssl \
+	--with-libssl-prefix=$(STAGING_DIR)/usr \
+	--without-libgcrypt
 endif
 
 # Add zlib support if enabled
