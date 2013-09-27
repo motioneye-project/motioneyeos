@@ -327,10 +327,6 @@ config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_VPX
 	help
 	  VP8 plugin
 
-config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_VPX
-	bool "vpx (webm)"
-	select BR2_PACKAGE_LIBVPX
-
 config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_WAVPACK
 	bool "wavpack (*.wv audio)"
 	select BR2_PACKAGE_WAVPACK
