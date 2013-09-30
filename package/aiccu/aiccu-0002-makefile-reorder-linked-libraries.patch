@@ -1,0 +1,24 @@
+Makefile: changed LDFLAGS contents and order on the compile line for --static
+
+Signed-off-by: Michael Rommel <rommel@layer-7.net>
+
+--- aiccu_20070115.orig/unix-console/Makefile	2007-01-15 12:04:27.000000000 +0100
++++ aiccu_20070115/unix-console/Makefile	2013-09-29 22:54:42.742963861 +0200
+@@ -42,7 +42,7 @@ CFLAGS	+= -D AICCU_CONSOLE
+ # Currently defaultly builds only on Linux, but other platforms might easily also support it
+ ifeq ($(shell uname | grep -c "Linux"),1)
+ CFLAGS	+= -D AICCU_GNUTLS
+-LDFLAGS += -lgnutls
++LDFLAGS += -lgnutls -lhogweed -lnettle -lgmp -lz
+ endif
+ 
+ # Linux
+@@ -144,7 +144,7 @@ endif
+ all: aiccu
+ 
+ aiccu:	$(OBJS) ${SRCS} ${INCS}
+-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $(OBJS)
++	$(CC) $(CFLAGS) -o $@ $(OBJS) $(LDFLAGS)
+ ifeq ($(shell echo $(CFLAGS) | grep -c "DEBUG"),0)
+ ifeq ($(shell echo "$(RPM_OPT_FLAGS)" | wc -c),1)
+ 	strip $@
