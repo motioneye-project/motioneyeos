@@ -15,6 +15,11 @@ config BR2_PACKAGE_GNUPG
 
 if BR2_PACKAGE_GNUPG
 
+config BR2_PACKAGE_GNUPG_RSA
+	bool "RSA support"
+	help
+	  Support for RSA public key algorithm
+
 config BR2_PACKAGE_GNUPG_GPGV
 	bool "gpgv"
 	help

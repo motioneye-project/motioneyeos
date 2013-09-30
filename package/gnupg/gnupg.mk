@@ -31,6 +31,12 @@ else
 GNUPG_CONF_OPT += --without-readline
 endif
 
+ifeq ($(BR2_PACKAGE_GNUPG_RSA),y)
+GNUPG_CONF_OPT += --enable-rsa
+else
+GNUPG_CONF_OPT += --disable-rsa
+endif
+
 ifneq ($(BR2_PACKAGE_GNUPG_GPGV),y)
 define GNUPG_REMOVE_GPGV
 	rm -f $(TARGET_DIR)/usr/bin/gpgv \
