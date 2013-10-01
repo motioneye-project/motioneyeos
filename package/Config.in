@@ -923,6 +923,7 @@ source "package/at/Config.in"
 if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 source "package/bash/Config.in"
 source "package/dash/Config.in"
+source "package/zsh/Config.in"
 endif
 source "package/dialog/Config.in"
 source "package/dtach/Config.in"
