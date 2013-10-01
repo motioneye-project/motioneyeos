@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-NGIRCD_VERSION = 17.1
+NGIRCD_VERSION = 20.3
 NGIRCD_SITE = ftp://ftp.berlios.de/pub/ngircd/
 NGIRCD_DEPENDENCIES = zlib
 
