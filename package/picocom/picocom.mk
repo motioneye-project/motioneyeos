@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-PICOCOM_VERSION = 1.6
+PICOCOM_VERSION = 1.7
 PICOCOM_SITE    = http://picocom.googlecode.com/files/
 
 define PICOCOM_BUILD_CMDS
