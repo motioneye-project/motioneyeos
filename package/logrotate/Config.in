@@ -2,6 +2,7 @@ config BR2_PACKAGE_LOGROTATE
 	bool "logrotate"
 	select BR2_PACKAGE_POPT
 	depends on BR2_USE_WCHAR
+	depends on BR2_USE_MMU # fork()
 	help
 	  A simple program to rotate logs.
 
