@@ -11,10 +11,18 @@ AICCU_LICENSE = SixXS License, concise redistribution license
 AICCU_LICENSE_FILES = doc/LICENSE
 AICCU_DEPENDENCIES = gnutls
 
+AICCU_LFDLAGS = $(TARGET_LDFLAGS)
+
+# aiccu forgets to link with gnutls' dependencies breaking the build when
+# linking statically
+ifeq ($(BR2_PREFER_STATIC_LIB),y)
+AICCU_LDFLAGS += $(shell $(PKG_CONFIG_HOST_BINARY) --static --libs gnutls)
+endif
+
 # dummy RPM_OPT_FLAGS to disable stripping
 define AICCU_BUILD_CMDS
-	$(TARGET_CONFIGURE_OPTS) $(MAKE) CC="$(TARGET_CC)" \
-		RPM_OPT_FLAGS=1 -C $(@D)/unix-console all
+	$(TARGET_CONFIGURE_OPTS) LDFLAGS="$(AICCU_LDFLAGS)" $(MAKE) \
+		CC="$(TARGET_CC)" RPM_OPT_FLAGS=1 -C $(@D)/unix-console all
 endef
 
 define AICCU_INSTALL_TARGET_CMDS
