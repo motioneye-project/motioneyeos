@@ -91,6 +91,30 @@ EXTRAMAKEARGS = O=$(O)
 NEED_WRAPPER=y
 endif
 
+# bash prints the name of the directory on 'cd <dir>' if CDPATH is
+# set, so unset it here to not cause problems. Notice that the export
+# line doesn't affect the environment of $(shell ..) calls, so
+# explictly throw away any output from 'cd' here.
+export CDPATH:=
+BASE_DIR := $(shell mkdir -p $(O) && cd $(O) >/dev/null && pwd)
+$(if $(BASE_DIR),, $(error output directory "$(O)" does not exist))
+
+BUILD_DIR:=$(BASE_DIR)/build
+STAMP_DIR:=$(BASE_DIR)/stamps
+BINARIES_DIR:=$(BASE_DIR)/images
+TARGET_DIR:=$(BASE_DIR)/target
+# initial definition so that 'make clean' works for most users, even without
+# .config. HOST_DIR will be overwritten later when .config is included.
+HOST_DIR:=$(BASE_DIR)/host
+
+LEGAL_INFO_DIR=$(BASE_DIR)/legal-info
+REDIST_SOURCES_DIR=$(LEGAL_INFO_DIR)/sources
+LICENSE_FILES_DIR=$(LEGAL_INFO_DIR)/licenses
+LEGAL_MANIFEST_CSV=$(LEGAL_INFO_DIR)/manifest.csv
+LEGAL_LICENSES_TXT=$(LEGAL_INFO_DIR)/licenses.txt
+LEGAL_WARNINGS=$(LEGAL_INFO_DIR)/.warnings
+LEGAL_REPORT=$(LEGAL_INFO_DIR)/README
+
 BUILDROOT_CONFIG=$(CONFIG_DIR)/.config
 
 # Pull in the user's configuration file
@@ -184,17 +208,6 @@ unexport DESTDIR
 # Causes breakage with packages that needs host-ruby
 unexport RUBYOPT
 
-# bash prints the name of the directory on 'cd <dir>' if CDPATH is
-# set, so unset it here to not cause problems. Notice that the export
-# line doesn't affect the environment of $(shell ..) calls, so
-# explictly throw away any output from 'cd' here.
-export CDPATH:=
-BASE_DIR := $(shell mkdir -p $(O) && cd $(O) >/dev/null && pwd)
-$(if $(BASE_DIR),, $(error output directory "$(O)" does not exist))
-
-BUILD_DIR:=$(BASE_DIR)/build
-
-
 ifeq ($(BR2_HAVE_DOT_CONFIG),y)
 
 ################################################################################
@@ -262,20 +275,7 @@ HOST_DIR:=$(call qstrip,$(BR2_HOST_DIR))
 # locales to generate
 GENERATE_LOCALE=$(call qstrip,$(BR2_GENERATE_LOCALE))
 
-# stamp (dependency) files go here
-STAMP_DIR:=$(BASE_DIR)/stamps
-
-BINARIES_DIR:=$(BASE_DIR)/images
-TARGET_DIR:=$(BASE_DIR)/target
 TARGET_SKELETON=$(TOPDIR)/system/skeleton
-
-LEGAL_INFO_DIR=$(BASE_DIR)/legal-info
-REDIST_SOURCES_DIR=$(LEGAL_INFO_DIR)/sources
-LICENSE_FILES_DIR=$(LEGAL_INFO_DIR)/licenses
-LEGAL_MANIFEST_CSV=$(LEGAL_INFO_DIR)/manifest.csv
-LEGAL_LICENSES_TXT=$(LEGAL_INFO_DIR)/licenses.txt
-LEGAL_WARNINGS=$(LEGAL_INFO_DIR)/.warnings
-LEGAL_REPORT=$(LEGAL_INFO_DIR)/README
 
 # Location of a file giving a big fat warning that output/target
 # should not be used as the root filesystem.
