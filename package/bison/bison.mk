@@ -11,6 +11,7 @@ BISON_LICENSE = GPLv3+
 BISON_LICENSE_FILES = COPYING
 BISON_CONF_ENV = ac_cv_path_M4=/usr/bin/m4
 BISON_DEPENDENCIES = m4
+BISON_AUTORECONF = YES
 
 define BISON_DISABLE_EXAMPLES
 	echo 'all install:' > $(@D)/examples/Makefile
