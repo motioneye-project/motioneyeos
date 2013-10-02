@@ -5,9 +5,9 @@
 ################################################################################
 
 SETSERIAL_VERSION            = 2.17
-SETSERIAL_PATCH              = setserial_2.17-45.2.diff.gz
+SETSERIAL_PATCH              = setserial_2.17-45.3.diff.gz
 SETSERIAL_SOURCE             = setserial_$(SETSERIAL_VERSION).orig.tar.gz
-SETSERIAL_SITE               = $(BR2_DEBIAN_MIRROR)/debian/pool/main/s/setserial/
+SETSERIAL_SITE               = http://snapshot.debian.org/archive/debian/20131001T214925Z/pool/main/s/setserial/
 
 define SETSERIAL_APPLY_DEBIAN_PATCHES
 	# Touching gorhack.h is needed for the Debian patch 18 to work
