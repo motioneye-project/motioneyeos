@@ -1,0 +1,13 @@
+config BR2_PACKAGE_LIBCGROUP
+	bool "libcgroup"
+	depends on BR2_INSTALL_LIBSTDCPP
+	# libcgroup uses <fts.h> which is not included by default in uClibc
+	depends on BR2_TOOLCHAIN_USES_GLIBC
+	help
+	  libcgroup is a library that abstracts the control
+	  group file system in Linux.
+
+	  http://libcg.sourceforge.net/
+
+comment "libcgroup requires a glibc toolchain with C++ support"
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_USES_GLIBC
