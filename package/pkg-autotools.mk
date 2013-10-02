@@ -70,12 +70,19 @@ ifndef $(2)_MAKE
  endif
 endif
 
+ifndef $(2)_AUTORECONF
+ ifdef $(3)_AUTORECONF
+  $(2)_AUTORECONF = $($(3)_AUTORECONF)
+ else
+  $(2)_AUTORECONF ?= NO
+ endif
+endif
+
 $(2)_CONF_ENV			?=
 $(2)_CONF_OPT			?=
 $(2)_MAKE_ENV			?=
 $(2)_MAKE_OPT			?=
-$(2)_AUTORECONF			?= NO
-$(2)_AUTORECONF_OPT		?=
+$(2)_AUTORECONF_OPT		?= $($(3)_AUTORECONF_OPT)
 $(2)_INSTALL_OPT                ?= install
 $(2)_INSTALL_STAGING_OPT	?= DESTDIR=$$(STAGING_DIR) install
 $(2)_INSTALL_TARGET_OPT		?= DESTDIR=$$(TARGET_DIR)  install
