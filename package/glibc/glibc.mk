@@ -28,9 +28,8 @@ ifeq ($(BR2_TOOLCHAIN_BUILDROOT_EGLIBC),y)
 GLIBC_DEPENDENCIES += host-gawk
 endif
 
-# Before (e)glibc is built, we must have the second stage
-# cross-compiler, for some gcc versions
-glibc-build: $(if $(BR2_TOOLCHAIN_NEEDS_THREE_STAGE_BUILD),host-gcc-intermediate)
+# Before (e)glibc is built, we must have the second stage cross-compiler
+eglibc-build: host-gcc-intermediate
 
 GLIBC_SUBDIR = build
 

@@ -3,12 +3,6 @@ comment "GCC Options"
 config BR2_GCC_NEEDS_MPC
 	bool
 
-# Until gcc 4.7, a three stage build process was needed when using
-# NPTL. This hidden option tells whether gcc is a version that
-# requires this three stage build process.
-config BR2_GCC_VERSION_NEEDS_THREE_STAGE_BUILD
-	bool
-
 choice
 	prompt "GCC compiler Version"
 	default BR2_GCC_VERSION_4_4_X if BR2_sparc_sparchfleon || BR2_sparc_sparchfleonv8 || BR2_sparc_sparcsfleon || BR2_sparc_sparcsfleonv8
@@ -22,13 +16,11 @@ choice
 	config BR2_GCC_VERSION_4_2_2_AVR32_2_1_5
 		depends on BR2_avr32
 		bool "gcc 4.2.2-avr32-2.1.5"
-		select BR2_GCC_VERSION_NEEDS_THREE_STAGE_BUILD
 
 	config BR2_GCC_VERSION_4_3_X
 		depends on !BR2_arc && !BR2_avr32 && !BR2_sparc_sparchfleon && !BR2_sparc_sparchfleonv8 && !BR2_sparc_sparcsfleon && !BR2_sparc_sparcsfleonv8 && !BR2_cortex_a5 && !BR2_cortex_a7 && !BR2_cortex_a8 && !BR2_cortex_a9 && !BR2_cortex_a15 && !BR2_x86_atom && !BR2_powerpc_e300c2 && !BR2_powerpc_e300c3 && !BR2_powerpc_e500mc && !BR2_powerpc_464 && !BR2_powerpc_464fp && !BR2_powerpc_476 && !BR2_powerpc_476fp && !BR2_fa526 && !BR2_pj4
 		depends on !BR2_ARM_EABIHF
 		bool "gcc 4.3.x"
-		select BR2_GCC_VERSION_NEEDS_THREE_STAGE_BUILD
 
 	config BR2_GCC_VERSION_4_4_X
 		depends on !BR2_arc && !BR2_avr32 && !BR2_cortex_a5 && !BR2_cortex_a7 && !BR2_cortex_a15 && !BR2_x86_atom && !BR2_powerpc_476 && !BR2_powerpc_476fp && !BR2_fa526 && !BR2_pj4
@@ -37,7 +29,6 @@ choice
 		depends on !BR2_ARM_EABIHF
 		# VFPv4 support appeared in gcc 4.5
 		depends on !BR2_ARM_FPU_VFPV4 && !BR2_ARM_FPU_VFPV4D16
-		select BR2_GCC_VERSION_NEEDS_THREE_STAGE_BUILD
 
 	config BR2_GCC_VERSION_4_5_X
 		depends on !BR2_arc && !BR2_avr32 && !BR2_cortex_a7 && !BR2_cortex_a15 && !BR2_sparc_sparchfleon && !BR2_sparc_sparchfleonv8 && !BR2_sparc_sparcsfleon && !BR2_sparc_sparcsfleonv8 && !BR2_fa526 && !BR2_pj4
@@ -45,13 +36,11 @@ choice
 		# ARM EABIhf support appeared in gcc 4.6
 		depends on !BR2_ARM_EABIHF
 		bool "gcc 4.5.x"
-		select BR2_GCC_VERSION_NEEDS_THREE_STAGE_BUILD
 
 	config BR2_GCC_VERSION_4_6_X
 		depends on !BR2_arc && !BR2_avr32 && !BR2_bfin && !BR2_cortex_a7 && !BR2_sparc_sparchfleon && !BR2_sparc_sparchfleonv8 && !BR2_sparc_sparcsfleon && !BR2_sparc_sparcsfleonv8 && !BR2_pj4
 		select BR2_GCC_NEEDS_MPC
 		bool "gcc 4.6.x"
-		select BR2_GCC_VERSION_NEEDS_THREE_STAGE_BUILD
 
 	config BR2_GCC_VERSION_4_7_X
 		depends on !BR2_arc && !BR2_avr32 && !BR2_bfin && !BR2_sparc_sparchfleon && !BR2_sparc_sparchfleonv8 && !BR2_sparc_sparcsfleon && !BR2_sparc_sparcsfleonv8 && !BR2_pj4

@@ -22,9 +22,8 @@ UCLIBC_INSTALL_STAGING = YES
 # cross-compiler and the kernel headers
 UCLIBC_DEPENDENCIES = host-gcc-initial linux-headers
 
-# Before uClibc is built, we must have the second stage
-# cross-compiler, for some gcc versions, and when NPTL is used.
-uclibc-build: $(if $(BR2_TOOLCHAIN_NEEDS_THREE_STAGE_BUILD),host-gcc-intermediate)
+# Before uClibc is built, we must have the second stage cross-compiler
+uclibc-build: host-gcc-intermediate
 
 # specifying UCLIBC_CONFIG_FILE on the command-line overrides the .config
 # setting.
