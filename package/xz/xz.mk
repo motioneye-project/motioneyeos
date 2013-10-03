@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-XZ_VERSION = 5.0.4
+XZ_VERSION = 5.0.5
 XZ_SOURCE = xz-$(XZ_VERSION).tar.bz2
 XZ_SITE = http://tukaani.org/xz/
 XZ_INSTALL_STAGING = YES
