@@ -1,5 +1,7 @@
 config BR2_PACKAGE_NANO
 	bool "nano"
+	# full version uses fork()
+	select BR2_PACKAGE_NANO_TINY if !BR2_USE_MMU
 	select BR2_PACKAGE_NCURSES
 	help
 	  A nice ncurses-based editor. Started out as a clone of pico.
