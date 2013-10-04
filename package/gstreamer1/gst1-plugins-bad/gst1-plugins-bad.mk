@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-GST1_PLUGINS_BAD_VERSION = 1.0.10
+GST1_PLUGINS_BAD_VERSION = 1.2.0
 GST1_PLUGINS_BAD_SOURCE = gst-plugins-bad-$(GST1_PLUGINS_BAD_VERSION).tar.xz
 GST1_PLUGINS_BAD_SITE = http://gstreamer.freedesktop.org/src/gst-plugins-bad
 GST1_PLUGINS_BAD_LICENSE_FILES = COPYING COPYING.LIB
@@ -90,6 +90,12 @@ GST1_PLUGINS_BAD_DEPENDENCIES += orc
 GST1_PLUGINS_BAD_CONF_OPT += --enable-orc
 endif
 
+ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_ACCURIP),y)
+GST1_PLUGINS_BAD_CONF_OPT += --enable-accurip
+else
+GST1_PLUGINS_BAD_CONF_OPT += --disable-accurip
+endif
+
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_ADPCMDEC),y)
 GST1_PLUGINS_BAD_CONF_OPT += --enable-adpcmdec
 else
@@ -112,6 +118,12 @@ ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_ASFMUX),y)
 GST1_PLUGINS_BAD_CONF_OPT += --enable-asfmux
 else
 GST1_PLUGINS_BAD_CONF_OPT += --disable-asfmux
+endif
+
+ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_AUDIOFXBAD),y)
+GST1_PLUGINS_BAD_CONF_OPT += --enable-audiofxbad
+else
+GST1_PLUGINS_BAD_CONF_OPT += --disable-audiofxbad
 endif
 
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_AUDIOVISUALIZERS),y)
@@ -167,12 +179,6 @@ ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_DEBUGUTILS),y)
 GST1_PLUGINS_BAD_CONF_OPT += --enable-debugutils
 else
 GST1_PLUGINS_BAD_CONF_OPT += --disable-debugutils
-endif
-
-ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_DTMF),y)
-GST1_PLUGINS_BAD_CONF_OPT += --enable-dtmf
-else
-GST1_PLUGINS_BAD_CONF_OPT += --disable-dtmf
 endif
 
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_DVBSUBOVERLAY),y)
@@ -241,12 +247,6 @@ else
 GST1_PLUGINS_BAD_CONF_OPT += --disable-hdvparse
 endif
 
-ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_HLS),y)
-GST1_PLUGINS_BAD_CONF_OPT += --enable-hls
-else
-GST1_PLUGINS_BAD_CONF_OPT += --disable-hls
-endif
-
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_ID3TAG),y)
 GST1_PLUGINS_BAD_CONF_OPT += --enable-id3tag
 else
@@ -271,6 +271,12 @@ else
 GST1_PLUGINS_BAD_CONF_OPT += --disable-ivfparse
 endif
 
+ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_IVTC),y)
+GST1_PLUGINS_BAD_CONF_OPT += --enable-ivtc
+else
+GST1_PLUGINS_BAD_CONF_OPT += --disable-ivtc
+endif
+
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_JP2KDECIMATOR),y)
 GST1_PLUGINS_BAD_CONF_OPT += --enable-jp2kdecimator
 else
@@ -293,6 +299,12 @@ ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_LIVEADDER),y)
 GST1_PLUGINS_BAD_CONF_OPT += --enable-liveadder
 else
 GST1_PLUGINS_BAD_CONF_OPT += --disable-liveadder
+endif
+
+ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_MIDI),y)
+GST1_PLUGINS_BAD_CONF_OPT += --enable-midi
+else
+GST1_PLUGINS_BAD_CONF_OPT += --disable-midi
 endif
 
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_MPEGDEMUX),y)
@@ -373,24 +385,6 @@ ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_REMOVESILENCE),y)
 GST1_PLUGINS_BAD_CONF_OPT += --enable-removesilence
 else
 GST1_PLUGINS_BAD_CONF_OPT += --disable-removesilence
-endif
-
-ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_RTPMUX),y)
-GST1_PLUGINS_BAD_CONF_OPT += --enable-rtpmux
-else
-GST1_PLUGINS_BAD_CONF_OPT += --disable-rtpmux
-endif
-
-ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_RTPVP8),y)
-GST1_PLUGINS_BAD_CONF_OPT += --enable-rtpvp8
-else
-GST1_PLUGINS_BAD_CONF_OPT += --disable-rtpvp8
-endif
-
-ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_SCALETEMPO),y)
-GST1_PLUGINS_BAD_CONF_OPT += --enable-scaletempo
-else
-GST1_PLUGINS_BAD_CONF_OPT += --disable-scaletempo
 endif
 
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_SDI),y)
@@ -483,6 +477,12 @@ else
 GST1_PLUGINS_BAD_CONF_OPT += --disable-y4m
 endif
 
+ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_YADIF),y)
+GST1_PLUGINS_BAD_CONF_OPT += --enable-yadif
+else
+GST1_PLUGINS_BAD_CONF_OPT += --disable-yadif
+endif
+
 # Plugins with dependencies
 
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_SHM),y)
@@ -518,13 +518,6 @@ else
 GST1_PLUGINS_BAD_CONF_OPT += --disable-cdaudio
 endif
 
-ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_CELT),y)
-GST1_PLUGINS_BAD_CONF_OPT += --enable-celt
-GST1_PLUGINS_BAD_DEPENDENCIES += celt051
-else
-GST1_PLUGINS_BAD_CONF_OPT += --disable-celt
-endif
-
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_CURL),y)
 GST1_PLUGINS_BAD_CONF_OPT += --enable-curl
 GST1_PLUGINS_BAD_DEPENDENCIES += libcurl
@@ -532,10 +525,24 @@ else
 GST1_PLUGINS_BAD_CONF_OPT += --disable-curl
 endif
 
+ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_DASH),y)
+GST1_PLUGINS_BAD_CONF_OPT += --enable-dash
+GST1_PLUGINS_BAD_DEPENDENCIES += libxml2
+else
+GST1_PLUGINS_BAD_CONF_OPT += --disable-dash
+endif
+
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_DECKLINK),y)
 GST1_PLUGINS_BAD_CONF_OPT += --enable-decklink
 else
 GST1_PLUGINS_BAD_CONF_OPT += --disable-decklink
+endif
+
+ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_WEBP),y)
+GST1_PLUGINS_BAD_CONF_OPT += --enable-webp
+GST1_PLUGINS_BAD_DEPENDENCIES += webp
+else
+GST1_PLUGINS_BAD_CONF_OPT += --disable-webp
 endif
 
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_DIRECTFB),y)
@@ -660,6 +667,13 @@ GST1_PLUGINS_BAD_CONF_OPT += --enable-dvb
 GST1_PLUGINS_BAD_DEPENDENCIES += dvb-apps
 else
 GST1_PLUGINS_BAD_CONF_OPT += --disable-dvb
+endif
+
+ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_HLS),y)
+GST1_PLUGINS_BAD_CONF_OPT += --enable-hls
+GST1_PLUGINS_BAD_DEPENDENCIES += gnutls
+else
+GST1_PLUGINS_BAD_CONF_OPT += --disable-hls
 endif
 
 # Add GPL license if GPL licensed plugins enabled.

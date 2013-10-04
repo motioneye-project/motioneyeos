@@ -12,6 +12,11 @@ if BR2_PACKAGE_GST1_PLUGINS_BAD
 
 comment "dependency-less plugins"
 
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_ACCURIP
+	bool "accurip"
+	help
+	  Accurip plugin
+
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_ADPCMDEC
 	bool "adpcmdec"
 	help
@@ -31,6 +36,11 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_ASFMUX
 	bool "asfmux"
 	help
 	  ASF Muxer Plugin
+
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_AUDIOFXBAD
+	bool "audiofxbad"
+	help
+	  Audio filters plugin
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_AUDIOVISUALIZERS
 	bool "audiovisualizers"
@@ -73,15 +83,10 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_DEBUGUTILS
 	help
 	  Collection of elements that may or may not be useful for debugging
 
-config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_DTMF
-	bool "dtmf"
-	help
-	  DTMF plugins
-
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_DVBSUBOVERLAY
 	bool "dvdsuboverlay"
 	help
-	  DTMF plugins
+	  DVB subtitle renderer plugin
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_DVDSPU
 	bool "dvdspu"
@@ -129,9 +134,6 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_GDP
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_HDVPARSE
 	bool "hdvparse"
 
-config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_HLS
-	bool "hls"
-
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_ID3TAG
 	bool "id3tag"
 	help
@@ -150,6 +152,11 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_INTERLACE
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_IVFPARSE
 	bool "ivfparse"
 
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_IVTC
+	bool "ivtc"
+	help
+	  Inverse Telecine plugin
+
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_JP2KDECIMATOR
 	bool "jp2kdecimator"
 
@@ -167,6 +174,11 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_LIVEADDER
 	bool "liveadder"
 	help
 	  Adds multiple live discontinuous streams
+
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_MIDI
+	bool "midi"
+	help
+	  MIDI plugin
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_MPEGDEMUX
 	bool "mpegdemux"
@@ -224,21 +236,6 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_REMOVESILENCE
 	bool "removesilence"
 	help
 	  Removes silence from an audio stream
-
-config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_RTPMUX
-	bool "rtpmux"
-	help
-	  RTP Muxer plugins
-
-config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_RTPVP8
-	bool "rtpvp8"
-	help
-	  rtpvp8
-
-config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_SCALETEMPO
-	bool "scaletempo"
-	help
-	  Scale audio tempo in sync with playback rate
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_SDI
 	bool "sdi"
@@ -303,6 +300,11 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_Y4M
 	help
 	  Demuxes/decodes YUV4MPEG streams
 
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_YADIF
+	bool "yadif"
+	help
+	  YADIF deinterlacing filter
+
 comment "plugins with external dependencies"
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_SHM
@@ -327,17 +329,17 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_CDAUDIO
 	bool "cdaudio"
 	select BR2_PACKAGE_LIBCDAUDIO
 
-config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_CELT
-	bool "celt"
-	select BR2_PACKAGE_CELT051
-	help
-	  CELT plugin library
-
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_CURL
 	bool "curl"
 	select BR2_PACKAGE_LIBCURL
 	help
 	  libcurl-based elements
+
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_DASH
+	bool "dash"
+	select BR2_PACKAGE_LIBXML2
+	help
+	  DASH demuxer plugin
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_DECKLINK
 	depends on BR2_INSTALL_LIBSTDCPP
@@ -361,6 +363,12 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_WAYLAND
 	help
 	  Wayland Video Sink
 
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_WEBP
+	bool "webp"
+	select BR2_PACKAGE_WEBP
+	help
+	  Webp image format plugin
+
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_FAAD
 	bool "faad"
 	select BR2_PACKAGE_FAAD2
@@ -381,7 +389,7 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_LIBMMS
 	  Microsoft Multi Media Server streaming protocol support
 
 comment "libmms requires a toolchain with WCHAR and threading support"
-	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREAD
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_MPEG2ENC
 	bool "mpeg2enc"
@@ -456,5 +464,11 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_DVB
 	select BR2_PACKAGE_DVB_APPS
 	help
 	  DVB elements
+
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_HLS
+	bool "hls"
+	select BR2_PACKAGE_GNUTLS
+	help
+	  Fragmented streaming plugins
 
 endif
