@@ -22,7 +22,6 @@ endef
 
 LIBFFI_POST_INSTALL_STAGING_HOOKS += LIBFFI_MOVE_STAGING_HEADERS
 
-HOST_LIBFFI_AUTORECONF = YES
 
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))

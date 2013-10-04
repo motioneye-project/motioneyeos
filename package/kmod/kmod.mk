@@ -13,7 +13,6 @@ HOST_KMOD_DEPENDENCIES = host-pkgconf
 
 # Some patches are touching configure.ac
 KMOD_AUTORECONF = YES
-HOST_KMOD_AUTORECONF = YES
 
 # license info for libkmod only, conditionally add more below
 KMOD_LICENSE = LGPLv2.1+

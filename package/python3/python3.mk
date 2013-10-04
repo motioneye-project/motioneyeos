@@ -31,7 +31,6 @@ HOST_PYTHON3_MAKE_ENV = \
 	PYTHON_MODULES_INCLUDE=$(HOST_DIR)/usr/include \
 	PYTHON_MODULES_LIB="$(HOST_DIR)/lib $(HOST_DIR)/usr/lib"
 
-HOST_PYTHON3_AUTORECONF = YES
 
 define HOST_PYTHON3_CONFIGURE_CMDS
 	(cd $(@D) && rm -rf config.cache; \
