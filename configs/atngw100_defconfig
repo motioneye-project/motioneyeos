@@ -3,7 +3,8 @@ BR2_avr32=y
 
 # Lock down kernel headers version, to match the kernel version used
 # below.
-BR2_KERNEL_HEADERS_3_9=y
+BR2_KERNEL_HEADERS_VERSION=y
+BR2_DEFAULT_KERNEL_VERSION="3.9.11"
 
 # Filesystems
 BR2_TARGET_ROOTFS_JFFS2=y
