@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-GST1_PLUGINS_GOOD_VERSION = 1.0.10
+GST1_PLUGINS_GOOD_VERSION = 1.2.0
 GST1_PLUGINS_GOOD_SOURCE = gst-plugins-good-$(GST1_PLUGINS_GOOD_VERSION).tar.xz
 GST1_PLUGINS_GOOD_SITE = http://gstreamer.freedesktop.org/src/gst-plugins-good
 GST1_PLUGINS_GOOD_LICENSE_FILES = COPYING
@@ -99,6 +99,12 @@ ifeq ($(BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_DEINTERLACE),y)
 GST1_PLUGINS_GOOD_CONF_OPT += --enable-deinterlace
 else
 GST1_PLUGINS_GOOD_CONF_OPT += --disable-deinterlace
+endif
+
+ifeq ($(BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_DTMF),y)
+GST1_PLUGINS_GOOD_CONF_OPT += --enable-dtmf
+else
+GST1_PLUGINS_GOOD_CONF_OPT += --disable-dtmf
 endif
 
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_EFFECTV),y)
@@ -378,6 +384,13 @@ GST1_PLUGINS_GOOD_CONF_OPT += --enable-speex
 GST1_PLUGINS_GOOD_DEPENDENCIES += speex
 else
 GST1_PLUGINS_GOOD_CONF_OPT += --disable-speex
+endif
+
+ifeq ($(BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_TAGLIB),y)
+GST1_PLUGINS_GOOD_CONF_OPT += --enable-taglib
+GST1_PLUGINS_GOOD_DEPENDENCIES += taglib
+else
+GST1_PLUGINS_GOOD_CONF_OPT += --disable-taglib
 endif
 
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_VPX),y)

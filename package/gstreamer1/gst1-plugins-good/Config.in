@@ -91,6 +91,11 @@ config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_DEINTERLACE
 	help
 	  Deinterlacer
 
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_DTMF
+	bool "dtmf"
+	help
+	  DTMF plugin
+
 config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_EFFECTV
 	bool "effectv"
 	help
@@ -211,13 +216,9 @@ config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_SPECTRUM
 	  Run an FFT on the audio signal, output spectrum data
 
 config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_UDP
-	depends on BR2_INET_IPV6
 	bool "udp"
 	help
 	  transfer data via UDP
-
-comment "udp requires a toolchain with IPv6 support"
-	depends on !BR2_INET_IPV6
 
 config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_VIDEOBOX
 	bool "videobox"
@@ -320,6 +321,16 @@ config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_SPEEX
 	select BR2_PACKAGE_SPEEX
 	help
 	  Speex plugin library
+
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_TAGLIB
+	bool "taglib"
+	depends on BR2_INSTALL_LIBSTDCPP
+	select BR2_PACKAGE_TAGLIB
+	help
+	  Taglib tagging plugin library
+
+comment "taglib requires a toolchain with C++ support"
+	depends on !BR2_INSTALL_LIBSTDCPP
 
 config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_VPX
 	bool "vpx (webm)"
