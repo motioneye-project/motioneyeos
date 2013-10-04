@@ -1,0 +1,36 @@
+From 1f7602f1dde43b12bead54433934ae4ddefa8118 Mon Sep 17 00:00:00 2001
+From: Peter Korsgaard <peter@korsgaard.com>
+Date: Fri, 4 Oct 2013 21:09:09 +0200
+Subject: [PATCH-0.9.33] common/pread_write.c: unbreak on archs without __NR_pread64
+
+Some archs (avr32 in particular) still doesn't define __NR_pread64, so
+we should fall back to __NR_pread if it isn't available.
+
+The code nicely checks for it, but then ends up hard coding the syscall
+to use __NR_pread64 afterwards, rendering the check useless. Fix it by
+using the result of the test instead.
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+Noticed when adding the pending patches for 0.9.33.3 to Buildroot:
+http://jenkins.free-electrons.com/job/buildroot/config=atstk100x_defconfig/116/console
+
+ libc/sysdeps/linux/common/pread_write.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/libc/sysdeps/linux/common/pread_write.c b/libc/sysdeps/linux/common/pread_write.c
+index b13de66..8562ab4 100644
+--- a/libc/sysdeps/linux/common/pread_write.c
++++ b/libc/sysdeps/linux/common/pread_write.c
+@@ -42,7 +42,7 @@ extern __typeof(pwrite64) __libc_pwrite64;
+ 
+ #include <bits/kernel_types.h>
+ 
+-# define __NR___syscall_pread __NR_pread64
++# define __NR___syscall_pread __NR_pread
+ static __inline__ _syscall5(ssize_t, __syscall_pread, int, fd, void *, buf,
+ 		size_t, count, off_t, offset_hi, off_t, offset_lo)
+ 
+-- 
+1.7.10.4
+
