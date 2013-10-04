@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-DMIDECODE_VERSION = 2.11
+DMIDECODE_VERSION = 2.12
 DMIDECODE_SITE    = http://download.savannah.gnu.org/releases/dmidecode/
 
 define DMIDECODE_BUILD_CMDS
