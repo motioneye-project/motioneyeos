@@ -6,6 +6,8 @@
 
 DMIDECODE_VERSION = 2.12
 DMIDECODE_SITE    = http://download.savannah.gnu.org/releases/dmidecode/
+DMIDECODE_LICENSE = GPLv2+
+DMIDECODE_LICENSE_FILES = LICENSE
 
 define DMIDECODE_BUILD_CMDS
 	$(MAKE) -C $(@D) $(TARGET_CONFIGURE_OPTS)
