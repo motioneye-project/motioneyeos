@@ -10,8 +10,6 @@ MPC_LICENSE = LGPLv3+
 MPC_LICENSE_FILES = COPYING.LESSER
 MPC_INSTALL_STAGING = YES
 MPC_DEPENDENCIES = gmp mpfr
-MPC_AUTORECONF = YES
-HOST_MPC_AUTORECONF = YES
 
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
