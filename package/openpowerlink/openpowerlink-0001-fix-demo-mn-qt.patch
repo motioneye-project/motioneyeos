@@ -1,0 +1,22 @@
+commit 8658075bd7c49a7481e8f6d0d7a13b0651e1dfd7
+Author: Romain Naour <romain.naour@openwide.fr>
+Date:   Wed Sep 18 23:33:04 2013 +0200
+
+    [FIX] demo_mn_qt: add EplDebug.c in demo_sources list
+
+    demo_mn_qt use EplGetEmergErrCodeStr()
+
+    Signed-off-by: Romain Naour <romain.naour@openwide.fr>
+
+diff --git a/Examples/X86/Generic/demo_mn_qt/CMakeLists.txt b/Examples/X86/Generic/demo_mn_qt/CMakeLists.txt
+index 9db2f7f..48ae9eb 100644
+--- a/Examples/X86/Generic/demo_mn_qt/CMakeLists.txt
++++ b/Examples/X86/Generic/demo_mn_qt/CMakeLists.txt
+@@ -78,6 +78,7 @@ SET(DEMO_SOURCES src/EplApi.cpp
+                  src/MainWindow.cpp
+                  src/NodeState.cpp
+                  ${POWERLINK_SOURCE_DIR}/ObjDicts/${OBJDICT}/EplApiProcessImageSetup.c
++                 ${POWERLINK_SOURCE_DIR}/EplStack/EplDebug.c
+     )
+
+ # The TRACE macros need trace.c on the Windows platform
