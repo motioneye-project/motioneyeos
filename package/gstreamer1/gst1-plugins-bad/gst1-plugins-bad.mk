@@ -90,6 +90,13 @@ GST1_PLUGINS_BAD_DEPENDENCIES += orc
 GST1_PLUGINS_BAD_CONF_OPT += --enable-orc
 endif
 
+ifeq ($(BR2_PACKAGE_BLUEZ_UTILS),y)
+GST1_PLUGINS_BAD_DEPENDENCIES += bluez_utils
+GST1_PLUGINS_BAD_CONF_OPT += --enable-bluez
+else
+GST1_PLUGINS_BAD_CONF_OPT += --disable-bluez
+endif
+
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_ACCURIP),y)
 GST1_PLUGINS_BAD_CONF_OPT += --enable-accurip
 else
