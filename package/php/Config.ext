@@ -106,6 +106,7 @@ config BR2_PACKAGE_PHP_EXT_MYSQL
 	bool "Mysql"
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_USE_MMU # mysql
+	depends on BR2_TOOLCHAIN_HAS_THREADS # mysql
 	select BR2_PACKAGE_MYSQL_CLIENT
 	help
 	  MySQL support
@@ -114,6 +115,7 @@ config BR2_PACKAGE_PHP_EXT_MYSQLI
 	bool "Mysqli"
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_USE_MMU # mysql
+	depends on BR2_TOOLCHAIN_HAS_THREADS # mysql
 	select BR2_PACKAGE_MYSQL_CLIENT
 	select BR2_PACKAGE_PHP_EXT_MYSQL
 	help
@@ -130,6 +132,7 @@ config BR2_PACKAGE_PHP_EXT_PDO_MYSQL
 	bool "MySQL"
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_USE_MMU # mysql
+	depends on BR2_TOOLCHAIN_HAS_THREADS # mysql
 	select BR2_PACKAGE_MYSQL_CLIENT
 	help
 	  PDO driver for MySQL
