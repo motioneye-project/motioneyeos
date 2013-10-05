@@ -24,7 +24,8 @@ NETATALK_CONF_OPT += --with-cnid-cdb-backend \
 	--disable-shell-check \
 	--without-kerberos \
 	--without-pam \
-	--with-libevent=no
+	--with-libevent=no \
+	--with-dtrace=no
 
 ifeq ($(BR2_PACKAGE_CUPS),y)
 	NETATALK_DEPENDENCIES += cups
