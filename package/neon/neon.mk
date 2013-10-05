@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-NEON_VERSION = 0.29.6
+NEON_VERSION = 0.30.0
 NEON_SITE = http://www.webdav.org/neon/
 NEON_LICENSE = LGPLv2+ (library), GPLv2+ (manual and tests)
 NEON_LICENSE_FILES = src/COPYING.LIB test/COPYING README
