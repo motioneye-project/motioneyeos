@@ -30,6 +30,10 @@ DBUS_CONF_OPT = --with-dbus-user=dbus \
 		--with-system-socket=/var/run/dbus/system_bus_socket \
 		--with-system-pid-file=/var/run/messagebus.pid
 
+ifeq ($(BR2_PREFER_STATIC_LIB),y)
+DBUS_CONF_OPT += LIBS='-lpthread'
+endif
+
 ifeq ($(BR2_microblaze),y)
 # microblaze toolchain doesn't provide inotify_rm_* but does have sys/inotify.h
 DBUS_CONF_OPT += --disable-inotify
