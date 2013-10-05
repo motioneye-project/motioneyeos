@@ -1,6 +1,7 @@
 config BR2_PACKAGE_SQLCIPHER
 	bool "sqlcipher"
 	depends on !BR2_PACKAGE_SQLITE
+	depends on BR2_TOOLCHAIN_HAS_THREADS
 	select BR2_PACKAGE_OPENSSL
 	help
 	  SQLCipher is an SQLite extension that provides 256 bits AES
@@ -27,3 +28,6 @@ config BR2_PACKAGE_SQLCIPHER_STAT3
 
 comment "sqlcipher conflicts with sqlite"
 	depends on BR2_PACKAGE_SQLITE
+
+comment "sqlcipher needs a toolchain with thread support"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
