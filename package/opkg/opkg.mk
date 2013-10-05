@@ -4,14 +4,16 @@
 #
 ################################################################################
 
-OPKG_VERSION = 635
-OPKG_SITE = http://opkg.googlecode.com/svn/trunk/
-OPKG_SITE_METHOD = svn
+OPKG_VERSION = v0.2.0
+OPKG_SOURCE = $(OPKG_VERSION).tar.bz2
+OPKG_SITE = https://bitbucket.org/opkg/opkg/get
+# Uses PKG_CHECK_MODULES() in configure.ac
+OPKG_DEPENDENCIES = host-pkgconf
+OPKG_LICENSE = GPLv2+
+OPKG_LICENSE_FILES = COPYING
 OPKG_INSTALL_STAGING = YES
 OPKG_CONF_OPT = --disable-curl
 OPKG_AUTORECONF = YES
-# Uses PKG_CHECK_MODULES() in configure.ac
-OPKG_DEPENDENCIES = host-pkgconf
 
 # Ensure directory for lockfile exists
 define OPKG_CREATE_LOCKDIR
