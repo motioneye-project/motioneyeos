@@ -240,8 +240,6 @@ ifeq ($(BR2_TOOLCHAIN_BUILDROOT),y)
 BASE_TARGETS += toolchain-buildroot
 else ifeq ($(BR2_TOOLCHAIN_EXTERNAL),y)
 BASE_TARGETS += toolchain-external
-else ifeq ($(BR2_TOOLCHAIN_CTNG),y)
-BASE_TARGETS += toolchain-crosstool-ng
 endif
 
 TARGETS:=
@@ -323,8 +321,6 @@ ifeq ($(BR2_TOOLCHAIN_BUILDROOT),y)
 include toolchain/toolchain-buildroot.mk
 else ifeq ($(BR2_TOOLCHAIN_EXTERNAL),y)
 include toolchain/toolchain-external.mk
-else ifeq ($(BR2_TOOLCHAIN_CTNG),y)
-include toolchain/toolchain-crosstool-ng.mk
 endif
 
 # Include the package override file if one has been provided in the
@@ -801,9 +797,6 @@ ifeq ($(BR2_LINUX_KERNEL),y)
 endif
 ifeq ($(BR2_TOOLCHAIN_BUILDROOT),y)
 	@echo '  uclibc-menuconfig      - Run uClibc menuconfig'
-endif
-ifeq ($(BR2_TOOLCHAIN_CTNG),y)
-	@echo '  ctng-menuconfig        - Run crosstool-NG menuconfig'
 endif
 ifeq ($(BR2_TARGET_BAREBOX),y)
 	@echo '  barebox-menuconfig     - Run barebox menuconfig'

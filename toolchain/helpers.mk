@@ -1,7 +1,5 @@
 # This Makefile fragment declares helper functions, usefull to handle
-# non- buildroot-built toolchains, eg. purely external toolchains or
-# toolchains (internally) built using crosstool-NG.
-
+# non- buildroot-built toolchains, eg. purely external toolchains.
 #
 # Copy a toolchain library and its symbolic links from the sysroot
 # directory to the target directory. Also optionaly strips the

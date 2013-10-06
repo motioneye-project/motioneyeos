@@ -36,23 +36,10 @@ config BR2_TOOLCHAIN_EXTERNAL
 	  toolchain. Buildroot can either download automatically a
 	  toolchain, or use an already installed toolchain.
 
-config BR2_TOOLCHAIN_CTNG
-	bool "Crosstool-NG toolchain"
-	depends on BR2_DEPRECATED
-	depends on !BR2_microblaze && !BR2_aarch64 && !BR2_xtensa && \
-		   !BR2_arc && !BR2_nios2
-	select BR2_TOOLCHAIN_HAS_SHADOW_PASSWORDS
-	help
-	  Say 'y' if you want to generate the toolchain with crosstool-NG
-	  (http://crosstool-ng.org).
-
-	  This is considered experimental, and you can expect some breakage.
-
 endchoice
 
 source "toolchain/toolchain-buildroot/Config.in"
 source "toolchain/toolchain-external/Config.in"
-source "toolchain/toolchain-crosstool-ng/Config.in"
 source "toolchain/toolchain-common.in"
 
 endmenu

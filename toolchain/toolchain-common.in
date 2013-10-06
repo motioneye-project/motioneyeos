@@ -59,10 +59,6 @@ config BR2_ENABLE_LOCALE_WHITELIST
 config BR2_GENERATE_LOCALE
 	string "Generate locale data"
 	default ""
-	# Pre-built uClibc external toolchains and uClibc toolchains
-	# built by the Crosstool-NG backend cannot be supported,
-	# because the list of locales to support must be defined at
-	# build time.
 	depends on \
 		BR2_TOOLCHAIN_BUILDROOT      || \
 		BR2_TOOLCHAIN_USES_GLIBC
