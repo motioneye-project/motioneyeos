@@ -23,6 +23,8 @@ include::working-with.txt[]
 
 include::faq-troubleshooting.txt[]
 
+include::known-issues.txt[]
+
 include::going-further.txt[]
 
 include::developer-guide.txt[]
