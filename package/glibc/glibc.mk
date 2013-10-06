@@ -29,7 +29,7 @@ GLIBC_DEPENDENCIES += host-gawk
 endif
 
 # Before (e)glibc is built, we must have the second stage cross-compiler
-eglibc-build: host-gcc-intermediate
+glibc-build: host-gcc-intermediate
 
 GLIBC_SUBDIR = build
 
