@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-MEDIA_CTL_VERSION = ac40b79f002a2315f909548614ccd2d408da25b7
+MEDIA_CTL_VERSION = 87f58c2ed885d636229f7209fde883058433a1ce
 MEDIA_CTL_SITE = git://git.ideasonboard.org/media-ctl.git
 MEDIA_CTL_INSTALL_STAGING = YES
 MEDIA_CTL_LICENSE = LGPLv2.1+
