@@ -47,8 +47,7 @@ target system uses ARM, the regular compilation toolchain on your host
 runs on x86 and generates code for x86, while the cross-compilation
 toolchain runs on x86 and generates code for ARM.
 
-Buildroot provides different solutions to build, or use existing
-cross-compilation toolchains:
+Buildroot provides two solutions for the cross-compilation toolchain:
 
  * The *internal toolchain backend*, called +Buildroot toolchain+ in
    the configuration interface.
@@ -56,10 +55,7 @@ cross-compilation toolchains:
  * The *external toolchain backend*, called +External toolchain+ in
    the configuration interface.
 
- * The *Crosstool-NG toolchain backend*, called +Crosstool-NG
-   toolchain+ in the configuration interface.
-
-The choice between these three solutions is done using the +Toolchain
+The choice between these two solutions is done using the +Toolchain
 Type+ option in the +Toolchain+ menu. Once one solution has been
 chosen, a number of configuration options appear, they are detailed in
 the following sections.
@@ -76,8 +72,8 @@ This backend is the historical backend of Buildroot, and has been
 limited for a long time to the usage of the
 http://www.uclibc.org[uClibc C library]. Support for the _eglibc_ C
 library has been added in 2013 and is at this point considered
-experimental. See the _External toolchain backend_ and _Crosstool-NG
-toolchain backend_ for other solutions to use _glibc_ or _eglibc_.
+experimental. See the _External toolchain backend_ for another
+solution to use _glibc_ or _eglibc_.
 
 Once you have selected this backend, a number of options appear. The
 most important ones allow to:
@@ -241,54 +237,6 @@ Drawbacks of this backend:
 * If your pre-built external toolchain has a bug, may be hard to get a
   fix from the toolchain vendor, unless you build your external
   toolchain by yourself using Crosstool-NG.
-
-[[crosstool-ng-toolchain-backend]]
-Crosstool-NG toolchain backend
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The _Crosstool-NG toolchain backend_ integrates the
-http://crosstool-ng.org[Crosstool-NG] project with
-Buildroot. Crosstool-NG is a highly-configurable, versatile and
-well-maintained tool to build cross-compilation toolchains.
-
-If you select the +Crosstool-NG toolchain+ option in +Toolchain Type+,
-then you will be offered to:
-
- * Choose which C library you want to use. Crosstool-NG supports the
-   three most important C libraries used in Linux systems: glibc,
-   eglibc and uClibc
-
- * Choose a custom Crosstool-NG configuration file. Buildroot has its
-   own default configuration file (one per C library choice), but you
-   can provide your own. Another option is to run +make
-   ctng-menuconfig+ to get access to the Crosstool-NG configuration
-   interface. However, note that all Buildroot packages have only been
-   tested with the default Crosstool-NG configurations.
-
- * Choose a number of toolchain options (rather limited if glibc or
-   eglibc are used, or numerous if uClibc is used)
-
-When you will start the Buildroot build process, Buildroot will
-download and install the Crosstool-NG tool, build and install its
-required dependencies, and then run Crosstool-NG with the provided
-configuration.
-
-Advantages of this backend:
-
-* Not limited to uClibc: glibc and eglibc are supported.
-
-* Vast possibilities of toolchain configuration.
-
-Drawbacks of this backend:
-
-* Crosstool-NG is not perfectly integrated with Buildroot. For
-  example, Crosstool-NG has its own download infrastructure, not
-  integrated with the one in Buildroot (for example a Buildroot +make
-  source+ will not download all the source code tarballs needed by
-  Crosstool-NG).
-
-* The toolchain is completely rebuilt from scratch if you do a +make
-  clean+.
 
 /dev management
 ~~~~~~~~~~~~~~~

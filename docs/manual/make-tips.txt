@@ -36,8 +36,6 @@ some settings in the +.config+ file may hide some targets:
   +linux+ is enabled;
 * +uclibc-menuconfig+ is only available when the
   Buildroot internal toolchain backend is used;
-* +ctng-menuconfig+ is only available when the
-  crosstool-NG backend is used;
 * +barebox-menuconfig+ and +barebox-savedefconfig+ only work when the
   +barebox+ bootloader is enabled.
 

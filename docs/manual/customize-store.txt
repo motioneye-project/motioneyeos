@@ -42,13 +42,14 @@ Alternatively, you can copy the file to any other place and rebuild with
 Other package configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The configuration files for busybox, the linux kernel, barebox, uClibc and
-crosstool-NG should be stored as well if changed. For each of these, a
-buildroot configuration option exists to point to an input configuration
-file, e.g. +BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE+.  To save their
-configuration, set those configuration options to a path outside
-your output directory, e.g. +board/<manufacturer>/<boardname>/linux.config+.
-Then, copy the configuration files to that path.
+The configuration files for busybox, the linux kernel, barebox and
+uClibc should be stored as well if changed. For each of these, a
+buildroot configuration option exists to point to an input
+configuration file, e.g. +BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE+.  To
+save their configuration, set those configuration options to a path
+outside your output directory,
+e.g. +board/<manufacturer>/<boardname>/linux.config+.  Then, copy the
+configuration files to that path.
 
 Make sure that you create a configuration file 'before' changing
 the +BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE+ etc. options.  Otherwise,
@@ -70,9 +71,8 @@ configuration files easier.
   path specified by +BR2_UCLIBC_CONFIG+.
 * +make barebox-update-defconfig+ saves the barebox configuration to the
   path specified by +BR2_TARGET_BAREBOX_CUSTOM_CONFIG_FILE+.
-* For crosstool-NG and at91bootstrap3, no helper exists so you
-  have to copy the config file manually to +BR2_TOOLCHAIN_CTNG_CONFIG+,
-  resp. +BR2_TARGET_AT91BOOTSTRAP3_CUSTOM_CONFIG_FILE+.
+* For at91bootstrap3, no helper exists so you have to copy the config
+  file manually to +BR2_TARGET_AT91BOOTSTRAP3_CUSTOM_CONFIG_FILE+.
 
 
 [[customize-store-board-support]]
@@ -130,14 +130,12 @@ you can skip the steps that are not relevant for your use case.
    (as far as they are relevant):
    * +BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE+
    * +BR2_PACKAGE_BUSYBOX_CONFIG+
-   * +BR2_TOOLCHAIN_CTNG_CONFIG+
    * +BR2_UCLIBC_CONFIG+
    * +BR2_TARGET_AT91BOOTSTRAP3_CUSTOM_CONFIG_FILE+
    * +BR2_TARGET_BAREBOX_CUSTOM_CONFIG_FILE+
 1. Write the configuration files:
    * +make linux-update-defconfig+
    * +make busybox-update-config+
-   * +cp <output>/build/build-toolchain/.config board/<manufacturer>/<boardname>/ctng.config+
    * +make uclibc-update-config+
    * +cp <output>/build/at91bootstrap3-*/.config board/<manufacturer>/<boardname>/at91bootstrap3.config+
    * +make barebox-update-defconfig+

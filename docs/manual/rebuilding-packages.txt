@@ -17,8 +17,6 @@ In some cases, a full rebuild is mandatory:
 
 ** after changing any toolchain option under the _Toolchain_ menu (if
    the internal Buildroot backend is used);
-** after running +make ctng-menuconfig+ (if the crosstool-NG backend
-   is used);
 ** after running +make uclibc-menuconfig+.
 
 * after removing some libraries from the package selection.

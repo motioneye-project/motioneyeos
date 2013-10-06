@@ -44,15 +44,3 @@ However, it allows to tune major settings, such as:
 
 These settings are available after selecting the +Buildroot toolchain+ type in
 the menu +Toolchain+.
-
-Using the Crosstool-NG backend
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The http://crosstool-ng.org[crosstool-NG] toolchain backend enables a rather
-limited set of settings under the Buildroot +Toolchain+ menu:
-
-* The http://crosstool-ng.org[crosstool-NG] configuration file
-
-* Gdb and some toolchain options
-
-Then, the toolchain can be fine-tuned by invoking +make ctng-menuconfig+.
