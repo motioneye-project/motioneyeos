@@ -6,6 +6,7 @@ config BR2_PACKAGE_LTP_TESTSUITE
 	bool "ltp-testsuite"
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_INET_IPV6
+	depends on BR2_LARGEFILE
 	depends on BR2_TOOLCHAIN_HAS_NATIVE_RPC
 	# aarch64 build currently broken, reported at
 	# https://bugs.launchpad.net/linaro-aarch64/+bug/1236027
@@ -22,6 +23,6 @@ config BR2_PACKAGE_LTP_TESTSUITE
 
 	  http://ltp.sourceforge.net/
 
-comment "ltp-testsuite requires a toolchain with IPV6, RPC and thread support"
+comment "ltp-testsuite requires a toolchain with IPV6, RPC, LARGEFILE and thread support"
 	depends on (!BR2_TOOLCHAIN_HAS_THREADS || !BR2_INET_IPV6 || \
-		!BR2_TOOLCHAIN_HAS_NATIVE_RPC) && !BR2_aarch64
+		!BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_NATIVE_RPC) && !BR2_aarch64
