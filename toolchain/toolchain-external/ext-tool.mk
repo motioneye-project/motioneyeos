@@ -1,4 +1,3 @@
-
 #
 # This file implements the support for external toolchains, i.e
 # toolchains that have not been produced by Buildroot itself and that
@@ -112,8 +111,10 @@ TOOLCHAIN_EXTERNAL_DIR=$(call qstrip,$(BR2_TOOLCHAIN_EXTERNAL_PATH))
 endif
 
 ifeq ($(TOOLCHAIN_EXTERNAL_DIR),)
+ifneq ($(TOOLCHAIN_EXTERNAL_PREFIX),)
 # if no path set, figure it out from path
 TOOLCHAIN_EXTERNAL_BIN := $(shell dirname $(shell which $(TOOLCHAIN_EXTERNAL_PREFIX)-gcc))
+endif
 else
 ifeq ($(BR2_bfin),y)
 TOOLCHAIN_EXTERNAL_BIN := $(TOOLCHAIN_EXTERNAL_DIR)/$(TOOLCHAIN_EXTERNAL_PREFIX)/bin
