@@ -4,9 +4,8 @@
 #
 ################################################################################
 
-MINIDLNA_VERSION = 1.0.25
+MINIDLNA_VERSION = 1.0.26
 MINIDLNA_SITE = http://downloads.sourceforge.net/project/minidlna/minidlna/$(MINIDLNA_VERSION)
-MINIDLNA_SOURCE = minidlna_$(MINIDLNA_VERSION)_src.tar.gz
 MINIDLNA_LICENSE = GPLv2 BSD-3c
 MINIDLNA_LICENSE_FILES = LICENCE LICENCE.miniupnpd
 

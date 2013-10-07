@@ -3,6 +3,7 @@ config BR2_PACKAGE_MINIDLNA
 	depends on BR2_LARGEFILE # ffmpeg
 	depends on BR2_INET_IPV6 # ffmpeg
 	depends on BR2_USE_MMU # fork
+	depends on BR2_TOOLCHAIN_HAS_THREADS
 	select BR2_PACKAGE_FFMPEG
 	select BR2_PACKAGE_FLAC
 	select BR2_PACKAGE_LIBVORBIS # selects libogg
@@ -17,5 +18,5 @@ config BR2_PACKAGE_MINIDLNA
 
 	  http://minidlna.sourceforge.net/
 
-comment "minidlna requires a toolchain with LARGEFILE and IPV6 support"
-	depends on !(BR2_LARGEFILE && BR2_INET_IPV6)
+comment "minidlna requires a toolchain with LARGEFILE, IPV6 and thread support"
+	depends on !(BR2_LARGEFILE && BR2_INET_IPV6 && BR2_TOOLCHAIN_HAS_THREADS)
