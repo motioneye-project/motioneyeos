@@ -1,5 +1,5 @@
 config BR2_PACKAGE_PYTHON_PYGAME
-	bool "pygame"
+	bool "python-pygame"
 	depends on BR2_PACKAGE_PYTHON
 	select BR2_PACKAGE_SDL
 	help
