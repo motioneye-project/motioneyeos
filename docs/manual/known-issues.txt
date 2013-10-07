@@ -28,5 +28,5 @@ Known issues
   architectures.
 
 * The +prboom+ package triggers a compiler failure with the SuperH 4
-  compiler from Soucery CodeBench, version 2012.09.
+  compiler from Sourcery CodeBench, version 2012.09.
 
