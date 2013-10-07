@@ -4,12 +4,12 @@
 #
 ################################################################################
 
-MEDIASTREAMER_VERSION = 2.8.2
+MEDIASTREAMER_VERSION = 2.9.0
 MEDIASTREAMER_SITE = http://download.savannah.nongnu.org/releases/linphone/mediastreamer
 MEDIASTREAMER_INSTALL_STAGING = YES
 MEDIASTREAMER_DEPENDENCIES = host-intltool host-pkgconf ortp host-gettext
 # tests fail linking on some architectures, so disable them
-MEDIASTREAMER_CONF_OPT = --disable-tests
+MEDIASTREAMER_CONF_OPT = --disable-tests --disable-glx --disable-strict
 MEDIASTREAMER_LICENSE = GPLv2+
 MEDIASTREAMER_LICENSE_FILES = COPYING
 
