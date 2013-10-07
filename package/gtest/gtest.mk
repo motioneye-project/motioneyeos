@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-GTEST_VERSION = 1.6.0
+GTEST_VERSION = 1.7.0
 GTEST_SOURCE = gtest-$(GTEST_VERSION).zip
 GTEST_SITE = http://googletest.googlecode.com/files/
 GTEST_INSTALL_STAGING = YES
