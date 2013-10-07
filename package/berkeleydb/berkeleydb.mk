@@ -4,7 +4,12 @@
 #
 ################################################################################
 
-BERKELEYDB_VERSION = 6.0.20
+# Since BerkeleyDB version 6 and above are licensed under the Affero
+# GPL (AGPL), we want to keep this 'bdb' package at version 5.x to
+# avoid licensing issues.
+# BerkeleyDB version 6 or above should be provided by a dedicated
+# package instead.
+BERKELEYDB_VERSION = 5.3.21
 BERKELEYDB_SITE = http://download.oracle.com/berkeley-db
 BERKELEYDB_SOURCE = db-$(BERKELEYDB_VERSION).NC.tar.gz
 BERKELEYDB_SUBDIR = build_unix
