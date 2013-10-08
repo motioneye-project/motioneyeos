@@ -11,6 +11,8 @@ NETATALK_AUTORECONF = YES
 NETATALK_CONFIG_SCRIPTS = netatalk-config
 NETATALK_DEPENDENCIES = host-pkgconf openssl berkeleydb libgcrypt libgpg-error \
 	libevent
+NETATALK_LICENSE = GPLv2+, LGPLv3+, MIT-like
+NETATALK_LICENSE_FILES = COPYING COPYRIGHT
 
 # Don't run ldconfig!
 NETATALK_CONF_ENV += CC="$(TARGET_CC) -std=gnu99" \
