@@ -236,11 +236,7 @@ GNU_HOST_NAME:=$(shell support/gnuconfig/config.guess)
 #
 ################################################################################
 
-ifeq ($(BR2_TOOLCHAIN_BUILDROOT),y)
-BASE_TARGETS += toolchain-buildroot
-else ifeq ($(BR2_TOOLCHAIN_EXTERNAL),y)
-BASE_TARGETS += toolchain-external
-endif
+BASE_TARGETS = toolchain
 
 TARGETS:=
 
@@ -317,11 +313,8 @@ include support/dependencies/dependencies.mk
 # We also need the various per-package makefiles, which also add
 # each selected package to TARGETS if that package was selected
 # in the .config file.
-ifeq ($(BR2_TOOLCHAIN_BUILDROOT),y)
-include toolchain/toolchain-buildroot.mk
-else ifeq ($(BR2_TOOLCHAIN_EXTERNAL),y)
-include toolchain/toolchain-external.mk
-endif
+include toolchain/helpers.mk
+include toolchain/*/*.mk
 
 # Include the package override file if one has been provided in the
 # configuration.
@@ -388,16 +381,12 @@ $(TARGETS_ALL): __real_tgt_%: $(BASE_TARGETS) %
 dirs: $(BUILD_DIR) $(STAGING_DIR) $(TARGET_DIR) \
 	$(HOST_DIR) $(BINARIES_DIR) $(STAMP_DIR)
 
-$(BASE_TARGETS): dirs $(HOST_DIR)/usr/share/buildroot/toolchainfile.cmake
-
 $(BUILD_DIR)/buildroot-config/auto.conf: $(BUILDROOT_CONFIG)
 	$(MAKE) $(EXTRAMAKEARGS) HOSTCC="$(HOSTCC_NOCCACHE)" HOSTCXX="$(HOSTCXX_NOCCACHE)" silentoldconfig
 
 prepare: $(BUILD_DIR)/buildroot-config/auto.conf
 
-toolchain: prepare dirs dependencies $(BASE_TARGETS)
-
-world: toolchain $(TARGETS_ALL)
+world: $(BASE_TARGETS) $(TARGETS_ALL)
 
 .PHONY: all world toolchain dirs clean distclean source outputmakefile \
 	legal-info legal-info-prepare legal-info-clean printvars \
