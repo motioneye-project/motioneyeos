@@ -112,12 +112,12 @@ endef
 #
 
 GLIBC_LIBS_LIB = \
-	ld*.so libc.so libcrypt.so libdl.so libgcc_s.so libm.so	   \
-	libnsl.so libpthread.so libresolv.so librt.so libutil.so   \
-	libnss_files.so libnss_dns.so
+	ld*.so.* libc.so.* libcrypt.so.* libdl.so.* libgcc_s.so.* libm.so.*        \
+	libnsl.so.* libpthread.so.* libresolv.so.* librt.so.* libutil.so.*   \
+	libnss_files.so.* libnss_dns.so.*
 
 ifeq ($(BR2_PACKAGE_GDB_SERVER),y)
-GLIBC_LIBS_LIB += libthread_db.so
+GLIBC_LIBS_LIB += libthread_db.so.*
 endif
 
 define GLIBC_INSTALL_TARGET_CMDS
