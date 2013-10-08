@@ -1,7 +1,11 @@
 config BR2_PACKAGE_LIBSOC
 	bool "libsoc"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
 	help
 	  libsoc is a C library for interfacing with common SoC
 	  peripherals through generic kernel interfaces
 
 	  https://github.com/jackmitch/libsoc
+
+comment "libsoc requires a toolchain with threads support"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
