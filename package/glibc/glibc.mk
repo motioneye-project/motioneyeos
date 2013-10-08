@@ -21,12 +21,7 @@ GLIBC_LICENSE_FILES = $(addprefix $(GLIBC_SRC_SUBDIR)/,COPYING COPYING.LIB LICEN
 
 # Before (e)glibc is configured, we must have the first stage
 # cross-compiler and the kernel headers
-GLIBC_DEPENDENCIES = host-gcc-initial linux-headers
-
-# eglibc also needs host-gawk
-ifeq ($(BR2_TOOLCHAIN_BUILDROOT_EGLIBC),y)
-GLIBC_DEPENDENCIES += host-gawk
-endif
+GLIBC_DEPENDENCIES = host-gcc-initial linux-headers host-gawk
 
 # Before (e)glibc is built, we must have the second stage cross-compiler
 glibc-build: host-gcc-intermediate
