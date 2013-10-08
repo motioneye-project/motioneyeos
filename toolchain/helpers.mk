@@ -209,6 +209,17 @@ check_glibc = \
 	$(call check_glibc_rpc_feature,$${SYSROOT_DIR})
 
 #
+# Check that the selected C library really is musl
+#
+# $1: sysroot directory
+check_musl = \
+	SYSROOT_DIR="$(strip $1)"; \
+	if test ! -f $${SYSROOT_DIR}/lib/libc.so -o -e $${SYSROOT_DIR}/lib/libm.so ; then \
+		echo "Incorrect selection of the C library" ; \
+		exit -1; \
+	fi
+
+#
 # Check the conformity of Buildroot configuration with regard to the
 # uClibc configuration of the external toolchain, for a particular
 # feature.

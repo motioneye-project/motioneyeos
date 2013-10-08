@@ -860,6 +860,10 @@ config BR2_TOOLCHAIN_EXTERNAL_UCLIBC
 	bool
 	select BR2_TOOLCHAIN_USES_UCLIBC
 
+config BR2_TOOLCHAIN_EXTERNAL_MUSL
+	bool
+	select BR2_TOOLCHAIN_USES_MUSL
+
 if BR2_TOOLCHAIN_EXTERNAL_CUSTOM
 
 choice
@@ -881,6 +885,13 @@ config BR2_TOOLCHAIN_EXTERNAL_CUSTOM_GLIBC
 	  configured to exclude some of its features. Using a toolchain with
 	  eglibc configured to exclude key features may cause build failures to
 	  some packages.
+
+config BR2_TOOLCHAIN_EXTERNAL_CUSTOM_MUSL
+	bool "musl"
+	select BR2_TOOLCHAIN_EXTERNAL_MUSL
+	help
+	  Select this option if your external toolchain uses the
+	  'musl' C library, available from http://www.musl-libc.org/.
 
 endchoice
 
@@ -952,6 +963,7 @@ endif # BR2_TOOLCHAIN_EXTERNAL_CUSTOM_UCLIBC
 config BR2_TOOLCHAIN_EXTERNAL_INET_RPC
 	bool "Toolchain has RPC support?"
 	select BR2_TOOLCHAIN_HAS_NATIVE_RPC
+	depends on !BR2_TOOLCHAIN_EXTERNAL_MUSL
 	default y if BR2_TOOLCHAIN_EXTERNAL_GLIBC
 	help
 	  Select this option if your external toolchain supports

@@ -15,6 +15,15 @@ config BR2_TOOLCHAIN_USES_GLIBC
 config BR2_TOOLCHAIN_USES_UCLIBC
 	bool
 
+config BR2_TOOLCHAIN_USES_MUSL
+	bool
+	select BR2_LARGEFILE
+	select BR2_INET_IPV6
+	select BR2_USE_WCHAR
+	select BR2_ENABLE_LOCALE
+	select BR2_TOOLCHAIN_HAS_THREADS
+	select BR2_TOOLCHAIN_HAS_THREADS_DEBUG
+
 choice
 	prompt "Toolchain type"
 	help

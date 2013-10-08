@@ -68,6 +68,10 @@ ifeq ($(BR2_TOOLCHAIN_EXTERNAL_GLIBC),y)
 LIB_EXTERNAL_LIBS+=libnss_files.so.* libnss_dns.so.*
 endif
 
+ifeq ($(BR2_TOOLCHAIN_EXTERNAL_MUSL),y)
+LIB_EXTERNAL_LIBS += libc.so libgcc_s.so.*
+endif
+
 ifeq ($(BR2_INSTALL_LIBSTDCPP),y)
 USR_LIB_EXTERNAL_LIBS+=libstdc++.so.*
 endif
@@ -353,7 +357,7 @@ endif
 define TOOLCHAIN_EXTERNAL_CONFIGURE_CMDS
 	$(Q)$(call check_cross_compiler_exists,$(TOOLCHAIN_EXTERNAL_CC))
 	$(Q)LIBC_A_LOCATION=`readlink -f $$(LANG=C $(TOOLCHAIN_EXTERNAL_CC) -print-file-name=libc.a)` ; \
-	SYSROOT_DIR=`echo $${LIBC_A_LOCATION} | sed -r -e 's:usr/lib(32|64)?/(.*/)?libc\.a::'` ; \
+	SYSROOT_DIR=`echo $${LIBC_A_LOCATION} | sed -r -e 's:(usr/)?lib(32|64)?/(.*/)?libc\.a::'` ; \
 	if test -z "$${SYSROOT_DIR}" ; then \
 		@echo "External toolchain doesn't support --sysroot. Cannot use." ; \
 		exit 1 ; \
@@ -368,10 +372,22 @@ define TOOLCHAIN_EXTERNAL_CONFIGURE_CMDS
 	fi ; \
 	if test "$(BR2_TOOLCHAIN_EXTERNAL_UCLIBC)" = "y" ; then \
 		$(call check_uclibc,$${SYSROOT_DIR}) ; \
+	elif test "$(BR2_TOOLCHAIN_EXTERNAL_MUSL)" = "y" ; then \
+		$(call check_musl,$${SYSROOT_DIR}) ; \
 	else \
 		$(call check_glibc,$${SYSROOT_DIR}) ; \
 	fi
 endef
+
+# With the musl C library, the libc.so library directly plays the role
+# of the dynamic library loader. We just need to create a symbolic
+# link to libc.so with the appropriate name.
+ifeq ($(BR2_TOOLCHAIN_EXTERNAL_MUSL),y)
+define TOOLCHAIN_EXTERNAL_MUSL_LD_LINK
+	ln -sf libc.so $(TARGET_DIR)/lib/ld-musl-$(ARCH).so.1
+endef
+TOOLCHAIN_EXTERNAL_POST_INSTALL_STAGING_HOOKS += TOOLCHAIN_EXTERNAL_MUSL_LD_LINK
+endif
 
 # Integration of the toolchain into Buildroot: find the main sysroot
 # and the variant-specific sysroot, then copy the needed libraries to
