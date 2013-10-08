@@ -33,14 +33,6 @@ dependencies: HOSTCC=$(HOSTCC_NOCCACHE)
 dependencies: HOSTCXX=$(HOSTCXX_NOCCACHE)
 dependencies: core-dependencies $(DEPENDENCIES_HOST_PREREQ)
 
-dependencies-source:
-
-dependencies-clean:
-	rm -f $(SSTRIP_TARGET)
-
-dependencies-dirclean:
-	true
-
 ################################################################################
 #
 # Toplevel Makefile options
