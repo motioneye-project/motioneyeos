@@ -12,8 +12,8 @@ RUBY_MAKE_ENV = $(TARGET_MAKE_ENV)
 RUBY_MAKE = $(MAKE1)
 RUBY_CONF_OPT = --disable-install-doc --disable-rpath
 HOST_RUBY_CONF_OPT = --disable-install-doc --with-out-ext=curses,readline
-RUBY_LICENSE = Ruby
-RUBY_LICENSE_FILES = LEGAL
+RUBY_LICENSE = Ruby or BSD-2c, BSD-3c, others
+RUBY_LICENSE_FILES = LEGAL COPYING BSDL
 
 # Force optionals to build before we do
 ifeq ($(BR2_PACKAGE_BERKELEYDB),y)
