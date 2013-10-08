@@ -60,21 +60,24 @@ copy_toolchain_lib_root = \
 			break ; \
 		fi \
 	done ; \
+	mkdir -p $(TARGET_DIR)/$${DESTDIR}; \
 	for LIBPATH in $${LIBSPATH} ; do \
-		LIBNAME=`basename $${LIBPATH}`; \
-		LIBDIR=`dirname $${LIBPATH}` ; \
-		while test \! -z "$${LIBNAME}" ; do \
-			LIBPATH=$${LIBDIR}/$${LIBNAME} ; \
+		while true ; do \
+			LIBNAME=`basename $${LIBPATH}`; \
+			LIBDIR=`dirname $${LIBPATH}` ; \
+			LINKTARGET=`readlink $${LIBPATH}` ; \
 			rm -fr $(TARGET_DIR)/$${DESTDIR}/$${LIBNAME}; \
-			mkdir -p $(TARGET_DIR)/$${DESTDIR}; \
 			if test -h $${LIBPATH} ; then \
-				cp -d $${LIBPATH} $(TARGET_DIR)/$${DESTDIR}/; \
+				ln -sf `basename $${LINKTARGET}` $(TARGET_DIR)/$${DESTDIR}/$${LIBNAME} ; \
 			elif test -f $${LIBPATH}; then \
 				$(INSTALL) -D -m0755 $${LIBPATH} $(TARGET_DIR)/$${DESTDIR}/$${LIBNAME}; \
 			else \
 				exit -1; \
 			fi; \
-			LIBNAME="`readlink $${LIBPATH}`"; \
+			if test -z "$${LINKTARGET}" ; then \
+				break ; \
+			fi ; \
+			LIBPATH="`readlink -f $${LIBPATH}`"; \
 		done; \
 	done; \
  \
