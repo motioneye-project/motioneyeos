@@ -1,9 +1,10 @@
-# This Makefile fragment declares helper functions, usefull to handle
-# non- buildroot-built toolchains, eg. purely external toolchains.
-#
-# Copy a toolchain library and its symbolic links from the sysroot
-# directory to the target directory. Also optionaly strips the
-# library.
+# This Makefile fragment declares toolchain related helper functions.
+
+# The copy_toolchain_lib_root function copies a toolchain library and
+# its symbolic links from the sysroot directory to the target
+# directory. Note that this function is used both by the external
+# toolchain logic, and the glibc package, so care must be taken when
+# changing this function.
 #
 # Most toolchains (CodeSourcery ones) have their libraries either in
 # /lib or /usr/lib relative to their ARCH_SYSROOT_DIR, so we search
