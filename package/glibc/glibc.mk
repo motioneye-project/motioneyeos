@@ -47,6 +47,17 @@ else ifeq ($(BR2_MIPS_OABI32),y)
 GLIBC_EXTRA_CFLAGS += -mabi=32
 endif
 
+# The stubs.h header is not installed by install-headers, but is
+# needed for the gcc build. An empty stubs.h will work, as explained
+# in http://gcc.gnu.org/ml/gcc/2002-01/msg00900.html. The same trick
+# is used by Crosstool-NG.
+ifeq ($(BR2_TOOLCHAIN_BUILDROOT_GLIBC),y)
+define GLIBC_ADD_MISSING_STUB_H
+	mkdir -p $(STAGING_DIR)/usr/include/gnu
+	touch $(STAGING_DIR)/usr/include/gnu/stubs.h
+endef
+endif
+
 # Even though we use the autotools-package infrastructure, we have to
 # override the default configure commands for several reasons:
 #
@@ -89,6 +100,7 @@ define GLIBC_CONFIGURE_CMDS
 	cp $(@D)/build/csu/crt1.o $(STAGING_DIR)/usr/lib/
 	cp $(@D)/build/csu/crti.o $(STAGING_DIR)/usr/lib/
 	cp $(@D)/build/csu/crtn.o $(STAGING_DIR)/usr/lib/
+	$(GLIBC_ADD_MISSING_STUB_H)
 	$(TARGET_CROSS)gcc -nostdlib \
 		-nostartfiles -shared -x c /dev/null -o $(STAGING_DIR)/usr/lib/libc.so
 endef
