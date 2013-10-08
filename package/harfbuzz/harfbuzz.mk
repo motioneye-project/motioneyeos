@@ -7,8 +7,8 @@
 HARFBUZZ_VERSION = 0.9.22
 HARFBUZZ_SITE = http://www.freedesktop.org/software/harfbuzz/release/
 HARFBUZZ_SOURCE = harfbuzz-$(HARFBUZZ_VERSION).tar.bz2
-HARFBUZZ_LICENSE = MIT, ISC (ucdn library), ICU License (icu support library)
-HARFBUZZ_LICENSE_FILES = COPYING src/hb-ucdn/COPYING src/hb-icu-le/COPYING
+HARFBUZZ_LICENSE = MIT, ISC (ucdn library)
+HARFBUZZ_LICENSE_FILES = COPYING src/hb-ucdn/COPYING
 HARFBUZZ_INSTALL_STAGING = YES
 
 HARFBUZZ_CONF_OPT = --without-coretext --without-uniscribe --without-graphite2
