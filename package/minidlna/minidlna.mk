@@ -35,10 +35,15 @@ endif
 
 MINIDLNA_MAKE_OPTS += LIBS='$(MINIDLNA_COMMON_LIBS)'
 
+# genconfig.sh uses absolute paths to find libav, so help it out
 define MINIDLNA_BUILD_CMDS
 	PREFIX=$(STAGING_DIR)/usr \
 		$(TARGET_MAKE_ENV) $(MAKE) $(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(MINIDLNA_CFLAGS)" -C $(@D) depend
+	$(SED) '/HAVE_LIBAV/d' $(@D)/config.h
+	echo "#define HAVE_LIBAVUTIL_AVUTIL_H 1" >>$(@D)/config.h
+	echo "#define HAVE_LIBAVFORMAT_AVFORMAT_H 1" >>$(@D)/config.h
+	echo "#define HAVE_LIBAVCODEC_AVCODEC_H 1" >>$(@D)/config.h
 	$(TARGET_MAKE_ENV) $(MAKE) $(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(MINIDLNA_CFLAGS)" $(MINIDLNA_MAKE_OPTS) -C $(@D) all
 endef
