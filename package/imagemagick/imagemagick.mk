@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-IMAGEMAGICK_MAJOR = 6.8.6
-IMAGEMAGICK_VERSION = $(IMAGEMAGICK_MAJOR)-2
+IMAGEMAGICK_MAJOR = 6.8.7
+IMAGEMAGICK_VERSION = $(IMAGEMAGICK_MAJOR)-0
 IMAGEMAGICK_SOURCE = ImageMagick-$(IMAGEMAGICK_VERSION).tar.bz2
 # The official ImageMagick site only keeps the latest versions
 # available, which is annoying. Use an alternate site that keeps all
