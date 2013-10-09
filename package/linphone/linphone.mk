@@ -10,7 +10,8 @@ LINPHONE_CONF_OPT = \
 	--enable-external-ortp \
 	--enable-external-mediastreamer \
 	--disable-strict
-
+# configure is out of sync causing deplibs linking issues
+LINPHONE_AUTORECONF = YES
 LINPHONE_DEPENDENCIES = host-pkgconf ortp mediastreamer libeXosip2 speex
 LINPHONE_LICENSE = GPLv2+
 LINPHONE_LICENSE_FILES = COPYING
