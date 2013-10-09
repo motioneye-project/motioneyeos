@@ -1,5 +1,6 @@
 config BR2_PACKAGE_OPROFILE
 	bool "oprofile"
+	depends on BR2_USE_MMU # fork()
 	select BR2_PACKAGE_POPT
 	select BR2_PACKAGE_BINUTILS
 	select BR2_PACKAGE_LIBPFM4 if BR2_powerpc
