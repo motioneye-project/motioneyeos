@@ -12,6 +12,8 @@ LINPHONE_CONF_OPT = \
 	--disable-strict
 
 LINPHONE_DEPENDENCIES = host-pkgconf ortp mediastreamer libeXosip2 speex
+LINPHONE_LICENSE = GPLv2+
+LINPHONE_LICENSE_FILES = COPYING
 
 ifeq ($(BR2_PACKAGE_LIBGTK2)$(BR2_PACKAGE_XORG7),yy)
 LINPHONE_CONF_OPT += --enable-gtk_ui
