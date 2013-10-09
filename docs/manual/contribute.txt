@@ -132,9 +132,15 @@ $ git format-patch --subject-prefix "PATCH v4" \
 Reviewing/Testing patches
 -------------------------
 
+The review process for new patches is done over the mailing list. Once
+a patch is submitted to the mailing list, other developers will provide
+feedback to the patch via emails sent through the mailing list.
+
 In the review process, do not hesitate to respond to patch submissions
 for remarks, suggestions or anything that will help everyone to
-understand the patches and make them better.
+understand the patches and make them better. Please use internet
+style replies in plain text emails when responding to patch
+submissions.
 
 Some tags are used to help following the state of any patch posted on
 the mailing-list:
@@ -143,6 +149,10 @@ Acked-by:: Indicates that the patch can be committed.
 
 Tested-by:: Indicates that the patch has been tested. It is useful
   but not necessary to add a comment about what has been tested.
+
+Buildroot's Patchwork website can be used to pull in patches for testing
+purposes. Please see xref:apply-patches-patchwork[] for more
+information on using Buildroot's Patchwork website to apply patches.
 
 Autobuild
 ---------

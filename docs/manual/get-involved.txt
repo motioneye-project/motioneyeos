@@ -55,11 +55,44 @@ using a code sharing website.
 Patchwork
 ---------
 
-The Buildroot patch management interface is at
+Patchwork is a web-based patch tracking system designed to facilitate
+the contribution and management of contributions to an open-source
+project. Patches that have been sent to a mailing list are \'caught' by
+the system, and appear on a web page. Any comments posted that
+reference the patch are appended to the patch page too. For more
+information on Patchwork see
+http://jk.ozlabs.org/projects/patchwork[].
+
+Buildroot's Patchwork website is mainly for use by Buildroot's
+maintainer to ensure patches aren't missed. The website however,
+exposes patches and their corresponding review comments in a clean
+and concise web interface.
+
+The Buildroot patch management interface is available at
 http://patchwork.buildroot.org[].
 
-All patches and comments sent through the mailing list are
-automatically indexed in http://patchwork.buildroot.org[patchwork].
+[[apply-patches-patchwork]]
+Applying Patches from Patchwork
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The main use of Buildroot's Patchwork website for a developer is for
+pulling in patches into their local git repository for testing
+purposes.
+
+When browsing patches in the patchwork management interface, an +mbox+
+link is provided at the top of the page. Copy this link address and
+run the following commands:
+
+---------------------
+$ git checkout -b <test-branch-name>
+$ wget -O - <mbox-url> | git am
+---------------------
+
+Another option for applying patches is to create a bundle. A bundle is
+a set of patches that you can group together using the patchwork
+interface. Once the bundle is created and the bundle is made public,
+you can copy the +mbox+ link for the bundle and apply the bundle
+using the above commands.
 
 [[bugtracker]]
 Bugtracker
