@@ -1,5 +1,6 @@
 config BR2_PACKAGE_OPKG
 	bool "opkg"
+	depends on BR2_USE_MMU # fork()
 	help
 	  Opkg is a lightweight package management system, based on ipkg. It is
 	  written in C and resembles apt/dpkg in operation. It is intended for
