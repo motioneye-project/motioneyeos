@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-NANO_VERSION = 2.3.1
+NANO_VERSION = 2.3.2
 NANO_SITE = http://www.nano-editor.org/dist/v2.3
 NANO_LICENSE = GPLv3+
 NANO_LICENSE_FILES = COPYING
