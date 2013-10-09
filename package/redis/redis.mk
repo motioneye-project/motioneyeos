@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-REDIS_VERSION = 2.6.11
-REDIS_SITE = http://redis.googlecode.com/files
+REDIS_VERSION = 2.6.16
+REDIS_SITE = http://download.redis.io/releases
 REDIS_LICENSE = BSD-3c (core); MIT and BSD family licenses (Bundled components)
 REDIS_LICENSE_FILES = COPYING
 
