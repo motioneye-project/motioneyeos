@@ -1,0 +1,22 @@
+Use correct curl-config program
+
+Instead of calling again curl-config in src/Makefile (which ends up
+calling the wrong curl-config: the one in the PATH instead of the one
+pointed at by the environment variables at configure time), let's use
+the CURL_LDADD variable which was computed at configure time.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/src/Makefile
+===================================================================
+--- a/src/Makefile
++++ b/src/Makefile
+@@ -56,7 +56,7 @@
+   TRANSPORT_MODS += blddir/lib/curl_transport/curltransaction
+   TRANSPORT_MODS += blddir/lib/curl_transport/curlmulti
+   TRANSPORT_MODS += blddir/lib/curl_transport/lock_pthread
+-  TRANSPORT_LIBDEP += $(shell curl-config --libs)
++  TRANSPORT_LIBDEP += $(CURL_LDADD)
+ endif
+ ifeq ($(MUST_BUILD_LIBWWW_CLIENT),yes)
+   TRANSPORT_MODS += blddir/lib/libwww_transport/xmlrpc_libwww_transport
