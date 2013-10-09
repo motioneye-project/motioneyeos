@@ -4,7 +4,8 @@
 #
 ################################################################################
 
-POPPLER_VERSION = 0.22.3
+POPPLER_VERSION = 0.24.2
+POPPLER_SOURCE = poppler-$(POPPLER_VERSION).tar.xz
 POPPLER_SITE = http://poppler.freedesktop.org
 POPPLER_DEPENDENCIES = fontconfig
 POPPLER_LICENSE = GPLv2+
