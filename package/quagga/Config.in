@@ -80,6 +80,7 @@ config BR2_PACKAGE_QUAGGA_WATCHQUAGGA
 
 config BR2_PACKAGE_QUAGGA_SNMP
 	bool "SNMP support"
+	depends on BR2_USE_MMU # net-snmp
 	select BR2_PACKAGE_NETSNMP
 	help
 	  Make quagga information available via SNMP SMUX.
