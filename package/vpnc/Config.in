@@ -1,5 +1,6 @@
 config BR2_PACKAGE_VPNC
 	bool "vpnc"
+	depends on BR2_USE_MMU # fork()
 	select BR2_PACKAGE_LIBGCRYPT
 	select BR2_PACKAGE_LIBGPG_ERROR
 	help
