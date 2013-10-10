@@ -24,8 +24,8 @@ WESTON_CONF_OPT = \
 	--disable-drm-compositor \
 	--disable-wayland-compositor \
 	--disable-headless-compositor \
-	--disable-rpi-compositor \
 	--disable-weston-launch \
+	--disable-colord \
 	--disable-libunwind
 
 ifeq ($(BR2_PACKAGE_WESTON_FBDEV),y)
@@ -33,5 +33,17 @@ WESTON_CONF_OPT += --enable-fbdev-compositor
 else
 WESTON_CONF_OPT += --disable-fbdev-compositor
 endif
+
+ifeq ($(BR2_PACKAGE_WESTON_RPI),y)
+WESTON_DEPENDENCIES += rpi-userland
+WESTON_CONF_OPT += --enable-rpi-compositor \
+	--disable-resize-optimization \
+	--disable-setuid-install \
+	--disable-xwayland-test \
+	--disable-simple-egl-clients \
+	WESTON_NATIVE_BACKEND=rpi-backend.so
+else
+WESTON_CONF_OPT += --disable-rpi-compositor
+endif # BR2_PACKAGE_WESTON_RPI
 
 $(eval $(autotools-package))

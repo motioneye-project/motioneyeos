@@ -36,4 +36,13 @@ config BR2_PACKAGE_WESTON_FBDEV
 	bool "fbdev compositor"
 	default y
 
+config BR2_PACKAGE_WESTON_RPI
+	bool "RPi compositor"
+	depends on BR2_arm                      # rpi-userland
+	depends on BR2_INSTALL_LIBSTDCPP        # rpi-userland
+	depends on BR2_LARGEFILE                # rpi-userland
+	depends on BR2_TOOLCHAIN_HAS_THREADS    # rpi-userland
+	select BR2_PACKAGE_RPI_USERLAND
+	select BR2_PACKAGE_WESTON_HAS_COMPOSITOR
+
 endif
