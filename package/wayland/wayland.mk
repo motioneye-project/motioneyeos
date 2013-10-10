@@ -22,7 +22,9 @@ WAYLAND_CONF_OPT = --disable-scanner
 define WAYLAND_BUILD_SCANNER
 	(cd $(@D)/src/; \
 		$(HOSTCC) $(HOST_CFLAGS) $(HOST_LDFLAGS) \
-			-o wayland-scanner scanner.c wayland-util.c -lexpat)
+			-o wayland-scanner scanner.c wayland-util.c -lexpat; \
+	 	$(INSTALL) -m 0755 -D wayland-scanner \
+			$(HOST_DIR)/usr/bin/wayland-scanner)
 endef
 
 WAYLAND_POST_CONFIGURE_HOOKS += WAYLAND_BUILD_SCANNER
