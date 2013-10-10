@@ -6,6 +6,8 @@
 
 XMLSTARLET_VERSION = 1.3.0
 XMLSTARLET_SITE = http://downloads.sourceforge.net/project/xmlstar/xmlstarlet/$(XMLSTARLET_VERSION)
+XMLSTARLET_LICENSE = MIT
+XMLSTARLET_LICENSE_FILES = COPYING
 
 XMLSTARLET_DEPENDENCIES += libxml2 libxslt \
 	$(if $(BR2_PACKAGE_LIBICONV),libiconv)
