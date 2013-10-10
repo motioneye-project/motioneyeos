@@ -5,7 +5,7 @@
 ################################################################################
 
 GDK_PIXBUF_MAJOR_VERSION = 2.28
-GDK_PIXBUF_VERSION = $(GDK_PIXBUF_MAJOR_VERSION).1
+GDK_PIXBUF_VERSION = $(GDK_PIXBUF_MAJOR_VERSION).2
 GDK_PIXBUF_SOURCE = gdk-pixbuf-$(GDK_PIXBUF_VERSION).tar.xz
 GDK_PIXBUF_SITE = http://ftp.gnome.org/pub/gnome/sources/gdk-pixbuf/$(GDK_PIXBUF_MAJOR_VERSION)
 GDK_PIXBUF_LICENSE = LGPLv2+
