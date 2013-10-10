@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-BOOST_VERSION = 1.53.0
+BOOST_VERSION = 1.54.0
 BOOST_FILE_VERSION = $(subst .,_,$(BOOST_VERSION))
 BOOST_SOURCE = boost_$(BOOST_FILE_VERSION).tar.bz2
 BOOST_SITE = http://downloads.sourceforge.net/project/boost/boost/$(BOOST_VERSION)
