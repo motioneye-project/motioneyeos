@@ -12,6 +12,10 @@ WESTON_LICENSE_FILES = COPYING
 
 WESTON_DEPENDENCIES = host-pkgconf wayland libxkbcommon pixman libpng \
 	jpeg mtdev udev cairo
+
+# We touch configure.ac with one of our patches
+WESTON_AUTORECONF = YES
+
 WESTON_CONF_OPT = \
 	--disable-egl \
 	--disable-simple-egl-clients \
