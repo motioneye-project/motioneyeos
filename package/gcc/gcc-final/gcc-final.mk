@@ -26,6 +26,21 @@ HOST_GCC_FINAL_SUBDIR = build
 
 HOST_GCC_FINAL_PRE_CONFIGURE_HOOKS += HOST_GCC_CONFIGURE_SYMLINK
 
+define  HOST_GCC_FINAL_CONFIGURE_CMDS
+        (cd $(HOST_GCC_FINAL_SRCDIR) && rm -rf config.cache; \
+                $(HOST_CONFIGURE_OPTS) \
+                CFLAGS="$(HOST_CFLAGS)" \
+                LDFLAGS="$(HOST_LDFLAGS)" \
+                $(HOST_GCC_FINAL_CONF_ENV) \
+                ./configure \
+                --prefix="$(HOST_DIR)/usr" \
+                --sysconfdir="$(HOST_DIR)/etc" \
+                --enable-shared --enable-static \
+                $(QUIET) $(HOST_GCC_FINAL_CONF_OPT) \
+        )
+endef
+
+
 # Languages supported by the cross-compiler
 GCC_FINAL_CROSS_LANGUAGES-y = c
 GCC_FINAL_CROSS_LANGUAGES-$(BR2_INSTALL_LIBSTDCPP) += c++
@@ -132,6 +147,8 @@ define HOST_GCC_FINAL_INSTALL_USR_LIBS
 	mkdir -p $(TARGET_DIR)/usr/lib
 	for i in $(HOST_GCC_FINAL_USR_LIBS) ; do \
 		cp -dpf $(HOST_DIR)/usr/$(GNU_TARGET_NAME)/lib*/$${i}.so* \
+			$(STAGING_DIR)/usr/lib/ ; \
+		cp -dpf $(HOST_DIR)/usr/$(GNU_TARGET_NAME)/lib*/$${i}.a \
 			$(STAGING_DIR)/usr/lib/ ; \
 		cp -dpf $(HOST_DIR)/usr/$(GNU_TARGET_NAME)/lib*/$${i}.so* \
 			$(TARGET_DIR)/usr/lib/ ; \
