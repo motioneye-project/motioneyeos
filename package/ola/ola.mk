@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-OLA_VERSION = 0.8.31
+OLA_VERSION = 0.8.32
 OLA_SITE = https://open-lighting.googlecode.com/files
 
 OLA_LICENSE = LGPLv2.1+ (libola, libolacommon, Python bindings), GPLv2+ (libolaserver, olad, Python examples and tests)
