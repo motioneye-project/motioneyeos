@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-APR_VERSION = 1.4.6
+APR_VERSION = 1.4.8
 APR_SITE = http://archive.apache.org/dist/apr
 APR_LICENSE = Apache-2.0
 APR_LICENSE_FILES = LICENSE
