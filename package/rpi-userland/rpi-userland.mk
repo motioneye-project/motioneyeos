@@ -16,10 +16,4 @@ define RPI_USERLAND_POST_TARGET_CLEANUP
 endef
 RPI_USERLAND_POST_INSTALL_TARGET_HOOKS += RPI_USERLAND_POST_TARGET_CLEANUP
 
-define RPI_USERLAND_POST_STAGING_PC_FILE
-	install -D -m 0644 package/rpi-userland/bcm_host.pc \
-		$(STAGING_DIR)/usr/lib/pkgconfig/bcm_host.pc
-endef
-RPI_USERLAND_POST_INSTALL_STAGING_HOOKS += RPI_USERLAND_POST_STAGING_PC_FILE
-
 $(eval $(cmake-package))
