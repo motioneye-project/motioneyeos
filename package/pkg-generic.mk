@@ -281,7 +281,7 @@ endif
 
 ifeq ($$($(2)_SITE_METHOD),local)
 ifeq ($$($(2)_OVERRIDE_SRCDIR),)
-$(2)_OVERRIDE_SRCDIR = $($(2)_SITE)
+$(2)_OVERRIDE_SRCDIR = $$($(2)_SITE)
 endif
 endif
 
