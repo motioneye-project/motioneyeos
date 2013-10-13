@@ -94,5 +94,5 @@ config BR2_PACKAGE_E2FSPROGS_UUIDGEN
 
 endif
 
-comment "e2fsprogs requires a toolchain with LARGEFILE + WCHAR support"
+comment "e2fsprogs needs a toolchain w/ largefile, wchar"
 	depends on !(BR2_LARGEFILE && BR2_USE_WCHAR)

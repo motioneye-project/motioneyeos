@@ -10,5 +10,5 @@ config BR2_PACKAGE_LIBUPNP
 
 	  http://pupnp.sourceforge.net/
 
-comment "libupnp requires a toolchain with LARGEFILE and thread support"
+comment "libupnp needs a toolchain w/ largefile, threads"
 	depends on !(BR2_LARGEFILE && BR2_TOOLCHAIN_HAS_THREADS)

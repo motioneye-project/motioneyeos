@@ -16,5 +16,5 @@ config BR2_PACKAGE_TSTOOLS
 
 	  http://tstools.berlios.de/
 
-comment "tstools needs largefile support in toolchain"
+comment "tstools needs a toolchain w/ largefile"
 	depends on !BR2_LARGEFILE

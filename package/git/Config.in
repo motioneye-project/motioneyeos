@@ -10,5 +10,5 @@ config BR2_PACKAGE_GIT
 
 	  http://git-scm.com
 
-comment "git requires a toolchain with LARGEFILE support"
+comment "git needs a toolchain w/ largefile"
 	depends on !BR2_LARGEFILE

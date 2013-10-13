@@ -63,7 +63,7 @@ config BR2_PACKAGE_MTD_MKFSUBIFS
 	depends on BR2_LARGEFILE # util-linux
 	depends on BR2_USE_WCHAR # util-linux
 
-comment "mkfs.ubifs requires largefile and wchar support in toolchain"
+comment "mkfs.ubifs needs a toolchain w/ largefile, wchar"
 	depends on !BR2_LARGEFILE || !BR2_USE_WCHAR
 
 config BR2_PACKAGE_MTD_MTD_DEBUG
@@ -92,7 +92,7 @@ config BR2_PACKAGE_MTD_RECV_IMAGE
 	depends on BR2_INET_IPV6
 	bool "recv_image"
 
-comment "recv_image requires a toolchain with IPv6 support"
+comment "recv_image needs a toolchain w/ IPv6"
 	depends on !BR2_INET_IPV6
 
 config BR2_PACKAGE_MTD_RFDDUMP

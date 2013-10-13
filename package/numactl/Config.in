@@ -12,5 +12,5 @@ config BR2_PACKAGE_NUMACTL
 
 	  http://oss.sgi.com/projects/libnuma/
 
-comment "numactl requires a toolchain with LARGEFILE support"
+comment "numactl needs a toolchain w/ largefile"
 	depends on !BR2_LARGEFILE

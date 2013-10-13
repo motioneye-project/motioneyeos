@@ -46,7 +46,7 @@ config BR2_PACKAGE_GST1_PLUGINS_UGLY_PLUGIN_DVDREAD
 	help
 	  Access a DVD with dvdread
 
-comment "dvdread requires a toolchain with largefile support"
+comment "dvdread needs a toolchain w/ largefile"
 	depends on !BR2_LARGEFILE
 
 config BR2_PACKAGE_GST1_PLUGINS_UGLY_PLUGIN_LAME

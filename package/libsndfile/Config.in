@@ -11,5 +11,5 @@ config BR2_PACKAGE_LIBSNDFILE
 
 	  http://www.mega-nerd.com/libsndfile/
 
-comment "libsndfile requires a toolchain with LARGEFILE support"
+comment "libsndfile needs a toolchain w/ largefile"
 	depends on !BR2_LARGEFILE

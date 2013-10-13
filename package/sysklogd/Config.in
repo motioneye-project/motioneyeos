@@ -6,5 +6,5 @@ config BR2_PACKAGE_SYSKLOGD
 
 	  http://www.infodrom.org/products/sysklogd/
 
-comment "syslogd requires a toolchain with LARGEFILE support"
+comment "syslogd needs a toolchain w/ largefile"
 	depends on !BR2_LARGEFILE

@@ -17,5 +17,5 @@ config BR2_PACKAGE_RPI_USERLAND
 
 	  https://github.com/raspberrypi/userland/
 
-comment "rpi-userland requires a toolchain with C++, LARGEFILE and threads support"
+comment "rpi-userland needs a toolchain w/ C++, largefile, threads"
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_THREADS

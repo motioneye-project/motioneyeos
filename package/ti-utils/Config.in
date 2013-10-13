@@ -8,5 +8,5 @@ config BR2_PACKAGE_TI_UTILS
 
 	  http://linuxwireless.org/en/users/Drivers/wl12xx/calibrator
 
-comment "ti-utils requires a toolchain with thread support"
+comment "ti-utils needs a toolchain w/ threads"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS

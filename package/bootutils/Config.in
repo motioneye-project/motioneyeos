@@ -9,5 +9,5 @@ config BR2_PACKAGE_BOOTUTILS
 
 	  http://bootutils.pr.linuxrulz.org/
 
-comment "bootutils requires a toolchain with LARGEFILE support"
+comment "bootutils needs a toolchain w/ largefile"
 	depends on !BR2_LARGEFILE

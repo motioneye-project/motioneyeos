@@ -7,7 +7,7 @@ config BR2_PACKAGE_LIBARCHIVE
 
 	  http://www.libarchive.org/
 
-comment "libarchive requires a toolchain with WCHAR support"
+comment "libarchive needs a toolchain w/ wchar"
 	depends on !BR2_USE_WCHAR
 
 config BR2_PACKAGE_LIBARCHIVE_BSDTAR

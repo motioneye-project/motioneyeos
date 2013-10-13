@@ -7,5 +7,5 @@ config BR2_PACKAGE_EXFAT_UTILS
 
 	  http://code.google.com/p/exfat/
 
-comment "exfat-utils requires a toolchain with LARGEFILE and WCHAR support"
+comment "exfat-utils needs a toolchain w/ largefile, wchar"
 	depends on !BR2_LARGEFILE || !BR2_USE_WCHAR

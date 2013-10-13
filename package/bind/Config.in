@@ -39,5 +39,5 @@ config BR2_PACKAGE_BIND_TOOLS
 
 endif
 
-comment "bind requires a toolchain with LARGEFILE and IPV6 support"
+comment "bind needs a toolchain w/ largefile, IPv6"
 	depends on !(BR2_LARGEFILE || BR2_INET_IPV6)

@@ -11,5 +11,5 @@ config BR2_PACKAGE_LOG4CXX
 
 	  http://apache.linux-mirror.org/logging/log4cxx/0.10.0
 
-comment "log4cxx requires C++ support in toolchain"
+comment "log4cxx needs a toolchain w/ C++"
 	depends on !BR2_INSTALL_LIBSTDCPP

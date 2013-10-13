@@ -10,5 +10,5 @@ config BR2_PACKAGE_RADVD
 
 	  http://www.litech.org/radvd/
 
-comment "radvd requires a toolchain with IPV6 support"
+comment "radvd needs a toolchain w/ IPv6"
 	depends on !BR2_INET_IPV6

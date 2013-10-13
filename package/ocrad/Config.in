@@ -10,5 +10,5 @@ config BR2_PACKAGE_OCRAD
 
 	  http://www.gnu.org/software/ocrad/
 
-comment "ocrad needs a toolchain with C++ support"
+comment "ocrad needs a toolchain w/ C++"
 	depends on !BR2_INSTALL_LIBSTDCPP

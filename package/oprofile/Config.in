@@ -22,5 +22,5 @@ config BR2_PACKAGE_OPROFILE
 	  interrupt handlers, kernel modules, the kernel, shared
 	  libraries, and applications.
 
-comment "oprofile requires a toolchain with C++ support enabled"
+comment "oprofile needs a toolchain w/ C++"
 	depends on !BR2_INSTALL_LIBSTDCPP

@@ -23,7 +23,7 @@ config BR2_PACKAGE_LIBEDBUS_BLUEZ
 	help
 	  Bluetooth support.
 
-comment "bluez support requires a toolchain with WCHAR and threading support"
+comment "bluez support needs a toolchain w/ wchar, threads"
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
 
 config BR2_PACKAGE_LIBEDBUS_CONNMAN
@@ -39,5 +39,5 @@ config BR2_PACKAGE_LIBEDBUS_NOTIFY
 
 endif
 
-comment "libedbus requires a toolchain with thread support"
+comment "libedbus needs a toolchain w/ threads"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS

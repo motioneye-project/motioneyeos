@@ -1,4 +1,4 @@
-comment "tvheadend needs a toolchain with LARGEFILE, IPv6 and THREADS support"
+comment "tvheadend needs a toolchain w/ largefile, IPv6, threads"
     depends on !BR2_LARGEFILE || !BR2_INET_IPV6 || !BR2_TOOLCHAIN_HAS_THREADS
 
 config BR2_PACKAGE_TVHEADEND

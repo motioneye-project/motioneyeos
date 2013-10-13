@@ -1,4 +1,4 @@
-comment "Kismet requires a toolchain with thread and C++ support enabled"
+comment "kismet needs a toolchain w/ threads, C++"
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS
 
 config BR2_PACKAGE_KISMET

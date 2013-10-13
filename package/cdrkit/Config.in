@@ -12,5 +12,5 @@ config BR2_PACKAGE_CDRKIT
 
 	  http://www.cdrkit.org/
 
-comment "cdrkit requires a toolchain with LARGEFILE support"
+comment "cdrkit needs a toolchain w/ largefile"
 	depends on !BR2_LARGEFILE

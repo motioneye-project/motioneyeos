@@ -1,4 +1,4 @@
-comment "gptfdisk requires a toolchain with LARGEFILE/WCHAR/C++ support enabled"
+comment "gptfdisk needs a toolchain w/ largefile, wchar, C++"
 	depends on !(BR2_LARGEFILE && BR2_INSTALL_LIBSTDCPP && BR2_USE_WCHAR)
 
 config BR2_PACKAGE_GPTFDISK

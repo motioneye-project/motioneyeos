@@ -9,5 +9,5 @@ config BR2_PACKAGE_LIBNETFILTER_CTTIMEOUT
 
 	  http://www.netfilter.org/projects/libnetfilter_cttimeout/
 
-comment "libnetfilter_cttimout requires a toolchain with LARGEFILE support"
+comment "libnetfilter_cttimout needs a toolchain w/ largefile"
 	depends on !BR2_LARGEFILE

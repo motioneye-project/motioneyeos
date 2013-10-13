@@ -1,4 +1,4 @@
-comment "ola requires a toolchain with C++, thread, largefile and wchar support"
+comment "ola needs a toolchain w/ C++, threads, largefile, wchar"
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_LARGEFILE || !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
 
 config BR2_PACKAGE_OLA

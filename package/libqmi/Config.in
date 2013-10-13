@@ -9,5 +9,5 @@ config BR2_PACKAGE_LIBQMI
 
 	  http://www.freedesktop.org/wiki/Software/libqmi/
 
-comment "libqmi requires a toolchain with WCHAR and threading support"
+comment "libqmi needs a toolchain w/ wchar, threads"
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS

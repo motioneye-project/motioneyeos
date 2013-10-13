@@ -15,6 +15,6 @@ config BR2_PACKAGE_MIDORI
 
 	  http://software.twotoasts.de/?page=midori
 
-comment "midori requires C++, WCHAR, threading in toolchain and libgtk2"
+comment "midori needs libgtk2 and a toolchain w/ C++, wchar, threads"
         depends on !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR || \
 		!BR2_TOOLCHAIN_HAS_THREADS || !BR2_PACKAGE_LIBGTK2

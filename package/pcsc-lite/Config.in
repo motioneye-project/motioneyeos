@@ -28,5 +28,5 @@ config BR2_PACKAGE_PCSC_LITE_EMBEDDED
 
 endif
 
-comment "pcsc-lite needs a toolchain with thread support"
+comment "pcsc-lite needs a toolchain w/ threads"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS

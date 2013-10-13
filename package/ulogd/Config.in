@@ -14,6 +14,6 @@ config BR2_PACKAGE_ULOGD
 
 	  http://www.netfilter.org/projects/ulogd/
 
-comment "ulogd requires a toolchain with IPV6, LARGEFILE and dynamic library support"
+comment "ulogd needs a toolchain w/ IPv6, largefile, dynamic library"
 	depends on !BR2_INET_IPV6 || !BR2_LARGEFILE || BR2_PREFER_STATIC_LIB
 	depends on BR2_USE_MMU

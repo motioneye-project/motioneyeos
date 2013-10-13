@@ -9,5 +9,5 @@ config BR2_PACKAGE_LMBENCH
 
 	  http://sourceforge.net/projects/lmbench/
 
-comment "lmbench requires a toolchain with threading support"
+comment "lmbench needs a toolchain w/ threads"
 	depends on !(BR2_TOOLCHAIN_HAS_THREADS || BR2_TOOLCHAIN_HAS_NATIVE_RPC)

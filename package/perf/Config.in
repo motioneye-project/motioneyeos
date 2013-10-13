@@ -18,5 +18,5 @@ config BR2_PACKAGE_PERF
 
 	  https://perf.wiki.kernel.org/
 
-comment "perf only available if Linux kernel is enabled, and requires largefile support"
+comment "perf only available if Linux kernel is enabled, and needs a toolchain w/ largefile"
 	depends on !BR2_LINUX_KERNEL || !BR2_LARGEFILE

@@ -25,5 +25,5 @@ config BR2_PACKAGE_MPLAYER_MENCODER
 
 endif
 
-comment "mplayer requires a toolchain with LARGEFILE support"
+comment "mplayer needs a toolchain w/ largefile"
 	depends on !BR2_LARGEFILE

@@ -19,5 +19,5 @@ config BR2_PACKAGE_BUSTLE
 
 	  http://www.willthompson.co.uk/bustle/
 
-comment "bustle requires a toolchain with WCHAR support and threading support"
+comment "bustle needs a toolchain w/ wchar, threads"
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS

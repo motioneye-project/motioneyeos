@@ -26,5 +26,5 @@ config BR2_PACKAGE_PULSEAUDIO_DAEMON
 	  recommended way of using PulseAudio unless you are building a
 	  headless system.
 
-comment "pulseaudio requires a toolchain with WCHAR, LARGEFILE and threads support"
+comment "pulseaudio needs a toolchain w/ wchar, largefile, threads"
 	depends on !BR2_USE_WCHAR || !BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_THREADS

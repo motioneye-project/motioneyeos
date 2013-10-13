@@ -9,5 +9,5 @@ config BR2_PACKAGE_MSGPACK
 
 	  http://msgpack.org/
 
-comment "msgpack requires a toolchain with C++ support enabled"
+comment "msgpack needs a toolchain w/ C++"
 	depends on !BR2_INSTALL_LIBSTDCPP

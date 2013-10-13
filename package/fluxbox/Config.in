@@ -10,5 +10,5 @@ config BR2_PACKAGE_FLUXBOX
 
 	  http://fluxbox.org
 
-comment "fluxbox requires a toolchain with C++ support enabled"
+comment "fluxbox needs a toolchain w/ C++"
 	depends on BR2_PACKAGE_XORG7 && !BR2_INSTALL_LIBSTDCPP

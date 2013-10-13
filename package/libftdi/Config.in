@@ -18,5 +18,5 @@ config BR2_PACKAGE_LIBTFDI_CPP
 
 endif # BR2_PACKAGE_LIBFTDI
 
-comment "libftdi needs a toolchain with thread support"
+comment "libftdi needs a toolchain w/ threads"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS

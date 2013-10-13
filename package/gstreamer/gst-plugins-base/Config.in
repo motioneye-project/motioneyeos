@@ -90,7 +90,7 @@ config BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_PANGO
 	depends on BR2_TOOLCHAIN_HAS_THREADS # pango -> libglib2
 	select BR2_PACKAGE_PANGO
 
-comment "pango plugin requires a toolchain with C++, WCHAR and threading support "
+comment "pango plugin needs a toolchain w/ C++, wchar, threads"
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR || \
 		!BR2_TOOLCHAIN_HAS_THREADS
 

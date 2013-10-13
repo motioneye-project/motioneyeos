@@ -10,5 +10,5 @@ config BR2_PACKAGE_ACL
 
 	  http://savannah.nongnu.org/projects/acl
 
-comment "acl requires a toolchain with LARGEFILE support"
+comment "acl needs a toolchain w/ largefile"
 	depends on !BR2_LARGEFILE

@@ -13,5 +13,5 @@ config BR2_PACKAGE_GST_FFMPEG
 
 	  http://gstreamer.freedesktop.org/
 
-comment "gst-ffmpeg requires a toolchain with LARGEFILE and IPV6 support"
+comment "gst-ffmpeg needs a toolchain w/ largefile, IPv6"
 	depends on !(BR2_LARGEFILE && BR2_INET_IPV6)

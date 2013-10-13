@@ -11,5 +11,5 @@ config BR2_PACKAGE_BLACKBOX
 
 	  http://blackboxwm.sourceforge.net/
 
-comment "blackbox requires a toolchain with C++ support enabled"
+comment "blackbox needs a toolchain w/ C++"
 	depends on BR2_PACKAGE_XORG7 && !BR2_INSTALL_LIBSTDCPP

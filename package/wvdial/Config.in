@@ -9,5 +9,5 @@ config BR2_PACKAGE_WVDIAL
 
 	  http://wvdial.googlecode.com/
 
-comment "wvdial requires a toolchain with C++ and largefile support enabled"
+comment "wvdial needs a toolchain w/ C++, largefile"
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_LARGEFILE

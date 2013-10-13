@@ -137,7 +137,7 @@ config BR2_PACKAGE_PHP_EXT_PDO_MYSQL
 	help
 	  PDO driver for MySQL
 
-comment "MySQL drivers require a toolchain with C++ support"
+comment "MySQL drivers need a toolchain w/ C++"
 	depends on !BR2_INSTALL_LIBSTDCPP
 
 config BR2_PACKAGE_PHP_EXT_PDO_SQLITE
@@ -157,7 +157,7 @@ config BR2_PACKAGE_PHP_EXT_GETTEXT
 	help
 	  Gettext support
 
-comment "Gettext support requires a toolchain with WCHAR support"
+comment "Gettext support needs a toolchain w/ wchar"
 	depends on !BR2_USE_WCHAR
 
 config BR2_PACKAGE_PHP_EXT_ICONV
@@ -174,7 +174,7 @@ config BR2_PACKAGE_PHP_EXT_INTL
 	help
 	  Internationalization support
 
-comment "intl support requires a toolchain with C++ and WCHAR support"
+comment "intl support needs a toolchain w/ C++, wchar"
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR
 
 comment "Image processing"

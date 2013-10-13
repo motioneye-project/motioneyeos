@@ -8,5 +8,5 @@ config BR2_PACKAGE_LIBMATROSKA
 
 	  http://matroska.org
 
-comment "libmatroska requires a toolchain with C++ support"
+comment "libmatroska needs a toolchain w/ C++"
 	depends on !BR2_INSTALL_LIBSTDCPP

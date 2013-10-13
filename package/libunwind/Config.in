@@ -8,5 +8,5 @@ config BR2_PACKAGE_LIBUNWIND
 
 	  http://www.nongnu.org/libunwind/index.html
 
-comment "libunwind requires a toolchain with thread support"
+comment "libunwind needs a toolchain w/ threads"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS

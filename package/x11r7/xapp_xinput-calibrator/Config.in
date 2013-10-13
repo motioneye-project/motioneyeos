@@ -8,5 +8,5 @@ config BR2_PACKAGE_XAPP_XINPUT_CALIBRATOR
 
 	  http://www.freedesktop.org/wiki/Software/xinput_calibrator
 
-comment "xinput-calibrator requires a toolchain with C++ support"
+comment "xinput-calibrator needs a toolchain w/ C++"
 	depends on !BR2_INSTALL_LIBSTDCPP

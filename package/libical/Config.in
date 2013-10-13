@@ -7,5 +7,5 @@ config BR2_PACKAGE_LIBICAL
 
 	  http://www.citadel.org/doku.php/documentation:featured_projects:libical
 
-comment "libical requires a toolchain with WCHAR support"
+comment "libical needs a toolchain w/ wchar"
 	depends on !BR2_USE_WCHAR

@@ -8,5 +8,5 @@ config BR2_PACKAGE_MUTT
 
 	  http://www.mutt.org/
 
-comment "mutt requires a toolchain with WCHAR support"
+comment "mutt needs a toolchain w/ wchar"
 	depends on !BR2_USE_WCHAR

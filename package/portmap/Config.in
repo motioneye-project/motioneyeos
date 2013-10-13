@@ -8,5 +8,5 @@ config BR2_PACKAGE_PORTMAP
 
 	  http://neil.brown.name/portmap/
 
-comment "portmap requires a toolchain with RPC support"
+comment "portmap needs a toolchain w/ RPC"
 	depends on !BR2_TOOLCHAIN_HAS_NATIVE_RPC

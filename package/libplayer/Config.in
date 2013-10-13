@@ -24,7 +24,7 @@ config BR2_PACKAGE_LIBPLAYER_GSTREAMER
 	depends on BR2_TOOLCHAIN_HAS_THREADS # glib2
 	select BR2_PACKAGE_GSTREAMER
 
-comment "gstreamer backend requires a toolchain with WCHAR and threading support"
+comment "gstreamer backend needs a toolchain w/ wchar, threads"
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
 
 config BR2_PACKAGE_LIBPLAYER_PYTHON
@@ -33,5 +33,5 @@ config BR2_PACKAGE_LIBPLAYER_PYTHON
 	bool "Libplayer python bindings"
 endif
 
-comment "libplayer requires a toolchain with LARGEFILE and threads support"
+comment "libplayer needs a toolchain w/ largefile, threads"
 	depends on !BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_THREADS

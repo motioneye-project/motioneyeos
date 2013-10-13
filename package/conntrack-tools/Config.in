@@ -17,7 +17,7 @@ config BR2_PACKAGE_CONNTRACK_TOOLS
 
 	  http://www.netfilter.org/projects/conntrack-tools/
 
-comment "conntrack-tools requires a toolchain with IPV6, LARGEFILE and threading support"
+comment "conntrack-tools needs a toolchain w/ IPv6, largefile, threads"
 	depends on !BR2_INET_IPV6 || \
 		!BR2_LARGEFILE || \
 		!(BR2_TOOLCHAIN_HAS_THREADS || BR2_TOOLCHAIN_HAS_NATIVE_RPC)

@@ -32,7 +32,7 @@ config BR2_PACKAGE_UDEV_ALL_EXTRAS
 	  Enable all extras with external dependencies like
 	  libacl, hwdata and libglib2
 
-comment "enabling all extras requires a toolchain with WCHAR and threading support"
+comment "enabling all extras needs a toolchain w/ wchar, threads"
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
 
 endif

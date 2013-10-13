@@ -19,5 +19,5 @@ config BR2_PACKAGE_BCUSDK
 
 	  http://www.auto.tuwien.ac.at/~mkoegler/eib/
 
-comment "bcusdk requires a toolchain with C++ support"
+comment "bcusdk needs a toolchain w/ C++"
 	depends on !BR2_INSTALL_LIBSTDCPP

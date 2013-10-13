@@ -1,4 +1,4 @@
-comment "boost requires a toolchain with C++, large file and thread support enabled"
+comment "boost needs a toolchain w/ C++, largefile, threads"
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_THREADS
 
 config BR2_PACKAGE_BOOST
@@ -48,7 +48,7 @@ config BR2_PACKAGE_BOOST_LOCALE
 	depends on BR2_USE_WCHAR
 	bool "boost-locale"
 
-comment "boost-locale requires a toolchain with wchar support"
+comment "boost-locale needs a toolchain w/ wchar"
 	depends on !BR2_USE_WCHAR
 
 config BR2_PACKAGE_BOOST_MATH

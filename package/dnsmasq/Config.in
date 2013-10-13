@@ -42,7 +42,7 @@ config BR2_PACKAGE_DNSMASQ_CONNTRACK
 	help
 	  Enable DNS query connection marking in netfilter.
 
-comment "conntrack marking support requires a toolchain with LARGEFILE support"
+comment "conntrack marking support needs a toolchain w/ largefile"
 	depends on !BR2_LARGEFILE
 
 endif

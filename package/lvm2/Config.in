@@ -29,5 +29,5 @@ config BR2_PACKAGE_LVM2_APP_LIBRARY
 	help
 	  Install application library (liblvm2app).
 
-comment "lvm2 requires a toolchain with LARGEFILE support"
+comment "lvm2 needs a toolchain w/ largefile"
         depends on !BR2_LARGEFILE

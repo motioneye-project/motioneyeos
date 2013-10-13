@@ -10,6 +10,6 @@ config BR2_PACKAGE_DBUS_PYTHON
 
 	  http://dbus.freedesktop.org/doc/dbus-python/
 
-comment "dbus-python requires a toolchain with WCHAR and threading support"
+comment "dbus-python needs a toolchain w/ wchar, threads"
 	depends on BR2_PACKAGE_DBUS && BR2_PACKAGE_PYTHON && \
 		(!BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS)

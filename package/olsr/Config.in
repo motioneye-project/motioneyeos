@@ -13,5 +13,5 @@ config BR2_PACKAGE_OLSR
 
 	  http://www.olsr.org/
 
-comment "olsr requires a toolchain with IPv6 and threads support"
+comment "olsr needs a toolchain w/ IPv6, threads"
 	depends on !BR2_INET_IPV6 || !BR2_TOOLCHAIN_HAS_THREADS

@@ -9,5 +9,5 @@ config BR2_PACKAGE_SNAPPY
 
 	  http://code.google.com/p/snappy/
 
-comment "snappy requires a toolchain with C++ support"
+comment "snappy needs a toolchain w/ C++"
 	depends on !BR2_INSTALL_LIBSTDCPP

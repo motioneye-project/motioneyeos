@@ -16,7 +16,7 @@ config BR2_LINUX_KERNEL_EXT_XENOMAI
 	  ARM, 2.6.35.9, 2.6.37.6, 2.6.38.8, on NIOS2, 2.6.35, on
 	  PowerPC, 2.6.35.7, 2.6.36.4, 3.0.8.
 
-comment "xenomai requires thread support in toolchain"
+comment "xenomai needs a toolchain w/ threads"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS
 
 config BR2_LINUX_KERNEL_EXT_XENOMAI_ADEOS_PATCH

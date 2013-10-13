@@ -1,4 +1,4 @@
-comment "Squid requires a toolchain with C++ and IPv6 support enabled"
+comment "squid needs a toolchain w/ C++, IPv6"
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_INET_IPV6
 
 config BR2_PACKAGE_SQUID

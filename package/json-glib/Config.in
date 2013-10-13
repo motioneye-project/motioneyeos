@@ -11,5 +11,5 @@ config BR2_PACKAGE_JSON_GLIB
 
 	  https://live.gnome.org/JsonGlib/
 
-comment "json-glib requires a toolchain with WCHAR and threading support"
+comment "json-glib needs a toolchain w/ wchar, threads"
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS

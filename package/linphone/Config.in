@@ -26,6 +26,6 @@ config BR2_PACKAGE_LINPHONE
 
 	  http://www.linphone.org/
 
-comment "linphone requires a toolchain with threads, C++ and IPv6 support enabled"
+comment "linphone needs a toolchain w/ threads, C++, IPv6"
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS || \
 		!BR2_INET_IPV6

@@ -1,4 +1,4 @@
-comment "rpm requires a toolchain with thread support"
+comment "rpm needs a toolchain w/ threads"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS
 
 config BR2_PACKAGE_RPM
@@ -30,7 +30,7 @@ config BR2_PACKAGE_RPM_XZ_PAYLOADS
 	help
 	  Support for xz payloads in RPM.
 
-comment "xz payload support requires a toolchain with c++ support"
+comment "xz payload support needs a toolchain w/ C++"
 	depends on !BR2_INSTALL_LIBSTDCPP
 
 endif

@@ -13,5 +13,5 @@ config BR2_PACKAGE_NETATALK
 
 	  http://netatalk.sourceforge.net/
 
-comment "netatalk requires a toolchain with thread support"
+comment "netatalk needs a toolchain w/ threads"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS

@@ -6,5 +6,5 @@ config BR2_PACKAGE_DHCPCD
 
 	  http://roy.marples.name/downloads/dhcpcd
 
-comment "dhcpcd requires a toolchain with IPV6 support"
+comment "dhcpcd needs a toolchain w/ IPv6"
 	depends on !BR2_INET_IPV6

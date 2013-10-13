@@ -13,5 +13,5 @@ config BR2_PACKAGE_CRYPTSETUP
 
 	  https://code.google.com/p/cryptsetup/
 
-comment "cryptsetup needs largefile and wchar support in toolchain"
+comment "cryptsetup needs a toolchain w/ largefile, wchar"
 	depends on !BR2_LARGEFILE || !BR2_USE_WCHAR

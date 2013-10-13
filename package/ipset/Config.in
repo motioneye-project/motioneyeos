@@ -8,5 +8,5 @@ config BR2_PACKAGE_IPSET
 
 	  http://ipset.netfilter.org/
 
-comment "ipset requires a toolchain with LARGEFILE support"
+comment "ipset needs a toolchain w/ largefile"
 	depends on !BR2_LARGEFILE

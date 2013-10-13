@@ -7,8 +7,8 @@ config BR2_PACKAGE_BEECRYPT
 
 	  http://beecrypt.sf.net
 
-comment "beecrypt needs a toolchain with thread support"
+comment "beecrypt needs a toolchain w/ threads"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS
 
-comment "beecrypt C++ support requires a toolchain with WCHAR enabled"
+comment "beecrypt C++ support needs a toolchain w/ wchar"
 	depends on BR2_INSTALL_LIBSTDCPP && !BR2_USE_WCHAR && BR2_TOOLCHAIN_HAS_THREADS

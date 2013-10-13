@@ -8,5 +8,5 @@ config BR2_PACKAGE_SER2NET
 
 	  http://ser2net.sourceforge.net
 
-comment "ser2net requires a toolchain with IPV6 support"
+comment "ser2net needs a toolchain w/ IPv6"
 	depends on !BR2_INET_IPV6

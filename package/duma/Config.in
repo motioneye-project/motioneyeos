@@ -16,5 +16,5 @@ config BR2_PACKAGE_DUMA_NO_LEAKDETECTION
 
 endif # BR2_PACKAGE_DUMA
 
-comment "duma requires C++ and thread support in toolchain"
+comment "duma needs a toolchain w/ C++, threads"
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS

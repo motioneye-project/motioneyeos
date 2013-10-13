@@ -8,6 +8,6 @@ config BR2_PACKAGE_LINUX_PAM
 
 	  http://linux-pam.org
 
-comment "linux-pam requires a toolchain with WCHAR and locale support"
+comment "linux-pam needs a toolchain w/ wchar, locale"
 	depends on !(BR2_ENABLE_LOCALE && BR2_USE_WCHAR)
 

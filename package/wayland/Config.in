@@ -10,5 +10,5 @@ config BR2_PACKAGE_WAYLAND
 
 	  http://wayland.freedesktop.org/
 
-comment "wayland requires a toolchain with thread support"
+comment "wayland needs a toolchain w/ threads"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS

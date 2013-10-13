@@ -6,5 +6,5 @@ config BR2_PACKAGE_MEMTESTER
 
 	  http://pyropus.ca/software/memtester/
 
-comment "memtester requires a toolchain with LARGEFILE support"
+comment "memtester needs a toolchain w/ largefile"
        depends on !BR2_LARGEFILE

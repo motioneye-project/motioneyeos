@@ -10,5 +10,5 @@ config BR2_PACKAGE_UNIONFS
 
 	  http://podgorny.cz/moin/UnionFsFuse
 
-comment "unionfs requires a toolchain with LARGEFILE, threads and dynamic library support"
+comment "unionfs needs a toolchain w/ largefile, threads, dynamic library"
 	depends on !BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_THREADS || BR2_PREFER_STATIC_LIB

@@ -9,5 +9,5 @@ config BR2_PACKAGE_FBTERM
 
 	  http://code.google.com/p/fbterm/
 
-comment "fbterm requires a toolchain with C++, WCHAR and locale support"
+comment "fbterm needs a toolchain w/ C++, wchar, locale"
 	depends on !(BR2_INSTALL_LIBSTDCPP && BR2_ENABLE_LOCALE && BR2_USE_WCHAR)

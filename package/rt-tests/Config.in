@@ -22,5 +22,5 @@ config BR2_PACKAGE_RT_TESTS
 
 	  http://rt.wiki.kernel.org
 
-comment "rt-tests requires a toolchain with threads support"
+comment "rt-tests needs a toolchain w/ threads"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS

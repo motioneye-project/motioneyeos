@@ -6,5 +6,5 @@ config BR2_PACKAGE_SED
 
 	  http://sed.sourceforge.net/
 
-comment "sed requires a toolchain with WCHAR support"
+comment "sed needs a toolchain w/ wchar"
 	depends on !BR2_USE_WCHAR

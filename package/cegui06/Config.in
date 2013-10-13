@@ -1,4 +1,4 @@
-comment "cegui06 needs a toolchain with C++ and threads"
+comment "cegui06 needs a toolchain w/ C++, threads"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_INSTALL_LIBSTDCPP
 
 config BR2_PACKAGE_CEGUI06

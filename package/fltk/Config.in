@@ -11,5 +11,5 @@ config BR2_PACKAGE_FLTK
 
 	  http://www.fltk.org/
 
-comment "fltk requires a toolchain with C++ support enabled"
+comment "fltk needs a toolchain w/ C++"
 	depends on !BR2_INSTALL_LIBSTDCPP && BR2_PACKAGE_XORG7

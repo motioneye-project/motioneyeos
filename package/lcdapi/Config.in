@@ -7,5 +7,5 @@ config BR2_PACKAGE_LCDAPI
 
 	  https://github.com/spdawson/lcdapi
 
-comment "lcdapi requires a toolchain with C++ and thread support enabled"
+comment "lcdapi needs a toolchain w/ C++, threads"
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS

@@ -13,5 +13,5 @@ config BR2_PACKAGE_FDK_AAC
 
 	  http://sourceforge.net/projects/opencore-amr/files/fdk-aac/
 
-comment "fdk-aac requires a toolchain with C++ support"
+comment "fdk-aac needs a toolchain w/ C++"
 	depends on !BR2_INSTALL_LIBSTDCPP

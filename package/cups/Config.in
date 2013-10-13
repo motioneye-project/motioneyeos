@@ -15,7 +15,7 @@ config BR2_PACKAGE_CUPS_PDFTOPS
        help
          Enable pdftops support
 
-comment "pdftops support requires a toolchain with C++ support enabled"
+comment "pdftops support needs a toolchain w/ C++"
 	depends on !BR2_INSTALL_LIBSTDCPP
 
 endif

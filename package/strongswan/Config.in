@@ -17,7 +17,7 @@ menuconfig BR2_PACKAGE_STRONGSWAN
 
 if BR2_PACKAGE_STRONGSWAN
 
-comment "kernel-netlink and socket-default options require a toolchain with IPV6 support"
+comment "kernel-netlink and socket-default options need a toolchain w/ IPv6"
 	depends on !BR2_INET_IPV6
 
 choice

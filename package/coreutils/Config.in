@@ -14,5 +14,5 @@ config BR2_PACKAGE_COREUTILS
 
 	  http://www.gnu.org/software/coreutils/
 
-comment "coreutils requires a toolchain with WCHAR support"
+comment "coreutils needs a toolchain w/ wchar"
 	depends on !BR2_USE_WCHAR

@@ -11,5 +11,5 @@ config BR2_PACKAGE_LIBMPD
 
 	  http://gmpcwiki.sarine.nl/index.php?title=Libmpd
 
-comment "libmpd requires a toolchain with WCHAR and threading support"
+comment "libmpd needs a toolchain w/ wchar, threads"
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS

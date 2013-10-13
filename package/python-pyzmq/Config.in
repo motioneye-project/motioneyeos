@@ -12,6 +12,6 @@ config BR2_PACKAGE_PYTHON_PYZMQ
 
 	  http://zeromq.org/bindings:python
 
-comment "python-pyzmq requires a toolchain with C++, IPV6, LARGEFILE, WCHAR & thread support"
+comment "python-pyzmq needs a toolchain w/ C++, IPv6, largefile, wchar, threads"
 	depends on !(BR2_INSTALL_LIBSTDCPP && BR2_INET_IPV6 && BR2_LARGEFILE \
 		&& BR2_USE_WCHAR && BR2_TOOLCHAIN_HAS_THREADS)

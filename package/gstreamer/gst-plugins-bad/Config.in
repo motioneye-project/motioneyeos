@@ -61,7 +61,7 @@ config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_DECKLINK
 	depends on BR2_INSTALL_LIBSTDCPP
 	bool "decklink"
 
-comment "decklink requires a toolchain with C++ support enabled"
+comment "decklink needs a toolchain w/ C++"
 	depends on !BR2_INSTALL_LIBSTDCPP
 
 config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_DTMF
@@ -281,7 +281,7 @@ config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_LIBMMS
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libmms -> libglib2
 	select BR2_PACKAGE_LIBMMS
 
-comment "libmms requires a toolchain with WCHAR and threading support"
+comment "libmms needs a toolchain w/ wchar, threads"
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
 
 config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_MUSEPACK
@@ -303,7 +303,7 @@ config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_RSVG
 	depends on BR2_TOOLCHAIN_HAS_THREADS # librsvg -> libglib2
 	select BR2_PACKAGE_LIBRSVG
 
-comment "rsvg plugin requires a toolchain with C++, WCHAR, and threading support"
+comment "rsvg plugin needs a toolchain w/ C++, wchar, threads"
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR || \
 		!BR2_TOOLCHAIN_HAS_THREADS
 
@@ -316,7 +316,7 @@ config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_SNDFILE
 	select BR2_PACKAGE_LIBSNDFILE
 	depends on BR2_LARGEFILE
 
-comment "gst-plugins-bad-plugin-sndfile requires a toolchain with LARGEFILE support"
+comment "gst-plugins-bad-plugin-sndfile needs a toolchain w/ largefile"
 	depends on !BR2_LARGEFILE
 
 config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_VCD

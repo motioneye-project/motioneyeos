@@ -9,5 +9,5 @@ config BR2_PACKAGE_LIBSIGC
 
 	  http://libsigc.sourceforge.net/
 
-comment "libsigc++ requires a toolchain with C++ support enabled"
+comment "libsigc++ needs a toolchain w/ C++"
 	depends on !BR2_INSTALL_LIBSTDCPP

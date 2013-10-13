@@ -75,7 +75,7 @@ config BR2_PACKAGE_XSERVER_XORG_SERVER_MODULAR
 	  input and graphics) are built separately from the X.org
 	  server (see the xdriver* packages).
 
-comment "Modular X.org requires largefile and C++ support"
+comment "Modular X.org needs a toolchain w/ largefile, C++"
 	depends on !(BR2_LARGEFILE && BR2_INSTALL_LIBSTDCPP)
 
 config BR2_PACKAGE_XSERVER_XORG_SERVER_KDRIVE

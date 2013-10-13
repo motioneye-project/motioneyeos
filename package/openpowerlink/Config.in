@@ -1,4 +1,4 @@
-comment "openpowerlink requires a toolchain with C++ and threads support enabled"
+comment "openpowerlink needs a toolchain w/ C++, threads"
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS
 
 config BR2_PACKAGE_OPENPOWERLINK

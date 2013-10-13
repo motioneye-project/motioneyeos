@@ -27,5 +27,5 @@ config BR2_PACKAGE_PSPLASH
 
 	  http://git.yoctoproject.org/cgit/cgit.cgi/psplash/
 
-comment "psplash requires a toolchain with WCHAR support"
+comment "psplash needs a toolchain w/ wchar"
 	depends on !BR2_USE_WCHAR

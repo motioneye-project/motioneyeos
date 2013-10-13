@@ -19,5 +19,5 @@ config BR2_PACKAGE_AICCU
 
 	  http://www.sixxs.net/tools/aiccu/
 
-comment "aiccu requires a toolchain with IPv6, WCHAR and thread support"
+comment "aiccu needs a toolchain w/ IPv6, wchar, threads"
 	depends on !(BR2_INET_IPV6 && BR2_USE_WCHAR && BR2_TOOLCHAIN_HAS_THREADS)

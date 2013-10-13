@@ -1,4 +1,4 @@
-comment "gdb/gdbserver require a toolchain with thread and thread debug support"
+comment "gdb/gdbserver needs a toolchain w/ threads, threads debug"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_TOOLCHAIN_HAS_THREADS_DEBUG
 
 config BR2_PACKAGE_GDB
@@ -41,7 +41,7 @@ config BR2_PACKAGE_GDB_DEBUGGER
 	depends on BR2_USE_WCHAR
 	depends on !BR2_sh && !BR2_sh64 && !BR2_avr32 && !BR2_microblaze && !BR2_bfin
 
-comment "full gdb on target needs WCHAR support in toolchain"
+comment "full gdb on target needs a toolchain w/ wchar"
 	depends on !BR2_USE_WCHAR
 
 endif

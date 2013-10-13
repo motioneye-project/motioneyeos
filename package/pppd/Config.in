@@ -22,6 +22,6 @@ config BR2_PACKAGE_PPPD_RADIUS
 	help
 	  Install RADIUS support for pppd
 
-comment "pppd requires a toolchain with dynamic library support"
+comment "pppd needs a toolchain w/ dynamic library"
 	depends on BR2_PREFER_STATIC_LIB
 	depends on BR2_USE_MMU

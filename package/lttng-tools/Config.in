@@ -27,6 +27,6 @@ config BR2_PACKAGE_LTTNG_TOOLS
 
 	  http://lttng.org
 
-comment "lttng-tools needs LARGEFILE, threads and wchar support"
+comment "lttng-tools needs a toolchain w/ largefile, threads, wchar"
 	depends on !BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_THREADS || \
 		!BR2_USE_WCHAR

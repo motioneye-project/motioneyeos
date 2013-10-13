@@ -10,5 +10,5 @@ config BR2_PACKAGE_FLASHBENCH
 
 	  https://wiki.linaro.org/WorkingGroups/KernelConsolidation/Projects/FlashCardSurvey
 
-comment "flashbench requires a toolchain with LARGEFILE support"
+comment "flashbench needs a toolchain w/ largefile"
 	depends on !BR2_LARGEFILE

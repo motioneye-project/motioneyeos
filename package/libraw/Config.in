@@ -6,5 +6,5 @@ config BR2_PACKAGE_LIBRAW
 
 	  http://www.libraw.org/
 
-comment "libraw requires a toolchain with C++ support enabled"
+comment "libraw needs a toolchain w/ C++"
 	depends on !BR2_INSTALL_LIBSTDCPP

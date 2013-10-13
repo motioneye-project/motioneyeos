@@ -10,5 +10,5 @@ config BR2_PACKAGE_LXC
 
 	  http://lxc.sourceforge.net/
 
-comment "lxc requires a toolchain with IPv6 and thread support"
+comment "lxc needs a toolchain w/ IPv6, threads"
 	depends on !BR2_INET_IPV6 || !BR2_TOOLCHAIN_HAS_THREADS

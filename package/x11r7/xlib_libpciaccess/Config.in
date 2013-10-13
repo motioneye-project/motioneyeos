@@ -4,5 +4,5 @@ config BR2_PACKAGE_XLIB_LIBPCIACCESS
 	help
 	  X.Org libpciaccess
 
-comment "libpciaccess requires a toolchain with LARGEFILE support"
+comment "libpciaccess needs a toolchain w/ largefile"
 	depends on !BR2_LARGEFILE

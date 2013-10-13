@@ -10,5 +10,5 @@ config BR2_PACKAGE_OMNIORB
 
 	  http://omniorb.sourceforge.net/
 
-comment "omniORB requires a toolchain with C++ support"
+comment "omniORB needs a toolchain w/ C++"
 	depends on !BR2_INSTALL_LIBSTDCPP

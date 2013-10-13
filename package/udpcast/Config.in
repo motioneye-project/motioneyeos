@@ -9,7 +9,7 @@ config BR2_PACKAGE_UDPCAST
 
 	  http://www.udpcast.linux.lu/
 
-comment "udpcast requires a toolchain with LARGEFILE and threads support"
+comment "udpcast needs a toolchain w/ largefile, threads"
 	depends on !BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_THREADS
 
 menu "udpcast tools selection"

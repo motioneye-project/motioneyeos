@@ -14,5 +14,5 @@ config BR2_PACKAGE_OFONO
 
 	  http://ofono.org/
 
-comment "ofono requires a toolchain with WCHAR and thread support"
+comment "ofono needs a toolchain w/ wchar, threads"
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS

@@ -1,4 +1,4 @@
-comment "qt requires a toolchain with C++ and threads support enabled"
+comment "qt needs a toolchain w/ C++, threads"
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS
 
 menuconfig BR2_PACKAGE_QT
@@ -300,7 +300,7 @@ config BR2_PACKAGE_QT_DBUS
 	help
 	  Build the Qt DBus module.
 
-comment "DBus Module requires a toolchain with thread support"
+comment "DBus Module needs a toolchain w/ threads"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS
 
 config BR2_PACKAGE_QT_XML

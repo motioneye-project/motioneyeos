@@ -10,5 +10,5 @@ config BR2_PACKAGE_DMRAID
 	  dmraid uses the Linux device-mapper to create devices with
 	  respective mappings for the ATARAID sets discovered.
 
-comment "dmraid requires a toolchain with LARGEFILE support"
+comment "dmraid needs a toolchain w/ largefile"
 	depends on !BR2_LARGEFILE

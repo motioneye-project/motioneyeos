@@ -10,5 +10,5 @@ config BR2_PACKAGE_LIBIQRF
 
 	  https://github.com/nandra/libiqrf
 
-comment "libiqrf needs a toolchain with thread support"
+comment "libiqrf needs a toolchain w/ threads"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS

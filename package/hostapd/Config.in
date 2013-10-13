@@ -25,5 +25,5 @@ config BR2_PACKAGE_HOSTAPD_WPS
 
 endif
 
-comment "hostapd requires a toolchain with thread support"
+comment "hostapd needs a toolchain w/ threads"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS

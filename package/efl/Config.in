@@ -24,5 +24,5 @@ source "package/efl/libedbus/Config.in"
 
 endif # BR2_PACKAGE_EFL
 
-comment "EFL requires WCHAR support in toolchain"
+comment "EFL needs a toolchain w/ wchar"
 	depends on !BR2_USE_WCHAR

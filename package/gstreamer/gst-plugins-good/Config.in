@@ -143,7 +143,7 @@ config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_UDP
 	depends on BR2_INET_IPV6
 	bool "udp"
 
-comment "udp requires a toolchain with IPv6 support"
+comment "udp needs a toolchain w/ IPv6"
 	depends on !BR2_INET_IPV6
 
 config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_VIDEOBOX
@@ -192,7 +192,7 @@ config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_GDKPIXBUF
 	depends on BR2_TOOLCHAIN_HAS_THREADS # gdk-pixbuf -> libglib2
 	select BR2_PACKAGE_GDK_PIXBUF
 
-comment "gdkpixbuf requires a toolchain with WCHAR and threading support"
+comment "gdkpixbuf needs a toolchain w/ wchar, threads"
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
 
 config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_OSS
@@ -213,7 +213,7 @@ config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_SOUPHTTPSRC
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libsoup -> glib2
 	select BR2_PACKAGE_LIBSOUP
 
-comment "souphttpsrc requires a toolchain with WCHAR and threading support"
+comment "souphttpsrc needs a toolchain w/ wchar, threads"
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREAD
 
 config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_SPEEX

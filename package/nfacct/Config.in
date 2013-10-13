@@ -8,5 +8,5 @@ config BR2_PACKAGE_NFACCT
 
 	  http://www.netfilter.org/projects/nfacct/
 
-comment "nfacct requires a toolchain with LARGEFILE support"
+comment "nfacct needs a toolchain w/ largefile"
 	depends on !BR2_LARGEFILE

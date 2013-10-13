@@ -21,5 +21,5 @@ config BR2_PACKAGE_GTEST
 
 	  http://code.google.com/p/googletest/
 
-comment "gtest requires a toolchain with c++, WCHAR and THREADS support"
+comment "gtest needs a toolchain w/ C++, wchar, threads"
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || !BR2_INSTALL_LIBSTDCPP

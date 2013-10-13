@@ -10,5 +10,5 @@ config BR2_PACKAGE_LSHW
 
 	  http://ezix.org/project/wiki/HardwareLiSter
 
-comment "lshw requires a toolchain with C++, LARGEFILE & WCHAR support enabled"
+comment "lshw needs a toolchain w/ C++, largefile, wchar"
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_LARGEFILE || !BR2_USE_WCHAR

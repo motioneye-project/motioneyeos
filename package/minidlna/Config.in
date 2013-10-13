@@ -18,5 +18,5 @@ config BR2_PACKAGE_MINIDLNA
 
 	  http://minidlna.sourceforge.net/
 
-comment "minidlna requires a toolchain with LARGEFILE, IPV6 and thread support"
+comment "minidlna needs a toolchain w/ largefile, IPv6, threads"
 	depends on !(BR2_LARGEFILE && BR2_INET_IPV6 && BR2_TOOLCHAIN_HAS_THREADS)

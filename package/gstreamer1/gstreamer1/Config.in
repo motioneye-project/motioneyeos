@@ -49,5 +49,5 @@ config BR2_PACKAGE_GSTREAMER1_INSTALL_TOOLS
 
 endif
 
-comment "gstreamer1 requires a toolchain with WCHAR and threading support"
+comment "gstreamer1 needs a toolchain w/ wchar, threads"
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS

@@ -20,6 +20,6 @@ config BR2_PACKAGE_GMPC
 
 	  http://gmpcwiki.sarine.nl/index.php?title=GMPC
 
-comment "gmpc requires a toolchain with WCHAR and threading support"
+comment "gmpc needs a toolchain w/ wchar, threads"
 	depends on BR2_PACKAGE_LIBGTK2 && !BR2_USE_WCHAR || \
 		!BR2_TOOLCHAIN_HAS_THREADS

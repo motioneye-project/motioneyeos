@@ -13,5 +13,5 @@ config BR2_PACKAGE_LIBNFC_EXAMPLES
 	depends on BR2_PACKAGE_LIBNFC
 	select BR2_PACKAGE_READLINE
 
-comment "libnfc needs a toolchain with thread support"
+comment "libnfc needs a toolchain w/ threads"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS

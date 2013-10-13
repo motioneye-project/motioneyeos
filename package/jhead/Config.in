@@ -7,5 +7,5 @@ config BR2_PACKAGE_JHEAD
 
 	  http://www.sentex.net/~mwandel/jhead/
 
-comment "jhead requires a toolchain with WCHAR support"
+comment "jhead needs a toolchain w/ wchar"
 	depends on !BR2_USE_WCHAR

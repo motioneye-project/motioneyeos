@@ -7,5 +7,5 @@ config BR2_PACKAGE_ORC
 
 	  http://code.entropywave.com/projects/orc/
 
-comment "orc requires a toolchain with thread support"
+comment "orc needs a toolchain w/ threads"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS

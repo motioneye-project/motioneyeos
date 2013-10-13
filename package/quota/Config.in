@@ -15,7 +15,7 @@ config BR2_PACKAGE_QUOTA
 
 	  http://sourceforge.net/projects/linuxquota/
 
-comment "quota requires a toolchain with LARGEFILE, WCHAR and threading support"
+comment "quota needs a toolchain w/ largefile, wchar, threads"
 	depends on !BR2_LARGEFILE || \
 		!BR2_USE_WCHAR || \
 		!(BR2_TOOLCHAIN_HAS_THREADS || BR2_TOOLCHAIN_HAS_NATIVE_RPC)

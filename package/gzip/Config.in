@@ -7,5 +7,5 @@ config BR2_PACKAGE_GZIP
 
 	  http://www.gnu.org/software/gzip/gzip.html
 
-comment "gzip requires a toolchain with WCHAR support"
+comment "gzip needs a toolchain w/ wchar"
 	depends on !BR2_USE_WCHAR

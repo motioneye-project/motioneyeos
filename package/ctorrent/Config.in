@@ -1,4 +1,4 @@
-comment "ctorrent requires a toolchain with C++ support enabled"
+comment "ctorrent needs a toolchain w/ C++"
 	depends on !BR2_INSTALL_LIBSTDCPP
 
 config BR2_PACKAGE_CTORRENT

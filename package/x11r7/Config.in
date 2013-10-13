@@ -261,5 +261,5 @@ if BR2_PACKAGE_XORG7
 	endmenu
 endif
 
-comment "X.org requires a toolchain with WCHAR support"
+comment "X.org needs a toolchain w/ wchar"
         depends on !BR2_USE_WCHAR

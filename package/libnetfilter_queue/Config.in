@@ -11,5 +11,5 @@ config BR2_PACKAGE_LIBNETFILTER_QUEUE
 
 	  http://www.netfilter.org/projects/libnetfilter_queue/
 
-comment "libnetfilter_queue requires a toolchain with LARGEFILE and IPv6 support"
+comment "libnetfilter_queue needs a toolchain w/ largefile, IPv6"
 	depends on !BR2_LARGEFILE && !BR2_INET_IPV6

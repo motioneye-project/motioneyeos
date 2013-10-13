@@ -9,7 +9,7 @@ config BR2_PACKAGE_PYTHON
 
 	  http://www.python.org/
 
-comment "python requires a toolchain with WCHAR support"
+comment "python needs a toolchain w/ wchar"
 	depends on !BR2_USE_WCHAR
 
 if BR2_PACKAGE_PYTHON

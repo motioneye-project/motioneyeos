@@ -11,7 +11,7 @@ config BR2_PACKAGE_NFS_UTILS
 
 	  http://sourceforge.net/projects/nfs
 
-comment "nfs-utils requires a toolchain with LARGEFILE and threading support"
+comment "nfs-utils needs a toolchain w/ largefile, threads"
 	depends on !BR2_LARGEFILE || \
 		!(BR2_TOOLCHAIN_HAS_THREADS || BR2_TOOLCHAIN_HAS_NATIVE_RPC)
 

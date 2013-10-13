@@ -7,5 +7,5 @@ config BR2_PACKAGE_IW
 
 	  http://wireless.kernel.org/en/users/Documentation/iw
 
-comment "iw requires a toolchain with thread support"
+comment "iw needs a toolchain w/ threads"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS

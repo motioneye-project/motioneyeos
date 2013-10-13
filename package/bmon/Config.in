@@ -5,5 +5,5 @@ config BR2_PACKAGE_BMON
 	help
 	  Linux bandwidth monitor
 
-comment "bmon requires a toolchain with IPv6 support"
+comment "bmon needs a toolchain w/ IPv6"
 	depends on !BR2_INET_IPV6

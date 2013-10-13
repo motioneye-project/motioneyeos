@@ -9,5 +9,5 @@ config BR2_PACKAGE_GENEXT2FS
 
 	  http://genext2fs.sourceforge.net/
 
-comment "genext2fs requires a toolchain with LARGEFILE support"
+comment "genext2fs needs a toolchain w/ largefile"
 	depends on !BR2_LARGEFILE

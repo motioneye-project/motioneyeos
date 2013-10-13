@@ -82,7 +82,7 @@ config BR2_PACKAGE_MPD_FFMPEG
 	  Enable ffmpeg input support.
 	  Select this if you want to play back files supported by ffmpeg.
 
-comment "ffmpeg support requires a toolchain with LARGEFILE and IPV6 support"
+comment "ffmpeg support needs a toolchain w/ largefile, IPv6"
 	depends on !(BR2_LARGEFILE && BR2_INET_IPV6)
 
 config BR2_PACKAGE_MPD_LAME
@@ -112,7 +112,7 @@ config BR2_PACKAGE_MPD_LIBSNDFILE
 	  Enable libsndfile input/streaming support.
 	  Select this if you want to play back WAV files.
 
-comment "mpd-libsndfile requires a toolchain with LARGEFILE support"
+comment "mpd-libsndfile needs a toolchain w/ largefile"
 	depends on !BR2_LARGEFILE
 
 config BR2_PACKAGE_MPD_MAD
@@ -182,6 +182,6 @@ config BR2_PACKAGE_MPD_WAVPACK
 
 endif
 
-comment "mpd requires a toolchain with C++, threading and WCHAR support"
+comment "mpd needs a toolchain w/ C++, threads, wchar"
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR || \
 		!BR2_TOOLCHAIN_HAS_THREADS

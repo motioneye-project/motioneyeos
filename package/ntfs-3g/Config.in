@@ -30,5 +30,5 @@ config BR2_PACKAGE_NTFS_3G_NTFSPROGS
 
 endif
 
-comment "ntfs-3g requires a toolchain with LARGEFILE, WCHAR and threads support"
+comment "ntfs-3g needs a toolchain w/ largefile, wchar, threads"
 	depends on !(BR2_LARGEFILE && BR2_USE_WCHAR && BR2_TOOLCHAIN_HAS_THREADS)

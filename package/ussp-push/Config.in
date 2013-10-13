@@ -14,5 +14,5 @@ config BR2_PACKAGE_USSP_PUSH
 
 	  http://www.xmailserver.org/ussp-push.html
 
-comment "ussp-push require a toolchain with WCHAR, IPV6 and thread support"
+comment "ussp-push needs a toolchain w/ wchar, IPv6, threads"
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || !BR2_INET_IPV6

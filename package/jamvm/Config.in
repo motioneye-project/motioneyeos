@@ -11,5 +11,5 @@ config BR2_PACKAGE_JAMVM
 
 	  http://jamvm.sf.net
 
-comment "jamvm requires a toolchain with IPV6 support"
+comment "jamvm needs a toolchain w/ IPv6"
 	depends on !BR2_INET_IPV6

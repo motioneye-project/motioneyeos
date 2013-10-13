@@ -18,5 +18,5 @@ config BR2_PACKAGE_FLEX_BINARY
 	help
 	  Install the flex binary tool in the target filesystem.
 
-comment "flex binary requires a toolchain with WCHAR support"
+comment "flex binary needs a toolchain w/ wchar"
 	depends on !BR2_USE_WCHAR

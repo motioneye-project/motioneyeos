@@ -36,5 +36,5 @@ config BR2_PACKAGE_AVAHI_DAEMON
 
 endif
 
-comment "avahi requires a toolchain with thread support"
+comment "avahi needs a toolchain w/ threads"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS

@@ -29,5 +29,5 @@ config BR2_PACKAGE_OPENOCD_VSLLINK
 
 endif # BR2_PACKAGE_OPENOCD
 
-comment "openocd needs a toolchain with thread support"
+comment "openocd needs a toolchain w/ threads"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS

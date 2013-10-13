@@ -403,7 +403,7 @@ config BR2_PACKAGE_COLLECTD_RRDTOOL
 	help
 	  Writes values to RRD-files.
 
-comment "rrdtool support requires a toolchain with WCHAR support"
+comment "rrdtool support needs a toolchain w/ wchar"
 	depends on !BR2_USE_WCHAR
 
 config BR2_PACKAGE_COLLECTD_RIEMANN
@@ -429,6 +429,6 @@ endmenu
 
 endif
 
-comment "collectd needs a toolchain with IPv6 and thread support"
+comment "collectd needs a toolchain w/ IPv6, threads"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_INET_IPV6
 	depends on BR2_USE_MMU

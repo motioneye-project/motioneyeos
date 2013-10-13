@@ -10,5 +10,5 @@ config BR2_PACKAGE_GDK_PIXBUF
 
 	  http://www.gtk.org/
 
-comment "gdk-pixbuf depends on toolchain with WCHAR and threading support"
+comment "gdk-pixbuf needs a toolchain w/ wchar, threads"
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS

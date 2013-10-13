@@ -9,5 +9,5 @@ config BR2_PACKAGE_F2FS_TOOLS
 
 	  http://sourceforge.net/projects/f2fs-tools/
 
-comment "f2fs-tools requires a toolchain with LARGEFILE and WCHAR support"
+comment "f2fs-tools needs a toolchain w/ largefile, wchar"
 	depends on !(BR2_LARGEFILE && BR2_USE_WCHAR)

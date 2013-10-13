@@ -18,5 +18,5 @@ config BR2_PACKAGE_TAGLIB_ASF
 	depends on BR2_PACKAGE_TAGLIB
 	bool "taglib wma support"
 
-comment "taglib requires a toolchain with C++ support enabled"
+comment "taglib needs a toolchain w/ C++"
 	depends on !BR2_INSTALL_LIBSTDCPP

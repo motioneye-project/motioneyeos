@@ -8,6 +8,6 @@ config BR2_PACKAGE_LOGROTATE
 
 	  https://fedorahosted.org/logrotate/
 
-comment "logrotate requires a toolchain with WCHAR support"
+comment "logrotate needs a toolchain w/ wchar"
 	depends on !BR2_USE_WCHAR
 

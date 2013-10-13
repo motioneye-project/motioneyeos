@@ -27,5 +27,5 @@ config BR2_PACKAGE_DOSFSTOOLS_MKFS_FAT
 
 endif
 
-comment "dosfstools requires a toolchain with LARGEFILE and WCHAR support"
+comment "dosfstools needs a toolchain w/ largefile, wchar"
 	depends on !BR2_LARGEFILE || !BR2_USE_WCHAR

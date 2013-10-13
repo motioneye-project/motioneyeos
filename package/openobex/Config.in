@@ -17,7 +17,7 @@ config BR2_PACKAGE_OPENOBEX_BLUEZ
 	depends on BR2_USE_MMU # dbus
 	select BR2_PACKAGE_BLUEZ_UTILS
 
-comment "bluez support require a toolchain with WCHAR and thread support"
+comment "bluez support needs a toolchain w/ wchar, threads"
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
 
 config BR2_PACKAGE_OPENOBEX_LIBUSB
@@ -25,7 +25,7 @@ config BR2_PACKAGE_OPENOBEX_LIBUSB
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	select BR2_PACKAGE_LIBUSB
 
-comment "libusb support require a toolchain with thread support"
+comment "libusb support needs a toolchain w/ threads"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS
 
 config BR2_PACKAGE_OPENOBEX_APPS
@@ -41,5 +41,5 @@ config BR2_PACKAGE_OPENOBEX_DUMP
 
 endif
 
-comment "openobex requires a toolchain with IPV6 support"
+comment "openobex needs a toolchain w/ IPv6"
 	depends on !BR2_INET_IPV6

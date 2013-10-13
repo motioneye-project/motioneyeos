@@ -15,7 +15,7 @@ config BR2_PACKAGE_ZMQPP
 
 	  http://github.com/benjamg/zmqpp
 
-comment "zmqpp requires a toolchain with C++, IPV6, LARGEFILE, WCHAR & thread support"
+comment "zmqpp needs a toolchain w/ C++, IPv6, largefile, wchar, threads"
 	depends on !(BR2_INSTALL_LIBSTDCPP && BR2_INET_IPV6 && BR2_LARGEFILE \
 		&& BR2_USE_WCHAR && BR2_TOOLCHAIN_HAS_THREADS)
 
@@ -29,5 +29,5 @@ config BR2_PACKAGE_ZMQPP_CLIENT
 	  Build and install the zmqpp client, a command line tool that can be
 	  used to listen or send to zeromq sockets.
 
-comment "zmqpp client requires a toolchain with thread support"
+comment "zmqpp client needs a toolchain w/ threads"
 	depends on BR2_PACKAGE_ZMQPP && !BR2_TOOLCHAIN_HAS_THREADS

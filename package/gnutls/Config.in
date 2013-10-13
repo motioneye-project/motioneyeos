@@ -15,5 +15,5 @@ config BR2_PACKAGE_GNUTLS_TOOLS
 	help
 	  Install GnuTLS command line tools for various cryptographic tasks.
 
-comment "gnutls requires a toolchain with WCHAR support"
+comment "gnutls needs a toolchain w/ wchar"
 	depends on !BR2_USE_WCHAR

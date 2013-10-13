@@ -28,5 +28,5 @@ config BR2_PACKAGE_CPPCMS_ICU
 	  Using ICU allows advanced localization features into CppCMS,
 	  in another hand ICU is heavier than iconv.
 
-comment "cppcms requires a glibc toolchain with C++ support"
+comment "cppcms needs a glibc toolchain w/ C++"
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_USES_GLIBC

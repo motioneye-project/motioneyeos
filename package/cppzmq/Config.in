@@ -11,6 +11,6 @@ config BR2_PACKAGE_CPPZMQ
 
 	  http://github.com/zeromq/cppzmq
 
-comment "cppzmq requires a toolchain with C++, IPV6, LARGEFILE and WCHAR support"
+comment "cppzmq needs a toolchain w/ C++, IPv6, largefile, wchar"
 	depends on !(BR2_INSTALL_LIBSTDCPP && BR2_INET_IPV6 && BR2_LARGEFILE \
 		&& BR2_USE_WCHAR && BR2_TOOLCHAIN_HAS_THREADS)

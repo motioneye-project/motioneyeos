@@ -134,7 +134,7 @@ config BR2_PACKAGE_OPENCV_WITH_FFMPEG
 	help
 	  Use ffmpeg from the target system.
 
-comment "ffmpeg support requires a toolchain with LARGEFILE and IPV6 support"
+comment "ffmpeg support needs a toolchain w/ largefile, IPv6"
 	depends on !(BR2_LARGEFILE && BR2_INET_IPV6)
 
 config BR2_PACKAGE_OPENCV_WITH_GSTREAMER
@@ -145,7 +145,7 @@ config BR2_PACKAGE_OPENCV_WITH_GSTREAMER
 	select BR2_PACKAGE_GST_PLUGINS_BASE
 	select BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_APP
 
-comment "gstreamer support requires a toolchain with WCHAR and threading support"
+comment "gstreamer support needs a toolchain w/ wchar, threads"
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
 
 config BR2_PACKAGE_OPENCV_WITH_GTK
@@ -192,7 +192,7 @@ config BR2_PACKAGE_OPENCV_WITH_V4L
 	help
 	  Enable Video 4 Linux support.
 
-comment "v4l support requires a toolchain with LARGEFILE and thread support"
+comment "v4l support needs a toolchain w/ largefile, threads"
 	depends on !BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_THREADS
 
 comment "Install options"
@@ -208,5 +208,5 @@ config BR2_PACKAGE_OPENCV_INSTALL_DATA
 
 endif # BR2_PACKAGE_OPENCV
 
-comment "opencv requires a toolchain with C++ and WCHAR support"
+comment "opencv needs a toolchain w/ C++, wchar"
 	depends on !(BR2_INSTALL_LIBSTDCPP  && BR2_USE_WCHAR)

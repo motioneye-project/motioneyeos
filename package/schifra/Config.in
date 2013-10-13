@@ -14,5 +14,5 @@ config BR2_PACKAGE_SCHIFRA_EXAMPLES
 	help
 	  Build and install the schifra example applications.
 
-comment "schifra requires a toolchain with C++ support enabled"
+comment "schifra needs a toolchain w/ C++"
 	depends on !BR2_INSTALL_LIBSTDCPP

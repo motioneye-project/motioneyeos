@@ -7,5 +7,5 @@ config BR2_PACKAGE_LIBOPING
 
 	  http://verplant.org/liboping/
 
-comment "liboping requires a toolchain with IPv6 support enabled"
+comment "liboping needs a toolchain w/ IPv6"
 	depends on !BR2_INET_IPV6

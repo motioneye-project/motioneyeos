@@ -92,7 +92,7 @@ config BR2_PACKAGE_UTIL_LINUX_LOGIN_UTILS
 	help
 	  Build login utilities (last, login, su, sulogin)
 
-comment "login utilities require a toolchain with locale support"
+comment "login utilities needs a toolchain w/ locale"
 	depends on !BR2_ENABLE_LOCALE
 
 config BR2_PACKAGE_UTIL_LINUX_MESG
@@ -174,5 +174,5 @@ endif
 
 endif
 
-comment "util-linux requires a toolchain with LARGEFILE + WCHAR support"
+comment "util-linux needs a toolchain w/ largefile, wchar"
 	depends on !(BR2_LARGEFILE && BR2_USE_WCHAR)

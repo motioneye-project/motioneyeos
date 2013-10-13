@@ -6,5 +6,5 @@ config BR2_PACKAGE_HDPARM
 
 	  http://www.ibiblio.org/pub/Linux/system/hardware/
 
-comment "hdparm requires a toolchain with LARGEFILE support"
+comment "hdparm needs a toolchain w/ largefile"
 	depends on !BR2_LARGEFILE

@@ -9,5 +9,5 @@ config BR2_PACKAGE_IPERF
 
 	  http://dast.nlanr.net/projects/iperf/
 
-comment "iperf requires a toolchain with C++ support enabled"
+comment "iperf needs a toolchain w/ C++"
 	depends on !BR2_INSTALL_LIBSTDCPP

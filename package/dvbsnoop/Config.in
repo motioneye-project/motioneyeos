@@ -21,5 +21,5 @@ config BR2_PACKAGE_DVBSNOOP
 	  http://dvbsnoop.sourceforge.net
 	  http://en.wikipedia.org/wiki/DBox2
 
-comment "dvbsnoop requires a toolchain with LARGEFILE support"
+comment "dvbsnoop needs a toolchain w/ largefile"
         depends on !BR2_LARGEFILE

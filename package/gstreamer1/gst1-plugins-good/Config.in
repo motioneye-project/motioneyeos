@@ -294,7 +294,7 @@ config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_GDKPIXBUF
 	help
 	  GdkPixbuf-based image decoder, overlay and sink
 
-comment "gdkpixbuf requires a toolchain with WCHAR and threading support"
+comment "gdkpixbuf needs a toolchain w/ wchar, threads"
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
 
 config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_PULSE
@@ -313,7 +313,7 @@ config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_SOUPHTTPSRC
 	help
 	  libsoup HTTP client src/sink
 
-comment "souphttpsrc requires a toolchain with WCHAR and threading support"
+comment "souphttpsrc needs a toolchain w/ wchar, threads"
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
 
 config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_SPEEX
@@ -329,7 +329,7 @@ config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_TAGLIB
 	help
 	  Taglib tagging plugin library
 
-comment "taglib requires a toolchain with C++ support"
+comment "taglib needs a toolchain w/ C++"
 	depends on !BR2_INSTALL_LIBSTDCPP
 
 config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_VPX

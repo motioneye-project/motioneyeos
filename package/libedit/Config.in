@@ -14,5 +14,5 @@ config BR2_PACKAGE_LIBEDIT
 	  sources which require pmake:
 	  http://www.thrysoee.dk/editline/
 
-comment "libedit requires a toolchain with WCHAR support"
+comment "libedit needs a toolchain w/ wchar"
 	depends on !BR2_USE_WCHAR

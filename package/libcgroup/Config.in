@@ -9,5 +9,5 @@ config BR2_PACKAGE_LIBCGROUP
 
 	  http://libcg.sourceforge.net/
 
-comment "libcgroup requires a glibc toolchain with C++ support"
+comment "libcgroup needs an (e)glibc toolchain w/ C++"
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_USES_GLIBC

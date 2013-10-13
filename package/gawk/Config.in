@@ -10,5 +10,5 @@ config BR2_PACKAGE_GAWK
 
 	  http://www.gnu.org/software/gawk/
 
-comment "gawk requires a toolchain with WCHAR support"
+comment "gawk needs a toolchain w/ wchar"
 	depends on !BR2_USE_WCHAR

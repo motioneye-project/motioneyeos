@@ -14,7 +14,7 @@ config BR2_PACKAGE_NODEJS
 
 	  http://nodejs.org/
 
-comment "nodejs requires a toolchain with C++, IPv6, large files, and threading"
+comment "nodejs needs a toolchain w/ C++, IPv6, largefile, threads"
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_LARGEFILE || \
 		!BR2_TOOLCHAIN_HAS_THREADS || !BR2_INET_IPV6
 

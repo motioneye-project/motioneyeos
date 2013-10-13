@@ -20,7 +20,7 @@ config BR2_PACKAGE_LIBEVAS_GENERIC_LOADERS_SVG
 	help
 	  This option enables the Evas generic SVG loader
 
-comment "SVG loader requires a toolchain with WCHAR, threading and C++ support"
+comment "SVG loader needs a toolchain w/ wchar, threads, C++"
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || !BR2_INSTALL_LIBSTDCPP
 
 endif

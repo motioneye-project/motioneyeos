@@ -29,5 +29,5 @@ config BR2_PACKAGE_LIVE555_MPEG2_INDEXER
 	  MPEG2 Transport Stream Indexer. Provides indexes allowing 'trick play'
 	  operation in the Live555MediaServer.
 
-comment "Live555 needs C++ compiler"
+comment "live555 needs a toolchain w/ C++"
 	depends on !BR2_INSTALL_LIBSTDCPP

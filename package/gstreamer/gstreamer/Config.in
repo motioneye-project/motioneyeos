@@ -28,5 +28,5 @@ config BR2_PACKAGE_GSTREAMER_PLUGIN_REGISTRY
 	  Enable support for the GStreamer plugin registry. This may increase
 	  the launch-time for a GStreamer application.
 
-comment "gstreamer requires a toolchain with WCHAR and threads support"
+comment "gstreamer needs a toolchain w/ wchar, threads"
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS

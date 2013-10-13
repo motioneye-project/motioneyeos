@@ -37,5 +37,5 @@ config BR2_PACKAGE_SQUASHFS_XZ
 
 endif
 
-comment "squashfs requires a toolchain with LARGEFILE and threads support"
+comment "squashfs needs a toolchain w/ largefile, threads"
 	depends on !BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_THREADS

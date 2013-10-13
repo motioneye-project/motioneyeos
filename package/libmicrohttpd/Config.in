@@ -16,8 +16,8 @@ config BR2_PACKAGE_LIBMICROHTTPD_SSL
 	help
 	  Enable HTTPS (SSL) support.
 
-comment "libmicrohttpd needs a toolchain with thread support"
+comment "libmicrohttpd needs a toolchain w/ threads"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS
 
-comment "libmicrohttpd https support needs a toolchain with wchar support"
+comment "libmicrohttpd https support needs a toolchain w/ wchar"
 	depends on BR2_PACKAGE_LIBMICROHTTPD && !BR2_USE_WCHAR

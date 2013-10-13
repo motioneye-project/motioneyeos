@@ -18,7 +18,7 @@ config BR2_PACKAGE_TRANSMISSION_UTP
 	help
 	  Install support for uTorrent Transport Protocol
 
-comment "uTP requires a toolchain with C++ support"
+comment "uTP needs a toolchain w/ C++"
 	depends on !BR2_INSTALL_LIBSTDCPP
 
 config BR2_PACKAGE_TRANSMISSION_CLI
@@ -42,9 +42,9 @@ config BR2_PACKAGE_TRANSMISSION_GTK
 	help
 	  Install transmission GTK-based GUI interface.
 
-comment "transmission-gtk requires a toolchain with locale support"
+comment "transmission-gtk needs a toolchain w/ locale"
 	depends on BR2_PACKAGE_LIBGTK2 && !BR2_ENABLE_LOCALE
 endif
 
-comment "Transmission requires a toolchain with IPv6 and threads support"
+comment "transmission needs a toolchain w/ IPv6, threads"
 	depends on !BR2_INET_IPV6 || !BR2_TOOLCHAIN_HAS_THREADS

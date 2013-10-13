@@ -12,5 +12,5 @@ config BR2_PACKAGE_EXFAT
 
 	  http://code.google.com/p/exfat/
 
-comment "exfat requires a toolchain with LARGEFILE, WCHAR, threads and dynamic library support"
+comment "exfat needs a toolchain w/ largefile, wchar, threads, dynamic library"
 	depends on !BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_THREADS || !BR2_USE_WCHAR || BR2_PREFER_STATIC_LIB

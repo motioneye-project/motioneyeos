@@ -6,5 +6,5 @@ config BR2_PACKAGE_RUBY
 
 	  http://www.ruby-lang.org/
 
-comment "ruby requires a toolchain with WCHAR support"
+comment "ruby needs a toolchain w/ wchar"
 	depends on !BR2_USE_WCHAR

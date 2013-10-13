@@ -7,5 +7,5 @@ config BR2_PACKAGE_LIBEBML
 
 	  http://matroska.org
 
-comment "libebml requires a toolchain with C++ support"
+comment "libebml needs a toolchain w/ C++"
 	depends on !BR2_INSTALL_LIBSTDCPP

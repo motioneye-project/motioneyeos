@@ -9,7 +9,7 @@ config BR2_PACKAGE_ALSA_UTILS
 
 	  http://www.alsa-project.org/
 
-comment "alsa-utils requires a toolchain with LARGEFILE and threads support"
+comment "alsa-utils needs a toolchain w/ largefile, threads"
 	depends on !BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_THREADS
 
 if BR2_PACKAGE_ALSA_UTILS
@@ -32,7 +32,7 @@ config BR2_PACKAGE_ALSA_UTILS_ALSAMIXER
 	depends on BR2_USE_WCHAR
 	default y
 
-comment "alsamixer requires a toolchain with WCHAR support"
+comment "alsamixer needs a toolchain w/ wchar"
 	depends on !BR2_USE_WCHAR
 
 config BR2_PACKAGE_ALSA_UTILS_AMIDI

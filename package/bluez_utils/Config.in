@@ -26,7 +26,7 @@ config BR2_PACKAGE_BLUEZ_UTILS_AUDIO
 	help
 	  Audio support
 
-comment "bluez-utils audio requires a toolchain with LARGEFILE support"
+comment "bluez-utils audio needs a toolchain w/ largefile"
 	depends on !BR2_LARGEFILE
 
 config BR2_PACKAGE_BLUEZ_UTILS_USB
@@ -38,5 +38,5 @@ config BR2_PACKAGE_BLUEZ_UTILS_USB
 
 endif
 
-comment "bluez-utils require a toolchain with WCHAR and threading support"
+comment "bluez-utils needs a toolchain w/ wchar, threads"
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS

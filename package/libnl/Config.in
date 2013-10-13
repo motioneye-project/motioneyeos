@@ -12,5 +12,5 @@ config BR2_PACKAGE_LIBNL_TOOLS
 	help
 	  Install binary tools.
 
-comment "libnl requires a toolchain with thread support"
+comment "libnl needs a toolchain w/ threads"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS

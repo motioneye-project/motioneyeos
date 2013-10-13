@@ -18,10 +18,10 @@ config BR2_CIVETWEB_WITH_LUA
 	  version of Lua and Sqlite bundled within the Civetweb
 	  sources, and not the packages from Buildroot.
 
-comment "Lua support requires largefile support in toolchain"
+comment "Lua support needs a toolchain w/ largefile"
 	depends on !BR2_LARGEFILE
 
 endif
 
-comment "civetweb requires a toolchain with PTHREAD support"
+comment "civetweb needs a toolchain w/ threads"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS

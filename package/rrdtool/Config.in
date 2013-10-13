@@ -11,5 +11,5 @@ config BR2_PACKAGE_RRDTOOL
 
 	  http://oss.oetiker.ch/rrdtool/
 
-comment "rrdtool requires a toolchain with WCHAR support"
+comment "rrdtool needs a toolchain w/ wchar"
 	depends on !BR2_USE_WCHAR

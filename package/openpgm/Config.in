@@ -12,5 +12,5 @@ config BR2_PACKAGE_OPENPGM
 
 	  http://code.google.com/p/openpgm/
 
-comment "openpgm needs a toolchain with WCHAR, threads and IPv6 support"
+comment "openpgm needs a toolchain w/ wchar, threads, IPv6"
 	depends on !(BR2_TOOLCHAIN_HAS_THREADS && BR2_INET_IPV6 && BR2_USE_WCHAR)

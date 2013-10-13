@@ -1,4 +1,4 @@
-comment "elfutils requires a toolchain with LARGEFILE and WCHAR support"
+comment "elfutils needs a toolchain w/ largefile, wchar"
 	depends on !BR2_LARGEFILE || !BR2_USE_WCHAR
 
 config BR2_PACKAGE_ELFUTILS

@@ -9,5 +9,5 @@ config BR2_PACKAGE_IGMPPROXY
 
 	  http://sourceforge.net/projects/igmpproxy/
 
-comment "igmpproxy needs a toolchain with wchar support"
+comment "igmpproxy needs a toolchain w/ wchar"
 	depends on !BR2_USE_WCHAR

@@ -7,5 +7,5 @@ config BR2_PACKAGE_LIBCGICC
 
 	  http://www.cgicc.com
 
-comment "libcgicc requires a toolchain with C++ support enabled"
+comment "libcgicc needs a toolchain w/ C++"
 	depends on !BR2_INSTALL_LIBSTDCPP

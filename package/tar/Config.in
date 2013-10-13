@@ -7,5 +7,5 @@ config BR2_PACKAGE_TAR
 
 	  http://www.gnu.org/software/tar/
 
-comment "tar requires a toolchain with WCHAR support"
+comment "tar needs a toolchain w/ wchar"
 	depends on !BR2_USE_WCHAR

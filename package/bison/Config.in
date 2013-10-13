@@ -11,5 +11,5 @@ config BR2_PACKAGE_BISON
 
 	  http://www.gnu.org/software/bison/
 
-comment "bison requires a toolchain with WCHAR support"
+comment "bison needs a toolchain w/ wchar"
 	depends on !BR2_USE_WCHAR

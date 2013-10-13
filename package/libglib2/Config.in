@@ -11,5 +11,5 @@ config BR2_PACKAGE_LIBGLIB2
 
 	  http://www.gtk.org/
 
-comment "libglib2 requires a toolchain with WCHAR support and threading support"
+comment "libglib2 needs a toolchain w/ wchar, threads"
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS

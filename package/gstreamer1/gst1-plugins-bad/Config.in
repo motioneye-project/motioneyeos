@@ -347,7 +347,7 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_DECKLINK
 	help
 	  Blackmagic Decklink plugin
 
-comment "decklink requires a toolchain with C++ support enabled"
+comment "decklink needs a toolchain w/ C++"
 	depends on !BR2_INSTALL_LIBSTDCPP
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_DIRECTFB
@@ -388,7 +388,7 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_LIBMMS
 	help
 	  Microsoft Multi Media Server streaming protocol support
 
-comment "libmms requires a toolchain with WCHAR and threading support"
+comment "libmms needs a toolchain w/ wchar, threads"
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_MPEG2ENC
@@ -420,7 +420,7 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_OPENCV
 	help
 	  GStreamer OpenCV Plugins
 
-comment "opencv plugin requires a toolchain with C++ support"
+comment "opencv plugin needs a toolchain w/ C++"
 	depends on !BR2_INSTALL_LIBSTDCPP
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_OPUS
@@ -438,7 +438,7 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_RSVG
 	help
 	  RSVG plugin library
 
-comment "rsvg plugin requires a toolchain with C++, WCHAR and threading support"
+comment "rsvg plugin needs a toolchain w/ C++, wchar, threads"
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR || \
 		!BR2_TOOLCHAIN_HAS_THREADS
 
@@ -457,7 +457,7 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_SNDFILE
 	select BR2_PACKAGE_LIBSNDFILE
 	depends on BR2_LARGEFILE
 
-comment "gst-plugins-bad-plugin-sndfile requires a toolchain with LARGEFILE support"
+comment "gst-plugins-bad-plugin-sndfile needs a toolchain w/ largefile"
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_DVB
 	bool "dvb"

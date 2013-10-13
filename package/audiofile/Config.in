@@ -7,5 +7,5 @@ config BR2_PACKAGE_AUDIOFILE
 
 	  http://www.68k.org/~michael/audiofile/
 
-comment "audiofile requires a toolchain with C++ support enabled"
+comment "audiofile needs a toolchain w/ C++"
 	depends on !BR2_INSTALL_LIBSTDCPP

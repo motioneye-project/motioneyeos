@@ -87,7 +87,7 @@ config BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_UDEV
 	depends on !BR2_PREFER_STATIC_LIB # udev -> kmod
 	select BR2_PACKAGE_UDEV
 
-comment "udev requires a toolchain with LARGEFILE + WCHAR support"
+comment "udev needs a toolchain w/ largefile, wchar"
 	depends on !(BR2_LARGEFILE && BR2_USE_WCHAR)
 
 comment "udev doesn't work with 'prefer static libraries'"
@@ -118,7 +118,7 @@ config BR2_INIT_SYSTEMD
 	select BR2_PACKAGE_DBUS
 	select BR2_PACKAGE_SYSTEMD
 
-comment 'systemd requires largefile, wchar, IPv6, threads and udev support'
+comment 'systemd needs udev /dev management and a toolchain w/ largefile, wchar, IPv6, threads'
 	depends on !(BR2_LARGEFILE && BR2_USE_WCHAR && \
 		     BR2_INET_IPV6 && BR2_TOOLCHAIN_HAS_THREADS && \
 		     BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_UDEV)

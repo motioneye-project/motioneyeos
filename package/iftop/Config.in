@@ -12,5 +12,5 @@ config BR2_PACKAGE_IFTOP
 
 	  http://www.ex-parrot.com/pdw/iftop/
 
-comment "iftop requires IPv6 and threads support in toolchain"
+comment "iftop needs a toolchain w/ IPv6, threads"
 	depends on !BR2_INET_IPV6 || !BR2_TOOLCHAIN_HAS_THREADS

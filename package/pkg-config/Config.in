@@ -12,5 +12,5 @@ config BR2_PACKAGE_PKG_CONFIG
 
 	  http://www.freedesktop.org/software/pkgconfig/
 
-comment "pkg-config requires a toolchain with WCHAR and threading support"
+comment "pkg-config needs a toolchain w/ wchar, threads"
 	depends on BR2_DEPRECATED && (!BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS)
