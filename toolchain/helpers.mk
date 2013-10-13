@@ -324,3 +324,21 @@ check_cross_compiler_exists = \
 		echo "Cannot execute cross-compiler '$${__CROSS_CC}'" ; \
 		exit 1 ; \
 	fi
+
+#
+# Check for toolchains known not to work with Buildroot. For now, we
+# only check for Angstrom toolchains, by looking at the vendor part of
+# the host tuple.
+#
+# $1: cross-gcc path
+#
+check_unusable_toolchain = \
+	__CROSS_CC=$(strip $1) ; \
+	vendor=`$${__CROSS_CC} -dumpmachine | cut -f2 -d'-'` ; \
+	if test "$${vendor}" = "angstrom" ; then \
+		echo "Angstrom toolchains are not pure toolchains: they contain" ; \
+		echo "many other libraries than just the C library, which makes" ; \
+		echo "them unsuitable as external toolchains for build systems" ; \
+		echo "such as Buildroot." ; \
+		exit 1 ; \
+	fi
