@@ -14,6 +14,8 @@ config BR2_PACKAGE_WESTON
 	depends on BR2_TOOLCHAIN_HAS_THREADS # wayland
 	# Runtime dependency
 	select BR2_PACKAGE_XKEYBOARD_CONFIG
+	# Make sure at least one compositor is selected.
+	select BR2_PACKAGE_WESTON_FBDEV if !BR2_PACKAGE_WESTON_HAS_COMPOSITOR
 	help
 	  Weston is the reference implementation of a Wayland
 	  compositor, and a useful compositor in its own right.
@@ -24,17 +26,12 @@ config BR2_PACKAGE_WESTON
 
 if BR2_PACKAGE_WESTON
 
-# These two options make sure at least one compositor is selected.
+# Helper to make sure at least one compositor is selected.
 config BR2_PACKAGE_WESTON_HAS_COMPOSITOR
 	bool
-config BR2_PACKAGE_WESTON_NEEDS_ONE_COMPOSITOR
-	def_bool y
-	depends on ! BR2_PACKAGE_WESTON_HAS_COMPOSITOR
-	select BR2_PACKAGE_WESTON_FBDEV
 
 config BR2_PACKAGE_WESTON_FBDEV
 	bool "fbdev compositor"
-	default y
 
 config BR2_PACKAGE_WESTON_RPI
 	bool "RPi compositor"
