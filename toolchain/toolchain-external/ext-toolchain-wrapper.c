@@ -63,6 +63,12 @@ static char *predef_args[] = {
 #ifdef BR_BINFMT_FLAT
 	"-Wl,-elf2flt",
 #endif
+#ifdef BR_MIPS_TARGET_LITTLE_ENDIAN
+	"-EL",
+#endif
+#ifdef BR_MIPS_TARGET_BIG_ENDIAN
+	"-EB",
+#endif
 #ifdef BR_ADDITIONAL_CFLAGS
 	BR_ADDITIONAL_CFLAGS
 #endif

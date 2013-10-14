@@ -213,12 +213,10 @@ config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_MIPS201305
 	    - MIPS32 O32 little endian glibc
 	      Select a MIPS generic core
 	      Disable BR2_SOFT_FLOAT
-	      Set BR2_TARGET_OPTIMIZATION to -EL
 	    - MIPS64 little endian glibc
 	      Select a MIPS64 generic core
 	      Select the n64 ABI
 	      Disable BR2_SOFT_FLOAT
-	      Set BR2_TARGET_OPTIMIZATION to -EL
 	    - MIPS32 big endian soft float glibc
 	      Select a MIPS generic core
 	      Select BR2_SOFT_FLOAT
@@ -229,12 +227,10 @@ config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_MIPS201305
 	    - MIPS32 little endian soft float glibc
 	      Select a MIPS generic core
 	      Select BR2_SOFT_FLOAT
-	      Set BR2_TARGET_OPTIMIZATION to -EL
 	    - MIPS64 little endian soft float glibc
 	      Select a MIPS64 generic core
 	      Select the n64 ABI
 	      Select BR2_SOFT_FLOAT
-	      Set BR2_TARGET_OPTIMIZATION to -EL
 	    - MIPS32 big endian microMIPS glibc
 	      Select a MIPS generic core
 	      Disable BR2_SOFT_FLOAT
@@ -242,7 +238,7 @@ config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_MIPS201305
 	    - MIPS32 little endian microMIPS glibc
 	      Select a MIPS generic core
 	      Disable BR2_SOFT_FLOAT
-	      Set BR2_TARGET_OPTIMIZATION to -EL -mips16
+	      Set BR2_TARGET_OPTIMIZATION to -mips16
 	    - MIPS32 big endian soft float microMIPS glibc
 	      Select a MIPS generic core
 	      Select BR2_SOFT_FLOAT
@@ -250,7 +246,7 @@ config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_MIPS201305
 	    - MIPS32 little endian soft float microMIPS glibc
 	      Select a MIPS generic core
 	      Select BR2_SOFT_FLOAT
-	      Set BR2_TARGET_OPTIMIZATION to -EL -mips16
+	      Set BR2_TARGET_OPTIMIZATION to -mips16
 	    - MIPS32 big endian uclibc
 	      Not usable in Buildroot yet.
 	    - MIPS32 little endian uclibc
@@ -284,12 +280,10 @@ config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_MIPS201209
 	    - MIPS32 O32 little endian glibc
 	      Select a MIPS generic core
 	      Disable BR2_SOFT_FLOAT
-	      Set BR2_TARGET_OPTIMIZATION to -EL
 	    - MIPS64 little endian glibc
 	      Select a MIPS generic core
 	      Select the n64 ABI
 	      Disable BR2_SOFT_FLOAT
-	      Set BR2_TARGET_OPTIMIZATION to -EL
 	    - MIPS32 big endian soft float glibc
 	      Select a MIPS generic core
 	      Select BR2_SOFT_FLOAT
@@ -300,12 +294,10 @@ config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_MIPS201209
 	    - MIPS32 little endian soft float glibc
 	      Select a MIPS generic core
 	      Select BR2_SOFT_FLOAT
-	      Set BR2_TARGET_OPTIMIZATION to -EL
 	    - MIPS64 little endian soft float glibc
 	      Select a MIPS generic core
 	      Select the n64 ABI
 	      Select BR2_SOFT_FLOAT
-	      Set BR2_TARGET_OPTIMIZATION to -EL
 	    - MIPS32 big endian microMIPS glibc
 	      Select a MIPS generic core
 	      Disable BR2_SOFT_FLOAT
@@ -313,7 +305,7 @@ config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_MIPS201209
 	    - MIPS32 little endian microMIPS glibc
 	      Select a MIPS generic core
 	      Disable BR2_SOFT_FLOAT
-	      Set BR2_TARGET_OPTIMIZATION to -EL -mips16
+	      Set BR2_TARGET_OPTIMIZATION to -mips16
 	    - MIPS32 big endian soft float microMIPS glibc
 	      Select a MIPS generic core
 	      Select BR2_SOFT_FLOAT
@@ -321,7 +313,7 @@ config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_MIPS201209
 	    - MIPS32 little endian soft float microMIPS glibc
 	      Select a MIPS generic core
 	      Select BR2_SOFT_FLOAT
-	      Set BR2_TARGET_OPTIMIZATION to -EL -mips16
+	      Set BR2_TARGET_OPTIMIZATION to -mips16
 	    - MIPS32 big endian uclibc
 	      Not usable in Buildroot yet.
 	    - MIPS32 little endian uclibc
@@ -355,12 +347,10 @@ config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_MIPS201203
 	    - MIPS32 O32 little endian glibc
 	      Select a MIPS generic core
 	      Disable BR2_SOFT_FLOAT
-	      Set BR2_TARGET_OPTIMIZATION to -EL
 	    - MIPS64 little endian glibc
 	      Select a MIPS generic core
 	      Select the n64 ABI
 	      Disable BR2_SOFT_FLOAT
-	      Set BR2_TARGET_OPTIMIZATION to -EL
 	    - MIPS32 big endian soft float glibc
 	      Select a MIPS generic core
 	      Select BR2_SOFT_FLOAT
@@ -371,12 +361,10 @@ config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_MIPS201203
 	    - MIPS32 little endian soft float glibc
 	      Select a MIPS generic core
 	      Select BR2_SOFT_FLOAT
-	      Set BR2_TARGET_OPTIMIZATION to -EL
 	    - MIPS64 little endian soft float glibc
 	      Select a MIPS generic core
 	      Select the n64 ABI
 	      Select BR2_SOFT_FLOAT
-	      Set BR2_TARGET_OPTIMIZATION to -EL
 	    - MIPS32 big endian microMIPS glibc
 	      Select a MIPS generic core
 	      Disable BR2_SOFT_FLOAT
@@ -384,7 +372,7 @@ config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_MIPS201203
 	    - MIPS32 little endian microMIPS glibc
 	      Select a MIPS generic core
 	      Disable BR2_SOFT_FLOAT
-	      Set BR2_TARGET_OPTIMIZATION to -EL -mips16
+	      Set BR2_TARGET_OPTIMIZATION to -mips16
 	    - MIPS32 big endian soft float microMIPS glibc
 	      Select a MIPS generic core
 	      Select BR2_SOFT_FLOAT
@@ -392,7 +380,7 @@ config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_MIPS201203
 	    - MIPS32 little endian soft float microMIPS glibc
 	      Select a MIPS generic core
 	      Select BR2_SOFT_FLOAT
-	      Set BR2_TARGET_OPTIMIZATION to -EL -mips16
+	      Set BR2_TARGET_OPTIMIZATION to -mips16
 	    - MIPS32 big endian uclibc
 	      Not usable in Buildroot yet.
 	    - MIPS32 little endian uclibc
