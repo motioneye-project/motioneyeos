@@ -7,6 +7,8 @@
 NOIP_VERSION = 2.1.9
 NOIP_SITE = http://www.no-ip.com/client/linux
 NOIP_SOURCE = noip-duc-linux.tar.gz
+NOIP_LICENSE = GPLv2+
+NOIP_LICENSE_FILES = COPYING
 
 define NOIP_BUILD_CMDS
 	sed -i -e "s:\(#define CONFIG_FILENAME\).*:\1 \"/etc/no-ip2.conf\":" \
