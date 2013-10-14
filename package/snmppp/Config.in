@@ -8,5 +8,5 @@ config BR2_PACKAGE_SNMPPP
 
 	  http://www.agentpp.com/snmp_pp3_x/snmp_pp3_x.html
 
-comment "snmp++ requires a toolchain with threads and C++ support enabled"
+comment "snmp++ needs a toolchain w/ threads, C++"
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS
