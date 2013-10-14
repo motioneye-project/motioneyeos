@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-WESTON_VERSION = 1.2.2
+WESTON_VERSION = 1.3.0
 WESTON_SITE = http://wayland.freedesktop.org/releases/
 WESTON_SOURCE = weston-$(WESTON_VERSION).tar.xz
 WESTON_LICENSE = MIT
@@ -13,7 +13,7 @@ WESTON_LICENSE_FILES = COPYING
 WESTON_DEPENDENCIES = host-pkgconf wayland libxkbcommon pixman libpng \
 	jpeg mtdev udev cairo
 
-# We touch configure.ac with one of our patches
+# We're touching Makefile.am
 WESTON_AUTORECONF = YES
 
 WESTON_CONF_OPT = \

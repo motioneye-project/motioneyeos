@@ -1,0 +1,45 @@
+commit 0b12db5f519a347ce0e1d5262e0cb2e9e2cc6990
+Author: Tomeu Vizoso <tomeu@tomeuvizoso.net>
+Date:   Wed Oct 9 11:30:57 2013 +0200
+
+    launcher: Wrap drmGetMagic and drmAuthMagic so we can build without libdrm
+
+---
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+
+diff --git a/src/launcher-util.c b/src/launcher-util.c
+index 6b6a5f3..35a5698 100644
+--- a/src/launcher-util.c
++++ b/src/launcher-util.c
+@@ -80,9 +80,19 @@ drm_set_master(int drm_fd)
+ 		return drmSetMaster(drm_fd);
+ 	return -EBADF;
+ }
++static int
++drm_check_master(int drm_fd)
++{
++	drm_magic_t magic;
++	if (drm_fd != -1)
++		return drmGetMagic(drm_fd, &magic) != 0 ||
++		       drmAuthMagic(drm_fd, magic) != 0;
++	return 0;
++}
+ #else
+ static int drm_drop_master(int drm_fd) {return 0;}
+ static int drm_set_master(int drm_fd) {return 0;}
++static int drm_check_master(int drm_fd) {return 1;}
+ #endif
+ 
+ int
+@@ -110,10 +120,8 @@ weston_launcher_open(struct weston_launcher *launcher,
+ 		}
+ 
+ 		if (major(s.st_rdev) == DRM_MAJOR) {
+-			drm_magic_t magic;
+ 			launcher->drm_fd = fd;
+-			if (drmGetMagic(fd, &magic) != 0 ||
+-			    drmAuthMagic(fd, magic) != 0) {
++			if (!drm_check_master(fd)) {
+ 				weston_log("drm fd not master\n");
+ 				close(fd);
+ 				return -1;
