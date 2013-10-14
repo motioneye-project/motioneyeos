@@ -1,5 +1,5 @@
-comment "weston requires udev"
-	depends on !BR2_PACKAGE_UDEV
+comment "weston needs udev and a toolchain w/ threads"
+	depends on !BR2_PACKAGE_UDEV || !BR2_TOOLCHAIN_HAS_THREADS
 
 config BR2_PACKAGE_WESTON
 	bool "weston"
@@ -32,6 +32,10 @@ config BR2_PACKAGE_WESTON_HAS_COMPOSITOR
 
 config BR2_PACKAGE_WESTON_FBDEV
 	bool "fbdev compositor"
+
+comment "RPi compositor needs a toolchain w/ C++, largefile, threads"
+	depends on BR2_arm
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_THREADS
 
 config BR2_PACKAGE_WESTON_RPI
 	bool "RPi compositor"
