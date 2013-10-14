@@ -11,14 +11,14 @@ include::makeusers-syntax.txt[]
 // Automatically generated lists:
 
 [[package-list]]
-Package Selection for the target
---------------------------------
+List of target packages available in Buildroot
+----------------------------------------------
 
 include::package-list.txt[]
 
 [[host-package-list]]
-Host utilities
---------------
+List of host utilities available in Buildroot
+---------------------------------------------
 
 The following packages are all available in the menu +Host utilities+.
 
