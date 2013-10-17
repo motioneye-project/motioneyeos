@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-MPD_VERSION = 0.17.5
+MPD_VERSION = 0.17.6
 MPD_SOURCE = mpd-$(MPD_VERSION).tar.xz
 MPD_SITE = http://www.musicpd.org/download/mpd/stable
 MPD_DEPENDENCIES = host-pkgconf libglib2
