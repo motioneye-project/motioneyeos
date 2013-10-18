@@ -1,0 +1,23 @@
+This backports fix from http://gcc.gnu.org/bugzilla/show_bug.cgi?id=57717
+
+Upstream-Status: Backport
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+
+Index: gcc-4.8.1/gcc/config/rs6000/rs6000.c
+===================================================================
+--- gcc-4.8.1.orig/gcc/config/rs6000/rs6000.c	2013-05-09 18:54:06.000000000 -0700
++++ gcc-4.8.1/gcc/config/rs6000/rs6000.c	2013-06-27 08:22:40.459021366 -0700
+@@ -5431,11 +5431,12 @@
+ 
+     case TFmode:
+     case TDmode:
+-    case TImode:
+       if (TARGET_E500_DOUBLE)
+ 	return (SPE_CONST_OFFSET_OK (offset)
+ 		&& SPE_CONST_OFFSET_OK (offset + 8));
++        /* Fall through.  */
+ 
++    case TImode:
+       extra = 8;
+       if (!worst_case)
+ 	break;

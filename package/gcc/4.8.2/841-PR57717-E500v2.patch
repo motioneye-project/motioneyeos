@@ -1,0 +1,21 @@
+This backports fix from http://gcc.gnu.org/bugzilla/show_bug.cgi?id=57717
+
+Upstream-Status: Backport
+Signed-off-by: Julian Brown <Julian_Brown@mentor.com>
+
+fix for PR57717 (PowerPC E500v2)
+http://gcc.gnu.org/ml/gcc-patches/2013-08/msg00668.html
+
+--- a/gcc/config/rs6000/rs6000.c	2013-05-09 20:54:06.000000000 -0500
++++ b/gcc/config/rs6000/rs6000.c	2013-08-28 01:25:24.865218744 -0500
+@@ -6337,9 +6337,7 @@
+       && GET_CODE (XEXP (x, 1)) == CONST_INT
+       && reg_offset_p
+       && !SPE_VECTOR_MODE (mode)
+-      && !(TARGET_E500_DOUBLE && (mode == DFmode || mode == TFmode
+-				  || mode == DDmode || mode == TDmode
+-				  || mode == DImode))
++      && !(TARGET_E500_DOUBLE && GET_MODE_SIZE (mode) > UNITS_PER_WORD)
+       && VECTOR_MEM_NONE_P (mode))
+     {
+       HOST_WIDE_INT val = INTVAL (XEXP (x, 1));
