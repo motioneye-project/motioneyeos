@@ -1,5 +1,6 @@
 config BR2_PACKAGE_XDRIVER_XF86_INPUT_TSLIB
 	bool "xf86-input-tslib"
+	depends on !BR2_PREFER_STATIC_LIB # tslib
 	select BR2_PACKAGE_XPROTO_INPUTPROTO
 	select BR2_PACKAGE_XPROTO_RANDRPROTO
 	select BR2_PACKAGE_XPROTO_XPROTO
@@ -8,3 +9,6 @@ config BR2_PACKAGE_XDRIVER_XF86_INPUT_TSLIB
 	  Touch screen library input driver
 
 	  http://www.ptxdist.org/software/xf86-input-tslib/index_en.html
+
+comment "xf86-input-tslib needs a toolchain w/ dynamic library"
+	depends on BR2_PREFER_STATIC_LIB
