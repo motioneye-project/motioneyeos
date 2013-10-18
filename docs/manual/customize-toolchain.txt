@@ -31,14 +31,19 @@ set the environment variable BR_DEBUG_WRAPPER to either one of:
 Using the internal Buildroot toolchain backend
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The internal Buildroot toolchain backend *only* allows to generate
-*http://www.uclibc.org/[uClibc]-based toolchains*.
+The internal Buildroot toolchain backend allows to generate toolchains
+based on http://www.uclibc.org/[uClibc],
+https://www.gnu.org/software/libc/[glibc] and
+http://www.eglibc.org/[eglibc].
+Generation of (e)glibc-based toolchains is still experimental in
+Buildroot.
 
-However, it allows to tune major settings, such as:
+It allows to tune major settings, such as:
 
 * Linux headers version;
 
-* http://www.uclibc.org/[uClibc] configuration (see xref:uclibc-custom[uClibc]);
+* C library configuration (only available for
+  http://www.uclibc.org/[uClibc], see xref:uclibc-custom[uClibc]);
 
 * Binutils, GCC, Gdb and toolchain options.
 
