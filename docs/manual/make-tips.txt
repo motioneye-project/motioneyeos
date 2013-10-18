@@ -64,9 +64,8 @@ To generate the manual:
 The manual outputs will be generated in 'output/docs/manual'.
 
 .Notes
-- +asciidoc+ is required to build the documentation (see:
+- A few tools are required to build the documentation (see:
   xref:requirement-optional[]).
-- There is a known issue that you can't build it under Debian Squeeze.
 
 .Reseting Buildroot for a new target:
 

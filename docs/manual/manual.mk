@@ -1,7 +1,33 @@
-manual-update-lists:
+manual-update-lists: manual-check-dependencies-lists
 	$(Q)$(call MESSAGE,"Updating the manual lists...")
 	$(Q)BR2_DEFCONFIG="" TOPDIR=$(TOPDIR) O=$(O)/docs/manual/.build \
 		$(TOPDIR)/support/scripts/gen-manual-lists.py
+
+# we can't use suitable-host-package here because that's not available in
+# the context of 'make release'
+manual-check-dependencies:
+	$(Q)if [ -z "$(shell support/dependencies/check-host-asciidoc.sh)" ]; then \
+		echo "You need a sufficiently recent asciidoc on your host" \
+			"to generate the manual"; \
+		exit 1; \
+	fi
+	$(Q)if [ -z "`which w3m 2>/dev/null`" ]; then \
+		echo "You need w3m on your host to generate the manual"; \
+		exit 1; \
+	fi
+
+manual-check-dependencies-pdf:
+	$(Q)if [ -z "`which dblatex 2>/dev/null`" ]; then \
+		echo "You need dblatex on your host to generate the pdf manual"; \
+		exit 1; \
+	fi
+
+manual-check-dependencies-lists:
+	$(Q)if ! python -c "import argparse" >/dev/null 2>&1 ; then \
+		echo "You need python with argparse on your host to generate" \
+			"the list of packages in the manual"; \
+		exit 1; \
+	fi
 
 ################################################################################
 # GENDOC -- generates the make targets needed to build a specific type of
@@ -22,8 +48,12 @@ $(1): $(1)-$(3)
 .PHONY: $(1)-$(3)
 $(1)-$(3): $$(O)/docs/$(1)/$(1).$(4)
 
+manual-check-dependencies-$(3):
+
 $$(O)/docs/$(1)/$(1).$(4): docs/$(1)/$(1).txt \
 			   $$($(call UPPERCASE,$(1))_SOURCES) \
+			   manual-check-dependencies \
+			   manual-check-dependencies-$(3) \
 			   manual-update-lists
 	$(Q)$(call MESSAGE,"Generating $(5) $(1)...")
 	$(Q)mkdir -p $$(@D)/.build

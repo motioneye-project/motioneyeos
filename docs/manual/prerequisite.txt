@@ -76,4 +76,7 @@ development context (further details: refer to xref:download-infra[]).
 ** The +jar+ tool
 
 * Documentation generation tools:
-** +asciidoc+
+** +asciidoc+, version 8.6.3 or higher
+** +w3m+
+** +python+ with the +argparse+ module (automatically present in 2.7+ and 3.2+)
+** +dblatex+ (required for the pdf manual only)
