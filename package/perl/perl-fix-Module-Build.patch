@@ -5,7 +5,7 @@ Index: b/cpan/Module-Build/lib/Module/Build/Base.pm
 ===================================================================
 --- a/cpan/Module-Build/lib/Module/Build/Base.pm
 +++ b/cpan/Module-Build/lib/Module/Build/Base.pm
-@@ -456,7 +456,7 @@
+@@ -460,7 +460,7 @@
    my $proto = shift;
    my $c     = ref($proto) ? $proto->{config} : 'Module::Build::Config';
  
