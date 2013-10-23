@@ -291,6 +291,7 @@ export STAGING_DIR
 export HOST_DIR
 export BINARIES_DIR
 export BASE_DIR
+export BUILD_DIR
 
 ################################################################################
 #
