@@ -17,7 +17,10 @@ STRESS_AUTORECONF = YES
 #
 # If the BR2_PREFER_STATIC_LIB is not defined, we have to specify
 # --disable-static explicitly to get stress linked dynamically.
+#
+# Also, disable documentation by undefining makeinfo
 STRESS_CONF_OPT = \
-	$(if $(BR2_PREFER_STATIC_LIB),,--disable-static)
+	$(if $(BR2_PREFER_STATIC_LIB),,--disable-static) \
+	MAKEINFO=:
 
 $(eval $(autotools-package))
