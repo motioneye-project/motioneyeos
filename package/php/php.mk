@@ -19,6 +19,11 @@ PHP_CONF_OPT =  --mandir=/usr/share/man \
 		--with-config-file-path=/etc \
 		--localstatedir=/var \
 		--disable-rpath
+ifeq ($(BR2_ENDIAN),"BIG")
+PHP_CONF_ENV = ac_cv_c_bigendian_php=yes
+else
+PHP_CONF_ENV = ac_cv_c_bigendian_php=no
+endif
 PHP_CONFIG_SCRIPTS = php-config
 
 PHP_CFLAGS = $(TARGET_CFLAGS)
