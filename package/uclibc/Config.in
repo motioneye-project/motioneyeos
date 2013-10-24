@@ -244,8 +244,8 @@ config BR2_UCLIBC_SPARC_TYPE
 config BR2_UCLIBC_POWERPC_TYPE
 	string
 	depends on BR2_UCLIBC_TARGET_ARCH = "powerpc"
-	default CLASSIC if !BR2_powerpc_8540 && !BR2_powerpc_8548 && !BR2_powerpc_e500mc
-	default E500    if BR2_powerpc_8540 || BR2_powerpc_8548 || BR2_powerpc_e500mc
+	default CLASSIC if !BR2_powerpc_8540 && !BR2_powerpc_8548
+	default E500    if BR2_powerpc_8540 || BR2_powerpc_8548
 
 config BR2_UCLIBC_X86_TYPE
 	string
