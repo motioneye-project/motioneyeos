@@ -5,6 +5,6 @@ config BR2_PACKAGE_XDRIVER_XF86_VIDEO_GEODE
 	select BR2_PACKAGE_XPROTO_RENDERPROTO
 	select BR2_PACKAGE_XPROTO_VIDEOPROTO
 	select BR2_PACKAGE_XPROTO_XPROTO
-	depends on (BR2_i386 || BR2_x86_64)
+	depends on BR2_i386
 	help
 	  video driver for geode device
