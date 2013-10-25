@@ -47,6 +47,7 @@ config BR2_MIPS_OABI32
 config BR2_MIPS_NABI32
 	bool "n32"
 	depends on BR2_ARCH_IS_64
+	select BR2_KERNEL_64_USERLAND_32
 config BR2_MIPS_NABI64
 	bool "n64"
 	depends on BR2_ARCH_IS_64
