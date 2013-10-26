@@ -1,0 +1,22 @@
+[PATCH] fix QtGUI build without PNG support
+
+Upstream bug: https://bugreports.qt-project.org/browse/QTBUG-33496
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ src/gui/kernel/qplatformtheme.cpp |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+Index: qt5base-5.1.1/src/gui/kernel/qplatformtheme.cpp
+===================================================================
+--- qt5base-5.1.1.orig/src/gui/kernel/qplatformtheme.cpp
++++ qt5base-5.1.1/src/gui/kernel/qplatformtheme.cpp
+@@ -48,7 +48,7 @@
+ #include <QtCore/qfileinfo.h>
+ #include <qpalette.h>
+ #include <qtextformat.h>
+-#include <qiconloader_p.h>
++#include <private/qiconloader_p.h>
+ 
+ QT_BEGIN_NAMESPACE
+ 
