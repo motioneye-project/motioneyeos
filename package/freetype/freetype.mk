@@ -19,6 +19,7 @@ FREETYPE_DEPENDENCIES = host-pkgconf \
 FREETYPE_CONFIG_SCRIPTS = freetype-config
 
 HOST_FREETYPE_DEPENDENCIES = host-pkgconf
+HOST_FREETYPE_CONF_OPT = --without-png
 
 ifeq ($(BR2_PACKAGE_LIBPNG),y)
 FREETYPE_DEPENDENCIES += libpng
