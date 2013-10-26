@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-BIND_VERSION = 9.6-ESV-R9-P1
+BIND_VERSION = 9.6-ESV-R10
 BIND_SITE = ftp://ftp.isc.org/isc/bind9/$(BIND_VERSION)
 BIND_MAKE = $(MAKE1)
 BIND_INSTALL_STAGING = YES
