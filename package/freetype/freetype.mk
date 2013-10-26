@@ -13,13 +13,25 @@ FREETYPE_INSTALL_STAGING = YES
 FREETYPE_MAKE_OPT = CCexe="$(HOSTCC)"
 FREETYPE_LICENSE = Dual FTL/GPLv2+
 FREETYPE_LICENSE_FILES = docs/FTL.TXT docs/GPLv2.TXT
-FREETYPE_DEPENDENCIES = host-pkgconf \
-	$(if $(BR2_PACKAGE_ZLIB),zlib) \
-	$(if $(BR2_PACKAGE_BZIP2),bzip2)
+FREETYPE_DEPENDENCIES = host-pkgconf
 FREETYPE_CONFIG_SCRIPTS = freetype-config
 
 HOST_FREETYPE_DEPENDENCIES = host-pkgconf
-HOST_FREETYPE_CONF_OPT = --without-png
+HOST_FREETYPE_CONF_OPT = --without-zlib --without-bzip2 --without-png
+
+ifeq ($(BR2_PACKAGE_ZLIB),y)
+FREETYPE_DEPENDENCIES += zlib
+FREETYPE_CONF_OPT += --with-zlib
+else
+FREETYPE_CONF_OPT += --without-zlib
+endif
+
+ifeq ($(BR2_PACKAGE_BZIP2),y)
+FREETYPE_DEPENDENCIES += bzip2
+FREETYPE_CONF_OPT += --with-bzip2
+else
+FREETYPE_CONF_OPT += --without-bzip2
+endif
 
 ifeq ($(BR2_PACKAGE_LIBPNG),y)
 FREETYPE_DEPENDENCIES += libpng
