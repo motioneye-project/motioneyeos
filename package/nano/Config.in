@@ -1,5 +1,6 @@
 config BR2_PACKAGE_NANO
 	bool "nano"
+	depends on BR2_USE_WCHAR
 	# full version uses fork()
 	select BR2_PACKAGE_NANO_TINY if !BR2_USE_MMU
 	select BR2_PACKAGE_NCURSES
@@ -15,3 +16,6 @@ config BR2_PACKAGE_NANO_TINY
 	depends on BR2_PACKAGE_NANO
 	help
 	  Disable all features for the sake of size.
+
+comment "nano needs a toolchain w/ wchar"
+	depends on !BR2_USE_WCHAR
