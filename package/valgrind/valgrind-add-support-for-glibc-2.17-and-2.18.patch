@@ -1,0 +1,50 @@
+From bca21896dbdba12963aa7991d7f1b732b6a709a8 Mon Sep 17 00:00:00 2001
+From: Phil Eichinger <phil@zankapfel.net>
+Date: Wed, 23 Oct 2013 18:28:15 +0200
+Subject: [PATCH 1/1] Add support for glibc 2.17 and 2.18.
+
+
+Signed-off-by: Phil Eichinger <phil@zankapfel.net>
+---
+Status: fixed in upstream r13228 & r13504, not yet released.
+
+ configure.in |   16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
+
+diff --git a/configure.in b/configure.in
+index 1da3a2c..ccc60a0 100644
+--- a/configure.in
++++ b/configure.in
+@@ -906,6 +906,20 @@ case "${GLIBC_VERSION}" in
+ 	DEFAULT_SUPP="glibc-2.34567-NPTL-helgrind.supp ${DEFAULT_SUPP}"
+ 	DEFAULT_SUPP="glibc-2.X-drd.supp ${DEFAULT_SUPP}"
+ 	;;
++     2.17)
++	AC_MSG_RESULT(2.17 family)
++	AC_DEFINE([GLIBC_2_17], 1, [Define to 1 if you're using glibc 2.17.x])
++	DEFAULT_SUPP="glibc-2.X.supp ${DEFAULT_SUPP}"
++	DEFAULT_SUPP="glibc-2.34567-NPTL-helgrind.supp ${DEFAULT_SUPP}"
++	DEFAULT_SUPP="glibc-2.X-drd.supp ${DEFAULT_SUPP}"
++	;;
++     2.18)
++	AC_MSG_RESULT(2.18 family)
++	AC_DEFINE([GLIBC_2_18], 1, [Define to 1 if you're using glibc 2.18.x])
++	DEFAULT_SUPP="glibc-2.X.supp ${DEFAULT_SUPP}"
++	DEFAULT_SUPP="glibc-2.34567-NPTL-helgrind.supp ${DEFAULT_SUPP}"
++	DEFAULT_SUPP="glibc-2.X-drd.supp ${DEFAULT_SUPP}"
++	;;
+      darwin)
+ 	AC_MSG_RESULT(Darwin)
+ 	AC_DEFINE([DARWIN_LIBC], 1, [Define to 1 if you're using Darwin])
+@@ -919,7 +933,7 @@ case "${GLIBC_VERSION}" in
+ 
+      *)
+ 	AC_MSG_RESULT([unsupported version ${GLIBC_VERSION}])
+-	AC_MSG_ERROR([Valgrind requires glibc version 2.2 - 2.16])
++	AC_MSG_ERROR([Valgrind requires glibc version 2.2 - 2.18])
+ 	AC_MSG_ERROR([or Darwin libc])
+ 	;;
+ esac
+-- 
+1.7.10.4
+
