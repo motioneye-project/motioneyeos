@@ -116,7 +116,7 @@ GLIBC_LIBS_LIB = \
 	libnsl.so.* libpthread.so.* libresolv.so.* librt.so.* libutil.so.*   \
 	libnss_files.so.* libnss_dns.so.*
 
-ifeq ($(BR2_PACKAGE_GDB_SERVER),y)
+ifeq ($(BR2_PACKAGE_GDB),y)
 GLIBC_LIBS_LIB += libthread_db.so.*
 endif
 
