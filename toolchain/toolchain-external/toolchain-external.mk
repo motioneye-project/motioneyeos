@@ -229,10 +229,11 @@ TOOLCHAIN_EXTERNAL_WRAPPER_ARGS += -DBR_SOFTFLOAT=1
 endif
 
 # The Linaro ARMhf toolchain expects the libraries in
-# /lib/arm-linux-gnueabihf, but Buildroot copies them to /lib, so we
-# need to create a symbolic link.
+# {/usr,}/lib/arm-linux-gnueabihf, but Buildroot copies them to
+# {/usr,}/lib, so we need to create a symbolic link.
 define TOOLCHAIN_EXTERNAL_LINARO_ARMHF_SYMLINK
 	ln -sf . $(TARGET_DIR)/lib/arm-linux-gnueabihf
+	ln -sf . $(TARGET_DIR)/usr/lib/arm-linux-gnueabihf
 endef
 
 ifeq ($(BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_ARM201109),y)
