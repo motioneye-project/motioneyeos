@@ -31,18 +31,15 @@ define SYSVINIT_BUILD_CMDS
 endef
 
 define SYSVINIT_INSTALL_TARGET_CMDS
-	for x in halt init shutdown; do \
+	for x in halt init shutdown killall5; do \
 		install -D -m 0755 $(@D)/src/$$x $(TARGET_DIR)/sbin/$$x || exit 1; \
 	done
 	# Override Busybox's inittab with an inittab compatible with
 	# sysvinit
 	install -D -m 0644 package/sysvinit/inittab $(TARGET_DIR)/etc/inittab
-endef
-
-define SYSVINIT_UNINSTALL_TARGET_CMDS
-	for x in halt init shutdown; do \
-		rm -f $(TARGET_DIR)/sbin/$$x || exit 1; \
-	done
+	ln -sf /sbin/halt $(TARGET_DIR)/sbin/reboot
+	ln -sf /sbin/halt $(TARGET_DIR)/sbin/poweroff
+	ln -sf killall5 $(TARGET_DIR)/sbin/pidof
 endef
 
 define SYSVINIT_CLEAN_CMDS
