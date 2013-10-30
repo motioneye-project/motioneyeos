@@ -16,6 +16,16 @@ IPTABLES_CONF_OPT = --libexecdir=/usr/lib --with-kernel=$(STAGING_DIR)/usr
 # Because of iptables-01-fix-static-link.patch
 IPTABLES_AUTORECONF = YES
 
+# For connlabel match
+ifeq ($(BR2_PACKAGE_LIBNETFILTER_CONNTRACK),y)
+IPTABLES_DEPENDENCIES += libnetfilter_conntrack
+endif
+
+# For nfnl_osf
+ifeq ($(BR2_PACKAGE_LIBNFNETLINK),y)
+IPTABLES_DEPENDENCIES += libnfnetlink
+endif
+
 define IPTABLES_TARGET_SYMLINK_CREATE
 	ln -sf xtables-multi $(TARGET_DIR)/usr/sbin/iptables
 	ln -sf xtables-multi $(TARGET_DIR)/usr/sbin/iptables-save
