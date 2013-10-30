@@ -1,0 +1,19 @@
+config BR2_PACKAGE_JACK2
+	bool "jack2"
+	depends on BR2_LARGEFILE # libsndfile
+	depends on BR2_TOOLCHAIN_HAS_THREADS # alsa-lib
+	select BR2_PACKAGE_LIBSAMPLERATE
+	select BR2_PACKAGE_LIBSNDFILE
+	select BR2_PACKAGE_ALSA_LIB
+	help
+	  JACK Audio Connection Kit (server and example clients).
+
+	  JACK is a low-latency sound server, allowing multiple
+	  applications to connect to one audio device, and to share
+	  audio between themselves.  This package contains the daemon
+	  jackd as well as some example clients.
+
+	  http://jackaudio.org/
+
+comment "jack2 needs a toolchain w/ largefile and threads"
+	depends on !BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_THREADS
