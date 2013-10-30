@@ -1,0 +1,13 @@
+config BR2_PACKAGE_FIO
+	bool "fio"
+	depends on BR2_USE_MMU # fork()
+	depends on BR2_LARGEFILE
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	help
+	  fio is an I/O tool meant to be used both for benchmark
+	  and stress/hardware verification.
+
+	  http://git.kernel.dk/?p=fio.git;a=summary
+
+comment "fio needs a toolchain w/ largefile, threads"
+	depends on !BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_THREADS
