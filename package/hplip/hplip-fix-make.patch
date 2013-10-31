@@ -30,45 +30,6 @@ index 16ea902..b22f46a 100644
  endif
  
  # ui (qt3)
-@@ -564,26 +564,26 @@ endif
- 
- install-dist_hplip_LogDATA:
- if FULL_BUILD
--	test -z "$(DESTDIR)$(hplip_Logdir)" || mkdir -p $(DESTDIR)$(hplip_Logdir)
--	chgrp "lp" -R $(DESTDIR)$(hplip_Logdir)
--	chmod 775 $(DESTDIR)$(hplip_Logdir)
-+#	test -z "$(DESTDIR)$(hplip_Logdir)" || mkdir -p $(DESTDIR)$(hplip_Logdir)
-+#	chgrp "lp" -R $(DESTDIR)$(hplip_Logdir)
-+#	chmod 775 $(DESTDIR)$(hplip_Logdir)
- endif	#FULL_BUILD
- if HPLIP_BUILD
--	test -z "$(DESTDIR)$(hplip_Logdir)" || mkdir -p $(DESTDIR)$(hplip_Logdir)
--	chgrp "lp" -R $(DESTDIR)$(hplip_Logdir)
--	chmod 775 $(DESTDIR)$(hplip_Logdir)
-+#	test -z "$(DESTDIR)$(hplip_Logdir)" || mkdir -p $(DESTDIR)$(hplip_Logdir)
-+#	chgrp "lp" -R $(DESTDIR)$(hplip_Logdir)
-+#	chmod 775 $(DESTDIR)$(hplip_Logdir)
- endif	#FULL_BUILD
- 
- install-dist_hplip_tmpDATA:
- if FULL_BUILD
--	test -z "$(DESTDIR)$(hplip_tmpdir)" || mkdir -p $(DESTDIR)$(hplip_tmpdir)
--	chgrp "lp" -R $(DESTDIR)$(hplip_tmpdir)
--	chmod 1775 $(DESTDIR)$(hplip_tmpdir)
-+#	test -z "$(DESTDIR)$(hplip_tmpdir)" || mkdir -p $(DESTDIR)$(hplip_tmpdir)
-+#	chgrp "lp" -R $(DESTDIR)$(hplip_tmpdir)
-+#	chmod 1775 $(DESTDIR)$(hplip_tmpdir)
- endif	#FULL_BUILD
- if HPLIP_BUILD
--	test -z "$(DESTDIR)$(hplip_tmpdir)" || mkdir -p $(DESTDIR)$(hplip_tmpdir)
--	chgrp "lp" -R $(DESTDIR)$(hplip_tmpdir)
--	chmod 1775 $(DESTDIR)$(hplip_tmpdir)
-+#	test -z "$(DESTDIR)$(hplip_tmpdir)" || mkdir -p $(DESTDIR)$(hplip_tmpdir)
-+#	chgrp "lp" -R $(DESTDIR)$(hplip_tmpdir)
-+#	chmod 1775 $(DESTDIR)$(hplip_tmpdir)
- endif	#FULL_BUILD
- 
- install-dist_cronDATA:$(dist_cron_DATA)
 -- 
 1.7.10.4
 
