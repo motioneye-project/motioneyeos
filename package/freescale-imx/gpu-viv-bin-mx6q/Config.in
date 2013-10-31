@@ -1,4 +1,4 @@
-comment "gpu-viv-bin-mx6q requires a glibc toolchain"
+comment "gpu-viv-bin-mx6q needs an (e)glibc toolchain"
 	depends on !BR2_TOOLCHAIN_USES_GLIBC
 
 config BR2_PACKAGE_GPU_VIV_BIN_MX6Q

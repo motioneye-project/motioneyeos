@@ -13,3 +13,7 @@ config BR2_PACKAGE_NSS_MDNS
 	  mDNS domain .local.
 
 	  http://0pointer.de/lennart/projects/nss-mdns/
+
+comment "nss-mdns needs an (e)glibc toolchain"
+	depends on BR2_USE_MMU && BR2_PACKAGE_AVAHI_DAEMON
+	depends on !BR2_TOOLCHAIN_USES_GLIBC

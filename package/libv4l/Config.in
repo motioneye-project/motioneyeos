@@ -17,7 +17,7 @@ config BR2_PACKAGE_LIBV4L_DECODE_TM6000
 	help
 	  Tool to decode tm6000 proprietary format streams
 
-comment "decode_tm6000 requires a GLIBC based toolchain"
+comment "decode_tm6000 needs an (e)glibc toolchain"
 	depends on !BR2_TOOLCHAIN_USES_GLIBC
 
 config BR2_PACKAGE_LIBV4L_IR_KEYTABLE
@@ -26,7 +26,7 @@ config BR2_PACKAGE_LIBV4L_IR_KEYTABLE
 	help
 	  Tool to alter keymaps of Remote Controller devices
 
-comment "ir-keytable requires a GLIBC based toolchain"
+comment "ir-keytable needs an (e)glibc toolchain"
 	depends on !BR2_TOOLCHAIN_USES_GLIBC
 
 config BR2_PACKAGE_LIBV4L_V4L2_COMPLIANCE

@@ -11,5 +11,6 @@ config BR2_PACKAGE_GST_PLUGIN_X170
 
 	  http://www.at91.com/linux4sam/bin/view/Linux4SAM/SAM9M10Gstreamer
 
-comment "gst-plugin-x170 requires a toolchain which uses eglibc/glibc"
-	depends on BR2_PACKAGE_GSTREAMER && BR2_arm926t && !BR2_TOOLCHAIN_USES_GLIBC
+comment "gst-plugin-x170 needs an (e)glibc toolchain"
+	depends on BR2_PACKAGE_GSTREAMER && BR2_arm926t
+	depends on !BR2_TOOLCHAIN_USES_GLIBC

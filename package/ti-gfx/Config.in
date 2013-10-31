@@ -60,5 +60,6 @@ endchoice
 
 endif
 
-comment "ti-gfx requires an eglibc/glibc based toolchain and the linux kernel"
-	depends on !(BR2_LINUX_KERNEL && BR2_TOOLCHAIN_USES_GLIBC) && BR2_arm
+comment "ti-gfx needs an (e)glibc toolchain and the linux kernel"
+	depends on BR2_arm
+	depends on !(BR2_LINUX_KERNEL && BR2_TOOLCHAIN_USES_GLIBC)
