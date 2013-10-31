@@ -5,7 +5,7 @@
 ################################################################################
 
 UEMACS_VERSION = 4.0.15-lt
-UEMACS_SOURCE = em-$(UEMACS_VERSION).tar.bz2
+UEMACS_SOURCE = em-$(UEMACS_VERSION).tar.gz
 UEMACS_SITE = $(BR2_KERNEL_MIRROR)/software/editors/uemacs/
 UEMACS_DEPENDENCIES = ncurses
 
