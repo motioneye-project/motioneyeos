@@ -1,0 +1,30 @@
+libcap: split install into install-shared/install-static
+
+In order to support static only builds, split the install target into
+install-shared and install-static targets.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/libcap/Makefile
+===================================================================
+--- a/libcap/Makefile
++++ b/libcap/Makefile
+@@ -60,11 +60,17 @@
+ cap_text.o: cap_text.c $(USE_GPERF_OUTPUT) $(INCLS)
+ 	$(CC) $(CFLAGS) $(IPATH) $(INCLUDE_GPERF_OUTPUT) -c $< -o $@
+ 
+-install: all
++install: install-shared install-static
++
++install-common:
+ 	mkdir -p -m 0755 $(INCDIR)/sys
+ 	install -m 0644 include/sys/capability.h $(INCDIR)/sys
+ 	mkdir -p -m 0755 $(LIBDIR)
++
++install-static: install-common
+ 	install -m 0644 $(STALIBNAME) $(LIBDIR)/$(STALIBNAME)
++
++install-shared: install-common
+ 	install -m 0755 $(MINLIBNAME) $(LIBDIR)/$(MINLIBNAME)
+ 	ln -sf $(MINLIBNAME) $(LIBDIR)/$(MAJLIBNAME)
+ 	ln -sf $(MAJLIBNAME) $(LIBDIR)/$(LIBNAME)
