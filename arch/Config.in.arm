@@ -341,7 +341,7 @@ config BR2_ENDIAN
 	default "LITTLE" if BR2_arm
 	default "BIG"	 if BR2_armeb
 
-config BR2_GCC_TARGET_TUNE
+config BR2_GCC_TARGET_CPU
 	default "arm7tdmi"	if BR2_arm7tdmi
 	default "arm7tdmi"	if BR2_arm720t
 	default "arm7tdmi"	if BR2_arm740t
