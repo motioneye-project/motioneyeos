@@ -9,10 +9,6 @@ DHCPCD_SOURCE = dhcpcd-$(DHCPCD_VERSION).tar.bz2
 DHCPCD_SITE = http://roy.marples.name/downloads/dhcpcd/
 DHCPCD_LICENSE = BSD-2c
 
-ifeq ($(BR2_USE_MMU),)
-	DHCPCD_CONFIG_OPT += --disable-fork
-endif
-
 define DHCPCD_CONFIGURE_CMDS
 	(cd $(@D); \
 	./configure \
