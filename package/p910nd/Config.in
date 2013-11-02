@@ -1,0 +1,9 @@
+config BR2_PACKAGE_P910ND
+	bool "p910nd"
+	depends on BR2_USE_MMU # fork()
+	help
+	  p910nd is a small printer daemon intended for diskless
+	  workstations. Using ports 9100-9102, it accepts
+	  print jobs and passes them directly to a USB printer.
+
+	  http://p910nd.sourceforge.net/
