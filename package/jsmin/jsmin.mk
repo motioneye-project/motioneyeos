@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-JSMIN_VERSION = a9b4755
+JSMIN_VERSION = a9b47554d5684a55301a2eb7ca8480b7ee7630d4
 JSMIN_SITE = http://github.com/douglascrockford/JSMin/tarball/$(JSMIN_VERSION)
 
 define JSMIN_BUILD_CMDS

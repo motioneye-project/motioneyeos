@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LINENOISE_VERSION = 27a3b4d5
+LINENOISE_VERSION = 27a3b4d5205a5fb3e2101128edd6653bd0c92189
 LINENOISE_SITE = http://github.com/antirez/linenoise/tarball/$(LINENOISE_VERSION)
 LINENOISE_LICENSE = BSD-2c
 LINENOISE_INSTALL_STAGING = YES

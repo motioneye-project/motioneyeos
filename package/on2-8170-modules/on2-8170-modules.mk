@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-ON2_8170_MODULES_VERSION = 73b0806
+ON2_8170_MODULES_VERSION = 73b08061d30789178e692bc332b73d1d9922bf39
 ON2_8170_MODULES_SITE    = http://github.com/alexandrebelloni/on2-8170-modules/tarball/$(ON2_8170_MODULES_VERSION)
 
 ON2_8170_MODULES_DEPENDENCIES = linux

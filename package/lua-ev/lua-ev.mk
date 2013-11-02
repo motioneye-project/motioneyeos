@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LUA_EV_VERSION = 458165b
+LUA_EV_VERSION = 458165bdfe0c6eadc788813925f11a0e6a823845
 LUA_EV_SITE = http://github.com/brimworks/lua-ev/tarball/$(LUA_EV_VERSION)
 LUA_EV_DEPENDENCIES = lua libev
 LUA_EV_LICENSE = MIT

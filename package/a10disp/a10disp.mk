@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-A10DISP_VERSION = a899cc6dcf
+A10DISP_VERSION = a899cc6dcf909360aac00482ede5369f3656f226
 A10DISP_SITE = http://github.com/hglm/a10disp/tarball/$(A10DISP_VERSION)
 A10DISP_LICENSE = MIT
 

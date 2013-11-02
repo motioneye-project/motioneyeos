@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-ZYRE_VERSION = 44a57a449a
+ZYRE_VERSION = 44a57a449a34bb6310b5ce4b17f1ce42f9b17beb
 ZYRE_SITE = git://github.com/zeromq/zyre.git
 ZYRE_LICENSE = LGPLv3+
 ZYRE_LICENSE_FILES = COPYING COPYING.LESSER

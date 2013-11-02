@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBNFC_VERSION = fda8d60ce062
+LIBNFC_VERSION = fda8d60ce062409bb32c76a229f02f7502948ce8
 LIBNFC_SITE = http://libnfc.googlecode.com/git/
 LIBNFC_SITE_METHOD = git
 LIBNFC_LICENSE = LGPLv3+

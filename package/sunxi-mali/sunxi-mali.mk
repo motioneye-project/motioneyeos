@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-SUNXI_MALI_VERSION = c2491fe952
+SUNXI_MALI_VERSION = c2491fe952354ba44538064e534ed7c731cedb1e
 SUNXI_MALI_SITE = http://github.com/linux-sunxi/sunxi-mali/tarball/$(SUNXI_MALI_VERSION)
 
 SUNXI_MALI_INSTALL_STAGING = YES

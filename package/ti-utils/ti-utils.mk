@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-TI_UTILS_VERSION = 06dbdb2
+TI_UTILS_VERSION = 06dbdb2727354b5f3ad7c723897f40051fddee49
 TI_UTILS_SITE = http://github.com/gxk/ti-utils/tarball/$(TI_UTILS_VERSION)
 TI_UTILS_DEPENDENCIES = libnl
 

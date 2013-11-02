@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-CPPZMQ_VERSION = b232978
+CPPZMQ_VERSION = b23297800389149ac37f19b7215fa4734d344998
 CPPZMQ_SITE = git://github.com/zeromq/cppzmq.git
 CPPZMQ_INSTALL_STAGING = YES
 CPPZMQ_DEPENDENCIES = zeromq

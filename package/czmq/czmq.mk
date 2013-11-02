@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-CZMQ_VERSION = cb9839cf90
+CZMQ_VERSION = cb9839cf90e4ac69acb7c6ff2b4e2d42d704cf6e
 CZMQ_SITE = git://github.com/zeromq/czmq.git
 
 # Autoreconf required as we use the git tree

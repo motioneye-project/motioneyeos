@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-QEXTSERIALPORT_VERSION     = 6c47244de4ce6db
+QEXTSERIALPORT_VERSION     = 6c47244de4ce6db43c2f05caee957666c951dae1
 QEXTSERIALPORT_SITE        = https://qextserialport.googlecode.com/git/
 QEXTSERIALPORT_SITE_METHOD = git
 

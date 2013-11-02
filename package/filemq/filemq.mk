@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-FILEMQ_VERSION = 8fac5140dd
+FILEMQ_VERSION = 8fac5140ddbca3c4742016795fbbf1d6579902f3
 FILEMQ_SITE = git://github.com/zeromq/filemq.git
 
 FILEMQ_AUTORECONF = YES
