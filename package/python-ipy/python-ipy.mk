@@ -4,9 +4,8 @@
 #
 ################################################################################
 
-PYTHON_IPY_VERSION = 0.75-0-g58006fb
-PYTHON_IPY_SOURCE  = haypo-python-ipy-IPy-$(PYTHON_IPY_VERSION).tar.gz
-PYTHON_IPY_SITE    = https://github.com/haypo/python-ipy/tarball/IPy-0.75
+PYTHON_IPY_VERSION = IPy-0.75
+PYTHON_IPY_SITE    = https://github.com/haypo/python-ipy/tarball/$(PYTHON_IPY_VERSION)
 PYTHON_IPY_DEPENDENCIES = host-python python
 PYTHON_IPY_LICENSE = BSD-3c
 PYTHON_IPY_LICENSE_FILES = COPYING
