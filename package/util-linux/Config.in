@@ -72,6 +72,7 @@ config BR2_PACKAGE_UTIL_LINUX_EJECT
 
 config BR2_PACKAGE_UTIL_LINUX_FALLOCATE
 	bool "fallocate"
+	depends on !BR2_avr32 # fallocate not implemented
 	help
 	  Preallocate space to a file
 
