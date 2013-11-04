@@ -42,6 +42,10 @@ SQLITE_CONF_ENV = CFLAGS="$(TARGET_CFLAGS) $(SQLITE_CFLAGS)"
 SQLITE_CONF_OPT = \
 	--localstatedir=/var
 
+ifeq ($(BR2_PREFER_STATIC_LIB),y)
+SQLITE_CONF_OPT += --enable-dynamic-extensions=no
+endif
+
 ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),y)
 SQLITE_CONF_OPT += --enable-threadsafe
 else
