@@ -1,5 +1,7 @@
-This configuration is intended as a base image, it doesn't have support
-for things like WiFi, either in the kernel or packages.
+This configuration is intended as a base image.
+It includes kernel and firmware support for the common USB WiFi hardware.
+Packages for WiFi support are up to the user, you'll probably want
+one or more of: hostapd, iw, wireless_tools and/or wpa_supplicant.
 
 It also pulls up the console on the serial port, not on TV output.
 
