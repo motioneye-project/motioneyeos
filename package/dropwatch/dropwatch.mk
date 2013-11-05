@@ -13,13 +13,18 @@ DROPWATCH_LICENSE_FILES = COPYING
 
 # libbfd may be linked to libintl
 # Ugly... but LDFLAGS are hardcoded anyway
+#
+# Also: always need to add -liberty to hardcoded LDFLAGS for avr32
+DROPWATCH_LDFLAGS = \
+	$(TARGET_LDFLAGS) -lbfd -liberty -lreadline -lnl-3 -lnl-genl-3
+
 ifeq ($(BR2_NEEDS_GETTEXT_IF_LOCALE),y)
-DROPWATCH_LDFLAGS = LDFLAGS="-lintl -lbfd -lreadline -lnl-3 -lnl-genl-3"
+DROPWATCH_LDFLAGS += -lintl
 endif
 
 define DROPWATCH_BUILD_CMDS
 	$(TARGET_CONFIGURE_OPTS) $(TARGET_MAKE_ENV) $(MAKE) -C $(@D) \
-		$(DROPWATCH_LDFLAGS) build
+		LDFLAGS="$(DROPWATCH_LDFLAGS)" build
 endef
 
 define DROPWATCH_CLEAN_CMDS
