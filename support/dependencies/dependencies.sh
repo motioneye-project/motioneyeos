@@ -178,7 +178,8 @@ if grep -q ^BR2_HOSTARCH_NEEDS_IA32_LIBS=y $BUILDROOT_CONFIG ; then
 	/bin/echo -e "\nYour Buildroot configuration uses pre-built tools for the x86 architecture,"
 	/bin/echo -e "but your build machine uses the x86-64 architecture without the 32 bits compatibility"
 	/bin/echo -e "library."
-	/bin/echo -e "If you're running a Debian/Ubuntu distribution, install the libc:i386 package."
+	/bin/echo -e "If you're running a Debian/Ubuntu distribution, install the libc6:i386,"
+	/bin/echo -e "libstdc++6:i386, and zlib1g:i386 packages."
 	/bin/echo -e "For other distributions, refer to the documentation on how to install the 32 bits"
 	/bin/echo -e "compatibility libraries."
 	exit 1
