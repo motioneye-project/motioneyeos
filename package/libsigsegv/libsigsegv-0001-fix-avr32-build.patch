@@ -1,0 +1,20 @@
+The libsigsegv configure step fails to correctly figure out the direction of
+stack growth for avr32. This leads to a zero STACK_DIRECTION definition, and
+build failures such as the following.
+
+  http://autobuild.buildroot.net/results/a3fe938f9376533b4777d79deb7a2ee83ed5ce33
+
+Signed-off-by: Simon Dawson <spdawson@gmail.com>
+
+diff -Nurp a/m4/stack-direction.m4 b/m4/stack-direction.m4
+--- a/m4/stack-direction.m4	2009-11-21 12:22:45.000000000 +0000
++++ b/m4/stack-direction.m4	2013-11-04 09:29:27.558036038 +0000
+@@ -16,7 +16,7 @@ AC_DEFUN([SV_STACK_DIRECTION],
+       alpha* | \
+       arc | \
+       arm* | strongarm* | xscale* | \
+-      avr | \
++      avr | avr32 | \
+       c1 | c2 | c32 | c34 | c38 | \
+       clipper | \
+       cris | \
