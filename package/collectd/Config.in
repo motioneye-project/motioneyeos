@@ -277,6 +277,12 @@ config BR2_PACKAGE_COLLECTD_PROTOCOLS
 	help
 	  Collects information about the network protocols.
 
+config BR2_PACKAGE_COLLECTD_SENSORS
+	bool "sensors"
+	select BR2_PACKAGE_LM_SENSORS
+	help
+	  Collects data from lm-sensors.
+
 config BR2_PACKAGE_COLLECTD_SERIAL
 	bool "serial"
 	help
