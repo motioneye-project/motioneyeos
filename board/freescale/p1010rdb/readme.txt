@@ -6,7 +6,7 @@ It won't work for NAND or SPI and will brick those bootloaders!
 Also don't go playing around with different U-boot versions or flash targets
 unless you've got the necessary hardware and/or know-how to unbrick your kit.
 
-2013.04 is known good for NOR.
+2013.10 is known good for NOR.
 ******************** WARNING ********************
 
 You'll need to program the files created by buildroot into the flash.
