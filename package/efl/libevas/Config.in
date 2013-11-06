@@ -1,5 +1,6 @@
 config BR2_PACKAGE_LIBEVAS
 	bool "libevas"
+	depends on !BR2_avr32 # no epoll_create1 or inotify_init1
 	select BR2_PACKAGE_FREETYPE
 	select BR2_PACKAGE_LIBEINA
 	# required to build so far

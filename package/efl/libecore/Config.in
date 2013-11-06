@@ -38,5 +38,6 @@ config BR2_PACKAGE_LIBECORE_X_XCB
 config BR2_PACKAGE_LIBECORE_EVAS
 	bool "libecore Evas support"
 	select BR2_PACKAGE_LIBEVAS
+	depends on !BR2_avr32 # libevas
 
 endif # BR2_PACKAGE_LIBECORE

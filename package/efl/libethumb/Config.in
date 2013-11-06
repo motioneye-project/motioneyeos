@@ -5,6 +5,7 @@ config BR2_PACKAGE_LIBETHUMB
 	select BR2_PACKAGE_LIBECORE
 	select BR2_PACKAGE_LIBECORE_EVAS
 	select BR2_PACKAGE_LIBEDJE
+	depends on !BR2_avr32 # libevas
 	help
 	  Ethumb is a library for generating thumbnail images of documents.
 

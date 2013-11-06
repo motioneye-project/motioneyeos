@@ -26,6 +26,7 @@ config BR2_PACKAGE_ENLIGHTENMENT
 	# libedbus -> dbus
 	depends on BR2_USE_MMU
 	depends on BR2_PACKAGE_XORG7
+	depends on !BR2_avr32 # libevas
 	help
 	  Enlightenment, also known simply as E, is a stacking window
 	  manager for the X Window System which can be used alone or
@@ -38,3 +39,4 @@ config BR2_PACKAGE_ENLIGHTENMENT
 comment "enlightenment needs a toolchain w/ wchar, C++, threads"
 	depends on BR2_PACKAGE_XORG7
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || !BR2_INSTALL_LIBSTDCPP
+	depends on !BR2_avr32
