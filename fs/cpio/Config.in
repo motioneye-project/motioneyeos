@@ -6,34 +6,34 @@ config BR2_TARGET_ROOTFS_CPIO
 	  by the bootloader.
 
 choice
-        prompt "Compression method"
-        default BR2_TARGET_ROOTFS_CPIO_NONE
-        depends on BR2_TARGET_ROOTFS_CPIO
-        help
-          Select compressor for cpio filesystem of the root filesystem.
-          If you use the cpio archive as an initial RAM filesystem, make
-          sure the kernel contains the decompression algorithm selected
-          here.
+	prompt "Compression method"
+	default BR2_TARGET_ROOTFS_CPIO_NONE
+	depends on BR2_TARGET_ROOTFS_CPIO
+	help
+	  Select compressor for cpio filesystem of the root filesystem.
+	  If you use the cpio archive as an initial RAM filesystem, make
+	  sure the kernel contains the decompression algorithm selected
+	  here.
 
 config BR2_TARGET_ROOTFS_CPIO_NONE
-        bool "no compression"
-        help
-          Do not compress the cpio filesystem.
+	bool "no compression"
+	help
+	  Do not compress the cpio filesystem.
 
 config BR2_TARGET_ROOTFS_CPIO_GZIP
-        bool "gzip"
-        help
-          Do compress the cpio filesystem with gzip.
+	bool "gzip"
+	help
+	  Do compress the cpio filesystem with gzip.
 
 config BR2_TARGET_ROOTFS_CPIO_BZIP2
-        bool "bzip2"
-        help
-          Do compress the cpio filesystem with bzip2.
+	bool "bzip2"
+	help
+	  Do compress the cpio filesystem with bzip2.
 
 config BR2_TARGET_ROOTFS_CPIO_LZMA
-        bool "lzma"
-        help
-          Do compress the cpio filesystem with lzma.
+	bool "lzma"
+	help
+	  Do compress the cpio filesystem with lzma.
 
 config BR2_TARGET_ROOTFS_CPIO_LZO
 	bool "lzo"
