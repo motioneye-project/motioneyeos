@@ -17,7 +17,7 @@
 #  generating the filesystem image
 #
 #  ROOTFS_$(FSTYPE)_POST_GEN_HOOKS, a list of hooks to call after
-#  generating the filesystem image
+#  generating and compressing the filesystem image
 #
 #  ROOTFS_$(FSTYPE)_POST_TARGETS, the list of targets that should be
 #  run after running the main filesystem target. This is useful for
