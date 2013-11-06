@@ -37,7 +37,31 @@ USERS_TABLE = $(BUILD_DIR)/_users_table.txt
 define ROOTFS_TARGET_INTERNAL
 
 # extra deps
-ROOTFS_$(2)_DEPENDENCIES += host-fakeroot host-makedevs $$(if $$(BR2_TARGET_ROOTFS_$(2)_LZMA),host-lzma) $$(if $$(BR2_TARGET_ROOTFS_$(2)_LZO),host-lzop) $$(if $$(BR2_TARGET_ROOTFS_$(2)_XZ),host-xz)
+ROOTFS_$(2)_DEPENDENCIES += host-fakeroot host-makedevs
+
+ifeq ($$(BR2_TARGET_ROOTFS_$(2)_GZIP),y)
+ROOTFS_$(2)_COMPRESS_EXT = .gz
+ROOTFS_$(2)_COMPRESS_CMD = gzip -9 -c
+endif
+ifeq ($$(BR2_TARGET_ROOTFS_$(2)_BZIP2),y)
+ROOTFS_$(2)_COMPRESS_EXT = .bz2
+ROOTFS_$(2)_COMPRESS_CMD = bzip2 -9 -c
+endif
+ifeq ($$(BR2_TARGET_ROOTFS_$(2)_LZMA),y)
+ROOTFS_$(2)_DEPENDENCIES += host-lzma
+ROOTFS_$(2)_COMPRESS_EXT = .lzma
+ROOTFS_$(2)_COMPRESS_CMD = $$(LZMA) -9 -c
+endif
+ifeq ($$(BR2_TARGET_ROOTFS_$(2)_LZO),y)
+ROOTFS_$(2)_DEPENDENCIES += host-lzop
+ROOTFS_$(2)_COMPRESS_EXT = .lzo
+ROOTFS_$(2)_COMPRESS_CMD = $$(LZOP) -9 -c
+endif
+ifeq ($$(BR2_TARGET_ROOTFS_$(2)_XZ),y)
+ROOTFS_$(2)_DEPENDENCIES += host-xz
+ROOTFS_$(2)_COMPRESS_EXT = .xz
+ROOTFS_$(2)_COMPRESS_CMD = $$(XZ) -9 -C crc32 -c
+endif
 
 $$(BINARIES_DIR)/rootfs.$(1): $$(ROOTFS_$(2)_DEPENDENCIES)
 	@$$(call MESSAGE,"Generating root filesystem image rootfs.$(1)")
@@ -60,20 +84,8 @@ endif
 	$$(HOST_DIR)/usr/bin/fakeroot -- $$(FAKEROOT_SCRIPT)
 	cp support/misc/target-dir-warning.txt $$(TARGET_DIR_WARNING_FILE)
 	-@rm -f $$(FAKEROOT_SCRIPT) $$(FULL_DEVICE_TABLE)
-ifeq ($$(BR2_TARGET_ROOTFS_$(2)_GZIP),y)
-	gzip -9 -c $$@ > $$@.gz
-endif
-ifeq ($$(BR2_TARGET_ROOTFS_$(2)_BZIP2),y)
-	bzip2 -9 -c $$@ > $$@.bz2
-endif
-ifeq ($$(BR2_TARGET_ROOTFS_$(2)_LZMA),y)
-	$$(LZMA) -9 -c $$@ > $$@.lzma
-endif
-ifeq ($$(BR2_TARGET_ROOTFS_$(2)_LZO),y)
-	$$(LZOP) -9 -c $$@ > $$@.lzo
-endif
-ifeq ($$(BR2_TARGET_ROOTFS_$(2)_XZ),y)
-	$(XZ) -9 -C crc32 -c $$@ > $$@.xz
+ifneq ($$(ROOTFS_$(2)_COMPRESS_CMD),)
+	$$(ROOTFS_$(2)_COMPRESS_CMD) $$@ > $$@$$(ROOTFS_$(2)_COMPRESS_EXT)
 endif
 
 rootfs-$(1)-show-depends:
