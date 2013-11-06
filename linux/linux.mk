@@ -228,9 +228,9 @@ ifeq ($(BR2_LINUX_KERNEL_APPENDED_UIMAGE),y)
 # of the image. To do so, we first need to retrieve both load
 # address and entry point for the kernel from the already
 # generate uboot image before using mkimage -l.
-LINUX_APPEND_DTB += $(sep) MKIMAGE_ARGS=`$(HOST_DIR)/usr/bin/mkimage -l $(LINUX_IMAGE_PATH) |\
+LINUX_APPEND_DTB += $(sep) MKIMAGE_ARGS=`$(MKIMAGE) -l $(LINUX_IMAGE_PATH) |\
         sed -n -e 's/Image Name:[ ]*\(.*\)/-n \1/p' -e 's/Load Address:/-a/p' -e 's/Entry Point:/-e/p'`; \
-        $(HOST_DIR)/usr/bin/mkimage -A $(KERNEL_ARCH) -O linux \
+        $(MKIMAGE) -A $(MKIMAGE_ARCH) -O linux \
         -T kernel -C none $${MKIMAGE_ARGS} \
         -d $(KERNEL_ARCH_PATH)/boot/zImage $(LINUX_IMAGE_PATH);
 endif
