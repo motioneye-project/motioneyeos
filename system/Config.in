@@ -67,35 +67,6 @@ config BR2_TARGET_GENERIC_PASSWD_METHOD
 	default "sha-512"   if BR2_TARGET_GENERIC_PASSWD_SHA512
 
 choice
-	prompt "/dev management"
-	default BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_DEVTMPFS
-
-config BR2_ROOTFS_DEVICE_CREATION_STATIC
-	bool "Static using device table"
-
-config BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_DEVTMPFS
-	bool "Dynamic using devtmpfs only"
-
-config BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_MDEV
-	bool "Dynamic using mdev"
-	select BR2_PACKAGE_BUSYBOX
-
-config BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_UDEV
-	bool "Dynamic using udev"
-	depends on BR2_LARGEFILE # udev
-	depends on BR2_USE_WCHAR # udev
-	depends on !BR2_PREFER_STATIC_LIB # udev -> kmod
-	select BR2_PACKAGE_UDEV
-
-comment "udev needs a toolchain w/ largefile, wchar"
-	depends on !(BR2_LARGEFILE && BR2_USE_WCHAR)
-
-comment "udev doesn't work with 'prefer static libraries'"
-	depends on BR2_PREFER_STATIC_LIB
-
-endchoice
-
-choice
 	prompt "Init system"
 	default BR2_INIT_BUSYBOX
 
@@ -126,6 +97,35 @@ comment 'systemd needs udev /dev management and a toolchain w/ largefile, wchar,
 
 config BR2_INIT_NONE
 	bool "None"
+
+endchoice
+
+choice
+	prompt "/dev management"
+	default BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_DEVTMPFS
+
+config BR2_ROOTFS_DEVICE_CREATION_STATIC
+	bool "Static using device table"
+
+config BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_DEVTMPFS
+	bool "Dynamic using devtmpfs only"
+
+config BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_MDEV
+	bool "Dynamic using mdev"
+	select BR2_PACKAGE_BUSYBOX
+
+config BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_UDEV
+	bool "Dynamic using udev"
+	depends on BR2_LARGEFILE # udev
+	depends on BR2_USE_WCHAR # udev
+	depends on !BR2_PREFER_STATIC_LIB # udev -> kmod
+	select BR2_PACKAGE_UDEV
+
+comment "udev needs a toolchain w/ largefile, wchar"
+	depends on !(BR2_LARGEFILE && BR2_USE_WCHAR)
+
+comment "udev doesn't work with 'prefer static libraries'"
+	depends on BR2_PREFER_STATIC_LIB
 
 endchoice
 
