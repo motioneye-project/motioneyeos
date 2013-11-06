@@ -10,6 +10,9 @@ NETTLE_DEPENDENCIES = gmp
 NETTLE_INSTALL_STAGING = YES
 NETTLE_LICENSE = LGPLv2.1+
 NETTLE_LICENSE_FILES = COPYING.LIB
+# don't include openssl support for (unused) examples as it has problems
+# with static linking
+NETTLE_CONF_OPT = --disable-openssl
 
 # ARM assembly requires v6+ ISA
 ifeq ($(BR2_arm7tdmi)$(BR2_arm720t)$(BR2_arm920t)$(BR2_arm922t)$(BR2_arm926t)$(BR2_arm10t)$(BR2_fa526)$(BR2_strongarm)$(BR2_xscale)$(BR2_iwmmxt),y)
