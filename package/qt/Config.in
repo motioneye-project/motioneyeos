@@ -365,12 +365,6 @@ comment "WebKit needs shared library/gui/network support"
 	depends on !(BR2_PACKAGE_QT_SHARED && BR2_PACKAGE_QT_GUI_MODULE && BR2_PACKAGE_QT_NETWORK)
 	depends on BR2_PACKAGE_QT_ARCH_SUPPORTS_WEBKIT
 
-config BR2_PACKAGE_QT_JAVASCRIPTCORE
-	bool "JavaScriptCore JIT compiler"
-	help
-	  Build the JavaScriptCore JIT compiler
-	  If unsure, say y
-
 config BR2_PACKAGE_QT_STL
 	bool "STL support"
 	help

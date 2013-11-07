@@ -101,6 +101,24 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2013.11"
 
+config BR2_PACKAGE_QT_JAVASCRIPTCORE
+	bool "qt javascriptcore option removed"
+	select BR2_LEGACY
+	help
+	  The BR2_PACKAGE_QT_JAVASCRIPTCORE option was available to
+	  force the activation or disabling of the JIT compiler in the
+	  Qt Javascript interpreter. However, the JIT compiler is not
+	  available for all architectures, so forcing its activation
+	  does not always work. Moreover, Qt knows by itself for which
+	  architectures JIT support is possible, and will
+	  automatically enable it if possible.
+
+	  Therefore, this option was in fact useless, and causing
+	  build problems when enabled on architectures for which the
+	  JIT support was not available. It has been removed, and
+	  there is no replacement: Qt will enable JIT at compile time
+	  when possible.
+
 config BR2_PACKAGE_MODULE_INIT_TOOLS
 	bool "module-init-tools replaced by kmod"
 	select BR2_PACKAGE_KMOD

@@ -415,12 +415,6 @@ else
 QT_CONFIGURE_OPTS += -no-scripttools
 endif
 
-ifeq ($(BR2_PACKAGE_QT_JAVASCRIPTCORE),y)
-QT_CONFIGURE_OPTS += -javascript-jit
-else
-QT_CONFIGURE_OPTS += -no-javascript-jit
-endif
-
 ifeq ($(BR2_PACKAGE_QT_STL),y)
 QT_CONFIGURE_OPTS += -stl
 else
