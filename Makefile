@@ -426,11 +426,14 @@ ifeq ($(BR2_ROOTFS_SKELETON_CUSTOM),y)
 TARGET_SKELETON=$(BR2_ROOTFS_SKELETON_CUSTOM_PATH)
 endif
 
+RSYNC_VCS_EXCLUSIONS = \
+	--exclude .svn --exclude .git --exclude .hg --exclude .bzr \
+	--exclude CVS
+
 $(BUILD_DIR)/.root:
 	mkdir -p $(TARGET_DIR)
-	rsync -a \
-		--exclude .empty --exclude .svn --exclude .git \
-		--exclude .hg --exclude=CVS --exclude '*~' \
+	rsync -a $(RSYNC_VCS_EXCLUSIONS) \
+		--exclude .empty --exclude '*~' \
 		$(TARGET_SKELETON)/ $(TARGET_DIR)/
 	cp support/misc/target-dir-warning.txt $(TARGET_DIR_WARNING_FILE)
 	@ln -snf lib $(TARGET_DIR)/$(LIB_SYMLINK)
@@ -504,9 +507,8 @@ endif
 
 	@$(foreach d, $(call qstrip,$(BR2_ROOTFS_OVERLAY)), \
 		$(call MESSAGE,"Copying overlay $(d)"); \
-		rsync -a \
-			--exclude .empty --exclude .svn --exclude .git \
-			--exclude .hg --exclude=CVS --exclude '*~' \
+		rsync -a $(RSYNC_VCS_EXCLUSIONS) \
+			--exclude .empty --exclude '*~' \
 			$(d)/ $(TARGET_DIR)$(sep))
 
 	@$(foreach s, $(call qstrip,$(BR2_ROOTFS_POST_BUILD_SCRIPT)), \
