@@ -135,8 +135,7 @@ for most CMake-based packages. However, when required, it is still
 possible to customize what is done in any particular step:
 
 * By adding a post-operation hook (after extract, patch, configure,
-  build or install). See the reference documentation of the generic
-  infrastructure for details.
+  build or install). See xref:hooks[] for details.
 
 * By overriding one of the steps. For example, even if the CMake
   infrastructure is used, if the package +.mk+ file defines its own

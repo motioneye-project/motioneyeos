@@ -1,0 +1,41 @@
+// -*- mode:doc; -*-
+// vim: set syntax=asciidoc:
+
+[[hooks]]
+Hooks available in the various build steps
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The generic infrastructure (and as a result also the derived autotools
+and cmake infrastructures) allow packages to specify hooks.
+These define further actions to perform after existing steps.
+Most hooks aren't really useful for generic packages, since the +.mk+
+file already has full control over the actions performed in each step
+of the package construction.
+
+The following hook points are available:
+
+* +LIBFOO_POST_DOWNLOAD_HOOKS+
+* +LIBFOO_POST_EXTRACT_HOOKS+
+* +LIBFOO_POST_RSYNC_HOOKS+
+* +LIBFOO_PRE_PATCH_HOOKS+
+* +LIBFOO_POST_PATCH_HOOKS+
+* +LIBFOO_PRE_CONFIGURE_HOOKS+
+* +LIBFOO_POST_CONFIGURE_HOOKS+
+* +LIBFOO_POST_BUILD_HOOKS+
+* +LIBFOO_POST_INSTALL_HOOKS+ (for host packages only)
+* +LIBFOO_POST_INSTALL_STAGING_HOOKS+ (for target packages only)
+* +LIBFOO_POST_INSTALL_TARGET_HOOKS+ (for target packages only)
+* +LIBFOO_POST_LEGAL_INFO_HOOKS+
+
+These variables are 'lists' of variable names containing actions to be
+performed at this hook point. This allows several hooks to be
+registered at a given hook point. Here is an example:
+
+----------------------
+define LIBFOO_POST_PATCH_FIXUP
+	action1
+	action2
+endef
+
+LIBFOO_POST_PATCH_HOOKS += LIBFOO_POST_PATCH_FIXUP
+----------------------
