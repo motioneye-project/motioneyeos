@@ -8,8 +8,8 @@ config BR2_PACKAGE_PCMANFM
 	select BR2_PACKAGE_XLIB_LIBX11
 	depends on BR2_PACKAGE_LIBGTK2
 	help
-	  An extremly fast and lightweight file manager which features
-	  tabbed browsing and user-friendly interface.
+	  An extremely fast and lightweight file manager which features
+	  tabbed browsing and a user-friendly interface.
 
 	  http://internap.dl.sourceforge.net/sourceforge/pcmanfm
 
