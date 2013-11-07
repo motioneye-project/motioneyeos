@@ -1,5 +1,6 @@
 config BR2_PACKAGE_OPENPGM
 	bool "openpgm"
+	depends on !BR2_GCC_VERSION_4_2_2_AVR32_2_1_5 # lacks required builtins
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_INET_IPV6
 	depends on BR2_USE_WCHAR
@@ -14,3 +15,4 @@ config BR2_PACKAGE_OPENPGM
 
 comment "openpgm needs a toolchain w/ wchar, threads, IPv6"
 	depends on !(BR2_TOOLCHAIN_HAS_THREADS && BR2_INET_IPV6 && BR2_USE_WCHAR)
+	depends on !BR2_GCC_VERSION_4_2_2_AVR32_2_1_5

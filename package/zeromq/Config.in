@@ -30,6 +30,7 @@ config BR2_PACKAGE_ZEROMQ
 config BR2_PACKAGE_ZEROMQ_PGM
 	bool "PGM/EPGM support"
 	depends on BR2_PACKAGE_ZEROMQ
+	depends on !BR2_GCC_VERSION_4_2_2_AVR32_2_1_5 # openpgm
 	select BR2_PACKAGE_OPENPGM
 	help
 	  Add support for Pragmatic General Multicast protocol (RFC 3208)
