@@ -138,6 +138,7 @@ config BR2_PACKAGE_PHP_EXT_PDO_MYSQL
 	  PDO driver for MySQL
 
 comment "MySQL drivers need a toolchain w/ C++"
+	depends on BR2_USE_MMU
 	depends on !BR2_INSTALL_LIBSTDCPP
 
 config BR2_PACKAGE_PHP_EXT_PDO_SQLITE

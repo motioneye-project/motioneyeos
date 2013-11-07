@@ -9,4 +9,5 @@ config BR2_PACKAGE_LZMA
 	  http://tukaani.org/lzma/
 
 comment "lzma needs a toolchain w/ C++"
-        depends on !BR2_INSTALL_LIBSTDCPP && BR2_DEPRECATED
+	depends on BR2_DEPRECATED
+	depends on !BR2_INSTALL_LIBSTDCPP

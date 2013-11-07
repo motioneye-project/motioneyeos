@@ -1,4 +1,5 @@
 comment "openvpn needs a toolchain w/ IPv6"
+	depends on BR2_USE_MMU
 	depends on !BR2_INET_IPV6
 
 config BR2_PACKAGE_OPENVPN

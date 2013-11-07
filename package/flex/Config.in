@@ -7,11 +7,12 @@ config BR2_PACKAGE_FLEX
 
 	  http://flex.sourceforge.net/
 
+if BR2_PACKAGE_FLEX
+
 config BR2_PACKAGE_FLEX_BINARY
 	bool "Install tool in the target"
 	# needs fork()
 	depends on BR2_USE_MMU
-	depends on BR2_PACKAGE_FLEX
 	# runtime dependency
 	select BR2_PACKAGE_M4
 	depends on BR2_USE_WCHAR # m4
@@ -19,4 +20,7 @@ config BR2_PACKAGE_FLEX_BINARY
 	  Install the flex binary tool in the target filesystem.
 
 comment "flex binary needs a toolchain w/ wchar"
+	depends on BR2_USE_MMU
 	depends on !BR2_USE_WCHAR
+
+endif

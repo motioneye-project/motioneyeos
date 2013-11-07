@@ -11,4 +11,5 @@ config BR2_PACKAGE_LIBFUSE
 	  http://fuse.sourceforge.net/
 
 comment "libfuse needs a toolchain w/ largefile, threads, dynamic library"
-        depends on !BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_THREADS || BR2_PREFER_STATIC_LIB
+	depends on BR2_USE_MMU
+	depends on !BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_THREADS || BR2_PREFER_STATIC_LIB

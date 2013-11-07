@@ -47,4 +47,5 @@ comment "transmission-gtk needs a toolchain w/ locale"
 endif
 
 comment "transmission needs a toolchain w/ IPv6, threads"
+	depends on BR2_USE_MMU
 	depends on !BR2_INET_IPV6 || !BR2_TOOLCHAIN_HAS_THREADS

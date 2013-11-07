@@ -11,4 +11,5 @@ config BR2_PACKAGE_RADVD
 	  http://www.litech.org/radvd/
 
 comment "radvd needs a toolchain w/ IPv6"
+	depends on BR2_USE_MMU
 	depends on !BR2_INET_IPV6

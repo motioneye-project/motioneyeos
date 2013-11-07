@@ -1,4 +1,5 @@
 comment "Qt5 needs a toolchain w/ wchar, IPv6, threads, C++"
+	depends on !BR2_PACKAGE_QT
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR || !BR2_INET_IPV6 || !BR2_TOOLCHAIN_HAS_THREADS
 
 menuconfig BR2_PACKAGE_QT5

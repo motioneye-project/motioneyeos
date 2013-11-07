@@ -16,4 +16,5 @@ config BR2_PACKAGE_CVS_SERVER
 	  Enable cvs server code
 
 comment "cvs needs a toolchain w/ wchar"
+	depends on BR2_USE_MMU
 	depends on !BR2_USE_WCHAR

@@ -28,5 +28,5 @@ config BR2_PACKAGE_LTTNG_BABELTRACE
 	  http://lttng.org
 
 comment "lttng-babeltrace needs a toolchain w/ wchar, threads, largefile"
-	depends on BR2_PACKAGE_LTTNG_TOOLS && \
-		(!BR2_USE_WCHAR || !BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_THREADS)
+	depends on BR2_PACKAGE_LTTNG_TOOLS
+	depends on !BR2_USE_WCHAR || !BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_THREADS

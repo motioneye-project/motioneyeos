@@ -23,4 +23,5 @@ config BR2_PACKAGE_OPROFILE
 	  libraries, and applications.
 
 comment "oprofile needs a toolchain w/ C++"
+	depends on BR2_USE_MMU && !BR2_aarch64
 	depends on !BR2_INSTALL_LIBSTDCPP

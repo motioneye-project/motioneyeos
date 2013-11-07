@@ -11,4 +11,5 @@ config BR2_PACKAGE_CLASSPATH
 	  http://classpath.org
 
 comment "classpath needs a toolchain w/ IPv6"
+	depends on BR2_PACKAGE_JAMVM
 	depends on !BR2_INET_IPV6

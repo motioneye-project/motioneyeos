@@ -14,4 +14,5 @@ config BR2_PACKAGE_NETATALK
 	  http://netatalk.sourceforge.net/
 
 comment "netatalk needs a toolchain w/ threads"
+	depends on BR2_USE_MMU
 	depends on !BR2_TOOLCHAIN_HAS_THREADS

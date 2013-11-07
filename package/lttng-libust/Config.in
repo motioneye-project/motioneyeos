@@ -18,5 +18,5 @@ config BR2_PACKAGE_LTTNG_LIBUST
 	  http://lttng.org
 
 comment "lttng-libust needs a toolchain w/ wchar, largefile, threads"
-	depends on !(BR2_USE_WCHAR || BR2_LARGEFILE)
-	depends on !BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_arm || BR2_armeb || BR2_i386 || BR2_powerpc || BR2_x86_64
+	depends on !BR2_USE_WCHAR || !BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_THREADS

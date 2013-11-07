@@ -20,4 +20,5 @@ config BR2_PACKAGE_BUSTLE
 	  http://www.willthompson.co.uk/bustle/
 
 comment "bustle needs a toolchain w/ wchar, threads"
+	depends on BR2_PACKAGE_DBUS
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS

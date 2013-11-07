@@ -13,4 +13,5 @@ config BR2_PACKAGE_CDRKIT
 	  http://www.cdrkit.org/
 
 comment "cdrkit needs a toolchain w/ largefile"
+	depends on BR2_USE_MMU
 	depends on !BR2_LARGEFILE

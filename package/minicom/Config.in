@@ -12,4 +12,5 @@ config BR2_PACKAGE_MINICOM
 	  http://alioth.debian.org/projects/minicom
 
 comment "minicom needs a toolchain w/ wchar"
+	depends on BR2_USE_MMU
 	depends on !BR2_USE_WCHAR

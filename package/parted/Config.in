@@ -13,4 +13,5 @@ config BR2_PACKAGE_PARTED
 	  http://www.gnu.org/software/parted/
 
 comment "parted needs a toolchain w/ largefile, wchar"
-        depends on !(BR2_LARGEFILE && BR2_USE_WCHAR)
+	depends on BR2_USE_MMU
+	depends on !(BR2_LARGEFILE && BR2_USE_WCHAR)

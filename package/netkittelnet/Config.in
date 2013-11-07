@@ -9,4 +9,5 @@ config BR2_PACKAGE_NETKITTELNET
 	  ftp://ftp.uk.linux.org/pub/linux/Networking/netkit/
 
 comment "netkittelnet needs a toolchain w/ RPC"
+	depends on BR2_DEPRECATED
 	depends on !BR2_TOOLCHAIN_HAS_NATIVE_RPC

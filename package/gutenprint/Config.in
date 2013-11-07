@@ -11,4 +11,5 @@ config BR2_PACKAGE_GUTENPRINT
 	  http://gimp-print.sourceforge.net/
 
 comment "gutenprint needs a toolchain w/ C++"
+	depends on BR2_PACKAGE_CUPS
 	depends on !BR2_INSTALL_LIBSTDCPP

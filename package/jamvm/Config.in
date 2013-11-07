@@ -12,4 +12,6 @@ config BR2_PACKAGE_JAMVM
 	  http://jamvm.sf.net
 
 comment "jamvm needs a toolchain w/ IPv6"
+	depends on BR2_arm || BR2_armeb || BR2_i386 \
+		|| BR2_mipsel || BR2_powerpc || BR2_x86_64
 	depends on !BR2_INET_IPV6

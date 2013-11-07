@@ -24,5 +24,6 @@ config BR2_PACKAGE_LTP_TESTSUITE
 	  http://ltp.sourceforge.net/
 
 comment "ltp-testsuite needs a toolchain w/ IPv6, RPC, largefile, threads"
-	depends on (!BR2_TOOLCHAIN_HAS_THREADS || !BR2_INET_IPV6 || \
-		!BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_NATIVE_RPC) && !BR2_aarch64
+	depends on !BR2_aarch64
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_INET_IPV6 || \
+		!BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_NATIVE_RPC

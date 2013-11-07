@@ -25,4 +25,5 @@ config BR2_PACKAGE_SYSPROF_GUI
 endif
 
 comment "sysprof needs a toolchain w/ wchar, threads"
-        depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_i386 || BR2_x86_64 || BR2_powerpc || BR2_sh4a || BR2_sh4aeb
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS

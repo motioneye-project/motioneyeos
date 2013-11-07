@@ -10,4 +10,5 @@ config BR2_PACKAGE_WVDIAL
 	  http://wvdial.googlecode.com/
 
 comment "wvdial needs a toolchain w/ C++, largefile"
+	depends on BR2_USE_MMU
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_LARGEFILE

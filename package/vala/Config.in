@@ -13,4 +13,5 @@ config BR2_PACKAGE_VALA
 	  http://live.gnome.org/Vala
 
 comment "vala needs a toolchain w/ wchar, threads"
-	depends on BR2_DEPRECATED && (!BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS)
+	depends on BR2_DEPRECATED
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS

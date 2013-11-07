@@ -16,6 +16,7 @@ config BR2_PACKAGE_QUOTA
 	  http://sourceforge.net/projects/linuxquota/
 
 comment "quota needs a toolchain w/ largefile, wchar, threads"
+	depends on BR2_USE_MMU && !(BR2_microblazeel || BR2_microblazebe)
 	depends on !BR2_LARGEFILE || \
 		!BR2_USE_WCHAR || \
 		!(BR2_TOOLCHAIN_HAS_THREADS || BR2_TOOLCHAIN_HAS_NATIVE_RPC)

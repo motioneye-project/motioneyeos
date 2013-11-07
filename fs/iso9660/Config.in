@@ -13,4 +13,5 @@ config BR2_TARGET_ROOTFS_ISO9660_BOOT_MENU
 	default "fs/iso9660/menu.lst"
 
 comment "iso image requires a Linux kernel to be built"
-	depends on (BR2_i386 || BR2_x86_64) && !BR2_LINUX_KERNEL
+	depends on BR2_i386 || BR2_x86_64
+	depends on !BR2_LINUX_KERNEL

@@ -8,4 +8,5 @@ config BR2_PACKAGE_SQUASHFS3
 	  http://squashfs.sourceforge.net/
 
 comment "squashfs3 needs a toolchain w/ largefile"
-	depends on BR2_DEPRECATED && !BR2_LARGEFILE
+	depends on BR2_DEPRECATED
+	depends on !BR2_LARGEFILE

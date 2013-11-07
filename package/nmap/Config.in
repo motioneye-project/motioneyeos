@@ -13,4 +13,5 @@ config BR2_PACKAGE_NMAP
 	  http://nmap.org
 
 comment "nmap needs a toolchain w/ C++, IPv6, threads"
+	depends on BR2_USE_MMU
 	depends on !(BR2_INSTALL_LIBSTDCPP && BR2_INET_IPV6 && BR2_TOOLCHAIN_HAS_THREADS)

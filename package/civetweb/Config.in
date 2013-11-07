@@ -24,4 +24,5 @@ comment "Lua support needs a toolchain w/ largefile"
 endif
 
 comment "civetweb needs a toolchain w/ threads"
+	depends on BR2_USE_MMU
 	depends on !BR2_TOOLCHAIN_HAS_THREADS

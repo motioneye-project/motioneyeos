@@ -17,4 +17,5 @@ config BR2_PACKAGE_GVFS
 	  http://en.wikipedia.org/wiki/GVFS
 
 comment "gvfs needs a toolchain w/ largefile, wchar, threads"
+	depends on BR2_USE_MMU
 	depends on !BR2_LARGEFILE || !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS

@@ -11,4 +11,5 @@ config BR2_PACKAGE_DMRAID
 	  respective mappings for the ATARAID sets discovered.
 
 comment "dmraid needs a toolchain w/ largefile"
+	depends on BR2_USE_MMU
 	depends on !BR2_LARGEFILE

@@ -15,7 +15,7 @@ config BR2_PACKAGE_QUAGGA_ZEBRA
 	  Build zebra daemon.
 
 comment "zebra daemon needs a toolchain w/ IPv6"
-	depends on BR2_PACKAGE_QUAGGA && !BR2_INET_IPV6
+	depends on !BR2_INET_IPV6
 
 config BR2_PACKAGE_QUAGGA_TCP_ZEBRA
 	bool "Use TCP sockets between zebra and protocol daemons"

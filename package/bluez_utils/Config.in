@@ -39,4 +39,5 @@ config BR2_PACKAGE_BLUEZ_UTILS_USB
 endif
 
 comment "bluez-utils needs a toolchain w/ wchar, threads"
+	depends on !BR2_avr32 && BR2_USE_MMU
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
