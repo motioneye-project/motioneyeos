@@ -123,6 +123,7 @@ config BR2_PACKAGE_MODULE_INIT_TOOLS
 	bool "module-init-tools replaced by kmod"
 	select BR2_PACKAGE_KMOD
 	select BR2_PACKAGE_KMOD_TOOLS
+	select BR2_LEGACY
 	help
 	  The 'module-init-tools' package has been removed, since it
 	  has been depracated upstream and replaced by 'kmod'.
