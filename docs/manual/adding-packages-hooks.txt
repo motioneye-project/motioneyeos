@@ -39,3 +39,23 @@ endef
 
 LIBFOO_POST_PATCH_HOOKS += LIBFOO_POST_PATCH_FIXUP
 ----------------------
+
+Using the +POST_RSYNC+ hook
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The +POST_RSYNC+ hook is run only for packages that use a local source,
+either through the +local+ site method or the +OVERRIDE_SRCDIR+
+mechanism. In this case, package sources are copied using +rsync+ from
+the local location into the buildroot build directory. The +rsync+
+command does not copy all files from the source directory, though.
+Files belonging to a version control system, like the directories
++.git+, +.hg+, etc. are not copied. For most packages this is
+sufficient, but a given package can perform additional actions using
+the +POST_RSYNC+ hook.
+
+In principle, the hook can contain any command you want. One specific
+use case, though, is the intentional copying of the version control
+directory using +rsync+. The +rsync+ command you use in the hook can, among
+others, use the following variables:
+
+* +$(SRCDIR)+: the path to the overridden source directory
+* +$(@D)+: the path to the build directory
