@@ -1,0 +1,40 @@
+From aa67771881d65373da448ad5f7a8393f3a1d9469 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Timo=20Ter=C3=A4s?= <timo.teras@iki.fi>
+Date: Wed, 30 Jun 2010 14:46:37 +0300
+Subject: [PATCH] more workarounds for GCC PR32219
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Commit 2e53dd645d5348f207cec7f8595969dc566c5a55 workarounds GCC
+bug when accessing _locale_init and _stdio_init. We need the same
+fix for __errno_location and __h_errno_location otherwise we crash
+calling null with static and non-threaded builds.
+
+Signed-off-by: Timo Teräs <timo.teras@iki.fi>
+Signed-off-by: Bernhard Reutner-Fischer <rep.dot.nop@gmail.com>
+---
+ libc/misc/internals/__uClibc_main.c |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/libc/misc/internals/__uClibc_main.c b/libc/misc/internals/__uClibc_main.c
+index 3f09ad2..58f6643 100644
+--- a/libc/misc/internals/__uClibc_main.c
++++ b/libc/misc/internals/__uClibc_main.c
+@@ -447,11 +447,11 @@ void __uClibc_main(int (*main)(int, char **, char **), int argc,
+      * have resulted in errno being set nonzero, so set it to 0 before
+      * we call main.
+      */
+-    if (likely(__errno_location!=NULL))
++    if (likely(not_null_ptr(__errno_location)))
+ 	*(__errno_location()) = 0;
+ 
+     /* Set h_errno to 0 as well */
+-    if (likely(__h_errno_location!=NULL))
++    if (likely(not_null_ptr(__h_errno_location)))
+ 	*(__h_errno_location()) = 0;
+ 
+ #if defined HAVE_CLEANUP_JMP_BUF && defined __UCLIBC_HAS_THREADS_NATIVE__
+-- 
+1.7.1
+
