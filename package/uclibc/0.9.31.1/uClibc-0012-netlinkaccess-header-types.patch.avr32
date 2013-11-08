@@ -1,0 +1,35 @@
+Using kernel headers newer than 3.6.x, uclibc 0.9.31.1 fails to build:
+
+  In file included from output/host/usr/avr32-buildroot-linux-uclibc/sysroot/usr/include/linux/rtnetlink.h:6,
+                 from libc/inet/netlinkaccess.h:34,
+                 from libc/inet/if_index.c:36:
+  output/host/usr/avr32-buildroot-linux-uclibc/sysroot/usr/include/linux/if_link.h:314: error: expected specifier-qualifier-list before '__be16'
+  make[1]: *** [libc/inet/if_index.os] Error 1
+  make[1]: Leaving directory `output/build/uclibc-0.9.31.1'
+  make: *** [output/build/uclibc-0.9.31.1/.stamp_built] Error 2
+
+This patch adjusts the system type definitions in the netlinkaccess.h
+header, updating the types to match those used in uClibc 0.9.33.2.
+
+Signed-off-by: Simon Dawson <spdawson@gmail.com>
+
+diff -Nurp a/libc/inet/netlinkaccess.h b/libc/inet/netlinkaccess.h
+--- a/libc/inet/netlinkaccess.h	2011-06-08 19:58:40.000000000 +0100
++++ b/libc/inet/netlinkaccess.h	2012-12-20 12:16:34.251965672 +0000
+@@ -22,15 +22,8 @@
+ #include <features.h>
+ #include <stdint.h>
+ #include <unistd.h>
+-#include <sys/types.h>
+-
+ #if defined __ASSUME_NETLINK_SUPPORT || defined __UCLIBC_USE_NETLINK__
+-#define _LINUX_TYPES_H
+-typedef uint8_t __u8;
+-typedef uint16_t __u16;
+-typedef uint32_t __u32;
+-typedef uint64_t __u64;
+-typedef int32_t __s32;
++#include <asm/types.h>
+ #include <linux/rtnetlink.h>
+ #include <linux/netlink.h>
+ 
