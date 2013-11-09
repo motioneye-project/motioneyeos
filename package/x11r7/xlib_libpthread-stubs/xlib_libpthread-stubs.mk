@@ -12,5 +12,9 @@ XLIB_LIBPTHREAD_STUBS_LICENSE_FILES = COPYING
 
 XLIB_LIBPTHREAD_STUBS_INSTALL_STAGING = YES
 
+ifeq ($(BR2_PREFER_STATIC_LIB),y)
+XLIB_LIBPTHREAD_STUBS_CONF_ENV += LDFLAGS="$(TARGET_LDFLAGS) -pthread"
+endif
+
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
