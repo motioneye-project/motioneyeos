@@ -17,11 +17,11 @@ How to build it
 Configure Buildroot
 -------------------
 
-The rpi_defconfig configuration is a minimal configuration with all that
-is required to bring the Raspberry Pi. You should base your work on this
-defconfig:
+The raspberrypi_defconfig configuration is a minimal configuration with
+all that is required to bring the Raspberry Pi. You should base your
+work on this defconfig:
 
-  $ make rpi_defconfig
+  $ make raspberrypi_defconfig
 
 If you want to use a persistent rootfs, skip to "Build the rootfs", below.
 
