@@ -548,7 +548,7 @@ target-generatelocales: host-localedef
 		I18NPATH=$(STAGING_DIR)/usr/share/i18n:/usr/share/i18n \
 		$(HOST_DIR)/usr/bin/localedef \
 			--prefix=$(TARGET_DIR) \
-			--`echo $(BR2_ENDIAN) | tr [A-Z] [a-z]`-endian \
+			--$(call LOWERCASE,$(BR2_ENDIAN))-endian \
 			-i $${inputfile} -f $${charmap} \
 			$${locale} ; \
 	done
