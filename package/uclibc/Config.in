@@ -230,9 +230,9 @@ config BR2_UCLIBC_MIPS_ISA
 	default 2 if BR2_mips_2
 	default 3 if BR2_mips_3
 	default 4 if BR2_mips_4
-	default mips32 if BR2_mips_32
-	default mips32r2 if BR2_mips_32r2
-	default mips64 if BR2_mips_64
+	default MIPS32 if BR2_mips_32
+	default MIPS32R2 if BR2_mips_32r2
+	default MIPS64 if BR2_mips_64
 
 config BR2_UCLIBC_SH_TYPE
 	string
