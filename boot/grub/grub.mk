@@ -46,6 +46,19 @@ GRUB_CONFIG-$(BR2_TARGET_GRUB_undi) += --enable-undi
 GRUB_CONFIG-$(BR2_TARGET_GRUB_via_rhine) += --enable-via-rhine
 GRUB_CONFIG-$(BR2_TARGET_GRUB_w89c840) += --enable-w89c840
 
+GRUB_POSSIBLE_FILESYSTEMS = ext2fs fat ffs ufs2 minix \
+	reiserfs vstafs jfs xfs iso9660
+GRUB_SELECTED_FILESYSTEMS = $(call qstrip,$(BR2_TARGET_GRUB_FS_SUPPORT))
+
+# Calculate the list of stage 1.5 files to install. They are prefixed
+# by the filesystem name, except for ext2fs, where the stage 1.5 is
+# prefixed by e2fs.
+GRUB_STAGE_1_5_TO_INSTALL = $(subst ext2fs,e2fs,$(GRUB_SELECTED_FILESYSTEMS))
+
+GRUB_CONFIG-y = \
+	$(foreach fs,$(GRUB_POSSIBLE_FILESYSTEMS),\
+		$(if $(filter $(fs),$(GRUB_SELECTED_FILESYSTEMS)),--enable-$(fs),--disable-$(fs)))
+
 define GRUB_DEBIAN_PATCHES
 	# Apply the patches from the Debian patch
 	(cd $(@D) ; for f in `cat debian/patches/00list | grep -v ^#` ; do \
@@ -79,7 +92,9 @@ define GRUB_INSTALL_TARGET_CMDS
 	install -m 0755 -D $(@D)/grub/grub $(HOST_DIR)/sbin/grub
 	mkdir -p $(TARGET_DIR)/boot/grub
 	cp $(@D)/stage1/stage1 $(TARGET_DIR)/boot/grub
-	cp $(@D)/stage2/*1_5   $(TARGET_DIR)/boot/grub
+	for f in $(GRUB_STAGE_1_5_TO_INSTALL) ; do \
+		cp $(@D)/stage2/$${f}_stage1_5 $(TARGET_DIR)/boot/grub ; \
+	done
 	cp $(@D)/stage2/stage2 $(TARGET_DIR)/boot/grub
 	cp boot/grub/menu.lst $(TARGET_DIR)/boot/grub
 	$(GRUB_INSTALL_SPLASH)

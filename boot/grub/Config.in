@@ -15,6 +15,14 @@ config BR2_TARGET_GRUB_SPLASH
 	  A splashimage is a 14-color indexed .xpm picture which
 	  is displayed as background for the grub menu.
 
+config BR2_TARGET_GRUB_FS_SUPPORT
+	string "Filesystem to support"
+	default "ext2fs fat"
+	help
+	  Space separated list of filesystems to support. Possible
+	  values are ext2fs, fat, ffs, ufs2, minix, reiserfs, vstafs,
+	  jfs, xfs and iso9660.
+
 config BR2_TARGET_GRUB_DISKLESS
 	bool "diskless support"
 	help
