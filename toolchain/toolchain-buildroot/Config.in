@@ -16,7 +16,7 @@ config BR2_TOOLCHAIN_BUILDROOT_UCLIBC
 	  http://uclibc.org
 
 config BR2_TOOLCHAIN_BUILDROOT_EGLIBC
-	bool "eglibc (experimental)"
+	bool "eglibc"
 	depends on BR2_arm    || BR2_armeb    || BR2_aarch64 || \
 		   BR2_i386   || BR2_mips     || BR2_mipsel  || \
 		   BR2_mips64 || BR2_mips64el || BR2_powerpc || \
@@ -36,7 +36,7 @@ config BR2_TOOLCHAIN_BUILDROOT_EGLIBC
 	  http://eglibc.org
 
 config BR2_TOOLCHAIN_BUILDROOT_GLIBC
-	bool "glibc (experimental)"
+	bool "glibc"
 	depends on BR2_arm    || BR2_armeb    || BR2_aarch64 || \
 		   BR2_i386   || BR2_mips     || BR2_mipsel  || \
 		   BR2_mips64 || BR2_mips64el || BR2_powerpc || \
