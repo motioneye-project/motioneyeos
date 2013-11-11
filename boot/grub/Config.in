@@ -5,6 +5,36 @@ config BR2_TARGET_GRUB
 	help
 	  The GRand Unified Bootloader for x86 systems.
 
+	  Some notes on creating a disk image with Grub installed:
+	    1. Create an empty disk image
+	       dd if=/dev/zero of=disk.img bs=1M count=32
+	    2. Create one primary partition
+	       cfdisk -h 16 -s 63 disk.img
+	    3. Set up a loop device
+	       sudo losetup -f disk.img
+	    4. Set up loop devices per partitions
+	       sudo partx -a /dev/loop0
+	    5. Create the ext2 filesystem
+	       sudo mkfs.ext2 -L root /dev/loop0p1
+	    6. Mount the filesystem
+	       mount /dev/loop0p1 /mnt
+	    7. Extract the root filesystem
+	       sudo tar -C /mnt -xf output/images/rootfs.tar
+	    8. Unmount the filesystem, clean up loop device
+	       sudo umount /mnt
+	       sudo partx -d /dev/loop0
+	       sudo losetup -d /dev/loop0
+	    9. Install grub
+	       output/host/sbin/grub --device-map=/dev/null
+	       and in the grub shell, enter:
+		device (hd0) disk.img
+		geometry (hd0) <cylinders> 16 63
+		root (hd0,0)
+		setup (hd0)
+	    10. Image is ready
+		Can be tested in Qemu, with:
+		  qemu-system-{i386,x86-64} -hda disk.img
+
 if BR2_TARGET_GRUB
 
 config BR2_TARGET_GRUB_SPLASH
