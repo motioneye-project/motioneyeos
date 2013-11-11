@@ -33,7 +33,7 @@ Mandatory packages
 ** +patch+
 ** +gzip+
 ** +bzip2+
-** +perl+
+** +perl+ (version 5.8.7 or any later)
 ** +tar+
 ** +cpio+
 ** +python+ (version 2.6 or 2.7)
