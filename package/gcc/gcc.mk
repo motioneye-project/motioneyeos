@@ -49,7 +49,9 @@ endif
 endif
 
 define HOST_GCC_APPLY_PATCHES
-	support/scripts/apply-patches.sh $(@D) package/gcc/$(GCC_VERSION) \*.patch
+	if test -d package/gcc/$(GCC_VERSION); then \
+	  support/scripts/apply-patches.sh $(@D) package/gcc/$(GCC_VERSION) \*.patch ; \
+	fi;
 	$(HOST_GCC_APPLY_POWERPC_PATCH)
 endef
 
