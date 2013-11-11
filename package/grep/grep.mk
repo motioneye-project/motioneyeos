@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-GREP_VERSION = 2.14
+GREP_VERSION = 2.15
 GREP_SITE = $(BR2_GNU_MIRROR)/grep
 GREP_SOURCE = grep-$(GREP_VERSION).tar.xz
 GREP_LICENSE = GPLv3+
