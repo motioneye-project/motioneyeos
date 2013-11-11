@@ -1,9 +1,9 @@
 config BR2_PACKAGE_INTLTOOL
-       bool "intltool"
-       # Hide from configuration as we only support the host package
-       # for the moment
-       depends on BR2_HOST_ONLY
-       help
-         Utility scripts for internationalizing XML
+	bool "intltool"
+	# Hide from configuration as we only support the host package
+	# for the moment
+	depends on BR2_HOST_ONLY
+	help
+	  Utility scripts for internationalizing XML
 
-	 http://www.freedesktop.org/wiki/Software/intltool
+	  http://www.freedesktop.org/wiki/Software/intltool

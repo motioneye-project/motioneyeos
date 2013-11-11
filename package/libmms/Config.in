@@ -4,11 +4,11 @@ config BR2_PACKAGE_LIBMMS
 	depends on BR2_TOOLCHAIN_HAS_THREADS # glib2
 	select BR2_PACKAGE_LIBGLIB2
 	help
-          LibMMS is a common library for parsing mms:// and mmsh://
-          type network streams. These are commonly used to stream
-          Windows Media Video content over the web. LibMMS itself is
-          only for receiving MMS stream, it doesn't handle sending at
-          all.
+	  LibMMS is a common library for parsing mms:// and mmsh://
+	  type network streams. These are commonly used to stream
+	  Windows Media Video content over the web. LibMMS itself is
+	  only for receiving MMS stream, it doesn't handle sending at
+	  all.
 
 	  http://launchpad.net/libmms
 

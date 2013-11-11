@@ -60,4 +60,4 @@ comment "v4l2-dbg needs a toolchain w/ C++"
 endif
 
 comment "libv4l needs a toolchain w/ largefile, threads"
-        depends on !BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_THREADS

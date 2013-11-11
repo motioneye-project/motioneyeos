@@ -12,16 +12,16 @@ if BR2_PACKAGE_PHP
 source "package/php/Config.ext"
 
 config BR2_PACKAGE_PHP_CLI
-       bool
+	bool
 
 config BR2_PACKAGE_PHP_CGI
-       bool
+	bool
 
 choice
-        prompt "Interface"
-        default BR2_PACKAGE_PHP_SAPI_CGI
-        help
-          Select the PHP interface(s).
+	prompt "Interface"
+	default BR2_PACKAGE_PHP_SAPI_CGI
+	help
+	  Select the PHP interface(s).
 
 config BR2_PACKAGE_PHP_SAPI_CGI
 	bool "CGI"
@@ -32,13 +32,13 @@ config BR2_PACKAGE_PHP_SAPI_CGI
 	  Common Gateway Interface
 
 config BR2_PACKAGE_PHP_SAPI_CLI
-        bool "CLI"
+	bool "CLI"
 	select BR2_PACKAGE_PHP_CLI
-        help
-          Command Line Interface
+	help
+	  Command Line Interface
 
 config BR2_PACKAGE_PHP_SAPI_CLI_CGI
-        bool "CGI and CLI"
+	bool "CGI and CLI"
 	# CGI uses fork()
 	depends on BR2_USE_MMU
 	select BR2_PACKAGE_PHP_CLI

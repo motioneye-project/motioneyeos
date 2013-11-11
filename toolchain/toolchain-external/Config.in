@@ -478,14 +478,14 @@ config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_SH201209
 	  from Mentor Graphics. It uses gcc 4.7.2, binutils 2.23.51,
 	  glibc 2.16, uClibc 0.9.30, gdb 7.4.50 and kernel headers
 	  3.5.4. It has support for the following variants:
-            - SH4A, glibc, little endian
-              Default.
-            - SH4A, glibc, big endian
-              Add -mb to BR2_TARGET_OPTIMIZATION
-            - SH4A, uClibc, little endian
-              Not usable in Buildroot yet.
-            - SH4A, uClibc, big endian
-              Not usable in Buildroot yet.
+	    - SH4A, glibc, little endian
+	      Default.
+	    - SH4A, glibc, big endian
+	      Add -mb to BR2_TARGET_OPTIMIZATION
+	    - SH4A, uClibc, little endian
+	      Not usable in Buildroot yet.
+	    - SH4A, uClibc, big endian
+	      Not usable in Buildroot yet.
 
 config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_SH201203
 	bool "Sourcery CodeBench SH 2012.03"
@@ -499,14 +499,14 @@ config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_SH201203
 	  from Mentor Graphics. It uses gcc 4.6.3, binutils 2.21.53,
 	  glibc 2.15, uClibc 0.9.30, gdb 7.2.50 and kernel headers
 	  3.2.10. It has support for the following variants:
-            - SH4A, glibc, little endian
-              Default.
-            - SH4A, glibc, big endian
-              Add -mb to BR2_TARGET_OPTIMIZATION
-            - SH4A, uClibc, little endian
-              Not usable in Buildroot yet.
-            - SH4A, uClibc, big endian
-              Not usable in Buildroot yet.
+	    - SH4A, glibc, little endian
+	      Default.
+	    - SH4A, glibc, big endian
+	      Add -mb to BR2_TARGET_OPTIMIZATION
+	    - SH4A, uClibc, little endian
+	      Not usable in Buildroot yet.
+	    - SH4A, uClibc, big endian
+	      Not usable in Buildroot yet.
 
 config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_SH201103
 	bool "Sourcery CodeBench SH 2011.03"
@@ -993,28 +993,28 @@ config BR2_TOOLCHAIN_EXTERNAL_GDB_SERVER_COPY
 # always installed. When a different binary format is used, we offer the option
 # of installing the FDPIC shared libraries.
 config BR2_BFIN_INSTALL_FDPIC_SHARED
-       bool "Install FDPIC shared libraries"
-       depends on BR2_bfin && !BR2_BINFMT_FDPIC
-       help
-         The Linux kernel supports running both FDPIC and FLAT applications
-         concurrently if the binary format specific libraries are installed
-         properly. This option allows developer to install FDPIC libraries
-         into a buildroot rootfs image built with binary format that is not
-         FDPIC.
+	bool "Install FDPIC shared libraries"
+	depends on BR2_bfin && !BR2_BINFMT_FDPIC
+	help
+	  The Linux kernel supports running both FDPIC and FLAT applications
+	  concurrently if the binary format specific libraries are installed
+	  properly. This option allows developer to install FDPIC libraries
+	  into a buildroot rootfs image built with binary format that is not
+	  FDPIC.
 
 # When the FLAT shared binary format is used, we force the installation
 # of the corresponding libraries. When a different binary format is
 # used, we offer the option of installing the FLAT shared libraries.
 config BR2_BFIN_INSTALL_FLAT_SHARED
-       bool "Install FLAT shared libraries" if !BR2_BINFMT_FLAT_SHARED
-       depends on BR2_bfin
-       default y if BR2_BINFMT_FLAT_SHARED
-       help
-         The Linux kernel supports running both FDPIC and FLAT applications
-         concurrently if the binary format specific libraries are installed
-         properly. This option allows developer to install FLAT libraries
-         into a buildroot rootfs image built with binary format that is not
-         shared FLAT.
+	bool "Install FLAT shared libraries" if !BR2_BINFMT_FLAT_SHARED
+	depends on BR2_bfin
+	default y if BR2_BINFMT_FLAT_SHARED
+	help
+	  The Linux kernel supports running both FDPIC and FLAT applications
+	  concurrently if the binary format specific libraries are installed
+	  properly. This option allows developer to install FLAT libraries
+	  into a buildroot rootfs image built with binary format that is not
+	  shared FLAT.
 
 endif # BR2_TOOLCHAIN_EXTERNAL
 

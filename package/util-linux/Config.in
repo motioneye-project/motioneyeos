@@ -154,7 +154,7 @@ config BR2_PACKAGE_UTIL_LINUX_UTMPDUMP
 config BR2_PACKAGE_UTIL_LINUX_UUIDD
 	bool "uuidd"
 	help
-	 UUID generation daemon
+	  UUID generation daemon
 
 config BR2_PACKAGE_UTIL_LINUX_WALL
 	bool "wall"

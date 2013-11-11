@@ -1,7 +1,7 @@
 config BR2_PACKAGE_CRAMFS
-       bool "cramfs"
-       help
-         cramfs is a compressed read-only filesystem. This package
-         contains the tools to generate and check a cramfs filesystem.
+	bool "cramfs"
+	help
+	  cramfs is a compressed read-only filesystem. This package
+	  contains the tools to generate and check a cramfs filesystem.
 
-	 http://sourceforge.net/projects/cramfs/
+	  http://sourceforge.net/projects/cramfs/

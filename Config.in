@@ -410,7 +410,7 @@ config BR2_ENABLE_SSP
 	  -fstack-protector-all option.
 
 	  See http://www.linuxfromscratch.org/hints/downloads/files/ssp.txt
-          for details.
+	  for details.
 
 	  Note that this requires the toolchain to have SSP
 	  support. This is always the case for glibc and eglibc

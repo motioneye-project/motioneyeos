@@ -11,29 +11,29 @@ config BR2_PACKAGE_SQUASHFS
 if BR2_PACKAGE_SQUASHFS
 
 config BR2_PACKAGE_SQUASHFS_GZIP
-       bool "gzip support"
-       default y
-       select BR2_PACKAGE_ZLIB
-       help
-         Support GZIP compression algorithm
+	bool "gzip support"
+	default y
+	select BR2_PACKAGE_ZLIB
+	help
+	  Support GZIP compression algorithm
 
 config BR2_PACKAGE_SQUASHFS_LZMA
-       bool "lzma support"
-       select BR2_PACKAGE_XZ
-       help
-         Support LZMA compression algorithm
+	bool "lzma support"
+	select BR2_PACKAGE_XZ
+	help
+	  Support LZMA compression algorithm
 
 config BR2_PACKAGE_SQUASHFS_LZO
-       bool "lzo support"
-       select BR2_PACKAGE_LZO
-       help
-         Support LZO compression algorithm
+	bool "lzo support"
+	select BR2_PACKAGE_LZO
+	help
+	  Support LZO compression algorithm
 
 config BR2_PACKAGE_SQUASHFS_XZ
-       bool "xz support"
-       select BR2_PACKAGE_XZ
-       help
-         Support XZ compression algorithm
+	bool "xz support"
+	select BR2_PACKAGE_XZ
+	help
+	  Support XZ compression algorithm
 
 endif
 

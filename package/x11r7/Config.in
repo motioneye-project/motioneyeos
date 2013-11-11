@@ -263,4 +263,4 @@ if BR2_PACKAGE_XORG7
 endif
 
 comment "X.org needs a toolchain w/ wchar, threads"
-        depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS

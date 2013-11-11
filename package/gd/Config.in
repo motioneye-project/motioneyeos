@@ -15,47 +15,47 @@ if BR2_PACKAGE_GD
 menu "gd tools"
 
 config BR2_PACKAGE_GD_ANNOTATE
-       bool "annotate"
+	bool "annotate"
 
 config BR2_PACKAGE_GD_BDFTOGD
-       bool "bdftogd"
-       depends on BR2_PACKAGE_PERL
+	bool "bdftogd"
+	depends on BR2_PACKAGE_PERL
 
 config BR2_PACKAGE_GD_GD2COPYPAL
-       bool "gd2copypal"
+	bool "gd2copypal"
 
 config BR2_PACKAGE_GD_GD2TOGIF
-       bool "gd2togif"
+	bool "gd2togif"
 
 config BR2_PACKAGE_GD_GD2TOPNG
-       bool "gd2topng"
-       select BR2_PACKAGE_LIBPNG
+	bool "gd2topng"
+	select BR2_PACKAGE_LIBPNG
 
 config BR2_PACKAGE_GD_GDCMPGIF
-       bool "gdcmpgif"
+	bool "gdcmpgif"
 
 config BR2_PACKAGE_GD_GDPARTTOPNG
-       bool "gdparttopng"
-       select BR2_PACKAGE_LIBPNG
+	bool "gdparttopng"
+	select BR2_PACKAGE_LIBPNG
 
 config BR2_PACKAGE_GD_GDTOPNG
-       bool "gdtopng"
-       select BR2_PACKAGE_LIBPNG
+	bool "gdtopng"
+	select BR2_PACKAGE_LIBPNG
 
 config BR2_PACKAGE_GD_GIFTOGD2
-       bool "giftogd2"
+	bool "giftogd2"
 
 config BR2_PACKAGE_GD_PNGTOGD
-       bool "pngtogd"
-       select BR2_PACKAGE_LIBPNG
+	bool "pngtogd"
+	select BR2_PACKAGE_LIBPNG
 
 config BR2_PACKAGE_GD_PNGTOGD2
-       bool "pngtogd2"
-       select BR2_PACKAGE_LIBPNG
+	bool "pngtogd2"
+	select BR2_PACKAGE_LIBPNG
 
 config BR2_PACKAGE_GD_WEBPNG
-       bool "webpng"
-       select BR2_PACKAGE_LIBPNG
+	bool "webpng"
+	select BR2_PACKAGE_LIBPNG
 
 endmenu
 

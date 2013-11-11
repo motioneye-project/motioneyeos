@@ -81,5 +81,5 @@ if !BR2_PACKAGE_BUSYBOX # kconfig doesn't support else
 # add dummy config so the stuff with busybox alternatives are shown
 # when busybox is disabled
 config BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
-       default y
+	default y
 endif

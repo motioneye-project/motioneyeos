@@ -43,16 +43,16 @@ choice
 	  Select which bootstream to generate
 
 config BR2_TARGET_MXS_BOOTLETS_BAREBOX
-       depends on BR2_TARGET_BAREBOX
-       bool "Barebox Bootloader"
+	depends on BR2_TARGET_BAREBOX
+	bool "Barebox Bootloader"
 
 config BR2_TARGET_MXS_BOOTLETS_LINUX
-       depends on BR2_LINUX_KERNEL
-       bool "Linux Kernel"
+	depends on BR2_LINUX_KERNEL
+	bool "Linux Kernel"
 
 config BR2_TARGET_MXS_BOOTLETS_UBOOT
-       depends on BR2_TARGET_UBOOT
-       bool "U-boot bootloader"
+	depends on BR2_TARGET_UBOOT
+	bool "U-boot bootloader"
 
 endchoice
 
@@ -82,9 +82,9 @@ config BR2_TARGET_MXS_BOOTLETS_CUSTOM_BOARD
 endchoice
 
 config BR2_TARGET_MXS_BOOTLETS_CUSTOM_BOARD_NAME
-       string "Custom board name"
-       depends on BR2_TARGET_MXS_BOOTLETS_CUSTOM_BOARD
-       help
-         Name of the board to build the bootlets for
+	string "Custom board name"
+	depends on BR2_TARGET_MXS_BOOTLETS_CUSTOM_BOARD
+	help
+	  Name of the board to build the bootlets for
 
 endif

@@ -8,7 +8,7 @@ config BR2_PACKAGE_LIBEXOSIP2
 	  This protocol is mainly to be used by VoIP telephony
 	  applications (endpoints or conference server) but might be
 	  also usefull for any application that wish to establish
-	  sessions like multiplayer games. 
+	  sessions like multiplayer games.
 	  eXosip is based in libosip.
 
 	  http://savannah.nongnu.org/projects/exosip/

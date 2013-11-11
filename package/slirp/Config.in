@@ -6,12 +6,12 @@ config BR2_PACKAGE_SLIRP
 	  The Spice project deals with both the virtualized devices
 	  and the front-end. Interaction between front-end and
 	  back-end is done using VD-Interfaces.
-	  
+
 	  This package implements the slirp-part for Spice.
 	  Slirp emulates a PPP or SLIP connection over a normal terminal.
-	  
+
 	  http://www.spice-space.org/
-	  
+
 	  NOTE:
 	  This package has some history of a unique kind:
 	    - originally developped as 'slirp' by Danny Gasparovski, and

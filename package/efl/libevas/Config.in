@@ -142,10 +142,10 @@ config BR2_PACKAGE_LIBEVAS_GL
 	select BR2_PACKAGE_LIBEET
 
 config BR2_PACKAGE_LIBEVAS_GLES_SGX
-       bool "OpenGL-ES SGX"
+	bool "OpenGL-ES SGX"
 
 config BR2_PACKAGE_LIBEVAS_GLES_S3C6410
-       bool "OpenGL-ES S3C6410"
+	bool "OpenGL-ES S3C6410"
 endchoice
 
 

@@ -3,12 +3,12 @@ config BR2_PACKAGE_LIBSECCOMP
 	depends on BR2_i386 || BR2_x86_64
 	help
 	  High level interface to the Linux Kernel's seccomp filter
-	  
+
 	  The libseccomp library provides an easy to use, platform independent,
 	  interface to the Linux Kernel's syscall filtering mechanism: seccomp.
 	  The libseccomp API is designed to abstract away the underlying BPF
 	  based syscall filter language and present a more conventional
 	  function-call based filtering interface that should be familiar to,
 	  and easily adopted by application developers.
-	  
+
 	  http://sourceforge.net/projects/libseccomp/

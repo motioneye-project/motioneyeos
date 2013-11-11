@@ -1,8 +1,8 @@
 config BR2_PACKAGE_DIVINE
-       bool "directfb virtual input extension"
-       depends on BR2_PACKAGE_DIRECTFB
-       help
-         DiVine provides a DirectFB input driver that reads input
-         events from a pipe and dispatches them via a virtual input
-         device. It also installs the tool 'spooky' that allows to
-         send input events to DirectFB applications.
+	bool "directfb virtual input extension"
+	depends on BR2_PACKAGE_DIRECTFB
+	help
+	  DiVine provides a DirectFB input driver that reads input
+	  events from a pipe and dispatches them via a virtual input
+	  device. It also installs the tool 'spooky' that allows to
+	  send input events to DirectFB applications.

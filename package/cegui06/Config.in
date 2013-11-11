@@ -15,5 +15,5 @@ config BR2_PACKAGE_CEGUI06
 	  orientated, written in C++, and targeted at games developers who
 	  should be spending their time creating great games, not building
 	  GUI sub-systems!
-	  
+
 	  http://www.cegui.org.uk/

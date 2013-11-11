@@ -4,7 +4,7 @@ config BR2_PACKAGE_LTTNG_BABELTRACE
 	select BR2_PACKAGE_UTIL_LINUX
 	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
 	select BR2_PACKAGE_LIBGLIB2
-	# libglib2 needs thread support and gettext which needs wchar support, and 
+	# libglib2 needs thread support and gettext which needs wchar support, and
 	# we also depends on util-linux which needs wchar
 	depends on BR2_USE_WCHAR
 	depends on BR2_TOOLCHAIN_HAS_THREADS

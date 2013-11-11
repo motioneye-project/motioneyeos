@@ -10,10 +10,10 @@ config BR2_PACKAGE_CUPS
 if BR2_PACKAGE_CUPS
 
 config BR2_PACKAGE_CUPS_PDFTOPS
-       bool "pdftops support"
-       depends on BR2_INSTALL_LIBSTDCPP
-       help
-         Enable pdftops support
+	bool "pdftops support"
+	depends on BR2_INSTALL_LIBSTDCPP
+	help
+	  Enable pdftops support
 
 comment "pdftops support needs a toolchain w/ C++"
 	depends on !BR2_INSTALL_LIBSTDCPP

@@ -10,10 +10,10 @@ config BR2_PACKAGE_USBREDIR
 	  traffic over a network connection. It is also the name of the
 	  software package offering a parsing library, a usbredirhost library
 	  and several utilities implementing this protocol.
-	  
+
 	  Note: only the library is installed, not the utilities. Say 'y'
 	  below if you want the server too.
-	  
+
 	  http://www.spice-space.org/page/UsbRedir
 
 if BR2_PACKAGE_USBREDIR
@@ -23,7 +23,7 @@ config BR2_PACKAGE_USBREDIR_SERVER
 	help
 	  If you want to serve usbredir requests on your target, say 'y'
 	  here to have the usbredir server on the target.
-	  
+
 	  Note: the server is not required to use the library.
 
 endif

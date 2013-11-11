@@ -3,13 +3,13 @@ config BR2_PACKAGE_CELT051
 	select BR2_PACKAGE_LIBOGG
 	help
 	  The CELT ultra-low delay audio codec
-	  
+
 	  The CELT codec is a compression algorithm for audio. Like MP3,
 	  Vorbis, and AAC it is suitable for transmitting music with high
 	  quality. Unlike these formats CELT imposes very little delay on
 	  the signal, even less than is typical for speech centric formats
 	  like Speex, GSM, or G.729.
-	  
+
 	  Note: this is version 0.5.1.3 of celt.
-	  
+
 	  http://www.celt-codec.org/

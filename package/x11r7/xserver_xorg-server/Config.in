@@ -90,14 +90,14 @@ config BR2_PACKAGE_XSERVER_XORG_SERVER_KDRIVE
 endchoice
 
 config BR2_PACKAGE_XSERVER_XORG_SERVER_NULL_CURSOR
-    bool "Null root cursor"
-    help
-        Don't display root cursor.
+	bool "Null root cursor"
+	help
+	  Don't display root cursor.
 
 config BR2_PACKAGE_XSERVER_XORG_SERVER_AIGLX
-    bool "Enable AIGLX Extension"
-    help
-        Enable/Use AIGLX extension.
+	bool "Enable AIGLX Extension"
+	help
+	  Enable/Use AIGLX extension.
 
 if BR2_PACKAGE_XSERVER_XORG_SERVER_KDRIVE
 
@@ -131,8 +131,8 @@ endif
 comment "Optional Servers"
 
 config BR2_PACKAGE_XSERVER_XORG_SERVER_XVFB
-    bool "Xvfb server"
-    help
-        Virtual frame buffer X server.
+	bool "Xvfb server"
+	help
+	  Virtual frame buffer X server.
 
 endif

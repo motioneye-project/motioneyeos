@@ -19,9 +19,9 @@ config BR2_PACKAGE_SPICE
 	  The Spice project deals with both the virtualized devices
 	  and the front-end. Interaction between front-end and
 	  back-end is done using VD-Interfaces.
-	  
+
 	  This package implements the server-part of Spice.
-	  
+
 	  http://www.spice-space.org/
 
 if BR2_PACKAGE_SPICE

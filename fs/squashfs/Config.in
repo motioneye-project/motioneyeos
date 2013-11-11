@@ -12,11 +12,11 @@ choice
 	  root filesystem.
 
 config BR2_TARGET_ROOTFS_SQUASHFS4
-       bool "4.x"
+	bool "4.x"
 
 config BR2_TARGET_ROOTFS_SQUASHFS3
-       depends on BR2_DEPRECATED
-       bool "3.x"
+	depends on BR2_DEPRECATED
+	bool "3.x"
 
 endchoice
 
@@ -29,16 +29,16 @@ choice
 	  generating the filesystem.
 
 config BR2_TARGET_ROOTFS_SQUASHFS4_GZIP
-       bool "gzip"
+	bool "gzip"
 
 config BR2_TARGET_ROOTFS_SQUASHFS4_LZMA
-       bool "lzma"
+	bool "lzma"
 
 config BR2_TARGET_ROOTFS_SQUASHFS4_LZO
-       bool "lzo"
+	bool "lzo"
 
 config BR2_TARGET_ROOTFS_SQUASHFS4_XZ
-       bool "xz"
+	bool "xz"
 
 endchoice
 endif

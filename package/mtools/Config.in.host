@@ -5,5 +5,5 @@ config BR2_PACKAGE_HOST_MTOOLS
 	  Unix without mounting them. It supports Win'95 style long file
 	  names, OS/2 Xdf disks and 2m disks (store up to 1992k on a high
 	  density 3 1/2 disk).
-	  
+
 	  http://www.tux.org/pub/tux/mtools/

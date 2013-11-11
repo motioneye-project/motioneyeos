@@ -46,56 +46,56 @@ config BR2_PACKAGE_XENOMAI_VERSION
 	  Kernel -> Linux Kernel Extensions menu.
 
 config BR2_PACKAGE_XENOMAI_TESTSUITE
-       bool "Install testsuite"
-       help
-         This option allows to install the Xenomai test programs.
+	bool "Install testsuite"
+	help
+	  This option allows to install the Xenomai test programs.
 
 config BR2_PACKAGE_XENOMAI_RTCAN
-       bool "RTCan utilities"
-       help
-         This option allows to install the Xenomai RT-CAN utilities.
+	bool "RTCan utilities"
+	help
+	  This option allows to install the Xenomai RT-CAN utilities.
 
 config BR2_PACKAGE_XENOMAI_ANALOGY
-       bool "Analogy libs and utils"
-       help
-         This option allows to install the Xenomai Analogy utilities
-         and libraries
+	bool "Analogy libs and utils"
+	help
+	  This option allows to install the Xenomai Analogy utilities
+	  and libraries
 
 config BR2_PACKAGE_XENOMAI_NATIVE_SKIN
-       bool "Native skin library"
-       default y
-       help
-	 This option allows to install the Native Xenomai skin
+	bool "Native skin library"
+	default y
+	help
+	  This option allows to install the Native Xenomai skin
 
 config BR2_PACKAGE_XENOMAI_POSIX_SKIN
-       bool "POSIX skin library"
-       default y
-       help
-	 This option allows to install the POSIX Xenomai skin
+	bool "POSIX skin library"
+	default y
+	help
+	  This option allows to install the POSIX Xenomai skin
 
 config BR2_PACKAGE_XENOMAI_VXWORKS_SKIN
-       bool "VX-Works skin library"
-       help
-	 This option allows to install the VX-Works Xenomai skin
+	bool "VX-Works skin library"
+	help
+	  This option allows to install the VX-Works Xenomai skin
 
 config BR2_PACKAGE_XENOMAI_PSOS_SKIN
-       bool "PSOS skin library"
-       help
-	 This option allows to install the PSOS Xenomai skin
+	bool "PSOS skin library"
+	help
+	  This option allows to install the PSOS Xenomai skin
 
 config BR2_PACKAGE_XENOMAI_RTAI_SKIN
-       bool "RTAI skin library"
-       help
-	 This option allows to install the RTAI Xenomai skin
+	bool "RTAI skin library"
+	help
+	  This option allows to install the RTAI Xenomai skin
 
 config BR2_PACKAGE_XENOMAI_UITRON_SKIN
-       bool "uiTron skin library"
-       help
-	 This option allows to install the uiTron Xenomai skin
+	bool "uiTron skin library"
+	help
+	  This option allows to install the uiTron Xenomai skin
 
 config BR2_PACKAGE_XENOMAI_VRTX_SKIN
-       bool "VRTX skin library"
-       help
-	 This option allows to install the VRTX Xenomai skin
+	bool "VRTX skin library"
+	help
+	  This option allows to install the VRTX Xenomai skin
 
 endif

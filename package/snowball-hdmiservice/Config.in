@@ -1,10 +1,10 @@
 config BR2_PACKAGE_SNOWBALL_HDMISERVICE
 	bool "snowball-hdmiservice"
-	depends on BR2_TOOLCHAIN_HAS_THREADS	
+	depends on BR2_TOOLCHAIN_HAS_THREADS
 	help
 	  HDMI userspace control daemon
 
-	  This package contains the HDMI userspace control daemon for the 
+	  This package contains the HDMI userspace control daemon for the
 	  snowball board
-	  
+
 	  http://www.igloocommunity.org

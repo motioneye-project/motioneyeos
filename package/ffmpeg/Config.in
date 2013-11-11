@@ -6,48 +6,48 @@ menuconfig BR2_PACKAGE_FFMPEG
 	depends on BR2_LARGEFILE
 	depends on BR2_INET_IPV6
 	help
-         FFmpeg is a complete, cross-platform solution to record, convert
-         and stream audio and video.
+	  FFmpeg is a complete, cross-platform solution to record, convert
+	  and stream audio and video.
 
-	 http://www.ffmpeg.org
+	  http://www.ffmpeg.org
 
 if BR2_PACKAGE_FFMPEG
 
 config BR2_PACKAGE_FFMPEG_GPL
 	bool "Enable GPL code"
 	help
-         allow use of GPL code, the resulting libs and binaries will
-         be under GPL
+	  allow use of GPL code, the resulting libs and binaries will
+	  be under GPL
 
 config BR2_PACKAGE_FFMPEG_NONFREE
 	bool "Enable nonfree code"
 	help
-         allow use of nonfree code, the resulting libs and binaries
-         will be unredistributable
+	  allow use of nonfree code, the resulting libs and binaries
+	  will be unredistributable
 
 config BR2_PACKAGE_FFMPEG_FFMPEG
 	bool "Build ffmpeg (the command line application)"
 	select BR2_PACKAGE_FFMPEG_SWSCALE
 	default y
 	help
-         FFmpeg is a very fast video and audio converter.
-         It can also grab from a live audio/video source.
+	  FFmpeg is a very fast video and audio converter.
+	  It can also grab from a live audio/video source.
 
-         It is not needed if you want to link the FFmpeg libraries
-         to your application.
+	  It is not needed if you want to link the FFmpeg libraries
+	  to your application.
 
 config BR2_PACKAGE_FFMPEG_FFPLAY
 	bool "Build ffplay"
 	select BR2_PACKAGE_SDL
 	help
-         FFplay is a very simple and portable media player using the
-         FFmpeg libraries and the SDL library.
-         It is mostly used as a testbed for the various FFmpeg APIs.
+	  FFplay is a very simple and portable media player using the
+	  FFmpeg libraries and the SDL library.
+	  It is mostly used as a testbed for the various FFmpeg APIs.
 
 config BR2_PACKAGE_FFMPEG_FFSERVER
 	bool "Build ffserver"
 	help
-         FFserver is a streaming server for both audio and video.
+	  FFserver is a streaming server for both audio and video.
 
 config BR2_PACKAGE_FFMPEG_POSTPROC
 	bool "Build libpostproc"
@@ -64,81 +64,81 @@ config BR2_PACKAGE_FFMPEG_ENCODERS
 	string "Enabled encoders"
 	default "all"
 	help
-	 Space-separated list of encoders to build in FFmpeg,
-	 or "all" to build all of them.
+	  Space-separated list of encoders to build in FFmpeg,
+	  or "all" to build all of them.
 
-	 Run ./configure --list-encoders in the ffmpeg sources
-	 directory to know the available options.
+	  Run ./configure --list-encoders in the ffmpeg sources
+	  directory to know the available options.
 
 config BR2_PACKAGE_FFMPEG_DECODERS
 	string "Enabled decoders"
 	default "all"
 	help
-	 Space-separated list of decoders to build in FFmpeg,
-	 or "all" to build all of them.
+	  Space-separated list of decoders to build in FFmpeg,
+	  or "all" to build all of them.
 
-	 Run ./configure --list-decoders in the ffmpeg sources
-	 directory to know the available options.
+	  Run ./configure --list-decoders in the ffmpeg sources
+	  directory to know the available options.
 
 config BR2_PACKAGE_FFMPEG_MUXERS
 	string "Enabled muxers"
 	default "all"
 	help
-	 Space-separated list of muxers to build in FFmpeg,
-	 or "all" to build all of them.
+	  Space-separated list of muxers to build in FFmpeg,
+	  or "all" to build all of them.
 
-	 Run ./configure --list-muxers in the ffmpeg sources
-	 directory to know the available options.
+	  Run ./configure --list-muxers in the ffmpeg sources
+	  directory to know the available options.
 
 config BR2_PACKAGE_FFMPEG_DEMUXERS
 	string "Enabled demuxers"
 	default "all"
 	help
-	 Space-separated list of demuxers to build in FFmpeg,
-	 or "all" to build all of them.
+	  Space-separated list of demuxers to build in FFmpeg,
+	  or "all" to build all of them.
 
-	 Run ./configure --list-demuxers in the ffmpeg sources
-	 directory to know the available options.
+	  Run ./configure --list-demuxers in the ffmpeg sources
+	  directory to know the available options.
 
 config BR2_PACKAGE_FFMPEG_PARSERS
 	string "Enabled parsers"
 	default "all"
 	help
-	 Space-separated list of parsers to build in FFmpeg,
-	 or "all" to build all of them.
+	  Space-separated list of parsers to build in FFmpeg,
+	  or "all" to build all of them.
 
-	 Run ./configure --list-parsers in the ffmpeg sources
-	 directory to know the available options.
+	  Run ./configure --list-parsers in the ffmpeg sources
+	  directory to know the available options.
 
 config BR2_PACKAGE_FFMPEG_BSFS
 	string "Enabled bitstreams"
 	default "all"
 	help
-	 Space-separated list of bitstream filters to build in FFmpeg,
-	 or "all" to build all of them.
+	  Space-separated list of bitstream filters to build in FFmpeg,
+	  or "all" to build all of them.
 
-	 Run ./configure --list-bsfs in the ffmpeg sources
-	 directory to know the available options.
+	  Run ./configure --list-bsfs in the ffmpeg sources
+	  directory to know the available options.
 
 config BR2_PACKAGE_FFMPEG_PROTOCOLS
 	string "Enabled protocols"
 	default "all"
 	help
-	 Space-separated list of protocols to build in FFmpeg,
-	 or "all" to build all of them.
+	  Space-separated list of protocols to build in FFmpeg,
+	  or "all" to build all of them.
 
-	 Run ./configure --list-protocols in the ffmpeg sources
-	 directory to know the available options.
+	  Run ./configure --list-protocols in the ffmpeg sources
+	  directory to know the available options.
 
 config BR2_PACKAGE_FFMPEG_FILTERS
 	string "Enabled filters"
 	default "all"
 	help
-	 Space-separated list of filters to build in FFmpeg,
-	 or "all" to build all of them.
+	  Space-separated list of filters to build in FFmpeg,
+	  or "all" to build all of them.
 
-	 Run ./configure --list-filters in the ffmpeg sources
-	 directory to know the available options.
+	  Run ./configure --list-filters in the ffmpeg sources
+	  directory to know the available options.
 
 config BR2_PACKAGE_FFMPEG_INDEVS
 	bool "Enable input devices"
@@ -152,7 +152,7 @@ config BR2_PACKAGE_FFMPEG_EXTRACONF
 	string "Additional parameters for ./configure"
 	default ""
 	help
-	 Extra parameters that will be appended to FFmpeg's
-	 ./configure commandline.
+	  Extra parameters that will be appended to FFmpeg's
+	  ./configure commandline.
 
 endif

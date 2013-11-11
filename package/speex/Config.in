@@ -9,9 +9,9 @@ config BR2_PACKAGE_SPEEX
 	  http://www.speex.org/
 
 config BR2_PACKAGE_SPEEX_ARM4
-       bool
-       default y
-       depends on BR2_PACKAGE_SPEEX && (BR2_arm7tdmi || BR2_arm720t || BR2_arm920t || BR2_arm922t || BR2_strongarm || BR2_fa526)
+	bool
+	default y
+	depends on BR2_PACKAGE_SPEEX && (BR2_arm7tdmi || BR2_arm720t || BR2_arm920t || BR2_arm922t || BR2_strongarm || BR2_fa526)
 
 config BR2_PACKAGE_SPEEX_ARM5E
 	default y

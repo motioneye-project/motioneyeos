@@ -31,15 +31,15 @@ config BR2_LINUX_KERNEL_EXT_XENOMAI_ADEOS_PATCH
 
 # RTAI
 config BR2_LINUX_KERNEL_EXT_RTAI
-       bool "RTAI Real-time patch"
-       select BR2_PACKAGE_RTAI
-       help
-         RTAI Kernel part.
+	bool "RTAI Real-time patch"
+	select BR2_PACKAGE_RTAI
+	help
+	  RTAI Kernel part.
 
 config BR2_LINUX_KERNEL_EXT_RTAI_PATCH
-       depends on BR2_LINUX_KERNEL_EXT_RTAI
-       string "Path for RTAI patch file"
-       help
-         Optionally, explicitly specify the RTAI patch to use.
+	depends on BR2_LINUX_KERNEL_EXT_RTAI
+	string "Path for RTAI patch file"
+	help
+	  Optionally, explicitly specify the RTAI patch to use.
 
 endmenu

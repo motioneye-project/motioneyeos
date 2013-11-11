@@ -127,9 +127,9 @@ config BR2_LINUX_KERNEL_DEFCONFIG
 	string "Defconfig name"
 	depends on BR2_LINUX_KERNEL_USE_DEFCONFIG
 	help
-	 Name of the kernel defconfig file to use, without the
-	 trailing _defconfig.  The defconfig is located in
-	 arch/<arch>/configs in the kernel tree.
+	  Name of the kernel defconfig file to use, without the
+	  trailing _defconfig.  The defconfig is located in
+	  arch/<arch>/configs in the kernel tree.
 
 config BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE
 	string "Configuration file path"
@@ -142,7 +142,7 @@ config BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE
 #
 
 config BR2_LINUX_KERNEL_UBOOT_IMAGE
-       bool
+	bool
 
 choice
 	prompt "Kernel binary format"
@@ -274,9 +274,9 @@ choice
 config BR2_LINUX_KERNEL_USE_INTREE_DTS
 	bool "Use a device tree present in the kernel."
 	help
-	   Use a device tree source distributed with
-	   the kernel sources. The dts files are located
-           in the arch/<arch>/boot/dts folder.
+	  Use a device tree source distributed with
+	  the kernel sources. The dts files are located
+	  in the arch/<arch>/boot/dts folder.
 
 config BR2_LINUX_KERNEL_USE_CUSTOM_DTS
 	bool "Use a custom device tree file"
@@ -290,9 +290,9 @@ config BR2_LINUX_KERNEL_INTREE_DTS_NAME
 	string "Device Tree Source file names"
 	depends on BR2_LINUX_KERNEL_USE_INTREE_DTS
 	help
-	 Name of the device tree source file, without
-	 the trailing .dts. You can provide a list of
-	 dts files to build, separated by spaces.
+	  Name of the device tree source file, without
+	  the trailing .dts. You can provide a list of
+	  dts files to build, separated by spaces.
 
 config BR2_LINUX_KERNEL_CUSTOM_DTS_PATH
 	string "Device Tree Source file path"

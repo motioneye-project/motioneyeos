@@ -4,9 +4,9 @@ config BR2_PACKAGE_LIBISCSI
 	help
 	  Libiscsi is a client-side library to implement the iSCSI protocol
 	  that can be used to access resource of an iSCSI Target.
-	  
+
 	  The library is fully async with regards to iscsi commands and scsi
 	  tasks, but a sync layer is also provided for ease of use for simpler
 	  applications.
-	  
+
 	  https://github.com/sahlberg/libiscsi  (no proper homepage)

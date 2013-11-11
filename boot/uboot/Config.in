@@ -21,7 +21,7 @@ config BR2_TARGET_UBOOT_LATEST_VERSION
 	bool "2013.10"
 
 config BR2_TARGET_UBOOT_CUSTOM_VERSION
-       bool "Custom version"
+	bool "Custom version"
 	help
 	  This option allows to use a specific official versions
 

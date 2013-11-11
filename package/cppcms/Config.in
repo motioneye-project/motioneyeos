@@ -12,11 +12,11 @@ config BR2_PACKAGE_CPPCMS
 	  differs from most of other web development frameworks like:
 	  Python Django or Java Servlets on  the following aspects:
 
-           - It is designed and tuned to handle extremely high loads.
+	   - It is designed and tuned to handle extremely high loads.
 	   - It uses modern C++ as primary development language in
 	     order to achieve the above goal.
-           - It is aimed on development of both Web Sites and Web
-             Services.
+	   - It is aimed on development of both Web Sites and Web
+	     Services.
 
 	  http://cppcms.com
 

@@ -39,7 +39,7 @@ choice
 config BR2_PACKAGE_TI_GFX_ES3
 	bool "es3.x (OMAP35xx, AM35xx Rev 3.1+)"
 	help
-	 OMAP35xx, AM35xx Rev 3.1+
+	  OMAP35xx, AM35xx Rev 3.1+
 
 config BR2_PACKAGE_TI_GFX_ES5
 	bool "es5.x (AM37xx, DM37xx)"

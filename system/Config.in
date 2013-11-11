@@ -1,16 +1,16 @@
 menu "System configuration"
 
 config BR2_TARGET_GENERIC_HOSTNAME
-       string "System hostname"
-       default "buildroot"
-       help
-         Select system hostname to be stored in /etc/hostname.
+	string "System hostname"
+	default "buildroot"
+	help
+	  Select system hostname to be stored in /etc/hostname.
 
 config BR2_TARGET_GENERIC_ISSUE
-       string "System banner"
-       default "Welcome to Buildroot"
-       help
-         Select system banner (/etc/issue) to be displayed at login.
+	string "System banner"
+	default "Welcome to Buildroot"
+	help
+	  Select system banner (/etc/issue) to be displayed at login.
 
 choice
 	bool "Passwords encoding"
@@ -200,8 +200,8 @@ config BR2_TARGET_GENERIC_ROOT_PASSWD
 	  .config file or the build log may be distributed!
 
 config BR2_TARGET_GENERIC_GETTY
-       bool "Run a getty (login prompt) after boot"
-       default y
+	bool "Run a getty (login prompt) after boot"
+	default y
 
 if BR2_TARGET_GENERIC_GETTY
 menu "getty options"
@@ -218,7 +218,7 @@ choice
 	  Select a baudrate to use.
 
 config BR2_TARGET_GENERIC_GETTY_BAUDRATE_KEEP
-       bool "keep kernel default"
+	bool "keep kernel default"
 config BR2_TARGET_GENERIC_GETTY_BAUDRATE_9600
 	bool "9600"
 config BR2_TARGET_GENERIC_GETTY_BAUDRATE_19200
