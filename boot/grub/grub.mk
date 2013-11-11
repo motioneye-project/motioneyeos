@@ -80,6 +80,7 @@ define GRUB_INSTALL_TARGET_CMDS
 	cp $(@D)/stage1/stage1 $(TARGET_DIR)/boot/grub
 	cp $(@D)/stage2/*1_5   $(TARGET_DIR)/boot/grub
 	cp $(@D)/stage2/stage2 $(TARGET_DIR)/boot/grub
+	cp boot/grub/menu.lst $(TARGET_DIR)/boot/grub
 	$(GRUB_INSTALL_SPLASH)
 endef
 
