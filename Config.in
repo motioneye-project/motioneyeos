@@ -20,6 +20,12 @@ config BR2_HOSTARCH
 config BR2_HOSTARCH_NEEDS_IA32_LIBS
 	bool
 
+# Hidden boolean selected by packages that need to build 32 bits
+# binaries with the host compiler, even on 64 bits build machines (e.g
+# bootloaders).
+config BR2_HOSTARCH_NEEDS_IA32_COMPILER
+	bool
+
 source "arch/Config.in"
 
 menu "Build options"

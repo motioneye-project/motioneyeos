@@ -186,6 +186,15 @@ if grep -q ^BR2_HOSTARCH_NEEDS_IA32_LIBS=y $BUILDROOT_CONFIG ; then
     fi
 fi
 
+if grep -q ^BR2_HOSTARCH_NEEDS_IA32_COMPILER=y $BUILDROOT_CONFIG ; then
+    if ! echo "int main(void) {}" | gcc -m32 -x c - ; then
+	/bin/echo -e "\nYour Buildroot configuration needs a compiler capable of building 32 bits binaries."
+	/bin/echo -e "If you're running a Debian/Ubuntu distribution, install the gcc-multilib package."
+	/bin/echo -e "For other distributions, refer to their documentation."
+	exit 1
+    fi
+fi
+
 # Check that the Perl installation is complete enough to build
 # host-autoconf.
 if ! perl  -e "require Data::Dumper" > /dev/null 2>&1 ; then
