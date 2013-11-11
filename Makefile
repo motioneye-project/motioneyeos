@@ -189,6 +189,12 @@ endif
 ifndef HOSTNM
 HOSTNM:=nm
 endif
+ifndef HOSTOBJCOPY
+HOSTOBJCOPY:=objcopy
+endif
+ifndef HOSTRANLIB
+HOSTRANLIB:=ranlib
+endif
 HOSTAR:=$(shell which $(HOSTAR) || type -p $(HOSTAR) || echo ar)
 HOSTAS:=$(shell which $(HOSTAS) || type -p $(HOSTAS) || echo as)
 HOSTFC:=$(shell which $(HOSTLD) || type -p $(HOSTLD) || echo || which g77 || type -p g77 || echo gfortran)
@@ -196,6 +202,8 @@ HOSTCPP:=$(shell which $(HOSTCPP) || type -p $(HOSTCPP) || echo cpp)
 HOSTLD:=$(shell which $(HOSTLD) || type -p $(HOSTLD) || echo ld)
 HOSTLN:=$(shell which $(HOSTLN) || type -p $(HOSTLN) || echo ln)
 HOSTNM:=$(shell which $(HOSTNM) || type -p $(HOSTNM) || echo nm)
+HOSTOBJCOPY:=$(shell which $(HOSTOBJCOPY) || type -p $(HOSTOBJCOPY) || echo objcopy)
+HOSTRANLIB:=$(shell which $(HOSTRANLIB) || type -p $(HOSTRANLIB) || echo ranlib)
 
 export HOSTAR HOSTAS HOSTCC HOSTCXX HOSTFC HOSTLD
 export HOSTCC_NOCCACHE HOSTCXX_NOCCACHE
