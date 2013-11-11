@@ -23,6 +23,7 @@ config BR2_PACKAGE_CPPCMS
 config BR2_PACKAGE_CPPCMS_ICU
 	bool "enable icu support"
 	depends on BR2_PACKAGE_CPPCMS
+	depends on !BR2_arc # icu -> atomic builtins
 	select BR2_PACKAGE_ICU
 	help
 	  Using ICU allows advanced localization features into CppCMS,
