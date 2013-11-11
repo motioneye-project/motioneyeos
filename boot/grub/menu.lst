@@ -1,6 +1,6 @@
 default=0
 timeout=5
-splashimage=(hd0,0)/boot/grub/splash.xpm.gz
+#splashimage=(hd0,0)/boot/grub/splash.xpm.gz
 hiddenmenu
 title Buildroot
 	root (hd0,0)
