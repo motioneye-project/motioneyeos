@@ -1,0 +1,29 @@
+[PATCH] fix linking error without pthread
+
+The rollingfile functionality only gets built if pthread support is
+available, but a call to these functions from log4c_fini() was outside
+the #if WITH_ROLLINGFILE conditional, causing linker errors when the
+library is used.
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ src/log4c/init.c |    2 ++
+ 1 file changed, 2 insertions(+)
+
+Index: liblog4c-localtime-v1.0/src/log4c/init.c
+===================================================================
+--- liblog4c-localtime-v1.0.orig/src/log4c/init.c
++++ liblog4c-localtime-v1.0/src/log4c/init.c
+@@ -267,10 +267,12 @@
+ 	log4c_layout_factory = NULL;
+     }
+   
++#ifdef WITH_ROLLINGFILE
+     if (log4c_rollingpolicy_factory) {
+ 	sd_factory_delete(log4c_rollingpolicy_factory);
+ 	log4c_rollingpolicy_factory = NULL;
+     }
++#endif
+     
+ #ifdef __SD_DEBUG__
+     if( getenv("SD_DEBUG")){
