@@ -99,20 +99,33 @@ endef
 # legal-info helper functions
 #
 LEGAL_INFO_SEPARATOR="::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
-legal-warning=echo "WARNING: $(1)" >>$(LEGAL_WARNINGS)
-legal-warning-pkg=echo "WARNING: $(1): $(2)" >>$(LEGAL_WARNINGS)
+
+define legal-warning # text
+	echo "WARNING: $(1)" >>$(LEGAL_WARNINGS)
+endef
+
+define legal-warning-pkg # pkg, text
+	echo "WARNING: $(1): $(2)" >>$(LEGAL_WARNINGS)
+endef
+
 define legal-warning-pkg-savednothing # pkg, {local|override}
 	$(call legal-warning-pkg,$(1),sources and license files not saved ($(2) packages not handled))
 endef
-legal-manifest=echo '"$(1)","$(2)","$(3)","$(4)","$(5)"' >>$(LEGAL_MANIFEST_CSV_$(6))
-define legal-license-header
+
+define legal-manifest # pkg, version, license, license-files, source, {HOST|TARGET}
+	echo '"$(1)","$(2)","$(3)","$(4)","$(5)"' >>$(LEGAL_MANIFEST_CSV_$(6))
+endef
+
+define legal-license-header # pkg, license-file, {HOST|TARGET}
 	echo -e "$(LEGAL_INFO_SEPARATOR)\n\t$(1):" \
 		"$(2)\n$(LEGAL_INFO_SEPARATOR)\n\n" >>$(LEGAL_LICENSES_TXT_$(3))
 endef
-define legal-license-nofiles
+
+define legal-license-nofiles # pkg, {HOST|TARGET}
 	$(call legal-license-header,$(1),unknown license file(s),$(2))
 endef
-define legal-license-file # pkg, filename, file-fullpath, type
+
+define legal-license-file # pkg, filename, file-fullpath, {HOST|TARGET}
 	$(call legal-license-header,$(1),$(2) file,$(4)) && \
 	cat $(3) >>$(LEGAL_LICENSES_TXT_$(4)) && \
 	echo >>$(LEGAL_LICENSES_TXT_$(4)) && \
