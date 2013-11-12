@@ -107,15 +107,15 @@ endef
 legal-manifest=echo '"$(1)","$(2)","$(3)","$(4)","$(5)"' >>$(LEGAL_MANIFEST_CSV_$(6))
 define legal-license-header
 	echo -e "$(LEGAL_INFO_SEPARATOR)\n\t$(1):" \
-		"$(2)\n$(LEGAL_INFO_SEPARATOR)\n\n" >>$(LEGAL_LICENSES_TXT)
+		"$(2)\n$(LEGAL_INFO_SEPARATOR)\n\n" >>$(LEGAL_LICENSES_TXT_$(3))
 endef
 define legal-license-nofiles
-	$(call legal-license-header,$(1),unknown license file(s))
+	$(call legal-license-header,$(1),unknown license file(s),$(2))
 endef
-define legal-license-file # pkg, filename, file-fullpath
-	$(call legal-license-header,$(1),$(2) file) && \
-	cat $(3) >>$(LEGAL_LICENSES_TXT) && \
-	echo >>$(LEGAL_LICENSES_TXT) && \
-	mkdir -p $(LICENSE_FILES_DIR)/$(1)/$(dir $(2)) && \
-	cp $(3) $(LICENSE_FILES_DIR)/$(1)/$(2)
+define legal-license-file # pkg, filename, file-fullpath, type
+	$(call legal-license-header,$(1),$(2) file,$(4)) && \
+	cat $(3) >>$(LEGAL_LICENSES_TXT_$(4)) && \
+	echo >>$(LEGAL_LICENSES_TXT_$(4)) && \
+	mkdir -p $(LICENSE_FILES_DIR_$(4))/$(1)/$(dir $(2)) && \
+	cp $(3) $(LICENSE_FILES_DIR_$(4))/$(1)/$(2)
 endef
