@@ -136,12 +136,11 @@ diff --git a/src/3rdparty/sqlite.pri b/src/3rdparty/sqlite.pri
 index 58d4ddd..072502c 100644
 --- a/src/3rdparty/sqlite.pri
 +++ b/src/3rdparty/sqlite.pri
-@@ -1,6 +1,7 @@
+@@ -1,5 +1,6 @@
  CONFIG(release, debug|release):DEFINES *= NDEBUG
  DEFINES += SQLITE_OMIT_LOAD_EXTENSION SQLITE_OMIT_COMPLETE SQLITE_ENABLE_FTS3 SQLITE_ENABLE_FTS3_PARENTHESIS SQLITE_ENABLE_RTREE
  !contains(CONFIG, largefile):DEFINES += SQLITE_DISABLE_LFS
 +contains(QT_CONFIG, posix_fallocate):DEFINES += HAVE_POSIX_FALLOCATE=1
- winrt: DEFINES += SQLITE_OS_WINRT
  INCLUDEPATH +=  $$PWD/sqlite
  SOURCES +=      $$PWD/sqlite/sqlite3.c
 diff --git a/src/3rdparty/sqlite/sqlite3.c b/src/3rdparty/sqlite/sqlite3.c
