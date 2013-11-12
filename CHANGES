@@ -1,4 +1,4 @@
-2013.11, Not yet released:
+2013.11-rc1, Released November 12th, 2013
 
 	Architectures: Nios-II support, MIPS arch handling fixes
 
@@ -60,13 +60,13 @@
 	smartmontools, socat, socketcand, sqlcipher, sqlite, squid,
 	stress, strongswan, stunnel, sudo, syslinux, systemd,
 	sysvinit, tcl, ti-gfx, time, transmission, tremor, tslib,
-	tvheadend, tzdata, uboot-tools, uclibc, udpcast, uemacs,
-	ulogd, usb_modeswitch{,_data}, util-linux, vala, valgrind,
-	vde2, vorbus-tools, vpnc, vsftpd, vtun, wayland, webkit, webp,
-	webrtc-audio-processing, weston, wget, wireshark, wsapi,
-	xavante, xdriver_xf86-video-geode, xenomai, xinetd,
-	xlib_libpthread-stubs, xl2tp, xmlstarlet, xserver_xorg-server,
-	xz, zeromq, zic, zmqpp
+	tstools, tvheadend, tzdata, uboot-tools, uclibc, udpcast,
+	uemacs, ulogd, usb_modeswitch{,_data}, util-linux, vala,
+	valgrind, vde2, vorbus-tools, vpnc, vsftpd, vtun, wayland,
+	webkit, webp, webrtc-audio-processing, weston, wget,
+	wireshark, wsapi, xavante, xdriver_xf86-video-geode, xenomai,
+	xinetd, xlib_libpthread-stubs, xl2tp, xmlstarlet,
+	xserver_xorg-server, xz, zeromq, zic, zmqpp
 
 	New packages: aiccu, autossh, bc, civetweb, cppdb, cryptsetup,
 	duma, eigen, harfbuzz, igmpproxy, iputils, jq, knock, kobs-ng,
