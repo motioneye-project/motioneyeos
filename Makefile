@@ -108,7 +108,8 @@ TARGET_DIR:=$(BASE_DIR)/target
 HOST_DIR:=$(BASE_DIR)/host
 
 LEGAL_INFO_DIR=$(BASE_DIR)/legal-info
-REDIST_SOURCES_DIR=$(LEGAL_INFO_DIR)/sources
+REDIST_SOURCES_DIR_TARGET=$(LEGAL_INFO_DIR)/sources
+REDIST_SOURCES_DIR_HOST=$(LEGAL_INFO_DIR)/host-sources
 LICENSE_FILES_DIR_TARGET=$(LEGAL_INFO_DIR)/licenses
 LICENSE_FILES_DIR_HOST=$(LEGAL_INFO_DIR)/host-licenses
 LEGAL_MANIFEST_CSV_TARGET=$(LEGAL_INFO_DIR)/manifest.csv
@@ -404,7 +405,7 @@ world: $(BASE_TARGETS) $(TARGETS_ALL)
 # dependencies anywhere else
 #
 ################################################################################
-$(BUILD_DIR) $(HOST_DIR) $(BINARIES_DIR) $(STAMP_DIR) $(LEGAL_INFO_DIR) $(REDIST_SOURCES_DIR):
+$(BUILD_DIR) $(HOST_DIR) $(BINARIES_DIR) $(STAMP_DIR) $(LEGAL_INFO_DIR) $(REDIST_SOURCES_DIR_TARGET) $(REDIST_SOURCES_DIR_HOST):
 	@mkdir -p $@
 
 # We make a symlink lib32->lib or lib64->lib as appropriate
@@ -585,8 +586,8 @@ legal-info-prepare: $(LEGAL_INFO_DIR)
 	@$(call legal-warning,the toolchain has not been saved)
 	@cp $(BUILDROOT_CONFIG) $(LEGAL_INFO_DIR)/buildroot.config
 
-legal-info: dirs legal-info-clean legal-info-prepare $(REDIST_SOURCES_DIR) \
-		$(TARGETS_LEGAL_INFO)
+legal-info: dirs legal-info-clean legal-info-prepare $(TARGETS_LEGAL_INFO) \
+		$(REDIST_SOURCES_DIR_TARGET) $(REDIST_SOURCES_DIR_HOST)
 	@cat support/legal-info/README.header >>$(LEGAL_REPORT)
 	@if [ -r $(LEGAL_WARNINGS) ]; then \
 		cat support/legal-info/README.warnings-header \
