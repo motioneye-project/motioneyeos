@@ -16,6 +16,10 @@ config BR2_PACKAGE_LIBPLAYER_MPLAYER
 	depends on !BR2_sh4a && !BR2_sh4aeb && !BR2_microblaze && !BR2_aarch64
 	# mplayer
 	depends on BR2_LARGEFILE
+	# mplayer
+	# Broken support for <ARMv5
+	depends on !(BR2_arm7tdmi || BR2_arm720t || BR2_arm920t \
+		|| BR2_arm920t || BR2_arm922t || BR2_fa526 || BR2_strongarm)
 	select BR2_PACKAGE_MPLAYER
 
 config BR2_PACKAGE_LIBPLAYER_GSTREAMER
