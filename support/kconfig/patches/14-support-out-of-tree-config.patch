@@ -8,7 +8,7 @@ Index: b/conf.c
 ===================================================================
 --- a/conf.c
 +++ b/conf.c
-@@ -547,7 +547,6 @@
+@@ -558,7 +558,6 @@
  	}
  	name = av[optind];
  	conf_parse(name);
@@ -39,7 +39,7 @@ Index: b/confdata.c
  }
  
  static char *conf_expand_value(const char *in)
-@@ -737,6 +736,9 @@
+@@ -742,6 +741,9 @@
  	char dirname[PATH_MAX+1], tmpname[PATH_MAX+1], newname[PATH_MAX+1];
  	char *env;
  
@@ -49,7 +49,7 @@ Index: b/confdata.c
  	dirname[0] = 0;
  	if (name && name[0]) {
  		struct stat st;
-@@ -831,6 +833,7 @@
+@@ -836,6 +838,7 @@
  {
  	const char *name;
  	char path[PATH_MAX+1];
@@ -57,7 +57,7 @@ Index: b/confdata.c
  	char *s, *d, c;
  	struct symbol *sym;
  	struct stat sb;
-@@ -839,8 +842,20 @@
+@@ -844,8 +847,20 @@
  	name = conf_get_autoconfig_name();
  	conf_read_simple(name, S_DEF_AUTO);
  
@@ -80,7 +80,7 @@ Index: b/confdata.c
  
  	res = 0;
  	for_all_symbols(i, sym) {
-@@ -933,9 +948,11 @@
+@@ -938,9 +953,11 @@
  		close(fd);
  	}
  out:
@@ -95,7 +95,7 @@ Index: b/confdata.c
  	return res;
  }
  
-@@ -945,25 +962,38 @@
+@@ -950,25 +967,38 @@
  	const char *name;
  	FILE *out, *tristate, *out_h;
  	int i;
@@ -138,7 +138,7 @@ Index: b/confdata.c
  	if (!out_h) {
  		fclose(out);
  		fclose(tristate);
-@@ -995,19 +1025,22 @@
+@@ -1000,19 +1030,22 @@
  	name = getenv("KCONFIG_AUTOHEADER");
  	if (!name)
  		name = "include/generated/autoconf.h";
