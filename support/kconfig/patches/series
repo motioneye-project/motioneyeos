@@ -7,3 +7,4 @@
 12-fix-glade-file-path.patch
 14-support-out-of-tree-config.patch
 15-fix-qconf-moc-rule.patch
+16-fix-space-to-de-select-options.patch
