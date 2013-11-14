@@ -3,7 +3,6 @@
 # $Id: dhcp3-relay,v 1.1 2004/04/16 15:41:08 ml Exp $
 #
 
-
 # What servers should the DHCP relay forward requests to?
 # e.g: SERVERS="192.168.0.1"
 SERVERS=""
@@ -14,31 +13,29 @@ INTERFACES=""
 # Additional options that are passed to the DHCP relay daemon?
 OPTIONS=""
 
-
-
-
-# It is not safe to start if we don't have a default configuration...
-echo "/etc/init.d/dhcp-relay not yet configured! - Aborting..."
-exit 1;
-
-
+# Sanity checks
+test -f /usr/sbin/dhcrelay || exit 0
+test -n "$INTERFACES" || exit 0
+test -n "$SERVERS" || exit 0
 
 # Build command line for interfaces (will be passed to dhrelay below.)
 IFCMD=""
-if test "$INTERFACES" != ""; then
-	for I in $INTERFACES; do
-		IFCMD=${IFCMD}"-i "${I}" "
-	done
-fi
+for I in $INTERFACES; do
+	IFCMD=${IFCMD}"-i "${I}" "
+done
 
 DHCRELAYPID=/var/run/dhcrelay.pid
 
 case "$1" in
 	start)
+		echo -n "Starting DHCP relay: "
 		start-stop-daemon -S -x /usr/sbin/dhcrelay -- -q $OPTIONS $IFCMD $SERVERS
+		[ $? == 0 ] && echo "OK" || echo "FAIL"
 		;;
 	stop)
+		echo -n "Stopping DHCP relay: "
 		start-stop-daemon -K -x /usr/sbin/dhcrelay
+		[ $? == 0 ] && echo "OK" || echo "FAIL"
 		;;
 	restart | force-reload)
 		$0 stop
@@ -47,7 +44,7 @@ case "$1" in
 		;;
 	*)
 		echo "Usage: /etc/init.d/dhcp-relay {start|stop|restart|force-reload}"
-		exit 1 
+		exit 1
 esac
 
 exit 0

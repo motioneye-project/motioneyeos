@@ -3,34 +3,27 @@
 # $Id: dhcp3-server.init.d,v 1.4 2003/07/13 19:12:41 mdz Exp $
 #
 
-
-
 # On what interfaces should the DHCP server (dhcpd) serve DHCP requests?
 #       Separate multiple interfaces with spaces, e.g. "eth0 eth1".
 INTERFACES=""
 
-
-# It is not safe to start if we don't have a default configuration...
-echo "/etc/init.d/dhcp-server not yet configured! - Aborting..."
-exit 1;
-
-
-
+# Sanity checks
 test -f /usr/sbin/dhcpd || exit 0
-
+test -f /etc/dhcpd.conf || exit 0
+test -n "$INTERFACES" || exit 0
 
 case "$1" in
 	start)
 		echo -n "Starting DHCP server: "
 		test -d /var/lib/dhcp/ || mkdir -p /var/lib/dhcp/
-		test -f /var/lib/dhcp/dhcpd.leases || touch /var/lib/dhcp/dhcpd.leases	
+		test -f /var/lib/dhcp/dhcpd.leases || touch /var/lib/dhcp/dhcpd.leases
 		start-stop-daemon -S -x /usr/sbin/dhcpd -- -q $INTERFACES
-		echo "."
+		[ $? == 0 ] && echo "OK" || echo "FAIL"
 		;;
 	stop)
 		echo -n "Stopping DHCP server: dhcpd3"
 		start-stop-daemon -K -x /usr/sbin/dhcpd
-		echo "."
+		[ $? == 0 ] && echo "OK" || echo "FAIL"
 		;;
 	restart | force-reload)
 		$0 stop
@@ -42,7 +35,7 @@ case "$1" in
 		;;
 	*)
 		echo "Usage: /etc/init.d/dhcp-server {start|stop|restart|force-reload}"
-		exit 1 
+		exit 1
 esac
 
 exit 0

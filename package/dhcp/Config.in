@@ -1,5 +1,5 @@
 config BR2_PACKAGE_DHCP
-	bool "isc dhcp"
+	bool "dhcp (ISC)"
 	# fork()
 	depends on BR2_USE_MMU
 	help
