@@ -22,7 +22,8 @@ WVSTREAMS_CONF_OPT += \
 	--with-openssl \
 	--with-zlib \
 	--without-pam \
-	--disable-warnings
+	--disable-warnings \
+	--without-tcl
 
 # needed for openssl detection when statically linking (as ssl needs lz)
 WVSTREAMS_CONF_ENV += LIBS=-lz
@@ -36,13 +37,6 @@ ifeq ($(BR2_PACKAGE_DBUS),y)
 	WVSTREAMS_CONF_OPT += --with-dbus
 else
 	WVSTREAMS_CONF_OPT += --without-dbus
-endif
-
-ifeq ($(BR2_PACKAGE_TCL),y)
-	WVSTREAMS_DEPENDENCIES += tcl
-	WVSTREAMS_CONF_OPT += --with-tcl
-else
-	WVSTREAMS_CONF_OPT += --without-tcl
 endif
 
 ifeq ($(BR2_PACKAGE_QT),y)
