@@ -13,6 +13,12 @@ NANO_CONF_OPT = --without-slang
 NANO_CONF_ENV = ac_cv_prog_NCURSESW_CONFIG=false
 NANO_DEPENDENCIES = ncurses
 
+ifeq ($(BR2_PACKAGE_FILE),y)
+	NANO_DEPENDENCIES += file
+else
+	NANO_CONF_ENV += ac_cv_lib_magic_magic_open=no
+endif
+
 ifeq ($(BR2_PACKAGE_NANO_TINY),y)
 	NANO_CONF_OPT += --enable-tiny
 endif
