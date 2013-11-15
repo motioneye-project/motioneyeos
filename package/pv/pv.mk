@@ -17,7 +17,7 @@ PV_LICENSE_FILES = doc/COPYING
 # the correct one. By passing the below values for LD and LDFLAGS, we
 # ensure that 'gcc' is used to do these partial linking steps.
 PV_MAKE_OPT = \
-	LD=$(TARGET_CC) \
+	LD="$(TARGET_CC)" \
 	LDFLAGS="-Wl,-r -nostdlib"
 
 $(eval $(autotools-package))
