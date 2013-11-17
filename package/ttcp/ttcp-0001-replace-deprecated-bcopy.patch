@@ -1,6 +1,9 @@
-diff -urN ttcp-0rig/ttcp.c ttcp/ttcp.c
---- ttcp-0rig/ttcp.c	1993-05-17 00:00:00.000000000 +0200
-+++ ttcp/ttcp.c	2009-01-14 23:46:19.000000000 +0100
+Replace deprecated bcopy call by using memmove instead.
+
+Index: b/ttcp.c
+===================================================================
+--- a/ttcp.c
++++ b/ttcp.c
 @@ -241,7 +241,7 @@
  			if ((addr=gethostbyname(host)) == NULL)
  				err("bad hostname");

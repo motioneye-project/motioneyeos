@@ -4,9 +4,8 @@
 #
 ################################################################################
 
-#
-TTCP_VERSION =
-TTCP_SITE    = http://ftp.sunet.se/pub/network/monitoring/ttcp
+TTCP_VERSION = 1.12
+TTCP_SITE    = ftp://ftp.sgi.com/sgi/src/ttcp/
 TTCP_SOURCE  = ttcp.c
 TTCP_LICENSE = public domain
 

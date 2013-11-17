@@ -4,4 +4,4 @@ config BR2_PACKAGE_TTCP
 	help
 	  Benchmarking tool for determining TCP and UDP performance.
 
-	  ftp://ftp.sunet.se/pub/network/monitoring/ttcp/
+	  ftp://ftp.sgi.com/sgi/src/ttcp/README
