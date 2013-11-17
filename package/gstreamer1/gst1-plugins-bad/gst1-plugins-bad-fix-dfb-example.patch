@@ -1,0 +1,33 @@
+[PATCH] work around dfb-example build issue
+
+directfb.h defines a number of macros which conflicts with gst/gst.h:
+
+In file included from ../sysroot/usr/include/gstreamer-1.0/gst/gst.h:50:0,
+                 from dfb-example.c:4:
+../sysroot/usr/include/gstreamer-1.0/gst/gstinfo.h:295:69: error: expected ‘)’ before ‘__attribute__’
+../sysroot/usr/include/gstreamer-1.0/gst/gstinfo.h:295:69: error: expected ‘,’ or ‘;’ before ‘)’ token
+
+As mentioned in the upstream bug report:
+
+https://bugzilla.gnome.org/show_bug.cgi?id=685609
+
+A workaround is to simply swap the include order around.
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ ext/directfb/dfb-example.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+Index: gst1-plugins-bad-1.2.1/ext/directfb/dfb-example.c
+===================================================================
+--- gst1-plugins-bad-1.2.1.orig/ext/directfb/dfb-example.c
++++ gst1-plugins-bad-1.2.1/ext/directfb/dfb-example.c
+@@ -1,7 +1,7 @@
+ 
+-#include <directfb.h>
+ #include <stdio.h>
+ #include <gst/gst.h>
++#include <directfb.h>
+ 
+ static IDirectFB *dfb = NULL;
+ static IDirectFBSurface *primary = NULL;
