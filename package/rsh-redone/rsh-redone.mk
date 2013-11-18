@@ -13,8 +13,12 @@ rsh-redone-bin-$(BR2_PACKAGE_RSH_REDONE_RCP) += rcp
 rsh-redone-bin-$(BR2_PACKAGE_RSH_REDONE_RLOGIN) += rlogin
 rsh-redone-bin-$(BR2_PACKAGE_RSH_REDONE_RSH) += rsh
 rsh-redone-sbin-y =
-rsh-redone-sbin-$(BR2_PACKAGE_RSH_REDONE_RLOGIND) += rlogind
-rsh-redone-sbin-$(BR2_PACKAGE_RSH_REDONE_RSHD) += rshd
+rsh-redone-sbin-$(BR2_PACKAGE_RSH_REDONE_RLOGIND) += in.rlogind
+rsh-redone-sbin-$(BR2_PACKAGE_RSH_REDONE_RSHD) += in.rshd
+
+ifneq ($(BR2_PACKAGE_RSH_REDONE_RSHD)$(BR2_PACKAGE_RSH_REDONE_RLOGIND),)
+RSH_REDONE_DEPENDENCIES = linux-pam
+endif
 
 define RSH_REDONE_BUILD_CMDS
 	$(TARGET_CONFIGURE_OPTS) $(MAKE) -C $(@D) BIN="$(rsh-redone-bin-y)" SBIN="$(rsh-redone-sbin-y)"

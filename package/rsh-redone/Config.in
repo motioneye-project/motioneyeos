@@ -16,15 +16,23 @@ if BR2_PACKAGE_RSH_REDONE
 config BR2_PACKAGE_RSH_REDONE_RLOGIN
 	bool "rlogin"
 
-# requires PAM
-#config BR2_PACKAGE_RSH_REDONE_RLOGIND
-#	bool "rlogind"
+config BR2_PACKAGE_RSH_REDONE_RLOGIND
+	bool "rlogind"
+	select BR2_PACKAGE_LINUX_PAM
+	depends on BR2_ENABLE_LOCALE && BR2_USE_WCHAR
+
+comment "rlogind needs a toolchain w/ wchar, locale"
+	depends on !(BR2_ENABLE_LOCALE && BR2_USE_WCHAR)
 
 config BR2_PACKAGE_RSH_REDONE_RSH
 	bool "rsh"
 
-# requires PAM
-#config BR2_PACKAGE_RSH_REDONE_RSHD
-#	bool "rshd"
+config BR2_PACKAGE_RSH_REDONE_RSHD
+	bool "rshd"
+	select BR2_PACKAGE_LINUX_PAM
+	depends on BR2_ENABLE_LOCALE && BR2_USE_WCHAR
+
+comment "rshd needs a toolchain w/ wchar, locale"
+	depends on !(BR2_ENABLE_LOCALE && BR2_USE_WCHAR)
 
 endif
