@@ -1,3 +1,25 @@
+2013.11-rc2, Released November 18th, 2013
+
+	Fixes all over the tree.
+
+	Defconfigs: qemu_arm_versatile, qemu_arm_nuri, sheevaplug:
+	Adjust kernel versions.
+
+	Toolchain: avr32: fix for modern kernel headers
+
+	Bootloader: Barebox updated to 2013.10.1
+
+	Updated/fixed packages: dhcp, e2fsprogs, gst1-plugins-bad,
+	libcurl, libvncserver, nano, pc, qt5base, squashfs, ttcp,
+	wayland, wvstreams
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#3601: DHCPD S80dhcp-server startup script issues
+	#6320: Fix kernel compile issue if BR2_LINUX_KERNEL_CUSTOM_GIT_VERS..
+	#6416: Xenomai package, patch alternative
+	#6590: directfb-examples build failed whit linaro toolchain
+
 2013.11-rc1, Released November 12th, 2013
 
 	Architectures: Nios-II support, MIPS arch handling fixes
