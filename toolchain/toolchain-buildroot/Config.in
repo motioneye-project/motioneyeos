@@ -31,9 +31,6 @@ config BR2_TOOLCHAIN_BUILDROOT_EGLIBC
 	  This option selects eglibc as the C library for the
 	  cross-compilation toolchain.
 
-	  The eglibc support in the Buildroot toolchain backend is
-	  very recent, and therefore marked experimental.
-
 	  http://eglibc.org
 
 config BR2_TOOLCHAIN_BUILDROOT_GLIBC
@@ -50,9 +47,6 @@ config BR2_TOOLCHAIN_BUILDROOT_GLIBC
 	help
 	  This option selects glibc as the C library for the
 	  cross-compilation toolchain.
-
-	  The glibc support in the Buildroot toolchain backend is
-	  very recent, and therefore marked experimental.
 
 	  http://www.gnu.org/software/libc/
 
