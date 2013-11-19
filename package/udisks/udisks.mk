@@ -20,7 +20,8 @@ UDISKS_DEPENDENCIES = 	\
 	lvm2		\
 	libatasmart
 
-UDISKS_CONF_OPT = --disable-remote-access
+UDISKS_CONF_OPT = --disable-remote-access \
+	$(if $(BR2_HAVE_DOCUMENTATION),,--disable-man-pages)
 
 ifeq ($(BR2_PACKAGE_UDISKS_LVM2),y)
 UDISKS_CONF_OPT += --enable-lvm2
