@@ -5,6 +5,8 @@ config BR2_PACKAGE_DBUS_PYTHON
 	depends on BR2_PACKAGE_DBUS
 	depends on BR2_PACKAGE_PYTHON
 	select BR2_PACKAGE_DBUS_GLIB
+	# pyexpat: runtime dependency only
+	select BR2_PACKAGE_PYTHON_PYEXPAT
 	help
 	  Python bindings for D-Bus
 
