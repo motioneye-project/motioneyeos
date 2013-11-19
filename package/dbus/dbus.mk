@@ -75,10 +75,14 @@ define DBUS_INSTALL_TARGET_FIXUP
 	mkdir -p $(TARGET_DIR)/var/lib
 	rm -rf $(TARGET_DIR)/var/lib/dbus
 	ln -sf /tmp/dbus $(TARGET_DIR)/var/lib/dbus
-	$(INSTALL) -m 0755 -D package/dbus/S30dbus $(TARGET_DIR)/etc/init.d/S30dbus
 endef
 
 DBUS_POST_INSTALL_TARGET_HOOKS += DBUS_INSTALL_TARGET_FIXUP
+
+define DBUS_INSTALL_INIT_SYSV
+	$(INSTALL) -m 0755 -D package/dbus/S30dbus \
+		$(TARGET_DIR)/etc/init.d/S30dbus
+endef
 
 HOST_DBUS_DEPENDENCIES = host-pkgconf host-expat
 HOST_DBUS_CONF_OPT = \
