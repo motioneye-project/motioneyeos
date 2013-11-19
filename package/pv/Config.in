@@ -1,5 +1,6 @@
 config BR2_PACKAGE_PV
 	bool "pv"
+	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE
 	help
 	  Pipe Viewer - is a terminal-based tool for
 	  monitoring the progress of data through a
