@@ -1,0 +1,29 @@
+Set loadAcquire() as const
+
+Fixes powerpc build.
+
+Fetched-from: https://bugzilla.redhat.com/attachment.cgi?id=812643
+Signed-off-by: Fatih Aşıcı <fatih.asici@gmail.com>
+
+Index: qtbase-opensource-src-5.1.1/src/corelib/thread/qoldbasicatomic.h
+===================================================================
+--- qtbase-opensource-src-5.1.1.orig/src/corelib/thread/qoldbasicatomic.h
++++ qtbase-opensource-src-5.1.1/src/corelib/thread/qoldbasicatomic.h
+@@ -63,7 +63,7 @@ public:
+     // Atomic API, implemented in qatomic_XXX.h
+ 
+     int load() const { return _q_value; }
+-    int loadAcquire() { return _q_value; }
++    int loadAcquire() const { return _q_value; }
+     void store(int newValue) { _q_value = newValue; }
+     void storeRelease(int newValue) { _q_value = newValue; }
+ 
+@@ -107,7 +107,7 @@ public:
+     // Atomic API, implemented in qatomic_XXX.h
+ 
+     T *load() const { return _q_value; }
+-    T *loadAcquire() { return _q_value; }
++    T *loadAcquire() const { return _q_value; }
+     void store(T *newValue) { _q_value = newValue; }
+     void storeRelease(T *newValue) { _q_value = newValue; }
+ 
