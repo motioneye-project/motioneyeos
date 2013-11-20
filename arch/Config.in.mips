@@ -1,8 +1,7 @@
 choice
 	prompt "Target Architecture Variant"
 	depends on BR2_mips || BR2_mipsel || BR2_mips64 || BR2_mips64el
-	default BR2_mips_3 if BR2_mips
-	default BR2_mips_1 if BR2_mipsel
+	default BR2_mips_32 if BR2_mips || BR2_mipsel
 	default BR2_mips_64 if BR2_mips64 || BR2_mips64el
 	help
 	  Specific CPU variant to use
@@ -12,14 +11,16 @@ choice
 
 config BR2_mips_1
 	bool "mips I (generic)"
-	depends on !BR2_ARCH_IS_64
+	depends on !BR2_ARCH_IS_64 && BR2_DEPRECATED
 config BR2_mips_2
 	bool "mips II"
-	depends on !BR2_ARCH_IS_64
+	depends on !BR2_ARCH_IS_64 && BR2_DEPRECATED
 config BR2_mips_3
 	bool "mips III"
+	depends on BR2_DEPRECATED
 config BR2_mips_4
 	bool "mips IV"
+	depends on BR2_DEPRECATED
 config BR2_mips_32
 	bool "mips 32"
 	depends on !BR2_ARCH_IS_64
