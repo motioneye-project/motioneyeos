@@ -152,21 +152,7 @@ QT5BASE_INSTALL_LIBS_$(BR2_PACKAGE_QT5BASE_PRINTSUPPORT) += Qt5PrintSupport
 
 QT5BASE_INSTALL_LIBS_$(BR2_PACKAGE_QT5BASE_DBUS) += Qt5DBus
 
-# Ideally, we could use -device-option to substitute variable values
-# in our linux-buildroot-g++/qmake.config, but this mechanism doesn't
-# nicely support variable values that contain spaces. So we use the
-# good old sed solution here.
-define QT5BASE_CONFIG_SET
-	$(SED) 's%^$(1).*%$(1) = $(2)%g' $(@D)/mkspecs/devices/linux-buildroot-g++/qmake.conf
-endef
-
 define QT5BASE_CONFIGURE_CMDS
-	$(call QT5BASE_CONFIG_SET,BUILDROOT_CROSS_COMPILE,$(TARGET_CROSS))
-	$(call QT5BASE_CONFIG_SET,BUILDROOT_COMPILER_CFLAGS,$(TARGET_CFLAGS))
-	$(call QT5BASE_CONFIG_SET,BUILDROOT_COMPILER_CXXFLAGS,$(TARGET_CXXFLAGS))
-	$(call QT5BASE_CONFIG_SET,BUILDROOT_INCLUDE_PATH,$(STAGING_DIR)/usr/include)
-	$(call QT5BASE_CONFIG_SET,EGLFS_PLATFORM_HOOKS_SOURCES, \
-		$(QT5BASE_EGLFS_PLATFORM_HOOKS_SOURCES))
 	(cd $(@D); \
 		PKG_CONFIG="$(PKG_CONFIG_HOST_BINARY)" \
 		PKG_CONFIG_LIBDIR="$(STAGING_DIR)/usr/lib/pkgconfig" \
@@ -181,6 +167,10 @@ define QT5BASE_CONFIGURE_CMDS
 		-no-rpath \
 		-nomake examples -nomake tests \
 		-device buildroot \
+		-device-option CROSS_COMPILE="$(TARGET_CROSS)" \
+		-device-option BUILDROOT_COMPILER_CFLAGS="$(TARGET_CFLAGS)" \
+		-device-option BUILDROOT_COMPILER_CXXFLAGS="$(TARGET_CXXFLAGS)" \
+		-device-option EGLFS_PLATFORM_HOOKS_SOURCES="$(QT5BASE_EGLFS_PLATFORM_HOOKS_SOURCES)" \
 		-no-c++11 \
 		$(QT5BASE_CONFIGURE_OPTS) \
 	)
