@@ -3,6 +3,7 @@ config BR2_PACKAGE_LXC
 	select BR2_PACKAGE_LIBCAP
 	depends on BR2_INET_IPV6
 	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_LARGEFILE
 	depends on BR2_USE_MMU # fork()
 	help
 	  Linux Containers (LXC), provides the ability to group and isolate
@@ -11,6 +12,6 @@ config BR2_PACKAGE_LXC
 
 	  http://lxc.sourceforge.net/
 
-comment "lxc needs a toolchain w/ IPv6, threads"
+comment "lxc needs a toolchain w/ IPv6, threads, largefile"
 	depends on BR2_USE_MMU
-	depends on !BR2_INET_IPV6 || !BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_INET_IPV6 || !BR2_TOOLCHAIN_HAS_THREADS || !BR2_LARGEFILE
