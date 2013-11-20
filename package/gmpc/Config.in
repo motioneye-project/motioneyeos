@@ -3,6 +3,7 @@ config BR2_PACKAGE_GMPC
 	depends on BR2_PACKAGE_LIBGTK2
 	depends on BR2_USE_WCHAR # glib2
 	depends on BR2_TOOLCHAIN_HAS_THREADS # glib2
+	depends on BR2_USE_MMU # glib2
 	depends on BR2_PACKAGE_XORG7
 	select BR2_PACKAGE_LIBGLIB2
 	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE
@@ -21,5 +22,6 @@ config BR2_PACKAGE_GMPC
 	  http://gmpcwiki.sarine.nl/index.php?title=GMPC
 
 comment "gmpc needs a toolchain w/ wchar, threads"
+	depends on BR2_USE_MMU
 	depends on BR2_PACKAGE_XORG7 && BR2_PACKAGE_LIBGTK2
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS

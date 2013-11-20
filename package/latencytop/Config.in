@@ -2,6 +2,7 @@ config BR2_PACKAGE_LATENCYTOP
 	bool "latencytop"
 	depends on BR2_USE_WCHAR # libglib2
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libglib2
+	depends on BR2_USE_MMU # libglib2
 	select BR2_PACKAGE_NCURSES
 	select BR2_PACKAGE_LIBGLIB2
 	help
@@ -21,4 +22,5 @@ config BR2_PACKAGE_LATENCYTOP
 	  http://www.latencytop.org
 
 comment "latencytop needs a toolchain w/ wchar, threads"
+	depends on BR2_USE_MMU
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS

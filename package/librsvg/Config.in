@@ -8,6 +8,7 @@ config BR2_PACKAGE_LIBRSVG
 	select BR2_PACKAGE_GDK_PIXBUF
 	depends on BR2_USE_WCHAR # glib2
 	depends on BR2_TOOLCHAIN_HAS_THREADS # glib2
+	depends on BR2_USE_MMU # glib2
 	depends on BR2_INSTALL_LIBSTDCPP # pango
 	help
 	  The rsvg library is an efficient renderer for Scalable
@@ -16,4 +17,5 @@ config BR2_PACKAGE_LIBRSVG
 	  http://librsvg.sourceforge.net/
 
 comment "librsvg needs a toolchain w/ wchar, threads, C++"
+	depends on BR2_USE_MMU
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || !BR2_INSTALL_LIBSTDCPP

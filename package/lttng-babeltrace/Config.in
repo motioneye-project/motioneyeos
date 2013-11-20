@@ -4,12 +4,10 @@ config BR2_PACKAGE_LTTNG_BABELTRACE
 	select BR2_PACKAGE_UTIL_LINUX
 	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
 	select BR2_PACKAGE_LIBGLIB2
-	# libglib2 needs thread support and gettext which needs wchar support, and
-	# we also depends on util-linux which needs wchar
-	depends on BR2_USE_WCHAR
-	depends on BR2_TOOLCHAIN_HAS_THREADS
-	# util-linux depends on largefile support
-	depends on BR2_LARGEFILE
+	depends on BR2_USE_WCHAR # libglib2, util-linux
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libglib2
+	depends on BR2_USE_MMU # libglib2
+	depends on BR2_LARGEFILE # util-linux
 	help
 	  Babeltrace is part of the LTTng 2.x project.
 
@@ -29,4 +27,5 @@ config BR2_PACKAGE_LTTNG_BABELTRACE
 
 comment "lttng-babeltrace needs a toolchain w/ wchar, threads, largefile"
 	depends on BR2_PACKAGE_LTTNG_TOOLS
+	depends on BR2_USE_MMU
 	depends on !BR2_USE_WCHAR || !BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_THREADS
