@@ -11,7 +11,7 @@ Index: a/Makefile
 ===================================================================
 --- a/Makefile
 +++ b/Makefile
-@@ -41,7 +41,7 @@
+@@ -46,7 +46,7 @@
  
  # options
  override CPPFLAGS += -Iinc/
