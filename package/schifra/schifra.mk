@@ -23,7 +23,7 @@ endef
 define SCHIFRA_INSTALL_EXAMPLES
 	cd $(@D) && for i in `find -type f -name 'schifra_*' -executable` ; \
 	do \
-		$(INSTALL) -m 0755 -D $$i (TARGET_DIR)/usr/bin/$$i; \
+		$(INSTALL) -m 0755 -D $$i $(TARGET_DIR)/usr/bin/$$i; \
 	done
 endef
 
