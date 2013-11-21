@@ -1,0 +1,27 @@
+Fix build on 64 bits architectures
+
+This upstream patch fixes a warning that, due to -Werror, is causing
+build failures on 64 bits architectures.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+commit ea375582b0bfee93d66608ffc807078ffc48e961
+Author: Simon Newton <nomis52@gmail.com>
+Date:   Wed Oct 30 09:23:49 2013 -0700
+
+    * Avoid a compiler warning
+
+diff --git a/plugins/e131/e131/PreamblePacker.cpp b/plugins/e131/e131/PreamblePacker.cpp
+index ef29e18..8dfcc72 100644
+--- a/plugins/e131/e131/PreamblePacker.cpp
++++ b/plugins/e131/e131/PreamblePacker.cpp
+@@ -77,7 +77,8 @@ const uint8_t *PreamblePacker::Pack(const PDUBlock<PDU> &pdu_block,
+   if (!m_send_buffer)
+     Init();
+ 
+-  unsigned int size = MAX_DATAGRAM_SIZE - sizeof(ACN_HEADER);
++  unsigned int size = MAX_DATAGRAM_SIZE -
++      static_cast<unsigned int>(sizeof(ACN_HEADER));
+   if (!pdu_block.Pack(m_send_buffer + sizeof(ACN_HEADER), &size)) {
+     OLA_WARN << "Failed to pack E1.31 PDU";
+     return NULL;
