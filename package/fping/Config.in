@@ -1,0 +1,8 @@
+config BR2_PACKAGE_FPING
+	bool "fping"
+	help
+	  fping is a program to send ICMP echo probes to network hosts,
+	  similar to ping, but much better performing when pinging
+	  multiple hosts.
+
+	  http://fping.org/
