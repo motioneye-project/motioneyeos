@@ -73,7 +73,7 @@ define OPENSSL_CONFIGURE_CMDS
 			--prefix=/usr \
 			--openssldir=/etc/ssl \
 			--libdir=/lib \
-			threads \
+			$(if $(BR2_TOOLCHAIN_HAS_THREADS),threads,no-threads) \
 			$(if $(BR2_PREFER_STATIC_LIB),no-shared,shared) \
 			no-idea \
 			no-rc5 \
