@@ -19,7 +19,8 @@ BEECRYPT_CONF_ENV = \
 
 BEECRYPT_CONF_OPT = \
 		--without-java \
-		--without-python
+		--without-python \
+		--disable-openmp
 
 ifeq ($(BR2_PACKAGE_ICU),y)
 # C++ support needs icu
