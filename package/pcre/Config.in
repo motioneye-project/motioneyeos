@@ -19,4 +19,16 @@ config BR2_PACKAGE_PCRE_32
 	help
 	  This option builds the 32-bits pcre library, i.e 'libpcre32'
 
+config BR2_PACKAGE_PCRE_UTF
+	bool "UTF-8/16/32 support in pcre"
+	help
+	  This option builds the pcre library with UTF-8/16/32 support
+
+config BR2_PACKAGE_PCRE_UCP
+	bool "Unicode properties support in pcre"
+	select BR2_PACKAGE_PCRE_UTF
+	help
+	  This option builds the pcre library with Unicode properties
+	  support (implies UTF-8/16/32 support)'
+
 endif
