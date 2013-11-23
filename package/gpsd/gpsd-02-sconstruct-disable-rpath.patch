@@ -2,14 +2,13 @@ Disable addition of RPATH to the generated libraries
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 
-Index: b/SConstruct
-===================================================================
---- a/SConstruct
-+++ b/SConstruct
-@@ -273,8 +273,6 @@
-     env.Prepend(LIBPATH=[installdir('libdir')])
- else:
-     env.Prepend(LIBPATH=[env["sysroot"] + installdir('libdir')])
+diff -Nurp a/SConstruct b/SConstruct
+--- a/SConstruct	2013-11-22 13:10:01.000000000 +0000
++++ b/SConstruct	2013-11-23 11:26:57.698486777 +0000
+@@ -287,8 +287,6 @@ def installdir(dir, add_destdir=True):
+ # Honor the specified installation prefix in link paths.
+ if env["sysroot"]:
+     env.Prepend(LIBPATH=[env["sysroot"] + installdir('libdir', add_destdir=False)])
 -if env["shared"]:
 -    env.Prepend(RPATH=[installdir('libdir')])
  
