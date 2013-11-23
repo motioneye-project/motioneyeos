@@ -48,6 +48,14 @@ else
 NUT_CONF_OPT += --without-cgi
 endif
 
+# libltdl (libtool) is needed for nut-scanner
+ifeq ($(BR2_PACKAGE_LIBTOOL),y)
+NUT_DEPENDENCIES += libtool
+NUT_CONF_OPT += --with-libltdl
+else
+NUT_CONF_OPT += --without-libltdl
+endif
+
 ifeq ($(BR2_PACKAGE_LIBUSB_COMPAT),y)
 NUT_DEPENDENCIES += libusb-compat
 NUT_CONF_OPT += --with-usb
