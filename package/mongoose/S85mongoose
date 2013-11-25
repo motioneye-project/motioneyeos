@@ -28,12 +28,12 @@ case "$1" in
   restart|force-reload)
 	echo -n "Restarting $DESC: "
 	start-stop-daemon -K -x "$DAEMON"
+	sleep 1
 	start-stop-daemon -S -x "$DAEMON" -b -- $OPTIONS
 	echo "$NAME."
 	;;
   *)
-	N=/etc/init.d/$NAME
-	echo "Usage: $N {start|stop|restart|force-reload}" >&2
+	echo "Usage: $0 {start|stop|restart|force-reload}" >&2
 	exit 1
 	;;
 esac
