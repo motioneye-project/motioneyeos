@@ -1,0 +1,32 @@
+Just assume ICONV_DIR is fine since we pass the correct parameters
+to configure.
+Otherwise configure will try to guess on absolute directories and
+sometimes messes up on some weird edge conditions.
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+diff -Nura php-5.3.27.orig/configure php-5.3.27/configure
+--- php-5.3.27.orig/configure	2013-11-26 09:33:30.874253800 -0300
++++ php-5.3.27/configure	2013-11-26 09:41:41.495363637 -0300
+@@ -48212,20 +48212,7 @@
+ 
+ 
+   if test "$iconv_avail" != "no"; then
+-    if test -z "$ICONV_DIR"; then
+-      for i in /usr/local /usr; do
+-        if test -f "$i/include/iconv.h" || test -f "$i/include/giconv.h"; then
+-          PHP_ICONV_PREFIX="$i"
+-          break
+-        fi
+-      done
+-      if test -z "$PHP_ICONV_PREFIX"; then
+-        PHP_ICONV_PREFIX="/usr"
+-      fi
+-    else
+-      PHP_ICONV_PREFIX="$ICONV_DIR"
+-    fi
+-
++    PHP_ICONV_PREFIX="$ICONV_DIR"
+     CFLAGS="-I$PHP_ICONV_PREFIX/include $CFLAGS"
+     LDFLAGS="-L$PHP_ICONV_PREFIX/$PHP_LIBDIR $LDFLAGS"
+ 
