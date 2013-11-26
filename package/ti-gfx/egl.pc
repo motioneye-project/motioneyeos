@@ -8,4 +8,4 @@ Description: TI Graphics SDK implementation of EGL
 Version: 1.9.2188537
 Requires:
 Libs: -L${libdir} -lEGL -lGLESv2 -lIMGegl
-Cflags: -I{includedir}/EGL/ -I${includedir}
+Cflags: -I${includedir}/EGL/ -I${includedir}

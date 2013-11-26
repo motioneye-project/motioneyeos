@@ -8,5 +8,5 @@ Description: ARM Mali implementation of EGL
 Version: 1.4
 Requires:
 Libs: -L${libdir} -lEGL -lGLESv2 -lUMP
-Cflags: -I{includedir}/EGL/ -I${includedir}
+Cflags: -I${includedir}/EGL/ -I${includedir}
 
