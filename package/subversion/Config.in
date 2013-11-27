@@ -3,6 +3,7 @@ config BR2_PACKAGE_SUBVERSION
 	select BR2_PACKAGE_APR_UTIL
 	# apr really needs shared library support
 	depends on !BR2_PREFER_STATIC_LIB
+	depends on BR2_USE_MMU # apr
 	select BR2_PACKAGE_NEON
 	select BR2_PACKAGE_NEON_XML
 	help

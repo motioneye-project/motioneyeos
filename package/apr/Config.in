@@ -2,6 +2,7 @@ config BR2_PACKAGE_APR
 	bool "apr"
 	# apr really needs shared library support
 	depends on !BR2_PREFER_STATIC_LIB
+	depends on BR2_USE_MMU # fork() in apr_proc_fork()
 	help
 	  The mission of the Apache Portable Runtime (APR) project is to create
 	  and maintain software libraries that provide a predictable and

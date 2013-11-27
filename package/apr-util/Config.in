@@ -7,6 +7,7 @@ config BR2_PACKAGE_APR_UTIL
 	select BR2_PACKAGE_ZLIB
 	# apr really needs shared library support
 	depends on !BR2_PREFER_STATIC_LIB
+	depends on BR2_USE_MMU # apr
 	help
 	  The utility library for the apache runtime project
 
