@@ -2,10 +2,6 @@
 BR2_mips64=y
 BR2_MIPS_NABI64=y
 
-# Toolchain
-# uClibc dynamic loader seems broken for mips64
-BR2_PREFER_STATIC_LIB=y
-
 # Filesystem
 BR2_TARGET_ROOTFS_EXT2=y
 # BR2_TARGET_ROOTFS_TAR is not set
