@@ -19,6 +19,11 @@ APR_CONF_ENV = \
 	apr_cv_mutex_recursive=yes
 APR_CONFIG_SCRIPTS = apr-1-config
 
+# Doesn't even try to guess when cross compiling
+ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),y)
+APR_CONF_ENV += apr_cv_pthreads_lib="-lpthread"
+endif
+
 define APR_CLEANUP_UNNEEDED_FILES
 	$(RM) -rf $(TARGET_DIR)/usr/build-1/
 endef
