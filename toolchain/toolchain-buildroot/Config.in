@@ -5,6 +5,7 @@ source "package/linux-headers/Config.in.host"
 
 choice
 	prompt "C library"
+	default BR2_TOOLCHAIN_BUILDROOT_EGLIBC if BR2_mips64 || BR2_mips64el
 
 config BR2_TOOLCHAIN_BUILDROOT_UCLIBC
 	bool "uClibc"
