@@ -21,3 +21,9 @@ config BR2_PACKAGE_ECRYPTFS_UTILS
 	  for another method.
 
 	  http://ecryptfs.org
+
+comment "ecryptfs-utils needs a toolchain w/ largefile, threads"
+	depends on !BR2_avr32 && !BR2_microblaze
+	depends on BR2_PACKAGE_LIBNSPR_ARCH_SUPPORT
+	depends on BR2_USE_MMU
+	depends on !BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_THREADS
