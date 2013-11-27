@@ -16,7 +16,8 @@ DROPWATCH_LICENSE_FILES = COPYING
 #
 # Also: always need to add -liberty to hardcoded LDFLAGS for avr32
 DROPWATCH_LDFLAGS = \
-	$(TARGET_LDFLAGS) -lbfd -liberty -lreadline -lnl-3 -lnl-genl-3
+	$(TARGET_LDFLAGS) -lbfd -liberty -lreadline -lnl-3 -lnl-genl-3 \
+		-lpthread -lncurses -lm
 
 ifeq ($(BR2_NEEDS_GETTEXT_IF_LOCALE),y)
 DROPWATCH_LDFLAGS += -lintl
