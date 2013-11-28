@@ -57,6 +57,7 @@ HOST_GDB_PRE_PATCH_HOOKS += GDB_XTENSA_PRE_PATCH
 endif
 
 GDB_CONF_ENV = \
+	ac_cv_prog_MAKEINFO=missing \
 	ac_cv_type_uintptr_t=yes \
 	gt_cv_func_gettext_libintl=yes \
 	ac_cv_func_dcgettext=yes \
