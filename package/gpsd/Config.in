@@ -34,6 +34,7 @@ config BR2_PACKAGE_GPSD_OLDSTYLE
 config BR2_PACKAGE_GPSD_PROFILING
 	bool "profiling support"
 	depends on BR2_TOOLCHAIN_USES_GLIBC
+	depends on !BR2_aarch64
 
 comment "profiling support not available with uClibc-based toolchain"
 	depends on !BR2_TOOLCHAIN_USES_GLIBC
