@@ -385,6 +385,7 @@ config BR2_PACKAGE_QT_OPENSSL
 
 config BR2_PACKAGE_QT_SCRIPT
 	bool "Script Module"
+	depends on BR2_PACKAGE_QT_ARCH_SUPPORTS_WEBKIT
 	default y
 	help
 	  Build the Qt Script module.
