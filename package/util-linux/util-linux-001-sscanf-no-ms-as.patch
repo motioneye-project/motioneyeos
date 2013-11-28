@@ -124,7 +124,7 @@ ported to util-linux-2.23.2
  			"%jd"		/* (4) used */
  			"%d",		/* priority */
  
-+#ifndef HAVE_SCANF_MS_MODIFIER
++#ifdef HAVE_SCANF_MS_MODIFIER
  			&src,
  			&fs->swaptype,
 +#else
