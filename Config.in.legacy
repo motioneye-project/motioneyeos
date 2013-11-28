@@ -101,6 +101,18 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2013.11"
 
+config BR2_PACKAGE_LVM2_DMSETUP_ONLY
+	bool "lvm2's 'dmsetup only' option removed"
+	select BR2_LEGACY
+	help
+	  The BR2_PACKAGE_LVM2_DMSETUP_ONLY was a negative option, which
+	  led to problems with other packages that need the full lvm2
+	  suite. Therefore, the option has been replaced with the positive
+	  BR2_PACKAGE_LVM2_STANDARD_INSTALL option.
+
+# Note: BR2_PACKAGE_LVM2_DMSETUP_ONLY is still referenced in package/lvm2/Config.in
+# in order to automatically propagate old configs
+
 config BR2_PACKAGE_QT_JAVASCRIPTCORE
 	bool "qt javascriptcore option removed"
 	select BR2_LEGACY

@@ -38,7 +38,7 @@ else
 LVM2_CONF_OPT += --disable-readline
 endif
 
-ifeq ($(BR2_PACKAGE_LVM2_DMSETUP_ONLY),y)
+ifeq ($(BR2_PACKAGE_LVM2_STANDARD_INSTALL),)
 LVM2_MAKE_OPT = device-mapper
 LVM2_INSTALL_STAGING_OPT = DESTDIR=$(STAGING_DIR) install_device-mapper
 LVM2_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install_device-mapper
