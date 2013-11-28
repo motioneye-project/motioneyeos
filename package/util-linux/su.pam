@@ -1,0 +1,13 @@
+auth		sufficient	pam_rootok.so
+auth		required	pam_wheel.so use_uid
+auth		required	pam_env.so
+auth		required	pam_unix.so nullok
+
+account		required	pam_unix.so
+
+password	required	pam_unix.so nullok
+
+session		required	pam_limits.so
+session		required	pam_env.so
+session		required	pam_unix.so
+session		optional	pam_lastlog.so
