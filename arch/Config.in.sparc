@@ -25,12 +25,6 @@ config BR2_ENDIAN
 
 config BR2_GCC_TARGET_TUNE
 	default "v8"		if BR2_sparc_v8
-	default "v9"		if BR2_sparc_v9
-	default "v9"		if BR2_sparc_v9a
-	default "v9"		if BR2_sparc_v9b
-	default "ultrasparc"	if BR2_sparc_ultrasparc
-	default "ultrasparc3"	if BR2_sparc_ultrasparc3
-	default "niagara"	if BR2_sparc_niagara
 
 config BR2_GCC_TARGET_CPU
 	default "sparchfleon"	if BR2_sparc_sparchfleon
