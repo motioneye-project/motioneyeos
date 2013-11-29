@@ -1,5 +1,6 @@
 config BR2_PACKAGE_LIBPFM4
 	bool "libpfm4"
+	depends on !BR2_avr32 # no perf_event_open
 	help
 	  A helper library to help encode Performance Events to use with
 	  Operating system kernels performance monitoring interfaces.
