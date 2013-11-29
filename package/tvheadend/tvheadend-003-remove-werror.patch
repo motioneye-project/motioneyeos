@@ -1,0 +1,15 @@
+tvheadend: remove -Werror from CFLAGS
+
+Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+
+--- tvheadend-2b649954346aa2e9c81834d500a25c528f31f829/Makefile.orig	2013-11-28 15:52:52.284041848 +0000
++++ tvheadend-2b649954346aa2e9c81834d500a25c528f31f829/Makefile	2013-11-28 15:53:03.715220194 +0000
+@@ -27,7 +27,7 @@ PROG    := $(BUILDDIR)/tvheadend
+ # Common compiler flags
+ #
+ 
+-CFLAGS  += -Wall -Werror -Wwrite-strings -Wno-deprecated-declarations
++CFLAGS  += -Wall -Wwrite-strings -Wno-deprecated-declarations
+ CFLAGS  += -Wmissing-prototypes -fms-extensions
+ CFLAGS  += -g -funsigned-char -O2 
+ CFLAGS  += -D_FILE_OFFSET_BITS=64
