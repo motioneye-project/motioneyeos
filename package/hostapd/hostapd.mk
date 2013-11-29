@@ -10,13 +10,14 @@ HOSTAPD_SUBDIR = hostapd
 HOSTAPD_CONFIG = $(HOSTAPD_DIR)/$(HOSTAPD_SUBDIR)/.config
 HOSTAPD_DEPENDENCIES = libnl
 HOSTAPD_CFLAGS = $(TARGET_CFLAGS) -I$(STAGING_DIR)/usr/include/libnl3/
-HOSTAPD_LDFLAGS = $(TARGET_LDFLAGS)
 HOSTAPD_LICENSE = GPLv2/BSD-3c
 HOSTAPD_LICENSE_FILES = README
 
-# libnl needs -lm (for rint) if linking statically
+# libnl-3 needs -lm (for rint) and -lpthread if linking statically
+# And library order matters hence stick -lnl-3 first since it's appended
+# in the hostapd Makefiles as in LIBS+=-lnl-3 ... thus failing
 ifeq ($(BR2_PREFER_STATIC_LIB),y)
-HOSTAPD_LDFLAGS += -lm
+HOSTAPD_LIBS += -lnl-3 -lm -lpthread
 endif
 
 define HOSTAPD_LIBNL_CONFIG
@@ -93,7 +94,7 @@ endef
 
 define HOSTAPD_BUILD_CMDS
 	$(TARGET_MAKE_ENV) CFLAGS="$(HOSTAPD_CFLAGS)" \
-		LDFLAGS="$(TARGET_LDFLAGS)" \
+		LDFLAGS="$(TARGET_LDFLAGS)" LIBS="$(HOSTAPD_LIBS)" \
 		$(MAKE) CC="$(TARGET_CC)" -C $(@D)/$(HOSTAPD_SUBDIR)
 endef
 
