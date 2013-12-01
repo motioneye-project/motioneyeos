@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-DVB_APPS_VERSION        = 83c746462ccb
+DVB_APPS_VERSION        = be76da69f250
 DVB_APPS_SITE           = http://linuxtv.org/hg/dvb-apps
 DVB_APPS_SITE_METHOD    = hg
 
