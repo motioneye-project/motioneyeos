@@ -1,9 +1,8 @@
 01-kconfig-kernel-to-buildroot.patch
-02-cpp-comments-to-c-comments.patch
 06-br-build-system-integration.patch
-09-implement-kconfig-probability.patch
 10-br-build-system.patch
 11-use-mktemp-for-lxdialog.patch
 12-fix-glade-file-path.patch
 14-support-out-of-tree-config.patch
 15-fix-qconf-moc-rule.patch
+16-fix-space-to-de-select-options.patch

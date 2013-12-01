@@ -19,11 +19,6 @@ config BR2_PACKAGE_CONNMAN
 
 if BR2_PACKAGE_CONNMAN
 
-config BR2_PACKAGE_CONNMAN_THREADS
-	bool "enable threading support"
-	depends on BR2_TOOLCHAIN_HAS_THREADS
-	default y
-
 config BR2_PACKAGE_CONNMAN_ETHERNET
 	bool "enable Ethernet support"
 	default y
@@ -38,8 +33,13 @@ config BR2_PACKAGE_CONNMAN_BLUETOOTH
 config BR2_PACKAGE_CONNMAN_LOOPBACK
 	bool "enable loopback support"
 
-config BR2_PACKAGE_CONNMAN_NTPD
-	bool "enable ntpd support"
+config BR2_PACKAGE_CONNMAN_NEARD
+	bool "enable neard support"
+	select BR2_PACKAGE_NEARD
+
+config BR2_PACKAGE_CONNMAN_OFONO
+	bool "enable ofono support"
+	select BR2_PACKAGE_OFONO
 
 config BR2_PACKAGE_CONNMAN_DEBUG
 	bool "enable compiling with debugging information"

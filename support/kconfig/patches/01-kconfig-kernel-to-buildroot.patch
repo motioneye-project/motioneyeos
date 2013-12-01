@@ -25,7 +25,7 @@ Index: b/mconf.c
 +++ b/mconf.c
 @@ -178,9 +178,9 @@
  	"Arrow keys navigate the menu.  "
- 	"<Enter> selects submenus --->.  "
+ 	"<Enter> selects submenus ---> (or empty submenus ----).  "
  	"Highlighted letters are hotkeys.  "
 -	"Pressing <Y> includes, <N> excludes, <M> modularizes features.  "
 +	"Pressing <Y> selectes a feature, while <N> will exclude a feature.  "
@@ -39,10 +39,10 @@ Index: b/zconf.tab.c_shipped
 ===================================================================
 --- a/zconf.tab.c_shipped
 +++ b/zconf.tab.c_shipped
-@@ -2259,7 +2259,7 @@
- 	modules_sym = sym_lookup(NULL, 0);
- 	modules_sym->type = S_BOOLEAN;
- 	modules_sym->flags |= SYMBOL_AUTO;
+@@ -2297,7 +2297,7 @@
+ 
+ 	sym_init();
+ 	_menu_init();
 -	rootmenu.prompt = menu_add_prompt(P_MENU, "Linux Kernel Configuration", NULL);
 +	rootmenu.prompt = menu_add_prompt(P_MENU, "Buildroot Configuration", NULL);
  
@@ -52,10 +52,10 @@ Index: b/zconf.y
 ===================================================================
 --- a/zconf.y
 +++ b/zconf.y
-@@ -496,7 +496,7 @@
- 	modules_sym = sym_lookup(NULL, 0);
- 	modules_sym->type = S_BOOLEAN;
- 	modules_sym->flags |= SYMBOL_AUTO;
+@@ -493,7 +493,7 @@
+ 
+ 	sym_init();
+ 	_menu_init();
 -	rootmenu.prompt = menu_add_prompt(P_MENU, "Linux Kernel Configuration", NULL);
 +	rootmenu.prompt = menu_add_prompt(P_MENU, "Buildroot Configuration", NULL);
  
@@ -65,7 +65,7 @@ Index: b/confdata.c
 ===================================================================
 --- a/confdata.c
 +++ b/confdata.c
-@@ -25,7 +26,7 @@
+@@ -25,7 +25,7 @@
  static const char *conf_filename;
  static int conf_lineno, conf_warnings, conf_unsaved;
  
@@ -74,7 +74,7 @@ Index: b/confdata.c
  
  static void conf_warning(const char *fmt, ...)
  {
-@@ -63,7 +64,7 @@
+@@ -63,7 +63,7 @@
  
  const char *conf_get_configname(void)
  {

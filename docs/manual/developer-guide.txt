@@ -11,3 +11,5 @@ include::adding-packages.txt[]
 include::patch-policy.txt[]
 
 include::download-infra.txt[]
+
+include::debugging-buildroot.txt[]

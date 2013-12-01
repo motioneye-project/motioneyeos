@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-ULOGD_VERSION = 2.0.2
+ULOGD_VERSION = 2.0.3
 ULOGD_SOURCE = ulogd-$(ULOGD_VERSION).tar.bz2
 ULOGD_SITE = http://www.netfilter.org/projects/ulogd/files
 ULOGD_CONF_OPT = --with-dbi=no --with-pgsql=no

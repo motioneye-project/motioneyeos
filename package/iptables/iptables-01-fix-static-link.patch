@@ -14,6 +14,7 @@ If libnetfilter_conntrack is not found, @libnetfilter_conntrack_CFLAGS@
 and @libnetfilter_conntrack_LIBS@ (and their ${} ones) should be empty,
 therefore producing no harm to include unconditionally.
 
+[Gustavo: update for iptables 1.4.21]
 Reported-and-tested-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
 Signed-off-by: Florian Westphal <fw@strlen.de>
 ---
@@ -25,8 +26,8 @@ index 14e7c57..780e715 100644
  kinclude_CPPFLAGS  = @kinclude_CPPFLAGS@
  
  AM_CFLAGS       = ${regular_CFLAGS}
--AM_CPPFLAGS     = ${regular_CPPFLAGS} -I${top_builddir}/include -I${top_builddir} -I${top_srcdir}/include ${kinclude_CPPFLAGS}
-+AM_CPPFLAGS     = ${regular_CPPFLAGS} -I${top_builddir}/include -I${top_builddir} -I${top_srcdir}/include ${kinclude_CPPFLAGS} @libnetfilter_conntrack_CFLAGS@
+-AM_CPPFLAGS     = ${regular_CPPFLAGS} -I${top_builddir}/include -I${top_builddir} -I${top_srcdir}/include ${kinclude_CPPFLAGS} ${CPPFLAGS}
++AM_CPPFLAGS     = ${regular_CPPFLAGS} -I${top_builddir}/include -I${top_builddir} -I${top_srcdir}/include ${kinclude_CPPFLAGS} ${CPPFLAGS} @libnetfilter_conntrack_CFLAGS@
  AM_DEPFLAGS     = -Wp,-MMD,$(@D)/.$(@F).d,-MT,$@
  AM_LDFLAGS      = @noundef_LDFLAGS@
  

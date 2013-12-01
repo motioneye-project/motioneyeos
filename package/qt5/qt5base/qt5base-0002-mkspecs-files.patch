@@ -14,50 +14,17 @@ Index: b/mkspecs/devices/linux-buildroot-g++/qmake.conf
 ===================================================================
 --- /dev/null
 +++ b/mkspecs/devices/linux-buildroot-g++/qmake.conf
-@@ -0,0 +1,44 @@
-+MAKEFILE_GENERATOR      = UNIX
-+CONFIG                 += incremental gdb_dwarf_index
-+QMAKE_INCREMENTAL_STYLE = sublib
-+
-+include(../../common/linux.conf)
-+include(../../common/gcc-base-unix.conf)
-+include(../../common/g++-unix.conf)
-+
-+load(device_config)
-+
-+QT_QPA_DEFAULT_PLATFORM = eglfs
-+
-+BUILDROOT_CROSS_COMPILE =
-+BUILDROOT_COMPILER_CFLAGS =
-+BUILDROOT_COMPILER_CXXFLAGS =
-+BUILDROOT_INCLUDE_PATH =
-+
-+# modifications to g++.conf
-+QMAKE_CC                = $${BUILDROOT_CROSS_COMPILE}gcc
-+QMAKE_CXX               = $${BUILDROOT_CROSS_COMPILE}g++
-+QMAKE_LINK              = $${QMAKE_CXX}
-+QMAKE_LINK_SHLIB        = $${QMAKE_CXX}
-+
-+# modifications to linux.conf
-+QMAKE_AR                = $${BUILDROOT_CROSS_COMPILE}ar cqs
-+QMAKE_OBJCOPY           = $${BUILDROOT_CROSS_COMPILE}objcopy
-+QMAKE_NM                = $${BUILDROOT_CROSS_COMPILE}nm -P
-+QMAKE_STRIP             = $${BUILDROOT_CROSS_COMPILE}strip
+@@ -0,0 +1,11 @@
++include(../common/linux_device_pre.conf)
 +
 +#modifications to gcc-base.conf
 +QMAKE_CFLAGS           += $${BUILDROOT_COMPILER_CFLAGS}
 +QMAKE_CXXFLAGS         += $${BUILDROOT_COMPILER_CXXFLAGS}
 +QMAKE_CXXFLAGS_RELEASE += -O3
-+INCLUDEPATH            += $${BUILDROOT_INCLUDE_PATH}
 +
 +QMAKE_LIBS             += -lrt -lpthread -ldl
 +
-+# device specific glue code
-+EGLFS_PLATFORM_HOOKS_SOURCES =
-+
-+# Sanity check
-+deviceSanityCheckCompiler()
-+
++include(../common/linux_device_post.conf)
 +load(qt_config)
 Index: b/mkspecs/devices/linux-buildroot-g++/qplatformdefs.h
 ===================================================================

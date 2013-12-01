@@ -6,7 +6,7 @@ Index: b/lxdialog/check-lxdialog.sh
 ===================================================================
 --- a/lxdialog/check-lxdialog.sh
 +++ b/lxdialog/check-lxdialog.sh
-@@ -34,7 +34,7 @@
+@@ -36,7 +36,7 @@
  }
  
  # Temp file, try to clean up after us

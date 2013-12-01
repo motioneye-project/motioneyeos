@@ -21,6 +21,50 @@
 ################################################################################
 
 ################################################################################
+# Helper functions to catch start/end of each step
+################################################################################
+
+# Those two functions are called by each step below.
+# They are responsible for calling all hooks defined in
+# $(GLOBAL_INSTRUMENTATION_HOOKS) and pass each of them
+# three arguments:
+#   $1: either 'start' or 'end'
+#   $2: the name of the step
+#   $3: the name of the package
+
+# Start step
+# $1: step name
+define step_start
+	$(foreach hook,$(GLOBAL_INSTRUMENTATION_HOOKS),$(call $(hook),start,$(1),$($(PKG)_NAME))$(sep))
+endef
+
+# End step
+# $1: step name
+define step_end
+	$(foreach hook,$(GLOBAL_INSTRUMENTATION_HOOKS),$(call $(hook),end,$(1),$($(PKG)_NAME))$(sep))
+endef
+
+#######################################
+# Actual steps hooks
+
+# Time steps
+define step_time
+	printf "%s:%-5.5s:%-20.20s: %s\n"           \
+	       "$$(date +%s)" "$(1)" "$(2)" "$(3)"  \
+	       >>"$(BUILD_DIR)/build-time.log"
+endef
+GLOBAL_INSTRUMENTATION_HOOKS += step_time
+
+# User-supplied script
+define step_user
+	@$(foreach user_hook, $(BR2_INSTRUMENTATION_SCRIPTS), \
+		$(USER_HOOKS_EXTRA_ENV) $(user_hook) "$(1)" "$(2)" "$(3)"$(sep))
+endef
+ifneq ($(BR2_INSTRUMENTATION_SCRIPTS),)
+GLOBAL_INSTRUMENTATION_HOOKS += step_user
+endif
+
+################################################################################
 # Implicit targets -- produce a stamp file for each step of a package build
 ################################################################################
 
@@ -55,6 +99,7 @@ endif
 
 # Unpack the archive
 $(BUILD_DIR)/%/.stamp_extracted:
+	@$(call step_start,extract)
 	@$(call MESSAGE,"Extracting")
 	$(Q)mkdir -p $(@D)
 	$($(PKG)_EXTRACT_CMDS)
@@ -62,6 +107,7 @@ $(BUILD_DIR)/%/.stamp_extracted:
 	$(Q)chmod -R +rw $(@D)
 	$(foreach hook,$($(PKG)_POST_EXTRACT_HOOKS),$(call $(hook))$(sep))
 	$(Q)touch $@
+	@$(call step_end,extract)
 
 # Rsync the source directory if the <pkg>_OVERRIDE_SRCDIR feature is
 # used.
@@ -91,6 +137,7 @@ endif
 $(BUILD_DIR)/%/.stamp_patched: NAMEVER = $(RAWNAME)-$($(PKG)_VERSION)
 $(BUILD_DIR)/%/.stamp_patched: PATCH_BASE_DIRS = $($(PKG)_DIR_PREFIX)/$(RAWNAME) $(call qstrip,$(BR2_GLOBAL_PATCH_DIR))/$(RAWNAME)
 $(BUILD_DIR)/%/.stamp_patched:
+	@$(call step_start,patch)
 	@$(call MESSAGE,"Patching")
 	$(foreach hook,$($(PKG)_PRE_PATCH_HOOKS),$(call $(hook))$(sep))
 	$(foreach p,$($(PKG)_PATCH),support/scripts/apply-patches.sh $(@D) $(DL_DIR) $(notdir $(p))$(sep))
@@ -107,31 +154,39 @@ $(BUILD_DIR)/%/.stamp_patched:
 	)
 	$(foreach hook,$($(PKG)_POST_PATCH_HOOKS),$(call $(hook))$(sep))
 	$(Q)touch $@
+	@$(call step_end,patch)
 
 # Configure
 $(BUILD_DIR)/%/.stamp_configured:
+	@$(call step_start,configure)
 	$(foreach hook,$($(PKG)_PRE_CONFIGURE_HOOKS),$(call $(hook))$(sep))
 	@$(call MESSAGE,"Configuring")
 	$($(PKG)_CONFIGURE_CMDS)
 	$(foreach hook,$($(PKG)_POST_CONFIGURE_HOOKS),$(call $(hook))$(sep))
 	$(Q)touch $@
+	@$(call step_end,configure)
 
 # Build
 $(BUILD_DIR)/%/.stamp_built::
+	@$(call step_start,build)
 	@$(call MESSAGE,"Building")
 	$($(PKG)_BUILD_CMDS)
 	$(foreach hook,$($(PKG)_POST_BUILD_HOOKS),$(call $(hook))$(sep))
 	$(Q)touch $@
+	@$(call step_end,build)
 
 # Install to host dir
 $(BUILD_DIR)/%/.stamp_host_installed:
+	@$(call step_start,install-host)
 	@$(call MESSAGE,"Installing to host directory")
 	$($(PKG)_INSTALL_CMDS)
 	$(foreach hook,$($(PKG)_POST_INSTALL_HOOKS),$(call $(hook))$(sep))
 	$(Q)touch $@
+	@$(call step_end,install-host)
 
 # Install to staging dir
 $(BUILD_DIR)/%/.stamp_staging_installed:
+	@$(call step_start,install-staging)
 	@$(call MESSAGE,"Installing to staging directory")
 	$($(PKG)_INSTALL_STAGING_CMDS)
 	$(foreach hook,$($(PKG)_POST_INSTALL_STAGING_HOOKS),$(call $(hook))$(sep))
@@ -143,16 +198,20 @@ $(BUILD_DIR)/%/.stamp_staging_installed:
 				$(addprefix $(STAGING_DIR)/usr/bin/,$($(PKG)_CONFIG_SCRIPTS)) ;\
 	fi
 	$(Q)touch $@
+	@$(call step_end,install-staging)
 
 # Install to images dir
 $(BUILD_DIR)/%/.stamp_images_installed:
+	@$(call step_start,install-image)
 	@$(call MESSAGE,"Installing to images directory")
 	$($(PKG)_INSTALL_IMAGES_CMDS)
 	$(foreach hook,$($(PKG)_POST_INSTALL_IMAGES_HOOKS),$(call $(hook))$(sep))
 	$(Q)touch $@
+	@$(call step_end,install-image)
 
 # Install to target dir
 $(BUILD_DIR)/%/.stamp_target_installed:
+	@$(call step_start,install-target)
 	@$(call MESSAGE,"Installing to target")
 	$(if $(BR2_INIT_SYSTEMD),\
 		$($(PKG)_INSTALL_INIT_SYSTEMD))
@@ -164,6 +223,7 @@ $(BUILD_DIR)/%/.stamp_target_installed:
 		$(RM) -f $(addprefix $(TARGET_DIR)/usr/bin/,$($(PKG)_CONFIG_SCRIPTS)) ; \
 	fi
 	$(Q)touch $@
+	@$(call step_end,install-target)
 
 # Clean package
 $(BUILD_DIR)/%/.stamp_cleaned:
@@ -491,7 +551,7 @@ ifeq ($$($(2)_REDISTRIBUTE),YES)
 ifneq ($$($(2)_SITE_METHOD),local)
 ifneq ($$($(2)_SITE_METHOD),override)
 # Packages that have a tarball need it downloaded and extracted beforehand
-$(1)-legal-info: $(1)-extract $(REDIST_SOURCES_DIR)
+$(1)-legal-info: $(1)-extract $(REDIST_SOURCES_DIR_$(call UPPERCASE,$(5)))
 $(2)_MANIFEST_TARBALL = $$($(2)_SOURCE)
 endif
 endif
@@ -515,23 +575,23 @@ else
 
 # Save license files if defined
 ifeq ($(call qstrip,$$($(2)_LICENSE_FILES)),)
-	@$(call legal-license-nofiles,$$($(2)_RAWNAME))
+	@$(call legal-license-nofiles,$$($(2)_RAWNAME),$(call UPPERCASE,$(5)))
 	@$(call legal-warning-pkg,$$($(2)_RAWNAME),cannot save license ($(2)_LICENSE_FILES not defined))
 else
 # Double dollar signs are really needed here, to catch host packages
 # without explicit HOST_FOO_LICENSE_FILES assignment, also in case they
 # have multiple license files.
-	@$$(foreach F,$$($(2)_LICENSE_FILES),$$(call legal-license-file,$$($(2)_RAWNAME),$$(F),$$($(2)_DIR)/$$(F))$$(sep))
+	@$$(foreach F,$$($(2)_LICENSE_FILES),$$(call legal-license-file,$$($(2)_RAWNAME),$$(F),$$($(2)_DIR)/$$(F),$(call UPPERCASE,$(5)))$$(sep))
 endif # license files
 
 ifeq ($$($(2)_REDISTRIBUTE),YES)
 # Copy the source tarball (just hardlink if possible)
-	@cp -l $(DL_DIR)/$$($(2)_SOURCE) $(REDIST_SOURCES_DIR) 2>/dev/null || \
-	   cp $(DL_DIR)/$$($(2)_SOURCE) $(REDIST_SOURCES_DIR)
+	@cp -l $(DL_DIR)/$$($(2)_SOURCE) $(REDIST_SOURCES_DIR_$(call UPPERCASE,$(5))) 2>/dev/null || \
+	   cp $(DL_DIR)/$$($(2)_SOURCE) $(REDIST_SOURCES_DIR_$(call UPPERCASE,$(5)))
 endif # redistribute
 
 endif # other packages
-	@$(call legal-manifest,$$($(2)_RAWNAME),$$($(2)_VERSION),$$($(2)_LICENSE),$$($(2)_MANIFEST_LICENSE_FILES),$$($(2)_MANIFEST_TARBALL))
+	@$(call legal-manifest,$$($(2)_RAWNAME),$$($(2)_VERSION),$$($(2)_LICENSE),$$($(2)_MANIFEST_LICENSE_FILES),$$($(2)_MANIFEST_TARBALL),$(call UPPERCASE,$(5)))
 endif # ifneq ($(call qstrip,$$($(2)_SOURCE)),)
 	$(foreach hook,$($(2)_POST_LEGAL_INFO_HOOKS),$(call $(hook))$(sep))
 
