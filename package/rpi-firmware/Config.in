@@ -7,3 +7,42 @@ config BR2_PACKAGE_RPI_FIRMWARE
 
 	  https://github.com/raspberrypi/firmware
 
+if BR2_PACKAGE_RPI_FIRMWARE
+
+choice
+	bool "Firmware to boot"
+	default BR2_PACKAGE_RPI_FIRMWARE_DEFAULT
+	help
+	  There are three different firmware files:
+	    - the default firmware, that enables standard GPU features;
+	    - the extended firmware, that enables additional GPU features
+	      (eg. more audio/video codecs);
+	    - the cut-down firmware, for emergency situations, with only
+	      features required to boot a Linux kernel.
+
+config BR2_PACKAGE_RPI_FIRMWARE_DEFAULT
+	bool "default"
+	help
+	  The default firmware, that enables standard GPU features.
+
+config BR2_PACKAGE_RPI_FIRMWARE_X
+	bool "extended ('x', more codecs)"
+	help
+	  The extended firmware, that enables additional GPU features
+	  (eg. more audio/video codecs).
+
+config BR2_PACKAGE_RPI_FIRMWARE_CD
+	bool "cut-down ('cd', emergency)"
+	help
+	  The cut-down firmware, for emergency situations, with only
+	  features required to boot a Linux kernel.
+
+endchoice
+
+config BR2_PACKAGE_RPI_FIRMWARE_BOOT
+	string
+	default ""      if BR2_PACKAGE_RPI_FIRMWARE_DEFAULT
+	default "_x"    if BR2_PACKAGE_RPI_FIRMWARE_X
+	default "_cd"   if BR2_PACKAGE_RPI_FIRMWARE_CD
+
+endif # BR2_PACKAGE_RPI_FIRMWARE
