@@ -1,0 +1,31 @@
+--- a/configure	2013-12-02 12:31:53.257634249 +1100
++++ b/configure	2013-12-02 12:32:17.726085888 +1100
+@@ -6389,6 +6389,16 @@
+ 
+ 
+ fi
++ac_fn_c_check_type "$LINENO" "struct ptrace_peeksiginfo_args" "ac_cv_type_struct_ptrace_peeksiginfo_args" "#include <sys/ptrace.h>
++"
++if test "x$ac_cv_type_struct_ptrace_peeksiginfo_args" = xyes; then :
++
++cat >>confdefs.h <<_ACEOF
++#define HAVE_STRUCT_PTRACE_PEEKSIGINFO_ARGS 1
++_ACEOF
++
++
++fi
+ 
+ 
+ ac_fn_c_check_type "$LINENO" "struct user_desc" "ac_cv_type_struct_user_desc" "#include <asm/ldt.h>
+--- a/config.h.in.orig	2013-12-02 12:44:56.795927681 +1100
++++ b/config.h.in	2013-12-02 12:45:07.524122894 +1100
+@@ -253,6 +253,9 @@
+ /* Define to 1 if `msg_control' is a member of `struct msghdr'. */
+ #undef HAVE_STRUCT_MSGHDR_MSG_CONTROL
+ 
++/* Define to 1 if the system has the type `struct ptrace_peeksiginfo_args'. */
++#undef HAVE_STRUCT_PTRACE_PEEKSIGINFO_ARGS
++
+ /* Define to 1 if the system has the type `struct pt_all_user_regs'. */
+ #undef HAVE_STRUCT_PT_ALL_USER_REGS
+ 
