@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-COREUTILS_VERSION = 8.18
+COREUTILS_VERSION = 8.21
 COREUTILS_SITE = $(BR2_GNU_MIRROR)/coreutils
 COREUTILS_SOURCE = coreutils-$(COREUTILS_VERSION).tar.xz
 COREUTILS_LICENSE = GPLv3+
@@ -53,19 +53,12 @@ COREUTILS_CONF_ENV = ac_cv_c_restrict=no \
 		gl_cv_func_working_mkstemp=yes \
 		gl_cv_func_working_utimes=yes \
 		gl_getline_needs_run_time_check=no \
-		utils_cv_localtime_cache=no
+		utils_cv_localtime_cache=no \
+		PERL=missing
 
 COREUTILS_CONF_OPT = --disable-rpath \
 		--disable-dependency-tracking \
 		--enable-install-program=hostname
-
-define COREUTILS_TOUCH_UNAME_C
-	# ensure uname.c file's timestamp does not change,
-	# so help2man does not run
-	touch -d '2010-01-01' $(@D)/src/uname.c
-endef
-
-COREUTILS_POST_PATCH_HOOKS += COREUTILS_TOUCH_UNAME_C
 
 define COREUTILS_POST_INSTALL
 	# some things go in root rather than usr
