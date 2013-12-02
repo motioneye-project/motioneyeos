@@ -1,0 +1,43 @@
+commit 99cddff73ab4023186bcfca54cbb73051140e15d
+Author: Stefan Bühler <stbuehler@web.de>
+Date:   Wed Nov 13 11:43:33 2013 +0000
+
+    [core] check success of setuid,setgid,setgroups (CVE-2013-4559)
+    
+    From: Stefan Bühler <stbuehler@web.de>
+    
+    git-svn-id: svn://svn.lighttpd.net/lighttpd/branches/lighttpd-1.4.x@2923 152afb58-edef-0310-8abb-c4023f1b3aa9
+
+diff --git a/src/server.c b/src/server.c
+index 2d825bb..e2b42eb 100644
+--- a/src/server.c
++++ b/src/server.c
+@@ -820,8 +820,14 @@ int main (int argc, char **argv) {
+ 		 * to /etc/group
+ 		 * */
+ 		if (NULL != grp) {
+-			setgid(grp->gr_gid);
+-			setgroups(0, NULL);
++			if (-1 == setgid(grp->gr_gid)) {
++				log_error_write(srv, __FILE__, __LINE__, "ss", "setgid failed: ", strerror(errno));
++				return -1;
++			}
++			if (-1 == setgroups(0, NULL)) {
++				log_error_write(srv, __FILE__, __LINE__, "ss", "setgroups failed: ", strerror(errno));
++				return -1;
++			}
+ 			if (srv->srvconf.username->used) {
+ 				initgroups(srv->srvconf.username->ptr, grp->gr_gid);
+ 			}
+@@ -844,7 +850,10 @@ int main (int argc, char **argv) {
+ #ifdef HAVE_PWD_H
+ 		/* drop root privs */
+ 		if (NULL != pwd) {
+-			setuid(pwd->pw_uid);
++			if (-1 == setuid(pwd->pw_uid)) {
++				log_error_write(srv, __FILE__, __LINE__, "ss", "setuid failed: ", strerror(errno));
++				return -1;
++			}
+ 		}
+ #endif
+ #if defined(HAVE_SYS_PRCTL_H) && defined(PR_SET_DUMPABLE)
