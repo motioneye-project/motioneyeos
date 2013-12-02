@@ -112,6 +112,17 @@ endif
 
 UTIL_LINUX_POST_INSTALL_TARGET_HOOKS += UTIL_LINUX_INSTALL_PAMFILES
 
+# Install agetty->getty symlink to avoid breakage when there's no busybox
+ifeq ($(BR2_PACKAGE_UTIL_LINUX_AGETTY),y)
+ifeq ($(BR2_PACKAGE_BUSYBOX),)
+define UTIL_LINUX_GETTY_SYMLINK
+	ln -sf agetty $(TARGET_DIR)/sbin/getty
+endef
+endif
+endif
+
+UTIL_LINUX_POST_INSTALL_TARGET_HOOKS += UTIL_LINUX_GETTY_SYMLINK
+
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
 
