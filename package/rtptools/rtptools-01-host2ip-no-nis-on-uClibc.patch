@@ -1,0 +1,45 @@
+host2ip.c: disable NIS support when building with uClibc
+
+uClibc doesn't have NIS support, so simply disable the fallback.
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ host2ip.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+Index: rtptools-1.20/host2ip.c
+===================================================================
+--- rtptools-1.20.orig/host2ip.c
++++ rtptools-1.20/host2ip.c
+@@ -3,7 +3,16 @@
+ #include <netdb.h>           /* gethostbyname() */
+ #include <netinet/in.h>      /* sockaddr_in */
+ #include <arpa/inet.h>       /* inet_addr() */
++
++#include <features.h>
++#ifndef __UCLIBC__
++#define HAVE_YP
++#endif
++
++#ifdef HAVE_YP
+ #include <rpcsvc/ypclnt.h>   /* YP */
++#endif
++
+ #include <string.h>          /* strlen() added by Akira 12/27/01 */ 
+ #include "sysdep.h"
+ 
+@@ -28,6 +37,7 @@
+   else if ((hep = gethostbyname(host))) {
+     in = *(struct in_addr *)(hep->h_addr_list[0]);
+   }
++#ifdef HAVE_YP
+   /* As a last resort, try YP. */
+   else {
+     static char *domain = 0;  /* YP domain */
+@@ -39,5 +49,6 @@
+       in.s_addr = inet_addr(value);
+     }
+   }
++#endif
+   return in;
+ } /* host2ip */
