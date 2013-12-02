@@ -1,0 +1,16 @@
+Make it cross-compile happy the hard way, there's no clean way.
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+diff -Nura thrift-0.9.1.orig/aclocal/ax_lib_event.m4 thrift-0.9.1/aclocal/ax_lib_event.m4
+--- thrift-0.9.1.orig/aclocal/ax_lib_event.m4	2013-08-15 11:04:29.000000000 -0300
++++ thrift-0.9.1/aclocal/ax_lib_event.m4	2013-10-07 20:40:44.076435613 -0300
+@@ -75,7 +75,7 @@
+           AC_LANG_PUSH([C])
+           dnl This can be changed to AC_LINK_IFELSE if you are cross-compiling,
+           dnl but then the version cannot be checked.
+-          AC_RUN_IFELSE([AC_LANG_PROGRAM([[
++          AC_LINK_IFELSE([AC_LANG_PROGRAM([[
+           #include <sys/types.h>
+           #include <event.h>
+           ]], [[
