@@ -9,7 +9,7 @@
 # avoid licensing issues.
 # BerkeleyDB version 6 or above should be provided by a dedicated
 # package instead.
-BERKELEYDB_VERSION = 5.3.21
+BERKELEYDB_VERSION = 5.3.28
 BERKELEYDB_SITE = http://download.oracle.com/berkeley-db
 BERKELEYDB_SOURCE = db-$(BERKELEYDB_VERSION).NC.tar.gz
 BERKELEYDB_SUBDIR = build_unix
