@@ -8,6 +8,8 @@ NCURSES_VERSION = 5.9
 NCURSES_SITE = $(BR2_GNU_MIRROR)/ncurses
 NCURSES_INSTALL_STAGING = YES
 NCURSES_DEPENDENCIES = host-ncurses
+HOST_NCURSES_DEPENDENCIES =
+NCURSES_PROGS = clear infocmp tabs tic toe tput tset
 NCURSES_LICENSE = MIT with advertising clause
 NCURSES_LICENSE_FILES = README
 NCURSES_CONFIG_SCRIPTS = ncurses5-config
@@ -17,7 +19,6 @@ NCURSES_CONF_OPT = \
 	--without-cxx \
 	--without-cxx-binding \
 	--without-ada \
-	--without-progs \
 	--without-tests \
 	--disable-big-core \
 	--without-profile \
@@ -27,12 +28,17 @@ NCURSES_CONF_OPT = \
 	--enable-const \
 	--enable-overwrite \
 	--enable-pc-files \
+	$(if $(BR2_PACKAGE_NCURSES_TARGET_PROGS),,--without-progs) \
 	$(if $(BR2_HAVE_DOCUMENTATION),,--without-manpages)
+
+# Install after busybox for the full-blown versions
+ifeq ($(BR2_PACKAGE_BUSYBOX),y)
+	NCURSES_DEPENDENCIES += busybox
+endif
 
 ifneq ($(BR2_ENABLE_DEBUG),y)
 NCURSES_CONF_OPT += --without-debug
 endif
-
 
 define NCURSES_BUILD_CMDS
 	$(MAKE1) -C $(@D) DESTDIR=$(STAGING_DIR)
@@ -60,12 +66,23 @@ endif
 
 endif
 
+ifeq ($(BR2_PACKAGE_NCURSES_TARGET_PROGS),y)
+define NCURSES_INSTALL_TARGET_PROGS
+	for x in $(NCURSES_PROGS); do \
+		$(INSTALL) -m 0755 $(NCURSES_DIR)/progs/$$x \
+			$(TARGET_DIR)/usr/bin/$$x; \
+	done
+	ln -sf tset $(TARGET_DIR)/usr/bin/reset
+endef
+endif
+
 define NCURSES_INSTALL_TARGET_CMDS
 	mkdir -p $(TARGET_DIR)/usr/lib
 	$(if $(BR2_PREFER_STATIC_LIB),,cp -dpf $(NCURSES_DIR)/lib/libncurses.so* $(TARGET_DIR)/usr/lib/)
 	$(NCURSES_INSTALL_TARGET_PANEL)
 	$(NCURSES_INSTALL_TARGET_FORM)
 	$(NCURSES_INSTALL_TARGET_MENU)
+	$(NCURSES_INSTALL_TARGET_PROGS)
 	ln -snf /usr/share/terminfo $(TARGET_DIR)/usr/lib/terminfo
 	mkdir -p $(TARGET_DIR)/usr/share/terminfo/x
 	cp -dpf $(STAGING_DIR)/usr/share/terminfo/x/xterm $(TARGET_DIR)/usr/share/terminfo/x
