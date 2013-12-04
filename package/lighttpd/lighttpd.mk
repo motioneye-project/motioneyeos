@@ -98,7 +98,7 @@ endef
 
 define LIGHTTPD_INSTALL_INIT_SYSTEMD
 	[ -f $(TARGET_DIR)/etc/systemd/system/lighttpd.service ] || \
-		$(INSTALL) -D -m 755 package/lighttpd/lighttpd.service \
+		$(INSTALL) -D -m 644 package/lighttpd/lighttpd.service \
 			$(TARGET_DIR)/etc/systemd/system/lighttpd.service
 
 	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
