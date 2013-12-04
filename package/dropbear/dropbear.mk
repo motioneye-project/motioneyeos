@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-DROPBEAR_VERSION = 2013.60
+DROPBEAR_VERSION = 2013.62
 DROPBEAR_SITE = http://matt.ucc.asn.au/dropbear/releases
 DROPBEAR_SOURCE = dropbear-$(DROPBEAR_VERSION).tar.bz2
 DROPBEAR_TARGET_BINS = dbclient dropbearkey dropbearconvert scp ssh
@@ -24,8 +24,8 @@ endef
 
 DROPBEAR_POST_EXTRACT_HOOKS += DROPBEAR_FIX_XAUTH
 
-define DROPBEAR_DISABLE_REVERSE_DNS
-	$(SED) 's:\(#define DO_HOST_LOOKUP\):/*\1 */:' $(@D)/options.h
+define DROPBEAR_ENABLE_REVERSE_DNS
+	$(SED) 's:.*\(#define DO_HOST_LOOKUP\).*:\1:' $(@D)/options.h
 endef
 
 define DROPBEAR_BUILD_SMALL
@@ -43,6 +43,14 @@ define DROPBEAR_DISABLE_STANDALONE
 	$(SED) 's:\(#define NON_INETD_MODE\):/*\1 */:' $(@D)/options.h
 endef
 
+define DROPBEAR_INSTALL_INIT_SYSTEMD
+	$(INSTALL) -D -m 644 package/dropbear/dropbear.service \
+		$(TARGET_DIR)/etc/systemd/system/dropbear.service
+	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
+	ln -fs ../dropbear.service \
+		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/dropbear.service
+endef
+
 ifeq ($(BR2_USE_MMU),y)
 define DROPBEAR_INSTALL_INIT_SYSV
 	$(INSTALL) -D -m 755 package/dropbear/S50dropbear \
@@ -52,8 +60,8 @@ else
 DROPBEAR_POST_EXTRACT_HOOKS += DROPBEAR_DISABLE_STANDALONE
 endif
 
-ifeq ($(BR2_PACKAGE_DROPBEAR_DISABLE_REVERSEDNS),y)
-DROPBEAR_POST_EXTRACT_HOOKS += DROPBEAR_DISABLE_REVERSE_DNS
+ifeq ($(BR2_PACKAGE_DROPBEAR_DISABLE_REVERSEDNS),)
+DROPBEAR_POST_EXTRACT_HOOKS += DROPBEAR_ENABLE_REVERSE_DNS
 endif
 
 ifeq ($(BR2_PACKAGE_DROPBEAR_SMALL),y)

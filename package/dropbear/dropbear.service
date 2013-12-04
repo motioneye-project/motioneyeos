@@ -1,0 +1,10 @@
+[Unit]
+Description=Dropbear SSH daemon
+After=syslog.target network.target auditd.service
+
+[Service]
+ExecStart=/usr/sbin/dropbear -F -R
+ExecReload=/bin/kill -HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target
