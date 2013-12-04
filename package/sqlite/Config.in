@@ -6,9 +6,10 @@ config BR2_PACKAGE_SQLITE
 
 	  http://www.sqlite.org/
 
+if BR2_PACKAGE_SQLITE
+
 config BR2_PACKAGE_SQLITE_READLINE
 	bool "Command-line editing"
-	depends on BR2_PACKAGE_SQLITE
 	select BR2_PACKAGE_NCURSES
 	select BR2_PACKAGE_READLINE
 	help
@@ -16,7 +17,6 @@ config BR2_PACKAGE_SQLITE_READLINE
 
 config BR2_PACKAGE_SQLITE_STAT3
 	bool "Additional query optimizations (stat3)"
-	depends on BR2_PACKAGE_SQLITE
 	help
 	  Adds additional logic to the ANALYZE command and to the query
 	  planner that can help SQLite to choose a better query plan under
@@ -24,7 +24,6 @@ config BR2_PACKAGE_SQLITE_STAT3
 
 config BR2_PACKAGE_SQLITE_ENABLE_FTS3
 	bool "Enable version 3 of the full-text search engine"
-	depends on BR2_PACKAGE_SQLITE
 	help
 	  When this option is defined in the amalgamation
 	  (see http://www.sqlite.org/amalgamation.html), version 3 of
@@ -32,7 +31,6 @@ config BR2_PACKAGE_SQLITE_ENABLE_FTS3
 
 config BR2_PACKAGE_SQLITE_ENABLE_UNLOCK_NOTIFY
 	bool "Enable sqlite3_unlock_notify() interface"
-	depends on BR2_PACKAGE_SQLITE
 	help
 	  This option enables the sqlite3_unlock_notify() interface and its
 	  accosiated functionality. See the documentation
@@ -40,7 +38,6 @@ config BR2_PACKAGE_SQLITE_ENABLE_UNLOCK_NOTIFY
 
 config BR2_PACKAGE_SQLITE_SECURE_DELETE
 	bool "Set the secure_delete pragma on by default"
-	depends on BR2_PACKAGE_SQLITE
 	help
 	  This compile-time option changes the default settings of the
 	  secure_delete pragma. When this option is not used, secure_delete
@@ -56,3 +53,4 @@ config BR2_PACKAGE_SQLITE_SECURE_DELETE
 	  http://www.sqlite.org/pragma.html#pragma_secure_delete
 	  for additional information.
 
+endif
