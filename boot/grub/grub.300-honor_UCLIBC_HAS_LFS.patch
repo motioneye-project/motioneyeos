@@ -1,6 +1,7 @@
-diff -rup grub-0.97.orig/grub/asmstub.c grub-0.97/grub/asmstub.c
---- grub-0.97.orig/grub/asmstub.c	2006-11-29 20:36:20.000000000 +0100
-+++ grub-0.97/grub/asmstub.c	2006-11-29 21:26:16.000000000 +0100
+Index: b/grub/asmstub.c
+===================================================================
+--- a/grub/asmstub.c
++++ b/grub/asmstub.c
 @@ -18,10 +18,13 @@
   *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
   */
@@ -15,9 +16,10 @@ diff -rup grub-0.97.orig/grub/asmstub.c grub-0.97/grub/asmstub.c
  
  /* Simulator entry point. */
  int grub_stage2 (void);
-diff -rup grub-0.97.orig/lib/device.c grub-0.97/lib/device.c
---- grub-0.97.orig/lib/device.c	2006-11-29 20:36:20.000000000 +0100
-+++ grub-0.97/lib/device.c	2006-11-29 21:25:19.000000000 +0100
+Index: b/lib/device.c
+===================================================================
+--- a/lib/device.c
++++ b/lib/device.c
 @@ -18,10 +18,13 @@
   *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
   */
