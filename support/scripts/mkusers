@@ -307,10 +307,10 @@ add_one_user() {
     esac
     case "${passwd}" in
         !=*)
-            _passwd='!'"$( encode_passwd "${passwd#!=}" )"
+            _passwd='!'"$( encode_password "${passwd#!=}" )"
             ;;
         =*)
-            _passwd="$( encode_passwd "${passwd#=}" )"
+            _passwd="$( encode_password "${passwd#=}" )"
             ;;
         *)
             _passwd="${passwd}"
