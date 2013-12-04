@@ -2,7 +2,7 @@ support: don't try to run compiled code
 
 When cross-compiling, we can't run the compiled code.
 
-Consider the compiler returning succes as an indication
+Consider the compiler returning success as an indication
 it is working.
 
 Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
