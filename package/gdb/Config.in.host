@@ -58,6 +58,6 @@ config BR2_GDB_VERSION
 	default "7.3.1"    if BR2_GDB_VERSION_7_3
 	default "7.4.1"    if BR2_GDB_VERSION_7_4
 	default "7.5.1"    if BR2_GDB_VERSION_7_5
-	default "7.5.1-arc" if BR2_arc
+	default "f25a1952afd054205f9471e449c1f7ca5b271b7c" if BR2_arc
 
 endif
