@@ -24,11 +24,13 @@ endif
 ifeq ($(BR2_arc),y)
 GDB_SITE = $(call github,foss-for-synopsys-dwc-arc-processors,gdb,$(GDB_VERSION))
 GDB_SOURCE = gdb-$(GDB_VERSION).tar.gz
+GDB_FROM_GIT = y
 endif
 
 ifeq ($(BR2_microblaze),y)
 GDB_SITE = $(call github,Xilinx,gdb,$(GDB_VERSION))
 GDB_SOURCE = gdb-$(GDB_VERSION).tar.gz
+GDB_FROM_GIT = y
 endif
 
 ifeq ($(GDB_VERSION),6.7.1-avr32-2.1.5)
@@ -125,6 +127,10 @@ HOST_GDB_CONF_OPT = \
 	--disable-werror \
 	--without-included-gettext \
 	--disable-sim
+
+ifeq ($(GDB_FROM_GIT),y)
+HOST_GDB_DEPENDENCIES += host-texinfo
+endif
 
 # legacy $arch-linux-gdb symlink
 define HOST_GDB_ADD_SYMLINK
