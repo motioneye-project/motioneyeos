@@ -63,9 +63,8 @@ Additionally, there are some other useful make targets:
 | +show-depends+    | Displays the dependencies required to build the
 package
 
-| +clean+           | Run the clean command of the package, also
-uninstall the package from both the target and the staging directory; _note
-that this is not implemented for all packages_
+| +clean+           | Run the clean command of the package; _note that
+  this is not implemented for all packages_
 
 | +dirclean+        | Remove the whole package build directory
 

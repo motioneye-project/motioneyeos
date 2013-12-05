@@ -415,12 +415,6 @@ different steps of the build process.
 * +LIBFOO_CLEAN_CMDS+, lists the actions to perform to clean up
   the build directory of the package.
 
-* +LIBFOO_UNINSTALL_TARGET_CMDS+ lists the actions to
-  uninstall the package from the target directory +$(TARGET_DIR)+
-
-* +LIBFOO_UNINSTALL_STAGING_CMDS+ lists the actions to
-  uninstall the package from the staging directory +$(STAGING_DIR)+.
-
 * +LIBFOO_INSTALL_INIT_SYSV+ and +LIBFOO_INSTALL_INIT_SYSTEMD+ list the
   actions to install init scripts either for the systemV-like init systems
   (busybox, sysvinit, etc.) or for the systemd units. These commands
