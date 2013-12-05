@@ -55,6 +55,9 @@ notdomain=$(patsubst $(call domain,$(1),$(2))$(call domainseparator,$(2))%,%,$(c
 # default domainseparator is /, specify alternative value as first argument
 domainseparator=$(if $(1),$(1),/)
 
+# github(user,package,version): returns site of github repository
+github = https://github.com/$(1)/$(2)/tarball/$(3)
+
 ################################################################################
 # The DOWNLOAD_* helpers are in charge of getting a working copy
 # of the source repository for their corresponding SCM,
