@@ -41,11 +41,12 @@ How to add a package from github
 
 Packages on github often don't have a download area with release tarballs.
 However, it is possible to download tarballs directly from the repository
-on github.
+on github. As github is known to have changed download mechanisms in the
+past, the 'github' helper function should be used as shown below.
 
 ------------------------
 FOO_VERSION = v1.0 # tag or full commit ID
-FOO_SITE = http://github.com/<user>/<package>/tarball/$(FOO_VERSION)
+FOO_SITE = $(call github,<user>,<package>,$(FOO_VERSION))
 ------------------------
 
 .Notes
