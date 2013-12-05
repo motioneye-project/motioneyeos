@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-##
 ## gen-manual-lists.py
 ##
 ## This script generates the following Buildroot manual appendices:
