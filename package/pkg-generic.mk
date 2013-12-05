@@ -231,19 +231,6 @@ $(BUILD_DIR)/%/.stamp_cleaned:
 	$($(PKG)_CLEAN_CMDS)
 	rm -f $(@D)/.stamp_built
 
-# Uninstall package from target and staging
-# Uninstall commands tend to fail, so remove the stamp files first
-$(BUILD_DIR)/%/.stamp_uninstalled:
-	@$(call MESSAGE,"Uninstalling")
-	rm -f $($(PKG)_TARGET_INSTALL_STAGING)
-	rm -f $($(PKG)_TARGET_INSTALL_TARGET)
-	$($(PKG)_UNINSTALL_STAGING_CMDS)
-	$($(PKG)_UNINSTALL_TARGET_CMDS)
-	$(if $(BR2_INIT_SYSTEMD),\
-		$($(PKG)_UNINSTALL_INIT_SYSTEMD))
-	$(if $(BR2_INIT_SYSV)$(BR2_INIT_BUSYBOX),\
-		$($(PKG)_UNINSTALL_INIT_SYSV))
-
 # Remove package sources
 $(BUILD_DIR)/%/.stamp_dircleaned:
 	rm -Rf $(@D)
@@ -388,7 +375,6 @@ $(2)_TARGET_RSYNC_SOURCE =      $$($(2)_DIR)/.stamp_rsync_sourced
 $(2)_TARGET_PATCH =		$$($(2)_DIR)/.stamp_patched
 $(2)_TARGET_EXTRACT =		$$($(2)_DIR)/.stamp_extracted
 $(2)_TARGET_SOURCE =		$$($(2)_DIR)/.stamp_downloaded
-$(2)_TARGET_UNINSTALL =		$$($(2)_DIR)/.stamp_uninstalled
 $(2)_TARGET_CLEAN =		$$($(2)_DIR)/.stamp_cleaned
 $(2)_TARGET_DIRCLEAN =		$$($(2)_DIR)/.stamp_dircleaned
 
@@ -486,10 +472,7 @@ endif
 $(1)-show-depends:
 			@echo $$($(2)_DEPENDENCIES)
 
-$(1)-uninstall:		$(1)-configure $$($(2)_TARGET_UNINSTALL)
-
-$(1)-clean:		$(1)-uninstall \
-			$$($(2)_TARGET_CLEAN)
+$(1)-clean:		$$($(2)_TARGET_CLEAN)
 
 $(1)-dirclean:		$$($(2)_TARGET_DIRCLEAN)
 
@@ -526,7 +509,6 @@ $$($(2)_TARGET_PATCH):			PKG=$(2)
 $$($(2)_TARGET_PATCH):			RAWNAME=$(patsubst host-%,%,$(1))
 $$($(2)_TARGET_EXTRACT):		PKG=$(2)
 $$($(2)_TARGET_SOURCE):			PKG=$(2)
-$$($(2)_TARGET_UNINSTALL):		PKG=$(2)
 $$($(2)_TARGET_CLEAN):			PKG=$(2)
 $$($(2)_TARGET_DIRCLEAN):		PKG=$(2)
 
