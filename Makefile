@@ -364,6 +364,8 @@ include boot/common.mk
 include linux/linux.mk
 include system/system.mk
 
+include $(BR2_EXTERNAL)/external.mk
+
 TARGETS+=target-finalize
 
 ifeq ($(BR2_ENABLE_LOCALE_PURGE),y)
