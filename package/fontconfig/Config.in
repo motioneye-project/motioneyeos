@@ -3,6 +3,6 @@ config BR2_PACKAGE_FONTCONFIG
 	select BR2_PACKAGE_FREETYPE
 	select BR2_PACKAGE_EXPAT
 	help
-	  a library for font customization and configuration.
+	  Fontconfig is a library for configuring and customizing font access.
 
 	  http://www.fontconfig.org/
