@@ -12,7 +12,3 @@ config BR2_ENDIAN
 
 config BR2_GCC_TARGET_CPU
 	default "arc700"
-
-config BR2_ARC_SITE
-	string
-	default "http://www.synopsys.com/apps/arc-developer/"
