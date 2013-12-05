@@ -19,9 +19,8 @@ define OPENSSL_DISABLE_APPS
 	$(SED) '/^build_apps/! s/build_apps//' $(@D)/Makefile.org
 	$(SED) '/^DIRS=/ s/apps//' $(@D)/Makefile.org
 endef
-endif
-
 OPENSSL_PRE_CONFIGURE_HOOKS += OPENSSL_DISABLE_APPS
+endif
 
 ifeq ($(BR2_PACKAGE_CRYPTODEV_LINUX),y)
 	OPENSSL_CFLAGS += -DHAVE_CRYPTODEV -DUSE_CRYPTODEV_DIGESTS
@@ -111,23 +110,19 @@ define OPENSSL_INSTALL_TARGET_CMDS
 endef
 
 ifneq ($(BR2_PREFER_STATIC_LIB),y)
-
 # libraries gets installed read only, so strip fails
 define OPENSSL_INSTALL_FIXUPS_SHARED
 	chmod +w $(TARGET_DIR)/usr/lib/engines/lib*.so
 	for i in $(addprefix $(TARGET_DIR)/usr/lib/,libcrypto.so.* libssl.so.*); \
 	do chmod +w $$i; done
 endef
-
 OPENSSL_POST_INSTALL_TARGET_HOOKS += OPENSSL_INSTALL_FIXUPS_SHARED
-
 endif
 
+ifneq ($(BR2_PACKAGE_OPENSSL_ENGINES),y)
 define OPENSSL_REMOVE_OPENSSL_ENGINES
 	rm -rf $(TARGET_DIR)/usr/lib/engines
 endef
-
-ifneq ($(BR2_PACKAGE_OPENSSL_ENGINES),y)
 OPENSSL_POST_INSTALL_TARGET_HOOKS += OPENSSL_REMOVE_OPENSSL_ENGINES
 endif
 
