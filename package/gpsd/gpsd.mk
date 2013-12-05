@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-GPSD_VERSION = 3.10
-GPSD_SITE = http://download-mirror.savannah.gnu.org/releases/gpsd/
+GPSD_VERSION = 327a3ef7c83c1b3b2cf7cdfcddf0c6fd7aaa8963
+GPSD_SITE = git://git.savannah.nongnu.org/gpsd.git
 GPSD_LICENSE = BSD-3c
 GPSD_LICENSE_FILES = COPYING
 GPSD_INSTALL_STAGING = YES

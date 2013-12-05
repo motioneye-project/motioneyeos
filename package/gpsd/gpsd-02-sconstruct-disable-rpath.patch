@@ -5,11 +5,11 @@ Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 diff -Nurp a/SConstruct b/SConstruct
 --- a/SConstruct	2013-11-22 13:10:01.000000000 +0000
 +++ b/SConstruct	2013-11-23 11:26:57.698486777 +0000
-@@ -287,8 +287,6 @@ def installdir(dir, add_destdir=True):
- # Honor the specified installation prefix in link paths.
- if env["sysroot"]:
-     env.Prepend(LIBPATH=[env["sysroot"] + installdir('libdir', add_destdir=False)])
--if env["shared"]:
+@@ -299,8 +299,6 @@ if env["sysroot"]:
+ # prefix=/usr/local build want to put our libraries there. Ideally
+ # we'd query the default load path here and test against wharever it
+ # is, but we haven't found a way to do that.
+-if env["shared"] and env["libdir"] not in {"/lib","/usr/lib","/usr/local/lib"}:
 -    env.Prepend(RPATH=[installdir('libdir')])
  
  # Give deheader a way to set compiler flags
