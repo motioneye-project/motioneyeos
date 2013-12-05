@@ -5,7 +5,7 @@
 ################################################################################
 
 LIBCOFI_VERSION = 7313fbe12b0593034d0a1b606bf33c7cf4ababce
-LIBCOFI_SITE = http://github.com/simonjhall/copies-and-fills/tarball/$(LIBCOFI_VERSION)
+LIBCOFI_SITE = $(call github,simonjhall,copies-and-fills,$(LIBCOFI_VERSION))
 LIBCOFI_LICENSE = LGPLv2.1
 LIBCOFI_LICENSE_FILES = README.md
 

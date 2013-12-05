@@ -5,7 +5,7 @@
 ################################################################################
 
 LUASQL_VERSION = v2.3.0
-LUASQL_SITE = https://github.com/keplerproject/luasql/tarball/$(LUASQL_VERSION)
+LUASQL_SITE = $(call github,keplerproject,luasql,$(LUASQL_VERSION))
 LUASQL_LICENSE = MIT
 LUASQL_LICENSE_FILES = README
 LUASQL_DEPENDENCIES = lua

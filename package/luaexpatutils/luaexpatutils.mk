@@ -5,7 +5,7 @@
 ################################################################################
 
 LUAEXPATUTILS_VERSION = 88c228365b084224c911d34aff06002634b38b50
-LUAEXPATUTILS_SITE = http://github.com/stevedonovan/LuaExpatUtils/tarball/$(LUAEXPATUTILS_VERSION)
+LUAEXPATUTILS_SITE = $(call github,stevedonovan,LuaExpatUtils,$(LUAEXPATUTILS_VERSION))
 LUAEXPATUTILS_LICENSE = Public Domain
 LUAEXPATUTILS_DEPENDENCIES = luaexpat
 

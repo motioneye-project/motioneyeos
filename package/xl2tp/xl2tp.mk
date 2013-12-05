@@ -5,7 +5,7 @@
 ################################################################################
 
 XL2TP_VERSION = v1.3.1
-XL2TP_SITE = http://github.com/xelerance/xl2tpd/tarball/$(XL2TP_VERSION)
+XL2TP_SITE = $(call github,xelerance,xl2tpd,$(XL2TP_VERSION))
 XL2TP_DEPENDENCIES = libpcap
 
 define XL2TP_BUILD_CMDS

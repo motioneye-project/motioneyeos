@@ -5,7 +5,7 @@
 ################################################################################
 
 SOCKETCAND_VERSION = dc3437abf17359fa8cb16567415b47e7ef8568d0
-SOCKETCAND_SITE = http://github.com/dschanoeh/socketcand/tarball/$(SOCKETCAND_VERSION)
+SOCKETCAND_SITE = $(call github,dschanoeh,socketcand,$(SOCKETCAND_VERSION))
 SOCKETCAND_AUTORECONF = YES
 
 ifeq ($(BR2_PACKAGE_LIBCONFIG),y)

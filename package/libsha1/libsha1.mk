@@ -5,7 +5,7 @@
 ################################################################################
 
 LIBSHA1_VERSION = 0.3
-LIBSHA1_SITE = http://github.com/dottedmag/libsha1/tarball/$(LIBSHA1_VERSION)
+LIBSHA1_SITE = $(call github,dottedmag,libsha1,$(LIBSHA1_VERSION))
 LIBSHA1_LICENSE = BSD-3c or GPL
 LIBSHA1_LICENSE_FILES = COPYING
 

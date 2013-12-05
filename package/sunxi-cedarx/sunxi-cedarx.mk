@@ -5,7 +5,7 @@
 ################################################################################
 
 SUNXI_CEDARX_VERSION = 74923e55fc3ef512d4cd2462da58ae5331611f37
-SUNXI_CEDARX_SITE = http://github.com/linux-sunxi/cedarx-libs/tarball/$(SUNXI_CEDARX_VERSION)
+SUNXI_CEDARX_SITE = $(call github,linux-sunxi,cedarx-libs,$(SUNXI_CEDARX_VERSION))
 
 SUNXI_CEDARX_INSTALL_STAGING = YES
 

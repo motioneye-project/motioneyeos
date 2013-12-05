@@ -5,7 +5,7 @@
 ################################################################################
 
 MONGREL2_VERSION = v1.8.0
-MONGREL2_SITE = https://github.com/zedshaw/mongrel2/tarball/$(MONGREL2_VERSION)
+MONGREL2_SITE = $(call github,zedshaw,mongrel2,$(MONGREL2_VERSION))
 MONGREL2_LICENSE = BSD-3c
 MONGREL2_LICENSE_FILES = LICENSE
 MONGREL2_DEPENDENCIES = sqlite zeromq
