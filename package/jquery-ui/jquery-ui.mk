@@ -29,9 +29,4 @@ define JQUERY_UI_INSTALL_TARGET_CMDS
 	chmod 0644 $(TARGET_DIR)/var/www/images/*.png
 endef
 
-define JQUERY_UI_UNINSTALL_TARGET_CMDS
-	$(RM) $(addprefix $(TARGET_DIR)/var/www/,\
-		jquery-ui.js jquery-ui-i18n.js jquery-ui.css)
-endef
-
 $(eval $(generic-package))

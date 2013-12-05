@@ -30,17 +30,9 @@ define LM_SENSORS_INSTALL_STAGING_CMDS
 	rm -f $(addprefix $(STAGING_DIR)/usr/,$(LM_SENSORS_BINS_) $(LM_SENSORS_BINS_y))
 endef
 
-define LM_SENSORS_UNINSTALL_STAGING_CMDS
-	$(MAKE) -C $(@D) PREFIX=/usr DESTDIR=$(STAGING_DIR) uninstall
-endef
-
 define LM_SENSORS_INSTALL_TARGET_CMDS
 	$(MAKE) -C $(@D) PREFIX=/usr DESTDIR=$(TARGET_DIR) install
 	rm -f $(addprefix $(TARGET_DIR)/usr/,$(LM_SENSORS_BINS_))
-endef
-
-define LM_SENSORS_UNINSTALL_TARGET_CMDS
-	$(MAKE) -C $(@D) PREFIX=/usr DESTDIR=$(TARGET_DIR) uninstall
 endef
 
 define LM_SENSORS_CLEAN_CMDS

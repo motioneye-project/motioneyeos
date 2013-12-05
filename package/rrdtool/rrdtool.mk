@@ -25,10 +25,4 @@ endef
 
 RRDTOOL_POST_INSTALL_TARGET_HOOKS += RRDTOOL_REMOVE_EXAMPLES
 
-define RRDTOOL_UNINSTALL_TARGET_CMDS
-	$(MAKE) DESTDIR=$(TARGET_DIR) -C $(@D) uninstall
-	rm -rf $(TARGET_DIR)/usr/share/rrdtool
-	rm -f $(TARGET_DIR)/usr/lib/librrd*
-endef
-
 $(eval $(autotools-package))

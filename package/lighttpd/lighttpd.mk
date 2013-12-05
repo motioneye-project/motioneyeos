@@ -107,10 +107,4 @@ define LIGHTTPD_INSTALL_INIT_SYSTEMD
 		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/lighttpd.service
 endef
 
-define LIGHTTPD_UNINSTALL_TARGET_CMDS
-	$(RM) $(TARGET_DIR)/usr/sbin/lighttpd
-	$(RM) $(TARGET_DIR)/usr/sbin/lighttpd-angel
-	$(RM) -r $(TARGET_DIR)/usr/lib/lighttpd
-endef
-
 $(eval $(autotools-package))

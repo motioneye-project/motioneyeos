@@ -24,12 +24,6 @@ define ACPID_INSTALL_TARGET_CMDS
 	$(INSTALL) -D -m 0755 package/acpid/S02acpid $(TARGET_DIR)/etc/init.d/S02acpid
 endef
 
-define ACPID_UNINSTALL_TARGET_CMDS
-	rm -f $(TARGET_DIR)/usr/sbin/acpid
-	rm -f $(TARGET_DIR)/usr/bin/acpi_listen
-	rm -f $(addprefix $(TARGET_DIR)/usr/share/man/man8/,acpid.8 acpi_listen.8)
-endef
-
 define ACPID_CLEAN_CMDS
 	-$(MAKE) -C $(@D) clean
 endef

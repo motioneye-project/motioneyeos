@@ -14,9 +14,4 @@ define HWDATA_INSTALL_TARGET_CMDS
 	install -D -m 644 $(@D)/usb.ids $(TARGET_DIR)/usr/share/hwdata/usb.ids
 endef
 
-define HWDATA_UNINSTALL_TARGET_CMDS
-	rm -rf $(TARGET_DIR)/usr/share/hwdata
-	rmdir --ignore-fail-on-non-empty $(TARGET_DIR)/usr/share
-endef
-
 $(eval $(generic-package))

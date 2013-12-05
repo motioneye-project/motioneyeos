@@ -16,8 +16,4 @@ define DSP_TOOLS_INSTALL_TARGET_CMDS
 	$(TARGET_CONFIGURE_OPTS) $(MAKE) -C $(@D) -e DESTDIR=$(TARGET_DIR) install
 endef
 
-define DSP_TOOLS_UNINSTALL_TARGET_CMDS
-	rm -f $(addprefix $(TARGET_DIR)/usr/bin/dsp-, load probe test exec)
-endef
-
 $(eval $(generic-package))

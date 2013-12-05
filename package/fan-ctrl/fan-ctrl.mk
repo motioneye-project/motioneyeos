@@ -23,8 +23,4 @@ define FAN_CTRL_INSTALL_TARGET_CMDS
 	install -D -m 755 $(@D)/fan-ctrl $(TARGET_DIR)/usr/sbin/fan-ctrl
 endef
 
-define FAN_CTRL_UNINSTALL_TARGET_CMDS
-	rm -f $(TARGET_DIR)/usr/sbin/fan-ctrl
-endef
-
 $(eval $(generic-package))

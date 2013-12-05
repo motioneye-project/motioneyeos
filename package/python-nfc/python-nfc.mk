@@ -17,8 +17,4 @@ define PYTHON_NFC_INSTALL_TARGET_CMDS
 	(cd $(@D); $(HOST_DIR)/usr/bin/python setup.py install --prefix=$(TARGET_DIR)/usr)
 endef
 
-define PYTHON_NFC_UNINSTALL_TARGET_CMDS
-	$(RM) -r $(TARGET_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR)/site-packages/nfc/
-endef
-
 $(eval $(generic-package))

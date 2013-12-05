@@ -37,8 +37,4 @@ define DROPWATCH_INSTALL_TARGET_CMDS
 		$(TARGET_DIR)/usr/bin/dropwatch
 endef
 
-define DROPWATCH_UNINSTALL_CMDS
-	rm -f $(TARGET_DIR)/usr/bin/dropwatch
-endef
-
 $(eval $(generic-package))

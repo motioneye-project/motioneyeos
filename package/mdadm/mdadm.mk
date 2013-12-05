@@ -16,9 +16,6 @@ MDADM_MAKE_OPT = \
 MDADM_INSTALL_TARGET_OPT = \
 	DESTDIR=$(TARGET_DIR)/usr -C $(MDADM_DIR) install-mdadm
 
-MDADM_UNINSTALL_TARGET_OPT = \
-	DESTDIR=$(TARGET_DIR)/usr -C $(MDADM_DIR) uninstall
-
 define MDADM_CONFIGURE_CMDS
 	# Do nothing
 endef

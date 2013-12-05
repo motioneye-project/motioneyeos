@@ -38,12 +38,6 @@ define DOSFSTOOLS_INSTALL_TARGET_CMDS
 		$(TARGET_DIR)/sbin/
 endef
 
-define DOSFSTOOLS_UNINSTALL_TARGET_CMDS
-	rm -f $(TARGET_DIR)/sbin/$(FATLABEL_BINARY)
-	rm -f $(TARGET_DIR)/sbin/$(FSCK_FAT_BINARY)
-	rm -f $(TARGET_DIR)/sbin/$(MKFS_FAT_BINARY)
-endef
-
 define DOSFSTOOLS_CLEAN_CMDS
 	-$(MAKE) -C $(@D) clean
 endef

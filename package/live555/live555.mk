@@ -61,17 +61,4 @@ define LIVE555_INSTALL_TARGET_CMDS
 	done
 endef
 
-define LIVE555_UNINSTALL_STAGING_CMDS
-	rm -rf $(STAGING_DIR)/usr/include/live
-	for i in $(LIVE555_LIBS_TO_INSTALL); do \
-		rm -f $(addprefix $(STAGING_DIR)/usr/lib/, `basename $$i`); \
-	done
-endef
-
-define LIVE555_UNINSTALL_TARGET_CMDS
-	for i in $(LIVE555_FILES_TO_INSTALL-); do \
-		rm -f $(addprefix $(TARGET_DIR)/usr/bin/, `basename $$i`); \
-	done
-endef
-
 $(eval $(generic-package))

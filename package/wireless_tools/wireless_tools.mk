@@ -40,8 +40,4 @@ define WIRELESS_TOOLS_INSTALL_TARGET_CMDS
 	$(MAKE) -C $(@D) INSTALL_MAN="$(TARGET_DIR)/usr/share/man" install-man
 endef
 
-define WIRELESS_TOOLS_UNINSTALL_TARGET_CMDS
-	$(MAKE) -C $(@D) PREFIX="$(TARGET_DIR)" uninstall
-endef
-
 $(eval $(generic-package))

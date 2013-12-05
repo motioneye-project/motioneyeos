@@ -23,8 +23,4 @@ define NANOCOM_INSTALL_TARGET_CMDS
 	$(INSTALL) -m 0755 -D $(@D)/nanocom $(TARGET_DIR)/usr/bin/nanocom
 endef
 
-define NANOCOM_UNINSTALL_TARGET_CMDS
-	$(RM) $(TARGET_DIR)/usr/bin/nanocom
-endef
-
 $(eval $(generic-package))

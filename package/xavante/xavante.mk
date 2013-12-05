@@ -14,10 +14,4 @@ define XAVANTE_INSTALL_TARGET_CMDS
 		LUA_LIBDIR="$(TARGET_DIR)/usr/lib/lua" install
 endef
 
-define XAVANTE_UNINSTALL_TARGET_CMDS
-	rm -rf "$(TARGET_DIR)/usr/share/xavante"
-	rm -f "$(TARGET_DIR)/usr/share/xavante.lua"
-	rm -f "$(TARGET_DIR)/usr/share/sajax.lua"
-endef
-
 $(eval $(generic-package))

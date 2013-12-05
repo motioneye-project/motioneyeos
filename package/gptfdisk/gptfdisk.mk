@@ -35,8 +35,4 @@ define GPTFDISK_INSTALL_TARGET_CMDS
 	done
 endef
 
-define GPTFDISK_UNINSTALL_TARGET_CMDS
-	rm -f $(addprefix $(TARGET_DIR)/usr/sbin/,$(GPTFDISK_TARGETS_y))
-endef
-
 $(eval $(generic-package))

@@ -13,8 +13,4 @@ define COXPCALL_INSTALL_TARGET_CMDS
 		$(TARGET_DIR)/usr/share/lua/coxpcall.lua
 endef
 
-define COXPCALL_UNINSTALL_TARGET_CMDS
-	rm -f "$(TARGET_DIR)/usr/share/lua/coxpcall.lua"
-endef
-
 $(eval $(generic-package))

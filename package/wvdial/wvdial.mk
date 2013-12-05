@@ -29,12 +29,6 @@ define WVDIAL_INSTALL_TARGET_CMDS
 		install -C $(@D)
 endef
 
-define WVDIAL_UNINSTALL_TARGET_CMDS
-	$(TARGET_MAKE_ENV) $(WVDIAL_MAKE_ENV) $(WVDIAL_MAKE) \
-		prefix="$(TARGET_DIR)/usr" PPPDIR="$(TARGET_DIR)/etc/ppp/peers" \
-		uninstall -C $(@D)
-endef
-
 define WVDIAL_CLEAN_CMDS
 	$(TARGET_MAKE_ENV) $(WVDIAL_MAKE_ENV) $(WVDIAL_MAKE) clean -C $(@D)
 endef

@@ -28,8 +28,4 @@ define LUACJSON_CLEAN_CMDS
 	$(MAKE) -C $(@D) clean
 endef
 
-define LUACJSON_UNINSTALL_TARGET_CMDS
-	rm -f $(TARGET_DIR)/usr/lib/lua/cjson.so
-endef
-
 $(eval $(generic-package))

@@ -28,9 +28,4 @@ define IW_INSTALL_TARGET_CMDS
 	$(IW_MAKE_ENV) $(MAKE) -C $(@D) DESTDIR=$(TARGET_DIR) install
 endef
 
-define IW_UNINSTALL_TARGET_CMDS
-	rm -f $(TARGET_DIR)/usr/sbin/iw
-	rm -f $(TARGET_DIR)/usr/share/man/man8/iw.8*
-endef
-
 $(eval $(generic-package))

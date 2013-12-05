@@ -18,8 +18,4 @@ define JQUERY_VALIDATION_INSTALL_TARGET_CMDS
 		$(TARGET_DIR)/var/www/jquery.validate.js
 endef
 
-define JQUERY_VALIDATION_UNINSTALL_TARGET_CMDS
-	rm -f $(TARGET_DIR)/var/www/jquery.validate.js
-endef
-
 $(eval $(generic-package))

@@ -15,10 +15,6 @@ define JSMIN_INSTALL_TARGET_CMDS
 	$(INSTALL) -m 0755 -D $(@D)/jsmin $(TARGET_DIR)/usr/bin/jsmin
 endef
 
-define JSMIN_UNINSTALL_TARGET_CMDS
-	rm -f $(TARGET_DIR)/usr/bin/jsmin
-endef
-
 define HOST_JSMIN_BUILD_CMDS
 	$(HOST_CONFIGURE_OPTS) $(MAKE) -C $(@D) jsmin
 endef

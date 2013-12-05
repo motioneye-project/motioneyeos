@@ -15,8 +15,4 @@ define EEPROG_INSTALL_TARGET_CMDS
 	$(INSTALL) -D $(@D)/eeprog $(TARGET_DIR)/usr/bin/eeprog
 endef
 
-define EEPROG_UNINSTALL_TARGET_CMDS
-	rm -f $(TARGET_DIR)/usr/bin/eeprog
-endef
-
 $(eval $(generic-package))

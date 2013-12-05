@@ -37,10 +37,4 @@ define PORTMAP_INSTALL_TARGET_CMDS
 		$(TARGET_DIR)/etc/init.d
 endef
 
-define PORTMAP_UNINSTALL_TARGET_CMDS
-	rm -f $(addprefix $(TARGET_DIR)/sbin/,$(PORTMAP_SBINS))
-	rm -f $(addprefix $(TARGET_DIR)/usr/share/man/man8/, \
-		$(addsuffix .8,$(PORTMAP_SBINS)))
-endef
-
 $(eval $(generic-package))

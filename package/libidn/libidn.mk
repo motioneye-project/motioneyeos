@@ -27,9 +27,4 @@ endef
 
 LIBIDN_POST_INSTALL_TARGET_HOOKS += LIBIDN_REMOVE_EMACS_STUFF
 
-define LIBIDN_UNINSTALL_TARGET_CMDS
-	rm -f $(TARGET_DIR)/usr/lib/libidn*
-	rm -f $(TARGET_DIR)/usr/bin/idn
-endef
-
 $(eval $(autotools-package))

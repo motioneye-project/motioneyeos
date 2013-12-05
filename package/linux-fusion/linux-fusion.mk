@@ -38,14 +38,4 @@ define LINUX_FUSION_INSTALL_TARGET_CMDS
 	cp -dpf package/linux-fusion/40-fusion.rules $(LINUX_FUSION_ETC_DIR)
 endef
 
-define LINUX_FUSION_UNINSTALL_STAGING_CMDS
-	rm -f $(STAGING_DIR)/usr/include/linux/fusion.h
-endef
-
-define LINUX_FUSION_UNINSTALL_TARGET_CMDS
-	rm -f $(TARGET_DIR)/usr/include/linux/fusion.h
-	rm -rf $(TARGET_DIR)/lib/modules/$(LINUX_FOR_FUSION)/kernel/drivers/char/fusion
-	rm -f $(LINUX_FUSION_ETC_DIR)/40-fusion.rules
-endef
-
 $(eval $(generic-package))

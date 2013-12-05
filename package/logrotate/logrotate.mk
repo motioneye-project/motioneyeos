@@ -23,14 +23,6 @@ define LOGROTATE_INSTALL_TARGET_CMDS
 	$(INSTALL) -d -m 0755 $(TARGET_DIR)/etc/logrotate.d
 endef
 
-define LOGROTATE_UNINSTALL_TARGET_CMDS
-	rm -f $(TARGET_DIR)/usr/sbin/logrotate
-	rm -f $(TARGET_DIR)/etc/logrotate.conf
-	rm -f $(TARGET_DIR)/usr/man/man5/logrotate.conf.5
-	rm -f $(TARGET_DIR)/usr/man/man8/logrotate.8
-	rmdir --ignore-fail-on-non-empty $(TARGET_DIR)/etc/logrotate.d
-endef
-
 define LOGROTATE_CLEAN_CMDS
 	-$(MAKE) -C $(@D) clean
 endef

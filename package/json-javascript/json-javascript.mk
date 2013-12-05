@@ -13,8 +13,4 @@ define JSON_JAVASCRIPT_INSTALL_TARGET_CMDS
 	$(INSTALL) -m 0644 -D $(@D)/json2.js $(TARGET_DIR)/var/www/json2.js
 endef
 
-define JSON_JAVASCRIPT_UNINSTALL_TARGET_CMDS
-	$(RM) $(TARGET_DIR)/var/www/json2.js
-endef
-
 $(eval $(generic-package))

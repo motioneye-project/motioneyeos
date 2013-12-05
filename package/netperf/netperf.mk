@@ -18,9 +18,4 @@ define NETPERF_INSTALL_TARGET_CMDS
 		$(TARGET_DIR)/usr/bin/netserver
 endef
 
-define NETPERF_UNINSTALL_TARGET_CMDS
-	rm -f $(TARGET_DIR)/usr/bin/netperf
-	rm -f $(TARGET_DIR)/usr/bin/netserver
-endef
-
 $(eval $(autotools-package))

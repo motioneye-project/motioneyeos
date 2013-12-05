@@ -24,8 +24,4 @@ define WHETSTONE_INSTALL_TARGET_CMDS
 	$(INSTALL) -D $(@D)/whetstone $(TARGET_DIR)/usr/bin/whetstone
 endef
 
-define WHETSTONE_UNINSTALL_TARGET_CMDS
-	rm -f $(TARGET_DIR)/usr/bin/whetstone
-endef
-
 $(eval $(generic-package))

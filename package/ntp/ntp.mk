@@ -58,13 +58,6 @@ define NTP_INSTALL_TARGET_CMDS
 	fi
 endef
 
-define NTP_UNINSTALL_TARGET_CMDS
-	rm $(TARGET_DIR)/usr/sbin/ntpd
-	rm -f $(addprefix $(TARGET_DIR)/usr/bin/,$(NTP_INSTALL_FILES_y))
-	rm $(TARGET_DIR)/etc/init.d/S49ntp
-	rm $(TARGET_DIR)/etc/default/ntpd
-endef
-
 NTP_POST_PATCH_HOOKS += NTP_PATCH_FIXUPS
 
 $(eval $(autotools-package))

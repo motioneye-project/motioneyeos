@@ -15,8 +15,4 @@ define SOUND_THEME_BOREALIS_INSTALL_TARGET_CMDS
 	done
 endef
 
-define SOUND_THEME_BOREALIS_UNINSTALL_TARGET_CMDS
-	$(RM) -r $(TARGET_DIR)/usr/share/sounds/borealis
-endef
-
 $(eval $(generic-package))

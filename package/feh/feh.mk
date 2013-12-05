@@ -19,9 +19,4 @@ define FEH_INSTALL_TARGET_CMDS
 		DESTDIR=$(TARGET_DIR) -C $(@D) install
 endef
 
-define FEH_UNINSTALL_TARGET_CMDS
-	$(MAKE1) CC="$(TARGET_CC) $(TARGET_CFLAGS) $(TARGET_LDFLAGS) " \
-		DESTDIR=$(TARGET_DIR) -C $(@D) uninstall
-endef
-
 $(eval $(generic-package))

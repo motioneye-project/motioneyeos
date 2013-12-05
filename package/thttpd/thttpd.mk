@@ -39,14 +39,4 @@ define THTTPD_INSTALL_TARGET_CMDS
 	echo "pidfile=/var/run/thttpd.pid" >> $(TARGET_DIR)/var/www/thttpd_config
 endef
 
-define THTTPD_UNINSTALL_TARGET_CMDS
-	rm -f $(TARGET_DIR)/usr/sbin/thttpd
-	rm -f $(TARGET_DIR)/usr/sbin/thttpd_wrapper
-	rm -rf $(TARGET_DIR)/var/www
-	rm -f $(TARGET_DIR)/etc/init.d/S90thttpd
-	rm -f $(TARGET_DIR)/usr/bin/htpasswd
-	rm -f $(TARGET_DIR)/usr/bin/makeweb
-	rm -f $(TARGET_DIR)/usr/bin/syslogtocern
-endef
-
 $(eval $(autotools-package))

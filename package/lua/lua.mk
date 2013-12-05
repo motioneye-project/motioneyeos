@@ -99,24 +99,6 @@ LUA_INSTALLED_FILES = \
 	/usr/lib/liblua.a \
 	/usr/lib/liblua.so*
 
-define LUA_UNINSTALL_STAGING_CMDS
-	for i in $(LUA_INSTALLED_FILES); do \
-		rm -f $(STAGING_DIR)$$i; \
-	done
-endef
-
-define LUA_UNINSTALL_TARGET_CMDS
-	for i in $(LUA_INSTALLED_FILES); do \
-		rm -f $(TARGET_DIR)$$i; \
-	done
-endef
-
-define HOST_LUA_UNINSTALL_TARGET_CMDS
-	for i in $(LUA_INSTALLED_FILES); do \
-		rm -f $(HOST_DIR)$$i; \
-	done
-endef
-
 define LUA_CLEAN_CMDS
 	-$(MAKE) -C $(@D) clean
 endef

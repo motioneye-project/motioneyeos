@@ -20,8 +20,4 @@ define NUTTCP_INSTALL_TARGET_CMDS
 		$(TARGET_DIR)/usr/bin/nuttcp
 endef
 
-define NUTTCP_UNINSTALL_TARGET_CMDS
-	rm -f $(TARGET_DIR)/usr/bin/nuttcp
-endef
-
 $(eval $(generic-package))

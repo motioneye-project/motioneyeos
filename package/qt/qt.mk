@@ -686,10 +686,4 @@ define QT_CLEAN_CMDS
 	-$(MAKE) -C $(@D) clean
 endef
 
-define QT_UNINSTALL_TARGET_CMDS
-	-rm -rf $(TARGET_DIR)/usr/lib/fonts
-	-rm $(TARGET_DIR)/usr/lib/libQt*.so.*
-	-rm $(TARGET_DIR)/usr/lib/libphonon.so.*
-endef
-
 $(eval $(generic-package))

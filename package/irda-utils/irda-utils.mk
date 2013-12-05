@@ -38,8 +38,4 @@ define IRDA_UTILS_INSTALL_TARGET_CMDS
 	done
 endef
 
-define IRDA_UTILS_UNINSTALL_TARGET_CMDS
-	rm -f $(addprefix $(TARGET_DIR)/usr/sbin/,$(IRDA_UTILS_SBINS-))
-endef
-
 $(eval $(generic-package))

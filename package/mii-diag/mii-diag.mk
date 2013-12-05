@@ -29,10 +29,6 @@ define MII_DIAG_INSTALL_TARGET_CMDS
 	$(MAKE) DESTDIR=$(TARGET_DIR) -C $(@D) install-mii-diag
 endef
 
-define MII_DIAG_UNINSTALL_TARGET_CMDS
-	rm -f $(TARGET_DIR)/usr/sbin/mii-diag
-endef
-
 define MII_DIAG_CLEAN_CMDS
 	$(MAKE) -C $(@D) clean
 endef

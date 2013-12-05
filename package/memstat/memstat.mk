@@ -19,9 +19,4 @@ define MEMSTAT_INSTALL_TARGET_CMDS
 	$(INSTALL) -D $(@D)/memstat $(TARGET_DIR)/usr/bin/memstat
 endef
 
-define MEMSTAT_UNINSTALL_TARGET_CMDS
-	rm -f $(TARGET_DIR)/etc/memstat.conf
-	rm -f $(TARGET_DIR)/usr/bin/memstat
-endef
-
 $(eval $(generic-package))

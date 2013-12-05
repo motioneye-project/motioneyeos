@@ -43,10 +43,4 @@ define PROFTPD_INSTALL_TARGET_CMDS
 	$(INSTALL) -m 0755 package/proftpd/S50proftpd $(TARGET_DIR)/etc/init.d
 endef
 
-define PROFTPD_UNINSTALL_TARGET_CMDS
-	rm -f $(TARGET_DIR)/$(PROFTPD_TARGET_BINARY)
-	rm -f $(TARGET_DIR)/etc/init.d/S50proftpd
-	rm -f $(TARGET_DIR)/etc/proftpd.conf
-endef
-
 $(eval $(autotools-package))

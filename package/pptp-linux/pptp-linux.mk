@@ -23,9 +23,4 @@ define PPTP_LINUX_INSTALL_TARGET_CMDS
 	$(INSTALL) -m 0644 -D $(@D)/pptp.8 $(TARGET_DIR)/usr/share/man/man8/pptp.8
 endef
 
-define PPTP_LINUX_UNINSTALL_TARGET_CMDS
-	rm -f $(TARGET_DIR)/usr/sbin/pptp
-	rm -f $(TARGET_DIR)/usr/share/man/man8/pptp.8
-endef
-
 $(eval $(generic-package))

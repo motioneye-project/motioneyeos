@@ -18,8 +18,4 @@ define JQUERY_INSTALL_TARGET_CMDS
 		$(TARGET_DIR)/var/www/jquery.js
 endef
 
-define JQUERY_UNINSTALL_TARGET_CMDS
-	rm -f $(TARGET_DIR)/var/www/jquery.js
-endef
-
 $(eval $(generic-package))

@@ -25,10 +25,6 @@ define LOCKFILE_PROGS_INSTALL_TARGET_CMDS
 	done
 endef
 
-define LOCKFILE_PROGS_UNINSTALL_TARGET_CMDS
-	rm -f $(addprefix $(TARGET_DIR)/usr/bin/,$(LOCKFILE_BINS))
-endef
-
 define LOCKFILE_PROGS_CLEAN_CMDS
 	-$(MAKE) -C $(@D) clean
 endef

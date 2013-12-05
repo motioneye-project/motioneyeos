@@ -14,8 +14,4 @@ define LUAEXPATUTILS_INSTALL_TARGET_CMDS
 		$(TARGET_DIR)/usr/share/lua/lxp/doc.lua
 endef
 
-define LUAEXPATUTILS_UNINSTALL_TARGET_CMDS
-	rm -f $(TARGET_DIR)/usr/share/lua/lxp/doc.lua
-endef
-
 $(eval $(generic-package))

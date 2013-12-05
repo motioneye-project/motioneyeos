@@ -17,8 +17,4 @@ define FIS_INSTALL_TARGET_CMDS
 	$(INSTALL) -m 0755 -D $(@D)/fis $(TARGET_DIR)/sbin/fis
 endef
 
-define FIS_UNINSTALL_TARGET_CMDS
-	rm -f $(TARGET_DIR)/sbin/fis
-endef
-
 $(eval $(generic-package))

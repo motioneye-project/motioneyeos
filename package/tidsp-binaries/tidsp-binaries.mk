@@ -11,8 +11,4 @@ define TIDSP_BINARIES_INSTALL_TARGET_CMDS
 	$(MAKE) -C $(@D) -e DESTDIR=$(TARGET_DIR) install
 endef
 
-define TIDSP_BINARIES_UNINSTALL_TARGET_CMDS
-	$(RM) -r $(TARGET_DIR)/lib/dsp
-endef
-
 $(eval $(generic-package))

@@ -17,8 +17,4 @@ define DOOM_WAD_INSTALL_TARGET_CMDS
 		$(TARGET_DIR)/usr/share/games/doom/doom1.wad
 endef
 
-define DOOM_WAD_UNINSTALL_TARGET_CMDS
-	rm -f $(TARGET_DIR)/usr/share/games/doom/doom1.wad
-endef
-
 $(eval $(generic-package))

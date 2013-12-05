@@ -32,22 +32,6 @@ define SLANG_INSTALL_TARGET_CMDS
 	(cd $(TARGET_DIR)/usr/lib; ln -fs libslang.so libslang.so.1)
 endef
 
-define SLANG_UNINSTALL_STAGING_CMDS
-	rm -f $(STAGING_DIR)/usr/lib/libslang.a
-	rm -f $(STAGING_DIR)/usr/lib/libslang.so
-	rm -f $(STAGING_DIR)/usr/lib/libslang.so.1
-	rm -f $(STAGING_DIR)/usr/include/slang.h
-	rm -f $(STAGING_DIR)/usr/include/slcurses.h
-endef
-
-define SLANG_UNINSTALL_TARGET_CMDS
-	rm -f $(TARGET_DIR)/usr/lib/libslang.a
-	rm -f $(TARGET_DIR)/usr/lib/libslang.so
-	rm -f $(TARGET_DIR)/usr/lib/libslang.so.1
-	rm -f $(TARGET_DIR)/usr/include/slang.h
-	rm -f $(TARGET_DIR)/usr/include/slcurses.h
-endef
-
 define SLANG_CLEAN_CMDS
 	$(MAKE) -C $(@D) clean
 endef

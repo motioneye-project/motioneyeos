@@ -23,16 +23,6 @@ define EZXML_INSTALL_TARGET_CMDS
 	install -D -m 0644 $(@D)/libezxml.a $(TARGET_DIR)/usr/lib/libezxml.a
 endef
 
-define EZXML_UNINSTALL_STAGING_CMDS
-	rm -f $(STAGING_DIR)/usr/include/ezxml.h
-	rm -f $(STAGING_DIR)/usr/lib/libezxml.a
-endef
-
-define EZXML_UNINSTALL_TARGET_CMDS
-	rm -f $(TARGET_DIR)/usr/include/ezxml.h
-	rm -f $(TARGET_DIR)/usr/lib/libezxml.a
-endef
-
 define EZXML_CLEAN_CMDS
 	-$(MAKE) -C $(@D) -f GNUmakefile clean
 endef

@@ -27,8 +27,4 @@ define JQUERY_UI_THEMES_INSTALL_TARGET_CMDS
 	chmod 0644 $(TARGET_DIR)/var/www/images/*.png
 endef
 
-define JQUERY_UI_THEMES_UNINSTALL_TARGET_CMDS
-	$(RM) $(TARGET_DIR)/var/www/jquery-ui.css
-endef
-
 $(eval $(generic-package))

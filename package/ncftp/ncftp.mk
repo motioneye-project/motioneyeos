@@ -39,8 +39,4 @@ define NCFTP_INSTALL_TARGET_CMDS
 	$(NCFTP_INSTALL_NCFTP_BATCH)
 endef
 
-define NCFTP_UNINSTALL_TARGET_CMDS
-	rm -f $(addprefix $(TARGET_DIR)/usr/bin/, $(NCFTP_TARGET_BINS) ncftpspooler)
-endef
-
 $(eval $(autotools-package))

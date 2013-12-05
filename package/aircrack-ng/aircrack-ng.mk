@@ -39,9 +39,4 @@ define AIRCRACK_NG_INSTALL_TARGET_CMDS
 		prefix=/usr $(AIRCRACK_NG_MAKE_OPTS) install
 endef
 
-define AIRCRACK_NG_UNINSTALL_TARGET_CMDS
-	$(TARGET_CONFIGURE_OPTS) $(MAKE1) -C $(@D) DESTDIR=$(TARGET_DIR) \
-		$(AIRCRACK_NG_MAKE_OPTS) uninstall
-endef
-
 $(eval $(generic-package))

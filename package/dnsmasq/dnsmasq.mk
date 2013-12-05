@@ -93,9 +93,4 @@ define DNSMASQ_INSTALL_TARGET_CMDS
 	mkdir -p $(TARGET_DIR)/var/lib/misc/
 endef
 
-define DNSMASQ_UNINSTALL_TARGET_CMDS
-	rm -f $(TARGET_DIR)/usr/sbin/dnsmasq
-	rm -f $(TARGET_DIR)/usr/share/man/man8/dnsmasq.8
-endef
-
 $(eval $(generic-package))

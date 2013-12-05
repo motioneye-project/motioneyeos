@@ -22,18 +22,6 @@ define SNOWBALL_HDMISERVICE_INSTALL_TARGET_CMDS
 	$(MAKE) -C $(@D) CC="$(TARGET_CC) $(TARGET_CFLAGS)" DESTDIR=$(TARGET_DIR) install
 endef
 
-define SNOWBALL_HDMISERVICE_UNINSTALL_STAGING_CMDS
-	rm -f $(STAGING_DIR)/usr/lib/hdmiservice.so
-	rm -f $(STAGING_DIR)/usr/bin/hdmistart
-	rm -f $(STAGING_DIR)/usr/include/hdmi_service_api.h
-	rm -f $(STAGING_DIR)/usr/include/hdmi_service_local.h
-endef
-
-define SNOWBALL_HDMISERVICE_UNINSTALL_TARGET_CMDS
-	rm -f $(TARGET_DIR)/usr/lib/hdmiservice.so
-	rm -f $(TARGET_DIR)/usr/bin/hdmistart
-endef
-
 define SNOWBALL_HDMISERVICE_CLEAN_CMDS
 	$(MAKE) -C $(@D) clean
 endef

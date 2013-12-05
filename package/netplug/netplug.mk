@@ -21,12 +21,6 @@ define NETPLUG_INSTALL_INIT_SYSV
 		$(TARGET_DIR)/etc/init.d/S29netplug
 endef
 
-define NETPLUG_UNINSTALL_TARGET_CMDS
-	rm -f $(TARGET_DIR)/sbin/netplugd
-	rm -rf $(TARGET_DIR)/etc/netplug*
-	rm -f $(TARGET_DIR)/etc/init.d/S29netplug
-endef
-
 define NETPLUG_CLEAN_CMDS
 	-$(MAKE) -C $(@D) clean
 endef

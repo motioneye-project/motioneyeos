@@ -26,13 +26,4 @@ define RP_PPPOE_INSTALL_TARGET_CMDS
 	done
 endef
 
-define RP_PPPOE_UNINSTALL_TARGET_CMDS
-	for ff in $(RP_PPPOE_TARGET_FILES); do \
-		rm -f $(TARGET_DIR)/usr/sbin/$$ff; \
-	done
-	for ff in $(RP_PPPOE_TARGET_FILES); do \
-		rm -f $(TARGET_DIR)/usr/share/man/man8/$$ff.8; \
-	done
-endef
-
 $(eval $(autotools-package))

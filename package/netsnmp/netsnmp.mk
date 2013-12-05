@@ -75,13 +75,6 @@ define NETSNMP_INSTALL_TARGET_CMDS
 	$(NETSNMP_REMOVE_MIBS_IPV6)
 endef
 
-define NETSNMP_UNINSTALL_TARGET_CMDS
-	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) \
-		DESTDIR=$(TARGET_DIR) uninstall
-	rm -f $(TARGET_DIR)/etc/init.d/S59snmpd
-	rm -f $(TARGET_DIR)/usr/lib/libnetsnmp*
-endef
-
 define NETSNMP_STAGING_NETSNMP_CONFIG_FIXUP
 	$(SED) 	"s,^includedir=.*,includedir=\'$(STAGING_DIR)/usr/include\',g" \
 		-e "s,^libdir=.*,libdir=\'$(STAGING_DIR)/usr/lib\',g" \

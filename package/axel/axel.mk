@@ -38,10 +38,6 @@ define AXEL_INSTALL_TARGET_CMDS
 	$(MAKE) DESTDIR=$(TARGET_DIR) -C $(@D) install
 endef
 
-define AXEL_UNINSTALL_TARGET_CMDS
-	$(MAKE) DESTDIR=$(TARGET_DIR) -C $(@D) uninstall
-endef
-
 define AXEL_CLEAN_CMDS
 	-$(MAKE) -C $(@D) clean
 endef

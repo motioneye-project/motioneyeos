@@ -31,8 +31,4 @@ define FLOT_INSTALL_TARGET_CMDS
 	done
 endef
 
-define FLOT_UNINSTALL_TARGET_CMDS
-	rm -f $(TARGET_DIR)/var/www/jquery.flot*
-endef
-
 $(eval $(generic-package))

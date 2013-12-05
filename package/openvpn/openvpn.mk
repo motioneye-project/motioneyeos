@@ -53,9 +53,4 @@ define OPENVPN_INSTALL_TARGET_CMDS
 		$(TARGET_DIR)/etc/init.d/S60openvpn
 endef
 
-define OPENVPN_UNINSTALL_TARGET_CMDS
-	rm -f $(TARGET_DIR)/usr/sbin/openvpn
-	rm -f $(TARGET_DIR)/etc/init.d/S60openvpn
-endef
-
 $(eval $(autotools-package))

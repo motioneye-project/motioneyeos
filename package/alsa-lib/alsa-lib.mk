@@ -80,16 +80,4 @@ endif
 ALSA_LIB_CONF_ENV = CFLAGS="$(ALSA_LIB_CFLAGS)" \
 		    LDFLAGS="$(TARGET_LDFLAGS) -lm"
 
-define ALSA_LIB_UNINSTALL_TARGET_CMDS
-	-rm -f $(TARGET_DIR)/usr/lib/libasound.so*
-	-rm -rf $(TARGET_DIR)/usr/lib/alsa-lib
-	-rm -rf $(TARGET_DIR)/usr/share/alsa
-endef
-
-define ALSA_LIB_UNINSTALL_STAGING_CMDS
-	-rm -f $(STAGING_DIR)/usr/lib/libasound.*
-	-rm -rf $(STAGING_DIR)/usr/lib/alsa-lib
-	-rm -rf $(STAGING_DIR)/usr/share/alsa
-endef
-
 $(eval $(autotools-package))

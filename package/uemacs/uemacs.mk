@@ -19,8 +19,4 @@ define UEMACS_INSTALL_TARGET_CMDS
 	$(INSTALL) -m 0755 -D $(@D)/em $(TARGET_DIR)/usr/bin/em
 endef
 
-define UEMACS_UNINSTALL_TARGET_CMDS
-	rm -f $(TARGET_DIR)/usr/bin/em
-endef
-
 $(eval $(generic-package))

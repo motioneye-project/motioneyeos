@@ -39,8 +39,4 @@ define CHRONY_INSTALL_TARGET_CMDS
 	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) DESTDIR="$(TARGET_DIR)" install
 endef
 
-define CHRONY_UNINSTALL_TARGET_CMDS
-	rm -f $(TARGET_DIR)/usr/bin/chronyc $(TARGET_DIR)/usr/sbin/chronyd
-endef
-
 $(eval $(generic-package))

@@ -23,9 +23,4 @@ define TI_UTILS_INSTALL_TARGET_CMDS
 	cp -r $(@D)/ini_files $(TARGET_DIR)/usr/share/ti-utils
 endef
 
-define TI_UTILS_UNINSTALL_TARGET_CMDS
-	rm -f $(TARGET_DIR)/usr/bin/calibrator
-	rm -fr $(TARGET_DIR)/usr/share/ti-utils
-endef
-
 $(eval $(generic-package))

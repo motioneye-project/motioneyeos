@@ -27,10 +27,4 @@ define RSH_REDONE_INSTALL_TARGET_CMDS
 			$(if $(rsh-redone-sbin-y),install-sbin))
 endef
 
-define RSH_REDONE_UNINSTALL_TARGET_CMDS
-	rm -f \
-		$(addprefix $(TARGET_DIR)/usr/bin/,$(rsh-redone-bin-y)) \
-		$(addprefix $(TARGET_DIR)/usr/sbin/,$(rsh-redone-sbin-y))
-endef
-
 $(eval $(generic-package))

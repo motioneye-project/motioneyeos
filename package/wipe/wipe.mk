@@ -16,9 +16,4 @@ define WIPE_INSTALL_TARGET_CMDS
 	$(INSTALL) -D $(@D)/wipe.1 $(TARGET_DIR)/usr/share/man/man1/wipe.1
 endef
 
-define WIPE_UNINSTALL_TARGET_CMDS
-	rm -f $(TARGET_DIR)/usr/bin/wipe
-	rm -f $(TARGET_DIR)/usr/share/man/man1/wipe.1
-endef
-
 $(eval $(autotools-package))

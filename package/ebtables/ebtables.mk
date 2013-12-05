@@ -36,9 +36,4 @@ define EBTABLES_INSTALL_TARGET_CMDS
 endef
 endif
 
-define EBTABLES_UNINSTALL_TARGET_CMDS
-	rm -rf $(TARGET_DIR)/lib/ebtables
-	rm -f $(TARGET_DIR)/sbin/ebtables
-endef
-
 $(eval $(generic-package))

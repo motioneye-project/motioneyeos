@@ -56,8 +56,4 @@ define ALSA_UTILS_INSTALL_TARGET_CMDS
 	fi
 endef
 
-define ALSA_UTILS_UNINSTALL_TARGET_CMDS
-	rm -f $(addprefix $(TARGET_DIR)/,$(ALSA_UTILS_TARGETS_) $(ALSA_UTILS_TARGETS_y))
-endef
-
 $(eval $(autotools-package))

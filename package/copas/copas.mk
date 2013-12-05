@@ -13,8 +13,4 @@ define COPAS_INSTALL_TARGET_CMDS
 		$(TARGET_DIR)/usr/share/lua/copas.lua
 endef
 
-define COPAS_UNINSTALL_TARGET_CMDS
-	rm -f "$(TARGET_DIR)/usr/share/lua/copas.lua"
-endef
-
 $(eval $(generic-package))

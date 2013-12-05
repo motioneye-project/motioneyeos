@@ -40,15 +40,6 @@ define SCHIFRA_INSTALL_STAGING_CMDS
 		$(INSTALL) -m 0644 -D $$i $(STAGING_DIR)/usr/include/$$i; done
 endef
 
-define SCHIFRA_UNINSTALL_TARGET_CMDS
-	$(RM) $(TARGET_DIR)/usr/include/schifra_*.hpp
-	$(RM) $(TARGET_DIR)/usr/bin/schifra_*
-endef
-
-define SCHIFRA_UNINSTALL_STAGING_CMDS
-	$(RM) $(STAGING_DIR)/usr/include/schifra_*.hpp
-endef
-
 define SCHIFRA_CLEAN_CMDS
 	$(MAKE) -C $(@D) $(SCHIFRA_MAKE_OPT) clean
 endef

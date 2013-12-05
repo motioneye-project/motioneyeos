@@ -20,8 +20,4 @@ define GOOGLEFONTDIRECTORY_INSTALL_TARGET_CMDS
 	done
 endef
 
-define GOOGLEFONTDIRECTORY_UNINSTALL_TARGET_CMDS
-	rm -rf $(addprefix $(TARGET_DIR)/usr/share/fonts/,$(GOOGLEFONTDIRECTORY_FONTS))
-endef
-
 $(eval $(generic-package))

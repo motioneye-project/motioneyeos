@@ -47,19 +47,6 @@ define PPPD_BUILD_CMDS
 		-C $(@D) $(PPPD_MAKE_OPT)
 endef
 
-define PPPD_UNINSTALL_TARGET_CMDS
-	rm -f $(addprefix $(TARGET_DIR)/usr/sbin/, $(PPPD_TARGET_BINS))
-	rm -f $(TARGET_DIR)/usr/sbin/pppoe-discovery
-	rm -rf $(TARGET_DIR)/usr/lib/pppd
-	rm -rf $(TARGET_DIR)/etc/ppp/radius
-	for m in $(PPPD_MANPAGES); do \
-		rm -f $(TARGET_DIR)/usr/share/man/man8/$$m.8; \
-	done
-	for m in $(PPPD_RADIUS_MANPAGES); do \
-		rm -f $(TARGET_DIR)/usr/share/man/man8/$$m.8; \
-	done
-endef
-
 ifeq ($(BR2_PACKAGE_PPPD_RADIUS),y)
 define PPPD_INSTALL_RADIUS
 	$(INSTALL) -D $(PPPD_DIR)/pppd/plugins/radius/radattr.so \

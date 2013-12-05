@@ -27,8 +27,4 @@ define RAPIDJSON_INSTALL_STAGING_CMDS
 		$(STAGING_DIR)/usr/include/rapidjson/internal
 endef
 
-define RAPIDJSON_UNINSTALL_STAGING_CMDS
-	$(RM) -r $(STAGING_DIR)/usr/include/rapidjson
-endef
-
 $(eval $(generic-package))

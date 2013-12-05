@@ -14,8 +14,4 @@ define WSAPI_INSTALL_TARGET_CMDS
 		$(TARGET_DIR)/usr/share/lua/wsapi
 endef
 
-define WSAPI_UNINSTALL_TARGET_CMDS
-	rm -rf "$(TARGET_DIR)/usr/share/lua/wsapi"
-endef
-
 $(eval $(generic-package))

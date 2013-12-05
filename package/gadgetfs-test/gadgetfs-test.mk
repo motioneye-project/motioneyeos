@@ -22,10 +22,6 @@ define GADGETFS_TEST_INSTALL_TARGET_CMDS
 	$(MAKE) -C $(@D) DESTDIR=$(TARGET_DIR) prefix=/usr install
 endef
 
-define GADGETFS_TEST_UNINSTALL_TARGET_CMDS
-	rm -f $(TARGET_DIR)/bin/gadgetfs-test
-endef
-
 define GADGETFS_TEST_CLEAN_CMDS
 	-$(MAKE) -C $(@D) $(GADGETFS_TEST_MAKEOPTS) clean
 endef

@@ -17,8 +17,4 @@ define EXPLORERCANVAS_INSTALL_TARGET_CMDS
 		$(TARGET_DIR)/var/www/excanvas.js
 endef
 
-define EXPLORERCANVAS_UNINSTALL_TARGET_CMDS
-	rm -f $(TARGET_DIR)/var/www/excanvas.js
-endef
-
 $(eval $(generic-package))

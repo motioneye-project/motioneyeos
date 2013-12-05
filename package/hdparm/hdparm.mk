@@ -26,11 +26,6 @@ define HDPARM_INSTALL_TARGET_CMDS
 	$(HDPARM_INSTALL_DOCUMENTATION)
 endef
 
-define HDPARM_UNINSTALL_TARGET_CMDS
-	rm -f $(TARGET_DIR)/sbin/hdparm
-	rm -f $(TARGET_DIR)/usr/share/man/man8/hdparm.8
-endef
-
 define HDPARM_CLEAN_CMDS
 	-$(MAKE) -C $(@D) clean
 endef

@@ -50,13 +50,6 @@ define VSFTPD_INSTALL_TARGET_CMDS
 	install -d -m 700 $(TARGET_DIR)/usr/share/empty
 endef
 
-define VSFTPD_UNINSTALL_TARGET_CMDS
-	rm -f $(TARGET_DIR)/usr/sbin/vsftpd
-	rm -f $(TARGET_DIR)/usr/share/man/man8/vsftpd.8
-	rm -f $(TARGET_DIR)/usr/share/man/man5/vsftpd.conf.5
-	rm -f $(TARGET_DIR)/etc/init.d/S70vsftpd
-endef
-
 define VSFTPD_CLEAN_CMDS
 	-$(MAKE) -C $(@D) clean
 endef

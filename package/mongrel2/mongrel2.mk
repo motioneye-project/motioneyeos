@@ -20,10 +20,4 @@ define MONGREL2_INSTALL_TARGET_CMDS
 		PREFIX=/usr DESTDIR=$(TARGET_DIR) install
 endef
 
-define MONGREL2_UNINSTALL_TARGET_CMDS
-	rm -f $(TARGET_DIR)/usr/bin/mongrel2
-	rm -f $(TARGET_DIR)/usr/bin/m2sh
-	rm -f $(TARGET_DIR)/usr/bin/procer
-endef
-
 $(eval $(generic-package))

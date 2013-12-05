@@ -50,14 +50,4 @@ else
 LVM2_CONF_OPT += --disable-applib
 endif
 
-define LVM2_UNINSTALL_STAGING_CMDS
-	rm -f $(addprefix $(STAGING_DIR)/usr/sbin/,$(LVM2_BINS))
-	rm -f $(addprefix $(STAGING_DIR)/usr/lib/,libdevmapper.so*)
-endef
-
-define LVM2_UNINSTALL_TARGET_CMDS
-	rm -f $(addprefix $(TARGET_DIR)/usr/sbin/,$(LVM2_BINS))
-	rm -f $(addprefix $(TARGET_DIR)/usr/lib/,libdevmapper.so*)
-endef
-
 $(eval $(autotools-package))

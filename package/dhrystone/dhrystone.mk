@@ -25,8 +25,4 @@ define DHRYSTONE_INSTALL_TARGET_CMDS
 	$(INSTALL) -D $(@D)/dhrystone $(TARGET_DIR)/usr/bin/dhrystone
 endef
 
-define DHRYSTONE_UNINSTALL_TARGET_CMDS
-	rm -f $(TARGET_DIR)/usr/bin/dhrystone
-endef
-
 $(eval $(generic-package))

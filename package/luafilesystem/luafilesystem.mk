@@ -21,10 +21,6 @@ define LUAFILESYSTEM_INSTALL_TARGET_CMDS
 	$(INSTALL) -D $(@D)/src/lfs.so $(TARGET_DIR)/usr/lib/lua/lfs.so
 endef
 
-define LUAFILESYSTEM_UNINSTALL_TARGET_CMDS
-	rm -f "$(TARGET_DIR)/usr/lib/lua/lfs.so"
-endef
-
 define LUAFILESYSTEM_CLEAN_CMDS
 	$(MAKE) -C $(@D) clean
 endef

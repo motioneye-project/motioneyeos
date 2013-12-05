@@ -23,8 +23,4 @@ define NEARD_INSTALL_INIT_SYSV
 		$(TARGET_DIR)/etc/init.d/S53neard
 endef
 
-define NEARD_UNINSTALL_INIT_SYSV
-	$(RM) $(TARGET_DIR)/etc/init.d/S53neard
-endef
-
 $(eval $(autotools-package))

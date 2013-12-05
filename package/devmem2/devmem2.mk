@@ -24,8 +24,4 @@ define DEVMEM2_INSTALL_TARGET_CMDS
 	$(INSTALL) -D $(@D)/devmem2 $(TARGET_DIR)/sbin/devmem2
 endef
 
-define DEVMEM2_UNINSTALL_TARGET_CMDS
-	rm -f $(TARGET_DIR)/sbin/devmem2
-endef
-
 $(eval $(generic-package))

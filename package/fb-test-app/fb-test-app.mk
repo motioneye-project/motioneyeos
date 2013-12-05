@@ -20,13 +20,6 @@ define FB_TEST_APP_INSTALL_TARGET_CMDS
 	$(INSTALL) -D -m 0755 $(@D)/offset $(TARGET_DIR)/usr/bin/fb-test-offset
 endef
 
-define FB_TEST_APP_UNINSTALL_TARGET_CMDS
-	rm -f $(TARGET_DIR)/usr/bin/fb-test-perf
-	rm -f $(TARGET_DIR)/usr/bin/fb-test-rect
-	rm -f $(TARGET_DIR)/usr/bin/fb-test
-	rm -f $(TARGET_DIR)/usr/bin/fb-test-offset
-endef
-
 define FB_TEST_APP_CLEAN_CMDS
 	$(MAKE) -C $(@D) clean
 endef

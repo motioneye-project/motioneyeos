@@ -21,10 +21,6 @@ define LBASE64_INSTALL_TARGET_CMDS
 		$(TARGET_DIR)/usr/lib/lua/base64.so
 endef
 
-define LBASE64_UNINSTALL_TARGET_CMDS
-       rm -f $(TARGET_DIR)/usr/lib/lua/base64.so
-endef
-
 define LBASE64_CLEAN_CMDS
        $(MAKE) -C $(@D) clean
 endef

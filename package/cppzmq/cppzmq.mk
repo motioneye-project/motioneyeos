@@ -16,8 +16,4 @@ define CPPZMQ_INSTALL_STAGING_CMDS
 	$(INSTALL) -m 0644 -D $(@D)/zmq.hpp $(STAGING_DIR)/usr/include/zmq.hpp
 endef
 
-define CPPZMQ_UNINSTALL_STAGING_CMDS
-	$(RM) $(STAGING_DIR)/usr/include/zmq.hpp
-endef
-
 $(eval $(generic-package))

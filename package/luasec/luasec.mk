@@ -24,10 +24,4 @@ define LUASEC_INSTALL_TARGET_CMDS
 		LUACPATH="$(TARGET_DIR)/usr/lib/lua" install
 endef
 
-define LUASEC_UNINSTALL_TARGET_CMDS
-	rm -f $(TARGET_DIR)/usr/lib/lua/ssl.so
-	rm -rf $(TARGET_DIR)/usr/share/lua/ssl
-	rm -f $(TARGET_DIR)/usr/share/lua/ssl.lua
-endef
-
 $(eval $(generic-package))

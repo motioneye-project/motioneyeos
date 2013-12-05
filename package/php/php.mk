@@ -218,18 +218,6 @@ endef
 
 PHP_POST_INSTALL_TARGET_HOOKS += PHP_INSTALL_FIXUP
 
-define PHP_UNINSTALL_STAGING_CMDS
-	rm -rf $(STAGING_DIR)/usr/include/php
-	rm -rf $(STAGING_DIR)/usr/lib/php
-	rm -f $(STAGING_DIR)/usr/bin/php*
-	rm -f $(STAGING_DIR)/usr/share/man/man1/php*.1
-endef
-
-define PHP_UNINSTALL_TARGET_CMDS
-	rm -f $(TARGET_DIR)/etc/php.ini
-	rm -f $(TARGET_DIR)/usr/bin/php*
-endef
-
 PHP_CONF_ENV += CFLAGS="$(PHP_CFLAGS)"
 
 $(eval $(autotools-package))

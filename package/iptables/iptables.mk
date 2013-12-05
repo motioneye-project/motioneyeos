@@ -50,11 +50,4 @@ else
 IPTABLES_POST_INSTALL_TARGET_HOOKS += IPTABLES_TARGET_IPV6_REMOVE
 endif
 
-define IPTABLES_UNINSTALL_TARGET_CMDS
-	rm -f $(TARGET_DIR)/usr/bin/iptables-xml
-	rm -f $(TARGET_DIR)/usr/sbin/iptables* $(TARGET_DIR)/usr/sbin/ip6tables*
-	rm -f $(TARGET_DIR)/usr/sbin/xtables-multi
-	rm -rf $(TARGET_DIR)/usr/lib/xtables
-endef
-
 $(eval $(autotools-package))

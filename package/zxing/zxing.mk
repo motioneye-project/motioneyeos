@@ -27,16 +27,8 @@ define ZXING_INSTALL_STAGING_CMDS
 	$(MAKE) -C $(@D)/cpp/core/src DESTDIR=$(STAGING_DIR) install
 endef
 
-define ZXING_UNINSTALL_STAGING_CMDS
-	$(MAKE) -C $(@D)/cpp/core/src DESTDIR=$(STAGING_DIR) uninstall
-endef
-
 define ZXING_INSTALL_TARGET_CMDS
 	$(MAKE) -C $(@D)/cpp/core/src DESTDIR=$(TARGET_DIR) install
-endef
-
-define ZXING_UNINSTALL_TARGET_CMDS
-	$(MAKE) -C $(@D)/cpp/core/src DESTDIR=$(TARGET_DIR) uninstall
 endef
 
 $(eval $(generic-package))
