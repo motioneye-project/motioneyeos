@@ -17,3 +17,5 @@ include::customize-toolchain.txt[]
 include::customize-store.txt[]
 
 include::customize-packages.txt[]
+
+include::customize-outside-br.txt[]
