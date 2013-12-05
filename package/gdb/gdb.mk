@@ -26,6 +26,11 @@ GDB_SITE = $(call github,foss-for-synopsys-dwc-arc-processors,gdb,$(GDB_VERSION)
 GDB_SOURCE = gdb-$(GDB_VERSION).tar.gz
 endif
 
+ifeq ($(BR2_microblaze),y)
+GDB_SITE = $(call github,Xilinx,gdb,$(GDB_VERSION))
+GDB_SOURCE = gdb-$(GDB_VERSION).tar.gz
+endif
+
 ifeq ($(GDB_VERSION),6.7.1-avr32-2.1.5)
 GDB_SITE = ftp://www.at91.com/pub/buildroot/
 endif
