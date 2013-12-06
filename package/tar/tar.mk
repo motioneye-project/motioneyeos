@@ -5,6 +5,7 @@
 ################################################################################
 
 TAR_VERSION = 1.27.1
+TAR_SOURCE = tar-$(TAR_VERSION).tar.xz
 TAR_SITE = $(BR2_GNU_MIRROR)/tar
 TAR_LICENSE = GPLv3+
 TAR_LICENSE_FILES = COPYING
