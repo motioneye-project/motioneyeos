@@ -57,5 +57,12 @@ define FREETYPE_FIX_CONFIG_FILE_LIBS
 endef
 FREETYPE_POST_INSTALL_STAGING_HOOKS += FREETYPE_FIX_CONFIG_FILE_LIBS
 
+# Version 2.5.1 reorganized headers out of freetype2/freetype
+# It's unexpected for some packages so symlink it until it spreads upstream
+define FREETYPE_FIX_FREETYPE_INCLUDE
+	ln -sf . $(STAGING_DIR)/usr/include/freetype2/freetype
+endef
+FREETYPE_POST_INSTALL_STAGING_HOOKS += FREETYPE_FIX_FREETYPE_INCLUDE
+
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
