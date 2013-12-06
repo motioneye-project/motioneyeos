@@ -4,8 +4,10 @@
 #
 ################################################################################
 
-OPUS_TOOLS_VERSION = 0.1.7
+OPUS_TOOLS_VERSION = 0.1.8
 OPUS_TOOLS_SITE = http://downloads.xiph.org/releases/opus
+OPUS_TOOLS_LICENSE = BSD-2c
+OPUS_TOOLS_LICENSE_FILES = COPYING
 OPUS_TOOLS_CONF_OPT = --disable-oggtest --disable-opustest
 OPUS_TOOLS_DEPENDENCIES = opus libogg host-pkgconf
 
