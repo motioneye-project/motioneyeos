@@ -63,6 +63,10 @@ define FREETYPE_FIX_FREETYPE_INCLUDE
 	ln -sf . $(STAGING_DIR)/usr/include/freetype2/freetype
 endef
 FREETYPE_POST_INSTALL_STAGING_HOOKS += FREETYPE_FIX_FREETYPE_INCLUDE
+define HOST_FREETYPE_FIX_FREETYPE_INCLUDE
+	ln -sf . $(HOST_DIR)/usr/include/freetype2/freetype
+endef
+HOST_FREETYPE_POST_INSTALL_HOOKS += HOST_FREETYPE_FIX_FREETYPE_INCLUDE
 
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
