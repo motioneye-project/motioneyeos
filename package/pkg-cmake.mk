@@ -45,7 +45,6 @@ $(2)_MAKE_OPT			?=
 $(2)_INSTALL_HOST_OPT		?= install
 $(2)_INSTALL_STAGING_OPT	?= DESTDIR=$$(STAGING_DIR) install
 $(2)_INSTALL_TARGET_OPT		?= DESTDIR=$$(TARGET_DIR) install
-$(2)_CLEAN_OPT			?= clean
 
 $(2)_SRCDIR			= $$($(2)_DIR)/$($(2)_SUBDIR)
 $(2)_BUILDDIR			= $$($(2)_SRCDIR)
@@ -136,16 +135,6 @@ endif
 ifndef $(2)_INSTALL_TARGET_CMDS
 define $(2)_INSTALL_TARGET_CMDS
 	$(TARGET_MAKE_ENV) $$($$(PKG)_MAKE_ENV) $$($$(PKG)_MAKE) $$($$(PKG)_MAKE_OPT) $$($$(PKG)_INSTALL_TARGET_OPT) -C $$($$(PKG)_BUILDDIR)
-endef
-endif
-
-#
-# Clean step. Only define it if not already defined by
-# the package .mk file.
-#
-ifndef $(2)_CLEAN_CMDS
-define $(2)_CLEAN_CMDS
-	-$(TARGET_MAKE_ENV) $$($$(PKG)_MAKE_ENV) $$($$(PKG)_MAKE) $$($$(PKG)_MAKE_OPT) $$($$(PKG)_CLEAN_OPT) -C $$($$(PKG)_BUILDDIR)
 endef
 endif
 

@@ -225,12 +225,6 @@ $(BUILD_DIR)/%/.stamp_target_installed:
 	$(Q)touch $@
 	@$(call step_end,install-target)
 
-# Clean package
-$(BUILD_DIR)/%/.stamp_cleaned:
-	@$(call MESSAGE,"Cleaning up")
-	$($(PKG)_CLEAN_CMDS)
-	rm -f $(@D)/.stamp_built
-
 # Remove package sources
 $(BUILD_DIR)/%/.stamp_dircleaned:
 	rm -Rf $(@D)
@@ -375,7 +369,6 @@ $(2)_TARGET_RSYNC_SOURCE =      $$($(2)_DIR)/.stamp_rsync_sourced
 $(2)_TARGET_PATCH =		$$($(2)_DIR)/.stamp_patched
 $(2)_TARGET_EXTRACT =		$$($(2)_DIR)/.stamp_extracted
 $(2)_TARGET_SOURCE =		$$($(2)_DIR)/.stamp_downloaded
-$(2)_TARGET_CLEAN =		$$($(2)_DIR)/.stamp_cleaned
 $(2)_TARGET_DIRCLEAN =		$$($(2)_DIR)/.stamp_dircleaned
 
 # default extract command
@@ -472,8 +465,6 @@ endif
 $(1)-show-depends:
 			@echo $$($(2)_DEPENDENCIES)
 
-$(1)-clean:		$$($(2)_TARGET_CLEAN)
-
 $(1)-dirclean:		$$($(2)_TARGET_DIRCLEAN)
 
 $(1)-clean-for-rebuild:
@@ -509,7 +500,6 @@ $$($(2)_TARGET_PATCH):			PKG=$(2)
 $$($(2)_TARGET_PATCH):			RAWNAME=$(patsubst host-%,%,$(1))
 $$($(2)_TARGET_EXTRACT):		PKG=$(2)
 $$($(2)_TARGET_SOURCE):			PKG=$(2)
-$$($(2)_TARGET_CLEAN):			PKG=$(2)
 $$($(2)_TARGET_DIRCLEAN):		PKG=$(2)
 
 # Compute the name of the Kconfig option that correspond to the
