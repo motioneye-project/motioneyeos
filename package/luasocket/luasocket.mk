@@ -22,8 +22,4 @@ define LUASOCKET_INSTALL_TARGET_CMDS
 		INSTALL_TOP_LIB="$(TARGET_DIR)/usr/lib/lua" install
 endef
 
-define LUASOCKET_CLEAN_CMDS
-	$(MAKE) -C $(@D) -f makefile clean
-endef
-
 $(eval $(generic-package))

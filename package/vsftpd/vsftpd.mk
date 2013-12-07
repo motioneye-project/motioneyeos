@@ -50,8 +50,4 @@ define VSFTPD_INSTALL_TARGET_CMDS
 	install -d -m 700 $(TARGET_DIR)/usr/share/empty
 endef
 
-define VSFTPD_CLEAN_CMDS
-	-$(MAKE) -C $(@D) clean
-endef
-
 $(eval $(generic-package))

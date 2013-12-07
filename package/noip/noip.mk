@@ -21,8 +21,4 @@ define NOIP_INSTALL_TARGET_CMDS
 	$(INSTALL) -m 0755 -D $(@D)/noip2 $(TARGET_DIR)/usr/sbin/noip2
 endef
 
-define NOIP_CLEAN_CMDS
-	$(MAKE) -C $(@D) clean
-endef
-
 $(eval $(generic-package))

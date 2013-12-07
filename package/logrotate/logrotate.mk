@@ -23,8 +23,4 @@ define LOGROTATE_INSTALL_TARGET_CMDS
 	$(INSTALL) -d -m 0755 $(TARGET_DIR)/etc/logrotate.d
 endef
 
-define LOGROTATE_CLEAN_CMDS
-	-$(MAKE) -C $(@D) clean
-endef
-
 $(eval $(generic-package))

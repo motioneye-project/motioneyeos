@@ -26,8 +26,4 @@ define INPUT_EVENT_DAEMON_INSTALL_TARGET_CMDS
 			$(TARGET_DIR)/etc/init.d/S99input-event-daemon
 endef
 
-define INPUT_EVENT_DAEMON_CLEAN_CMDS
-	$(MAKE) -C $(@D) clean
-endef
-
 $(eval $(generic-package))

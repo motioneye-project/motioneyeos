@@ -23,8 +23,4 @@ define MTDEV2TUIO_INSTALL_TARGET_CMDS
 	$(INSTALL) -D -m 0755 $(@D)/mtdev2tuio $(TARGET_DIR)/usr/bin/mtdev2tuio
 endef
 
-define MTDEV2TUIO_CLEAN_CMDS
-	$(MAKE) -C $(@D) clean
-endef
-
 $(eval $(generic-package))

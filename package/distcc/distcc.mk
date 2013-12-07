@@ -16,10 +16,4 @@ define DISTCC_INSTALL_TARGET_CMDS
 	install -D $(@D)/distcc $(TARGET_DIR)/usr/bin/distcc
 endef
 
-define DISTCC_CLEAN_CMDS
-	rm -f $(TARGET_DIR)/usr/bin/distcc
-	rm -f $(TARGET_DIR)/usr/bin/distccd
-	-$(MAKE) -C $(@D) clean
-endef
-
 $(eval $(autotools-package))

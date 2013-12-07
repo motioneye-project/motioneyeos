@@ -25,10 +25,6 @@ define LIBSEPOL_INSTALL_TARGET_CMDS
 	$(MAKE) -C $(@D) install $(TARGET_CONFIGURE_OPTS) DESTDIR=$(TARGET_DIR)
 endef
 
-define LIBSEPOL_CLEAN_CMDS
-	$(MAKE) -C $(@D) clean
-endef
-
 define HOST_LIBSEPOL_BUILD_CMDS
 	$(MAKE) -C $(@D) $(HOST_CONFIGURE_OPTS) DESTDIR=$(HOST_DIR)
 endef
@@ -38,10 +34,6 @@ define HOST_LIBSEPOL_INSTALL_CMDS
 	mv $(HOST_DIR)/lib/libsepol.so.1 $(HOST_DIR)/usr/lib
 	(cd $(HOST_DIR)/usr/lib; rm -f libsepol.so; ln -s libsepol.so.1 libsepol.so)
 	-rmdir $(HOST_DIR)/lib
-endef
-
-define HOST_LIBSEPOL_CLEAN_CMDS
-	$(MAKE) -C $(@D) clean
 endef
 
 $(eval $(generic-package))

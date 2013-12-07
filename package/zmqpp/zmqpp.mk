@@ -36,9 +36,4 @@ define ZMQPP_INSTALL_STAGING_CMDS
 		$(ZMQPP_MAKE_OPT) DESTDIR=$(STAGING_DIR) install -C $(@D)
 endef
 
-define ZMQPP_CLEAN_CMDS
-	$(TARGET_MAKE_ENV) $(MAKE) $(TARGET_CONFIGURE_OPTS) $(ZMQPP_MAKE_OPT) \
-		clean -C $(@D)
-endef
-
 $(eval $(generic-package))

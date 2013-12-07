@@ -27,8 +27,4 @@ define LINENOISE_INSTALL_TARGET_CMDS
 	$(INSTALL) -m 755 -D $(@D)/linenoise_example    $(TARGET_DIR)/usr/bin/linenoise_example
 endef
 
-define LINENOISE_CLEAN_CMDS
-	rm -f $(@D)/*.o $(@D)/*.a $(@D)/linenoise_example
-endef
-
 $(eval $(generic-package))

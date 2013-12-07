@@ -22,9 +22,4 @@ define SNOWBALL_HDMISERVICE_INSTALL_TARGET_CMDS
 	$(MAKE) -C $(@D) CC="$(TARGET_CC) $(TARGET_CFLAGS)" DESTDIR=$(TARGET_DIR) install
 endef
 
-define SNOWBALL_HDMISERVICE_CLEAN_CMDS
-	$(MAKE) -C $(@D) clean
-endef
-
-
 $(eval $(generic-package))

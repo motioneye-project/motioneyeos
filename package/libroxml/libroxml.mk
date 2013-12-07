@@ -20,10 +20,6 @@ define LIBROXML_INSTALL_TARGET_CMDS
 	$(MAKE) DESTDIR=$(TARGET_DIR)/usr/ -C $(@D) install
 endef
 
-define LIBROXML_CLEAN_CMDS
-	-$(MAKE) -C $(@D) clean
-endef
-
 define LIBROXML_DISABLE_DOXYGEN
 	$(SED) 's:) doxy:):' $(@D)/Makefile
 endef

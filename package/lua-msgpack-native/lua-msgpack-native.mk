@@ -18,8 +18,4 @@ define LUA_MSGPACK_NATIVE_INSTALL_TARGET_CMDS
 	$(INSTALL) -m 755 -D $(@D)/msgpack.so $(TARGET_DIR)/usr/lib/lua/msgpack.so
 endef
 
-define LUA_MSGPACK_NATIVE_CLEAN_CMDS
-	rm -f $(@D)/msgpack.so
-endef
-
 $(eval $(generic-package))

@@ -15,9 +15,4 @@ define DASH_INSTALL_TARGET_CMDS
 	cp -a $(@D)/src/dash $(TARGET_DIR)/bin/dash
 endef
 
-define DASH_CLEAN_CMDS
-	$(MAKE) -C $(@D) clean
-	rm -f $(TARGET_DIR)/bin/dash
-endef
-
 $(eval $(autotools-package))

@@ -29,8 +29,4 @@ define WVDIAL_INSTALL_TARGET_CMDS
 		install -C $(@D)
 endef
 
-define WVDIAL_CLEAN_CMDS
-	$(TARGET_MAKE_ENV) $(WVDIAL_MAKE_ENV) $(WVDIAL_MAKE) clean -C $(@D)
-endef
-
 $(eval $(generic-package))

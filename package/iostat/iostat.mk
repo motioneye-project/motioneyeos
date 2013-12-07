@@ -15,10 +15,6 @@ define IOSTAT_BUILD_CMDS
 	$(MAKE) -C $(@D) $(TARGET_CONFIGURE_OPTS)
 endef
 
-define IOSTAT_CLEAN_CMDS
-	$(MAKE) -C $(@D) clean
-endef
-
 define IOSTAT_INSTALL_TARGET_CMDS
 	$(INSTALL) -D $(IOSTAT_DIR)/iostat $(TARGET_DIR)/usr/bin/iostat
 	$(INSTALL) -D $(IOSTAT_DIR)/iostat.8 \

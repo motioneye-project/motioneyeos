@@ -76,11 +76,4 @@ define LIBNSS_INSTALL_TARGET_CMDS
 		$(TARGET_DIR)/usr/lib/pkgconfig/nss.pc
 endef
 
-define LIBNSS_CLEAN_CMDS
-	-$(MAKE1) -C $(@D)/$(LIBNSS_SUBDIR) clobber \
-					clobber_dbm \
-					clobber_coreconf \
-					BUILD_OPT=1
-endef
-
 $(eval $(generic-package))

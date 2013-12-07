@@ -51,13 +51,4 @@ define DMALLOC_INSTALL_TARGET_CMDS
 	cp -dpf $(STAGING_DIR)/usr/bin/dmalloc $(TARGET_DIR)/usr/bin/dmalloc
 endef
 
-define DMALLOC_CLEAN_CMDS
-	-rm -f $(TARGET_DIR)/usr/lib/libdmalloc*
-	-rm -f $(STAGING_DIR)/usr/lib/libdmalloc*
-	rm -f $(STAGING_DIR)/usr/include/dmalloc.h
-	rm -f $(TARGET_DIR)/usr/bin/dmalloc
-	-$(MAKE) -C $(DMALLOC_DIR) clean
-endef
-
-
 $(eval $(autotools-package))

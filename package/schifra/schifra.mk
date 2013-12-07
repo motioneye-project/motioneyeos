@@ -40,8 +40,4 @@ define SCHIFRA_INSTALL_STAGING_CMDS
 		$(INSTALL) -m 0644 -D $$i $(STAGING_DIR)/usr/include/$$i; done
 endef
 
-define SCHIFRA_CLEAN_CMDS
-	$(MAKE) -C $(@D) $(SCHIFRA_MAKE_OPT) clean
-endef
-
 $(eval $(generic-package))

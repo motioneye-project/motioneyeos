@@ -18,8 +18,4 @@ define RINGS_INSTALL_TARGET_CMDS
 		LUA_DIR="$(TARGET_DIR)/usr/share/lua" install
 endef
 
-define RINGS_CLEAN_CMDS
-	$(MAKE) -C $(@D) clean
-endef
-
 $(eval $(generic-package))

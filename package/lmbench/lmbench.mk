@@ -35,8 +35,4 @@ define LMBENCH_INSTALL_TARGET_CMDS
 	$(MAKE) CFLAGS="$(TARGET_CFLAGS)" OS=$(ARCH) CC="$(TARGET_CC)" BASE=$(TARGET_DIR)/usr -C $(@D)/src install
 endef
 
-define LMBENCH_CLEAN_CMDS
-	$(MAKE) -C $(@D)/src clean
-endef
-
 $(eval $(generic-package))

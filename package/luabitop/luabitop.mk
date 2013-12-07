@@ -20,8 +20,4 @@ define LUABITOP_INSTALL_TARGET_CMDS
 	$(INSTALL) -p $(@D)/bit.so $(TARGET_DIR)/usr/lib/lua
 endef
 
-define LUABITOP_CLEAN_CMDS
-	$(MAKE) -C $(@D) clean
-endef
-
 $(eval $(generic-package))

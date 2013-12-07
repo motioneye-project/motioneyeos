@@ -23,8 +23,4 @@ define LIBSVGTINY_INSTALL_TARGET_CMDS
 		$(MAKE) -C $(@D) PREFIX=/usr DESTDIR=$(TARGET_DIR) install
 endef
 
-define LIBSVGTINY_CLEAN_CMDS
-	$(TARGET_CONFIGURE_OPTS) $(MAKE) -C $(@D) clean
-endef
-
 $(eval $(generic-package))

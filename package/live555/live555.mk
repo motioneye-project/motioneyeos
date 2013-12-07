@@ -22,10 +22,6 @@ define LIVE555_BUILD_CMDS
 	$(MAKE) -C $(@D) all
 endef
 
-define LIVE555_CLEAN_CMDS
-	$(MAKE) -C $(@D) clean
-endef
-
 LIVE555_HEADERS_TO_INSTALL = \
 	liveMedia/include \
 	groupsock/include \

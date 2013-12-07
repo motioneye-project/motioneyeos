@@ -20,8 +20,4 @@ define BSDIFF_INSTALL_TARGET_CMDS
 	install -D -m 755 $(@D)/bspatch $(TARGET_DIR)/usr/bin/bspatch
 endef
 
-define BSDIFF_CLEAN_CMDS
-	rm -f $(@D)/bsdiff $(@D)/bspatch
-endef
-
 $(eval $(generic-package))

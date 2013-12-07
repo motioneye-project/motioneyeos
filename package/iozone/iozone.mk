@@ -30,8 +30,4 @@ define IOZONE_INSTALL_TARGET_CMDS
 		$(TARGET_DIR)/usr/bin/iozone
 endef
 
-define IOZONE_CLEAN_CMDS
-       $(MAKE) -C $(@D)/src/current clean
-endef
-
 $(eval $(generic-package))

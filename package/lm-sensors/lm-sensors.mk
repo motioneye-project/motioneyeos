@@ -35,8 +35,4 @@ define LM_SENSORS_INSTALL_TARGET_CMDS
 	rm -f $(addprefix $(TARGET_DIR)/usr/,$(LM_SENSORS_BINS_))
 endef
 
-define LM_SENSORS_CLEAN_CMDS
-	-$(MAKE) -C $(@D) clean
-endef
-
 $(eval $(generic-package))

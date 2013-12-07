@@ -25,8 +25,4 @@ define LOCKFILE_PROGS_INSTALL_TARGET_CMDS
 	done
 endef
 
-define LOCKFILE_PROGS_CLEAN_CMDS
-	-$(MAKE) -C $(@D) clean
-endef
-
 $(eval $(generic-package))

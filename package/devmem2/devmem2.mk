@@ -16,10 +16,6 @@ define DEVMEM2_BUILD_CMDS
 	$(TARGET_CONFIGURE_OPTS) $(MAKE) -C $(@D) devmem2
 endef
 
-define DEVMEM2_CLEAN_CMDS
-	rm -f $(@D)/devmem2
-endef
-
 define DEVMEM2_INSTALL_TARGET_CMDS
 	$(INSTALL) -D $(@D)/devmem2 $(TARGET_DIR)/sbin/devmem2
 endef

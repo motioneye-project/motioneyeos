@@ -25,9 +25,4 @@ define LRZSZ_INSTALL_TARGET_CMDS
 	ln -sf sz $(TARGET_DIR)/usr/bin/lsz
 endef
 
-define LRZSZ_CLEAN_CMDS
-	rm -f $(addprefix $(TARGET_DIR)/usr/bin/,rz sz lrz lsz)
-	-$(MAKE) -C $(@D) clean
-endef
-
 $(eval $(autotools-package))

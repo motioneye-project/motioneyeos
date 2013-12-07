@@ -21,8 +21,4 @@ define NETPLUG_INSTALL_INIT_SYSV
 		$(TARGET_DIR)/etc/init.d/S29netplug
 endef
 
-define NETPLUG_CLEAN_CMDS
-	-$(MAKE) -C $(@D) clean
-endef
-
 $(eval $(generic-package))

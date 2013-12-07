@@ -682,8 +682,4 @@ define QT_INSTALL_TARGET_CMDS
 	$(QT_INSTALL_TARGET_TRANSLATIONS)
 endef
 
-define QT_CLEAN_CMDS
-	-$(MAKE) -C $(@D) clean
-endef
-
 $(eval $(generic-package))

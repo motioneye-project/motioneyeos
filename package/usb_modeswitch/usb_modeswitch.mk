@@ -32,9 +32,4 @@ define USB_MODESWITCH_INSTALL_TARGET_CMDS
 		-C $(@D) $(USB_MODESWITCH_INSTALL_TARGETS)
 endef
 
-
-define USB_MODESWITCH_CLEAN_CMDS
-	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) DESTDIR=$(TARGET_DIR) clean
-endef
-
 $(eval $(generic-package))

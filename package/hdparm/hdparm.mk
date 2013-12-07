@@ -26,8 +26,4 @@ define HDPARM_INSTALL_TARGET_CMDS
 	$(HDPARM_INSTALL_DOCUMENTATION)
 endef
 
-define HDPARM_CLEAN_CMDS
-	-$(MAKE) -C $(@D) clean
-endef
-
 $(eval $(generic-package))

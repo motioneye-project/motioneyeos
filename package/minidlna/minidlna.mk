@@ -53,8 +53,4 @@ define MINIDLNA_INSTALL_TARGET_CMDS
 		-C $(@D) DESTDIR=$(TARGET_DIR) install
 endef
 
-define MINIDLNA_CLEAN_CMDS
-	$(TARGET_MAKE_ENV) $(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(@D) clean
-endef
-
 $(eval $(generic-package))

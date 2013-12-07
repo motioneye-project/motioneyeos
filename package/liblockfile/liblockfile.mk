@@ -26,11 +26,4 @@ define LIBLOCKFILE_INSTALL_TARGET_CMDS
 	cp -a $(STAGING_DIR)/usr/lib/liblockfile.so* $(TARGET_DIR)/usr/lib
 endef
 
-define LIBLOCKFILE_CLEAN_CMDS
-	rm -f $(TARGET_DIR)/usr/lib/liblockfile.so*
-	rm -f $(STAGING_DIR)/usr/lib/liblockfile*
-	rm -f $(addprefix $(STAGING_DIR)/usr/include/,lockfile.h mailfile.h)
-	-$(MAKE) -C $(@D) clean
-endef
-
 $(eval $(autotools-package))

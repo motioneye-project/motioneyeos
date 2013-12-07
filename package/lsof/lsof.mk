@@ -62,8 +62,4 @@ define LSOF_INSTALL_TARGET_CMDS
 	install -D -m 755 $(@D)/lsof $(TARGET_DIR)/bin/lsof
 endef
 
-define LSOF_CLEAN_CMDS
-	-$(MAKE) -C $(@D) clean
-endef
-
 $(eval $(generic-package))

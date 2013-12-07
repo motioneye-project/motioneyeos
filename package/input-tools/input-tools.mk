@@ -39,8 +39,4 @@ define INPUT_TOOLS_INSTALL_TARGET_CMDS
 	done
 endef
 
-define INPUT_TOOLS_CLEAN_CMDS
-	rm -f $(addprefix $(@D)/,$(INPUT_TOOLS_TARGETS_y))
-endef
-
 $(eval $(generic-package))

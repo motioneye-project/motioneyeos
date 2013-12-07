@@ -27,8 +27,4 @@ define HTTPING_INSTALL_TARGET_CMDS
 	$(HTTPING_MAKE_OPT) $(MAKE) DESTDIR=$(TARGET_DIR) -C $(@D) install
 endef
 
-define HTTPING_CLEAN_CMDS
-       $(MAKE) -C $(@D) clean
-endef
-
 $(eval $(generic-package))

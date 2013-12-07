@@ -38,10 +38,6 @@ define DOSFSTOOLS_INSTALL_TARGET_CMDS
 		$(TARGET_DIR)/sbin/
 endef
 
-define DOSFSTOOLS_CLEAN_CMDS
-	-$(MAKE) -C $(@D) clean
-endef
-
 define HOST_DOSFSTOOLS_BUILD_CMDS
 	$(MAKE) $(HOST_CONFIGURE_OPTS) -C $(@D)
 endef

@@ -60,11 +60,4 @@ define QTUIO_INSTALL_STAGING_CMDS
 	cp -dpf $(@D)/lib/libqTUIO.so* $(STAGING_DIR)/usr/lib
 endef
 
-define QTUIO_CLEAN_CMDS
-	$(MAKE) -C $(@D)/src clean
-	for example in $(QTUIO_EXAMPLES) ; do \
-		($(MAKE) -C $(@D)/examples/$${example} clean) ; \
-	done
-endef
-
 $(eval $(generic-package))

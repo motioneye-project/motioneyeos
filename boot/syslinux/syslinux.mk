@@ -41,9 +41,5 @@ define HOST_SYSLINUX_INSTALL_CMDS
 	$(HOST_MAKE_ENV) $(MAKE) -C $(@D) INSTALLROOT=$(HOST_DIR) install
 endef
 
-define HOST_SYSLINUX_CLEAN_CMDS
-	$(HOST_MAKE_ENV) $(MAKE) -C $(@D) clean
-endef
-
 $(eval $(generic-package))
 $(eval $(host-generic-package))

@@ -17,8 +17,4 @@ define MROUTED_INSTALL_TARGET_CMDS
 	$(MAKE) prefix=/usr DESTDIR=$(TARGET_DIR) -C $(@D) install
 endef
 
-define MROUTED_CLEAN_CMDS
-	$(MAKE) -C $(@D) clean
-endef
-
 $(eval $(generic-package))

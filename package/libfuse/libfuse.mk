@@ -21,10 +21,4 @@ define LIBFUSE_INSTALL_TARGET_CMDS
 	cp -dpf $(STAGING_DIR)/usr/lib/libfuse.so* $(TARGET_DIR)/usr/lib/
 endef
 
-define LIBFUSE_CLEAN_CMDS
-	-$(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) uninstall
-	-$(MAKE) -C $(@D) clean
-	rm -f $(TARGET_DIR)/usr/bin/fusermount $(TARGET_DIR)/usr/lib/libfuse.so*
-endef
-
 $(eval $(autotools-package))

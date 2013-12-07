@@ -17,8 +17,4 @@ define FCONFIG_INSTALL_TARGET_CMDS
 	$(INSTALL) -D -m 0755 $(@D)/fconfig $(TARGET_DIR)/sbin/fconfig
 endef
 
-define FCONFIG_CLEAN_CMDS
-	-$(MAKE) -C $(@D) clean
-endef
-
 $(eval $(generic-package))

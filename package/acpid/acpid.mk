@@ -24,8 +24,4 @@ define ACPID_INSTALL_TARGET_CMDS
 	$(INSTALL) -D -m 0755 package/acpid/S02acpid $(TARGET_DIR)/etc/init.d/S02acpid
 endef
 
-define ACPID_CLEAN_CMDS
-	-$(MAKE) -C $(@D) clean
-endef
-
 $(eval $(generic-package))

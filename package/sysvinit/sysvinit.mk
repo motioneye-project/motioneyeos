@@ -42,8 +42,4 @@ define SYSVINIT_INSTALL_TARGET_CMDS
 	ln -sf killall5 $(TARGET_DIR)/sbin/pidof
 endef
 
-define SYSVINIT_CLEAN_CMDS
-	$(MAKE) -C $(@D) clean
-endef
-
 $(eval $(generic-package))

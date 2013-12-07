@@ -21,10 +21,6 @@ define IRDA_UTILS_BUILD_CMDS
 		V=1 -C $(@D)
 endef
 
-define IRDA_UTILS_CLEAN_CMDS
-	$(MAKE) -C $(@D) clean
-endef
-
 IRDA_UTILS_SBINS-  =
 IRDA_UTILS_SBINS-y =
 IRDA_UTILS_SBINS-$(BR2_PACKAGE_IRDA_UTILS_IRATTACH) += irattach

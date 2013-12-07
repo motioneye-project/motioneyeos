@@ -60,9 +60,5 @@ define HOST_ZLIB_INSTALL_CMDS
 	$(MAKE1) -C $(@D) LDCONFIG=true install
 endef
 
-define ZLIB_CLEAN_CMDS
-	-$(MAKE1) -C $(@D) clean
-endef
-
 $(eval $(generic-package))
 $(eval $(host-generic-package))

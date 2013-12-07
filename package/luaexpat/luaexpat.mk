@@ -27,8 +27,4 @@ define LUAEXPAT_INSTALL_TARGET_CMDS
 	$(INSTALL) -D -m 0644 $(@D)/src/lxp/lom.lua $(TARGET_DIR)/usr/share/lua/lxp/lom.lua
 endef
 
-define LUAEXPAT_CLEAN_CMDS
-	$(MAKE) -C $(@D) $(LUAEXPAT_MFLAGS) clean
-endef
-
 $(eval $(generic-package))

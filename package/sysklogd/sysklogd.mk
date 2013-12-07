@@ -35,8 +35,4 @@ define SYSKLOGD_INSTALL_TARGET_CMDS
 	fi
 endef
 
-define SYSKLOGD_CLEAN_CMDS
-	$(MAKE) -C $(@D) clean
-endef
-
 $(eval $(generic-package))

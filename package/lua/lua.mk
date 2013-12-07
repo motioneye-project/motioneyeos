@@ -99,13 +99,5 @@ LUA_INSTALLED_FILES = \
 	/usr/lib/liblua.a \
 	/usr/lib/liblua.so*
 
-define LUA_CLEAN_CMDS
-	-$(MAKE) -C $(@D) clean
-endef
-
-define HOST_LUA_CLEAN_CMDS
-	-$(MAKE) -C $(@D) clean
-endef
-
 $(eval $(generic-package))
 $(eval $(host-generic-package))

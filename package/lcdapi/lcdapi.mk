@@ -25,8 +25,4 @@ define LCDAPI_INSTALL_TARGET_CMDS
 		DESTDIR="$(TARGET_DIR)" install
 endef
 
-define LCDAPI_CLEAN_CMDS
-	$(TARGET_MAKE_ENV) $(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(@D) clean
-endef
-
 $(eval $(generic-package))

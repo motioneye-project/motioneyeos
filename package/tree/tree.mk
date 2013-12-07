@@ -20,8 +20,4 @@ define TREE_INSTALL_TARGET_CMDS
 		$(TARGET_DIR)/usr/share/man/man1/tree.1
 endef
 
-define TREE_CLEAN_CMDS
-	-$(MAKE) -C $(@D) clean
-endef
-
 $(eval $(generic-package))

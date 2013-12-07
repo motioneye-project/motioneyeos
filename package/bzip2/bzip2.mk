@@ -51,16 +51,6 @@ define BZIP2_INSTALL_TARGET_CMDS
 	$(BZIP2_INSTALL_TARGET_SHARED_CMDS)
 endef
 
-define BZIP2_CLEAN_CMDS
-	rm -f $(addprefix $(TARGET_DIR),/lib/libbz2.* \
-					/usr/lib/libbz2.* \
-					/usr/include/bzlib.h)
-	rm -f $(addprefix $(STAGING_DIR),/lib/libbz2.* \
-					/usr/lib/libbz2.* \
-					/usr/include/bzlib.h)
-	-$(MAKE) -C $(@D) clean
-endef
-
 define HOST_BZIP2_BUILD_CMDS
 	$(HOST_MAKE_ENV) $(HOST_CONFIGURE_OPTS) \
 		$(MAKE) -C $(@D) -f Makefile-libbz2_so

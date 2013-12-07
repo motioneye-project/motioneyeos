@@ -17,8 +17,4 @@ define HOST_ELFTOSB_INSTALL_CMDS
 	$(INSTALL) -D -m 0755 $(@D)/bld/linux/sbtool $(HOST_DIR)/usr/bin/sbtool
 endef
 
-define HOST_ELFTOSB_CLEAN_CMDS
-	rm -rf $(@D)/bld/linux
-endef
-
 $(eval $(host-generic-package))

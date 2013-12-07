@@ -32,8 +32,4 @@ define SLANG_INSTALL_TARGET_CMDS
 	(cd $(TARGET_DIR)/usr/lib; ln -fs libslang.so libslang.so.1)
 endef
 
-define SLANG_CLEAN_CMDS
-	$(MAKE) -C $(@D) clean
-endef
-
 $(eval $(generic-package))

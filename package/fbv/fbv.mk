@@ -48,9 +48,4 @@ define FBV_INSTALL_TARGET_CMDS
 	install -D $(@D)/fbv $(TARGET_DIR)/usr/bin/fbv
 endef
 
-define FBV_CLEAN_CMDS
-	rm -f $(TARGET_DIR)/usr/bin/fbv
-	-$(MAKE) -C $(@D) clean
-endef
-
 $(eval $(autotools-package))

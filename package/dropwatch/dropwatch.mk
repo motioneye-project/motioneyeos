@@ -28,10 +28,6 @@ define DROPWATCH_BUILD_CMDS
 		LDFLAGS="$(DROPWATCH_LDFLAGS)" build
 endef
 
-define DROPWATCH_CLEAN_CMDS
-	$(TARGET_CONFIGURE_OPTS) $(TARGET_MAKE_ENV) $(MAKE) -C $(@D) clean
-endef
-
 define DROPWATCH_INSTALL_TARGET_CMDS
 	$(INSTALL) -D -m 0755 $(@D)/src/dropwatch \
 		$(TARGET_DIR)/usr/bin/dropwatch

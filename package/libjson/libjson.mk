@@ -46,9 +46,4 @@ define LIBJSON_INSTALL_STAGING_CMDS
 		$(LIBJSON_MAKE_OPT) prefix=$(STAGING_DIR)/usr install -C $(@D)
 endef
 
-define LIBJSON_CLEAN_CMDS
-	$(TARGET_MAKE_ENV) $(MAKE) $(TARGET_CONFIGURE_OPTS) $(LIBJSON_MAKE_OPT) \
-		clean -C $(@D)
-endef
-
 $(eval $(generic-package))

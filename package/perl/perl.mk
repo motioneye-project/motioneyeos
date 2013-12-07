@@ -102,8 +102,4 @@ define PERL_INSTALL_TARGET_CMDS
 	PERL5LIB=$(@D)/dist/base/lib $(MAKE1) -C $(@D) DESTDIR="$(TARGET_DIR)" $(PERL_INSTALL_TARGET_GOALS)
 endef
 
-define PERL_CLEAN_CMDS
-	-$(MAKE1) -C $(@D) clean
-endef
-
 $(eval $(generic-package))

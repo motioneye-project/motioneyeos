@@ -24,8 +24,4 @@ define LUACJSON_INSTALL_TARGET_CMDS
 	install -D -m 0644 $(@D)/cjson.so $(TARGET_DIR)/usr/lib/lua/cjson.so
 endef
 
-define LUACJSON_CLEAN_CMDS
-	$(MAKE) -C $(@D) clean
-endef
-
 $(eval $(generic-package))

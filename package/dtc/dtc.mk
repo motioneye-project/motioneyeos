@@ -21,7 +21,6 @@ DTC_LICENSE        += (for the library), GPLv2+ (for the executables)
 # Use default goal to build everything
 DTC_BUILD_GOAL      =
 DTC_INSTALL_GOAL    = install
-DTC_CLEAN_GOAL      = clean
 ifeq ($(BR2_PACKAGE_BASH),)
 DTC_POST_INSTALL_TARGET_HOOKS += DTC_POST_INSTALL_TARGET_RM_DTDIFF
 endif
@@ -31,7 +30,6 @@ else # $(BR2_PACKAGE_DTC_PROGRAMS) != y
 DTC_BUILD_GOAL      = libfdt
 # libfdt_install is our own install rule added by our patch
 DTC_INSTALL_GOAL    = libfdt_install
-DTC_CLEAN_GOAL      = libfdt_clean
 
 endif # $(BR2_PACKAGE_DTC_PROGRAMS) != y
 
@@ -48,10 +46,6 @@ endef
 
 define DTC_INSTALL_TARGET_CMDS
 	$(MAKE) -C $(@D) DESTDIR=$(TARGET_DIR) PREFIX=/usr $(DTC_INSTALL_GOAL)
-endef
-
-define DTC_CLEAN_CMDS
-	$(MAKE) -C $(@D) $(DTC_CLEAN_GOAL)
 endef
 
 $(eval $(generic-package))
