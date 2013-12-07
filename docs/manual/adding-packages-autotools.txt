@@ -145,9 +145,6 @@ cases, typical packages will therefore only use a few of them.
   value is correct for most autotools packages, but it is still possible
   to override it if needed.
 
-* +LIBFOO_CLEAN_OPT+ contains the make options used to
-  clean the package. By default, the value is +clean+.
-
 With the autotools infrastructure, all the steps required to build
 and install the packages are already defined, and they generally work
 well for most autotools-based packages. However, when required, it is

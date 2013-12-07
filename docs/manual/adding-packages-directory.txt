@@ -269,7 +269,7 @@ different way, using different infrastructures:
   These are based on an infrastructure similar to the one used for
   autotools-based packages, but require a little more work from the
   developer. They specify what should be done for the configuration,
-  compilation, installation and cleanup of the package. This
+  compilation and installation of the package. This
   infrastructure must be used for all packages that do not use the
   autotools as their build system. In the future, other specialized
   infrastructures might be written for other build systems.  We cover

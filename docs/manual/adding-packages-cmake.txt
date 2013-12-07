@@ -126,9 +126,6 @@ typical packages will therefore only use a few of them.
   for most CMake packages, but it is still possible to override it if
   needed.
 
-* +LIBFOO_CLEAN_OPT+ contains the make options used to clean the
-  package. By default, the value is +clean+.
-
 With the CMake infrastructure, all the steps required to build and
 install the packages are already defined, and they generally work well
 for most CMake-based packages. However, when required, it is still
