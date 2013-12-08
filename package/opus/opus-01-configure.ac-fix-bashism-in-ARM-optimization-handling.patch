@@ -1,0 +1,43 @@
+From a3d4f4f2385394b822b8f66342de8a1e3b4217bb Mon Sep 17 00:00:00 2001
+From: Peter Korsgaard <peter@korsgaard.com>
+Date: Sun, 8 Dec 2013 10:54:25 +0100
+Subject: [PATCH] configure.ac: fix bashism in ARM optimization handling
+
+Submitted upstream:
+http://lists.xiph.org/pipermail/opus/2013-December/002422.html
+
+Breaks configure when /bin/sh isn't bash with:
+
+configure: Trying to force-enable ARMv6 media instructions...
+checking if assembler supports ARMv6 media instructions on ARM... yes
+configure: Trying to force-enable NEON instructions...
+checking if assembler supports NEON instructions on ARM... yes
+./configure.lineno: 12799: Bad substitution
+
+Fix it by using the %% expansion to remove everything from the first
+space instead.
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ configure.ac | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 0ba4a80..443362f 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -333,9 +333,9 @@ AS_IF([test x"${enable_asm}" = x"yes"],[
+ 
+ AM_CONDITIONAL([CPU_ARM], [test "$cpu_arm" = "yes"])
+ AM_CONDITIONAL([OPUS_ARM_INLINE_ASM],
+-    [test x"${inline_optimization:0:3}" = x"ARM"])
++    [test x"${inline_optimization%% *}" = x"ARM"])
+ AM_CONDITIONAL([OPUS_ARM_EXTERNAL_ASM],
+-    [test x"${asm_optimization:0:3}" = x"ARM"])
++    [test x"${asm_optimization%% *}" = x"ARM"])
+ 
+ AS_IF([test x"$enable_rtcd" = x"yes"],[
+     AS_IF([test x"$rtcd_support" != x"no"],[
+-- 
+1.8.4.rc3
+
