@@ -89,12 +89,8 @@ The main usage of this is to store package recipes. The recommended
    like:
 +
 ------
-menu "<somecompany> packages"
-
 source "$BR2_EXTERNAL/package/package1/Config.in"
 source "$BR2_EXTERNAL/package/package2/Config.in"
-
-endmenu
 ------
 +
 Then, have a +BR2_EXTERNAL/external.mk+ file that looks like:
