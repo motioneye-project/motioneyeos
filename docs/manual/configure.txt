@@ -371,7 +371,7 @@ can be chosen from +System configuration+, +Init system+:
    etc. +systemd+ will be useful on relatively complex embedded
    systems, for example the ones requiring D-Bus and services
    communicating between each other. It is worth noting that +systemd+
-   brings a fairly big number of large dependencies: +dbus+, +glib+
+   brings a fairly big number of large dependencies: +dbus+, +udev+
    and more. For more details about +systemd+, see
    http://www.freedesktop.org/wiki/Software/systemd.
 
