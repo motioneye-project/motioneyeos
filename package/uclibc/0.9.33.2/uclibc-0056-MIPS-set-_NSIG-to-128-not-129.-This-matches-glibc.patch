@@ -1,0 +1,43 @@
+From 2da958760f798224065508431787e3a83b7fe2ae Mon Sep 17 00:00:00 2001
+From: Denys Vlasenko <vda.linux@googlemail.com>
+Date: Fri, 28 Jun 2013 21:59:54 +0200
+Subject: [PATCH-0.9.33] MIPS: set _NSIG to 128, not 129. This matches glibc.
+
+Prompted by lkml discussion of a MIPS bug where sending
+signal 128 was found to be able to crash the machine :/
+
+Signed-off-by: Denys Vlasenko <vda.linux@googlemail.com>
+---
+ libc/sysdeps/linux/mips/bits/signum.h | 17 +++++++++++++++--
+ 1 file changed, 15 insertions(+), 2 deletions(-)
+
+diff --git a/libc/sysdeps/linux/mips/bits/signum.h b/libc/sysdeps/linux/mips/bits/signum.h
+index cf9b834..e83250e 100644
+--- a/libc/sysdeps/linux/mips/bits/signum.h
++++ b/libc/sysdeps/linux/mips/bits/signum.h
+@@ -53,7 +53,20 @@
+ #define SIGXCPU		30	/* CPU limit exceeded (4.2 BSD).  */
+ #define SIGXFSZ		31	/* File size limit exceeded (4.2 BSD).  */
+ 
+-/* Biggest signal number + 1 (including real-time signals).  */
+-#define _NSIG		129
++/* MIPS is special by having 128 signals.
++ * All (?) other architectures have at most 64 signals.
++ * Having 128 signals is problematic because signal nos are 1-based
++ * and last signal number is then 128.
++ * This plays havoc with WIFSIGNALED and WCOREDUMP in waitpid status word,
++ * when process dies from signal 128.
++ * Linux kernel 3.9 accepts signal 128, with awful results :/
++ * It is being fixed.
++ *
++ * glibc (accidentally?) papers over this issue by declaring _NSIG to be 128,
++ * not 129 (despite claiming that _NSIG is "biggest signal number + 1"
++ * in the comment above that definition). We follow suit.
++ * Note that this results in __SIGRTMAX == 127. It is intended.
++ */
++#define _NSIG		128
+ 
+ #endif	/* <signal.h> included.  */
+-- 
+1.8.1.2
+

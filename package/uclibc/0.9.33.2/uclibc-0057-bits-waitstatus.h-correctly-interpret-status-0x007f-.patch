@@ -1,0 +1,54 @@
+From 4a96b948687166da26a6c327e6c6733ad2336c5c Mon Sep 17 00:00:00 2001
+From: Denys Vlasenko <vda.linux@googlemail.com>
+Date: Thu, 18 Jul 2013 21:57:06 +0200
+Subject: [PATCH-0.9.33] bits/waitstatus.h: correctly interpret status 0x007f on
+ MIPS
+
+On other architectures exit status of 0x007f is not possible,
+they don't have signal 127.
+
+Signed-off-by: Denys Vlasenko <vda.linux@googlemail.com>
+---
+ libc/sysdeps/linux/common/bits/waitstatus.h | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
+
+diff --git a/libc/sysdeps/linux/common/bits/waitstatus.h b/libc/sysdeps/linux/common/bits/waitstatus.h
+index 45d0fd3..33f39a8 100644
+--- a/libc/sysdeps/linux/common/bits/waitstatus.h
++++ b/libc/sysdeps/linux/common/bits/waitstatus.h
+@@ -24,7 +24,7 @@
+ /* Everything extant so far uses these same bits.  */
+ 
+ 
+-/* If WIFEXITED(STATUS), the low-order 8 bits of the status.  */
++/* If WIFEXITED(STATUS), the low-order 8 bits of exit(N).  */
+ #define	__WEXITSTATUS(status)	(((status) & 0xff00) >> 8)
+ 
+ /* If WIFSIGNALED(STATUS), the terminating signal.  */
+@@ -36,12 +36,20 @@
+ /* Nonzero if STATUS indicates normal termination.  */
+ #define	__WIFEXITED(status)	(__WTERMSIG(status) == 0)
+ 
+-/* Nonzero if STATUS indicates termination by a signal.  */
+-#define __WIFSIGNALED(status) \
+-  (((signed char) (((status) & 0x7f) + 1) >> 1) > 0)
++/* Nonzero if STATUS indicates termination by a signal.
++ * Note that status 0x007f is "died from signal 127", not "stopped by signal 0".
++ * This does happen on MIPS.
++ * The comparison is "< 0xff", not "< 0x7f", because WCOREDUMP bit (0x80)
++ * can be set too.
++ */
++#define	__WIFSIGNALED(status)	(((unsigned)((status) & 0xffff) - 1U) < 0xffU)
+ 
+ /* Nonzero if STATUS indicates the child is stopped.  */
++#if !defined(__mips__)
+ #define	__WIFSTOPPED(status)	(((status) & 0xff) == 0x7f)
++#else
++#define	__WIFSTOPPED(status)	(((status) & 0xff) == 0x7f && ((status) & 0xff00))
++#endif
+ 
+ /* Nonzero if STATUS indicates the child continued after a stop.  We only
+    define this if <bits/waitflags.h> provides the WCONTINUED flag bit.  */
+-- 
+1.8.1.2
+
