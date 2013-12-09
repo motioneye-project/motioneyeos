@@ -1,16 +1,20 @@
 Disable addition of RPATH to the generated libraries
 
+Signed-off-by: Simon Dawson <spdawson@gmail.com>
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 
 diff -Nurp a/SConstruct b/SConstruct
 --- a/SConstruct	2013-11-22 13:10:01.000000000 +0000
 +++ b/SConstruct	2013-11-23 11:26:57.698486777 +0000
-@@ -299,8 +299,6 @@ if env["sysroot"]:
- # prefix=/usr/local build want to put our libraries there. Ideally
- # we'd query the default load path here and test against wharever it
- # is, but we haven't found a way to do that.
--if env["shared"] and env["libdir"] not in {"/lib","/usr/lib","/usr/local/lib"}:
--    env.Prepend(RPATH=[installdir('libdir')])
+@@ -299,11 +299,6 @@ if env["sysroot"]:
+ # system default load path. /lib and /usr/lib should always be on
+ # this; listing them explicitly is a fail-safe against this ldconfig
+ # invocation not doing what we expect.
+-if env["shared"]:
+-    sysrpath = Split(_getoutput("ldconfig -v -N -X 2>/dev/null | sed -n -e '/^\//s/://p'"))
+-    if env["libdir"] not in ["/usr/lib", "/lib"] + sysrpath:
+-        announce("Prepending %s to RPATH." % installdir('libdir'))
+-        env.Prepend(RPATH=[installdir('libdir')])
  
  # Give deheader a way to set compiler flags
  if 'MORECFLAGS' in os.environ:

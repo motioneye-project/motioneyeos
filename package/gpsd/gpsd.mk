@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-GPSD_VERSION = 327a3ef7c83c1b3b2cf7cdfcddf0c6fd7aaa8963
+GPSD_VERSION = a496a59c81173881900d976be35752787f4ab38c
 GPSD_SITE = git://git.savannah.nongnu.org/gpsd.git
 GPSD_LICENSE = BSD-3c
 GPSD_LICENSE_FILES = COPYING
