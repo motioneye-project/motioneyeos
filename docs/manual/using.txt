@@ -15,7 +15,13 @@ assistant:
  $ make menuconfig
 --------------------
 
-to run the curses-based configurator, or
+or
+
+--------------------
+ $ make nconfig
+--------------------
+
+to run the old or new curses-based configurator, or
 
 --------------------
  $ make xconfig
@@ -105,7 +111,7 @@ This directory contains several subdirectories:
 * +toolchain/+ contains the build directories for the various
   components of the cross-compilation toolchain.
 
-These commands, +make menuconfig|gconfig|xconfig+ and +make+, are the
+These commands, +make menuconfig|nconfig|gconfig|xconfig+ and +make+, are the
 basic ones that allow to easily and quickly generate images fitting
 your needs, with all the supports and applications you enabled.
 

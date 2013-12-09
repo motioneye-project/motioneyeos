@@ -11,7 +11,7 @@ Offline builds
 
 If you intend to do an offline build and just want to download
 all sources that you previously selected in the configurator
-('menuconfig', 'xconfig' or 'gconfig'), then issue:
+('menuconfig', 'nconfig', 'xconfig' or 'gconfig'), then issue:
 
 --------------------
  $ make source
