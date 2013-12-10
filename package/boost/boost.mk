@@ -13,9 +13,7 @@ BOOST_INSTALL_STAGING = YES
 TARGET_CC_VERSION = $(shell $(TARGET_CC) -dumpversion)
 HOST_CC_VERSION = $(shell $(HOSTCC) -dumpversion)
 
-BOOST_DEPENDENCIES =
-
-BOOST_FLAGS =
+HOST_BOOST_DEPENDENCIES =
 
 # keep host variant as minimal as possible
 HOST_BOOST_FLAGS = --without-icu \
