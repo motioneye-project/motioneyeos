@@ -27,7 +27,7 @@ endif
 # This is just for the libraries / bindings
 THRIFT_LANG_CONF_OPT += --without-csharp --without-java --without-erlang \
 	--without-python --without-perl --without-php --without-php_extension \
-	--without-ruby --without-haskell --without-go --without-d
+	--without-ruby --without-haskell --without-go --without-d --without-qt4
 HOST_THRIFT_CONF_OPT += $(THRIFT_LANG_CONF_OPT) --without-c_glib
 THRIFT_CONF_OPT += $(THRIFT_LANG_CONF_OPT)
 
