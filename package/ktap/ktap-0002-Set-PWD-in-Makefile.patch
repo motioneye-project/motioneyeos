@@ -1,0 +1,28 @@
+From 90a8dd877b7766b1ba722c19569cffb68625288b Mon Sep 17 00:00:00 2001
+From: Anders Darander <anders@chargestorm.se>
+Date: Mon, 11 Nov 2013 13:04:36 +0100
+Subject: Set PWD in Makefile
+
+When cross-compiling using e.g. buildroot, PWD was not reset in the Makefile.
+That caused PWD to have an incorrect value, and thus building the module failed.
+
+Signed-off-by: Anders Darander <anders@chargestorm.se>
+---
+ Makefile | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/Makefile b/Makefile
+index 372b41a..939d25e 100644
+--- a/Makefile
++++ b/Makefile
+@@ -25,6 +25,7 @@ ktapvm-y	:= $(INTP_OBJS)
+ 
+ KVERSION ?= $(shell uname -r)
+ KERNEL_SRC ?= /lib/modules/$(KVERSION)/build
++PWD := $(shell pwd)
+ mod:
+ 	$(MAKE) -C $(KERNEL_SRC) M=$(PWD) modules
+ 
+-- 
+1.8.4.2
+

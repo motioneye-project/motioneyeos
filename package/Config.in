@@ -50,6 +50,7 @@ source "package/duma/Config.in"
 source "package/gdb/Config.in"
 source "package/iozone/Config.in"
 source "package/kexec/Config.in"
+source "package/ktap/Config.in"
 source "package/latencytop/Config.in"
 source "package/lmbench/Config.in"
 if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
