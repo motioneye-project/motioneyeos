@@ -371,4 +371,5 @@ include package/pkg-utils.mk
 include package/pkg-download.mk
 include package/pkg-autotools.mk
 include package/pkg-cmake.mk
+include package/pkg-python.mk
 include package/pkg-generic.mk

@@ -1,0 +1,159 @@
+// -*- mode:doc; -*-
+// vim: set syntax=asciidoc:
+
+Infrastructure for Python packages
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This infrastructure applies to Python packages that use the standard
+Python setuptools mechanism as their build system, generally
+recognizable by the usage of a +setup.py+ script.
+
+[[python-package-tutorial]]
+
++python-package+ tutorial
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+First, let's see how to write a +.mk+ file for a Python package,
+with an example :
+
+------------------------
+01: ################################################################################
+02: #
+03: # python-foo
+04: #
+05: ################################################################################
+06:
+07: PYTHON_FOO_VERSION = 1.0
+08: PYTHON_FOO_SOURCE = python-foo-$(LIBFOO_VERSION).tar.xz
+09: PYTHON_FOO_SITE = http://www.foosoftware.org/download
+10: PYTHON_FOO_LICENSE = BSD-3c
+11: PYTHON_FOO_LICENSE_FILES = LICENSE
+12: PYTHON_FOO_ENV = SOME_VAR=1
+13: PYTHON_FOO_DEPENDENCIES = libmad
+14: PYTHON_FOO_SETUP_TYPE = distutils
+15:
+16: $(eval $(python-package))
+------------------------
+
+On line 7, we declare the version of the package.
+
+On line 8 and 9, we declare the name of the tarball (xz-ed tarball
+recommended) and the location of the tarball on the Web. Buildroot
+will automatically download the tarball from this location.
+
+On line 10 and 11, we give licensing details about the package (its
+license on line 10, and the file containing the license text on line
+11).
+
+On line 12, we tell Buildroot to pass custom options to the Python
++setup.py+ script when it is configuring the package.
+
+On line 13, we declare our dependencies, so that they are built
+before the build process of our package starts.
+
+On line 14, we declare the specific Python build system being used. In
+this case the +distutils+ Python build system is used. The two
+supported ones are +distutils+ and +setuptools+.
+
+Finally, on line 16, we invoke the +python-package+ macro that
+generates all the Makefile rules that actually allow the package to be
+built.
+
+[[python-package-reference]]
+
++python-package+ reference
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+As a policy, packages that merely provide Python modules should all be
+named +python-<something>+ in Buildroot. Other packages that use the
+Python build system, but are not Python modules, can freely choose
+their name (existing examples in Buildroot are +scons+ and
++supervisor+).
+
+In their +Config.in+ file, they should depend on +BR2_PACKAGE_PYTHON+
+so that when Buildroot will enable Python 3 usage for modules, we will
+be able to enable Python modules progressively on Python 3.
+
+The main macro of the Python package infrastructure is
++python-package+. It is similar to the +generic-package+ macro. It is
+also possible to create Python host packages with the
++host-python-package+ macro.
+
+Just like the generic infrastructure, the Python infrastructure works
+by defining a number of variables before calling the +python-package+
+or +host-python-package+ macros.
+
+All the package metadata information variables that exist in the
+xref:generic-package-reference[generic package infrastructure] also
+exist in the Python infrastructure: +PYTHON_FOO_VERSION+,
++PYTHON_FOO_SOURCE+, +PYTHON_FOO_PATCH+, +PYTHON_FOO_SITE+,
++PYTHON_FOO_SUBDIR+, +PYTHON_FOO_DEPENDENCIES+, +PYTHON_FOO_LICENSE+,
++PYTHON_FOO_LICENSE_FILES+, etc.
+
+Note that:
+
+ * Setting +PYTHON_FOO_INSTALL_STAGING+ to +YES+ has no effect (unless
+   a +PYTHON_FOO_INSTALL_STAGING_CMDS+ variable is defined), since
+   Python modules generally don't need to be installed to the
+   +staging+ directory.
+
+ * It is not necessary to add +python+ or +host-python+ in the
+   +PYTHON_FOO_DEPENDENCIES+ variable of a package, since these basic
+   dependencies are automatically added as needed by the Python
+   package infrastructure.
+
+ * Similarly, it is not needed to add +host-setuptools+ and/or
+   +host-distutilscross+ dependencies to +PYTHON_FOO_DEPENDENCIES+ for
+   setuptools-based packages, since these are automatically added by
+   the Python infrastructure as needed.
+
+One variable specific to the Python infrastructure is mandatory:
+
+* +PYTHON_FOO_SETUP_TYPE+, to define which Python build system is used
+  by the package. The two supported values are +distutils+ and
+  +setuptools+. If you don't know which one is used in your package,
+  look at the +setup.py+ file in your package source code, and see
+  whether it imports things from the +distutils+ module or the
+  +setuptools+ module.
+
+A few additional variables, specific to the Python infrastructure, can
+optionally be defined, depending on the package's needs. Many of them
+are only useful in very specific cases, typical packages will
+therefore only use a few of them, or none.
+
+* +PYTHON_FOO_ENV+, to specify additional environment variables to
+  pass to the Python +setup.py+ script (for both the build and install
+  steps). Note that the infrastructure is automatically passing
+  several standard variables, defined in +PKG_PYTHON_DISTUTILS_ENV+
+  (for distutils target packages), +HOST_PKG_PYTHON_DISTUTILS_ENV+
+  (for distutils host packages), +PKG_PYTHON_SETUPTOOLS_ENV+ (for
+  setuptools target packages) and +HOST_PKG_PYTHON_SETUPTOOLS_ENV+
+  (for setuptools host packages).
+
+* +PYTHON_FOO_BUILD_OPT+, to specify additional options to pass to the
+  Python +setup.py+ script during the build step. For target distutils
+  packages, the +PKG_PYTHON_DISTUTILS_BUILD_OPT+ options are already
+  passed automatically by the infrastructure.
+
+* +PYTHON_FOO_INSTALL_OPT+, to specify additional options to pass to
+  the Python +setup.py+ script during the installation step. Note that
+  the infrastructure is automatically passing some options, defined in
+  +PKG_PYTHON_DISTUTILS_INSTALL_OPT+ (for target distutils packages),
+  +HOST_PKG_PYTHON_DISTUTILS_INSTALL_OPT+ (for host distutils
+  packages), +PKG_PYTHON_SETUPTOOLS_INSTALL_OPT+ (for target
+  setuptools packages) and +HOST_PKG_PYTHON_SETUPTOOLS_INSTALL_OPT+
+  (for host setuptools packages).
+
+With the Python infrastructure, all the steps required to build and
+install the packages are already defined, and they generally work well
+for most Python-based packages. However, when required, it is still
+possible to customize what is done in any particular step:
+
+* By adding a post-operation hook (after extract, patch, configure,
+  build or install). See xref:hooks[] for details.
+
+* By overriding one of the steps. For example, even if the Python
+  infrastructure is used, if the package +.mk+ file defines its own
+  +PYTHON_FOO_BUILD_CMDS+ variable, it will be used instead of the
+  default Python one. However, using this method should be restricted
+  to very specific cases. Do not use it in the general case.
