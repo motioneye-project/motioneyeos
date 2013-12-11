@@ -409,6 +409,7 @@ source "package/python-serial/Config.in"
 source "package/python-setuptools/Config.in"
 source "package/python-simplejson/Config.in"
 source "package/python-thrift/Config.in"
+source "package/python-tornado/Config.in"
 source "package/python-versiontools/Config.in"
 endmenu
 endif
