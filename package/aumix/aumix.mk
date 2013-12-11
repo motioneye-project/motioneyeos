@@ -8,6 +8,8 @@ AUMIX_VERSION = 2.8
 AUMIX_SOURCE = aumix-$(AUMIX_VERSION).tar.bz2
 AUMIX_SITE = http://jpj.net/~trevor/aumix/releases
 AUMIX_AUTORECONF = YES
+AUMIX_LICENSE = GPLv2+
+AUMIX_LICENSE_FILES = COPYING
 
 AUMIX_CONF_OPT = \
 	--without-gtk \
