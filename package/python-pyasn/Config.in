@@ -1,0 +1,13 @@
+config BR2_PACKAGE_PYTHON_PYASN
+	bool "python-pyasn"
+	depends on BR2_PACKAGE_PYTHON
+	depends on BR2_INSTALL_LIBSTDCPP
+	help
+	  PyASN is a Python extension module that enables you to
+	  perform very fast IP address to Autonomous System Number
+	  lookups.
+
+	  https://code.google.com/p/pyasn/
+
+comment "python-pyasn needs a toolchain w/ C++"
+        depends on !BR2_INSTALL_LIBSTDCPP
