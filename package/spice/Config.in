@@ -1,3 +1,6 @@
+comment "spice server needs a toolchain w/ wchar, threads"
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
+
 comment "spice server depends on python (for pyparsing)"
 	depends on BR2_i386 || BR2_x86_64
 	depends on !BR2_PACKAGE_PYTHON
@@ -6,9 +9,12 @@ config BR2_PACKAGE_SPICE
 	bool "spice server"
 	depends on BR2_i386 || BR2_x86_64
 	depends on BR2_PACKAGE_PYTHON
+	depends on BR2_USE_WCHAR # libglib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libglib2
 	select BR2_PACKAGE_ALSA_LIB
 	select BR2_PACKAGE_CELT051
 	select BR2_PACKAGE_JPEG
+	select BR2_PACKAGE_LIBGLIB2
 	select BR2_PACKAGE_OPENSSL
 	select BR2_PACKAGE_PIXMAN
 	select BR2_PACKAGE_PYTHON_PYPARSING

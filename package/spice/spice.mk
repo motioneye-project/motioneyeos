@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-SPICE_VERSION         = 0.12.0
+SPICE_VERSION         = 0.12.4
 SPICE_SOURCE          = spice-$(SPICE_VERSION).tar.bz2
 SPICE_SITE            = http://www.spice-space.org/download/releases/
 SPICE_LICENSE         = LGPLv2.1+
