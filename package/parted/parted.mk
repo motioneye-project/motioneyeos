@@ -26,4 +26,10 @@ else
 PARTED_CONF_OPT += --disable-device-mapper
 endif
 
+HOST_PARTED_DEPENDENCIES = host-util-linux
+HOST_PARTED_CONF_OPT += \
+	--without-readline \
+	--disable-device-mapper \
+
 $(eval $(autotools-package))
+$(eval $(host-autotools-package))
