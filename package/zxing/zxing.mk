@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-ZXING_VERSION = 2.0
+ZXING_VERSION = 2.3.0
 ZXING_SITE = http://zxing.googlecode.com/files
 ZXING_SOURCE = ZXing-$(ZXING_VERSION).zip
 ZXING_LICENSE = Apache v2.0
