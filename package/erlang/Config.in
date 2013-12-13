@@ -10,11 +10,23 @@ config BR2_PACKAGE_ERLANG
 
 	  http://www.erlang.org
 
+if BR2_PACKAGE_ERLANG
+
+config BR2_PACKAGE_ERLANG_SMP
+	bool "enable SMP support"
+	help
+	  Erlang provides both a UP and an SMP emulator. The UP emulator
+	  is always built, and this option enables compilation of the SMP
+	  emulator. The choice of which emulator to use is made at runtime.
+	  If you do not need SMP support, turning this option off reduces
+	  compile time and the size of the Erlang installation.
+
 config BR2_PACKAGE_ERLANG_MEGACO
 	bool "install megaco application"
-	depends on BR2_PACKAGE_ERLANG
 	help
 	  The Megaco application is a framework for building applications
 	  on top of the Megaco/H.248 protocol. It is approximately 14MB in
 	  size so if you do not need it then it is recommended not to
 	  enable it.
+
+endif # BR2_PACKAGE_ERLANG

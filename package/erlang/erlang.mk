@@ -43,6 +43,10 @@ ERLANG_CONF_OPT += --enable-shared-zlib
 ERLANG_DEPENDENCIES += zlib
 endif
 
+ifeq ($(BR2_PACKAGE_ERLANG_SMP),)
+ERLANG_CONF_OPT += --disable-smp-support
+endif
+
 # Remove source, example, gs and wx files from the target
 ERLANG_REMOVE_PACKAGES = gs wx
 
