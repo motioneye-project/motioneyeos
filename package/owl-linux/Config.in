@@ -9,7 +9,7 @@ config BR2_PACKAGE_OWL_LINUX
 
 	  http://linux.hd-wireless.se/bin/view/Linux/GettingStarted
 
-comment "owl-linux requires a Linux kernel"
+comment "owl-linux needs a Linux kernel to be built"
 	depends on !BR2_LINUX_KERNEL
 	depends on BR2_arm || BR2_armeb
 

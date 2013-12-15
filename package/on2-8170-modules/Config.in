@@ -1,5 +1,5 @@
 config BR2_PACKAGE_ON2_8170_MODULES
-	bool "on2-8170 modules"
+	bool "on2-8170-modules"
 	depends on BR2_LINUX_KERNEL
 	depends on BR2_arm926t
 	help
@@ -7,6 +7,6 @@ config BR2_PACKAGE_ON2_8170_MODULES
 
 	  http://www.at91.com/linux4sam/bin/view/Linux4SAM/SAM9M10Gstreamer
 
-comment "on2-8170 modules requires a linux kernel to be built"
+comment "on2-8170-modules needs a Linux kernel to be built"
 	depends on BR2_arm926t
 	depends on !BR2_LINUX_KERNEL

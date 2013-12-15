@@ -1,4 +1,4 @@
-comment "gst-fsl-plugins requires an imx-specific kernel to be built"
+comment "gst-fsl-plugins needs an imx-specific Linux kernel to be built"
 	depends on BR2_arm && BR2_PACKAGE_GSTREAMER && !BR2_LINUX_KERNEL
 
 config BR2_PACKAGE_GST_FSL_PLUGINS

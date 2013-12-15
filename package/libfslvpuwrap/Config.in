@@ -1,4 +1,4 @@
-comment "libfslvpuwrap needs an imx-specific kernel to be built"
+comment "libfslvpuwrap needs an imx-specific Linux kernel to be built"
 	depends on BR2_arm
 	depends on !BR2_LINUX_KERNEL
 

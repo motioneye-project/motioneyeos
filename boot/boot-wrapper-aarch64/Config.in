@@ -1,3 +1,7 @@
+comment "boot-wrapper-aarch64 needs a Linux kernel to be built"
+	depends on BR2_aarch64
+	depends on !BR2_LINUX_KERNEL
+
 config BR2_TARGET_BOOT_WRAPPER_AARCH64
 	bool "boot-wrapper-aarch64"
 	depends on BR2_aarch64

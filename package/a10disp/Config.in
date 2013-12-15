@@ -8,6 +8,6 @@ config BR2_PACKAGE_A10DISP
 
 	  http://github.com/hglm/a10disp
 
-comment "a10disp requires the linux kernel"
+comment "a10disp needs a Linux kernel to be built"
 	depends on BR2_arm
 	depends on !BR2_LINUX_KERNEL

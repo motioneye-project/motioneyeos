@@ -10,6 +10,6 @@ config BR2_PACKAGE_ON2_8170_LIBS
 
 	  http://www.at91.com/linux4sam/bin/view/Linux4SAM/SAM9M10Gstreamer
 
-comment "on2-8170-libs needs an (e)glibc toolchain and a linux kernel to be built"
+comment "on2-8170-libs needs an (e)glibc toolchain and a Linux kernel to be built"
 	depends on BR2_arm926t
 	depends on !BR2_LINUX_KERNEL || !BR2_TOOLCHAIN_USES_GLIBC

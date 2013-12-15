@@ -1,4 +1,4 @@
-comment "imx-lib needs an imx-specific kernel to be built"
+comment "imx-lib needs an imx-specific Linux kernel to be built"
 	depends on BR2_arm && !BR2_LINUX_KERNEL
 
 config BR2_PACKAGE_IMX_LIB

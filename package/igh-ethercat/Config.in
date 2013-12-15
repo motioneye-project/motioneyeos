@@ -1,3 +1,6 @@
+comment "igh-ethercat needs a Linux kernel to be built"
+	depends on !BR2_LINUX_KERNEL
+
 config BR2_PACKAGE_IGH_ETHERCAT
 	bool "igh-ethercat"
 	depends on BR2_LINUX_KERNEL

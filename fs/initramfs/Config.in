@@ -17,5 +17,5 @@ config BR2_TARGET_ROOTFS_INITRAMFS
 	  identical root filesystems, one embedded inside the kernel
 	  image, and one separately.
 
-comment "initramfs requires a Linux kernel to be built"
+comment "initramfs needs a Linux kernel to be built"
 	depends on !BR2_LINUX_KERNEL

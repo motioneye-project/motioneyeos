@@ -18,7 +18,7 @@ config BR2_PACKAGE_KTAP
 
 	  http://www.ktap.org
 
-comment "ktap requires a linux kernel to be built"
+comment "ktap needs a Linux kernel to be built"
 	depends on !BR2_LINUX_KERNEL
 
 comment "ktap needs a toolchain w/ threads"

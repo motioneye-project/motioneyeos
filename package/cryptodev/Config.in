@@ -1,5 +1,8 @@
+comment "cryptodev needs a Linux kernel to be built"
+	depends on !BR2_LINUX_KERNEL
+
 config BR2_PACKAGE_CRYPTODEV
-	bool "cryptodev support"
+	bool "cryptodev"
 	depends on BR2_LINUX_KERNEL
 	help
 	  Select the desired cryptodev implementation.

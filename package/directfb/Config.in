@@ -16,6 +16,9 @@ config BR2_PACKAGE_DIRECTFB_MULTI
 	help
 	  Enable use of multiple concurrent DirectFB applications
 
+comment "directfb multi application needs a Linux kernel to be built"
+	depends on !BR2_LINUX_KERNEL
+
 config BR2_PACKAGE_DIRECTFB_DEBUG
 	bool "directfb debugging"
 	help

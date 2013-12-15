@@ -17,5 +17,5 @@ config BR2_PACKAGE_LTTNG_MODULES
 
 	  http://lttng.org
 
-comment "lttng-modules requires a linux kernel to be built"
+comment "lttng-modules needs a Linux kernel to be built"
 	depends on !BR2_LINUX_KERNEL
