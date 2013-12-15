@@ -94,7 +94,7 @@ ifndef $(2)_SETUP_TYPE
  ifdef $(3)_SETUP_TYPE
   $(2)_SETUP_TYPE = $($(3)_SETUP_TYPE)
  else
-  $$(error "$(1): Unknown or undefined <pkg>_SETUP_TYPE")
+  $$(error "$(2)_SETUP_TYPE must be set")
  endif
 endif
 
@@ -124,6 +124,8 @@ $(2)_BASE_BUILD_TGT   = build
 $(2)_BASE_BUILD_OPT   =
 $(2)_BASE_INSTALL_OPT = $$(HOST_PKG_PYTHON_SETUPTOOLS_INSTALL_OPT)
 endif
+else
+$$(error "Invalid $(2)_SETUP_TYPE. Valid options are 'distutils' or 'setuptools'")
 endif
 
 # The below statement intends to calculate the dependencies of host
