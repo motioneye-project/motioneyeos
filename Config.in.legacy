@@ -99,6 +99,26 @@ comment "----------------------------------------------------"
 endif
 
 ###############################################################################
+comment "Legacy options removed in 2014.02"
+
+config BR2_PACKAGE_NETKITBASE
+	bool "netkitbase has been removed"
+	select BR2_LEGACY
+	help
+	  The 'netkitbase' package has been removed since it has been
+	  deprecated since 2012.11. This package provided 'inetd'
+	  which is replaced by 'xinet' and 'ping' which is replaced by
+	  'busybox' or 'fping'.
+
+config BR2_PACKAGE_NETKITTELNET
+	bool "netkittelnet has been removed"
+	select BR2_LEGACY
+	help
+	  The 'netkittelnet' package has been removed since it has
+	  been deprecated since 2012.11. 'busybox' provides a telnet
+	  client and should be used instead.
+
+###############################################################################
 comment "Legacy options removed in 2013.11"
 
 config BR2_PACKAGE_LVM2_DMSETUP_ONLY

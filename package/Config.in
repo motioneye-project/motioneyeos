@@ -851,8 +851,6 @@ source "package/ndisc6/Config.in"
 source "package/netatalk/Config.in"
 if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 source "package/netcat/Config.in"
-source "package/netkitbase/Config.in"
-source "package/netkittelnet/Config.in"
 endif
 source "package/netplug/Config.in"
 source "package/netsnmp/Config.in"
