@@ -253,6 +253,22 @@ use in the comment.
 ** Dependency symbol: +!BR2_PREFER_STATIC_LIB+
 ** Comment string: +dynamic library+
 
+Dependencies on a Linux kernel built by buildroot
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Some packages need a Linux kernel to be built by buildroot. These are
+typically kernel modules or firmware. A comment should be added in the
+Config.in file to express this dependency, similar to dependencies on
+toolchain options. The general format is:
+
+--------------------------
+foo needs a Linux kernel to be built
+--------------------------
+
+If there is a dependency on both toolchain options and the Linux
+kernel, use this format:
+--------------------------
+foo needs a toolchain w/ featA, featB, featC and a Linux kernel to be built
+--------------------------
 
 The +.mk+ file
 ~~~~~~~~~~~~~~
