@@ -4,12 +4,13 @@
 #
 ################################################################################
 
-PHP_VERSION = 5.3.27
+PHP_VERSION = 5.5.7
 PHP_SOURCE = php-$(PHP_VERSION).tar.xz
 PHP_SITE = http://www.php.net/distributions
 PHP_INSTALL_STAGING = YES
 PHP_INSTALL_STAGING_OPT = INSTALL_ROOT=$(STAGING_DIR) install
 PHP_INSTALL_TARGET_OPT = INSTALL_ROOT=$(TARGET_DIR) install
+PHP_DEPENDENCIES = host-pkgconf
 PHP_LICENSE = PHP
 PHP_LICENSE_FILES = LICENSE
 PHP_CONF_OPT =  --mandir=/usr/share/man \
@@ -123,17 +124,6 @@ endif
 ifeq ($(BR2_PACKAGE_PHP_EXT_READLINE),y)
 	PHP_CONF_OPT += --with-readline=$(STAGING_DIR)/usr
 	PHP_DEPENDENCIES += readline
-endif
-
-### Legacy sqlite2 support
-ifeq ($(BR2_PACKAGE_PHP_EXT_SQLITE),y)
-	PHP_CONF_OPT += --with-sqlite
-ifneq ($(BR2_LARGEFILE),y)
-	PHP_CFLAGS += -DSQLITE_DISABLE_LFS
-endif
-ifeq ($(BR2_PACKAGE_PHP_EXT_SQLITE_UTF8),y)
-	PHP_CONF_OPT += --enable-sqlite-utf8
-endif
 endif
 
 ### Native MySQL extensions
