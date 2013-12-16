@@ -51,3 +51,7 @@ ttySC5
 ttySC6
 ttySC7
 ttyGS0
+hvc0
+hvc1
+hvc2
+hvc3
