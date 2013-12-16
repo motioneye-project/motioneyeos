@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-ZYRE_VERSION = 44a57a449a34bb6310b5ce4b17f1ce42f9b17beb
-ZYRE_SITE = git://github.com/zeromq/zyre.git
+ZYRE_VERSION = 378b8b5cf76d10f5e41b339a4bcb0dc6197a9edf
+ZYRE_SITE = $(call github,zeromq,zyre,$(ZYRE_VERSION))
 ZYRE_LICENSE = LGPLv3+
 ZYRE_LICENSE_FILES = COPYING COPYING.LESSER
 ZYRE_INSTALL_STAGING = YES
