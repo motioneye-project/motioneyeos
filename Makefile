@@ -418,7 +418,7 @@ dirs: $(BUILD_DIR) $(STAGING_DIR) $(TARGET_DIR) \
 	$(HOST_DIR) $(BINARIES_DIR) $(STAMP_DIR)
 
 $(BUILD_DIR)/buildroot-config/auto.conf: $(BUILDROOT_CONFIG)
-	$(MAKE) $(EXTRAMAKEARGS) HOSTCC="$(HOSTCC_NOCCACHE)" HOSTCXX="$(HOSTCXX_NOCCACHE)" silentoldconfig
+	$(MAKE1) $(EXTRAMAKEARGS) HOSTCC="$(HOSTCC_NOCCACHE)" HOSTCXX="$(HOSTCXX_NOCCACHE)" silentoldconfig
 
 prepare: $(BUILD_DIR)/buildroot-config/auto.conf
 
@@ -603,7 +603,7 @@ toolchain-eclipse-register:
 source: dirs $(TARGETS_SOURCE) $(HOST_SOURCE)
 
 external-deps:
-	@$(MAKE) -Bs DL_MODE=SHOW_EXTERNAL_DEPS $(EXTRAMAKEARGS) source | sort -u
+	@$(MAKE1) -Bs DL_MODE=SHOW_EXTERNAL_DEPS $(EXTRAMAKEARGS) source | sort -u
 
 legal-info-clean:
 	@rm -fr $(LEGAL_INFO_DIR)
@@ -753,7 +753,7 @@ savedefconfig: $(BUILD_DIR)/buildroot-config/conf outputmakefile
 
 # check if download URLs are outdated
 source-check:
-	$(MAKE) DL_MODE=SOURCE_CHECK $(EXTRAMAKEARGS) source
+	$(MAKE1) DL_MODE=SOURCE_CHECK $(EXTRAMAKEARGS) source
 
 .PHONY: defconfig savedefconfig
 
