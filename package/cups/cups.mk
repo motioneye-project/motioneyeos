@@ -14,6 +14,7 @@ CUPS_INSTALL_STAGING_OPT = DESTDIR=$(STAGING_DIR) DSTROOT=$(STAGING_DIR) install
 CUPS_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) DSTROOT=$(TARGET_DIR) install
 CUPS_CONF_OPT = --without-perl \
 		--without-java \
+		--without-php \
 		--disable-gnutls \
 		--disable-gssapi \
 		--libdir=/usr/lib
@@ -33,14 +34,6 @@ endif
 
 ifeq ($(BR2_PACKAGE_XORG7),y)
 	CUPS_DEPENDENCIES += xlib_libX11
-endif
-
-ifeq ($(BR2_PACKAGE_PHP),y)
-	CUPS_CONF_ENV += ac_cv_path_PHPCONFIG=$(STAGING_DIR)/usr/bin/php-config
-	CUPS_CONF_OPT += --with-php
-	CUPS_DEPENDENCIES += php
-else
-	CUPS_CONF_OPT += --without-php
 endif
 
 ifeq ($(BR2_PACKAGE_PYTHON),y)
