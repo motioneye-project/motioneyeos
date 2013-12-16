@@ -1,0 +1,34 @@
+From cd84bc9743d7595dee1ea4bc40bd236a619d6539 Mon Sep 17 00:00:00 2001
+From: Gabor Tatarka <gabor.tatarka@ericsson.com>
+Date: Mon, 2 Dec 2013 22:05:57 +0400
+Subject: [PATCH] fix TPACKET_V3 initialization (GH #329)
+
+libpcap would fail to initialize on Linux when compiled against kernel
+headers with TPACKET_V3 support but running on kernel without:
+
+"can't get TPACKET_V3 header len on packet socket: Invalid argument"
+
+Fix init_tpacket() to respect EINVAL because that is what the kernel
+returns for unsupported TPACKET versions.
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ pcap-linux.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/pcap-linux.c b/pcap-linux.c
+index 6c0723a..8800c96 100644
+--- a/pcap-linux.c
++++ b/pcap-linux.c
+@@ -3471,7 +3471,7 @@ init_tpacket(pcap_t *handle, int version, const char *version_str)
+ 
+ 	/* Probe whether kernel supports the specified TPACKET version */
+ 	if (getsockopt(handle->fd, SOL_PACKET, PACKET_HDRLEN, &val, &len) < 0) {
+-		if (errno == ENOPROTOOPT)
++		if (errno == ENOPROTOOPT || errno == EINVAL)
+ 			return 1;	/* no */
+ 
+ 		/* Failed to even find out; this is a fatal error. */
+-- 
+1.8.5.1
+
