@@ -8,6 +8,8 @@ config BR2_PACKAGE_QT5WEBKIT
 	select BR2_PACKAGE_XLIB_LIBXRENDER if BR2_PACKAGE_QT5BASE_XCB
 	# This module does not support static linking
 	depends on !BR2_PREFER_STATIC_LIB
+	# This package is not supported on MIPS 64-bit architecture
+	depends on !BR2_mips64 && !BR2_mips64el
 	help
 	  Qt is a cross-platform application and UI framework for
 	  developers using C++.
