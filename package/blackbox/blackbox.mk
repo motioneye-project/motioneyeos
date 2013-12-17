@@ -17,4 +17,6 @@ ifneq ($(BR2_ENABLE_LOCALE),y)
 BLACKBOX_DEPENDENCIES += libiconv
 endif
 
+BLACKBOX_AUTORECONF = YES
+
 $(eval $(autotools-package))
