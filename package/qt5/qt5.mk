@@ -1,5 +1,5 @@
-QT5_VERSION = 5.1.1
-QT5_SITE = http://download.qt-project.org/official_releases/qt/5.1/$(QT5_VERSION)/submodules/
+QT5_VERSION = 5.2.0
+QT5_SITE = http://download.qt-project.org/official_releases/qt/5.2/$(QT5_VERSION)/submodules/
 include $(sort $(wildcard package/qt5/*/*.mk))
 
 define QT5_LA_PRL_FILES_FIXUP

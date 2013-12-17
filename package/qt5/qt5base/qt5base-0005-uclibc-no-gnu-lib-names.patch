@@ -1,0 +1,44 @@
+[PATCH]: fix build on uClibc
+
+Reported upstream: https://bugreports.qt-project.org/browse/QTBUG-35742
+
+uClibc defines __GNU_LIBRARY__ like glibc, but doesn't provide
+gnu/lib-names.h, so the build breaks with:
+
+kernel/qdnslookup_unix.cpp:56:29: fatal error: gnu/lib-names.h:
+No such file or directory
+
+Fix it by explicitly checking for !uClibc.
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ src/network/kernel/qdnslookup_unix.cpp |    2 +-
+ src/network/kernel/qhostinfo_unix.cpp  |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+Index: qt5base-5.2.0/src/network/kernel/qdnslookup_unix.cpp
+===================================================================
+--- qt5base-5.2.0.orig/src/network/kernel/qdnslookup_unix.cpp
++++ qt5base-5.2.0/src/network/kernel/qdnslookup_unix.cpp
+@@ -52,7 +52,7 @@
+ #include <arpa/nameser_compat.h>
+ #include <resolv.h>
+ 
+-#ifdef __GNU_LIBRARY__
++#if defined(__GNU_LIBRARY__) && !defined(__UCLIBC__)
+ #  include <gnu/lib-names.h>
+ #endif
+ 
+Index: qt5base-5.2.0/src/network/kernel/qhostinfo_unix.cpp
+===================================================================
+--- qt5base-5.2.0.orig/src/network/kernel/qhostinfo_unix.cpp
++++ qt5base-5.2.0/src/network/kernel/qhostinfo_unix.cpp
+@@ -63,7 +63,7 @@
+ #  include <resolv.h>
+ #endif
+ 
+-#ifdef __GNU_LIBRARY__
++#if defined(__GNU_LIBRARY__) && !defined(__UCLIBC__)
+ #  include <gnu/lib-names.h>
+ #endif
+ 
