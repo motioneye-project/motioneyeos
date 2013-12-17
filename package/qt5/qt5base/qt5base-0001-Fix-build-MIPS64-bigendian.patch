@@ -1,0 +1,51 @@
+qt5base: Fix build error on 64bit BigEndian platforms
+Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+
+From cea101bd10cc158b97d5fbf45b33dad9b649c08b Mon Sep 17 00:00:00 2001
+From: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+Date: Mon, 2 Dec 2013 13:59:34 +0000
+Subject: [PATCH] qtbase: Fix build error on 64bit BigEndian platforms
+
+The functions fromBytesToWord() and fromWordToBytes() are called when
+building on 64bit BigEndian platforms. It fails because those
+functions are disabled on the source code. Enabling those functions for
+64bit BigEndian platforms fixes the problem.
+
+Task-number: QTBUG-35228
+
+Change-Id: I5ccacd4fb5051df05f67c8da879b3a9e49953861
+Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+Reviewed-by: Giuseppe D'Angelo <giuseppe.dangelo@kdab.com>
+Reviewed-by: Richard J. Moore <rich@kde.org>
+---
+ src/3rdparty/sha3/KeccakF-1600-opt64.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+ mode change 100755 => 100644 src/3rdparty/sha3/KeccakF-1600-opt64.c
+
+diff --git a/src/3rdparty/sha3/KeccakF-1600-opt64.c b/src/3rdparty/sha3/KeccakF-1600-opt64.c
+old mode 100755
+new mode 100644
+index 7bd442e..a547bb5
+--- a/src/3rdparty/sha3/KeccakF-1600-opt64.c
++++ b/src/3rdparty/sha3/KeccakF-1600-opt64.c
+@@ -328,7 +328,7 @@ static void KeccakPermutation(unsigned char *state)
+     KeccakPermutationOnWords((UINT64*)state);
+ }
+ 
+-#if 0 // Unused in the Qt configuration
++#if (PLATFORM_BYTE_ORDER == IS_BIG_ENDIAN)
+ static void fromBytesToWord(UINT64 *word, const UINT8 *bytes)
+ {
+     unsigned int i;
+@@ -449,7 +449,7 @@ static void KeccakAbsorb(unsigned char *state, const unsigned char *data, unsign
+ #endif
+ }
+ 
+-#if 0 // Unused in the Qt configuration
++#if (PLATFORM_BYTE_ORDER == IS_BIG_ENDIAN)
+ static void fromWordToBytes(UINT8 *bytes, const UINT64 word)
+ {
+     unsigned int i;
+-- 
+1.8.5.1
+
