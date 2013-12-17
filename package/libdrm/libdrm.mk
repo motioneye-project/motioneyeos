@@ -44,7 +44,7 @@ ifeq ($(BR2_PACKAGE_LIBDRM_VMWGFX),y)
 LIBDRM_CONF_OPT += --enable-vmwgfx
 LIBDRM_DEPENDENCIES += xlib_libpciaccess
 else
-LIBDRM_CONF_OPT += --enable-vmwgfx
+LIBDRM_CONF_OPT += --disable-vmwgfx
 endif
 
 ifeq ($(BR2_PACKAGE_LIBDRM_OMAP),y)
