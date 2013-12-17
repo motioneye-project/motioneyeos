@@ -54,6 +54,7 @@ endif
 SYSTEMD_MAKE_OPT += LIBS=-lrt
 SYSTEMD_MAKE_OPT += LDFLAGS+=-ldl
 
+ifeq ($(BR2_INIT_SYSTEMD),y)
 define SYSTEMD_INSTALL_INIT_HOOK
 	ln -fs ../usr/lib/systemd/systemd $(TARGET_DIR)/sbin/init
 	ln -fs ../usr/bin/systemctl $(TARGET_DIR)/sbin/halt
@@ -62,6 +63,9 @@ define SYSTEMD_INSTALL_INIT_HOOK
 
 	ln -fs ../../../usr/lib/systemd/system/multi-user.target $(TARGET_DIR)/etc/systemd/system/default.target
 endef
+SYSTEMD_POST_INSTALL_TARGET_HOOKS += \
+	SYSTEMD_INSTALL_INIT_HOOK
+endif
 
 define SYSTEMD_INSTALL_TTY_HOOK
 	rm -f $(TARGET_DIR)/etc/systemd/system/getty.target.wants/getty@tty1.service
@@ -69,7 +73,6 @@ define SYSTEMD_INSTALL_TTY_HOOK
 endef
 
 SYSTEMD_POST_INSTALL_TARGET_HOOKS += \
-	SYSTEMD_INSTALL_INIT_HOOK \
 	SYSTEMD_INSTALL_TTY_HOOK \
 
 $(eval $(autotools-package))
