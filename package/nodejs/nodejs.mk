@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-NODEJS_VERSION = 0.8.22
+NODEJS_VERSION = 0.10.12
 NODEJS_SOURCE = node-v$(NODEJS_VERSION).tar.gz
 NODEJS_SITE = http://nodejs.org/dist/v$(NODEJS_VERSION)
 NODEJS_DEPENDENCIES = host-python host-nodejs \
@@ -43,6 +43,8 @@ ifeq ($(BR2_i386),y)
 NODEJS_CPU=ia32
 else ifeq ($(BR2_x86_64),y)
 NODEJS_CPU=x64
+else ifeq ($(BR2_mipsel),y)
+NODEJS_CPU=mipsel
 else ifeq ($(BR2_arm),y)
 NODEJS_CPU=arm
 # V8 needs to know what floating point ABI the target is using.  There's also
