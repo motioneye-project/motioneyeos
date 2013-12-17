@@ -13,7 +13,7 @@ define LIBROXML_BUILD_CMDS
 endef
 
 define LIBROXML_INSTALL_STAGING_CMDS
-	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(@D) install
+	$(MAKE) DESTDIR=$(STAGING_DIR)/usr/ -C $(@D) install
 endef
 
 define LIBROXML_INSTALL_TARGET_CMDS
