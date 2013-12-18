@@ -20,6 +20,7 @@ config BR2_PACKAGE_QT5QUICK1
 
 	  http://qt-project.org
 
-comment "qt5quick1 requires an OpenGL-capable backend"
-	depends on (!BR2_PACKAGE_HAS_OPENGL_EGL || !BR2_PACKAGE_HAS_OPENGL_ES) && \
-		BR2_PACKAGE_QT5JSBACKEND_AVAILABLE
+comment "qt5quick1 needs a toolchain w/ dynamic library and an OpenGL-capable backend"
+	depends on BR2_PACKAGE_QT5JSBACKEND_AVAILABLE
+	depends on !BR2_PACKAGE_HAS_OPENGL_EGL || !BR2_PACKAGE_HAS_OPENGL_ES || \
+		BR2_PREFER_STATIC_LIB
