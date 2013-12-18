@@ -50,10 +50,11 @@ Global patch directory
 ^^^^^^^^^^^^^^^^^^^^^^
 
 The +BR2_GLOBAL_PATCH_DIR+ configuration file option can be
-used to specify a directory containing global package patches. See
-xref:packages-custom[] for details.
+used to specify a space separated list of one or more directories
+containing global package patches. See xref:packages-custom[] for
+details.
 
-
+[[patch-apply-order]]
 How patches are applied
 ~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -64,18 +65,23 @@ How patches are applied
 . If +<packagename>_PATCH+ is defined, then patches from these
   tarballs are applied;
 
-. If there are some +*.patch+ files in the package directory or in the
-  a package subdirectory named +<packageversion>+, then:
+. If there are some +*.patch+ files in the package's Buildroot
+  directory or in a package subdirectory named +<packageversion>+,
+  then:
 +
 * If a +series+ file exists in the package directory, then patches are
   applied according to the +series+ file;
 +
 * Otherwise, patch files matching +<packagename>-*.patch+
   are applied in alphabetical order.
-  So, to ensure they are applied in the right order, it is hightly
-  recommended to named the patch files like this:
+  So, to ensure they are applied in the right order, it is highly
+  recommended to name the patch files like this:
   +<packagename>-<number>-<description>.patch+, where +<number>+
   refers to the 'apply order'.
+
+. If +BR2_GLOBAL_PATCH_DIR+ is defined, the directories will be
+  enumerated in the order they are specified. The patches are applied
+  as described in the previous step.
 
 . Run the +<packagename>_POST_PATCH_HOOKS+ commands if defined.
 

@@ -8,16 +8,90 @@ It is sometimes useful to apply 'extra' patches to packages - over and
 above those provided in Buildroot. This might be used to support custom
 features in a project, for example, or when working on a new architecture.
 
-The +BR2_GLOBAL_PATCH_DIR+ configuration file option can be
-used to specify a directory containing global package patches.
+The +BR2_GLOBAL_PATCH_DIR+ configuration option can be used to specify
+a space separated list of one or more directories containing package
+patches. By specifying multiple global patch directories, a user could
+implement a layered approach to patches. This could be useful when a
+user has multiple boards that share a common processor architecture.
+It is often the case that a subset of patches for a package need to be
+shared between the different boards a user has. However, each board
+may require specific patches for the package that build on top of the
+common subset of patches.
 
-For a specific version <packageversion> of a specific package <packagename>,
-patches are applied as follows.
+For a specific version +<packageversion>+ of a specific package
++<packagename>+, patches are applied from +BR2_GLOBAL_PATCH_DIR+ as
+follows:
 
-First, the default Buildroot patch set for the package is applied.
+. For every directory - +<global-patch-dir>+ - that exists in
+  +BR2_GLOBAL_PATCH_DIR+, a +<package-patch-dir>+ will be determined as
+  follows:
++
+* +<global-patch-dir>/<packagename>/<packageversion>/+ if the
+  directory exists.
++
+* Otherwise, +<global-patch-dir>/<packagename>+ if the directory
+  exists.
 
-If the directory +$(BR2_GLOBAL_PATCH_DIR)/<packagename>/<packageversion>+
-exists, then all +*.patch+ files in the directory will be applied.
+. Patches will then be applied from a +<package-patch-dir>+ as
+  follows:
++
+* If a +series+ file exists in the package directory, then patches are
+  applied according to the +series+ file;
++
+* Otherwise, patch files matching +<packagename>-*.patch+
+  are applied in alphabetical order.
+  So, to ensure they are applied in the right order, it is highly
+  recommended to name the patch files like this:
+  +<packagename>-<number>-<description>.patch+, where +<number>+
+  refers to the 'apply order'.
 
-Otherwise, if the directory +$(BR2_GLOBAL_PATCH_DIR)/<packagename>+
-exists, then all +*.patch+ files in the directory will be applied.
+For information about how patches are applied for a package, see
+xref:patch-apply-order[]
+
+The +BR2_GLOBAL_PATCH_DIR+ option is the preferred method for
+specifying a custom patch directory for packages. It can be used to
+specify a patch directory for any package in buildroot. It should also
+be used in place of the custom patch directory options that are
+available for packages such as U-Boot and Barebox. By doing this, it
+will allow a user to manage their patches from one top-level
+directory.
+
+The exception to +BR2_GLOBAL_PATCH_DIR+ being the preferred method for
+specifying custom patches is +BR2_LINUX_KERNEL_PATCH+.
++BR2_LINUX_KERNEL_PATCH+ should be used to specify kernel patches that
+are available at an URL. *Note:* +BR2_LINUX_KERNEL_PATCHES+ are applied
+after patches available in +BR2_GLOBAL_PATCH_DIR+, as it is done
+from a post-patch hook of the Linux package.
+
+An example directory structure for where a user has multiple
+directories specified for +BR2_GLOBAL_PATCH_DIR+ may look like this:
+
+-----
+board/
++-- common-fooarch
+|   +-- patches
+|       +-- linux
+|       |   +-- linux-patch1.patch
+|       |   +-- linux-patch2.patch
+|       +-- u-boot
+|       +-- foopkg
++-- fooarch-board
+    +-- patches
+        +-- linux
+        |   +-- linux-patch3.patch
+        +-- u-boot
+        +-- foopkg
+-----
+
+If the user has the +BR2_GLOBAL_PATCH_DIR+ configuration option set as
+follows:
+
+-----
+BR2_GLOBAL_PATCH_DIR="board/common-fooarch board/fooarch-board"
+-----
+
+Then the patches would applied as follows for the Linux kernel:
+
+. board/common-fooarch/patches/linux/linux-patch1.patch
+. board/common-fooarch/patches/linux/linux-patch2.patch
+. board/fooarch-board/patches/linux/linux-patch3.patch
