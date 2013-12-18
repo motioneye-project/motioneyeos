@@ -461,18 +461,22 @@ config BR2_PACKAGE_OVERRIDE_FILE
 	  Buildroot documentation for more details on this feature.
 
 config BR2_GLOBAL_PATCH_DIR
-	string "global patch directory"
+	string "global patch directories"
 	help
-	  You may specify a directory containing global package patches.
-	  For a specific version <packageversion> of a specific package
-	  <packagename>, patches are applied as follows.
+	  You may specify a space separated list of one or more directories
+	  containing global package patches. For a specific version
+	  <packageversion> of a specific package <packagename>, patches are
+	  applied as follows:
 
-	  First, the default Buildroot patch set for the package is applied.
+	  First, the default Buildroot patch set for the package is applied
+	  from the package's directory in Buildroot.
 
-	  If the directory $(BR2_GLOBAL_PATCH_DIR)/<packagename>/<packageversion>
-	  exists, then all *.patch files in the directory will be applied.
+	  Then for every directory - <global-patch-dir> - that exists in
+	  BR2_GLOBAL_PATCH_DIR, if the directory
+	  <global-patch-dir>/<packagename>/<packageversion>/ exists, then all
+	  *.patch files in this directory will be applied.
 
-	  Otherwise, if the directory $(BR2_GLOBAL_PATCH_DIR)/<packagename> exists,
+	  Otherwise, if the directory <global-patch-dir>/<packagename> exists,
 	  then all *.patch files in the directory will be applied.
 
 endmenu
