@@ -4,9 +4,10 @@
 #
 ################################################################################
 
-MIDORI_VERSION = 0.4.6
+MIDORI_VERSION_MAJOR = 0.4
+MIDORI_VERSION = $(MIDORI_VERSION_MAJOR).6
 MIDORI_SOURCE = midori-$(MIDORI_VERSION).tar.bz2
-MIDORI_SITE = http://archive.xfce.org/src/apps/midori/0.4/
+MIDORI_SITE = http://archive.xfce.org/src/apps/midori/$(MIDORI_VERSION_MAJOR)/
 MIDORI_LICENSE = LGPLv2.1+
 MIDORI_LICENSE_FILES = COPYING
 MIDORI_DEPENDENCIES = \

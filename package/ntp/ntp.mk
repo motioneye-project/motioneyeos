@@ -4,8 +4,9 @@
 #
 ################################################################################
 
-NTP_VERSION = 4.2.6p5
-NTP_SITE = http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2
+NTP_VERSION_MAJOR = 4.2
+NTP_VERSION = $(NTP_VERSION_MAJOR).6p5
+NTP_SITE = http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-$(NTP_VERSION_MAJOR)
 NTP_LICENSE = ntp license
 NTP_LICENSE_FILES = COPYRIGHT
 NTP_CONF_ENV = ac_cv_lib_md5_MD5Init=no

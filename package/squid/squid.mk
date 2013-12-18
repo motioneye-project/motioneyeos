@@ -4,9 +4,10 @@
 #
 ################################################################################
 
-SQUID_VERSION = 3.3.11
+SQUID_VERSION_MAJOR = 3.3
+SQUID_VERSION = $(SQUID_VERSION_MAJOR).11
 SQUID_SOURCE = squid-$(SQUID_VERSION).tar.xz
-SQUID_SITE = http://www.squid-cache.org/Versions/v3/3.3
+SQUID_SITE = http://www.squid-cache.org/Versions/v3/$(SQUID_VERSION_MAJOR)
 SQUID_LICENSE = GPLv2+
 SQUID_LICENSE_FILES = COPYING
 SQUID_AUTORECONF = YES

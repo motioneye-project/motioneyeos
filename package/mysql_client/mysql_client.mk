@@ -4,9 +4,10 @@
 #
 ################################################################################
 
-MYSQL_CLIENT_VERSION = 5.1.70
+MYSQL_CLIENT_VERSION_MAJOR = 5.1
+MYSQL_CLIENT_VERSION = $(MYSQL_CLIENT_VERSION_MAJOR).70
 MYSQL_CLIENT_SOURCE = mysql-$(MYSQL_CLIENT_VERSION).tar.gz
-MYSQL_CLIENT_SITE = http://downloads.skysql.com/archives/mysql-5.1
+MYSQL_CLIENT_SITE = http://downloads.skysql.com/archives/mysql-$(MYSQL_CLIENT_VERSION_MAJOR)
 MYSQL_CLIENT_INSTALL_STAGING = YES
 MYSQL_CLIENT_DEPENDENCIES = readline ncurses
 MYSQL_CLIENT_AUTORECONF = YES

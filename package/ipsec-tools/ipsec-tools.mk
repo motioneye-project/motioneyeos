@@ -4,9 +4,10 @@
 #
 ################################################################################
 
-IPSEC_TOOLS_VERSION = 0.8.0
+IPSEC_TOOLS_VERSION_MAJOR = 0.8
+IPSEC_TOOLS_VERSION = $(IPSEC_TOOLS_VERSION_MAJOR).0
 IPSEC_TOOLS_SOURCE = ipsec-tools-$(IPSEC_TOOLS_VERSION).tar.bz2
-IPSEC_TOOLS_SITE = http://ftp.sunet.se/pub/NetBSD/misc/ipsec-tools/0.8/
+IPSEC_TOOLS_SITE = http://ftp.sunet.se/pub/NetBSD/misc/ipsec-tools/$(IPSEC_TOOLS_VERSION_MAJOR)/
 IPSEC_TOOLS_INSTALL_STAGING = YES
 IPSEC_TOOLS_MAKE = $(MAKE1)
 IPSEC_TOOLS_DEPENDENCIES = openssl flex host-flex

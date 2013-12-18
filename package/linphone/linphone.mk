@@ -4,8 +4,9 @@
 #
 ################################################################################
 
-LINPHONE_VERSION = 3.6.1
-LINPHONE_SITE = http://download-mirror.savannah.gnu.org/releases/linphone/3.6.x/sources
+LINPHONE_VERSION_MAJOR = 3.6
+LINPHONE_VERSION = $(LINPHONE_VERSION_MAJOR).1
+LINPHONE_SITE = http://download-mirror.savannah.gnu.org/releases/linphone/$(LINPHONE_VERSION_MAJOR).x/sources
 LINPHONE_CONF_OPT = \
 	--enable-external-ortp \
 	--enable-external-mediastreamer \

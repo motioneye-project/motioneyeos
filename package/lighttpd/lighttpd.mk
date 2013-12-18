@@ -4,9 +4,10 @@
 #
 ################################################################################
 
-LIGHTTPD_VERSION = 1.4.33
+LIGHTTPD_VERSION_MAJOR = 1.4
+LIGHTTPD_VERSION = $(LIGHTTPD_VERSION_MAJOR).33
 LIGHTTPD_SOURCE = lighttpd-$(LIGHTTPD_VERSION).tar.xz
-LIGHTTPD_SITE = http://download.lighttpd.net/lighttpd/releases-1.4.x
+LIGHTTPD_SITE = http://download.lighttpd.net/lighttpd/releases-$(LIGHTTPD_VERSION_MAJOR).x
 LIGHTTPD_LICENSE = BSD-3c
 LIGHTTPD_LICENSE_FILES = COPYING
 LIGHTTPD_DEPENDENCIES = host-pkgconf
