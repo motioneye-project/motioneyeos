@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-KTAP_VERSION = v0.3
+KTAP_VERSION = v0.4
 KTAP_SITE = $(call github,ktap,ktap,$(KTAP_VERSION))
 KTAP_SOURCE = v$(KTAP_VERSION).tar.gz
 KTAP_LICENSE = GPLv2
@@ -12,8 +12,14 @@ KTAP_LICENSE_FILES = LICENSE-GPL
 
 KTAP_DEPENDENCIES = linux
 
+ifeq ($(BR2_PACKAGE_ELFUTILS),y)
+KTAP_DEPENDENCIES += elfutils
+else
+KTAP_FLAGS += NO_LIBELF=1
+endif
+
 define KTAP_BUILD_CMDS
-	$(MAKE) -C $(@D) $(TARGET_CONFIGURE_OPTS) ktap
+	$(MAKE) -C $(@D) $(TARGET_CONFIGURE_OPTS) $(KTAP_FLAGS) ktap
 	$(MAKE) -C $(@D) $(LINUX_MAKE_FLAGS) KERNEL_SRC=$(LINUX_DIR) KVERSION=$(LINUX_VERSION_PROBED) mod
 endef
 

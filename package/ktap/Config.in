@@ -13,6 +13,9 @@ config BR2_PACKAGE_KTAP
 
 	  ktap doesn't support kernels older than 3.1.
 
+	  To be able to resolve symbols in DSO and for sdt, you need to enable
+	  elfutils.
+
 	  Your kernel must have CONFIG_EVENT_TRACING,
 	  CONFIG_PERF_EVENTS, and CONFIG_DEBUG_FS enabled to compile.
 
