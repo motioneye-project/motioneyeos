@@ -40,10 +40,7 @@ comment "enabling all extras needs a toolchain w/ wchar, threads"
 
 endif
 
-comment "udev requires /dev mgmnt set to udev under System configuration"
+comment "udev needs udev /dev management and a toolchain w/ largefile, wchar, dynamic library"
 	depends on !BR2_avr32
-	depends on !BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_UDEV
-
-comment "udev needs a toolchain w/ largefile, wchar, dynamic library"
-	depends on !BR2_avr32
-	depends on !BR2_LARGEFILE || !BR2_USE_WCHAR || BR2_PREFER_STATIC_LIB
+	depends on !BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_UDEV || \
+		!BR2_LARGEFILE || !BR2_USE_WCHAR || BR2_PREFER_STATIC_LIB
