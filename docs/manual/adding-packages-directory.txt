@@ -270,6 +270,23 @@ kernel, use this format:
 foo needs a toolchain w/ featA, featB, featC and a Linux kernel to be built
 --------------------------
 
+Dependencies on udev /dev management
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+If a package needs udev /dev management, it should depend on symbol
++BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_UDEV+, and the following comment
+should be added:
+
+--------------------------
+foo needs udev /dev management
+--------------------------
+
+If there is a dependency on both toolchain options and udev /dev
+management, use this format:
+
+--------------------------
+foo needs udev /dev management and a toolchain w/ featA, featB, featC
+--------------------------
+
 The +.mk+ file
 ~~~~~~~~~~~~~~
 [[adding-packages-mk]]
