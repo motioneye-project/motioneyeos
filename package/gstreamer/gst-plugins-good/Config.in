@@ -1,6 +1,5 @@
 menuconfig BR2_PACKAGE_GST_PLUGINS_GOOD
 	bool "gst-plugins-good"
-	depends on BR2_PACKAGE_GSTREAMER
 	select BR2_PACKAGE_GST_PLUGINS_BASE
 	help
 	  A set of well-supported plug-ins for GStreamer under the preferred

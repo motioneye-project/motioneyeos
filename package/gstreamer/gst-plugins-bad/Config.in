@@ -1,6 +1,5 @@
 menuconfig BR2_PACKAGE_GST_PLUGINS_BAD
 	bool "gst-plugins-bad"
-	depends on BR2_PACKAGE_GSTREAMER
 	select BR2_PACKAGE_GST_PLUGINS_BASE
 	help
 	  A set of plug-ins for GStreamer that may be of poor quality or

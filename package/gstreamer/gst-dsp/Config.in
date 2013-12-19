@@ -1,6 +1,6 @@
 config BR2_PACKAGE_GST_DSP
 	bool "gst-dsp"
-	depends on BR2_PACKAGE_GSTREAMER && BR2_cortex_a8
+	depends on BR2_cortex_a8
 	select BR2_PACKAGE_TIDSP_BINARIES
 	help
 	  GStreamer plug-in to access TI OMAP3 DSP algorithms.

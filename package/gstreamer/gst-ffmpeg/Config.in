@@ -1,6 +1,5 @@
 config BR2_PACKAGE_GST_FFMPEG
 	bool "gst-ffmpeg"
-	depends on BR2_PACKAGE_GSTREAMER
 	select BR2_PACKAGE_GST_PLUGINS_BASE
 	select BR2_PACKAGE_FFMPEG
 	select BR2_PACKAGE_FFMPEG_GPL
@@ -14,5 +13,4 @@ config BR2_PACKAGE_GST_FFMPEG
 	  http://gstreamer.freedesktop.org/
 
 comment "gst-ffmpeg needs a toolchain w/ largefile, IPv6"
-	depends on BR2_PACKAGE_GSTREAMER
 	depends on !(BR2_LARGEFILE && BR2_INET_IPV6)

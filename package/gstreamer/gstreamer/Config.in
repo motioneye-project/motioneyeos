@@ -12,10 +12,11 @@ config BR2_PACKAGE_GSTREAMER
 
 	  http://gstreamer.freedesktop.org/
 
+if BR2_PACKAGE_GSTREAMER
+
 config BR2_PACKAGE_GSTREAMER_GST_DEBUG
 	bool "enable gst-debug trace support"
 	default y
-	depends on BR2_PACKAGE_GSTREAMER
 	help
 	  Enable support for the gst-debug tracing functionality in gstreamer.
 	  This has limited CPU overhead, but does increase the rootfs size
@@ -24,10 +25,11 @@ config BR2_PACKAGE_GSTREAMER_GST_DEBUG
 config BR2_PACKAGE_GSTREAMER_PLUGIN_REGISTRY
 	bool "enable plugin registry"
 	default y
-	depends on BR2_PACKAGE_GSTREAMER
 	help
 	  Enable support for the GStreamer plugin registry. This may increase
 	  the launch-time for a GStreamer application.
+
+endif
 
 comment "gstreamer needs a toolchain w/ wchar, threads"
 	depends on BR2_USE_MMU
