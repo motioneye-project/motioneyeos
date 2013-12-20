@@ -5,14 +5,7 @@
 ################################################################################
 
 LIBOPENMAX_SOURCE =
-
-ifeq ($(BR2_PACKAGE_RPI_USERLAND),y)
-LIBOPENMAX_DEPENDENCIES += rpi-userland
-endif
-
-ifeq ($(BR2_PACKAGE_BELLAGIO),y)
-LIBOPENMAX_DEPENDENCIES += bellagio
-endif
+LIBOPENMAX_DEPENDENCIES = $(call qstrip,$(BR2_PACKAGE_PROVIDES_OPENMAX))
 
 ifeq ($(LIBOPENMAX_DEPENDENCIES),)
 define LIBOPENMAX_CONFIGURE_CMDS
