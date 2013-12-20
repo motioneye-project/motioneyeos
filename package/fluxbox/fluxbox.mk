@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-FLUXBOX_VERSION = 1.3.2
+FLUXBOX_VERSION = 1.3.5
 FLUXBOX_SOURCE = fluxbox-$(FLUXBOX_VERSION).tar.bz2
 FLUXBOX_SITE = http://downloads.sourceforge.net/project/fluxbox/fluxbox/$(FLUXBOX_VERSION)
 FLUXBOX_LICENSE = MIT
