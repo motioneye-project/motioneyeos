@@ -30,4 +30,9 @@ config BR2_PACKAGE_JPEG_TURBO
 
 endchoice
 
+config BR2_PACKAGE_PROVIDES_JPEG
+	string
+	default "libjpeg"    if BR2_PACKAGE_LIBJPEG
+	default "jpeg-turbo" if BR2_PACKAGE_JPEG_TURBO
+
 endif

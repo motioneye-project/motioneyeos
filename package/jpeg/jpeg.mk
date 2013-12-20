@@ -5,14 +5,7 @@
 ################################################################################
 
 JPEG_SOURCE =
-
-ifeq ($(BR2_PACKAGE_JPEG_TURBO),y)
-JPEG_DEPENDENCIES += jpeg-turbo
-endif
-
-ifeq ($(BR2_PACKAGE_LIBJPEG),y)
-JPEG_DEPENDENCIES += libjpeg
-endif
+JPEG_DEPENDENCIES = $(call qstrip,$(BR2_PACKAGE_PROVIDES_JPEG))
 
 ifeq ($(JPEG_DEPENDENCIES),)
 define JPEG_CONFIGURE_CMDS
