@@ -1,8 +1,6 @@
 source "package/opengl/libegl/Config.in"
 source "package/opengl/libgles/Config.in"
-
-config BR2_PACKAGE_HAS_OPENVG
-	bool
+source "package/opengl/libopenvg/Config.in"
 
 config BR2_PACKAGE_HAS_OPENMAX
 	bool
