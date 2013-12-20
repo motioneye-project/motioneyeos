@@ -37,6 +37,13 @@ BLUEZ_UTILS_CONF_OPT +=	\
 	--disable-audio
 endif
 
+ifeq ($(BR2_PACKAGE_BLUEZ_UTILS_GATT),y)
+BLUEZ_UTILS_DEPENDENCIES += readline
+BLUEZ_UTILS_CONF_OPT += --enable-gatt
+else
+BLUEZ_UTILS_CONF_OPT += --disable-gatt
+endif
+
 # USB support
 ifeq ($(BR2_PACKAGE_BLUEZ_UTILS_USB),y)
 BLUEZ_UTILS_DEPENDENCIES += libusb
