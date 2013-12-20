@@ -5,22 +5,7 @@
 ################################################################################
 
 LIBGLES_SOURCE =
-
-ifeq ($(BR2_PACKAGE_RPI_USERLAND),y)
-LIBGLES_DEPENDENCIES += rpi-userland
-endif
-
-ifeq ($(BR2_PACKAGE_TI_GFX),y)
-LIBGLES_DEPENDENCIES += ti-gfx
-endif
-
-ifeq ($(BR2_PACKAGE_SUNXI_MALI),y)
-LIBGLES_DEPENDENCIES += sunxi-mali
-endif
-
-ifeq ($(BR2_PACKAGE_GPU_VIV_BIN_MX6Q),y)
-LIBGLES_DEPENDENCIES += gpu-viv-bin-mx6q
-endif
+LIBGLES_DEPENDENCIES = $(call qstrip,$(BR2_PACKAGE_PROVIDES_OPENGL_ES))
 
 ifeq ($(LIBGLES_DEPENDENCIES),)
 define LIBGLES_CONFIGURE_CMDS

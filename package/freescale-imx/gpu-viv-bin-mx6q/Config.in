@@ -27,6 +27,9 @@ if BR2_PACKAGE_GPU_VIV_BIN_MX6Q
 config BR2_PACKAGE_PROVIDES_OPENGL_EGL
 	default "gpu-viv-bin-mx6q"
 
+config BR2_PACKAGE_PROVIDES_OPENGL_ES
+	default "gpu-viv-bin-mx6q"
+
 config BR2_PACKAGE_GPU_VIV_BIN_MX6Q_EXAMPLES
 	bool "install examples"
 	help

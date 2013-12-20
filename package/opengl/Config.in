@@ -1,7 +1,5 @@
 source "package/opengl/libegl/Config.in"
-
-config BR2_PACKAGE_HAS_OPENGL_ES
-	bool
+source "package/opengl/libgles/Config.in"
 
 config BR2_PACKAGE_HAS_OPENVG
 	bool

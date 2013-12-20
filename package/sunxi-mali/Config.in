@@ -21,6 +21,9 @@ if BR2_PACKAGE_SUNXI_MALI
 config BR2_PACKAGE_PROVIDES_OPENGL_EGL
 	default "sunxi-mali"
 
+config BR2_PACKAGE_PROVIDES_OPENGL_ES
+	default "sunxi-mali"
+
 config BR2_PACKAGE_SUNXI_MALI_DBG
 	bool "install malitest and maliver tools"
 	help

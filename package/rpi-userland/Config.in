@@ -22,6 +22,9 @@ if BR2_PACKAGE_RPI_USERLAND
 config BR2_PACKAGE_PROVIDES_OPENGL_EGL
 	default "rpi-userland"
 
+config BR2_PACKAGE_PROVIDES_OPENGL_ES
+	default "rpi-userland"
+
 endif
 
 comment "rpi-userland needs a toolchain w/ C++, largefile, threads"
