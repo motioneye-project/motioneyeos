@@ -1,2 +1,6 @@
 config BR2_PACKAGE_HAS_POWERVR
 	bool
+
+config BR2_PACKAGE_PROVIDES_POWERVR
+	depends on BR2_PACKAGE_HAS_POWERVR
+	string
