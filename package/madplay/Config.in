@@ -11,7 +11,11 @@ config BR2_PACKAGE_MADPLAY
 
 	  http://www.underbit.com/products/mad/
 
+if BR2_PACKAGE_MADPLAY
+
 config BR2_PACKAGE_MADPLAY_ALSA
 	bool
 	default y
-	depends on BR2_PACKAGE_MADPLAY && BR2_PACKAGE_ALSA_LIB
+	depends on BR2_PACKAGE_ALSA_LIB
+
+endif

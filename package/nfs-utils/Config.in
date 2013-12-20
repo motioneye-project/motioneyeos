@@ -1,3 +1,8 @@
+comment "nfs-utils needs a toolchain w/ largefile, threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_LARGEFILE || \
+		!(BR2_TOOLCHAIN_HAS_THREADS || BR2_TOOLCHAIN_HAS_NATIVE_RPC)
+
 config BR2_PACKAGE_NFS_UTILS
 	bool "nfs-utils"
 	depends on BR2_TOOLCHAIN_HAS_NATIVE_RPC || BR2_TOOLCHAIN_HAS_THREADS # libtirpc
@@ -11,30 +16,25 @@ config BR2_PACKAGE_NFS_UTILS
 
 	  http://sourceforge.net/projects/nfs
 
-comment "nfs-utils needs a toolchain w/ largefile, threads"
-	depends on BR2_USE_MMU
-	depends on !BR2_LARGEFILE || \
-		!(BR2_TOOLCHAIN_HAS_THREADS || BR2_TOOLCHAIN_HAS_NATIVE_RPC)
+if BR2_PACKAGE_NFS_UTILS
 
 menu "NFS utilities selection"
-	depends on BR2_PACKAGE_NFS_UTILS
 
 config BR2_PACKAGE_NFS_UTILS_RPCDEBUG
 	bool "rpcdebug"
-	depends on BR2_PACKAGE_NFS_UTILS
 	help
 	  The RPC debugging utility
 
 config BR2_PACKAGE_NFS_UTILS_RPC_LOCKD
 	bool "rpc.lockd"
-	depends on BR2_PACKAGE_NFS_UTILS
 	help
 	  NFS lock manager for Linux kernels older than 2.4
 
 config BR2_PACKAGE_NFS_UTILS_RPC_RQUOTAD
 	bool "rpc.rquotad"
-	depends on BR2_PACKAGE_NFS_UTILS
 	help
 	  NFS remote quota server
 
 endmenu
+
+endif

@@ -13,9 +13,10 @@ config BR2_PACKAGE_POLARSSL
 
 	  http://polarssl.org/
 
+if BR2_PACKAGE_POLARSSL
+
 config BR2_PACKAGE_POLARSSL_PROGRAMS
 	bool "polarssl programs"
-	depends on BR2_PACKAGE_POLARSSL
 	help
 	  This option enables the installation and the build of
 	  PolarSSL companion programs: aescrypt2, benchmark, cert_app,
@@ -26,3 +27,5 @@ config BR2_PACKAGE_POLARSSL_PROGRAMS
 	  selftest, sha1sum, sha2sum, ssi-cgi, ssl_cert_test,
 	  ssl_client1, ssl_client2, ssl_fork_server, ssl_mail_client,
 	  ssl_server, ssl_test
+
+endif

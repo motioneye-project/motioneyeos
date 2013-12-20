@@ -7,8 +7,9 @@ config BR2_PACKAGE_PPPD
 
 	  http://www.samba.org/ppp/
 
+if BR2_PACKAGE_PPPD
+
 config BR2_PACKAGE_PPPD_FILTER
-	depends on BR2_PACKAGE_PPPD
 	select BR2_PACKAGE_LIBPCAP
 	bool "filtering"
 	help
@@ -17,10 +18,11 @@ config BR2_PACKAGE_PPPD_FILTER
 	  are available.
 
 config BR2_PACKAGE_PPPD_RADIUS
-	depends on BR2_PACKAGE_PPPD
 	bool "radius"
 	help
 	  Install RADIUS support for pppd
+
+endif
 
 comment "pppd needs a toolchain w/ dynamic library"
 	depends on BR2_PREFER_STATIC_LIB

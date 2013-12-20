@@ -4,10 +4,11 @@ config BR2_PACKAGE_GADGETFS_TEST
 	help
 	  Test program for gadgetfs from linux-usb.org
 
+if BR2_PACKAGE_GADGETFS_TEST
+
 config BR2_PACKAGE_GADGETFS_TEST_USE_AIO
 	bool "use asynchronous i/o"
 	select BR2_PACKAGE_LIBAIO
-	depends on BR2_PACKAGE_GADGETFS_TEST
 	# libaio is available only on few architectures
 	depends on \
 		BR2_arm   || BR2_armeb || BR2_avr32  || BR2_i386    || \
@@ -16,6 +17,8 @@ config BR2_PACKAGE_GADGETFS_TEST_USE_AIO
 	help
 	  Select this to have gadgetfs-test do asynchronous I/O using
 	  the libaio library.
+
+endif
 
 comment "gadgetfs-test needs a toolchain w/ threads"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS

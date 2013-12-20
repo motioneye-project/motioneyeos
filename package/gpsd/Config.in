@@ -17,13 +17,13 @@ config BR2_PACKAGE_GPSD
 
 	  http://gpsd.berlios.de/
 
+if BR2_PACKAGE_GPSD
+
 config BR2_PACKAGE_GPSD_DEVICES
 	string "Where to look for GPSes"
 	default "/dev/ttyS1"
-	depends on BR2_PACKAGE_GPSD
 
 menu "Features"
-	depends on BR2_PACKAGE_GPSD
 
 config BR2_PACKAGE_GPSD_CLIENT_DEBUG
 	bool "client debugging support"
@@ -95,7 +95,6 @@ config BR2_PACKAGE_GPSD_SQUELCH
 endmenu
 
 menu "Protocols"
-	depends on BR2_PACKAGE_GPSD
 
 config BR2_PACKAGE_GPSD_AIVDM
 	bool "Aivdm"
@@ -231,3 +230,5 @@ config BR2_PACKAGE_GPSD_UBX
 	  uBlox UBX binary support
 
 endmenu
+
+endif

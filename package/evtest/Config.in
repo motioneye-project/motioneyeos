@@ -8,11 +8,14 @@ config BR2_PACKAGE_EVTEST
 
 	  http://www.freedesktop.org/wiki/Evtest
 
+if BR2_PACKAGE_EVTEST
+
 config BR2_PACKAGE_EVTEST_CAPTURE
 	bool "evtest-capture"
-	depends on BR2_PACKAGE_EVTEST
 	select BR2_PACKAGE_LIBXML2
 	help
 	  evtest-capture captures the information and events from the
 	  input device specified on the command line and writes it to
 	  the xml file given.
+
+endif

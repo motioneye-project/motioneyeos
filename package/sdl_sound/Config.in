@@ -12,9 +12,12 @@ config BR2_PACKAGE_SDL_SOUND
 
 	  http://icculus.org/SDL_sound/
 
+if BR2_PACKAGE_SDL_SOUND
+
 config BR2_PACKAGE_SDL_SOUND_PLAYSOUND
 	bool "install playsound tool"
-	depends on BR2_PACKAGE_SDL_SOUND
 	help
 	  Enable this option to install the playsound/playsound_simple
 	  tools to target.
+
+endif

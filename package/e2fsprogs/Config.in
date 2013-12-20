@@ -79,7 +79,6 @@ config BR2_PACKAGE_E2FSPROGS_MKE2FS
 config BR2_PACKAGE_E2FSPROGS_MKLOSTFOUND
 	bool "mklost+found"
 	default y
-	depends on BR2_PACKAGE_E2FSPROGS
 
 config BR2_PACKAGE_E2FSPROGS_RESIZE2FS
 	bool "resize2fs"

@@ -6,10 +6,13 @@ config BR2_PACKAGE_KMOD
 
 	  http://git.kernel.org/?p=utils/kernel/kmod/kmod.git
 
+if BR2_PACKAGE_KMOD
+
 config BR2_PACKAGE_KMOD_TOOLS
 	bool "kmod utilities"
-	depends on BR2_PACKAGE_KMOD
 	depends on BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	help
 	  Install kmod module utilities (depmod, insmod, lsmod,
 	  modinfo, modprobe, rmmod).
+
+endif

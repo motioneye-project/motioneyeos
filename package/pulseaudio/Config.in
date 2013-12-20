@@ -18,13 +18,16 @@ config BR2_PACKAGE_PULSEAUDIO
 
 	  http://pulseaudio.org
 
+if BR2_PACKAGE_PULSEAUDIO
+
 config BR2_PACKAGE_PULSEAUDIO_DAEMON
 	bool "start as a system daemon"
-	depends on BR2_PACKAGE_PULSEAUDIO
 	help
 	  PulseAudio can be started as a system daemon. This is not the
 	  recommended way of using PulseAudio unless you are building a
 	  headless system.
+
+endif
 
 comment "pulseaudio needs a toolchain w/ wchar, largefile, threads"
 	depends on !BR2_USE_WCHAR || !BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_THREADS

@@ -8,8 +8,9 @@ config BR2_PACKAGE_SDL_IMAGE
 
 	  http://www.libsdl.org/projects/SDL_image/
 
+if BR2_PACKAGE_SDL_IMAGE
+
 menu "SDL_image file format support"
-	depends on BR2_PACKAGE_SDL_IMAGE
 
 config BR2_PACKAGE_SDL_IMAGE_BMP
 	bool "enable BMP file format support"
@@ -56,3 +57,5 @@ config BR2_PACKAGE_SDL_IMAGE_XV
 	bool "enable XV file format support"
 
 endmenu
+
+endif

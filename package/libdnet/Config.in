@@ -5,12 +5,16 @@ config BR2_PACKAGE_LIBDNET
 
 	  http://libdnet.sourceforge.net/
 
+if BR2_PACKAGE_LIBDNET
+
 config BR2_PACKAGE_LIBDNET_PYTHON
 	bool "libdnet python module"
-	depends on BR2_PACKAGE_LIBDNET && BR2_PACKAGE_PYTHON
+	depends on BR2_PACKAGE_PYTHON
 	help
 	  dnet module for python
 
 comment "dnet module for python requires python package"
-	depends on BR2_PACKAGE_LIBDNET && !BR2_PACKAGE_PYTHON
+	depends on !BR2_PACKAGE_PYTHON
+
+endif
 

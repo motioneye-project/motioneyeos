@@ -14,9 +14,12 @@ config BR2_PACKAGE_LIBEDJE
 
 	  http://trac.enlightenment.org/e/wiki/Edje
 
+if BR2_PACKAGE_LIBEDJE
+
 config BR2_PACKAGE_LIBEDJE_CC
 	bool "build edje_cc"
-	depends on BR2_PACKAGE_LIBEDJE
 	help
 	  Build and install the Edje compiler for the target. Normally this
 	  is not required.
+
+endif

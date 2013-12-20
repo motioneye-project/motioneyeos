@@ -9,11 +9,14 @@ config BR2_PACKAGE_CVS
 
 	  http://www.nongnu.org/cvs/
 
+if BR2_PACKAGE_CVS
+
 config BR2_PACKAGE_CVS_SERVER
 	bool "server support"
-	depends on BR2_PACKAGE_CVS
 	help
 	  Enable cvs server code
+
+endif
 
 comment "cvs needs a toolchain w/ wchar"
 	depends on BR2_USE_MMU

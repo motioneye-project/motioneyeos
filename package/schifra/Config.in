@@ -8,11 +8,14 @@ config BR2_PACKAGE_SCHIFRA
 
 	  http://www.schifra.com/
 
+if BR2_PACKAGE_SCHIFRA
+
 config BR2_PACKAGE_SCHIFRA_EXAMPLES
 	bool "schifra examples"
-	depends on BR2_PACKAGE_SCHIFRA
 	help
 	  Build and install the schifra example applications.
+
+endif
 
 comment "schifra needs a toolchain w/ C++"
 	depends on !BR2_INSTALL_LIBSTDCPP

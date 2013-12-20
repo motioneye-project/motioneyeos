@@ -7,25 +7,24 @@ config BR2_PACKAGE_RSH_REDONE
 
 	  http://packages.debian.org/source/sid/rsh-redone
 
+if BR2_PACKAGE_RSH_REDONE
+
 # this is incomplete in the source
 #config BR2_PACKAGE_RSH_REDONE_RCP
 #	bool "rcp"
-#	depends on BR2_PACKAGE_RSH_REDONE
 
 config BR2_PACKAGE_RSH_REDONE_RLOGIN
 	bool "rlogin"
-	depends on BR2_PACKAGE_RSH_REDONE
 
 # requires PAM
 #config BR2_PACKAGE_RSH_REDONE_RLOGIND
 #	bool "rlogind"
-#	depends on BR2_PACKAGE_RSH_REDONE
 
 config BR2_PACKAGE_RSH_REDONE_RSH
 	bool "rsh"
-	depends on BR2_PACKAGE_RSH_REDONE
 
 # requires PAM
 #config BR2_PACKAGE_RSH_REDONE_RSHD
 #	bool "rshd"
-#	depends on BR2_PACKAGE_RSH_REDONE
+
+endif

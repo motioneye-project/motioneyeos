@@ -26,16 +26,16 @@ config BR2_PACKAGE_KISMET
 
 	  http://www.kismetwireless.net
 
+if BR2_PACKAGE_KISMET
+
 config BR2_PACKAGE_KISMET_CLIENT
 	bool "Install client"
-	depends on BR2_PACKAGE_KISMET
 
 config BR2_PACKAGE_KISMET_DRONE
 	bool "Install drone"
-	depends on BR2_PACKAGE_KISMET
 
 config BR2_PACKAGE_KISMET_SERVER
 	bool "Install server"
 	default y
-	depends on BR2_PACKAGE_KISMET
 
+endif

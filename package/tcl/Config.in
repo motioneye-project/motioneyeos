@@ -5,10 +5,11 @@ config BR2_PACKAGE_TCL
 
 	  http://www.tcl.tk
 
+if BR2_PACKAGE_TCL
+
 config BR2_PACKAGE_TCL_DEL_ENCODINGS
 	bool "delete encodings (saves 1.4Mb)"
 	default y
-	depends on BR2_PACKAGE_TCL
 	help
 	  Delete encoding files for TCL. If your programs do not use
 	  various tcl character recoding functions, you may safely
@@ -19,9 +20,10 @@ config BR2_PACKAGE_TCL_DEL_ENCODINGS
 config BR2_PACKAGE_TCL_SHLIB_ONLY
 	bool "install only shared library"
 	default y
-	depends on BR2_PACKAGE_TCL
 	help
 	  Install only TCL shared library and not binary tcl
 	  interpreter(tclsh8.4).
 
 	  Saves ~14kb.
+
+endif

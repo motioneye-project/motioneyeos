@@ -6,8 +6,11 @@ config BR2_PACKAGE_PROFTPD
 
 	  http://www.proftpd.org/
 
+if BR2_PACKAGE_PROFTPD
+
 config BR2_PACKAGE_PROFTPD_MOD_REWRITE
 	bool "mod_rewrite support"
-	depends on BR2_PACKAGE_PROFTPD
 	help
 	  Compile ProFTPD with mod_rewrite support
+
+endif

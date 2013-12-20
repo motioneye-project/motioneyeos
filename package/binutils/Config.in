@@ -5,9 +5,10 @@ config BR2_PACKAGE_BINUTILS
 	help
 	  Install binutils on the target
 
+if BR2_PACKAGE_BINUTILS
+
 config BR2_PACKAGE_BINUTILS_TARGET
 	bool "binutils binaries"
-	depends on BR2_PACKAGE_BINUTILS
 	help
 	  The GNU Binutils are a collection of binary tools:
 
@@ -16,3 +17,5 @@ config BR2_PACKAGE_BINUTILS_TARGET
 	  and others...
 
 	  http://www.gnu.org/software/binutils/
+
+endif

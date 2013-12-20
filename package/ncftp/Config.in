@@ -8,8 +8,9 @@ config BR2_PACKAGE_NCFTP
 
 	  http://www.ncftp.com/ncftp/
 
+if BR2_PACKAGE_NCFTP
+
 menu "ncFTP tools selection"
-	depends on BR2_PACKAGE_NCFTP
 
 config BR2_PACKAGE_NCFTP_GET
 	bool "NcFTPGet - command-line utility program"
@@ -32,3 +33,5 @@ config BR2_PACKAGE_NCFTP_BOOKMARKS
 	select BR2_PACKAGE_NCURSES
 
 endmenu
+
+endif

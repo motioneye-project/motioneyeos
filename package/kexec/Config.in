@@ -9,9 +9,12 @@ config BR2_PACKAGE_KEXEC
 
 	  https://www.kernel.org/pub/linux/utils/kernel/kexec/
 
+if BR2_PACKAGE_KEXEC
+
 config BR2_PACKAGE_KEXEC_ZLIB
 	bool "zlib support"
-	depends on BR2_PACKAGE_KEXEC
 	select BR2_PACKAGE_ZLIB
 	help
 	  Support for compressed kernel images
+
+endif

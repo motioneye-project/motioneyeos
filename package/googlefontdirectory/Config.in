@@ -5,9 +5,12 @@ config BR2_PACKAGE_GOOGLEFONTDIRECTORY
 
 	  http://code.google.com/p/googlefontdirectory/
 
+if BR2_PACKAGE_GOOGLEFONTDIRECTORY
+
 config BR2_PACKAGE_GOOGLEFONTDIRECTORY_FONTS
 	string "List of fonts to install"
 	default "droid"
-	depends on BR2_PACKAGE_GOOGLEFONTDIRECTORY
 	help
 	  Specify a space-separated list of fonts to install
+
+endif

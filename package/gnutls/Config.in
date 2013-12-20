@@ -9,11 +9,14 @@ config BR2_PACKAGE_GNUTLS
 
 	  http://www.gnutls.org
 
+if BR2_PACKAGE_GNUTLS
+
 config BR2_PACKAGE_GNUTLS_TOOLS
 	bool "install tools"
-	depends on BR2_PACKAGE_GNUTLS
 	help
 	  Install GnuTLS command line tools for various cryptographic tasks.
+
+endif
 
 comment "gnutls needs a toolchain w/ wchar"
 	depends on !BR2_USE_WCHAR

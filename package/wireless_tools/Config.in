@@ -5,8 +5,11 @@ config BR2_PACKAGE_WIRELESS_TOOLS
 
 	  http://www.hpl.hp.com/personal/Jean_Tourrilhes/Linux/Tools.html
 
+if BR2_PACKAGE_WIRELESS_TOOLS
+
 config BR2_PACKAGE_WIRELESS_TOOLS_LIB
 	bool "Install shared library"
-	depends on BR2_PACKAGE_WIRELESS_TOOLS
 	help
 	  The shared library of wireless tools
+
+endif

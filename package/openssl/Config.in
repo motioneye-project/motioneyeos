@@ -9,9 +9,10 @@ config BR2_PACKAGE_OPENSSL
 
 	  http://www.openssl.org/
 
+if BR2_PACKAGE_OPENSSL
+
 config BR2_PACKAGE_OPENSSL_BIN
 	bool "openssl binary"
-	depends on BR2_PACKAGE_OPENSSL
 	# uses fork()
 	depends on BR2_USE_MMU
 	help
@@ -20,6 +21,7 @@ config BR2_PACKAGE_OPENSSL_BIN
 
 config BR2_PACKAGE_OPENSSL_ENGINES
 	bool "openssl additional engines"
-	depends on BR2_PACKAGE_OPENSSL
 	help
 	  Install additional encryption engine libraries.
+
+endif

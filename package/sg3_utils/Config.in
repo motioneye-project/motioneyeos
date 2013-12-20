@@ -8,9 +8,12 @@ config BR2_PACKAGE_SG3_UTILS
 
 	  http://sg.danny.cz/sg/sg3_utils.html
 
+if BR2_PACKAGE_SG3_UTILS
+
 config BR2_PACKAGE_SG3_UTILS_PROGS
 	bool "install programs"
-	depends on BR2_PACKAGE_SG3_UTILS
+
+endif
 
 comment "sg3-utils needs a toolchain w/ largefile, threads"
 	depends on !BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_THREADS

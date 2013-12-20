@@ -7,9 +7,10 @@ config BR2_PACKAGE_DHCP
 
 	  http://www.isc.org/products/DHCP
 
+if BR2_PACKAGE_DHCP
+
 config BR2_PACKAGE_DHCP_SERVER
 	bool "dhcp server"
-	depends on BR2_PACKAGE_DHCP
 	help
 	  DHCP server from the ISC DHCP distribution.
 
@@ -21,14 +22,13 @@ config BR2_PACKAGE_DHCP_SERVER_DELAYED_ACK
 
 config BR2_PACKAGE_DHCP_RELAY
 	bool "dhcp relay"
-	depends on BR2_PACKAGE_DHCP
 	help
 	  DHCP relay agent from the ISC DHCP distribution.
 
 
 config BR2_PACKAGE_DHCP_CLIENT
 	bool "dhcp client"
-	depends on BR2_PACKAGE_DHCP
 	help
 	  DHCP client from the ISC DHCP distribution.
 
+endif

@@ -7,12 +7,14 @@ config BR2_TARGET_SYSLINUX
 
 	  http://syslinux.org
 
+if BR2_TARGET_SYSLINUX
+
 config BR2_TARGET_SYSLINUX_ISOLINUX
 	bool "Install isolinux"
-	depends on BR2_TARGET_SYSLINUX
 	default y
 
 config BR2_TARGET_SYSLINUX_PXELINUX
 	bool "Install pxelinux"
-	depends on BR2_TARGET_SYSLINUX
 	default y
+
+endif

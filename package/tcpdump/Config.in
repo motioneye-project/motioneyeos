@@ -6,8 +6,11 @@ config BR2_PACKAGE_TCPDUMP
 
 	  http://www.tcpdump.org/
 
+if BR2_PACKAGE_TCPDUMP
+
 config BR2_PACKAGE_TCPDUMP_SMB
 	bool "smb dump support"
-	depends on BR2_PACKAGE_TCPDUMP
 	help
 	  enable possibly-buggy SMB printer
+
+endif

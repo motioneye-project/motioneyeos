@@ -10,12 +10,15 @@ config BR2_PACKAGE_NANO
 
 	  http://www.nano-editor.org/
 
+if BR2_PACKAGE_NANO
+
 config BR2_PACKAGE_NANO_TINY
 	bool "optimize for size"
 	default y
-	depends on BR2_PACKAGE_NANO
 	help
 	  Disable all features for the sake of size.
+
+endif
 
 comment "nano needs a toolchain w/ wchar"
 	depends on !BR2_USE_WCHAR

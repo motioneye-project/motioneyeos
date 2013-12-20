@@ -9,23 +9,23 @@ config BR2_PACKAGE_MATCHBOX
 	help
 	  http://projects.o-hand.com/matchbox
 
+if BR2_PACKAGE_MATCHBOX
+
 config BR2_PACKAGE_MATCHBOX_PANEL
 	bool "Matchbox Panel"
-	depends on BR2_PACKAGE_MATCHBOX
 	help
 	  A flexible always present 'window bar' for holding
 	  application launchers.
 
 config BR2_PACKAGE_MATCHBOX_DESKTOP
 	bool "Matchbox Desktop"
-	depends on BR2_PACKAGE_MATCHBOX
 	select BR2_PACKAGE_ZLIB
 	help
 	  A PDA style application launcher or 'item browser'.
 
 config BR2_PACKAGE_MATCHBOX_COMMON
 	bool "Matchbox session common files"
-	depends on BR2_PACKAGE_MATCHBOX && BR2_PACKAGE_MATCHBOX_PANEL && BR2_PACKAGE_MATCHBOX_DESKTOP
+	depends on BR2_PACKAGE_MATCHBOX_PANEL && BR2_PACKAGE_MATCHBOX_DESKTOP
 	help
 	  Common desktop folders and matchbox-session script.
 
@@ -35,7 +35,8 @@ config BR2_PACKAGE_MATCHBOX_COMMON_PDA
 
 config BR2_PACKAGE_MATCHBOX_KEYBOARD
 	bool "Matchbox Virtual Keyboard"
-	depends on BR2_PACKAGE_MATCHBOX
 	select BR2_PACKAGE_XLIB_LIBXTST
 	help
 	  Virtual Keyboard
+
+endif
