@@ -29,7 +29,6 @@ PKG_PYTHON_DISTUTILS_ENV = \
 	LDSHARED="$(TARGET_CROSS)gcc -shared" \
 	CROSS_COMPILING=yes \
 	_python_sysroot=$(STAGING_DIR) \
-	_python_srcdir=$(PYTHON_DIR) \
 	_python_prefix=/usr \
 	_python_exec_prefix=/usr
 
@@ -50,7 +49,11 @@ HOST_PKG_PYTHON_DISTUTILS_INSTALL_OPT = \
 PKG_PYTHON_SETUPTOOLS_ENV = \
 	PATH="$(TARGET_PATH)" \
 	PYTHONPATH="$(TARGET_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR)/site-packages" \
-	PYTHONXCPREFIX="$(STAGING_DIR)/usr/"
+	PYTHONXCPREFIX="$(STAGING_DIR)/usr/" \
+	CROSS_COMPILING=yes \
+	_python_sysroot=$(STAGING_DIR) \
+	_python_prefix=/usr \
+	_python_exec_prefix=/usr
 
 PKG_PYTHON_SETUPTOOLS_INSTALL_OPT = \
 	--prefix=$(TARGET_DIR)/usr \
