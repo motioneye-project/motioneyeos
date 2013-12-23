@@ -11,7 +11,17 @@ PYTHON_PYCRYPTO_SETUP_TYPE = distutils
 
 PYTHON_PYCRYPTO_LICENSE = Public Domain, Python 2.2 License (HMAC.py, setup.py)
 PYTHON_PYCRYPTO_LICENSE_FILES = COPYRIGHT LEGAL/copy/LICENSE.libtom \
-		LEGAL/copy/LICENSE.orig LEGAL/copy/LICENSE.python-2.2
+		LEGAL/copy/LICENSE.python-2.2
+
+# The pycrypto package contains a LICENSE.orig file, but our patching
+# infrastrucure removes all .orig file, so we must rename that license
+# file prior to patching, so it is still available to the legal-info
+# infrastructure
+define PYTHON_PYCRYPTO_RENAME_LICENSE
+	mv $(@D)/LEGAL/copy/LICENSE.orig $(@D)/LEGAL/copy/LICENSE.original
+endef
+PYTHON_PYCRYPTO_POST_EXTRACT_HOOKS += PYTHON_PYCRYPTO_RENAME_LICENSE
+PYTHON_PYCRYPTO_LICENSE_FILES += LEGAL/copy/LICENSE.original
 
 PYTHON_PYCRYPTO_DEPENDENCIES = gmp
 
