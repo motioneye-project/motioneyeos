@@ -4,9 +4,10 @@
 #
 ################################################################################
 
-LIBUSB_VERSION = 1.0.9
+LIBUSB_VERSION_MAJOR = 1.0
+LIBUSB_VERSION = $(LIBUSB_VERSION_MAJOR).9
 LIBUSB_SOURCE = libusb-$(LIBUSB_VERSION).tar.bz2
-LIBUSB_SITE = http://downloads.sourceforge.net/project/libusb/libusb-1.0/libusb-$(LIBUSB_VERSION)
+LIBUSB_SITE = http://downloads.sourceforge.net/project/libusb/libusb-$(LIBUSB_VERSION_MAJOR)/libusb-$(LIBUSB_VERSION)
 LIBUSB_LICENSE = LGPLv2.1+
 LIBUSB_LICENSE_FILES = COPYING
 LIBUSB_DEPENDENCIES = host-pkgconf
