@@ -4,8 +4,7 @@ config BR2_PACKAGE_QT5MULTIMEDIA
 	select BR2_PACKAGE_QT5DECLARATIVE
 	depends on BR2_PACKAGE_HAS_OPENGL_EGL
 	depends on BR2_PACKAGE_HAS_OPENGL_ES
-	# qt5declarative -> qt5jsbackend
-	depends on BR2_PACKAGE_QT5JSBACKEND_AVAILABLE
+	depends on BR2_PACKAGE_QT5DECLARATIVE_AVAILABLE
 	help
 	  Qt is a cross-platform application and UI framework for
 	  developers using C++.
@@ -16,4 +15,4 @@ config BR2_PACKAGE_QT5MULTIMEDIA
 
 comment "qt5multimedia requires an OpenGL-capable backend"
 	depends on (!BR2_PACKAGE_HAS_OPENGL_EGL || !BR2_PACKAGE_HAS_OPENGL_ES) && \
-		BR2_PACKAGE_QT5JSBACKEND_AVAILABLE
+		BR2_PACKAGE_QT5DECLARATIVE_AVAILABLE
