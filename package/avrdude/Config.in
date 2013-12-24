@@ -1,0 +1,15 @@
+config BR2_PACKAGE_AVRDUDE
+	bool "avrdude"
+	select BR2_PACKAGE_LIBELF
+	select BR2_PACKAGE_LIBUSB
+	select BR2_PACKAGE_LIBUSB_COMPAT
+	select BR2_PACKAGE_NCURSES
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	help
+	  avrdude is a programmer for Atmel AVR microcontrollers
+	  this package provides a version with new linuxspi driver
+
+	  https://github.com/kcuzner/avrdude
+
+comment "avrdude needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS

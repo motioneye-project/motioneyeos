@@ -259,6 +259,7 @@ source "package/zd1211-firmware/Config.in"
 endmenu
 source "package/a10disp/Config.in"
 source "package/acpid/Config.in"
+source "package/avrdude/Config.in"
 source "package/cdrkit/Config.in"
 source "package/cryptsetup/Config.in"
 source "package/dbus/Config.in"
