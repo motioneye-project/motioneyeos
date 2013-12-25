@@ -54,11 +54,6 @@ config BR2_PACKAGE_UTIL_LINUX_ARCH
 	help
 	  Print machine architecture
 
-config BR2_PACKAGE_UTIL_LINUX_CHFN_CHSH
-	bool "chfn/chsh"
-	help
-	  Change login shell, real user name and information
-
 config BR2_PACKAGE_UTIL_LINUX_CRAMFS
 	bool "cramfs utilities"
 	select BR2_PACKAGE_ZLIB
@@ -91,11 +86,6 @@ config BR2_PACKAGE_UTIL_LINUX_KILL
 	help
 	  Send a signal to a process
 
-config BR2_PACKAGE_UTIL_LINUX_LAST
-	bool "last"
-	help
-	  Show listing of last logged in users
-
 config BR2_PACKAGE_UTIL_LINUX_LOGIN_UTILS
 	bool "login utilities"
 	depends on BR2_ENABLE_LOCALE # linux-pam
@@ -106,11 +96,6 @@ config BR2_PACKAGE_UTIL_LINUX_LOGIN_UTILS
 comment "login utilities needs a toolchain w/ locale"
 	depends on !BR2_ENABLE_LOCALE
 
-config BR2_PACKAGE_UTIL_LINUX_LOSETUP
-	bool "losetup"
-	help
-	  Set up and control loop devices
-
 config BR2_PACKAGE_UTIL_LINUX_MESG
 	bool "mesg"
 	help
@@ -120,11 +105,6 @@ config BR2_PACKAGE_UTIL_LINUX_MOUNT
 	bool "mount/umount"
 	help
 	  Mount/unmount filesystems
-
-config BR2_PACKAGE_UTIL_LINUX_NEWGRP
-	bool "newgrp"
-	help
-	  Log in to a new group
 
 config BR2_PACKAGE_UTIL_LINUX_NSENTER
 	bool "nsenter"
@@ -180,11 +160,6 @@ config BR2_PACKAGE_UTIL_LINUX_UUIDD
 	bool "uuidd"
 	help
 	  UUID generation daemon
-
-config BR2_PACKAGE_UTIL_LINUX_VIPW
-	bool "vipw"
-	help
-	  Edit the password, group, shadow-password or shadow-group file
 
 config BR2_PACKAGE_UTIL_LINUX_WALL
 	bool "wall"
