@@ -1,0 +1,15 @@
+config BR2_PACKAGE_QT5CONNECTIVITY
+	bool "qt5connectivity"
+	select BR2_PACKAGE_BLUEZ_UTILS
+	select BR2_PACKAGE_QT5BASE
+	select BR2_PACKAGE_QT5BASE_CONCURRENT
+	select BR2_PACKAGE_QT5BASE_DBUS
+	depends on !BR2_avr32 # bluez_utils
+	depends on BR2_USE_MMU # bluez_utils
+	help
+	  Qt is a cross-platform application and UI framework for
+	  developers using C++.
+
+	  This package corresponds to the qt5connectivity module.
+
+	  http://qt-project.org
