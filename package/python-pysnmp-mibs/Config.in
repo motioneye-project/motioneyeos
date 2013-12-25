@@ -10,4 +10,4 @@ config BR2_PACKAGE_PYTHON_PYSNMP_MIBS
 	  http://pysnmp.sf.net
 
 comment "python-pysnmp-libs needs a toolchain w/ C++"
-        depends on !BR2_INSTALL_LIBSTDCPP
+	depends on !BR2_INSTALL_LIBSTDCPP

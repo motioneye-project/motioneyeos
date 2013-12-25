@@ -6,4 +6,4 @@ config BR2_PACKAGE_LIBXML2
 	  http://xmlsoft.org/
 
 config BR2_PACKAGE_HOST_LIBXML2_PYTHON
-    bool
+	bool
