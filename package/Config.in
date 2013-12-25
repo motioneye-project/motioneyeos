@@ -948,12 +948,14 @@ source "package/xenomai/Config.in"
 endmenu
 
 menu "Shell and utilities"
-source "package/at/Config.in"
+comment "Shells"
 if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 source "package/bash/Config.in"
 source "package/dash/Config.in"
 source "package/zsh/Config.in"
 endif
+comment "Utilities"
+source "package/at/Config.in"
 source "package/dialog/Config.in"
 source "package/dtach/Config.in"
 source "package/file/Config.in"
