@@ -15,6 +15,11 @@ config BR2_PACKAGE_LINUX_FIRMWARE_ATHEROS_7010
 	help
 	  Firmware files for the Atheros 7010 module
 
+config BR2_PACKAGE_LINUX_FIRMWARE_ATHEROS_9170
+	bool "Atheros 9170"
+	help
+	  Firmware files for the Atheros 9170 module
+
 config BR2_PACKAGE_LINUX_FIRMWARE_ATHEROS_9271
 	bool "Atheros 9271"
 	help
