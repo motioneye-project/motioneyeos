@@ -21,6 +21,14 @@ FFMPEG_CONF_OPT = \
 	--disable-avfilter	\
 	$(if $(BR2_HAVE_DOCUMENTATION),,--disable-doc)
 
+FFMPEG_CFLAGS = $(TARGET_CFLAGS)
+
+ifeq ($(BR2_xtensa),y)
+FFMPEG_CFLAGS += -mtext-section-literals
+endif
+
+FFMPEG_CONF_ENV = CFLAGS="$(FFMPEG_CFLAGS)"
+
 ifeq ($(BR2_PACKAGE_FFMPEG_GPL),y)
 FFMPEG_CONF_OPT += --enable-gpl
 else
