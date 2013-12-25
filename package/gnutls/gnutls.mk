@@ -15,8 +15,12 @@ GNUTLS_DEPENDENCIES = host-pkgconf nettle pcre \
 	$(if $(BR2_PACKAGE_LIBIDN),libidn) \
 	$(if $(BR2_PACKAGE_LIBTASN1),libtasn1) \
 	$(if $(BR2_PACKAGE_ZLIB),zlib)
-GNUTLS_CONF_OPT = --with-libnettle-prefix=$(STAGING_DIR)/usr --disable-rpath \
-	--disable-doc --disable-guile
+GNUTLS_CONF_OPT = \
+	--with-libnettle-prefix=$(STAGING_DIR)/usr \
+	--disable-rpath \
+	--disable-doc \
+	--disable-guile \
+	--enable-local-libopts
 GNUTLS_CONF_ENV = gl_cv_socket_ipv6=$(if $(BR2_INET_IPV6),yes,no) \
 	ac_cv_header_wchar_h=$(if $(BR2_USE_WCHAR),yes,no) \
 	gt_cv_c_wchar_t=$(if $(BR2_USE_WCHAR),yes,no) \
