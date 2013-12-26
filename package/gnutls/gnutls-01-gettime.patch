@@ -1,0 +1,25 @@
+From b9dee5a0afec0f78343863048d6564021416e65a Mon Sep 17 00:00:00 2001
+From: Gustavo Zacarias <gustavo@zacarias.com.ar>
+Date: Thu, 26 Dec 2013 13:09:34 -0300
+Subject: [PATCH] Add LIB_CLOCK_GETTIME to crywrap
+
+It's used indirectly thus causing build breakage on versions of glibc
+where it's defined in librt rather than libc directly.
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+---
+ src/crywrap/Makefile.am | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/crywrap/Makefile.am b/src/crywrap/Makefile.am
+index ca41259..d86ca55 100644
+--- a/src/crywrap/Makefile.am
++++ b/src/crywrap/Makefile.am
+@@ -29,3 +29,4 @@ bin_PROGRAMS = crywrap
+ 
+ crywrap_SOURCES = crywrap.c primes.h crywrap.h
+ crywrap_LDADD = ../../lib/libgnutls.la $(LIBIDN_LIBS) #../../gl/libgnu.la 
++crywrap_LDADD += $(LIB_CLOCK_GETTIME)
+-- 
+1.8.3.2
+
