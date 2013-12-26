@@ -3,6 +3,15 @@ config BR2_PACKAGE_FIO
 	depends on BR2_USE_MMU # fork()
 	depends on BR2_LARGEFILE
 	depends on BR2_TOOLCHAIN_HAS_THREADS
+	# fio uses posix_madvise(), which is not part of any official
+	# release of uClibc, but is part of uClibc Git, and backported
+	# in Buildroot patch set of uClibc 0.9.33. Therefore, we
+	# disable the build of fio for external uClibc toolchains
+	# (which use an unknown uClibc version) and for 0.9.31 and
+	# 0.9.32 which don't have posix_madvise().
+	depends on !BR2_TOOLCHAIN_EXTERNAL_UCLIBC && \
+		!BR2_UCLIBC_VERSION_0_9_31 && \
+		!BR2_UCLIBC_VERSION_0_9_32
 	help
 	  fio is an I/O tool meant to be used both for benchmark
 	  and stress/hardware verification.
