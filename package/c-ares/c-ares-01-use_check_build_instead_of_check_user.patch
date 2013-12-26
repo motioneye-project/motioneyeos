@@ -1,0 +1,17 @@
+Use XC_CHECK_BUILD_FLAGS instead of XC_CHECK_USER_FLAGS.
+Otherwise it complains of CPPFLAGS in CFLAGS.
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+diff -Nura c-ares-1.10.0.orig/m4/xc-cc-check.m4 c-ares-1.10.0/m4/xc-cc-check.m4
+--- c-ares-1.10.0.orig/m4/xc-cc-check.m4	2013-12-26 19:40:46.354195974 -0300
++++ c-ares-1.10.0/m4/xc-cc-check.m4	2013-12-26 19:41:01.850718535 -0300
+@@ -59,7 +59,7 @@
+ 
+ AC_DEFUN([_XC_PROG_CC], [
+   AC_REQUIRE([_XC_PROG_CC_PREAMBLE])dnl
+-  AC_REQUIRE([XC_CHECK_USER_FLAGS])dnl
++  AC_REQUIRE([XC_CHECK_BUILD_FLAGS])dnl
+   AC_REQUIRE([AC_PROG_INSTALL])dnl
+   AC_REQUIRE([AC_PROG_CC])dnl
+   AC_REQUIRE([AM_PROG_CC_C_O])dnl
