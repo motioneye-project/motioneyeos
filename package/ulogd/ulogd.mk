@@ -11,15 +11,21 @@ ULOGD_CONF_OPT = --with-dbi=no --with-pgsql=no
 ULOGD_AUTORECONF = YES
 ULOGD_DEPENDENCIES = host-pkgconf \
 	libmnl libnetfilter_acct libnetfilter_conntrack libnetfilter_log \
-	libnfnetlink $(if $(BR2_PACKAGE_SQLITE),sqlite)
+	libnfnetlink
 ULOGD_LICENSE = GPLv2
 ULOGD_LICENSE_FILES = COPYING
 
+# DB backends need threads
+ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),y)
 ifeq ($(BR2_PACKAGE_MYSQL_CLIENT),y)
-ULOGD_CONF_OPT += --with-mysql=$(STAGING_DIR)/usr
-ULOGD_DEPENDENCIES += mysql_client
+	ULOGD_CONF_OPT += --with-mysql=$(STAGING_DIR)/usr
+	ULOGD_DEPENDENCIES += mysql_client
+endif
+ifeq ($(BR2_PACKAGE_SQLITE),y)
+	ULOGD_DEPENDENCIES += sqlite
+endif
 else
-ULOGD_CONF_OPT += --with-mysql=no
+	ULOGD_CONF_OPT += --with-mysql=no --without-sqlite
 endif
 
 $(eval $(autotools-package))
