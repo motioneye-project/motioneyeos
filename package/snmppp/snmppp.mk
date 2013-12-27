@@ -12,6 +12,6 @@ SNMPPP_INSTALL_STAGING = YES
 # no configure script in tarball
 SNMPPP_AUTORECONF = YES
 SNMPPP_LICENSE = SNMP++
-SNMPPP_LICENSE_FILES = snmp_pp/snmp_pp.cpp
+SNMPPP_LICENSE_FILES = src/v3.cpp
 
 $(eval $(autotools-package))
