@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-CRYPTSETUP_VERSION = 1.6.2
+CRYPTSETUP_VERSION = 1.6.3
 CRYPTSETUP_SOURCE = cryptsetup-$(CRYPTSETUP_VERSION).tar.bz2
 CRYPTSETUP_SITE = http://cryptsetup.googlecode.com/files
 CRYPTSETUP_CONF_ENV += LIBGCRYPT_CONFIG=$(STAGING_DIR)/usr/bin/libgcrypt-config
