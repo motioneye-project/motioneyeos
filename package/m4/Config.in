@@ -3,6 +3,8 @@ config BR2_PACKAGE_M4
 	depends on BR2_USE_WCHAR
 	# uses fork()
 	depends on BR2_USE_MMU
+	# development tool, useless on the target
+	depends on BR2_DEPRECATED
 	help
 	  An implementation of the traditional Unix macro processor.
 
