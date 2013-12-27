@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-SNMPPP_VERSION = 3.3.0
-SNMPPP_SOURCE = snmp++v$(SNMPPP_VERSION).tar.gz
+SNMPPP_VERSION = 3.3.2
+SNMPPP_SOURCE = snmp++$(SNMPPP_VERSION).tar.gz
 SNMPPP_SITE = http://www.agentpp.com
 SNMPPP_DEPENDENCIES = openssl host-pkgconf
 SNMPPP_INSTALL_STAGING = YES
