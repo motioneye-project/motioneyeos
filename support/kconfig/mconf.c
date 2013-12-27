@@ -959,7 +959,7 @@ static int handle_exit(void)
 	if (conf_get_changed())
 		res = dialog_yesno(NULL,
 				   _("Do you wish to save your new configuration?\n"
-				     "(Press <ESC><ESC> to continue kernel configuration.)"),
+				     "(Press <ESC><ESC> to continue Buildroot configuration.)"),
 				   6, 60);
 	else
 		res = -1;
