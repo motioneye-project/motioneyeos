@@ -4,6 +4,7 @@ config BR2_TARGET_ROOTFS_ISO9660
 	depends on BR2_LINUX_KERNEL
 	select BR2_TARGET_ROOTFS_CPIO
 	select BR2_TARGET_GRUB
+	select BR2_TARGET_GRUB_FS_ISO9660
 	help
 	  Build a bootable iso9660 image
 
