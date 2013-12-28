@@ -13,7 +13,7 @@ LIBEVDEV_LICENSE_FILES = COPYING
 LIBEVDEV_DEPENDENCIES = host-pkgconf
 
 # Needs Python to generate a header file
-# We can't rely on the system pPython, since it may be too old
+# We can't rely on the system Python, since it may be too old
 # (missing argparse in python 2.6)
 LIBEVDEV_DEPENDENCIES += host-python
 
