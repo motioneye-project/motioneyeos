@@ -2,10 +2,10 @@ default		0
 timeout		10
 color cyan/blue white/blue
 
+title		Buildroot ISO9660 image
+kernel		/kernel
+initrd		/initrd
+
 title		Hard Drive (first partition)
 rootnoverify	(hd0)
 chainloader	+1
-
-title		BuildRoot ISO9660 image
-kernel		/kernel
-initrd		/initrd
