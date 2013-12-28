@@ -58,6 +58,8 @@ config BR2_TARGET_GRUB_DISKLESS
 	help
 	  enable diskless support
 
+menu "network drivers"
+
 config BR2_TARGET_GRUB_3c595
 	bool "3Com595 driver"
 	help
@@ -162,5 +164,7 @@ config BR2_TARGET_GRUB_w89c840
 	bool "Winbond W89c840 driver"
 	help
 	  enable Winbond W89c840 driver
+
+endmenu
 
 endif # BR2_TARGET_GRUB
