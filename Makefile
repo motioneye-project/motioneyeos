@@ -121,6 +121,9 @@ else
   $(shell echo BR2_EXTERNAL ?= $(BR2_EXTERNAL) > $(BR2_EXTERNAL_FILE))
 endif
 
+# Need that early, before we scan packages
+# Avoids doing the $(or...) everytime
+BR2_GRAPH_OUT := $(or $(GRAPH_OUT),pdf)
 
 BUILD_DIR:=$(BASE_DIR)/build
 STAMP_DIR:=$(BASE_DIR)/stamps
@@ -635,17 +638,17 @@ graph-build: $(O)/build/build-time.log
 	@install -d $(O)/graphs
 	$(foreach o,name build duration,./support/scripts/graph-build-time \
 					--type=histogram --order=$(o) --input=$(<) \
-					--output=$(O)/graphs/build.hist-$(o).pdf \
+					--output=$(O)/graphs/build.hist-$(o).$(BR2_GRAPH_OUT) \
 					$(if $(GRAPH_ALT),--alternate-colors)$(sep))
 	$(foreach t,packages steps,./support/scripts/graph-build-time \
 				   --type=pie-$(t) --input=$(<) \
-				   --output=$(O)/graphs/build.pie-$(t).pdf \
+				   --output=$(O)/graphs/build.pie-$(t).$(BR2_GRAPH_OUT) \
 				   $(if $(GRAPH_ALT),--alternate-colors)$(sep))
 
 graph-depends:
 	@$(INSTALL) -d $(O)/graphs
 	@./support/scripts/graph-depends \
-	|dot -Tpdf -o $(O)/graphs/$(@).pdf
+	|dot -T$(BR2_GRAPH_OUT) -o $(O)/graphs/$(@).$(BR2_GRAPH_OUT)
 
 else # ifeq ($(BR2_HAVE_DOT_CONFIG),y)
 

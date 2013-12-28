@@ -88,6 +88,8 @@ to +make+ or set in the environment:
   is the recommended way of setting it.
 * +GRAPH_ALT+, if set and non-empty, to use an alternate color-scheme in
   build-time graphs
+* +GRAPH_OUT+ to set the filetype of generated graphs, either +pdf+ (the
+  default), or +png+.
 
 An example that uses config files located in the toplevel directory and
 in your $HOME:

@@ -51,7 +51,6 @@
 
 import matplotlib
 import numpy
-matplotlib.use('PDF')
 
 import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
@@ -264,7 +263,7 @@ parser.add_argument("--alternate-colors", '-c', action="store_true",
 parser.add_argument("--input", '-i', metavar="OUTPUT",
                     help="Input file (usually $(O)/build/build-time.log)")
 parser.add_argument("--output", '-o', metavar="OUTPUT", required=True,
-                    help="Output file (PDF extension)")
+                    help="Output file (.pdf or .png extension)")
 args = parser.parse_args()
 
 d = read_data(args.input)
