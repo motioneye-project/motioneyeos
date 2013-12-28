@@ -86,6 +86,8 @@ to +make+ or set in the environment:
   Note that the Buildroot download directory can also be set from the
   configuration interface, so through the Buildroot +.config+ file; this
   is the recommended way of setting it.
+* +GRAPH_ALT+, if set and non-empty, to use an alternate color-scheme in
+  build-time graphs
 
 An example that uses config files located in the toplevel directory and
 in your $HOME:

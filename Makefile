@@ -631,6 +631,17 @@ legal-info: dirs legal-info-clean legal-info-prepare $(TARGETS_LEGAL_INFO) \
 show-targets:
 	@echo $(TARGETS)
 
+graph-build: $(O)/build/build-time.log
+	@install -d $(O)/graphs
+	$(foreach o,name build duration,./support/scripts/graph-build-time \
+					--type=histogram --order=$(o) --input=$(<) \
+					--output=$(O)/graphs/build.hist-$(o).pdf \
+					$(if $(GRAPH_ALT),--alternate-colors)$(sep))
+	$(foreach t,packages steps,./support/scripts/graph-build-time \
+				   --type=pie-$(t) --input=$(<) \
+				   --output=$(O)/graphs/build.pie-$(t).pdf \
+				   $(if $(GRAPH_ALT),--alternate-colors)$(sep))
+
 else # ifeq ($(BR2_HAVE_DOT_CONFIG),y)
 
 all: menuconfig
@@ -843,6 +854,7 @@ endif
 	@echo '  manual-pdf             - build manual in PDF'
 	@echo '  manual-text            - build manual in text'
 	@echo '  manual-epub            - build manual in ePub'
+	@echo '  graph-build            - generate graphs of the build times'
 	@echo
 	@echo 'Miscellaneous:'
 	@echo '  source                 - download all sources needed for offline-build'
