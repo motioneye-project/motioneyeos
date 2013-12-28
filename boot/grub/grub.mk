@@ -22,7 +22,8 @@ GRUB_CFLAGS = \
 	-O0 -Wl,--build-id=none \
 	-fno-stack-protector
 
-GRUB_CONFIG-$(BR2_TARGET_GRUB_SPLASH) += --enable-graphics
+GRUB_CONFIG-y += $(if $(BR2_TARGET_GRUB_SPLASH),--enable-graphics,--disable-graphics)
+
 GRUB_CONFIG-$(BR2_TARGET_GRUB_DISKLESS) += --enable-diskless
 GRUB_CONFIG-$(BR2_TARGET_GRUB_3c595) += --enable-3c595
 GRUB_CONFIG-$(BR2_TARGET_GRUB_3c90x) += --enable-3c90x
