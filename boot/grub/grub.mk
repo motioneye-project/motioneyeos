@@ -46,18 +46,20 @@ GRUB_CONFIG-$(BR2_TARGET_GRUB_undi) += --enable-undi
 GRUB_CONFIG-$(BR2_TARGET_GRUB_via_rhine) += --enable-via-rhine
 GRUB_CONFIG-$(BR2_TARGET_GRUB_w89c840) += --enable-w89c840
 
-GRUB_POSSIBLE_FILESYSTEMS = ext2fs fat ffs ufs2 minix \
-	reiserfs vstafs jfs xfs iso9660
-GRUB_SELECTED_FILESYSTEMS = $(call qstrip,$(BR2_TARGET_GRUB_FS_SUPPORT))
+GRUB_CONFIG-y += $(if $(BR2_TARGET_GRUB_FS_EXT2),--enable-ext2fs,--disable-ext2fs)
+GRUB_CONFIG-y += $(if $(BR2_TARGET_GRUB_FS_FAT),--enable-fat,--disable-fat)
+GRUB_CONFIG-y += $(if $(BR2_TARGET_GRUB_FS_ISO9660),--enable-iso9660,--disable-iso9660)
+GRUB_CONFIG-y += $(if $(BR2_TARGET_GRUB_FS_JFS),--enable-jfs,--disable-jfs)
+GRUB_CONFIG-y += $(if $(BR2_TARGET_GRUB_FS_REISERFS),--enable-reiserfs,--disable-reiserfs)
+GRUB_CONFIG-y += $(if $(BR2_TARGET_GRUB_FS_XFS),--enable-xfs,--disable-xfs)
+GRUB_CONFIG-y += --disable-ffs --disable-ufs2 --disable-minix --disable-vstafs
 
-# Calculate the list of stage 1.5 files to install. They are prefixed
-# by the filesystem name, except for ext2fs, where the stage 1.5 is
-# prefixed by e2fs.
-GRUB_STAGE_1_5_TO_INSTALL = $(subst ext2fs,e2fs,$(GRUB_SELECTED_FILESYSTEMS))
-
-GRUB_CONFIG-y = \
-	$(foreach fs,$(GRUB_POSSIBLE_FILESYSTEMS),\
-		$(if $(filter $(fs),$(GRUB_SELECTED_FILESYSTEMS)),--enable-$(fs),--disable-$(fs)))
+GRUB_STAGE_1_5_TO_INSTALL += $(if $(BR2_TARGET_GRUB_FS_EXT2),e2fs)
+GRUB_STAGE_1_5_TO_INSTALL += $(if $(BR2_TARGET_GRUB_FS_FAT),fat)
+GRUB_STAGE_1_5_TO_INSTALL += $(if $(BR2_TARGET_GRUB_FS_ISO9660),iso9660)
+GRUB_STAGE_1_5_TO_INSTALL += $(if $(BR2_TARGET_GRUB_FS_JFS),jfs)
+GRUB_STAGE_1_5_TO_INSTALL += $(if $(BR2_TARGET_GRUB_FS_REISERFS),reiserfs)
+GRUB_STAGE_1_5_TO_INSTALL += $(if $(BR2_TARGET_GRUB_FS_XFS),xfs)
 
 define GRUB_DEBIAN_PATCHES
 	# Apply the patches from the Debian patch

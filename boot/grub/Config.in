@@ -45,18 +45,46 @@ config BR2_TARGET_GRUB_SPLASH
 	  A splashimage is a 14-color indexed .xpm picture which
 	  is displayed as background for the grub menu.
 
-config BR2_TARGET_GRUB_FS_SUPPORT
-	string "Filesystem to support"
-	default "ext2fs fat"
-	help
-	  Space separated list of filesystems to support. Possible
-	  values are ext2fs, fat, ffs, ufs2, minix, reiserfs, vstafs,
-	  jfs, xfs and iso9660.
-
 config BR2_TARGET_GRUB_DISKLESS
 	bool "diskless support"
 	help
 	  enable diskless support
+
+menu "filesystem drivers"
+
+config BR2_TARGET_GRUB_FS_EXT2
+	bool "ext2"
+	default y
+	help
+	  Enable support for the ext2 filesystem in Grub
+
+config BR2_TARGET_GRUB_FS_FAT
+	bool "FAT"
+	default y
+	help
+	  Enable support for the FAT filesystem in Grub.
+
+config BR2_TARGET_GRUB_FS_ISO9660
+	bool "ISO9660"
+	help
+	  Enable support for the ISO9660 filesystem in Grub.
+
+config BR2_TARGET_GRUB_FS_JFS
+	bool "IBM JFS"
+	help
+	  Enable support for the JFS filesystem in Grub.
+
+config BR2_TARGET_GRUB_FS_REISERFS
+	bool "ReiserFS"
+	help
+	  Enable support for the ReiserFS filesystem in Grub.
+
+config BR2_TARGET_GRUB_FS_XFS
+	bool "SGI XFS"
+	help
+	  Enable support for the XFS filesystem in Grub.
+
+endmenu
 
 menu "network drivers"
 
