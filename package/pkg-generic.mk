@@ -468,6 +468,11 @@ endif
 $(1)-show-depends:
 			@echo $$($(2)_DEPENDENCIES)
 
+$(1)-graph-depends:
+			@$(INSTALL) -d $(O)/graphs
+			@./support/scripts/graph-depends $(1) \
+			|dot -Tpdf -o $(O)/graphs/$$(@).pdf
+
 $(1)-dirclean:		$$($(2)_TARGET_DIRCLEAN)
 
 $(1)-clean-for-rebuild:

@@ -642,6 +642,11 @@ graph-build: $(O)/build/build-time.log
 				   --output=$(O)/graphs/build.pie-$(t).pdf \
 				   $(if $(GRAPH_ALT),--alternate-colors)$(sep))
 
+graph-depends:
+	@$(INSTALL) -d $(O)/graphs
+	@./support/scripts/graph-depends \
+	|dot -Tpdf -o $(O)/graphs/$(@).pdf
+
 else # ifeq ($(BR2_HAVE_DOT_CONFIG),y)
 
 all: menuconfig
@@ -814,6 +819,7 @@ help:
 	@echo '  toolchain              - build toolchain'
 	@echo '  <package>-rebuild      - force recompile <package>'
 	@echo '  <package>-reconfigure  - force reconfigure <package>'
+	@echo '  <package>-graph-depends    - generate graph of the dependency tree for package'
 	@echo
 	@echo 'Configuration:'
 	@echo '  menuconfig             - interactive curses-based configurator'
@@ -855,6 +861,7 @@ endif
 	@echo '  manual-text            - build manual in text'
 	@echo '  manual-epub            - build manual in ePub'
 	@echo '  graph-build            - generate graphs of the build times'
+	@echo '  graph-depends          - generate graph of the dependency tree'
 	@echo
 	@echo 'Miscellaneous:'
 	@echo '  source                 - download all sources needed for offline-build'
