@@ -42,8 +42,10 @@ config BR2_TARGET_GRUB_SPLASH
 	help
 	  Add support for splashimage.
 
-	  A splashimage is a 14-color indexed .xpm picture which
-	  is displayed as background for the grub menu.
+	  A splashimage is a 14-color indexed .xpm picture which is
+	  displayed as background for the grub menu. See
+	  http://www.katspace.org/computers/Grub_Splash/ for details
+	  on how to generate a splashimage.
 
 config BR2_TARGET_GRUB_DISKLESS
 	bool "diskless support"
