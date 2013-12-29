@@ -34,7 +34,7 @@ endef
 
 define LOCKDEV_INSTALL_TARGET_CMDS
 	$(MAKE1) basedir=$(TARGET_DIR)/usr -C $(@D) install_run
-	ln -sf liblockdev.$(LOCKDEV_VERSION).so $(STAGING_DIR)/usr/lib/liblockdev.so.1
+	ln -sf liblockdev.$(LOCKDEV_VERSION).so $(TARGET_DIR)/usr/lib/liblockdev.so.1
 endef
 endif # BR2_PREFER_STATIC_LIB
 
