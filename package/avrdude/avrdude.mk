@@ -12,7 +12,8 @@ AVRDUDE_SUBDIR = avrdude
 # Sources coming from git, without generated configure and Makefile.in
 # files.
 AVRDUDE_AUTORECONF = YES
-AVRDUDE_DEPENDENCIES = libelf libusb libusb-compat ncurses
+AVRDUDE_DEPENDENCIES = libelf libusb libusb-compat ncurses \
+	host-flex host-bison
 
 ifeq ($(BR2_PACKAGE_LIBFTDI),y)
 AVRDUDE_DEPENDENCIES += libftdi
