@@ -1,0 +1,30 @@
+From 71345fe15f126ae3a596af309945d0af6edfbbbb Mon Sep 17 00:00:00 2001
+From: Romain Naour <romain.naour@openwide.fr>
+Date: Sun, 29 Dec 2013 18:00:25 +0100
+Subject: [PATCH 1/1] posix: fix build failure when HAVE_OPEN64 is undefined.
+
+fixes: http://autobuild.buildroot.org/results/d59/d590be34637a4043c929ce615f9db504484be435/build-end.log
+
+Signed-off-by: Romain Naour <romain.naour@openwide.fr>
+---
+ src/skins/posix/rtdm.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/src/skins/posix/rtdm.c b/src/skins/posix/rtdm.c
+index 5840c64..d6c87dc 100644
+--- a/src/skins/posix/rtdm.c
++++ b/src/skins/posix/rtdm.c
+@@ -107,8 +107,9 @@ int __wrap_open64(const char *path, int oflag, ...)
+ 			errno = EMFILE;
+ 			ret = -1;
+ 		}
++	}
+ #endif
+-	} else {
++	else {
+ 		errno = -ret;
+ 		ret = -1;
+ 	}
+-- 
+1.8.1.4
+
