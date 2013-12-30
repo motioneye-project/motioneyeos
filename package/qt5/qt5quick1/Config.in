@@ -10,7 +10,7 @@ config BR2_PACKAGE_QT5QUICK1
 	depends on !BR2_PREFER_STATIC_LIB
 	depends on BR2_PACKAGE_HAS_OPENGL_EGL
 	depends on BR2_PACKAGE_HAS_OPENGL_ES
-	depends on BR2_PACKAGE_QT5DECLARATIVE_AVAILABLE
+	depends on BR2_PACKAGE_QT5_JSCORE_AVAILABLE
 	help
 	  Qt is a cross-platform application and UI framework for
 	  developers using C++.
@@ -20,6 +20,6 @@ config BR2_PACKAGE_QT5QUICK1
 	  http://qt-project.org
 
 comment "qt5quick1 needs a toolchain w/ dynamic library and an OpenGL-capable backend"
-	depends on BR2_PACKAGE_QT5DECLARATIVE_AVAILABLE
+	depends on BR2_PACKAGE_QT5_JSCORE_AVAILABLE
 	depends on !BR2_PACKAGE_HAS_OPENGL_EGL || !BR2_PACKAGE_HAS_OPENGL_ES || \
 		BR2_PREFER_STATIC_LIB

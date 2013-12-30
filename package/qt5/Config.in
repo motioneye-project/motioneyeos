@@ -1,3 +1,11 @@
+config BR2_PACKAGE_QT5_JSCORE_AVAILABLE
+	bool
+	# Javascript engine is only available on certain architectures
+	depends on BR2_arm || BR2_i386 || BR2_x86_64 || BR2_mipsel
+	# ARM needs BLX, so v5t+
+	depends on !(BR2_arm7tdmi || BR2_arm720t || BR2_arm920t || BR2_arm922t || BR2_fa526)
+	default y
+
 comment "Qt5 needs a toolchain w/ wchar, IPv6, threads, C++"
 	depends on !BR2_PACKAGE_QT
 	depends on !BR2_avr32

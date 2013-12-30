@@ -1,11 +1,3 @@
-config BR2_PACKAGE_QT5DECLARATIVE_AVAILABLE
-	bool
-	# Javascript engine is only available on certain architectures
-	depends on BR2_arm || BR2_i386 || BR2_x86_64 || BR2_mipsel
-	# ARM needs BLX, so v5t+
-	depends on !(BR2_arm7tdmi || BR2_arm720t || BR2_arm920t || BR2_arm922t || BR2_fa526)
-	default y
-
 config BR2_PACKAGE_QT5DECLARATIVE
 	bool "qt5declarative"
 	select BR2_PACKAGE_QT5XMLPATTERNS
@@ -14,7 +6,7 @@ config BR2_PACKAGE_QT5DECLARATIVE
 	select BR2_PACKAGE_QT5BASE_EGLFS
 	depends on BR2_PACKAGE_HAS_OPENGL_EGL
 	depends on BR2_PACKAGE_HAS_OPENGL_ES
-	depends on BR2_PACKAGE_QT5DECLARATIVE_AVAILABLE
+	depends on BR2_PACKAGE_QT5_JSCORE_AVAILABLE
 	help
 	  Qt is a cross-platform application and UI framework for
 	  developers using C++.
@@ -25,4 +17,4 @@ config BR2_PACKAGE_QT5DECLARATIVE
 
 comment "qt5declarative requires an OpenGL-capable backend"
 	depends on (!BR2_PACKAGE_HAS_OPENGL_EGL || !BR2_PACKAGE_HAS_OPENGL_ES) && \
-		BR2_PACKAGE_QT5DECLARATIVE_AVAILABLE
+		BR2_PACKAGE_QT5_JSCORE_AVAILABLE
