@@ -1,6 +1,7 @@
 config BR2_PACKAGE_QT5SCRIPT
 	bool "qt5script"
 	select BR2_PACKAGE_QT5BASE
+	depends on BR2_PACKAGE_QT5_JSCORE_AVAILABLE
 	help
 	  Qt is a cross-platform application and UI framework for
 	  developers using C++.
