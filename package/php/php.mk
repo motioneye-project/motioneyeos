@@ -36,6 +36,10 @@ ifneq ($(BR2_INET_IPV6),y)
 endif
 endif
 
+ifeq ($(BR2_xtensa),y)
+PHP_CFLAGS += -mtext-section-literals
+endif
+
 PHP_CONF_OPT += $(if $(BR2_PACKAGE_PHP_CLI),,--disable-cli)
 PHP_CONF_OPT += $(if $(BR2_PACKAGE_PHP_CGI),,--disable-cgi)
 
