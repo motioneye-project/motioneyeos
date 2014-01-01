@@ -73,13 +73,13 @@ board/
 |       +-- linux
 |       |   +-- linux-patch1.patch
 |       |   +-- linux-patch2.patch
-|       +-- u-boot
+|       +-- uboot
 |       +-- foopkg
 +-- fooarch-board
     +-- patches
         +-- linux
         |   +-- linux-patch3.patch
-        +-- u-boot
+        +-- uboot
         +-- foopkg
 -----
 
