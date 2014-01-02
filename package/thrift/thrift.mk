@@ -14,7 +14,7 @@ THRIFT_CONF_OPT = --with-sysroot=$(STAGING_DIR) --with-tests=no \
 	--with-boost=$(STAGING_DIR)
 HOST_THRIFT_CONF_OPT = --with-sysroot=$(HOST_DIR) --with-tests=no
 THRIFT_AUTORECONF = YES
-THRIFT_LICENSE = Apache 2.0
+THRIFT_LICENSE = Apache-2.0
 THRIFT_LICENSE_FILES = LICENSE
 
 ifeq ($(BR2_PREFER_STATIC_LIB),y)

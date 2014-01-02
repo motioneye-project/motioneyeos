@@ -10,7 +10,7 @@ IMAGEMAGICK_SOURCE = ImageMagick-$(IMAGEMAGICK_VERSION).tar.xz
 # available, which is annoying. Use an alternate site that keeps all
 # older versions.
 IMAGEMAGICK_SITE = ftp://ftp.nluug.nl/pub/ImageMagick/
-IMAGEMAGICK_LICENSE = Apache-v2
+IMAGEMAGICK_LICENSE = Apache-2.0
 IMAGEMAGICK_LICENSE_FILES = LICENSE
 
 IMAGEMAGICK_INSTALL_STAGING = YES

@@ -8,7 +8,7 @@
 # one year old.
 NE10_VERSION = 88c18f02199947b2c8b57796f5a3ca53160aff96
 NE10_SITE = http://github.com/projectNe10/Ne10/tarball/$(NE10_VERSION)
-NE10_LICENSE = BSD-3c or Apache 2.0
+NE10_LICENSE = BSD-3c or Apache-2.0
 NE10_LICENSE_FILES = doc/LICENSE
 
 ifeq ($(BR2_PREFER_STATIC_LIB),)

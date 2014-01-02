@@ -122,6 +122,9 @@ Buildroot, with the name used in the manifest files:
 * `BSD-3c`: BSD 3-clause license;
 * `BSD-2c`: BSD 2-clause license;
 * `MIT`: MIT-style license.
+* `Apache-2.0`:
+  http://apache.org/licenses/LICENSE-2.0.html[
+  Apache License, version 2.0];
 
 Complying with the Buildroot license
 ------------------------------------
