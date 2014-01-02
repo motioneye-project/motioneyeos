@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-FFMPEG_VERSION = 0.8.15
+FFMPEG_VERSION = 1.2.4
 FFMPEG_SOURCE = ffmpeg-$(FFMPEG_VERSION).tar.bz2
 FFMPEG_SITE = http://ffmpeg.org/releases
 FFMPEG_INSTALL_STAGING = YES
@@ -18,8 +18,60 @@ endif
 
 FFMPEG_CONF_OPT = \
 	--prefix=/usr		\
-	--disable-avfilter	\
+	--enable-avfilter \
+	--disable-debug \
+	--disable-version3 \
+	--enable-logging \
+	--disable-pic \
+	--enable-optimizations \
+	--disable-extra-warnings \
+	--disable-ffprobe \
+	--enable-avdevice \
+	--enable-avcodec \
+	--enable-avformat \
+	--enable-swscale \
+	--enable-postproc \
+	--disable-x11grab \
+	--enable-network \
+	--disable-gray \
+	--enable-swscale-alpha \
+	--disable-small \
+	--enable-dct \
+	--enable-fft \
+	--enable-mdct \
+	--enable-rdft \
+	--disable-crystalhd \
+	--disable-vaapi \
+	--disable-vdpau \
+	--disable-dxva2 \
+	--enable-runtime-cpudetect \
+	--disable-hardcoded-tables \
+	--disable-memalign-hack \
+	--enable-hwaccels \
+	--disable-avisynth \
+	--disable-frei0r \
+	--disable-libopencore-amrnb \
+	--disable-libopencore-amrwb \
+	--disable-libopencv \
+	--disable-libdc1394 \
+	--disable-libfaac \
+	--disable-libfreetype \
+	--disable-libgsm \
+	--disable-libmp3lame \
+	--disable-libnut \
+	--disable-libopenjpeg \
+	--disable-librtmp \
+	--disable-libschroedinger \
+	--disable-libspeex \
+	--disable-libtheora \
+	--disable-libvo-aacenc \
+	--disable-libvo-amrwbenc \
+	--disable-vis \
+	--disable-sram \
+	--disable-symver \
 	$(if $(BR2_HAVE_DOCUMENTATION),,--disable-doc)
+
+FFMPEG_DEPENDENCIES += $(if $(BR2_PACKAGE_LIBICONV),libiconv)
 
 FFMPEG_CFLAGS = $(TARGET_CFLAGS)
 
@@ -100,7 +152,7 @@ endif
 
 ifneq ($(call qstrip,$(BR2_PACKAGE_FFMPEG_BSFS)),all)
 FFMPEG_CONF_OPT += --disable-bsfs \
-	$(foreach x,$(call qstrip,$(BR2_PACKAGE_FFMPEG_BSFS)),--enable-bsf=$(x))
+	$(foreach x,$(call qstrip,$(BR2_PACKAGE_FFMPEG_BSFS)),--enable-bsfs=$(x))
 endif
 
 ifneq ($(call qstrip,$(BR2_PACKAGE_FFMPEG_PROTOCOLS)),all)
@@ -138,14 +190,58 @@ else
 FFMPEG_CONF_OPT += --disable-zlib
 endif
 
-ifeq ($(BR2_i386)$(BR2_x86_64),y)
-# MMX on is default for x86, disable it for lowly x86-type processors
-ifeq ($(BR2_x86_i386)$(BR2_x86_i486)$(BR2_x86_i586)$(BR2_x86_i686)$(BR2_x86_pentiumpro)$(BR2_x86_geode),y)
-FFMPEG_CONF_OPT += --disable-mmx
+ifeq ($(BR2_PACKAGE_BZIP2),y)
+FFMPEG_CONF_OPT += --enable-bzlib
+FFMPEG_DEPENDENCIES += bzip2
 else
-# If it is enabled, nasm is required
-FFMPEG_DEPENDENCIES += host-nasm
+FFMPEG_CONF_OPT += --disable-bzlib
 endif
+
+ifeq ($(BR2_PACKAGE_OPENSSL),y)
+FFMPEG_CONF_OPT += --enable-openssl
+FFMPEG_DEPENDENCIES += openssl
+else
+FFMPEG_CONF_OPT += --disable-openssl
+endif
+
+ifeq ($(BR2_PACKAGE_LIBVORBIS),y)
+FFMPEG_DEPENDENCIES += libvorbis
+FFMPEG_CONF_OPT += \
+	--enable-libvorbis \
+	--enable-muxer=ogg \
+	--enable-encoder=libvorbis
+endif
+
+ifeq ($(BR2_X86_CPU_HAS_MMX),y)
+FFMPEG_CONF_OPT += --enable-yasm
+FFMPEG_DEPENDENCIES += yasm
+else
+FFMPEG_CONF_OPT += --disable-yasm
+FFMPEG_CONF_OPT += --disable-mmx
+endif
+
+ifeq ($(BR2_X86_CPU_HAS_SSE),y)
+FFMPEG_CONF_OPT += --enable-sse
+else
+FFMPEG_CONF_OPT += --disable-sse
+endif
+
+ifeq ($(BR2_X86_CPU_HAS_SSE2),y)
+FFMPEG_CONF_OPT += --enable-sse2
+else
+FFMPEG_CONF_OPT += --disable-sse2
+endif
+
+ifeq ($(BR2_X86_CPU_HAS_SSE3),y)
+FFMPEG_CONF_OPT += --enable-sse3
+else
+FFMPEG_CONF_OPT += --disable-sse3
+endif
+
+ifeq ($(BR2_X86_CPU_HAS_SSSE3),y)
+FFMPEG_CONF_OPT += --enable-ssse3
+else
+FFMPEG_CONF_OPT += --disable-ssse3
 endif
 
 # Explicitly disable everything that doesn't match for ARM
@@ -160,9 +256,9 @@ else
 FFMPEG_CONF_OPT += --disable-armv6 --disable-armv6t2
 endif
 ifeq ($(BR2_arm10)$(BR2_arm1136jf_s)$(BR2_arm1176jz_s)$(BR2_arm1176jzf_s)$(BR2_cortex_a5)$(BR2_cortex_a8)$(BR2_cortex_a9)$(BR2_cortex_a15),y)
-FFMPEG_CONF_OPT += --enable-armvfp
+FFMPEG_CONF_OPT += --enable-vfp
 else
-FFMPEG_CONF_OPT += --disable-armvfp
+FFMPEG_CONF_OPT += --disable-vfp
 endif
 ifeq ($(BR2_ARM_CPU_HAS_NEON),y)
 FFMPEG_CONF_OPT += --enable-neon
@@ -175,6 +271,10 @@ FFMPEG_CONF_OPT += --enable-altivec
 else
 FFMPEG_CONF_OPT += --disable-altivec
 endif
+endif
+
+ifeq ($(BR2_PREFER_STATIC_LIB),)
+FFMPEG_CONF_OPT += --enable-pic
 endif
 
 FFMPEG_CONF_OPT += $(call qstrip,$(BR2_PACKAGE_FFMPEG_EXTRACONF))
@@ -191,8 +291,8 @@ define FFMPEG_CONFIGURE_CMDS
 		--sysroot=$(STAGING_DIR) \
 		--host-cc="$(HOSTCC)" \
 		--arch=$(BR2_ARCH) \
-		--target-os=linux \
-		--extra-cflags=-fPIC \
+		--target-os="linux" \
+		$(if $(BR2_GCC_TARGET_TUNE),--cpu=$(BR2_GCC_TARGET_TUNE)) \
 		$(SHARED_STATIC_LIBS_OPTS) \
 		$(FFMPEG_CONF_OPT) \
 	)
