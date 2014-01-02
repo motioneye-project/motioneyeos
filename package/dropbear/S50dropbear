@@ -3,14 +3,20 @@
 # Starts dropbear sshd.
 #
 
+# Allow a few customizations from a config file
+test -r /etc/default/dropbear && . /etc/default/dropbear
+
 start() {
- 	echo -n "Starting dropbear sshd: "
+	DROPBEAR_ARGS="$DROPBEAR_ARGS -R"
+
+	echo -n "Starting dropbear sshd: "
 	# Make sure dropbear directory exists
 	if [ ! -d /etc/dropbear ] ; then
 		mkdir -p /etc/dropbear
 	fi
 	umask 077
-	start-stop-daemon -S -q -p /var/run/dropbear.pid --exec /usr/sbin/dropbear -- -R
+	start-stop-daemon -S -q -p /var/run/dropbear.pid \
+		--exec /usr/sbin/dropbear -- $DROPBEAR_ARGS
 	[ $? == 0 ] && echo "OK" || echo "FAIL"
 }
 stop() {
