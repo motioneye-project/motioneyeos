@@ -6,8 +6,9 @@
 
 LRZSZ_VERSION = 0.12.20
 LRZSZ_SITE = http://www.ohse.de/uwe/releases
-
-LRZSR_CONF_OPT = --disable-timesync
+LRZSZ_CONF_OPT = --disable-timesync
+LRZSZ_LICENSE = GPLv2+
+LRZSZ_LICENSE_FILES = COPYING
 
 define LRZSZ_POST_CONFIGURE_HOOKS
 	$(SED) "s/-lnsl//;" $(@D)/src/Makefile
