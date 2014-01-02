@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-ZMQPP_VERSION = 31220ca4a0fb43a0848d78f5e4f23fce39945777
+ZMQPP_VERSION = 30d72d95f2cfdf9c5cedfd56747f549d65e65847
 ZMQPP_SITE = git://github.com/benjamg/zmqpp.git
 ZMQPP_INSTALL_STAGING = YES
 ZMQPP_DEPENDENCIES = zeromq
