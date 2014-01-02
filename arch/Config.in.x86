@@ -9,6 +9,10 @@ config BR2_X86_CPU_HAS_SSE3
 	bool
 config BR2_X86_CPU_HAS_SSSE3
 	bool
+config BR2_X86_CPU_HAS_SSE4
+	bool
+config BR2_X86_CPU_HAS_SSE42
+	bool
 
 choice
 	prompt "Target Architecture Variant"

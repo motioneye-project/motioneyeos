@@ -249,6 +249,18 @@ else
 FFMPEG_CONF_OPT += --disable-ssse3
 endif
 
+ifeq ($(BR2_X86_CPU_HAS_SSE4),y)
+FFMPEG_CONF_OPT += --enable-sse4
+else
+FFMPEG_CONF_OPT += --disable-sse4
+endif
+
+ifeq ($(BR2_X86_CPU_HAS_SSE42),y)
+FFMPEG_CONF_OPT += --enable-sse42
+else
+FFMPEG_CONF_OPT += --disable-sse42
+endif
+
 # Explicitly disable everything that doesn't match for ARM
 # FFMPEG "autodetects" by compiling an extended instruction via AS
 # This works on compilers that aren't built for generic by default
