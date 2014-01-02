@@ -4,13 +4,12 @@
 #
 ################################################################################
 
-CPPZMQ_VERSION = b23297800389149ac37f19b7215fa4734d344998
+CPPZMQ_VERSION = 235803740753312576495301ebf5b8ed76407173
 CPPZMQ_SITE = git://github.com/zeromq/cppzmq.git
 CPPZMQ_INSTALL_STAGING = YES
 CPPZMQ_DEPENDENCIES = zeromq
 CPPZMQ_LICENSE = MIT
-# No license file, the license is in the installed header
-CPPZMQ_LICENSE_FILES = zmq.hpp
+CPPZMQ_LICENSE_FILES = LICENSE
 
 define CPPZMQ_INSTALL_STAGING_CMDS
 	$(INSTALL) -m 0644 -D $(@D)/zmq.hpp $(STAGING_DIR)/usr/include/zmq.hpp
