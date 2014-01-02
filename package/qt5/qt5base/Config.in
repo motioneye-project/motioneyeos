@@ -28,6 +28,13 @@ config BR2_PACKAGE_QT5BASE_LICENSE_APPROVED
 
 	  See also http://qt-project.org/doc/qt-5.0/qtdoc/licensing.html
 
+config BR2_PACKAGE_QT5BASE_EXAMPLES
+	bool "Compile and install examples (with code)"
+	select BR2_PACKAGE_QT5BASE_NETWORK
+	select BR2_PACKAGE_QT5BASE_XML
+	help
+	  If unsure, say N.
+
 config BR2_PACKAGE_QT5BASE_NETWORK
 	bool "network module"
 	help
