@@ -34,12 +34,12 @@ choice
 	config BR2_GDB_VERSION_7_2
 		bool "gdb 7.2.x"
 		depends on !BR2_bfin
-		depends on BR2_DEPRECATED
+		depends on BR2_DEPRECATED_SINCE_2013_02
 
 	config BR2_GDB_VERSION_7_3
 		bool "gdb 7.3.x"
 		depends on !BR2_bfin
-		depends on BR2_DEPRECATED
+		depends on BR2_DEPRECATED_SINCE_2013_02
 
 	config BR2_GDB_VERSION_7_4
 		bool "gdb 7.4.x"

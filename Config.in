@@ -254,6 +254,46 @@ config BR2_DEPRECATED
 	help
 	  This option hides outdated/obsolete versions of packages.
 
+if BR2_DEPRECATED
+
+config BR2_DEPRECATED_SINCE_2010_05
+	bool
+	default y
+
+config BR2_DEPRECATED_SINCE_2010_11
+	bool
+	default y
+
+config BR2_DEPRECATED_SINCE_2012_05
+	bool
+	default y
+
+config BR2_DEPRECATED_SINCE_2012_11
+	bool
+	default y
+
+config BR2_DEPRECATED_SINCE_2013_02
+	bool
+	default y
+
+config BR2_DEPRECATED_SINCE_2013_05
+	bool
+	default y
+
+config BR2_DEPRECATED_SINCE_2013_08
+	bool
+	default y
+
+config BR2_DEPRECATED_SINCE_2013_11
+	bool
+	default y
+
+config BR2_DEPRECATED_SINCE_2014_02
+	bool
+	default y
+
+endif
+
 config BR2_ENABLE_DEBUG
 	bool "build packages with debugging symbols"
 	help
@@ -443,7 +483,7 @@ config BR2_PREFER_STATIC_LIB
 config BR2_HAVE_DOCUMENTATION
 	bool "documentation on the target"
 	# We no longer want to support a toolchain on the target
-	depends on BR2_DEPRECATED
+	depends on BR2_DEPRECATED_SINCE_2012_11
 	help
 	  Install the documentation, including manual pages and info
 	  pages, on the target.

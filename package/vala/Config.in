@@ -1,7 +1,7 @@
 config BR2_PACKAGE_VALA
 	bool "vala"
 	# We no longer support a toolchain on the target
-	depends on BR2_DEPRECATED
+	depends on BR2_DEPRECATED_SINCE_2013_05
 	depends on BR2_USE_WCHAR # glib2
 	depends on BR2_TOOLCHAIN_HAS_THREADS # glib2
 	depends on BR2_USE_MMU # glib2
@@ -14,6 +14,6 @@ config BR2_PACKAGE_VALA
 	  http://live.gnome.org/Vala
 
 comment "vala needs a toolchain w/ wchar, threads"
-	depends on BR2_DEPRECATED
+	depends on BR2_DEPRECATED_SINCE_2013_05
 	depends on BR2_USE_MMU
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS

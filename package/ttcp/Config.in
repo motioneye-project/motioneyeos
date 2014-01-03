@@ -1,6 +1,6 @@
 config BR2_PACKAGE_TTCP
 	bool "ttcp"
-	depends on BR2_DEPRECATED
+	depends on BR2_DEPRECATED_SINCE_2012_05
 	help
 	  Benchmarking tool for determining TCP and UDP performance.
 

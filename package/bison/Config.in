@@ -5,7 +5,7 @@ config BR2_PACKAGE_BISON
 	# m4 uses fork()
 	depends on BR2_USE_MMU
 	# development tool, useless on the target
-	depends on BR2_DEPRECATED
+	depends on BR2_DEPRECATED_SINCE_2014_02
 	help
 	  General-purpose parser generator that converts a
 	  grammar description for an LALR context-free grammar into a C
@@ -14,4 +14,6 @@ config BR2_PACKAGE_BISON
 	  http://www.gnu.org/software/bison/
 
 comment "bison needs a toolchain w/ wchar"
+	depends on BR2_DEPRECATED_SINCE_2014_02
+	depends on BR2_USE_MMU
 	depends on !BR2_USE_WCHAR

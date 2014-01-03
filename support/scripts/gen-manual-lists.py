@@ -234,7 +234,9 @@ class Buildroot:
         """ Return True if the symbol is marked as deprecated, otherwise False.
 
         """
-        return self._deprecated in symbol.get_referenced_symbols()
+        # This also catches BR2_DEPRECATED_SINCE_xxxx_xx
+        return bool([ symbol for x in symbol.get_referenced_symbols()
+            if x.get_name().startswith(self._deprecated.get_name()) ])
 
     def _is_package(self, symbol):
         """ Return True if the symbol is a package or a host package, otherwise
