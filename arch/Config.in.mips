@@ -29,8 +29,10 @@ config BR2_mips_32r2
 	depends on !BR2_ARCH_IS_64
 config BR2_mips_64
 	bool "mips 64"
+	depends on BR2_ARCH_IS_64
 config BR2_mips_64r2
 	bool "mips 64r2"
+	depends on BR2_ARCH_IS_64
 endchoice
 
 
