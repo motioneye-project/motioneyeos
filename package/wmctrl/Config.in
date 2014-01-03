@@ -18,6 +18,7 @@ config BR2_PACKAGE_WMCTRL
 
 	  http://tomas.styblo.name/wmctrl/
 
-comment "libglib2 needs a toolchain w/ wchar, threads"
-	depends on !BR2_USE_MMU
+comment "wmctrl needs a toolchain w/ wchar, threads"
+	depends on BR2_USE_MMU
+	depends on BR2_PACKAGE_XORG7
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
