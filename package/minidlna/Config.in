@@ -4,6 +4,8 @@ config BR2_PACKAGE_MINIDLNA
 	depends on BR2_INET_IPV6 # ffmpeg
 	depends on BR2_USE_MMU # fork
 	depends on BR2_TOOLCHAIN_HAS_THREADS
+	# static build is broken w.r.t libgcc_s
+	depends on !BR2_PREFER_STATIC_LIB
 	select BR2_PACKAGE_FFMPEG
 	select BR2_PACKAGE_FLAC
 	select BR2_PACKAGE_LIBVORBIS # selects libogg
