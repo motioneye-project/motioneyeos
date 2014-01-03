@@ -4,26 +4,10 @@ config BR2_TARGET_ROOTFS_SQUASHFS
 	  Build a squashfs root filesystem
 
 if BR2_TARGET_ROOTFS_SQUASHFS
-choice
-	prompt "SquashFS version"
-	default BR2_TARGET_ROOTFS_SQUASHFS4
-	help
-	  Select the Squash filesystem version to use to generate the
-	  root filesystem.
-
-config BR2_TARGET_ROOTFS_SQUASHFS4
-	bool "4.x"
-
-config BR2_TARGET_ROOTFS_SQUASHFS3
-	depends on BR2_DEPRECATED_SINCE_2010_05
-	bool "3.x"
-
-endchoice
 
 choice
 	prompt "Compression algorithm"
 	default BR2_TARGET_ROOTFS_SQUASHFS4_GZIP
-	depends on BR2_TARGET_ROOTFS_SQUASHFS4
 	help
 	  Select the squashfs compression algorithm to use when
 	  generating the filesystem.

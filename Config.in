@@ -256,10 +256,6 @@ config BR2_DEPRECATED
 
 if BR2_DEPRECATED
 
-config BR2_DEPRECATED_SINCE_2010_05
-	bool
-	default y
-
 config BR2_DEPRECATED_SINCE_2010_11
 	bool
 	default y

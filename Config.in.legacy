@@ -101,6 +101,23 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2014.02"
 
+config BR2_PACKAGE_SQUASHFS3
+	bool "squashfs3 has been removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_SQUASHFS
+	help
+	  The 'squashfs3' package has been removed since it has been
+	  deprecated for more than four buildroot releases. Package
+	  'squashfs' (4) has been selected automatically as replacement.
+
+config BR2_TARGET_ROOTFS_SQUASHFS3
+	bool "squashfs3 rootfs support has been removed"
+	select BR2_LEGACY
+	help
+	  Together with the removal of the squashfs3 package, support
+	  for squashfs3 root filesystems has been removed too. Squashfs
+	  root filesystems will automatically use squashfs4 now.
+
 config BR2_PACKAGE_NETKITBASE
 	bool "netkitbase has been removed"
 	select BR2_LEGACY

@@ -4,7 +4,6 @@
 #
 ################################################################################
 
-ifeq ($(BR2_TARGET_ROOTFS_SQUASHFS4),y)
 ROOTFS_SQUASHFS_DEPENDENCIES = host-squashfs
 
 ifeq ($(BR2_TARGET_ROOTFS_SQUASHFS4_LZO),y)
@@ -19,17 +18,6 @@ else
 ROOTFS_SQUASHFS_ARGS += -comp gzip
 endif
 endif
-endif
-
-else
-ROOTFS_SQUASHFS_DEPENDENCIES = host-squashfs3
-
-ifeq ($(BR2_ENDIAN),"BIG")
-ROOTFS_SQUASHFS_ARGS=-be
-else
-ROOTFS_SQUASHFS_ARGS=-le
-endif
-
 endif
 
 define ROOTFS_SQUASHFS_CMD
