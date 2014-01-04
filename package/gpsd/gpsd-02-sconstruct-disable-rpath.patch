@@ -13,7 +13,7 @@ diff -Nurp a/SConstruct b/SConstruct
 -if env["shared"]:
 -    sysrpath = Split(_getoutput("ldconfig -v -N -X 2>/dev/null | sed -n -e '/^\//s/://p'"))
 -    if env["libdir"] not in ["/usr/lib", "/lib"] + sysrpath:
--        announce("Prepending %s to RPATH." % installdir('libdir'))
+-        announce("Prepending %s to RPATH." % installdir('libdir', False))
 -        env.Prepend(RPATH=[installdir('libdir')])
  
  # Give deheader a way to set compiler flags
