@@ -1,0 +1,5 @@
+config BR2_PACKAGE_XPROTO_PRESENTPROTO
+	bool "presentproto"
+	select BR2_PACKAGE_XUTIL_UTIL_MACROS
+	help
+	  X.Org Present extension headers
