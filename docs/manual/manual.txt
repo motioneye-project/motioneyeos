@@ -8,8 +8,8 @@ The Buildroot user manual
 Buildroot usage and documentation by Thomas Petazzoni. Contributions
 from Karsten Kruse, Ned Ludd, Martin Herren and others.
 
-Buildroot {sys:echo $\{BR2_VERSION%%-git*\}} manual generated on {docdate}
-{doctime} from git revision {sys:git rev-parse --short HEAD}
+Buildroot {sys:echo $\{BR2_VERSION%%-git*\}} manual generated on {localdate}
+{localtime} from git revision {sys:git rev-parse --short HEAD}
 
 image::logo.png[]
 
