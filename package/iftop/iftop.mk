@@ -4,11 +4,9 @@
 #
 ################################################################################
 
-IFTOP_VERSION = 1.0pre2
+IFTOP_VERSION = 1.0pre3
 IFTOP_SITE = http://www.ex-parrot.com/pdw/iftop/download/
-
 IFTOP_DEPENDENCIES = ncurses libpcap
-
 IFTOP_LICENSE = GPLv2+
 IFTOP_LICENSE_FILES = COPYING
 
