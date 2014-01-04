@@ -7,4 +7,3 @@ config BR2_PACKAGE_SDL_TTF
 	  use TrueType fonts in your SDL applications.
 
 	  http://www.libsdl.org/projects/SDL_ttf/
-

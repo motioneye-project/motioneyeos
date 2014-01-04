@@ -80,4 +80,3 @@ config BR2_PACKAGE_ALSA_LIB_OLD_SYMBOLS
 endmenu
 
 endif
-

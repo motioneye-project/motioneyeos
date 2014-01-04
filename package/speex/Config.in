@@ -21,4 +21,3 @@ config BR2_PACKAGE_SPEEX_ARM5E
 	depends on BR2_arm && !BR2_PACKAGE_SPEEX_ARM4
 
 endif
-

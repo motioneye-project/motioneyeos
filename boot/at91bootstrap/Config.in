@@ -45,6 +45,3 @@ config BR2_TARGET_AT91BOOTSTRAP_MEMORY
 	default	"nandflash"	if	BR2_TARGET_AT91BOOTSTRAP_NANDFLASH
 
 endif
-
-
-

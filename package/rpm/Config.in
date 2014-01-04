@@ -34,5 +34,3 @@ comment "xz payload support needs a toolchain w/ C++"
 	depends on !BR2_INSTALL_LIBSTDCPP
 
 endif
-
-

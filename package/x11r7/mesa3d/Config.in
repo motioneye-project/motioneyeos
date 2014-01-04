@@ -12,4 +12,3 @@ config BR2_PACKAGE_MESA3D
 	depends on BR2_INSTALL_LIBSTDCPP
 	help
 	  Mesa 3D, an open-source implementation of the OpenGL specification.
-

@@ -15,4 +15,3 @@ endif
 $(eval $(generic-package))
 
 toolchain-source: prepare dirs dependencies $(HOST_DIR)/usr/share/buildroot/toolchainfile.cmake
-

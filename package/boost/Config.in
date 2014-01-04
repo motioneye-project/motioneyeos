@@ -88,4 +88,3 @@ config BR2_PACKAGE_BOOST_WAVE
 	bool "boost-wave"
 
 endif
-

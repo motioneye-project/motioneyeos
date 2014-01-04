@@ -17,4 +17,3 @@ comment "dnet module for python requires python package"
 	depends on !BR2_PACKAGE_PYTHON
 
 endif
-

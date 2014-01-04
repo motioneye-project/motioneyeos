@@ -9,4 +9,3 @@ config BR2_PACKAGE_SAWMAN
 	  working horse.
 
 	  See http://www.directfb.org/downloads/Extras/README.SaWMan
-

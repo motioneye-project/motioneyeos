@@ -46,4 +46,3 @@ config BR2_PACKAGE_CAIRO_XML
 	select BR2_PACKAGE_CAIRO_PNG
 
 endif
-

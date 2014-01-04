@@ -7,4 +7,3 @@ config BR2_PACKAGE_LIBCAP
 	  privilege into a set of distinct privileges.
 
 	  http://sites.google.com/site/fullycapable/
-

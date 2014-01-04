@@ -5,4 +5,3 @@ config BR2_PACKAGE_GDBM
 	  It works similar to the standard UNIX dbm routines.
 
 	  http://www.gnu.org/software/gdbm/gdbm.html
-

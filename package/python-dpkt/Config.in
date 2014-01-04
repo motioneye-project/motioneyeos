@@ -7,5 +7,3 @@ config BR2_PACKAGE_PYTHON_DPKT
 	  for the basic TCP/IP protocols.
 
 	  http://code.google.com/p/dpkt/
-
-

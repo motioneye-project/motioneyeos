@@ -4,4 +4,3 @@ config BR2_PACKAGE_VSFTPD
 	help
 	  vsftpd is an ftp daemon written with security in mind.
 	  http://vsftpd.beasts.org/
-

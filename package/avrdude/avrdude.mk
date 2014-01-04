@@ -28,4 +28,3 @@ endef
 AVRDUDE_POST_INSTALL_TARGET_HOOKS += AVRDUDE_REMOVE_BACKUP_FILE
 
 $(eval $(autotools-package))
-

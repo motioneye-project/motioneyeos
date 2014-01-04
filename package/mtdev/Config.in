@@ -5,4 +5,3 @@ config BR2_PACKAGE_MTDEV
 	  variants of kernel MT events to the slotted type B protocol.
 
 	  http://bitmath.org/code/mtdev/
-

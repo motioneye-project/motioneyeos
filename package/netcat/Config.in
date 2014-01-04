@@ -10,4 +10,3 @@ config BR2_PACKAGE_NETCAT
 	  need and has several interesting built-in capabilities.
 
 	  http://netcat.sourceforge.net/download.php
-

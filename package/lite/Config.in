@@ -9,4 +9,3 @@ config BR2_PACKAGE_LITE
 	   event systems.
 
 	   See http://www.directfb.org/wiki/index.php/LiTE:Architecture
-

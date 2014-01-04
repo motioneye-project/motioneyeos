@@ -18,4 +18,3 @@ endif
 
 comment "qtuio depends on QT gui module"
 	depends on !BR2_PACKAGE_QT_GUI_MODULE
-

@@ -78,4 +78,3 @@ config BR2_PACKAGE_ALSA_UTILS_SPEAKER_TEST
 endmenu
 
 endif
-

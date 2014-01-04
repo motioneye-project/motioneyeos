@@ -14,4 +14,3 @@ config BR2_PACKAGE_LIBXSLT
 	  XML document that uses the formatting vocabulary.
 
 	  http://www.w3.org/TR/xslt
-

@@ -7,4 +7,3 @@ config BR2_PACKAGE_GIBLIB
 	  Giblib is a simple library which wraps imlib2.
 
 	  http://linuxbrit.co.uk/giblib/
-

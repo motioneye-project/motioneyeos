@@ -8,4 +8,3 @@ config BR2_PACKAGE_LIBXML_PARSER_PERL
 	  The Perl XML::Parser module.
 
 	  http://www.cpan.org/modules/by-module/XML/
-

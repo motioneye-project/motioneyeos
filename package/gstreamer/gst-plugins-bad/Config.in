@@ -322,4 +322,3 @@ config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_VCD
 	bool "vcd"
 
 endif
-

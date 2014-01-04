@@ -8,4 +8,3 @@ config BR2_PACKAGE_LIBOSIP2
 	  SIP is a open standard replacement from IETF for H323.
 
 	  http://www.gnu.org/software/osip/
-

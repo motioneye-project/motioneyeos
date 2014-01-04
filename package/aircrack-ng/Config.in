@@ -13,4 +13,3 @@ config BR2_PACKAGE_AIRCRACK_NG
 comment "aircrack-ng needs a toolchain w/ largefile, threads"
 	depends on BR2_USE_MMU
 	depends on !BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_THREADS
-

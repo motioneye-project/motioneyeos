@@ -4,4 +4,3 @@ config BR2_PACKAGE_IPKG
 	  The Itsy Package Installer from handhelds.org
 
 	  http://www.handhelds.org
-

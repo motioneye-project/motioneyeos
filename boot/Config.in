@@ -13,4 +13,3 @@ source "boot/uboot/Config.in"
 source "boot/xloader/Config.in"
 
 endmenu
-
