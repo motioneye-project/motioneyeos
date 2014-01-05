@@ -1,5 +1,6 @@
 config BR2_PACKAGE_TN5250
 	bool "tn5250"
+	depends on BR2_USE_MMU # fork()
 	select BR2_PACKAGE_NCURSES
 	help
 	  Telnet client that emulates 5250 terminals and printers.
