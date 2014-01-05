@@ -44,18 +44,20 @@ then
 fi
 
 e2tunefsck() {
-    # Upgrade the file system
-    if [ $# -ne 0 ]; then
-        tune2fs "$@" "${IMG}"
-    fi
-
     # genext2fs does not generate a UUID, but fsck will whine if one is
     # is missing, so we need to add a UUID.
     # Of course, this has to happend _before_ we run fsck.
+    # Also, some ext4 metadata are based on the UUID, so we must
+    # set it before we can convert the filesystem to ext4.
     # Although a random UUID may seem bad for reproducibility, there
     # already are so many things that are not reproducible in a
     # filesystem: file dates, file ordering, content of the files...
     tune2fs -U random "${IMG}"
+
+    # Upgrade the filesystem
+    if [ $# -ne 0 ]; then
+        tune2fs "$@" "${IMG}"
+    fi
 
     # After changing filesystem options, running fsck is required
     # (see: man tune2fs). Running e2fsck in other cases will ensure
