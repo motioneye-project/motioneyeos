@@ -15,6 +15,7 @@ DBUS_CPP_CONF_OPT = --disable-examples --disable-tests --disable-doxygen-docs \
 	--with-build-libdbus-cxx=$(HOST_DBUS_CPP_BUILDDIR)
 HOST_DBUS_CPP_CONF_OPT = --disable-examples --disable-tests \
 	--disable-doxygen-docs --disable-ecore --disable-glib
+DBUS_CPP_AUTORECONF = YES
 DBUS_CPP_LICENSE = LGPLv2.1+
 DBUS_CPP_LICENSE_FILES = COPYING
 
