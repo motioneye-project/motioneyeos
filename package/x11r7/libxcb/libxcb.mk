@@ -17,6 +17,7 @@ LIBXCB_DEPENDENCIES = \
 	host-xcb-proto host-python host-pkgconf
 
 LIBXCB_CONF_OPT = --disable-build-docs
+HOST_LIBXCB_CONF_OPT = --disable-build-docs
 
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
