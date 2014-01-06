@@ -1,3 +1,7 @@
+
+comment "omniORB needs a toolchain w/ C++, threads"
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS
+
 config BR2_PACKAGE_OMNIORB
 	bool "omniorb"
 	depends on BR2_INSTALL_LIBSTDCPP
@@ -11,5 +15,12 @@ config BR2_PACKAGE_OMNIORB
 
 	  http://omniorb.sourceforge.net/
 
-comment "omniORB needs a toolchain w/ C++, threads"
-	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS
+if BR2_PACKAGE_OMNIORB
+
+config BR2_PACKAGE_OMNIORB_WITH_APPS
+	bool "Enable Apps and Services"
+	help
+	  omniORB applications and services disabled by default
+	  embedded system build configuration.
+
+endif

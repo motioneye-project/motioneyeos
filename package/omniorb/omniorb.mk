@@ -24,6 +24,19 @@ OMNIORB_INSTALL_TARGET = YES
 OMNIORB_CONF_OPT += --disable-longdouble
 HOST_OMNIORB_CONF_OPT += --disable-longdouble
 
+# The EmbeddedSystem define (set below in OMNIORB_ADJUST_TOOLDIR)
+# enables building of just the lib and disables building of
+# tools/apps/services.  In some cases the apps/services are still
+# required.  The tools however are host related and should never
+# be required on target.
+define OMNIORB_ENABLE_EXTRA_APPS
+$(SED) 's:SUBDIRS += lib:SUBDIRS += lib appl services:g' $(@D)/src/dir.mk
+endef
+
+ifeq ($(BR2_PACKAGE_OMNIORB_WITH_APPS),y)
+OMNIORB_POST_PATCH_HOOKS += OMNIORB_ENABLE_EXTRA_APPS
+endif
+
 # omniORB is not completely cross-compile friendly and has some
 # assumptions where a couple host tools must be built and then
 # used by the target build.  The host tools generate code from
@@ -32,7 +45,7 @@ HOST_OMNIORB_CONF_OPT += --disable-longdouble
 define OMNIORB_ADJUST_TOOLDIR
 	# Point to the host folder to get HOST_OMNIORB tools
 	$(SED) 's:TOOLBINDIR = $$(TOP)/$$(BINDIR):TOOLBINDIR = $(HOST_DIR)/usr/bin:g' $(@D)/mk/beforeauto.mk
-	# Disables OMNIORB tool building
+	# Disables OMNIORB app/service/tool building
 	echo "EmbeddedSystem=1" >> $(@D)/mk/beforeauto.mk
 endef
 OMNIORB_POST_CONFIGURE_HOOKS += OMNIORB_ADJUST_TOOLDIR
