@@ -21,7 +21,13 @@ config BR2_PACKAGE_QT_DEBUG
 	  If unsure, say N.
 
 config BR2_PACKAGE_QT_DEMOS
-	bool "Compile and install demos and examples (with code)"
+	bool "Compile and install Qt demos (with code)"
+	select BR2_PACKAGE_QT_GUI_MODULE
+	help
+	  If unsure, say N.
+
+config BR2_PACKAGE_QT_EXAMPLES
+	bool "Compile and install Qt examples (with code)"
 	select BR2_PACKAGE_QT_GUI_MODULE
 	help
 	  If unsure, say N.
