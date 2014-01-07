@@ -32,7 +32,7 @@ endef
 
 define DHCPCD_INSTALL_TARGET_CMDS
 	$(INSTALL) -D -m 0755 $(@D)/dhcpcd \
-		$(TARGET_DIR)/usr/bin/dhcpcd
+		$(TARGET_DIR)/usr/sbin/dhcpcd
 	$(INSTALL) -D -m 0644 $(@D)/dhcpcd.conf \
 		$(TARGET_DIR)/etc/dhcpcd.conf
 	$(INSTALL) -D -m 0755 $(@D)/dhcpcd-run-hooks \
