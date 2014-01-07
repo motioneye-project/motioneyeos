@@ -1,0 +1,28 @@
+Fix a link error.
+
+Signed-off-by: Simon Dawson <spdawson@gmail.com>
+
+diff -Nurp a/bin/Makefile.am b/bin/Makefile.am
+--- a/bin/Makefile.am	2013-12-03 09:12:34.000000000 +0000
++++ b/bin/Makefile.am	2014-01-06 22:03:34.888581851 +0000
+@@ -44,7 +44,7 @@ vlc_static_CFLAGS = $(AM_CFLAGS) \
+ 	-DTOP_SRCDIR=\"$$(cd "$(top_srcdir)"; pwd)\" \
+ 	$(NULL)
+ vlc_static_DEPENDENCIES = $(vlc_DEPENDENCIES)
+-vlc_static_LDADD = $(vlc_LDADD)
++vlc_static_LDADD = $(vlc_LDADD) ../compat/libcompat.la
+ vlc_static_LDFLAGS = $(vlc_LDFLAGS)
+ 
+ if HAVE_WIN32
+diff -Nurp a/bin/Makefile.in b/bin/Makefile.in
+--- a/bin/Makefile.in	2013-12-07 16:17:01.000000000 +0000
++++ b/bin/Makefile.in	2014-01-06 22:04:10.888444978 +0000
+@@ -1049,7 +1049,7 @@ vlc_static_CFLAGS = $(AM_CFLAGS) \
+ 	$(NULL)
+ 
+ vlc_static_DEPENDENCIES = $(vlc_DEPENDENCIES)
+-vlc_static_LDADD = $(vlc_LDADD)
++vlc_static_LDADD = $(vlc_LDADD) ../compat/libcompat.la
+ vlc_static_LDFLAGS = $(vlc_LDFLAGS) $(am__append_7)
+ @HAVE_WIN32_TRUE@vlc_DEPENDENCIES = vlc_win32_rc.$(OBJEXT)
+ vlc_cache_gen_SOURCES = cachegen.c
