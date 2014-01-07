@@ -104,3 +104,42 @@ or +g+++ for building helper-binaries on your host, then do
 --------------------
  $ make HOSTCXX=g++-4.3-HEAD HOSTCC=gcc-4.3-HEAD
 --------------------
+
+Dealing efficiently with filesystem images
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Filesystem images can get pretty big, depending on the filesystem you choose,
+the number of packages, whether you provisioned free space... Yet, some
+locations in the filesystems images may just be _empty_ (eg. a long run of
+'zeroes'); such a file is called a _sparse_ file.
+
+Most tools can handle sparse files efficiently, and will only store or write
+those parts of a sparse file that are not empty.
+
+For example:
+
+* +tar+ accepts the +-S+ option to tell it to only store non-zero blocks
+  of sparse files:
+** +tar cf archive.tar -S [files...]+ will efficiently store sparse files
+   in a tarball
+** +tar xf archive.tar -S+ will efficiently store sparse files extracted
+   from a tarball
+
+* +cp+ accepts the +--sparse=WHEN+ option (+WHEN+ is one of +auto+,
+  +never+ or +always+):
+** +cp --sparse=always source.file dest.file+ will make +dest.file+ a
+   sparse file if +source.file+ has long runs of zeroes
+
+Other tools may have similar options. Please consult their respective man
+pages.
+
+You can use sparse files if you need to store the filesystem images (eg.
+to transfer from one machine to another), of if you need to send them (eg.
+to the Q&A team).
+
+Note however that flashing a filesystem image to a device while using the
+sparse mode of +dd+ may result in a broken filesystem (eg. the block bitmap
+of an ext2 filesystem may be corrupted; or, if you have sparse files in
+your filesystem, those parts may not be all-zeroes when read back). You
+should only use sparse files when handling files on the build machine, not
+when transferring them to an actual device that will be used on the target.
