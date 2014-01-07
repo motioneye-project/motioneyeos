@@ -23,4 +23,14 @@ config BR2_PACKAGE_TZDATA_ZONELIST
 	  The full list is the list of files in the time zone database source,
 	  not including the build and .tab files.
 
+config BR2_PACKAGE_TZDATA_LOCALTIME
+	string "default local time"
+	help
+	  The time zone to install as the default local time, expressed as a
+	  tzdata location, such as:
+	    GMT, Europe/Paris, America/New_York, Pacific/Wallis...
+
+	  If empty, no local time will be set, and the dates will be
+	  expressed in UTC.
+
 endif
