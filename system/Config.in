@@ -6,11 +6,17 @@ config BR2_TARGET_GENERIC_HOSTNAME
 	help
 	  Select system hostname to be stored in /etc/hostname.
 
+	  Leave empty to not create /etc/hostname, or to keep the
+	  one from a custom skeleton.
+
 config BR2_TARGET_GENERIC_ISSUE
 	string "System banner"
 	default "Welcome to Buildroot"
 	help
 	  Select system banner (/etc/issue) to be displayed at login.
+
+	  Leave empty to not create /etc/issue, or to keep the
+	  one from a custom skeleton.
 
 choice
 	bool "Passwords encoding"
