@@ -11,7 +11,8 @@ config BR2_PACKAGE_UDEV
 	help
 	  Userspace device daemon.
 
-	  udev requires a Linux kernel >= 2.6.34: it relies on devtmpfs.
+	  udev requires a Linux kernel >= 2.6.34: it relies on devtmpfs
+	  and inotify.
 
 	  ftp://ftp.kernel.org/pub/linux/utils/kernel/hotplug/
 
