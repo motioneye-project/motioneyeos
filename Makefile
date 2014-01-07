@@ -647,7 +647,8 @@ graph-build: $(O)/build/build-time.log
 
 graph-depends:
 	@$(INSTALL) -d $(O)/graphs
-	@./support/scripts/graph-depends \
+	@cd "$(CONFIG_DIR)"; \
+	$(TOPDIR)/support/scripts/graph-depends \
 	|dot -T$(BR2_GRAPH_OUT) -o $(O)/graphs/$(@).$(BR2_GRAPH_OUT)
 
 else # ifeq ($(BR2_HAVE_DOT_CONFIG),y)
