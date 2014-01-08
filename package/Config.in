@@ -157,6 +157,7 @@ menu "Games"
 source "package/doom-wad/Config.in"
 source "package/gnuchess/Config.in"
 source "package/lbreakout2/Config.in"
+source "package/ltris/Config.in"
 source "package/prboom/Config.in"
 source "package/rubix/Config.in"
 endmenu
