@@ -5,7 +5,7 @@
 ################################################################################
 
 PERL_VERSION_MAJOR = 18
-PERL_VERSION = 5.$(PERL_VERSION_MAJOR).1
+PERL_VERSION = 5.$(PERL_VERSION_MAJOR).2
 PERL_SITE = http://www.cpan.org/src/5.0
 PERL_SOURCE = perl-$(PERL_VERSION).tar.bz2
 PERL_LICENSE = Artistic or GPLv1+
@@ -85,7 +85,7 @@ endef
 # perlcross's miniperl_top forgets base, which is required by mktables.
 # Instead of patching, it's easier to just set PERL5LIB
 define PERL_BUILD_CMDS
-	PERL5LIB=$(@D)/dist/base/lib $(MAKE1) -C $(@D) perl modules
+	PERL5LIB=$(@D)/dist/base/lib $(MAKE1) -C $(@D) all
 endef
 
 define PERL_INSTALL_STAGING_CMDS
