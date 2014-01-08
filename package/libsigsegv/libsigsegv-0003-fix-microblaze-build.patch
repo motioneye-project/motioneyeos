@@ -1,0 +1,16 @@
+Add microblaze support
+
+Signed-off-by: Spenser Gilliland <spenser@gillilanding.com>
+
+Index: libsigsegv-2.10/m4/stack-direction.m4
+===================================================================
+--- libsigsegv-2.10.orig/m4/stack-direction.m4	2014-01-08 10:15:43.149509801 -0600
++++ libsigsegv-2.10/m4/stack-direction.m4	2014-01-08 10:16:57.249511153 -0600
+@@ -32,6 +32,7 @@
+       m68* | \
+       m88k | \
+       mcore | \
++      microblaze | \
+       mips* | \
+       mmix | \
+       mn10200 | \
