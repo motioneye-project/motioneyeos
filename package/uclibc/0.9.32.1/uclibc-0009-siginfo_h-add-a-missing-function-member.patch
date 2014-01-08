@@ -1,0 +1,66 @@
+siginfo.h: add a missing function member on ia64, mips and sparc arches
+Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+
+From b4e6e61e2f7c6fb4bf59f66efaa74591a2112912 Mon Sep 17 00:00:00 2001
+From: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+Date: Thu, 02 Jan 2014 15:02:11 +0000
+Subject: siginfo.h: add a missing function member on ia64, mips and sparc arches
+
+Add "__pid_t _tid" member which is used for some packages, like rt-test
+for instance, which fails with an error like this one:
+
+src/cyclictest/cyclictest.c:638:9: error: 'union <anonymous>' has no
+member named '_tid'
+
+Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+Signed-off-by: Bernhard Reutner-Fischer <rep.dot.nop@gmail.com>
+---
+(limited to 'libc/sysdeps/linux')
+
+diff --git a/libc/sysdeps/linux/ia64/bits/siginfo.h b/libc/sysdeps/linux/ia64/bits/siginfo.h
+index f571f46..82cc73f 100644
+--- a/libc/sysdeps/linux/ia64/bits/siginfo.h
++++ b/libc/sysdeps/linux/ia64/bits/siginfo.h
+@@ -309,6 +309,10 @@ typedef struct sigevent
+       {
+ 	int _pad[__SIGEV_PAD_SIZE];
+ 
++	/* When SIGEV_SIGNAL and SIGEV_THREAD_ID set, LWP ID of the
++	   thread to receive the signal.  */
++	__pid_t _tid;
++
+ 	struct
+ 	  {
+ 	    void (*_function) (sigval_t);	/* Function to start.  */
+diff --git a/libc/sysdeps/linux/mips/bits/siginfo.h b/libc/sysdeps/linux/mips/bits/siginfo.h
+index 79fb15a..84b08ca 100644
+--- a/libc/sysdeps/linux/mips/bits/siginfo.h
++++ b/libc/sysdeps/linux/mips/bits/siginfo.h
+@@ -281,6 +281,10 @@ typedef struct sigevent
+       {
+ 	int _pad[__SIGEV_PAD_SIZE];
+ 
++	/* When SIGEV_SIGNAL and SIGEV_THREAD_ID set, LWP ID of the
++	   thread to receive the signal.  */
++	__pid_t _tid;
++
+ 	struct
+ 	  {
+ 	    void (*_function) (sigval_t);	/* Function to start.  */
+diff --git a/libc/sysdeps/linux/sparc/bits/siginfo.h b/libc/sysdeps/linux/sparc/bits/siginfo.h
+index 6f2d035..3ffeb6d 100644
+--- a/libc/sysdeps/linux/sparc/bits/siginfo.h
++++ b/libc/sysdeps/linux/sparc/bits/siginfo.h
+@@ -288,6 +288,10 @@ typedef struct sigevent
+       {
+ 	int _pad[__SIGEV_PAD_SIZE];
+ 
++	/* When SIGEV_SIGNAL and SIGEV_THREAD_ID set, LWP ID of the
++	   thread to receive the signal.  */
++	__pid_t _tid;
++
+ 	struct
+ 	  {
+ 	    void (*_function) (sigval_t);	/* Function to start.  */
+--
+cgit v0.9.1
