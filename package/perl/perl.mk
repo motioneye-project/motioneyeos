@@ -82,14 +82,12 @@ define PERL_CONFIGURE_CMDS
 	$(SED) 's/UNKNOWN-/Buildroot $(BR2_VERSION_FULL) /' $(@D)/patchlevel.h
 endef
 
-# perlcross's miniperl_top forgets base, which is required by mktables.
-# Instead of patching, it's easier to just set PERL5LIB
 define PERL_BUILD_CMDS
-	PERL5LIB=$(@D)/dist/base/lib $(MAKE1) -C $(@D) all
+	$(MAKE1) -C $(@D) all
 endef
 
 define PERL_INSTALL_STAGING_CMDS
-	PERL5LIB=$(@D)/dist/base/lib $(MAKE1) -C $(@D) DESTDIR="$(STAGING_DIR)" install.perl
+	$(MAKE1) -C $(@D) DESTDIR="$(STAGING_DIR)" install.perl
 endef
 
 PERL_INSTALL_TARGET_GOALS = install.perl
@@ -99,7 +97,7 @@ endif
 
 
 define PERL_INSTALL_TARGET_CMDS
-	PERL5LIB=$(@D)/dist/base/lib $(MAKE1) -C $(@D) DESTDIR="$(TARGET_DIR)" $(PERL_INSTALL_TARGET_GOALS)
+	$(MAKE1) -C $(@D) DESTDIR="$(TARGET_DIR)" $(PERL_INSTALL_TARGET_GOALS)
 endef
 
 $(eval $(generic-package))
