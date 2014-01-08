@@ -13,8 +13,14 @@ MINIDLNA_DEPENDENCIES = \
 	ffmpeg flac libvorbis libogg libid3tag libexif libjpeg sqlite \
 	host-xutil_makedepend
 
-# static build is broken w.r.t libgcc_s
+ifeq ($(BR2_PREFER_STATIC_LIB),y)
+# the configure script / Makefile forgets to link with some of the dependent
+# libraries breaking static linking, so help it along
+MINIDLNA_CONF_ENV = \
+	LIBS='-lavformat -lavcodec -lavutil -logg -lz -lpthread -lm'
+else
 MINIDLNA_CONF_OPT = \
 	--disable-static
+endif
 
 $(eval $(autotools-package))
