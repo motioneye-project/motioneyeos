@@ -84,6 +84,24 @@ config BR2_PACKAGE_PYTHON_UNICODEDATA
 	help
 	  Unicode character database (used by stringprep module) (large).
 
+if BR2_PACKAGE_PYTHON_UNICODEDATA
+
+choice
+	prompt "Python unicode database format"
+	default BR2_PACKAGE_PYTHON_UCS2
+	help
+	  Select Python unicode database format for target
+
+config BR2_PACKAGE_PYTHON_UCS2
+	bool "Universal Character Set 2-byte (UCS2)"
+
+config BR2_PACKAGE_PYTHON_UCS4
+	bool "Universal Character Set 4-byte (UCS4)"
+
+endchoice
+
+endif
+
 config BR2_PACKAGE_PYTHON_SQLITE
 	bool "sqlite module"
 	select BR2_PACKAGE_SQLITE
