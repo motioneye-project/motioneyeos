@@ -1,0 +1,14 @@
+config BR2_PACKAGE_PYTHON_POSIX_IPC
+	bool "python-posix-ipc"
+	depends on BR2_PACKAGE_PYTHON
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	help
+	  The Python extension module posix_ipc gives access to POSIX
+	  inter-process semaphores, shared memory and message queues
+	  on systems that support the POSIX Realtime Extensions
+	  a.k.a. POSIX 1003.1b-1993.
+
+	  http://semanchuk.com/philip/posix_ipc/
+
+comment "python-posix-ipc needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
