@@ -18,6 +18,12 @@ GREP_CONF_ENV += LIBS=-liconv
 GREP_DEPENDENCIES += libiconv
 endif
 
+# link with pcre if enabled
+ifeq ($(BR2_PACKAGE_PCRE),y)
+GREP_CONF_OPT += --enable-perl-regexp
+GREP_DEPENDENCIES += pcre
+endif
+
 # Full grep preferred over busybox grep
 ifeq ($(BR2_PACKAGE_BUSYBOX),y)
 GREP_DEPENDENCIES += busybox
