@@ -1,0 +1,30 @@
+configure: do not check for google.protobuf
+
+The check for google.protobuf is inherently flawed for cross-compilation,
+as it uses the host Python to check for target modules.
+
+In Buildroot, our dependencies ensures that google.protobuf is present
+by the time we configure and build ola, so we can just skip the test
+altogether.
+
+We don't need to fake the result of the test: it is used nowhere; the
+test is only here to fail or succeed.
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+
+diff -durN ola-0.8.32.orig/configure.ac ola-0.8.32/configure.ac
+--- ola-0.8.32.orig/configure.ac	2013-09-29 19:46:48.000000000 +0200
++++ ola-0.8.32/configure.ac	2014-01-09 19:43:55.342044336 +0100
+@@ -530,7 +530,11 @@
+ 
+ if test "${enable_python_libs}" = "yes"; then
+  AM_PATH_PYTHON(2.6)
+- AX_PYTHON_MODULE("google.protobuf", "fatal")
++# AX_PYTHON_MODULE is inherently broken for cross-compilation
++# since it executes the host Python to check for target modules.
++# In Buildroot, we do not need to check for google.protobuf,
++# since our dependencies ensure it is available.
++# AX_PYTHON_MODULE("google.protobuf", "fatal")
+ fi
+ 
+ # Maybe build the logic sniffer tools
