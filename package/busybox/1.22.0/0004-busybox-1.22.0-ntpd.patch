@@ -1,0 +1,11 @@
+--- busybox-1.22.0/networking/ntpd.c
++++ busybox-1.22.0-ntpd/networking/ntpd.c
+@@ -1445,6 +1445,8 @@ update_local_clock(peer_t *p)
+ 
+ 		run_script("step", offset);
+ 
++		recv_time += offset;
++
+ #if USING_INITIAL_FREQ_ESTIMATION
+ 		if (G.discipline_state == STATE_NSET) {
+ 			set_new_values(STATE_FREQ, /*offset:*/ 0, recv_time);
