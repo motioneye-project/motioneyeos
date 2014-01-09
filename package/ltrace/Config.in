@@ -1,6 +1,7 @@
 config BR2_PACKAGE_LTRACE
 	bool "ltrace"
-	depends on !(BR2_avr32 || BR2_sh || BR2_sh64 || BR2_xtensa || BR2_aarch64 || BR2_arc)
+	depends on (BR2_i386 || BR2_arm || BR2_mips || BR2_mipsel \
+		|| BR2_powerpc || BR2_sparc || BR2_x86_64)
 	select BR2_PACKAGE_LIBELF
 	help
 	  Debugging program which runs a specified command until it exits.
