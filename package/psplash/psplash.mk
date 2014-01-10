@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-PSPLASH_VERSION = 0.1
-PSPLASH_SITE = http://downloads.yoctoproject.org/releases/psplash
+PSPLASH_VERSION = afd4e228c606a9998feae44a3fed4474803240b7
+PSPLASH_SITE = git://git.yoctoproject.org/psplash
 PSPLASH_LICENSE = GPLv2+
-PSPLASH_LICENSE_FILES = COPYING
+PSPLASH_AUTORECONF = YES
 
 $(eval $(autotools-package))
