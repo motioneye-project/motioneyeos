@@ -22,5 +22,5 @@ Index: b/setup.py
 +      author_email='stephen.tiedemann@googlemail.com',
 +      url='https://launchpad.net/nfcpy',
 +      packages=['nfc', 'nfc/dev', 'nfc/llcp', 'nfc/ndef',
-+                'nfc/npp', 'nfc/snep'],
++                'nfc/snep'],
 +      )
