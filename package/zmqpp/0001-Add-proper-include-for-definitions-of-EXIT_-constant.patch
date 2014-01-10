@@ -1,0 +1,30 @@
+From 9aebdc0e54a6700ea62553365026727456c4969e Mon Sep 17 00:00:00 2001
+From: Alexander Lukichev <alexander.lukichev@espotel.com>
+Date: Thu, 9 Jan 2014 12:15:31 +0200
+Subject: [PATCH] Add proper include for definitions of EXIT_* constants
+
+These constants are referenced in src/client/main.cpp but their
+definitions are pulled indirectly through other header files. For
+some toolchains they are not pulled through those headers, which
+breaks compilation.
+
+Signed-off-by: Alexander Lukichev <alexander.lukichev@gmail.com>
+---
+ src/client/main.cpp | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/client/main.cpp b/src/client/main.cpp
+index 37c30a0..3679891 100644
+--- a/src/client/main.cpp
++++ b/src/client/main.cpp
+@@ -4,6 +4,7 @@
+  */
+ 
+ #include <array>
++#include <cstdlib>
+ #include <iostream>
+ #include <tuple>
+ 
+-- 
+1.8.0.1
+
