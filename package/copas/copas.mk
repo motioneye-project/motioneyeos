@@ -4,7 +4,8 @@
 #
 ################################################################################
 
-COPAS_VERSION = 1.1.6-1
+COPAS_VERSION = 1.2.1-1
+COPAS_SUBDIR  = copas-1_2_1
 COPAS_LICENSE = MIT
 
 $(eval $(luarocks-package))
