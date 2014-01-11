@@ -4,7 +4,8 @@
 #
 ################################################################################
 
-RINGS_VERSION = 1.2.3-2
+RINGS_VERSION = 1.3.0-1
+RINGS_SUBDIR  = rings-v_1_3_0
 RINGS_LICENSE = MIT
 
 $(eval $(luarocks-package))
