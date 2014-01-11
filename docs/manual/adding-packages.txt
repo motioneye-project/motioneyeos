@@ -20,6 +20,8 @@ include::adding-packages-cmake.txt[]
 
 include::adding-packages-python.txt[]
 
+include::adding-packages-luarocks.txt[]
+
 include::adding-packages-hooks.txt[]
 
 include::adding-packages-gettext.txt[]
