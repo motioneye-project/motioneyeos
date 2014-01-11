@@ -360,8 +360,9 @@ source "package/haserl/Config.in"
 source "package/jamvm/Config.in"
 source "package/jimtcl/Config.in"
 source "package/lua/Config.in"
+source "package/luainterpreter/Config.in"
 source "package/luajit/Config.in"
-if BR2_PACKAGE_LUA || BR2_PACKAGE_LUAJIT
+if BR2_PACKAGE_HAS_LUA_INTERPRETER
 menu "Lua libraries/modules"
 source "package/cgilua/Config.in"
 source "package/copas/Config.in"

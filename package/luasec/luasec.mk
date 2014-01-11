@@ -8,7 +8,7 @@ LUASEC_VERSION = 0.4.1
 LUASEC_SITE = http://www.inf.puc-rio.br/~brunoos/luasec/download/
 LUASEC_LICENSE = MIT
 LUASEC_LICENSE_FILES = LICENSE
-LUASEC_DEPENDENCIES = lua openssl
+LUASEC_DEPENDENCIES = luainterpreter openssl
 
 define LUASEC_BUILD_CMDS
 	$(MAKE) -C $(@D) CC="$(TARGET_CC)" LD="$(TARGET_CC)" \

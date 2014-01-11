@@ -9,7 +9,7 @@ LUAPOSIX_SITE = https://github.com/luaposix/luaposix/archive
 LUAPOSIX_SOURCE = release-v$(LUAPOSIX_VERSION).tar.gz
 LUAPOSIX_LICENSE = MIT
 LUAPOSIX_LICENSE_FILES = COPYING
-LUAPOSIX_DEPENDENCIES = lua host-lua
+LUAPOSIX_DEPENDENCIES = luainterpreter host-lua
 LUAPOSIX_CONF_OPT = --libdir="/usr/lib/lua" --datarootdir="/usr/share/lua"
 
 ifeq ($(BR2_PACKAGE_NCURSES),y)

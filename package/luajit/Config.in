@@ -1,5 +1,6 @@
 config BR2_PACKAGE_LUAJIT
 	bool "luajit"
+	select BR2_PACKAGE_HAS_LUA_INTERPRETER
 	# Luajit is only available for some target architectures, and
 	# has some complexity wrt 32/64. See luajit.mk for details.
 	depends on BR2_i386 || (BR2_x86_64 && BR2_HOSTARCH='x86_64') || BR2_powerpc || BR2_arm || BR2_armeb
@@ -10,3 +11,10 @@ config BR2_PACKAGE_LUAJIT
 	  deployed as a drop-in replacement.
 
 	  http://luajit.org/
+
+if BR2_PACKAGE_LUAJIT
+
+config BR2_PACKAGE_PROVIDES_LUA_INTERPRETER
+	default "luajit"
+
+endif

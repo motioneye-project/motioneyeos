@@ -9,7 +9,7 @@ LBASE64_SITE = http://www.tecgraf.puc-rio.br/~lhf/ftp/lua/5.1
 LBASE64_SOURCE = lbase64.tar.gz
 LBASE64_LICENSE = Public domain
 LBASE64_LICENSE_FILES = README
-LBASE64_DEPENDENCIES = lua
+LBASE64_DEPENDENCIES = luainterpreter
 
 define LBASE64_BUILD_CMDS
        $(MAKE) -C $(@D) $(TARGET_CONFIGURE_OPTS) \
