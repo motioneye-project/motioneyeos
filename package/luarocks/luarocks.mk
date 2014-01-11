@@ -40,3 +40,6 @@ define HOST_LUAROCKS_INSTALL_CMDS
 endef
 
 $(eval $(host-generic-package))
+
+LUAROCKS_RUN = LUA_PATH="$(HOST_DIR)/usr/share/lua/5.1/?.lua" \
+	$(HOST_DIR)/usr/bin/lua $(HOST_DIR)/usr/bin/luarocks

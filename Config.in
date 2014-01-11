@@ -217,6 +217,14 @@ config BR2_DEBIAN_MIRROR
 
 endif
 
+config BR2_LUAROCKS_MIRROR
+	string "LuaRocks mirror"
+	default "http://luarocks.org/repositories/rocks"
+	help
+	  LuaRocks repository.
+
+	  See http://luarocks.org
+
 endmenu
 
 config BR2_JLEVEL
