@@ -27,9 +27,8 @@ define LUASQL_BUILD_CMDS
 endef
 
 define LUASQL_INSTALL_TARGET_CMDS
-	$(MAKE) -C $(@D) $(LUASQL_MAKE_FLAGS) PREFIX=/usr \
-		LUA_DIR="$(TARGET_DIR)/usr/share/lua" \
-		LUA_LIBDIR="$(TARGET_DIR)/usr/lib/lua" install
+	$(MAKE) -C $(@D) $(LUASQL_MAKE_FLAGS) \
+		PREFIX="$(TARGET_DIR)/usr" install
 endef
 
 $(eval $(generic-package))

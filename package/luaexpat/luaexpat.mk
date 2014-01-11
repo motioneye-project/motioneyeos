@@ -11,7 +11,7 @@ LUAEXPAT_LICENSE      = MIT
 
 
 LUAEXPAT_MFLAGS += LUA_VERSION_NUM=501
-LUAEXPAT_MFLAGS += LUA_INC=$(STAGING_DIR)/usr/include/lua
+LUAEXPAT_MFLAGS += LUA_INC=$(STAGING_DIR)/usr/include
 LUAEXPAT_MFLAGS += EXPAT_INC=$(STAGING_DIR)/usr/include
 LUAEXPAT_MFLAGS += LIBNAME=lxp.so
 LUAEXPAT_MFLAGS += LIB_OPTION="-shared -fPIC $(TARGET_CFLAGS)"
@@ -23,8 +23,8 @@ define LUAEXPAT_BUILD_CMDS
 endef
 
 define LUAEXPAT_INSTALL_TARGET_CMDS
-	$(INSTALL) -D $(@D)/src/lxp.so $(TARGET_DIR)/usr/lib/lua/lxp.so
-	$(INSTALL) -D -m 0644 $(@D)/src/lxp/lom.lua $(TARGET_DIR)/usr/share/lua/lxp/lom.lua
+	$(INSTALL) -D $(@D)/src/lxp.so $(TARGET_DIR)/usr/lib/lua/5.1/lxp.so
+	$(INSTALL) -D -m 0644 $(@D)/src/lxp/lom.lua $(TARGET_DIR)/usr/share/lua/5.1/lxp/lom.lua
 endef
 
 $(eval $(generic-package))

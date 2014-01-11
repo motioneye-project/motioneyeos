@@ -10,7 +10,7 @@ COPAS_LICENSE = MIT
 
 define COPAS_INSTALL_TARGET_CMDS
 	$(INSTALL) -m 0644 -D $(@D)/src/copas/copas.lua \
-		$(TARGET_DIR)/usr/share/lua/copas.lua
+		$(TARGET_DIR)/usr/share/lua/5.1/copas.lua
 endef
 
 $(eval $(generic-package))

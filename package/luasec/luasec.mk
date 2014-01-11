@@ -17,11 +17,9 @@ define LUASEC_BUILD_CMDS
 endef
 
 define LUASEC_INSTALL_TARGET_CMDS
-	mkdir -p $(TARGET_DIR)/usr/share/lua
-	mkdir -p $(TARGET_DIR)/usr/lib/lua
 	$(MAKE) -C $(@D) \
-		LUAPATH="$(TARGET_DIR)/usr/share/lua" \
-		LUACPATH="$(TARGET_DIR)/usr/lib/lua" install
+		LUAPATH="$(TARGET_DIR)/usr/share/lua/5.1" \
+		LUACPATH="$(TARGET_DIR)/usr/lib/lua/5.1" install
 endef
 
 $(eval $(generic-package))

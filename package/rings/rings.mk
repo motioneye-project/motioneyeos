@@ -14,8 +14,7 @@ define RINGS_BUILD_CMDS
 endef
 
 define RINGS_INSTALL_TARGET_CMDS
-	$(MAKE) -C $(@D) LUA_LIBDIR="$(TARGET_DIR)/usr/lib/lua" \
-		LUA_DIR="$(TARGET_DIR)/usr/share/lua" install
+	$(MAKE) -C $(@D) PREFIX="$(TARGET_DIR)/usr" install
 endef
 
 $(eval $(generic-package))

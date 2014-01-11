@@ -18,7 +18,7 @@ endef
 
 define LBASE64_INSTALL_TARGET_CMDS
        $(INSTALL) -D -m 0755 $(@D)/base64.so \
-		$(TARGET_DIR)/usr/lib/lua/base64.so
+		$(TARGET_DIR)/usr/lib/lua/5.1/base64.so
 endef
 
 $(eval $(generic-package))

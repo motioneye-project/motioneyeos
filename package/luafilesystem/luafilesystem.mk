@@ -18,7 +18,7 @@ define LUAFILESYSTEM_BUILD_CMDS
 endef
 
 define LUAFILESYSTEM_INSTALL_TARGET_CMDS
-	$(INSTALL) -D $(@D)/src/lfs.so $(TARGET_DIR)/usr/lib/lua/lfs.so
+	$(INSTALL) -D $(@D)/src/lfs.so $(TARGET_DIR)/usr/lib/lua/5.1/lfs.so
 endef
 
 $(eval $(generic-package))

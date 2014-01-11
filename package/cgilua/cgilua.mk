@@ -9,7 +9,7 @@ CGILUA_SITE = http://github.com/downloads/keplerproject/cgilua
 CGILUA_LICENSE = MIT
 
 define CGILUA_INSTALL_TARGET_CMDS
-	$(MAKE) -C $(@D) install LUA_DIR="$(TARGET_DIR)/usr/share/lua"
+	$(MAKE) PREFIX="$(TARGET_DIR)/usr" -C $(@D) install
 endef
 
 $(eval $(generic-package))

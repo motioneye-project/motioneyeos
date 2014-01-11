@@ -21,7 +21,7 @@ define LUACJSON_BUILD_CMDS
 endef
 
 define LUACJSON_INSTALL_TARGET_CMDS
-	install -D -m 0644 $(@D)/cjson.so $(TARGET_DIR)/usr/lib/lua/cjson.so
+	$(MAKE) DESTDIR="$(TARGET_DIR)" PREFIX="/usr" -C $(@D) install
 endef
 
 $(eval $(generic-package))

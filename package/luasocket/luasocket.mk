@@ -18,8 +18,8 @@ endef
 
 define LUASOCKET_INSTALL_TARGET_CMDS
 	$(MAKE) -C $(@D) -f makefile \
-		INSTALL_TOP_SHARE="$(TARGET_DIR)/usr/share/lua" \
-		INSTALL_TOP_LIB="$(TARGET_DIR)/usr/lib/lua" install
+		INSTALL_TOP_SHARE="$(TARGET_DIR)/usr/share/lua/5.1" \
+		INSTALL_TOP_LIB="$(TARGET_DIR)/usr/lib/lua/5.1" install
 endef
 
 $(eval $(generic-package))
