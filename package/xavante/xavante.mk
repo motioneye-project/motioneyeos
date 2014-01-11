@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-XAVANTE_VERSION = 2.2.0-1
+XAVANTE_VERSION = 2.3.0-1
 XAVANTE_LICENSE = MIT
 
 $(eval $(luarocks-package))
