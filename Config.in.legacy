@@ -146,6 +146,13 @@ config BR2_PACKAGE_NETKITTELNET
 	  been deprecated since 2012.11. 'busybox' provides a telnet
 	  client and should be used instead.
 
+config BR2_PACKAGE_LUACJSON
+	bool "luacjson has been replaced by lua-cjson"
+	select BR2_PACKAGE_LUA_CJSON
+	select BR2_LEGACY
+	help
+	  The option has been renamed BR2_PACKAGE_LUA_CJSON.
+
 ###############################################################################
 comment "Legacy options removed in 2013.11"
 
