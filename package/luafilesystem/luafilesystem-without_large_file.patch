@@ -1,7 +1,7 @@
-diff --git a/src/lfs.c b/src/lfs.c
-index 85f01e3..ed49f50 100644
---- a/src/lfs.c
-+++ b/src/lfs.c
+Index: b/luafilesystem-1.6.2/src/lfs.c
+===================================================================
+--- a/luafilesystem-1.6.2/src/lfs.c
++++ b/luafilesystem-1.6.2/src/lfs.c
 @@ -22,13 +22,13 @@
  
  #ifndef _WIN32

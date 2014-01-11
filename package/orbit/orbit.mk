@@ -4,16 +4,10 @@
 #
 ################################################################################
 
-ORBIT_VERSION = 2.2.0
-ORBIT_SITE = http://github.com/downloads/keplerproject/orbit
+ORBIT_VERSION_UPSTREAM = 2.2.0
+ORBIT_VERSION = $(ORBIT_VERSION_UPSTREAM)-2
+ORBIT_SUBDIR  = orbit-$(ORBIT_VERSION_UPSTREAM)
 ORBIT_LICENSE = MIT
-ORBIT_LICENSE_FILES = doc/us/license.md
+ORBIT_LICENSE_FILES = $(ORBIT_SUBDIR)/doc/us/license.md
 
-define ORBIT_INSTALL_TARGET_CMDS
-	$(MAKE) -C $(@D) \
-		LUA_DIR=$(TARGET_DIR)/usr/share/lua/5.1/ \
-		BIN_DIR=$(TARGET_DIR)/usr/bin \
-		install
-endef
-
-$(eval $(generic-package))
+$(eval $(luarocks-package))

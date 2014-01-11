@@ -4,21 +4,9 @@
 #
 ################################################################################
 
-LBASE64_VERSION = 20100323
-LBASE64_SITE = http://www.tecgraf.puc-rio.br/~lhf/ftp/lua/5.1
-LBASE64_SOURCE = lbase64.tar.gz
+LBASE64_VERSION = 20120820-1
+LBASE64_SUBDIR  = base64
 LBASE64_LICENSE = Public domain
-LBASE64_LICENSE_FILES = README
-LBASE64_DEPENDENCIES = luainterpreter
+LBASE64_LICENSE_FILES = $(LBASE64_SUBDIR)/README
 
-define LBASE64_BUILD_CMDS
-       $(MAKE) -C $(@D) $(TARGET_CONFIGURE_OPTS) \
-		CFLAGS="$(TARGET_CFLAGS) -fPIC" so
-endef
-
-define LBASE64_INSTALL_TARGET_CMDS
-       $(INSTALL) -D -m 0755 $(@D)/base64.so \
-		$(TARGET_DIR)/usr/lib/lua/5.1/base64.so
-endef
-
-$(eval $(generic-package))
+$(eval $(luarocks-package))
