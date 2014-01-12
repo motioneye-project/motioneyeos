@@ -1,6 +1,7 @@
 config BR2_PACKAGE_LTRIS
 	bool "LTris"
 	select BR2_PACKAGE_SDL
+	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE
 	help
 	  LTris as a tetris clone, using SDL. It optionally requires
 	  SDL_mixer for audio support.  A display with minimum 640x480

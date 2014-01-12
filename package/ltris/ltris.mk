@@ -21,4 +21,9 @@ else
 LTRIS_CONF_OPT += --disable-audio
 endif
 
+ifeq ($(BR2_PACKAGE_GETTEXT),y)
+LTRIS_DEPENDENCIES += gettext
+LTRIS_CONF_ENV += LIBS=-lintl
+endif
+
 $(eval $(autotools-package))
