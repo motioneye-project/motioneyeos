@@ -4,6 +4,8 @@ menuconfig BR2_PACKAGE_MPD
 	depends on BR2_USE_WCHAR # libglib2
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libglib2
 	depends on BR2_USE_MMU # libglib2
+	depends on !(BR2_avr32 || BR2_sparc) # gcc too old
+	depends on !BR2_UCLIBC_VERSION_0_9_32 # lacks signalfd
 	select BR2_PACKAGE_LIBGLIB2
 	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
 	select BR2_PACKAGE_MPD_TREMOR if !(BR2_PACKAGE_MPD_MAD || BR2_PACKAGE_MPD_MPG123 || BR2_PACKAGE_MPD_VORBIS || BR2_PACKAGE_MPD_WAVPACK || BR2_PACKAGE_MPD_FLAC || BR2_PACKAGE_MPD_MUSEPACK || BR2_PACKAGE_MPD_FFMPEG)
@@ -141,6 +143,19 @@ config BR2_PACKAGE_MPD_MUSEPACK
 	help
 	  Enable musepack input support.
 	  Select this if you want to play back MPC files.
+
+config BR2_PACKAGE_MPD_OPUS
+	bool "opus"
+	select BR2_PACKAGE_OPUS
+	help
+	  Enable opus input support.
+	  Select this if you want to play back OPUS encoded files.
+
+config BR2_PACKAGE_MPD_SOUNDCLOUD
+	bool "soundcloud"
+	select BR2_PACKAGE_YAJL
+	help
+	  Enable soundcloud.com playlist support.
 
 config BR2_PACKAGE_MPD_SQLITE
 	bool "sqlite"

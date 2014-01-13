@@ -4,12 +4,12 @@
 #
 ################################################################################
 
-MPD_VERSION_MAJOR = 0.17
-MPD_VERSION = $(MPD_VERSION_MAJOR).6
+MPD_VERSION_MAJOR = 0.18
+MPD_VERSION = $(MPD_VERSION_MAJOR).7
 MPD_SOURCE = mpd-$(MPD_VERSION).tar.xz
 MPD_SITE = http://www.musicpd.org/download/mpd/$(MPD_VERSION_MAJOR)
 MPD_DEPENDENCIES = host-pkgconf libglib2
-MPD_LICENSE = GPLv2
+MPD_LICENSE = GPLv2+
 MPD_LICENSE_FILES = COPYING
 
 # Some options need an explicit --disable or --enable
@@ -82,6 +82,12 @@ else
 MPD_CONF_OPT += --disable-sndfile
 endif
 
+ifeq ($(BR2_PACKAGE_MPD_OPUS),y)
+MPD_DEPENDENCIES += opus
+else
+MPD_CONF_OPT += --disable-opus
+endif
+
 ifeq ($(BR2_PACKAGE_MPD_VORBIS),y)
 MPD_DEPENDENCIES += libvorbis
 else
@@ -98,6 +104,12 @@ ifeq ($(BR2_PACKAGE_MPD_MUSEPACK),y)
 MPD_DEPENDENCIES += musepack
 else
 MPD_CONF_OPT += --disable-mpc
+endif
+
+ifeq ($(BR2_PACKAGE_MPD_SOUNDCLOUD),y)
+MPD_DEPENDENCIES += yajl
+else
+MPD_CONF_OPT += --disable-soundcloud
 endif
 
 ifeq ($(BR2_PACKAGE_MPD_SQLITE),y)
