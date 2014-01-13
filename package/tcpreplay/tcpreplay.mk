@@ -4,11 +4,14 @@
 #
 ################################################################################
 
-TCPREPLAY_VERSION = 3.4.3
+TCPREPLAY_VERSION = 4.0.0
 TCPREPLAY_SITE = http://downloads.sourceforge.net/project/tcpreplay/tcpreplay/$(TCPREPLAY_VERSION)
-TCPREPLAY_CONF_ENV = tr_cv_libpcap_version=">= 0.7.0"
+TCPREPLAY_LICENSE = GPLv3
+TCPREPLAY_LICENSE_FILES = docs/LICENSE
+TCPREPLAY_CONF_ENV = \
+	tr_cv_libpcap_version=">= 0.7.0" \
+	ac_cv_have_bpf=no
 TCPREPLAY_CONF_OPT = --with-libpcap=$(STAGING_DIR)/usr
-TCPREPLAY_AUTORECONF = YES
 TCPREPLAY_DEPENDENCIES = libpcap
 
 # libpcap may depend on symbols in libusb as well
