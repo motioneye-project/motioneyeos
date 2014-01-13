@@ -1,9 +1,10 @@
 config BR2_PACKAGE_RT_TESTS
 	bool "rt-tests"
 	depends on BR2_TOOLCHAIN_HAS_THREADS
-	# Too old uClibc, does not provide priority-inheritance
-	# mutexes
-	depends on !BR2_avr32
+	# priority-inheritance mutex needs NPTL
+	depends on !BR2_PTHREADS && !BR2_PTHREADS_OLD
+	# no NPTL for these archs
+	depends on !BR2_avr32 && !BR2_xtensa && !BR2_arc
 	help
 	  Set of utilities for testing the real-time behaviour of a
 	  Linux system.
@@ -23,5 +24,6 @@ config BR2_PACKAGE_RT_TESTS
 	  http://rt.wiki.kernel.org
 
 comment "rt-tests needs a toolchain w/ threads"
-	depends on !BR2_avr32
+	depends on !BR2_PTHREADS && !BR2_PTHREADS_OLD
+	depends on !BR2_avr32 && !BR2_xtensa && !BR2_arc
 	depends on !BR2_TOOLCHAIN_HAS_THREADS
