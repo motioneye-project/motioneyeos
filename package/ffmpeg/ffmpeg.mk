@@ -281,6 +281,32 @@ ifeq ($(BR2_ARM_CPU_HAS_NEON),y)
 FFMPEG_CONF_OPT += --enable-neon
 endif
 
+ifeq ($(BR2_MIPS_SOFT_FLOAT),y)
+FFMPEG_CONF_OPT += \
+	--disable-mipsfpu
+else
+FFMPEG_CONF_OPT += \
+	--enable-mipsfpu
+endif
+
+ifeq ($(BR2_mips_32r2),y)
+FFMPEG_CONF_OPT += \
+	--enable-mips32r2
+else
+FFMPEG_CONF_OPT += \
+	--disable-mips32r2
+endif
+
+ifeq ($(BR2_mips_64r2),y)
+FFMPEG_CONF_OPT += \
+	--enable-mipsdspr1 \
+	--enable-mipsdspr2
+else
+FFMPEG_CONF_OPT += \
+	--disable-mipsdspr1 \
+	--disable-mipsdspr2
+endif
+
 # Set powerpc altivec appropriately
 ifeq ($(BR2_powerpc),y)
 ifeq ($(BR2_powerpc_7400)$(BR2_powerpc_7450)$(BR2_powerpc_970),y)
