@@ -9,6 +9,7 @@ VLC_SITE = http://download.videolan.org/pub/videolan/vlc/$(VLC_VERSION)
 VLC_SOURCE = vlc-$(VLC_VERSION).tar.xz
 VLC_LICENSE = GPLv2+ LGPLv2.1+
 VLC_LICENSE_FILES = COPYING COPYING.LIB
+VLC_DEPENDENCIES = host-pkgconf
 
 VLC_CONF_OPT += \
 	--disable-a52 \
