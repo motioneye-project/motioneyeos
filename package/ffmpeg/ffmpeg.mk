@@ -214,7 +214,7 @@ endif
 
 ifeq ($(BR2_X86_CPU_HAS_MMX),y)
 FFMPEG_CONF_OPT += --enable-yasm
-FFMPEG_DEPENDENCIES += yasm
+FFMPEG_DEPENDENCIES += host-yasm
 else
 FFMPEG_CONF_OPT += --disable-yasm
 FFMPEG_CONF_OPT += --disable-mmx
