@@ -198,8 +198,13 @@ FFMPEG_CONF_OPT += --disable-bzlib
 endif
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
+# openssl isn't license compatible with GPL
+ifeq ($(BR2_PACKAGE_FFMPEG_GPL)x$(BR2_PACKAGE_FFMPEG_NONFREE),yx)
+FFMPEG_CONF_OPT += --disable-openssl
+else
 FFMPEG_CONF_OPT += --enable-openssl
 FFMPEG_DEPENDENCIES += openssl
+endif
 else
 FFMPEG_CONF_OPT += --disable-openssl
 endif
