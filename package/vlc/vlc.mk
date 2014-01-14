@@ -139,7 +139,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_LIBTHEORA),y)
 VLC_CONF_OPT += --enable-theora
-VLC_DEPENDENCIES += theora
+VLC_DEPENDENCIES += libtheora
 else
 VLC_CONF_OPT += --disable-theora
 endif
