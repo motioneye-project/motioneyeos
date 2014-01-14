@@ -2,7 +2,6 @@ config BR2_PACKAGE_PROTOBUF_C
 	bool "protobuf-c"
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_TOOLCHAIN_HAS_THREADS # protobuf
-	select BR2_PACKAGE_PROTOBUF
 	help
 	  Code generator and runtime libraries to use Protocol Buffers
 	  from pure C (not C++).
