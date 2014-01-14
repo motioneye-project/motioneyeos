@@ -18,6 +18,7 @@ OLA_AUTORECONF = YES
 OLA_DEPENDENCIES = protobuf util-linux host-bison host-flex
 
 OLA_CONF_OPT = \
+	ac_cv_have_pymod_google_protobuf=yes \
 	--disable-gcov \
 	--disable-tcmalloc \
 	--disable-unittests \

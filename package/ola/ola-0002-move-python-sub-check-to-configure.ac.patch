@@ -1,0 +1,48 @@
+commit 673a7602a6bf7a6aa8a8461ebd9362d59f6e21df
+Author: Yann E. MORIN <yann.morin.1998@free.fr>
+Date:   Tue Jan 14 21:37:51 2014 +0100
+
+    configure: move python sub-check to configure.ac
+    
+    We do not want to re-test the python name for each Python module
+    we want to check for.
+    
+    Even if we only check for one Python module right now, this is
+    good practice overall.
+    
+    Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+
+---
+Sent upstream, awaiting for response...
+
+diff --git a/config/ax_python_module.m4 b/config/ax_python_module.m4
+index bd70a06..96dd1ab 100644
+--- a/config/ax_python_module.m4
++++ b/config/ax_python_module.m4
+@@ -25,11 +25,6 @@
+ 
+ AU_ALIAS([AC_PYTHON_MODULE], [AX_PYTHON_MODULE])
+ AC_DEFUN([AX_PYTHON_MODULE],[
+-    if test -z $PYTHON;
+-    then
+-        PYTHON="python"
+-    fi
+-    PYTHON_NAME=`basename $PYTHON`
+     AC_MSG_CHECKING($PYTHON_NAME module: $1)
+ 	$PYTHON -c "import $1" 2>/dev/null
+ 	if test $? -eq 0;
+diff --git a/configure.ac b/configure.ac
+index 1efedf1..5f6f604 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -530,6 +530,10 @@ AM_CONDITIONAL(INSTALL_RDM_TESTS, test "${enable_rdm_tests}" = "yes")
+ 
+ if test "${enable_python_libs}" = "yes"; then
+  AM_PATH_PYTHON(2.6)
++ if test -z $PYTHON; then
++  PYTHON="python"
++ fi
++ PYTHON_NAME=`basename $PYTHON`
+  AX_PYTHON_MODULE("google.protobuf", "fatal")
+ fi
+ 
