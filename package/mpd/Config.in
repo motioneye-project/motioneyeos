@@ -4,7 +4,9 @@ menuconfig BR2_PACKAGE_MPD
 	depends on BR2_USE_WCHAR # libglib2
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libglib2
 	depends on BR2_USE_MMU # libglib2
-	depends on !(BR2_avr32 || BR2_sparc) # gcc too old
+	# avr32, sparc & CS powerpc gcc are too old
+	depends on !(BR2_avr32 || BR2_sparc)
+	depends on !(BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_POWERPC201103 || BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_POWERPC201009)
 	depends on !BR2_UCLIBC_VERSION_0_9_32 # lacks signalfd
 	select BR2_PACKAGE_LIBGLIB2
 	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
@@ -200,5 +202,6 @@ endif
 
 comment "mpd needs a toolchain w/ C++, threads, wchar"
 	depends on BR2_USE_MMU
+	depends on !(BR2_avr32 || BR2_sparc)
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR || \
 		!BR2_TOOLCHAIN_HAS_THREADS
