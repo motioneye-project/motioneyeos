@@ -100,10 +100,9 @@ files:
 For example:
 
  $ cp output/images/rpi-firmware/* /mnt/mountpointboot
- $ cp output/images/zImage /mnt/mountpointboot/zImage.img
+ $ cp output/images/zImage /mnt/mountpointboot
 
-Note: The default name is kernel.img.
-Actually, the name is zImage and it's define in the file config.txt like:
+Note: The kernel image file name is defined in config.txt like this:
 kernel=zImage
 
 If you use a volatile rootfs, Skip to "Finish", below. For a persistent
