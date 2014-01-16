@@ -93,6 +93,15 @@ config BR2_PACKAGE_LINUX_FIRMWARE_TI_WL128X
 
 endmenu
 
+menu "Ethernet firmware"
+
+config BR2_PACKAGE_LINUX_FIRMWARE_BNX2X
+	bool "Broadcom NetXtremeII"
+	help
+	  Firmware files for Broadcom NetXtreme 10Gb ethernet cards (bnx2x)
+
+endmenu
+
 menu "DVB firmware"
 
 config BR2_PACKAGE_LINUX_FIRMWARE_DIB0700

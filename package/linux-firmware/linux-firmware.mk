@@ -135,6 +135,15 @@ LINUX_FIRMWARE_FILES += iwlwifi-5000-5.ucode
 LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENCE.iwlwifi_firmware
 endif
 
+ifeq ($(BR2_PACKAGE_LINUX_FIRMWARE_BNX2X),y)
+LINUX_FIRMWARE_FILES += \
+	bnx2x/bnx2x-e1-7.8.17.0.fw \
+	bnx2x/bnx2x-e1h-7.8.17.0.fw \
+	bnx2x/bnx2x-e2-7.8.17.0.fw
+# No license file; the license is in the file WHENCE
+# which is installed unconditionally
+endif
+
 ifeq ($(BR2_PACKAGE_LINUX_FIRMWARE_XC5000),y)
 LINUX_FIRMWARE_FILES += dvb-fe-xc5000-1.6.114.fw
 LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENCE.xc5000
