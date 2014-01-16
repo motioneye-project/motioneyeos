@@ -1,5 +1,6 @@
 comment "tvheadend needs a toolchain w/ largefile, IPv6, threads"
-	depends on !BR2_avr32
+	depends on !BR2_avr32 && !BR2_xtensa && !BR2_arc
+	depends on !BR2_PTHREADS && !BR2_PTHREADS_OLD
 	depends on !BR2_LARGEFILE || !BR2_INET_IPV6 || !BR2_TOOLCHAIN_HAS_THREADS
 
 config BR2_PACKAGE_TVHEADEND
@@ -12,6 +13,10 @@ config BR2_PACKAGE_TVHEADEND
 	# context of Buildroot, the only really problematic
 	# architecture is avr32, which uses gcc 4.2.
 	depends on !BR2_avr32
+	# clock_nanosleep needs NPTL
+	depends on !BR2_PTHREADS && !BR2_PTHREADS_OLD
+	# no NPTL for these archs
+	depends on !BR2_xtensa && !BR2_arc
 	select BR2_PACKAGE_DVB_APPS
 	select BR2_PACKAGE_OPENSSL
 	help
