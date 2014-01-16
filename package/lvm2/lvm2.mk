@@ -11,17 +11,6 @@ LVM2_INSTALL_STAGING = YES
 LVM2_LICENSE = GPLv2 LGPLv2.1
 LVM2_LICENSE_FILES = COPYING COPYING.LIB
 
-LVM2_BINS = \
-	dmsetup fsadm lvm lvmconf lvmdump vgimportclone \
-	lvchange lvconvert lvcreate lvdisplay lvextend 	\
-	lvmchange lvmdiskscan lvmsadc lvmsar lvreduce  	\
-	lvremove lvrename lvresize lvs lvscan pvchange 	\
-	pvck pvcreate pvdisplay pvmove pvremove 	\
-	pvresize pvs pvscan vgcfgbackup vgcfgrestore 	\
-	vgchange vgck vgconvert vgcreate vgdisplay 	\
-	vgexport vgextend vgimport vgmerge vgmknodes 	\
-	vgreduce vgremove vgrename vgs vgscan vgsplit
-
 # Make sure that binaries and libraries are installed with write
 # permissions for the owner.
 LVM2_CONF_OPT += --enable-write_install --enable-pkgconfig
