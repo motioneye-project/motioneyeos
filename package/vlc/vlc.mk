@@ -14,7 +14,6 @@ VLC_DEPENDENCIES = host-pkgconf
 VLC_CONF_OPT += \
 	--disable-a52 \
 	--disable-shout \
-	--disable-mod \
 	--disable-twolame \
 	--disable-dca \
 	--disable-dirac \
@@ -114,6 +113,13 @@ VLC_CONF_OPT += --enable-mad
 VLC_DEPENDENCIES += libmad
 else
 VLC_CONF_OPT += --disable-mad
+endif
+
+ifeq ($(BR2_PACKAGE_LIBMODPLUG),y)
+VLC_CONF_OPT += --enable-mod
+VLC_DEPENDENCIES += libmodplug
+else
+VLC_CONF_OPT += --disable-mod
 endif
 
 ifeq ($(BR2_PACKAGE_LIBMPEG2),y)
