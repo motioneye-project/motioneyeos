@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-MPC_VERSION = 1.0.1
+MPC_VERSION = 1.0.2
 MPC_SITE = $(BR2_GNU_MIRROR)/mpc
 MPC_LICENSE = LGPLv3+
 MPC_LICENSE_FILES = COPYING.LESSER
