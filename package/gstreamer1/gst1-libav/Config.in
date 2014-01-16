@@ -1,0 +1,10 @@
+config BR2_PACKAGE_GST1_LIBAV
+	bool "gst1-libav"
+	select BR2_PACKAGE_GST1_PLUGINS_BASE
+	help
+	  GStreamer plugin (formerly gst-ffmpeg).
+
+	  This package contains GStreamer plugins based on
+	  the libav project.
+
+	  http://gstreamer.freedesktop.org/
