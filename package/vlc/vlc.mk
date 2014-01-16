@@ -30,7 +30,6 @@ VLC_CONF_OPT += \
 	--disable-goom \
 	--disable-projectm \
 	--disable-vsxu \
-	--disable-udev \
 	--disable-mtp
 
 ifeq ($(BR2_PACKAGE_ALSA_LIB),y)
@@ -232,6 +231,13 @@ VLC_CONF_OPT += --enable-tremor
 VLC_DEPENDENCIES += tremor
 else
 VLC_CONF_OPT += --disable-tremor
+endif
+
+ifeq ($(BR2_PACKAGE_UDEV),y)
+VLC_CONF_OPT += --enable-udev
+VLC_DEPENDENCIES += udev
+else
+VLC_CONF_OPT += --disable-udev
 endif
 
 ifeq ($(BR2_PACKAGE_XLIB_LIBX11),y)
