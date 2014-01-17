@@ -1,0 +1,14 @@
+config BR2_PACKAGE_LJSYSCALL
+	bool "ljsyscall"
+	# ljsyscall is specifically for LuaJIT, not Lua.
+	depends on BR2_PACKAGE_LUAJIT
+	# ljsyscall is only available for some target architectures
+	depends on BR2_i386 || BR2_x86_64 || BR2_powerpc || BR2_arm || BR2_armeb
+	help
+	  An FFI implementation of the Linux and NetBSD kernel ABIs for LuaJIT.
+
+	  http://github.com/justincormack/ljsyscall
+
+comment "ljsyscall needs LuaJIT"
+	depends on !BR2_PACKAGE_LUAJIT && (BR2_i386 || BR2_x86_64 || BR2_powerpc || BR2_arm || BR2_armeb)
+
