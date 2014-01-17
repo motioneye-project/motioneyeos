@@ -12,7 +12,7 @@ LUAROCKS_LICENSE_FILES = COPYING
 HOST_LUAROCKS_DEPENDENCIES = host-lua luainterpreter
 
 LUAROCKS_CONFIG_DIR  = $(HOST_DIR)/usr/etc/luarocks
-LUAROCKS_CONFIG_FILE = $(LUAROCKS_CONFIG_DIR)/config-5.1.lua
+LUAROCKS_CONFIG_FILE = $(LUAROCKS_CONFIG_DIR)/config-$(LUAINTERPRETER_ABIVER).lua
 
 define HOST_LUAROCKS_CONFIGURE_CMDS
 	cd $(@D) && ./configure \
@@ -41,5 +41,5 @@ endef
 
 $(eval $(host-generic-package))
 
-LUAROCKS_RUN = LUA_PATH="$(HOST_DIR)/usr/share/lua/5.1/?.lua" \
+LUAROCKS_RUN = LUA_PATH="$(HOST_DIR)/usr/share/lua/$(LUAINTERPRETER_ABIVER)/?.lua" \
 	$(HOST_DIR)/usr/bin/lua $(HOST_DIR)/usr/bin/luarocks

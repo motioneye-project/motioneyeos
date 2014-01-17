@@ -3,8 +3,12 @@ config BR2_PACKAGE_LUASEC
 	select BR2_PACKAGE_OPENSSL
 	select BR2_PACKAGE_LUASOCKET
 	depends on BR2_PACKAGE_HAS_LUA_INTERPRETER
+	depends on !BR2_PACKAGE_LUA_5_2
 	help
 	  LuaSec is a binding for OpenSSL library to provide TLS/SSL
 	  communication.
 
 	  http://www.inf.puc-rio.br/~brunoos/luasec/
+
+comment "luasec needs a Lua 5.1 interpreter"
+	depends on BR2_PACKAGE_LUA_5_2

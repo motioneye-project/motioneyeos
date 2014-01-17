@@ -11,7 +11,7 @@ LUAEXPATUTILS_DEPENDENCIES = luaexpat
 
 define LUAEXPATUTILS_INSTALL_TARGET_CMDS
 	$(INSTALL) -m 0644 -D $(@D)/lua/doc.lua \
-		$(TARGET_DIR)/usr/share/lua/5.1/lxp/doc.lua
+		$(TARGET_DIR)/usr/share/lua/$(LUAINTERPRETER_ABIVER)/lxp/doc.lua
 endef
 
 $(eval $(generic-package))
