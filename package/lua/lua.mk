@@ -4,7 +4,11 @@
 #
 ################################################################################
 
+ifeq ($(BR2_PACKAGE_LUA_5_2),y)
+LUA_VERSION = 5.2.3
+else
 LUA_VERSION = 5.1.5
+endif
 LUA_SITE = http://www.lua.org/ftp
 LUA_INSTALL_STAGING = YES
 LUA_LICENSE = MIT
@@ -12,6 +16,13 @@ LUA_LICENSE_FILES = COPYRIGHT
 
 LUA_CFLAGS = -Wall -fPIC
 LUA_MYLIBS += -ldl
+
+ifeq ($(BR2_PACKAGE_LUA_5_2),y)
+LUA_CFLAGS += -DLUA_COMPAT_ALL
+ifneq ($(BR2_LARGEFILE),y)
+LUA_CFLAGS += -D_FILE_OFFSET_BITS=32
+endif
+endif
 
 ifeq ($(BR2_PACKAGE_LUA_INTERPRETER_READLINE),y)
 	LUA_DEPENDENCIES = readline ncurses
@@ -32,6 +43,10 @@ endif
 HOST_LUA_DEPENDENCIES =
 HOST_LUA_CFLAGS = -Wall -fPIC -DLUA_USE_DLOPEN -DLUA_USE_POSIX
 HOST_LUA_MYLIBS = -ldl
+
+ifeq ($(BR2_PACKAGE_LUA_5_2),y)
+HOST_LUA_CFLAGS += -DLUA_COMPAT_ALL
+endif
 
 define LUA_BUILD_CMDS
 	$(MAKE) \
@@ -70,7 +85,8 @@ define LUA_INSTALL_TARGET_CMDS
 	$(INSTALL) -m 0755 -D $(@D)/src/liblua.so.$(LUA_VERSION) \
 		$(TARGET_DIR)/usr/lib/liblua.so.$(LUA_VERSION)
 	ln -sf liblua.so.$(LUA_VERSION) $(TARGET_DIR)/usr/lib/liblua.so
-	$(INSTALL) -m 0644 -D $(@D)/src/liblua.a $(TARGET_DIR)/usr/lib/liblua.a
+	mkdir -p $(TARGET_DIR)/usr/lib/lua/$(LUAINTERPRETER_ABIVER)
+	mkdir -p $(TARGET_DIR)/usr/share/lua/$(LUAINTERPRETER_ABIVER)
 endef
 
 define HOST_LUA_INSTALL_CMDS

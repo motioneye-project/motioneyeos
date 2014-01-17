@@ -12,6 +12,24 @@ config BR2_PACKAGE_PROVIDES_LUA_INTERPRETER
 	default "lua"
 
 choice
+	prompt "Lua Version"
+	default BR2_PACKAGE_LUA_5_1
+	help
+	  Select the version of Lua API/ABI you wish to use.
+
+	config BR2_PACKAGE_LUA_5_1
+		bool "Lua 5.1.x"
+
+	config BR2_PACKAGE_LUA_5_2
+		bool "Lua 5.2.x"
+
+endchoice
+
+config BR2_PACKAGE_LUAINTERPRETER_ABI_VERSION
+	default "5.1"	if BR2_PACKAGE_LUA_5_1
+	default "5.2"	if BR2_PACKAGE_LUA_5_2
+
+choice
 	prompt "Lua Interpreter command-line editing"
 	default BR2_PACKAGE_LUA_INTERPRETER_EDITING_NONE
 
