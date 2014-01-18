@@ -19,12 +19,6 @@ TRANSMISSION_CONF_OPT = \
 	--disable-libnotify \
 	--enable-lightweight
 
-define TRANSMISSION_INIT_SCRIPT_INSTALL
-	[ -f $(TARGET_DIR)/etc/init.d/S92transmission ] || \
-		$(INSTALL) -m 0755 -D package/transmission/S92transmission \
-			$(TARGET_DIR)/etc/init.d/S92transmission
-endef
-
 ifeq ($(BR2_PACKAGE_TRANSMISSION_UTP),y)
 	TRANSMISSION_CONF_OPT += --enable-utp
 else
@@ -39,7 +33,13 @@ endif
 
 ifeq ($(BR2_PACKAGE_TRANSMISSION_DAEMON),y)
 	TRANSMISSION_CONF_OPT += --enable-daemon
-	TRANSMISSION_POST_INSTALL_TARGET_HOOKS += TRANSMISSION_INIT_SCRIPT_INSTALL
+
+define TRANSMISSION_INSTALL_INIT_SYSV
+	[ -f $(TARGET_DIR)/etc/init.d/S92transmission ] || \
+		$(INSTALL) -m 0755 -D package/transmission/S92transmission \
+			$(TARGET_DIR)/etc/init.d/S92transmission
+endef
+
 else
 	TRANSMISSION_CONF_OPT += --disable-daemon
 endif
