@@ -10,6 +10,8 @@ config BR2_PACKAGE_TRANSMISSION
 	help
 	  Transmission is a cross-platform BitTorrent client.
 
+	  http://www.transmissionbt.com/
+
 if BR2_PACKAGE_TRANSMISSION
 
 config BR2_PACKAGE_TRANSMISSION_UTP
