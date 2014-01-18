@@ -1,11 +1,8 @@
 config BR2_PACKAGE_URG
 	bool "urg"
 	depends on BR2_INSTALL_LIBSTDCPP
-	select BR2_PACKAGE_SDL
-	select BR2_PACKAGE_SDL_NET
 	help
 	  Library to control Hokuyo's URG series sensors.
-	  Requires SDL & SDL_net.
 
 	  http://www.hokuyo-aut.jp/02sensor/07scanner/download/urg_programs_en/
 
