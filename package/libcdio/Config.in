@@ -1,0 +1,11 @@
+config BR2_PACKAGE_LIBCDIO
+	bool "libcdio"
+	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
+	depends on BR2_INSTALL_LIBSTDCPP
+	help
+	  The GNU Compact Disc Input and Control library.
+
+	  http://www.gnu.org/software/libcdio/
+
+comment "libcdio needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP
