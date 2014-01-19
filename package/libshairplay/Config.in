@@ -1,0 +1,12 @@
+config BR2_PACKAGE_LIBSHAIRPLAY
+	bool "libshairplay"
+	depends on BR2_INET_IPV6
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	help
+	  libshairplay is a client library that emulates an airplay
+	  server.
+
+	  https://github.com/juhovh/shairplay
+
+comment "libshairplay needs a toolchain w/ IPv6, threads"
+	depends on !BR2_INET_IPV6 || !BR2_TOOLCHAIN_HAS_THREADS
