@@ -624,6 +624,7 @@ source "package/libxslt/Config.in"
 source "package/libyaml/Config.in"
 source "package/mxml/Config.in"
 source "package/rapidjson/Config.in"
+source "package/tinyxml/Config.in"
 source "package/xerces/Config.in"
 source "package/yajl/Config.in"
 endmenu
