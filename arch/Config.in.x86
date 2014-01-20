@@ -131,6 +131,8 @@ config BR2_x86_jaguar
 	select BR2_X86_CPU_HAS_SSE2
 	select BR2_X86_CPU_HAS_SSE3
 	select BR2_X86_CPU_HAS_SSSE3
+	select BR2_X86_CPU_HAS_SSE4
+	select BR2_X86_CPU_HAS_SSE42
 config BR2_x86_geode
 	bool "geode"
 	# Don't include MMX support because there several variant of geode
