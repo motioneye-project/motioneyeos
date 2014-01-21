@@ -214,7 +214,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_SDL_IMAGE),y)
 VLC_CONF_OPT += --enable-sdl-image
-VLC_DEPENDENCIES += sdl-image
+VLC_DEPENDENCIES += sdl_image
 else
 VLC_CONF_OPT += --disable-sdl-image
 endif
