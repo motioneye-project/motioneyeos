@@ -11,8 +11,14 @@ LIVE555_LICENSE = LGPLv2.1+
 LIVE555_LICENSE_FILES = COPYING
 LIVE555_INSTALL_STAGING = YES
 
+LIVE555_CFLAGS = $(TARGET_CFLAGS)
+
+ifndef ($(BR2_ENABLE_LOCALE),y)
+LIVE555_CFLAGS += -DLOCALE_NOT_USED
+endif
+
 define LIVE555_CONFIGURE_CMDS
-	echo 'COMPILE_OPTS = $$(INCLUDES) -I. -DSOCKLEN_T=socklen_t $(TARGET_CFLAGS)' >> $(@D)/config.linux
+	echo 'COMPILE_OPTS = $$(INCLUDES) -I. -DSOCKLEN_T=socklen_t $(LIVE555_CFLAGS)' >> $(@D)/config.linux
 	echo 'C_COMPILER = $(TARGET_CC)' >> $(@D)/config.linux
 	echo 'CPLUSPLUS_COMPILER = $(TARGET_CXX)' >> $(@D)/config.linux
 	echo 'LINK = $(TARGET_CXX) -o' >> $(@D)/config.linux
