@@ -35,7 +35,6 @@ if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 source "package/gzip/Config.in"
 endif
 source "package/infozip/Config.in"
-source "package/lzma/Config.in"
 source "package/lzop/Config.in"
 source "package/xz/Config.in"
 endmenu
