@@ -1,20 +1,20 @@
 ################################################################################
 #
-# mysql_client
+# mysql
 #
 ################################################################################
 
-MYSQL_CLIENT_VERSION_MAJOR = 5.1
-MYSQL_CLIENT_VERSION = $(MYSQL_CLIENT_VERSION_MAJOR).70
-MYSQL_CLIENT_SOURCE = mysql-$(MYSQL_CLIENT_VERSION).tar.gz
-MYSQL_CLIENT_SITE = http://downloads.skysql.com/archives/mysql-$(MYSQL_CLIENT_VERSION_MAJOR)
-MYSQL_CLIENT_INSTALL_STAGING = YES
-MYSQL_CLIENT_DEPENDENCIES = readline ncurses
-MYSQL_CLIENT_AUTORECONF = YES
-MYSQL_CLIENT_LICENSE = GPLv2
-MYSQL_CLIENT_LICENSE_FILES = README COPYING
+MYSQL_VERSION_MAJOR = 5.1
+MYSQL_VERSION = $(MYSQL_VERSION_MAJOR).70
+MYSQL_SOURCE = mysql-$(MYSQL_VERSION).tar.gz
+MYSQL_SITE = http://downloads.skysql.com/archives/mysql-$(MYSQL_VERSION_MAJOR)
+MYSQL_INSTALL_STAGING = YES
+MYSQL_DEPENDENCIES = readline ncurses
+MYSQL_AUTORECONF = YES
+MYSQL_LICENSE = GPLv2
+MYSQL_LICENSE_FILES = README COPYING
 
-MYSQL_CLIENT_CONF_ENV = \
+MYSQL_CONF_ENV = \
 	ac_cv_sys_restartable_syscalls=yes \
 	ac_cv_path_PS=/bin/ps \
 	ac_cv_FIND_PROC="/bin/ps p \$\$PID | grep -v grep | grep mysqld > /dev/null" \
@@ -23,7 +23,7 @@ MYSQL_CLIENT_CONF_ENV = \
 	ac_cv_have_decl_HAVE_IB_GCC_ATOMIC_BUILTINS=yes \
 	mysql_cv_new_rl_interface=yes
 
-MYSQL_CLIENT_CONF_OPT = \
+MYSQL_CONF_OPT = \
 	--without-ndb-binlog \
 	--without-server \
 	--without-docs \
@@ -34,15 +34,15 @@ MYSQL_CLIENT_CONF_OPT = \
 	--enable-thread-safe-client \
 	$(ENABLE_DEBUG)
 
-define MYSQL_CLIENT_REMOVE_TEST_PROGS
+define MYSQL_REMOVE_TEST_PROGS
 	rm -rf $(TARGET_DIR)/usr/mysql-test $(TARGET_DIR)/usr/sql-bench
 endef
 
-define MYSQL_CLIENT_ADD_MYSQL_LIB_PATH
+define MYSQL_ADD_MYSQL_LIB_PATH
 	echo "/usr/lib/mysql" >> $(TARGET_DIR)/etc/ld.so.conf
 endef
 
-MYSQL_CLIENT_POST_INSTALL_TARGET_HOOKS += MYSQL_CLIENT_REMOVE_TEST_PROGS
-MYSQL_CLIENT_POST_INSTALL_TARGET_HOOKS += MYSQL_CLIENT_ADD_MYSQL_LIB_PATH
+MYSQL_POST_INSTALL_TARGET_HOOKS += MYSQL_REMOVE_TEST_PROGS
+MYSQL_POST_INSTALL_TARGET_HOOKS += MYSQL_ADD_MYSQL_LIB_PATH
 
 $(eval $(autotools-package))

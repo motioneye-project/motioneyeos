@@ -125,6 +125,13 @@ config BR2_PACKAGE_LIBNFC_LLCP
 	  to 'libllcp'. We have added a new package for 'libllcp' and bumped
 	  the version at the same time.
 
+config BR2_PACKAGE_MYSQL_CLIENT
+	bool "MySQL client renamed to MySQL"
+	select BR2_LEGACY
+	select BR2_PACKAGE_MYSQL
+	help
+	  The option has been renamed BR2_PACKAGE_MYSQL
+
 config BR2_PACKAGE_SQUASHFS3
 	bool "squashfs3 has been removed"
 	select BR2_LEGACY
