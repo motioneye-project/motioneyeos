@@ -10,7 +10,7 @@ config BR2_PACKAGE_FLEX
 if BR2_PACKAGE_FLEX
 
 config BR2_PACKAGE_FLEX_BINARY
-	bool "Install tool in the target"
+	bool "Install flex binary on target"
 	# needs fork()
 	depends on BR2_USE_MMU
 	# runtime dependency
