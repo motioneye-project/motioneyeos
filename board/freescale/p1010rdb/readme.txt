@@ -6,7 +6,21 @@ It won't work for NAND or SPI and will brick those bootloaders!
 Also don't go playing around with different U-boot versions or flash targets
 unless you've got the necessary hardware and/or know-how to unbrick your kit.
 
-2013.10 is known good for NOR.
+2014.01 is known good for NOR on the P1010RDB-PA kit.
+
+Freescale released a revised version of the kit with a faster processor and
+some other hardware changes named P1010RDB-PB. U-Boot needs to be configured
+differently for this kit hence this default config WILL NOT WORK.
+This is ONLY related to U-Boot, otherwise the configuration is the same,
+you can perfectly use the generated kernel and rootfs.
+
+IF you want to build an U-Boot for the new kit just change
+BR2_TARGET_UBOOT_BOARDNAME from P1010RDB-PA_NOR to P1010RDB-PB_NOR.
+!!!!! THIS IS COMPLETELY UNTESTED BY BR DEVS SO YOU ARE ON YOUR OWN !!!!!
+If it works we'd like to know so drop an email to the mailing list. Thanks.
+
+If your kit doesn't mention PA nor PB in their shipping inventory then it's
+the old version (PA).
 ******************** WARNING ********************
 
 You'll need to program the files created by buildroot into the flash.
