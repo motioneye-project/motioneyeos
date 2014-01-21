@@ -117,14 +117,13 @@ config BR2_PACKAGE_TTCP
 	  deprecated for more than four buildroot releases.
 
 config BR2_PACKAGE_LIBNFC_LLCP
-	bool "libnfc-llcp has been removed"
-	depends on BR2_TOOLCHAIN_HAS_THREADS # libusb
-	select BR2_PACKAGE_LIBNFC
+	bool "libnfc-llcp has been replaced by libllcp"
 	select BR2_LEGACY
+	select BR2_PACKAGE_LIBLLCP
 	help
 	  The 'libnfc-llcp' package has been removed since upstream renamed
-          to 'libllcp'. We have added a new package for 'libllcp' and bumped
-          the version at the same time.
+	  to 'libllcp'. We have added a new package for 'libllcp' and bumped
+	  the version at the same time.
 
 config BR2_PACKAGE_SQUASHFS3
 	bool "squashfs3 has been removed"
