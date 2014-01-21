@@ -29,6 +29,12 @@ Deprecated features
 -------------------
 
 The following features are marked as _deprecated_ in Buildroot due to
-their status either too old or unmaintained.
+them being either too old or unmaintained. They will be removed at
+some point, so stop using them.
+Each deprecated symbol in kconfig depends on a symbol
++BR2_DEPRECATED_SINCE_xxxx_xx+, which provides an indication of when
+the feature can be removed: features will not be removed within the
+year following deprecation. For example, a symbol depending on
++BR2_DEPRECATED_SINCE_2013_05+ can be removed from 2014.05 onwards.
 
 include::deprecated-list.txt[]
