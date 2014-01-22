@@ -12,7 +12,7 @@ OPEN2300_BINS = open2300 dump2300 log2300 fetch2300 wu2300 cw2300 history2300 \
 		histlog2300 bin2300 xml2300 light2300 interval2300 minmax2300
 
 ifeq ($(BR2_PACKAGE_MYSQL),y)
-	OPEN2300_DEPENDENCIES += mysql_client
+	OPEN2300_DEPENDENCIES += mysql
 	OPEN2300_BINS         += mysql2300 mysqlhistlog2300
 endif
 

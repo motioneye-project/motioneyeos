@@ -133,11 +133,11 @@ endif
 ### Native MySQL extensions
 ifeq ($(BR2_PACKAGE_PHP_EXT_MYSQL),y)
 	PHP_CONF_OPT += --with-mysql=$(STAGING_DIR)/usr
-	PHP_DEPENDENCIES += mysql_client
+	PHP_DEPENDENCIES += mysql
 endif
 ifeq ($(BR2_PACKAGE_PHP_EXT_MYSQLI),y)
 	PHP_CONF_OPT += --with-mysqli=$(STAGING_DIR)/usr/bin/mysql_config
-	PHP_DEPENDENCIES += mysql_client
+	PHP_DEPENDENCIES += mysql
 endif
 
 ### PDO
@@ -153,7 +153,7 @@ endif
 endif
 ifeq ($(BR2_PACKAGE_PHP_EXT_PDO_MYSQL),y)
 	PHP_CONF_OPT += --with-pdo-mysql=$(STAGING_DIR)/usr
-	PHP_DEPENDENCIES += mysql_client
+	PHP_DEPENDENCIES += mysql
 endif
 endif
 

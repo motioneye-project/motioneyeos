@@ -104,7 +104,7 @@ COLLECTD_DEPENDENCIES = host-pkgconf \
 	$(if $(BR2_PACKAGE_COLLECTD_CURL_XML),libcurl libxml2) \
 	$(if $(BR2_PACKAGE_COLLECTD_DNS),libpcap) \
 	$(if $(BR2_PACKAGE_COLLECTD_IPTABLES),iptables) \
-	$(if $(BR2_PACKAGE_COLLECTD_MYSQL),mysql_client) \
+	$(if $(BR2_PACKAGE_COLLECTD_MYSQL),mysql) \
 	$(if $(BR2_PACKAGE_COLLECTD_NOTIFY_EMAIL),libesmtp) \
 	$(if $(BR2_PACKAGE_COLLECTD_PING),liboping) \
 	$(if $(BR2_PACKAGE_COLLECTD_RIEMANN),protobuf-c) \
@@ -117,7 +117,7 @@ COLLECTD_DEPENDENCIES = host-pkgconf \
 ifeq ($(BR2_PACKAGE_LIBCURL),y)
 	COLLECTD_CONF_OPT += --with-libcurl=$(STAGING_DIR)/usr
 endif
-ifeq ($(BR2_PACKAGE_MYSQL_CLIENT),y)
+ifeq ($(BR2_PACKAGE_MYSQL),y)
 	COLLECTD_CONF_OPT += --with-libmysql=$(STAGING_DIR)/usr
 endif
 ifeq ($(BR2_PACKAGE_NETSNMP),y)

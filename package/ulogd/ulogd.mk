@@ -17,9 +17,9 @@ ULOGD_LICENSE_FILES = COPYING
 
 # DB backends need threads
 ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),y)
-ifeq ($(BR2_PACKAGE_MYSQL_CLIENT),y)
+ifeq ($(BR2_PACKAGE_MYSQL),y)
 	ULOGD_CONF_OPT += --with-mysql=$(STAGING_DIR)/usr
-	ULOGD_DEPENDENCIES += mysql_client
+	ULOGD_DEPENDENCIES += mysql
 endif
 ifeq ($(BR2_PACKAGE_SQLITE),y)
 	ULOGD_DEPENDENCIES += sqlite

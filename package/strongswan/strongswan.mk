@@ -64,7 +64,7 @@ STRONGSWAN_DEPENDENCIES +=                               \
 ifeq ($(BR2_PACKAGE_STRONGSWAN_SQL),y)
 STRONGSWAN_DEPENDENCIES +=                               \
       $(if $(BR2_PACKAGE_SQLITE),sqlite)                 \
-      $(if $(BR2_PACKAGE_MYSQL_CLIENT),mysql_client)
+      $(if $(BR2_PACKAGE_MYSQL),mysql)
 endif
 
 # Strongswan uses AC_LIB_PREFIX, which is relatively new.

@@ -57,7 +57,7 @@ else
 endif
 
 ifeq ($(BR2_PACKAGE_SCONESERVER_MYSQL),y)
-	SCONESERVER_DEPENDENCIES += mysql_client
+	SCONESERVER_DEPENDENCIES += mysql
 	SCONESERVER_CONF_OPT += --with-mysql \
 		--with-mysql_config="$(STAGING_DIR)/usr/bin/mysql_config" \
 		LDFLAGS="$(TARGET_LDFLAGS) -L$(STAGING_DIR)/usr/lib/mysql"

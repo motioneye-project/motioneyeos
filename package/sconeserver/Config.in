@@ -38,7 +38,7 @@ config BR2_PACKAGE_SCONESERVER_HTTP_SCONESITE_IMAGE
 config BR2_PACKAGE_SCONESERVER_MYSQL
 	bool "mysql"
 	depends on BR2_USE_MMU # mysql
-	select BR2_PACKAGE_MYSQL_CLIENT
+	select BR2_PACKAGE_MYSQL
 	help
 	  MySQL module for Sconeserver
 
