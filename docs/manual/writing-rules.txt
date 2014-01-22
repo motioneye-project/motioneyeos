@@ -71,13 +71,7 @@ LIBFOO_VERSION = 1.0
 LIBFOO_CONF_OPT += --without-python-support
 ---------------------
 +
-It is also possible to align the +=+ signs:
-+
----------------------
-LIBFOO_VERSION   = 1.0
-LIBFOO_SOURCE    = foo-$(LIBFOO_VERSION).tar.gz
-LIBFOO_CONF_OPT += --without-python-support
----------------------
+Do not align the +=+ signs.
 
 * Indentation: use tab only:
 +
