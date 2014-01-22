@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBVORBIS_VERSION = 1.3.3
+LIBVORBIS_VERSION = 1.3.4
 LIBVORBIS_SOURCE = libvorbis-$(LIBVORBIS_VERSION).tar.xz
 LIBVORBIS_SITE = http://downloads.xiph.org/releases/vorbis/
 LIBVORBIS_INSTALL_STAGING = YES
