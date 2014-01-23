@@ -18,4 +18,10 @@ TCPREPLAY_DEPENDENCIES = libpcap
 TCPREPLAY_LIBS = -lpcap $(if $(BR2_PACKAGE_LIBUSB),-lusb-1.0)
 TCPREPLAY_CONF_ENV += ac_cv_search_pcap_close='$(TCPREPLAY_LIBS)'
 
+ifeq ($(BR2_PACKAGE_TCPDUMP),y)
+TCPREPLAY_CONF_ENV += ac_cv_path_tcpdump_path=/usr/sbin/tcpdump
+else
+TCPREPLAY_CONF_ENV += ac_cv_path_tcpdump_path=no
+endif
+
 $(eval $(autotools-package))
