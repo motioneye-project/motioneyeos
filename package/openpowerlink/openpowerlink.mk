@@ -22,6 +22,10 @@ endif
 
 OPENPOWERLINK_CONF_OPT = -DCMAKE_SYSTEM_PROCESSOR=$(OPENPOWERLINK_ARCH)
 
+# There is no shared lib in openpowerlink,
+# so force static lib to build libpowerlink.a
+OPENPOWERLINK_CONF_OPT += -DBUILD_SHARED_LIBS=OFF
+
 ifeq ($(BR2_ENABLE_DEBUG),y)
 OPENPOWERLINK_CONF_OPT += -DCMAKE_BUILD_TYPE=Debug
 else
