@@ -12,6 +12,15 @@ GTEST_INSTALL_TARGET = NO
 GTEST_LICENSE = BSD-3c
 GTEST_LICENSE_FILES = LICENSE
 
+# While it is possible to build gtest as shared library, using this gtest shared
+# library requires to set some special configure option in the project using
+# gtest.
+# So, force to build gtest as a static library.
+#
+# For further details, refer to the explaination given in the README file from
+# the gtest sources.
+GTEST_CONF_OPT = -DBUILD_SHARED_LIBS=OFF
+
 define GTEST_EXTRACT_CMDS
 	unzip $(DL_DIR)/$(GTEST_SOURCE) -d $(BUILD_DIR)
 endef
