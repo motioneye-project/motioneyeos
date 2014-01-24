@@ -1,0 +1,9 @@
+config BR2_PACKAGE_TMUX
+	bool "tmux"
+	select BR2_PACKAGE_LIBEVENT
+	select BR2_PACKAGE_NCURSES
+	help
+	  tmux is a terminal multiplexer, it enables a number of terminals
+	  (or windows) to be accessed and controlled from a single terminal.
+
+	  http://tmux.sourceforge.net/
