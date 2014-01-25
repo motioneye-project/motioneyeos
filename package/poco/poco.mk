@@ -34,8 +34,8 @@ ifeq ($(LIBC),uclibc)
 POCO_CONF_OPT += --no-fpenvironment --no-wstring
 endif
 
-# sh4a is missing FE_DOWNWARD and FE_UPWARD in its fenv.h
-ifeq ($(BR2_sh4a),y)
+# architectures missing some FE_* in their fenv.h
+ifeq ($(BR2_sh4a)$(BR2_nios2),y)
 POCO_CONF_OPT += --no-fpenvironment
 endif
 
