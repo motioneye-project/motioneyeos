@@ -630,6 +630,7 @@ source "package/yajl/Config.in"
 endmenu
 
 menu "Multimedia"
+source "package/libass/Config.in"
 source "package/libbluray/Config.in"
 source "package/libdvbsi/Config.in"
 source "package/libdvdnav/Config.in"
