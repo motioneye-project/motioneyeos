@@ -1,0 +1,15 @@
+libiconv.m4: Fix AM_ICONV macro usage
+
+Signed-off-by: Bernd Kuhls <berndkuhls@hotmail.com>
+
+--- a/m4/libiconv.m4 2013-09-30 09:48:22.000000000 +0200
++++ b/m4/libiconv.m4 2014-01-18 12:56:32.634514555 +0100
+@@ -17,7 +17,7 @@
+ dnl
+
+ dnl Use standard iconv test
+-AM_ICONV
++m4_pattern_allow([AM_ICONV])
+ CONVERTER_LIBS="$CONVERTER_LIBS $LIBICONV"
+
+ dnl Compile iconvcap.c and run it to determine what encodings iconv actually
