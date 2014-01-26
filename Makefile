@@ -261,6 +261,7 @@ unexport CPP
 unexport CFLAGS
 unexport CXXFLAGS
 unexport GREP_OPTIONS
+unexport TAR_OPTIONS
 unexport CONFIG_SITE
 unexport QMAKESPEC
 unexport TERMINFO
