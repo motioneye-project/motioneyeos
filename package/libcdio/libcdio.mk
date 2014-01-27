@@ -15,6 +15,10 @@ ifeq ($(BR2_ENABLE_LOCALE),)
 LIBCDIO_DEPENDENCIES += libiconv
 endif
 
+ifeq ($(BR2_INSTALL_LIBSTDCPP),)
+LIBCDIO_CONF_OPT += --disable-cxx
+endif
+
 ifeq ($(BR2_PACKAGE_NCURSES),y)
 LIBCDIO_DEPENDENCIES += ncurses
 else
