@@ -1,7 +1,6 @@
 config BR2_PACKAGE_RTMPDUMP
 	bool "librtmp"
 	select BR2_PACKAGE_ZLIB
-	select BR2_PACKAGE_GNUTLS if !BR2_PACKAGE_POLARSSL && !BR2_PACKAGE_OPENSSL
 	help
 	  rtmpdump - RTMPDump Real-Time Messaging Protocol API
 	  Only librtmp is installed by this package.

@@ -19,9 +19,12 @@ ifeq ($(BR2_PACKAGE_GNUTLS),y)
 else ifeq ($(BR2_PACKAGE_POLARSSL),y)
     RTMPDUMP_DEPENDENCIES += polarssl
     RTMPDUMP_CRYPTO = POLARSSL
-else
+else ifeq ($(BR2_PACKAGE_OPENSSL),y)
     RTMPDUMP_DEPENDENCIES += openssl
     RTMPDUMP_CRYPTO = OPENSSL
+else
+    # no crypto
+    RTMPDUMP_CRYPTO =
 endif
 
 RTMPDUMP_CFLAGS = $(TARGET_CFLAGS)
