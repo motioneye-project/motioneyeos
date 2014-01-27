@@ -10,8 +10,8 @@ choice
 	  Select the version of binutils you wish to use.
 
 	config BR2_BINUTILS_VERSION_2_18_AVR32_1_0_1
-	       depends on BR2_avr32
-	       bool "binutils 2.18-avr32-1.0.1"
+		depends on BR2_avr32
+		bool "binutils 2.18-avr32-1.0.1"
 
 	config BR2_BINUTILS_VERSION_2_20_1
 		depends on !BR2_avr32
