@@ -1,0 +1,8 @@
+config BR2_PACKAGE_PHP_IMAGICK
+	bool "php-imagick"
+	depends on BR2_PACKAGE_PHP
+	select BR2_PACKAGE_IMAGEMAGICK
+	help
+	  PHP wrapper to the ImageMagick library.
+
+	  http://pecl.php.net/package/imagick
