@@ -394,6 +394,16 @@ menu "Perl libraries/modules"
 endmenu
 endif
 source "package/php/Config.in"
+if BR2_PACKAGE_PHP
+if !BR2_PREFER_STATIC_LIB
+menu "External php extensions"
+source "package/php-zmq/Config.in"
+endmenu
+endif
+if BR2_PREFER_STATIC_LIB
+comment "External PHP extensions need a toolchain w/ dynamic library"
+endif
+endif
 source "package/python/Config.in"
 if BR2_PACKAGE_PYTHON
 menu "external python modules"

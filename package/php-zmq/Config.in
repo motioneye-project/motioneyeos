@@ -1,0 +1,17 @@
+comment "php-zmq needs a toolchain w/ C++, IPv6, largefile, wchar, threads"
+	depends on !(BR2_INSTALL_LIBSTDCPP && BR2_INET_IPV6 && BR2_LARGEFILE \
+		&& BR2_USE_WCHAR && BR2_TOOLCHAIN_HAS_THREADS)
+
+config BR2_PACKAGE_PHP_ZMQ
+	bool "php-zmq"
+	depends on BR2_PACKAGE_PHP
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_INET_IPV6
+	depends on BR2_LARGEFILE # util-linux
+	depends on BR2_USE_WCHAR # util-linux
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	select BR2_PACKAGE_ZEROMQ
+	help
+	  ZeroMQ messaging bindings for PHP
+
+	  http://pecl.php.net/package/zmq
