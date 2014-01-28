@@ -4,8 +4,7 @@
 #
 ################################################################################
 
-PHP_VERSION = 5.5.7
-PHP_SOURCE = php-$(PHP_VERSION).tar.xz
+PHP_VERSION = 5.5.8
 PHP_SITE = http://www.php.net/distributions
 PHP_INSTALL_STAGING = YES
 PHP_INSTALL_STAGING_OPT = INSTALL_ROOT=$(STAGING_DIR) install
