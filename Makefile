@@ -475,7 +475,7 @@ $(BUILD_DIR)/.root:
 	rsync -a $(RSYNC_VCS_EXCLUSIONS) \
 		--chmod=Du+w --exclude .empty --exclude '*~' \
 		$(TARGET_SKELETON)/ $(TARGET_DIR)/
-	cp support/misc/target-dir-warning.txt $(TARGET_DIR_WARNING_FILE)
+	$(INSTALL) -m 0644 support/misc/target-dir-warning.txt $(TARGET_DIR_WARNING_FILE)
 	@ln -snf lib $(TARGET_DIR)/$(LIB_SYMLINK)
 	@mkdir -p $(TARGET_DIR)/usr
 	@ln -snf lib $(TARGET_DIR)/usr/$(LIB_SYMLINK)
