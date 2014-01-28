@@ -4,4 +4,4 @@ config BR2_PACKAGE_LIBUSB_COMPAT
 	help
 	  libusb-0.1 compatibility layer for libusb-1.0.
 
-	  http://libusb.sourceforge.net/
+	  http://libusb.info/
