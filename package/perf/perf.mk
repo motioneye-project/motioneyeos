@@ -22,6 +22,16 @@ PERF_MAKE_FLAGS = \
 	WERROR=0 \
 	ASCIIDOC=
 
+# The call to backtrace() function fails for ARC, because for some
+# reason the unwinder from libgcc returns early. Thus the usage of
+# backtrace() should be disabled in perf explicitly: at build time
+# backtrace() appears to be available, but it fails at runtime: the
+# backtrace will contain only several functions from the top of stack,
+# instead of the complete backtrace.
+ifeq ($(BR2_arc),y)
+	PERF_MAKE_FLAGS += NO_BACKTRACE=1
+endif
+
 ifeq ($(BR2_PACKAGE_ELFUTILS),y)
 	PERF_DEPENDENCIES += elfutils
 else
