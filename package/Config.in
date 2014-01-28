@@ -397,6 +397,7 @@ source "package/php/Config.in"
 if BR2_PACKAGE_PHP
 if !BR2_PREFER_STATIC_LIB
 menu "External php extensions"
+source "package/php-yaml/Config.in"
 source "package/php-zmq/Config.in"
 endmenu
 endif
