@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-SSHFS_VERSION = 2.4
+SSHFS_VERSION = 2.5
 SSHFS_SITE = http://downloads.sourceforge.net/project/fuse/sshfs-fuse/$(SSHFS_VERSION)
 SSHFS_SOURCE = sshfs-fuse-$(SSHFS_VERSION).tar.gz
 SSHFS_LICENSE = GPLv2
