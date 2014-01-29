@@ -21,7 +21,6 @@ VLC_CONF_OPT += \
 	--disable-quicksync \
 	--disable-fluidsynth \
 	--disable-zvbi \
-	--disable-libass \
 	--disable-kate \
 	--disable-caca \
 	--disable-jack \
@@ -98,6 +97,13 @@ VLC_CONF_OPT += --enable-opus
 VLC_DEPENDENCIES += opus
 else
 VLC_CONF_OPT += --disable-opus
+endif
+
+ifeq ($(BR2_PACKAGE_LIBASS),y)
+VLC_CONF_OPT += --enable-libass
+VLC_DEPENDENCIES += libass
+else
+VLC_CONF_OPT += --disable-libass
 endif
 
 ifeq ($(BR2_PACKAGE_LIBGCRYPT),y)
