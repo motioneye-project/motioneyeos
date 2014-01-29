@@ -51,15 +51,19 @@ choice
 
 endchoice
 
+endif
+
+# If cross-gdb is not enabled, the latest working version is chosen.
 config BR2_GDB_VERSION
 	string
-	default "6.6a"     if BR2_GDB_VERSION_6_6
-	default "6.7.1-avr32-2.1.5" if BR2_GDB_VERSION_6_7_1_AVR32_2_1_5
+	depends on BR2_PACKAGE_GDB || BR2_PACKAGE_HOST_GDB
+	default "6.6a"     if BR2_GDB_VERSION_6_6 || \
+	                      (!BR2_PACKAGE_HOST_GDB && BR2_bfin)
+	default "6.7.1-avr32-2.1.5" if BR2_GDB_VERSION_6_7_1_AVR32_2_1_5 || \
+                                   (!BR2_PACKAGE_HOST_GDB && BR2_avr32)
 	default "7.2a"     if BR2_GDB_VERSION_7_2
 	default "7.3.1"    if BR2_GDB_VERSION_7_3
 	default "7.4.1"    if BR2_GDB_VERSION_7_4
-	default "7.5.1"    if BR2_GDB_VERSION_7_5
+	default "7.5.1"    if BR2_GDB_VERSION_7_5 || !BR2_PACKAGE_HOST_GDB
 	default "f25a1952afd054205f9471e449c1f7ca5b271b7c" if BR2_arc
 	default "6be65fb56ea6694a9260733a536a023a1e2d4d57" if BR2_microblaze
-
-endif
