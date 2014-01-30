@@ -1,5 +1,6 @@
 config BR2_PACKAGE_FSWEBCAM
 	bool "fswebcam"
+	depends on BR2_USE_MMU # fork()
 	select BR2_PACKAGE_GD
 	select BR2_PACKAGE_FREETYPE
 	select BR2_PACKAGE_JPEG
