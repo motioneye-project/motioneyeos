@@ -11,7 +11,10 @@ INFOZIP_LICENSE = Info-ZIP
 INFOZIP_LICENSE_FILES = LICENSE
 
 define INFOZIP_BUILD_CMDS
-	$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(@D) AS="$(TARGET_CC) -c" -f unix/Makefile generic
+	$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(@D) \
+		CFLAGS="$(TARGET_CFLAGS) -I. -DUNIX" \
+		AS="$(TARGET_CC) -c" \
+		-f unix/Makefile generic
 endef
 
 define INFOZIP_INSTALL_TARGET_CMDS
