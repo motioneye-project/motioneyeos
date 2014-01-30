@@ -41,6 +41,7 @@ comment "RPi compositor needs a toolchain w/ C++, largefile, threads"
 
 config BR2_PACKAGE_WESTON_RPI
 	bool "RPi compositor"
+	depends on BROKEN                       # rpi-backend broken in 1.4.0
 	depends on BR2_arm                      # rpi-userland
 	depends on BR2_INSTALL_LIBSTDCPP        # rpi-userland
 	depends on BR2_LARGEFILE                # rpi-userland
