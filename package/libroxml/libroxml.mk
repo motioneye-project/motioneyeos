@@ -4,26 +4,12 @@
 #
 ################################################################################
 
-LIBROXML_VERSION = 2.2.3
+LIBROXML_VERSION = 2.3.0
 LIBROXML_SITE = http://download.libroxml.net/pool/v2.x/
 LIBROXML_INSTALL_STAGING = YES
+LIBROXML_LICENSE = LGPLv2.1+ with static link exception
+LIBROXML_LICENSE_FILES = License.txt
 
-define LIBROXML_BUILD_CMDS
-	$(MAKE) $(TARGET_CONFIGURE_OPTS) OPTIM= -C $(@D) V=1 all
-endef
+LIBROXML_CONF_OPT = --disable-silent-rules
 
-define LIBROXML_INSTALL_STAGING_CMDS
-	$(MAKE) DESTDIR=$(STAGING_DIR)/usr/ -C $(@D) install
-endef
-
-define LIBROXML_INSTALL_TARGET_CMDS
-	$(MAKE) DESTDIR=$(TARGET_DIR)/usr/ -C $(@D) install
-endef
-
-define LIBROXML_DISABLE_DOXYGEN
-	$(SED) 's:) doxy:):' $(@D)/Makefile
-endef
-
-LIBROXML_POST_PATCH_HOOKS += LIBROXML_DISABLE_DOXYGEN
-
-$(eval $(generic-package))
+$(eval $(autotools-package))
