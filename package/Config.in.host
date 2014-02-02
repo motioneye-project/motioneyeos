@@ -15,5 +15,6 @@ source "package/parted/Config.in.host"
 source "package/sam-ba/Config.in.host"
 source "package/sunxi-tools/Config.in.host"
 source "package/uboot-tools/Config.in.host"
+source "package/util-linux/Config.in.host"
 
 endmenu
