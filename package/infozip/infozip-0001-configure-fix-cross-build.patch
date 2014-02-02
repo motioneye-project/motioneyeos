@@ -31,7 +31,7 @@ index abd0c44..8388c74 100644
  #   LFLAGS2   flags after obj file list (libraries, etc)
  CFLAGS_NOOPT = -I. -DUNIX $(LOCAL_ZIP)
 -CFLAGS = -O2 $(CFLAGS_NOOPT)
-+CFLAGS ?= -02 $(CFLAGS_NOOPT)
++CFLAGS ?= -O2 $(CFLAGS_NOOPT)
  LFLAGS1 =
  LFLAGS2 = -s
  
