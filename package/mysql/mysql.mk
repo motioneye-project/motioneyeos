@@ -5,7 +5,7 @@
 ################################################################################
 
 MYSQL_VERSION_MAJOR = 5.1
-MYSQL_VERSION = $(MYSQL_VERSION_MAJOR).70
+MYSQL_VERSION = $(MYSQL_VERSION_MAJOR).73
 MYSQL_SOURCE = mysql-$(MYSQL_VERSION).tar.gz
 MYSQL_SITE = http://downloads.skysql.com/archives/mysql-$(MYSQL_VERSION_MAJOR)
 MYSQL_INSTALL_STAGING = YES
