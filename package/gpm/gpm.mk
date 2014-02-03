@@ -32,6 +32,15 @@ GPM_POST_PATCH_HOOKS += GPM_RUN_AUTOGEN
 
 GPM_DEPENDENCIES += host-automake host-autoconf host-libtool
 
+# gpm tries to build/install .info doc even if makeinfo isn't installed on the
+# host, so we have to disable global doc installation to prevent autobuild
+# errors.
+define GPM_DISABLE_DOC_INSTALL
+	$(SED) 's/SUBDIRS = src doc contrib/SUBDIRS = src contrib/' \
+		$(@D)/Makefile.in
+endef
+GPM_POST_PATCH_HOOKS += GPM_DISABLE_DOC_INSTALL
+
 ifeq ($(BR2_PACKAGE_GPM_INSTALL_TEST_TOOLS),)
 define GPM_REMOVE_TEST_TOOLS_FROM_TARGET
 	for tools in mev hltest mouse-test display-buttons \
