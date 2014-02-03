@@ -5,7 +5,7 @@
 ################################################################################
 
 LTRACE_VERSION = 0.7.3
-LTRACE_SITE = http://alioth.debian.org/frs/download.php/file/3947
+LTRACE_SITE = http://sources.buildroot.net/
 LTRACE_SOURCE = ltrace-$(LTRACE_VERSION).tar.bz2
 LTRACE_DEPENDENCIES = libelf
 LTRACE_CONF_OPT = --disable-werror
