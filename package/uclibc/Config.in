@@ -241,7 +241,6 @@ config BR2_UCLIBC_SH_TYPE
 	string
 	depends on BR2_UCLIBC_TARGET_ARCH = "sh"
 	default SH2A if BR2_sh2a
-	default SH3  if BR2_sh3 || BR2_sh3eb
 	default SH4  if BR2_sh4 || BR2_sh4eb
 
 config BR2_UCLIBC_SPARC_TYPE

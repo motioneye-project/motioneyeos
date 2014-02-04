@@ -101,6 +101,24 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2014.02"
 
+config BR2_sh2
+	bool "sh2 support removed"
+	help
+	  Due to an inexistent user base and generally poor Linux
+	  support, the support for the SH2 architecture was removed.
+
+config BR2_sh3
+	bool "sh3 support removed"
+	help
+	  Due to an inexistent user base and generally poor Linux
+	  support, the support for the SH3 architecture was removed.
+
+config BR2_sh3eb
+	bool "sh3eb support removed"
+	help
+	  Due to an inexistent user base and generally poor Linux
+	  support, the support for the SH3eb architecture was removed.
+
 config BR2_PACKAGE_LZMA
 	bool "lzma target package has been removed"
 	select BR2_LEGACY

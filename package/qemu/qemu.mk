@@ -36,10 +36,7 @@ HOST_QEMU_DEPENDENCIES = host-pkgconf host-zlib host-libglib2 host-pixman
 #       mips64          ?
 #       mips64el        ?
 #       powerpc         ppc
-#       sh2             not supported
 #       sh2a            not supported
-#       sh3             not supported
-#       sh3eb           not supported
 #       sh4             sh4
 #       sh4eb           sh4eb
 #       sh4a            ?
