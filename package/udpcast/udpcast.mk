@@ -6,7 +6,6 @@
 
 UDPCAST_VERSION = 20120424
 UDPCAST_SITE = http://www.udpcast.linux.lu/download
-UDPCAST_CONF_ENV = $(if $(BR_LARGEFILE),ac_cv_type_stat64=yes,ac_cv_type_stat64=no)
 UDPCAST_DEPENDENCIES = host-m4
 
 define UDPCAST_REMOVE_UDP_SENDER
