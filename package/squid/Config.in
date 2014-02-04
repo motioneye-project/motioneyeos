@@ -1,5 +1,6 @@
 comment "squid needs a toolchain w/ C++, IPv6"
 	depends on BR2_USE_MMU
+	depends on !BR2_avr32 # toolchain too old
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_INET_IPV6
 
 config BR2_PACKAGE_SQUID
