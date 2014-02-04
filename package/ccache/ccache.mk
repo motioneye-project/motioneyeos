@@ -22,16 +22,16 @@ CCACHE_LICENSE_FILES = LICENSE.txt GPL-3.0.txt
 HOST_CCACHE_CONF_OPT += ccache_cv_zlib_1_2_3=no
 
 # Patch host-ccache as follows:
-#  - Use BUILDROOT_CACHE_DIR instead of CCACHE_DIR, because CCACHE_DIR
+#  - Use BR_CACHE_DIR instead of CCACHE_DIR, because CCACHE_DIR
 #    is already used by autotargets for the ccache package.
-#    BUILDROOT_CACHE_DIR is exported by Makefile based on config option
+#    BR_CACHE_DIR is exported by Makefile based on config option
 #    BR2_CCACHE_DIR.
 #  - ccache shouldn't use the compiler binary mtime to detect a change in
 #    the compiler, because in the context of Buildroot, that completely
 #    defeats the purpose of ccache. Of course, that leaves the user
 #    responsible for purging its cache when the compiler changes.
 define HOST_CCACHE_PATCH_CONFIGURATION
-	sed -i 's,getenv("CCACHE_DIR"),getenv("BUILDROOT_CACHE_DIR"),' $(@D)/ccache.c
+	sed -i 's,getenv("CCACHE_DIR"),getenv("BR_CACHE_DIR"),' $(@D)/ccache.c
 	sed -i 's,getenv("CCACHE_COMPILERCHECK"),"none",' $(@D)/ccache.c
 endef
 
