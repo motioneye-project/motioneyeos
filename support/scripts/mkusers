@@ -39,7 +39,7 @@ GROUP="${TARGET_DIR}/etc/group"
 # with /etc/group, so any use of gshadow must be conditional.
 GSHADOW="${TARGET_DIR}/etc/gshadow"
 
-# We can't simply source ${BUILDROOT_CONFIG} as it may contains constructs
+# We can't simply source ${BR2_CONFIG} as it may contains constructs
 # such as:
 #    BR2_DEFCONFIG="$(CONFIG_DIR)/defconfig"
 # which when sourced from a shell script will eventually try to execute
@@ -48,7 +48,7 @@ GSHADOW="${TARGET_DIR}/etc/gshadow"
 # So, we have to scan that file instead. Sigh... :-(
 PASSWD_METHOD="$( sed -r -e '/^BR2_TARGET_GENERIC_PASSWD_METHOD="(.*)"$/!d;'    \
                          -e 's//\1/;'                                           \
-                         "${BUILDROOT_CONFIG}"                                  \
+                         "${BR2_CONFIG}"                                        \
                 )"
 
 #----------------------------------------------------------------------------

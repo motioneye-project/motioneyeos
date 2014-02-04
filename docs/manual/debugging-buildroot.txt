@@ -24,7 +24,7 @@ make BR2_INSTRUMENTATION_SCRIPTS="/path/to/my/script1 /path/to/my/script2"
 
 That script has access to the following variables:
 
-  - +BUILDROOT_CONFIG+: the path to the Buildroot .config file
+  - +BR2_CONFIG+: the path to the Buildroot .config file
   - +HOST_DIR+, +STAGING_DIR+, +TARGET_DIR+: see
     xref:generic-package-reference[]
   - +BUILD_DIR+: the directory where packages are extracted and built

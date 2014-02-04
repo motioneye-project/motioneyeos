@@ -38,7 +38,7 @@ there are a few ways to customize the resulting target filesystem.
   files, you should fix that package rather than work around it with some
   post-build cleanup scripts.
   You may also use these variables in your post-build script:
-    - +BUILDROOT_CONFIG+: the path to the Buildroot .config file
+    - +BR2_CONFIG+: the path to the Buildroot .config file
     - +HOST_DIR+, +STAGING_DIR+, +TARGET_DIR+: see
       xref:generic-package-reference[]
     - +BUILD_DIR+: the directory where packages are extracted and built
@@ -79,7 +79,7 @@ in one of these _post-image scripts_ will require special handling
 
 Just like for the _post-build scripts_ mentioned above, you also have
 access to the following environment variables from your _post-image
-scripts_: +BUILDROOT_CONFIG+, +BUILD_DIR+, +HOST_DIR+, +STAGING_DIR+,
+scripts_: +BR2_CONFIG+, +BUILD_DIR+, +HOST_DIR+, +STAGING_DIR+,
 +TARGET_DIR+, +BINARIES_DIR+ and +BASE_DIR+.
 
 Additionally, each of the +BR2_ROOTFS_POST_BUILD_SCRIPT+ and

@@ -64,7 +64,7 @@ static void conf_message(const char *fmt, ...)
 
 const char *conf_get_configname(void)
 {
-	char *name = getenv("BUILDROOT_CONFIG");
+	char *name = getenv("BR2_CONFIG");
 
 	return name ? name : ".config";
 }

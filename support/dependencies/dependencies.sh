@@ -167,8 +167,8 @@ if test "${missing_progs}" = "yes" ; then
 	exit 1
 fi
 
-if grep ^BR2_TOOLCHAIN_BUILDROOT=y $BUILDROOT_CONFIG > /dev/null && \
-	grep ^BR2_ENABLE_LOCALE=y       $BUILDROOT_CONFIG > /dev/null ; then
+if grep ^BR2_TOOLCHAIN_BUILDROOT=y $BR2_CONFIG > /dev/null && \
+	grep ^BR2_ENABLE_LOCALE=y       $BR2_CONFIG > /dev/null ; then
 	if ! which locale > /dev/null ; then
 		echo
 		echo "You need locale support on your build machine to build a toolchain supporting locales"
@@ -181,7 +181,7 @@ if grep ^BR2_TOOLCHAIN_BUILDROOT=y $BUILDROOT_CONFIG > /dev/null && \
 	fi
 fi
 
-if grep -q ^BR2_PACKAGE_CLASSPATH=y $BUILDROOT_CONFIG ; then
+if grep -q ^BR2_PACKAGE_CLASSPATH=y $BR2_CONFIG ; then
 	for prog in javac jar; do
 		if ! which $prog > /dev/null ; then
 			echo >&2
@@ -191,7 +191,7 @@ if grep -q ^BR2_PACKAGE_CLASSPATH=y $BUILDROOT_CONFIG ; then
 	done
 fi
 
-if grep -q ^BR2_HOSTARCH_NEEDS_IA32_LIBS=y $BUILDROOT_CONFIG ; then
+if grep -q ^BR2_HOSTARCH_NEEDS_IA32_LIBS=y $BR2_CONFIG ; then
 	if test ! -f /lib/ld-linux.so.2 ; then
 		echo
 		echo "Your Buildroot configuration uses pre-built tools for the x86 architecture,"
@@ -205,7 +205,7 @@ if grep -q ^BR2_HOSTARCH_NEEDS_IA32_LIBS=y $BUILDROOT_CONFIG ; then
 	fi
 fi
 
-if grep -q ^BR2_HOSTARCH_NEEDS_IA32_COMPILER=y $BUILDROOT_CONFIG ; then
+if grep -q ^BR2_HOSTARCH_NEEDS_IA32_COMPILER=y $BR2_CONFIG ; then
 	if ! echo "int main(void) {}" | gcc -m32 -x c - -o /dev/null ; then
 		echo
 		echo "Your Buildroot configuration needs a compiler capable of building 32 bits binaries."
