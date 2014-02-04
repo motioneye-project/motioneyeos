@@ -13,7 +13,11 @@ LVM2_LICENSE_FILES = COPYING COPYING.LIB
 
 # Make sure that binaries and libraries are installed with write
 # permissions for the owner.
-LVM2_CONF_OPT += --enable-write_install --enable-pkgconfig
+LVM2_CONF_OPT += \
+	--enable-write_install \
+	--enable-pkgconfig \
+	--enable-cmdlib \
+	--enable-dmeventd
 
 # LVM2 uses autoconf, but not automake, and the build system does not
 # take into account the CC passed at configure time.
