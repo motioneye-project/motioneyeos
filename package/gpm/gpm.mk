@@ -28,7 +28,7 @@ GPM_CONF_OPT = --without-curses
 define GPM_RUN_AUTOGEN
 	cd $(@D) && PATH=$(HOST_PATH) ./autogen.sh
 endef
-GPM_POST_PATCH_HOOKS += GPM_RUN_AUTOGEN
+GPM_PRE_CONFIGURE_HOOKS += GPM_RUN_AUTOGEN
 
 GPM_DEPENDENCIES += host-automake host-autoconf host-libtool
 
