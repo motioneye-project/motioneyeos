@@ -36,6 +36,6 @@ config BR2_ARCH
 
 config BR2_ENDIAN
 	default "LITTLE"	if BR2_sh3 || BR2_sh4 || BR2_sh4a || \
-				   BR2_x86_64 || BR2_sh64
+				   BR2_sh64
 	default "BIG"		if BR2_sh2 || BR2_sh2a || BR2_sh3eb || \
 				   BR2_sh4eb || BR2_sh4aeb
