@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-ELF2FLT_VERSION = 20130904
-ELF2FLT_SITE = cvs://cvs.uclinux.org:/var/cvs
-ELF2FLT_SITE_METHOD = cvs
+ELF2FLT_VERSION = 21c6a41885ad544763ccd19883c1353f3b0b7a47
+ELF2FLT_SITE = git://wh0rd.org/elf2flt.git
+ELF2FLT_SITE_METHOD = git
 ELF2FLT_LICENSE = GPLv2+
 ELF2FLT_LICENSE_FILES = LICENSE.TXT
 
