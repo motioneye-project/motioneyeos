@@ -4,10 +4,10 @@
 #
 ################################################################################
 
-DMRAID_VERSION = 1.0.0.rc15
+DMRAID_VERSION = 1.0.0.rc16-3
 DMRAID_SOURCE = dmraid-$(DMRAID_VERSION).tar.bz2
 DMRAID_SITE = http://people.redhat.com/~heinzm/sw/dmraid/src
-DMRAID_SUBDIR = $(DMRAID_VERSION)
+DMRAID_SUBDIR = $(DMRAID_VERSION)/dmraid
 # lib and tools race with parallel make
 DMRAID_MAKE = $(MAKE1)
 DMRAID_INSTALL_STAGING = YES
