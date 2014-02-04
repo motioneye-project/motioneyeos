@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-DBUS_VERSION = 1.4.26
+DBUS_VERSION = 1.6.8
 DBUS_SITE = http://dbus.freedesktop.org/releases/dbus
 DBUS_LICENSE = AFLv2.1 GPLv2+
 DBUS_LICENSE_FILES = COPYING
