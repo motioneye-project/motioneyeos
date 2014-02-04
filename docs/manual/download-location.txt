@@ -13,14 +13,14 @@ filesystem with exactly the same versions.
 
 If you maintain several Buildroot trees, it might be better to have a
 shared download location. This can be achieved by pointing the
-+BUILDROOT_DL_DIR+ environment variable to a directory.  If this is
++BR2_DL_DIR+ environment variable to a directory.  If this is
 set, then the value of +BR2_DL_DIR+ in the Buildroot configuration is
 overridden. The following line should be added to +<~/.bashrc>+.
 
 -----------------
- $ export BUILDROOT_DL_DIR <shared download location>
+ $ export BR2_DL_DIR <shared download location>
 -----------------
 
 The download location can also be set in the +.config+ file, with the
-+BR2_DL_DIR+ option. This value is overridden by the +BUILDROOT_DL_DIR+
-environment variable.
++BR2_DL_DIR+ option. Unlike most options in the .config file, this value
+is overridden by the +BR2_DL_DIR+ environment variable.

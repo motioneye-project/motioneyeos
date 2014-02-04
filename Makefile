@@ -121,6 +121,13 @@ else
   $(shell echo BR2_EXTERNAL ?= $(BR2_EXTERNAL) > $(BR2_EXTERNAL_FILE))
 endif
 
+# To make sure the the environment variable overrides the .config option,
+# set this before including .config.
+ifneq ($(BR2_DL_DIR),)
+DL_DIR := $(BR2_DL_DIR)
+endif
+
+
 # Need that early, before we scan packages
 # Avoids doing the $(or...) everytime
 BR2_GRAPH_OUT := $(or $(GRAPH_OUT),pdf)

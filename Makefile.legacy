@@ -13,6 +13,22 @@ $(error "You have legacy configuration in your .config! Please check your config
 endif
 
 #
+# Legacy options from 2014.02
+#
+
+# The BUILDROOT_DL_DIR environment variable was renamed by BR2_DL_DIR. We
+# want to detect someone using the old variable, _except_ if also the new
+# variable was set. By the time we get here, however, we no longer have
+# access to the BR2_DL_DIR environment variable (because it has been overridden
+# by the .config inclusion). However, the environment variable (if defined) was
+# saved in DL_DIR, so we can use that.
+ifneq ($(BUILDROOT_DL_DIR),)
+ifneq ($(BUILDROOT_DL_DIR),$(DL_DIR))
+$(error "The BUILDROOT_DL_DIR environment variable was renamed to BR2_DL_DIR.")
+endif
+endif
+
+#
 # Legacy options from 2012.08
 #
 
