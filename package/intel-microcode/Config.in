@@ -1,0 +1,7 @@
+config BR2_PACKAGE_INTEL_MICROCODE
+	bool "intel-microcode"
+	depends on BR2_x86_64 || BR2_i386
+	help
+	  This package provides an Intel microcode data file that can be
+	  used to correct processor errors. The iucode-tool package and
+	  proper kernel support are required to upload the microcode.
