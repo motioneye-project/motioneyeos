@@ -1,0 +1,28 @@
+Description: CVE-2013-6393: yaml_parser_scan_tag_uri: fix int overflow leading to buffer overflow
+ This is a proposed patch from Florian Weimer <fweimer@redhat.com> for
+ the string overflow issue. It has been ack'd by upstream.
+Origin: https://bugzilla.redhat.com/show_bug.cgi?id=1033990
+Bug-RedHat: https://bugzilla.redhat.com/show_bug.cgi?id=1033990
+Bug-Debian: http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=737076
+Last-Update: 2014-01-29
+---
+# HG changeset patch
+# User Florian Weimer <fweimer@redhat.com>
+# Date 1389273500 -3600
+#      Thu Jan 09 14:18:20 2014 +0100
+# Node ID a54d7af707f25dc298a7be60fd152001d2b3035b
+# Parent  3e6507fa0c26d20c09f8f468f2bd04aa2fd1b5b5
+yaml_parser_scan_tag_uri: fix int overflow leading to buffer overflow
+
+diff --git a/src/scanner.c b/src/scanner.c
+--- a/src/scanner.c
++++ b/src/scanner.c
+@@ -2574,7 +2574,7 @@
+ 
+     /* Resize the string to include the head. */
+ 
+-    while (string.end - string.start <= (int)length) {
++    while ((size_t)(string.end - string.start) <= length) {
+         if (!yaml_string_extend(&string.start, &string.pointer, &string.end)) {
+             parser->error = YAML_MEMORY_ERROR;
+             goto error;
