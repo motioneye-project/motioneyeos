@@ -18,8 +18,8 @@ Index: b/mkspecs/devices/linux-buildroot-g++/qmake.conf
 +include(../common/linux_device_pre.conf)
 +
 +#modifications to gcc-base.conf
-+QMAKE_CFLAGS           += $${BUILDROOT_COMPILER_CFLAGS}
-+QMAKE_CXXFLAGS         += $${BUILDROOT_COMPILER_CXXFLAGS}
++QMAKE_CFLAGS           += $${BR_COMPILER_CFLAGS}
++QMAKE_CXXFLAGS         += $${BR_COMPILER_CXXFLAGS}
 +QMAKE_CXXFLAGS_RELEASE += -O3
 +
 +QMAKE_LIBS             += -lrt -lpthread -ldl
