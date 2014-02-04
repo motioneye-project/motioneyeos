@@ -5,6 +5,7 @@ config BR2_PACKAGE_LIBXMLPP
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_USE_WCHAR # glibmm -> libglib2
 	depends on BR2_TOOLCHAIN_HAS_THREADS # glibmm -> libglib2
+	depends on BR2_USE_MMU # glibmm -> libglib2
 	help
 	  libxml++ is a C++ wrapper for the libxml XML parser library.
 
