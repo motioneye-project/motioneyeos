@@ -204,7 +204,7 @@ else
 VLC_CONF_OPT += --disable-lua
 endif
 
-ifeq ($(BR2_PACKAGE_QT),y)
+ifeq ($(BR2_PACKAGE_QT_GUI_MODULE),y)
 VLC_CONF_OPT += --enable-qt
 VLC_DEPENDENCIES += qt
 else
