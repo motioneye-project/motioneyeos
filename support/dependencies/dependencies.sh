@@ -207,7 +207,7 @@ if grep -q ^BR2_HOSTARCH_NEEDS_IA32_LIBS=y $BUILDROOT_CONFIG ; then
 fi
 
 if grep -q ^BR2_HOSTARCH_NEEDS_IA32_COMPILER=y $BUILDROOT_CONFIG ; then
-    if ! echo "int main(void) {}" | gcc -m32 -x c - ; then
+    if ! echo "int main(void) {}" | gcc -m32 -x c - -o /dev/null ; then
 	echo
 	echo "Your Buildroot configuration needs a compiler capable of building 32 bits binaries."
 	echo "If you're running a Debian/Ubuntu distribution, install the gcc-multilib package."
