@@ -9,6 +9,7 @@ import BeautifulSoup
 import re
 import os
 import urllib
+from distutils.version import LooseVersion
 
 # This can be customized
 XORG_VERSION = "X11R7.7"
@@ -147,17 +148,20 @@ def show_summary(packages):
             xorg_version = "N/A"
             action = "Remove from Buildroot"
             remove_pkgs += 1
-        # For now, we assume that if a package version is different,
-        # it's because an upgrade is needed.
-        elif pkg[XORG_VERSION_KEY] != pkg[BR_VERSION_KEY]:
+        elif LooseVersion(pkg[XORG_VERSION_KEY]) > LooseVersion(pkg[BR_VERSION_KEY]):
             br_version = pkg[BR_VERSION_KEY]
             xorg_version = pkg[XORG_VERSION_KEY]
             action = "Upgrade"
             upgrade_pkgs += 1
+        elif LooseVersion(pkg[XORG_VERSION_KEY]) < LooseVersion(pkg[BR_VERSION_KEY]):
+            br_version = pkg[BR_VERSION_KEY]
+            xorg_version = pkg[XORG_VERSION_KEY]
+            action = "More recent"
+            nothing_todo_pkgs += 1
         else:
             br_version = pkg[BR_VERSION_KEY]
             xorg_version = pkg[XORG_VERSION_KEY]
-            action = "-"
+            action = ""
             nothing_todo_pkgs += 1
 
         print FORMAT_STRING % (pkgname, br_version.center(15), xorg_version.center(15), action)
