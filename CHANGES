@@ -80,6 +80,28 @@
 	Removed packages: lzma, netkitbase, netkittelnet, pkg-config,
 	squashfs3, ttcp
 
+	Issues resolved (http://bugs.uclibc.org):
+
+	#65:   new package: dbus c++ language bindings
+	#769:  Update configuration menu for MIPS target
+	#2629: Segmentation faults and division by zero in Grub on ext2
+	#5024: grub fails to build for x86_64 target architecture
+	#5066: New-Package: net-tools
+	#5072: ncurses: add ncurses-progs to target
+	#5294: uclibc build ignores target CFLAGS and LDFLAGS
+	#5366: Login doesn't work with util-linux versions of login/agetty
+	#5378: dropbear Makefile broken
+	#5390: System banner - change to empty doesn't remove /etc/issue
+	#5798: ncurses-5.9 fails to compile statically
+	#5810: Buildroot 2012.11: Additional GCC option "-msoft-float" ...
+	#6080: Git fetch caching
+	#6092: Bootable ISO image creation seems to have stopped working..
+	#6272: coreutils build fails
+	#6656: Build Qt5 with ccache
+	#6662: internal compiler error: Segmentation fault during making..
+	#6752: genext2fs: e2fsck must run before tunefs -U random
+	#6830: Qt5: no fonts are installed
+
 2013.11, Released November 30th, 2013:
 
 	Minor fixes.
