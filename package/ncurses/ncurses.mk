@@ -29,7 +29,7 @@ NCURSES_CONF_OPT = \
 	--enable-overwrite \
 	--enable-pc-files \
 	$(if $(BR2_PACKAGE_NCURSES_TARGET_PROGS),,--without-progs) \
-	$(if $(BR2_HAVE_DOCUMENTATION),,--without-manpages)
+	--without-manpages
 
 # Install after busybox for the full-blown versions
 ifeq ($(BR2_PACKAGE_BUSYBOX),y)

@@ -69,7 +69,7 @@ FFMPEG_CONF_OPT = \
 	--disable-vis \
 	--disable-sram \
 	--disable-symver \
-	$(if $(BR2_HAVE_DOCUMENTATION),,--disable-doc)
+	--disable-doc
 
 FFMPEG_DEPENDENCIES += $(if $(BR2_PACKAGE_LIBICONV),libiconv)
 

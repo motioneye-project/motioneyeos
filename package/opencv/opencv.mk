@@ -12,7 +12,7 @@ OPENCV_INSTALL_STAGING = YES
 OPENCV_CONF_OPT += \
 	-DCMAKE_BUILD_TYPE=$(if $(BR2_ENABLE_DEBUG),Debug,Release)   \
 	-DBUILD_WITH_STATIC_CRT=OFF                                  \
-	-DBUILD_DOCS=$(if $(BR2_HAVE_DOCUMENTATION),ON,OFF)          \
+	-DBUILD_DOCS=OFF                                             \
 	-DBUILD_EXAMPLES=OFF                                         \
 	-DBUILD_PACKAGE=OFF                                          \
 	-DBUILD_TESTS=$(if $(BR2_PACKAGE_OPENCV_BUILD_TESTS),ON,OFF) \
@@ -161,12 +161,10 @@ OPENCV_CONF_OPT += -DWITH_V4L=OFF
 endif
 
 # Installation hooks:
-ifneq ($(BR2_HAVE_DOCUMENTATION),y)
 define OPENCV_CLEAN_INSTALL_DOC
 	$(RM) -fr $(TARGET_DIR)/usr/share/OpenCV/doc
 endef
 OPENCV_POST_INSTALL_TARGET_HOOKS += OPENCV_CLEAN_INSTALL_DOC
-endif
 
 define OPENCV_CLEAN_INSTALL_CMAKE
 	$(RM) -f $(TARGET_DIR)/usr/share/OpenCV/OpenCVConfig*.cmake

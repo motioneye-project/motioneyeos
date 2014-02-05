@@ -10,7 +10,7 @@ XPROTO_XEXTPROTO_SITE = http://xorg.freedesktop.org/releases/individual/proto
 XPROTO_XEXTPROTO_LICENSE = MIT
 XPROTO_XEXTPROTO_LICENSE_FILES = COPYING
 XPROTO_XEXTPROTO_INSTALL_STAGING = YES
-XPROTO_XEXTPROTO_CONF_OPT = $(if $(BR2_HAVE_DOCUMENTATION),,--disable-specs)
+XPROTO_XEXTPROTO_CONF_OPT = --disable-specs
 HOST_XPROTO_XEXTPROTO_CONF_OPT = --disable-specs
 
 $(eval $(autotools-package))

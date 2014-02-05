@@ -22,7 +22,8 @@ NETSNMP_CONF_OPT = --with-persistent-directory=/var/lib/snmp \
 		--with-sys-location="Unknown" \
 		--with-mib-modules="$(call qstrip,$(BR2_PACKAGE_NETSNMP_WITH_MIB_MODULES))" \
 		--with-out-mib-modules="$(call qstrip,$(BR2_PACKAGE_NETSNMP_WITHOUT_MIB_MODULES))" \
-		--with-out-transports="Unix"
+		--with-out-transports="Unix" \
+		--disable-manuals
 NETSNMP_MAKE = $(MAKE1)
 NETSNMP_CONFIG_SCRIPTS = net-snmp-config
 
@@ -44,9 +45,7 @@ else
 endif
 
 # Docs
-ifneq ($(BR2_HAVE_DOCUMENTATION),y)
-	NETSNMP_CONF_OPT += --disable-manuals
-endif
+NETSNMP_CONF_OPT += --disable-manuals
 
 ifneq ($(BR2_PACKAGE_NETSNMP_ENABLE_MIBS),y)
 	NETSNMP_CONF_OPT += --disable-mib-loading

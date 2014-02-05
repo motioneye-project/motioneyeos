@@ -332,7 +332,6 @@ ifneq ($(BR2_LARGEFILE),y)
 DISABLE_LARGEFILE= --disable-largefile
 endif
 
-ifneq ($(BR2_HAVE_DOCUMENTATION),y)
 # The configure option varies, but since unknown options are ignored
 # we can pass all of them.
 DISABLE_DOCUMENTATION = \
@@ -342,7 +341,6 @@ DISABLE_DOCUMENTATION = \
 	--disable-documentation \
 	--with-xmlto=no \
 	--with-fop=no
-endif
 
 ifeq ($(BR2_INET_IPV6),y)
 DISABLE_IPV6= --enable-ipv6

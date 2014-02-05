@@ -35,13 +35,11 @@ else
 ENLIGHTENMENT_CONF_ENV += enable_alsa=no
 endif
 
-ifeq ($(BR2_HAVE_DOCUMENTATION),)
 define ENLIGHTENMENT_REMOVE_DOCUMENTATION
 	rm -rf $(TARGET_DIR)/usr/share/enlightenment/doc/
 	rm -f $(TARGET_DIR)/usr/share/enlightenment/COPYING
 	rm -f $(TARGET_DIR)/usr/share/enlightenment/AUTHORS
 endef
 ENLIGHTENMENT_POST_INSTALL_TARGET_HOOKS += ENLIGHTENMENT_REMOVE_DOCUMENTATION
-endif
 
 $(eval $(autotools-package))

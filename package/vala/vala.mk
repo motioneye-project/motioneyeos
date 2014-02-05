@@ -15,15 +15,9 @@ VALA_LICENSE_FILES = COPYING
 VALA_DEPENDENCIES = host-flex host-bison libglib2 \
 		$(if $(BR2_NEEDS_GETTEXT_IF_LOCALE),gettext)
 
-# If we want the documentation, then xsltproc is needed. If we don't
-# want the documentation, force Vala to not use the host xsltproc even
-# if available, because it may or may not work with Vala documentation
-# (some versions of xsltproc segfault)
-ifeq ($(BR2_HAVE_DOCUMENTATION),y)
-VALA_DEPENDENCIES += host-libxslt
-else
+# Force Vala to not use the host xsltproc even if available, because it may or
+# may not work with Vala documentation (some versions of xsltproc segfault)
 VALA_CONF_ENV = ac_cv_path_XSLTPROC=:
-endif
 
 HOST_VALA_DEPENDENCIES = host-flex host-libglib2
 # Yes, the autoconf script understands ':' as "xsltproc is not

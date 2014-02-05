@@ -15,7 +15,7 @@ PULSEAUDIO_CONF_OPT = \
 	--disable-default-build-tests \
 	--disable-legacy-runtime-dir \
 	--disable-legacy-database-entry-format \
-	$(if $(BR2_HAVE_DOCUMENTATION),,--disable-manpages)
+	--disable-manpages
 
 PULSEAUDIO_DEPENDENCIES = \
 	host-pkgconf libtool json-c libsndfile speex host-intltool \

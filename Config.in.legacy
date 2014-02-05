@@ -119,6 +119,13 @@ config BR2_sh3eb
 	  Due to an inexistent user base and generally poor Linux
 	  support, the support for the SH3eb architecture was removed.
 
+config BR2_HAVE_DOCUMENTATION
+	bool "support for documentation on target has been removed"
+	select BR2_LEGACY
+	help
+	  Support for documentation on target has been removed since it has
+	  been deprecated for more than four buildroot releases.
+
 config BR2_PACKAGE_AUTOMAKE
 	bool "automake target package has been removed"
 	select BR2_LEGACY

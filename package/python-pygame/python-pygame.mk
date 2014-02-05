@@ -82,13 +82,11 @@ define PYTHON_PYGAME_CONFIGURE_CMDS
 	$(PYTHON_PYGAME_UNCONFIGURE_SCRAP)
 endef
 
-ifneq ($(BR2_HAVE_DOCUMENTATION),y)
 define PYTHON_PYGAME_REMOVE_DOC
 	rm -rf $(TARGET_DIR)/usr/lib/python*/site-packages/pygame/docs
 endef
 
 PYTHON_PYGAME_POST_INSTALL_TARGET_HOOKS += PYTHON_PYGAME_REMOVE_DOC
-endif
 
 define PYTHON_PYGAME_REMOVE_TESTS
 	rm -rf $(TARGET_DIR)/usr/lib/python*/site-packages/pygame/tests
