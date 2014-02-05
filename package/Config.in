@@ -81,7 +81,6 @@ source "package/whetstone/Config.in"
 endmenu
 
 menu "Development tools"
-source "package/automake/Config.in"
 source "package/binutils/Config.in"
 source "package/bison/Config.in"
 source "package/bsdiff/Config.in"
