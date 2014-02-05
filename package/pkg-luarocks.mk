@@ -28,8 +28,7 @@
 #             for host packages
 #  argument 3 is the uppercase package name, without the HOST_ prefix
 #             for host packages
-#  argument 4 is the package directory prefix
-#  argument 5 is the type (target or host)
+#  argument 4 is the type (target or host)
 ################################################################################
 
 define inner-luarocks-package
@@ -70,7 +69,7 @@ endif
 
 # Call the generic package infrastructure to generate the necessary
 # make targets
-$(call inner-generic-package,$(1),$(2),$(3),$(4),$(5))
+$(call inner-generic-package,$(1),$(2),$(3),$(4))
 
 endef
 
@@ -78,5 +77,5 @@ endef
 # luarocks-package -- the target generator macro for LuaRocks packages
 ################################################################################
 
-luarocks-package = $(call inner-luarocks-package,$(pkgname),$(call UPPERCASE,$(pkgname)),$(call UPPERCASE,$(pkgname)),$(pkgparentdir),target)
+luarocks-package = $(call inner-luarocks-package,$(pkgname),$(call UPPERCASE,$(pkgname)),$(call UPPERCASE,$(pkgname)),target)
 # host-luarocks-package not supported

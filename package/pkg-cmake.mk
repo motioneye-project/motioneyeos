@@ -31,8 +31,7 @@
 #             for host packages
 #  argument 3 is the uppercase package name, without the HOST_ prefix
 #             for host packages
-#  argument 4 is the package directory prefix
-#  argument 5 is the type (target or host)
+#  argument 4 is the type (target or host)
 ################################################################################
 
 define inner-cmake-package
@@ -55,7 +54,7 @@ $(2)_BUILDDIR			= $$($(2)_SRCDIR)
 # packages.
 #
 ifndef $(2)_CONFIGURE_CMDS
-ifeq ($(5),target)
+ifeq ($(4),target)
 
 # Configure package for target
 define $(2)_CONFIGURE_CMDS
@@ -99,7 +98,7 @@ $(2)_DEPENDENCIES += host-cmake
 # file.
 #
 ifndef $(2)_BUILD_CMDS
-ifeq ($(5),target)
+ifeq ($(4),target)
 define $(2)_BUILD_CMDS
 	$(TARGET_MAKE_ENV) $$($$(PKG)_MAKE_ENV) $$($$(PKG)_MAKE) $$($$(PKG)_MAKE_OPT) -C $$($$(PKG)_BUILDDIR)
 endef
@@ -142,7 +141,7 @@ endif
 
 # Call the generic package infrastructure to generate the necessary
 # make targets
-$(call inner-generic-package,$(1),$(2),$(3),$(4),$(5))
+$(call inner-generic-package,$(1),$(2),$(3),$(4))
 
 endef
 
@@ -150,8 +149,8 @@ endef
 # cmake-package -- the target generator macro for CMake packages
 ################################################################################
 
-cmake-package = $(call inner-cmake-package,$(pkgname),$(call UPPERCASE,$(pkgname)),$(call UPPERCASE,$(pkgname)),$(pkgparentdir),target)
-host-cmake-package = $(call inner-cmake-package,host-$(pkgname),$(call UPPERCASE,host-$(pkgname)),$(call UPPERCASE,$(pkgname)),$(pkgparentdir),host)
+cmake-package = $(call inner-cmake-package,$(pkgname),$(call UPPERCASE,$(pkgname)),$(call UPPERCASE,$(pkgname)),target)
+host-cmake-package = $(call inner-cmake-package,host-$(pkgname),$(call UPPERCASE,host-$(pkgname)),$(call UPPERCASE,$(pkgname)),host)
 
 ################################################################################
 # Generation of the CMake toolchain file

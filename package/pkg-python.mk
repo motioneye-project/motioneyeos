@@ -80,8 +80,7 @@ HOST_PKG_PYTHON_SETUPTOOLS_INSTALL_OPT = \
 #             for host packages
 #  argument 3 is the uppercase package name, without the HOST_ prefix
 #             for host packages
-#  argument 4 is the package directory prefix
-#  argument 5 is the type (target or host)
+#  argument 4 is the type (target or host)
 ################################################################################
 
 define inner-python-package
@@ -103,7 +102,7 @@ endif
 
 # Distutils
 ifeq ($$($(2)_SETUP_TYPE),distutils)
-ifeq ($(5),target)
+ifeq ($(4),target)
 $(2)_BASE_ENV         = $$(PKG_PYTHON_DISTUTILS_ENV)
 $(2)_BASE_BUILD_TGT   = build
 $(2)_BASE_BUILD_OPT   = $$(PKG_PYTHON_DISTUTILS_BUILD_OPT)
@@ -116,7 +115,7 @@ $(2)_BASE_INSTALL_OPT = $$(HOST_PKG_PYTHON_DISTUTILS_INSTALL_OPT)
 endif
 # Setuptools
 else ifeq ($$($(2)_SETUP_TYPE),setuptools)
-ifeq ($(5),target)
+ifeq ($(4),target)
 $(2)_BASE_ENV         = $$(PKG_PYTHON_SETUPTOOLS_ENV)
 $(2)_BASE_BUILD_TGT   = build -x
 $(2)_BASE_BUILD_OPT   =
@@ -149,7 +148,7 @@ $(2)_DEPENDENCIES ?= $(filter-out host-python host-python-setuptools host-python
 # runtime) and the python interpreter on the host (for
 # compilation). However, host packages only need the python
 # interpreter on the host.
-ifeq ($(5),target)
+ifeq ($(4),target)
 $(2)_DEPENDENCIES += host-python python
 else
 $(2)_DEPENDENCIES += host-python
@@ -164,7 +163,7 @@ endif
 ifeq ($$($(2)_SETUP_TYPE),setuptools)
 ifneq ($(2),HOST_PYTHON_SETUPTOOLS)
 $(2)_DEPENDENCIES += host-python-setuptools
-ifeq ($(5),target)
+ifeq ($(4),target)
 $(2)_DEPENDENCIES += host-python-distutilscross
 endif
 endif
@@ -212,7 +211,7 @@ endif
 
 # Call the generic package infrastructure to generate the necessary
 # make targets
-$(call inner-generic-package,$(1),$(2),$(3),$(4),$(5))
+$(call inner-generic-package,$(1),$(2),$(3),$(4))
 
 endef
 
@@ -220,5 +219,5 @@ endef
 # python-package -- the target generator macro for Python packages
 ################################################################################
 
-python-package = $(call inner-python-package,$(pkgname),$(call UPPERCASE,$(pkgname)),$(call UPPERCASE,$(pkgname)),$(pkgparentdir),target)
-host-python-package = $(call inner-python-package,host-$(pkgname),$(call UPPERCASE,host-$(pkgname)),$(call UPPERCASE,$(pkgname)),$(pkgparentdir),host)
+python-package = $(call inner-python-package,$(pkgname),$(call UPPERCASE,$(pkgname)),$(call UPPERCASE,$(pkgname)),target)
+host-python-package = $(call inner-python-package,host-$(pkgname),$(call UPPERCASE,host-$(pkgname)),$(call UPPERCASE,$(pkgname)),host)
