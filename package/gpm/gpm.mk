@@ -10,6 +10,7 @@ GPM_SITE = http://www.nico.schottelius.org/software/gpm/archives/
 GPM_LICENSE = GPLv2+
 GPM_LICENSE_FILES = COPYING
 GPM_INSTALL_STAGING = YES
+GPM_DEPENDENCIES = host-bison
 
 # if not already installed in staging dir, gpm Makefile may fail to find some
 # of the headers needed to generate build dependencies, the first time it is
