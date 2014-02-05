@@ -78,5 +78,5 @@ endef
 # luarocks-package -- the target generator macro for LuaRocks packages
 ################################################################################
 
-luarocks-package = $(call inner-luarocks-package,$(call pkgname),$(call UPPERCASE,$(call pkgname)),$(call UPPERCASE,$(call pkgname)),$(call pkgparentdir),target)
+luarocks-package = $(call inner-luarocks-package,$(pkgname),$(call UPPERCASE,$(pkgname)),$(call UPPERCASE,$(pkgname)),$(pkgparentdir),target)
 # host-luarocks-package not supported

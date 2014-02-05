@@ -59,8 +59,8 @@ endef
 # pkgdir macro is carefully written to handle the case of the Linux
 # package, for which the package directory is an empty string.
 pkgdir       = $(dir $(lastword $(MAKEFILE_LIST)))
-pkgname      = $(lastword $(subst /, ,$(call pkgdir)))
-pkgparentdir = $(patsubst %$(call pkgname)/,%,$(call pkgdir))
+pkgname      = $(lastword $(subst /, ,$(pkgdir)))
+pkgparentdir = $(patsubst %$(pkgname)/,%,$(pkgdir))
 
 # Define extractors for different archive suffixes
 INFLATE.bz2  = $(BZCAT)
