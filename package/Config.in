@@ -85,7 +85,6 @@ source "package/binutils/Config.in"
 source "package/bison/Config.in"
 source "package/bsdiff/Config.in"
 source "package/bustle/Config.in"
-source "package/ccache/Config.in"
 source "package/cvs/Config.in"
 if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 source "package/diffutils/Config.in"

@@ -38,7 +38,6 @@ endef
 HOST_CCACHE_POST_CONFIGURE_HOOKS += \
 	HOST_CCACHE_PATCH_CONFIGURATION
 
-$(eval $(autotools-package))
 $(eval $(host-autotools-package))
 
 ifeq ($(BR2_CCACHE),y)
