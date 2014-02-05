@@ -1,6 +1,7 @@
 menuconfig BR2_PACKAGE_OPENCV
 	bool "opencv"
 	select BR2_PACKAGE_ZLIB
+	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_USE_WCHAR
 	help
@@ -208,5 +209,5 @@ config BR2_PACKAGE_OPENCV_INSTALL_DATA
 
 endif # BR2_PACKAGE_OPENCV
 
-comment "opencv needs a toolchain w/ C++, wchar"
-	depends on !(BR2_INSTALL_LIBSTDCPP  && BR2_USE_WCHAR)
+comment "opencv needs a toolchain w/ C++, threads, wchar"
+	depends on !(BR2_INSTALL_LIBSTDCPP  && BR2_USE_WCHAR && BR2_TOOLCHAIN_HAS_THREADS)
