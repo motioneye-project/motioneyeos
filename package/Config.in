@@ -235,7 +235,6 @@ source "package/torsmo/Config.in"
 source "package/wmctrl/Config.in"
 source "package/x11vnc/Config.in"
 source "package/xscreensaver/Config.in"
-source "package/xstroke/Config.in"
 source "package/xterm/Config.in"
 source "package/xvkbd/Config.in"
 
