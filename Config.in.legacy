@@ -119,6 +119,24 @@ config BR2_sh3eb
 	  Due to an inexistent user base and generally poor Linux
 	  support, the support for the SH3eb architecture was removed.
 
+config BR2_GDB_VERSION_7_2
+	bool "gdb 7.2.x is no longer supported"
+	select BR2_GDB_VERSION_7_5
+	select BR2_LEGACY
+	help
+	  Version 7.2.x of gdb has been deprecated for more than four
+	  buildroot releases and is now removed. As an alternative, gdb
+	  7.5.x has been automatically selected in your configuration.
+
+config BR2_GDB_VERSION_7_3
+	bool "gdb 7.3.x is no longer supported"
+	select BR2_GDB_VERSION_7_5
+	select BR2_LEGACY
+	help
+	  Version 7.3.x of gdb has been deprecated for more than four
+	  buildroot releases and is now removed. As an alternative, gdb
+	  7.5.x has been automatically selected in your configuration.
+
 config BR2_PACKAGE_CCACHE
 	bool "ccache target package has been removed"
 	select BR2_LEGACY
