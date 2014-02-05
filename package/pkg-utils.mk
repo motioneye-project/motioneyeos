@@ -55,12 +55,9 @@ endef
 # Helper functions to determine the name of a package and its
 # directory from its makefile directory, using the $(MAKEFILE_LIST)
 # variable provided by make. This is used by the *TARGETS macros to
-# automagically find where the package is located. Note that the
-# pkgdir macro is carefully written to handle the case of the Linux
-# package, for which the package directory is an empty string.
+# automagically find where the package is located.
 pkgdir       = $(dir $(lastword $(MAKEFILE_LIST)))
 pkgname      = $(lastword $(subst /, ,$(pkgdir)))
-pkgparentdir = $(patsubst %$(pkgname)/,%,$(pkgdir))
 
 # Define extractors for different archive suffixes
 INFLATE.bz2  = $(BZCAT)
