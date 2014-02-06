@@ -35,7 +35,7 @@ config BR2_USE_UCLIBC_SNAPSHOT
 	default "snapshot"
 	depends on BR2_UCLIBC_VERSION_SNAPSHOT
 	help
-	    Use latest snapshot or one from a specific date?
+	  Use latest snapshot or one from a specific date?
 
 config BR2_UCLIBC_VERSION_STRING
 	string
@@ -115,11 +115,11 @@ choice
 		bool "linuxthreads"
 		depends on !BR2_bfin
 		depends on !BR2_xtensa
-	        select BR2_TOOLCHAIN_HAS_THREADS
+		select BR2_TOOLCHAIN_HAS_THREADS
 
 	config BR2_PTHREADS_OLD
 		bool "linuxthreads (stable/old)"
-	        select BR2_TOOLCHAIN_HAS_THREADS
+		select BR2_TOOLCHAIN_HAS_THREADS
 
 	config BR2_PTHREADS_NATIVE
 		bool "Native POSIX Threading (NPTL)"
