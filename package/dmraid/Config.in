@@ -2,6 +2,8 @@ config BR2_PACKAGE_DMRAID
 	bool "dmraid"
 	depends on BR2_LARGEFILE
 	depends on BR2_USE_MMU # lvm2
+	# triggers gcc ice
+	depends on !BR2_arc
 	select BR2_PACKAGE_LVM2
 	help
 	  dmraid discovers, activates, deactivates and displays properties
@@ -13,3 +15,4 @@ config BR2_PACKAGE_DMRAID
 comment "dmraid needs a toolchain w/ largefile"
 	depends on BR2_USE_MMU
 	depends on !BR2_LARGEFILE
+	depends on !BR2_arc
