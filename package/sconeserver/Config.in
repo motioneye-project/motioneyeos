@@ -67,6 +67,7 @@ config BR2_PACKAGE_SCONESERVER_LOCATION
 	bool "location"
 	depends on BR2_USE_MMU # gpsd
 	depends on BR2_TOOLCHAIN_HAS_THREADS # gpsd
+	depends on !BR2_microblaze # gpsd
 	select BR2_PACKAGE_GPSD
 	help
 	  Location module for Sconeserver
