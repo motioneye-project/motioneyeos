@@ -91,7 +91,7 @@ endif
 ifeq ($(BR2_PACKAGE_MPD_VORBIS),y)
 MPD_DEPENDENCIES += libvorbis
 else
-MPD_CONF_OPT += --disable-vorbis
+MPD_CONF_OPT += --disable-vorbis --disable-vorbis-encoder
 endif
 
 ifeq ($(BR2_PACKAGE_MPD_MPG123),y)
