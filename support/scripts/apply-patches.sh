@@ -92,7 +92,7 @@ function apply_patch {
 }
 
 function scan_patchdir {
-    path=$1
+    local path=$1
     shift 1
     patches=${@-*}
 
