@@ -11,3 +11,18 @@ to the sdcard:
 	rootfs.cpio.gz.uboot -> uramdisk.image.gz
 	uImage -> uImage
 
+Uboot Support
+-------------
+
+Uboot is installed in a wrapper file called BOOT.BIN located on the root of
+the SD card.  To create the BOOT.BIN file do the following.
+
+source <path/to/xilinx/settings.sh>
+cat <<EOF > boot.bif
+{
+   [bootloader]<path/to/fsbl.elf>
+   <path/to/system.bit>
+   <path/to/uboot.elf>
+}
+EOF
+bootgen -image boot.bif -o i BOOT.BIN
