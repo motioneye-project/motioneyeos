@@ -99,6 +99,64 @@ comment "----------------------------------------------------"
 endif
 
 ###############################################################################
+comment "Legacy options removed in 2014.05"
+
+config BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_UDEV
+	bool "/dev management by udev removed"
+	select BR2_LEGACY
+	help
+	  The 'udev' package has been converted to a virtual package.
+	  There is currently one provider for this feature: 'eudev'.
+
+	  Therefore, you must choose 'Dynamic using eudev' in the
+	  '/dev management' menu to get the same behaviour as in your
+	   old configuration.
+
+	  You must also check the packages depending on 'udev' are still
+	  selected.
+
+config BR2_PACKAGE_UDEV
+	bool "udev is now a virtual package"
+	select BR2_LEGACY
+	select BR2_PACKAGE_HAS_UDEV
+	help
+	  The 'udev' package has been converted to a virtual package.
+	  There is currently one provider for this feature: 'eudev'.
+
+	  Your old configuration refers to packages depending on 'udev',
+	  either for build or at runtime.
+
+	  Check that a 'udev' provider is selected, i.e. that 'eudev' is
+	  selected, which is the case if '/dev management' is set to
+	  'Dynamic using eudev'.
+
+config BR2_PACKAGE_UDEV_RULES_GEN
+	bool "udev rules generation handled by eudev"
+	select BR2_LEGACY
+	select BR2_PACKAGE_EUDEV
+	select BR2_PACKAGE_EUDEV_RULES_GEN
+	help
+	  The 'udev' package has been converted to a virtual package.
+	  There is currently one provider for this feature: 'eudev'.
+
+	  udev rules generation will now be handled by 'eudev'.
+
+	  Check that '/dev management' is set to 'Dynamic using eudev'
+	  to get the same behaviour as in your old configuration.
+
+config BR2_PACKAGE_UDEV_ALL_EXTRAS
+	bool "udev extras removed"
+	select BR2_LEGACY
+	help
+	  The 'udev' package has been converted to a virtual package.
+	  There is currently one provider for this feature: 'eudev'.
+
+	  The option to enable the extra features of 'udev' (gudev, ...)
+	  has been removed. These features are automatically enabled in
+	  the 'udev' providers if the dependencies are selected. For
+	  example, selecting 'libglib2' will trigger the build of gudev.
+
+###############################################################################
 comment "Legacy options removed in 2014.02"
 
 config BR2_sh2

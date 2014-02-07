@@ -1,6 +1,6 @@
 config BR2_PACKAGE_LIBATASMART
 	bool "libatasmart"
-	depends on BR2_PACKAGE_UDEV # libudev is configure dependency
+	depends on BR2_PACKAGE_HAS_UDEV # libudev is configure dependency
 	help
 	  The libatasmart package is a disk reporting library.
 	  It only supports a subset of the ATA S.M.A.R.T. functionality.
@@ -8,4 +8,4 @@ config BR2_PACKAGE_LIBATASMART
 	  http://www.linuxfromscratch.org/blfs/view/svn/general/libatasmart.html
 
 comment "libatasmart requires udev to be enabled"
-	depends on !BR2_PACKAGE_UDEV
+	depends on !BR2_PACKAGE_HAS_UDEV

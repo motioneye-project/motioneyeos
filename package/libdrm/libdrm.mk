@@ -65,7 +65,7 @@ else
 LIBDRM_CONF_OPT += --disable-freedreno-experimental-api
 endif
 
-ifeq ($(BR2_PACKAGE_UDEV),y)
+ifeq ($(BR2_PACKAGE_HAS_UDEV),y)
 LIBDRM_CONF_OPT += --enable-udev
 LIBDRM_DEPENDENCIES += udev
 else

@@ -16,7 +16,7 @@ PCSC_LITE_LICENSE_FILES = COPYING
 # - libudev and libusb can't be used together
 # - libudev has a priority over libusb
 
-ifeq ($(BR2_PACKAGE_UDEV),y)
+ifeq ($(BR2_PACKAGE_HAS_UDEV),y)
 PCSC_LITE_CONF_OPT += --enable-libudev --disable-libusb
 PCSC_LITE_DEPENDENCIES += udev
 else

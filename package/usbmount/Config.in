@@ -1,6 +1,6 @@
 config BR2_PACKAGE_USBMOUNT
 	bool "usbmount"
-	depends on BR2_PACKAGE_UDEV
+	depends on BR2_PACKAGE_HAS_UDEV
 	select BR2_PACKAGE_LOCKFILE_PROGS
 	help
 	  The usbmount package automatically mounts USB mass storage devices
@@ -9,4 +9,4 @@ config BR2_PACKAGE_USBMOUNT
 	  http://usbmount.alioth.debian.org/
 
 comment "usbmount requires udev to be enabled"
-	depends on !BR2_PACKAGE_UDEV
+	depends on !BR2_PACKAGE_HAS_UDEV
