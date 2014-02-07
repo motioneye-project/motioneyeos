@@ -1,5 +1,6 @@
 config BR2_PACKAGE_JOE
 	bool "joe"
+	depends on BR2_USE_MMU # fork()
 	help
 	  Joe's Own Editor
 
