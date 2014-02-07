@@ -1,11 +1,21 @@
 config BR2_PACKAGE_SYSTEMD
 	bool "systemd"
-	depends on BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_EUDEV
+	depends on BR2_INIT_SYSTEMD
+	depends on !BR2_avr32 # no epoll_create1
+	depends on BR2_LARGEFILE # util-linux
+	depends on BR2_USE_WCHAR # util-linux
 	depends on BR2_INET_IPV6
+	depends on !BR2_PREFER_STATIC_LIB # kmod
 	depends on BR2_TOOLCHAIN_HAS_THREADS # dbus
 	depends on BR2_USE_MMU # dbus
+	select BR2_PACKAGE_HAS_UDEV
 	select BR2_PACKAGE_DBUS
 	select BR2_PACKAGE_LIBCAP
+	select BR2_PACKAGE_UTIL_LINUX
+	select BR2_PACKAGE_UTIL_LINUX_LIBBLKID
+	select BR2_PACKAGE_KMOD
+	select BR2_PACKAGE_BUSYBOX_SHOW_OTHERS # kmod-tools
+	select BR2_PACKAGE_KMOD_TOOLS
 	help
 	  systemd is a system and service manager for Linux, compatible with
 	  SysV and LSB init scripts. systemd provides aggressive parallelization
@@ -16,9 +26,36 @@ config BR2_PACKAGE_SYSTEMD
 	  elaborate transactional dependency-based service control logic.
 	  It can work as a drop-in replacement for sysvinit.
 
+	  Systemd requires a Linux kernel >= 3.0, with inotify, devtmpfs,
+	  tmpfs vfs and tmpfs POSIX ACL enabled.
+
+	  Systemd also provides udev, the userspace device daemon.
+
+	  The selection of other packages will enable some features:
+
+	  - libglib2 package will add support for gudev.
+	  - acl package will add support for multi-seat.
+
 	  http://freedesktop.org/wiki/Software/systemd
 
-comment "systemd needs eudev /dev management and a toolchain w/ IPv6, threads"
-	depends on BR2_USE_MMU
-	depends on !BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_EUDEV || !BR2_INET_IPV6 || \\
-		!BR2_TOOLCHAIN_HAS_THREADS
+if BR2_PACKAGE_SYSTEMD
+
+config BR2_PACKAGE_SYSTEMD_ALL_EXTRAS
+	bool "enable all extras"
+	select BR2_PACKAGE_XZ
+	select BR2_PACKAGE_LIBGCRYPT
+	help
+	  Enable extra features for Systemd: journal compression and
+	  signing.
+
+config BR2_PACKAGE_SYSTEMD_JOURNAL_GATEWAY
+	bool "HTTP server for journal events"
+	select BR2_PACKAGE_LIBMICROHTTPD
+	help
+	  systemd-journal-gatewayd serves journal events over the
+	  network. Clients must connect using HTTP. The server
+	  listens on port 19531 by default.
+
+	  http://www.freedesktop.org/software/systemd/man/systemd-journal-gatewayd.service.html
+
+endif
