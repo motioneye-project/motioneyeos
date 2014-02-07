@@ -26,7 +26,6 @@ HOST_PYTHON_CONF_OPT += 	\
 	--disable-curses	\
 	--disable-codecs-cjk	\
 	--disable-nis		\
-	--disable-unicodedata	\
 	--disable-dbm		\
 	--disable-gdbm		\
 	--disable-bsddb		\
@@ -100,6 +99,7 @@ endif
 
 ifneq ($(BR2_PACKAGE_PYTHON_UNICODEDATA),y)
 PYTHON_CONF_OPT += --disable-unicodedata
+HOST_PYTHON_CONF_OPT += --disable-unicodedata
 endif
 
 # Default is UCS2 w/o a conf opt
