@@ -38,9 +38,10 @@ else
 VLC_CONF_OPT += --disable-alsa
 endif
 
-ifeq ($(BR2_PACKAGE_AVAHI),y)
+# bonjour support needs avahi-client, which needs avahi-daemon and dbus
+ifeq ($(BR2_PACKAGE_AVAHI)$(BR2_PACKAGE_AVAHI_DAEMON)$(BR2_PACKAGE_DBUS),yyy)
 VLC_CONF_OPT += --enable-bonjour
-VLC_DEPENDENCIES += avahi
+VLC_DEPENDENCIES += avahi dbus
 else
 VLC_CONF_OPT += --disable-bonjour
 endif
