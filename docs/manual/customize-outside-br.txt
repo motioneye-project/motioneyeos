@@ -83,6 +83,7 @@ Or disable the usage of external definitions:
    logic. Buildroot automatically includes +BR2_EXTERNAL/Config.in+ to
    make it appear in the top-level configuration menu, and includes
    +BR2_EXTERNAL/external.mk+ with the rest of the makefile logic.
+   Providing those two files is mandatory, but they can be empty.
 +
 The main usage of this is to store package recipes. The recommended
    way to do this is to write a +BR2_EXTERNAL/Config.in+ that looks
