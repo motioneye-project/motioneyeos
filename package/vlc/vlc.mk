@@ -224,7 +224,7 @@ else
 VLC_CONF_OPT += --disable-qt
 endif
 
-ifeq ($(BR2_PACKAGE_SDL),y)
+ifeq ($(BR2_PACKAGE_SDL_X11),y)
 VLC_CONF_OPT += --enable-sdl
 VLC_DEPENDENCIES += sdl
 else
