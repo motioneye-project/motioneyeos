@@ -10,6 +10,7 @@ VLC_SOURCE = vlc-$(VLC_VERSION).tar.xz
 VLC_LICENSE = GPLv2+ LGPLv2.1+
 VLC_LICENSE_FILES = COPYING COPYING.LIB
 VLC_DEPENDENCIES = host-pkgconf
+VLC_AUTORECONF = YES
 
 VLC_CONF_OPT += \
 	--disable-a52 \
@@ -110,6 +111,8 @@ endif
 ifeq ($(BR2_PACKAGE_LIBGCRYPT),y)
 VLC_CONF_OPT += --enable-libgcrypt
 VLC_DEPENDENCIES += libgcrypt
+VLC_CONF_ENV += \
+	GCRYPT_CONFIG="$(STAGING_DIR)/usr/bin/libgcrypt-config"
 else
 VLC_CONF_OPT += --disable-libgcrypt
 endif
