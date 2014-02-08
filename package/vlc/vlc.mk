@@ -32,6 +32,13 @@ VLC_CONF_OPT += \
 	--disable-vsxu \
 	--disable-mtp
 
+# Set powerpc altivec appropriately
+ifeq ($(BR2_powerpc_7400)$(BR2_powerpc_7450)$(BR2_powerpc_970),y)
+VCL_CONF_OPT += --enable-altivec
+else
+VLC_CONF_OPT += --disable-altivec
+endif
+
 ifeq ($(BR2_PACKAGE_ALSA_LIB),y)
 VLC_CONF_OPT += --enable-alsa
 VLC_DEPENDENCIES += alsa-lib
