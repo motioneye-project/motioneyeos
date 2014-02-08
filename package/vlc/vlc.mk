@@ -194,6 +194,15 @@ endif
 ifeq ($(BR2_PACKAGE_LIVE555),y)
 VLC_CONF_OPT += --enable-live555
 VLC_DEPENDENCIES += live555
+VLC_CONF_ENV = \
+	LIVE555_CFLAGS="\
+		-I$(STAGING_DIR)/usr/include/live \
+		-I$(STAGING_DIR)/usr/include/live/BasicUsageEnvironment \
+		-I$(STAGING_DIR)/usr/include/live/groupsock \
+		-I$(STAGING_DIR)/usr/include/live/liveMedia \
+		-I$(STAGING_DIR)/usr/include/live/UsageEnvironment \
+		" \
+	LIVE555_LIBS="-L$(STAGING_DIR)/usr/lib -lliveMedia"
 else
 VLC_CONF_OPT += --disable-live555
 endif
