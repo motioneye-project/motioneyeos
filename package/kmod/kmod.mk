@@ -15,12 +15,12 @@ HOST_KMOD_DEPENDENCIES = host-pkgconf
 KMOD_LICENSE = LGPLv2.1+
 KMOD_LICENSE_FILES = libkmod/COPYING
 
-KMOD_CONF_OPT += --disable-manpages
-HOST_KMOD_CONF_OPT = --disable-manpages
-
 # static linking not supported, see
 # https://git.kernel.org/cgit/utils/kernel/kmod/kmod.git/commit/?id=b7016153ec8
 KMOD_CONF_OPT = --disable-static --enable-shared
+
+KMOD_CONF_OPT += --disable-manpages
+HOST_KMOD_CONF_OPT = --disable-manpages
 
 ifeq ($(BR2_PACKAGE_ZLIB),y)
 KMOD_DEPENDENCIES += zlib
