@@ -114,7 +114,7 @@ define $(2)_CONFIGURE_CMDS
 		--disable-docs \
 		--disable-documentation \
 		--with-xmlto=no \
-		--with-fop=no
+		--with-fop=no \
 		$$(DISABLE_NLS) \
 		$$(DISABLE_LARGEFILE) \
 		$$(DISABLE_IPV6) \
