@@ -101,6 +101,13 @@ else
 VLC_CONF_OPT += --disable-flac
 endif
 
+ifeq ($(BR2_PACKAGE_MESA3D),y)
+VLC_CONF_OPT += --enable-glx
+VLC_DEPENDENCIES += mesa3d
+else
+VLC_CONF_OPT += --disable-glx
+endif
+
 ifeq ($(BR2_PACKAGE_OPUS),y)
 VLC_CONF_OPT += --enable-opus
 VLC_DEPENDENCIES += opus
