@@ -11,16 +11,20 @@ Fix this by explicitly indicating -march=armv7-m.
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 
+Updated the patch to the latest version of the Makefile
+
+Signed-off-by: Anders Darander <anders@chargestorm.se>
+
 Index: b/Makefile
 ===================================================================
 --- a/Makefile
 +++ b/Makefile
-@@ -13,7 +13,7 @@
+@@ -13,7 +13,7 @@ SRCDIR = src
  BINDIR = bin
  
  INCLUDES = $(SRCDIR)/include
--CFLAGS =-mcpu=cortex-m3 -mthumb -nostdlib -Wall -g -I$(INCLUDES)
-+CFLAGS =-march=armv7-m -mcpu=cortex-m3 -mthumb -nostdlib -Wall -g -I$(INCLUDES)
- LDFLAGS =-nostartfiles -fno-exceptions -Tfirmware.ld
- 
- EXECUTABLE=am335x-pm-firmware.elf
+-CFLAGS =-mcpu=cortex-m3 -mthumb -nostdlib -Wall -Wundef \
++CFLAGS =-march=armv7-m -mcpu=cortex-m3 -mthumb -nostdlib -Wall -Wundef \
+ 	-Werror-implicit-function-declaration -Wstrict-prototypes \
+ 	-Wdeclaration-after-statement -fno-delete-null-pointer-checks \
+ 	-Wempty-body -fno-strict-overflow  -g -I$(INCLUDES) -O2
