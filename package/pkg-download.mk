@@ -24,9 +24,14 @@ LOCALFILES := $(call qstrip,$(BR2_LOCALFILES))
 DL_MODE=DOWNLOAD
 
 # DL_DIR may have been set already from the environment
+ifeq ($(origin DL_DIR),undefined)
 DL_DIR ?= $(call qstrip,$(BR2_DL_DIR))
 ifeq ($(DL_DIR),)
 DL_DIR := $(TOPDIR)/dl
+endif
+else
+# Restore the BR2_DL_DIR that was overridden by the .config file
+BR2_DL_DIR = $(DL_DIR)
 endif
 
 # ensure it exists and a absolute path

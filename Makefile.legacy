@@ -28,16 +28,20 @@ $(error "The BUILDROOT_DL_DIR environment variable was renamed to BR2_DL_DIR.")
 endif
 endif
 
+# If a script is using the deprecated BUILDROOT_CONFIG, make sure it fails.
+# Add some directories in front just in case someone used dirname on it.
+BUILDROOT_CONFIG_FAKE = /tmp/deprecated/The-BUILDROOT_CONFIG-environment-variable-was-renamed-to-BR2_CONFIG
+
 # Similar to above for BUILDROOT_CONFIG, but here we have no .config equivalent.
 ifneq ($(BUILDROOT_CONFIG),)
 ifneq ($(BUILDROOT_CONFIG),$(BR2_CONFIG))
+ifneq ($(BUILDROOT_CONFIG),$(BUILDROOT_CONFIG_FAKE))
 $(error "The BUILDROOT_CONFIG environment variable was renamed to BR2_CONFIG.")
 endif
 endif
+endif
 
-# If a script is using the deprecated BUILDROOT_CONFIG, make sure it fails.
-# Add some directories in front just in case someone used dirname on it.
-BUILDROOT_CONFIG = /tmp/deprecated/The-BUILDROOT_CONFIG-environment-variable-was-renamed-to-BR2_CONFIG
+BUILDROOT_CONFIG = $(BUILDROOT_CONFIG_FAKE)
 export BUILDROOT_CONFIG
 
 #
