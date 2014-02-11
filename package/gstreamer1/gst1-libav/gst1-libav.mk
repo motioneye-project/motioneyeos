@@ -83,4 +83,12 @@ endif
 GST1_LIBAV_CONF_OPT = \
 	--with-libav-extra-configure="$(GST1_LIBAV_CONF_EXTRA_OPT)"
 
+GST1_LIBAV_CFLAGS = $(TARGET_CFLAGS)
+
+ifeq ($(BR2_xtensa),y)
+GST1_LIBAV_CFLAGS += -mtext-section-literals
+endif
+
+GST1_LIBAV_CONF_ENV += CFLAGS="$(GST1_LIBAV_CFLAGS)"
+
 $(eval $(autotools-package))
