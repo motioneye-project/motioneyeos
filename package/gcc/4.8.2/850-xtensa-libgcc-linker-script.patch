@@ -1,0 +1,29 @@
+From 7c722c07a0781e4279f643650bc528422c80ce5e Mon Sep 17 00:00:00 2001
+Message-Id: <7c722c07a0781e4279f643650bc528422c80ce5e.1392126765.git.baruch@tkos.co.il>
+From: sterling <sterling@138bc75d-0d04-0410-961f-82ee72b054a4>
+Date: Tue, 21 Jan 2014 19:50:02 +0000
+Subject: [PATCH] 2014-01-21  Baruch Siach <barch@tkos.co.il>
+
+	* config.host (tmake_file): add t-slibgcc-libgcc for xtensa*-*-linux*.
+
+Patch status: upstream (4.8 branch commit r206905)
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+
+diff --git a/libgcc/config.host b/libgcc/config.host
+index ee16d60e34a6..302aa6135211 100644
+--- a/libgcc/config.host
++++ b/libgcc/config.host
+@@ -1102,7 +1102,7 @@ xtensa*-*-elf*)
+ 	extra_parts="$extra_parts crti.o crtn.o"
+ 	;;
+ xtensa*-*-linux*)
+-	tmake_file="$tmake_file xtensa/t-xtensa xtensa/t-linux"
++	tmake_file="$tmake_file xtensa/t-xtensa xtensa/t-linux t-slibgcc-libgcc"
+ 	md_unwind_header=xtensa/linux-unwind.h
+ 	;;
+ am33_2.0-*-linux*)
+-- 
+1.8.5.3
+
