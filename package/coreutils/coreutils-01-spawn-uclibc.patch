@@ -11,9 +11,9 @@ Patch status: suggested by gnulib maintainer
 (http://article.gmane.org/gmane.comp.lib.gnulib.bugs/33610), not in upstream
 gnulib yet
 
-This issue should be fixed in coreutils version 2.23.
+This issue should be fixed in coreutils version 8.23.
 
-Sign-off-by: Baruch Siach <baruch@tkos.co.il>
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
 ---
 
 diff --git a/m4/spawn_h.m4 b/m4/spawn_h.m4
