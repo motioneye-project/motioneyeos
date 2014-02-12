@@ -30,8 +30,7 @@ MYSQL_CONF_OPT = \
 	--without-libedit \
 	--without-readline \
 	--with-low-memory \
-	--enable-thread-safe-client \
-	$(ENABLE_DEBUG)
+	--enable-thread-safe-client
 
 ifeq ($(BR2_PACKAGE_MYSQL_SERVER),y)
 MYSQL_DEPENDENCIES += host-mysql host-bison
@@ -56,6 +55,14 @@ MYSQL_CONF_OPT += \
 	--without-plugin-innobase \
 	--without-plugin-innodb_plugin \
 	--without-plugin-ndbcluster
+
+# Debugging is only available for the server, so no need for
+# this if-block outside of the server if-block
+ifeq ($(BR2_ENABLE_DEBUG),y)
+MYSQL_CONF_OPT += --with-debug=full
+else
+MYSQL_CONF_OPT += --without-debug
+endif
 
 define HOST_MYSQL_BUILD_CMDS
 	$(MAKE) -C $(@D)/include my_config.h
