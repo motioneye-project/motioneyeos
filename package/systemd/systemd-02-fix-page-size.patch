@@ -6,8 +6,8 @@ Date:   Wed Mar 21 23:47:44 2012 +0100
     
     Let's use NAME_MAX, as suggested by Dan Walsh
 
-diff --git a/src/journal/journald.c b/src/journal/journald.c
-index d27cb60..87390bd 100644
+Index: b/src/journal/journald.c
+===================================================================
 --- a/src/journal/journald.c
 +++ b/src/journal/journald.c
 @@ -29,7 +29,6 @@
@@ -18,7 +18,7 @@ index d27cb60..87390bd 100644
  
  #include <systemd/sd-journal.h>
  #include <systemd/sd-login.h>
-@@ -2149,10 +2148,20 @@ static int process_event(Server *s, struct epoll_event *ev) {
+@@ -2141,10 +2140,20 @@
                          size_t label_len = 0;
                          union {
                                  struct cmsghdr cmsghdr;
