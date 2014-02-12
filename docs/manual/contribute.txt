@@ -48,7 +48,7 @@ before submitting them using your favorite text editor.
 Lastly, send/submit your patch set to the Buildroot mailing list:
 
 ---------------------
-$ git send-email --to buildroot@busybox.net outgoing/*
+$ git send-email --to buildroot@buildroot.org outgoing/*
 ---------------------
 
 Note that +git+ should be configured to use your mail account.

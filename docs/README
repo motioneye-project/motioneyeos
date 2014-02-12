@@ -56,4 +56,4 @@ $ make HOSTCC=gcc-4.3 uclibc-menuconfig
 $ make HOSTCC=gcc-4.3 busybox-menuconfig
 
 Please feed suggestions, bug reports, insults, and bribes back to the
-buildroot mailing list: buildroot@uclibc.org
+buildroot mailing list: buildroot@buildroot.org

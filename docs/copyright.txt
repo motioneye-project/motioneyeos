@@ -25,6 +25,6 @@ HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
 
 You have been warned.
 
-You can contact the webmaster at <buildroot@uclibc.org> if you have some sort
+You can contact the webmaster at <buildroot@buildroot.org> if you have some sort
 of problem with this.
 
