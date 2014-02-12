@@ -7,6 +7,9 @@ config BR2_PACKAGE_ELFUTILS
 	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT
 	depends on BR2_LARGEFILE
 	depends on BR2_USE_WCHAR
+	# canonicalize_file_name() not available on uClibc 0.9.31, used
+	# only for AVR32
+	depends on !BR2_avr32
 	help
 	  Libraries/utilities to handle ELF objects (drop in
 	  replacement for libelf).
