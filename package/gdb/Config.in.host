@@ -53,5 +53,5 @@ config BR2_GDB_VERSION
                                    (!BR2_PACKAGE_HOST_GDB && BR2_avr32)
 	default "7.4.1"    if BR2_GDB_VERSION_7_4
 	default "7.5.1"    if BR2_GDB_VERSION_7_5 || !BR2_PACKAGE_HOST_GDB
-	default "f25a1952afd054205f9471e449c1f7ca5b271b7c" if BR2_arc
+	default "cb15acc5eecea46d041730e5c2c9fa1d4283ef25" if BR2_arc
 	default "6be65fb56ea6694a9260733a536a023a1e2d4d57" if BR2_microblaze
