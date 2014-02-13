@@ -1,0 +1,36 @@
+Fix get_python_inc() for cross-compilation
+
+When we are cross compiling, doing os.path.dirname(sys.executable) to
+get the build directory is incorrect, because we're executing the host
+Python to build things for the target. Instead, we should use the
+project_base variable.
+
+This fixes cross-compilation, which was adding incorrect header paths
+pointing to the location where the host Python was built:
+
+/home/thomas/projets/buildroot/output/host/usr/bin/arm-none-linux-gnueabi-gcc -fPIC -fno-strict-aliasing \
+  -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -pipe -Os -DNDEBUG -g -O3 -Wall -Wstrict-prototypes \
+  -I/usr/include -I. -IInclude -I./Include -I/home/thomas/projets/buildroot/output/host/usr/arm-buildroot-linux-gnueabi/sysroot/usr/include \
+  -I/home/thomas/projets/buildroot/output/host/usr/bin/Include -I/home/thomas/projets/buildroot/output/host/usr/bin \
+  -c /home/thomas/projets/buildroot/output/build/python-2.7.6/Modules/_struct.c \
+  -o build/temp.linux2-arm-2.7/home/thomas/projets/buildroot/output/build/python-2.7.6/Modules/_struct.o
+
+This patch allows to fix the
+/home/thomas/projets/buildroot/output/host/usr/bin/Include and
+/home/thomas/projets/buildroot/output/host/usr/bin paths that are
+incorrectly added to the header paths.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Index: b/Lib/distutils/sysconfig.py
+===================================================================
+--- a/Lib/distutils/sysconfig.py
++++ b/Lib/distutils/sysconfig.py
+@@ -79,7 +79,7 @@
+ 
+     if os.name == "posix":
+         if python_build:
+-            buildir = os.path.dirname(sys.executable)
++            buildir = project_base
+             if plat_specific:
+                 # python.h is located in the buildir
+                 inc_dir = buildir

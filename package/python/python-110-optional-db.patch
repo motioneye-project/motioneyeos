@@ -12,47 +12,44 @@ Signed-off-by: Samuel Martin <s.martin49@gmail.com>
  configure.in    |   22 ++++++++++++++++++++++
  2 files changed, 30 insertions(+), 2 deletions(-)
 
-Index: Python-2.7.2/Makefile.pre.in
+Index: b/Makefile.pre.in
 ===================================================================
---- Python-2.7.2.orig/Makefile.pre.in
-+++ Python-2.7.2/Makefile.pre.in
-@@ -861,7 +861,7 @@
+--- a/Makefile.pre.in
++++ b/Makefile.pre.in
+@@ -938,7 +938,7 @@
+ 		encodings compiler hotshot \
  		email email/mime \
  		json \
- 		sqlite3 \
 -		logging bsddb csv importlib wsgiref \
 +		logging csv importlib wsgiref \
  		ctypes  ctypes/macholib idlelib idlelib/Icons \
  		distutils distutils/command \
  		multiprocessing multiprocessing/dummy \
-@@ -873,7 +873,7 @@
- LIBSUBDIRS +=   test test/data \
- 		test/cjkencodings test/decimaltestdata test/xmltestdata test/subprocessdata \
- 		test/tracedmodules email/test email/test/data \
--		json/tests  bsddb/test \
-+		json/tests \
- 		ctypes/test distutils/tests unittest/test
- endif
- 
-@@ -914,6 +914,13 @@
+@@ -951,7 +951,6 @@
+ 	test/tracedmodules \
+ 	email/test email/test/data \
+ 	json/tests \
+-	bsddb/test \
+ 	ctypes/test \
+ 	distutils/tests \
+ 	unittest/test
+@@ -991,6 +990,11 @@
  LIBSUBDIRS += $(XMLLIBSUBDIRS)
  endif
  
 +ifeq (@BSDDB@,yes)
 +LIBSUBDIRS += bsddb
-+ifeq (@TEST_MODULES@,yes)
-+LIBSUBDIRS += bsddb/test
-+endif
++TESTSUBDIRS += bsddb/test
 +endif
 +
  libinstall:	build_all $(srcdir)/Lib/$(PLATDIR) $(srcdir)/Modules/xxmodule.c
  	@for i in $(SCRIPTDIR) $(LIBDEST); \
  	do \
-Index: Python-2.7.2/configure.in
+Index: b/configure.ac
 ===================================================================
---- Python-2.7.2.orig/configure.in
-+++ Python-2.7.2/configure.in
-@@ -2436,6 +2436,28 @@
+--- a/configure.ac
++++ b/configure.ac
+@@ -2642,6 +2642,28 @@
      	     DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} nis"
    	  fi])
  

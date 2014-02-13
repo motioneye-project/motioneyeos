@@ -8,21 +8,21 @@ Signed-off-by: Samuel Martin <s.martin49@gmail.com>
  configure.in    |    9 +++++++++
  2 files changed, 14 insertions(+), 1 deletion(-)
 
-Index: Python-2.7.2/Makefile.pre.in
+Index: b/Makefile.pre.in
 ===================================================================
---- Python-2.7.2.orig/Makefile.pre.in
-+++ Python-2.7.2/Makefile.pre.in
-@@ -867,7 +867,7 @@
+--- a/Makefile.pre.in
++++ b/Makefile.pre.in
+@@ -944,7 +944,7 @@
  		multiprocessing multiprocessing/dummy \
  		unittest \
  		lib-old \
 -		curses $(MACHDEPS)
 +		$(MACHDEPS)
  
- ifeq (@TEST_MODULES@,yes)
- LIBSUBDIRS +=   test test/data \
-@@ -906,6 +906,10 @@
- endif
+ TESTSUBDIRS = test test/audiodata test/data \
+ 	test/cjkencodings test/decimaltestdata test/xmltestdata test/subprocessdata \
+@@ -983,6 +983,10 @@
+ 	      lib-tk/test/test_ttk
  endif
  
 +ifeq (@CURSES@,yes)
@@ -32,11 +32,11 @@ Index: Python-2.7.2/Makefile.pre.in
  libinstall:	build_all $(srcdir)/Lib/$(PLATDIR) $(srcdir)/Modules/xxmodule.c
  	@for i in $(SCRIPTDIR) $(LIBDEST); \
  	do \
-Index: Python-2.7.2/configure.in
+Index: b/configure.ac
 ===================================================================
---- Python-2.7.2.orig/configure.in
-+++ Python-2.7.2/configure.in
-@@ -2425,6 +2425,15 @@
+--- a/configure.ac
++++ b/configure.ac
+@@ -2631,6 +2631,15 @@
     DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} _tkinter"
  fi
  

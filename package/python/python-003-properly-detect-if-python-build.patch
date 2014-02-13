@@ -1,0 +1,23 @@
+distutils: fix build_ext check to find whether we're building Python or not
+
+The build_ext logic uses
+sys.executable.startswith(os.path.join(sys.exec_prefix, "bin")) to
+determine whether we're building a third-party Python extension, or a
+built-in Python extension. However, this check is wrong in
+cross-compilation mode, and instead, the sysconfig.python_build
+variable should be used.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Index: b/Lib/distutils/command/build_ext.py
+===================================================================
+--- a/Lib/distutils/command/build_ext.py
++++ b/Lib/distutils/command/build_ext.py
+@@ -235,7 +235,7 @@
+         # Python's library directory must be appended to library_dirs
+         # See Issues: #1600860, #4366
+         if (sysconfig.get_config_var('Py_ENABLE_SHARED')):
+-            if sys.executable.startswith(os.path.join(sys.exec_prefix, "bin")):
++            if not sysconfig.python_build:
+                 # building third party extensions
+                 self.library_dirs.append(sysconfig.get_config_var('LIBDIR'))
+             else:

@@ -9,11 +9,11 @@ Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
  configure.in |    6 ++++++
  1 file changed, 6 insertions(+)
 
-Index: Python-2.7.2/configure.in
+Index: b/configure.ac
 ===================================================================
---- Python-2.7.2.orig/configure.in
-+++ Python-2.7.2/configure.in
-@@ -2430,6 +2430,12 @@
+--- a/configure.ac
++++ b/configure.ac
+@@ -2636,6 +2636,12 @@
      	     DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} _codecs_kr _codecs_jp _codecs_cn _codecs_tw _codecs_hk"
    	  fi])
  

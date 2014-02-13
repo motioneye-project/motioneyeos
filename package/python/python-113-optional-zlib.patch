@@ -1,22 +1,22 @@
-Add an option to disable the bz2 module
+Add an option to disable the zlib module
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 ---
  configure.in |    6 ++++++
  1 file changed, 6 insertions(+)
 
-Index: Python-2.7.2/configure.in
+Index: b/configure.ac
 ===================================================================
---- Python-2.7.2.orig/configure.in
-+++ Python-2.7.2/configure.in
-@@ -2442,6 +2442,12 @@
-     	     DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} ssl"
-   	  fi])
+--- a/configure.ac
++++ b/configure.ac
+@@ -2654,6 +2654,12 @@
+             DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} bz2"
+          fi])
  
-+AC_ARG_ENABLE(bz2,
-+       AS_HELP_STRING([--disable-bz2], [disable BZIP2]),
++AC_ARG_ENABLE(zlib,
++       AS_HELP_STRING([--disable-zlib], [disable ZLIB]),
 +       [ if test "$enableval" = "no"; then
-+            DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} bz2"
++            DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} zlib"
 +         fi])
 +
  AC_ARG_ENABLE(dbm,

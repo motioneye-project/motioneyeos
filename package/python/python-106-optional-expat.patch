@@ -15,20 +15,20 @@ Signed-off-by: Samuel Martin <s.martin49@gmail.com>
  setup.py        |    2 +-
  3 files changed, 19 insertions(+), 7 deletions(-)
 
-Index: Python-2.7.2/Makefile.pre.in
+Index: b/Makefile.pre.in
 ===================================================================
---- Python-2.7.2.orig/Makefile.pre.in
-+++ Python-2.7.2/Makefile.pre.in
-@@ -863,7 +863,7 @@
- 		sqlite3 \
+--- a/Makefile.pre.in
++++ b/Makefile.pre.in
+@@ -940,7 +940,7 @@
+ 		json \
  		logging bsddb csv importlib wsgiref \
  		ctypes  ctypes/macholib idlelib idlelib/Icons \
--		distutils distutils/command  $(XMLLIBSUBDIRS) \
+-		distutils distutils/command $(XMLLIBSUBDIRS) \
 +		distutils distutils/command \
  		multiprocessing multiprocessing/dummy \
  		unittest \
  		lib-old \
-@@ -910,6 +910,10 @@
+@@ -987,6 +987,10 @@
  LIBSUBDIRS += curses
  endif
  
@@ -39,11 +39,11 @@ Index: Python-2.7.2/Makefile.pre.in
  libinstall:	build_all $(srcdir)/Lib/$(PLATDIR) $(srcdir)/Modules/xxmodule.c
  	@for i in $(SCRIPTDIR) $(LIBDEST); \
  	do \
-Index: Python-2.7.2/configure.in
+Index: b/configure.ac
 ===================================================================
---- Python-2.7.2.orig/configure.in
-+++ Python-2.7.2/configure.in
-@@ -2102,13 +2102,21 @@
+--- a/configure.ac
++++ b/configure.ac
+@@ -2278,13 +2278,21 @@
  AC_SUBST(DISABLED_EXTENSIONS)
  
  # Check for use of the system expat library
@@ -70,11 +70,11 @@ Index: Python-2.7.2/configure.in
  
  # Check for use of the system libffi library
  AC_MSG_CHECKING(for --with-system-ffi)
-Index: Python-2.7.2/setup.py
+Index: b/setup.py
 ===================================================================
---- Python-2.7.2.orig/setup.py
-+++ Python-2.7.2/setup.py
-@@ -1403,7 +1403,7 @@
+--- a/setup.py
++++ b/setup.py
+@@ -1457,7 +1457,7 @@
          #
          # More information on Expat can be found at www.libexpat.org.
          #

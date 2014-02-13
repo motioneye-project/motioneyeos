@@ -12,21 +12,21 @@ Signed-off-by: Samuel Martin <s.martin49@gmail.com>
  setup.py        |   10 +++++++---
  3 files changed, 17 insertions(+), 4 deletions(-)
 
-Index: Python-2.7.2/Makefile.pre.in
+Index: b/Makefile.pre.in
 ===================================================================
---- Python-2.7.2.orig/Makefile.pre.in
-+++ Python-2.7.2/Makefile.pre.in
-@@ -868,7 +868,7 @@
+--- a/Makefile.pre.in
++++ b/Makefile.pre.in
+@@ -947,7 +947,7 @@
  		multiprocessing multiprocessing/dummy \
  		unittest \
  		lib-old \
 -		curses pydoc_data $(MACHDEPS)
 +		curses $(MACHDEPS)
  
- ifeq (@TEST_MODULES@,yes)
- LIBSUBDIRS += lib-tk/test lib-tk/test/test_tkinter \
-@@ -880,6 +880,10 @@
- 		ctypes/test distutils/tests unittest/test
+ TESTSUBDIRS = lib-tk/test lib-tk/test/test_tkinter \
+ 	lib-tk/test/test_ttk \
+@@ -968,6 +968,10 @@
+ LIBSUBDIRS += $(TESTSUBDIRS)
  endif
  
 +ifeq (@PYDOC@,yes)
@@ -36,12 +36,12 @@ Index: Python-2.7.2/Makefile.pre.in
  libinstall:	build_all $(srcdir)/Lib/$(PLATDIR) $(srcdir)/Modules/xxmodule.c
  	@for i in $(SCRIPTDIR) $(LIBDEST); \
  	do \
-Index: Python-2.7.2/configure.in
+Index: b/configure.ac
 ===================================================================
---- Python-2.7.2.orig/configure.in
-+++ Python-2.7.2/configure.in
-@@ -2407,6 +2407,11 @@
-         esac])
+--- a/configure.ac
++++ b/configure.ac
+@@ -2613,6 +2613,11 @@
+       AC_CHECK_FUNCS(pthread_atfork)
  fi
  
 +AC_SUBST(PYDOC)
@@ -52,11 +52,11 @@ Index: Python-2.7.2/configure.in
  
  AC_SUBST(TEST_MODULES)
  
-Index: Python-2.7.2/setup.py
+Index: b/setup.py
 ===================================================================
---- Python-2.7.2.orig/setup.py
-+++ Python-2.7.2/setup.py
-@@ -2092,6 +2092,12 @@
+--- a/setup.py
++++ b/setup.py
+@@ -2205,6 +2205,12 @@
      # turn off warnings when deprecated modules are imported
      import warnings
      warnings.filterwarnings("ignore",category=DeprecationWarning)
@@ -69,7 +69,7 @@ Index: Python-2.7.2/setup.py
      setup(# PyPI Metadata (PEP 301)
            name = "Python",
            version = sys.version.split()[0],
-@@ -2112,9 +2118,7 @@
+@@ -2225,9 +2231,7 @@
            ext_modules=[Extension('_struct', ['_struct.c'])],
  
            # Scripts to install
