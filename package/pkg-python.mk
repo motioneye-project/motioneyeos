@@ -27,7 +27,6 @@ PKG_PYTHON_DISTUTILS_ENV = \
 	CFLAGS="$(TARGET_CFLAGS)" \
 	LDFLAGS="$(TARGET_LDFLAGS)" \
 	LDSHARED="$(TARGET_CROSS)gcc -shared" \
-	CROSS_COMPILING=yes \
 	PYTHONPATH="$(PYTHON_PATH)" \
 	_python_sysroot=$(STAGING_DIR) \
 	_python_prefix=/usr \
@@ -50,8 +49,6 @@ HOST_PKG_PYTHON_DISTUTILS_INSTALL_OPT = \
 PKG_PYTHON_SETUPTOOLS_ENV = \
 	PATH="$(TARGET_PATH)" \
 	PYTHONPATH="$(PYTHON_PATH)" \
-	PYTHONXCPREFIX="$(STAGING_DIR)/usr/" \
-	CROSS_COMPILING=yes \
 	_python_sysroot=$(STAGING_DIR) \
 	_python_prefix=/usr \
 	_python_exec_prefix=/usr
@@ -64,8 +61,7 @@ PKG_PYTHON_SETUPTOOLS_INSTALL_OPT = \
 
 # Host setuptools-based packages
 HOST_PKG_PYTHON_SETUPTOOLS_ENV = \
-	PATH="$(HOST_PATH)" \
-	PYTHONXCPREFIX="$(HOST_DIR)/usr/"
+	PATH="$(HOST_PATH)"
 
 HOST_PKG_PYTHON_SETUPTOOLS_INSTALL_OPT = \
 	--prefix=$(HOST_DIR)/usr
