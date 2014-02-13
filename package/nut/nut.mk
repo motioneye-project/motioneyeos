@@ -17,7 +17,8 @@ NUT_AUTORECONF = YES
 # Put the PID files in a read-write place (/var/run is a tmpfs)
 # since the default location (/var/state/ups) maybe readonly.
 NUT_CONF_OPT = \
-	--with-altpidpath=/var/run/upsd
+	--with-altpidpath=/var/run/upsd \
+	--without-hal
 
 NUT_CONF_ENV = \
 	GDLIB_CONFIG=$(STAGING_DIR)/usr/bin/gdlib-config \
