@@ -48,7 +48,7 @@ HOST_PKG_PYTHON_DISTUTILS_INSTALL_OPT = \
 # Target setuptools-based packages
 PKG_PYTHON_SETUPTOOLS_ENV = \
 	PATH="$(TARGET_PATH)" \
-	PYTHONPATH="$(TARGET_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR)/site-packages" \
+	PYTHONPATH="$(PYTHON_PATH)" \
 	PYTHONXCPREFIX="$(STAGING_DIR)/usr/" \
 	CROSS_COMPILING=yes \
 	_python_sysroot=$(STAGING_DIR) \
