@@ -38,7 +38,7 @@ endif
 
 define JIMTCL_CONFIGURE_CMDS
 	(cd $(@D); \
-		$(TARGET_CONFIGURE_OPTS) \
+		$(TARGET_CONFIGURE_OPTS) CCACHE=none \
 		./configure --prefix=/usr \
 		$(JIMTCL_SHARED) \
 	)
