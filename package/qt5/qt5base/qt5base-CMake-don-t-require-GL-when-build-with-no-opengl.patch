@@ -1,0 +1,28 @@
+From 02edc30764935d64f0994a9c592ca729f1c37410 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Peter=20K=C3=BCmmel?= <syntheticpp@gmx.net>
+Date: Fri, 31 Jan 2014 22:28:19 +0100
+Subject: [PATCH] CMake: don't require GL when build with -no-opengl
+
+Task-number: QTBUG-36509
+Change-Id: I03451527ab91754d87ff2a43985952c7c7641826
+Reviewed-by: Stephen Kelly <stephen.kelly@kdab.com>
+---
+ src/gui/gui.pro | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/gui/gui.pro b/src/gui/gui.pro
+index 3203b41..f4c35a3 100644
+--- a/src/gui/gui.pro
++++ b/src/gui/gui.pro
+@@ -81,7 +81,7 @@ contains(QT_CONFIG, angle) {
+         !isEmpty(QMAKE_LIBDIR_OPENGL_ES2): CMAKE_OPENGL_LIBDIR = $$cmakePortablePaths($$QMAKE_LIBDIR_OPENGL_ES2)
+         CMAKE_GL_HEADER_NAME = GLES2/gl2.h
+         CMAKE_QT_OPENGL_IMPLEMENTATION = GLESv2
+-    } else {
++    } else:contains(QT_CONFIG, opengl) {
+         !isEmpty(QMAKE_INCDIR_OPENGL): CMAKE_GL_INCDIRS = $$cmakeTargetPaths($$QMAKE_INCDIR_OPENGL)
+         CMAKE_OPENGL_INCDIRS = $$cmakePortablePaths($$QMAKE_INCDIR_OPENGL)
+         CMAKE_OPENGL_LIBS = $$cmakeProcessLibs($$QMAKE_LIBS_OPENGL)
+-- 
+1.8.3.2
+
