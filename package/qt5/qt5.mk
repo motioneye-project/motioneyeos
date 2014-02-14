@@ -1,5 +1,5 @@
 QT5_VERSION_MAJOR = 5.2
-QT5_VERSION = $(QT5_VERSION_MAJOR).0
+QT5_VERSION = $(QT5_VERSION_MAJOR).1
 QT5_SITE = http://download.qt-project.org/official_releases/qt/$(QT5_VERSION_MAJOR)/$(QT5_VERSION)/submodules/
 include $(sort $(wildcard package/qt5/*/*.mk))
 
