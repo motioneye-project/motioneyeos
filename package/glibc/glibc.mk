@@ -38,9 +38,6 @@ GLIBC_ADD_TOOLCHAIN_DEPENDENCY = NO
 # cross-compiler and the kernel headers
 GLIBC_DEPENDENCIES = host-gcc-initial linux-headers host-gawk
 
-# Before (e)glibc is built, we must have the second stage cross-compiler
-glibc-build: host-gcc-intermediate
-
 GLIBC_SUBDIR = build
 
 GLIBC_INSTALL_STAGING = YES
@@ -142,3 +139,6 @@ define GLIBC_INSTALL_TARGET_CMDS
 endef
 
 $(eval $(autotools-package))
+
+# Before (e)glibc is built, we must have the second stage cross-compiler
+$(GLIBC_TARGET_BUILD): | host-gcc-intermediate
