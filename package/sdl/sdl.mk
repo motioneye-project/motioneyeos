@@ -17,7 +17,7 @@ define SDL_RUN_AUTOGEN
 	cd $(@D) && PATH=$(HOST_PATH) ./autogen.sh
 endef
 
-SDL_POST_PATCH_HOOKS += SDL_RUN_AUTOGEN
+SDL_PRE_CONFIGURE_HOOKS += SDL_RUN_AUTOGEN
 SDL_DEPENDENCIES += host-automake host-autoconf host-libtool
 
 
