@@ -22,6 +22,9 @@ endif
 
 UCLIBC_INSTALL_STAGING = YES
 
+# uclibc is part of the toolchain so disable the toolchain dependency
+UCLIBC_ADD_TOOLCHAIN_DEPENDENCY = NO
+
 # Before uClibc is configured, we must have the first stage
 # cross-compiler and the kernel headers
 UCLIBC_DEPENDENCIES = host-gcc-initial linux-headers

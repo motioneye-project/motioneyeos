@@ -142,7 +142,7 @@ endif
 # be derived automatically from the dependencies of the corresponding
 # target package. For example, target packages need
 # host-python-distutilscross, but not host packages.
-$(2)_DEPENDENCIES ?= $(filter-out host-python host-python-setuptools host-python-distutilscross $(1),$(patsubst host-host-%,host-%,$(addprefix host-,$($(3)_DEPENDENCIES))))
+$(2)_DEPENDENCIES ?= $(filter-out host-python host-python-setuptools host-python-distutilscross host-toolchain $(1),$(patsubst host-host-%,host-%,$(addprefix host-,$($(3)_DEPENDENCIES))))
 
 # Target packages need both the python interpreter on the target (for
 # runtime) and the python interpreter on the host (for

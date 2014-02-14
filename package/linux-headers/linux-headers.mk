@@ -17,6 +17,9 @@ LINUX_HEADERS_SOURCE = linux-$(LINUX_HEADERS_VERSION).tar.xz
 
 LINUX_HEADERS_INSTALL_STAGING = YES
 
+# linux-headers is part of the toolchain so disable the toolchain dependency
+LINUX_HEADERS_ADD_TOOLCHAIN_DEPENDENCY = NO
+
 define LINUX_HEADERS_INSTALL_STAGING_CMDS
 	(cd $(@D); \
 		$(TARGET_MAKE_ENV) $(MAKE) \
