@@ -5,7 +5,7 @@
 ################################################################################
 
 FIRMWARE_IMX_VERSION = $(FREESCALE_IMX_VERSION)
-FIRMWARE_IMX_SITE = $(FREESCALE_IMX_MIRROR_SITE)
+FIRMWARE_IMX_SITE = $(FREESCALE_IMX_SITE)
 FIRMWARE_IMX_SOURCE = firmware-imx-$(FIRMWARE_IMX_VERSION).bin
 FIRMWARE_IMX_LICENSE = Freescale Semiconductor Software License Agreement, \
 	Atheros license (ath6k)
