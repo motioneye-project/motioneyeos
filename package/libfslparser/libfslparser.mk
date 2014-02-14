@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBFSLPARSER_VERSION = 3.0.1
+LIBFSLPARSER_VERSION = $(FREESCALE_IMX_VERSION)
 LIBFSLPARSER_SITE = $(FREESCALE_IMX_SITE)
 LIBFSLPARSER_SOURCE = libfslparser-$(LIBFSLPARSER_VERSION).bin
 LIBFSLPARSER_LICENSE = Freescale Semiconductor Software License Agreement
@@ -35,5 +35,8 @@ endef
 
 # The Makefile installs several versions of the libraries, but we only
 # need one of them, depending on the platform.
+
+# without AUTORECONF, configure fails to find install-sh.
+LIBFSLPARSER_AUTORECONF = YES
 
 $(eval $(autotools-package))
