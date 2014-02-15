@@ -115,7 +115,7 @@ ifeq ($(BR2_PACKAGE_BZIP2),y)
 IMAGEMAGICK_CONF_OPT += --with-bzlib
 IMAGEMAGICK_DEPENDENCIES += bzip2
 else
-IMAGEMAGICK_CONF_OPT += --without-bzip2
+IMAGEMAGICK_CONF_OPT += --without-bzlib
 endif
 
 $(eval $(autotools-package))
