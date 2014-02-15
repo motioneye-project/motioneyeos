@@ -1,5 +1,6 @@
 config BR2_PACKAGE_IMAGEMAGICK
 	bool "imagemagick"
+	depends on BR2_USE_MMU # fork()
 	help
 	  ImageMagick(R) is a software suite to create, edit, and compose
 	  bitmap images. It can read, convert and write images in a variety of
