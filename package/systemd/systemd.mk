@@ -103,7 +103,7 @@ endef
 
 define SYSTEMD_SANITIZE_PATH_IN_UNITS
 	find $(TARGET_DIR)/lib/systemd/system -name '*.service' \
-		-exec $(SED) -e 's,$(HOST_DIR),,g' {} \;
+		-exec $(SED) 's,$(HOST_DIR),,g' {} \;
 endef
 
 SYSTEMD_POST_INSTALL_TARGET_HOOKS += \
