@@ -40,6 +40,10 @@ ifeq ($(BR2_PACKAGE_OPENSSL),y)
 	NETSNMP_DEPENDENCIES += openssl
 	NETSNMP_CONF_OPT += \
 		--with-openssl=$(STAGING_DIR)/usr/include/openssl
+ifeq ($(BR2_PREFER_STATIC_LIB),y)
+	# openssl uses zlib, so we need to explicitly link with it when static
+	NETSNMP_CONF_ENV += LIBS=-lz
+endif
 else
 	NETSNMP_CONF_OPT += --without-openssl
 endif
