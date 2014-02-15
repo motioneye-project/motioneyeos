@@ -26,12 +26,6 @@ config BR2_PACKAGE_OPENCV_LIB_CONTRIB
 	help
 	  Include opencv_contrib module into the OpenCV build.
 
-config BR2_PACKAGE_OPENCV_LIB_CORE
-	bool "core"
-	default y
-	help
-	  Include opencv_core module into the OpenCV build.
-
 config BR2_PACKAGE_OPENCV_LIB_FEATURES2D
 	bool "features2d"
 	default y
