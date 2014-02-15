@@ -6,7 +6,6 @@
 
 COLLECTD_VERSION = 5.4.1
 COLLECTD_SITE = http://collectd.org/files
-COLLECTD_MAKE_OPT = LDFLAGS="$(TARGET_LDFLAGS) -lm"
 COLLECTD_CONF_ENV = ac_cv_lib_yajl_yajl_alloc=yes
 COLLECTD_INSTALL_STAGING = YES
 COLLECTD_LICENSE = GPLv2 LGPLv2.1
@@ -21,6 +20,16 @@ COLLECTD_PLUGINS_DISABLE = amqp apple_sensors aquaero ascent dbi email \
 		sigrok tape target_v5upgrade teamspeak2 ted \
 		tokyotyrant uuid varnish vserver write_mongodb write_redis \
 		xmms zfs_arc
+
+COLLECTD_LDFLAGS = $(TARGET_LDFLAGS) -lm
+
+ifeq ($(BR2_PREFER_STATIC_LIB),y)
+# collectd-tg indirectly needs pthread but doesn't link with -pthread,
+# causing static linker errors
+COLLECTD_LDFLAGS += -lpthread
+endif
+
+COLLECTD_CONF_ENV += LDFLAGS="$(COLLECTD_LDFLAGS)"
 
 COLLECTD_CONF_OPT += --with-nan-emulation --with-fp-layout=nothing \
 	--localstatedir=/var --with-perl-bindings=no \
