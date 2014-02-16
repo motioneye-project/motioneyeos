@@ -226,7 +226,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_LUA),y)
 VLC_CONF_OPT += --enable-lua
-VLC_DEPENDENCIES += lua
+VLC_DEPENDENCIES += lua host-lua
 else
 VLC_CONF_OPT += --disable-lua
 endif
