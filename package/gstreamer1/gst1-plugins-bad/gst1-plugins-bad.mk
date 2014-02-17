@@ -41,7 +41,6 @@ GST1_PLUGINS_BAD_CONF_OPT += \
 	--disable-uvch264 \
 	--disable-assrender \
 	--disable-voamrwbenc \
-	--disable-voaacenc \
 	--disable-chromaprint \
 	--disable-dash \
 	--disable-dc1394 \
@@ -509,6 +508,13 @@ GST1_PLUGINS_BAD_CONF_OPT += --enable-apexsink
 GST1_PLUGINS_BAD_DEPENDENCIES += openssl
 else
 GST1_PLUGINS_BAD_CONF_OPT += --disable-apexsink
+endif
+
+ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_VOAACENC),y)
+GST1_PLUGINS_BAD_CONF_OPT += --enable-voaacenc
+GST1_PLUGINS_BAD_DEPENDENCIES += vo-aacenc
+else
+GST1_PLUGINS_BAD_CONF_OPT += --disable-voaacenc
 endif
 
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_BZ2),y)
