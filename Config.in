@@ -18,6 +18,11 @@ config BR2_EXTERNAL
 	string
 	option env="BR2_EXTERNAL"
 
+# Hidden boolean selected by packages in need of Java in order to build
+# (example: xbmc)
+config BR2_HOST_NEEDS_JAVA
+	bool
+
 # Hidden boolean selected by pre-built packages for x86, when they
 # need to run on x86-64 machines (example: pre-built external
 # toolchains, binary tools like SAM-BA, etc.).
