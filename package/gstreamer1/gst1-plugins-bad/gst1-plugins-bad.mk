@@ -39,7 +39,6 @@ GST1_PLUGINS_BAD_CONF_OPT += \
 	--disable-mfc \
 	--disable-opensles \
 	--disable-uvch264 \
-	--disable-assrender \
 	--disable-voamrwbenc \
 	--disable-chromaprint \
 	--disable-dash \
@@ -508,6 +507,13 @@ GST1_PLUGINS_BAD_CONF_OPT += --enable-apexsink
 GST1_PLUGINS_BAD_DEPENDENCIES += openssl
 else
 GST1_PLUGINS_BAD_CONF_OPT += --disable-apexsink
+endif
+
+ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_ASSRENDER),y)
+GST1_PLUGINS_BAD_CONF_OPT += --enable-assrender
+GST1_PLUGINS_BAD_DEPENDENCIES += libass
+else
+GST1_PLUGINS_BAD_CONF_OPT += --disable-assrender
 endif
 
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_VOAACENC),y)
