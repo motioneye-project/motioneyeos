@@ -14,6 +14,7 @@ TRANSMISSION_DEPENDENCIES = \
 	libevent \
 	openssl \
 	zlib
+TRANSMISSION_AUTORECONF = YES
 
 TRANSMISSION_CONF_OPT = \
 	--disable-libnotify \
