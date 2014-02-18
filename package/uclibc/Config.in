@@ -124,6 +124,7 @@ choice
 	config BR2_PTHREADS_NATIVE
 		bool "Native POSIX Threading (NPTL)"
 		select BR2_TOOLCHAIN_HAS_THREADS
+		select BR2_TOOLCHAIN_HAS_THREADS_NPTL
 		depends on !BR2_arc
 		depends on !BR2_avr32
 		depends on !BR2_bfin
