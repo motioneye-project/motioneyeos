@@ -411,7 +411,8 @@ comment "External PHP extensions need a toolchain w/ dynamic library"
 endif
 endif
 source "package/python/Config.in"
-if BR2_PACKAGE_PYTHON
+source "package/python3/Config.in"
+if BR2_PACKAGE_PYTHON || BR2_PACKAGE_PYTHON3
 menu "external python modules"
 source "package/python-bottle/Config.in"
 source "package/python-configobj/Config.in"
@@ -447,7 +448,6 @@ source "package/python-tornado/Config.in"
 source "package/python-versiontools/Config.in"
 endmenu
 endif
-source "package/python3/Config.in"
 source "package/ruby/Config.in"
 source "package/tcl/Config.in"
 if BR2_PACKAGE_TCL
