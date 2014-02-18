@@ -15,20 +15,20 @@ Signed-off-by: Samuel Martin <s.martin49@gmail.com>
  setup.py        |    2 +-
  3 files changed, 19 insertions(+), 7 deletions(-)
 
-Index: cpython/Makefile.pre.in
+Index: b/Makefile.pre.in
 ===================================================================
---- cpython.orig/Makefile.pre.in
-+++ cpython/Makefile.pre.in
-@@ -987,7 +987,7 @@
- 		html json http dbm xmlrpc \
+--- a/Makefile.pre.in
++++ b/Makefile.pre.in
+@@ -1134,7 +1134,7 @@
  		logging csv wsgiref urllib \
- 		ctypes ctypes/macholib idlelib idlelib/Icons \
+ 		ctypes ctypes/macholib \
+ 		idlelib idlelib/Icons \
 -		distutils distutils/command $(XMLLIBSUBDIRS) \
 +		distutils distutils/command \
  		importlib \
  		turtledemo \
  		multiprocessing multiprocessing/dummy \
-@@ -1065,6 +1065,10 @@
+@@ -1205,6 +1205,10 @@
  LIBSUBDIRS += curses
  endif
  
@@ -36,14 +36,14 @@ Index: cpython/Makefile.pre.in
 +LIBSUBDIRS += $(XMLLIBSUBDIRS)
 +endif
 +
- libinstall:	build_all $(srcdir)/Lib/$(PLATDIR) $(srcdir)/Modules/xxmodule.c
- 	@for i in $(SCRIPTDIR) $(LIBDEST); \
- 	do \
-Index: cpython/configure.ac
+ ifeq (@TEST_MODULES@,yes)
+ LIBSUBDIRS += $(TESTSUBDIRS)
+ endif
+Index: b/configure.ac
 ===================================================================
---- cpython.orig/configure.ac
-+++ cpython/configure.ac
-@@ -2178,13 +2178,21 @@
+--- a/configure.ac
++++ b/configure.ac
+@@ -2363,13 +2363,21 @@
  AC_SUBST(DISABLED_EXTENSIONS)
  
  # Check for use of the system expat library
@@ -70,11 +70,11 @@ Index: cpython/configure.ac
  
  # Check for use of the system libffi library
  AC_MSG_CHECKING(for --with-system-ffi)
-Index: cpython/setup.py
+Index: b/setup.py
 ===================================================================
---- cpython.orig/setup.py
-+++ cpython/setup.py
-@@ -1404,7 +1404,7 @@
+--- a/setup.py
++++ b/setup.py
+@@ -1396,7 +1396,7 @@
          #
          # More information on Expat can be found at www.libexpat.org.
          #

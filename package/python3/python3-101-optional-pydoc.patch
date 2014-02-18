@@ -12,11 +12,11 @@ Signed-off-by: Samuel Martin <s.martin49@gmail.com>
  setup.py        |    9 +++++++--
  3 files changed, 19 insertions(+), 3 deletions(-)
 
-Index: cpython/Makefile.pre.in
+Index: b/Makefile.pre.in
 ===================================================================
---- cpython.orig/Makefile.pre.in
-+++ cpython/Makefile.pre.in
-@@ -952,7 +952,9 @@
+--- a/Makefile.pre.in
++++ b/Makefile.pre.in
+@@ -1087,7 +1087,9 @@
  	-rm -f $(DESTDIR)$(BINDIR)/idle3
  	(cd $(DESTDIR)$(BINDIR); $(LN) -s idle$(VERSION) idle3)
  	-rm -f $(DESTDIR)$(BINDIR)/pydoc3
@@ -26,32 +26,32 @@ Index: cpython/Makefile.pre.in
  	-rm -f $(DESTDIR)$(BINDIR)/2to3
  	(cd $(DESTDIR)$(BINDIR); $(LN) -s 2to3-$(VERSION) 2to3)
  	-rm -f $(DESTDIR)$(BINDIR)/pyvenv
-@@ -991,7 +993,7 @@
+@@ -1138,7 +1140,7 @@
  		multiprocessing multiprocessing/dummy \
  		unittest \
  		venv venv/scripts venv/scripts/posix \
 -		curses pydoc_data $(MACHDEPS)
 +		curses $(MACHDEPS)
  
- ifeq (@TEST_MODULES@,yes)
- LIBSUBDIRS += tkinter/test tkinter/test/test_tkinter \
-@@ -1034,6 +1036,10 @@
- 		unittest unittest/test unittest/test/testmock
- endif
+ TESTSUBDIRS = 	tkinter/test tkinter/test/test_tkinter tkinter/test/test_ttk \
+ 		test test/test_asyncio ctypes/test \
+@@ -1180,6 +1182,10 @@
+ 		unittest/test unittest/test/testmock \
+ 		distutils/tests
  
 +ifeq (@PYDOC@,yes)
 +LIBSUBDIRS += pydoc_data
 +endif
 +
- libinstall:	build_all $(srcdir)/Lib/$(PLATDIR) $(srcdir)/Modules/xxmodule.c
- 	@for i in $(SCRIPTDIR) $(LIBDEST); \
- 	do \
-Index: cpython/configure.ac
+ ifeq (@TEST_MODULES@,yes)
+ LIBSUBDIRS += $(TESTSUBDIRS)
+ endif
+Index: b/configure.ac
 ===================================================================
---- cpython.orig/configure.ac
-+++ cpython/configure.ac
-@@ -2448,6 +2448,11 @@
-         esac])
+--- a/configure.ac
++++ b/configure.ac
+@@ -2666,6 +2666,11 @@
+       AC_CHECK_FUNCS(pthread_atfork)
  fi
  
 +AC_SUBST(PYDOC)
@@ -62,11 +62,11 @@ Index: cpython/configure.ac
  
  AC_SUBST(TEST_MODULES)
  
-Index: cpython/setup.py
+Index: b/setup.py
 ===================================================================
---- cpython.orig/setup.py
-+++ cpython/setup.py
-@@ -2123,6 +2123,12 @@
+--- a/setup.py
++++ b/setup.py
+@@ -2182,6 +2182,12 @@
      # turn off warnings when deprecated modules are imported
      import warnings
      warnings.filterwarnings("ignore",category=DeprecationWarning)
@@ -79,7 +79,7 @@ Index: cpython/setup.py
      setup(# PyPI Metadata (PEP 301)
            name = "Python",
            version = sys.version.split()[0],
-@@ -2147,8 +2153,7 @@
+@@ -2206,8 +2212,7 @@
            # If you change the scripts installed here, you also need to
            # check the PyBuildScripts command above, and change the links
            # created by the bininstall target in Makefile.pre.in

@@ -11,11 +11,11 @@ Signed-off-by: Maxime Ripard <maxime.ripard@free-electrons.com>
  setup.py        |    4 +++-
  3 files changed, 16 insertions(+), 2 deletions(-)
 
-Index: cpython/Makefile.pre.in
+Index: b/Makefile.pre.in
 ===================================================================
---- cpython.orig/Makefile.pre.in
-+++ cpython/Makefile.pre.in
-@@ -950,7 +950,9 @@
+--- a/Makefile.pre.in
++++ b/Makefile.pre.in
+@@ -1085,7 +1085,9 @@
  	-rm -f $(DESTDIR)$(LIBPC)/python3.pc
  	(cd $(DESTDIR)$(LIBPC); $(LN) -s python-$(VERSION).pc python3.pc)
  	-rm -f $(DESTDIR)$(BINDIR)/idle3
@@ -25,16 +25,15 @@ Index: cpython/Makefile.pre.in
  	-rm -f $(DESTDIR)$(BINDIR)/pydoc3
  ifeq (@PYDOC@,yes)
  	(cd $(DESTDIR)$(BINDIR); $(LN) -s pydoc$(VERSION) pydoc3)
-@@ -986,7 +988,7 @@
- 		email email/mime \
+@@ -1133,7 +1135,6 @@
  		html json http dbm xmlrpc \
  		logging csv wsgiref urllib \
--		ctypes ctypes/macholib idlelib idlelib/Icons \
-+		ctypes ctypes/macholib \
+ 		ctypes ctypes/macholib \
+-		idlelib idlelib/Icons \
  		distutils distutils/command \
  		importlib \
  		turtledemo \
-@@ -1069,6 +1071,10 @@
+@@ -1209,6 +1210,10 @@
  LIBSUBDIRS += $(XMLLIBSUBDIRS)
  endif
  
@@ -42,14 +41,14 @@ Index: cpython/Makefile.pre.in
 +LIBSUBDIRS += idlelib idlelib/Icons
 +endif
 +
- libinstall:	build_all $(srcdir)/Lib/$(PLATDIR) $(srcdir)/Modules/xxmodule.c
- 	@for i in $(SCRIPTDIR) $(LIBDEST); \
- 	do \
-Index: cpython/configure.ac
+ ifeq (@TEST_MODULES@,yes)
+ LIBSUBDIRS += $(TESTSUBDIRS)
+ endif
+Index: b/configure.ac
 ===================================================================
---- cpython.orig/configure.ac
-+++ cpython/configure.ac
-@@ -2519,6 +2519,12 @@
+--- a/configure.ac
++++ b/configure.ac
+@@ -2737,6 +2737,12 @@
  	AS_HELP_STRING([--disable-lib2to3], [disable lib2to3]),
  	[ LIB2TO3="${enableval}" ], [ LIB2TO3=yes ])
  
@@ -62,11 +61,11 @@ Index: cpython/configure.ac
  # Check for enable-ipv6
  AH_TEMPLATE(ENABLE_IPV6, [Define if --enable-ipv6 is specified])
  AC_MSG_CHECKING([if --enable-ipv6 is specified])
-Index: cpython/setup.py
+Index: b/setup.py
 ===================================================================
---- cpython.orig/setup.py
-+++ cpython/setup.py
-@@ -2124,11 +2124,13 @@
+--- a/setup.py
++++ b/setup.py
+@@ -2183,11 +2183,13 @@
      import warnings
      warnings.filterwarnings("ignore",category=DeprecationWarning)
  

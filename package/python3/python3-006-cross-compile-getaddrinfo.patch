@@ -6,11 +6,11 @@ Signed-off-by: Vanya Sergeev <vsergeev at gmail.com>
  configure.ac |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Index: Python-3.3.0/configure.ac
+Index: b/configure.ac
 ===================================================================
---- Python-3.3.0.orig/configure.ac
-+++ Python-3.3.0/configure.ac
-@@ -3204,7 +3204,7 @@
+--- a/configure.ac
++++ b/configure.ac
+@@ -3423,7 +3423,7 @@
  
  AC_MSG_RESULT($ac_cv_buggy_getaddrinfo)
  

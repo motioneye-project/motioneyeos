@@ -8,35 +8,35 @@ Signed-off-by: Samuel Martin <s.martin49@gmail.com>
  configure.ac    |    9 +++++++++
  2 files changed, 14 insertions(+), 1 deletion(-)
 
-Index: cpython/Makefile.pre.in
+Index: b/Makefile.pre.in
 ===================================================================
---- cpython.orig/Makefile.pre.in
-+++ cpython/Makefile.pre.in
-@@ -993,7 +993,7 @@
+--- a/Makefile.pre.in
++++ b/Makefile.pre.in
+@@ -1140,7 +1140,7 @@
  		multiprocessing multiprocessing/dummy \
  		unittest \
  		venv venv/scripts venv/scripts/posix \
 -		curses $(MACHDEPS)
 +		$(MACHDEPS)
  
- ifeq (@TEST_MODULES@,yes)
- LIBSUBDIRS += 	test \
-@@ -1061,6 +1061,10 @@
- endif
+ TESTSUBDIRS = 	test test/test_asyncio ctypes/test \
+ 		test/test_email test/test_email/data \
+@@ -1201,6 +1201,10 @@
+ 	tkinter/test/test_ttk
  endif
  
 +ifeq (@CURSES@,yes)
 +LIBSUBDIRS += curses
 +endif
 +
- libinstall:	build_all $(srcdir)/Lib/$(PLATDIR) $(srcdir)/Modules/xxmodule.c
- 	@for i in $(SCRIPTDIR) $(LIBDEST); \
- 	do \
-Index: cpython/configure.ac
+ ifeq (@TEST_MODULES@,yes)
+ LIBSUBDIRS += $(TESTSUBDIRS)
+ endif
+Index: b/configure.ac
 ===================================================================
---- cpython.orig/configure.ac
-+++ cpython/configure.ac
-@@ -2466,6 +2466,15 @@
+--- a/configure.ac
++++ b/configure.ac
+@@ -2684,6 +2684,15 @@
     DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} _tkinter"
  fi
  

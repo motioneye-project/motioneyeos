@@ -8,12 +8,12 @@ Signed-off-by: Samuel Martin <s.martin49@gmail.com>
  configure.ac    |    9 +++++++++
  2 files changed, 16 insertions(+), 2 deletions(-)
 
-Index: cpython/configure.ac
+Index: b/configure.ac
 ===================================================================
---- cpython.orig/configure.ac
-+++ cpython/configure.ac
-@@ -2448,6 +2448,15 @@
-         esac])
+--- a/configure.ac
++++ b/configure.ac
+@@ -2666,6 +2666,15 @@
+       AC_CHECK_FUNCS(pthread_atfork)
  fi
  
 +AC_SUBST(SQLITE3)
@@ -28,37 +28,36 @@ Index: cpython/configure.ac
  AC_SUBST(PYDOC)
  
  AC_ARG_ENABLE(pydoc,
-Index: cpython/Makefile.pre.in
+Index: b/Makefile.pre.in
 ===================================================================
---- cpython.orig/Makefile.pre.in
-+++ cpython/Makefile.pre.in
-@@ -985,7 +985,6 @@
- 		collections concurrent concurrent/futures encodings \
+--- a/Makefile.pre.in
++++ b/Makefile.pre.in
+@@ -1131,7 +1131,6 @@
  		email email/mime \
+ 		ensurepip ensurepip/_bundled \
  		html json http dbm xmlrpc \
 -		sqlite3 \
  		logging csv wsgiref urllib \
- 		ctypes ctypes/macholib idlelib idlelib/Icons \
- 		distutils distutils/command $(XMLLIBSUBDIRS) \
-@@ -1025,7 +1024,6 @@
- 		test/namespace_pkgs/module_and_namespace_package/a_test \
- 		test/test_email test/test_email/data \
- 		test/json_tests \
--		sqlite3/test \
- 		ctypes/test \
- 		distutils/tests \
+ 		ctypes ctypes/macholib \
+ 		idlelib idlelib/Icons \
+@@ -1173,7 +1172,7 @@
+ 		test/namespace_pkgs/project3/parent/child \
+                 test/namespace_pkgs/module_and_namespace_package \
+                 test/namespace_pkgs/module_and_namespace_package/a_test \
+-		sqlite3/test idlelib/idle_test \
++		idlelib/idle_test \
  		test/test_importlib test/test_importlib/builtin \
-@@ -1048,6 +1046,13 @@
- endif
+ 		test/test_importlib/extension test/test_importlib/frozen \
+ 		test/test_importlib/import_ test/test_importlib/source \
+@@ -1192,6 +1191,11 @@
+ 	lib2to3/tests/data/fixers/myfixes
  endif
  
 +ifeq (@SQLITE3@,yes)
 +LIBSUBDIRS += sqlite3
-+ifeq (@TEST_MODULES@,yes)
-+LIBSUBDIRS += sqlite3/test
-+endif
++TESTSUBDIRS += sqlite3/test
 +endif
 +
- libinstall:	build_all $(srcdir)/Lib/$(PLATDIR) $(srcdir)/Modules/xxmodule.c
- 	@for i in $(SCRIPTDIR) $(LIBDEST); \
- 	do \
+ ifeq (@TEST_MODULES@,yes)
+ LIBSUBDIRS += $(TESTSUBDIRS)
+ endif

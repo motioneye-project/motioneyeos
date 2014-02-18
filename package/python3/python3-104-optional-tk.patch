@@ -8,50 +8,47 @@ Signed-off-by: Samuel Martin <s.martin49@gmail.com>
  configure.ac    |    9 +++++++++
  2 files changed, 20 insertions(+), 3 deletions(-)
 
-Index: cpython/Makefile.pre.in
+Index: b/Makefile.pre.in
 ===================================================================
---- cpython.orig/Makefile.pre.in
-+++ cpython/Makefile.pre.in
-@@ -980,7 +980,7 @@
+--- a/Makefile.pre.in
++++ b/Makefile.pre.in
+@@ -1124,7 +1124,7 @@
  EXTRAPLATDIR= @EXTRAPLATDIR@
  MACHDEPS=	$(PLATDIR) $(EXTRAPLATDIR)
  XMLLIBSUBDIRS=  xml xml/dom xml/etree xml/parsers xml/sax
 -LIBSUBDIRS=	tkinter \
 +LIBSUBDIRS=	\
  		site-packages \
+ 		asyncio \
  		collections concurrent concurrent/futures encodings \
- 		email email/mime \
-@@ -996,8 +996,7 @@
+@@ -1142,8 +1142,7 @@
+ 		venv venv/scripts venv/scripts/posix \
  		curses $(MACHDEPS)
  
- ifeq (@TEST_MODULES@,yes)
--LIBSUBDIRS += tkinter/test tkinter/test/test_tkinter \
--		tkinter/test/test_ttk test \
-+LIBSUBDIRS += 	test \
- 		test/capath test/data \
- 		test/cjkencodings test/decimaltestdata test/xmltestdata \
- 		test/subprocessdata test/sndhdrdata \
-@@ -1053,6 +1052,15 @@
- endif
+-TESTSUBDIRS = 	tkinter/test tkinter/test/test_tkinter tkinter/test/test_ttk \
+-		test test/test_asyncio ctypes/test \
++TESTSUBDIRS = 	test test/test_asyncio ctypes/test \
+ 		test/test_email test/test_email/data \
+ 		test/test_json \
+ 		test/audiodata \
+@@ -1196,6 +1195,12 @@
+ TESTSUBDIRS += sqlite3/test
  endif
  
 +ifeq (@TK@,yes)
 +LIBSUBDIRS += tkinter
-+ifeq (@TEST_MODULES@,yes)
-+LIBSUBDIRS += 	\
-+		tkinter/test tkinter/test/test_tkinter \
-+		tkinter/test/test_ttk
-+endif
++TESTSUBDIRS += tkinter/test tkinter/test/test_tkinter \
++	tkinter/test/test_ttk
 +endif
 +
- libinstall:	build_all $(srcdir)/Lib/$(PLATDIR) $(srcdir)/Modules/xxmodule.c
- 	@for i in $(SCRIPTDIR) $(LIBDEST); \
- 	do \
-Index: cpython/configure.ac
+ ifeq (@TEST_MODULES@,yes)
+ LIBSUBDIRS += $(TESTSUBDIRS)
+ endif
+Index: b/configure.ac
 ===================================================================
---- cpython.orig/configure.ac
-+++ cpython/configure.ac
-@@ -2457,6 +2457,15 @@
+--- a/configure.ac
++++ b/configure.ac
+@@ -2675,6 +2675,15 @@
     DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} _sqlite3"
  fi
  

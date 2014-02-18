@@ -8,11 +8,13 @@ See http://www.python.org/dev/peps/pep-3147
 
 Signed-off-by: Daniel Nelson <daniel@sigpwr.com>
 
---- python3-3.3.0/configure.ac	2013-01-27 16:35:52.429067797 -0800
-+++ python3-3.3.0/configure.ac	2013-01-27 16:43:43.528601443 -0800
-@@ -1827,6 +1827,23 @@
-     LIBTOOL_CRUFT=$LIBTOOL_CRUFT' -compatibility_version $(VERSION) -current_version $(VERSION)';;
- esac
+Index: b/configure.ac
+===================================================================
+--- a/configure.ac
++++ b/configure.ac
+@@ -349,6 +349,23 @@
+ AC_SUBST(FRAMEWORKUNIXTOOLSPREFIX)
+ AC_SUBST(FRAMEWORKINSTALLAPPSPREFIX)
  
 +STDLIB_CACHE_FLAGS=
 +AC_MSG_CHECKING(for --enable-old-stdlib-cache)
@@ -31,12 +33,14 @@ Signed-off-by: Daniel Nelson <daniel@sigpwr.com>
 +])
 +AC_SUBST(STDLIB_CACHE_FLAGS)
 +
- AC_MSG_CHECKING(for --enable-framework)
- if test "$enable_framework"
- then
---- python3-3.3.0/Makefile.pre.in	2013-01-27 16:35:52.422067642 -0800
-+++ python3-3.3.0/Makefile.pre.in	2013-01-27 16:37:03.710650439 -0800
-@@ -143,6 +143,9 @@
+ ##AC_ARG_WITH(dyld,
+ ##            AS_HELP_STRING([--with-dyld],
+ ##                           [Use (OpenStep|Rhapsody) dynamic linker]))
+Index: b/Makefile.pre.in
+===================================================================
+--- a/Makefile.pre.in
++++ b/Makefile.pre.in
+@@ -157,6 +157,9 @@
  # Options to enable prebinding (for fast startup prior to Mac OS X 10.3)
  OTHER_LIBTOOL_OPT=@OTHER_LIBTOOL_OPT@
  
@@ -46,7 +50,7 @@ Signed-off-by: Daniel Nelson <daniel@sigpwr.com>
  # Environment to run shared python without installed libraries
  RUNSHARED=       @RUNSHARED@
  
-@@ -1079,12 +1082,12 @@
+@@ -1231,21 +1234,21 @@
  	fi
  	-PYTHONPATH=$(DESTDIR)$(LIBDEST)  $(RUNSHARED) \
  		$(PYTHON_FOR_BUILD) -Wi $(DESTDIR)$(LIBDEST)/compileall.py \
@@ -54,8 +58,19 @@ Signed-off-by: Daniel Nelson <daniel@sigpwr.com>
 +		-d $(LIBDEST) -f $(STDLIB_CACHE_FLAGS) \
  		-x 'bad_coding|badsyntax|site-packages|lib2to3/tests/data' \
  		$(DESTDIR)$(LIBDEST)
+ 	-PYTHONPATH=$(DESTDIR)$(LIBDEST) $(RUNSHARED) \
+ 		$(PYTHON_FOR_BUILD) -Wi -O $(DESTDIR)$(LIBDEST)/compileall.py \
+-		-d $(LIBDEST) -f \
++		-d $(LIBDEST) -f $(STDLIB_CACHE_FLAGS) \
+ 		-x 'bad_coding|badsyntax|site-packages|lib2to3/tests/data' \
+ 		$(DESTDIR)$(LIBDEST)
  	-PYTHONPATH=$(DESTDIR)$(LIBDEST)  $(RUNSHARED) \
  		$(PYTHON_FOR_BUILD) -Wi $(DESTDIR)$(LIBDEST)/compileall.py \
+-		-d $(LIBDEST)/site-packages -f \
++		-d $(LIBDEST)/site-packages -f $(STDLIB_CACHE_FLAGS) \
+ 		-x badsyntax $(DESTDIR)$(LIBDEST)/site-packages
+ 	-PYTHONPATH=$(DESTDIR)$(LIBDEST) $(RUNSHARED) \
+ 		$(PYTHON_FOR_BUILD) -Wi -O $(DESTDIR)$(LIBDEST)/compileall.py \
 -		-d $(LIBDEST)/site-packages -f \
 +		-d $(LIBDEST)/site-packages -f $(STDLIB_CACHE_FLAGS) \
  		-x badsyntax $(DESTDIR)$(LIBDEST)/site-packages

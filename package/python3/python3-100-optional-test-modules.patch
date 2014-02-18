@@ -11,11 +11,11 @@ Signed-off-by: Samuel Martin <s.martin49@gmail.com>
  configure.ac    |    6 ++++++
  2 files changed, 38 insertions(+), 18 deletions(-)
 
-Index: cpython/Makefile.pre.in
+Index: b/Makefile.pre.in
 ===================================================================
---- cpython.orig/Makefile.pre.in
-+++ cpython/Makefile.pre.in
-@@ -976,8 +976,26 @@
+--- a/Makefile.pre.in
++++ b/Makefile.pre.in
+@@ -1120,8 +1120,30 @@
  EXTRAPLATDIR= @EXTRAPLATDIR@
  MACHDEPS=	$(PLATDIR) $(EXTRAPLATDIR)
  XMLLIBSUBDIRS=  xml xml/dom xml/etree xml/parsers xml/sax
@@ -23,13 +23,16 @@ Index: cpython/Makefile.pre.in
 -		tkinter/test/test_ttk site-packages test \
 +LIBSUBDIRS=	tkinter \
 +		site-packages \
++		asyncio \
 +		collections concurrent concurrent/futures encodings \
 +		email email/mime \
++		ensurepip ensurepip/_bundled \
 +		html json http dbm xmlrpc \
 +		sqlite3 \
 +		logging csv wsgiref urllib \
 +		lib2to3 lib2to3/fixes lib2to3/pgen2 \
-+		ctypes ctypes/macholib idlelib idlelib/Icons \
++		ctypes ctypes/macholib \
++		idlelib idlelib/Icons \
 +		distutils distutils/command $(XMLLIBSUBDIRS) \
 +		importlib \
 +		turtledemo \
@@ -38,37 +41,34 @@ Index: cpython/Makefile.pre.in
 +		venv venv/scripts venv/scripts/posix \
 +		curses pydoc_data $(MACHDEPS)
 +
-+ifeq (@TEST_MODULES@,yes)
-+LIBSUBDIRS += tkinter/test tkinter/test/test_tkinter \
-+		tkinter/test/test_ttk test \
++TESTSUBDIRS = 	tkinter/test tkinter/test/test_tkinter tkinter/test/test_ttk \
++		test test/test_asyncio ctypes/test \
++		test/test_email test/test_email/data \
++		test/test_json \
+ 		test/audiodata \
  		test/capath test/data \
  		test/cjkencodings test/decimaltestdata test/xmltestdata \
- 		test/subprocessdata test/sndhdrdata \
-@@ -1000,26 +1018,22 @@
- 		test/namespace_pkgs/project3 \
- 		test/namespace_pkgs/project3/parent \
+@@ -1148,28 +1170,20 @@
  		test/namespace_pkgs/project3/parent/child \
--                test/namespace_pkgs/module_and_namespace_package \
--                test/namespace_pkgs/module_and_namespace_package/a_test \
+                 test/namespace_pkgs/module_and_namespace_package \
+                 test/namespace_pkgs/module_and_namespace_package/a_test \
+-		asyncio \
+-		test/test_asyncio \
 -		collections concurrent concurrent/futures encodings \
 -		email email/mime test/test_email test/test_email/data \
--		html json test/json_tests http dbm xmlrpc \
+-		ensurepip ensurepip/_bundled \
+-		html json test/test_json http dbm xmlrpc \
 -		sqlite3 sqlite3/test \
 -		logging csv wsgiref urllib \
 -		lib2to3 lib2to3/fixes lib2to3/pgen2 lib2to3/tests \
-+		test/namespace_pkgs/module_and_namespace_package \
-+		test/namespace_pkgs/module_and_namespace_package/a_test \
-+		test/test_email test/test_email/data \
-+		test/json_tests \
-+		sqlite3/test \
 +		lib2to3/tests \
  		lib2to3/tests/data lib2to3/tests/data/fixers \
  		lib2to3/tests/data/fixers/myfixes \
--		ctypes ctypes/test ctypes/macholib idlelib idlelib/Icons \
+-		ctypes ctypes/test ctypes/macholib \
+-		idlelib idlelib/Icons idlelib/idle_test \
 -		distutils distutils/command distutils/tests $(XMLLIBSUBDIRS) \
 -		importlib test/test_importlib test/test_importlib/builtin \
-+		ctypes/test \
-+		distutils/tests \
++		sqlite3/test idlelib/idle_test \
 +		test/test_importlib test/test_importlib/builtin \
  		test/test_importlib/extension test/test_importlib/frozen \
  		test/test_importlib/import_ test/test_importlib/source \
@@ -77,17 +77,21 @@ Index: cpython/Makefile.pre.in
 -		unittest unittest/test unittest/test/testmock \
 -		venv venv/scripts venv/scripts/posix \
 -		curses pydoc_data $(MACHDEPS)
-+		unittest unittest/test unittest/test/testmock
++		unittest/test unittest/test/testmock \
++		distutils/tests
++
++ifeq (@TEST_MODULES@,yes)
++LIBSUBDIRS += $(TESTSUBDIRS)
 +endif
 +
  libinstall:	build_all $(srcdir)/Lib/$(PLATDIR) $(srcdir)/Modules/xxmodule.c
  	@for i in $(SCRIPTDIR) $(LIBDEST); \
  	do \
-Index: cpython/configure.ac
+Index: b/configure.ac
 ===================================================================
---- cpython.orig/configure.ac
-+++ cpython/configure.ac
-@@ -2449,6 +2449,12 @@
+--- a/configure.ac
++++ b/configure.ac
+@@ -2667,6 +2667,12 @@
  fi
  
  

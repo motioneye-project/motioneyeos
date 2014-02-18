@@ -6,11 +6,11 @@ Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
  configure.ac |    6 ++++++
  1 file changed, 6 insertions(+)
 
-Index: cpython/configure.ac
+Index: b/configure.ac
 ===================================================================
---- cpython.orig/configure.ac
-+++ cpython/configure.ac
-@@ -2465,6 +2465,12 @@
+--- a/configure.ac
++++ b/configure.ac
+@@ -2683,6 +2683,12 @@
     DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} _sqlite3"
  fi
  
