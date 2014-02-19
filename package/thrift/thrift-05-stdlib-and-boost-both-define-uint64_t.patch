@@ -1,0 +1,112 @@
+THRIFT-2367 Build failure: stdlib and boost both define uint64_t
+
+Fix: remove "using namespace boost;"
+Patch: Roger Meier
+---
+ lib/cpp/src/thrift/transport/TSSLServerSocket.cpp | 8 +++-----
+ lib/cpp/src/thrift/transport/TSSLSocket.cpp       | 7 +++----
+ tutorial/cpp/CppClient.cpp                        | 2 --
+ tutorial/cpp/CppServer.cpp                        | 2 --
+ 4 files changed, 6 insertions(+), 13 deletions(-)
+
+diff --git a/lib/cpp/src/thrift/transport/TSSLServerSocket.cpp b/lib/cpp/src/thrift/transport/TSSLServerSocket.cpp
+index 4689e4a..df5ed75 100644
+--- a/lib/cpp/src/thrift/transport/TSSLServerSocket.cpp
++++ b/lib/cpp/src/thrift/transport/TSSLServerSocket.cpp
+@@ -22,25 +22,23 @@
+ 
+ namespace apache { namespace thrift { namespace transport {
+ 
+-using namespace boost;
+-
+ /**
+  * SSL server socket implementation.
+  */
+ TSSLServerSocket::TSSLServerSocket(int port,
+-                                   shared_ptr<TSSLSocketFactory> factory):
++                                   boost::shared_ptr<TSSLSocketFactory> factory):
+                                    TServerSocket(port), factory_(factory) {
+   factory_->server(true);
+ }
+ 
+ TSSLServerSocket::TSSLServerSocket(int port, int sendTimeout, int recvTimeout,
+-                                   shared_ptr<TSSLSocketFactory> factory):
++                                   boost::shared_ptr<TSSLSocketFactory> factory):
+                                    TServerSocket(port, sendTimeout, recvTimeout),
+                                    factory_(factory) {
+   factory_->server(true);
+ }
+ 
+-shared_ptr<TSocket> TSSLServerSocket::createSocket(int client) {
++boost::shared_ptr<TSocket> TSSLServerSocket::createSocket(int client) {
+   return factory_->createSocket(client);
+ }
+ 
+diff --git a/lib/cpp/src/thrift/transport/TSSLSocket.cpp b/lib/cpp/src/thrift/transport/TSSLSocket.cpp
+index 029c541..5029f74 100644
+--- a/lib/cpp/src/thrift/transport/TSSLSocket.cpp
++++ b/lib/cpp/src/thrift/transport/TSSLSocket.cpp
+@@ -41,7 +41,6 @@
+ #define OPENSSL_VERSION_NO_THREAD_ID 0x10000000L
+ 
+ using namespace std;
+-using namespace boost;
+ using namespace apache::thrift::concurrency;
+ 
+ struct CRYPTO_dynlock_value {
+@@ -489,7 +488,7 @@ int TSSLSocketFactory::passwordCallback(char* password,
+   return length;
+ }
+ 
+-static shared_array<Mutex> mutexes;
++static boost::shared_array<Mutex> mutexes;
+ 
+ static void callbackLocking(int mode, int n, const char*, int) {
+   if (mode & CRYPTO_LOCK) {
+@@ -533,7 +532,7 @@ void TSSLSocketFactory::initializeOpenSSL() {
+   SSL_library_init();
+   SSL_load_error_strings();
+   // static locking
+-  mutexes = shared_array<Mutex>(new Mutex[::CRYPTO_num_locks()]);
++  mutexes = boost::shared_array<Mutex>(new Mutex[::CRYPTO_num_locks()]);
+   if (mutexes == NULL) {
+     throw TTransportException(TTransportException::INTERNAL_ERROR,
+           "initializeOpenSSL() failed, "
+@@ -591,7 +590,7 @@ void buildErrors(string& errors, int errno_copy) {
+     }
+   }
+   if (errors.empty()) {
+-    errors = "error code: " + lexical_cast<string>(errno_copy);
++    errors = "error code: " + boost::lexical_cast<string>(errno_copy);
+   }
+ }
+ 
+diff --git a/tutorial/cpp/CppClient.cpp b/tutorial/cpp/CppClient.cpp
+index ba71caa..6db8db6 100644
+--- a/tutorial/cpp/CppClient.cpp
++++ b/tutorial/cpp/CppClient.cpp
+@@ -35,8 +35,6 @@ using namespace apache::thrift::transport;
+ using namespace tutorial;
+ using namespace shared;
+ 
+-using namespace boost;
+-
+ int main(int argc, char** argv) {
+   shared_ptr<TTransport> socket(new TSocket("localhost", 9090));
+   shared_ptr<TTransport> transport(new TBufferedTransport(socket));
+diff --git a/tutorial/cpp/CppServer.cpp b/tutorial/cpp/CppServer.cpp
+index d0dbad9..d0bff32 100644
+--- a/tutorial/cpp/CppServer.cpp
++++ b/tutorial/cpp/CppServer.cpp
+@@ -41,8 +41,6 @@ using namespace apache::thrift::server;
+ using namespace tutorial;
+ using namespace shared;
+ 
+-using namespace boost;
+-
+ class CalculatorHandler : public CalculatorIf {
+  public:
+   CalculatorHandler() {}
+-- 
+1.8.5.3
+
