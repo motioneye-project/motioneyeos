@@ -1,0 +1,53 @@
+Allow CFLAGS/CPPFLAGS to be completed from the environment
+
+Buildroot passes its own CPPFLAGS and CFLAGS in the environment, so
+the CFLAGS += and CPPFLAGS += statements in gnu-efi Makefile have no
+effect. Change these to override <VARIABLE> += so that they extend the
+flags passed by Buildroot.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/Make.defaults
+===================================================================
+--- a/Make.defaults
++++ b/Make.defaults
+@@ -83,25 +83,25 @@
+                                && [ $(GCCMINOR) -ge "7" ] ) ) \
+                         && echo 1)
+ ifeq ($(GCCNEWENOUGH),1)
+-  CPPFLAGS += -DGNU_EFI_USE_MS_ABI -maccumulate-outgoing-args --std=c11
++  override CPPFLAGS += -DGNU_EFI_USE_MS_ABI -maccumulate-outgoing-args --std=c11
+ endif
+ 
+ # Arch-specific compilation flags
+-CPPFLAGS += -DCONFIG_$(ARCH)
++override CPPFLAGS += -DCONFIG_$(ARCH)
+ 
+ ifeq ($(ARCH),ia64)
+-  CFLAGS += -mfixed-range=f32-f127
++  override CFLAGS += -mfixed-range=f32-f127
+ endif
+ 
+ ifeq ($(ARCH),ia32)
+-  CFLAGS += -mno-mmx -mno-sse
++  override CFLAGS += -mno-mmx -mno-sse
+   ifeq ($(HOSTARCH),x86_64)
+     ARCH3264 = -m32
+   endif
+ endif
+ 
+ ifeq ($(ARCH),x86_64)
+-  CFLAGS += -mno-red-zone -mno-mmx -mno-sse
++  override CFLAGS += -mno-red-zone -mno-mmx -mno-sse
+   ifeq ($(HOSTARCH),ia32)
+     ARCH3264 = -m64
+   endif
+@@ -110,7 +110,7 @@
+ # Generic compilation flags
+ INCDIR  += -I$(SRCDIR) -I$(TOPDIR)/inc -I$(TOPDIR)/inc/$(ARCH) \
+            -I$(TOPDIR)/inc/protocol
+-CFLAGS  += $(ARCH3264) -O2 -fpic -Wall -fshort-wchar -fno-strict-aliasing \
++override CFLAGS  += $(ARCH3264) -O2 -fpic -Wall -fshort-wchar -fno-strict-aliasing \
+            -fno-merge-constants -ffreestanding -fno-stack-protector       \
+            -fno-stack-check
+ ASFLAGS += $(ARCH3264)

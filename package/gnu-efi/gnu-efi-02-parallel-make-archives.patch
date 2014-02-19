@@ -1,0 +1,48 @@
+Fix parallel make failure for archives
+
+Upstream-Status: Pending
+
+The lib and gnuefi makefiles were using the lib.a() form which compiles
+and ar's as a pair instead of compiling all and then ar'ing which can
+parallelize better. This was resulting in build failures on larger values
+of -j.
+
+See http://www.chemie.fu-berlin.de/chemnet/use/info/make/make_toc.html#TOC105
+for details.
+
+Signed-off-by: Saul Wold <sgw@linux.intel.com>
+Signed-off-by: Darren Hart <dvhart@linux.intel.com>
+---
+---
+ gnuefi/Makefile |    3 ++-
+ lib/Makefile    |    3 ++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
+
+Index: gnu-efi-3.0/lib/Makefile
+===================================================================
+--- gnu-efi-3.0.orig/lib/Makefile
++++ gnu-efi-3.0/lib/Makefile
+@@ -66,7 +66,8 @@ all: libsubdirs libefi.a
+ libsubdirs:
+ 	for sdir in $(SUBDIRS); do mkdir -p $$sdir; done
+ 
+-libefi.a: $(patsubst %,libefi.a(%),$(OBJS))
++libefi.a: $(OBJS)
++	$(AR) rv $@ $(OBJS)
+ 
+ clean:
+ 	rm -f libefi.a *~ $(OBJS) */*.o
+Index: gnu-efi-3.0/gnuefi/Makefile
+===================================================================
+--- gnu-efi-3.0.orig/gnuefi/Makefile
++++ gnu-efi-3.0/gnuefi/Makefile
+@@ -51,7 +51,8 @@ TARGETS	= crt0-efi-$(ARCH).o libgnuefi.a
+ 
+ all:	$(TARGETS)
+ 
+-libgnuefi.a: $(patsubst %,libgnuefi.a(%),$(OBJS))
++libgnuefi.a: $(OBJS)
++	$(AR) rv $@ $(OBJS)
+ 
+ clean:
+ 	rm -f $(TARGETS) *~ *.o $(OBJS)
