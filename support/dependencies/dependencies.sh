@@ -191,7 +191,7 @@ if grep -q ^BR2_PACKAGE_CLASSPATH=y $BR2_CONFIG ; then
 	done
 fi
 
-if grep -q ^BR2_HOST_NEEDS_JAVA=y $BR2_CONFIG ; then
+if grep -q ^BR2_NEEDS_HOST_JAVA=y $BR2_CONFIG ; then
 	if ! which java > /dev/null ; then
 		echo >&2
 		echo "You must install 'java' on your build machine" >&2
