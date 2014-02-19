@@ -1,5 +1,6 @@
 config BR2_PACKAGE_LIBVNCSERVER
 	bool "libvncserver"
+	depends on BR2_USE_MMU # VNCommand.c uses fork()
 	help
 	  libvncserver is a VNC server/client library.
 
