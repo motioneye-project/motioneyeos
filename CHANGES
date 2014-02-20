@@ -1,3 +1,26 @@
+2014.02-rc2, Released February 20th, 2014
+
+	Fixes all over the tree. Static linking / nommu fixes and
+	annotations for several packages.
+
+	Updated/fixed packages: boost, busybox, collectd, coreutils,
+	dropbear, elfutils, feh, gcc, gst1-libav, imagemagick, iozone,
+	jimtcl, kexec, libvncserver, lvm2, lxc, mplayer, netsnmp, nut,
+	opencv, python, python3, qtuio, systemd, thrift, transmission,
+	uclibc, vlc, webkit
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#5450: AT91SAM9260 Bootstrap compilation problem
+	#5582: libiconv 1.14 failed to build
+	#5624: When building directfb, BR2_TARGET_LDFLAGS not used by..
+	#5852: [2012.11] usb_modeswitch should depends of "BR2_PACK..
+	#6218: binutils-2.23.2/gas fails with undefined reference to..
+	#6236: binutils-2.23.2/bfd fails with undefined reference to..
+	#6470: If the build directory is a child of /usr, the build..
+	#6776: systemd error: static declaration of 'execvpe' follows..
+	#6818: toolchainfile.cmake has absolut path references
+
 2014.02-rc1, Released February 11th, 2014
 
 	Fixes all over the tree and new features.
