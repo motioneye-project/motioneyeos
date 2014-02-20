@@ -162,11 +162,13 @@ config BR2_PACKAGE_PHP_EXT_INTL
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_USE_WCHAR
 	depends on !BR2_arc # icu -> atomic builtins
+	depends on !BR2_BINFMT_FLAT # icu
 	help
 	  Internationalization support
 
 comment "intl support needs a toolchain w/ C++, wchar"
 	depends on !BR2_arc
+	depends on !BR2_BINFMT_FLAT
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR
 
 comment "Image processing"

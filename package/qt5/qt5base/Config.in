@@ -189,6 +189,7 @@ config BR2_PACKAGE_QT5BASE_ICU
 	bool "Enable ICU support"
 	select BR2_PACKAGE_ICU
 	depends on !BR2_arc # icu -> atomic builtins
+	depends on !BR2_BINFMT_FLAT # icu
 	help
 	  This option enables ICU support in Qt5. This is for example
 	  needed for Qt5Webkit.
