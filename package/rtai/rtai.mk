@@ -6,11 +6,20 @@
 
 RTAI_VERSION = 3.8.1
 RTAI_SOURCE  = rtai-$(RTAI_VERSION).tar.bz2
-RTAI_SITE    = http://www.rtai.org/RTAI/
+RTAI_SITE    = https://www.rtai.org/userfiles/downloads/RTAI/
+RTAI_INSTALL_STAGING = YES
+
+# The <pkg>_CONFIG_SCRIPTS cannot apply here to the specificities of rtai-config
+define RTAI_POST_PATCH_FIXUP
+	(SED) 's%^staging=.*%staging=$(STAGING_DIR)%' $(STAGING_DIR)/usr/bin/rtai-config
+endef
+
+RTAI_POST_INSTALL_STAGING_HOOKS += RTAI_POST_PATCH_FIXUP
 
 RTAI_DEPENDENCIES = linux
 
 RTAI_CONF_OPT = \
+	--includedir=/usr/include/rtai \
 	--with-linux-dir=$(LINUX_DIR) 	\
 	--disable-leds		      	\
 	--disable-rtailab		\
