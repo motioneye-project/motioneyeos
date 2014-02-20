@@ -25,6 +25,10 @@ E2FSPROGS_CONF_OPT = \
 	--disable-e2initrd-helper \
 	--disable-testio-debug
 
+ifeq ($(BR2_nios2),y)
+E2FSPROGS_CONF_ENV += ac_cv_func_fallocate=no
+endif
+
 E2FSPROGS_DEPENDENCIES = host-pkgconf util-linux
 
 E2FSPROGS_MAKE_OPT = \
