@@ -1,0 +1,36 @@
+Fix thread detection with uClibc in timer_time.m4
+
+The timer_time.m4 gl_TIMER_TIME function determines which libraries
+need to be linked to get access to the timer function, generally -lrt
+for Linux systems. On platforms where threads are used, librt
+typically uses thread functions from libpthread.
+
+However, the test to determine whether the platform has thread or not
+is incorrect: it assumes that if the C library is uClibc, then threads
+are not available. This is actually not true: uClibc has configurable
+thread support, and when thread support is available, librt calls
+libpthread functions.
+
+This is important when static linking is used, because otherwise only
+-lrt is used at link time, which fails because librt calls undefined
+thread functions. Both -lrt and -lpthread must be passed.
+
+This problem is fixed by making the uClibc thread detection a bit
+smarter, thanks to the usage of the __HAS_NO_THREADS__ macro defined
+in <bits/uClibc_config.h>, which itself is included by <features.h>.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/m4/timer_time.m4
+===================================================================
+--- a/m4/timer_time.m4
++++ b/m4/timer_time.m4
+@@ -28,7 +28,7 @@
+ #include <features.h>
+ #ifdef __GNU_LIBRARY__
+  #if ((__GLIBC__ == 2 && __GLIBC_MINOR__ >= 2) || (__GLIBC__ > 2)) \
+-     && !defined __UCLIBC__
++     && !(__UCLIBC__ && __HAS_NO_THREADS__)
+   Thread emulation available
+  #endif
+ #endif
