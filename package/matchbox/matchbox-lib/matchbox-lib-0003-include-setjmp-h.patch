@@ -1,0 +1,17 @@
+matchbox-lib: include setjmp.h
+
+Based on this upstream patch:
+
+   http://git.yoctoproject.org/cgit/cgit.cgi/libmatchbox/commit/?id=9315bcce1f01e7d6c00161442d61d3c676794d9d
+
+Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+--- libmatchbox-1.9/libmb/mbpixbuf.c.orig	2014-02-21 12:45:46.867035956 +0000
++++ libmatchbox-1.9/libmb/mbpixbuf.c	2014-02-21 12:46:43.482949583 +0000
+@@ -22,6 +22,7 @@
+ 
+ #include <strings.h>
+ #include "mbpixbuf.h"
++#include <setjmp.h>
+ 
+ #define BYTE_ORD_24_RGB  0
+ #define BYTE_ORD_24_RBG  1
