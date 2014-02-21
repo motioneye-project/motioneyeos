@@ -1,6 +1,7 @@
 config BR2_PACKAGE_GPM
 	bool "gpm"
 	depends on !BR2_PREFER_STATIC_LIB
+	depends on BR2_USE_MMU # fork()
 	help
 	  "gpm" means general purpose mouse (server) and provides mouse support
 	  for Linux virtual consoles.
