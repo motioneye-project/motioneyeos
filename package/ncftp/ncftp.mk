@@ -11,6 +11,14 @@ NCFTP_TARGET_BINS = ncftp
 NCFTP_LICENSE = Clarified Artistic License
 NCFTP_LICENSE_FILES = doc/LICENSE.txt
 
+NCFTP_DEPENDENCIES = host-autoconf
+
+define NCFTP_RUN_AUTOCONF
+       (cd $(@D); $(HOST_DIR)/usr/bin/autoconf -I$(@D)/autoconf_local/)
+endef
+
+NCFTP_PRE_CONFIGURE_HOOKS += NCFTP_RUN_AUTOCONF
+
 ifeq ($(BR2_PACKAGE_NCFTP_GET),y)
 	NCFTP_TARGET_BINS += ncftpget
 endif
