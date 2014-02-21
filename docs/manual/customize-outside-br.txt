@@ -30,18 +30,18 @@ there is no need to pass +BR2_EXTERNAL+ at every +make+ invocation. It
 can however be changed at any time by passing a new value, and can be
 removed by passing an empty value.
 
-The +BR2_EXTERNAL+ path can be either an absolute or a relative path,
+*Note:* the +BR2_EXTERNAL+ path can be either an absolute or a relative path,
 but if it's passed as a relative path, it is important to note that it
-is interpreted relatively to the main Buildroot source directory, not
+is interpreted relative to the main Buildroot source directory, *not*
 the Buildroot output directory.
 
 Some examples:
 
 -----
- buildroot/ $ make BR2_EXTERNAL=../foobar menuconfig
+ buildroot/ $ make BR2_EXTERNAL=/path/to/foobar menuconfig
 -----
 
-Starting from now on, external definitions from the +../foobar+
+Starting from now on, external definitions from the +/path/to/foobar+
 directory will be used:
 
 -----
@@ -52,7 +52,7 @@ directory will be used:
 We can switch to another external definitions directory at any time:
 
 -----
- buildroot/ $ make BR2_EXTERNAL=../barfoo xconfig
+ buildroot/ $ make BR2_EXTERNAL=/where/we/have/barfoo xconfig
 -----
 
 Or disable the usage of external definitions:
