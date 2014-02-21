@@ -28,8 +28,6 @@ define TVHEADEND_CONFIGURE_CMDS
 	 $(TARGET_CONFIGURE_ARGS)		\
 	 ./configure				\
 	 --prefix=/usr				\
-	 --cc="$(TARGET_CC)"			\
-	 --cflags="$(TARGET_CFLAGS)"		\
 	 --arch="$(ARCH)"			\
 	 --cpu="$(BR2_GCC_TARGET_CPU)"		\
 	 --python="$(HOST_DIR)/usr/bin/python"	\
