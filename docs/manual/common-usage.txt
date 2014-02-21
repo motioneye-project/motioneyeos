@@ -40,7 +40,13 @@ Or:
  $ cd /tmp/build; make O=$PWD -C path/to/buildroot
 --------------------
 
-All the output files will be located under +/tmp/build+.
+All the output files will be located under +/tmp/build+. If the +O+
+path does not exist, Buildroot will create it.
+
+*Note:* the +O+ path can be either an absolute or a relative path, but if it's
+passed as a relative path, it is important to note that it is interpreted
+relative to the main Buildroot source directory, *not* the current working
+directory.
 
 When using out-of-tree builds, the Buildroot +.config+ and temporary
 files are also stored in the output directory. This means that you can
@@ -48,8 +54,8 @@ safely run multiple builds in parallel using the same source tree as
 long as they use unique output directories.
 
 For ease of use, Buildroot generates a Makefile wrapper in the output
-directory - so after the first run, you no longer need to pass +O=..+
-and +-C ..+, simply run (in the output directory):
+directory - so after the first run, you no longer need to pass +O=<...>+
+and +-C <...>+, simply run (in the output directory):
 
 --------------------
  $ make <target>
