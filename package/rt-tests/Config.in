@@ -4,7 +4,7 @@ config BR2_PACKAGE_RT_TESTS
 	# priority-inheritance mutex needs NPTL
 	depends on !BR2_PTHREADS && !BR2_PTHREADS_OLD
 	# no NPTL for these archs
-	depends on !BR2_avr32 && !BR2_xtensa && !BR2_arc
+	depends on !BR2_avr32 && !BR2_xtensa && !BR2_arc && !BR2_bfin
 	# no _tid field in 'struct sigevent'
 	depends on !BR2_TOOLCHAIN_USES_UCLIBC if (BR2_mips || BR2_mipsel || \
 		BR2_mips64 || BR2_mips64el)
@@ -28,7 +28,7 @@ config BR2_PACKAGE_RT_TESTS
 
 comment "rt-tests needs a toolchain w/ threads"
 	depends on !BR2_PTHREADS && !BR2_PTHREADS_OLD
-	depends on !BR2_avr32 && !BR2_xtensa && !BR2_arc
+	depends on !BR2_avr32 && !BR2_xtensa && !BR2_arc && !BR2_bfin
 	depends on !BR2_TOOLCHAIN_HAS_THREADS
 
 comment "rt-tests needs an (e)glibc toolchain"
