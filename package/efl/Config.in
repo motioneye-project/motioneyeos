@@ -1,6 +1,8 @@
 menuconfig BR2_PACKAGE_EFL
 	bool "Enlightenment Foundation Libraries"
 	depends on BR2_USE_WCHAR
+	# libeina uses madvise(). To revisit when bumping EFL to 1.8
+	depends on BR2_USE_MMU
 	help
 	  Enlightenment Foundation Libraries
 

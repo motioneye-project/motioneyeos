@@ -23,7 +23,7 @@ config BR2_PACKAGE_ENLIGHTENMENT
 	# libedbus -> dbus
 	# libedbus -> glib2, libevas
 	depends on BR2_TOOLCHAIN_HAS_THREADS
-	# libedbus -> dbus
+	# libedbus -> dbus, efl libraries
 	depends on BR2_USE_MMU
 	depends on BR2_PACKAGE_XORG7
 	depends on !BR2_avr32 # libevas
