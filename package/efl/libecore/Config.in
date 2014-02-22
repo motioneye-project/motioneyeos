@@ -38,6 +38,11 @@ config BR2_PACKAGE_LIBECORE_X_XCB
 config BR2_PACKAGE_LIBECORE_EVAS
 	bool "libecore Evas support"
 	select BR2_PACKAGE_LIBEVAS
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_avr32 # libevas
+
+comment "evas support needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
 	depends on !BR2_avr32 # libevas
 
 endif # BR2_PACKAGE_LIBECORE

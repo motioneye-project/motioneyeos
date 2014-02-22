@@ -1,6 +1,16 @@
+comment "libevas needs a toolchain w/ threads"
+	depends on !BR2_avr32
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
+
 config BR2_PACKAGE_LIBEVAS
 	bool "libevas"
 	depends on !BR2_avr32 # no epoll_create1 or inotify_init1
+	# libevas should normally build without threads, but due to a
+	# build issue when the async preloader is disabled, which is
+	# needed when no threads are available, we don't allow evas to
+	# be built without threads. This should be revisited when efl
+	# is bumped to 1.8.
+	depends on BR2_TOOLCHAIN_HAS_THREADS
 	select BR2_PACKAGE_FREETYPE
 	select BR2_PACKAGE_LIBEINA
 	# required to build so far
