@@ -2,6 +2,7 @@ config BR2_PACKAGE_DISTCC
 	bool "distcc"
 	# needs fork()
 	depends on BR2_USE_MMU
+	depends on BR2_DEPRECATED_SINCE_2014_02
 	help
 	  Distributed compiler client and server.  Allows you to
 	  distribute compilation of C code across several machines
