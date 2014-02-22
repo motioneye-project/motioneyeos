@@ -1,5 +1,7 @@
---- libcgi-1.0.orig/src/cgi.c
-+++ libcgi-1.0/src/cgi.c
+Index: b/src/cgi.c
+===================================================================
+--- a/src/cgi.c
++++ b/src/cgi.c
 @@ -336,7 +336,7 @@
  	hextable['b'] = 11;
  	hextable['c'] = 12;
@@ -9,8 +11,10 @@
  	hextable['f'] = 15;
  	hextable['A'] = 10;
  	hextable['B'] = 11;
---- libcgi-1.0.orig/src/string.c
-+++ libcgi-1.0/src/string.c
+Index: b/src/string.c
+===================================================================
+--- a/src/string.c
++++ b/src/string.c
 @@ -584,7 +584,7 @@
  
  	va_start(ptr, s);
@@ -20,9 +24,11 @@
  	len = strlen(s);
  
  	while (*str) {
---- libcgi-1.0.orig/Makefile.in
-+++ libcgi-1.0/Makefile.in
-@@ -5,22 +5,27 @@
+Index: b/Makefile.in
+===================================================================
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -5,22 +5,32 @@
  prefix = @prefix@
  exec_prefix = @exec_prefix@
  
@@ -44,18 +50,23 @@
 +SHOBJS=$(OBJS:.o=.sh.o)
  
 -.c.o: $(CC) $(FLAGS) -c $<
-+%.o: %.c
-+	$(CC) $(FLAGS) -c $*.c -o $@
++ALL_TARGETS = src/libcgi.a
++ifeq ($(STATIC),)
++ALL_TARGETS += src/libcgi.so
++endif
  
 -all: $(OBJS) src/libcgi.so
++%.o: %.c
++	$(CC) $(FLAGS) -c $*.c -o $@
++
 +%.sh.o: %.c
 +	$(CC) $(FLAGS) -fPIC -c $*.c -o $@
 +
-+all: src/libcgi.so src/libcgi.a
++all: $(ALL_TARGETS)
  
  	@echo ""
  	@echo ""
-@@ -48,14 +53,15 @@
+@@ -48,14 +58,17 @@
  src/libcgi.a: $(OBJS)
  	$(AR) rc src/libcgi.a $(OBJS)
  
@@ -70,14 +81,16 @@
 -	cp src/cgi.h $(INCDIR)
 -	cp src/session.h $(INCDIR)
 +	cp src/libcgi.a $(DESTDIR)/$(LIBDIR)
++ifeq ($(STATIC),)
 +	cp src/libcgi.so $(DESTDIR)/$(LIBDIR)
++endif
 +	[ -d $(DESTDIR)/$(INCDIR) ] || mkdir -p $(DESTDIR)/$(INCDIR)
 +	cp src/cgi.h $(DESTDIR)/$(INCDIR)
 +	cp src/session.h $(DESTDIR)/$(INCDIR)
  
  
  src/error.o: src/error.c src/error.h
-@@ -69,8 +75,9 @@
+@@ -69,8 +82,9 @@
  src/list.o: src/list.c
  
  clean:
@@ -88,7 +101,7 @@
  
  uninstall: clean
  	rm -f $(LIBDIR)/libcgi.*
-@@ -78,11 +85,11 @@
+@@ -78,11 +92,11 @@
  	rm -f $(INCDIR)/session.h
  	rm -f $(MANDIR)/libcgi*
  
