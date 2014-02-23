@@ -69,8 +69,5 @@ files that just tell whether this or that action has been done):
   Buildroot will trigger the recompilation of the package from the
   compilation step (execution of +make+).
 
-Note: toolchain packages use custom makefiles. Their stamp files are named
-differently.
-
 Further details about package special make targets are explained in
 xref:pkg-build-steps[].
