@@ -17,6 +17,12 @@ LINUX_HEADERS_SOURCE = linux-$(LINUX_HEADERS_VERSION).tar.xz
 
 LINUX_HEADERS_INSTALL_STAGING = YES
 
+# For some architectures (eg. Arc, Cris, Hexagon, ia64, parisc,
+# score and xtensa), the Linux buildsystem tries to call the
+# cross-compiler, although it is not needed at all.
+# This results in seemingly errors like:
+#   [...]/scripts/gcc-version.sh: line 26: arc-linux-uclibc-gcc: command not found
+# Those can be safely ignored.
 define LINUX_HEADERS_INSTALL_STAGING_CMDS
 	(cd $(@D); \
 		$(TARGET_MAKE_ENV) $(MAKE) \
