@@ -323,5 +323,16 @@ different way, using different infrastructures:
    CMake. We cover them through a xref:cmake-package-tutorial[tutorial]
    and xref:cmake-package-reference[reference].
 
+* *Makefiles for Python modules*: We have a dedicated infrastructure
+   for Python modules that use either the +distutils+ or the
+   +setuptools+ mechanism. We cover them through a
+   xref:python-package-tutorial[tutorial] and a
+   xref:python-package-reference[reference].
+
+* *Makefiles for Lua modules*: We have a dedicated infrastructure for
+   Lua modules available through the LuaRocks web site. We cover them
+   through a xref:luarocks-package-tutorial[tutorial] and a
+   xref:luarocks-package-reference[reference].
+
 Further formatting details: see xref:writing-rules-mk[the writing
 rules].
