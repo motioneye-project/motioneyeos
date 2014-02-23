@@ -11,3 +11,5 @@ include::ccache-support.txt[]
 include::download-location.txt[]
 
 include::package-make-target.txt[]
+
+include::using-buildroot-development.txt[]
