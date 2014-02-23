@@ -127,6 +127,7 @@ config BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_UDEV
 	depends on BR2_LARGEFILE # udev
 	depends on BR2_USE_WCHAR # udev
 	depends on !BR2_PREFER_STATIC_LIB # udev -> kmod
+	depends on BR2_USE_MMU # udev -> util-linux/libblkid
 	select BR2_PACKAGE_UDEV
 
 comment "udev needs a toolchain w/ largefile, wchar"

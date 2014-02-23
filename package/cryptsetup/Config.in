@@ -6,7 +6,7 @@ config BR2_PACKAGE_CRYPTSETUP
 	select BR2_PACKAGE_E2FSPROGS
 	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE
 	depends on BR2_LARGEFILE # lvm2, util-linux
-	depends on BR2_USE_MMU # lvm2
+	depends on BR2_USE_MMU # lvm2, e2fsprogs
 	depends on !BR2_PREFER_STATIC_LIB # lvm2
 	depends on BR2_USE_WCHAR # util-linux
 	help

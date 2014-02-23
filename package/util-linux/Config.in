@@ -14,6 +14,7 @@ if BR2_PACKAGE_UTIL_LINUX
 
 config BR2_PACKAGE_UTIL_LINUX_LIBBLKID
 	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
+	depends on BR2_USE_MMU # fork
 	bool "libblkid"
 	help
 	  Install libblkid.
@@ -22,6 +23,7 @@ config BR2_PACKAGE_UTIL_LINUX_LIBMOUNT
 	select BR2_PACKAGE_UTIL_LINUX_LIBBLKID
 	# libc lacks UTIME_NOW & UTIME_COMMIT
 	depends on !(BR2_microblazeel || BR2_microblazebe)
+	depends on BR2_USE_MMU # util-linux/libblkid
 	bool "libmount"
 	help
 	  Install libmount.
