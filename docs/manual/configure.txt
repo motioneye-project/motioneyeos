@@ -138,10 +138,9 @@ http://www.linaro.org[Linaro] for ARM,
 http://www.mentor.com/embedded-software/sourcery-tools/sourcery-codebench/editions/lite-edition/[Sourcery
 CodeBench] for ARM, x86, x86-64, PowerPC, MIPS and SuperH,
 https://blackfin.uclinux.org/gf/project/toolchain[Blackfin toolchains
-from ADI], http://git.xilinx.com/[Xilinx toolchains for Microblaze],
-etc.) and is capable of downloading them automatically, or it can be
-pointed to a custom toolchain, either available for download or
-installed locally.
+from Analog Devices], etc.) and is capable of downloading them
+automatically, or it can be pointed to a custom toolchain, either
+available for download or installed locally.
 
 Then, you have three solutions to use an external toolchain:
 
