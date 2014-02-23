@@ -51,23 +51,25 @@ its build directory in +output/build+. Buildroot will then re-extract,
 re-configure, re-compile and re-install this package from scratch. You
 can ask buildroot to do this with the +make <package>-dirclean+ command.
 
-For convenience, the special make targets
-<package>-reconfigure and <package>-rebuild repeat the configure
-resp. build steps.
+On the other hand, if you only want to restart the build process of a
+package from its compilation step, you can run +make
+<package>-rebuild+, followed by +make+ or +make <package>+. It will
+restart the compilation and installation of the package, but not from
+scratch: it basically simply re-executes +make+ and +make install+
+inside the package, so it will only rebuild files that changed.
 
-However, if you don't want to rebuild the package completely from
-scratch, a better understanding of the Buildroot internals is
-needed. Internally, to keep track of which steps have been done and
-which steps remain to be done, Buildroot maintains stamp files (empty
-files that just tell whether this or that action has been done):
+If you want to restart the build process of a package from its
+configuration step, you can run +make <package>-reconfigure+, followed
+by +make+ or +make <package>+. It will restart the configuration,
+compilation and installation of the package.
 
-* +output/build/<package>-<version>/.stamp_configured+. If removed,
-  Buildroot will trigger the recompilation of the package from the
-  configuration step (execution of +./configure+).
-
-* +output/build/<package>-<version>/.stamp_built+. If removed,
-  Buildroot will trigger the recompilation of the package from the
-  compilation step (execution of +make+).
+Internally, Buildroot creates so-called _stamp files_ to keep track of
+which build steps have been completed for each package. They are
+stored in the package build directory,
++output/build/<package>-<version>/+ and are named
++.stamp_<step-name>+. The commands detailed above simply manipulate
+these stamp files to force Buildroot to restart a specific set of
+steps of a package build process.
 
 Further details about package special make targets are explained in
 xref:pkg-build-steps[].
