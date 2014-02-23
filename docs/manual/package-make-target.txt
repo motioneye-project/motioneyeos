@@ -63,6 +63,11 @@ Additionally, there are some other useful make targets:
 | +show-depends+    | Displays the dependencies required to build the
 package
 
+| +graph-depends+   | Generate a dependency graph of the package, in the
+context of the current Buildroot configuration. See
+xref:graph-depends[this section] for more details about dependency
+graphs.
+
 | +dirclean+        | Remove the whole package build directory
 
 | +rebuild+         | Re-run the compilation commands - this only makes
