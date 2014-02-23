@@ -16,7 +16,7 @@ Index: b/configure.ac
  fi
  
 +AC_CHECK_DECL([FE_DIVBYZERO], [], [], [[#include <fenv.h>]])
-+if test x$have_fe_divbyzero = xyes; then
++if test x$ac_cv_have_decl_FE_DIVBYZERO = xyes; then
 +   AC_DEFINE(HAVE_FEDIVBYZERO, 1, [Whether we have FE_DIVBYZERO])
 +fi
 +
