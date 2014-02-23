@@ -68,12 +68,10 @@ The _internal toolchain backend_ is the backend where Buildroot builds
 by itself a cross-compilation toolchain, before building the userspace
 applications and libraries for your target embedded system.
 
-This backend is the historical backend of Buildroot, and has been
-limited for a long time to the usage of the
-http://www.uclibc.org[uClibc C library]. Support for the _eglibc_ C
-library has been added in 2013 and is at this point considered
-experimental. See the _External toolchain backend_ for another
-solution to use _glibc_ or _eglibc_.
+This backend supports several C libraries:
+http://www.uclibc.org[uClibc], the
+http://www.gnu.org/software/libc/libc.html[glibc] and
+http://www.eglibc.org[eglibc].
 
 Once you have selected this backend, a number of options appear. The
 most important ones allow to:
@@ -96,18 +94,7 @@ most important ones allow to:
    the C library might be using interfaces that are not provided by
    your Linux kernel.
 
- * Change the version and the configuration of the uClibc C library
-   (if uClibc is selected). The default options are usually
-   fine. However, if you really need to specifically customize the
-   configuration of your uClibc C library, you can pass a specific
-   configuration file here. Or alternatively, you can run the +make
-   uclibc-menuconfig+ command to get access to uClibc's configuration
-   interface. Note that all packages in Buildroot are tested against
-   the default uClibc configuration bundled in Buildroot: if you
-   deviate from this configuration by removing features from uClibc,
-   some packages may no longer build.
-
- * Change the version of the GCC compiler and binutils.
+ * Change the version of the GCC compiler, binutils and the C library.
 
  * Select a number of toolchain options (uClibc only): whether the
    toolchain should have largefile support (i.e support for files
@@ -118,7 +105,12 @@ most important ones allow to:
    libraries visible in Buildroot menus will change: many applications
    and libraries require certain toolchain options to be enabled. Most
    packages show a comment when a certain toolchain option is required
-   to be able to enable those packages.
+   to be able to enable those packages. If needed, you can further
+   refine the uClibc configuration by running +make
+   uclibc-menuconfig+. Note however that all packages in Buildroot are
+   tested against the default uClibc configuration bundled in
+   Buildroot: if you deviate from this configuration by removing
+   features from uClibc, some packages may no longer build.
 
 It is worth noting that whenever one of those options is modified,
 then the entire toolchain and system must be rebuilt. See
