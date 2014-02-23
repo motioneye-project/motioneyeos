@@ -151,6 +151,7 @@ config BR2_PACKAGE_OPENCV_WITH_GTK
 	depends on BR2_USE_WCHAR # libgtk2 -> libglib2
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libgtk2 -> libglib2
 	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_USE_MMU # libgtk2 -> glib2
 	select BR2_PACKAGE_LIBGTK2
 
 config BR2_PACKAGE_OPENCV_WITH_JPEG
