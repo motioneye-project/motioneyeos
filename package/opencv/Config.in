@@ -169,6 +169,7 @@ config BR2_PACKAGE_OPENCV_WITH_QT
 	bool "qt backend support"
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on !BR2_avr32 # qt
+	depends on BR2_USE_MMU # qt
 	select BR2_PACKAGE_QT
 	select BR2_PACKAGE_QT_STL
 	default y
