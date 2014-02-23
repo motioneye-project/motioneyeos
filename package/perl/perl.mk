@@ -90,10 +90,8 @@ define PERL_INSTALL_STAGING_CMDS
 	$(MAKE1) -C $(@D) DESTDIR="$(STAGING_DIR)" install.perl
 endef
 
-PERL_INSTALL_TARGET_GOALS = install.perl
-
 define PERL_INSTALL_TARGET_CMDS
-	$(MAKE1) -C $(@D) DESTDIR="$(TARGET_DIR)" $(PERL_INSTALL_TARGET_GOALS)
+	$(MAKE1) -C $(@D) DESTDIR="$(TARGET_DIR)" install.perl
 endef
 
 $(eval $(generic-package))
