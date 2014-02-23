@@ -149,3 +149,55 @@ of an ext2 filesystem may be corrupted; or, if you have sparse files in
 your filesystem, those parts may not be all-zeroes when read back). You
 should only use sparse files when handling files on the build machine, not
 when transferring them to an actual device that will be used on the target.
+
+Graphing the dependencies between packages
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+[[graph-depends]]
+
+One of Buildroot's jobs is to know the dependencies between packages,
+and make sure they are built in the right order. These dependencies
+can sometimes be quite complicated, and for a given system, it is
+often not easy to understand why such or such package was brought into
+the build by Buildroot.
+
+In order to help understanding the dependencies, and therefore better
+understand what is the role of the different components in your
+embedded Linux system, Buildroot is capable of generating dependency
+graphs.
+
+To generate a dependency graph of the full system you have compiled,
+simply run:
+
+------------------------
+make graph-depends
+------------------------
+
+You will find the generated graph in
++output/graphs/graph-depends.pdf+.
+
+If your system is quite large, the dependency graph may be too complex
+and difficult to read. It is therefore possible to generate the
+dependency graph just for a given package:
+
+------------------------
+make <pkg>-graph-depends
+------------------------
+
+You will find the generated graph in
++output/graph/<pkg>-graph-depends.pdf+.
+
+Note that the dependency graphs are generated using the +dot+ tool
+from the _Graphviz_ project, which you must have installed on your
+system to use this feature. In most distributions, it is available as
+the +graphviz+ package.
+
+By default, the dependency graphs are generated in the PDF
+format. However, by passing the +GRAPH_OUT+ environment variable, you
+can switch to other output formats, such as PNG, PostScript or
+SVG. All formats supported by the +-T+ option of the +dot+ tool are
+supported.
+
+--------------------------------
+GRAPH_OUT=svg make graph-depends
+--------------------------------
