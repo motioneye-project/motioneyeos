@@ -1,3 +1,7 @@
+comment "alsa-utils needs a toolchain w/ largefile, threads"
+	depends on BR2_USE_MMU # fork
+	depends on !BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_THREADS
+
 config BR2_PACKAGE_ALSA_UTILS
 	bool "alsa-utils"
 	depends on BR2_USE_MMU # fork
@@ -9,10 +13,6 @@ config BR2_PACKAGE_ALSA_UTILS
 	  project.
 
 	  http://www.alsa-project.org/
-
-comment "alsa-utils needs a toolchain w/ largefile, threads"
-	depends on BR2_USE_MMU # fork
-	depends on !BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_THREADS
 
 if BR2_PACKAGE_ALSA_UTILS
 menu "ALSA utils selection"
