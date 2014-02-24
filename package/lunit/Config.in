@@ -1,0 +1,10 @@
+config BR2_PACKAGE_LUNIT
+	bool "lunit"
+	depends on !BR2_PACKAGE_LUA_5_2
+	help
+	  A unit testing framework for Lua.
+
+	  http://www.mroth.net/lunit/
+
+comment "lunit needs a Lua 5.1 interpreter"
+	depends on BR2_PACKAGE_LUA_5_2
