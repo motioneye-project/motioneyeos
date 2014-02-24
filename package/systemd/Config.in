@@ -40,6 +40,9 @@ config BR2_PACKAGE_SYSTEMD
 
 if BR2_PACKAGE_SYSTEMD
 
+config BR2_PACKAGE_PROVIDES_UDEV
+	default "systemd"
+
 config BR2_PACKAGE_SYSTEMD_ALL_EXTRAS
 	bool "enable all extras"
 	select BR2_PACKAGE_XZ
