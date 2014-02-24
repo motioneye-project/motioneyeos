@@ -1,0 +1,8 @@
+config BR2_PACKAGE_COSMO
+	bool "cosmo"
+	# run-time dependency
+	select BR2_PACKAGE_LPEG
+	help
+	  Cosmo is a "safe templates" engine for Lua.
+
+	  http://mascarenhas.github.io/cosmo/
