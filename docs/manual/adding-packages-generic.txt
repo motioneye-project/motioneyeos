@@ -253,7 +253,7 @@ information is (assuming the package name is +libfoo+) :
   Buildroot should download from +LIBFOO_SITE+ in addition to the main
   +LIBFOO_SOURCE+ (which usually is a tarball). Buildroot will not do
   anything with those additional files, except download files: it will
-  be up to the package recipe to use them from +$(DL_DIR)+.
+  be up to the package recipe to use them from +$(BR2_DL_DIR)+.
 
 * +LIBFOO_SITE_METHOD+ determines the method used to fetch or copy the
   package source code. In many cases, Buildroot guesses the method
