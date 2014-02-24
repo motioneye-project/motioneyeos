@@ -92,9 +92,9 @@ to +make+ or set in the environment:
   Note that the Buildroot download directory can also be set from the
   configuration interface, so through the Buildroot +.config+ file; this
   is the recommended way of setting it.
-* +GRAPH_ALT+, if set and non-empty, to use an alternate color-scheme in
+* +BR2_GRAPH_ALT+, if set and non-empty, to use an alternate color-scheme in
   build-time graphs
-* +GRAPH_OUT+ to set the filetype of generated graphs, either +pdf+ (the
+* +BR2_GRAPH_OUT+ to set the filetype of generated graphs, either +pdf+ (the
   default), or +png+.
 
 An example that uses config files located in the toplevel directory and
@@ -193,13 +193,13 @@ system to use this feature. In most distributions, it is available as
 the +graphviz+ package.
 
 By default, the dependency graphs are generated in the PDF
-format. However, by passing the +GRAPH_OUT+ environment variable, you
+format. However, by passing the +BR2_GRAPH_OUT+ environment variable, you
 can switch to other output formats, such as PNG, PostScript or
 SVG. All formats supported by the +-T+ option of the +dot+ tool are
 supported.
 
 --------------------------------
-GRAPH_OUT=svg make graph-depends
+BR2_GRAPH_OUT=svg make graph-depends
 --------------------------------
 
 Graphing the build duration
@@ -242,9 +242,9 @@ Python version older than 2.7 (+python-argparse+ on most
 distributions).
 
 By default, the output format for the graph is PDF, but a different
-format can be selected using the +GRAPH_OUT+ environment variable. The
+format can be selected using the +BR2_GRAPH_OUT+ environment variable. The
 only other format supported is PNG:
 
 ----------------
-GRAPH_OUT=png make graph-build
+BR2_GRAPH_OUT=png make graph-build
 ----------------
