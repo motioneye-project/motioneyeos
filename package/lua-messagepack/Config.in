@@ -1,0 +1,7 @@
+config BR2_PACKAGE_LUA_MESSAGEPACK
+	bool "lua-messagepack"
+	help
+	  A pure Lua implementation of the MessagePack serialization
+	  format.
+
+	  http://fperrad.github.io/lua-MessagePack/
