@@ -23,7 +23,7 @@ source code of one package, and be able to quickly rebuild the system
 with Buildroot.
 
 Making changes directly in +output/build/<package>-<version>+ is not
-appropriate solution, because this directory is removed on +make
+an appropriate solution, because this directory is removed on +make
 clean+.
 
 Therefore, Buildroot provides a specific mechanism for this use case:

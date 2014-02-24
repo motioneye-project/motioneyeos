@@ -211,7 +211,7 @@ When the build of a system takes a long time, it is sometimes useful
 to be able to understand which packages are the longest to build, to
 see if anything can be done to speed up the build. In order to help
 such build time analysis, Buildroot collects the build time of each
-step of each package, and allows to generate graphs from these data.
+step of each package, and allows to generate graphs from this data.
 
 To generate the build time graph after a build, run:
 
@@ -221,13 +221,13 @@ make graph-build
 
 This will generate a set of files in +output/graphs+ :
 
-* +build.hist-build.pdf+, an histogram of the build time for each
+* +build.hist-build.pdf+, a histogram of the build time for each
   package, ordered in the build order.
 
-* +build.hist-duration.pdf+, an histogram of the build time for each
+* +build.hist-duration.pdf+, a histogram of the build time for each
   package, ordered by duration (longest first)
 
-* +build.hist-name.pdf+, an histogram of the build time for each
+* +build.hist-name.pdf+, a histogram of the build time for each
   package, order by package name.
 
 * +build.pie-packages.pdf+, a pie chart of the build time per package

@@ -62,7 +62,7 @@ can help you understand how to work with Buildroot:
 
  * When a change to the root filesystem skeleton is made, a full
    rebuild is needed. However, when changes to the root filesystem
-   overlay, to a post-build script or a post-image script are made,
+   overlay, a post-build script or a post-image script are made,
    there is no need for a full rebuild: a simple +make+ invocation
    will take the changes into account.
 
@@ -104,7 +104,7 @@ On the other hand, if you only want to restart the build process of a
 package from its compilation step, you can run +make
 <package>-rebuild+, followed by +make+ or +make <package>+. It will
 restart the compilation and installation of the package, but not from
-scratch: it basically simply re-executes +make+ and +make install+
+scratch: it basically re-executes +make+ and +make install+
 inside the package, so it will only rebuild files that changed.
 
 If you want to restart the build process of a package from its
