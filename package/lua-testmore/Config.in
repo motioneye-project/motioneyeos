@@ -1,0 +1,6 @@
+config BR2_PACKAGE_LUA_TESTMORE
+	bool "lua-testmore"
+	help
+	  an Unit Testing Framework.
+
+	  http://fperrad.github.io/lua-TestMore/
