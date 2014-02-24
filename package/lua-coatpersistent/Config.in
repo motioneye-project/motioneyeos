@@ -1,0 +1,9 @@
+config BR2_PACKAGE_LUA_COATPERSISTENT
+	bool "lua-coatpersistent"
+	# run-time dependencies
+	select BR2_PACKAGE_DADO
+	select BR2_PACKAGE_LUA_COAT
+	help
+	  An ORM for lua-Coat.
+
+	  http://fperrad.github.io/lua-CoatPersistent/
