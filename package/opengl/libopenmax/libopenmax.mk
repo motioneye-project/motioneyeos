@@ -7,11 +7,10 @@
 LIBOPENMAX_SOURCE =
 LIBOPENMAX_DEPENDENCIES = $(call qstrip,$(BR2_PACKAGE_PROVIDES_OPENMAX))
 
+ifeq ($(BR2_PACKAGE_HAS_OPENMAX),y)
 ifeq ($(LIBOPENMAX_DEPENDENCIES),)
-define LIBOPENMAX_CONFIGURE_CMDS
-	echo "No libopenmax implementation selected. Configuration error."
-	exit 1
-endef
+$(error No libopenmax implementation selected. Configuration error.)
+endif
 endif
 
 $(eval $(generic-package))
