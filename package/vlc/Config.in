@@ -1,3 +1,8 @@
+if BR2_PACKAGE_VLC
+comment "vlc is known not to work in all configurations"
+comment "If you can fix it, please inform buildroot@buildroot.net"
+endif
+
 config BR2_PACKAGE_VLC
 	bool "vlc"
 	depends on (BR2_UCLIBC_VERSION_SNAPSHOT || BR2_TOOLCHAIN_USES_GLIBC) # spawn.h
