@@ -25,6 +25,7 @@ choice
 
 config BR2_PACKAGE_HASERL_VERSION_0_8_X
 	bool	"v 0.8.x"
+	depends on BR2_DEPRECATED_SINCE_2014_02
 	help
 	  stable version
 
