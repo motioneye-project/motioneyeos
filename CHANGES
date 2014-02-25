@@ -1,3 +1,26 @@
+2014.02-rc3, Released February 25th, 2014
+
+	Minor fixes.
+
+	Updated/fixed packages: aiccu, ala-lib, alsa-utils, binutils,
+	cairo, coreutils, dhcpcd, distcc, efl, evas, iputils, gdb,
+	gpsd, gst-fsl-plugins, icu, libcec, libcgi, libplayer,
+	libsecret, libsepol, libsigsegv, libtool, libv4l,
+	linux-headers, matchbox-lib, mpg123, ncftp, opencv, pcmanfm,
+	pixman, pv, qt, rt-tests, sawman, sconeserver, sdl, thrift,
+	tvheadend, util-linux, webkit, xscreensaver
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#4706: Removing .stamp_target_installed does not trigger...
+	#5030: busybox built fails if we use an override src dir...
+	#5420: Dbus and /var/run management
+	#5768: Not able to build ALSA-Lib for static build
+	#5774: Not able to build ALSA-Utils for static build
+	#6542: external python modules fail to compile to pyc if...
+	#6764: Support for kernel signed modules
+	#6794: Busybox compiled from buildroot hangs on pass from...
+
 2014.02-rc2, Released February 20th, 2014
 
 	Fixes all over the tree. Static linking / nommu fixes and
