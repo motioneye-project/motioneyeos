@@ -33,6 +33,11 @@ VLC_CONF_OPT += \
 	--without-mtp \
 	--without-opencv
 
+# Building static and shared doesn't work, so force static off.
+ifeq ($(BR2_PREFER_STATIC_LIB),)
+VLC_CONF_OPT += --disable-static
+endif
+
 # Set powerpc altivec appropriately
 ifeq ($(BR2_powerpc_7400)$(BR2_powerpc_7450)$(BR2_powerpc_970),y)
 VCL_CONF_OPT += --enable-altivec
@@ -209,7 +214,9 @@ else
 VLC_CONF_OPT += --without-libxml2
 endif
 
-ifeq ($(BR2_PACKAGE_LIVE555),y)
+# live555 installs a static library only, and vlc tries to link it into a
+# shared library - which doesn't work. So only enable live555 if static.
+ifeq ($(BR2_PACKAGE_LIVE555)$(BR2_PREFER_STATIC_LIB),yy)
 VLC_CONF_OPT += --enable-live555
 VLC_DEPENDENCIES += live555
 VLC_CONF_ENV += \
