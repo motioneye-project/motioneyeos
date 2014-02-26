@@ -104,16 +104,5 @@ define HOST_LUA_INSTALL_CMDS
 	$(INSTALL) -m 0644 -D $(@D)/src/lauxlib.h $(HOST_DIR)/usr/include/lauxlib.h
 endef
 
-LUA_INSTALLED_FILES = \
-	/usr/include/lua.h \
-	/usr/include/luaconf.h \
-	/usr/include/lualib.h \
-	/usr/include/lauxlib.h \
-	/usr/lib/pkgconfig/lua.pc \
-	/usr/bin/lua \
-	/usr/bin/luac \
-	/usr/lib/liblua.a \
-	/usr/lib/liblua.so*
-
 $(eval $(generic-package))
 $(eval $(host-generic-package))
