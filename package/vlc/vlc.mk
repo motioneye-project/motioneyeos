@@ -12,6 +12,17 @@ VLC_LICENSE_FILES = COPYING COPYING.LIB
 VLC_DEPENDENCIES = host-pkgconf
 VLC_AUTORECONF = YES
 
+# VLC defines two autoconf functions which are also defined by our own pkg.m4
+# from pkgconf. Unfortunately, they are defined in a different way: VLC adds
+# --enable- options, but pkg.m4 adds --with- options. To make sure we use
+# VLC's definition, rename these two functions.
+define VLC_OVERRIDE_PKG_M4
+	$(SED) 's/PKG_WITH_MODULES/VLC_PKG_WITH_MODULES/g' \
+		-e 's/PKG_HAVE_WITH_MODULES/VLC_PKG_HAVE_WITH_MODULES/g' \
+		$(@D)/configure.ac $(@D)/m4/with_pkg.m4
+endef
+VLC_POST_PATCH_HOOKS += VLC_OVERRIDE_PKG_M4
+
 VLC_CONF_OPT += \
 	--disable-a52 \
 	--disable-shout \
