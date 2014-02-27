@@ -11,6 +11,7 @@ PCSC_LITE_INSTALL_STAGING = YES
 PCSC_LITE_DEPENDENCIES = host-pkgconf
 PCSC_LITE_LICENSE = BSD-3c
 PCSC_LITE_LICENSE_FILES = COPYING
+PCSC_LITE_AUTORECONF = YES
 
 # - libudev and libusb are optional
 # - libudev and libusb can't be used together
