@@ -1,6 +1,7 @@
 config BR2_PACKAGE_BASH
 	bool "bash"
 	select BR2_PACKAGE_NCURSES
+	select BR2_PACKAGE_READLINE
 	# uses fork()
 	depends on BR2_USE_MMU
 	help

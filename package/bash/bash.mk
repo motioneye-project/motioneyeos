@@ -4,17 +4,19 @@
 #
 ################################################################################
 
-BASH_VERSION = 4.2
+BASH_VERSION = 4.3
 BASH_SITE = $(BR2_GNU_MIRROR)/bash
-BASH_DEPENDENCIES = ncurses host-bison
+BASH_DEPENDENCIES = ncurses readline host-bison
+BASH_CONF_OPT = --with-installed-readline
 BASH_LICENSE = GPLv3+
 BASH_LICENSE_FILES = COPYING
 
-BASH_CONF_ENV +=                       \
-   bash_cv_job_control_missing=present \
-   bash_cv_sys_named_pipes=present     \
-   bash_cv_func_sigsetjmp=present      \
-   bash_cv_printf_a_format=yes
+BASH_CONF_ENV += \
+	ac_cv_rl_version="$(READLINE_VERSION)" \
+	bash_cv_job_control_missing=present \
+	bash_cv_sys_named_pipes=present \
+	bash_cv_func_sigsetjmp=present \
+	bash_cv_printf_a_format=yes
 
 # Parallel build sometimes fails because some of the generator tools
 # are built twice (i.e. while executing).
