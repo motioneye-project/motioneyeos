@@ -1,3 +1,16 @@
+2014.02, Released February 27th, 2014
+
+	Minor fixes.
+
+	Updated/fixed packages: cegui06, cppdb, e2fsprogs, gcc, gdb,
+	gst1-plugins-bad, gstreamer, gstreamer1, haserl, imagemagick,
+	libpng, libxml2, lua, luajit, luarock, ncftp, openswan,
+	pcsc-lite, qt5connectivity, ramsmp, strongswan, vlc
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#6938: mkuser script generates wrong password for new user in..
+
 2014.02-rc3, Released February 25th, 2014
 
 	Minor fixes.
