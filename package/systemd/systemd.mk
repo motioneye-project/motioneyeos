@@ -23,8 +23,6 @@ ifeq ($(BR2_PACKAGE_BUSYBOX),y)
 SYSTEMD_DEPENDENCIES += busybox
 endif
 
-SYSTEMD_AUTORECONF = YES
-
 SYSTEMD_CONF_OPT += \
 	--with-rootprefix= \
 	--with-rootlibdir=/lib \
