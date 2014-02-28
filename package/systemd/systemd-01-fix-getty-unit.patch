@@ -1,34 +1,32 @@
 Prefer getty to agetty in console setup systemd units
 
 Signed-off-by: Maxime Ripard <maxime.ripard@free-electrons.com>
+Signed-off-by: Eric Le Bihan <eric.le.bihan.dev@free.fr>
 ---
- units/getty@.service.m4        |    2 +-
- units/serial-getty@.service.m4 |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
 
-Index: b/units/getty@.service.m4
+Index: systemd-206/units/getty@.service.m4
 ===================================================================
---- a/units/getty@.service.m4
-+++ b/units/getty@.service.m4
-@@ -35,7 +35,7 @@
- 
+--- systemd-206.orig/units/getty@.service.m4	2013-07-22 00:43:28.000000000 +0200
++++ systemd-206/units/getty@.service.m4	2013-09-18 10:20:17.000000000 +0200
+@@ -27,7 +27,7 @@
+
  [Service]
- Environment=TERM=linux
--ExecStart=-/sbin/agetty %I 38400
+ # the VT is cleared by TTYVTDisallocate
+-ExecStart=-/sbin/agetty --noclear %I
 +ExecStart=-/sbin/getty -L %I 115200 vt100
+ Type=idle
  Restart=always
  RestartSec=0
- UtmpIdentifier=%I
-Index: b/units/serial-getty@.service.m4
+Index: systemd-206/units/serial-getty@.service.m4
 ===================================================================
---- a/units/serial-getty@.service.m4
-+++ b/units/serial-getty@.service.m4
-@@ -35,7 +35,7 @@
- 
+--- systemd-206.orig/units/serial-getty@.service.m4	2013-07-22 00:43:28.000000000 +0200
++++ systemd-206/units/serial-getty@.service.m4	2013-09-18 10:21:31.000000000 +0200
+@@ -22,7 +22,7 @@
+ IgnoreOnIsolate=yes
+
  [Service]
- Environment=TERM=vt100
--ExecStart=-/sbin/agetty -s %I 115200,38400,9600
+-ExecStart=-/sbin/agetty --keep-baud %I 115200,38400,9600
 +ExecStart=-/sbin/getty -L %I 115200 vt100
+ Type=idle
  Restart=always
  RestartSec=0
- UtmpIdentifier=%I

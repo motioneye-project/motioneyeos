@@ -996,15 +996,28 @@ config BR2_TOOLCHAIN_EXTERNAL_HAS_THREADS
 	  support. If you don't know, leave the default value,
 	  Buildroot will tell you if it's correct or not.
 
+if BR2_TOOLCHAIN_EXTERNAL_HAS_THREADS
+
 config BR2_TOOLCHAIN_EXTERNAL_HAS_THREADS_DEBUG
 	bool "Toolchain has threads debugging support?"
-	depends on BR2_TOOLCHAIN_EXTERNAL_HAS_THREADS
 	select BR2_TOOLCHAIN_HAS_THREADS_DEBUG
 	default y
 	help
 	  Select this option if your external toolchain has thread
 	  debugging support. If you don't know, leave the default
 	  value, Buildroot will tell you if it's correct or not.
+
+config BR2_TOOLCHAIN_EXTERNAL_HAS_THREADS_NPTL
+	bool "Toolchain has NPTL threads support?"
+	select BR2_TOOLCHAIN_HAS_THREADS_NPTL
+	default y
+	help
+	  Select this option if your external toolchain uses the NPTL
+	  (Native Posix Thread Library) implementation of Posix
+	  threads. If you don't know, leave the default value,
+	  Buildroot will tell you if it's correct or not.
+
+endif # BR2_TOOLCHAIN_EXTERNAL_HAS_THREADS
 
 config BR2_TOOLCHAIN_EXTERNAL_HAS_SSP
 	bool "Toolchain has SSP support?"

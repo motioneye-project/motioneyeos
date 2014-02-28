@@ -1,0 +1,54 @@
+Add an option to disable the curses module
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+
+---
+ Makefile.pre.in |    6 +++++-
+ configure.in    |    9 +++++++++
+ 2 files changed, 14 insertions(+), 1 deletion(-)
+
+Index: b/Makefile.pre.in
+===================================================================
+--- a/Makefile.pre.in
++++ b/Makefile.pre.in
+@@ -944,7 +944,7 @@
+ 		multiprocessing multiprocessing/dummy \
+ 		unittest \
+ 		lib-old \
+-		curses $(MACHDEPS)
++		$(MACHDEPS)
+ 
+ TESTSUBDIRS = test test/audiodata test/data \
+ 	test/cjkencodings test/decimaltestdata test/xmltestdata test/subprocessdata \
+@@ -983,6 +983,10 @@
+ 	      lib-tk/test/test_ttk
+ endif
+ 
++ifeq (@CURSES@,yes)
++LIBSUBDIRS += curses
++endif
++
+ libinstall:	build_all $(srcdir)/Lib/$(PLATDIR) $(srcdir)/Modules/xxmodule.c
+ 	@for i in $(SCRIPTDIR) $(LIBDEST); \
+ 	do \
+Index: b/configure.ac
+===================================================================
+--- a/configure.ac
++++ b/configure.ac
+@@ -2631,6 +2631,15 @@
+    DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} _tkinter"
+ fi
+ 
++AC_SUBST(CURSES)
++AC_ARG_ENABLE(curses,
++	AS_HELP_STRING([--disable-curses], [disable curses]),
++	[ CURSES="${enableval}" ], [ CURSES=yes ])
++
++if test "$CURSES" = "no"; then
++   DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} _curses _curses_panel"
++fi
++
+ AC_SUBST(PYDOC)
+ 
+ AC_ARG_ENABLE(pydoc,

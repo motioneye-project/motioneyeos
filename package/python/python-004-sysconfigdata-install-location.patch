@@ -1,0 +1,76 @@
+Change the install location of _sysconfigdata.py
+
+The _sysconfigdata.py module contains definitions that are needed when
+building Python modules. In cross-compilation mode, when building
+Python extensions for the target, we need to use the _sysconfigdata.py
+of the target Python while executing the host Python.
+
+However until now, the _sysconfigdata.py module was installed in
+build/lib.<arch>-<version> directory, together with a number of
+architecture-specific shared objects, which cannot be used with the
+host Python.
+
+To solve this problem, this patch moves _sysconfigdata.py to a
+separate location, build/sysconfigdata.<arch>-<version>/, and only
+this directory gets added to the PYTHONPATH of the host Python
+interpreter when building Python modules for the target.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/Makefile.pre.in
+===================================================================
+--- a/Makefile.pre.in
++++ b/Makefile.pre.in
+@@ -449,6 +449,9 @@
+ # sys.path fixup -- see Modules/getpath.c.
+ pybuilddir.txt: $(BUILDPYTHON)
+ 		$(RUNSHARED) $(PYTHON_FOR_BUILD) -S -m sysconfig --generate-posix-vars
++		echo `cat pybuilddir.txt`/sysconfigdata > pysysconfigdatadir.txt
++		mkdir -p `cat pysysconfigdatadir.txt`
++		cp `cat pybuilddir.txt`/_sysconfigdata.py `cat pysysconfigdatadir.txt`
+ 
+ # Build the shared modules
+ # Under GNU make, MAKEFLAGS are sorted and normalized; the 's' for
+@@ -965,7 +968,7 @@
+ 		else	true; \
+ 		fi; \
+ 	done
+-	@for i in $(srcdir)/Lib/*.py `cat pybuilddir.txt`/_sysconfigdata.py $(srcdir)/Lib/*.doc $(srcdir)/Lib/*.egg-info ; \
++	@for i in $(srcdir)/Lib/*.py $(srcdir)/Lib/*.doc $(srcdir)/Lib/*.egg-info ; \
+ 	do \
+ 		if test -x $$i; then \
+ 			$(INSTALL_SCRIPT) $$i $(DESTDIR)$(LIBDEST); \
+@@ -975,6 +978,11 @@
+ 			echo $(INSTALL_DATA) $$i $(LIBDEST); \
+ 		fi; \
+ 	done
++	$(INSTALL_DATA) `cat pysysconfigdatadir.txt`/_sysconfigdata.py \
++		$(DESTDIR)$(LIBDEST)
++	mkdir -p $(DESTDIR)$(LIBDEST)/sysconfigdata
++	$(INSTALL_DATA) `cat pysysconfigdatadir.txt`/_sysconfigdata.py \
++		$(DESTDIR)$(LIBDEST)/sysconfigdata
+ 	@for d in $(LIBSUBDIRS); \
+ 	do \
+ 		a=$(srcdir)/Lib/$$d; \
+@@ -1299,7 +1307,7 @@
+ 		Modules/Setup Modules/Setup.local Modules/Setup.config \
+ 		Modules/ld_so_aix Modules/python.exp Misc/python.pc
+ 	-rm -f python*-gdb.py
+-	-rm -f pybuilddir.txt
++	-rm -f pybuilddir.txt pysysconfigdatadir.txt
+ 	find $(srcdir)/[a-zA-Z]* '(' -name '*.fdc' -o -name '*~' \
+ 				     -o -name '[@,#]*' -o -name '*.old' \
+ 				     -o -name '*.orig' -o -name '*.rej' \
+Index: b/configure.ac
+===================================================================
+--- a/configure.ac
++++ b/configure.ac
+@@ -30,7 +30,7 @@
+ 	    AC_MSG_ERROR([python$PACKAGE_VERSION interpreter not found])
+ 	fi
+         AC_MSG_RESULT($interp)
+-	PYTHON_FOR_BUILD='_PYTHON_PROJECT_BASE=$(abs_builddir) _PYTHON_HOST_PLATFORM=$(_PYTHON_HOST_PLATFORM) PYTHONPATH=$(shell test -f pybuilddir.txt && echo $(abs_builddir)/`cat pybuilddir.txt`:)$(srcdir)/Lib:$(srcdir)/Lib/plat-$(MACHDEP) '$interp
++	PYTHON_FOR_BUILD='_PYTHON_PROJECT_BASE=$(abs_builddir) _PYTHON_HOST_PLATFORM=$(_PYTHON_HOST_PLATFORM) PYTHONPATH=$(shell test -f pysysconfigdatadir.txt && echo $(abs_builddir)/`cat pysysconfigdatadir.txt`:)$(srcdir)/Lib:$(srcdir)/Lib/plat-$(MACHDEP) '$interp
+     fi
+ elif test "$cross_compiling" = maybe; then
+     AC_MSG_ERROR([Cross compiling required --host=HOST-TUPLE and --build=ARCH])

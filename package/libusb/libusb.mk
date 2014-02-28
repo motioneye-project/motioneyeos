@@ -21,7 +21,7 @@ ifeq ($(BR2_avr32),y)
 LIBUSB_CONF_OPT += --disable-timerfd
 endif
 
-ifeq ($(BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_UDEV),y)
+ifeq ($(BR2_PACKAGE_HAS_UDEV),y)
 LIBUSB_DEPENDENCIES += udev
 else
 LIBUSB_CONF_OPT += --disable-udev

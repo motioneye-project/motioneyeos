@@ -222,7 +222,7 @@ define GPSD_INSTALL_STAGING_CMDS
 		install)
 endef
 
-ifeq ($(BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_UDEV),y)
+ifeq ($(BR2_PACKAGE_HAS_UDEV),y)
 define GPSD_INSTALL_UDEV_RULES
 	(cd $(@D); \
 		$(GPSD_SCONS_ENV) \

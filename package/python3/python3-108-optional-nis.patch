@@ -9,11 +9,11 @@ Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
  configure.ac |    6 ++++++
  1 file changed, 6 insertions(+)
 
-Index: cpython/configure.ac
+Index: b/configure.ac
 ===================================================================
---- cpython.orig/configure.ac
-+++ cpython/configure.ac
-@@ -2471,6 +2471,12 @@
+--- a/configure.ac
++++ b/configure.ac
+@@ -2689,6 +2689,12 @@
  		DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} _codecs_kr _codecs_jp _codecs_cn _codecs_tw _codecs_hk _codecs_iso2022"
  	fi])
  

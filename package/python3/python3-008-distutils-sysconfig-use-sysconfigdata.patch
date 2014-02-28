@@ -1,0 +1,58 @@
+Index: b/Lib/distutils/sysconfig.py
+===================================================================
+--- a/Lib/distutils/sysconfig.py
++++ b/Lib/distutils/sysconfig.py
+@@ -430,49 +430,11 @@
+ 
+ def _init_posix():
+     """Initialize the module as appropriate for POSIX systems."""
+-    g = {}
+-    # load the installed Makefile:
+-    try:
+-        filename = get_makefile_filename()
+-        parse_makefile(filename, g)
+-    except OSError as msg:
+-        my_msg = "invalid Python installation: unable to open %s" % filename
+-        if hasattr(msg, "strerror"):
+-            my_msg = my_msg + " (%s)" % msg.strerror
+-
+-        raise DistutilsPlatformError(my_msg)
+-
+-    # load the installed pyconfig.h:
+-    try:
+-        filename = get_config_h_filename()
+-        with open(filename) as file:
+-            parse_config_h(file, g)
+-    except OSError as msg:
+-        my_msg = "invalid Python installation: unable to open %s" % filename
+-        if hasattr(msg, "strerror"):
+-            my_msg = my_msg + " (%s)" % msg.strerror
+-
+-        raise DistutilsPlatformError(my_msg)
+-
+-    # On AIX, there are wrong paths to the linker scripts in the Makefile
+-    # -- these paths are relative to the Python source, but when installed
+-    # the scripts are in another directory.
+-    if python_build:
+-        g['LDSHARED'] = g['BLDSHARED']
+-
+-    elif get_python_version() < '2.1':
+-        # The following two branches are for 1.5.2 compatibility.
+-        if sys.platform == 'aix4':          # what about AIX 3.x ?
+-            # Linker script is in the config directory, not in Modules as the
+-            # Makefile says.
+-            python_lib = get_python_lib(standard_lib=1)
+-            ld_so_aix = os.path.join(python_lib, 'config', 'ld_so_aix')
+-            python_exp = os.path.join(python_lib, 'config', 'python.exp')
+-
+-            g['LDSHARED'] = "%s %s -bI:%s" % (ld_so_aix, g['CC'], python_exp)
+-
++    # _sysconfigdata is generated at build time, see the sysconfig module
++    from _sysconfigdata import build_time_vars
+     global _config_vars
+-    _config_vars = g
++    _config_vars = {}
++    _config_vars.update(build_time_vars)
+ 
+ 
+ def _init_nt():

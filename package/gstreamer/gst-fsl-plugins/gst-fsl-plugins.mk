@@ -4,9 +4,8 @@
 #
 ################################################################################
 
-GST_FSL_PLUGINS_VERSION = 3.0.1
-# No official download site from freescale, just this mirror
-GST_FSL_PLUGINS_SITE = http://download.ossystems.com.br/bsp/freescale/source
+GST_FSL_PLUGINS_VERSION = $(FREESCALE_IMX_VERSION)
+GST_FSL_PLUGINS_SITE = $(FREESCALE_IMX_SITE)
 
 # Most is LGPLv2+, but some sources are copied from upstream and are
 # LGPLv2.1+, which essentially makes it LGPLv2.1+

@@ -1,0 +1,60 @@
+Index: b/Makefile.pre.in
+===================================================================
+--- a/Makefile.pre.in
++++ b/Makefile.pre.in
+@@ -153,6 +153,8 @@
+ # configure script arguments
+ CONFIG_ARGS=	@CONFIG_ARGS@
+ 
++# disabled extensions
++DISABLED_EXTENSIONS=	@DISABLED_EXTENSIONS@
+ 
+ # Subdirectories with code
+ SRCDIRS= 	@SRCDIRS@
+@@ -464,6 +466,7 @@
+ 	esac; \
+ 	$(RUNSHARED) CC='$(CC)' LDSHARED='$(BLDSHARED)' OPT='$(OPT)' \
+ 		_TCLTK_INCLUDES='$(TCLTK_INCLUDES)' _TCLTK_LIBS='$(TCLTK_LIBS)' \
++		DISABLED_EXTENSIONS="$(DISABLED_EXTENSIONS)" \
+ 		$(PYTHON_FOR_BUILD) $(srcdir)/setup.py $$quiet build
+ 
+ # Build static library
+@@ -1154,7 +1157,8 @@
+ # Install the dynamically loadable modules
+ # This goes into $(exec_prefix)
+ sharedinstall: sharedmods
+-	$(RUNSHARED) $(PYTHON_FOR_BUILD) $(srcdir)/setup.py install \
++	$(RUNSHARED) DISABLED_EXTENSIONS="$(DISABLED_EXTENSIONS)" \
++		$(PYTHON_FOR_BUILD) $(srcdir)/setup.py install \
+ 	   	--prefix=$(prefix) \
+ 		--install-scripts=$(BINDIR) \
+ 		--install-platlib=$(DESTSHARED) \
+Index: b/configure.ac
+===================================================================
+--- a/configure.ac
++++ b/configure.ac
+@@ -2275,6 +2275,8 @@
+ 
+ AC_PATH_TOOL([PKG_CONFIG], [pkg-config])
+ 
++AC_SUBST(DISABLED_EXTENSIONS)
++
+ # Check for use of the system expat library
+ AC_MSG_CHECKING(for --with-system-expat)
+ AC_ARG_WITH(system_expat,
+Index: b/setup.py
+===================================================================
+--- a/setup.py
++++ b/setup.py
+@@ -33,7 +33,10 @@
+ COMPILED_WITH_PYDEBUG = ('--with-pydebug' in sysconfig.get_config_var("CONFIG_ARGS"))
+ 
+ # This global variable is used to hold the list of modules to be disabled.
+-disabled_module_list = []
++try:
++    disabled_module_list = sysconfig.get_config_var("DISABLED_EXTENSIONS").split(" ")
++except KeyError:
++    disabled_module_list = list()
+ 
+ def add_dir_to_list(dirlist, dir):
+     """Add the directory 'dir' to the list 'dirlist' (at the front) if

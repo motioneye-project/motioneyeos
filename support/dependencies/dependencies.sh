@@ -191,6 +191,14 @@ if grep -q ^BR2_PACKAGE_CLASSPATH=y $BR2_CONFIG ; then
 	done
 fi
 
+if grep -q ^BR2_NEEDS_HOST_JAVA=y $BR2_CONFIG ; then
+	if ! which java > /dev/null ; then
+		echo >&2
+		echo "You must install 'java' on your build machine" >&2
+		exit 1
+	fi
+fi
+
 if grep -q ^BR2_HOSTARCH_NEEDS_IA32_LIBS=y $BR2_CONFIG ; then
 	if test ! -f /lib/ld-linux.so.2 ; then
 		echo

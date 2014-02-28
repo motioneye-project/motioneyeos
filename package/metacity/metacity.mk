@@ -19,7 +19,7 @@ METACITY_CONF_OPT = --x-includes=$(STAGING_DIR)/usr/include/X11 \
 
 METACITY_DEPENDENCIES = libgtk2 \
 	xlib_libX11 \
-	host-libxml-parser-perl \
+	host-perl-xml-parser \
 	xlib_libXcomposite \
 	xlib_libXfixes \
 	xlib_libXrender \

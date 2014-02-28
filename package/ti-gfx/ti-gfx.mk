@@ -4,13 +4,13 @@
 #
 ################################################################################
 
-TI_GFX_VERSION = 4_09_00_01
-TI_GFX_SO_VERSION = 1.9.2188537
+TI_GFX_VERSION = 5_01_00_01
+TI_GFX_SO_VERSION = 1.10.2359475
 
 ifeq ($(BR2_ARM_EABIHF),y)
-TI_GFX_SOURCE = Graphics_SDK_setuplinux_$(TI_GFX_VERSION)_hardfp_minimal_demos.bin
+TI_GFX_SOURCE = Graphics_SDK_setuplinux_hardfp_$(TI_GFX_VERSION).bin
 else
-TI_GFX_SOURCE = Graphics_SDK_setuplinux_$(TI_GFX_VERSION)_minimal_demos.bin
+TI_GFX_SOURCE = Graphics_SDK_setuplinux_softfp_$(TI_GFX_VERSION).bin
 endif
 
 TI_GFX_SITE = http://downloads.ti.com/dsps/dsps_public_sw/sdo_sb/targetcontent/gfxsdk/$(TI_GFX_VERSION)/exports/
@@ -90,7 +90,6 @@ TI_GFX_HDR_DIRS = OGLES2/EGL OGLES2/EWS OGLES2/GLES2 OGLES2/KHR \
 	OGLES/GLES bufferclass_ti/ pvr2d/ wsegl/
 
 define TI_GFX_EXTRACT_CMDS
-	$(RM) -rf $(TI_GFX_DIR)
 	chmod +x $(DL_DIR)/$(TI_GFX_SOURCE)
 	printf "Y\nY\n qY\n\n" | $(DL_DIR)/$(TI_GFX_SOURCE) \
 		--prefix $(@D) \

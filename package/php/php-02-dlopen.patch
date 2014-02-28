@@ -1,0 +1,25 @@
+PHP can't be AUTORECONF with any modern autotools and the dl tests are
+pretty bad for cross-compilation, so just kill the needed ac_cv value unsets
+so they can flow through from the package makefile.
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+diff -Nura php-5.5.8.orig/configure php-5.5.8/configure
+--- php-5.5.8.orig/configure	2014-01-28 17:41:33.943851727 -0300
++++ php-5.5.8/configure	2014-01-28 17:42:53.785493795 -0300
+@@ -16985,7 +16985,6 @@
+ 
+ 
+ 
+-  unset ac_cv_func_dlopen
+   unset ac_cv_func___dlopen
+   unset found
+ 
+@@ -17013,7 +17012,6 @@
+ 
+     *)
+ 
+-  unset ac_cv_lib_dl_dlopen
+   unset ac_cv_lib_dl___dlopen
+   unset found
+   { $as_echo "$as_me:${as_lineno-$LINENO}: checking for dlopen in -ldl" >&5

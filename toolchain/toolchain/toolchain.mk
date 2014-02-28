@@ -12,6 +12,8 @@ else ifeq ($(BR2_TOOLCHAIN_EXTERNAL),y)
 TOOLCHAIN_DEPENDENCIES += toolchain-external
 endif
 
+TOOLCHAIN_ADD_TOOLCHAIN_DEPENDENCY = NO
+
 $(eval $(generic-package))
 
-toolchain-source: prepare dirs dependencies $(HOST_DIR)/usr/share/buildroot/toolchainfile.cmake
+toolchain: $(HOST_DIR)/usr/share/buildroot/toolchainfile.cmake

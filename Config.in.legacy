@@ -99,6 +99,73 @@ comment "----------------------------------------------------"
 endif
 
 ###############################################################################
+comment "Legacy options removed in 2014.05"
+
+config BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_UDEV
+	bool "/dev management by udev removed"
+	select BR2_LEGACY
+	help
+	  The 'udev' package has been converted to a virtual package.
+	  The providers for this feature are: 'eudev', 'systemd'.
+
+	  Therefore, if you are not using 'systemd' as init system, you
+	  must choose 'Dynamic using eudev' in the '/dev management'
+	  menu to get the same behaviour as in your old configuration.
+
+	  If you are using 'systemd', its internal implementation of
+	  'udev' will be used automatically.
+
+	  You must also check the packages depending on 'udev' are still
+	  selected.
+
+config BR2_PACKAGE_UDEV
+	bool "udev is now a virtual package"
+	select BR2_LEGACY
+	select BR2_PACKAGE_HAS_UDEV
+	help
+	  The 'udev' package has been converted to a virtual package.
+	  The providers for this feature are: 'eudev', 'systemd'.
+
+	  Your old configuration refers to packages depending on 'udev',
+	  either for build or at runtime.
+
+	  Check that a 'udev' provider is selected. If you are not using
+	  'systemd' as init system, 'eudev' should be selected, which is
+	  the case if '/dev management' is set to 'Dynamic using eudev'.
+
+	  If you are using 'systemd', its internal implementation of 'udev'
+	  is used.
+
+config BR2_PACKAGE_UDEV_RULES_GEN
+	bool "udev rules generation handled by provider"
+	select BR2_LEGACY
+	select BR2_PACKAGE_EUDEV if !BR2_INIT_SYSTEMD
+	select BR2_PACKAGE_EUDEV_RULES_GEN if !BR2_INIT_SYSTEMD
+	help
+	  The 'udev' package has been converted to a virtual package.
+	  The providers for this feature are: 'eudev', 'systemd'.
+
+	  If you are not using 'systemd' as init system, udev rules
+	  generation will be handled by 'eudev'. Check that
+	  '/dev management' is set to 'Dynamic using eudev' to get
+	  the same behaviour as in your old configuration.
+
+	  If you are using 'systemd', it internal implementation of 'udev'
+	  will generate the rules.
+
+config BR2_PACKAGE_UDEV_ALL_EXTRAS
+	bool "udev extras removed"
+	select BR2_LEGACY
+	help
+	  The 'udev' package has been converted to a virtual package.
+	  The providers for this feature are: 'eudev', 'systemd'.
+
+	  The option to enable the extra features of 'udev' (gudev, ...)
+	  has been removed. These features are automatically enabled in
+	  the 'udev' providers if the dependencies are selected. For
+	  example, selecting 'libglib2' will trigger the build of gudev.
+
+###############################################################################
 comment "Legacy options removed in 2014.02"
 
 config BR2_sh2

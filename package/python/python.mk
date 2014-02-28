@@ -5,16 +5,15 @@
 ################################################################################
 
 PYTHON_VERSION_MAJOR = 2.7
-PYTHON_VERSION       = $(PYTHON_VERSION_MAJOR).3
+PYTHON_VERSION       = $(PYTHON_VERSION_MAJOR).6
 PYTHON_SOURCE        = Python-$(PYTHON_VERSION).tar.xz
 PYTHON_SITE          = http://python.org/ftp/python/$(PYTHON_VERSION)
 PYTHON_LICENSE       = Python software foundation license v2, others
 PYTHON_LICENSE_FILES = LICENSE
 
-# Python needs itself and a "pgen" program to build itself, both being
-# provided in the Python sources. So in order to cross-compile Python,
-# we need to build a host Python first. This host Python is also
-# installed in $(HOST_DIR), as it is needed when cross-compiling
+# Python needs itself to be built, so in order to cross-compile
+# Python, we need to build a host Python first. This host Python is
+# also installed in $(HOST_DIR), as it is needed when cross-compiling
 # third-party Python modules.
 
 HOST_PYTHON_CONF_OPT += 	\
@@ -26,17 +25,14 @@ HOST_PYTHON_CONF_OPT += 	\
 	--disable-curses	\
 	--disable-codecs-cjk	\
 	--disable-nis		\
+	--enable-unicodedata	\
 	--disable-dbm		\
 	--disable-gdbm		\
 	--disable-bsddb		\
 	--disable-test-modules	\
 	--disable-bz2		\
-	--disable-ssl
-
-HOST_PYTHON_MAKE_ENV = \
-	PYTHON_MODULES_INCLUDE=$(HOST_DIR)/usr/include \
-	PYTHON_MODULES_LIB="$(HOST_DIR)/lib $(HOST_DIR)/usr/lib"
-
+	--disable-ssl		\
+	--disable-pyo-build
 
 # Building host python in parallel sometimes triggers a "Bus error"
 # during the execution of "./python setup.py build" in the
@@ -49,12 +45,6 @@ HOST_PYTHON_MAKE = $(MAKE1)
 PYTHON_DEPENDENCIES  = host-python libffi
 
 HOST_PYTHON_DEPENDENCIES = host-expat host-zlib
-
-define HOST_PYTHON_INSTALL_PGEN
-	$(INSTALL) -m0755 -D $(@D)/Parser/pgen $(HOST_DIR)/usr/bin/python-pgen
-endef
-
-HOST_PYTHON_POST_INSTALL_HOOKS += HOST_PYTHON_INSTALL_PGEN
 
 PYTHON_INSTALL_STAGING = YES
 
@@ -124,14 +114,9 @@ PYTHON_DEPENDENCIES += openssl
 endif
 
 PYTHON_CONF_ENV += \
-	PYTHON_FOR_BUILD=$(HOST_DIR)/usr/bin/python \
-	PGEN_FOR_BUILD=$(HOST_DIR)/usr/bin/python-pgen \
-	ac_cv_have_long_long_format=yes
-
-PYTHON_MAKE_ENV += \
-	_python_sysroot=$(STAGING_DIR) \
-	PYTHON_MODULES_INCLUDE=$(STAGING_DIR)/usr/include \
-	PYTHON_MODULES_LIB="$(STAGING_DIR)/lib $(STAGING_DIR)/usr/lib"
+	ac_cv_have_long_long_format=yes \
+	ac_cv_file__dev_ptmx=yes \
+	ac_cv_file__dev_ptc=yes
 
 PYTHON_CONF_OPT += \
 	--without-cxx-main 	\
@@ -143,7 +128,18 @@ PYTHON_CONF_OPT += \
 	--disable-gdbm		\
 	--disable-tk		\
 	--disable-nis		\
-	--disable-dbm
+	--disable-dbm		\
+	--disable-pyo-build
+
+# This is needed to make sure the Python build process doesn't try to
+# regenerate those files with the pgen program. Otherwise, it builds
+# pgen for the target, and tries to run it on the host.
+
+define PYTHON_TOUCH_GRAMMAR_FILES
+	touch $(@D)/Include/graminit.h $(@D)/Python/graminit.c
+endef
+
+PYTHON_POST_PATCH_HOOKS += PYTHON_TOUCH_GRAMMAR_FILES
 
 #
 # Remove useless files. In the config/ directory, only the Makefile
@@ -165,7 +161,19 @@ endef
 
 PYTHON_POST_INSTALL_TARGET_HOOKS += PYTHON_REMOVE_USELESS_FILES
 
+#
+# Make sure libpython gets stripped out on target
+#
+define PYTHON_ENSURE_LIBPYTHON_STRIPPED
+	chmod u+w $(TARGET_DIR)/usr/lib/libpython$(PYTHON_VERSION_MAJOR)*.so
+endef
+
+PYTHON_POST_INSTALL_TARGET_HOOKS += PYTHON_ENSURE_LIBPYTHON_STRIPPED
+
 PYTHON_AUTORECONF = YES
+
+# Provided to other packages
+PYTHON_PATH = $(TARGET_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR)/sysconfigdata/:$(TARGET_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR)/site-packages/
 
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))

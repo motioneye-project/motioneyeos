@@ -4,9 +4,8 @@
 #
 ################################################################################
 
-LIBFSLCODEC_VERSION = 3.0.1
-# No official download site from freescale, just this mirror
-LIBFSLCODEC_SITE = http://download.ossystems.com.br/bsp/freescale/source
+LIBFSLCODEC_VERSION = $(FREESCALE_IMX_VERSION)
+LIBFSLCODEC_SITE = $(FREESCALE_IMX_SITE)
 LIBFSLCODEC_SOURCE = libfslcodec-$(LIBFSLCODEC_VERSION).bin
 LIBFSLCODEC_LICENSE = Freescale Semiconductor Software License Agreement, BSD-3c (flac, ogg headers)
 LIBFSLCODEC_LICENSE_FILES = EULA EULA.txt

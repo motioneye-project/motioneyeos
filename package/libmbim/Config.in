@@ -2,9 +2,8 @@ config BR2_PACKAGE_LIBMBIM
 	bool "libmbim"
 	depends on BR2_USE_WCHAR # libglib2
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libglib2
-	depends on BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_UDEV
+	depends on BR2_PACKAGE_HAS_UDEV
 	select BR2_PACKAGE_LIBGLIB2
-	select BR2_PACKAGE_UDEV_ALL_EXTRAS
 	help
 	  libmbim is a glib-based library for talking to WWAN modems and
 	  devices which speak the Mobile Interface Broadband Model (MBIM)
@@ -14,4 +13,4 @@ config BR2_PACKAGE_LIBMBIM
 
 comment "libmbim needs udev /dev management and a toolchain w/ wchar, threads"
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || \
-		!BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_UDEV
+		!BR2_PACKAGE_HAS_UDEV

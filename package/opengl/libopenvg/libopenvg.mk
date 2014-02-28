@@ -7,11 +7,10 @@
 LIBOPENVG_SOURCE =
 LIBOPENVG_DEPENDENCIES = $(call qstrip,$(BR2_PACKAGE_PROVIDES_OPENVG))
 
+ifeq ($(BR2_PACKAGE_HAS_OPENVG),y)
 ifeq ($(LIBOPENVG_DEPENDENCIES),)
-define LIBOPENVG_CONFIGURE_CMDS
-	echo "No libOpenVG implementation selected. Configuration error."
-	exit 1
-endef
+$(error No libOpenVG implementation selected. Configuration error.)
+endif
 endif
 
 $(eval $(generic-package))

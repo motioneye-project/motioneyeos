@@ -22,7 +22,7 @@ OFONO_CONF_OPT = --disable-test
 # make sure that it is defined.
 OFONO_CONF_ENV += CFLAGS="$(TARGET_CFLAGS) -D_GNU_SOURCE"
 
-ifeq ($(BR2_PACKAGE_UDEV),y)
+ifeq ($(BR2_PACKAGE_HAS_UDEV),y)
 	OFONO_CONF_OPT += --enable-udev
 	OFONO_DEPENDENCIES += udev
 else

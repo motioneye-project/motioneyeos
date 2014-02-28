@@ -12,11 +12,11 @@ Signed-off-by: Samuel Martin <s.martin49@gmail.com>
  setup.py        |    5 +++--
  3 files changed, 23 insertions(+), 6 deletions(-)
 
-Index: cpython/Makefile.pre.in
+Index: b/Makefile.pre.in
 ===================================================================
---- cpython.orig/Makefile.pre.in
-+++ cpython/Makefile.pre.in
-@@ -956,7 +956,9 @@
+--- a/Makefile.pre.in
++++ b/Makefile.pre.in
+@@ -1091,7 +1091,9 @@
  	(cd $(DESTDIR)$(BINDIR); $(LN) -s pydoc$(VERSION) pydoc3)
  endif
  	-rm -f $(DESTDIR)$(BINDIR)/2to3
@@ -25,46 +25,44 @@ Index: cpython/Makefile.pre.in
 +endif
  	-rm -f $(DESTDIR)$(BINDIR)/pyvenv
  	(cd $(DESTDIR)$(BINDIR); $(LN) -s pyvenv-$(VERSION) pyvenv)
- 
-@@ -985,7 +987,6 @@
+ 	if test "x$(LIPO_32BIT_FLAGS)" != "x" ; then \
+@@ -1131,7 +1133,6 @@
  		html json http dbm xmlrpc \
  		sqlite3 \
  		logging csv wsgiref urllib \
 -		lib2to3 lib2to3/fixes lib2to3/pgen2 \
- 		ctypes ctypes/macholib idlelib idlelib/Icons \
+ 		ctypes ctypes/macholib \
+ 		idlelib idlelib/Icons \
  		distutils distutils/command $(XMLLIBSUBDIRS) \
- 		importlib \
-@@ -1025,9 +1026,6 @@
- 		test/test_email test/test_email/data \
- 		test/json_tests \
- 		sqlite3/test \
+@@ -1172,9 +1173,6 @@
+ 		test/namespace_pkgs/project3/parent/child \
+                 test/namespace_pkgs/module_and_namespace_package \
+                 test/namespace_pkgs/module_and_namespace_package/a_test \
 -		lib2to3/tests \
 -		lib2to3/tests/data lib2to3/tests/data/fixers \
 -		lib2to3/tests/data/fixers/myfixes \
- 		ctypes/test \
- 		distutils/tests \
+ 		sqlite3/test idlelib/idle_test \
  		test/test_importlib test/test_importlib/builtin \
-@@ -1040,6 +1038,16 @@
+ 		test/test_importlib/extension test/test_importlib/frozen \
+@@ -1186,6 +1184,14 @@
  LIBSUBDIRS += pydoc_data
  endif
  
 +ifeq (@LIB2TO3@,yes)
 +LIBSUBDIRS += lib2to3 lib2to3/fixes lib2to3/pgen2
-+ifeq (@TEST_MODULES@,yes)
-+LIBSUBDIRS += 	lib2to3/tests				\
-+		lib2to3/tests/data			\
-+		lib2to3/tests/data/fixers		\
-+		lib2to3/tests/data/fixers/myfixes
-+endif
++TESTSUBDIRS += lib2to3/tests			\
++	lib2to3/tests/data			\
++	lib2to3/tests/data/fixers		\
++	lib2to3/tests/data/fixers/myfixes
 +endif
 +
- libinstall:	build_all $(srcdir)/Lib/$(PLATDIR) $(srcdir)/Modules/xxmodule.c
- 	@for i in $(SCRIPTDIR) $(LIBDEST); \
- 	do \
-@@ -1109,10 +1117,12 @@
- 		$(PYTHON_FOR_BUILD) -Wi $(DESTDIR)$(LIBDEST)/compileall.py \
- 		-d $(LIBDEST)/site-packages -f \
+ ifeq (@TEST_MODULES@,yes)
+ LIBSUBDIRS += $(TESTSUBDIRS)
+ endif
+@@ -1281,10 +1287,12 @@
+ 		-d $(LIBDEST)/site-packages -f $(STDLIB_CACHE_FLAGS) \
  		-x badsyntax $(DESTDIR)$(LIBDEST)/site-packages
+ endif
 +ifeq (@LIB2TO3@,yes)
  	-PYTHONPATH=$(DESTDIR)$(LIBDEST) $(RUNSHARED) \
  		$(PYTHON_FOR_BUILD) -m lib2to3.pgen2.driver $(DESTDIR)$(LIBDEST)/lib2to3/Grammar.txt
@@ -74,11 +72,11 @@ Index: cpython/Makefile.pre.in
  
  # Create the PLATDIR source directory, if one wasn't distributed..
  $(srcdir)/Lib/$(PLATDIR):
-Index: cpython/setup.py
+Index: b/setup.py
 ===================================================================
---- cpython.orig/setup.py
-+++ cpython/setup.py
-@@ -2124,10 +2124,11 @@
+--- a/setup.py
++++ b/setup.py
+@@ -2183,10 +2183,11 @@
      import warnings
      warnings.filterwarnings("ignore",category=DeprecationWarning)
  
@@ -92,11 +90,11 @@ Index: cpython/setup.py
  
      setup(# PyPI Metadata (PEP 301)
            name = "Python",
-Index: cpython/configure.ac
+Index: b/configure.ac
 ===================================================================
---- cpython.orig/configure.ac
-+++ cpython/configure.ac
-@@ -2460,6 +2460,12 @@
+--- a/configure.ac
++++ b/configure.ac
+@@ -2678,6 +2678,12 @@
  	AS_HELP_STRING([--disable-test-modules], [disable test modules]),
  	[ TEST_MODULES="${enableval}" ], [ TEST_MODULES=yes ])
  

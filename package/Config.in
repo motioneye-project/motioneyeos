@@ -156,6 +156,8 @@ source "package/doom-wad/Config.in"
 source "package/gnuchess/Config.in"
 source "package/lbreakout2/Config.in"
 source "package/ltris/Config.in"
+source "package/opentyrian/Config.in"
+source "package/opentyrian-data/Config.in"
 source "package/prboom/Config.in"
 source "package/rubix/Config.in"
 endmenu
@@ -276,6 +278,7 @@ source "package/dmraid/Config.in"
 source "package/dvb-apps/Config.in"
 source "package/dvbsnoop/Config.in"
 source "package/eeprog/Config.in"
+source "package/eudev/Config.in"
 source "package/evemu/Config.in"
 source "package/evtest/Config.in"
 source "package/fan-ctrl/Config.in"
@@ -395,8 +398,23 @@ menu "Perl libraries/modules"
 endmenu
 endif
 source "package/php/Config.in"
+if BR2_PACKAGE_PHP
+if !BR2_PREFER_STATIC_LIB
+menu "External php extensions"
+source "package/php-gnupg/Config.in"
+source "package/php-imagick/Config.in"
+source "package/php-ssh2/Config.in"
+source "package/php-yaml/Config.in"
+source "package/php-zmq/Config.in"
+endmenu
+endif
+if BR2_PREFER_STATIC_LIB
+comment "External PHP extensions need a toolchain w/ dynamic library"
+endif
+endif
 source "package/python/Config.in"
-if BR2_PACKAGE_PYTHON
+source "package/python3/Config.in"
+if BR2_PACKAGE_PYTHON || BR2_PACKAGE_PYTHON3
 menu "external python modules"
 source "package/python-bottle/Config.in"
 source "package/python-configobj/Config.in"
@@ -432,7 +450,6 @@ source "package/python-tornado/Config.in"
 source "package/python-versiontools/Config.in"
 endmenu
 endif
-source "package/python3/Config.in"
 source "package/ruby/Config.in"
 source "package/tcl/Config.in"
 if BR2_PACKAGE_TCL
@@ -468,6 +485,7 @@ source "package/portaudio/Config.in"
 source "package/speex/Config.in"
 source "package/taglib/Config.in"
 source "package/tremor/Config.in"
+source "package/vo-aacenc/Config.in"
 source "package/webrtc-audio-processing/Config.in"
 endmenu
 
@@ -568,6 +586,7 @@ endmenu
 menu "Hardware handling"
 source "package/ccid/Config.in"
 source "package/dtc/Config.in"
+source "package/gnu-efi/Config.in"
 source "package/lcdapi/Config.in"
 source "package/libaio/Config.in"
 source "package/libatasmart/Config.in"
@@ -617,7 +636,6 @@ source "package/json-c/Config.in"
 source "package/json-glib/Config.in"
 source "package/libjson/Config.in"
 source "package/libroxml/Config.in"
-source "package/libxml-parser-perl/Config.in"
 source "package/libxml2/Config.in"
 source "package/libxmlpp/Config.in"
 source "package/libxslt/Config.in"

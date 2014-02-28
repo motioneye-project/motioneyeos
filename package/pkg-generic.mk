@@ -173,7 +173,7 @@ $(BUILD_DIR)/%/.stamp_configured:
 $(BUILD_DIR)/%/.stamp_built::
 	@$(call step_start,build)
 	@$(call MESSAGE,"Building")
-	$($(PKG)_BUILD_CMDS)
+	+$($(PKG)_BUILD_CMDS)
 	$(foreach hook,$($(PKG)_POST_BUILD_HOOKS),$(call $(hook))$(sep))
 	$(Q)touch $@
 	@$(call step_end,build)
@@ -182,7 +182,7 @@ $(BUILD_DIR)/%/.stamp_built::
 $(BUILD_DIR)/%/.stamp_host_installed:
 	@$(call step_start,install-host)
 	@$(call MESSAGE,"Installing to host directory")
-	$($(PKG)_INSTALL_CMDS)
+	+$($(PKG)_INSTALL_CMDS)
 	$(foreach hook,$($(PKG)_POST_INSTALL_HOOKS),$(call $(hook))$(sep))
 	$(Q)touch $@
 	@$(call step_end,install-host)
@@ -191,7 +191,7 @@ $(BUILD_DIR)/%/.stamp_host_installed:
 $(BUILD_DIR)/%/.stamp_staging_installed:
 	@$(call step_start,install-staging)
 	@$(call MESSAGE,"Installing to staging directory")
-	$($(PKG)_INSTALL_STAGING_CMDS)
+	+$($(PKG)_INSTALL_STAGING_CMDS)
 	$(foreach hook,$($(PKG)_POST_INSTALL_STAGING_HOOKS),$(call $(hook))$(sep))
 	$(Q)if test -n "$($(PKG)_CONFIG_SCRIPTS)" ; then \
 		$(call MESSAGE,"Fixing package configuration files") ;\
@@ -207,7 +207,7 @@ $(BUILD_DIR)/%/.stamp_staging_installed:
 $(BUILD_DIR)/%/.stamp_images_installed:
 	@$(call step_start,install-image)
 	@$(call MESSAGE,"Installing to images directory")
-	$($(PKG)_INSTALL_IMAGES_CMDS)
+	+$($(PKG)_INSTALL_IMAGES_CMDS)
 	$(foreach hook,$($(PKG)_POST_INSTALL_IMAGES_HOOKS),$(call $(hook))$(sep))
 	$(Q)touch $@
 	@$(call step_end,install-image)
@@ -220,7 +220,7 @@ $(BUILD_DIR)/%/.stamp_target_installed:
 		$($(PKG)_INSTALL_INIT_SYSTEMD))
 	$(if $(BR2_INIT_SYSV)$(BR2_INIT_BUSYBOX),\
 		$($(PKG)_INSTALL_INIT_SYSV))
-	$($(PKG)_INSTALL_TARGET_CMDS)
+	+$($(PKG)_INSTALL_TARGET_CMDS)
 	$(foreach hook,$($(PKG)_POST_INSTALL_TARGET_HOOKS),$(call $(hook))$(sep))
 	$(Q)if test -n "$($(PKG)_CONFIG_SCRIPTS)" ; then \
 		$(RM) -f $(addprefix $(TARGET_DIR)/usr/bin/,$($(PKG)_CONFIG_SCRIPTS)) ; \
@@ -351,8 +351,18 @@ endif
 
 $(2)_REDISTRIBUTE		?= YES
 
+# When a target package is a toolchain dependency set this variable to
+# 'NO' so the 'toolchain' dependency is not added to prevent a circular
+# dependency
+$(2)_ADD_TOOLCHAIN_DEPENDENCY	?= YES
 
-$(2)_DEPENDENCIES ?= $(filter-out $(1),$(patsubst host-host-%,host-%,$(addprefix host-,$($(3)_DEPENDENCIES))))
+$(2)_DEPENDENCIES ?= $(filter-out  host-toolchain $(1),\
+	$(patsubst host-host-%,host-%,$(addprefix host-,$($(3)_DEPENDENCIES))))
+ifeq ($(4),target)
+ifeq ($$($(2)_ADD_TOOLCHAIN_DEPENDENCY),YES)
+$(2)_DEPENDENCIES += toolchain
+endif
+endif
 
 $(2)_INSTALL_STAGING		?= NO
 $(2)_INSTALL_IMAGES		?= NO
@@ -402,30 +412,47 @@ $(1)-install:		$(1)-install-staging $(1)-install-target $(1)-install-images
 endif
 
 ifeq ($$($(2)_INSTALL_TARGET),YES)
-$(1)-install-target:	$(1)-build \
-			$$($(2)_TARGET_INSTALL_TARGET)
+$(1)-install-target:		$$($(2)_TARGET_INSTALL_TARGET)
+$$($(2)_TARGET_INSTALL_TARGET):	$$($(2)_TARGET_BUILD)
 else
 $(1)-install-target:
 endif
 
 ifeq ($$($(2)_INSTALL_STAGING),YES)
-$(1)-install-staging:	$(1)-build \
-			$$($(2)_TARGET_INSTALL_STAGING)
+$(1)-install-staging:			$$($(2)_TARGET_INSTALL_STAGING)
+$$($(2)_TARGET_INSTALL_STAGING):	$$($(2)_TARGET_BUILD)
+# Some packages use install-staging stuff for install-target
+$$($(2)_TARGET_INSTALL_TARGET):		$$($(2)_TARGET_INSTALL_STAGING)
 else
 $(1)-install-staging:
 endif
 
 ifeq ($$($(2)_INSTALL_IMAGES),YES)
-$(1)-install-images:	$(1)-build \
-			$$($(2)_TARGET_INSTALL_IMAGES)
+$(1)-install-images:		$$($(2)_TARGET_INSTALL_IMAGES)
+$$($(2)_TARGET_INSTALL_IMAGES):	$$($(2)_TARGET_BUILD)
 else
 $(1)-install-images:
 endif
 
-$(1)-install-host:      $(1)-build $$($(2)_TARGET_INSTALL_HOST)
+$(1)-install-host:      	$$($(2)_TARGET_INSTALL_HOST)
+$$($(2)_TARGET_INSTALL_HOST):	$$($(2)_TARGET_BUILD)
 
-$(1)-build:		$(1)-configure \
-			$$($(2)_TARGET_BUILD)
+$(1)-build:		$$($(2)_TARGET_BUILD)
+$$($(2)_TARGET_BUILD):	$$($(2)_TARGET_CONFIGURE)
+
+# Since $(2)_DEPENDENCIES are phony targets, they are always "newer"
+# than $(2)_TARGET_CONFIGURE. This would force the configure step (and
+# therefore the other steps as well) to be re-executed with every
+# invocation of make.  Therefore, make $(2)_DEPENDENCIES an order-only
+# dependency by using |.
+
+$(1)-configure:			$$($(2)_TARGET_CONFIGURE)
+$$($(2)_TARGET_CONFIGURE):	| $$($(2)_DEPENDENCIES)
+
+$$($(2)_TARGET_SOURCE) $$($(2)_TARGET_RSYNC): | dirs prepare
+ifeq ($(filter $(1),$(DEPENDENCIES_HOST_PREREQ)),)
+$$($(2)_TARGET_SOURCE) $$($(2)_TARGET_RSYNC): | dependencies
+endif
 
 ifeq ($$($(2)_OVERRIDE_SRCDIR),)
 # In the normal case (no package override), the sequence of steps is
@@ -434,13 +461,13 @@ ifeq ($$($(2)_OVERRIDE_SRCDIR),)
 #  extract
 #  patch
 #  configure
-$(1)-configure:		$(1)-patch $(1)-depends \
-			$$($(2)_TARGET_CONFIGURE)
+$$($(2)_TARGET_CONFIGURE):	$$($(2)_TARGET_PATCH)
 
-$(1)-patch:		$(1)-extract $$($(2)_TARGET_PATCH)
+$(1)-patch:		$$($(2)_TARGET_PATCH)
+$$($(2)_TARGET_PATCH):	$$($(2)_TARGET_EXTRACT)
 
-$(1)-extract:		$(1)-source \
-			$$($(2)_TARGET_EXTRACT)
+$(1)-extract:			$$($(2)_TARGET_EXTRACT)
+$$($(2)_TARGET_EXTRACT):	$$($(2)_TARGET_SOURCE)
 
 $(1)-depends:		$$($(2)_DEPENDENCIES)
 
@@ -450,10 +477,9 @@ else
 #  source, by rsyncing
 #  depends
 #  configure
-$(1)-configure:		$(1)-depends \
-			$$($(2)_TARGET_CONFIGURE)
+$$($(2)_TARGET_CONFIGURE):	$$($(2)_TARGET_RSYNC)
 
-$(1)-depends:		$(1)-rsync $$($(2)_DEPENDENCIES)
+$(1)-depends:		$$($(2)_DEPENDENCIES)
 
 $(1)-patch:		$(1)-rsync
 $(1)-extract:		$(1)-rsync

@@ -17,6 +17,9 @@ LINUX_HEADERS_SOURCE = linux-$(LINUX_HEADERS_VERSION).tar.xz
 
 LINUX_HEADERS_INSTALL_STAGING = YES
 
+# linux-headers is part of the toolchain so disable the toolchain dependency
+LINUX_HEADERS_ADD_TOOLCHAIN_DEPENDENCY = NO
+
 # For some architectures (eg. Arc, Cris, Hexagon, ia64, parisc,
 # score and xtensa), the Linux buildsystem tries to call the
 # cross-compiler, although it is not needed at all.

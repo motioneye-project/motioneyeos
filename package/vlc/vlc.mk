@@ -274,7 +274,7 @@ else
 VLC_CONF_OPT += --disable-tremor
 endif
 
-ifeq ($(BR2_PACKAGE_UDEV),y)
+ifeq ($(BR2_PACKAGE_HAS_UDEV),y)
 VLC_CONF_OPT += --with-udev
 VLC_DEPENDENCIES += udev
 else

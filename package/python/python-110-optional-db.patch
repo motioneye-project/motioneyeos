@@ -1,0 +1,80 @@
+Add an option to disable bsddb
+
+bsddb has an external dependency on Berkeley DB. Since we want to be
+able to build Python without it, this patch adds an option to disable
+the build/installation of this Python module.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+
+---
+ Makefile.pre.in |   10 ++++++++--
+ configure.in    |   22 ++++++++++++++++++++++
+ 2 files changed, 30 insertions(+), 2 deletions(-)
+
+Index: b/Makefile.pre.in
+===================================================================
+--- a/Makefile.pre.in
++++ b/Makefile.pre.in
+@@ -938,7 +938,7 @@
+ 		encodings compiler hotshot \
+ 		email email/mime \
+ 		json \
+-		logging bsddb csv importlib wsgiref \
++		logging csv importlib wsgiref \
+ 		ctypes  ctypes/macholib idlelib idlelib/Icons \
+ 		distutils distutils/command \
+ 		multiprocessing multiprocessing/dummy \
+@@ -951,7 +951,6 @@
+ 	test/tracedmodules \
+ 	email/test email/test/data \
+ 	json/tests \
+-	bsddb/test \
+ 	ctypes/test \
+ 	distutils/tests \
+ 	unittest/test
+@@ -991,6 +990,11 @@
+ LIBSUBDIRS += $(XMLLIBSUBDIRS)
+ endif
+ 
++ifeq (@BSDDB@,yes)
++LIBSUBDIRS += bsddb
++TESTSUBDIRS += bsddb/test
++endif
++
+ libinstall:	build_all $(srcdir)/Lib/$(PLATDIR) $(srcdir)/Modules/xxmodule.c
+ 	@for i in $(SCRIPTDIR) $(LIBDEST); \
+ 	do \
+Index: b/configure.ac
+===================================================================
+--- a/configure.ac
++++ b/configure.ac
+@@ -2642,6 +2642,28 @@
+     	     DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} nis"
+   	  fi])
+ 
++AC_ARG_ENABLE(dbm,
++	AS_HELP_STRING([--disable-dbm], [disable DBM]),
++	[ if test "$enableval" = "no"; then
++    	     DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} dbm"
++  	  fi])
++
++AC_ARG_ENABLE(gdbm,
++	AS_HELP_STRING([--disable-gdbm], [disable GDBM]),
++	[ if test "$enableval" = "no"; then
++    	     DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} gdbm"
++  	  fi])
++
++AC_SUBST(BSDDB)
++AC_ARG_ENABLE(bsddb,
++	AS_HELP_STRING([--disable-bsddb], [disable BerkeyleyDB]),
++	[ if test "$enableval" = "no"; then
++    	     BSDDB=no
++    	     DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} bsddb"
++  	  else
++	     BSDDB=yes
++  	  fi], [ BSDDB=yes ])
++
+ AC_ARG_ENABLE(unicodedata,
+ 	AS_HELP_STRING([--disable-unicodedata], [disable unicodedata]),
+ 	[ if test "$enableval" = "no"; then

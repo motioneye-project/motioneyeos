@@ -1,0 +1,32 @@
+setup.py: do not add invalid header locations
+
+This piece of code incorrectly adds /usr/include to
+self.compiler.include_dirs, and results in the following invalid
+compilation line:
+
+/home/thomas/projets/buildroot/output/host/usr/bin/arm-none-linux-gnueabi-gcc -fPIC \
+  -fno-strict-aliasing -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 \
+  -pipe -Os -DNDEBUG -g -O3 -Wall -Wstrict-prototypes \
+  -I/usr/include -I. -IInclude -I./Include \
+  -I/home/thomas/projets/buildroot/output/host/usr/arm-buildroot-linux-gnueabi/sysroot/usr/include \
+  -I/home/thomas/projets/buildroot/output/build/python-2.7.6/Include \
+  -I/home/thomas/projets/buildroot/output/build/python-2.7.6 \
+  -c /home/thomas/projets/buildroot/output/build/python-2.7.6/Modules/mathmodule.c \
+  -o build/temp.linux2-arm-2.7/home/thomas/projets/buildroot/output/build/python-2.7.6/Modules/mathmodule.o
+cc1: warning: include location "/usr/include" is unsafe for cross-compilation [-Wpoison-system-directories]
+[...]
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Index: b/setup.py
+===================================================================
+--- a/setup.py
++++ b/setup.py
+@@ -478,7 +478,7 @@
+                     for directory in reversed(options.dirs):
+                         add_dir_to_list(dir_list, directory)
+ 
+-        if os.path.normpath(sys.prefix) != '/usr' \
++        if False and os.path.normpath(sys.prefix) != '/usr' \
+                 and not sysconfig.get_config_var('PYTHONFRAMEWORK'):
+             # OSX note: Don't add LIBDIR and INCLUDEDIR to building a framework
+             # (PYTHONFRAMEWORK is set) to avoid # linking problems when

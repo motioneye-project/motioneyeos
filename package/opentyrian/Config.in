@@ -1,0 +1,24 @@
+config BR2_PACKAGE_OPENTYRIAN
+	bool "OpenTyrian"
+	select BR2_PACKAGE_SDL
+	select BR2_PACKAGE_OPENTYRIAN_DATA
+	help
+	  OpenTyrian is a port of the DOS shoot-em-up Tyrian. It uses SDL,
+	  making it easily cross-platform.
+	  It requires the original data files to run.
+	  A display with minimum 640x480 resolution and a keyboard are needed
+	  to play the game.
+	  If you want some sound, activate ALSA with OSS emulation.
+
+	  http://code.google.com/p/opentyrian/
+
+if BR2_PACKAGE_OPENTYRIAN
+
+config BR2_PACKAGE_OPENTYRIAN_NET
+	bool "network support"
+	default y
+	select BR2_PACKAGE_SDL_NET
+	help
+	  Activates network support in OpenTyrian. Will add SDL_net.
+
+endif

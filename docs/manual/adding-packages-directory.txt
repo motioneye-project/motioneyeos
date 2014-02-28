@@ -235,7 +235,12 @@ use in the comment.
 
 * thread support
 ** Dependency symbol: +BR2_TOOLCHAIN_HAS_THREADS+
-** Comment string: +threads+
+** Comment string: +threads+ (unless +BR2_TOOLCHAIN_HAS_THREADS_NPTL+
+   is also needed, in which case, specifying only +NPTL+ is sufficient)
+
+* NPTL thread support
+** Dependency symbol: +BR2_TOOLCHAIN_HAS_THREADS_NPTL+
+** Comment string: +NPTL+
 
 * RPC support
 ** Dependency symbol: +BR2_TOOLCHAIN_HAS_NATIVE_RPC+
@@ -273,8 +278,7 @@ foo needs a toolchain w/ featA, featB, featC and a Linux kernel to be built
 Dependencies on udev /dev management
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 If a package needs udev /dev management, it should depend on symbol
-+BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_UDEV+, and the following comment
-should be added:
++BR2_PACKAGE_HAS_UDEV+, and the following comment should be added:
 
 --------------------------
 foo needs udev /dev management

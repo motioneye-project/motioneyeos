@@ -1,48 +1,6 @@
-config BR2_PACKAGE_UDEV
-	bool "udev"
-	depends on !BR2_avr32 # no epoll_create1
-	depends on BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_UDEV
-	depends on BR2_LARGEFILE # util-linux
-	depends on BR2_USE_WCHAR # util-linux
-	depends on !BR2_PREFER_STATIC_LIB # kmod
-	depends on BR2_USE_MMU # util-linux/libblkid
-	select BR2_PACKAGE_UTIL_LINUX
-	select BR2_PACKAGE_UTIL_LINUX_LIBBLKID
-	select BR2_PACKAGE_KMOD
-	help
-	  Userspace device daemon.
+config BR2_PACKAGE_HAS_UDEV
+	bool
 
-	  udev requires a Linux kernel >= 2.6.34: it relies on devtmpfs
-	  and inotify.
-
-	  ftp://ftp.kernel.org/pub/linux/utils/kernel/hotplug/
-
-if BR2_PACKAGE_UDEV
-
-config BR2_PACKAGE_UDEV_RULES_GEN
-	bool "enable rules generator"
-	help
-	  Enable persistant rules generator
-
-config BR2_PACKAGE_UDEV_ALL_EXTRAS
-	bool "enable all extras"
-	select BR2_PACKAGE_ACL
-	select BR2_PACKAGE_HWDATA
-	select BR2_PACKAGE_LIBGLIB2
-	depends on BR2_USE_WCHAR # libglib2
-	depends on BR2_TOOLCHAIN_HAS_THREADS # libglib2
-	depends on BR2_USE_MMU # libglib2
-	help
-	  Enable all extras with external dependencies like
-	  libacl, hwdata and libglib2
-
-comment "enabling all extras needs a toolchain w/ wchar, threads"
-	depends on BR2_USE_MMU
-	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
-
-endif
-
-comment "udev needs udev /dev management and a toolchain w/ largefile, wchar, dynamic library"
-	depends on !BR2_avr32
-	depends on !BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_UDEV || \
-		!BR2_LARGEFILE || !BR2_USE_WCHAR || BR2_PREFER_STATIC_LIB
+config BR2_PACKAGE_PROVIDES_UDEV
+	depends on BR2_PACKAGE_HAS_UDEV
+	string

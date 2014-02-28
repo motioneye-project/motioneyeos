@@ -1,12 +1,10 @@
 config BR2_PACKAGE_UDISKS
 	bool "udisks"
 	depends on !BR2_avr32 # udev
-	depends on BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_UDEV
+	depends on BR2_PACKAGE_HAS_UDEV
 	depends on BR2_TOOLCHAIN_HAS_THREADS # dbus-glib -> glib2
 	depends on BR2_USE_MMU # lvm2
 	depends on !BR2_PREFER_STATIC_LIB # lvm2
-	select BR2_PACKAGE_UDEV
-	select BR2_PACKAGE_UDEV_ALL_EXTRAS
 	select BR2_PACKAGE_DBUS
 	select BR2_PACKAGE_DBUS_GLIB
 	depends on BR2_USE_WCHAR # dbus-glib -> glib2
@@ -37,9 +35,13 @@ config BR2_PACKAGE_UDISKS_LVM2
 
 endif
 
-comment "udisks needs udev /dev management and a toolchain w/ wchar, threads, dynamic library"
+comment "udisks needs udev /dev management"
 	depends on !BR2_avr32
 	depends on BR2_USE_MMU
-	depends on !BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_UDEV || \
-		!BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS  || \
+	depends on !BR2_PACKAGE_HAS_UDEV
+
+comment "udisks needs a toolchain w/ wchar, threads, dynamic library"
+	depends on !BR2_avr32
+	depends on BR2_USE_MMU
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || \
 		BR2_PREFER_STATIC_LIB
