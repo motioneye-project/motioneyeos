@@ -37,4 +37,13 @@ define LINUX_HEADERS_INSTALL_STAGING_CMDS
 			headers_install)
 endef
 
+ifeq ($(BR2_KERNEL_HEADERS_VERSION),y)
+define LINUX_HEADERS_CHECK_VERSION
+	$(call check_kernel_headers_version,\
+		"$(TARGET_CC) $(TOOLCHAIN_EXTERNAL_CFLAGS)",\
+		$(call qstrip,$(BR2_TOOLCHAIN_HEADERS_AT_LEAST)))
+endef
+LINUX_HEADERS_POST_INSTALL_STAGING_HOOKS += LINUX_HEADERS_CHECK_VERSION
+endif
+
 $(eval $(generic-package))
