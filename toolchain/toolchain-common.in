@@ -110,3 +110,62 @@ config BR2_ECLIPSE_REGISTER
 	  This options tells Buildroot to generate the necessary
 	  configuration files to make your toolchain appear within
 	  Eclipse, through the Eclipse Buildroot plugin.
+
+# Options for packages to depend on, if they require at least a
+# specific version of the kernel headers.
+# Toolchains should choose the adequate option (ie. the highest
+# version, not all of them).
+config BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0
+	bool
+
+config BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_1
+	bool
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0
+
+config BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_2
+	bool
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_1
+
+config BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_3
+	bool
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_2
+
+config BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_4
+	bool
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_3
+
+config BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_5
+	bool
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_4
+
+config BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_6
+	bool
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_5
+
+config BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_7
+	bool
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_6
+
+config BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_8
+	bool
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_7
+
+config BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_9
+	bool
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_8
+
+config BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_10
+	bool
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_9
+
+config BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_11
+	bool
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_10
+
+config BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_12
+	bool
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_11
+
+config BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_13
+	bool
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_12
