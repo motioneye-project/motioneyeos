@@ -101,6 +101,13 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2014.05"
 
+config BR2_KERNEL_HEADERS_SNAP
+	bool "Local Linux snapshot support removed"
+	select BR2_LEGACY
+	help
+	  Support for using a custom snapshot to install the Linux
+	  kernel headers has been removed.
+
 config BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_UDEV
 	bool "/dev management by udev removed"
 	select BR2_LEGACY

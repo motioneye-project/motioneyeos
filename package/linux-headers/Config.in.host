@@ -56,9 +56,6 @@ choice
 
 	config BR2_KERNEL_HEADERS_VERSION
 		bool "Manually specified Linux version"
-
-	config BR2_KERNEL_HEADERS_SNAP
-		bool "Local Linux snapshot (linux-2.6.tar.bz2)"
 endchoice
 
 config BR2_DEFAULT_KERNEL_VERSION
@@ -81,5 +78,4 @@ config BR2_DEFAULT_KERNEL_HEADERS
 	default "3.11.10"	if BR2_KERNEL_HEADERS_3_11
 	default "3.12.13"	if BR2_KERNEL_HEADERS_3_12
 	default "3.13.5"	if BR2_KERNEL_HEADERS_3_13
-	default "2.6"		if BR2_KERNEL_HEADERS_SNAP
 	default BR2_DEFAULT_KERNEL_VERSION if BR2_KERNEL_HEADERS_VERSION
