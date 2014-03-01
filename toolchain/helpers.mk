@@ -163,6 +163,19 @@ copy_toolchain_sysroot = \
 	find $(STAGING_DIR) -type d | xargs chmod 755
 
 #
+# Check the specified kernel headers version actually matches the
+# version in the toolchain.
+#
+# $1: cross-gcc path
+# $2: kernel version string, in the form: X.Y
+#
+check_kernel_headers_version = \
+	if ! support/scripts/check-kernel-headers.sh $(1) $(2); then \
+		echo "Incorrect selection of kernel headers"; \
+	    exit 1; \
+	fi
+
+#
 # Check the availability of a particular glibc feature. This function
 # is used to check toolchain options that are always supported by
 # glibc, so we simply check that the corresponding option is properly

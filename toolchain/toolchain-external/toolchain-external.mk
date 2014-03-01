@@ -412,7 +412,7 @@ endef
 # Checks for an already installed toolchain: check the toolchain
 # location, check that it supports sysroot, and then verify that it
 # matches the configuration provided in Buildroot: ABI, C++ support,
-# type of C library and all C library features.
+# kernel headers version, type of C library and all C library features.
 define TOOLCHAIN_EXTERNAL_CONFIGURE_CMDS
 	$(Q)$(call check_cross_compiler_exists,$(TOOLCHAIN_EXTERNAL_CC))
 	$(Q)$(call check_unusable_toolchain,$(TOOLCHAIN_EXTERNAL_CC))
@@ -420,6 +420,11 @@ define TOOLCHAIN_EXTERNAL_CONFIGURE_CMDS
 	if test -z "$${SYSROOT_DIR}" ; then \
 		@echo "External toolchain doesn't support --sysroot. Cannot use." ; \
 		exit 1 ; \
+	fi ; \
+	if [ "$(BR2_TOOLCHAIN_EXTERNAL_CUSTOM)" = "y" ]; then \
+		$(call check_kernel_headers_version,\
+			"$(TOOLCHAIN_EXTERNAL_CC) $(TOOLCHAIN_EXTERNAL_CFLAGS)",\
+			$(call qstrip,$(BR2_TOOLCHAIN_HEADERS_AT_LEAST))); \
 	fi ; \
 	if test "$(BR2_arm)" = "y" ; then \
 		$(call check_arm_abi,\
