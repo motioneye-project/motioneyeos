@@ -13,7 +13,7 @@ LIBXCB_LICENSE_FILES = COPYING
 LIBXCB_INSTALL_STAGING = YES
 
 LIBXCB_DEPENDENCIES = \
-	host-libxslt xlib_libpthread-stubs xcb-proto xlib_libXdmcp xlib_libXau \
+	host-libxslt libpthread-stubs xcb-proto xlib_libXdmcp xlib_libXau \
 	host-xcb-proto host-python host-pkgconf
 
 LIBXCB_CONF_OPT = --disable-build-docs

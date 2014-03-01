@@ -1,6 +1,6 @@
 config BR2_PACKAGE_LIBDRM
 	bool "libdrm"
-	select BR2_PACKAGE_XLIB_LIBPTHREAD_STUBS
+	select BR2_PACKAGE_LIBPTHREAD_STUBS
 	depends on BR2_PACKAGE_XORG7
 	depends on BR2_LARGEFILE
 	help

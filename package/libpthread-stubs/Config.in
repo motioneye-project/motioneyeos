@@ -1,4 +1,4 @@
-config BR2_PACKAGE_XLIB_LIBPTHREAD_STUBS
+config BR2_PACKAGE_LIBPTHREAD_STUBS
 	bool "libpthread-stubs"
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	help
