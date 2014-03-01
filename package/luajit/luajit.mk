@@ -16,6 +16,12 @@ ifneq ($(BR2_LARGEFILE),y)
 LUAJIT_NO_LARGEFILE = TARGET_LFSFLAGS=
 endif
 
+ifeq ($(BR2_PREFER_STATIC_LIB),y)
+LUAJIT_BUILDMODE = static
+else
+LUAJIT_BUILDMODE = dynamic
+endif
+
 # The luajit build procedure requires the host compiler to have the
 # same bitness as the target compiler. Therefore, on a x86 build
 # machine, we can't build luajit for x86_64, which is checked in
@@ -44,7 +50,7 @@ define LUAJIT_BUILD_CMDS
 		HOST_CFLAGS="$(HOST_CFLAGS)" \
 		HOST_LDFLAGS="$(HOST_LDFLAGS)" \
 		$(LUAJIT_NO_LARGEFILE) \
-		BUILDMODE=dynamic \
+		BUILDMODE=$(LUAJIT_BUILDMODE) \
 		-C $(@D) amalg
 endef
 
