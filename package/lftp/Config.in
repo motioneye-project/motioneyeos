@@ -2,6 +2,7 @@ config BR2_PACKAGE_LFTP
 	bool "lftp"
 	depends on BR2_USE_WCHAR
 	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_USE_MMU # fork()
 	select BR2_PACKAGE_READLINE
 	select BR2_PACKAGE_ZLIB
 	select BR2_PACKAGE_GNUTLS if !BR2_PACKAGE_OPENSSL
@@ -61,4 +62,5 @@ config BR2_PACKAGE_LFTP_PROTO_SFTP
 endif  # BR2_PACKAGE_LFTP
 
 comment "lftp requires a toolchain w/ C++, wchar"
+	depends on BR2_USE_MMU
 	depends on !(BR2_USE_WCHAR && BR2_INSTALL_LIBSTDCPP)
