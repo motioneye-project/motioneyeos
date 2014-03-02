@@ -15,7 +15,8 @@ SYSTEMD_DEPENDENCIES = \
 	libcap \
 	dbus \
 	util-linux \
-	kmod
+	kmod \
+	host-gperf
 
 # Make sure that systemd will always be built after busybox so that we have
 # a consistent init setup between two builds
