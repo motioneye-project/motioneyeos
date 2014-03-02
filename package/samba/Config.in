@@ -4,9 +4,9 @@ config BR2_PACKAGE_SAMBA
 	depends on BR2_USE_MMU # fork()
 	select BR2_PACKAGE_POPT
 	help
-	  Provides print services to all manner of SMB/CIFS clients,
-	  including the numerous versions of Microsoft Windows
-	  operating systems.
+	  Provides secure, stable and fast file and print services
+	  for all clients using the SMB/CIFS protocol, such as all
+	  versions of DOS, Windows, OS/2, Linux and many others.
 
 	  http://www.samba.org/
 
