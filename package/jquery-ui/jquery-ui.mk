@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-JQUERY_UI_VERSION = 1.10.3
+JQUERY_UI_VERSION = 1.10.4
 JQUERY_UI_SITE = http://jqueryui.com/resources/download
 JQUERY_UI_SOURCE = jquery-ui-$(JQUERY_UI_VERSION).zip
 JQUERY_UI_LICENSE = MIT
