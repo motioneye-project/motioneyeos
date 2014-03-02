@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-JQUERY_UI_THEMES_VERSION = 1.10.3
+JQUERY_UI_THEMES_VERSION = 1.10.4
 JQUERY_UI_THEMES_SITE = http://jqueryui.com/resources/download
 JQUERY_UI_THEMES_SOURCE = jquery-ui-themes-$(JQUERY_UI_THEMES_VERSION).zip
 JQUERY_UI_THEMES_LICENSE = MIT
