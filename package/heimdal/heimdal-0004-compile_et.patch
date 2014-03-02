@@ -1,0 +1,28 @@
+Use compile_et from e2fsprogs rather than building the native and useless one
+from heimdal.
+
+Idea from:
+http://comments.gmane.org/gmane.comp.encryption.kerberos.heimdal.general/6572
+
+Status: Backport from upstream git.
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+diff -Nura heimdal-1.5.3.orig/cf/check-compile-et.m4 heimdal-1.5.3.et/cf/check-compile-et.m4
+--- heimdal-1.5.3.orig/cf/check-compile-et.m4	2012-12-09 19:06:44.000000000 -0300
++++ heimdal-1.5.3.et/cf/check-compile-et.m4	2013-12-18 14:20:04.025925879 -0300
+@@ -3,12 +3,12 @@
+ dnl CHECK_COMPILE_ET
+ AC_DEFUN([CHECK_COMPILE_ET], [
+ 
+-AC_CHECK_PROG(COMPILE_ET, compile_et, [compile_et])
++AC_CHECK_PROG(COMPILE_ET, compile_et, [compile_et], [no])
+ 
+ krb_cv_compile_et="no"
+ krb_cv_com_err_need_r=""
+ krb_cv_compile_et_cross=no
+-if test "${COMPILE_ET}" = "compile_et"; then
++if test "$COMPILE_ET" != "no"; then
+ 
+ dnl We have compile_et.  Now let's see if it supports `prefix' and `index'.
+ AC_MSG_CHECKING(whether compile_et has the features we need)
