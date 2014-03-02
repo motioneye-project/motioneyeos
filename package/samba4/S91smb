@@ -1,0 +1,56 @@
+#!/bin/sh
+
+[ -f /etc/samba/smb.conf ] || exit 0
+
+mkdir -p /var/log/samba
+
+start() {
+	echo -n "Starting SMB services: "
+	smbd -D
+	[ $? == 0 ] && echo "OK" || echo "FAIL"
+
+	echo -n "Starting NMB services: "
+	nmbd -D
+	[ $? == 0 ] && echo "OK" || echo "FAIL"
+}
+
+stop() {
+	echo -n "Shutting down SMB services: "
+	kill -9 `pidof smbd`
+	[ $? == 0 ] && echo "OK" || echo "FAIL"
+
+	echo -n "Shutting down NMB services: "
+	kill -9 `pidof nmbd`
+	[ $? == 0 ] && echo "OK" || echo "FAIL"
+}
+
+restart() {
+	stop
+	start
+}
+
+reload() {
+        echo -n "Reloading smb.conf file: "
+	kill -HUP `pidof smbd`
+	[ $? == 0 ] && echo "OK" || echo "FAIL"
+}
+
+case "$1" in
+  start)
+  	start
+	;;
+  stop)
+  	stop
+	;;
+  restart)
+  	restart
+	;;
+  reload)
+  	reload
+	;;
+  *)
+	echo "Usage: $0 {start|stop|restart|reload}"
+	exit 1
+esac
+
+exit $?

@@ -1,0 +1,42 @@
+Force external asn1_compile and compile_et binaries.
+At the moment the samba bundled heimdal fails to build the tools for the host
+when cross-compiling, and it can't link to an external heimdal either.
+
+Status: working with samba upstream on a proper way to cross-compile
+the bundled heimdal.
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+diff -Nura samba-4.1.3.orig/source4/heimdal_build/wscript_build samba-4.1.3.heimdal.cross/source4/heimdal_build/wscript_build
+--- samba-4.1.3.orig/source4/heimdal_build/wscript_build	2013-12-12 16:45:46.951965484 -0300
++++ samba-4.1.3.heimdal.cross/source4/heimdal_build/wscript_build	2013-12-18 22:01:24.323429945 -0300
+@@ -925,6 +925,8 @@
+         install=False
+     )
+     bld.env['ASN1_COMPILE'] = os.path.join(bld.env['BUILD_DIRECTORY'], 'asn1_compile')
++else:
++    bld.env['ASN1_COMPILE'] = 'asn1_compile'
+ 
+ 
+ if not bld.CONFIG_SET('USING_SYSTEM_COMPILE_ET'):
+@@ -939,6 +941,8 @@
+         install=False
+         )
+     bld.env['COMPILE_ET'] = os.path.join(bld.env['BUILD_DIRECTORY'], 'compile_et')
++else:
++    bld.env['COMPILE_ET'] = 'compile_et'
+ 
+ HEIMDAL_BINARY('samba4kinit',
+     'kuser/kinit.c',
+diff -Nura samba-4.1.3.orig/source4/heimdal_build/wscript_configure samba-4.1.3.heimdal.cross/source4/heimdal_build/wscript_configure
+--- samba-4.1.3.orig/source4/heimdal_build/wscript_configure	2013-12-12 16:45:46.951965484 -0300
++++ samba-4.1.3.heimdal.cross/source4/heimdal_build/wscript_configure	2013-12-18 21:55:08.813653187 -0300
+@@ -162,6 +162,8 @@
+ conf.define('HAVE_KRB5_PRINCIPAL_GET_NUM_COMP', 1)
+ conf.define('HAVE_GSSAPI_GSSAPI_SPNEGO_H', 1)
+ conf.define('HAVE_FLAGS_IN_KRB5_CREDS', 1)
++conf.define('USING_SYSTEM_ASN1_COMPILE', 1)
++conf.define('USING_SYSTEM_COMPILE_ET', 1)
+ 
+ heimdal_includedirs = []
+ heimdal_libdirs = []
