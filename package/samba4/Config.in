@@ -20,5 +20,6 @@ config BR2_PACKAGE_SAMBA4
 	  http://www.samba.org/
 
 comment "samba4 needs a toolchain w/ IPv6, wchar, largfile, threads"
+	depends on BR2_arm || BR2_powerpc || BR2_x86_64
 	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_LARGEFILE || \
 		!BR2_USE_WCHAR || !BR2_INET_IPV6
