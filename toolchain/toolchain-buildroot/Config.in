@@ -46,8 +46,9 @@ config BR2_TOOLCHAIN_BUILDROOT_GLIBC
 		   BR2_mips64 || BR2_mips64el || BR2_powerpc || \
 		   BR2_sh     || BR2_sh64     || BR2_sparc   || \
 		   BR2_x86_64 || BR2_microblaze
-	select BR2_TOOLCHAIN_USES_GLIBC
+	depends on BR2_USE_MMU
 	depends on !BR2_PREFER_STATIC_LIB
+	select BR2_TOOLCHAIN_USES_GLIBC
 	# our glibc.mk enables RPC support
 	select BR2_TOOLCHAIN_HAS_NATIVE_RPC
 	help
