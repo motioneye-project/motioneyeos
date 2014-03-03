@@ -191,7 +191,7 @@ int main(int argc, char **argv)
 	 * set to 1          : trace all arguments on a single line
 	 * set to 2          : trace one argument per line
 	 */
-	if ((env_debug = getenv("BR_DEBUG_WRAPPER"))) {
+	if ((env_debug = getenv("BR2_DEBUG_WRAPPER"))) {
 		debug = atoi(env_debug);
 		if (debug > 0) {
 			fprintf(stderr, "Toolchain wrapper executing:");

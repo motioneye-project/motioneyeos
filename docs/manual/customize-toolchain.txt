@@ -21,7 +21,7 @@ When using an external toolchain, Buildroot generates a wrapper program,
 that transparently passes the appropriate options (according to the
 configuration) to the external toolchain programs. In case you need to
 debug this wrapper to check exactly what arguments are passed, you can
-set the environment variable BR_DEBUG_WRAPPER to either one of:
+set the environment variable +BR2_DEBUG_WRAPPER+ to either one of:
 
 * +0+, empty or not set: no debug
 
