@@ -1,0 +1,13 @@
+config BR2_PACKAGE_ZLOG
+	bool "zlog"
+	depends on BR2_LARGEFILE
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_PREFER_STATIC_LIB
+	help
+	  zlog is a reliable, high-performance, thread safe, flexible,
+	  clear-model, pure C logging library.
+
+	  https://github.com/HardySimpson/zlog
+
+comment "zlog needs a toolchain w/ threads, largefile, dynamic library"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_LARGEFILE || BR2_PREFER_STATIC_LIB

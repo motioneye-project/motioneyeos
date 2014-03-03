@@ -800,6 +800,7 @@ source "package/protobuf-c/Config.in"
 source "package/schifra/Config.in"
 source "package/startup-notification/Config.in"
 source "package/tzdata/Config.in"
+source "package/zlog/Config.in"
 endmenu
 
 menu "Security"
