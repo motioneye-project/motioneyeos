@@ -170,13 +170,13 @@ ifeq ($(BR2_LINUX_KERNEL),y)
 ifeq ($(wildcard $(KERNEL_SOURCE_CONFIG)),)
 $(error Configuration file '$(KERNEL_SOURCE_CONFIG)' not found.)
 endif
-endif
 
 ifeq ($(call KCONFIG_GET_OPT,CONFIG_KERNEL_LZO,$(KERNEL_SOURCE_CONFIG)),y)
 LINUX_DEPENDENCIES += host-lzop
 endif
 ifeq ($(call KCONFIG_GET_OPT,CONFIG_RD_LZO,$(KERNEL_SOURCE_CONFIG)),y)
 LINUX_DEPENDENCIES += host-lzop
+endif
 endif
 
 define LINUX_CONFIGURE_CMDS
