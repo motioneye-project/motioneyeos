@@ -57,7 +57,6 @@ endif
 
 ifeq ($(BR2_PACKAGE_WPA_SUPPLICANT_WPS),y)
 	WPA_SUPPLICANT_CONFIG_ENABLE += CONFIG_WPS
-	WPA_SUPPLICANT_CONFIG_DISABLE += CONFIG_WPS_NFC
 endif
 
 # Try to use openssl if it's already available
