@@ -99,6 +99,11 @@ endef
 
 MYSQL_POST_INSTALL_TARGET_HOOKS += MYSQL_ADD_FOLDER
 
+define MYSQL_INSTALL_INIT_SYSV
+	$(INSTALL) -D -m 0755 package/mysql/S97mysqld \
+		$(TARGET_DIR)/etc/init.d/S97mysqld
+endef
+
 else
 MYSQL_CONF_OPT += \
 	--without-server
