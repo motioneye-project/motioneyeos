@@ -34,6 +34,12 @@ HOST_PYTHON_CONF_OPT += 	\
 	--disable-ssl		\
 	--disable-pyo-build
 
+# Make sure that LD_LIBRARY_PATH overrides -rpath.
+# This is needed because libpython may be installed at the same time that
+# python is called.
+HOST_PYTHON_CONF_ENV += \
+	LDFLAGS="$(HOST_LDFLAGS) -Wl,--enable-new-dtags"
+
 # Building host python in parallel sometimes triggers a "Bus error"
 # during the execution of "./python setup.py build" in the
 # installation step. It is probably due to the installation of a

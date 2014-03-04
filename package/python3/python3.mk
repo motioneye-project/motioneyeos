@@ -30,6 +30,12 @@ HOST_PYTHON3_CONF_OPT += 	\
 	--disable-idle3		\
 	--disable-pyo-build
 
+# Make sure that LD_LIBRARY_PATH overrides -rpath.
+# This is needed because libpython may be installed at the same time that
+# python is called.
+HOST_PYTHON3_CONF_ENV += \
+	LDFLAGS="$(HOST_LDFLAGS) -Wl,--enable-new-dtags"
+
 PYTHON3_DEPENDENCIES  = host-python3 libffi
 
 HOST_PYTHON3_DEPENDENCIES = host-expat host-zlib
