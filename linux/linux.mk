@@ -166,10 +166,6 @@ else ifeq ($(BR2_LINUX_KERNEL_USE_CUSTOM_CONFIG),y)
 KERNEL_SOURCE_CONFIG = $(call qstrip,$(BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE))
 endif
 
-ifeq ($(wildcard $(KERNEL_SOURCE_CONFIG)),)
-$(error Configuration file '$(KERNEL_SOURCE_CONFIG)' not found.)
-endif
-
 ifeq ($(call KCONFIG_GET_OPT,CONFIG_KERNEL_LZO,$(KERNEL_SOURCE_CONFIG)),y)
 LINUX_DEPENDENCIES += host-lzop
 endif
