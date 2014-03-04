@@ -50,6 +50,7 @@ HOST_MYSQL_CONF_OPT = \
 	--disable-mysql-maintainer-mode
 
 MYSQL_CONF_OPT += \
+	--localstatedir=/var/mysql \
 	--disable-dependency-tracking \
 	--with-atomic-ops=up \
 	--with-embedded-server \
@@ -87,6 +88,12 @@ endef
 define HOST_MYSQL_INSTALL_CMDS
 	$(INSTALL) -m 0755  $(@D)/sql/gen_lex_hash  $(HOST_DIR)/usr/bin/
 endef
+
+define MYSQL_ADD_FOLDER
+	$(INSTALL) -d $(TARGET_DIR)/var/mysql
+endef
+
+MYSQL_POST_INSTALL_TARGET_HOOKS += MYSQL_ADD_FOLDER
 
 else
 MYSQL_CONF_OPT += \
