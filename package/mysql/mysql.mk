@@ -89,6 +89,10 @@ define HOST_MYSQL_INSTALL_CMDS
 	$(INSTALL) -m 0755  $(@D)/sql/gen_lex_hash  $(HOST_DIR)/usr/bin/
 endef
 
+define MYSQL_USERS
+	mysql -1 nogroup -1 * /var/mysql - - MySQL daemon
+endef
+
 define MYSQL_ADD_FOLDER
 	$(INSTALL) -d $(TARGET_DIR)/var/mysql
 endef
