@@ -29,7 +29,13 @@ WPA_SUPPLICANT_CONFIG_ENABLE = \
 WPA_SUPPLICANT_CONFIG_DISABLE = \
 	CONFIG_SMARTCARD
 
+# libnl-3 needs -lm (for rint) and -lpthread if linking statically
+# And library order matters hence stick -lnl-3 first since it's appended
+# in the wpa_supplicant Makefiles as in LIBS+=-lnl-3 ... thus failing
 ifeq ($(BR2_PACKAGE_LIBNL),y)
+ifeq ($(BR2_PREFER_STATIC_LIB),y)
+	WPA_SUPPLICANT_LIBS += -lnl-3 -lm -lpthread
+endif
 	WPA_SUPPLICANT_DEPENDENCIES += libnl
 	WPA_SUPPLICANT_CONFIG_ENABLE += CONFIG_LIBNL32
 else
@@ -57,6 +63,7 @@ endif
 # Try to use openssl if it's already available
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 	WPA_SUPPLICANT_DEPENDENCIES += openssl
+	WPA_SUPPLICANT_LIBS += $(if $(BR2_PREFER_STATIC_LIB),-lcrypto -lz)
 	WPA_SUPPLICANT_CONFIG_EDITS += 's/\#\(CONFIG_TLS=openssl\)/\1/'
 else
 	WPA_SUPPLICANT_CONFIG_DISABLE += CONFIG_EAP_PWD
@@ -108,9 +115,12 @@ define WPA_SUPPLICANT_CONFIGURE_CMDS
 	       $(WPA_SUPPLICANT_CONFIG)
 endef
 
+# LIBS for wpa_supplicant, LIBS_c for wpa_cli, LIBS_p for wpa_passphrase
 define WPA_SUPPLICANT_BUILD_CMDS
 	$(TARGET_MAKE_ENV) CFLAGS="$(WPA_SUPPLICANT_CFLAGS)" \
 		LDFLAGS="$(TARGET_LDFLAGS)" BINDIR=/usr/sbin \
+		LIBS="$(WPA_SUPPLICANT_LIBS)" LIBS_c="$(WPA_SUPPLICANT_LIBS)" \
+		LIBS_p="$(WPA_SUPPLICANT_LIBS)" \
 		$(MAKE) CC="$(TARGET_CC)" -C $(@D)/$(WPA_SUPPLICANT_SUBDIR)
 endef
 
