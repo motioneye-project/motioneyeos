@@ -52,8 +52,6 @@ define KCONFIG_DISABLE_OPT
 	echo "# $(1) is not set" >> $(2)
 endef
 
-KCONFIG_GET_OPT = $(shell sed -e 's/^$(1)=//p' $(2))
-
 # Helper functions to determine the name of a package and its
 # directory from its makefile directory, using the $(MAKEFILE_LIST)
 # variable provided by make. This is used by the *TARGETS macros to
