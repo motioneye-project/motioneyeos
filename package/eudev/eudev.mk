@@ -15,6 +15,7 @@ EUDEV_AUTORECONF = YES
 EUDEV_CONF_ENV += LIBS=-lrt
 
 EUDEV_CONF_OPT =		\
+	--disable-manpages	\
 	--sbindir=/sbin		\
 	--with-rootlibdir=/lib	\
 	--libexecdir=/lib	\
