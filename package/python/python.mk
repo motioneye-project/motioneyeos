@@ -175,7 +175,33 @@ endef
 
 PYTHON_POST_INSTALL_TARGET_HOOKS += PYTHON_ENSURE_LIBPYTHON_STRIPPED
 
+# Always install the python symlink in the target tree
+define PYTHON_INSTALL_TARGET_PYTHON_SYMLINK
+	ln -sf python2 $(TARGET_DIR)/usr/bin/python
+endef
+
+PYTHON_POST_INSTALL_TARGET_HOOKS += PYTHON_INSTALL_TARGET_PYTHON_SYMLINK
+
+# Always install the python-config symlink in the staging tree
+define PYTHON_INSTALL_STAGING_PYTHON_CONFIG_SYMLINK
+	ln -sf python2-config $(STAGING_DIR)/usr/bin/python-config
+endef
+
+PYTHON_POST_INSTALL_STAGING_HOOKS += PYTHON_INSTALL_STAGING_PYTHON_CONFIG_SYMLINK
+
 PYTHON_AUTORECONF = YES
+
+# Some packages may have build scripts requiring python2.
+# Only install the python symlink in the host tree if python2 is enabled
+# for the target.
+ifeq ($(BR2_PACKAGE_PYTHON),y)
+define HOST_PYTHON_INSTALL_PYTHON_SYMLINK
+	ln -sf python2 $(HOST_DIR)/usr/bin/python
+	ln -sf python2-config $(HOST_DIR)/usr/bin/python-config
+endef
+
+HOST_PYTHON_POST_INSTALL_HOOKS += HOST_PYTHON_INSTALL_PYTHON_SYMLINK
+endif
 
 # Provided to other packages
 PYTHON_PATH = $(TARGET_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR)/sysconfigdata/:$(TARGET_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR)/site-packages/

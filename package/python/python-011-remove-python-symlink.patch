@@ -1,0 +1,29 @@
+Remove the python symlink install rules.
+
+The python symlink installation will be handled by Buildroot itself, because
+Buildroot needs to control to what python interpreter (python2 or python3) the
+python symlink points to.
+
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+
+diff -purN a/Makefile.pre.in b/Makefile.pre.in
+--- a/Makefile.pre.in	2014-03-02 17:56:56.529132499 +0100
++++ b/Makefile.pre.in	2014-03-02 19:24:02.346491849 +0100
+@@ -857,17 +857,10 @@ $(DESTSHARED):
+ #  $(PYTHON) -> python2 -> python$(VERSION))
+ # Also create equivalent chains for other installed files
+ bininstall:	altbininstall
+-	-if test -f $(DESTDIR)$(BINDIR)/$(PYTHON) -o -h $(DESTDIR)$(BINDIR)/$(PYTHON); \
+-	then rm -f $(DESTDIR)$(BINDIR)/$(PYTHON); \
+-	else true; \
+-	fi
+-	(cd $(DESTDIR)$(BINDIR); $(LN) -s python2$(EXE) $(PYTHON))
+ 	-rm -f $(DESTDIR)$(BINDIR)/python2$(EXE)
+ 	(cd $(DESTDIR)$(BINDIR); $(LN) -s python$(VERSION)$(EXE) python2$(EXE))
+ 	-rm -f $(DESTDIR)$(BINDIR)/python2-config
+ 	(cd $(DESTDIR)$(BINDIR); $(LN) -s python$(VERSION)-config python2-config)
+-	-rm -f $(DESTDIR)$(BINDIR)/python-config
+-	(cd $(DESTDIR)$(BINDIR); $(LN) -s python2-config python-config)
+ 	-test -d $(DESTDIR)$(LIBPC) || $(INSTALL) -d -m $(DIRMODE) $(DESTDIR)$(LIBPC)
+ 	-rm -f $(DESTDIR)$(LIBPC)/python2.pc
+ 	(cd $(DESTDIR)$(LIBPC); $(LN) -s python-$(VERSION).pc python2.pc)
