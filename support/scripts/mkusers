@@ -63,7 +63,7 @@ get_uid() {
 get_ugid() {
     local username="${1}"
 
-    awk -F:i -v username="${username}"                          \
+    awk -F: -v username="${username}"                          \
         '$1 == username { printf( "%d\n", $4 ); }' "${PASSWD}"
 }
 
