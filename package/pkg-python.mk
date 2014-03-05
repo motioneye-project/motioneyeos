@@ -143,12 +143,32 @@ $(2)_DEPENDENCIES ?= $(filter-out host-python host-python3 host-python-setuptool
 # Target packages need both the python interpreter on the target (for
 # runtime) and the python interpreter on the host (for
 # compilation). However, host packages only need the python
-# interpreter on the host.
+# interpreter on the host, whose version may be enforced by setting
+# the *_NEEDS_HOST_PYTHON variable.
+#
+# So:
+# - for target packages, we always depend on the default python interpreter
+#   (the one selected by the config);
+# - for host packages:
+#   - if *_NEEDS_HOST_PYTHON is not set, then we depend on use the default
+#     interperter;
+#   - otherwise, we depend on the one requested by *_NEEDS_HOST_PYTHON.
+#
 ifeq ($(4),target)
 $(2)_DEPENDENCIES += $(if $(BR2_PACKAGE_PYTHON3),host-python3 python3,host-python python)
 else
+ifeq ($($(2)_NEEDS_HOST_PYTHON),)
 $(2)_DEPENDENCIES += $(if $(BR2_PACKAGE_PYTHON3),host-python3,host-python)
+else
+ifeq ($($(2)_NEEDS_HOST_PYTHON),python2)
+$(2)_DEPENDENCIES += host-python
+else ifeq ($($(2)_NEEDS_HOST_PYTHON),python3)
+$(2)_DEPENDENCIES += host-python3
+else
+$$(error Incorrect value '$($(2)_NEEDS_HOST_PYTHON)' for $(2)_NEEDS_HOST_PYTHON)
 endif
+endif # ($($(2)_NEEDS_HOST_PYTHON),)
+endif # ($(4),target)
 
 # Setuptools based packages will need host-python-setuptools (both
 # host and target). We need to have a special exclusion for the
@@ -161,6 +181,30 @@ $(2)_DEPENDENCIES += host-python-setuptools
 endif
 endif
 
+# Python interpreter to use for building the package.
+#
+# We may want to specify the python interpreter toi be used for building a
+# package, especially for host-packages (target packages must be built using
+# the same version of the interpreter as the one installed on the target).
+#
+# So:
+# - for target packages, we always use the default python interpreter (which
+#   is the same version as the one built and installed on the target);
+# - for host packages:
+#   - if *_NEEDS_HOST_PYTHON is not set, then we use use the default
+#     interperter;
+#   - otherwise, we use the one requested by *_NEEDS_HOST_PYTHON.
+#
+ifeq ($(4),target)
+$(2)_PYTHON_INTERPRETER = $(HOST_DIR)/usr/bin/python
+else
+ifeq ($($(2)_NEEDS_HOST_PYTHON),)
+$(2)_PYTHON_INTERPRETER = $(HOST_DIR)/usr/bin/python
+else
+$(2)_PYTHON_INTERPRETER = $(HOST_DIR)/usr/bin/$($(2)_NEEDS_HOST_PYTHON)
+endif
+endif
+
 #
 # Build step. Only define it if not already defined by the package .mk
 # file.
@@ -169,7 +213,7 @@ ifndef $(2)_BUILD_CMDS
 define $(2)_BUILD_CMDS
 	(cd $$($$(PKG)_BUILDDIR)/; \
 		$$($$(PKG)_BASE_ENV) $$($$(PKG)_ENV) \
-		$(HOST_DIR)/usr/bin/python setup.py \
+		$$($(2)_PYTHON_INTERPRETER) setup.py \
 		$$($$(PKG)_BASE_BUILD_TGT) \
 		$$($$(PKG)_BASE_BUILD_OPT) $$($$(PKG)_BUILD_OPT))
 endef
@@ -183,7 +227,7 @@ ifndef $(2)_INSTALL_CMDS
 define $(2)_INSTALL_CMDS
 	(cd $$($$(PKG)_BUILDDIR)/; \
 		$$($$(PKG)_BASE_ENV) $$($$(PKG)_ENV) \
-		$(HOST_DIR)/usr/bin/python setup.py install \
+		$$($(2)_PYTHON_INTERPRETER) setup.py install \
 		$$($$(PKG)_BASE_INSTALL_OPT) $$($$(PKG)_INSTALL_OPT))
 endef
 endif
@@ -196,7 +240,7 @@ ifndef $(2)_INSTALL_TARGET_CMDS
 define $(2)_INSTALL_TARGET_CMDS
 	(cd $$($$(PKG)_BUILDDIR)/; \
 		$$($$(PKG)_BASE_ENV) $$($$(PKG)_ENV) \
-		$(HOST_DIR)/usr/bin/python setup.py install \
+		$$($(2)_PYTHON_INTERPRETER) setup.py install \
 		$$($$(PKG)_BASE_INSTALL_OPT) $$($$(PKG)_INSTALL_OPT))
 endef
 endif

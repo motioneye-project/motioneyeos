@@ -144,6 +144,13 @@ therefore only use a few of them, or none.
   setuptools packages) and +HOST_PKG_PYTHON_SETUPTOOLS_INSTALL_OPT+
   (for host setuptools packages).
 
+* +HOST_PYTHON_FOO_NEEDS_HOST_PYTHON+, to define the host python
+  interpreter. The usage of this variable is limited to host
+  packages. The two supported value are +python2+ and +python3+.  It
+  will ensures the right host python package is available and will
+  invoke it for the build. If some build steps are overloaded, the
+  right python interpreter must be explicitly called in the commands.
+
 With the Python infrastructure, all the steps required to build and
 install the packages are already defined, and they generally work well
 for most Python-based packages. However, when required, it is still
