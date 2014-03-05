@@ -28,8 +28,6 @@ config BR2_TOOLCHAIN_EXTERNAL_LINARO_2014_02
 	  with the hard floating point calling convention, and uses
 	  the VFPv3-D16 FPU instructions.
 
-	  To use this toolchain, you must disable soft float usage.
-
 config BR2_TOOLCHAIN_EXTERNAL_LINARO_2014_01
 	bool "Linaro 2014.01"
 	depends on BR2_arm
@@ -52,8 +50,6 @@ config BR2_TOOLCHAIN_EXTERNAL_LINARO_2014_01
 	  with the hard floating point calling convention, and uses
 	  the VFPv3-D16 FPU instructions.
 
-	  To use this toolchain, you must disable soft float usage.
-
 config BR2_TOOLCHAIN_EXTERNAL_LINARO_2013_12
 	bool "Linaro 2013.12"
 	depends on BR2_arm
@@ -75,8 +71,6 @@ config BR2_TOOLCHAIN_EXTERNAL_LINARO_2013_12
 	  but tuned for the Cortex-A9. The code generated is Thumb 2,
 	  with the hard floating point calling convention, and uses
 	  the VFPv3-D16 FPU instructions.
-
-	  To use this toolchain, you must disable soft float usage.
 
 comment "Linaro toolchains available for Cortex-A + EABIhf"
 	depends on BR2_arm
