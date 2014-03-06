@@ -164,16 +164,18 @@ Submitting patches
 _Please, do not attach patches to bugs, send them to the mailing list
 instead_.
 
-When your changes are done, and committed in your local git view,
-_rebase_ your development branch on top of the upstream tree before
-generating the patch set. To do so, run:
+If you made some changes to Buildroot and you would like to contribute
+them to the Buildroot project, proceed as follows. Starting from the
+changes committed in your local git view, _rebase_ your development
+branch on top of the upstream tree before generating a patch set. To do
+so, run:
 
 ---------------------
 $ git fetch --all --tags
 $ git rebase origin/master
 ---------------------
 
-Here, you are ready to generate then submit your patch set.
+Now, you are ready to generate then submit your patch set.
 
 To generate it, run:
 
@@ -185,7 +187,7 @@ This will generate patch files in the +outgoing+ subdirectory,
 automatically adding the +Signed-off-by+ line.
 
 Once patch files are generated, you can review/edit the commit message
-before submitting them using your favorite text editor.
+before submitting them, using your favorite text editor.
 
 Lastly, send/submit your patch set to the Buildroot mailing list:
 
@@ -196,9 +198,9 @@ $ git send-email --to buildroot@buildroot.org outgoing/*
 Note that +git+ should be configured to use your mail account.
 To configure +git+, see +man git-send-email+ or google it.
 
-Make sure posted *patches are not line-wrapped*, otherwise they cannot
-easily be applied. In such a case, fix your e-mail client, or better,
-use +git send-email+ to send your patches.
+If you do not use +git send-email+, make sure posted *patches are not
+line-wrapped*, otherwise they cannot easily be applied. In such a case,
+fix your e-mail client, or better yet, learn to use +git send-email+.
 
 Cover letter
 ~~~~~~~~~~~~
@@ -244,7 +246,7 @@ Hereafter the recommended layout:
 ---------------
 Patch title less than 80-character length
 
-Some more paragraph giving some more details.
+A paragraph giving more details.
 
 And yet another paragraph giving more details.
 
