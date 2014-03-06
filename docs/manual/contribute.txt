@@ -146,6 +146,15 @@ Buildroot's Patchwork website can be used to pull in patches for testing
 purposes. Please see xref:apply-patches-patchwork[] for more
 information on using Buildroot's Patchwork website to apply patches.
 
+Work on items from the TODO list
+--------------------------------
+
+If you want to contribute to Buildroot but don't know where to start,
+and you don't like any of the above topics, you can always work on items
+from the http://elinux.org/Buildroot#Todo_list[Buildroot TODO list].
+Don't hesitate to discuss an item first on the mailing list or on IRC.
+Do edit the wiki to indicate when you start working on an item, so we
+avoid duplicate efforts.
 
 [[submitting-patches]]
 Submitting patches
