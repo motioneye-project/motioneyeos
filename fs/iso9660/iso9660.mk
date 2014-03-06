@@ -47,5 +47,5 @@ rootfs-iso9660: $(BINARIES_DIR)/rootfs.iso9660
 #
 ################################################################################
 ifeq ($(BR2_TARGET_ROOTFS_ISO9660),y)
-TARGETS += rootfs-iso9660
+TARGETS_ROOTFS += rootfs-iso9660
 endif
