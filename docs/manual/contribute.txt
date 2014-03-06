@@ -274,16 +274,16 @@ $ git format-patch --subject-prefix "PATCH v4" \
 ---------------------
 
 [[reporting-bugs]]
-Reporting issues/bugs, get help
--------------------------------
+Reporting issues/bugs or getting help
+-------------------------------------
 
 Before reporting any issue, please check
 xref:mailing-list-subscribe[the mailing list archive] in case someone has
 already reported and fixed a similar problem.
 
-However you choose to report bugs or get help,
-xref:bugtracker[opening a bug] or
-xref:mailing-list-subscribe[send a mail to the mailing list], there are
+However you choose to report bugs or get help, either by
+xref:bugtracker[opening a bug] or by
+xref:mailing-list-subscribe[sending a mail to the mailing list], there are
 a number of details to provide in order to help people reproduce and
 find a solution to the issue.
 
@@ -295,11 +295,16 @@ Here is a short list of details to provide in such case:
 * host machine (OS/release)
 * version of Buildroot
 * target for which the build fails
-* package(s) which the build fails
+* package(s) for which the build fails
 * the command that fails and its output
 * any information you think that may be relevant
 
-Additionnally, your can add the +.config+ file.
+Additionally, you should add the +.config+ file (or if you know how, a
++defconfig+).
 
 If some of these details are too large, do not hesitate to use a
-pastebin service (see http://www.similarsitesearch.com/alternatives-to/pastebin.com[]).
+pastebin service. Note that not all available pastebin services will
+preserve Unix-style line terminators when downloading raw pastes.
+Following pastebin services are known to work correctly:
+- https://gist.github.com/
+- http://code.bulix.org/
