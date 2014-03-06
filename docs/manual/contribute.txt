@@ -244,13 +244,20 @@ be preserved forever in the +git+ history of the project.
 Hereafter the recommended layout:
 
 ---------------
-Patch title less than 80-character length
+Patch title: short explanation, max 72 chars
 
-A paragraph giving more details.
+A paragraph that explains the problem, and how it manifests itself. If
+the problem is complex, it is OK to add more paragraphs. All paragraphs
+should be wrapped at 72 characters.
 
-And yet another paragraph giving more details.
+A paragraph that explains the root cause of the problem. Again, more
+than on paragraph is OK.
 
-Signed-off-by: John Doe <john.doe@noname.org>
+Finally, one or more paragraphs that explain how the problem is solved.
+Don't hesitate to explain complex solutions in detail.
+
+Signed-off-by: John DOE <john.doe@example.net>
+
 ---
 Changes v2 -> v3:
   - foo bar  (suggested by Jane)
