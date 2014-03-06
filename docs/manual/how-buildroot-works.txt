@@ -56,11 +56,10 @@ configuration is done):
   +stamps+, etc. in the output directory (+output/+ by default,
   another value can be specified using +O=+)
 
-* Generate all the targets listed in the +BASE_TARGETS+ variable. When
-  an internal toolchain is used, this means generating the
-  cross-compilation toolchain. When an external toolchain is used,
-  this means checking the features of the external toolchain and
-  importing it into the Buildroot environment.
+* Generate the toolchain target. When an internal toolchain is used, this
+  means generating the cross-compilation toolchain. When an external
+  toolchain is used, this means checking the features of the external
+  toolchain and importing it into the Buildroot environment.
 
 * Generate all the targets listed in the +TARGETS+ variable. This
   variable is filled by all the individual components'
