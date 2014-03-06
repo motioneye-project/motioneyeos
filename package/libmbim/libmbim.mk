@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBMBIM_VERSION = 1.6.0
+LIBMBIM_VERSION = 1.8.0
 LIBMBIM_SITE    = http://www.freedesktop.org/software/libmbim/
 LIBMBIM_SOURCE  = libmbim-$(LIBMBIM_VERSION).tar.xz
 LIBMBIM_LICENSE = LGPLv2+ (library), GPLv2+ (programs)
