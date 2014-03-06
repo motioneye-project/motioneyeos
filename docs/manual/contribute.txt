@@ -228,8 +228,8 @@ Patch revision changelog
 When improvements are requested, the new revision of each commit
 should include a changelog of the modifications between each
 submission. Note that when your patch series is introduced by a cover
-letter, the changelog may be added in the cover letter rather than in
-the individual commits.
+letter, an overall changelog may be added to the cover letter in
+addition to the changelog in the individual commits.
 
 When added to the individual commits, this changelog is added when
 editing the commit message.  Below the +Signed-off-by+ section, add
