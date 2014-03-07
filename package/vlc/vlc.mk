@@ -42,7 +42,7 @@ VLC_CONF_OPT += \
 	--disable-projectm \
 	--disable-vsxu \
 	--disable-mtp \
-	--without-opencv
+	--disable-opencv
 
 # Building static and shared doesn't work, so force static off.
 ifeq ($(BR2_PREFER_STATIC_LIB),)
