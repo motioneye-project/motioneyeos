@@ -19,6 +19,7 @@ BR2_TARGET_ROOTFS_TAR=y
 # Lock down headers to avoid breaking with new defaults
 BR2_KERNEL_HEADERS_VERSION=y
 BR2_DEFAULT_KERNEL_VERSION="3.0.4"
+BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_3_0=y
 
 # Bootloader
 BR2_TARGET_UBOOT=y

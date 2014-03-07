@@ -5,6 +5,7 @@ BR2_arm926t=y
 # Lock down headers to avoid breaking with new defaults
 BR2_KERNEL_HEADERS_VERSION=y
 BR2_DEFAULT_KERNEL_VERSION="3.13.2"
+BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_3_13=y
 
 # System
 BR2_TARGET_GENERIC_HOSTNAME="apf27"

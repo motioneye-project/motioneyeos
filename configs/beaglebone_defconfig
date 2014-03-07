@@ -17,6 +17,7 @@ BR2_TARGET_ROOTFS_EXT2=y
 # lock down headers to avoid breaking with new defaults
 BR2_KERNEL_HEADERS_VERSION=y
 BR2_DEFAULT_KERNEL_VERSION="3.12.10"
+BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_3_12=y
 
 # bootloader
 BR2_TARGET_UBOOT=y
