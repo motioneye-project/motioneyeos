@@ -6,6 +6,7 @@ config BR2_PACKAGE_JACK2
 	select BR2_PACKAGE_LIBSNDFILE
 	select BR2_PACKAGE_ALSA_LIB
 	select BR2_PACKAGE_ALSA_LIB_SEQ
+	select BR2_PACKAGE_ALSA_LIB_RAWMIDI
 	help
 	  JACK Audio Connection Kit (server and example clients).
 
