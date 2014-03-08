@@ -8,6 +8,7 @@ config BR2_PACKAGE_LTTNG_LIBUST
 	depends on BR2_LARGEFILE
 	# liburcu only works on some architectures and requires threads support"
 	depends on BR2_arm || BR2_armeb || BR2_i386 || BR2_powerpc || BR2_x86_64
+	depends on !BR2_TOOLCHAIN_HAS_GCC_BUG_58854 # liburcu/gcc-4.8.x bug
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	help
 	  Userspace tracing library for the Lttng tracing
@@ -20,3 +21,7 @@ config BR2_PACKAGE_LTTNG_LIBUST
 comment "lttng-libust needs a toolchain w/ wchar, largefile, threads"
 	depends on BR2_arm || BR2_armeb || BR2_i386 || BR2_powerpc || BR2_x86_64
 	depends on !BR2_USE_WCHAR || !BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_TOOLCHAIN_HAS_GCC_BUG_58854 # liburcu/gcc-4.8.x bug
+
+comment "lttng-libust needs a toolchain not affected by GCC bug 58854"
+	depends on BR2_TOOLCHAIN_HAS_GCC_BUG_58854

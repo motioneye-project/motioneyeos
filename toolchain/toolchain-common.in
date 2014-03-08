@@ -11,6 +11,9 @@ config BR2_LARGEFILE
 config BR2_INET_IPV6
 	bool
 
+config BR2_TOOLCHAIN_HAS_GCC_BUG_58854
+	bool
+
 config BR2_TOOLCHAIN_HAS_NATIVE_RPC
 	bool
 
