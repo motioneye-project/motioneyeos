@@ -56,7 +56,7 @@ notdomain=$(patsubst $(call domain,$(1),$(2))$(call domainseparator,$(2))%,%,$(c
 domainseparator=$(if $(1),$(1),/)
 
 # github(user,package,version): returns site of github repository
-github = https://github.com/$(1)/$(2)/tarball/$(3)
+github = https://github.com/$(1)/$(2)/archive/$(3)
 
 ################################################################################
 # The DOWNLOAD_* helpers are in charge of getting a working copy
