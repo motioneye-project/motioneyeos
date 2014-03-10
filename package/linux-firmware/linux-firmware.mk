@@ -157,7 +157,7 @@ endif
 ifeq ($(BR2_PACKAGE_LINUX_FIRMWARE_CXGB4),y)
 LINUX_FIRMWARE_FILES += \
 	cxgb4/t4fw-1.9.23.0.bin \
-	cxbg4/t4fw.bin
+	cxgb4/t4fw.bin
 LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENCE.chelsio_firmware
 endif
 
