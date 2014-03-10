@@ -8,10 +8,10 @@ it is no longer needed to install those as part of tvheadend.
 
 Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
 
-diff -durN tvheadend-v3.5.orig/configure tvheadend-v3.5/configure
---- tvheadend-v3.5.orig/configure	2013-02-15 14:41:26.000000000 +0100
-+++ tvheadend-v3.5/configure	2013-02-16 15:41:16.675556099 +0100
-@@ -179,15 +179,16 @@
+diff -durN tvheadend-c84bc2b72b462ef2dbed305f3fd0bb3fa5046fc3.orig/configure tvheadend-c84bc2b72b462ef2dbed305f3fd0bb3fa5046fc3/configure
+--- tvheadend-c84bc2b72b462ef2dbed305f3fd0bb3fa5046fc3.orig/configure	2014-03-07 21:44:39.000000000 +0100
++++ tvheadend-c84bc2b72b462ef2dbed305f3fd0bb3fa5046fc3/configure	2014-03-09 14:44:09.350095543 +0100
+@@ -272,15 +272,16 @@
  #
  # DVB scan
  #
@@ -35,12 +35,12 @@ diff -durN tvheadend-v3.5.orig/configure tvheadend-v3.5/configure
 +#  echo "ok"
 +#fi
  
- # ###########################################################################
- # Write config
-diff -durN tvheadend-v3.5.orig/Makefile tvheadend-v3.5/Makefile
---- tvheadend-v3.5.orig/Makefile	2013-02-15 14:41:26.000000000 +0100
-+++ tvheadend-v3.5/Makefile	2013-02-16 15:41:38.218821287 +0100
-@@ -211,7 +211,7 @@
+ #
+ # epoll
+diff -durN tvheadend-c84bc2b72b462ef2dbed305f3fd0bb3fa5046fc3.orig/Makefile tvheadend-c84bc2b72b462ef2dbed305f3fd0bb3fa5046fc3/Makefile
+--- tvheadend-c84bc2b72b462ef2dbed305f3fd0bb3fa5046fc3.orig/Makefile	2014-03-07 21:44:39.000000000 +0100
++++ tvheadend-c84bc2b72b462ef2dbed305f3fd0bb3fa5046fc3/Makefile	2014-03-09 14:44:09.350095543 +0100
+@@ -255,7 +255,7 @@
  SRCS-${CONFIG_BUNDLE}     += bundle.c
  BUNDLES-yes               += docs/html docs/docresources src/webui/static
  BUNDLES-yes               += data/conf
@@ -49,10 +49,10 @@ diff -durN tvheadend-v3.5.orig/Makefile tvheadend-v3.5/Makefile
  BUNDLES                    = $(BUNDLES-yes)
  
  #
-diff -durN tvheadend-v3.5.orig/support/posix.mk tvheadend-v3.5/support/posix.mk
---- tvheadend-v3.5.orig/support/posix.mk	2013-02-15 14:41:26.000000000 +0100
-+++ tvheadend-v3.5/support/posix.mk	2013-02-16 15:42:41.015290003 +0100
-@@ -15,6 +15,10 @@
+diff -durN tvheadend-c84bc2b72b462ef2dbed305f3fd0bb3fa5046fc3.orig/support/posix.mk tvheadend-c84bc2b72b462ef2dbed305f3fd0bb3fa5046fc3/support/posix.mk
+--- tvheadend-c84bc2b72b462ef2dbed305f3fd0bb3fa5046fc3.orig/support/posix.mk	2014-03-07 21:44:39.000000000 +0100
++++ tvheadend-c84bc2b72b462ef2dbed305f3fd0bb3fa5046fc3/support/posix.mk	2014-03-09 14:44:09.350095543 +0100
+@@ -17,6 +17,10 @@
  
  	find ${DESTDIR}${datadir}/tvheadend -name .git -exec rm -rf {} \; &>/dev/null || /bin/true
  
@@ -62,4 +62,4 @@ diff -durN tvheadend-v3.5.orig/support/posix.mk tvheadend-v3.5/support/posix.mk
 +
  uninstall:
  	rm -f ${DESTDIR}${bindir}/tvheadend
- 	rm -f ${DESTDIR}${mandir}/tvheadend.1
+ 	rm -f ${DESTDIR}${mandir}/man1/tvheadend.1

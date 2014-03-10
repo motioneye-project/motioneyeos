@@ -9,10 +9,10 @@ to a false comparison of the files' dates.
 
 Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
 
-diff -durN tvheadend-v3.5.orig/Makefile tvheadend-v3.5/Makefile
---- tvheadend-v3.5.orig/Makefile	2013-02-17 15:15:03.228749505 +0100
-+++ tvheadend-v3.5/Makefile	2013-02-17 15:15:51.591923062 +0100
-@@ -250,7 +250,7 @@
+diff -durN tvheadend-c84bc2b72b462ef2dbed305f3fd0bb3fa5046fc3.orig/Makefile tvheadend-c84bc2b72b462ef2dbed305f3fd0bb3fa5046fc3/Makefile
+--- tvheadend-c84bc2b72b462ef2dbed305f3fd0bb3fa5046fc3.orig/Makefile	2014-03-09 14:47:43.780025330 +0100
++++ tvheadend-c84bc2b72b462ef2dbed305f3fd0bb3fa5046fc3/Makefile	2014-03-09 14:48:40.836539093 +0100
+@@ -294,7 +294,7 @@
  	$(ROOTDIR)/configure $(CONFIGURE_ARGS)
  
  # Binary
