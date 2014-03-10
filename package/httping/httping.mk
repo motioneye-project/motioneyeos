@@ -4,12 +4,14 @@
 #
 ################################################################################
 
-HTTPING_VERSION = 2.2.1
+HTTPING_VERSION = 2.3.4
 HTTPING_SOURCE = httping-$(HTTPING_VERSION).tgz
 HTTPING_SITE = http://www.vanheusden.com/httping
 HTTPING_LICENSE = GPLv2
 HTTPING_LICENSE_FILES = license.txt
+HTTPING_LDFLAGS = $(if $(BR2_NEEDS_GETTEXT),-lintl) $(TARGET_LDFLAGS)
 HTTPING_DEPENDENCIES = \
+	$(if $(BR2_NEEDS_GETTEXT),gettext) \
 	$(if $(BR2_PACKAGE_OPENSSL),openssl) \
 	$(if $(BR2_PACKAGE_NCURSES),ncurses) \
 	$(if $(BR2_PACKAGE_FFTW),fftw)
@@ -20,7 +22,8 @@ HTTPING_MAKE_OPT = $(TARGET_CONFIGURE_OPTS) \
 	TFO=$(if $(BR2_PACKAGE_HTTPING_TFO),yes,no)
 
 define HTTPING_BUILD_CMDS
-	$(HTTPING_MAKE_OPT) $(MAKE) OFLAGS= DEBUG=no -C $(@D)
+	$(HTTPING_MAKE_OPT) LDFLAGS="$(HTTPING_LDFLAGS)" \
+		$(MAKE) DEBUG=no -C $(@D)
 endef
 
 define HTTPING_INSTALL_TARGET_CMDS
