@@ -15,6 +15,11 @@ IPSEC_TOOLS_DEPENDENCIES = openssl flex host-flex
 # configure hardcodes -Werror, so override CFLAGS on make invocation
 IPSEC_TOOLS_MAKE_OPT = CFLAGS='$(TARGET_CFLAGS)'
 
+# openssl uses zlib, so we need to explicitly link with it when static
+ifeq ($(BR2_PREFER_STATIC_LIB),y)
+IPSEC_TOOLS_CONF_ENV += LIBS=-lz
+endif
+
 IPSEC_TOOLS_CONF_OPT = \
 	  --disable-hybrid \
 	  --without-libpam \
