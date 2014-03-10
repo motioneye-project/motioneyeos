@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-MSMTP_VERSION = 1.4.31
+MSMTP_VERSION = 1.4.32
 MSMTP_SITE = http://downloads.sourceforge.net/project/msmtp/msmtp/$(MSMTP_VERSION)
 MSMTP_SOURCE = msmtp-$(MSMTP_VERSION).tar.bz2
 MSMTP_LICENSE = GPLv3+
