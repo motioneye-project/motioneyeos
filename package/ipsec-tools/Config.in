@@ -5,6 +5,8 @@ config BR2_PACKAGE_IPSEC_TOOLS
 	help
 	  This package is required to support IPSec for Linux 2.6+
 
+	  http://ipsec-tools.sourceforge.net/
+
 if BR2_PACKAGE_IPSEC_TOOLS
 
 config BR2_PACKAGE_IPSEC_TOOLS_ADMINPORT
