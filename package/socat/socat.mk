@@ -21,6 +21,18 @@ SOCAT_CONF_ENV = sc_cv_termios_ispeed=no \
 
 SOCAT_DEPENDENCIES = host-autoconf
 
+ifeq ($(BR2_PACKAGE_OPENSSL),y)
+	SOCAT_DEPENDENCIES += openssl
+else
+	SOCAT_CONF_OPT += --disable-openssl
+endif
+
+ifeq ($(BR2_PACKAGE_READLINE),y)
+	SOCAT_DEPENDENCIES += readline
+else
+	SOCAT_CONF_OPT += --disable-readline
+endif
+
 define SOCAT_RUN_AUTOCONF
 	(cd $(@D); $(HOST_DIR)/usr/bin/autoconf)
 endef
