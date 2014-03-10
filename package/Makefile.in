@@ -297,11 +297,11 @@ HOST_MAKE_ENV=PATH=$(BR_PATH) \
 		PKG_CONFIG_SYSROOT_DIR="/" \
 		PKG_CONFIG_LIBDIR="$(HOST_DIR)/usr/lib/pkgconfig"
 
-# This extra environment we can not export ourselves (eg. because some
+# This is extra environment we can not export ourselves (eg. because some
 # packages use that variable internally, eg. uboot), so we have to
 # explicitly pass it to user-supplied external hooks (eg. post-build,
 # post-images)
-USER_HOOKS_EXTRA_ENV=\
+EXTRA_ENV=\
 	PATH=$(BR_PATH) \
 	BUILD_DIR=$(BUILD_DIR)
 
