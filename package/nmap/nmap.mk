@@ -4,13 +4,13 @@
 #
 ################################################################################
 
-NMAP_VERSION = 6.01
+NMAP_VERSION = 6.40
 NMAP_SITE = http://nmap.org/dist
 NMAP_SOURCE = nmap-$(NMAP_VERSION).tar.bz2
 NMAP_DEPENDENCIES = libpcap pcre
 NMAP_CONF_OPT = --without-liblua --without-zenmap \
 	--with-libdnet=included --with-liblinear=included \
-	--with-libpcre="$(STAGING_DIR)/usr"
+	--with-libpcre="$(STAGING_DIR)/usr" --without-ncat
 NMAP_LICENSE = GPLv2
 NMAP_LICENSE_FILES = COPYING
 
