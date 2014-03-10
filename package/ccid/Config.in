@@ -4,11 +4,12 @@ config BR2_PACKAGE_CCID
 	select BR2_PACKAGE_LIBUSB
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libusb
 	depends on BR2_USE_MMU # pcsc-lite
+	depends on !BR2_PREFER_STATIC_LIB # pcsc-lite
 	help
 	  PC/SC driver for USB CCID smart card readers
 
 	  http://pcsclite.alioth.debian.org/ccid.html
 
-comment "ccid needs a toolchain w/ threads"
+comment "ccid needs a toolchain w/ threads, dynamic library"
 	depends on BR2_USE_MMU
-	depends on !BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_PREFER_STATIC_LIB
