@@ -1,0 +1,11 @@
+config BR2_PACKAGE_LIBSTROPHE
+	bool "libstrophe"
+	select BR2_PACKAGE_OPENSSL
+	select BR2_PACKAGE_LIBXML2 if !BR2_PACKAGE_EXPAT
+	help
+	  libstrophe is a lightweight XMPP client library written in C.
+	  It has minimal dependencies and is configurable for various
+	  environments. It runs well on both Linux, Unix, and Windows
+	  based platforms.
+
+	  https://github.com/strophe/libstrophe
