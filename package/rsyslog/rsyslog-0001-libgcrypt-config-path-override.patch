@@ -1,0 +1,44 @@
+From 2d498883b19c386abacffca969eb404c9407a8cc Mon Sep 17 00:00:00 2001
+From: Clayton Shotwell <clshotwe@rockwellcollins.com>
+Date: Mon, 10 Mar 2014 14:40:35 -0500
+Subject: [PATCH] configure: Allow overriding of libgcrypt-config
+
+Allow the overriding of the libgcrypt-config path if it is not at
+a standard location.
+
+Signed-off-by: Clayton Shotwell <clshotwe@rockwellcollins.com>
+---
+ configure.ac |   12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 9643b84..7eb7712 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -820,19 +820,15 @@ AC_ARG_ENABLE(libgcrypt,
+         [enable_libgcrypt=yes]
+ )
+ if test "x$enable_libgcrypt" = "xyes"; then
+-        AC_CHECK_PROG(
+-      	    [HAVE_LIBGCRYPT_CONFIG],
+-            [libgcrypt-config],
+-            [yes],,,
+-            )
+-        if test "x${HAVE_LIBGCRYPT_CONFIG}" != "xyes"; then
++	AC_PATH_PROG(LIBGCRYPT_CONFIG,libgcrypt-config)
++        if test "x${LIBGCRYPT_CONFIG}" == "x"; then
+            AC_MSG_FAILURE([libgcrypt-config not found in PATH])
+         fi
+         AC_CHECK_LIB(
+ 		[gcrypt],
+         	[gcry_cipher_open],
+-        	[LIBGCRYPT_CFLAGS="`libgcrypt-config --cflags`"
+-        	LIBGCRYPT_LIBS="`libgcrypt-config --libs`"
++        	[LIBGCRYPT_CFLAGS="`${LIBGCRYPT_CONFIG} --cflags`"
++        	LIBGCRYPT_LIBS="`${LIBGCRYPT_CONFIG} --libs`"
+         	],
+         	[AC_MSG_FAILURE([libgcrypt is missing])],
+         	[`libgcrypt-config --libs --cflags`]
+-- 
+1.7.9.5
+
