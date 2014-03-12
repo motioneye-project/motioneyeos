@@ -1,0 +1,6 @@
+config BR2_PACKAGE_LIBESTR
+	bool "libestr"
+	help
+	  Some essentials for string handling (and a bit more)
+
+	  http://libestr.adiscon.com/
