@@ -1,0 +1,19 @@
+config BR2_PACKAGE_LIBEE
+	bool "libee"
+	select BR2_PACKAGE_LIBESTR
+	help
+	  An Event Expression Library inspired by CEE.
+
+	  CEE is an upcoming standard used to describe network
+	  events in a number of normalized formats. It's goal is
+	  to unify they currently many different representations
+	  that exist in the industry.
+
+	  The core idea of libee is to provide a small but hopefully
+	  convenient API layer above the CEE standard. However, CEE
+	  is not finished. At the time of this writing, CEE is under
+	  heavy development and even some of its core data structures
+	  (like the data dictionary and taxonmy) have not been fully
+	  specified.
+
+	  http://www.libee.org
