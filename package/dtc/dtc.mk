@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-DTC_VERSION         = e4b497f367a3b2ae99cc52089a14a221b13a76ef
+DTC_VERSION         = v1.4.0
 DTC_SITE            = git://git.jdl.com/software/dtc.git
 DTC_LICENSE         = GPLv2+/BSD-2c
 DTC_LICENSE_FILES   = README.license GPL
