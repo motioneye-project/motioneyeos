@@ -1,0 +1,30 @@
+From 0aa3952890e14f5447147ae4d0d37c515e4fefea Mon Sep 17 00:00:00 2001
+From: Jeremy Kerr <jk@ozlabs.org>
+Date: Fri, 26 Jul 2013 13:07:22 +0800
+Subject: [PATCH] iprconfig: Don't use gettext
+
+... since we don't have any translations.
+
+Signed-off-by: Jeremy Kerr <jk@ozlabs.org>
+---
+ iprconfig.h |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/iprconfig.h b/iprconfig.h
+index 867b5ac..a9cdf5e 100644
+--- a/iprconfig.h
++++ b/iprconfig.h
+@@ -11,9 +11,7 @@
+  *
+  **/
+ 
+-#include <libintl.h>
+-
+-#define _(string) gettext(string)
++#define _(string) (string)
+ #define __(string) (string)
+ #define EXIT_FLAG		0x8000	/* stops at given screen on exit call */
+ #define CANCEL_FLAG		0x4000	/* stops at given screen on quit call */
+-- 
+1.7.10.4
+

@@ -1,0 +1,20 @@
+Allow CFLAGS to be extended from the environment
+
+We also remove -g, since we don't necessarily want to build with
+debugging symbols. Buildroot will add -g if needed.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/Makefile
+===================================================================
+--- a/Makefile
++++ b/Makefile
+@@ -9,7 +9,7 @@
+ 
+ include version.mk
+ 
+-CFLAGS = -g -Wall $(IPR_DEFINES)
++override CFLAGS += -Wall $(IPR_DEFINES)
+ UTILS_VER = $(IPR_MAJOR_RELEASE).$(IPR_MINOR_RELEASE).$(IPR_FIX_LEVEL)
+ TAR = cd .. && tar -zcpf iprutils-$(UTILS_VER)-src.tgz --exclude CVS --exclude applied-patches --exclude series --exclude txt --exclude pc --exclude patches --exclude debug --exclude *~* iprutils
+ 
