@@ -10,6 +10,7 @@ MODEM_MANAGER_SITE = http://www.freedesktop.org/software/ModemManager/
 MODEM_MANAGER_LICENSE = GPLv2+ (programs, plugins), LGPLv2+ (libmm-glib)
 MODEM_MANAGER_LICENSE_FILES = COPYING
 MODEM_MANAGER_DEPENDENCIES = host-pkgconf udev dbus-glib host-intltool
+MODEM_MANAGER_INSTALL_STAGING = YES
 
 ifeq ($(BR2_PACKAGE_MODEM_MANAGER_LIBQMI),y)
 	MODEM_MANAGER_DEPENDENCIES += libqmi
