@@ -26,6 +26,15 @@ config BR2_PACKAGE_NETWORK_MANAGER
 
 	  http://projects.gnome.org/NetworkManager/
 
+if BR2_PACKAGE_NETWORK_MANAGER
+
+config BR2_PACKAGE_NETWORK_MANAGER_PPPD
+	bool "pppd support"
+	select BR2_PACKAGE_PPPD
+	help
+	  This option enables support for PPPD daemon
+endif
+
 comment "NetworkManager needs udev /dev management and a toolchain w/ IPv6, largefile, wchar, threads"
 	depends on !BR2_avr32
 	depends on BR2_USE_MMU

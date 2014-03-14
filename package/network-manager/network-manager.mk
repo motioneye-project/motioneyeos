@@ -29,10 +29,16 @@ NETWORK_MANAGER_CONF_OPT = \
 		--disable-gtk-doc \
 		--localstatedir=/var \
 		--with-crypto=gnutls \
-		--disable-ppp \
 		--with-iptables=/usr/sbin/iptables \
 		--disable-ifupdown \
 		--disable-ifnet
+
+ifeq ($(BR2_PACKAGE_NETWORK_MANAGER_PPPD),y)
+	NETWORK_MANAGER_DEPENDENCIES += pppd
+	NETWORK_MANAGER_CONF_OPT += --enable-ppp
+else
+	NETWORK_MANAGER_CONF_OPT += --disable-ppp
+endif
 
 ifeq ($(BR2_PACKAGE_DHCP_CLIENT),y)
 NETWORK_MANAGER_CONF_OPT += --with-dhclient=/usr/sbin/dhclient
