@@ -1,5 +1,5 @@
 config BR2_PACKAGE_NETWORK_MANAGER
-	bool "NetworkManager"
+	bool "networkmanager"
 	depends on !BR2_avr32 # udev
 	depends on BR2_INET_IPV6
 	depends on BR2_LARGEFILE # acl
