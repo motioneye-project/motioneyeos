@@ -40,6 +40,13 @@ else
 	NETWORK_MANAGER_CONF_OPT += --disable-ppp
 endif
 
+ifeq ($(BR2_PACKAGE_NETWORK_MANAGER_MODEM_MANAGER),y)
+	NETWORK_MANAGER_DEPENDENCIES += modem-manager
+	NETWORK_MANAGER_CONF_OPT += --with-modem-manager-1
+else
+	NETWORK_MANAGER_CONF_OPT += --without-modem-manager-1
+endif
+
 ifeq ($(BR2_PACKAGE_DHCP_CLIENT),y)
 NETWORK_MANAGER_CONF_OPT += --with-dhclient=/usr/sbin/dhclient
 endif

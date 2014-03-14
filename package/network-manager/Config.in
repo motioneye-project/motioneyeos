@@ -28,6 +28,14 @@ config BR2_PACKAGE_NETWORK_MANAGER
 
 if BR2_PACKAGE_NETWORK_MANAGER
 
+config BR2_PACKAGE_NETWORK_MANAGER_MODEM_MANAGER
+	bool "modem-manager support"
+	select BR2_PACKAGE_MODEM_MANAGER
+	select BR2_PACKAGE_MODEM_MANAGER_LIBMBIM
+	select BR2_PACKAGE_MODEM_MANAGER_LIBQMI
+	help
+	  This option enables support for ModemManager
+
 config BR2_PACKAGE_NETWORK_MANAGER_PPPD
 	bool "pppd support"
 	select BR2_PACKAGE_PPPD
