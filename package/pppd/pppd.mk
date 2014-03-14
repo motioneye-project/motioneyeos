@@ -11,6 +11,7 @@ PPPD_LICENSE = LGPLv2+ LGPL BSD-4c BSD-3c GPLv2+
 PPPD_LICENSE_FILES = pppd/tdb.c pppd/plugins/pppoatm/COPYING \
 	pppdump/bsd-comp.c pppd/ccp.c pppd/plugins/passprompt.c
 
+PPPD_INSTALL_STAGING = YES
 PPPD_TARGET_BINS = chat pppd pppdump pppstats
 PPPD_RADIUS_CONF = dictionary dictionary.ascend dictionary.compat \
 			dictionary.merit dictionary.microsoft \
@@ -90,6 +91,10 @@ define PPPD_INSTALL_TARGET_CMDS
 	$(INSTALL) -D $(PPPD_DIR)/pppd/plugins/pppol2tp/pppol2tp.so \
 		$(TARGET_DIR)/usr/lib/pppd/$(PPPD_VERSION)/pppol2tp.so
 	$(PPPD_INSTALL_RADIUS)
+endef
+
+define PPPD_INSTALL_STAGING_CMDS
+	$(MAKE) INSTROOT=$(STAGING_DIR)/ -C $(@D) $(PPPD_MAKE_OPT) install-devel
 endef
 
 $(eval $(generic-package))
