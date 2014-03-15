@@ -16,6 +16,40 @@ config BR2_PACKAGE_BOOST
 
 if BR2_PACKAGE_BOOST
 
+choice
+	prompt "Layout"
+	default BR2_PACKAGE_BOOST_LAYOUT_SYSTEM
+	help
+	  Selects the layout of Boost binary names
+
+config BR2_PACKAGE_BOOST_LAYOUT_SYSTEM
+	bool "system"
+	help
+	  Boost binary names do not include the Boost version number
+	  or the name and version number of the compiler.
+
+config BR2_PACKAGE_BOOST_LAYOUT_TAGGED
+	bool "tagged"
+	help
+	  Boost binary names include the encoded build properties such
+	  as variant and threading, but do not include compiler name
+	  and version, or Boost version. This option is useful if you
+	  build several variants of Boost, using the same compiler.
+
+config BR2_PACKAGE_BOOST_LAYOUT_VERSIONED
+	bool "versioned"
+	help
+	  Boost binary names include the Boost version number, name
+	  and version of the compiler and encoded build properties.
+
+endchoice
+
+config BR2_PACKAGE_BOOST_LAYOUT
+	string
+	default "system" if BR2_PACKAGE_BOOST_LAYOUT_SYSTEM
+	default "tagged" if BR2_PACKAGE_BOOST_LAYOUT_TAGGED
+	default "versioned" if BR2_PACKAGE_BOOST_LAYOUT_VERSIONED
+
 config BR2_PACKAGE_BOOST_CHRONO
 	bool "boost-chrono"
 

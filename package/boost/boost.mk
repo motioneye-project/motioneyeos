@@ -81,6 +81,7 @@ endif
 
 BOOST_WITHOUT_FLAGS_COMMASEPERATED += $(subst $(space),$(comma),$(strip $(BOOST_WITHOUT_FLAGS)))
 BOOST_FLAGS += $(if $(BOOST_WITHOUT_FLAGS_COMMASEPERATED), --without-libraries=$(BOOST_WITHOUT_FLAGS_COMMASEPERATED))
+BOOST_LAYOUT = $(call qstrip, $(BR2_PACKAGE_BOOST_LAYOUT))
 
 define BOOST_CONFIGURE_CMDS
 	(cd $(@D) && ./bootstrap.sh $(BOOST_FLAGS))
@@ -99,7 +100,7 @@ define BOOST_INSTALL_TARGET_CMDS
 	--user-config=$(@D)/user-config.jam \
 	$(BOOST_OPT) \
 	--prefix=$(TARGET_DIR)/usr \
-	--layout=system install )
+	--layout=$(BOOST_LAYOUT) install )
 endef
 
 define HOST_BOOST_BUILD_CMDS
@@ -114,7 +115,7 @@ define HOST_BOOST_INSTALL_CMDS
 	--user-config=$(@D)/user-config.jam \
 	$(HOST_BOOST_OPT) \
 	--prefix=$(HOST_DIR)/usr \
-	--layout=system install )
+	--layout=$(BOOST_LAYOUT) install )
 endef
 
 define BOOST_INSTALL_STAGING_CMDS
@@ -122,7 +123,7 @@ define BOOST_INSTALL_STAGING_CMDS
 	--user-config=$(@D)/user-config.jam \
 	$(BOOST_OPT) \
 	--prefix=$(STAGING_DIR)/usr \
-	--layout=system install)
+	--layout=$(BOOST_LAYOUT) install)
 endef
 
 $(eval $(generic-package))
