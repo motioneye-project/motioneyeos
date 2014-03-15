@@ -3,4 +3,4 @@ config BR2_PACKAGE_SLANG
 	help
 	  Multi-platform console display library.
 
-	  http://www.s-lang.org/
+	  http://www.jedsoft.org/slang/index.html
