@@ -1,0 +1,29 @@
+[PATCH] stdlog: va_list needs stdarg.h
+
+Otherwise we get compilation errors like:
+
+In file included from stdlogctl.c:32:0:
+stdlog.h:80:75: error: unknown type name 'va_list'
+In file included from stdlogctl.c:32:0:
+stdlog.h:81:131: error: unknown type name 'va_list'
+
+Simplified version of upstream fix:
+https://github.com/rsyslog/liblogging/commit/3bf42ae392c1a317f09711846ea1c7072ef45634
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ stdlog/stdlog.h |    1 +
+ 1 file changed, 1 insertion(+)
+
+Index: liblogging-1.0.2/stdlog/stdlog.h
+===================================================================
+--- liblogging-1.0.2.orig/stdlog/stdlog.h
++++ liblogging-1.0.2/stdlog/stdlog.h
+@@ -28,6 +28,7 @@
+ #ifndef LIBLOGGING_STDLOG_H_INCLUDED
+ #define LIBLOGGING_STDLOG_H_INCLUDED
+ #include <stdint.h>
++#include <stdarg.h>
+ 
+ /* options for stdlog_open() call */
+ #define STDLOG_SIGSAFE 1	/* enforce signal-safe implementation */
