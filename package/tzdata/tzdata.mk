@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-TZDATA_VERSION = 2013i
+TZDATA_VERSION = 2014a
 TZDATA_SOURCE = tzdata$(TZDATA_VERSION).tar.gz
 TZDATA_SITE = ftp://ftp.iana.org/tz/releases
 TZDATA_DEPENDENCIES = host-zic
