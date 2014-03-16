@@ -34,8 +34,4 @@ else
 SDL_MIXER_CONF_OPT += --disable-music-ogg
 endif
 
-define SDL_MIXER_INSTALL_TARGET_CMDS
-	cp -dpf $(STAGING_DIR)/usr/lib/libSDL_mixer*.so* $(TARGET_DIR)/usr/lib/
-endef
-
 $(eval $(autotools-package))
