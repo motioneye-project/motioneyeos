@@ -6,4 +6,4 @@ config BR2_PACKAGE_HOST_MTOOLS
 	  names, OS/2 Xdf disks and 2m disks (store up to 1992k on a high
 	  density 3 1/2 disk).
 
-	  http://www.tux.org/pub/tux/mtools/
+	  http://www.gnu.org/software/mtools/
