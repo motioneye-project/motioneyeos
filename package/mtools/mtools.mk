@@ -10,8 +10,4 @@ MTOOLS_SITE          = $(BR2_GNU_MIRROR)/mtools/
 MTOOLS_LICENSE       = GPLv3+
 MTOOLS_LICENSE_FILES = COPYING
 
-MTOOLS_CONF_OPT = --enable-xdf        \
-                  --enable-vold       \
-                  --enable-new-vold
-
 $(eval $(host-autotools-package))
