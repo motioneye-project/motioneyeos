@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-PULSEAUDIO_VERSION = 4.0
+PULSEAUDIO_VERSION = 5.0
 PULSEAUDIO_SOURCE = pulseaudio-$(PULSEAUDIO_VERSION).tar.xz
 PULSEAUDIO_SITE = http://freedesktop.org/software/pulseaudio/releases/
 PULSEAUDIO_INSTALL_STAGING = YES
@@ -39,6 +39,13 @@ PULSEAUDIO_CONF_ENV += ORCC=$(HOST_DIR)/usr/bin/orcc
 PULSEAUDIO_CONF_OPT += --enable-orc
 else
 PULSEAUDIO_CONF_OPT += --disable-orc
+endif
+
+ifeq ($(BR2_PACKAGE_LIBCAP),y)
+PULSEAUDIO_DEPENDENCIES += libcap
+PULSEAUDIO_CONF_OPT += --with-caps
+else
+PULSEAUDIO_CONF_OPT += --without-caps
 endif
 
 ifneq ($(BR2_INSTALL_LIBSTDCPP),y)
