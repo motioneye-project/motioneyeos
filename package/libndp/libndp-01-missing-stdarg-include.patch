@@ -1,0 +1,16 @@
+Add missing <stdarg.h> include for va_list
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/include/ndp.h
+===================================================================
+--- a/include/ndp.h
++++ b/include/ndp.h
+@@ -20,6 +20,7 @@
+ #ifndef _NDP_H_
+ #define _NDP_H_
+ 
++#include <stdarg.h>
+ #include <stdbool.h>
+ #include <netinet/in.h>
+ 

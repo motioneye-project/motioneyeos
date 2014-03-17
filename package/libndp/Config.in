@@ -1,0 +1,12 @@
+config BR2_PACKAGE_LIBNDP
+	bool "libndp"
+	depends on BR2_INET_IPV6
+	help
+	  This package contains a library which provides a wrapper
+	  for IPv6 Neighbor Discovery Protocol. It also provides a tool
+	  named ndptool for sending and receiving NDP messages.
+
+	  https://github.com/jpirko/libndp
+
+comment "libndp needs a toolchain w/ IPv6"
+	depends on !BR2_INET_IPV6
