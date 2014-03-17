@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-EUDEV_VERSION = 1.3
-EUDEV_SITE = $(call github,gentoo,eudev,v$(EUDEV_VERSION))
+EUDEV_VERSION = 1.5.2
+EUDEV_SITE = $(call github,gentoo,eudev,$(EUDEV_VERSION))
 EUDEV_LICENSE = GPLv2+ (programs), LGPLv2.1+ (libraries)
 EUDEV_LICENSE_FILES = COPYING
 EUDEV_INSTALL_STAGING = YES
