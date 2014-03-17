@@ -11,7 +11,9 @@ LFTP_LICENSE_FILES = COPYING
 LFTP_AUTORECONF = YES
 LFTP_DEPENDENCIES  = readline zlib
 
+ifneq ($(BR2_PREFER_STATIC_LIB),y)
 LFTP_CONF_OPT += --with-modules
+endif
 
 ifeq ($(BR2_PACKAGE_GNUTLS),y)
 LFTP_DEPENDENCIES += gnutls
