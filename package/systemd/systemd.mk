@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-SYSTEMD_VERSION = 208
+SYSTEMD_VERSION = 210
 SYSTEMD_SITE = http://www.freedesktop.org/software/systemd/
 SYSTEMD_SOURCE = systemd-$(SYSTEMD_VERSION).tar.xz
 SYSTEMD_LICENSE = GPLv2+
@@ -13,7 +13,6 @@ SYSTEMD_INSTALL_STAGING = YES
 SYSTEMD_DEPENDENCIES = \
 	host-intltool \
 	libcap \
-	dbus \
 	util-linux \
 	kmod \
 	host-gperf
@@ -44,6 +43,7 @@ SYSTEMD_CONF_OPT += \
 	--disable-myhostname \
 	--disable-tcpwrap \
 	--disable-tests \
+	--disable-dbus \
 	--without-python
 
 ifeq ($(BR2_PACKAGE_ACL),y)
@@ -78,6 +78,12 @@ ifeq ($(BR2_PACKAGE_SYSTEMD_JOURNAL_GATEWAY),y)
 SYSTEMD_DEPENDENCIES += libmicrohttpd
 else
 SYSTEMD_CONF_OPT += --disable-microhttpd
+endif
+
+ifeq ($(BR2_PACKAGE_SYSTEMD_NETWORKD),y)
+SYSTEMD_CONF_OPT += --enable-networkd
+else
+SYSTEMD_CONF_OPT += --disable-networkd
 endif
 
 # mq_getattr needs -lrt

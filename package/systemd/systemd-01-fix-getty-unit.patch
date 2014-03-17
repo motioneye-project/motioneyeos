@@ -4,28 +4,26 @@ Signed-off-by: Maxime Ripard <maxime.ripard@free-electrons.com>
 Signed-off-by: Eric Le Bihan <eric.le.bihan.dev@free.fr>
 ---
 
-Index: systemd-206/units/getty@.service.m4
-===================================================================
---- systemd-206.orig/units/getty@.service.m4	2013-07-22 00:43:28.000000000 +0200
-+++ systemd-206/units/getty@.service.m4	2013-09-18 10:20:17.000000000 +0200
+diff -aburN systemd-210.orig/units/getty@.service.m4 systemd-210/units/getty@.service.m4
+--- systemd-210.orig/units/getty@.service.m4	2013-12-18 18:21:28.000000000 +0100
++++ systemd-210/units/getty@.service.m4	2014-03-13 10:20:10.000000000 +0100
 @@ -27,7 +27,7 @@
 
  [Service]
  # the VT is cleared by TTYVTDisallocate
--ExecStart=-/sbin/agetty --noclear %I
+-ExecStart=-/sbin/agetty --noclear %I $TERM
 +ExecStart=-/sbin/getty -L %I 115200 vt100
  Type=idle
  Restart=always
  RestartSec=0
-Index: systemd-206/units/serial-getty@.service.m4
-===================================================================
---- systemd-206.orig/units/serial-getty@.service.m4	2013-07-22 00:43:28.000000000 +0200
-+++ systemd-206/units/serial-getty@.service.m4	2013-09-18 10:21:31.000000000 +0200
+diff -aburN systemd-210.orig/units/serial-getty@.service.m4 systemd-210/units/serial-getty@.service.m4
+--- systemd-210.orig/units/serial-getty@.service.m4	2014-02-24 15:38:03.000000000 +0100
++++ systemd-210/units/serial-getty@.service.m4	2014-03-13 10:20:10.000000000 +0100
 @@ -22,7 +22,7 @@
  IgnoreOnIsolate=yes
 
  [Service]
--ExecStart=-/sbin/agetty --keep-baud %I 115200,38400,9600
+-ExecStart=-/sbin/agetty --keep-baud %I 115200,38400,9600 $TERM
 +ExecStart=-/sbin/getty -L %I 115200 vt100
  Type=idle
  Restart=always

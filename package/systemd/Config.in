@@ -9,7 +9,7 @@ config BR2_PACKAGE_SYSTEMD
 	depends on BR2_TOOLCHAIN_HAS_THREADS # dbus
 	depends on BR2_USE_MMU # dbus
 	select BR2_PACKAGE_HAS_UDEV
-	select BR2_PACKAGE_DBUS
+	select BR2_PACKAGE_DBUS # runtime dependency only
 	select BR2_PACKAGE_LIBCAP
 	select BR2_PACKAGE_UTIL_LINUX
 	select BR2_PACKAGE_UTIL_LINUX_LIBBLKID
@@ -72,5 +72,17 @@ config BR2_PACKAGE_SYSTEMD_JOURNAL_GATEWAY
 	  listens on port 19531 by default.
 
 	  http://www.freedesktop.org/software/systemd/man/systemd-journal-gatewayd.service.html
+
+config BR2_PACKAGE_SYSTEMD_NETWORKD
+	bool "enable network manager"
+	help
+	  systemd-networkd is a system service that manages networks.
+	  It detects and configures network devices as they appear, as well as
+	  creating virtual network devices.
+
+	  This simple network configuration solution is an alternative to
+	  dhcpcd or ISC dhcp.
+
+	  http://www.freedesktop.org/software/systemd/man/systemd-networkd.html
 
 endif
