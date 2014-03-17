@@ -10,4 +10,5 @@ MTOOLS_SITE          = $(BR2_GNU_MIRROR)/mtools/
 MTOOLS_LICENSE       = GPLv3+
 MTOOLS_LICENSE_FILES = COPYING
 
+$(eval $(autotools-package))
 $(eval $(host-autotools-package))
