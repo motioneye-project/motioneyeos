@@ -5,8 +5,7 @@
 ################################################################################
 
 FETCHMAIL_VERSION_MAJOR = 6.3
-FETCHMAIL_VERSION_MINOR = 26
-FETCHMAIL_VERSION = $(FETCHMAIL_VERSION_MAJOR).$(FETCHMAIL_VERSION_MINOR)
+FETCHMAIL_VERSION = $(FETCHMAIL_VERSION_MAJOR).26
 FETCHMAIL_SOURCE = fetchmail-$(FETCHMAIL_VERSION).tar.xz
 FETCHMAIL_SITE = http://downloads.sourceforge.net/project/fetchmail/branch_$(FETCHMAIL_VERSION_MAJOR)/
 FETCHMAIL_LICENSE = GPLv2; some exceptions are mentioned in COPYING

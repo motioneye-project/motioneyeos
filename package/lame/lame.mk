@@ -5,8 +5,7 @@
 ################################################################################
 
 LAME_VERSION_MAJOR = 3.99
-LAME_VERSION_MINOR = 5
-LAME_VERSION = $(LAME_VERSION_MAJOR).$(LAME_VERSION_MINOR)
+LAME_VERSION = $(LAME_VERSION_MAJOR).5
 LAME_SITE = http://downloads.sourceforge.net/project/lame/lame/$(LAME_VERSION_MAJOR)
 LAME_DEPENDENCIES = host-pkgconf
 LAME_INSTALL_STAGING = YES

@@ -6,8 +6,7 @@
 
 # newer versions need libcanberra-gtk and gnome-doc-utils
 METACITY_VERSION_MAJOR = 2.25
-METACITY_VERSION_MINOR = 1
-METACITY_VERSION = $(METACITY_VERSION_MAJOR).$(METACITY_VERSION_MINOR)
+METACITY_VERSION = $(METACITY_VERSION_MAJOR).1
 METACITY_SOURCE = metacity-$(METACITY_VERSION).tar.bz2
 METACITY_SITE = http://ftp.gnome.org/pub/gnome/sources/metacity/$(METACITY_VERSION_MAJOR)
 
