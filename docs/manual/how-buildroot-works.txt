@@ -53,7 +53,7 @@ The main Makefile performs the following steps (once the
 configuration is done):
 
 * Create all the output directories: +staging+, +target+, +build+,
-  +stamps+, etc. in the output directory (+output/+ by default,
+  etc. in the output directory (+output/+ by default,
   another value can be specified using +O=+)
 
 * Generate the toolchain target. When an internal toolchain is used, this
