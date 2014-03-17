@@ -1,6 +1,7 @@
 config BR2_PACKAGE_LVM2
 	bool "lvm2 & device mapper"
 	depends on BR2_LARGEFILE
+	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_USE_MMU # needs fork()
 	depends on !BR2_PREFER_STATIC_LIB # It fails to build statically
 	help
@@ -34,6 +35,7 @@ config BR2_PACKAGE_LVM2_APP_LIBRARY
 
 endif
 
-comment "lvm2 needs a toolchain w/ largefile, dynamic library"
+comment "lvm2 needs a toolchain w/ largefile, threads, dynamic library"
 	depends on BR2_USE_MMU
-	depends on !BR2_LARGEFILE || BR2_PREFER_STATIC_LIB
+	depends on !BR2_LARGEFILE || BR2_PREFER_STATIC_LIB || \
+		!BR2_TOOLCHAIN_HAS_THREADS

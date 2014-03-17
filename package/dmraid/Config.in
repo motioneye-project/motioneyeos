@@ -1,6 +1,7 @@
 config BR2_PACKAGE_DMRAID
 	bool "dmraid"
 	depends on BR2_LARGEFILE
+	depends on BR2_TOOLCHAIN_HAS_THREADS # lvm2
 	depends on BR2_USE_MMU # lvm2
 	depends on !BR2_PREFER_STATIC_LIB # lvm2
 	select BR2_PACKAGE_LVM2
@@ -11,6 +12,7 @@ config BR2_PACKAGE_DMRAID
 	  dmraid uses the Linux device-mapper to create devices with
 	  respective mappings for the ATARAID sets discovered.
 
-comment "dmraid needs a toolchain w/ largefile, dynamic library"
+comment "dmraid needs a toolchain w/ largefile, threads, dynamic library"
 	depends on BR2_USE_MMU
-	depends on !BR2_LARGEFILE || BR2_PREFER_STATIC_LIB
+	depends on !BR2_LARGEFILE || BR2_PREFER_STATIC_LIB || \
+		!BR2_TOOLCHAIN_HAS_THREADS
