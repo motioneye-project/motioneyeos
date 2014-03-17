@@ -4,27 +4,27 @@ in a non-interactive embedded system.
 
 Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
 
-diff -Nura libpng-1.6.6.orig/Makefile.am libpng-1.6.6/Makefile.am
---- libpng-1.6.6.orig/Makefile.am	2013-10-27 19:13:39.183376955 -0300
-+++ libpng-1.6.6/Makefile.am	2013-10-27 19:13:50.388744191 -0300
+diff -Nura libpng-1.6.10.orig/Makefile.am libpng-1.6.10/Makefile.am
+--- libpng-1.6.10.orig/Makefile.am	2014-03-17 08:51:25.812005079 -0300
++++ libpng-1.6.10/Makefile.am	2014-03-17 09:14:28.807586433 -0300
 @@ -10,7 +10,7 @@
- check_PROGRAMS= pngtest pngunknown pngstest pngvalid
+ check_PROGRAMS= pngtest pngunknown pngstest pngvalid pngimage
  
  # Utilities - installed
 -bin_PROGRAMS= pngfix png-fix-itxt
 +bin_PROGRAMS=
  
- pngtest_SOURCES = pngtest.c
- pngtest_LDADD = libpng@PNGLIB_MAJOR@@PNGLIB_MINOR@.la
-diff -Nura libpng-1.6.6.orig/Makefile.in libpng-1.6.6/Makefile.in
---- libpng-1.6.6.orig/Makefile.in	2013-10-27 19:13:39.180376856 -0300
-+++ libpng-1.6.6/Makefile.in	2013-10-27 19:14:55.332872643 -0300
-@@ -59,7 +59,7 @@
+ # This ensures that pnglibconf.h gets built at the start of 'make all' or
+ # 'make check', but it does not add dependencies to the individual programs,
+diff -Nura libpng-1.6.10.orig/Makefile.in libpng-1.6.10/Makefile.in
+--- libpng-1.6.10.orig/Makefile.in	2014-03-17 08:51:25.807005070 -0300
++++ libpng-1.6.10/Makefile.in	2014-03-17 09:14:44.846617623 -0300
+@@ -87,7 +87,7 @@
  host_triplet = @host@
  check_PROGRAMS = pngtest$(EXEEXT) pngunknown$(EXEEXT) \
- 	pngstest$(EXEEXT) pngvalid$(EXEEXT)
+ 	pngstest$(EXEEXT) pngvalid$(EXEEXT) pngimage$(EXEEXT)
 -bin_PROGRAMS = pngfix$(EXEEXT) png-fix-itxt$(EXEEXT)
 +bin_PROGRAMS =
  @PNG_ARM_NEON_TRUE@am__append_1 = arm/arm_init.c\
- @PNG_ARM_NEON_TRUE@	arm/filter_neon.S
+ @PNG_ARM_NEON_TRUE@	arm/filter_neon.S arm/filter_neon_intrinsics.c
  
