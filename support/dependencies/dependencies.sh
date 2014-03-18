@@ -139,11 +139,15 @@ if [ ! -z "$CXXCOMPILER" ] ; then
 fi
 
 # Check bash
-if ! $SHELL --version 2>&1 | grep -q '^GNU bash'; then
+# We only check bash is available, setting SHELL appropriately is done
+# in the top-level Makefile, and we mimick the same sequence here
+if   [ -n "${BASH}" ]; then :
+elif [ -x /bin/bash ]; then :
+elif [ -z "$( sh -c 'echo $BASH' )" ]; then
 	echo
-	echo "You must install 'bash' on your build machine";
-	exit 1;
-fi;
+	echo "You must install 'bash' on your build machine"
+	exit 1
+fi
 
 # Check that a few mandatory programs are installed
 missing_progs="no"
