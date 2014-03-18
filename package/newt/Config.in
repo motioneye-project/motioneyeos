@@ -1,7 +1,13 @@
 config BR2_PACKAGE_NEWT
 	bool "newt"
+	depends on BR2_USE_WCHAR
 	select BR2_PACKAGE_SLANG
+	select BR2_PACKAGE_POPT
+	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE
 	help
 	  Programming library for color text mode, widget based user interfaces.
 
 	  http://www.redhat.com/
+
+comment "newt needs a toolchain w/ wchar"
+	depends on !BR2_USE_WCHAR

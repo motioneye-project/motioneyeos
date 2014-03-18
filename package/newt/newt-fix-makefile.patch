@@ -1,6 +1,5 @@
 Fix Makefile.in
 
-* Remove -Os from the CFLAGS (already handled by Buildroot)
 * Use $(CC) instead of $(CPP) to generate .depend file because
   '$(CPP) -M' call does not support multiple input files.
   This avoid the following error:
@@ -14,29 +13,23 @@ make[1]: Leaving directory
 make: *** 
 [/opt/br/output/build/newt-0.51.0/.stamp_built] Error 2
 
-
 Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
 
 ---
-Index: newt-0.51.0/Makefile.in
+ Makefile.in |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+Index: b/Makefile.in
 ===================================================================
---- newt-0.51.0.orig/Makefile.in	2012-10-10 22:43:42.042318041 +0200
-+++ newt-0.51.0/Makefile.in	2012-10-11 21:25:44.063873277 +0200
-@@ -3,7 +3,7 @@ SHLIBS = -lslang -lm -lc
- 
- GPM_SUPPORT=@gpm_support@
- 
--CFLAGS = -Wall -Os -D_GNU_SOURCE
-+CFLAGS += -D_GNU_SOURCE
- 
- VERSION = @VERSION@
- CVSTAG = r$(subst .,-,$(VERSION))
-@@ -86,7 +86,7 @@ clean:
- 		$(SHAREDOBJS) *.so*
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -121,7 +121,7 @@
+ 		$(SHAREDDIR)/*.o *.$(SOEXT)*
  
  depend:
--	$(CPP) $(CFLAGS) -M $(SOURCES) > .depend
-+	$(CC) $(CFLAGS) -M $(SOURCES) > .depend
+-	$(CPP) $(CFLAGS) $(CPPFLAGS) -M $(SOURCES) > .depend
++	$(CC) $(CFLAGS) $(CPPFLAGS) -M $(SOURCES) > .depend
  
  $(SHAREDDIR):
  	mkdir -p $(SHAREDDIR)
