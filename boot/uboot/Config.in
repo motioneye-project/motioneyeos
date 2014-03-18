@@ -169,6 +169,7 @@ endif
 
 menuconfig BR2_TARGET_UBOOT_NETWORK
 	bool "Custom Network Settings"
+	depends on BR2_DEPRECATED_SINCE_2014_05
 	help
 	  Custom network settings for U-boot
 
