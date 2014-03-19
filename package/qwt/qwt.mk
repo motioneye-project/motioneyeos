@@ -28,11 +28,11 @@ endif
 
 define QWT_CONFIGURE_CMDS
 	$(SED) $(QWT_CONFIG) $(@D)/qwtconfig.pri
-	(cd $(@D); $(QT_QMAKE))
+	(cd $(@D); $(TARGET_MAKE_ENV) $(QT_QMAKE))
 endef
 
 define QWT_BUILD_CMDS
-	$(MAKE) -C $(@D)
+	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D)
 endef
 
 # After installation, we fixup the INSTALL_PREFIX in qwtconfig.pri so
