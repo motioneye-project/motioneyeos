@@ -25,7 +25,7 @@ QT5MULTIMEDIA_DEPENDENCIES += gst-plugins-base
 endif
 
 define QT5MULTIMEDIA_CONFIGURE_CMDS
-	(cd $(@D); $(HOST_DIR)/usr/bin/qmake)
+	(cd $(@D); $(TARGET_MAKE_ENV) $(HOST_DIR)/usr/bin/qmake)
 endef
 
 define QT5MULTIMEDIA_BUILD_CMDS

@@ -23,7 +23,7 @@ QT5CONNECTIVITY_DEPENDENCIES += qt5declarative
 endif
 
 define QT5CONNECTIVITY_CONFIGURE_CMDS
-	(cd $(@D); $(HOST_DIR)/usr/bin/qmake)
+	(cd $(@D); $(TARGET_MAKE_ENV) $(HOST_DIR)/usr/bin/qmake)
 endef
 
 define QT5CONNECTIVITY_BUILD_CMDS

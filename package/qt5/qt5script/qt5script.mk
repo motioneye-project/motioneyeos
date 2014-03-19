@@ -19,7 +19,7 @@ QT5SCRIPT_REDISTRIBUTE = NO
 endif
 
 define QT5SCRIPT_CONFIGURE_CMDS
-	(cd $(@D); $(HOST_DIR)/usr/bin/qmake)
+	(cd $(@D); $(TARGET_MAKE_ENV) $(HOST_DIR)/usr/bin/qmake)
 endef
 
 define QT5SCRIPT_BUILD_CMDS

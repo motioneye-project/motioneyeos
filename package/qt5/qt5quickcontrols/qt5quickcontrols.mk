@@ -19,7 +19,7 @@ QT5QUICKCONTROLS_REDISTRIBUTE = NO
 endif
 
 define QT5QUICKCONTROLS_CONFIGURE_CMDS
-	(cd $(@D); $(HOST_DIR)/usr/bin/qmake)
+	(cd $(@D); $(TARGET_MAKE_ENV) $(HOST_DIR)/usr/bin/qmake)
 endef
 
 define QT5QUICKCONTROLS_BUILD_CMDS
