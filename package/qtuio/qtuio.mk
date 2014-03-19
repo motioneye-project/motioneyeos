@@ -19,13 +19,13 @@ QTUIO_EXAMPLES = dials fingerpaint knobs pinchzoom
 ifeq ($(BR2_QTUIO_EXAMPLES),y)
 define QTUIO_CONFIGURE_EXAMPLES
 	for example in $(QTUIO_EXAMPLES) ; do \
-		(cd $(@D)/examples/$${example} && $(QT_QMAKE)) ; \
+		(cd $(@D)/examples/$${example} && $(TARGET_MAKE_ENV) $(QT_QMAKE)) ; \
 	done
 endef
 endif
 
 define QTUIO_CONFIGURE_CMDS
-	cd $(@D)/src && $(QT_QMAKE)
+	cd $(@D)/src && $(TARGET_MAKE_ENV) $(QT_QMAKE)
 	$(QTUIO_CONFIGURE_EXAMPLES)
 endef
 
@@ -38,7 +38,7 @@ endef
 endif
 
 define QTUIO_BUILD_CMDS
-	$(MAKE) -C $(@D)/src
+	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D)/src
 	$(QTUIO_BUILD_EXAMPLES)
 endef
 
