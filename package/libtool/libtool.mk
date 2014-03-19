@@ -13,18 +13,25 @@ LIBTOOL_LICENSE_FILES = COPYING
 
 HOST_LIBTOOL_LIBTOOL_PATCH = NO
 
-# libtool-mips64-n64-linking.post-install-patch is an upstream patch that
-# fixes MIPS64 n64 link failures. However, because the patch touches an m4
-# file, applying it triggers a run of autoconf, automake, etc. This sometimes
-# leads to build failures due to incompatible system autotools. We cannot
-# simply set HOST_LIBTOOL_AUTORECONF = YES because that would create a
-# circular dependency on host-libtool. Therefore, just apply the patch
-# directly on the installed file.
-define HOST_LIBTOOL_FIXUP_LIBTOOL_M4
-	patch $(HOST_DIR)/usr/share/aclocal/libtool.m4 < \
-		package/libtool/libtool-mips64-n64-linking.post-install-patch
+# We have a patch that affects libtool.m4, which triggers an autoreconf
+# in the build step. Normally we would set AUTORECONF = YES, but this
+# doesn't work for host-libtool because that creates a circular
+# dependency. Instead, touch the generated files so autoreconf is not
+# triggered in the build step. Note that aclocal.m4 has to be touched
+# first since the rest depends on it. Note that we don't need the changes
+# in libtool.m4 in our configure script, because we're not actually
+# running it on the target.
+# For the target, we would normally be able to use AUTORECONF, but it
+# fails on libltdl/Makefile.inc. Rather than trying to fix that failure,
+# just use the same hack as on the host.
+define LIBTOOL_AVOID_AUTORECONF_HOOK
+	find $(@D) -name aclocal.m4 -exec touch '{}' \;
+	find $(@D) -name config-h.in -exec touch '{}' \;
+	find $(@D) -name configure -exec touch '{}' \;
+	find $(@D) -name Makefile.in -exec touch '{}' \;
 endef
-HOST_LIBTOOL_POST_INSTALL_HOOKS += HOST_LIBTOOL_FIXUP_LIBTOOL_M4
+LIBTOOL_PRE_CONFIGURE_HOOKS += LIBTOOL_AVOID_AUTORECONF_HOOK
+HOST_LIBTOOL_PRE_CONFIGURE_HOOKS += LIBTOOL_AVOID_AUTORECONF_HOOK
 
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
