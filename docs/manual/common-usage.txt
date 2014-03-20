@@ -140,7 +140,7 @@ Other tools may have similar options. Please consult their respective man
 pages.
 
 You can use sparse files if you need to store the filesystem images (eg.
-to transfer from one machine to another), of if you need to send them (eg.
+to transfer from one machine to another), or if you need to send them (eg.
 to the Q&A team).
 
 Note however that flashing a filesystem image to a device while using the
