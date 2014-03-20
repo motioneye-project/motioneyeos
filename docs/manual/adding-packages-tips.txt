@@ -31,7 +31,7 @@ using the following rules:
   +BR2_PACKAGE_FOO_BAR_BOO+);
 
 * the +*.mk+ file variable prefix is the upper case _package name_
-  `.` and `-` characters substituted with `_` (e.g.:
+  with `.` and `-` characters substituted with `_` (e.g.:
   +FOO_BAR_BOO_VERSION+).
 
 
