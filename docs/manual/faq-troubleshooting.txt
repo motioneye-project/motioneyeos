@@ -117,7 +117,7 @@ Why doesn't Buildroot generate binary packages (.deb, .ipkg...)?
 ----------------------------------------------------------------
 
 One feature that is often discussed on the Buildroot list is the
-the general topic of "package management". To summarize, the idea
+general topic of "package management". To summarize, the idea
 would be to add some tracking of which Buildroot package installs
 what files, with the goals of:
 
