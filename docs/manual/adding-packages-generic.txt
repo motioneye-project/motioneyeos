@@ -11,7 +11,7 @@ system is based on hand-written Makefiles or shell scripts.
 
 [[generic-package-tutorial]]
 
-+generic-package+ Tutorial
++generic-package+ tutorial
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 ------------------------------
@@ -159,7 +159,7 @@ Makefile code necessary to make your package working.
 
 [[generic-package-reference]]
 
-+generic-package+ Reference
++generic-package+ reference
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 There are two variants of the generic target. The +generic-package+ macro is
