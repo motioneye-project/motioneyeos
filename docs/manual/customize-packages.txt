@@ -59,9 +59,9 @@ directory.
 The exception to +BR2_GLOBAL_PATCH_DIR+ being the preferred method for
 specifying custom patches is +BR2_LINUX_KERNEL_PATCH+.
 +BR2_LINUX_KERNEL_PATCH+ should be used to specify kernel patches that
-are available at an URL. *Note:* +BR2_LINUX_KERNEL_PATCHES+ are applied
-after patches available in +BR2_GLOBAL_PATCH_DIR+, as it is done
-from a post-patch hook of the Linux package.
+are available at an URL. *Note:* +BR2_LINUX_KERNEL_PATCH+ specifies kernel
+patches that are applied after patches available in +BR2_GLOBAL_PATCH_DIR+,
+as it is done from a post-patch hook of the Linux package.
 
 An example directory structure for where a user has multiple
 directories specified for +BR2_GLOBAL_PATCH_DIR+ may look like this:
