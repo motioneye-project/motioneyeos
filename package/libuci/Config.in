@@ -1,0 +1,16 @@
+config BR2_PACKAGE_LIBUCI
+	bool "libuci"
+	depends on !BR2_PREFER_STATIC_LIB
+	select BR2_PACKAGE_LIBUBOX
+	help
+	  This library originates from the OpenWrt project to
+	  handle the configuration file infrastructure, but can
+	  also be used for the same purposes in projects other
+	  than OpenWrt.
+
+	  This package will also install CLI tool uci.
+
+	  http://wiki.openwrt.org/doc/techref/uci
+
+comment "libuci needs a toolchain w/ dynamic library"
+	depends on BR2_PREFER_STATIC_LIB
