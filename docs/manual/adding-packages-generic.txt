@@ -211,7 +211,7 @@ information is (assuming the package name is +libfoo+) :
   the package. If +HOST_LIBFOO_SOURCE+ is not specified, it
   defaults to +LIBFOO_SOURCE+. If none are specified, then
   the value is assumed to be
-  +packagename-$(LIBFOO_VERSION).tar.gz+. +
+  +libfoo-$(LIBFOO_VERSION).tar.gz+. +
   Example: +LIBFOO_SOURCE = foobar-$(LIBFOO_VERSION).tar.bz2+
 
 * +LIBFOO_PATCH+ may contain a space-separated list of patch file
