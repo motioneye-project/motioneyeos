@@ -3,7 +3,7 @@ ARM software simulator of the AArch64 architecture.
 
 First, one has to download the AArch64 software simulator from:
 
-  https://silver.arm.com/download/download.tm?pv=1317469
+  https://silver.arm.com/download/download.tm?pv=1509509
 
 Then, use the arm_foundationv8_defconfig configuration to build your
 Buildroot system.
