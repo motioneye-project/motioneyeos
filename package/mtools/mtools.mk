@@ -12,5 +12,11 @@ MTOOLS_LICENSE_FILES = COPYING
 MTOOLS_CONF_ENV = ac_cv_func_setpgrp_void=yes
 MTOOLS_CONF_OPT = --without-x
 
+# link with iconv if enabled
+ifeq ($(BR2_PACKAGE_LIBICONV),y)
+MTOOLS_DEPENDENCIES += libiconv
+MTOOLS_CONF_ENV += LIBS=-liconv
+endif
+
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
