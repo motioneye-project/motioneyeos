@@ -10,6 +10,10 @@ CIFS_UTILS_SITE    = http://ftp.samba.org/pub/linux-cifs/cifs-utils
 CIFS_UTILS_LICENSE = GPLv3+
 CIFS_UTILS_LICENSE_FILES = COPYING
 
+ifeq ($(BR2_PREFER_STATIC_LIB),y)
+CIFS_UTILS_CONF_OPT += --disable-pie
+endif
+
 define CIFS_UTILS_NO_WERROR
 	$(SED) 's/-Werror//' $(@D)/Makefile.in
 endef
