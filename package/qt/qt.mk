@@ -625,6 +625,7 @@ endef
 # Library installation
 ifeq ($(BR2_PACKAGE_QT_SHARED),y)
 define QT_INSTALL_TARGET_LIBS
+	mkdir -p $(TARGET_DIR)/usr/lib
 	for lib in $(QT_INSTALL_LIBS); do \
 		cp -dpf $(STAGING_DIR)/usr/lib/lib$${lib}.so.* $(TARGET_DIR)/usr/lib ; \
 	done
