@@ -75,6 +75,16 @@ $(if $(call qstrip,$(2)),
 	@echo '#define $(strip $(1)) $(call qstrip,$(2))' >> $(@D)/include/config.h)
 endef
 
+# prior to u-boot 2013.10 the license info was in COPYING. Copy it so
+# legal-info finds it
+define UBOOT_COPY_OLD_LICENSE_FILE
+	if [ -f $(@D)/COPYING ]; then \
+		$(INSTALL) -m 0644 -D $(@D)/COPYING $(@D)/Licenses/gpl-2.0.txt; \
+	fi
+endef
+
+UBOOT_POST_EXTRACT_HOOKS += UBOOT_COPY_OLD_LICENSE_FILE
+
 ifneq ($(call qstrip,$(BR2_TARGET_UBOOT_CUSTOM_PATCH_DIR)),)
 define UBOOT_APPLY_CUSTOM_PATCHES
 	support/scripts/apply-patches.sh $(@D) $(BR2_TARGET_UBOOT_CUSTOM_PATCH_DIR) \
