@@ -1,0 +1,34 @@
+[PATCH] libubox: drop legacy json-c support
+
+The cmake logic is wrong (E.G. PKG_CHECK_FOR_MODULES fails unless all
+modules are found), and the legacy libjson.so name is also used by the other
+libjson (http://sourceforge.net/projects/libjson/) which provides an
+incompatible API, so just drop it.
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ CMakeLists.txt |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+Index: libubox-bbd846ec2d72b2629758b69dc122ac0b0f2c3e4b/CMakeLists.txt
+===================================================================
+--- libubox-bbd846ec2d72b2629758b69dc122ac0b0f2c3e4b.orig/CMakeLists.txt
++++ libubox-bbd846ec2d72b2629758b69dc122ac0b0f2c3e4b/CMakeLists.txt
+@@ -13,7 +13,7 @@
+ ENDIF()
+ 
+ INCLUDE(FindPkgConfig)
+-PKG_CHECK_MODULES(JSONC json-c json)
++PKG_CHECK_MODULES(JSONC json-c)
+ IF(JSONC_FOUND)
+   ADD_DEFINITIONS(-DJSONC)
+   INCLUDE_DIRECTORIES(${JSONC_INCLUDE_DIRS})
+@@ -42,7 +42,7 @@
+ 
+ ADD_SUBDIRECTORY(lua)
+ 
+-find_library(json NAMES json-c json)
++find_library(json NAMES json-c)
+ IF(EXISTS ${json})
+ 	ADD_LIBRARY(blobmsg_json SHARED blobmsg_json.c)
+ 	TARGET_LINK_LIBRARIES(blobmsg_json ubox ${json})
