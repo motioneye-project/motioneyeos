@@ -5,10 +5,9 @@
 ################################################################################
 
 PYTHON3_VERSION_MAJOR = 3.4
-PYTHON3_VERSION_MINOR = 0
-PYTHON3_VERSION       = $(PYTHON3_VERSION_MAJOR).$(PYTHON3_VERSION_MINOR)
-PYTHON3_SOURCE        = Python-$(PYTHON3_VERSION).tar.xz
-PYTHON3_SITE          = http://python.org/ftp/python/$(PYTHON3_VERSION_MAJOR).$(PYTHON3_VERSION_MINOR)
+PYTHON3_VERSION = $(PYTHON3_VERSION_MAJOR).0
+PYTHON3_SOURCE = Python-$(PYTHON3_VERSION).tar.xz
+PYTHON3_SITE = http://python.org/ftp/python/$(PYTHON3_VERSION)
 
 # Python needs itself and a "pgen" program to build itself, both being
 # provided in the Python sources. So in order to cross-compile Python,
