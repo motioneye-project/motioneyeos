@@ -1,0 +1,12 @@
+[Unit]
+Description = XBMC media center
+After = network.target
+
+[Service]
+Type = simple
+ExecStart = /usr/lib/xbmc/xbmc.bin --standalone -fs -n
+Restart = on-failure
+
+[Install]
+WantedBy = multi-user.target
+

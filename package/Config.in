@@ -27,6 +27,7 @@ source "package/tstools/Config.in"
 source "package/vlc/Config.in"
 source "package/vorbis-tools/Config.in"
 source "package/wavpack/Config.in"
+source "package/xbmc/Config.in"
 source "package/yavta/Config.in"
 endmenu
 
