@@ -22,7 +22,7 @@ BEECRYPT_CONF_OPT = \
 		--without-python \
 		--disable-openmp
 
-ifeq ($(BR2_PACKAGE_ICU),y)
+ifeq ($(BR2_INSTALL_LIBSTDCPP)$(BR2_USE_WCHAR)$(BR2_PACKAGE_ICU),yyy)
 # C++ support needs icu
 BEECRYPT_DEPENDENCIES += icu
 else
