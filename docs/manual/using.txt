@@ -75,8 +75,8 @@ This directory contains several subdirectories:
 * +images/+ where all the images (kernel image, bootloader and root
   filesystem images) are stored.
 
-* +build/+ where all the components except for the cross-compilation
-  toolchain are built (this includes tools needed to run Buildroot on
+* +build/+ where all the components are built
+  (this includes tools needed to run Buildroot on
   the host and packages compiled for the target). The +build/+
   directory contains one subdirectory for each of these components.
 
@@ -107,9 +107,6 @@ This directory contains several subdirectories:
 * +host/+ contains the installation of tools compiled for the host
   that are needed for the proper execution of Buildroot, including the
   cross-compilation toolchain.
-
-* +toolchain/+ contains the build directories for the various
-  components of the cross-compilation toolchain.
 
 These commands, +make menuconfig|nconfig|gconfig|xconfig+ and +make+, are the
 basic ones that allow to easily and quickly generate images fitting
