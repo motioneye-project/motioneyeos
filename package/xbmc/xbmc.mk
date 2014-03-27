@@ -8,6 +8,10 @@ XBMC_VERSION = 12.3-Frodo
 XBMC_SITE = $(call github,xbmc,xbmc,$(XBMC_VERSION))
 XBMC_LICENSE = GPLv2
 XBMC_LICENSE_FILES = LICENSE.GPL
+# XBMC needs host-sdl_image (and therefore host-sdl) for a host tools it builds
+# called TexturePacker. It is responsible to take all the images used in the
+# GUI and pack them in a blob.
+# http://wiki.xbmc.org/index.php?title=TexturePacker
 XBMC_DEPENDENCIES = host-gperf host-lzo host-sdl_image host-swig
 XBMC_DEPENDENCIES += boost bzip2 expat flac fontconfig freetype jasper jpeg \
 	libass libcdio libcurl libfribidi libgcrypt libmad libmodplug libmpeg2 \
