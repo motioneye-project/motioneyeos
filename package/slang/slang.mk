@@ -13,6 +13,12 @@ SLANG_LICENSE_FILES = COPYING
 SLANG_INSTALL_STAGING = YES
 SLANG_MAKE = $(MAKE1)
 
+ifeq ($(BR2_PACKAGE_NCURSES),y)
+	SLANG_DEPENDENCIES = ncurses
+else
+	SLANG_CONF_OPT = ac_cv_path_nc5config=no
+endif
+
 # The installation location of the slang library
 # does not take into account the DESTDIR directory.
 # So SLANG_INST_LIB is initialized with -L/usr/lib/
