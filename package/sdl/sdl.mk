@@ -21,6 +21,7 @@ SDL_PRE_CONFIGURE_HOOKS += SDL_RUN_AUTOGEN
 HOST_SDL_PRE_CONFIGURE_HOOKS += SDL_RUN_AUTOGEN
 
 SDL_DEPENDENCIES += host-automake host-autoconf host-libtool
+HOST_SDL_DEPENDENCIES += host-automake host-autoconf host-libtool
 
 ifeq ($(BR2_PACKAGE_SDL_FBCON),y)
 SDL_CONF_OPT += --enable-video-fbcon=yes
@@ -65,6 +66,12 @@ SDL_DEPENDENCIES += mesa3d
 endif
 
 SDL_CONF_OPT += --enable-pulseaudio=no \
+		--disable-arts \
+		--disable-esd \
+		--disable-nasm \
+		--disable-video-ps3
+
+HOST_SDL_CONF_OPT += --enable-pulseaudio=no \
 		--disable-arts \
 		--disable-esd \
 		--disable-nasm \
