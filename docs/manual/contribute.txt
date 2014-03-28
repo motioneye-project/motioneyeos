@@ -97,7 +97,7 @@ To indicate approval of a patch, there are three formal tags that keep
 track of this approval. To add your tag to a patch, reply to it with the
 approval tag below the original author's Signed-off-by line. These tags
 will be picked up automatically by patchwork (see
-ref:apply-patches-patchwork[]) and will be part of the commit log when
+xref:apply-patches-patchwork[]) and will be part of the commit log when
 the patch is accepted.
 
 Tested-by:: Indicates that the patch has been tested successfully.
