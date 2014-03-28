@@ -1,7 +1,14 @@
+config BR2_PACKAGE_SYSTEMD_ARCH_SUPPORTS
+	bool
+	# see src/shared/architecture.h
+	default y if BR2_arm || BR2_armeb || BR2_i386 || BR2_mips || \
+		BR2_mipsel || BR2_powerpc || BR2_sh4 || BR2_sh4eb || \
+		BR2_sh4a || BR2_sh4aeb || BR2_sparc || BR2_x86_64 || \
+		BR2_aarch64 || BR2_m68k
+
 config BR2_PACKAGE_SYSTEMD
 	bool "systemd"
 	depends on BR2_INIT_SYSTEMD
-	depends on !BR2_avr32 # no epoll_create1
 	depends on BR2_LARGEFILE # util-linux
 	depends on BR2_USE_WCHAR # util-linux
 	depends on BR2_INET_IPV6
