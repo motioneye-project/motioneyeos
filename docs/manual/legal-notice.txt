@@ -99,7 +99,7 @@ Buildroot, with the name used in the manifest files:
   GNU Library General Public License, version 2];
 * `LGPLv2+`:
   http://www.gnu.org/licenses/old-licenses/lgpl-2.0.html[
-  GNU Library General Public License, version 2.1]
+  GNU Library General Public License, version 2]
   or (at your option) any later version;
 * `LGPLv2.1`:
   http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html[
