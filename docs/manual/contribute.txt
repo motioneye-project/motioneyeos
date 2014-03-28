@@ -307,7 +307,7 @@ Here is a short list of details to provide in such case:
 * any information you think that may be relevant
 
 Additionally, you should add the +.config+ file (or if you know how, a
-+defconfig+).
++defconfig+; see xref:customize-store-buildroot-config[]).
 
 If some of these details are too large, do not hesitate to use a
 pastebin service. Note that not all available pastebin services will
