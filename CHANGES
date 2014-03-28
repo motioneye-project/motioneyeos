@@ -1,3 +1,11 @@
+2014.05, Not yet released:
+
+Support for MIPS o32 ABI on MIPS-64 targets has been removed. Building
+o32 ELF files for MIPS64 is an exotic configuration that nobody should
+be using. If o32 is required, then is better if it's built for MIPS
+32-bit cores so only 32-bit instructions will be used leading to a more
+efficient o32 usage.
+
 2014.02, Released February 27th, 2014
 
 	Minor fixes.

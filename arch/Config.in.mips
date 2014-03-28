@@ -38,15 +38,12 @@ endchoice
 
 choice
 	prompt "Target ABI"
-	depends on BR2_mips || BR2_mipsel || BR2_mips64 || BR2_mips64el
-	default BR2_MIPS_OABI32 if !BR2_ARCH_IS_64
-	default BR2_MIPS_NABI32 if BR2_ARCH_IS_64
+	depends on BR2_mips64 || BR2_mips64el
+	default BR2_MIPS_NABI32
 
 	help
 	  Application Binary Interface to use
 
-config BR2_MIPS_OABI32
-	bool "o32"
 config BR2_MIPS_NABI32
 	bool "n32"
 	depends on BR2_ARCH_IS_64
@@ -85,6 +82,10 @@ config BR2_GCC_TARGET_ARCH
 	default "mips32r2"	if BR2_mips_32r2
 	default "mips64"	if BR2_mips_64
 	default "mips64r2"	if BR2_mips_64r2
+
+config BR2_MIPS_OABI32
+	bool
+	default y		if BR2_mips || BR2_mipsel
 
 config BR2_GCC_TARGET_ABI
 	default "32"		if BR2_MIPS_OABI32
