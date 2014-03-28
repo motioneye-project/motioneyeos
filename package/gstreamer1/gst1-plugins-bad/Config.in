@@ -481,7 +481,7 @@ comment "gst-plugins-bad-plugin-sndfile needs a toolchain w/ largefile"
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_DVB
 	bool "dvb"
-	select BR2_PACKAGE_DVB_APPS
+	select BR2_PACKAGE_DTV_SCAN_TABLES
 	help
 	  DVB elements
 

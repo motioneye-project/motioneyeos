@@ -683,7 +683,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_DVB),y)
 GST1_PLUGINS_BAD_CONF_OPT += --enable-dvb
-GST1_PLUGINS_BAD_DEPENDENCIES += dvb-apps
+GST1_PLUGINS_BAD_DEPENDENCIES += dtv-scan-tables
 else
 GST1_PLUGINS_BAD_CONF_OPT += --disable-dvb
 endif
