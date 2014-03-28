@@ -101,6 +101,13 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2014.05"
 
+config BR2_PACKAGE_DVB_APPS_UTILS
+	bool "dvb-apps utilities now built by default"
+	select BR2_LEGACY
+	help
+	  The dvb-apps utilities are now always built when the dvb-apps
+	  package is selected.
+
 config BR2_KERNEL_HEADERS_SNAP
 	bool "Local Linux snapshot support removed"
 	select BR2_LEGACY

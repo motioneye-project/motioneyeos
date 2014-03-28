@@ -4,15 +4,9 @@
 #
 ################################################################################
 
-DVB_APPS_VERSION        = be76da69f250
+DVB_APPS_VERSION        = 3d43b280298c39a67d1d889e01e173f52c12da35
 DVB_APPS_SITE           = http://linuxtv.org/hg/dvb-apps
 DVB_APPS_SITE_METHOD    = hg
-
-DVB_APPS_DEPENDENCIES   = dtv-scan-tables
-
-ifeq ($(BR2_PACKAGE_DVB_APPS_UTILS),y)
-# Utilitiess are selected, build and install everything
-
 DVB_APPS_LICENSE        = GPLv2 GPLv2+ LGPLv2.1+
 DVB_APPS_LICENSE_FILES  = COPYING COPYING.LGPL
 
@@ -37,10 +31,5 @@ endef
 define DVB_APPS_INSTALL_TARGET_CMDS
 	$(MAKE) -C $(@D) V=1 DESTDIR=$(TARGET_DIR) install
 endef
-
-else
-# We do not really install anything, so there's no license
-DVB_APPS_LICENSE        = none
-endif
 
 $(eval $(generic-package))
