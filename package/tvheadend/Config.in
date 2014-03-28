@@ -12,7 +12,7 @@ config BR2_PACKAGE_TVHEADEND
 	# context of Buildroot, the only really problematic
 	# architecture is avr32, which uses gcc 4.2.
 	depends on !BR2_avr32
-	select BR2_PACKAGE_DVB_APPS
+	select BR2_PACKAGE_DTV_SCAN_TABLES
 	select BR2_PACKAGE_OPENSSL
 	help
 	  Tvheadend is a TV streaming server for Linux supporting DVB-S,
