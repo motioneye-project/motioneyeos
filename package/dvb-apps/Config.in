@@ -1,5 +1,6 @@
 config BR2_PACKAGE_DVB_APPS
 	bool "dvb-apps (transponders data)"
+	select BR2_PACKAGE_DTV_SCAN_TABLES
 	help
 	  Install the DVB-C, DVB-S, DVB-T and ATSC transponders data.
 
