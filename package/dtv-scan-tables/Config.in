@@ -1,0 +1,8 @@
+config BR2_PACKAGE_DTV_SCAN_TABLES
+	bool "dtv-scan-tables"
+	# dvb-apps installs its own set of transponder data
+	depends on !BR2_PACKAGE_DVB_APPS
+	help
+	  The Digital TV scan tables.
+
+	  http://git.linuxtv.org/dtv-scan-tables.git
