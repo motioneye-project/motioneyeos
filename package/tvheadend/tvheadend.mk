@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-TVHEADEND_VERSION           = c84bc2b72b462ef2dbed305f3fd0bb3fa5046fc3
+TVHEADEND_VERSION           = 6482d33ba90848018c530018e5c38992b8ac921c
 TVHEADEND_SITE              = git://github.com/tvheadend/tvheadend.git
 TVHEADEND_LICENSE           = GPLv3+
 TVHEADEND_LICENSE_FILES     = LICENSE
