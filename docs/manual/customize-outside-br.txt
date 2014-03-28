@@ -78,7 +78,7 @@ Or disable the usage of external definitions:
    directories called +board/<boardname>/+ under +BR2_EXTERNAL+. This
    matches the directory structure used within Buildroot.
 
- * One can store package recipes (i.e +Config.in+ and
+ * One can store package recipes (i.e. +Config.in+ and
    +<packagename>.mk+), or even custom configuration options and make
    logic. Buildroot automatically includes +BR2_EXTERNAL/Config.in+ to
    make it appear in the top-level configuration menu, and includes

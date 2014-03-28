@@ -138,7 +138,7 @@ is much more complicated than that:
 
  * When a package is unselected from the configuration, it is not
    sufficient to remove just the files it installed. One must also
-   remove all its reverse dependencies (i.e packages relying on it)
+   remove all its reverse dependencies (i.e. packages relying on it)
    and rebuild all those packages. For example, package A depends
    optionally on the OpenSSL library. Both are selected, and Buildroot
    is built. Package A is built with crypto support using OpenSSL.
