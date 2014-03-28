@@ -13,27 +13,35 @@ SLANG_LICENSE_FILES = COPYING
 SLANG_INSTALL_STAGING = YES
 SLANG_MAKE = $(MAKE1)
 
-ifeq ($(BR2_PACKAGE_NCURSES),y)
-	SLANG_DEPENDENCIES = ncurses
+# Absolute path hell, sigh...
+ifeq ($(BR2_PACKAGE_LIBPNG),y)
+	SLANG_CONF_OPT += --with-png=$(STAGING_DIR)/usr
+	SLANG_DEPENDENCIES += libpng
 else
-	SLANG_CONF_OPT = ac_cv_path_nc5config=no
+	SLANG_CONF_OPT += --with-png=no
+endif
+ifeq ($(BR2_PACKAGE_PCRE),y)
+	SLANG_CONF_OPT += --with-pcre=$(STAGING_DIR)/usr
+	SLANG_DEPENDENCIES += pcre
+else
+	SLANG_CONF_OPT += --with-pcre=no
+endif
+ifeq ($(BR2_PACKAGE_ZLIB),y)
+	SLANG_CONF_OPT += --with-z=$(STAGING_DIR)/usr
+	SLANG_DEPENDENCIES += zlib
+else
+	SLANG_CONF_OPT += --with-z=no
 endif
 
-# The installation location of the slang library
-# does not take into account the DESTDIR directory.
-# So SLANG_INST_LIB is initialized with -L/usr/lib/
-# and slang may be linked with host's libdl.so (if any)
-# Therefore, we have to pass correct installation paths.
-SLANG_INSTALL_STAGING_OPT = \
-	prefix=$(STAGING_DIR)/usr \
-	exec_prefix=$(STAGING_DIR)/usr \
-	DESTDIR=$(STAGING_DIR) \
-	install
+ifeq ($(BR2_PACKAGE_NCURSES),y)
+	SLANG_DEPENDENCIES += ncurses
+else
+	SLANG_CONF_OPT += ac_cv_path_nc5config=no
+endif
 
-SLANG_INSTALL_TARGET_OPT = \
-	prefix=$(STAGING_DIR)/usr \
-	exec_prefix=$(STAGING_DIR)/usr \
-	DESTDIR=$(TARGET_DIR) \
-	install
+ifeq ($(BR2_PACKAGE_READLINE),y)
+	SLANG_CONF_OPT += --with-readline=gnu
+	SLANG_DEPENDENCIES += readline
+endif
 
 $(eval $(autotools-package))
