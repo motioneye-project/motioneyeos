@@ -4,14 +4,14 @@
 #
 ################################################################################
 
-TVHEADEND_VERSION           = 6482d33ba90848018c530018e5c38992b8ac921c
-TVHEADEND_SITE              = git://github.com/tvheadend/tvheadend.git
-TVHEADEND_LICENSE           = GPLv3+
-TVHEADEND_LICENSE_FILES     = LICENSE
-TVHEADEND_DEPENDENCIES      = host-pkgconf host-python openssl
+TVHEADEND_VERSION = 6482d33ba90848018c530018e5c38992b8ac921c
+TVHEADEND_SITE = git://github.com/tvheadend/tvheadend.git
+TVHEADEND_LICENSE = GPLv3+
+TVHEADEND_LICENSE_FILES = LICENSE
+TVHEADEND_DEPENDENCIES = host-pkgconf host-python openssl
 
 ifeq ($(BR2_PACKAGE_AVAHI),y)
-TVHEADEND_DEPENDENCIES     += avahi
+TVHEADEND_DEPENDENCIES += avahi
 endif
 
 #----------------------------------------------------------------------------
@@ -20,7 +20,7 @@ endif
 # package, so it has a list of pre-scanned tunner configurations.
 # For buildroot, we add a patch that avoids doing that, but uses the
 # scan files installed by the dtv-scan-tables package
-TVHEADEND_DEPENDENCIES     += dtv-scan-tables
+TVHEADEND_DEPENDENCIES += dtv-scan-tables
 
 define TVHEADEND_CONFIGURE_CMDS
 	(cd $(@D);				\
