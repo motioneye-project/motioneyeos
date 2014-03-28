@@ -116,7 +116,7 @@ Dealing efficiently with filesystem images
 
 Filesystem images can get pretty big, depending on the filesystem you choose,
 the number of packages, whether you provisioned free space... Yet, some
-locations in the filesystems images may just be _empty_ (eg. a long run of
+locations in the filesystems images may just be _empty_ (e.g. a long run of
 'zeroes'); such a file is called a _sparse_ file.
 
 Most tools can handle sparse files efficiently, and will only store or write
@@ -139,12 +139,12 @@ For example:
 Other tools may have similar options. Please consult their respective man
 pages.
 
-You can use sparse files if you need to store the filesystem images (eg.
-to transfer from one machine to another), or if you need to send them (eg.
+You can use sparse files if you need to store the filesystem images (e.g.
+to transfer from one machine to another), or if you need to send them (e.g.
 to the Q&A team).
 
 Note however that flashing a filesystem image to a device while using the
-sparse mode of +dd+ may result in a broken filesystem (eg. the block bitmap
+sparse mode of +dd+ may result in a broken filesystem (e.g. the block bitmap
 of an ext2 filesystem may be corrupted; or, if you have sparse files in
 your filesystem, those parts may not be all-zeroes when read back). You
 should only use sparse files when handling files on the build machine, not

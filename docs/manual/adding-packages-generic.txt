@@ -150,7 +150,7 @@ On line 31..33, we define a device-node file used by this package
 On line 35..37, we define the permissions to set to specific files
 installed by this package (+LIBFOO_PERMISSIONS+).
 
-On lines 39..41, we define a user that is used by this package (eg.
+On lines 39..41, we define a user that is used by this package (e.g.
 to run a daemon as non-root) (+LIBFOO_USERS+).
 
 Finally, on line 43, we call the +generic-package+ function, which
@@ -335,7 +335,7 @@ information is (assuming the package name is +libfoo+) :
   This variable is optional.
 
 * +LIBFOO_USERS+ lists the users to create for this package, if it installs
-  a program you want to run as a specific user (eg. as a daemon, or as a
+  a program you want to run as a specific user (e.g. as a daemon, or as a
   cron-job). The syntax is similar in spirit to the makedevs one, and is
   described in the xref:makeuser-syntax[]. This variable is optional.
 
