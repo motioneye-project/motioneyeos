@@ -202,6 +202,10 @@ for example:
 --------------------------
 aircrack-ng needs a toolchain w/ largefile, threads
 --------------------------
+or
+--------------------------
+crda needs a toolchain w/ threads
+--------------------------
 
 Note that this text is kept brief on purpose, so that it will fit on a
 80-character terminal.
