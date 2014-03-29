@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-XAPP_BEFORELIGHT_VERSION = 1.0.2
+XAPP_BEFORELIGHT_VERSION = 1.0.5
 XAPP_BEFORELIGHT_SOURCE = beforelight-$(XAPP_BEFORELIGHT_VERSION).tar.bz2
 XAPP_BEFORELIGHT_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_BEFORELIGHT_LICENSE = MIT
