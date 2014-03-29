@@ -93,4 +93,9 @@ define DNSMASQ_INSTALL_TARGET_CMDS
 	mkdir -p $(TARGET_DIR)/var/lib/misc/
 endef
 
+define DNSMASQ_INSTALL_INIT_SYSV
+	$(INSTALL) -m 755 -D package/dnsmasq/S80dnsmasq \
+		$(TARGET_DIR)/etc/init.d/S80dnsmasq
+endef
+
 $(eval $(generic-package))
