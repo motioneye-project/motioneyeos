@@ -1,0 +1,34 @@
+From 30787294c837aefa8820b6f76f00fe30d4e54181 Mon Sep 17 00:00:00 2001
+From: Adam Jackson <ajax@redhat.com>
+Date: Tue, 25 Sep 2012 12:55:01 +0000
+Subject: Remove mibstore.h
+
+Signed-off-by: Adam Jackson <ajax@redhat.com>
+---
+Fetch from:
+http://cgit.freedesktop.org/xorg/driver/xf86-video-trident/commit/?id=30787294c837aefa8820b6f76f00fe30d4e54181
+
+Signed-off-by: Bernd Kuhls <berndkuhls@hotmail.com>
+
+diff --git a/src/trident_driver.c b/src/trident_driver.c
+index dc12b76..408c870 100644
+--- a/src/trident_driver.c
++++ b/src/trident_driver.c
+@@ -56,7 +56,6 @@
+ 
+ #include "mipointer.h"
+ 
+-#include "mibstore.h"
+ #include "shadow.h"
+ #include "trident.h"
+ #include "trident_regs.h"
+@@ -3037,7 +3036,6 @@ TRIDENTScreenInit(SCREEN_INIT_ARGS_DECL)
+     	TridentAccelInit(pScreen);
+     }
+ 
+-    miInitializeBackingStore(pScreen);
+     xf86SetBackingStore(pScreen);
+ 
+     /* Initialise cursor functions */
+--
+cgit v0.9.0.2-2-gbebe
