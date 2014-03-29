@@ -1,0 +1,67 @@
+From 49796d6a3274adc0250ee07faa6bc63e41c98740 Mon Sep 17 00:00:00 2001
+From: Peter Hutterer <peter.hutterer@who-t.net>
+Date: Thu, 21 Nov 2013 22:21:18 +0000
+Subject: Fix format-security warnings
+
+sis_driver.c: In function 'SISErrorLog':
+sis_driver.c:432:5: error: format not a string literal and no format arguments [-Werror=format-security]
+     xf86DrvMsg(pScrn->scrnIndex, X_ERROR, str);
+     ^
+sis_driver.c:439:5: error: format not a string literal and no format arguments [-Werror=format-security]
+     xf86DrvMsg(pScrn->scrnIndex, X_ERROR, str);
+     ^
+sis_driver.c: In function 'SiSUpdateXineramaScreenInfo':
+sis_driver.c:1917:4: error: format not a string literal and no format arguments [-Werror=format-security]
+    xf86DrvMsg(pScrn1->scrnIndex, X_INFO, rectxine);
+    ^
+sis_driver.c:1924:8: error: format not a string literal and no format arguments [-Werror=format-security]
+        xf86DrvMsg(pScrn1->scrnIndex, X_INFO, rectxine);
+
+Signed-off-by: Peter Hutterer <peter.hutterer@who-t.net>
+Reviewed-by: Alan Coopersmith <alan.coopersmith@oracle.com>
+---
+Fetch from:
+http://cgit.freedesktop.org/xorg/driver/xf86-video-sis/commit/?id=49796d6a3274adc0250ee07faa6bc63e41c98740
+
+Signed-off-by: Bernd Kuhls <berndkuhls@hotmail.com>
+
+diff --git a/src/sis_driver.c b/src/sis_driver.c
+index 80b8d51..bd9c4e1 100644
+--- a/src/sis_driver.c
++++ b/src/sis_driver.c
+@@ -429,14 +429,14 @@ SISErrorLog(ScrnInfoPtr pScrn, const char *format, ...)
+     static const char *str = "**************************************************\n";
+ 
+     va_start(ap, format);
+-    xf86DrvMsg(pScrn->scrnIndex, X_ERROR, str);
++    xf86DrvMsg(pScrn->scrnIndex, X_ERROR, "%s", str);
+     xf86DrvMsg(pScrn->scrnIndex, X_ERROR,
+ 	"                      ERROR:\n");
+     xf86VDrvMsgVerb(pScrn->scrnIndex, X_ERROR, 1, format, ap);
+     va_end(ap);
+     xf86DrvMsg(pScrn->scrnIndex, X_ERROR,
+ 	"                  END OF MESSAGE\n");
+-    xf86DrvMsg(pScrn->scrnIndex, X_ERROR, str);
++    xf86DrvMsg(pScrn->scrnIndex, X_ERROR, "%s", str);
+ }
+ 
+ static void
+@@ -1914,14 +1914,14 @@ SiSUpdateXineramaScreenInfo(ScrnInfoPtr pScrn1)
+        if(infochanged && !usenonrect) {
+ 	  xf86DrvMsg(pScrn1->scrnIndex, X_INFO,
+ 			"Virtual screen size does not match maximum display modes...\n");
+-	  xf86DrvMsg(pScrn1->scrnIndex, X_INFO, rectxine);
++	  xf86DrvMsg(pScrn1->scrnIndex, X_INFO, "%s", rectxine);
+ 
+        }
+     } else if(infochanged && usenonrect) {
+        usenonrect = FALSE;
+        xf86DrvMsg(pScrn1->scrnIndex, X_INFO,
+ 		"Only clone modes available for this virtual screen size...\n");
+-       xf86DrvMsg(pScrn1->scrnIndex, X_INFO, rectxine);
++       xf86DrvMsg(pScrn1->scrnIndex, X_INFO, "%s", rectxine);
+     }
+ 
+     if(pSiS->maxCRT1_X1) {		/* Means we have at least one non-clone mode */
+--
+cgit v0.9.0.2-2-gbebe

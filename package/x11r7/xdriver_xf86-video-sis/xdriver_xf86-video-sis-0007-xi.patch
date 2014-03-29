@@ -1,0 +1,24 @@
+Fetch from:
+https://projects.archlinux.org/svntogit/packages.git/commit/trunk?h=packages/xf86-video-sis&id=7aaa7a9786ce5654df877311909244e0a6c42fd1
+
+Signed-off-by: Bernd Kuhls <berndkuhls@hotmail.com>
+
+--- xf86-video-sis-0.10.7/src/sis_driver.c	2013-03-10 13:57:50.000000000 +0100
++++ xf86-video-sis-0.10.7/src/sis_driver.c.new	2013-03-10 13:54:48.645203559 +0100
+@@ -9378,7 +9378,15 @@
+      }
+      if(doit) {
+ 	sigstate = xf86BlockSIGIO();
+-#if GET_ABI_MAJOR(ABI_XINPUT_VERSION) >= 15
++#if GET_ABI_MAJOR(ABI_XINPUT_VERSION) >= 18
++        {
++            double dx = x, dy = y;
++            miPointerSetPosition(inputInfo.pointer, Absolute, &dx, &dy,
++                NULL, NULL);
++            x = (int)dx;
++            y = (int)dy;
++        }
++#elif GET_ABI_MAJOR(ABI_XINPUT_VERSION) >= 15
+         {
+             double dx = x, dy = y;
+             miPointerSetPosition(inputInfo.pointer, Absolute, &dx, &dy);

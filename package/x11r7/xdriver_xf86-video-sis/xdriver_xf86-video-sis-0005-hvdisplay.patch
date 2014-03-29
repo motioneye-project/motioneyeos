@@ -1,0 +1,46 @@
+From 0a4336efaafac4c34d4287b5df586bbb418f7f76 Mon Sep 17 00:00:00 2001
+From: Alan Coopersmith <alan.coopersmith@oracle.com>
+Date: Sat, 26 Oct 2013 21:27:17 +0000
+Subject: Fix HDisplay/VDisplay typos
+
+Found by gcc -Wlogicalops:
+
+sis_driver.c: In function 'SiS_CheckModeCRT2':
+sis_driver.c:13754:5: warning: logical 'and' of mutually exclusive tests is always false [-Wlogical-op]
+sis_driver.c:13755:6: warning: logical 'and' of mutually exclusive tests is always false [-Wlogical-op]
+sis_driver.c:13756:6: warning: logical 'and' of mutually exclusive tests is always false [-Wlogical-op]
+sis_driver.c:13758:5: warning: logical 'and' of mutually exclusive tests is always false [-Wlogical-op]
+sis_driver.c:13759:6: warning: logical 'and' of mutually exclusive tests is always false [-Wlogical-op]
+
+Signed-off-by: Alan Coopersmith <alan.coopersmith@oracle.com>
+Reviewed-by: Gaetan Nadon <memsize@videotron.ca>
+---
+Fetch from:
+http://cgit.freedesktop.org/xorg/driver/xf86-video-sis/commit/?id=0a4336efaafac4c34d4287b5df586bbb418f7f76
+
+Signed-off-by: Bernd Kuhls <berndkuhls@hotmail.com>
+
+diff --git a/src/sis_driver.c b/src/sis_driver.c
+index cefe503..80b8d51 100644
+--- a/src/sis_driver.c
++++ b/src/sis_driver.c
+@@ -13751,12 +13751,12 @@ SiS_CheckModeCRT2(ScrnInfoPtr pScrn, DisplayModePtr mode, unsigned int VBFlags,
+       if( ((mode->HDisplay <= pSiS->LCDwidth) &&
+            (mode->VDisplay <= pSiS->LCDheight)) ||
+ 	  ((pSiS->SiS_Pr->SiS_CustomT == CUT_PANEL848) &&
+-	   (((mode->HDisplay == 1360) && (mode->HDisplay == 768)) ||
+-	    ((mode->HDisplay == 1024) && (mode->HDisplay == 768)) ||
+-	    ((mode->HDisplay ==  800) && (mode->HDisplay == 600)))) ||
++	   (((mode->HDisplay == 1360) && (mode->VDisplay == 768)) ||
++	    ((mode->HDisplay == 1024) && (mode->VDisplay == 768)) ||
++	    ((mode->HDisplay ==  800) && (mode->VDisplay == 600)))) ||
+ 	  ((pSiS->SiS_Pr->SiS_CustomT == CUT_PANEL856) &&
+-	   (((mode->HDisplay == 1024) && (mode->HDisplay == 768)) ||
+-	    ((mode->HDisplay ==  800) && (mode->HDisplay == 600)))) ) {
++	   (((mode->HDisplay == 1024) && (mode->VDisplay == 768)) ||
++	    ((mode->HDisplay ==  800) && (mode->VDisplay == 600)))) ) {
+ 
+ 	 ModeIndex = SiS_GetModeID_LCD(pSiS->VGAEngine, VBFlags, mode->HDisplay, mode->VDisplay, i,
+ 				pSiS->FSTN, pSiS->SiS_Pr->SiS_CustomT, pSiS->LCDwidth, pSiS->LCDheight,
+--
+cgit v0.9.0.2-2-gbebe
