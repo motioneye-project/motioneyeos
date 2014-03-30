@@ -107,10 +107,10 @@ config BR2_PACKAGE_MESA3D_OPENGL_ES
 endmenu
 
 config BR2_PACKAGE_PROVIDES_OPENGL_EGL
-	default "mesa3d"
+	default "mesa3d" if BR2_PACKAGE_MESA3D_OPENGL_EGL
 
 config BR2_PACKAGE_PROVIDES_OPENGL_ES
-	default "mesa3d"
+	default "mesa3d" if BR2_PACKAGE_MESA3D_OPENGL_ES
 
 endif
 
