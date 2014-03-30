@@ -73,14 +73,6 @@ FFMPEG_CONF_OPT = \
 
 FFMPEG_DEPENDENCIES += $(if $(BR2_PACKAGE_LIBICONV),libiconv)
 
-FFMPEG_CFLAGS = $(TARGET_CFLAGS)
-
-ifeq ($(BR2_xtensa),y)
-FFMPEG_CFLAGS += -mtext-section-literals
-endif
-
-FFMPEG_CONF_ENV = CFLAGS="$(FFMPEG_CFLAGS)"
-
 ifeq ($(BR2_PACKAGE_FFMPEG_GPL),y)
 FFMPEG_CONF_OPT += --enable-gpl
 else
