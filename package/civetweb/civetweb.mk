@@ -25,9 +25,6 @@ endif
 
 ifeq ($(BR2_CIVETWEB_WITH_LUA),y)
 	CIVETWEB_CONF_OPT += WITH_LUA=1
-ifeq ($(BR2_xtensa),y)
-	CIVETWEB_COPT += -mtext-section-literals
-endif
 endif
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
