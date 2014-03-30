@@ -21,12 +21,14 @@ ifeq ($(BR2_PACKAGE_BUSYBOX),y)
 endif
 
 define IFPLUGD_INSTALL_FIXUP
-	@if [ ! -f $(TARGET_DIR)/etc/ifplugd/ifplugd.conf ]; then \
+	if [ ! -f $(TARGET_DIR)/etc/ifplugd/ifplugd.conf ]; then \
 		$(INSTALL) -D $(@D)/conf/ifplugd.conf $(TARGET_DIR)/etc/ifplugd/ifplugd.conf; \
 		$(SED) 's^\(ARGS=.*\)w^\1^' $(TARGET_DIR)/etc/ifplugd/ifplugd.conf; \
 	fi
-	$(INSTALL) -D -m 0755 $(@D)/conf/ifplugd.action \
-		$(TARGET_DIR)/etc/ifplugd/ifplugd.action
+	if [ ! -f $(TARGET_DIR)/etc/ifplugd/ifplugd.action ]; then \
+		$(INSTALL) -D -m 0755 $(@D)/conf/ifplugd.action \
+			$(TARGET_DIR)/etc/ifplugd/ifplugd.action
+	fi
 	$(INSTALL) -D -m 0755 $(@D)/conf/ifplugd.init \
 		$(TARGET_DIR)/etc/init.d/S45ifplugd
 	# don't use bash for init script
