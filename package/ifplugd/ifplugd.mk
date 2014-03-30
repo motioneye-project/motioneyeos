@@ -27,7 +27,7 @@ define IFPLUGD_INSTALL_FIXUP
 	fi
 	if [ ! -f $(TARGET_DIR)/etc/ifplugd/ifplugd.action ]; then \
 		$(INSTALL) -D -m 0755 $(@D)/conf/ifplugd.action \
-			$(TARGET_DIR)/etc/ifplugd/ifplugd.action
+			$(TARGET_DIR)/etc/ifplugd/ifplugd.action ; \
 	fi
 	$(INSTALL) -D -m 0755 $(@D)/conf/ifplugd.init \
 		$(TARGET_DIR)/etc/init.d/S45ifplugd
