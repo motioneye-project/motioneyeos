@@ -72,8 +72,17 @@ endif
 # and is required for some packages. While this option can degrade both
 # code size and performance, the linker can usually optimize away the
 # overhead when a call ends up within a certain range.
+#
+# Use text-section-literals for Xtensa globally.
+# Collecting literals into separate section can be advantageous if that
+# section is placed into DTCM at link time. This is applicable for code
+# running on bare metal, but makes no sense under linux, where userspace
+# is isolated from the physical memory details. OTOH placing literals into
+# separate section breaks build of huge source files, because l32r
+# instruction can only access literals in 256 KBytes range.
+#
 ifeq ($(BR2_xtensa),y)
-TARGET_ABI += -mlongcalls
+TARGET_ABI += -mlongcalls -mtext-section-literals
 endif
 
 STAGING_SUBDIR = usr/$(GNU_TARGET_NAME)/sysroot
