@@ -1,24 +1,29 @@
-diff -rdup pptp-linux-1.7.0/pptp_callmgr.c pptp-linux-1.7.0.orig/pptp_callmgr.c
---- pptp-linux-1.7.0/pptp_callmgr.c	2005-07-28 03:15:11.000000000 +0200
-+++ pptp-linux-1.7.0.orig/pptp_callmgr.c	2007-08-24 09:20:39.000000000 +0200
-@@ -314,7 +314,7 @@ int open_inetsock(struct in_addr inetadd
-         return s;
+bzero is deprecated in POSIX.1-2001 and removed for POSIX.1-2008 so
+switch to memset instead.
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+diff -Nura pptp-1.8.0.orig/pptp_callmgr.c pptp-1.8.0/pptp_callmgr.c
+--- pptp-1.8.0.orig/pptp_callmgr.c	2013-10-23 05:10:46.000000000 -0300
++++ pptp-1.8.0/pptp_callmgr.c	2014-03-31 16:47:42.617643298 -0300
+@@ -340,7 +340,7 @@
      }
+ #endif
      if (localbind.s_addr != INADDR_NONE) {
 -        bzero(&src, sizeof(src));
-+        memset(&src, 0, sizeof(src));
-         src.sin_family = AF_INET;
-         src.sin_addr   = localbind;
-         if (bind(s, (struct sockaddr *) &src, sizeof(src)) != 0) {
-diff -rdup pptp-linux-1.7.0/pptp_gre.c pptp-linux-1.7.0.orig/pptp_gre.c
---- pptp-linux-1.7.0/pptp_gre.c	2005-07-28 03:15:11.000000000 +0200
-+++ pptp-linux-1.7.0.orig/pptp_gre.c	2007-08-24 09:20:56.000000000 +0200
-@@ -81,7 +81,7 @@ int pptp_gre_bind(struct in_addr inetadd
-     int s = socket(AF_INET, SOCK_RAW, PPTP_PROTO);
-     if (s < 0) { warn("socket: %s", strerror(errno)); return -1; }
++	memset(&src, 0, sizeof(src));
+         src.i.sin_family = AF_INET;
+         src.i.sin_addr   = localbind;
+         if (bind(s, &src.a, sizeof(src.i)) != 0) {
+diff -Nura pptp-1.8.0.orig/pptp_gre.c pptp-1.8.0/pptp_gre.c
+--- pptp-1.8.0.orig/pptp_gre.c	2013-10-23 05:10:46.000000000 -0300
++++ pptp-1.8.0/pptp_gre.c	2014-03-31 16:47:30.745249066 -0300
+@@ -103,7 +103,7 @@
+     }
+ #endif
      if (localbind.s_addr != INADDR_NONE) {
 -        bzero(&loc_addr, sizeof(loc_addr));
-+        memset(&loc_addr, 0, sizeof(loc_addr));
-         loc_addr.sin_family = AF_INET;
-         loc_addr.sin_addr   = localbind;
-         if (bind(s, (struct sockaddr *) &loc_addr, sizeof(loc_addr)) != 0) {
++	memset(&loc_addr, 0, sizeof(loc_addr));
+         loc_addr.i.sin_family = AF_INET;
+         loc_addr.i.sin_addr   = localbind;
+         if (bind(s, &loc_addr.a, sizeof(loc_addr.i)) != 0) {
