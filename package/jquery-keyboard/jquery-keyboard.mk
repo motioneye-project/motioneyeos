@@ -4,9 +4,8 @@
 #
 ################################################################################
 
-JQUERY_KEYBOARD_VERSION = v1.18.2
-JQUERY_KEYBOARD_SITE = \
-	http://github.com/Mottie/Keyboard/tarball/$(JQUERY_KEYBOARD_VERSION)
+JQUERY_KEYBOARD_VERSION = v1.18.6
+JQUERY_KEYBOARD_SITE = $(call github,Mottie,Keyboard,$(JQUERY_KEYBOARD_VERSION))
 JQUERY_KEYBOARD_LICENSE = MIT WTFPL
 JQUERY_KEYBOARD_LICENSE_FILES = README.markdown
 
