@@ -9,7 +9,7 @@ comment "xbmc requires an OpenGL ES and EGL backend"
 
 menuconfig BR2_PACKAGE_XBMC
 	bool "xbmc"
-	select BR2_HOST_NEEDS_JAVA
+	select BR2_NEEDS_HOST_JAVA
 	select BR2_PACKAGE_BOOST
 	select BR2_PACKAGE_BOOST_THREAD
 	select BR2_PACKAGE_BZIP2
