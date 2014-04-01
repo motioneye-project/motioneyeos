@@ -20,8 +20,23 @@ endif
 MAKE1:=$(HOSTMAKE) -j1
 MAKE:=$(HOSTMAKE) $(if $(PARALLEL_JOBS),-j$(PARALLEL_JOBS))
 
+ifeq ($(BR2_TOOLCHAIN_BUILDROOT),y)
+TARGET_VENDOR = $(call qstrip,$(BR2_TOOLCHAIN_BUILDROOT_VENDOR))
+else
+TARGET_VENDOR = buildroot
+endif
+
+# Sanity checks
+ifeq ($(TARGET_VENDOR),)
+$(error BR2_TOOLCHAIN_BUILDROOT_VENDOR is not allowed to be empty)
+endif
+ifeq ($(TARGET_VENDOR),unknown)
+$(error BR2_TOOLCHAIN_BUILDROOT_VENDOR cannot be 'unknown'. \
+        It might be confused with the native toolchain)
+endif
+
 # Compute GNU_TARGET_NAME
-GNU_TARGET_NAME=$(ARCH)-buildroot-$(TARGET_OS)-$(LIBC)$(ABI)
+GNU_TARGET_NAME=$(ARCH)-$(TARGET_VENDOR)-$(TARGET_OS)-$(LIBC)$(ABI)
 
 # Blackfin FLAT needs uclinux
 ifeq ($(BR2_bfin)$(BR2_BINFMT_FLAT),yy)

@@ -1,6 +1,23 @@
 # Config entries for internal toolchain backend
 
 if BR2_TOOLCHAIN_BUILDROOT
+
+config BR2_TOOLCHAIN_BUILDROOT_VENDOR
+	string "custom toolchain vendor name"
+	default "buildroot"
+	help
+	  This option allows to customize the "vendor" part of the
+	  toolchain tuple, where the toolchain tuple has the form
+	  <arch>-<vendor>-<os>-<libc>. The default value, "buildroot",
+	  is fine for most cases, except in very specific situations
+	  where gcc might make different decisions based on the vendor
+	  part of the tuple. The value "unknown" is not allowed, as the
+	  cross-compiling toolchain might then be confused with the
+	  native toolchain when the target and host architecture are
+	  identical. The value can not be empty either.
+
+	  If you're not sure, just leave the default "buildroot" value.
+
 source "package/linux-headers/Config.in.host"
 
 choice
