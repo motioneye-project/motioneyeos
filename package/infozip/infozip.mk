@@ -26,4 +26,17 @@ define INFOZIP_INSTALL_TARGET_CMDS
 		prefix=$(TARGET_DIR)/usr
 endef
 
+define HOST_INFOZIP_BUILD_CMDS
+	$(MAKE) $(HOST_CONFIGURE_OPTS) -C $(@D) \
+		CFLAGS="$(HOST_CFLAGS) -I. -DUNIX" \
+		AS="$(HOST_CC) -c" \
+		-f unix/Makefile generic
+endef
+
+define HOST_INFOZIP_INSTALL_CMDS
+	$(MAKE) $(HOST_CONFIGURE_OPTS) -C $(@D) -f unix/Makefile install \
+		prefix=$(HOST_DIR)/usr
+endef
+
 $(eval $(generic-package))
+$(eval $(host-generic-package))
