@@ -43,10 +43,6 @@ $(2)_SITE		?= $(call qstrip,$(BR2_LUAROCKS_MIRROR))
 # a target package, and can just add the required dependencies
 $(2)_DEPENDENCIES	+= host-luarocks luainterpreter
 
-# $(2)_DEPENDENCIES are handled for configure step (too late)
-# but host-luarocks is required to do the extract
-$(1)-extract: host-luarocks
-
 #
 # Extract step
 #
@@ -70,6 +66,10 @@ endif
 # Call the generic package infrastructure to generate the necessary
 # make targets
 $(call inner-generic-package,$(1),$(2),$(3),$(4))
+
+# $(2)_DEPENDENCIES are handled for configure step (too late)
+# but host-luarocks is required to do the extract
+$$($(2)_TARGET_EXTRACT): | host-luarocks
 
 endef
 
