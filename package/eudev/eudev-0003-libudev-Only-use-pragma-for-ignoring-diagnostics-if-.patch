@@ -1,0 +1,37 @@
+From dc8aa43b7b6d0cead7d8a0c1a151d289a5233a10 Mon Sep 17 00:00:00 2001
+From: Eric Le Bihan <eric.le.bihan.dev@free.fr>
+Date: Wed, 2 Apr 2014 12:36:52 +0200
+Subject: [PATCH] libudev: Only use #pragma for ignoring diagnostics if GCC
+ version supports it.
+
+
+Signed-off-by: Eric Le Bihan <eric.le.bihan.dev@free.fr>
+---
+ src/libudev/macro.h |    5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/src/libudev/macro.h b/src/libudev/macro.h
+index ac2a23f..fb55983 100644
+--- a/src/libudev/macro.h
++++ b/src/libudev/macro.h
+@@ -40,12 +40,17 @@
+ #define _cleanup_(x) __attribute__((cleanup(x)))
+ 
+ 
++#if __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 6)
+ #define DISABLE_WARNING_FORMAT_NONLITERAL                               \
+         _Pragma("GCC diagnostic push");                                 \
+         _Pragma("GCC diagnostic ignored \"-Wformat-nonliteral\"")
+ 
+ #define REENABLE_WARNING                                                \
+         _Pragma("GCC diagnostic pop")
++#else
++#define DISABLE_WARNING_FORMAT_NONLITERAL
++#define REENABLE_WARNING
++#endif
+ 
+ /* Rounds up */
+ 
+-- 
+1.7.9.5
+
