@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-TAGLIB_VERSION = 1.8
-TAGLIB_SITE = http://github.com/downloads/taglib/taglib
+TAGLIB_VERSION = 1.9.1
+TAGLIB_SITE = http://taglib.github.io/releases
 TAGLIB_INSTALL_STAGING = YES
 TAGLIB_LICENSE = LGPLv2.1 MPL
 TAGLIB_LICENSE_FILES = COPYING.LGPL COPYING.MPL
