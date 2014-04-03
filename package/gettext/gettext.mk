@@ -57,5 +57,11 @@ endef
 endif
 endif # GETTEXT_TOOLS = n
 
+# Disable interactive confirmation in host gettextize for package fixups
+define HOST_GETTEXT_GETTEXTIZE_CONFIRMATION
+	$(SED) '/read dummy/d' $(HOST_DIR)/usr/bin/gettextize
+endef
+HOST_GETTEXT_POST_INSTALL_HOOKS += HOST_GETTEXT_GETTEXTIZE_CONFIRMATION
+
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
