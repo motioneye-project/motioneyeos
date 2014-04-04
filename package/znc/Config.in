@@ -1,0 +1,10 @@
+config BR2_PACKAGE_ZNC
+	bool "znc"
+	depends on BR2_INSTALL_LIBSTDCPP
+	help
+	  Advanced IRC bouncer
+
+	  http://www.znc.in
+
+comment "znc needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP

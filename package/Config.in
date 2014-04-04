@@ -1025,6 +1025,7 @@ source "package/wpa_supplicant/Config.in"
 source "package/wvdial/Config.in"
 source "package/xinetd/Config.in"
 source "package/xl2tp/Config.in"
+source "package/znc/Config.in"
 
 endmenu
 
