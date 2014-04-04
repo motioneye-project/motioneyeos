@@ -13,6 +13,13 @@ PTPD2_AUTORECONF = YES
 PTPD2_LICENSE = BSD-2c
 PTPD2_LICENSE_FILES = COPYRIGHT
 
+ifeq ($(BR2_PACKAGE_NETSNMP),y)
+	PTPD2_CONF_ENV += ac_cv_path_PATH_NET_SNMP_CONFIG=$(STAGING_DIR)/usr/bin/net-snmp-config
+	PTPD2_DEPENDENCIES += netsnmp
+else
+	PTPD2_CONF_OPT += --disable-snmp
+endif
+
 define PTPD2_INSTALL_INIT_SYSV
 	$(INSTALL) -m 755 -D package/ptpd2/S65ptpd2 \
 		$(TARGET_DIR)/etc/init.d/S65ptpd2
