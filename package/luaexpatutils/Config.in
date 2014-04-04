@@ -1,12 +1,8 @@
 config BR2_PACKAGE_LUAEXPATUTILS
 	bool "luaexpatutils"
 	select BR2_PACKAGE_LUAEXPAT
-	depends on !BR2_PACKAGE_LUA_5_2
 	help
 	  lxp.doc is a module that provides useful features for working with
 	  XML formats in LOM format as used by the LuaExpat project from Kepler.
 
 	  https://github.com/stevedonovan/LuaExpatUtils
-
-comment "luaexpatutils needs a Lua 5.1 interpreter"
-	depends on BR2_PACKAGE_LUA_5_2
