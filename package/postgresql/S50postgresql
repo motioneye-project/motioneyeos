@@ -1,0 +1,44 @@
+#!/bin/sh
+#
+# start postgresql
+#
+
+umask 077
+
+if [ ! -f /var/lib/pgsql/PG_VERSION ]; then
+	echo "Initializing postgresql data base..."
+	su - postgres -c '/usr/bin/pg_ctl initdb -D /var/lib/pgsql'
+	echo "done"
+fi
+
+start() {
+	echo -n "Starting postgresql: "
+	su - postgres -c '/usr/bin/pg_ctl start -D /var/lib/pgsql -l logfile'
+	echo "OK"
+}
+stop() {
+	echo -n "Stopping postgresql: "
+	su - postgres -c '/usr/bin/pg_ctl stop -D /var/lib/pgsql -m fast'
+	echo "OK"
+}
+restart() {
+	stop
+	start
+}
+
+case "$1" in
+	start)
+		start
+		;;
+	stop)
+		stop
+		;;
+	restart|reload)
+		restart
+		;;
+	*)
+		echo "Usage: $0 {start|stop|restart}"
+		exit 1
+esac
+
+exit $?
