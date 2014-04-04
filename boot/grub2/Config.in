@@ -117,4 +117,12 @@ config BR2_TARGET_GRUB2_BUILTIN_MODULES
 	default "boot linux ext2 fat part_msdos part_gpt normal efi_gop" \
 		if BR2_TARGET_GRUB2_I386_EFI || BR2_TARGET_GRUB2_X86_64_EFI
 
+config BR2_TARGET_GRUB2_BUILTIN_CONFIG
+	string "builtin config"
+	help
+	  Path to a Grub 2 configuration file that will be embedded
+	  into the Grub image itself. This allows to set the root
+	  device and other configuration parameters, but however menu
+	  entries cannot be described in this embedded configuration.
+
 endif # BR2_TARGET_GRUB2

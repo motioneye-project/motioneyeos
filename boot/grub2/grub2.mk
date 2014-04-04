@@ -34,6 +34,7 @@ GRUB2_PLATFORM = efi
 endif
 
 GRUB2_BUILTIN_MODULES = $(call qstrip,$(BR2_TARGET_GRUB2_BUILTIN_MODULES))
+GRUB2_BUILTIN_CONFIG = $(call qstrip,$(BR2_TARGET_GRUB2_BUILTIN_CONFIG))
 
 # Grub2 is kind of special: it considers CC, LD and so on to be the
 # tools to build the native tools (i.e to be executed on the build
@@ -71,6 +72,7 @@ define GRUB2_IMAGE_INSTALLATION
 		-O $(GRUB2_TUPLE) \
 		-o $(GRUB2_IMAGE) \
 		$(if $(GRUB2_PREFIX),-p $(GRUB2_PREFIX)) \
+		$(if $(GRUB2_BUILTIN_CONFIG),-c $(GRUB2_BUILTIN_CONFIG)) \
 		$(GRUB2_BUILTIN_MODULES)
 	mkdir -p $(dir $(GRUB2_CFG))
 	$(INSTALL) -D -m 0644 boot/grub2/grub.cfg $(GRUB2_CFG)
