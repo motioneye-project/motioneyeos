@@ -15,7 +15,7 @@ Signed-off-by: Peter Seiderer <ps.report@gmx.net>
  2 files changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/configure.ac b/configure.ac
-index f7907a7..9f834df 100755
+index a5d1655..7b5a7a6 100755
 --- a/configure.ac
 +++ b/configure.ac
 @@ -173,6 +173,9 @@ AC_CHECK_LIB(ipu, mxc_ipu_lib_task_init, [IPU_LIBS=-lipu], [echo "No libipu arou
@@ -25,19 +25,19 @@ index f7907a7..9f834df 100755
 +AC_SEARCH_LIBS([shm_open], [rt], [SHM_LIBS="-lrt"])
 +AC_SUBST(SHM_LIBS)
 +
- FSL_MM_CORE_CFLAGS=`$PKG_CONFIG --cflags libfslaudiocodec 2>/dev/null`
- FSL_MM_CORE_CFLAGS="$FSL_MM_CORE_CFLAGS `$PKG_CONFIG --cflags libfslvideocodec 2>/dev/null`"
- FSL_MM_CORE_CFLAGS="$FSL_MM_CORE_CFLAGS `$PKG_CONFIG --cflags libfslparser 2>/dev/null`"
+ dnl of the POSIX Real-Time Extensions.
+ AC_CHECK_LIB(rt, clock_gettime)
+ AC_SUBST(RT_CFLAGS)
 diff --git a/libs/Makefile.am b/libs/Makefile.am
-index a68fd4b..7b19b92 100755
+index 2f56bba..5b30657 100755
 --- a/libs/Makefile.am
 +++ b/libs/Makefile.am
-@@ -12,7 +12,7 @@ libgstfsl_@GST_MAJORMINOR@_la_SOURCES = \
+@@ -42,7 +42,7 @@ libgstfsl_@GST_MAJORMINOR@_la_CFLAGS  += -DIPULIB
+ endif
  
- libgstfsl_@GST_MAJORMINOR@_la_CFLAGS  = $(GST_BASE_CFLAGS) $(IPU_CFLAGS) -I../inc/common
  libgstfsl_@GST_MAJORMINOR@_la_LDFLAGS = -version-info @GSTMXLIBS_VERSION@
--libgstfsl_@GST_MAJORMINOR@_la_LIBADD = $(GST_BASE_LIBS) -lgstvideo-@GST_MAJORMINOR@ -lgstinterfaces-$(GST_MAJORMINOR) $(IPU_LIBS)
-+libgstfsl_@GST_MAJORMINOR@_la_LIBADD = $(GST_BASE_LIBS) -lgstvideo-@GST_MAJORMINOR@ -lgstinterfaces-$(GST_MAJORMINOR) $(IPU_LIBS) $(SHM_LIBS)
+-libgstfsl_@GST_MAJORMINOR@_la_LIBADD = $(GST_BASE_LIBS) -lgstvideo-@GST_MAJORMINOR@ -lgstinterfaces-$(GST_MAJORMINOR) $(IPU_LIBS) $(RT_LIBS)
++libgstfsl_@GST_MAJORMINOR@_la_LIBADD = $(GST_BASE_LIBS) -lgstvideo-@GST_MAJORMINOR@ -lgstinterfaces-$(GST_MAJORMINOR) $(IPU_LIBS) $(RT_LIBS) $(SHM_LIBS)
  
  libgstfsl_@GST_MAJORMINOR@includedir = $(includedir)/gstreamer-@GST_MAJORMINOR@/gst/imx-mm
  libgstfsl_@GST_MAJORMINOR@include_HEADERS = \
