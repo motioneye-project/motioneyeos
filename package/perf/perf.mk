@@ -36,9 +36,11 @@ define PERF_BUILD_CMDS
 	fi
 	$(Q)if test "$(BR2_PACKAGE_ELFUTILS)" = "" ; then \
 		if ! grep -q NO_LIBELF $(LINUX_DIR)/tools/perf/Makefile ; then \
-			echo "The perf tool in your kernel cannot be built without libelf." ; \
-			echo "Either upgrade your kernel to >= 3.7, or enable the elfutils package." ; \
-			exit 1 ; \
+			if ! test -r $(LINUX_DIR)/tools/perf/config/Makefile ; then \
+				echo "The perf tool in your kernel cannot be built without libelf." ; \
+				echo "Either upgrade your kernel to >= 3.7, or enable the elfutils package." ; \
+				exit 1 ; \
+			fi \
 		fi \
 	fi
 	$(TARGET_MAKE_ENV) $(MAKE) -C $(LINUX_DIR)/tools/perf \
