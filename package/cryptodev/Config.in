@@ -37,6 +37,9 @@ config BR2_PACKAGE_OCF_LINUX
 
 endchoice
 
+config BR2_PACKAGE_HAS_CRYPTODEV
+	def_bool y
+
 config BR2_PACKAGE_PROVIDES_CRYPTODEV
 	string
 	default "cryptodev-linux" if BR2_PACKAGE_CRYPTODEV_LINUX
