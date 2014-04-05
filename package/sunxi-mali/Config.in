@@ -1,6 +1,6 @@
 config BR2_PACKAGE_SUNXI_MALI
 	bool "sunxi-mali"
-	select BR2_PACKAGE_HAS_OPENGL_EGL
+	select BR2_PACKAGE_HAS_LIBEGL
 	select BR2_PACKAGE_HAS_LIBGLES
 	# The egl/gles mali libraries are provided as a git submodule of the
 	# sunxi-mali repo and are downloaded by the sunxi-mali-prop package.
@@ -18,7 +18,7 @@ config BR2_PACKAGE_SUNXI_MALI
 
 if BR2_PACKAGE_SUNXI_MALI
 
-config BR2_PACKAGE_PROVIDES_OPENGL_EGL
+config BR2_PACKAGE_PROVIDES_LIBEGL
 	default "sunxi-mali"
 
 config BR2_PACKAGE_PROVIDES_LIBGLES

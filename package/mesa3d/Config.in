@@ -92,7 +92,7 @@ depends on BR2_PACKAGE_MESA3D_DRIVER
 config BR2_PACKAGE_MESA3D_OPENGL_EGL
 	bool "EGL"
 	depends on BR2_PACKAGE_HAS_UDEV
-	select BR2_PACKAGE_HAS_OPENGL_EGL
+	select BR2_PACKAGE_HAS_LIBEGL
 	help
 	  Use the Khronos EGL APIs. EGL is a window manager for OpenGL applications
 	  similar to GLX, for X, and WGL, for Windows.
@@ -106,7 +106,7 @@ config BR2_PACKAGE_MESA3D_OPENGL_ES
 
 endmenu
 
-config BR2_PACKAGE_PROVIDES_OPENGL_EGL
+config BR2_PACKAGE_PROVIDES_LIBEGL
 	default "mesa3d" if BR2_PACKAGE_MESA3D_OPENGL_EGL
 
 config BR2_PACKAGE_PROVIDES_LIBGLES
