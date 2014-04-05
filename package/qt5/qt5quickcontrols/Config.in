@@ -5,7 +5,7 @@ config BR2_PACKAGE_QT5QUICKCONTROLS
 	select BR2_PACKAGE_QT5DECLARATIVE
 	depends on BR2_PACKAGE_QT5_JSCORE_AVAILABLE
 	depends on BR2_PACKAGE_HAS_OPENGL_EGL
-	depends on BR2_PACKAGE_HAS_OPENGL_ES
+	depends on BR2_PACKAGE_HAS_LIBGLES
 	help
 	  Qt is a cross-platform application and UI framework for
 	  developers using C++.
@@ -15,5 +15,5 @@ config BR2_PACKAGE_QT5QUICKCONTROLS
 	  http://qt-project.org
 
 comment "qt5quickcontrols requires an OpenGL-capable backend"
-	depends on (!BR2_PACKAGE_HAS_OPENGL_EGL || !BR2_PACKAGE_HAS_OPENGL_ES) && \
+	depends on (!BR2_PACKAGE_HAS_OPENGL_EGL || !BR2_PACKAGE_HAS_LIBGLES) && \
 		BR2_PACKAGE_QT5_JSCORE_AVAILABLE
