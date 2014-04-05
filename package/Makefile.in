@@ -371,4 +371,5 @@ include package/pkg-cmake.mk
 include package/pkg-luarocks.mk
 include package/pkg-perl.mk
 include package/pkg-python.mk
+include package/pkg-virtual.mk
 include package/pkg-generic.mk
