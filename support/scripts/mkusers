@@ -137,12 +137,16 @@ check_user_validity() {
         fi
 
         # check the group does not already exists with another gid
-        if [ -n "${_gid}" -a ${_gid} -ne ${gid} ]; then
+        # Need to split the check in two, otherwise '[' complains it
+        # is missing arguments when _gid is empty
+        if [ -n "${_gid}" ] && [ ${_gid} -ne ${gid} ]; then
             fail "group already exists with gid '${_gid}'\n"
         fi
 
         # check the user does not already exists with another gid
-        if [ -n "${_ugid}" -a ${_ugid} -ne ${gid} ]; then
+        # Need to split the check in two, otherwise '[' complains it
+        # is missing arguments when _ugid is empty
+        if [ -n "${_ugid}" ] && [ ${_ugid} -ne ${gid} ]; then
             fail "user already exists with gid '${_ugid}'\n"
         fi
     fi
@@ -156,7 +160,9 @@ check_user_validity() {
         fi
 
         # check the user does not already exists with another uid
-        if [ -n "${_uid}" -a ${_uid} -ne ${uid} ]; then
+        # Need to split the check in two, otherwise '[' complains it
+        # is missing arguments when _uid is empty
+        if [ -n "${_uid}" ] && [ ${_uid} -ne ${uid} ]; then
             fail "user already exists with uid '${_uid}'\n"
         fi
     fi
