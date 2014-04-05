@@ -24,6 +24,8 @@ include::adding-packages-luarocks.txt[]
 
 include::adding-packages-perl.txt[]
 
+include::adding-packages-virtual.txt[]
+
 include::adding-packages-hooks.txt[]
 
 include::adding-packages-gettext.txt[]
