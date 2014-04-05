@@ -6,7 +6,7 @@ config BR2_PACKAGE_RPI_USERLAND
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	select BR2_PACKAGE_HAS_LIBEGL
 	select BR2_PACKAGE_HAS_LIBGLES
-	select BR2_PACKAGE_HAS_OPENVG
+	select BR2_PACKAGE_HAS_LIBOPENVG
 	select BR2_PACKAGE_HAS_LIBOPENMAX
 	help
 	  Raspberry Pi Userland contains the necessary library to use the
@@ -25,7 +25,7 @@ config BR2_PACKAGE_PROVIDES_LIBEGL
 config BR2_PACKAGE_PROVIDES_LIBGLES
 	default "rpi-userland"
 
-config BR2_PACKAGE_PROVIDES_OPENVG
+config BR2_PACKAGE_PROVIDES_LIBOPENVG
 	default "rpi-userland"
 
 config BR2_PACKAGE_PROVIDES_LIBOPENMAX

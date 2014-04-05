@@ -61,7 +61,7 @@ else
 	CAIRO_CONF_OPT += --disable-glesv2
 endif
 
-ifeq ($(BR2_PACKAGE_HAS_OPENVG),y)
+ifeq ($(BR2_PACKAGE_HAS_LIBOPENVG),y)
 	CAIRO_CONF_OPT += --enable-vg
 	CAIRO_DEPENDENCIES += libopenvg
 else
