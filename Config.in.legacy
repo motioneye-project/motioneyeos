@@ -101,6 +101,30 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2014.05"
 
+config BR2_PACKAGE_LUA_INTERPRETER_EDITING_NONE
+	bool "Lua command-line editing none has been renamed"
+	select BR2_LEGACY
+	help
+	  The BR2_PACKAGE_LUA_INTERPRETER_EDITING_NONE option has been
+	  renamed to BR2_PACKAGE_LUA_EDITING_NONE. You will have to select
+	  it in the corresponding choice.
+
+config BR2_PACKAGE_LUA_INTERPRETER_READLINE
+	bool "Lua command-line editing using readline has been renamed"
+	select BR2_LEGACY
+	help
+	  The BR2_PACKAGE_LUA_INTERPRETER_READLINE option has been
+	  renamed to BR2_PACKAGE_LUA_READLINE. You will have to select
+	  it in the corresponding choice.
+
+config BR2_PACKAGE_LUA_INTERPRETER_LINENOISE
+	bool "Lua command-line editing using linenoise has been renamed"
+	select BR2_LEGACY
+	help
+	  The BR2_PACKAGE_LUA_INTERPRETER_LINENOISE option has been
+	  renamed to BR2_PACKAGE_LUA_LINENOISE. You will have to select
+	  it in the corresponding choice.
+
 config BR2_PACKAGE_DVB_APPS_UTILS
 	bool "dvb-apps utilities now built by default"
 	select BR2_LEGACY

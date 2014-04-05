@@ -30,22 +30,22 @@ config BR2_PACKAGE_LUAINTERPRETER_ABI_VERSION
 	default "5.2"	if BR2_PACKAGE_LUA_5_2
 
 choice
-	prompt "Lua Interpreter command-line editing"
-	default BR2_PACKAGE_LUA_INTERPRETER_EDITING_NONE
+	prompt "Lua command-line editing"
+	default BR2_PACKAGE_LUA_EDITING_NONE
 
-config BR2_PACKAGE_LUA_INTERPRETER_EDITING_NONE
+config BR2_PACKAGE_LUA_EDITING_NONE
 	bool "none"
 	help
 	  None.
 
-config BR2_PACKAGE_LUA_INTERPRETER_READLINE
+config BR2_PACKAGE_LUA_READLINE
 	bool "readline support"
 	select BR2_PACKAGE_READLINE
 	select BR2_PACKAGE_NCURSES
 	help
 	  Enables command-line editing in the Lua interpreter.
 
-config BR2_PACKAGE_LUA_INTERPRETER_LINENOISE
+config BR2_PACKAGE_LUA_LINENOISE
 	bool "linenoise support"
 	select BR2_PACKAGE_LINENOISE
 	help

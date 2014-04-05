@@ -31,12 +31,12 @@ else
 	LUA_MYLIBS += -ldl
 endif
 
-ifeq ($(BR2_PACKAGE_LUA_INTERPRETER_READLINE),y)
+ifeq ($(BR2_PACKAGE_LUA_READLINE),y)
 	LUA_DEPENDENCIES = readline ncurses
 	LUA_MYLIBS += -lreadline -lhistory -lncurses
 	LUA_CFLAGS += -DLUA_USE_READLINE
 else
-ifeq ($(BR2_PACKAGE_LUA_INTERPRETER_LINENOISE),y)
+ifeq ($(BR2_PACKAGE_LUA_LINENOISE),y)
 	LUA_DEPENDENCIES = linenoise
 	LUA_MYLIBS += -llinenoise
 	LUA_CFLAGS += -DLUA_USE_LINENOISE
