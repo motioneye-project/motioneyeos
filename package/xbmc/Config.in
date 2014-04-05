@@ -160,6 +160,7 @@ config BR2_PACKAGE_XBMC_WAVPACK
 
 comment "XBMC addons"
 
+source "package/xbmc-addon-xvdr/Config.in"
 source "package/xbmc-pvr-addons/Config.in"
 
 endif # BR2_PACKAGE_XBMC

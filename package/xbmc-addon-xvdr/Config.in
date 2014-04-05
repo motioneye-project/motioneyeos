@@ -1,0 +1,14 @@
+config BR2_PACKAGE_XBMC_ADDON_XVDR
+	bool "xbmc-addon-xvdr"
+	help
+	  This is a PVR add-on for XBMC to add VDR (http://tvdr.de/)
+	  as a TV/PVR Backend to XBMC.
+
+	  It adds support for Live TV watching, replaying of Recordings,
+	  programming Timers and EPG TV Guide to use on same computer or
+	  over the Network.
+
+	  https://github.com/pipelka/xbmc-addon-xvdr
+
+	  Note: since the VDR server is not packaged in Buildroot, using
+	  this addon requires that a remote VDR server be used.

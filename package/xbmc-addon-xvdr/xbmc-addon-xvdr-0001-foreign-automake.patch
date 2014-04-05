@@ -1,0 +1,28 @@
+commit 846b0b5a8b559f94dffadf5b2f95ca845b6ba9f1
+Author: Yann E. MORIN <yann.morin.1998@free.fr>
+Date:   Wed Mar 26 07:45:58 2014 +0100
+
+    configure: set the foreign flag
+    
+    This is required since we do not bundle the necessary files (NEWS,
+    INSTALL et al.) Setting it in configure.in is needed to be able
+    to run autoreconf (in lieu of the weird autogen.sh)
+    
+    Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+
+Patch accepted upstream in master:
+    https://github.com/pipelka/xbmc-addon-xvdr/commit/84e5860f488e67a3a3386c779f9a56adeb3dc220
+
+diff --git a/configure.in b/configure.in
+index 6e692e1..7be0d18 100755
+--- a/configure.in
++++ b/configure.in
+@@ -12,7 +12,7 @@ AC_CANONICAL_HOST
+ AC_CANONICAL_TARGET
+ 
+ dnl Setup for automake
+-AM_INIT_AUTOMAKE
++AM_INIT_AUTOMAKE([foreign])
+ 
+ dnl Check for tools
+ 
