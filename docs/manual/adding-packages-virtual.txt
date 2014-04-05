@@ -91,3 +91,52 @@ provider, but only if it is selected.
 
 Of course, do not forget to add the proper build and runtime dependencies for
 this package!
+
+Notes on depending on a virtual package
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+When adding a package that requires a certain +FEATURE+ provided by a virtual
+package, you have to use +depends on BR2_PACKAGE_HAS_FEATURE+, like so:
+
+---------------------------
+config BR2_PACKAGE_HAS_FEATURE
+    bool
+
+config BR2_PACKAGE_FOO
+    bool "foo"
+    depends on BR2_PACKAGE_HAS_FEATURE
+---------------------------
+
+Notes on depending on a specific provider
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+If your package really requires a specific provider, then you'll have to
+make your package +depends on+ this provider; you can _not_ +select+ a
+provider.
+
+Let's take an example with two providers for a +FEATURE+:
+
+---------------------------
+config BR2_PACKAGE_HAS_FEATURE
+    bool
+
+config BR2_PACKAGE_FOO
+    bool "foo"
+    select BR2_PACKAGE_HAS_FEATURE
+
+config BR2_PACKAGE_BAR
+    bool "bar"
+    select BR2_PACKAGE_HAS_FEATURE
+---------------------------
+
+And you are adding a package that needs +FEATURE+ as provided by +foo+,
+but not as provided by +bar+.
+
+If you were to use +select BR2_PACKAGE_FOO+, then the user would still
+be able to select +BR2_PACKAGE_BAR+ in the menuconfig. This would create
+a configuration inconsistency, whereby two providers of the same +FEATURE+
+would be enabled at once, one explicitly set by the user, the other
+implicitly by your +select+.
+
+Instead, you have to use +depends on BR2_PACKAGE_FOO+, which avoids any
+implicit configuration inconsistency.
