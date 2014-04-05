@@ -1,6 +1,6 @@
 config BR2_PACKAGE_LBASE64
 	bool "lbase64"
-	depends on BR2_PACKAGE_HAS_LUA_INTERPRETER
+	depends on BR2_PACKAGE_HAS_LUAINTERPRETER
 	depends on !BR2_PACKAGE_LUA_5_2
 	help
 	  A base64 library for Lua

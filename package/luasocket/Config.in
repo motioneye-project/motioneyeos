@@ -1,6 +1,6 @@
 config BR2_PACKAGE_LUASOCKET
 	bool "luasocket"
-	depends on BR2_PACKAGE_HAS_LUA_INTERPRETER
+	depends on BR2_PACKAGE_HAS_LUAINTERPRETER
 	help
 	  LuaSocket is the most comprehensive networking support library
 	  for the Lua language.

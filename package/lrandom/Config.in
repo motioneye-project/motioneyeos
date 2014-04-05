@@ -1,6 +1,6 @@
 config BR2_PACKAGE_LRANDOM
 	bool "lrandom"
-	depends on BR2_PACKAGE_HAS_LUA_INTERPRETER
+	depends on BR2_PACKAGE_HAS_LUAINTERPRETER
 	help
 	  A library for generating random numbers
 	  based on the Mersenne Twister

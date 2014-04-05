@@ -1,6 +1,6 @@
 config BR2_PACKAGE_LUA
 	bool "lua"
-	select BR2_PACKAGE_HAS_LUA_INTERPRETER
+	select BR2_PACKAGE_HAS_LUAINTERPRETER
 	help
 	  Lua is a powerful, fast, light-weight, embeddable scripting language.
 
@@ -8,7 +8,7 @@ config BR2_PACKAGE_LUA
 
 if BR2_PACKAGE_LUA
 
-config BR2_PACKAGE_PROVIDES_LUA_INTERPRETER
+config BR2_PACKAGE_PROVIDES_LUAINTERPRETER
 	default "lua"
 
 choice
