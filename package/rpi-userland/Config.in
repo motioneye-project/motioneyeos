@@ -7,7 +7,7 @@ config BR2_PACKAGE_RPI_USERLAND
 	select BR2_PACKAGE_HAS_LIBEGL
 	select BR2_PACKAGE_HAS_LIBGLES
 	select BR2_PACKAGE_HAS_OPENVG
-	select BR2_PACKAGE_HAS_OPENMAX
+	select BR2_PACKAGE_HAS_LIBOPENMAX
 	help
 	  Raspberry Pi Userland contains the necessary library to use the
 	  VideoCore driver.
@@ -28,7 +28,7 @@ config BR2_PACKAGE_PROVIDES_LIBGLES
 config BR2_PACKAGE_PROVIDES_OPENVG
 	default "rpi-userland"
 
-config BR2_PACKAGE_PROVIDES_OPENMAX
+config BR2_PACKAGE_PROVIDES_LIBOPENMAX
 	default "rpi-userland"
 
 endif
