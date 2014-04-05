@@ -1,10 +1,10 @@
 // -*- mode:doc; -*-
 // vim: set syntax=asciidoc:
 
-[[virtual-package-tutorial]]
+Infrastructure for virtual packages
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Virtual package tutorial
-~~~~~~~~~~~~~~~~~~~~~~~~
+[[virtual-package-tutorial]]
 
 In Buildroot, a virtual package is a package whose functionalities are
 provided by one or more packages, referred to as 'providers'. The virtual
@@ -15,6 +15,9 @@ For example, 'OpenGL ES' is an API for 2D and 3D graphics on embedded systems.
 The implementation of this API is different for the 'Allwinner Tech Sunxi' and
 the 'Texas Instruments OMAP35xx' plaftorms. So +libgles+ will be a virtual
 package and +sunxi-mali+ and +ti-gfx+ will be the providers.
+
++virtual-package+ tutorial
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 In the following example, we will explain how to add a new virtual package
 ('something-virtual') and a provider for it ('some-provider').
@@ -42,7 +45,7 @@ providers.
 Virtual package's +*.mk+ file
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Makefile +package/something-virtual/something-virtual.mk+ should contain:
+The +.mk+ for the virtual package should just evaluate the +virtual-package+ macro:
 
 ---------------------------
 01: ################################################################################
@@ -51,20 +54,11 @@ The Makefile +package/something-virtual/something-virtual.mk+ should contain:
 04: #
 05: ################################################################################
 06:
-07: SOMETHING_VIRTUAL_SOURCE =
-08: SOMETHING_VIRTUAL_DEPENDENCIES = $(call qstrip,$(BR2_PACKAGE_PROVIDES_SOMETHING_VIRTUAL))
-09:
-10: ifeq ($(BR2_PACKAGE_HAS_SOMETHING_VIRTUAL),y)
-11: ifeq ($(SOMETHING_VIRTUAL_DEPENDENCIES),)
-12: $(error No something-virtual implementation selected. Configuration error.)
-13: endif
-14: endif
-15:
-16: $(eval $(generic-package))
+07: $(eval $(virtual-package))
 ---------------------------
 
-The Makefile is quite small as it will only check if a provider for the
-virtual package has been selected.
+The ability to have target and host packages is also available, with the
++host-virtual-package+ macro.
 
 Provider's +Config.in+ file
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
