@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-FLEX_VERSION = 2.5.39
+FLEX_VERSION = 2.5.37
 FLEX_SITE = http://download.sourceforge.net/project/flex
 FLEX_INSTALL_STAGING = YES
 FLEX_LICENSE = FLEX

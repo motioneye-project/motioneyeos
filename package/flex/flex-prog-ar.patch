@@ -1,0 +1,11 @@
+diff -rup flex-2.5.33.orig/Makefile.in flex-2.5.33/Makefile.in
+--- flex-2.5.33.orig/Makefile.in	2007-01-18 17:29:25.000000000 +0100
++++ flex-2.5.33/Makefile.in	2007-01-18 18:28:22.000000000 +0100
+@@ -105,7 +105,6 @@ am__installdirs = "$(DESTDIR)$(libdir)"
+ 	"$(DESTDIR)$(includedir)"
+ libLIBRARIES_INSTALL = $(INSTALL_DATA)
+ LIBRARIES = $(lib_LIBRARIES)
+-AR = ar
+ ARFLAGS = cru
+ libfl_a_AR = $(AR) $(ARFLAGS)
+ libfl_a_LIBADD =
