@@ -26,8 +26,13 @@ WESTON_CONF_OPT = \
 	--disable-wayland-compositor \
 	--disable-headless-compositor \
 	--disable-weston-launch \
-	--disable-colord \
-	--disable-libunwind
+	--disable-colord
+
+ifeq ($(BR2_PACKAGE_LIBUNWIND),y)
+WESTON_DEPENDENCIES += libunwind
+else
+WESTON_CONF_OPT += --disable-libunwind
+endif
 
 ifeq ($(BR2_PACKAGE_WESTON_FBDEV),y)
 WESTON_CONF_OPT += --enable-fbdev-compositor
