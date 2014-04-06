@@ -15,7 +15,9 @@ LIBEVDEV_DEPENDENCIES = host-pkgconf
 # Needs Python to generate a header file
 # We can't rely on the system Python, since it may be too old
 # (missing argparse in python 2.6)
-LIBEVDEV_DEPENDENCIES += host-python
+# libevdev build scripts support both python2 and python3, so avoid unneeded
+# dependency on host-python.
+LIBEVDEV_DEPENDENCIES += $(if $(BR2_PACKAGE_PYTHON3),host-python3,host-python)
 
 # package source code coming from git, so it doesn't have generated
 # configure and Makefile.in
