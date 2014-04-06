@@ -8,5 +8,16 @@ config BR2_PACKAGE_SNMPPP
 
 	  http://www.agentpp.com/snmp_pp3_x/snmp_pp3_x.html
 
+if BR2_PACKAGE_SNMPPP
+
+config BR2_PACKAGE_SNMPPP_LOGGING
+	bool "enable logging"
+	help
+	  Enable logging output for SNMP++.
+	  According to the SNMP++ documentation, disabling logging "increases
+	  performance drastically and minimizes memory consumption".
+
+endif
+
 comment "snmp++ needs a toolchain w/ threads, C++"
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS
