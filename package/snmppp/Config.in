@@ -2,7 +2,6 @@ config BR2_PACKAGE_SNMPPP
 	bool "snmp++"
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_TOOLCHAIN_HAS_THREADS
-	select BR2_PACKAGE_OPENSSL
 	help
 	  SNMP++v3.x is a C++ API which supports SNMP v1, v2c, and v3.
 
@@ -16,6 +15,13 @@ config BR2_PACKAGE_SNMPPP_LOGGING
 	  Enable logging output for SNMP++.
 	  According to the SNMP++ documentation, disabling logging "increases
 	  performance drastically and minimizes memory consumption".
+
+config BR2_PACKAGE_SNMPPP_SNMPV3
+	bool "enable SNMPv3"
+	default y
+	select BR2_PACKAGE_OPENSSL
+	help
+	  Enable optional support for SNMP++. This selects OpenSSL.
 
 endif
 
