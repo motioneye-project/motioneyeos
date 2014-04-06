@@ -8,7 +8,7 @@ HDR_M="${HDR_VER%%.*}"
 HDR_V="${HDR_VER#*.}"
 HDR_m="${HDR_V%%.*}"
 
-EXEC="/tmp/br.check-headers.$(uuidgen)"
+EXEC="$(mktemp --tmpdir check-headers.XXXXXX)"
 
 # By the time we get here, we do not always have the staging-dir
 # already populated (think external toolchain), so we can not use
