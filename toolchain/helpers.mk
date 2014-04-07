@@ -166,7 +166,7 @@ copy_toolchain_sysroot = \
 # Check the specified kernel headers version actually matches the
 # version in the toolchain.
 #
-# $1: cross-gcc path
+# $1: sysroot directory
 # $2: kernel version string, in the form: X.Y
 #
 check_kernel_headers_version = \

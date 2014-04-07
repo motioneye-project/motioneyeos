@@ -431,7 +431,7 @@ define TOOLCHAIN_EXTERNAL_CONFIGURE_CMDS
 	fi ; \
 	if [ "$(BR2_TOOLCHAIN_EXTERNAL_CUSTOM)" = "y" ]; then \
 		$(call check_kernel_headers_version,\
-			"$(TOOLCHAIN_EXTERNAL_CC) $(TOOLCHAIN_EXTERNAL_CFLAGS)",\
+			$(call toolchain_find_sysroot,$(TOOLCHAIN_EXTERNAL_CC) $(TOOLCHAIN_EXTERNAL_CFLAGS)),\
 			$(call qstrip,$(BR2_TOOLCHAIN_HEADERS_AT_LEAST))); \
 	fi ; \
 	if test "$(BR2_arm)" = "y" ; then \

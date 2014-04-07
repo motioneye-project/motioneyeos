@@ -1,6 +1,6 @@
 #!/bin/sh
 
-CC="${1}"
+SYSROOT="${1}"
 # Make sure we have enough version components
 HDR_VER="${2}.0.0"
 
@@ -9,15 +9,6 @@ HDR_V="${HDR_VER#*.}"
 HDR_m="${HDR_V%%.*}"
 
 EXEC="$(mktemp --tmpdir check-headers.XXXXXX)"
-
-# By the time we get here, we do not always have the staging-dir
-# already populated (think external toolchain), so we can not use
-# it.
-# So we just ask the cross compiler what its default sysroot is.
-# For multilib-aware toolchains where we should use a non-default
-# sysroot, it's not really a problem since the version of the kernel
-# headers is the same for all sysroots.
-SYSROOT=$(${CC} -print-sysroot)
 
 # We do not want to account for the patch-level, since headers are
 # not supposed to change for different patchlevels, so we mask it out.
