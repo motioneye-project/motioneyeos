@@ -13,10 +13,10 @@ TZDATA_LICENSE = Public domain
 TZDATA_DEFAULT_ZONELIST = africa antarctica asia australasia backward etcetera \
 			europe factory northamerica pacificnew southamerica
 
-ifeq ($(call qstrip,$(BR2_PACKAGE_TZDATA_ZONELIST)),default)
+ifeq ($(call qstrip,$(BR2_TARGET_TZ_ZONELIST)),default)
 TZDATA_ZONELIST = $(TZDATA_DEFAULT_ZONELIST)
 else
-TZDATA_ZONELIST = $(call qstrip,$(BR2_PACKAGE_TZDATA_ZONELIST))
+TZDATA_ZONELIST = $(call qstrip,$(BR2_TARGET_TZ_ZONELIST))
 endif
 
 # Don't strip any path components during extraction.

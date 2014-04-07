@@ -267,6 +267,29 @@ config BR2_TARGET_GENERIC_GETTY_OPTIONS
 endmenu
 endif
 
+config BR2_TARGET_TZ_INFO
+	bool "Install timezone info"
+	depends on BR2_TOOLCHAIN_USES_GLIBC
+	select BR2_PACKAGE_TZDATA
+	help
+	  Say 'y' here to install timezone info.
+
+if BR2_TARGET_TZ_INFO
+
+config BR2_TARGET_TZ_ZONELIST
+	string "timezone list"
+	default "default"
+	help
+	  Space-separated list of time zones to compile.
+
+	  The value "default" includes all commonly used time zones. Note
+	  that this set consumes around 5.5M.
+
+	  The full list is the list of files in the time zone database source,
+	  not including the build and .tab files.
+
+endif # BR2_TARGET_TZ_INFO
+
 config BR2_TARGET_GENERIC_REMOUNT_ROOTFS_RW
 	bool "remount root filesystem read-write during boot"
 	default y

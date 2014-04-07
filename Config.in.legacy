@@ -101,6 +101,21 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2014.05"
 
+config BR2_TARGET_TZ_ZONELIST
+	default BR2_PACKAGE_TZDATA_ZONELIST if BR2_PACKAGE_TZDATA_ZONELIST != ""
+
+config BR2_PACKAGE_TZDATA_ZONELIST
+	string "tzdata: the timezone list option has been renamed"
+	help
+	  The option BR2_PACKAGE_TZDATA_ZONELIST has been renamed to
+	  BR2_TARGET_TZ_ZONELIST, and moved to the "System configuration"
+	  menu. You'll need to select BR2_TARGET_TZ_INFO.
+
+config BR2_PACKAGE_TZDATA_ZONELIST_WRAP
+	bool
+	default y if BR2_PACKAGE_TZDATA_ZONELIST != ""
+	select BR2_LEGACY
+
 config BR2_PACKAGE_LUA_INTERPRETER_EDITING_NONE
 	bool "Lua command-line editing none has been renamed"
 	select BR2_LEGACY
