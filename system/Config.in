@@ -269,8 +269,10 @@ endif
 
 config BR2_TARGET_TZ_INFO
 	bool "Install timezone info"
-	depends on BR2_TOOLCHAIN_USES_GLIBC
-	select BR2_PACKAGE_TZDATA
+	# No timezone for musl; only for uClibc or (e)glibc.
+	depends on BR2_TOOLCHAIN_USES_GLIBC || BR2_TOOLCHAIN_USES_UCLIBC
+	select BR2_PACKAGE_TZDATA if BR2_TOOLCHAIN_USES_GLIBC
+	select BR2_PACKAGE_TZ if BR2_TOOLCHAIN_USES_UCLIBC
 	help
 	  Say 'y' here to install timezone info.
 
@@ -283,7 +285,7 @@ config BR2_TARGET_TZ_ZONELIST
 	  Space-separated list of time zones to compile.
 
 	  The value "default" includes all commonly used time zones. Note
-	  that this set consumes around 5.5M.
+	  that this set consumes around 5.5M for (e)glibc and 2.1M for uClibc.
 
 	  The full list is the list of files in the time zone database source,
 	  not including the build and .tab files.
