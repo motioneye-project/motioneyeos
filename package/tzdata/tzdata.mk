@@ -50,4 +50,24 @@ define TZDATA_INSTALL_TARGET_CMDS
 	fi
 endef
 
+define HOST_TZDATA_EXTRACT_CMDS
+	gzip -d -c $(DL_DIR)/$(TZDATA_SOURCE) \
+		| $(TAR) --strip-components=0 -C $(@D) -xf -
+endef
+
+define HOST_TZDATA_BUILD_CMDS
+	(cd $(@D); \
+		for zone in $(TZDATA_ZONELIST); do \
+			$(ZIC) -d _output/posix -y yearistype.sh $$zone; \
+			$(ZIC) -d _output/right -L leapseconds -y yearistype.sh $$zone; \
+		done; \
+	)
+endef
+
+define HOST_TZDATA_INSTALL_CMDS
+	mkdir -p $(HOST_DIR)/usr/share/zoneinfo
+	cp -a $(@D)/_output/* $(HOST_DIR)/usr/share/zoneinfo
+endef
+
 $(eval $(generic-package))
+$(eval $(host-generic-package))
