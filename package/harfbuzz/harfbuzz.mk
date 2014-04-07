@@ -13,6 +13,11 @@ HARFBUZZ_INSTALL_STAGING = YES
 
 HARFBUZZ_CONF_OPT = --without-coretext --without-uniscribe --without-graphite2
 
+ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),y)
+# forgets to link test programs with -pthread breaking static link
+HARFBUZZ_CONF_ENV = LDFLAGS="$(TARGET_LDFLAGS) -pthread"
+endif
+
 ifeq ($(BR2_PACKAGE_CAIRO),y)
 	HARFBUZZ_DEPENDENCIES += cairo
 	HARFBUZZ_CONF_OPT += --with-cairo=yes
