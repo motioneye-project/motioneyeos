@@ -1,5 +1,11 @@
 menu "Toolchain"
 
+# Invisible option that makes sure the toolchain package always gets
+# built
+config BR2_TOOLCHAIN
+	bool
+	default y
+
 # Should be selected for glibc or eglibc
 config BR2_TOOLCHAIN_USES_GLIBC
 	bool

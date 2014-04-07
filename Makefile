@@ -294,14 +294,7 @@ unexport TERMINFO
 
 GNU_HOST_NAME:=$(shell support/gnuconfig/config.guess)
 
-################################################################################
-#
-# The list of stuff to build for the target toolchain
-# along with the packages to build for the target.
-#
-################################################################################
-
-TARGETS:= toolchain
+TARGETS :=
 
 # silent mode requested?
 QUIET:=$(if $(findstring s,$(MAKEFLAGS)),-q)
