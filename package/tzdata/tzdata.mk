@@ -19,6 +19,8 @@ else
 TZDATA_ZONELIST = $(call qstrip,$(BR2_TARGET_TZ_ZONELIST))
 endif
 
+TZDATA_LOCALTIME = $(call qstrip,$(BR2_TARGET_LOCALTIME))
+
 # Don't strip any path components during extraction.
 define TZDATA_EXTRACT_CMDS
 	gzip -d -c $(DL_DIR)/$(TZDATA_SOURCE) \
@@ -39,8 +41,13 @@ define TZDATA_INSTALL_TARGET_CMDS
 	cp -a $(@D)/_output/* $(TARGET_DIR)/usr/share/zoneinfo
 	cd $(TARGET_DIR)/usr/share/zoneinfo;    \
 	for zone in posix/*; do                 \
-	    ln -sfn "$${zone}" "$${zone##*/}";    \
+	    ln -sfn "$${zone}" "$${zone##*/}";  \
 	done
+	if [ -n "$(TZDATA_LOCALTIME)" ]; then                           \
+	    cd $(TARGET_DIR)/etc;                                       \
+	    ln -sf ../usr/share/zoneinfo/$(TZDATA_LOCALTIME) localtime; \
+	    echo "$(TZDATA_LOCALTIME)" >timezone;                       \
+	fi
 endef
 
 $(eval $(generic-package))
