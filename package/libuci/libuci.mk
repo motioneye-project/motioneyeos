@@ -10,14 +10,12 @@ LIBUCI_LICENSE = LGPLv2.1
 LIBUCI_INSTALL_STAGING = YES
 LIBUCI_DEPENDENCIES = libubox
 
-ifeq ($(BR2_USE_MMU),y) # fork()
-ifeq ($(BR2_PACKAGE_LUA_5_1),y)
+ifeq ($(BR2_USE_MMU)$(BR2_PACKAGE_LUA_5_1),yy)
 LIBUCI_DEPENDENCIES += lua
 LIBUCI_CONF_OPT += -DLUAPATH=$(STAGING_DIR)/usr/lib/lua/5.1 \
 	-DLUA_CFLAGS=-I$(STAGING_DIR)/usr/include
 else
 LIBUCI_CONF_OPT += -DBUILD_LUA:BOOL=OFF
 endif
-endif # MMU
 
 $(eval $(cmake-package))
