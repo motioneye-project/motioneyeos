@@ -18,6 +18,11 @@ CPPCMS_CONF_OPT += -DDISABLE_ICONV=ON
 CPPCMS_DEPENDENCIES += icu
 endif
 
+ifeq ($(BR2_TOOLCHAIN_USES_UCLIBC),y)
+# posix backend needs monetary.h which isn't available on uClibc
+CPPCMS_CONF_OPT += -DDISABLE_POSIX_LOCALE=on
+endif
+
 # We copy cppcms_tmpl_cc from staging to host because this file can be
 # needed for compiling packages using cppcms. And it is not worth
 # creating a host package just for a python script.

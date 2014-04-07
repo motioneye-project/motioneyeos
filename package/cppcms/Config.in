@@ -4,8 +4,6 @@ config BR2_PACKAGE_CPPCMS
 	select BR2_PACKAGE_PCRE
 	select BR2_PACKAGE_LIBGCRYPT
 	depends on BR2_INSTALL_LIBSTDCPP
-	# cppcms uses <monetary.h> which doesn't exist in uClibc
-	depends on BR2_TOOLCHAIN_USES_GLIBC
 	help
 	  CppCMS is a Free High Performance Web Development Framework
 	  (not a CMS) aimed for Rapid Web Application Development. It
@@ -33,5 +31,5 @@ config BR2_PACKAGE_CPPCMS_ICU
 
 endif
 
-comment "cppcms needs an (e)glibc toolchain w/ C++"
-	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_USES_GLIBC
+comment "cppcms needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP
