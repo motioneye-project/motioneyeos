@@ -2,6 +2,7 @@
 config BR2_PACKAGE_TAGLIB
 	bool "taglib"
 	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_USE_WCHAR
 	help
 	  TagLib is a library for reading and editing the meta-data of
 	  several popular audio formats. Currently it supports both ID3v1
@@ -20,5 +21,5 @@ config BR2_PACKAGE_TAGLIB_ASF
 
 endif
 
-comment "taglib needs a toolchain w/ C++"
-	depends on !BR2_INSTALL_LIBSTDCPP
+comment "taglib needs a toolchain w/ C++, wchar"
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR

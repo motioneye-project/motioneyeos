@@ -324,12 +324,13 @@ config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_SPEEX
 config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_TAGLIB
 	bool "taglib"
 	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_USE_WCHAR
 	select BR2_PACKAGE_TAGLIB
 	help
 	  Taglib tagging plugin library
 
-comment "taglib needs a toolchain w/ C++"
-	depends on !BR2_INSTALL_LIBSTDCPP
+comment "taglib needs a toolchain w/ C++, wchar"
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR
 
 config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_VPX
 	bool "vpx (webm)"
