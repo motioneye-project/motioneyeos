@@ -1,0 +1,39 @@
+From 74f27b8305cfbcf9324a07bea93829237c86e687 Mon Sep 17 00:00:00 2001
+From: Ross Lagerwall <rosslagerwall@gmail.com>
+Date: Tue, 18 Jun 2013 08:48:44 +0100
+Subject: tld-parser.py: Force file io to use utf-8
+
+This fixes an issue where the build would fail with a UnicodeDecodeError
+when run in a non-utf8 locale (which is typical in build environments)
+using Python 3.
+
+https://bugzilla.gnome.org/show_bug.cgi?id=702534
+
+Patch status: upstream
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+
+diff --git a/libsoup/tld-parser.py b/libsoup/tld-parser.py
+index c1a0346..5d9d2ba 100755
+--- a/libsoup/tld-parser.py
++++ b/libsoup/tld-parser.py
+@@ -5,13 +5,14 @@
+ # Based on tld-parser.c Copyright (C) 2012 Igalia S.L.
+ 
+ import sys
++import codecs
+ 
+ SOUP_TLD_RULE_NORMAL = 0
+ SOUP_TLD_RULE_MATCH_ALL = 1 << 0
+ SOUP_TLD_RULE_EXCEPTION = 1 << 1
+ 
+-tlds_file = open(sys.argv[1])
+-inc_file = open(sys.argv[2], 'w')
++tlds_file = codecs.open(sys.argv[1], encoding='utf-8')
++inc_file = codecs.open(sys.argv[2], 'w', encoding='utf-8')
+ 
+ first = True
+ for rule in tlds_file:
+-- 
+cgit v0.10.1
+
