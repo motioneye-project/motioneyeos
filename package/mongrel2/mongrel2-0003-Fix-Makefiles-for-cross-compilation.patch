@@ -23,8 +23,8 @@ index 6dce4a6..d48e05e 100644
 --- a/Makefile
 +++ b/Makefile
 @@ -1,4 +1,4 @@
--CFLAGS=-g -O2 -Wall -Wextra -Isrc -pthread -rdynamic -DNDEBUG $(OPTFLAGS) -D_FILE_OFFSET_BITS=64
-+override CFLAGS += -g -O2 -Wall -Wextra -Isrc -pthread -rdynamic -DNDEBUG $(OPTFLAGS) -D_FILE_OFFSET_BITS=64
+-CFLAGS=-g -O2 -Wall -Wextra -Isrc -Isrc/polarssl/include -pthread -rdynamic -DNDEBUG $(OPTFLAGS) -D_FILE_OFFSET_BITS=64
++override CFLAGS += -g -O2 -Wall -Wextra -Isrc -Isrc/polarssl/include -pthread -rdynamic -DNDEBUG $(OPTFLAGS) -D_FILE_OFFSET_BITS=64
  LIBS=-lzmq -ldl -lsqlite3 $(OPTLIBS)
  PREFIX?=/usr/local
  
@@ -34,8 +34,8 @@ index 398490c..53f2255 100644
 +++ b/tools/config_modules/Makefile
 @@ -1,5 +1,5 @@
  PREFIX?=/usr/local
--CFLAGS=-I../../src $(OPTFLAGS) -fPIC -shared -nostartfiles -L../../build
-+override CFLAGS += -I../../src $(OPTFLAGS) -fPIC -shared -nostartfiles -L../../build
+-CFLAGS=-I../../src -I../../src/polarssl/include $(OPTFLAGS) -fPIC -shared -nostartfiles -L../../build
++override CFLAGS += -I../../src -I../../src/polarssl/include $(OPTFLAGS) -fPIC -shared -nostartfiles -L../../build
  LDFLAGS=$(OPTLIBS)
  
  MONGO_SRC = mongo-c-driver/src/bson.c \
@@ -45,8 +45,8 @@ index f9f4556..6077b79 100644
 +++ b/tools/filters/Makefile
 @@ -1,5 +1,5 @@
  PREFIX?=/usr/local
--CFLAGS=-I../../src $(OPTFLAGS) -fPIC -shared -nostartfiles -L../../build
-+override CFLAGS += -I../../src $(OPTFLAGS) -fPIC -shared -nostartfiles -L../../build
+-CFLAGS=-I../../src -I../../src/polarssl/include $(OPTFLAGS) -g -fPIC -shared -nostartfiles -L../../build
++ override CFLAGS += -I../../src -I../../src/polarssl/include $(OPTFLAGS) -g -fPIC -shared -nostartfiles -L../../build
  LDFLAGS=$(OPTLIBS)
  
  all: null.so
