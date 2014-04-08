@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBUCI_VERSION = 262fede3e8c8c08c1eb0d1be9bf102232fb86cb9
+LIBUCI_VERSION = ed938cc8e423d4a33b8f31e6e6d1eb0805ae3d10
 LIBUCI_SITE = git://nbd.name/uci.git
 LIBUCI_LICENSE = LGPLv2.1
 LIBUCI_INSTALL_STAGING = YES
