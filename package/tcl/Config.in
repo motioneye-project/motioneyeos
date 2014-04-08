@@ -1,28 +1,35 @@
 config BR2_PACKAGE_TCL
 	bool "tcl"
+	# fork()
+	depends on BR2_USE_MMU
+	depends on BR2_INET_IPV6
 	help
 	  TCL (Tool Command Language) is a simple textual language.
 
 	  http://www.tcl.tk
 
+comment "tcl needs a toolchain w/ ipv6"
+	depends on BR2_USE_MMU
+	depends on !BR2_INET_IPV6
+
 if BR2_PACKAGE_TCL
 
 config BR2_PACKAGE_TCL_DEL_ENCODINGS
-	bool "delete encodings (saves 1.4Mb)"
+	bool "delete encodings (saves 1.6Mb)"
 	default y
 	help
 	  Delete encoding files for TCL. If your programs do not use
 	  various tcl character recoding functions, you may safely
 	  choose Y here.
 
-	  It saves approx. 1.4 Mb of space.
+	  It saves approx. 1.6 Mb of space.
 
 config BR2_PACKAGE_TCL_SHLIB_ONLY
 	bool "install only shared library"
 	default y
 	help
 	  Install only TCL shared library and not binary tcl
-	  interpreter(tclsh8.4).
+	  interpreter (tclsh).
 
 	  Saves ~14kb.
 
