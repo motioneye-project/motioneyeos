@@ -20,6 +20,12 @@ config BR2_PACKAGE_PYTHON_PYGAME_IMAGE
 	  pygame module for loading, saving and transfering images.
 	  Will autoselect sdl_image with png and jpeg support.
 
+config BR2_PACKAGE_PYTHON_PYGAME_EXAMPLES
+	bool "pygame.examples"
+	help
+	  Include examples.
+	  Selecting this option adds about 1.5 MB to the target file system.
+
 config BR2_PACKAGE_PYTHON_PYGAME_FONT
 	bool "pygame.font"
 	select BR2_PACKAGE_SDL_TTF
