@@ -1,0 +1,44 @@
+From 83a1afd73f2d0aff9aa11c1754d6d407983afa7d Mon Sep 17 00:00:00 2001
+From: Eric Le Bihan <eric.le.bihan.dev@free.fr>
+Date: Wed, 9 Apr 2014 12:48:36 +0200
+Subject: [PATCH] Fix khrplatform.h not installed if EGL is disabled.
+
+KHR/khrplatform.h is required by the EGL, GLES and VG headers, but is
+only installed if Mesa3d is compiled with EGL support.
+
+This patch installs this header file unconditionally.
+
+Signed-off-by: Eric Le Bihan <eric.le.bihan.dev@free.fr>
+---
+ src/egl/main/Makefile.am | 3 ---
+ src/mapi/Makefile.am     | 3 +++
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/src/egl/main/Makefile.am b/src/egl/main/Makefile.am
+index 60cb600..1cd5cd2 100644
+--- a/src/egl/main/Makefile.am
++++ b/src/egl/main/Makefile.am
+@@ -126,9 +126,6 @@ pkgconfigdir = $(libdir)/pkgconfig
+ 
+ pkgconfig_DATA = egl.pc
+ 
+-khrdir = $(includedir)/KHR
+-khr_HEADERS = $(top_srcdir)/include/KHR/khrplatform.h
+-
+ egldir = $(includedir)/EGL
+ egl_HEADERS = \
+ 	$(top_srcdir)/include/EGL/eglext.h \
+diff --git a/src/mapi/Makefile.am b/src/mapi/Makefile.am
+index ef53803..2a8c555 100644
+--- a/src/mapi/Makefile.am
++++ b/src/mapi/Makefile.am
+@@ -40,3 +40,6 @@ endif
+ if HAVE_OPENVG
+ SUBDIRS += vgapi
+ endif
++
++khrdir = $(includedir)/KHR
++khr_HEADERS = $(top_srcdir)/include/KHR/khrplatform.h
+-- 
+1.9.1
+
