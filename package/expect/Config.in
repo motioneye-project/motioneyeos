@@ -1,0 +1,7 @@
+config BR2_PACKAGE_EXPECT
+	bool "expect"
+	help
+	  Expect is a tool for automating interactive applications
+	  such as telnet, ftp, passwd, fsck, rlogin, ssh, tip, etc.
+
+	  http://expect.sourceforge.net/

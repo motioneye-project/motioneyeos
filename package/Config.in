@@ -477,6 +477,7 @@ source "package/ruby/Config.in"
 source "package/tcl/Config.in"
 if BR2_PACKAGE_TCL
 menu "tcl libraries/modules"
+source "package/expect/Config.in"
 source "package/tcllib/Config.in"
 endmenu
 endif
