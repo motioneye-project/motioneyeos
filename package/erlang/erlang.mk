@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-ERLANG_VERSION = R16B03-1
+ERLANG_VERSION = 17.0
 ERLANG_SITE = http://www.erlang.org/download
 ERLANG_SOURCE = otp_src_$(ERLANG_VERSION).tar.gz
 ERLANG_DEPENDENCIES = host-erlang
