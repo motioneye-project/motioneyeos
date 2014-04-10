@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-STUNNEL_VERSION = 4.56
-STUNNEL_SITE = http://ftp.nluug.nl/pub/networking/stunnel/archive/4.x/
+STUNNEL_VERSION = 5.01
+STUNNEL_SITE = http://ftp.nluug.nl/pub/networking/stunnel/archive/5.x/
 STUNNEL_DEPENDENCIES = openssl
 STUNNEL_CONF_OPT = --with-ssl=$(STAGING_DIR)/usr --with-threads=fork
 STUNNEL_LICENSE = GPLv2+
