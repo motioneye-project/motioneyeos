@@ -16,6 +16,11 @@ GD_LICENSE_FILES = COPYING
 GD_CONFIG_SCRIPTS = gdlib-config
 GD_CONF_OPT = --without-x --disable-rpath
 
+ifeq ($(BR2_TOOLCHAIN_HAS_THREADS)$(BR2_PREFER_STATIC_LIB),yy)
+# add -pthread when linking executables statically
+GD_CONF_ENV += LDFLAGS="$(TARGET_LDFLAGS) -pthread"
+endif
+
 ifeq ($(BR2_PACKAGE_FONTCONFIG),y)
 GD_DEPENDENCIES += fontconfig
 GD_CONF_OPT += --with-fontconfig
