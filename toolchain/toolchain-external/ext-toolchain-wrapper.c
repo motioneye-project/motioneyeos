@@ -26,7 +26,7 @@ static char sysroot[PATH_MAX];
 
 /**
  * GCC errors out with certain combinations of arguments (examples are
- * -mabi-float={hard|soft} and -m{little|big}-endian), so we have to ensure
+ * -mfloat-abi={hard|soft} and -m{little|big}-endian), so we have to ensure
  * that we only pass the predefined one to the real compiler if the inverse
  * option isn't in the argument list.
  * This specifies the worst case number of extra arguments we might pass
