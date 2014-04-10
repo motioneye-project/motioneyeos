@@ -13,6 +13,7 @@ LIBLOGGING_CONF_OPT = --enable-cached-man-pages
 
 ifeq ($(BR2_INIT_SYSTEMD),y)
 LIBLOGGING_CONF_OPT += --enable-journal
+LIBLOGGING_DEPENDENCIES += systemd
 else
 LIBLOGGING_CONF_OPT += --disable-journal
 endif
