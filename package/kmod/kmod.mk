@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-KMOD_VERSION = 16
+KMOD_VERSION = 17
 KMOD_SOURCE = kmod-$(KMOD_VERSION).tar.xz
 KMOD_SITE = $(BR2_KERNEL_MIRROR)/linux/utils/kernel/kmod/
 KMOD_INSTALL_STAGING = YES
@@ -30,6 +30,11 @@ endif
 ifeq ($(BR2_PACKAGE_XZ),y)
 KMOD_DEPENDENCIES += xz
 KMOD_CONF_OPT += --with-xz
+endif
+
+ifeq ($(BR2_PACKAGE_PYTHON),y)
+KMOD_DEPENDENCIES += python
+KMOD_CONF_OPT += --enable-python
 endif
 
 # --gc-sections triggers a bug in the current Xtensa binutils
