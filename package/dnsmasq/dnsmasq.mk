@@ -4,12 +4,13 @@
 #
 ################################################################################
 
-DNSMASQ_VERSION = 2.68
+DNSMASQ_VERSION = 2.69
 DNSMASQ_SOURCE = dnsmasq-$(DNSMASQ_VERSION).tar.xz
 DNSMASQ_SITE = http://thekelleys.org.uk/dnsmasq
 DNSMASQ_MAKE_ENV = $(TARGET_MAKE_ENV) CC="$(TARGET_CC)"
 DNSMASQ_MAKE_OPT = COPTS="$(DNSMASQ_COPTS)" PREFIX=/usr CFLAGS="$(TARGET_CFLAGS)"
 DNSMASQ_MAKE_OPT += DESTDIR=$(TARGET_DIR) LDFLAGS="$(TARGET_LDFLAGS)"
+DNSMASQ_DEPENDENCIES = host-pkgconf
 DNSMASQ_LICENSE = Dual GPLv2/GPLv3
 DNSMASQ_LICENSE_FILES = COPYING COPYING-v3
 
@@ -19,6 +20,14 @@ endif
 
 ifneq ($(BR2_PACKAGE_DNSMASQ_DHCP),y)
 	DNSMASQ_COPTS += -DNO_DHCP
+endif
+
+ifeq ($(BR2_PACKAGE_DNSMASQ_DNSSEC),y)
+	DNSMASQ_DEPENDENCIES += gmp nettle
+	DNSMASQ_COPTS += -DHAVE_DNSSEC
+ifeq ($(BR2_PREFER_STATIC_LIB),y)
+	DNSMASQ_COPTS += -DHAVE_DNSSEC_STATIC
+endif
 endif
 
 ifneq ($(BR2_PACKAGE_DNSMASQ_TFTP),y)
@@ -34,7 +43,7 @@ ifeq ($(BR2_PACKAGE_DNSMASQ_IDN),y)
 endif
 
 ifeq ($(BR2_PACKAGE_DNSMASQ_CONNTRACK),y)
-	DNSMASQ_DEPENDENCIES += host-pkgconf libnetfilter_conntrack
+	DNSMASQ_DEPENDENCIES += libnetfilter_conntrack
 endif
 
 ifeq ($(BR2_PACKAGE_DNSMASQ_CONNTRACK),y)
@@ -45,7 +54,7 @@ endef
 endif
 
 ifeq ($(BR2_PACKAGE_DNSMASQ_LUA),y)
-	DNSMASQ_DEPENDENCIES += lua host-pkgconf
+	DNSMASQ_DEPENDENCIES += lua
 	DNSMASQ_MAKE_OPT += LDFLAGS+="-ldl"
 
 define DNSMASQ_ENABLE_LUA
@@ -60,7 +69,7 @@ ifneq ($(BR2_LARGEFILE),y)
 endif
 
 ifeq ($(BR2_PACKAGE_DBUS),y)
-	DNSMASQ_DEPENDENCIES += host-pkgconf dbus
+	DNSMASQ_DEPENDENCIES += dbus
 endif
 
 define DNSMASQ_FIX_PKGCONFIG

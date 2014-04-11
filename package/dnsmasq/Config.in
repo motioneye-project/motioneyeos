@@ -20,6 +20,13 @@ config BR2_PACKAGE_DNSMASQ_DHCP
 	help
 	  Enable DHCP server support in dnsmasq.
 
+config BR2_PACKAGE_DNSMASQ_DNSSEC
+	bool "DNSSEC support"
+	select BR2_PACKAGE_GMP
+	select BR2_PACKAGE_NETTLE
+	help
+	  Enable DNSSEC validation and caching support.
+
 config BR2_PACKAGE_DNSMASQ_IDN
 	bool "IDN support"
 	depends on BR2_USE_WCHAR
