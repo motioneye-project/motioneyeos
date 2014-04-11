@@ -1,0 +1,11 @@
+config BR2_PACKAGE_LIBGC
+	bool "libgc"
+	select BR2_PACKAGE_LIBATOMIC_OPS
+	depends on BR2_PACKAGE_LIBATOMIC_ARCH_SUPPORTS
+	help
+	  The Boehm-Demers-Weiser conservative garbage collector can be used
+	  as a garbage collecting replacement for C malloc or C++ new. It allows
+	  you to allocate memory basically as you normally would, without
+	  explicitly deallocating memory that is no longer useful.
+
+	  http://www.hboehm.info/gc/
