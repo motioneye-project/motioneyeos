@@ -32,8 +32,8 @@ KMOD_DEPENDENCIES += xz
 KMOD_CONF_OPT += --with-xz
 endif
 
-ifeq ($(BR2_PACKAGE_PYTHON),y)
-KMOD_DEPENDENCIES += python
+ifeq ($(BR2_PACKAGE_PYTHON)$(BR2_PACKAGE_PYTHON3),y)
+KMOD_DEPENDENCIES += $(if $(BR2_PACKAGE_PYTHON),python,python3)
 KMOD_CONF_OPT += --enable-python
 endif
 
