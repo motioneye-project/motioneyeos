@@ -1,0 +1,27 @@
+Prefer python2 binary in case python points to python3
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+
+diff -uNr libxml2-2.9.1.org/configure.in libxml2-2.9.1/configure.in
+--- libxml2-2.9.1.org/configure.in	2013-04-19 09:25:20.000000000 +0200
++++ libxml2-2.9.1/configure.in	2014-04-12 14:16:26.579361068 +0200
+@@ -748,6 +748,11 @@
+ PYTHON_TESTS=
+ pythondir=
+ if test "$with_python" != "no" ; then
++    if test -x "$with_python/bin/python2"
++    then
++        echo Found python2 in $with_python/bin/python2
++        PYTHON="$with_python/bin/python2"
++    else
+     if test -x "$with_python/bin/python"
+     then
+         echo Found python in $with_python/bin/python
+@@ -773,6 +778,7 @@
+ 	    fi
+ 	fi
+     fi
++    fi
+     if test "$PYTHON" != ""
+     then
+         PYTHON_VERSION=`$PYTHON -c "from distutils import sysconfig; print(sysconfig.get_python_version())"`
