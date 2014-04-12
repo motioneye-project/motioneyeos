@@ -9,7 +9,6 @@ RSH_REDONE_SOURCE = rsh-redone_$(RSH_REDONE_VERSION).orig.tar.gz
 RSH_REDONE_SITE = $(BR2_DEBIAN_MIRROR)/debian/pool/main/r/rsh-redone
 
 rsh-redone-bin-y =
-rsh-redone-bin-$(BR2_PACKAGE_RSH_REDONE_RCP) += rcp
 rsh-redone-bin-$(BR2_PACKAGE_RSH_REDONE_RLOGIN) += rlogin
 rsh-redone-bin-$(BR2_PACKAGE_RSH_REDONE_RSH) += rsh
 rsh-redone-sbin-y =

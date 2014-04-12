@@ -9,10 +9,6 @@ config BR2_PACKAGE_RSH_REDONE
 
 if BR2_PACKAGE_RSH_REDONE
 
-# this is incomplete in the source
-#config BR2_PACKAGE_RSH_REDONE_RCP
-#	bool "rcp"
-
 config BR2_PACKAGE_RSH_REDONE_RLOGIN
 	bool "rlogin"
 
