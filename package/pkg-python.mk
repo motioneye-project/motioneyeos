@@ -183,7 +183,7 @@ endif
 
 # Python interpreter to use for building the package.
 #
-# We may want to specify the python interpreter toi be used for building a
+# We may want to specify the python interpreter to be used for building a
 # package, especially for host-packages (target packages must be built using
 # the same version of the interpreter as the one installed on the target).
 #
