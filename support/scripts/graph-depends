@@ -8,6 +8,8 @@
 # dependencies for the current configuration.
 # If '-p <package-name>' is specified, graph-depends will draw a graph
 # of dependencies for the given package name.
+# If '-d <depth>' is specified, graph-depends will limit the depth of
+# the dependency graph to 'depth' levels.
 #
 # Limitations
 #
@@ -31,10 +33,13 @@ FULL_MODE = 1
 PKG_MODE  = 2
 
 mode = 0
+max_depth = 0
 
 parser = argparse.ArgumentParser(description="Graph pacakges dependencies")
 parser.add_argument("--package", '-p', metavar="PACKAGE",
                     help="Graph the dependencies of PACKAGE")
+parser.add_argument("--depth", '-d', metavar="DEPTH",
+                    help="Limit the dependency graph to DEPTH levels")
 args = parser.parse_args()
 
 if args.package == None:
@@ -42,6 +47,9 @@ if args.package == None:
 else:
     mode = PKG_MODE
     rootpkg = args.package
+
+if args.depth != None:
+    max_depth = int(args.depth)
 
 allpkgs = []
 
@@ -193,6 +201,7 @@ if mode == FULL_MODE:
     deps = get_all_depends(filtered_targets)
     if deps != None:
         dependencies += deps
+    rootpkg = 'all'
 
 # In pkg mode, start directly with get_all_depends() on the requested
 # package
@@ -201,26 +210,42 @@ elif mode == PKG_MODE:
 
 dependencies = remove_redundant_deps(dependencies)
 
-# Start printing the graph data
-print "digraph G {"
+# Make the dependencies a dictionnary { 'pkg':[dep1, dep2, ...] }
+dict_deps = {}
+for dep in dependencies:
+    if not dict_deps.has_key(dep[0]):
+        dict_deps[dep[0]] = []
+    dict_deps[dep[0]].append(dep[1])
 
-# First, the dependencies. Usage of set allows to remove duplicated
-# dependencies in the graph
-for dep in set(dependencies):
-    print "%s -> %s" % (pkg_node_name(dep[0]), pkg_node_name(dep[1]))
-
-# Then, the node attributes: color, style and label.
-for pkg in allpkgs:
+# Print the attributes of a node: label and fill-color
+def print_attrs(pkg):
     if pkg == 'all':
         print "all [label = \"ALL\"]"
         print "all [color=lightblue,style=filled]"
-        continue
-
+        return
     print "%s [label = \"%s\"]" % (pkg_node_name(pkg), pkg)
-
     if mode == PKG_MODE and pkg == rootpkg:
         print "%s [color=lightblue,style=filled]" % pkg_node_name(rootpkg)
     else:
         print "%s [color=grey,style=filled]" % pkg_node_name(pkg)
+
+# Print the dependency graph of a package
+def print_pkg_deps(depth, pkg):
+    if pkg in done_deps:
+        return
+    done_deps.append(pkg)
+    print_attrs(pkg)
+    if not dict_deps.has_key(pkg):
+        return
+    if max_depth == 0 or depth < max_depth:
+        for d in dict_deps[pkg]:
+            print "%s -> %s" % (pkg_node_name(pkg), pkg_node_name(d))
+            print_pkg_deps(depth+1, d)
+
+# Start printing the graph data
+print "digraph G {"
+
+done_deps = []
+print_pkg_deps(0, rootpkg)
 
 print "}"

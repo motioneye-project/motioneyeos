@@ -150,6 +150,7 @@ endif
 # Need that early, before we scan packages
 # Avoids doing the $(or...) everytime
 BR_GRAPH_OUT := $(or $(BR2_GRAPH_OUT),pdf)
+BR_GRAPH_DEPTH := $(or $(BR2_GRAPH_DEPTH),0)
 
 BUILD_DIR:=$(BASE_DIR)/build
 BINARIES_DIR:=$(BASE_DIR)/images
@@ -672,7 +673,7 @@ graph-build: $(O)/build/build-time.log
 graph-depends:
 	@$(INSTALL) -d $(O)/graphs
 	@cd "$(CONFIG_DIR)"; \
-	$(TOPDIR)/support/scripts/graph-depends \
+	$(TOPDIR)/support/scripts/graph-depends -d $(BR_GRAPH_DEPTH) \
 	|dot -T$(BR_GRAPH_OUT) -o $(O)/graphs/$(@).$(BR_GRAPH_OUT)
 
 else # ifeq ($(BR2_HAVE_DOT_CONFIG),y)
