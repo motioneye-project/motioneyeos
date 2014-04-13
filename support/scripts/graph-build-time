@@ -126,12 +126,17 @@ def pkg_histogram(data, output, order="build"):
     # Draw the package names
     plt.xticks(ind + .6, [ p.name for p in data ], rotation=-60, rotation_mode="anchor", fontsize=8, ha='left')
 
-    # Adjust size of graph (double the width)
-    sz = plt.gcf().get_size_inches()
-    plt.gcf().set_size_inches(sz[0] * 2, sz[1])
+    # Adjust size of graph depending on the number of packages
+    # Ensure a minimal size twice as the default
+    # Magic Numbers do Magic Layout!
+    ratio = max(((n_pkgs + 10) / 48, 2))
+    borders = 0.1 / ratio
+    sz = plt.gcf().get_figwidth()
+    plt.gcf().set_figwidth(sz * ratio)
 
-    # Add more space for the package names at the bottom
-    plt.gcf().subplots_adjust(bottom=0.2)
+    # Adjust space at borders, add more space for the
+    # package names at the bottom
+    plt.gcf().subplots_adjust(bottom=0.2, left=borders, right=1-borders)
 
     # Remove ticks in the graph for each package
     axes = plt.gcf().gca()
