@@ -496,7 +496,7 @@ $(1)-graph-depends:
 			@$(INSTALL) -d $(O)/graphs
 			@cd "$(CONFIG_DIR)"; \
 			$(TOPDIR)/support/scripts/graph-depends $(1) \
-			|dot -T$(_BR2_GRAPH_OUT) -o $(O)/graphs/$$(@).$(_BR2_GRAPH_OUT)
+			|dot -T$(BR_GRAPH_OUT) -o $(O)/graphs/$$(@).$(BR_GRAPH_OUT)
 
 $(1)-dirclean:		$$($(2)_TARGET_DIRCLEAN)
 
