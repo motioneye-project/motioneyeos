@@ -16,8 +16,8 @@ Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
  	echo @LDFLAGS@
  	;;
      --libs)
--	echo @LIBS@ @LIBICONV@
-+	echo @LIBS@
+-	echo -lgd @LIBS@ @LIBICONV@
++	echo -lgd @LIBS@
  	;;
      --cflags|--includes)
  	echo -I@includedir@

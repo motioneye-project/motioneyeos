@@ -12,8 +12,8 @@ Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
 
 Index: gd-2.0.35/gd_gd2.c
 ===================================================================
---- gd-2.0.35.orig/gd_gd2.c
-+++ gd-2.0.35/gd_gd2.c
+--- gd-2.0.35.orig/src/gd_gd2.c
++++ gd-2.0.35/src/gd_gd2.c
 @@ -1068,4 +1068,34 @@
    fprintf (stderr, "GD2 support is not available - no libz\n");
    return NULL;

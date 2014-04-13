@@ -4,22 +4,15 @@
 #
 ################################################################################
 
-GD_VERSION = 2.0.35
-GD_SOURCE = gd-$(GD_VERSION).tar.bz2
-GD_SITE = http://distfiles.gentoo.org/distfiles
-# needed because of configure.ac timestamp
-GD_AUTORECONF = YES
+GD_VERSION = 2.1.0
+GD_SOURCE = libgd-$(GD_VERSION).tar.xz
+GD_SITE = https://bitbucket.org/libgd/gd-libgd/downloads/
 GD_INSTALL_STAGING = YES
 GD_LICENSE = GD license
 GD_LICENSE_FILES = COPYING
 
 GD_CONFIG_SCRIPTS = gdlib-config
 GD_CONF_OPT = --without-x --disable-rpath
-
-ifeq ($(BR2_TOOLCHAIN_HAS_THREADS)$(BR2_PREFER_STATIC_LIB),yy)
-# add -pthread when linking executables statically
-GD_CONF_ENV += LDFLAGS="$(TARGET_LDFLAGS) -pthread"
-endif
 
 ifeq ($(BR2_PACKAGE_FONTCONFIG),y)
 GD_DEPENDENCIES += fontconfig
@@ -28,7 +21,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_FREETYPE),y)
 GD_DEPENDENCIES += freetype
-GD_CONF_ENV += ac_cv_path_FREETYPE_CONFIG=$(STAGING_DIR)/usr/bin/freetype-config
+GD_CONF_OPT += --with-freetype=$(STAGING_DIR)/usr
 else
 GD_CONF_OPT += --without-freetype
 endif
@@ -40,9 +33,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_LIBPNG),y)
 GD_DEPENDENCIES += libpng
-GD_CONF_OPT += --with-png
-GD_CONF_ENV += ac_cv_path_LIBPNG12_CONFIG=""
-GD_CONF_ENV += ac_cv_path_LIBPNG_CONFIG=$(STAGING_DIR)/usr/bin/libpng-config
+GD_CONF_OPT += --with-png=$(STAGING_DIR)/usr
 else
 GD_CONF_OPT += --without-png
 endif
@@ -54,22 +45,6 @@ endif
 
 ifeq ($(BR2_PACKAGE_ZLIB),y)
 GD_DEPENDENCIES += zlib
-endif
-
-ifeq ($(BR2_PACKAGE_GETTEXT),y)
-GD_DEPENDENCIES += gettext
-else
-# configure.ac has newer timestamp than aclocal.m4 / configure, so we need
-# to autoreconf to regenerate them (or set configure.ac timestamp to older
-# than them) to make the Makefile happy.
-# configure.ac refers to AM_ICONV which we only have if gettext is enabled,
-# so add a dummy definition elsewise
-define GD_FIXUP_ICONV
-	echo 'm4_ifndef([AM_ICONV],[m4_define([AM_ICONV],[:])])' \
-		>> $(@D)/acinclude.m4
-endef
-
-GD_PRE_CONFIGURE_HOOKS += GD_FIXUP_ICONV
 endif
 
 GD_TOOLS_$(BR2_PACKAGE_GD_ANNOTATE)	+= annotate
