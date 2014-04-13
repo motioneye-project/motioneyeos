@@ -1,13 +1,13 @@
 #!/usr/bin/python
 
 # Usage (the graphviz package must be installed in your distribution)
-#  ./support/scripts/graph-depends [package-name] > test.dot
+#  ./support/scripts/graph-depends [-p package-name] > test.dot
 #  dot -Tpdf test.dot -o test.pdf
 #
 # With no arguments, graph-depends will draw a complete graph of
-# dependencies for the current configuration. With an argument,
-# graph-depends will draw a graph of dependencies for the given
-# package name.
+# dependencies for the current configuration.
+# If '-p <package-name>' is specified, graph-depends will draw a graph
+# of dependencies for the given package name.
 #
 # Limitations
 #
@@ -21,6 +21,7 @@
 
 import sys
 import subprocess
+import argparse
 
 # In FULL_MODE, we draw the full dependency graph for all selected
 # packages
@@ -31,14 +32,16 @@ PKG_MODE  = 2
 
 mode = 0
 
-if len(sys.argv) == 1:
+parser = argparse.ArgumentParser(description="Graph pacakges dependencies")
+parser.add_argument("--package", '-p', metavar="PACKAGE",
+                    help="Graph the dependencies of PACKAGE")
+args = parser.parse_args()
+
+if args.package == None:
     mode = FULL_MODE
-elif len(sys.argv) == 2:
-    mode = PKG_MODE
-    rootpkg  = sys.argv[1]
 else:
-    print "Usage: graph-depends [package-name]"
-    sys.exit(1)
+    mode = PKG_MODE
+    rootpkg = args.package
 
 allpkgs = []
 
