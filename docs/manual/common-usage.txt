@@ -96,6 +96,8 @@ to +make+ or set in the environment:
   build-time graphs
 * +BR2_GRAPH_OUT+ to set the filetype of generated graphs, either +pdf+ (the
   default), or +png+.
+* +BR2_GRAPH_DEPTH+ (an integer) to limit the depth of the dependency graph.
+  The default, +0+, is to not limit the depth.
 
 An example that uses config files located in the toplevel directory and
 in your $HOME:
