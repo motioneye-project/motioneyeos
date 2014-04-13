@@ -4,17 +4,6 @@
 #
 ################################################################################
 
-ifeq ($(BR2_microblaze),y)
-ifeq ($(BR2_TOOLCHAIN_BUILDROOT_EGLIBC),y)
-GLIBC_VERSION = 7f0bcce417c47aefad06ddfec7cd4ced3a4e10ff
-GLIBC_SITE = $(call github,Xilinx,eglibc,$(GLIBC_VERSION))
-GLIBC_SRC_SUBDIR = .
-else
-GLIBC_VERSION = b86835ca92a1942ed08d8b5ee47498e711feaddb
-GLIBC_SITE = $(call github,Xilinx,glibc,$(GLIBC_VERSION))
-GLIBC_SRC_SUBDIR = .
-endif
-else
 ifeq ($(BR2_TOOLCHAIN_BUILDROOT_EGLIBC),y)
 GLIBC_VERSION = 2.18-svnr23787
 GLIBC_SITE = http://downloads.yoctoproject.org/releases/eglibc/
@@ -25,7 +14,6 @@ GLIBC_VERSION = $(if $(BR2_GLIBC_VERSION_2_19),2.19,2.18)
 GLIBC_SITE = $(BR2_GNU_MIRROR)/libc
 GLIBC_SOURCE = glibc-$(GLIBC_VERSION).tar.xz
 GLIBC_SRC_SUBDIR = .
-endif
 endif
 
 GLIBC_LICENSE = GPLv2+ (programs), LGPLv2.1+, BSD-3c, MIT (library)
