@@ -162,13 +162,16 @@ def has_redundant_deps(deps, pkg):
 def remove_redundant_deps(deps):
     newdeps = []
     for dep in deps:
-        if dep[0] != "all":
+        if dep[0] == "all" and dep[1] == "toolchain":
+            newdeps.append(dep)
+            continue
+        if dep[0] != "all" and dep[1] != "toolchain":
             newdeps.append(dep)
             continue
         if not has_redundant_deps(deps, dep[1]):
             newdeps.append(dep)
             continue
-        sys.stderr.write("Removing redundant dep all -> %s\n" % dep[1])
+        sys.stderr.write("Removing redundant dep %s -> %s\n" % (dep[0],dep[1]))
     return newdeps
 
 TARGET_EXCEPTIONS = [
