@@ -1,0 +1,30 @@
+From 658f3243238efe951f6242fa384e990d77078afc Mon Sep 17 00:00:00 2001
+From: Samuel Martin <s.martin49@gmail.com>
+Date: Fri, 27 Dec 2013 17:42:39 +0100
+Subject: [PATCH] now honor DESTDIR env. var.
+
+Flite used a handwritten a Makefile which doesn't honor DESTDIR environment
+variable, though it uses autoconf.
+
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+---
+ config/config.in | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/config/config.in b/config/config.in
+index 914d2bf..43f1a56 100644
+--- a/config/config.in
++++ b/config/config.in
+@@ -49,6 +49,6 @@ include $(TOP)/config/$(langvox).lv
+ prefix        = @prefix@
+ exec_prefix   = @exec_prefix@
+ EXEEXT	      = @EXEEXT@
+-INSTALLBINDIR = @bindir@
+-INSTALLLIBDIR = @libdir@
+-INSTALLINCDIR = @includedir@/flite
++INSTALLBINDIR = $(DESTDIR)@bindir@
++INSTALLLIBDIR = $(DESTDIR)@libdir@
++INSTALLINCDIR = $(DESTDIR)@includedir@/flite
+--
+1.8.5.2
+
