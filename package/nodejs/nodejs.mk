@@ -23,7 +23,8 @@ define HOST_NODEJS_CONFIGURE_CMDS
 	# NPM is non-functional without it, and host-openssl isn't part of
 	# buildroot.
 	(cd $(@D); \
-                ./configure \
+		$(HOST_CONFIGURE_OPTS) \
+		./configure \
 		--prefix=$(HOST_DIR)/usr \
 		--without-snapshot \
 		--without-dtrace \
@@ -75,7 +76,9 @@ define NODEJS_CONFIGURE_CMDS
 endef
 
 define NODEJS_BUILD_CMDS
-	$(TARGET_MAKE_ENV) $(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(@D)
+	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) \
+		$(TARGET_CONFIGURE_OPTS) \
+		LD="$(TARGET_CXX)"
 endef
 
 #
@@ -107,7 +110,10 @@ endef
 endif
 
 define NODEJS_INSTALL_TARGET_CMDS
-	$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(@D) DESTDIR=$(TARGET_DIR) install
+	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) install \
+		DESTDIR=$(TARGET_DIR) \
+		$(TARGET_CONFIGURE_OPTS) \
+		LD="$(TARGET_CXX)"
 	$(NODEJS_INSTALL_MODULES)
 endef
 
