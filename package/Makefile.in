@@ -302,6 +302,7 @@ HOST_MAKE_ENV=PATH=$(BR_PATH) \
 # explicitly pass it to user-supplied external hooks (eg. post-build,
 # post-images)
 USER_HOOKS_EXTRA_ENV=\
+	PATH=$(BR_PATH) \
 	BUILD_DIR=$(BUILD_DIR)
 
 ################################################################################
