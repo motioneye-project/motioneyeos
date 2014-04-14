@@ -42,13 +42,13 @@ parser.add_argument("--depth", '-d', metavar="DEPTH",
                     help="Limit the dependency graph to DEPTH levels")
 args = parser.parse_args()
 
-if args.package == None:
+if args.package is None:
     mode = FULL_MODE
 else:
     mode = PKG_MODE
     rootpkg = args.package
 
-if args.depth != None:
+if args.depth is not None:
     max_depth = int(args.depth)
 
 allpkgs = []
@@ -130,7 +130,7 @@ def get_all_depends(pkgs):
 
     if len(deps) != 0:
         newdeps = get_all_depends(deps)
-        if newdeps != None:
+        if newdeps is not None:
             dependencies += newdeps
 
     return dependencies
@@ -202,7 +202,7 @@ if mode == FULL_MODE:
         dependencies.append(('all', tg))
         filtered_targets.append(tg)
     deps = get_all_depends(filtered_targets)
-    if deps != None:
+    if deps is not None:
         dependencies += deps
     rootpkg = 'all'
 

@@ -84,7 +84,7 @@ class Package:
             self.steps_duration[step] = self.steps_end[step] - self.steps_start[step]
 
     def get_duration(self, step=None):
-        if step == None:
+        if step is None:
             duration = 0
             for step in self.steps_duration.keys():
                 duration += self.steps_duration[step]
@@ -278,10 +278,10 @@ if args.alternate_colors:
 else:
     colors = default_colors
 
-if args.type == "histogram" or args.type == None:
+if args.type == "histogram" or args.type is None:
     if args.order == "build" or args.order == "duration" or args.order == "name":
         pkg_histogram(d, args.output, args.order)
-    elif args.order == None:
+    elif args.order is None:
         pkg_histogram(d, args.output, "name")
     else:
         sys.stderr.write("Unknown ordering: %s\n" % args.order)
