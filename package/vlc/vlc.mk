@@ -127,7 +127,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_OPUS),y)
 VLC_CONF_OPT += --enable-opus
-VLC_DEPENDENCIES += opus
+VLC_DEPENDENCIES += libvorbis opus
 else
 VLC_CONF_OPT += --disable-opus
 endif
