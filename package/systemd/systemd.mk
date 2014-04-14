@@ -46,6 +46,12 @@ SYSTEMD_CONF_OPT += \
 	--disable-dbus \
 	--without-python
 
+ifeq ($(BR2_PACKAGE_SYSTEMD_COMPAT),y)
+SYSTEMD_CONF_OPT += --enable-compat-libs
+else
+SYSTEMD_CONF_OPT += --disable-compat-libs
+endif
+
 ifeq ($(BR2_PACKAGE_ACL),y)
 SYSTEMD_CONF_OPT += --enable-acl
 SYSTEMD_DEPENDENCIES += acl
