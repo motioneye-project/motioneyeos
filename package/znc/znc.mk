@@ -14,7 +14,7 @@ ZNC_CONF_OPT = --disable-perl
 # The standard <pkg>_AUTORECONF = YES invocation doesn't work for this
 # package, because it does not use automake in a normal way.
 define ZNC_RUN_AUTOGEN
-	cd $(@D) && PATH=$(HOST_PATH) ./autogen.sh
+	cd $(@D) && PATH=$(BR_PATH) ./autogen.sh
 endef
 ZNC_PRE_CONFIGURE_HOOKS += ZNC_RUN_AUTOGEN
 
