@@ -183,7 +183,11 @@ config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_CAIRO
 
 config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_FLAC
 	bool "flac (libFLAC)"
+	depends on BR2_USE_WCHAR # flac
 	select BR2_PACKAGE_FLAC
+
+comment "flac needs a toolchain w/ wchar"
+	depends on !BR2_USE_WCHAR
 
 config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_GDKPIXBUF
 	bool "gdkpixbuf"

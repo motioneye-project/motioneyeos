@@ -1,6 +1,10 @@
 config BR2_PACKAGE_FLAC
 	bool "flac"
+	depends on BR2_USE_WCHAR
 	help
 	  FLAC is an Open Source lossless audio codec.
 
 	  http://flac.sourceforge.net/
+
+comment "flac needs a toolchain w/ wchar"
+	depends on !BR2_USE_WCHAR
