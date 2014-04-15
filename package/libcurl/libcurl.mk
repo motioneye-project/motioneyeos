@@ -36,9 +36,6 @@ LIBCURL_CONF_OPT += --with-ssl=$(STAGING_DIR)/usr \
 else ifeq ($(BR2_PACKAGE_GNUTLS),y)
 LIBCURL_CONF_OPT += --with-gnutls=$(STAGING_DIR)/usr
 LIBCURL_DEPENDENCIES += gnutls
-else ifeq ($(BR2_PACKAGE_POLARSSL),y)
-LIBCURL_CONF_OPT += --with-polarssl=$(STAGING_DIR)/usr
-LIBCURL_DEPENDENCIES += polarssl
 else ifeq ($(BR2_PACKAGE_LIBNSS),y)
 LIBCURL_CONF_OPT += --with-nss=$(STAGING_DIR)/usr
 LIBCURL_CONF_ENV += CPPFLAGS="$(TARGET_CPPFLAGS) `$(PKG_CONFIG_HOST_BINARY) nspr nss --cflags`"
