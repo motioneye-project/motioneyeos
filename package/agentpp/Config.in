@@ -3,6 +3,7 @@ config BR2_PACKAGE_AGENTPP
 	select BR2_PACKAGE_SNMPPP
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_TOOLCHAIN_HAS_THREADS # snmp++
+	depends on !BR2_PREFER_STATIC_LIB # snmp++
 	help
 	  AGENT++ is a set of C++ classes which provides a complete protocol
 	  engine and dispatch table for the development of SNMP agents.
@@ -16,5 +17,6 @@ config BR2_PACKAGE_AGENTPP
 
 	  http://www.agentpp.com/agentpp3_5/agentpp3_5.html
 
-comment "agent++ needs a toolchain w/ threads, C++"
-	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS
+comment "agent++ needs a toolchain w/ threads, C++, dynamic library"
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS || \
+		BR2_PREFER_STATIC_LIB
