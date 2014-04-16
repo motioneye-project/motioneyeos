@@ -2,6 +2,7 @@ config BR2_PACKAGE_LIBSIGSEGV
 	bool "libsigsegv"
 	depends on !BR2_xtensa
 	depends on !BR2_arc # no ucontext_i.sym file
+	depends on !BR2_microblaze
 	help
 	  Library for handling page faults in user mode.
 
