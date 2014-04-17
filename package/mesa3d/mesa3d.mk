@@ -58,16 +58,6 @@ MESA3D_DRI_DRIVERS-$(BR2_PACKAGE_MESA3D_DRI_DRIVER_SWRAST) += swrast
 MESA3D_DRI_DRIVERS-$(BR2_PACKAGE_MESA3D_DRI_DRIVER_I965)   += i965
 MESA3D_DRI_DRIVERS-$(BR2_PACKAGE_MESA3D_DRI_DRIVER_RADEON) += radeon
 
-# at least one API is required, for buildroot enable OpenGL API by default
-# other APIs (EGL, EGL_ES) are optional
-ifeq ($(MESA3D_GALLIUM_DRIVERS-y)$(MESA3D_DRI_DRIVERS-y),)
-MESA3D_CONF_OPT += \
-	--disable-opengl
-else
-MESA3D_CONF_OPT += \
-	--enable-opengl
-endif
-
 ifeq ($(MESA3D_GALLIUM_DRIVERS-y),)
 MESA3D_CONF_OPT += \
 	--without-gallium-drivers
@@ -89,6 +79,14 @@ MESA3D_CONF_OPT += \
 endif
 
 # APIs
+
+# At least one API is required, for buildroot enable OpenGL API by default.
+# Other APIs (EGL, EGL_ES) are optional
+ifeq ($(BR2_PACKAGE_MESA3D_DRIVER),y)
+MESA3D_CONF_OPT += --enable-opengl
+else
+MESA3D_CONF_OPT += --disable-opengl
+endif
 
 ifeq ($(BR2_PACKAGE_MESA3D_OPENGL_EGL),y)
 # egl depends on gbm, gbm depends on udev
