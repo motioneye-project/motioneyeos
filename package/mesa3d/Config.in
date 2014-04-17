@@ -92,8 +92,11 @@ if BR2_PACKAGE_MESA3D_DRIVER
 
 comment "Additional API Support"
 
+comment "OpenGL EGL needs udev /dev management"
+	depends on !BR2_PACKAGE_HAS_UDEV
+
 config BR2_PACKAGE_MESA3D_OPENGL_EGL
-	bool "EGL"
+	bool "OpenGL EGL"
 	depends on BR2_PACKAGE_HAS_UDEV
 	select BR2_PACKAGE_HAS_LIBEGL
 	help
