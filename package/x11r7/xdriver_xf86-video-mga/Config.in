@@ -1,7 +1,7 @@
 config BR2_PACKAGE_XDRIVER_XF86_VIDEO_MGA
 	bool "xf86-video-mga"
+	depends on BR2_PACKAGE_MESA3D
 	select BR2_PACKAGE_LIBDRM
-	select BR2_PACKAGE_MESA3D
 	select BR2_PACKAGE_XPROTO_FONTSPROTO
 	select BR2_PACKAGE_XPROTO_GLPROTO
 	select BR2_PACKAGE_XPROTO_RANDRPROTO
@@ -12,3 +12,6 @@ config BR2_PACKAGE_XDRIVER_XF86_VIDEO_MGA
 	select BR2_PACKAGE_XPROTO_XPROTO
 	help
 	  Matrox video driver
+
+comment "xf86-video-mga needs mesa3d"
+	depends on !BR2_PACKAGE_MESA3D

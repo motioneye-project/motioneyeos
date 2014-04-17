@@ -1,5 +1,7 @@
 config BR2_PACKAGE_XDRIVER_XF86_VIDEO_INTEL
 	bool "xf86-video-intel"
+	depends on (BR2_i386 || BR2_x86_64)
+	depends on BR2_PACKAGE_MESA3D
 	select BR2_PACKAGE_XPROTO_FONTSPROTO
 	select BR2_PACKAGE_XPROTO_RANDRPROTO
 	select BR2_PACKAGE_XPROTO_RENDERPROTO
@@ -7,7 +9,9 @@ config BR2_PACKAGE_XDRIVER_XF86_VIDEO_INTEL
 	select BR2_PACKAGE_XLIB_LIBPCIACCESS
 	select BR2_PACKAGE_LIBDRM
 	select BR2_PACKAGE_LIBDRM_INTEL
-	select BR2_PACKAGE_MESA3D
-	depends on (BR2_i386 || BR2_x86_64)
 	help
 	  Intel video driver
+
+comment "xf86-video-intel needs mesa3d"
+	depends on (BR2_i386 || BR2_x86_64)
+	depends on !BR2_PACKAGE_MESA3D

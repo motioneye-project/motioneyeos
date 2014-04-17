@@ -9,3 +9,6 @@ config BR2_PACKAGE_XDRIVER_XF86_VIDEO_MACH64
 	select BR2_PACKAGE_XPROTO_XPROTO
 	help
 	  mach64 video driver
+
+comment "xf86-video-mach64 needs mesa3d"
+	depends on !BR2_PACKAGE_MESA3D
