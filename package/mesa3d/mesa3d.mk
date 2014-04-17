@@ -80,9 +80,9 @@ endif
 
 # APIs
 
-# At least one API is required, for buildroot enable OpenGL API by default.
-# Other APIs (EGL, EGL_ES) are optional
-ifeq ($(BR2_PACKAGE_MESA3D_DRIVER),y)
+# Full OpenGL is provided by DRI drivers with X.Org; DRI drivers are only
+# enabled when X.Org is enabled anyway, so no need to check for X.Org here.
+ifeq ($(BR2_PACKAGE_MESA3D_DRI_DRIVER),y)
 MESA3D_CONF_OPT += --enable-opengl
 else
 MESA3D_CONF_OPT += --disable-opengl
