@@ -1,5 +1,9 @@
 config BR2_PACKAGE_DMALLOC
 	bool "dmalloc"
+	# On some packages, Microblaze gcc has issues when debugging
+	# symbols are enabled: "Error: operation combines symbols in
+	# different segments".
+	depends on !(BR2_microblaze && BR2_ENABLE_DEBUG)
 	help
 	  A debug memory allocation library which is a drop in replacement for
 	  the system's malloc, realloc, calloc, free and other memory management
