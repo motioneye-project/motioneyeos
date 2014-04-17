@@ -21,4 +21,11 @@ else
 NMAP_CONF_OPT += --without-openssl
 endif
 
+# ndiff only works with python2.x
+ifeq ($(BR2_PACKAGE_PYTHON),y)
+NMAP_DEPENDENCIES += python
+else
+NMAP_CONF_OPT += --without-ndiff
+endif
+
 $(eval $(autotools-package))
