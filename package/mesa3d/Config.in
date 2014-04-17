@@ -1,4 +1,4 @@
-config BR2_PACKAGE_MESA3D
+menuconfig BR2_PACKAGE_MESA3D
 	bool "Mesa 3D Graphics Library"
 	select BR2_PACKAGE_LIBDRM
 	select BR2_PACKAGE_EXPAT
@@ -31,7 +31,7 @@ config BR2_PACKAGE_MESA3D_DRI_DRIVER
 config BR2_PACKAGE_MESA3D_DRIVER
 	bool
 
-menu "Drivers"
+comment "Gallium drivers"
 
 config BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_NOUVEAU
 	bool "Gallium nouveau driver"
@@ -61,6 +61,8 @@ comment "DRI drivers needs a toolchain w/ dynamic library"
 
 if !BR2_PREFER_STATIC_LIB
 
+comment "DRI drivers"
+
 config BR2_PACKAGE_MESA3D_DRI_DRIVER_SWRAST
 	bool "DRI swrast driver"
 	select BR2_PACKAGE_MESA3D_DRI_DRIVER
@@ -87,10 +89,9 @@ config BR2_PACKAGE_MESA3D_DRI_DRIVER_RADEON
 
 endif # !BR2_PREFER_STATIC_LIB
 
-endmenu
+if BR2_PACKAGE_MESA3D_DRIVER
 
-menu "Additional API Support"
-depends on BR2_PACKAGE_MESA3D_DRIVER
+comment "Additional API Support"
 
 config BR2_PACKAGE_MESA3D_OPENGL_EGL
 	bool "EGL"
@@ -107,7 +108,7 @@ config BR2_PACKAGE_MESA3D_OPENGL_ES
 	  Use the Khronos OpenGL ES APIs.  This is commonly used on embedded
 	  systems and represents a subset of the OpenGL API.
 
-endmenu
+endif # BR2_PACKAGE_MESA3D_DRIVER
 
 config BR2_PACKAGE_PROVIDES_LIBEGL
 	default "mesa3d" if BR2_PACKAGE_MESA3D_OPENGL_EGL
@@ -115,7 +116,7 @@ config BR2_PACKAGE_PROVIDES_LIBEGL
 config BR2_PACKAGE_PROVIDES_LIBGLES
 	default "mesa3d" if BR2_PACKAGE_MESA3D_OPENGL_ES
 
-endif
+endif # BR2_PACKAGE_MESA3D
 
 comment "mesa3d needs a toolchain w/ C++, largefile"
 	depends on !BR2_LARGEFILE || !BR2_INSTALL_LIBSTDCPP
