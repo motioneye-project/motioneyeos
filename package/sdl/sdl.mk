@@ -72,6 +72,7 @@ SDL_CONF_OPT += --enable-pulseaudio=no \
 		--disable-video-ps3
 
 HOST_SDL_CONF_OPT += --enable-pulseaudio=no \
+		--enable-video-x11=no \
 		--disable-arts \
 		--disable-esd \
 		--disable-nasm \
