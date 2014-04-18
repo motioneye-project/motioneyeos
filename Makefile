@@ -598,7 +598,7 @@ ifneq ($(GENERATE_LOCALE),)
 # data comes preferably from the toolchain, or if the toolchain does
 # not have them (Linaro toolchains), we use the ones available on the
 # host machine.
-target-generatelocales: host-localedef
+target-generatelocales: host-localedef toolchain
 	$(Q)mkdir -p $(TARGET_DIR)/usr/lib/locale/
 	$(Q)for locale in $(GENERATE_LOCALE) ; do \
 		inputfile=`echo $${locale} | cut -f1 -d'.'` ; \
