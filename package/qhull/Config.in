@@ -1,0 +1,19 @@
+config BR2_PACKAGE_QHULL
+	bool "qhull"
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on !BR2_PREFER_STATIC_LIB
+	help
+	  Qhull computes the convex hull, Delaunay triangulation,
+	  Voronoi diagram, halfspace intersection about a point,
+	  furthest-site Delaunay triangulation, and furthest-site
+	  Voronoi diagram. The source code runs in 2-d, 3-d, 4-d, and
+	  higher dimensions. Qhull implements the Quickhull algorithm
+	  for computing the convex hull. It handles roundoff errors
+	  from floating point arithmetic. It computes volumes, surface
+	  areas, and approximations to the convex hull.
+
+	  http://www.qhull.org
+
+comment "qhull needs a toolchain w/ C++, dynamic library"
+	depends on !BR2_INSTALL_LIBSTDCPP
+	depends on BR2_PREFER_STATIC_LIB
