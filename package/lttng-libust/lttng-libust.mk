@@ -15,4 +15,12 @@ LTTNG_LIBUST_DEPENDENCIES    = liburcu util-linux
 
 LTTNG_LIBUST_AUTORECONF = YES
 
+ifeq ($(BR2_PACKAGE_PYTHON),y)
+LTTNG_LIBUST_DEPENDENCIES += python
+else ifeq ($(BR2_PACKAGE_PYTHON3),y)
+LTTNG_LIBUST_DEPENDENCIES += python3
+else
+LTTNG_LIBUST_CONF_ENV=am_cv_pathless_PYTHON="none"
+endif
+
 $(eval $(autotools-package))
