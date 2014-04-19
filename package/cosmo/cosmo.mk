@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-COSMO_VERSION = 13.01.30-1
+COSMO_VERSION = 14.03.04-1
 COSMO_LICENSE = MIT
 
 $(eval $(luarocks-package))
