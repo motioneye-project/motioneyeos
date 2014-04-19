@@ -80,13 +80,10 @@ endif
 
 # APIs
 
-# Full OpenGL is provided by DRI drivers with X.Org; DRI drivers are only
-# enabled when X.Org is enabled anyway, so no need to check for X.Org here.
-ifeq ($(BR2_PACKAGE_MESA3D_DRI_DRIVER),y)
+# Always enable OpenGL:
+#   - it is needed for GLES (mesa3d's ./configure is a bit weird)
+#   - but if no DRI driver is enabled, then libgl is not built
 MESA3D_CONF_OPT += --enable-opengl
-else
-MESA3D_CONF_OPT += --disable-opengl
-endif
 
 ifeq ($(BR2_PACKAGE_MESA3D_OPENGL_EGL),y)
 # egl depends on gbm, gbm depends on udev
