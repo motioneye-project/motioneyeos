@@ -1,0 +1,54 @@
+python3: do not rely only on LIBRARY_PATH for old compilers
+
+The cross-compilation improvements integrated in Python rely on the
+compiler exposing a line starting with LIBRARY_PATH when called with
+-E -v. This is used by Python setup.py to find the installation
+locations of libraries.
+
+However, this LIBRARY_PATH line is not shown by very old compilers,
+such as the gcc 4.2.x compiler used on the AVR32 architecture. This
+causes libraries installed in the sysroot, such as libffi, to not be
+detected by the setup.py script.
+
+To fix this problem, this patch adds addtional logic to setup.py,
+which consists in deriving the library paths from the sysroot
+location, if no LIBRARY_PATH field was found.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/setup.py
+===================================================================
+--- a/setup.py
++++ b/setup.py
+@@ -421,6 +421,7 @@
+         in_incdirs = False
+         inc_dirs = []
+         lib_dirs = []
++        compiler_has_library_path = False
+         try:
+             if ret >> 8 == 0:
+                 with open(tmpfile) as fp:
+@@ -432,6 +433,7 @@
+                         elif line.startswith("End of search list"):
+                             in_incdirs = False
+                         elif is_gcc and line.startswith("LIBRARY_PATH"):
++                            compiler_has_library_path = True
+                             for d in line.strip().split("=")[1].split(":"):
+                                 d = os.path.normpath(d)
+                                 if '/gcc/' not in d:
+@@ -443,6 +445,15 @@
+         finally:
+             os.unlink(tmpfile)
+ 
++        if not compiler_has_library_path:
++            ret = os.system("%s -print-file-name=libc.a | sed -r -e 's:(usr/)?lib(32|64)?/([^/]*/)?libc\.a::' >%s" % (gcc, tmpfile))
++            with open(tmpfile) as fp:
++                line = fp.readline().strip()
++                add_dir_to_list(self.compiler.library_dirs,
++                                os.path.join(line, "usr", "lib"))
++                add_dir_to_list(self.compiler.library_dirs,
++                                os.path.join(line, "lib"))
++
+     def detect_modules(self):
+         # Ensure that /usr/local is always used, but the local build
+         # directories (i.e. '.' and 'Include') must be first.  See issue
