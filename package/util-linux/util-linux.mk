@@ -18,7 +18,10 @@ UTIL_LINUX_AUTORECONF = YES
 UTIL_LINUX_INSTALL_STAGING = YES
 UTIL_LINUX_DEPENDENCIES = host-pkgconf
 UTIL_LINUX_CONF_ENV = scanf_cv_type_modifier=no
-UTIL_LINUX_CONF_OPT += --disable-rpath --disable-makeinstall-chown
+UTIL_LINUX_CONF_OPT += \
+	--disable-rpath \
+	--disable-makeinstall-chown \
+	--disable-bash-completion
 
 # We don't want the host-busybox dependency to be added automatically
 HOST_UTIL_LINUX_DEPENDENCIES = host-pkgconf
