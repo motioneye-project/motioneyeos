@@ -63,6 +63,13 @@ else
 SYSTEMD_CONF_OPT += --disable-acl
 endif
 
+ifeq ($(BR2_PACKAGE_ATTR),y)
+SYSTEMD_CONF_OPT += --enable-attr
+SYSTEMD_DEPENDENCIES += attr
+else
+SYSTEMD_CONF_OPT += --disable-attr
+endif
+
 ifeq ($(BR2_PACKAGE_LIBGLIB2),y)
 SYSTEMD_CONF_OPT += --enable-gudev
 SYSTEMD_DEPENDENCIES += libglib2
@@ -103,6 +110,12 @@ define SYSTEMD_USER_TIMESYNC
 endef
 else
 SYSTEMD_CONF_OPT += --disable-timesyncd
+endif
+
+ifeq ($(BR2_PACKAGE_SYSTEMD_SMACK_SUPPORT),y)
+SYSTEMD_CONF_OPT += --enable-smack
+else
+SYSTEMD_CONF_OPT += --disable-smack
 endif
 
 # mq_getattr needs -lrt

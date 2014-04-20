@@ -118,4 +118,18 @@ config BR2_PACKAGE_SYSTEMD_COMPAT
 
 	  This option enables the installation of compatibility *.pc files.
 
+config BR2_PACKAGE_SYSTEMD_SMACK_SUPPORT
+	bool "enable SMACK support"
+	select BR2_PACKAGE_ATTR
+	select BR2_PACKAGE_SMACK
+	help
+	  Enable support for SMACK, the Simple Mandatory Access Control
+	  Kernel, a minimal approach to Access Control implemented as a kernel
+	  LSM.
+
+	  This feature requires a kernel >= 3.8.
+
+	  When this feature is enabled, Systemd mounts smackfs and manages
+	  security labels for sockets.
+
 endif
