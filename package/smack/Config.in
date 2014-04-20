@@ -1,0 +1,32 @@
+config BR2_PACKAGE_SMACK
+	bool "smack"
+	depends on !BR2_PREFER_STATIC_LIB # dlfcn.h
+	help
+	  User space programs and libraries for SMACK.
+
+	  SMACK stands for Simplified Mandatory Access Control Kernel.
+	  It is a Linux Security Module which provides a Mandatory Access
+	  Control mechanism, aimed towards simplicity.
+
+	  This package provides a library which allows applications to work
+	  with SMACK and tools to load/unload rules from the kernel, as well
+	  as query the policy.
+
+	  SMACK requires the following kernel options to be enabled:
+
+	  - CONFIG_SECURITY
+	  - CONFIG_SECURITY_SMACK
+	  - CONFIG_SECURITY_NETWORK
+
+	  These options will be automatically enabled by Buildroot if it is
+	  responsible for building the kernel. Otherwise, if you are building
+	  your kernel outside of Buildroot, make sure these options are
+	  enabled.
+
+	  To activate SMACK, do not forget to add "security=smack" to your
+	  kernel command line.
+
+	  https://github.com/smack-team/smack
+
+comment "smack needs a toolchain w/ dynamic library"
+	depends on BR2_PREFER_STATIC_LIB
