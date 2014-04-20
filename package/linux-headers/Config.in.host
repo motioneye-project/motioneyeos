@@ -11,9 +11,6 @@ choice
 	  You must select the correct set of header files to match
 	  the kernel you intend to use on your target system.
 
-	  For the snapshot, you have to provide the
-	  linux-2.6.tar.bz2 tarball in your download dir.
-
 	config BR2_KERNEL_HEADERS_3_0
 		bool "Linux 3.0.x kernel headers"
 		depends on !BR2_arc
