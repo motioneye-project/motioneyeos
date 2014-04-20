@@ -7,3 +7,18 @@ config BR2_PACKAGE_LIBCAP
 	  privilege into a set of distinct privileges.
 
 	  http://sites.google.com/site/fullycapable/
+
+if BR2_PACKAGE_LIBCAP
+
+config BR2_PACKAGE_LIBCAP_TOOLS
+	bool "install tools"
+	depends on BR2_USE_MMU
+	help
+	  Install setcap, getcap, getpcaps and capsh tools.
+
+	  For these tools to run properly, you should enable, in your
+	  kernel configuration, extended file attributes/security labels
+	  support for the file system type used on target system (e.g.
+	  CONFIG_EXT2_FS_XATTR and CONFIG_EXT2_FS_SECURITY for ext2).
+
+endif
