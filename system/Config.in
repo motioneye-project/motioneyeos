@@ -319,6 +319,15 @@ config BR2_TARGET_GENERIC_REMOUNT_ROOTFS_RW
 
 endif # BR2_ROOTFS_SKELETON_DEFAULT
 
+config BR2_ROOTFS_USERS_TABLES
+	string "Path to the users tables"
+	help
+	  Specify a space-separated list of users table locations,
+	  that will be passed to the mkusers utility to create
+	  users on the system, with home directory, password, etc.
+
+	  See manual for details on the usage and syntax of these files.
+
 config BR2_ROOTFS_OVERLAY
 	string "Root filesystem overlay directories"
 	default ""
