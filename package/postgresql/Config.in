@@ -4,8 +4,6 @@ config BR2_PACKAGE_POSTGRESQL
 	# enabled, due to an uClibc bug, see
 	# http://lists.uclibc.org/pipermail/uclibc/2014-April/048326.html.
 	depends on BR2_TOOLCHAIN_USES_GLIBC
-	select BR2_PACKAGE_READLINE
-	select BR2_PACKAGE_ZLIB
 	help
 	  PostgreSQL is a powerful, open source object-relational
 	  database system.
