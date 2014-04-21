@@ -58,8 +58,13 @@ config BR2_PACKAGE_UTIL_LINUX_ARCH
 
 config BR2_PACKAGE_UTIL_LINUX_CHFN_CHSH
 	bool "chfn/chsh"
+	select BR2_PACKAGE_LINUX_PAM
+	depends on (BR2_ENABLE_LOCALE && BR2_USE_WCHAR) # linux-pam
 	help
 	  Change login shell, real user name and information
+
+comment "chfn/chsh needs a toolchain w/ wchar, locale"
+	depends on !(BR2_ENABLE_LOCALE && BR2_USE_WCHAR)
 
 config BR2_PACKAGE_UTIL_LINUX_CRAMFS
 	bool "cramfs utilities"
