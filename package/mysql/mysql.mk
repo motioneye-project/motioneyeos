@@ -30,14 +30,16 @@ MYSQL_CONF_OPT = \
 	--without-libedit \
 	--without-readline \
 	--with-low-memory \
-	--enable-thread-safe-client
+	--enable-thread-safe-client \
+	--disable-mysql-maintainer-mode
 
 ifeq ($(BR2_PACKAGE_MYSQL_SERVER),y)
 MYSQL_DEPENDENCIES += host-mysql host-bison
 HOST_MYSQL_DEPENDENCIES =
 
 HOST_MYSQL_CONF_OPT = \
-	--with-embedded-server
+	--with-embedded-server \
+	--disable-mysql-maintainer-mode
 
 MYSQL_CONF_OPT += \
 	--disable-dependency-tracking \
