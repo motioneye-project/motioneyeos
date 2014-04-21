@@ -1,6 +1,7 @@
 config BR2_PACKAGE_LIBDRM
 	bool "libdrm"
 	select BR2_PACKAGE_LIBPTHREAD_STUBS
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libpthread-stubs
 	depends on BR2_LARGEFILE
 	help
 	  Direct Rendering Manager
@@ -59,5 +60,5 @@ endmenu
 
 endif
 
-comment "libdrm needs a toolchain w/ largefile"
-	depends on !BR2_LARGEFILE
+comment "libdrm needs a toolchain w/ largefile, threads"
+	depends on !BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_THREADS
