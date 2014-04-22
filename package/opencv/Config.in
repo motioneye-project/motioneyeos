@@ -161,6 +161,16 @@ config BR2_PACKAGE_OPENCV_WITH_GTK
 	depends on BR2_USE_MMU # libgtk2 -> glib2
 	select BR2_PACKAGE_LIBGTK2
 
+config BR2_PACKAGE_OPENCV_WITH_JASPER
+	bool "jpeg2000 support"
+	select BR2_PACKAGE_JASPER
+	help
+	  Enable jpeg2000 support.
+
+	  Note: this does not use the libjasper bundled with opencv,
+	  but uses the libjasper package installed system-wide by
+	  Buildroot.
+
 config BR2_PACKAGE_OPENCV_WITH_JPEG
 	bool "jpeg support"
 	select BR2_PACKAGE_JPEG
