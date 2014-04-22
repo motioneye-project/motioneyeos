@@ -1,7 +1,7 @@
 config BR2_PACKAGE_LIBFSLCODEC
 	bool "libfslcodec"
 	depends on BR2_arm # Only relevant for i.MX
-	depends on BR2_TOOLCHAIN_USES_GLIBC
+	depends on BR2_TOOLCHAIN_USES_GLIBC # prebuilt binaries
 	help
 	  Binary codec libraries for the Freescale i.MX SoCs.
 
