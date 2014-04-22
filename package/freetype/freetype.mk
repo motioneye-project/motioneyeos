@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-FREETYPE_VERSION = 2.5.2
+FREETYPE_VERSION = 2.5.3
 FREETYPE_SOURCE = freetype-$(FREETYPE_VERSION).tar.bz2
 FREETYPE_SITE = http://downloads.sourceforge.net/project/freetype/freetype2/$(FREETYPE_VERSION)
 FREETYPE_INSTALL_STAGING = YES
@@ -16,6 +16,18 @@ FREETYPE_CONFIG_SCRIPTS = freetype-config
 
 HOST_FREETYPE_DEPENDENCIES = host-pkgconf
 HOST_FREETYPE_CONF_OPT = --without-zlib --without-bzip2 --without-png
+
+# Regen required because the tarball ships with an experimental ltmain.sh
+# that can't be patched by our infra.
+# autogen.sh is because autotools stuff lives in other directories and
+# even AUTORECONF with _OPT doesn't do it properly.
+# POST_PATCH is because we still need to patch libtool after the regen.
+define FREETYPE_RUN_AUTOGEN
+	cd $(@D) && PATH=$(BR_PATH) ./autogen.sh
+endef
+FREETYPE_POST_PATCH_HOOKS += FREETYPE_RUN_AUTOGEN
+FREETYPE_DEPENDENCIES += host-automake host-autoconf host-libtool
+HOST_FREETYPE_DEPENDENCIES += host-automake host-autoconf host-libtool
 
 ifeq ($(BR2_PACKAGE_ZLIB),y)
 FREETYPE_DEPENDENCIES += zlib
