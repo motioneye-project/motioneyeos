@@ -46,6 +46,7 @@ OPENCV_CONF_OPT += \
 	-DBUILD_opencv_calib3d=$(if $(BR2_PACKAGE_OPENCV_LIB_CALIB3D),ON,OFF)   \
 	-DBUILD_opencv_contrib=$(if $(BR2_PACKAGE_OPENCV_LIB_CONTRIB),ON,OFF)   \
 	-DBUILD_opencv_core=ON                                                  \
+	-DBUILD_opencv_dynamicuda=OFF                                           \
 	-DBUILD_opencv_features2d=$(if $(BR2_PACKAGE_OPENCV_LIB_FEATURES2D),ON,OFF) \
 	-DBUILD_opencv_flann=$(if $(BR2_PACKAGE_OPENCV_LIB_FLANN),ON,OFF)       \
 	-DBUILD_opencv_gpu=$(if $(BR2_PACKAGE_OPENCV_LIB_GPU),ON,OFF)           \
@@ -76,6 +77,35 @@ OPENCV_CONF_OPT += \
 	-DENABLE_SSSE3=$(if $(BR2_X86_CPU_HAS_SSSE3),ON,OFF)
 
 # Software/3rd-party support options.
+# Cuda stuff
+OPENCV_CONF_OPT += \
+	-DWITH_CUBLAS=OFF \
+	-DWITH_CUDA=OFF   \
+	-DWITH_CUFFT=OFF
+
+# NVidia stuff
+OPENCV_CONF_OPT += -DWITH_NVCUVID=OFF
+
+# AMD stuff
+OPENCV_CONF_OPT += \
+	-DWITH_OPENCLAMDFFT=OFF \
+	-DWITH_OPENCLAMDBLAS=OFF
+
+# Intel stuff
+OPENCV_CONF_OPT += \
+	-DWITH_INTELPERC=OFF \
+	-DWITH_IPP=OFF       \
+	-DWITH_TBB=OFF
+
+# Smartek stuff
+OPENCV_CONF_OPT += -DWITH_GIGEAPI=OFF
+
+# Prosilica stuff
+OPENCV_CONF_OPT += -DWITH_PVAPI=OFF
+
+# Ximea stuff
+OPENCV_CONF_OPT += -DWITH_XIMEA=OFF
+
 OPENCV_CONF_OPT += \
 	-DBUILD_JASPER=OFF \
 	-DBUILD_JPEG=OFF   \
@@ -95,22 +125,15 @@ OPENCV_CONF_OPT += \
 	-DWITH_ANDROID_CAMERA=OFF \
 	-DWITH_AVFOUNDATION=OFF	  \
 	-DWITH_CARBON=OFF         \
-	-DWITH_CUBLAS=OFF         \
-	-DWITH_CUDA=OFF           \
-	-DWITH_CUFFT=OFF          \
 	-DWITH_EIGEN=OFF          \
 	-DWITH_IMAGEIO=OFF        \
-	-DWITH_IPP=OFF            \
 	-DWITH_JASPER=OFF         \
 	-DWITH_OPENEXR=OFF        \
 	-DWITH_OPENGL=OFF         \
 	-DWITH_OPENNI=OFF         \
-	-DWITH_PVAPI=OFF          \
 	-DWITH_QUICKTIME=OFF      \
-	-DWITH_TBB=OFF            \
 	-DWITH_UNICAP=OFF         \
 	-DWITH_VIDEOINPUT=OFF     \
-	-DWITH_XIMEA=OFF          \
 	-DWITH_XINE=OFF
 
 OPENCV_DEPENDENCIES += zlib
