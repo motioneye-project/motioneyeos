@@ -4,12 +4,12 @@ case "$1" in
 	start)
 		echo -n "Starting acpid: "
 		start-stop-daemon -S -q -m -b -p /var/run/acpid.pid --exec /usr/sbin/acpid -- -n
-		echo "done"
+		[ $? == 0 ] && echo "OK" || echo "FAIL"
 		;;
 	stop)
 		echo -n "Stopping acpid: "
 		start-stop-daemon -K -q -p /var/run/acpid.pid
-		echo "done"
+		[ $? == 0 ] && echo "OK" || echo "FAIL"
 		;;
 	restart)
 		"$0" stop
