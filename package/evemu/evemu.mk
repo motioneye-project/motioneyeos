@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-EVEMU_VERSION = 1.0.10
+EVEMU_VERSION = 1.2.0
 EVEMU_SITE = http://cgit.freedesktop.org/evemu/snapshot
 EVEMU_LICENSE = LGPLv3 (library), GPLv3 (tools)
 EVEMU_LICENSE_FILES = COPYING COPYING.GPL3

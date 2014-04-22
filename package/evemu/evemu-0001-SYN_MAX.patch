@@ -1,0 +1,25 @@
+[PATCH] make-event-names.py: fix SYN_MAX definition for modern kernel headers
+
+SYN_MAX has been exported to user space since 3.12 (52764fed5: Input: add
+SYN_MAX and SYN_CNT constants), so only define it locally if not already
+defined, otherwise the build breaks.
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ src/make-event-names.py |    2 ++
+ 1 file changed, 2 insertions(+)
+
+Index: evemu-1.2.0/src/make-event-names.py
+===================================================================
+--- evemu-1.2.0.orig/src/make-event-names.py
++++ evemu-1.2.0/src/make-event-names.py
+@@ -91,7 +91,9 @@
+ 	print "#ifndef EVENT_NAMES_H"
+ 	print "#define EVENT_NAMES_H"
+ 	print ""
++	print "#ifndef SYN_MAX"
+ 	print "#define SYN_MAX 3 /* linux/input.h doesn't define that */"
++	print "#endif"
+ 	print ""
+ 
+ 	for prefix in prefixes:
