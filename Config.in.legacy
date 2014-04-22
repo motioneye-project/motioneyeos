@@ -101,6 +101,14 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2014.05"
 
+config BR2_PACKAGE_EVTEST_CAPTURE
+	bool "evtest-capture support removed (dropped since evtest 1.31)"
+	select BR2_LEGACY
+	help
+	  Support for evtest-capture has been removed (dropped from
+	  evtest package since version 1.31), use evemu package
+	  instead.
+
 config BR2_KERNEL_HEADERS_3_6
 	bool "kernel headers version 3.6.x are no longer supported"
 	select BR2_KERNEL_HEADERS_3_8

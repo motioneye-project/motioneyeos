@@ -6,16 +6,4 @@ config BR2_PACKAGE_EVTEST
 	  device. It then monitors the device and displays all the
 	  events layer events generated.
 
-	  http://www.freedesktop.org/wiki/Evtest
-
-if BR2_PACKAGE_EVTEST
-
-config BR2_PACKAGE_EVTEST_CAPTURE
-	bool "evtest-capture"
-	select BR2_PACKAGE_LIBXML2
-	help
-	  evtest-capture captures the information and events from the
-	  input device specified on the command line and writes it to
-	  the xml file given.
-
-endif
+	  http://cgit.freedesktop.org/evtest
