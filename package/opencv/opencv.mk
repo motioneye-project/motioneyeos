@@ -43,6 +43,7 @@ OPENCV_CONF_OPT += \
 # OpenCV module selection
 OPENCV_CONF_OPT += \
 	-DBUILD_opencv_androidcamera=OFF                                        \
+	-DBUILD_opencv_apps=OFF                                                 \
 	-DBUILD_opencv_calib3d=$(if $(BR2_PACKAGE_OPENCV_LIB_CALIB3D),ON,OFF)   \
 	-DBUILD_opencv_contrib=$(if $(BR2_PACKAGE_OPENCV_LIB_CONTRIB),ON,OFF)   \
 	-DBUILD_opencv_core=ON                                                  \
