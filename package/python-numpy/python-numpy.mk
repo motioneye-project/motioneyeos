@@ -11,6 +11,11 @@ PYTHON_NUMPY_LICENSE = BSD-3c
 PYTHON_NUMPY_LICENSE_FILES = LICENSE.txt
 PYTHON_NUMPY_SETUP_TYPE = distutils
 
+ifeq ($(BR2_PACKAGE_CLAPACK),y)
+PYTHON_NUMPY_DEPENDENCIES += clapack
+PYTHON_NUMPY_SITE_CFG_LIBS += blas lapack
+endif
+
 PYTHON_NUMPY_BUILD_OPT = --fcompiler=None
 
 define PYTHON_NUMPY_CONFIGURE_CMDS
@@ -18,7 +23,7 @@ define PYTHON_NUMPY_CONFIGURE_CMDS
 	echo "[DEFAULT]" >> $(@D)/site.cfg
 	echo "library_dirs = $(STAGING_DIR)/usr/lib" >> $(@D)/site.cfg
 	echo "include_dirs = $(STAGING_DIR)/usr/include" >> $(@D)/site.cfg
-	echo "libraries =" >> $(@D)/site.cfg
+	echo "libraries =" $(subst $(space),$(comma),$(PYTHON_NUMPY_SITE_CFG_LIBS)) >> $(@D)/site.cfg
 endef
 
 # Some package may include few headers from NumPy, so let's install it
