@@ -416,4 +416,9 @@ config BR2_PACKAGE_QT_DECLARATIVE
 	  Build the Qt Declarative Module for qml support
 	  if unsure, say n.
 
+config BR2_PACKAGE_QT_TEST
+	bool "Test Module"
+	help
+	  Install the Test module.
+
 endif # BR2_PACKAGE_QT

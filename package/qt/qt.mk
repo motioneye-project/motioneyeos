@@ -586,6 +586,9 @@ endif
 ifeq ($(BR2_PACKAGE_QT_GFX_POWERVR),y)
 QT_INSTALL_LIBS    += pvrQWSWSEGL
 endif
+ifeq ($(BR2_PACKAGE_QT_TEST),y)
+QT_INSTALL_LIBS    += QtTest
+endif
 
 QT_CONF_FILE=$(HOST_DIR)/usr/bin/qt.conf
 
