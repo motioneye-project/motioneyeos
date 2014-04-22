@@ -8,7 +8,7 @@ menuconfig BR2_PACKAGE_OPENCV
 	  OpenCV (Open Source Computer Vision) is a library of programming
 	  functions for real time computer vision.
 
-	  http://opencv.willowgarage.com/wiki/
+	  http://opencv.org/
 
 if BR2_PACKAGE_OPENCV
 

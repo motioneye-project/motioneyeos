@@ -4,9 +4,8 @@
 #
 ################################################################################
 
-OPENCV_VERSION = 2.4.2
-OPENCV_SITE = http://downloads.sourceforge.net/project/opencvlibrary/opencv-unix/$(OPENCV_VERSION)
-OPENCV_SOURCE = OpenCV-$(OPENCV_VERSION).tar.bz2
+OPENCV_VERSION = 2.4.8
+OPENCV_SITE = $(call github,itseez,opencv,$(OPENCV_VERSION))
 OPENCV_INSTALL_STAGING = YES
 OPENCV_LICENSE = BSD-3c
 OPENCV_LICENSE_FILES = doc/license.txt
@@ -141,7 +140,7 @@ OPENCV_CONF_OPT += -DWITH_PNG=OFF
 endif
 
 ifeq ($(BR2_PACKAGE_OPENCV_WITH_QT),y)
-OPENCV_CONF_OPT += -DWITH_QT=ON
+OPENCV_CONF_OPT += -DWITH_QT=4
 OPENCV_DEPENDENCIES += qt
 else
 OPENCV_CONF_OPT += -DWITH_QT=OFF
@@ -155,10 +154,10 @@ OPENCV_CONF_OPT += -DWITH_TIFF=OFF
 endif
 
 ifeq ($(BR2_PACKAGE_OPENCV_WITH_V4L),y)
-OPENCV_CONF_OPT += -DWITH_V4L=ON
+OPENCV_CONF_OPT += -DWITH_V4L=ON -DWITH_LIBV4L=ON
 OPENCV_DEPENDENCIES += libv4l
 else
-OPENCV_CONF_OPT += -DWITH_V4L=OFF
+OPENCV_CONF_OPT += -DWITH_V4L=OFF -DWITH_LIBV4L=OFF
 endif
 
 # Installation hooks:
