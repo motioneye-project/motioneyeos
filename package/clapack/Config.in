@@ -1,0 +1,22 @@
+config BR2_PACKAGE_CLAPACK
+	bool "cblas/clapack"
+	depends on BR2_LARGEFILE
+	help
+	  BLAS and LAPACK C implementation (f2c'ed version of).
+
+	  http://www.netlib.org/clapack/
+
+config BR2_PACKAGE_CLAPACK_ARITH_H
+	string "Custom BLAS arith.h"
+	depends on BR2_PACKAGE_CLAPACK
+	help
+	  To optimize BLAS library for the hardware, an 'arith.h' header should
+	  be provided.
+
+	  If empty, the library will not be optimized by the compiler.
+
+	  In any case an 'arithchk' program is built (but not installed), to be run
+	  on the target to generate this arith.h header.
+
+comment "cblas/clapack needs a toolchain w/ largefile"
+	depends on !BR2_LARGEFILE
