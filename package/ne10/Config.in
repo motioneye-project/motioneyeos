@@ -1,6 +1,7 @@
 config BR2_PACKAGE_NE10
 	bool "ne10"
-	depends on BR2_arm && BR2_ARM_CPU_HAS_NEON
+	depends on BR2_arm
+	depends on BR2_ARM_FPU_NEON || BR2_ARM_FPU_NEON_VFPV4
 	help
 	  The Ne10 project has been set up to provide a set of common,
 	  useful functions which have been heavily optimized for the
@@ -10,3 +11,7 @@ config BR2_PACKAGE_NE10
 	  and NEON implementations.
 
 	  http://projectne10.github.io/Ne10/
+
+comment "ne10 needs a toolchain w/ neon"
+	depends on BR2_arm
+	depends on !(BR2_ARM_FPU_NEON || BR2_ARM_FPU_NEON_VFPV4)
