@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-SAMBA4_VERSION = 4.1.6
+SAMBA4_VERSION = 4.1.7
 SAMBA4_SITE = http://ftp.samba.org/pub/samba/stable
 SAMBA4_SOURCE = samba-$(SAMBA4_VERSION).tar.gz
 SAMBA4_LICENSE = GPLv3+
@@ -62,7 +62,8 @@ else
 endif
 
 define SAMBA4_CONFIGURE_CMDS
-	cp package/samba4/$(call qstrip,$(BR2_ARCH))-cache.txt $(@D)/cache.txt;
+	cp package/samba4/samba4-cache.txt $(@D)/cache.txt;
+	echo 'Checking uname machine type: $(BR2_ARCH)' >>$(@D)/cache.txt;
 	(cd $(@D); \
 		PYTHON_CONFIG="$(STAGING_DIR)/usr/bin/python-config" \
 		python_LDFLAGS="" \

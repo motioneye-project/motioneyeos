@@ -1,13 +1,11 @@
-From 3c16a171c008b584ed427988dde73c1d9a9de4ad Mon Sep 17 00:00:00 2001
+From 5e0bafd6504916dd7de5b1ae90e7253d11498435 Mon Sep 17 00:00:00 2001
 From: Gustavo Zacarias <gustavo@zacarias.com.ar>
 Date: Mon, 20 Jan 2014 10:17:19 -0300
-Subject: [PATCH 2/3] build: don't execute statfs and f_fsid checks
+Subject: [PATCH 1/5] build: don't execute statfs and f_fsid checks
 
 There's no need to execute the statfs and statfs.f_fsid checks, the
 return value is of no consequence since it's undefined in some
 platforms and prevents cross-compiling.
-
-Status: sent, not yet upstream pending more testing.
 
 Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
 ---
@@ -15,10 +13,10 @@ Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
  1 file changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/source3/wscript b/source3/wscript
-index 501707b..2d0a62e 100644
+index 4fe49fa..e81a47b 100644
 --- a/source3/wscript
 +++ b/source3/wscript
-@@ -468,8 +468,7 @@ return acl_get_perm_np(permset_d, perm);
+@@ -476,8 +476,7 @@ return acl_get_perm_np(permset_d, perm);
      conf.CHECK_CODE('struct statfs fsd; fsid_t fsid = fsd.f_fsid; return statfs(".", &fsd);',
                      'HAVE_STATFS_F_FSID',
                      msg="vfs_fileid: checking for statfs() and struct statfs.f_fsid",
