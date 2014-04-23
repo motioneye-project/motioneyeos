@@ -4,9 +4,10 @@
 #
 ################################################################################
 
-LIBDVDNAV_VERSION = 4.1.3
-LIBDVDNAV_SOURCE = libdvdnav-$(LIBDVDNAV_VERSION).tar.bz2
+LIBDVDNAV_VERSION = 4.2.1
+LIBDVDNAV_SOURCE = libdvdnav-$(LIBDVDNAV_VERSION).tar.xz
 LIBDVDNAV_SITE = http://dvdnav.mplayerhq.hu/releases
+# configure not shipped
 LIBDVDNAV_AUTORECONF = YES
 LIBDVDNAV_INSTALL_STAGING = YES
 LIBDVDNAV_CONFIG_SCRIPTS = dvdnav-config
