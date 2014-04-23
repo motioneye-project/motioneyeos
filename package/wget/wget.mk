@@ -19,7 +19,7 @@ WGET_DEPENDENCIES += host-gettext
 define WGET_GETTEXTIZE
 	cd $(@D) ; $(HOST_DIR)/usr/bin/gettextize -f
 endef
-WGET_POST_PATCH_HOOKS += WGET_GETTEXTIZE
+WGET_PRE_CONFIGURE_HOOKS += WGET_GETTEXTIZE
 
 # Prefer full-blown wget over busybox
 ifeq ($(BR2_PACKAGE_BUSYBOX),y)
