@@ -26,6 +26,7 @@ define FREETYPE_RUN_AUTOGEN
 	cd $(@D) && PATH=$(BR_PATH) ./autogen.sh
 endef
 FREETYPE_POST_PATCH_HOOKS += FREETYPE_RUN_AUTOGEN
+HOST_FREETYPE_POST_PATCH_HOOKS += FREETYPE_RUN_AUTOGEN
 FREETYPE_DEPENDENCIES += host-automake host-autoconf host-libtool
 HOST_FREETYPE_DEPENDENCIES += host-automake host-autoconf host-libtool
 
