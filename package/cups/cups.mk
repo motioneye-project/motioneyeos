@@ -17,7 +17,8 @@ CUPS_CONF_OPT = --without-perl \
 		--without-php \
 		--disable-gnutls \
 		--disable-gssapi \
-		--libdir=/usr/lib
+		--libdir=/usr/lib \
+		--localstatedir=/var
 CUPS_CONFIG_SCRIPTS = cups-config
 
 CUPS_DEPENDENCIES = $(if $(BR2_PACKAGE_ZLIB),zlib) \
