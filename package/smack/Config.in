@@ -1,6 +1,7 @@
 config BR2_PACKAGE_SMACK
 	bool "smack"
 	depends on !BR2_PREFER_STATIC_LIB # dlfcn.h
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0
 	help
 	  User space programs and libraries for SMACK.
 
@@ -28,5 +29,6 @@ config BR2_PACKAGE_SMACK
 
 	  https://github.com/smack-team/smack
 
-comment "smack needs a toolchain w/ dynamic library"
+comment "smack needs a toolchain w/ dynamic library, headers >= 3.0"
 	depends on BR2_PREFER_STATIC_LIB
+	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0
