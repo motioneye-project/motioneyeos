@@ -26,6 +26,18 @@ ifeq ($(BR2_PACKAGE_PROFTPD_MOD_REWRITE),y)
 PROFTPD_CONF_OPT += --with-modules=mod_rewrite
 endif
 
+ifeq ($(BR2_LARGEFILE),y)
+# configure script doesn't handle detection of %llu format string
+# support for printing the file size when cross compiling, breaking
+# access for large files.
+# We unfortunately cannot AUTORECONF the package, so instead force it
+# on if we know we support it
+define PROFTPD_USE_LLU
+	$(SED) 's/HAVE_LU/HAVE_LLU/' $(@D)/configure
+endef
+PROFTPD_PRE_CONFIGURE_HOOKS += PROFTPD_USE_LLU
+endif
+
 define PROFTPD_MAKENAMES
 	$(MAKE1) CC="$(HOSTCC)" CFLAGS="" LDFLAGS="" -C $(@D)/lib/libcap _makenames
 endef
