@@ -1,0 +1,30 @@
+From d2c08aafcae8a0af3cb5a6ae873bbcbd567eae95 Mon Sep 17 00:00:00 2001
+From: Peter Seiderer <ps.report@gmx.net>
+Date: Fri, 25 Apr 2014 22:30:06 +0200
+Subject: [PATCH] make-event-names: use input.h from sysroot (instead of host
+ system version)
+
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+---
+ src/make-event-names.py | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/src/make-event-names.py b/src/make-event-names.py
+index 2092cfd..5bbc669 100755
+--- a/src/make-event-names.py
++++ b/src/make-event-names.py
+@@ -7,8 +7,10 @@
+ import re
+ import sys
+ import argparse
++import os
+ 
+-SOURCE_FILE = "/usr/include/linux/input.h"
++# environment variable SYSROOT set by buildroot for cross-compilation
++SOURCE_FILE = os.environ.get('SYSROOT', '') + "/usr/include/linux/input.h"
+ 
+ class Bits(object):
+ 	pass
+-- 
+1.8.1.4
+

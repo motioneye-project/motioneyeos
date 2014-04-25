@@ -14,6 +14,10 @@ EVEMU_LICENSE_FILES = COPYING COPYING.GPL3
 # which doesn't have all the needed modules enabled, breaking the build
 EVEMU_CONF_ENV = ac_cv_path_ASCIIDOC=""
 
+# needed for make-event-names.py to find sysroot provided input.h (instead
+# of host system version)
+EVEMU_MAKE_ENV = SYSROOT=$(STAGING_DIR)
+
 # Uses PKG_CHECK_MODULES() in configure.ac
 EVEMU_DEPENDENCIES = host-pkgconf libevdev
 
