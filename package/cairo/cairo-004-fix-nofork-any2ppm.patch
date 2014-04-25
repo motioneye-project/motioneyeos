@@ -1,0 +1,23 @@
+test: fix build of any2ppm if fork is not available.
+
+The test program any2ppm can run as daemon. This feature can be disabled at
+compile time, if the required headers are not present. However the support for
+fork() is not checked.
+
+This patch fixes this issue.
+
+Signed-off-by: Eric Le Bihan <eric.le.bihan.dev@free.fr>
+
+Index: cairo-1.12.10/test/any2ppm.c
+===================================================================
+--- cairo-1.12.10.orig/test/any2ppm.c	2012-04-19 14:17:34.000000000 +0200
++++ cairo-1.12.10/test/any2ppm.c	2014-04-25 11:13:30.000000000 +0200
+@@ -79,7 +79,7 @@
+ 
+ #include <errno.h>
+ 
+-#if HAVE_UNISTD_H && HAVE_FCNTL_H && HAVE_SIGNAL_H && HAVE_SYS_STAT_H && HAVE_SYS_SOCKET_H && HAVE_SYS_POLL_H && HAVE_SYS_UN_H
++#if HAVE_UNISTD_H && HAVE_FCNTL_H && HAVE_SIGNAL_H && HAVE_SYS_STAT_H && HAVE_SYS_SOCKET_H && HAVE_SYS_POLL_H && HAVE_SYS_UN_H && HAVE_FORK
+ #include <fcntl.h>
+ #include <signal.h>
+ #include <sys/stat.h>
