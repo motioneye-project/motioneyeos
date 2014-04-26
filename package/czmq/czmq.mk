@@ -11,8 +11,8 @@ CZMQ_SITE = git://github.com/zeromq/czmq.git
 CZMQ_AUTORECONF = YES
 CZMQ_INSTALL_STAGING = YES
 CZMQ_DEPENDENCIES = zeromq
-CZMQ_LICENSE = LGPLv3+ with exceptions
-CZMQ_LICENSE_FILES = COPYING COPYING.LESSER
+CZMQ_LICENSE = MPLv2.0
+CZMQ_LICENSE_FILES = LICENSE
 
 # asciidoc is a python script that imports unicodedata, which is not in
 # host-python, so disable asciidoc entirely.
