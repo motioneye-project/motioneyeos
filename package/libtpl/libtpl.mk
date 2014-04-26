@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBTPL_VERSION = 6df007e450cbee7d7a4896d3538128c5370b1c61
+LIBTPL_VERSION = v1.6.1
 LIBTPL_SITE = $(call github,troydhanson,tpl,$(LIBTPL_VERSION))
 LIBTPL_INSTALL_STAGING = YES
 LIBTPL_LICENSE = BSD-like
