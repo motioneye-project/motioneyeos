@@ -267,6 +267,6 @@ config BR2_UCLIBC_X86_TYPE
 	default PENTIUMII  if BR2_x86_pentium2
 	default PENTIUMIII if BR2_x86_pentium3
 	default PENTIUM4   if BR2_x86_pentium4 || BR2_x86_pentium_m || \
-			      BR2_x86_nocona || BR2_x86_core2
+			      BR2_x86_nocona || BR2_x86_core2 || BR2_x86_corei7
 
 endif # BR2_TOOLCHAIN_BUILDROOT_UCLIBC

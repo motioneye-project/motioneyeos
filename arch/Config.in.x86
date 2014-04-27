@@ -83,6 +83,15 @@ config BR2_x86_core2
 	select BR2_X86_CPU_HAS_SSE2
 	select BR2_X86_CPU_HAS_SSE3
 	select BR2_X86_CPU_HAS_SSSE3
+config BR2_x86_corei7
+	bool "corei7"
+	select BR2_X86_CPU_HAS_MMX
+	select BR2_X86_CPU_HAS_SSE
+	select BR2_X86_CPU_HAS_SSE2
+	select BR2_X86_CPU_HAS_SSE3
+	select BR2_X86_CPU_HAS_SSSE3
+	select BR2_X86_CPU_HAS_SSE4
+	select BR2_X86_CPU_HAS_SSE42
 config BR2_x86_atom
 	bool "atom"
 	select BR2_X86_CPU_HAS_MMX
@@ -177,6 +186,7 @@ config BR2_ARCH
 	default "i686"		if BR2_x86_prescott
 	default "i686"		if BR2_x86_nocona && BR2_i386
 	default "i686"		if BR2_x86_core2 && BR2_i386
+	default "i686"		if BR2_x86_corei7 && BR2_i386
 	default "i686"		if BR2_x86_atom && BR2_i386
 	default "i686"		if BR2_x86_opteron && BR2_i386
 	default "i686"		if BR2_x86_opteron_sse3 && BR2_i386
@@ -206,6 +216,7 @@ config BR2_GCC_TARGET_TUNE
 	default "prescott"	if BR2_x86_prescott
 	default "nocona"	if BR2_x86_nocona
 	default "core2"		if BR2_x86_core2
+	default "corei7"	if BR2_x86_corei7
 	default "atom"		if BR2_x86_atom
 	default "k8"		if BR2_x86_opteron
 	default "k8-sse3"	if BR2_x86_opteron_sse3
@@ -236,6 +247,7 @@ config BR2_GCC_TARGET_ARCH
 	default "prescott"	if BR2_x86_prescott
 	default "nocona"	if BR2_x86_nocona
 	default "core2"		if BR2_x86_core2
+	default "corei7"	if BR2_x86_corei7
 	default "atom"		if BR2_x86_atom
 	default "k8"		if BR2_x86_opteron
 	default "k8-sse3"	if BR2_x86_opteron_sse3
