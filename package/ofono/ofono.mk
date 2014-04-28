@@ -22,6 +22,10 @@ OFONO_CONF_OPT = --disable-test
 # make sure that it is defined.
 OFONO_CONF_ENV += CFLAGS="$(TARGET_CFLAGS) -D_GNU_SOURCE"
 
+define OFONO_INSTALL_INIT_SYSV
+	$(INSTALL) -m 0755 -D package/ofono/S46ofono $(TARGET_DIR)/etc/init.d/S46ofono
+endef
+
 ifeq ($(BR2_PACKAGE_HAS_UDEV),y)
 	OFONO_CONF_OPT += --enable-udev
 	OFONO_DEPENDENCIES += udev
