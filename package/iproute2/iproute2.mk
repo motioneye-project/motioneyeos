@@ -32,8 +32,8 @@ define IPROUTE2_WITH_IPTABLES
 endef
 endif
 
-# arpd needs BerkeleyDB
-ifeq ($(BR2_PACKAGE_BERKELEYDB_COMPAT185),y)
+# arpd needs BerkeleyDB and links against pthread
+ifeq ($(BR2_PACKAGE_BERKELEYDB_COMPAT185)$(BR2_TOOLCHAIN_HAS_THREADS),yy)
 IPROUTE2_DEPENDENCIES += berkeleydb
 else
 define IPROUTE2_DISABLE_ARPD
