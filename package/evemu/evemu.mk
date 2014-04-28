@@ -27,11 +27,10 @@ EVEMU_DEPENDENCIES = host-pkgconf libevdev
 # Needs Python for header file generation
 EVEMU_DEPENDENCIES += $(if $(BR2_PACKAGE_PYTHON3),host-python3,host-python)
 
-# Check for target python (python3 bindings disabled because
-# of build/byte-compile problems)
-ifeq ($(BR2_PACKAGE_PYTHON),y)
+# Check for target python
+ifeq ($(BR2_PACKAGE_PYTHON)$(BR2_PACKAGE_PYTHON3),y)
 EVEMU_CONF_OPT += --enable-python-bindings
-EVEMU_DEPENDENCIES += python
+EVEMU_DEPENDENCIES += $(if $(BR2_PACKAGE_PYTHON3),python3,python)
 else
 EVEMU_CONF_OPT += --disable-python-bindings
 endif
