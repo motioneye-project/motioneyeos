@@ -24,8 +24,8 @@ EVEMU_CONF_OPT += --disable-tests
 # Uses PKG_CHECK_MODULES() in configure.ac
 EVEMU_DEPENDENCIES = host-pkgconf libevdev
 
-# Needs Python to generate a wrapper
-EVEMU_DEPENDENCIES += host-python
+# Needs Python for header file generation
+EVEMU_DEPENDENCIES += $(if $(BR2_PACKAGE_PYTHON3),host-python3,host-python)
 
 # package source code coming from git, so it doesn't have generated
 # configure and Makefile.in
