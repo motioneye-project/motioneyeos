@@ -18,6 +18,9 @@ EVEMU_CONF_ENV = ac_cv_path_ASCIIDOC=""
 # of host system version)
 EVEMU_MAKE_ENV = SYSROOT=$(STAGING_DIR)
 
+# disable tests generation because of C++ dependency
+EVEMU_CONF_OPT += --disable-tests
+
 # Uses PKG_CHECK_MODULES() in configure.ac
 EVEMU_DEPENDENCIES = host-pkgconf libevdev
 
