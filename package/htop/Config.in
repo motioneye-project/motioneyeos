@@ -6,4 +6,4 @@ config BR2_PACKAGE_HTOP
 	  htop is an interactive text-mode process viewer for Linux.
 	  It aims to be a better top.
 
-	  http://htop.sf.net
+	  http://hisham.hm/htop/
