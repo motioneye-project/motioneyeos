@@ -41,10 +41,10 @@ How to build it
 Configure Buildroot
 -------------------
 
-The arrow_sockit_defconfig configuration is a minimal configuration with
+The altera_sockit_defconfig configuration is a minimal configuration with
 all that is required to bring the SoCkit :
 
-  $ make arrow_sockit_defconfig
+  $ make altera_sockit_defconfig
 
 Build everything
 ----------------
