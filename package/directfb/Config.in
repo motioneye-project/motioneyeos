@@ -110,6 +110,10 @@ config BR2_PACKAGE_DIRECTFB_GIF
 config BR2_PACKAGE_DIRECTFB_IMLIB2
 	bool "enable IMLIB2 support"
 	select BR2_PACKAGE_IMLIB2
+	depends on !BR2_PREFER_STATIC_LIB
+
+comment "imlib2 support needs a toolchain w/ dynamic library"
+	depends on BR2_PREFER_STATIC_LIB
 
 config BR2_PACKAGE_DIRECTFB_JPEG
 	bool "enable JPEG support"
