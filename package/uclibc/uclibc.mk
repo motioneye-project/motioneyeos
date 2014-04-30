@@ -211,7 +211,7 @@ endef
 endif
 
 #
-# Endianess
+# Endianness
 #
 
 ifeq ($(call qstrip,$(BR2_ENDIAN)),BIG)
@@ -552,6 +552,9 @@ uclibc-menuconfig: uclibc-patch
 	rm -f $(UCLIBC_DIR)/.stamp_{configured,built,target_installed,staging_installed}
 
 $(eval $(generic-package))
+
+uclibc-update-config: $(UCLIBC_DIR)/.stamp_configured
+	cp -f $(UCLIBC_DIR)/.config $(UCLIBC_CONFIG_FILE)
 
 # Before uClibc is built, we must have the second stage cross-compiler
 $(UCLIBC_TARGET_BUILD): | host-gcc-intermediate
