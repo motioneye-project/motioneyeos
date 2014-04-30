@@ -101,6 +101,26 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2014.05"
 
+config BR2_KERNEL_HEADERS_3_6
+	bool "kernel headers version 3.6.x are no longer supported"
+	select BR2_KERNEL_HEADERS_3_8
+	select BR2_LEGACY
+	help
+	  Version 3.6.x of the Linux kernel headers have been deprecated
+	  for more than four buildroot releases and are now removed.
+	  As an alternative, version 3.8.x of the headers have been
+	  automatically selected in your configuration.
+
+config BR2_KERNEL_HEADERS_3_7
+	bool "kernel headers version 3.7.x are no longer supported"
+	select BR2_KERNEL_HEADERS_3_8
+	select BR2_LEGACY
+	help
+	  Version 3.7.x of the Linux kernel headers have been deprecated
+	  for more than four buildroot releases and are now removed.
+	  As an alternative, version 3.8.x of the headers have been
+	  automatically selected in your configuration.
+
 config BR2_PACKAGE_VALA
 	bool "vala target package has been removed"
 	select BR2_LEGACY
@@ -278,12 +298,12 @@ config BR2_KERNEL_HEADERS_3_3
 
 config BR2_KERNEL_HEADERS_3_5
 	bool "kernel headers version 3.5.x are no longer supported"
-	select BR2_KERNEL_HEADERS_3_6
+	select BR2_KERNEL_HEADERS_3_8
 	select BR2_LEGACY
 	help
 	  Version 3.5.x of the Linux kernel headers have been deprecated
 	  for more than four buildroot releases and are now removed.
-	  As an alternative, version 3.6.x of the headers have been
+	  As an alternative, version 3.8.x of the headers have been
 	  automatically selected in your configuration.
 
 config BR2_GDB_VERSION_7_2
