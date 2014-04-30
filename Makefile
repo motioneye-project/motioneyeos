@@ -507,7 +507,14 @@ ifneq (,$(call qstrip,$(BR2_STRIP_EXCLUDE_DIRS)))
 STRIP_FIND_CMD += \( $(call finddirclauses,$(TARGET_DIR),$(call qstrip,$(BR2_STRIP_EXCLUDE_DIRS))) \) -prune -o
 endif
 STRIP_FIND_CMD += -type f \( -perm /111 -o -name '*.so*' \)
-STRIP_FIND_CMD += -not \( $(call findfileclauses,libpthread*.so* $(call qstrip,$(BR2_STRIP_EXCLUDE_FILES))) \) -print
+# file exclusions:
+# - libpthread.so: a non-stripped libpthread shared library is needed for
+#   proper debugging of pthread programs using gdb.
+# - kernel modules (*.ko): do not function properly when stripped like normal
+#   applications and libraries. Normally kernel modules are already excluded
+#   by the executable permission check above, so the explicit exclusion is only
+#   done for kernel modules with incorrect permissions.
+STRIP_FIND_CMD += -not \( $(call findfileclauses,libpthread*.so* *.ko $(call qstrip,$(BR2_STRIP_EXCLUDE_FILES))) \) -print
 
 $(TARGETS_ROOTFS): target-finalize
 
