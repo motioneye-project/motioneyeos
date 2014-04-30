@@ -101,6 +101,14 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2014.05"
 
+config BR2_PACKAGE_VALA
+	bool "vala target package has been removed"
+	select BR2_LEGACY
+	help
+	  The 'vala' target package has been removed since it has been
+	  deprecated for more than four buildroot releases.
+	  Note: the host vala package still exists.
+
 config BR2_TARGET_TZ_ZONELIST
 	default BR2_PACKAGE_TZDATA_ZONELIST if BR2_PACKAGE_TZDATA_ZONELIST != ""
 
