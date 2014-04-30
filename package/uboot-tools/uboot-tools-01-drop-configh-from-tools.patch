@@ -4,11 +4,12 @@ image, so it really isn't mandatory.
 
 Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
 
-diff -Nura u-boot-2013.01.orig/tools/env/fw_env.h u-boot-2013.01/tools/env/fw_env.h
---- u-boot-2013.01.orig/tools/env/fw_env.h	2013-01-19 07:50:53.879241660 -0300
-+++ u-boot-2013.01/tools/env/fw_env.h	2013-01-19 07:58:11.897903403 -0300
-@@ -21,15 +21,6 @@
-  * MA 02111-1307 USA
+diff --git a/tools/env/fw_env.h b/tools/env/fw_env.h
+index aff471b..dfe7439 100644
+--- a/tools/env/fw_env.h
++++ b/tools/env/fw_env.h
+@@ -5,14 +5,6 @@
+  * SPDX-License-Identifier:	GPL-2.0+
   */
  
 -/* Pull in the current config to define the default environment */
@@ -19,19 +20,6 @@ diff -Nura u-boot-2013.01.orig/tools/env/fw_env.h u-boot-2013.01/tools/env/fw_en
 -#else
 -#include <config.h>
 -#endif
--
+ 
  /*
   * To build the utility with the static configuration
-  * comment out the next line.
-diff -Nura u-boot-2013.01.orig/tools/env/Makefile u-boot-2013.01/tools/env/Makefile
---- u-boot-2013.01.orig/tools/env/Makefile	2013-01-19 07:50:53.879241660 -0300
-+++ u-boot-2013.01/tools/env/Makefile	2013-01-19 07:59:34.926486346 -0300
-@@ -26,7 +26,7 @@
- HOSTSRCS := $(SRCTREE)/lib/crc32.c  fw_env.c  fw_env_main.c
- HOSTSRCS += $(SRCTREE)/lib/ctype.c $(SRCTREE)/lib/linux_string.c
- HOSTSRCS += $(SRCTREE)/common/env_attr.c $(SRCTREE)/common/env_flags.c
--HEADERS	:= fw_env.h $(OBJTREE)/include/config.h
-+HEADERS	:= fw_env.h
- 
- # Compile for a hosted environment on the target
- HOSTCPPFLAGS  = -idirafter $(SRCTREE)/include \
