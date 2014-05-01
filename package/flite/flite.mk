@@ -11,6 +11,9 @@ FLITE_LICENSE = BSD-4c
 FLITE_LICENSE_FILES = COPYING
 
 FLITE_INSTALL_STAGING = YES
+# Patching configure.in
+FLITE_AUTORECONF = YES
+FLITE_DEPENDENCIES = host-pkgconf
 
 # Sadly, Flite does not support parallel build, especially when building its
 # shared libraries.
