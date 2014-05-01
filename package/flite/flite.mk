@@ -38,4 +38,11 @@ define FLITE_EXTRACT_CMDS
 	$(RM) -rf $(BUILD_DIR)/$(subst .tar.bz2,,$(FLITE_SOURCE))
 endef
 
+ifeq ($(BR2_PACKAGE_ALSA_LIB),y)
+FLITE_DEPENDENCIES += alsa-lib
+FLITE_CONF_OPT += --with-audio=alsa
+else
+FLITE_CONF_OPT += --with-audio=oss
+endif
+
 $(eval $(autotools-package))
