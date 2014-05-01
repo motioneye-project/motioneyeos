@@ -266,7 +266,7 @@ config BR2_CCACHE
 	help
 	  This option will enable the use of ccache, a compiler
 	  cache. It will cache the result of previous builds to speed
-	  up future builds. The cache is stored in
+	  up future builds. By default, the cache is stored in
 	  $HOME/.buildroot-ccache.
 
 	  Note that Buildroot does not try to invalidate the cache
@@ -276,12 +276,29 @@ config BR2_CCACHE
 	  ccache cache by removing the $HOME/.buildroot-ccache
 	  directory.
 
+if BR2_CCACHE
+
 config BR2_CCACHE_DIR
 	string "Compiler cache location"
-	depends on BR2_CCACHE
 	default "$(HOME)/.buildroot-ccache"
 	help
 	  Where ccache should store cached files.
+
+config BR2_CCACHE_INITIAL_SETUP
+	string "Compiler cache initial setup"
+	help
+	  Initial ccache settings to apply, such as --max-files or --max-size.
+
+	  For example, if your project is known to require more space than the
+	  default max cache size, then you might want to increase the cache size
+	  to a suitable amount using the -M (--max-size) option.
+
+	  The string you specify here is passed verbatim to ccache.  Refer to
+	  ccache documentation for more details.
+
+	  These initial settings are applied after ccache has been compiled.
+
+endif
 
 config BR2_DEPRECATED
 	bool "Show packages that are deprecated or obsolete"
