@@ -347,7 +347,7 @@ config BR2_ROOTFS_POST_BUILD_SCRIPT
 	  has finished and before Buildroot starts packing the files into
 	  selected filesystem images.
 
-	  This gives users the oportunity to do board-specific cleanups,
+	  This gives users the opportunity to do board-specific cleanups,
 	  add-ons and the like, so the generated files can be used directly
 	  without further processing.
 
@@ -377,7 +377,7 @@ config BR2_ROOTFS_POST_SCRIPT_ARGS
 	string "Extra post-{build,image} arguments"
 	depends on BR2_ROOTFS_POST_BUILD_SCRIPT != "" || BR2_ROOTFS_POST_IMAGE_SCRIPT != ""
 	help
-	  Pass these aditional arguments to each post-build or post-image
+	  Pass these additional arguments to each post-build or post-image
 	  scripts.
 
 	  Note that all the post-build and post-image scripts will be passed
