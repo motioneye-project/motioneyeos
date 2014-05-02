@@ -1,0 +1,37 @@
+efi: look for headers and libs in the sysroot
+
+Currently, syslinux hard-codes search paths to /usr/.... directories.
+This does not play well in cross-compilation.
+
+If $SYSROOT is defined, prepend it to the search paths.
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+
+diff -durN syslinux-6.02.orig/efi/find-gnu-efi.sh syslinux-6.02/efi/find-gnu-efi.sh
+--- syslinux-6.02.orig/efi/find-gnu-efi.sh	2013-10-13 19:59:03.000000000 +0200
++++ syslinux-6.02/efi/find-gnu-efi.sh	2014-04-22 00:19:23.638483887 +0200
+@@ -9,7 +9,7 @@
+ find_include()
+ {
+     for d in $include_dirs; do
+-	found=`find $d -name efi -type d 2> /dev/null`
++	found=`find $SYSROOT$d -name efi -type d 2> /dev/null`
+ 	if [ "$found"x != "x" ] && [ -e $found/$ARCH/efibind.h ]; then
+ 	    echo $found
+ 	    break;
+@@ -20,12 +20,12 @@
+ find_lib()
+ {
+     for d in $lib_dirs; do
+-	found=`find $d -name libgnuefi.a 2> /dev/null`
++	found=`find $SYSROOT$d -name libgnuefi.a 2> /dev/null`
+ 	if [ "$found"x != "x" ]; then
+ 	    crt_name='crt0-efi-'$ARCH'.o'
+-	    crt=`find $d -name $crt_name 2> /dev/null`
++	    crt=`find $SYSROOT$d -name $crt_name 2> /dev/null`
+ 	    if [ "$crt"x != "x" ]; then
+-		echo $d
++		echo $SYSROOT$d
+ 		break;
+ 	    fi
+ 	fi

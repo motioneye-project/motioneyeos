@@ -10,20 +10,31 @@ config BR2_TARGET_SYSLINUX
 
 if BR2_TARGET_SYSLINUX
 
+config BR2_TARGET_SYSLINUX_LEGACY_BIOS
+	bool
+
 choice
 	bool "Image to install"
 
 config BR2_TARGET_SYSLINUX_ISOLINUX
 	bool "isolinux"
+	select BR2_TARGET_SYSLINUX_LEGACY_BIOS
 	help
 	  Install the legacy-BIOS 'isolinux' image, to boot off
 	  optical media (CDROM, DVD.)
 
 config BR2_TARGET_SYSLINUX_PXELINUX
 	bool "pxelinux"
+	select BR2_TARGET_SYSLINUX_LEGACY_BIOS
 	help
 	  Install the legacy-BIOS 'pxelinux' image, to boot off
 	  the network using PXE.
+
+config BR2_TARGET_SYSLINUX_EFI
+	bool "efi"
+	select BR2_PACKAGE_GNU_EFI
+	help
+	  Install the 'efi' image, to boot from an EFI environment.
 
 endchoice
 

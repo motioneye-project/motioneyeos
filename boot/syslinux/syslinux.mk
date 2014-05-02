@@ -15,6 +15,20 @@ SYSLINUX_INSTALL_IMAGES = YES
 
 SYSLINUX_DEPENDENCIES = host-nasm host-util-linux host-upx
 
+ifeq ($(BR2_TARGET_SYSLINUX_LEGACY_BIOS),y)
+SYSLINUX_TARGET = bios
+endif
+
+ifeq ($(BR2_TARGET_SYSLINUX_EFI),y)
+ifeq ($(BR2_ARCH_IS_64),y)
+SYSLINUX_EFI_BITS = efi64
+else
+SYSLINUX_EFI_BITS = efi32
+endif # 64-bit
+SYSLINUX_DEPENDENCIES += gnu-efi
+SYSLINUX_TARGET = $(SYSLINUX_EFI_BITS)
+endif # EFI
+
 # The syslinux tarball comes with pre-compiled binaries.
 # Since timestamps might not be in the correct order, a rebuild is
 # not always triggered for all the different images.
@@ -30,7 +44,7 @@ SYSLINUX_POST_PATCH_HOOKS += SYSLINUX_CLEANUP
 # be used.
 define SYSLINUX_BUILD_CMDS
 	$(TARGET_MAKE_ENV) $(MAKE1) CC="$(HOSTCC) -idirafter $(HOST_DIR)/usr/include $(HOST_LDFLAGS)" \
-	    AR="$(HOSTAR)" -C $(@D) bios
+	    AR="$(HOSTAR)" SYSROOT=$(STAGING_DIR) -C $(@D) $(SYSLINUX_TARGET)
 endef
 
 # While the actual bootloader is compiled for the target, several
@@ -40,12 +54,13 @@ endef
 # install time
 define SYSLINUX_INSTALL_TARGET_CMDS
 	$(TARGET_MAKE_ENV) $(MAKE1) CC="$(HOSTCC) -idirafter $(HOST_DIR)/usr/include $(HOST_LDFLAGS)" \
-	    AR="$(HOSTAR)" INSTALLROOT=$(HOST_DIR) \
-	    -C $(@D) bios install
+	    AR="$(HOSTAR)" SYSROOT=$(STAGING_DIR) INSTALLROOT=$(HOST_DIR) \
+	    -C $(@D) $(SYSLINUX_TARGET) install
 endef
 
 SYSLINUX_IMAGES-$(BR2_TARGET_SYSLINUX_ISOLINUX) += bios/core/isolinux.bin
 SYSLINUX_IMAGES-$(BR2_TARGET_SYSLINUX_PXELINUX) += bios/core/pxelinux.bin
+SYSLINUX_IMAGES-$(BR2_TARGET_SYSLINUX_EFI) += $(SYSLINUX_EFI_BITS)/efi/syslinux.efi
 
 define SYSLINUX_INSTALL_IMAGES_CMDS
 	for i in $(SYSLINUX_IMAGES-y); do \
