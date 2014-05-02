@@ -22,9 +22,9 @@ define SYSLINUX_BUILD_CMDS
 	$(TARGET_MAKE_ENV) $(MAKE) CC="$(HOSTCC) -idirafter $(HOST_DIR)/usr/include $(HOST_LDFLAGS)" AR="$(HOSTAR)" -C $(@D)
 endef
 
+# While the actual bootloader is compiled for the target, several
+# utilities for installing the bootloader are meant for the host.
 define SYSLINUX_INSTALL_TARGET_CMDS
-	# While the actual bootloader is compiled for the target, several
-	# utilities for installing the bootloader are meant for the host.
 	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) INSTALLROOT=$(HOST_DIR) install
 endef
 
