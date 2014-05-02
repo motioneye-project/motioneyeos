@@ -27,8 +27,6 @@ ifeq ($(BR2_USE_WCHAR),)
 define LSOF_CONFIGURE_WCHAR_FIXUPS
 	$(SED) 's,^#define[[:space:]]*HASWIDECHAR.*,#undef HASWIDECHAR,' \
 		$(@D)/machine.h
-	$(SED) 's,^#define[[:space:]]*WIDECHARINCL.*,,' \
-		$(@D)/machine.h
 endef
 endif
 
