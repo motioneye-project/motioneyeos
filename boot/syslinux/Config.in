@@ -14,11 +14,17 @@ choice
 	bool "Image to install"
 
 config BR2_TARGET_SYSLINUX_ISOLINUX
-	bool "Install isolinux"
+	bool "isolinux"
+	help
+	  Install the legacy-BIOS 'isolinux' image, to boot off
+	  optical media (CDROM, DVD.)
 
 config BR2_TARGET_SYSLINUX_PXELINUX
-	bool "Install pxelinux"
+	bool "pxelinux"
+	help
+	  Install the legacy-BIOS 'pxelinux' image, to boot off
+	  the network using PXE.
 
 endchoice
 
-endif
+endif # BR2_TARGET_SYSLINUX
