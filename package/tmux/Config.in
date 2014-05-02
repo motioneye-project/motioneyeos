@@ -1,5 +1,6 @@
 config BR2_PACKAGE_TMUX
 	bool "tmux"
+	depends on BR2_USE_MMU # fork()
 	select BR2_PACKAGE_LIBEVENT
 	select BR2_PACKAGE_NCURSES
 	help
