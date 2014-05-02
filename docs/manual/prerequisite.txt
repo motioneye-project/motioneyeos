@@ -2,8 +2,7 @@
 // vim: set syntax=asciidoc:
 
 [[requirement]]
-System requirements
--------------------
+== System requirements
 
 Buildroot is designed to run on Linux systems.
 
@@ -17,8 +16,7 @@ for the libraries that may be packaged in 2 distinct packages.
 
 [[requirement-mandatory]]
 
-Mandatory packages
-~~~~~~~~~~~~~~~~~~
+=== Mandatory packages
 
 * Build tools:
 
@@ -45,8 +43,7 @@ Mandatory packages
 
 [[requirement-optional]]
 
-Optional packages
-~~~~~~~~~~~~~~~~~
+=== Optional packages
 
 * Source fetching tools:
 +

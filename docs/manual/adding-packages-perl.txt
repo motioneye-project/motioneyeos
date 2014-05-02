@@ -1,13 +1,11 @@
 // -*- mode:doc; -*-
 // vim: set syntax=asciidoc:
 
-Infrastructure for Perl/CPAN packages
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Infrastructure for Perl/CPAN packages
 
 [[perl-package-tutorial]]
 
-+perl-package+ tutorial
-^^^^^^^^^^^^^^^^^^^^^^^
+==== +perl-package+ tutorial
 
 First, let's see how to write a +.mk+ file for a Perl/CPAN package,
 with an example :
@@ -67,8 +65,7 @@ following things should be checked.
 
 [[perl-package-reference]]
 
-+perl-package+ reference
-^^^^^^^^^^^^^^^^^^^^^^^^
+==== +perl-package+ reference
 
 As a policy, packages that provide Perl/CPAN modules should all be
 named +perl-<something>+ in Buildroot.

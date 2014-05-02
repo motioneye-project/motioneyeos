@@ -1,13 +1,11 @@
 // -*- mode:doc; -*-
 // vim: set syntax=asciidoc:
 
-Daily use
----------
+== Daily use
 
 include::rebuilding-packages.txt[]
 
-Offline builds
-~~~~~~~~~~~~~~
+=== Offline builds
 
 If you intend to do an offline build and just want to download
 all sources that you previously selected in the configurator
@@ -20,8 +18,7 @@ all sources that you previously selected in the configurator
 You can now disconnect or copy the content of your +dl+
 directory to the build-host.
 
-Building out-of-tree
-~~~~~~~~~~~~~~~~~~~~
+=== Building out-of-tree
 
 As default, everything built by Buildroot is stored in the directory
 +output+ in the Buildroot tree.
@@ -63,8 +60,7 @@ and +-C <...>+, simply run (in the output directory):
 
 [[env-vars]]
 
-Environment variables
-~~~~~~~~~~~~~~~~~~~~~
+=== Environment variables
 
 Buildroot also honors some environment variables, when they are passed
 to +make+ or set in the environment:
@@ -113,8 +109,7 @@ or +g+++ for building helper-binaries on your host, then do
  $ make HOSTCXX=g++-4.3-HEAD HOSTCC=gcc-4.3-HEAD
 --------------------
 
-Dealing efficiently with filesystem images
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Dealing efficiently with filesystem images
 
 Filesystem images can get pretty big, depending on the filesystem you choose,
 the number of packages, whether you provisioned free space... Yet, some
@@ -152,8 +147,7 @@ your filesystem, those parts may not be all-zeroes when read back). You
 should only use sparse files when handling files on the build machine, not
 when transferring them to an actual device that will be used on the target.
 
-Graphing the dependencies between packages
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Graphing the dependencies between packages
 
 [[graph-depends]]
 
@@ -204,8 +198,7 @@ supported.
 BR2_GRAPH_OUT=svg make graph-depends
 --------------------------------
 
-Graphing the build duration
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Graphing the build duration
 
 [[graph-duration]]
 

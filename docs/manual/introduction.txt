@@ -1,8 +1,7 @@
 // -*- mode:doc; -*-
 // vim: set syntax=asciidoc:
 
-About Buildroot
-===============
+= About Buildroot
 
 Buildroot is a tool that simplifies and automates the process of
 building a complete Linux system for an embedded system, using

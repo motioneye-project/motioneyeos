@@ -1,8 +1,7 @@
 // -*- mode:doc; -*-
 // vim: set syntax=asciidoc:
 
-Infrastructure for virtual packages
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Infrastructure for virtual packages
 
 [[virtual-package-tutorial]]
 
@@ -16,16 +15,14 @@ The implementation of this API is different for the 'Allwinner Tech Sunxi' and
 the 'Texas Instruments OMAP35xx' plaftorms. So +libgles+ will be a virtual
 package and +sunxi-mali+ and +ti-gfx+ will be the providers.
 
-+virtual-package+ tutorial
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== +virtual-package+ tutorial
 
 In the following example, we will explain how to add a new virtual package
 ('something-virtual') and a provider for it ('some-provider').
 
 First, let's create the virtual package.
 
-Virtual package's +Config.in+ file
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Virtual package's +Config.in+ file
 
 The +Config.in+ file of virtual package 'something-virtual' should contain:
 
@@ -42,8 +39,7 @@ In this file, we declare two options, +BR2_PACKAGE_HAS_SOMETHING_VIRTUAL+ and
 +BR2_PACKAGE_PROVIDES_SOMETHING_VIRTUAL+, whose values will be used by the
 providers.
 
-Virtual package's +*.mk+ file
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Virtual package's +*.mk+ file
 
 The +.mk+ for the virtual package should just evaluate the +virtual-package+ macro:
 
@@ -60,8 +56,7 @@ The +.mk+ for the virtual package should just evaluate the +virtual-package+ mac
 The ability to have target and host packages is also available, with the
 +host-virtual-package+ macro.
 
-Provider's +Config.in+ file
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Provider's +Config.in+ file
 
 When adding a package as a provider, only the +Config.in+ file requires some
 modifications. The +*.mk+ file should follow the Buildroot infrastructure with
@@ -92,8 +87,7 @@ provider, but only if it is selected.
 Of course, do not forget to add the proper build and runtime dependencies for
 this package!
 
-Notes on depending on a virtual package
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Notes on depending on a virtual package
 
 When adding a package that requires a certain +FEATURE+ provided by a virtual
 package, you have to use +depends on BR2_PACKAGE_HAS_FEATURE+, like so:
@@ -107,8 +101,7 @@ config BR2_PACKAGE_FOO
     depends on BR2_PACKAGE_HAS_FEATURE
 ---------------------------
 
-Notes on depending on a specific provider
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Notes on depending on a specific provider
 
 If your package really requires a specific provider, then you'll have to
 make your package +depends on+ this provider; you can _not_ +select+ a

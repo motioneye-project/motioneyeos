@@ -3,7 +3,6 @@
 
 [[download-infra]]
 
-Download infrastructure
------------------------
+== Download infrastructure
 
 TODO

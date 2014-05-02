@@ -1,8 +1,7 @@
 // -*- mode:doc; -*-
 // vim: set syntax=asciidoc:
 
-Appendix
-========
+= Appendix
 
 include::makedev-syntax.txt[]
 include::makeusers-syntax.txt[]
@@ -11,22 +10,19 @@ include::makeusers-syntax.txt[]
 // Automatically generated lists:
 
 [[package-list]]
-List of target packages available in Buildroot
-----------------------------------------------
+== List of target packages available in Buildroot
 
 include::package-list.txt[]
 
 [[host-package-list]]
-List of host utilities available in Buildroot
----------------------------------------------
+== List of host utilities available in Buildroot
 
 The following packages are all available in the menu +Host utilities+.
 
 include::host-package-list.txt[]
 
 [[deprecated-list]]
-Deprecated features
--------------------
+== Deprecated features
 
 The following features are marked as _deprecated_ in Buildroot due to
 them being either too old or unmaintained. They will be removed at

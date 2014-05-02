@@ -1,8 +1,7 @@
 // -*- mode:doc; -*-
 // vim: set syntax=asciidoc:
 
-Starting up
-===========
+= Starting up
 
 include::prerequisite.txt[]
 

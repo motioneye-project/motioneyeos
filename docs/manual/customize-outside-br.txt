@@ -1,8 +1,7 @@
 // -*- mode:doc -*- ;
 
 [[outside-br-custom]]
-Keeping customizations outside Buildroot
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Keeping customizations outside Buildroot
 
 The Buildroot community recommends and encourages upstreaming to the
 official Buildroot version the packages and board support that are

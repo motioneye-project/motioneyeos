@@ -1,8 +1,7 @@
 // -*- mode:doc; -*-
 // vim: set syntax=asciidoc:
 
-Known issues
-============
+= Known issues
 
 * The +ltp-testsuite+ package does not build with the default uClibc
   configuration used by the Buildroot toolchain backend. The LTP

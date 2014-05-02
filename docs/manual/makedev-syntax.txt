@@ -2,8 +2,7 @@
 // vim: set syntax=asciidoc:
 
 [[makedev-syntax]]
-Makedev syntax documentation
-----------------------------
+== Makedev syntax documentation
 
 The makedev syntax is used in several places in Buildroot to
 define changes to be made for permissions, or which device files to

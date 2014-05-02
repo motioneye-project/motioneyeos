@@ -2,8 +2,7 @@
 // vim: set syntax=asciidoc:
 
 [[full-rebuild]]
-Understanding when a full rebuild is necessary
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Understanding when a full rebuild is necessary
 
 Buildroot does not attempt to detect what parts of the system should
 be rebuilt when the system configuration is changed through +make
@@ -82,8 +81,7 @@ $ make clean all
 ---------------
 
 [[rebuild-pkg]]
-Understanding how to rebuild packages
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Understanding how to rebuild packages
 
 One of the most common questions asked by Buildroot users is how to
 rebuild a given package or how to remove a package without rebuilding

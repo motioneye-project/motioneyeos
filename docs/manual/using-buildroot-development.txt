@@ -1,8 +1,7 @@
 // -*- mode:doc; -*-
 // vim: set syntax=asciidoc:
 
-Using Buildroot during development
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Using Buildroot during development
 
 The normal operation of Buildroot is to download a tarball, extract
 it, configure, compile and install the software component found inside

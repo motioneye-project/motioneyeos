@@ -1,12 +1,10 @@
 // -*- mode:doc; -*-
 // vim: set syntax=asciidoc:
 
-Tips and tricks
-~~~~~~~~~~~~~~~
+=== Tips and tricks
 
 [[package-name-variable-relation]]
-Package name, config entry name and makefile variable relationship
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Package name, config entry name and makefile variable relationship
 
 In Buildroot, there is some relationship between:
 
@@ -36,8 +34,7 @@ using the following rules:
 
 
 [[github-download-url]]
-How to add a package from github
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== How to add a package from github
 
 Packages on github often don't have a download area with release tarballs.
 However, it is possible to download tarballs directly from the repository

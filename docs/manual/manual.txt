@@ -1,8 +1,7 @@
 // -*- mode:doc; -*-
 // vim: set syntax=asciidoc:
 
-The Buildroot user manual
-=========================
+= The Buildroot user manual
 :toc:
 
 Buildroot usage and documentation by Thomas Petazzoni. Contributions

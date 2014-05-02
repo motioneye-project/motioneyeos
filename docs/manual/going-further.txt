@@ -1,8 +1,7 @@
 // -*- mode:doc; -*-
 // vim: set syntax=asciidoc:
 
-Going further in Buildroot's innards
-====================================
+= Going further in Buildroot's innards
 
 include::how-buildroot-works.txt[]
 

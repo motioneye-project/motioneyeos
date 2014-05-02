@@ -2,8 +2,7 @@
 // vim: set syntax=asciidoc:
 
 [[ccache]]
-Using +ccache+ in Buildroot
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Using +ccache+ in Buildroot
 
 http://ccache.samba.org[ccache] is a compiler cache. It stores the
 object files resulting from each compilation process, and is able to

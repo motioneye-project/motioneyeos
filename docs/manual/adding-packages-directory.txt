@@ -1,8 +1,7 @@
 // -*- mode:doc; -*-
 // vim: set syntax=asciidoc:
 
-Package directory
-~~~~~~~~~~~~~~~~~
+=== Package directory
 
 First of all, create a directory under the +package+ directory for
 your software, for example +libfoo+.
@@ -13,8 +12,7 @@ one of these categories, then create your package directory in these.
 New subdirectories are discouraged, however.
 
 
-+Config.in+ file
-~~~~~~~~~~~~~~~~
+=== +Config.in+ file
 
 Then, create a file named +Config.in+. This file will contain the
 option descriptions related to our +libfoo+ software that will be used
@@ -52,8 +50,7 @@ source "package/libfoo/Config.in"
 --------------------------
 
 [[depends-on-vs-select]]
-Choosing +depends on+ or +select+
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Choosing +depends on+ or +select+
 
 The +Config.in+ file of your package must also ensure that
 dependencies are enabled. Typically, Buildroot uses the following
@@ -164,8 +161,8 @@ Further formatting details: see xref:writing-rules-config-in[the
 coding style].
 
 [[dependencies-target-toolchain-options]]
-Dependencies on target and toolchain options
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Dependencies on target and toolchain options
+
 Many packages depend on certain options of the toolchain: the choice of
 C library, C++ support, largefile support, thread support, RPC support,
 IPv6 support, wchar support, or dynamic library support. Some packages
@@ -268,8 +265,8 @@ use in the comment.
 ** Dependency symbol: +!BR2_PREFER_STATIC_LIB+
 ** Comment string: +dynamic library+
 
-Dependencies on a Linux kernel built by buildroot
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Dependencies on a Linux kernel built by buildroot
+
 Some packages need a Linux kernel to be built by buildroot. These are
 typically kernel modules or firmware. A comment should be added in the
 Config.in file to express this dependency, similar to dependencies on
@@ -285,8 +282,8 @@ kernel, use this format:
 foo needs a toolchain w/ featA, featB, featC and a Linux kernel to be built
 --------------------------
 
-Dependencies on udev /dev management
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Dependencies on udev /dev management
+
 If a package needs udev /dev management, it should depend on symbol
 +BR2_PACKAGE_HAS_UDEV+, and the following comment should be added:
 
@@ -301,8 +298,8 @@ management, use this format:
 foo needs udev /dev management and a toolchain w/ featA, featB, featC
 --------------------------
 
-The +.mk+ file
-~~~~~~~~~~~~~~
+=== The +.mk+ file
+
 [[adding-packages-mk]]
 
 Finally, here's the hardest part. Create a file named +libfoo.mk+. It

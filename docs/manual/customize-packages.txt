@@ -1,8 +1,7 @@
 // -*- mode:doc -*- ;
 
 [[packages-custom]]
-Customizing packages
-~~~~~~~~~~~~~~~~~~~~
+=== Customizing packages
 
 It is sometimes useful to apply 'extra' patches to packages - over and
 above those provided in Buildroot. This might be used to support custom

@@ -1,13 +1,11 @@
 // -*- mode:doc; -*-
 // vim: set syntax=asciidoc:
 
-Infrastructure for LuaRocks-based packages
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Infrastructure for LuaRocks-based packages
 
 [[luarocks-package-tutorial]]
 
-+luarocks-package+ tutorial
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== +luarocks-package+ tutorial
 
 First, let's see how to write a +.mk+ file for a LuaRocks-based package,
 with an example :
@@ -48,8 +46,7 @@ package to be built.
 
 [[luarocks-package-reference]]
 
-+luarocks-package+ reference
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== +luarocks-package+ reference
 
 LuaRocks is a deployment and management system for Lua modules, and supports
 various +build.type+: +builtin+, +make+ and +cmake+. In the contetx of

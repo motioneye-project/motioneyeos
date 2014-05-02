@@ -1,8 +1,7 @@
 // -*- mode:doc; -*-
 // vim: set syntax=asciidoc:
 
-Customization
--------------
+== Customization
 
 include::customize-rootfs.txt[]
 

@@ -2,8 +2,7 @@
 // vim: set syntax=asciidoc:
 
 [[getting-buildroot]]
-Getting Buildroot
------------------
+== Getting Buildroot
 
 Buildroot releases are made approximately every 3 months. Direct Git
 access and daily snapshots are also available, if you want more

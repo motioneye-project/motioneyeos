@@ -2,8 +2,7 @@
 // vim: set syntax=asciidoc:
 
 [[uclibc-custom]]
-Customizing the uClibc configuration
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Customizing the uClibc configuration
 
 Just like xref:busybox-custom[BusyBox], http://www.uclibc.org/[uClibc]
 offers a lot of configuration options. They allow you to select

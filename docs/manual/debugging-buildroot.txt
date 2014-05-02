@@ -3,8 +3,7 @@
 
 [[debugging-buildroot]]
 
-Debugging Buildroot
--------------------
+== Debugging Buildroot
 
 It is possible to instrument the steps +Buildroot+ does when building
 packages. Define the variable +BR2_INSTRUMENTATION_SCRIPTS+ to contain

@@ -2,14 +2,12 @@
 // vim: set syntax=asciidoc:
 
 [[toolchain-custom]]
-Customizing the toolchain
-~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Customizing the toolchain
 
 There are three distinct types of toolchain backend supported in Buildroot,
 available under the menu +Toolchain+, invoking +make menuconfig+.
 
-Using the external toolchain backend
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Using the external toolchain backend
 
 There is no way of tuning an external toolchain since Buildroot does not
 generate it.
@@ -29,8 +27,7 @@ set the environment variable +BR2_DEBUG_WRAPPER+ to either one of:
 
 * +2+: trace one argument per line
 
-Using the internal Buildroot toolchain backend
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Using the internal Buildroot toolchain backend
 
 The internal Buildroot toolchain backend allows to generate toolchains
 based on http://www.uclibc.org/[uClibc],

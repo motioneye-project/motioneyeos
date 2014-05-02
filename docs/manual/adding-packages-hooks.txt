@@ -2,8 +2,7 @@
 // vim: set syntax=asciidoc:
 
 [[hooks]]
-Hooks available in the various build steps
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Hooks available in the various build steps
 
 The generic infrastructure (and as a result also the derived autotools
 and cmake infrastructures) allow packages to specify hooks.
@@ -40,8 +39,7 @@ endef
 LIBFOO_POST_PATCH_HOOKS += LIBFOO_POST_PATCH_FIXUP
 ----------------------
 
-Using the +POST_RSYNC+ hook
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Using the +POST_RSYNC+ hook
 The +POST_RSYNC+ hook is run only for packages that use a local source,
 either through the +local+ site method or the +OVERRIDE_SRCDIR+
 mechanism. In this case, package sources are copied using +rsync+ from

@@ -2,16 +2,14 @@
 // vim: set syntax=asciidoc:
 
 [[configure]]
-Details on Buildroot configuration
-----------------------------------
+== Details on Buildroot configuration
 
 All the configuration options in +make *config+ have a help text
 providing details about the option. However, a number of topics
 require additional details that cannot easily be covered in the help
 text and are there covered in the following sections.
 
-Cross-compilation toolchain
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Cross-compilation toolchain
 
 A compilation toolchain is the set of tools that allows you to compile
 code for your system. It consists of a compiler (in our case, +gcc+),
@@ -61,8 +59,7 @@ chosen, a number of configuration options appear, they are detailed in
 the following sections.
 
 [[internal-toolchain-backend]]
-Internal toolchain backend
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Internal toolchain backend
 
 The _internal toolchain backend_ is the backend where Buildroot builds
 by itself a cross-compilation toolchain, before building the userspace
@@ -128,8 +125,7 @@ Drawbacks of this backend:
   using the _External toolchain backend_.
 
 [[external-toolchain-backend]]
-External toolchain backend
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== External toolchain backend
 
 The _external toolchain backend_ allows to use existing pre-built
 cross-compilation toolchains. Buildroot knows about a number of
@@ -219,8 +215,7 @@ Drawbacks of this backend:
   fix from the toolchain vendor, unless you build your external
   toolchain by yourself using Crosstool-NG.
 
-/dev management
-~~~~~~~~~~~~~~~
+=== /dev management
 
 On a Linux system, the +/dev+ directory contains special files, called
 _device files_, that allow userspace applications to access the
@@ -309,8 +304,7 @@ needed, in which case *Dynamic using mdev* is usually a good solution.
 Note that if +systemd+ is chosen as init system, /dev management will
 be performed by the +udev+ program provided by +systemd+.
 
-init system
-~~~~~~~~~~~
+=== init system
 
 The _init_ program is the first userspace program started by the
 kernel (it carries the PID number 1), and is responsible for starting

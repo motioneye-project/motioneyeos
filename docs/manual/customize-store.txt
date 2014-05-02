@@ -2,8 +2,7 @@
 // vim: set syntax=asciidoc:
 
 [[customize-store]]
-Storing the configuration
--------------------------
+== Storing the configuration
 
 When you have a buildroot configuration that you are satisfied with and
 you want to share it with others, put it under revision control or move
@@ -15,13 +14,11 @@ modifications.
 
 
 [[customize-store-basics]]
-Basics for storing the configuration
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Basics for storing the configuration
 
 
 [[customize-store-buildroot-config]]
-Buildroot configuration
-^^^^^^^^^^^^^^^^^^^^^^^
+==== Buildroot configuration
 
 For storing the buildroot configuration itself, buildroot offers the
 following command: +make savedefconfig+.
@@ -39,8 +36,7 @@ Alternatively, you can copy the file to any other place and rebuild with
 
 
 [[customize-store-package-config]]
-Other package configuration
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Other package configuration
 
 The configuration files for busybox, the linux kernel, barebox and
 uClibc should be stored as well if changed. For each of these, a
@@ -76,8 +72,7 @@ configuration files easier.
 
 
 [[customize-store-board-support]]
-Creating your own board support
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Creating your own board support
 
 Creating your own board support in Buildroot allows users of a
 particular hardware platform to easily build a system that is known to
@@ -112,8 +107,7 @@ and configurations in these directories, and reference them from the main
 Buildroot configuration.
 
 
-Step-by-step instructions for storing configuration
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Step-by-step instructions for storing configuration
 
 To store the configuration for a specific product, device or
 application, it is advisable to use the same conventions as for the

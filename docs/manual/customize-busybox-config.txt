@@ -2,8 +2,7 @@
 // vim: set syntax=asciidoc:
 
 [[busybox-custom]]
-Customizing the Busybox configuration
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Customizing the Busybox configuration
 
 http://www.busybox.net/[Busybox] is very configurable, and you may
 want to customize it. You can follow these simple steps to do so. This

@@ -1,14 +1,11 @@
 // -*- mode:doc; -*-
 // vim: set syntax=asciidoc:
 
-Beyond Buildroot
-================
+= Beyond Buildroot
 
-Boot the generated images
--------------------------
+== Boot the generated images
 
-NFS boot
-~~~~~~~~
+=== NFS boot
 
 To achieve NFS-boot, enable _tar root filesystem_ in the _Filesystem
 images_ menu.
@@ -24,8 +21,7 @@ Remember to add this path to +/etc/exports+.
 
 Then, you can execute a NFS-boot from your target.
 
-Chroot
-------
+== Chroot
 
 If you want to chroot in a generated image, then there are few thing
 you should be aware of:

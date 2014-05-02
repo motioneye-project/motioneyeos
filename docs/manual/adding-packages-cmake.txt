@@ -1,13 +1,11 @@
 // -*- mode:doc; -*-
 // vim: set syntax=asciidoc:
 
-Infrastructure for CMake-based packages
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Infrastructure for CMake-based packages
 
 [[cmake-package-tutorial]]
 
-+cmake-package+ tutorial
-^^^^^^^^^^^^^^^^^^^^^^^^
+==== +cmake-package+ tutorial
 
 First, let's see how to write a +.mk+ file for a CMake-based package,
 with an example :
@@ -66,8 +64,7 @@ package to be built.
 
 [[cmake-package-reference]]
 
-+cmake-package+ reference
-^^^^^^^^^^^^^^^^^^^^^^^^^
+==== +cmake-package+ reference
 
 The main macro of the CMake package infrastructure is
 +cmake-package+. It is similar to the +generic-package+ macro. The ability to

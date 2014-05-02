@@ -1,8 +1,7 @@
 // -*- mode:doc; -*-
 // vim: set syntax=asciidoc:
 
-Infrastructure for Python packages
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Infrastructure for Python packages
 
 This infrastructure applies to Python packages that use the standard
 Python setuptools mechanism as their build system, generally
@@ -10,8 +9,7 @@ recognizable by the usage of a +setup.py+ script.
 
 [[python-package-tutorial]]
 
-+python-package+ tutorial
-^^^^^^^^^^^^^^^^^^^^^^^^^
+==== +python-package+ tutorial
 
 First, let's see how to write a +.mk+ file for a Python package,
 with an example :
@@ -61,8 +59,7 @@ built.
 
 [[python-package-reference]]
 
-+python-package+ reference
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== +python-package+ reference
 
 As a policy, packages that merely provide Python modules should all be
 named +python-<something>+ in Buildroot. Other packages that use the

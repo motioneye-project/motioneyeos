@@ -3,8 +3,7 @@
 
 [[patch-policy]]
 
-Patching a package
-------------------
+== Patching a package
 
 While integrating a new package or updating an existing one, it may be
 necessary to patch the source of the software to get it cross-built within
@@ -15,11 +14,9 @@ the builds. It supports three ways of applying patch sets: downloaded patches,
 patches supplied within buildroot and patches located in a user-defined
 global patch directory.
 
-Providing patches
-~~~~~~~~~~~~~~~~~
+=== Providing patches
 
-Downloaded
-^^^^^^^^^^
+==== Downloaded
 
 If it is necessary to apply a patch that is available for download, then add it
 to the +<packagename>_PATCH+ variable. It is downloaded from the same site
@@ -28,8 +25,7 @@ patch series.
 
 This method is typically used for packages from Debian.
 
-Within Buildroot
-^^^^^^^^^^^^^^^^
+==== Within Buildroot
 
 Most patches are provided within Buildroot, in the package
 directory; these typically aim to fix cross-compilation, libc support,
@@ -46,8 +42,7 @@ application order.
 reference in their filename.
 - The field +<number>+ in the patch file name refers to the 'apply order'.
 
-Global patch directory
-^^^^^^^^^^^^^^^^^^^^^^
+==== Global patch directory
 
 The +BR2_GLOBAL_PATCH_DIR+ configuration file option can be
 used to specify a space separated list of one or more directories
@@ -55,8 +50,7 @@ containing global package patches. See xref:packages-custom[] for
 details.
 
 [[patch-apply-order]]
-How patches are applied
-~~~~~~~~~~~~~~~~~~~~~~~
+=== How patches are applied
 
 . Run the +<packagename>_PRE_PATCH_HOOKS+ commands if defined;
 
@@ -87,8 +81,7 @@ How patches are applied
 
 If something goes wrong in the steps _3_ or _4_, then the build fails.
 
-Format and licensing of the package patches
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Format and licensing of the package patches
 
 Patches are released under the same license as the software that is
 modified.
@@ -130,8 +123,7 @@ AC_PROG_MAKE_SET
 +AM_CONDITIONAL([CXX_WORKS], [test "x$rw_cv_prog_cxx_works" = "xyes"])
 ---------------
 
-Integrating patches found on the Web
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Integrating patches found on the Web
 
 When integrating a patch of which you are not the author, you have to
 add a few things in the header of the patch itself.

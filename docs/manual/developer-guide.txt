@@ -1,8 +1,7 @@
 // -*- mode:doc; -*-
 // vim: set syntax=asciidoc:
 
-Developer Guidelines
-====================
+= Developer Guidelines
 
 include::writing-rules.txt[]
 

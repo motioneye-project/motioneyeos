@@ -1,8 +1,7 @@
 // -*- mode:doc; -*-
 // vim: set syntax=asciidoc:
 
-Coding style
-------------
+== Coding style
 
 Overall, these coding style rules are here to help you to add new files in
 Buildroot or refactor existing ones.
@@ -17,8 +16,7 @@ file,
 
 [[writing-rules-config-in]]
 
-+Config.in+ file
-~~~~~~~~~~~~~~~~
+=== +Config.in+ file
 
 +Config.in+ files contain entries for almost anything configurable in
 Buildroot.
@@ -49,8 +47,7 @@ http://kernel.org/doc/Documentation/kbuild/kconfig-language.txt[].
 
 [[writing-rules-mk]]
 
-The +.mk+ file
-~~~~~~~~~~~~~~
+=== The +.mk+ file
 
 * Header: The file starts with a header. It contains the module name,
 preferably in lowercase, enclosed between separators made of 80 hashes. A
@@ -135,8 +132,7 @@ LIBFOO_POST_INSTALL_TARGET_HOOKS += LIBFOO_REMOVE_DATA
 endif
 ---------------------
 
-The documentation
-~~~~~~~~~~~~~~~~~
+=== The documentation
 
 The documentation uses the
 http://www.methods.co.nz/asciidoc/[asciidoc] format.

@@ -1,8 +1,7 @@
 // -*- mode:doc; -*-
 // vim: set syntax=asciidoc:
 
-Location of downloaded packages
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Location of downloaded packages
 
 The various tarballs that are downloaded by Buildroot are all stored
 in +BR2_DL_DIR+, which by default is the +dl+ directory. If you want

@@ -2,8 +2,7 @@
 // vim: set syntax=asciidoc:
 
 [[adding-packages]]
-Adding new packages to Buildroot
---------------------------------
+== Adding new packages to Buildroot
 
 This section covers how new packages (userspace libraries or
 applications) can be integrated into Buildroot. It also shows how

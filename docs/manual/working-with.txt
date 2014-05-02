@@ -1,8 +1,7 @@
 // -*- mode:doc; -*-
 // vim: set syntax=asciidoc:
 
-Working with Buildroot
-======================
+= Working with Buildroot
 
 This section explains how you can customize Buildroot to fit your
 needs.
@@ -17,8 +16,7 @@ include::common-usage.txt[]
 
 include::eclipse-integration.txt[]
 
-Hacking Buildroot
------------------
+== Hacking Buildroot
 
 If Buildroot does not yet fit all your requirements, you may be
 interested in hacking it to add:

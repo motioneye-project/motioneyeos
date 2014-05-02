@@ -1,8 +1,7 @@
 // -*- mode:doc -*- ;
 
 [[makeuser-syntax]]
-Makeuser syntax documentation
------------------------------
+== Makeuser syntax documentation
 
 The syntax to create users is inspired by the makedev syntax, above, but
 is specific to Buildroot.
