@@ -46,4 +46,14 @@ config BR2_TARGET_SYSLINUX_EFI
 
 endchoice
 
+if BR2_TARGET_SYSLINUX_LEGACY_BIOS
+
+config BR2_TARGET_SYSLINUX_C32
+	string "modules to install"
+	help
+	  Enter a space-separated list of .c32 modules to install.
+	  Leave empty to install no module.
+
+endif # BR2_TARGET_SYSLINUX_LEGACY_BIOS
+
 endif # BR2_TARGET_SYSLINUX

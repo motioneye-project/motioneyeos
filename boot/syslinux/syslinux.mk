@@ -63,9 +63,18 @@ SYSLINUX_IMAGES-$(BR2_TARGET_SYSLINUX_PXELINUX) += bios/core/pxelinux.bin
 SYSLINUX_IMAGES-$(BR2_TARGET_SYSLINUX_MBR) += bios/mbr/mbr.bin
 SYSLINUX_IMAGES-$(BR2_TARGET_SYSLINUX_EFI) += $(SYSLINUX_EFI_BITS)/efi/syslinux.efi
 
+SYSLINUX_C32 = $(call qstrip,$(BR2_TARGET_SYSLINUX_C32))
+
+# We install the c32 modules from the host-installed tree, where they
+# are all neatly installed in a single location, while they are
+# scattered around everywhere in the build tree.
 define SYSLINUX_INSTALL_IMAGES_CMDS
 	for i in $(SYSLINUX_IMAGES-y); do \
 		$(INSTALL) -D -m 0755 $(@D)/$$i $(BINARIES_DIR)/$${i##*/}; \
+	done
+	for i in $(SYSLINUX_C32); do \
+		$(INSTALL) -D -m 0755 $(HOST_DIR)/usr/share/syslinux/$${i} \
+				   $(BINARIES_DIR)/$${i}; \
 	done
 endef
 
