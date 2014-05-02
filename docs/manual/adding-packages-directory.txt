@@ -227,10 +227,10 @@ use in the comment.
 
 * C library
 ** Dependency symbol: +BR2_TOOLCHAIN_USES_GLIBC+,
-+BR2_TOOLCHAIN_USES_UCLIBC+
+   +BR2_TOOLCHAIN_USES_UCLIBC+
 ** Comment string: for the C library, a slightly different comment text
    is used: +foo needs an (e)glibc toolchain+, or `foo needs an (e)glibc
-   toolchain w/ C++ support`
+   toolchain w/ C++`
 
 * C++ support
 ** Dependency symbol: +BR2_INSTALL_LIBSTDCPP+
