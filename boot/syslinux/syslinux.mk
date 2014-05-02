@@ -70,11 +70,11 @@ SYSLINUX_C32 = $(call qstrip,$(BR2_TARGET_SYSLINUX_C32))
 # scattered around everywhere in the build tree.
 define SYSLINUX_INSTALL_IMAGES_CMDS
 	for i in $(SYSLINUX_IMAGES-y); do \
-		$(INSTALL) -D -m 0755 $(@D)/$$i $(BINARIES_DIR)/$${i##*/}; \
+		$(INSTALL) -D -m 0755 $(@D)/$$i $(BINARIES_DIR)/syslinux/$${i##*/}; \
 	done
 	for i in $(SYSLINUX_C32); do \
 		$(INSTALL) -D -m 0755 $(HOST_DIR)/usr/share/syslinux/$${i} \
-				   $(BINARIES_DIR)/$${i}; \
+				   $(BINARIES_DIR)/syslinux/$${i}; \
 	done
 endef
 
