@@ -1,5 +1,7 @@
 config BR2_PACKAGE_CLASSPATH
 	bool "classpath"
+	select BR2_NEEDS_HOST_JAR
+	select BR2_NEEDS_HOST_JAVAC
 	depends on BR2_PACKAGE_JAMVM
 	depends on BR2_INET_IPV6
 	help
