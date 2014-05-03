@@ -51,18 +51,20 @@ if test -n "$PERL_MM_OPT" ; then
 	exit 1
 fi
 
-# Verify that which is installed
-if ! which which > /dev/null ; then
-	echo
-	echo "You must install 'which' on your build machine";
-	exit 1;
-fi;
+check_prog_host()
+{
+	prog="$1"
+	if ! which $prog > /dev/null ; then
+		echo >&2
+		echo "You must install '$prog' on your build machine" >&2
+		exit 1
+	fi
+}
 
-if ! which sed > /dev/null ; then
-	echo
-	echo "You must install 'sed' on your build machine"
-	exit 1
-fi
+# Verify that which is installed
+check_prog_host "which"
+# Verify that sed is installed
+check_prog_host "sed"
 
 # Check make
 MAKE=$(which make 2> /dev/null)
@@ -196,11 +198,7 @@ if grep -q ^BR2_PACKAGE_CLASSPATH=y $BR2_CONFIG ; then
 fi
 
 if grep -q ^BR2_NEEDS_HOST_JAVA=y $BR2_CONFIG ; then
-	if ! which java > /dev/null ; then
-		echo >&2
-		echo "You must install 'java' on your build machine" >&2
-		exit 1
-	fi
+	check_prog_host "java"
 fi
 
 if grep -q ^BR2_HOSTARCH_NEEDS_IA32_LIBS=y $BR2_CONFIG ; then
