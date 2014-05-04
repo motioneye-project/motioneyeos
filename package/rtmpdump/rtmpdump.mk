@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-RTMPDUMP_VERSION = dc76f0a8461e6c8f1277eba58eae201b2dc1d06a
+RTMPDUMP_VERSION = 79459a2b43f41ac44a2ec001139bcb7b1b8f7497
 RTMPDUMP_SITE = git://git.ffmpeg.org/rtmpdump
 RTMPDUMP_INSTALL_STAGING = YES
 # Note that rtmpdump is GPLv2 but librtmp has its own license and since we only
