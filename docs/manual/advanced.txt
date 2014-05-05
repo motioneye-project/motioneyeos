@@ -5,6 +5,8 @@
 
 include::using-buildroot-toolchain.txt[]
 
+include::using-buildroot-debugger.txt[]
+
 include::ccache-support.txt[]
 
 include::download-location.txt[]
