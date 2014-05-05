@@ -5,7 +5,7 @@
 ################################################################################
 
 QTUIO_VERSION = abe4973ff60654aad9df7037c4ca15c45f811d24
-QTUIO_SITE = git://github.com/x29a/qTUIO.git
+QTUIO_SITE = $(call github,x29a,qTUIO,$(QTUIO_VERSION))
 QTUIO_INSTALL_STAGING = YES
 QTUIO_DEPENDENCIES = qt
 

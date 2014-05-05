@@ -7,7 +7,7 @@
 # Release 0.6.0 doesn't build cleanly, so use a recent
 # Git commit.
 SCONESERVER_VERSION = d58f2de88c681939554089f786e360042a30c8f8
-SCONESERVER_SITE = git://github.com/sconemad/sconeserver.git
+SCONESERVER_SITE = $(call github,sconemad,sconeserver,$(SCONESERVER_VERSION))
 SCONESERVER_LICENSE = GPLv2+
 SCONESERVER_LICENSE_FILES = COPYING
 

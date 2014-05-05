@@ -5,7 +5,7 @@
 ################################################################################
 
 ZNC_VERSION = b396cafdb249544164ed02942a5babba59e519a3
-ZNC_SITE = git://github.com/znc/znc.git
+ZNC_SITE = $(call github,znc,znc,$(ZNC_VERSION))
 ZNC_LICENSE = Apache-2.0
 ZNC_LICENSE_FILES = LICENSE
 ZNC_DEPENDENCIES = host-pkgconf host-autoconf host-automake

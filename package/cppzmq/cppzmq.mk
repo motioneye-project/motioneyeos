@@ -5,7 +5,7 @@
 ################################################################################
 
 CPPZMQ_VERSION = 235803740753312576495301ebf5b8ed76407173
-CPPZMQ_SITE = git://github.com/zeromq/cppzmq.git
+CPPZMQ_SITE = $(call github,zeromq,cppzmq,$(CPPZMQ_VERSION))
 CPPZMQ_INSTALL_STAGING = YES
 CPPZMQ_DEPENDENCIES = zeromq
 CPPZMQ_LICENSE = MIT

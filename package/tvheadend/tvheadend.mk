@@ -5,7 +5,7 @@
 ################################################################################
 
 TVHEADEND_VERSION = 6482d33ba90848018c530018e5c38992b8ac921c
-TVHEADEND_SITE = git://github.com/tvheadend/tvheadend.git
+TVHEADEND_SITE = $(call github,tvheadend,tvheadend,$(TVHEADEND_VERSION))
 TVHEADEND_LICENSE = GPLv3+
 TVHEADEND_LICENSE_FILES = LICENSE
 TVHEADEND_DEPENDENCIES = host-pkgconf host-python openssl
