@@ -355,3 +355,10 @@ check_unusable_toolchain = \
 		echo "such as Buildroot." ; \
 		exit 1 ; \
 	fi
+
+#
+# Generate gdbinit file for use with Buildroot
+#
+gen_gdbinit_file = \
+	mkdir -p $(STAGING_DIR)/usr/share/buildroot/ ; \
+	echo "set sysroot $(STAGING_DIR)" > $(STAGING_DIR)/usr/share/buildroot/gdbinit

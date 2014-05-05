@@ -651,6 +651,12 @@ define TOOLCHAIN_EXTERNAL_SANITIZE_KERNEL_HEADERS
 		-e 's@#(ifndef|define|endif[ \t]*/[*])[ \t]*_UAPI@#\1 @'
 endef
 
+define TOOLCHAIN_EXTERNAL_INSTALL_GDBINIT
+	if test -f $(TARGET_CROSS)gdb ; then \
+		$(call gen_gdbinit_file) ; \
+	fi
+endef
+
 # Even though we're installing things in both the staging, the host
 # and the target directory, we do everything within the
 # install-staging step, arbitrarily.
@@ -659,6 +665,7 @@ define TOOLCHAIN_EXTERNAL_INSTALL_STAGING_CMDS
 	$(TOOLCHAIN_EXTERNAL_INSTALL_BFIN_FDPIC)
 	$(TOOLCHAIN_EXTERNAL_INSTALL_BFIN_FLAT)
 	$(TOOLCHAIN_EXTERNAL_INSTALL_WRAPPER)
+	$(TOOLCHAIN_EXTERNAL_INSTALL_GDBINIT)
 endef
 
 $(eval $(generic-package))

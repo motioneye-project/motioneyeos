@@ -126,5 +126,7 @@ endef
 
 HOST_GDB_POST_INSTALL_HOOKS += HOST_GDB_ADD_SYMLINK
 
+HOST_GDB_POST_INSTALL_HOOKS += gen_gdbinit_file
+
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
