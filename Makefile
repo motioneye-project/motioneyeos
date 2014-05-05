@@ -387,6 +387,7 @@ include $(sort $(wildcard package/*/*.mk))
 include boot/common.mk
 include linux/linux.mk
 include system/system.mk
+include fs/common.mk
 
 include $(BR2_EXTERNAL)/external.mk
 
@@ -399,8 +400,6 @@ endif
 ifeq ($(BR2_ECLIPSE_REGISTER),y)
 TARGETS += toolchain-eclipse-register
 endif
-
-include fs/common.mk
 
 TARGETS_SOURCE := $(patsubst %,%-source,$(TARGETS))
 TARGETS_DIRCLEAN := $(patsubst %,%-dirclean,$(TARGETS))
