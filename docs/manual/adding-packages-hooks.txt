@@ -13,17 +13,37 @@ of the package construction.
 
 The following hook points are available:
 
+* +LIBFOO_PRE_DOWNLOAD_HOOKS+
 * +LIBFOO_POST_DOWNLOAD_HOOKS+
+
+* +LIBFOO_PRE_EXTRACT_HOOKS+
 * +LIBFOO_POST_EXTRACT_HOOKS+
+
+* +LIBFOO_PRE_RSYNC_HOOKS+
 * +LIBFOO_POST_RSYNC_HOOKS+
+
 * +LIBFOO_PRE_PATCH_HOOKS+
 * +LIBFOO_POST_PATCH_HOOKS+
+
 * +LIBFOO_PRE_CONFIGURE_HOOKS+
 * +LIBFOO_POST_CONFIGURE_HOOKS+
+
+* +LIBFOO_PRE_BUILD_HOOKS+
 * +LIBFOO_POST_BUILD_HOOKS+
+
+* +LIBFOO_PRE_INSTALL_HOOKS+ (for host packages only)
 * +LIBFOO_POST_INSTALL_HOOKS+ (for host packages only)
+
+* +LIBFOO_PRE_INSTALL_STAGING_HOOKS+ (for target packages only)
 * +LIBFOO_POST_INSTALL_STAGING_HOOKS+ (for target packages only)
+
+* +LIBFOO_PRE_INSTALL_TARGET_HOOKS+ (for target packages only)
 * +LIBFOO_POST_INSTALL_TARGET_HOOKS+ (for target packages only)
+
+* +LIBFOO_PRE_INSTALL_IMAGES_HOOKS+
+* +LIBFOO_POST_INSTALL_IMAGES_HOOKS+
+
+* +LIBFOO_PRE_LEGAL_INFO_HOOKS+
 * +LIBFOO_POST_LEGAL_INFO_HOOKS+
 
 These variables are 'lists' of variable names containing actions to be
