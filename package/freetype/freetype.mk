@@ -83,3 +83,7 @@ HOST_FREETYPE_POST_INSTALL_HOOKS += HOST_FREETYPE_FIX_FREETYPE_INCLUDE
 
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
+
+# freetype-patch uses autogen.sh so add it as a order-only-prerequisite
+# because it is a phony target.
+$(FREETYPE_TARGET_PATCH): | host-automake
