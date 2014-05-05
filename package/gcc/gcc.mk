@@ -122,8 +122,9 @@ ifneq ($(BR2_TOOLCHAIN_BUILDROOT_WCHAR),y)
 HOST_GCC_COMMON_CONF_OPT += --disable-libquadmath
 endif
 
-# libsanitizer requires wordexp, not in default uClibc config
-ifeq ($(BR2_TOOLCHAIN_BUILDROOT_UCLIBC),y)
+# libsanitizer requires wordexp, not in default uClibc config. Also
+# doesn't build properly with musl.
+ifeq ($(BR2_TOOLCHAIN_BUILDROOT_UCLIBC)$(BR2_TOOLCHAIN_BUILDROOT_MUSL),y)
 HOST_GCC_COMMON_CONF_OPT += --disable-libsanitizer
 endif
 
