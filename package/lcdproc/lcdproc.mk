@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LCDPROC_VERSION = 0.5.6
+LCDPROC_VERSION = 0.5.7
 LCDPROC_SITE = http://downloads.sourceforge.net/project/lcdproc/lcdproc/$(LCDPROC_VERSION)
 LCDPROC_LICENSE = GPLv2+
 LCDPROC_LICENSE_FILES = COPYING
