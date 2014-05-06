@@ -2,6 +2,9 @@ config BR2_PACKAGE_CLAPACK
 	bool "cblas/clapack"
 	depends on BR2_LARGEFILE
 	depends on !(BR2_mips || BR2_mipsel || BR2_mips64 || BR2_mips64el)
+	# _fpu_control is used on PowerPC, but not available with
+	# uClibc
+	depends on !(BR2_powerpc && BR2_TOOLCHAIN_USES_UCLIBC)
 	help
 	  BLAS and LAPACK C implementation (f2c'ed version of).
 
@@ -22,3 +25,4 @@ config BR2_PACKAGE_CLAPACK_ARITH_H
 comment "cblas/clapack needs a toolchain w/ largefile"
 	depends on !BR2_LARGEFILE
 	depends on !(BR2_mips || BR2_mipsel || BR2_mips64 || BR2_mips64el)
+	depends on !(BR2_powerpc && BR2_TOOLCHAIN_USES_UCLIBC)
