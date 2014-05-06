@@ -1,0 +1,25 @@
+[PATCH] configure.ac: drop hardcoded paths
+
+Causing problems with cross compilation.
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ configure.ac |    5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
+
+Index: qdecoder-r12.0.5/configure.ac
+===================================================================
+--- qdecoder-r12.0.5.orig/configure.ac
++++ qdecoder-r12.0.5/configure.ac
+@@ -81,10 +81,7 @@
+ AC_CONFIG_HEADER([config.h])
+ AC_CONFIG_FILES([Makefile src/Makefile examples/Makefile])
+ 
+-## Set path
+-PATH="$PATH:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin"
+-CPPFLAGS="$CPPFLAGS -I/usr/include -I/usr/local/include -I./ -D_GNU_SOURCE"
+-LDFLAGS="$LDFLAGS -L/usr/lib -L/usr/local/lib"
++CPPFLAGS="$CPPFLAGS -I./ -D_GNU_SOURCE"
+ 
+ ## Set autoconf setting
+ #AC_CANONICAL_TARGET
