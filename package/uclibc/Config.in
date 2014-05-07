@@ -200,8 +200,6 @@ config BR2_UCLIBC_ARM_TYPE
 	string
 	depends on BR2_UCLIBC_TARGET_ARCH = "arm"
 	default GENERIC_ARM	if BR2_fa526
-	default ARM7TDMI	if BR2_arm7tdmi
-	default ARM720T		if BR2_arm720t
 	default ARM920T		if BR2_arm920t
 	default ARM922T		if BR2_arm922t
 	default ARM926T		if BR2_arm926t

@@ -4,8 +4,8 @@ config BR2_PACKAGE_MPLAYER
 	depends on !(BR2_bfin || BR2_sh2a || BR2_sh4a || BR2_sh4aeb \
 			|| BR2_microblaze || BR2_aarch64 || BR2_nios2)
 	# Broken support for <ARMv5
-	depends on !(BR2_arm7tdmi || BR2_arm720t || BR2_arm920t \
-		|| BR2_arm920t || BR2_arm922t || BR2_fa526 || BR2_strongarm)
+	depends on !(BR2_arm920t || BR2_arm920t || BR2_arm922t || BR2_fa526 \
+		|| BR2_strongarm)
 	depends on BR2_LARGEFILE
 	help
 	  MPlayer is a movie player which runs on many systems and supports

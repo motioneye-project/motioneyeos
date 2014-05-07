@@ -44,12 +44,6 @@ choice
 	help
 	  Specific CPU variant to use
 
-config BR2_arm7tdmi
-	bool "arm7tdmi"
-	select BR2_ARM_CPU_HAS_THUMB
-config BR2_arm720t
-	bool "arm720t"
-	select BR2_ARM_CPU_HAS_THUMB
 config BR2_arm920t
 	bool "arm920t"
 	select BR2_ARM_CPU_HAS_THUMB
@@ -347,9 +341,6 @@ config BR2_ENDIAN
 	default "BIG"	 if BR2_armeb
 
 config BR2_GCC_TARGET_CPU
-	default "arm7tdmi"	if BR2_arm7tdmi
-	default "arm7tdmi"	if BR2_arm720t
-	default "arm7tdmi"	if BR2_arm740t
 	default "arm920"	if BR2_arm920
 	default "arm920t"	if BR2_arm920t
 	default "arm922t"	if BR2_arm922t
@@ -371,8 +362,6 @@ config BR2_GCC_TARGET_CPU
 	default "iwmmxt"	if BR2_iwmmxt
 
 config BR2_GCC_TARGET_ARCH
-	default "armv4t"	if BR2_arm7tdmi
-	default "armv4t"	if BR2_arm720t
 	default "armv4t"	if BR2_arm920t
 	default "armv4t"	if BR2_arm922t
 	default "armv5te"	if BR2_arm926t
