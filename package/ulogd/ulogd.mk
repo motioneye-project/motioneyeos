@@ -20,6 +20,8 @@ ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),y)
 ifeq ($(BR2_PACKAGE_MYSQL),y)
 	ULOGD_CONF_OPT += --with-mysql=$(STAGING_DIR)/usr
 	ULOGD_DEPENDENCIES += mysql
+else
+	ULOGD_CONF_OPT += --with-mysql=no
 endif
 ifeq ($(BR2_PACKAGE_SQLITE),y)
 	ULOGD_DEPENDENCIES += sqlite
