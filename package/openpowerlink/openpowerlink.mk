@@ -5,9 +5,8 @@
 ################################################################################
 
 OPENPOWERLINK_VERSION = V1.08.4
-OPENPOWERLINK_SOURCE = openPOWERLINK-$(OPENPOWERLINK_VERSION).zip
-OPENPOWERLINK_SITE = http://downloads.sourceforge.net/project/openpowerlink/openPOWERLINK/V1.8.4
-
+OPENPOWERLINK_SITE = http://git.code.sf.net/p/openpowerlink/code
+OPENPOWERLINK_SITE_METHOD = git
 OPENPOWERLINK_LICENSE = BSD-2c, GPLv2
 OPENPOWERLINK_LICENSE_FILES = license.txt
 OPENPOWERLINK_INSTALL_STAGING = YES
@@ -88,12 +87,5 @@ OPENPOWERLINK_CONF_OPT += -DCFG_X86_DEMO_LINUX_KERNEL=ON
 else
 OPENPOWERLINK_CONF_OPT += -DCFG_X86_DEMO_LINUX_KERNEL=OFF
 endif
-
-define OPENPOWERLINK_EXTRACT_CMDS
-	$(RM) -rf $(OPENPOWERLINK_DIR)
-	unzip -q -d $(BUILD_DIR)/ $(DL_DIR)/$(OPENPOWERLINK_SOURCE)
-	test -d $(OPENPOWERLINK_DIR) || \
-		mv $(BUILD_DIR)/$(subst .zip,,$(OPENPOWERLINK_SOURCE)) $(OPENPOWERLINK_DIR)
-endef
 
 $(eval $(cmake-package))
