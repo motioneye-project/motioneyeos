@@ -3,14 +3,15 @@ config BR2_PACKAGE_TCL
 	# fork()
 	depends on BR2_USE_MMU
 	depends on BR2_INET_IPV6
+	depends on BR2_TOOLCHAIN_HAS_THREADS
 	help
 	  TCL (Tool Command Language) is a simple textual language.
 
 	  http://www.tcl.tk
 
-comment "tcl needs a toolchain w/ ipv6"
+comment "tcl needs a toolchain w/ ipv6, threads"
 	depends on BR2_USE_MMU
-	depends on !BR2_INET_IPV6
+	depends on !BR2_INET_IPV6 || !BR2_TOOLCHAIN_HAS_THREADS
 
 if BR2_PACKAGE_TCL
 
