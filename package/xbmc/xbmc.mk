@@ -127,6 +127,10 @@ ifeq ($(BR2_PACKAGE_XBMC_WAVPACK),y)
 XBMC_DEPENDENCIES += wavpack
 endif
 
+ifeq ($(BR2_PACKAGE_XBMC_LIBTHEORA),y)
+XBMC_DEPENDENCIES += libtheora
+endif
+
 # Add HOST_DIR to PATH for codegenerator.mk to find swig
 define XBMC_BOOTSTRAP
 	cd $(@D) && PATH=$(BR_PATH) AUTOPOINT=/bin/true ./bootstrap
