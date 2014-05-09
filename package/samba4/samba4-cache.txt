@@ -27,6 +27,7 @@ Checking for the maximum value of the 'time_t' type: OK
 Checking whether the realpath function allows a NULL argument: OK
 Checking whether POSIX capabilities are available: OK
 Checking for ftruncate extend: OK
+vfs_fileid checking for statfs() and struct statfs.f_fsid: OK
 getcwd takes a NULL argument: OK
 Checking uname sysname type: "Linux"
 Checking uname release type: "3.0.0"

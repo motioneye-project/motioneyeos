@@ -8,6 +8,8 @@ it's used to find out if utmp support should be enabled.
 This is necessary with the introduction of the cross-compile aware
 CHECK_SIZEOF.
 
+Status: Upstream.
+
 Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
 ---
  source3/wscript | 2 +-

@@ -11,7 +11,7 @@ Allow some of these variables to be redefined via environment variables
 in order to aid cross-compiling.
 According to testing python_LDFLAGS and python_LIBDIR should be enough.
 
-Status: upstream for next branch.
+Status: Upstream.
 
 Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
 ---

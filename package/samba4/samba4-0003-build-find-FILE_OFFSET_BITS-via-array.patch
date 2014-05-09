@@ -17,7 +17,7 @@ array.
 If it's false it gives array[(-1 * 1)] thus failing with a
 negative-sized array.
 
-Status: upstream for next branch.
+Status: Upstream.
 
 Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
 ---

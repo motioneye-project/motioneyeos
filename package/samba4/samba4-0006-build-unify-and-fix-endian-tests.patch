@@ -10,6 +10,8 @@ of main scope since that will fail.
 And keep the WORDS_BIGENDIAN, HAVE_LITTLE_ENDIAN and HAVE_BIG_ENDIAN
 defines separate because of different codebases.
 
+Status: Upstream.
+
 Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
 ---
  buildtools/wafsamba/wscript | 65 ++++++++++++++++++++++++++++++++++++++++++---

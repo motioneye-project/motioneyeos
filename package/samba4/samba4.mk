@@ -88,6 +88,7 @@ define SAMBA4_CONFIGURE_CMDS
 			--without-ldap \
 			--without-cluster-support \
 			--without-ads \
+			--bundled-libraries='!asn1_compile,!compile_et' \
 			$(SAMBA4_CONF_OPT) \
 	)
 endef

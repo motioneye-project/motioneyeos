@@ -7,6 +7,8 @@ Using the same trick as commit 0d9bb86293c9d39298786df095c73a6251b08b7e
 find blkcnt_t size via an array so that it can be determined via build
 rather than running it.
 
+Status: Upstream.
+
 Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
 ---
  source3/wscript | 22 ++++++++++++----------

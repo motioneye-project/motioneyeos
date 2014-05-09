@@ -7,7 +7,7 @@ tests/summary.c will never be able to be executed when cross compiling.
 Use #error and #warning directives to fail or warn accordingly when
 compiling it.
 
-Status: upstream for next branch.
+Status: Upstream.
 
 Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
 ---

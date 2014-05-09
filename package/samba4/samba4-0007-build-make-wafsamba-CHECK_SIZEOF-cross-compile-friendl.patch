@@ -12,6 +12,8 @@ according to each test.
 The default is True since normally it's expected to find a proper
 result and should error out if not.
 
+Status: Upstream.
+
 Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
 ---
  buildtools/wafsamba/samba_autoconf.py | 28 ++++++++++++++++------------

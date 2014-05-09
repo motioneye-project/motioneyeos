@@ -1,0 +1,35 @@
+From 8dc24d4006a2e936baf73e116129d2b0a5d71ed7 Mon Sep 17 00:00:00 2001
+From: "Jose A. Rivera" <jarrpa@redhat.com>
+Date: Mon, 5 May 2014 07:29:57 -0500
+Subject: [PATCH] Minor typo fix in source3/wscript.
+
+Signed-off-by: Jose A. Rivera <jarrpa@redhat.com>
+Reviewed-by: Volker Lendecke <vl@samba.org>
+Reviewed-by: Jeremy Allison <jra@samba.org>
+
+Autobuild-User(master): Jeremy Allison <jra@samba.org>
+Autobuild-Date(master): Mon May  5 22:41:19 CEST 2014 on sn-devel-104
+
+Status: Upstream.
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+---
+ source3/wscript | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/source3/wscript b/source3/wscript
+index 4fe49fa..8cbd9bc 100644
+--- a/source3/wscript
++++ b/source3/wscript
+@@ -475,7 +475,7 @@ return acl_get_perm_np(permset_d, perm);
+ 
+     conf.CHECK_CODE('struct statfs fsd; fsid_t fsid = fsd.f_fsid; return statfs(".", &fsd);',
+                     'HAVE_STATFS_F_FSID',
+-                    msg="vfs_fileid: checking for statfs() and struct statfs.f_fsid",
++                    msg="vfs_fileid checking for statfs() and struct statfs.f_fsid",
+                     headers='sys/types.h sys/statfs.h',
+                     execute=True)
+ 
+-- 
+1.8.5.5
+
