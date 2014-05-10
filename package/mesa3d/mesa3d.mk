@@ -63,13 +63,13 @@ MESA3D_CONF_OPT += \
 	--without-gallium-drivers
 else
 MESA3D_CONF_OPT += \
+	--enable-shared-glapi \
 	--with-gallium-drivers=$(subst $(space),$(comma),$(MESA3D_GALLIUM_DRIVERS-y))
 endif
 
 ifeq ($(MESA3D_DRI_DRIVERS-y),)
 MESA3D_CONF_OPT += \
 	--disable-dri \
-	--disable-shared-glapi \
 	--without-dri-drivers
 else
 MESA3D_CONF_OPT += \
