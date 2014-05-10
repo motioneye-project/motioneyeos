@@ -69,7 +69,6 @@ endif
 
 ifeq ($(MESA3D_DRI_DRIVERS-y),)
 MESA3D_CONF_OPT += \
-	--disable-dri \
 	--without-dri-drivers
 else
 MESA3D_CONF_OPT += \
@@ -102,7 +101,6 @@ MESA3D_CONF_OPT += \
 	--with-egl-platforms=$(subst $(space),$(comma),$(MESA3D_EGL_PLATFORMS))
 else
 MESA3D_CONF_OPT += \
-	--disable-gbm \
 	--disable-egl
 endif
 
