@@ -8,6 +8,8 @@ only installed if Mesa3d is compiled with EGL support.
 
 This patch installs this header file unconditionally.
 
+Patch sent upstream: https://bugs.freedesktop.org/show_bug.cgi?id=77240
+
 Signed-off-by: Eric Le Bihan <eric.le.bihan.dev@free.fr>
 ---
  src/egl/main/Makefile.am | 3 ---
