@@ -2,6 +2,9 @@ config BR2_PACKAGE_PROTOBUF
 	bool "protobuf"
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_TOOLCHAIN_HAS_THREADS
+	# See src/google/protobuf/stubs/platform_macros.h for supported archs.
+	# PowerPC doesn't actually work.
+	depends on BR2_arm || BR2_i386 || BR2_mipsel || BR2_x86_64
 	help
 	  Protocol buffers are Google's language-neutral, platform-neutral,
 	  extensible mechanism for serializing structured data.
@@ -10,3 +13,4 @@ config BR2_PACKAGE_PROTOBUF
 
 comment "protobuf needs a toolchain w/ C++, threads"
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_arm || BR2_i386 || BR2_mipsel || BR2_x86_64
