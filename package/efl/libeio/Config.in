@@ -3,6 +3,7 @@ config BR2_PACKAGE_LIBEIO
 	select BR2_PACKAGE_LIBEET
 	select BR2_PACKAGE_LIBEINA
 	select BR2_PACKAGE_LIBECORE
+	depends on BR2_TOOLCHAIN_HAS_THREADS
 	help
 	  Eio integrates with EFL (Ecore, Eina) to provide efficient
 	  filesystem Input/Output (I/O). It use the best techniques to
@@ -16,3 +17,6 @@ config BR2_PACKAGE_LIBEIO
 	  naive implementations, and it is easy to use.
 
 	  http://trac.enlightenment.org/e/wiki/Eio
+
+comment "libeio needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
