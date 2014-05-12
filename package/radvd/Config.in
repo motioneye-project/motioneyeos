@@ -5,6 +5,8 @@ config BR2_PACKAGE_RADVD
 	select BR2_PACKAGE_FLEX
 	select BR2_PACKAGE_LIBDAEMON
 	depends on BR2_INET_IPV6
+	# uClibc too old, does not define ARPHRD_IEEE802154
+	depends on !BR2_avr32
 	help
 	  IPv6 Router Advertisement Daemon.
 
@@ -13,3 +15,4 @@ config BR2_PACKAGE_RADVD
 comment "radvd needs a toolchain w/ IPv6"
 	depends on BR2_USE_MMU
 	depends on !BR2_INET_IPV6
+	depends on !BR2_avr32
