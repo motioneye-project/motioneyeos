@@ -1,0 +1,22 @@
+Do not use -Wno-psabi warning, not available on old g++
+
+AVR32 uses a very old g++ version, which does not implement the
+-Wno-psabi warning flag. This patch simply removes this warning flag
+from the libcec build. It can be dropped if only gcc 4.5+ versions are
+supported in Buildroot.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/configure.ac
+===================================================================
+--- a/configure.ac
++++ b/configure.ac
+@@ -130,7 +130,7 @@
+ use_udev="no"
+ use_adapter_detection="yes"
+ use_lockdev="no"
+-SUPPRESS_MANGLING_WARNINGS=" -Wno-psabi"
++SUPPRESS_MANGLING_WARNINGS=""
+ case "${host}" in
+   *-*-linux*)
+     ## search for udev if pkg-config was found
