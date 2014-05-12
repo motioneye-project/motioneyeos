@@ -5,4 +5,4 @@ config BR2_PACKAGE_LIBMBUS
 	  It supports TCP and RS232 M-bus gateways.
 	  (M-bus standard: http://www.m-bus.com/)
 
-	  http://www.freescada.com/libmbus
+	  http://www.rscada.se/libmbus/
