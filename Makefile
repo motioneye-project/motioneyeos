@@ -533,6 +533,7 @@ endif
 $(TARGETS_ROOTFS): target-finalize
 
 target-finalize: $(TARGETS)
+	@$(call MESSAGE,"Finalizing target directory")
 	$(TARGET_PURGE_LOCALES)
 	rm -rf $(TARGET_DIR)/usr/include $(TARGET_DIR)/usr/share/aclocal \
 		$(TARGET_DIR)/usr/lib/pkgconfig $(TARGET_DIR)/usr/share/pkgconfig \
