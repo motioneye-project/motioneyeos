@@ -10,7 +10,7 @@ NAME=mongoose
 DESC="Mongoose HTTP server"
 
 DAEMON=`which mongoose`
-OPTIONS="-num_threads 3 -document_root /var/www -listening_ports 80"
+OPTIONS="-document_root /var/www -listening_port 80"
 
 [ -e /etc/default/mongoose ] && . /etc/default/mongoose
 
