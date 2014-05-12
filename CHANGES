@@ -20,7 +20,7 @@
 	for ARC, Internal toolchain support for Aarch64 and
 	Microblaze. Environment variable to control debug output of
 	toolchain wrapper renamed to BR2_DEBUG_WRAPPER to match the
-	other variables. Toolchain tupple vendor name can now be
+	other variables. Toolchain tuple vendor name can now be
 	customized. Updated external Linaro ARM/Aarch64
 	toolchains. Added external Linaro ARMEB toolchain.
 	A GDB gdbinit file is now generated for external toolchains to
@@ -31,7 +31,7 @@
 	features can specify these requirements in Kconfig.
 
 	Infrastructure: Support for (but disabled as it leads to
-	unreproducable builds) toplevel parallel builds. See the
+	unreproducible builds) toplevel parallel builds. See the
 	comment at the top of Makefile for details about how to enable
 	it and what the problems are if you want to test it.
 	Python package infrastructure extended to support Python 3.x
