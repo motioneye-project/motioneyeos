@@ -419,6 +419,8 @@ comment "rrdtool support needs a toolchain w/ wchar"
 config BR2_PACKAGE_COLLECTD_RIEMANN
 	bool "riemann"
 	depends on BR2_INSTALL_LIBSTDCPP # protobuf
+	# protobuf-c -> host-protobuf
+	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86"
 	select BR2_PACKAGE_PROTOBUF_C
 	help
 	  Sends data to Riemann, a stream processing and monitoring system.
