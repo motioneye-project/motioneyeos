@@ -14,7 +14,7 @@ SYSSTAT_LICENSE_FILES = COPYING
 
 ifeq ($(BR2_NEEDS_GETTEXT_IF_LOCALE),y)
 SYSSTAT_DEPENDENCIES += gettext
-SYSSTAT_MAKE_OPT += CFLAGS+=-lintl
+SYSSTAT_MAKE_OPT += CFLAGS="$(TARGET_CFLAGS) -lintl"
 endif
 
 # The isag tool is a post processing script that depends on tcl/tk
