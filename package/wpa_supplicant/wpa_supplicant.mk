@@ -105,6 +105,11 @@ define WPA_SUPPLICANT_DEBUG_CONFIG
 endef
 endif
 
+ifeq ($(BR2_PACKAGE_READLINE),y)
+	WPA_SUPPLICANT_DEPENDENCIES += readline
+	WPA_SUPPLICANT_CONFIG_ENABLE += CONFIG_READLINE
+endif
+
 define WPA_SUPPLICANT_CONFIGURE_CMDS
 	cp $(@D)/wpa_supplicant/defconfig $(WPA_SUPPLICANT_CONFIG)
 	sed -i $(patsubst %,-e 's/^#\(%\)/\1/',$(WPA_SUPPLICANT_CONFIG_ENABLE)) \
