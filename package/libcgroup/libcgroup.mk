@@ -16,8 +16,8 @@ LIBCGROUP_INSTALL_STAGING = YES
 # large file support. See https://bugzilla.redhat.com/show_bug.cgi?id=574992
 # for more information.
 LIBCGROUP_CONF_ENV = \
-	CXXFLAGS+="-U_FILE_OFFSET_BITS" \
-	CFLAGS+="-U_FILE_OFFSET_BITS"
+	CXXFLAGS="$(TARGET_CXXFLAGS) -U_FILE_OFFSET_BITS" \
+	CFLAGS="$(TARGET_CFLAGS) -U_FILE_OFFSET_BITS"
 
 LIBCGROUP_CONF_OPT = \
 	--disable-tools \
