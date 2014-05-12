@@ -11,6 +11,8 @@ config BR2_PACKAGE_AICCU
 	# due to the lack of dn_skipname(), even with external
 	# toolchains.
 	depends on !BR2_avr32
+	# Triggers the _gp link issue
+	depends on !BR2_nios2
 	select BR2_PACKAGE_GNUTLS
 	help
 	  SixXS Automatic IPv6 Connectivity Client Utility
@@ -29,3 +31,5 @@ config BR2_PACKAGE_AICCU
 comment "aiccu needs a toolchain w/ IPv6, wchar, threads"
 	depends on BR2_USE_MMU
 	depends on !(BR2_INET_IPV6 && BR2_USE_WCHAR && BR2_TOOLCHAIN_HAS_THREADS)
+	depends on !BR2_avr32
+	depends on !BR2_nios2
