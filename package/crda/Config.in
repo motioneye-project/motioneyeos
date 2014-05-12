@@ -5,6 +5,8 @@ config BR2_PACKAGE_CRDA
 	select BR2_PACKAGE_LIBNL
 	# regdb is a runtime dependency
 	select BR2_PACKAGE_WIRELESS_REGDB
+	# Triggers the _gp link issue
+	depends on !BR2_nios2
 	help
 	  Central Regulatory Domain Agent.
 
@@ -17,3 +19,4 @@ config BR2_PACKAGE_CRDA
 
 comment "crda needs a toolchain w/ threads"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_nios2
