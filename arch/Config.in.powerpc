@@ -110,6 +110,19 @@ config BR2_powerpc_e300c3
 config BR2_powerpc_e500mc
 	bool "e500mc"
 	depends on !BR2_ARCH_IS_64
+config BR2_powerpc_power4
+	bool "power4"
+config BR2_powerpc_power5
+	bool "power5"
+config BR2_powerpc_power6
+	bool "power6"
+	select BR2_POWERPC_CPU_HAS_ALTIVEC
+config BR2_powerpc_power7
+	bool "power7"
+	select BR2_POWERPC_CPU_HAS_ALTIVEC
+config BR2_powerpc_power8
+	bool "power8"
+	select BR2_POWERPC_CPU_HAS_ALTIVEC
 endchoice
 
 choice
@@ -178,6 +191,11 @@ config BR2_GCC_TARGET_TUNE
 	default "e300c2"	if BR2_powerpc_e300c2
 	default "e300c3"	if BR2_powerpc_e300c3
 	default "e500mc"	if BR2_powerpc_e500mc
+	default "power4"	if BR2_powerpc_power4
+	default "power5"	if BR2_powerpc_power5
+	default "power6"	if BR2_powerpc_power6
+	default "power7"	if BR2_powerpc_power7
+	default "power8"	if BR2_powerpc_power8
 
 config BR2_GCC_TARGET_ABI
 	default "altivec"		if BR2_PPC_ABI_altivec
