@@ -13,6 +13,18 @@ config BR2_PACKAGE_ICU
 
 	  http://site.icu-project.org/
 
+if BR2_PACKAGE_ICU
+
+config BR2_PACKAGE_ICU_CUSTOM_DATA_PATH
+	string "Path to custom data library file"
+	help
+	  This option allows to define the path to a custom data
+	  library generated with
+	  http://apps.icu-project.org/datacustom/ICUData51.html. Leave
+	  empty to not use this functionality.
+
+endif
+
 comment "icu needs a toolchain w/ C++, wchar, threads"
 	depends on !BR2_arc
 	depends on !BR2_BINFMT_FLAT

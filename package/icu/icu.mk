@@ -26,5 +26,12 @@ ICU_MAKE = $(MAKE1)
 ICU_SUBDIR = source
 HOST_ICU_SUBDIR = source
 
+ifneq ($(BR2_PACKAGE_ICU_CUSTOM_DATA_PATH),)
+define ICU_COPY_CUSTOM_DATA
+	cp $(BR2_PACKAGE_ICU_CUSTOM_DATA_PATH) $(@D)/source/data/in/
+endef
+ICU_POST_PATCH_HOOKS += ICU_COPY_CUSTOM_DATA
+endif
+
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
