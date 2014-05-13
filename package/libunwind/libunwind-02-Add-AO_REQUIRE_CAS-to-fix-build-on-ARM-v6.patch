@@ -1,0 +1,56 @@
+From 24484e80b3e329c9edee1995e102f8612eedb79c Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Tue, 13 May 2014 23:32:27 +0200
+Subject: [PATCH] Add AO_REQUIRE_CAS to fix build on ARM < v6
+
+ARM earlier than ARMv6, such as ARMv4 and ARMv5 do not provide
+optimize atomic operations in libatomic_ops. Since libunwind is using
+such operations, it should define AO_REQUIRE_CAS before including
+<atomic_ops.h> so that libatomic_ops knows it should use emulated
+atomic operations instead (even though they are obviously a lot more
+expensive).
+
+Also, while real atomic operations are all inline functions and
+therefore linking against libatomic_ops was not required, the emulated
+atomic operations actually require linking against libatomic_ops, so
+the commented AC_CHECK_LIB test in acinclude.m4 is uncommented to make
+sure we link against libatomic_ops.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ acinclude.m4          | 8 +-------
+ include/libunwind_i.h | 1 +
+ 2 files changed, 2 insertions(+), 7 deletions(-)
+
+diff --git a/acinclude.m4 b/acinclude.m4
+index 497f7c2..9c15af1 100644
+--- a/acinclude.m4
++++ b/acinclude.m4
+@@ -22,11 +22,5 @@ fi])
+ AC_DEFUN([CHECK_ATOMIC_OPS],
+ [dnl Check whether the system has the atomic_ops package installed.
+   AC_CHECK_HEADERS(atomic_ops.h)
+-#
+-# Don't link against libatomic_ops for now.  We don't want libunwind
+-# to depend on libatomic_ops.so.  Fortunately, none of the platforms
+-# we care about so far need libatomic_ops.a (everything is done via
+-# inline macros).
+-#
+-#  AC_CHECK_LIB(atomic_ops, main)
++  AC_CHECK_LIB(atomic_ops, main)
+ ])
+diff --git a/include/libunwind_i.h b/include/libunwind_i.h
+index 23f615e..deabdfd 100644
+--- a/include/libunwind_i.h
++++ b/include/libunwind_i.h
+@@ -95,6 +95,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
+ 	(pthread_mutex_unlock != NULL ? pthread_mutex_unlock (l) : 0)
+ 
+ #ifdef HAVE_ATOMIC_OPS_H
++# define AO_REQUIRE_CAS
+ # include <atomic_ops.h>
+ static inline int
+ cmpxchg_ptr (void *addr, void *old, void *new)
+-- 
+1.9.2
+
