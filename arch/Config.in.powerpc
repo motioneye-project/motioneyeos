@@ -6,7 +6,6 @@ config BR2_POWERPC_CPU_HAS_SPE
 
 choice
 	prompt "Target Architecture Variant"
-	depends on BR2_powerpc || BR2_powerpc64le
 	default BR2_generic_powerpc
 	help
 	  Specific CPU variant to use
@@ -127,7 +126,6 @@ endchoice
 
 choice
 	prompt "Target ABI"
-	depends on BR2_powerpc || BR2_powerpc64le
 	default BR2_powerpc_SPE if BR2_POWERPC_CPU_HAS_SPE
 	default BR2_powerpc_CLASSIC
 	help
