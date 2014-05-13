@@ -2,6 +2,7 @@ comment "armadillo needs a toolchain w/ C++, largefile"
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_LARGEFILE
 	depends on !(BR2_mips || BR2_mipsel || BR2_mips64 || BR2_mips64el) # clapack
 	depends on !(BR2_powerpc && BR2_TOOLCHAIN_USES_UCLIBC) # clapack
+	depends on !BR2_bfin # clapack
 
 config BR2_PACKAGE_ARMADILLO
 	bool "armadillo"
@@ -9,6 +10,7 @@ config BR2_PACKAGE_ARMADILLO
 	depends on BR2_LARGEFILE # clapack
 	depends on !(BR2_mips || BR2_mipsel || BR2_mips64 || BR2_mips64el) # clapack
 	depends on !(BR2_powerpc && BR2_TOOLCHAIN_USES_UCLIBC) # clapack
+	depends on !BR2_bfin # clapack
 	select BR2_PACKAGE_CLAPACK
 	help
 	  Armadillo: An Open Source C++ Linear Algebra Library for
