@@ -136,7 +136,7 @@ else
 LIBEVAS_CONF_OPT += --disable-cpu-sse3
 endif
 
-ifeq ($(BR2_powerpc_7400)$(BR2_powerpc_7450)$(BR2_powerpc_970),y)
+ifeq ($(BR2_POWERPC_CPU_HAS_ALTIVEC),y)
 LIBEVAS_CONF_OPT += --enable-cpu-altivec
 else
 LIBEVAS_CONF_OPT += --disable-cpu-altivec

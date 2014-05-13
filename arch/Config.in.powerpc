@@ -1,3 +1,6 @@
+config BR2_POWERPC_CPU_HAS_ALTIVEC
+	bool
+
 config BR2_POWERPC_CPU_HAS_SPE
 	bool
 
@@ -51,8 +54,10 @@ config BR2_powerpc_740
 	bool "740"
 config BR2_powerpc_7400
 	bool "7400"
+	select BR2_POWERPC_CPU_HAS_ALTIVEC
 config BR2_powerpc_7450
 	bool "7450"
+	select BR2_POWERPC_CPU_HAS_ALTIVEC
 config BR2_powerpc_750
 	bool "750"
 config BR2_powerpc_821
@@ -63,6 +68,7 @@ config BR2_powerpc_860
 	bool "860"
 config BR2_powerpc_970
 	bool "970"
+	select BR2_POWERPC_CPU_HAS_ALTIVEC
 config BR2_powerpc_8540
 	bool "8540 / e500v1"
 	select BR2_POWERPC_CPU_HAS_SPE
