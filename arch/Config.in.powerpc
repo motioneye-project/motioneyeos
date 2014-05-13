@@ -150,10 +150,11 @@ config BR2_POWERPC_SOFT_FLOAT
 
 config BR2_ARCH
 	default "powerpc"	if BR2_powerpc
+	default "powerpc64"	if BR2_powerpc64
 	default "powerpc64le"	if BR2_powerpc64le
 
 config BR2_ENDIAN
-	default "BIG"    if BR2_powerpc
+	default "BIG"    if BR2_powerpc || BR2_powerpc64
 	default "LITTLE" if BR2_powerpc64le
 
 config BR2_GCC_TARGET_TUNE
