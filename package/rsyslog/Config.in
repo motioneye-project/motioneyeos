@@ -8,6 +8,7 @@ config BR2_PACKAGE_RSYSLOG
 	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_LARGEFILE # util-linux
+	depends on BR2_USE_MMU # fork()
 	depends on BR2_USE_WCHAR # util-linux
 	help
 	  Rsyslog is a powerful and flexible syslog implementation
@@ -15,4 +16,5 @@ config BR2_PACKAGE_RSYSLOG
 	  http://www.rsyslog.com
 
 comment "rsyslog needs a toolchain w/ largefile, wchar, threads"
+	depends on BR2_USE_MMU
 	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_LARGEFILE || !BR2_USE_WCHAR
