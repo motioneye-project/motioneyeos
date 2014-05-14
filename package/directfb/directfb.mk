@@ -26,6 +26,11 @@ DIRECTFB_CONF_OPT = \
 	--disable-video4linux \
 	--disable-video4linux2 \
 	--without-tools
+
+ifeq ($(BR2_PREFER_STATIC_LIB),y)
+DIRECTFB_CONF_OPT += --disable-dynload
+endif
+
 DIRECTFB_CONFIG_SCRIPTS = directfb-config
 
 DIRECTFB_DEPENDENCIES = freetype zlib
