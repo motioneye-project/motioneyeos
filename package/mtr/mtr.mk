@@ -21,4 +21,4 @@ endif
 
 MTR_POST_PATCH_HOOKS += MTR_DISABLE_RES_NINIT
 
-$(eval $(call autotools-package))
+$(eval $(autotools-package))
