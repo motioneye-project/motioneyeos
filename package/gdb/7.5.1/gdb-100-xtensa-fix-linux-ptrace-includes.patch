@@ -1,0 +1,60 @@
+From e671835b7afc90b3ff201b79f07a6fb67797bc5c Mon Sep 17 00:00:00 2001
+From: Baruch Siach <baruch@tkos.co.il>
+Date: Mon, 20 Jan 2014 09:53:12 +0200
+Subject: [PATCH] gdb: xtensa: fix linux ptrace includes
+
+Currently, xtensa code using the Linux ptrace interface only include
+sys/ptrace.h.  This file comes from the C library (glibc and uClibc,
+at least), and includes a declaration of the ptrace() functions, along
+with some cross architecture constants that are mostly copied from the
+file located at include/uapi/linux/ptrace.h in recent Linux kernels.
+
+For xtensa specific constants like PTRACE_GETXTREGS and
+PTRACE_SETXTREGS the asm/ptrace.h include from the Linux kernel UAPI
+is needed.  The code in gdbserver xtensa specific part doesn't call
+ptrace() directly, so we can remove the unneeded sys/ptrace.h include.
+The gdb xtensa specific code needs both headers, since it calls
+ptrace().
+
+gdb/
+	* xtensa-linux-nat.c: Include asm/ptrace.h.
+
+gdb/gdbserver/
+	* linux-xtensa-low.c: Include asm/ptrace.h instead of
+	sys/ptrace.h.
+---
+Backported from: e671835b7afc90b3ff201b79f07a6fb67797bc5c
+Changes to Changelog files are dropped.
+
+ gdb/gdbserver/linux-xtensa-low.c | 2 +-
+ gdb/xtensa-linux-nat.c           | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/gdb/gdbserver/linux-xtensa-low.c b/gdb/gdbserver/linux-xtensa-low.c
+index 7db97a9..479b65b 100644
+--- a/gdb/gdbserver/linux-xtensa-low.c
++++ b/gdb/gdbserver/linux-xtensa-low.c
+@@ -24,7 +24,7 @@
+ void init_registers_xtensa (void);
+ extern const struct target_desc *tdesc_xtensa;
+ 
+-#include <sys/ptrace.h>
++#include <asm/ptrace.h>
+ #include <xtensa-config.h>
+ 
+ #include "xtensa-xtregs.c"
+diff --git a/gdb/xtensa-linux-nat.c b/gdb/xtensa-linux-nat.c
+index 2372e79..9340c62 100644
+--- a/gdb/xtensa-linux-nat.c
++++ b/gdb/xtensa-linux-nat.c
+@@ -36,6 +36,7 @@
+ #include <fcntl.h>
+ #include <sys/procfs.h>
+ #include <sys/ptrace.h>
++#include <asm/ptrace.h>
+ 
+ #include "gregset.h"
+ #include "xtensa-tdep.h"
+-- 
+1.8.1.4
+
