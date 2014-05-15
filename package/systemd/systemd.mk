@@ -17,6 +17,8 @@ SYSTEMD_DEPENDENCIES = \
 	kmod \
 	host-gperf
 
+SYSTEMD_PROVIDES = udev
+
 # Make sure that systemd will always be built after busybox so that we have
 # a consistent init setup between two builds
 ifeq ($(BR2_PACKAGE_BUSYBOX),y)

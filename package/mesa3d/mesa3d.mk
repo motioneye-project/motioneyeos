@@ -13,6 +13,8 @@ MESA3D_AUTORECONF = YES
 
 MESA3D_INSTALL_STAGING = YES
 
+MESA3D_PROVIDES =
+
 MESA3D_DEPENDENCIES = \
 	expat \
 	host-bison \
@@ -71,6 +73,7 @@ ifeq ($(MESA3D_DRI_DRIVERS-y),)
 MESA3D_CONF_OPT += \
 	--without-dri-drivers
 else
+MESA3D_PROVIDES += libgl
 MESA3D_CONF_OPT += \
 	--enable-dri \
 	--enable-shared-glapi \
@@ -85,6 +88,7 @@ endif
 MESA3D_CONF_OPT += --enable-opengl
 
 ifeq ($(BR2_PACKAGE_MESA3D_OPENGL_EGL),y)
+MESA3D_PROVIDES += libegl
 # egl depends on gbm, gbm depends on udev
 MESA3D_DEPENDENCIES += udev
 MESA3D_EGL_PLATFORMS = drm
@@ -105,6 +109,7 @@ MESA3D_CONF_OPT += \
 endif
 
 ifeq ($(BR2_PACKAGE_MESA3D_OPENGL_ES),y)
+MESA3D_PROVIDES += libgles
 MESA3D_CONF_OPT += --enable-gles1 --enable-gles2
 else
 MESA3D_CONF_OPT += --disable-gles1 --disable-gles2

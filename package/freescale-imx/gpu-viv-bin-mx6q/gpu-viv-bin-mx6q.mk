@@ -23,6 +23,8 @@ GPU_VIV_BIN_MX6Q_LICENSE = Freescale Semiconductor Software License Agreement
 # for which a separate license is needed...
 GPU_VIV_BIN_MX6Q_REDISTRIBUTE = NO
 
+GPU_VIV_BIN_MX6Q_PROVIDES = libegl libgles
+
 # DirectFB is not supported (wrong version)
 ifeq ($(BR2_PACKAGE_XORG7),y)
 GPU_VIV_BIN_MX6Q_DEPENDENCIES = xlib_libXdamage xlib_libXext
