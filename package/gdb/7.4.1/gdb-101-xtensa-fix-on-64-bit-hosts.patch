@@ -1,0 +1,42 @@
+From 54bff650843cacd3c17a0afdb0fe32e15e1b65b0 Mon Sep 17 00:00:00 2001
+From: Baruch Siach <baruch@tkos.co.il>
+Date: Wed, 22 Jan 2014 15:02:29 +0200
+Subject: [PATCH] gdb: xtensa: fix on 64-bit hosts
+
+On 64-bit hosts unsigned long is 64 bit.  Use uint32_t instead.
+
+gdb/
+2014-01-22  Baruch Siach  <baruch@tkos.co.il>
+
+	* xtensa-tdep.h (xtensa_elf_greg_t): Change type to uint32_t.
+---
+Backported from: 54bff650843cacd3c17a0afdb0fe32e15e1b65b0
+Changes to Changelog files are dropped and #include <stdint.h> is added.
+
+ gdb/xtensa-tdep.h | 3 +-
+ 1 file changed, 2 insertion(+), 1 deletion(-)
+
+diff --git a/gdb/xtensa-tdep.h b/gdb/xtensa-tdep.h
+index 968b9d2..d7ba562 100644
+--- a/gdb/xtensa-tdep.h
++++ b/gdb/xtensa-tdep.h
+@@ -17,6 +17,7 @@
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
+ 
++#include <stdint.h>
+ 
+ /* XTENSA_TDEP_VERSION can/should be changed along with XTENSA_CONFIG_VERSION
+    whenever the "tdep" structure changes in an incompatible way.  */
+@@ -84,7 +84,7 @@ typedef enum
+ /* Xtensa ELF core file register set representation ('.reg' section).
+    Copied from target-side ELF header <xtensa/elf.h>.  */
+ 
+-typedef unsigned long xtensa_elf_greg_t;
++typedef uint32_t xtensa_elf_greg_t;
+ 
+ typedef struct
+ {
+-- 
+1.8.1.4
+
