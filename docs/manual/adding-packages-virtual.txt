@@ -39,7 +39,7 @@ In this file, we declare two options, +BR2_PACKAGE_HAS_SOMETHING_VIRTUAL+ and
 +BR2_PACKAGE_PROVIDES_SOMETHING_VIRTUAL+, whose values will be used by the
 providers.
 
-==== Virtual package's +*.mk+ file
+==== Virtual package's +.mk+ file
 
 The +.mk+ for the virtual package should just evaluate the +virtual-package+ macro:
 
@@ -59,8 +59,7 @@ The ability to have target and host packages is also available, with the
 ==== Provider's +Config.in+ file
 
 When adding a package as a provider, only the +Config.in+ file requires some
-modifications. The +*.mk+ file should follow the Buildroot infrastructure with
-no change at all.
+modifications.
 
 The +Config.in+ file of the package 'some-provider', which provides the
 functionalities of 'something-virtual', should contain:
@@ -83,6 +82,16 @@ functionalities of 'something-virtual', should contain:
 On line 3, we select +BR2_PACKAGE_HAS_SOMETHING_VIRTUAL+, and on line 11, we
 set the value of +BR2_PACKAGE_PROVIDES_SOMETHING_VIRTUAL+ to the name of the
 provider, but only if it is selected.
+
+==== Provider's +.mk+ file
+
+The +.mk+ file should also declare an additional variable
++SOME_PROVIDER_PROVIDES+ to contain the names of all the virtual
+packages it is an implementation of:
+
+---------------------------
+01: SOME_PROVIDER_PROVIDES = something-virtual
+---------------------------
 
 Of course, do not forget to add the proper build and runtime dependencies for
 this package!

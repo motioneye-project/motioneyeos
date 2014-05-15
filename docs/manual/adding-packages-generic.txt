@@ -304,6 +304,9 @@ information is (assuming the package name is +libfoo+) :
   a similar way, +HOST_LIBFOO_DEPENDENCIES+ lists the dependencies for
   the current host package.
 
+* +LIBFOO_PROVIDES+ lists all the virtual packages +libfoo+ is an
+  implementation of. See xref:virtual-package-tutorial[].
+
 * +LIBFOO_INSTALL_STAGING+ can be set to +YES+ or +NO+ (default). If
   set to +YES+, then the commands in the +LIBFOO_INSTALL_STAGING_CMDS+
   variables are executed to install the package into the staging
