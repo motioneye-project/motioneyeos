@@ -50,12 +50,13 @@ else
 	NETSNMP_CONF_OPT += --without-openssl
 endif
 
-# Docs
-NETSNMP_CONF_OPT += --disable-manuals
-
 ifneq ($(BR2_PACKAGE_NETSNMP_ENABLE_MIBS),y)
 	NETSNMP_CONF_OPT += --disable-mib-loading
 	NETSNMP_CONF_OPT += --disable-mibs
+endif
+
+ifneq ($(BR2_PACKAGE_NETSNMP_ENABLE_DEBUGGING),y)
+	NETSNMP_CONF_OPT += --disable-debugging
 endif
 
 # Remove IPv6 MIBs if there's no IPv6
@@ -66,11 +67,6 @@ endef
 
 NETSNMP_POST_INSTALL_TARGET_HOOKS += NETSNMP_REMOVE_MIBS_IPV6
 endif
-
-ifneq ($(BR2_PACKAGE_NETSNMP_ENABLE_DEBUGGING),y)
-	NETSNMP_CONF_OPT += --disable-debugging
-endif
-
 
 define NETSNMP_REMOVE_BLOAT_MIBS
 	for mib in $(NETSNMP_BLOAT_MIBS); do \
