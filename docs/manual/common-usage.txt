@@ -92,8 +92,8 @@ to +make+ or set in the environment:
   build-time graphs
 * +BR2_GRAPH_OUT+ to set the filetype of generated graphs, either +pdf+ (the
   default), or +png+.
-* +BR2_GRAPH_DEPTH+ (an integer) to limit the depth of the dependency graph.
-  The default, +0+, is to not limit the depth.
+* +BR2_GRAPH_DEPS_OPTS+ to pass extra options to the dependency graph; see
+  xref:graph-depends[] for the accepted options
 
 An example that uses config files located in the toplevel directory and
 in your $HOME:
@@ -196,6 +196,16 @@ supported.
 
 --------------------------------
 BR2_GRAPH_OUT=svg make graph-depends
+--------------------------------
+
+The +graph-depends+ behaviour can be controlled by setting options in the
++BR2_GRAPH_DEPS_OPTS+ environment variable. The accepted options are:
+
+* +--depth N+, +-d N+, to limit the dependency depth to +N+ levels. The
+  default, +0+, means no limit.
+
+--------------------------------
+BR2_GRAPH_DEPS_OPTS='-d 3' make graph-depends
 --------------------------------
 
 === Graphing the build duration
