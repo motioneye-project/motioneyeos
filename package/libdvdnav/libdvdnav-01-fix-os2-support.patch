@@ -1,0 +1,32 @@
+configure: fix build on NIOS II platform
+
+NIOS II is a CPU architecture from Altera, which uses 'nios2' as the
+architecture part of the tuple. Unfortunately, 'nios2' matches the
+current '*os2*' test done by libdvdnav's configure script to detect
+the OS/2 operating system. This leads to build issues as the build
+process of libdvdnav then tries to use OS/2 specific compiler
+options, that do not exist in the gcc used for Linux/NIOS2.
+
+To fix this, this patch makes the test for OS/2 a little bit more
+specific: in the case of the OS/2 operating system, the OS part of the
+tuple contains just 'os2' (confirmed by looking at config.guess and
+config.sub in the gnuconfig project). So using '*-os2-*' will properly
+match the OS/2 operating system but not the NIOS II architecture.
+
+Upstream-status: not needed, newer upstream versions no longer have
+		 this test
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/configure.ac
+===================================================================
+--- a/configure.ac
++++ b/configure.ac
+@@ -166,7 +166,7 @@
+   *cygwin*)
+     LDFLAGS="-no-undefined $LDFLAGS"
+     ;;
+-  *os2*)
++  *-os2-*)
+     LDFLAGS="-no-undefined -Zbin-files $LDFLAGS"
+     ;;
+   *)
