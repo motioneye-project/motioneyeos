@@ -19,6 +19,7 @@ DUMA_OPTIONS = \
 # build time, is not specified in the Makefile. Force non-parallel build.
 define DUMA_BUILD_CMDS
 	$(MAKE1) $(TARGET_CONFIGURE_OPTS)       \
+		OS=linux \
 		DUMA_OPTIONS="$(DUMA_OPTIONS)"   \
 		$(DUMA_CPP) -C $(@D)
 endef
