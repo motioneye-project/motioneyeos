@@ -1,5 +1,6 @@
 config BR2_PACKAGE_SANE_BACKENDS
 	bool "sane-backends"
+	depends on BR2_USE_MMU # fork()
 	help
 	  SANE - Scanner Access Now Easy
 
