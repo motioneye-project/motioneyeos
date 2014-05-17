@@ -5,6 +5,7 @@ config BR2_PACKAGE_ZYRE
 	depends on BR2_LARGEFILE # filemq
 	depends on BR2_USE_WCHAR # filemq
 	depends on BR2_TOOLCHAIN_HAS_THREADS # filemq
+	depends on BR2_USE_MMU # filemq -> czmq
 	# uClibc toolchains provided by ADI don't have AI_ADDRCONFIG
 	# support, needed by filemq -> czmq
 	depends on !BR2_TOOLCHAIN_EXTERNAL_BLACKFIN_UCLINUX_2012R2 && \
@@ -17,6 +18,7 @@ config BR2_PACKAGE_ZYRE
 	  http://zyre.org
 
 comment "zyre needs a toolchain w/ C++, IPv6, largefile, wchar, threads"
+	depends on BR2_USE_MMU
 	depends on !BR2_TOOLCHAIN_EXTERNAL_BLACKFIN_UCLINUX_2012R2 && \
 		!BR2_TOOLCHAIN_EXTERNAL_BLACKFIN_UCLINUX_2012R1
 	depends on !(BR2_INSTALL_LIBSTDCPP && BR2_INET_IPV6 && BR2_LARGEFILE \
