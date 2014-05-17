@@ -2,6 +2,7 @@ config BR2_PACKAGE_JACK2
 	bool "jack2"
 	depends on BR2_LARGEFILE # libsndfile
 	depends on BR2_TOOLCHAIN_HAS_THREADS # alsa-lib
+	depends on BR2_USE_MMU # fork()
 	depends on BR2_INSTALL_LIBSTDCPP
 	select BR2_PACKAGE_LIBSAMPLERATE
 	select BR2_PACKAGE_LIBSNDFILE
@@ -20,5 +21,6 @@ config BR2_PACKAGE_JACK2
 	  http://jackaudio.org/
 
 comment "jack2 needs a toolchain w/ largefile, threads, C++"
+	depends on BR2_USE_MMU
 	depends on !BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_THREADS || \
 		!BR2_INSTALL_LIBSTDCPP
