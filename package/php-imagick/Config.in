@@ -1,6 +1,7 @@
 config BR2_PACKAGE_PHP_IMAGICK
 	bool "php-imagick"
 	depends on BR2_PACKAGE_PHP
+	depends on BR2_USE_MMU # imagemagick
 	select BR2_PACKAGE_IMAGEMAGICK
 	help
 	  PHP wrapper to the ImageMagick library.
