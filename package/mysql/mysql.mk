@@ -33,6 +33,10 @@ MYSQL_CONF_OPT = \
 	--enable-thread-safe-client \
 	--disable-mysql-maintainer-mode
 
+ifeq ($(BR2_PACKAGE_OPENSSL),y)
+MYSQL_DEPENDENCIES += openssl
+endif
+
 ifeq ($(BR2_PACKAGE_ZLIB),y)
 MYSQL_DEPENDENCIES += zlib
 endif
