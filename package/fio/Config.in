@@ -12,6 +12,9 @@ config BR2_PACKAGE_FIO
 	depends on !BR2_TOOLCHAIN_EXTERNAL_UCLIBC && \
 		!BR2_UCLIBC_VERSION_0_9_31 && \
 		!BR2_UCLIBC_VERSION_0_9_32
+	# fio uses fallocate() which becomes fallocate64() while compiling
+	# with BR2_LARGEFILE but fallocate64() is not available on nios2
+	depends on !BR2_nios2
 	help
 	  fio is an I/O tool meant to be used both for benchmark
 	  and stress/hardware verification.
@@ -20,3 +23,4 @@ config BR2_PACKAGE_FIO
 
 comment "fio needs a toolchain w/ largefile, threads"
 	depends on !BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_nios2
