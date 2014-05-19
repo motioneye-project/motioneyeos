@@ -3,6 +3,9 @@ comment "GCC Options"
 config BR2_GCC_NEEDS_MPC
 	bool
 
+config BR2_GCC_SUPPORTS_GRAPHITE
+	bool
+
 choice
 	prompt "GCC compiler Version"
 	default BR2_GCC_VERSION_4_4_X if BR2_sparc_sparchfleon || BR2_sparc_sparchfleonv8 || BR2_sparc_sparcsfleon || BR2_sparc_sparcsfleonv8
@@ -60,6 +63,7 @@ choice
 	config BR2_GCC_VERSION_4_8_X
 		depends on !BR2_microblaze && !BR2_arc && !BR2_avr32 && !BR2_bfin && !BR2_cortex_a12 && !BR2_sparc_sparchfleon && !BR2_sparc_sparchfleonv8 && !BR2_sparc_sparcsfleon && !BR2_sparc_sparcsfleonv8 && !BR2_powerpc64le
 		select BR2_GCC_NEEDS_MPC
+		select BR2_GCC_SUPPORTS_GRAPHITE
 		bool "gcc 4.8.x"
 
 	config BR2_GCC_VERSION_4_8_ARC
@@ -70,6 +74,7 @@ choice
 	config BR2_GCC_VERSION_4_9_X
 		depends on !BR2_arc && !BR2_avr32 && !BR2_bfin && !BR2_sparc_sparchfleon && !BR2_sparc_sparchfleonv8 && !BR2_sparc_sparcsfleon && !BR2_sparc_sparcsfleonv8
 		select BR2_GCC_NEEDS_MPC
+		select BR2_GCC_SUPPORTS_GRAPHITE
 		bool "gcc 4.9.x"
 
 	config BR2_GCC_VERSION_SNAP
@@ -77,6 +82,7 @@ choice
 		select BR2_GCC_NEEDS_MPC
 		# musl patches only for gcc 4.7+
 		depends on !BR2_TOOLCHAIN_BUILDROOT_MUSL
+		select BR2_GCC_SUPPORTS_GRAPHITE
 		bool "gcc snapshot"
 endchoice
 
@@ -180,3 +186,10 @@ config BR2_GCC_ENABLE_LIBMUDFLAP
 	  the help of the gcc -fmudflap option for more details.
 
 	  If you're unsure, leave this option disabled.
+
+config BR2_GCC_ENABLE_GRAPHITE
+	bool "Enable graphite support"
+	depends on BR2_GCC_SUPPORTS_GRAPHITE
+	help
+	  This option enables the graphite optimizations in the
+	  compiler.

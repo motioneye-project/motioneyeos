@@ -154,6 +154,13 @@ HOST_GCC_COMMON_DEPENDENCIES += host-mpc
 HOST_GCC_COMMON_CONF_OPT += --with-mpc=$(HOST_DIR)/usr
 endif
 
+ifeq ($(BR2_GCC_ENABLE_GRAPHITE),y)
+HOST_GCC_COMMON_DEPENDENCIES += host-isl host-cloog
+HOST_GCC_COMMON_CONF_OPT += --with-isl=$(HOST_DIR)/usr --with-cloog=$(HOST_DIR)/usr
+else
+HOST_GCC_COMMON_CONF_OPT += --without-isl --without-cloog
+endif
+
 ifneq ($(BR2_arc)$(BR2_GCC_VERSION_SNAP),)
 HOST_GCC_COMMON_DEPENDENCIES += host-flex host-bison
 endif
