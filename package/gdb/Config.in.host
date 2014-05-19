@@ -17,15 +17,10 @@ choice
 	prompt "GDB debugger Version"
 	depends on !BR2_arc
 	depends on !BR2_microblaze
-	default BR2_GDB_VERSION_6_6 if BR2_bfin
 	default BR2_GDB_VERSION_6_7_1_AVR32_2_1_5 if BR2_avr32
 	default BR2_GDB_VERSION_7_5
 	help
 	  Select the version of gdb you wish to use.
-
-	config BR2_GDB_VERSION_6_6
-		bool "gdb 6.6"
-		depends on BR2_bfin
 
 	config BR2_GDB_VERSION_6_7_1_AVR32_2_1_5
 		depends on BR2_avr32
@@ -33,11 +28,9 @@ choice
 
 	config BR2_GDB_VERSION_7_4
 		bool "gdb 7.4.x"
-		depends on !BR2_bfin
 
 	config BR2_GDB_VERSION_7_5
 		bool "gdb 7.5.x"
-		depends on !BR2_bfin
 
 endchoice
 
