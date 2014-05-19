@@ -11,6 +11,10 @@ WEBKIT_INSTALL_STAGING = YES
 WEBKIT_DEPENDENCIES = host-ruby host-flex host-bison host-gperf enchant harfbuzz \
 	icu jpeg libcurl libgail libsecret libsoup libxml2 libxslt libgtk2 sqlite webp
 
+WEBKIT_DEPENDENCIES += \
+	$(if $(BR_PACKAGE_XLIB_LIBXCOMPOSITE),xlib_libXcomposite) \
+	$(if $(BR_PACKAGE_XLIB_LIBXDAMAGE),xlib_libXdamage)
+
 # webkit-disable-tests.patch changes configure.ac therefore autoreconf required
 WEBKIT_AUTORECONF = YES
 WEBKIT_AUTORECONF_OPT = -I $(@D)/Source/autotools
@@ -47,5 +51,22 @@ WEBKIT_CONF_OPT += \
 # Xorg Dependencies
 WEBKIT_CONF_OPT += --with-target=x11
 WEBKIT_DEPENDENCIES += xlib_libXt
+
+ifeq ($(BR2_PACKAGE_HAS_LIBEGL)$(BR2_PACKAGE_HAS_LIBGLES),yy)
+WEBKIT_CONF_OPT += --enable-gles2
+WEBKIT_DEPENDENCIES += libegl libgles
+else
+WEBKIT_CONF_OPT += --disable-gles2
+endif
+
+# gles/egl support is prefered over opengl by webkit configure
+ifeq ($(BR2_PACKAGE_HAS_LIBGL),y)
+WEBKIT_CONF_OPT += --with-acceleration-backend=opengl
+WEBKIT_DEPENDENCIES += libgl
+else
+# OpenGL/glx is auto-detected due to the presence of gl.h/glx.h, which is not
+# enough, so disable glx and the use of the OpenGL acceleration backend here
+WEBKIT_CONF_OPT += --disable-glx --with-acceleration-backend=none
+endif
 
 $(eval $(autotools-package))

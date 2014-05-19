@@ -31,6 +31,8 @@ config BR2_PACKAGE_WEBKIT
 	select BR2_PACKAGE_SQLITE
 	select BR2_PACKAGE_WEBP
 	select BR2_PACKAGE_XLIB_LIBXT if BR2_PACKAGE_XORG7
+	select BR2_PACKAGE_XLIB_LIBXCOMPOSITE if BR2_PACKAGE_HAS_LIBGL
+	select BR2_PACKAGE_XLIB_LIBXDAMAGE if BR2_PACKAGE_HAS_LIBGL
 	help
 	  WebKit is an open source, standards compliant web browser engine.
 
