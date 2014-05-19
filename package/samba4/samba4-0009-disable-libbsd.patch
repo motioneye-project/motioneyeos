@@ -1,0 +1,26 @@
+Disable libbsd support, samba4 uses a global config.h for its own
+codebase and that of heimdal (when building with builtin).
+This causes redefinition conflicts for link(2) when both standard unistd.h
+and bsd/unistd.h get included.
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+diff -Nura samba-4.1.7.orig/lib/replace/wscript samba-4.1.7/lib/replace/wscript
+--- samba-4.1.7.orig/lib/replace/wscript	2014-04-17 04:59:14.000000000 -0300
++++ samba-4.1.7/lib/replace/wscript	2014-05-19 09:17:25.561947774 -0300
+@@ -253,15 +253,6 @@
+     conf.CHECK_FUNCS('strtouq strtoll __strtoll strtoq memalign posix_memalign')
+     conf.CHECK_FUNCS('prctl')
+ 
+-    # libbsd on some platforms provides strlcpy and strlcat
+-    if not conf.CHECK_FUNCS('strlcpy strlcat'):
+-        conf.CHECK_FUNCS_IN('strlcpy strlcat', 'bsd', headers='bsd/string.h',
+-                checklibc=True)
+-    if not conf.CHECK_FUNCS('getpeereid'):
+-        conf.CHECK_FUNCS_IN('getpeereid', 'bsd', headers='sys/types.h bsd/unistd.h')
+-    if not conf.CHECK_FUNCS_IN('setproctitle', 'bsd', headers='sys/types.h bsd/unistd.h'):
+-        conf.CHECK_FUNCS_IN('setproctitle', 'setproctitle', headers='setproctitle.h')
+-
+     conf.CHECK_CODE('''
+                 struct ucred cred;
+                 socklen_t cred_len;
