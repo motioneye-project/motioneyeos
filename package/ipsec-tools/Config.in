@@ -2,6 +2,7 @@ config BR2_PACKAGE_IPSEC_TOOLS
 	bool "ipsec-tools"
 	select BR2_PACKAGE_OPENSSL
 	select BR2_PACKAGE_FLEX
+	depends on BR2_USE_MMU # fork()
 	help
 	  This package is required to support IPSec for Linux 2.6+
 
