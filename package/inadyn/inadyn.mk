@@ -17,6 +17,9 @@ define INADYN_INSTALL_TARGET_CMDS
 	$(INSTALL) -D -m 0755 $(@D)/src/inadyn $(TARGET_DIR)/usr/sbin/inadyn
 	$(INSTALL) -D -m 0600 package/inadyn/inadyn.conf \
 		$(TARGET_DIR)/etc/inadyn.conf
+endef
+
+define INADYN_INSTALL_INIT_SYSV
 	$(INSTALL) -D -m 0755 package/inadyn/S70inadyn \
 		$(TARGET_DIR)/etc/init.d/S70inadyn
 endef
