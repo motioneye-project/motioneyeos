@@ -174,5 +174,27 @@ ifeq ($(filter source,$(MAKECMDGOALS)),)
 ifeq ($(UBOOT_BOARD_NAME),)
 $(error NO U-Boot board name set. Check your BR2_TARGET_UBOOT_BOARDNAME setting)
 endif
-endif
-endif
+
+ifeq ($(BR2_TARGET_UBOOT_CUSTOM_VERSION),y)
+ifeq ($(call qstrip,$(BR2_TARGET_UBOOT_CUSTOM_VERSION_VALUE)),)
+$(error No custom U-Boot version specified. Check your BR2_TARGET_UBOOT_CUSTOM_VERSION_VALUE setting)
+endif # qstrip BR2_TARGET_UBOOT_CUSTOM_VERSION_VALUE
+endif # BR2_TARGET_UBOOT_CUSTOM_VERSION
+
+ifeq ($(BR2_TARGET_UBOOT_CUSTOM_TARBALL),y)
+ifeq ($(call qstrip,$(BR2_TARGET_UBOOT_CUSTOM_TARBALL_LOCATION)),)
+$(error No custom U-Boot tarball specified. Check your BR2_TARGET_UBOOT_CUSTOM_TARBALL_LOCATION setting)
+endif # qstrip BR2_TARGET_UBOOT_CUSTOM_TARBALL_LOCATION
+endif # BR2_TARGET_UBOOT_CUSTOM_TARBALL
+
+ifeq ($(BR2_TARGET_UBOOT_CUSTOM_GIT)$(BR2_TARGET_UBOOT_CUSTOM_HG),y)
+ifeq ($(call qstrip,$(BR2_TARGET_UBOOT_CUSTOM_REPO_URL)),)
+$(error No custom U-Boot repository URL specified. Check your BR2_TARGET_UBOOT_CUSTOM_REPO_URL setting)
+endif # qstrip BR2_TARGET_UBOOT_CUSTOM_CUSTOM_REPO_URL
+ifeq ($(call qstrip,$(BR2_TARGET_UBOOT_CUSTOM_REPO_VERSION)),)
+$(error No custom U-Boot repository URL specified. Check your BR2_TARGET_UBOOT_CUSTOM_REPO_VERSION setting)
+endif # qstrip BR2_TARGET_UBOOT_CUSTOM_CUSTOM_REPO_VERSION
+endif # BR2_TARGET_UBOOT_CUSTOM_GIT || BR2_TARGET_UBOOT_CUSTOM_HG
+
+endif # filter source
+endif # BR2_TARGET_UBOOT
