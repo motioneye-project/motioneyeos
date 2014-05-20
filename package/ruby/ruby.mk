@@ -30,6 +30,9 @@ RUBY_CONF_ENV = CFLAGS="$(RUBY_CFLAGS)"
 ifeq ($(BR2_PACKAGE_BERKELEYDB),y)
 	RUBY_DEPENDENCIES += berkeleydb
 endif
+ifeq ($(BR2_PACKAGE_GDBM),y)
+	RUBY_DEPENDENCIES += gdbm
+endif
 ifeq ($(BR2_PACKAGE_LIBYAML),y)
 	RUBY_DEPENDENCIES += libyaml
 endif
