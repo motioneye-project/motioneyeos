@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-INADYN_VERSION = 1.99.6
+INADYN_VERSION = 1.99.7
 INADYN_SITE = $(call github,troglobit,inadyn,$(INADYN_VERSION))
 INADYN_LICENSE = GPLv2+
 INADYN_LICENSE_FILES = COPYING LICENSE
