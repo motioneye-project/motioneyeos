@@ -36,6 +36,7 @@ config BR2_PACKAGE_MATCHBOX_COMMON_PDA
 config BR2_PACKAGE_MATCHBOX_KEYBOARD
 	bool "Matchbox Virtual Keyboard"
 	select BR2_PACKAGE_XLIB_LIBXTST
+	select BR2_PACKAGE_XLIB_LIBXFT if !BR2_PACKAGE_CAIRO
 	help
 	  Virtual Keyboard
 

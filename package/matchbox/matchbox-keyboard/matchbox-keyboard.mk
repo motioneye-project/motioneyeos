@@ -9,7 +9,7 @@ MATCHBOX_KEYBOARD_SOURCE = matchbox-keyboard-$(MATCHBOX_KEYBOARD_VERSION).tar.bz
 MATCHBOX_KEYBOARD_SITE = http://downloads.yoctoproject.org/releases/matchbox/matchbox-keyboard/$(MATCHBOX_KEYBOARD_VERSION)
 MATCHBOX_KEYBOARD_LICENSE = GPLv2+
 MATCHBOX_KEYBOARD_LICENSE_FILES = COPYING
-MATCHBOX_KEYBOARD_DEPENDENCIES = matchbox-lib matchbox-fakekey
+MATCHBOX_KEYBOARD_DEPENDENCIES = host-pkgconf matchbox-lib matchbox-fakekey expat
 
 # Workaround bug in configure script
 MATCHBOX_KEYBOARD_CONF_ENV = expat=yes
@@ -22,8 +22,9 @@ MATCHBOX_KEYBOARD_POST_INSTALL_TARGET_HOOKS += MATCHBOX_KEYBOARD_POST_INSTALL_FI
 
 ################################################################################
 
-ifeq ($(BR2_PACKAGE_PANGO),y)
-  MATCHBOX_PKEYBOARD_CONF_OPT += --enable-pango
+ifeq ($(BR2_PACKAGE_CAIRO),y)
+  MATCHBOX_KEYBOARD_CONF_OPT += --enable-cairo
+  MATCHBOX_KEYBOARD_DEPENDENCIES += cairo
 else
   MATCHBOX_KEYBOARD_DEPENDENCIES += xlib_libXft
 endif
