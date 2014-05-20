@@ -6,6 +6,7 @@ config BR2_PACKAGE_IPRUTILS
 	select BR2_PACKAGE_NCURSES_TARGET_MENU
 	select BR2_PACKAGE_LIBSYSFS
 	select BR2_PACKAGE_PCIUTILS
+	depends on !BR2_bfin # pciutils
 	help
 	  System utilities for IBM Power RAID devices
 
