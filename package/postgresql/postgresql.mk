@@ -69,4 +69,12 @@ define POSTGRESQL_INSTALL_INIT_SYSV
 		$(TARGET_DIR)/etc/init.d/S50postgresql
 endef
 
+define POSTGRESQL_INSTALL_INIT_SYSTEMD
+	$(INSTALL) -D -m 644 package/postgresql/postgresql.service \
+		$(TARGET_DIR)/etc/systemd/system/postgresql.service
+	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
+	ln -fs ../postgresql.service \
+		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/postgresql.service
+endef
+
 $(eval $(autotools-package))
