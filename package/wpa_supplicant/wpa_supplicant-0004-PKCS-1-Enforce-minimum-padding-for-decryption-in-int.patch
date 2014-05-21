@@ -1,0 +1,35 @@
+From 6c5be116dd6997f68e524247751cff53c74519d7 Mon Sep 17 00:00:00 2001
+From: Jouni Malinen <jouni@qca.qualcomm.com>
+Date: Mon, 19 May 2014 23:26:43 +0300
+Subject: [PATCH] PKCS #1: Enforce minimum padding for decryption in
+ internal TLS
+
+Follow the PKCS #1 v1.5, 8.1 constraint of at least eight octets long PS
+for the case where the internal TLS implementation decrypts PKCS #1
+formatted data. Similar limit was already in place for signature
+validation, but not for this decryption routine.
+
+Signed-off-by: Jouni Malinen <jouni@qca.qualcomm.com>
+---
+ src/tls/pkcs1.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/src/tls/pkcs1.c b/src/tls/pkcs1.c
+index af58a42987c6..ea3e6171a1d1 100644
+--- a/src/tls/pkcs1.c
++++ b/src/tls/pkcs1.c
+@@ -113,6 +113,11 @@ int pkcs1_v15_private_key_decrypt(struct crypto_rsa_key *key,
+ 		pos++;
+ 	if (pos == end)
+ 		return -1;
++	if (pos - out - 2 < 8) {
++		/* PKCS #1 v1.5, 8.1: At least eight octets long PS */
++		wpa_printf(MSG_INFO, "LibTomCrypt: Too short padding");
++		return -1;
++	}
+ 	pos++;
+ 
+ 	*outlen -= pos - out;
+-- 
+2.0.0.rc2
+
