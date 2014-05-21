@@ -4,10 +4,19 @@
 #
 ################################################################################
 
-INADYN_VERSION = 1.99.7
+INADYN_VERSION = 1.99.9
 INADYN_SITE = $(call github,troglobit,inadyn,$(INADYN_VERSION))
 INADYN_LICENSE = GPLv2+
 INADYN_LICENSE_FILES = COPYING LICENSE
+
+ifeq ($(BR2_PACKAGE_OPENSSL),y)
+INADYN_DEPENDENCIES += openssl
+else
+define INADYN_DISABLE_OPENSSL
+	$(SED) '/ssl/Id' $(@D)/config.mk
+endef
+endif
+INADYN_POST_PATCH_HOOKS += INADYN_DISABLE_OPENSSL
 
 define INADYN_BUILD_CMDS
 	$(TARGET_CONFIGURE_OPTS) $(MAKE) -C $(@D)
