@@ -70,7 +70,7 @@ Index: b/configure.ac
 +	AS_HELP_STRING([--disable-bsddb], [disable BerkeyleyDB]),
 +	[ if test "$enableval" = "no"; then
 +    	     BSDDB=no
-+    	     DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} bsddb"
++    	     DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} _bsddb"
 +  	  else
 +	     BSDDB=yes
 +  	  fi], [ BSDDB=yes ])
