@@ -1,3 +1,42 @@
+2014.05-rc2, Released May 21st, 2014
+
+	Fixes all over the tree.
+
+	Stripping using sstrip has been deprecated.
+
+	BR2_EXTERNAL can now also be used to implement custom
+	filesystem types.
+
+	The newly added BR2_GRAPH_DEPTH variable to limit the depth of
+	the generated dependency graph has been renamed to
+	BR2_GRAPH_DEPS_OPTS, so additional options can be supported in
+	the future.
+
+	The virtual package infrastructure will now error out early
+	if multiple packages providing the same virtual package has
+	been enabled (E.G. opengl). This change requires that the
+	packages explicitly declare what virtual package(s) they
+	provide.
+
+	Updated/fixed packages: acpid, armadillo, avahi, bellagio,
+	btrfs-progs, cairo, clapack, directfb, duma, ecryptfs-utils,
+	elfutils, eudev, fbgrab, fio, flann, fluxbox, gdb, gpm,
+	gpu-viv-bin-mx6q, gst1-plugins-good, gst-plugins-good,
+	imagemagick, iprutils, ipsec-tools, jack2, libdvdnav,
+	libdvdread, libnss, libunwind, linux-headers, lsof, lua,
+	luajit, matchbox-keyboard, mesa3d, mpd, mplayer, mtr, mysql,
+	netsnmp, nodejs, openpowerlink, openvpn, pciutils,
+	php-imagick, postgresql, pulseaudio, qt5quick1, rpi-userland,
+	rsyslog, samba, samba4, sane-backends, sunxi-mali, systemd,
+	ti-gfx, tstools, udev, webkit, wpa_supplicant, xbmc,
+	xlib_libXpm, xserver_xorg-server, zyre
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#5396: Boot hangs when starting samba if BR2_ENABLE_LOCALE...
+	#7016: Git issues in resulting buildroot tar
+	#7094: pciutils doesn't build on Blackfin
+
 2014.05-rc1, Released May 13th, 2014
 
 	Fixes all over the tree and new features.
