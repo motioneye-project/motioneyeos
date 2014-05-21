@@ -17,7 +17,7 @@ endef
 
 define ACPID_SET_EVENTS
 	mkdir -p $(TARGET_DIR)/etc/acpi/events
-	/bin/echo -e "event=button[ /]power\naction=/sbin/poweroff" \
+	printf "event=button[ /]power\naction=/sbin/poweroff\n" \
 		>$(TARGET_DIR)/etc/acpi/events/powerbtn
 endef
 
