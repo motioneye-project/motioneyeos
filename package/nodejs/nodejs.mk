@@ -19,8 +19,6 @@ endif
 
 # nodejs build system is based on python, but only support python-2.6 or
 # python-2.7. So, we have to enforce PYTHON interpreter to be python2.
-# However, few build scripts hard-code 'python' as the interpreter to be
-# invoked; so we have to manually fix them.
 define HOST_NODEJS_CONFIGURE_CMDS
 	# Build with the static, built-in OpenSSL which is supplied as part of
 	# the nodejs source distribution.  This is needed on the host because
@@ -35,8 +33,6 @@ define HOST_NODEJS_CONFIGURE_CMDS
 		--without-dtrace \
 		--without-etw \
 	)
-	$(SED) "s@'python',@'$(HOST_DIR)/usr/bin/python2',@" \
-		$(@D)/deps/v8/tools/gyp/v8.gyp
 endef
 
 define HOST_NODEJS_BUILD_CMDS
@@ -81,8 +77,6 @@ define NODEJS_CONFIGURE_CMDS
 		$(if $(NODEJS_ARM_FP),--with-arm-float-abi=$(NODEJS_ARM_FP)) \
 		--dest-os=linux \
 	)
-	$(SED) "s@'python',@'$(HOST_DIR)/usr/bin/python2',@" \
-		$(@D)/deps/v8/tools/gyp/v8.gyp
 endef
 
 define NODEJS_BUILD_CMDS
