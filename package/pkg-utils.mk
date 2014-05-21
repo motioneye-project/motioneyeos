@@ -110,8 +110,8 @@ define legal-manifest # pkg, version, license, license-files, source, {HOST|TARG
 endef
 
 define legal-license-header # pkg, license-file, {HOST|TARGET}
-	echo -e "$(LEGAL_INFO_SEPARATOR)\n\t$(1):" \
-		"$(2)\n$(LEGAL_INFO_SEPARATOR)\n\n" >>$(LEGAL_LICENSES_TXT_$(3))
+	printf "$(LEGAL_INFO_SEPARATOR)\n\t$(1):\
+		$(2)\n$(LEGAL_INFO_SEPARATOR)\n\n\n" >>$(LEGAL_LICENSES_TXT_$(3))
 endef
 
 define legal-license-nofiles # pkg, {HOST|TARGET}
