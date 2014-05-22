@@ -44,6 +44,11 @@ define TZDATA_INSTALL_TARGET_CMDS
 	    ln -sfn "$${zone}" "$${zone##*/}";  \
 	done
 	if [ -n "$(TZDATA_LOCALTIME)" ]; then                           \
+	    if [ ! -f $(TARGET_DIR)/usr/share/zoneinfo/$(TZDATA_LOCALTIME) ]; then \
+	        printf "Error: '%s' is not a valid timezone, check your BR2_TARGET_LOCALTIME setting\n" \
+	               "$(TZDATA_LOCALTIME)";                           \
+	        exit 1;                                                 \
+	    fi;                                                         \
 	    cd $(TARGET_DIR)/etc;                                       \
 	    ln -sf ../usr/share/zoneinfo/$(TZDATA_LOCALTIME) localtime; \
 	    echo "$(TZDATA_LOCALTIME)" >timezone;                       \
