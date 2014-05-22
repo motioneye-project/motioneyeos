@@ -30,7 +30,11 @@ LIBNSS_BUILD_VARS = MOZILLA_CLIENT=1 \
 		OS_TEST="$(ARCH)"
 
 ifeq ($(BR2_ARCH_IS_64),y)
+# MIPS64 n32 is treated as a 32-bit architecture by libnss.
+# See: https://bugzilla.mozilla.org/show_bug.cgi?id=1010730
+ifeq ($(BR2_MIPS_NABI32),)
 LIBNSS_BUILD_VARS += USE_64=1
+endif
 endif
 
 
