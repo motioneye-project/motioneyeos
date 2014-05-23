@@ -15,7 +15,7 @@ config BR2_PACKAGE_CONNMAN
 	  managing internet connections within embedded devices running
 	  the Linux operating system.
 
-	  For more information, see http://connman.net/
+	  For more information, see https://01.org/connman
 
 if BR2_PACKAGE_CONNMAN
 
