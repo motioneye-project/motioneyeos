@@ -7,6 +7,7 @@ config BR2_PACKAGE_SAMBA4
 	depends on BR2_LARGEFILE
 	depends on BR2_TOOLCHAIN_HAS_THREADS # talloc python threads
 	depends on !BR2_avr32 # bad toolchain
+	depends on !BR2_nios2 # binary too large, relocations don't fit
 	select BR2_PACKAGE_E2FSPROGS
 	select BR2_PACKAGE_POPT
 	select BR2_PACKAGE_PYTHON

@@ -2,8 +2,8 @@ config BR2_PACKAGE_SAMBA
 	bool "samba"
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_USE_MMU # fork()
-	# binary too large, relocations don't fit
-	depends on !BR2_avr32
+	depends on !BR2_avr32 # binary too large, relocations don't fit
+	depends on !BR2_nios2 # binary too large, relocations don't fit
 	select BR2_PACKAGE_POPT
 	help
 	  Provides secure, stable and fast file and print services
