@@ -69,4 +69,8 @@ else
 LIBDRM_CONF_OPT += --disable-udev
 endif
 
+ifeq ($(BR2_PACKAGE_LIBDRM_INSTALL_TESTS),y)
+LIBDRM_CONF_OPT += --enable-install-test-programs
+endif
+
 $(eval $(autotools-package))

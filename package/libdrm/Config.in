@@ -10,6 +10,11 @@ config BR2_PACKAGE_LIBDRM
 
 if BR2_PACKAGE_LIBDRM
 
+config BR2_PACKAGE_LIBDRM_INSTALL_TESTS
+	bool "Install test programs"
+	help
+	  This option allows to install the libdrm test programs.
+
 menu "DRM Drivers"
 
 config BR2_PACKAGE_LIBDRM_INTEL
