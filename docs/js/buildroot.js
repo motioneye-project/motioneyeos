@@ -36,7 +36,7 @@ function load_activity(feedurl, divid) {
 
 function initialize() {
   load_activity("http://rss.gmane.org/topics/excerpts/gmane.comp.lib.uclibc.buildroot", "mailing-list-activity");
-  load_activity("http://git.uclibc.org/buildroot/atom/?h=master", "commit-activity");
+  load_activity("http://git.buildroot.org/buildroot/atom/?h=master", "commit-activity");
 }
 
 function google_analytics() {
