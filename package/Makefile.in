@@ -374,6 +374,8 @@ endif
 
 ifeq ($(BR2_PREFER_STATIC_LIB),y)
 SHARED_STATIC_LIBS_OPTS = --enable-static --disable-shared
+TARGET_CFLAGS += -static
+TARGET_CXXFLAGS += -static
 TARGET_LDFLAGS += -static
 else
 SHARED_STATIC_LIBS_OPTS = --enable-static --enable-shared
