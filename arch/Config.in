@@ -143,6 +143,14 @@ config BR2_powerpc
 	  http://www.power.org/
 	  http://en.wikipedia.org/wiki/Powerpc
 
+config BR2_powerpc64le
+	bool "PowerPC64 (little endian)"
+	select BR2_ARCH_IS_64
+	help
+	  PowerPC is a RISC architecture created by Apple-IBM-Motorola alliance.
+	  http://www.power.org/
+	  http://en.wikipedia.org/wiki/Powerpc
+
 config BR2_sh
 	bool "SuperH"
 	help
@@ -321,7 +329,7 @@ if BR2_nios2
 source "arch/Config.in.nios2"
 endif
 
-if BR2_powerpc
+if BR2_powerpc || BR2_powerpc64le
 source "arch/Config.in.powerpc"
 endif
 

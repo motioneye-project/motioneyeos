@@ -1,0 +1,29 @@
+Description: powerpc64le-support.patch: Patch configure to support ppc64el.
+Author: Adam Conrad <adconrad@ubuntu.com>
+
+--- fakeroot-1.20.orig/configure
++++ fakeroot-1.20/configure
+@@ -6509,6 +6509,9 @@ s390*-*linux*|s390*-*tpf*|sparc*-*linux*
+ 	  ppc64-*linux*|powerpc64-*linux*)
+ 	    LD="${LD-ld} -m elf32ppclinux"
+ 	    ;;
++	  powerpc64le-*linux*)
++	    LD="${LD-ld} -m elf32lppclinux"
++	    ;;
+ 	  s390x-*linux*)
+ 	    LD="${LD-ld} -m elf_s390"
+ 	    ;;
+@@ -6525,9 +6528,12 @@ s390*-*linux*|s390*-*tpf*|sparc*-*linux*
+ 	  x86_64-*linux*)
+ 	    LD="${LD-ld} -m elf_x86_64"
+ 	    ;;
+-	  ppc*-*linux*|powerpc*-*linux*)
++	  ppc-*linux*|powerpc-*linux*)
+ 	    LD="${LD-ld} -m elf64ppc"
+ 	    ;;
++	  powerpcle-*linux*)
++	    LD="${LD-ld} -m elf64lppc"
++	    ;;
+ 	  s390*-*linux*|s390*-*tpf*)
+ 	    LD="${LD-ld} -m elf64_s390"
+ 	    ;;
