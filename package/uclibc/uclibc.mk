@@ -513,8 +513,8 @@ define UCLIBC_INSTALL_TARGET_CMDS
 	$(UCLIBC_INSTALL_TEST_SUITE)
 endef
 
-# For FLAT binfmts (static) there are no host utils
-ifeq ($(BR2_BINFMT_FLAT),)
+# STATIC has no ld* tools, only getconf
+ifeq ($(BR2_PREFER_STATIC_LIB),)
 define UCLIBC_INSTALL_UTILS_STAGING
 	$(INSTALL) -D -m 0755 $(@D)/utils/ldd.host $(HOST_DIR)/usr/bin/ldd
 	ln -sf ldd $(HOST_DIR)/usr/bin/$(GNU_TARGET_NAME)-ldd
