@@ -10,7 +10,7 @@ ACL_SITE = http://download.savannah.gnu.org/releases/acl
 ACL_INSTALL_STAGING = YES
 ACL_DEPENDENCIES = attr
 ACL_CONF_OPT = --enable-gettext=no
-ACL_LICENSE = GPLv2+, LGPLv2.1+
+ACL_LICENSE = GPLv2+ (programs), LGPLv2.1+ (libraries)
 ACL_LICENSE_FILES = doc/COPYING doc/COPYING.LGPL
 
 # While the configuration system uses autoconf, the Makefiles are
