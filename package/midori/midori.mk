@@ -14,6 +14,7 @@ MIDORI_DEPENDENCIES = \
 	host-intltool \
 	host-pkgconf \
 	host-vala \
+	host-python \
 	libgtk2 \
 	libsexy \
 	webkit \
@@ -30,18 +31,18 @@ define MIDORI_CONFIGURE_CMDS
 	$(MIDORI_WITHOUT_X11)
 	(cd $(@D); \
 		$(TARGET_CONFIGURE_OPTS)	\
-		./waf configure			\
+		$(HOST_DIR)/usr/bin/python2 ./waf configure \
 		--prefix=/usr			\
 		--disable-libnotify		\
        )
 endef
 
 define MIDORI_BUILD_CMDS
-       (cd $(@D); ./waf build -j $(PARALLEL_JOBS))
+       (cd $(@D); $(HOST_DIR)/usr/bin/python2 ./waf build -j $(PARALLEL_JOBS))
 endef
 
 define MIDORI_INSTALL_TARGET_CMDS
-       (cd $(@D); ./waf --destdir=$(TARGET_DIR) install)
+       (cd $(@D); $(HOST_DIR)/usr/bin/python2 ./waf --destdir=$(TARGET_DIR) install)
 endef
 
 $(eval $(generic-package))
