@@ -7,6 +7,11 @@
 Buildroot usage and documentation by Thomas Petazzoni. Contributions
 from Karsten Kruse, Ned Ludd, Martin Herren and others.
 
+The Buildroot manual is licensed under the GNU General Public License,
+version 2. Refer to file
+http://git.buildroot.org/buildroot/tree/COPYING[COPYING] in the Buildroot
+sources for the full text of this license.
+
 Buildroot {sys:echo $\{BR2_VERSION%%-git*\}} manual generated on {localdate}
 {localtime} from git revision {sys:git rev-parse --short HEAD}
 
