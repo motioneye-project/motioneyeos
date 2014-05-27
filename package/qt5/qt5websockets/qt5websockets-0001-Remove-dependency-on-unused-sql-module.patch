@@ -1,0 +1,28 @@
+From c6b4e9f6609b91e56301bde39be48fc65fcfb916 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Fatih=20A=C5=9F=C4=B1c=C4=B1?= <fatih.asici@gmail.com>
+Date: Tue, 20 May 2014 16:15:43 +0300
+Subject: [PATCH] Remove dependency on unused sql module
+
+Sent-Upstream: https://codereview.qt-project.org/85844
+Signed-off-by: Fatih Aşıcı <fatih.asici@gmail.com>
+Change-Id: I102bcb81ec53d022480e81a3632b93d42bf33403
+---
+ src/websockets/websockets.pro | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/websockets/websockets.pro b/src/websockets/websockets.pro
+index 99e84b6..5b5ff78 100644
+--- a/src/websockets/websockets.pro
++++ b/src/websockets/websockets.pro
+@@ -1,7 +1,7 @@
+ load(qt_build_config)
+ TARGET = QtWebSockets
+ 
+-QT = core network core-private sql
++QT = core network core-private
+ 
+ TEMPLATE = lib
+ 
+-- 
+1.9.1
+
