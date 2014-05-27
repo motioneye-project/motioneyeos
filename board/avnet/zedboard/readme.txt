@@ -10,19 +10,21 @@ to the sdcard:
 	zynq-zed.dtb -> devicetree.dtb
 	rootfs.cpio.gz.uboot -> uramdisk.image.gz
 	uImage -> uImage
+	boot.bin -> boot.bin
 
-Uboot Support
+U-Boot SPL Support
 -------------
 
-Uboot is installed in a wrapper file called BOOT.BIN located on the root of
-the SD card.  To create the BOOT.BIN file do the following.
+Due to licensing issues, the files ps7_init.c/h are not able to be
+distributed with the U-Boot source code.  These files are required to make a
+boot.bin file.
 
-source <path/to/xilinx/settings.sh>
-cat <<EOF > boot.bif
-{
-   [bootloader]<path/to/fsbl.elf>
-   <path/to/system.bit>
-   <path/to/uboot.elf>
-}
-EOF
-bootgen -image boot.bif -o i BOOT.BIN
+If you already have the Xilinx tools installed, the follwing sequence will
+unpack, patch and build the rfs, kernel, uboot, and uboot-spl.
+
+make zedboard_defconfig
+make uboot-patch
+cp ${XILINX}/ISE_DS/EDK/sw/lib/hwplatform_templates/zed_hw_platform/ps7_init.{c,h} \
+output/build/uboot-xilinx-v2014.1/boards/xilinx/zynq/
+make
+
