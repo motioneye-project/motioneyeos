@@ -6,7 +6,7 @@ config BR2_PACKAGE_MONGOOSE
 	help
 	  Mongoose is a small and easy to use web server
 
-	  https://github.com/valenok/mongoose
+	  https://github.com/cesanta/mongoose
 
 comment "mongoose needs a toolchain w/ threads, largefile"
 	depends on BR2_USE_MMU
