@@ -50,11 +50,7 @@ GDB_PRE_PATCH_HOOKS += GDB_XTENSA_PRE_PATCH
 HOST_GDB_PRE_PATCH_HOOKS += GDB_XTENSA_PRE_PATCH
 endif
 
-HOST_GDB_CONF_ENV = \
-	ac_cv_prog_MAKEINFO=missing
-
 GDB_CONF_ENV = \
-	ac_cv_prog_MAKEINFO=missing \
 	ac_cv_type_uintptr_t=yes \
 	gt_cv_func_gettext_libintl=yes \
 	ac_cv_func_dcgettext=yes \
@@ -119,6 +115,10 @@ HOST_GDB_CONF_OPT = \
 
 ifeq ($(GDB_FROM_GIT),y)
 HOST_GDB_DEPENDENCIES += host-texinfo
+else
+# don't generate documentation
+GDB_CONF_ENV += ac_cv_prog_MAKEINFO=missing
+HOST_GDB_CONF_ENV += ac_cv_prog_MAKEINFO=missing
 endif
 
 # legacy $arch-linux-gdb symlink
