@@ -49,15 +49,22 @@ define EXIM_CONFIGURE_CMDS
 	$(call exim-config-add,HOSTCFLAGS,$(HOSTCFLAGS))
 endef
 
+# exim needs a bit of love to build statically
+ifeq ($(BR2_PREFER_STATIC_LIB),y)
+EXIM_STATIC_FLAGS = LFLAGS="-pthread --static"
+endif
+
 # "The -j (parallel) flag must not be used with make"
 # (http://www.exim.org/exim-html-current/doc/html/spec_html/ch04.html)
 define EXIM_BUILD_CMDS
-	build=br $(MAKE1) -C $(@D)
+	build=br $(MAKE1) -C $(@D) $(EXIM_STATIC_FLAGS)
 endef
 
+# Need to replicate the LFLAGS in install, as exim still wants to build
+# something when installing...
 define EXIM_INSTALL_TARGET_CMDS
 	DESTDIR=$(TARGET_DIR) INSTALL_ARG="-no_chown -no_symlink" build=br \
-	  $(MAKE1) -C $(@D) install
+	  $(MAKE1) -C $(@D) $(EXIM_STATIC_FLAGS) install
 	chmod u+s $(TARGET_DIR)/usr/sbin/exim
 endef
 
