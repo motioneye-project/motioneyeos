@@ -1,3 +1,19 @@
+2014.05-rc3, Released May 28th, 2014
+
+	Minor fixes.
+
+	Updated/fixed packages: acl, attr, connman, dosfstools,
+	dropbear, dvb-apps, exim, flite, gdb, httping, hwdata,
+	lesstif, libnss, libv4l, lttng-babeltrace, midori, monit,
+	mplayer, php, python2, rdesktop, rpi-userland, ruby, samba,
+	samba4, slang, xbmc
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#7100: license info for package 'acl' missing
+	#7106: license info for package 'attr' missing
+	#7112: license info for package 'hwdata'
+
 2014.05-rc2, Released May 21st, 2014
 
 	Fixes all over the tree.
