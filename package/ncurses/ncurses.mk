@@ -45,8 +45,12 @@ ifneq ($(BR2_ENABLE_DEBUG),y)
 NCURSES_CONF_OPT += --without-debug
 endif
 
+# ncurses breaks with parallel build, but takes quite a while to
+# build single threaded. Work around it similar to how Gentoo does
 define NCURSES_BUILD_CMDS
-	$(MAKE1) -C $(@D) DESTDIR=$(STAGING_DIR)
+	$(MAKE1) -C $(@D) DESTDIR=$(STAGING_DIR) sources
+	rm -rf $(@D)/misc/pc-files
+	$(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR)
 endef
 
 ifneq ($(BR2_PREFER_STATIC_LIB),y)
