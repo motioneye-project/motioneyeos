@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-FONTCONFIG_VERSION = 2.11.0
+FONTCONFIG_VERSION = 2.11.1
 FONTCONFIG_SITE = http://fontconfig.org/release
 FONTCONFIG_INSTALL_STAGING = YES
 FONTCONFIG_DEPENDENCIES = freetype expat host-pkgconf
