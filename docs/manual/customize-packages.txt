@@ -86,7 +86,7 @@ If the user has the +BR2_GLOBAL_PATCH_DIR+ configuration option set as
 follows:
 
 -----
-BR2_GLOBAL_PATCH_DIR="board/common-fooarch board/fooarch-board"
+BR2_GLOBAL_PATCH_DIR="board/common-fooarch/patches board/fooarch-board/patches"
 -----
 
 Then the patches would applied as follows for the Linux kernel:
