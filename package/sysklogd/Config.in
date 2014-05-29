@@ -1,6 +1,7 @@
 config BR2_PACKAGE_SYSKLOGD
 	bool "syslogd & klogd"
 	depends on BR2_LARGEFILE
+	depends on BR2_USE_MMU # fork()
 	help
 	  System log daemons syslogd and klogd.
 
@@ -8,3 +9,4 @@ config BR2_PACKAGE_SYSKLOGD
 
 comment "syslogd needs a toolchain w/ largefile"
 	depends on !BR2_LARGEFILE
+	depends on BR2_USE_MMU
