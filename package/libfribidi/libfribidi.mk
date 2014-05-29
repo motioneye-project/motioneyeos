@@ -12,5 +12,6 @@ LIBFRIBIDI_LICENSE_FILES = COPYING
 LIBFRIBIDI_INSTALL_STAGING = YES
 # BR's libtool patch doesn't apply
 LIBFRIBIDI_AUTORECONF = YES
+LIBFRIBIDI_DEPENDENCIES = host-pkgconf
 
 $(eval $(autotools-package))
