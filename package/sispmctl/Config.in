@@ -1,0 +1,17 @@
+config BR2_PACKAGE_SISPMCTL
+	bool "sispmctl"
+	select BR2_PACKAGE_LIBUSB
+	select BR2_PACKAGE_LIBUSB_COMPAT
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libusb
+	depends on BR2_USE_WCHAR
+	depends on BR2_USE_MMU # fork()
+	help
+	  sispmctl is an application enabling the use of the GEMBIRD
+	  SiS-PM and mSiS(sispm) USB-controlled power-outlet device
+	  under Linux.  Note that the device is also sold under
+	  different Names, i.e. as "IntelliPlug" in Germany.
+
+	  http://sispmctl.sourceforge.net/
+
+comment "sispmctl needs a toolchain w/ threads, wchar"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_USE_WCHAR
