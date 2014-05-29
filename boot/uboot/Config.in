@@ -224,11 +224,11 @@ config BR2_TARGET_UBOOT_SPL
 
 config BR2_TARGET_UBOOT_SPL_NAME
 	string "U-Boot SPL target name"
-	default "u-boot-spl.bin"
+	default "spl/u-boot-spl.bin"
 	depends on BR2_TARGET_UBOOT_SPL
 	help
 	  This is the name of the SPL binary, generated during
-	  u-boot build. For most platform it is u-boot-spl.bin
+	  u-boot build. For most platform it is spl/u-boot-spl.bin
 	  but not always. It is MLO on OMAP for example.
 
 menuconfig BR2_TARGET_UBOOT_ENVIMAGE
