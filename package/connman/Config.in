@@ -3,10 +3,9 @@ config BR2_PACKAGE_CONNMAN
 	select BR2_PACKAGE_DBUS
 	select BR2_PACKAGE_LIBGLIB2
 	select BR2_PACKAGE_IPTABLES
-	select BR2_PACKAGE_GNUTLS
 	depends on !BR2_avr32 # no inotify_init1
 	depends on !BR2_UCLIBC_VERSION_0_9_32
-	depends on BR2_USE_WCHAR # libglib2 and gnutls
+	depends on BR2_USE_WCHAR # libglib2
 	depends on BR2_INET_IPV6
 	depends on BR2_TOOLCHAIN_HAS_THREADS # dbus, libglib2
 	depends on BR2_USE_MMU # dbus, libglib2
@@ -26,9 +25,23 @@ config BR2_PACKAGE_CONNMAN_ETHERNET
 config BR2_PACKAGE_CONNMAN_WIFI
 	bool "enable WiFi support"
 	select BR2_PACKAGE_WPA_SUPPLICANT
+	help
+	  Enable WiFi support (scan and static/dhcp interface setup). ConnMan 
+	  detect the start of wpa_supplicant automatically.
+
+config BR2_PACKAGE_CONNMAN_WISPR
+	bool "enable WISPr support"
+	select BR2_PACKAGE_GNUTLS
+	help
+	  Enable support for Wireless Internet Service Provider
+	  roaming (WISPr). A RADIUS server is used to authenticate the
+	  subscriber's credentials.
 
 config BR2_PACKAGE_CONNMAN_BLUETOOTH
 	bool "enable Bluetooth support"
+	help
+	  Enable Bluetooth (PAN profile) support. The start of bluetoothd is 
+	  automatically detected and only a runtime dependency. 
 
 config BR2_PACKAGE_CONNMAN_LOOPBACK
 	bool "enable loopback support"
