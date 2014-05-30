@@ -378,7 +378,7 @@ else ifeq ($(BR2_armeb),y)
 TOOLCHAIN_EXTERNAL_SOURCE = crossx86-armeb-linux-musleabi-1.0.0.tar.xz
 else ifeq ($(BR2_i386),y)
 TOOLCHAIN_EXTERNAL_SOURCE = crossx86-i486-linux-musl-1.0.0.tar.xz
-else ifeq ($(BR2_microblaze),y)
+else ifeq ($(BR2_microblazebe),y)
 TOOLCHAIN_EXTERNAL_SOURCE = crossx86-microblaze-linux-musl-1.0.0.tar.xz
 else ifeq ($(BR2_mips),y)
 ifeq ($(BR2_SOFT_FLOAT),y)
