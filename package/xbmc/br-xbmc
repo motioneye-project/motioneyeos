@@ -15,10 +15,10 @@ trap trap_kill INT QUIT TERM
 
 LOOP=1
 while [ ${LOOP} -eq 1 ]; do
-    # Hack: Busybox ash does not catch signals while a non-builtin
+    # Hack: BusyBox ash does not catch signals while a non-builtin
     # is running, and only catches the signal when the non-builtin
     # command ends. So, we just background the XBMC binary, and wait
-    # for it. But Busybox' ash's wait builtin does not return the
+    # for it. But BusyBox' ash's wait builtin does not return the
     # exit code even if there was only one job (which is correct
     # for POSIX). So we explicitly wait for the XBMC job
     "${XBMC}" "${@}" &

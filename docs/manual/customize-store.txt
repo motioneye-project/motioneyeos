@@ -80,9 +80,9 @@ work.
 
 To do so, you need to create a normal Buildroot configuration that
 builds a basic system for the hardware: toolchain, kernel, bootloader,
-filesystem and a simple Busybox-only userspace. No specific package
+filesystem and a simple BusyBox-only userspace. No specific package
 should be selected: the configuration should be as minimal as
-possible, and should only build a working basic Busybox system for the
+possible, and should only build a working basic BusyBox system for the
 target platform. You can of course use more complicated configurations
 for your internal projects, but the Buildroot project will only
 integrate basic board configurations. This is because package

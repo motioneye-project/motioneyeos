@@ -77,7 +77,7 @@ choice
 	default BR2_INIT_BUSYBOX
 
 config BR2_INIT_BUSYBOX
-	bool "Busybox"
+	bool "BusyBox"
 	select BR2_PACKAGE_BUSYBOX
 
 config BR2_INIT_SYSV

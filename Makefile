@@ -89,7 +89,7 @@ CONFIG_DIR := $(TOPDIR)
 NEED_WRAPPER =
 else
 # other packages might also support Linux-style out of tree builds
-# with the O=<dir> syntax (E.G. Busybox does). As make automatically
+# with the O=<dir> syntax (E.G. BusyBox does). As make automatically
 # forwards command line variable definitions those packages get very
 # confused. Fix this by telling make to not do so
 MAKEOVERRIDES =

@@ -1,7 +1,7 @@
 # /etc/inittab
 #
 # This inittab is a basic inittab sample for sysvinit, which mimics
-# Buildroot's default inittab for Busybox.
+# Buildroot's default inittab for BusyBox.
 id:1:initdefault:
 
 proc::sysinit:/bin/mount -t proc proc /proc

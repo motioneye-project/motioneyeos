@@ -76,9 +76,9 @@ to +make+ or set in the environment:
   is the recommended way of setting it.
   +
 * +BUSYBOX_CONFIG_FILE=<path/to/.config>+, path to
-  the Busybox configuration file.
+  the BusyBox configuration file.
   +
-  Note that the Busybox configuration file can also be set from the
+  Note that the BusyBox configuration file can also be set from the
   configuration interface, so through the Buildroot +.config+ file; this
   is the recommended way of setting it.
   +

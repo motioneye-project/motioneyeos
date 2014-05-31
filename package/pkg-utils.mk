@@ -29,7 +29,7 @@ $(eval $(call caseconvert-helper,LOWERCASE,$(join $(addsuffix :,$([TO])),$([FROM
 
 #
 # Manipulation of .config files based on the Kconfig
-# infrastructure. Used by the Busybox package, the Linux kernel
+# infrastructure. Used by the BusyBox package, the Linux kernel
 # package, and more.
 #
 

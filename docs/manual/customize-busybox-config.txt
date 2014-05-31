@@ -2,9 +2,9 @@
 // vim: set syntax=asciidoc:
 
 [[busybox-custom]]
-=== Customizing the Busybox configuration
+=== Customizing the BusyBox configuration
 
-http://www.busybox.net/[Busybox] is very configurable, and you may
+http://www.busybox.net/[BusyBox] is very configurable, and you may
 want to customize it. You can follow these simple steps to do so. This
 method isn't optimal, but it's simple, and it works:
 

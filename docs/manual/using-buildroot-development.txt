@@ -72,7 +72,7 @@ make linux-rebuild all
 -----------------------
 
 and in a matter of seconds gets the updated Linux kernel image in
-+output/images+. Similarly, a change can be made to the Busybox source
++output/images+. Similarly, a change can be made to the BusyBox source
 code in +/home/bob/busybox+, and after:
 
 -----------------------
@@ -80,4 +80,4 @@ make busybox-rebuild all
 -----------------------
 
 the root filesystem image in +output/images+ contains the updated
-Busybox.
+BusyBox.

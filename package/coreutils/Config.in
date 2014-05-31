@@ -5,7 +5,7 @@ config BR2_PACKAGE_COREUTILS
 	help
 	  All of the basic file/text/shell utilities.  These are the
 	  core utilities which are expected to exist on every system.
-	  Busybox implements many of the most common.
+	  BusyBox implements many of the most common.
 
 	  Things like:
 	  - chmod, cp, dd, dir, ls, etc...

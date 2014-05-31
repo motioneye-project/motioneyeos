@@ -272,7 +272,7 @@ different solutions to handle the +/dev+ directory :
    requirement to have +CONFIG_DEVTMPFS+ and +CONFIG_DEVTMPFS_MOUNT+
    enabled in the kernel configuration still apply), but adds the
    +mdev+ userspace utility on top of it. +mdev+ is a program part of
-   Busybox that the kernel will call every time a device is added or
+   BusyBox that the kernel will call every time a device is added or
    removed. Thanks to the +/etc/mdev.conf+ configuration file, +mdev+
    can be configured to for example, set specific permissions or
    ownership on a device file, call a script or application whenever a
@@ -314,16 +314,16 @@ graphical applications, other network servers, etc.).
 Buildroot allows to use three different types of init systems, which
 can be chosen from +System configuration+, +Init system+:
 
- * The first solution is *Busybox*. Amongst many programs, Busybox has
+ * The first solution is *BusyBox*. Amongst many programs, BusyBox has
    an implementation of a basic +init+ program, which is sufficient
    for most embedded systems. Enabling the +BR2_INIT_BUSYBOX+ will
-   ensure Busybox will build and install its +init+ program. This is
-   the default solution in Buildroot. The Busybox +init+ program will
+   ensure BusyBox will build and install its +init+ program. This is
+   the default solution in Buildroot. The BusyBox +init+ program will
    read the +/etc/inittab+ file at boot to know what to do. The syntax
    of this file can be found in
    http://git.busybox.net/busybox/tree/examples/inittab (note that
-   Busybox +inittab+ syntax is special: do not use a random +inittab+
-   documentation from the Internet to learn about Busybox
+   BusyBox +inittab+ syntax is special: do not use a random +inittab+
+   documentation from the Internet to learn about BusyBox
    +inittab+). The default +inittab+ in Buildroot is stored in
    +system/skeleton/etc/inittab+. Apart from mounting a few important
    filesystems, the main job the default inittab does is to start the
@@ -336,7 +336,7 @@ can be chosen from +System configuration+, +Init system+:
    Linux distributions, until they switched to more recent
    alternatives such as Upstart or Systemd. +sysvinit+ also works with
    an +inittab+ file (which has a slightly different syntax than the
-   one from Busybox). The default +inittab+ installed with this init
+   one from BusyBox). The default +inittab+ installed with this init
    solution is located in +package/sysvinit/inittab+.
 
  * The third solution is *systemd*. +systemd+ is the new generation
@@ -353,5 +353,5 @@ can be chosen from +System configuration+, +Init system+:
    http://www.freedesktop.org/wiki/Software/systemd.
 
 The solution recommended by Buildroot developers is to use the
-*Busybox init* as it is sufficient for most embedded
+*BusyBox init* as it is sufficient for most embedded
 systems. *systemd* can be used for more complex situations.

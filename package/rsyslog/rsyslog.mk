@@ -14,7 +14,7 @@ RSYSLOG_AUTORECONF = YES
 RSYSLOG_CONF_OPT = --disable-testbench \
 		   --enable-cached-man-pages
 
-# Build after Busybox
+# Build after BusyBox
 ifeq ($(BR2_PACKAGE_BUSYBOX),y)
 	RSYSLOG_DEPENDENCIES += busybox
 endif
