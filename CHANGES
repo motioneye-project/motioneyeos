@@ -1,3 +1,13 @@
+2014.05, Released May 31st, 2014
+
+	Minor fixes.
+
+	Minor manual fixes. U-Boot now defaults to spl/u-boot-spl.bin
+	for the spl file.
+
+	Updated/fixed packages: exim, glibc, gnutls, libfribidi,
+	qt5base, qt5webkit, sysklogd, thrift, u-boot
+
 2014.05-rc3, Released May 28th, 2014
 
 	Minor fixes.
