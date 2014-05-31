@@ -49,7 +49,7 @@ package to be built.
 ==== +luarocks-package+ reference
 
 LuaRocks is a deployment and management system for Lua modules, and supports
-various +build.type+: +builtin+, +make+ and +cmake+. In the contetx of
+various +build.type+: +builtin+, +make+ and +cmake+. In the context of
 Buildroot, the +luarocks-package+ infrastructure only supports the +builtin+
 mode. LuaRocks packages that use the +make+ or +cmake+ build mechanisms
 should instead be packaged using the +generic-package+ and +cmake-package+
@@ -57,7 +57,7 @@ infrastructures in Buildroot, respectively.
 
 The main macro of the LuaRocks package infrastructure is +luarocks-package+:
 like +generic-package+ it works by defining a number of variables providing
-meta informations about the package, and then calling +luarocks-package+. It
+meta information about the package, and then calling +luarocks-package+. It
 is worth mentioning that building LuaRocks packages for the host is not
 supported, so the macro +host-luarocks-package+ is not implemented.
 

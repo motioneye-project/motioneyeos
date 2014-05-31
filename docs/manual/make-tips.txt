@@ -67,7 +67,7 @@ The manual outputs will be generated in 'output/docs/manual'.
 - A few tools are required to build the documentation (see:
   xref:requirement-optional[]).
 
-.Reseting Buildroot for a new target:
+.Resetting Buildroot for a new target:
 
 To delete all build products as well as the configuration:
 

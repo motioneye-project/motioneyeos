@@ -57,7 +57,7 @@ any other version control system. To achieve this, Buildroot will use
 _rsync_ to copy the source code of the component from the specified
 +<pkg>_OVERRIDE_SRCDIR+ to +output/build/<package>-custom/+.
 
-This mechanism is best used in conjuction with the +make
+This mechanism is best used in conjunction with the +make
 <pkg>-rebuild+ and +make <pkg>-reconfigure+ targets. A +make
 <pkg>-rebuild all+ sequence will _rsync_ the source code from
 +<pkg>_OVERRIDE_SRCDIR+ to +output/build/<package>-custom+ (thanks to

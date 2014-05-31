@@ -230,7 +230,7 @@ different solutions to handle the +/dev+ directory :
  * The first solution is *Static using device table*. This is the old
    classical way of handling device files in Linux. With this method,
    the device files are persistently stored in the root filesystem
-   (i.e. they persist accross reboots), and there is nothing that will
+   (i.e. they persist across reboots), and there is nothing that will
    automatically create and remove those device files when hardware
    devices are added or removed from the system. Buildroot therefore
    creates a standard set of device files using a _device table_, the
@@ -257,14 +257,14 @@ different solutions to handle the +/dev+ directory :
    possible to use this option). When mounted in +/dev+, this virtual
    filesystem will automatically make _device files_ appear and
    disappear as hardware devices are added and removed from the
-   system. This filesystem is not persistent accross reboots: it is
+   system. This filesystem is not persistent across reboots: it is
    filled dynamically by the kernel. Using _devtmpfs_ requires the
    following kernel configuration options to be enabled:
    +CONFIG_DEVTMPFS+ and +CONFIG_DEVTMPFS_MOUNT+. When Buildroot is in
    charge of building the Linux kernel for your embedded device, it
    makes sure that those two options are enabled. However, if you
    build your Linux kernel outside of Buildroot, then it is your
-   responsability to enable those two options (if you fail to do so,
+   responsibility to enable those two options (if you fail to do so,
    your Buildroot system will not boot).
 
  * The third solution is *Dynamic using mdev*. This method also relies
