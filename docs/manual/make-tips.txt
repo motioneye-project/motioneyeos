@@ -31,8 +31,7 @@ The result of the search shows the help message of the matching items.
 Not all targets are always available,
 some settings in the +.config+ file may hide some targets:
 
-* +busybox-menuconfig+ and +busybox-savedefconfig+ only work when
-  +busybox+ is enabled;
+* +busybox-menuconfig+ only works when +busybox+ is enabled;
 * +linux-menuconfig+ and +linux-savedefconfig+ only work when
   +linux+ is enabled;
 * +uclibc-menuconfig+ is only available when the uClibc C library is
