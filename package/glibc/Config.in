@@ -1,3 +1,21 @@
+if BR2_TOOLCHAIN_BUILDROOT_EGLIBC
+
+choice
+	prompt "eglibc version"
+	default BR2_EGLIBC_VERSION_2_18
+
+config BR2_EGLIBC_VERSION_2_18
+	bool "2.18-svnr23787"
+
+config BR2_EGLIBC_VERSION_2_19
+	bool "2.19-svnr25243"
+	# Build breakage
+	depends on !BR2_powerpc_SPE
+
+endchoice
+
+endif
+
 if BR2_TOOLCHAIN_BUILDROOT_GLIBC
 
 choice
