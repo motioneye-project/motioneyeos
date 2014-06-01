@@ -9,6 +9,5 @@ QHULL_SITE = git://gitorious.org/qhull/qhull.git
 QHULL_INSTALL_STAGING = YES
 QHULL_LICENSE = BSD-Style
 QHULL_LICENSE_FILES = COPYING.txt
-QHULL_CONF_OPT = -DCMAKE_BUILD_TYPE=Release
 
 $(eval $(cmake-package))
