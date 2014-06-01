@@ -101,6 +101,16 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2014.08"
 
+config BR2_PACKAGE_GETTEXT_TOOLS
+	bool "support for gettext-tools on target has been removed"
+	select BR2_LEGACY
+	help
+	  The option to install the gettext utilities on the target
+	  has been removed. This is not necessary as Buildroot is not
+	  designed to provide a full development environment on the
+	  target. gettext tools should be used on the build machine
+	  instead.
+
 config BR2_PACKAGE_PROCPS
 	bool "procps has been replaced by procps-ng"
 	select BR2_PACKAGE_PROCPS_NG
