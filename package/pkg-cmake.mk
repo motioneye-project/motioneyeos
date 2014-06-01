@@ -158,14 +158,17 @@ host-cmake-package = $(call inner-cmake-package,host-$(pkgname),$(call UPPERCASE
 # Generation of the CMake toolchain file
 ################################################################################
 
+# In order to allow the toolchain to be relocated, we calculate the HOST_DIR
+# based on the toolchainfile.cmake file's location: $(HOST_DIR)/usr/share/buildroot
+# In all the other variables, HOST_DIR will be replaced by RELOCATED_HOST_DIR,
+# so we have to strip "$(HOST_DIR)/" from the paths that contain it.
 $(HOST_DIR)/usr/share/buildroot/toolchainfile.cmake:
 	@mkdir -p $(@D)
 	sed \
-		-e 's:@@HOST_DIR@@:$(call qstrip,$(HOST_DIR)):' \
-		-e 's:@@STAGING_DIR@@:$(call qstrip,$(STAGING_DIR)):' \
+		-e 's:@@STAGING_SUBDIR@@:$(call qstrip,$(STAGING_SUBDIR)):' \
 		-e 's:@@TARGET_CFLAGS@@:$(call qstrip,$(TARGET_CFLAGS)):' \
 		-e 's:@@TARGET_CXXFLAGS@@:$(call qstrip,$(TARGET_CXXFLAGS)):' \
-		-e 's:@@TARGET_CC_NOCCACHE@@:$(call qstrip,$(TARGET_CC_NOCCACHE)):' \
-		-e 's:@@TARGET_CXX_NOCCACHE@@:$(call qstrip,$(TARGET_CXX_NOCCACHE)):' \
+		-e 's:@@TARGET_CC_NOCCACHE@@:$(subst $(HOST_DIR)/,,$(call qstrip,$(TARGET_CC_NOCCACHE))):' \
+		-e 's:@@TARGET_CXX_NOCCACHE@@:$(subst $(HOST_DIR)/,,$(call qstrip,$(TARGET_CXX_NOCCACHE))):' \
 		$(TOPDIR)/support/misc/toolchainfile.cmake.in \
 		> $@
