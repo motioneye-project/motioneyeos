@@ -391,6 +391,9 @@ $(2)_DEPENDENCIES += toolchain
 endif
 endif
 
+# Eliminate duplicates in dependencies
+$(2)_FINAL_DEPENDENCIES = $$(sort $$($(2)_DEPENDENCIES))
+
 $(2)_INSTALL_STAGING		?= NO
 $(2)_INSTALL_IMAGES		?= NO
 $(2)_INSTALL_TARGET		?= YES
@@ -476,14 +479,14 @@ $$($(2)_TARGET_INSTALL_HOST):	$$($(2)_TARGET_BUILD)
 $(1)-build:		$$($(2)_TARGET_BUILD)
 $$($(2)_TARGET_BUILD):	$$($(2)_TARGET_CONFIGURE)
 
-# Since $(2)_DEPENDENCIES are phony targets, they are always "newer"
+# Since $(2)_FINAL_DEPENDENCIES are phony targets, they are always "newer"
 # than $(2)_TARGET_CONFIGURE. This would force the configure step (and
 # therefore the other steps as well) to be re-executed with every
-# invocation of make.  Therefore, make $(2)_DEPENDENCIES an order-only
+# invocation of make.  Therefore, make $(2)_FINAL_DEPENDENCIES an order-only
 # dependency by using |.
 
 $(1)-configure:			$$($(2)_TARGET_CONFIGURE)
-$$($(2)_TARGET_CONFIGURE):	| $$($(2)_DEPENDENCIES)
+$$($(2)_TARGET_CONFIGURE):	| $$($(2)_FINAL_DEPENDENCIES)
 
 $$($(2)_TARGET_SOURCE) $$($(2)_TARGET_RSYNC): | dirs prepare
 ifeq ($(filter $(1),$(DEPENDENCIES_HOST_PREREQ)),)
@@ -505,7 +508,7 @@ $$($(2)_TARGET_PATCH):	$$($(2)_TARGET_EXTRACT)
 $(1)-extract:			$$($(2)_TARGET_EXTRACT)
 $$($(2)_TARGET_EXTRACT):	$$($(2)_TARGET_SOURCE)
 
-$(1)-depends:		$$($(2)_DEPENDENCIES)
+$(1)-depends:		$$($(2)_FINAL_DEPENDENCIES)
 
 $(1)-source:		$$($(2)_TARGET_SOURCE)
 else
@@ -515,7 +518,7 @@ else
 #  configure
 $$($(2)_TARGET_CONFIGURE):	$$($(2)_TARGET_RSYNC)
 
-$(1)-depends:		$$($(2)_DEPENDENCIES)
+$(1)-depends:		$$($(2)_FINAL_DEPENDENCIES)
 
 $(1)-patch:		$(1)-rsync
 $(1)-extract:		$(1)-rsync
@@ -526,7 +529,7 @@ $(1)-source:		$$($(2)_TARGET_RSYNC_SOURCE)
 endif
 
 $(1)-show-depends:
-			@echo $$($(2)_DEPENDENCIES)
+			@echo $$($(2)_FINAL_DEPENDENCIES)
 
 $(1)-graph-depends:
 			@$(INSTALL) -d $(O)/graphs
