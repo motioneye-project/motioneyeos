@@ -11,7 +11,7 @@ choice
 	default BR2_GCC_VERSION_4_8_ARC if BR2_arc
 	default BR2_GCC_VERSION_4_9_X if BR2_microblaze || BR2_powerpc64le
 	default BR2_GCC_VERSION_4_5_X if BR2_bfin
-	default BR2_GCC_VERSION_4_7_X
+	default BR2_GCC_VERSION_4_8_X
 	help
 	  Select the version of gcc you wish to use.
 
