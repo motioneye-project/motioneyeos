@@ -6,6 +6,9 @@
 
 ROOTFS_SQUASHFS_DEPENDENCIES = host-squashfs
 
+ifeq ($(BR2_TARGET_ROOTFS_SQUASHFS4_LZ4),y)
+ROOTFS_SQUASHFS_ARGS += -comp lz4
+else
 ifeq ($(BR2_TARGET_ROOTFS_SQUASHFS4_LZO),y)
 ROOTFS_SQUASHFS_ARGS += -comp lzo
 else
@@ -16,6 +19,7 @@ ifeq ($(BR2_TARGET_ROOTFS_SQUASHFS4_XZ),y)
 ROOTFS_SQUASHFS_ARGS += -comp xz
 else
 ROOTFS_SQUASHFS_ARGS += -comp gzip
+endif
 endif
 endif
 endif

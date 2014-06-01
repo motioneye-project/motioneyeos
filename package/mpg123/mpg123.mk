@@ -22,13 +22,11 @@ ifeq ($(BR2_i386),y)
 MPG123_CPU = x86
 endif
 
-ifeq ($(BR2_powerpc),y)
-ifneq ($(BR2_powerpc_7400)$(BR2_powerpc_7450)$(BR2_powerpc_970),)
+ifeq ($(BR2_POWERPC_CPU_HAS_ALTIVEC),y)
 MPG123_CPU = altivec
 endif
 ifeq ($(BR2_SOFT_FLOAT),y)
 MPG123_CPU = ppc_nofpu
-endif
 endif
 
 ifeq ($(BR2_x86_64),y)

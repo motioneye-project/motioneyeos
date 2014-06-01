@@ -63,13 +63,10 @@ ifeq ($(BR2_ARM_CPU_HAS_NEON),y)
 GST_FFMPEG_CONF_EXTRA_OPT += --enable-neon
 endif
 
-# Set powerpc altivec appropriately
-ifeq ($(BR2_powerpc),y)
-ifeq ($(BR2_powerpc_7400)$(BR2_powerpc_7450)$(BR2_powerpc_970),y)
+ifeq ($(BR2_POWERPC_CPU_HAS_ALTIVEC),y)
 GST_FFMPEG_CONF_EXTRA_OPT += --enable-altivec
 else
 GST_FFMPEG_CONF_EXTRA_OPT += --disable-altivec
-endif
 endif
 
 ifeq ($(BR2_PREFER_STATIC_LIB),)

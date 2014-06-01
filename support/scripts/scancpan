@@ -581,7 +581,7 @@ while (my ($distname, $dist) = each %dist) {
         open my $fh, q{>}, $cfgname;
         say {$fh} qq{config BR2_PACKAGE_${brname}};
         say {$fh} qq{\tbool "${fsname}"};
-        foreach my $dep (@{$deps_runtime{$distname}}) {
+        foreach my $dep (sort @{$deps_runtime{$distname}}) {
             my $brdep = brname( fsname( $dep ) );
             say {$fh} qq{\tselect BR2_PACKAGE_${brdep}};
         }
@@ -596,10 +596,10 @@ while (my ($distname, $dist) = each %dist) {
         # the scheme is not used, because the job is done by the BR download infrastructure
         # the auth part is not used, because we use $(BR2_CPAN_MIRROR)
         my($filename, $directories, $suffix) = fileparse( $path, q{tar.gz}, q{tgz} );
-        my $dependencies = join q{ }, map( { q{host-} . fsname( $_ ); } @{$deps_build{$distname}} ),
-                                      map( { fsname( $_ ); } @{$deps_runtime{$distname}} );
-        my $host_dependencies = join q{ }, map { q{host-} . fsname( $_ ); } @{$deps_build{$distname}},
-                                                                            @{$deps_runtime{$distname}};
+        my $dependencies = join q{ }, map( { q{host-} . fsname( $_ ); } sort @{$deps_build{$distname}} ),
+                                      map( { fsname( $_ ); } sort @{$deps_runtime{$distname}} );
+        my $host_dependencies = join q{ }, map { q{host-} . fsname( $_ ); } sort( @{$deps_build{$distname}},
+                                                                                  @{$deps_runtime{$distname}} );
         my $license = ref $dist->{license} eq 'ARRAY'
                     ? join q{ or }, @{$dist->{license}}
                     : $dist->{license};
