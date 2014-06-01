@@ -55,6 +55,7 @@ config BR2_PACKAGE_POCO_DATA_SQLITE
 config BR2_PACKAGE_POCO_DATA_MYSQL
 	bool "mysql"
 	depends on BR2_USE_MMU # mysql
+	depends on !BR2_avr32 # mysql
 	select BR2_PACKAGE_POCO_DATA
 	select BR2_PACKAGE_MYSQL
 
