@@ -45,7 +45,7 @@ define FBV_BUILD_CMDS
 endef
 
 define FBV_INSTALL_TARGET_CMDS
-	install -D $(@D)/fbv $(TARGET_DIR)/usr/bin/fbv
+	$(INSTALL) -D $(@D)/fbv $(TARGET_DIR)/usr/bin/fbv
 endef
 
 $(eval $(autotools-package))

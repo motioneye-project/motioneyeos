@@ -12,8 +12,8 @@ DISTCC_LICENSE = GPLv2+
 DISTCC_LICENSE_FILES = COPYING
 
 define DISTCC_INSTALL_TARGET_CMDS
-	install -D $(@D)/distccd $(TARGET_DIR)/usr/bin/distccd
-	install -D $(@D)/distcc $(TARGET_DIR)/usr/bin/distcc
+	$(INSTALL) -D $(@D)/distccd $(TARGET_DIR)/usr/bin/distccd
+	$(INSTALL) -D $(@D)/distcc $(TARGET_DIR)/usr/bin/distcc
 endef
 
 $(eval $(autotools-package))

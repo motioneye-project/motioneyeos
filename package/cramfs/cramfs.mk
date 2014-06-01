@@ -16,8 +16,8 @@ define CRAMFS_BUILD_CMDS
 endef
 
 define CRAMFS_INSTALL_TARGET_CMDS
- install -D -m 755 $(@D)/mkcramfs $(TARGET_DIR)/usr/bin/mkcramfs
- install -D -m 755 $(@D)/cramfsck $(TARGET_DIR)/usr/bin/cramfsck
+ $(INSTALL) -D -m 755 $(@D)/mkcramfs $(TARGET_DIR)/usr/bin/mkcramfs
+ $(INSTALL) -D -m 755 $(@D)/cramfsck $(TARGET_DIR)/usr/bin/cramfsck
 endef
 
 define HOST_CRAMFS_BUILD_CMDS
@@ -25,8 +25,8 @@ define HOST_CRAMFS_BUILD_CMDS
 endef
 
 define HOST_CRAMFS_INSTALL_CMDS
- install -D -m 755 $(@D)/mkcramfs $(HOST_DIR)/usr/bin/mkcramfs
- install -D -m 755 $(@D)/cramfsck $(HOST_DIR)/usr/bin/cramfsck
+ $(INSTALL) -D -m 755 $(@D)/mkcramfs $(HOST_DIR)/usr/bin/mkcramfs
+ $(INSTALL) -D -m 755 $(@D)/cramfsck $(HOST_DIR)/usr/bin/cramfsck
 endef
 
 $(eval $(generic-package))

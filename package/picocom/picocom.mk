@@ -14,7 +14,7 @@ define PICOCOM_BUILD_CMDS
 endef
 
 define PICOCOM_INSTALL_TARGET_CMDS
-	install -D -m 0755 $(@D)/picocom $(TARGET_DIR)/usr/bin/picocom
+	$(INSTALL) -D -m 0755 $(@D)/picocom $(TARGET_DIR)/usr/bin/picocom
 endef
 
 $(eval $(generic-package))

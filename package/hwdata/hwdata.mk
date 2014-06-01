@@ -12,8 +12,8 @@ HWDATA_LICENSE = GPLv2+ or XFree86 1.0 license
 HWDATA_LICENSE_FILES = COPYING LICENSE
 
 define HWDATA_INSTALL_TARGET_CMDS
-	install -D -m 644 $(@D)/pci.ids $(TARGET_DIR)/usr/share/hwdata/pci.ids
-	install -D -m 644 $(@D)/usb.ids $(TARGET_DIR)/usr/share/hwdata/usb.ids
+	$(INSTALL) -D -m 644 $(@D)/pci.ids $(TARGET_DIR)/usr/share/hwdata/pci.ids
+	$(INSTALL) -D -m 644 $(@D)/usb.ids $(TARGET_DIR)/usr/share/hwdata/usb.ids
 endef
 
 $(eval $(generic-package))

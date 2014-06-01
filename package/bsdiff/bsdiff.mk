@@ -16,8 +16,8 @@ define BSDIFF_BUILD_CMDS
 endef
 
 define BSDIFF_INSTALL_TARGET_CMDS
-	install -D -m 755 $(@D)/bsdiff $(TARGET_DIR)/usr/bin/bsdiff
-	install -D -m 755 $(@D)/bspatch $(TARGET_DIR)/usr/bin/bspatch
+	$(INSTALL) -D -m 755 $(@D)/bsdiff $(TARGET_DIR)/usr/bin/bsdiff
+	$(INSTALL) -D -m 755 $(@D)/bspatch $(TARGET_DIR)/usr/bin/bspatch
 endef
 
 $(eval $(generic-package))

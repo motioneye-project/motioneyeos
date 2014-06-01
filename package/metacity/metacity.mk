@@ -29,7 +29,7 @@ METACITY_DEPENDENCIES += xlib_libXcursor
 endif
 
 define METACITY_INSTALL_XSESSION
-	install -D package/metacity/Xsession $(TARGET_DIR)/etc/X11/Xsession
+	$(INSTALL) -D package/metacity/Xsession $(TARGET_DIR)/etc/X11/Xsession
 endef
 
 METACITY_POST_INSTALL_TARGET_HOOKS += METACITY_INSTALL_XSESSION

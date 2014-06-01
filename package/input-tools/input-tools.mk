@@ -35,7 +35,7 @@ endef
 
 define INPUT_TOOLS_INSTALL_TARGET_CMDS
 	for i in $(INPUT_TOOLS_TARGETS_y); do \
-		install -m 755 -D $(@D)/$$i $(TARGET_DIR)/usr/bin/$$i; \
+		$(INSTALL) -m 755 -D $(@D)/$$i $(TARGET_DIR)/usr/bin/$$i; \
 	done
 endef
 

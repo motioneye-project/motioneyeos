@@ -59,12 +59,12 @@ endef
 ifeq ($(BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_MDEV),y)
 define BUSYBOX_INSTALL_MDEV_SCRIPT
 	[ -f $(TARGET_DIR)/etc/init.d/S10mdev ] || \
-		install -D -m 0755 package/busybox/S10mdev \
+		$(INSTALL) -D -m 0755 package/busybox/S10mdev \
 			$(TARGET_DIR)/etc/init.d/S10mdev
 endef
 define BUSYBOX_INSTALL_MDEV_CONF
 	[ -f $(TARGET_DIR)/etc/mdev.conf ] || \
-		install -D -m 0644 package/busybox/mdev.conf \
+		$(INSTALL) -D -m 0644 package/busybox/mdev.conf \
 			$(TARGET_DIR)/etc/mdev.conf
 endef
 define BUSYBOX_SET_MDEV
@@ -182,7 +182,7 @@ define BUSYBOX_SET_WATCHDOG
 endef
 define BUSYBOX_INSTALL_WATCHDOG_SCRIPT
 	[ -f $(TARGET_DIR)/etc/init.d/S15watchdog ] || \
-		install -D -m 0755 package/busybox/S15watchdog \
+		$(INSTALL) -D -m 0755 package/busybox/S15watchdog \
 			$(TARGET_DIR)/etc/init.d/S15watchdog && \
 		$(SED) s/PERIOD/$(call qstrip,$(BR2_PACKAGE_BUSYBOX_WATCHDOG_PERIOD))/ \
 			$(TARGET_DIR)/etc/init.d/S15watchdog

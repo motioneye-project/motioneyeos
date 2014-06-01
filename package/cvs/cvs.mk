@@ -46,7 +46,7 @@ endif
 CVS_POST_PATCH_HOOKS += CVS_DEBIAN_PATCHES
 
 define CVS_INSTALL_TARGET_CMDS
-	install -D $(@D)/src/cvs $(TARGET_DIR)/usr/bin/cvs
+	$(INSTALL) -D $(@D)/src/cvs $(TARGET_DIR)/usr/bin/cvs
 endef
 
 $(eval $(autotools-package))
