@@ -5,7 +5,6 @@ comment "weston needs udev and a toolchain w/ threads, headers >= 3.0"
 config BR2_PACKAGE_WESTON
 	bool "weston"
 	select BR2_PACKAGE_WAYLAND
-	select BR2_PACKAGE_LIBXKBCOMMON
 	select BR2_PACKAGE_CAIRO
 	select BR2_PACKAGE_CAIRO_PNG
 	select BR2_PACKAGE_LIBPNG
@@ -28,6 +27,16 @@ config BR2_PACKAGE_WESTON
 	  http://wayland.freedesktop.org/
 
 if BR2_PACKAGE_WESTON
+
+config BR2_PACKAGE_WESTON_HW_KBD
+	bool "enable keyboard support"
+	default y
+	select BR2_PACKAGE_LIBXKBCOMMON
+	help
+	  Say 'y' here if you plan on using a keyboard.
+
+	  Only say 'n' if you're going to use a virtual keyboard or any other
+	  input method.
 
 # Helper to make sure at least one compositor is selected.
 config BR2_PACKAGE_WESTON_HAS_COMPOSITOR
