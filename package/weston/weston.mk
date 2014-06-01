@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-WESTON_VERSION = 1.4.0
+WESTON_VERSION = 1.5.0
 WESTON_SITE = http://wayland.freedesktop.org/releases/
 WESTON_SOURCE = weston-$(WESTON_VERSION).tar.xz
 WESTON_LICENSE = MIT
@@ -12,9 +12,6 @@ WESTON_LICENSE_FILES = COPYING
 
 WESTON_DEPENDENCIES = host-pkgconf wayland libxkbcommon pixman libpng \
 	jpeg mtdev udev cairo
-
-# We're touching Makefile.am
-WESTON_AUTORECONF = YES
 
 WESTON_CONF_OPT = \
 	--with-dtddir=$(STAGING_DIR)/usr/share/wayland \

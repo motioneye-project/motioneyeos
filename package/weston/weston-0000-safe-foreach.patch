@@ -1,0 +1,36 @@
+commit a35d028d66cdd83a4a08663231dd2504f1b228f9
+Author: U. Artie Eoff <ullysses.a.eoff@intel.com>
+Date:   Wed May 21 09:20:02 2014 -0700
+
+    comp-wayland: use safe foreach when destroying outputs
+    
+    wl_list_for_each dereference's output to increment the
+    next iteration of the loop.  However, output is free'd
+    inside the loop resulting in a dereference to free'd
+    memory.
+    
+    Use wl_list_for_each_safe instead, which is designed to
+    handle this kind of pattern.
+    
+    Signed-off-by: U. Artie Eoff <ullysses.a.eoff@intel.com>
+    Reviewed-by: Thierry Reding <thierry.reding@gmail.com>
+    Signed-off-by: Pekka Paalanen <pekka.paalanen@collabora.co.uk>
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+
+diff --git a/src/compositor-wayland.c b/src/compositor-wayland.c
+index a08b71a..76e5396 100644
+--- a/src/compositor-wayland.c
++++ b/src/compositor-wayland.c
+@@ -1997,9 +1997,9 @@ err_free:
+ static void
+ wayland_compositor_destroy(struct wayland_compositor *c)
+ {
+-	struct weston_output *output;
++	struct weston_output *output, *next;
+ 
+-	wl_list_for_each(output, &c->base.output_list, link)
++	wl_list_for_each_safe(output, next, &c->base.output_list, link)
+ 		wayland_output_destroy(output);
+ 
+ 	c->base.renderer->destroy(&c->base);
