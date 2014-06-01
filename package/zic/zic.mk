@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-ZIC_VERSION = 2013i
+ZIC_VERSION = 2014d
 ZIC_SOURCE = tzcode$(ZIC_VERSION).tar.gz
 ZIC_SITE = ftp://ftp.iana.org/tz/releases
 ZIC_LICENSE = Public domain
