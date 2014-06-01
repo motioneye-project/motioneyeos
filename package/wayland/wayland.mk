@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-WAYLAND_VERSION = 1.4.0
+WAYLAND_VERSION = 1.5.0
 WAYLAND_SITE = http://wayland.freedesktop.org/releases/
 WAYLAND_SOURCE = wayland-$(WAYLAND_VERSION).tar.xz
 WAYLAND_LICENSE = MIT
@@ -19,7 +19,7 @@ WAYLAND_CONF_OPT = --disable-scanner
 # We must provide a specialy-crafted wayland-scanner .pc file
 # which we vampirise and adapt from the host-wayland copy
 define WAYLAND_SCANNER_PC
-	$(INSTALL) -m 0644 -D $(HOST_DIR)/usr/share/pkgconfig/wayland-scanner.pc \
+	$(INSTALL) -m 0644 -D $(HOST_DIR)/usr/lib/pkgconfig/wayland-scanner.pc \
 	              $(STAGING_DIR)/usr/lib/pkgconfig/wayland-scanner.pc
 	$(SED) 's:^prefix=.*:prefix=/usr:' \
 	    -e 's:^wayland_scanner=.*:wayland_scanner=$(HOST_DIR)/usr/bin/wayland-scanner:' \
