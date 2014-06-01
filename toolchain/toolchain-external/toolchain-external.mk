@@ -359,31 +359,32 @@ TOOLCHAIN_EXTERNAL_SITE = http://releases.linaro.org/14.05/components/toolchain/
 TOOLCHAIN_EXTERNAL_SOURCE = gcc-linaro-aarch64-linux-gnu-4.9-2014.05_linux.tar.xz
 TOOLCHAIN_EXTERNAL_POST_INSTALL_STAGING_HOOKS += TOOLCHAIN_EXTERNAL_LINARO_AARCH64_SYMLINK
 else ifeq ($(BR2_TOOLCHAIN_EXTERNAL_MUSL_CROSS),y)
-TOOLCHAIN_EXTERNAL_SITE = https://googledrive.com/host/0BwnS5DMB0YQ6bDhPZkpOYVFhbk0/musl-1.0.0/
+TOOLCHAIN_EXTERNAL_VERSION = 1.1.1
+TOOLCHAIN_EXTERNAL_SITE = https://googledrive.com/host/0BwnS5DMB0YQ6bDhPZkpOYVFhbk0/musl-$(TOOLCHAIN_EXTERNAL_VERSION)/
 ifeq ($(BR2_arm),y)
-TOOLCHAIN_EXTERNAL_SOURCE = crossx86-arm-linux-musleabi-1.0.0.tar.xz
+TOOLCHAIN_EXTERNAL_SOURCE = crossx86-arm-linux-musleabi-$(TOOLCHAIN_EXTERNAL_VERSION).tar.xz
 else ifeq ($(BR2_armeb),y)
-TOOLCHAIN_EXTERNAL_SOURCE = crossx86-armeb-linux-musleabi-1.0.0.tar.xz
+TOOLCHAIN_EXTERNAL_SOURCE = crossx86-armeb-linux-musleabi-$(TOOLCHAIN_EXTERNAL_VERSION).tar.xz
 else ifeq ($(BR2_i386),y)
-TOOLCHAIN_EXTERNAL_SOURCE = crossx86-i486-linux-musl-1.0.0.tar.xz
+TOOLCHAIN_EXTERNAL_SOURCE = crossx86-i486-linux-musl-$(TOOLCHAIN_EXTERNAL_VERSION).tar.xz
 else ifeq ($(BR2_microblazebe),y)
-TOOLCHAIN_EXTERNAL_SOURCE = crossx86-microblaze-linux-musl-1.0.0.tar.xz
+TOOLCHAIN_EXTERNAL_SOURCE = crossx86-microblaze-linux-musl-$(TOOLCHAIN_EXTERNAL_VERSION).tar.xz
 else ifeq ($(BR2_mips),y)
 ifeq ($(BR2_SOFT_FLOAT),y)
-TOOLCHAIN_EXTERNAL_SOURCE = crossx86-mips-sf-linux-musl-1.0.0.tar.xz
+TOOLCHAIN_EXTERNAL_SOURCE = crossx86-mips-sf-linux-musl-$(TOOLCHAIN_EXTERNAL_VERSION).tar.xz
 else
-TOOLCHAIN_EXTERNAL_SOURCE = crossx86-mips-linux-musl-1.0.0.tar.xz
+TOOLCHAIN_EXTERNAL_SOURCE = crossx86-mips-linux-musl-$(TOOLCHAIN_EXTERNAL_VERSION).tar.xz
 endif # BR2_SOFT_FLOAT
 else ifeq ($(BR2_mipsel),y)
 ifeq ($(BR2_SOFT_FLOAT),y)
-TOOLCHAIN_EXTERNAL_SOURCE = crossx86-mipsel-sf-linux-musl-1.0.0.tar.xz
+TOOLCHAIN_EXTERNAL_SOURCE = crossx86-mipsel-sf-linux-musl-$(TOOLCHAIN_EXTERNAL_VERSION).tar.xz
 else
-TOOLCHAIN_EXTERNAL_SOURCE = crossx86-mipsel-linux-musl-1.0.0.tar.xz
+TOOLCHAIN_EXTERNAL_SOURCE = crossx86-mipsel-linux-musl-$(TOOLCHAIN_EXTERNAL_VERSION).tar.xz
 endif # BR2_SOFT_FLOAT
 else ifeq ($(BR2_powerpc),y)
-TOOLCHAIN_EXTERNAL_SOURCE = crossx86-powerpc-linux-musl-1.0.0.tar.xz
+TOOLCHAIN_EXTERNAL_SOURCE = crossx86-powerpc-linux-musl-$(TOOLCHAIN_EXTERNAL_VERSION).tar.xz
 else ifeq ($(BR2_x86_64),y)
-TOOLCHAIN_EXTERNAL_SOURCE = crossx86-x86_64-linux-musl-1.0.0.tar.xz
+TOOLCHAIN_EXTERNAL_SOURCE = crossx86-x86_64-linux-musl-$(TOOLCHAIN_EXTERNAL_VERSION).tar.xz
 endif
 else
 # Custom toolchain
