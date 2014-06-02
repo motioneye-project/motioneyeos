@@ -99,6 +99,16 @@ comment "----------------------------------------------------"
 endif
 
 ###############################################################################
+comment "Legacy options removed in 2014.08"
+
+config BR2_PACKAGE_PROCPS
+	bool "procps has been replaced by procps-ng"
+	select BR2_PACKAGE_PROCPS_NG
+	select BR2_LEGACY
+	help
+	  The procps package has been replaced by the equivalent procps-ng.
+
+###############################################################################
 comment "Legacy options removed in 2014.05"
 
 config BR2_PACKAGE_EVTEST_CAPTURE
