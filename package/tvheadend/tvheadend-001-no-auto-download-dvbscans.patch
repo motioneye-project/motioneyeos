@@ -15,7 +15,7 @@ diff -durN tvheadend-c84bc2b72b462ef2dbed305f3fd0bb3fa5046fc3.orig/configure tvh
  #
  # DVB scan
  #
--if enabled linuxdvb && enabled dvbscan; then
+-if enabled dvbscan; then
 -  printf "${TAB}" "fetching dvb-scan files ..."
 -  "${ROOTDIR}/support/getmuxlist"
 -  if [ $? -ne 0 ]; then
@@ -25,7 +25,7 @@ diff -durN tvheadend-c84bc2b72b462ef2dbed305f3fd0bb3fa5046fc3.orig/configure tvh
 -  echo "ok"
 -fi
 +# For buildroot, we already installed those files via the dvb-apps package
-+#if enabled linuxdvb && enabled dvbscan; then
++#if enabled dvbscan; then
 +#  printf "${TAB}" "fetching dvb-scan files ..."
 +#  "${ROOTDIR}/support/getmuxlist"
 +#  if [ $? -ne 0 ]; then
