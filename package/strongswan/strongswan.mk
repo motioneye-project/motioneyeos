@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-STRONGSWAN_VERSION = 5.0.4
+STRONGSWAN_VERSION = 5.1.3
 STRONGSWAN_SOURCE = strongswan-$(STRONGSWAN_VERSION).tar.bz2
 STRONGSWAN_SITE = http://download.strongswan.org
 STRONGSWAN_LICENSE = GPLv2+
@@ -66,13 +66,5 @@ STRONGSWAN_DEPENDENCIES +=                               \
       $(if $(BR2_PACKAGE_SQLITE),sqlite)                 \
       $(if $(BR2_PACKAGE_MYSQL),mysql)
 endif
-
-# Strongswan uses AC_LIB_PREFIX, which is relatively new.
-# Avoid make to try reconfiguring due to timestamp changes,
-# after patching configure{,.in}.
-define STRONGSWAN_AVOID_RECONF_HOOK
-	touch $(@D)/aclocal.m4
-endef
-STRONGSWAN_POST_PATCH_HOOKS += STRONGSWAN_AVOID_RECONF_HOOK
 
 $(eval $(autotools-package))
