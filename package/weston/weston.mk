@@ -32,6 +32,13 @@ else
 WESTON_CONF_OPT += --disable-xkbcommon
 endif
 
+ifeq ($(BR2_PACKAGE_LIBINPUT),y)
+WESTON_DEPENDENCIES += libinput
+WESTON_CONF_OPT += --enable-libinput-backend
+else
+WESTON_CONF_OPT += --disable-libinput-backend
+endif
+
 ifeq ($(BR2_PACKAGE_LIBUNWIND),y)
 WESTON_DEPENDENCIES += libunwind
 else
