@@ -228,7 +228,7 @@ information is (assuming the package name is +libfoo+) :
   types for retrieving package tarballs. Git, Subversion, Mercurial,
   and Bazaar are supported URL types for retrieving packages directly
   from source code management systems. There is a helper function to make
-  it easier to download source tarballs from github (refer to
+  it easier to download source tarballs from GitHub (refer to
   xref:github-download-url[] for details). A filesystem path may be used
   to specify either a tarball or a directory containing the package
   source code. See +LIBFOO_SITE_METHOD+ below for more details on how

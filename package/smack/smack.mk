@@ -11,7 +11,7 @@ SMACK_LICENSE_FILES = COPYING
 SMACK_INSTALL_STAGING = YES
 SMACK_DEPENDENCIES = host-pkgconf
 
-# Sources from github, no configure script included.
+# Sources from GitHub, no configure script included.
 SMACK_AUTORECONF = YES
 
 $(eval $(autotools-package))

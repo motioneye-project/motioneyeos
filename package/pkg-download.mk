@@ -55,7 +55,7 @@ notdomain=$(patsubst $(call domain,$(1),$(2))$(call domainseparator,$(2))%,%,$(c
 # default domainseparator is /, specify alternative value as first argument
 domainseparator=$(if $(1),$(1),/)
 
-# github(user,package,version): returns site of github repository
+# github(user,package,version): returns site of GitHub repository
 github = https://github.com/$(1)/$(2)/archive/$(3)
 
 ################################################################################

@@ -34,11 +34,11 @@ using the following rules:
 
 
 [[github-download-url]]
-==== How to add a package from github
+==== How to add a package from GitHub
 
-Packages on github often don't have a download area with release tarballs.
+Packages on GitHub often don't have a download area with release tarballs.
 However, it is possible to download tarballs directly from the repository
-on github. As github is known to have changed download mechanisms in the
+on GitHub. As GitHub is known to have changed download mechanisms in the
 past, the 'github' helper function should be used as shown below.
 
 ------------------------
