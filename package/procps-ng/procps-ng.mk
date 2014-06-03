@@ -12,4 +12,9 @@ PROCPS_NG_LICENSE_FILES = COPYING COPYING.LIB
 
 PROCPS_NG_DEPENDENCIES = ncurses
 
+ifeq ($(BR2_PACKAGE_GETTEXT),y)
+PROCPS_NG_DEPENDENCIES += gettext
+PROCPS_NG_CONF_OPT += LIBS=-lintl
+endif
+
 $(eval $(autotools-package))
