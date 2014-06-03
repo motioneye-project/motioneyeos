@@ -13,6 +13,11 @@ MPD_LICENSE = GPLv2+
 MPD_LICENSE_FILES = COPYING
 
 # Some options need an explicit --disable or --enable
+ifeq ($(BR2_PACKAGE_AVAHI_DAEMON),y)
+MPD_DEPENDENCIES += avahi
+else
+MPD_CONF_OPT += --with-zeroconf=no
+endif
 
 ifeq ($(BR2_PACKAGE_MPD_ALSA),y)
 MPD_DEPENDENCIES += alsa-lib
