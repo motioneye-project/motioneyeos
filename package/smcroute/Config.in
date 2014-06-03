@@ -1,6 +1,7 @@
 config BR2_PACKAGE_SMCROUTE
 	bool "smcroute"
 	depends on BR2_INET_IPV6
+	depends on BR2_USE_MMU # fork()
 	help
 	  SMCRoute is a command line tool to manipulate the multicast
 	  routes of a UNIX kernel. It supports both IPv4 and IPv6 multicast
@@ -13,3 +14,4 @@ config BR2_PACKAGE_SMCROUTE
 
 comment "smcroute needs a toolchain w/ IPv6"
 	depends on !BR2_INET_IPV6
+	depends on BR2_USE_MMU
