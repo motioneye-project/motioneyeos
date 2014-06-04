@@ -26,6 +26,7 @@ ifeq ($(BR2_PACKAGE_RPI_USERLAND),y)
 LIBCEC_CONF_OPT = --enable-rpi \
    --with-rpi-include-path=$(STAGING_DIR)/usr/include
 LIBCEC_DEPENDENCIES += rpi-userland
+LIBCEC_CONF_ENV += LIBS="-lvcos -lvchostif"
 else
 LIBCEC_CONF_OPT = --disable-rpi
 endif
