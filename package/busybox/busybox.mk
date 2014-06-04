@@ -189,6 +189,12 @@ define BUSYBOX_INSTALL_WATCHDOG_SCRIPT
 endef
 endif
 
+# Enable "noclobber" in install.sh, to prevent BusyBox from overwritting any
+# full-blown versions of apps installed by other packages with sym/hard links.
+define BUSYBOX_NOCLOBBER_INSTALL
+	$(SED) 's/^noclobber="0"$$/noclobber="1"/' $(@D)/applets/install.sh
+endef
+
 define BUSYBOX_CONFIGURE_CMDS
 	$(BUSYBOX_COPY_CONFIG)
 	$(BUSYBOX_SET_MMU)
@@ -204,6 +210,7 @@ define BUSYBOX_CONFIGURE_CMDS
 	$(BUSYBOX_SET_WATCHDOG)
 	@yes "" | $(MAKE) ARCH=$(KERNEL_ARCH) CROSS_COMPILE="$(TARGET_CROSS)" \
 		-C $(@D) oldconfig
+	$(BUSYBOX_NOCLOBBER_INSTALL)
 endef
 
 define BUSYBOX_BUILD_CMDS
