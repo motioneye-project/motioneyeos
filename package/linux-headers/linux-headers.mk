@@ -26,6 +26,20 @@ LINUX_HEADERS_ADD_TOOLCHAIN_DEPENDENCY = NO
 # This results in seemingly errors like:
 #   [...]/scripts/gcc-version.sh: line 26: arc-linux-uclibc-gcc: command not found
 # Those can be safely ignored.
+
+# This step is required to have a separate linux headers location for
+# uClibc building. This way uClibc doesn't modify linux headers on installation
+# of "its" headers
+define LINUX_HEADERS_CONFIGURE_CMDS
+	(cd $(@D); \
+		$(TARGET_MAKE_ENV) $(MAKE) \
+			ARCH=$(KERNEL_ARCH) \
+			HOSTCC="$(HOSTCC)" \
+			HOSTCFLAGS="$(HOSTCFLAGS)" \
+			HOSTCXX="$(HOSTCXX)" \
+			headers_install)
+endef
+
 define LINUX_HEADERS_INSTALL_STAGING_CMDS
 	(cd $(@D); \
 		$(TARGET_MAKE_ENV) $(MAKE) \
