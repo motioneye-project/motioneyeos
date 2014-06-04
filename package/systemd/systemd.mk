@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-SYSTEMD_VERSION = 212
+SYSTEMD_VERSION = 213
 SYSTEMD_SITE = http://www.freedesktop.org/software/systemd/
 SYSTEMD_SOURCE = systemd-$(SYSTEMD_VERSION).tar.xz
 SYSTEMD_LICENSE = LGPLv2.1+; GPLv2+ for udev; MIT-like license for few source files listed in README
@@ -18,6 +18,7 @@ SYSTEMD_DEPENDENCIES = \
 	host-gperf
 
 SYSTEMD_PROVIDES = udev
+SYSTEMD_AUTORECONF = YES
 
 # Make sure that systemd will always be built after busybox so that we have
 # a consistent init setup between two builds
@@ -34,6 +35,7 @@ SYSTEMD_CONF_OPT += \
 	--disable-selinux \
 	--disable-pam \
 	--disable-libcryptsetup \
+	--disable-gtk-doc \
 	--with-dbuspolicydir=/etc/dbus-1/system.d \
 	--with-dbussessionservicedir=/usr/share/dbus-1/services \
 	--with-dbussystemservicedir=/usr/share/dbus-1/system-services \
@@ -94,6 +96,15 @@ else
 SYSTEMD_CONF_OPT += --disable-networkd
 endif
 
+ifeq ($(BR2_PACKAGE_SYSTEMD_TIMESYNCD),y)
+SYSTEMD_CONF_OPT += --enable-timesyncd
+define SYSTEMD_USER_TIMESYNC
+	systemd-timesync -1 systemd-timesync -1 * - - - Network Time Synchronization
+endef
+else
+SYSTEMD_CONF_OPT += --disable-timesyncd
+endif
+
 # mq_getattr needs -lrt
 SYSTEMD_MAKE_OPT += LIBS=-lrt
 SYSTEMD_MAKE_OPT += LDFLAGS+=-ldl
@@ -130,6 +141,7 @@ SYSTEMD_POST_INSTALL_TARGET_HOOKS += \
 define SYSTEMD_USERS
 	systemd-journal -1 systemd-journal -1 * /var/log/journal - - Journal
 	systemd-journal-gateway -1 systemd-journal-gateway -1 * /var/log/journal - - Journal Gateway
+	$(SYSTEMD_USER_TIMESYNC)
 endef
 
 $(eval $(autotools-package))
