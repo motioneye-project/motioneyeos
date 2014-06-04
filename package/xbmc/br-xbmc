@@ -26,8 +26,8 @@ while [ ${LOOP} -eq 1 ]; do
     ret=$?
     case "${ret}" in
         0)  ;;
-        64) halt;   LOOP=0;;
-        66) reboot; LOOP=0;;
+        64) poweroff; LOOP=0;;
+        66) reboot;   LOOP=0;;
         *)  # Crash
             sleep 1
             ;;
