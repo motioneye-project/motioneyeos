@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-HOSTAPD_VERSION = 2.1
+HOSTAPD_VERSION = 2.2
 HOSTAPD_SITE = http://hostap.epitest.fi/releases
 HOSTAPD_SUBDIR = hostapd
 HOSTAPD_CONFIG = $(HOSTAPD_DIR)/$(HOSTAPD_SUBDIR)/.config
@@ -21,7 +21,6 @@ HOSTAPD_CONFIG_ENABLE = \
 	CONFIG_IEEE80211AC \
 	CONFIG_IEEE80211N \
 	CONFIG_IEEE80211R \
-	CONFIG_IEEE80211W \
 	CONFIG_INTERNAL_LIBTOMMATH \
 	CONFIG_INTERWORKING \
 	CONFIG_LIBNL32 \
