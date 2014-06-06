@@ -9,4 +9,4 @@ config BR2_PACKAGE_FETCHMAIL
 	  Fetchmail - the mail-retrieval daemon
 	  Client daemon to move mail from POP and IMAP to your local computer
 
-	  http://sourceforge.net/projects/fetchmail/
+	  http://www.fetchmail.info/
