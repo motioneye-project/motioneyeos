@@ -21,6 +21,13 @@ XBMC_DEPENDENCIES += boost bzip2 expat flac fontconfig freetype jasper jpeg \
 # xbmc@i386 depends on nasm
 XBMC_DEPENDENCIES += $(if $(BR2_i386),host-nasm)
 
+# ffmpeg depends on yasm on MMX archs
+# xbmc configure passes $(BR2_ARCH) to ffmpeg configure which adds
+# yasm as dependency for x86_64, even if BR2_x86_generic=y
+ifneq ($(BR2_X86_CPU_HAS_MMX)$(BR2_x86_64),)
+XBMC_DEPENDENCIES += host-yasm
+endif
+
 XBMC_CONF_ENV = \
 	PYTHON_VERSION="$(PYTHON_VERSION_MAJOR)" \
 	PYTHON_LDFLAGS="-lpython$(PYTHON_VERSION_MAJOR) -lpthread -ldl -lutil -lm" \
