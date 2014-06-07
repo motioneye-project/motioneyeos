@@ -4,8 +4,9 @@
 #
 ################################################################################
 
-XBMC_VERSION = 12.3-Frodo
-XBMC_SITE = $(call github,xbmc,xbmc,$(XBMC_VERSION))
+XBMC_VERSION = 13.1-Gotham
+XBMC_SOURCE = $(XBMC_VERSION).tar.gz
+XBMC_SITE = https://github.com/xbmc/xbmc/archive
 XBMC_LICENSE = GPLv2
 XBMC_LICENSE_FILES = LICENSE.GPL
 # XBMC needs host-sdl_image (and therefore host-sdl) for a host tools it builds
@@ -15,7 +16,7 @@ XBMC_LICENSE_FILES = LICENSE.GPL
 XBMC_DEPENDENCIES = host-gawk host-gettext host-gperf host-infozip host-lzo host-sdl_image host-swig
 XBMC_DEPENDENCIES += boost bzip2 expat flac fontconfig freetype jasper jpeg \
 	libass libcdio libcurl libegl libfribidi libgcrypt libgles libmad libmodplug libmpeg2 \
-	libogg libplist libpng libsamplerate libungif libvorbis libxml2 lzo ncurses \
+	libogg libplist libpng libsamplerate libungif libvorbis libxml2 libxslt lzo ncurses \
 	openssl pcre python readline sqlite taglib tiff tinyxml yajl zlib
 
 # xbmc@i386 depends on nasm
@@ -37,6 +38,7 @@ XBMC_CONF_ENV = \
 	TEXTUREPACKER_NATIVE_ROOT="$(HOST_DIR)/usr"
 
 XBMC_CONF_OPT +=  \
+	--with-arch=$(BR2_ARCH) \
 	--disable-alsa \
 	--disable-crystalhd \
 	--disable-debug \
