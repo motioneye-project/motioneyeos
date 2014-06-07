@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-MESA3D_VERSION = 10.0.4
+MESA3D_VERSION = 10.2.1
 MESA3D_SOURCE = MesaLib-$(MESA3D_VERSION).tar.bz2
 MESA3D_SITE = ftp://ftp.freedesktop.org/pub/mesa/$(MESA3D_VERSION)
 MESA3D_LICENSE = MIT, SGI, Khronos
@@ -35,9 +35,13 @@ MESA3D_DEPENDENCIES += \
 	xlib_libXdamage \
 	xlib_libXfixes \
 	libxcb
-MESA3D_CONF_OPT += \
-	--enable-glx \
-	--enable-xa
+MESA3D_CONF_OPT += --enable-glx
+# quote from mesa3d configure "Building xa requires at least one non swrast gallium driver."
+ifneq ($(BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_NOUVEAU)$(BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_SVGA),)
+MESA3D_CONF_OPT += --enable-xa
+else
+MESA3D_CONF_OPT += --disable-xa
+endif
 else
 MESA3D_CONF_OPT += \
 	--disable-glx \
