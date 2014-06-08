@@ -33,13 +33,15 @@ FULL_MODE = 1
 PKG_MODE  = 2
 
 mode = 0
+
+# Limit drawing the dependency graph to this depth. 0 means 'no limit'.
 max_depth = 0
 
 parser = argparse.ArgumentParser(description="Graph pacakges dependencies")
 parser.add_argument("--package", '-p', metavar="PACKAGE",
                     help="Graph the dependencies of PACKAGE")
-parser.add_argument("--depth", '-d', metavar="DEPTH",
-                    help="Limit the dependency graph to DEPTH levels")
+parser.add_argument("--depth", '-d', metavar="DEPTH", dest="depth", type=int, default=0,
+                    help="Limit the dependency graph to DEPTH levels; 0 means no limit.")
 parser.add_argument("--transitive", dest="transitive", action='store_true',
                     default=True)
 parser.add_argument("--no-transitive", dest="transitive", action='store_false',
@@ -52,8 +54,7 @@ else:
     mode = PKG_MODE
     rootpkg = args.package
 
-if args.depth is not None:
-    max_depth = int(args.depth)
+max_depth = args.depth
 
 transitive = args.transitive
 
