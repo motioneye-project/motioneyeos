@@ -14,6 +14,14 @@ include::makeusers-syntax.txt[]
 
 include::package-list.txt[]
 
+[[virtual-package-list]]
+== List of virtual packages
+
+These are the virtual packages known to +Buildroot+, with the
+corresponding symbols and providers.
+
+include::virtual-package-list.txt[]
+
 [[host-package-list]]
 == List of host utilities available in Buildroot
 

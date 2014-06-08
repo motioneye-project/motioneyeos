@@ -298,6 +298,16 @@ management, use this format:
 foo needs udev /dev management and a toolchain w/ featA, featB, featC
 --------------------------
 
+==== Dependencies on features provided by virtual packages
+
+Some features can be provided by more than one package, such as the
+openGL libraries.
+
+See xref:virtual-package-tutorial[] for more on the virtual packages.
+
+See xref:virtual-package-list[] for the symbols to depend on if your package
+depends on a feature provided by a virtual package.
+
 === The +.mk+ file
 
 [[adding-packages-mk]]
