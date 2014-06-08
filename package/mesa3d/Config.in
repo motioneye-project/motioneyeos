@@ -1,5 +1,5 @@
 menuconfig BR2_PACKAGE_MESA3D
-	bool "Mesa 3D Graphics Library"
+	bool "mesa3d"
 	select BR2_PACKAGE_LIBDRM
 	select BR2_PACKAGE_EXPAT
 	select BR2_PACKAGE_HOST_LIBXML2_PYTHON
