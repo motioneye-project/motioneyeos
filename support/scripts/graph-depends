@@ -40,6 +40,10 @@ parser.add_argument("--package", '-p', metavar="PACKAGE",
                     help="Graph the dependencies of PACKAGE")
 parser.add_argument("--depth", '-d', metavar="DEPTH",
                     help="Limit the dependency graph to DEPTH levels")
+parser.add_argument("--transitive", dest="transitive", action='store_true',
+                    default=True)
+parser.add_argument("--no-transitive", dest="transitive", action='store_false',
+                    help="Draw (do not draw) transitive dependencies")
 args = parser.parse_args()
 
 if args.package is None:
@@ -50,6 +54,8 @@ else:
 
 if args.depth is not None:
     max_depth = int(args.depth)
+
+transitive = args.transitive
 
 allpkgs = []
 
@@ -219,6 +225,49 @@ for dep in dependencies:
     if not dict_deps.has_key(dep[0]):
         dict_deps[dep[0]] = []
     dict_deps[dep[0]].append(dep[1])
+
+# This function return True if pkg is a dependency (direct or
+# transitive) of pkg2, dependencies being listed in the deps
+# dictionary. Returns False otherwise.
+def is_dep(pkg,pkg2,deps):
+    if deps.has_key(pkg2):
+        for p in deps[pkg2]:
+            if pkg == p:
+                return True
+            if is_dep(pkg,p,deps):
+                return True
+    return False
+
+# This function eliminates transitive dependencies; for example, given
+# these dependency chain: A->{B,C} and B->{C}, the A->{C} dependency is
+# already covered by B->{C}, so C is a transitive dependency of A, via B.
+# The functions does:
+#   - for each dependency d[i] of the package pkg
+#     - if d[i] is a dependency of any of the other dependencies d[j]
+#       - do not keep d[i]
+#     - otherwise keep d[i]
+def remove_transitive_deps(pkg,deps):
+    d = deps[pkg]
+    new_d = []
+    for i in range(len(d)):
+        keep_me = True
+        for j in range(len(d)):
+            if j==i:
+                continue
+            if is_dep(d[i],d[j],deps):
+                keep_me = False
+        if keep_me:
+            new_d.append(d[i])
+    return new_d
+
+# This functions trims down the dependency list of all packages.
+def remove_extra_deps(deps):
+    for pkg in deps.keys():
+        if not transitive:
+            deps[pkg] = remove_transitive_deps(pkg,deps)
+    return deps
+
+dict_deps = remove_extra_deps(dict_deps)
 
 # Print the attributes of a node: label and fill-color
 def print_attrs(pkg):
