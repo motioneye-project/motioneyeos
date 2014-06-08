@@ -279,12 +279,29 @@ class Buildroot:
                     pkg_list.append(re.sub(r"(.*?)\.mk", r"\1", file_))
             setattr(self, "_package_list", pkg_list)
         for pkg in getattr(self, "_package_list"):
-            if pattern.match(pkg):
-                return True
+            if type == 'real':
+                if pattern.match(pkg) and not self._exists_virt_symbol(pkg):
+                    return True
         return False
 
     def _is_real_package(self, symbol):
         return self._is_package(symbol, 'real')
+
+    def _exists_virt_symbol(self, pkg_name):
+        """ Return True if a symbol exists that defines the package as
+        a virtual package, False otherwise
+
+        :param pkg_name:    The name of the package, for which to check if
+                            a symbol exists defining it as a virtual package
+
+        """
+        virt_pattern = "BR2_PACKAGE_HAS_" + pkg_name + "$"
+        virt_pattern = re.sub("_", ".", virt_pattern)
+        virt_pattern = re.compile(virt_pattern, re.IGNORECASE)
+        for sym in self.config:
+            if virt_pattern.match(sym.get_name()):
+                return True
+        return False
 
     def _get_pkg_name(self, symbol):
         """ Return the package name of the specified symbol.
