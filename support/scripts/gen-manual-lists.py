@@ -75,8 +75,6 @@ def get_symbol_subset(root, filter_func):
         raise Exception(message)
     for item in get_items():
         if item.is_symbol():
-            if not item.prompts:
-                continue
             if not filter_func(item):
                 continue
             yield item
@@ -134,8 +132,6 @@ def format_asciidoc_table(root, get_label_func, filter_func=lambda x: True,
             return "| {0:<40}\n".format(item)
     lines = []
     for item in get_symbol_subset(root, filter_func):
-        if not item.is_symbol() or not item.prompts:
-            continue
         loc = get_symbol_parents(item, root, enable_choice=enable_choice)
         lines.append(_format_entry(get_label_func(item), loc, sub_menu))
     if sorted:
@@ -248,6 +244,10 @@ class Buildroot:
                         Note: only 'real' is (implictly) handled for now
 
         """
+        if not symbol.is_symbol():
+            return False
+        if type == 'real' and not symbol.prompts:
+            return False
         if not self.re_pkg_prefix.match(symbol.get_name()):
             return False
         pkg_name = self._get_pkg_name(symbol)
