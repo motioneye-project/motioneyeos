@@ -13,6 +13,7 @@ choice
 
 config BR2_PACKAGE_LIBJPEG
 	bool "jpeg"
+	select BR2_PACKAGE_HAS_JPEG
 	help
 	  The ubiquitous C library for manipulating JPEG images.
 
@@ -20,6 +21,7 @@ config BR2_PACKAGE_LIBJPEG
 
 config BR2_PACKAGE_JPEG_TURBO
 	bool "jpeg-turbo"
+	select BR2_PACKAGE_HAS_JPEG
 	help
 	  Libjpeg-turbo is a derivative of libjpeg that uses SIMD
 	  instructions (MMX, SSE2, NEON) to accelerate baseline JPEG
@@ -31,7 +33,7 @@ config BR2_PACKAGE_JPEG_TURBO
 endchoice
 
 config BR2_PACKAGE_HAS_JPEG
-	def_bool y
+	bool
 
 config BR2_PACKAGE_PROVIDES_JPEG
 	string
