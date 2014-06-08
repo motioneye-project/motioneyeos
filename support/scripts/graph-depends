@@ -37,6 +37,9 @@ mode = 0
 # Limit drawing the dependency graph to this depth. 0 means 'no limit'.
 max_depth = 0
 
+# Whether to draw the transitive dependencies
+transitive = True
+
 parser = argparse.ArgumentParser(description="Graph pacakges dependencies")
 parser.add_argument("--package", '-p', metavar="PACKAGE",
                     help="Graph the dependencies of PACKAGE")
