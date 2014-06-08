@@ -222,15 +222,22 @@ for dep in dependencies:
 
 # Print the attributes of a node: label and fill-color
 def print_attrs(pkg):
+    name = pkg_node_name(pkg)
     if pkg == 'all':
-        print "all [label = \"ALL\"]"
-        print "all [color=lightblue,style=filled]"
-        return
-    print "%s [label = \"%s\"]" % (pkg_node_name(pkg), pkg)
-    if mode == PKG_MODE and pkg == rootpkg:
-        print "%s [color=lightblue,style=filled]" % pkg_node_name(rootpkg)
+        label = 'ALL'
     else:
-        print "%s [color=grey,style=filled]" % pkg_node_name(pkg)
+        label = pkg
+    if pkg == 'all' or (mode == PKG_MODE and pkg == rootpkg):
+        color = 'lightblue'
+    else:
+        if pkg.startswith('host') \
+        or pkg.startswith('toolchain') \
+        or pkg.startswith('rootfs'):
+            color = 'gainsboro'
+        else:
+            color = 'grey'
+    print "%s [label = \"%s\"]" % (name, label)
+    print "%s [color=%s,style=filled]" % (name, color)
 
 # Print the dependency graph of a package
 def print_pkg_deps(depth, pkg):
