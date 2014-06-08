@@ -42,6 +42,12 @@ parser.add_argument("--package", '-p', metavar="PACKAGE",
                     help="Graph the dependencies of PACKAGE")
 parser.add_argument("--depth", '-d', metavar="DEPTH", dest="depth", type=int, default=0,
                     help="Limit the dependency graph to DEPTH levels; 0 means no limit.")
+parser.add_argument("--colours", "-c", metavar="COLOR_LIST", dest="colours",
+                    default="lightblue,grey,gainsboro",
+                    help="Comma-separated list of the three colours to use" \
+                       + " to draw the top-level package, the target" \
+                       + " packages, and the host packages, in this order." \
+                       + " Defaults to: 'lightblue,grey,gainsboro'")
 parser.add_argument("--transitive", dest="transitive", action='store_true',
                     default=True)
 parser.add_argument("--no-transitive", dest="transitive", action='store_false',
@@ -57,6 +63,17 @@ else:
 max_depth = args.depth
 
 transitive = args.transitive
+
+# Get the colours: we need exactly three colours,
+# so no need not split more than 4
+# We'll let 'dot' validate the colours...
+colours = args.colours.split(',',4)
+if len(colours) != 3:
+    sys.stderr.write("Error: incorrect colour list '%s'\n" % args.colours)
+    sys.exit(1)
+root_colour = colours[0]
+target_colour = colours[1]
+host_colour = colours[2]
 
 allpkgs = []
 
@@ -250,14 +267,14 @@ def print_attrs(pkg):
     else:
         label = pkg
     if pkg == 'all' or (mode == PKG_MODE and pkg == rootpkg):
-        color = 'lightblue'
+        color = root_colour
     else:
         if pkg.startswith('host') \
         or pkg.startswith('toolchain') \
         or pkg.startswith('rootfs'):
-            color = 'gainsboro'
+            color = host_colour
         else:
-            color = 'grey'
+            color = target_colour
     print "%s [label = \"%s\"]" % (name, label)
     print "%s [color=%s,style=filled]" % (name, color)
 
