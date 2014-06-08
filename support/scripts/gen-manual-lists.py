@@ -183,14 +183,14 @@ class Buildroot:
         'target-packages': {
             'filename': "package-list",
             'root_menu': "Target packages",
-            'filter': "_is_package",
+            'filter': "_is_real_package",
             'sorted': True,
             'sub_menu': True,
         },
         'host-packages': {
             'filename': "host-package-list",
             'root_menu': "Host utilities",
-            'filter': "_is_package",
+            'filter': "_is_real_package",
             'sorted': True,
             'sub_menu': False,
         },
@@ -238,11 +238,14 @@ class Buildroot:
         return bool([ symbol for x in symbol.get_referenced_symbols()
             if x.get_name().startswith(self._deprecated.get_name()) ])
 
-    def _is_package(self, symbol):
+    def _is_package(self, symbol, type='real'):
         """ Return True if the symbol is a package or a host package, otherwise
         False.
 
         :param symbol:  The symbol to check
+        :param type:    Limit to 'real' or 'virtual' types of packages,
+                        with 'real' being the default.
+                        Note: only 'real' is (implictly) handled for now
 
         """
         if not self.re_pkg_prefix.match(symbol.get_name()):
@@ -279,6 +282,9 @@ class Buildroot:
             if pattern.match(pkg):
                 return True
         return False
+
+    def _is_real_package(self, symbol):
+        return self._is_package(symbol, 'real')
 
     def _get_pkg_name(self, symbol):
         """ Return the package name of the specified symbol.
