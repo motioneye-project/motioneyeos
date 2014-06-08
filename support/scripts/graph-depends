@@ -146,40 +146,6 @@ def get_all_depends(pkgs):
 def pkg_node_name(pkg):
     return pkg.replace("-","")
 
-# Helper function for remove_redundant_deps(). This function tells
-# whether package "pkg" is the dependency of another package that is
-# not the special "all" package.
-def has_redundant_deps(deps, pkg):
-    for dep in deps:
-        if dep[0] != "all" and dep[1] == pkg:
-            return True
-    return False
-
-# This function removes redundant dependencies of the special "all"
-# package. This "all" package is created to reflect the origin of the
-# selection for all packages that are not themselves selected by any
-# other package. So for example if you enable libpng, zlib is enabled
-# as a dependency. But zlib being selected by libpng, it also appears
-# as a dependency of the "all" package. This needlessly complicates
-# the generated dependency graph. So when we have the dependency list
-# (all -> zlib, all -> libpn, libpng -> zlib), we get rid of the 'all
-# -> zlib' dependency, because zlib is already a dependency of a
-# regular package.
-def remove_redundant_deps(deps):
-    newdeps = []
-    for dep in deps:
-        if dep[0] == "all" and dep[1] == "toolchain":
-            newdeps.append(dep)
-            continue
-        if dep[0] != "all" and dep[1] != "toolchain":
-            newdeps.append(dep)
-            continue
-        if not has_redundant_deps(deps, dep[1]):
-            newdeps.append(dep)
-            continue
-        sys.stderr.write("Removing redundant dep %s -> %s\n" % (dep[0],dep[1]))
-    return newdeps
-
 TARGET_EXCEPTIONS = [
     "target-generic-securetty",
     "target-generic-issue",
@@ -216,8 +182,6 @@ if mode == FULL_MODE:
 # package
 elif mode == PKG_MODE:
     dependencies = get_all_depends([rootpkg])
-
-dependencies = remove_redundant_deps(dependencies)
 
 # Make the dependencies a dictionnary { 'pkg':[dep1, dep2, ...] }
 dict_deps = {}
@@ -260,10 +224,18 @@ def remove_transitive_deps(pkg,deps):
             new_d.append(d[i])
     return new_d
 
+# This function removes the dependency on the 'toolchain' package
+def remove_toolchain_deps(pkg,deps):
+    return [p for p in deps[pkg] if not p == 'toolchain']
+
 # This functions trims down the dependency list of all packages.
+# It applies in sequence all the dependency-elimination methods.
 def remove_extra_deps(deps):
     for pkg in deps.keys():
-        if not transitive:
+        if not pkg == 'all':
+            deps[pkg] = remove_toolchain_deps(pkg,deps)
+    for pkg in deps.keys():
+        if not transitive or pkg == 'all':
             deps[pkg] = remove_transitive_deps(pkg,deps)
     return deps
 
