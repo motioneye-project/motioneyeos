@@ -242,6 +242,8 @@ class Buildroot:
         """ Return True if the symbol is a package or a host package, otherwise
         False.
 
+        :param symbol:  The symbol to check
+
         """
         if not self.re_pkg_prefix.match(symbol.get_name()):
             return False
