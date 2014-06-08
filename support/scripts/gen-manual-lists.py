@@ -245,7 +245,7 @@ class Buildroot:
         """
         if not self.re_pkg_prefix.match(symbol.get_name()):
             return False
-        pkg_name = re.sub("BR2_PACKAGE_(HOST_)?(.*)", r"\2", symbol.get_name())
+        pkg_name = self._get_pkg_name(symbol)
 
         pattern = "^(HOST_)?" + pkg_name + "$"
         pattern = re.sub("_", ".", pattern)
@@ -277,6 +277,15 @@ class Buildroot:
             if pattern.match(pkg):
                 return True
         return False
+
+    def _get_pkg_name(self, symbol):
+        """ Return the package name of the specified symbol.
+
+        :param symbol:      The symbol to get the package name of
+
+        """
+
+        return re.sub("BR2_PACKAGE_(HOST_)?(.*)", r"\2", symbol.get_name())
 
     def _get_symbol_label(self, symbol, mark_deprecated=True):
         """ Return the label (a.k.a. prompt text) of the symbol.
