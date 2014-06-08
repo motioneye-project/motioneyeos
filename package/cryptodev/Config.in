@@ -18,6 +18,7 @@ choice
 config BR2_PACKAGE_CRYPTODEV_LINUX
 	bool "cryptodev-linux"
 	depends on !BR2_microblaze
+	select BR2_PACKAGE_HAS_CRYPTODEV
 	help
 	  Cryptodev-linux is a device that allows access to Linux kernel
 	  cryptographic drivers; thus allowing userspace applications
@@ -27,6 +28,7 @@ config BR2_PACKAGE_CRYPTODEV_LINUX
 
 config BR2_PACKAGE_OCF_LINUX
 	bool "ocf-linux"
+	select BR2_PACKAGE_HAS_CRYPTODEV
 	help
 	  OCF-Linux is a Linux port of the OpenBSD/FreeBSD Cryptographic
 	  Framework (OCF). This port aims to bring full asynchronous HW/SW
@@ -38,7 +40,7 @@ config BR2_PACKAGE_OCF_LINUX
 endchoice
 
 config BR2_PACKAGE_HAS_CRYPTODEV
-	def_bool y
+	bool
 
 config BR2_PACKAGE_PROVIDES_CRYPTODEV
 	string
