@@ -94,6 +94,8 @@ to +make+ or set in the environment:
   default), or +png+.
 * +BR2_GRAPH_DEPS_OPTS+ to pass extra options to the dependency graph; see
   xref:graph-depends[] for the accepted options
+* +BR2_GRAPH_DOT_OPTS+ is passed verbatim as options to the +dot+ utility to
+  draw the dependency graph.
 
 An example that uses config files located in the toplevel directory and
 in your $HOME:
@@ -204,8 +206,15 @@ The +graph-depends+ behaviour can be controlled by setting options in the
 * +--depth N+, +-d N+, to limit the dependency depth to +N+ levels. The
   default, +0+, means no limit.
 
+* +--transitive+, +--no-transitive+, to draw (or not) the transitive
+  dependencies. The default is to draw transitive dependencies.
+
+* +--colours R,T,H+, the comma-separated list of colours to draw the
+  root package (+R+), the target packages (+T+) and the host packages
+  (+H+). Defaults to: +lightblue,grey,gainsboro+
+
 --------------------------------
-BR2_GRAPH_DEPS_OPTS='-d 3' make graph-depends
+BR2_GRAPH_DEPS_OPTS='-d 3 --no-transitive --colours=red,green,blue' make graph-depends
 --------------------------------
 
 === Graphing the build duration
