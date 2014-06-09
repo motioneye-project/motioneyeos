@@ -207,7 +207,7 @@ The +graph-depends+ behaviour can be controlled by setting options in the
   default, +0+, means no limit.
 
 * +--transitive+, +--no-transitive+, to draw (or not) the transitive
-  dependencies. The default is to draw transitive dependencies.
+  dependencies. The default is to not draw transitive dependencies.
 
 * +--colours R,T,H+, the comma-separated list of colours to draw the
   root package (+R+), the target packages (+T+) and the host packages

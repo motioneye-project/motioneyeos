@@ -48,7 +48,7 @@ parser.add_argument("--colours", "-c", metavar="COLOR_LIST", dest="colours",
                        + " packages, and the host packages, in this order." \
                        + " Defaults to: 'lightblue,grey,gainsboro'")
 parser.add_argument("--transitive", dest="transitive", action='store_true',
-                    default=True)
+                    default=False)
 parser.add_argument("--no-transitive", dest="transitive", action='store_false',
                     help="Draw (do not draw) transitive dependencies")
 args = parser.parse_args()
