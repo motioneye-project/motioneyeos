@@ -10,7 +10,7 @@ WESTON_SOURCE = weston-$(WESTON_VERSION).tar.xz
 WESTON_LICENSE = MIT
 WESTON_LICENSE_FILES = COPYING
 
-WESTON_DEPENDENCIES = host-pkgconf wayland pixman libpng \
+WESTON_DEPENDENCIES = host-pkgconf wayland libxkbcommon pixman libpng \
 	jpeg mtdev udev cairo
 
 WESTON_CONF_OPT = \
@@ -24,13 +24,6 @@ WESTON_CONF_OPT = \
 	--disable-headless-compositor \
 	--disable-weston-launch \
 	--disable-colord
-
-ifeq ($(BR2_PACKAGE_WESTON_HW_KBD),y)
-WESTON_DEPENDENCIES += libxkbcommon
-WESTON_CONF_OPT += --enable-xkbcommon
-else
-WESTON_CONF_OPT += --disable-xkbcommon
-endif
 
 ifeq ($(BR2_PACKAGE_LIBINPUT),y)
 WESTON_DEPENDENCIES += libinput
