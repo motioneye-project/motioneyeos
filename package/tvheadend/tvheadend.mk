@@ -14,12 +14,6 @@ ifeq ($(BR2_PACKAGE_AVAHI),y)
 TVHEADEND_DEPENDENCIES += avahi
 endif
 
-#----------------------------------------------------------------------------
-# tvheadend is a little smuggler and thief! ;-)
-# During the ./configure, it downloads some files from the dtv-scan-tables
-# package, so it has a list of pre-scanned tunner configurations.
-# For buildroot, we add a patch that avoids doing that, but uses the
-# scan files installed by the dtv-scan-tables package
 TVHEADEND_DEPENDENCIES += dtv-scan-tables
 
 define TVHEADEND_CONFIGURE_CMDS
@@ -31,6 +25,7 @@ define TVHEADEND_CONFIGURE_CMDS
 	 --arch="$(ARCH)"			\
 	 --cpu="$(BR2_GCC_TARGET_CPU)"		\
 	 --python="$(HOST_DIR)/usr/bin/python"	\
+	 --disable-dvbscan			\
 	)
 endef
 
