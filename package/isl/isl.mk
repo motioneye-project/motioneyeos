@@ -12,7 +12,6 @@ ISL_SOURCE = isl-$(ISL_VERSION).tar.bz2
 ISL_SITE = http://isl.gforge.inria.fr/
 ISL_LICENSE = MIT
 ISL_LICENSE_FILES = LICENSE
-ISL_INSTALL_STAGING = YES
 ISL_DEPENDENCIES = gmp
 
 # Our libtool patch doesn't apply, and since this package is only
