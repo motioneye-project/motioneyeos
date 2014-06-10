@@ -11,6 +11,8 @@ FAIFA_DEPENDENCIES = libpcap host-autoconf
 FAIFA_LICENSE = GPLv2+
 FAIFA_LICENSE_FILES = COPYING
 
+FAIFA_MAKE_OPT += GIT_REV=$(FAIFA_VERSION)
+
 # This package uses autoconf, but not automake, so we need to call
 # their special autogen.sh script, and have custom target and staging
 # installation commands.
