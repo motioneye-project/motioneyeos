@@ -1,6 +1,7 @@
 config BR2_PACKAGE_ZNC
 	bool "znc"
 	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_USE_MMU # fork()
 	help
 	  Advanced IRC bouncer
 
@@ -8,3 +9,4 @@ config BR2_PACKAGE_ZNC
 
 comment "znc needs a toolchain w/ C++"
 	depends on !BR2_INSTALL_LIBSTDCPP
+	depends on BR2_USE_MMU
