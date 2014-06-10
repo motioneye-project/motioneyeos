@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-P910ND_VERSION = 0.95
+P910ND_VERSION = 0.97
 P910ND_SITE = http://downloads.sourceforge.net/project/p910nd/p910nd/$(P910ND_VERSION)
 P910ND_SOURCE = p910nd-$(P910ND_VERSION).tar.bz2
 P910ND_LICENSE = GPLv2
