@@ -2,15 +2,27 @@ Disable tests to avoid cross-compilation issues (tries to run genrandom).
 
 Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
 
-diff -Nura bind-9.6-ESV-R9-P1.orig/bin/Makefile.in bind-9.6-ESV-R9-P1/bin/Makefile.in
---- bind-9.6-ESV-R9-P1.orig/bin/Makefile.in	2013-06-04 15:30:48.000000000 -0300
-+++ bind-9.6-ESV-R9-P1/bin/Makefile.in	2013-07-19 15:32:19.018287733 -0300
+diff -Nura bind-9.9.4-P2.orig/bin/Makefile.in bind-9.9.4-P2/bin/Makefile.in
+--- bind-9.9.4-P2.orig/bin/Makefile.in	2013-12-19 21:28:28.000000000 -0300
++++ bind-9.9.4-P2/bin/Makefile.in	2014-01-17 11:41:25.378784210 -0300
 @@ -19,7 +19,7 @@
  VPATH =		@srcdir@
  top_srcdir =	@top_srcdir@
-
--SUBDIRS =	named rndc dig dnssec tests nsupdate check
-+SUBDIRS =	named rndc dig dnssec nsupdate check
+ 
+-SUBDIRS =	named rndc dig dnssec tools tests nsupdate \
++SUBDIRS =	named rndc dig dnssec tools nsupdate \
+ 		check confgen @PYTHON_TOOLS@ @PKCS11_TOOLS@
  TARGETS =
-
+ 
+diff -Nura bind-9.9.4-P2.orig/lib/Makefile.in bind-9.9.4-P2/lib/Makefile.in
+--- bind-9.9.4-P2.orig/lib/Makefile.in	2013-12-19 21:28:28.000000000 -0300
++++ bind-9.9.4-P2/lib/Makefile.in	2014-01-17 11:41:30.489954861 -0300
+@@ -23,7 +23,7 @@
+ # Attempt to disable parallel processing.
+ .NOTPARALLEL:
+ .NO_PARALLEL:
+-SUBDIRS =	isc isccc dns isccfg bind9 lwres tests
++SUBDIRS =	isc isccc dns isccfg bind9 lwres
+ TARGETS =
+ 
  @BIND9_MAKE_RULES@

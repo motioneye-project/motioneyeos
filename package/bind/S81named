@@ -1,48 +1,31 @@
 #!/bin/sh
-#
-# System-V init to control the bind DNS Daemon
-#
 
-NAME=named
-DAEMON=/usr/sbin/$NAME
+CONFIG=/etc/bind/named.conf
+DAEMON=/usr/sbin/named
 
-# this file contains a few tunable parameters
-test -r /etc/default/named && . /etc/default/named
-
-test -f $DAEMON || exit 0
-
-set -e
+[ -x $DAEMON ] || exit 0
+[ -f $CONFIG ] || exit 0
 
 case "$1" in
 	start)
-		test -z "$CHROOT" || ARGS="$ARGS -t $CHROOT"
-		test -z "$SETUID" || ARGS="$ARGS -u $SETUID"
-		if [ ! -f $CHROOT/etc/rndc.key ]; then
-		    echo "Initializing $NAME control key: rndc-confgen"
-		    set +e
-
+		if [ ! -f /etc/rndc.key ]; then
+		    echo -n "Initializing bind control key: "
                     # if rndc.key is a symlink, the target must exist
-		    touch $CHROOT/etc/rndc.key
-		    touch etc/rndc.key
-
-		    rndc-confgen -a -r /dev/urandom $ARGS || true
-		    set -e
+		    touch /etc/rndc.key
+		    rndc-confgen -a -r /dev/urandom 2>/dev/null && echo "OK" || echo "FAIL"
 		fi
-		test -z "$CONF" || ARGS="$ARGS -c $CONF"
-		echo -n "Starting domain name daemon: $NAME"
-		trap 'echo failed' 0
-		start-stop-daemon -S -x $DAEMON -- $ARGS
-		trap - 0
-		echo "."
+		echo -n "Starting domain name daemon: "
+		start-stop-daemon -S -x $DAEMON -- -c $CONFIG -u named
+		[ $? == 0 ] && echo "OK" || echo "FAIL"
 		;;
 	stop)
-		echo -n "Stopping domain name daemon: $NAME"
+		echo -n "Stopping domain name daemon: "
 		rndc stop || start-stop-daemon -K -x $DAEMON
-		echo "."
+		[ $? == 0 ] && echo "OK" || echo "FAIL"
 		;;
 	restart)
 		$0 stop || true
-		sleep 2
+		sleep 1
 		$0 start
 		;;
 	reload|force-reload)
