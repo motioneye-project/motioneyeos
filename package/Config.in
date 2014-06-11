@@ -859,6 +859,7 @@ menu "Text and terminal handling"
 	source "package/popt/Config.in"
 	source "package/readline/Config.in"
 	source "package/slang/Config.in"
+	source "package/tclap/Config.in"
 endmenu
 
 endmenu
