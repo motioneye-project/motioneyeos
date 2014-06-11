@@ -35,8 +35,8 @@
 define inner-virtual-package
 
 # Ensure the virtual package has an implementation defined.
-ifeq ($(BR2_PACKAGE_HAS_$(2)),y)
-ifeq ($(call qstrip,$(BR2_PACKAGE_PROVIDES_$(2))),)
+ifeq ($$(BR2_PACKAGE_HAS_$(2)),y)
+ifeq ($$(call qstrip,$$(BR2_PACKAGE_PROVIDES_$(2))),)
 $$(error No implementation selected for virtual package $(1). Configuration error)
 endif
 endif
@@ -50,11 +50,13 @@ HOST_$(3)_VERSION = virtual
 
 # This must be repeated from inner-generic-package, otherwise we get an empty
 # _DEPENDENCIES
-$(2)_DEPENDENCIES ?= $(filter-out host-toolchain $(1),\
-	$(patsubst host-host-%,host-%,$(addprefix host-,$($(3)_DEPENDENCIES))))
+ifeq ($(4),host)
+$(2)_DEPENDENCIES ?= $$(filter-out host-toolchain $(1),\
+	$$(patsubst host-host-%,host-%,$$(addprefix host-,$$($(3)_DEPENDENCIES))))
+endif
 
 # Add dependency against the provider
-$(2)_DEPENDENCIES += $(call qstrip,$(BR2_PACKAGE_PROVIDES_$(2)))
+$(2)_DEPENDENCIES += $$(call qstrip,$$(BR2_PACKAGE_PROVIDES_$(2)))
 
 # Call the generic package infrastructure to generate the necessary
 # make targets

@@ -33,8 +33,8 @@ manual-check-dependencies-lists:
 	fi
 
 ################################################################################
-# GENDOC -- generates the make targets needed to build a specific type of
-#           asciidoc documentation.
+# GENDOC_INNER -- generates the make targets needed to build a specific type of
+#                 asciidoc documentation.
 #
 #  argument 1 is the name of the document and must be a subdirectory of docs/;
 #             the top-level asciidoc file must have the same name
@@ -45,6 +45,9 @@ manual-check-dependencies-lists:
 #  argument 6 (optional) are extra arguments for a2x
 #
 # The variable <DOCUMENT_NAME>_SOURCES defines the dependencies.
+#
+# Since this function will be called from within an $(eval ...)
+# all variable references except the arguments must be $$-quoted.
 ################################################################################
 define GENDOC_INNER
 $(1): $(1)-$(3)
@@ -54,16 +57,16 @@ $(1)-$(3): $$(O)/docs/$(1)/$(1).$(4)
 manual-check-dependencies-$(3):
 
 $$(O)/docs/$(1)/$(1).$(4): docs/$(1)/$(1).txt \
-			   $$($(call UPPERCASE,$(1))_SOURCES) \
+			   $$($$(call UPPERCASE,$(1))_SOURCES) \
 			   manual-check-dependencies \
 			   manual-check-dependencies-$(3) \
 			   manual-update-lists
-	$(Q)$(call MESSAGE,"Generating $(5) $(1)...")
-	$(Q)mkdir -p $$(@D)/.build
-	$(Q)rsync -au docs/$(1)/*.txt $$(@D)/.build
-	$(Q)a2x $(6) -f $(2) -d book -L -r $(TOPDIR)/docs/images \
+	$$(Q)$$(call MESSAGE,"Generating $(5) $(1)...")
+	$$(Q)mkdir -p $$(@D)/.build
+	$$(Q)rsync -au docs/$(1)/*.txt $$(@D)/.build
+	$$(Q)a2x $(6) -f $(2) -d book -L -r $$(TOPDIR)/docs/images \
 	        -D $$(@D) $$(@D)/.build/$(1).txt
-	-$(Q)rm -rf $$(@D)/.build
+	-$$(Q)rm -rf $$(@D)/.build
 endef
 
 ################################################################################
@@ -82,7 +85,7 @@ $(call GENDOC_INNER,$(1),text,text,text,text)
 $(call GENDOC_INNER,$(1),epub,epub,epub,ePUB)
 clean: $(1)-clean
 $(1)-clean:
-	$(Q)$(RM) -rf $(O)/docs/$(1)
+	$$(Q)$$(RM) -rf $$(O)/docs/$(1)
 .PHONY: $(1) $(1)-clean manual-update-lists
 endef
 

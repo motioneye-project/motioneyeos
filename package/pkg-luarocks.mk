@@ -34,10 +34,10 @@
 define inner-luarocks-package
 
 $(2)_BUILD_OPT		?=
-$(2)_SUBDIR		?= $(1)-$(shell echo "$($(3)_VERSION)" | sed -e "s/-[0-9]$$//")
-$(2)_ROCKSPEC		?= $(1)-$($(3)_VERSION).rockspec
-$(2)_SOURCE		?= $(1)-$($(3)_VERSION).src.rock
-$(2)_SITE		?= $(call qstrip,$(BR2_LUAROCKS_MIRROR))
+$(2)_SUBDIR		?= $(1)-$$(shell echo "$$($(3)_VERSION)" | sed -e "s/-[0-9]$$$$//")
+$(2)_ROCKSPEC		?= $(1)-$$($(3)_VERSION).rockspec
+$(2)_SOURCE		?= $(1)-$$($(3)_VERSION).src.rock
+$(2)_SITE		?= $$(call qstrip,$$(BR2_LUAROCKS_MIRROR))
 
 # Since we do not support host-luarocks-package, we know this is
 # a target package, and can just add the required dependencies
@@ -49,7 +49,7 @@ $(2)_DEPENDENCIES	+= host-luarocks luainterpreter
 ifndef $(2)_EXTRACT_CMDS
 define $(2)_EXTRACT_CMDS
 	cd $$($(2)_DIR)/.. && \
-	 $$(LUAROCKS_RUN) unpack --force $(DL_DIR)/$$($(2)_SOURCE)
+	 $$(LUAROCKS_RUN) unpack --force $$(DL_DIR)/$$($(2)_SOURCE)
 endef
 endif
 

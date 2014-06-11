@@ -282,7 +282,7 @@ define inner-generic-package
 
 $(2)_TYPE                       =  $(4)
 $(2)_NAME			=  $(1)
-$(2)_RAWNAME			=  $(patsubst host-%,%,$(1))
+$(2)_RAWNAME			=  $$(patsubst host-%,%,$(1))
 
 # Keep the package version that may contain forward slashes in the _DL_VERSION
 # variable, then replace all forward slashes ('/') by underscores ('_') to
@@ -291,15 +291,15 @@ $(2)_RAWNAME			=  $(patsubst host-%,%,$(1))
 # version control system branch or tag, for example remotes/origin/1_10_stable.
 ifndef $(2)_VERSION
  ifdef $(3)_VERSION
-  $(2)_DL_VERSION = $($(3)_VERSION)
-  $(2)_VERSION = $(subst /,_,$($(3)_VERSION))
+  $(2)_DL_VERSION = $$($(3)_VERSION)
+  $(2)_VERSION := $$(subst /,_,$$($(3)_VERSION))
  else
   $(2)_VERSION = undefined
   $(2)_DL_VERSION = undefined
  endif
 else
-  $(2)_DL_VERSION = $($(2)_VERSION)
-  $(2)_VERSION = $(subst /,_,$($(2)_VERSION))
+  $(2)_DL_VERSION = $$($(2)_VERSION)
+  $(2)_VERSION := $$(subst /,_,$$($(2)_VERSION))
 endif
 
 $(2)_BASE_NAME	=  $(1)-$$($(2)_VERSION)
@@ -323,7 +323,7 @@ endif
 
 ifndef $(2)_SOURCE
  ifdef $(3)_SOURCE
-  $(2)_SOURCE = $($(3)_SOURCE)
+  $(2)_SOURCE = $$($(3)_SOURCE)
  else
   $(2)_SOURCE			?= $$($(2)_RAWNAME)-$$($(2)_VERSION).tar.gz
  endif
@@ -331,22 +331,22 @@ endif
 
 ifndef $(2)_PATCH
  ifdef $(3)_PATCH
-  $(2)_PATCH = $($(3)_PATCH)
+  $(2)_PATCH = $$($(3)_PATCH)
  endif
 endif
 
 ifndef $(2)_SITE
  ifdef $(3)_SITE
-  $(2)_SITE = $($(3)_SITE)
+  $(2)_SITE = $$($(3)_SITE)
  endif
 endif
 
 ifndef $(2)_SITE_METHOD
  ifdef $(3)_SITE_METHOD
-  $(2)_SITE_METHOD = $($(3)_SITE_METHOD)
+  $(2)_SITE_METHOD = $$($(3)_SITE_METHOD)
  else
 	# Try automatic detection using the scheme part of the URI
-	$(2)_SITE_METHOD = $(call geturischeme,$($(2)_SITE))
+	$(2)_SITE_METHOD = $$(call geturischeme,$$($(2)_SITE))
  endif
 endif
 
@@ -358,7 +358,7 @@ endif
 
 ifndef $(2)_LICENSE
  ifdef $(3)_LICENSE
-  $(2)_LICENSE = $($(3)_LICENSE)
+  $(2)_LICENSE = $$($(3)_LICENSE)
  endif
 endif
 
@@ -366,13 +366,13 @@ $(2)_LICENSE			?= unknown
 
 ifndef $(2)_LICENSE_FILES
  ifdef $(3)_LICENSE_FILES
-  $(2)_LICENSE_FILES = $($(3)_LICENSE_FILES)
+  $(2)_LICENSE_FILES = $$($(3)_LICENSE_FILES)
  endif
 endif
 
 ifndef $(2)_REDISTRIBUTE
  ifdef $(3)_REDISTRIBUTE
-  $(2)_REDISTRIBUTE = $($(3)_REDISTRIBUTE)
+  $(2)_REDISTRIBUTE = $$($(3)_REDISTRIBUTE)
  endif
 endif
 
@@ -383,8 +383,10 @@ $(2)_REDISTRIBUTE		?= YES
 # dependency
 $(2)_ADD_TOOLCHAIN_DEPENDENCY	?= YES
 
-$(2)_DEPENDENCIES ?= $(filter-out  host-toolchain $(1),\
-	$(patsubst host-host-%,host-%,$(addprefix host-,$($(3)_DEPENDENCIES))))
+ifeq ($(4),host)
+$(2)_DEPENDENCIES ?= $$(filter-out  host-toolchain $(1),\
+	$$(patsubst host-host-%,host-%,$$(addprefix host-,$$($(3)_DEPENDENCIES))))
+endif
 ifeq ($(4),target)
 ifeq ($$($(2)_ADD_TOOLCHAIN_DEPENDENCY),YES)
 $(2)_DEPENDENCIES += toolchain
@@ -414,8 +416,8 @@ $(2)_TARGET_DIRCLEAN =		$$($(2)_DIR)/.stamp_dircleaned
 
 # default extract command
 $(2)_EXTRACT_CMDS ?= \
-	$$(if $$($(2)_SOURCE),$$(INFLATE$$(suffix $$($(2)_SOURCE))) $(DL_DIR)/$$($(2)_SOURCE) | \
-	$(TAR) $(TAR_STRIP_COMPONENTS)=1 -C $$($(2)_DIR) $(TAR_OPTIONS) -)
+	$$(if $$($(2)_SOURCE),$$(INFLATE$$(suffix $$($(2)_SOURCE))) $$(DL_DIR)/$$($(2)_SOURCE) | \
+	$$(TAR) $$(TAR_STRIP_COMPONENTS)=1 -C $$($(2)_DIR) $$(TAR_OPTIONS) -)
 
 # pre/post-steps hooks
 $(2)_PRE_DOWNLOAD_HOOKS         ?=
@@ -489,7 +491,7 @@ $(1)-configure:			$$($(2)_TARGET_CONFIGURE)
 $$($(2)_TARGET_CONFIGURE):	| $$($(2)_FINAL_DEPENDENCIES)
 
 $$($(2)_TARGET_SOURCE) $$($(2)_TARGET_RSYNC): | dirs prepare
-ifeq ($(filter $(1),$(DEPENDENCIES_HOST_PREREQ)),)
+ifeq ($$(filter $(1),$$(DEPENDENCIES_HOST_PREREQ)),)
 $$($(2)_TARGET_SOURCE) $$($(2)_TARGET_RSYNC): | dependencies
 endif
 
@@ -532,11 +534,11 @@ $(1)-show-depends:
 			@echo $$($(2)_FINAL_DEPENDENCIES)
 
 $(1)-graph-depends:
-			@$(INSTALL) -d $(O)/graphs
-			@cd "$(CONFIG_DIR)"; \
-			$(TOPDIR)/support/scripts/graph-depends -p $(1) $(BR2_GRAPH_DEPS_OPTS) \
-			|tee $(O)/graphs/$$(@).dot \
-			|dot $(BR2_GRAPH_DOT_OPTS) -T$(BR_GRAPH_OUT) -o $(O)/graphs/$$(@).$(BR_GRAPH_OUT)
+			@$$(INSTALL) -d $$(O)/graphs
+			@cd "$$(CONFIG_DIR)"; \
+			$$(TOPDIR)/support/scripts/graph-depends -p $(1) $$(BR2_GRAPH_DEPS_OPTS) \
+			|tee $$(O)/graphs/$$(@).dot \
+			|dot $$(BR2_GRAPH_DOT_OPTS) -T$$(BR_GRAPH_OUT) -o $$(O)/graphs/$$(@).$$(BR_GRAPH_OUT)
 
 $(1)-dirclean:		$$($(2)_TARGET_DIRCLEAN)
 
@@ -570,7 +572,7 @@ $$($(2)_TARGET_RSYNC):                  PKG=$(2)
 $$($(2)_TARGET_RSYNC_SOURCE):		SRCDIR=$$($(2)_OVERRIDE_SRCDIR)
 $$($(2)_TARGET_RSYNC_SOURCE):		PKG=$(2)
 $$($(2)_TARGET_PATCH):			PKG=$(2)
-$$($(2)_TARGET_PATCH):			RAWNAME=$(patsubst host-%,%,$(1))
+$$($(2)_TARGET_PATCH):			RAWNAME=$$(patsubst host-%,%,$(1))
 $$($(2)_TARGET_PATCH):			PKGDIR=$(pkgdir)
 $$($(2)_TARGET_EXTRACT):		PKG=$(2)
 $$($(2)_TARGET_SOURCE):			PKG=$(2)
@@ -581,9 +583,9 @@ $$($(2)_TARGET_DIRCLEAN):		PKG=$(2)
 # kernel case, the bootloaders case, and the normal packages case.
 ifeq ($(1),linux)
 $(2)_KCONFIG_VAR = BR2_LINUX_KERNEL
-else ifneq ($(filter boot/%,$(pkgdir)),)
+else ifneq ($$(filter boot/%,$(pkgdir)),)
 $(2)_KCONFIG_VAR = BR2_TARGET_$(2)
-else ifneq ($(filter toolchain/%,$(pkgdir)),)
+else ifneq ($$(filter toolchain/%,$(pkgdir)),)
 $(2)_KCONFIG_VAR = BR2_$(2)
 else
 $(2)_KCONFIG_VAR = BR2_PACKAGE_$(2)
@@ -599,7 +601,7 @@ ifeq ($$($(2)_REDISTRIBUTE),YES)
 ifneq ($$($(2)_SITE_METHOD),local)
 ifneq ($$($(2)_SITE_METHOD),override)
 # Packages that have a tarball need it downloaded and extracted beforehand
-$(1)-legal-info: $(1)-extract $(REDIST_SOURCES_DIR_$(call UPPERCASE,$(4)))
+$(1)-legal-info: $(1)-extract $$(REDIST_SOURCES_DIR_$$(call UPPERCASE,$(4)))
 $(2)_MANIFEST_TARBALL = $$($(2)_SOURCE)
 endif
 endif
@@ -609,40 +611,37 @@ $(2)_MANIFEST_TARBALL ?= not saved
 # legal-info: produce legally relevant info.
 $(1)-legal-info:
 # Packages without a source are assumed to be part of Buildroot, skip them.
-	$(foreach hook,$($(2)_PRE_LEGAL_INFO_HOOKS),$(call $(hook))$(sep))
-ifneq ($(call qstrip,$$($(2)_SOURCE)),)
+	$$(foreach hook,$$($(2)_PRE_LEGAL_INFO_HOOKS),$$(call $$(hook))$$(sep))
+ifneq ($$(call qstrip,$$($(2)_SOURCE)),)
 
 ifeq ($$($(2)_SITE_METHOD),local)
 # Packages without a tarball: don't save and warn
-	@$(call legal-warning-pkg-savednothing,$$($(2)_RAWNAME),local)
+	@$$(call legal-warning-pkg-savednothing,$$($(2)_RAWNAME),local)
 
 else ifneq ($$($(2)_OVERRIDE_SRCDIR),)
-	@$(call legal-warning-pkg-savednothing,$$($(2)_RAWNAME),override)
+	@$$(call legal-warning-pkg-savednothing,$$($(2)_RAWNAME),override)
 
 else
 # Other packages
 
 # Save license files if defined
-ifeq ($(call qstrip,$$($(2)_LICENSE_FILES)),)
-	@$(call legal-license-nofiles,$$($(2)_RAWNAME),$(call UPPERCASE,$(4)))
-	@$(call legal-warning-pkg,$$($(2)_RAWNAME),cannot save license ($(2)_LICENSE_FILES not defined))
+ifeq ($$(call qstrip,$$($(2)_LICENSE_FILES)),)
+	@$$(call legal-license-nofiles,$$($(2)_RAWNAME),$$(call UPPERCASE,$(4)))
+	@$$(call legal-warning-pkg,$$($(2)_RAWNAME),cannot save license ($(2)_LICENSE_FILES not defined))
 else
-# Double dollar signs are really needed here, to catch host packages
-# without explicit HOST_FOO_LICENSE_FILES assignment, also in case they
-# have multiple license files.
-	@$$(foreach F,$$($(2)_LICENSE_FILES),$$(call legal-license-file,$$($(2)_RAWNAME),$$(F),$$($(2)_DIR)/$$(F),$(call UPPERCASE,$(4)))$$(sep))
+	@$$(foreach F,$$($(2)_LICENSE_FILES),$$(call legal-license-file,$$($(2)_RAWNAME),$$(F),$$($(2)_DIR)/$$(F),$$(call UPPERCASE,$(4)))$$(sep))
 endif # license files
 
 ifeq ($$($(2)_REDISTRIBUTE),YES)
 # Copy the source tarball (just hardlink if possible)
-	@cp -l $(DL_DIR)/$$($(2)_SOURCE) $(REDIST_SOURCES_DIR_$(call UPPERCASE,$(4))) 2>/dev/null || \
-	   cp $(DL_DIR)/$$($(2)_SOURCE) $(REDIST_SOURCES_DIR_$(call UPPERCASE,$(4)))
+	@cp -l $$(DL_DIR)/$$($(2)_SOURCE) $$(REDIST_SOURCES_DIR_$$(call UPPERCASE,$(4))) 2>/dev/null || \
+	   cp $$(DL_DIR)/$$($(2)_SOURCE) $$(REDIST_SOURCES_DIR_$$(call UPPERCASE,$(4)))
 endif # redistribute
 
 endif # other packages
-	@$(call legal-manifest,$$($(2)_RAWNAME),$$($(2)_VERSION),$$($(2)_LICENSE),$$($(2)_MANIFEST_LICENSE_FILES),$$($(2)_MANIFEST_TARBALL),$(call UPPERCASE,$(4)))
-endif # ifneq ($(call qstrip,$$($(2)_SOURCE)),)
-	$(foreach hook,$($(2)_POST_LEGAL_INFO_HOOKS),$(call $(hook))$(sep))
+	@$$(call legal-manifest,$$($(2)_RAWNAME),$$($(2)_VERSION),$$($(2)_LICENSE),$$($(2)_MANIFEST_LICENSE_FILES),$$($(2)_MANIFEST_TARBALL),$$(call UPPERCASE,$(4)))
+endif # ifneq ($$(call qstrip,$$($(2)_SOURCE)),)
+	$$(foreach hook,$$($(2)_POST_LEGAL_INFO_HOOKS),$$(call $$(hook))$$(sep))
 
 # add package to the general list of targets if requested by the buildroot
 # configuration
@@ -685,8 +684,8 @@ endif # SITE_METHOD
 # ZCAT="gzip -d -c", and to check for the dependency we only want 'gzip'.
 # Do not add xzcat to the list of required dependencies, as it gets built
 # automatically if it isn't found.
-ifneq ($(call suitable-extractor,$($(2)_SOURCE)),$(XZCAT))
-DL_TOOLS_DEPENDENCIES += $(firstword $(call suitable-extractor,$($(2)_SOURCE)))
+ifneq ($$(call suitable-extractor,$$($(2)_SOURCE)),$$(XZCAT))
+DL_TOOLS_DEPENDENCIES += $$(firstword $$(call suitable-extractor,$$($(2)_SOURCE)))
 endif
 
 endif # $(2)_KCONFIG_VAR

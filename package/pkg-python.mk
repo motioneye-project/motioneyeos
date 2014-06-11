@@ -82,7 +82,7 @@ HOST_PKG_PYTHON_SETUPTOOLS_INSTALL_OPT = \
 
 define inner-python-package
 
-$(2)_SRCDIR	= $$($(2)_DIR)/$($(2)_SUBDIR)
+$(2)_SRCDIR	= $$($(2)_DIR)/$$($(2)_SUBDIR)
 $(2)_BUILDDIR	= $$($(2)_SRCDIR)
 
 $(2)_ENV         ?=
@@ -91,7 +91,7 @@ $(2)_INSTALL_OPT ?=
 
 ifndef $(2)_SETUP_TYPE
  ifdef $(3)_SETUP_TYPE
-  $(2)_SETUP_TYPE = $($(3)_SETUP_TYPE)
+  $(2)_SETUP_TYPE = $$($(3)_SETUP_TYPE)
  else
   $$(error "$(2)_SETUP_TYPE must be set")
  endif
@@ -138,7 +138,9 @@ endif
 # depending on the package characteristics, and shouldn't be derived
 # automatically from the dependencies of the corresponding target
 # package.
-$(2)_DEPENDENCIES ?= $(filter-out host-python host-python3 host-python-setuptools host-toolchain $(1),$(patsubst host-host-%,host-%,$(addprefix host-,$($(3)_DEPENDENCIES))))
+ifeq ($(4),host)
+$(2)_DEPENDENCIES ?= $$(filter-out host-python host-python3 host-python-setuptools host-toolchain $(1),$$(patsubst host-host-%,host-%,$$(addprefix host-,$$($(3)_DEPENDENCIES))))
+endif
 
 # Target packages need both the python interpreter on the target (for
 # runtime) and the python interpreter on the host (for
@@ -155,19 +157,19 @@ $(2)_DEPENDENCIES ?= $(filter-out host-python host-python3 host-python-setuptool
 #   - otherwise, we depend on the one requested by *_NEEDS_HOST_PYTHON.
 #
 ifeq ($(4),target)
-$(2)_DEPENDENCIES += $(if $(BR2_PACKAGE_PYTHON3),host-python3 python3,host-python python)
+$(2)_DEPENDENCIES += $$(if $$(BR2_PACKAGE_PYTHON3),host-python3 python3,host-python python)
 else
-ifeq ($($(2)_NEEDS_HOST_PYTHON),)
-$(2)_DEPENDENCIES += $(if $(BR2_PACKAGE_PYTHON3),host-python3,host-python)
+ifeq ($$($(2)_NEEDS_HOST_PYTHON),)
+$(2)_DEPENDENCIES += $$(if $$(BR2_PACKAGE_PYTHON3),host-python3,host-python)
 else
-ifeq ($($(2)_NEEDS_HOST_PYTHON),python2)
+ifeq ($$($(2)_NEEDS_HOST_PYTHON),python2)
 $(2)_DEPENDENCIES += host-python
-else ifeq ($($(2)_NEEDS_HOST_PYTHON),python3)
+else ifeq ($$($(2)_NEEDS_HOST_PYTHON),python3)
 $(2)_DEPENDENCIES += host-python3
 else
-$$(error Incorrect value '$($(2)_NEEDS_HOST_PYTHON)' for $(2)_NEEDS_HOST_PYTHON)
+$$(error Incorrect value '$$($(2)_NEEDS_HOST_PYTHON)' for $(2)_NEEDS_HOST_PYTHON)
 endif
-endif # ($($(2)_NEEDS_HOST_PYTHON),)
+endif # ($$($(2)_NEEDS_HOST_PYTHON),)
 endif # ($(4),target)
 
 # Setuptools based packages will need host-python-setuptools (both
@@ -196,12 +198,12 @@ endif
 #   - otherwise, we use the one requested by *_NEEDS_HOST_PYTHON.
 #
 ifeq ($(4),target)
-$(2)_PYTHON_INTERPRETER = $(HOST_DIR)/usr/bin/python
+$(2)_PYTHON_INTERPRETER = $$(HOST_DIR)/usr/bin/python
 else
-ifeq ($($(2)_NEEDS_HOST_PYTHON),)
-$(2)_PYTHON_INTERPRETER = $(HOST_DIR)/usr/bin/python
+ifeq ($$($(2)_NEEDS_HOST_PYTHON),)
+$(2)_PYTHON_INTERPRETER = $$(HOST_DIR)/usr/bin/python
 else
-$(2)_PYTHON_INTERPRETER = $(HOST_DIR)/usr/bin/$($(2)_NEEDS_HOST_PYTHON)
+$(2)_PYTHON_INTERPRETER = $$(HOST_DIR)/usr/bin/$$($(2)_NEEDS_HOST_PYTHON)
 endif
 endif
 

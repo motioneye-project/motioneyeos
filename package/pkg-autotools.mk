@@ -65,7 +65,7 @@ define inner-autotools-package
 
 ifndef $(2)_LIBTOOL_PATCH
  ifdef $(3)_LIBTOOL_PATCH
-  $(2)_LIBTOOL_PATCH = $($(3)_LIBTOOL_PATCH)
+  $(2)_LIBTOOL_PATCH = $$($(3)_LIBTOOL_PATCH)
  else
   $(2)_LIBTOOL_PATCH ?= YES
  endif
@@ -73,25 +73,28 @@ endif
 
 ifndef $(2)_MAKE
  ifdef $(3)_MAKE
-  $(2)_MAKE = $($(3)_MAKE)
+  $(2)_MAKE = $$($(3)_MAKE)
  else
-  $(2)_MAKE ?= $(MAKE)
+  $(2)_MAKE ?= $$(MAKE)
  endif
 endif
 
 ifndef $(2)_AUTORECONF
  ifdef $(3)_AUTORECONF
-  $(2)_AUTORECONF = $($(3)_AUTORECONF)
+  $(2)_AUTORECONF = $$($(3)_AUTORECONF)
  else
   $(2)_AUTORECONF ?= NO
  endif
+endif
+
+ifeq ($(4),host)
+ $(2)_AUTORECONF_OPT ?= $$($(3)_AUTORECONF_OPT)
 endif
 
 $(2)_CONF_ENV			?=
 $(2)_CONF_OPT			?=
 $(2)_MAKE_ENV			?=
 $(2)_MAKE_OPT			?=
-$(2)_AUTORECONF_OPT		?= $($(3)_AUTORECONF_OPT)
 $(2)_INSTALL_OPT                ?= install
 $(2)_INSTALL_STAGING_OPT	?= DESTDIR=$$(STAGING_DIR) install
 $(2)_INSTALL_TARGET_OPT		?= DESTDIR=$$(TARGET_DIR)  install
@@ -175,7 +178,7 @@ $(2)_POST_PATCH_HOOKS += UPDATE_CONFIG_HOOK
 #
 define LIBTOOL_PATCH_HOOK
 	@$$(call MESSAGE,"Patching libtool")
-	$(Q)if test "$$($$(PKG)_LIBTOOL_PATCH)" = "YES" \
+	$$(Q)if test "$$($$(PKG)_LIBTOOL_PATCH)" = "YES" \
 		-a "$$($$(PKG)_AUTORECONF)" != "YES"; then \
 		for i in `find $$($$(PKG)_SRCDIR) -name ltmain.sh`; do \
 			ltmain_version=`sed -n '/^[ 	]*VERSION=/{s/^[ 	]*VERSION=//;p;q;}' $$$$i | \
@@ -201,8 +204,8 @@ endif
 #
 define AUTORECONF_HOOK
 	@$$(call MESSAGE,"Autoreconfiguring")
-	$(Q)cd $$($$(PKG)_SRCDIR) && $(AUTORECONF) $$($$(PKG)_AUTORECONF_OPT)
-	$(Q)if test "$$($$(PKG)_LIBTOOL_PATCH)" = "YES"; then \
+	$$(Q)cd $$($$(PKG)_SRCDIR) && $$(AUTORECONF) $$($$(PKG)_AUTORECONF_OPT)
+	$$(Q)if test "$$($$(PKG)_LIBTOOL_PATCH)" = "YES"; then \
 		for i in `find $$($$(PKG)_SRCDIR) -name ltmain.sh`; do \
 			ltmain_version=`sed -n '/^[ 	]*VERSION=/{s/^[ 	]*VERSION=//;p;q;}' $$$$i | \
 			sed -e 's/\([0-9].[0-9]*\).*/\1/' -e 's/\"//'`; \
@@ -220,10 +223,11 @@ endef
 # This must be repeated from inner-generic-package, otherwise we get an empty
 # _DEPENDENCIES if _AUTORECONF is YES.  Also filter the result of _AUTORECONF
 # away from the non-host rule
-$(2)_DEPENDENCIES ?= $(filter-out host-automake host-autoconf host-libtool \
+ifeq ($(4),host)
+$(2)_DEPENDENCIES ?= $$(filter-out host-automake host-autoconf host-libtool \
 				host-toolchain $(1),\
-    $(patsubst host-host-%,host-%,$(addprefix host-,$($(3)_DEPENDENCIES))))
-
+    $$(patsubst host-host-%,host-%,$$(addprefix host-,$$($(3)_DEPENDENCIES))))
+endif
 
 ifeq ($$($(2)_AUTORECONF),YES)
 $(2)_PRE_CONFIGURE_HOOKS += AUTORECONF_HOOK
@@ -263,9 +267,9 @@ endif
 ifndef $(2)_INSTALL_STAGING_CMDS
 define $(2)_INSTALL_STAGING_CMDS
 	$$(TARGET_MAKE_ENV) $$($$(PKG)_MAKE_ENV) $$($$(PKG)_MAKE) $$($$(PKG)_INSTALL_STAGING_OPT) -C $$($$(PKG)_SRCDIR)
-	for i in $$$$(find $(STAGING_DIR)/usr/lib* -name "*.la"); do \
+	for i in $$$$(find $$(STAGING_DIR)/usr/lib* -name "*.la"); do \
 		cp -f $$$$i $$$$i~; \
-		$$(SED) "s:\(['= ]\)/usr:\\1$(STAGING_DIR)/usr:g" $$$$i; \
+		$$(SED) "s:\(['= ]\)/usr:\\1$$(STAGING_DIR)/usr:g" $$$$i; \
 	done
 endef
 endif
