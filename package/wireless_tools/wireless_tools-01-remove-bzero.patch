@@ -1,0 +1,95 @@
+Switch all instances of deprecated bzero() to memset() equivalent.
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+diff -Nura wireless_tools.30/ifrename.c wireless_tools.30-bzero/ifrename.c
+--- wireless_tools.30/ifrename.c	2007-10-16 20:12:41.000000000 -0300
++++ wireless_tools.30-bzero/ifrename.c	2014-06-11 09:52:59.623741119 -0300
+@@ -541,7 +541,7 @@
+ 	    victimname, autoname);
+ 
+   /* Prepare request */
+-  bzero(&ifr, sizeof(struct ifreq));
++  memset(&ifr, 0, sizeof(struct ifreq));
+   strncpy(ifr.ifr_name, victimname, IFNAMSIZ); 
+   strncpy(ifr.ifr_newname, autoname, IFNAMSIZ); 
+ 
+@@ -587,7 +587,7 @@
+     }
+ 
+   /* Prepare request */
+-  bzero(&ifr, sizeof(struct ifreq));
++  memset(&ifr, 0, sizeof(struct ifreq));
+   strncpy(ifr.ifr_name, oldname, IFNAMSIZ); 
+   strncpy(ifr.ifr_newname, newname, IFNAMSIZ); 
+ 
+@@ -747,7 +747,7 @@
+   int		i;
+ 
+   /* Get MAC address */
+-  bzero(&ifr, sizeof(struct ifreq));
++  memset(&ifr, 0, sizeof(struct ifreq));
+   strncpy(ifr.ifr_name, ifname, IFNAMSIZ);
+   ret = ioctl(skfd, SIOCGIFHWADDR, &ifr);
+   if(ret < 0)
+@@ -1040,8 +1040,8 @@
+     return(0);
+ 
+   /* Prepare request */
+-  bzero(&ifr, sizeof(struct ifreq));
+-  bzero(&drvinfo, sizeof(struct ethtool_drvinfo));
++  memset(&ifr, 0, sizeof(struct ifreq));
++  memset(&drvinfo, 0, sizeof(struct ethtool_drvinfo));
+   strncpy(ifr.ifr_name, ifname, IFNAMSIZ);
+   drvinfo.cmd = ETHTOOL_GDRVINFO;
+   ifr.ifr_data = (caddr_t) &drvinfo;
+@@ -1206,8 +1206,8 @@
+     return(0);
+ 
+   /* Prepare request */
+-  bzero(&ifr, sizeof(struct ifreq));
+-  bzero(&map, sizeof(struct ifmap));
++  memset(&ifr, 0, sizeof(struct ifreq));
++  memset(&map, 0, sizeof(struct ifmap));
+   strncpy(ifr.ifr_name, ifname, IFNAMSIZ);
+ 
+   /* Do it */
+@@ -2050,7 +2050,7 @@
+   struct add_extra	extrainfo;
+ 
+   /* Reset the list of filters */
+-  bzero(selector_active, sizeof(selector_active));
++  memset(selector_active, 0, sizeof(selector_active));
+ 
+   /* Check filename */
+   if(!strcmp(filename, "-"))
+diff -Nura wireless_tools.30/iwlib.c wireless_tools.30-bzero/iwlib.c
+--- wireless_tools.30/iwlib.c	2009-11-23 23:28:59.000000000 -0300
++++ wireless_tools.30-bzero/iwlib.c	2014-06-11 09:50:20.611371384 -0300
+@@ -484,7 +484,7 @@
+   union iw_range_raw *	range_raw;
+ 
+   /* Cleanup */
+-  bzero(buffer, sizeof(buffer));
++  memset(buffer, 0, sizeof(buffer));
+ 
+   wrq.u.data.pointer = (caddr_t) buffer;
+   wrq.u.data.length = sizeof(buffer);
+@@ -513,7 +513,7 @@
+   else
+     {
+       /* Zero unknown fields */
+-      bzero((char *) range, sizeof(struct iw_range));
++      memset((char *) range, 0, sizeof(struct iw_range));
+ 
+       /* Initial part unmoved */
+       memcpy((char *) range,
+@@ -3064,7 +3064,7 @@
+ 	oldwscan->next = wscan;
+ 
+       /* Reset it */
+-      bzero(wscan, sizeof(struct wireless_scan));
++      memset(wscan, 0, sizeof(struct wireless_scan));
+ 
+       /* Save cell identifier */
+       wscan->has_ap_addr = 1;
