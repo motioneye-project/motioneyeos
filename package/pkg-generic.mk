@@ -269,6 +269,29 @@ endef
 #  argument 3 is the uppercase package name, without the HOST_ prefix
 #             for host packages
 #  argument 4 is the type (target or host)
+#
+# Note about variable and function references: inside all blocks that are
+# evaluated with $(eval), which includes all 'inner-xxx-package' blocks,
+# specific rules apply with respect to variable and function references.
+# - Numbered variables (parameters to the block) can be referenced with a single
+#   dollar sign: $(1), $(2), $(3), etc.
+# - pkgdir and pkgname should be referenced with a single dollar sign too. These
+#   functions rely on 'the most recently parsed makefile' which is supposed to
+#   be the package .mk file. If we defer the evaluation of these functions using
+#   double dollar signs, then they may be evaluated too late, when other
+#   makefiles have already been parsed. One specific case is when $$(pkgdir) is
+#   assigned to a variable using deferred evaluation with '=' and this variable
+#   is used in a target rule outside the eval'ed inner block. In this case, the
+#   pkgdir will be that of the last makefile parsed by buildroot, which is not
+#   the expected value. This mechanism is for example used for the TARGET_PATCH
+#   rule.
+# - All other variables should be referenced with a double dollar sign:
+#   $$(TARGET_DIR), $$($(2)_VERSION), etc. Also all make functions should be
+#   referenced with a double dollar sign: $$(subst), $$(call), $$(filter-out),
+#   etc. This rule ensures that these variables and functions are only expanded
+#   during the $(eval) step, and not earlier. Otherwise, unintuitive and
+#   undesired behavior occurs with respect to these variables and functions.
+#
 ################################################################################
 
 define inner-generic-package
