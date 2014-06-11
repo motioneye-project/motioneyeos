@@ -44,6 +44,7 @@ config BR2_PACKAGE_PINENTRY_QT4
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	# select qt
 	select BR2_PACKAGE_QT
+	select BR2_PACKAGE_QT_GUI_MODULE
 	help
 	  The pinentry-qt4 tool
 
