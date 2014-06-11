@@ -1,0 +1,25 @@
+#!/bin/sh
+
+[ -x /usr/sbin/ntpd ] || exit 0
+[ -f /etc/ntpd.conf ] || exit 0
+
+case "$1" in
+	start)
+		echo -n "Starting openntpd: "
+		start-stop-daemon -S -x /usr/sbin/ntpd
+		[ $? == 0 ] && echo "OK" || echo "FAIL"
+		;;
+	stop)
+		echo -n "Stopping openntpd: "
+		start-stop-daemon -K -x /usr/sbin/ntpd
+		[ $? == 0 ] && echo "OK" || echo "FAIL"
+		;;
+	restart)
+		"$0" stop
+		sleep 1
+		"$0" start
+		;;
+	*)
+		echo "Usage: $0 {start|stop|restart}"
+		;;
+esac

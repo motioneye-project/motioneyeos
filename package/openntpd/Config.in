@@ -1,7 +1,7 @@
 config BR2_PACKAGE_OPENNTPD
 	bool "openntpd"
-	# fork()
-	depends on BR2_USE_MMU
+	depends on BR2_USE_MMU # fork ()
+	depends on !BR2_PACKAGE_NTP # conflicting binaries
 	help
 	  OpenNTPD is an easy to use implementation of the Network Time
 	  Protocol. It provides the ability to sync the local clock
