@@ -2,6 +2,8 @@ config BR2_PACKAGE_COSMO
 	bool "cosmo"
 	# run-time dependency
 	select BR2_PACKAGE_LPEG
+	# upstream site does not provide a valid archive
+	depends on BROKEN
 	help
 	  Cosmo is a "safe templates" engine for Lua.
 
