@@ -1,0 +1,19 @@
+Fix race condition when installing man page
+
+Fixes
+http://autobuild.buildroot.net/results/11e/11ece737078ca8da2fee4249432148675b4e630e/
+http://autobuild.buildroot.net/results/a95/a952932b832ee3296d6c225c7a9df408ca3eef9f/
+
+Patch sent upstream: https://bugs.freedesktop.org/show_bug.cgi?id=79396
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+
+diff -uNr xorg-server-1.15.1.org/man/Makefile.am xorg-server-1.15.1/man/Makefile.am
+--- xorg-server-1.15.1.org/man/Makefile.am	2014-03-22 06:37:53.000000000 +0100
++++ xorg-server-1.15.1/man/Makefile.am	2014-05-29 09:27:48.808356591 +0200
+@@ -4,3 +4,5 @@
+ 
+ include $(top_srcdir)/manpages.am
+ appman_PRE = Xserver.man
++
++.NOTPARALLEL:
