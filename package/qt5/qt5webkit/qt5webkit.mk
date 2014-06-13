@@ -11,14 +11,12 @@ QT5WEBKIT_DEPENDENCIES = qt5base sqlite host-ruby host-gperf host-bison host-fle
 QT5WEBKIT_INSTALL_STAGING = YES
 
 ifeq ($(BR2_PACKAGE_QT5BASE_LICENSE_APPROVED),y)
-QT5WEBKIT_LICENSE = LGPLv2.1 or GPLv3.0
-# Here we would like to get license files from qt5base, but qt5base
-# may not be extracted at the time we get the legal-info for
-# qt5script.
+QT5WEBKIT_LICENSE = LGPLv2+, MIT
 else
-QT5WEBKIT_LICENSE = Commercial license
+QT5WEBKIT_LICENSE = LGPLv2+, MIT, Commercial license
 QT5WEBKIT_REDISTRIBUTE = NO
 endif
+QT5WEBKIT_LICENSE_FILES = Source/WebCore/LICENSE-LGPL-2 Source/WebCore/LICENSE-LGPL-2.1 Source/WebKit/LICENSE
 
 ifeq ($(BR2_PACKAGE_QT5BASE_XCB),y)
 QT5WEBKIT_DEPENDENCIES += xlib_libXext xlib_libXrender
