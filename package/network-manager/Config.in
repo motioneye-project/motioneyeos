@@ -16,6 +16,8 @@ config BR2_PACKAGE_NETWORK_MANAGER
 	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
 	select BR2_PACKAGE_WIRELESS_TOOLS
 	select BR2_PACKAGE_WIRELESS_TOOLS_LIB
+	select BR2_PACKAGE_READLINE
+	select BR2_PACKAGE_LIBNDP
 	help
 	  NetworkManager is a set of co-operative tools that make networking
 	  simple and straightforward. Whether WiFi, wired, 3G, or Bluetooth,
