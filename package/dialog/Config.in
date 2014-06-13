@@ -11,6 +11,8 @@ config BR2_PACKAGE_DIALOG
 	  types of dialog boxes from shell scripts.  This allows a developer
 	  of a script to interact with the user in a much friendlier manner.
 
+	  http://invisible-island.net/dialog/dialog.html
+
 comment "dialog needs a toolchain w/ threads"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_USE_MMU
