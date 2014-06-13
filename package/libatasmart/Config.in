@@ -5,7 +5,7 @@ config BR2_PACKAGE_LIBATASMART
 	  The libatasmart package is a disk reporting library.
 	  It only supports a subset of the ATA S.M.A.R.T. functionality.
 
-	  http://www.linuxfromscratch.org/blfs/view/svn/general/libatasmart.html
+	  http://0pointer.de/blog/projects/being-smart.html
 
 comment "libatasmart requires udev to be enabled"
 	depends on !BR2_PACKAGE_HAS_UDEV
