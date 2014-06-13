@@ -34,6 +34,13 @@ NETWORK_MANAGER_CONF_OPT = \
 		--disable-ifupdown \
 		--disable-ifnet
 
+ifeq ($(BR2_PACKAGE_NETWORK_MANAGER_TUI),y)
+	NETWORK_MANAGER_DEPENDENCIES += newt
+	NETWORK_MANAGER_CONF_OPT += --with-nmtui=yes
+else
+	NETWORK_MANAGER_CONF_OPT += --with-nmtui=no
+endif
+
 ifeq ($(BR2_PACKAGE_NETWORK_MANAGER_PPPD),y)
 	NETWORK_MANAGER_DEPENDENCIES += pppd
 	NETWORK_MANAGER_CONF_OPT += --enable-ppp
