@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-SG3_UTILS_VERSION = 1.38
+SG3_UTILS_VERSION = 1.39
 SG3_UTILS_SOURCE = sg3_utils-$(SG3_UTILS_VERSION).tar.xz
 SG3_UTILS_SITE  = http://sg.danny.cz/sg/p/
 SG3_UTILS_LICENSE = BSD-3c
@@ -26,7 +26,7 @@ define SG3_UTILS_REMOVE_PROGS
 		map sgm_dd modes opcodes sgp_dd persist prevent \
 		raw rbuf rdac read readcap read_block_limits \
 		read_buffer read_long reassign referrals \
-		requests reset rmsn rtpg safte sanitize \
+		rep_zones requests reset reset_wp rmsn rtpg safte sanitize \
 		sat_identify sat_phy_event sat_set_features scan \
 		senddiag ses start stpg sync test_rwbuf turs \
 		unmap verify vpd write_buffer write_long \
