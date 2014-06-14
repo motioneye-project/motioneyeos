@@ -3,7 +3,7 @@ comment "tclap needs a toolchain w/ C++"
 
 config BR2_PACKAGE_TCLAP
 	bool "tclap"
-	depends BR2_INSTALL_LIBSTDCPP
+	depends on BR2_INSTALL_LIBSTDCPP
 	help
 	  This is a small, flexible library that provides a simple interface
 	  for defining and accessing command line arguments. It was initially
