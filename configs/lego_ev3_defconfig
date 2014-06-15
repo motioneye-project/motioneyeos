@@ -1,0 +1,28 @@
+# architecture
+BR2_arm=y
+BR2_arm926t=y
+
+# toolchain
+# Use gcc 4.7, as gcc 4.8 breaks the boot.
+BR2_GCC_VERSION_4_7_X=y
+
+# system
+BR2_TARGET_GENERIC_GETTY=y
+BR2_TARGET_GENERIC_GETTY_PORT="ttyS1"
+
+# Lock to 3.3 headers to avoid breaking with newer kernels
+BR2_KERNEL_HEADERS_VERSION=y
+BR2_DEFAULT_KERNEL_VERSION="3.3"
+BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_3_3=y
+
+# Kernel
+BR2_LINUX_KERNEL=y
+BR2_LINUX_KERNEL_CUSTOM_GIT=y
+BR2_LINUX_KERNEL_CUSTOM_REPO_URL="https://github.com/mindboards/ev3dev-kernel.git"
+BR2_LINUX_KERNEL_CUSTOM_REPO_VERSION="v3.3.0-2-ev3dev_0"
+BR2_LINUX_KERNEL_DEFCONFIG="ev3dev"
+
+# filesystem
+BR2_TARGET_ROOTFS_EXT2=y
+BR2_TARGET_ROOTFS_EXT2_3=y
+# BR2_TARGET_ROOTFS_TAR is not set
