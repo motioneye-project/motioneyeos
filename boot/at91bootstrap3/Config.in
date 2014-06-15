@@ -1,5 +1,5 @@
 config BR2_TARGET_AT91BOOTSTRAP3
-	depends on BR2_arm926t
+	depends on BR2_arm926t || BR2_cortex_a5
 	bool "AT91 Bootstrap 3"
 	help
 	  AT91Bootstrap is a first level bootloader for the Atmel AT91

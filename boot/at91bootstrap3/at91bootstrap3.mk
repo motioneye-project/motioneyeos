@@ -4,10 +4,8 @@
 #
 ################################################################################
 
-AT91BOOTSTRAP3_VERSION = 3.2
-AT91BOOTSTRAP3_SITE = \
-	ftp://www.at91.com/pub/at91bootstrap/AT91Bootstrap$(AT91BOOTSTRAP3_VERSION)
-AT91BOOTSTRAP3_SOURCE = at91bootstrap_9n12.tar.gz
+AT91BOOTSTRAP3_VERSION = v3.6.2
+AT91BOOTSTRAP3_SITE = $(call github,linux4sam,at91bootstrap,$(AT91BOOTSTRAP3_VERSION))
 
 AT91BOOTSTRAP3_INSTALL_IMAGES = YES
 AT91BOOTSTRAP3_INSTALL_TARGET = NO
@@ -47,7 +45,7 @@ define AT91BOOTSTRAP3_BUILD_CMDS
 endef
 
 define AT91BOOTSTRAP3_INSTALL_IMAGES_CMDS
-	$(MAKE) $(AT91BOOTSTRAP3_MAKE_OPT) -C $(@D) bootstrap
+	cp $(@D)/binaries/*.bin $(BINARIES_DIR)
 endef
 
 $(eval $(generic-package))
