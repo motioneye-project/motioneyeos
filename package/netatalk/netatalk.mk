@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-NETATALK_VERSION = 3.0.8
+NETATALK_VERSION = 3.1.2
 NETATALK_SITE = http://downloads.sourceforge.net/project/netatalk/netatalk/$(NETATALK_VERSION)
 NETATALK_SOURCE = netatalk-$(NETATALK_VERSION).tar.bz2
 NETATALK_AUTORECONF = YES
@@ -27,7 +27,8 @@ NETATALK_CONF_OPT += --with-cnid-cdb-backend \
 	--without-kerberos \
 	--without-pam \
 	--with-libevent=no \
-	--with-dtrace=no
+	--with-dtrace=no \
+	--with-mysql-config=no
 
 ifeq ($(BR2_PACKAGE_CUPS),y)
 	NETATALK_DEPENDENCIES += cups
