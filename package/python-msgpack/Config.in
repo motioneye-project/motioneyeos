@@ -3,6 +3,7 @@ config BR2_PACKAGE_PYTHON_MSGPACK
 	depends on BR2_PACKAGE_PYTHON
 	select BR2_PACKAGE_MSGPACK
 	depends on BR2_INSTALL_LIBSTDCPP # msgpack
+	depends on !BR2_arc # msgpack - atomic builtins
 	help
 	  MessagePack (http://msgpack.org/) is a fast, compact binary
 	  serialization format, suitable for similar data to JSON.
@@ -14,3 +15,4 @@ config BR2_PACKAGE_PYTHON_MSGPACK
 comment "python-msgpack needs a toolchain w/ C++"
 	depends on BR2_PACKAGE_PYTHON
 	depends on !BR2_INSTALL_LIBSTDCPP
+	depends on !BR2_arc
