@@ -29,6 +29,12 @@ NETATALK_CONF_OPT += --with-cnid-cdb-backend \
 	--with-dtrace=no \
 	--with-mysql-config=no
 
+ifeq ($(BR2_PACKAGE_ACL),y)
+	NETATALK_DEPENDENCIES += acl
+else
+	NETATALK_CONF_OPT += --with-acls=no
+endif
+
 ifeq ($(BR2_PACKAGE_AVAHI_DAEMON)$(BR2_PACKAGE_DBUS),yy)
 	NETATALK_DEPENDENCIES += avahi
 	NETATALK_CONF_OPT += --enable-zeroconf=$(STAGING_DIR)/usr
