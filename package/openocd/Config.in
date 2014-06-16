@@ -6,7 +6,7 @@ config BR2_PACKAGE_OPENOCD
 	help
 	  OpenOCD - Open On-Chip Debugger
 
-	  http://openocd.berlios.de/web/
+	  http://openocd.sourceforge.net/
 
 if BR2_PACKAGE_OPENOCD
 
