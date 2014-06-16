@@ -6,4 +6,4 @@ config BR2_PACKAGE_CAN_UTILS
 	  networking stack.
 	  This package provides various tools for this stack.
 
-	  http://developer.berlios.de/projects/socketcan/
+	  http://elinux.org/Can-utils
