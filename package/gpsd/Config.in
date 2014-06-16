@@ -18,7 +18,7 @@ config BR2_PACKAGE_GPSD
 
 	  The D-Bus interface is included if dbus-glib is enabled.
 
-	  http://gpsd.berlios.de/
+	  http://www.catb.org/gpsd/
 
 if BR2_PACKAGE_GPSD
 
