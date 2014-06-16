@@ -15,7 +15,7 @@ config BR2_PACKAGE_TSTOOLS
 	  cable and satellite data. Program Stream (PS) is typically
 	  used to store data on DVDs.
 
-	  http://tstools.berlios.de/
+	  https://code.google.com/p/tstools/
 
 comment "tstools needs a toolchain w/ largefile"
 	depends on !BR2_LARGEFILE
