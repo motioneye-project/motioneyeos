@@ -577,6 +577,7 @@ while (my ($distname, $dist) = each %dist) {
     mkdir $dirname unless -d $dirname;
     if ($need_target{$distname} && ($force || !-f $cfgname)) {
         my $abstract = $dist->{abstract};
+        my $homepage = $dist->{resources}->{homepage} || qq{https://metacpan.org/release/${distname}};
         say qq{write ${cfgname}} unless $quiet;
         open my $fh, q{>}, $cfgname;
         say {$fh} qq{config BR2_PACKAGE_${brname}};
@@ -585,8 +586,9 @@ while (my ($distname, $dist) = each %dist) {
             my $brdep = brname( fsname( $dep ) );
             say {$fh} qq{\tselect BR2_PACKAGE_${brdep}};
         }
-        say {$fh} qq{\thelp} if $abstract;
-        say {$fh} qq{\t  ${abstract}} if $abstract;
+        say {$fh} qq{\thelp};
+        say {$fh} qq{\t  ${abstract}\n} if $abstract;
+        say {$fh} qq{\t  ${homepage}};
         close $fh;
     }
     if ($force || !-f $mkname) {
