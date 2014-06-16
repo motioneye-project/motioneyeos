@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-DBUS_VERSION = 1.6.18
+DBUS_VERSION = 1.8.4
 DBUS_SITE = http://dbus.freedesktop.org/releases/dbus
 DBUS_LICENSE = AFLv2.1 GPLv2+
 DBUS_LICENSE_FILES = COPYING
@@ -14,7 +14,7 @@ define DBUS_PERMISSIONS
 /usr/libexec/dbus-daemon-launch-helper f 4755 0 0 - - - - -
 endef
 
-DBUS_DEPENDENCIES = host-pkgconf
+DBUS_DEPENDENCIES = host-pkgconf expat
 
 DBUS_CONF_ENV = ac_cv_have_abstract_sockets=yes
 DBUS_CONF_OPT = --with-dbus-user=dbus \
@@ -27,6 +27,7 @@ DBUS_CONF_OPT = --with-dbus-user=dbus \
 		--disable-static \
 		--disable-dnotify \
 		--localstatedir=/var \
+		--with-xml=expat \
 		--with-system-socket=/var/run/dbus/system_bus_socket \
 		--with-system-pid-file=/var/run/messagebus.pid
 
@@ -41,14 +42,6 @@ endif
 ifeq ($(BR2_microblaze),y)
 # microblaze toolchain doesn't provide inotify_rm_* but does have sys/inotify.h
 DBUS_CONF_OPT += --disable-inotify
-endif
-
-ifeq ($(BR2_DBUS_EXPAT),y)
-DBUS_CONF_OPT += --with-xml=expat
-DBUS_DEPENDENCIES += expat
-else
-DBUS_CONF_OPT += --with-xml=libxml
-DBUS_DEPENDENCIES += libxml2
 endif
 
 ifeq ($(BR2_PACKAGE_XLIB_LIBX11),y)
