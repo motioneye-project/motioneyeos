@@ -77,3 +77,7 @@ development context (further details: refer to xref:download-infra[]).
 ** +w3m+
 ** +python+ with the +argparse+ module (automatically present in 2.7+ and 3.2+)
 ** +dblatex+ (required for the pdf manual only)
+
+* Graph generation tools:
+** +graphviz+ to use 'graph-depends' and '<pkg>-graph-depends'
+** +python-matplotlib+ to use 'graph-build'
