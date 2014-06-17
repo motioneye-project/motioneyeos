@@ -556,7 +556,7 @@ endif
 $(1)-show-depends:
 			@echo $$($(2)_FINAL_DEPENDENCIES)
 
-$(1)-graph-depends:
+$(1)-graph-depends: graph-depends-requirements
 			@$$(INSTALL) -d $$(O)/graphs
 			@cd "$$(CONFIG_DIR)"; \
 			$$(TOPDIR)/support/scripts/graph-depends -p $(1) $$(BR2_GRAPH_DEPS_OPTS) \

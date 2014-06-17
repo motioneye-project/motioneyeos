@@ -673,9 +673,11 @@ graph-build: $(O)/build/build-time.log
 				   --output=$(O)/graphs/build.pie-$(t).$(BR_GRAPH_OUT) \
 				   $(if $(BR2_GRAPH_ALT),--alternate-colors)$(sep))
 
-graph-depends:
+graph-depends-requirements:
 	@dot -? >/dev/null 2>&1 || \
-		(echo "ERROR: The 'dot' program from Graphviz is needed for graph-depends" >&2; exit 1)
+		{ echo "ERROR: The 'dot' program from Graphviz is needed for graph-depends" >&2; exit 1; }
+
+graph-depends: graph-depends-requirements
 	@$(INSTALL) -d $(O)/graphs
 	@cd "$(CONFIG_DIR)"; \
 	$(TOPDIR)/support/scripts/graph-depends $(BR2_GRAPH_DEPS_OPTS) \
