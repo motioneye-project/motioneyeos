@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-FILE_VERSION = 5.18
+FILE_VERSION = 5.19
 FILE_SITE = ftp://ftp.astron.com/pub/file
 FILE_DEPENDENCIES = host-file zlib
 FILE_INSTALL_STAGING = YES
