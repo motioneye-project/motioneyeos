@@ -1,5 +1,5 @@
 config BR2_PACKAGE_OLSR
-	bool "OLSR mesh networking Daemon"
+	bool "olsrd"
 	depends on BR2_USE_MMU # fork()
 	depends on BR2_INET_IPV6
 	depends on BR2_TOOLCHAIN_HAS_THREADS
