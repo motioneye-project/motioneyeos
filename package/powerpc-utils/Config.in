@@ -1,0 +1,8 @@
+config BR2_PACKAGE_POWERPC_UTILS
+	bool "powerpc-utils"
+	depends on BR2_powerpc || BR2_powerpc64 || BR2_powerpc64le
+	select BR2_PACKAGE_ZLIB
+	help
+	  System utilities for PowerPC machines.
+
+	  http://sourceforge.net/projects/powerpc-utils/
