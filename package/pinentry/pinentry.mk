@@ -39,6 +39,9 @@ endif
 
 # pinentry-qt4 backend
 ifeq ($(BR2_PACKAGE_PINENTRY_QT4),y)
+# -pthread needs to be passed for certain toolchains
+# http://autobuild.buildroot.net/results/6be/6be109ccedec603a67cebdb31b55865dcce0e128/
+PINENTRY_CONF_OPT += LIBS=-pthread
 PINENTRY_CONF_OPT += --enable-pinentry-qt4
 PINENTRY_DEPENDENCIES += qt
 else
