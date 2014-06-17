@@ -212,6 +212,8 @@ define BUSYBOX_INSTALL_TARGET_CMDS
 	$(BUSYBOX_MAKE_ENV) $(MAKE) $(BUSYBOX_MAKE_OPTS) -C $(@D) install
 	$(INSTALL) -m 0755 -D package/busybox/udhcpc.script \
 		$(TARGET_DIR)/usr/share/udhcpc/default.script
+	$(INSTALL) -m 0755 -d \
+		$(TARGET_DIR)/usr/share/udhcpc/default.script.d
 	$(BUSYBOX_INSTALL_MDEV_CONF)
 endef
 
