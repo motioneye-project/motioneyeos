@@ -20,6 +20,13 @@ LIBPCAP_CFLAGS = $(TARGET_CFLAGS)
 LIBPCAP_CONF_OPT = --disable-yydebug --with-pcap=linux
 LIBPCAP_CONFIG_SCRIPTS = pcap-config
 
+ifeq ($(BR2_PACKAGE_DBUS),y)
+LIBPCAP_CONF_OPT += --enable-dbus
+LIBPCAP_DEPENDENCIES += dbus
+else
+LIBPCAP_CONF_OPT += --disable-dbus
+endif
+
 ifeq ($(BR2_PACKAGE_LIBUSB),y)
 LIBPCAP_CONF_OPT += --enable-canusb
 LIBPCAP_DEPENDENCIES += libusb
