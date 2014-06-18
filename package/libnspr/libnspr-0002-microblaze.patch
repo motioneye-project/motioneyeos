@@ -1,11 +1,12 @@
 Add Microblaze support
 
+[Gustavo: update for nspr 4.10.6]
 Signed-off-by: Spenser Gilliland <spenser@gillilanding.com>
 
-diff -Naur libnspr-4.9.6-ori/mozilla/nsprpub/pr/include/md/_linux.cfg libnspr-4.9.6/mozilla/nsprpub/pr/include/md/_linux.cfg
---- libnspr-4.9.6-ori/mozilla/nsprpub/pr/include/md/_linux.cfg	2013-11-10 21:15:04.556139100 -0300
-+++ libnspr-4.9.6/mozilla/nsprpub/pr/include/md/_linux.cfg	2013-11-10 21:15:29.332138283 -0300
-@@ -914,6 +914,56 @@
+diff -Nura nspr-4.10.6.nios2/nspr/pr/include/md/_linux.cfg nspr-4.10.6/nspr/pr/include/md/_linux.cfg
+--- nspr-4.10.6.nios2/nspr/pr/include/md/_linux.cfg	2014-06-18 10:29:15.816361425 -0300
++++ nspr-4.10.6/nspr/pr/include/md/_linux.cfg	2014-06-18 10:26:59.908768508 -0300
+@@ -969,6 +969,56 @@
  #define PR_BYTES_PER_WORD_LOG2   2
  #define PR_BYTES_PER_DWORD_LOG2  3
  
@@ -62,9 +63,9 @@ diff -Naur libnspr-4.9.6-ori/mozilla/nsprpub/pr/include/md/_linux.cfg libnspr-4.
  #else
  
  #error "Unknown CPU architecture"
-diff -Naur libnspr-4.9.6-ori/mozilla/nsprpub/pr/include/md/_linux.h libnspr-4.9.6/mozilla/nsprpub/pr/include/md/_linux.h
---- libnspr-4.9.6.orig/mozilla/nsprpub/pr/include/md/_linux.h	2014-01-10 14:39:20.674107805 -0600
-+++ libnspr-4.9.6/mozilla/nsprpub/pr/include/md/_linux.h	2014-01-10 14:44:04.442112985 -0600
+diff -Nura nspr-4.10.6.nios2/nspr/pr/include/md/_linux.h nspr-4.10.6/nspr/pr/include/md/_linux.h
+--- nspr-4.10.6.nios2/nspr/pr/include/md/_linux.h	2014-06-18 10:29:15.817361459 -0300
++++ nspr-4.10.6/nspr/pr/include/md/_linux.h	2014-06-18 10:26:59.909768537 -0300
 @@ -55,6 +55,8 @@
  #define _PR_SI_ARCHITECTURE "avr32"
  #elif defined(__m32r__)

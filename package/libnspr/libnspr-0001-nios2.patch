@@ -1,11 +1,12 @@
 Add Nios-II support
 
+[Gustavo: update for nspr 4.10.6]
 Signed-off-by: Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
 
-diff -Naur libnspr-4.9.6-ori/mozilla/nsprpub/pr/include/md/_linux.cfg libnspr-4.9.6/mozilla/nsprpub/pr/include/md/_linux.cfg
---- libnspr-4.9.6-ori/mozilla/nsprpub/pr/include/md/_linux.cfg	2013-11-10 21:15:04.556139100 -0300
-+++ libnspr-4.9.6/mozilla/nsprpub/pr/include/md/_linux.cfg	2013-11-10 21:15:29.332138283 -0300
-@@ -914,6 +914,51 @@
+diff -Nura nspr-4.10.6.orig/nspr/pr/include/md/_linux.cfg nspr-4.10.6/nspr/pr/include/md/_linux.cfg
+--- nspr-4.10.6.orig/nspr/pr/include/md/_linux.cfg	2014-06-18 10:26:22.447502521 -0300
++++ nspr-4.10.6/nspr/pr/include/md/_linux.cfg	2014-06-18 10:26:32.746850581 -0300
+@@ -924,6 +924,51 @@
  #define PR_BYTES_PER_WORD_LOG2   2
  #define PR_BYTES_PER_DWORD_LOG2  3
  
@@ -57,9 +58,9 @@ diff -Naur libnspr-4.9.6-ori/mozilla/nsprpub/pr/include/md/_linux.cfg libnspr-4.
  #else
  
  #error "Unknown CPU architecture"
-diff -Naur libnspr-4.9.6-ori/mozilla/nsprpub/pr/include/md/_linux.h libnspr-4.9.6/mozilla/nsprpub/pr/include/md/_linux.h
---- libnspr-4.9.6-ori/mozilla/nsprpub/pr/include/md/_linux.h	2013-11-10 21:15:04.556139100 -0300
-+++ libnspr-4.9.6/mozilla/nsprpub/pr/include/md/_linux.h	2013-11-10 21:15:33.245138154 -0300
+diff -Nura nspr-4.10.6.orig/nspr/pr/include/md/_linux.h nspr-4.10.6/nspr/pr/include/md/_linux.h
+--- nspr-4.10.6.orig/nspr/pr/include/md/_linux.h	2014-06-18 10:26:22.446502487 -0300
++++ nspr-4.10.6/nspr/pr/include/md/_linux.h	2014-06-18 10:26:32.747850615 -0300
 @@ -55,6 +55,8 @@
  #define _PR_SI_ARCHITECTURE "avr32"
  #elif defined(__m32r__)
