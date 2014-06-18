@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-PSMISC_VERSION = 22.20
+PSMISC_VERSION = 22.21
 PSMISC_SITE = http://downloads.sourceforge.net/project/psmisc/psmisc
 PSMISC_LICENSE = GPLv2
 PSMISC_LICENSE_FILES = COPYING
