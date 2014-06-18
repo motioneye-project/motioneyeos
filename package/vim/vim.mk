@@ -6,8 +6,8 @@
 
 VIM_SITE = https://vim.googlecode.com/hg
 VIM_SITE_METHOD = hg
-# 7.3 release patchlevel 762
-VIM_VERSION = 699f8d8f096d
+# 7.4 release patchlevel 333
+VIM_VERSION = 8ae50e3ef8bf
 VIM_DEPENDENCIES = ncurses $(if $(BR2_NEEDS_GETTEXT_IF_LOCALE),gettext)
 VIM_SUBDIR = src
 VIM_CONF_ENV = vim_cv_toupper_broken=no \
