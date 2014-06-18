@@ -24,7 +24,6 @@ DBUS_CONF_OPT = --with-dbus-user=dbus \
 		--disable-selinux \
 		--disable-xml-docs \
 		--disable-doxygen-docs \
-		--disable-static \
 		--disable-dnotify \
 		--localstatedir=/var \
 		--with-xml=expat \
@@ -90,7 +89,6 @@ HOST_DBUS_CONF_OPT = \
 		--disable-selinux \
 		--disable-xml-docs \
 		--disable-doxygen-docs \
-		--disable-static \
 		--enable-dnotify \
 		--without-x \
 		--with-xml=expat
