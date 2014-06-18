@@ -19,11 +19,11 @@ Starting dropbear sshd: generating rsa key... generating dsa key... OK
 
 then it means that your system is running, but didn't start a shell on
 the serial console. In order to have the system start a shell on your
-serial console, you have to go into the Buildroot configuration, +System
-configuration+, and modify +Port to run a getty (login prompt) on+ and
-+Baudrate to use+ as appropriate. This will automatically tune the
-+/etc/inittab+ file of the generated system so that a shell starts on
-the correct serial port.
+serial console, you have to go into the Buildroot configuration, in 
++System configuration+, modify +Run a getty (login prompt) after boot+ 
+and set the appropriate port and baud rate in the +getty options+ 
+submenu. This will automatically tune the +/etc/inittab+ file of the 
+generated system so that a shell starts on the correct serial port.
 
 [[faq-no-compiler-on-target]]
 == Why is there no compiler on the target?
