@@ -4,15 +4,14 @@
 #
 ################################################################################
 
-LIBNSS_VERSION = 3.14.5
+LIBNSS_VERSION = 3.16.1
 LIBNSS_SOURCE = nss-$(LIBNSS_VERSION).tar.gz
 LIBNSS_SITE = https://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_$(subst .,_,$(LIBNSS_VERSION))_RTM/src
-LIBNSS_SUBDIR = mozilla/security
-LIBNSS_DISTDIR = mozilla/dist
+LIBNSS_DISTDIR = dist
 LIBNSS_INSTALL_STAGING = YES
 LIBNSS_DEPENDENCIES = libnspr sqlite zlib
 LIBNSS_LICENSE = MPLv2.0
-LIBNSS_LICENSE_FILES = mozilla/security/nss/COPYING
+LIBNSS_LICENSE_FILES = nss/COPYING
 
 LIBNSS_BUILD_VARS = MOZILLA_CLIENT=1 \
 		NSPR_INCLUDE_DIR=$(STAGING_DIR)/usr/include/nspr \
@@ -39,12 +38,12 @@ endif
 
 
 define LIBNSS_BUILD_CMDS
-	$(MAKE1) -C $(@D)/$(LIBNSS_SUBDIR)/nss build_coreconf \
+	$(MAKE1) -C $(@D)/nss coreconf \
 			SOURCE_MD_DIR=$(@D)/$(LIBNSS_DISTDIR) \
 			DIST=$(@D)/$(LIBNSS_DISTDIR) \
 			CHECKLOC= \
 			$(LIBNSS_BUILD_VARS)
-	$(MAKE1) -C $(@D)/$(LIBNSS_SUBDIR)/nss build_dbm all \
+	$(MAKE1) -C $(@D)/nss lib/dbm all \
 			SOURCE_MD_DIR=$(@D)/$(LIBNSS_DISTDIR) \
 			DIST=$(@D)/$(LIBNSS_DISTDIR) \
 			CHECKLOC= \
