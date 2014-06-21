@@ -264,12 +264,27 @@ endif
 # Staging installation step. Only define it if not already defined by
 # the package .mk file.
 #
+# Most autotools packages install libtool .la files alongside any
+# installed libraries. These .la files sometimes refer to paths
+# relative to the sysroot, which libtool will interpret as absolute
+# paths to host libraries instead of the target libraries. Since we
+# configure with --prefix=/usr, such absolute paths start with
+# /usr. So we add $(STAGING_DIR) in front of any path that starts with
+# /usr.
+#
+# To protect against the case that the output directory itself is
+# under /usr, we first substitute away any occurences of the output
+# directory to @BASE_DIR@.
+#
 ifndef $(2)_INSTALL_STAGING_CMDS
 define $(2)_INSTALL_STAGING_CMDS
 	$$(TARGET_MAKE_ENV) $$($$(PKG)_MAKE_ENV) $$($$(PKG)_MAKE) $$($$(PKG)_INSTALL_STAGING_OPT) -C $$($$(PKG)_SRCDIR)
 	for i in $$$$(find $$(STAGING_DIR)/usr/lib* -name "*.la"); do \
-		cp -f $$$$i $$$$i~; \
-		$$(SED) "s:\(['= ]\)/usr:\\1$$(STAGING_DIR)/usr:g" $$$$i; \
+		$$(SED) "s:$$(BASE_DIR):@BASE_DIR@:g" \
+			-e "s:\(['= ]\)/usr:\\1@STAGING_DIR@/usr:g" \
+			-e "s:@STAGING_DIR@:$$(STAGING_DIR):g" \
+			-e "s:@BASE_DIR@:$$(BASE_DIR):g" \
+			$$$$i; \
 	done
 endef
 endif
