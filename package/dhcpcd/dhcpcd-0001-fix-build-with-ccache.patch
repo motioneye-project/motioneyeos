@@ -1,0 +1,32 @@
+configure: support builds using ccache
+
+The configure script checks whether CC is executable by means of a check
+'type $CC'. However, when using ccache, CC is normally set to "ccache gcc"
+(using the appropriate paths). Such a compound string is not recognized by
+type, however, and thus configure bails out.
+
+This patch changes the check 'type $CC' with a compile test.
+
+Signed-off-by: Thomas De Schampheleire <thomas.de.schampheleire@gmail.com>
+
+Upstream status: another implementation was submitted, modified by
+maintainer Roy, then simplified based on my suggestion. This patch is a fold
+of the two upstream patches:
+http://roy.marples.name/projects/dhcpcd/info/5f4bf91142fceac502c478886aeb5079a184bb43
+http://roy.marples.name/projects/dhcpcd/info/26bc10be2405659bdf31d690a72d377d6b67ebd4
+
+diff -r 66c8bdc88858 configure
+--- a/configure	Sat Jun 21 16:54:30 2014 +0200
++++ b/configure	Sun Jun 22 15:20:25 2014 +0200
+@@ -272,8 +272,9 @@
+ fi
+ 
+ echo "Using compiler .. $CC"
+-if ! type "$CC" >/dev/null 2>&1; then
+-	echo "$CC is not an executable"
++if ! echo "int main(void) { return 0; }" | $CC -x c -o /dev/null - 2>/dev/null
++then
++	echo "$CC does not create executables"
+ 	exit 1
+ fi
+ [ "$CC" != cc ] && echo "CC=	$CC" >>$CONFIG_MK
