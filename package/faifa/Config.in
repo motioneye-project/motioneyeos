@@ -2,6 +2,7 @@ config BR2_PACKAGE_FAIFA
 	bool "faifa"
 	select BR2_PACKAGE_LIBPCAP
 	depends on !BR2_PREFER_STATIC_LIB
+	depends on BR2_TOOLCHAIN_HAS_THREADS
 	help
 	  Faifa can configure any Intellon-based Power Line
 	  Communication device using Intellon INT5000 and INT6000
@@ -11,5 +12,5 @@ config BR2_PACKAGE_FAIFA
 
 	  https://dev.open-plc.org
 
-comment "faifa needs a toolchain w/ dynamic library"
-	depends on BR2_PREFER_STATIC_LIB
+comment "faifa needs a toolchain w/ dynamic library, threads"
+	depends on BR2_PREFER_STATIC_LIB || !BR2_TOOLCHAIN_HAS_THREADS
