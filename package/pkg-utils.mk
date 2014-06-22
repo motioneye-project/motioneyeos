@@ -101,8 +101,8 @@ define legal-warning-pkg # pkg, text
 	echo "WARNING: $(1): $(2)" >>$(LEGAL_WARNINGS)
 endef
 
-define legal-warning-pkg-savednothing # pkg, {local|override}
-	$(call legal-warning-pkg,$(1),sources and license files not saved ($(2) packages not handled))
+define legal-warning-nosource # pkg, {local|override}
+	$(call legal-warning-pkg,$(1),sources not saved ($(2) packages not handled))
 endef
 
 define legal-manifest # pkg, version, license, license-files, source, {HOST|TARGET}

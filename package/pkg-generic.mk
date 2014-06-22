@@ -662,10 +662,10 @@ endif # license files
 
 ifeq ($$($(2)_SITE_METHOD),local)
 # Packages without a tarball: don't save and warn
-	@$$(call legal-warning-pkg-savednothing,$$($(2)_RAWNAME),local)
+	@$$(call legal-warning-nosource,$$($(2)_RAWNAME),local)
 
 else ifneq ($$($(2)_OVERRIDE_SRCDIR),)
-	@$$(call legal-warning-pkg-savednothing,$$($(2)_RAWNAME),override)
+	@$$(call legal-warning-nosource,$$($(2)_RAWNAME),override)
 
 else
 # Other packages
