@@ -1,0 +1,15 @@
+config BR2_PACKAGE_ATFTP
+	bool "atftp"
+	depends on BR2_INET_IPV6
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	help
+	  atftp is a client/server implementation of the TFTP
+	  protocol that implements RFCs 1350, 2090, 2347, 2348,
+	  and 2349. The server is multi-threaded and the client
+	  presents a friendly interface using libreadline
+	  (if enabled).
+
+	  http://sourceforge.net/projects/atftp/
+
+comment "atftp needs a toolchain w/ threads, IPv6"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_INET_IPV6
