@@ -5,7 +5,7 @@ case "$1" in
 	if [ ! -d /tmp/avahi-autoipd ]; then
 	    rm -rf /tmp/avahi-autoipd
 	    mkdir /tmp/avahi-autoipd
-	    chown default.default /tmp/avahi-autoipd
+	    chown avahi.avahi /tmp/avahi-autoipd
 	fi
 	;;
     stop) ;;
