@@ -424,6 +424,7 @@ endif
 if BR2_PACKAGE_PERL
 menu "Perl libraries/modules"
 	source "package/perl-mojolicious/Config.in"
+	source "package/perl-net-ssleay/Config.in"
 endmenu
 endif
 	source "package/php/Config.in"
