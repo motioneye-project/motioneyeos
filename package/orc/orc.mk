@@ -4,7 +4,8 @@
 #
 ################################################################################
 
-ORC_VERSION = 0.4.19
+ORC_VERSION = 0.4.20
+ORC_SOURCE = orc-$(ORC_VERSION).tar.xz
 ORC_SITE = http://gstreamer.freedesktop.org/data/src/orc/
 ORC_LICENSE = BSD-2c, BSD-3c
 ORC_LICENSE_FILES = COPYING
