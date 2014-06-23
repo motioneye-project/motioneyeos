@@ -80,16 +80,16 @@ class Package:
             self.steps_start[step] = time
         else:
             self.steps_end[step] = time
-        if self.steps_start.has_key(step) and self.steps_end.has_key(step):
+        if step in self.steps_start and step in self.steps_end:
             self.steps_duration[step] = self.steps_end[step] - self.steps_start[step]
 
     def get_duration(self, step=None):
         if step is None:
             duration = 0
-            for step in self.steps_duration.keys():
+            for step in list(self.steps_duration.keys()):
                 duration += self.steps_duration[step]
             return duration
-        if self.steps_duration.has_key(step):
+        if step in self.steps_duration:
             return self.steps_duration[step]
         return 0
 
