@@ -6,11 +6,12 @@
 
 PANGO_VERSION_MAJOR = 1.28
 PANGO_VERSION = $(PANGO_VERSION_MAJOR).4
-
 PANGO_SOURCE = pango-$(PANGO_VERSION).tar.bz2
 PANGO_SITE = http://ftp.gnome.org/pub/GNOME/sources/pango/$(PANGO_VERSION_MAJOR)
 PANGO_AUTORECONF = YES
 PANGO_INSTALL_STAGING = YES
+PANGO_LICENSE = LGPLv2+
+PANGO_LICENSE_FILES = COPYING
 
 PANGO_CONF_ENV = ac_cv_func_posix_getpwuid_r=yes glib_cv_stack_grows=no \
 		glib_cv_uscore=no ac_cv_func_strtod=yes \
