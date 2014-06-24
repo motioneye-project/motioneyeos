@@ -4,9 +4,11 @@
 #
 ################################################################################
 
-OPEN2300_SITE        = http://www.lavrsen.dk/svn/open2300/trunk/
+OPEN2300_SITE = http://www.lavrsen.dk/svn/open2300/trunk/
 OPEN2300_SITE_METHOD = svn
-OPEN2300_VERSION     = 12
+OPEN2300_VERSION = 12
+OPEN2300_LICENSE = GPLv2
+OPEN2300_LICENSE_FILES = COPYING
 
 OPEN2300_BINS = open2300 dump2300 log2300 fetch2300 wu2300 cw2300 history2300 \
 		histlog2300 bin2300 xml2300 light2300 interval2300 minmax2300
