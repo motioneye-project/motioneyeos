@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-CRDA_VERSION = 1.1.3
-CRDA_SOURCE = crda-$(CRDA_VERSION).tar.bz2
-CRDA_SITE = http://wireless.kernel.org/download/crda
+CRDA_VERSION = 3.13
+CRDA_SOURCE = crda-$(CRDA_VERSION).tar.xz
+CRDA_SITE = $(BR2_KERNEL_MIRROR)/software/network/crda
 CRDA_DEPENDENCIES = host-pkgconf host-python-m2crypto \
 	libnl libgcrypt host-python
 CRDA_LICENSE = ISC

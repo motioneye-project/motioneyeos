@@ -1,0 +1,41 @@
+From 2cabb2588da56735369131b709f191453c080be0 Mon Sep 17 00:00:00 2001
+From: "John W. Linville" <linville@tuxdriver.com>
+Date: Fri, 14 Feb 2014 13:58:44 -0500
+Subject: [PATCH 1/4] crda: Add DESTDIR support in install-libreg* rules in
+ Makefile
+
+Also drop ldconfig call, as that causes problems when cross compiling /
+installing as non-root.
+
+Signed-off-by: John W. Linville <linville@tuxdriver.com>
+Signed-off-by: Luis R. Rodriguez <mcgrof@do-not-panic.com>
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ Makefile | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 0b2f0d7..1f25509 100644
+--- a/Makefile
++++ b/Makefile
+@@ -120,13 +120,12 @@ $(LIBREG): regdb.h reglib.h reglib.c
+ 
+ install-libreg-headers:
+ 	$(NQ) '  INSTALL  libreg-headers'
+-	$(Q)mkdir -p $(INCLUDE_DIR)
+-	$(Q)cp *.h $(INCLUDE_DIR)/
++	$(Q)mkdir -p $(DESTDIR)/$(INCLUDE_DIR)
++	$(Q)cp *.h $(DESTDIR)/$(INCLUDE_DIR)/
+ 
+ install-libreg:
+ 	$(NQ) '  INSTALL  libreg'
+-	$(Q)mkdir -p $(LIBDIR)
+-	$(Q)cp $(LIBREG) $(LIBDIR)/
+-	$(Q)ldconfig
++	$(Q)mkdir -p $(DESTDIR)/$(LIBDIR)
++	$(Q)cp $(LIBREG) $(DESTDIR)/$(LIBDIR)/
+ 
+ %.o: %.c regdb.h $(LIBREG)
+-- 
+1.8.5.5
+
