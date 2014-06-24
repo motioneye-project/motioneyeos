@@ -1,0 +1,7 @@
+config BR2_PACKAGE_WHOIS
+	bool "whois"
+	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT
+	help
+	  Improved whois client.
+
+	  http://www.linux.it/~md/software/
