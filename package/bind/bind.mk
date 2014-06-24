@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-BIND_VERSION = 9.9.5
+BIND_VERSION = 9.9.5-P1
 BIND_SITE = ftp://ftp.isc.org/isc/bind9/$(BIND_VERSION)
 BIND_INSTALL_STAGING = YES
 BIND_CONFIG_SCRIPTS = bind9-config isc-config.sh
