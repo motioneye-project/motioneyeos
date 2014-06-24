@@ -7,10 +7,12 @@
 # stable 1.9.1 release requires V4L which has been wiped out of recent Linux
 # kernels, so use latest mercurial revision until next stable release is out.
 PYTHON_PYGAME_VERSION = f0bb4a4b365d
-PYTHON_PYGAME_SOURCE  = pygame-$(PYTHON_PYGAME_VERSION).tar.gz
+PYTHON_PYGAME_SOURCE = pygame-$(PYTHON_PYGAME_VERSION).tar.gz
 PYTHON_PYGAME_SITE = https://bitbucket.org/pygame/pygame
 PYTHON_PYGAME_SITE_METHOD = hg
 PYTHON_PYGAME_SETUP_TYPE = distutils
+PYTHON_PYGAME_LICENSE = LGPLv2.1+
+PYTHON_PYGAME_LICENSE_FILES = LGPL
 
 ifeq ($(BR2_PACKAGE_PYTHON_PYGAME_IMAGE),y)
 PYTHON_PYGAME_OPT_DEPENDS += sdl_image
