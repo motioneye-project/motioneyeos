@@ -5,9 +5,11 @@
 ################################################################################
 
 PYTHON_MAD_VERSION = 0.6
-PYTHON_MAD_SOURCE  = pymad-$(PYTHON_MAD_VERSION).tar.gz
-PYTHON_MAD_SITE    = http://spacepants.org/src/pymad/download/
+PYTHON_MAD_SOURCE = pymad-$(PYTHON_MAD_VERSION).tar.gz
+PYTHON_MAD_SITE = http://spacepants.org/src/pymad/download/
 PYTHON_MAD_SETUP_TYPE = distutils
+PYTHON_MAD_LICENSE = GPLv2+
+PYTHON_MAD_LICENSE_FILES = COPYING
 
 PYTHON_MAD_DEPENDENCIES = libmad
 
