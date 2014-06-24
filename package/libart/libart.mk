@@ -11,5 +11,7 @@ LIBART_SITE = http://ftp.gnome.org/pub/gnome/sources/libart_lgpl/$(LIBART_VERSIO
 LIBART_AUTORECONF = YES
 LIBART_INSTALL_STAGING = YES
 LIBART_CONFIG_SCRIPTS = libart2-config
+LIBART_LICENSE = LGPLv2+
+LIBART_LICENSE_FILES = COPYING
 
 $(eval $(autotools-package))
