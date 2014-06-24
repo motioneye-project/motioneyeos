@@ -10,6 +10,8 @@ LIBV4L_SITE = http://linuxtv.org/downloads/v4l-utils/
 LIBV4L_INSTALL_STAGING = YES
 LIBV4L_MAKE_OPTS = PREFIX=/usr
 LIBV4L_DEPENDENCIES = jpeg
+LIBV4L_LICENSE = GPLv2+ (utilities), LGPLv2.1+ (libraries)
+LIBV4L_LICENSE_FILES = COPYING COPYING.LIB lib/libv4l1/libv4l1-kernelcode-license.txt
 
 LIBV4L_DIRS_y += lib
 LIBV4L_DIRS_$(BR2_PACKAGE_LIBV4L_DECODE_TM6000)	+= utils/libv4l2util utils/decode_tm6000
