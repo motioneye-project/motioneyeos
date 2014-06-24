@@ -14,6 +14,8 @@ AVRDUDE_SUBDIR = avrdude
 AVRDUDE_AUTORECONF = YES
 AVRDUDE_DEPENDENCIES = libelf libusb libusb-compat ncurses \
 	host-flex host-bison
+AVRDUDE_LICENSE = GPLv2+
+AVRDUDE_LICENSE_FILES = avrdude/COPYING
 
 ifeq ($(BR2_PACKAGE_LIBFTDI),y)
 AVRDUDE_DEPENDENCIES += libftdi
