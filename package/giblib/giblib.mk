@@ -12,5 +12,7 @@ GIBLIB_AUTORECONF = YES
 GIBLIB_CONF_OPT = --with-imlib2-prefix=$(STAGING_DIR)/usr \
 		  --with-imlib2-exec-prefix=$(STAGING_DIR)/usr
 GIBLIB_CONFIG_SCRIPTS = giblib-config
+GIBLIB_LICENSE = MIT
+GIBLIB_LICENSE_FILES = COPYING
 
 $(eval $(autotools-package))
