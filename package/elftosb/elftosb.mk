@@ -6,6 +6,8 @@
 
 ELFTOSB_VERSION = 10.12.01
 ELFTOSB_SITE = http://repository.timesys.com/buildsources/e/elftosb/elftosb-$(ELFTOSB_VERSION)
+ELFTOSB_LICENSE = BSD-3c
+ELFTOSB_LICENSE_FILES = COPYING
 
 define HOST_ELFTOSB_BUILD_CMDS
 	$(HOST_CONFIGURE_OPTS) $(MAKE) -C $(@D) all
