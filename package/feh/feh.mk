@@ -8,6 +8,8 @@ FEH_VERSION = 2.12
 FEH_SOURCE = feh-$(FEH_VERSION).tar.bz2
 FEH_SITE = http://feh.finalrewind.org/
 FEH_DEPENDENCIES = libcurl imlib2 libpng xlib_libXinerama xlib_libXt
+FEH_LICENSE = MIT
+FEH_LICENSE_FILES = COPYING
 
 define FEH_BUILD_CMDS
 	$(MAKE1) CC="$(TARGET_CC) $(TARGET_CFLAGS) $(TARGET_LDFLAGS)" \
