@@ -7,6 +7,8 @@
 DEVMEM2_SITE = http://free-electrons.com/pub/mirror
 DEVMEM2_SOURCE = devmem2.c
 DEVMEM2_VERSION = 1
+DEVMEM2_LICENSE = GPLv2+
+DEVMEM2_LICENSE_FILES = devmem2.c
 
 define DEVMEM2_EXTRACT_CMDS
 	cp $(DL_DIR)/$($(PKG)_SOURCE) $(@D)/
