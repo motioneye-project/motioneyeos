@@ -6,6 +6,8 @@
 
 XVKBD_VERSION = 3.2
 XVKBD_SITE = http://homepage3.nifty.com/tsato/xvkbd
+XVKBD_LICENSE = GPLv2+
+XVKBD_LICENSE_FILES = README
 
 # Passing USRLIBDIR ensures that the stupid Makefile doesn't add
 # /usr/lib to the library search path.
