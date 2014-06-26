@@ -5,4 +5,4 @@ config BR2_PACKAGE_DHCPCD
 	help
 	  An RFC2131 compliant DHCP client
 
-	  http://roy.marples.name/downloads/dhcpcd
+	  http://roy.marples.name/projects/dhcpcd/
