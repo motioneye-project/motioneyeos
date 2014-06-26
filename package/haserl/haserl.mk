@@ -16,15 +16,13 @@ HASERL_DEPENDENCIES = host-pkgconf
 
 ifeq ($(BR2_PACKAGE_HASERL_WITH_LUA),y)
 	HASERL_CONF_OPT += --with-lua
-	HASERL_DEPENDENCIES += lua host-lua
+	HASERL_DEPENDENCIES += lua
 
 # liblua uses dlopen when dynamically linked
 ifneq ($(BR2_PREFER_STATIC_LIB),y)
 	HASERL_CONF_ENV += LIBS="-ldl"
 endif
 
-	# lua2c is built for host, so needs to find host libs/headers
-	HASERL_MAKE_OPT += lua2c_LDFLAGS='$(HOST_CFLAGS) $(HOST_LDFLAGS)'
 else
 	HASERL_CONF_OPT += --without-lua
 endif
