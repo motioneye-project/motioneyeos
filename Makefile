@@ -421,10 +421,6 @@ $(BUILD_DIR)/buildroot-config/auto.conf: $(BR2_CONFIG)
 
 prepare: $(BUILD_DIR)/buildroot-config/auto.conf
 
-# Add base dependencies to all targets even on those not based on the
-# package framework.
-$(TARGETS): dirs prepare dependencies
-
 world: target-post-image
 
 .PHONY: all world toolchain dirs clean distclean source outputmakefile \
