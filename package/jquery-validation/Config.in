@@ -6,4 +6,4 @@ config BR2_PACKAGE_JQUERY_VALIDATION
 	  your existing forms, while making all kinds of
 	  customizations to fit your application really easy.
 
-	  http://bassistance.de/jquery-plugins/jquery-plugin-validation/
+	  http://jqueryvalidation.org/
