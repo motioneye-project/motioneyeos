@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBTASN1_VERSION = 3.6
+LIBTASN1_VERSION = 4.0
 LIBTASN1_SITE = http://ftp.gnu.org/gnu/libtasn1
 LIBTASN1_DEPENDENCIES = host-bison
 LIBTASN1_LICENSE = GPLv3+ LGPLv2.1+
