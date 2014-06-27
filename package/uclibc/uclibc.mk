@@ -482,13 +482,13 @@ endef
 endif
 
 define UCLIBC_BUILD_CMDS
-	$(MAKE1) -C $(@D) \
+	$(MAKE) -C $(@D) \
 		$(UCLIBC_MAKE_FLAGS) \
 		PREFIX= \
 		DEVEL_PREFIX=/ \
 		RUNTIME_PREFIX=/ \
 		all
-	$(MAKE1) -C $(@D)/utils \
+	$(MAKE) -C $(@D)/utils \
 		PREFIX=$(HOST_DIR) \
 		HOSTCC="$(HOSTCC)" hostutils
 	$(UCLIBC_BUILD_TEST_SUITE)
