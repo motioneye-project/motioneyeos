@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-OPKG_VERSION = v0.2.0
-OPKG_SOURCE = $(OPKG_VERSION).tar.bz2
-OPKG_SITE = https://bitbucket.org/opkg/opkg/get
+OPKG_VERSION = v0.2.2
+OPKG_SITE = http://git.yoctoproject.org/git/opkg
+OPKG_SITE_METHOD = git
 # Uses PKG_CHECK_MODULES() in configure.ac
 OPKG_DEPENDENCIES = host-pkgconf
 OPKG_LICENSE = GPLv2+
