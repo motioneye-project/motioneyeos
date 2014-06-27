@@ -397,10 +397,6 @@ TARGETS += target-generatelocales
 endif
 endif
 
-ifeq ($(BR2_ECLIPSE_REGISTER),y)
-TARGETS += toolchain-eclipse-register
-endif
-
 TARGETS_SOURCE := $(patsubst %,%-source,$(TARGETS))
 TARGETS_DIRCLEAN := $(patsubst %,%-dirclean,$(TARGETS))
 
@@ -509,6 +505,14 @@ STRIP_FIND_CMD += -type f \( -perm /111 -o -name '*.so*' \)
 #   by the executable permission check above, so the explicit exclusion is only
 #   done for kernel modules with incorrect permissions.
 STRIP_FIND_CMD += -not \( $(call findfileclauses,libpthread*.so* *.ko $(call qstrip,$(BR2_STRIP_EXCLUDE_FILES))) \) -print
+
+ifeq ($(BR2_ECLIPSE_REGISTER),y)
+define TOOLCHAIN_ECLIPSE_REGISTER
+	./support/scripts/eclipse-register-toolchain `readlink -f $(O)` \
+		$(notdir $(TARGET_CROSS)) $(BR2_ARCH)
+endef
+TARGET_FINALIZE_HOOKS += TOOLCHAIN_ECLIPSE_REGISTER
+endif
 
 ifeq ($(BR2_ENABLE_LOCALE_PURGE),y)
 LOCALE_WHITELIST = $(BUILD_DIR)/locales.nopurge
@@ -628,9 +632,6 @@ target-post-image: $(TARGETS_ROOTFS) target-finalize
 	@$(foreach s, $(call qstrip,$(BR2_ROOTFS_POST_IMAGE_SCRIPT)), \
 		$(call MESSAGE,"Executing post-image script $(s)"); \
 		$(EXTRA_ENV) $(s) $(BINARIES_DIR) $(call qstrip,$(BR2_ROOTFS_POST_SCRIPT_ARGS))$(sep))
-
-toolchain-eclipse-register: toolchain
-	./support/scripts/eclipse-register-toolchain `readlink -f $(O)` $(notdir $(TARGET_CROSS)) $(BR2_ARCH)
 
 source: $(TARGETS_SOURCE) $(HOST_SOURCE)
 
