@@ -153,7 +153,6 @@ PYTHON_POST_PATCH_HOOKS += PYTHON_TOUCH_GRAMMAR_FILES
 # idle & smtpd.py have bad shebangs and are mostly samples
 #
 define PYTHON_REMOVE_USELESS_FILES
-	rm -f $(TARGET_DIR)/usr/bin/idle
 	rm -f $(TARGET_DIR)/usr/bin/python$(PYTHON_VERSION_MAJOR)-config
 	rm -f $(TARGET_DIR)/usr/bin/python2-config
 	rm -f $(TARGET_DIR)/usr/bin/python-config
