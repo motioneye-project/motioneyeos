@@ -50,6 +50,13 @@ endef
 GETTEXT_POST_PATCH_HOOKS += HOST_GETTEXT_DISABLE_UNNEEDED
 HOST_GETTEXT_POST_PATCH_HOOKS += HOST_GETTEXT_DISABLE_UNNEEDED
 
+define GETTEXT_REMOVE_UNNEEDED
+	$(RM) -rf $(TARGET_DIR)/usr/share/gettext/ABOUT-NLS
+	rmdir --ignore-fail-on-non-empty $(TARGET_DIR)/usr/share/gettext
+endef
+
+GETTEXT_POST_INSTALL_TARGET_HOOKS += GETTEXT_REMOVE_UNNEEDED
+
 # Force build with NLS support, otherwise libintl is not built
 # This is needed because some packages (eg. libglib2) requires
 # locales, but do not properly depend on BR2_ENABLE_LOCALE, and
