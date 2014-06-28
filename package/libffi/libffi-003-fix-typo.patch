@@ -1,0 +1,41 @@
+From cbc5a3c0200aa6c2cf8d6798d69a21501557c83f Mon Sep 17 00:00:00 2001
+From: Ryan Hill <rhill@gentoo.org>
+Date: Sat, 31 May 2014 08:26:34 -0400
+Subject: [PATCH 05/10] Fix typo
+
+This patch was borrowed from upstream, commit
+cbc5a3c0200aa6c2cf8d6798d69a21501557c83f, and will be part of the next
+3.1.1 release.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ include/ffi.h.in | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/include/ffi.h.in b/include/ffi.h.in
+index 93c776f..70c6179 100644
+--- a/include/ffi.h.in
++++ b/include/ffi.h.in
+@@ -1,5 +1,5 @@
+ /* -----------------------------------------------------------------*-C-*-
+-   libffi @VERSION@ - Copyright (c) 2011 Anthony Green
++   libffi @VERSION@ - Copyright (c) 2011, 2014 Anthony Green
+                     - Copyright (c) 1996-2003, 2007, 2008 Red Hat, Inc.
+ 
+    Permission is hereby granted, free of charge, to any person
+@@ -221,10 +221,10 @@ typedef struct {
+ #endif
+ } ffi_cif;
+ 
+-#if HAVE_LONG_DOUBLE_VARIANT
++#if @HAVE_LONG_DOUBLE_VARIANT@
+ /* Used to adjust size/alignment of ffi types.  */
+ void ffi_prep_types (ffi_abi abi);
+-# endif
++#endif
+ 
+ /* Used internally, but overridden by some architectures */
+ ffi_status ffi_prep_cif_core(ffi_cif *cif,
+-- 
+2.0.0
+

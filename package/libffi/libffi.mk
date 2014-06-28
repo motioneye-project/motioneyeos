@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBFFI_VERSION = 3.0.13
+LIBFFI_VERSION = 3.1
 LIBFFI_SITE    = ftp://sourceware.org/pub/libffi/
 LIBFFI_LICENSE = MIT
 LIBFFI_LICENSE_FILES = LICENSE
