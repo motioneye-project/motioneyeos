@@ -15,16 +15,17 @@ Index: b/Makefile.pre.in
 ===================================================================
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -934,23 +934,40 @@
+@@ -928,26 +928,42 @@
  	plat-mac/lib-scriptpackages/SystemEvents \
  	plat-mac/lib-scriptpackages/Terminal
  PLATMACPATH=:plat-mac:plat-mac/lib-scriptpackages
 -LIBSUBDIRS=	lib-tk lib-tk/test lib-tk/test/test_tkinter \
 -		lib-tk/test/test_ttk site-packages test test/audiodata test/data \
--		test/cjkencodings test/decimaltestdata test/xmltestdata test/subprocessdata \
+-		test/cjkencodings test/decimaltestdata test/xmltestdata \
+-		test/imghdrdata \
+-		test/subprocessdata \
 -		test/tracedmodules \
-+LIBSUBDIRS=	lib-tk \
-+		site-packages \
++LIBSUBDIRS=	lib-tk site-packages \
  		encodings compiler hotshot \
 -		email email/mime email/test email/test/data \
 -		json json/tests \
@@ -32,14 +33,16 @@ Index: b/Makefile.pre.in
 -		logging bsddb bsddb/test csv importlib wsgiref \
 -		lib2to3 lib2to3/fixes lib2to3/pgen2 lib2to3/tests \
 -		lib2to3/tests/data lib2to3/tests/data/fixers lib2to3/tests/data/fixers/myfixes \
--		ctypes ctypes/test ctypes/macholib idlelib idlelib/Icons \
+-		ctypes ctypes/test ctypes/macholib \
+-		idlelib idlelib/Icons idlelib/idle_test \
 -		distutils distutils/command distutils/tests $(XMLLIBSUBDIRS) \
 +		email email/mime \
 +		json \
 +		sqlite3 \
 +		logging bsddb csv importlib wsgiref \
 +		lib2to3 lib2to3/fixes lib2to3/pgen2 \
-+		ctypes  ctypes/macholib idlelib idlelib/Icons \
++		ctypes ctypes/macholib \
++		idlelib idlelib/Icons \
 +		distutils distutils/command $(XMLLIBSUBDIRS) \
  		multiprocessing multiprocessing/dummy \
 -		unittest unittest/test \
@@ -48,9 +51,10 @@ Index: b/Makefile.pre.in
  		curses pydoc_data $(MACHDEPS)
 +
 +TESTSUBDIRS = lib-tk/test lib-tk/test/test_tkinter \
-+	lib-tk/test/test_ttk \
-+	test test/audiodata test/data \
-+	test/cjkencodings test/decimaltestdata test/xmltestdata test/subprocessdata \
++	lib-tk/test/test_ttk test test/audiodata test/data \
++	test/cjkencodings test/decimaltestdata test/xmltestdata \
++	test/imghdrdata \
++	test/subprocessdata \
 +	test/tracedmodules \
 +	email/test email/test/data \
 +	json/tests \
@@ -59,6 +63,7 @@ Index: b/Makefile.pre.in
 +	lib2to3/tests \
 +	lib2to3/tests/data lib2to3/tests/data/fixers lib2to3/tests/data/fixers/myfixes \
 +	ctypes/test \
++	idlelib/idle_test \
 +	distutils/tests \
 +	unittest/test
 +
@@ -73,7 +78,7 @@ Index: b/configure.ac
 ===================================================================
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2614,6 +2614,12 @@
+@@ -2612,6 +2612,12 @@
  fi
  
  

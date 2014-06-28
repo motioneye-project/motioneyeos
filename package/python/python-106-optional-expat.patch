@@ -19,16 +19,16 @@ Index: b/Makefile.pre.in
 ===================================================================
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -940,7 +940,7 @@
- 		json \
+@@ -935,7 +935,7 @@
  		logging bsddb csv importlib wsgiref \
- 		ctypes  ctypes/macholib idlelib idlelib/Icons \
+ 		ctypes ctypes/macholib \
+ 		idlelib idlelib/Icons \
 -		distutils distutils/command $(XMLLIBSUBDIRS) \
 +		distutils distutils/command \
  		multiprocessing multiprocessing/dummy \
  		unittest \
  		lib-old \
-@@ -987,6 +987,10 @@
+@@ -985,6 +985,10 @@
  LIBSUBDIRS += curses
  endif
  
@@ -43,7 +43,7 @@ Index: b/configure.ac
 ===================================================================
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2278,13 +2278,21 @@
+@@ -2276,13 +2276,21 @@
  AC_SUBST(DISABLED_EXTENSIONS)
  
  # Check for use of the system expat library
@@ -74,7 +74,7 @@ Index: b/setup.py
 ===================================================================
 --- a/setup.py
 +++ b/setup.py
-@@ -1457,7 +1457,7 @@
+@@ -1469,7 +1469,7 @@
          #
          # More information on Expat can be found at www.libexpat.org.
          #

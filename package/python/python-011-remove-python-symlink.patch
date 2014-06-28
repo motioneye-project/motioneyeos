@@ -6,10 +6,11 @@ python symlink points to.
 
 Signed-off-by: Samuel Martin <s.martin49@gmail.com>
 
-diff -purN a/Makefile.pre.in b/Makefile.pre.in
---- a/Makefile.pre.in	2014-03-02 17:56:56.529132499 +0100
-+++ b/Makefile.pre.in	2014-03-02 19:24:02.346491849 +0100
-@@ -857,17 +857,10 @@ $(DESTSHARED):
+Index: b/Makefile.pre.in
+===================================================================
+--- a/Makefile.pre.in
++++ b/Makefile.pre.in
+@@ -858,17 +858,10 @@
  #  $(PYTHON) -> python2 -> python$(VERSION))
  # Also create equivalent chains for other installed files
  bininstall:	altbininstall

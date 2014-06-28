@@ -16,24 +16,24 @@ Index: b/Makefile.pre.in
 ===================================================================
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -938,7 +938,7 @@
+@@ -932,7 +932,7 @@
  		encodings compiler hotshot \
  		email email/mime \
  		json \
 -		logging bsddb csv importlib wsgiref \
 +		logging csv importlib wsgiref \
- 		ctypes  ctypes/macholib idlelib idlelib/Icons \
+ 		ctypes ctypes/macholib \
+ 		idlelib idlelib/Icons \
  		distutils distutils/command \
- 		multiprocessing multiprocessing/dummy \
-@@ -951,7 +951,6 @@
+@@ -948,7 +948,6 @@
  	test/tracedmodules \
  	email/test email/test/data \
  	json/tests \
 -	bsddb/test \
  	ctypes/test \
+ 	idlelib/idle_test \
  	distutils/tests \
- 	unittest/test
-@@ -991,6 +990,11 @@
+@@ -989,6 +988,11 @@
  LIBSUBDIRS += $(XMLLIBSUBDIRS)
  endif
  
@@ -49,7 +49,7 @@ Index: b/configure.ac
 ===================================================================
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2642,6 +2642,28 @@
+@@ -2640,6 +2640,28 @@
      	     DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} nis"
    	  fi])
  

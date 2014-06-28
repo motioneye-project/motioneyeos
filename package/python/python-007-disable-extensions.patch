@@ -19,7 +19,7 @@ Index: b/Makefile.pre.in
  		$(PYTHON_FOR_BUILD) $(srcdir)/setup.py $$quiet build
  
  # Build static library
-@@ -1154,7 +1157,8 @@
+@@ -1158,7 +1161,8 @@
  # Install the dynamically loadable modules
  # This goes into $(exec_prefix)
  sharedinstall: sharedmods
@@ -33,7 +33,7 @@ Index: b/configure.ac
 ===================================================================
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2275,6 +2275,8 @@
+@@ -2268,6 +2268,8 @@
  
  AC_PATH_TOOL([PKG_CONFIG], [pkg-config])
  

@@ -16,7 +16,7 @@ Index: b/Makefile.pre.in
 ===================================================================
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -947,7 +947,7 @@
+@@ -941,7 +941,7 @@
  		multiprocessing multiprocessing/dummy \
  		unittest \
  		lib-old \
@@ -24,8 +24,8 @@ Index: b/Makefile.pre.in
 +		curses $(MACHDEPS)
  
  TESTSUBDIRS = lib-tk/test lib-tk/test/test_tkinter \
- 	lib-tk/test/test_ttk \
-@@ -968,6 +968,10 @@
+ 	lib-tk/test/test_ttk test test/audiodata test/data \
+@@ -964,6 +964,10 @@
  LIBSUBDIRS += $(TESTSUBDIRS)
  endif
  
@@ -40,7 +40,7 @@ Index: b/configure.ac
 ===================================================================
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2613,6 +2613,11 @@
+@@ -2611,6 +2611,11 @@
        AC_CHECK_FUNCS(pthread_atfork)
  fi
  
@@ -56,7 +56,7 @@ Index: b/setup.py
 ===================================================================
 --- a/setup.py
 +++ b/setup.py
-@@ -2205,6 +2205,12 @@
+@@ -2217,6 +2217,12 @@
      # turn off warnings when deprecated modules are imported
      import warnings
      warnings.filterwarnings("ignore",category=DeprecationWarning)
@@ -69,7 +69,7 @@ Index: b/setup.py
      setup(# PyPI Metadata (PEP 301)
            name = "Python",
            version = sys.version.split()[0],
-@@ -2225,9 +2231,7 @@
+@@ -2237,9 +2243,7 @@
            ext_modules=[Extension('_struct', ['_struct.c'])],
  
            # Scripts to install

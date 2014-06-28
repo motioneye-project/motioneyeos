@@ -12,7 +12,7 @@ Index: b/configure.ac
 ===================================================================
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2613,6 +2613,15 @@
+@@ -2611,6 +2611,15 @@
        AC_CHECK_FUNCS(pthread_atfork)
  fi
  
@@ -32,23 +32,23 @@ Index: b/Makefile.pre.in
 ===================================================================
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -939,7 +939,6 @@
+@@ -932,7 +932,6 @@
  		encodings compiler hotshot \
  		email email/mime \
  		json \
 -		sqlite3 \
  		logging bsddb csv importlib wsgiref \
- 		ctypes  ctypes/macholib idlelib idlelib/Icons \
- 		distutils distutils/command $(XMLLIBSUBDIRS) \
-@@ -955,7 +954,6 @@
+ 		ctypes ctypes/macholib \
+ 		idlelib idlelib/Icons \
+@@ -950,7 +949,6 @@
  	test/tracedmodules \
  	email/test email/test/data \
  	json/tests \
 -	sqlite3/test \
  	bsddb/test \
  	ctypes/test \
- 	distutils/tests \
-@@ -977,6 +975,11 @@
+ 	idlelib/idle_test \
+@@ -973,6 +971,11 @@
  		lib2to3/tests/data/fixers/myfixes
  endif
  
