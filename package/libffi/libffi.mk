@@ -22,6 +22,12 @@ endef
 
 LIBFFI_POST_INSTALL_STAGING_HOOKS += LIBFFI_MOVE_STAGING_HEADERS
 
+# Remove headers that are not at the usual location from the target
+define LIBFFI_REMOVE_TARGET_HEADERS
+	$(RM) -rf $(TARGET_DIR)/usr/lib/libffi-$(LIBFFI_VERSION)
+endef
+
+LIBFFI_POST_INSTALL_TARGET_HOOKS += LIBFFI_REMOVE_TARGET_HEADERS
 
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
