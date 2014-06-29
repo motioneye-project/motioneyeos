@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LSOF_VERSION = 4.85
+LSOF_VERSION = 4.87
 LSOF_SOURCE = lsof_$(LSOF_VERSION).tar.bz2
 LSOF_SITE = ftp://lsof.itap.purdue.edu/pub/tools/unix/lsof/
 LSOF_LICENSE = lsof license
@@ -58,7 +58,7 @@ define LSOF_BUILD_CMDS
 endef
 
 define LSOF_INSTALL_TARGET_CMDS
-	$(INSTALL) -D -m 755 $(@D)/lsof $(TARGET_DIR)/bin/lsof
+	$(INSTALL) -D -m 755 $(@D)/lsof $(TARGET_DIR)/usr/bin/lsof
 endef
 
 $(eval $(generic-package))
