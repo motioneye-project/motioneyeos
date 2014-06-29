@@ -1,0 +1,30 @@
+From a20a91ad7c042c46e4a2adee6d03315f857f9985 Mon Sep 17 00:00:00 2001
+From: Bernhard Reutner-Fischer <rep.dot.nop@gmail.com>
+Date: Tue, 18 Feb 2014 23:30:28 +0100
+Subject: [PATCH] test: Fix math .c dependency
+
+When explicitly running the compile target we were missing a dependency
+to generate the libm-test.c.
+
+Signed-off-by: Bernhard Reutner-Fischer <rep.dot.nop@gmail.com>
+---
+ test/math/Makefile.in | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/test/math/Makefile.in b/test/math/Makefile.in
+index beef650..0285b66 100644
+--- a/test/math/Makefile.in
++++ b/test/math/Makefile.in
+@@ -25,7 +25,8 @@ EXTRA_LDFLAGS   := -lm
+ 
+ PERL := /usr/bin/perl
+ 
+-$(TESTS): libm-test.c
++MDEPS := $(wildcard test-*.c)
++$(MDEPS): libm-test.c
+ 
+ libm-test.c: libm-test-ulps-$(TARGET_ARCH) libm-test.inc gen-libm-test.pl
+ 	$(Q)$(PERL) ./gen-libm-test.pl -u libm-test-ulps-$(TARGET_ARCH) ./libm-test.inc -o "." 2>&1 > /dev/null
+-- 
+1.9.3
+
