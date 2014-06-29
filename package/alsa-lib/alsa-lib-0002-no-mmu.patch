@@ -1,11 +1,12 @@
 Don't use fork() on noMMU platforms
 
+[Gustavo: update patch for 1.0.28]
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 
-Index: alsa-lib-1.0.26/configure.in
+Index: alsa-lib-1.0.26/configure.ac
 ===================================================================
---- alsa-lib-1.0.26.orig/configure.in	2012-09-06 10:55:14.000000000 +0200
-+++ alsa-lib-1.0.26/configure.in	2013-03-09 16:22:08.000000000 +0100
+--- alsa-lib-1.0.26.orig/configure.ac	2012-09-06 10:55:14.000000000 +0200
++++ alsa-lib-1.0.26/configure.ac	2013-03-09 16:22:08.000000000 +0100
 @@ -66,6 +66,8 @@
  AM_CONDITIONAL(ALSA_HSEARCH_R, [test "x$HAVE_HSEARCH_R" != xyes])
  AC_CHECK_FUNCS([uselocale])
