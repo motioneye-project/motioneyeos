@@ -425,6 +425,7 @@ if BR2_PACKAGE_PERL
 menu "Perl libraries/modules"
 	source "package/perl-mojolicious/Config.in"
 	source "package/perl-net-ssleay/Config.in"
+	source "package/perl-xml-namespacesupport/Config.in"
 endmenu
 endif
 	source "package/php/Config.in"
