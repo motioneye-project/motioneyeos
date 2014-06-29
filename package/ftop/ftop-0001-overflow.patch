@@ -1,0 +1,17 @@
+Set tmp_buf and rate_buf to something ridiculously high to fix a buffer
+overflow when COLUMNS is large. - JeR
+
+(Taken from gentoo portage)
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+--- a/src/ftop.c	2009-02-16 07:00:00.000000000 +0100
++++ b/src/ftop.c	2013-09-06 14:42:41.788852952 +0200
+@@ -736,7 +736,7 @@
+ {
+     size_t i, j, bytes, bar_total;
+     char more_procs_ch, more_files_ch, expanded_ch;
+-    char tmp_buf[80], rate_buf[80];
++    char tmp_buf[2048], rate_buf[2048];
+     char *tmp_str;
+     snapshot *s, *s_prev;
+     file_info *tmp_file;
