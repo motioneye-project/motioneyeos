@@ -9,29 +9,14 @@ have the default dash as /bin/sh define a variable ending with
 
 Signed-off-by: Arnout Vandecappelle (Essensium/Mind) <arnout@mind.be>
 ---
- configure.ac |   22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+ configure.ac | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
 diff --git a/configure.ac b/configure.ac
 index 5968eb6..1a31a06 100755
 --- a/configure.ac
 +++ b/configure.ac
-@@ -60,10 +60,10 @@ AC_DEFUN([CHECK_DISABLE_FEATURE],
-         [use_[$1]=yes])
-     if test "$use_[$1]" = "yes"; then
-         SAVE_CPPFLAGS="$CPPFLAGS"
--        CPPFLAGS=`$PKG_CONFIG --cflags libfslaudiocodec`
--        CPPFLAGS+=`$PKG_CONFIG --cflags libfslvideocodec`
--        CPPFLAGS+=`$PKG_CONFIG --cflags libfslparser`
--        CPPFLAGS+=`$PKG_CONFIG --cflags libfslvpuwrap`
-+        CPPFLAGS="$CPPFLAGS `$PKG_CONFIG --cflags libfslaudiocodec`"
-+        CPPFLAGS="$CPPFLAGS `$PKG_CONFIG --cflags libfslvideocodec`"
-+        CPPFLAGS="$CPPFLAGS `$PKG_CONFIG --cflags libfslparser`"
-+        CPPFLAGS="$CPPFLAGS `$PKG_CONFIG --cflags libfslvpuwrap`"
-         AC_CHECK_HEADERS([$4], HAVE_[$3]=yes, HAVE_[$3]=no && break)
-         CPPFLAGS="$SAVE_CPPFLAGS"
-         if test "x$HAVE_[$3]" = "xyes"; then
-@@ -157,7 +157,7 @@ AC_SUBST(GST_PLUGINS_BASE_LIBS)
+@@ -152,7 +152,7 @@ AC_SUBST(GST_PLUGINS_BASE_LIBS)
  AC_CHECK_HEADERS([vpu_lib.h], [HAVE_VPU_LIB=yes], [HAVE_VPU_LIB=no])
  if test "x$HAVE_VPU_LIB" = "xyes"; then
      VPU_LIBS=`$PKG_CONFIG --libs libfslvpuwrap 2>/dev/null`
@@ -40,8 +25,8 @@ index 5968eb6..1a31a06 100755
  fi
  AC_SUBST(VPU_LIBS)
  
-@@ -173,15 +173,15 @@ AC_SUBST(IPU_CFLAGS)
- AC_SUBST(IPU_LIBS)
+@@ -176,15 +176,15 @@ AC_SUBST(RT_CFLAGS)
+ AC_SUBST(RT_LIBS)
  
  FSL_MM_CORE_CFLAGS=`$PKG_CONFIG --cflags libfslaudiocodec 2>/dev/null`
 -FSL_MM_CORE_CFLAGS+=`$PKG_CONFIG --cflags libfslvideocodec 2>/dev/null`

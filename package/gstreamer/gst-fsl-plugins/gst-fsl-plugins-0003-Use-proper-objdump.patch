@@ -18,16 +18,16 @@ index 1a31a06..cc7557d 100755
 @@ -17,7 +17,7 @@ AC_DEFUN([FIND_PARSER_SONAME],
      AC_MSG_CHECKING([for lib_$1_parser_$2_elinux.3.0.so soname])
      path=`$PKG_CONFIG --variable=libdir libfslparser`
-     SONAME=$( $CC -print-file-name=$path/lib_$1_parser_$2_elinux.so | \
+     SONAME=$( $CC -print-file-name=$PKG_CONFIG_SYSROOT_DIR$path/lib_$1_parser_$2_elinux.so | \
 -	    while read output; do objdump -p $output | \
 +	    while read output; do $OBJDUMP -p $output | \
  	    grep "SONAME" | \
  	    sed -e 's/ \+SONAME \+//'; done 2> /dev/null )
      if [[ -z "$SONAME" ]]; then
-@@ -37,7 +37,7 @@ AC_DEFUN([FIND_ACODEC_SONAME],
+@@ -36,7 +36,7 @@ AC_DEFUN([FIND_ACODEC_SONAME],
      AC_MSG_CHECKING([for lib_$1_wrap_$2_elinux.so soname])
      path=`$PKG_CONFIG --variable=libdir libfslaudiocodec`
-     SONAME=$( $CC -print-file-name=$path/wrap/lib_$1_wrap_$2_elinux.so | \
+     SONAME=$( $CC -print-file-name=$PKG_CONFIG_SYSROOT_DIR$path/wrap/lib_$1_wrap_$2_elinux.so | \
 -	    while read output; do objdump -p $output | \
 +	    while read output; do $OBJDUMP -p $output | \
  	    grep "SONAME" | \

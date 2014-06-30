@@ -18,7 +18,7 @@ diff --git a/configure.ac b/configure.ac
 index a5d1655..7b5a7a6 100755
 --- a/configure.ac
 +++ b/configure.ac
-@@ -173,6 +173,9 @@ AC_CHECK_LIB(ipu, mxc_ipu_lib_task_init, [IPU_LIBS=-lipu], [echo "No libipu arou
+@@ -170,6 +170,9 @@ AC_CHECK_LIB(ipu, mxc_ipu_lib_task_init, [IPU_LIBS=-lipu], [echo "No libipu arou
  AC_SUBST(IPU_CFLAGS)
  AC_SUBST(IPU_LIBS)
  
