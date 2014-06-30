@@ -49,6 +49,11 @@ BINUTILS_CONF_OPT = --disable-multilib --disable-werror \
 		--enable-install-libiberty \
 		$(BINUTILS_EXTRA_CONFIG_OPTIONS)
 
+# Don't build documentation. It takes up extra space / build time,
+# and sometimes needs specific makeinfo versions to work
+BINUTILS_CONF_ENV += ac_cv_prog_MAKEINFO=missing
+HOST_BINUTILS_CONF_ENV += ac_cv_prog_MAKEINFO=missing
+
 # Install binutils after busybox to prefer full-blown utilities
 ifeq ($(BR2_PACKAGE_BUSYBOX),y)
 BINUTILS_DEPENDENCIES += busybox
