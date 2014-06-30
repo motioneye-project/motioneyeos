@@ -110,10 +110,11 @@ endef
 # As a work-around, explicitly create this header file in $(STAGING_DIR).
 # It doesn't hurt to create it even if the system perl doesn't need it.
 #
-define PERL_ADD_PATCHLEVEL_DEBIAN_H
+define PERL_ADD_CORE_H
 	touch $(STAGING_DIR)/usr/lib/perl5/$(PERL_VERSION)/$(PERL_ARCHNAME)/CORE/patchlevel-debian.h
+	touch $(STAGING_DIR)/usr/lib/perl5/$(PERL_VERSION)/$(PERL_ARCHNAME)/CORE/cc_runtime.h
 endef
 
-PERL_POST_INSTALL_STAGING_HOOKS += PERL_ADD_PATCHLEVEL_DEBIAN_H
+PERL_POST_INSTALL_STAGING_HOOKS += PERL_ADD_CORE_H
 
 $(eval $(generic-package))
