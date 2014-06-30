@@ -1,4 +1,4 @@
-From 8a1ee148ea860c20fa4e076839e5681412a11f7e Mon Sep 17 00:00:00 2001
+From c4c4550dafabda05d78ca4aa9969db8a4f70affe Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Date: Sat, 10 Nov 2012 16:21:01 +0100
 Subject: [PATCH] Add rpcgen program from nfs-utils sources
@@ -6,7 +6,7 @@ Subject: [PATCH] Add rpcgen program from nfs-utils sources
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 ---
  Makefile.am          |    2 +-
- configure.ac         |   12 +-
+ configure.ac         |   14 +-
  rpcgen/Makefile.am   |   22 ++
  rpcgen/rpc_clntout.c |  217 ++++++++++
  rpcgen/rpc_cout.c    |  706 +++++++++++++++++++++++++++++++++
@@ -23,7 +23,7 @@ Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
  rpcgen/rpc_util.c    |  479 ++++++++++++++++++++++
  rpcgen/rpc_util.h    |  166 ++++++++
  rpcgen/rpcgen.1      |  521 ++++++++++++++++++++++++
- 18 files changed, 6342 insertions(+), 2 deletions(-)
+ 18 files changed, 6344 insertions(+), 2 deletions(-)
  create mode 100644 rpcgen/Makefile.am
  create mode 100644 rpcgen/rpc_clntout.c
  create mode 100644 rpcgen/rpc_cout.c
@@ -42,7 +42,7 @@ Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
  create mode 100644 rpcgen/rpcgen.1
 
 diff --git a/Makefile.am b/Makefile.am
-index 1a7596b..afb4e38 100644
+index 9b812eb..6edf029 100644
 --- a/Makefile.am
 +++ b/Makefile.am
 @@ -1,4 +1,4 @@
@@ -50,28 +50,29 @@ index 1a7596b..afb4e38 100644
 +SUBDIRS = src man doc rpcgen
  ACLOCAL_AMFLAGS = -I m4
  
- nobase_include_HEADERS = tirpc/netconfig.h \
+ noinst_HEADERS	       = tirpc/reentrant.h \
 diff --git a/configure.ac b/configure.ac
-index 487ec83..7f35b48 100644
+index 11df020..4110225 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -29,6 +29,16 @@ AC_CHECK_HEADER(netinet/ip6.h,
+@@ -34,5 +34,17 @@ AC_CHECK_LIB([pthread], [pthread_create])
+ AC_CHECK_LIB([nsl], [yp_get_default_domain])
  
- AC_CHECK_LIB([pthread], [pthread_create])
- 
-+AM_CONDITIONAL(CROSS_COMPILING, test $cross_compiling = yes)
  
 -AC_CONFIG_FILES([Makefile src/Makefile man/Makefile doc/Makefile])
++AM_CONDITIONAL(CROSS_COMPILING, test $cross_compiling = yes)
++
 +AC_MSG_CHECKING([for a C compiler for build tools])
 +if test $cross_compiling = yes; then
-+  AC_CHECK_PROGS(CC_FOR_BUILD, gcc cc)
++   AC_CHECK_PROGS(CC_FOR_BUILD, gcc cc)
 +else
-+  CC_FOR_BUILD=$CC
++   CC_FOR_BUILD=$CC
 +fi
 +AC_MSG_RESULT([$CC_FOR_BUILD])
 +AC_SUBST(CC_FOR_BUILD)
 +
 +AC_CONFIG_FILES([Makefile src/Makefile man/Makefile doc/Makefile rpcgen/Makefile])
++
  AC_OUTPUT(libtirpc.pc)
 diff --git a/rpcgen/Makefile.am b/rpcgen/Makefile.am
 new file mode 100644
@@ -6500,5 +6501,5 @@ index 0000000..89df7ed
 +.%T The rpcgen chapter in the NETP manual
 +.Re
 -- 
-1.7.9.5
+2.0.0
 

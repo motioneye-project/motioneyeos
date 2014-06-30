@@ -1,8 +1,7 @@
-From 52aecb645b2e45d120a941f42fdbe193e22c27e1 Mon Sep 17 00:00:00 2001
+From 008a9c8ac3a84ffcc46a0eedb5b13862b279190c Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Date: Sat, 10 Nov 2012 17:45:03 +0100
-Subject: [PATCH] Add more XDR files needed to build rpcbind on top of
- libtirpc
+Subject: [PATCH] Add more XDR files needed to build rpcbind on top of libtirpc
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 ---
@@ -16,17 +15,20 @@ Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
  create mode 100644 tirpc/rpcsvc/rquota.x
 
 diff --git a/Makefile.am b/Makefile.am
-index 7e63f78..351c5df 100644
+index 4e4dc32..b7ae979 100644
 --- a/Makefile.am
 +++ b/Makefile.am
-@@ -3,10 +3,16 @@ ACLOCAL_AMFLAGS = -I m4
+@@ -3,6 +3,9 @@ ACLOCAL_AMFLAGS = -I m4
  
  GENFILES = \
- 			 tirpc/rpcsvc/crypt.h \
-+			 tirpc/rpcsvc/mount.h \
-+			 tirpc/rpcsvc/nfs_prot.h \
-+			 tirpc/rpcsvc/rquota.h \
- 			 tirpc/rpc/rpcb_prot.h
+ 			tirpc/rpcsvc/crypt.h \
++			tirpc/rpcsvc/mount.h \
++			tirpc/rpcsvc/nfs_prot.h \
++			tirpc/rpcsvc/rquota.h \
+ 			tirpc/rpc/rpcb_prot.h
+ 
+ noinst_HEADERS	       = tirpc/reentrant.h \
+@@ -12,6 +15,9 @@ noinst_HEADERS	       = tirpc/reentrant.h \
  
  nobase_include_HEADERS = tirpc/netconfig.h \
  			 tirpc/rpcsvc/crypt.x \
@@ -1645,5 +1647,5 @@ index 0000000..72864d1
 +	} = 1;
 +} = 100011;
 -- 
-1.7.9.5
+2.0.0
 

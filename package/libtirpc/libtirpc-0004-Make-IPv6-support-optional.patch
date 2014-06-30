@@ -1,43 +1,26 @@
-From 5ce585bed328fafc99800effb5e9d1b07dbac2b7 Mon Sep 17 00:00:00 2001
+From fbe5fccf0e3bdaae3defc66a288176797fd12a17 Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Date: Sun, 24 Jun 2012 21:40:21 +0200
 Subject: [PATCH] Make IPv6 support optional
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 ---
- configure.ac    |    5 +++++
- src/Makefile.am |    2 +-
- 2 files changed, 6 insertions(+), 1 deletion(-)
+ src/Makefile.am | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/configure.ac b/configure.ac
-index 97c6f2c..487ec83 100644
---- a/configure.ac
-+++ b/configure.ac
-@@ -22,6 +22,11 @@ AC_PROG_LIBTOOL
- AC_HEADER_DIRENT
- AC_PREFIX_DEFAULT(/usr)
- AC_CHECK_HEADERS([arpa/inet.h fcntl.h libintl.h limits.h locale.h netdb.h netinet/in.h stddef.h stdint.h stdlib.h string.h sys/ioctl.h sys/param.h sys/socket.h sys/time.h syslog.h unistd.h])
-+
-+AC_CHECK_HEADER(netinet/ip6.h,
-+	AC_DEFINE(INET6, 1, [Define to 1 if IPv6 is available]),
-+	[AC_MSG_WARN([no IPv6])])
-+
- AC_CHECK_LIB([pthread], [pthread_create])
- 
- 
 diff --git a/src/Makefile.am b/src/Makefile.am
-index 6d36b93..6dc259e 100644
+index b5db263..f086255 100644
 --- a/src/Makefile.am
 +++ b/src/Makefile.am
-@@ -6,7 +6,7 @@
- ## anything like that.
+@@ -7,7 +7,7 @@
  
+ noinst_HEADERS = rpc_com.h
  
--INCLUDES = -I$(top_srcdir)/tirpc -DPORTMAP -DINET6 -DVERSION="\"$(VERSION)\"" \
-+INCLUDES = -I$(top_srcdir)/tirpc -DPORTMAP -DVERSION="\"$(VERSION)\"" \
+-AM_CPPFLAGS = -I$(top_srcdir)/tirpc -DPORTMAP -DINET6 \
++AM_CPPFLAGS = -I$(top_srcdir)/tirpc -DPORTMAP \
  		-D_GNU_SOURCE -Wall -pipe  
  
  lib_LTLIBRARIES = libtirpc.la
 -- 
-1.7.9.5
+2.0.0
 

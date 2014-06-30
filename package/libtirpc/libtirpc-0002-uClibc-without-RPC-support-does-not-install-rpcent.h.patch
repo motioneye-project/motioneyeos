@@ -1,15 +1,15 @@
-From c2e96bdc453334f10faf8db0eb06e41ab3ca4fe9 Mon Sep 17 00:00:00 2001
+From a20f33ad121fb1e9d1fbc31a0044546450677e7a Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Date: Sat, 23 Jun 2012 21:58:07 +0200
 Subject: [PATCH] uClibc without RPC support does not install rpcent.h
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 ---
- tirpc/rpc/rpcent.h |    5 +++--
+ tirpc/rpc/rpcent.h | 5 +++--
  1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/tirpc/rpc/rpcent.h b/tirpc/rpc/rpcent.h
-index 7fd93d9..8ce05ed 100644
+index c865e51..45775ed 100644
 --- a/tirpc/rpc/rpcent.h
 +++ b/tirpc/rpc/rpcent.h
 @@ -46,8 +46,9 @@
@@ -25,5 +25,5 @@ index 7fd93d9..8ce05ed 100644
  	char	*r_name;	/* name of server for this rpc program */
  	char	**r_aliases;	/* alias list */
 -- 
-1.7.9.5
+2.0.0
 
