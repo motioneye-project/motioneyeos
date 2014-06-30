@@ -481,8 +481,20 @@ define UCLIBC_BUILD_TEST_SUITE
 endef
 endif
 
+# In uClibc 0.9.31 parallel building is broken so we have to disable it
+# Fortunately uClibc 0.9.31 is only used by AVR32 and in its turn AVR32 is
+# about to be removed from buildroot.
+#
+# So as soon as AVR32 is removed please revert this patch so instead of
+# UCLIBC_MAKE normal "MAKE" is used in UCLIBC_BUILD_CMDS
+ifeq ($(BR2_UCLIBC_VERSION_0_9_31),y)
+	UCLIBC_MAKE = $(MAKE1)
+else
+	UCLIBC_MAKE = $(MAKE)
+endif
+
 define UCLIBC_BUILD_CMDS
-	$(MAKE) -C $(@D) \
+	$(UCLIBC_MAKE) -C $(@D) \
 		$(UCLIBC_MAKE_FLAGS) \
 		PREFIX= \
 		DEVEL_PREFIX=/ \
