@@ -1,4 +1,4 @@
-From ab7769e4b57741c654f1a815b006d6548104ba95 Mon Sep 17 00:00:00 2001
+From 5a1826d116ae986cb464d3503e0ae9ceaba3a687 Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Date: Sat, 10 Nov 2012 22:24:56 +0100
 Subject: [PATCH] Make IPv6 configurable
@@ -9,34 +9,34 @@ src/Makefile.am.
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 ---
- configure.in    |    3 +++
- src/Makefile.am |    2 +-
- 2 files changed, 4 insertions(+), 1 deletion(-)
+ Makefile.am  | 1 -
+ configure.in | 3 +++
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/configure.in b/configure.in
-index de1c730..57f0bf0 100644
---- a/configure.in
-+++ b/configure.in
-@@ -61,6 +61,9 @@ AC_ARG_ENABLE(libwrap,[ --enable-libwrap  Enables host name checking],
- 	esac],[libwarp=false])
- AM_CONDITIONAL(LIBWRAP, test x$libwarp = xtrue)
+diff --git a/Makefile.am b/Makefile.am
+index d10c906..c983a3e 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -3,7 +3,6 @@ AM_CPPFLAGS = \
+ 	-DPORTMAP \
+ 	-DFACILITY=LOG_MAIL \
+ 	-DSEVERITY=LOG_INFO \
+-	-DINET6 \
+ 	-DRPCBIND_STATEDIR="\"$(statedir)\"" \
+ 	-DRPCBIND_USER="\"$(rpcuser)\"" \
+ 	-D_GNU_SOURCE \
+diff --git a/configure.ac b/configure.ac
+index 2b67720..f144c8e 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -36,4 +36,7 @@ AS_IF([test x$enable_libwrap = xyes], [
+ 
+ AC_SEARCH_LIBS([pthread_create], [pthread])
  
 +AC_CHECK_HEADER(netinet/ip6.h,
 +        AC_DEFINE(INET6, 1, [Define to 1 if IPv6 is available]))
 +
- AC_CONFIG_FILES([Makefile src/Makefile man/Makefile])
- AC_OUTPUT()
-                                                                    
-diff --git a/src/Makefile.am b/src/Makefile.am
-index cc0a85b..3826eca 100644
---- a/src/Makefile.am
-+++ b/src/Makefile.am
-@@ -1,4 +1,4 @@
--INCLUDES = -I$(srcdir)/tirpc -DPORTMAP -DINET6 -DVERSION="\"$(VERSION)\"" \
-+INCLUDES = -I$(srcdir)/tirpc -DPORTMAP -DVERSION="\"$(VERSION)\"" \
-                                                 -D_GNU_SOURCE -Wall -pipe
- if DEBUG
- INCLUDES +=	-DRPCBIND_DEBUG -DSVC_RUN_DEBUG -DDEBUG_RMTCALL
+ AC_OUTPUT([Makefile])
 -- 
-1.7.9.5
+2.0.0
 

@@ -1,4 +1,4 @@
-From 6b5db966ae01c0bdaa7b3b90d9332394af6ea0be Mon Sep 17 00:00:00 2001
+From 249e25c5cc675c212ca4e4a3342bff8f59285b1a Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Date: Sat, 10 Nov 2012 22:03:43 +0100
 Subject: [PATCH] Remove yellow pages support
@@ -9,11 +9,11 @@ such feature, get rid of it.
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 ---
- src/security.c |   18 ------------------
+ src/security.c | 18 ------------------
  1 file changed, 18 deletions(-)
 
 diff --git a/src/security.c b/src/security.c
-index 0edeac6..c6c977f 100644
+index d272f74..8d5863c 100644
 --- a/src/security.c
 +++ b/src/security.c
 @@ -23,9 +23,6 @@
@@ -26,7 +26,7 @@ index 0edeac6..c6c977f 100644
  
  #include "rpcbind.h"
  
-@@ -322,24 +319,9 @@ check_callit(SVCXPRT *xprt, struct r_rmtcall_args *args, int versnum /*__unused*
+@@ -308,24 +305,9 @@ check_callit(SVCXPRT *xprt, struct r_rmtcall_args *args, int versnum /*__unused*
  		    args->rmt_proc != MOUNTPROC_UMNT)
  			break;
  		goto deny;
@@ -52,5 +52,5 @@ index 0edeac6..c6c977f 100644
  		break;
  	}
 -- 
-1.7.9.5
+2.0.0
 
