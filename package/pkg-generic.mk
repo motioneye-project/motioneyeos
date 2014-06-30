@@ -545,7 +545,10 @@ else
 #  source, by rsyncing
 #  depends
 #  configure
-$$($(2)_TARGET_CONFIGURE):	$$($(2)_TARGET_RSYNC)
+
+# Use an order-only dependency so the "<pkg>-clean-for-rebuild" rule
+# can remove the stamp file without triggering the configure step.
+$$($(2)_TARGET_CONFIGURE): | $$($(2)_TARGET_RSYNC)
 
 $(1)-depends:		$$($(2)_FINAL_DEPENDENCIES)
 
