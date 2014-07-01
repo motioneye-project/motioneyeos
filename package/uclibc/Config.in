@@ -188,25 +188,6 @@ config BR2_UCLIBC_TARGET_ARCH
 	default i386	   if BR2_i386
 	default x86_64	   if BR2_x86_64
 
-# This is only useful for uClibc <= 0.9.32. It can be removed once
-# Buildroot will support only uClibc >= 0.9.33 on ARM.
-config BR2_UCLIBC_ARM_TYPE
-	string
-	depends on BR2_UCLIBC_TARGET_ARCH = "arm"
-	default GENERIC_ARM	if BR2_fa526
-	default ARM920T		if BR2_arm920t
-	default ARM922T		if BR2_arm922t
-	default ARM926T		if BR2_arm926t
-	default ARM10T		if BR2_arm10t
-	default ARM1136JF_S	if BR2_arm1136jf_s
-	default ARM1176JZ_S	if BR2_arm1176jz_s
-	default ARM1176JZF_S	if BR2_arm1176jzf_s
-	default ARM_SA1100	if BR2_strongarm
-	default ARM_XSCALE	if BR2_xscale
-	default ARM_IWMMXT	if BR2_iwmmxt
-	default ARM_CORTEXA8	if BR2_cortex_a8
-	default ARM_CORTEXA9	if BR2_cortex_a9
-
 config BR2_UCLIBC_ARM_BX
 	bool
 	depends on BR2_UCLIBC_TARGET_ARCH = "arm"

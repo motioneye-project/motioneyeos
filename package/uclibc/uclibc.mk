@@ -67,14 +67,6 @@ endef
 #
 
 ifeq ($(UCLIBC_TARGET_ARCH),arm)
-UCLIBC_ARM_TYPE = CONFIG_$(call qstrip,$(BR2_UCLIBC_ARM_TYPE))
-
-define UCLIBC_ARM_TYPE_CONFIG
-	$(SED) 's/^\(CONFIG_[^_]*[_]*ARM[^=]*\)=.*/# \1 is not set/g' \
-		$(@D)/.config
-	$(call UCLIBC_OPT_SET,$(UCLIBC_ARM_TYPE),y,$(@D))
-endef
-
 define UCLIBC_ARM_ABI_CONFIG
 	$(SED) '/CONFIG_ARM_.ABI/d' $(@D)/.config
 	$(call UCLIBC_OPT_SET,CONFIG_ARM_EABI,y,$(@D))
@@ -425,7 +417,6 @@ define UCLIBC_SETUP_DOT_CONFIG
 	$(call UCLIBC_OPT_SET,DEVEL_PREFIX,"/usr",$(@D))
 	$(call UCLIBC_OPT_SET,SHARED_LIB_LOADER_PREFIX,"/lib",$(@D))
 	$(UCLIBC_MMU_CONFIG)
-	$(UCLIBC_ARM_TYPE_CONFIG)
 	$(UCLIBC_ARM_ABI_CONFIG)
 	$(UCLIBC_ARM_BX_CONFIG)
 	$(UCLIBC_MIPS_ABI_CONFIG)
