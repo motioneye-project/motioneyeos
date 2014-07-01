@@ -149,6 +149,13 @@ config BR2_BINUTILS_VERSION_2_23_1
 	  The 2.23.1 version of binutils has been removed. Use a newer
 	  version instead.
 
+config BR2_UCLIBC_VERSION_0_9_32
+	bool "uclibc 0.9.32 has been removed"
+	select BR2_LEGACY
+	help
+	  The 0.9.32 version of uClibc has been removed. Use a newer
+	  version instead.
+
 config BR2_PACKAGE_LIBV4L_DECODE_TM6000
 	bool "decode_tm6000"
 	select BR2_PACKAGE_LIBV4L_UTILS
