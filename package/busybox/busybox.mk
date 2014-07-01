@@ -4,13 +4,8 @@
 #
 ################################################################################
 
-ifeq ($(BR2_PACKAGE_BUSYBOX_SNAPSHOT),y)
-BUSYBOX_VERSION = snapshot
-BUSYBOX_SITE = http://www.busybox.net/downloads/snapshots
-else
-BUSYBOX_VERSION = $(call qstrip,$(BR2_BUSYBOX_VERSION))
+BUSYBOX_VERSION = 1.22.1
 BUSYBOX_SITE = http://www.busybox.net/downloads
-endif
 BUSYBOX_SOURCE = busybox-$(BUSYBOX_VERSION).tar.bz2
 BUSYBOX_LICENSE = GPLv2
 BUSYBOX_LICENSE_FILES = LICENSE

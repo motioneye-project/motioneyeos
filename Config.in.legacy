@@ -184,6 +184,30 @@ config BR2_GDB_VERSION_7_5
 	  The 7.5 version of gdb has been removed. Use a newer version
 	  instead.
 
+config BR2_BUSYBOX_VERSION_1_19_X
+	bool "busybox version selection has been removed"
+	select BR2_LEGACY
+	help
+	  The possibility of selecting the Busybox version has been
+	  removed. Use the latest version provided by the Busybox
+	  package instead.
+
+config BR2_BUSYBOX_VERSION_1_20_X
+	bool "busybox version selection has been removed"
+	select BR2_LEGACY
+	help
+	  The possibility of selecting the Busybox version has been
+	  removed. Use the latest version provided by the Busybox
+	  package instead.
+
+config BR2_BUSYBOX_VERSION_1_21_X
+	bool "busybox version selection has been removed"
+	select BR2_LEGACY
+	help
+	  The possibility of selecting the Busybox version has been
+	  removed. Use the latest version provided by the Busybox
+	  package instead.
+
 config BR2_PACKAGE_LIBV4L_DECODE_TM6000
 	bool "decode_tm6000"
 	select BR2_PACKAGE_LIBV4L_UTILS
