@@ -156,6 +156,20 @@ config BR2_UCLIBC_VERSION_0_9_32
 	  The 0.9.32 version of uClibc has been removed. Use a newer
 	  version instead.
 
+config BR2_GCC_VERSION_4_3_X
+	bool "gcc 4.3.x has been removed"
+	select BR2_LEGACY
+	help
+	  The 4.3.x version of gcc has been removed. Use a newer
+	  version instead.
+
+config BR2_GCC_VERSION_4_6_X
+	bool "gcc 4.6.x has been removed"
+	select BR2_LEGACY
+	help
+	  The 4.6.x version of gcc has been removed. Use a newer
+	  version instead.
+
 config BR2_PACKAGE_LIBV4L_DECODE_TM6000
 	bool "decode_tm6000"
 	select BR2_PACKAGE_LIBV4L_UTILS
