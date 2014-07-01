@@ -24,17 +24,20 @@ config BR2_TARGET_GRUB2
 		store Grub2. Leaving 1 MB of free space is safe.
 	  3. Setup loop device and loop partitions
 	     sudo losetup -f disk.img
-	     sudo partx -a disk.img
+	     sudo partx -a /dev/loop0
 	  4. Prepare the root partition
 	     sudo mkfs.ext3 -L root /dev/loop0p1
 	     sudo mount /dev/loop0p1 /mnt
 	     sudo tar -C /mnt -xf output/images/rootfs.tar
 	     sudo umount /mnt
 	  5. Install Grub2
-	     ./output/host/usr/sbin/grub-bios-setup \
+	     sudo ./output/host/usr/sbin/grub-bios-setup \
 			-b ./output/host/usr/lib/grub/i386-pc/boot.img \
 			-c ./output/images/grub.img -d . /dev/loop0
-	  6. Your disk.img is ready!
+	  6. Cleanup loop device
+	     sudo partx -d /dev/loop0
+	     sudo losetup -d /dev/loop0
+	  7. Your disk.img is ready!
 
 	  To test your BIOS image in Qemu:
 
