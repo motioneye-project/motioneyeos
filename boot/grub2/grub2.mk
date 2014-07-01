@@ -11,9 +11,14 @@ GRUB2_LICENSE = GPLv3+
 GRUB2_LICENSE_FILES = COPYING
 GRUB2_DEPENDENCIES = host-bison host-flex
 
+GRUB2_BUILTIN_MODULES = $(call qstrip,$(BR2_TARGET_GRUB2_BUILTIN_MODULES))
+GRUB2_BUILTIN_CONFIG = $(call qstrip,$(BR2_TARGET_GRUB2_BUILTIN_CONFIG))
+GRUB2_BOOT_PARTITION = $(call qstrip,$(BR2_TARGET_GRUB2_BOOT_PARTITION))
+
 ifeq ($(BR2_TARGET_GRUB2_I386_PC),y)
 GRUB2_IMAGE = $(BINARIES_DIR)/grub.img
 GRUB2_CFG = $(TARGET_DIR)/boot/grub/grub.cfg
+GRUB2_PREFIX = ($(GRUB2_BOOT_PARTITION))/boot/grub
 GRUB2_TUPLE = i386-pc
 GRUB2_TARGET = i386
 GRUB2_PLATFORM = pc
@@ -32,9 +37,6 @@ GRUB2_TUPLE = x86_64-efi
 GRUB2_TARGET = x86_64
 GRUB2_PLATFORM = efi
 endif
-
-GRUB2_BUILTIN_MODULES = $(call qstrip,$(BR2_TARGET_GRUB2_BUILTIN_MODULES))
-GRUB2_BUILTIN_CONFIG = $(call qstrip,$(BR2_TARGET_GRUB2_BUILTIN_CONFIG))
 
 # Grub2 is kind of special: it considers CC, LD and so on to be the
 # tools to build the native tools (i.e to be executed on the build
@@ -71,7 +73,7 @@ define GRUB2_IMAGE_INSTALLATION
 		-d $(HOST_DIR)/usr/lib/grub/$(GRUB2_TUPLE) \
 		-O $(GRUB2_TUPLE) \
 		-o $(GRUB2_IMAGE) \
-		$(if $(GRUB2_PREFIX),-p $(GRUB2_PREFIX)) \
+		-p "$(GRUB2_PREFIX)" \
 		$(if $(GRUB2_BUILTIN_CONFIG),-c $(GRUB2_BUILTIN_CONFIG)) \
 		$(GRUB2_BUILTIN_MODULES)
 	mkdir -p $(dir $(GRUB2_CFG))

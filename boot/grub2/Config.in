@@ -111,6 +111,19 @@ config BR2_TARGET_GRUB2_X86_64_EFI
 
 endchoice
 
+if BR2_TARGET_GRUB2_I386_PC
+
+config BR2_TARGET_GRUB2_BOOT_PARTITION
+	string "boot partition"
+	default "hd0,msdos1"
+	help
+	  Specify the partition where the /boot/grub/grub.cfg file is
+	  located. Use 'hd0,msdos1' for the first partition of the
+	  first disk if using a legacy partition table, or 'hd0,gpt1'
+	  if using GPT partition table.
+
+endif # BR2_TARGET_GRUB2_I386_PC
+
 config BR2_TARGET_GRUB2_BUILTIN_MODULES
 	string "builtin modules"
 	default "boot linux ext2 fat part_msdos part_gpt normal biosdisk" if BR2_TARGET_GRUB2_I386_PC
