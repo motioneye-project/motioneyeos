@@ -35,7 +35,7 @@ define DBUS_USERS
 endef
 
 ifeq ($(BR2_PREFER_STATIC_LIB),y)
-DBUS_CONF_OPT += LIBS='-lpthread'
+DBUS_CONF_OPT += LIBS='-pthread'
 endif
 
 ifeq ($(BR2_microblaze),y)
