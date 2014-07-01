@@ -128,6 +128,27 @@ config BR2_PACKAGE_PROCPS
 	help
 	  The procps package has been replaced by the equivalent procps-ng.
 
+config BR2_BINUTILS_VERSION_2_20_1
+	bool "binutils 2.20.1 has been removed"
+	select BR2_LEGACY
+	help
+	  The 2.20.1 version of binutils has been removed. Use a newer
+	  version instead.
+
+config BR2_BINUTILS_VERSION_2_21
+	bool "binutils 2.21 has been removed"
+	select BR2_LEGACY
+	help
+	  The 2.21 version of binutils has been removed. Use a newer
+	  version instead.
+
+config BR2_BINUTILS_VERSION_2_23_1
+	bool "binutils 2.23.1 has been removed"
+	select BR2_LEGACY
+	help
+	  The 2.23.1 version of binutils has been removed. Use a newer
+	  version instead.
+
 config BR2_PACKAGE_LIBV4L_DECODE_TM6000
 	bool "decode_tm6000"
 	select BR2_PACKAGE_LIBV4L_UTILS
