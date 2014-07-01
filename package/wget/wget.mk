@@ -37,6 +37,10 @@ ifeq ($(BR2_PACKAGE_OPENSSL),y)
 	WGET_DEPENDENCIES += openssl
 endif
 
+ifeq ($(BR2_PACKAGE_UTIL_LINUX_LIBUUID),y)
+	WGET_DEPENDENCIES += util-linux
+endif
+
 # --with-ssl is default
 ifneq ($(BR2_PACKAGE_GNUTLS),y)
 ifneq ($(BR2_PACKAGE_OPENSSL),y)
