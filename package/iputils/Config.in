@@ -4,8 +4,7 @@ config BR2_PACKAGE_IPUTILS
 	depends on BR2_USE_MMU # fork()
 	# requires dn_comp (only available in since uclibc 0.9.33)
 	depends on !BR2_avr32
-	depends on !BR2_UCLIBC_VERSION_0_9_31 && \
-		!BR2_UCLIBC_VERSION_0_9_32
+	depends on !BR2_UCLIBC_VERSION_0_9_31
 	help
 	  This package is set of small useful utilities for Linux networking.
 	  It includes complete versions of ping, traceroute, etc.
