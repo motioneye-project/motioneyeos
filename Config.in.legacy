@@ -170,6 +170,20 @@ config BR2_GCC_VERSION_4_6_X
 	  The 4.6.x version of gcc has been removed. Use a newer
 	  version instead.
 
+config BR2_GDB_VERSION_7_4
+	bool "gdb 7.4 has been removed"
+	select BR2_LEGACY
+	help
+	  The 7.4 version of gdb has been removed. Use a newer version
+	  instead.
+
+config BR2_GDB_VERSION_7_5
+	bool "gdb 7.5 has been removed"
+	select BR2_LEGACY
+	help
+	  The 7.5 version of gdb has been removed. Use a newer version
+	  instead.
+
 config BR2_PACKAGE_LIBV4L_DECODE_TM6000
 	bool "decode_tm6000"
 	select BR2_PACKAGE_LIBV4L_UTILS
@@ -428,7 +442,7 @@ config BR2_KERNEL_HEADERS_3_5
 
 config BR2_GDB_VERSION_7_2
 	bool "gdb 7.2.x is no longer supported"
-	select BR2_GDB_VERSION_7_5
+	select BR2_GDB_VERSION_7_6
 	select BR2_LEGACY
 	help
 	  Version 7.2.x of gdb has been deprecated for more than four
@@ -437,7 +451,7 @@ config BR2_GDB_VERSION_7_2
 
 config BR2_GDB_VERSION_7_3
 	bool "gdb 7.3.x is no longer supported"
-	select BR2_GDB_VERSION_7_5
+	select BR2_GDB_VERSION_7_6
 	select BR2_LEGACY
 	help
 	  Version 7.3.x of gdb has been deprecated for more than four

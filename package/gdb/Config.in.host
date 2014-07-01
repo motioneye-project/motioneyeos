@@ -27,14 +27,6 @@ choice
 		depends on BR2_avr32
 		bool "gdb 6.7.1-avr32-2.1.5"
 
-	config BR2_GDB_VERSION_7_4
-		bool "gdb 7.4.x"
-		depends on !BR2_powerpc64le
-
-	config BR2_GDB_VERSION_7_5
-		bool "gdb 7.5.x"
-		depends on !BR2_powerpc64le
-
 	config BR2_GDB_VERSION_7_6
 		bool "gdb 7.6.x"
 		depends on !BR2_powerpc64le
@@ -54,7 +46,5 @@ config BR2_GDB_VERSION
                                    (!BR2_PACKAGE_HOST_GDB && BR2_avr32)
 	default "arc-4.8-R3" if BR2_arc
 	default "6be65fb56ea6694a9260733a536a023a1e2d4d57" if BR2_microblaze
-	default "7.4.1"    if BR2_GDB_VERSION_7_4
-	default "7.5.1"    if BR2_GDB_VERSION_7_5
 	default "7.6.2"    if BR2_GDB_VERSION_7_6 || !BR2_PACKAGE_HOST_GDB
 	default "7.7.1"    if BR2_GDB_VERSION_7_7 || BR2_powerpc64le
