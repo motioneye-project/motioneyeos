@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# We want to catch any command failure, and exit immediately
+set -e
+
+# Download helper for cp
+# Call it with:
+#   $1: source file
+#   $2: output file
+# And this environment:
+#   LOCALFILES: the cp command to call
+
+source="${1}"
+output="${2}"
+
+${LOCALFILES} "${source}" "${output}"
