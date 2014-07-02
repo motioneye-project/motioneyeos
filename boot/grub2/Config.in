@@ -39,7 +39,30 @@ config BR2_TARGET_GRUB2
 	     sudo losetup -d /dev/loop0
 	  7. Your disk.img is ready!
 
-	  To test your BIOS image in Qemu:
+	  Using genimage
+	  --------------
+
+	  If you use genimage to generate your complete image,
+	  installing Grub can be tricky. Here is how to achieve Grub's
+	  installation with genimage:
+
+	  partition boot {
+	      in-partition-table = "no"
+	      image = "path_to_boot.img"
+	      offset = 0
+	      size = 512
+	  }
+	  partition grub {
+	      in-partition-table = "no"
+	      image = "path_to_grub.img"
+	      offset = 512
+	  }
+
+	  The result is not byte to byte identical to what
+	  grub-bios-setup does but it works anyway.
+
+	  To test your BIOS image in Qemu
+	  -------------------------------
 
 	  qemu-system-{i386,x86-64} -hda disk.img
 
@@ -73,7 +96,8 @@ config BR2_TARGET_GRUB2
 	     sudo losetup -d /dev/loop0
 	  7. Your disk.img is ready!
 
-	  To test your EFI image in Qemu:
+	  To test your EFI image in Qemu
+	  ------------------------------
 
 	  1. Download the EFI BIOS for Qemu
 	     Version IA32 or X64 depending on the chosen Grub2
