@@ -5,9 +5,11 @@
 ################################################################################
 
 OPENCV_VERSION = 2.4.2
-OPENCV_SITE    = http://downloads.sourceforge.net/project/opencvlibrary/opencv-unix/$(OPENCV_VERSION)
-OPENCV_SOURCE  = OpenCV-$(OPENCV_VERSION).tar.bz2
+OPENCV_SITE = http://downloads.sourceforge.net/project/opencvlibrary/opencv-unix/$(OPENCV_VERSION)
+OPENCV_SOURCE = OpenCV-$(OPENCV_VERSION).tar.bz2
 OPENCV_INSTALL_STAGING = YES
+OPENCV_LICENSE = BSD-3c
+OPENCV_LICENSE_FILES = doc/license.txt
 
 OPENCV_CONF_OPT += \
 	-DBUILD_WITH_STATIC_CRT=OFF                                  \
