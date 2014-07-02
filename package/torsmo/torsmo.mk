@@ -6,6 +6,8 @@
 
 TORSMO_VERSION = 0.18
 TORSMO_SITE = http://mirror.egtvedt.no/avr32linux.org/twiki/pub/Main/Torsmo
+TORSMO_LICENSE = BSD-3c
+TORSMO_LICENSE_FILES = COPYING
 
 # help2man doesn't work when cross compiling
 TORSMO_CONF_ENV = ac_cv_path_HELP2MAN=''
