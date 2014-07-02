@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# We want to catch any command failure, and exit immediately
+set -e
+
+# Download helper for wget
+# Call it with:
+#   $1: URL
+#   $2: output file
+# And this environment:
+#   WGET      : the wget command to call
+
+url="${1}"
+output="${2}"
+
+if ${WGET} -O "${output}.tmp" "${url}"; then
+    mv "${output}.tmp" "${output}"
+else
+    rm -f "${output}.tmp"
+    exit 1
+fi

@@ -8,7 +8,7 @@
 ################################################################################
 
 # Download method commands
-WGET := $(call qstrip,$(BR2_WGET)) $(QUIET)
+export WGET := $(call qstrip,$(BR2_WGET)) $(QUIET)
 export SVN := $(call qstrip,$(BR2_SVN))
 export CVS := $(call qstrip,$(BR2_CVS))
 BZR := $(call qstrip,$(BR2_BZR))
@@ -175,17 +175,10 @@ define SHOW_EXTERNAL_DEPS_HG
   echo $($(PKG)_SOURCE)
 endef
 
-# Download a file using wget. Only download the file if it doesn't
-# already exist in the download directory. If the download fails,
-# remove the file (because wget -O creates a 0-byte file even if the
-# download fails).  To handle an interrupted download as well, download
-# to a temporary file first.  The temporary file will be overwritten
-# the next time the download is tried.
+
 define DOWNLOAD_WGET
 	test -e $(DL_DIR)/$(2) || \
-	($(WGET) -O $(DL_DIR)/$(2).tmp '$(call qstrip,$(1))' && \
-	 mv $(DL_DIR)/$(2).tmp $(DL_DIR)/$(2)) || \
-	(rm -f $(DL_DIR)/$(2).tmp ; exit 1)
+	$(EXTRA_ENV) support/download/wget '$(call qstrip,$(1))' $(DL_DIR)/$(2)
 endef
 
 define SOURCE_CHECK_WGET
