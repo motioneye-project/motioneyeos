@@ -629,7 +629,7 @@ $(2)_MANIFEST_LICENSE_FILES ?= not saved
 # for overriden, local or normal remote packages alike, whether
 # we want to redistribute it or not.
 ifneq ($$($(2)_LICENSE_FILES),)
-$(1)-legal-info: $(1)-extract
+$(1)-legal-info: $(1)-patch
 endif
 
 # We only save the sources of packages we want to redistribute, that are
