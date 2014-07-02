@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# We want to catch any command failure, and exit immediately
+set -e
+
+# Download helper for svn
+# Call it with:
+#   $1: svn repo
+#   $2: svn revision
+#   $3: package's basename (eg. foobar-1.2.3)
+#   $4: output file
+# And this environment:
+#   SVN       : the svn command to call
+#   BR2_DL_DIR: path to Buildroot's download dir
+
+repo="${1}"
+rev="${2}"
+basename="${3}"
+output="${4}"
+
+pushd "${BR2_DL_DIR}" >/dev/null
+${SVN} export "${repo}@${rev}" "${basename}"
+tar czf "${output}" "${basename}"
+rm -rf "${basename}"
+popd >/dev/null
