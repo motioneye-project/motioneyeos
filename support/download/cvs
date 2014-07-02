@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# We want to catch any command failure, and exit immediately
+set -e
+
+# Download helper for cvs
+# Call it with:
+#   $1: cvs repo
+#   $2: cvs revision
+#   $3: package's name (eg. foobar)
+#   $4: package's basename (eg. foobar-1.2.3)
+#   $5: output file
+# And this environment:
+#   CVS       : the cvs command to call
+#   BR2_DL_DIR: path to Buildroot's download dir
+
+repo="${1}"
+rev="${2}"
+rawname="${3}"
+basename="${4}"
+output="${5}"
+
+cd "${BR2_DL_DIR}"
+${CVS} -z3 -d":pserver:anonymous@${repo}" \
+       co -d "${basename}" -r ":${rev}" -P "${rawname}"
+tar czf "${output}" "${basename}"
+rm -rf "${basename}"
