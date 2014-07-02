@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# We want to catch any command failure, and exit immediately
+set -e
+
+# Download helper for bzr
+# Call it with:
+#   $1: bzr repo
+#   $2: bzr revision
+#   $3: output file
+# And this environment:
+#   BZR       : the bzr command to call
+#   BR2_DL_DIR: path to Buildroot's download dir
+
+repo="${1}"
+rev="${2}"
+output="${3}"
+
+${BZR} export "${output}" "${repo}" -r "${rev}"
