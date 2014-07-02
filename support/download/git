@@ -1,0 +1,37 @@
+#!/bin/bash
+
+# We want to catch any command failure, and exit immediately
+set -e
+
+# Download helper for git
+# Call it with:
+#   $1: git repo
+#   $2: git cset
+#   $3: package's basename (eg. foobar-1.2.3)
+#   $4: output file
+# And this environment:
+#   BR2_DL_DIR: path to Buildroot's download dir
+#   GIT       : the git command to call
+
+repo="${1}"
+cset="${2}"
+basename="${3}"
+output="${4}"
+
+repodir="${BR2_DL_DIR}/${basename}"
+
+if [ -n "$(${GIT} ls-remote "${repo}" "${cset}" 2>&1)" ]; then
+    printf "Doing shallow clone\n"
+    ${GIT} clone --depth 1 -b "${cset}" --bare "${repo}" "${repodir}"
+else
+    printf "Doing full clone\n"
+    ${GIT} clone --bare "${repo}" "${repodir}"
+fi
+
+pushd "${repodir}" >/dev/null
+${GIT} archive --prefix="${basename}/" -o "${output}.tmp" --format=tar "${cset}"
+gzip -c "${output}.tmp" >"${output}"
+rm -f "${output}.tmp"
+popd >/dev/null
+
+rm -rf "${repodir}"
