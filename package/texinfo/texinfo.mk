@@ -10,5 +10,7 @@
 
 TEXINFO_VERSION = 4.13a
 TEXINFO_SITE = $(BR2_GNU_MIRROR)/texinfo
+TEXINFO_LICENSE = GPLv3+
+TEXINFO_LICENSE_FILES = COPYING
 
 $(eval $(host-autotools-package))
