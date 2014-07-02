@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# We want to catch any command failure, and exit immediately
+set -e
+
+# Download helper for scp
+# Call it with:
+#   $1: URL
+#   $2: output file
+# And this environment:
+#   SCP       : the scp command to call
+
+url="${1}"
+output="${2}"
+
+${SCP} "${url}" "${output}"
