@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# We want to catch any command failure, and exit immediately
+set -e
+
+# Download helper for hg
+# Call it with:
+#   $1: hg repo
+#   $2: hg cset
+#   $3: package's basename (eg. foobar-1.2.3)
+#   $4: output file
+# And this environment:
+#   HG        : the hg command to call
+#   BR2_DL_DIR: path to Buildroot's download dir
+
+repo="${1}"
+cset="${2}"
+basename="${3}"
+output="${4}"
+
+cd "${BR2_DL_DIR}"
+${HG} clone --noupdate --rev "${cset}" "${repo}" "${basename}"
+${HG} archive --repository "${basename}" --type tgz --prefix "${basename}" \
+              --rev "${cset}" "${output}"
+rm -rf "${basename}"
