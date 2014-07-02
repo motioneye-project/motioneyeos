@@ -1,6 +1,7 @@
 config BR2_PACKAGE_CRDA
 	bool "crda"
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libnl
+	depends on !BR2_PREFER_STATIC_LIB
 	select BR2_PACKAGE_LIBGCRYPT
 	select BR2_PACKAGE_LIBNL
 	# regdb is a runtime dependency
@@ -17,6 +18,6 @@ config BR2_PACKAGE_CRDA
 
 	  http://linuxwireless.org/en/developers/Regulatory/CRDA
 
-comment "crda needs a toolchain w/ threads"
-	depends on !BR2_TOOLCHAIN_HAS_THREADS
+comment "crda needs a toolchain w/ threads, dynamic library"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_PREFER_STATIC_LIB
 	depends on !BR2_nios2
