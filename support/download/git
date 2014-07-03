@@ -10,15 +10,28 @@ set -e
 #   $3: package's basename (eg. foobar-1.2.3)
 #   $4: output file
 # And this environment:
-#   BR2_DL_DIR: path to Buildroot's download dir
-#   GIT       : the git command to call
+#   GIT      : the git command to call
+#   BUILD_DIR: path to Buildroot's build dir
 
 repo="${1}"
 cset="${2}"
 basename="${3}"
 output="${4}"
 
-repodir="${BR2_DL_DIR}/${basename}"
+repodir="${basename}.tmp-git-checkout"
+tmp_tar="$( mktemp "${BUILD_DIR}/.XXXXXX" )"
+tmp_output="$( mktemp "${output}.XXXXXX" )"
+
+# Play tic-tac-toe with temp files
+# - first, we download to a trashable location (the build-dir)
+# - then we create the uncomporessed tarball in tht same trashable location
+# - then we create a temporary compressed tarball in the final location, so
+#   it is on the same filesystem as the final file
+# - finally, we atomically rename to the final file
+
+cd "${BUILD_DIR}"
+# Remove leftovers from a previous failed run
+rm -rf "${repodir}"
 
 if [ -n "$(${GIT} ls-remote "${repo}" "${cset}" 2>&1)" ]; then
     printf "Doing shallow clone\n"
@@ -28,10 +41,16 @@ else
     ${GIT} clone --bare "${repo}" "${repodir}"
 fi
 
+ret=1
 pushd "${repodir}" >/dev/null
-${GIT} archive --prefix="${basename}/" -o "${output}.tmp" --format=tar "${cset}"
-gzip -c "${output}.tmp" >"${output}"
-rm -f "${output}.tmp"
+if ${GIT} archive --prefix="${basename}/" -o "${tmp_tar}" \
+                  --format=tar "${cset}"; then
+    if gzip -c "${tmp_tar}" >"${tmp_output}"; then
+        mv "${tmp_output}" "${output}"
+        ret=0
+    fi
+fi
 popd >/dev/null
 
-rm -rf "${repodir}"
+rm -rf "${repodir}" "${tmp_tar}" "${tmp_output}"
+exit ${ret}

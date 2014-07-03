@@ -13,4 +13,14 @@ set -e
 source="${1}"
 output="${2}"
 
-${LOCALFILES} "${source}" "${output}"
+tmp_output="$( mktemp "${output}.XXXXXX" )"
+
+ret=1
+if ${LOCALFILES} "${source}" "${tmp_output}"; then
+    mv "${tmp_output}" "${output}"
+    ret=0
+fi
+
+# Cleanup
+rm -f "${tmp_output}"
+exit ${ret}

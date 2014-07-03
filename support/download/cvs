@@ -11,8 +11,8 @@ set -e
 #   $4: package's basename (eg. foobar-1.2.3)
 #   $5: output file
 # And this environment:
-#   CVS       : the cvs command to call
-#   BR2_DL_DIR: path to Buildroot's download dir
+#   CVS      : the cvs command to call
+#   BUILD_DIR: path to Buildroot's build dir
 
 repo="${1}"
 rev="${2}"
@@ -20,8 +20,28 @@ rawname="${3}"
 basename="${4}"
 output="${5}"
 
-cd "${BR2_DL_DIR}"
-${CVS} -z3 -d":pserver:anonymous@${repo}" \
-       co -d "${basename}" -r ":${rev}" -P "${rawname}"
-tar czf "${output}" "${basename}"
-rm -rf "${basename}"
+repodir="${basename}.tmp-cvs-checkout"
+tmp_output="$( mktemp "${output}.XXXXXX" )"
+
+cd "${BUILD_DIR}"
+# Remove leftovers from a previous failed run
+rm -rf "${repodir}"
+
+# Play tic-tac-toe with temp files
+# - first, we download to a trashable location (the build-dir)
+# - then we create a temporary tarball in the final location, so it is
+#   on the same filesystem as the final file
+# - finally, we atomically rename to the final file
+
+ret=1
+if ${CVS} -z3 -d":pserver:anonymous@${repo}" \
+           co -d "${repodir}" -r ":${rev}" -P "${rawname}"; then
+    if tar czf "${tmp_output}" "${repodir}"; then
+        mv "${tmp_output}" "${output}"
+        ret=0
+    fi
+fi
+
+# Cleanup
+rm -rf "${repodir}" "${tmp_output}"
+exit ${ret}

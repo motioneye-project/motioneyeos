@@ -8,14 +8,28 @@ set -e
 #   $1: URL
 #   $2: output file
 # And this environment:
-#   WGET      : the wget command to call
+#   WGET     : the wget command to call
+#   BUILD_DIR: path to Buildroot's build dir
 
 url="${1}"
 output="${2}"
 
-if ${WGET} -O "${output}.tmp" "${url}"; then
-    mv "${output}.tmp" "${output}"
-else
-    rm -f "${output}.tmp"
-    exit 1
+tmp_dl="$( mktemp "${BUILD_DIR}/.XXXXXX" )"
+tmp_output="$( mktemp "${output}.XXXXXX" )"
+
+# Play tic-tac-toe with temp files
+# - first, we download to a trashable location (the build-dir)
+# - then we copy to a temporary tarball in the final location, so it is
+#   on the same filesystem as the final file
+# - finally, we atomically rename to the final file
+
+ret=1
+if ${WGET} -O "${tmp_dl}" "${url}"; then
+    if mv "${tmp_dl}" "${tmp_output}"; then
+        mv "${tmp_output}" "${output}"
+        ret=0
+    fi
 fi
+
+rm -f "${tmp_dl}" "${tmp_output}"
+exit ${ret}

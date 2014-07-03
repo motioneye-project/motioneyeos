@@ -10,16 +10,35 @@ set -e
 #   $3: package's basename (eg. foobar-1.2.3)
 #   $4: output file
 # And this environment:
-#   SVN       : the svn command to call
-#   BR2_DL_DIR: path to Buildroot's download dir
+#   SVN      : the svn command to call
+#   BUILD_DIR: path to Buildroot's build dir
 
 repo="${1}"
 rev="${2}"
 basename="${3}"
 output="${4}"
 
-pushd "${BR2_DL_DIR}" >/dev/null
-${SVN} export "${repo}@${rev}" "${basename}"
-tar czf "${output}" "${basename}"
-rm -rf "${basename}"
-popd >/dev/null
+repodir="${basename}.tmp-svn-checkout"
+tmp_output="$( mktemp "${output}.XXXXXX" )"
+
+cd "${BUILD_DIR}"
+# Remove leftovers from a previous failed run
+rm -rf "${repodir}"
+
+# Play tic-tac-toe with temp files
+# - first, we download to a trashable location (the build-dir)
+# - then we create a temporary tarball in the final location, so it is
+#   on the same filesystem as the final file
+# - finally, we atomically rename to the final file
+
+ret=1
+if ${SVN} export "${repo}@${rev}" "${repodir}"; then
+    if tar czf "${tmp_output}" "${repodir}"; then
+        mv "${tmp_output}" "${output}"
+        ret=0
+    fi
+fi
+
+# Cleanup
+rm -rf "${repodir}" "${tmp_output}"
+exit ${ret}
