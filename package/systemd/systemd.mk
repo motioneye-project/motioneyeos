@@ -50,6 +50,10 @@ SYSTEMD_CONF_OPT += \
 	--disable-dbus \
 	--without-python
 
+# Override path to kmod, used in kmod-static-nodes.service
+SYSTEMD_CONF_ENV = \
+	ac_cv_path_KMOD=/usr/bin/kmod
+
 ifeq ($(BR2_PACKAGE_SYSTEMD_COMPAT),y)
 SYSTEMD_CONF_OPT += --enable-compat-libs
 else
