@@ -50,8 +50,13 @@ else
 DBUS_CONF_OPT += --without-x
 endif
 
-ifeq ($(BR2_PACKAGE_SYSTEMD),y)
-DBUS_CONF_OPT += --with-systemdsystemunitdir=/lib/systemd/system
+ifeq ($(BR2_INIT_SYSTEMD),y)
+DBUS_CONF_OPT += \
+	--enable-systemd \
+	--with-systemdsystemunitdir=/lib/systemd/system
+DBUS_DEPENDENCIES += systemd
+else
+DBUS_CONF_OPT += --disable-systemd
 endif
 
 # fix rebuild (dbus makefile errors out if /var/lib/dbus is a symlink)
