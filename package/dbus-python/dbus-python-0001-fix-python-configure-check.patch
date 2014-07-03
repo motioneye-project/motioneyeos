@@ -1,0 +1,27 @@
+Python: add am_cv_python_includes to override runtime python-config check
+[Gustavo: update for dbus-python 1.2.0]
+
+diff -Nura dbus-python-1.2.0.orig/configure dbus-python-1.2.0/configure
+--- dbus-python-1.2.0.orig/configure	2013-05-08 04:48:42.000000000 -0300
++++ dbus-python-1.2.0/configure	2014-07-03 16:54:25.922727033 -0300
+@@ -11762,6 +11762,12 @@
+ else
+     { $as_echo "$as_me:${as_lineno-$LINENO}: checking for Python headers using $PYTHON-config --includes" >&5
+ $as_echo_n "checking for Python headers using $PYTHON-config --includes... " >&6; }
++if test "${am_cv_python_includes+set}" = set; then
++  $as_echo_n "(cached) $ECHO_C" >&6
++  PYTHON_INCLUDES=${am_cv_python_includes}
++  { $as_echo "$as_me:$LINENO: result: $PYTHON_INCLUDES" >&5
++$as_echo_t "${ECHO_T}$PYTHON_INCLUDES" >&6; }
++else
+   PYTHON_INCLUDES=`$PYTHON-config --includes`
+   if test $? = 0; then
+     { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PYTHON_INCLUDES" >&5
+@@ -11781,6 +11787,7 @@
+ $as_echo "$PYTHON_INCLUDES" >&6; }
+   fi
+ fi
++fi
+ 
+ { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether those headers are sufficient" >&5
+ $as_echo_n "checking whether those headers are sufficient... " >&6; }
