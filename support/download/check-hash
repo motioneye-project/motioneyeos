@@ -22,6 +22,7 @@ check_one_hash() {
     _known="${2}"
     _file="${3}"
 
+    # Note: md5 is supported, but undocumented on purpose.
     # Note: sha3 is not supported, since there is currently no implementation
     #       (the NIST has yet to publish the parameters).
     case "${_h}" in
