@@ -1,0 +1,2 @@
+set bootargs console=ttymxc1,115200 root=/dev/mmcblk0p1 rootwait consoleblank=0
+${fs}load mmc ${disk}:1 10800000 /boot/uImage && bootm 10800000 ; echo "Error loading kernel image"
