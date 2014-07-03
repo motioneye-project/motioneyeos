@@ -267,25 +267,26 @@ endif
 # Most autotools packages install libtool .la files alongside any
 # installed libraries. These .la files sometimes refer to paths
 # relative to the sysroot, which libtool will interpret as absolute
-# paths to host libraries instead of the target libraries. Since we
-# configure with --prefix=/usr, such absolute paths start with
-# /usr. So we add $(STAGING_DIR) in front of any path that starts with
-# /usr.
+# paths to host libraries instead of the target libraries. Since this
+# is not what we want, these paths are fixed by prefixing them with
+# $(STAGING_DIR).  As we configure with --prefix=/usr, this fix
+# needs to be applied to any path that starts with /usr.
 #
-# To protect against the case that the output directory itself is
-# under /usr, we first substitute away any occurences of the output
-# directory to @BASE_DIR@.
+# To protect against the case that the output or staging directories
+# themselves are under /usr, we first substitute away any occurrences
+# of these directories as @BASE_DIR@ and @STAGING_DIR@. Note that
+# STAGING_DIR can be outside BASE_DIR when the user sets BR2_HOST_DIR
+# to a custom value.
 #
 ifndef $(2)_INSTALL_STAGING_CMDS
 define $(2)_INSTALL_STAGING_CMDS
 	$$(TARGET_MAKE_ENV) $$($$(PKG)_MAKE_ENV) $$($$(PKG)_MAKE) $$($$(PKG)_INSTALL_STAGING_OPT) -C $$($$(PKG)_SRCDIR)
-	for i in $$$$(find $$(STAGING_DIR)/usr/lib* -name "*.la"); do \
+	find $$(STAGING_DIR)/usr/lib* -name "*.la" | xargs \
 		$$(SED) "s:$$(BASE_DIR):@BASE_DIR@:g" \
+			-e "s:$$(STAGING_DIR):@STAGING_DIR@:g" \
 			-e "s:\(['= ]\)/usr:\\1@STAGING_DIR@/usr:g" \
 			-e "s:@STAGING_DIR@:$$(STAGING_DIR):g" \
-			-e "s:@BASE_DIR@:$$(BASE_DIR):g" \
-			$$$$i; \
-	done
+			-e "s:@BASE_DIR@:$$(BASE_DIR):g"
 endef
 endif
 

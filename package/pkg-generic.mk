@@ -202,6 +202,7 @@ $(BUILD_DIR)/%/.stamp_staging_installed:
 	$(Q)if test -n "$($(PKG)_CONFIG_SCRIPTS)" ; then \
 		$(call MESSAGE,"Fixing package configuration files") ;\
 			$(SED)  "s,$(BASE_DIR),@BASE_DIR@,g" \
+				-e "s,$(STAGING_DIR),@STAGING_DIR@,g" \
 				-e "s,^\(exec_\)\?prefix=.*,\1prefix=@STAGING_DIR@/usr,g" \
 				-e "s,-I/usr/,-I@STAGING_DIR@/usr/,g" \
 				-e "s,-L/usr/,-L@STAGING_DIR@/usr/,g" \
