@@ -58,6 +58,17 @@ domainseparator=$(if $(1),$(1),/)
 # github(user,package,version): returns site of GitHub repository
 github = https://github.com/$(1)/$(2)/archive/$(3)
 
+# Helper for checking a tarball's checksum
+# If the hash does not match, remove the incorrect file
+# $(1): the path to the file with the hashes
+# $(2): the full path to the file to check
+define VERIFY_HASH
+	if ! support/download/check-hash $(1) $(2); then \
+		rm -f $(2); \
+		exit 1; \
+	fi
+endef
+
 ################################################################################
 # The DOWNLOAD_* helpers are in charge of getting a working copy
 # of the source repository for their corresponding SCM,
@@ -148,7 +159,8 @@ endef
 define DOWNLOAD_SCP
 	test -e $(DL_DIR)/$(2) || \
 	$(EXTRA_ENV) support/download/scp '$(call stripurischeme,$(call qstrip,$(1)))' \
-					  $(DL_DIR)/$(2)
+					  $(DL_DIR)/$(2) && \
+	$(call VERIFY_HASH,$(PKGDIR)/$($(PKG)_NAME).hash,$(DL_DIR)/$(2))
 endef
 
 define SOURCE_CHECK_SCP
@@ -179,7 +191,8 @@ endef
 
 define DOWNLOAD_WGET
 	test -e $(DL_DIR)/$(2) || \
-	$(EXTRA_ENV) support/download/wget '$(call qstrip,$(1))' $(DL_DIR)/$(2)
+	$(EXTRA_ENV) support/download/wget '$(call qstrip,$(1))' $(DL_DIR)/$(2) && \
+	$(call VERIFY_HASH,$(PKGDIR)/$($(PKG)_NAME).hash,$(DL_DIR)/$(2))
 endef
 
 define SOURCE_CHECK_WGET
@@ -193,7 +206,8 @@ endef
 define DOWNLOAD_LOCALFILES
 	test -e $(DL_DIR)/$(2) || \
 	$(EXTRA_ENV) support/download/cp $(call stripurischeme,$(call qstrip,$(1))) \
-					 $(DL_DIR)
+					 $(DL_DIR) && \
+	$(call VERIFY_HASH,$(PKGDIR)/$($(PKG)_NAME).hash,$(DL_DIR)/$(2))
 endef
 
 define SOURCE_CHECK_LOCALFILES
