@@ -30,7 +30,12 @@ define exim-config-add # variable-name, variable-value
 	echo "$1=$2" >>$(@D)/Local/Makefile
 endef
 
-define EXIM_CONFIGURE_CMDS
+define EXIM_USE_CUSTOM_CONFIG_FILE
+	$(INSTALL) -m 0644 $(BR2_PACKAGE_EXIM_CUSTOM_CONFIG_FILE) \
+		$(@D)/Local/Makefile
+endef
+
+define EXIM_USE_DEFAULT_CONFIG_FILE
 	$(INSTALL) -m 0644 $(@D)/src/EDITME $(@D)/Local/Makefile
 	$(call exim-config-change,BIN_DIRECTORY,/usr/sbin)
 	$(call exim-config-change,CONFIGURE_FILE,/etc/exim/configure)
@@ -41,6 +46,9 @@ define EXIM_CONFIGURE_CMDS
 	$(call exim-config-change,PCRE_CONFIG,no)
 	$(call exim-config-change,HAVE_ICONV,no)
 	$(call exim-config-unset,EXIM_MONITOR)
+endef
+
+define EXIM_CONFIGURE_TOOLCHAIN
 	$(call exim-config-add,CC,$(TARGET_CC))
 	$(call exim-config-add,CFLAGS,$(TARGET_CFLAGS))
 	$(call exim-config-add,AR,$(TARGET_AR) cq)
@@ -48,6 +56,21 @@ define EXIM_CONFIGURE_CMDS
 	$(call exim-config-add,HOSTCC,$(HOSTCC))
 	$(call exim-config-add,HOSTCFLAGS,$(HOSTCFLAGS))
 endef
+
+ifeq ($(BR2_PACKAGE_EXIM_CUSTOM_CONFIG),y)
+ifeq ($(call qstrip,$(BR2_PACKAGE_EXIM_CUSTOM_CONFIG_FILE)),)
+$(error No exim configuration file specified, check your BR2_PACKAGE_EXIM_CUSTOM_CONFIG_FILE setting)
+endif
+define EXIM_CONFIGURE_CMDS
+	$(EXIM_USE_CUSTOM_CONFIG_FILE)
+	$(EXIM_CONFIGURE_TOOLCHAIN)
+endef
+else # CUSTOM_CONFIG
+define EXIM_CONFIGURE_CMDS
+	$(EXIM_USE_DEFAULT_CONFIG_FILE)
+	$(EXIM_CONFIGURE_TOOLCHAIN)
+endef
+endif # CUSTOM_CONFIG
 
 # exim needs a bit of love to build statically
 ifeq ($(BR2_PREFER_STATIC_LIB),y)
