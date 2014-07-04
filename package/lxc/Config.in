@@ -12,7 +12,7 @@ config BR2_PACKAGE_LXC
 	  of a set of processes in a jail by virtualizing and accounting the
 	  kernel resources. It is similar to Linux-Vserver or Openvz.
 
-	  http://lxc.sourceforge.net/
+	  https://linuxcontainers.org/
 
 comment "lxc needs a toolchain w/ IPv6, threads, largefile"
 	depends on BR2_USE_MMU
