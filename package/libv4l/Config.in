@@ -3,63 +3,30 @@ config BR2_PACKAGE_LIBV4L
 	depends on BR2_LARGEFILE
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_USE_MMU # fork()
-	select BR2_PACKAGE_JPEG
+	depends on BR2_INSTALL_LIBSTDCPP
+	select BR2_PACKAGE_ARGP_STANDALONE if BR2_TOOLCHAIN_USES_UCLIBC
 	help
-	  libv4l is an accompanying collection of libraries that adds a thin
-	  abstraction layer on top of video4linux2 (V4L2) devices.
+	  libv4l is a collection of libraries which adds a thin abstraction
+	  layer on top of video4linux2 devices. libv4l consists of 3 different
+	  libraries: libv4lconvert, libv4l1 and libv4l2.
 
 	  http://freshmeat.net/projects/libv4l
 
 if BR2_PACKAGE_LIBV4L
 
-config BR2_PACKAGE_LIBV4L_DECODE_TM6000
-	bool "decode_tm6000"
-	depends on BR2_TOOLCHAIN_USES_GLIBC
+comment "libv4l JPEG support not enabled"
+	depends on !BR2_PACKAGE_JPEG
+
+config BR2_PACKAGE_LIBV4L_UTILS
+	bool "v4l-utils tools"
 	help
-	  Tool to decode tm6000 proprietary format streams
-
-comment "decode_tm6000 needs an (e)glibc toolchain"
-	depends on !BR2_TOOLCHAIN_USES_GLIBC
-
-config BR2_PACKAGE_LIBV4L_IR_KEYTABLE
-	bool "ir-keytable"
-	depends on BR2_TOOLCHAIN_USES_GLIBC
-	help
-	  Tool to alter keymaps of Remote Controller devices
-
-comment "ir-keytable needs an (e)glibc toolchain"
-	depends on !BR2_TOOLCHAIN_USES_GLIBC
-
-config BR2_PACKAGE_LIBV4L_V4L2_COMPLIANCE
-	bool "v4l2-compliance"
-	depends on BR2_INSTALL_LIBSTDCPP
-	help
-	  Tool to test v4l2 API compliance of drivers
-
-comment "v4l2-compliance needs a toolchain w/ C++"
-	depends on !BR2_INSTALL_LIBSTDCPP
-
-config BR2_PACKAGE_LIBV4L_V4L2_CTL
-	bool "v4l2-ctl"
-	depends on BR2_INSTALL_LIBSTDCPP
-	default y
-	help
-	  Tool to configure v4l2 controls from the cmdline
-
-comment "v4l2-ctl needs a toolchain w/ C++"
-	depends on !BR2_INSTALL_LIBSTDCPP
-
-config BR2_PACKAGE_LIBV4L_V4L2_DBG
-	bool "v4l2-dbg"
-	depends on BR2_INSTALL_LIBSTDCPP
-	help
-	  Tool to directly get and set registers of v4l2 devices
-
-comment "v4l2-dbg needs a toolchain w/ C++"
-	depends on !BR2_INSTALL_LIBSTDCPP
+	  v4l-utils is a collection of various video4linux and DVB utilities.
+	  Enable this if you want to build the following tools:
+	  cx18-ctl, ir-keytable, ivtv-ctl, v4l2-ctl, v4l2-sysfs-path and
+	  others.
 
 endif
 
-comment "libv4l needs a toolchain w/ largefile, threads"
-	depends on !BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_THREADS
+comment "libv4l needs a toolchain w/ largefile, threads and C++"
+	depends on !BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_THREADS || !BR2_INSTALL_LIBSTDCPP
 	depends on BR2_USE_MMU

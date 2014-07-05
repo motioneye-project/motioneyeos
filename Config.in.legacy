@@ -128,6 +128,46 @@ config BR2_PACKAGE_PROCPS
 	help
 	  The procps package has been replaced by the equivalent procps-ng.
 
+config BR2_PACKAGE_LIBV4L_DECODE_TM6000
+	bool "decode_tm6000"
+	select BR2_PACKAGE_LIBV4L_UTILS
+	select BR2_LEGACY
+	help
+	  This libv4l option has been deprecated and replaced by a single
+	  option to build all the libv4l utilities.
+
+config BR2_PACKAGE_LIBV4L_IR_KEYTABLE
+	bool "ir-keytable"
+	select BR2_PACKAGE_LIBV4L_UTILS
+	select BR2_LEGACY
+	help
+	  This libv4l option has been deprecated and replaced by a single
+	  option to build all the libv4l utilities.
+
+config BR2_PACKAGE_LIBV4L_V4L2_COMPLIANCE
+	bool "v4l2-compliance"
+	select BR2_PACKAGE_LIBV4L_UTILS
+	select BR2_LEGACY
+	help
+	  This libv4l option has been deprecated and replaced by a single
+	  option to build all the libv4l utilities.
+
+config BR2_PACKAGE_LIBV4L_V4L2_CTL
+	bool "v4l2-ctl"
+	select BR2_PACKAGE_LIBV4L_UTILS
+	select BR2_LEGACY
+	help
+	  This libv4l option has been deprecated and replaced by a single
+	  option to build all the libv4l utilities.
+
+config BR2_PACKAGE_LIBV4L_V4L2_DBG
+	bool "v4l2-dbg"
+	select BR2_PACKAGE_LIBV4L_UTILS
+	select BR2_LEGACY
+	help
+	  This libv4l option has been deprecated and replaced by a single
+	  option to build all the libv4l utilities.
+
 ###############################################################################
 comment "Legacy options removed in 2014.05"
 
