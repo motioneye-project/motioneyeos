@@ -6,9 +6,6 @@ config BR2_PACKAGE_LIBNL
 
 	  http://people.suug.ch/~tgr/libnl/
 
-comment "libnl needs a toolchain w/ threads"
-	depends on !BR2_TOOLCHAIN_HAS_THREADS
-
 if BR2_PACKAGE_LIBNL
 
 config BR2_PACKAGE_LIBNL_TOOLS
@@ -20,5 +17,7 @@ config BR2_PACKAGE_LIBNL_TOOLS
 
 comment "libnl tools need a toolchain w/ dynamic library"
 	depends on BR2_PREFER_STATIC_LIB
-
 endif
+
+comment "libnl needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
