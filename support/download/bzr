@@ -26,7 +26,7 @@ tmp_output="$( mktemp "${output}.XXXXXX" )"
 # - finally, we atomically rename to the final file
 
 ret=1
-if ${BZR} export "${tmp_dl}" "${repo}" -r "${rev}"; then
+if ${BZR} export --format=tgz "${tmp_dl}" "${repo}" -r "${rev}"; then
     if mv "${tmp_dl}" "${tmp_output}"; then
         mv "${tmp_output}" "${output}"
         ret=0
