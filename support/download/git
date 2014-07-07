@@ -33,10 +33,14 @@ cd "${BUILD_DIR}"
 # Remove leftovers from a previous failed run
 rm -rf "${repodir}"
 
+git_done=0
 if [ -n "$(${GIT} ls-remote "${repo}" "${cset}" 2>&1)" ]; then
     printf "Doing shallow clone\n"
-    ${GIT} clone --depth 1 -b "${cset}" --bare "${repo}" "${repodir}"
-else
+    if ${GIT} clone --depth 1 -b "${cset}" --bare "${repo}" "${repodir}"; then
+        git_done=1
+    fi
+fi
+if [ ${git_done} -eq 0 ]; then
     printf "Doing full clone\n"
     ${GIT} clone --bare "${repo}" "${repodir}"
 fi
