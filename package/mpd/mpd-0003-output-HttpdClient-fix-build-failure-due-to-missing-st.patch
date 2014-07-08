@@ -1,0 +1,26 @@
+From 5f18d45f9583e521e2b2c18b055c4dab7ce126cf Mon Sep 17 00:00:00 2001
+From: Gustavo Zacarias <gustavo@zacarias.com.ar>
+Date: Tue, 8 Jul 2014 10:40:18 -0300
+Subject: [PATCH 3/4] output/HttpdClient: fix build failure due to missing
+ stdio.h include
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+---
+ src/output/HttpdClient.cxx | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/output/HttpdClient.cxx b/src/output/HttpdClient.cxx
+index 8e13fda..dc33705 100644
+--- a/src/output/HttpdClient.cxx
++++ b/src/output/HttpdClient.cxx
+@@ -30,6 +30,7 @@
+ 
+ #include <assert.h>
+ #include <string.h>
++#include <stdio.h>
+ 
+ HttpdClient::~HttpdClient()
+ {
+-- 
+1.8.5.5
+

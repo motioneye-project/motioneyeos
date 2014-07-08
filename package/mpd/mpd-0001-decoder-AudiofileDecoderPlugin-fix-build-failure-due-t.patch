@@ -1,0 +1,26 @@
+From 58c9d0c314119a571862b21b2f4e4bf7bbe88a57 Mon Sep 17 00:00:00 2001
+From: Gustavo Zacarias <gustavo@zacarias.com.ar>
+Date: Tue, 8 Jul 2014 10:39:12 -0300
+Subject: [PATCH 1/4] decoder/AudiofileDecoderPlugin: fix build failure due to
+ missing stdio.h include
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+---
+ src/decoder/AudiofileDecoderPlugin.cxx | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/decoder/AudiofileDecoderPlugin.cxx b/src/decoder/AudiofileDecoderPlugin.cxx
+index ab3557e..92223f2 100644
+--- a/src/decoder/AudiofileDecoderPlugin.cxx
++++ b/src/decoder/AudiofileDecoderPlugin.cxx
+@@ -31,6 +31,7 @@
+ #include <af_vfs.h>
+ 
+ #include <assert.h>
++#include <stdio.h>
+ 
+ /* pick 1020 since its devisible for 8,16,24, and 32-bit audio */
+ #define CHUNK_SIZE		1020
+-- 
+1.8.5.5
+

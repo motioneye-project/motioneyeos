@@ -1,0 +1,26 @@
+From 66f19e78a5b8e7b7aefd807218edafcf55ccee55 Mon Sep 17 00:00:00 2001
+From: Gustavo Zacarias <gustavo@zacarias.com.ar>
+Date: Tue, 8 Jul 2014 10:39:38 -0300
+Subject: [PATCH 2/4] decoder/OpusDecoderPlugin: fix build failure due to
+ missing stdio.h include
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+---
+ src/decoder/OpusDecoderPlugin.cxx | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/decoder/OpusDecoderPlugin.cxx b/src/decoder/OpusDecoderPlugin.cxx
+index f3d7b34..01ea368 100644
+--- a/src/decoder/OpusDecoderPlugin.cxx
++++ b/src/decoder/OpusDecoderPlugin.cxx
+@@ -40,6 +40,7 @@
+ #include <glib.h>
+ 
+ #include <string.h>
++#include <stdio.h>
+ 
+ static constexpr opus_int32 opus_sample_rate = 48000;
+ 
+-- 
+1.8.5.5
+
