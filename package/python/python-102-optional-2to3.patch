@@ -52,7 +52,7 @@ Index: b/configure.ac
 ===================================================================
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2623,6 +2623,12 @@
+@@ -2636,6 +2636,12 @@
  	AS_HELP_STRING([--disable-test-modules], [disable test modules]),
  	[ TEST_MODULES="${enableval}" ], [ TEST_MODULES=yes ])
  
@@ -69,7 +69,7 @@ Index: b/setup.py
 ===================================================================
 --- a/setup.py
 +++ b/setup.py
-@@ -2218,10 +2218,11 @@
+@@ -2220,10 +2220,11 @@
      import warnings
      warnings.filterwarnings("ignore",category=DeprecationWarning)
  

@@ -26,7 +26,7 @@ Index: b/configure.ac
    case $ac_sys_system in
      CYGWIN*)
            BLDLIBRARY='$(LIBRARY)'
-@@ -1909,6 +1911,9 @@
+@@ -1915,6 +1917,9 @@
  AC_SUBST(BLDSHARED)
  AC_SUBST(CCSHARED)
  AC_SUBST(LINKFORSHARED)
@@ -36,7 +36,7 @@ Index: b/configure.ac
  # SO is the extension of shared libraries `(including the dot!)
  # -- usually .so, .sl on HP-UX, .dll on Cygwin
  AC_MSG_CHECKING(SO)
-@@ -4550,7 +4555,7 @@
+@@ -4563,7 +4568,7 @@
  AC_MSG_RESULT(done)
  
  # generate output files
@@ -91,7 +91,7 @@ Index: b/Makefile.pre.in
  	@if [ -s Modules/python.exp -a \
  		"`echo $(MACHDEP) | sed 's/^\(...\).*/\1/'`" = "aix" ]; then \
  		echo; echo "Installing support files for building shared extension modules on AIX:"; \
-@@ -1311,6 +1313,7 @@
+@@ -1312,6 +1314,7 @@
  		config.cache config.log pyconfig.h Modules/config.c
  	-rm -rf build platform
  	-rm -rf $(PYTHONFRAMEWORKDIR)
