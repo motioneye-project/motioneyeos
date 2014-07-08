@@ -1,0 +1,22 @@
+config BR2_PACKAGE_DCRON
+	bool "dcron"
+	depends on BR2_USE_MMU # fork()
+	help
+	  dcron is a time-based job scheduler with anacron-like
+	  features.  It works as a background daemon that parses
+	  individual crontab files and executes commands on behalf of
+	  the users in question.
+
+	  Upon installation, this package will enable a system level
+	  cron daemon with hourly, daily, weekly and monthly crontabs.
+
+	  However, it doesn't allow non root users to create their own
+	  crontab file. This is because /var/spool/cron/crontabs is
+	  non user writable.
+
+	  Typically, a crontab group is created on the system and
+	  users allowed to create crontab entries are added into this
+	  group, while crontab executable is owned by root:crontab
+	  with sgid bit enabled.
+
+	  http://www.jimpryor.net/linux/dcron.html
