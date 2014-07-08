@@ -55,6 +55,20 @@ else
 	CAIRO_CONF_OPT += --disable-directfb
 endif
 
+ifeq ($(BR2_PACKAGE_FREETYPE),y)
+	CAIRO_CONF_OPT += --enable-ft
+	CAIRO_DEPENDENCIES += freetype
+else
+	CAIRO_CONF_OPT += --disable-ft
+endif
+
+ifeq ($(BR2_PACKAGE_LIBGLIB2),y)
+	CAIRO_CONF_OPT += --enable-gobject
+	CAIRO_DEPENDENCIES += libglib2
+else
+	CAIRO_CONF_OPT += --disable-gobject
+endif
+
 ifeq ($(BR2_PACKAGE_HAS_LIBGLES),y)
 	CAIRO_CONF_OPT += --enable-glesv2
 	CAIRO_DEPENDENCIES += libgles
