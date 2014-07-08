@@ -31,6 +31,11 @@ config BR2_PACKAGE_PHP_EXT_BZIP2
 	help
 	  bzip2 read/write support
 
+config BR2_PACKAGE_PHP_EXT_PHAR
+	bool "phar"
+	help
+	  PHP Archive support
+
 config BR2_PACKAGE_PHP_EXT_ZIP
 	bool "zip"
 	select BR2_PACKAGE_ZLIB
