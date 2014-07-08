@@ -73,7 +73,7 @@ Index: b/configure.ac
 ===================================================================
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2360,6 +2360,8 @@
+@@ -2349,6 +2349,8 @@
  
  AC_PATH_TOOL([PKG_CONFIG], [pkg-config])
  

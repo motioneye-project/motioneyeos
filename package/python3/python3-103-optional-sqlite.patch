@@ -12,7 +12,7 @@ Index: b/configure.ac
 ===================================================================
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2666,6 +2666,15 @@
+@@ -2655,6 +2655,15 @@
        AC_CHECK_FUNCS(pthread_atfork)
  fi
  
@@ -40,16 +40,15 @@ Index: b/Makefile.pre.in
  		logging csv wsgiref urllib \
  		ctypes ctypes/macholib \
  		idlelib idlelib/Icons \
-@@ -1173,7 +1172,7 @@
- 		test/namespace_pkgs/project3/parent/child \
-                 test/namespace_pkgs/module_and_namespace_package \
-                 test/namespace_pkgs/module_and_namespace_package/a_test \
--		sqlite3/test idlelib/idle_test \
-+		idlelib/idle_test \
- 		test/test_importlib test/test_importlib/builtin \
- 		test/test_importlib/extension test/test_importlib/frozen \
- 		test/test_importlib/import_ test/test_importlib/source \
-@@ -1192,6 +1191,11 @@
+@@ -1173,7 +1172,6 @@
+ 		test/test_importlib/namespace_pkgs/project3/parent/child \
+                 test/test_importlib/namespace_pkgs/module_and_namespace_package \
+                 test/test_importlib/namespace_pkgs/module_and_namespace_package/a_test \
+-		sqlite3/test \
+ 		ctypes/test \
+ 		idlelib/idle_test \
+ 		distutils/tests \
+@@ -1194,6 +1192,11 @@
  	lib2to3/tests/data/fixers/myfixes
  endif
  

@@ -34,17 +34,17 @@ Index: b/Makefile.pre.in
  		ctypes ctypes/macholib \
  		idlelib idlelib/Icons \
  		distutils distutils/command $(XMLLIBSUBDIRS) \
-@@ -1172,9 +1173,6 @@
- 		test/namespace_pkgs/project3/parent/child \
-                 test/namespace_pkgs/module_and_namespace_package \
-                 test/namespace_pkgs/module_and_namespace_package/a_test \
+@@ -1173,9 +1174,6 @@
+                 test/test_importlib/namespace_pkgs/module_and_namespace_package \
+                 test/test_importlib/namespace_pkgs/module_and_namespace_package/a_test \
+ 		sqlite3/test \
 -		lib2to3/tests \
 -		lib2to3/tests/data lib2to3/tests/data/fixers \
 -		lib2to3/tests/data/fixers/myfixes \
- 		sqlite3/test idlelib/idle_test \
- 		test/test_importlib test/test_importlib/builtin \
- 		test/test_importlib/extension test/test_importlib/frozen \
-@@ -1186,6 +1184,14 @@
+ 		ctypes/test \
+ 		idlelib/idle_test \
+ 		distutils/tests \
+@@ -1188,6 +1186,14 @@
  LIBSUBDIRS += pydoc_data
  endif
  
@@ -59,7 +59,7 @@ Index: b/Makefile.pre.in
  ifeq (@TEST_MODULES@,yes)
  LIBSUBDIRS += $(TESTSUBDIRS)
  endif
-@@ -1281,10 +1287,12 @@
+@@ -1283,10 +1289,12 @@
  		-d $(LIBDEST)/site-packages -f $(STDLIB_CACHE_FLAGS) \
  		-x badsyntax $(DESTDIR)$(LIBDEST)/site-packages
  endif
@@ -76,7 +76,7 @@ Index: b/setup.py
 ===================================================================
 --- a/setup.py
 +++ b/setup.py
-@@ -2183,10 +2183,11 @@
+@@ -2204,10 +2204,11 @@
      import warnings
      warnings.filterwarnings("ignore",category=DeprecationWarning)
  
@@ -94,7 +94,7 @@ Index: b/configure.ac
 ===================================================================
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2678,6 +2678,12 @@
+@@ -2667,6 +2667,12 @@
  	AS_HELP_STRING([--disable-test-modules], [disable test modules]),
  	[ TEST_MODULES="${enableval}" ], [ TEST_MODULES=yes ])
  

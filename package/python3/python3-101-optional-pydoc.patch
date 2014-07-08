@@ -34,10 +34,10 @@ Index: b/Makefile.pre.in
 +		curses $(MACHDEPS)
  
  TESTSUBDIRS = 	tkinter/test tkinter/test/test_tkinter tkinter/test/test_ttk \
- 		test test/test_asyncio ctypes/test \
-@@ -1180,6 +1182,10 @@
- 		unittest/test unittest/test/testmock \
- 		distutils/tests
+ 		test test/test_asyncio \
+@@ -1182,6 +1184,10 @@
+ 		test/test_importlib/import_ test/test_importlib/source \
+ 		unittest/test unittest/test/testmock
  
 +ifeq (@PYDOC@,yes)
 +LIBSUBDIRS += pydoc_data
@@ -50,7 +50,7 @@ Index: b/configure.ac
 ===================================================================
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2666,6 +2666,11 @@
+@@ -2655,6 +2655,11 @@
        AC_CHECK_FUNCS(pthread_atfork)
  fi
  
@@ -66,7 +66,7 @@ Index: b/setup.py
 ===================================================================
 --- a/setup.py
 +++ b/setup.py
-@@ -2182,6 +2182,12 @@
+@@ -2203,6 +2203,12 @@
      # turn off warnings when deprecated modules are imported
      import warnings
      warnings.filterwarnings("ignore",category=DeprecationWarning)
@@ -79,7 +79,7 @@ Index: b/setup.py
      setup(# PyPI Metadata (PEP 301)
            name = "Python",
            version = sys.version.split()[0],
-@@ -2206,8 +2212,7 @@
+@@ -2227,8 +2233,7 @@
            # If you change the scripts installed here, you also need to
            # check the PyBuildScripts command above, and change the links
            # created by the bininstall target in Makefile.pre.in

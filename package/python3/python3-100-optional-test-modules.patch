@@ -42,16 +42,16 @@ Index: b/Makefile.pre.in
 +		curses pydoc_data $(MACHDEPS)
 +
 +TESTSUBDIRS = 	tkinter/test tkinter/test/test_tkinter tkinter/test/test_ttk \
-+		test test/test_asyncio ctypes/test \
++		test test/test_asyncio \
 +		test/test_email test/test_email/data \
 +		test/test_json \
  		test/audiodata \
  		test/capath test/data \
  		test/cjkencodings test/decimaltestdata test/xmltestdata \
-@@ -1148,28 +1170,20 @@
- 		test/namespace_pkgs/project3/parent/child \
-                 test/namespace_pkgs/module_and_namespace_package \
-                 test/namespace_pkgs/module_and_namespace_package/a_test \
+@@ -1148,28 +1170,22 @@
+ 		test/test_importlib/namespace_pkgs/project3/parent/child \
+                 test/test_importlib/namespace_pkgs/module_and_namespace_package \
+                 test/test_importlib/namespace_pkgs/module_and_namespace_package/a_test \
 -		asyncio \
 -		test/test_asyncio \
 -		collections concurrent concurrent/futures encodings \
@@ -61,6 +61,7 @@ Index: b/Makefile.pre.in
 -		sqlite3 sqlite3/test \
 -		logging csv wsgiref urllib \
 -		lib2to3 lib2to3/fixes lib2to3/pgen2 lib2to3/tests \
++		sqlite3/test \
 +		lib2to3/tests \
  		lib2to3/tests/data lib2to3/tests/data/fixers \
  		lib2to3/tests/data/fixers/myfixes \
@@ -68,7 +69,9 @@ Index: b/Makefile.pre.in
 -		idlelib idlelib/Icons idlelib/idle_test \
 -		distutils distutils/command distutils/tests $(XMLLIBSUBDIRS) \
 -		importlib test/test_importlib test/test_importlib/builtin \
-+		sqlite3/test idlelib/idle_test \
++		ctypes/test \
++		idlelib/idle_test \
++		distutils/tests \
 +		test/test_importlib test/test_importlib/builtin \
  		test/test_importlib/extension test/test_importlib/frozen \
  		test/test_importlib/import_ test/test_importlib/source \
@@ -77,8 +80,7 @@ Index: b/Makefile.pre.in
 -		unittest unittest/test unittest/test/testmock \
 -		venv venv/scripts venv/scripts/posix \
 -		curses pydoc_data $(MACHDEPS)
-+		unittest/test unittest/test/testmock \
-+		distutils/tests
++		unittest/test unittest/test/testmock
 +
 +ifeq (@TEST_MODULES@,yes)
 +LIBSUBDIRS += $(TESTSUBDIRS)
@@ -91,7 +93,7 @@ Index: b/configure.ac
 ===================================================================
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2667,6 +2667,12 @@
+@@ -2656,6 +2656,12 @@
  fi
  
  

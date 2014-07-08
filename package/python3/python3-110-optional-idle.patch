@@ -33,7 +33,7 @@ Index: b/Makefile.pre.in
  		distutils distutils/command \
  		importlib \
  		turtledemo \
-@@ -1209,6 +1210,10 @@
+@@ -1210,6 +1211,10 @@
  LIBSUBDIRS += $(XMLLIBSUBDIRS)
  endif
  
@@ -48,7 +48,7 @@ Index: b/configure.ac
 ===================================================================
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2737,6 +2737,12 @@
+@@ -2726,6 +2726,12 @@
  	AS_HELP_STRING([--disable-lib2to3], [disable lib2to3]),
  	[ LIB2TO3="${enableval}" ], [ LIB2TO3=yes ])
  
@@ -65,7 +65,7 @@ Index: b/setup.py
 ===================================================================
 --- a/setup.py
 +++ b/setup.py
-@@ -2183,11 +2183,13 @@
+@@ -2204,11 +2204,13 @@
      import warnings
      warnings.filterwarnings("ignore",category=DeprecationWarning)
  

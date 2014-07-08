@@ -26,12 +26,12 @@ Index: b/Makefile.pre.in
  		curses $(MACHDEPS)
  
 -TESTSUBDIRS = 	tkinter/test tkinter/test/test_tkinter tkinter/test/test_ttk \
--		test test/test_asyncio ctypes/test \
-+TESTSUBDIRS = 	test test/test_asyncio ctypes/test \
+-		test test/test_asyncio \
++TESTSUBDIRS = 	test test/test_asyncio \
  		test/test_email test/test_email/data \
  		test/test_json \
  		test/audiodata \
-@@ -1196,6 +1195,12 @@
+@@ -1197,6 +1196,12 @@
  TESTSUBDIRS += sqlite3/test
  endif
  
@@ -48,7 +48,7 @@ Index: b/configure.ac
 ===================================================================
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2675,6 +2675,15 @@
+@@ -2664,6 +2664,15 @@
     DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} _sqlite3"
  fi
  

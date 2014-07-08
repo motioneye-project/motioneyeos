@@ -19,9 +19,9 @@ Index: b/Makefile.pre.in
 -		curses $(MACHDEPS)
 +		$(MACHDEPS)
  
- TESTSUBDIRS = 	test test/test_asyncio ctypes/test \
+ TESTSUBDIRS = 	test test/test_asyncio \
  		test/test_email test/test_email/data \
-@@ -1201,6 +1201,10 @@
+@@ -1202,6 +1202,10 @@
  	tkinter/test/test_ttk
  endif
  
@@ -36,7 +36,7 @@ Index: b/configure.ac
 ===================================================================
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2684,6 +2684,15 @@
+@@ -2673,6 +2673,15 @@
     DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} _tkinter"
  fi
  
