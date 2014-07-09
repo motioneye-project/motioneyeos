@@ -1,0 +1,29 @@
+Remove usage of host ldconfig
+
+To know whether the libiconv library is available, lm-sensors is using
+the host ldconfig, which is obviously wrong in cross-compilation.
+
+Moreover, the lm-sensors program making use of the iconv_*() API
+already does it when __UCLIBC__ is *not* defined. In this case, the
+iconv_*() functions are already part of the C library, so there is no
+need to link against a separate library. Therefore, this patch simply
+removes the libiconv handling.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/prog/sensors/Module.mk
+===================================================================
+--- a/prog/sensors/Module.mk
++++ b/prog/sensors/Module.mk
+@@ -37,10 +37,8 @@
+ REMOVESENSORSBIN := $(patsubst $(MODULE_DIR)/%,$(DESTDIR)$(BINDIR)/%,$(PROGSENSORSTARGETS))
+ REMOVESENSORSMAN := $(patsubst $(MODULE_DIR)/%,$(DESTDIR)$(PROGSENSORSMAN1DIR)/%,$(PROGSENSORSMAN1FILES))
+ 
+-LIBICONV := $(shell if /sbin/ldconfig -p | grep -q '/libiconv\.so$$' ; then echo \-liconv; else echo; fi)
+-
+ $(PROGSENSORSTARGETS): $(PROGSENSORSSOURCES:.c=.ro) lib/$(LIBDEP_FOR_PROGS)
+-	$(CC) $(EXLDFLAGS) -o $@ $(PROGSENSORSSOURCES:.c=.ro) $(LIBICONV) -Llib -lsensors -lm
++	$(CC) $(EXLDFLAGS) -o $@ $(PROGSENSORSSOURCES:.c=.ro) -Llib -lsensors -lm
+ 
+ all-prog-sensors: $(PROGSENSORSTARGETS)
+ user :: all-prog-sensors
