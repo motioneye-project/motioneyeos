@@ -10,7 +10,8 @@ OPENVPN_SITE = http://swupdate.openvpn.net/community/releases
 OPENVPN_DEPENDENCIES = host-pkgconf
 OPENVPN_LICENSE = GPLv2
 OPENVPN_LICENSE_FILES = COPYRIGHT.GPL
-OPENVPN_CONF_OPT = --disable-plugin-auth-pam --enable-iproute2
+OPENVPN_CONF_OPT = --disable-plugin-auth-pam --enable-iproute2 \
+	$(if $(BR2_PREFER_STATIC_LIB),--disable-plugins)
 OPENVPN_CONF_ENV = IFCONFIG=/sbin/ifconfig \
 	NETSTAT=/bin/netstat \
 	ROUTE=/sbin/route
