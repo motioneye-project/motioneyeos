@@ -44,8 +44,12 @@ config BR2_PACKAGE_LM_SENSORS_PWMCONFIG
 
 config BR2_PACKAGE_LM_SENSORS_SENSORS_DETECT
 	bool "sensors-detect"
+	depends on BR2_PACKAGE_PERL
 	help
 	  Sensors-detect is an interactive program for detecting
 	  available hardware monitoring chips.
+
+comment "sensors-detect needs perl"
+	depends on !BR2_PACKAGE_PERL
 
 endif
