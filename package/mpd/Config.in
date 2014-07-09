@@ -184,6 +184,16 @@ config BR2_PACKAGE_MPD_TREMOR
 	  Enable vorbis input support.
 	  Select this if you want to play back OGG files on softfloat targets.
 
+config BR2_PACKAGE_MPD_TWOLAME
+	bool "twolame"
+	depends on BR2_LARGEFILE # twolame -> libsndfile
+	select BR2_PACKAGE_TWOLAME
+	help
+	  Enable TwoLAME mp2 encoding.
+
+comment "twolame support needs a toolchain w/ largefile"
+        depends on !BR2_LARGEFILE
+
 config BR2_PACKAGE_MPD_VORBIS
 	bool "vorbis"
 	select BR2_PACKAGE_LIBOGG

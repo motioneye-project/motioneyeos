@@ -132,6 +132,11 @@ MPD_DEPENDENCIES += tremor
 MPD_CONF_OPT += --with-tremor
 endif
 
+ifeq ($(BR2_PACKAGE_MPD_TWOLAME),y)
+MPD_DEPENDENCIES += twolame
+MPD_CONF_OPT += --enable-twolame-encoder
+endif
+
 ifeq ($(BR2_PACKAGE_MPD_WAVPACK),y)
 MPD_DEPENDENCIES += wavpack
 else
