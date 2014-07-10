@@ -8,7 +8,7 @@ config BR2_PACKAGE_GD
 	  useful in World Wide Web applications, where PNG is one of
 	  the formats accepted for inline images by most browsers.
 
-	  http://www.boutell.com/gd/
+	  http://libgd.bitbucket.org/
 
 if BR2_PACKAGE_GD
 
