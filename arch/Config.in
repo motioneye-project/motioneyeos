@@ -60,7 +60,7 @@ config BR2_avr32
 	# do the lack of upstream support in the major toolchain
 	# components. If you're interested by AVR32, contact the
 	# Buildroot community. Otherwise, its support will be removed
-	# in 2014.11.
+	# by the 2015.02 release.
 	depends on BR2_DEPRECATED_SINCE_2014_08
 	help
 	  The AVR32 is a 32-bit RISC microprocessor architecture designed by
