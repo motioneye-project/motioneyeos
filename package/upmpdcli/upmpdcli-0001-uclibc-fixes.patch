@@ -1,0 +1,77 @@
+Add necessary fixes to build with uClibc
+
+ - Missing #include of C library headers
+ - exp10 is not available in uClibc
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/libupnpp/device.cxx
+===================================================================
+--- a/libupnpp/device.cxx
++++ b/libupnpp/device.cxx
+@@ -17,6 +17,7 @@
+ #include "config.h"
+ 
+ #include <time.h>
++#include <errno.h>
+ #include <sys/time.h>
+ 
+ #include <iostream>
+Index: b/libupnpp/soaphelp.cxx
+===================================================================
+--- a/libupnpp/soaphelp.cxx
++++ b/libupnpp/soaphelp.cxx
+@@ -16,6 +16,10 @@
+  */
+ #include "config.h"
+ 
++#include <string.h>
++#include <stdlib.h>
++#include <stdio.h>
++
+ #include <iostream>
+ using namespace std;
+ 
+Index: b/upmpd/upmpd.cxx
+===================================================================
+--- a/upmpd/upmpd.cxx
++++ b/upmpd/upmpd.cxx
+@@ -20,6 +20,7 @@
+ #include <unistd.h>
+ #include <sys/types.h>
+ #include <pwd.h>
++#include <errno.h>
+ 
+ #include <string>
+ #include <iostream>
+Index: b/upmpd/upmpdutils.cxx
+===================================================================
+--- a/upmpd/upmpdutils.cxx
++++ b/upmpd/upmpdutils.cxx
+@@ -21,11 +21,14 @@
+ // not linking to Qt or glib just to get path-concatenating
+ // functions...
+ 
++#define _GNU_SOURCE
++
+ #include <unistd.h>
+ #include <fcntl.h>
+ #include <sys/types.h>
+ #include <sys/stat.h>
+ #include <sys/file.h>
++#include <stdlib.h>
+ #include <math.h>
+ #include <pwd.h>
+ #include <regex.h>
+@@ -35,6 +38,11 @@
+ #define O_STREAMING 0
+ #endif
+ 
++#ifdef __UCLIBC__
++/* 10^x = 10^(log e^x) = (e^x)^log10 = e^(x * log 10) */
++#define exp10(x) (exp((x) * log(10)))
++#endif /* __UCLIBC__ */
++
+ #include <iostream>
+ #include <sstream>
+ #include <fstream>

@@ -1,0 +1,40 @@
+#!/bin/sh
+
+NAME=upmpdcli
+DAEMON=/usr/bin/$NAME
+CONFFILE=/etc/$NAME.conf
+PIDFILE=/var/run/$NAME.pid
+DAEMON_ARGS="-D -c $CONFFILE"
+
+# Sanity checks
+test -f $DAEMON || exit 0
+
+do_start() {
+        echo -n "Starting $NAME: "
+        start-stop-daemon --start --quiet --background --exec $DAEMON \
+                -- $DAEMON_ARGS \
+                && echo "OK" || echo "FAIL"
+}
+
+do_stop() {
+        echo -n "Stopping $NAME: "
+        start-stop-daemon --stop --quiet --pidfile $PIDFILE \
+                && echo "OK" || echo "FAIL"
+}
+
+case "$1" in
+        start)
+                do_start
+                ;;
+        stop)
+                do_stop
+                ;;
+        restart)
+                do_stop
+                sleep 1
+                do_start
+                ;;
+        *)
+                echo "Usage: $0 {start|stop|restart}"
+                exit 1
+esac
