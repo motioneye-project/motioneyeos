@@ -33,17 +33,17 @@ $(eval $(call caseconvert-helper,LOWERCASE,$(join $(addsuffix :,$([TO])),$([FROM
 # package, and more.
 #
 
-define KCONFIG_ENABLE_OPT
+define KCONFIG_ENABLE_OPT # (option, file)
 	$(SED) "/\\<$(1)\\>/d" $(2)
 	echo "$(1)=y" >> $(2)
 endef
 
-define KCONFIG_SET_OPT
+define KCONFIG_SET_OPT # (option, value, file)
 	$(SED) "/\\<$(1)\\>/d" $(3)
 	echo "$(1)=$(2)" >> $(3)
 endef
 
-define KCONFIG_DISABLE_OPT
+define KCONFIG_DISABLE_OPT # (option, file)
 	$(SED) "/\\<$(1)\\>/d" $(2)
 	echo "# $(1) is not set" >> $(2)
 endef
