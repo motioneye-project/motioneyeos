@@ -10,5 +10,4 @@ NASM_SITE = http://www.nasm.us/pub/nasm/releasebuilds/$(NASM_VERSION)
 NASM_LICENSE = BSD-2c
 NASM_LICENSE_FILES = LICENSE
 
-$(eval $(autotools-package))
 $(eval $(host-autotools-package))
