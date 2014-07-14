@@ -35,17 +35,17 @@ $(eval $(call caseconvert-helper,LOWERCASE,$(join $(addsuffix :,$([TO])),$([FROM
 
 define KCONFIG_ENABLE_OPT # (option, file)
 	$(SED) "/\\<$(1)\\>/d" $(2)
-	echo "$(1)=y" >> $(2)
+	echo '$(1)=y' >> $(2)
 endef
 
 define KCONFIG_SET_OPT # (option, value, file)
 	$(SED) "/\\<$(1)\\>/d" $(3)
-	echo "$(1)=$(2)" >> $(3)
+	echo '$(1)=$(2)' >> $(3)
 endef
 
 define KCONFIG_DISABLE_OPT # (option, file)
 	$(SED) "/\\<$(1)\\>/d" $(2)
-	echo "# $(1) is not set" >> $(2)
+	echo '# $(1) is not set' >> $(2)
 endef
 
 # Helper functions to determine the name of a package and its
