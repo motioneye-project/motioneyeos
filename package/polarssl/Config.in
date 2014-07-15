@@ -17,6 +17,7 @@ if BR2_PACKAGE_POLARSSL
 
 config BR2_PACKAGE_POLARSSL_PROGRAMS
 	bool "polarssl programs"
+	depends on BR2_USE_MMU # fork()
 	help
 	  This option enables the installation and the build of
 	  PolarSSL companion programs: aescrypt2, benchmark, cert_app,
