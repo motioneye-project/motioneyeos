@@ -11,6 +11,8 @@ AT_SITE = $(BR2_DEBIAN_MIRROR)/debian/pool/main/a/at
 AT_MAKE = $(MAKE1)
 AT_AUTORECONF = YES
 AT_DEPENDENCIES = $(if $(BR2_PACKAGE_FLEX),flex) host-bison host-flex
+AT_LICENSE = GPLv2+, GPLv3+, ISC
+AT_LICENSE_FILES = Copyright COPYING
 
 AT_CONF_OPT = \
         --with-jobdir=/var/spool/cron/atjobs \
