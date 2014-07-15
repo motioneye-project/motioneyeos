@@ -17,6 +17,9 @@ config BR2_PACKAGE_PHP_CLI
 config BR2_PACKAGE_PHP_CGI
 	bool
 
+config BR2_PACKAGE_PHP_FPM
+        bool
+
 choice
 	prompt "Interface"
 	default BR2_PACKAGE_PHP_SAPI_CGI
@@ -37,6 +40,13 @@ config BR2_PACKAGE_PHP_SAPI_CLI
 	help
 	  Command Line Interface
 
+config BR2_PACKAGE_PHP_SAPI_FPM
+	bool "FPM"
+	depends on BR2_USE_MMU
+	select BR2_PACKAGE_PHP_FPM
+	help
+	  PHP-FPM (FastCGI Process Manager)
+
 config BR2_PACKAGE_PHP_SAPI_CLI_CGI
 	bool "CGI and CLI"
 	# CGI uses fork()
@@ -45,6 +55,14 @@ config BR2_PACKAGE_PHP_SAPI_CLI_CGI
 	select BR2_PACKAGE_PHP_CGI
 	help
 	  Command line and Common gateway interfaces
+
+config BR2_PACKAGE_PHP_SAPI_CLI_FPM
+	bool "FPM and CLI"
+	depends on BR2_USE_MMU
+	select BR2_PACKAGE_PHP_CLI
+	select BR2_PACKAGE_PHP_FPM
+	help
+	  Command line and PHP-FPM (FastCGI Process Manager)
 
 endchoice
 
