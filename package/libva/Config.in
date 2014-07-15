@@ -1,0 +1,18 @@
+config BR2_PACKAGE_LIBVA
+	bool "libva"
+	select BR2_PACKAGE_LIBDRM
+	select BR2_PACKAGE_XLIB_LIBX11 if BR2_PACKAGE_XORG7
+	select BR2_PACKAGE_XLIB_LIBXEXT if BR2_PACKAGE_XORG7
+	select BR2_PACKAGE_XLIB_LIBXFIXES if BR2_PACKAGE_XORG7
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libdrm/libpthread-stubs
+	depends on BR2_LARGEFILE # libdrm
+	help
+	  The main motivation for VA-API (Video Acceleration API) is to enable
+	  hardware accelerated video decode/encode at various entry-points (VLD,
+	  IDCT, Motion Compensation etc.) for the prevailing coding standards
+	  today (MPEG-2, MPEG-4 ASP/H.263, MPEG-4 AVC/H.264, and VC-1/VMW3).
+
+	  http://www.freedesktop.org/wiki/Software/vaapi/
+
+comment "libva needs a toolchain w/ largefile, threads"
+	depends on !BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_THREADS
