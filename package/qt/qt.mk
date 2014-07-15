@@ -231,7 +231,20 @@ else
 QT_EMB_PLATFORM = generic
 endif
 
+ifeq ($(BR2_PACKAGE_QT_X11),y)
+QT_DEPENDENCIES += fontconfig xlib_libXi xlib_libX11 xlib_libXrender \
+                xlib_libXcursor xlib_libXrandr xlib_libXext xlib_libXv
+# Using pkg-config avoids us some logic to redefine and sed again mkspecs files
+# to add X11 include path and link options
+QT_CFLAGS += $(shell $(PKG_CONFIG_HOST_BINARY) --cflags x11)
+QT_CXXFLAGS += $(shell $(PKG_CONFIG_HOST_BINARY) --cflags x11)
+QT_LDFLAGS += $(shell $(PKG_CONFIG_HOST_BINARY) --libs x11 xext)
+QT_CONFIGURE_OPTS += -arch $(QT_EMB_PLATFORM) \
+		-xplatform qws/linux-$(QT_EMB_PLATFORM)-g++ -x11 -no-gtkstyle -no-sm \
+		-no-openvg
+else # if BR2_PACKAGE_QT_EMBEDDED
 QT_CONFIGURE_OPTS += -embedded $(QT_EMB_PLATFORM)
+endif
 
 ifneq ($(BR2_PACKAGE_QT_GUI_MODULE),y)
 QT_CONFIGURE_OPTS += -no-gui
@@ -650,6 +663,7 @@ define QT_INSTALL_TARGET_IMPORTS
 endef
 
 # Fonts installation
+ifeq ($(BR2_PACKAGE_QT_EMBEDDED),y)
 ifneq ($(QT_FONTS),)
 define QT_INSTALL_TARGET_FONTS
 	mkdir -p $(TARGET_DIR)/usr/lib/fonts
@@ -663,6 +677,7 @@ define QT_INSTALL_TARGET_FONTS_TTF
 	cp -dpf $(STAGING_DIR)/usr/lib/fonts/*.ttf $(TARGET_DIR)/usr/lib/fonts
 endef
 endif
+endif # BR2_PACKAGE_QT_EMBEDDED
 
 ifeq ($(BR2_PACKAGE_QT_GFX_POWERVR),y)
 define QT_INSTALL_TARGET_POWERVR

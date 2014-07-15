@@ -17,6 +17,40 @@ menuconfig BR2_PACKAGE_QT
 
 if BR2_PACKAGE_QT
 
+choice
+	prompt "Qt installation"
+	help
+	  Selects the type of installation: standard or embedded
+
+config BR2_PACKAGE_QT_EMBEDDED
+	bool "Qt embedded"
+	help
+	  The embedded Qt installation targets embedded systems without X.org.
+	  Provides backends for framebuffer.
+	  If unsure, say Y.
+
+comment "Qt standard (X11) not available (need X.org)"
+	depends on !BR2_PACKAGE_XORG7
+
+config BR2_PACKAGE_QT_X11
+	bool "Qt standard (X11)"
+	depends on BR2_PACKAGE_XORG7
+	select BR2_PACKAGE_FONTCONFIG
+	select BR2_PACKAGE_XLIB_LIBXI
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBXRENDER
+	select BR2_PACKAGE_XLIB_LIBXCURSOR
+	select BR2_PACKAGE_XLIB_LIBXRANDR
+	select BR2_PACKAGE_XLIB_LIBXEXT
+	select BR2_PACKAGE_XLIB_LIBXV
+	select BR2_PACKAGE_QT_SYSTEMFREETYPE
+	select BR2_PACKAGE_QT_GUI_MODULE
+	help
+	  The standard Qt installation provides X.org backend. If you don't want to
+	  use X.org, say N.
+
+endchoice
+
 config BR2_PACKAGE_QT_DEBUG
 	bool "Compile with debug support"
 	help
@@ -105,6 +139,9 @@ config BR2_PACKAGE_QT_GUI_MODULE
 	  video output, or you don't require Qt GUI, say n.
 
 if BR2_PACKAGE_QT_GUI_MODULE
+
+if BR2_PACKAGE_QT_EMBEDDED
+
 menu "Pixel depths"
 comment "Deselecting each option leads to Qt's default (8,16,32)"
 
@@ -162,6 +199,8 @@ config BR2_PACKAGE_QT_FONT_UNIFONT
 
 endmenu
 
+endif # BR2_PACKAGE_QT_EMBEDDED
+
 choice
 	prompt "freetype2 support"
 	default BR2_PACKAGE_QT_NOFREETYPE
@@ -170,11 +209,16 @@ choice
 
 config BR2_PACKAGE_QT_NOFREETYPE
 	bool "no freetype2 support"
+	depends on BR2_PACKAGE_QT_EMBEDDED
 	help
 	  Do not compile in Freetype2 support.
 
+comment "Qt freetype2 needs Qt embedded"
+	depends on BR2_PACKAGE_QT_X11
+
 config BR2_PACKAGE_QT_QTFREETYPE
 	bool "Qt freetype2"
+	depends on BR2_PACKAGE_QT_EMBEDDED
 	help
 	  Use the libfreetype bundled with Qt.
 
@@ -275,9 +319,11 @@ endchoice
 
 source "package/qt/Config.sql.in"
 if BR2_PACKAGE_QT_GUI_MODULE
+if BR2_PACKAGE_QT_EMBEDDED
 source "package/qt/Config.gfx.in"
 source "package/qt/Config.mouse.in"
 source "package/qt/Config.keyboard.in"
+endif
 
 config BR2_PACKAGE_QT_PHONON
 	bool "Phonon Module"
