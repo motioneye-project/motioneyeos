@@ -125,6 +125,18 @@ cases, typical packages will therefore only use a few of them.
   passed to the 'autoreconf' program if
   +LIBFOO_AUTORECONF=YES+. By default, empty.
 
+* +LIBFOO_GETTEXTIZE+, tells whether the package should be
+  gettextized or not (i.e. if the package uses a different gettext
+  version than Buildroot provides, and it is needed to run
+  'gettextize'.) Only valid when +LIBFOO_AUTORECONF=YES+. Valid
+  values are +YES+ and +NO+. The default is +NO+.
+
+* +LIBFOO_GETTEXTIZE_OPT+, to specify additional options passed to
+  the 'gettextize' program, if +LIBFOO_GETTEXTIZE=YES+. You may
+  use that if, for example, the +.po+ files are not located in the
+  standard place (i.e. in +po/+ at the root of the package.) By
+  default, '-f'.
+
 * +LIBFOO_LIBTOOL_PATCH+ tells whether the Buildroot
   patch to fix libtool cross-compilation issues should be applied or
   not. Valid values are +YES+ and +NO+. By
