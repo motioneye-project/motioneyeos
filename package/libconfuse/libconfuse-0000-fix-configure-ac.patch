@@ -1,0 +1,27 @@
+configure: remove po/Makefile.in from AC_CONFIG_FILES
+
+Since we are gettextizing the package, gettextize updates configure.ac
+to add po/Makefile.in to AC_CONFIG_FILES>
+
+Unfortunately, it's already present, and gettextize does not detect it,
+and insists on adding its own. Later on, autoreconf barfs on the double
+occurences.
+
+As suggested by Arnout, just patch configure.ac to remove the
+po/Makefile.in occurence, so gettextize can safely add its own
+
+Reported-by: Arnout Vandecappelle <arnout@mind.be>
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+Cc: Alvaro Gamez <alvaro.gamez@hazent.com>
+
+diff -durN libconfuse-V2_7.orig/configure.ac libconfuse-V2_7/configure.ac
+--- libconfuse-V2_7.orig/configure.ac	2010-02-20 10:14:10.000000000 +0100
++++ libconfuse-V2_7/configure.ac	2014-07-17 00:19:18.816785340 +0200
+@@ -49,7 +49,6 @@
+ AC_CONFIG_FILES([Makefile \
+ 		 src/Makefile \
+ 		 examples/Makefile \
+-                 po/Makefile.in \
+ 		 m4/Makefile \
+ 		 tests/Makefile \
+ 		 doc/Makefile \
