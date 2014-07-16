@@ -144,6 +144,17 @@ config BR2_PACKAGE_QT5BASE_EGLFS
 comment "eglfs backend available if OpenGLES and EGL are enabled"
 	depends on !BR2_PACKAGE_HAS_LIBEGL || !BR2_PACKAGE_HAS_LIBGLES
 
+config BR2_PACKAGE_QT5BASE_DEFAULT_QPA
+	string "Default graphical platform"
+	help
+	  Choose the default platform abstraction to use for graphical
+	  applications (e.g xcb, linuxfb, eglfs, ...). If this is empty, the
+	  default for your architecture will be used (usually this is eglfs).
+
+	  You can get a list of supported platforms by running a Qt application
+	  with the option "-platform help" on your target. You can choose a
+	  different platform at runtime with the -platform option.
+
 config BR2_PACKAGE_QT5BASE_PRINTSUPPORT
 	bool "print support module"
 	select BR2_PACKAGE_QT5BASE_WIDGETS
