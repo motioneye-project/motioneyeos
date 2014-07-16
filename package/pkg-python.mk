@@ -35,8 +35,11 @@ PKG_PYTHON_DISTUTILS_ENV = \
 PKG_PYTHON_DISTUTILS_BUILD_OPT = \
 	--executable=/usr/bin/python
 
-PKG_PYTHON_DISTUTILS_INSTALL_OPT = \
+PKG_PYTHON_DISTUTILS_INSTALL_TARGET_OPT = \
 	--prefix=$(TARGET_DIR)/usr
+
+PKG_PYTHON_DISTUTILS_INSTALL_STAGING_OPT = \
+	--prefix=$(STAGING_DIR)/usr
 
 # Host distutils-based packages
 HOST_PKG_PYTHON_DISTUTILS_ENV = \
@@ -53,8 +56,14 @@ PKG_PYTHON_SETUPTOOLS_ENV = \
 	_python_prefix=/usr \
 	_python_exec_prefix=/usr
 
-PKG_PYTHON_SETUPTOOLS_INSTALL_OPT = \
+PKG_PYTHON_SETUPTOOLS_INSTALL_TARGET_OPT = \
 	--prefix=$(TARGET_DIR)/usr \
+	--executable=/usr/bin/python \
+	--single-version-externally-managed \
+	--root=/
+
+PKG_PYTHON_SETUPTOOLS_INSTALL_STAGING_OPT = \
+	--prefix=$(STAGING_DIR)/usr \
 	--executable=/usr/bin/python \
 	--single-version-externally-managed \
 	--root=/
@@ -103,7 +112,8 @@ ifeq ($(4),target)
 $(2)_BASE_ENV         = $$(PKG_PYTHON_DISTUTILS_ENV)
 $(2)_BASE_BUILD_TGT   = build
 $(2)_BASE_BUILD_OPT   = $$(PKG_PYTHON_DISTUTILS_BUILD_OPT)
-$(2)_BASE_INSTALL_OPT = $$(PKG_PYTHON_DISTUTILS_INSTALL_OPT)
+$(2)_BASE_INSTALL_TARGET_OPT  = $$(PKG_PYTHON_DISTUTILS_INSTALL_TARGET_OPT)
+$(2)_BASE_INSTALL_STAGING_OPT = $$(PKG_PYTHON_DISTUTILS_INSTALL_STAGING_OPT)
 else
 $(2)_BASE_ENV         = $$(HOST_PKG_PYTHON_DISTUTILS_ENV)
 $(2)_BASE_BUILD_TGT   = build
@@ -116,7 +126,8 @@ ifeq ($(4),target)
 $(2)_BASE_ENV         = $$(PKG_PYTHON_SETUPTOOLS_ENV)
 $(2)_BASE_BUILD_TGT   = build
 $(2)_BASE_BUILD_OPT   =
-$(2)_BASE_INSTALL_OPT = $$(PKG_PYTHON_SETUPTOOLS_INSTALL_OPT)
+$(2)_BASE_INSTALL_TARGET_OPT  = $$(PKG_PYTHON_SETUPTOOLS_INSTALL_TARGET_OPT)
+$(2)_BASE_INSTALL_STAGING_OPT = $$(PKG_PYTHON_SETUPTOOLS_INSTALL_STAGING_OPT)
 else
 $(2)_BASE_ENV         = $$(HOST_PKG_PYTHON_SETUPTOOLS_ENV)
 $(2)_BASE_BUILD_TGT   = build
@@ -243,7 +254,22 @@ define $(2)_INSTALL_TARGET_CMDS
 	(cd $$($$(PKG)_BUILDDIR)/; \
 		$$($$(PKG)_BASE_ENV) $$($$(PKG)_ENV) \
 		$$($(2)_PYTHON_INTERPRETER) setup.py install \
-		$$($$(PKG)_BASE_INSTALL_OPT) $$($$(PKG)_INSTALL_OPT))
+		$$($$(PKG)_BASE_INSTALL_TARGET_OPT) \
+		$$($$(PKG)_INSTALL_TARGET_OPT))
+endef
+endif
+
+#
+# Staging installation step. Only define it if not already defined by
+# the package .mk file.
+#
+ifndef $(2)_INSTALL_STAGING_CMDS
+define $(2)_INSTALL_STAGING_CMDS
+	(cd $$($$(PKG)_BUILDDIR)/; \
+		$$($$(PKG)_BASE_ENV) $$($$(PKG)_ENV) \
+		$$($(2)_PYTHON_INTERPRETER) setup.py install \
+		$$($$(PKG)_BASE_INSTALL_STAGING_OPT) \
+		$$($$(PKG)_INSTALL_STAGING_OPT))
 endef
 endif
 

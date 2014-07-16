@@ -85,14 +85,9 @@ xref:generic-package-reference[generic package infrastructure] also
 exist in the Python infrastructure: +PYTHON_FOO_VERSION+,
 +PYTHON_FOO_SOURCE+, +PYTHON_FOO_PATCH+, +PYTHON_FOO_SITE+,
 +PYTHON_FOO_SUBDIR+, +PYTHON_FOO_DEPENDENCIES+, +PYTHON_FOO_LICENSE+,
-+PYTHON_FOO_LICENSE_FILES+, etc.
++PYTHON_FOO_LICENSE_FILES+, +PYTHON_FOO_INSTALL_STAGING+, etc.
 
 Note that:
-
- * Setting +PYTHON_FOO_INSTALL_STAGING+ to +YES+ has no effect (unless
-   a +PYTHON_FOO_INSTALL_STAGING_CMDS+ variable is defined), since
-   Python modules generally don't need to be installed to the
-   +staging+ directory.
 
  * It is not necessary to add +python+ or +host-python+ in the
    +PYTHON_FOO_DEPENDENCIES+ variable of a package, since these basic
@@ -132,14 +127,18 @@ therefore only use a few of them, or none.
   packages, the +PKG_PYTHON_DISTUTILS_BUILD_OPT+ options are already
   passed automatically by the infrastructure.
 
-* +PYTHON_FOO_INSTALL_OPT+, to specify additional options to pass to
-  the Python +setup.py+ script during the installation step. Note that
-  the infrastructure is automatically passing some options, defined in
-  +PKG_PYTHON_DISTUTILS_INSTALL_OPT+ (for target distutils packages),
-  +HOST_PKG_PYTHON_DISTUTILS_INSTALL_OPT+ (for host distutils
-  packages), +PKG_PYTHON_SETUPTOOLS_INSTALL_OPT+ (for target
-  setuptools packages) and +HOST_PKG_PYTHON_SETUPTOOLS_INSTALL_OPT+
-  (for host setuptools packages).
+* +PYTHON_FOO_INSTALL_TARGET_OPT+, +PYTHON_FOO_INSTALL_STAGING_OPT+,
+  +HOST_PYTHON_FOO_INSTALL_OPT+ to specify additional options to pass
+  to the Python +setup.py+ script during the target installation step,
+  the staging installation step or the host installation,
+  respectively. Note that the infrastructure is automatically passing
+  some options, defined in +PKG_PYTHON_DISTUTILS_INSTALL_TARGET_OPT+
+  or +PKG_PYTHON_DISTUTILS_INSTALL_STAGING_OPT+ (for target distutils
+  packages), +HOST_PKG_PYTHON_DISTUTILS_INSTALL_OPT+ (for host
+  distutils packages), +PKG_PYTHON_SETUPTOOLS_INSTALL_TARGET_OPT+ or
+  +PKG_PYTHON_SETUPTOOLS_INSTALL_STAGING_OPT+ (for target setuptools
+  packages) and +HOST_PKG_PYTHON_SETUPTOOLS_INSTALL_OPT+ (for host
+  setuptools packages).
 
 * +HOST_PYTHON_FOO_NEEDS_HOST_PYTHON+, to define the host python
   interpreter. The usage of this variable is limited to host
