@@ -57,10 +57,7 @@ define EXIM_CONFIGURE_TOOLCHAIN
 	$(call exim-config-add,HOSTCFLAGS,$(HOSTCFLAGS))
 endef
 
-ifeq ($(BR2_PACKAGE_EXIM_CUSTOM_CONFIG),y)
-ifeq ($(call qstrip,$(BR2_PACKAGE_EXIM_CUSTOM_CONFIG_FILE)),)
-$(error No exim configuration file specified, check your BR2_PACKAGE_EXIM_CUSTOM_CONFIG_FILE setting)
-endif
+ifneq ($(call qstrip,$(BR2_PACKAGE_EXIM_CUSTOM_CONFIG_FILE)),)
 define EXIM_CONFIGURE_CMDS
 	$(EXIM_USE_CUSTOM_CONFIG_FILE)
 	$(EXIM_CONFIGURE_TOOLCHAIN)
