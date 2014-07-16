@@ -12,14 +12,7 @@ WGET_LICENSE_FILES = COPYING
 
 # patching gnulib .m4 file
 WGET_AUTORECONF = YES
-
-# Ugly kludge to fix autoreconf with old gettext infra
-# We need to gettextize before autoreconf to upgrade
-WGET_DEPENDENCIES += host-gettext
-define WGET_GETTEXTIZE
-	cd $(@D) ; $(HOST_DIR)/usr/bin/gettextize -f
-endef
-WGET_PRE_CONFIGURE_HOOKS += WGET_GETTEXTIZE
+WGET_GETTEXTIZE = YES
 
 # Prefer full-blown wget over busybox
 ifeq ($(BR2_PACKAGE_BUSYBOX),y)
