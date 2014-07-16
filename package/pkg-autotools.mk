@@ -87,6 +87,22 @@ ifndef $(2)_AUTORECONF
  endif
 endif
 
+ifndef $(2)_GETTEXTIZE
+ ifdef $(3)_GETTEXTIZE
+  $(2)_GETTEXTIZE = $$($(3)_GETTEXTIZE)
+ else
+  $(2)_GETTEXTIZE ?= NO
+ endif
+endif
+
+ifndef $(2)_GETTEXTIZE_OPT
+ ifdef $(3)_GETTEXTIZE_OPT
+  $(2)_GETTEXTIZE_OPT = $$($(3)_GETTEXTIZE)
+ else
+  $(2)_GETTEXTIZE_OPT ?= -f
+ endif
+endif
+
 ifeq ($(4),host)
  $(2)_AUTORECONF_OPT ?= $$($(3)_AUTORECONF_OPT)
 endif
@@ -200,6 +216,14 @@ $(2)_POST_PATCH_HOOKS += LIBTOOL_PATCH_HOOK
 endif
 
 #
+# Hook to gettextize the package if needed
+#
+define GETTEXTIZE_HOOK
+	@$$(call MESSAGE,"Gettextizing")
+	$(Q)cd $$($$(PKG)_SRCDIR) && $(HOST_DIR)/usr/bin/gettextize $$($$(PKG)_GETTEXTIZE_OPT)
+endef
+
+#
 # Hook to autoreconf the package if needed
 #
 define AUTORECONF_HOOK
@@ -222,14 +246,19 @@ endef
 
 # This must be repeated from inner-generic-package, otherwise we get an empty
 # _DEPENDENCIES if _AUTORECONF is YES.  Also filter the result of _AUTORECONF
-# away from the non-host rule
+# and _GETTEXTIZE away from the non-host rule
 ifeq ($(4),host)
 $(2)_DEPENDENCIES ?= $$(filter-out host-automake host-autoconf host-libtool \
-				host-toolchain $(1),\
+				host-gettext host-toolchain $(1),\
     $$(patsubst host-host-%,host-%,$$(addprefix host-,$$($(3)_DEPENDENCIES))))
 endif
 
 ifeq ($$($(2)_AUTORECONF),YES)
+# This has to come before autoreconf
+ifeq ($$($(2)_GETTEXTIZE),YES)
+$(2)_PRE_CONFIGURE_HOOKS += GETTEXTIZE_HOOK
+$(2)_DEPENDENCIES += host-gettext
+endif
 $(2)_PRE_CONFIGURE_HOOKS += AUTORECONF_HOOK
 $(2)_DEPENDENCIES += host-automake host-autoconf host-libtool
 endif
