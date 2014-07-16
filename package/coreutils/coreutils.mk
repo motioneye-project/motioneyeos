@@ -12,6 +12,7 @@ COREUTILS_LICENSE_FILES = COPYING
 
 # patching gnulib .m4 file
 COREUTILS_AUTORECONF = YES
+COREUTILS_GETTEXTIZE = YES
 
 # If both coreutils and busybox are selected, make certain coreutils
 # wins the fight over who gets to have their utils actually installed.
