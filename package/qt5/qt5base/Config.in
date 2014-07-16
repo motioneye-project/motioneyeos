@@ -3,6 +3,7 @@ config BR2_PACKAGE_QT5BASE
 	select BR2_PACKAGE_ZLIB
 	select BR2_PACKAGE_PCRE
 	select BR2_PACKAGE_PCRE_16
+	select BR2_PACKAGE_PCRE_UTF
 	help
 	  Qt is a cross-platform application and UI framework for
 	  developers using C++.
