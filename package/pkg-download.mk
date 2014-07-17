@@ -206,7 +206,7 @@ endef
 define DOWNLOAD_LOCALFILES
 	test -e $(DL_DIR)/$(2) || \
 	$(EXTRA_ENV) support/download/cp $(call stripurischeme,$(call qstrip,$(1))) \
-					 $(DL_DIR) && \
+					 $(DL_DIR)/$(2) && \
 	$(call VERIFY_HASH,$(PKGDIR)/$($(PKG)_NAME).hash,$(DL_DIR)/$(2))
 endef
 
