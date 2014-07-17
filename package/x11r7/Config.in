@@ -50,6 +50,7 @@ if BR2_PACKAGE_XORG7
 		source package/x11r7/xlib_libdmx/Config.in
 		source package/x11r7/xlib_libfontenc/Config.in
 		source package/x11r7/xlib_libxkbfile/Config.in
+		source package/x11r7/xlib_libxshmfence/Config.in
 		source package/x11r7/xlib_xtrans/Config.in
 		source package/x11r7/xlib_libpciaccess/Config.in
 	endmenu
