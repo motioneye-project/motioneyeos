@@ -4,12 +4,12 @@
 #
 ################################################################################
 
-EUDEV_VERSION = v1.7
-EUDEV_SITE = $(call github,gentoo,eudev,$(EUDEV_VERSION))
+EUDEV_VERSION = 1.9
+EUDEV_SOURCE = eudev-$(EUDEV_VERSION).tar.gz
+EUDEV_SITE = http://dev.gentoo.org/~blueness/eudev
 EUDEV_LICENSE = GPLv2+ (programs), LGPLv2.1+ (libraries)
 EUDEV_LICENSE_FILES = COPYING
 EUDEV_INSTALL_STAGING = YES
-EUDEV_AUTORECONF = YES
 
 # mq_getattr is in librt
 EUDEV_CONF_ENV += LIBS=-lrt
