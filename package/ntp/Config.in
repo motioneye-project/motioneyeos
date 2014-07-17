@@ -54,6 +54,8 @@ config BR2_PACKAGE_NTP_NTPQ
 
 config BR2_PACKAGE_NTP_NTPSNMPD
 	bool "ntpsnmpd"
+	depends on BR2_USE_MMU # netsnmp fork()
+	select BR2_PACKAGE_NETSNMP
 	help
 	  Install ntpsnmpd NTP SNMP MIB agent.
 
