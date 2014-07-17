@@ -13,6 +13,7 @@ https://bitbucket.org/GregorR/musl-cross/src. Compared to the upstream version:
    causing build failure. Bug reported upstream at
    https://bitbucket.org/GregorR/musl-gcc-patches/issue/4/musl-gcc-patches-break-the-build-on.
 
+[Gustavo: remove upstream applied gcc/config/sh/sh.c chunk for 4.9.1]
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 ---
 
@@ -441,21 +442,6 @@ Index: b/gcc/config/sh/linux.h
  
  #undef SUBTARGET_LINK_EMUL_SUFFIX
  #define SUBTARGET_LINK_EMUL_SUFFIX "_linux"
-Index: b/gcc/config/sh/sh.c
-===================================================================
---- a/gcc/config/sh/sh.c
-+++ b/gcc/config/sh/sh.c
-@@ -70,10 +70,6 @@
- #include "pass_manager.h"
- #include "context.h"
- 
--#include <sstream>
--#include <vector>
--#include <algorithm>
--
- int code_for_indirect_jump_scratch = CODE_FOR_indirect_jump_scratch;
- 
- /* These are some macros to abstract register modes.  */
 Index: b/gcc/configure
 ===================================================================
 --- a/gcc/configure
