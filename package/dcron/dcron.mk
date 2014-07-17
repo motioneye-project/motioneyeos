@@ -29,4 +29,8 @@ define DCRON_INSTALL_TARGET_CMDS
 	        $(TARGET_DIR)/etc/cron.monthly $(TARGET_DIR)/etc/cron.weekly
 endef
 
+define DCRON_INSTALL_INIT_SYSV
+	$(INSTALL) -D -m 0755 package/dcron/S90dcron $(TARGET_DIR)/etc/init.d/S90dcron
+endef
+
 $(eval $(generic-package))
