@@ -982,6 +982,7 @@ endif
 	source "package/linux-zigbee/Config.in"
 	source "package/lrzsz/Config.in"
 	source "package/macchanger/Config.in"
+	source "package/memcached/Config.in"
 	source "package/mii-diag/Config.in"
 	source "package/minidlna/Config.in"
 	source "package/modem-manager/Config.in"
