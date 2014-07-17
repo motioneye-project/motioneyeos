@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-JQUERY_MOBILE_VERSION = 1.4.2
+JQUERY_MOBILE_VERSION = 1.4.3
 JQUERY_MOBILE_SITE = http://jquerymobile.com/resources/download
 JQUERY_MOBILE_SOURCE = jquery.mobile-$(JQUERY_MOBILE_VERSION).zip
 JQUERY_MOBILE_LICENSE = MIT
