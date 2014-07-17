@@ -18,6 +18,12 @@ MUSL_ADD_TOOLCHAIN_DEPENDENCY = NO
 
 MUSL_INSTALL_STAGING = YES
 
+# gcc constant folding bug with weak aliases workaround
+# See http://www.openwall.com/lists/musl/2014/05/15/1
+ifeq ($(BR2_GCC_VERSION_4_9_X),y)
+MUSL_EXTRA_CFLAGS += -fno-toplevel-reorder
+endif
+
 # We need to run the musl configure script prior to building the
 # gcc-intermediate, so that we can call the install-headers step and
 # get the crt<X>.o built. However, we need to call it again after
@@ -29,7 +35,7 @@ MUSL_INSTALL_STAGING = YES
 define MUSL_CONFIGURE_CALL
 	(cd $(@D); \
 		$(TARGET_CONFIGURE_OPTS) \
-		CFLAGS="$(filter-out -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64,$(TARGET_CFLAGS))" \
+		CFLAGS="$(filter-out -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64,$(TARGET_CFLAGS)) $(MUSL_EXTRA_CFLAGS)" \
 		CPPFLAGS="$(filter-out -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64,$(TARGET_CPPFLAGS))" \
 		./configure \
 			--target=$(GNU_TARGET_NAME) \
