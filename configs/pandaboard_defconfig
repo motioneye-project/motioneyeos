@@ -28,9 +28,6 @@ BR2_LINUX_KERNEL_USE_INTREE_DTS=y
 # might need omap4-panda or omap4-panda-a4 instead
 BR2_LINUX_KERNEL_INTREE_DTS_NAME="omap4-panda-es"
 
-# GCC
-BR2_GCC_VERSION_4_6_X=y
-
 # Bootloaders
 BR2_TARGET_UBOOT=y
 BR2_TARGET_UBOOT_FORMAT_IMG=y
