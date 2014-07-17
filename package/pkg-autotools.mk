@@ -97,7 +97,7 @@ endif
 
 ifndef $(2)_GETTEXTIZE_OPT
  ifdef $(3)_GETTEXTIZE_OPT
-  $(2)_GETTEXTIZE_OPT = $$($(3)_GETTEXTIZE)
+  $(2)_GETTEXTIZE_OPT = $$($(3)_GETTEXTIZE_OPT)
  else
   $(2)_GETTEXTIZE_OPT ?= -f
  endif
