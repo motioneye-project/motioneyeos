@@ -503,17 +503,33 @@ my %need_host;          # name -> 1 if host package is needed
 my %need_dlopen;        # name -> 1 if requires dynamic library
 my %deps_build;         # name -> list of host dependencies
 my %deps_runtime;       # name -> list of target dependencies
+my %license_files;      # neam -> list of license files
 my $mcpan = MetaCPAN::API::Tiny->new();
 my $ua = HTTP::Tiny->new();
 
-sub is_xs {
+sub get_manifest {
     my ($author, $distname, $version) = @_;
+    my $url = qq{http://api.metacpan.org/source/${author}/${distname}-${version}/MANIFEST};
+    my $response = $ua->get($url);
+    return $response->{content};
+}
+
+sub is_xs {
+    my ($manifest) = @_;
     # This heuristic determines if a module is a native extension, by searching
     # some file extension types in the MANIFEST of the distribution.
     # It was inspired by http://deps.cpantesters.org/static/purity.html
-    my $url = qq{http://api.metacpan.org/source/${author}/${distname}-${version}/MANIFEST};
-    my $response = $ua->get($url);
-    return $response->{content} =~ m/\.(swg|xs|c|h|i)\n/;
+    return $manifest =~ m/\.(swg|xs|c|h|i)\n/;
+}
+
+sub find_license_files {
+    my ($manifest) = @_;
+    my @license_files;
+    foreach (split /\n/, $manifest) {
+        next if m|/|;
+        push @license_files, $_ if m/(ARTISTIC|COPYING|COPYRIGHT|LICENSE)/i;
+    }
+    return \@license_files;
 }
 
 sub fetch {
@@ -524,7 +540,9 @@ sub fetch {
         say qq{fetch ${name}} unless $quiet;
         my $result = $mcpan->release( distribution => $name );
         $dist{$name} = $result;
-        $need_dlopen{$name} = is_xs( $result->{author}, $name, $result->{version} );
+        my $manifest = get_manifest( $result->{author}, $name, $result->{version} );
+        $need_dlopen{$name} = is_xs( $manifest );
+        $license_files{$name} = find_license_files( $manifest );
         my @deps_build = ();
         my @deps_runtime = ();
         my $mb;
@@ -629,6 +647,7 @@ while (my ($distname, $dist) = each %dist) {
         $license =~ s|artistic_2|Artistic-2.0|;
         $license =~ s|openssl|OpenSSL|;
         $license =~ s|perl_5|Artistic or GPLv1+|;
+        my $license_files = join q{ }, @{$license_files{$distname}};
         say qq{write ${mkname}} unless $quiet;
         open my $fh, q{>}, $mkname;
         say {$fh} qq{################################################################################};
@@ -643,6 +662,7 @@ while (my ($distname, $dist) = each %dist) {
         say {$fh} qq{${brname}_DEPENDENCIES = ${dependencies}} if $need_target{$distname};
         say {$fh} qq{HOST_${brname}_DEPENDENCIES = ${host_dependencies}} if $need_host{$distname};
         say {$fh} qq{${brname}_LICENSE = ${license}} if $license && $license ne q{unknown};
+        say {$fh} qq{${brname}_LICENSE_FILES = ${license_files}} if $license_files;
         say {$fh} qq{};
         say {$fh} qq{\$(eval \$(perl-package))} if $need_target{$distname};
         say {$fh} qq{\$(eval \$(host-perl-package))} if $need_host{$distname};
