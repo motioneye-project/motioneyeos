@@ -394,7 +394,6 @@ UCLIBC_MAKE_FLAGS = \
 	HOSTCC="$(HOSTCC)"
 
 define UCLIBC_FIXUP_DOT_CONFIG
-	$(INSTALL) -m 0644 $(UCLIBC_CONFIG_FILE) $(@D)/.config
 	$(call KCONFIG_SET_OPT,CROSS_COMPILER_PREFIX,"$(TARGET_CROSS)",$(@D)/.config)
 	$(call KCONFIG_ENABLE_OPT,TARGET_$(UCLIBC_TARGET_ARCH),$(@D)/.config)
 	$(call KCONFIG_SET_OPT,TARGET_ARCH,"$(UCLIBC_TARGET_ARCH)",$(@D)/.config)
@@ -533,7 +532,14 @@ define UCLIBC_INSTALL_STAGING_CMDS
 	$(UCLIBC_INSTALL_UTILS_STAGING)
 endef
 
-uclibc-menuconfig: uclibc-patch
+$(eval $(generic-package))
+
+$(UCLIBC_DIR)/.config: $(UCLIBC_CONFIG_FILE) | uclibc-patch
+	$(INSTALL) -m 0644 $(UCLIBC_CONFIG_FILE) $(UCLIBC_DIR)/.config
+
+$(UCLIBC_TARGET_CONFIGURE): $(UCLIBC_DIR)/.config
+
+uclibc-menuconfig: $(UCLIBC_DIR)/.config
 	$(MAKE1) -C $(UCLIBC_DIR) \
 		$(UCLIBC_MAKE_FLAGS) \
 		PREFIX=$(STAGING_DIR) \
@@ -541,8 +547,6 @@ uclibc-menuconfig: uclibc-patch
 		RUNTIME_PREFIX=$(STAGING_DIR)/ \
 		menuconfig
 	rm -f $(UCLIBC_DIR)/.stamp_{configured,built,target_installed,staging_installed}
-
-$(eval $(generic-package))
 
 uclibc-update-config: $(UCLIBC_DIR)/.stamp_configured
 	cp -f $(UCLIBC_DIR)/.config $(UCLIBC_CONFIG_FILE)
