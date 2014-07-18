@@ -1,0 +1,14 @@
+config BR2_PACKAGE_LIBUV
+	bool "libuv"
+	depends on BR2_INET_IPV6
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_USE_MMU # fork()
+	help
+	  libuv is a multi-platform support library with a focus
+	  on asynchronous I/O.
+
+	  https://github.com/joyent/libuv
+
+comment "libuv needs a toolchain w/ IPv6, threads"
+	depends on !BR2_INET_IPV6 || !BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_USE_MMU
