@@ -1,0 +1,47 @@
+From 672a3199615e6bbaa9cc788a67ac45213a528971 Mon Sep 17 00:00:00 2001
+From: Thomas Kho <tkho@facebook.com>
+Date: Thu, 28 Oct 2010 20:21:35 -0700
+Subject: [PATCH] Support building static binaries via --enable-static-binary
+ configure flag
+
+Patch taken from upstream commit
+https://github.com/rvoicilas/inotify-tools/commit/672a3199615e6bbaa9cc788a67ac45213a528971,
+but with only the source code changes kept. The build system changes
+adding the --enable-static-binary is not needed, and not having them
+avoids the need for autoreconfiguring the package.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+ 
+diff --git a/libinotifytools/src/inotifytools.c b/libinotifytools/src/inotifytools.c
+index b3feca3..966e828 100644
+--- a/libinotifytools/src/inotifytools.c
++++ b/libinotifytools/src/inotifytools.c
+@@ -150,7 +150,7 @@ static int init = 0;
+ static char* timefmt = 0;
+ static regex_t* regex = 0;
+ 
+-int isdir( char const * path );
++static int isdir( char const * path );
+ void record_stats( struct inotify_event const * event );
+ int onestr_to_event(char const * event);
+ 
+@@ -193,8 +193,8 @@ int onestr_to_event(char const * event);
+  *
+  * @param  mesg  A human-readable error message shown if assertion fails.
+  */
+-void _niceassert( long cond, int line, char const * file, char const * condstr,
+-                  char const * mesg ) {
++static void _niceassert( long cond, int line, char const * file,
++                  char const * condstr, char const * mesg ) {
+ 	if ( cond ) return;
+ 
+ 	if ( mesg ) {
+@@ -1594,7 +1594,7 @@ int inotifytools_error() {
+ /**
+  * @internal
+  */
+-int isdir( char const * path ) {
++static int isdir( char const * path ) {
+ 	static struct stat64 my_stat;
+ 
+ 	if ( -1 == lstat64( path, &my_stat ) ) {
