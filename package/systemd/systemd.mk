@@ -112,6 +112,11 @@ endif
 
 ifeq ($(BR2_PACKAGE_SYSTEMD_TIMESYNCD),y)
 SYSTEMD_CONF_OPT += --enable-timesyncd
+define SYSTEMD_INSTALL_SERVICE_TIMESYNC
+	mkdir -p $(TARGET_DIR)/etc/systemd/system/sysinit.target.wants
+	ln -sf ../../../../lib/systemd/system/systemd-timesyncd.service \
+		$(TARGET_DIR)/etc/systemd/system/sysinit.target.wants/systemd-timesyncd.service
+endef
 else
 SYSTEMD_CONF_OPT += --disable-timesyncd
 endif
@@ -167,6 +172,7 @@ endef
 define SYSTEMD_INSTALL_INIT_SYSTEMD
 	$(SYSTEMD_INSTALL_SERVICE_TTY)
 	$(SYSTEMD_INSTALL_SERVICE_NETWORK)
+	$(SYSTEMD_INSTALL_SERVICE_TIMESYNC)
 endef
 
 $(eval $(autotools-package))
