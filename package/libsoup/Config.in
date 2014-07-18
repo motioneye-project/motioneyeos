@@ -15,6 +15,11 @@ config BR2_PACKAGE_LIBSOUP
 
 if BR2_PACKAGE_LIBSOUP
 
+config BR2_PACKAGE_LIBSOUP_GNOME
+	bool "libsoup-gnome"
+	help
+	  Build libsoup-gnome library.
+
 config BR2_PACKAGE_LIBSOUP_SSL
 	bool "https support"
 	select BR2_PACKAGE_GLIB_NETWORKING

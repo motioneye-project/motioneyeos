@@ -18,10 +18,16 @@ ifneq ($(BR2_INET_IPV6),y)
 LIBSOUP_CONF_ENV += soup_cv_ipv6=no
 endif
 
-LIBSOUP_CONF_OPT = --disable-glibtest --without-gnome
+LIBSOUP_CONF_OPT = --disable-glibtest
 
 LIBSOUP_DEPENDENCIES = host-pkgconf host-libglib2 \
        libglib2 libxml2 sqlite host-intltool
+
+ifeq ($(BR2_PACKAGE_LIBSOUP_GNOME),y)
+LIBSOUP_CONF_OPT += --with-gnome
+else
+LIBSOUP_CONF_OPT += --without-gnome
+endif
 
 ifeq ($(BR2_PACKAGE_LIBSOUP_SSL),y)
 LIBSOUP_DEPENDENCIES += glib-networking
