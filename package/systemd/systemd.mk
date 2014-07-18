@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-SYSTEMD_VERSION = 213
+SYSTEMD_VERSION = 214
 SYSTEMD_SITE = http://www.freedesktop.org/software/systemd/
 SYSTEMD_SOURCE = systemd-$(SYSTEMD_VERSION).tar.xz
 SYSTEMD_LICENSE = LGPLv2.1+; GPLv2+ for udev; MIT-like license for few source files listed in README
@@ -44,7 +44,6 @@ SYSTEMD_CONF_OPT += \
 	--enable-split-usr \
 	--enable-introspection=no \
 	--disable-efi \
-	--disable-myhostname \
 	--disable-tcpwrap \
 	--disable-tests \
 	--disable-dbus \
@@ -65,13 +64,6 @@ SYSTEMD_CONF_OPT += --enable-acl
 SYSTEMD_DEPENDENCIES += acl
 else
 SYSTEMD_CONF_OPT += --disable-acl
-endif
-
-ifeq ($(BR2_PACKAGE_ATTR),y)
-SYSTEMD_CONF_OPT += --enable-attr
-SYSTEMD_DEPENDENCIES += attr
-else
-SYSTEMD_CONF_OPT += --disable-attr
 endif
 
 ifeq ($(BR2_PACKAGE_LIBGLIB2),y)
@@ -103,6 +95,10 @@ endif
 
 ifeq ($(BR2_PACKAGE_SYSTEMD_NETWORKD),y)
 SYSTEMD_CONF_OPT += --enable-networkd
+define SYSTEMD_INSTALL_RESOLVCONF_HOOK
+	ln -sf ../run/systemd/resolve/resolv.conf \
+		$(TARGET_DIR)/etc/resolv.conf
+endef
 else
 SYSTEMD_CONF_OPT += --disable-networkd
 define SYSTEMD_INSTALL_SERVICE_NETWORK
@@ -116,9 +112,6 @@ endif
 
 ifeq ($(BR2_PACKAGE_SYSTEMD_TIMESYNCD),y)
 SYSTEMD_CONF_OPT += --enable-timesyncd
-define SYSTEMD_USER_TIMESYNC
-	systemd-timesync -1 systemd-timesync -1 * - - - Network Time Synchronization
-endef
 else
 SYSTEMD_CONF_OPT += --disable-timesyncd
 endif
@@ -154,12 +147,16 @@ endef
 SYSTEMD_POST_INSTALL_TARGET_HOOKS += \
 	SYSTEMD_INSTALL_INIT_HOOK \
 	SYSTEMD_INSTALL_MACHINEID_HOOK \
+	SYSTEMD_INSTALL_RESOLVCONF_HOOK \
 	SYSTEMD_SANITIZE_PATH_IN_UNITS
 
 define SYSTEMD_USERS
 	systemd-journal -1 systemd-journal -1 * /var/log/journal - - Journal
 	systemd-journal-gateway -1 systemd-journal-gateway -1 * /var/log/journal - - Journal Gateway
-	$(SYSTEMD_USER_TIMESYNC)
+	systemd-resolve -1 systemd-resolve -1 * - - - Network Name Resolution Manager
+	systemd-bus-proxy -1 systemd-bus-proxy -1 * - - - Proxy D-Bus messages to/from a bus
+	systemd-timesync -1 systemd-timesync -1 * - - - Network Time Synchronization
+	systemd-network -1 systemd-network -1 * - - - Network Manager
 endef
 
 define SYSTEMD_INSTALL_SERVICE_TTY
