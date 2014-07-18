@@ -432,7 +432,6 @@ define UCLIBC_FIXUP_DOT_CONFIG
 endef
 
 define UCLIBC_CONFIGURE_CMDS
-	$(UCLIBC_FIXUP_DOT_CONFIG)
 	$(MAKE1) -C $(UCLIBC_DIR) \
 		$(UCLIBC_MAKE_FLAGS) \
 		PREFIX=$(STAGING_DIR) \
@@ -537,7 +536,11 @@ $(eval $(generic-package))
 $(UCLIBC_DIR)/.config: $(UCLIBC_CONFIG_FILE) | uclibc-patch
 	$(INSTALL) -m 0644 $(UCLIBC_CONFIG_FILE) $(UCLIBC_DIR)/.config
 
-$(UCLIBC_TARGET_CONFIGURE): $(UCLIBC_DIR)/.config
+$(UCLIBC_DIR)/.stamp_config_fixup_done: $(UCLIBC_DIR)/.config
+	$(UCLIBC_FIXUP_DOT_CONFIG)
+	$(Q)touch $@
+
+$(UCLIBC_TARGET_CONFIGURE): $(UCLIBC_DIR)/.stamp_config_fixup_done
 
 uclibc-menuconfig: $(UCLIBC_DIR)/.config
 	$(MAKE1) -C $(UCLIBC_DIR) \
@@ -546,9 +549,10 @@ uclibc-menuconfig: $(UCLIBC_DIR)/.config
 		DEVEL_PREFIX=/usr/ \
 		RUNTIME_PREFIX=$(STAGING_DIR)/ \
 		menuconfig
-	rm -f $(UCLIBC_DIR)/.stamp_{configured,built,target_installed,staging_installed}
+	rm -f $(UCLIBC_DIR)/.stamp_{config_fixup_done,configured,built}
+	rm -f $(UCLIBC_DIR)/.stamp_{target,staging}_installed
 
-uclibc-update-config: $(UCLIBC_DIR)/.stamp_configured
+uclibc-update-config: $(UCLIBC_DIR)/.stamp_config_fixup_done
 	cp -f $(UCLIBC_DIR)/.config $(UCLIBC_CONFIG_FILE)
 
 # Before uClibc is built, we must have the second stage cross-compiler
