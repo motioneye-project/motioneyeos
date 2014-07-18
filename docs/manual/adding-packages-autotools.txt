@@ -121,6 +121,11 @@ cases, typical packages will therefore only use a few of them.
   automake, libtool, etc.). Valid values are +YES+ and
   +NO+. By default, the value is +NO+
 
+* +LIBFOO_AUTORECONF_ENV+, to specify additional environment
+  variables to pass to the 'autoreconf' program if
+  +LIBFOO_AUTORECONF=YES+. These are passed in the environment of
+  the 'autoreconf' command. By default, empty.
+  
 * +LIBFOO_AUTORECONF_OPT+ to specify additional options
   passed to the 'autoreconf' program if
   +LIBFOO_AUTORECONF=YES+. By default, empty.
