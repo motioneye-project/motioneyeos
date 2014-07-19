@@ -1,0 +1,26 @@
+Fixes compile error in libva-intel-driver
+
+make[4]: Entering directory `/home/br/br/output/build/libva-intel-driver-1.3.2/src'
+  CC       i965_drv_video_la-i965_output_wayland.lo
+i965_output_wayland.c:31:41: fatal error: wayland-drm-client-protocol.h: No such file or directory
+compilation terminated.
+
+Patch sent upstream:
+http://lists.freedesktop.org/archives/libva/2014-July/002519.html
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+
+diff -uNr libva-1.3.1.org/va/wayland/Makefile.am libva-1.3.1/va/wayland/Makefile.am
+--- libva-1.3.1.org/va/wayland/Makefile.am	2014-05-09 06:28:15.000000000 +0200
++++ libva-1.3.1/va/wayland/Makefile.am	2014-07-19 11:46:01.126931242 +0200
+@@ -54,8 +54,8 @@
+ 
+ noinst_LTLIBRARIES		= libva_wayland.la
+ libva_waylandincludedir		= ${includedir}/va
+-libva_waylandinclude_HEADERS	= $(source_h)
+-libva_wayland_la_SOURCES	= $(source_c) $(protocol_source_h)
++libva_waylandinclude_HEADERS	= $(source_h) $(protocol_source_h)
++libva_wayland_la_SOURCES	= $(source_c)
+ noinst_HEADERS			= $(source_h_priv)
+ 
+ # Wayland protocol
