@@ -38,3 +38,6 @@ Index: b/Makefile.PL
 -			"lib_xpm_path=s"  => \$lib_xpm_path,
 -			"lib_zlib_path=s" => \$lib_zlib_path,
 -		       );
+ unless ($result) {
+   print STDERR <<END;
+ Usage: perl Makefile.PL [options]

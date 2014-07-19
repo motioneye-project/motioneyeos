@@ -23,3 +23,6 @@ Index: b/Makefile.PL
    @$LIBS         = split /\s+/,$libs;
  
 -  push @$LIBS,"-lgd";
+   push @$LIBPATH,"-L$libdir";
+   ($$lib_gd_path = $libdir) =~ s!/[^/]+$!!;
+   $$options      = $features;
