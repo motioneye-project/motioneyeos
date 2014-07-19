@@ -242,7 +242,7 @@ config BR2_LUAROCKS_MIRROR
 
 config BR2_CPAN_MIRROR
 	string "CPAN mirror (Perl packages)"
-	default "http://search.cpan.org/CPAN"
+	default "http://cpan.metacpan.org"
 	help
 	  CPAN (Comprehensive Perl Archive Network) is a repository
 	  of Perl packages. It has multiple software mirrors scattered
