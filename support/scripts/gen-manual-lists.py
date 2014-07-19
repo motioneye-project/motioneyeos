@@ -384,7 +384,7 @@ class Buildroot:
                     return s
             return None
 
-        def _get_providers(config, symbol):
+        def _get_providers(symbol):
             providers = list()
             for sym in self.config:
                 if not sym.is_symbol():
@@ -404,7 +404,7 @@ class Buildroot:
                                   + " (w/ " + l + ")"
                             providers.append(l)
                         else:
-                            providers.extend(_get_providers(config,sym))
+                            providers.extend(_get_providers(sym))
             return providers
 
         if what == "layout":
@@ -415,7 +415,7 @@ class Buildroot:
 
         if what == "symbol":
             pkg = re.sub(r"^BR2_PACKAGE_HAS_(.+)$", r"\1", symbol.get_name())
-            providers = _get_providers(self.config, symbol)
+            providers = _get_providers(symbol)
 
             return "| {0:<20} <| {1:<32} <| {2}\n".format(pkg.lower(),
                                                           '+' + symbol.get_name() + '+',
