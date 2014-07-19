@@ -6,6 +6,8 @@ config BR2_PACKAGE_UPMPDCLI
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_LARGEFILE # libupnp
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libupnp
+	depends on !BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_POWERPC201103 # Too old gcc
+	depends on !BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_POWERPC201009 # Ditto
 	help
 	  upmpdcli is a UPnP Media Renderer front-end for MPD, the Music
 	  Player Daemon. It supports UPnP gapless track transitions and
