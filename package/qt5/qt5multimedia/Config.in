@@ -1,10 +1,8 @@
 config BR2_PACKAGE_QT5MULTIMEDIA
 	bool "qt5multimedia"
 	select BR2_PACKAGE_QT5BASE
-	select BR2_PACKAGE_QT5DECLARATIVE
-	depends on BR2_PACKAGE_HAS_LIBEGL
-	depends on BR2_PACKAGE_HAS_LIBGLES
-	depends on BR2_PACKAGE_QT5_JSCORE_AVAILABLE
+	select BR2_PACKAGE_QT5BASE_GUI
+	select BR2_PACKAGE_QT5BASE_NETWORK
 	help
 	  Qt is a cross-platform application and UI framework for
 	  developers using C++.
@@ -12,7 +10,3 @@ config BR2_PACKAGE_QT5MULTIMEDIA
 	  This package corresponds to the qt5multimedia module.
 
 	  http://qt-project.org
-
-comment "qt5multimedia requires an OpenGL-capable backend"
-	depends on (!BR2_PACKAGE_HAS_LIBEGL || !BR2_PACKAGE_HAS_LIBGLES) && \
-		BR2_PACKAGE_QT5_JSCORE_AVAILABLE
