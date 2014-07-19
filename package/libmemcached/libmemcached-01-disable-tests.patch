@@ -1,0 +1,16 @@
+Disable the tests, cuts build time by half and avoids build issues
+with extra dependencies.
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+diff -Nura libmemcached-1.0.18.orig/Makefile.am libmemcached-1.0.18/Makefile.am
+--- libmemcached-1.0.18.orig/Makefile.am	2014-07-19 08:43:15.127031040 -0300
++++ libmemcached-1.0.18/Makefile.am	2014-07-19 08:48:11.327068987 -0300
+@@ -76,7 +76,6 @@
+ include libmemcachedinternal/util/include.am
+ include rpm/include.mk
+ include support/include.am
+-include tests/include.am
+ include util/include.am
+ include win32/include.am
+ 
