@@ -2,7 +2,6 @@ config BR2_PACKAGE_PHP_MEMCACHED
 	bool "php-memcached"
 	depends on BR2_INSTALL_LIBSTDCPP # libmemcached
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libmemcached
-	depends on BR2_TOOLCHAIN_USES_GLIBC # libmemcached
 	select BR2_PACKAGE_PHP_EXT_SESSION
 	select BR2_PACKAGE_LIBMEMCACHED
 	select BR2_PACKAGE_ZLIB
@@ -12,6 +11,5 @@ config BR2_PACKAGE_PHP_MEMCACHED
 
 	  http://pecl.php.net/package/memcached
 
-comment "php-memcached needs a (e)glibc toolchain w/ C++, threads"
-	depends on !BR2_TOOLCHAIN_USES_GLIBC \
-		|| !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS
+comment "php-memcached needs a toolchain w/ C++, threads"
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS
