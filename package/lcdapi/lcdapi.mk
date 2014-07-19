@@ -4,25 +4,17 @@
 #
 ################################################################################
 
-LCDAPI_VERSION = v0.4
+LCDAPI_VERSION = dbbdca06f271b8cf81b4817a9da3d558cfe59905
 LCDAPI_SITE = $(call github,spdawson,lcdapi,$(LCDAPI_VERSION))
 LCDAPI_LICENSE = LGPLv2.1+
 LCDAPI_LICENSE_FILES = COPYING
-
+LCDAPI_AUTORECONF = YES
 LCDAPI_INSTALL_STAGING = YES
 
-define LCDAPI_BUILD_CMDS
-	$(TARGET_MAKE_ENV) $(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(@D)
+define LCDAPI_CREATE_M4_DIR
+	mkdir -p $(@D)/m4
 endef
 
-define LCDAPI_INSTALL_STAGING_CMDS
-	$(TARGET_MAKE_ENV) $(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(@D) \
-		DESTDIR="$(STAGING_DIR)" install
-endef
+LCDAPI_POST_PATCH_HOOKS += LCDAPI_CREATE_M4_DIR
 
-define LCDAPI_INSTALL_TARGET_CMDS
-	$(TARGET_MAKE_ENV) $(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(@D) \
-		DESTDIR="$(TARGET_DIR)" install
-endef
-
-$(eval $(generic-package))
+$(eval $(autotools-package))
