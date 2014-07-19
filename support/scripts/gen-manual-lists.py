@@ -389,13 +389,13 @@ class Buildroot:
             for sym in self.config:
                 if not sym.is_symbol():
                     continue
+                if _symbol_is_legacy(sym):
+                    continue
                 selects = sym.get_selected_symbols()
                 if not selects:
                     continue
                 for s in selects:
                     if s == symbol:
-                        if _symbol_is_legacy(sym):
-                            continue
                         if sym.prompts:
                             l = self._get_symbol_label(sym,False)
                             parent_pkg = _get_parent_package(sym)
