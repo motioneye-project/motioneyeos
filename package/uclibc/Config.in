@@ -157,6 +157,7 @@ config BR2_UCLIBC_INSTALL_UTILS
 config BR2_UCLIBC_INSTALL_TEST_SUITE
 	bool "Compile and install uClibc tests"
 	select BR2_PACKAGE_MAKE
+	depends on BR2_USE_MMU # make
 	help
 	  Enabling this option will compile and install the uClibc test suite.
 	  This is useful if you want to check if the uClibc library is working
