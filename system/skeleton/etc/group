@@ -24,6 +24,5 @@ haldaemon:x:68:
 dbus:x:81:
 netdev:x:82:
 ftp:x:83
-nobody:x:99:
 nogroup:x:99:
 users:x:100:
