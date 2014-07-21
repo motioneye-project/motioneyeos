@@ -53,9 +53,15 @@ define QT5MULTIMEDIA_INSTALL_TARGET_LIBS
 endef
 endif
 
+ifeq ($(BR2_PACKAGE_QT5DECLARATIVE_QUICK),y)
+define QT5MULTIMEDIA_INSTALL_TARGET_QMLS
+	cp -dpfr $(STAGING_DIR)/usr/qml/QtMultimedia $(TARGET_DIR)/usr/qml/
+endef
+endif
+
 define QT5MULTIMEDIA_INSTALL_TARGET_CMDS
-	cp -dpfr $(STAGING_DIR)/usr/qml/* $(TARGET_DIR)/usr/qml
 	$(QT5MULTIMEDIA_INSTALL_TARGET_LIBS)
+	$(QT5MULTIMEDIA_INSTALL_TARGET_QMLS)
 endef
 
 $(eval $(generic-package))
