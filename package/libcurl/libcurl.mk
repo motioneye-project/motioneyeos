@@ -14,6 +14,8 @@ LIBCURL_DEPENDENCIES = host-pkgconf \
 LIBCURL_LICENSE = ICS
 LIBCURL_LICENSE_FILES = COPYING
 LIBCURL_INSTALL_STAGING = YES
+# For libcurl-0001-build-link-curl-to-NSS-libraries-when-NSS-support.patch
+LIBCURL_AUTORECONF = YES
 
 # We disable NTLM support because it uses fork(), which doesn't work
 # on non-MMU platforms. Moreover, this authentication method is
