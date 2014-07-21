@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LUAPOSIX_VERSION = 31
+LUAPOSIX_VERSION = 32
 LUAPOSIX_SITE = https://github.com/luaposix/luaposix/archive
 LUAPOSIX_SOURCE = release-v$(LUAPOSIX_VERSION).tar.gz
 LUAPOSIX_LICENSE = MIT
