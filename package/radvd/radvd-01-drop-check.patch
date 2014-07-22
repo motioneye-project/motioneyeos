@@ -1,0 +1,15 @@
+Drop check requirement, we don't do unit tests.
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+diff -Nura radvd-2.1.orig/configure.ac radvd-2.1/configure.ac
+--- radvd-2.1.orig/configure.ac	2014-07-22 08:23:12.642260069 -0300
++++ radvd-2.1/configure.ac	2014-07-22 08:23:21.270552628 -0300
+@@ -49,7 +49,6 @@
+ dnl Determine CC and preset CFLAGS
+ AC_PROG_CC_C99
+ AC_PROG_RANLIB
+-PKG_CHECK_MODULES([CHECK], [check >= 0.9.4])
+ 
+ dnl Determine of netlink is available
+ AC_MSG_CHECKING(netlink)

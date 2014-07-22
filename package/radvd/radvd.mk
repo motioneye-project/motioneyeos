@@ -4,10 +4,13 @@
 #
 ################################################################################
 
-RADVD_VERSION = 1.14
+RADVD_VERSION = 2.1
 RADVD_SOURCE = radvd-$(RADVD_VERSION).tar.xz
 RADVD_SITE = http://www.litech.org/radvd/dist
-RADVD_DEPENDENCIES = host-bison flex libdaemon host-flex host-pkgconf
+RADVD_DEPENDENCIES = host-bison flex host-flex host-pkgconf
+RADVD_CONF_ENV = ac_cv_prog_cc_c99='-std=gnu99'
+# For radvd-01-drop-check.patch & radvd-02-drop-stack-protector.patch
+RADVD_AUTORECONF = YES
 
 define RADVD_INSTALL_INITSCRIPT
 	$(INSTALL) -m 0755 package/radvd/S50radvd $(TARGET_DIR)/etc/init.d
