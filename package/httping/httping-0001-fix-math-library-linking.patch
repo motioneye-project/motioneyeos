@@ -1,0 +1,25 @@
+Move LDFLAGS+=-lm option to the end.
+The order of the math library directive '-lm' matters.
+
+Signed-off-by: Yuvaraj Patil <yuvaraj.patil@wipro.com>
+---
+diff -Nurp httping-2.3.4_orig/Makefile httping-2.3.4/Makefile
+--- httping-2.3.4_orig/Makefile	2014-07-23 16:16:36.495546288 +0530
++++ httping-2.3.4/Makefile	2014-07-23 16:18:42.547541002 +0530
+@@ -37,7 +37,6 @@ DEBUG=yes
+ WFLAGS=-Wall -W
+ OFLAGS=
+ CFLAGS+=$(WFLAGS) $(OFLAGS) -DVERSION=\"$(VERSION)\" -DLOCALEDIR=\"$(LOCALEDIR)\"
+-LDFLAGS+=-lm
+ 
+ PACKAGE=$(TARGET)-$(VERSION)
+ PREFIX?=/usr
+@@ -97,6 +96,8 @@ ifeq ($(ARM),yes)
+ CC=arm-linux-gcc
+ endif
+ 
++LDFLAGS+=-lm
++
+ all: $(TARGET) $(TRANSLATIONS)
+ 
+ $(TARGET): $(OBJS)
