@@ -51,6 +51,13 @@ else
 PYTHON3_CONF_OPT += --disable-curses
 endif
 
+ifeq ($(BR2_PACKAGE_PYTHON3_DECIMAL),y)
+PYTHON3_DEPENDENCIES += mpdecimal
+PYTHON3_CONF_OPT += --with-libmpdec=system
+else
+PYTHON3_CONF_OPT += --with-libmpdec=none
+endif
+
 ifeq ($(BR2_PACKAGE_PYTHON3_PYEXPAT),y)
 PYTHON3_DEPENDENCIES += expat
 PYTHON3_CONF_OPT += --with-expat=system
