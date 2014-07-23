@@ -7,3 +7,13 @@ config BR2_PACKAGE_LIBPTHSEM
 	  version, with support for semaphores added.
 
 	  http://www.auto.tuwien.ac.at/~mkoegler/pth/
+
+if BR2_PACKAGE_LIBPTHSEM
+
+config BR2_PACKAGE_LIBPTHSEM_COMPAT
+	bool "libpth compatibility"
+	help
+	  This option enables the compatibility with the original
+	  libpth library.
+
+endif
