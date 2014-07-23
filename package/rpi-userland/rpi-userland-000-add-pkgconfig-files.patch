@@ -19,7 +19,7 @@ Index: b/interface/khronos/egl/egl.pc.in
 +Name: egl
 +Description: RasberryPi implementation of EGL
 +Version: 10
-+Libs: -L${libdir} -lEGL -lGLESv2 -lbcm_host
++Libs: -L${libdir} -lEGL -lGLESv2 -lbcm_host -lvchostif
 +Cflags: -I${includedir}/ -I${includedir}/interface/vcos/pthreads/ \
 +        -I${includedir}/interface/vmcs_host/linux/
 Index: b/interface/khronos/CMakeLists.txt
