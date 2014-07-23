@@ -15,8 +15,12 @@ if BR2_PACKAGE_HOSTAPD
 
 config BR2_PACKAGE_HOSTAPD_EAP
 	bool "Enable EAP"
+	depends on !BR2_PREFER_STATIC_LIB
 	help
 	  Enable support for EAP and RADIUS.
+
+comment "hostapd EAP needs a toolchain w/ dynamic library"
+	depends on BR2_PREFER_STATIC_LIB
 
 config BR2_PACKAGE_HOSTAPD_WPS
 	bool "Enable WPS"
