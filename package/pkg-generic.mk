@@ -13,7 +13,7 @@
 # In terms of implementation, this generic infrastructure requires the
 # .mk file to specify:
 #
-#   1. Metadata informations about the package: name, version,
+#   1. Metadata information about the package: name, version,
 #      download URL, etc.
 #
 #   2. Description of the commands to be executed to configure, build
@@ -304,7 +304,7 @@ define inner-generic-package
 # already defined. For some variables (version, source, site and
 # subdir), if they are undefined, we try to see if a variable without
 # the HOST_ prefix is defined. If so, we use such a variable, so that
-# these informations have only to be specified once, for both the
+# this information has only to be specified once, for both the
 # target and host packages of a given .mk file.
 
 $(2)_TYPE                       =  $(4)

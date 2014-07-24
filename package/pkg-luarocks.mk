@@ -12,7 +12,7 @@
 # infrastructure
 #
 # In terms of implementation, this LuaRocks infrastructure requires
-# the .mk file to only specify metadata informations about the
+# the .mk file to only specify metadata information about the
 # package: name, version, etc.
 #
 ################################################################################

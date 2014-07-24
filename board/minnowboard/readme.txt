@@ -36,5 +36,5 @@ Prepare the SD card for the Minnow Board
 
  4. Enjoy
 
-Additional informations about this board can be found at
+Additional information about this board can be found at
 http://www.minnowboard.org/.

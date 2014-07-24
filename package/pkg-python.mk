@@ -9,7 +9,7 @@
 # infrastructure
 #
 # In terms of implementation, this Python infrastructure requires the
-# .mk file to only specify metadata informations about the package:
+# .mk file to only specify metadata information about the package:
 # name, version, download URL, etc.
 #
 # We still allow the package .mk file to override what the different
