@@ -27,7 +27,7 @@
 # generate the necessary make targets
 #
 #  argument 1 is the lowercase package name
-#  argument 2 is the uppercase package name, including an HOST_ prefix
+#  argument 2 is the uppercase package name, including a HOST_ prefix
 #             for host packages
 #  argument 3 is the uppercase package name, without the HOST_ prefix
 #             for host packages
