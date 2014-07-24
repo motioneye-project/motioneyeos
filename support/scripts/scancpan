@@ -645,7 +645,10 @@ while (my ($distname, $dist) = each %dist) {
         my $license = ref $dist->{license} eq 'ARRAY'
                     ? join q{ or }, @{$dist->{license}}
                     : $dist->{license};
+        # BR requires license name as in http://spdx.org/licenses/
+        $license =~ s|apache_2_0|Apache-2.0|;
         $license =~ s|artistic_2|Artistic-2.0|;
+        $license =~ s|mit|MIT|;
         $license =~ s|openssl|OpenSSL|;
         $license =~ s|perl_5|Artistic or GPLv1+|;
         my $license_files = join q{ }, @{$license_files{$distname}};
