@@ -5,8 +5,8 @@ config BR2_PACKAGE_GNUPG2
 	select BR2_PACKAGE_LIBGCRYPT
 	select BR2_PACKAGE_LIBASSUAN
 	select BR2_PACKAGE_LIBKSBA
-	select BR2_PACKAGE_PTHSEM
-	select BR2_PACKAGE_PTHSEM_COMPAT
+	select BR2_PACKAGE_LIBPTHSEM
+	select BR2_PACKAGE_LIBPTHSEM_COMPAT
 	depends on BR2_USE_MMU # libassuan
 	help
 	  GnuPG is the GNU project's complete and free implementation
