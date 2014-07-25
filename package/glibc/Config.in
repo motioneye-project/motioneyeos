@@ -1,5 +1,10 @@
 if BR2_TOOLCHAIN_BUILDROOT_EGLIBC
 
+# For legal-info
+config BR2_PACKAGE_EGLIBC
+	bool
+	default y
+
 choice
 	prompt "eglibc version"
 	default BR2_EGLIBC_VERSION_2_18
@@ -17,6 +22,11 @@ endchoice
 endif
 
 if BR2_TOOLCHAIN_BUILDROOT_GLIBC
+
+# For legal-info
+config BR2_PACKAGE_GLIBC
+	bool
+	default y
 
 choice
 	prompt "glibc version"

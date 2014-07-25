@@ -1,5 +1,10 @@
 if BR2_TOOLCHAIN_BUILDROOT_UCLIBC
 
+# For legal-info
+config BR2_PACKAGE_UCLIBC
+	bool
+	default y
+
 comment "uClibc Options"
 
 choice
