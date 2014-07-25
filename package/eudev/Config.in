@@ -17,7 +17,7 @@ config BR2_PACKAGE_EUDEV
 	  eudev requires a Linux kernel >= 2.6.34: it relies on devtmpfs
 	  and inotify.
 
-	  http://github.com/gentoo/eudev/
+	  http://dev.gentoo.org/~blueness/eudev
 
 if BR2_PACKAGE_EUDEV
 
