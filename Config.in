@@ -234,7 +234,7 @@ endif
 
 config BR2_LUAROCKS_MIRROR
 	string "LuaRocks mirror"
-	default "http://luarocks.org/repositories/rocks"
+	default "http://rocks.moonscript.org"
 	help
 	  LuaRocks repository.
 
