@@ -323,10 +323,12 @@ config BR2_LINUX_KERNEL_INTREE_DTS_NAME
 	  dts files to build, separated by spaces.
 
 config BR2_LINUX_KERNEL_CUSTOM_DTS_PATH
-	string "Device Tree Source file path"
+	string "Device Tree Source file paths"
 	depends on BR2_LINUX_KERNEL_USE_CUSTOM_DTS
 	help
-	  Path to the device tree source file
+	  Path to the device tree source files. You can
+	  provide a list of dts paths to copy and build,
+	  separated by spaces.
 
 endif
 
