@@ -1,0 +1,39 @@
+From a904d1e35be72d0821a6680a75060815bce86642 Mon Sep 17 00:00:00 2001
+Message-Id: <a904d1e35be72d0821a6680a75060815bce86642.1406266983.git.baruch@tkos.co.il>
+From: Baruch Siach <baruch@tkos.co.il>
+Date: Fri, 25 Jul 2014 07:28:47 +0300
+Subject: [PATCH] configure.in: uclinux is also linux
+
+Also we need -lpthread for the test to build for noMMU targets.
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+ configure.in | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/configure.in b/configure.in
+index 4530aed3a7d0..63f708b9b855 100644
+--- a/configure.in
++++ b/configure.in
+@@ -1539,7 +1539,7 @@ AC_ARG_ENABLE([canusb],
+ if test "x$enable_canusb" != "xno" ; then
+ 	dnl check for canusb support
+ 	case "$host_os" in
+-	linux*)
++	linux*|uclinux*)
+ 		AC_CHECK_HEADER(libusb-1.0/libusb.h,
+ 		[
+ 		    AC_CHECK_LIB(usb-1.0, libusb_init,
+@@ -1549,7 +1549,8 @@ if test "x$enable_canusb" != "xno" ; then
+ 			LIBS="-lusb-1.0 -lpthread $LIBS"
+ 			ac_lbl_has_libusb=yes
+ 		    ],
+-		    ac_lbl_has_libusb=no
++		    ac_lbl_has_libusb=no,
++		    -lpthread
+ 		    )
+ 		],
+ 		ac_lbl_has_libusb=no
+-- 
+2.0.1
+
