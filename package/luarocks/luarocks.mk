@@ -38,6 +38,7 @@ define HOST_LUAROCKS_INSTALL_CMDS
 	echo "gcc_rpath = false"                                >> $(LUAROCKS_CONFIG_FILE)
 	echo "rocks_trees = { [[$(TARGET_DIR)/usr]] }"          >> $(LUAROCKS_CONFIG_FILE)
 	echo "wrap_bin_scripts = false"                         >> $(LUAROCKS_CONFIG_FILE)
+	echo "deps_mode = [[none]]"                             >> $(LUAROCKS_CONFIG_FILE)
 endef
 
 $(eval $(host-generic-package))
