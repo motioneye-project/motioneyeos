@@ -69,6 +69,10 @@ ifeq ($(shell expr $(PERL_VERSION_MAJOR) % 2), 1)
     PERL_CONF_OPT += -Dusedevel
 endif
 
+ifeq ($(BR2_PREFER_STATIC_LIB),y)
+    PERL_CONF_OPT += --all-static --no-dynaloader
+endif
+
 ifneq ($(BR2_LARGEFILE),y)
     PERL_CONF_OPT += -Uuselargefiles
 endif
