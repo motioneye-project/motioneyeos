@@ -1,0 +1,59 @@
+#!/bin/bash
+
+# This script is used to generate a gconv-modules file that takes into
+# account only the gconv modules installed by Buildroot. It receives
+# on its standard input the original complete gconv-modules file from
+# the toolchain, and as arguments the list of gconv modules that were
+# actually installed, and writes on its standard output the new
+# gconv-modules file.
+
+# The format of gconv-modules is precisely documented in the
+# file itself. It consists of two different directives:
+#   module  FROMSET  TOSET  FILENAME  COST
+#   alias   ALIAS  REALNAME
+# and that's what this script parses and generates.
+#
+# There are two kinds of 'module' directives:
+#   - the first defines conversion of a charset to/from INTERNAL representation
+#   - the second defines conversion of a charset to/from another charset
+# we handle each with slightly different code, since the second never has
+# associated aliases.
+
+gawk -v files="${1}" '
+$1 == "alias" {
+    aliases[$3] = aliases[$3] " " $2;
+}
+$1 == "module" && $2 != "INTERNAL" && $3 == "INTERNAL" {
+    file2internals[$4] = file2internals[$4] " " $2;
+    mod2cost[$2] = $5;
+}
+$1 == "module" && $2 != "INTERNAL" && $3 != "INTERNAL" {
+    file2cset[$4] = file2cset[$4] " " $2 ":" $3;
+    mod2cost[$2] = $5;
+}
+
+END {
+    nb_files = split(files, all_files);
+    for(f = 1; f <= nb_files; f++) {
+        file = all_files[f];
+        printf("# Modules and aliases for: %s\n", file);
+        nb_mods = split(file2internals[file], mods);
+        for(i = 1; i <= nb_mods; i++) {
+            nb_aliases = split(aliases[mods[i]], mod_aliases);
+            for(j = 1; j <= nb_aliases; j++) {
+                printf("alias\t%s\t%s\n", mod_aliases[j], mods[i]);
+            }
+            printf("module\t%s\t%s\t%s\t%d\n", mods[i], "INTERNAL", file, mod2cost[mods[i]]);
+            printf("module\t%s\t%s\t%s\t%d\n", "INTERNAL", mods[i], file, mod2cost[mods[i]]);
+            printf("\n" );
+        }
+        printf("%s", nb_mods != 0 ? "\n" : "");
+        nb_csets = split(file2cset[file], csets);
+        for(i = 1; i <= nb_csets; i++) {
+            split(csets[i], cs, ":");
+            printf("module\t%s\t%s\t%s\t%d\n", cs[1], cs[2], file, mod2cost[cs[1]]);
+        }
+        printf("%s", nb_csets != 0 ? "\n\n" : "");
+    }
+}
+'

@@ -77,6 +77,28 @@ config BR2_GENERATE_LOCALE
 	  specified, UTF-8 is assumed. Examples of locales: en_US,
 	  fr_FR.UTF-8.
 
+config BR2_TOOLCHAIN_GLIBC_GCONV_LIBS_COPY
+	bool "Copy gconv libraries"
+	depends on BR2_TOOLCHAIN_USES_GLIBC
+	help
+	  The gconv libraries are used to convert between different
+	  character sets (charsets).
+
+	  Say 'y' if you need to store and/or display different charsets.
+
+config BR2_TOOLCHAIN_GLIBC_GCONV_LIBS_LIST
+	string "Gconv libraries to copy"
+	depends on BR2_TOOLCHAIN_GLIBC_GCONV_LIBS_COPY
+	help
+	  Set to the list of gconv libraries to copy.
+	  Leave empty to copy all gconv libraries.
+
+	  Specify only the basename of the libraries, leave
+	  out the .so extension. Eg.:
+	    IBM850 ISO8859-15 UNICODE
+
+	  Note: the full set of gconv libs are ~8MiB (on ARM).
+
 # glibc and eglibc directly include gettext, so a separatly compiled
 # gettext isn't needed and shouldn't be built to avoid conflicts. Some
 # packages always need gettext, other packages only need gettext when
