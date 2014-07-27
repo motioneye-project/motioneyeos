@@ -31,6 +31,8 @@ RTMPDUMP_CFLAGS = $(TARGET_CFLAGS)
 
 ifneq ($(BR2_PREFER_STATIC_LIB),y)
     RTMPDUMP_CFLAGS += -fPIC
+else
+    RTMPDUMP_SHARED = "SHARED="
 endif
 
 define RTMPDUMP_BUILD_CMDS
@@ -39,15 +41,16 @@ define RTMPDUMP_BUILD_CMDS
 		XCFLAGS="$(RTMPDUMP_CFLAGS)" \
 		XLDFLAGS="$(TARGET_CFLAGS)" \
 		CROSS_COMPILE="$(TARGET_CROSS)" \
+		$(RTMPDUMP_SHARED) \
 		-C $(@D)/librtmp
 endef
 
 define RTMPDUMP_INSTALL_STAGING_CMDS
-	$(MAKE) prefix=/usr -C $(@D)/librtmp install DESTDIR=$(STAGING_DIR)
+	$(MAKE) prefix=/usr -C $(@D)/librtmp install DESTDIR=$(STAGING_DIR) $(RTMPDUMP_SHARED)
 endef
 
 define RTMPDUMP_INSTALL_TARGET_CMDS
-	$(MAKE) prefix=/usr -C $(@D)/librtmp install DESTDIR=$(TARGET_DIR)
+	$(MAKE) prefix=/usr -C $(@D)/librtmp install DESTDIR=$(TARGET_DIR) $(RTMPDUMP_SHARED)
 endef
 
 $(eval $(generic-package))
