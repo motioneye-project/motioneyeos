@@ -10,6 +10,9 @@ FETCHMAIL_SOURCE = fetchmail-$(FETCHMAIL_VERSION).tar.xz
 FETCHMAIL_SITE = http://downloads.sourceforge.net/project/fetchmail/branch_$(FETCHMAIL_VERSION_MAJOR)/
 FETCHMAIL_LICENSE = GPLv2; some exceptions are mentioned in COPYING
 FETCHMAIL_LICENSE_FILES = COPYING
+FETCHMAIL_AUTORECONF = YES
+
+FETCHMAIL_CONF_ENV += LIBS="-lz"
 
 FETCHMAIL_CONF_OPT = \
 	--with-ssl=$(STAGING_DIR)/usr
