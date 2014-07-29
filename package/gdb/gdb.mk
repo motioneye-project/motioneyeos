@@ -50,6 +50,14 @@ GDB_PRE_PATCH_HOOKS += GDB_XTENSA_PRE_PATCH
 HOST_GDB_PRE_PATCH_HOOKS += GDB_XTENSA_PRE_PATCH
 endif
 
+# When gdb sources are fetched from the binutils-gdb repository, they
+# also contain the binutils sources, but binutils shouldn't be built,
+# so we disable it.
+GDB_DISABLE_BINUTILS_CONF_OPT = \
+	--disable-binutils \
+	--disable-ld \
+	--disable-gas
+
 GDB_CONF_ENV = \
 	ac_cv_type_uintptr_t=yes \
 	gt_cv_func_gettext_libintl=yes \
@@ -67,6 +75,7 @@ GDB_CONF_OPT = \
 	--disable-gdbtk \
 	--without-x \
 	--disable-sim \
+	$(GDB_DISABLE_BINUTILS_CONF_OPT) \
 	$(if $(BR2_PACKAGE_GDB_SERVER),--enable-gdbserver) \
 	--with-curses \
 	--without-included-gettext \
@@ -111,6 +120,7 @@ HOST_GDB_CONF_OPT = \
 	--enable-threads \
 	--disable-werror \
 	--without-included-gettext \
+	$(GDB_DISABLE_BINUTILS_CONF_OPT) \
 	--disable-sim
 
 ifeq ($(GDB_FROM_GIT),y)

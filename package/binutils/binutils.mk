@@ -42,11 +42,18 @@ BINUTILS_DEPENDENCIES += host-texinfo host-flex host-bison
 HOST_BINUTILS_DEPENDENCIES += host-texinfo host-flex host-bison
 endif
 
+# When binutils sources are fetched from the binutils-gdb repository,
+# they also contain the gdb sources, but gdb shouldn't be built, so we
+# disable it.
+BINUTILS_DISABLE_GDB_CONF_OPT = \
+	--disable-sim --disable-gdb
+
 # We need to specify host & target to avoid breaking ARM EABI
 BINUTILS_CONF_OPT = --disable-multilib --disable-werror \
 		--host=$(GNU_TARGET_NAME) \
 		--target=$(GNU_TARGET_NAME) \
 		--enable-install-libiberty \
+		$(BINUTILS_DISABLE_GDB_CONF_OPT) \
 		$(BINUTILS_EXTRA_CONFIG_OPTIONS)
 
 # Don't build documentation. It takes up extra space / build time,
@@ -65,6 +72,7 @@ HOST_BINUTILS_CONF_OPT = --disable-multilib --disable-werror \
 			--target=$(GNU_TARGET_NAME) \
 			--disable-shared --enable-static \
 			--with-sysroot=$(STAGING_DIR) \
+			$(BINUTILS_DISABLE_GDB_CONF_OPT) \
 			$(BINUTILS_EXTRA_CONFIG_OPTIONS)
 
 # We just want libbfd and libiberty, not the full-blown binutils in staging
