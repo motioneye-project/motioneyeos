@@ -51,3 +51,10 @@ $(eval $(host-generic-package))
 
 LUAROCKS_RUN = LUA_PATH="$(HOST_DIR)/usr/share/lua/$(LUAINTERPRETER_ABIVER)/?.lua" \
 	$(LUA_RUN) $(HOST_DIR)/usr/bin/luarocks
+
+define LUAROCKS_FINALIZE_TARGET
+	rm -rf $(TARGET_DIR)/usr/lib/luarocks
+endef
+
+TARGET_FINALIZE_HOOKS += LUAROCKS_FINALIZE_TARGET
+
