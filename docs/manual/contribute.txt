@@ -272,7 +272,7 @@ This can be easily handled with +git format-patch+ by using the option
 
 ---------------------
 $ git format-patch --subject-prefix "PATCH v4" \
-    -M -o outgoing origin/master
+    -M -s -o outgoing origin/master
 ---------------------
 
 [[reporting-bugs]]
