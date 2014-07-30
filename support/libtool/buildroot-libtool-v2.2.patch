@@ -1,6 +1,6 @@
---- a/ltmain.sh	2009-11-16 06:23:18.000000000 -0700
-+++ b/ltmain.sh	2010-09-18 20:25:06.000000000 -0700
-@@ -1048,8 +1048,8 @@ func_infer_tag ()
+--- a/ltmain.sh	2010-06-09 15:08:53.000000000 +0200
++++ b/ltmain.sh	2014-07-30 22:33:41.176710372 +0200
+@@ -1214,8 +1214,8 @@
  	# was found and let the user know that the "--tag" command
  	# line option must be used.
  	if test -z "$tagname"; then
@@ -11,7 +11,7 @@
  #	else
  #	  func_verbose "using $tagname tagged configuration"
  	fi
-@@ -2018,8 +2018,11 @@ func_mode_install ()
+@@ -2239,8 +2239,11 @@
  	  # At present, this check doesn't affect windows .dll's that
  	  # are installed into $libdir/../bin (currently, that works fine)
  	  # but it's something to keep an eye on.
@@ -25,7 +25,49 @@
  
  	  if test -n "$inst_prefix_dir"; then
  	    # Stick the inst_prefix_dir data into the link command.
-@@ -5412,8 +5415,14 @@ func_mode_link ()
+@@ -4429,7 +4432,8 @@
+ 	;;
+       -all-static | -static | -static-libtool-libs)
+ 	case $arg in
+-	-all-static)
++	# Make -static behave like -all-static
++	-all-static | -static)
+ 	  if test "$build_libtool_libs" = yes && test -z "$link_static_flag"; then
+ 	    func_warning "complete static linking is impossible in this configuration"
+ 	  fi
+@@ -4438,12 +4442,6 @@
+ 	  fi
+ 	  prefer_static_libs=yes
+ 	  ;;
+-	-static)
+-	  if test -z "$pic_flag" && test -n "$link_static_flag"; then
+-	    dlopen_self=$dlopen_self_static
+-	  fi
+-	  prefer_static_libs=built
+-	  ;;
+ 	-static-libtool-libs)
+ 	  if test -z "$pic_flag" && test -n "$link_static_flag"; then
+ 	    dlopen_self=$dlopen_self_static
+@@ -4726,7 +4724,8 @@
+       prevarg="$arg"
+ 
+       case $arg in
+-      -all-static)
++      # Make -static behave like -all-static
++      -all-static | -static)
+ 	if test -n "$link_static_flag"; then
+ 	  # See comment for -static flag below, for more details.
+ 	  func_append compile_command " $link_static_flag"
+@@ -4995,7 +4994,7 @@
+ 	continue
+ 	;;
+ 
+-      -static | -static-libtool-libs)
++      -static-libtool-libs)
+ 	# The effects of -static are defined in a previous loop.
+ 	# We used to do the same as -all-static on platforms that
+ 	# didn't have a PIC flag, but the assumption that the effects
+@@ -5739,8 +5738,14 @@
  	    absdir="$abs_ladir"
  	    libdir="$abs_ladir"
  	  else
@@ -42,7 +84,7 @@
  	  fi
  	  test "X$hardcode_automatic" = Xyes && avoidtemprpath=yes
  	else
-@@ -5564,7 +5573,7 @@ func_mode_link ()
+@@ -5891,7 +5896,7 @@
  	  *)
  	    if test "$installed" = no; then
  	      notinst_deplibs="$notinst_deplibs $lib"
@@ -51,7 +93,7 @@
  	    fi
  	    ;;
  	  esac
-@@ -8052,6 +8061,10 @@ EOF
+@@ -8373,6 +8378,10 @@
  	    # Replace all uninstalled libtool libraries with the installed ones
  	    newdependency_libs=
  	    for deplib in $dependency_libs; do
