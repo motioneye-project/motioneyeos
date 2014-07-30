@@ -96,12 +96,6 @@ config BR2_PACKAGE_MPD_LAME
 	help
 	  Enable lame (mp3) encoding support.
 
-config BR2_PACKAGE_MPD_LIBCUE
-	bool "libcue"
-	select BR2_PACKAGE_LIBCUE
-	help
-	  Enable cue file support.
-
 config BR2_PACKAGE_MPD_LIBSAMPLERATE
 	bool "libsamplerate"
 	select BR2_PACKAGE_LIBSAMPLERATE
