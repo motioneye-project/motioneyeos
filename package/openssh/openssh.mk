@@ -12,6 +12,11 @@ OPENSSH_CONF_ENV = LD="$(TARGET_CC)" LDFLAGS="$(TARGET_CFLAGS)"
 OPENSSH_CONF_OPT = --disable-lastlog --disable-utmp \
 		--disable-utmpx --disable-wtmp --disable-wtmpx --disable-strip
 
+# uClibc toolchain for ARC doesn't support PIE at the moment
+ifeq ($(BR2_arc),y)
+OPENSSH_CONF_OPT += --without-pie
+endif
+
 OPENSSH_DEPENDENCIES = zlib openssl
 
 ifeq ($(BR2_PACKAGE_LINUX_PAM),y)
