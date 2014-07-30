@@ -1,0 +1,18 @@
+Microblaze assembly seems to be broken, fixes:
+
+http://autobuild.buildroot.net/results/4d5/4d54958ded61a0d929d992e4ca0bb31c996953cb/
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+diff -Nura polarssl-1.2.11.orig/include/polarssl/bn_mul.h polarssl-1.2.11/include/polarssl/bn_mul.h
+--- polarssl-1.2.11.orig/include/polarssl/bn_mul.h	2014-07-30 15:47:27.381658434 -0300
++++ polarssl-1.2.11/include/polarssl/bn_mul.h	2014-07-30 15:48:52.616543074 -0300
+@@ -480,7 +480,7 @@
+ 
+ #endif /* SPARCv8 */
+ 
+-#if defined(__microblaze__) || defined(microblaze)
++#if 0 && defined(__microblaze__) || defined(microblaze)
+ 
+ #define MULADDC_INIT                    \
+     asm(                                \
