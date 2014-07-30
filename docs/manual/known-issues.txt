@@ -3,6 +3,10 @@
 
 = Known issues
 
+* It is not possible to pass extra linker options via +BR2_TARGET_LDFLAGS+
+  if such options contain a +$+ sign. For example, the following is known
+  to break: +BR2_TARGET_LDFLAGS="-Wl,-rpath=\'$ORIGIN/../lib'"+
+
 * The +ltp-testsuite+ package does not build with the default uClibc
   configuration used by the Buildroot toolchain backend. The LTP
   testsuite uses several functions that are considered obsolete, such
