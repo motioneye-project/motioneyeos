@@ -9,8 +9,6 @@ LIBUNGIF_SOURCE = libungif-$(LIBUNGIF_VERSION).tar.bz2
 LIBUNGIF_SITE = http://downloads.sourceforge.net/project/giflib/libungif-4.x/libungif-$(LIBUNGIF_VERSION)
 LIBUNGIF_INSTALL_STAGING = YES
 LIBUNGIF_CONF_OPT = --without-x
-# libtool 1.5 patch failure
-LIBUNGIF_AUTORECONF = YES
 LIBUNGIF_LICENSE = MIT
 LIBUNGIF_LICENSE_FILES = COPYING
 
