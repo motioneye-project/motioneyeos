@@ -24,17 +24,16 @@ if BR2_PACKAGE_CPPCMS
 
 config BR2_PACKAGE_CPPCMS_ICU
 	bool "enable icu support"
-	depends on !BR2_arc # icu -> atomic builtins
 	depends on !BR2_BINFMT_FLAT # icu
 	depends on BR2_USE_WCHAR # icu
+	depends on BR2_TOOLCHAIN_HAS_ATOMIC_INTRINSICS # icu
 	select BR2_PACKAGE_ICU
 	help
 	  Using ICU allows advanced localization features into CppCMS,
 	  in another hand ICU is heavier than iconv.
 
-comment "icu support needs a toolchain w/ wchar"
-	depends on !BR2_arc
-	depends on !BR2_BINFMT_FLAT
+comment "icu support needs a toolchain w/ wchar, atomic intrinsics"
+	depends on !BR2_BINFMT_FLAT || !BR2_TOOLCHAIN_HAS_ATOMIC_INTRINSICS
 	depends on !BR2_USE_WCHAR
 
 endif
