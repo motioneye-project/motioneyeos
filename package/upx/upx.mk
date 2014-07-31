@@ -5,7 +5,7 @@
 ################################################################################
 
 UPX_VERSION = 3.91
-UPX_SITE = http://upx.sourceforge.net/download/
+UPX_SITE = http://upx.sourceforge.net/download
 UPX_SOURCE = upx-$(UPX_VERSION)-src.tar.bz2
 UPX_LICENSE = GPLv2+
 UPX_LICENSE_FILES = COPYING

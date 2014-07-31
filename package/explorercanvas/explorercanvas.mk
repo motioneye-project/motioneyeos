@@ -5,7 +5,7 @@
 ################################################################################
 
 EXPLORERCANVAS_VERSION = r3
-EXPLORERCANVAS_SITE = http://explorercanvas.googlecode.com/files/
+EXPLORERCANVAS_SITE = http://explorercanvas.googlecode.com/files
 EXPLORERCANVAS_SOURCE = excanvas_$(EXPLORERCANVAS_VERSION).zip
 EXPLORERCANVAS_LICENSE = Apache-2.0
 EXPLORERCANVAS_LICENSE_FILES = COPYING

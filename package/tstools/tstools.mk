@@ -5,7 +5,7 @@
 ################################################################################
 
 TSTOOLS_VERSION = 1_11
-TSTOOLS_SITE    = https://tstools.googlecode.com/files/
+TSTOOLS_SITE    = https://tstools.googlecode.com/files
 TSTOOLS_SOURCE  = tstools-$(TSTOOLS_VERSION).tgz
 TSTOOLS_LICENSE = MPL v1.1
 

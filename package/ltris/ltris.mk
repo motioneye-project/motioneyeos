@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LTRIS_SITE = http://downloads.sourceforge.net/lgames/ltris/
+LTRIS_SITE = http://downloads.sourceforge.net/lgames/ltris
 LTRIS_VERSION = 1.0.19
 LTRIS_LICENSE = GPLv2+
 LTRIS_LICENSE_FILES = COPYING

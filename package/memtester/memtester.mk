@@ -5,7 +5,7 @@
 ################################################################################
 
 MEMTESTER_VERSION = 4.3.0
-MEMTESTER_SITE = http://pyropus.ca/software/memtester/old-versions/
+MEMTESTER_SITE = http://pyropus.ca/software/memtester/old-versions
 MEMTESTER_LICENSE = GPLv2
 MEMTESTER_LICENSE_FILES = COPYING
 

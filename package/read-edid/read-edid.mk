@@ -5,7 +5,7 @@
 ################################################################################
 
 READ_EDID_VERSION = 1.4.2
-READ_EDID_SITE = http://www.polypux.org/projects/read-edid/
+READ_EDID_SITE = http://www.polypux.org/projects/read-edid
 READ_EDID_LICENSE = GPLv2
 READ_EDID_LICENSE_FILES = COPYING
 

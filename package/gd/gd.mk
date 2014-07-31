@@ -6,7 +6,7 @@
 
 GD_VERSION = 2.1.0
 GD_SOURCE = libgd-$(GD_VERSION).tar.xz
-GD_SITE = https://bitbucket.org/libgd/gd-libgd/downloads/
+GD_SITE = https://bitbucket.org/libgd/gd-libgd/downloads
 GD_INSTALL_STAGING = YES
 GD_LICENSE = GD license
 GD_LICENSE_FILES = COPYING

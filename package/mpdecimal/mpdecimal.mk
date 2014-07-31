@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-MPDECIMAL_SITE = http://www.bytereef.org/software/mpdecimal/releases/
+MPDECIMAL_SITE = http://www.bytereef.org/software/mpdecimal/releases
 MPDECIMAL_VERSION = 2.4.0
 MPDECIMAL_INSTALL_STAGING = YES
 MPDECIMAL_LICENSE = BSD-2c

@@ -5,7 +5,7 @@
 ################################################################################
 
 GST_PLUGIN_X170_VERSION = 1.0
-GST_PLUGIN_X170_SITE = ftp://ftp.linux4sam.org/pub/demo/linux4sam_1.9/codec/
+GST_PLUGIN_X170_SITE = ftp://ftp.linux4sam.org/pub/demo/linux4sam_1.9/codec
 
 GST_PLUGIN_X170_LICENSE = BSD-1c
 #A license file is included but it is just a placeholder

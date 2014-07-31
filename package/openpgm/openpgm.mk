@@ -6,7 +6,7 @@
 
 OPENPGM_VERSION = 5.1.118~dfsg
 OPENPGM_SOURCE = libpgm-$(OPENPGM_VERSION).tar.gz
-OPENPGM_SITE = http://openpgm.googlecode.com/files/
+OPENPGM_SITE = http://openpgm.googlecode.com/files
 OPENPGM_LICENSE = LGPLv2.1+
 OPENPGM_LICENSE_FILES = openpgm/pgm/LICENSE
 OPENPGM_INSTALL_STAGING = YES

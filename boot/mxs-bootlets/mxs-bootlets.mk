@@ -14,7 +14,7 @@ else ifeq ($(BR2_TARGET_MXS_BOOTLETS_CUSTOM_GIT),y)
 	MXS_BOOTLETS_VERSION = $(call qstrip,$(BR2_TARGET_MXS_BOOTLETS_CUSTOM_GIT_VERSION))
 else
 	MXS_BOOTLETS_VERSION = 10.12.01
-	MXS_BOOTLETS_SITE = http://download.ossystems.com.br/bsp/freescale/source/
+	MXS_BOOTLETS_SITE = http://download.ossystems.com.br/bsp/freescale/source
 	MXS_BOOTLETS_SOURCE = imx-bootlets-src-$(MXS_BOOTLETS_VERSION).tar.gz
 endif
 

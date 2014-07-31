@@ -5,7 +5,7 @@
 ################################################################################
 
 BOA_VERSION = 0.94.14rc21
-BOA_SITE = http://www.boa.org/
+BOA_SITE = http://www.boa.org
 BOA_LICENSE = GPLv2+
 BOA_LICENSE_FILES = COPYING
 

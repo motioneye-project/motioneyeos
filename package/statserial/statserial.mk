@@ -5,7 +5,7 @@
 ################################################################################
 
 STATSERIAL_VERSION = 1.1
-STATSERIAL_SITE = http://www.ibiblio.org/pub/Linux/system/serial/
+STATSERIAL_SITE = http://www.ibiblio.org/pub/Linux/system/serial
 STATSERIAL_DEPENDENCIES = ncurses
 STATSERIAL_LICENSE = GPLv2+
 STATSERIAL_LICENSE_FILES = COPYING

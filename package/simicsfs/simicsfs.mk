@@ -5,7 +5,7 @@
 ###############################################################################
 
 SIMICSFS_VERSION = 1.17
-SIMICSFS_SITE = http://download.simics.net/pub/
+SIMICSFS_SITE = http://download.simics.net/pub
 SIMICSFS_LICENSE = GPLv2+
 SIMICSFS_LICENSE_FILES = hostfs.h
 SIMICSFS_DEPENDENCIES = linux

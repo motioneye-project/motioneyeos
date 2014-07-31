@@ -20,7 +20,7 @@ GDB_FROM_GIT = y
 endif
 
 ifeq ($(GDB_VERSION),6.7.1-avr32-2.1.5)
-GDB_SITE = ftp://www.at91.com/pub/buildroot/
+GDB_SITE = ftp://www.at91.com/pub/buildroot
 endif
 
 GDB_SOURCE ?= gdb-$(GDB_VERSION).tar.bz2

@@ -6,7 +6,7 @@
 
 GENPART_VERSION       = 1.0.2
 GENPART_SOURCE        = genpart-$(GENPART_VERSION).tar.bz2
-GENPART_SITE          = http://www.pengutronix.de/software/genpart/download/
+GENPART_SITE          = http://www.pengutronix.de/software/genpart/download
 # genpart has no license embedded in its source release.
 # However, their project page mentions:
 #   > This community portal offers an overview about our own OSS

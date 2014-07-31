@@ -6,7 +6,7 @@
 
 LIBDRM_VERSION = 2.4.56
 LIBDRM_SOURCE = libdrm-$(LIBDRM_VERSION).tar.bz2
-LIBDRM_SITE = http://dri.freedesktop.org/libdrm/
+LIBDRM_SITE = http://dri.freedesktop.org/libdrm
 LIBDRM_LICENSE = MIT
 
 LIBDRM_INSTALL_STAGING = YES

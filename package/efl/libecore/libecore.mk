@@ -6,7 +6,7 @@
 
 LIBECORE_VERSION = $(EFL_VERSION)
 LIBECORE_SOURCE = ecore-$(LIBECORE_VERSION).tar.bz2
-LIBECORE_SITE = http://download.enlightenment.org/releases/
+LIBECORE_SITE = http://download.enlightenment.org/releases
 LIBECORE_LICENSE = BSD-2c
 LIBECORE_LICENSE_FILES = COPYING
 

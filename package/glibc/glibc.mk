@@ -7,7 +7,7 @@
 GLIBC_VERSION = $(call qstrip,$(BR2_GLIBC_VERSION_STRING))
 
 ifeq ($(BR2_TOOLCHAIN_BUILDROOT_EGLIBC),y)
-GLIBC_SITE = http://downloads.yoctoproject.org/releases/eglibc/
+GLIBC_SITE = http://downloads.yoctoproject.org/releases/eglibc
 GLIBC_SOURCE = eglibc-$(GLIBC_VERSION).tar.bz2
 GLIBC_SRC_SUBDIR = libc
 else

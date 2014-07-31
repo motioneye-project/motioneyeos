@@ -5,7 +5,7 @@
 ################################################################################
 
 RSYSLOG_VERSION = 7.6.0
-RSYSLOG_SITE = http://rsyslog.com/files/download/rsyslog/
+RSYSLOG_SITE = http://rsyslog.com/files/download/rsyslog
 RSYSLOG_LICENSE = GPLv3 LGPLv3 Apache-2.0
 RSYSLOG_LICENSE_FILES = COPYING COPYING.LESSER COPYING.ASL20
 RSYSLOG_DEPENDENCIES = zlib libestr liblogging json-c util-linux host-pkgconf

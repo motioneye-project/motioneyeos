@@ -5,7 +5,7 @@
 ################################################################################
 
 DCRON_VERSION = 4.5
-DCRON_SITE = http://www.jimpryor.net/linux/releases/
+DCRON_SITE = http://www.jimpryor.net/linux/releases
 # The source code does not specify the version of the GPL that is used.
 DCRON_LICENSE = GPL
 

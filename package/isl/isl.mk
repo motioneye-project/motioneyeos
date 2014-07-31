@@ -9,7 +9,7 @@
 # published.
 ISL_VERSION = 0.12.2
 ISL_SOURCE = isl-$(ISL_VERSION).tar.bz2
-ISL_SITE = http://isl.gforge.inria.fr/
+ISL_SITE = http://isl.gforge.inria.fr
 ISL_LICENSE = MIT
 ISL_LICENSE_FILES = LICENSE
 ISL_DEPENDENCIES = gmp

@@ -5,7 +5,7 @@
 ################################################################################
 
 TRANSMISSION_VERSION = 2.84
-TRANSMISSION_SITE = http://download.transmissionbt.com/files/
+TRANSMISSION_SITE = http://download.transmissionbt.com/files
 TRANSMISSION_SOURCE = transmission-$(TRANSMISSION_VERSION).tar.xz
 TRANSMISSION_DEPENDENCIES = \
 	host-pkgconf \

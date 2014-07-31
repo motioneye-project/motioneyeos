@@ -6,7 +6,7 @@
 
 LIBEDJE_VERSION = $(EFL_VERSION)
 LIBEDJE_SOURCE = edje-$(LIBEDJE_VERSION).tar.bz2
-LIBEDJE_SITE =  http://download.enlightenment.org/releases/
+LIBEDJE_SITE =  http://download.enlightenment.org/releases
 LIBEDJE_LICENSE = GPLv2+ (epp binary), BSD-2c (everything else)
 LIBEDJE_LICENSE_FILES = COPYING
 

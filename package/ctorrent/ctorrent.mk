@@ -5,7 +5,7 @@
 ################################################################################
 
 CTORRENT_VERSION = dnh3.3.2
-CTORRENT_SITE = http://www.rahul.net/dholmes/ctorrent/
+CTORRENT_SITE = http://www.rahul.net/dholmes/ctorrent
 CTORRENT_LICENSE = GPLv2
 CTORRENT_LICENSE_FILES = COPYING
 

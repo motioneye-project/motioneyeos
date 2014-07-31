@@ -5,7 +5,7 @@
 ################################################################################
 
 ON2_8170_LIBS_VERSION = 1.0
-ON2_8170_LIBS_SITE = ftp://ftp.linux4sam.org/pub/demo/linux4sam_1.9/codec/
+ON2_8170_LIBS_SITE = ftp://ftp.linux4sam.org/pub/demo/linux4sam_1.9/codec
 
 ON2_8170_LICENSE = PROPRIETARY
 # No license file is included in the archive

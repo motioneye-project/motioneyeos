@@ -6,7 +6,7 @@
 
 AICCU_VERSION = 20070115
 AICCU_SOURCE = aiccu_$(AICCU_VERSION).tar.gz
-AICCU_SITE = http://www.sixxs.net/archive/sixxs/aiccu/unix/
+AICCU_SITE = http://www.sixxs.net/archive/sixxs/aiccu/unix
 AICCU_LICENSE = SixXS License, concise redistribution license
 AICCU_LICENSE_FILES = doc/LICENSE
 AICCU_DEPENDENCIES = gnutls

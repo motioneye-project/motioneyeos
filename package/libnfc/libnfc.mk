@@ -5,7 +5,7 @@
 ################################################################################
 
 LIBNFC_VERSION = 7b7f5061427b5456835dd48923a8cc0563cfd1e9
-LIBNFC_SITE = http://libnfc.googlecode.com/git/
+LIBNFC_SITE = http://libnfc.googlecode.com/git
 LIBNFC_SITE_METHOD = git
 LIBNFC_LICENSE = LGPLv3+
 LIBNFC_LICENSE_FILES = COPYING

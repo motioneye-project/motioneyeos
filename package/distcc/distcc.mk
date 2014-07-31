@@ -6,7 +6,7 @@
 
 DISTCC_VERSION = 2.18.3
 DISTCC_SOURCE = distcc-$(DISTCC_VERSION).tar.bz2
-DISTCC_SITE = http://distcc.googlecode.com/files/
+DISTCC_SITE = http://distcc.googlecode.com/files
 DISTCC_CONF_OPT = --with-included-popt --without-gtk --without-gnome
 DISTCC_LICENSE = GPLv2+
 DISTCC_LICENSE_FILES = COPYING

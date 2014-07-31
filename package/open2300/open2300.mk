@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-OPEN2300_SITE = http://www.lavrsen.dk/svn/open2300/trunk/
+OPEN2300_SITE = http://www.lavrsen.dk/svn/open2300/trunk
 OPEN2300_SITE_METHOD = svn
 OPEN2300_VERSION = 12
 OPEN2300_LICENSE = GPLv2

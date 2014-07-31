@@ -7,7 +7,7 @@
 GRUB_VERSION = 0.97
 GRUB_SOURCE = grub_$(GRUB_VERSION).orig.tar.gz
 GRUB_PATCH  = grub_$(GRUB_VERSION)-67.diff.gz
-GRUB_SITE   = http://snapshot.debian.org/archive/debian/20130129T225227Z/pool/main/g/grub/
+GRUB_SITE   = http://snapshot.debian.org/archive/debian/20130129T225227Z/pool/main/g/grub
 
 GRUB_LICENSE = GPLv2+
 GRUB_LICENSE_FILES = COPYING

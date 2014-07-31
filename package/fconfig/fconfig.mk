@@ -5,7 +5,7 @@
 ################################################################################
 
 FCONFIG_VERSION = 20080329
-FCONFIG_SITE = http://andrzejekiert.ovh.org/software/fconfig/
+FCONFIG_SITE = http://andrzejekiert.ovh.org/software/fconfig
 FCONFIG_LICENSE = GPLv2+
 FCONFIG_LICENSE_FILES = fconfig.c
 

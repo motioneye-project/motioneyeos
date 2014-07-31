@@ -6,7 +6,7 @@
 
 LIBEET_VERSION = $(EFL_VERSION)
 LIBEET_SOURCE = eet-$(LIBEET_VERSION).tar.bz2
-LIBEET_SITE = http://download.enlightenment.org/releases/
+LIBEET_SITE = http://download.enlightenment.org/releases
 LIBEET_LICENSE = BSD-2c
 LIBEET_LICENSE_FILES = COPYING
 

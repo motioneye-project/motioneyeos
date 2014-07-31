@@ -5,7 +5,7 @@
 ################################################################################
 
 MINICOM_VERSION = 2.7
-MINICOM_SITE = http://sources.buildroot.net/
+MINICOM_SITE = http://sources.buildroot.net
 MINICOM_LICENSE = GPLv2+
 MINICOM_LICENSE_FILES = COPYING
 

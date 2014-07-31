@@ -5,7 +5,7 @@
 ################################################################################
 
 LATENCYTOP_VERSION = 0.5
-LATENCYTOP_SITE = http://www.latencytop.org/download/
+LATENCYTOP_SITE = http://www.latencytop.org/download
 LATENCYTOP_DEPENDENCIES = libglib2 ncurses
 LATENCYTOP_LICENSE = GPLv2
 LATENCYTOP_LICENSE_FILES = latencytop.c

@@ -6,7 +6,7 @@
 
 DOOM_WAD_VERSION = 1.8
 DOOM_WAD_SOURCE = doom-$(DOOM_WAD_VERSION).wad.gz
-DOOM_WAD_SITE = ftp://ftp.idsoftware.com/idstuff/doom/
+DOOM_WAD_SITE = ftp://ftp.idsoftware.com/idstuff/doom
 
 define DOOM_WAD_EXTRACT_CMDS
 	$(ZCAT) $(DL_DIR)/$($(PKG)_SOURCE) > $(@D)/doom1.wad

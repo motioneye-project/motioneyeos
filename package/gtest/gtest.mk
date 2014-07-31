@@ -6,7 +6,7 @@
 
 GTEST_VERSION = 1.7.0
 GTEST_SOURCE = gtest-$(GTEST_VERSION).zip
-GTEST_SITE = http://googletest.googlecode.com/files/
+GTEST_SITE = http://googletest.googlecode.com/files
 GTEST_INSTALL_STAGING = YES
 GTEST_INSTALL_TARGET = NO
 GTEST_LICENSE = BSD-3c

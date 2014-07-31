@@ -6,7 +6,7 @@
 
 LOCALEDEF_VERSION = 2.14.1-r17443-ptx1
 LOCALEDEF_SOURCE  = localedef-eglibc-$(LOCALEDEF_VERSION).tar.bz2
-LOCALEDEF_SITE    = http://www.pengutronix.de/software/ptxdist/temporary-src/
+LOCALEDEF_SITE    = http://www.pengutronix.de/software/ptxdist/temporary-src
 
 HOST_LOCALEDEF_CONF_OPT += \
 	--prefix=/usr \

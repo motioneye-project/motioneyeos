@@ -5,7 +5,7 @@
 ################################################################################
 
 AXEL_VERSION = 2.4
-AXEL_SITE = http://sources.buildroot.net/
+AXEL_SITE = http://sources.buildroot.net
 AXEL_LICENSE = GPLv2+
 AXEL_LICENSE_FILES = COPYING
 

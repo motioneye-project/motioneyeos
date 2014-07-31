@@ -6,7 +6,7 @@
 
 YAFFS2UTILS_VERSION = 0.2.9
 YAFFS2UTILS_SOURCE = $(YAFFS2UTILS_VERSION).tar.gz
-YAFFS2UTILS_SITE = https://yaffs2utils.googlecode.com/files/
+YAFFS2UTILS_SITE = https://yaffs2utils.googlecode.com/files
 YAFFS2UTILS_LICENSE = GPLv2
 YAFFS2UTILS_LICENSE_FILES = COPYING
 

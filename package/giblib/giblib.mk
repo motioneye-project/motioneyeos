@@ -5,7 +5,7 @@
 ################################################################################
 
 GIBLIB_VERSION = 1.2.4
-GIBLIB_SITE = http://linuxbrit.co.uk/downloads/
+GIBLIB_SITE = http://linuxbrit.co.uk/downloads
 GIBLIB_INSTALL_STAGING = YES
 GIBLIB_DEPENDENCIES = imlib2
 GIBLIB_AUTORECONF = YES

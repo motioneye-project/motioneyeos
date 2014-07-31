@@ -5,7 +5,7 @@
 ################################################################################
 
 SMSTOOLS3_VERSION = 3.1.15
-SMSTOOLS3_SITE = http://smstools3.kekekasvi.com/packages/
+SMSTOOLS3_SITE = http://smstools3.kekekasvi.com/packages
 SMSTOOLS3_LICENSE = GPLv2+
 SMSTOOLS3_LICENSE_FILES = doc/license.html LICENSE
 

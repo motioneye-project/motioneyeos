@@ -6,7 +6,7 @@
 
 SDL_MIXER_VERSION = 1.2.12
 SDL_MIXER_SOURCE = SDL_mixer-$(SDL_MIXER_VERSION).tar.gz
-SDL_MIXER_SITE = http://www.libsdl.org/projects/SDL_mixer/release/
+SDL_MIXER_SITE = http://www.libsdl.org/projects/SDL_mixer/release
 SDL_MIXER_LICENSE = zlib
 SDL_MIXER_LICENSE_FILES = COPYING
 

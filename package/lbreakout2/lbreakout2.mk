@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LBREAKOUT2_SITE = http://downloads.sourceforge.net/lgames/lbreakout2/2.6/
+LBREAKOUT2_SITE = http://downloads.sourceforge.net/lgames/lbreakout2/2.6
 LBREAKOUT2_VERSION = 2.6.4
 LBREAKOUT2_LICENSE = GPLv2+
 LBREAKOUT2_LICENSE_FILES = COPYING

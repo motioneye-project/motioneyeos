@@ -5,7 +5,7 @@
 ################################################################################
 
 LZIP_VERSION = 1.15
-LZIP_SITE = http://download.savannah.gnu.org/releases/lzip/
+LZIP_SITE = http://download.savannah.gnu.org/releases/lzip
 LZIP_LICENSE = GPLv3+
 LZIP_LICENSE_FILES = COPYING
 

@@ -5,7 +5,7 @@
 ################################################################################
 
 IGH_ETHERCAT_VERSION = 1.5.1
-IGH_ETHERCAT_SITE    = http://etherlab.org/download/ethercat/
+IGH_ETHERCAT_SITE    = http://etherlab.org/download/ethercat
 IGH_ETHERCAT_SOURCE  = ethercat-$(IGH_ETHERCAT_VERSION).tar.bz2
 IGH_ETHERCAT_LICENSE = GPLv2 (IgH EtherCAT master), LGPLv2.1 (libraries)
 IGH_ETHERCAT_LICENSE_FILES = COPYING COPYING.LESSER

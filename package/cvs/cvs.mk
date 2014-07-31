@@ -7,7 +7,7 @@
 CVS_VERSION = 1.12.13
 CVS_SOURCE = cvs_$(CVS_VERSION).orig.tar.gz
 CVS_PATCH = cvs_$(CVS_VERSION)-12.diff.gz
-CVS_SITE = $(BR2_DEBIAN_MIRROR)/debian/pool/main/c/cvs/
+CVS_SITE = $(BR2_DEBIAN_MIRROR)/debian/pool/main/c/cvs
 CVS_DEPENDENCIES = ncurses
 
 CVS_CONF_ENV = cvs_cv_func_printf_ptr=yes

@@ -28,9 +28,9 @@ LINUX_SOURCE = linux-$(LINUX_VERSION).tar.xz
 # to use the $(word) function. We support versions such as 3.1,
 # 2.6.32, 2.6.32-rc1, 3.0-rc6, etc.
 ifeq ($(findstring x2.6.,x$(LINUX_VERSION)),x2.6.)
-LINUX_SITE = $(BR2_KERNEL_MIRROR)/linux/kernel/v2.6/
+LINUX_SITE = $(BR2_KERNEL_MIRROR)/linux/kernel/v2.6
 else
-LINUX_SITE = $(BR2_KERNEL_MIRROR)/linux/kernel/v3.x/
+LINUX_SITE = $(BR2_KERNEL_MIRROR)/linux/kernel/v3.x
 endif
 # release candidates are in testing/ subdir
 ifneq ($(findstring -rc,$(LINUX_VERSION)),)

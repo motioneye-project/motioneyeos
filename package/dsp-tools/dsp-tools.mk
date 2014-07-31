@@ -5,7 +5,7 @@
 ################################################################################
 
 DSP_TOOLS_VERSION = 2.0
-DSP_TOOLS_SITE = http://gst-dsp.googlecode.com/files/
+DSP_TOOLS_SITE = http://gst-dsp.googlecode.com/files
 DSP_TOOLS_DEPENDENCIES = tidsp-binaries
 DSP_TOOLS_LICENSE = LGPLv2.1
 DSP_TOOLS_LICENSE_FILES = LICENSE

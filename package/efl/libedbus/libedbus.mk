@@ -6,7 +6,7 @@
 
 LIBEDBUS_VERSION = $(EFL_VERSION)
 LIBEDBUS_SOURCE = e_dbus-$(LIBEDBUS_VERSION).tar.bz2
-LIBEDBUS_SITE = http://download.enlightenment.org/releases/
+LIBEDBUS_SITE = http://download.enlightenment.org/releases
 LIBEDBUS_LICENSE = BSD-2c
 LIBEDBUS_LICENSE_FILES = COPYING
 

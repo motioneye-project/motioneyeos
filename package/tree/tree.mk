@@ -6,7 +6,7 @@
 
 TREE_VERSION = 1.6.0
 TREE_SOURCE = tree-$(TREE_VERSION).tgz
-TREE_SITE = http://mama.indstate.edu/users/ice/tree/src/
+TREE_SITE = http://mama.indstate.edu/users/ice/tree/src
 TREE_LICENSE = GPLv2+
 TREE_LICENSE_FILES = LICENSE
 

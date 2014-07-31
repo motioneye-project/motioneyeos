@@ -5,7 +5,7 @@
 ################################################################################
 
 ZEROMQ_VERSION = 4.0.4
-ZEROMQ_SITE = http://download.zeromq.org/
+ZEROMQ_SITE = http://download.zeromq.org
 ZEROMQ_INSTALL_STAGING = YES
 ZEROMQ_DEPENDENCIES = util-linux
 ZEROMQ_LICENSE = LGPLv3+ with exceptions

@@ -5,7 +5,7 @@
 ################################################################################
 
 YASM_VERSION = 1.2.0
-YASM_SITE = http://www.tortall.net/projects/yasm/releases/
+YASM_SITE = http://www.tortall.net/projects/yasm/releases
 
 define YASM_PRE_CONFIGURE_FIXUP
 # This sed prevents it compiling 2 programs (vsyasm and ytasm) 

@@ -5,7 +5,7 @@
 ################################################################################
 
 XCURSOR_TRANSPARENT_THEME_VERSION = 0.1.1
-XCURSOR_TRANSPARENT_THEME_SITE = http://downloads.yoctoproject.org/releases/matchbox/utils/
+XCURSOR_TRANSPARENT_THEME_SITE = http://downloads.yoctoproject.org/releases/matchbox/utils
 XCURSOR_TRANSPARENT_THEME_DEPENDENCIES = xlib_libXcursor host-xapp_xcursorgen
 XCURSOR_TRANSPARENT_THEME_LICENSE = GPLv2
 XCURSOR_TRANSPARENT_THEME_LICENSE_FILES = COPYING

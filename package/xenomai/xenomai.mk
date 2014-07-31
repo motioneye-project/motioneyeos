@@ -9,7 +9,7 @@ ifeq ($(XENOMAI_VERSION),)
 XENOMAI_VERSION = 2.6.3
 endif
 
-XENOMAI_SITE = http://download.gna.org/xenomai/stable/
+XENOMAI_SITE = http://download.gna.org/xenomai/stable
 XENOMAI_SOURCE = xenomai-$(XENOMAI_VERSION).tar.bz2
 XENOMAI_LICENSE = headers: GPLv2+ with exception, libraries: LGPLv2.1+, kernel: GPLv2+, docs: GFDLv1.2+, ipipe patch and can driver: GPLv2
 # GFDL is not included but refers to gnu.org

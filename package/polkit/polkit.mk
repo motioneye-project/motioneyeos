@@ -5,7 +5,7 @@
 ################################################################################
 
 POLKIT_VERSION = 0.103
-POLKIT_SITE = http://www.freedesktop.org/software/polkit/releases/
+POLKIT_SITE = http://www.freedesktop.org/software/polkit/releases
 POLKIT_LICENSE = GPLv2
 POLKIT_LICENSE_FILES = COPYING
 

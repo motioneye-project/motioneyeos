@@ -5,7 +5,7 @@
 ################################################################################
 
 OPENTYRIAN_VERSION = 2.1.20130907
-OPENTYRIAN_SITE = http://www.camanis.net/opentyrian/releases/
+OPENTYRIAN_SITE = http://www.camanis.net/opentyrian/releases
 OPENTYRIAN_SOURCE = opentyrian-$(OPENTYRIAN_VERSION)-src.tar.gz
 OPENTYRIAN_LICENSE = GPLv2+
 OPENTYRIAN_LICENSE_FILES = COPYING

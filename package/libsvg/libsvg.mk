@@ -5,7 +5,7 @@
 ################################################################################
 
 LIBSVG_VERSION         = 0.1.4
-LIBSVG_SITE            = http://cairographics.org/snapshots/
+LIBSVG_SITE            = http://cairographics.org/snapshots
 LIBSVG_DEPENDENCIES    = host-pkgconf libpng libjpeg
 LIBSVG_INSTALL_STAGING = YES
 LIBSVG_LICENSE         = LGPLv2+

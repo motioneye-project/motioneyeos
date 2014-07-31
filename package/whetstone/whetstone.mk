@@ -6,7 +6,7 @@
 
 WHETSTONE_VERSION = 1.2
 WHETSTONE_SOURCE = whetstone.c
-WHETSTONE_SITE = http://www.netlib.org/benchmark/
+WHETSTONE_SITE = http://www.netlib.org/benchmark
 
 define WHETSTONE_EXTRACT_CMDS
 	cp $(DL_DIR)/$($(PKG)_SOURCE) $(@D)/

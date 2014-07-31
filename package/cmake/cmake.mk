@@ -6,7 +6,7 @@
 
 CMAKE_VERSION_MAJOR = 2.8
 CMAKE_VERSION = $(CMAKE_VERSION_MAJOR).12.2
-CMAKE_SITE = http://www.cmake.org/files/v$(CMAKE_VERSION_MAJOR)/
+CMAKE_SITE = http://www.cmake.org/files/v$(CMAKE_VERSION_MAJOR)
 CMAKE_LICENSE = BSD-3c
 CMAKE_LICENSE_FILES = Copyright.txt
 

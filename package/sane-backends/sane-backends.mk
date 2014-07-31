@@ -5,7 +5,7 @@
 ################################################################################
 
 SANE_BACKENDS_VERSION = 1.0.22
-SANE_BACKENDS_SITE = http://sources.buildroot.net/
+SANE_BACKENDS_SITE = http://sources.buildroot.net
 SANE_BACKENDS_CONFIG_SCRIPTS = sane-config
 SANE_BACKENDS_LICENSE = GPLv2+
 SANE_BACKENDS_LICENSE_FILES = COPYING

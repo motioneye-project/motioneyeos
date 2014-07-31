@@ -5,7 +5,7 @@
 ################################################################################
 
 OPENTYRIAN_DATA_VERSION = 2.1
-OPENTYRIAN_DATA_SITE = http://www.camanis.net/opentyrian/
+OPENTYRIAN_DATA_SITE = http://www.camanis.net/opentyrian
 OPENTYRIAN_DATA_SOURCE = tyrian21.zip
 OPENTYRIAN_DATA_LICENSE = Freeware
 

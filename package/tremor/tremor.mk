@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-TREMOR_SITE = http://svn.xiph.org/trunk/Tremor/
+TREMOR_SITE = http://svn.xiph.org/trunk/Tremor
 TREMOR_SITE_METHOD = svn
 TREMOR_VERSION = 18153
 TREMOR_LICENSE = BSD-3c
