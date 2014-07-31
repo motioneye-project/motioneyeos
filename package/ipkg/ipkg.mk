@@ -9,5 +9,7 @@ IPKG_SITE = http://www.handhelds.org/download/packages/ipkg
 IPKG_INSTALL_STAGING = YES
 IPKG_LICENSE = GPLv2+
 IPKG_LICENSE_FILES = COPYING
+# libtool 1.5 patch failure
+IPKG_AUTORECONF = YES
 
 $(eval $(autotools-package))

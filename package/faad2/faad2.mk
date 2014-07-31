@@ -11,5 +11,7 @@ FAAD2_LICENSE_FILES = COPYING
 # frontend/faad calls frexp()
 FAAD2_CONF_ENV = LIBS=-lm
 FAAD2_INSTALL_STAGING = YES
+# libtool 1.5 patch failure
+FAAD2_AUTORECONF = YES
 
 $(eval $(autotools-package))
