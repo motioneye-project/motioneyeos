@@ -1,3 +1,8 @@
+# Choise of atomic instructions presence
+config BR2_ARC_ATOMIC_EXT
+	bool "Atomic extension (LLOCK/SCOND instructions)"
+	select BR2_TOOLCHAIN_HAS_ATOMIC_INTRINSICS
+
 config BR2_ARCH
 	default "arc"	if BR2_arcle
 	default "arceb"	if BR2_arceb
