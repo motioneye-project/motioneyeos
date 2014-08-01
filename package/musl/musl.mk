@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-MUSL_VERSION = 1.1.3
+MUSL_VERSION = 1.1.4
 MUSL_SITE = http://www.musl-libc.org/releases
 MUSL_LICENSE = MIT
 MUSL_LICENSE_FILES = COPYRIGHT
@@ -17,12 +17,6 @@ MUSL_DEPENDENCIES = host-gcc-initial linux-headers
 MUSL_ADD_TOOLCHAIN_DEPENDENCY = NO
 
 MUSL_INSTALL_STAGING = YES
-
-# gcc constant folding bug with weak aliases workaround
-# See http://www.openwall.com/lists/musl/2014/05/15/1
-ifeq ($(BR2_GCC_VERSION_4_9_X),y)
-MUSL_EXTRA_CFLAGS += -fno-toplevel-reorder
-endif
 
 # We need to run the musl configure script prior to building the
 # gcc-intermediate, so that we can call the install-headers step and
