@@ -6,9 +6,26 @@ comment "xbmc needs a toolchain w/ C++, IPv6, largefile, threads, wchar"
 	depends on BR2_PACKAGE_XBMC_ARCH_SUPPORTS
 	depends on !BR2_INET_IPV6 || !BR2_INSTALL_LIBSTDCPP || !BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_THREADS || !BR2_USE_WCHAR
 
+config BR2_PACKAGE_XBMC_EGL_GLES
+	bool
+	default y
+	depends on BR2_PACKAGE_HAS_LIBEGL
+	depends on BR2_PACKAGE_HAS_LIBGLES
+	depends on !BR2_PACKAGE_XBMC_GL # prefer GL if available
+
+config BR2_PACKAGE_XBMC_GL
+	bool
+	default y
+	depends on BR2_PACKAGE_HAS_LIBGL
+	depends on !BR2_arm # xbmc needs egl/gles on arm
+
+comment "xbmc needs an OpenGL or an openGL ES and EGL backend"
+	depends on BR2_i386 || BR2_x86_64
+	depends on !BR2_PACKAGE_XBMC_GL && !BR2_PACKAGE_XBMC_EGL_GLES
+
 comment "xbmc requires an OpenGL ES and EGL backend"
-	depends on BR2_PACKAGE_XBMC_ARCH_SUPPORTS
-	depends on !BR2_PACKAGE_HAS_LIBEGL || !BR2_PACKAGE_HAS_LIBGLES
+	depends on BR2_arm
+	depends on !BR2_PACKAGE_XBMC_EGL_GLES
 
 menuconfig BR2_PACKAGE_XBMC
 	bool "xbmc"
@@ -26,6 +43,8 @@ menuconfig BR2_PACKAGE_XBMC
 	select BR2_PACKAGE_LIBCDIO
 	select BR2_PACKAGE_LIBCURL
 	select BR2_PACKAGE_LIBFRIBIDI
+	select BR2_PACKAGE_LIBGLEW if BR2_PACKAGE_XBMC_GL
+	select BR2_PACKAGE_LIBGLU if BR2_PACKAGE_XBMC_GL
 	select BR2_PACKAGE_LIBGCRYPT
 	select BR2_PACKAGE_LIBID3TAG
 	select BR2_PACKAGE_LIBMAD
@@ -55,17 +74,23 @@ menuconfig BR2_PACKAGE_XBMC
 	select BR2_PACKAGE_PYTHON_UNICODEDATA
 	select BR2_PACKAGE_PYTHON_ZLIB
 	select BR2_PACKAGE_READLINE
+	select BR2_PACKAGE_SDL if BR2_PACKAGE_XBMC_GL
+	select BR2_PACKAGE_SDL_X11 if BR2_PACKAGE_XBMC_GL
+	select BR2_PACKAGE_SDL_IMAGE if BR2_PACKAGE_XBMC_GL
 	select BR2_PACKAGE_SQLITE
 	select BR2_PACKAGE_TAGLIB
 	select BR2_PACKAGE_TIFF
 	select BR2_PACKAGE_TINYXML
+	select BR2_PACKAGE_XLIB_XMU if BR2_PACKAGE_XBMC_GL # needed by rsxs screensaver
+	select BR2_PACKAGE_XLIB_XRANDR if BR2_PACKAGE_XBMC_GL
+	select BR2_PACKAGE_XLIB_XT if BR2_PACKAGE_XBMC_GL # needed by rsxs screensaver
 	select BR2_PACKAGE_YAJL
 	select BR2_PACKAGE_ZLIB
 	depends on BR2_INET_IPV6
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_LARGEFILE
 	depends on BR2_TOOLCHAIN_HAS_THREADS
-	depends on BR2_PACKAGE_HAS_LIBEGL && BR2_PACKAGE_HAS_LIBGLES
+	depends on BR2_PACKAGE_XBMC_EGL_GLES || BR2_PACKAGE_XBMC_GL
 	depends on BR2_USE_MMU # python
 	depends on BR2_USE_WCHAR
 	depends on BR2_PACKAGE_XBMC_ARCH_SUPPORTS
