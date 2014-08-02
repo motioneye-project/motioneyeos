@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-VLC_VERSION = 2.1.4
+VLC_VERSION = 2.1.5
 VLC_SITE = http://download.videolan.org/pub/videolan/vlc/$(VLC_VERSION)
 VLC_SOURCE = vlc-$(VLC_VERSION).tar.xz
 VLC_LICENSE = GPLv2+ LGPLv2.1+
