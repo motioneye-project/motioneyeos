@@ -670,12 +670,14 @@ define QT_INSTALL_TARGET_POWERVR
 endef
 endif
 
+ifeq ($(BR2_PACKAGE_QT_TRANSLATION_FILES),y)
 define QT_INSTALL_TARGET_TRANSLATIONS
 	if [ -d $(STAGING_DIR)/usr/share/qt/translations/ ] ; then \
 		mkdir -p $(TARGET_DIR)/usr/share/qt/translations ; \
 		cp -dpfr $(STAGING_DIR)/usr/share/qt/translations/* $(TARGET_DIR)/usr/share/qt/translations ; \
 	fi
 endef
+endif
 
 define QT_INSTALL_TARGET_CMDS
 	$(QT_INSTALL_TARGET_LIBS)

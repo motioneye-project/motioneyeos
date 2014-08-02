@@ -28,6 +28,13 @@ config BR2_PACKAGE_QT_DEMOS
 	help
 	  If unsure, say N.
 
+config BR2_PACKAGE_QT_TRANSLATION_FILES
+	bool "Install translation files"
+	default y
+	help
+	  Install binary .qm translation files.
+	  If unsure, say y.
+
 config BR2_PACKAGE_QT_EXAMPLES
 	bool "Compile and install Qt examples (with code)"
 	select BR2_PACKAGE_QT_GUI_MODULE
