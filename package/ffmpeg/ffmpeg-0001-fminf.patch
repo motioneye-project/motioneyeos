@@ -1,0 +1,47 @@
+Fix build error
+
+CC      libavdevice/alldevices.o
+In file included from ./libavutil/internal.h:167:0,
+                 from ./libavutil/common.h:415,
+                 from ./libavutil/avutil.h:289,
+                 from ./libavutil/log.h:25,
+                 from libavdevice/avdevice.h:46,
+                 from libavdevice/alldevices.c:22:
+./libavutil/libm.h:87:40: error: static declaration of 'fminf' follows non-static declaration
+ static av_always_inline av_const float fminf(float x, float y)
+                                        ^
+make: *** [libavdevice/alldevices.o] Error 1
+
+using buildroot-compiled uClibc toolchain, used defconfig:
+
+BR2_x86_64=y
+BR2_x86_corei7=y
+BR2_TOOLCHAIN_BUILDROOT_LARGEFILE=y
+BR2_TOOLCHAIN_BUILDROOT_INET_IPV6=y
+BR2_TOOLCHAIN_BUILDROOT_INET_RPC=y
+BR2_TOOLCHAIN_BUILDROOT_WCHAR=y
+BR2_TOOLCHAIN_BUILDROOT_CXX=y
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+
+
+diff -uNr ffmpeg-d028c907004e8a3c0f5161ce595331e4cc57c86c.org/libavutil/libm.h ffmpeg-d028c907004e8a3c0f5161ce595331e4cc57c86c/libavutil/libm.h
+--- ffmpeg-d028c907004e8a3c0f5161ce595331e4cc57c86c.org/libavutil/libm.h	2014-07-16 20:37:20.000000000 +0200
++++ ffmpeg-d028c907004e8a3c0f5161ce595331e4cc57c86c/libavutil/libm.h	2014-07-17 22:58:01.781316442 +0200
+@@ -82,16 +82,6 @@
+ #define exp2f(x) ((float)exp2(x))
+ #endif /* HAVE_EXP2F */
+ 
+-#if !HAVE_FMINF
+-#undef fminf
+-static av_always_inline av_const float fminf(float x, float y)
+-{
+-    //Note, the NaN special case is needed for C spec compliance, it should be
+-    //optimized away if the users compiler is configured to assume no NaN
+-    return x > y ? y : (x == x ? x : y);
+-}
+-#endif
+-
+ #if !HAVE_ISINF
+ static av_always_inline av_const int isinf(float x)
+ {
