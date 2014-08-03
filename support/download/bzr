@@ -1,38 +1,20 @@
 #!/bin/bash
 
-# We want to catch any command failure, and exit immediately
+# We want to catch any unexpected failure, and exit immediately
 set -e
 
-# Download helper for bzr
-# Call it with:
-#   $1: bzr repo
-#   $2: bzr revision
-#   $3: output file
+# Download helper for bzr, to be called from the download wrapper script
+# Expected arguments:
+#   $1: output file
+#   $2: bzr repo
+#   $3: bzr revision
+#   $4: basename
 # And this environment:
 #   BZR      : the bzr command to call
-#   BUILD_DIR: path to Buildroot's build dir
 
-repo="${1}"
-rev="${2}"
-output="${3}"
+output="${1}"
+repo="${2}"
+rev="${3}"
+basename="${4}"
 
-tmp_dl="$( mktemp "${BUILD_DIR}/.XXXXXX" )"
-tmp_output="$( mktemp "${output}.XXXXXX" )"
-
-# Play tic-tac-toe with temp files
-# - first, we download to a trashable location (the build-dir)
-# - the we move to a temp file in the final location, so it is
-#   on the same filesystem as the final file
-# - finally, we atomically rename to the final file
-
-ret=1
-if ${BZR} export --format=tgz "${tmp_dl}" "${repo}" -r "${rev}"; then
-    if mv "${tmp_dl}" "${tmp_output}"; then
-        mv "${tmp_output}" "${output}"
-        ret=0
-    fi
-fi
-
-# Cleanup
-rm -f "${tmp_dl}" "${tmp_output}"
-exit ${ret}
+${BZR} export --root="${basename}/" --format=tgz "${output}" "${repo}" -r "${rev}"
