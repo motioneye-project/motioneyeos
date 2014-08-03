@@ -394,3 +394,4 @@ include package/pkg-perl.mk
 include package/pkg-python.mk
 include package/pkg-virtual.mk
 include package/pkg-generic.mk
+include package/pkg-kconfig.mk
