@@ -129,9 +129,12 @@ endef
 
 define DOWNLOAD_CVS
 	test -e $(DL_DIR)/$($(PKG)_SOURCE) || \
-	$(EXTRA_ENV) support/download/cvs $(call stripurischeme,$(call qstrip,$($(PKG)_SITE))) \
-					  $($(PKG)_DL_VERSION) $($(PKG)_RAWNAME) \
-					  $($(PKG)_BASE_NAME) $(DL_DIR)/$($(PKG)_SOURCE)
+	$(EXTRA_ENV) support/download/wrapper cvs \
+		$(DL_DIR)/$($(PKG)_SOURCE) \
+		$(call stripurischeme,$(call qstrip,$($(PKG)_SITE))) \
+		$($(PKG)_DL_VERSION) \
+		$($(PKG)_RAWNAME) \
+		$($(PKG)_BASE_NAME)
 endef
 
 # Not all CVS servers support ls/rls, use login to see if we can connect
