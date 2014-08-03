@@ -168,8 +168,9 @@ endef
 # to prepend the path with a slash: scp://[user@]host:/absolutepath
 define DOWNLOAD_SCP
 	test -e $(DL_DIR)/$(2) || \
-	$(EXTRA_ENV) support/download/scp '$(call stripurischeme,$(call qstrip,$(1)))' \
-					  $(DL_DIR)/$(2) && \
+	$(EXTRA_ENV) support/download/wrapper scp \
+		$(DL_DIR)/$(2) \
+		'$(call stripurischeme,$(call qstrip,$(1)))' && \
 	$(call VERIFY_HASH,$(PKGDIR)/$($(PKG)_NAME).hash,$(DL_DIR)/$(2))
 endef
 
