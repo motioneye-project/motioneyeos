@@ -1,35 +1,16 @@
 #!/bin/bash
 
-# We want to catch any command failure, and exit immediately
+# We want to catch any unexpected failure, and exit immediately
 set -e
 
-# Download helper for wget
-# Call it with:
-#   $1: URL
-#   $2: output file
+# Download helper for wget, to be called from the download wrapper script
+# Expected arguments:
+#   $1: output file
+#   $2: URL
 # And this environment:
 #   WGET     : the wget command to call
-#   BUILD_DIR: path to Buildroot's build dir
 
-url="${1}"
-output="${2}"
+output="${1}"
+url="${2}"
 
-tmp_dl="$( mktemp "${BUILD_DIR}/.XXXXXX" )"
-tmp_output="$( mktemp "${output}.XXXXXX" )"
-
-# Play tic-tac-toe with temp files
-# - first, we download to a trashable location (the build-dir)
-# - then we copy to a temporary tarball in the final location, so it is
-#   on the same filesystem as the final file
-# - finally, we atomically rename to the final file
-
-ret=1
-if ${WGET} -O "${tmp_dl}" "${url}"; then
-    if mv "${tmp_dl}" "${tmp_output}"; then
-        mv "${tmp_output}" "${output}"
-        ret=0
-    fi
-fi
-
-rm -f "${tmp_dl}" "${tmp_output}"
-exit ${ret}
+${WGET} -O "${output}" "${url}"
