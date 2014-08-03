@@ -37,6 +37,14 @@ ifndef UCLIBC_CONFIG_FILE
 UCLIBC_CONFIG_FILE = $(call qstrip,$(BR2_UCLIBC_CONFIG))
 endif
 
+UCLIBC_KCONFIG_FILE = $(UCLIBC_CONFIG_FILE)
+
+UCLIBC_KCONFIG_OPT = \
+		$(UCLIBC_MAKE_FLAGS) \
+		PREFIX=$(STAGING_DIR) \
+		DEVEL_PREFIX=/usr/ \
+		RUNTIME_PREFIX=$(STAGING_DIR)/ \
+
 UCLIBC_TARGET_ARCH = $(call qstrip,$(BR2_UCLIBC_TARGET_ARCH))
 
 ifeq ($(GENERATE_LOCALE),)
@@ -393,7 +401,7 @@ UCLIBC_MAKE_FLAGS = \
 	UCLIBC_EXTRA_CFLAGS="$(UCLIBC_EXTRA_CFLAGS) $(TARGET_ABI)" \
 	HOSTCC="$(HOSTCC)"
 
-define UCLIBC_FIXUP_DOT_CONFIG
+define UCLIBC_KCONFIG_FIXUP_CMDS
 	$(call KCONFIG_SET_OPT,CROSS_COMPILER_PREFIX,"$(TARGET_CROSS)",$(@D)/.config)
 	$(call KCONFIG_ENABLE_OPT,TARGET_$(UCLIBC_TARGET_ARCH),$(@D)/.config)
 	$(call KCONFIG_SET_OPT,TARGET_ARCH,"$(UCLIBC_TARGET_ARCH)",$(@D)/.config)
@@ -531,29 +539,7 @@ define UCLIBC_INSTALL_STAGING_CMDS
 	$(UCLIBC_INSTALL_UTILS_STAGING)
 endef
 
-$(eval $(generic-package))
-
-$(UCLIBC_DIR)/.config: $(UCLIBC_CONFIG_FILE) | uclibc-patch
-	$(INSTALL) -m 0644 $(UCLIBC_CONFIG_FILE) $(UCLIBC_DIR)/.config
-
-$(UCLIBC_DIR)/.stamp_config_fixup_done: $(UCLIBC_DIR)/.config
-	$(UCLIBC_FIXUP_DOT_CONFIG)
-	$(Q)touch $@
-
-$(UCLIBC_TARGET_CONFIGURE): $(UCLIBC_DIR)/.stamp_config_fixup_done
-
-uclibc-menuconfig: $(UCLIBC_DIR)/.stamp_config_fixup_done
-	$(MAKE) -C $(UCLIBC_DIR) \
-		$(UCLIBC_MAKE_FLAGS) \
-		PREFIX=$(STAGING_DIR) \
-		DEVEL_PREFIX=/usr/ \
-		RUNTIME_PREFIX=$(STAGING_DIR)/ \
-		menuconfig
-	rm -f $(UCLIBC_DIR)/.stamp_{config_fixup_done,configured,built}
-	rm -f $(UCLIBC_DIR)/.stamp_{target,staging}_installed
-
-uclibc-update-config: $(UCLIBC_DIR)/.stamp_config_fixup_done
-	cp -f $(UCLIBC_DIR)/.config $(UCLIBC_CONFIG_FILE)
+$(eval $(kconfig-package))
 
 # Before uClibc is built, we must have the second stage cross-compiler
 $(UCLIBC_TARGET_BUILD): | host-gcc-intermediate
