@@ -16,6 +16,7 @@ config BR2_PACKAGE_GST_FSL_PLUGINS
 	select BR2_PACKAGE_IMX_VPU
 	select BR2_PACKAGE_LIBFSLPARSER
 	select BR2_PACKAGE_LIBFSLCODEC
+	select BR2_PACKAGE_FREESCALE_IMX
 	help
 	  GStreamer plugins for hardware-accelerated audio and video
 	  parsers and codecs on i.MX platforms. It requires a kernel that
