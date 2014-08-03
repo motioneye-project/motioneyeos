@@ -13,3 +13,6 @@ config BR2_PACKAGE_LTRACE
 	  process and the signals received by that process.
 
 	  http://ltrace.org
+
+comment "ltrace needs toolchain w/ largefile, wchar"
+	depends on !BR2_LARGEFILE || !BR2_USE_WCHAR
