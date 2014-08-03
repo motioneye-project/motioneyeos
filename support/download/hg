@@ -1,46 +1,24 @@
 #!/bin/bash
 
-# We want to catch any command failure, and exit immediately
+# We want to catch any unexpected failure, and exit immediately
 set -e
 
-# Download helper for hg
-# Call it with:
-#   $1: hg repo
-#   $2: hg cset
-#   $3: package's basename (eg. foobar-1.2.3)
-#   $4: output file
+# Download helper for hg, to be called from the download wrapper script
+# Expected arguments:
+#   $1: output file
+#   $2: hg repo
+#   $3: hg cset
+#   $4: package's basename (eg. foobar-1.2.3)
 # And this environment:
 #   HG       : the hg command to call
-#   BUILD_DIR: path to Buildroot's build dir
 
-repo="${1}"
-cset="${2}"
-basename="${3}"
-output="${4}"
+output="${1}"
+repo="${2}"
+cset="${3}"
+basename="${4}"
 
-repodir="${basename}.tmp-hg-checkout"
-tmp_output="$( mktemp "${output}.XXXXXX" )"
+${HG} clone --noupdate --rev "${cset}" "${repo}" "${basename}"
 
-cd "${BUILD_DIR}"
-# Remove leftovers from a previous failed run
-rm -rf "${repodir}"
-
-# Play tic-tac-toe with temp files
-# - first, we download to a trashable location (the build-dir)
-# - then we create a temporary tarball in the final location, so it is
-#   on the same filesystem as the final file
-# - finally, we atomically rename to the final file
-
-ret=1
-if ${HG} clone --noupdate --rev "${cset}" "${repo}" "${repodir}"; then
-    if ${HG} archive --repository "${repodir}" --type tgz \
-                     --prefix "${basename}" --rev "${cset}" \
-                     "${tmp_output}"; then
-        mv "${tmp_output}" "${output}"
-        ret=0
-    fi
-fi
-
-# Cleanup
-rm -rf "${repodir}" "${tmp_output}"
-exit ${ret}
+${HG} archive --repository "${basename}" --type tgz \
+              --prefix "${basename}" --rev "${cset}" \
+              "${output}"
