@@ -1,5 +1,6 @@
 comment "linux-zigbee needs a toolchain w/ threads"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_USE_MMU
 
 config BR2_PACKAGE_LINUX_ZIGBEE
 	bool "linux-zigbee"
