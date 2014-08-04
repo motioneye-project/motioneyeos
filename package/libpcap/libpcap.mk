@@ -20,6 +20,13 @@ LIBPCAP_CFLAGS = $(TARGET_CFLAGS)
 LIBPCAP_CONF_OPT = --disable-yydebug --with-pcap=linux
 LIBPCAP_CONFIG_SCRIPTS = pcap-config
 
+# On purpose, not compatible with bluez5
+ifeq ($(BR2_PACKAGE_BLUEZ_UTILS),y)
+LIBPCAP_DEPENDENCIES += bluez_utils
+else
+LIBPCAP_CONF_OPT += --disable-bluetooth
+endif
+
 ifeq ($(BR2_PACKAGE_DBUS),y)
 LIBPCAP_CONF_OPT += --enable-dbus
 LIBPCAP_DEPENDENCIES += dbus
