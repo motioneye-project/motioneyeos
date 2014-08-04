@@ -1,0 +1,55 @@
+Fix compile error on bfin.
+
+After the removal of all Blackfin architecture optimizations in
+http://git.videolan.org/gitweb.cgi/ffmpeg.git/?a=commit;h=b55d3bbeed375f7b74442c4dd274d116a3e3d2e1
+some includes were left behind leading to a compilation error
+
+http://autobuild.buildroot.net/results/ae0/ae056f267e907091d09d2a1546d6f1ae02fa23b9/
+
+CC      libavformat/adtsenc.o
+In file included from ./libavcodec/get_bits.h:35,
+                 from ./libavcodec/ac3_parser.h:27,
+                 from libavformat/ac3dec.c:23:
+./libavcodec/mathops.h:43:29: error: bfin/mathops.h: No such file or directory
+
+Patch sent upstream:
+https://ffmpeg.org/pipermail/ffmpeg-devel/2014-August/160694.html
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+
+diff -uNr ffmpeg-2.3.1.org/libavcodec/mathops.h ffmpeg-2.3.1/libavcodec/mathops.h
+--- ffmpeg-2.3.1.org/libavcodec/mathops.h	2014-07-31 03:18:40.000000000 +0200
++++ ffmpeg-2.3.1/libavcodec/mathops.h	2014-08-04 20:49:00.340763801 +0200
+@@ -39,8 +39,6 @@
+ #   include "arm/mathops.h"
+ #elif ARCH_AVR32
+ #   include "avr32/mathops.h"
+-#elif ARCH_BFIN
+-#   include "bfin/mathops.h"
+ #elif ARCH_MIPS
+ #   include "mips/mathops.h"
+ #elif ARCH_PPC
+diff -uNr ffmpeg-2.3.1.org/libavutil/bswap.h ffmpeg-2.3.1/libavutil/bswap.h
+--- ffmpeg-2.3.1.org/libavutil/bswap.h	2014-07-31 03:18:47.000000000 +0200
++++ ffmpeg-2.3.1/libavutil/bswap.h	2014-08-04 20:48:56.028818009 +0200
+@@ -40,8 +40,6 @@
+ #   include "arm/bswap.h"
+ #elif ARCH_AVR32
+ #   include "avr32/bswap.h"
+-#elif ARCH_BFIN
+-#   include "bfin/bswap.h"
+ #elif ARCH_SH4
+ #   include "sh4/bswap.h"
+ #elif ARCH_X86
+diff -uNr ffmpeg-2.3.1.org/libavutil/timer.h ffmpeg-2.3.1/libavutil/timer.h
+--- ffmpeg-2.3.1.org/libavutil/timer.h	2014-07-31 03:18:47.000000000 +0200
++++ ffmpeg-2.3.1/libavutil/timer.h	2014-08-04 20:48:48.832908474 +0200
+@@ -40,8 +40,6 @@
+ 
+ #if   ARCH_ARM
+ #   include "arm/timer.h"
+-#elif ARCH_BFIN
+-#   include "bfin/timer.h"
+ #elif ARCH_PPC
+ #   include "ppc/timer.h"
+ #elif ARCH_X86
