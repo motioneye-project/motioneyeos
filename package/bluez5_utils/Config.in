@@ -64,6 +64,7 @@ endif
 comment "bluez5-utils needs a toolchain w/ wchar, threads, IPv6, headers >= 3.4"
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || \
 		!BR2_INET_IPV6 || !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_4
+	depends on BR2_USE_MMU
 
 comment "bluez5-utils conflicts with older bluez-utils version"
 	depends on BR2_PACKAGE_BLUEZ_UTILS
