@@ -14,4 +14,6 @@ config BR2_PACKAGE_E2TOOLS
 	  https://github.com/ndim/e2tools
 
 comment "e2tools needs a toolchain w/ threads, largefile and wchar"
-	depends on !BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_LARGEFILE || \
+		!BR2_USE_WCHAR
+	depends on BR2_USE_MMU
