@@ -5,6 +5,7 @@ config BR2_PACKAGE_XBMC_ARCH_SUPPORTS
 comment "xbmc needs a toolchain w/ C++, IPv6, largefile, threads, wchar"
 	depends on BR2_PACKAGE_XBMC_ARCH_SUPPORTS
 	depends on !BR2_INET_IPV6 || !BR2_INSTALL_LIBSTDCPP || !BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_THREADS || !BR2_USE_WCHAR
+	depends on BR2_USE_MMU
 
 config BR2_PACKAGE_XBMC_EGL_GLES
 	bool
