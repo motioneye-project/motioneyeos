@@ -23,3 +23,4 @@ endif
 
 comment "gpm mouse server needs a toolchain w/ dynamic library"
 	depends on BR2_PREFER_STATIC_LIB
+	depends on BR2_USE_MMU
