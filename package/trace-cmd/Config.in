@@ -16,3 +16,4 @@ config BR2_PACKAGE_TRACE_CMD
 
 comment "trace-cmd needs a toolchain w/ largefile, threads"
 	depends on !BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_USE_MMU
