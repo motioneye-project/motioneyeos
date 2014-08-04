@@ -2,6 +2,7 @@ config BR2_PACKAGE_STARTUP_NOTIFICATION
 	bool "startup-notification"
 	select BR2_PACKAGE_XLIB_LIBX11
 	depends on BR2_PACKAGE_XORG7
+	depends on BR2_USE_MMU # fork()
 	help
 	  Startup-notification is a library used to monitor application startup.
 
