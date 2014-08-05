@@ -1,0 +1,40 @@
+Assume that the functionality is not present
+
+Patch written by Holger Hans Peter Freyther, and fetched from
+http://lists.gnu.org/archive/html/lightning/2014-11/msg00002.html.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ configure.ac | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 031279d..a36bed6 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -184,7 +184,7 @@ elif test $cpu = x86; then
+                          : "0" (1));
+        return (edx & 1 << 26) ? 0 : 1;
+     }
+-    ]])],[ac_cv_test_x86_x87=yes],[][])
++    ]])],[ac_cv_test_x86_x87=yes],[],[ac_cv_test_x86_x87=no])
+ elif test $cpu = arm; then
+     AC_RUN_IFELSE([AC_LANG_SOURCE([[
+     #include <stdio.h>
+@@ -207,7 +207,7 @@ elif test $cpu = arm; then
+     #endif
+        return 1;
+     }
+-    ]])],[ac_cv_test_arm_arm=yes],[][])
++    ]])],[ac_cv_test_arm_arm=yes],[],[ac_cv_test_arm_arm=no])
+     AC_RUN_IFELSE([AC_LANG_SOURCE([[
+     #include <stdio.h>
+     int main(void) {
+@@ -229,7 +229,7 @@ elif test $cpu = arm; then
+     #endif
+        return 1;
+     }
+-    ]])],[ac_cv_test_arm_swf=yes],[][])
++    ]])],[ac_cv_test_arm_swf=yes],[],[ac_cv_test_arm_swf=no])
+ fi
+ CFLAGS=$save_CFLAGS
