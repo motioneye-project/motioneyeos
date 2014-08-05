@@ -4,8 +4,8 @@
 #
 ###############################################################################
 
-ESPEAK_VERSION_MAJOR = 1.47
-ESPEAK_VERSION = $(ESPEAK_VERSION_MAJOR).11
+ESPEAK_VERSION_MAJOR = 1.48
+ESPEAK_VERSION = $(ESPEAK_VERSION_MAJOR).04
 ESPEAK_SOURCE = espeak-$(ESPEAK_VERSION)-source.zip
 ESPEAK_SITE = http://downloads.sourceforge.net/project/espeak/espeak/espeak-$(ESPEAK_VERSION_MAJOR)
 ESPEAK_LICENSE = GPLv3+
