@@ -50,6 +50,8 @@ $$($(2)_DIR)/.config: $$($(2)_KCONFIG_FILE) | $(1)-patch
 # The exact rules are specified by the package .mk file.
 $$($(2)_DIR)/.stamp_kconfig_fixup_done: $$($(2)_DIR)/.config
 	$$($(2)_KCONFIG_FIXUP_CMDS)
+	@yes "" | $$($(2)_MAKE_ENV) $$(MAKE) -C $$($(2)_DIR) \
+		$$($(2)_KCONFIG_OPT) oldconfig
 	$$(Q)touch $$@
 
 # Before running configure, the configuration file should be present and fixed
