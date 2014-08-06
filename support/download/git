@@ -34,6 +34,6 @@ if [ ${git_done} -eq 0 ]; then
 fi
 
 GIT_DIR="${basename}" \
-${GIT} archive --prefix="${basename}/" -o "${output}" --format=tar "${cset}"
+${GIT} archive --prefix="${basename}/" -o "${output}.tmp" --format=tar "${cset}"
 
-gzip "${output}"
+gzip <"${output}.tmp" >"${output}"
