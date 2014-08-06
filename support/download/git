@@ -19,6 +19,7 @@ basename="${4}"
 
 # Try to see if we can do a shallow clone, since it is faster
 # than a full clone.
+git_done=0
 if [ -n "$(${GIT} ls-remote "${repo}" "${cset}" 2>&1)" ]; then
     printf "Doing shallow clone\n"
     if ${GIT} clone --depth 1 -b "${cset}" --bare "${repo}" "${basename}"; then
