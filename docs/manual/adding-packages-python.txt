@@ -22,7 +22,7 @@ with an example :
 05: ################################################################################
 06:
 07: PYTHON_FOO_VERSION = 1.0
-08: PYTHON_FOO_SOURCE = python-foo-$(LIBFOO_VERSION).tar.xz
+08: PYTHON_FOO_SOURCE = python-foo-$(PYTHON_FOO_VERSION).tar.xz
 09: PYTHON_FOO_SITE = http://www.foosoftware.org/download
 10: PYTHON_FOO_LICENSE = BSD-3c
 11: PYTHON_FOO_LICENSE_FILES = LICENSE
