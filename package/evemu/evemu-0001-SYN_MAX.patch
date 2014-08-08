@@ -6,20 +6,20 @@ defined, otherwise the build breaks.
 
 Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
 ---
- src/make-event-names.py |    2 ++
+ src/make-event-names.py | 2 ++
  1 file changed, 2 insertions(+)
 
-Index: evemu-1.2.0/src/make-event-names.py
-===================================================================
---- evemu-1.2.0.orig/src/make-event-names.py
-+++ evemu-1.2.0/src/make-event-names.py
-@@ -91,7 +91,9 @@
- 	print "#ifndef EVENT_NAMES_H"
- 	print "#define EVENT_NAMES_H"
- 	print ""
-+	print "#ifndef SYN_MAX"
- 	print "#define SYN_MAX 3 /* linux/input.h doesn't define that */"
-+	print "#endif"
- 	print ""
+diff --git a/src/make-event-names.py b/src/make-event-names.py
+index bc77f2c..2d0924d 100755
+--- a/src/make-event-names.py
++++ b/src/make-event-names.py
+@@ -92,7 +92,9 @@ def print_mapping_table(bits):
+ 	print("#ifndef EVENT_NAMES_H")
+ 	print("#define EVENT_NAMES_H")
+ 	print("")
++	print("#ifndef SYN_MAX")
+ 	print("#define SYN_MAX 3 /* linux/input.h doesn't define that */")
++	print("#endif")
+ 	print("")
  
  	for prefix in prefixes:
