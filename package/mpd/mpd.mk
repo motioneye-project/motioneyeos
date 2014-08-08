@@ -92,6 +92,13 @@ else
 MPD_CONF_OPTS += --disable-flac
 endif
 
+ifeq ($(BR2_PACKAGE_MPD_JACK2),y)
+MPD_DEPENDENCIES += jack2
+MPD_CONF_OPTS += --enable-jack
+else
+MPD_CONF_OPTS += --disable-jack
+endif
+
 ifeq ($(BR2_PACKAGE_MPD_LAME),y)
 MPD_DEPENDENCIES += lame
 MPD_CONF_OPTS += --enable-lame-encoder

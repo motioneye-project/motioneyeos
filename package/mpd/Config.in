@@ -229,6 +229,18 @@ config BR2_PACKAGE_MPD_AO
 	help
 	  Enable libao output support.
 
+config BR2_PACKAGE_MPD_JACK2
+	bool "jack2"
+	depends on BR2_LARGEFILE # jack2 -> libsndfile
+	depends on BR2_ARCH_HAS_ATOMICS
+	select BR2_PACKAGE_JACK2
+	help
+	  Enable jack output support.
+
+comment "jack support needs a toolchain w/ largefile"
+	depends on BR2_ARCH_HAS_ATOMICS
+	depends on !BR2_LARGEFILE
+
 config BR2_PACKAGE_MPD_PULSEAUDIO
 	bool "pulseaudio"
 	depends on BR2_LARGEFILE # pulseaudio -> libsndfile
