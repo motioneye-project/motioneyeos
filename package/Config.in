@@ -1031,6 +1031,7 @@ endif
 	source "package/noip/Config.in"
 	source "package/ntp/Config.in"
 	source "package/nuttcp/Config.in"
+	source "package/odhcploc/Config.in"
 	source "package/olsr/Config.in"
 	source "package/openntpd/Config.in"
 	source "package/openobex/Config.in"
