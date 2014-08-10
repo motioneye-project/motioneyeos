@@ -1,0 +1,22 @@
+downloaded from
+http://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/app-misc/empty/files/empty-respect-LDFLAGS.patch?view=markup
+
+Reported on the Gentoo bug tracker
+https://bugs.gentoo.org/show_bug.cgi?id=429664
+
+and reported upstream
+https://sourceforge.net/tracker/?func=detail&aid=3554236&group_id=136798&atid=736886
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+
+--- empty-0.6.18b/Makefile
++++ empty-0.6.18b/Makefile
+@@ -16,7 +16,7 @@
+ PREFIX = /usr/local
+ 
+ all:
+-	${CC} ${CFLAGS} -Wall ${LIBS} -o empty empty.c
++	${CC} ${CFLAGS} ${LDFLAGS} empty.c ${LIBS} -o empty
+ 
+ FreeBSD:	all
+ NetBSD:		all
