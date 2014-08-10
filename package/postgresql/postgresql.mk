@@ -16,7 +16,7 @@ ifneq ($(BR2_TOOLCHAIN_HAS_THREADS),y)
 	POSTGRESQL_CONF_OPT += --disable-thread-safety
 endif
 
-ifeq ($(BR2_microblazeel)$(BR2_microblazebe),y)
+ifeq ($(BR2_microblazeel)$(BR2_microblazebe)$(BR2_nios2),y)
 	POSTGRESQL_CONF_OPT += --disable-spinlocks
 endif
 
