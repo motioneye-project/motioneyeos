@@ -29,7 +29,7 @@ else
 FBV_CONFIGURE_OPTS += --without-libungif
 endif
 
-#fbv donesn't support cross-compilation
+#fbv doesn't support cross-compilation
 define FBV_CONFIGURE_CMDS
 	(cd $(FBV_DIR); rm -f config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
