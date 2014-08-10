@@ -15,6 +15,12 @@ FBV_DEPENDENCIES = # empty
 FBV_CONFIGURE_OPTS = # empty
 ifeq ($(BR2_PACKAGE_FBV_PNG),y)
 FBV_DEPENDENCIES += libpng
+
+# libpng in turn depends on other libraries
+ifeq ($(BR2_PREFER_STATIC_LIB),y)
+FBV_CONFIGURE_OPTS += "--libs=$(shell $(PKGg_CONFIG_HOST_BINARY) --libs libpng --static)"
+endif
+
 else
 FBV_CONFIGURE_OPTS += --without-libpng
 endif
