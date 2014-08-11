@@ -1,0 +1,38 @@
+From b8241447e2a910dde57bf5a44a4464d80c87ebca Mon Sep 17 00:00:00 2001
+From: Peter Korsgaard <peter@korsgaard.com>
+Date: Mon, 11 Aug 2014 09:37:05 +0200
+Subject: [PATCH] NetworkManagerUtils: fix build with toolchains not exporting
+ CLOCK_BOOTTIME
+
+E.G. uClibc 0.9.33 and earlier.
+
+Submitted upstream: https://bugzilla.gnome.org/show_bug.cgi?id=734599
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ src/NetworkManagerUtils.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/src/NetworkManagerUtils.c b/src/NetworkManagerUtils.c
+index aa689ce..fc85b00 100644
+--- a/src/NetworkManagerUtils.c
++++ b/src/NetworkManagerUtils.c
+@@ -45,6 +45,15 @@
+ #include "nm-posix-signals.h"
+ 
+ /*
++ * Some toolchains (E.G. uClibc 0.9.33 and earlier) don't export
++ * CLOCK_BOOTTIME even though the kernel supports it, so provide a
++ * local definition
++ */
++#ifndef CLOCK_BOOTTIME
++#define CLOCK_BOOTTIME 7
++#endif
++
++/*
+  * nm_ethernet_address_is_valid
+  *
+  * Compares an Ethernet address against known invalid addresses.
+-- 
+2.0.0
+
