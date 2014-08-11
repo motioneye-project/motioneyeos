@@ -54,7 +54,7 @@ endif
 ifeq ($(BR2_PACKAGE_MPD_FLAC),y)
 MPD_DEPENDENCIES += flac
 else
-MPD_CONF_OPT += --without-flac --disable-oggflac
+MPD_CONF_OPT += --disable-flac
 endif
 
 ifeq ($(BR2_PACKAGE_MPD_CURL),y)
