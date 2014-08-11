@@ -110,6 +110,13 @@ else
 MPD_CONF_OPT += --disable-vorbis --disable-vorbis-encoder
 endif
 
+ifeq ($(BR2_PACKAGE_MPD_MAD),y)
+MPD_DEPENDENCIES += libid3tag libmad
+MPD_CONF_OPT += --enable-mad
+else
+MPD_CONF_OPT += --disable-mad
+endif
+
 ifeq ($(BR2_PACKAGE_MPD_MPG123),y)
 MPD_DEPENDENCIES += libid3tag mpg123
 MPD_CONF_OPT += --enable-mpg123
