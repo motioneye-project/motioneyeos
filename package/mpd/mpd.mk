@@ -48,7 +48,7 @@ endif
 ifeq ($(BR2_PACKAGE_MPD_FAAD2),y)
 MPD_DEPENDENCIES += faad2
 else
-MPD_CONF_OPT += --disable-faad2
+MPD_CONF_OPT += --disable-aac
 endif
 
 ifeq ($(BR2_PACKAGE_MPD_FLAC),y)
