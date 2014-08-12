@@ -22,6 +22,8 @@ include::introduction.txt[]
 
 include::starting-up.txt[]
 
+include::get-involved.txt[]
+
 = User guide
 
 include::working-with.txt[]
@@ -39,8 +41,6 @@ include::beyond-buildroot.txt[]
 = Developer guide
 
 include::developer-guide.txt[]
-
-include::get-involved.txt[]
 
 include::contribute.txt[]
 

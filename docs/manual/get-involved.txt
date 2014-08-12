@@ -1,7 +1,7 @@
 // -*- mode:doc; -*-
 // vim: set syntax=asciidoc:
 
-== Getting involved
+== Community resources
 
 Like any open source project, Buildroot has different ways to share
 information in its community and outside.
