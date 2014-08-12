@@ -103,19 +103,3 @@ http://elinux.org[elinux.org].
 This page is reachable at http://elinux.org/Buildroot[].
 
 Currently, this page is mainly used as a _todo-list_.
-
-[[events]]
-=== Events
-
-==== Buildroot Developer Days aside ELC-E 2012 (November 3-4, 2012 - Barcelona)
-
-* Event page: http://elinux.org/Buildroot:DeveloperDaysELCE2012[]
-
-==== Buildroot presentation at LSM 2012 (July 12-14, 2012 - Geneva)
-
-* Announcement: http://lists.busybox.net/pipermail/buildroot/2012-May/053845.html[]
-
-==== Buildroot Developer Days aside FOSDEM 2012 (February 3, 2012 - Brussels)
-
-* Announcement & agenda thread: http://lists.busybox.net/pipermail/buildroot/2012-January/049340.html[]
-* Report: http://lists.busybox.net/pipermail/buildroot/2012-February/050371.html[]
