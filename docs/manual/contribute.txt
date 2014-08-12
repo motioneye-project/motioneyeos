@@ -14,7 +14,7 @@ If you are interested in contributing to Buildroot, the first thing you
 should do is to subscribe to the Buildroot mailing list. This list is
 the main way of interacting with other Buildroot developers and to send
 contributions to. If you aren't subscribed yet, then refer to
-xref:mailing-list-subscribe[].
+xref:community-resources[] for the subscription link.
 
 If you are going to touch the code, it is highly recommended to use a
 git repository of Buildroot, rather than starting from an extracted
@@ -141,6 +141,29 @@ tag provided is valuable.
 Buildroot's Patchwork website can be used to pull in patches for testing
 purposes. Please see xref:apply-patches-patchwork[] for more
 information on using Buildroot's Patchwork website to apply patches.
+
+[[apply-patches-patchwork]]
+==== Applying Patches from Patchwork
+
+The main use of Buildroot's Patchwork website for a developer is for
+pulling in patches into their local git repository for testing
+purposes.
+
+When browsing patches in the patchwork management interface, an +mbox+
+link is provided at the top of the page. Copy this link address and
+run the following commands:
+
+---------------------
+$ git checkout -b <test-branch-name>
+$ wget -O - <mbox-url> | git am
+---------------------
+
+Another option for applying patches is to create a bundle. A bundle is
+a set of patches that you can group together using the patchwork
+interface. Once the bundle is created and the bundle is made public,
+you can copy the +mbox+ link for the bundle and apply the bundle
+using the above commands.
+
 
 === Work on items from the TODO list
 
@@ -278,13 +301,13 @@ $ git format-patch --subject-prefix "PATCH v4" \
 [[reporting-bugs]]
 === Reporting issues/bugs or getting help
 
-Before reporting any issue, please check
-xref:mailing-list-subscribe[the mailing list archive] in case someone has
-already reported and fixed a similar problem.
+Before reporting any issue, please check in
+xref:community-resources[the mailing list archive] whether someone has
+already reported and/or fixed a similar problem.
 
 However you choose to report bugs or get help, either by
-xref:bugtracker[opening a bug] or by
-xref:mailing-list-subscribe[sending a mail to the mailing list], there are
+opening a bug in the xref:community-resources[bug tracker] or by
+xref:community-resources[sending a mail to the mailing list], there are
 a number of details to provide in order to help people reproduce and
 find a solution to the issue.
 
