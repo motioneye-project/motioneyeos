@@ -1,8 +1,6 @@
 // -*- mode:doc; -*-
 // vim: set syntax=asciidoc:
 
-= Appendix
-
 include::makedev-syntax.txt[]
 include::makeusers-syntax.txt[]
 

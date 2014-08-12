@@ -1,8 +1,6 @@
 // -*- mode:doc; -*-
 // vim: set syntax=asciidoc:
 
-= Working with Buildroot
-
 This section explains how you can customize Buildroot to fit your
 needs.
 

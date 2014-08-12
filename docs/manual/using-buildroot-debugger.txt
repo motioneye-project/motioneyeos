@@ -1,7 +1,7 @@
 // -*- mode:doc; -*-
 // vim: set syntax=asciidoc:
 
-=== Using +gdb+ in Buildroot
+==== Using +gdb+ in Buildroot
 
 Buildroot allows to do cross-debugging, where the debugger runs on the
 build machine and communicates with +gdbserver+ on the target to

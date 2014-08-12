@@ -1,10 +1,10 @@
 // -*- mode:doc; -*-
 // vim: set syntax=asciidoc:
 
-= Frequently Asked Questions & Troubleshooting
+== Frequently Asked Questions & Troubleshooting
 
 [[faq-boot-hang-after-starting]]
-== The boot hangs after 'Starting network...'
+=== The boot hangs after 'Starting network...'
 
 If the boot process seems to hang after the following messages
 (messages not necessarily exactly similar, depending on the list of
@@ -26,7 +26,7 @@ submenu. This will automatically tune the +/etc/inittab+ file of the
 generated system so that a shell starts on the correct serial port.
 
 [[faq-no-compiler-on-target]]
-== Why is there no compiler on the target?
+=== Why is there no compiler on the target?
 
 It has been decided that support for the _native compiler on the
 target_ would be stopped from the Buildroot-2012.11 release because:
@@ -50,7 +50,7 @@ distribution_ and you should opt for something like:
 * ...
 
 [[faq-no-dev-files-on-target]]
-== Why are there no development files on the target?
+=== Why are there no development files on the target?
 
 Since there is no compiler available on the target (see
 xref:faq-no-compiler-on-target[]), it does not make sense to waste
@@ -60,7 +60,7 @@ Therefore, those files are always removed from the target since the
 Buildroot-2012.11 release.
 
 [[faq-no-doc-on-target]]
-== Why is there no documentation on the target?
+=== Why is there no documentation on the target?
 
 Because Buildroot mostly targets _small_ or _very small_ target
 hardware with limited resource onboard (CPU, ram, mass-storage), it
@@ -71,7 +71,7 @@ is not suitable for your purpose, and you should look for a _real
 distribution_ (see: xref:faq-no-compiler-on-target[]).
 
 [[faq-why-not-visible-package]]
-== Why are some packages not visible in the Buildroot config menu?
+=== Why are some packages not visible in the Buildroot config menu?
 
 If a package exists in the Buildroot tree and does not appear in the
 config menu, this most likely means that some of the package's
@@ -89,7 +89,7 @@ then you should certainly run a full rebuild (see xref:make-tips[] for
 more explanations).
 
 [[faq-why-not-use-target-as-chroot]]
-== Why not use the target directory as a chroot directory?
+=== Why not use the target directory as a chroot directory?
 
 There are plenty of reasons to *not* use the target directory a chroot
 one, among these:
@@ -106,7 +106,7 @@ root, then use the tarball image generated in +images/+ and extract it
 as root.
 
 [[faq-no-binary-packages]]
-== Why doesn't Buildroot generate binary packages (.deb, .ipkg...)?
+=== Why doesn't Buildroot generate binary packages (.deb, .ipkg...)?
 
 One feature that is often discussed on the Buildroot list is the
 general topic of "package management". To summarize, the idea

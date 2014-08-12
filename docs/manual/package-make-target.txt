@@ -3,7 +3,7 @@
 
 [[pkg-build-steps]]
 
-=== Package-specific _make_ targets
+==== Package-specific _make_ targets
 
 Running +make <package>+ builds and installs that particular package
 and its dependencies.
