@@ -49,8 +49,11 @@ SYSTEMD_CONF_OPT += \
 	--disable-dbus \
 	--without-python
 
+SYSTEMD_CFLAGS = $(TARGET_CFLAGS) -fno-lto
+
 # Override path to kmod, used in kmod-static-nodes.service
 SYSTEMD_CONF_ENV = \
+	CFLAGS="$(SYSTEMD_CFLAGS)" \
 	ac_cv_path_KMOD=/usr/bin/kmod
 
 ifeq ($(BR2_PACKAGE_SYSTEMD_COMPAT),y)
