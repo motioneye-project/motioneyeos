@@ -18,7 +18,7 @@ FBV_DEPENDENCIES += libpng
 
 # libpng in turn depends on other libraries
 ifeq ($(BR2_PREFER_STATIC_LIB),y)
-FBV_CONFIGURE_OPTS += "--libs=$(shell $(PKGg_CONFIG_HOST_BINARY) --libs libpng --static)"
+FBV_CONFIGURE_OPTS += "--libs=$(shell $(PKG_CONFIG_HOST_BINARY) --libs libpng --static)"
 endif
 
 else
