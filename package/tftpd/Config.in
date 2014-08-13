@@ -1,4 +1,5 @@
 config BR2_PACKAGE_TFTPD
 	bool "tftpd"
+	depends on BR2_USE_MMU # fork()
 	help
 	  HPA's Trivial File Transfer Protocol (tftp) server.
