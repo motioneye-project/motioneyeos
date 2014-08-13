@@ -135,6 +135,16 @@ comment "MySQL drivers need a toolchain w/ C++"
 	depends on BR2_USE_MMU
 	depends on !BR2_INSTALL_LIBSTDCPP
 
+config BR2_PACKAGE_PHP_EXT_PDO_POSTGRESQL
+	bool "PostgreSQL"
+	depends on BR2_TOOLCHAIN_USES_GLIBC
+	select BR2_PACKAGE_POSTGRESQL
+	help
+	  PDO driver for PostgreSQL
+
+comment "PostgreSQL driver needs an (e)glibc toolchain"
+	depends on !BR2_TOOLCHAIN_USES_GLIBC
+
 config BR2_PACKAGE_PHP_EXT_PDO_SQLITE
 	bool "SQLite3"
 	select BR2_PACKAGE_SQLITE
