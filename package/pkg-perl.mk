@@ -56,6 +56,7 @@ define $(2)_CONFIGURE_CMDS
 			--config full_ar="$$(TARGET_AR)" \
 			--config cc="$$(TARGET_CC)" \
 			--config ccflags="$$(TARGET_CFLAGS)" \
+			--config optimize=" " \
 			--config ld="$$(TARGET_CC)" \
 			--config lddlflags="-shared $$(TARGET_LDFLAGS)" \
 			--config ldflags="$$(TARGET_LDFLAGS)" \
@@ -78,6 +79,7 @@ define $(2)_CONFIGURE_CMDS
 			FULL_AR="$$(TARGET_AR)" \
 			CC="$$(TARGET_CC)" \
 			CCFLAGS="$$(TARGET_CFLAGS)" \
+			OPTIMIZE=" " \
 			LD="$$(TARGET_CC)" \
 			LDDLFLAGS="-shared $$(TARGET_LDFLAGS)" \
 			LDFLAGS="$$(TARGET_LDFLAGS)" \
