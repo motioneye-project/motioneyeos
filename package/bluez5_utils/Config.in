@@ -39,6 +39,17 @@ config BR2_PACKAGE_BLUEZ5_UTILS_CLIENT
 	help
 	  Enable the Bluez 5.x command line client.
 
+config BR2_PACKAGE_BLUEZ5_UTILS_GATTTOOL
+	bool "install GATT tool"
+	depends on BR2_PACKAGE_BLUEZ5_UTILS_CLIENT
+	help
+	  Generic Attribute Profile (GATT) support. This provides
+	  profile discovery and description services for Bluetooth Low
+	  Energy.  This will install the gatttool utility.
+
+	  It is always built with BlueZ 5.x, but upstream choose not
+	  to install it by default.
+
 config BR2_PACKAGE_BLUEZ5_UTILS_EXPERIMENTAL
 	bool "build experimental plugins"
 	help
@@ -48,16 +59,6 @@ config BR2_PACKAGE_BLUEZ5_UTILS_TEST
 	bool "build tests"
 	help
 	  Build BlueZ 5.x tests
-
-config BR2_PACKAGE_BLUEZ5_UTILS_GATTTOOL
-	bool "install GATT tool"
-	help
-	  Generic Attribute Profile (GATT) support. This provides
-	  profile discovery and description services for Bluetooth Low
-	  Energy.  This will install the gatttool utility.
-
-	  It is always built with BlueZ 5.x, but upstream choose not
-	  to install it by default.
 
 endif
 
