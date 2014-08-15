@@ -1,0 +1,25 @@
+Fix static only build
+
+Make sure to build the shared library only if BUILD_SHARED_LIBS is
+ON. Normally, CMake takes care of this automatically, but libcuefile
+wants to build both the shared and static variants, so the normal
+logic of CMake doesn't apply.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/src/CMakeLists.txt
+===================================================================
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -4,7 +4,11 @@
+ add_library(cuefile-static STATIC cd cdtext cue_parse cue_print cue_scan cuefile time toc toc_parse toc_print toc_scan)
+ set_target_properties(cuefile-static PROPERTIES OUTPUT_NAME cuefile CLEAN_DIRECT_OUTPUT 1)
+ 
++if (BUILD_SHARED_LIBS)
+ add_library(cuefile-shared SHARED cd cdtext cue_parse cue_print cue_scan cuefile time toc toc_parse toc_print toc_scan)
+ set_target_properties(cuefile-shared PROPERTIES OUTPUT_NAME cuefile CLEAN_DIRECT_OUTPUT 1 VERSION 0.0.0 SOVERSION 0)
+ 
+ install(TARGETS cuefile-static cuefile-shared LIBRARY DESTINATION "lib${LIB_SUFFIX}" ARCHIVE DESTINATION "lib${LIB_SUFFIX}")
++else (BUILD_SHARED_LIBS)
++install(TARGETS cuefile-static LIBRARY DESTINATION "lib${LIB_SUFFIX}" ARCHIVE DESTINATION "lib${LIB_SUFFIX}")
++endif (BUILD_SHARED_LIBS)
