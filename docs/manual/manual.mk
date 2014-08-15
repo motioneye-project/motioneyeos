@@ -78,16 +78,16 @@ endef
 # The variable <DOCUMENT_NAME>_SOURCES defines the dependencies.
 ################################################################################
 define GENDOC
-$(call GENDOC_INNER,$(1),xhtml,html,html,HTML,--xsltproc-opts "--stringparam toc.section.depth 2")
-$(call GENDOC_INNER,$(1),chunked,split-html,chunked,split HTML,--xsltproc-opts "--stringparam toc.section.depth 2")
-$(call GENDOC_INNER,$(1),pdf,pdf,pdf,PDF,--dblatex-opts "-P latex.output.revhistory=0")
-$(call GENDOC_INNER,$(1),text,text,text,text)
-$(call GENDOC_INNER,$(1),epub,epub,epub,ePUB)
-clean: $(1)-clean
-$(1)-clean:
-	$$(Q)$$(RM) -rf $$(O)/docs/$(1)
-.PHONY: $(1) $(1)-clean manual-update-lists
+$(call GENDOC_INNER,$(pkgname),xhtml,html,html,HTML,--xsltproc-opts "--stringparam toc.section.depth 2")
+$(call GENDOC_INNER,$(pkgname),chunked,split-html,chunked,split HTML,--xsltproc-opts "--stringparam toc.section.depth 2")
+$(call GENDOC_INNER,$(pkgname),pdf,pdf,pdf,PDF,--dblatex-opts "-P latex.output.revhistory=0")
+$(call GENDOC_INNER,$(pkgname),text,text,text,text)
+$(call GENDOC_INNER,$(pkgname),epub,epub,epub,ePUB)
+clean: $(pkgname)-clean
+$(pkgname)-clean:
+	$$(Q)$$(RM) -rf $$(O)/docs/$(pkgname)
+.PHONY: $(pkgname) $(pkgname)-clean manual-update-lists
 endef
 
 MANUAL_SOURCES = $(sort $(wildcard docs/manual/*.txt) $(wildcard docs/images/*))
-$(eval $(call GENDOC,manual))
+$(eval $(call GENDOC))
