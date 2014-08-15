@@ -56,6 +56,11 @@ $(1)-$(3): $$(O)/docs/$(1)/$(1).$(4)
 
 manual-check-dependencies-$(3):
 
+MANUAL_$(2)_ASCIIDOC_CONF = docs/$(1)/asciidoc-$(2).conf
+ifneq ($$(wildcard $$(MANUAL_$(2)_ASCIIDOC_CONF)),)
+MANUAL_$(2)_ASCIIDOC_OPTS += -f $$(MANUAL_$(2)_ASCIIDOC_CONF)
+endif
+
 $$(O)/docs/$(1)/$(1).$(4): docs/$(1)/$(1).txt \
 			   $$($$(call UPPERCASE,$(1))_SOURCES) \
 			   manual-check-dependencies \
@@ -65,7 +70,8 @@ $$(O)/docs/$(1)/$(1).$(4): docs/$(1)/$(1).txt \
 	$$(Q)mkdir -p $$(@D)/.build
 	$$(Q)rsync -au docs/$(1)/*.txt $$(@D)/.build
 	$$(Q)a2x $(6) -f $(2) -d book -L -r $$(TOPDIR)/docs/images \
-	        -D $$(@D) $$(@D)/.build/$(1).txt
+	        -D $$(@D) $$(@D)/.build/$(1).txt \
+	        --asciidoc-opts="$$(MANUAL_$(2)_ASCIIDOC_OPTS)"
 	-$$(Q)rm -rf $$(@D)/.build
 endef
 
