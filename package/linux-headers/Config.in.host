@@ -13,6 +13,7 @@ choice
 
 	config BR2_KERNEL_HEADERS_3_0
 		bool "Linux 3.0.x kernel headers"
+		depends on BR2_DEPRECATED_SINCE_2014_08
 		depends on !BR2_arc
 		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0
 
@@ -37,6 +38,7 @@ choice
 
 	config BR2_KERNEL_HEADERS_3_11
 		bool "Linux 3.11.x kernel headers"
+		depends on BR2_DEPRECATED_SINCE_2014_08
 		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_11
 
 	config BR2_KERNEL_HEADERS_3_12
@@ -45,6 +47,7 @@ choice
 
 	config BR2_KERNEL_HEADERS_3_13
 		bool "Linux 3.13.x kernel headers"
+		depends on BR2_DEPRECATED_SINCE_2014_08
 		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_13
 
 	config BR2_KERNEL_HEADERS_3_14
@@ -53,6 +56,7 @@ choice
 
 	config BR2_KERNEL_HEADERS_3_15
 		bool "Linux 3.15.x kernel headers"
+		depends on BR2_DEPRECATED_SINCE_2014_08
 		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_15
 
 	config BR2_KERNEL_HEADERS_3_16
