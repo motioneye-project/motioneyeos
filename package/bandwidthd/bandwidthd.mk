@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-BANDWIDTHD_VERSION = v2.0.1-auto-r07
+BANDWIDTHD_VERSION = v2.0.1-auto-r08
 BANDWIDTHD_SITE = $(call github,nroach44,bandwidthd,$(BANDWIDTHD_VERSION))
 
 # Specified as "any version of the GPL that is current as of your
@@ -14,6 +14,8 @@ BANDWIDTHD_LICENSE = GPL
 BANDWIDTHD_DEPENDENCIES = gd libpng libpcap
 
 BANDWIDTHD_AUTORECONF = YES
+
+BANDWIDTHD_CONF_OPT += --without-x
 
 ifeq ($(BR2_PACKAGE_BANDWIDTHD_POSTGRESQL),y)
 BANDWIDTHD_DEPENDENCIES += postgresql
