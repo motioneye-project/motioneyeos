@@ -385,7 +385,6 @@ else
 SHARED_STATIC_LIBS_OPTS = --enable-static --enable-shared
 endif
 
-include package/pkg-utils.mk
 include package/pkg-download.mk
 include package/pkg-autotools.mk
 include package/pkg-cmake.mk

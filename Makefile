@@ -271,6 +271,8 @@ unexport DESTDIR
 # Causes breakage with packages that needs host-ruby
 unexport RUBYOPT
 
+include package/pkg-utils.mk
+
 ifeq ($(BR2_HAVE_DOT_CONFIG),y)
 
 ################################################################################
