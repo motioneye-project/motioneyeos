@@ -29,7 +29,7 @@ endef
 define HOST_INFOZIP_BUILD_CMDS
 	$(MAKE) $(HOST_CONFIGURE_OPTS) -C $(@D) \
 		CFLAGS="$(HOST_CFLAGS) -I. -DUNIX" \
-		AS="$(HOST_CC) -c" \
+		AS="$(HOSTCC) -c" \
 		-f unix/Makefile generic
 endef
 
