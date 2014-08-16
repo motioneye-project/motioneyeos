@@ -8,15 +8,22 @@ library. Dependencies for this library are fairly complicated and
 therefore, deserve some explanation.
 
 The 'uClibc' C library doesn't implement gettext functionality;
-therefore with this C library, a separate gettext must be compiled. On
-the other hand, the 'glibc' C library does integrate its own gettext,
-and in this case the separate gettext library should not be compiled,
-because it creates various kinds of build failures.
+therefore with this C library, a separate gettext must be compiled,
+which is provided by the additional +libintl+ library, part of the
++gettext+ package.
+
+On the other hand, the 'glibc' C library does integrate its own
+gettext library functions, so it is not necessary to build a separate
++libintl+ library.
+
+However, certain packages need some gettext utilities on the target,
+such as the +gettext+ program itself, which allows to retrieve
+translated strings, from the command line.
 
 Additionally, some packages (such as +libglib2+) do require gettext
-unconditionally, while other packages (those who support
-+--disable-nls+ in general) only require gettext when locale support
-is enabled.
+functions unconditionally, while other packages (in general, those who
+support +--disable-nls+) only require gettext functions when locale
+support is enabled.
 
 Therefore, Buildroot defines two configuration options:
 
@@ -44,3 +51,11 @@ should:
 * use +$(if $(BR2_NEEDS_GETTEXT),gettext)+ in the package
   +DEPENDENCIES+ variable in the +.mk+ file.
 
+Packages that need the +gettext+ utilities on the target (should be
+rare) should:
+
+* use +select BR2_PACKAGE_GETTEXT+ in their +Config.in+ file,
+  indicating in a comment above that it's a runtime dependency only.
+
+* not add any +gettext+ dependency in the +DEPENDENCIES+ variable of
+  their +.mk+ file.
