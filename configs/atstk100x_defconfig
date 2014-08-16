@@ -1,3 +1,6 @@
+# AVR32 is deprecated
+BR2_DEPRECATED=y
+
 # Architecture
 BR2_avr32=y
 
