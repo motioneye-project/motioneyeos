@@ -189,6 +189,13 @@ fi
 
 if grep -q ^BR2_NEEDS_HOST_JAVA=y $BR2_CONFIG ; then
 	check_prog_host "java"
+	JAVA_GCJ=$(java -version 2>&1 | grep gcj)
+	if [ ! -z "$JAVA_GCJ" ] ; then
+		echo
+		echo "$JAVA_GCJ is not sufficient to compile your package selection."
+		echo "Please install an OpenJDK/IcedTea/Oracle Java."
+		exit 1 ;
+	fi
 fi
 
 if grep -q ^BR2_NEEDS_HOST_JAVAC=y $BR2_CONFIG ; then
