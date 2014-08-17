@@ -6,3 +6,6 @@ config BR2_ENDIAN
 
 config BR2_GCC_TARGET_ARCH
 	default "ap"
+
+config BR2_ARCH_HAS_ATOMICS
+	default y
