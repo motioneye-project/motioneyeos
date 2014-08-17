@@ -202,6 +202,9 @@ config BR2_ARCH
 config BR2_ENDIAN
 	default "LITTLE"
 
+config BR2_ARCH_HAS_ATOMICS
+	default y if !BR2_x86_i386
+
 config BR2_GCC_TARGET_TUNE
 	default "i386"		if BR2_x86_i386
 	default "i486"		if BR2_x86_i486
