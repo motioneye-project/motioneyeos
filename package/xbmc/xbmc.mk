@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-XBMC_VERSION = 13.2rc1-Gotham
+XBMC_VERSION = 13.2-Gotham
 XBMC_SOURCE = $(XBMC_VERSION).tar.gz
 XBMC_SITE = https://github.com/xbmc/xbmc/archive
 XBMC_LICENSE = GPLv2
