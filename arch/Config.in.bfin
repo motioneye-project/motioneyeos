@@ -68,6 +68,9 @@ config BR2_ARCH
 config BR2_ENDIAN
 	default "LITTLE"
 
+config BR2_ARCH_HAS_ATOMICS
+	default y
+
 config BR2_GCC_TARGET_CPU
 	default bf606		if BR2_bf606
 	default bf607		if BR2_bf607
