@@ -254,7 +254,6 @@ config BR2_GCC_TARGET_MODE
 config BR2_ARCH_HAS_ATOMICS
 	bool
 	default y if !BR2_arc
-	select BR2_TOOLCHAIN_HAS_ATOMIC_INTRINSICS
 
 # Set up target binary format
 choice
