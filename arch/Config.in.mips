@@ -73,6 +73,9 @@ config BR2_ENDIAN
 	default "LITTLE"	if BR2_mipsel || BR2_mips64el
 	default "BIG" 	    	if BR2_mips || BR2_mips64
 
+config BR2_ARCH_HAS_ATOMICS
+	default y
+
 config BR2_GCC_TARGET_ARCH
 	default "mips1"		if BR2_mips_1
 	default "mips2"		if BR2_mips_2
