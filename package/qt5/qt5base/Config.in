@@ -241,14 +241,11 @@ config BR2_PACKAGE_QT5BASE_DBUS
 config BR2_PACKAGE_QT5BASE_ICU
 	bool "Enable ICU support"
 	select BR2_PACKAGE_ICU
-	depends on BR2_TOOLCHAIN_HAS_ATOMIC_INTRINSICS # icu
+	depends on BR2_ARCH_HAS_ATOMICS # icu
 	depends on !BR2_BINFMT_FLAT # icu
 	help
 	  This option enables ICU support in Qt5. This is for example
 	  needed for Qt5Webkit.
-
-comment "icu needs a toolchain w/ atomic intrinsics"
-	depends on !BR2_TOOLCHAIN_HAS_ATOMIC_INTRINSICS
 
 config BR2_PACKAGE_QT5BASE_TSLIB
 	bool "Enable Tslib support"
