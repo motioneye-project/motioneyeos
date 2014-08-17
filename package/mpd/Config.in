@@ -45,11 +45,13 @@ config BR2_PACKAGE_MPD_AUDIOFILE
 config BR2_PACKAGE_MPD_PULSEAUDIO
 	bool "pulseaudio"
 	depends on BR2_LARGEFILE # pulseaudio -> libsndfile
+	depends on BR2_ARCH_HAS_ATOMICS # pulseaudio
 	select BR2_PACKAGE_PULSEAUDIO
 	help
 	  Enable pulseaudio output support.
 
 comment "pulseaudio support needs a toolchain w/ largefile"
+	depends on BR2_ARCH_HAS_ATOMICS
 	depends on !BR2_LARGEFILE
 
 config BR2_PACKAGE_MPD_BZIP2
