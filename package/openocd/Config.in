@@ -14,6 +14,7 @@ comment "Adapters"
 
 config BR2_PACKAGE_OPENOCD_FT2XXX
 	bool "FT2xxx/FT4xxx Based JTAG Programmer"
+	depends on BR2_ARCH_HAS_ATOMICS # libftdi
 	select BR2_PACKAGE_LIBFTDI
 	help
 	  Enable building support for FT2232 based devices
