@@ -1,3 +1,22 @@
+2014.08, Not yet released:
+
+	Fixes all over the tree.
+
+	Updated/fixed packages: bandwidthd, bluez5_utils, empty,
+	espeak, fbv, ffmpeg, gd, gnupg2, gst1-plugin-good, iftop,
+	infozip, libcuefile, libeml, libnftl, localedef, ltrace,
+	matchbox, network-manager, nftables, ngrep, openssl, perl,
+	perl-net-ssleay, postgresql, pppd, procps-ng, qt, subversion,
+	synergy, systemd, tar, tftpd, webkit, xapp_rstart, xbmc
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#7124: Use BR toolchain externally results a non-bootable...
+	#7208: Glibc C++ aplications crash if they use exceptions
+	#7250: Cannot build with -std=c++11
+	#7262: Generating locale en_US.UTF-8 fails on 64bit fedora..
+	#7286: systemd 215 doesn't build
+
 2014.08-rc1, Released August 8th, 2014
 
 	Fixes all over the tree and new features.
