@@ -250,6 +250,12 @@ config BR2_GCC_TARGET_FLOAT_ABI
 config BR2_GCC_TARGET_MODE
 	string
 
+# If the architecture has atomic operations, select this:
+config BR2_ARCH_HAS_ATOMICS
+	bool
+	default y if !BR2_arc
+	select BR2_TOOLCHAIN_HAS_ATOMIC_INTRINSICS
+
 # Set up target binary format
 choice
 	prompt "Target Binary Format"
