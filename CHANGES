@@ -1,13 +1,19 @@
-2014.08, Not yet released:
+2014.08-rc2, Released August 18th, 2014
 
 	Fixes all over the tree.
+
+	User manual restructured / reworked.
+
+	Toolchain: Fix for C++ exceptions / pthread_exit() on
+	uClibc/glibc, C++-11 features with uClibc.
 
 	Updated/fixed packages: bandwidthd, bluez5_utils, empty,
 	espeak, fbv, ffmpeg, gd, gnupg2, gst1-plugin-good, iftop,
 	infozip, libcuefile, libeml, libnftl, localedef, ltrace,
-	matchbox, network-manager, nftables, ngrep, openssl, perl,
-	perl-net-ssleay, postgresql, pppd, procps-ng, qt, subversion,
-	synergy, systemd, tar, tftpd, webkit, xapp_rstart, xbmc
+	matchbox, mpd, network-manager, nftables, ngrep, nut, openssl,
+	oprofile, perl, perl-net-ssleay, postgresql, pppd, procps-ng,
+	qt, subversion, synergy, systemd, tar, tftpd, webkit,
+	xapp_rstart, xbmc, xbmc-pvr-addons
 
 	Issues resolved (http://bugs.uclibc.org):
 
