@@ -219,6 +219,11 @@ use in the comment.
 ** Dependency symbol: +BR2_USE_MMU+
 ** Comment string: no comment to be added
 
+* Atomic instructions (whereby the architecture has instructions to
+  perform some operations atomically, like LOCKCMPXCHG on x86)
+** Dependency symbol: +BR2_ARCH_HAS_ATOMICS+
+** Comment string: no comment to be added
+
 * Kernel headers
 ** Dependency symbol: +BR2_TOOLCHAIN_HEADERS_AT_LEAST_X_Y+, (replace
    +X_Y+ with the proper version, see +toolchain/toolchain-common.in+)
