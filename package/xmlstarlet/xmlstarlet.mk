@@ -12,9 +12,15 @@ XMLSTARLET_LICENSE_FILES = COPYING
 XMLSTARLET_DEPENDENCIES += libxml2 libxslt \
 	$(if $(BR2_PACKAGE_LIBICONV),libiconv)
 
-XMLSTARLET_CONF_OPT += --disable-static-libs \
+XMLSTARLET_CONF_OPT += \
 	--with-libxml-prefix=${STAGING_DIR}/usr \
 	--with-libxslt-prefix=${STAGING_DIR}/usr \
 	--with-libiconv-prefix=${STAGING_DIR}/usr
+
+ifeq ($(BR2_PREFER_STATIC_LIB),y)
+XMLSTARLET_CONF_OPT += --enable-static-libs
+else
+XMLSTARLET_CONF_OPT += --disable-static-libs
+endif
 
 $(eval $(autotools-package))
