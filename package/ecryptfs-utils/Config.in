@@ -5,6 +5,8 @@ config BR2_PACKAGE_ECRYPTFS_UTILS
 	# runtime dependency only, some scripts are using the
 	# 'gettext' program to get translations
 	select BR2_PACKAGE_GETTEXT
+	# runtime dependency only
+	select BR2_PACKAGE_GETENT
 	depends on BR2_USE_WCHAR # gettext
 	depends on BR2_USE_MMU # keyutils
 	depends on !BR2_avr32 && !BR2_microblaze # keyutils
