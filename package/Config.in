@@ -1181,6 +1181,7 @@ if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 endif
 	source "package/dsp-tools/Config.in"
 	source "package/ftop/Config.in"
+	source "package/getent/Config.in"
 	source "package/htop/Config.in"
 	source "package/iprutils/Config.in"
 	source "package/keyutils/Config.in"

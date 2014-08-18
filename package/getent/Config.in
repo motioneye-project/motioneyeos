@@ -1,0 +1,10 @@
+config BR2_PACKAGE_GETENT
+	bool "getent"
+	help
+	  This package installs the 'getent' utility, which allows to
+	  get entries from Name Service Switch libraries. For glibc
+	  toolchains, it's the real getent program from the C library
+	  that gets installed, which is NSS-capable. For uclibc and
+	  musl toolchains, it's a simple wrapper script that emulates
+	  getent's behavior, since there is no NSS support in uclibc
+	  and musl.
