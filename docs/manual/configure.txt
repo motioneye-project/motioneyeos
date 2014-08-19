@@ -5,9 +5,24 @@
 == Buildroot configuration
 
 All the configuration options in +make *config+ have a help text
-providing details about the option. However, a number of topics
-require additional details that cannot easily be covered in the help
-text and are there covered in the following sections.
+providing details about the option.
+
+The +make *config+ commands also offer a search tool. Read the help
+message in the different frontend menus to know how to use it:
+
+* in _menuconfig_, the search tool is called by pressing +/+;
+* in _xconfig_, the search tool is called by pressing +Ctrl+ + +f+.
+
+The result of the search shows the help message of the matching items.
+In _menuconfig_, numbers in the left column provide a shortcut to the
+corresponding entry. Just type this number to directly jump to the
+entry, or to the containing menu in case the entry is not selectable due
+to a missing dependency.
+
+Although the menu structure and the help text of the entries should be
+sufficiently self-explanatory, a number of topics require additional
+explanation that cannot easily be covered in the help text and are
+therefore covered in the following sections.
 
 === Cross-compilation toolchain
 
