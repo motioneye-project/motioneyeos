@@ -2,7 +2,7 @@
 // vim: set syntax=asciidoc:
 
 [[make-tips]]
-== 'make' tips
+=== 'make' tips
 
 This is a collection of tips that help you make the most of Buildroot.
 

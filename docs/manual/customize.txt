@@ -1,17 +1,15 @@
 // -*- mode:doc; -*-
 // vim: set syntax=asciidoc:
 
-== Customization
+== Project-specific customization
+
+The following sections describe the various way in which you can
+customize Buildroot for a given project.
+
+For instructions on how to add new packages to Buildroot, refer to
+xref:adding-packages[]
 
 include::customize-rootfs.txt[]
-
-include::customize-busybox-config.txt[]
-
-include::customize-uclibc-config.txt[]
-
-include::customize-kernel-config.txt[]
-
-include::customize-toolchain.txt[]
 
 include::customize-store.txt[]
 

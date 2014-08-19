@@ -1,8 +1,8 @@
 // -*- mode:doc; -*-
 // vim: set syntax=asciidoc:
 
-[[customize-store]]
-== Storing the configuration
+[[customize-store-basics]]
+=== Basics for storing the configuration
 
 When you have a buildroot configuration that you are satisfied with and
 you want to share it with others, put it under revision control or move
@@ -11,11 +11,6 @@ so it can be rebuilt later. The configuration that needs to be stored
 consists of the buildroot configuration, the configuration files for
 packages that you use (kernel, busybox, uClibc, ...), and your rootfs
 modifications.
-
-
-[[customize-store-basics]]
-=== Basics for storing the configuration
-
 
 [[customize-store-buildroot-config]]
 ==== Buildroot configuration

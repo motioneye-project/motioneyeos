@@ -32,13 +32,13 @@ include::faq-troubleshooting.txt[]
 
 include::known-issues.txt[]
 
-include::going-further.txt[]
-
 include::legal-notice.txt[]
 
 include::beyond-buildroot.txt[]
 
 = Developer guide
+
+include::how-buildroot-works.txt[]
 
 include::developer-guide.txt[]
 

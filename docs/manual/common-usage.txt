@@ -1,7 +1,9 @@
 // -*- mode:doc; -*-
 // vim: set syntax=asciidoc:
 
-== Daily use
+== General Buildroot usage
+
+include::make-tips.txt[]
 
 include::rebuilding-packages.txt[]
 
@@ -262,3 +264,7 @@ only other format supported is PNG:
 ----------------
 BR2_GRAPH_OUT=png make graph-build
 ----------------
+
+include::eclipse-integration.txt[]
+
+include::advanced.txt[]

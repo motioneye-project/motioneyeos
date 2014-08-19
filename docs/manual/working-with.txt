@@ -6,20 +6,6 @@ needs.
 
 include::configure.txt[]
 
-include::make-tips.txt[]
-
-include::customize.txt[]
-
 include::common-usage.txt[]
 
-include::eclipse-integration.txt[]
-
-== Hacking Buildroot
-
-If Buildroot does not yet fit all your requirements, you may be
-interested in hacking it to add:
-
-* new packages: refer to the xref:adding-packages[Developer guide]
-
-* new board support: refer to the
-  xref:customize-store-board-support[Developer guide].
+include::customize.txt[]
