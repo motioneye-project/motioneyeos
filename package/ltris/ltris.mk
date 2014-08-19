@@ -21,7 +21,7 @@ else
 LTRIS_CONF_OPT += --disable-audio
 endif
 
-ifeq ($(BR2_PACKAGE_GETTEXT),y)
+ifeq ($(BR2_NEEDS_GETTEXT_IF_LOCALE),y)
 LTRIS_DEPENDENCIES += gettext
 LTRIS_CONF_ENV += LIBS=-lintl
 endif
