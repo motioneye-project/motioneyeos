@@ -1,7 +1,7 @@
 // -*- mode:doc; -*-
 // vim: set syntax=asciidoc:
 
-== Using Buildroot
+== Buildroot quick start
 
 *Important*: you can and should *build everything as a normal user*. There
 is no need to be root to configure and use Buildroot. By running all
@@ -47,7 +47,8 @@ specifically the xref:requirement-optional[optional requirements]
 to get the dependencies of your favorite interface.
 
 For each menu entry in the configuration tool, you can find associated
-help that describes the purpose of the entry.
+help that describes the purpose of the entry. Refer to xref:configure[]
+for details on some specific configuration aspects.
 
 Once everything is configured, the configuration tool generates a
 +.config+ file that contains the entire configuration. This file will be
