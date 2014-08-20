@@ -31,7 +31,7 @@ case "$1" in
         fi
         ;;
     stop)
-        printf "Stoping TVHeadend daemon: "
+        printf "Stopping TVHeadend daemon: "
         start-stop-daemon -K -q -p ${PIDFILE} -s TERM
         sleep 2
         if start-stop-daemon -K -q -p ${PIDFILE} -t; then
@@ -46,7 +46,7 @@ case "$1" in
         "${0}" start
         ;;
     *)
-        echo "Usage: $SCRIPTNAME {start|stop|restart|force-reload}" >&2
+        echo "Usage: $0 {start|stop|restart|force-reload}" >&2
         exit 1
         ;;
 esac
