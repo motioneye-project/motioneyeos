@@ -36,7 +36,7 @@ case "$1" in
 	sleep 1
 	$0 start
 	;;
-  *) echo "Usage: $SCRIPTNAME {start|stop|restart|reload|force-reload}" >&2
+  *) echo "Usage: $0 {start|stop|restart|reload|force-reload}" >&2
 	exit 1
 	;;
 esac
