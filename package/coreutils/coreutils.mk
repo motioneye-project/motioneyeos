@@ -20,7 +20,7 @@ ifeq ($(BR2_PACKAGE_BUSYBOX),y)
 COREUTILS_DEPENDENCIES = busybox
 endif
 
-COREUTILS_BIN_PROGS = cat chgrp chmod chown cp date dd df dir echo false hostname \
+COREUTILS_BIN_PROGS = cat chgrp chmod chown cp date dd df dir echo false \
 	ln ls mkdir mknod mv pwd rm rmdir vdir sleep stty sync touch true \
 	uname join
 
@@ -61,8 +61,7 @@ COREUTILS_CONF_ENV = ac_cv_c_restrict=no \
 		utils_cv_localtime_cache=no \
 		PERL=missing
 
-COREUTILS_CONF_OPT = --disable-rpath \
-		--enable-install-program=hostname
+COREUTILS_CONF_OPT = --disable-rpath
 
 define COREUTILS_POST_INSTALL
 	# some things go in root rather than usr

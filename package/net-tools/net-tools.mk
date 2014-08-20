@@ -17,11 +17,6 @@ ifeq ($(BR2_PACKAGE_BUSYBOX),y)
 	NET_TOOLS_DEPENDENCIES += busybox
 endif
 
-# Install after util-linux since net-tools hostname is better
-ifeq ($(BR2_PACKAGE_UTIL_LINUX_BINARIES),y)
-	NET_TOOLS_DEPENDENCIES += util-linux
-endif
-
 define NET_TOOLS_CONFIGURE_CMDS
 	(cd $(@D); yes "" | ./configure.sh config.in )
 endef
