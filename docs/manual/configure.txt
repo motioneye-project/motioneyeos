@@ -384,12 +384,3 @@ can be chosen from +System configuration+, +Init system+:
 The solution recommended by Buildroot developers is to use the
 *BusyBox init* as it is sufficient for most embedded
 systems. *systemd* can be used for more complex situations.
-
-== Configuration of other components
-
-include::customize-busybox-config.txt[]
-
-include::customize-uclibc-config.txt[]
-
-include::customize-kernel-config.txt[]
-

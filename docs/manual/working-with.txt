@@ -6,6 +6,8 @@ needs.
 
 include::configure.txt[]
 
+include::configure-other-components.txt[]
+
 include::common-usage.txt[]
 
 include::customize.txt[]
