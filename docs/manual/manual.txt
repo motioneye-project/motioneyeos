@@ -24,9 +24,9 @@ include::prerequisite.txt[]
 
 include::getting.txt[]
 
-include::using.txt[]
+include::quickstart.txt[]
 
-include::get-involved.txt[]
+include::resources.txt[]
 
 = User guide
 
