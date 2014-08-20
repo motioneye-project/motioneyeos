@@ -29,6 +29,7 @@ IMAGEMAGICK_CONF_ENV = ac_cv_sys_file_offset_bits=32
 endif
 
 IMAGEMAGICK_CONF_OPT = --program-transform-name='s,,,' \
+		--disable-openmp \
 		--without-perl \
 		--without-wmf \
 		--without-openexr \
