@@ -20,13 +20,23 @@ image::logo.png[]
 
 include::introduction.txt[]
 
-include::starting-up.txt[]
+include::prerequisite.txt[]
+
+include::getting.txt[]
+
+include::using.txt[]
 
 include::get-involved.txt[]
 
 = User guide
 
-include::working-with.txt[]
+include::configure.txt[]
+
+include::configure-other-components.txt[]
+
+include::common-usage.txt[]
+
+include::customize.txt[]
 
 include::faq-troubleshooting.txt[]
 
@@ -40,7 +50,15 @@ include::beyond-buildroot.txt[]
 
 include::how-buildroot-works.txt[]
 
-include::developer-guide.txt[]
+include::writing-rules.txt[]
+
+include::adding-packages.txt[]
+
+include::patch-policy.txt[]
+
+include::download-infra.txt[]
+
+include::debugging-buildroot.txt[]
 
 include::contribute.txt[]
 
