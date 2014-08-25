@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-GPSD_VERSION = b4c32aa40cff1b4e1041d5f3004e9d9156cdf96f
-GPSD_SITE = git://git.savannah.nongnu.org/gpsd.git
+GPSD_VERSION = 3.11
+GPSD_SITE = http://download-mirror.savannah.gnu.org/releases/gpsd
 GPSD_LICENSE = BSD-3c
 GPSD_LICENSE_FILES = COPYING
 GPSD_INSTALL_STAGING = YES
@@ -19,7 +19,6 @@ GPSD_SCONS_ENV = $(TARGET_CONFIGURE_OPTS)
 GPSD_SCONS_OPTS = \
 	arch=$(ARCH)\
 	prefix=/usr\
-	chrpath=no\
 	sysroot=$(STAGING_DIR)\
 	strip=no\
 	python=no
@@ -48,7 +47,7 @@ ifeq ($(BR2_PACKAGE_QT_NETWORK),y)
 	GPSD_SCONS_ENV += QMAKE="$(QT_QMAKE)"
 	GPSD_DEPENDENCIES += qt host-pkgconf
 else
-	GPSD_SCONS_OPTS += libQgpsmm=no
+	GPSD_SCONS_OPTS += qt=no
 endif
 
 # If libusb is available build it before so the package can use it

@@ -4,16 +4,14 @@ Signed-off-by: Simon Dawson <spdawson@gmail.com>
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 
 diff -Nurp a/SConstruct b/SConstruct
---- a/SConstruct	2013-11-22 13:10:01.000000000 +0000
-+++ b/SConstruct	2013-11-23 11:26:57.698486777 +0000
-@@ -299,11 +299,6 @@ if env["sysroot"]:
- # system default load path. /lib and /usr/lib should always be on
- # this; listing them explicitly is a fail-safe against this ldconfig
- # invocation not doing what we expect.
+--- a/SConstruct	2014-08-23 18:41:09.000000000 +0100
++++ b/SConstruct	2014-08-25 09:46:53.754364989 +0100
+@@ -300,9 +300,6 @@ if env["sysroot"]:
+ 
+ # Don't hack RPATH unless libdir points somewhere that is not on the
+ # minimum default load path.
 -if env["shared"]:
--    sysrpath = Split(_getoutput("ldconfig -v -N -X 2>/dev/null | sed -n -e '/^\//s/://p'"))
--    if env["libdir"] not in ["/usr/lib", "/lib"] + sysrpath:
--        announce("Prepending %s to RPATH." % installdir('libdir', False))
+-    if env["libdir"] not in ["/usr/lib", "/lib"]:
 -        env.Prepend(RPATH=[installdir('libdir')])
  
  # Give deheader a way to set compiler flags
