@@ -1,3 +1,21 @@
+2014.08-rc3, Released August 26th, 2014
+
+	Minor fixes.
+
+	User manual update / restructuring.
+
+	Updated/fixed packages: cairo, ecryptfs-utils, gettext,
+	gstreamer, gstreamer1, gutenprint, icu, imagemagick, jack2,
+	lbreakout2, libevas-generic-loaders, libftdi, libinput,
+	libtorrent, ltris, msgpack, ntp, php, procps-ng, pulseaudio,
+	thrift, tvheadend, usb_modeswitch, xmlstarlet,
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#7136: ecryptfs-utils needs gettext to run when glibc/eglibc...
+	#7322: libgomp dependency issue with imagemagick
+	#7328: Git dl of versions in x/y broken
+
 2014.08-rc2, Released August 18th, 2014
 
 	Fixes all over the tree.
