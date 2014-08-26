@@ -97,7 +97,7 @@ MPD_CONF_OPT += --disable-sndfile
 endif
 
 ifeq ($(BR2_PACKAGE_MPD_OPUS),y)
-MPD_DEPENDENCIES += opus
+MPD_DEPENDENCIES += opus libogg
 MPD_CONF_OPT += --enable-opus
 else
 MPD_CONF_OPT += --disable-opus

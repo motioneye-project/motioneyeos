@@ -145,6 +145,7 @@ config BR2_PACKAGE_MPD_MUSEPACK
 config BR2_PACKAGE_MPD_OPUS
 	bool "opus"
 	select BR2_PACKAGE_OPUS
+	select BR2_PACKAGE_LIBOGG
 	help
 	  Enable opus input support.
 	  Select this if you want to play back OPUS encoded files.
