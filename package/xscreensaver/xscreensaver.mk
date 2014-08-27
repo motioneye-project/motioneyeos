@@ -14,8 +14,6 @@ XSCREENSAVER_LICENSE_FILES = hacks/screenhack.h hacks/glx/chessmodels.h
 XSCREENSAVER_DEPENDENCIES = jpeg libglade libgtk2 xlib_libX11 xlib_libXt \
 	$(if $(BR2_PACKAGE_GETTEXT),gettext)
 
-XSCREENSAVER_CONF_ENV = $(if $(BR2_PACKAGE_GETTEXT),LIBS=-lintl)
-
 # otherwise we end up with host include/library dirs passed to the
 # compiler/linker
 XSCREENSAVER_CONF_OPT = \
