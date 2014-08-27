@@ -1,0 +1,61 @@
+From 17e0d6ddd1dc5d04b8032bde2f2076134b0c6dd7 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Wed, 27 Aug 2014 14:21:32 +0200
+Subject: [PATCH] tools/env: change stripping strategy to allow no-stripping
+
+When building the U-Boot tools for non-ELF platforms (such as Blackfin
+FLAT), since commit 79fc0c5f498c3982aa4740c273ab1a9255063d9c
+("tools/env: cross-compile fw_printenv without setting HOSTCC"), the
+build fails because it tries to strip a FLAT binary, which does not
+make sense.
+
+This commit solves this by changing the stripping logic in
+tools/env/Makefile to be similar to the one in tools/Makefile. This
+logic continues to apply strip to the final binary, but does not abort
+the build if it fails, and does the stripping in place on the final
+binary. This allows the logic to work fine if stripping doesn't work,
+as it leaves the final binary untouched.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Cc: Masahiro Yamada <yamada.m@jp.panasonic.com>
+Cc: Sonic Zhang <sonic.zhang@analog.com>
+---
+An improved solution would be to be able to override STRIP completely
+by setting it to /bin/true, but the main Makefile enforces STRIP =
+$(CROSS_COMPILE)strip.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ tools/env/Makefile | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
+
+diff --git a/tools/env/Makefile b/tools/env/Makefile
+index f5368bc..d047aa5 100644
+--- a/tools/env/Makefile
++++ b/tools/env/Makefile
+@@ -21,14 +21,16 @@ HOST_EXTRACFLAGS += -DMTD_OLD
+ endif
+ 
+ always := fw_printenv
+-hostprogs-y := fw_printenv_unstripped
++hostprogs-y := fw_printenv
+ 
+-fw_printenv_unstripped-objs := fw_env.o fw_env_main.o \
++fw_printenv-objs := fw_env.o fw_env_main.o \
+ 	crc32.o ctype.o linux_string.o \
+ 	env_attr.o env_flags.o aes.o
+ 
+-quiet_cmd_strip = STRIP   $@
+-      cmd_strip = $(STRIP) -o $@ $<
++quiet_cmd_crosstools_strip = STRIP   $^
++      cmd_crosstools_strip = $(STRIP) $^; touch $@
+ 
+-$(obj)/fw_printenv: $(obj)/fw_printenv_unstripped FORCE
+-	$(call if_changed,strip)
++$(obj)/.strip: $(obj)/fw_printenv
++	$(call cmd,crosstools_strip)
++
++always += .strip
+-- 
+2.0.0
+
