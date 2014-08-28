@@ -28,6 +28,10 @@ RUBY_CFLAGS += -O2
 endif
 RUBY_CONF_ENV = CFLAGS="$(RUBY_CFLAGS)"
 
+ifeq ($(BR2_bfin),y)
+RUBY_CONF_ENV = ac_cv_func_dl_iterate_phdr=no
+endif
+
 # Force optionals to build before we do
 ifeq ($(BR2_PACKAGE_BERKELEYDB),y)
 	RUBY_DEPENDENCIES += berkeleydb
