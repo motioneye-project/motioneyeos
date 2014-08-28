@@ -101,6 +101,15 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2014.08"
 
+config BR2_PACKAGE_LIBELF
+	bool "libelf has been removed"
+	select BR2_PACKAGE_ELFUTILS
+	select BR2_LEGACY
+	help
+	  The libelf package provided an old version of the libelf library
+	  and is deprecated. The libelf library is now provided by the
+	  elfutils package.
+
 config BR2_KERNEL_HEADERS_3_8
 	bool "kernel headers version 3.8.x are no longer supported"
 	select BR2_KERNEL_HEADERS_3_9
