@@ -13,7 +13,6 @@ IPERF_CONF_ENV = \
 	ac_cv_sizeof_bool=1
 
 IPERF_CONF_OPT = \
-	--disable-dependency-tracking \
 	--disable-web100
 
 $(eval $(autotools-package))

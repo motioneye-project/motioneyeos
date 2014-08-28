@@ -61,7 +61,6 @@ COREUTILS_CONF_ENV = ac_cv_c_restrict=no \
 		PERL=missing
 
 COREUTILS_CONF_OPT = --disable-rpath \
-		--disable-dependency-tracking \
 		--enable-install-program=hostname
 
 define COREUTILS_POST_INSTALL

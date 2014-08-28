@@ -14,7 +14,6 @@ AGENTPP_DEPENDENCIES = host-pkgconf snmppp
 AGENTPP_CONF_OPT += \
 	--disable-proxy \
 	--disable-forwarder \
-	--disable-rpath \
-	--disable-dependency-tracking
+	--disable-rpath
 
 $(eval $(autotools-package))
