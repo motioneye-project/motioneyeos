@@ -6,7 +6,7 @@
 
 LTRACE_VERSION = 0896ce554f80afdcba81d9754f6104f863dea803
 LTRACE_SITE = git://anonscm.debian.org/collab-maint/ltrace.git
-LTRACE_DEPENDENCIES = libelf elfutils
+LTRACE_DEPENDENCIES = elfutils
 LTRACE_CONF_OPT = --disable-werror
 LTRACE_LICENSE = GPLv2
 LTRACE_LICENSE_FILES = COPYING
