@@ -1,6 +1,7 @@
 // -*- mode:doc; -*-
 // vim: set syntax=asciidoc:
 
+[[customize-dir-structure]]
 === Recommended directory structure
 
 When customizing Buildroot for your project, you will be creating one or

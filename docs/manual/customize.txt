@@ -20,6 +20,14 @@ Typical actions you may need to perform for a given project are:
   (using +BR2_ROOTFS_POST_IMAGE_SCRIPT+)
 - adding project-specific packages
 
+An important note regarding such 'project-specific' customizations:
+please carefully consider which changes are indeed project-specific and
+which changes are also useful to developers outside your project. The
+Buildroot community highly recommends and encourages the upstreaming of
+improvements, packages and board support to the official Buildroot
+project. Of course, it is sometimes not possible or desirable to
+upstream because the changes are highly specific or proprietary.
+
 This chapter describes how to make such project-specific customizations
 in Buildroot and how to store them in a way that you can build the same
 image in a reproducible way, even after running 'make clean'. By
