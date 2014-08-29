@@ -9,9 +9,27 @@ LIBARCHIVE_SITE = http://www.libarchive.org/downloads
 LIBARCHIVE_INSTALL_STAGING = YES
 LIBARCHIVE_LICENSE = BSD-2c, BSD-3c
 LIBARCHIVE_LICENSE_FILES = COPYING
-LIBARCHIVE_CONF_OPT = --without-lzma \
-	$(if $(BR2_PACKAGE_LIBARCHIVE_BSDTAR),--enable-bsdtar,--disable-bsdtar) \
-	$(if $(BR2_PACKAGE_LIBARCHIVE_BSDCPIO),--enable-bsdcpio,--disable-bsdcpio)
+LIBARCHIVE_CONF_OPT = --without-lzma
+
+ifeq ($(BR2_PACKAGE_LIBARCHIVE_BSDTAR),y)
+ifeq ($(BR2_PREFER_STATIC_LIB),y)
+LIBARCHIVE_CONF_OPT += --enable-bsdtar=static
+else
+LIBARCHIVE_CONF_OPT += --enable-bsdtar=shared
+endif
+else
+LIBARCHIVE_CONF_OPT += --disable-bsdtar
+endif
+
+ifeq ($(BR2_PACKAGE_LIBARCHIVE_BSDCPIO),y)
+ifeq ($(BR2_PREFER_STATIC_LIB),y)
+LIBARCHIVE_CONF_OPT += --enable-bsdcpio=static
+else
+LIBARCHIVE_CONF_OPT += --enable-bsdcpio=shared
+endif
+else
+LIBARCHIVE_CONF_OPT += --disable-bsdcpio
+endif
 
 ifeq ($(BR2_PACKAGE_ACL),y)
 LIBARCHIVE_DEPENDENCIES += acl
