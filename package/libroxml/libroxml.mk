@@ -12,4 +12,8 @@ LIBROXML_LICENSE_FILES = License.txt
 
 LIBROXML_CONF_OPT = --disable-silent-rules
 
+# libroxml forgets to compile/link with -pthread, even though it uses
+# thread functions breaking static linking
+LIBROXML_CONF_ENV = CFLAGS="$(TARGET_CFLAGS) -pthread" LIBS="-pthread"
+
 $(eval $(autotools-package))
