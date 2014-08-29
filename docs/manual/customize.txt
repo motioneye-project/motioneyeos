@@ -26,10 +26,12 @@ image in a reproducible way, even after running 'make clean'. By
 following the recommended strategy, you can even use the same Buildroot
 tree to build multiple distinct projects!
 
+include::customize-directory-structure.txt[]
+
+include::customize-outside-br.txt[]
+
 include::customize-rootfs.txt[]
 
 include::customize-store.txt[]
 
 include::customize-packages.txt[]
-
-include::customize-outside-br.txt[]
