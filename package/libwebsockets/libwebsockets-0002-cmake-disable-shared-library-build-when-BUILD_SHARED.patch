@@ -1,0 +1,86 @@
+From 990835b15e3713e6c34d64b4bed8e55dcca6e6e2 Mon Sep 17 00:00:00 2001
+From: Samuel Martin <s.martin49@gmail.com>
+Date: Sat, 30 Aug 2014 00:40:03 +0200
+Subject: [PATCH 2/2] cmake: disable shared library build when
+ BUILD_SHARED_LIBS is off
+
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+---
+ CMakeLists.txt | 19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 72391b0..8f28680 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -320,14 +320,19 @@ source_group("Sources"          FILES ${SOURCES})
+ #
+ # Create the lib.
+ #
++set(_libs_websockets websockets)
+ add_library(websockets STATIC
+ 			${HDR_PRIVATE}
+ 			${HDR_PUBLIC}
+ 			${SOURCES})
++
++if(BUILD_SHARED_LIBS)
++list(APPEND _libs_websockets websockets_shared)
+ add_library(websockets_shared SHARED
+ 			${HDR_PRIVATE}
+ 			${HDR_PUBLIC}
+ 			${SOURCES})
++endif()
+ 
+ if (WIN32)
+ 	# On Windows libs have the same file ending (.lib)
+@@ -348,15 +353,17 @@ endif(WIN32)
+ 
+ # We want the shared lib to be named "libwebsockets"
+ # not "libwebsocket_shared".
++if(BUILD_SHARED_LIBS)
+ set_target_properties(websockets_shared
+-		PROPERTIES 
++		PROPERTIES
+ 		OUTPUT_NAME websockets)
++endif()
+ 
+ # Set the so version of the lib.
+ # Equivalent to LDFLAGS=-version-info x:x:x
+ if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
+-	foreach(lib websockets websockets_shared)
+-		set_target_properties(${lib} 
++	foreach(lib ${_libs_websockets})
++		set_target_properties(${lib}
+ 			PROPERTIES
+ 			SOVERSION ${SOVERSION})
+ 	endforeach()
+@@ -408,7 +415,7 @@ if (NOT WITHOUT_EXTENSIONS)
+ 	endif()
+ 
+ 	# Make sure ZLib is compiled before the libs.
+-	foreach (lib websockets websockets_shared)
++	foreach (lib ${_libs_websockets})
+ 		add_dependencies(${lib} ZLIB)
+ 	endforeach()
+ 
+@@ -462,7 +469,7 @@ if (UNIX)
+ endif()
+ 
+ # Setup the linking for all libs.
+-foreach (lib websockets websockets_shared)
++foreach (lib ${_libs_websockets})
+ 	target_link_libraries(${lib} ${LIB_LIST})
+ endforeach()
+ 
+@@ -727,7 +734,7 @@ install(FILES ${HDR_PUBLIC}
+ set(CPACK_COMPONENT_HEADERS_DISPLAY_NAME "Header files")
+ 
+ # Install libs.
+-install(TARGETS websockets websockets_shared
++install(TARGETS ${_libs_websockets}
+ 		LIBRARY DESTINATION lib${LIB_SUFFIX}
+ 		ARCHIVE DESTINATION lib${LIB_SUFFIX}
+ 		COMPONENT libraries)
+-- 
+2.1.0
+
