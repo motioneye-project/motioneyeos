@@ -81,7 +81,7 @@ config BR2_PACKAGE_MESA3D_DRI_DRIVER_I965
 	select BR2_PACKAGE_MESA3D_DRI_DRIVER
 	select BR2_PACKAGE_LIBDRM_INTEL
 	help
-	  Supports all Intel GPUs.  This version is most supported by Intel.
+	  Support for i965-based Intel GPUs.
 
 config BR2_PACKAGE_MESA3D_DRI_DRIVER_RADEON
 	bool "DRI radeon driver"
