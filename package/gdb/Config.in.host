@@ -15,7 +15,6 @@ if BR2_PACKAGE_HOST_GDB
 
 config BR2_PACKAGE_HOST_GDB_TUI
 	bool "GDB TUI support"
-	select BR2_PACKAGE_NCURSES
 	help
 	  This option enables terminal user interface (TUI) for gdb
 
