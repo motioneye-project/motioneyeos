@@ -1,0 +1,101 @@
+From 6cef3077e0e7073e3449286b3e544ec60e3c5270 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Sat, 30 Aug 2014 14:43:04 +0200
+Subject: [PATCH 2/2] Improve static building and installation
+
+This commit improves the static-only building of btrfs-progs, and adds
+support for installing the static only tools:
+
+ - It now ensures that all programs are built statically, not only a
+   small subset of them, by defining 'progs_static' from the existing
+   'progs' variable.
+
+ - It changes the order of libraries in the btrfs-%.static rule so
+   that -lpthread (part of STATIC_LIBS) appears *after* the '$($(subst
+   -,_,$(subst .static,,$@)-libs))' logic, which brings in
+   -lcom_err. This is needed because libcom_err.a uses the semaphore
+   functions, which are available in the pthread library.
+
+ - Adds the necessary rules to generate the btrfsck.static link and
+   btrfstune.static binary.
+
+ - Adds an 'install-static' target to install the static
+   binaries. Note that they are renamed to not carry a '.static'
+   suffix.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ Makefile | 22 +++++++++++++++++++---
+ 1 file changed, 19 insertions(+), 3 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 926885f..93e264b 100644
+--- a/Makefile
++++ b/Makefile
+@@ -50,6 +50,8 @@ progs = mkfs.btrfs btrfs-debug-tree btrfsck \
+ 	btrfs btrfs-map-logical btrfs-image btrfs-zero-log btrfs-convert \
+ 	btrfs-find-root btrfstune btrfs-show-super
+ 
++progs_static = $(foreach p,$(progs),$(p).static)
++
+ # external libs required by various binaries; for btrfs-foo,
+ # specify btrfs_foo_libs = <list of libs>; see $($(subst...)) rules below
+ btrfs_convert_libs = -lext2fs -lcom_err
+@@ -141,7 +143,7 @@ test:
+ # NOTE: For static compiles, you need to have all the required libs
+ # 	static equivalent available
+ #
+-static: btrfs.static mkfs.btrfs.static btrfs-find-root.static
++static: $(progs_static)
+ 
+ version.h:
+ 	@echo "    [SH]     $@"
+@@ -174,8 +176,8 @@ $(lib_links):
+ btrfs-%.static: $(static_objects) btrfs-%.static.o $(static_libbtrfs_objects)
+ 	@echo "    [LD]     $@"
+ 	$(Q)$(CC) $(STATIC_CFLAGS) -o $@ $@.o $(static_objects) \
+-		$(static_libbtrfs_objects) $(STATIC_LDFLAGS) $(STATIC_LIBS) \
+-		$($(subst -,_,$(subst .static,,$@)-libs))
++		$(static_libbtrfs_objects) $(STATIC_LDFLAGS) \
++		$($(subst -,_,$(subst .static,,$@)-libs)) $(STATIC_LIBS)
+ 
+ btrfs-%: $(objects) $(libs) btrfs-%.o
+ 	@echo "    [LD]     $@"
+@@ -196,6 +198,10 @@ btrfsck: btrfs
+ 	@echo "    [LN]     $@"
+ 	$(Q)$(LN) -f btrfs btrfsck
+ 
++btrfsck.static: btrfs.static
++	@echo "    [LN]     $@"
++	$(Q)$(LN) -f $^ $@
++
+ mkfs.btrfs: $(objects) $(libs) mkfs.o
+ 	@echo "    [LD]     $@"
+ 	$(Q)$(CC) $(CFLAGS) -o mkfs.btrfs $(objects) mkfs.o $(LDFLAGS) $(LIBS)
+@@ -209,6 +215,11 @@ btrfstune: $(objects) $(libs) btrfstune.o
+ 	@echo "    [LD]     $@"
+ 	$(Q)$(CC) $(CFLAGS) -o btrfstune $(objects) btrfstune.o $(LDFLAGS) $(LIBS)
+ 
++btrfstune.static: $(static_objects) btrfstune.static.o $(static_libbtrfs_objects)
++	@echo "    [LD]     $@"
++	$(Q)$(CC) $(STATIC_CFLAGS) -o $@ btrfstune.static.o $(static_objects) \
++		$(static_libbtrfs_objects) $(STATIC_LDFLAGS) $(STATIC_LIBS)
++
+ dir-test: $(objects) $(libs) dir-test.o
+ 	@echo "    [LD]     $@"
+ 	$(Q)$(CC) $(CFLAGS) -o dir-test $(objects) dir-test.o $(LDFLAGS) $(LIBS)
+@@ -258,6 +269,11 @@ install: $(libs) $(progs) $(INSTALLDIRS)
+ 	$(INSTALL) -m755 -d $(DESTDIR)$(incdir)
+ 	$(INSTALL) -m644 $(headers) $(DESTDIR)$(incdir)
+ 
++install-static: $(progs_static) $(INSTALLDIRS)
++	for p in $(progs_static) ; do \
++		$(INSTALL) -D -m755 $$p $(DESTDIR)$(bindir)/`basename $$p .static` ; \
++	done
++
+ $(INSTALLDIRS):
+ 	@echo "Making install in $(patsubst install-%,%,$@)"
+ 	$(Q)$(MAKE) $(MAKEOPTS) -C $(patsubst install-%,%,$@) install
+-- 
+2.0.0
+
