@@ -75,6 +75,14 @@ config BR2_PACKAGE_MESA3D_DRI_DRIVER_SWRAST
 	  This is a software opengl implementation using the DRI
 	  infrastructure.
 
+config BR2_PACKAGE_MESA3D_DRI_DRIVER_I915
+	bool "DRI i915 driver"
+	depends on BR2_i386 || BR2_x86_64
+	select BR2_PACKAGE_MESA3D_DRI_DRIVER
+	select BR2_PACKAGE_LIBDRM_INTEL
+	help
+	  Support for i915-based Intel GPUs.
+
 config BR2_PACKAGE_MESA3D_DRI_DRIVER_I965
 	bool "DRI i965 driver"
 	depends on BR2_i386 || BR2_x86_64
