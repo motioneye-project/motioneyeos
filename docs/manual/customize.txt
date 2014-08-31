@@ -40,6 +40,8 @@ include::customize-outside-br.txt[]
 
 include::customize-rootfs.txt[]
 
+include::customize-post-image.txt[]
+
 include::customize-store.txt[]
 
 include::customize-packages.txt[]
