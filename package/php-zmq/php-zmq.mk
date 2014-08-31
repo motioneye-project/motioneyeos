@@ -6,7 +6,8 @@
 
 PHP_ZMQ_VERSION = 1.1.2
 PHP_ZMQ_SOURCE = zmq-$(PHP_ZMQ_VERSION).tgz
-PHP_ZMQ_SITE = http://pecl.php.net/get
+# pecl.php.net returns html with db connect failed
+PHP_ZMQ_SITE = http://sources.buildroot.net
 # phpize does the autoconf magic
 PHP_ZMQ_DEPENDENCIES = php zeromq host-autoconf host-pkgconf
 PHP_ZMQ_CONF_OPT = --with-php-config=$(STAGING_DIR)/usr/bin/php-config
