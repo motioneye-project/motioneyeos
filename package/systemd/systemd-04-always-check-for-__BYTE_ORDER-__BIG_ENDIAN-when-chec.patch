@@ -1,0 +1,116 @@
+From 4f4b92ba7ae9c56cb0f181d5f95d709e085b8bd5 Mon Sep 17 00:00:00 2001
+From: Lennart Poettering <lennart@poettering.net>
+Date: Fri, 11 Jul 2014 15:56:16 +0200
+Subject: [PATCH] always check for __BYTE_ORDER == __BIG_ENDIAN when checking
+ for endianess
+
+Let's always stick to glibc's way to determine byte order, and not mix
+autoconf-specific checks with gcc checks.
+---
+ src/shared/architecture.h | 12 ++++++------
+ src/shared/gpt.h          |  4 ++--
+ src/shared/time-dst.c     |  6 +++---
+ 3 files changed, 11 insertions(+), 11 deletions(-)
+
+diff --git a/src/shared/architecture.h b/src/shared/architecture.h
+index 4821d5d..58e97e5 100644
+--- a/src/shared/architecture.h
++++ b/src/shared/architecture.h
+@@ -80,7 +80,7 @@ Architecture uname_architecture(void);
+ #  define native_architecture() ARCHITECTURE_X86
+ #  define LIB_ARCH_TUPLE "i386-linux-gnu"
+ #elif defined(__powerpc64__)
+-#  if defined(WORDS_BIGENDIAN)
++#  if __BYTE_ORDER == __BIG_ENDIAN
+ #    define native_architecture() ARCHITECTURE_PPC64
+ #    define LIB_ARCH_TUPLE "ppc64-linux-gnu"
+ #  else
+@@ -88,7 +88,7 @@ Architecture uname_architecture(void);
+ #    error "Missing LIB_ARCH_TUPLE for PPC64LE"
+ #  endif
+ #elif defined(__powerpc__)
+-#  if defined(WORDS_BIGENDIAN)
++#  if __BYTE_ORDER == __BIG_ENDIAN
+ #    define native_architecture() ARCHITECTURE_PPC
+ #    define LIB_ARCH_TUPLE "powerpc-linux-gnu"
+ #  else
+@@ -117,7 +117,7 @@ Architecture uname_architecture(void);
+ #  define native_architecture() ARCHITECTURE_SPARC
+ #  define LIB_ARCH_TUPLE "sparc-linux-gnu"
+ #elif defined(__mips64__)
+-#  if defined(WORDS_BIGENDIAN)
++#  if __BYTE_ORDER == __BIG_ENDIAN
+ #    define native_architecture() ARCHITECTURE_MIPS64
+ #    error "Missing LIB_ARCH_TUPLE for MIPS64"
+ #  else
+@@ -125,7 +125,7 @@ Architecture uname_architecture(void);
+ #    error "Missing LIB_ARCH_TUPLE for MIPS64_LE"
+ #  endif
+ #elif defined(__mips__)
+-#  if defined(WORDS_BIGENDIAN)
++#  if __BYTE_ORDER == __BIG_ENDIAN
+ #    define native_architecture() ARCHITECTURE_MIPS
+ #    define LIB_ARCH_TUPLE "mips-linux-gnu"
+ #  else
+@@ -136,7 +136,7 @@ Architecture uname_architecture(void);
+ #  define native_architecture() ARCHITECTURE_ALPHA
+ #  define LIB_ARCH_TUPLE "alpha-linux-gnu"
+ #elif defined(__aarch64__)
+-#  if defined(WORDS_BIGENDIAN)
++#  if __BYTE_ORDER == __BIG_ENDIAN
+ #    define native_architecture() ARCHITECTURE_ARM64_BE
+ #    define LIB_ARCH_TUPLE "aarch64_be-linux-gnu"
+ #  else
+@@ -144,7 +144,7 @@ Architecture uname_architecture(void);
+ #    define LIB_ARCH_TUPLE "aarch64-linux-gnu"
+ #  endif
+ #elif defined(__arm__)
+-#  if defined(WORDS_BIGENDIAN)
++#  if __BYTE_ORDER == __BIG_ENDIAN
+ #    define native_architecture() ARCHITECTURE_ARM_BE
+ #    if defined(__ARM_EABI__)
+ #      if defined(__ARM_PCS_VFP)
+diff --git a/src/shared/gpt.h b/src/shared/gpt.h
+index 64090e0..278940b 100644
+--- a/src/shared/gpt.h
++++ b/src/shared/gpt.h
+@@ -42,10 +42,10 @@
+ #  define GPT_ROOT_NATIVE GPT_ROOT_X86
+ #endif
+ 
+-#if defined(__aarch64__) && !defined(WORDS_BIGENDIAN)
++#if defined(__aarch64__) && (__BYTE_ORDER != __BIG_ENDIAN)
+ #  define GPT_ROOT_NATIVE GPT_ROOT_ARM_64
+ #  define GPT_ROOT_SECONDARY GPT_ROOT_ARM
+-#elif defined(__arm__) && !defined(WORDS_BIGENDIAN)
++#elif defined(__arm__) && (__BYTE_ORDER != __BIG_ENDIAN)
+ #  define GPT_ROOT_NATIVE GPT_ROOT_ARM
+ #endif
+ 
+diff --git a/src/shared/time-dst.c b/src/shared/time-dst.c
+index ceca2fa..6195b11 100644
+--- a/src/shared/time-dst.c
++++ b/src/shared/time-dst.c
+@@ -207,8 +207,8 @@ read_again:
+                 if (type_idxs[i] >= num_types)
+                         return -EINVAL;
+ 
+-        if (BYTE_ORDER == BIG_ENDIAN ? sizeof(time_t) == 8 && trans_width == 4
+-                                     : sizeof(time_t) == 4 || trans_width == 4) {
++        if (__BYTE_ORDER == __BIG_ENDIAN ? sizeof(time_t) == 8 && trans_width == 4
++                                         : sizeof(time_t) == 4 || trans_width == 4) {
+                 /* Decode the transition times, stored as 4-byte integers in
+                    network (big-endian) byte order.  We work from the end of
+                    the array so as not to clobber the next element to be
+@@ -216,7 +216,7 @@ read_again:
+                 i = num_transitions;
+                 while (i-- > 0)
+                         transitions[i] = decode((char *)transitions + i * 4);
+-        } else if (BYTE_ORDER != BIG_ENDIAN && sizeof(time_t) == 8) {
++        } else if (__BYTE_ORDER != __BIG_ENDIAN && sizeof(time_t) == 8) {
+                 /* Decode the transition times, stored as 8-byte integers in
+                    network (big-endian) byte order.  */
+                 for (i = 0; i < num_transitions; ++i)
+-- 
+2.0.0
+

@@ -1,0 +1,53 @@
+From 6017365a1d0c1c78fc34a7da63768ee5df5da511 Mon Sep 17 00:00:00 2001
+From: Lennart Poettering <lennart@poettering.net>
+Date: Fri, 11 Jul 2014 16:13:13 +0200
+Subject: [PATCH] endian: explicitly include endian.h wherever we want to use
+ __BYTE_ORDER
+
+---
+ src/libsystemd/sd-bus/bus-protocol.h | 1 +
+ src/shared/architecture.h            | 2 ++
+ src/shared/gpt.h                     | 2 ++
+ 3 files changed, 5 insertions(+)
+
+diff --git a/src/libsystemd/sd-bus/bus-protocol.h b/src/libsystemd/sd-bus/bus-protocol.h
+index 5046d17..4f46468 100644
+--- a/src/libsystemd/sd-bus/bus-protocol.h
++++ b/src/libsystemd/sd-bus/bus-protocol.h
+@@ -21,6 +21,7 @@
+   along with systemd; If not, see <http://www.gnu.org/licenses/>.
+ ***/
+ 
++#include <endian.h>
+ 
+ /* Endianness */
+ 
+diff --git a/src/shared/architecture.h b/src/shared/architecture.h
+index 58e97e5..38780d1 100644
+--- a/src/shared/architecture.h
++++ b/src/shared/architecture.h
+@@ -21,6 +21,8 @@
+   along with systemd; If not, see <http://www.gnu.org/licenses/>.
+ ***/
+ 
++#include <endian.h>
++
+ #include "util.h"
+ 
+ /* A cleaned up architecture definition. We don't want to get lost in
+diff --git a/src/shared/gpt.h b/src/shared/gpt.h
+index 278940b..ef3444f 100644
+--- a/src/shared/gpt.h
++++ b/src/shared/gpt.h
+@@ -19,6 +19,8 @@
+   along with systemd; If not, see <http://www.gnu.org/licenses/>.
+ ***/
+ 
++#include <endian.h>
++
+ #include "sd-id128.h"
+ 
+ /* We only support root disk discovery for x86, x86-64 and ARM for
+-- 
+2.0.0
+
