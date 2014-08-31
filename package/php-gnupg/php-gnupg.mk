@@ -6,7 +6,8 @@
 
 PHP_GNUPG_VERSION = 1.3.3
 PHP_GNUPG_SOURCE = gnupg-$(PHP_GNUPG_VERSION).tgz
-PHP_GNUPG_SITE = http://pecl.php.net/get
+# pecl.php.net returns html with db connect failed
+PHP_GNUPG_SITE = http://sources.buildroot.net
 # phpize does the autoconf magic
 PHP_GNUPG_DEPENDENCIES = php libgpgme host-autoconf host-pkgconf
 PHP_GNUPG_CONF_OPT = --with-php-config=$(STAGING_DIR)/usr/bin/php-config \
