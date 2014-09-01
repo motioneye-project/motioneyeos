@@ -15,7 +15,6 @@ METACITY_LICENSE_FILES = COPYING
 METACITY_CONF_OPT = --x-includes=$(STAGING_DIR)/usr/include/X11 \
 		--x-libraries=$(STAGING_DIR)/usr/lib \
 		--disable-glibtest --disable-gconf \
-		--disable-dependency-tracking \
 		--disable-sm --disable-startup-notification
 
 METACITY_DEPENDENCIES = libgtk2 \

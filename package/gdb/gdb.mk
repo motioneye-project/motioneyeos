@@ -114,7 +114,6 @@ HOST_GDB_CONF_OPT = \
 	--target=$(GNU_TARGET_NAME) \
 	--enable-static --disable-shared \
 	--without-uiout \
-	--disable-tui \
 	--disable-gdbtk \
 	--without-x \
 	--enable-threads \
@@ -122,6 +121,13 @@ HOST_GDB_CONF_OPT = \
 	--without-included-gettext \
 	$(GDB_DISABLE_BINUTILS_CONF_OPT) \
 	--disable-sim
+
+ifeq ($(BR2_PACKAGE_HOST_GDB_TUI),y)
+	HOST_GDB_DEPENDENCIES += host-ncurses
+	HOST_GDB_CONF_OPT += --enable-tui
+else
+	HOST_GDB_CONF_OPT += --disable-tui
+endif
 
 ifeq ($(GDB_FROM_GIT),y)
 HOST_GDB_DEPENDENCIES += host-texinfo

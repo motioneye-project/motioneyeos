@@ -51,7 +51,6 @@ HOST_MYSQL_CONF_OPT = \
 
 MYSQL_CONF_OPT += \
 	--localstatedir=/var/mysql \
-	--disable-dependency-tracking \
 	--with-atomic-ops=up \
 	--with-embedded-server \
 	--without-query-cache \

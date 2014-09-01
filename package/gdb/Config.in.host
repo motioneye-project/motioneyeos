@@ -13,6 +13,11 @@ config BR2_PACKAGE_HOST_GDB
 
 if BR2_PACKAGE_HOST_GDB
 
+config BR2_PACKAGE_HOST_GDB_TUI
+	bool "GDB TUI support"
+	help
+	  This option enables terminal user interface (TUI) for gdb
+
 choice
 	prompt "GDB debugger Version"
 	depends on !BR2_arc

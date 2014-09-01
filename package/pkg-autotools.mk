@@ -140,6 +140,7 @@ define $(2)_CONFIGURE_CMDS
 		--disable-documentation \
 		--with-xmlto=no \
 		--with-fop=no \
+		--disable-dependency-tracking \
 		$$(DISABLE_NLS) \
 		$$(DISABLE_LARGEFILE) \
 		$$(DISABLE_IPV6) \
@@ -169,6 +170,7 @@ define $(2)_CONFIGURE_CMDS
 		--disable-documentation \
 		--with-xmlto=no \
 		--with-fop=no \
+		--disable-dependency-tracking \
 		$$(QUIET) $$($$(PKG)_CONF_OPT) \
 	)
 endef

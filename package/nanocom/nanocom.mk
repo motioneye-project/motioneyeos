@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-NANOCOM_VERSION = 2.6.1
+NANOCOM_VERSION = 1.0
 NANOCOM_SOURCE = nanocom.tar.gz
-NANOCOM_SITE = http://downloads.sourceforge.net/project/nanocom/nanocom/v1.0
+NANOCOM_SITE = http://downloads.sourceforge.net/project/nanocom/nanocom/v$(NANOCOM_VERSION)
 NANOCOM_LICENSE = GPLv2+
 NANOCOM_LICENSE_FILES = COPYING
 

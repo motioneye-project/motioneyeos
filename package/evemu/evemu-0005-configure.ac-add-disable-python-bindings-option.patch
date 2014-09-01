@@ -1,4 +1,4 @@
-From 3169736eab530cdbd5d123e7df10f51c44090e0b Mon Sep 17 00:00:00 2001
+From 4618fb3b788715c754872df5fed7bce0186f5089 Mon Sep 17 00:00:00 2001
 From: Peter Seiderer <ps.report@gmx.net>
 Date: Sun, 27 Apr 2014 13:23:41 +0200
 Subject: [PATCH] configure.ac: add '--disable-python-bindings' option
@@ -20,10 +20,10 @@ index a83b35f..fb87c76 100644
  pkgconfigdir = $(libdir)/pkgconfig
  pkgconfig_DATA = evemu.pc
 diff --git a/configure.ac b/configure.ac
-index 4e0c3b8..ab1b553 100644
+index c7e16b3..72c5fdf 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -52,6 +52,17 @@ AS_IF([test "x$enable_tests" != "xno"], [
+@@ -54,6 +54,17 @@ AS_IF([test "x$enable_tests" != "xno"], [
  
  AC_SUBST([SUBDIR_TESTS])
  
@@ -39,7 +39,7 @@ index 4e0c3b8..ab1b553 100644
 +
 +
  AC_SUBST(AM_CFLAGS,
-          "-Wall -Wextra -pedantic")
+          "-Wall -Wextra")
  
 -- 
 1.8.1.4
