@@ -88,6 +88,7 @@ ifeq ($(BR2_PACKAGE_XBMC_GL),y)
 XBMC_DEPENDENCIES += libglew libglu libgl sdl_image xlib_libX11 xlib_libXext \
 	xlib_libXmu xlib_libXrandr xlib_libXt
 XBMC_CONF_OPT += --enable-gl --enable-sdl --enable-x11 --enable-xrandr --disable-gles
+ifeq ($(BR2_PACKAGE_XBMC_RSXS),y)
 # fix rsxs compile
 # make sure target libpng-config is used, options taken from rsxs-0.9/acinclude.m4
 XBMC_CONF_ENV += \
@@ -98,6 +99,9 @@ XBMC_CONF_ENV += \
 	mac_cv_pkg_ldflags="`$(STAGING_DIR)/usr/bin/libpng-config --L_opts --R_opts`" \
 	mac_cv_pkg_libs="`$(STAGING_DIR)/usr/bin/libpng-config --libs`"
 XBMC_CONF_OPT += --enable-rsxs
+else
+XBMC_CONF_OPT += --disable-rsxs
+endif
 else
 XBMC_CONF_OPT += --disable-gl --disable-rsxs --disable-sdl --disable-x11 --disable-xrandr
 ifeq ($(BR2_PACKAGE_XBMC_EGL_GLES),y)
