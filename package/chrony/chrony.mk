@@ -27,6 +27,12 @@ ifneq ($(BR2_INET_IPV6),y)
 CHRONY_CONF_OPT += --disable-ipv6
 endif
 
+# Ditch the doc build, needs makeinfo and we don't need them
+define CHRONY_DISABLE_DOCS
+	$(SED) 's/chronyc chrony.txt/chronyc/' $(@D)/Makefile.in
+endef
+CHRONY_POST_PATCH_HOOKS += CHRONY_DISABLE_DOCS
+
 define CHRONY_CONFIGURE_CMDS
 	cd $(@D) && $(TARGET_CONFIGURE_OPTS) ./configure $(CHRONY_CONF_OPT)
 endef
