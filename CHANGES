@@ -1,3 +1,19 @@
+2014.08, Released September 1st, 2014
+
+	Minor manual fixes/additions.
+
+	Updated/fixed packages: btrfs-progs, cmake, cppcms, exim,
+	lftp, libdaemon, libev, libgpgme, libiqrf, libnl, libplist,
+	libroxml, libwebsockets, mesa3d, mpd, mtdev2tuio, musepack,
+	perl-gd, php-geoip, php-gnupg, php-imagick, php-memcached,
+	php-ssh2, php-yaml, php-zmq, polarssl, ruby, systemd, taglib,
+	uboot-tools, upmpdcli, webkit, xapp_xfs, xapp_luit,
+	xscreensaver, yajl
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#7346: vim-8ae50e3ef8bf.tar.gz can not be downloaded, 404 not found
+
 2014.08-rc3, Released August 26th, 2014
 
 	Minor fixes.
