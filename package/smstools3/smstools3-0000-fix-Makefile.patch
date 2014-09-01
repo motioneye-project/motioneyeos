@@ -1,0 +1,29 @@
+Makefile: fix rules
+
+In a Makefile, recipes should follow rules, there can not be variable
+definitions in-between.
+
+Although make-3.81 is happy about it, make-4.0 (and probably 3.82 too)
+do whine loudly.
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+
+diff -durN smstools3-3.1.15.orig/src/Makefile smstools3-3.1.15/src/Makefile
+--- smstools3-3.1.15.orig/src/Makefile	2010-09-21 13:29:14.000000000 +0200
++++ smstools3-3.1.15/src/Makefile	2014-09-01 22:27:02.719939329 +0200
+@@ -39,14 +39,13 @@
+ 
+ all: smsd 
+ 
+-smsd: smsd.c extras.o locking.o cfgfile.o logging.o alarm.o smsd_cfg.o charset.o stats.o blacklist.o whitelist.o modeminit.o pdu.o
+-
+ ifneq (,$(findstring SOLARIS,$(CFLAGS)))
+ ifeq (,$(findstring DISABLE_INET_SOCKET,$(CFLAGS)))
+ override LFLAGS += -lsocket -lnsl
+ endif
+ endif
+ 
++smsd: smsd.c extras.o locking.o cfgfile.o logging.o alarm.o smsd_cfg.o charset.o stats.o blacklist.o whitelist.o modeminit.o pdu.o
+ ifneq (,$(findstring NOSTATS,$(CFLAGS)))
+ 	$(CC) $(CFLAGS) -o $@ $^ $(LFLAGS)
+ else 
