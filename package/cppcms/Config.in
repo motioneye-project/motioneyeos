@@ -32,13 +32,8 @@ config BR2_PACKAGE_CPPCMS_ICU
 	  Using ICU allows advanced localization features into CppCMS,
 	  in another hand ICU is heavier than iconv.
 
-comment "icu support needs a toolchain w/ wchar"
-	depends on !BR2_BINFMT_FLAT
-	depends on BR2_ARCH_HAS_ATOMICS
-	depends on !BR2_USE_WCHAR
-
 endif
 
-comment "cppcms needs a toolchain w/ C++, NPTL, dynamic library"
+comment "cppcms needs a toolchain w/ C++, NPTL, wchar, dynamic library"
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS_NPTL || \
-		BR2_PREFER_STATIC_LIB
+		!BR2_USE_WCHAR || BR2_PREFER_STATIC_LIB
