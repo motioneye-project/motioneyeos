@@ -1,6 +1,7 @@
 config BR2_PACKAGE_PHIDGETWEBSERVICE
 	bool "phidgetwebservice"
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libusb, libphidget
+	depends on !BR2_PREFER_STATIC_LIB # libphidget
 	select BR2_PACKAGE_LIBPHIDGET
 	help
           phidgetwebservice (the Phidget WebService) provides an HTTP
@@ -15,5 +16,6 @@ config BR2_PACKAGE_PHIDGETWEBSERVICE
 
 	  http://phidgets.com/
 
-comment "phidgetwebservice needs a toolchain w/ threads"
+comment "phidgetwebservice needs a toolchain w/ threads, dynamic library"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_PREFER_STATIC_LIB
