@@ -64,8 +64,11 @@ XBMC_CONF_ENV += INCLUDES="-I$(STAGING_DIR)/usr/include/interface/vcos/pthreads 
 	LIBS="-lvcos -lvchostif"
 endif
 
-ifeq ($(BR2_PACKAGE_DBUS),y)
+ifeq ($(BR2_PACKAGE_XBMC_DBUS),y)
 XBMC_DEPENDENCIES += dbus
+XBMC_CONF_OPT += --enable-dbus
+else
+XBMC_CONF_OPT += --disable-dbus
 endif
 
 ifeq ($(BR2_PACKAGE_ALSA_LIB),y)
