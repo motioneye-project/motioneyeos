@@ -8,7 +8,7 @@ HDR_M="${HDR_VER%%.*}"
 HDR_V="${HDR_VER#*.}"
 HDR_m="${HDR_V%%.*}"
 
-EXEC="$(mktemp --tmpdir check-headers.XXXXXX)"
+EXEC="$(mktemp -t check-headers.XXXXXX)"
 
 # We do not want to account for the patch-level, since headers are
 # not supposed to change for different patchlevels, so we mask it out.
