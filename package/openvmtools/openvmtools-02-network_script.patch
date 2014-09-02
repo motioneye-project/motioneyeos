@@ -1,0 +1,21 @@
+scripts/linux/network: exit normally if no network control script
+
+When using suspend/resume from the hypervisor, openvmtools checks for the
+networking script, and exists with an error if not found, making the hypervisor
+raise a warning message. This workaround silences that error message.
+
+Signed-off-by: Karoly Kasza <kaszak@gmail.com>
+
+--- open-vm-tools-9.4.6-1770165.orig/scripts/linux/network	2014-07-02 00:21:14.000000000 +0200
++++ open-vm-tools-9.4.6-1770165/scripts/linux/network	2014-08-07 16:34:21.963514273 +0200
+@@ -88,7 +88,9 @@
+ run_network_script()
+ {
+    script=`find_networking_script`
+-   [ "$script" != "error" ] || Panic "Cannot find system networking script."
++#   [ "$script" != "error" ] || Panic "Cannot find system networking script."
++# Modified for buildroot
++   [ "$script" != "error" ] || exit 0
+ 
+    # Using SysV "service" if it exists, otherwise fall back to run the script directly
+    service=`which service 2>/dev/null`

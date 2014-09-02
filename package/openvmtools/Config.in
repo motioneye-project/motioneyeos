@@ -1,0 +1,61 @@
+config BR2_PACKAGE_OPENVMTOOLS
+	bool "openvmtools"
+	depends on BR2_i386 || BR2_x86_64
+	depends on BR2_USE_MMU # libglib2
+	depends on BR2_USE_WCHAR # libglib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libglib2
+	depends on BR2_TOOLCHAIN_HAS_NATIVE_RPC
+	depends on BR2_LARGEFILE
+	depends on BR2_ENABLE_LOCALE
+	select BR2_PACKAGE_LIBGLIB2
+	help
+	  Open Virtual Machine Tools for VMware guest OS
+
+	  http://open-vm-tools.sourceforge.net/
+
+	  ICU locales and X11 tools are currently not supported.
+
+	  NOTE: Support for vmblock-fuse will be enabled in openvmtools if the
+	        libfuse package is selected.
+
+if BR2_PACKAGE_OPENVMTOOLS
+
+config BR2_PACKAGE_OPENVMTOOLS_PROCPS
+	bool "procps support"
+	depends on BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
+	select BR2_PACKAGE_PROCPS_NG
+	help
+	  Enable support for procps / meminfo
+
+comment "procps support needs BR2_PACKAGE_BUSYBOX_SHOW_OTHERS"
+	depends on !BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
+
+config BR2_PACKAGE_OPENVMTOOLS_DNET
+	bool "dnet support"
+	depends on BR2_INET_IPV6
+	select BR2_PACKAGE_LIBDNET
+	help
+	  Enable support for libdnet / nicinfo
+
+comment "dnet support needs a toolchain w/ IPv6"
+	depends on !BR2_INET_IPV6
+
+config BR2_PACKAGE_OPENVMTOOLS_PAM
+	bool "PAM support"
+	select BR2_PACKAGE_LINUX_PAM
+	# linux-pam needs locale and wchar, but we already have this
+	# dependency on the main symbol, above.
+	depends on !BR2_PREFER_STATIC_LIB
+	help
+	  Support for PAM in openvmtools
+
+comment "PAM support needs a toolchain w/ dynamic library"
+	depends on BR2_PREFER_STATIC_LIB
+
+endif
+
+comment "openvmtools needs a toolchain w/ wchar, threads, RPC, largefile, locale"
+	depends on BR2_i386 || BR2_x86_64
+	depends on BR2_USE_MMU
+	depends on !BR2_USE_WCHAR ||!BR2_TOOLCHAIN_HAS_THREADS || \
+	!BR2_TOOLCHAIN_HAS_NATIVE_RPC || !BR2_LARGEFILE || !BR2_ENABLE_LOCALE

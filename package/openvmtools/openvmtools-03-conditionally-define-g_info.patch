@@ -1,0 +1,28 @@
+conditionally define g_info
+
+glib also defines a g_info macro since 2.39.2, conflicting with the one in
+openvmtools:
+
+https://git.gnome.org/browse/glib/commit/?h=glib-2-40&id=36f1a4ce7ed6df6aa8
+
+Patch from Fedora:
+
+https://bugzilla.redhat.com/show_bug.cgi?id=1063847
+http://pkgs.fedoraproject.org/cgit/open-vm-tools.git/tree/g_info_redefine.patch
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+
+diff -uNr open-vm-tools-9.4.0-1280544.orig/lib/include/vmware/tools/log.h open-vm-tools-9.4.0-1280544/lib/include/vmware/tools/log.h
+--- open-vm-tools-9.4.0-1280544.orig/lib/include/vmware/tools/log.h	2013-09-23 19:51:10.000000000 +0400
++++ open-vm-tools-9.4.0-1280544/lib/include/vmware/tools/log.h	2014-02-18 10:56:50.368604176 +0400
+@@ -134,7 +134,9 @@
+  *******************************************************************************
+  */
+ 
+-#define g_info(fmt, ...) g_log(G_LOG_DOMAIN, G_LOG_LEVEL_INFO, fmt, ## __VA_ARGS__)
++#if !defined(g_info)
++#  define g_info(fmt, ...) g_log(G_LOG_DOMAIN, G_LOG_LEVEL_INFO, fmt, ## __VA_ARGS__)
++#endif
+ 
+ 
+ /*

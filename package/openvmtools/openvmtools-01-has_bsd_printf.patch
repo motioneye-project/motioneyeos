@@ -1,0 +1,26 @@
+lib/misc/msgList.c: missing #ifdef
+
+This macro checks for BSD style printf(), which is not present
+when compiling for uClibc. The linked functions are unnecessary in
+this case, and they break compilation.
+
+Signed-off-by: Karoly Kasza <kaszak@gmail.com>
+
+--- open-vm-tools-9.4.6-1770165.orig/lib/misc/msgList.c	2014-07-02 00:21:14.000000000 +0200
++++ open-vm-tools-9.4.6-1770165/lib/misc/msgList.c	2014-07-29 13:40:40.000000000 +0200
+@@ -487,6 +487,7 @@
+    return messages->id;
+ }
+ 
++#ifdef HAS_BSD_PRINTF
+ 
+ /*
+  *----------------------------------------------------------------------
+@@ -566,6 +567,7 @@
+    }
+ }
+ 
++#endif
+ 
+ /*
+  *----------------------------------------------------------------------
