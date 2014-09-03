@@ -8,7 +8,7 @@ diff -durN tvheadend-c84bc2b72b462ef2dbed305f3fd0bb3fa5046fc3.orig/Makefile tvhe
 @@ -28,7 +28,7 @@
  #
  
- CFLAGS  += -g -O2
+ CFLAGS  += -g -O2 -Wunused-result
 -CFLAGS  += -Wall -Werror -Wwrite-strings -Wno-deprecated-declarations
 +CFLAGS  += -Wall -Wwrite-strings -Wno-deprecated-declarations
  CFLAGS  += -Wmissing-prototypes
