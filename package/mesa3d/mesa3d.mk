@@ -82,6 +82,9 @@ MESA3D_CONF_OPT += --enable-dri3
 else
 MESA3D_CONF_OPT += --disable-dri3
 endif
+ifeq ($(BR2_PACKAGE_XLIB_LIBXXF86VM),y)
+MESA3D_DEPENDENCIES += xlib_libXxf86vm
+endif
 MESA3D_PROVIDES += libgl
 MESA3D_CONF_OPT += \
 	--enable-dri \
