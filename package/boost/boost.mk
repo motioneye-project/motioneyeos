@@ -82,6 +82,7 @@ HOST_BOOST_OPT += toolset=gcc threading=multi variant=release link=shared \
 
 BOOST_OPT += toolset=gcc \
 	     threading=multi \
+	     abi=$(if $(BR2_MIPS_OABI32),o32,sysv) \
 	     variant=$(if $(BR2_ENABLE_DEBUG),debug,release) \
 	     link=$(if $(BR2_PREFER_STATIC_LIB),static,shared) \
 	     runtime-link=$(if $(BR2_PREFER_STATIC_LIB),static,shared)
