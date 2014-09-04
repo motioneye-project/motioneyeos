@@ -4,12 +4,13 @@
 #
 ################################################################################
 
-WIRESHARK_VERSION = 1.10.9
+WIRESHARK_VERSION = 1.12.0
 WIRESHARK_SOURCE = wireshark-$(WIRESHARK_VERSION).tar.bz2
 WIRESHARK_SITE = http://www.wireshark.org/download/src/all-versions
 WIRESHARK_LICENSE = wireshark license
 WIRESHARK_LICENSE_FILES = COPYING
 WIRESHARK_DEPENDENCIES = libpcap libgcrypt libglib2
+# For wrong cflags patch
 WIRESHARK_AUTORECONF = YES
 WIRESHARK_CONF_ENV = LIBGCRYPT_CONFIG=$(STAGING_DIR)/usr/bin/libgcrypt-config \
 			ac_cv_path_PCAP_CONFIG=$(STAGING_DIR)/usr/bin/pcap-config
