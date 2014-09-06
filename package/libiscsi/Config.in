@@ -1,6 +1,5 @@
 config BR2_PACKAGE_LIBISCSI
 	bool "libiscsi"
-	select BR2_PACKAGE_POPT
 	help
 	  Libiscsi is a client-side library to implement the iSCSI protocol
 	  that can be used to access resource of an iSCSI Target.
