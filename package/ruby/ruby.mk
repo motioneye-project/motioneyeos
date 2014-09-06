@@ -54,6 +54,12 @@ endif
 ifeq ($(BR2_PACKAGE_ZLIB),y)
 	RUBY_DEPENDENCIES += zlib
 endif
+ifeq ($(BR2_PACKAGE_GMP),y)
+	RUBY_DEPENDENCIES += gmp
+	RUBY_CONF_OPT += --with-gmp
+else
+	RUBY_CONF_OPT += --without-gmp
+endif
 
 # Remove rubygems and friends, as they need extensions that aren't
 # built and a target compiler.
