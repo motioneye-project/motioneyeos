@@ -16,6 +16,7 @@
 # The /var/lib/nfs directory is actually on a tmpfs filesystem.
 mkdir -p /var/lib/nfs/sm
 mkdir -p /var/lib/nfs/sm.bak
+mkdir -p /var/lock/subsys
 touch /var/lib/nfs/etab
 touch /var/lib/nfs/rmtab
 touch /var/lib/nfs/state
