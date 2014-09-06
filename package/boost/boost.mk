@@ -80,9 +80,17 @@ endif
 HOST_BOOST_OPT += toolset=gcc threading=multi variant=release link=shared \
 	runtime-link=shared
 
+ifeq ($(BR2_MIPS_OABI32),y)
+BOOST_ABI = o32
+else ifeq ($(BR2_arm),y)
+BOOST_ABI = aapcs
+else
+BOOST_ABI = sysv
+endif
+
 BOOST_OPT += toolset=gcc \
 	     threading=multi \
-	     abi=$(if $(BR2_MIPS_OABI32),o32,sysv) \
+	     abi=$(BOOST_ABI) \
 	     variant=$(if $(BR2_ENABLE_DEBUG),debug,release) \
 	     link=$(if $(BR2_PREFER_STATIC_LIB),static,shared) \
 	     runtime-link=$(if $(BR2_PREFER_STATIC_LIB),static,shared)
