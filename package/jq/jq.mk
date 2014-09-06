@@ -4,9 +4,8 @@
 #
 ################################################################################
 
-JQ_VERSION = 1.3
+JQ_VERSION = 1.4
 JQ_SITE = http://stedolan.github.io/jq/download/source
-JQ_DEPENDENCIES = host-flex host-bison
 JQ_LICENSE = MIT (code), CC-BY-3.0 (documentation)
 JQ_LICENSE_FILES = COPYING
 
