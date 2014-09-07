@@ -1,0 +1,33 @@
+xserver_xorg-server: Fix compile error for microblaze
+
+Fixes
+mipushpxl.c: In function 'miPushPixels':
+mipushpxl.c:110:38: error: 'IMAGE_BYTE_ORDER' undeclared (first use in this function)
+     if (screenInfo.bitmapBitOrder == IMAGE_BYTE_ORDER)
+
+Patch submitted upstream: https://bugs.freedesktop.org/show_bug.cgi?id=83582
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+
+diff -uNr xorg-server-1.16.0.glyph/include/servermd.h xorg-server-1.16.0/include/servermd.h
+--- xorg-server-1.16.0.glyph/include/servermd.h	2014-09-07 11:32:34.297332811 +0200
++++ xorg-server-1.16.0/include/servermd.h	2014-09-07 11:31:33.470099995 +0200
+@@ -176,6 +176,18 @@
+ 
+ #endif                          /* mips */
+ 
++#if defined(__microblaze__) || defined(microblaze)
++
++#ifdef __BIG_ENDIAN__
++#define IMAGE_BYTE_ORDER	MSBFirst
++#define BITMAP_BIT_ORDER	MSBFirst
++#else
++#define IMAGE_BYTE_ORDER	LSBFirst
++#define BITMAP_BIT_ORDER	LSBFirst
++#endif
++
++#endif
++
+ #if defined(__alpha) || defined(__alpha__)
+ #define IMAGE_BYTE_ORDER	LSBFirst        /* Values for the Alpha only */
+ #define BITMAP_BIT_ORDER       LSBFirst
