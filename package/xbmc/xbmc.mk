@@ -193,7 +193,7 @@ XBMC_DEPENDENCIES += libtheora
 endif
 
 # xbmc needs libva & libva-glx
-ifeq ($(BR2_PACKAGE_LIBVA)$(BR2_PACKAGE_MESA3D_DRI_DRIVER),yy)
+ifeq ($(BR2_PACKAGE_XBMC_LIBVA)$(BR2_PACKAGE_MESA3D_DRI_DRIVER),yy)
 XBMC_DEPENDENCIES += mesa3d libva
 XBMC_CONF_OPT += --enable-vaapi
 else
