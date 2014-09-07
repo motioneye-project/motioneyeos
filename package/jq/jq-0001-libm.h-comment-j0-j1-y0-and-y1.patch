@@ -1,0 +1,49 @@
+From e87163425a67938afde96f01b19587ac3348b369 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Sun, 7 Sep 2014 10:49:57 +0200
+Subject: [PATCH] libm.h: comment j0, j1, y0 and y1
+
+Those functions are currently not used by jq, but having them in
+libm.h prevents building with the uClibc C library when it doesn't
+have DO_XSI_MATH option enabled.
+
+This issue was spotted by the Buildroot autobuilder system:
+
+  http://autobuild.buildroot.org/results/aaf/aaf3c114e0ca3e265ae32c646ba67f01aaf608bd/build-end.log
+
+Submitted upstream at https://github.com/stedolan/jq/pull/570.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ libm.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/libm.h b/libm.h
+index f8c52be..8e82fb7 100644
+--- a/libm.h
++++ b/libm.h
+@@ -10,8 +10,8 @@ LIBM_DD(cosh)
+ LIBM_DD(exp2)
+ LIBM_DD(exp)
+ LIBM_DD(floor)
+-LIBM_DD(j0)
+-LIBM_DD(j1)
++/* LIBM_DD(j0) */
++/* LIBM_DD(j1) */
+ LIBM_DD(log10)
+ LIBM_DD(log2)
+ LIBM_DD(log)
+@@ -21,8 +21,8 @@ LIBM_DD(sqrt)
+ LIBM_DD(tan)
+ LIBM_DD(tanh)
+ LIBM_DD(tgamma)
+-LIBM_DD(y0)
+-LIBM_DD(y1)
++/* LIBM_DD(y0) */
++/* LIBM_DD(y1) */
+ /* LIBM_DID(jn) */
+ /* LIBM_DID(yn) */
+ /* LIBM_DDD(pow) */
+-- 
+2.0.0
+
