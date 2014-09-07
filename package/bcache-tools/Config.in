@@ -1,0 +1,22 @@
+config BR2_PACKAGE_BCACHE_TOOLS
+	bool "bcache tools"
+	depends on BR2_PACKAGE_HAS_UDEV
+	depends on BR2_LARGEFILE # util-linux
+	depends on BR2_USE_WCHAR # util-linux
+	depends on BR2_USE_MMU # util-linux (libblkid)
+	select BR2_PACKAGE_UTIL_LINUX
+	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
+	select BR2_PACKAGE_UTIL_LINUX_LIBBLKID
+	help
+	  Bcache is a Linux kernel block layer cache. It allows one or
+	  more fast disk drives such as flash-based solid state drives (SSDs)
+	  to act as a cache for one or more slower hard disk drives.
+
+	  http://bcache.evilpiepirate.org/
+
+	  This is the user space bcache tools, required to setup the linux
+	  bcache feature of the Linux kernel.
+
+comment "bcache-tools needs udev /dev management and a toolchain w/ largefile, wchar"
+	depends on BR2_USE_MMU
+	depends on !BR2_PACKAGE_HAS_UDEV || !BR2_LARGEFILE || !BR2_USE_WCHAR
