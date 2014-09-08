@@ -30,14 +30,13 @@ config BR2_PACKAGE_GLIBC
 
 choice
 	prompt "glibc version"
-	default BR2_GLIBC_VERSION_2_18
-
-config BR2_GLIBC_VERSION_2_18
-	bool "2.18"
-	depends on !BR2_powerpc64le
+	default BR2_GLIBC_VERSION_2_19
 
 config BR2_GLIBC_VERSION_2_19
 	bool "2.19"
+
+config BR2_GLIBC_VERSION_2_20
+	bool "2.20"
 
 endchoice
 
@@ -47,5 +46,5 @@ config BR2_GLIBC_VERSION_STRING
 	string
 	default "2.18-svnr23787" if BR2_EGLIBC_VERSION_2_18
 	default "2.19-svnr25243" if BR2_EGLIBC_VERSION_2_19
-	default "2.18" if BR2_GLIBC_VERSION_2_18
 	default "2.19" if BR2_GLIBC_VERSION_2_19
+	default "2.20" if BR2_GLIBC_VERSION_2_20
