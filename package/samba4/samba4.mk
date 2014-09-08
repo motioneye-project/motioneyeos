@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-SAMBA4_VERSION = 4.1.11
+SAMBA4_VERSION = 4.1.12
 SAMBA4_SITE = http://ftp.samba.org/pub/samba/stable
 SAMBA4_SOURCE = samba-$(SAMBA4_VERSION).tar.gz
 SAMBA4_LICENSE = GPLv3+
@@ -124,11 +124,13 @@ define SAMBA4_INSTALL_INIT_SYSV
 		$(TARGET_DIR)/etc/init.d/S91smb
 endef
 
-# uClibc-based builds don't like libtalloc in /usr/lib/samba
-define SAMBA4_MOVE_TALLOC
+# uClibc doesn't honor $ORIGIN so we need to move a few libs
+ifeq ($(BR2_TOOLCHAIN_USES_UCLIBC),y)
+define SAMBA4_MOVE_LIBS
+	mv -f $(TARGET_DIR)/usr/lib/samba/libreplace* $(TARGET_DIR)/usr/lib
 	mv -f $(TARGET_DIR)/usr/lib/samba/libtalloc* $(TARGET_DIR)/usr/lib
 endef
-
-SAMBA4_POST_INSTALL_TARGET_HOOKS += SAMBA4_MOVE_TALLOC
+SAMBA4_POST_INSTALL_TARGET_HOOKS += SAMBA4_MOVE_LIBS
+endif
 
 $(eval $(generic-package))
