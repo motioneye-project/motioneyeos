@@ -41,6 +41,16 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_AUDIOFXBAD
 	help
 	  Audio filters plugin
 
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_AUDIOMIXER
+	bool "audiomixer"
+	help
+	  Audio mixer plugin
+
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_COMPOSITOR
+	bool "compositor"
+	help
+	  Video compositor plugin
+
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_AUDIOVISUALIZERS
 	bool "audiovisualizers"
 	help
@@ -332,10 +342,6 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_BZ2
 	help
 	  Compress or decompress streams
 
-config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_CDAUDIO
-	bool "cdaudio"
-	select BR2_PACKAGE_LIBCDAUDIO
-
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_CURL
 	bool "curl"
 	select BR2_PACKAGE_LIBCURL
@@ -463,12 +469,6 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_RSVG
 comment "rsvg plugin needs a toolchain w/ C++, wchar, threads"
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR || \
 		!BR2_TOOLCHAIN_HAS_THREADS
-
-config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_EGLGLES
-	bool "eglgles"
-	depends on BR2_PACKAGE_HAS_LIBEGL && BR2_PACKAGE_HAS_LIBGLES
-	help
-	  EGL/GLES sink
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_SDL
 	bool "sdl"

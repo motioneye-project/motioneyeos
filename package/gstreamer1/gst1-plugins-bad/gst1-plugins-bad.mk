@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-GST1_PLUGINS_BAD_VERSION = 1.2.4
+GST1_PLUGINS_BAD_VERSION = 1.4.1
 GST1_PLUGINS_BAD_SOURCE = gst-plugins-bad-$(GST1_PLUGINS_BAD_VERSION).tar.xz
 GST1_PLUGINS_BAD_SITE = http://gstreamer.freedesktop.org/src/gst-plugins-bad
 GST1_PLUGINS_BAD_LICENSE_FILES = COPYING COPYING.LIB
@@ -25,7 +25,7 @@ GST1_PLUGINS_BAD_CONF_OPT = \
 	--disable-direct3d \
 	--disable-directdraw \
 	--disable-direct3d9 \
-	--disable-directshow \
+	--disable-winks \
 	--disable-android_media \
 	--disable-apple_media \
 	--disable-osx_video \
@@ -37,7 +37,6 @@ GST1_PLUGINS_BAD_CONF_OPT = \
 GST1_PLUGINS_BAD_CONF_OPT += \
 	--disable-avc \
 	--disable-quicktime \
-	--disable-mfc \
 	--disable-opensles \
 	--disable-uvch264 \
 	--disable-voamrwbenc \
@@ -62,8 +61,11 @@ GST1_PLUGINS_BAD_CONF_OPT += \
 	--disable-nas \
 	--disable-ofa \
 	--disable-openal \
+	--disable-openexr \
 	--disable-openjpeg \
+	--disable-openni2 \
 	--disable-pvr \
+	--disable-libvisual \
 	--disable-timidity \
 	--disable-teletextdec \
 	--disable-wildmidi \
@@ -130,6 +132,18 @@ ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_AUDIOFXBAD),y)
 GST1_PLUGINS_BAD_CONF_OPT += --enable-audiofxbad
 else
 GST1_PLUGINS_BAD_CONF_OPT += --disable-audiofxbad
+endif
+
+ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_AUDIOMIXER),y)
+GST1_PLUGINS_BAD_CONF_OPT += --enable-audiomixer
+else
+GST1_PLUGINS_BAD_CONF_OPT += --disable-audiomixer
+endif
+
+ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_COMPOSITOR),y)
+GST1_PLUGINS_BAD_CONF_OPT += --enable-compositor
+else
+GST1_PLUGINS_BAD_CONF_OPT += --disable-compositor
 endif
 
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_AUDIOVISUALIZERS),y)
