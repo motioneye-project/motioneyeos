@@ -19,7 +19,6 @@ endif
 FFMPEG_CONF_OPT = \
 	--prefix=/usr		\
 	--enable-avfilter \
-	--disable-debug \
 	--disable-version3 \
 	--enable-logging \
 	--enable-optimizations \
@@ -66,6 +65,12 @@ FFMPEG_CONF_OPT = \
 	--disable-doc
 
 FFMPEG_DEPENDENCIES += $(if $(BR2_PACKAGE_LIBICONV),libiconv)
+
+ifeq ($(BR2_ENABLE_DEBUG),y)
+FFMPEG_CONF_OPT += --enable-debug
+else
+FFMPEG_CONF_OPT += --disable-debug
+endif
 
 ifeq ($(BR2_PACKAGE_FFMPEG_GPL),y)
 FFMPEG_CONF_OPT += --enable-gpl
