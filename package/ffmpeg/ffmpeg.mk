@@ -64,7 +64,7 @@ FFMPEG_CONF_OPT = \
 	--disable-symver \
 	--disable-doc
 
-FFMPEG_DEPENDENCIES += $(if $(BR2_PACKAGE_LIBICONV),libiconv)
+FFMPEG_DEPENDENCIES += $(if $(BR2_PACKAGE_LIBICONV),libiconv) host-pkgconf
 
 ifeq ($(BR2_ENABLE_DEBUG),y)
 FFMPEG_CONF_OPT += --enable-debug
@@ -333,6 +333,7 @@ define FFMPEG_CONFIGURE_CMDS
 		--arch=$(BR2_ARCH) \
 		--target-os="linux" \
 		--disable-stripping \
+		--pkg-config="$(PKG_CONFIG_HOST_BINARY)" \
 		$(if $(BR2_GCC_TARGET_TUNE),--cpu=$(BR2_GCC_TARGET_TUNE)) \
 		$(SHARED_STATIC_LIBS_OPTS) \
 		$(FFMPEG_CONF_OPT) \
