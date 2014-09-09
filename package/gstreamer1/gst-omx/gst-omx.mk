@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-GST_OMX_VERSION = 1.0.0
+GST_OMX_VERSION = 1.2.0
 GST_OMX_SOURCE = gst-omx-$(GST_OMX_VERSION).tar.xz
 GST_OMX_SITE = http://gstreamer.freedesktop.org/src/gst-omx
 
@@ -33,5 +33,13 @@ GST_OMX_CONF_ENV = \
 endif
 
 GST_OMX_DEPENDENCIES = gstreamer1 gst1-plugins-base libopenmax
+
+# adjust library paths to where buildroot installs them
+define GST_OMX_FIXUP_CONFIG_PATHS
+	find $(@D)/config -name gstomx.conf | \
+		xargs $(SED) 's|/usr/local|/usr|g' -e 's|/opt/vc|/usr|g'
+endef
+
+GST_OMX_POST_PATCH_HOOKS += GST_OMX_FIXUP_CONFIG_PATHS
 
 $(eval $(autotools-package))
