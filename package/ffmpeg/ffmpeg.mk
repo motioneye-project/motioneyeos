@@ -22,15 +22,12 @@ FFMPEG_CONF_OPT = \
 	--disable-debug \
 	--disable-version3 \
 	--enable-logging \
-	--disable-pic \
 	--enable-optimizations \
 	--disable-extra-warnings \
 	--disable-ffprobe \
 	--enable-avdevice \
 	--enable-avcodec \
 	--enable-avformat \
-	--enable-swscale \
-	--enable-postproc \
 	--disable-x11grab \
 	--enable-network \
 	--disable-gray \
@@ -311,6 +308,8 @@ endif
 
 ifeq ($(BR2_PREFER_STATIC_LIB),)
 FFMPEG_CONF_OPT += --enable-pic
+else
+FFMPEG_CONF_OPT += --disable-pic
 endif
 
 FFMPEG_CONF_OPT += $(call qstrip,$(BR2_PACKAGE_FFMPEG_EXTRACONF))
