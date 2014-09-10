@@ -84,6 +84,7 @@ config BR2_TOOLCHAIN_BUILDROOT_MUSL
 	bool "musl (experimental)"
 	depends on BR2_arm || BR2_armeb || BR2_i386 || BR2_microblaze || \
 		BR2_mips || BR2_mipsel || BR2_powerpc || BR2_x86_64
+	depends on !BR2_powerpc_SPE # not supported, build breaks
 	select BR2_TOOLCHAIN_USES_MUSL
 	help
 	  This option selects musl as the C library for the
