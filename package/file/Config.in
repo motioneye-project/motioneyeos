@@ -5,4 +5,4 @@ config BR2_PACKAGE_FILE
 	  Program to identify a file's format by scanning binary data
 	  for known patterns.
 
-	  ftp://ftp.astron.com/pub/file/
+	  http://www.darwinsys.com/file/
