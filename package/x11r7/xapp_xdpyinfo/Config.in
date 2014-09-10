@@ -1,5 +1,6 @@
 config BR2_PACKAGE_XAPP_XDPYINFO
 	bool "xdpyinfo"
+	depends on BR2_USE_MMU # fork()
 	select BR2_PACKAGE_XLIB_LIBX11
 	select BR2_PACKAGE_XLIB_LIBXEXT
 	select BR2_PACKAGE_XLIB_LIBXTST
