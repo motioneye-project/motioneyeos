@@ -53,4 +53,13 @@ config BR2_PACKAGE_SQLITE_SECURE_DELETE
 	  http://www.sqlite.org/pragma.html#pragma_secure_delete
 	  for additional information.
 
+config BR2_PACKAGE_SQLITE_NO_SYNC
+	bool "Disable fsync"
+	help
+	  By default SQLite forces all database transactions to storage
+	  immediately using fsync() to protect against data loss in case
+	  of power failure.
+	  This option turns this behavior off resulting in higher performance
+	  especially when using slow flash storage.
+
 endif
