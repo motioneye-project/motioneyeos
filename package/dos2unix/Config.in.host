@@ -1,0 +1,6 @@
+config BR2_PACKAGE_HOST_DOS2UNIX
+	bool "host dos2unix"
+	help
+	  dos2unix converts text file line endings between CRLF and LF
+
+	  http://freshmeat.net/projects/dos2unix
