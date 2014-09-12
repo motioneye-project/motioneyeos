@@ -3,10 +3,12 @@ comment "Note that xfsprogs needs a toolchain with UCLIBC_SV4_DEPRECATED and UCL
 	depends on BR2_PACKAGE_XFSPROGS
 
 comment "xfsprogs needs a toolchain w/ largefile, wchar"
+	depends on BR2_USE_MMU
 	depends on !(BR2_LARGEFILE && BR2_USE_WCHAR)
 
 config BR2_PACKAGE_XFSPROGS
 	bool "xfsprogs"
+	depends on BR2_USE_MMU # fork()
 	depends on BR2_LARGEFILE
 	depends on BR2_USE_WCHAR # util-linux
 	select BR2_PACKAGE_UTIL_LINUX
