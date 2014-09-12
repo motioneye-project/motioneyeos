@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-GOOGLE_BREAKPAD_VERSION = 1320
+GOOGLE_BREAKPAD_VERSION = 1373
 GOOGLE_BREAKPAD_SITE = http://google-breakpad.googlecode.com/svn/trunk
 GOOGLE_BREAKPAD_SITE_METHOD = svn
 GOOGLE_BREAKPAD_CONF_OPT = --disable-processor --disable-tools
