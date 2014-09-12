@@ -12,7 +12,11 @@ endif
 LUA_SITE = http://www.lua.org/ftp
 LUA_INSTALL_STAGING = YES
 LUA_LICENSE = MIT
+ifeq ($(BR2_PACKAGE_LUA_5_1),y)
 LUA_LICENSE_FILES = COPYRIGHT
+else
+LUA_LICENSE_FILES = doc/readme.html
+endif
 
 LUA_PROVIDES = luainterpreter
 
