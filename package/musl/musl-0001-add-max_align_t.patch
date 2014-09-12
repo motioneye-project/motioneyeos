@@ -1,0 +1,153 @@
+From 321f4fa9067185aa6bb47403dfba46e8cfe917d3 Mon Sep 17 00:00:00 2001
+From: Rich Felker <dalias@aerifal.cx>
+Date: Wed, 20 Aug 2014 21:20:14 +0000
+Subject: add max_align_t definition for C11 and C++11
+
+unfortunately this needs to be able to vary by arch, because of a huge
+mess GCC made: the GCC definition, which became the ABI, depends on
+quirks in GCC's definition of __alignof__, which does not match the
+formal alignment of the type.
+
+GCC's __alignof__ unexpectedly exposes the an implementation detail,
+its "preferred alignment" for the type, rather than the formal/ABI
+alignment of the type, which it only actually uses in structures. on
+most archs the two values are the same, but on some (at least i386)
+the preferred alignment is greater than the ABI alignment.
+
+I considered using _Alignas(8) unconditionally, but on at least one
+arch (or1k), the alignment of max_align_t with GCC's definition is
+only 4 (even the "preferred alignment" for these types is only 4).
+---
+diff --git a/arch/arm/bits/alltypes.h.in b/arch/arm/bits/alltypes.h.in
+index 0d750cc..183c4c4 100644
+--- a/arch/arm/bits/alltypes.h.in
++++ b/arch/arm/bits/alltypes.h.in
+@@ -13,6 +13,8 @@ TYPEDEF unsigned wint_t;
+ TYPEDEF float float_t;
+ TYPEDEF double double_t;
+ 
++TYPEDEF struct { long long __ll; long double __ld; } max_align_t;
++
+ TYPEDEF long time_t;
+ TYPEDEF long suseconds_t;
+ 
+diff --git a/arch/i386/bits/alltypes.h.in b/arch/i386/bits/alltypes.h.in
+index 502c882..8ba8f6f 100644
+--- a/arch/i386/bits/alltypes.h.in
++++ b/arch/i386/bits/alltypes.h.in
+@@ -27,6 +27,8 @@ TYPEDEF long double float_t;
+ TYPEDEF long double double_t;
+ #endif
+ 
++TYPEDEF struct { _Alignas(8) long long __ll; long double __ld; } max_align_t;
++
+ TYPEDEF long time_t;
+ TYPEDEF long suseconds_t;
+ 
+diff --git a/arch/microblaze/bits/alltypes.h.in b/arch/microblaze/bits/alltypes.h.in
+index 4657d14..a03e1b8 100644
+--- a/arch/microblaze/bits/alltypes.h.in
++++ b/arch/microblaze/bits/alltypes.h.in
+@@ -13,6 +13,8 @@ TYPEDEF unsigned wint_t;
+ TYPEDEF float float_t;
+ TYPEDEF double double_t;
+ 
++TYPEDEF struct { long long __ll; long double __ld; } max_align_t;
++
+ TYPEDEF long time_t;
+ TYPEDEF long suseconds_t;
+ 
+diff --git a/arch/mips/bits/alltypes.h.in b/arch/mips/bits/alltypes.h.in
+index 4657d14..a03e1b8 100644
+--- a/arch/mips/bits/alltypes.h.in
++++ b/arch/mips/bits/alltypes.h.in
+@@ -13,6 +13,8 @@ TYPEDEF unsigned wint_t;
+ TYPEDEF float float_t;
+ TYPEDEF double double_t;
+ 
++TYPEDEF struct { long long __ll; long double __ld; } max_align_t;
++
+ TYPEDEF long time_t;
+ TYPEDEF long suseconds_t;
+ 
+diff --git a/arch/or1k/bits/alltypes.h.in b/arch/or1k/bits/alltypes.h.in
+index 0d750cc..183c4c4 100644
+--- a/arch/or1k/bits/alltypes.h.in
++++ b/arch/or1k/bits/alltypes.h.in
+@@ -13,6 +13,8 @@ TYPEDEF unsigned wint_t;
+ TYPEDEF float float_t;
+ TYPEDEF double double_t;
+ 
++TYPEDEF struct { long long __ll; long double __ld; } max_align_t;
++
+ TYPEDEF long time_t;
+ TYPEDEF long suseconds_t;
+ 
+diff --git a/arch/powerpc/bits/alltypes.h.in b/arch/powerpc/bits/alltypes.h.in
+index 378124c..ee7f137 100644
+--- a/arch/powerpc/bits/alltypes.h.in
++++ b/arch/powerpc/bits/alltypes.h.in
+@@ -13,6 +13,8 @@ TYPEDEF unsigned wint_t;
+ TYPEDEF float float_t;
+ TYPEDEF double double_t;
+ 
++TYPEDEF struct { long long __ll; long double __ld; } max_align_t;
++
+ TYPEDEF long time_t;
+ TYPEDEF long suseconds_t;
+ 
+diff --git a/arch/sh/bits/alltypes.h.in b/arch/sh/bits/alltypes.h.in
+index 378124c..ee7f137 100644
+--- a/arch/sh/bits/alltypes.h.in
++++ b/arch/sh/bits/alltypes.h.in
+@@ -13,6 +13,8 @@ TYPEDEF unsigned wint_t;
+ TYPEDEF float float_t;
+ TYPEDEF double double_t;
+ 
++TYPEDEF struct { long long __ll; long double __ld; } max_align_t;
++
+ TYPEDEF long time_t;
+ TYPEDEF long suseconds_t;
+ 
+diff --git a/arch/x32/bits/alltypes.h.in b/arch/x32/bits/alltypes.h.in
+index 8930efa..8e396c9 100644
+--- a/arch/x32/bits/alltypes.h.in
++++ b/arch/x32/bits/alltypes.h.in
+@@ -18,6 +18,8 @@ TYPEDEF float float_t;
+ TYPEDEF double double_t;
+ #endif
+ 
++TYPEDEF struct { long long __ll; long double __ld; } max_align_t;
++
+ TYPEDEF long long time_t;
+ TYPEDEF long long suseconds_t;
+ 
+diff --git a/arch/x86_64/bits/alltypes.h.in b/arch/x86_64/bits/alltypes.h.in
+index 34b7d6a..7b4f3e7 100644
+--- a/arch/x86_64/bits/alltypes.h.in
++++ b/arch/x86_64/bits/alltypes.h.in
+@@ -18,6 +18,8 @@ TYPEDEF float float_t;
+ TYPEDEF double double_t;
+ #endif
+ 
++TYPEDEF struct { long long __ll; long double __ld; } max_align_t;
++
+ TYPEDEF long time_t;
+ TYPEDEF long suseconds_t;
+ 
+diff --git a/include/stddef.h b/include/stddef.h
+index 0a32919..bd75385 100644
+--- a/include/stddef.h
++++ b/include/stddef.h
+@@ -10,6 +10,9 @@
+ #define __NEED_ptrdiff_t
+ #define __NEED_size_t
+ #define __NEED_wchar_t
++#if __STDC_VERSION__ >= 201112L || __cplusplus >= 201103L
++#define __NEED_max_align_t
++#endif
+ 
+ #include <bits/alltypes.h>
+ 
+--
+cgit v0.9.0.3-65-g4555
