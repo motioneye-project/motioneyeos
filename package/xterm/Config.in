@@ -3,6 +3,7 @@ config BR2_PACKAGE_XTERM
 	select BR2_PACKAGE_NCURSES
 	select BR2_PACKAGE_XLIB_LIBXAW
 	depends on BR2_PACKAGE_XORG7
+	depends on BR2_USE_MMU # fork()
 	help
 	  xterm terminal emulator
 
