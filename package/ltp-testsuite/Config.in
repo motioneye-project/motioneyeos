@@ -4,6 +4,7 @@ comment "ltp-testsuite needs specific uClibc options, see help"
 
 config BR2_PACKAGE_LTP_TESTSUITE
 	bool "ltp-testsuite"
+	depends on BR2_USE_MMU # fork()
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_INET_IPV6
 	depends on BR2_LARGEFILE
@@ -24,5 +25,6 @@ config BR2_PACKAGE_LTP_TESTSUITE
 
 comment "ltp-testsuite needs a toolchain w/ IPv6, RPC, largefile, threads"
 	depends on !BR2_nios2
+	depends on BR2_USE_MMU
 	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_INET_IPV6 || \
 		!BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_NATIVE_RPC
