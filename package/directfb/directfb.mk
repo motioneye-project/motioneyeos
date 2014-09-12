@@ -116,6 +116,15 @@ else
 DIRECTFB_CONF_OPT += --disable-jpeg
 endif
 
+ifeq ($(BR2_PACKAGE_DIRECTFB_SVG),y)
+DIRECTFB_CONF_OPT += --enable-svg
+# needs some help to find cairo includes
+DIRECTFB_CONF_ENV += CPPFLAGS="$(TARGET_CPPFLAGS) -I$(STAGING_DIR)/usr/include/cairo"
+DIRECTFB_DEPENDENCIES += libsvg-cairo
+else
+DIRECTFB_CONF_OPT += --disable-svg
+endif
+
 ifeq ($(BR2_PACKAGE_DIRECTFB_IMLIB2),y)
 DIRECTFB_CONF_OPT += --enable-imlib2
 DIRECTFB_DEPENDENCIES += imlib2

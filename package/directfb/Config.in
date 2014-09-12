@@ -125,6 +125,12 @@ config BR2_PACKAGE_DIRECTFB_PNG
 	default y
 	select BR2_PACKAGE_LIBPNG
 
+config BR2_PACKAGE_DIRECTFB_SVG
+	bool "enable SVG support"
+	depends on BR2_ARCH_HAS_ATOMICS # cairo
+	default y
+	select BR2_PACKAGE_LIBSVG_CAIRO
+
 config BR2_PACKAGE_DIRECTFB_DITHER_RGB16
 	bool "enable advanced dithering of RGB16 surfaces"
 	help

@@ -48,7 +48,10 @@ CAIRO_CONF_OPT = \
 
 CAIRO_DEPENDENCIES = host-pkgconf fontconfig pixman
 
-ifeq ($(BR2_PACKAGE_DIRECTFB),y)
+# DirectFB svg support rely on Cairo and Cairo DirectFB support depends on
+# DirectFB. Break circular dependency by disabling DirectFB support in Cairo
+# (which is experimental)
+ifeq ($(BR2_PACKAGE_DIRECTFB)x$(BR2_PACKAGE_DIRECTFB_SVG),yx)
 	CAIRO_CONF_OPT += --enable-directfb
 	CAIRO_DEPENDENCIES += directfb
 else
