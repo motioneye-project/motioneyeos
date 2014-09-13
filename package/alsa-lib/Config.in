@@ -38,7 +38,7 @@ config BR2_PACKAGE_ALSA_LIB_DEVDIR
 config BR2_PACKAGE_ALSA_LIB_PCM_PLUGINS
 	string "built PCM plugins"
 	default "all" if BR2_USE_MMU
-	default "copy linear route mulaw alaw adpcm rate plug multi file null empty share meter hooks lfloat ladspa dmix dshare dsnoop asym iec958 softvol extplug ioplug mmap_emul" if !BR2_MMU
+	default "copy linear route mulaw alaw adpcm rate plug multi file null empty share meter hooks lfloat ladspa dmix dshare dsnoop asym iec958 softvol extplug ioplug mmap_emul" if !BR2_USE_MMU
 
 config BR2_PACKAGE_ALSA_LIB_CTL_PLUGINS
 	string "built control plugins"
