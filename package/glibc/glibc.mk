@@ -92,18 +92,7 @@ define GLIBC_CONFIGURE_CMDS
 		--without-gd \
 		--enable-obsolete-rpc \
 		--with-headers=$(STAGING_DIR)/usr/include)
-	# Install headers and start files
-	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D)/build \
-		install_root=$(STAGING_DIR) \
-		install-bootstrap-headers=yes \
-		install-headers
-	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D)/build csu/subdir_lib
-	cp $(@D)/build/csu/crt1.o $(STAGING_DIR)/usr/lib/
-	cp $(@D)/build/csu/crti.o $(STAGING_DIR)/usr/lib/
-	cp $(@D)/build/csu/crtn.o $(STAGING_DIR)/usr/lib/
 	$(GLIBC_ADD_MISSING_STUB_H)
-	$(TARGET_CROSS)gcc -nostdlib \
-		-nostartfiles -shared -x c /dev/null -o $(STAGING_DIR)/usr/lib/libc.so
 endef
 
 
