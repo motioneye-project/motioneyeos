@@ -79,6 +79,7 @@ define GLIBC_CONFIGURE_CMDS
 		$(SHELL) $(@D)/$(GLIBC_SRC_SUBDIR)/configure \
 		ac_cv_path_BASH_SHELL=/bin/bash \
 		libc_cv_forced_unwind=yes \
+		libc_cv_ssp=no \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
@@ -127,6 +128,3 @@ define GLIBC_INSTALL_TARGET_CMDS
 endef
 
 $(eval $(autotools-package))
-
-# Before (e)glibc is built, we must have the second stage cross-compiler
-$(GLIBC_TARGET_BUILD): | host-gcc-intermediate

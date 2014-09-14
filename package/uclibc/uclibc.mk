@@ -534,6 +534,3 @@ define UCLIBC_INSTALL_STAGING_CMDS
 endef
 
 $(eval $(kconfig-package))
-
-# Before uClibc is built, we must have the second stage cross-compiler
-$(UCLIBC_TARGET_BUILD): | host-gcc-intermediate

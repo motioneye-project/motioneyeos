@@ -68,6 +68,3 @@ define MUSL_INSTALL_TARGET_CMDS
 endef
 
 $(eval $(generic-package))
-
-# Before musl is built, we must have the second stage cross-compiler
-$(MUSL_TARGET_BUILD): | host-gcc-intermediate
