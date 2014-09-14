@@ -1,7 +1,6 @@
 ################################################################################
 #
-# Common variables for the gcc-initial, gcc-intermediate and gcc-final
-# packages.
+# Common variables for the gcc-initial and gcc-final packages.
 #
 ################################################################################
 
