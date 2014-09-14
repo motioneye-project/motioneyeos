@@ -27,6 +27,9 @@ UTIL_LINUX_CONF_OPT += \
 # We don't want the host-busybox dependency to be added automatically
 HOST_UTIL_LINUX_DEPENDENCIES = host-pkgconf
 
+# We also don't want the host-python dependency
+HOST_UTIL_LINUX_CONF_OPT = --without-python
+
 # If both util-linux and busybox are selected, make certain util-linux
 # wins the fight over who gets to have their utils actually installed
 ifeq ($(BR2_PACKAGE_BUSYBOX),y)
