@@ -1,0 +1,14 @@
+Add missing #include for PATH_MAX
+
+Signed-off-by: Maarten ter Huurne <maarten@treewalker.org>
+
+--- memstat-0.8.org/memstat.c	2009-06-08 14:38:05.000000000 +0200
++++ memstat-0.8/memstat.c	2014-09-12 03:55:43.096035374 +0200
+@@ -19,6 +19,7 @@
+ #include <unistd.h>
+ #include <getopt.h>
+ #include <errno.h>
++#include <limits.h>
+ 
+ /* blacklist devices that just map physical memory */
+ char *blacklist[] = { "/dev/mem",
