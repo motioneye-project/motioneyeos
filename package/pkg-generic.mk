@@ -56,11 +56,11 @@ endef
 GLOBAL_INSTRUMENTATION_HOOKS += step_time
 
 # User-supplied script
+ifneq ($(BR2_INSTRUMENTATION_SCRIPTS),)
 define step_user
 	@$(foreach user_hook, $(BR2_INSTRUMENTATION_SCRIPTS), \
 		$(EXTRA_ENV) $(user_hook) "$(1)" "$(2)" "$(3)"$(sep))
 endef
-ifneq ($(BR2_INSTRUMENTATION_SCRIPTS),)
 GLOBAL_INSTRUMENTATION_HOOKS += step_user
 endif
 
