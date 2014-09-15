@@ -91,6 +91,13 @@ else
 	GDB_CONF_OPT += --disable-tui
 endif
 
+ifeq ($(BR2_PACKAGE_GDB_PYTHON),y)
+	GDB_CONF_OPT += --with-python=$(TOPDIR)/package/gdb/gdb-python-config
+	GDB_DEPENDENCIES += python
+else
+	GDB_CONF_OPT += --without-python
+endif
+
 # This removes some unneeded Python scripts and XML target description
 # files that are not useful for a normal usage of the debugger.
 define GDB_REMOVE_UNNEEDED_FILES

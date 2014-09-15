@@ -60,6 +60,13 @@ config BR2_PACKAGE_GDB_TUI
 
 	  https://sourceware.org/gdb/current/onlinedocs/gdb/TUI.html
 
+config BR2_PACKAGE_GDB_PYTHON
+	bool "Python support"
+	# Only Python 2.x is supported by gdb for now
+	depends on BR2_PACKAGE_PYTHON
+	help
+	  This option enables Python support in the target gdb.
+
 endif
 
 endif
