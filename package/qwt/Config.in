@@ -16,6 +16,12 @@ config BR2_PACKAGE_QWT_SVG
 config BR2_PACKAGE_QWT_MATHML
 	bool "MathML support"
 
+config BR2_PACKAGE_QWT_OPENGL
+	bool "OpenGL support"
+	depends on BR2_PACKAGE_HAS_LIBGLES
+	depends on BR2_PACKAGE_HAS_LIBEGL
+	select BR2_PACKAGE_QT_OPENGL_ES
+
 endif
 
 comment "qwt depends on QT gui module"
