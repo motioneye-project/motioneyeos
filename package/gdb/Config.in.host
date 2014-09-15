@@ -18,6 +18,11 @@ config BR2_PACKAGE_HOST_GDB_TUI
 	help
 	  This option enables terminal user interface (TUI) for gdb
 
+config BR2_PACKAGE_HOST_GDB_PYTHON
+	bool "Python support"
+	help
+	  This option enables the Python support in the cross gdb.
+
 choice
 	prompt "GDB debugger Version"
 	depends on !BR2_arc

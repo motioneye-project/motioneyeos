@@ -138,6 +138,13 @@ else
 	HOST_GDB_CONF_OPT += --disable-tui
 endif
 
+ifeq ($(BR2_PACKAGE_HOST_GDB_PYTHON),y)
+	HOST_GDB_CONF_OPT += --with-python
+	HOST_GDB_DEPENDENCIES += host-python
+else
+	HOST_GDB_CONF_OPT += --without-python
+endif
+
 ifeq ($(GDB_FROM_GIT),y)
 HOST_GDB_DEPENDENCIES += host-texinfo
 else
