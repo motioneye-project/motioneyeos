@@ -1,0 +1,34 @@
+From c1ccd15d95f4a649dc192c96005409693eb31d2c Mon Sep 17 00:00:00 2001
+From: Peter Korsgaard <peter@korsgaard.com>
+Date: Mon, 15 Sep 2014 14:51:24 +0200
+Subject: [PATCH] gstv4l2allocator: O_CLOEXEC needs _GNU_SOURCE
+
+Similar to 94f3d6fc / bz 709423
+
+On some systems (E.G. uClibc and older Glibc versions), O_CLOEXEC is only
+defined when _GNU_SOURCE is specified, so do so.
+
+Upstream bugzilla: https://bugzilla.gnome.org/show_bug.cgi?id=736670
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ sys/v4l2/gstv4l2allocator.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/sys/v4l2/gstv4l2allocator.c b/sys/v4l2/gstv4l2allocator.c
+index 2bc51c4..a5c9626 100644
+--- a/sys/v4l2/gstv4l2allocator.c
++++ b/sys/v4l2/gstv4l2allocator.c
+@@ -21,6 +21,10 @@
+ 
+ #include "config.h"
+ 
++#ifndef _GNU_SOURCE
++# define _GNU_SOURCE            /* O_CLOEXEC */
++#endif
++
+ #include "ext/videodev2.h"
+ #include "gstv4l2allocator.h"
+ #include "v4l2_calls.h"
+-- 
+2.1.0
+
