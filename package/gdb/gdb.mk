@@ -40,8 +40,9 @@ GDB_DEPENDENCIES = ncurses
 endif
 
 # For the host variant, we really want to build with XML support,
-# which is needed to read XML descriptions of target architectures.
-HOST_GDB_DEPENDENCIES = host-expat
+# which is needed to read XML descriptions of target architectures. We
+# also need ncurses.
+HOST_GDB_DEPENDENCIES = host-expat host-ncurses
 
 # Apply the Xtensa specific patches
 XTENSA_CORE_NAME = $(call qstrip, $(BR2_XTENSA_CORE_NAME))
@@ -127,7 +128,6 @@ HOST_GDB_CONF_OPT = \
 	--disable-sim
 
 ifeq ($(BR2_PACKAGE_HOST_GDB_TUI),y)
-	HOST_GDB_DEPENDENCIES += host-ncurses
 	HOST_GDB_CONF_OPT += --enable-tui
 else
 	HOST_GDB_CONF_OPT += --disable-tui
