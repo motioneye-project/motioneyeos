@@ -4,13 +4,13 @@
 #
 ################################################################################
 
-SCREEN_VERSION = 4.0.3
+SCREEN_VERSION = 4.2.1
 SCREEN_SITE = $(BR2_GNU_MIRROR)/screen
-SCREEN_LICENSE = GPLv2+
+SCREEN_LICENSE = GPLv3+
 SCREEN_LICENSE_FILES = COPYING
 SCREEN_DEPENDENCIES = ncurses
-SCREEN_CONF_ENV = ac_cv_header_elf_h=no ac_cv_header_dwarf_h=no \
-	CFLAGS="$(TARGET_CFLAGS) -DTERMINFO"
+SCREEN_AUTORECONF = YES
+SCREEN_CONF_ENV = CFLAGS="$(TARGET_CFLAGS)"
 SCREEN_MAKE = $(MAKE1)
 SCREEN_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) SCREEN=screen install_bin
 
