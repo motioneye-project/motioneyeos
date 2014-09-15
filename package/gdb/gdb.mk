@@ -76,7 +76,6 @@ GDB_CONF_ENV = \
 
 GDB_CONF_OPT = \
 	--without-uiout \
-	--disable-tui \
 	--disable-gdbtk \
 	--without-x \
 	--disable-sim \
@@ -85,6 +84,12 @@ GDB_CONF_OPT = \
 	--with-curses \
 	--without-included-gettext \
 	--disable-werror
+
+ifeq ($(BR2_PACKAGE_GDB_TUI),y)
+	GDB_CONF_OPT += --enable-tui
+else
+	GDB_CONF_OPT += --disable-tui
+endif
 
 # This removes some unneeded Python scripts and XML target description
 # files that are not useful for a normal usage of the debugger.
