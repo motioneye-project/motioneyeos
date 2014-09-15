@@ -13,10 +13,6 @@ OPENVMTOOLS_LICENSE_FILES = COPYING
 # See http://sourceforge.net/p/open-vm-tools/mailman/message/32550385/
 OPENVMTOOLS_AUTORECONF = YES
 OPENVMTOOLS_CONF_OPT = --without-icu --without-x --without-gtk2 --without-gtkmm --without-kernel-modules
-# -Wno-deprecated-declarations is a workaround for a bug in open-vm-tools
-# See http://sourceforge.net/p/open-vm-tools/mailman/message/31473171/
-OPENVMTOOLS_CONF_ENV = CFLAGS="$(TARGET_CFLAGS) -Wno-deprecated-declarations"
-
 OPENVMTOOLS_DEPENDENCIES = libglib2
 
 # When libfuse is available, openvmtools can build vmblock-fuse, so
