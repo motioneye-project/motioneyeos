@@ -73,6 +73,21 @@ define DHCP_INSTALL_INIT_SYSV
 		$(TARGET_DIR)/etc/init.d/S80dhcp-relay
 endef
 
+define DHCP_INSTALL_INIT_SYSTEMD
+	$(INSTALL) -D -m 644 package/dhcp/dhcpd.service \
+		$(TARGET_DIR)/lib/systemd/system/dhcpd.service
+
+	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
+
+	ln -sf ../../../../lib/systemd/system/dhcpd.service \
+		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/dhcpd.service
+
+	echo "d /var/lib/dhcp 0755 - - - -" > \
+		$(TARGET_DIR)/usr/lib/tmpfiles.d/dhcpd.conf
+	echo "f /var/lib/dhcp/dhcpd.leases - - - - -" >> \
+		$(TARGET_DIR)/usr/lib/tmpfiles.d/dhcpd.conf
+endef
+
 define DHCP_INSTALL_TARGET_CMDS
 	$(DHCP_INSTALL_RELAY)
 	$(DHCP_INSTALL_SERVER)
