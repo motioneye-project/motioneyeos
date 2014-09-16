@@ -190,7 +190,8 @@ define QT5BASE_CONFIGURE_CMDS
 		-no-rpath \
 		-nomake tests \
 		-device buildroot \
-		-device-option CROSS_COMPILE="$(CCACHE) $(TARGET_CROSS)" \
+		-device-option CROSS_COMPILE="$(TARGET_CROSS)" \
+		-device-option BR_CCACHE="$(CCACHE)" \
 		-device-option BR_COMPILER_CFLAGS="$(TARGET_CFLAGS)" \
 		-device-option BR_COMPILER_CXXFLAGS="$(TARGET_CXXFLAGS)" \
 		-device-option EGLFS_PLATFORM_HOOKS_SOURCES="$(QT5BASE_EGLFS_PLATFORM_HOOKS_SOURCES)" \

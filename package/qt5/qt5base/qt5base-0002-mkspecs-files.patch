@@ -14,8 +14,12 @@ Index: b/mkspecs/devices/linux-buildroot-g++/qmake.conf
 ===================================================================
 --- /dev/null
 +++ b/mkspecs/devices/linux-buildroot-g++/qmake.conf
-@@ -0,0 +1,12 @@
+@@ -0,0 +1,16 @@
 +include(../common/linux_device_pre.conf)
++
++# modifications to g++-unix.conf
++QMAKE_CC                = $${BR_CCACHE} $${CROSS_COMPILE}gcc
++QMAKE_CXX               = $${BR_CCACHE} $${CROSS_COMPILE}g++
 +
 +#modifications to gcc-base.conf
 +QMAKE_CFLAGS           += $${BR_COMPILER_CFLAGS}
