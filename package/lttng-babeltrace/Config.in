@@ -30,4 +30,4 @@ comment "lttng-babeltrace needs a uclibc snapshot or (e)glib toolchain w/ wchar,
 	depends on BR2_PACKAGE_LTTNG_TOOLS
 	depends on BR2_USE_MMU
 	depends on !BR2_USE_WCHAR || !BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_THREADS \
-		|| !BR2_UCLIBC_VERSION_SNAPSHOT || !BR2_TOOLCHAIN_USES_GLIBC
+		|| !(BR2_UCLIBC_VERSION_SNAPSHOT || BR2_TOOLCHAIN_USES_GLIBC)
