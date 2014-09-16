@@ -19,7 +19,7 @@ SQLCIPHER_CONF_OPT = \
 	--localstatedir=/var
 
 SQLCIPHER_CFLAGS += -DSQLITE_HAS_CODEC # Required according to the README
-SQLCIPHER_LDFLAGS += -lcrypto
+SQLCIPHER_LDFLAGS += -lcrypto -lz
 
 ifneq ($(BR2_LARGEFILE),y)
 # the sqlite configure script fails to define SQLITE_DISABLE_LFS when
