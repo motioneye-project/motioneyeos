@@ -480,6 +480,7 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_SNDFILE
 	depends on BR2_LARGEFILE
 
 comment "gst-plugins-bad-plugin-sndfile needs a toolchain w/ largefile"
+	depends on !BR2_LARGEFILE
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_DVB
 	bool "dvb"
