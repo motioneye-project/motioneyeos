@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-SYSSTAT_VERSION = 11.0.0
-SYSSTAT_SOURCE = sysstat-$(SYSSTAT_VERSION).tar.bz2
+SYSSTAT_VERSION = 11.0.1
+SYSSTAT_SOURCE = sysstat-$(SYSSTAT_VERSION).tar.xz
 SYSSTAT_SITE = http://pagesperso-orange.fr/sebastien.godard
 SYSSTAT_CONF_OPT = --disable-man-group --disable-sensors
 SYSSTAT_DEPENDENCIES = host-gettext
