@@ -10,6 +10,12 @@ config BR2_PACKAGE_NCURSES
 
 if BR2_PACKAGE_NCURSES
 
+config BR2_PACKAGE_NCURSES_WCHAR
+	bool "enable wide char support"
+	depends on BR2_USE_WCHAR
+	help
+	  Enable wide char & UTF-8 support in ncurses libraries
+
 config BR2_PACKAGE_NCURSES_TARGET_PANEL
 	bool "ncurses libpanel in target"
 	help
