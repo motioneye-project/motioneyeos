@@ -9,10 +9,15 @@ NANO_VERSION = $(NANO_VERSION_MAJOR).6
 NANO_SITE = http://www.nano-editor.org/dist/v$(NANO_VERSION_MAJOR)
 NANO_LICENSE = GPLv3+
 NANO_LICENSE_FILES = COPYING
-NANO_MAKE_ENV = CURSES_LIB="-lncurses"
 NANO_CONF_OPT = --without-slang
-NANO_CONF_ENV = ac_cv_prog_NCURSESW_CONFIG=false
 NANO_DEPENDENCIES = ncurses
+
+ifeq ($(BR2_PACKAGE_NCURSES_WCHAR),y)
+	NANO_CONF_ENV += ac_cv_prog_NCURSESW_CONFIG="$(STAGING_DIR)/usr/bin/ncursesw5-config"
+else
+	NANO_CONF_ENV += ac_cv_prog_NCURSESW_CONFIG=false
+	NANO_MAKE_ENV += CURSES_LIB="-lncurses"
+endif
 
 ifeq ($(BR2_PACKAGE_FILE),y)
 	NANO_DEPENDENCIES += file
