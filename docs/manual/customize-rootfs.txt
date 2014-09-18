@@ -21,6 +21,9 @@ A filesystem overlay is a tree of files that is copied directly
   directories of version control systems, like +.git+, +.svn+, +.hg+,
   etc., files called +.empty+ and files ending in +~+ are excluded from
   the copy.
++
+As shown in xref:customize-dir-structure[], the recommended path for
+  this overlay is +board/<company>/<boardname>/rootfs-overlay+.
 
 Post-build scripts (+BR2_ROOTFS_POST_BUILD_SCRIPT+)::
 +
@@ -36,6 +39,9 @@ Using post-build scripts, you can remove or modify any file in your
   Whenever you find that a certain package generates wrong or unneeded
   files, you should fix that package rather than work around it with some
   post-build cleanup scripts.
++
+As shown in xref:customize-dir-structure[], the recommended path for
+  this script is +board/<company>/<boardname>/post_build.sh+.
 +
 The post-build scripts are run with the main Buildroot tree as current
   working directory. The path to the target filesystem is passed as the
