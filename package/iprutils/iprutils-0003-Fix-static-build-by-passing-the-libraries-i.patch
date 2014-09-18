@@ -1,0 +1,20 @@
+iprutils: Fix static build by passing the libraries in the right order
+
+This mistake was causing failures like this one:
+
+m_post.c:(.text+0x60): undefined reference to `wattr_on'
+
+http://autobuild.buildroot.net/results/500/5004e7b230635e0605acdd17d2b7d2d01fc5075c/build-end.log
+
+Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+--- iprutils-2.4.2/Makefile.orig	2014-09-17 18:14:52.435367860 +0100
++++ iprutils-2.4.2/Makefile	2014-09-17 18:15:09.367652526 +0100
+@@ -16,7 +16,7 @@ TAR = cd .. && tar -zcpf iprutils-$(UTIL
+ all: iprconfig iprupdate iprdump iprinit iprdbg docs 
+ 
+ iprconfig: iprconfig.c iprlib.o iprconfig.h
+-	$(CC) $(CFLAGS) $(INCLUDEDIR) -o iprconfig iprconfig.c iprlib.o $(LDFLAGS) -lform -lpanel -lncurses -lmenu
++	$(CC) $(CFLAGS) $(INCLUDEDIR) -o iprconfig iprconfig.c iprlib.o $(LDFLAGS) -lform -lpanel -lmenu -lncurses
+ 
+ iprupdate: iprupdate.c iprlib.o
+ 	$(CC) $(CFLAGS) $(INCLUDEDIR) -o iprupdate iprlib.o iprupdate.c $(LDFLAGS)
