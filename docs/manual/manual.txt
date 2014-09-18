@@ -52,6 +52,8 @@ include::how-buildroot-works.txt[]
 
 include::writing-rules.txt[]
 
+include::adding-board-support.txt[]
+
 include::adding-packages.txt[]
 
 include::patch-policy.txt[]
