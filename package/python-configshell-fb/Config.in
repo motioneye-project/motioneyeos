@@ -1,0 +1,11 @@
+config BR2_PACKAGE_PYTHON_CONFIGSHELL_FB
+	bool "python-configshell-fb"
+	depends on BR2_PACKAGE_PYTHON
+	select BR2_PACKAGE_PYTHON_PYPARSING
+	select BR2_PACKAGE_PYTHON_READLINE
+	select BR2_PACKAGE_PYTHON_URWID
+	help
+	  configshell-fb is a Python library that provides a framework
+	  for building simple but nice CLI-based applications.
+
+	  https://github.com/agrover/configshell-fb
