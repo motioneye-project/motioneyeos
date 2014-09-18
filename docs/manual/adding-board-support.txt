@@ -1,12 +1,13 @@
 // -*- mode:doc; -*-
 // vim: set syntax=asciidoc:
 
-[[customize-store-board-support]]
-== Creating your own board support
+[[adding-board-support]]
+== Adding support for a particular board
 
-Creating your own board support in Buildroot allows users of a
-particular hardware platform to easily build a system that is known to
-work.
+Buildroot contains basic configurations for several publicly available
+hardware boards, so that users of such a board can easily build a system
+that is known to work. You are welcome to add support for other boards
+to Buildroot too.
 
 To do so, you need to create a normal Buildroot configuration that
 builds a basic system for the hardware: toolchain, kernel, bootloader,
@@ -34,4 +35,4 @@ configuration or patches specific to your target platform. To do so,
 create a directory +board/<manufacturer>+ and a subdirectory
 +board/<manufacturer>/<boardname>+. You can then store your patches
 and configurations in these directories, and reference them from the main
-Buildroot configuration.
+Buildroot configuration. Refer to xref:customize[] for more details.
