@@ -40,13 +40,12 @@ it using +BR2_EXTERNAL+. Both options are valid, the choice is up to you.
 |   +-- <company>/
 |       +-- Config.in (if not using BR2_EXTERNAL)
 |       +-- <company>.mk (if not using BR2_EXTERNAL)
-|       +-- <boardname>/
-|           +-- package1/
-|           |    +-- Config.in
-|           |    +-- package1.mk
-|           +-- package2/
-|               +-- Config.in
-|               +-- package2.mk
+|       +-- package1/
+|       |    +-- Config.in
+|       |    +-- package1.mk
+|       +-- package2/
+|           +-- Config.in
+|           +-- package2.mk
 |
 +-- Config.in (if using BR2_EXTERNAL)
 +-- external.mk (if using BR2_EXTERNAL)

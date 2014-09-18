@@ -81,19 +81,21 @@ The main usage of this is to store package recipes. The recommended
    looks like:
 +
 ------
-source "$BR2_EXTERNAL/package/<boardname>/package1/Config.in"
-source "$BR2_EXTERNAL/package/<boardname>/package2/Config.in"
+source "$BR2_EXTERNAL/package/package1/Config.in"
+source "$BR2_EXTERNAL/package/package2/Config.in"
 ------
 +
 Then, have a +$(BR2_EXTERNAL)/external.mk+ file that looks like:
 +
 ------
-include $(sort $(wildcard $(BR2_EXTERNAL)/package/*/*/*.mk))
+include $(sort $(wildcard $(BR2_EXTERNAL)/package/*/*.mk))
 ------
 +
-And then in +$(BR2_EXTERNAL)/package/<boardname>/package1+ and
-   +$(BR2_EXTERNAL)/package/<boardname>/package2+ create normal Buildroot
+And then in +$(BR2_EXTERNAL)/package/package1+ and
+   +$(BR2_EXTERNAL)/package/package2+ create normal Buildroot
    package recipes, as explained in xref:adding-packages[].
+   If you prefer, you can also group the packages in subdirectories
+   called <boardname> and adapt the above paths accordingly.
 
  * One can store Buildroot defconfigs in the +configs+ subdirectory of
    +$(BR2_EXTERNAL)+. Buildroot will automatically show them in the
