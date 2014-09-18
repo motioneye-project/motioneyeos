@@ -20,6 +20,7 @@ Typical actions you may need to perform for a given project are:
      +BR2_ROOTFS_DEVICE_TABLE+)
   ** adding custom devices nodes (using
      +BR2_ROOTFS_STATIC_DEVICE_TABLE+)
+* adding custom user accounts (using +BR2_ROOTFS_USERS_TABLES+)
 * running arbitrary commands after generating the filesystem image
   (using +BR2_ROOTFS_POST_IMAGE_SCRIPT+)
 * adding project-specific patches to some packages (using
@@ -47,6 +48,8 @@ include::customize-outside-br.txt[]
 include::customize-configuration.txt[]
 
 include::customize-rootfs.txt[]
+
+include::customize-users-tables.txt[]
 
 include::customize-post-image.txt[]
 

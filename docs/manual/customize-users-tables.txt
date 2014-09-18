@@ -1,0 +1,18 @@
+// -*- mode:doc; -*-
+// vim: set syntax=asciidoc:
+
+[[customize-users]]
+=== Adding custom user accounts
+
+Sometimes it is needed to add specific users in the target system.
+To cover this requirement, Buildroot provides support for so-called
+_users tables_. To use this feature, set config option
++BR2_ROOTFS_USERS_TABLES+ to a space-separated list of users tables,
+regular text files following the xref:makeuser-syntax[makeusers syntax].
+
+As shown in xref:customize-dir-structure[], the recommended location for
+such files is +board/<company>/<boardname>/+.
+
+It should be noted that if the custom users are related to a specific
+application, you should set variable +FOO_USERS+ in the package's +.mk+
+file instead (see xref:generic-package-reference[]).
