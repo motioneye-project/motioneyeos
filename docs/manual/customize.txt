@@ -39,6 +39,8 @@ include::customize-directory-structure.txt[]
 
 include::customize-outside-br.txt[]
 
+include::customize-configuration.txt[]
+
 include::customize-rootfs.txt[]
 
 include::customize-post-image.txt[]
