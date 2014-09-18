@@ -97,3 +97,5 @@ To enable this feature, enable config option
 This method is not recommended because it duplicates the entire
   skeleton, which prevents taking advantage of the fixes or improvements
   brought to the default skeleton in later Buildroot releases.
+
+include::customize-device-permission-tables.txt[]
