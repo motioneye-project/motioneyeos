@@ -56,3 +56,54 @@ Details on the files shown above are given further in this chapter.
 Note: if you choose to place this structure outside of the Buildroot
 tree using +BR2_EXTERNAL+, the <company> and possibly <boardname>
 components may be superfluous and can be left out.
+
+==== Implementing layered customizations
+
+It is quite common for a user to have several related projects that partly
+need the same customizations. Instead of duplicating these
+customizations for each project, it is recommended to use a layered
+customization approach, as explained in this section.
+
+Almost all of the customization methods available in Buildroot, like
+post-build scripts and root filesystem overlays, accept a
+space-separated list of items. The specified items are always treated in
+order, from left to right. By creating more than one such item, one for
+the common customizations and another one for the really
+project-specific customizations, you can avoid unnecessary duplication.
+Each layer is typically embodied by a separate directory inside
++board/<company>/+. Depending on your projects, you could even introduce
+more than two layers.
+
+An example directory structure for where a user has two customization
+layers 'common' and 'fooboard' is:
+
+-----
++-- board/
+    +-- <company>/
+        +-- common/
+        |   +-- post_build.sh
+        |   +-- rootfs_overlay/
+        |   |   +-- ...
+        |   +-- patches/
+        |       +-- ...
+        |
+        +-- fooboard/
+            +-- linux.config
+            +-- busybox.config
+            +-- <other configuration files>
+            +-- post_build.sh
+            +-- rootfs_overlay/
+            |   +-- ...
+            +-- patches/
+                +-- ...
+-----
+
+For example, if the user has the +BR2_GLOBAL_PATCH_DIR+ configuration
+option set as:
+
+-----
+BR2_GLOBAL_PATCH_DIR="board/<company>/common/patches board/<company>/fooboard/patches"
+-----
+
+then first the patches from the 'common' layer would be applied,
+followed by the patches from the 'fooboard' layer.
