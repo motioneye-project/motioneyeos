@@ -1,11 +1,12 @@
 // -*- mode:doc -*- ;
 
-[[packages-custom]]
-=== Customizing packages
+[[customize-patches]]
+=== Adding project-specific patches
 
-It is sometimes useful to apply 'extra' patches to packages - over and
-above those provided in Buildroot. This might be used to support custom
-features in a project, for example, or when working on a new architecture.
+It is sometimes useful to apply 'extra' patches to packages - on top of
+those provided in Buildroot. This might be used to support custom
+features in a project, for example, or when working on a new
+architecture.
 
 The +BR2_GLOBAL_PATCH_DIR+ configuration option can be used to specify
 a space separated list of one or more directories containing package

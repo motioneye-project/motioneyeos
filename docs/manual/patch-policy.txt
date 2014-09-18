@@ -46,7 +46,7 @@ reference in their filename.
 
 The +BR2_GLOBAL_PATCH_DIR+ configuration file option can be
 used to specify a space separated list of one or more directories
-containing global package patches. See xref:packages-custom[] for
+containing global package patches. See xref:customize-patches[] for
 details.
 
 [[patch-apply-order]]
