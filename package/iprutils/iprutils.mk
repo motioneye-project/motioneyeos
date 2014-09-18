@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-IPRUTILS_VERSION = 2.3.15
+IPRUTILS_VERSION = 2.4.2
 IPRUTILS_SITE = http://downloads.sourceforge.net/project/iprdd/iprutils%20for%202.6%20kernels/$(IPRUTILS_VERSION)
 IPRUTILS_SOURCE = iprutils-$(IPRUTILS_VERSION)-src.tgz
 IPRUTILS_DEPENDENCIES = ncurses libsysfs pciutils
