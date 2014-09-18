@@ -57,4 +57,4 @@ include::customize-patches.txt[]
 
 include::customize-packages.txt[]
 
-include::customize-store.txt[]
+include::customize-quick-guide.txt[]
