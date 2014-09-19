@@ -1,0 +1,36 @@
+From 4a7cd7c5b165317dccf45cfc235da3e14bc339e8 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Vincent=20Stehl=C3=A9?= <vincent.stehle@freescale.com>
+Date: Tue, 12 Aug 2014 10:17:31 +0200
+Subject: [PATCH] mx6qsabre_common: boot Linux to /init in mfgtools mode
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Buildroot supplies a nice /init wrapper script to use when booting from a
+ramdisk.
+
+This patch tells u-boot to tell the kernel to boot into /init (instead of
+/linuxrc) on i.MX6, when booting in mfgtools mode. This way we can boot a
+buildroot system entirely through USB.
+
+Signed-off-by: Vincent Stehlé <vincent.stehle@freescale.com>
+---
+ include/configs/mx6qsabre_common.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/configs/mx6qsabre_common.h b/include/configs/mx6qsabre_common.h
+index 69ff0df..ec7b665 100644
+--- a/include/configs/mx6qsabre_common.h
++++ b/include/configs/mx6qsabre_common.h
+@@ -129,7 +129,7 @@
+ 
+ #define CONFIG_MFG_ENV_SETTINGS \
+ 	"mfgtool_args=setenv bootargs console=" CONFIG_CONSOLE_DEV ",115200 " \
+-		"rdinit=/linuxrc " \
++		"rdinit=/init " \
+ 		"g_mass_storage.stall=0 g_mass_storage.removable=1 " \
+ 		"g_mass_storage.idVendor=0x066F g_mass_storage.idProduct=0x37FF "\
+ 		"g_mass_storage.iSerialNumber=\"\" "\
+-- 
+2.0.1
+
