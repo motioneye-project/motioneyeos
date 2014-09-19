@@ -301,9 +301,10 @@ config BR2_CCACHE_INITIAL_SETUP
 endif
 
 config BR2_DEPRECATED
-	bool "Show packages that are deprecated or obsolete"
+	bool "Show options and packages that are deprecated or obsolete"
 	help
-	  This option hides outdated/obsolete versions of packages.
+	  This option shows outdated/obsolete versions of packages and
+	  options that are otherwise hidden.
 
 if BR2_DEPRECATED
 
