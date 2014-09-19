@@ -4,8 +4,9 @@
 #
 ################################################################################
 
-PHP_VERSION = 5.5.16
+PHP_VERSION = 5.5.17
 PHP_SITE = http://www.php.net/distributions
+PHP_SOURCE = php-$(PHP_VERSION).tar.xz
 PHP_INSTALL_STAGING = YES
 PHP_INSTALL_STAGING_OPT = INSTALL_ROOT=$(STAGING_DIR) install
 PHP_INSTALL_TARGET_OPT = INSTALL_ROOT=$(TARGET_DIR) install
