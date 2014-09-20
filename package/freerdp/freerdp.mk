@@ -4,7 +4,8 @@
 #
 ################################################################################
 
-FREERDP_VERSION = 1.0.2
+# Changeset on the stable-1.1 branch
+FREERDP_VERSION = 440916eae2e07463912d5fe507677e67096eb083
 FREERDP_SITE = $(call github,FreeRDP,FreeRDP,$(FREERDP_VERSION))
 FREERDP_DEPENDENCIES = openssl zlib \
 	xlib_libX11 xlib_libXt xlib_libXext xlib_libXcursor
