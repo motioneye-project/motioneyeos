@@ -15,4 +15,5 @@ GENPART_SITE          = http://www.pengutronix.de/software/genpart/download
 # So, until the authors have clarified the licensing terms:
 GENPART_LICENSE       = Unknown (clarification has been asked to the authors)
 
+$(eval $(autotools-package))
 $(eval $(host-autotools-package))
