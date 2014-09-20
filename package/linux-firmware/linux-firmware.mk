@@ -201,6 +201,11 @@ LINUX_FIRMWARE_FILES += dvb-usb-dib0700-1.20.fw
 LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENSE.dib0700
 endif
 
+ifeq ($(BR2_PACKAGE_LINUX_FIRMWARE_ITETECH_IT9135),y)
+LINUX_FIRMWARE_FILES += dvb-usb-it9135-01.fw dvb-usb-it9135-02.fw
+LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENCE.it913x
+endif
+
 ifeq ($(BR2_PACKAGE_LINUX_FIRMWARE_H5_DRXK),y)
 LINUX_FIRMWARE_FILES += dvb-usb-terratec-h5-drxk.fw
 # No license file; the license is in the file WHENCE

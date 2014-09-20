@@ -173,6 +173,11 @@ config BR2_PACKAGE_LINUX_FIRMWARE_DIB0700
 	help
 	  Firmware file for dib0700-based USB DVB tuner driver
 
+config BR2_PACKAGE_LINUX_FIRMWARE_ITETECH_IT9135
+	bool "ITEtech it9135"
+	help
+	  Firmware files for ITEtech it9135 (Ax and Bx) DVB-T USB tuner
+
 config BR2_PACKAGE_LINUX_FIRMWARE_H5_DRXK
 	bool "Terratec H5 DRX-K"
 	help
