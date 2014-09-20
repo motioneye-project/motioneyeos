@@ -163,6 +163,11 @@ endmenu
 
 menu "DVB firmware"
 
+config BR2_PACKAGE_LINUX_FIRMWARE_AS102
+	bool "Abilis Systems as102"
+	help
+	  Firmware file for Abilis Systems single DVB-T receiver as102
+
 config BR2_PACKAGE_LINUX_FIRMWARE_DIB0700
 	bool "DiBcom dib0700"
 	help
