@@ -46,6 +46,13 @@ LINUX_FIRMWARE_FILES += rtlwifi/rtl8712u.bin rtlwifi/rtl8723fw.bin	\
 LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENCE.rtlwifi_firmware.txt
 endif
 
+# rtl88xx
+ifeq ($(BR2_PACKAGE_LINUX_FIRMWARE_RTL_88XX),y)
+LINUX_FIRMWARE_FILES += rtlwifi/rtl8821aefw.bin \
+			rtlwifi/rtl8821aefw_wowlan.bin
+LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENCE.rtlwifi_firmware.txt
+endif
+
 # ar7010
 ifeq ($(BR2_PACKAGE_LINUX_FIRMWARE_ATHEROS_7010),y)
 LINUX_FIRMWARE_FILES += ar7010.fw ar7010_1_1.fw htc_7010.fw
