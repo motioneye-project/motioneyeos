@@ -11,3 +11,26 @@ body {
     float:right;
     margin: 10px 0 0;
 }
+
+div.sponsor-main {
+    background: #eeeeee;
+    padding: 2em;
+}
+
+div.sponsor {
+    background: #eeeeee;
+    padding: 0.5em;
+    height: 12em;
+    display: table !important;
+}
+
+div.sponsor-description {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+}
+
+div.sponsor-description img {
+    height: 4em;
+    margin-bottom: 1em;
+}
