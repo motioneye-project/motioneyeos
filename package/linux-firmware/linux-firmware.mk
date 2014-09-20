@@ -140,6 +140,18 @@ LINUX_FIRMWARE_FILES += ti-connectivity/wl127x-nvs.bin
 LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENCE.ti-connectivity
 endif
 
+# wl18xx
+ifeq ($(BR2_PACKAGE_LINUX_FIRMWARE_TI_WL18XX),y)
+LINUX_FIRMWARE_FILES += \
+	ti-connectivity/wl18xx-fw.bin \
+	ti-connectivity/wl18xx-conf.bin \
+	ti-connectivity/wl18xx-fw-2.bin \
+	ti-connectivity/wl18xx-fw-3.bin \
+	ti-connectivity/wl18xx-fw-4.bin \
+	ti-connectivity/TIInit_7.2.31.bts
+LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENCE.ti-connectivity
+endif
+
 ifeq ($(BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_3160),y)
 LINUX_FIRMWARE_FILES += iwlwifi-3160-$(BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_3160_7260_REV).ucode
 LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENCE.iwlwifi_firmware

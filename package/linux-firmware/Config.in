@@ -132,14 +132,19 @@ config BR2_PACKAGE_LINUX_FIRMWARE_RTL_88XX
 	  Realtek rtl8821ae
 
 config BR2_PACKAGE_LINUX_FIRMWARE_TI_WL127X
-	bool "TI wl127X"
+	bool "TI wl127x"
 	help
 	  Firmware files for WLAN and Bluetooth modules wl1271 and wl1273
 
 config BR2_PACKAGE_LINUX_FIRMWARE_TI_WL128X
-	bool "TI wl128X"
+	bool "TI wl128x"
 	help
 	  Firmware files for WLAN and Bluetooth modules wl128x
+
+config BR2_PACKAGE_LINUX_FIRMWARE_TI_WL18XX
+	bool "TI wl18xx"
+	help
+	  Firmware files for WLAN and Bluetooth modules wl18xx
 
 endmenu
 
