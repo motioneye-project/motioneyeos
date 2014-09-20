@@ -8,6 +8,15 @@ config BR2_PACKAGE_LINUX_FIRMWARE
 
 if BR2_PACKAGE_LINUX_FIRMWARE
 
+menu "Audio firmware"
+
+config BR2_PACKAGE_LINUX_FIRMWARE_INTEL_SST_DSP
+	bool "Intel SST DSP"
+	help
+	  Firmware files for Intel Baytrail SST DSP audio.
+
+endmenu # Audio
+
 menu "WiFi firmware"
 
 config BR2_PACKAGE_LINUX_FIRMWARE_ATHEROS_7010
