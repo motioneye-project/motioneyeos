@@ -73,7 +73,8 @@ choice
 	bool "iwlwifi 3160/726x revision to use"
 	help
 	  Use revision 7 for kernel 3.10 to 3.12.
-	  Use revision 8 for kernel 3.13 onward.
+	  Use revision 8 for kernel 3.13 to 3.15.
+	  Use revision 9 for kernel 3.16 onward.
 
 config BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_REV_7
 	prompt "revision 7"
@@ -83,7 +84,12 @@ config BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_REV_7
 config BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_REV_8
 	prompt "revision 8"
 	help
-	  Use revision 8 for kernel 3.13 onward.
+	  Use revision 8 for kernel 3.13 to 3.15.
+
+config BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_REV_9
+	prompt "revision 9"
+	help
+	  Use revision 9 for kernel 3.16 onward.
 
 endchoice
 
@@ -91,6 +97,7 @@ config BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_REV
 	int
 	default 7 if BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_REV_7
 	default 8 if BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_REV_8
+	default 9 if BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_REV_9
 
 endif # iwlwifi 3160/7260
 
