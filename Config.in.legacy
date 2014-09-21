@@ -101,6 +101,14 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2014.11"
 
+config BR2_PACKAGE_LINUX_FIRMWARE_CXGB4
+	bool "Chelsio T4 option has been renamed"
+	select BR2_PACKAGE_LINUX_FIRMWARE_CXGB4_T4
+	help
+	  The Chelsio T4 option BR2_PACKAGE_LINUX_FIRMWARE_CXGB4
+	  has been renamed to BR2_PACKAGE_LINUX_FIRMWARE_CXGB4_T4
+	  to better account for the fact that a T5 variant exists.
+
 config BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_3160_7260_7
 	bool "BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_3160_7260_7 has been renamed"
 	help
