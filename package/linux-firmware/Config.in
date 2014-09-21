@@ -217,10 +217,10 @@ config BR2_PACKAGE_LINUX_FIRMWARE_H5_DRXK
 	help
 	  Firmware file for Terratec H5 DRX-K based DVB tuner driver
 
-config BR2_PACKAGE_LINUX_FIRMWARE_XC5000
-	bool "Xceive xc5000"
+config BR2_PACKAGE_LINUX_FIRMWARE_XCx000
+	bool "Xceive/Cresta xc4000/xc5000/xc500c"
 	help
-	  Firmware file for xc5000-based DVB tuner driver
+	  Firmware file for xc4000/xc5000/xc5000c based DVB tuner driver
 
 endmenu
 

@@ -101,6 +101,14 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2014.11"
 
+config BR2_PACKAGE_LINUX_FIRMWARE_XC5000
+	bool "Xceive xc5000 option has been renamed"
+	select BR2_PACKAGE_LINUX_FIRMWARE_XCx000
+	help
+	  The Xceive xc5000 option now also handles older firmwares from
+	  Xceive (the xc4000 series), as well as new firmwares (the xc5000c)
+	  from Cresta, who bought Xceive.
+
 config BR2_PACKAGE_LINUX_FIRMWARE_CXGB4
 	bool "Chelsio T4 option has been renamed"
 	select BR2_PACKAGE_LINUX_FIRMWARE_CXGB4_T4
