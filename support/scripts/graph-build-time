@@ -49,9 +49,10 @@
 #   * argparse (by default in Python 2.7, requires python-argparse if
 #     Python 2.6 is used)
 
-import matplotlib
+import matplotlib as mpl
 import numpy
 
+mpl.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
 import csv
