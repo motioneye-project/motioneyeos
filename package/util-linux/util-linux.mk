@@ -96,7 +96,7 @@ HOST_UTIL_LINUX_CONF_OPT += \
 	--enable-libuuid \
 	--disable-agetty --disable-cramfs --disable-fallocate \
 	--disable-fsck --disable-libblkid --disable-libmount \
-	--disable-login --disable-mount --disable-partx \
+	--disable-login --disable-mount --disable-more --disable-partx \
 	--disable-pivot_root --disable-rename --disable-schedutils \
 	--disable-su --disable-switch_root --disable-unshare \
 	--disable-uuidd --disable-wall --without-ncurses
