@@ -261,6 +261,7 @@ comment "X applications"
 
 comment "X libraries and helper libraries"
 	source "package/dejavu/Config.in"
+	source "package/ghostscript-fonts/Config.in"
 	source "package/liberation/Config.in"
 	source "package/libsexy/Config.in"
 	source "package/x11r7/xkeyboard-config/Config.in"
