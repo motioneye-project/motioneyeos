@@ -35,6 +35,14 @@ config BR2_PACKAGE_AVAHI_DAEMON
 	  The daemon registers local IP addresses and services using
 	  mDNS/DNS-SD.
 
+config BR2_PACKAGE_AVAHI_LIBDNSSD_COMPATIBILITY
+	bool "libdns_sd compatibility (Bonjour)"
+	depends on BR2_PACKAGE_AVAHI_DAEMON
+	select BR2_PACKAGE_DBUS
+	help
+	  Enable the libdns_sd (Bonjour) compatibility library support
+	  for legacy applications.
+
 endif
 
 comment "avahi needs a toolchain w/ threads"

@@ -101,6 +101,10 @@ else
 AVAHI_CONF_OPT += --with-xml=none
 endif
 
+ifeq ($(BR2_PACKAGE_AVAHI_LIBDNSSD_COMPATIBILITY),y)
+AVAHI_CONF_OPT += --enable-compat-libdns_sd
+endif
+
 ifeq ($(BR2_PACKAGE_DBUS),y)
 AVAHI_DEPENDENCIES += dbus
 else
@@ -179,6 +183,16 @@ define AVAHI_INSTALL_INIT_SYSV
 	$(INSTALL) -m 0755 package/avahi/S50avahi-daemon $(TARGET_DIR)/etc/init.d/
 endef
 
+endif
+
+# applications expects to be able to #include <dns_sd.h>
+define AVAHI_STAGING_INSTALL_LIBDNSSD_LINK
+	ln -sf avahi-compat-libdns_sd/dns_sd.h \
+		$(STAGING_DIR)/usr/include/dns_sd.h
+endef
+
+ifeq ($(BR2_PACKAGE_AVAHI_LIBDNSSD_COMPATIBILITY),y)
+AVAHI_POST_INSTALL_STAGING_HOOKS += AVAHI_STAGING_INSTALL_LIBDNSSD_LINK
 endif
 
 $(eval $(autotools-package))
