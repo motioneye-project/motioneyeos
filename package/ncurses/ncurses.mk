@@ -46,6 +46,8 @@ define NCURSES_LINK_LIBS
 		ln -sf $${lib}$(NCURSES_LIB_SUFFIX).a \
 			$(1)/usr/lib/$${lib}.a; \
 	done
+	ln -sf libncurses$(NCURSES_LIB_SUFFIX).a \
+		$(1)/usr/lib/libcurses.a
 endef
 else
 define NCURSES_LINK_LIBS
@@ -55,6 +57,10 @@ define NCURSES_LINK_LIBS
 		ln -sf $${lib}$(NCURSES_LIB_SUFFIX).so \
 			$(1)/usr/lib/$${lib}.so; \
 	done
+	ln -sf libncurses$(NCURSES_LIB_SUFFIX).a \
+		$(1)/usr/lib/libcurses.a
+	ln -sf libncurses$(NCURSES_LIB_SUFFIX).so \
+		$(1)/usr/lib/libcurses.so
 endef
 endif
 
