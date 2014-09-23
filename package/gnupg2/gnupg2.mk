@@ -33,4 +33,11 @@ else
 GNUPG2_CONF_OPT += --disable-bzip2
 endif
 
+ifeq ($(BR2_PACKAGE_READLINE),y)
+GNUPG2_CONF_OPT += --with-readline=$(STAGING_DIR)
+GNUPG2_DEPENDENCIES += readline
+else
+GNUPG2_CONF_OPT += --without-readline
+endif
+
 $(eval $(autotools-package))
