@@ -1,7 +1,7 @@
-From 271d855c0ad94a2ec164e20173257a06cd83288d Mon Sep 17 00:00:00 2001
+From 6bb94d51e25b394bc9c52699f744a7cc06ffca15 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?J=C3=A9r=C3=B4me=20Pouiller?= <jezz@sysmic.org>
 Date: Thu, 2 Jan 2014 16:00:06 +0100
-Subject: [PATCH 2/3] don't enable largefile support unconditionally on uClibc
+Subject: [PATCH 2/2] don't enable largefile support unconditionally on uClibc
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -19,7 +19,7 @@ Signed-off-by: Jérôme Pouiller <jezz@sysmic.org>
  3 files changed, 12 insertions(+)
 
 diff --git a/coregrind/m_initimg/initimg-linux.c b/coregrind/m_initimg/initimg-linux.c
-index 9bcc05c..ffee30f 100644
+index a8e7d27..fa670cb 100644
 --- a/coregrind/m_initimg/initimg-linux.c
 +++ b/coregrind/m_initimg/initimg-linux.c
 @@ -55,7 +55,11 @@
@@ -35,10 +35,10 @@ index 9bcc05c..ffee30f 100644
  #include <elf.h>
  /* --- !!! --- EXTERNAL HEADERS end --- !!! --- */
 diff --git a/coregrind/m_main.c b/coregrind/m_main.c
-index 35c11e1..0372946 100644
+index e7159a8..4371a1f 100644
 --- a/coregrind/m_main.c
 +++ b/coregrind/m_main.c
-@@ -2997,7 +2997,11 @@ asm(
+@@ -3143,7 +3143,11 @@ asm(
  
  /* --- !!! --- EXTERNAL HEADERS start --- !!! --- */
  #define _GNU_SOURCE
@@ -51,7 +51,7 @@ index 35c11e1..0372946 100644
  #include <elf.h>
  /* --- !!! --- EXTERNAL HEADERS end --- !!! --- */
 diff --git a/coregrind/m_ume/elf.c b/coregrind/m_ume/elf.c
-index b5b30e5..0766c74 100644
+index 4615da3..06992a4 100644
 --- a/coregrind/m_ume/elf.c
 +++ b/coregrind/m_ume/elf.c
 @@ -48,7 +48,11 @@
@@ -67,5 +67,5 @@ index b5b30e5..0766c74 100644
  #include <elf.h>
  /* --- !!! --- EXTERNAL HEADERS end --- !!! --- */
 -- 
-1.8.3.2
+1.9.1
 
