@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-GNUPLOT_VERSION = 4.6.2
+GNUPLOT_VERSION = 4.6.6
 GNUPLOT_SITE = http://downloads.sourceforge.net/project/gnuplot/gnuplot/$(GNUPLOT_VERSION)
 GNUPLOT_LICENSE = gnuplot license (open source)
 GNUPLOT_LICENSE_FILES = Copyright
