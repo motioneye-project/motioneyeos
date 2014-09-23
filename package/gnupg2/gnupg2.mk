@@ -26,4 +26,11 @@ endef
 GNUPG2_POST_INSTALL_TARGET_HOOKS += GNUPG2_REMOVE_GPGV2
 endif
 
+ifeq ($(BR2_PACKAGE_BZIP2),y)
+GNUPG2_CONF_OPT += --enable-bzip2 --with-bzip2=$(STAGING_DIR)
+GNUPG2_DEPENDENCIES += bzip2
+else
+GNUPG2_CONF_OPT += --disable-bzip2
+endif
+
 $(eval $(autotools-package))
