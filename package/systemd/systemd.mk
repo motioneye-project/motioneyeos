@@ -76,6 +76,13 @@ else
 SYSTEMD_CONF_OPT += --disable-gudev
 endif
 
+ifeq ($(BR2_PACKAGE_LIBSECCOMP),y)
+SYSTEMD_CONF_OPT += --enable-seccomp
+SYSTEMD_DEPENDENCIES += libseccomp
+else
+SYSTEMD_CONF_OPT += --disable-seccomp
+endif
+
 ifeq ($(BR2_PACKAGE_SYSTEMD_ALL_EXTRAS),y)
 SYSTEMD_DEPENDENCIES += \
 	xz 		\
