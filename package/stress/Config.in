@@ -6,4 +6,4 @@ config BR2_PACKAGE_STRESS
 	  It imposes a configurable amount of CPU, memory, I/O, and
 	  disk stress on the system.
 
-	  http://weather.ou.edu/~apw/projects/stress/
+	  http://people.seas.harvard.edu/~apw/stress/
