@@ -1,58 +1,12 @@
-diff -durN keyutils-1.5.5.orig/Makefile keyutils-1.5.5/Makefile
---- keyutils-1.5.5.orig/Makefile	2011-11-30 16:27:43.000000000 +0100
-+++ keyutils-1.5.5/Makefile	2012-08-14 17:06:07.064412101 +0200
-@@ -1,7 +1,5 @@
--CPPFLAGS	:= -I.
--CFLAGS		:= -g -Wall -Werror
--INSTALL		:= install
--DESTDIR		:=
-+CPPFLAGS	+= -I.
-+CFLAGS		+= -g -Wall -Werror
- SPECFILE	:= keyutils.spec
- NO_GLIBC_KEYERR	:= 0
- NO_ARLIB	:= 0
-@@ -14,7 +12,7 @@
- MAN5		:= /usr/share/man/man5
- MAN8		:= /usr/share/man/man8
- INCLUDEDIR	:= /usr/include
--LNS		:= ln -sf
-+LNS		:= $(LN) -sf
- 
- ###############################################################################
- #
-@@ -48,29 +46,6 @@
- 
- ###############################################################################
- #
--# Guess at the appropriate lib directory and word size
--#
--###############################################################################
--LIBDIR		:= $(shell ldd /usr/bin/make | grep '\(/libc\)' | sed -e 's!.*\(/.*\)/libc[.].*!\1!')
--USRLIBDIR	:= $(patsubst /lib/%,/usr/lib/%,$(LIBDIR))
--BUILDFOR	:= $(shell file /usr/bin/make | sed -e 's!.*ELF \(32\|64\)-bit.*!\1!')-bit
--
--LNS		:= ln -sf
--
--ifeq ($(BUILDFOR),32-bit)
--CFLAGS		+= -m32
--LIBDIR		:= /lib
--USRLIBDIR	:= /usr/lib
--else
--ifeq ($(BUILDFOR),64-bit)
--CFLAGS		+= -m64
--LIBDIR		:= /lib64
--USRLIBDIR	:= /usr/lib64
--endif
--endif
--
--###############################################################################
--#
- # This is necessary if glibc doesn't know about the key management error codes
- #
- ###############################################################################
-@@ -110,10 +85,10 @@
- 
- 
+Makefile: Don't call "ln" directly
+
+Signed-off-by: Vicente Olivert Riera <vincent.riera@imgtec.com>
+
+--- keyutils-1.5.9/Makefile.orig	2014-09-22 16:05:14.117007430 +0100
++++ keyutils-1.5.9/Makefile	2014-09-22 16:06:26.053219336 +0100
+@@ -123,10 +123,10 @@ endif
+ ifeq ($(NO_SOLIB),0)
+ all: $(DEVELLIB)
  $(DEVELLIB): $(SONAME)
 -	ln -sf $< $@
 +	$(LNS) $< $@

@@ -3,17 +3,18 @@ Makefile: fix install rule
 Do not link the .so with an absolute path, otherwise it may point to
 the host library.
 
-Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+Based on the former patch by Yann E. MORIN.
 
-diff -durN keyutils-1.5.5.orig/Makefile keyutils-1.5.5/Makefile
---- keyutils-1.5.5.orig/Makefile	2012-10-22 20:11:57.188548033 +0200
-+++ keyutils-1.5.5/Makefile	2012-10-22 20:14:40.868236838 +0200
-@@ -127,7 +127,7 @@
+Signed-off-by: Vicente Olivert Riera <vincent.riera@imgtec.com>
+
+--- keyutils-1.5.9/Makefile.orig	2014-09-22 16:13:41.593562765 +0100
++++ keyutils-1.5.9/Makefile	2014-09-22 16:14:05.377963952 +0100
+@@ -168,7 +168,7 @@ ifeq ($(NO_SOLIB),0)
  	$(INSTALL) -D $(LIBNAME) $(DESTDIR)$(LIBDIR)/$(LIBNAME)
  	$(LNS) $(LIBNAME) $(DESTDIR)$(LIBDIR)/$(SONAME)
  	mkdir -p $(DESTDIR)$(USRLIBDIR)
 -	$(LNS) $(LIBDIR)/$(SONAME) $(DESTDIR)$(USRLIBDIR)/$(DEVELLIB)
 +	$(LNS) $(SONAME) $(DESTDIR)$(USRLIBDIR)/$(DEVELLIB)
+ endif
  	$(INSTALL) -D keyctl $(DESTDIR)$(BINDIR)/keyctl
  	$(INSTALL) -D request-key $(DESTDIR)$(SBINDIR)/request-key
- 	$(INSTALL) -D request-key-debug.sh $(DESTDIR)$(SHAREDIR)/request-key-debug.sh

@@ -4,29 +4,35 @@
 #
 ################################################################################
 
-KEYUTILS_VERSION         = 1.5.5
+KEYUTILS_VERSION         = 1.5.9
 KEYUTILS_SOURCE          = keyutils-$(KEYUTILS_VERSION).tar.bz2
 KEYUTILS_SITE            = http://people.redhat.com/~dhowells/keyutils
 KEYUTILS_LICENSE         = GPLv2+ LGPLv2.1+
 KEYUTILS_LICENSE_FILES   = LICENCE.GPL LICENCE.LGPL
 KEYUTILS_INSTALL_STAGING = YES
 
-KEYUTILS_MAKE_ENV =     \
-    INSTALL=$(INSTALL)  \
-    LIBDIR=/usr/lib     \
-    USRLIBDIR=/usr/lib  \
-    LN=$(HOSTLN)        \
+KEYUTILS_MAKE_PARAMS =                \
+    INSTALL=$(INSTALL)                \
+    LIBDIR=/usr/lib                   \
+    USRLIBDIR=/usr/lib                \
+    CFLAGS="$(TARGET_CFLAGS)"         \
+    CPPFLAGS="$(TARGET_CPPFLAGS) -I." \
+    LNS="$(HOSTLN) -sf"
+
+ifeq ($(BR2_PREFER_STATIC_LIB),y)
+KEYUTILS_MAKE_PARAMS += NO_SOLIB=1
+endif
 
 define KEYUTILS_BUILD_CMDS
-	$(KEYUTILS_MAKE_ENV) $(TARGET_CONFIGURE_OPTS) $(MAKE) -C $(@D)
+	$(TARGET_CONFIGURE_OPTS) $(MAKE) $(KEYUTILS_MAKE_PARAMS) -C $(@D)
 endef
 
 define KEYUTILS_INSTALL_STAGING_CMDS
-	$(KEYUTILS_MAKE_ENV) $(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
+	$(MAKE) $(KEYUTILS_MAKE_PARAMS) -C $(@D) DESTDIR=$(STAGING_DIR) install
 endef
 
 define KEYUTILS_INSTALL_TARGET_CMDS
-	$(KEYUTILS_MAKE_ENV) $(MAKE) -C $(@D) DESTDIR=$(TARGET_DIR) install
+	$(MAKE) $(KEYUTILS_MAKE_PARAMS) -C $(@D) DESTDIR=$(TARGET_DIR) install
 endef
 
 $(eval $(generic-package))
