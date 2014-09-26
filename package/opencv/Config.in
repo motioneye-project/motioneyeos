@@ -101,6 +101,7 @@ config BR2_PACKAGE_OPENCV_LIB_SUPERRES
 
 config BR2_PACKAGE_OPENCV_LIB_TS
 	bool "ts (touchscreen)"
+	select BR2_PACKAGE_OPENCV_LIB_HIGHGUI
 	default y
 	help
 	  Include opencv_ts module into the OpenCV build.
