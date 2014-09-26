@@ -11,12 +11,10 @@ CDRKIT_LICENSE = GPLv2
 CDRKIT_LICENSE_FILES = COPYING
 
 ifeq ($(BR2_ENDIAN),"BIG")
-CMAKE_ENDIAN_OPT=-DBITFIELDS_HTOL=1
+CDRKIT_CONF_OPT += -DBITFIELDS_HTOL=1
 else
-CMAKE_ENDIAN_OPT=-DBITFIELDS_HTOL=0
+CDRKIT_CONF_OPT += -DBITFIELDS_HTOL=0
 endif
-
-CDRKIT_CONF_OPT += $(CMAKE_ENDIAN_OPT)
 
 ## cdrkit isn't completely re-rooted by CMAKE_FIND_ROOT_PATH, so add
 ## some extra flags so it finds needed libs and headers.
