@@ -46,7 +46,7 @@ be set to suit the needs of the package under consideration:
 * +FOO_KCONFIG_EDITORS+: a space-separated list of kconfig editors to
   support, for example 'menuconfig xconfig'. By default, 'menuconfig'.
 
-* +FOO_KCONFIG_OPT+: extra options to pass when calling the kconfig
+* +FOO_KCONFIG_OPTS+: extra options to pass when calling the kconfig
   editors. This may need to include '$(FOO_MAKE_OPTS)', for example. By
   default, empty.
 

@@ -33,7 +33,7 @@ $(call inner-generic-package,$(1),$(2),$(3),$(4))
 
 # Default values
 $(2)_KCONFIG_EDITORS ?= menuconfig
-$(2)_KCONFIG_OPT ?=
+$(2)_KCONFIG_OPTS ?=
 $(2)_KCONFIG_FIXUP_CMDS ?=
 
 # FOO_KCONFIG_FILE is required
@@ -51,7 +51,7 @@ $$($(2)_DIR)/.config: $$($(2)_KCONFIG_FILE) | $(1)-patch
 $$($(2)_DIR)/.stamp_kconfig_fixup_done: $$($(2)_DIR)/.config
 	$$($(2)_KCONFIG_FIXUP_CMDS)
 	@yes "" | $$($(2)_MAKE_ENV) $$(MAKE) -C $$($(2)_DIR) \
-		$$($(2)_KCONFIG_OPT) oldconfig
+		$$($(2)_KCONFIG_OPTS) oldconfig
 	$$(Q)touch $$@
 
 # Before running configure, the configuration file should be present and fixed
@@ -60,7 +60,7 @@ $$($(2)_TARGET_CONFIGURE): $$($(2)_DIR)/.stamp_kconfig_fixup_done
 # Configuration editors (menuconfig, ...)
 $$(addprefix $(1)-,$$($(2)_KCONFIG_EDITORS)): $$($(2)_DIR)/.stamp_kconfig_fixup_done
 	$$($(2)_MAKE_ENV) $$(MAKE) -C $$($(2)_DIR) \
-		$$($(2)_KCONFIG_OPT) $$(subst $(1)-,,$$@)
+		$$($(2)_KCONFIG_OPTS) $$(subst $(1)-,,$$@)
 	rm -f $$($(2)_DIR)/.stamp_{kconfig_fixup_done,configured,built}
 	rm -f $$($(2)_DIR)/.stamp_{target,staging}_installed
 
