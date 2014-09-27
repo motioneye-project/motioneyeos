@@ -136,7 +136,7 @@ cases, typical packages will therefore only use a few of them.
   'gettextize'.) Only valid when +LIBFOO_AUTORECONF=YES+. Valid
   values are +YES+ and +NO+. The default is +NO+.
 
-* +LIBFOO_GETTEXTIZE_OPT+, to specify additional options passed to
+* +LIBFOO_GETTEXTIZE_OPTS+, to specify additional options passed to
   the 'gettextize' program, if +LIBFOO_GETTEXTIZE=YES+. You may
   use that if, for example, the +.po+ files are not located in the
   standard place (i.e. in +po/+ at the root of the package.) By
