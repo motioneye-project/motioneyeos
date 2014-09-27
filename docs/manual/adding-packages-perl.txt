@@ -113,6 +113,6 @@ cases, typical packages will therefore only use a few of them.
   pass to +make pure_install+ or +perl Build install+ in the install step.
   By default, empty.
 
-* +HOST_PERL_FOO_INSTALL_OPT+, to specify additional options to
+* +HOST_PERL_FOO_INSTALL_OPTS+, to specify additional options to
   pass to +make pure_install+ or +perl Build install+ in the install step.
   By default, empty.

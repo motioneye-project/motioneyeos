@@ -128,16 +128,16 @@ therefore only use a few of them, or none.
   passed automatically by the infrastructure.
 
 * +PYTHON_FOO_INSTALL_TARGET_OPT+, +PYTHON_FOO_INSTALL_STAGING_OPT+,
-  +HOST_PYTHON_FOO_INSTALL_OPT+ to specify additional options to pass
+  +HOST_PYTHON_FOO_INSTALL_OPTS+ to specify additional options to pass
   to the Python +setup.py+ script during the target installation step,
   the staging installation step or the host installation,
   respectively. Note that the infrastructure is automatically passing
   some options, defined in +PKG_PYTHON_DISTUTILS_INSTALL_TARGET_OPT+
   or +PKG_PYTHON_DISTUTILS_INSTALL_STAGING_OPT+ (for target distutils
-  packages), +HOST_PKG_PYTHON_DISTUTILS_INSTALL_OPT+ (for host
+  packages), +HOST_PKG_PYTHON_DISTUTILS_INSTALL_OPTS+ (for host
   distutils packages), +PKG_PYTHON_SETUPTOOLS_INSTALL_TARGET_OPT+ or
   +PKG_PYTHON_SETUPTOOLS_INSTALL_STAGING_OPT+ (for target setuptools
-  packages) and +HOST_PKG_PYTHON_SETUPTOOLS_INSTALL_OPT+ (for host
+  packages) and +HOST_PKG_PYTHON_SETUPTOOLS_INSTALL_OPTS+ (for host
   setuptools packages).
 
 * +HOST_PYTHON_FOO_NEEDS_HOST_PYTHON+, to define the host python
