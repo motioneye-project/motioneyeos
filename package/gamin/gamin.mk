@@ -10,10 +10,10 @@ GAMIN_AUTORECONF = YES
 GAMIN_INSTALL_STAGING = YES
 GAMIN_LICENSE = LGPLv2+
 GAMIN_LICENSE_FILES = COPYING
-GAMIN_CONF_OPT = --disable-debug
+GAMIN_CONF_OPTS = --disable-debug
 
 # python support broken
-GAMIN_CONF_OPT += --without-python
+GAMIN_CONF_OPTS += --without-python
 
 GAMIN_CONF_ENV = have_abstract_sockets=no
 

@@ -13,18 +13,18 @@ DMALLOC_LICENSE = MIT-like
 DMALLOC_LICENSE_FILES = dmalloc.h.1
 
 DMALLOC_INSTALL_STAGING = YES
-DMALLOC_CONF_OPT = --enable-shlib
+DMALLOC_CONF_OPTS = --enable-shlib
 
 ifeq ($(BR2_INSTALL_LIBSTDCPP),y)
-DMALLOC_CONF_OPT += --enable-cxx
+DMALLOC_CONF_OPTS += --enable-cxx
 else
-DMALLOC_CONF_OPT += --disable-cxx
+DMALLOC_CONF_OPTS += --disable-cxx
 endif
 
 ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),y)
-DMALLOC_CONF_OPT += --enable-threads
+DMALLOC_CONF_OPTS += --enable-threads
 else
-DMALLOC_CONF_OPT += --disable-threads
+DMALLOC_CONF_OPTS += --disable-threads
 endif
 
 define DMALLOC_POST_PATCH

@@ -31,7 +31,7 @@ SAMBA_CONF_ENV = \
 	libreplace_cv_HAVE_IPV6=$(if $(BR2_INET_IPV6),yes,no) \
 	$(if $(BR2_PACKAGE_SAMBA_AVAHI),AVAHI_LIBS=-pthread)
 
-SAMBA_CONF_OPT = \
+SAMBA_CONF_OPTS = \
 	--localstatedir=/var \
 	--with-piddir=/var/run \
 	--with-lockdir=/var/lock \
@@ -148,13 +148,13 @@ endef
 # --with-libiconv="" is to avoid detecting host libiconv and build failure
 ifeq ($(BR2_PACKAGE_SAMBA_LIBICONV),y)
 SAMBA_DEPENDENCIES += libiconv
-SAMBA_CONF_OPT += --with-libiconv=$(STAGING_DIR)
+SAMBA_CONF_OPTS += --with-libiconv=$(STAGING_DIR)
 else
-SAMBA_CONF_OPT += --with-libiconv=""
+SAMBA_CONF_OPTS += --with-libiconv=""
 endif
 
 # Compiled debug messages by level
-SAMBA_CONF_OPT += CFLAGS="$(TARGET_CFLAGS) -DMAX_DEBUG_LEVEL=$(BR2_PACKAGE_SAMBA_MAX_DEBUGLEVEL)"
+SAMBA_CONF_OPTS += CFLAGS="$(TARGET_CFLAGS) -DMAX_DEBUG_LEVEL=$(BR2_PACKAGE_SAMBA_MAX_DEBUGLEVEL)"
 
 ifeq ($(BR2_PACKAGE_SAMBA_SWAT),y)
 SAMBA_POST_INSTALL_TARGET_HOOKS += SAMBA_REMOVE_SWAT_DOCUMENTATION

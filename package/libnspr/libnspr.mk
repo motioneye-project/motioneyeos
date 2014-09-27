@@ -17,15 +17,15 @@ LIBNSPR_LICENSE_FILES = nspr/LICENSE
 LIBNSPR_CONF_ENV = HOST_CFLAGS="-g -O2" \
 		   HOST_LDFLAGS="-lc"
 # NSPR mixes up --build and --host
-LIBNSPR_CONF_OPT  = --host=$(GNU_HOST_NAME)
-LIBNSPR_CONF_OPT += --$(if $(BR2_ARCH_IS_64),en,dis)able-64bit
-LIBNSPR_CONF_OPT += --$(if $(BR2_INET_IPV6),en,dis)able-ipv6
+LIBNSPR_CONF_OPTS  = --host=$(GNU_HOST_NAME)
+LIBNSPR_CONF_OPTS += --$(if $(BR2_ARCH_IS_64),en,dis)able-64bit
+LIBNSPR_CONF_OPTS += --$(if $(BR2_INET_IPV6),en,dis)able-ipv6
 
 ifeq ($(BR2_arm),y)
 ifeq ($(BR2_cortex_a8)$(BR2_cortex_a9),y)
-LIBNSPR_CONF_OPT += --enable-thumb2
+LIBNSPR_CONF_OPTS += --enable-thumb2
 else
-LIBNSPR_CONF_OPT += --disable-thumb2
+LIBNSPR_CONF_OPTS += --disable-thumb2
 endif
 endif
 

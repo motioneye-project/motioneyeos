@@ -15,7 +15,7 @@ ifeq ($(BR2_PACKAGE_LIBPNG),y)
 PRBOOM_DEPENDENCIES += libpng
 endif
 
-PRBOOM_CONF_OPT = \
+PRBOOM_CONF_OPTS = \
 		--oldincludedir=$(STAGING_DIR)/usr/include \
 		--with-sdl-prefix=$(STAGING_DIR)/usr \
 		--with-sdl-exec-prefix=$(STAGING_DIR)/usr \

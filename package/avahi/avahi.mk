@@ -67,7 +67,7 @@ AVAHI_CONF_ENV = ac_cv_func_strtod=yes \
 		avahi_cv_sys_cxx_works=yes \
 		DATADIRNAME=share
 
-AVAHI_CONF_OPT = --localstatedir=/var \
+AVAHI_CONF_OPTS = --localstatedir=/var \
 		--disable-qt3 \
 		--disable-qt4 \
 		--disable-gdbm \
@@ -91,36 +91,36 @@ AVAHI_DEPENDENCIES = $(if $(BR2_NEEDS_GETTEXT_IF_LOCALE),gettext) host-intltool 
 ifneq ($(BR2_PACKAGE_AVAHI_DAEMON)$(BR2_PACKAGE_AVAHI_AUTOIPD),)
 AVAHI_DEPENDENCIES += libdaemon
 else
-AVAHI_CONF_OPT += --disable-libdaemon
+AVAHI_CONF_OPTS += --disable-libdaemon
 endif
 
 ifeq ($(BR2_PACKAGE_AVAHI_DAEMON),y)
 AVAHI_DEPENDENCIES += expat
-AVAHI_CONF_OPT += --with-xml=expat
+AVAHI_CONF_OPTS += --with-xml=expat
 else
-AVAHI_CONF_OPT += --with-xml=none
+AVAHI_CONF_OPTS += --with-xml=none
 endif
 
 ifeq ($(BR2_PACKAGE_AVAHI_LIBDNSSD_COMPATIBILITY),y)
-AVAHI_CONF_OPT += --enable-compat-libdns_sd
+AVAHI_CONF_OPTS += --enable-compat-libdns_sd
 endif
 
 ifeq ($(BR2_PACKAGE_DBUS),y)
 AVAHI_DEPENDENCIES += dbus
 else
-AVAHI_CONF_OPT += --disable-dbus
+AVAHI_CONF_OPTS += --disable-dbus
 endif
 
 ifeq ($(BR2_PACKAGE_LIBGLIB2),y)
 AVAHI_DEPENDENCIES += libglib2
 else
-AVAHI_CONF_OPT += --disable-glib --disable-gobject
+AVAHI_CONF_OPTS += --disable-glib --disable-gobject
 endif
 
 ifeq ($(BR2_PACKAGE_LIBGLADE),y)
 AVAHI_DEPENDENCIES += libglade
 else
-AVAHI_CONF_OPT += --disable-gtk
+AVAHI_CONF_OPTS += --disable-gtk
 endif
 
 ifeq ($(BR2_PACKAGE_PYTHON),y)
@@ -133,9 +133,9 @@ AVAHI_CONF_ENV += am_cv_pathless_PYTHON=python \
 		py_cv_mod_socket_=yes
 
 AVAHI_DEPENDENCIES += python
-AVAHI_CONF_OPT += --enable-python
+AVAHI_CONF_OPTS += --enable-python
 else
-AVAHI_CONF_OPT += --disable-python
+AVAHI_CONF_OPTS += --disable-python
 endif
 
 AVAHI_MAKE_OPTS += $(if $(BR2_NEEDS_GETTEXT_IF_LOCALE),LIBS=-lintl)

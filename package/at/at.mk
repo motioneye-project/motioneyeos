@@ -14,7 +14,7 @@ AT_DEPENDENCIES = $(if $(BR2_PACKAGE_FLEX),flex) host-bison host-flex
 AT_LICENSE = GPLv2+, GPLv3+, ISC
 AT_LICENSE_FILES = Copyright COPYING
 
-AT_CONF_OPT = \
+AT_CONF_OPTS = \
         --with-jobdir=/var/spool/cron/atjobs \
         --with-atspool=/var/spool/cron/atspool \
         --with-daemon_username=root \

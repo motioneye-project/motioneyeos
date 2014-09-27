@@ -69,7 +69,7 @@ define $(2)_CONFIGURE_CMDS
 			--install_path script=/usr/bin \
 			--install_path bindoc=/usr/share/man/man1 \
 			--install_path libdoc=/usr/share/man/man3 \
-			$$($(2)_CONF_OPT); \
+			$$($(2)_CONF_OPTS); \
 	else \
 		$$($(2)_CONF_ENV) \
 		PERL_MM_USE_DEFAULT=1 \
@@ -91,7 +91,7 @@ define $(2)_CONFIGURE_CMDS
 			INSTALLVENDORSCRIPT=/usr/bin \
 			INSTALLVENDORMAN1DIR=/usr/share/man/man1 \
 			INSTALLVENDORMAN3DIR=/usr/share/man/man3 \
-			$$($(2)_CONF_OPT); \
+			$$($(2)_CONF_OPTS); \
 	fi
 endef
 else
@@ -104,7 +104,7 @@ define $(2)_CONFIGURE_CMDS
 		perl Build.PL \
 			--install_base $$(HOST_DIR)/usr \
 			--installdirs vendor \
-			$$($(2)_CONF_OPT); \
+			$$($(2)_CONF_OPTS); \
 	else \
 		$$($(2)_CONF_ENV) \
 		PERL_MM_USE_DEFAULT=1 \
@@ -112,7 +112,7 @@ define $(2)_CONFIGURE_CMDS
 		perl Makefile.PL \
 			INSTALL_BASE=$$(HOST_DIR)/usr \
 			INSTALLDIRS=vendor \
-			$$($(2)_CONF_OPT); \
+			$$($(2)_CONF_OPTS); \
 	fi
 endef
 endif

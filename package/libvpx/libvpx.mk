@@ -18,7 +18,7 @@ LIBVPX_CONF_ENV = \
 	LD="$(TARGET_CC)" \
 	CROSS=$(GNU_TARGET_NAME)
 
-LIBVPX_CONF_OPT = \
+LIBVPX_CONF_OPTS = \
 	--disable-examples \
 	--disable-docs \
 	--disable-unit-tests
@@ -34,7 +34,7 @@ define LIBVPX_CONFIGURE_CMDS
 		--enable-pic \
 		--prefix=/usr \
 		$(SHARED_STATIC_LIBS_OPTS) \
-		$(LIBVPX_CONF_OPT) \
+		$(LIBVPX_CONF_OPTS) \
 	)
 endef
 

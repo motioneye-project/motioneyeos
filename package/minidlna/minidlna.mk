@@ -20,7 +20,7 @@ ifeq ($(BR2_PREFER_STATIC_LIB),y)
 MINIDLNA_CONF_ENV = \
 	LIBS='-lavformat -lavcodec -lavutil -logg -lz -lpthread -lm'
 else
-MINIDLNA_CONF_OPT = \
+MINIDLNA_CONF_OPTS = \
 	--disable-static
 endif
 

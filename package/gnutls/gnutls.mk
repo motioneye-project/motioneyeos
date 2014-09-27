@@ -15,7 +15,7 @@ GNUTLS_DEPENDENCIES = host-pkgconf nettle pcre \
 	$(if $(BR2_PACKAGE_LIBIDN),libidn) \
 	$(if $(BR2_PACKAGE_LIBTASN1),libtasn1) \
 	$(if $(BR2_PACKAGE_ZLIB),zlib)
-GNUTLS_CONF_OPT = \
+GNUTLS_CONF_OPTS = \
 	--with-libnettle-prefix=$(STAGING_DIR)/usr \
 	--disable-rpath \
 	--disable-doc \
@@ -29,26 +29,26 @@ GNUTLS_CONF_ENV = gl_cv_socket_ipv6=$(if $(BR2_INET_IPV6),yes,no) \
 GNUTLS_INSTALL_STAGING = YES
 
 # libpthread and libz autodetection poison the linkpath
-GNUTLS_CONF_OPT += $(if $(BR2_TOOLCHAIN_HAS_THREADS),--with-libpthread-prefix=$(STAGING_DIR)/usr)
-GNUTLS_CONF_OPT += $(if $(BR2_PACKAGE_ZLIB),--with-libz-prefix=$(STAGING_DIR)/usr)
+GNUTLS_CONF_OPTS += $(if $(BR2_TOOLCHAIN_HAS_THREADS),--with-libpthread-prefix=$(STAGING_DIR)/usr)
+GNUTLS_CONF_OPTS += $(if $(BR2_PACKAGE_ZLIB),--with-libz-prefix=$(STAGING_DIR)/usr)
 
 # gnutls needs libregex, but pcre can be used too
 # The check isn't cross-compile friendly
 GNUTLS_CONF_ENV += libopts_cv_with_libregex=yes
-GNUTLS_CONF_OPT += --with-regex-header=pcreposix.h \
+GNUTLS_CONF_OPTS += --with-regex-header=pcreposix.h \
 	--with-libregex-cflags="`$(PKG_CONFIG_HOST_BINARY) libpcreposix --cflags`" \
 	--with-libregex-libs="`$(PKG_CONFIG_HOST_BINARY) libpcreposix --libs`"
 
 # Consider crywrap as part of tools because it needs WCHAR, and it's so too
 ifeq ($(BR2_PACKAGE_GNUTLS_TOOLS),)
-	GNUTLS_CONF_OPT += --disable-crywrap
+	GNUTLS_CONF_OPTS += --disable-crywrap
 endif
 
 # libidn support for nommu must exclude the crywrap wrapper (uses fork)
-GNUTLS_CONF_OPT += $(if $(BR2_USE_MMU),,--disable-crywrap)
+GNUTLS_CONF_OPTS += $(if $(BR2_USE_MMU),,--disable-crywrap)
 
 ifeq ($(BR2_PACKAGE_CRYPTODEV_LINUX),y)
-	GNUTLS_CONF_OPT += --enable-cryptodev
+	GNUTLS_CONF_OPTS += --enable-cryptodev
 	GNUTLS_DEPENDENCIES += cryptodev-linux
 endif
 

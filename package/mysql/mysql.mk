@@ -23,7 +23,7 @@ MYSQL_CONF_ENV = \
 	ac_cv_have_decl_HAVE_IB_GCC_ATOMIC_BUILTINS=yes \
 	mysql_cv_new_rl_interface=yes
 
-MYSQL_CONF_OPT = \
+MYSQL_CONF_OPTS = \
 	--without-ndb-binlog \
 	--without-docs \
 	--without-man \
@@ -45,11 +45,11 @@ ifeq ($(BR2_PACKAGE_MYSQL_SERVER),y)
 MYSQL_DEPENDENCIES += host-mysql host-bison
 HOST_MYSQL_DEPENDENCIES = host-zlib
 
-HOST_MYSQL_CONF_OPT = \
+HOST_MYSQL_CONF_OPTS = \
 	--with-embedded-server \
 	--disable-mysql-maintainer-mode
 
-MYSQL_CONF_OPT += \
+MYSQL_CONF_OPTS += \
 	--localstatedir=/var/mysql \
 	--with-atomic-ops=up \
 	--with-embedded-server \
@@ -69,9 +69,9 @@ MYSQL_CONF_OPT += \
 # Debugging is only available for the server, so no need for
 # this if-block outside of the server if-block
 ifeq ($(BR2_ENABLE_DEBUG),y)
-MYSQL_CONF_OPT += --with-debug=full
+MYSQL_CONF_OPTS += --with-debug=full
 else
-MYSQL_CONF_OPT += --without-debug
+MYSQL_CONF_OPTS += --without-debug
 endif
 
 define HOST_MYSQL_BUILD_CMDS
@@ -104,7 +104,7 @@ define MYSQL_INSTALL_INIT_SYSV
 endef
 
 else
-MYSQL_CONF_OPT += \
+MYSQL_CONF_OPTS += \
 	--without-server
 endif
 

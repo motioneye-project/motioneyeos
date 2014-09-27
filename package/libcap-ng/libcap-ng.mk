@@ -11,6 +11,6 @@ LIBCAP_NG_LICENSE_FILES = COPYING COPYING.LIB
 LIBCAP_NG_INSTALL_STAGING = YES
 
 LIBCAP_NG_CONF_ENV = ac_cv_prog_swig_found=no
-LIBCAP_NG_CONF_OPT = --without-python
+LIBCAP_NG_CONF_OPTS = --without-python
 
 $(eval $(autotools-package))

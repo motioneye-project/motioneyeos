@@ -11,7 +11,7 @@ MEDIA_CTL_LICENSE = LGPLv2.1+
 MEDIA_CTL_LICENSE_FILES = COPYING.LIB
 
 MEDIA_CTL_AUTORECONF = YES
-MEDIA_CTL_CONF_OPT = --with-kernel-headers=$(STAGING_DIR)/usr/include
+MEDIA_CTL_CONF_OPTS = --with-kernel-headers=$(STAGING_DIR)/usr/include
 MEDIA_CTL_DEPENDENCIES = host-pkgconf
 
 $(eval $(autotools-package))

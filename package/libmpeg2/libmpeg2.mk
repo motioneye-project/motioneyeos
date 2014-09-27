@@ -10,14 +10,14 @@ LIBMPEG2_LICENSE = GPLv2+
 LIBMPEG2_LICENSE_FILES = COPYING
 LIBMPEG2_INSTALL_STAGING = YES
 LIBMPEG2_AUTORECONF = YES
-LIBMPEG2_CONF_OPT = --without-x --disable-directx
+LIBMPEG2_CONF_OPTS = --without-x --disable-directx
 
 ifeq ($(BR2_PACKAGE_SDL),y)
 LIBMPEG2_CONF_ENV += ac_cv_prog_SDLCONFIG=$(STAGING_DIR)/usr/bin/sdl-config
-LIBMPEG2_CONF_OPT += --enable-sdl
+LIBMPEG2_CONF_OPTS += --enable-sdl
 LIBMPEG2_DEPENDENCIES += sdl
 else
-LIBMPEG2_CONF_OPT += --disable-sdl
+LIBMPEG2_CONF_OPTS += --disable-sdl
 endif
 
 ifneq ($(BR2_PACKAGE_LIBMPEG2_BINS),y)

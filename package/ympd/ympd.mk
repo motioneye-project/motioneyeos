@@ -16,6 +16,6 @@ endef
 
 YMPD_PRE_BUILD_HOOKS += YMPD_MAKE_HOST_TOOL
 
-YMPD_CONF_OPT += -DMKDATA_EXE=$(@D)/mkdata
+YMPD_CONF_OPTS += -DMKDATA_EXE=$(@D)/mkdata
 
 $(eval $(cmake-package))

@@ -11,9 +11,9 @@ JOE_LICENSE_FILES = COPYING
 
 ifeq ($(BR2_PACKAGE_NCURSES),y)
 JOE_DEPENDENCIES += ncurses
-JOE_CONF_OPT += --enable-curses
+JOE_CONF_OPTS += --enable-curses
 else
-JOE_CONF_OPT += --disable-curses
+JOE_CONF_OPTS += --disable-curses
 endif
 
 ifneq ($(BR2_PACKAGE_JOE_FULL),y)

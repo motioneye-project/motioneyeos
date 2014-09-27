@@ -16,7 +16,7 @@ NUT_AUTORECONF = YES
 
 # Put the PID files in a read-write place (/var/run is a tmpfs)
 # since the default location (/var/state/ups) maybe readonly.
-NUT_CONF_OPT = \
+NUT_CONF_OPTS = \
 	--with-altpidpath=/var/run/upsd \
 	--without-hal
 
@@ -30,60 +30,60 @@ NUT_CONF_ENV += LDFLAGS="$(TARGET_LDFLAGS) -lm"
 endif
 
 ifeq ($(call qstrip,$(BR2_PACKAGE_NUT_DRIVERS)),)
-NUT_CONF_OPT += --with-drivers=all
+NUT_CONF_OPTS += --with-drivers=all
 else
-NUT_CONF_OPT += --with-drivers=$(BR2_PACKAGE_NUT_DRIVERS)
+NUT_CONF_OPTS += --with-drivers=$(BR2_PACKAGE_NUT_DRIVERS)
 endif
 
 ifeq ($(BR2_PACKAGE_AVAHI)$(BR2_PACKAGE_DBUS),yy)
 NUT_DEPENDENCIES += avahi dbus
-NUT_CONF_OPT += --with-avahi
+NUT_CONF_OPTS += --with-avahi
 else
-NUT_CONF_OPT += --without-avahi
+NUT_CONF_OPTS += --without-avahi
 endif
 
 # gd with support for png is required for the CGI
 ifeq ($(BR2_PACKAGE_GD)$(BR2_PACKAGE_LIBPNG),yy)
 NUT_DEPENDENCIES += gd libpng
-NUT_CONF_OPT += --with-cgi
+NUT_CONF_OPTS += --with-cgi
 else
-NUT_CONF_OPT += --without-cgi
+NUT_CONF_OPTS += --without-cgi
 endif
 
 # libltdl (libtool) is needed for nut-scanner
 ifeq ($(BR2_PACKAGE_LIBTOOL),y)
 NUT_DEPENDENCIES += libtool
-NUT_CONF_OPT += --with-libltdl
+NUT_CONF_OPTS += --with-libltdl
 else
-NUT_CONF_OPT += --without-libltdl
+NUT_CONF_OPTS += --without-libltdl
 endif
 
 ifeq ($(BR2_PACKAGE_LIBUSB_COMPAT),y)
 NUT_DEPENDENCIES += libusb-compat
-NUT_CONF_OPT += --with-usb
+NUT_CONF_OPTS += --with-usb
 else
-NUT_CONF_OPT += --without-usb
+NUT_CONF_OPTS += --without-usb
 endif
 
 ifeq ($(BR2_PACKAGE_NEON_EXPAT)$(BR2_PACKAGE_NEON_LIBXML2),y)
 NUT_DEPENDENCIES += neon
-NUT_CONF_OPT += --with-neon
+NUT_CONF_OPTS += --with-neon
 else
-NUT_CONF_OPT += --without-neon
+NUT_CONF_OPTS += --without-neon
 endif
 
 ifeq ($(BR2_PACKAGE_NETSNMP),y)
 NUT_DEPENDENCIES += netsnmp
-NUT_CONF_OPT += --with-snmp
+NUT_CONF_OPTS += --with-snmp
 else
-NUT_CONF_OPT += --without-snmp
+NUT_CONF_OPTS += --without-snmp
 endif
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 NUT_DEPENDENCIES += openssl
-NUT_CONF_OPT += --with-ssl
+NUT_CONF_OPTS += --with-ssl
 else
-NUT_CONF_OPT += --without-ssl
+NUT_CONF_OPTS += --without-ssl
 endif
 
 $(eval $(autotools-package))

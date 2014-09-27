@@ -15,7 +15,7 @@ LIBECORE_INSTALL_STAGING = YES
 LIBECORE_DEPENDENCIES = host-pkgconf libeina
 
 HOST_LIBECORE_DEPENDENCIES = host-pkgconf host-libeina host-libevas
-HOST_LIBECORE_CONF_OPT += 		\
+HOST_LIBECORE_CONF_OPTS += 		\
 	--enable-ecore-evas 		\
 	--disable-simple-x11 		\
 	--disable-ecore-directfb 	\
@@ -24,7 +24,7 @@ HOST_LIBECORE_CONF_OPT += 		\
 	--disable-ecore-imf-xim
 
 # default options
-LIBECORE_CONF_OPT = --disable-simple-x11
+LIBECORE_CONF_OPTS = --disable-simple-x11
 
 ifeq ($(BR2_PACKAGE_TSLIB),y)
 LIBECORE_DEPENDENCIES += tslib
@@ -36,16 +36,16 @@ endif
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 LIBECORE_DEPENDENCIES += openssl
-LIBECORE_CONF_OPT += --enable-openssl
+LIBECORE_CONF_OPTS += --enable-openssl
 else
-LIBECORE_CONF_OPT += --disable-openssl
+LIBECORE_CONF_OPTS += --disable-openssl
 endif
 
 ifeq ($(BR2_PACKAGE_GNUTLS)$(BR2_PACKAGE_LIBGCRYPT),yy)
 LIBECORE_DEPENDENCIES += gnutls libgcrypt
-LIBECORE_CONF_OPT += --enable-gnutls --with-libgcrypt-prefix=$(STAGING_DIR)/usr
+LIBECORE_CONF_OPTS += --enable-gnutls --with-libgcrypt-prefix=$(STAGING_DIR)/usr
 else
-LIBECORE_CONF_OPT += --disable-gnutls
+LIBECORE_CONF_OPTS += --disable-gnutls
 endif
 
 ifeq ($(BR2_PACKAGE_LIBCURL),y)
@@ -54,34 +54,34 @@ endif
 
 # libecore
 ifeq ($(BR2_PACKAGE_LIBECORE_DIRECTFB),y)
-LIBECORE_CONF_OPT += --enable-ecore-directfb
+LIBECORE_CONF_OPTS += --enable-ecore-directfb
 LIBECORE_DEPENDENCIES += directfb
 else
-LIBECORE_CONF_OPT += --disable-ecore-directfb
+LIBECORE_CONF_OPTS += --disable-ecore-directfb
 endif
 
 ifeq ($(BR2_PACKAGE_LIBECORE_FB),y)
-LIBECORE_CONF_OPT += --enable-ecore-fb
+LIBECORE_CONF_OPTS += --enable-ecore-fb
 else
-LIBECORE_CONF_OPT += --disable-ecore-fb
+LIBECORE_CONF_OPTS += --disable-ecore-fb
 endif
 
 ifeq ($(BR2_PACKAGE_LIBECORE_SDL),y)
-LIBECORE_CONF_OPT += --enable-ecore-sdl
+LIBECORE_CONF_OPTS += --enable-ecore-sdl
 LIBECORE_DEPENDENCIES += sdl
 else
-LIBECORE_CONF_OPT += --disable-ecore-sdl
+LIBECORE_CONF_OPTS += --disable-ecore-sdl
 endif
 
 ifeq ($(BR2_PACKAGE_LIBECORE_X),y)
-LIBECORE_CONF_OPT += --enable-ecore-x
+LIBECORE_CONF_OPTS += --enable-ecore-x
 LIBECORE_DEPENDENCIES += xlib_libXext xlib_libX11
 else
-LIBECORE_CONF_OPT += --disable-ecore-x --disable-ecore-imf-xim
+LIBECORE_CONF_OPTS += --disable-ecore-x --disable-ecore-imf-xim
 endif
 
 ifeq ($(BR2_PACKAGE_LIBECORE_X_XCB),y)
-LIBECORE_CONF_OPT += --enable-ecore-x-xcb
+LIBECORE_CONF_OPTS += --enable-ecore-x-xcb
 LIBECORE_DEPENDENCIES += libxcb xlib_libX11 xcb-util pixman
 
 # src/util/makekeys is executed at build time to generate
@@ -96,15 +96,15 @@ endef
 
 LIBECORE_POST_EXTRACT_HOOKS += LIBECORE_BUILD_MAKEKEYS_FOR_HOST
 else
-LIBECORE_CONF_OPT += --disable-ecore-x-xcb
+LIBECORE_CONF_OPTS += --disable-ecore-x-xcb
 endif
 
 # libecore-evas
 ifeq ($(BR2_PACKAGE_LIBECORE_EVAS),y)
-LIBECORE_CONF_OPT += --enable-ecore-evas
+LIBECORE_CONF_OPTS += --enable-ecore-evas
 LIBECORE_DEPENDENCIES += libevas
 else
-LIBECORE_CONF_OPT += --disable-ecore-evas
+LIBECORE_CONF_OPTS += --disable-ecore-evas
 endif
 
 $(eval $(autotools-package))

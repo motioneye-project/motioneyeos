@@ -17,7 +17,7 @@ OLA_AUTORECONF = YES
 # util-linux provides uuid lib
 OLA_DEPENDENCIES = protobuf util-linux host-bison host-flex
 
-OLA_CONF_OPT = \
+OLA_CONF_OPTS = \
 	ac_cv_have_pymod_google_protobuf=yes \
 	--disable-gcov \
 	--disable-tcmalloc \
@@ -33,119 +33,119 @@ OLA_MAKE_ENV = PYTHONPATH=$(TARGET_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR)/si
 ## OLA Bindings and Interface selections
 
 ifeq ($(BR2_PACKAGE_OLA_WEB),y)
-OLA_CONF_OPT += --enable-http
+OLA_CONF_OPTS += --enable-http
 OLA_DEPENDENCIES += libmicrohttpd
 else
-OLA_CONF_OPT += --disable-http
+OLA_CONF_OPTS += --disable-http
 endif
 
 ifeq ($(BR2_PACKAGE_OLA_SLP),y)
-OLA_CONF_OPT += --enable-slp
+OLA_CONF_OPTS += --enable-slp
 else
-OLA_CONF_OPT += --disable-slp
+OLA_CONF_OPTS += --disable-slp
 endif
 
 ifeq ($(BR2_PACKAGE_OLA_PYTHON_BINDINGS),y)
-OLA_CONF_OPT += --enable-python-libs
+OLA_CONF_OPTS += --enable-python-libs
 OLA_DEPENDENCIES += python python-protobuf
 else
-OLA_CONF_OPT += --disable-python-libs
+OLA_CONF_OPTS += --disable-python-libs
 endif
 
 ## OLA Examples and Tests
 
 ifeq ($(BR2_PACKAGE_OLA_EXAMPLES),y)
-OLA_CONF_OPT += --enable-examples
+OLA_CONF_OPTS += --enable-examples
 OLA_DEPENDENCIES += ncurses
 else
-OLA_CONF_OPT += --disable-examples
+OLA_CONF_OPTS += --disable-examples
 endif
 
 ifeq ($(BR2_PACKAGE_OLA_RDM_TESTS),y)
-OLA_CONF_OPT += --enable-rdm-tests
+OLA_CONF_OPTS += --enable-rdm-tests
 else
-OLA_CONF_OPT += --disable-rdm-tests
+OLA_CONF_OPTS += --disable-rdm-tests
 endif
 
 ## OLA Plugin selections
 
 ifeq ($(BR2_PACKAGE_OLA_PLUGIN_E131),y)
-OLA_CONF_OPT += --enable-e131
+OLA_CONF_OPTS += --enable-e131
 else
-OLA_CONF_OPT += --disable-e131
+OLA_CONF_OPTS += --disable-e131
 endif
 
 ifeq ($(BR2_PACKAGE_OLA_PLUGIN_ARTNET),y)
-OLA_CONF_OPT += --enable-artnet
+OLA_CONF_OPTS += --enable-artnet
 else
-OLA_CONF_OPT += --disable-artnet
+OLA_CONF_OPTS += --disable-artnet
 endif
 
 ifeq ($(BR2_PACKAGE_OLA_PLUGIN_OPENDMX),y)
-OLA_CONF_OPT += --enable-opendmx
+OLA_CONF_OPTS += --enable-opendmx
 else
-OLA_CONF_OPT += --disable-opendmx
+OLA_CONF_OPTS += --disable-opendmx
 endif
 
 ifeq ($(BR2_PACKAGE_OLA_PLUGIN_DUMMY),y)
-OLA_CONF_OPT += --enable-dummy
+OLA_CONF_OPTS += --enable-dummy
 else
-OLA_CONF_OPT += --disable-dummy
+OLA_CONF_OPTS += --disable-dummy
 endif
 
 ifeq ($(BR2_PACKAGE_OLA_PLUGIN_ESPNET),y)
-OLA_CONF_OPT += --enable-espnet
+OLA_CONF_OPTS += --enable-espnet
 else
-OLA_CONF_OPT += --disable-espnet
+OLA_CONF_OPTS += --disable-espnet
 endif
 
 ifeq ($(BR2_PACKAGE_OLA_PLUGIN_KINET),y)
-OLA_CONF_OPT += --enable-kinet
+OLA_CONF_OPTS += --enable-kinet
 else
-OLA_CONF_OPT += --disable-kinet
+OLA_CONF_OPTS += --disable-kinet
 endif
 
 ifeq ($(BR2_PACKAGE_OLA_PLUGIN_OSC),y)
-OLA_CONF_OPT += --enable-osc
+OLA_CONF_OPTS += --enable-osc
 OLA_DEPENDENCIES += liblo
 else
-OLA_CONF_OPT += --disable-osc
+OLA_CONF_OPTS += --disable-osc
 endif
 
 ifeq ($(BR2_PACKAGE_OLA_PLUGIN_MILINT),y)
-OLA_CONF_OPT += --enable-milinst
+OLA_CONF_OPTS += --enable-milinst
 else
-OLA_CONF_OPT += --disable-milinst
+OLA_CONF_OPTS += --disable-milinst
 endif
 
 ifeq ($(BR2_PACKAGE_OLA_PLUGIN_PATHPORT),y)
-OLA_CONF_OPT += --enable-pathport
+OLA_CONF_OPTS += --enable-pathport
 else
-OLA_CONF_OPT += --disable-pathport
+OLA_CONF_OPTS += --disable-pathport
 endif
 
 ifeq ($(BR2_PACKAGE_OLA_PLUGIN_SANDNET),y)
-OLA_CONF_OPT += --enable-sandnet
+OLA_CONF_OPTS += --enable-sandnet
 else
-OLA_CONF_OPT += --disable-sandnet
+OLA_CONF_OPTS += --disable-sandnet
 endif
 
 ifeq ($(BR2_PACKAGE_OLA_PLUGIN_SHOWNET),y)
-OLA_CONF_OPT += --enable-shownet
+OLA_CONF_OPTS += --enable-shownet
 else
-OLA_CONF_OPT += --disable-shownet
+OLA_CONF_OPTS += --disable-shownet
 endif
 
 ifeq ($(BR2_PACKAGE_OLA_PLUGIN_STAGEPROFI),y)
-OLA_CONF_OPT += --enable-stageprofi --enable-libusb
+OLA_CONF_OPTS += --enable-stageprofi --enable-libusb
 else
-OLA_CONF_OPT += --disable-stageprofi
+OLA_CONF_OPTS += --disable-stageprofi
 endif
 
 ifeq ($(BR2_PACKAGE_OLA_PLUGIN_USBPRO),y)
-OLA_CONF_OPT += --enable-usbpro --enable-libusb
+OLA_CONF_OPTS += --enable-usbpro --enable-libusb
 else
-OLA_CONF_OPT += --disable-usbpro
+OLA_CONF_OPTS += --disable-usbpro
 endif
 
 $(eval $(autotools-package))

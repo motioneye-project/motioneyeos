@@ -13,7 +13,7 @@ IPMITOOL_LICENSE_FILES = COPYING
 ifeq ($(BR2_PACKAGE_IPMITOOL_LANPLUS),y)
 IPMITOOL_DEPENDENCIES += openssl
 else
-IPMITOOL_CONF_OPT += --disable-intf-lanplus
+IPMITOOL_CONF_OPTS += --disable-intf-lanplus
 endif
 
 ifeq ($(BR2_PACKAGE_READLINE),y)

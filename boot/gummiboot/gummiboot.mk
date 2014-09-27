@@ -21,7 +21,7 @@ else ifeq ($(BR2_x86_64),y)
 GUMMIBOOT_IMGARCH = x64
 endif
 
-GUMMIBOOT_CONF_OPT = \
+GUMMIBOOT_CONF_OPTS = \
 	--host=$(BR2_ARCH) \
 	--with-efi-libdir=$(STAGING_DIR)/usr/lib \
 	--with-efi-ldsdir=$(STAGING_DIR)/usr/lib \

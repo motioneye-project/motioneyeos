@@ -16,7 +16,7 @@ LIBTIRPC_AUTORECONF = YES
 # getrpcby{number,name} are only provided if 'GQ' is defined
 LIBTIRPC_CONF_ENV = CFLAGS="$(TARGET_CFLAGS) -DGQ"
 
-LIBTIRPC_CONF_OPT = --disable-gssapi
+LIBTIRPC_CONF_OPTS = --disable-gssapi
 
 # We need host-pkgconf because the configure.ac contains a
 # PKG_CHECK_MODULES macro call, and since we're autoreconfiguring this

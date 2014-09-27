@@ -12,15 +12,15 @@ FLUXBOX_LICENSE_FILES = COPYING
 
 FLUXBOX_AUTORECONF = YES
 
-FLUXBOX_CONF_OPT = --x-includes=$(STAGING_DIR)/usr/include/X11 \
+FLUXBOX_CONF_OPTS = --x-includes=$(STAGING_DIR)/usr/include/X11 \
 		   --x-libraries=$(STAGING_DIR)/usr/lib
 FLUXBOX_DEPENDENCIES = xlib_libX11 $(if $(BR2_PACKAGE_LIBICONV),libiconv)
 
 ifeq ($(BR2_PACKAGE_IMLIB2_X),y)
-FLUXBOX_CONF_OPT += --enable-imlib2 --with-imlib2-prefix=$(STAGING_DIR)/usr
+FLUXBOX_CONF_OPTS += --enable-imlib2 --with-imlib2-prefix=$(STAGING_DIR)/usr
 FLUXBOX_DEPENDENCIES += imlib2
 else
-FLUXBOX_CONF_OPT += --disable-imlib2
+FLUXBOX_CONF_OPTS += --disable-imlib2
 endif
 
 define FLUXBOX_INSTALL_XSESSION_FILE

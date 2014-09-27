@@ -14,7 +14,7 @@ RPCBIND_AUTORECONF = YES
 RPCBIND_CONF_ENV += \
 	CFLAGS="$(TARGET_CFLAGS) -I$(STAGING_DIR)/usr/include/tirpc/"
 RPCBIND_DEPENDENCIES += libtirpc
-RPCBIND_CONF_OPT += --with-rpcuser=root
+RPCBIND_CONF_OPTS += --with-rpcuser=root
 
 define RPCBIND_INSTALL_INIT_SYSV
 	[ -f $(TARGET_DIR)/etc/init.d/S30rpcbind ] || \

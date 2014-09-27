@@ -29,16 +29,16 @@ ifeq ($(BR2_PACKAGE_SPEEX),y)
 SDL_SOUND_DEPENDENCIES += speex
 endif
 
-SDL_SOUND_CONF_OPT = \
+SDL_SOUND_CONF_OPTS = \
 	--with-sdl-prefix=$(STAGING_DIR)/usr \
 	--with-sdl-exec-prefix=$(STAGING_DIR)/usr \
 	--disable-sdltest \
 	--enable-static
 
 ifeq ($(BR2_X86_CPU_HAS_MMX),y)
-SDL_SOUND_CONF_OPT += --enable-mmx
+SDL_SOUND_CONF_OPTS += --enable-mmx
 else
-SDL_SOUND_CONF_OPT += --disable-mmx
+SDL_SOUND_CONF_OPTS += --disable-mmx
 endif
 
 define SDL_SOUND_REMOVE_PLAYSOUND

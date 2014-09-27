@@ -13,7 +13,7 @@ SOCKETCAND_LICENSE_FILES = socketcand.c
 ifeq ($(BR2_PACKAGE_LIBCONFIG),y)
 SOCKETCAND_DEPENDENCIES = libconfig
 else
-SOCKETCAND_CONF_OPT = --without-config
+SOCKETCAND_CONF_OPTS = --without-config
 endif
 
 $(eval $(autotools-package))

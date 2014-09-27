@@ -14,12 +14,12 @@ PIXMAN_DEPENDENCIES = host-pkgconf
 PIXMAN_AUTORECONF = YES
 
 # don't build gtk based demos
-PIXMAN_CONF_OPT = --disable-gtk
+PIXMAN_CONF_OPTS = --disable-gtk
 
 # disable iwmmxt support for CPU's that don't have
 # this feature
 ifneq ($(BR2_iwmmxt),y)
-PIXMAN_CONF_OPT += --disable-arm-iwmmxt
+PIXMAN_CONF_OPTS += --disable-arm-iwmmxt
 endif
 
 $(eval $(autotools-package))

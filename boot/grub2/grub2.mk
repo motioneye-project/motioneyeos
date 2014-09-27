@@ -50,7 +50,7 @@ GRUB2_CONF_ENV = \
 	TARGET_CFLAGS="$(TARGET_CFLAGS)" \
 	TARGET_CPPFLAGS="$(TARGET_CPPFLAGS)"
 
-GRUB2_CONF_OPT = \
+GRUB2_CONF_OPTS = \
 	--target=$(GRUB2_TARGET) \
 	--with-platform=$(GRUB2_PLATFORM) \
 	--disable-grub-mkfont \

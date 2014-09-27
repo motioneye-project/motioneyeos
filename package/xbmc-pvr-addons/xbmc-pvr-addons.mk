@@ -20,15 +20,15 @@ XBMC_PVR_ADDONS_DEPENDENCIES = boost zlib
 # installed its own files
 XBMC_PVR_ADDONS_DEPENDENCIES += xbmc
 
-XBMC_PVR_ADDONS_CONF_OPT = \
+XBMC_PVR_ADDONS_CONF_OPTS = \
 	--enable-release \
 	--enable-addons-with-dependencies
 
 ifeq ($(BR2_PACKAGE_MYSQL),y)
-XBMC_PVR_ADDONS_CONF_OPT += --enable-mysql
+XBMC_PVR_ADDONS_CONF_OPTS += --enable-mysql
 XBMC_PVR_ADDONS_DEPENDENCIES += mysql
 else
-XBMC_PVR_ADDONS_CONF_OPT += --disable-mysql
+XBMC_PVR_ADDONS_CONF_OPTS += --disable-mysql
 endif
 
 $(eval $(autotools-package))

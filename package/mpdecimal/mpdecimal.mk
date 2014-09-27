@@ -9,7 +9,7 @@ MPDECIMAL_VERSION = 2.4.0
 MPDECIMAL_INSTALL_STAGING = YES
 MPDECIMAL_LICENSE = BSD-2c
 MPDECIMAL_LICENSE_FILES = LICENSE.txt
-MPDECIMAL_CONF_OPT = LD="$(TARGET_CC)"
+MPDECIMAL_CONF_OPTS = LD="$(TARGET_CC)"
 
 # On i386, by default, mpdecimal tries to uses <fenv.h> which is not
 # available in musl/glibc. So in this case, we tell mpdecimal to use

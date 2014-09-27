@@ -12,7 +12,7 @@ WEBRTC_AUDIO_PROCESSING_LICENSE = BSD-3c
 WEBRTC_AUDIO_PROCESSING_LICENSE_FILES = COPYING
 
 ifeq ($(BR2_SOFT_FLOAT),y)
-WEBRTC_AUDIO_PROCESSING_CONF_OPT += --with-ns-mode=fixed
+WEBRTC_AUDIO_PROCESSING_CONF_OPTS += --with-ns-mode=fixed
 endif
 
 $(eval $(autotools-package))

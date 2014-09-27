@@ -11,7 +11,7 @@ GNUPLOT_LICENSE_FILES = Copyright
 
 GNUPLOT_AUTORECONF = YES
 
-GNUPLOT_CONF_OPT = --without-x \
+GNUPLOT_CONF_OPTS = --without-x \
 		--disable-raise-console \
 		--disable-mouse \
 	        --without-tutorial \
@@ -25,19 +25,19 @@ GNUPLOT_CONF_OPT = --without-x \
 	        --without-cairo
 
 ifeq ($(BR2_PACKAGE_GD)$(BR2_PACKAGE_LIBPNG),yy)
-GNUPLOT_CONF_OPT += --with-gd
+GNUPLOT_CONF_OPTS += --with-gd
 GNUPLOT_DEPENDENCIES += gd
 GNUPLOT_CONF_ENV += \
 	ac_cv_path_GDLIB_CONFIG=$(STAGING_DIR)/usr/bin/gdlib-config
 else
-GNUPLOT_CONF_OPT += --without-gd
+GNUPLOT_CONF_OPTS += --without-gd
 endif
 
 ifeq ($(BR2_PACKAGE_READLINE),y)
-GNUPLOT_CONF_OPT += --with-readline=gnu
+GNUPLOT_CONF_OPTS += --with-readline=gnu
 GNUPLOT_DEPENDENCIES += readline
 else
-GNUPLOT_CONF_OPT += --without-readline
+GNUPLOT_CONF_OPTS += --without-readline
 endif
 
 # Remove Javascript scripts, lua scripts, PostScript files

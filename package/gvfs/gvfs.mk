@@ -17,7 +17,7 @@ GVFS_LICENSE_FILES = COPYING
 # build system from searching the host paths.
 GVFS_CONF_ENV = ac_cv_path_LIBGCRYPT_CONFIG=$(STAGING_DIR)/usr/bin/libgcrypt-config
 
-GVFS_CONF_OPT = \
+GVFS_CONF_OPTS = \
 	--disable-gconf			\
 	--disable-cdda			\
 	--disable-obexftp		\
@@ -28,23 +28,23 @@ GVFS_CONF_OPT = \
 
 ifeq ($(BR2_PACKAGE_AVAHI),y)
 GVFS_DEPENDENCIES += avahi
-GVFS_CONF_OPT += --enable-avahi
+GVFS_CONF_OPTS += --enable-avahi
 else
-GVFS_CONF_OPT += --disable-avahi
+GVFS_CONF_OPTS += --disable-avahi
 endif
 
 ifeq ($(BR2_PACKAGE_LIBARCHIVE),y)
 GVFS_DEPENDENCIES += libarchive
-GVFS_CONF_OPT += --enable-archive
+GVFS_CONF_OPTS += --enable-archive
 else
-GVFS_CONF_OPT += --disable-archive
+GVFS_CONF_OPTS += --disable-archive
 endif
 
 ifeq ($(BR2_PACKAGE_LIBFUSE),y)
 GVFS_DEPENDENCIES += libfuse
-GVFS_CONF_OPT += --enable-fuse
+GVFS_CONF_OPTS += --enable-fuse
 else
-GVFS_CONF_OPT += --disable-fuse
+GVFS_CONF_OPTS += --disable-fuse
 endif
 
 ifeq ($(BR2_PACKAGE_LIBGCRYPT),y)
@@ -53,20 +53,20 @@ endif
 
 ifeq ($(BR2_PACKAGE_LIBSOUP),y)
 GVFS_DEPENDENCIES += libsoup
-GVFS_CONF_OPT += --enable-http
+GVFS_CONF_OPTS += --enable-http
 else
-GVFS_CONF_OPT += --disable-http
+GVFS_CONF_OPTS += --disable-http
 endif
 
 ifeq ($(BR2_PACKAGE_SAMBA_LIBSMBCLIENT),y)
 GVFS_DEPENDENCIES += samba
-GVFS_CONF_OPT += \
+GVFS_CONF_OPTS += \
 	--enable-samba \
 	--with-samba-includes=$(STAGING_DIR)/usr/include \
 	--with-samba-libs=$(STAGING_DIR)/usr/lib \
 	ac_cv_lib_smbclient_smbc_option_get=yes
 else
-GVFS_CONF_OPT += --disable-samba
+GVFS_CONF_OPTS += --disable-samba
 endif
 
 define GVFS_REMOVE_USELESS_BINARY

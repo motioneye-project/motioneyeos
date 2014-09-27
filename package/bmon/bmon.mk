@@ -14,10 +14,10 @@ BMON_LICENSE_FILES = LICENSE
 
 # link dynamically unless explicitly requested otherwise
 ifeq ($(BR2_PREFER_STATIC_LIB),)
-BMON_CONF_OPT += --disable-static
+BMON_CONF_OPTS += --disable-static
 else
 # forgets to explicitly link with pthread for libnl
-BMON_CONF_OPT += LIBS=-lpthread
+BMON_CONF_OPTS += LIBS=-lpthread
 endif
 
 $(eval $(autotools-package))

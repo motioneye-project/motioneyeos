@@ -14,6 +14,6 @@ LIBQMI_INSTALL_STAGING = YES
 LIBQMI_DEPENDENCIES = libglib2
 
 # we don't want -Werror
-LIBQMI_CONF_OPT = --enable-more-warnings=no
+LIBQMI_CONF_OPTS = --enable-more-warnings=no
 
 $(eval $(autotools-package))

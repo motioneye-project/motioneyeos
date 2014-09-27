@@ -11,6 +11,6 @@ XLIB_LIBXXF86VM_LICENSE = MIT
 XLIB_LIBXXF86VM_LICENSE_FILES = COPYING
 XLIB_LIBXXF86VM_INSTALL_STAGING = YES
 XLIB_LIBXXF86VM_DEPENDENCIES = xlib_libX11 xlib_libXext xproto_xf86vidmodeproto xproto_xproto
-XLIB_LIBXXF86VM_CONF_OPT = --disable-malloc0returnsnull
+XLIB_LIBXXF86VM_CONF_OPTS = --disable-malloc0returnsnull
 
 $(eval $(autotools-package))

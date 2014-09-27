@@ -18,6 +18,6 @@ XLIB_LIBXI_DEPENDENCIES = \
 	xlib_libXext \
 	xlib_libXfixes
 
-XLIB_LIBXI_CONF_OPT = --disable-malloc0returnsnull
+XLIB_LIBXI_CONF_OPTS = --disable-malloc0returnsnull
 
 $(eval $(autotools-package))

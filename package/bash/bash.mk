@@ -7,7 +7,7 @@
 BASH_VERSION = 4.3
 BASH_SITE = $(BR2_GNU_MIRROR)/bash
 BASH_DEPENDENCIES = ncurses readline host-bison
-BASH_CONF_OPT = --with-installed-readline
+BASH_CONF_OPTS = --with-installed-readline
 BASH_LICENSE = GPLv3+
 BASH_LICENSE_FILES = COPYING
 
@@ -25,7 +25,7 @@ BASH_MAKE = $(MAKE1)
 
 # The static build needs some trickery
 ifeq ($(BR2_PREFER_STATIC_LIB),y)
-BASH_CONF_OPT += --enable-static-link --without-bash-malloc
+BASH_CONF_OPTS += --enable-static-link --without-bash-malloc
 endif
 
 # Make sure we build after busybox so that /bin/sh links to bash

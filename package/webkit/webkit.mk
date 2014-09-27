@@ -39,7 +39,7 @@ WEBKIT_CONF_ENV = ac_cv_path_icu_config=$(STAGING_DIR)/usr/bin/icu-config \
 	CXXFLAGS="$(TARGET_CXXFLAGS) -Wno-cast-align -Wno-sign-compare" \
 	AR_FLAGS="cru"
 
-WEBKIT_CONF_OPT += \
+WEBKIT_CONF_OPTS += \
 	--with-gtk=2.0 \
 	--disable-geolocation \
 	--disable-webkit2 \
@@ -49,24 +49,24 @@ WEBKIT_CONF_OPT += \
 	--disable-tests
 
 # Xorg Dependencies
-WEBKIT_CONF_OPT += --with-target=x11
+WEBKIT_CONF_OPTS += --with-target=x11
 WEBKIT_DEPENDENCIES += xlib_libXt
 
 ifeq ($(BR2_PACKAGE_HAS_LIBEGL)$(BR2_PACKAGE_HAS_LIBGLES),yy)
-WEBKIT_CONF_OPT += --enable-gles2
+WEBKIT_CONF_OPTS += --enable-gles2
 WEBKIT_DEPENDENCIES += libegl libgles
 else
-WEBKIT_CONF_OPT += --disable-gles2
+WEBKIT_CONF_OPTS += --disable-gles2
 endif
 
 # gles/egl support is prefered over opengl by webkit configure
 ifeq ($(BR2_PACKAGE_HAS_LIBGL),y)
-WEBKIT_CONF_OPT += --with-acceleration-backend=opengl
+WEBKIT_CONF_OPTS += --with-acceleration-backend=opengl
 WEBKIT_DEPENDENCIES += libgl
 else
 # OpenGL/glx is auto-detected due to the presence of gl.h/glx.h, which is not
 # enough, so disable glx and the use of the OpenGL acceleration backend here
-WEBKIT_CONF_OPT += --disable-glx --with-acceleration-backend=none
+WEBKIT_CONF_OPTS += --disable-glx --with-acceleration-backend=none
 endif
 
 $(eval $(autotools-package))

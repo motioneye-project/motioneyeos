@@ -18,23 +18,23 @@ PCSC_LITE_AUTORECONF = YES
 # - libudev has a priority over libusb
 
 ifeq ($(BR2_PACKAGE_HAS_UDEV),y)
-PCSC_LITE_CONF_OPT += --enable-libudev --disable-libusb
+PCSC_LITE_CONF_OPTS += --enable-libudev --disable-libusb
 PCSC_LITE_DEPENDENCIES += udev
 else
 ifeq ($(BR2_PACKAGE_LIBUSB),y)
-PCSC_LITE_CONF_OPT += --enable-libusb --disable-libudev
+PCSC_LITE_CONF_OPTS += --enable-libusb --disable-libudev
 PCSC_LITE_DEPENDENCIES += libusb
 else
-PCSC_LITE_CONF_OPT += --disable-libusb --disable-libudev
+PCSC_LITE_CONF_OPTS += --disable-libusb --disable-libudev
 endif
 endif
 
 ifeq ($(PACKAGE_PCSC_LITE_DEBUGATR),y)
-PCSC_LITE_CONF_OPT += --enable-debugatr
+PCSC_LITE_CONF_OPTS += --enable-debugatr
 endif
 
 ifeq ($(PACKAGE_PCSC_LITE_EMBEDDED),y)
-PCSC_LITE_CONF_OPT += --enable-embedded
+PCSC_LITE_CONF_OPTS += --enable-embedded
 endif
 
 $(eval $(autotools-package))

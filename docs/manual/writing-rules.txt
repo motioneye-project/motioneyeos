@@ -65,7 +65,7 @@ blank line is mandatory after the header:
 +
 ---------------------
 LIBFOO_VERSION = 1.0
-LIBFOO_CONF_OPT += --without-python-support
+LIBFOO_CONF_OPTS += --without-python-support
 ---------------------
 +
 Do not align the +=+ signs.
@@ -90,17 +90,17 @@ YES:
 +
 ---------------------
 ifeq ($(BR2_PACKAGE_PYTHON),y)
-LIBFOO_CONF_OPT += --with-python-support
+LIBFOO_CONF_OPTS += --with-python-support
 LIBFOO_DEPENDENCIES += python
 else
-LIBFOO_CONF_OPT += --without-python-support
+LIBFOO_CONF_OPTS += --without-python-support
 endif
 ---------------------
 +
 NO:
 +
 ---------------------
-LIBFOO_CONF_OPT += --with$(if $(BR2_PACKAGE_PYTHON),,out)-python-support
+LIBFOO_CONF_OPTS += --with$(if $(BR2_PACKAGE_PYTHON),,out)-python-support
 LIBFOO_DEPENDENCIES += $(if $(BR2_PACKAGE_PYTHON),python,)
 ---------------------
 

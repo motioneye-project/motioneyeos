@@ -22,7 +22,7 @@ ifeq ($(BR2_PACKAGE_EXPAT),y)
 # configure script assumes expat should be used.
 LIBSTROPHE_DEPENDENCIES += expat
 else
-LIBSTROPHE_CONF_OPT += --with-libxml2
+LIBSTROPHE_CONF_OPTS += --with-libxml2
 LIBSTROPHE_DEPENDENCIES += libxml2
 endif
 

@@ -18,13 +18,13 @@ TCL_AUTORECONF = YES
 # in the sqlite package (which gets removed if sqlite not
 # configured).  Don't need to worry about conditionally including
 # it in the configure options
-TCL_CONF_OPT = \
+TCL_CONF_OPTS = \
 		--disable-symbols \
 		--disable-langinfo \
 		--disable-framework \
 		--with-system-sqlite
 
-HOST_TCL_CONF_OPT = \
+HOST_TCL_CONF_OPTS = \
 		--disable-symbols \
 		--disable-langinfo \
 		--disable-framework

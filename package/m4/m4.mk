@@ -15,7 +15,7 @@ ifneq ($(BR2_USE_WCHAR),y)
 M4_CONF_ENV += gt_cv_c_wchar_t=no gl_cv_absolute_wchar_h=__fpending.h
 endif
 
-HOST_M4_CONF_OPT = --disable-static
+HOST_M4_CONF_OPTS = --disable-static
 
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))

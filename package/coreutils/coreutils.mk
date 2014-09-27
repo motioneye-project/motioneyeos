@@ -61,7 +61,7 @@ COREUTILS_CONF_ENV = ac_cv_c_restrict=no \
 		utils_cv_localtime_cache=no \
 		PERL=missing
 
-COREUTILS_CONF_OPT = --disable-rpath
+COREUTILS_CONF_OPTS = --disable-rpath
 
 define COREUTILS_POST_INSTALL
 	# some things go in root rather than usr

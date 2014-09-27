@@ -17,7 +17,7 @@ endef
 DBUS_DEPENDENCIES = host-pkgconf expat
 
 DBUS_CONF_ENV = ac_cv_have_abstract_sockets=yes
-DBUS_CONF_OPT = --with-dbus-user=dbus \
+DBUS_CONF_OPTS = --with-dbus-user=dbus \
 		--disable-tests \
 		--disable-asserts \
 		--enable-abstract-sockets \
@@ -35,28 +35,28 @@ define DBUS_USERS
 endef
 
 ifeq ($(BR2_PREFER_STATIC_LIB),y)
-DBUS_CONF_OPT += LIBS='-pthread'
+DBUS_CONF_OPTS += LIBS='-pthread'
 endif
 
 ifeq ($(BR2_microblaze),y)
 # microblaze toolchain doesn't provide inotify_rm_* but does have sys/inotify.h
-DBUS_CONF_OPT += --disable-inotify
+DBUS_CONF_OPTS += --disable-inotify
 endif
 
 ifeq ($(BR2_PACKAGE_XLIB_LIBX11),y)
-DBUS_CONF_OPT += --with-x
+DBUS_CONF_OPTS += --with-x
 DBUS_DEPENDENCIES += xlib_libX11
 else
-DBUS_CONF_OPT += --without-x
+DBUS_CONF_OPTS += --without-x
 endif
 
 ifeq ($(BR2_INIT_SYSTEMD),y)
-DBUS_CONF_OPT += \
+DBUS_CONF_OPTS += \
 	--enable-systemd \
 	--with-systemdsystemunitdir=/lib/systemd/system
 DBUS_DEPENDENCIES += systemd
 else
-DBUS_CONF_OPT += --disable-systemd
+DBUS_CONF_OPTS += --disable-systemd
 endif
 
 # fix rebuild (dbus makefile errors out if /var/lib/dbus is a symlink)
@@ -86,7 +86,7 @@ define DBUS_INSTALL_INIT_SYSV
 endef
 
 HOST_DBUS_DEPENDENCIES = host-pkgconf host-expat
-HOST_DBUS_CONF_OPT = \
+HOST_DBUS_CONF_OPTS = \
 		--with-dbus-user=dbus \
 		--disable-tests \
 		--disable-asserts \

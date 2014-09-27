@@ -15,7 +15,7 @@ OPENOBEX_DEPENDENCIES = host-pkgconf
 OPENOBEX_AUTORECONF = YES
 OPENOBEX_INSTALL_STAGING = YES
 
-OPENOBEX_CONF_OPT += \
+OPENOBEX_CONF_OPTS += \
 	$(if $(BR2_ENABLE_DEBUG),--enable-debug) \
 	$(if $(BR2_PACKAGE_OPENOBEX_APPS),--enable-apps) \
 	$(if $(BR2_PACKAGE_OPENOBEX_SYSLOG),--enable-syslog) \
@@ -23,16 +23,16 @@ OPENOBEX_CONF_OPT += \
 
 ifeq ($(BR2_PACKAGE_OPENOBEX_BLUEZ),y)
 OPENOBEX_DEPENDENCIES += bluez_utils
-OPENOBEX_CONF_OPT += --with-bluez=$(STAGING_DIR)
+OPENOBEX_CONF_OPTS += --with-bluez=$(STAGING_DIR)
 else
-OPENOBEX_CONF_OPT += --disable-bluetooth
+OPENOBEX_CONF_OPTS += --disable-bluetooth
 endif
 
 ifeq ($(BR2_PACKAGE_OPENOBEX_LIBUSB),y)
 OPENOBEX_DEPENDENCIES += libusb
-OPENOBEX_CONF_OPT += --with-usb=$(STAGING_DIR)
+OPENOBEX_CONF_OPTS += --with-usb=$(STAGING_DIR)
 else
-OPENOBEX_CONF_OPT += --disable-usb
+OPENOBEX_CONF_OPTS += --disable-usb
 endif
 
 $(eval $(autotools-package))

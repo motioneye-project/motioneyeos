@@ -22,7 +22,7 @@ with an example :
 09: LIBFOO_SITE = http://www.foosoftware.org/download
 10: LIBFOO_INSTALL_STAGING = YES
 11: LIBFOO_INSTALL_TARGET = NO
-12: LIBFOO_CONF_OPT = -DBUILD_DEMOS=ON
+12: LIBFOO_CONF_OPTS = -DBUILD_DEMOS=ON
 13: LIBFOO_DEPENDENCIES = libglib2 host-pkgconf
 14:
 15: $(eval $(cmake-package))
@@ -94,7 +94,7 @@ typical packages will therefore only use a few of them.
 * +LIBFOO_CONF_ENV+, to specify additional environment variables to
   pass to CMake. By default, empty.
 
-* +LIBFOO_CONF_OPT+, to specify additional configure options to pass
+* +LIBFOO_CONF_OPTS+, to specify additional configure options to pass
   to CMake. By default, empty.
 
 * +LIBFOO_MAKE+, to specify an alternate +make+ command. This is

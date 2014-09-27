@@ -10,7 +10,7 @@ STRONGSWAN_SITE = http://download.strongswan.org
 STRONGSWAN_LICENSE = GPLv2+
 STRONGSWAN_LICENSE_FILES = COPYING LICENSE
 STRONGSWAN_DEPENDENCIES = host-pkgconf
-STRONGSWAN_CONF_OPT +=                                                             \
+STRONGSWAN_CONF_OPTS +=                                                             \
       --without-lib-prefix                                                         \
       --enable-pkcs11=yes                                                          \
       --enable-kernel-netlink=$(if $(BR2_INET_IPV6),yes,no)                        \
@@ -32,7 +32,7 @@ STRONGSWAN_CONF_OPT +=                                                          
       --enable-scripts=$(if $(BR2_PACKAGE_STRONGSWAN_SCRIPTS),yes,no)
 
 ifeq ($(BR2_PACKAGE_STRONGSWAN_EAP),y)
-STRONGSWAN_CONF_OPT +=              \
+STRONGSWAN_CONF_OPTS +=              \
       --enable-eap-sim              \
       --enable-eap-sim-file         \
       --enable-eap-aka              \

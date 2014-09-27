@@ -11,7 +11,7 @@ LOG4CXX_INSTALL_STAGING = YES
 LOG4CXX_LICENSE = Apache-2.0
 LOG4CXX_LICENSE_FILES = LICENSE
 
-LOG4CXX_CONF_OPT = \
+LOG4CXX_CONF_OPTS = \
 	--with-apr=$(STAGING_DIR)/usr/bin/apr-1-config \
 	--with-apr-util=$(STAGING_DIR)/usr/bin/apu-1-config
 

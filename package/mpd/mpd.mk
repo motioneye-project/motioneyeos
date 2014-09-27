@@ -16,163 +16,163 @@ MPD_LICENSE_FILES = COPYING
 ifeq ($(BR2_PACKAGE_AVAHI_DAEMON),y)
 MPD_DEPENDENCIES += avahi
 else
-MPD_CONF_OPT += --with-zeroconf=no
+MPD_CONF_OPTS += --with-zeroconf=no
 endif
 
 ifeq ($(BR2_PACKAGE_MPD_ALSA),y)
 MPD_DEPENDENCIES += alsa-lib
-MPD_CONF_OPT += --enable-alsa
+MPD_CONF_OPTS += --enable-alsa
 else
-MPD_CONF_OPT += --disable-alsa
+MPD_CONF_OPTS += --disable-alsa
 endif
 
 ifeq ($(BR2_PACKAGE_MPD_AO),y)
 MPD_DEPENDENCIES += libao
-MPD_CONF_OPT += --enable-ao
+MPD_CONF_OPTS += --enable-ao
 else
-MPD_CONF_OPT += --disable-ao
+MPD_CONF_OPTS += --disable-ao
 endif
 
 ifeq ($(BR2_PACKAGE_MPD_AUDIOFILE),y)
 MPD_DEPENDENCIES += audiofile
-MPD_CONF_OPT += --enable-audiofile
+MPD_CONF_OPTS += --enable-audiofile
 else
-MPD_CONF_OPT += --disable-audiofile
+MPD_CONF_OPTS += --disable-audiofile
 endif
 
 ifeq ($(BR2_PACKAGE_MPD_PULSEAUDIO),y)
 MPD_DEPENDENCIES += pulseaudio
-MPD_CONF_OPT += --enable-pulse
+MPD_CONF_OPTS += --enable-pulse
 else
-MPD_CONF_OPT += --disable-pulse
+MPD_CONF_OPTS += --disable-pulse
 endif
 
 ifeq ($(BR2_PACKAGE_MPD_BZIP2),y)
 MPD_DEPENDENCIES += bzip2
-MPD_CONF_OPT += --enable-bzip2
+MPD_CONF_OPTS += --enable-bzip2
 else
-MPD_CONF_OPT += --disable-bzip2
+MPD_CONF_OPTS += --disable-bzip2
 endif
 
 ifeq ($(BR2_PACKAGE_MPD_FAAD2),y)
 MPD_DEPENDENCIES += faad2
-MPD_CONF_OPT += --enable-aac
+MPD_CONF_OPTS += --enable-aac
 else
-MPD_CONF_OPT += --disable-aac
+MPD_CONF_OPTS += --disable-aac
 endif
 
 ifeq ($(BR2_PACKAGE_MPD_FLAC),y)
 MPD_DEPENDENCIES += flac
-MPD_CONF_OPT += --enable-flac
+MPD_CONF_OPTS += --enable-flac
 else
-MPD_CONF_OPT += --disable-flac
+MPD_CONF_OPTS += --disable-flac
 endif
 
 ifeq ($(BR2_PACKAGE_MPD_CURL),y)
 MPD_DEPENDENCIES += libcurl
-MPD_CONF_OPT += --enable-curl
+MPD_CONF_OPTS += --enable-curl
 else
-MPD_CONF_OPT += --disable-curl
+MPD_CONF_OPTS += --disable-curl
 endif
 
 ifeq ($(BR2_PACKAGE_MPD_LAME),y)
 MPD_DEPENDENCIES += lame
-MPD_CONF_OPT += --enable-lame-encoder
+MPD_CONF_OPTS += --enable-lame-encoder
 else
-MPD_CONF_OPT += --disable-lame-encoder
+MPD_CONF_OPTS += --disable-lame-encoder
 endif
 
 ifeq ($(BR2_PACKAGE_MPD_LIBSAMPLERATE),y)
 MPD_DEPENDENCIES += libsamplerate
-MPD_CONF_OPT += --enable-lsr
+MPD_CONF_OPTS += --enable-lsr
 else
-MPD_CONF_OPT += --disable-lsr
+MPD_CONF_OPTS += --disable-lsr
 endif
 
 ifeq ($(BR2_PACKAGE_MPD_LIBSNDFILE),y)
 MPD_DEPENDENCIES += libsndfile
-MPD_CONF_OPT += --enable-sndfile
+MPD_CONF_OPTS += --enable-sndfile
 else
-MPD_CONF_OPT += --disable-sndfile
+MPD_CONF_OPTS += --disable-sndfile
 endif
 
 ifeq ($(BR2_PACKAGE_MPD_OPUS),y)
 MPD_DEPENDENCIES += opus libogg
-MPD_CONF_OPT += --enable-opus
+MPD_CONF_OPTS += --enable-opus
 else
-MPD_CONF_OPT += --disable-opus
+MPD_CONF_OPTS += --disable-opus
 endif
 
 ifeq ($(BR2_PACKAGE_MPD_VORBIS),y)
 MPD_DEPENDENCIES += libvorbis
-MPD_CONF_OPT += --enable-vorbis --enable-vorbis-encoder
+MPD_CONF_OPTS += --enable-vorbis --enable-vorbis-encoder
 else
-MPD_CONF_OPT += --disable-vorbis --disable-vorbis-encoder
+MPD_CONF_OPTS += --disable-vorbis --disable-vorbis-encoder
 endif
 
 ifeq ($(BR2_PACKAGE_MPD_MAD),y)
 MPD_DEPENDENCIES += libid3tag libmad
-MPD_CONF_OPT += --enable-mad
+MPD_CONF_OPTS += --enable-mad
 else
-MPD_CONF_OPT += --disable-mad
+MPD_CONF_OPTS += --disable-mad
 endif
 
 ifeq ($(BR2_PACKAGE_MPD_MPG123),y)
 MPD_DEPENDENCIES += libid3tag mpg123
-MPD_CONF_OPT += --enable-mpg123
+MPD_CONF_OPTS += --enable-mpg123
 else
-MPD_CONF_OPT += --disable-mpg123
+MPD_CONF_OPTS += --disable-mpg123
 endif
 
 ifeq ($(BR2_PACKAGE_MPD_MUSEPACK),y)
 MPD_DEPENDENCIES += musepack
-MPD_CONF_OPT += --enable-mpc
+MPD_CONF_OPTS += --enable-mpc
 else
-MPD_CONF_OPT += --disable-mpc
+MPD_CONF_OPTS += --disable-mpc
 endif
 
 ifeq ($(BR2_PACKAGE_MPD_SOUNDCLOUD),y)
 MPD_DEPENDENCIES += yajl
-MPD_CONF_OPT += --enable-soundcloud
+MPD_CONF_OPTS += --enable-soundcloud
 else
-MPD_CONF_OPT += --disable-soundcloud
+MPD_CONF_OPTS += --disable-soundcloud
 endif
 
 ifeq ($(BR2_PACKAGE_MPD_SQLITE),y)
 MPD_DEPENDENCIES += sqlite
-MPD_CONF_OPT += --enable-sqlite
+MPD_CONF_OPTS += --enable-sqlite
 else
-MPD_CONF_OPT += --disable-sqlite
+MPD_CONF_OPTS += --disable-sqlite
 endif
 
 ifneq ($(BR2_PACKAGE_MPD_TCP),y)
-MPD_CONF_OPT += --disable-tcp
+MPD_CONF_OPTS += --disable-tcp
 endif
 
 ifeq ($(BR2_PACKAGE_MPD_TREMOR),y)
 MPD_DEPENDENCIES += tremor
-MPD_CONF_OPT += --with-tremor
+MPD_CONF_OPTS += --with-tremor
 endif
 
 ifeq ($(BR2_PACKAGE_MPD_TWOLAME),y)
 MPD_DEPENDENCIES += twolame
-MPD_CONF_OPT += --enable-twolame-encoder
+MPD_CONF_OPTS += --enable-twolame-encoder
 else
-MPD_CONF_OPT += --disable-twolame-encoder
+MPD_CONF_OPTS += --disable-twolame-encoder
 endif
 
 ifeq ($(BR2_PACKAGE_MPD_WAVPACK),y)
 MPD_DEPENDENCIES += wavpack
-MPD_CONF_OPT += --enable-wavpack
+MPD_CONF_OPTS += --enable-wavpack
 else
-MPD_CONF_OPT += --disable-wavpack
+MPD_CONF_OPTS += --disable-wavpack
 endif
 
 ifeq ($(BR2_PACKAGE_MPD_FFMPEG),y)
 MPD_DEPENDENCIES += ffmpeg
-MPD_CONF_OPT += --enable-ffmpeg
+MPD_CONF_OPTS += --enable-ffmpeg
 else
-MPD_CONF_OPT += --disable-ffmpeg
+MPD_CONF_OPTS += --disable-ffmpeg
 endif
 
 define MPD_INSTALL_EXTRA_FILES

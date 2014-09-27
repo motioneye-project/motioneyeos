@@ -12,7 +12,7 @@ ELFUTILS_LICENSE_FILES = COPYING COPYING-GPLV2 COPYING-LGPLV3
 
 # The tarball does not have a generated configure script
 ELFUTILS_AUTORECONF = YES
-ELFUTILS_CONF_OPT += --disable-werror
+ELFUTILS_CONF_OPTS += --disable-werror
 ELFUTILS_PATCH = \
 	elfutils-portability.patch \
 	elfutils-robustify.patch
@@ -43,29 +43,29 @@ endif
 
 ifeq ($(BR2_PACKAGE_ZLIB),y)
  ELFUTILS_DEPENDENCIES += zlib
- ELFUTILS_CONF_OPT += --with-zlib
+ ELFUTILS_CONF_OPTS += --with-zlib
 else
- ELFUTILS_CONF_OPT += --without-zlib
+ ELFUTILS_CONF_OPTS += --without-zlib
 endif
 
 ifeq ($(BR2_PACKAGE_BZIP2),y)
  ELFUTILS_DEPENDENCIES += bzip2
- ELFUTILS_CONF_OPT += --with-bzlib
+ ELFUTILS_CONF_OPTS += --with-bzlib
 else
- ELFUTILS_CONF_OPT += --without-bzlib
+ ELFUTILS_CONF_OPTS += --without-bzlib
 endif
 
 ifeq ($(BR2_PACKAGE_XZ),y)
  ELFUTILS_DEPENDENCIES += xz
- ELFUTILS_CONF_OPT += --with-lzma
+ ELFUTILS_CONF_OPTS += --with-lzma
 else
- ELFUTILS_CONF_OPT += --without-lzma
+ ELFUTILS_CONF_OPTS += --without-lzma
 endif
 
 ifeq ($(BR2_PACKAGE_ELFUTILS_PROGS),y)
- ELFUTILS_CONF_OPT += --enable-progs
+ ELFUTILS_CONF_OPTS += --enable-progs
 else
- ELFUTILS_CONF_OPT += --disable-progs
+ ELFUTILS_CONF_OPTS += --disable-progs
 endif
 
 $(eval $(autotools-package))

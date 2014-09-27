@@ -15,7 +15,7 @@ LIBEVAS_GENERIC_LOADERS_INSTALL_STAGING = YES
 LIBEVAS_GENERIC_LOADERS_DEPENDENCIES = libeina zlib
 
 # For now, we only support the SVG loader
-LIBEVAS_GENERIC_LOADERS_CONF_OPT += \
+LIBEVAS_GENERIC_LOADERS_CONF_OPTS += \
 	--disable-poppler \
 	--disable-spectre \
 	--disable-libraw \
@@ -23,9 +23,9 @@ LIBEVAS_GENERIC_LOADERS_CONF_OPT += \
 
 ifeq ($(BR2_PACKAGE_LIBEVAS_GENERIC_LOADERS_SVG),y)
 LIBEVAS_GENERIC_LOADERS_DEPENDENCIES += librsvg cairo
-LIBEVAS_GENERIC_LOADERS_CONF_OPT += --enable-svg
+LIBEVAS_GENERIC_LOADERS_CONF_OPTS += --enable-svg
 else
-LIBEVAS_GENERIC_LOADERS_CONF_OPT += --disable-svg
+LIBEVAS_GENERIC_LOADERS_CONF_OPTS += --disable-svg
 endif
 
 $(eval $(autotools-package))

@@ -77,7 +77,7 @@ else
 GST1_LIBAV_CONF_EXTRA_OPT += --disable-altivec
 endif
 
-GST1_LIBAV_CONF_OPT = \
+GST1_LIBAV_CONF_OPTS = \
 	--with-libav-extra-configure="$(GST1_LIBAV_CONF_EXTRA_OPT)"
 
 $(eval $(autotools-package))

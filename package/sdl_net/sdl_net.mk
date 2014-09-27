@@ -10,7 +10,7 @@ SDL_NET_SOURCE = SDL_net-$(SDL_NET_VERSION).tar.gz
 SDL_NET_LICENSE = zlib
 SDL_NET_LICENSE_FILES = COPYING
 
-SDL_NET_CONF_OPT = --localstatedir=/var \
+SDL_NET_CONF_OPTS = --localstatedir=/var \
 		--with-sdl-prefix=$(STAGING_DIR)/usr \
 		--with-sdl-exec-prefix=$(STAGING_DIR)/usr
 

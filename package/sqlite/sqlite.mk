@@ -39,24 +39,24 @@ endif
 
 SQLITE_CONF_ENV = CFLAGS="$(TARGET_CFLAGS) $(SQLITE_CFLAGS)"
 
-SQLITE_CONF_OPT = \
+SQLITE_CONF_OPTS = \
 	--localstatedir=/var
 
 ifeq ($(BR2_PREFER_STATIC_LIB),y)
-SQLITE_CONF_OPT += --enable-dynamic-extensions=no
+SQLITE_CONF_OPTS += --enable-dynamic-extensions=no
 endif
 
 ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),y)
-SQLITE_CONF_OPT += --enable-threadsafe
+SQLITE_CONF_OPTS += --enable-threadsafe
 else
-SQLITE_CONF_OPT += --disable-threadsafe
+SQLITE_CONF_OPTS += --disable-threadsafe
 endif
 
 ifeq ($(BR2_PACKAGE_SQLITE_READLINE),y)
 SQLITE_DEPENDENCIES += ncurses readline
-SQLITE_CONF_OPT += --with-readline-inc="-I$(STAGING_DIR)/usr/include"
+SQLITE_CONF_OPTS += --with-readline-inc="-I$(STAGING_DIR)/usr/include"
 else
-SQLITE_CONF_OPT += --disable-readline
+SQLITE_CONF_OPTS += --disable-readline
 endif
 
 $(eval $(autotools-package))

@@ -15,14 +15,14 @@ LIBQRENCODE_LICENSE_FILES = COPYING
 ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),y)
 LIBQRENCODE_CONF_ENV += LIBS='-pthread'
 else
-LIBQRENCODE_CONF_OPT += --disable-thread-safety
+LIBQRENCODE_CONF_OPTS += --disable-thread-safety
 endif
 
 ifeq ($(BR2_PACKAGE_LIBQRENCODE_TOOLS),y)
-LIBQRENCODE_CONF_OPT += --with-tools=yes
+LIBQRENCODE_CONF_OPTS += --with-tools=yes
 LIBQRENCODE_DEPENDENCIES += libpng
 else
-LIBQRENCODE_CONF_OPT += --with-tools=no
+LIBQRENCODE_CONF_OPTS += --with-tools=no
 endif
 
 $(eval $(autotools-package))

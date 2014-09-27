@@ -14,7 +14,7 @@ EUDEV_INSTALL_STAGING = YES
 # mq_getattr is in librt
 EUDEV_CONF_ENV += LIBS=-lrt
 
-EUDEV_CONF_OPT =		\
+EUDEV_CONF_OPTS =		\
 	--disable-manpages	\
 	--sbindir=/sbin		\
 	--with-rootlibdir=/lib	\
@@ -28,14 +28,14 @@ EUDEV_DEPENDENCIES = host-gperf host-pkgconf util-linux kmod
 EUDEV_PROVIDES = udev
 
 ifeq ($(BR2_PACKAGE_EUDEV_RULES_GEN),y)
-EUDEV_CONF_OPT += --enable-rule_generator
+EUDEV_CONF_OPTS += --enable-rule_generator
 endif
 
 ifeq ($(BR2_PACKAGE_LIBGLIB2),y)
-EUDEV_CONF_OPT += --enable-gudev
+EUDEV_CONF_OPTS += --enable-gudev
 EUDEV_DEPENDENCIES += libglib2
 else
-EUDEV_CONF_OPT += --disable-gudev
+EUDEV_CONF_OPTS += --disable-gudev
 endif
 
 define EUDEV_INSTALL_INIT_SYSV

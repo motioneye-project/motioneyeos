@@ -58,7 +58,7 @@ endif
 # When gdb sources are fetched from the binutils-gdb repository, they
 # also contain the binutils sources, but binutils shouldn't be built,
 # so we disable it.
-GDB_DISABLE_BINUTILS_CONF_OPT = \
+GDB_DISABLE_BINUTILS_CONF_OPTS = \
 	--disable-binutils \
 	--disable-ld \
 	--disable-gas
@@ -74,28 +74,28 @@ GDB_CONF_ENV = \
 	bash_cv_have_mbstate_t=yes \
 	gdb_cv_func_sigsetjmp=yes
 
-GDB_CONF_OPT = \
+GDB_CONF_OPTS = \
 	--without-uiout \
 	--disable-gdbtk \
 	--without-x \
 	--disable-sim \
-	$(GDB_DISABLE_BINUTILS_CONF_OPT) \
+	$(GDB_DISABLE_BINUTILS_CONF_OPTS) \
 	$(if $(BR2_PACKAGE_GDB_SERVER),--enable-gdbserver) \
 	--with-curses \
 	--without-included-gettext \
 	--disable-werror
 
 ifeq ($(BR2_PACKAGE_GDB_TUI),y)
-	GDB_CONF_OPT += --enable-tui
+	GDB_CONF_OPTS += --enable-tui
 else
-	GDB_CONF_OPT += --disable-tui
+	GDB_CONF_OPTS += --disable-tui
 endif
 
 ifeq ($(BR2_PACKAGE_GDB_PYTHON),y)
-	GDB_CONF_OPT += --with-python=$(TOPDIR)/package/gdb/gdb-python-config
+	GDB_CONF_OPTS += --with-python=$(TOPDIR)/package/gdb/gdb-python-config
 	GDB_DEPENDENCIES += python
 else
-	GDB_CONF_OPT += --without-python
+	GDB_CONF_OPTS += --without-python
 endif
 
 # This removes some unneeded Python scripts and XML target description
@@ -127,7 +127,7 @@ endif
 #  * --disable-shared, otherwise the old 6.7 version specific to AVR32
 #    doesn't build because it wants to link a shared libbfd.so against
 #    non-PIC liberty.a.
-HOST_GDB_CONF_OPT = \
+HOST_GDB_CONF_OPTS = \
 	--target=$(GNU_TARGET_NAME) \
 	--enable-static --disable-shared \
 	--without-uiout \
@@ -136,20 +136,20 @@ HOST_GDB_CONF_OPT = \
 	--enable-threads \
 	--disable-werror \
 	--without-included-gettext \
-	$(GDB_DISABLE_BINUTILS_CONF_OPT) \
+	$(GDB_DISABLE_BINUTILS_CONF_OPTS) \
 	--disable-sim
 
 ifeq ($(BR2_PACKAGE_HOST_GDB_TUI),y)
-	HOST_GDB_CONF_OPT += --enable-tui
+	HOST_GDB_CONF_OPTS += --enable-tui
 else
-	HOST_GDB_CONF_OPT += --disable-tui
+	HOST_GDB_CONF_OPTS += --disable-tui
 endif
 
 ifeq ($(BR2_PACKAGE_HOST_GDB_PYTHON),y)
-	HOST_GDB_CONF_OPT += --with-python
+	HOST_GDB_CONF_OPTS += --with-python
 	HOST_GDB_DEPENDENCIES += host-python
 else
-	HOST_GDB_CONF_OPT += --without-python
+	HOST_GDB_CONF_OPTS += --without-python
 endif
 
 ifeq ($(GDB_FROM_GIT),y)

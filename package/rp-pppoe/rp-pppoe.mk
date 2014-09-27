@@ -12,7 +12,7 @@ RP_PPPOE_DEPENDENCIES = pppd
 RP_PPPOE_SUBDIR = src
 RP_PPPOE_TARGET_FILES = pppoe pppoe-server pppoe-relay pppoe-sniff
 RP_PPPOE_MAKE_OPTS = PLUGIN_DIR=/usr/lib/pppd/$(PPPD_VERSION)
-RP_PPPOE_CONF_OPT = --disable-debugging
+RP_PPPOE_CONF_OPTS = --disable-debugging
 RP_PPPOE_CONF_ENV = \
 	rpppoe_cv_pack_bitfields=normal \
 	PPPD_H=$(PPPD_DIR)/pppd/pppd.h

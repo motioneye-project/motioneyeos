@@ -8,7 +8,7 @@ SWIG_MAJOR = 2.0
 SWIG_VERSION = $(SWIG_MAJOR).12
 SWIG_SITE = http://downloads.sourceforge.net/project/swig/swig/swig-$(SWIG_VERSION)
 SWIG_DEPENDENCIES = host-bison
-HOST_SWIG_CONF_OPT = \
+HOST_SWIG_CONF_OPTS = \
 	--without-pcre \
 	--disable-ccache \
 	--without-octave

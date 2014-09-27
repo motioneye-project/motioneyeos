@@ -21,7 +21,7 @@ ifeq ($(BR2_aarch64),y)
 GSTREAMER1_CONF_ENV = as_cv_unaligned_access=yes
 endif
 
-GSTREAMER1_CONF_OPT = \
+GSTREAMER1_CONF_OPTS = \
 	--disable-examples \
 	--disable-tests \
 	--disable-failing-tests \

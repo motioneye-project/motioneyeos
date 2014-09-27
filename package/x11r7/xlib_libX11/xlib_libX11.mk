@@ -23,13 +23,13 @@ XLIB_LIBX11_DEPENDENCIES = \
 	xproto_xf86bigfontproto \
 	host-xproto_xproto
 
-XLIB_LIBX11_CONF_OPT = \
+XLIB_LIBX11_CONF_OPTS = \
 	--disable-malloc0returnsnull \
 	--with-xcb \
 	--disable-specs \
 	--without-perl
 
-HOST_XLIB_LIBX11_CONF_OPT = \
+HOST_XLIB_LIBX11_CONF_OPTS = \
 	--disable-specs \
 	--without-perl
 

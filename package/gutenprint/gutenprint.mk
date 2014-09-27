@@ -25,7 +25,7 @@ GUTENPRINT_DEPENDENCIES += host-gutenprint
 GUTENPRINT_CONF_ENV = ac_cv_path_CUPS_CONFIG=$(STAGING_DIR)/usr/bin/cups-config \
 	ac_cv_path_IJS_CONFIG=""
 
-GUTENPRINT_CONF_OPT = --disable-libgutenprintui2 \
+GUTENPRINT_CONF_OPTS = --disable-libgutenprintui2 \
                       --disable-samples \
                       --without-doc \
                       --without-gimp2 \
@@ -53,7 +53,7 @@ HOST_GUTENPRINT_MAKE_ENV =
 # empty string to to disable this, not just to /bin/false like elsewhere.
 HOST_GUTENPRINT_CONF_ENV = ac_cv_path_CUPS_CONFIG=''
 
-HOST_GUTENPRINT_CONF_OPT = --disable-libgutenprintui2 \
+HOST_GUTENPRINT_CONF_OPTS = --disable-libgutenprintui2 \
                            --disable-samples \
                            --without-gimp2 \
                            --without-doc \

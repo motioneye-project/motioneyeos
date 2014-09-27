@@ -16,12 +16,12 @@ ALSA_UTILS_DEPENDENCIES = host-gettext host-pkgconf alsa-lib \
 ALSA_UTILS_CONF_ENV = \
 	ac_cv_prog_ncurses5_config=$(STAGING_DIR)/usr/bin/$(NCURSES_CONFIG_SCRIPTS)
 
-ALSA_UTILS_CONF_OPT = \
+ALSA_UTILS_CONF_OPTS = \
 	--disable-xmlto \
 	--with-curses=$(if $(BR2_PACKAGE_NCURSES_WCHAR),ncursesw,ncurses)
 
 ifneq ($(BR2_PACKAGE_ALSA_UTILS_ALSAMIXER),y)
-ALSA_UTILS_CONF_OPT += --disable-alsamixer --disable-alsatest
+ALSA_UTILS_CONF_OPTS += --disable-alsamixer --disable-alsatest
 endif
 
 ALSA_UTILS_TARGETS_$(BR2_PACKAGE_ALSA_UTILS_ALSACONF) += usr/sbin/alsaconf

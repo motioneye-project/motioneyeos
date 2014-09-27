@@ -9,7 +9,7 @@ GREP_SITE = $(BR2_GNU_MIRROR)/grep
 GREP_SOURCE = grep-$(GREP_VERSION).tar.xz
 GREP_LICENSE = GPLv3+
 GREP_LICENSE_FILES = COPYING
-GREP_CONF_OPT = --disable-perl-regexp --without-included-regex
+GREP_CONF_OPTS = --disable-perl-regexp --without-included-regex
 GREP_DEPENDENCIES = $(if $(BR2_NEEDS_GETTEXT_IF_LOCALE),gettext)
 
 # link with iconv if enabled
@@ -20,7 +20,7 @@ endif
 
 # link with pcre if enabled
 ifeq ($(BR2_PACKAGE_PCRE),y)
-GREP_CONF_OPT += --enable-perl-regexp
+GREP_CONF_OPTS += --enable-perl-regexp
 GREP_DEPENDENCIES += pcre
 endif
 

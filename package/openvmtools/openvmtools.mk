@@ -12,7 +12,7 @@ OPENVMTOOLS_LICENSE_FILES = COPYING
 # Autoreconf needed because package is distributed without a configure script
 # See http://sourceforge.net/p/open-vm-tools/mailman/message/32550385/
 OPENVMTOOLS_AUTORECONF = YES
-OPENVMTOOLS_CONF_OPT = --without-icu --without-x --without-gtk2 --without-gtkmm --without-kernel-modules
+OPENVMTOOLS_CONF_OPTS = --without-icu --without-x --without-gtk2 --without-gtkmm --without-kernel-modules
 OPENVMTOOLS_DEPENDENCIES = libglib2
 
 # When libfuse is available, openvmtools can build vmblock-fuse, so
@@ -23,28 +23,28 @@ endif
 
 ifeq ($(BR2_PACKAGE_OPENVMTOOLS_PROCPS),y)
 OPENVMTOOLS_CONF_ENV += CUSTOM_PROCPS_NAME=procps
-OPENVMTOOLS_CONF_OPT += --with-procps
+OPENVMTOOLS_CONF_OPTS += --with-procps
 OPENVMTOOLS_DEPENDENCIES += procps-ng
 else
-OPENVMTOOLS_CONF_OPT += --without-procps
+OPENVMTOOLS_CONF_OPTS += --without-procps
 endif
 
 ifeq ($(BR2_PACKAGE_OPENVMTOOLS_DNET),y)
 # Needed because if it is defined configure will
 # use a different method to check for dnet
 OPENVMTOOLS_CONF_ENV += CUSTOM_DNET_CPPFLAGS=" "
-OPENVMTOOLS_CONF_OPT += --with-dnet
+OPENVMTOOLS_CONF_OPTS += --with-dnet
 OPENVMTOOLS_DEPENDENCIES += libdnet
 else
-OPENVMTOOLS_CONF_OPT += --without-dnet
+OPENVMTOOLS_CONF_OPTS += --without-dnet
 endif
 
 ifeq ($(BR2_PACKAGE_OPENVMTOOLS_PAM),y)
-OPENVMTOOLS_CONF_OPT += --with-pam
+OPENVMTOOLS_CONF_OPTS += --with-pam
 OPENVMTOOLS_MAKE_OPTS += CFLAGS+="-Wno-unused-local-typedefs"
 OPENVMTOOLS_DEPENDENCIES += linux-pam
 else
-OPENVMTOOLS_CONF_OPT += --without-pam
+OPENVMTOOLS_CONF_OPTS += --without-pam
 endif
 
 # symlink needed by lib/system/systemLinux.c (or will cry in /var/log/messages)

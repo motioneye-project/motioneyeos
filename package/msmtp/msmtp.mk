@@ -13,20 +13,20 @@ MSMTP_LICENSE_FILES = COPYING
 MSMTP_DEPENDENCIES += host-pkgconf
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
-MSMTP_CONF_OPT += --with-ssl=openssl
+MSMTP_CONF_OPTS += --with-ssl=openssl
 MSMTP_DEPENDENCIES += openssl
 ifeq ($(BR2_PREFER_STATIC_LIB),y)
 # openssl uses zlib, so we need to explicitly link with it when static
 MSMTP_CONF_ENV += LIBS=-lz
 endif
 else ifeq ($(BR2_PACKAGE_GNUTLS),y)
-MSMTP_CONF_OPT += --with-ssl=gnutls
+MSMTP_CONF_OPTS += --with-ssl=gnutls
 MSMTP_DEPENDENCIES += gnutls
 else
-MSMTP_CONF_OPT += --with-ssl=no
+MSMTP_CONF_OPTS += --with-ssl=no
 endif
 
-MSMTP_CONF_OPT += \
+MSMTP_CONF_OPTS += \
 	--without-libidn \
 	--without-libgsasl \
 	--without-gnome-keyring

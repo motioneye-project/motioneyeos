@@ -28,9 +28,9 @@ GST_FSL_PLUGINS_CONF_ENV += CPPFLAGS="$(TARGET_CPPFLAGS) -idirafter $(LINUX_DIR)
 
 ifeq ($(BR2_PACKAGE_XLIB_LIBX11),y)
 GST_FSL_PLUGINS_DEPENDENCIES += xlib_libX11
-GST_FSL_PLUGINS_CONF_OPT += --enable-x11
+GST_FSL_PLUGINS_CONF_OPTS += --enable-x11
 else
-GST_FSL_PLUGINS_CONF_OPT += --disable-x11
+GST_FSL_PLUGINS_CONF_OPTS += --disable-x11
 endif
 
 # Autoreconf requires an m4 directory to exist

@@ -8,7 +8,7 @@ PHP_IMAGICK_VERSION = 3.1.2
 PHP_IMAGICK_SOURCE = imagick-$(PHP_IMAGICK_VERSION).tgz
 # pecl.php.net returns html with db connect failed
 PHP_IMAGICK_SITE = http://sources.buildroot.net
-PHP_IMAGICK_CONF_OPT = --with-php-config=$(STAGING_DIR)/usr/bin/php-config \
+PHP_IMAGICK_CONF_OPTS = --with-php-config=$(STAGING_DIR)/usr/bin/php-config \
 	--with-imagick=$(STAGING_DIR)/usr
 # phpize does the autoconf magic
 PHP_IMAGICK_DEPENDENCIES = imagemagick php host-autoconf

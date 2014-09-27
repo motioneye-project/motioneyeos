@@ -17,24 +17,24 @@ PARTED_LICENSE_FILES = COPYING
 
 ifeq ($(BR2_PACKAGE_READLINE),y)
 PARTED_DEPENDENCIES += readline
-PARTED_CONF_OPT += --with-readline
+PARTED_CONF_OPTS += --with-readline
 else
-PARTED_CONF_OPT += --without-readline
+PARTED_CONF_OPTS += --without-readline
 endif
 
 ifeq ($(BR2_PACKAGE_LVM2),y)
 PARTED_DEPENDENCIES += lvm2
-PARTED_CONF_OPT += --enable-device-mapper
+PARTED_CONF_OPTS += --enable-device-mapper
 else
-PARTED_CONF_OPT += --disable-device-mapper
+PARTED_CONF_OPTS += --disable-device-mapper
 endif
 
 ifeq ($(BR2_PREFER_STATIC_LIB),y)
-PARTED_CONF_OPT += --disable-dynamic-loading
+PARTED_CONF_OPTS += --disable-dynamic-loading
 endif
 
 HOST_PARTED_DEPENDENCIES = host-util-linux
-HOST_PARTED_CONF_OPT += \
+HOST_PARTED_CONF_OPTS += \
 	--without-readline \
 	--disable-device-mapper \
 

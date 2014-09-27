@@ -21,30 +21,30 @@ ERLANG_CONF_ENV = ac_cv_func_isnan=yes ac_cv_func_isinf=yes
 # for documentation.
 ERLANG_CONF_ENV += erl_xcomp_sysroot=$(STAGING_DIR)
 
-ERLANG_CONF_OPT = --without-javac
-HOST_ERLANG_CONF_OPT = --without-javac
+ERLANG_CONF_OPTS = --without-javac
+HOST_ERLANG_CONF_OPTS = --without-javac
 
 ifeq ($(BR2_PACKAGE_NCURSES),y)
-ERLANG_CONF_OPT += --with-termcap
+ERLANG_CONF_OPTS += --with-termcap
 ERLANG_DEPENDENCIES += ncurses
 else
-ERLANG_CONF_OPT += --without-termcap
+ERLANG_CONF_OPTS += --without-termcap
 endif
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
-ERLANG_CONF_OPT += --with-ssl
+ERLANG_CONF_OPTS += --with-ssl
 ERLANG_DEPENDENCIES += openssl
 else
-ERLANG_CONF_OPT += --without-ssl
+ERLANG_CONF_OPTS += --without-ssl
 endif
 
 ifeq ($(BR2_PACKAGE_ZLIB),y)
-ERLANG_CONF_OPT += --enable-shared-zlib
+ERLANG_CONF_OPTS += --enable-shared-zlib
 ERLANG_DEPENDENCIES += zlib
 endif
 
 ifeq ($(BR2_PACKAGE_ERLANG_SMP),)
-ERLANG_CONF_OPT += --disable-smp-support
+ERLANG_CONF_OPTS += --disable-smp-support
 endif
 
 # Remove source, example, gs and wx files from the target

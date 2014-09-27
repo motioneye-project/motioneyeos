@@ -12,9 +12,9 @@ SANE_BACKENDS_LICENSE_FILES = COPYING
 
 ifeq ($(BR2_PACKAGE_LIBUSB),y)
 SANE_BACKENDS_DEPENDENCIES += libusb
-SANE_BACKENDS_CONF_OPT += --enable-libusb_1_0
+SANE_BACKENDS_CONF_OPTS += --enable-libusb_1_0
 else
-SANE_BACKENDS_CONF_OPT += --disable-libusb
+SANE_BACKENDS_CONF_OPTS += --disable-libusb
 endif
 
 ifeq ($(BR2_PACKAGE_JPEG),y)
@@ -31,13 +31,13 @@ endif
 
 ifeq ($(BR2_PACKAGE_AVAHI)$(BR2_PACKAGE_DBUS)$(BR2_PACKAGE_LIBGLIB2),yyy)
 SANE_BACKENDS_DEPENDENCIES += avahi
-SANE_BACKENDS_CONF_OPT += --enable-avahi
+SANE_BACKENDS_CONF_OPTS += --enable-avahi
 endif
 
 ifeq ($(BR2_PACKAGE_NETSNMP),y)
 SANE_BACKENDS_DEPENDENCIES += netsnmp
 else
-SANE_BACKENDS_CONF_OPT += --without-snmp
+SANE_BACKENDS_CONF_OPTS += --without-snmp
 endif
 
 define SANE_BACKENDS_DISABLE_DOCS

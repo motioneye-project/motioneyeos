@@ -10,55 +10,55 @@ POPPLER_SITE = http://poppler.freedesktop.org
 POPPLER_DEPENDENCIES = fontconfig
 POPPLER_LICENSE = GPLv2+
 POPPLER_LICENSE_FILES = COPYING
-POPPLER_CONF_OPT = --with-font-configuration=fontconfig
+POPPLER_CONF_OPTS = --with-font-configuration=fontconfig
 
 ifeq ($(BR2_PACKAGE_LCMS2),y)
-	POPPLER_CONF_OPT += --enable-cms=lcms2
+	POPPLER_CONF_OPTS += --enable-cms=lcms2
 	POPPLER_DEPENDENCIES += lcms2
 else
-	POPPLER_CONF_OPT += --enable-cms=none
+	POPPLER_CONF_OPTS += --enable-cms=none
 endif
 
 ifeq ($(BR2_PACKAGE_TIFF),y)
-	POPPLER_CONF_OPT += --enable-libtiff
+	POPPLER_CONF_OPTS += --enable-libtiff
 	POPPLER_DEPENDENCIES += tiff
 else
-	POPPLER_CONF_OPT += --disable-libtiff
+	POPPLER_CONF_OPTS += --disable-libtiff
 endif
 
 ifeq ($(BR2_PACKAGE_JPEG),y)
-	POPPLER_CONF_OPT += --enable-libjpeg
+	POPPLER_CONF_OPTS += --enable-libjpeg
 	POPPLER_DEPENDENCIES += jpeg
 else
-	POPPLER_CONF_OPT += --disable-libjpeg
+	POPPLER_CONF_OPTS += --disable-libjpeg
 endif
 
 ifeq ($(BR2_PACKAGE_LIBPNG),y)
-	POPPLER_CONF_OPT += --enable-libpng
+	POPPLER_CONF_OPTS += --enable-libpng
 	POPPLER_DEPENDENCIES += libpng
 else
-	POPPLER_CONF_OPT += --disable-libpng
+	POPPLER_CONF_OPTS += --disable-libpng
 endif
 
 ifeq ($(BR2_PACKAGE_ZLIB),y)
-	POPPLER_CONF_OPT += --enable-zlib
+	POPPLER_CONF_OPTS += --enable-zlib
 	POPPLER_DEPENDENCIES += zlib
 else
-	POPPLER_CONF_OPT += --disable-zlib
+	POPPLER_CONF_OPTS += --disable-zlib
 endif
 
 ifeq ($(BR2_PACKAGE_POPPLER_LIBCURL),y)
-	POPPLER_CONF_OPT += --enable-libcurl
+	POPPLER_CONF_OPTS += --enable-libcurl
 	POPPLER_DEPENDENCIES += libcurl
 else
-	POPPLER_CONF_OPT += --disable-libcurl
+	POPPLER_CONF_OPTS += --disable-libcurl
 endif
 
 ifeq ($(BR2_PACKAGE_XORG7),y)
-	POPPLER_CONF_OPT += --with-x
+	POPPLER_CONF_OPTS += --with-x
 	POPPLER_DEPENDENCIES += xlib_libX11 xlib_libXext
 else
-	POPPLER_CONF_OPT += --without-x
+	POPPLER_CONF_OPTS += --without-x
 endif
 
 $(eval $(autotools-package))

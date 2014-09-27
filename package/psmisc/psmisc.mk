@@ -12,7 +12,7 @@ PSMISC_DEPENDENCIES = ncurses $(if $(BR2_NEEDS_GETTEXT_IF_LOCALE),gettext)
 
 ifeq ($(BR2_TOOLCHAIN_HAS_SSP),)
 # Don't force -fstack-protector when SSP is not available in toolchain
-PSMISC_CONF_OPT = --disable-harden-flags
+PSMISC_CONF_OPTS = --disable-harden-flags
 endif
 
 # build after busybox, we prefer fat versions while we're at it

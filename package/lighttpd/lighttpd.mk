@@ -11,7 +11,7 @@ LIGHTTPD_SITE = http://download.lighttpd.net/lighttpd/releases-$(LIGHTTPD_VERSIO
 LIGHTTPD_LICENSE = BSD-3c
 LIGHTTPD_LICENSE_FILES = COPYING
 LIGHTTPD_DEPENDENCIES = host-pkgconf
-LIGHTTPD_CONF_OPT = \
+LIGHTTPD_CONF_OPTS = \
 	--libdir=/usr/lib/lighttpd \
 	--libexecdir=/usr/lib \
 	--localstatedir=/var \
@@ -19,45 +19,45 @@ LIGHTTPD_CONF_OPT = \
 
 ifeq ($(BR2_PACKAGE_LIGHTTPD_OPENSSL),y)
 LIGHTTPD_DEPENDENCIES += openssl
-LIGHTTPD_CONF_OPT += --with-openssl
+LIGHTTPD_CONF_OPTS += --with-openssl
 else
-LIGHTTPD_CONF_OPT += --without-openssl
+LIGHTTPD_CONF_OPTS += --without-openssl
 endif
 
 ifeq ($(BR2_PACKAGE_LIGHTTPD_ZLIB),y)
 LIGHTTPD_DEPENDENCIES += zlib
-LIGHTTPD_CONF_OPT += --with-zlib
+LIGHTTPD_CONF_OPTS += --with-zlib
 else
-LIGHTTPD_CONF_OPT += --without-zlib
+LIGHTTPD_CONF_OPTS += --without-zlib
 endif
 
 ifeq ($(BR2_PACKAGE_LIGHTTPD_BZIP2),y)
 LIGHTTPD_DEPENDENCIES += bzip2
-LIGHTTPD_CONF_OPT += --with-bzip2
+LIGHTTPD_CONF_OPTS += --with-bzip2
 else
-LIGHTTPD_CONF_OPT += --without-bzip2
+LIGHTTPD_CONF_OPTS += --without-bzip2
 endif
 
 ifeq ($(BR2_PACKAGE_LIGHTTPD_PCRE),y)
 LIGHTTPD_CONF_ENV = PCRECONFIG=$(STAGING_DIR)/usr/bin/pcre-config
 LIGHTTPD_DEPENDENCIES += pcre
-LIGHTTPD_CONF_OPT += --with-pcre
+LIGHTTPD_CONF_OPTS += --with-pcre
 else
-LIGHTTPD_CONF_OPT += --without-pcre
+LIGHTTPD_CONF_OPTS += --without-pcre
 endif
 
 ifeq ($(BR2_PACKAGE_LIGHTTPD_WEBDAV),y)
 LIGHTTPD_DEPENDENCIES += libxml2 sqlite
-LIGHTTPD_CONF_OPT += --with-webdav-props --with-webdav-locks
+LIGHTTPD_CONF_OPTS += --with-webdav-props --with-webdav-locks
 else
-LIGHTTPD_CONF_OPT += --without-webdav-props --without-webdav-locks
+LIGHTTPD_CONF_OPTS += --without-webdav-props --without-webdav-locks
 endif
 
 ifeq ($(BR2_PACKAGE_LIGHTTPD_LUA),y)
 LIGHTTPD_DEPENDENCIES += lua
-LIGHTTPD_CONF_OPT += --with-lua
+LIGHTTPD_CONF_OPTS += --with-lua
 else
-LIGHTTPD_CONF_OPT += --without-lua
+LIGHTTPD_CONF_OPTS += --without-lua
 endif
 
 define LIGHTTPD_INSTALL_CONFIG

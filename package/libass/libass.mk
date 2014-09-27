@@ -17,23 +17,23 @@ LIBASS_DEPENDENCIES = \
 
 ifeq ($(BR2_PACKAGE_FONTCONFIG),y)
 LIBASS_DEPENDENCIES += fontconfig
-LIBASS_CONF_OPT += --enable-fontconfig
+LIBASS_CONF_OPTS += --enable-fontconfig
 else
-LIBASS_CONF_OPT += --disable-fontconfig
+LIBASS_CONF_OPTS += --disable-fontconfig
 endif
 
 ifeq ($(BR2_PACKAGE_HARFBUZZ),y)
 LIBASS_DEPENDENCIES += harfbuzz
-LIBASS_CONF_OPT += --enable-harfbuzz
+LIBASS_CONF_OPTS += --enable-harfbuzz
 else
-LIBASS_CONF_OPT += --disable-harfbuzz
+LIBASS_CONF_OPTS += --disable-harfbuzz
 endif
 
 ifeq ($(BR2_PACKAGE_LIBENCA),y)
 LIBASS_DEPENDENCIES += libenca
-LIBASS_CONF_OPT += --enable-enca
+LIBASS_CONF_OPTS += --enable-enca
 else
-LIBASS_CONF_OPT += --disable-enca
+LIBASS_CONF_OPTS += --disable-enca
 endif
 
 $(eval $(autotools-package))

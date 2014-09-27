@@ -101,7 +101,7 @@ cases, typical packages will therefore only use a few of them.
   environment variables to pass to the +perl Makefile.PL+ or +perl Build.PL+.
   By default, empty.
 
-* +PERL_FOO_CONF_OPT+/+HOST_PERL_FOO_CONF_OPT+, to specify additional
+* +PERL_FOO_CONF_OPTS+/+HOST_PERL_FOO_CONF_OPTS+, to specify additional
   configure options to pass to the +perl Makefile.PL+ or +perl Build.PL+.
   By default, empty.
 

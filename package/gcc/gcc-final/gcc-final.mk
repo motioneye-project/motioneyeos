@@ -36,7 +36,7 @@ define  HOST_GCC_FINAL_CONFIGURE_CMDS
                 --prefix="$(HOST_DIR)/usr" \
                 --sysconfdir="$(HOST_DIR)/etc" \
                 --enable-static \
-                $(QUIET) $(HOST_GCC_FINAL_CONF_OPT) \
+                $(QUIET) $(HOST_GCC_FINAL_CONF_OPTS) \
         )
 endef
 
@@ -48,28 +48,28 @@ GCC_FINAL_CROSS_LANGUAGES-$(BR2_INSTALL_FORTRAN) += fortran
 GCC_FINAL_CROSS_LANGUAGES-$(BR2_INSTALL_OBJC)    += objc
 GCC_FINAL_CROSS_LANGUAGES = $(subst $(space),$(comma),$(GCC_FINAL_CROSS_LANGUAGES-y))
 
-HOST_GCC_FINAL_CONF_OPT = \
-	$(HOST_GCC_COMMON_CONF_OPT) \
+HOST_GCC_FINAL_CONF_OPTS = \
+	$(HOST_GCC_COMMON_CONF_OPTS) \
 	--enable-languages=$(GCC_FINAL_CROSS_LANGUAGES) \
 	$(DISABLE_LARGEFILE) \
 	--with-build-time-tools=$(HOST_DIR)/usr/$(GNU_TARGET_NAME)/bin
 
 # Disable shared libs like libstdc++ if we do static since it confuses linking
 ifeq ($(BR2_PREFER_STATIC_LIB),y)
-HOST_GCC_FINAL_CONF_OPT += --disable-shared
+HOST_GCC_FINAL_CONF_OPTS += --disable-shared
 else
-HOST_GCC_FINAL_CONF_OPT += --enable-shared
+HOST_GCC_FINAL_CONF_OPTS += --enable-shared
 endif
 
 ifeq ($(BR2_GCC_ENABLE_OPENMP),y)
-HOST_GCC_FINAL_CONF_OPT += --enable-libgomp
+HOST_GCC_FINAL_CONF_OPTS += --enable-libgomp
 else
-HOST_GCC_FINAL_CONF_OPT += --disable-libgomp
+HOST_GCC_FINAL_CONF_OPTS += --disable-libgomp
 endif
 
 # End with user-provided options, so that they can override previously
 # defined options.
-HOST_GCC_FINAL_CONF_OPT += \
+HOST_GCC_FINAL_CONF_OPTS += \
 	$(call qstrip,$(BR2_EXTRA_GCC_CONFIG_OPTIONS))
 
 HOST_GCC_FINAL_CONF_ENV = \

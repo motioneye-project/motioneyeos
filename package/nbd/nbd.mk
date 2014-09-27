@@ -7,7 +7,7 @@
 NBD_VERSION = 3.8
 NBD_SOURCE = nbd-$(NBD_VERSION).tar.xz
 NBD_SITE = http://downloads.sourceforge.net/project/nbd/nbd/$(NBD_VERSION)
-NBD_CONF_OPT = $(if $(BR2_LARGEFILE),--enable-lfs,--disable-lfs)
+NBD_CONF_OPTS = $(if $(BR2_LARGEFILE),--enable-lfs,--disable-lfs)
 NBD_DEPENDENCIES = libglib2
 NBD_LICENSE = GPLv2
 NBD_LICENSE_FILES = COPYING

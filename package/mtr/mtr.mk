@@ -6,7 +6,7 @@
 
 MTR_VERSION = 0.85
 MTR_SITE = ftp://ftp.bitwizard.nl/mtr
-MTR_CONF_OPT = --without-gtk --without-glib
+MTR_CONF_OPTS = --without-gtk --without-glib
 MTR_DEPENDENCIES = host-pkgconf $(if $(BR2_PACKAGE_NCURSES),ncurses)
 MTR_LICENSE = GPLv2
 MTR_LICENSE_FILES = COPYING

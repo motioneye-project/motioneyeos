@@ -21,15 +21,15 @@ endif
 
 ifeq ($(BR2_PACKAGE_JPEG),y)
 LIBV4L_DEPENDENCIES += jpeg
-LIBV4L_CONF_OPT += --with-jpeg
+LIBV4L_CONF_OPTS += --with-jpeg
 else
-LIBV4L_CONF_OPT += --without-jpeg
+LIBV4L_CONF_OPTS += --without-jpeg
 endif
 
 ifeq ($(BR2_PACKAGE_LIBV4L_UTILS),y)
-LIBV4L_CONF_OPT += --enable-v4l-utils
+LIBV4L_CONF_OPTS += --enable-v4l-utils
 else
-LIBV4L_CONF_OPT += --disable-v4l-utils
+LIBV4L_CONF_OPTS += --disable-v4l-utils
 endif
 
 $(eval $(autotools-package))

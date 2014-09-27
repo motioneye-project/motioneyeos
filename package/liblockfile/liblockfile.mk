@@ -13,7 +13,7 @@ LIBLOCKFILE_LICENSE = LGPLv2+, dotlockfile GPLv2+
 # No license file included, it refers to the gnu.org website
 
 LIBLOCKFILE_INSTALL_STAGING = YES
-LIBLOCKFILE_CONF_OPT = --mandir=/usr/share/man
+LIBLOCKFILE_CONF_OPTS = --mandir=/usr/share/man
 
 define LIBLOCKFILE_INSTALL_STAGING_CMDS
 	mkdir -p $(addprefix $(STAGING_DIR)/usr/share/man/man,1 3)

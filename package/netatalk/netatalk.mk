@@ -17,7 +17,7 @@ NETATALK_LICENSE_FILES = COPYING COPYRIGHT
 # Don't run ldconfig!
 NETATALK_CONF_ENV += CC="$(TARGET_CC) -std=gnu99" \
 	ac_cv_path_NETA_LDCONFIG=""
-NETATALK_CONF_OPT += --with-cnid-cdb-backend \
+NETATALK_CONF_OPTS += --with-cnid-cdb-backend \
 	--with-bdb=$(STAGING_DIR)/usr \
 	--with-ssl-dir=$(STAGING_DIR)/usr \
 	--with-libgcrypt-dir=$(STAGING_DIR)/usr \
@@ -32,22 +32,22 @@ NETATALK_CONF_OPT += --with-cnid-cdb-backend \
 ifeq ($(BR2_PACKAGE_ACL),y)
 	NETATALK_DEPENDENCIES += acl
 else
-	NETATALK_CONF_OPT += --with-acls=no
+	NETATALK_CONF_OPTS += --with-acls=no
 endif
 
 ifeq ($(BR2_PACKAGE_AVAHI_DAEMON)$(BR2_PACKAGE_DBUS),yy)
 	NETATALK_DEPENDENCIES += avahi
-	NETATALK_CONF_OPT += --enable-zeroconf=$(STAGING_DIR)/usr
+	NETATALK_CONF_OPTS += --enable-zeroconf=$(STAGING_DIR)/usr
 else
-	NETATALK_CONF_OPT += --disable-zeroconf
+	NETATALK_CONF_OPTS += --disable-zeroconf
 endif
 
 ifeq ($(BR2_PACKAGE_CUPS),y)
 	NETATALK_DEPENDENCIES += cups
 	NETATALK_CONF_ENV += ac_cv_path_CUPS_CONFIG=$(STAGING_DIR)/usr/bin/cups-config
-	NETATALK_CONF_OPT += --enable-cups
+	NETATALK_CONF_OPTS += --enable-cups
 else
-	NETATALK_CONF_OPT += --disable-cups
+	NETATALK_CONF_OPTS += --disable-cups
 endif
 
 define NETATALK_INSTALL_EXTRA_FILES

@@ -75,7 +75,7 @@ GRUB_CONF_ENV = \
 	$(HOST_CONFIGURE_OPTS) \
 	CFLAGS="$(HOST_CFLAGS) $(GRUB_CFLAGS) -m32"
 
-GRUB_CONF_OPT = \
+GRUB_CONF_OPTS = \
 	--disable-auto-linux-mem-opt \
 	$(GRUB_CONFIG-y)
 

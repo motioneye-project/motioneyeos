@@ -10,9 +10,9 @@ THRIFT_DEPENDENCIES = host-pkgconf host-thrift boost libevent openssl zlib
 THRIFT_INSTALL_STAGING = YES
 HOST_THRIFT_DEPENDENCIES = host-boost host-libevent host-openssl host-pkgconf \
 	host-zlib host-bison host-flex
-THRIFT_CONF_OPT = --with-sysroot=$(STAGING_DIR) --with-tests=no \
+THRIFT_CONF_OPTS = --with-sysroot=$(STAGING_DIR) --with-tests=no \
 	--with-boost=$(STAGING_DIR)
-HOST_THRIFT_CONF_OPT = --with-sysroot=$(HOST_DIR) --with-tests=no
+HOST_THRIFT_CONF_OPTS = --with-sysroot=$(HOST_DIR) --with-tests=no
 THRIFT_AUTORECONF = YES
 THRIFT_LICENSE = Apache-2.0
 THRIFT_LICENSE_FILES = LICENSE
@@ -25,17 +25,17 @@ endif
 # Language selection
 # The generator (host tool) works with all of them regardless
 # This is just for the libraries / bindings
-THRIFT_LANG_CONF_OPT += --without-csharp --without-java --without-erlang \
+THRIFT_LANG_CONF_OPTS += --without-csharp --without-java --without-erlang \
 	--without-python --without-perl --without-php --without-php_extension \
 	--without-ruby --without-haskell --without-go --without-d --without-qt4
-HOST_THRIFT_CONF_OPT += $(THRIFT_LANG_CONF_OPT) --without-c_glib
-THRIFT_CONF_OPT += $(THRIFT_LANG_CONF_OPT)
+HOST_THRIFT_CONF_OPTS += $(THRIFT_LANG_CONF_OPTS) --without-c_glib
+THRIFT_CONF_OPTS += $(THRIFT_LANG_CONF_OPTS)
 
 # C bindings
 ifeq ($(BR2_PACKAGE_LIBGLIB2),y)
 THRIFT_DEPENDENCIES += libglib2
 else
-THRIFT_CONF_OPT += --without-c_glib
+THRIFT_CONF_OPTS += --without-c_glib
 endif
 
 # De-hardcode THRIFT for cross compiling

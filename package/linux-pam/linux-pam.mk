@@ -8,7 +8,7 @@ LINUX_PAM_VERSION = 1.1.8
 LINUX_PAM_SOURCE = Linux-PAM-$(LINUX_PAM_VERSION).tar.bz2
 LINUX_PAM_SITE = http://linux-pam.org/library
 LINUX_PAM_INSTALL_STAGING = YES
-LINUX_PAM_CONF_OPT = \
+LINUX_PAM_CONF_OPTS = \
 	--disable-prelude \
 	--disable-isadir \
 	--disable-nis \

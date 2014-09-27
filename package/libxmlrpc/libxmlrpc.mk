@@ -14,7 +14,7 @@ LIBXMLRPC_DEPENDENCIES = libcurl
 LIBXMLRPC_CONFIG_SCRIPTS = xmlrpc-c-config
 LIBXMLRPC_MAKE = $(MAKE1)
 
-LIBXMLRPC_CONF_OPT = \
+LIBXMLRPC_CONF_OPTS = \
 	$(if $(BR2_USE_WCHAR),,ac_cv_header_wchar_h=no) \
 	$(if $(BR2_INSTALL_LIBSTDCPP),,--disable-cplusplus) \
 	have_curl_config=$(STAGING_DIR)/usr/bin/curl-config \

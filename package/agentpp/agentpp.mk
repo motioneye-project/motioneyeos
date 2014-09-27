@@ -11,7 +11,7 @@ AGENTPP_LICENSE = Apache-2.0
 AGENTPP_LICENSE_FILES = LICENSE-2_0.txt
 AGENTPP_INSTALL_STAGING = YES
 AGENTPP_DEPENDENCIES = host-pkgconf snmppp
-AGENTPP_CONF_OPT += \
+AGENTPP_CONF_OPTS += \
 	--disable-proxy \
 	--disable-forwarder \
 	--disable-rpath

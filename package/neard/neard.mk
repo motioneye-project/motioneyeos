@@ -12,10 +12,10 @@ NEARD_LICENSE_FILES = COPYING
 
 NEARD_AUTORECONF = YES
 NEARD_DEPENDENCIES = host-pkgconf dbus libglib2 libnl
-NEARD_CONF_OPT = --disable-traces
+NEARD_CONF_OPTS = --disable-traces
 
 ifeq ($(BR2_PACKAGE_NEARD_TOOLS),y)
-	NEARD_CONF_OPT += --enable-tools
+	NEARD_CONF_OPTS += --enable-tools
 endif
 
 define NEARD_INSTALL_INIT_SYSV

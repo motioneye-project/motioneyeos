@@ -14,7 +14,7 @@ NCURSES_LICENSE = MIT with advertising clause
 NCURSES_LICENSE_FILES = README
 NCURSES_CONFIG_SCRIPTS = ncurses$(NCURSES_LIB_SUFFIX)5-config
 
-NCURSES_CONF_OPT = \
+NCURSES_CONF_OPTS = \
 	$(if $(BR2_PREFER_STATIC_LIB),--without-shared,--with-shared) \
 	--without-cxx \
 	--without-cxx-binding \
@@ -37,7 +37,7 @@ ifeq ($(BR2_PACKAGE_BUSYBOX),y)
 endif
 
 ifeq ($(BR2_PACKAGE_NCURSES_WCHAR),y)
-NCURSES_CONF_OPT += --enable-widec
+NCURSES_CONF_OPTS += --enable-widec
 NCURSES_LIB_SUFFIX = w
 
 ifeq ($(BR2_PREFER_STATIC_LIB),y)
@@ -77,7 +77,7 @@ NCURSES_LIBS-$(BR2_PACKAGE_NCURSES_TARGET_PANEL) += libpanel
 NCURSES_LIBS-$(BR2_PACKAGE_NCURSES_TARGET_FORM) += libform
 
 ifneq ($(BR2_ENABLE_DEBUG),y)
-NCURSES_CONF_OPT += --without-debug
+NCURSES_CONF_OPTS += --without-debug
 endif
 
 # ncurses breaks with parallel build, but takes quite a while to
@@ -140,7 +140,7 @@ define HOST_NCURSES_BUILD_CMDS
 	$(MAKE) -C $(@D)/progs tic
 endef
 
-HOST_NCURSES_CONF_OPT = \
+HOST_NCURSES_CONF_OPTS = \
 	--with-shared --without-gpm \
 	--without-manpages \
 	--without-cxx \

@@ -28,7 +28,7 @@ else
 IMAGEMAGICK_CONF_ENV = ac_cv_sys_file_offset_bits=32
 endif
 
-IMAGEMAGICK_CONF_OPT = --program-transform-name='s,,,' \
+IMAGEMAGICK_CONF_OPTS = --program-transform-name='s,,,' \
 		--disable-openmp \
 		--without-perl \
 		--without-wmf \
@@ -45,78 +45,78 @@ IMAGEMAGICK_CONF_OPT = --program-transform-name='s,,,' \
 IMAGEMAGICK_DEPENDENCIES = host-pkgconf
 
 ifeq ($(BR2_PACKAGE_FONTCONFIG),y)
-IMAGEMAGICK_CONF_OPT += --with-fontconfig
+IMAGEMAGICK_CONF_OPTS += --with-fontconfig
 IMAGEMAGICK_DEPENDENCIES += fontconfig
 else
-IMAGEMAGICK_CONF_OPT += --without-fontconfig
+IMAGEMAGICK_CONF_OPTS += --without-fontconfig
 endif
 
 ifeq ($(BR2_PACKAGE_FREETYPE),y)
-IMAGEMAGICK_CONF_OPT += --with-freetype
+IMAGEMAGICK_CONF_OPTS += --with-freetype
 IMAGEMAGICK_CONF_ENV += \
 	ac_cv_path_freetype_config=$(STAGING_DIR)/usr/bin/freetype-config
 IMAGEMAGICK_DEPENDENCIES += freetype
 else
-IMAGEMAGICK_CONF_OPT += --without-freetype
+IMAGEMAGICK_CONF_OPTS += --without-freetype
 endif
 
 ifeq ($(BR2_PACKAGE_JPEG),y)
-IMAGEMAGICK_CONF_OPT += --with-jpeg
+IMAGEMAGICK_CONF_OPTS += --with-jpeg
 IMAGEMAGICK_DEPENDENCIES += jpeg
 else
-IMAGEMAGICK_CONF_OPT += --without-jpeg
+IMAGEMAGICK_CONF_OPTS += --without-jpeg
 endif
 
 ifeq ($(BR2_PACKAGE_LIBPNG),y)
-IMAGEMAGICK_CONF_OPT += --with-png
+IMAGEMAGICK_CONF_OPTS += --with-png
 IMAGEMAGICK_DEPENDENCIES += libpng
 else
-IMAGEMAGICK_CONF_OPT += --without-png
+IMAGEMAGICK_CONF_OPTS += --without-png
 endif
 
 ifeq ($(BR2_PACKAGE_LIBRSVG),y)
-IMAGEMAGICK_CONF_OPT += --with-rsvg
+IMAGEMAGICK_CONF_OPTS += --with-rsvg
 IMAGEMAGICK_DEPENDENCIES += librsvg
 else
-IMAGEMAGICK_CONF_OPT += --without-rsvg
+IMAGEMAGICK_CONF_OPTS += --without-rsvg
 endif
 
 ifeq ($(BR2_PACKAGE_LIBXML2),y)
-IMAGEMAGICK_CONF_OPT += --with-xml
+IMAGEMAGICK_CONF_OPTS += --with-xml
 IMAGEMAGICK_CONF_ENV += ac_cv_path_xml2_config=$(STAGING_DIR)/usr/bin/xml2-config
 IMAGEMAGICK_DEPENDENCIES += libxml2
 else
-IMAGEMAGICK_CONF_OPT += --without-xml
+IMAGEMAGICK_CONF_OPTS += --without-xml
 endif
 
 ifeq ($(BR2_PACKAGE_TIFF),y)
-IMAGEMAGICK_CONF_OPT += --with-tiff
+IMAGEMAGICK_CONF_OPTS += --with-tiff
 IMAGEMAGICK_DEPENDENCIES += tiff
 else
-IMAGEMAGICK_CONF_OPT += --without-tiff
+IMAGEMAGICK_CONF_OPTS += --without-tiff
 endif
 
 ifeq ($(BR2_PACKAGE_FFTW),y)
 # configure script misdetects these leading to build errors
 IMAGEMAGICK_CONF_ENV += ac_cv_func_creal=yes ac_cv_func_cimag=yes
-IMAGEMAGICK_CONF_OPT += --with-fftw
+IMAGEMAGICK_CONF_OPTS += --with-fftw
 IMAGEMAGICK_DEPENDENCIES += fftw
 else
-IMAGEMAGICK_CONF_OPT += --without-fftw
+IMAGEMAGICK_CONF_OPTS += --without-fftw
 endif
 
 ifeq ($(BR2_PACKAGE_ZLIB),y)
-IMAGEMAGICK_CONF_OPT += --with-zlib
+IMAGEMAGICK_CONF_OPTS += --with-zlib
 IMAGEMAGICK_DEPENDENCIES += zlib
 else
-IMAGEMAGICK_CONF_OPT += --without-zlib
+IMAGEMAGICK_CONF_OPTS += --without-zlib
 endif
 
 ifeq ($(BR2_PACKAGE_BZIP2),y)
-IMAGEMAGICK_CONF_OPT += --with-bzlib
+IMAGEMAGICK_CONF_OPTS += --with-bzlib
 IMAGEMAGICK_DEPENDENCIES += bzip2
 else
-IMAGEMAGICK_CONF_OPT += --without-bzlib
+IMAGEMAGICK_CONF_OPTS += --without-bzlib
 endif
 
 $(eval $(autotools-package))

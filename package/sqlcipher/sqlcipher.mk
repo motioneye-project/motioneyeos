@@ -14,7 +14,7 @@ SQLCIPHER_CONF_ENV = \
 	LDFLAGS="$(TARGET_LDFLAGS) $(SQLCIPHER_LDFLAGS)" \
 	TCLSH_CMD=$(HOST_DIR)/usr/bin/tclsh$(TCL_VERSION_MAJOR)
 
-SQLCIPHER_CONF_OPT = \
+SQLCIPHER_CONF_OPTS = \
 	--enable-threadsafe \
 	--localstatedir=/var
 
@@ -34,9 +34,9 @@ endif
 
 ifeq ($(BR2_PACKAGE_SQLCIPHER_READLINE),y)
 SQLCIPHER_DEPENDENCIES += ncurses readline
-SQLCIPHER_CONF_OPT += --with-readline-inc="-I$(STAGING_DIR)/usr/include"
+SQLCIPHER_CONF_OPTS += --with-readline-inc="-I$(STAGING_DIR)/usr/include"
 else
-SQLCIPHER_CONF_OPT += --disable-readline
+SQLCIPHER_CONF_OPTS += --disable-readline
 endif
 
 $(eval $(autotools-package))

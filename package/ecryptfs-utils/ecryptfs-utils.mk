@@ -11,7 +11,7 @@ ECRYPTFS_UTILS_LICENSE         = GPLv2+
 ECRYPTFS_UTILS_LICENSE_FILES   = COPYING
 
 ECRYPTFS_UTILS_DEPENDENCIES    = keyutils libnss host-intltool
-ECRYPTFS_UTILS_CONF_OPT        = --disable-pywrap --disable-pam
+ECRYPTFS_UTILS_CONF_OPTS        = --disable-pywrap --disable-pam
 
 #Needed for build system to find pk11func.h and libnss3.so
 ECRYPTFS_UTILS_CONF_ENV = \
@@ -19,10 +19,10 @@ ECRYPTFS_UTILS_CONF_ENV = \
   NSS_LIBS="-lnss3"
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
-	ECRYPTFS_UTILS_CONF_OPT += --enable-openssl
+	ECRYPTFS_UTILS_CONF_OPTS += --enable-openssl
 	ECRYPTFS_UTILS_DEPENDENCIES += openssl
 else
-	ECRYPTFS_UTILS_CONF_OPT += --disable-openssl
+	ECRYPTFS_UTILS_CONF_OPTS += --disable-openssl
 endif
 
 $(eval $(autotools-package))

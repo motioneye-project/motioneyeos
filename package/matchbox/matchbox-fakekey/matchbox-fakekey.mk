@@ -11,7 +11,7 @@ MATCHBOX_FAKEKEY_LICENSE = GPLv2+
 MATCHBOX_FAKEKEY_LICENSE_FILES = COPYING
 MATCHBOX_FAKEKEY_INSTALL_STAGING = YES
 MATCHBOX_FAKEKEY_DEPENDENCIES = matchbox-lib xlib_libXtst
-MATCHBOX_FAKEKEY_CONF_OPT = --enable-expat
+MATCHBOX_FAKEKEY_CONF_OPTS = --enable-expat
 
 define MATCHBOX_FAKEKEY_POST_CONFIGURE_FIXES
  $(SED) 's:-I[^$$].*/usr/include/freetype2:-I/usr/include/freetype2:' $(STAGING_DIR)/usr/lib/pkgconfig/libmb.pc

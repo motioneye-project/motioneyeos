@@ -12,6 +12,6 @@ APITRACE_LICENSE_FILES = LICENSE
 APITRACE_DEPENDENCIES = xlib_libX11 host-python
 
 # Gui was never tested, so we prefer to explicitly disable it
-APITRACE_CONF_OPT += -DENABLE_GUI=false
+APITRACE_CONF_OPTS += -DENABLE_GUI=false
 
 $(eval $(cmake-package))

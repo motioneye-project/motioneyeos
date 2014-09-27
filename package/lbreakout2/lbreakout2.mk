@@ -21,16 +21,16 @@ endif
 
 ifeq ($(BR2_PACKAGE_LBREAKOUT2_AUDIO),y)
 LBREAKOUT2_DEPENDENCIES += sdl_mixer
-LBREAKOUT2_CONF_OPT += --enable-audio=yes
+LBREAKOUT2_CONF_OPTS += --enable-audio=yes
 else
-LBREAKOUT2_CONF_OPT += --disable-audio
+LBREAKOUT2_CONF_OPTS += --disable-audio
 endif
 
 ifeq ($(BR2_PACKAGE_LBREAKOUT2_NET),y)
 LBREAKOUT2_DEPENDENCIES += sdl_net
-LBREAKOUT2_CONF_OPT += --enable-network=yes
+LBREAKOUT2_CONF_OPTS += --enable-network=yes
 else
-LBREAKOUT2_CONF_OPT += --disable-network
+LBREAKOUT2_CONF_OPTS += --disable-network
 endif
 
 $(eval $(autotools-package))

@@ -13,9 +13,9 @@ ICU_LICENSE_FILES = license.html
 ICU_DEPENDENCIES = host-icu
 ICU_INSTALL_STAGING = YES
 ICU_CONFIG_SCRIPTS = icu-config
-ICU_CONF_OPT = --with-cross-build=$(HOST_ICU_DIR)/source --disable-samples \
+ICU_CONF_OPTS = --with-cross-build=$(HOST_ICU_DIR)/source --disable-samples \
 		--disable-tests
-HOST_ICU_CONF_OPT = \
+HOST_ICU_CONF_OPTS = \
 	--disable-samples \
 	--disable-tests \
 	--disable-extras \

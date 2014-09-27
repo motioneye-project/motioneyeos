@@ -14,7 +14,7 @@ RPM_LICENSE_FILES = COPYING.LIB
 RPM_CONF_ENV = CFLAGS="$(TARGET_CFLAGS) -I$(STAGING_DIR)/usr/include/beecrypt -I$(STAGING_DIR)/usr/include/neon -DHAVE_MUTEX_THREAD_ONLY" \
 		ac_cv_va_copy=yes
 
-RPM_CONF_OPT = --disable-build-versionscript --disable-rpath \
+RPM_CONF_OPTS = --disable-build-versionscript --disable-rpath \
 	--without-selinux \
 	--without-python --without-perl \
 	--with-openssl=external \
@@ -24,24 +24,24 @@ RPM_CONF_OPT = --disable-build-versionscript --disable-rpath \
 
 ifeq ($(BR2_PACKAGE_PCRE),y)
 RPM_DEPENDENCIES += pcre
-RPM_CONF_OPT += --with-pcre=external
+RPM_CONF_OPTS += --with-pcre=external
 else
-RPM_CONF_OPT += --with-pcre=no
+RPM_CONF_OPTS += --with-pcre=no
 endif
 
 ifeq ($(BR2_PACKAGE_FILE),y)
 RPM_DEPENDENCIES += file
-RPM_CONF_OPT += --with-file=external
+RPM_CONF_OPTS += --with-file=external
 else
-RPM_CONF_OPT += --with-file=no
+RPM_CONF_OPTS += --with-file=no
 endif
 
 ifeq ($(BR2_PACKAGE_RPM_XZ_PAYLOADS),y)
-RPM_CONF_OPT += --with-xz
+RPM_CONF_OPTS += --with-xz
 endif
 
 ifeq ($(BR2_PACKAGE_RPM_BZIP2_PAYLOADS),y)
-RPM_CONF_OPT += --with-bzip2
+RPM_CONF_OPTS += --with-bzip2
 RPM_DEPENDENCIES += bzip2
 endif
 

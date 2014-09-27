@@ -13,9 +13,9 @@ FBDUMP_LICENSE_FILES = COPYING
 # of the x86/x86-64 architectures, and causes build problems on some
 # architectures as outw() is not always available.
 ifeq ($(BR2_i386)$(BR2_x86_64),y)
-FBDUMP_CONF_OPT += --enable-vga16fb
+FBDUMP_CONF_OPTS += --enable-vga16fb
 else
-FBDUMP_CONF_OPT += --disable-vga16fb
+FBDUMP_CONF_OPTS += --disable-vga16fb
 endif
 
 $(eval $(autotools-package))

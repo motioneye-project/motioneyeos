@@ -17,35 +17,35 @@ LIBPCAP_CONF_ENV = ac_cv_linux_vers=2 \
 		ac_cv_header_linux_wireless_h=yes \
 		CFLAGS="$(LIBPCAP_CFLAGS)"
 LIBPCAP_CFLAGS = $(TARGET_CFLAGS)
-LIBPCAP_CONF_OPT = --disable-yydebug --with-pcap=linux
+LIBPCAP_CONF_OPTS = --disable-yydebug --with-pcap=linux
 LIBPCAP_CONFIG_SCRIPTS = pcap-config
 
 # On purpose, not compatible with bluez5
 ifeq ($(BR2_PACKAGE_BLUEZ_UTILS),y)
 LIBPCAP_DEPENDENCIES += bluez_utils
 else
-LIBPCAP_CONF_OPT += --disable-bluetooth
+LIBPCAP_CONF_OPTS += --disable-bluetooth
 endif
 
 ifeq ($(BR2_PACKAGE_DBUS),y)
-LIBPCAP_CONF_OPT += --enable-dbus
+LIBPCAP_CONF_OPTS += --enable-dbus
 LIBPCAP_DEPENDENCIES += dbus
 else
-LIBPCAP_CONF_OPT += --disable-dbus
+LIBPCAP_CONF_OPTS += --disable-dbus
 endif
 
 ifeq ($(BR2_PACKAGE_LIBUSB),y)
-LIBPCAP_CONF_OPT += --enable-canusb
+LIBPCAP_CONF_OPTS += --enable-canusb
 LIBPCAP_DEPENDENCIES += libusb
 else
-LIBPCAP_CONF_OPT += --disable-canusb
+LIBPCAP_CONF_OPTS += --disable-canusb
 endif
 
 ifeq ($(BR2_PACKAGE_LIBNL),y)
 LIBPCAP_DEPENDENCIES += libnl
 LIBPCAP_CFLAGS += "-I$(STAGING_DIR)/usr/include/libnl3"
 else
-LIBPCAP_CONF_OPT += --without-libnl
+LIBPCAP_CONF_OPTS += --without-libnl
 endif
 
 # microblaze needs -fPIC instead of -fpic

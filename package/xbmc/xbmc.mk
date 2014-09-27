@@ -39,7 +39,7 @@ XBMC_CONF_ENV = \
 	USE_TEXTUREPACKER_NATIVE_ROOT="$(HOST_DIR)/usr" \
 	TEXTUREPACKER_NATIVE_ROOT="$(HOST_DIR)/usr"
 
-XBMC_CONF_OPT +=  \
+XBMC_CONF_OPTS +=  \
 	--with-arch=$(BR2_ARCH) \
 	--disable-crystalhd \
 	--disable-debug \
@@ -58,7 +58,7 @@ XBMC_CONF_OPT +=  \
 
 ifeq ($(BR2_PACKAGE_RPI_USERLAND),y)
 XBMC_DEPENDENCIES += rpi-userland
-XBMC_CONF_OPT += --with-platform=raspberry-pi --enable-player=omxplayer
+XBMC_CONF_OPTS += --with-platform=raspberry-pi --enable-player=omxplayer
 XBMC_CONF_ENV += INCLUDES="-I$(STAGING_DIR)/usr/include/interface/vcos/pthreads \
 	-I$(STAGING_DIR)/usr/include/interface/vmcs_host/linux" \
 	LIBS="-lvcos -lvchostif"
@@ -66,23 +66,23 @@ endif
 
 ifeq ($(BR2_PACKAGE_XBMC_DBUS),y)
 XBMC_DEPENDENCIES += dbus
-XBMC_CONF_OPT += --enable-dbus
+XBMC_CONF_OPTS += --enable-dbus
 else
-XBMC_CONF_OPT += --disable-dbus
+XBMC_CONF_OPTS += --disable-dbus
 endif
 
 ifeq ($(BR2_PACKAGE_XBMC_ALSA_LIB),y)
 XBMC_DEPENDENCIES += alsa-lib
-XBMC_CONF_OPT += --enable-alsa
+XBMC_CONF_OPTS += --enable-alsa
 else
-XBMC_CONF_OPT += --disable-alsa
+XBMC_CONF_OPTS += --disable-alsa
 endif
 
 ifeq ($(BR2_PACKAGE_LAME),y)
 XBMC_DEPENDENCIES += lame
-XBMC_CONF_OPT += --enable-libmp3lame
+XBMC_CONF_OPTS += --enable-libmp3lame
 else
-XBMC_CONF_OPT += --disable-libmp3lame
+XBMC_CONF_OPTS += --disable-libmp3lame
 endif
 
 # quote from xbmc/configure.in: "GLES overwrites GL if both set to yes."
@@ -90,7 +90,7 @@ endif
 ifeq ($(BR2_PACKAGE_XBMC_GL),y)
 XBMC_DEPENDENCIES += libglew libglu libgl sdl_image xlib_libX11 xlib_libXext \
 	xlib_libXmu xlib_libXrandr xlib_libXt
-XBMC_CONF_OPT += --enable-gl --enable-sdl --enable-x11 --enable-xrandr --disable-gles
+XBMC_CONF_OPTS += --enable-gl --enable-sdl --enable-x11 --enable-xrandr --disable-gles
 ifeq ($(BR2_PACKAGE_XBMC_RSXS),y)
 # fix rsxs compile
 # make sure target libpng-config is used, options taken from rsxs-0.9/acinclude.m4
@@ -101,87 +101,87 @@ XBMC_CONF_ENV += \
 	mac_cv_pkg_cxxflags="`$(STAGING_DIR)/usr/bin/libpng-config --ccopts`" \
 	mac_cv_pkg_ldflags="`$(STAGING_DIR)/usr/bin/libpng-config --L_opts --R_opts`" \
 	mac_cv_pkg_libs="`$(STAGING_DIR)/usr/bin/libpng-config --libs`"
-XBMC_CONF_OPT += --enable-rsxs
+XBMC_CONF_OPTS += --enable-rsxs
 else
-XBMC_CONF_OPT += --disable-rsxs
+XBMC_CONF_OPTS += --disable-rsxs
 endif
 else
-XBMC_CONF_OPT += --disable-gl --disable-rsxs --disable-sdl --disable-x11 --disable-xrandr
+XBMC_CONF_OPTS += --disable-gl --disable-rsxs --disable-sdl --disable-x11 --disable-xrandr
 ifeq ($(BR2_PACKAGE_XBMC_EGL_GLES),y)
 XBMC_DEPENDENCIES += libegl libgles
-XBMC_CONF_OPT += --enable-gles
+XBMC_CONF_OPTS += --enable-gles
 else
-XBMC_CONF_OPT += --disable-gles
+XBMC_CONF_OPTS += --disable-gles
 endif
 endif
 
 ifeq ($(BR2_PACKAGE_XBMC_GOOM),y)
-XBMC_CONF_OPT += --enable-goom
+XBMC_CONF_OPTS += --enable-goom
 else
-XBMC_CONF_OPT += --disable-goom
+XBMC_CONF_OPTS += --disable-goom
 endif
 
 ifeq ($(BR2_PACKAGE_XBMC_LIBUSB),y)
 XBMC_DEPENDENCIES += libusb-compat
-XBMC_CONF_OPT += --enable-libusb
+XBMC_CONF_OPTS += --enable-libusb
 else
-XBMC_CONF_OPT += --disable-libusb
+XBMC_CONF_OPTS += --disable-libusb
 endif
 
 ifeq ($(BR2_PACKAGE_XBMC_LIBMICROHTTPD),y)
 XBMC_DEPENDENCIES += libmicrohttpd
-XBMC_CONF_OPT += --enable-webserver
+XBMC_CONF_OPTS += --enable-webserver
 else
-XBMC_CONF_OPT += --disable-webserver
+XBMC_CONF_OPTS += --disable-webserver
 endif
 
 ifeq ($(BR2_PACKAGE_XBMC_LIBSMBCLIENT),y)
 XBMC_DEPENDENCIES += samba
-XBMC_CONF_OPT += --enable-samba
+XBMC_CONF_OPTS += --enable-samba
 else
-XBMC_CONF_OPT += --disable-samba
+XBMC_CONF_OPTS += --disable-samba
 endif
 
 ifeq ($(BR2_PACKAGE_XBMC_LIBNFS),y)
 XBMC_DEPENDENCIES += libnfs
-XBMC_CONF_OPT += --enable-nfs
+XBMC_CONF_OPTS += --enable-nfs
 else
-XBMC_CONF_OPT += --disable-nfs
+XBMC_CONF_OPTS += --disable-nfs
 endif
 
 ifeq ($(BR2_PACKAGE_XBMC_RTMPDUMP),y)
 XBMC_DEPENDENCIES += rtmpdump
-XBMC_CONF_OPT += --enable-rtmp
+XBMC_CONF_OPTS += --enable-rtmp
 else
-XBMC_CONF_OPT += --disable-rtmp
+XBMC_CONF_OPTS += --disable-rtmp
 endif
 
 ifeq ($(BR2_PACKAGE_XBMC_LIBBLURAY),y)
 XBMC_DEPENDENCIES += libbluray
-XBMC_CONF_OPT += --enable-libbluray
+XBMC_CONF_OPTS += --enable-libbluray
 else
-XBMC_CONF_OPT += --disable-libbluray
+XBMC_CONF_OPTS += --disable-libbluray
 endif
 
 ifeq ($(BR2_PACKAGE_XBMC_LIBSHAIRPLAY),y)
 XBMC_DEPENDENCIES += libshairplay
-XBMC_CONF_OPT += --enable-airplay
+XBMC_CONF_OPTS += --enable-airplay
 else
-XBMC_CONF_OPT += --disable-airplay
+XBMC_CONF_OPTS += --disable-airplay
 endif
 
 ifeq ($(BR2_PACKAGE_XBMC_AVAHI),y)
 XBMC_DEPENDENCIES += avahi
-XBMC_CONF_OPT += --enable-avahi
+XBMC_CONF_OPTS += --enable-avahi
 else
-XBMC_CONF_OPT += --disable-avahi
+XBMC_CONF_OPTS += --disable-avahi
 endif
 
 ifeq ($(BR2_PACKAGE_XBMC_LIBCEC),y)
 XBMC_DEPENDENCIES += libcec
-XBMC_CONF_OPT += --enable-libcec
+XBMC_CONF_OPTS += --enable-libcec
 else
-XBMC_CONF_OPT += --disable-libcec
+XBMC_CONF_OPTS += --disable-libcec
 endif
 
 ifeq ($(BR2_PACKAGE_XBMC_WAVPACK),y)
@@ -195,9 +195,9 @@ endif
 # xbmc needs libva & libva-glx
 ifeq ($(BR2_PACKAGE_XBMC_LIBVA)$(BR2_PACKAGE_MESA3D_DRI_DRIVER),yy)
 XBMC_DEPENDENCIES += mesa3d libva
-XBMC_CONF_OPT += --enable-vaapi
+XBMC_CONF_OPTS += --enable-vaapi
 else
-XBMC_CONF_OPT += --disable-vaapi
+XBMC_CONF_OPTS += --disable-vaapi
 endif
 
 # Add HOST_DIR to PATH for codegenerator.mk to find swig

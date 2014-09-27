@@ -12,9 +12,9 @@ LIBNL_INSTALL_STAGING = YES
 LIBNL_DEPENDENCIES = host-bison host-flex
 
 ifeq ($(BR2_PACKAGE_LIBNL_TOOLS),y)
-LIBNL_CONF_OPT += --enable-cli
+LIBNL_CONF_OPTS += --enable-cli
 else
-LIBNL_CONF_OPT += --disable-cli
+LIBNL_CONF_OPTS += --disable-cli
 endif
 
 $(eval $(autotools-package))

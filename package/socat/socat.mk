@@ -24,13 +24,13 @@ SOCAT_DEPENDENCIES = host-autoconf
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 	SOCAT_DEPENDENCIES += openssl
 else
-	SOCAT_CONF_OPT += --disable-openssl
+	SOCAT_CONF_OPTS += --disable-openssl
 endif
 
 ifeq ($(BR2_PACKAGE_READLINE),y)
 	SOCAT_DEPENDENCIES += readline
 else
-	SOCAT_CONF_OPT += --disable-readline
+	SOCAT_CONF_OPTS += --disable-readline
 endif
 
 define SOCAT_RUN_AUTOCONF

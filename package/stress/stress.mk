@@ -19,7 +19,7 @@ STRESS_AUTORECONF = YES
 # --disable-static explicitly to get stress linked dynamically.
 #
 # Also, disable documentation by undefining makeinfo
-STRESS_CONF_OPT = \
+STRESS_CONF_OPTS = \
 	$(if $(BR2_PREFER_STATIC_LIB),,--disable-static) \
 	MAKEINFO=:
 

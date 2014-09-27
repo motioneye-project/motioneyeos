@@ -18,9 +18,9 @@ HOST_LIBEET_DEPENDENCIES = host-pkgconf host-zlib host-libjpeg host-libeina
 ifeq ($(BR2_PACKAGE_GNUTLS)$(BR2_PACKAGE_LIBGCRYPT),yy)
 LIBEET_DEPENDENCIES += gnutls libgcrypt
 LIBEET_CONF_ENV += LIBGCRYPT_CONFIG=$(STAGING_DIR)/usr/bin/libgcrypt-config
-LIBEET_CONF_OPT += --enable-gnutls
+LIBEET_CONF_OPTS += --enable-gnutls
 else
-LIBEET_CONF_OPT += --disable-gnutls
+LIBEET_CONF_OPTS += --disable-gnutls
 endif
 
 $(eval $(autotools-package))

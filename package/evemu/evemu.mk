@@ -19,7 +19,7 @@ EVEMU_CONF_ENV = ac_cv_path_ASCIIDOC=""
 EVEMU_MAKE_ENV = SYSROOT=$(STAGING_DIR)
 
 # disable tests generation because of C++ dependency
-EVEMU_CONF_OPT += --disable-tests
+EVEMU_CONF_OPTS += --disable-tests
 
 # Uses PKG_CHECK_MODULES() in configure.ac
 EVEMU_DEPENDENCIES = host-pkgconf libevdev
@@ -29,10 +29,10 @@ EVEMU_DEPENDENCIES += $(if $(BR2_PACKAGE_PYTHON3),host-python3,host-python)
 
 # Check for target python
 ifeq ($(BR2_PACKAGE_PYTHON)$(BR2_PACKAGE_PYTHON3),y)
-EVEMU_CONF_OPT += --enable-python-bindings
+EVEMU_CONF_OPTS += --enable-python-bindings
 EVEMU_DEPENDENCIES += $(if $(BR2_PACKAGE_PYTHON3),python3,python)
 else
-EVEMU_CONF_OPT += --disable-python-bindings
+EVEMU_CONF_OPTS += --disable-python-bindings
 endif
 
 # package source code coming from git, so it doesn't have generated

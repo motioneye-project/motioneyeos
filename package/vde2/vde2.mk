@@ -25,7 +25,7 @@ VDE2_AUTORECONF      = YES
 #
 # Note: disabled features can be added with corresponding dependencies
 #       in future commits.
-VDE2_CONF_OPT = --disable-experimental  \
+VDE2_CONF_OPTS = --disable-experimental  \
                 --disable-cryptcab      \
                 --disable-pcap          \
                 --disable-python        \

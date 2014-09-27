@@ -11,10 +11,10 @@ KEXEC_LICENSE = GPLv2
 KEXEC_LICENSE_FILES = COPYING
 
 ifeq ($(BR2_PACKAGE_KEXEC_ZLIB),y)
-KEXEC_CONF_OPT += --with-zlib
+KEXEC_CONF_OPTS += --with-zlib
 KEXEC_DEPENDENCIES = zlib
 else
-KEXEC_CONF_OPT += --without-zlib
+KEXEC_CONF_OPTS += --without-zlib
 endif
 
 define KEXEC_REMOVE_LIB_TOOLS

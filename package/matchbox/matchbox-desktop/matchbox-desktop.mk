@@ -11,7 +11,7 @@ MATCHBOX_DESKTOP_SITE = http://downloads.yoctoproject.org/releases/matchbox/matc
 MATCHBOX_DESKTOP_LICENSE = GPLv2+
 MATCHBOX_DESKTOP_LICENSE_FILES = COPYING
 MATCHBOX_DESKTOP_DEPENDENCIES = matchbox-lib zlib
-MATCHBOX_DESKTOP_CONF_OPT = --enable-expat
+MATCHBOX_DESKTOP_CONF_OPTS = --enable-expat
 
 # The bundled configure script does not properly replace LIBADD_DL, so
 # we force an autoreconf even if we don't have any patches touching
@@ -21,10 +21,10 @@ MATCHBOX_DESKTOP_AUTORECONF = YES
 ################################################################################
 
 ifeq ($(BR2_PACKAGE_STARTUP_NOTIFICATION),y)
-  MATCHBOX_DESKTOP_CONF_OPT += --enable-startup-notification
+  MATCHBOX_DESKTOP_CONF_OPTS += --enable-startup-notification
   MATCHBOX_DESKTOP_DEPENDENCIES += startup-notification
 else
-  MATCHBOX_DESKTOP_CONF_OPT += --disable-startup-notification
+  MATCHBOX_DESKTOP_CONF_OPTS += --disable-startup-notification
 endif
 
 ################################################################################

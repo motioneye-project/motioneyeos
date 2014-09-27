@@ -13,10 +13,10 @@ LIBSVG_LICENSE_FILES   = COPYING
 
 # libsvg needs at last a XML parser
 ifeq ($(BR2_PACKAGE_EXPAT),y)
-LIBSVG_CONF_OPT += --with-expat
+LIBSVG_CONF_OPTS += --with-expat
 LIBSVG_DEPENDENCIES += expat
 else
-LIBSVG_CONF_OPT += --with-libxml2
+LIBSVG_CONF_OPTS += --with-libxml2
 LIBSVG_DEPENDENCIES += libxml2
 endif
 

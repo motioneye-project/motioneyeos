@@ -20,56 +20,56 @@ ifeq ($(BR2_PREFER_STATIC_LIB),y)
 IPSEC_TOOLS_CONF_ENV += LIBS=-lz
 endif
 
-IPSEC_TOOLS_CONF_OPT = \
+IPSEC_TOOLS_CONF_OPTS = \
 	  --disable-hybrid \
 	  --without-libpam \
 	  --disable-gssapi \
 	  --with-kernel-headers=$(STAGING_DIR)/usr/include
 
 ifeq ($(BR2_PACKAGE_IPSEC_TOOLS_ADMINPORT), y)
-IPSEC_TOOLS_CONF_OPT += --enable-adminport
+IPSEC_TOOLS_CONF_OPTS += --enable-adminport
 else
-IPSEC_TOOLS_CONF_OPT += --disable-adminport
+IPSEC_TOOLS_CONF_OPTS += --disable-adminport
 endif
 
 ifeq ($(BR2_PACKAGE_IPSEC_TOOLS_NATT), y)
-IPSEC_TOOLS_CONF_OPT += --enable-natt
+IPSEC_TOOLS_CONF_OPTS += --enable-natt
 else
-IPSEC_TOOLS_CONF_OPT += --disable-natt
+IPSEC_TOOLS_CONF_OPTS += --disable-natt
 endif
 
 ifeq ($(BR2_PACKAGE_IPSEC_TOOLS_FRAG), y)
-IPSEC_TOOLS_CONF_OPT += --enable-frag
+IPSEC_TOOLS_CONF_OPTS += --enable-frag
 else
-IPSEC_TOOLS_CONF_OPT += --disable-frag
+IPSEC_TOOLS_CONF_OPTS += --disable-frag
 endif
 
 ifeq ($(BR2_PACKAGE_IPSEC_TOOLS_DPD), y)
-IPSEC_TOOLS_CONF_OPT += --enable-dpd
+IPSEC_TOOLS_CONF_OPTS += --enable-dpd
 else
-IPSEC_TOOLS_CONF_OPT += --disable-dpd
+IPSEC_TOOLS_CONF_OPTS += --disable-dpd
 endif
 
 ifeq ($(BR2_PACKAGE_IPSEC_TOOLS_STATS), y)
-IPSEC_TOOLS_CONF_OPT += --enable-stats
+IPSEC_TOOLS_CONF_OPTS += --enable-stats
 else
-IPSEC_TOOLS_CONF_OPT += --disable-stats
+IPSEC_TOOLS_CONF_OPTS += --disable-stats
 endif
 
 ifneq ($(BR2_PACKAGE_IPSEC_TOOLS_READLINE), y)
-IPSEC_TOOLS_CONF_OPT += --without-readline
+IPSEC_TOOLS_CONF_OPTS += --without-readline
 else
 IPSEC_DEPENDENCIES += readline
 endif
 
 ifeq ($(BR2_PACKAGE_IPSEC_SECCTX_DISABLE),y)
-IPSEC_TOOLS_CONF_OPT += --enable-security-context=no
+IPSEC_TOOLS_CONF_OPTS += --enable-security-context=no
 endif
 ifeq ($(BR2_PACKAGE_IPSEC_SECCTX_ENABLE),y)
-IPSEC_TOOLS_CONF_OPT += --enable-security-context=yes
+IPSEC_TOOLS_CONF_OPTS += --enable-security-context=yes
 endif
 ifeq ($(BR2_PACKAGE_IPSEC_SECCTX_KERNEL),y)
-IPSEC_TOOLS_CONF_OPT += --enable-security-context=kernel
+IPSEC_TOOLS_CONF_OPTS += --enable-security-context=kernel
 endif
 
 $(eval $(autotools-package))

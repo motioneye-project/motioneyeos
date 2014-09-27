@@ -13,7 +13,7 @@ PROFTPD_LICENSE_FILES = COPYING
 PROFTPD_CONF_ENV = ac_cv_func_setpgrp_void=yes \
 		ac_cv_func_setgrent_void=yes
 
-PROFTPD_CONF_OPT = --localstatedir=/var/run \
+PROFTPD_CONF_OPTS = --localstatedir=/var/run \
 		--disable-static \
 		--disable-curses \
 		--disable-ncurses \
@@ -23,7 +23,7 @@ PROFTPD_CONF_OPT = --localstatedir=/var/run \
 		--with-gnu-ld
 
 ifeq ($(BR2_PACKAGE_PROFTPD_MOD_REWRITE),y)
-PROFTPD_CONF_OPT += --with-modules=mod_rewrite
+PROFTPD_CONF_OPTS += --with-modules=mod_rewrite
 endif
 
 ifeq ($(BR2_LARGEFILE),y)

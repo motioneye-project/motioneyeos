@@ -16,9 +16,9 @@ WVSTREAMS_LICENSE_FILES = LICENSE
 WVSTREAMS_MAKE = $(MAKE1)
 
 # Needed to work around problem with wvassert.h
-WVSTREAMS_CONF_OPT += CPPFLAGS=-DNDEBUG
+WVSTREAMS_CONF_OPTS += CPPFLAGS=-DNDEBUG
 
-WVSTREAMS_CONF_OPT += \
+WVSTREAMS_CONF_OPTS += \
 	--with-openssl \
 	--with-zlib \
 	--without-pam \
@@ -34,23 +34,23 @@ endif
 
 ifeq ($(BR2_PACKAGE_DBUS),y)
 	WVSTREAMS_DEPENDENCIES += dbus
-	WVSTREAMS_CONF_OPT += --with-dbus
+	WVSTREAMS_CONF_OPTS += --with-dbus
 else
-	WVSTREAMS_CONF_OPT += --without-dbus
+	WVSTREAMS_CONF_OPTS += --without-dbus
 endif
 
 ifeq ($(BR2_PACKAGE_QT),y)
 	WVSTREAMS_DEPENDENCIES += qt
-	WVSTREAMS_CONF_OPT += --with-qt
+	WVSTREAMS_CONF_OPTS += --with-qt
 else
-	WVSTREAMS_CONF_OPT += --without-qt
+	WVSTREAMS_CONF_OPTS += --without-qt
 endif
 
 ifeq ($(BR2_PACKAGE_VALGRIND),y)
 	WVSTREAMS_DEPENDENCIES += valgrind
-	WVSTREAMS_CONF_OPT += --with-valgrind
+	WVSTREAMS_CONF_OPTS += --with-valgrind
 else
-	WVSTREAMS_CONF_OPT += --without-valgrind
+	WVSTREAMS_CONF_OPTS += --without-valgrind
 endif
 
 $(eval $(autotools-package))

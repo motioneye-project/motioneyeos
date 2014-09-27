@@ -15,7 +15,7 @@ USBUTILS_LICENSE_FILES = COPYING
 ifeq ($(BR2_PACKAGE_USBUTILS_ZLIB),y)
 	USBUTILS_DEPENDENCIES += zlib
 else
-	USBUTILS_CONF_OPT = --disable-zlib
+	USBUTILS_CONF_OPTS = --disable-zlib
 endif
 
 # Build after busybox since it's got a lightweight lsusb

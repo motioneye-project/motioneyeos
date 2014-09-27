@@ -8,7 +8,7 @@ PHP_GEOIP_VERSION = 1.1.0
 PHP_GEOIP_SOURCE = geoip-$(PHP_GEOIP_VERSION).tgz
 # pecl.php.net returns html with db connect failed
 PHP_GEOIP_SITE = http://sources.buildroot.net
-PHP_GEOIP_CONF_OPT = --with-php-config=$(STAGING_DIR)/usr/bin/php-config \
+PHP_GEOIP_CONF_OPTS = --with-php-config=$(STAGING_DIR)/usr/bin/php-config \
 	--with-geoip=$(STAGING_DIR)/usr
 # phpize does the autoconf magic
 PHP_GEOIP_DEPENDENCIES = geoip php host-autoconf

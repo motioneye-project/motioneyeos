@@ -10,7 +10,7 @@ JAMVM_LICENSE = GPLv2+
 JAMVM_LICENSE_FILES = COPYING
 JAMVM_DEPENDENCIES = zlib classpath
 # int inlining seems to crash jamvm, don't build shared version of internal lib
-JAMVM_CONF_OPT = \
+JAMVM_CONF_OPTS = \
 	--with-classpath-install-dir=/usr \
 	--disable-int-inlining \
 	--disable-shared \

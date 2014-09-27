@@ -17,7 +17,7 @@ WIRESHARK_CONF_ENV = LIBGCRYPT_CONFIG=$(STAGING_DIR)/usr/bin/libgcrypt-config \
 
 # wireshark adds -I$includedir to CFLAGS, causing host/target headers mixup.
 # Work around it by pointing includedir at staging
-WIRESHARK_CONF_OPT = --disable-wireshark --without-krb5 --disable-usr-local \
+WIRESHARK_CONF_OPTS = --disable-wireshark --without-krb5 --disable-usr-local \
 		     --enable-static=no --with-gnutls=no --with-libsmi=no \
 		     --includedir=$(STAGING_DIR)/usr/include
 

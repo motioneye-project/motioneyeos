@@ -12,30 +12,30 @@ BLUEZ5_UTILS_DEPENDENCIES = dbus libglib2
 BLUEZ5_UTILS_LICENSE = GPLv2+ LGPLv2.1+
 BLUEZ5_UTILS_LICENSE_FILES = COPYING COPYING.LIB
 
-BLUEZ5_UTILS_CONF_OPT = 	\
+BLUEZ5_UTILS_CONF_OPTS = 	\
 	--enable-tools 		\
 	--enable-library 	\
 	--disable-cups
 
 ifeq ($(BR2_PACKAGE_BLUEZ5_UTILS_OBEX),y)
-BLUEZ5_UTILS_CONF_OPT += --enable-obex
+BLUEZ5_UTILS_CONF_OPTS += --enable-obex
 BLUEZ5_UTILS_DEPENDENCIES += libical
 else
-BLUEZ5_UTILS_CONF_OPT += --disable-obex
+BLUEZ5_UTILS_CONF_OPTS += --disable-obex
 endif
 
 ifeq ($(BR2_PACKAGE_BLUEZ5_UTILS_CLIENT),y)
-BLUEZ5_UTILS_CONF_OPT += --enable-client
+BLUEZ5_UTILS_CONF_OPTS += --enable-client
 BLUEZ5_UTILS_DEPENDENCIES += readline
 else
-BLUEZ5_UTILS_CONF_OPT += --disable-client
+BLUEZ5_UTILS_CONF_OPTS += --disable-client
 endif
 
 # experimental plugins
 ifeq ($(BR2_PACKAGE_BLUEZ5_UTILS_EXPERIMENTAL),y)
-BLUEZ5_UTILS_CONF_OPT += --enable-experimental
+BLUEZ5_UTILS_CONF_OPTS += --enable-experimental
 else
-BLUEZ5_UTILS_CONF_OPT += --disable-experimental
+BLUEZ5_UTILS_CONF_OPTS += --disable-experimental
 endif
 
 # install gatttool (For some reason upstream choose not to do it by default)
@@ -48,25 +48,25 @@ endif
 
 # enable test
 ifeq ($(BR2_PACKAGE_BLUEZ5_UTILS_TEST),y)
-BLUEZ5_UTILS_CONF_OPT += --enable-test
+BLUEZ5_UTILS_CONF_OPTS += --enable-test
 else
-BLUEZ5_UTILS_CONF_OPT += --disable-test
+BLUEZ5_UTILS_CONF_OPTS += --disable-test
 endif
 
 # use udev if available
 ifeq ($(BR2_PACKAGE_HAS_UDEV),y)
-BLUEZ5_UTILS_CONF_OPT += --enable-udev
+BLUEZ5_UTILS_CONF_OPTS += --enable-udev
 BLUEZ5_UTILS_DEPENDENCIES += udev
 else
-BLUEZ5_UTILS_CONF_OPT += --disable-udev
+BLUEZ5_UTILS_CONF_OPTS += --disable-udev
 endif
 
 # integrate with systemd if available
 ifeq ($(BR2_PACKAGE_SYSTEMD),y)
-BLUEZ5_UTILS_CONF_OPT += --enable-systemd
+BLUEZ5_UTILS_CONF_OPTS += --enable-systemd
 BLUEZ5_UTILS_DEPENDENCIES += systemd
 else
-BLUEZ5_UTILS_CONF_OPT += --disable-systemd
+BLUEZ5_UTILS_CONF_OPTS += --disable-systemd
 endif
 
 $(eval $(autotools-package))

@@ -12,7 +12,7 @@ EXPECT_LICENSE_FILES = README
 
 EXPECT_AUTORECONF = YES
 EXPECT_DEPENDENCIES = tcl
-EXPECT_CONF_OPT = --with-tcl=$(BUILD_DIR)/tcl-$(TCL_VERSION)/unix
+EXPECT_CONF_OPTS = --with-tcl=$(BUILD_DIR)/tcl-$(TCL_VERSION)/unix
 
 # Since we don't want examples installed
 EXPECT_INSTALL_TARGET_OPTS = DESTDIR=$(TARGET_DIR)  install-binaries

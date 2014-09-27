@@ -15,8 +15,8 @@ HOST_OMNIORB_DEPENDENCIES = host-python
 OMNIORB_INSTALL_TARGET = YES
 
 # omniorb is not python3 friendly, so force the python interpreter
-OMNIORB_CONF_OPT = ac_cv_path_PYTHON=$(HOST_DIR)/usr/bin/python2
-HOST_OMNIORB_CONF_OPT = ac_cv_path_PYTHON=$(HOST_DIR)/usr/bin/python2
+OMNIORB_CONF_OPTS = ac_cv_path_PYTHON=$(HOST_DIR)/usr/bin/python2
+HOST_OMNIORB_CONF_OPTS = ac_cv_path_PYTHON=$(HOST_DIR)/usr/bin/python2
 
 # Defaulting long double support to a safe option for the
 # mix of embedded targets, this could later be automated
@@ -25,8 +25,8 @@ HOST_OMNIORB_CONF_OPT = ac_cv_path_PYTHON=$(HOST_DIR)/usr/bin/python2
 # need to match because of the code generation done by the
 # host tools during the target compile (ie headers generated
 # on host are used in target build).
-OMNIORB_CONF_OPT += --disable-longdouble
-HOST_OMNIORB_CONF_OPT += --disable-longdouble
+OMNIORB_CONF_OPTS += --disable-longdouble
+HOST_OMNIORB_CONF_OPTS += --disable-longdouble
 
 # The EmbeddedSystem define (set below in OMNIORB_ADJUST_TOOLDIR)
 # enables building of just the lib and disables building of

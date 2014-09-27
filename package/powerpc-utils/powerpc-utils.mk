@@ -11,6 +11,6 @@ POWERPC_UTILS_DEPENDENCIES = zlib
 POWERPC_UTILS_LICENSE = Common Public License Version 1.0
 POWERPC_UTILS_LICENSE_FILES = COPYRIGHT
 
-POWERPC_UTILS_CONF_OPT = --without-librtas
+POWERPC_UTILS_CONF_OPTS = --without-librtas
 
 $(eval $(autotools-package))

@@ -12,23 +12,23 @@ FLAC_AUTORECONF = YES
 FLAC_DEPENDENCIES = $(if $(BR2_PACKAGE_LIBICONV),libiconv)
 FLAC_LICENSE = Xiph BSD-like (libFLAC), GPLv2+ (tools), LGPLv2.1+ (other libraries)
 FLAC_LICENSE_FILES = COPYING.Xiph COPYING.GPL COPYING.LGPL
-FLAC_CONF_OPT = \
+FLAC_CONF_OPTS = \
 	--disable-cpplibs \
 	--disable-xmms-plugin \
 	--disable-altivec
 
 ifeq ($(BR2_PACKAGE_LIBOGG),y)
-FLAC_CONF_OPT += --with-ogg=$(STAGING_DIR)/usr
+FLAC_CONF_OPTS += --with-ogg=$(STAGING_DIR)/usr
 FLAC_DEPENDENCIES += libogg
 else
-FLAC_CONF_OPT += --disable-ogg
+FLAC_CONF_OPTS += --disable-ogg
 endif
 
 ifeq ($(BR2_X86_CPU_HAS_SSE),y)
 FLAC_DEPENDENCIES += host-nasm
-FLAC_CONF_OPT += --enable-sse
+FLAC_CONF_OPTS += --enable-sse
 else
-FLAC_CONF_OPT += --disable-sse
+FLAC_CONF_OPTS += --disable-sse
 endif
 
 $(eval $(autotools-package))

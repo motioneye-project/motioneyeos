@@ -13,18 +13,18 @@ LINUX_ZIGBEE_DEPENDENCIES = libnl host-pkgconf host-flex host-bison
 # We patch configure.ac/Makefile.am
 LINUX_ZIGBEE_AUTORECONF = YES
 
-LINUX_ZIGBEE_CONF_OPT = \
+LINUX_ZIGBEE_CONF_OPTS = \
 	--disable-manpages \
 	--with-leasefile="$(call qstrip,$(BR2_PACKAGE_LINUX_ZIGBEE_LEASEFILE))"
 
 ifeq ($(BR2_PACKAGE_LINUX_ZIGBEE_TESTS),y)
-LINUX_ZIGBEE_CONF_OPT += --with-zbtestdir='/usr/sbin/'
+LINUX_ZIGBEE_CONF_OPTS += --with-zbtestdir='/usr/sbin/'
 else
-LINUX_ZIGBEE_CONF_OPT += --with-zbtestdir=''
+LINUX_ZIGBEE_CONF_OPTS += --with-zbtestdir=''
 endif
 
 ifeq ($(BR2_PACKAGE_LINUX_ZIGBEE_OLD_KERNEL_COMPAT),y)
-LINUX_ZIGBEE_CONF_OPT += --enable-kernel-compat
+LINUX_ZIGBEE_CONF_OPTS += --enable-kernel-compat
 endif
 
 $(eval $(autotools-package))

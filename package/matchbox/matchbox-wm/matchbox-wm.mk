@@ -11,7 +11,7 @@ MATCHBOX_WM_LICENSE = GPLv2+
 MATCHBOX_WM_LICENSE_FILES = COPYING
 
 MATCHBOX_WM_DEPENDENCIES = matchbox-lib
-MATCHBOX_WM_CONF_OPT = --enable-expat
+MATCHBOX_WM_CONF_OPTS = --enable-expat
 
 # Workaround bug in configure script
 MATCHBOX_WM_CONF_ENV = expat=yes
@@ -20,7 +20,7 @@ MATCHBOX_WM_CONF_ENV = expat=yes
 
 ifeq ($(BR2_PACKAGE_X11R7_LIBXCOMPOSITE),y)
 ifeq ($(BR2_PACKAGE_X11R7_LIBXPM),y)
-  MATCHBOX_WM_CONF_OPT += --enable-composite
+  MATCHBOX_WM_CONF_OPTS += --enable-composite
   MATCHBOX_WM_DEPENDENCIES += xlib_libXcomposite
   MATCHBOX_WM_DEPENDENCIES += xlib_libXpm
 endif
@@ -34,10 +34,10 @@ else
 endif
 
 ifeq ($(BR2_PACKAGE_STARTUP_NOTIFICATION),y)
-  MATCHBOX_WM_CONF_OPT += --enable-startup-notification
+  MATCHBOX_WM_CONF_OPTS += --enable-startup-notification
   MATCHBOX_WM_DEPENDENCIES += startup-notification
 else
-  MATCHBOX_WM_CONF_OPT += --disable-startup-notification
+  MATCHBOX_WM_CONF_OPTS += --disable-startup-notification
 endif
 
 ################################################################################

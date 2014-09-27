@@ -19,7 +19,7 @@ CCACHE_LICENSE_FILES = LICENSE.txt GPL-3.0.txt
 # to use HOSTCC_NOCCACHE as the compiler. Instead, we take the easy
 # path: tell ccache to use its internal copy of zlib, so that ccache
 # has zero dependency besides the C library.
-HOST_CCACHE_CONF_OPT += ccache_cv_zlib_1_2_3=no
+HOST_CCACHE_CONF_OPTS += ccache_cv_zlib_1_2_3=no
 
 # Patch host-ccache as follows:
 #  - Use BR_CACHE_DIR instead of CCACHE_DIR, because CCACHE_DIR

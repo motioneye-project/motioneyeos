@@ -19,7 +19,7 @@ XENOMAI_INSTALL_STAGING = YES
 XENOMAI_INSTALL_TARGET_OPTS = DESTDIR=$(TARGET_DIR) install-user
 XENOMAI_INSTALL_STAGING_OPTS = DESTDIR=$(STAGING_DIR) install-user
 
-XENOMAI_CONF_OPT += --includedir=/usr/include/xenomai/ --disable-doc-install \
+XENOMAI_CONF_OPTS += --includedir=/usr/include/xenomai/ --disable-doc-install \
 	$(if $(BR2_ENABLE_DEBUG),--enable-debug,--disable-debug)
 
 define XENOMAI_REMOVE_DEVFILES

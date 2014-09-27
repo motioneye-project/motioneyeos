@@ -22,7 +22,7 @@ ifeq ($(BR2_PACKAGE_ZLIB),y)
 CVS_CONFIGURE_ARGS += --with-external-zlib
 endif
 
-CVS_CONF_OPT = $(CVS_CONFIGURE_ARGS)
+CVS_CONF_OPTS = $(CVS_CONFIGURE_ARGS)
 
 define CVS_BZIP_UNPACK
 	$(BZCAT) $(@D)/cvs-$(CVS_VERSION).tar.bz2 | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -

@@ -16,12 +16,12 @@ LIBEDJE_DEPENDENCIES = host-pkgconf lua libeina libeet libecore libevas \
 			libembryo
 
 ifeq ($(BR2_PACKAGE_LIBEDJE_CC),y)
-LIBEDJE_CONF_OPT += --enable-edje-cc
+LIBEDJE_CONF_OPTS += --enable-edje-cc
 else
-LIBEDJE_CONF_OPT += --disable-edje-cc
+LIBEDJE_CONF_OPTS += --disable-edje-cc
 endif
 
-HOST_LIBEDJE_CONF_OPT = --enable-edje-cc
+HOST_LIBEDJE_CONF_OPTS = --enable-edje-cc
 
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))

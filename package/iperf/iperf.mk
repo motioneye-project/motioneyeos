@@ -12,7 +12,7 @@ IPERF_CONF_ENV = \
 	ac_cv_type_bool=yes \
 	ac_cv_sizeof_bool=1
 
-IPERF_CONF_OPT = \
+IPERF_CONF_OPTS = \
 	--disable-web100
 
 $(eval $(autotools-package))

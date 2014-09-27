@@ -10,7 +10,7 @@ SUDO_LICENSE = ISC BSD-3c
 SUDO_LICENSE_FILES = doc/LICENSE
 # Ships a non-release libtool that isn't patch-friendly
 SUDO_AUTORECONF = YES
-SUDO_CONF_OPT = \
+SUDO_CONF_OPTS = \
 		--without-lecture \
 		--without-sendmail \
 		--without-umask \

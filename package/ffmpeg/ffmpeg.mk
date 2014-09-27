@@ -16,7 +16,7 @@ FFMPEG_LICENSE += and GPLv2+
 FFMPEG_LICENSE_FILES += COPYING.GPLv2
 endif
 
-FFMPEG_CONF_OPT = \
+FFMPEG_CONF_OPTS = \
 	--prefix=/usr \
 	--enable-avfilter \
 	--disable-version3 \
@@ -67,271 +67,271 @@ FFMPEG_CONF_OPT = \
 FFMPEG_DEPENDENCIES += $(if $(BR2_PACKAGE_LIBICONV),libiconv) host-pkgconf
 
 ifeq ($(BR2_ENABLE_DEBUG),y)
-FFMPEG_CONF_OPT += --enable-debug
+FFMPEG_CONF_OPTS += --enable-debug
 else
-FFMPEG_CONF_OPT += --disable-debug
+FFMPEG_CONF_OPTS += --disable-debug
 endif
 
 ifeq ($(BR2_PACKAGE_FFMPEG_GPL),y)
-FFMPEG_CONF_OPT += --enable-gpl
+FFMPEG_CONF_OPTS += --enable-gpl
 else
-FFMPEG_CONF_OPT += --disable-gpl
+FFMPEG_CONF_OPTS += --disable-gpl
 endif
 
 ifeq ($(BR2_PACKAGE_FFMPEG_NONFREE),y)
-FFMPEG_CONF_OPT += --enable-nonfree
+FFMPEG_CONF_OPTS += --enable-nonfree
 else
-FFMPEG_CONF_OPT += --disable-nonfree
+FFMPEG_CONF_OPTS += --disable-nonfree
 endif
 
 ifeq ($(BR2_PACKAGE_FFMPEG_FFMPEG),y)
-FFMPEG_CONF_OPT += --enable-ffmpeg
+FFMPEG_CONF_OPTS += --enable-ffmpeg
 else
-FFMPEG_CONF_OPT += --disable-ffmpeg
+FFMPEG_CONF_OPTS += --disable-ffmpeg
 endif
 
 ifeq ($(BR2_PACKAGE_FFMPEG_FFPLAY),y)
 FFMPEG_DEPENDENCIES += sdl
-FFMPEG_CONF_OPT += --enable-ffplay
+FFMPEG_CONF_OPTS += --enable-ffplay
 FFMPEG_CONF_ENV += SDL_CONFIG=$(STAGING_DIR)/usr/bin/sdl-config
 else
-FFMPEG_CONF_OPT += --disable-ffplay
+FFMPEG_CONF_OPTS += --disable-ffplay
 endif
 
 ifeq ($(BR2_PACKAGE_FFMPEG_FFSERVER),y)
-FFMPEG_CONF_OPT += --enable-ffserver
+FFMPEG_CONF_OPTS += --enable-ffserver
 else
-FFMPEG_CONF_OPT += --disable-ffserver
+FFMPEG_CONF_OPTS += --disable-ffserver
 endif
 
 ifeq ($(BR2_PACKAGE_FFMPEG_POSTPROC),y)
-FFMPEG_CONF_OPT += --enable-postproc
+FFMPEG_CONF_OPTS += --enable-postproc
 else
-FFMPEG_CONF_OPT += --disable-postproc
+FFMPEG_CONF_OPTS += --disable-postproc
 endif
 
 ifeq ($(BR2_PACKAGE_FFMPEG_SWSCALE),y)
-FFMPEG_CONF_OPT += --enable-swscale
+FFMPEG_CONF_OPTS += --enable-swscale
 else
-FFMPEG_CONF_OPT += --disable-swscale
+FFMPEG_CONF_OPTS += --disable-swscale
 endif
 
 ifneq ($(call qstrip,$(BR2_PACKAGE_FFMPEG_ENCODERS)),all)
-FFMPEG_CONF_OPT += --disable-encoders \
+FFMPEG_CONF_OPTS += --disable-encoders \
 	$(foreach x,$(call qstrip,$(BR2_PACKAGE_FFMPEG_ENCODERS)),--enable-encoder=$(x))
 endif
 
 ifneq ($(call qstrip,$(BR2_PACKAGE_FFMPEG_DECODERS)),all)
-FFMPEG_CONF_OPT += --disable-decoders \
+FFMPEG_CONF_OPTS += --disable-decoders \
 	$(foreach x,$(call qstrip,$(BR2_PACKAGE_FFMPEG_DECODERS)),--enable-decoder=$(x))
 endif
 
 ifneq ($(call qstrip,$(BR2_PACKAGE_FFMPEG_MUXERS)),all)
-FFMPEG_CONF_OPT += --disable-muxers \
+FFMPEG_CONF_OPTS += --disable-muxers \
 	$(foreach x,$(call qstrip,$(BR2_PACKAGE_FFMPEG_MUXERS)),--enable-muxer=$(x))
 endif
 
 ifneq ($(call qstrip,$(BR2_PACKAGE_FFMPEG_DEMUXERS)),all)
-FFMPEG_CONF_OPT += --disable-demuxers \
+FFMPEG_CONF_OPTS += --disable-demuxers \
 	$(foreach x,$(call qstrip,$(BR2_PACKAGE_FFMPEG_DEMUXERS)),--enable-demuxer=$(x))
 endif
 
 ifneq ($(call qstrip,$(BR2_PACKAGE_FFMPEG_PARSERS)),all)
-FFMPEG_CONF_OPT += --disable-parsers \
+FFMPEG_CONF_OPTS += --disable-parsers \
 	$(foreach x,$(call qstrip,$(BR2_PACKAGE_FFMPEG_PARSERS)),--enable-parser=$(x))
 endif
 
 ifneq ($(call qstrip,$(BR2_PACKAGE_FFMPEG_BSFS)),all)
-FFMPEG_CONF_OPT += --disable-bsfs \
+FFMPEG_CONF_OPTS += --disable-bsfs \
 	$(foreach x,$(call qstrip,$(BR2_PACKAGE_FFMPEG_BSFS)),--enable-bsfs=$(x))
 endif
 
 ifneq ($(call qstrip,$(BR2_PACKAGE_FFMPEG_PROTOCOLS)),all)
-FFMPEG_CONF_OPT += --disable-protocols \
+FFMPEG_CONF_OPTS += --disable-protocols \
 	$(foreach x,$(call qstrip,$(BR2_PACKAGE_FFMPEG_PROTOCOLS)),--enable-protocol=$(x))
 endif
 
 ifneq ($(call qstrip,$(BR2_PACKAGE_FFMPEG_FILTERS)),all)
-FFMPEG_CONF_OPT += --disable-filters \
+FFMPEG_CONF_OPTS += --disable-filters \
 	$(foreach x,$(call qstrip,$(BR2_PACKAGE_FFMPEG_FILTERS)),--enable-filter=$(x))
 endif
 
 ifeq ($(BR2_PACKAGE_FFMPEG_INDEVS),y)
-FFMPEG_CONF_OPT += --enable-indevs
+FFMPEG_CONF_OPTS += --enable-indevs
 else
-FFMPEG_CONF_OPT += --disable-indevs
+FFMPEG_CONF_OPTS += --disable-indevs
 endif
 
 ifeq ($(BR2_PACKAGE_FFMPEG_OUTDEVS),y)
-FFMPEG_CONF_OPT += --enable-outdevs
+FFMPEG_CONF_OPTS += --enable-outdevs
 else
-FFMPEG_CONF_OPT += --disable-outdevs
+FFMPEG_CONF_OPTS += --disable-outdevs
 endif
 
 ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),y)
-FFMPEG_CONF_OPT += --enable-pthreads
+FFMPEG_CONF_OPTS += --enable-pthreads
 else
-FFMPEG_CONF_OPT += --disable-pthreads
+FFMPEG_CONF_OPTS += --disable-pthreads
 endif
 
 ifeq ($(BR2_PACKAGE_ZLIB),y)
-FFMPEG_CONF_OPT += --enable-zlib
+FFMPEG_CONF_OPTS += --enable-zlib
 FFMPEG_DEPENDENCIES += zlib
 else
-FFMPEG_CONF_OPT += --disable-zlib
+FFMPEG_CONF_OPTS += --disable-zlib
 endif
 
 ifeq ($(BR2_PACKAGE_BZIP2),y)
-FFMPEG_CONF_OPT += --enable-bzlib
+FFMPEG_CONF_OPTS += --enable-bzlib
 FFMPEG_DEPENDENCIES += bzip2
 else
-FFMPEG_CONF_OPT += --disable-bzlib
+FFMPEG_CONF_OPTS += --disable-bzlib
 endif
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 # openssl isn't license compatible with GPL
 ifeq ($(BR2_PACKAGE_FFMPEG_GPL)x$(BR2_PACKAGE_FFMPEG_NONFREE),yx)
-FFMPEG_CONF_OPT += --disable-openssl
+FFMPEG_CONF_OPTS += --disable-openssl
 else
-FFMPEG_CONF_OPT += --enable-openssl
+FFMPEG_CONF_OPTS += --enable-openssl
 FFMPEG_DEPENDENCIES += openssl
 endif
 else
-FFMPEG_CONF_OPT += --disable-openssl
+FFMPEG_CONF_OPTS += --disable-openssl
 endif
 
 ifeq ($(BR2_PACKAGE_LIBVORBIS),y)
 FFMPEG_DEPENDENCIES += libvorbis
-FFMPEG_CONF_OPT += \
+FFMPEG_CONF_OPTS += \
 	--enable-libvorbis \
 	--enable-muxer=ogg \
 	--enable-encoder=libvorbis
 endif
 
 ifeq ($(BR2_PACKAGE_LIBVA),y)
-FFMPEG_CONF_OPT += --enable-vaapi
+FFMPEG_CONF_OPTS += --enable-vaapi
 FFMPEG_DEPENDENCIES += libva
 else
-FFMPEG_CONF_OPT += --disable-vaapi
+FFMPEG_CONF_OPTS += --disable-vaapi
 endif
 
 ifeq ($(BR2_PACKAGE_OPUS),y)
-FFMPEG_CONF_OPT += --enable-libopus
+FFMPEG_CONF_OPTS += --enable-libopus
 FFMPEG_DEPENDENCIES += opus
 else
-FFMPEG_CONF_OPT += --disable-libopus
+FFMPEG_CONF_OPTS += --disable-libopus
 endif
 
 ifeq ($(BR2_PACKAGE_LIBVPX),y)
-FFMPEG_CONF_OPT += --enable-libvpx
+FFMPEG_CONF_OPTS += --enable-libvpx
 FFMPEG_DEPENDENCIES += libvpx
 else
-FFMPEG_CONF_OPT += --disable-libvpx
+FFMPEG_CONF_OPTS += --disable-libvpx
 endif
 
 ifeq ($(BR2_X86_CPU_HAS_MMX),y)
-FFMPEG_CONF_OPT += --enable-yasm
+FFMPEG_CONF_OPTS += --enable-yasm
 FFMPEG_DEPENDENCIES += host-yasm
 else
-FFMPEG_CONF_OPT += --disable-yasm
-FFMPEG_CONF_OPT += --disable-mmx
+FFMPEG_CONF_OPTS += --disable-yasm
+FFMPEG_CONF_OPTS += --disable-mmx
 endif
 
 ifeq ($(BR2_X86_CPU_HAS_SSE),y)
-FFMPEG_CONF_OPT += --enable-sse
+FFMPEG_CONF_OPTS += --enable-sse
 else
-FFMPEG_CONF_OPT += --disable-sse
+FFMPEG_CONF_OPTS += --disable-sse
 endif
 
 ifeq ($(BR2_X86_CPU_HAS_SSE2),y)
-FFMPEG_CONF_OPT += --enable-sse2
+FFMPEG_CONF_OPTS += --enable-sse2
 else
-FFMPEG_CONF_OPT += --disable-sse2
+FFMPEG_CONF_OPTS += --disable-sse2
 endif
 
 ifeq ($(BR2_X86_CPU_HAS_SSE3),y)
-FFMPEG_CONF_OPT += --enable-sse3
+FFMPEG_CONF_OPTS += --enable-sse3
 else
-FFMPEG_CONF_OPT += --disable-sse3
+FFMPEG_CONF_OPTS += --disable-sse3
 endif
 
 ifeq ($(BR2_X86_CPU_HAS_SSSE3),y)
-FFMPEG_CONF_OPT += --enable-ssse3
+FFMPEG_CONF_OPTS += --enable-ssse3
 else
-FFMPEG_CONF_OPT += --disable-ssse3
+FFMPEG_CONF_OPTS += --disable-ssse3
 endif
 
 ifeq ($(BR2_X86_CPU_HAS_SSE4),y)
-FFMPEG_CONF_OPT += --enable-sse4
+FFMPEG_CONF_OPTS += --enable-sse4
 else
-FFMPEG_CONF_OPT += --disable-sse4
+FFMPEG_CONF_OPTS += --disable-sse4
 endif
 
 ifeq ($(BR2_X86_CPU_HAS_SSE42),y)
-FFMPEG_CONF_OPT += --enable-sse42
+FFMPEG_CONF_OPTS += --enable-sse42
 else
-FFMPEG_CONF_OPT += --disable-sse42
+FFMPEG_CONF_OPTS += --disable-sse42
 endif
 
 # Explicitly disable everything that doesn't match for ARM
 # FFMPEG "autodetects" by compiling an extended instruction via AS
 # This works on compilers that aren't built for generic by default
 ifeq ($(BR2_arm920t)$(BR2_arm922t)$(BR2_strongarm)$(BR2_fa526),y)
-FFMPEG_CONF_OPT += --disable-armv5te
+FFMPEG_CONF_OPTS += --disable-armv5te
 endif
 ifeq ($(BR2_arm1136jf_s)$(BR2_arm1176jz_s)$(BR2_arm1176jzf_s)$(BR2_cortex_a5)$(BR2_cortex_a8)$(BR2_cortex_a9)$(BR2_cortex_a15),y)
-FFMPEG_CONF_OPT += --enable-armv6
+FFMPEG_CONF_OPTS += --enable-armv6
 else
-FFMPEG_CONF_OPT += --disable-armv6 --disable-armv6t2
+FFMPEG_CONF_OPTS += --disable-armv6 --disable-armv6t2
 endif
 ifeq ($(BR2_arm10)$(BR2_arm1136jf_s)$(BR2_arm1176jz_s)$(BR2_arm1176jzf_s)$(BR2_cortex_a5)$(BR2_cortex_a8)$(BR2_cortex_a9)$(BR2_cortex_a15),y)
-FFMPEG_CONF_OPT += --enable-vfp
+FFMPEG_CONF_OPTS += --enable-vfp
 else
-FFMPEG_CONF_OPT += --disable-vfp
+FFMPEG_CONF_OPTS += --disable-vfp
 endif
 ifeq ($(BR2_ARM_CPU_HAS_NEON),y)
-FFMPEG_CONF_OPT += --enable-neon
+FFMPEG_CONF_OPTS += --enable-neon
 endif
 
 ifeq ($(BR2_MIPS_SOFT_FLOAT),y)
-FFMPEG_CONF_OPT += \
+FFMPEG_CONF_OPTS += \
 	--disable-mipsfpu
 else
-FFMPEG_CONF_OPT += \
+FFMPEG_CONF_OPTS += \
 	--enable-mipsfpu
 endif
 
 ifeq ($(BR2_mips_32r2),y)
-FFMPEG_CONF_OPT += \
+FFMPEG_CONF_OPTS += \
 	--enable-mips32r2
 else
-FFMPEG_CONF_OPT += \
+FFMPEG_CONF_OPTS += \
 	--disable-mips32r2
 endif
 
 ifeq ($(BR2_mips_64r2),y)
-FFMPEG_CONF_OPT += \
+FFMPEG_CONF_OPTS += \
 	--enable-mipsdspr1 \
 	--enable-mipsdspr2
 else
-FFMPEG_CONF_OPT += \
+FFMPEG_CONF_OPTS += \
 	--disable-mipsdspr1 \
 	--disable-mipsdspr2
 endif
 
 ifeq ($(BR2_POWERPC_CPU_HAS_ALTIVEC),y)
-FFMPEG_CONF_OPT += --enable-altivec
+FFMPEG_CONF_OPTS += --enable-altivec
 else
-FFMPEG_CONF_OPT += --disable-altivec
+FFMPEG_CONF_OPTS += --disable-altivec
 endif
 
 ifeq ($(BR2_PREFER_STATIC_LIB),)
-FFMPEG_CONF_OPT += --enable-pic
+FFMPEG_CONF_OPTS += --enable-pic
 else
-FFMPEG_CONF_OPT += --disable-pic
+FFMPEG_CONF_OPTS += --disable-pic
 endif
 
-FFMPEG_CONF_OPT += $(call qstrip,$(BR2_PACKAGE_FFMPEG_EXTRACONF))
+FFMPEG_CONF_OPTS += $(call qstrip,$(BR2_PACKAGE_FFMPEG_EXTRACONF))
 
 # Override FFMPEG_CONFIGURE_CMDS: FFmpeg does not support --target and others
 define FFMPEG_CONFIGURE_CMDS
@@ -350,7 +350,7 @@ define FFMPEG_CONFIGURE_CMDS
 		--pkg-config="$(PKG_CONFIG_HOST_BINARY)" \
 		$(if $(BR2_GCC_TARGET_TUNE),--cpu=$(BR2_GCC_TARGET_TUNE)) \
 		$(SHARED_STATIC_LIBS_OPTS) \
-		$(FFMPEG_CONF_OPT) \
+		$(FFMPEG_CONF_OPTS) \
 	)
 endef
 

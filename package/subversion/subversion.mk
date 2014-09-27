@@ -10,7 +10,7 @@ SUBVERSION_LICENSE = Apache-2.0
 SUBVERSION_LICENSE_FILES = LICENSE
 
 SUBVERSION_DEPENDENCIES = apr apr-util expat neon zlib
-SUBVERSION_CONF_OPT = \
+SUBVERSION_CONF_OPTS = \
 	--with-expat=$(STAGING_DIR)/usr/include:$(STAGING_DIR)/usr/lib: \
 	--with-apr=$(STAGING_DIR)/usr \
 	--with-apr-util=$(STAGING_DIR)/usr \

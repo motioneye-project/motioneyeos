@@ -18,7 +18,7 @@ CEGUI06_DEPENDENCIES    =       \
     freetype                    \
     pcre                        \
 
-CEGUI06_CONF_OPT =              \
+CEGUI06_CONF_OPTS =              \
     --enable-expat              \
     --disable-external-tinyxml  \
     --disable-xerces-c          \

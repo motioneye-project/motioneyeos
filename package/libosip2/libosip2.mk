@@ -15,7 +15,7 @@ ifeq ($(BR2_arc),y)
 LIBOSIP2_CONF_ENV += CFLAGS="$(TARGET_CFLAGS) -U__arc__"
 endif
 
-LIBOSIP2_CONF_OPT = \
+LIBOSIP2_CONF_OPTS = \
 	--enable-mt=$(if $(BR2_TOOLCHAIN_HAS_THREADS),yes,no)
 
 $(eval $(autotools-package))

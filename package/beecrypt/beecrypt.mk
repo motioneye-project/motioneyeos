@@ -17,7 +17,7 @@ BEECRYPT_LICENSE_FILES = COPYING.LIB
 BEECRYPT_CONF_ENV = \
 	CXXFLAGS="$(TARGET_CXXFLAGS) -fpermissive"
 
-BEECRYPT_CONF_OPT = \
+BEECRYPT_CONF_OPTS = \
 		--without-java \
 		--without-python \
 		--disable-openmp
@@ -25,7 +25,7 @@ BEECRYPT_CONF_OPT = \
 ifeq ($(BR2_PACKAGE_BEECRYPT_CPP),y)
 BEECRYPT_DEPENDENCIES += icu
 else
-BEECRYPT_CONF_OPT += --without-cplusplus
+BEECRYPT_CONF_OPTS += --without-cplusplus
 
 # automake/libtool uses the C++ compiler to link libbeecrypt because of
 # (the optional) cppglue.cxx. Force it to use the C compiler instead.

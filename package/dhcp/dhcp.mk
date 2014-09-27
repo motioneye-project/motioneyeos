@@ -13,7 +13,7 @@ DHCP_CONF_ENV = \
 	CPPFLAGS='-D_PATH_DHCPD_CONF=\"/etc/dhcp/dhcpd.conf\" \
 		-D_PATH_DHCLIENT_CONF=\"/etc/dhcp/dhclient.conf\"' \
 	ac_cv_file__dev_random=yes
-DHCP_CONF_OPT = \
+DHCP_CONF_OPTS = \
 	--localstatedir=/var/lib/dhcp \
 	--with-srv-lease-file=/var/lib/dhcp/dhcpd.leases \
 	--with-srv6-lease-file=/var/lib/dhcp/dhcpd6.leases \
@@ -27,11 +27,11 @@ DHCP_CONF_OPT = \
 	--with-relay6-pid-file=/var/run/dhcrelay6.pid
 
 ifeq ($(BR2_PACKAGE_DHCP_SERVER_DELAYED_ACK),y)
-        DHCP_CONF_OPT += --enable-delayed-ack
+        DHCP_CONF_OPTS += --enable-delayed-ack
 endif
 
 ifneq ($(BR2_INET_IPV6),y)
-        DHCP_CONF_OPT += --disable-dhcpv6
+        DHCP_CONF_OPTS += --disable-dhcpv6
 endif
 
 ifeq ($(BR2_PACKAGE_DHCP_SERVER),y)

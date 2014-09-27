@@ -19,16 +19,16 @@ LIBCGROUP_CONF_ENV = \
 	CXXFLAGS="$(TARGET_CXXFLAGS) -U_FILE_OFFSET_BITS" \
 	CFLAGS="$(TARGET_CFLAGS) -U_FILE_OFFSET_BITS"
 
-LIBCGROUP_CONF_OPT = \
+LIBCGROUP_CONF_OPTS = \
 	--disable-tools \
 	--disable-daemon \
 	--disable-initscript-install
 
 ifeq ($(BR2_PACKAGE_LINUX_PAM),y)
 	LIBCGROUP_DEPENDENCIES += linux-pam
-	LIBCGROUP_CONF_OPT += --enable-pam
+	LIBCGROUP_CONF_OPTS += --enable-pam
 else
-	LIBCGROUP_CONF_OPT += --disable-pam
+	LIBCGROUP_CONF_OPTS += --disable-pam
 endif
 
 $(eval $(autotools-package))

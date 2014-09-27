@@ -11,6 +11,6 @@ SISPMCTL_LICENSE_FILES = LICENCE
 SISPMCTL_DEPENDENCIES = libusb-compat
 
 SISPMCTL_CONF_ENV = HAVELIBUSB=$(STAGING_DIR)/usr/bin/libusb-config
-SISPMCTL_CONF_OPT = --enable-webless
+SISPMCTL_CONF_OPTS = --enable-webless
 
 $(eval $(autotools-package))

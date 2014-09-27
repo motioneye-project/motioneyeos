@@ -37,7 +37,7 @@
 define inner-cmake-package
 
 $(2)_CONF_ENV			?=
-$(2)_CONF_OPT			?=
+$(2)_CONF_OPTS			?=
 $(2)_MAKE			?= $$(MAKE)
 $(2)_MAKE_ENV			?=
 $(2)_MAKE_OPTS			?=
@@ -69,7 +69,7 @@ define $(2)_CONFIGURE_CMDS
 		-DBUILD_TESTING=OFF \
 		-DBUILD_SHARED_LIBS=$$(if $$(BR2_PREFER_STATIC_LIB),OFF,ON) \
 		-DUSE_CCACHE=$$(if $$(BR2_CCACHE),ON,OFF) \
-		$$($$(PKG)_CONF_OPT) \
+		$$($$(PKG)_CONF_OPTS) \
 	)
 endef
 else
@@ -90,7 +90,7 @@ define $(2)_CONFIGURE_CMDS
 		-DCMAKE_CXX_FLAGS="$$(HOST_CXXFLAGS)" \
 		-DCMAKE_EXE_LINKER_FLAGS="$$(HOST_LDFLAGS)" \
 		-DBUILD_TESTING=OFF \
-		$$($$(PKG)_CONF_OPT) \
+		$$($$(PKG)_CONF_OPTS) \
 	)
 endef
 endif

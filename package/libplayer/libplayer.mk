@@ -21,27 +21,27 @@ define LIBPLAYER_CONFIGURE_CMDS
 		--prefix=/usr \
 		--cross-compile \
 		$(SHARED_STATIC_LIBS_OPTS) \
-		$(LIBPLAYER_CONF_OPT) \
+		$(LIBPLAYER_CONF_OPTS) \
 	)
 endef
 
 ifeq ($(BR2_PACKAGE_LIBPLAYER_MPLAYER),y)
 	LIBPLAYER_DEPENDENCIES += mplayer
-	LIBPLAYER_CONF_OPT += --enable-mplayer
+	LIBPLAYER_CONF_OPTS += --enable-mplayer
 else
-	LIBPLAYER_CONF_OPT += --disable-mplayer
+	LIBPLAYER_CONF_OPTS += --disable-mplayer
 endif
 
 ifeq ($(BR2_PACKAGE_LIBPLAYER_GSTREAMER),y)
 	LIBPLAYER_DEPENDENCIES += gstreamer
-	LIBPLAYER_CONF_OPT += --enable-gstreamer
+	LIBPLAYER_CONF_OPTS += --enable-gstreamer
 else
-	LIBPLAYER_CONF_OPT += --disable-gstreamer
+	LIBPLAYER_CONF_OPTS += --disable-gstreamer
 endif
 
 ifeq ($(BR2_PACKAGE_LIBPLAYER_PYTHON),y)
 	LIBPLAYER_DEPENDENCIES += python
-	LIBPLAYER_CONF_OPT += --enable-binding-python
+	LIBPLAYER_CONF_OPTS += --enable-binding-python
 endif
 
 $(eval $(autotools-package))

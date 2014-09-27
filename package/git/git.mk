@@ -12,45 +12,45 @@ GIT_DEPENDENCIES    = zlib host-gettext
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 	GIT_DEPENDENCIES += openssl
-	GIT_CONF_OPT += --with-openssl
+	GIT_CONF_OPTS += --with-openssl
 else
-	GIT_CONF_OPT += --without-openssl
+	GIT_CONF_OPTS += --without-openssl
 endif
 
 ifeq ($(BR2_PACKAGE_PERL),y)
 	GIT_DEPENDENCIES += perl
-	GIT_CONF_OPT += --with-libpcre
+	GIT_CONF_OPTS += --with-libpcre
 else
-	GIT_CONF_OPT += --without-libpcre
+	GIT_CONF_OPTS += --without-libpcre
 endif
 
 ifeq ($(BR2_PACKAGE_CURL),y)
 	GIT_DEPENDENCIES += curl
-	GIT_CONF_OPT += --with-curl
+	GIT_CONF_OPTS += --with-curl
 else
-	GIT_CONF_OPT += --without-curl
+	GIT_CONF_OPTS += --without-curl
 endif
 
 ifeq ($(BR2_PACKAGE_EXPAT),y)
 	GIT_DEPENDENCIES += expat
-	GIT_CONF_OPT += --with-expat
+	GIT_CONF_OPTS += --with-expat
 else
-	GIT_CONF_OPT += --without-expat
+	GIT_CONF_OPTS += --without-expat
 endif
 
 ifeq ($(BR2_PACKAGE_LIBICONV),y)
 	GIT_DEPENDENCIES += libiconv
 	GIT_CONF_ENV += LIBS=-liconv
-	GIT_CONF_OPT += --with-iconv=/usr/lib
+	GIT_CONF_OPTS += --with-iconv=/usr/lib
 else
-	GIT_CONF_OPT += --without-iconv
+	GIT_CONF_OPTS += --without-iconv
 endif
 
 ifeq ($(BR2_PACKAGE_TCL),y)
 	GIT_DEPENDENCIES += tcl
-	GIT_CONF_OPT += --with-tcltk
+	GIT_CONF_OPTS += --with-tcltk
 else
-	GIT_CONF_OPT += --without-tcltk
+	GIT_CONF_OPTS += --without-tcltk
 endif
 
 # assume yes for these tests, configure will bail out otherwise

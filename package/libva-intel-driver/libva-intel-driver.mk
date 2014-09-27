@@ -14,16 +14,16 @@ LIBVA_INTEL_DRIVER_DEPENDENCIES = host-pkgconf libdrm libva
 
 ifeq ($(BR2_PACKAGE_XORG7),y)
 LIBVA_INTEL_DRIVER_DEPENDENCIES += xlib_libX11 xlib_libXext xlib_libXfixes
-LIBVA_INTEL_DRIVER_CONF_OPT += --enable-x11
+LIBVA_INTEL_DRIVER_CONF_OPTS += --enable-x11
 else
-LIBVA_INTEL_DRIVER_CONF_OPT += --disable-x11
+LIBVA_INTEL_DRIVER_CONF_OPTS += --disable-x11
 endif
 
 ifeq ($(BR2_PACKAGE_WAYLAND),y)
 LIBVA_DEPENDENCIES += wayland
-LIBVA_INTEL_DRIVER_CONF_OPT += --enable-wayland
+LIBVA_INTEL_DRIVER_CONF_OPTS += --enable-wayland
 else
-LIBVA_INTEL_DRIVER_CONF_OPT += --disable-wayland
+LIBVA_INTEL_DRIVER_CONF_OPTS += --disable-wayland
 endif
 
 $(eval $(autotools-package))

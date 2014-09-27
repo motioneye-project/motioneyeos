@@ -16,9 +16,9 @@ LTRIS_CONF_ENV = \
 
 ifeq ($(BR2_PACKAGE_LTRIS_AUDIO),y)
 LTRIS_DEPENDENCIES += sdl_mixer
-LTRIS_CONF_OPT += --enable-audio=yes
+LTRIS_CONF_OPTS += --enable-audio=yes
 else
-LTRIS_CONF_OPT += --disable-audio
+LTRIS_CONF_OPTS += --disable-audio
 endif
 
 ifeq ($(BR2_NEEDS_GETTEXT_IF_LOCALE),y)

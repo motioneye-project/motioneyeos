@@ -11,6 +11,6 @@ XLIB_LIBFS_LICENSE = MIT
 XLIB_LIBFS_LICENSE_FILES = COPYING
 XLIB_LIBFS_INSTALL_STAGING = YES
 XLIB_LIBFS_DEPENDENCIES = xlib_xtrans xproto_xproto xproto_fontsproto host-pkgconf
-XLIB_LIBFS_CONF_OPT = --disable-malloc0returnsnull
+XLIB_LIBFS_CONF_OPTS = --disable-malloc0returnsnull
 
 $(eval $(autotools-package))

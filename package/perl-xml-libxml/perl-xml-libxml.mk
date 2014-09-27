@@ -11,7 +11,7 @@ PERL_XML_LIBXML_DEPENDENCIES = perl zlib libxml2 perl-xml-sax perl-xml-namespace
 PERL_XML_LIBXML_LICENSE = Artistic or GPLv1+
 PERL_XML_LIBXML_LICENSE_FILES = LICENSE
 
-PERL_XML_LIBXML_CONF_OPT = \
+PERL_XML_LIBXML_CONF_OPTS = \
 	LIBS="-L $(STAGING_DIR)/usr/lib" \
 	INC="-I $(STAGING_DIR)/usr/include/libxml2" \
 	NO_THREADS

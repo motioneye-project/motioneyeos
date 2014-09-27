@@ -14,7 +14,7 @@ CPPDB_LICENSE_FILES = LICENSE_1_0.txt MIT.txt
 
 ifeq ($(BR2_PACKAGE_MYSQL),y)
 CPPDB_DEPENDENCIES += mysql
-CPPDB_CONF_OPT += -DMYSQL_LIB=$(STAGING_DIR)/usr/lib/mysql
+CPPDB_CONF_OPTS += -DMYSQL_LIB=$(STAGING_DIR)/usr/lib/mysql
 endif
 
 $(eval $(cmake-package))

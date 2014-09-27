@@ -11,15 +11,15 @@ MATCHBOX_PANEL_SITE = http://downloads.yoctoproject.org/releases/matchbox/matchb
 MATCHBOX_PANEL_LICENSE = GPLv2+
 MATCHBOX_PANEL_LICENSE_FILES = COPYING
 MATCHBOX_PANEL_DEPENDENCIES = matchbox-lib
-MATCHBOX_PANEL_CONF_OPT = --enable-expat
+MATCHBOX_PANEL_CONF_OPTS = --enable-expat
 
 ################################################################################
 
 ifeq ($(BR2_PACKAGE_STARTUP_NOTIFICATION),y)
-  MATCHBOX_PANEL_CONF_OPT += --enable-startup-notification
+  MATCHBOX_PANEL_CONF_OPTS += --enable-startup-notification
   MATCHBOX_PANEL_DEPENDENCIES += startup-notification matchbox-startup-monitor
 else
-  MATCHBOX_PANEL_CONF_OPT += --disable-startup-notification
+  MATCHBOX_PANEL_CONF_OPTS += --disable-startup-notification
 endif
 
 ################################################################################

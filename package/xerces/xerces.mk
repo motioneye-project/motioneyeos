@@ -11,7 +11,7 @@ XERCES_LICENSE = Apache-2.0
 XERCES_LICENSE_FILES = LICENSE
 XERCES_MAKE = $(MAKE1)
 XERCES_INSTALL_STAGING = YES
-XERCES_CONF_OPT = --disable-threads \
+XERCES_CONF_OPTS = --disable-threads \
 		  --with-gnu-ld
 
 ifeq ($(BR2_PACKAGE_LIBICONV),y)
@@ -20,10 +20,10 @@ XERCES_DEPENDENCIES += libiconv
 endif
 
 ifeq ($(BR2_PACKAGE_LIBCURL),y)
-XERCES_CONF_OPT += --enable-netaccessor-curl
+XERCES_CONF_OPTS += --enable-netaccessor-curl
 XERCES_DEPENDENCIES += libcurl
 else
-XERCES_CONF_OPT += --disable-network
+XERCES_CONF_OPTS += --disable-network
 endif
 
 $(eval $(autotools-package))

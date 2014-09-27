@@ -11,7 +11,7 @@ AUMIX_AUTORECONF = YES
 AUMIX_LICENSE = GPLv2+
 AUMIX_LICENSE_FILES = COPYING
 
-AUMIX_CONF_OPT = \
+AUMIX_CONF_OPTS = \
 	--without-gtk \
 	--without-gtk1 \
 	--without-alsa \

@@ -36,8 +36,8 @@ endef
 HOST_GCC_INITIAL_POST_PATCH_HOOKS += HOST_GCC_INITIAL_DISABLE_LIBGMON
 endif
 
-HOST_GCC_INITIAL_CONF_OPT = \
-	$(HOST_GCC_COMMON_CONF_OPT) \
+HOST_GCC_INITIAL_CONF_OPTS = \
+	$(HOST_GCC_COMMON_CONF_OPTS) \
 	--enable-languages=c \
 	--disable-shared \
 	--without-headers \

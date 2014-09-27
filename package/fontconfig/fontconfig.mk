@@ -11,11 +11,11 @@ FONTCONFIG_DEPENDENCIES = freetype expat host-pkgconf
 FONTCONFIG_LICENSE = fontconfig license
 FONTCONFIG_LICENSE_FILES = COPYING
 
-FONTCONFIG_CONF_OPT = --with-arch=$(GNU_TARGET_NAME) \
+FONTCONFIG_CONF_OPTS = --with-arch=$(GNU_TARGET_NAME) \
 		--with-cache-dir=/var/cache/fontconfig \
 		--disable-docs
 
-HOST_FONTCONFIG_CONF_OPT = \
+HOST_FONTCONFIG_CONF_OPTS = \
 		--disable-static
 
 $(eval $(autotools-package))

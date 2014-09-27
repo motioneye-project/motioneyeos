@@ -19,7 +19,7 @@ GTEST_LICENSE_FILES = LICENSE
 #
 # For further details, refer to the explaination given in the README file from
 # the gtest sources.
-GTEST_CONF_OPT = -DBUILD_SHARED_LIBS=OFF
+GTEST_CONF_OPTS = -DBUILD_SHARED_LIBS=OFF
 
 define GTEST_EXTRACT_CMDS
 	unzip $(DL_DIR)/$(GTEST_SOURCE) -d $(BUILD_DIR)

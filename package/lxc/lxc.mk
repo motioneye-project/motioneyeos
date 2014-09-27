@@ -11,7 +11,7 @@ LXC_LICENSE_FILES = COPYING
 LXC_DEPENDENCIES = libcap host-pkgconf
 # configure not shipped
 LXC_AUTORECONF = YES
-LXC_CONF_OPT = --disable-apparmor --with-distro=buildroot \
+LXC_CONF_OPTS = --disable-apparmor --with-distro=buildroot \
 	--disable-lua --disable-python \
 	$(if $(BR2_PACKAGE_BASH),,--disable-bash)
 

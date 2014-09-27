@@ -13,7 +13,7 @@ MATCHBOX_COMMON_LICENSE_FILES = COPYING
 MATCHBOX_COMMON_DEPENDENCIES = matchbox-lib
 
 ifeq ($(strip $(BR2_PACKAGE_MATCHBOX_COMMON_PDA)),y)
-	MATCHBOX_COMMON_CONF_OPT += --enable-pda-folders
+	MATCHBOX_COMMON_CONF_OPTS += --enable-pda-folders
 endif
 
 ################################################################################

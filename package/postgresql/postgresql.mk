@@ -14,28 +14,28 @@ POSTGRESQL_INSTALL_STAGING = YES
 POSTGRESQL_CONFIG_SCRIPTS = pg_config
 
 ifneq ($(BR2_TOOLCHAIN_HAS_THREADS),y)
-	POSTGRESQL_CONF_OPT += --disable-thread-safety
+	POSTGRESQL_CONF_OPTS += --disable-thread-safety
 endif
 
 ifeq ($(BR2_microblazeel)$(BR2_microblazebe)$(BR2_nios2),y)
-	POSTGRESQL_CONF_OPT += --disable-spinlocks
+	POSTGRESQL_CONF_OPTS += --disable-spinlocks
 endif
 
 ifeq ($(BR2_PACKAGE_READLINE),y)
 	POSTGRESQL_DEPENDENCIES += readline
 else
-	POSTGRESQL_CONF_OPT += --without-readline
+	POSTGRESQL_CONF_OPTS += --without-readline
 endif
 
 ifeq ($(BR2_PACKAGE_ZLIB),y)
 	POSTGRESQL_DEPENDENCIES += zlib
 else
-	POSTGRESQL_CONF_OPT += --without-zlib
+	POSTGRESQL_CONF_OPTS += --without-zlib
 endif
 
 ifeq ($(BR2_PACKAGE_TZDATA),y)
 	POSTGRESQL_DEPENDENCIES += tzdata
-	POSTGRESQL_CONF_OPT += --with-system-tzdata=/usr/share/zoneinfo
+	POSTGRESQL_CONF_OPTS += --with-system-tzdata=/usr/share/zoneinfo
 else
 	POSTGRESQL_DEPENDENCIES += host-zic
 	POSTGRESQL_CONF_ENV += ZIC=$$(ZIC)
@@ -43,7 +43,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 	POSTGRESQL_DEPENDENCIES += openssl
-	POSTGRESQL_CONF_OPT += --with-openssl
+	POSTGRESQL_CONF_OPTS += --with-openssl
 endif
 
 define POSTGRESQL_USERS

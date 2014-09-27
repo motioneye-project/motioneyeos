@@ -11,7 +11,7 @@ NETSNMP_LICENSE = Various BSD-like
 NETSNMP_LICENSE_FILES = COPYING
 NETSNMP_INSTALL_STAGING = YES
 NETSNMP_CONF_ENV = ac_cv_NETSNMP_CAN_USE_SYSCTL=yes
-NETSNMP_CONF_OPT = --with-persistent-directory=/var/lib/snmp \
+NETSNMP_CONF_OPTS = --with-persistent-directory=/var/lib/snmp \
 		--with-defaults --enable-mini-agent --without-rpm \
 		--with-logfile=none --without-kmem-usage $(DISABLE_IPV6) \
 		--enable-as-needed --without-perl-modules \
@@ -32,31 +32,31 @@ NETSNMP_CONFIG_SCRIPTS = net-snmp-config
 NETSNMP_BLOAT_MIBS = BRIDGE DISMAN-EVENT DISMAN-SCHEDULE DISMAN-SCRIPT EtherLike RFC-1215 RFC1155-SMI RFC1213 SCTP SMUX
 
 ifeq ($(BR2_ENDIAN),"BIG")
-	NETSNMP_CONF_OPT += --with-endianness=big
+	NETSNMP_CONF_OPTS += --with-endianness=big
 else
-	NETSNMP_CONF_OPT += --with-endianness=little
+	NETSNMP_CONF_OPTS += --with-endianness=little
 endif
 
 # OpenSSL
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 	NETSNMP_DEPENDENCIES += openssl
-	NETSNMP_CONF_OPT += \
+	NETSNMP_CONF_OPTS += \
 		--with-openssl=$(STAGING_DIR)/usr/include/openssl
 ifeq ($(BR2_PREFER_STATIC_LIB),y)
 	# openssl uses zlib, so we need to explicitly link with it when static
 	NETSNMP_CONF_ENV += LIBS=-lz
 endif
 else
-	NETSNMP_CONF_OPT += --without-openssl
+	NETSNMP_CONF_OPTS += --without-openssl
 endif
 
 ifneq ($(BR2_PACKAGE_NETSNMP_ENABLE_MIBS),y)
-	NETSNMP_CONF_OPT += --disable-mib-loading
-	NETSNMP_CONF_OPT += --disable-mibs
+	NETSNMP_CONF_OPTS += --disable-mib-loading
+	NETSNMP_CONF_OPTS += --disable-mibs
 endif
 
 ifneq ($(BR2_PACKAGE_NETSNMP_ENABLE_DEBUGGING),y)
-	NETSNMP_CONF_OPT += --disable-debugging
+	NETSNMP_CONF_OPTS += --disable-debugging
 endif
 
 # Remove IPv6 MIBs if there's no IPv6

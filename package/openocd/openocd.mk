@@ -11,7 +11,7 @@ OPENOCD_LICENSE = GPLv2+
 OPENOCD_LICENSE_FILES = COPYING
 
 OPENOCD_AUTORECONF = YES
-OPENOCD_CONF_OPT = \
+OPENOCD_CONF_OPTS = \
 	--oldincludedir=$(STAGING_DIR)/usr/include \
 	--includedir=$(STAGING_DIR)/usr/include \
 	--disable-doxygen-html \
@@ -21,21 +21,21 @@ OPENOCD_DEPENDENCIES = libusb-compat
 
 # Adapters
 ifeq ($(BR2_PACKAGE_OPENOCD_FT2XXX),y)
-OPENOCD_CONF_OPT += --enable-ft2232_libftdi
+OPENOCD_CONF_OPTS += --enable-ft2232_libftdi
 OPENOCD_DEPENDENCIES += libftdi
 endif
 
 ifeq ($(BR2_PACKAGE_OPENOCD_JLINK),y)
-OPENOCD_CONF_OPT += --enable-jlink
+OPENOCD_CONF_OPTS += --enable-jlink
 endif
 
 ifeq ($(BR2_PACKAGE_OPENOCD_VSLLINK),y)
-OPENOCD_CONF_OPT += --enable-vsllink
+OPENOCD_CONF_OPTS += --enable-vsllink
 endif
 
 HOST_OPENOCD_DEPENDENCIES = host-libusb-compat host-libftdi
 
-HOST_OPENOCD_CONF_OPT = 	\
+HOST_OPENOCD_CONF_OPTS = 	\
 	--disable-doxygen-html 	\
 	--enable-dummy 		\
 	--enable-ft2232_libftdi \

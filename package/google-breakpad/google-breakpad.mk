@@ -7,7 +7,7 @@
 GOOGLE_BREAKPAD_VERSION = 1373
 GOOGLE_BREAKPAD_SITE = http://google-breakpad.googlecode.com/svn/trunk
 GOOGLE_BREAKPAD_SITE_METHOD = svn
-GOOGLE_BREAKPAD_CONF_OPT = --disable-processor --disable-tools
+GOOGLE_BREAKPAD_CONF_OPTS = --disable-processor --disable-tools
 # Only a static library is installed
 GOOGLE_BREAKPAD_INSTALL_TARGET = NO
 GOOGLE_BREAKPAD_INSTALL_STAGING = YES

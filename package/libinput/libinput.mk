@@ -14,6 +14,6 @@ LIBINPUT_DEPENDENCIES = host-pkgconf libevdev mtdev udev
 LIBINPUT_INSTALL_STAGING = YES
 
 # Tests need fork, so just disable them everywhere.
-LIBINPUT_CONF_OPT = --disable-tests
+LIBINPUT_CONF_OPTS = --disable-tests
 
 $(eval $(autotools-package))

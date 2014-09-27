@@ -11,7 +11,7 @@ WEBP_LICENSE = BSD-3c
 WEBP_LICENSE_FILES = COPYING
 WEBP_INSTALL_STAGING = YES
 
-WEBP_CONF_OPT += \
+WEBP_CONF_OPTS += \
 	--with-jpegincludedir=$(STAGING_DIR)/usr/include \
 	--with-jpeglibdir=$(STAGING_DIR)/usr/lib \
 	--with-tiffincludedir=$(STAGING_DIR)/usr/include \

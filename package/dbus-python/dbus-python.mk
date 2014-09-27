@@ -18,7 +18,7 @@ DBUS_PYTHON_CONF_ENV = am_cv_pathless_PYTHON=python \
 		am_cv_python_pyexecdir=/usr/lib/python$(PYTHON_VERSION_MAJOR)/site-packages \
 		am_cv_python_includes=-I$(STAGING_DIR)/usr/include/python$(PYTHON_VERSION_MAJOR)
 
-DBUS_PYTHON_CONF_OPT = --disable-html-docs --disable-api-docs
+DBUS_PYTHON_CONF_OPTS = --disable-html-docs --disable-api-docs
 
 DBUS_PYTHON_DEPENDENCIES = dbus-glib python host-python
 

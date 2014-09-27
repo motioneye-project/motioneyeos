@@ -14,6 +14,6 @@ LIBMBIM_INSTALL_STAGING = YES
 LIBMBIM_DEPENDENCIES = libglib2 udev
 
 # we don't want -Werror
-LIBMBIM_CONF_OPT = --enable-more-warnings=no
+LIBMBIM_CONF_OPTS = --enable-more-warnings=no
 
 $(eval $(autotools-package))

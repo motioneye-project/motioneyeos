@@ -24,7 +24,7 @@ ENLIGHTENMENT_DEPENDENCIES = 	\
 	host-libeet		\
 	xcb-util-keysyms
 
-ENLIGHTENMENT_CONF_OPT = --with-edje-cc=$(HOST_DIR)/usr/bin/edje_cc \
+ENLIGHTENMENT_CONF_OPTS = --with-edje-cc=$(HOST_DIR)/usr/bin/edje_cc \
 			 --with-eet-eet=$(HOST_DIR)/usr/bin/eet \
 			 --disable-rpath
 

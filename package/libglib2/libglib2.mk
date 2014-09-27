@@ -61,7 +61,7 @@ ifeq ($(BR2_TOOLCHAIN_EXTERNAL_XILINX_MICROBLAZEEL_V2)$(BR2_TOOLCHAIN_EXTERNAL_X
 LIBGLIB2_CONF_ENV += ac_cv_header_sys_inotify_h=no
 endif
 
-HOST_LIBGLIB2_CONF_OPT = \
+HOST_LIBGLIB2_CONF_OPTS = \
 		--disable-gtk-doc \
 		--enable-debug=no \
 		--disable-dtrace \
@@ -69,9 +69,9 @@ HOST_LIBGLIB2_CONF_OPT = \
 		--disable-gcov \
 		--disable-modular-tests
 
-LIBGLIB2_CONF_OPT += --disable-modular-tests
+LIBGLIB2_CONF_OPTS += --disable-modular-tests
 ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),)
-	LIBGLIB2_CONF_OPT += --with-threads=none --disable-threads
+	LIBGLIB2_CONF_OPTS += --with-threads=none --disable-threads
 endif
 
 LIBGLIB2_DEPENDENCIES = host-pkgconf host-libglib2 libffi zlib $(if $(BR2_NEEDS_GETTEXT),gettext) host-gettext
@@ -83,15 +83,15 @@ LIBGLIB2_DEPENDENCIES += libiconv
 endif
 
 ifeq ($(BR2_PACKAGE_LIBICONV),y)
-LIBGLIB2_CONF_OPT += --with-libiconv=gnu
+LIBGLIB2_CONF_OPTS += --with-libiconv=gnu
 LIBGLIB2_DEPENDENCIES += libiconv
 endif
 
 ifeq ($(BR2_PACKAGE_PCRE),y)
-LIBGLIB2_CONF_OPT += --with-pcre=system
+LIBGLIB2_CONF_OPTS += --with-pcre=system
 LIBGLIB2_DEPENDENCIES += pcre
 else
-LIBGLIB2_CONF_OPT += --with-pcre=internal
+LIBGLIB2_CONF_OPTS += --with-pcre=internal
 endif
 
 define LIBGLIB2_REMOVE_DEV_FILES

@@ -51,7 +51,7 @@ endif
 # We have to override LD, because an external multilib toolchain ld is not
 # wrapped to provide the required sysroot options.  We also can't use ccache
 # because the configure script doesn't support it.
-PERL_CONF_OPT = \
+PERL_CONF_OPTS = \
 	--target=$(GNU_TARGET_NAME) \
 	--target-tools-prefix=$(TARGET_CROSS) \
 	--prefix=/usr \
@@ -66,24 +66,24 @@ PERL_CONF_OPT = \
 	-Dperladmin=root
 
 ifeq ($(shell expr $(PERL_VERSION_MAJOR) % 2), 1)
-    PERL_CONF_OPT += -Dusedevel
+    PERL_CONF_OPTS += -Dusedevel
 endif
 
 ifeq ($(BR2_PREFER_STATIC_LIB),y)
-    PERL_CONF_OPT += --all-static --no-dynaloader
+    PERL_CONF_OPTS += --all-static --no-dynaloader
 endif
 
 ifneq ($(BR2_LARGEFILE),y)
-    PERL_CONF_OPT += -Uuselargefiles
+    PERL_CONF_OPTS += -Uuselargefiles
 endif
 
 PERL_MODULES = $(call qstrip,$(BR2_PACKAGE_PERL_MODULES))
 ifneq ($(PERL_MODULES),)
-PERL_CONF_OPT += --only-mod=$(subst $(space),$(comma),$(PERL_MODULES))
+PERL_CONF_OPTS += --only-mod=$(subst $(space),$(comma),$(PERL_MODULES))
 endif
 
 define PERL_CONFIGURE_CMDS
-	(cd $(@D); HOSTCC='$(HOSTCC_NOCACHE)' ./configure $(PERL_CONF_OPT))
+	(cd $(@D); HOSTCC='$(HOSTCC_NOCACHE)' ./configure $(PERL_CONF_OPTS))
 	$(SED) 's/UNKNOWN-/Buildroot $(BR2_VERSION_FULL) /' $(@D)/patchlevel.h
 endef
 

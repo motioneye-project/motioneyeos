@@ -13,7 +13,7 @@ LVM2_LICENSE_FILES = COPYING COPYING.LIB
 
 # Make sure that binaries and libraries are installed with write
 # permissions for the owner.
-LVM2_CONF_OPT += \
+LVM2_CONF_OPTS += \
 	--enable-write_install \
 	--enable-pkgconfig \
 	--enable-cmdlib \
@@ -28,7 +28,7 @@ LVM2_DEPENDENCIES += readline
 else
 # v2.02.44: disable readline usage, or binaries are linked against provider
 # of "tgetent" (=> ncurses) even if it's not used..
-LVM2_CONF_OPT += --disable-readline
+LVM2_CONF_OPTS += --disable-readline
 endif
 
 ifeq ($(BR2_PACKAGE_LVM2_STANDARD_INSTALL),)
@@ -38,9 +38,9 @@ LVM2_INSTALL_TARGET_OPTS = DESTDIR=$(TARGET_DIR) install_device-mapper
 endif
 
 ifeq ($(BR2_PACKAGE_LVM2_APP_LIBRARY),y)
-LVM2_CONF_OPT += --enable-applib
+LVM2_CONF_OPTS += --enable-applib
 else
-LVM2_CONF_OPT += --disable-applib
+LVM2_CONF_OPTS += --disable-applib
 endif
 
 $(eval $(autotools-package))

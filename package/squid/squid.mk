@@ -17,7 +17,7 @@ SQUID_DEPENDENCIES = libcap host-libcap host-pkgconf \
 SQUID_CONF_ENV =	ac_cv_epoll_works=yes ac_cv_func_setresuid=yes \
 			ac_cv_func_va_copy=yes ac_cv_func___va_copy=yes \
 			ac_cv_func_strnstr=no ac_cv_have_squid=yes
-SQUID_CONF_OPT =	--enable-async-io=8 --enable-linux-netfilter \
+SQUID_CONF_OPTS =	--enable-async-io=8 --enable-linux-netfilter \
 			--enable-removal-policies="lru,heap" \
 			--with-filedescriptors=1024 --disable-ident-lookups \
 			--with-krb5-config=no \
@@ -34,7 +34,7 @@ ifeq ($(BR2_TOOLCHAIN_HAS_THREADS)$(BR2_TOOLCHAIN_USES_UCLIBC),yy)
 endif
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
-	SQUID_CONF_OPT += --enable-ssl
+	SQUID_CONF_OPTS += --enable-ssl
 	SQUID_DEPENDENCIES += openssl
 endif
 

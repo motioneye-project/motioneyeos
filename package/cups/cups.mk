@@ -12,7 +12,7 @@ CUPS_LICENSE_FILES = LICENSE.txt
 CUPS_INSTALL_STAGING = YES
 CUPS_INSTALL_STAGING_OPTS = DESTDIR=$(STAGING_DIR) DSTROOT=$(STAGING_DIR) install
 CUPS_INSTALL_TARGET_OPTS = DESTDIR=$(TARGET_DIR) DSTROOT=$(TARGET_DIR) install
-CUPS_CONF_OPT = --without-perl \
+CUPS_CONF_OPTS = --without-perl \
 		--without-java \
 		--without-php \
 		--disable-gnutls \
@@ -27,10 +27,10 @@ CUPS_DEPENDENCIES = $(if $(BR2_PACKAGE_ZLIB),zlib) \
 		    $(if $(BR2_PACKAGE_TIFF),tiff)
 
 ifeq ($(BR2_PACKAGE_DBUS),y)
-	CUPS_CONF_OPT += --enable-dbus
+	CUPS_CONF_OPTS += --enable-dbus
 	CUPS_DEPENDENCIES += dbus
 else
-	CUPS_CONF_OPT += --disable-dbus
+	CUPS_CONF_OPTS += --disable-dbus
 endif
 
 ifeq ($(BR2_PACKAGE_XORG7),y)
@@ -38,16 +38,16 @@ ifeq ($(BR2_PACKAGE_XORG7),y)
 endif
 
 ifeq ($(BR2_PACKAGE_PYTHON),y)
-	CUPS_CONF_OPT += --with-python
+	CUPS_CONF_OPTS += --with-python
 	CUPS_DEPENDENCIES += python
 else
-	CUPS_CONF_OPT += --without-python
+	CUPS_CONF_OPTS += --without-python
 endif
 
 ifeq ($(BR2_PACKAGE_CUPS_PDFTOPS),y)
-	CUPS_CONF_OPT += --enable-pdftops
+	CUPS_CONF_OPTS += --enable-pdftops
 else
-	CUPS_CONF_OPT += --disable-pdftops
+	CUPS_CONF_OPTS += --disable-pdftops
 endif
 
 # standard autoreconf fails with autoheader failures

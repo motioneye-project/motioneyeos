@@ -7,7 +7,7 @@
 GMPC_VERSION = 11.8.16
 GMPC_SITE = http://download.sarine.nl/Programs/gmpc/$(GMPC_VERSION)
 GMPC_CONF_ENV = ac_cv_path_GOB2=$(GOB2_HOST_BINARY)
-GMPC_CONF_OPT = --disable-mmkeys --disable-unique
+GMPC_CONF_OPTS = --disable-mmkeys --disable-unique
 GMPC_LICENSE = GPLv2+
 GMPC_LICENSE_FILES = COPYING
 GMPC_DEPENDENCIES = host-gob2 host-intltool host-pkgconf host-vala \

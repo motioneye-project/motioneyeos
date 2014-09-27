@@ -9,7 +9,7 @@ VORBIS_TOOLS_SITE = http://downloads.xiph.org/releases/vorbis
 VORBIS_TOOLS_LICENSE = GPLv2
 VORBIS_TOOLS_LICENSE_FILES = COPYING
 VORBIS_TOOLS_DEPENDENCIES = libao libogg libvorbis libcurl
-VORBIS_TOOLS_CONF_OPT = --program-transform-name=''
+VORBIS_TOOLS_CONF_OPTS = --program-transform-name=''
 # ogg123 calls math functions but forgets to link with libm
 VORBIS_TOOLS_CONF_ENV = LIBS=-lm
 

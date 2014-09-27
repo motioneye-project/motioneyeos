@@ -11,6 +11,6 @@ XLIB_LIBXINERAMA_LICENSE = MIT
 XLIB_LIBXINERAMA_LICENSE_FILES = COPYING
 XLIB_LIBXINERAMA_INSTALL_STAGING = YES
 XLIB_LIBXINERAMA_DEPENDENCIES = xlib_libX11 xlib_libXext xproto_xineramaproto
-XLIB_LIBXINERAMA_CONF_OPT = --disable-malloc0returnsnull
+XLIB_LIBXINERAMA_CONF_OPTS = --disable-malloc0returnsnull
 
 $(eval $(autotools-package))

@@ -30,7 +30,7 @@ endif
 # and as it's better to have gpm support in ncurses that the contrary, we force
 # gpm to not look after ncurses explicitly.
 # http://invisible-island.net/ncurses/ncurses.faq.html#using_gpm_lib
-GPM_CONF_OPT = --without-curses
+GPM_CONF_OPTS = --without-curses
 
 # configure is missing but gpm seems not compatible with our autoreconf
 # mechanism so we have to do it manually instead of using GPM_AUTORECONF = YES

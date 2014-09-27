@@ -10,26 +10,26 @@ PURE_FTPD_LICENSE = ISC
 PURE_FTPD_LICENSE_FILES = COPYING
 PURE_FTPD_DEPENDENCIES = $(if $(BR2_PACKAGE_LIBICONV),libiconv)
 
-PURE_FTPD_CONF_OPT = \
+PURE_FTPD_CONF_OPTS = \
 	--with-altlog \
 	--with-puredb \
 	--with-rfc2640
 
 ifeq ($(BR2_PACKAGE_LIBCAP),y)
-PURE_FTPD_CONF_OPT += --with-capabilities
+PURE_FTPD_CONF_OPTS += --with-capabilities
 PURE_FTPD_DEPENDENCIES += libcap
 else
-PURE_FTPD_CONF_OPT += --without-capabilities
+PURE_FTPD_CONF_OPTS += --without-capabilities
 endif
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
-PURE_FTPD_CONF_OPT += --with-tls
+PURE_FTPD_CONF_OPTS += --with-tls
 PURE_FTPD_DEPENDENCIES += openssl
 ifeq ($(BR2_PREFER_STATIC_LIB),y)
 PURE_FTPD_CONF_ENV += LIBS='-lssl -lcrypto -lz'
 endif
 else
-PURE_FTPD_CONF_OPT += --without-tls
+PURE_FTPD_CONF_OPTS += --without-tls
 endif
 
 $(eval $(autotools-package))

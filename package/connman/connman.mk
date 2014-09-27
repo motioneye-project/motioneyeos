@@ -11,7 +11,7 @@ CONNMAN_DEPENDENCIES = libglib2 dbus iptables
 CONNMAN_INSTALL_STAGING = YES
 CONNMAN_LICENSE = GPLv2
 CONNMAN_LICENSE_FILES = COPYING
-CONNMAN_CONF_OPT += --localstatedir=/var \
+CONNMAN_CONF_OPTS += --localstatedir=/var \
 	$(if $(BR2_PACKAGE_CONNMAN_DEBUG),--enable-debug,--disable-debug)		\
 	$(if $(BR2_PACKAGE_CONNMAN_ETHERNET),--enable-ethernet,--disable-ethernet)	\
 	$(if $(BR2_PACKAGE_CONNMAN_WIFI),--enable-wifi,--disable-wifi)			\
@@ -33,7 +33,7 @@ endef
 
 
 ifeq ($(BR2_PACKAGE_CONNMAN_CLIENT),y)
-CONNMAN_CONF_OPT += --enable-client
+CONNMAN_CONF_OPTS += --enable-client
 CONNMAN_DEPENDENCIES += readline
 
 define CONNMAN_INSTALL_CM
@@ -42,7 +42,7 @@ endef
 
 CONNMAN_POST_INSTALL_TARGET_HOOKS += CONNMAN_INSTALL_CM
 else
-CONNMAN_CONF_OPT += --disable-client
+CONNMAN_CONF_OPTS += --disable-client
 endif
 
 $(eval $(autotools-package))

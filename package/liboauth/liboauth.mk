@@ -14,7 +14,7 @@ LIBOAUTH_LICENSE_FILES = COPYING.MIT
 ifeq ($(BR2_PACKAGE_LIBCURL),y)
 LIBOAUTH_DEPENDENCIES += libcurl
 else
-LIBOAUTH_CONF_OPT += --disable-libcurl
+LIBOAUTH_CONF_OPTS += --disable-libcurl
 endif
 
 $(eval $(autotools-package))

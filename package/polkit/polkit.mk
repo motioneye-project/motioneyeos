@@ -14,7 +14,7 @@ POLKIT_INSTALL_STAGING = YES
 POLKIT_DEPENDENCIES = libglib2 host-intltool expat
 
 # We could also support --with-authfw=pam
-POLKIT_CONF_OPT = \
+POLKIT_CONF_OPTS = \
 	--with-authfw=shadow \
 	--with-os-type=unknown \
 	--disable-man-pages \

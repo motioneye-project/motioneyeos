@@ -43,9 +43,9 @@ endef
 
 ifeq ($(BR2_PACKAGE_ALSA_LIB),y)
 FLITE_DEPENDENCIES += alsa-lib
-FLITE_CONF_OPT += --with-audio=alsa
+FLITE_CONF_OPTS += --with-audio=alsa
 else
-FLITE_CONF_OPT += --with-audio=oss
+FLITE_CONF_OPTS += --with-audio=oss
 endif
 
 $(eval $(autotools-package))

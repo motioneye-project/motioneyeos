@@ -54,7 +54,7 @@ XSERVER_XORG_SERVER_DEPENDENCIES = 	\
 	mcookie 			\
 	host-pkgconf
 
-XSERVER_XORG_SERVER_CONF_OPT = --disable-config-hal \
+XSERVER_XORG_SERVER_CONF_OPTS = --disable-config-hal \
 		--disable-xnest --disable-xephyr --disable-dmx \
 		--with-builder-addr=buildroot@buildroot.org \
 		CFLAGS="$(TARGET_CFLAGS) -I$(STAGING_DIR)/usr/include/pixman-1" \
@@ -62,14 +62,14 @@ XSERVER_XORG_SERVER_CONF_OPT = --disable-config-hal \
 		--$(if $(BR2_PACKAGE_XSERVER_XORG_SERVER_XVFB),en,dis)able-xvfb
 
 ifeq ($(BR2_PACKAGE_XSERVER_XORG_SERVER_MODULAR),y)
-XSERVER_XORG_SERVER_CONF_OPT += --enable-xorg
+XSERVER_XORG_SERVER_CONF_OPTS += --enable-xorg
 XSERVER_XORG_SERVER_DEPENDENCIES += xlib_libpciaccess libdrm
 else
-XSERVER_XORG_SERVER_CONF_OPT += --disable-xorg
+XSERVER_XORG_SERVER_CONF_OPTS += --disable-xorg
 endif
 
 ifeq ($(BR2_PACKAGE_XSERVER_XORG_SERVER_KDRIVE),y)
-XSERVER_XORG_SERVER_CONF_OPT += --enable-kdrive --enable-xfbdev \
+XSERVER_XORG_SERVER_CONF_OPTS += --enable-kdrive --enable-xfbdev \
 		--disable-glx --disable-dri --disable-xsdl
 define XSERVER_CREATE_X_SYMLINK
  ln -f -s Xfbdev $(TARGET_DIR)/usr/bin/X
@@ -77,66 +77,66 @@ endef
 XSERVER_XORG_SERVER_POST_INSTALL_TARGET_HOOKS += XSERVER_CREATE_X_SYMLINK
 
 ifeq ($(BR2_PACKAGE_XSERVER_XORG_SERVER_KDRIVE_EVDEV),y)
-XSERVER_XORG_SERVER_CONF_OPT += --enable-kdrive-evdev
+XSERVER_XORG_SERVER_CONF_OPTS += --enable-kdrive-evdev
 else
-XSERVER_XORG_SERVER_CONF_OPT += --disable-kdrive-evdev
+XSERVER_XORG_SERVER_CONF_OPTS += --disable-kdrive-evdev
 endif
 
 ifeq ($(BR2_PACKAGE_XSERVER_XORG_SERVER_KDRIVE_KBD),y)
-XSERVER_XORG_SERVER_CONF_OPT += --enable-kdrive-kbd
+XSERVER_XORG_SERVER_CONF_OPTS += --enable-kdrive-kbd
 else
-XSERVER_XORG_SERVER_CONF_OPT += --disable-kdrive-kbd
+XSERVER_XORG_SERVER_CONF_OPTS += --disable-kdrive-kbd
 endif
 
 ifeq ($(BR2_PACKAGE_XSERVER_XORG_SERVER_KDRIVE_MOUSE),y)
-XSERVER_XORG_SERVER_CONF_OPT += --enable-kdrive-mouse
+XSERVER_XORG_SERVER_CONF_OPTS += --enable-kdrive-mouse
 else
-XSERVER_XORG_SERVER_CONF_OPT += --disable-kdrive-mouse
+XSERVER_XORG_SERVER_CONF_OPTS += --disable-kdrive-mouse
 endif
 
 else # modular
-XSERVER_XORG_SERVER_CONF_OPT += --disable-kdrive --disable-xfbdev
+XSERVER_XORG_SERVER_CONF_OPTS += --disable-kdrive --disable-xfbdev
 endif
 
 ifeq ($(BR2_PACKAGE_MESA3D_DRI_DRIVER),y)
-XSERVER_XORG_SERVER_CONF_OPT += --enable-dri --enable-glx
+XSERVER_XORG_SERVER_CONF_OPTS += --enable-dri --enable-glx
 XSERVER_XORG_SERVER_DEPENDENCIES += mesa3d xproto_xf86driproto
 else
-XSERVER_XORG_SERVER_CONF_OPT += --disable-dri --disable-glx
+XSERVER_XORG_SERVER_CONF_OPTS += --disable-dri --disable-glx
 endif
 
 ifeq ($(BR2_PACKAGE_XSERVER_XORG_SERVER_NULL_CURSOR),y)
-XSERVER_XORG_SERVER_CONF_OPT += --enable-null-root-cursor
+XSERVER_XORG_SERVER_CONF_OPTS += --enable-null-root-cursor
 else
-XSERVER_XORG_SERVER_CONF_OPT += --disable-null-root-cursor
+XSERVER_XORG_SERVER_CONF_OPTS += --disable-null-root-cursor
 endif
 
 ifeq ($(BR2_PACKAGE_XSERVER_XORG_SERVER_AIGLX),y)
-XSERVER_XORG_SERVER_CONF_OPT += --enable-aiglx
+XSERVER_XORG_SERVER_CONF_OPTS += --enable-aiglx
 else
-XSERVER_XORG_SERVER_CONF_OPT += --disable-aiglx
+XSERVER_XORG_SERVER_CONF_OPTS += --disable-aiglx
 endif
 
 # Optional packages
 ifeq ($(BR2_PACKAGE_TSLIB),y)
 XSERVER_XORG_SERVER_DEPENDENCIES += tslib
-XSERVER_XORG_SERVER_CONF_OPT += --enable-tslib LDFLAGS="-lts"
+XSERVER_XORG_SERVER_CONF_OPTS += --enable-tslib LDFLAGS="-lts"
 endif
 
 ifeq ($(BR2_PACKAGE_HAS_UDEV),y)
 XSERVER_XORG_SERVER_DEPENDENCIES += udev
-XSERVER_XORG_SERVER_CONF_OPT += --enable-config-udev
+XSERVER_XORG_SERVER_CONF_OPTS += --enable-config-udev
 # udev kms support depends on libdrm
 ifeq ($(BR2_PACKAGE_LIBDRM),y)
 XSERVER_XORG_SERVER_DEPENDENCIES += libdrm
-XSERVER_XORG_SERVER_CONF_OPT += --enable-config-udev-kms
+XSERVER_XORG_SERVER_CONF_OPTS += --enable-config-udev-kms
 else
-XSERVER_XORG_SERVER_CONF_OPT += --disable-config-udev-kms
+XSERVER_XORG_SERVER_CONF_OPTS += --disable-config-udev-kms
 endif
 else
 ifeq ($(BR2_PACKAGE_DBUS),y)
 XSERVER_XORG_SERVER_DEPENDENCIES += dbus
-XSERVER_XORG_SERVER_CONF_OPT += --enable-config-dbus
+XSERVER_XORG_SERVER_CONF_OPTS += --enable-config-dbus
 endif
 endif
 
@@ -147,56 +147,56 @@ endif
 ifeq ($(BR2_PACKAGE_LIBUNWIND),y)
 XSERVER_XORG_SERVER_DEPENDENCIES += libunwind
 else
-XSERVER_XORG_SERVER_CONF_OPT += --disable-libunwind
+XSERVER_XORG_SERVER_CONF_OPTS += --disable-libunwind
 endif
 
 ifeq ($(BR2_PACKAGE_XPROTO_RECORDPROTO),y)
 XSERVER_XORG_SERVER_DEPENDENCIES += xproto_recordproto
-XSERVER_XORG_SERVER_CONF_OPT += --enable-record
+XSERVER_XORG_SERVER_CONF_OPTS += --enable-record
 else
-XSERVER_XORG_SERVER_CONF_OPT += --disable-record
+XSERVER_XORG_SERVER_CONF_OPTS += --disable-record
 endif
 
 ifneq ($(BR2_PACKAGE_XLIB_LIBXVMC),y)
-XSERVER_XORG_SERVER_CONF_OPT += --disable-xvmc
+XSERVER_XORG_SERVER_CONF_OPTS += --disable-xvmc
 endif
 
 ifneq ($(BR2_PACKAGE_XLIB_LIBXCOMPOSITE),y)
-XSERVER_XORG_SERVER_CONF_OPT += --disable-composite
+XSERVER_XORG_SERVER_CONF_OPTS += --disable-composite
 endif
 
 ifeq ($(BR2_PACKAGE_XSERVER_XORG_SERVER_MODULAR),y)
 ifeq ($(BR2_PACKAGE_XPROTO_DRI2PROTO),y)
 XSERVER_XORG_SERVER_DEPENDENCIES += xproto_dri2proto
-XSERVER_XORG_SERVER_CONF_OPT += --enable-dri2
+XSERVER_XORG_SERVER_CONF_OPTS += --enable-dri2
 endif
 ifeq ($(BR2_PACKAGE_XPROTO_DRI3PROTO),y)
 XSERVER_XORG_SERVER_DEPENDENCIES += xlib_libxshmfence xproto_dri3proto
-XSERVER_XORG_SERVER_CONF_OPT += --enable-dri3
+XSERVER_XORG_SERVER_CONF_OPTS += --enable-dri3
 endif
 else
-XSERVER_XORG_SERVER_CONF_OPT += --disable-dri2 --disable-dri3
+XSERVER_XORG_SERVER_CONF_OPTS += --disable-dri2 --disable-dri3
 endif
 
 ifeq ($(BR2_PACKAGE_XLIB_LIBXSCRNSAVER),y)
 XSERVER_XORG_SERVER_DEPENDENCIES += xlib_libXScrnSaver
-XSERVER_XORG_SERVER_CONF_OPT += --enable-screensaver
+XSERVER_XORG_SERVER_CONF_OPTS += --enable-screensaver
 else
-XSERVER_XORG_SERVER_CONF_OPT += --disable-screensaver
+XSERVER_XORG_SERVER_CONF_OPTS += --disable-screensaver
 endif
 
 ifneq ($(BR2_PACKAGE_XLIB_LIBDMX),y)
-XSERVER_XORG_SERVER_CONF_OPT += --disable-dmx
+XSERVER_XORG_SERVER_CONF_OPTS += --disable-dmx
 endif
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
-XSERVER_XORG_SERVER_CONF_OPT += --with-sha1=libcrypto
+XSERVER_XORG_SERVER_CONF_OPTS += --with-sha1=libcrypto
 XSERVER_XORG_SERVER_DEPENDENCIES += openssl
 else ifeq ($(BR2_PACKAGE_LIBGCRYPT),y)
-XSERVER_XORG_SERVER_CONF_OPT += --with-sha1=libgcrypt
+XSERVER_XORG_SERVER_CONF_OPTS += --with-sha1=libgcrypt
 XSERVER_XORG_SERVER_DEPENDENCIES += libgcrypt
 else
-XSERVER_XORG_SERVER_CONF_OPT += --with-sha1=libsha1
+XSERVER_XORG_SERVER_CONF_OPTS += --with-sha1=libsha1
 XSERVER_XORG_SERVER_DEPENDENCIES += libsha1
 endif
 

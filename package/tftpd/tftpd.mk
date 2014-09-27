@@ -7,10 +7,10 @@
 TFTPD_VERSION  = 5.2
 TFTPD_SOURCE   = tftp-hpa-$(TFTPD_VERSION).tar.xz
 TFTPD_SITE     = $(BR2_KERNEL_MIRROR)/software/network/tftp/tftp-hpa
-TFTPD_CONF_OPT = --without-tcpwrappers
+TFTPD_CONF_OPTS = --without-tcpwrappers
 
 ifneq ($(BR2_INET_IPV6),y)
-TFTPD_CONF_OPT += --without-ipv6
+TFTPD_CONF_OPTS += --without-ipv6
 endif
 
 define TFTPD_INSTALL_TARGET_CMDS

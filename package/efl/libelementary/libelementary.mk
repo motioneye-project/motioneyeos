@@ -15,16 +15,16 @@ LIBELEMENTARY_INSTALL_STAGING = YES
 LIBELEMENTARY_DEPENDENCIES = libeina libevas libecore libedje host-libedje \
 				host-libeet
 
-LIBELEMENTARY_CONF_OPT = --with-edje-cc=$(HOST_DIR)/usr/bin/edje_cc \
+LIBELEMENTARY_CONF_OPTS = --with-edje-cc=$(HOST_DIR)/usr/bin/edje_cc \
 			 --with-eet-eet=$(HOST_DIR)/usr/bin/eet
 
 # libethumb_client is only built when ethumbd is built.
 # ethumbd is only built if edbus is built.
 ifeq ($(BR2_PACKAGE_LIBETHUMB)$(BR2_PACKAGE_LIBEDBUS),yy)
 LIBELEMENTARY_DEPENDENCIES += libethumb
-LIBELEMENTARY_CONF_OPT += --enable-ethumb
+LIBELEMENTARY_CONF_OPTS += --enable-ethumb
 else
-LIBELEMENTARY_CONF_OPT += --disable-ethumb
+LIBELEMENTARY_CONF_OPTS += --disable-ethumb
 endif
 
 $(eval $(autotools-package))
