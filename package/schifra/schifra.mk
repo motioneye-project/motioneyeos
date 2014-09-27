@@ -11,13 +11,13 @@ SCHIFRA_INSTALL_STAGING = YES
 SCHIFRA_LICENSE = schifra license
 SCHIFRA_LICENSE_FILES = schifra_license.txt
 
-SCHIFRA_MAKE_OPT = COMPILER="$(TARGET_CXX)" \
+SCHIFRA_MAKE_OPTS = COMPILER="$(TARGET_CXX)" \
 		   OPTIONS="$(TARGET_CFLAGS) $(TARGET_LDFLAGS) -o"
 
 # The examples are the only buildable artefacts.
 ifeq ($(BR2_PACKAGE_SCHIFRA_EXAMPLES),y)
 define SCHIFRA_BUILD_CMDS
-	$(MAKE) -C $(@D) $(SCHIFRA_MAKE_OPT) all
+	$(MAKE) -C $(@D) $(SCHIFRA_MAKE_OPTS) all
 endef
 
 define SCHIFRA_INSTALL_EXAMPLES

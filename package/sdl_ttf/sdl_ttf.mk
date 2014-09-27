@@ -16,5 +16,5 @@ SDL_TTF_CONF_OPT = --without-x \
 		--with-freetype-prefix=$(STAGING_DIR)/usr \
 		--with-sdl-prefix=$(STAGING_DIR)/usr
 
-SDL_TTF_MAKE_OPT = INCLUDES="-I$(STAGING_DIR)/usr/include/SDL"  LDFLAGS="-L$(STAGING_DIR)/usr/lib"
+SDL_TTF_MAKE_OPTS = INCLUDES="-I$(STAGING_DIR)/usr/include/SDL"  LDFLAGS="-L$(STAGING_DIR)/usr/lib"
 $(eval $(autotools-package))

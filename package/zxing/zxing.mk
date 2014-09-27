@@ -17,7 +17,7 @@ ZXING_DEPENDENCIES += libiconv
 else
 # There is no locale support in the toolchain and libiconv
 # is not available so disable iconv support in zxing
-ZING_MAKE_OPT=CXXFLAGS+="-DNO_ICONV"
+ZING_MAKE_OPTS=CXXFLAGS+="-DNO_ICONV"
 endif
 endif
 
@@ -26,7 +26,7 @@ define ZXING_EXTRACT_CMDS
 endef
 
 define ZXING_BUILD_CMDS
-	$(MAKE) -C $(@D)/cpp/core/src $(TARGET_CONFIGURE_OPTS) $(ZING_MAKE_OPT)
+	$(MAKE) -C $(@D)/cpp/core/src $(TARGET_CONFIGURE_OPTS) $(ZING_MAKE_OPTS)
 endef
 
 define ZXING_INSTALL_STAGING_CMDS

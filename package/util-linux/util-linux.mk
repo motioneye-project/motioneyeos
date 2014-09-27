@@ -44,7 +44,7 @@ endif
 
 ifeq ($(BR2_NEEDS_GETTEXT_IF_LOCALE),y)
 UTIL_LINUX_DEPENDENCIES += gettext
-UTIL_LINUX_MAKE_OPT += LIBS=-lintl
+UTIL_LINUX_MAKE_OPTS += LIBS=-lintl
 endif
 
 ifeq ($(BR2_PACKAGE_LIBCAP_NG),y)

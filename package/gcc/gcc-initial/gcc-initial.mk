@@ -53,7 +53,7 @@ HOST_GCC_INITIAL_CONF_ENV = \
 # We need to tell gcc that the C library will be providing the ssp
 # support, as it can't guess it since the C library hasn't been built
 # yet (we're gcc-initial).
-HOST_GCC_INITIAL_MAKE_OPT = $(if $(BR2_TOOLCHAIN_HAS_SSP),gcc_cv_libc_provides_ssp=yes) all-gcc all-target-libgcc
+HOST_GCC_INITIAL_MAKE_OPTS = $(if $(BR2_TOOLCHAIN_HAS_SSP),gcc_cv_libc_provides_ssp=yes) all-gcc all-target-libgcc
 HOST_GCC_INITIAL_INSTALL_OPT = install-gcc install-target-libgcc
 
 $(eval $(host-autotools-package))

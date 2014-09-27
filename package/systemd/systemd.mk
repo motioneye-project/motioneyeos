@@ -138,8 +138,8 @@ SYSTEMD_CONF_OPT += --disable-smack
 endif
 
 # mq_getattr needs -lrt
-SYSTEMD_MAKE_OPT += LIBS=-lrt
-SYSTEMD_MAKE_OPT += LDFLAGS+=-ldl
+SYSTEMD_MAKE_OPTS += LIBS=-lrt
+SYSTEMD_MAKE_OPTS += LDFLAGS+=-ldl
 
 define SYSTEMD_INSTALL_INIT_HOOK
 	ln -fs ../lib/systemd/systemd $(TARGET_DIR)/sbin/init

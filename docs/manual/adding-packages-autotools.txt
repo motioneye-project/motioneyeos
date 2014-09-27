@@ -111,7 +111,7 @@ cases, typical packages will therefore only use a few of them.
   variables to pass to make in the build step. These are passed before
   the +make+ command. By default, empty.
 
-* +LIBFOO_MAKE_OPT+, to specify additional variables to
+* +LIBFOO_MAKE_OPTS+, to specify additional variables to
   pass to make in the build step. These are passed after the
   +make+ command. By default, empty.
 

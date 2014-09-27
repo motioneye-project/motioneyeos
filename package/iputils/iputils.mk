@@ -18,7 +18,7 @@ IPUTILS_DEPENDENCIES += busybox
 endif
 
 # Disabling CAP_SETPCAP (file capabilities)
-IPUTILS_MAKE_OPT = $(TARGET_CONFIGURE_OPTS) USE_CAP=no USE_SYSFS=no\
+IPUTILS_MAKE_OPTS = $(TARGET_CONFIGURE_OPTS) USE_CAP=no USE_SYSFS=no\
 	CFLAGS="$(TARGET_CFLAGS) -D_GNU_SOURCE" \
 	arping clockdiff ping rarpd rdisc tftpd tracepath
 
@@ -26,7 +26,7 @@ ifeq ($(BR2_INET_IPV6),y)
 # To support md5 for ping6
 IPUTILS_DEPENDENCIES += openssl
 
-IPUTILS_MAKE_OPT += ping6 tracepath6 traceroute6
+IPUTILS_MAKE_OPTS += ping6 tracepath6 traceroute6
 
 define IPUTILS_IPV6_INSTALL_TARGET_CMDS
 	$(INSTALL) -D -m 755 $(@D)/ping6       $(TARGET_DIR)/bin/ping6
@@ -36,7 +36,7 @@ endef
 endif
 
 define IPUTILS_BUILD_CMDS
-	$(MAKE) -C $(@D) $(IPUTILS_MAKE_OPT)
+	$(MAKE) -C $(@D) $(IPUTILS_MAKE_OPTS)
 endef
 
 define IPUTILS_INSTALL_TARGET_CMDS

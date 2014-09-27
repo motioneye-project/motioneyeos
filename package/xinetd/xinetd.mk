@@ -28,6 +28,6 @@ XINETD_CONF_ENV += \
 	CFLAGS="$(XINETD_CFLAGS)" \
 	LIBS="$(XINETD_LIBS)"
 
-XINETD_MAKE_OPT = AR="$(TARGET_AR)"
+XINETD_MAKE_OPTS = AR="$(TARGET_AR)"
 
 $(eval $(autotools-package))

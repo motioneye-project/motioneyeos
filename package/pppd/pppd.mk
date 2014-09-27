@@ -19,11 +19,11 @@ PPPD_RADIUS_CONF = dictionary dictionary.ascend dictionary.compat \
 
 ifeq ($(BR2_PACKAGE_PPPD_FILTER),y)
 	PPPD_DEPENDENCIES += libpcap
-	PPPD_MAKE_OPT += FILTER=y
+	PPPD_MAKE_OPTS += FILTER=y
 endif
 
 ifeq ($(BR2_INET_IPV6),y)
-	PPPD_MAKE_OPT += HAVE_INET6=y
+	PPPD_MAKE_OPTS += HAVE_INET6=y
 endif
 
 # pppd bundles some but not all of the needed kernel headers. The embedded
@@ -43,7 +43,7 @@ endef
 
 define PPPD_BUILD_CMDS
 	$(MAKE) CC="$(TARGET_CC)" COPTS="$(TARGET_CFLAGS)" \
-		-C $(@D) $(PPPD_MAKE_OPT)
+		-C $(@D) $(PPPD_MAKE_OPTS)
 endef
 
 ifeq ($(BR2_PACKAGE_PPPD_RADIUS),y)
@@ -94,7 +94,7 @@ define PPPD_INSTALL_TARGET_CMDS
 endef
 
 define PPPD_INSTALL_STAGING_CMDS
-	$(MAKE) INSTROOT=$(STAGING_DIR)/ -C $(@D) $(PPPD_MAKE_OPT) install-devel
+	$(MAKE) INSTROOT=$(STAGING_DIR)/ -C $(@D) $(PPPD_MAKE_OPTS) install-devel
 endef
 
 $(eval $(generic-package))
