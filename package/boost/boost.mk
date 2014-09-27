@@ -77,7 +77,7 @@ BOOST_DEPENDENCIES += python
 endif
 endif
 
-HOST_BOOST_OPT += toolset=gcc threading=multi variant=release link=shared \
+HOST_BOOST_OPTS += toolset=gcc threading=multi variant=release link=shared \
 	runtime-link=shared
 
 ifeq ($(BR2_MIPS_OABI32),y)
@@ -88,7 +88,7 @@ else
 BOOST_ABI = sysv
 endif
 
-BOOST_OPT += toolset=gcc \
+BOOST_OPTS += toolset=gcc \
 	     threading=multi \
 	     abi=$(BOOST_ABI) \
 	     variant=$(if $(BR2_ENABLE_DEBUG),debug,release) \
@@ -98,7 +98,7 @@ BOOST_OPT += toolset=gcc \
 ifeq ($(BR2_PACKAGE_BOOST_LOCALE),y)
 ifeq ($(BR2_TOOLCHAIN_USES_UCLIBC),y)
 # posix backend needs monetary.h which isn't available on uClibc
-BOOST_OPT += boost.locale.posix=off
+BOOST_OPTS += boost.locale.posix=off
 endif
 
 BOOST_DEPENDENCIES += $(if $(BR2_ENABLE_LOCALE),,libiconv)
@@ -123,7 +123,7 @@ endef
 define BOOST_INSTALL_TARGET_CMDS
 	(cd $(@D) && ./b2 -j$(PARALLEL_JOBS) -q -d+1 \
 	--user-config=$(@D)/user-config.jam \
-	$(BOOST_OPT) \
+	$(BOOST_OPTS) \
 	--prefix=$(TARGET_DIR)/usr \
 	--layout=$(BOOST_LAYOUT) install )
 endef
@@ -131,14 +131,14 @@ endef
 define HOST_BOOST_BUILD_CMDS
 	(cd $(@D) && ./b2 -j$(PARALLEL_JOBS) -q -d+1 \
 	--user-config=$(@D)/user-config.jam \
-	$(HOST_BOOST_OPT) \
+	$(HOST_BOOST_OPTS) \
 	--prefix=$(HOST_DIR)/usr )
 endef
 
 define HOST_BOOST_INSTALL_CMDS
 	(cd $(@D) && ./b2 -j$(PARALLEL_JOBS) -q -d+1 \
 	--user-config=$(@D)/user-config.jam \
-	$(HOST_BOOST_OPT) \
+	$(HOST_BOOST_OPTS) \
 	--prefix=$(HOST_DIR)/usr \
 	--layout=$(BOOST_LAYOUT) install )
 endef
@@ -146,7 +146,7 @@ endef
 define BOOST_INSTALL_STAGING_CMDS
 	(cd $(@D) && ./bjam -j$(PARALLEL_JOBS) -d+1 \
 	--user-config=$(@D)/user-config.jam \
-	$(BOOST_OPT) \
+	$(BOOST_OPTS) \
 	--prefix=$(STAGING_DIR)/usr \
 	--layout=$(BOOST_LAYOUT) install)
 endef

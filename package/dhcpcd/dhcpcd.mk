@@ -11,15 +11,15 @@ DHCPCD_DEPENDENCIES = host-pkgconf
 DHCPCD_LICENSE = BSD-2c
 
 ifeq ($(BR2_INET_IPV6),)
-	DHCPCD_CONFIG_OPT += --disable-ipv6
+	DHCPCD_CONFIG_OPTS += --disable-ipv6
 endif
 
 ifeq ($(BR2_PREFER_STATIC_LIB),y)
-	DHCPCD_CONFIG_OPT += --enable-static
+	DHCPCD_CONFIG_OPTS += --enable-static
 endif
 
 ifeq ($(BR2_USE_MMU),)
-	DHCPCD_CONFIG_OPT += --disable-fork
+	DHCPCD_CONFIG_OPTS += --disable-fork
 endif
 
 define DHCPCD_CONFIGURE_CMDS
@@ -27,7 +27,7 @@ define DHCPCD_CONFIGURE_CMDS
 	$(TARGET_CONFIGURE_OPTS) ./configure \
 		--target=$(BR2_GCC_TARGET_ARCH) \
 		--os=linux \
-		$(DHCPCD_CONFIG_OPT) )
+		$(DHCPCD_CONFIG_OPTS) )
 endef
 
 define DHCPCD_BUILD_CMDS

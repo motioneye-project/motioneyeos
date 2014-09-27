@@ -20,7 +20,7 @@ HOST_FREETYPE_CONF_OPTS = --without-zlib --without-bzip2 --without-png
 # Regen required because the tarball ships with an experimental ltmain.sh
 # that can't be patched by our infra.
 # autogen.sh is because autotools stuff lives in other directories and
-# even AUTORECONF with _OPT doesn't do it properly.
+# even AUTORECONF with _OPTS doesn't do it properly.
 # POST_PATCH is because we still need to patch libtool after the regen.
 define FREETYPE_RUN_AUTOGEN
 	cd $(@D) && PATH=$(BR_PATH) ./autogen.sh
