@@ -17,7 +17,7 @@ WEBKIT_DEPENDENCIES += \
 
 # webkit-disable-tests.patch changes configure.ac therefore autoreconf required
 WEBKIT_AUTORECONF = YES
-WEBKIT_AUTORECONF_OPT = -I $(@D)/Source/autotools
+WEBKIT_AUTORECONF_OPTS = -I $(@D)/Source/autotools
 
 # parallel make install deadlocks with make 3.81
 WEBKIT_INSTALL_STAGING_OPTS = -j1 DESTDIR=$(STAGING_DIR) install

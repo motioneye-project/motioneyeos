@@ -12,7 +12,7 @@ GST_PLUGIN_X170_LICENSE = BSD-1c
 
 # There is no generated configure script in the tarball.
 GST_PLUGIN_X170_AUTORECONF = YES
-GST_PLUGIN_X170_AUTORECONF_OPT = -Im4/
+GST_PLUGIN_X170_AUTORECONF_OPTS = -Im4/
 GST_PLUGIN_X170_DEPENDENCIES = gstreamer libglib2 on2-8170-libs
 
 $(eval $(autotools-package))
