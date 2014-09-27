@@ -156,9 +156,9 @@ endif
 ifndef $(2)_INSTALL_CMDS
 define $(2)_INSTALL_CMDS
 	cd $$($$(PKG)_SRCDIR) && if [ -f Build.PL ] ; then \
-		perl Build $$($(2)_INSTALL_TARGET_OPT) install; \
+		perl Build $$($(2)_INSTALL_TARGET_OPTS) install; \
 	else \
-		$$(MAKE1) $$($(2)_INSTALL_TARGET_OPT) pure_install; \
+		$$(MAKE1) $$($(2)_INSTALL_TARGET_OPTS) pure_install; \
 	fi
 endef
 endif
@@ -170,9 +170,9 @@ endif
 ifndef $(2)_INSTALL_TARGET_CMDS
 define $(2)_INSTALL_TARGET_CMDS
 	cd $$($$(PKG)_SRCDIR) && if [ -f Build.PL ] ; then \
-		perl Build $$($(2)_INSTALL_TARGET_OPT) install; \
+		perl Build $$($(2)_INSTALL_TARGET_OPTS) install; \
 	else \
-		$$(MAKE1) $$($(2)_INSTALL_TARGET_OPT) pure_install; \
+		$$(MAKE1) $$($(2)_INSTALL_TARGET_OPTS) pure_install; \
 	fi
 endef
 endif

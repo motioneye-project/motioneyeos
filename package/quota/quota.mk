@@ -29,7 +29,7 @@ QUOTA_CONF_ENV = \
 	CFLAGS="$(QUOTA_CFLAGS) -D_GNU_SOURCE" LDFLAGS="$(QUOTA_LDFLAGS)"
 
 # Package uses autoconf but not automake.
-QUOTA_INSTALL_TARGET_OPT = \
+QUOTA_INSTALL_TARGET_OPTS = \
 	ROOTDIR=$(TARGET_DIR) \
 	install
 

@@ -25,7 +25,7 @@ NETSNMP_CONF_OPT = --with-persistent-directory=/var/lib/snmp \
 		--with-out-transports="Unix" \
 		--disable-manuals
 NETSNMP_INSTALL_STAGING_OPT = DESTDIR=$(STAGING_DIR) LIB_LDCONFIG_CMD=true install
-NETSNMP_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) LIB_LDCONFIG_CMD=true install
+NETSNMP_INSTALL_TARGET_OPTS = DESTDIR=$(TARGET_DIR) LIB_LDCONFIG_CMD=true install
 NETSNMP_MAKE = $(MAKE1)
 NETSNMP_CONFIG_SCRIPTS = net-snmp-config
 

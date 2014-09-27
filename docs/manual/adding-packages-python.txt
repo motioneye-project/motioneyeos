@@ -127,15 +127,15 @@ therefore only use a few of them, or none.
   packages, the +PKG_PYTHON_DISTUTILS_BUILD_OPT+ options are already
   passed automatically by the infrastructure.
 
-* +PYTHON_FOO_INSTALL_TARGET_OPT+, +PYTHON_FOO_INSTALL_STAGING_OPT+,
+* +PYTHON_FOO_INSTALL_TARGET_OPTS+, +PYTHON_FOO_INSTALL_STAGING_OPT+,
   +HOST_PYTHON_FOO_INSTALL_OPTS+ to specify additional options to pass
   to the Python +setup.py+ script during the target installation step,
   the staging installation step or the host installation,
   respectively. Note that the infrastructure is automatically passing
-  some options, defined in +PKG_PYTHON_DISTUTILS_INSTALL_TARGET_OPT+
+  some options, defined in +PKG_PYTHON_DISTUTILS_INSTALL_TARGET_OPTS+
   or +PKG_PYTHON_DISTUTILS_INSTALL_STAGING_OPT+ (for target distutils
   packages), +HOST_PKG_PYTHON_DISTUTILS_INSTALL_OPTS+ (for host
-  distutils packages), +PKG_PYTHON_SETUPTOOLS_INSTALL_TARGET_OPT+ or
+  distutils packages), +PKG_PYTHON_SETUPTOOLS_INSTALL_TARGET_OPTS+ or
   +PKG_PYTHON_SETUPTOOLS_INSTALL_STAGING_OPT+ (for target setuptools
   packages) and +HOST_PKG_PYTHON_SETUPTOOLS_INSTALL_OPTS+ (for host
   setuptools packages).

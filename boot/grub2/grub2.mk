@@ -65,7 +65,7 @@ GRUB2_CONF_OPT = \
 # directory, and the image generation process (below) will use the
 # grub-mkimage tool and Grub2 modules from the host directory.
 
-GRUB2_INSTALL_TARGET_OPT = DESTDIR=$(HOST_DIR) install
+GRUB2_INSTALL_TARGET_OPTS = DESTDIR=$(HOST_DIR) install
 
 define GRUB2_IMAGE_INSTALLATION
 	mkdir -p $(dir $(GRUB2_IMAGE))

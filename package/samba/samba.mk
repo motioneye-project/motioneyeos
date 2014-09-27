@@ -60,7 +60,7 @@ SAMBA_CONF_OPT = \
 	$(if $(BR2_PACKAGE_SAMBA_SMBCLIENT),--with-readline=$(STAGING_DIR)) \
 	$(if $(BR2_PACKAGE_SAMBA_WINBINDD),--with-winbind,--without-winbind)
 
-SAMBA_INSTALL_TARGET_OPT = \
+SAMBA_INSTALL_TARGET_OPTS = \
 	DESTDIR=$(TARGET_DIR) -C $(SAMBA_DIR)/$(SAMBA_SUBDIR) \
 	installlibs installservers installbin installscripts \
 	$(if $(BR2_PACKAGE_SAMBA_SWAT),installswat)

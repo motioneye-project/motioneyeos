@@ -117,7 +117,7 @@ typical packages will therefore only use a few of them.
   is +DESTDIR=$(STAGING_DIR) install+, which is correct for most
   CMake packages. It is still possible to override it.
 
-* +LIBFOO_INSTALL_TARGET_OPT+ contains the make options used to
+* +LIBFOO_INSTALL_TARGET_OPTS+ contains the make options used to
   install the package to the target directory. By default, the value
   is +DESTDIR=$(TARGET_DIR) install+. The default value is correct
   for most CMake packages, but it is still possible to override it if

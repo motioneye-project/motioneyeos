@@ -22,7 +22,7 @@ ACL_INSTALL_STAGING_OPT = 			\
 	PKG_DEVLIB_DIR=$(STAGING_DIR)/usr/lib	\
 	install-dev install-lib
 
-ACL_INSTALL_TARGET_OPT = 			\
+ACL_INSTALL_TARGET_OPTS = 			\
 	prefix=$(TARGET_DIR)/usr 		\
 	exec_prefix=$(TARGET_DIR)/usr 		\
 	install install-lib
