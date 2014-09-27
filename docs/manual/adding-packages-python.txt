@@ -122,9 +122,9 @@ therefore only use a few of them, or none.
   setuptools target packages) and +HOST_PKG_PYTHON_SETUPTOOLS_ENV+
   (for setuptools host packages).
 
-* +PYTHON_FOO_BUILD_OPT+, to specify additional options to pass to the
+* +PYTHON_FOO_BUILD_OPTS+, to specify additional options to pass to the
   Python +setup.py+ script during the build step. For target distutils
-  packages, the +PKG_PYTHON_DISTUTILS_BUILD_OPT+ options are already
+  packages, the +PKG_PYTHON_DISTUTILS_BUILD_OPTS+ options are already
   passed automatically by the infrastructure.
 
 * +PYTHON_FOO_INSTALL_TARGET_OPTS+, +PYTHON_FOO_INSTALL_STAGING_OPTS+,

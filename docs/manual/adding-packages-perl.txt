@@ -105,7 +105,7 @@ cases, typical packages will therefore only use a few of them.
   configure options to pass to the +perl Makefile.PL+ or +perl Build.PL+.
   By default, empty.
 
-* +PERL_FOO_BUILD_OPT+/+HOST_PERL_FOO_BUILD_OPT+, to specify additional
+* +PERL_FOO_BUILD_OPTS+/+HOST_PERL_FOO_BUILD_OPTS+, to specify additional
   options to pass to +make pure_all+ or +perl Build build+ in the build step.
   By default, empty.
 

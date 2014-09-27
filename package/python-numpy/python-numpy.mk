@@ -16,7 +16,7 @@ PYTHON_NUMPY_DEPENDENCIES += clapack
 PYTHON_NUMPY_SITE_CFG_LIBS += blas lapack
 endif
 
-PYTHON_NUMPY_BUILD_OPT = --fcompiler=None
+PYTHON_NUMPY_BUILD_OPTS = --fcompiler=None
 
 define PYTHON_NUMPY_CONFIGURE_CMDS
 	-rm -f $(@D)/site.cfg

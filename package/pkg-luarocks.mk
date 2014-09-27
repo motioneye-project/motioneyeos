@@ -33,7 +33,7 @@
 
 define inner-luarocks-package
 
-$(2)_BUILD_OPT		?=
+$(2)_BUILD_OPTS		?=
 $(2)_SUBDIR		?= $(1)-$$(shell echo "$$($(3)_VERSION)" | sed -e "s/-[0-9]$$$$//")
 $(2)_ROCKSPEC		?= $(1)-$$($(3)_VERSION).rockspec
 $(2)_SOURCE		?= $(1)-$$($(3)_VERSION).src.rock
@@ -59,7 +59,7 @@ endif
 ifndef $(2)_INSTALL_TARGET_CMDS
 define $(2)_INSTALL_TARGET_CMDS
 	cd $$($(2)_SRCDIR) && \
-	 $$(LUAROCKS_RUN) make --keep $$($(2)_ROCKSPEC) $$($(2)_BUILD_OPT)
+	 $$(LUAROCKS_RUN) make --keep $$($(2)_ROCKSPEC) $$($(2)_BUILD_OPTS)
 endef
 endif
 

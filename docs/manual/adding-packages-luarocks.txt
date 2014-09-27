@@ -20,8 +20,8 @@ with an example :
 07: LUAFOO_VERSION = 1.0.2-1
 08: LUAFOO_DEPENDENCIES = foo
 09:
-10: LUAFOO_BUILD_OPT += FOO_INCDIR=$(STAGING_DIR)/usr/include
-11: LUAFOO_BUILD_OPT += FOO_LIBDIR=$(STAGING_DIR)/usr/lib
+10: LUAFOO_BUILD_OPTS += FOO_INCDIR=$(STAGING_DIR)/usr/include
+11: LUAFOO_BUILD_OPTS += FOO_LIBDIR=$(STAGING_DIR)/usr/lib
 12: LUAFOO_LICENSE = luaFoo license
 13: LUAFOO_LICENSE_FILES = COPYING
 14:
@@ -86,5 +86,5 @@ also defined. They can be overridden in specific cases.
 * +LUAFOO_SUBDIR+, which defaults to
   +luafoo-$(LUAFOO_VERSION_WITHOUT_ROCKSPEC_REVISION)+
 
-* +LUAFOO_BUILD_OPT+ contains additional build options for the
+* +LUAFOO_BUILD_OPTS+ contains additional build options for the
   +luarocks build+ call.

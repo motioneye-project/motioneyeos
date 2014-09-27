@@ -129,11 +129,11 @@ ifeq ($(4),target)
 # Build package for target
 define $(2)_BUILD_CMDS
 	cd $$($$(PKG)_SRCDIR) && if [ -f Build.PL ] ; then \
-		perl Build $$($(2)_BUILD_OPT) build; \
+		perl Build $$($(2)_BUILD_OPTS) build; \
 	else \
 		$$(MAKE1) \
 			PERL_INC=$$(STAGING_DIR)/usr/lib/perl5/$$(PERL_VERSION)/$$(PERL_ARCHNAME)/CORE \
-			$$($(2)_BUILD_OPT) pure_all; \
+			$$($(2)_BUILD_OPTS) pure_all; \
 	fi
 endef
 else
@@ -141,9 +141,9 @@ else
 # Build package for host
 define $(2)_BUILD_CMDS
 	cd $$($$(PKG)_SRCDIR) && if [ -f Build.PL ] ; then \
-		perl Build $$($(2)_BUILD_OPT) build; \
+		perl Build $$($(2)_BUILD_OPTS) build; \
 	else \
-		$$(MAKE1) $$($(2)_BUILD_OPT) pure_all; \
+		$$(MAKE1) $$($(2)_BUILD_OPTS) pure_all; \
 	fi
 endef
 endif
