@@ -1,0 +1,11 @@
+config BR2_PACKAGE_YMPD
+	bool "ympd"
+	select BR2_PACKAGE_LIBMPDCLIENT
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_LARGEFILE
+	help
+	  ympd, a standalone MPD Web GUI written in C, utilizing
+	  Websockets and Bootstrap/JS
+
+comment "ympd needs a toolchain w/ threads, largefile"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_LARGEFILE
