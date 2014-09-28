@@ -1055,6 +1055,7 @@ endif
 	source "package/proxychains-ng/Config.in"
 	source "package/ptpd/Config.in"
 	source "package/ptpd2/Config.in"
+	source "package/pure-ftpd/Config.in"
 	source "package/quagga/Config.in"
 	source "package/radvd/Config.in"
 	source "package/rp-pppoe/Config.in"
