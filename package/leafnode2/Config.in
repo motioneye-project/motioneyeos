@@ -1,0 +1,10 @@
+config BR2_PACKAGE_LEAFNODE2
+	bool "leafnode2"
+	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_PCRE
+	help
+	  Leafnode-2 is a store-and-forward NNTP (or Usenet) proxy
+	  server designed for small sites with just a few active
+	  newsgroups.
+
+	  http://www.dt.e-technik.uni-dortmund.de/~ma/leafnode/beta/

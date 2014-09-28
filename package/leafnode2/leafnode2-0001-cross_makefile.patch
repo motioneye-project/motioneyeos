@@ -1,0 +1,39 @@
+Fix cross-compilation issues
+
+ - During target package compilation the host version of b_sortnl is
+   needed.
+
+ - Do not call a 'amiroot' program built for the target when
+   cross-compiling. We're anyway not root, so simply remove the
+   chown/chgrp dance.
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/Makefile.in
+===================================================================
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -1853,7 +1853,7 @@
+ 
+ configparam_data.c: $(srcdir)/config.table b_sortnl$(EXEEXT) genconfigparam_data.awk
+ 	rm -f config.table.sorted
+-	./b_sortnl$(EXEEXT) <$(srcdir)/config.table >config.table.sorted
++	./b_sortnl_host$(EXEEXT) <$(srcdir)/config.table >config.table.sorted
+ 	$(AWK) -f $(srcdir)/genconfigparam_data.awk <config.table.sorted >$@ \
+ 	|| { rm -f $@ ; false ; }
+ 
+@@ -1868,13 +1868,7 @@
+ install-data-hook:
+ 	$(INSTALL) -d -m 02770 $(DESTDIR)$(SPOOLDIR)
+ 	$(INSTALL) -d -m 02770 $(DESTDIR)$(SPOOLDIR)/leaf.node
+-	-./amiroot && chown $(RUNAS_USER) $(DESTDIR)$(SPOOLDIR)
+-	-./amiroot && chown $(RUNAS_USER) $(DESTDIR)$(SPOOLDIR)/leaf.node
+-	-./amiroot && chgrp $(RUNAS_GROUP) $(DESTDIR)$(SPOOLDIR)
+-	-./amiroot && chgrp $(RUNAS_GROUP) $(DESTDIR)$(SPOOLDIR)/leaf.node
+ 	rm -f $(DESTDIR)$(sbindir)/leafnode-version # now in $(bindir)
+-	./amiroot && p=$(DESTDIR)$(bindir)/newsq && chown 0 $$p \
+-		&& chgrp $(RUNAS_GROUP) $$p && chmod 2111 $$p  ; true
+ 	@echo
+ 	@echo "### If upgrading from leafnode before 1.6,"
+ 	@echo "### run:  make update"
