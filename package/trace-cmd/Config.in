@@ -4,6 +4,7 @@ config BR2_PACKAGE_TRACE_CMD
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on !BR2_avr32 # AVR32 does not have TLS support
 	depends on BR2_USE_MMU # fork()
+	depends on !BR2_PREFER_STATIC_LIB # dlopen()
 	help
 	  Command line reader for ftrace.
 
@@ -14,6 +15,7 @@ config BR2_PACKAGE_TRACE_CMD
 
 	  http://git.kernel.org/cgit/linux/kernel/git/rostedt/trace-cmd.git
 
-comment "trace-cmd needs a toolchain w/ largefile, threads"
-	depends on !BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_THREADS
+comment "trace-cmd needs a toolchain w/ largefile, threads, dynamic library"
 	depends on BR2_USE_MMU
+	depends on !BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_THREADS \
+		|| BR2_PREFER_STATIC_LIB
