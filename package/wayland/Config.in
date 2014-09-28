@@ -1,6 +1,7 @@
 config BR2_PACKAGE_WAYLAND
 	bool "wayland"
 	depends on !BR2_avr32 # no epoll_create1, timerfd_create or timerfd_settime
+	depends on !BR2_PREFER_STATIC_LIB # dlfcn.h
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	select BR2_PACKAGE_LIBFFI
 	select BR2_PACKAGE_EXPAT
@@ -11,6 +12,6 @@ config BR2_PACKAGE_WAYLAND
 
 	  http://wayland.freedesktop.org/
 
-comment "wayland needs a toolchain w/ threads"
+comment "wayland needs a toolchain w/ threads, dynamic library"
 	depends on !BR2_avr32
-	depends on !BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_PREFER_STATIC_LIB
