@@ -7,8 +7,13 @@ config BR2_PACKAGE_FREERDP
 	select BR2_PACKAGE_XLIB_LIBXCURSOR
 	select BR2_PACKAGE_ZLIB
 	depends on BR2_PACKAGE_XORG7
+	depends on !BR2_TOOLCHAIN_USES_UCLIBC # evenft_{read,write}
 	help
 	  FreeRDP is a free implementation of the Remote Desktop
 	  Protocol (RDP), released under the Apache license
 
 	  http://www.freerdp.com/
+
+comment "freerdp needs an (e)glibc or musl toolchain"
+	depends on BR2_PACKAGE_XORG7
+	depends on BR2_TOOLCHAIN_USES_UCLIBC
