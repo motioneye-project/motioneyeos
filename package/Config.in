@@ -761,6 +761,7 @@ endmenu
 menu "Networking"
 	source "package/agentpp/Config.in"
 	source "package/c-ares/Config.in"
+	source "package/canfestival/Config.in"
 	source "package/cppzmq/Config.in"
 	source "package/czmq/Config.in"
 	source "package/filemq/Config.in"

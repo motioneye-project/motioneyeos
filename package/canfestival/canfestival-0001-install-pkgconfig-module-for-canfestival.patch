@@ -1,0 +1,74 @@
+From s.martin49@gmail.com Sun Sep 28 14:59:53 2014
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Subject: [PATCH] Install pkgconfig module for canfestival
+X-Mercurial-Node: c408fdc77aa18fcda81db4f0d038e8a69ba84bb2
+X-Mercurial-Series-Index: 1
+X-Mercurial-Series-Total: 1
+Message-Id: <c408fdc77aa18fcda81d.1411909193@bobook>
+X-Mercurial-Series-Id: <c408fdc77aa18fcda81d.1411909193@bobook>
+User-Agent: Mercurial-patchbomb/3.1.1
+Date: Sun, 28 Sep 2014 14:59:53 +0200
+From: Samuel Martin <s.martin49@gmail.com>
+To: canfestival-devel@lists.sourceforge.net
+Cc: Samuel Martin <s.martin49@gmail.com>
+
+# HG changeset patch
+# User "Samuel Martin" <s.martin49@gmail.com>
+# Date 1411906817 -7200
+#      Sun Sep 28 14:20:17 2014 +0200
+# Node ID c408fdc77aa18fcda81db4f0d038e8a69ba84bb2
+# Parent  7740ac6fdedc23e1ed6908d3d7db54833c88572b
+Install pkgconfig module for canfestival.
+
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+Cc: Cluadio Laurita <claudio.laurita@integrazionetotale.it>
+
+diff -r 7740ac6fdedc -r c408fdc77aa1 canfestival.pc.in
+--- /dev/null	Thu Jan 01 00:00:00 1970 +0000
++++ b/canfestival.pc.in	Sun Sep 28 14:20:17 2014 +0200
+@@ -0,0 +1,12 @@
++PREFIX = SUB_PREFIX
++TARGET = SUB_TARGET
++
++prefix=${PREFIX}
++libdir=${prefix}/lib
++includedir=${prefix}/include/canfestival
++
++Name: Canfestival
++Description: Canfestival CANOpen library
++Version: 1
++Libs: -L${libdir} -lcanfestival -lcanfestival_${TARGET} -lrt -ldl -lpthread
++Cflags: -I${includedir}
+diff -r 7740ac6fdedc -r c408fdc77aa1 configure
+--- a/configure	Thu Jun 12 14:07:16 2014 +0200
++++ b/configure	Sun Sep 28 14:20:17 2014 +0200
+@@ -813,6 +813,10 @@
+     MAKEFILES=$MAKEFILES\ drivers/$SUB_TARGET/Makefile.in
+ fi
+ 
++if [ "$SUB_TARGET" = "unix" ]; then
++    MAKEFILES=$MAKEFILES\ canfestival.pc.in
++fi
++
+ if [ "$SUB_TARGET" = "unix" -a "$SUB_TIMERS_DRIVER" = "kernel" ]; then
+ 	MAKEFILES=$MAKEFILES\
+ \	examples/kerneltest/Makefile.in\
+diff -r 7740ac6fdedc -r c408fdc77aa1 src/Makefile.in
+--- a/src/Makefile.in	Thu Jun 12 14:07:16 2014 +0200
++++ b/src/Makefile.in	Sun Sep 28 14:20:17 2014 +0200
+@@ -132,9 +132,10 @@
+ 	$(CC) $(CFLAGS) $(PROG_CFLAGS) ${PROGDEFINES} $(INCLUDES) -o $@ -c $<
+ 
+ install: libcanfestival.a
+-	mkdir -p $(DESTDIR)$(PREFIX)/lib/
++	mkdir -p $(DESTDIR)$(PREFIX)/lib/pkgconfig
+ 	mkdir -p $(DESTDIR)$(PREFIX)/include/canfestival
+ 	cp libcanfestival.a $(DESTDIR)$(PREFIX)/lib/
++	cp ../canfestival.pc $(DESTDIR)$(PREFIX)/lib/pkgconfig/
+ 	cp ../include/*.h $(DESTDIR)$(PREFIX)/include/canfestival
+ 
+ uninstall:
+
+
