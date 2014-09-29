@@ -1,0 +1,40 @@
+From bd1a8b6b547e06456cbede686d8c2f3cfdfa47d1 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?J=C3=B6rg=20Krause?= <jkrause@posteo.de>
+Date: Tue, 30 Sep 2014 00:07:26 +0200
+Subject: [PATCH 2/2] musl fixes
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Instead of using the nonstandard pthread_yield call use the standardized 
+sched_yield.
+
+Signed-off-by: Jörg Krause <jkrause@posteo.de>
+---
+ libupnpp/control/discovery.cxx | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/libupnpp/control/discovery.cxx b/libupnpp/control/discovery.cxx
+index ac14a82..0a293c7 100644
+--- a/libupnpp/control/discovery.cxx
++++ b/libupnpp/control/discovery.cxx
+@@ -18,6 +18,7 @@
+ 
+ #include <stdlib.h>
+ #include <errno.h>
++#include <sched.h>
+ #include <unistd.h>
+ 
+ #include <iostream>
+@@ -297,7 +298,7 @@ UPnPDeviceDirectory::UPnPDeviceDirectory(time_t search_window)
+         m_reason = "Discover work queue start failed";
+         return;
+     }
+-    pthread_yield();
++    sched_yield();
+     LibUPnP *lib = LibUPnP::getLibUPnP();
+     if (lib == 0) {
+         m_reason = "Can't get lib";
+-- 
+2.1.1
+
