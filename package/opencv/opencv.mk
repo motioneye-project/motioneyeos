@@ -4,11 +4,11 @@
 #
 ################################################################################
 
-OPENCV_VERSION = 2.4.8
+OPENCV_VERSION = 2.4.9.1
 OPENCV_SITE = $(call github,itseez,opencv,$(OPENCV_VERSION))
 OPENCV_INSTALL_STAGING = YES
 OPENCV_LICENSE = BSD-3c
-OPENCV_LICENSE_FILES = doc/license.txt
+OPENCV_LICENSE_FILES = LICENSE
 
 # OpenCV component options
 OPENCV_CONF_OPT += \
