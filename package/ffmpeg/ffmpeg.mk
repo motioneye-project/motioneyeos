@@ -215,6 +215,13 @@ else
 FFMPEG_CONF_OPT += --disable-vaapi
 endif
 
+ifeq ($(BR2_PACKAGE_OPUS),y)
+FFMPEG_CONF_OPT += --enable-libopus
+FFMPEG_DEPENDENCIES += opus
+else
+FFMPEG_CONF_OPT += --disable-libopus
+endif
+
 ifeq ($(BR2_PACKAGE_LIBVPX),y)
 FFMPEG_CONF_OPT += --enable-libvpx
 FFMPEG_DEPENDENCIES += libvpx
