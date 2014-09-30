@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBVPX_VERSION = v1.2.0
+LIBVPX_VERSION = v1.3.0
 LIBVPX_SITE = http://git.chromium.org/webm/libvpx.git
 LIBVPX_SITE_METHOD = git
 
