@@ -4,12 +4,8 @@ config BR2_PACKAGE_RSYSLOG
 	select BR2_PACKAGE_LIBESTR
 	select BR2_PACKAGE_LIBLOGGING
 	select BR2_PACKAGE_JSON_C
-	select BR2_PACKAGE_UTIL_LINUX
-	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
 	depends on BR2_TOOLCHAIN_HAS_THREADS
-	depends on BR2_LARGEFILE # util-linux
 	depends on BR2_USE_MMU # fork()
-	depends on BR2_USE_WCHAR # util-linux
 	help
 	  Rsyslog is a powerful and flexible syslog implementation
 

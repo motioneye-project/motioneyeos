@@ -8,7 +8,7 @@ RSYSLOG_VERSION = 7.6.5
 RSYSLOG_SITE = http://rsyslog.com/files/download/rsyslog
 RSYSLOG_LICENSE = GPLv3 LGPLv3 Apache-2.0
 RSYSLOG_LICENSE_FILES = COPYING COPYING.LESSER COPYING.ASL20
-RSYSLOG_DEPENDENCIES = zlib libestr liblogging json-c util-linux host-pkgconf
+RSYSLOG_DEPENDENCIES = zlib libestr liblogging json-c host-pkgconf
 
 RSYSLOG_CONF_OPT = --disable-testbench \
 		   --enable-cached-man-pages
@@ -28,6 +28,13 @@ ifeq ($(BR2_PACKAGE_LIBGCRYPT),y)
 	RSYSLOG_CONF_OPT += --enable-libgcrypt=yes
 else
 	RSYSLOG_CONF_OPT += --enable-libgcrypt=no
+endif
+
+ifeq ($(BR2_PACKAGE_UTIL_LINUX_LIBUUID),y)
+	RSYSLOG_DEPENDENCIES += util-linux
+	RSYSLOG_CONF_OPT += --enable-uuid
+else
+	RSYSLOG_CONF_OPT += --disable-uuid
 endif
 
 define RSYSLOG_INSTALL_INIT_SYSV
