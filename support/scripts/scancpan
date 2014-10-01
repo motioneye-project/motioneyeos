@@ -471,7 +471,7 @@ unshift @INC, sub {
 } # END OF FATPACK CODE
 
 
-use 5.018;      # same major version as target perl
+use 5.020;      # same major version as target perl
 use strict;
 use warnings;
 use Fatal qw(open close);
