@@ -5,6 +5,11 @@ BR2_cortex_a9=y
 # patches
 BR2_GLOBAL_PATCH_DIR="board/freescale/imx6sabresd/patches"
 
+# toolchain
+BR2_KERNEL_HEADERS_VERSION=y
+BR2_DEFAULT_KERNEL_VERSION="3.10.17"
+BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_3_10=y
+
 # system
 BR2_TARGET_GENERIC_GETTY_PORT="ttymxc0"
 
