@@ -10,4 +10,4 @@ config BR2_PACKAGE_TWOLAME
 	  http://www.twolame.org/
 
 comment "twolame needs a toolchain w/ largefile"
-        depends on !BR2_LARGEFILE
+	depends on !BR2_LARGEFILE

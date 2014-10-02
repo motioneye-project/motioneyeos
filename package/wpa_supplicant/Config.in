@@ -28,7 +28,7 @@ config BR2_PACKAGE_WPA_SUPPLICANT_HOTSPOT
 	  Enable Hotspot 2.0 and IEEE 802.11u interworking functionality.
 
 config BR2_PACKAGE_WPA_SUPPLICANT_DEBUG_SYSLOG
-        bool "Enable syslog support"
+	bool "Enable syslog support"
 	help
 	  Enable support for sending debug messages to syslog.
 

@@ -21,7 +21,7 @@ choice
 	default BR2_PACKAGE_ESPEAK_AUDIO_BACKEND_NONE
 
 config BR2_PACKAGE_ESPEAK_AUDIO_BACKEND_NONE
-       bool "No sound backend, only produce wav files"
+	bool "No sound backend, only produce wav files"
 
 config BR2_PACKAGE_ESPEAK_AUDIO_BACKEND_ALSA
 	bool "alsa via portaudio"

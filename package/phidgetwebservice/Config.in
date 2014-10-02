@@ -4,7 +4,7 @@ config BR2_PACKAGE_PHIDGETWEBSERVICE
 	depends on !BR2_PREFER_STATIC_LIB # libphidget
 	select BR2_PACKAGE_LIBPHIDGET
 	help
-          phidgetwebservice (the Phidget WebService) provides an HTTP
+	  phidgetwebservice (the Phidget WebService) provides an HTTP
 	  front-end to the libphidget device control API. This provides
 	  an alternative to the libphidget C linkage interface for
 	  controlling locally attached Phidgets USB devices and it also

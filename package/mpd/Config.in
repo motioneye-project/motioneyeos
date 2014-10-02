@@ -188,7 +188,7 @@ config BR2_PACKAGE_MPD_TWOLAME
 	  Enable TwoLAME mp2 encoding.
 
 comment "twolame support needs a toolchain w/ largefile"
-        depends on !BR2_LARGEFILE
+	depends on !BR2_LARGEFILE
 
 config BR2_PACKAGE_MPD_VORBIS
 	bool "vorbis"

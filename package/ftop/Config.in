@@ -9,4 +9,4 @@ config BR2_PACKAGE_FTOP
 	  https://code.google.com/p/ftop/
 
 comment "ftop needs a toolchain w/ largefile"
-        depends on !BR2_LARGEFILE
+	depends on !BR2_LARGEFILE

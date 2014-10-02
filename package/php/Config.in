@@ -18,7 +18,7 @@ config BR2_PACKAGE_PHP_CGI
 	bool
 
 config BR2_PACKAGE_PHP_FPM
-        bool
+	bool
 
 choice
 	prompt "Interface"

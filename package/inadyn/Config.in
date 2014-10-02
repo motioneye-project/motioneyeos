@@ -10,5 +10,5 @@ config BR2_PACKAGE_INADYN
 	  https://github.com/troglobit/inadyn
 
 comment "inadyn needs a toolchain w/ dynamic library"
-        depends on BR2_PREFER_STATIC_LIB
+	depends on BR2_PREFER_STATIC_LIB
 	depends on BR2_USE_MMU

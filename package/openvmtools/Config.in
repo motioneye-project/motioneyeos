@@ -16,7 +16,7 @@ config BR2_PACKAGE_OPENVMTOOLS
 	  ICU locales and X11 tools are currently not supported.
 
 	  NOTE: Support for vmblock-fuse will be enabled in openvmtools if the
-	        libfuse package is selected.
+		libfuse package is selected.
 
 if BR2_PACKAGE_OPENVMTOOLS
 

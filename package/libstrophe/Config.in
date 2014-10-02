@@ -12,4 +12,4 @@ config BR2_PACKAGE_LIBSTROPHE
 	  https://github.com/strophe/libstrophe
 
 comment "libstrophe needs a toolchain w/ threads"
-        depends on !BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
