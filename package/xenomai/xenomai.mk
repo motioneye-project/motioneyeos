@@ -6,7 +6,7 @@
 
 XENOMAI_VERSION = $(call qstrip,$(BR2_PACKAGE_XENOMAI_VERSION))
 ifeq ($(XENOMAI_VERSION),)
-XENOMAI_VERSION = 2.6.3
+XENOMAI_VERSION = 2.6.4
 endif
 
 XENOMAI_SITE = http://download.gna.org/xenomai/stable
