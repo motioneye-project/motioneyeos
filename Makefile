@@ -275,7 +275,7 @@ unexport DESTDIR
 unexport RUBYOPT
 
 include package/pkg-utils.mk
-include package/gendoc.mk
+include package/doc-asciidoc.mk
 
 ifeq ($(BR2_HAVE_DOT_CONFIG),y)
 

@@ -1,6 +1,6 @@
 # we can't use suitable-host-package here because that's not available in
 # the context of 'make release'
-gendoc-check-dependencies:
+asciidoc-check-dependencies:
 	$(Q)if [ -z "$(shell support/dependencies/check-host-asciidoc.sh)" ]; then \
 		echo "You need a sufficiently recent asciidoc on your host" \
 			"to generate documents"; \
@@ -11,7 +11,7 @@ gendoc-check-dependencies:
 		exit 1; \
 	fi
 
-gendoc-check-dependencies-pdf:
+asciidoc-check-dependencies-pdf:
 	$(Q)if [ -z "`which dblatex 2>/dev/null`" ]; then \
 		echo "You need dblatex on your host to generate PDF documents"; \
 		exit 1; \
@@ -32,8 +32,8 @@ GENDOC_XSLTPROC_IS_BROKEN = \
 	$(shell xsltproc --maxvars 0 >/dev/null 2>/dev/null || echo y)
 
 ################################################################################
-# GENDOC_INNER -- generates the make targets needed to build a specific type of
-#                 asciidoc documentation.
+# ASCIIDOC_INNER -- generates the make targets needed to build a specific type of
+#                   asciidoc documentation.
 #
 #  argument 1 is the name of the document and the top-level asciidoc file must
 #             have the same name
@@ -50,14 +50,14 @@ GENDOC_XSLTPROC_IS_BROKEN = \
 # Since this function will be called from within an $(eval ...)
 # all variable references except the arguments must be $$-quoted.
 ################################################################################
-define GENDOC_INNER
+define ASCIIDOC_INNER
 $(1): $(1)-$(5)
 .PHONY: $(1)-$(5)
 $(1)-$(5): $$(O)/docs/$(1)/$(1).$(6)
 
 # Single line, because splitting a foreach is not easy...
-gendoc-check-dependencies-$(5):
-$(1)-check-dependencies-$(5): gendoc-check-dependencies-$(5)
+asciidoc-check-dependencies-$(5):
+$(1)-check-dependencies-$(5): asciidoc-check-dependencies-$(5)
 	$$(Q)$$(foreach hook,$$($(2)_CHECK_DEPENDENCIES_$$(call UPPERCASE,$(5))_HOOKS),$$(call $$(hook))$$(sep))
 
 $(2)_$(4)_ASCIIDOC_CONF = $(3)/asciidoc-$(4).conf
@@ -105,15 +105,15 @@ endif
 endef
 
 ################################################################################
-# GENDOC -- generates the make targets needed to build asciidoc documentation.
+# ASCIIDOC -- generates the make targets needed to build asciidoc documentation.
 #
 # The variable <DOCUMENT_NAME>_SOURCES defines the dependencies.
 # The variable <DOCUMENT_NAME>_RESOURCES defines where the document's
 # resources, such as images, are located; must be an absolute path.
 ################################################################################
-define GENDOC
+define ASCIIDOC
 # Single line, because splitting a foreach is not easy...
-$(pkgname)-check-dependencies: gendoc-check-dependencies
+$(pkgname)-check-dependencies: asciidoc-check-dependencies
 	$$(Q)$$(foreach hook,$$($$(call UPPERCASE,$(pkgname))_CHECK_DEPENDENCIES_HOOKS),$$(call $$(hook))$$(sep))
 
 $$(BUILD_DIR)/docs/$(pkgname):
@@ -127,24 +127,30 @@ $(pkgname)-rsync: $$(BUILD_DIR)/docs/$(pkgname)
 
 $(pkgname)-prepare-sources: $(pkgname)-rsync
 
-$(call GENDOC_INNER,$(pkgname),$$(call UPPERCASE,$(pkgname)),$(pkgdir),xhtml,html,html,HTML,\
+$(call ASCIIDOC_INNER,$(pkgname),$$(call UPPERCASE,$(pkgname)),$(pkgdir),xhtml,html,html,HTML,\
 	--xsltproc-opts "--stringparam toc.section.depth 1")
 
-$(call GENDOC_INNER,$(pkgname),$$(call UPPERCASE,$(pkgname)),$(pkgdir),chunked,split-html,chunked,split HTML,\
+$(call ASCIIDOC_INNER,$(pkgname),$$(call UPPERCASE,$(pkgname)),$(pkgdir),chunked,split-html,chunked,split HTML,\
 	--xsltproc-opts "--stringparam toc.section.depth 1")
 
 # dblatex needs to pass the '--maxvars ...' option to xsltproc to prevent it
 # from reaching the template recursion limit when processing the (long) target
 # package table and bailing out.
-$(call GENDOC_INNER,$(pkgname),$$(call UPPERCASE,$(pkgname)),$(pkgdir),pdf,pdf,pdf,PDF,\
+$(call ASCIIDOC_INNER,$(pkgname),$$(call UPPERCASE,$(pkgname)),$(pkgdir),pdf,pdf,pdf,PDF,\
 	--dblatex-opts "-P latex.output.revhistory=0 -x '--maxvars 100000'")
 
-$(call GENDOC_INNER,$(pkgname),$$(call UPPERCASE,$(pkgname)),$(pkgdir),text,text,text,text)
+$(call ASCIIDOC_INNER,$(pkgname),$$(call UPPERCASE,$(pkgname)),$(pkgdir),text,text,text,text)
 
-$(call GENDOC_INNER,$(pkgname),$$(call UPPERCASE,$(pkgname)),$(pkgdir),epub,epub,epub,ePUB)
+$(call ASCIIDOC_INNER,$(pkgname),$$(call UPPERCASE,$(pkgname)),$(pkgdir),epub,epub,epub,ePUB)
 
 clean: $(pkgname)-clean
 $(pkgname)-clean:
 	$$(Q)$$(RM) -rf $$(BUILD_DIR)/docs/$(pkgname)
 .PHONY: $(pkgname) $(pkgname)-clean
 endef
+
+################################################################################
+# asciidoc-document -- the target generator macro for asciidoc documents
+################################################################################
+
+asciidoc-document = $(call ASCIIDOC)

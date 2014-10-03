@@ -28,4 +28,4 @@ define MANUAL_CHECK_LISTS_DEPS
 endef
 MANUAL_CHECK_DEPENDENCIES_HOOKS += MANUAL_CHECK_LISTS_DEPS
 
-$(eval $(call GENDOC))
+$(eval $(call asciidoc-document))
