@@ -1,14 +1,3 @@
-# Packages included in BR2_EXTERNAL are not part of buildroot, so they
-# should not be included in the manual.
-.PHONY: manual-update-lists
-manual-update-lists: manual-check-dependencies-lists $(BUILD_DIR)/docs/$(pkgname)
-	$(Q)$(call MESSAGE,"Updating the manual lists...")
-	$(Q)BR2_DEFCONFIG="" TOPDIR=$(TOPDIR) O=$(BUILD_DIR)/docs/$(pkgname) \
-		BR2_EXTERNAL=$(TOPDIR)/support/dummy-external \
-		python -B $(TOPDIR)/support/scripts/gen-manual-lists.py
-
-manual-prepare-sources: manual-update-lists
-
 # we can't use suitable-host-package here because that's not available in
 # the context of 'make release'
 manual-check-dependencies:
@@ -25,13 +14,6 @@ manual-check-dependencies:
 manual-check-dependencies-pdf:
 	$(Q)if [ -z "`which dblatex 2>/dev/null`" ]; then \
 		echo "You need dblatex on your host to generate PDF documents"; \
-		exit 1; \
-	fi
-
-manual-check-dependencies-lists:
-	$(Q)if ! python -c "import argparse" >/dev/null 2>&1 ; then \
-		echo "You need python with argparse on your host to generate" \
-			"the list of packages in the manual"; \
 		exit 1; \
 	fi
 
@@ -155,6 +137,29 @@ $(pkgname)-clean:
 	$$(Q)$$(RM) -rf $$(BUILD_DIR)/docs/$(pkgname)
 .PHONY: $(pkgname) $(pkgname)-clean
 endef
+
+################################################################################
+# The Buildroot manual
+################################################################################
+
+# Our manual needs to generate lists
+manual-prepare-sources: manual-update-lists
+
+# Packages included in BR2_EXTERNAL are not part of buildroot, so they
+# should not be included in the manual.
+.PHONY: manual-update-lists
+manual-update-lists: manual-check-dependencies-lists $(BUILD_DIR)/docs/$(pkgname)
+	$(Q)$(call MESSAGE,"Updating the manual lists...")
+	$(Q)BR2_DEFCONFIG="" TOPDIR=$(TOPDIR) O=$(BUILD_DIR)/docs/$(pkgname) \
+		BR2_EXTERNAL=$(TOPDIR)/support/dummy-external \
+		python -B $(TOPDIR)/support/scripts/gen-manual-lists.py
+
+manual-check-dependencies-lists:
+	$(Q)if ! python -c "import argparse" >/dev/null 2>&1 ; then \
+		echo "You need python with argparse on your host to generate" \
+			"the list of packages in the manual"; \
+		exit 1; \
+	fi
 
 MANUAL_SOURCES = $(sort $(wildcard docs/manual/*.txt) $(wildcard docs/images/*))
 MANUAL_RESOURCES = $(TOPDIR)/docs/images
