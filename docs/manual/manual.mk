@@ -1,10 +1,19 @@
+$(BUILD_DIR)/docs/$(pkgname):
+	$(Q)mkdir -p $@
+
+manual-rsync: $(BUILD_DIR)/docs/$(pkgname)
+	$(Q)$(call MESSAGE,"Preparing the manual sources...")
+	$(Q)rsync -a docs/$(pkgname)/ $(BUILD_DIR)/docs/$(pkgname)
+
 # Packages included in BR2_EXTERNAL are not part of buildroot, so they
 # should not be included in the manual.
-manual-update-lists: manual-check-dependencies-lists
+manual-update-lists: manual-check-dependencies-lists $(BUILD_DIR)/docs/$(pkgname)
 	$(Q)$(call MESSAGE,"Updating the manual lists...")
-	$(Q)BR2_DEFCONFIG="" TOPDIR=$(TOPDIR) O=$(O)/docs/manual/.build \
+	$(Q)BR2_DEFCONFIG="" TOPDIR=$(TOPDIR) O=$(BUILD_DIR)/docs/$(pkgname) \
 		BR2_EXTERNAL=$(TOPDIR)/support/dummy-external \
 		python -B $(TOPDIR)/support/scripts/gen-manual-lists.py
+
+manual-prepare-sources: manual-rsync manual-update-lists
 
 # we can't use suitable-host-package here because that's not available in
 # the context of 'make release'
@@ -65,14 +74,13 @@ $$(O)/docs/$(1)/$(1).$(4): docs/$(1)/$(1).txt \
 			   $$($$(call UPPERCASE,$(1))_SOURCES) \
 			   manual-check-dependencies \
 			   manual-check-dependencies-$(3) \
-			   manual-update-lists
+			   manual-prepare-sources
 	$$(Q)$$(call MESSAGE,"Generating $(5) $(1)...")
-	$$(Q)mkdir -p $$(@D)/.build
-	$$(Q)rsync -au docs/$(1)/*.txt $$(@D)/.build
+	$$(Q)mkdir -p $$(@D)
 	$$(Q)a2x $(6) -f $(2) -d book -L -r $$(TOPDIR)/docs/images \
 		--asciidoc-opts="$$(MANUAL_$(2)_ASCIIDOC_OPTS)" \
-		-D $$(@D) $$(@D)/.build/$(1).txt
-	-$$(Q)rm -rf $$(@D)/.build
+		-D $$(@D) \
+		$$(BUILD_DIR)/docs/$(1)/$(1).txt
 endef
 
 ################################################################################
@@ -94,7 +102,7 @@ $(call GENDOC_INNER,$(pkgname),text,text,text,text)
 $(call GENDOC_INNER,$(pkgname),epub,epub,epub,ePUB)
 clean: $(pkgname)-clean
 $(pkgname)-clean:
-	$$(Q)$$(RM) -rf $$(O)/docs/$(pkgname)
+	$$(Q)$$(RM) -rf $$(BUILD_DIR)/docs/$(pkgname)
 .PHONY: $(pkgname) $(pkgname)-clean manual-update-lists
 endef
 
