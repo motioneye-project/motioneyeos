@@ -103,6 +103,12 @@ menuconfig BR2_PACKAGE_XBMC
 
 if BR2_PACKAGE_XBMC
 
+config BR2_PACKAGE_XBMC_ALSA_LIB
+	bool "alsa"
+	select BR2_PACKAGE_ALSA_LIB
+	help
+	  Enable alsa support.
+
 config BR2_PACKAGE_XBMC_AVAHI
 	bool "avahi"
 	depends on !BR2_PREFER_STATIC_LIB # avahi

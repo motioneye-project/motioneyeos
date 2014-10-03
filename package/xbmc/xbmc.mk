@@ -71,7 +71,7 @@ else
 XBMC_CONF_OPT += --disable-dbus
 endif
 
-ifeq ($(BR2_PACKAGE_ALSA_LIB),y)
+ifeq ($(BR2_PACKAGE_XBMC_ALSA_LIB),y)
 XBMC_DEPENDENCIES += alsa-lib
 XBMC_CONF_OPT += --enable-alsa
 else
