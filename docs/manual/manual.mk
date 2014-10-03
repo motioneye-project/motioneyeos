@@ -1,5 +1,6 @@
 # Packages included in BR2_EXTERNAL are not part of buildroot, so they
 # should not be included in the manual.
+.PHONY: manual-update-lists
 manual-update-lists: manual-check-dependencies-lists $(BUILD_DIR)/docs/$(pkgname)
 	$(Q)$(call MESSAGE,"Updating the manual lists...")
 	$(Q)BR2_DEFCONFIG="" TOPDIR=$(TOPDIR) O=$(BUILD_DIR)/docs/$(pkgname) \
@@ -140,7 +141,7 @@ $(call GENDOC_INNER,$(pkgname),epub,epub,epub,ePUB)
 clean: $(pkgname)-clean
 $(pkgname)-clean:
 	$$(Q)$$(RM) -rf $$(BUILD_DIR)/docs/$(pkgname)
-.PHONY: $(pkgname) $(pkgname)-clean manual-update-lists
+.PHONY: $(pkgname) $(pkgname)-clean
 endef
 
 MANUAL_SOURCES = $(sort $(wildcard docs/manual/*.txt) $(wildcard docs/images/*))
