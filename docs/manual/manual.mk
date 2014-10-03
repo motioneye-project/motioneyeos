@@ -7,7 +7,7 @@ manual-update-lists: manual-check-dependencies-lists $(BUILD_DIR)/docs/$(pkgname
 		BR2_EXTERNAL=$(TOPDIR)/support/dummy-external \
 		python -B $(TOPDIR)/support/scripts/gen-manual-lists.py
 
-manual-prepare-sources: manual-rsync manual-update-lists
+manual-prepare-sources: manual-update-lists
 
 # we can't use suitable-host-package here because that's not available in
 # the context of 'make release'
@@ -126,6 +126,8 @@ $$(BUILD_DIR)/docs/$(pkgname):
 $(pkgname)-rsync: $$(BUILD_DIR)/docs/$(pkgname)
 	$$(Q)$$(call MESSAGE,"Preparing the $(pkgname) sources...")
 	$$(Q)rsync -a docs/$(pkgname)/ $$^
+
+$(pkgname)-prepare-sources: $(pkgname)-rsync
 
 $(call GENDOC_INNER,$(pkgname),xhtml,html,html,HTML,\
 	--xsltproc-opts "--stringparam toc.section.depth 1")
