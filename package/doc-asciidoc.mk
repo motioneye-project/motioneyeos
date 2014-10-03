@@ -98,6 +98,8 @@ define $(2)_$(4)_INSTALL_CMDS
 endef
 endif
 
+$$(O)/docs/$(1)/$(1).$(6): export TZ=UTC
+
 ifeq ($(6)-$$(GENDOC_XSLTPROC_IS_BROKEN),pdf-y)
 $$(O)/docs/$(1)/$(1).$(6):
 	$$(warning PDF generation is disabled because of a bug in \
