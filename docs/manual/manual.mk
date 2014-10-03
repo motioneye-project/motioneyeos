@@ -86,6 +86,8 @@ $$(O)/docs/$(1)/$(1).$(6):
 		to make through the command line: \
 		'PATH=/path/to/custom-xsltproc/bin:$$$${PATH} make $(1)-pdf')
 else
+# -r $(@D) is there for documents that use external filters; those filters
+# generate code at the same location it finds the document's source files.
 $$(O)/docs/$(1)/$(1).$(6): $$($(2)_SOURCES) \
 			   $(1)-check-dependencies \
 			   $(1)-check-dependencies-$(5) \
@@ -93,7 +95,7 @@ $$(O)/docs/$(1)/$(1).$(6): $$($(2)_SOURCES) \
 	$$(Q)$$(call MESSAGE,"Generating $(7) $(1)...")
 	$$(Q)mkdir -p $$(@D)
 	$$(Q)a2x $(8) -f $(4) -d book -L \
-		$$(foreach r,$$($(2)_RESOURCES),-r $$(r)) \
+		$$(foreach r,$$($(2)_RESOURCES),-r $$(r)) -r $$(@D) \
 		$$($(2)_$(4)_A2X_OPTS) \
 		--asciidoc-opts="$$($(2)_$(4)_ASCIIDOC_OPTS)" \
 		$$(BUILD_DIR)/docs/$(1)/$(1).txt
