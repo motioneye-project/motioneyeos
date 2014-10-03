@@ -31,6 +31,9 @@ asciidoc-check-dependencies-pdf:
 GENDOC_XSLTPROC_IS_BROKEN = \
 	$(shell xsltproc --maxvars 0 >/dev/null 2>/dev/null || echo y)
 
+# Apply this configuration to all documents
+BR_ASCIIDOC_CONF = docs/conf/asciidoc.conf
+
 ################################################################################
 # ASCIIDOC_INNER -- generates the make targets needed to build a specific type of
 #                   asciidoc documentation.
@@ -60,10 +63,23 @@ asciidoc-check-dependencies-$(5):
 $(1)-check-dependencies-$(5): asciidoc-check-dependencies-$(5)
 	$$(Q)$$(foreach hook,$$($(2)_CHECK_DEPENDENCIES_$$(call UPPERCASE,$(5))_HOOKS),$$(call $$(hook))$$(sep))
 
+# Include Buildroot's AsciiDoc configuration first:
+#  - generic configuration,
+#  - then output-specific configuration
+ifneq ($$(wildcard $$(BR_ASCIIDOC_CONF)),)
+$(2)_$(4)_ASCIIDOC_OPTS += -f $$(BR_ASCIIDOC_CONF)
+endif
+BR_$(4)_ASCIIDOC_CONF = docs/conf/asciidoc-$(4).conf
+ifneq ($$(wildcard $$(BR_$(4)_ASCIIDOC_CONF)),)
+$(2)_$(4)_ASCIIDOC_OPTS += -f $$(BR_$(4)_ASCIIDOC_CONF)
+endif
+
+# Then include the document's AsciiDoc configuration:
+#  - generic configuration,
+#  - then output-specific configuration
 ifneq ($$(wildcard $$($(2)_ASCIIDOC_CONF)),)
 $(2)_$(4)_ASCIIDOC_OPTS += -f $$($(2)_ASCIIDOC_CONF)
 endif
-
 $(2)_$(4)_ASCIIDOC_CONF = $(3)/asciidoc-$(4).conf
 ifneq ($$(wildcard $$($(2)_$(4)_ASCIIDOC_CONF)),)
 $(2)_$(4)_ASCIIDOC_OPTS += -f $$($(2)_$(4)_ASCIIDOC_CONF)
