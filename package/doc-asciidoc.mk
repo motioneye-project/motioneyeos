@@ -121,16 +121,16 @@ define ASCIIDOC
 $(1)-check-dependencies: asciidoc-check-dependencies
 	$$(Q)$$(foreach hook,$$($(2)_CHECK_DEPENDENCIES_HOOKS),$$(call $$(hook))$$(sep))
 
-$$(BUILD_DIR)/docs/$(1):
-	$$(Q)mkdir -p $$@
-
 # Single line, because splitting a foreach is not easy...
-$(1)-rsync: $$(BUILD_DIR)/docs/$(1)
+# Do not touch the stamp file, so we get to rsync again every time we build
+# the document.
+$$(BUILD_DIR)/docs/$(1)/.stamp_doc_rsynced:
 	$$(Q)$$(call MESSAGE,"Preparing the $(1) sources...")
-	$$(Q)rsync -a $(3) $$^
+	$$(Q)mkdir -p $$(@D)
+	$$(Q)rsync -a $(3) $$(@D)
 	$$(Q)$$(foreach hook,$$($(2)_POST_RSYNC_HOOKS),$$(call $$(hook))$$(sep))
 
-$(1)-prepare-sources: $(1)-rsync
+$(1)-prepare-sources: $$(BUILD_DIR)/docs/$(1)/.stamp_doc_rsynced
 
 $(call ASCIIDOC_INNER,$(1),$(2),$(3),xhtml,html,html,HTML,\
 	--xsltproc-opts "--stringparam toc.section.depth 1")
