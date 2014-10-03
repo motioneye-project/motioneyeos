@@ -55,10 +55,10 @@ $(1): $(1)-$(5)
 .PHONY: $(1)-$(5)
 $(1)-$(5): $$(O)/docs/$(1)/$(1).$(6)
 
-$(1)-check-dependencies: gendoc-check-dependencies
-
+# Single line, because splitting a foreach is not easy...
 gendoc-check-dependencies-$(5):
 $(1)-check-dependencies-$(5): gendoc-check-dependencies-$(5)
+	$$(Q)$$(foreach hook,$$($(2)_CHECK_DEPENDENCIES_$$(call UPPERCASE,$(5))_HOOKS),$$(call $$(hook))$$(sep))
 
 $(2)_$(4)_ASCIIDOC_CONF = $(3)/asciidoc-$(4).conf
 ifneq ($$(wildcard $$($(2)_$(4)_ASCIIDOC_CONF)),)
@@ -110,12 +110,18 @@ endef
 # resources, such as images, are located; must be an absolute path.
 ################################################################################
 define GENDOC
+# Single line, because splitting a foreach is not easy...
+$(pkgname)-check-dependencies: gendoc-check-dependencies
+	$$(Q)$$(foreach hook,$$($$(call UPPERCASE,$(pkgname))_CHECK_DEPENDENCIES_HOOKS),$$(call $$(hook))$$(sep))
+
 $$(BUILD_DIR)/docs/$(pkgname):
 	$$(Q)mkdir -p $$@
 
+# Single line, because splitting a foreach is not easy...
 $(pkgname)-rsync: $$(BUILD_DIR)/docs/$(pkgname)
 	$$(Q)$$(call MESSAGE,"Preparing the $(pkgname) sources...")
 	$$(Q)rsync -a $(pkgdir) $$^
+	$$(Q)$$(foreach hook,$$($$(call UPPERCASE,$(pkgname))_POST_RSYNC_HOOKS),$$(call $$(hook))$$(sep))
 
 $(pkgname)-prepare-sources: $(pkgname)-rsync
 
