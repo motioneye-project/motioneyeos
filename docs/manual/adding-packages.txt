@@ -27,6 +27,8 @@ include::adding-packages-virtual.txt[]
 
 include::adding-packages-kconfig.txt[]
 
+include::adding-packages-asciidoc.txt[]
+
 include::adding-packages-hooks.txt[]
 
 include::adding-packages-gettext.txt[]
