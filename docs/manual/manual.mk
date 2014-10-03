@@ -106,7 +106,8 @@ $$(O)/docs/$(1)/$(1).$(5): $$($(2)_SOURCES) \
 			   $(1)-prepare-sources
 	$$(Q)$$(call MESSAGE,"Generating $(6) $(1)...")
 	$$(Q)mkdir -p $$(@D)
-	$$(Q)a2x $(7) -f $(3) -d book -L -r $$(TOPDIR)/docs/images \
+	$$(Q)a2x $(7) -f $(3) -d book -L \
+		$$(foreach r,$$($(2)_RESOURCES),-r $$(r)) \
 		$$($(2)_$(3)_A2X_OPTS) \
 		--asciidoc-opts="$$($(2)_$(3)_ASCIIDOC_OPTS)" \
 		$$(BUILD_DIR)/docs/$(1)/$(1).txt
@@ -119,6 +120,8 @@ endef
 # GENDOC -- generates the make targets needed to build asciidoc documentation.
 #
 # The variable <DOCUMENT_NAME>_SOURCES defines the dependencies.
+# The variable <DOCUMENT_NAME>_RESOURCES defines where the document's
+# resources, such as images, are located; must be an absolute path.
 ################################################################################
 define GENDOC
 $$(BUILD_DIR)/docs/$(pkgname):
@@ -148,4 +151,5 @@ $(pkgname)-clean:
 endef
 
 MANUAL_SOURCES = $(sort $(wildcard docs/manual/*.txt) $(wildcard docs/images/*))
+MANUAL_RESOURCES = $(TOPDIR)/docs/images
 $(eval $(call GENDOC))
