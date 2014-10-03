@@ -41,6 +41,20 @@ manual-check-dependencies-lists:
 		exit 1; \
 	fi
 
+# PDF manual generation is broken because of a bug in xsltproc program provided
+# by libxslt <=1.1.28, which does not honor an option we need to set.
+# Fortunately, this bug is already fixed upstream:
+#   https://gitorious.org/libxslt/libxslt/commit/5af7ad745323004984287e48b42712e7305de35c
+#
+# So, bail out when trying to build the pdf manual using a buggy version of the
+# xsltproc program.
+#
+# So, to overcome this issue and being able to build the pdf manual, you can
+# build xsltproc from it source repository, then run:
+#   $ PATH=/path/to/custom-xsltproc/bin:${PATH} make manual
+MANUAL_XSLTPROC_IS_BROKEN = \
+	$(shell xsltproc --maxvars 0 >/dev/null 2>/dev/null || echo y)
+
 ################################################################################
 # GENDOC_INNER -- generates the make targets needed to build a specific type of
 #                 asciidoc documentation.
@@ -83,6 +97,14 @@ define MANUAL_$(2)_INSTALL_CMDS
 endef
 endif
 
+ifeq ($(4)-$$(MANUAL_XSLTPROC_IS_BROKEN),pdf-y)
+$$(O)/docs/$(1)/$(1).$(4):
+	$$(warning PDF manual generation is disabled because of a bug in \
+		xsltproc. To be able to generate the PDF manual, you should \
+		build xsltproc from the libxslt sources >=1.1.29 and pass it \
+		to make through the command line: \
+		'PATH=/path/to/custom-xsltproc/bin:$$$${PATH} make manual-pdf')
+else
 $$(O)/docs/$(1)/$(1).$(4): docs/$(1)/$(1).txt \
 			   $$($$(call UPPERCASE,$(1))_SOURCES) \
 			   manual-check-dependencies \
@@ -96,6 +118,7 @@ $$(O)/docs/$(1)/$(1).$(4): docs/$(1)/$(1).txt \
 		$$(BUILD_DIR)/docs/$(1)/$(1).txt
 # install the generated manual
 	$$(MANUAL_$(2)_INSTALL_CMDS)
+endif
 endef
 
 ################################################################################
@@ -111,8 +134,11 @@ $(call GENDOC_INNER,$(pkgname),xhtml,html,html,HTML,\
 	--xsltproc-opts "--stringparam toc.section.depth 1")
 $(call GENDOC_INNER,$(pkgname),chunked,split-html,chunked,split HTML,\
 	--xsltproc-opts "--stringparam toc.section.depth 1")
+# dblatex needs to pass the '--maxvars ...' option to xsltproc to prevent it
+# from reaching the template recursion limit when processing the (long) target
+# package table and bailing out.
 $(call GENDOC_INNER,$(pkgname),pdf,pdf,pdf,PDF,\
-	--dblatex-opts "-P latex.output.revhistory=0")
+	--dblatex-opts "-P latex.output.revhistory=0 -x '--maxvars 100000'")
 $(call GENDOC_INNER,$(pkgname),text,text,text,text)
 $(call GENDOC_INNER,$(pkgname),epub,epub,epub,ePUB)
 clean: $(pkgname)-clean
