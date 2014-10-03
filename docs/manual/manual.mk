@@ -1,10 +1,3 @@
-$(BUILD_DIR)/docs/$(pkgname):
-	$(Q)mkdir -p $@
-
-manual-rsync: $(BUILD_DIR)/docs/$(pkgname)
-	$(Q)$(call MESSAGE,"Preparing the manual sources...")
-	$(Q)rsync -a docs/$(pkgname)/ $(BUILD_DIR)/docs/$(pkgname)
-
 # Packages included in BR2_EXTERNAL are not part of buildroot, so they
 # should not be included in the manual.
 manual-update-lists: manual-check-dependencies-lists $(BUILD_DIR)/docs/$(pkgname)
@@ -127,6 +120,13 @@ endef
 # The variable <DOCUMENT_NAME>_SOURCES defines the dependencies.
 ################################################################################
 define GENDOC
+$$(BUILD_DIR)/docs/$(pkgname):
+	$$(Q)mkdir -p $$@
+
+$(pkgname)-rsync: $$(BUILD_DIR)/docs/$(pkgname)
+	$$(Q)$$(call MESSAGE,"Preparing the $(pkgname) sources...")
+	$$(Q)rsync -a docs/$(pkgname)/ $$^
+
 $(call GENDOC_INNER,$(pkgname),xhtml,html,html,HTML,\
 	--xsltproc-opts "--stringparam toc.section.depth 1")
 $(call GENDOC_INNER,$(pkgname),chunked,split-html,chunked,split HTML,\
