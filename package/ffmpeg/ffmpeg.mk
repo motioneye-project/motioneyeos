@@ -17,7 +17,7 @@ FFMPEG_LICENSE_FILES += COPYING.GPLv2
 endif
 
 FFMPEG_CONF_OPT = \
-	--prefix=/usr		\
+	--prefix=/usr \
 	--enable-avfilter \
 	--disable-version3 \
 	--enable-logging \
@@ -340,7 +340,7 @@ define FFMPEG_CONFIGURE_CMDS
 	$(TARGET_CONFIGURE_ARGS) \
 	$(FFMPEG_CONF_ENV) \
 	./configure \
-		--enable-cross-compile	\
+		--enable-cross-compile \
 		--cross-prefix=$(TARGET_CROSS) \
 		--sysroot=$(STAGING_DIR) \
 		--host-cc="$(HOSTCC)" \
