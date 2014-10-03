@@ -1,0 +1,64 @@
+http://ftp.gnu.org/pub/gnu/bash/bash-4.3-patches/bash43-028 with
+a slight tweak for the patch prefix.
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release:	4.3
+Patch-ID:	bash43-029
+
+Bug-Reported-by:	Michal Zalewski <lcamtuf@coredump.cx>
+Bug-Reference-ID:
+Bug-Reference-URL:
+
+Bug-Description:
+
+When bash is parsing a function definition that contains a here-document
+delimited by end-of-file (or end-of-string), it leaves the closing delimiter
+uninitialized.  This can result in an invalid memory access when the parsed
+function is later copied.
+
+Patch (apply with `patch -p0'):
+
+*** a/make_cmd.c	2011-12-16 08:08:01.000000000 -0500
+--- b/make_cmd.c	2014-10-02 11:24:23.000000000 -0400
+***************
+*** 693,696 ****
+--- 693,697 ----
+    temp->redirector = source;
+    temp->redirectee = dest_and_filename;
++   temp->here_doc_eof = 0;
+    temp->instruction = instruction;
+    temp->flags = 0;
+*** a/copy_cmd.c	2009-09-11 16:28:02.000000000 -0400
+--- b/copy_cmd.c	2014-10-02 11:24:23.000000000 -0400
+***************
+*** 127,131 ****
+      case r_reading_until:
+      case r_deblank_reading_until:
+!       new_redirect->here_doc_eof = savestring (redirect->here_doc_eof);
+        /*FALLTHROUGH*/
+      case r_reading_string:
+--- 127,131 ----
+      case r_reading_until:
+      case r_deblank_reading_until:
+!       new_redirect->here_doc_eof = redirect->here_doc_eof ? savestring (redirect->here_doc_eof) : 0;
+        /*FALLTHROUGH*/
+      case r_reading_string:
+*** a/patchlevel.h	2012-12-29 10:47:57.000000000 -0500
+--- b/patchlevel.h	2014-03-20 20:01:28.000000000 -0400
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 28
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 29
+  
+  #endif /* _PATCHLEVEL_H_ */
