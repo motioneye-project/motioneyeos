@@ -124,9 +124,6 @@ endef
 ################################################################################
 # GENDOC -- generates the make targets needed to build asciidoc documentation.
 #
-#  argument 1 is the name of the document and must be a subdirectory of docs/;
-#             the top-level asciidoc file must have the same name
-#
 # The variable <DOCUMENT_NAME>_SOURCES defines the dependencies.
 ################################################################################
 define GENDOC
