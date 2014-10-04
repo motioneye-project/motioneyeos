@@ -32,4 +32,8 @@ endef
 
 LEAFNODE2_PRE_BUILD_HOOKS += LEAFNODE2_BUILD_SORTNL_TOOL
 
+define LEAFNODE2_USERS
+	news -1 news -1 * - - - Leafnode2 daemon
+endef
+
 $(eval $(autotools-package))
