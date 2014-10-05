@@ -31,3 +31,5 @@ endef
 HOST_SWIG_POST_INSTALL_HOOKS += HOST_SWIG_INSTALL_SYMLINK
 
 $(eval $(host-autotools-package))
+
+SWIG = $(HOST_DIR)/usr/bin/swig$(SWIG_MAJOR)
