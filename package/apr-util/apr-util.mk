@@ -18,6 +18,13 @@ APR_UTIL_CONFIG_SCRIPTS = apu-1-config
 # features.
 APR_UTIL_DEPENDENCIES += $(if $(BR2_PACKAGE_LIBICONV),libiconv)
 
+ifeq ($(BR2_PACKAGE_BERKELEYDB),y)
+APR_UTIL_CONF_OPTS += --with-dbm=db53 --with-berkeley-db="$(STAGING_DIR)/usr"
+APR_UTIL_DEPENDENCIES += berkeleydb
+else
+APR_UTIL_CONF_OPTS += --without-berkeley-db
+endif
+
 ifeq ($(BR2_PACKAGE_SQLITE),y)
 APR_UTIL_CONF_OPTS += --with-sqlite3="$(STAGING_DIR)/usr"
 APR_UTIL_DEPENDENCIES += sqlite
