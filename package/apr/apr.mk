@@ -4,12 +4,17 @@
 #
 ################################################################################
 
-APR_VERSION = 1.4.8
+APR_VERSION = 1.5.1
 APR_SITE = http://archive.apache.org/dist/apr
 APR_LICENSE = Apache-2.0
 APR_LICENSE_FILES = LICENSE
 APR_INSTALL_STAGING = YES
+# We have a patch touching configure.in and Makefile.in,
+# so we need to autoreconf:
+APR_AUTORECONF = YES
 APR_CONF_ENV = \
+	CC_FOR_BUILD="$(HOSTCC)" \
+	CFLAGS_FOR_BUILD="$(HOST_CFLAGS)" \
 	ac_cv_file__dev_zero=yes \
 	ac_cv_func_setpgrp_void=yes \
 	apr_cv_process_shared_works=yes \
@@ -40,6 +45,8 @@ define APR_FIXUP_RULES_MK
 	$(SED) 's%apr_builddir=%apr_builddir=$(STAGING_DIR)%' \
 		$(STAGING_DIR)/usr/build-1/apr_rules.mk
 	$(SED) 's%apr_builders=%apr_builders=$(STAGING_DIR)%' \
+		$(STAGING_DIR)/usr/build-1/apr_rules.mk
+	$(SED) 's%top_builddir=%top_builddir=$(STAGING_DIR)%' \
 		$(STAGING_DIR)/usr/build-1/apr_rules.mk
 endef
 
