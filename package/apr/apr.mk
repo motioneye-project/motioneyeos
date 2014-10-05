@@ -16,12 +16,18 @@ APR_CONF_ENV = \
 	apr_cv_mutex_robust_shared=no \
 	apr_cv_tcp_nodelay_with_cork=yes \
 	ac_cv_sizeof_struct_iovec=8 \
+	ac_cv_struct_rlimit=yes \
 	apr_cv_mutex_recursive=yes
 APR_CONFIG_SCRIPTS = apr-1-config
 
 # Doesn't even try to guess when cross compiling
 ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),y)
 APR_CONF_ENV += apr_cv_pthreads_lib="-lpthread"
+endif
+
+# Fix lfs detection when cross compiling
+ifeq ($(BR2_LARGEFILE),y)
+APR_CONF_ENV += apr_cv_use_lfs64=yes
 endif
 
 define APR_CLEANUP_UNNEEDED_FILES
