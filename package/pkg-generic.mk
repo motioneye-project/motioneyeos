@@ -702,7 +702,11 @@ $$(foreach pkg,$$($(2)_PROVIDES),\
 	$$(eval $$(call virt-provides-single,$$(pkg),$$(call UPPERCASE,$$(pkg)),$(1))$$(sep)))
 endif
 
-# Ensure unified variable name conventions between all packages
+# Ensure unified variable name conventions between all packages Some
+# of the variables are used by more than one infrastructure; so,
+# rather than duplicating the checks in each infrastructure, we check
+# all variables here in pkg-generic, even though pkg-generic should
+# have no knowledge of infra-specific variables.
 $(eval $(call check-deprecated-variable,$(2)_MAKE_OPT,$(2)_MAKE_OPTS))
 $(eval $(call check-deprecated-variable,$(2)_INSTALL_OPT,$(2)_INSTALL_OPTS))
 $(eval $(call check-deprecated-variable,$(2)_INSTALL_TARGET_OPT,$(2)_INSTALL_TARGET_OPTS))
