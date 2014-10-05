@@ -32,6 +32,13 @@ else
 APR_UTIL_CONF_OPTS += --without-gdbm
 endif
 
+ifeq ($(BR2_PACKAGE_MYSQL),y)
+APR_UTIL_CONF_OPTS += --with-mysql="$(STAGING_DIR)/usr"
+APR_UTIL_DEPENDENCIES += mysql
+else
+APR_UTIL_CONF_OPTS += --without-mysql
+endif
+
 ifeq ($(BR2_PACKAGE_SQLITE),y)
 APR_UTIL_CONF_OPTS += --with-sqlite3="$(STAGING_DIR)/usr"
 APR_UTIL_DEPENDENCIES += sqlite
