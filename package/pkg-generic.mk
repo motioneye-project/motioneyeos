@@ -264,21 +264,6 @@ endif
 endef
 
 ################################################################################
-# check-deprecated-variable -- throw an error on deprecated variables
-#
-# argument 1 is the deprecated variable
-# argument 2 is the new variable to use
-#
-# example:
-#   $(eval $(call check-deprecated-variable,FOO_MAKE_OPT,FOO_MAKE_OPTS))
-################################################################################
-define check-deprecated-variable
-ifneq ($$(origin $(1)),undefined)
-$$(error Package error: use $(2) instead of $(1). Please fix your .mk file)
-endif
-endef
-
-################################################################################
 # inner-generic-package -- generates the make targets needed to build a
 # generic package
 #

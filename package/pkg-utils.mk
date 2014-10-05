@@ -88,6 +88,15 @@ define sep
 
 endef
 
+# check-deprecated-variable -- throw an error on deprecated variables
+# example:
+#   $(eval $(call check-deprecated-variable,FOO_MAKE_OPT,FOO_MAKE_OPTS))
+define check-deprecated-variable # (deprecated var, new var)
+ifneq ($$(origin $(1)),undefined)
+$$(error Package error: use $(2) instead of $(1). Please fix your .mk file)
+endif
+endef
+
 #
 # legal-info helper functions
 #
