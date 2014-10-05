@@ -194,6 +194,14 @@ config BR2_PACKAGE_PHP_EXT_EXIF
 	help
 	  EXIF support
 
+config BR2_PACKAGE_PHP_EXT_GD
+	bool "GD"
+	select BR2_PACKAGE_FREETYPE
+	select BR2_PACKAGE_JPEG
+	select BR2_PACKAGE_LIBPNG
+	help
+	  GD support
+
 comment "Mathematical extensions"
 
 config BR2_PACKAGE_PHP_EXT_BCMATH

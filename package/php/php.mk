@@ -212,6 +212,14 @@ ifeq ($(BR2_PACKAGE_PHP_EXT_SNMP),y)
 	PHP_DEPENDENCIES += netsnmp
 endif
 
+ifeq ($(BR2_PACKAGE_PHP_EXT_GD),y)
+	PHP_CONF_OPTS += --with-gd --with-jpeg-dir=$(STAGING_DIR)/usr \
+		--with-png-dir=$(STAGING_DIR)/usr \
+		--with-zlib-dir=$(STAGING_DIR)/usr \
+		--with-freetype-dir=$(STAGING_DIR)/usr
+	PHP_DEPENDENCIES += jpeg libpng freetype
+endif
+
 define PHP_EXTENSIONS_FIXUP
 	$(SED) "/prefix/ s:/usr:$(STAGING_DIR)/usr:" \
 		$(STAGING_DIR)/usr/bin/phpize
