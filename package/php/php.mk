@@ -77,6 +77,11 @@ PHP_CONF_OPTS += $(if $(BR2_PACKAGE_PHP_EXT_SOCKETS),--enable-sockets) \
 		$(if $(BR2_PACKAGE_PHP_EXT_BCMATH),--enable-bcmath) \
 		$(if $(BR2_PACKAGE_PHP_EXT_PHAR),--enable-phar)
 
+ifeq ($(BR2_PACKAGE_PHP_EXT_MCRYPT),y)
+	PHP_CONF_OPTS += --with-mcrypt=$(STAGING_DIR)/usr
+	PHP_DEPENDENCIES += libmcrypt
+endif
+
 ifeq ($(BR2_PACKAGE_PHP_EXT_OPENSSL),y)
 	PHP_CONF_OPTS += --with-openssl=$(STAGING_DIR)/usr
 	PHP_DEPENDENCIES += openssl
