@@ -1,0 +1,88 @@
+From 81289d1d1adaf5a767a4b4d1309c286468cfd37f Mon Sep 17 00:00:00 2001
+From: Samuel Martin <s.martin49@gmail.com>
+Date: Thu, 24 Apr 2014 23:27:32 +0200
+Subject: [PATCH 1/5] auto/type/sizeof: rework autotest to be cross-compilation
+ friendly
+
+Rework the sizeof test to do the checks at compile time instead of at
+runtime. This way, it does not break when cross-compiling for a
+different CPU architecture.
+
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+---
+ auto/types/sizeof | 42 ++++++++++++++++++++++++++++--------------
+ 1 file changed, 28 insertions(+), 14 deletions(-)
+
+diff --git a/auto/types/sizeof b/auto/types/sizeof
+index 9215a54..c2c3ede 100644
+--- a/auto/types/sizeof
++++ b/auto/types/sizeof
+@@ -14,7 +14,7 @@ END
+ 
+ ngx_size=
+ 
+-cat << END > $NGX_AUTOTEST.c
++cat << _EOF > $NGX_AUTOTEST.c
+ 
+ #include <sys/types.h>
+ #include <sys/time.h>
+@@ -25,29 +25,43 @@ $NGX_INCLUDE_UNISTD_H
+ $NGX_INCLUDE_INTTYPES_H
+ $NGX_INCLUDE_AUTO_CONFIG_H
+ 
+-int main() {
+-    printf("%d", (int) sizeof($ngx_type));
++#if !defined( PASTE)
++#define PASTE2( x, y) x##y
++#define PASTE( x, y)  PASTE2( x, y)
++#endif /* PASTE */
++
++#define SAY_IF_SIZEOF( typename, type, size)   \\
++    static char PASTE( PASTE( PASTE( sizeof_, typename), _is_), size) \\
++    [(sizeof(type) == (size)) ? 1 : -1]
++
++SAY_IF_SIZEOF(TEST_TYPENAME, TEST_TYPE, TEST_SIZE);
++
++int main(void)
++{
+     return 0;
+ }
+ 
+-END
+-
++_EOF
+ 
+-ngx_test="$CC $CC_TEST_FLAGS $CC_AUX_FLAGS \
+-          -o $NGX_AUTOTEST $NGX_AUTOTEST.c $NGX_LD_OPT $ngx_feature_libs"
++_ngx_typename=`echo "$ngx_type" | sed 's/ /_/g;s/\*/p/'`
++ngx_size="-1"
++ngx_size=`for i in 1 2 4 8 16 ; do \
++    $CC $CC_TEST_FLAGS $CC_AUX_FLAGS \
++    -DTEST_TYPENAME="$_ngx_typename" -DTEST_TYPE="$ngx_type" -DTEST_SIZE="$i" \
++    $NGX_AUTOTEST.c -o $NGX_AUTOTEST \
++    $NGX_LD_OPT $ngx_feature_libs >/dev/null 2>&1 || continue ;\
++    echo $i ; break ; done`
+ 
+-eval "$ngx_test >> $NGX_AUTOCONF_ERR 2>&1"
++rm -rf $NGX_AUTOTEST*
+ 
++if test -z $ngx_size ; then
++    ngx_size=-1
++fi
+ 
+-if [ -x $NGX_AUTOTEST ]; then
+-    ngx_size=`$NGX_AUTOTEST`
++if [ $ngx_size -gt 0 ]; then
+     echo " $ngx_size bytes"
+ fi
+ 
+-
+-rm -rf $NGX_AUTOTEST*
+-
+-
+ case $ngx_size in
+     4)
+         if [ "$ngx_type"="long" ]; then
+-- 
+1.9.2
+

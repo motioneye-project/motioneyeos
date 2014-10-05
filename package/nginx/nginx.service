@@ -1,0 +1,15 @@
+[Unit]
+Description=A high performance web server and a reverse proxy server
+After=syslog.target network.target
+
+[Service]
+Type=forking
+PIDFile=/var/run/nginx.pid
+ExecStartPre=/usr/bin/mkdir -p /var/log/nginx /var/tmp/nginx; /usr/sbin/nginx -t -q -g 'pid /var/run/nginx.pid; daemon on; master_process on;'
+ExecStart=/usr/sbin/nginx -g 'pid /var/run/nginx.pid; daemon on; master_process on;'
+ExecReload=/usr/sbin/nginx -g 'pid /var/run/nginx.pid; daemon on; master_process on;' -s reload
+ExecStop=/usr/sbin/nginx -g 'pid /var/run/nginx.pid;' -s quit
+PrivateDevices=yes
+
+[Install]
+WantedBy=multi-user.target

@@ -1035,6 +1035,7 @@ endif
 	source "package/network-manager/Config.in"
 	source "package/nfacct/Config.in"
 	source "package/nftables/Config.in"
+	source "package/nginx/Config.in"
 	source "package/ngircd/Config.in"
 	source "package/ngrep/Config.in"
 	source "package/nmap/Config.in"
