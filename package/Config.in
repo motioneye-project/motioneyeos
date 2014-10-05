@@ -1025,6 +1025,7 @@ endif
 	source "package/netatalk/Config.in"
 if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	source "package/netcat/Config.in"
+	source "package/netcat-openbsd/Config.in"
 endif
 	source "package/netplug/Config.in"
 	source "package/netsnmp/Config.in"
