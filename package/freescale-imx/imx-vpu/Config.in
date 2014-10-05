@@ -2,6 +2,7 @@ config BR2_PACKAGE_IMX_VPU
 	bool "imx-vpu"
 	depends on BR2_LINUX_KERNEL
 	depends on BR2_arm # Only relevant for i.MX
+	select BR2_PACKAGE_FIRMWARE_IMX
 	help
 	  Library of userspace helpers specific for the Freescale i.MX
 	  platform. It wraps the kernel interfaces for the i.MX platform
