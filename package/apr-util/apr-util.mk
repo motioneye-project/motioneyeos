@@ -25,6 +25,13 @@ else
 APR_UTIL_CONF_OPTS += --without-berkeley-db
 endif
 
+ifeq ($(BR2_PACKAGE_GDBM),y)
+APR_UTIL_CONF_OPTS += --with-gdbm="$(STAGING_DIR)/usr"
+APR_UTIL_DEPENDENCIES += gdbm
+else
+APR_UTIL_CONF_OPTS += --without-gdbm
+endif
+
 ifeq ($(BR2_PACKAGE_SQLITE),y)
 APR_UTIL_CONF_OPTS += --with-sqlite3="$(STAGING_DIR)/usr"
 APR_UTIL_DEPENDENCIES += sqlite
