@@ -11,6 +11,12 @@ SLANG_LICENSE_FILES = COPYING
 SLANG_INSTALL_STAGING = YES
 SLANG_MAKE = $(MAKE1)
 
+# Racy and we don't have/do libtermcap
+define SLANG_DISABLE_TERMCAP
+	$(SED) '/^TERMCAP=/s:=.*:=:' $(@D)/configure
+endef
+SLANG_POST_PATCH_HOOKS += SLANG_DISABLE_TERMCAP
+
 # Absolute path hell, sigh...
 ifeq ($(BR2_PACKAGE_LIBPNG),y)
 	SLANG_CONF_OPTS += --with-png=$(STAGING_DIR)/usr
