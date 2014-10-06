@@ -41,7 +41,6 @@ endif
 
 ifeq ($(BR2_PACKAGE_OPENVMTOOLS_PAM),y)
 OPENVMTOOLS_CONF_OPTS += --with-pam
-OPENVMTOOLS_MAKE_OPTS += CFLAGS+="-Wno-unused-local-typedefs"
 OPENVMTOOLS_DEPENDENCIES += linux-pam
 else
 OPENVMTOOLS_CONF_OPTS += --without-pam
