@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-PROTOBUF_VERSION = 2.6.0
-PROTOBUF_SITE = https://github.com/google/protobuf/releases/download/v$(PROTOBUF_VERSION)/
+PROTOBUF_VERSION = 2.5.0
+PROTOBUF_SITE = http://protobuf.googlecode.com/files
 PROTOBUF_LICENSE = BSD-3c
 PROTOBUF_LICENSE_FILES = COPYING.txt
 
