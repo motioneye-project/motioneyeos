@@ -46,4 +46,11 @@ else
 APR_UTIL_CONF_OPTS += --without-sqlite3
 endif
 
+ifeq ($(BR2_PACKAGE_OPENSSL),y)
+APR_UTIL_CONF_OPTS += --with-crypto --with-openssl="$(STAGING_DIR)/usr"
+APR_UTIL_DEPENDENCIES += openssl
+else
+APR_UTIL_CONF_OPTS += --without-crypto
+endif
+
 $(eval $(autotools-package))
