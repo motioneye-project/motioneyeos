@@ -1,0 +1,10 @@
+config BR2_PACKAGE_BOTAN
+	bool "botan"
+	depends on BR2_INSTALL_LIBSTDCPP
+	help
+	  Botan is a crypto library for C++
+
+	  http://botan.randombit.net
+
+comment "botan needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP

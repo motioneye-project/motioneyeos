@@ -571,6 +571,7 @@ endmenu
 
 menu "Crypto"
 	source "package/beecrypt/Config.in"
+	source "package/botan/Config.in"
 	source "package/ca-certificates/Config.in"
 	source "package/cryptodev/Config.in"
 	source "package/gnutls/Config.in"
