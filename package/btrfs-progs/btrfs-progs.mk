@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-BTRFS_PROGS_VERSION = 3.16
-BTRFS_PROGS_SITE = https://www.kernel.org/pub/linux/kernel/people/mason/btrfs-progs
+BTRFS_PROGS_VERSION = 3.16.2
+BTRFS_PROGS_SITE = https://www.kernel.org/pub/linux/kernel/people/kdave/btrfs-progs
 BTRFS_PROGS_SOURCE = btrfs-progs-v$(BTRFS_PROGS_VERSION).tar.xz
 BTRFS_PROGS_DEPENDENCIES = acl attr e2fsprogs lzo util-linux zlib
 BTRFS_PROGS_LICENSE = GPLv2

@@ -1,2 +1,2 @@
-# From https://www.kernel.org/pub/linux/kernel/people/mason/btrfs-progs/sha256sums.asc
-sha256	9a7651df6c0430b75fa0637519ca5be29a756684dada241b4398007ae3cb0b5e	btrfs-progs-v3.16.tar.xz
+# From https://www.kernel.org/pub/linux/kernel/people/kdave/btrfs-progs/sha256sums.asc
+sha256	d4d62abe0c2b8e86888f96e4bd21ca7e25c2d53120a3b9e8c6f987344147732b	btrfs-progs-v3.16.2.tar.xz
