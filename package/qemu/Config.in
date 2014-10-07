@@ -64,4 +64,21 @@ config BR2_PACKAGE_QEMU_LINUX_USER
 
 endif # BR2_PACKAGE_QEMU_CUSTOM_TARGETS == ""
 
+config BR2_PACKAGE_QEMU_HAS_EMULS
+    def_bool y
+    depends on BR2_PACKAGE_QEMU_SYSTEM || BR2_PACKAGE_QEMU_LINUX_USER || BR2_PACKAGE_QEMU_CUSTOM_TARGETS != ""
+
+if BR2_PACKAGE_QEMU_HAS_EMULS
+
+comment "Frontends"
+
+config BR2_PACKAGE_QEMU_SDL
+	bool "Enable SDL frontend"
+	select BR2_PACKAGE_SDL
+	help
+	  Say 'y' to enable the SDL frontend, that is, a graphical window
+	  presenting the VM's display.
+
+endif # BR2_PACKAGE_QEMU_HAS_EMULS
+
 endif # BR2_PACKAGE_QEMU
