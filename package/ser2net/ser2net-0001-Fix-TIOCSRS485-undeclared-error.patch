@@ -1,0 +1,65 @@
+ser2net: Fix compilation failures due to missing TIOCSRS485 macro
+
+Patch sent upstream:
+	https://sourceforge.net/p/ser2net/mailman/message/32905302/
+
+Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+
+From: Yegor Yefremov <yegorslists@googlemail.com>
+
+include <asm-generic/ioctls.h> fixes compilations for systems,
+where <asm-generic/ioctls.h> won't be included automatically.
+
+Move special Linux includes to dataxfer.h.
+
+Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
+---
+ dataxfer.h | 5 +++--
+ devcfg.c   | 2 --
+ 2 files changed, 3 insertions(+), 4 deletions(-)
+
+diff --git a/dataxfer.h b/dataxfer.h
+index bd2665e..c3d7431 100644
+--- a/dataxfer.h
++++ b/dataxfer.h
+@@ -20,8 +20,6 @@
+ #ifndef DATAXFER
+ #define DATAXFER
+ 
+-#include <linux/serial.h>
+-
+ #include "controller.h"
+ 
+ #ifdef USE_UUCP_LOCKING
+@@ -30,6 +28,9 @@ extern int uucp_locking_enabled;
+ 
+ #ifdef linux
+ 
++#include <linux/serial.h>
++#include <asm-generic/ioctls.h>
++
+ #define USE_RS485_FEATURE
+ 
+ /* Check, if the toolchain provides serial_rs485 structure and macros */
+diff --git a/devcfg.c b/devcfg.c
+index ab819a6..1f84714 100644
+--- a/devcfg.c
++++ b/devcfg.c
+@@ -18,7 +18,6 @@
+  */
+ 
+ /* This code handles generating the configuration for the serial port. */
+-
+ #include <unistd.h>
+ #include <termios.h>
+ #include <sys/ioctl.h>
+@@ -31,7 +30,6 @@
+ #include <signal.h>
+ #include <errno.h>
+ #include <syslog.h>
+-#include <linux/serial.h>
+ 
+ #include "ser2net.h"
+ #include "selector.h"
+-- 
+1.9.1
