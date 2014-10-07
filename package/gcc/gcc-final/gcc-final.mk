@@ -5,8 +5,8 @@
 ################################################################################
 
 GCC_FINAL_VERSION = $(GCC_VERSION)
-GCC_FINAL_SITE    = $(GCC_SITE)
-GCC_FINAL_SOURCE  = $(GCC_SOURCE)
+GCC_FINAL_SITE = $(GCC_SITE)
+GCC_FINAL_SOURCE = $(GCC_SOURCE)
 
 HOST_GCC_FINAL_DEPENDENCIES = \
 	$(HOST_GCC_COMMON_DEPENDENCIES) \

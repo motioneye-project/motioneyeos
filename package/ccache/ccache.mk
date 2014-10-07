@@ -5,8 +5,8 @@
 ################################################################################
 
 CCACHE_VERSION = 3.1.8
-CCACHE_SITE    = http://samba.org/ftp/ccache
-CCACHE_SOURCE  = ccache-$(CCACHE_VERSION).tar.xz
+CCACHE_SITE = http://samba.org/ftp/ccache
+CCACHE_SOURCE = ccache-$(CCACHE_VERSION).tar.xz
 CCACHE_LICENSE = GPLv3+, others
 CCACHE_LICENSE_FILES = LICENSE.txt GPL-3.0.txt
 

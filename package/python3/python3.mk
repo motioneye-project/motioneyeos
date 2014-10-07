@@ -37,7 +37,7 @@ HOST_PYTHON3_CONF_OPTS += 	\
 HOST_PYTHON3_CONF_ENV += \
 	LDFLAGS="$(HOST_LDFLAGS) -Wl,--enable-new-dtags"
 
-PYTHON3_DEPENDENCIES  = host-python3 libffi
+PYTHON3_DEPENDENCIES = host-python3 libffi
 
 HOST_PYTHON3_DEPENDENCIES = host-expat host-zlib
 

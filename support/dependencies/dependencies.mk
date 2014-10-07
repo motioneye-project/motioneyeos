@@ -5,7 +5,7 @@
 #
 ################################################################################
 
-DEPENDENCIES_HOST_PREREQ := 
+DEPENDENCIES_HOST_PREREQ :=
 
 # suitable-host-pkg: calls check-host-$(1).sh shell script. Parameter (2)
 # can be the candidate to be checked. If not present, the check-host-$(1).sh
@@ -17,7 +17,7 @@ endef
 -include $(sort $(wildcard support/dependencies/check-host-*.mk))
 
 ifeq ($(BR2_STRIP_sstrip),y)
-DEPENDENCIES_HOST_PREREQ+=host-sstrip
+DEPENDENCIES_HOST_PREREQ += host-sstrip
 endif
 
 ifeq ($(BR2_CCACHE),y)

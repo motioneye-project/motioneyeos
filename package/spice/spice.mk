@@ -4,13 +4,13 @@
 #
 ################################################################################
 
-SPICE_VERSION         = 0.12.4
-SPICE_SOURCE          = spice-$(SPICE_VERSION).tar.bz2
-SPICE_SITE            = http://www.spice-space.org/download/releases
-SPICE_LICENSE         = LGPLv2.1+
-SPICE_LICENSE_FILES   = COPYING
+SPICE_VERSION = 0.12.4
+SPICE_SOURCE = spice-$(SPICE_VERSION).tar.bz2
+SPICE_SITE = http://www.spice-space.org/download/releases
+SPICE_LICENSE = LGPLv2.1+
+SPICE_LICENSE_FILES = COPYING
 SPICE_INSTALL_STAGING = YES
-SPICE_DEPENDENCIES    = \
+SPICE_DEPENDENCIES =    \
     alsa-lib            \
     celt051             \
     jpeg                \
@@ -21,7 +21,7 @@ SPICE_DEPENDENCIES    = \
 
 # We disable everything for now, because the dependency tree can become
 # quite deep if we try to enable some features, and I have not tested that.
-SPICE_CONF_OPTS =            \
+SPICE_CONF_OPTS =           \
   --disable-opengl          \
   --disable-smartcard       \
   --disable-automated-tests \

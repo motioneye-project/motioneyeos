@@ -4,12 +4,12 @@
 #
 ################################################################################
 
-DTC_VERSION         = v1.4.0
-DTC_SITE            = git://git.jdl.com/software/dtc.git
-DTC_LICENSE         = GPLv2+/BSD-2c
-DTC_LICENSE_FILES   = README.license GPL
+DTC_VERSION = v1.4.0
+DTC_SITE = git://git.jdl.com/software/dtc.git
+DTC_LICENSE = GPLv2+/BSD-2c
+DTC_LICENSE_FILES = README.license GPL
 DTC_INSTALL_STAGING = YES
-DTC_DEPENDENCIES    = host-bison host-flex
+DTC_DEPENDENCIES = host-bison host-flex
 
 define DTC_POST_INSTALL_TARGET_RM_DTDIFF
 	rm -f $(TARGET_DIR)/usr/bin/dtdiff
@@ -17,19 +17,19 @@ endef
 
 ifeq ($(BR2_PACKAGE_DTC_PROGRAMS),y)
 
-DTC_LICENSE        += (for the library), GPLv2+ (for the executables)
+DTC_LICENSE += (for the library), GPLv2+ (for the executables)
 # Use default goal to build everything
-DTC_BUILD_GOAL      =
-DTC_INSTALL_GOAL    = install
+DTC_BUILD_GOAL =
+DTC_INSTALL_GOAL = install
 ifeq ($(BR2_PACKAGE_BASH),)
 DTC_POST_INSTALL_TARGET_HOOKS += DTC_POST_INSTALL_TARGET_RM_DTDIFF
 endif
 
 else # $(BR2_PACKAGE_DTC_PROGRAMS) != y
 
-DTC_BUILD_GOAL      = libfdt
+DTC_BUILD_GOAL = libfdt
 # libfdt_install is our own install rule added by our patch
-DTC_INSTALL_GOAL    = libfdt_install
+DTC_INSTALL_GOAL = libfdt_install
 
 endif # $(BR2_PACKAGE_DTC_PROGRAMS) != y
 

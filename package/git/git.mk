@@ -4,11 +4,11 @@
 #
 ################################################################################
 
-GIT_VERSION         = 1.8.5.4
-GIT_SITE            = http://git-core.googlecode.com/files
-GIT_LICENSE         = GPLv2 LGPLv2.1+
-GIT_LICENSE_FILES   = COPYING LGPL-2.1
-GIT_DEPENDENCIES    = zlib host-gettext
+GIT_VERSION = 1.8.5.4
+GIT_SITE = http://git-core.googlecode.com/files
+GIT_LICENSE = GPLv2 LGPLv2.1+
+GIT_LICENSE_FILES = COPYING LGPL-2.1
+GIT_DEPENDENCIES = zlib host-gettext
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 	GIT_DEPENDENCIES += openssl

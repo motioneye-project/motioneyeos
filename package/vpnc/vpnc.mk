@@ -4,14 +4,14 @@
 #
 ################################################################################
 
-VPNC_VERSION       = 0.5.3
-VPNC_SITE          = http://www.unix-ag.uni-kl.de/~massar/vpnc
-VPNC_LICENSE       = GPLv2+
+VPNC_VERSION = 0.5.3
+VPNC_SITE = http://www.unix-ag.uni-kl.de/~massar/vpnc
+VPNC_LICENSE = GPLv2+
 VPNC_LICENSE_FILES = COPYING
 
-VPNC_DEPENDENCIES  = libgcrypt libgpg-error
+VPNC_DEPENDENCIES = libgcrypt libgpg-error
 
-VPNC_LDFLAGS  = $(TARGET_LDFLAGS) -lgcrypt -lgpg-error
+VPNC_LDFLAGS = $(TARGET_LDFLAGS) -lgcrypt -lgpg-error
 VPNC_CPPFLAGS = -DVERSION=\\\"$(VPNC_VERSION)\\\"
 
 define VPNC_BUILD_CMDS

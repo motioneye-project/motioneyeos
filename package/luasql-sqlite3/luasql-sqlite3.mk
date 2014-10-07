@@ -5,7 +5,7 @@
 ################################################################################
 
 LUASQL_SQLITE3_VERSION = 2.3.0-1
-LUASQL_SQLITE3_SUBDIR  = luasql
+LUASQL_SQLITE3_SUBDIR = luasql
 LUASQL_SQLITE3_LICENSE = MIT
 LUASQL_SQLITE3_LICENSE_FILES = $(LUASQL_SQLITE3_SUBDIR)/README
 LUASQL_SQLITE3_DEPENDENCIES = sqlite

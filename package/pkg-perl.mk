@@ -19,7 +19,7 @@
 #
 ################################################################################
 
-PERL_ARCHNAME	= $(ARCH)-linux
+PERL_ARCHNAME = $(ARCH)-linux
 
 ################################################################################
 # inner-perl-package -- defines how the configuration, compilation and

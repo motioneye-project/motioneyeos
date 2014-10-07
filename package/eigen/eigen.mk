@@ -6,7 +6,7 @@
 
 # version 3.2
 EIGEN_VERSION = ffa86ffb5570
-EIGEN_SITE    = https://bitbucket.org/eigen/eigen
+EIGEN_SITE = https://bitbucket.org/eigen/eigen
 EIGEN_SITE_METHOD = hg
 EIGEN_LICENSE = MPL2, BSD-3c, LGPLv2.1
 EIGEN_LICENSE_FILES = COPYING.MPL2 COPYING.BSD COPYING.LGPL COPYING.README

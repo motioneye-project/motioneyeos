@@ -5,7 +5,7 @@
 ################################################################################
 
 IMX_VPU_VERSION = $(FREESCALE_IMX_VERSION)
-IMX_VPU_SITE    = $(FREESCALE_IMX_SITE)
+IMX_VPU_SITE = $(FREESCALE_IMX_SITE)
 IMX_VPU_LICENSE = Freescale License
 IMX_VPU_LICENSE_FILES = EULA vpu/EULA.txt
 IMX_VPU_SOURCE = imx-vpu-$(IMX_VPU_VERSION).bin

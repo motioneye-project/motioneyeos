@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-XLOADER_VERSION    = 6f3a26101303051e0f91b6213735b68ce804e94e
-XLOADER_SITE       = git://gitorious.org/x-loader/x-loader.git
+XLOADER_VERSION = 6f3a26101303051e0f91b6213735b68ce804e94e
+XLOADER_SITE = git://gitorious.org/x-loader/x-loader.git
 XLOADER_BOARD_NAME = $(call qstrip,$(BR2_TARGET_XLOADER_BOARDNAME))
 
 XLOADER_LICENSE = GPLv2+

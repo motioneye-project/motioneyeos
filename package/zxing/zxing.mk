@@ -17,7 +17,7 @@ ZXING_DEPENDENCIES += libiconv
 else
 # There is no locale support in the toolchain and libiconv
 # is not available so disable iconv support in zxing
-ZING_MAKE_OPTS=CXXFLAGS+="-DNO_ICONV"
+ZING_MAKE_OPTS = CXXFLAGS+="-DNO_ICONV"
 endif
 endif
 

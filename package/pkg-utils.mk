@@ -52,8 +52,8 @@ endef
 # directory from its makefile directory, using the $(MAKEFILE_LIST)
 # variable provided by make. This is used by the *TARGETS macros to
 # automagically find where the package is located.
-pkgdir       = $(dir $(lastword $(MAKEFILE_LIST)))
-pkgname      = $(lastword $(subst /, ,$(pkgdir)))
+pkgdir = $(dir $(lastword $(MAKEFILE_LIST)))
+pkgname = $(lastword $(subst /, ,$(pkgdir)))
 
 # Define extractors for different archive suffixes
 INFLATE.bz2  = $(BZCAT)
@@ -67,15 +67,15 @@ INFLATE.tar  = cat
 suitable-extractor = $(INFLATE$(suffix $(1)))
 
 # MESSAGE Macro -- display a message in bold type
-MESSAGE     = echo "$(TERM_BOLD)>>> $($(PKG)_NAME) $($(PKG)_VERSION) $(call qstrip,$(1))$(TERM_RESET)"
-TERM_BOLD  := $(shell tput smso)
+MESSAGE = echo "$(TERM_BOLD)>>> $($(PKG)_NAME) $($(PKG)_VERSION) $(call qstrip,$(1))$(TERM_RESET)"
+TERM_BOLD := $(shell tput smso)
 TERM_RESET := $(shell tput rmso)
 
 # Utility functions for 'find'
 # findfileclauses(filelist) => -name 'X' -o -name 'Y'
 findfileclauses = $(call notfirstword,$(patsubst %,-o -name '%',$(1)))
 # finddirclauses(base, dirlist) => -path 'base/dirX' -o -path 'base/dirY'
-finddirclauses  = $(call notfirstword,$(patsubst %,-o -path '$(1)/%',$(2)))
+finddirclauses = $(call notfirstword,$(patsubst %,-o -path '$(1)/%',$(2)))
 
 # Miscellaneous utility functions
 # notfirstword(wordlist): returns all but the first word in wordlist
@@ -100,7 +100,7 @@ endef
 #
 # legal-info helper functions
 #
-LEGAL_INFO_SEPARATOR="::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
+LEGAL_INFO_SEPARATOR = "::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
 
 define legal-warning # text
 	echo "WARNING: $(1)" >>$(LEGAL_WARNINGS)

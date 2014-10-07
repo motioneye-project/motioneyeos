@@ -57,7 +57,7 @@ endif
 ifeq ($(HOST_QEMU_ARCH),powerpc)
     HOST_QEMU_ARCH = ppc
 endif
-HOST_QEMU_TARGETS=$(HOST_QEMU_ARCH)-linux-user
+HOST_QEMU_TARGETS = $(HOST_QEMU_ARCH)-linux-user
 
 # Note: although QEMU has a ./configure script, it is not a real autotools
 # package, and ./configure chokes on options such as --host or --target.

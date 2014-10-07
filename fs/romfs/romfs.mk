@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-ROMFS_TARGET=$(IMAGE).romfs
+ROMFS_TARGET = $(IMAGE).romfs
 
 ROOTFS_ROMFS_DEPENDENCIES = host-genromfs
 

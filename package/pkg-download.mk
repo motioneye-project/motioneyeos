@@ -21,7 +21,7 @@ export LOCALFILES := $(call qstrip,$(BR2_LOCALFILES))
 # Default spider mode is 'DOWNLOAD'. Other possible values are 'SOURCE_CHECK'
 # used by the _source-check target and 'SHOW_EXTERNAL_DEPS', used by the
 # external-deps target.
-DL_MODE=DOWNLOAD
+DL_MODE = DOWNLOAD
 
 # DL_DIR may have been set already from the environment
 ifeq ($(origin DL_DIR),undefined)
@@ -44,16 +44,16 @@ DL_DIR := $(shell mkdir -p $(DL_DIR) && cd $(DL_DIR) >/dev/null && pwd)
 # * scp://www.example.com:dir/file (with domainseparator :)
 #
 # geturischeme: http
-geturischeme=$(firstword $(subst ://, ,$(call qstrip,$(1))))
+geturischeme = $(firstword $(subst ://, ,$(call qstrip,$(1))))
 # stripurischeme: www.example.com/dir/file
-stripurischeme=$(lastword $(subst ://, ,$(call qstrip,$(1))))
+stripurischeme = $(lastword $(subst ://, ,$(call qstrip,$(1))))
 # domain: www.example.com
-domain=$(firstword $(subst $(call domainseparator,$(2)), ,$(call stripurischeme,$(1))))
+domain = $(firstword $(subst $(call domainseparator,$(2)), ,$(call stripurischeme,$(1))))
 # notdomain: dir/file
-notdomain=$(patsubst $(call domain,$(1),$(2))$(call domainseparator,$(2))%,%,$(call stripurischeme,$(1)))
+notdomain = $(patsubst $(call domain,$(1),$(2))$(call domainseparator,$(2))%,%,$(call stripurischeme,$(1)))
 #
 # default domainseparator is /, specify alternative value as first argument
-domainseparator=$(if $(1),$(1),/)
+domainseparator = $(if $(1),$(1),/)
 
 # github(user,package,version): returns site of GitHub repository
 github = https://github.com/$(1)/$(2)/archive/$(3)

@@ -17,7 +17,7 @@ AXEL_LDFLAGS += -lintl
 endif
 
 ifneq ($(BR2_ENABLE_LOCALE),y)
-AXEL_DISABLE_I18N=--i18n=0
+AXEL_DISABLE_I18N = --i18n=0
 endif
 
 define AXEL_CONFIGURE_CMDS

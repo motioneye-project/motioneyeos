@@ -13,8 +13,8 @@
 
 QT_VERSION_MAJOR = 4.8
 QT_VERSION = $(QT_VERSION_MAJOR).6
-QT_SOURCE  = qt-everywhere-opensource-src-$(QT_VERSION).tar.gz
-QT_SITE    = http://download.qt-project.org/official_releases/qt/$(QT_VERSION_MAJOR)/$(QT_VERSION)
+QT_SOURCE = qt-everywhere-opensource-src-$(QT_VERSION).tar.gz
+QT_SITE = http://download.qt-project.org/official_releases/qt/$(QT_VERSION_MAJOR)/$(QT_VERSION)
 QT_DEPENDENCIES = host-pkgconf
 QT_INSTALL_STAGING = YES
 
@@ -28,7 +28,7 @@ ifeq ($(BR2_PACKAGE_QT_LICENSE_APPROVED),y)
 QT_CONFIGURE_OPTS += -opensource -confirm-license
 endif
 
-QT_CONFIG_FILE=$(call qstrip,$(BR2_PACKAGE_QT_CONFIG_FILE))
+QT_CONFIG_FILE = $(call qstrip,$(BR2_PACKAGE_QT_CONFIG_FILE))
 
 ifneq ($(QT_CONFIG_FILE),)
 QT_CONFIGURE_OPTS += -qconfig buildroot
@@ -252,7 +252,7 @@ QT_CONFIGURE_OPTS += -qt-zlib
 else
 ifeq ($(BR2_PACKAGE_QT_SYSTEMZLIB),y)
 QT_CONFIGURE_OPTS += -system-zlib
-QT_DEPENDENCIES   += zlib
+QT_DEPENDENCIES += zlib
 endif
 endif
 
@@ -261,7 +261,7 @@ QT_CONFIGURE_OPTS += -qt-libjpeg
 else
 ifeq ($(BR2_PACKAGE_QT_SYSTEMJPEG),y)
 QT_CONFIGURE_OPTS += -system-libjpeg
-QT_DEPENDENCIES   += jpeg
+QT_DEPENDENCIES += jpeg
 else
 QT_CONFIGURE_OPTS += -no-libjpeg
 endif
@@ -272,7 +272,7 @@ QT_CONFIGURE_OPTS += -qt-libpng
 else
 ifeq ($(BR2_PACKAGE_QT_SYSTEMPNG),y)
 QT_CONFIGURE_OPTS += -system-libpng
-QT_DEPENDENCIES   += libpng
+QT_DEPENDENCIES += libpng
 else
 QT_CONFIGURE_OPTS += -no-libpng
 endif
@@ -283,7 +283,7 @@ QT_CONFIGURE_OPTS += -qt-libtiff
 else
 ifeq ($(BR2_PACKAGE_QT_SYSTEMTIFF),y)
 QT_CONFIGURE_OPTS += -system-libtiff
-QT_DEPENDENCIES   += tiff
+QT_DEPENDENCIES += tiff
 else
 QT_CONFIGURE_OPTS += -no-libtiff
 endif
@@ -302,29 +302,29 @@ else
 ifeq ($(BR2_PACKAGE_QT_SYSTEMFREETYPE),y)
 QT_CONFIGURE_OPTS += -system-freetype
 QT_CONFIGURE_OPTS += -I $(STAGING_DIR)/usr/include/freetype2/
-QT_DEPENDENCIES   += freetype
+QT_DEPENDENCIES += freetype
 else
 QT_CONFIGURE_OPTS += -no-freetype
 endif
 endif
 
 ifeq ($(BR2_PACKAGE_QT_DBUS),y)
-QT_DEPENDENCIES   += dbus
+QT_DEPENDENCIES += dbus
 endif
 
 ifeq ($(BR2_PACKAGE_QT_OPENSSL),y)
 QT_CONFIGURE_OPTS += -openssl
-QT_DEPENDENCIES   += openssl
+QT_DEPENDENCIES += openssl
 else
 QT_CONFIGURE_OPTS += -no-openssl
 endif
 
 ifeq ($(BR2_PACKAGE_QT_OPENGL_ES),y)
 QT_CONFIGURE_OPTS += -opengl es2 -egl
-QT_DEPENDENCIES   += libgles libegl
-QT_CFLAGS   += $(shell $(PKG_CONFIG_HOST_BINARY) --cflags egl)
+QT_DEPENDENCIES += libgles libegl
+QT_CFLAGS += $(shell $(PKG_CONFIG_HOST_BINARY) --cflags egl)
 QT_CXXFLAGS += $(shell $(PKG_CONFIG_HOST_BINARY) --cflags egl)
-QT_LDFLAGS  += $(shell $(PKG_CONFIG_HOST_BINARY) --libs egl)
+QT_LDFLAGS += $(shell $(PKG_CONFIG_HOST_BINARY) --libs egl)
 else
 QT_CONFIGURE_OPTS += -no-opengl
 endif
@@ -336,22 +336,22 @@ QT_CONFIGURE_OPTS += -qt-sql-ibase
 endif
 ifeq ($(BR2_PACKAGE_QT_MYSQL),y)
 QT_CONFIGURE_OPTS += -qt-sql-mysql -mysql_config $(STAGING_DIR)/usr/bin/mysql_config
-QT_DEPENDENCIES   += mysql
+QT_DEPENDENCIES += mysql
 endif
 ifeq ($(BR2_PACKAGE_QT_ODBC),y)
 QT_CONFIGURE_OPTS += -qt-sql-odbc
 endif
 ifeq ($(BR2_PACKAGE_QT_PSQL),y)
 QT_CONFIGURE_OPTS += -qt-sql-psql
-QT_CONFIGURE_ENV  += PSQL_LIBS=-L$(STAGING_DIR)/usr/lib
-QT_DEPENDENCIES   += postgresql
+QT_CONFIGURE_ENV += PSQL_LIBS=-L$(STAGING_DIR)/usr/lib
+QT_DEPENDENCIES += postgresql
 endif
 ifeq ($(BR2_PACKAGE_QT_SQLITE_QT),y)
 QT_CONFIGURE_OPTS += -qt-sql-sqlite
 else
 ifeq ($(BR2_PACKAGE_QT_SQLITE_SYSTEM),y)
 QT_CONFIGURE_OPTS += -system-sqlite
-QT_DEPENDENCIES   += sqlite
+QT_DEPENDENCIES += sqlite
 else
 QT_CONFIGURE_OPTS += -no-sql-sqlite
 endif
@@ -380,14 +380,14 @@ endif
 
 ifeq ($(BR2_PACKAGE_QT_AUDIO_BACKEND),y)
 QT_CONFIGURE_OPTS += -audio-backend
-QT_DEPENDENCIES   += alsa-lib
+QT_DEPENDENCIES += alsa-lib
 else
 QT_CONFIGURE_OPTS += -no-audio-backend
 endif
 
 ifeq ($(BR2_PACKAGE_QT_PHONON),y)
 QT_CONFIGURE_OPTS += -phonon
-QT_DEPENDENCIES   += gstreamer gst-plugins-base
+QT_DEPENDENCIES += gstreamer gst-plugins-base
 else
 QT_CONFIGURE_OPTS += -no-phonon
 endif
@@ -532,63 +532,63 @@ endef
 
 # Build the list of libraries and plugins to install to the target
 
-QT_INSTALL_LIBS    += QtCore
-QT_HOST_PROGRAMS   += moc rcc qmake lrelease
+QT_INSTALL_LIBS += QtCore
+QT_HOST_PROGRAMS += moc rcc qmake lrelease
 
 ifeq ($(BR2_PACKAGE_QT_GUI_MODULE),y)
-QT_INSTALL_LIBS    += QtGui
-QT_HOST_PROGRAMS   += uic
+QT_INSTALL_LIBS += QtGui
+QT_HOST_PROGRAMS += uic
 endif
 ifeq ($(BR2_PACKAGE_QT_SQL_MODULE),y)
-QT_INSTALL_LIBS    += QtSql
+QT_INSTALL_LIBS += QtSql
 endif
 ifeq ($(BR2_PACKAGE_QT_MULTIMEDIA),y)
-QT_INSTALL_LIBS    += QtMultimedia
+QT_INSTALL_LIBS += QtMultimedia
 endif
 ifeq ($(BR2_PACKAGE_QT_PHONON),y)
-QT_INSTALL_LIBS    += phonon
+QT_INSTALL_LIBS += phonon
 endif
 ifeq ($(BR2_PACKAGE_QT_SVG),y)
-QT_INSTALL_LIBS    += QtSvg
+QT_INSTALL_LIBS += QtSvg
 endif
 ifeq ($(BR2_PACKAGE_QT_NETWORK),y)
-QT_INSTALL_LIBS    += QtNetwork
+QT_INSTALL_LIBS += QtNetwork
 endif
 ifeq ($(BR2_PACKAGE_QT_WEBKIT),y)
-QT_INSTALL_LIBS    += QtWebKit
+QT_INSTALL_LIBS += QtWebKit
 endif
 ifeq ($(BR2_PACKAGE_QT_XML),y)
-QT_INSTALL_LIBS    += QtXml
+QT_INSTALL_LIBS += QtXml
 endif
 ifeq ($(BR2_PACKAGE_QT_DBUS),y)
-QT_INSTALL_LIBS    += QtDBus
+QT_INSTALL_LIBS += QtDBus
 endif
 ifeq ($(BR2_PACKAGE_QT_XMLPATTERNS),y)
-QT_INSTALL_LIBS    += QtXmlPatterns
+QT_INSTALL_LIBS += QtXmlPatterns
 endif
 ifeq ($(BR2_PACKAGE_QT_SCRIPT),y)
-QT_INSTALL_LIBS    += QtScript
+QT_INSTALL_LIBS += QtScript
 endif
 ifeq ($(BR2_PACKAGE_QT_SCRIPTTOOLS),y)
-QT_INSTALL_LIBS    += QtScriptTools
+QT_INSTALL_LIBS += QtScriptTools
 endif
 ifeq ($(BR2_PACKAGE_QT_DECLARATIVE),y)
-QT_INSTALL_LIBS    += QtDeclarative
+QT_INSTALL_LIBS += QtDeclarative
 endif
 ifeq ($(BR2_PACKAGE_QT_QT3SUPPORT),y)
-QT_INSTALL_LIBS    += Qt3Support
+QT_INSTALL_LIBS += Qt3Support
 endif
 ifeq ($(BR2_PACKAGE_QT_OPENGL_ES),y)
-QT_INSTALL_LIBS    += QtOpenGL
+QT_INSTALL_LIBS += QtOpenGL
 endif
 ifeq ($(BR2_PACKAGE_QT_GFX_POWERVR),y)
-QT_INSTALL_LIBS    += pvrQWSWSEGL
+QT_INSTALL_LIBS += pvrQWSWSEGL
 endif
 ifeq ($(BR2_PACKAGE_QT_TEST),y)
-QT_INSTALL_LIBS    += QtTest
+QT_INSTALL_LIBS += QtTest
 endif
 
-QT_CONF_FILE=$(HOST_DIR)/usr/bin/qt.conf
+QT_CONF_FILE = $(HOST_DIR)/usr/bin/qt.conf
 
 # Since host programs and spec files have been moved to $(HOST_DIR),
 # we need to tell qmake the new location of the various elements,

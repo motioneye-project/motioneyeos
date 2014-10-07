@@ -5,10 +5,10 @@
 ################################################################################
 
 PYTHON_VERSION_MAJOR = 2.7
-PYTHON_VERSION       = $(PYTHON_VERSION_MAJOR).8
-PYTHON_SOURCE        = Python-$(PYTHON_VERSION).tar.xz
-PYTHON_SITE          = http://python.org/ftp/python/$(PYTHON_VERSION)
-PYTHON_LICENSE       = Python software foundation license v2, others
+PYTHON_VERSION = $(PYTHON_VERSION_MAJOR).8
+PYTHON_SOURCE = Python-$(PYTHON_VERSION).tar.xz
+PYTHON_SITE = http://python.org/ftp/python/$(PYTHON_VERSION)
+PYTHON_LICENSE = Python software foundation license v2, others
 PYTHON_LICENSE_FILES = LICENSE
 
 # Python needs itself to be built, so in order to cross-compile
@@ -48,7 +48,7 @@ HOST_PYTHON_CONF_ENV += \
 # MAKE1 has shown to workaround the problem.
 HOST_PYTHON_MAKE = $(MAKE1)
 
-PYTHON_DEPENDENCIES  = host-python libffi
+PYTHON_DEPENDENCIES = host-python libffi
 
 HOST_PYTHON_DEPENDENCIES = host-expat host-zlib
 

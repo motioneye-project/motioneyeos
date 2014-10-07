@@ -5,7 +5,7 @@
 ################################################################################
 
 LIBFFI_VERSION = 3.1
-LIBFFI_SITE    = ftp://sourceware.org/pub/libffi
+LIBFFI_SITE = ftp://sourceware.org/pub/libffi
 LIBFFI_LICENSE = MIT
 LIBFFI_LICENSE_FILES = LICENSE
 LIBFFI_INSTALL_STAGING = YES

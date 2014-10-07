@@ -5,8 +5,8 @@
 ################################################################################
 
 SYSLINUX_VERSION = 6.02
-SYSLINUX_SOURCE  = syslinux-$(SYSLINUX_VERSION).tar.xz
-SYSLINUX_SITE    = $(BR2_KERNEL_MIRROR)/linux/utils/boot/syslinux
+SYSLINUX_SOURCE = syslinux-$(SYSLINUX_VERSION).tar.xz
+SYSLINUX_SITE = $(BR2_KERNEL_MIRROR)/linux/utils/boot/syslinux
 
 SYSLINUX_LICENSE = GPLv2+
 SYSLINUX_LICENSE_FILES = COPYING

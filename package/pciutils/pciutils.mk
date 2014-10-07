@@ -17,7 +17,7 @@ else
 	PCIUTILS_ZLIB=no
 endif
 
-PCIUTILS_DNS=no
+PCIUTILS_DNS = no
 
 ifeq ($(BR2_PACKAGE_KMOD),y)
 	PCIUTILS_DEPENDENCIES += kmod

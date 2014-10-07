@@ -14,9 +14,9 @@ MPLAYER_LDFLAGS = $(TARGET_LDFLAGS)
 # mplayer needs pcm+mixer support, but configure fails to check for it
 ifeq ($(BR2_PACKAGE_ALSA_LIB)$(BR2_PACKAGE_ALSA_LIB_MIXER)$(BR2_PACKAGE_ALSA_LIB_PCM),yyy)
 MPLAYER_DEPENDENCIES += alsa-lib
-MPLAYER_CONF_OPTS    += --enable-alsa
+MPLAYER_CONF_OPTS += --enable-alsa
 else
-MPLAYER_CONF_OPTS    += --disable-alsa
+MPLAYER_CONF_OPTS += --disable-alsa
 endif
 
 ifeq ($(BR2_ENDIAN),"BIG")

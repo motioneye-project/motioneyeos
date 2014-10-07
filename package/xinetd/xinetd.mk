@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-XINETD_VERSION       = 2.3.15
-XINETD_SITE          = http://www.xinetd.org
-XINETD_LICENSE       = xinetd license
+XINETD_VERSION = 2.3.15
+XINETD_SITE = http://www.xinetd.org
+XINETD_LICENSE = xinetd license
 XINETD_LICENSE_FILES = COPYRIGHT
 
 XINETD_CFLAGS = $(TARGET_CFLAGS)

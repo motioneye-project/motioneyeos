@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-UBOOT_VERSION    = $(call qstrip,$(BR2_TARGET_UBOOT_VERSION))
+UBOOT_VERSION = $(call qstrip,$(BR2_TARGET_UBOOT_VERSION))
 UBOOT_BOARD_NAME = $(call qstrip,$(BR2_TARGET_UBOOT_BOARDNAME))
 
 UBOOT_LICENSE = GPLv2+
@@ -15,48 +15,48 @@ UBOOT_INSTALL_IMAGES = YES
 ifeq ($(UBOOT_VERSION),custom)
 # Handle custom U-Boot tarballs as specified by the configuration
 UBOOT_TARBALL = $(call qstrip,$(BR2_TARGET_UBOOT_CUSTOM_TARBALL_LOCATION))
-UBOOT_SITE    = $(patsubst %/,%,$(dir $(UBOOT_TARBALL)))
-UBOOT_SOURCE  = $(notdir $(UBOOT_TARBALL))
+UBOOT_SITE = $(patsubst %/,%,$(dir $(UBOOT_TARBALL)))
+UBOOT_SOURCE = $(notdir $(UBOOT_TARBALL))
 else ifeq ($(BR2_TARGET_UBOOT_CUSTOM_GIT),y)
-UBOOT_SITE        = $(call qstrip,$(BR2_TARGET_UBOOT_CUSTOM_REPO_URL))
+UBOOT_SITE = $(call qstrip,$(BR2_TARGET_UBOOT_CUSTOM_REPO_URL))
 UBOOT_SITE_METHOD = git
 else ifeq ($(BR2_TARGET_UBOOT_CUSTOM_HG),y)
-UBOOT_SITE        = $(call qstrip,$(BR2_TARGET_UBOOT_CUSTOM_REPO_URL))
+UBOOT_SITE = $(call qstrip,$(BR2_TARGET_UBOOT_CUSTOM_REPO_URL))
 UBOOT_SITE_METHOD = hg
 else
 # Handle stable official U-Boot versions
-UBOOT_SITE    = ftp://ftp.denx.de/pub/u-boot
-UBOOT_SOURCE  = u-boot-$(UBOOT_VERSION).tar.bz2
+UBOOT_SITE = ftp://ftp.denx.de/pub/u-boot
+UBOOT_SOURCE = u-boot-$(UBOOT_VERSION).tar.bz2
 endif
 
 ifeq ($(BR2_TARGET_UBOOT_FORMAT_ELF),y)
-UBOOT_BIN          = u-boot
+UBOOT_BIN = u-boot
 else ifeq ($(BR2_TARGET_UBOOT_FORMAT_KWB),y)
-UBOOT_BIN          = u-boot.kwb
-UBOOT_MAKE_TARGET  = $(UBOOT_BIN)
+UBOOT_BIN = u-boot.kwb
+UBOOT_MAKE_TARGET = $(UBOOT_BIN)
 else ifeq ($(BR2_TARGET_UBOOT_FORMAT_AIS),y)
-UBOOT_BIN          = u-boot.ais
-UBOOT_MAKE_TARGET  = $(UBOOT_BIN)
+UBOOT_BIN = u-boot.ais
+UBOOT_MAKE_TARGET = $(UBOOT_BIN)
 else ifeq ($(BR2_TARGET_UBOOT_FORMAT_LDR),y)
-UBOOT_BIN          = u-boot.ldr
+UBOOT_BIN = u-boot.ldr
 else ifeq ($(BR2_TARGET_UBOOT_FORMAT_NAND_BIN),y)
-UBOOT_BIN          = u-boot-nand.bin
+UBOOT_BIN = u-boot-nand.bin
 else ifeq ($(BR2_TARGET_UBOOT_FORMAT_IMG),y)
-UBOOT_BIN          = u-boot.img
+UBOOT_BIN = u-boot.img
 else ifeq ($(BR2_TARGET_UBOOT_FORMAT_IMX),y)
-UBOOT_BIN          = u-boot.imx
+UBOOT_BIN = u-boot.imx
 else ifeq ($(BR2_TARGET_UBOOT_FORMAT_SB),y)
-UBOOT_BIN          = u-boot.sb
-UBOOT_MAKE_TARGET  = $(UBOOT_BIN)
+UBOOT_BIN = u-boot.sb
+UBOOT_MAKE_TARGET = $(UBOOT_BIN)
 UBOOT_DEPENDENCIES += host-elftosb
 else ifeq ($(BR2_TARGET_UBOOT_FORMAT_CUSTOM),y)
-UBOOT_BIN          = $(call qstrip,$(BR2_TARGET_UBOOT_FORMAT_CUSTOM_NAME))
+UBOOT_BIN = $(call qstrip,$(BR2_TARGET_UBOOT_FORMAT_CUSTOM_NAME))
 else
-UBOOT_BIN          = u-boot.bin
-UBOOT_BIN_IFT      = $(UBOOT_BIN).ift
+UBOOT_BIN = u-boot.bin
+UBOOT_BIN_IFT = $(UBOOT_BIN).ift
 endif
 
-UBOOT_ARCH=$(KERNEL_ARCH)
+UBOOT_ARCH = $(KERNEL_ARCH)
 
 UBOOT_CONFIGURE_OPTS += CONFIG_NOSOFTFLOAT=1
 UBOOT_MAKE_OPTS += \
