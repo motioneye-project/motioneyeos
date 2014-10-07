@@ -1,6 +1,7 @@
 config BR2_PACKAGE_YMPD
 	bool "ympd"
 	select BR2_PACKAGE_LIBMPDCLIENT
+	depends on BR2_USE_MMU # fork()
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_LARGEFILE
 	help
