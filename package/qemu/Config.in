@@ -31,6 +31,25 @@ if BR2_PACKAGE_QEMU
 
 comment "Emulators selection"
 
+config BR2_PACKAGE_QEMU_CUSTOM_TARGETS
+	string "Enable specific targets"
+	help
+	  Enter here the list of QEMU targets you want to build. For example:
+
+	    System emulation      | User-land emulation
+	    ----------------------+-----------------------
+	    i386-softmmu          | i386-linux-user
+	    arm-softmmu           | ppc-linux-user
+	    x86_64-softmmu        | sparc-bsd-user
+	    ...                   | ...
+
+config QEMU_FOO
+	bool # To break the indentation
+
+if BR2_PACKAGE_QEMU_CUSTOM_TARGETS = ""
+
+comment "... or you can select emulator families to enable, below:"
+
 config BR2_PACKAGE_QEMU_SYSTEM
 	bool "Enable all systems emulation"
 	help
@@ -42,5 +61,7 @@ config BR2_PACKAGE_QEMU_LINUX_USER
 	  Say 'y' to build all Linux user-land emulators that QEMU supports.
 
 # Note: bsd-user can not be build on Linux
+
+endif # BR2_PACKAGE_QEMU_CUSTOM_TARGETS == ""
 
 endif # BR2_PACKAGE_QEMU
