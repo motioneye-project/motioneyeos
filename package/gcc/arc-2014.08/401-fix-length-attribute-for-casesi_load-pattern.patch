@@ -1,0 +1,44 @@
+Fix length attribute for casesi_load pattern.
+
+Perl compilation was broken:
+--->---
+$ arc-linux-gcc -DPERL_CORE -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -matomic -pipe -mdiv-rem -Os   -c -o perl.o perl.c
+perl.s: Assembler messages:
+perl.s:1271: Error: operand out of range (512 is not between -512 and 511)
+--->---
+
+Fix is taken from current development branch of GCC for ARC and will be a
+part of the next release of ARC tools, so at that point patch should be dropped.
+
+https://github.com/foss-for-synopsys-dwc-arc-processors/gcc/commit/664ccd8d5ac8e047faac599309c9c2867af3a736
+
+Signed-off-by: Claudiu Zissulescu <claziss@synopsys.com>
+---
+
+--- a/gcc/config/arc/arc.md
++++ b/gcc/config/arc/arc.md
+@@ -3834,22 +3834,8 @@
+     }
+ }"
+   [(set_attr "type" "load")
+-   (set_attr_alternative "iscompact"
+-     [(cond
+-	[(ne (symbol_ref "GET_MODE (PATTERN (next_real_insn (operands[3])))")
+-	     (symbol_ref "QImode"))
+-	 (const_string "false")
+-	 (match_test "!ADDR_DIFF_VEC_FLAGS (PATTERN (next_real_insn (operands[3]))).offset_unsigned")
+-	 (const_string "false")]
+-	(const_string "true"))
+-      (const_string "false")
+-      (const_string "false")])
+-   (set_attr_alternative "length"
+-     [(cond
+-	[(eq_attr "iscompact" "false") (const_int 4)]
+-	(const_int 2))
+-      (const_int 4)
+-      (const_int 8)])])
++   (set_attr "iscompact" "false")
++   (set_attr "length" "4,4,8")])
+ 
+ ; Unlike the canonical tablejump, this pattern always uses a jump address,
+ ; even for CASE_VECTOR_PC_RELATIVE.

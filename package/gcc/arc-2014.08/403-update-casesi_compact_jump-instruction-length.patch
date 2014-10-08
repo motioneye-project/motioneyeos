@@ -1,0 +1,31 @@
+Update casesi_compact_jump instruction length
+
+Fixes autobuilder issue http://autobuild.buildroot.net/results/bc5/bc5100d6462af4e2805f2bc8d39c87a55d843e2b/
+
+--->---
+$ arc-linux-gcc -c -o wps_attr_parse.o -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64  -pipe -Os  -I.../host/usr/arc-buildroot-linux-uclibc/sysroot/usr/include/libnl3/ -I.../build/hostapd-2.2/src -I.../build/hostapd-2.2/src/utils wps_attr_parse.c
+wps_attr_parse.s: Assembler messages:
+wps_attr_parse.s:860: Error: operand out of range (512 is not between -512 and 511)
+--->---
+
+Fix is taken from current development branch of GCC for ARC and will be a
+part of the next release of ARC tools, so at that point patch should be dropped.
+
+https://github.com/foss-for-synopsys-dwc-arc-processors/gcc/commit/8e704c43cb50407ec79795f6f7459f09800b9f01
+
+Signed-off-by: Claudiu Zissulescu <claziss@synopsys.com>
+---
+ 
+diff --git a/gcc/config/arc/arc.md b/gcc/config/arc/arc.md
+index 88b2e37..8e18703 100644
+--- a/gcc/config/arc/arc.md
++++ b/gcc/config/arc/arc.md
+@@ -3948,7 +3948,7 @@
+   output_asm_insn (s, xop);
+   return \"add_s %2,%2,pcl\n\tj_s%* [%2]\";
+ }"
+-  [(set_attr "length" "10")
++  [(set_attr "length" "12")
+    (set_attr "type" "jump")
+    (set_attr "iscompact" "true")
+    (set_attr "cond" "nocond")])

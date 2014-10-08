@@ -1,0 +1,69 @@
+Fix length of instructions that are in delay slot and needs to be predicated
+
+Following problem was reported:
+--->---
+arceb-linux-gcc -mq-class -g -O2 -c -o main.o main.i
+/tmp/ccudUc8y.s: Assembler messages:
+/tmp/ccudUc8y.s:18820: Error: operand out of range (256 is not between -256 and 255)
+--->---
+
+Fix is taken from current development branch of GCC for ARC and will be a
+part of the next release of ARC tools, so at that point patch should be dropped.
+
+https://github.com/foss-for-synopsys-dwc-arc-processors/gcc/commit/5dfca5504d38293d5264f632c3090ac39c12f72b
+
+Signed-off-by: Claudiu Zissulescu <claziss@synopsys.com>
+---
+
+diff --git a/gcc/config/arc/arc-protos.h b/gcc/config/arc/arc-protos.h
+index 908d002..212423b 100644
+--- a/gcc/config/arc/arc-protos.h
++++ b/gcc/config/arc/arc-protos.h
+@@ -126,4 +126,5 @@ extern void arc_expand_compare_and_swap (rtx *);
+ 
+ #ifdef  RTX_CODE
+ extern void arc_expand_atomic_op (enum rtx_code, rtx, rtx, rtx, rtx, rtx);
++extern bool arc_bdr_iscond (rtx);
+ #endif
+diff --git a/gcc/config/arc/arc.c b/gcc/config/arc/arc.c
+index 68e5552..7d3ded3 100644
+--- a/gcc/config/arc/arc.c
++++ b/gcc/config/arc/arc.c
+@@ -9336,6 +9336,23 @@ arc_write_ext_corereg (rtx insn)
+   return for_each_rtx (&PATTERN (insn), write_ext_corereg_1, 0);
+ }
+ 
++/* Return true if the insn is in a delay slot and needs to be executed
++   conditionally. */
++
++bool
++arc_bdr_iscond (rtx insn)
++{
++  rtx jump = prev_active_insn (insn);
++
++  if (!jump || !JUMP_P(jump))
++    return false;
++
++  if (INSN_ANNULLED_BRANCH_P (jump) && INSN_FROM_TARGET_P (insn))
++    return true;
++
++  return false;
++}
++
+ /* This is like the hook, but returns NULL when it can't / won't generate
+    a legitimate address.  */
+ 
+diff --git a/gcc/config/arc/arc.md b/gcc/config/arc/arc.md
+index e001659..88b2e37 100644
+--- a/gcc/config/arc/arc.md
++++ b/gcc/config/arc/arc.md
+@@ -377,7 +377,8 @@
+ 	(cond [(match_test "GET_CODE (PATTERN (insn)) == COND_EXEC")
+ 	       (const_int 12)]
+ 	      (const_int 10))
+-	(match_test "GET_CODE (PATTERN (insn)) == COND_EXEC") (const_int 4)]
++	(match_test "GET_CODE (PATTERN (insn)) == COND_EXEC || arc_bdr_iscond (insn)")
++	(const_int 4)]
+       (const_int 2))
+ 
+     (eq_attr "iscompact" "true_limm")

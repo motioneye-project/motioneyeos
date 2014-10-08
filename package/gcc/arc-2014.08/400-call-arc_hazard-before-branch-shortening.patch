@@ -1,0 +1,96 @@
+Call arc_hazard before branch shortening
+
+On attempt to compile busybox (1.22.1) from buildroot master following build
+error happened:
+--->---
+$ arc-linux-gcc -Iinclude -Ilibbb  -include include/autoconf.h -D_FILE_OFFSET_BITS=64 -fstack-protector-all -fno-guess-branch-probability -Os -c -o libbb/xfuncs.o libbb/xfuncs.c
+xfuncs.s: Assembler messages:
+xfuncs.s:444: Error: operand out of range (128 is not between -128 and 127)
+--->---
+
+Fix is taken from current development branch of GCC for ARC and will be a
+part of the next release of ARC tools, so at that point patch should be dropped.
+
+https://github.com/foss-for-synopsys-dwc-arc-processors/gcc/commit/37ba2006be0b8c629d2f8ba6c5ec2819bd0269e5
+
+Signed-off-by: Claudiu Zissulescu <claziss@synopsys.com>
+---
+
+diff --git a/gcc/config/arc/arc.c b/gcc/config/arc/arc.c
+index 7d64f69..30baae1 100644
+--- a/gcc/config/arc/arc.c
++++ b/gcc/config/arc/arc.c
+@@ -6520,6 +6520,16 @@ workaround_arc_anomaly (void)
+ {
+   rtx insn, succ0, succ1;
+ 
++  /* For any architecture: call arc_hazard here. */
++  for (insn = get_insns (); insn; insn = NEXT_INSN (insn))
++    {
++      succ0 = next_real_insn(insn);
++      if (arc_hazard (insn, succ0))
++	{
++	  emit_insn_before (gen_nopv (), succ0);
++	}
++    }
++
+   if (!TARGET_ARC700)
+     return;
+ 
+@@ -8710,7 +8720,7 @@ arc_loop_hazard (rtx pred, rtx succ)
+ 	succ_bb = BLOCK_FOR_INSN (NEXT_INSN (label));
+     }
+ 
+-  if (succ_bb && REGNO_REG_SET_P (df_get_live_in (succ_bb), LP_COUNT))
++  if (succ_bb && REGNO_REG_SET_P (df_get_live_out (succ_bb), LP_COUNT))
+     return true;
+ 
+   return false;
+diff --git a/gcc/testsuite/gcc.target/arc/pr9000798619.c b/gcc/testsuite/gcc.target/arc/pr9000798619.c
+new file mode 100644
+index 0000000..b08b32d
+--- /dev/null
++++ b/gcc/testsuite/gcc.target/arc/pr9000798619.c
+@@ -0,0 +1,42 @@
++/* { dg-do assemble } */
++/* { dg-options "-Os -fstack-protector-all -fno-guess-branch-probability" } */
++/* The arc_hazard introduces a NOP which is not taken into account by
++   branch shortening step, resulting in an out of range branch
++   offset (ARC700 architecture). */
++
++typedef unsigned char uint8_t;
++extern int *const bb_errno;
++
++char* hex2bin(char *dst, const char *str, int count)
++{
++ (*bb_errno) = 22;
++ while (*str && count) {
++  uint8_t val;
++  uint8_t c = *str++;
++  if (((unsigned char)((c) - '0') <= 9))
++   val = c - '0';
++  else if ((c|0x20) >= 'a' && (c|0x20) <= 'f')
++   val = (c|0x20) - ('a' - 10);
++  else
++   return ((void *)0);
++  val <<= 4;
++  c = *str;
++  if (((unsigned char)((c) - '0') <= 9))
++   val |= c - '0';
++  else if ((c|0x20) >= 'a' && (c|0x20) <= 'f')
++   val |= (c|0x20) - ('a' - 10);
++  else if (c == ':' || c == '\0')
++   val >>= 4;
++  else
++   return ((void *)0);
++
++  *dst++ = val;
++  if (c != '\0')
++   str++;
++  if (*str == ':')
++   str++;
++  count--;
++ }
++ (*bb_errno) = (*str ? 34 : 0);
++ return dst;
++}
