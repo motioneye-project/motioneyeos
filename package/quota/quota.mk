@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-QUOTA_VERSION = 4.00
+QUOTA_VERSION = 4.01
 QUOTA_SITE = http://downloads.sourceforge.net/project/linuxquota/quota-tools/$(QUOTA_VERSION)
 QUOTA_DEPENDENCIES = host-gettext
 QUOTA_AUTORECONF = YES

@@ -20,8 +20,8 @@ Index: b/configure.in
 +   AC_MSG_ERROR([Neither getrpcbynumber_r nor getrpcbynumber are available])
 +fi
 +
- AC_ARG_ENABLE(altformat,
- 	[  --enable-altformat=[yes/no]     Enable alternative format used by edquota [default=yes].],
+ AC_ARG_ENABLE(rpc,
+ 	[  --enable-rpc=[yes/no]           Enable RPC support [default=yes].],
  	,
 Index: b/svc_socket.c
 ===================================================================
