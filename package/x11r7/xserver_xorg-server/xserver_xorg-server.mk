@@ -161,7 +161,9 @@ ifneq ($(BR2_PACKAGE_XLIB_LIBXVMC),y)
 XSERVER_XORG_SERVER_CONF_OPTS += --disable-xvmc
 endif
 
-ifneq ($(BR2_PACKAGE_XLIB_LIBXCOMPOSITE),y)
+ifeq ($(BR2_PACKAGE_XLIB_LIBXCOMPOSITE),y)
+XSERVER_XORG_SERVER_DEPENDENCIES += xlib_libXcomposite
+else
 XSERVER_XORG_SERVER_CONF_OPTS += --disable-composite
 endif
 
