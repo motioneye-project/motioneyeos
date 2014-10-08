@@ -4,10 +4,8 @@
 #
 ################################################################################
 
-SYSKLOGD_VERSION = 1.5
-SYSKLOGD_SOURCE = sysklogd_$(SYSKLOGD_VERSION).orig.tar.gz
-SYSKLOGD_PATCH = sysklogd_$(SYSKLOGD_VERSION)-6.diff.gz
-SYSKLOGD_SITE = $(BR2_DEBIAN_MIRROR)/debian/pool/main/s/sysklogd
+SYSKLOGD_VERSION = 1.5.1
+SYSKLOGD_SITE = http://www.infodrom.org/projects/sysklogd/download
 SYSKLOGD_LICENSE = GPLv2+
 SYSKLOGD_LICENSE_FILES = COPYING
 
@@ -15,14 +13,6 @@ SYSKLOGD_LICENSE_FILES = COPYING
 ifeq ($(BR2_PACKAGE_BUSYBOX),y)
 SYSKLOGD_DEPENDENCIES = busybox
 endif
-
-define SYSKLOGD_DEBIAN_PATCHES
-	if [ -d $(@D)/debian/patches ]; then \
-		support/scripts/apply-patches.sh $(@D) $(@D)/debian/patches \*.patch; \
-	fi
-endef
-
-SYSKLOGD_POST_PATCH_HOOKS = SYSKLOGD_DEBIAN_PATCHES
 
 define SYSKLOGD_BUILD_CMDS
 	$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(@D)

@@ -5,7 +5,7 @@ config BR2_PACKAGE_SYSKLOGD
 	help
 	  System log daemons syslogd and klogd.
 
-	  http://www.infodrom.org/products/sysklogd/
+	  http://www.infodrom.org/projects/sysklogd/
 
 comment "syslogd needs a toolchain w/ largefile"
 	depends on !BR2_LARGEFILE
