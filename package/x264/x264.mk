@@ -13,7 +13,7 @@ X264_LICENSE_FILES = COPYING
 X264_INSTALL_STAGING = YES
 
 ifeq ($(BR2_i386)$(BR2_x86_64),y)
-	FFMPEG_DEPENDENCIES += host-yasm
+	X264_DEPENDENCIES += host-yasm
 else
 	X264_CONF_OPTS += --disable-asm
 endif
