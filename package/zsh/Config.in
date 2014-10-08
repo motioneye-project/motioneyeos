@@ -8,4 +8,4 @@ config BR2_PACKAGE_ZSH
 	  ksh, and tcsh were incorporated into zsh; many original features
 	  were added.
 
-	  http://zsh.sourceforge.net/
+	  http://www.zsh.org/
