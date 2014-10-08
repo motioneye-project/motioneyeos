@@ -251,6 +251,10 @@ endif
 
 ifeq ($(BR2_PACKAGE_QT_GUI_MODULE),y)
 VLC_CONF_OPTS += --enable-qt
+VLC_CONF_ENV += \
+       ac_cv_path_MOC=$(HOST_DIR)/usr/bin/moc \
+       ac_cv_path_RCC=$(HOST_DIR)/usr/bin/rcc \
+       ac_cv_path_UIC=$(HOST_DIR)/usr/bin/uic
 VLC_DEPENDENCIES += qt
 else
 VLC_CONF_OPTS += --disable-qt
