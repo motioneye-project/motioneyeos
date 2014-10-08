@@ -35,7 +35,9 @@ target_ would be stopped from the Buildroot-2012.11 release because:
 * this feature was only available for Buildroot toolchains;
 * Buildroot mostly targets _small_ or _very small_ target hardware
   with limited resource onboard (CPU, ram, mass-storage), for which
-  compiling does not make much sense.
+  compiling on the target does not make much sense;
+* Buildroot aims at easing the cross-compilation, making native
+  compilation on the target unnecessary.
 
 If you need a compiler on your target anyway, then Buildroot is not
 suitable for your purpose. In such case, you need a _real
