@@ -27,4 +27,9 @@ define SYSKLOGD_INSTALL_TARGET_CMDS
 	fi
 endef
 
+define SYSKLOGD_INSTALL_INIT_SYSV
+	$(INSTALL) -m 755 -D package/sysklogd/S01logging \
+		$(TARGET_DIR)/etc/init.d/S01logging
+endef
+
 $(eval $(generic-package))
