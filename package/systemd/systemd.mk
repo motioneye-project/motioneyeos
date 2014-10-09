@@ -183,12 +183,24 @@ define SYSTEMD_USERS
 	systemd-network -1 systemd-network -1 * - - - Network Manager
 endef
 
-define SYSTEMD_INSTALL_SERVICE_TTY
+define SYSTEMD_DISABLE_SERVICE_TTY1
 	rm -f $(TARGET_DIR)/etc/systemd/system/getty.target.wants/getty@tty1.service
-	ln -fs ../../../../lib/systemd/system/serial-getty@.service $(TARGET_DIR)/etc/systemd/system/getty.target.wants/serial-getty@$(BR2_TARGET_GENERIC_GETTY_PORT).service
+endef
+
+# systemd needs getty.service for VTs and serial-getty.service for serial ttys
+define SYSTEMD_INSTALL_SERVICE_TTY
+	if echo $(BR2_TARGET_GENERIC_GETTY_PORT) | egrep -q 'tty[0-9]*$$'; \
+	then \
+		SERVICE="getty"; \
+	else \
+		SERVICE="serial-getty"; \
+	fi; \
+	ln -fs ../../../../lib/systemd/system/$${SERVICE}@.service \
+		$(TARGET_DIR)/etc/systemd/system/getty.target.wants/$${SERVICE}@$(BR2_TARGET_GENERIC_GETTY_PORT).service
 endef
 
 define SYSTEMD_INSTALL_INIT_SYSTEMD
+	$(SYSTEMD_DISABLE_SERVICE_TTY1)
 	$(SYSTEMD_INSTALL_SERVICE_TTY)
 	$(SYSTEMD_INSTALL_SERVICE_NETWORK)
 	$(SYSTEMD_INSTALL_SERVICE_TIMESYNC)
