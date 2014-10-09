@@ -187,6 +187,7 @@ define SYSTEMD_DISABLE_SERVICE_TTY1
 	rm -f $(TARGET_DIR)/etc/systemd/system/getty.target.wants/getty@tty1.service
 endef
 
+ifneq ($(call qstrip,$(BR2_TARGET_GENERIC_GETTY_PORT)),)
 # systemd needs getty.service for VTs and serial-getty.service for serial ttys
 define SYSTEMD_INSTALL_SERVICE_TTY
 	if echo $(BR2_TARGET_GENERIC_GETTY_PORT) | egrep -q 'tty[0-9]*$$'; \
@@ -198,6 +199,7 @@ define SYSTEMD_INSTALL_SERVICE_TTY
 	ln -fs ../../../../lib/systemd/system/$${SERVICE}@.service \
 		$(TARGET_DIR)/etc/systemd/system/getty.target.wants/$${SERVICE}@$(BR2_TARGET_GENERIC_GETTY_PORT).service
 endef
+endif
 
 define SYSTEMD_INSTALL_INIT_SYSTEMD
 	$(SYSTEMD_DISABLE_SERVICE_TTY1)
