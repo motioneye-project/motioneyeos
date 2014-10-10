@@ -14,6 +14,10 @@ CANFESTIVAL_INSTALL_STAGING = YES
 CANFESTIVAL_INSTALLED-y = src drivers
 CANFESTIVAL_INSTALLED-$(BR2_PACKAGE_CANFESTIVAL_INSTALL_EXAMPLES) += examples
 
+# Canfestival provides and used some python modules and scripts only compliant
+# with python2.
+CANFESTIVAL_DEPENDENCIES = host-python
+
 # canfestival uses its own hand-written build-system. Though there is
 # a configure script, it does not use the autotools, so, we use the
 # generic-package infrastructure.
@@ -33,19 +37,22 @@ define CANFESTIVAL_CONFIGURE_CMDS
 endef
 
 define CANFESTIVAL_BUILD_CMDS
-	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) all
+	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) all \
+		PYTHON=$(HOST_DIR)/usr/bin/python2
 endef
 
 define CANFESTIVAL_INSTALL_TARGET_CMDS
 	for d in $(CANFESTIVAL_INSTALLED-y) ; do \
 		$(TARGET_MAKE_ENV) $(MAKE) -C $(@D)/$$d install \
-			 DESTDIR=$(TARGET_DIR) || exit 1 ; \
+			PYTHON=$(HOST_DIR)/usr/bin/python2 \
+			DESTDIR=$(TARGET_DIR) || exit 1 ; \
 	done
 endef
 
 define CANFESTIVAL_INSTALL_STAGING_CMDS
 	for d in $(CANFESTIVAL_INSTALLED-y) ; do \
 		$(TARGET_MAKE_ENV) $(MAKE) -C $(@D)/$$d install \
+			PYTHON=$(HOST_DIR)/usr/bin/python2 \
 			DESTDIR=$(STAGING_DIR) || exit 1 ; \
 	done
 endef
