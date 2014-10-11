@@ -1,8 +1,6 @@
 config BR2_PACKAGE_RT_TESTS
 	bool "rt-tests"
 	# no _tid field in 'struct sigevent'
-	depends on !(BR2_TOOLCHAIN_USES_UCLIBC && (BR2_mips || BR2_mipsel || \
-		BR2_mips64 || BR2_mips64el))
 	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL
 	help
 	  Set of utilities for testing the real-time behaviour of a
@@ -23,9 +21,10 @@ config BR2_PACKAGE_RT_TESTS
 	  http://rt.wiki.kernel.org
 
 
-comment "rt-tests needs an (e)glibc toolchain"
-	depends on BR2_TOOLCHAIN_USES_UCLIBC && (BR2_mips || BR2_mipsel || \
-		BR2_mips64 || BR2_mips64el)
+comment "rt-tests may not work on MIPS with an external uClibc toolchain"
+	depends on BR2_PACKAGE_RT_TESTS
+	depends on BR2_TOOLCHAIN_EXTERNAL_UCLIBC
+	depends on BR2_mips || BR2_mipsel || BR2_mips64 || BR2_mips64el
 
 comment "rt-tests needs a toolchain w/ NPTL"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS_NPTL
