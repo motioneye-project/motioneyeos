@@ -1,7 +1,6 @@
 config BR2_PACKAGE_PERL_GDGRAPH
 	bool "perl-gdgraph"
 	depends on !BR2_PREFER_STATIC_LIB
-	depends on BR2_BROKEN # perl-gd
 	select BR2_PACKAGE_PERL_GD
 	select BR2_PACKAGE_PERL_GDTEXTUTIL
 	help

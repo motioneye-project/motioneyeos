@@ -100,32 +100,6 @@ define PERL_INSTALL_TARGET_CMDS
 	$(MAKE1) -C $(@D) DESTDIR="$(TARGET_DIR)" install.perl
 endef
 
-# perl infra: fix for Perl XS packages configured by Makefile.PL
-#
-# ExtUtils::MakeMaker adds all the header files used by the perl as
-# dependencies to the generated Makefile. This means that the generated
-# Makefile will depend on the system's header files.
-#
-# Usually this is not a problem, because when building the target package,
-# these header files will indeed be found in $(STAGING_DIR). However, some
-# distro's add an extra header file to the system's perl. This header is
-# also included in the generated Makefile, which makes the build fail
-# because it doesn't exist in $(STAGING_DIR).
-#
-# As a work-around, explicitly create this header file in $(STAGING_DIR).
-# It doesn't hurt to create it even if the system perl doesn't need it.
-#
-define PERL_ADD_CORE_H
-	touch $(STAGING_DIR)/usr/lib/perl5/$(PERL_VERSION)/$(PERL_ARCHNAME)/CORE/patchlevel-debian.h
-	touch $(STAGING_DIR)/usr/lib/perl5/$(PERL_VERSION)/$(PERL_ARCHNAME)/CORE/patchlevel-gentoo.h
-	touch $(STAGING_DIR)/usr/lib/perl5/$(PERL_VERSION)/$(PERL_ARCHNAME)/CORE/cc_runtime.h
-	touch $(STAGING_DIR)/usr/lib/perl5/$(PERL_VERSION)/$(PERL_ARCHNAME)/CORE/fakethr.h
-	touch $(STAGING_DIR)/usr/lib/perl5/$(PERL_VERSION)/$(PERL_ARCHNAME)/CORE/perlsfio.h
-	touch $(STAGING_DIR)/usr/lib/perl5/$(PERL_VERSION)/$(PERL_ARCHNAME)/CORE/vutil.h
-endef
-
-PERL_POST_INSTALL_STAGING_HOOKS += PERL_ADD_CORE_H
-
 HOST_PERL_CONF_OPTS = \
 	-des \
 	-Dprefix="$(HOST_DIR)/usr" \
