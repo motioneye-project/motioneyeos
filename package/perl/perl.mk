@@ -126,7 +126,25 @@ endef
 
 PERL_POST_INSTALL_STAGING_HOOKS += PERL_ADD_CORE_H
 
+HOST_PERL_CONF_OPTS = \
+	-des \
+	-Dprefix="$(HOST_DIR)/usr" \
+	-Dcc="$(HOSTCC)"
+
+define HOST_PERL_CONFIGURE_CMDS
+	(cd $(@D); HOSTCC='$(HOSTCC_NOCACHE)' ./Configure $(HOST_PERL_CONF_OPTS))
+endef
+
+define HOST_PERL_BUILD_CMDS
+	$(MAKE) -C $(@D)
+endef
+
+define HOST_PERL_INSTALL_CMDS
+	$(MAKE) -C $(@D) INSTALL_DEPENDENCE='' install
+endef
+
 $(eval $(generic-package))
+$(eval $(host-generic-package))
 
 define PERL_FINALIZE_TARGET
 	rm -rf $(TARGET_DIR)/usr/lib/perl5/$(PERL_VERSION)/pod
