@@ -24,6 +24,9 @@
 # You shouldn't need to mess with anything beyond this point...
 #--------------------------------------------------------------
 
+# This is our default rule, so must come first
+all:
+
 # Set and export the version string
 export BR2_VERSION := 2014.11-git
 
