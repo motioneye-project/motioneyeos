@@ -10,13 +10,7 @@
 
 GCC_VERSION = $(call qstrip,$(BR2_GCC_VERSION))
 
-ifeq ($(BR2_GCC_VERSION_SNAP),y)
-GCC_SNAP_DATE = $(call qstrip,$(BR2_GCC_SNAP_DATE))
-endif
-
-ifneq ($(GCC_SNAP_DATE),)
-GCC_SITE = ftp://gcc.gnu.org/pub/gcc/snapshots/$(GCC_SNAP_DATE)
-else ifeq ($(findstring avr32,$(GCC_VERSION)),avr32)
+ifeq ($(findstring avr32,$(GCC_VERSION)),avr32)
 GCC_SITE = ftp://www.at91.com/pub/buildroot
 else ifeq ($(BR2_arc),y)
 GCC_SITE = $(call github,foss-for-synopsys-dwc-arc-processors,gcc,$(GCC_VERSION))
@@ -160,7 +154,7 @@ else
 HOST_GCC_COMMON_CONF_OPTS += --without-isl --without-cloog
 endif
 
-ifneq ($(BR2_arc)$(BR2_GCC_VERSION_SNAP),)
+ifeq ($(BR2_arc),y)
 HOST_GCC_COMMON_DEPENDENCIES += host-flex host-bison
 endif
 

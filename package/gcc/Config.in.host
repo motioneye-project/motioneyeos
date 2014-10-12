@@ -112,33 +112,11 @@ choice
 		select BR2_GCC_NEEDS_MPC
 		select BR2_GCC_SUPPORTS_GRAPHITE
 
-	config BR2_GCC_VERSION_SNAP
-		bool "gcc snapshot"
-		# Broken or unsupported architectures
-		depends on !BR2_arc && !BR2_avr32
-		# musl patches only for release gcc versions
-		depends on !BR2_TOOLCHAIN_BUILDROOT_MUSL
-		select BR2_GCC_NEEDS_MPC
-		select BR2_GCC_SUPPORTS_GRAPHITE
 endchoice
 
 config BR2_GCC_SUPPORTS_FINEGRAINEDMTUNE
 	bool
 	default y if !BR2_GCC_VERSION_4_2_2_AVR32_2_1_5
-
-config BR2_GCC_SNAP_DATE
-	string "GCC snapshot date"
-	default "4.8-20120429"
-	depends on BR2_GCC_VERSION_SNAP
-	help
-	  Enter snapshot date to use for gcc.
-	  Format is: A.B-YYYYMMDD
-
-	  A is GCC major version, for example 4.
-	  B is GCC minor version, for example 7.
-	  YYYYMMDD is snapshot date, for example 20110430.
-
-	  This way we'd get version 4.7-20110430
 
 config BR2_GCC_VERSION
 	string
@@ -149,7 +127,6 @@ config BR2_GCC_VERSION
 	default "4.8.3"     if BR2_GCC_VERSION_4_8_X
 	default "4.9.1"     if BR2_GCC_VERSION_4_9_X
 	default "arc-2014.08" if BR2_GCC_VERSION_4_8_ARC
-	default BR2_GCC_SNAP_DATE if BR2_GCC_VERSION_SNAP
 
 config BR2_EXTRA_GCC_CONFIG_OPTIONS
 	string "Additional gcc options"
