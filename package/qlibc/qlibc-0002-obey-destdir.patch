@@ -1,0 +1,90 @@
+Make sure the Makefile obeys $(DESTDIR)
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/src/Makefile.in
+===================================================================
+--- a/src/Makefile.in
++++ b/src/Makefile.in
+@@ -120,48 +120,48 @@
+ install: ${INSTALL_TARGETS}
+ 
+ install-qlibc: qlibc
+-	${MKDIR_P} ${INST_INCDIR}/qlibc
+-	${INSTALL_DATA} ${QLIBC_INCDIR}/qlibc.h ${INST_INCDIR}/qlibc/qlibc.h
+-	${MKDIR_P} ${INST_LIBDIR}
+-	${INSTALL_DATA} ${QLIBC_LIBDIR}/${QLIBC_LIBNAME} ${INST_LIBDIR}/${QLIBC_LIBNAME}
+-	${INSTALL_DATA} ${QLIBC_LIBDIR}/${QLIBC_SLIBREALNAME} ${INST_LIBDIR}/${QLIBC_SLIBREALNAME}
+-	( cd ${INST_LIBDIR}; ${LN_S} -f ${QLIBC_SLIBREALNAME} ${QLIBC_SLIBNAME} )
++	${MKDIR_P} ${DESTDIR}/${INST_INCDIR}/qlibc
++	${INSTALL_DATA} ${QLIBC_INCDIR}/qlibc.h ${DESTDIR}/${INST_INCDIR}/qlibc/qlibc.h
++	${MKDIR_P} ${DESTDIR}/${INST_LIBDIR}
++	${INSTALL_DATA} ${QLIBC_LIBDIR}/${QLIBC_LIBNAME} ${DESTDIR}/${INST_LIBDIR}/${QLIBC_LIBNAME}
++	${INSTALL_DATA} ${QLIBC_LIBDIR}/${QLIBC_SLIBREALNAME} ${DESTDIR}/${INST_LIBDIR}/${QLIBC_SLIBREALNAME}
++	( cd ${DESTDIR}/${INST_LIBDIR}; ${LN_S} -f ${QLIBC_SLIBREALNAME} ${QLIBC_SLIBNAME} )
+ 
+ uninstall-qlibc:
+-	${RM} -f ${INST_INCDIR}/qlibc/qlibc.h
+-	${RM} -f ${INST_LIBDIR}/${QLIBC_LIBNAME}
+-	${RM} -f ${INST_LIBDIR}/${QLIBC_SLIBREALNAME}
+-	${RM} -f ${INST_LIBDIR}/${QLIBC_SLIBNAME}
++	${RM} -f ${DESTDIR}/${INST_INCDIR}/qlibc/qlibc.h
++	${RM} -f ${DESTDIR}/${INST_LIBDIR}/${QLIBC_LIBNAME}
++	${RM} -f ${DESTDIR}/${INST_LIBDIR}/${QLIBC_SLIBREALNAME}
++	${RM} -f ${DESTDIR}/${INST_LIBDIR}/${QLIBC_SLIBNAME}
+ 
+ install-qlibcext: qlibcext
+-	${MKDIR_P} ${INST_INCDIR}/qlibc
+-	${MKDIR_P} ${INST_INCDIR}/qlibc/qlibcext/
+-	${INSTALL_DATA} ${QLIBC_INCDIR}/qlibcext.h ${INST_INCDIR}/qlibc/qlibcext.h
+-	${INSTALL_DATA} ${QLIBC_INCDIR}/qlibcext/qconfig.h ${INST_INCDIR}/qlibc/qlibcext/qconfig.h
+-	${INSTALL_DATA} ${QLIBC_INCDIR}/qlibcext/qaconf.h ${INST_INCDIR}/qlibc/qlibcext/qaconf.h
+-	${INSTALL_DATA} ${QLIBC_INCDIR}/qlibcext/qlog.h ${INST_INCDIR}/qlibc/qlibcext/qlog.h
+-	${INSTALL_DATA} ${QLIBC_INCDIR}/qlibcext/qhttpclient.h ${INST_INCDIR}/qlibc/qlibcext/qhttpclient.h
+-	${INSTALL_DATA} ${QLIBC_INCDIR}/qlibcext/qdatabase.h ${INST_INCDIR}/qlibc/qlibcext/qdatabase.h
+-	${MKDIR_P} ${INST_LIBDIR}
+-	${INSTALL_DATA} ${QLIBC_LIBDIR}/${QLIBCEXT_LIBNAME} ${INST_LIBDIR}/${QLIBCEXT_LIBNAME}
+-	${INSTALL_DATA} ${QLIBC_LIBDIR}/${QLIBCEXT_SLIBREALNAME} ${INST_LIBDIR}/${QLIBCEXT_SLIBREALNAME}
+-	( cd ${INST_LIBDIR}; ${LN_S} -f ${QLIBCEXT_SLIBREALNAME} ${QLIBCEXT_SLIBNAME} )
++	${MKDIR_P} ${DESTDIR}/${INST_INCDIR}/qlibc
++	${MKDIR_P} ${DESTDIR}/${INST_INCDIR}/qlibc/qlibcext/
++	${INSTALL_DATA} ${QLIBC_INCDIR}/qlibcext.h ${DESTDIR}/${INST_INCDIR}/qlibc/qlibcext.h
++	${INSTALL_DATA} ${QLIBC_INCDIR}/qlibcext/qconfig.h ${DESTDIR}/${INST_INCDIR}/qlibc/qlibcext/qconfig.h
++	${INSTALL_DATA} ${QLIBC_INCDIR}/qlibcext/qaconf.h ${DESTDIR}/${INST_INCDIR}/qlibc/qlibcext/qaconf.h
++	${INSTALL_DATA} ${QLIBC_INCDIR}/qlibcext/qlog.h ${DESTDIR}/${INST_INCDIR}/qlibc/qlibcext/qlog.h
++	${INSTALL_DATA} ${QLIBC_INCDIR}/qlibcext/qhttpclient.h ${DESTDIR}/${INST_INCDIR}/qlibc/qlibcext/qhttpclient.h
++	${INSTALL_DATA} ${QLIBC_INCDIR}/qlibcext/qdatabase.h ${DESTDIR}/${INST_INCDIR}/qlibc/qlibcext/qdatabase.h
++	${MKDIR_P} ${DESTDIR}/${INST_LIBDIR}
++	${INSTALL_DATA} ${QLIBC_LIBDIR}/${QLIBCEXT_LIBNAME} ${DESTDIR}/${INST_LIBDIR}/${QLIBCEXT_LIBNAME}
++	${INSTALL_DATA} ${QLIBC_LIBDIR}/${QLIBCEXT_SLIBREALNAME} ${DESTDIR}/${INST_LIBDIR}/${QLIBCEXT_SLIBREALNAME}
++	( cd ${DESTDIR}/${INST_LIBDIR}; ${LN_S} -f ${QLIBCEXT_SLIBREALNAME} ${QLIBCEXT_SLIBNAME} )
+ 
+ uninstall-qlibcext:
+-	${RM} -f ${INST_INCDIR}/qlibc/qlibcext.h
+-	${RM} -f ${INST_INCDIR}/qlibc/qlibcext/qconfig.h
+-	${RM} -f ${INST_INCDIR}/qlibc/qlibcext/qaconf.h
+-	${RM} -f ${INST_INCDIR}/qlibc/qlibcext/qlog.h
+-	${RM} -f ${INST_INCDIR}/qlibc/qlibcext/qhttpclient.h
+-	${RM} -f ${INST_INCDIR}/qlibc/qlibcext/qdatabase.h
+-	${RM} -f ${INST_LIBDIR}/${QLIBCEXT_LIBNAME}
+-	${RM} -f ${INST_LIBDIR}/${QLIBCEXT_SLIBREALNAME}
+-	${RM} -f ${INST_LIBDIR}/${QLIBCEXT_SLIBNAME}
++	${RM} -f ${DESTDIR}/${INST_INCDIR}/qlibc/qlibcext.h
++	${RM} -f ${DESTDIR}/${INST_INCDIR}/qlibc/qlibcext/qconfig.h
++	${RM} -f ${DESTDIR}/${INST_INCDIR}/qlibc/qlibcext/qaconf.h
++	${RM} -f ${DESTDIR}/${INST_INCDIR}/qlibc/qlibcext/qlog.h
++	${RM} -f ${DESTDIR}/${INST_INCDIR}/qlibc/qlibcext/qhttpclient.h
++	${RM} -f ${DESTDIR}/${INST_INCDIR}/qlibc/qlibcext/qdatabase.h
++	${RM} -f ${DESTDIR}/${INST_LIBDIR}/${QLIBCEXT_LIBNAME}
++	${RM} -f ${DESTDIR}/${INST_LIBDIR}/${QLIBCEXT_SLIBREALNAME}
++	${RM} -f ${DESTDIR}/${INST_LIBDIR}/${QLIBCEXT_SLIBNAME}
+ 
+ deinstall: uninstall
+ uninstall: uninstall-qlibc uninstall-qlibcext
+-	${RMDIR} ${INST_INCDIR}/qlibc/qlibcext
+-	${RMDIR} ${INST_INCDIR}/qlibc
++	${RMDIR} ${DESTDIR}/${INST_INCDIR}/qlibc/qlibcext
++	${RMDIR} ${DESTDIR}/${INST_INCDIR}/qlibc
+ 
+ clean:
+ 	${RM} -f ${QLIBC_OBJS}
