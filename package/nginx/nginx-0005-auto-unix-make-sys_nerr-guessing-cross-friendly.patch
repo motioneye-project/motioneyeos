@@ -22,7 +22,7 @@ new file mode 100644
 index 0000000..25e7c22
 --- /dev/null
 +++ b/auto/os/sys_nerr
-@@ -0,0 +1,77 @@
+@@ -0,0 +1,78 @@
 +
 +# Copyright (C) Samuel Martin <s.martin49@gmail.com>
 +
@@ -89,6 +89,7 @@ index 0000000..25e7c22
 +
 +if test -z $ngx_sys_nerr ; then
 +    ngx_size=0
++    ngx_sys_nerr=0
 +fi
 +
 +cat << END >> $NGX_AUTO_CONFIG_H
