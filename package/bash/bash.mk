@@ -35,7 +35,6 @@ define BASH_INSTALL_TARGET_CMDS
 	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) \
 		DESTDIR=$(TARGET_DIR) exec_prefix=/ install
 	rm -f $(TARGET_DIR)/bin/bashbug
-	ln -sf bash $(TARGET_DIR)/bin/sh
 endef
 
 $(eval $(autotools-package))

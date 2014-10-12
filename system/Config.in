@@ -211,6 +211,50 @@ config BR2_TARGET_GENERIC_ROOT_PASSWD
 	  in the build log! Avoid using a valuable password if either the
 	  .config file or the build log may be distributed!
 
+choice
+	bool "/bin/sh"
+	default BR2_SYSTEM_BIN_SH_DASH if !BR2_PACKAGE_BUSYBOX
+	help
+	  Select which shell will provide /bin/sh.
+
+# busybox has shells that work on noMMU
+config BR2_SYSTEM_BIN_SH_BUSYBOX
+	bool "busybox' default shell"
+	depends on BR2_PACKAGE_BUSYBOX
+
+config BR2_SYSTEM_BIN_SH_BASH
+	bool "bash"
+	depends on BR2_USE_MMU # bash
+	depends on BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
+	select BR2_PACKAGE_BASH
+
+config BR2_SYSTEM_BIN_SH_DASH
+	bool "dash"
+	depends on BR2_USE_MMU # dash
+	depends on BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
+	select BR2_PACKAGE_DASH
+
+config BR2_SYSTEM_BIN_SH_ZSH
+	bool "zsh"
+	depends on BR2_USE_MMU # zsh
+	depends on BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
+	select BR2_PACKAGE_ZSH
+
+comment "bash, dash, zsh need BR2_PACKAGE_BUSYBOX_SHOW_OTHERS"
+	depends on !BR2_PACKAGE_BUSYBOX_SHOW_OTHERS && BR2_PACKAGE_BUSYBOX
+
+config BR2_SYSTEM_BIN_SH_NONE
+	bool "none"
+
+endchoice # /bin/sh
+
+config BR2_SYSTEM_BIN_SH
+	string
+	default "/bin/busybox" if BR2_SYSTEM_BIN_SH_BUSYBOX
+	default "/bin/bash"    if BR2_SYSTEM_BIN_SH_BASH
+	default "/bin/dash"    if BR2_SYSTEM_BIN_SH_DASH
+	default "/bin/zsh"     if BR2_SYSTEM_BIN_SH_ZSH
+
 config BR2_TARGET_GENERIC_GETTY
 	bool "Run a getty (login prompt) after boot"
 	default y
