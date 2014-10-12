@@ -16,6 +16,10 @@ if BR2_PACKAGE_NGINX
 
 config BR2_PACKAGE_NGINX_FILE_AIO
 	bool "file AIO support"
+	# Does not build, because nginx hardcodes using SYS_eventfd,
+	# but it's not available on AArch64, only eventfd() is.
+	# See https://bugs.launchpad.net/linaro-aarch64/+bug/1160013
+	depends on !BR2_aarch64
 
 config BR2_PACKAGE_NGINX_HTTP
 	bool "http server"
