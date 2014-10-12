@@ -10,5 +10,17 @@ config BR2_PACKAGE_POPPLER
 
 	  http://poppler.freedesktop.org/
 
+if BR2_PACKAGE_POPPLER
+
+config BR2_PACKAGE_POPPLER_QT
+	bool "Qt support"
+	depends on BR2_PACKAGE_QT
+	select BR2_PACKAGE_QT_GUI
+	select BR2_PACKAGE_QT_XML
+	help
+	  Build Qt support into the Poppler library
+
+endif
+
 comment "poppler needs a toolchain w/ C++, threads"
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS
