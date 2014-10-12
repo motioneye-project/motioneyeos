@@ -536,15 +536,19 @@ comment "enabling Stack Smashing Protection requires support in the toolchain"
 	depends on !BR2_TOOLCHAIN_HAS_SSP
 
 config BR2_PREFER_STATIC_LIB
-	bool "prefer static libraries"
+	bool "build statically linked applications, no dynamic libraries"
 	help
-	  Where possible, build and use static libraries for the target.
-	  This potentially increases your code size and should only be
+	  Build all applications for the target statically linked.
+	  This potentially increases your filesystem size and should only be
 	  used if you know what you do.
-	  The default is to build dynamic libraries and use those on
-	  the target filesystem.
 
-	  WARNING: This is highly experimental at the moment.
+	  Note that some applications cannot be build statically and so are
+	  intentionally disabled.
+
+	  The default (if this option is disabled) is to build dynamic
+	  libraries and dynamically link applications to use those on the
+	  target filesystem.
+
 
 config BR2_PACKAGE_OVERRIDE_FILE
 	string "location of a package override file"
