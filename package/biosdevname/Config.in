@@ -1,0 +1,15 @@
+config BR2_PACKAGE_BIOSDEVNAME
+	bool "biosdevname"
+	depends on BR2_i386 || BR2_x86_64
+	depends on BR2_PACKAGE_HAS_UDEV
+	select BR2_PACKAGE_PCIUTILS
+	select BR2_PACKAGE_ZLIB
+	help
+	  Biosdevname is a udev helper that looks at various BIOS tables to
+	  figure out what the actual hardware names are for Ethernet ports
+	  and renames the ports accordingly.  This has the advantage of
+	  always referring to the same port regardless of system or
+	  hardware changes that might otherwise alter the typical ethX
+	  naming.
+
+	  http://linux.dell.com/biosdevname/
