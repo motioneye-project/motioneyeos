@@ -52,7 +52,12 @@
 import matplotlib as mpl
 import numpy
 
+# Use the Agg backend (which produces a PNG output, see
+# http://matplotlib.org/faq/usage_faq.html#what-is-a-backend),
+# otherwise an incorrect backend is used on some host machines).
+# Note: matplotlib.use() must be called *before* matplotlib.pyplot.
 mpl.use('Agg')
+
 import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
 import csv
