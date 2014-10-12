@@ -5,8 +5,7 @@
 ################################################################################
 
 XBMC_VERSION = 13.2-Gotham
-XBMC_SOURCE = $(XBMC_VERSION).tar.gz
-XBMC_SITE = https://github.com/xbmc/xbmc/archive
+XBMC_SITE = $(call github,xbmc,xbmc,$(XBMC_VERSION))
 XBMC_LICENSE = GPLv2
 XBMC_LICENSE_FILES = LICENSE.GPL
 # XBMC needs host-sdl_image (and therefore host-sdl) for a host tools it builds
