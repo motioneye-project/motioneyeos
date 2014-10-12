@@ -50,7 +50,7 @@ VLC_CONF_OPTS += --disable-static
 endif
 
 ifeq ($(BR2_POWERPC_CPU_HAS_ALTIVEC),y)
-VCL_CONF_OPTS += --enable-altivec
+VLC_CONF_OPTS += --enable-altivec
 else
 VLC_CONF_OPTS += --disable-altivec
 endif
