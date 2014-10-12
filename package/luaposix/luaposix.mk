@@ -5,8 +5,7 @@
 ################################################################################
 
 LUAPOSIX_VERSION = 32
-LUAPOSIX_SITE = https://github.com/luaposix/luaposix/archive
-LUAPOSIX_SOURCE = release-v$(LUAPOSIX_VERSION).tar.gz
+LUAPOSIX_SITE = $(call github,luaposix,luaposix,release-v$(LUAPOSIX_VERSION))
 LUAPOSIX_LICENSE = MIT
 LUAPOSIX_LICENSE_FILES = COPYING
 LUAPOSIX_DEPENDENCIES = luainterpreter host-lua
