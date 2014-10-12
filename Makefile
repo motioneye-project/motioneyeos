@@ -847,9 +847,6 @@ help:
 	@echo 'Build:'
 	@echo '  all                    - make world'
 	@echo '  toolchain              - build toolchain'
-	@echo '  <package>-rebuild      - force recompile <package>'
-	@echo '  <package>-reconfigure  - force reconfigure <package>'
-	@echo '  <package>-graph-depends    - generate graph of the dependency tree for package'
 	@echo
 	@echo 'Configuration:'
 	@echo '  menuconfig             - interactive curses-based configurator'
@@ -912,7 +909,8 @@ ifneq ($(wildcard $(BR2_EXTERNAL)/configs/*_defconfig),)
 	  printf "  %-35s - Build for %s\\n" $(b) $(b:_defconfig=);)
 endif
 	@echo
-	@echo 'See docs/README, or generate the Buildroot manual for further details'
+	@echo 'For further details, see README, generate the Buildroot manual, or consult'
+	@echo 'it on-line at http://buildroot.org/docs.html'
 	@echo
 
 release: OUT = buildroot-$(BR2_VERSION)
