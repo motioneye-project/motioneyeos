@@ -49,6 +49,11 @@ config BR2_PACKAGE_FFMPEG_FFSERVER
 	help
 	  FFserver is a streaming server for both audio and video.
 
+config BR2_PACKAGE_FFMPEG_AVRESAMPLE
+	bool "Build libavresample"
+	help
+	  Avresample is a audio conversion library for compatibility.
+
 config BR2_PACKAGE_FFMPEG_POSTPROC
 	bool "Build libpostproc"
 	depends on BR2_PACKAGE_FFMPEG_GPL

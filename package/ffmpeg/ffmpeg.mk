@@ -98,6 +98,12 @@ else
 FFMPEG_CONF_OPTS += --disable-ffserver
 endif
 
+ifeq ($(BR2_PACKAGE_FFMPEG_AVRESAMPLE),y)
+FFMPEG_CONF_OPTS += --enable-avresample
+else
+FFMPEG_CONF_OPTS += --disable-avresample
+endif
+
 ifeq ($(BR2_PACKAGE_FFMPEG_POSTPROC),y)
 FFMPEG_CONF_OPTS += --enable-postproc
 else
