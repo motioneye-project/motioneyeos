@@ -1,0 +1,4 @@
+# Locally calculated after checking pgp signature (vanilla)
+# Locally calculated (ARC)
+sha256	62333167b79afb0b25a843513288c67b59547acf653e8fbe62ee64e71ebd1587	uClibc-0.9.33.2.tar.xz
+sha256	0a9085a11615296cfe7783f16ff29073393eb330749947adece0eeddb31705a4	uClibc-arc-2014.08.tar.gz
