@@ -14,6 +14,13 @@ ifeq ($(BR2_PACKAGE_AVAHI),y)
 TVHEADEND_DEPENDENCIES += avahi
 endif
 
+ifeq ($(BR2_PACKAGE_LIBDVBCSA),y)
+TVHEADEND_DEPENDENCIES += libdvbcsa
+TVHEADEND_CONF_OPTS += --enable-dvbcsa
+else
+TVHEADEND_CONF_OPTS += --disable-dvbcsa
+endif
+
 ifeq ($(BR2_PACKAGE_LIBICONV),y)
 TVHEADEND_DEPENDENCIES += libiconv
 endif
@@ -30,6 +37,7 @@ define TVHEADEND_CONFIGURE_CMDS
 	 --cpu="$(BR2_GCC_TARGET_CPU)"		\
 	 --python="$(HOST_DIR)/usr/bin/python"	\
 	 --disable-dvbscan			\
+	 $(TVHEADEND_CONF_OPTS)			\
 	)
 endef
 
