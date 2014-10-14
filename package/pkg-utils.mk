@@ -5,14 +5,24 @@
 #
 ################################################################################
 
-# UPPERCASE Macro -- transform its argument to uppercase and replace dots and
-# hyphens to underscores
+# Case conversion macros. This is inspired by the 'up' macro from gmsl
+# (http://gmsl.sf.net). It is optimised very heavily because these macros
+# are used a lot. It is about 5 times faster than forking a shell and tr.
+#
+# The caseconvert-helper creates a definition of the case conversion macro.
+# After expansion by the outer $(eval ), the UPPERCASE macro is defined as:
+# $(strip $(eval __tmp := $(1))  $(eval __tmp := $(subst a,A,$(__tmp))) ... )
+# In other words, every letter is substituted one by one.
+#
+# The caseconvert-helper allows us to create this definition out of the
+# [FROM] and [TO] lists, so we don't need to write down every substition
+# manually. The uses of $ and $$ quoting are chosen in order to do as
+# much expansion as possible up-front.
+#
+# Note that it would be possible to conceive a slightly more optimal
+# implementation that avoids the use of __tmp, but that would be even
+# more unreadable and is not worth the effort.
 
-# Heavily inspired by the up macro from gmsl (http://gmsl.sf.net)
-# This is approx 5 times faster than forking a shell and tr, and
-# as this macro is used a lot it matters
-# This works by creating translation character pairs (E.G. a:A b:B)
-# and then looping though all of them running $(subst from,to,text)
 [FROM] := a b c d e f g h i j k l m n o p q r s t u v w x y z - .
 [TO]   := A B C D E F G H I J K L M N O P Q R S T U V W X Y Z _ _
 
