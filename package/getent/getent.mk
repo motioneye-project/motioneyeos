@@ -14,7 +14,11 @@ GETENT_LICENSE = LGPLv2.1+
 # the C library. For other toolchains, we use the wrapper script
 # included in this package.
 ifeq ($(BR2_TOOLCHAIN_USES_GLIBC),y)
-GETENT_LOCATION = $(STAGING_DIR)/usr/bin/getent
+# Sourcery toolchains install it in sysroot/usr/lib/bin
+# Buildroot toolchains install it in sysroot/usr/bin
+GETENT_LOCATION = $(firstword $(wildcard \
+	$(STAGING_DIR)/usr/bin/getent \
+	$(STAGING_DIR)/usr/lib/bin/getent))
 else
 GETENT_LOCATION = package/getent/getent
 endif
