@@ -52,3 +52,20 @@ FOO_SITE = $(call github,<user>,<package>,$(FOO_VERSION))
   Buildroot (e.g.: +foo-f6fb6654af62045239caed5950bc6c7971965e60.tar.gz+),
   so it is not necessary to specify it in the +.mk+ file.
 - When using a commit ID as version, you should use the full 40 hex characters.
+
+If the package you wish to add does have a release section on GitHub, the
+maintainer may have uploaded a release tarball, or the release may just point
+to the automatically generated tarball from the git tag. If there is a
+release tarball uploaded by the maintainer, we prefer to use that since it
+may be slightly different (e.g. it contains a configure script so we don't
+need to do AUTORECONF).
+
+You can see on the release page if it's an uploaded tarball or a git tag:
+- If there is a green download button, like
+  https://github.com/zedshaw/mongrel2/releases/tag/v1.9.1[mongrel2], then it
+  was uploaded by the maintainer and you should use the link of that button to
+  specify +FOO_SITE+.
+- If there is grey download button, like
+  https://github.com/xbmc/xbmc/releases/tag/13.2-Gotham[xbmc], then it's an
+  automatically generated tarball and you should use the 'github' helper
+  function.
