@@ -4,8 +4,9 @@
 #
 ################################################################################
 
-GETTEXT_VERSION = 0.19.2
+GETTEXT_VERSION = 0.19.3
 GETTEXT_SITE = $(BR2_GNU_MIRROR)/gettext
+GETTEXT_SOURCE = gettext-$(GETTEXT_VERSION).tar.xz
 GETTEXT_INSTALL_STAGING = YES
 GETTEXT_LICENSE = GPLv2+
 GETTEXT_LICENSE_FILES = COPYING
