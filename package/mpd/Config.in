@@ -62,6 +62,12 @@ config BR2_PACKAGE_MPD_AUDIOFILE
 	  Enable audiofile input/streaming support.
 	  Select this if you want to play back WAV files.
 
+config BR2_PACKAGE_MPD_DSD
+	bool "dsd"
+	help
+	  Enable Digital Speech Decoder (DSD) support to play audio files encoded
+	  in a digital speech format.
+
 config BR2_PACKAGE_MPD_FAAD2
 	bool "faad2"
 	select BR2_PACKAGE_FAAD2

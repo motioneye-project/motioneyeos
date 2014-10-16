@@ -62,6 +62,12 @@ else
 MPD_CONF_OPTS += --disable-curl
 endif
 
+ifeq ($(BR2_PACKAGE_MPD_DSD),y)
+MPD_CONF_OPTS += --enable-dsd
+else
+MPD_CONF_OPTS += --disable-dsd
+endif
+
 ifeq ($(BR2_PACKAGE_MPD_FAAD2),y)
 MPD_DEPENDENCIES += faad2
 MPD_CONF_OPTS += --enable-aac
