@@ -13,23 +13,24 @@ VR_INADYN=/var/run/inadyn
 [ ! -d $VR_INADYN ] && mkdir -p $VR_INADYN
 
 case "$1" in
-        start)
-                echo "Starting inadyn."
-                start-stop-daemon -S -x /usr/sbin/inadyn
-                ;;
-        stop)
-                echo  "Stopping inadyn."
-                start-stop-daemon -q -K -x /usr/sbin/inadyn
-                rm -f /var/run/inadyn/inadyn.pid
-                ;;
-        restart)
-                "$0" stop
-                "$0" start
-                ;;
-        *)
-                echo $"Usage: $0 {start|stop|restart}"
-                exit 1
+	start)
+		echo "Starting inadyn: "
+		start-stop-daemon -S -x /usr/bin/inadyn
+		[ $? == 0 ] && echo "OK" || echo "FAIL"
+		;;
+	stop)
+		echo  "Stopping inadyn: "
+		start-stop-daemon -q -K -x /usr/bin/inadyn
+		[ $? == 0 ] && echo "OK" || echo "FAIL"
+		rm -f /var/run/inadyn/inadyn.pid
+		;;
+	restart)
+		"$0" stop
+		"$0" start
+		;;
+		*)
+		echo $"Usage: $0 {start|stop|restart}"
+		exit 1
 esac
 
 exit $?
-
