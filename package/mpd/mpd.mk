@@ -90,6 +90,13 @@ else
 MPD_CONF_OPTS += --disable-lame-encoder
 endif
 
+ifeq ($(BR2_PACKAGE_MPD_LIBSMBCLIENT),y)
+MPD_DEPENDENCIES += samba
+MPD_CONF_OPTS += --enable-smbclient
+else
+MPD_CONF_OPTS += --disable-smbclient
+endif
+
 ifeq ($(BR2_PACKAGE_MPD_LIBSAMPLERATE),y)
 MPD_DEPENDENCIES += libsamplerate
 MPD_CONF_OPTS += --enable-lsr
