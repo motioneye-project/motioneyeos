@@ -13,8 +13,11 @@ MPD_LICENSE = GPLv2+
 MPD_LICENSE_FILES = COPYING
 
 # Some options need an explicit --disable or --enable
-ifeq ($(BR2_PACKAGE_AVAHI_DAEMON),y)
+
+# Zeroconf support depends on libdns_sd from avahi.
+ifeq ($(BR2_PACKAGE_MPD_AVAHI_SUPPORT),y)
 MPD_DEPENDENCIES += avahi
+MPD_CONF_OPTS += --with-zeroconf=avahi
 else
 MPD_CONF_OPTS += --with-zeroconf=no
 endif
