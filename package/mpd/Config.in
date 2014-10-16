@@ -46,6 +46,13 @@ config BR2_PACKAGE_MPD_LIBSAMPLERATE
 	  Enable libsamplerate input support.
 	  Select this for software sample rate conversion.
 
+config BR2_PACKAGE_MPD_LIBSOXR
+	bool "libsoxr"
+	select BR2_PACKAGE_LIBSOXR
+	help
+	  Enable libsoxr resampler support.
+	  The SoX Resampler library performs software sample-rate conversion.
+
 comment "Decoder plugins"
 
 config BR2_PACKAGE_MPD_AUDIOFILE

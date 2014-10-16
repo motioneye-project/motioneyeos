@@ -104,6 +104,13 @@ else
 MPD_CONF_OPTS += --disable-sndfile
 endif
 
+ifeq ($(BR2_PACKAGE_MPD_LIBSOXR),y)
+MPD_DEPENDENCIES += libsoxr
+MPD_CONF_OPTS += --enable-soxr
+else
+MPD_CONF_OPTS += --disable-soxr
+endif
+
 ifeq ($(BR2_PACKAGE_MPD_MAD),y)
 MPD_DEPENDENCIES += libid3tag libmad
 MPD_CONF_OPTS += --enable-mad
