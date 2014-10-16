@@ -4,11 +4,11 @@
 #
 ################################################################################
 
-MPD_VERSION_MAJOR = 0.18
-MPD_VERSION = $(MPD_VERSION_MAJOR).16
+MPD_VERSION_MAJOR = 0.19
+MPD_VERSION = $(MPD_VERSION_MAJOR)
 MPD_SOURCE = mpd-$(MPD_VERSION).tar.xz
 MPD_SITE = http://www.musicpd.org/download/mpd/$(MPD_VERSION_MAJOR)
-MPD_DEPENDENCIES = host-pkgconf libglib2
+MPD_DEPENDENCIES = host-pkgconf boost libglib2
 MPD_LICENSE = GPLv2+
 MPD_LICENSE_FILES = COPYING
 
@@ -17,6 +17,14 @@ ifeq ($(BR2_PACKAGE_AVAHI_DAEMON),y)
 MPD_DEPENDENCIES += avahi
 else
 MPD_CONF_OPTS += --with-zeroconf=no
+endif
+
+# MPD prefers libicu for utf8 collation instead of libglib2.
+ifeq ($(BR2_PACKAGE_ICU),y)
+MPD_DEPENDENCIES += icu
+MPD_CONF_OPTS += --enable-icu
+else
+MPD_CONF_OPTS += --disable-icu
 endif
 
 ifeq ($(BR2_PACKAGE_MPD_ALSA),y)
