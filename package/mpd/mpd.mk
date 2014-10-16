@@ -48,18 +48,18 @@ else
 MPD_CONF_OPTS += --disable-audiofile
 endif
 
-ifeq ($(BR2_PACKAGE_MPD_PULSEAUDIO),y)
-MPD_DEPENDENCIES += pulseaudio
-MPD_CONF_OPTS += --enable-pulse
-else
-MPD_CONF_OPTS += --disable-pulse
-endif
-
 ifeq ($(BR2_PACKAGE_MPD_BZIP2),y)
 MPD_DEPENDENCIES += bzip2
 MPD_CONF_OPTS += --enable-bzip2
 else
 MPD_CONF_OPTS += --disable-bzip2
+endif
+
+ifeq ($(BR2_PACKAGE_MPD_CURL),y)
+MPD_DEPENDENCIES += libcurl
+MPD_CONF_OPTS += --enable-curl
+else
+MPD_CONF_OPTS += --disable-curl
 endif
 
 ifeq ($(BR2_PACKAGE_MPD_FAAD2),y)
@@ -69,18 +69,18 @@ else
 MPD_CONF_OPTS += --disable-aac
 endif
 
+ifeq ($(BR2_PACKAGE_MPD_FFMPEG),y)
+MPD_DEPENDENCIES += ffmpeg
+MPD_CONF_OPTS += --enable-ffmpeg
+else
+MPD_CONF_OPTS += --disable-ffmpeg
+endif
+
 ifeq ($(BR2_PACKAGE_MPD_FLAC),y)
 MPD_DEPENDENCIES += flac
 MPD_CONF_OPTS += --enable-flac
 else
 MPD_CONF_OPTS += --disable-flac
-endif
-
-ifeq ($(BR2_PACKAGE_MPD_CURL),y)
-MPD_DEPENDENCIES += libcurl
-MPD_CONF_OPTS += --enable-curl
-else
-MPD_CONF_OPTS += --disable-curl
 endif
 
 ifeq ($(BR2_PACKAGE_MPD_LAME),y)
@@ -104,20 +104,6 @@ else
 MPD_CONF_OPTS += --disable-sndfile
 endif
 
-ifeq ($(BR2_PACKAGE_MPD_OPUS),y)
-MPD_DEPENDENCIES += opus libogg
-MPD_CONF_OPTS += --enable-opus
-else
-MPD_CONF_OPTS += --disable-opus
-endif
-
-ifeq ($(BR2_PACKAGE_MPD_VORBIS),y)
-MPD_DEPENDENCIES += libvorbis
-MPD_CONF_OPTS += --enable-vorbis --enable-vorbis-encoder
-else
-MPD_CONF_OPTS += --disable-vorbis --disable-vorbis-encoder
-endif
-
 ifeq ($(BR2_PACKAGE_MPD_MAD),y)
 MPD_DEPENDENCIES += libid3tag libmad
 MPD_CONF_OPTS += --enable-mad
@@ -137,6 +123,20 @@ MPD_DEPENDENCIES += musepack
 MPD_CONF_OPTS += --enable-mpc
 else
 MPD_CONF_OPTS += --disable-mpc
+endif
+
+ifeq ($(BR2_PACKAGE_MPD_OPUS),y)
+MPD_DEPENDENCIES += opus libogg
+MPD_CONF_OPTS += --enable-opus
+else
+MPD_CONF_OPTS += --disable-opus
+endif
+
+ifeq ($(BR2_PACKAGE_MPD_PULSEAUDIO),y)
+MPD_DEPENDENCIES += pulseaudio
+MPD_CONF_OPTS += --enable-pulse
+else
+MPD_CONF_OPTS += --disable-pulse
 endif
 
 ifeq ($(BR2_PACKAGE_MPD_SOUNDCLOUD),y)
@@ -169,18 +169,18 @@ else
 MPD_CONF_OPTS += --disable-twolame-encoder
 endif
 
+ifeq ($(BR2_PACKAGE_MPD_VORBIS),y)
+MPD_DEPENDENCIES += libvorbis
+MPD_CONF_OPTS += --enable-vorbis --enable-vorbis-encoder
+else
+MPD_CONF_OPTS += --disable-vorbis --disable-vorbis-encoder
+endif
+
 ifeq ($(BR2_PACKAGE_MPD_WAVPACK),y)
 MPD_DEPENDENCIES += wavpack
 MPD_CONF_OPTS += --enable-wavpack
 else
 MPD_CONF_OPTS += --disable-wavpack
-endif
-
-ifeq ($(BR2_PACKAGE_MPD_FFMPEG),y)
-MPD_DEPENDENCIES += ffmpeg
-MPD_CONF_OPTS += --enable-ffmpeg
-else
-MPD_CONF_OPTS += --disable-ffmpeg
 endif
 
 define MPD_INSTALL_EXTRA_FILES
