@@ -15,7 +15,8 @@ LIBGTK3_AUTORECONF = YES
 
 LIBGTK3_CONF_ENV = \
 	ac_cv_path_GTK_UPDATE_ICON_CACHE=$(HOST_DIR)/usr/bin/gtk-update-icon-cache \
-	ac_cv_path_GDK_PIXBUF_CSOURCE=$(HOST_DIR)/usr/bin/gdk-pixbuf-csource
+	ac_cv_path_GDK_PIXBUF_CSOURCE=$(HOST_DIR)/usr/bin/gdk-pixbuf-csource \
+	PKG_CONFIG_FOR_BUILD=$(HOST_DIR)/usr/bin/pkgconf
 
 LIBGTK3_CONF_OPTS = --disable-glibtest \
 	--enable-explicit-deps=no \
