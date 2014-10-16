@@ -96,6 +96,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_CUPS),y)
 LIBGTK3_CONF_OPTS += --enable-cups
+LIBGTK3_CONF_ENV += ac_cv_path_CUPS_CONFIG=$(STAGING_DIR)/usr/bin/cups-config
 LIBGTK3_DEPENDENCIES += cups
 else
 LIBGTK3_CONF_OPTS += --disable-cups
