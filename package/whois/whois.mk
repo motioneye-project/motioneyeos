@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-WHOIS_VERSION = 5.2.0
+WHOIS_VERSION = 5.2.1
 WHOIS_SITE = $(BR2_DEBIAN_MIRROR)/debian/pool/main/w/whois
 WHOIS_SOURCE = whois_$(WHOIS_VERSION).tar.xz
 # take precedence over busybox implementation
