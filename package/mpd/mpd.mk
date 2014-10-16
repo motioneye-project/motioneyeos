@@ -90,6 +90,13 @@ else
 MPD_CONF_OPTS += --disable-lame-encoder
 endif
 
+ifeq ($(BR2_PACKAGE_MPD_LIBNFS),y)
+MPD_DEPENDENCIES += libnfs
+MPD_CONF_OPTS += --enable-nfs
+else
+MPD_CONF_OPTS += --disable-nfs
+endif
+
 ifeq ($(BR2_PACKAGE_MPD_LIBSMBCLIENT),y)
 MPD_DEPENDENCIES += samba
 MPD_CONF_OPTS += --enable-smbclient
