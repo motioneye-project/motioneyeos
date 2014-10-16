@@ -34,6 +34,13 @@ else
 	NTP_CONF_OPTS += --without-ntpsnmpd
 endif
 
+ifeq ($(BR2_PACKAGE_NTP_NTPD_ATOM_PPS),y)
+	NTP_CONF_OPTS += --enable-ATOM
+	NTP_DEPENDENCIES += pps-tools
+else
+	NTP_CONF_OPTS += --disable-ATOM
+endif
+
 define NTP_PATCH_FIXUPS
 	$(SED) "s,^#if.*__GLIBC__.*_BSD_SOURCE.*$$,#if 0," $(@D)/ntpd/refclock_pcf.c
 	$(SED) '/[[:space:](]rindex[[:space:]]*(/s/[[:space:]]*rindex[[:space:]]*(/ strrchr(/g' $(@D)/ntpd/*.c

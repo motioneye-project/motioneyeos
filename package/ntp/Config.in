@@ -34,6 +34,13 @@ config BR2_PACKAGE_NTP_NTPD
 	  system date and time in sync and optionally serving time and date
 	  information on the network via the NTP protocol.
 
+config BR2_PACKAGE_NTP_NTPD_ATOM_PPS
+	bool "PPS support"
+	depends on BR2_PACKAGE_NTP_NTPD
+	select BR2_PACKAGE_PPS_TOOLS
+	help
+	  Compile ntpd with the ability to use an ATOM PPS source.
+
 config BR2_PACKAGE_NTP_NTPDATE
 	bool "ntpdate"
 	help
