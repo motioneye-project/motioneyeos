@@ -134,6 +134,7 @@ define $(2)_CONFIGURE_CMDS
 		--prefix=/usr \
 		--exec-prefix=/usr \
 		--sysconfdir=/etc \
+		--localstatedir=/var \
 		--program-prefix="" \
 		--disable-gtk-doc \
 		--disable-doc \
@@ -165,6 +166,7 @@ define $(2)_CONFIGURE_CMDS
 		./configure \
 		--prefix="$$(HOST_DIR)/usr" \
 		--sysconfdir="$$(HOST_DIR)/etc" \
+		--localstatedir="$$(HOST_DIR)/var" \
 		--enable-shared --disable-static \
 		--disable-gtk-doc \
 		--disable-doc \
