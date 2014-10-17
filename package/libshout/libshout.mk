@@ -19,7 +19,7 @@ LIBSHOUT_CONF_OPTS += --disable-theora
 endif
 
 ifeq ($(BR2_PACKAGE_SPEEX),y)
-LIBSHOUT_CONF_OPT += --enable-speex
+LIBSHOUT_CONF_OPTS += --enable-speex
 LIBSHOUT_DEPENDENCIES += speex
 else
 LIBSHOUT_CONF_OPTS += --disable-speex
