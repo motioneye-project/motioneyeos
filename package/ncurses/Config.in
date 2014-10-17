@@ -36,6 +36,6 @@ config BR2_PACKAGE_NCURSES_TARGET_MENU
 config BR2_PACKAGE_NCURSES_TARGET_PROGS
 	bool "ncurses programs"
 	help
-	  Include ncurses programs in traget (clear, reset, tput, ...)
+	  Include ncurses programs in target (clear, reset, tput, ...)
 
 endif
