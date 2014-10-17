@@ -67,6 +67,7 @@ td.lotsofpatches {
 <td class=\"centered\">Infrastructure</td>
 <td class=\"centered\">License</td>
 <td class=\"centered\">License files</td>
+<td class=\"centered\">Hash file</td>
 </tr>
 "
 
@@ -82,6 +83,8 @@ packages_with_licence=0
 packages_without_licence=0
 packages_with_license_files=0
 packages_without_license_files=0
+packages_with_hash_file=0
+packages_without_hash_file=0
 total_patch_count=0
 cnt=0
 
@@ -191,6 +194,7 @@ for i in $(find boot/ linux/ package/ -name '*.mk' | sort) ; do
     fi
 
     pkg=$(basename $i)
+    dir=$(dirname $i)
     pkg=${pkg%.mk}
     pkgvariable=$(echo ${pkg} | tr "a-z-" "A-Z_")
 
@@ -229,6 +233,14 @@ for i in $(find boot/ linux/ package/ -name '*.mk' | sort) ; do
     else
 	packages_without_license_files=$(($packages_without_license_files+1))
 	license_files=0
+    fi
+
+    if test -f ${dir}/${pkg}.hash; then
+	packages_with_hash_file=$(($packages_with_hash_file+1))
+	hash_file=1
+    else
+	packages_without_hash_file=$(($packages_without_hash_file+1))
+	hash_file=0
     fi
 
     echo "<tr>"
@@ -274,6 +286,12 @@ for i in $(find boot/ linux/ package/ -name '*.mk' | sort) ; do
     fi
 
     if [ ${license_files} -eq 0 ] ; then
+	echo "<td class=\"centered wrong\">No</td>"
+    else
+	echo "<td class=\"centered correct\">Yes</td>"
+    fi
+
+    if [ ${hash_file} -eq 0 ] ; then
 	echo "<td class=\"centered wrong\">No</td>"
     else
 	echo "<td class=\"centered correct\">Yes</td>"
@@ -333,6 +351,14 @@ echo "</tr>"
 echo "<tr>"
 echo "<td>Packages not having licence files information</td>"
 echo "<td>$packages_without_license_files</td>"
+echo "</tr>"
+echo "<tr>"
+echo "<td>Packages having hash file</td>"
+echo "<td>$packages_with_hash_file</td>"
+echo "</tr>"
+echo "<tr>"
+echo "<td>Packages not having hash file</td>"
+echo "<td>$packages_without_hash_file</td>"
 echo "</tr>"
 echo "<tr>"
 echo "<td>Number of patches in all packages</td>"
