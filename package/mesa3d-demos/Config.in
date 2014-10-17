@@ -1,0 +1,8 @@
+config BR2_PACKAGE_MESA3D_DEMOS
+	bool "mesa3d-demos"
+	depends on BR2_PACKAGE_HAS_LIBGL || BR2_PACKAGE_HAS_LIBGLES \
+		|| BR2_PACKAGE_HAS_LIBEGL || BR2_PACKAGE_HAS_LIBOPENVG
+	help
+	  OpenGL demos from the Mesa 3D project.
+
+	  http://mesa3d.org

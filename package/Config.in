@@ -188,6 +188,7 @@ comment "Graphic applications"
 	source "package/fswebcam/Config.in"
 	source "package/gnuplot/Config.in"
 	source "package/jhead/Config.in"
+	source "package/mesa3d-demos/Config.in"
 	source "package/rrdtool/Config.in"
 
 comment "Graphic libraries"
