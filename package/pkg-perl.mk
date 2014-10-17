@@ -20,7 +20,7 @@
 ################################################################################
 
 PERL_ARCHNAME = $(ARCH)-linux
-PERL_RUN = $(HOST_DIR)/usr/bin/perl
+PERL_RUN = PERL5LIB= $(HOST_DIR)/usr/bin/perl
 
 ################################################################################
 # inner-perl-package -- defines how the configuration, compilation and

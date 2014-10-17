@@ -232,6 +232,17 @@ HOST_LDFLAGS  += -L$(HOST_DIR)/lib -L$(HOST_DIR)/usr/lib -Wl,-rpath,$(HOST_DIR)/
 HOSTCC_VERSION := $(shell $(HOSTCC_NOCCACHE) --version | \
 	sed -n 's/^.* \([0-9]*\)\.\([0-9]*\)\.\([0-9]*\)[ ]*.*$$/\1\2\3/p')
 
+# host-intltool should be executed with the system perl, so we save
+# the path to the system perl, before a host-perl built by Buildroot
+# might get installed into $(HOST_DIR)/usr/bin and therefore appears
+# in our PATH. This system perl will be used as INTLTOOL_PERL.
+export PERL=$(shell which perl)
+
+# host-intltool needs libxml-parser-perl, which Buildroot installs in
+# $(HOST_DIR)/usr/lib/perl, so we must make sure that the system perl
+# finds this perl module by exporting the proper value for PERL5LIB.
+export PERL5LIB=$(HOST_DIR)/usr/lib/perl
+
 TARGET_CONFIGURE_OPTS = PATH=$(BR_PATH) \
 		AR="$(TARGET_AR)" \
 		AS="$(TARGET_AS)" \
@@ -267,7 +278,8 @@ TARGET_CONFIGURE_OPTS = PATH=$(BR_PATH) \
 		LDFLAGS="$(TARGET_LDFLAGS)" \
 		FCFLAGS="$(TARGET_FCFLAGS)" \
 		PKG_CONFIG="$(PKG_CONFIG_HOST_BINARY)" \
-		STAGING_DIR="$(STAGING_DIR)"
+		STAGING_DIR="$(STAGING_DIR)" \
+		INTLTOOL_PERL=$(PERL)
 
 TARGET_MAKE_ENV = PATH=$(BR_PATH)
 
@@ -292,7 +304,8 @@ HOST_CONFIGURE_OPTS = PATH=$(BR_PATH) \
 		PKG_CONFIG="$(PKG_CONFIG_HOST_BINARY)" \
 		PKG_CONFIG_SYSROOT_DIR="/" \
 		PKG_CONFIG_LIBDIR="$(HOST_DIR)/usr/lib/pkgconfig:$(HOST_DIR)/usr/share/pkgconfig" \
-		LD_LIBRARY_PATH="$(HOST_DIR)/usr/lib:$(LD_LIBRARY_PATH)"
+		LD_LIBRARY_PATH="$(HOST_DIR)/usr/lib:$(LD_LIBRARY_PATH)" \
+		INTLTOOL_PERL=$(PERL)
 
 HOST_MAKE_ENV = PATH=$(BR_PATH) \
 		LD_LIBRARY_PATH="$(HOST_DIR)/usr/lib:$(LD_LIBRARY_PATH)" \
