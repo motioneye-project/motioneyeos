@@ -20,7 +20,7 @@ BIND_TARGET_SERVER_SBIN += dnssec-keyfromlabel dnssec-signzone
 BIND_TARGET_TOOLS_BIN = dig host nslookup nsupdate
 BIND_CONF_ENV = BUILD_CC="$(TARGET_CC)" \
 		BUILD_CFLAGS="$(TARGET_CFLAGS)"
-BIND_CONF_OPTS = --localstatedir=/var \
+BIND_CONF_OPTS = \
 		--with-randomdev=/dev/urandom \
 		--enable-epoll --with-libtool \
 		--with-gssapi=no --enable-rrl

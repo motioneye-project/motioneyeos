@@ -30,7 +30,6 @@ NETWORK_MANAGER_CONF_OPTS = \
 		--disable-more-warnings \
 		--without-docs \
 		--disable-gtk-doc \
-		--localstatedir=/var \
 		--with-crypto=gnutls \
 		--with-iptables=/usr/sbin/iptables \
 		--disable-ifupdown \

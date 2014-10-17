@@ -25,7 +25,6 @@ DBUS_CONF_OPTS = --with-dbus-user=dbus \
 		--disable-xml-docs \
 		--disable-doxygen-docs \
 		--disable-dnotify \
-		--localstatedir=/var \
 		--with-xml=expat \
 		--with-system-socket=/var/run/dbus/system_bus_socket \
 		--with-system-pid-file=/var/run/messagebus.pid

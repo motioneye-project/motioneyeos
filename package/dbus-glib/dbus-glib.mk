@@ -14,7 +14,7 @@ DBUS_GLIB_CONF_ENV = ac_cv_have_abstract_sockets=yes \
 		ac_cv_func_posix_getpwnam_r=yes \
 		have_abstract_sockets=yes
 
-DBUS_GLIB_CONF_OPTS = --localstatedir=/var \
+DBUS_GLIB_CONF_OPTS = \
 		--disable-tests \
 		--disable-xml-docs \
 		--with-introspect-xml=$(DBUS_HOST_INTROSPECT) \

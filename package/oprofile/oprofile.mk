@@ -9,7 +9,6 @@ OPROFILE_SITE = http://downloads.sourceforge.net/project/oprofile/oprofile/oprof
 OPROFILE_LICENSE = GPLv2+
 OPROFILE_LICENSE_FILES = COPYING
 OPROFILE_CONF_OPTS = \
-	--localstatedir=/var \
 	--disable-account-check \
 	--enable-gui=no \
 	--with-kernel=$(STAGING_DIR)/usr

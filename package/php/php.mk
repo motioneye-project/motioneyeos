@@ -18,7 +18,6 @@ PHP_CONF_OPTS = --mandir=/usr/share/man \
 		--disable-all \
 		--without-pear \
 		--with-config-file-path=/etc \
-		--localstatedir=/var \
 		--disable-rpath
 PHP_CONF_ENV = EXTRA_LIBS="$(PHP_EXTRA_LIBS)"
 

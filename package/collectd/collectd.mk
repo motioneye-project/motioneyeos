@@ -24,7 +24,7 @@ COLLECTD_PLUGINS_DISABLE = amqp apple_sensors aquaero ascent dbi email \
 COLLECTD_CONF_ENV += LIBS="-lm"
 
 COLLECTD_CONF_OPTS += --with-nan-emulation --with-fp-layout=nothing \
-	--localstatedir=/var --with-perl-bindings=no \
+	--with-perl-bindings=no \
 	$(foreach p, $(COLLECTD_PLUGINS_DISABLE), --disable-$(p)) \
 	$(if $(BR2_PACKAGE_COLLECTD_AGGREGATION),--enable-aggregation,--disable-aggregation) \
 	$(if $(BR2_PACKAGE_COLLECTD_APACHE),--enable-apache,--disable-apache) \

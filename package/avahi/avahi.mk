@@ -67,7 +67,7 @@ AVAHI_CONF_ENV = ac_cv_func_strtod=yes \
 		avahi_cv_sys_cxx_works=yes \
 		DATADIRNAME=share
 
-AVAHI_CONF_OPTS = --localstatedir=/var \
+AVAHI_CONF_OPTS = \
 		--disable-qt3 \
 		--disable-qt4 \
 		--disable-gdbm \

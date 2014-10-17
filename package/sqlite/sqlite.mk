@@ -39,9 +39,6 @@ endif
 
 SQLITE_CONF_ENV = CFLAGS="$(TARGET_CFLAGS) $(SQLITE_CFLAGS)"
 
-SQLITE_CONF_OPTS = \
-	--localstatedir=/var
-
 ifeq ($(BR2_PREFER_STATIC_LIB),y)
 SQLITE_CONF_OPTS += --enable-dynamic-extensions=no
 endif

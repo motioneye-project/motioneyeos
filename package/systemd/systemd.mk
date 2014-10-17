@@ -29,7 +29,6 @@ endif
 SYSTEMD_CONF_OPTS += \
 	--with-rootprefix= \
 	--with-rootlibdir=/lib \
-	--localstatedir=/var \
 	--enable-static=no \
 	--disable-manpages \
 	--disable-selinux \

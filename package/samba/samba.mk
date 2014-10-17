@@ -33,7 +33,6 @@ SAMBA_CONF_ENV = \
 	$(if $(BR2_PACKAGE_SAMBA_AVAHI),AVAHI_LIBS=-pthread)
 
 SAMBA_CONF_OPTS = \
-	--localstatedir=/var \
 	--with-piddir=/var/run \
 	--with-lockdir=/var/lock \
 	--with-logfilebase=/var/log \

@@ -6,7 +6,6 @@
 
 NSS_MDNS_VERSION = 0.10
 NSS_MDNS_SITE = http://0pointer.de/lennart/projects/nss-mdns
-NSS_MDNS_CONF_OPTS = --localstatedir=/var
 NSS_MDNS_LICENSE = LGPLv2.1+
 NSS_MDNS_LICENSE_FILES = LICENSE
 

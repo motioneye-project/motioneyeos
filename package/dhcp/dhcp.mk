@@ -14,7 +14,6 @@ DHCP_CONF_ENV = \
 		-D_PATH_DHCLIENT_CONF=\"/etc/dhcp/dhclient.conf\"' \
 	ac_cv_file__dev_random=yes
 DHCP_CONF_OPTS = \
-	--localstatedir=/var/lib/dhcp \
 	--with-srv-lease-file=/var/lib/dhcp/dhcpd.leases \
 	--with-srv6-lease-file=/var/lib/dhcp/dhcpd6.leases \
 	--with-cli-lease-file=/var/lib/dhcp/dhclient.leases \

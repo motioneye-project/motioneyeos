@@ -14,7 +14,6 @@ SED_CONF_OPTS = --bindir=/usr/bin \
 		--libexecdir=/usr/lib \
 		--sysconfdir=/etc \
 		--datadir=/usr/share \
-		--localstatedir=/var \
 		--mandir=/usr/share/man \
 		--infodir=/usr/share/info \
 		--include=$(STAGING_DIR)/usr/include
