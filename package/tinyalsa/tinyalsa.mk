@@ -16,8 +16,6 @@ endef
 define TINYALSA_INSTALL_STAGING_CMDS
 	$(INSTALL) -D -m 0755 $(@D)/libtinyalsa.so \
 			$(STAGING_DIR)/usr/lib/libtinyalsa.so
-	$(INSTALL) -D -m 0644 $(@D)/include/sound/asound.h \
-			$(STAGING_DIR)/usr/include/sound/asound.h
 	$(INSTALL) -D -m 0644 $(@D)/include/tinyalsa/asoundlib.h \
 			$(STAGING_DIR)/usr/include/tinyalsa/asoundlib.h
 endef
