@@ -10,7 +10,9 @@
 ISO9660_TARGET_DIR = $(BUILD_DIR)/iso9660
 ISO9660_BOOT_MENU := $(call qstrip,$(BR2_TARGET_ROOTFS_ISO9660_BOOT_MENU))
 
-$(BINARIES_DIR)/rootfs.iso9660: host-cdrkit host-fakeroot linux rootfs-cpio grub
+ROOTFS_ISO9660_DEPENDENCIES = grub host-cdrkit host-fakeroot linux rootfs-cpio
+
+$(BINARIES_DIR)/rootfs.iso9660: $(ROOTFS_ISO9660_DEPENDENCIES)
 	@$(call MESSAGE,"Generating root filesystem image rootfs.iso9660")
 	mkdir -p $(ISO9660_TARGET_DIR)
 	mkdir -p $(ISO9660_TARGET_DIR)/boot/grub
@@ -40,6 +42,9 @@ endif
 	-@rm -rf $(ISO9660_TARGET_DIR)
 
 rootfs-iso9660: $(BINARIES_DIR)/rootfs.iso9660
+
+rootfs-iso9660-show-depends:
+	@echo $(ROOTFS_ISO9660_DEPENDENCIES)
 
 ################################################################################
 #
