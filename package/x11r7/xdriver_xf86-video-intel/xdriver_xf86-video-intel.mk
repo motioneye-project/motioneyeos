@@ -20,8 +20,8 @@ XDRIVER_XF86_VIDEO_INTEL_CONF_OPTS = \
 
 XDRIVER_XF86_VIDEO_INTEL_DEPENDENCIES = \
 	libdrm \
+	libpciaccess \
 	xlib_libXrandr \
-	xlib_libpciaccess \
 	xproto_fontsproto \
 	xproto_xproto \
 	xserver_xorg-server

@@ -21,7 +21,7 @@ LIBDRM_CONF_OPTS = \
 
 ifeq ($(BR2_PACKAGE_LIBDRM_INTEL),y)
 LIBDRM_CONF_OPTS += --enable-intel
-LIBDRM_DEPENDENCIES += libatomic_ops xlib_libpciaccess
+LIBDRM_DEPENDENCIES += libatomic_ops libpciaccess
 else
 LIBDRM_CONF_OPTS += --disable-intel
 endif

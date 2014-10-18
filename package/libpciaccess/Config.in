@@ -1,4 +1,4 @@
-config BR2_PACKAGE_XLIB_LIBPCIACCESS
+config BR2_PACKAGE_LIBPCIACCESS
 	bool "libpciaccess"
 	depends on BR2_LARGEFILE
 	help

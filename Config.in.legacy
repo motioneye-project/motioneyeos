@@ -101,6 +101,15 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2014.11"
 
+config BR2_PACKAGE_XLIB_LIBPCIACCESS
+	bool "xlib-libpciaccess option has been renamed"
+	depends on BR2_PACKAGE_XORG7
+	select BR2_LEGACY
+	select BR2_PACKAGE_LIBPCIACCESS
+	help
+	  libpciaccess neither depends on X11 nor Xlib. Thus the
+	  package has been renamed BR2_PACKAGE_LIBPCIACCESS
+
 config BR2_PACKAGE_LINUX_FIRMWARE_XC5000
 	bool "Xceive xc5000 option has been renamed"
 	select BR2_PACKAGE_LINUX_FIRMWARE_XCx000

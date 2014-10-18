@@ -63,7 +63,7 @@ XSERVER_XORG_SERVER_CONF_OPTS = --disable-config-hal \
 
 ifeq ($(BR2_PACKAGE_XSERVER_XORG_SERVER_MODULAR),y)
 XSERVER_XORG_SERVER_CONF_OPTS += --enable-xorg
-XSERVER_XORG_SERVER_DEPENDENCIES += xlib_libpciaccess libdrm
+XSERVER_XORG_SERVER_DEPENDENCIES += libpciaccess libdrm
 else
 XSERVER_XORG_SERVER_CONF_OPTS += --disable-xorg
 endif
