@@ -11,6 +11,5 @@ XLIB_LIBXAW_LICENSE = MIT
 XLIB_LIBXAW_LICENSE_FILES = COPYING
 XLIB_LIBXAW_INSTALL_STAGING = YES
 XLIB_LIBXAW_DEPENDENCIES = xlib_libX11 xlib_libXt xlib_libXmu xlib_libXpm xproto_xproto
-XLIB_LIBXAW_CONF_OPTS = --disable-docs
 
 $(eval $(autotools-package))
