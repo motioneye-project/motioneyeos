@@ -25,7 +25,7 @@ HOST_LIBXML2_CONF_OPTS = --without-zlib --without-lzma --without-python
 
 ifeq ($(BR2_PACKAGE_ZLIB),y)
 LIBXML2_DEPENDENCIES += zlib
-LIBXML2_CONF_OPTS += --with-zlib
+LIBXML2_CONF_OPTS += --with-zlib=$(STAGING_DIR)/usr
 else
 LIBXML2_CONF_OPTS += --without-zlib
 endif
