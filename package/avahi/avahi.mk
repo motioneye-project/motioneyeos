@@ -172,8 +172,6 @@ define AVAHI_INSTALL_INIT_SYSTEMD
 	ln -fs /lib/systemd/system/avahi-dnsconfd.service \
 		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/avahi-dnsconfd.service
 
-	mkdir -p $(TARGET_DIR)/usr/lib/tmpfiles.d
-
 	$(INSTALL) -D -m 644 package/avahi/avahi_tmpfiles.conf \
 		$(TARGET_DIR)/usr/lib/tmpfiles.d/avahi.conf
 endef
