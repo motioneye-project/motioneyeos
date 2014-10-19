@@ -95,7 +95,17 @@ typical packages will therefore only use a few of them.
   pass to CMake. By default, empty.
 
 * +LIBFOO_CONF_OPTS+, to specify additional configure options to pass
-  to CMake. By default, empty.
+  to CMake. By default, empty. A number of common CMake options are
+  set by the +cmake-package+ infrastructure; so it is normally not
+  necessary to set them in the package's +*.mk+ file unless you want
+  to override them:
+
+** +CMAKE_BUILD_TYPE+ is driven by +BR2_ENABLE_DEBUG+;
+** +CMAKE_INSTALL_PREFIX+;
+** +BUILD_SHARED_LIBS+ is driven by +BR2_PREFER_STATIC_LIBS+;
+** +BUILD_DOC+, +BUILD_DOCS+ are disabled;
+** +BUILD_EXAMPLE+, +BUILD_EXAMPLES+ are disabled;
+** +BUILD_TEST+, +BUILD_TESTS+, +BUILD_TESTING+ are disabled.
 
 * +LIBFOO_MAKE+, to specify an alternate +make+ command. This is
   typically useful when parallel make is enabled in the configuration
