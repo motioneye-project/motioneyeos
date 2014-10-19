@@ -62,7 +62,6 @@ LIBGLIB2_CONF_ENV += ac_cv_header_sys_inotify_h=no
 endif
 
 HOST_LIBGLIB2_CONF_OPTS = \
-		--disable-gtk-doc \
 		--disable-dtrace \
 		--disable-systemtap \
 		--disable-gcov \

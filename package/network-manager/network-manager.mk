@@ -29,7 +29,6 @@ NETWORK_MANAGER_CONF_OPTS = \
 		--disable-qt \
 		--disable-more-warnings \
 		--without-docs \
-		--disable-gtk-doc \
 		--with-crypto=gnutls \
 		--with-iptables=/usr/sbin/iptables \
 		--disable-ifupdown \
