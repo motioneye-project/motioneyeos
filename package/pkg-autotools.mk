@@ -193,6 +193,7 @@ define $(2)_CONFIGURE_CMDS
 		--localstatedir=/var \
 		--program-prefix="" \
 		--disable-gtk-doc \
+		--disable-gtk-doc-html \
 		--disable-doc \
 		--disable-docs \
 		--disable-documentation \
@@ -226,6 +227,7 @@ define $(2)_CONFIGURE_CMDS
 		--localstatedir="$$(HOST_DIR)/var" \
 		--enable-shared --disable-static \
 		--disable-gtk-doc \
+		--disable-gtk-doc-html \
 		--disable-doc \
 		--disable-docs \
 		--disable-documentation \

@@ -46,7 +46,6 @@ WEBKIT_CONF_OPTS += \
 	--disable-webkit2 \
 	--disable-glibtest \
 	--disable-video \
-	--disable-gtk-doc-html \
 	--disable-tests
 
 # Xorg Dependencies

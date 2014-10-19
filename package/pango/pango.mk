@@ -66,7 +66,7 @@ PANGO_CONF_ENV = \
 	gl_cv_c_restrict=no \
 	ac_cv_path_FREETYPE_CONFIG=$(STAGING_DIR)/usr/bin/freetype-config
 
-PANGO_CONF_OPTS = --enable-explicit-deps=no --disable-gtk-doc-html
+PANGO_CONF_OPTS = --enable-explicit-deps=no
 
 PANGO_DEPENDENCIES = \
 	$(if $(BR2_NEEDS_GETTEXT_IF_LOCALE),gettext) \
