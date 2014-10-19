@@ -5,7 +5,6 @@ export PATH=\
 /sbin:\
 /usr/bin:\
 /usr/sbin:\
-/usr/bin/X11:\
 /usr/local/bin
 
 # If running interactively, then:
