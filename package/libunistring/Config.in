@@ -1,0 +1,8 @@
+config BR2_PACKAGE_LIBUNISTRING
+	bool "libunistring"
+	help
+	  The libunistring library provides functions for manipulating
+	  Unicode strings and for manipulating C strings according to
+	  the Unicode standard.
+
+	  http://www.gnu.org/software/libunistring/
