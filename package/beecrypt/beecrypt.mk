@@ -18,6 +18,7 @@ BEECRYPT_CONF_ENV = \
 	CXXFLAGS="$(TARGET_CXXFLAGS) -fpermissive"
 
 BEECRYPT_CONF_OPTS = \
+		--disable-expert-mode \
 		--without-java \
 		--without-python \
 		--disable-openmp
