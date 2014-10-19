@@ -42,7 +42,6 @@ XBMC_CONF_ENV = \
 XBMC_CONF_OPTS +=  \
 	--with-arch=$(BR2_ARCH) \
 	--disable-crystalhd \
-	--disable-debug \
 	--disable-dvdcss \
 	--disable-hal \
 	--disable-joystick \

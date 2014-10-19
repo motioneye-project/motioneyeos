@@ -11,7 +11,6 @@ GST1_PLUGINS_GOOD_LICENSE_FILES = COPYING
 GST1_PLUGINS_GOOD_LICENSE = LGPLv2.1+
 
 GST1_PLUGINS_GOOD_CONF_OPTS = \
-	--disable-debug \
 	--disable-valgrind \
 	--disable-examples \
 	--disable-directsound \

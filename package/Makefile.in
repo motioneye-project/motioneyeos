@@ -370,7 +370,7 @@ endif
 ifeq ($(BR2_ENABLE_DEBUG),y)
 ENABLE_DEBUG := --enable-debug
 else
-ENABLE_DEBUG :=
+ENABLE_DEBUG := --disable-debug
 endif
 
 ifeq ($(BR2_PREFER_STATIC_LIB),y)

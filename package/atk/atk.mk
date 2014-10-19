@@ -41,8 +41,7 @@ ATK_CONF_ENV = ac_cv_func_posix_getpwuid_r=yes \
 		jm_cv_func_working_re_compile_pattern=yes ac_use_included_regex=no \
 		gl_cv_c_restrict=no ac_cv_prog_F77=no
 
-ATK_CONF_OPTS =  --disable-glibtest --enable-explicit-deps=no \
-		--disable-debug
+ATK_CONF_OPTS =  --disable-glibtest --enable-explicit-deps=no
 
 ATK_DEPENDENCIES = libglib2 host-pkgconf
 

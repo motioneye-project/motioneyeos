@@ -10,10 +10,7 @@ GST1_LIBAV_SITE = http://gstreamer.freedesktop.org/src/gst-libav
 
 GST1_LIBAV_DEPENDENCIES = host-pkgconf gstreamer1 gst1-plugins-base
 
-GST1_LIBAV_CONF_EXTRA_OPTS = \
-	--cross-prefix=$(TARGET_CROSS) \
-	--target-os=linux \
-	$(if $(BR2_ENABLE_DEBUG),--enable-debug,--disable-debug)
+GST1_LIBAV_CONF_EXTRA_OPTS = --cross-prefix=$(TARGET_CROSS) --target-os=linux
 
 ifeq ($(BR2_PACKAGE_ZLIB),y)
 GST1_LIBAV_CONF_EXTRA_OPTS += --enable-zlib

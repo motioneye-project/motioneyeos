@@ -10,7 +10,6 @@ RSYNC_LICENSE = GPLv3+
 RSYNC_LICENSE_FILES = COPYING
 RSYNC_DEPENDENCIES = zlib popt
 RSYNC_CONF_OPTS = \
-	$(if $(BR2_ENABLE_DEBUG),--enable-debug,--disable-debug) \
 	--with-included-zlib=no \
 	--with-included-popt=no
 

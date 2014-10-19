@@ -18,7 +18,7 @@ OPENVPN_CONF_ENV = IFCONFIG=/sbin/ifconfig \
 
 ifeq ($(BR2_PACKAGE_OPENVPN_SMALL),y)
 OPENVPN_CONF_OPTS += --enable-small --disable-plugins \
-	--disable-debug --disable-eurephia
+	--disable-eurephia
 endif
 
 # BusyBox 1.21+ places the ip applet in the "correct" place

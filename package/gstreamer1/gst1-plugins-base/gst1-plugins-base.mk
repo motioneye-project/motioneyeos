@@ -23,8 +23,7 @@ GST1_PLUGINS_BASE_CONF_OPTS = \
 	--disable-oggtest \
 	--disable-vorbistest \
 	--disable-freetypetest \
-	--disable-valgrind \
-	--disable-debug
+	--disable-valgrind
 
 # Options which require currently unpackaged libraries
 GST1_PLUGINS_BASE_CONF_OPTS += \

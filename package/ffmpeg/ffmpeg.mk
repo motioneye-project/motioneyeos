@@ -66,12 +66,6 @@ FFMPEG_CONF_OPTS = \
 
 FFMPEG_DEPENDENCIES += $(if $(BR2_PACKAGE_LIBICONV),libiconv) host-pkgconf
 
-ifeq ($(BR2_ENABLE_DEBUG),y)
-FFMPEG_CONF_OPTS += --enable-debug
-else
-FFMPEG_CONF_OPTS += --disable-debug
-endif
-
 ifeq ($(BR2_PACKAGE_FFMPEG_GPL),y)
 FFMPEG_CONF_OPTS += --enable-gpl
 else

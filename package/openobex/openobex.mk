@@ -16,7 +16,6 @@ OPENOBEX_AUTORECONF = YES
 OPENOBEX_INSTALL_STAGING = YES
 
 OPENOBEX_CONF_OPTS += \
-	$(if $(BR2_ENABLE_DEBUG),--enable-debug) \
 	$(if $(BR2_PACKAGE_OPENOBEX_APPS),--enable-apps) \
 	$(if $(BR2_PACKAGE_OPENOBEX_SYSLOG),--enable-syslog) \
 	$(if $(BR2_PACKAGE_OPENOBEX_DUMP),--enable-dump)

@@ -144,7 +144,6 @@ endif
 
 HOST_DIRECTFB_DEPENDENCIES = host-pkgconf host-libpng
 HOST_DIRECTFB_CONF_OPTS = \
-		--disable-debug \
 		--disable-multi \
 		--enable-png \
 		--with-gfxdrivers=none \

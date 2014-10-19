@@ -69,9 +69,7 @@ LIBGTK2_CONF_ENV = ac_cv_func_posix_getpwuid_r=yes glib_cv_stack_grows=no \
 		ac_cv_prog_F77=no \
 		ac_cv_path_CUPS_CONFIG=no
 
-LIBGTK2_CONF_OPTS = --disable-glibtest \
-		--enable-explicit-deps=no \
-		--disable-debug
+LIBGTK2_CONF_OPTS = --disable-glibtest --enable-explicit-deps=no
 
 LIBGTK2_DEPENDENCIES = host-pkgconf host-libgtk2 libglib2 cairo pango atk gdk-pixbuf
 
@@ -164,8 +162,7 @@ HOST_LIBGTK2_CONF_OPTS = \
 		--without-libtiff \
 		--without-libjpeg \
 		--with-gdktarget=none \
-		--disable-cups \
-		--disable-debug
+		--disable-cups
 
 define HOST_LIBGTK2_BUILD_CMDS
  $(HOST_MAKE_ENV) make -C $(@D)/gtk gtk-update-icon-cache

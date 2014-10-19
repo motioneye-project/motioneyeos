@@ -18,7 +18,6 @@ GST1_PLUGINS_BAD_GETTEXTIZE = YES
 
 GST1_PLUGINS_BAD_CONF_OPTS = \
 	--disable-examples \
-	--disable-debug \
 	--disable-valgrind \
 	--disable-directsound \
 	--disable-wsapi \

@@ -49,10 +49,6 @@ ifneq ($(BR2_PACKAGE_ALSA_LIB_OLD_SYMBOLS),y)
 ALSA_LIB_CONF_OPTS += --disable-old-symbols
 endif
 
-ifeq ($(BR2_ENABLE_DEBUG),y)
-ALSA_LIB_CONF_OPTS += --enable-debug
-endif
-
 ifeq ($(BR2_avr32),y)
 ALSA_LIB_CFLAGS += -DAVR32_INLINE_BUG
 endif

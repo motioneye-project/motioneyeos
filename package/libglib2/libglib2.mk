@@ -63,7 +63,6 @@ endif
 
 HOST_LIBGLIB2_CONF_OPTS = \
 		--disable-gtk-doc \
-		--enable-debug=no \
 		--disable-dtrace \
 		--disable-systemtap \
 		--disable-gcov \

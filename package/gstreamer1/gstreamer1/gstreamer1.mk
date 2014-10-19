@@ -25,7 +25,6 @@ GSTREAMER1_CONF_OPTS = \
 	--disable-examples \
 	--disable-tests \
 	--disable-failing-tests \
-	--disable-debug \
 	--disable-valgrind \
 	--disable-benchmarks \
 	--disable-check \

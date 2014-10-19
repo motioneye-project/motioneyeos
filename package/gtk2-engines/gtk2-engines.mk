@@ -71,7 +71,6 @@ GTK2_ENGINES_CONF_OPTS = \
 		--x-libraries=$(STAGING_DIR)/usr/lib \
 		--disable-glibtest \
 		--enable-explicit-deps=no \
-		--disable-debug \
 		--enable-clearlooks \
 		--disable-crux \
 		--disable-hc \

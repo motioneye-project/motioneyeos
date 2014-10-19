@@ -146,6 +146,7 @@ define $(2)_CONFIGURE_CMDS
 		$$(DISABLE_NLS) \
 		$$(DISABLE_LARGEFILE) \
 		$$(DISABLE_IPV6) \
+		$$(ENABLE_DEBUG) \
 		$$(SHARED_STATIC_LIBS_OPTS) \
 		$$(QUIET) $$($$(PKG)_CONF_OPTS) \
 	)
@@ -172,6 +173,7 @@ define $(2)_CONFIGURE_CMDS
 		--disable-doc \
 		--disable-docs \
 		--disable-documentation \
+		--disable-debug \
 		--with-xmlto=no \
 		--with-fop=no \
 		--disable-dependency-tracking \

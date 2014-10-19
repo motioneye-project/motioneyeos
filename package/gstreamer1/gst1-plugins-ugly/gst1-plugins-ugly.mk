@@ -11,10 +11,7 @@ GST1_PLUGINS_UGLY_LICENSE_FILES = COPYING
 # GPL licensed plugins will append to GST1_PLUGINS_UGLY_LICENSE if enabled.
 GST1_PLUGINS_UGLY_LICENSE = LGPLv2.1+
 
-GST1_PLUGINS_UGLY_CONF_OPTS = \
-	--disable-examples \
-	--disable-debug \
-	--disable-valgrind
+GST1_PLUGINS_UGLY_CONF_OPTS = --disable-examples --disable-valgrind
 
 GST_PLUGINS_BAD1_CONF_OPTS += \
 	--disable-a52dec \
