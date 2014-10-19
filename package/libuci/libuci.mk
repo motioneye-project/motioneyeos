@@ -15,7 +15,7 @@ LIBUCI_DEPENDENCIES += lua
 LIBUCI_CONF_OPTS += -DLUAPATH=$(STAGING_DIR)/usr/lib/lua/5.1 \
 	-DLUA_CFLAGS=-I$(STAGING_DIR)/usr/include
 else
-LIBUCI_CONF_OPTS += -DBUILD_LUA:BOOL=OFF
+LIBUCI_CONF_OPTS += -DBUILD_LUA=OFF
 endif
 
 $(eval $(cmake-package))
