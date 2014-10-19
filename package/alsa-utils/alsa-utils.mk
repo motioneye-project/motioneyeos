@@ -13,6 +13,11 @@ ALSA_UTILS_INSTALL_STAGING = YES
 ALSA_UTILS_DEPENDENCIES = host-gettext host-pkgconf alsa-lib \
 	$(if $(BR2_PACKAGE_NCURSES),ncurses)
 
+# gettext support is optional
+ifeq ($(BR2_PACKAGE_GETTEXT),y)
+ALSA_UTILS_DEPENDENCIES += gettext
+endif
+
 ALSA_UTILS_CONF_ENV = \
 	ac_cv_prog_ncurses5_config=$(STAGING_DIR)/usr/bin/$(NCURSES_CONFIG_SCRIPTS)
 
