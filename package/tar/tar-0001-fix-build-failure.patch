@@ -1,0 +1,52 @@
+Status: upstream
+http://git.savannah.gnu.org/cgit/tar.git/commit/?id=e9ddc08da0982f36581ae5a8c7763453ff41cfe8
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+From e9ddc08da0982f36581ae5a8c7763453ff41cfe8 Mon Sep 17 00:00:00 2001
+From: Sergey Poznyakoff <gray@gnu.org>
+Date: Wed, 24 Sep 2014 21:22:16 +0000
+Subject: Bugfixes.
+
+* doc/tar.1: Fix typo in font spec.
+* src/tar.c (sort_mode_arg, sort_mode_flag): Protect "inode"
+(SAVEDIR_SORT_INODE) with D_INO_IN_DIRENT
+---
+diff --git a/doc/tar.1 b/doc/tar.1
+index 9000627..b91de63 100644
+--- a/doc/tar.1
++++ b/doc/tar.1
+@@ -879,7 +879,7 @@ Exclude files matching patterns listed in FILE.
+ \fB\-\-strip\-components\fR=\fINUMBER\fR
+ Strip \fINUMBER\fR leading components from file names on extraction.
+ .TP
+-\fB\-\-transform\fR=\fIEXPRESSION\dR, \fB\-\-xform\fR=\fIEXPRESSION\fR
++\fB\-\-transform\fR=\fIEXPRESSION\fR, \fB\-\-xform\fR=\fIEXPRESSION\fR
+ Use sed replace \fIEXPRESSION\fR to transform file names.
+ .SS File name matching options
+ These options affect both exclude and include patterns.
+diff --git a/src/tar.c b/src/tar.c
+index 225c624..f8102e0 100644
+--- a/src/tar.c
++++ b/src/tar.c
+@@ -1341,14 +1341,18 @@ static char filename_terminator;
+ static char const *const sort_mode_arg[] = {
+   "none",
+   "name",
++#if D_INO_IN_DIRENT
+   "inode",
++#endif
+   NULL
+ };
+ 
+ static int sort_mode_flag[] = {
+     SAVEDIR_SORT_NONE,
+     SAVEDIR_SORT_NAME,
++#if D_INO_IN_DIRENT
+     SAVEDIR_SORT_INODE
++#endif
+ };
+ 
+ ARGMATCH_VERIFY (sort_mode_arg, sort_mode_flag);
+--
+cgit v0.9.0.2

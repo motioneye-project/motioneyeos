@@ -4,9 +4,12 @@
 #
 ################################################################################
 
-TAR_VERSION = 1.27.1
+TAR_VERSION = 1.28
 TAR_SOURCE = tar-$(TAR_VERSION).tar.xz
 TAR_SITE = $(BR2_GNU_MIRROR)/tar
+# busybox installs in /bin, so we need tar to install as well in /bin
+# so that it overrides the Busybox symlinks.
+TAR_CONF_OPTS = --exec-prefix=/
 TAR_LICENSE = GPLv3+
 TAR_LICENSE_FILES = COPYING
 
