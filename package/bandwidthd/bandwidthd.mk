@@ -4,18 +4,18 @@
 #
 ################################################################################
 
-BANDWIDTHD_VERSION = v2.0.1-auto-r08
+BANDWIDTHD_VERSION = v2.0.1-auto-r11
 BANDWIDTHD_SITE = $(call github,nroach44,bandwidthd,$(BANDWIDTHD_VERSION))
 
 # Specified as "any version of the GPL that is current as of your
 # download" by upstream.
 BANDWIDTHD_LICENSE = GPL
 
-BANDWIDTHD_DEPENDENCIES = gd libpng libpcap
+BANDWIDTHD_DEPENDENCIES = gd libpng libpcap host-pkgconf
 
 BANDWIDTHD_AUTORECONF = YES
 
-BANDWIDTHD_CONF_OPTS += --without-x
+BANDWIDTHD_CONF_OPTS += --with-pcap-config=$(STAGING_DIR)/usr/bin/pcap-config
 
 ifeq ($(BR2_PACKAGE_BANDWIDTHD_POSTGRESQL),y)
 BANDWIDTHD_DEPENDENCIES += postgresql
