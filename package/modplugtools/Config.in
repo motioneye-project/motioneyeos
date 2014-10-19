@@ -1,0 +1,14 @@
+config BR2_PACKAGE_MODPLUGTOOLS
+	bool "modplugtools"
+	depends on BR2_INSTALL_LIBSTDCPP # libmodplug
+	select BR2_PACKAGE_LIBAO
+	select BR2_PACKAGE_LIBMODPLUG
+	help
+	  This installs the 'modplug123' command line tool to play music files
+	  in the tracker formats supported by libmodplug: MOD, S3M, XM etc.
+	  Audio output is handled by libao.
+
+	  http://modplug-xmms.sourceforge.net/
+
+comment "modplugtools needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP
