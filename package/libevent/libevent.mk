@@ -4,12 +4,13 @@
 #
 ################################################################################
 
-LIBEVENT_VERSION = 2.0.21
-LIBEVENT_SOURCE = libevent-$(LIBEVENT_VERSION)-stable.tar.gz
-LIBEVENT_SITE = https://github.com/downloads/libevent/libevent
+LIBEVENT_VERSION = release-2.0.21-stable
+LIBEVENT_SITE = $(call github,libevent,libevent,$(LIBEVENT_VERSION))
 LIBEVENT_INSTALL_STAGING = YES
 LIBEVENT_LICENSE = BSD-3c, OpenBSD
 LIBEVENT_LICENSE_FILES = LICENSE
+# Straight from the repository, need to generate autotools files
+LIBEVENT_AUTORECONF = YES
 
 define LIBEVENT_REMOVE_PYSCRIPT
 	rm $(TARGET_DIR)/usr/bin/event_rpcgen.py
