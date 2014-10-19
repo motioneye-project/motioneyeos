@@ -150,14 +150,17 @@ endef
 
 AVAHI_POST_INSTALL_TARGET_HOOKS += AVAHI_REMOVE_INITSCRIPT
 
+ifeq ($(BR2_PACKAGE_AVAHI_AUTOIPD),y)
 define AVAHI_INSTALL_AUTOIPD
-	$(INSTALL) -m 0755 package/avahi/S05avahi-setup.sh $(TARGET_DIR)/etc/init.d/
 	rm -f $(TARGET_DIR)/var/lib/avahi-autoipd
 	$(INSTALL) -d -m 0755 $(TARGET_DIR)/var/lib
 	ln -sf /tmp/avahi-autoipd $(TARGET_DIR)/var/lib/avahi-autoipd
 endef
 
-ifeq ($(BR2_PACKAGE_AVAHI_AUTOIPD),y)
+define AVAHI_INSTALL_AUTOIPD_INIT_SYSV
+	$(INSTALL) -D -m 0755 package/avahi/S05avahi-setup.sh $(TARGET_DIR)/etc/init.d/S05avahi-setup.sh
+endef
+
 AVAHI_POST_INSTALL_TARGET_HOOKS += AVAHI_INSTALL_AUTOIPD
 endif
 
@@ -176,11 +179,16 @@ define AVAHI_INSTALL_INIT_SYSTEMD
 		$(TARGET_DIR)/usr/lib/tmpfiles.d/avahi.conf
 endef
 
-define AVAHI_INSTALL_INIT_SYSV
-	$(INSTALL) -m 0755 package/avahi/S50avahi-daemon $(TARGET_DIR)/etc/init.d/
+define AVAHI_INSTALL_DAEMON_INIT_SYSV
+	$(INSTALL) -D -m 0755 package/avahi/S50avahi-daemon $(TARGET_DIR)/etc/init.d/S50avahi-daemon
 endef
 
 endif
+
+define AVAHI_INSTALL_INIT_SYSV
+	$(AVAHI_INSTALL_AUTOIPD_INIT_SYSV)
+	$(AVAHI_INSTALL_DAEMON_INIT_SYSV)
+endef
 
 # applications expects to be able to #include <dns_sd.h>
 define AVAHI_STAGING_INSTALL_LIBDNSSD_LINK
