@@ -3,6 +3,16 @@
 # TARGET_FINALIZE_HOOKS, to be applied just after all packages
 # have been built.
 
+# Install default nsswitch.conf file if the skeleton doesn't provide it
+ifeq ($(BR2_TOOLCHAIN_USES_GLIBC),y)
+define GLIBC_COPY_NSSWITCH_FILE
+	$(Q)if [ ! -f "$(TARGET_DIR)/etc/nsswitch.conf" ]; then \
+		$(INSTALL) -D -m 0644 package/glibc/nsswitch.conf $(TARGET_DIR)/etc/nsswitch.conf ; \
+	fi
+endef
+TARGET_FINALIZE_HOOKS += GLIBC_COPY_NSSWITCH_FILE
+endif
+
 # Install the gconv modules
 ifeq ($(BR2_TOOLCHAIN_GLIBC_GCONV_LIBS_COPY),y)
 GCONV_LIBS = $(call qstrip,$(BR2_TOOLCHAIN_GLIBC_GCONV_LIBS_LIST))
