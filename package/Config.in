@@ -737,6 +737,7 @@ menu "JSON/XML"
 	source "package/tinyxml/Config.in"
 	source "package/xerces/Config.in"
 	source "package/yajl/Config.in"
+	source "package/yaml-cpp/Config.in"
 endmenu
 
 menu "Logging"
