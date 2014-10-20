@@ -7,9 +7,7 @@ PROGNAME=$(basename $0)
 
 usage()
 {
-    echo "Create an SD card that boots on an i.MX6DL SABRESD board."
-    echo "It is supposed to work also for the i.MX6Q SABRESD board, but"
-    echo "it this is not tested."
+    echo "Create an SD card that boots on an i.MX53/6 board."
     echo
     echo "Note: all data on the the card will be completely deleted!"
     echo "Use with care!"
@@ -77,8 +75,8 @@ TMPDIR=$(mktemp -d)
 # FAT partition: kernel and DTBs
 mkfs.vfat ${PART1}
 mount ${PART1} ${TMPDIR}
-cp output/images/uImage ${TMPDIR}/
-cp output/images/*.dtb  ${TMPDIR}/
+cp output/images/*Image ${TMPDIR}/
+cp output/images/*.dtb  ${TMPDIR}/ || true
 sync
 umount ${TMPDIR}
 

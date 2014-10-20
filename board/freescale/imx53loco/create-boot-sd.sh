@@ -1,0 +1,1 @@
+../imx6sabresd/create-boot-sd.sh
