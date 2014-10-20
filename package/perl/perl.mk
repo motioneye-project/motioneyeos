@@ -99,6 +99,10 @@ define PERL_INSTALL_TARGET_CMDS
 	$(MAKE1) -C $(@D) DESTDIR="$(TARGET_DIR)" install.perl
 endef
 
+# We never want to have host-berkeleydb or host-gdbm as dependencies
+# of host-perl.
+HOST_PERL_DEPENDENCIES =
+
 HOST_PERL_CONF_OPTS = \
 	-des \
 	-Dprefix="$(HOST_DIR)/usr" \
