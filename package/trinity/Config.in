@@ -1,0 +1,6 @@
+config BR2_PACKAGE_TRINITY
+	bool "trinity"
+	help
+	  A Linux System call fuzz tester
+
+	  http://codemonkey.org.uk/projects/trinity/
