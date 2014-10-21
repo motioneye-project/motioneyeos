@@ -69,13 +69,8 @@ config BR2_arm926t
 	select BR2_ARM_CPU_MAYBE_HAS_VFPV2
 	select BR2_ARM_CPU_HAS_THUMB
 	select BR2_ARM_CPU_ARMV5
-config BR2_arm1136jf_s_r0
-	bool "arm1136jf_s rev0"
-	select BR2_ARM_CPU_HAS_VFPV2
-	select BR2_ARM_CPU_HAS_THUMB
-	select BR2_ARM_CPU_ARMV6
-config BR2_arm1136jf_s_r1
-	bool "arm1136jf_s rev1"
+config BR2_arm1136jf_s
+	bool "arm1136jf-s"
 	select BR2_ARM_CPU_HAS_VFPV2
 	select BR2_ARM_CPU_HAS_THUMB
 	select BR2_ARM_CPU_ARMV6
@@ -142,10 +137,6 @@ config BR2_iwmmxt
 	bool "iwmmxt"
 	select BR2_ARM_CPU_ARMV5
 endchoice
-
-config BR2_arm1136jf_s
-	bool
-	default BR2_arm1136jf_s_r0 || BR2_arm1136jf_s_r1
 
 choice
 	prompt "Target ABI"
@@ -394,8 +385,7 @@ config BR2_GCC_TARGET_ARCH
 	default "armv4t"	if BR2_arm920t
 	default "armv4t"	if BR2_arm922t
 	default "armv5te"	if BR2_arm926t
-	default "armv6j"	if BR2_arm1136jf_s_r0
-	default "armv6k"	if BR2_arm1136jf_s_r1
+	default "armv6j"	if BR2_arm1136jf_s
 	default "armv6zk"	if BR2_arm1176jz_s
 	default "armv6zk"	if BR2_arm1176jzf_s
 	default "armv7-a"	if BR2_cortex_a5
