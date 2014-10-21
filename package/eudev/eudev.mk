@@ -42,4 +42,9 @@ define EUDEV_INSTALL_INIT_SYSV
 	$(INSTALL) -m 0755 package/eudev/S10udev $(TARGET_DIR)/etc/init.d/S10udev
 endef
 
+# Required by default rules for input devices
+define EUDEV_USERS
+	- - input -1 * - - - Input device group
+endef
+
 $(eval $(autotools-package))
