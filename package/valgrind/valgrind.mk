@@ -16,8 +16,8 @@ VALGRIND_AUTORECONF = YES
 # host tuple to determine whether it's being built for ARMv7 or
 # not. Therefore, we adjust the host tuple to specify we're on
 # ARMv7. The valgrind package is guaranteed, through Config.in, to
-# only be selected on Cortex A8 and Cortex A9 platforms.
-ifeq ($(BR2_cortex_a5)$(BR2_cortex_a7)$(BR2_cortex_a8)$(BR2_cortex_a9)$(BR2_cortex_a12)$(BR2_cortex_a15),y)
+# only be selected on ARMv7-A platforms.
+ifeq ($(BR2_ARM_CPU_ARMV7A),y)
 VALGRIND_CONF_OPTS += \
 	--host=$(patsubst arm-%,armv7-%,$(GNU_TARGET_NAME))
 endif
