@@ -26,7 +26,7 @@ VO_AACENC_CFLAGS += -mfpu=neon
 else
 VO_AACENC_CONF_OPTS += --disable-armv7neon
 
-ifeq ($(BR2_arm920t)$(BR2_arm922t)$(BR2_strongarm)$(BR2_fa526),)
+ifeq ($(BR2_ARM_CPU_ARMV4),)
 VO_AACENC_CONF_OPTS += --enable-armv5e
 else
 VO_AACENC_CONF_OPTS += --disable-armv5e
