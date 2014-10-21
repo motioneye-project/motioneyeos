@@ -20,8 +20,6 @@ config BR2_ENDIAN
 config BR2_ARCH_HAS_ATOMICS
 	default y
 
-config BR2_GCC_TARGET_TUNE
-	default "v8"		if BR2_sparc_v8
-
 config BR2_GCC_TARGET_CPU
 	default "leon3"		if BR2_sparc_leon3
+	default "v8"		if BR2_sparc_v8
