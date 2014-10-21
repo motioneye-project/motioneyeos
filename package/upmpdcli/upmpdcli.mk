@@ -4,11 +4,11 @@
 #
 ################################################################################
 
-UPMPDCLI_VERSION = 0.8.3
+UPMPDCLI_VERSION = 0.8.5
 UPMPDCLI_SITE = http://www.lesbonscomptes.com/upmpdcli/downloads
 UPMPDCLI_LICENSE = GPLv2+
 UPMPDCLI_LICENSE_FILES = COPYING
-UPMPDCLI_DEPENDENCIES = expat libcurl libupnp libmpdclient
+UPMPDCLI_DEPENDENCIES = libmpdclient libupnpp
 
 # Upmpdcli only runs if user upmpdcli exists
 define UPMPDCLI_USERS
@@ -20,7 +20,7 @@ define UPMPDCLI_INSTALL_INIT_SYSV
 endef
 
 define UPMPDCLI_INSTALL_CONF_FILE
-	$(INSTALL) -D -m 0755 $(@D)/upmpd/upmpdcli.conf $(TARGET_DIR)/etc/upmpdcli.conf
+	$(INSTALL) -D -m 0755 $(@D)/src/upmpdcli.conf $(TARGET_DIR)/etc/upmpdcli.conf
 endef
 
 UPMPDCLI_POST_INSTALL_TARGET_HOOKS += UPMPDCLI_INSTALL_CONF_FILE

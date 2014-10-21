@@ -1,12 +1,10 @@
 config BR2_PACKAGE_UPMPDCLI
 	bool "upmpdcli"
-	select BR2_PACKAGE_EXPAT
-	select BR2_PACKAGE_LIBCURL
-	select BR2_PACKAGE_LIBUPNP
 	select BR2_PACKAGE_LIBMPDCLIENT
+	select BR2_PACKAGE_LIBUPNPP
 	depends on BR2_INSTALL_LIBSTDCPP
-	depends on BR2_LARGEFILE # libupnp
-	depends on BR2_TOOLCHAIN_HAS_THREADS # libupnp
+	depends on BR2_LARGEFILE # libupnpp -> libupnp
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libupnpp -> libupnp
 	depends on !BR2_TOOLCHAIN_EXTERNAL_BLACKFIN_UCLINUX_2014R1 # Too old gcc
 	depends on !BR2_TOOLCHAIN_EXTERNAL_BLACKFIN_UCLINUX_2013R1 # Ditto
 	depends on !BR2_TOOLCHAIN_EXTERNAL_BLACKFIN_UCLINUX_2012R2 # Ditto
