@@ -381,25 +381,6 @@ config BR2_GCC_TARGET_CPU
 	default "xscale"	if BR2_xscale
 	default "iwmmxt"	if BR2_iwmmxt
 
-config BR2_GCC_TARGET_ARCH
-	default "armv4t"	if BR2_arm920t
-	default "armv4t"	if BR2_arm922t
-	default "armv5te"	if BR2_arm926t
-	default "armv6j"	if BR2_arm1136jf_s
-	default "armv6zk"	if BR2_arm1176jz_s
-	default "armv6zk"	if BR2_arm1176jzf_s
-	default "armv7-a"	if BR2_cortex_a5
-	default "armv7-a"	if BR2_cortex_a7
-	default "armv7-a"	if BR2_cortex_a8
-	default "armv7-a"	if BR2_cortex_a9
-	default "armv7-a"	if BR2_cortex_a12
-	default "armv7-a"	if BR2_cortex_a15
-	default "armv4"		if BR2_fa526
-	default "armv7-a"	if BR2_pj4
-	default "armv4"		if BR2_strongarm
-	default "armv5te"	if BR2_xscale
-	default "iwmmxt"	if BR2_iwmmxt
-
 config BR2_GCC_TARGET_ABI
 	default "aapcs-linux"
 
