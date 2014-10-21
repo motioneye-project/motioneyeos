@@ -397,6 +397,7 @@ main() {
     # Now, add users whose uid is *not* automatic
     while read username uid group gid passwd home shell groups comment; do
         [ -n "${username}" ] || continue    # Package with no user
+        [ "${username}" != "-" ] || continue # Magic string to skip user creation
         [ ${uid} -ge 0     ] || continue    # Automatic uid
         add_one_user "${username}" "${uid}" "${group}" "${gid}" "${passwd}" \
                      "${home}" "${shell}" "${groups}" "${comment}"
@@ -405,6 +406,7 @@ main() {
     # Finally, add users whose uid *is* automatic
     while read username uid group gid passwd home shell groups comment; do
         [ -n "${username}" ] || continue    # Package with no user
+        [ "${username}" != "-" ] || continue # Magic string to skip user creation
         [ ${uid} -eq -1    ] || continue    # Non-automatic uid
         add_one_user "${username}" "${uid}" "${group}" "${gid}" "${passwd}" \
                      "${home}" "${shell}" "${groups}" "${comment}"
