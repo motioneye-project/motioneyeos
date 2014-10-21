@@ -340,6 +340,12 @@ endif
 
 FFMPEG_CONF_OPTS += $(call qstrip,$(BR2_PACKAGE_FFMPEG_EXTRACONF))
 
+ifneq ($(call qstrip,$(BR2_GCC_TARGET_CPU)),)
+FFMPEG_CONF_OPTS += --cpu=$(BR2_GCC_TARGET_CPU)
+else ifneq ($(call qstrip,$(BR2_GCC_TARGET_ARCH),)
+FFMPEG_CONF_OPTS += --cpu=$(BR2_GCC_TARGET_ARCH)
+endif
+
 # Override FFMPEG_CONFIGURE_CMDS: FFmpeg does not support --target and others
 define FFMPEG_CONFIGURE_CMDS
 	(cd $(FFMPEG_SRCDIR) && rm -rf config.cache && \
@@ -355,7 +361,6 @@ define FFMPEG_CONFIGURE_CMDS
 		--target-os="linux" \
 		--disable-stripping \
 		--pkg-config="$(PKG_CONFIG_HOST_BINARY)" \
-		$(if $(BR2_GCC_TARGET_TUNE),--cpu=$(BR2_GCC_TARGET_TUNE)) \
 		$(SHARED_STATIC_LIBS_OPTS) \
 		$(FFMPEG_CONF_OPTS) \
 	)
