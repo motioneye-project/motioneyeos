@@ -100,13 +100,7 @@ HOST_UTIL_LINUX_CONF_OPTS += \
 # Avoid building the tools if they are disabled since we can't install on
 # a per-directory basis.
 ifeq ($(BR2_PACKAGE_UTIL_LINUX_BINARIES),)
-define UTIL_LINUX_DISABLE_TOOLS
-	$(SED) '/schedutils/d' -e '/text-utils/d' -e '/term-utils/d' \
-		-e '/login-utils/d' -e '/mount-deprecated/d' \
-		-e '/sys-utils/d' -e '/misc-utils/d' -e '/disk-utils/d' \
-		-e '/fdisks/d' $(@D)/Makefile.am
-endef
-UTIL_LINUX_PRE_PATCH_HOOKS += UTIL_LINUX_DISABLE_TOOLS
+UTIL_LINUX_CONF_OPTS += --disable-all-programs
 endif
 
 # Install PAM configuration files
