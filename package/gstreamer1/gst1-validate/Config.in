@@ -1,0 +1,9 @@
+menuconfig BR2_PACKAGE_GST1_VALIDATE
+	bool "gst1-validate"
+	select BR2_PACKAGE_GST1_PLUGINS_BASE
+	help
+	  GstValidate is a tool that allows GStreamer developers to
+	  check that the GstElements they write behave the way they
+	  are supposed to.
+
+	  http://gstreamer.freedesktop.org/
