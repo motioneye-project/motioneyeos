@@ -51,10 +51,10 @@ endif
 # Explicitly disable everything that doesn't match for ARM
 # FFMPEG "autodetects" by compiling an extended instruction via AS
 # This works on compilers that aren't built for generic by default
-ifeq ($(BR2_arm920t)$(BR2_arm922t)$(BR2_strongarm)$(BR2_fa526),y)
+ifeq ($(BR2_ARM_CPU_ARMV4),y)
 GST_FFMPEG_CONF_EXTRA_OPTS += --disable-armv5te
 endif
-ifeq ($(BR2_arm1136jf_s)$(BR2_arm1176jz_s)$(BR2_arm1176jzf_s),y)
+ifeq ($(BR2_ARM_CPU_ARMV6),y)
 GST_FFMPEG_CONF_EXTRA_OPTS += --enable-armv6
 else
 GST_FFMPEG_CONF_EXTRA_OPTS += --disable-armv6 --disable-armv6t2
