@@ -3,16 +3,16 @@ config BR2_PACKAGE_USB_MODESWITCH
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libusb
 	select BR2_PACKAGE_LIBUSB
 	help
-	  Some models of some USB devices such as modems and Wifi
-	  adapters power-up in mass storage mode to provide access to
-	  drivers for the device's application mode. usb_modeswitch
+	  Some USB devices such as 3G/4G broadband modems power-up
+	  in mass storage mode to provide access to drivers
+	  for the device's application mode. usb_modeswitch
 	  changes the mode of such devices from the initial power-up
-	  mode to the application mode. Specific configuration data
-	  for each device model is required.
+	  mode to the application mode.
+	  Specific configuration data for each device model is required.
 
 	  usb_modeswitch can be used with the usb_modeswitch_data
-	  package and udev for automatic mode switching when devices
-	  are connected.
+	  package and eudev/systemd for automatic mode switching
+	  when devices are connected.
 
 	  For more information search the Internet for "Virtual CD-ROM
 	  switching utility".
