@@ -22,7 +22,7 @@ LIBNSPR_CONF_OPTS += --$(if $(BR2_ARCH_IS_64),en,dis)able-64bit
 LIBNSPR_CONF_OPTS += --$(if $(BR2_INET_IPV6),en,dis)able-ipv6
 
 ifeq ($(BR2_arm),y)
-ifeq ($(BR2_cortex_a8)$(BR2_cortex_a9),y)
+ifeq ($(BR2_ARM_CPU_HAS_THUMB2),y)
 LIBNSPR_CONF_OPTS += --enable-thumb2
 else
 LIBNSPR_CONF_OPTS += --disable-thumb2
