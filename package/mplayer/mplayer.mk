@@ -105,11 +105,11 @@ MPLAYER_DEPENDENCIES += $(if $(BR2_PACKAGE_XLIB_LIBX11),xlib_libX11)
 MPLAYER_DEPENDENCIES += $(if $(BR2_PACKAGE_XLIB_LIBXV),xlib_libXv)
 
 # ARM optimizations
-ifeq ($(call qstrip,$(BR2_GCC_TARGET_ARCH)),armv5te)
+ifeq ($(BR2_ARM_CPU_ARMV5),y)
 MPLAYER_CONF_OPTS += --enable-armv5te
 endif
 
-ifeq ($(call qstrip,$(BR2_GCC_TARGET_ARCH)),armv6j)
+ifeq ($(BR2_ARM_CPU_ARMV6),y)
 MPLAYER_CONF_OPTS += --enable-armv6
 endif
 
