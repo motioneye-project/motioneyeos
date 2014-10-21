@@ -205,37 +205,6 @@ config BR2_ENDIAN
 config BR2_ARCH_HAS_ATOMICS
 	default y if !BR2_x86_i386
 
-config BR2_GCC_TARGET_TUNE
-	default "i386"		if BR2_x86_i386
-	default "i486"		if BR2_x86_i486
-	default "i586"		if BR2_x86_i586
-	default "pentium-mmx"	if BR2_x86_pentium_mmx
-	default "i686"		if BR2_x86_i686
-	default "pentiumpro"	if BR2_x86_pentiumpro
-	default "pentium-m"	if BR2_x86_pentium_m
-	default "pentium2"	if BR2_x86_pentium2
-	default "pentium3"	if BR2_x86_pentium3
-	default "pentium4"	if BR2_x86_pentium4
-	default "prescott"	if BR2_x86_prescott
-	default "nocona"	if BR2_x86_nocona
-	default "core2"		if BR2_x86_core2
-	default "corei7"	if BR2_x86_corei7
-	default "atom"		if BR2_x86_atom
-	default "k8"		if BR2_x86_opteron
-	default "k8-sse3"	if BR2_x86_opteron_sse3
-	default "barcelona"	if BR2_x86_barcelona
-	default "btver2"	if BR2_x86_jaguar
-	default "k6"		if BR2_x86_k6
-	default "k6-2"		if BR2_x86_k6_2
-	default "athlon"	if BR2_x86_athlon
-	default "athlon-4"	if BR2_x86_athlon_4
-	default "winchip-c6"	if BR2_x86_winchip_c6
-	default "winchip2"	if BR2_x86_winchip2
-	default "c3"		if BR2_x86_c3
-	default "c3-2"		if BR2_x86_c32
-	default "geode"		if BR2_x86_geode
-	default "generic"	if BR2_x86_generic
-
 config BR2_GCC_TARGET_ARCH
 	default "i386"		if BR2_x86_i386
 	default "i486"		if BR2_x86_i486
@@ -265,3 +234,4 @@ config BR2_GCC_TARGET_ARCH
 	default "c3"		if BR2_x86_c3
 	default "c3-2"		if BR2_x86_c32
 	default "geode"		if BR2_x86_geode
+	default "generic"	if BR2_x86_generic
