@@ -217,9 +217,6 @@ config BR2_ARCH
 config BR2_ENDIAN
 	string
 
-config BR2_GCC_TARGET_TUNE
-	string
-
 config BR2_GCC_TARGET_ARCH
 	string
 
