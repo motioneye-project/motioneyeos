@@ -7,14 +7,6 @@ config BR2_ENDIAN
 config BR2_ARCH_HAS_ATOMICS
 	default y
 
-config BR2_GCC_TARGET_TUNE
-	default "68000"		if BR2_m68k_68000
-	default "68010"		if BR2_m68k_68010
-	default "68020"		if BR2_m68k_68020
-	default "68030"		if BR2_m68k_68030
-	default "68040"		if BR2_m68k_68040
-	default "68060"		if BR2_m68k_68060
-
 config BR2_GCC_TARGET_ARCH
 	default "68000"		if BR2_m68k_68000
 	default "68010"		if BR2_m68k_68010
