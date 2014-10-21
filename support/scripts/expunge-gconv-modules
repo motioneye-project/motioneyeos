@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # This script is used to generate a gconv-modules file that takes into
 # account only the gconv modules installed by Buildroot. It receives

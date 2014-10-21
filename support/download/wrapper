@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # This script is a wrapper to the other download helpers.
 # Its role is to ensure atomicity when saving downloaded files
