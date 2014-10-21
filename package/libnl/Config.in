@@ -15,7 +15,7 @@ config BR2_PACKAGE_LIBNL_TOOLS
 	help
 	  Install binary tools.
 
-comment "libnl tools need a toolchain w/ dynamic library"
+comment "libnl tools needs a toolchain w/ dynamic library"
 	depends on BR2_PREFER_STATIC_LIB
 endif
 
