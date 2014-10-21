@@ -12,7 +12,9 @@ IPTABLES_DEPENDENCIES = host-pkgconf \
 	$(if $(BR2_PACKAGE_LIBNETFILTER_CONNTRACK),libnetfilter_conntrack)
 IPTABLES_LICENSE = GPLv2
 IPTABLES_LICENSE_FILES = COPYING
-IPTABLES_CONF_OPTS = --libexecdir=/usr/lib --with-kernel=$(STAGING_DIR)/usr
+# Building static causes ugly warnings on some plugins
+IPTABLES_CONF_OPTS = --libexecdir=/usr/lib --with-kernel=$(STAGING_DIR)/usr \
+	$(if $(BR2_PREFER_STATIC_LIB),,--disable-static)
 # Because of iptables-01-fix-static-link.patch
 IPTABLES_AUTORECONF = YES
 
