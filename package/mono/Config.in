@@ -1,0 +1,40 @@
+config BR2_PACKAGE_MONO_ARCH_SUPPORTS
+	bool
+	default y if (BR2_arm || BR2_armeb || BR2_i386 || BR2_mips || \
+		      BR2_mipsel || BR2_powerpc || BR2_sparc || BR2_x86_64)
+
+config BR2_PACKAGE_MONO
+	bool "mono"
+	depends on BR2_PACKAGE_MONO_ARCH_SUPPORTS
+	depends on BR2_INET_IPV6
+	select BR2_PACKAGE_MONO_45 if !BR2_PACKAGE_MONO_20 && !BR2_PACKAGE_MONO_40
+	help
+	  An open source, cross-platform, implementation of C#
+	  and the CLR that is binary compatible with Microsoft.NET.
+
+	  http://download.mono-project.com/sources/mono/
+
+if BR2_PACKAGE_MONO
+
+config BR2_PACKAGE_MONO_20
+	bool "2.0/3.5 .Net Runtime"
+	help
+	  This option enables the installation of the 2.0/3.5 version
+	  of the Mono .Net runtime to the target
+
+config BR2_PACKAGE_MONO_40
+	bool "4.0 .Net Runtime"
+	help
+	  This option enables the installation of the 4.0 version
+	  of the Mono .Net runtime to the target
+
+config BR2_PACKAGE_MONO_45
+	bool "4.5 .Net Runtime"
+	help
+	  This option enables the installation of the 4.5 version
+	  of the Mono .Net runtime to the target
+
+endif
+
+comment "mono needs a toolchain w/ IPv6"
+	depends on !BR2_INET_IPV6

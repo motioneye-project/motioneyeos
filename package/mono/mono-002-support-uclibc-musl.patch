@@ -1,0 +1,25 @@
+Adjust libc.so path depending on C library being used
+
+By default, on Linux systems, Mono assumes that the C library is
+libc.so.6. While this is true for glibc, it is not true for uClibc and
+Musl based systems. This patch adds support for such systems.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/configure.ac
+===================================================================
+--- a/configure.ac
++++ b/configure.ac
+@@ -2973,6 +2973,12 @@
+         SQLITE="libsqlite.so"
+         SQLITE3="libsqlite3.so"
+ 	;;
++    *-*-*uclibc*)
++	LIBC="libc.so.0"
++	;;
++    *-*-*musl*)
++	LIBC="libc.so"
++	;;
+     *-*-*linux*)
+ 	AC_PATH_X
+ 	dlsearch_path=`(libtool --config ; echo eval echo \\$sys_lib_dlsearch_path_spec) | sh`
