@@ -6,6 +6,8 @@
 # (c) 2002 Erik Andersen <andersen@codepoet.org>
 #
 # Parameters:
+# - "-s", optional. Silent operation, don't print anything if there
+# isn't any error.
 # - the build directory, optional, default value is '.'. The place where are
 # the package sources.
 # - the patch directory, optional, default '../kernel-patches'. The place
@@ -27,6 +29,13 @@
 # it will be skipped. If necessary, the patch will be uncompressed before being
 # applied. The list of the patches applied is stored in '.applied_patches_list'
 # file in the build directory.
+
+silent=
+if [ "$1" = "-s" ] ; then
+    # add option to be used by the patch tool
+    silent=-s
+    shift
+fi
 
 # Set directories from arguments, or use defaults.
 builddir=${1-.}
@@ -77,14 +86,16 @@ function apply_patch {
 	return 0
 	;;
     esac
-    echo ""
-    echo "Applying $patch using ${type}: "
+    if [ -z "$silent" ] ; then
+	echo ""
+	echo "Applying $patch using ${type}: "
+    fi
     if [ ! -e "${path}/$patch" ] ; then
 	echo "Error: missing patch file ${path}/$patch"
 	exit 1
     fi
     echo $patch >> ${builddir}/.applied_patches_list
-    ${uncomp} "${path}/$patch" | patch -g0 -p1 -E -d "${builddir}" -t -N
+    ${uncomp} "${path}/$patch" | patch -g0 -p1 -E -d "${builddir}" -t -N $silent
     if [ $? != 0 ] ; then
         echo "Patch failed!  Please fix ${patch}!"
 	exit 1
