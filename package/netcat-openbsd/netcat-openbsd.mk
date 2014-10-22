@@ -18,7 +18,7 @@ endif
 
 define NETCAT_OPENBSD_APPLY_DEBIAN_PATCHES
 	if [ -d $(@D)/debian/patches ]; then \
-		support/scripts/apply-patches.sh $(@D) $(@D)/debian/patches *.dpatch; \
+		$(APPLY_PATCHES) $(@D) $(@D)/debian/patches *.dpatch; \
 	fi
 endef
 

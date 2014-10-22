@@ -18,7 +18,7 @@ endif
 
 define SYSVINIT_DEBIAN_PATCHES
 	if [ -d $(@D)/debian/patches ]; then \
-		support/scripts/apply-patches.sh $(@D) $(@D)/debian/patches \*.patch; \
+		$(APPLY_PATCHES) $(@D) $(@D)/debian/patches \*.patch; \
 	fi
 endef
 

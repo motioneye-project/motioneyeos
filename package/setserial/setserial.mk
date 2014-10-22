@@ -18,7 +18,7 @@ define SETSERIAL_APPLY_DEBIAN_PATCHES
 	if [ -d $(@D)/debian/patches ]; then \
 		touch $(@D)/gorhack.h; \
 		rm $(@D)/debian/patches/01_makefile.dpatch; \
-		support/scripts/apply-patches.sh $(@D) $(@D)/debian/patches *.dpatch; \
+		$(APPLY_PATCHES) $(@D) $(@D)/debian/patches *.dpatch; \
 	fi
 endef
 

@@ -38,7 +38,7 @@ define CVS_DEBIAN_PATCHES
 		 do $(SED) 's,^\+\+\+ .*cvs-$(CVS_VERSION)/,+++ cvs-$(CVS_VERSION)/,' $$i; \
 		 done; \
 		); \
-		support/scripts/apply-patches.sh $(@D) $(@D)/debian/patches \*; \
+		$(APPLY_PATCHES) $(@D) $(@D)/debian/patches \*; \
 	fi
 endef
 endif
