@@ -165,11 +165,11 @@ HOST_LIBGTK2_CONF_OPTS = \
 		--disable-cups
 
 define HOST_LIBGTK2_BUILD_CMDS
- $(HOST_MAKE_ENV) make -C $(@D)/gtk gtk-update-icon-cache
+	$(HOST_MAKE_ENV) make -C $(@D)/gtk gtk-update-icon-cache
 endef
 
 define HOST_LIBGTK2_INSTALL_CMDS
- cp $(@D)/gtk/gtk-update-icon-cache $(HOST_DIR)/usr/bin
+	cp $(@D)/gtk/gtk-update-icon-cache $(HOST_DIR)/usr/bin
 endef
 
 $(eval $(autotools-package))

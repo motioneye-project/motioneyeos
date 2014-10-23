@@ -12,23 +12,23 @@ LIBXML_PARSER_PERL_LICENSE = Artistic or GPLv1+
 LIBXML_PARSER_PERL_RUN_PERL = `which perl`
 
 define HOST_LIBXML_PARSER_PERL_CONFIGURE_CMDS
- (cd $(@D) ; \
-   $(HOST_CONFIGURE_OPTS) $(LIBXML_PARSER_PERL_RUN_PERL) Makefile.PL \
-        PREFIX=$(HOST_DIR)/usr \
-        EXPATLIBPATH=$(HOST_DIR)/usr/lib \
-        EXPATINCPATH=$(HOST_DIR)/usr/include \
-        INSTALLDIRS=site \
-        INSTALLSITELIB=$(HOST_DIR)/usr/lib/perl \
-        INSTALLSITEARCH=$(HOST_DIR)/usr/lib/perl \
- )
+	(cd $(@D) ; \
+		$(HOST_CONFIGURE_OPTS) $(LIBXML_PARSER_PERL_RUN_PERL) Makefile.PL \
+			PREFIX=$(HOST_DIR)/usr \
+			EXPATLIBPATH=$(HOST_DIR)/usr/lib \
+			EXPATINCPATH=$(HOST_DIR)/usr/include \
+			INSTALLDIRS=site \
+			INSTALLSITELIB=$(HOST_DIR)/usr/lib/perl \
+			INSTALLSITEARCH=$(HOST_DIR)/usr/lib/perl \
+	)
 endef
 
 define HOST_LIBXML_PARSER_PERL_BUILD_CMDS
- $(HOST_MAKE_ENV) $(MAKE) -C $(@D)
+	$(HOST_MAKE_ENV) $(MAKE) -C $(@D)
 endef
 
 define HOST_LIBXML_PARSER_PERL_INSTALL_CMDS
- $(HOST_MAKE_ENV) $(MAKE) -C $(@D) install
+	$(HOST_MAKE_ENV) $(MAKE) -C $(@D) install
 endef
 
 $(eval $(host-generic-package))

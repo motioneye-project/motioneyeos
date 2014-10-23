@@ -35,7 +35,7 @@ E2FSPROGS_MAKE_OPTS = \
 	LDCONFIG=true
 
 define HOST_E2FSPROGS_INSTALL_CMDS
- $(HOST_MAKE_ENV) $(MAKE) -C $(@D) install install-libs
+	$(HOST_MAKE_ENV) $(MAKE) -C $(@D) install install-libs
 endef
 # we don't have a host-util-linux
 HOST_E2FSPROGS_DEPENDENCIES = host-pkgconf

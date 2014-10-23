@@ -38,34 +38,34 @@ ELFUTILS_CONF_ENV += \
 	LDFLAGS="$(ELFUTILS_LDFLAGS)"
 
 ifeq ($(BR2_TOOLCHAIN_USES_UCLIBC),y)
- ELFUTILS_DEPENDENCIES += argp-standalone
+ELFUTILS_DEPENDENCIES += argp-standalone
 endif
 
 ifeq ($(BR2_PACKAGE_ZLIB),y)
- ELFUTILS_DEPENDENCIES += zlib
- ELFUTILS_CONF_OPTS += --with-zlib
+ELFUTILS_DEPENDENCIES += zlib
+ELFUTILS_CONF_OPTS += --with-zlib
 else
- ELFUTILS_CONF_OPTS += --without-zlib
+ELFUTILS_CONF_OPTS += --without-zlib
 endif
 
 ifeq ($(BR2_PACKAGE_BZIP2),y)
- ELFUTILS_DEPENDENCIES += bzip2
- ELFUTILS_CONF_OPTS += --with-bzlib
+ELFUTILS_DEPENDENCIES += bzip2
+ELFUTILS_CONF_OPTS += --with-bzlib
 else
- ELFUTILS_CONF_OPTS += --without-bzlib
+ELFUTILS_CONF_OPTS += --without-bzlib
 endif
 
 ifeq ($(BR2_PACKAGE_XZ),y)
- ELFUTILS_DEPENDENCIES += xz
- ELFUTILS_CONF_OPTS += --with-lzma
+ELFUTILS_DEPENDENCIES += xz
+ELFUTILS_CONF_OPTS += --with-lzma
 else
- ELFUTILS_CONF_OPTS += --without-lzma
+ELFUTILS_CONF_OPTS += --without-lzma
 endif
 
 ifeq ($(BR2_PACKAGE_ELFUTILS_PROGS),y)
- ELFUTILS_CONF_OPTS += --enable-progs
+ELFUTILS_CONF_OPTS += --enable-progs
 else
- ELFUTILS_CONF_OPTS += --disable-progs
+ELFUTILS_CONF_OPTS += --disable-progs
 endif
 
 $(eval $(autotools-package))

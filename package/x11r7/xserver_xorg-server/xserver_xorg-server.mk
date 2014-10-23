@@ -72,7 +72,7 @@ ifeq ($(BR2_PACKAGE_XSERVER_XORG_SERVER_KDRIVE),y)
 XSERVER_XORG_SERVER_CONF_OPTS += --enable-kdrive --enable-xfbdev \
 		--disable-glx --disable-dri --disable-xsdl
 define XSERVER_CREATE_X_SYMLINK
- ln -f -s Xfbdev $(TARGET_DIR)/usr/bin/X
+	ln -f -s Xfbdev $(TARGET_DIR)/usr/bin/X
 endef
 XSERVER_XORG_SERVER_POST_INSTALL_TARGET_HOOKS += XSERVER_CREATE_X_SYMLINK
 

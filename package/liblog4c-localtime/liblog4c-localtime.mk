@@ -19,4 +19,4 @@ endef
 
 LIBLOG4C_LOCALTIME_PRE_CONFIGURE_HOOKS += LIBLOG4C_LOCALTIME_FIX_CONFIGURE_PERMS
 
- $(eval $(autotools-package))
+$(eval $(autotools-package))

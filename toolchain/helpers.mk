@@ -48,7 +48,7 @@ copy_toolchain_lib_root = \
 	ARCH_LIB_DIR="$(strip $3)" ; \
 	LIB="$(strip $4)"; \
 	DESTDIR="$(strip $5)" ; \
- \
+\
 	for dir in \
 		$${ARCH_SYSROOT_DIR}/$${ARCH_LIB_DIR}/$(TOOLCHAIN_EXTERNAL_PREFIX) \
 		$${ARCH_SYSROOT_DIR}/usr/$(TOOLCHAIN_EXTERNAL_PREFIX)/$${ARCH_LIB_DIR} \
@@ -80,7 +80,7 @@ copy_toolchain_lib_root = \
 			LIBPATH="`readlink -f $${LIBPATH}`"; \
 		done; \
 	done; \
- \
+\
 	echo -n
 
 #

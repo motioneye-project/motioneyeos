@@ -95,9 +95,9 @@ define MTD_INSTALL_STAGING_CMDS
 endef
 
 define MTD_INSTALL_TARGET_CMDS
- for f in $(MTD_TARGETS_y) ; do \
-  $(INSTALL) -D -m 0755 $(@D)/$$f $(TARGET_DIR)/usr/sbin/$${f##*/} ; \
- done
+	for f in $(MTD_TARGETS_y) ; do \
+		$(INSTALL) -D -m 0755 $(@D)/$$f $(TARGET_DIR)/usr/sbin/$${f##*/} ; \
+	done
 endef
 
 $(eval $(generic-package))
