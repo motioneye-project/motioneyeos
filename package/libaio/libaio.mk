@@ -6,7 +6,7 @@
 
 LIBAIO_VERSION = 0.3.109
 LIBAIO_SOURCE = libaio_$(LIBAIO_VERSION).orig.tar.gz
-LIBAIO_SITE = http://snapshot.debian.org/archive/debian/20110227T085214Z/pool/main/liba/libaio
+LIBAIO_SITE = http://snapshot.debian.org/archive/debian/20141023T043132Z/pool/main/liba/libaio
 LIBAIO_INSTALL_STAGING = YES
 LIBAIO_LICENSE = LGPLv2.1+
 LIBAIO_LICENSE_FILES = COPYING
