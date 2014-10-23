@@ -4,10 +4,11 @@
 #
 ################################################################################
 
-INADYN_VERSION = 1.99.11
-INADYN_SITE = $(call github,troglobit,inadyn,$(INADYN_VERSION))
+INADYN_VERSION = 1.99.12
+INADYN_SITE = https://github.com/troglobit/inadyn/releases/download/$(INADYN_VERSION)
+INADYN_SOURCE = inadyn-$(INADYN_VERSION).tar.xz
 INADYN_LICENSE = GPLv2+
-INADYN_LICENSE_FILES = COPYING LICENSE
+INADYN_LICENSE_FILES = COPYING
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 INADYN_CONF_OPTS += --enable-openssl
