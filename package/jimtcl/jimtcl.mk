@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-JIMTCL_VERSION = 0.73
-JIMTCL_SITE = $(BR2_DEBIAN_MIRROR)/debian/pool/main/j/jimtcl
-JIMTCL_SOURCE = jimtcl_$(JIMTCL_VERSION).orig.tar.bz2
+JIMTCL_VERSION = 0.75
+JIMTCL_SITE = http://snapshot.debian.org/archive/debian/20141023T043132Z/pool/main/j/jimtcl
+JIMTCL_SOURCE = jimtcl_$(JIMTCL_VERSION).orig.tar.xz
 JIMTCL_INSTALL_STAGING = YES
 JIMTCL_LICENSE = BSD-2c
 JIMTCL_LICENSE_FILES = LICENSE
@@ -31,9 +31,10 @@ JIMTCL_LIB = a
 JIMTCL_INSTALL_LIB =
 else
 JIMTCL_SHARED = --shared
-JIMTCL_LIB = so
+JIMTCL_LIB = so.$(JIMTCL_VERSION)
 JIMTCL_INSTALL_LIB = $(INSTALL) -D $(@D)/libjim.$(JIMTCL_LIB) \
-		     $(TARGET_DIR)/usr/lib/libjim.$(JIMTCL_LIB)
+		     $(TARGET_DIR)/usr/lib/libjim.$(JIMTCL_LIB); \
+		     ln -s libjim.$(JIMTCL_LIB) $(TARGET_DIR)/usr/lib/libjim.so
 endif
 
 define JIMTCL_CONFIGURE_CMDS
@@ -52,7 +53,8 @@ define JIMTCL_INSTALL_STAGING_CMDS
 	for i in $(JIMTCL_HEADERS_TO_INSTALL); do \
 		cp -a $(@D)/$$i $(STAGING_DIR)/usr/include/ ; \
 	done; \
-	$(INSTALL) -D $(@D)/libjim.$(JIMTCL_LIB) $(STAGING_DIR)/usr/lib/libjim.$(JIMTCL_LIB)
+	$(INSTALL) -D $(@D)/libjim.$(JIMTCL_LIB) $(STAGING_DIR)/usr/lib/libjim.$(JIMTCL_LIB);
+	ln -s libjim.$(JIMTCL_LIB) $(STAGING_DIR)/usr/lib/libjim.so
 endef
 
 define JIMTCL_INSTALL_TARGET_CMDS
