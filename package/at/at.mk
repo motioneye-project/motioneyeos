@@ -6,7 +6,7 @@
 
 AT_VERSION = 3.1.13
 AT_SOURCE = at_$(AT_VERSION).orig.tar.gz
-AT_SITE = $(BR2_DEBIAN_MIRROR)/debian/pool/main/a/at
+AT_SITE = http://snapshot.debian.org/archive/debian/20141023T043132Z/pool/main/a/at
 # missing deps for parsetime.l
 AT_MAKE = $(MAKE1)
 AT_AUTORECONF = YES

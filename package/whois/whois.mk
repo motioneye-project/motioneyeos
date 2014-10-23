@@ -5,7 +5,7 @@
 ################################################################################
 
 WHOIS_VERSION = 5.2.1
-WHOIS_SITE = $(BR2_DEBIAN_MIRROR)/debian/pool/main/w/whois
+WHOIS_SITE = http://snapshot.debian.org/archive/debian/20141023T043132Z/pool/main/w/whois
 WHOIS_SOURCE = whois_$(WHOIS_VERSION).tar.xz
 # take precedence over busybox implementation
 WHOIS_DEPENDENCIES = host-gettext $(if $(BR2_PACKAGE_BUSYBOX),busybox)

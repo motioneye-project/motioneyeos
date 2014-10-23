@@ -6,7 +6,7 @@
 
 USBMOUNT_VERSION = 0.0.22
 USBMOUNT_SOURCE = usbmount_$(USBMOUNT_VERSION).tar.gz
-USBMOUNT_SITE = $(BR2_DEBIAN_MIRROR)/debian/pool/main/u/usbmount
+USBMOUNT_SITE = http://snapshot.debian.org/archive/debian/20141023T043132Z/pool/main/u/usbmount
 USBMOUNT_DEPENDENCIES = udev lockfile-progs
 USBMOUNT_LICENSE = BSD-2c
 USBMOUNT_LICENSE_FILES = debian/copyright

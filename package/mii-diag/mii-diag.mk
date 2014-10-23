@@ -7,7 +7,7 @@
 MII_DIAG_VERSION = 2.11
 MII_DIAG_SOURCE = mii-diag_$(MII_DIAG_VERSION).orig.tar.gz
 MII_DIAG_PATCH = mii-diag_$(MII_DIAG_VERSION)-3.diff.gz
-MII_DIAG_SITE = $(BR2_DEBIAN_MIRROR)/debian/pool/main/m/mii-diag
+MII_DIAG_SITE = http://snapshot.debian.org/archive/debian/20141023T043132Z/pool/main/m/mii-diag
 MII_DIAG_LICENSE = GPL # No version specified
 MII_DIAG_LICENSE_FILES = mii-diag.c
 

@@ -7,7 +7,7 @@
 THTTPD_VERSION = 2.25b
 THTTPD_SOURCE = thttpd_$(THTTPD_VERSION).orig.tar.gz
 THTTPD_PATCH = thttpd_$(THTTPD_VERSION)-11.diff.gz
-THTTPD_SITE = $(BR2_DEBIAN_MIRROR)/debian/pool/main/t/thttpd
+THTTPD_SITE = http://snapshot.debian.org/archive/debian/20141023T043132Z/pool/main/t/thttpd
 THTTPD_LICENSE = BSD-2c
 THTTPD_LICENSE_FILES = thttpd.c
 

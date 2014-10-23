@@ -5,7 +5,7 @@
 ################################################################################
 
 MEMSTAT_VERSION = 0.8
-MEMSTAT_SITE = $(BR2_DEBIAN_MIRROR)/debian/pool/main/m/memstat
+MEMSTAT_SITE = http://snapshot.debian.org/archive/debian/20141023T043132Z/pool/main/m/memstat
 MEMSTAT_SOURCE = memstat_$(MEMSTAT_VERSION).tar.gz
 MEMSTAT_LICENSE = GPL
 MEMSTAT_LICENSE_FILES = debian/copyright
