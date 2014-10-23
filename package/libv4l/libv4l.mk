@@ -20,6 +20,8 @@ LIBV4L_DEPENDENCIES += argp-standalone
 LIBV4L_CONF_ENV += LIBS="-largp"
 endif
 
+LIBV4L_DEPENDENCIES += $(if $(BR2_PACKAGE_LIBICONV),libiconv)
+
 ifeq ($(BR2_PACKAGE_JPEG),y)
 LIBV4L_DEPENDENCIES += jpeg
 LIBV4L_CONF_OPTS += --with-jpeg
