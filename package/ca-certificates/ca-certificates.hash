@@ -1,3 +1,3 @@
 # hashes from: $(CA_CERTIFICATES_SITE)/ca-certificates_$(CA_CERTIFICATES_VERSION).dsc :
-sha1   ad57a45f0422fafd78a2e8191e5204f2306cc91b                         ca-certificates_20140223.tar.xz
-sha256 815b7cd97200b0d76450bb3e7d9b65997ac494ab6467b17369f65b2ef94bcb0c ca-certificates_20140223.tar.xz
+sha1   6013ce6a3bf13e73a7e1feddcd17f5b2c09e5bd3                         ca-certificates_20141019.tar.xz
+sha256 684902d3f4e9ad27829f4af0d9d2d588afed03667997579b9c2be86fcd1eb73a ca-certificates_20141019.tar.xz
