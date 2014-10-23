@@ -1,0 +1,33 @@
+pixman: Fix C pre-processor issues in LEAF_MIPS32R2
+
+Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+
+From 3a60aa8d574f4dfc4fa3ddb13aaa13c7d955105b Mon Sep 17 00:00:00 2001
+From: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+Date: Thu, 11 Sep 2014 10:24:10 +0100
+Subject: [PATCH] Fix C pre-processor issues in LEAF_MIPS32R2
+
+Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+---
+ pixman/pixman-mips-dspr2-asm.h |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/pixman/pixman-mips-dspr2-asm.h b/pixman/pixman-mips-dspr2-asm.h
+index 11849bd..b2696d0 100644
+--- a/pixman/pixman-mips-dspr2-asm.h
++++ b/pixman/pixman-mips-dspr2-asm.h
+@@ -72,10 +72,10 @@
+ #define LEAF_MIPS32R2(symbol)                           \
+                 .globl  symbol;                         \
+                 .align  2;                              \
+-#ifdef __ELF__
++            .if __ELF__;                                \
+                 .hidden symbol;                         \
+                 .type   symbol, @function;              \
+-#endif
++            .endif;                                     \
+                 .ent    symbol, 0;                      \
+ symbol:         .frame  sp, 0, ra;                      \
+                 .set    push;                           \
+-- 
+1.7.1
