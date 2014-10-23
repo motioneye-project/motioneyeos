@@ -5,10 +5,8 @@
 ################################################################################
 
 LIBCAP_VERSION = 2.22
-# Until kernel.org is completely back up use debian mirror
-#LIBCAP_SITE = http://www.kernel.org/pub/linux/libs/security/linux-privs/libcap2
-LIBCAP_SITE = $(BR2_DEBIAN_MIRROR)/debian/pool/main/libc/libcap2
-LIBCAP_SOURCE = libcap2_$(LIBCAP_VERSION).orig.tar.gz
+LIBCAP_SITE = https://www.kernel.org/pub/linux/libs/security/linux-privs/libcap2
+LIBCAP_SOURCE = libcap-$(LIBCAP_VERSION).tar.gz
 LIBCAP_LICENSE = GPLv2 or BSD-3c
 LIBCAP_LICENSE_FILES = License
 
