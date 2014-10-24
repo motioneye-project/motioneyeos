@@ -4,13 +4,13 @@
 #
 ################################################################################
 
-COREUTILS_VERSION = 8.22
+COREUTILS_VERSION = 8.23
 COREUTILS_SITE = $(BR2_GNU_MIRROR)/coreutils
 COREUTILS_SOURCE = coreutils-$(COREUTILS_VERSION).tar.xz
 COREUTILS_LICENSE = GPLv3+
 COREUTILS_LICENSE_FILES = COPYING
 
-# patching gnulib .m4 file
+# coreutils-01-fix-for-dummy-man-usage.patch triggers autoreconf on build
 COREUTILS_AUTORECONF = YES
 COREUTILS_GETTEXTIZE = YES
 

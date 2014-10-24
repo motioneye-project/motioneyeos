@@ -8,24 +8,18 @@ would appear when compiling.
 "dummy-man: too many non-option arguments"
 
 Signed-off-by: Chen Qi <Qi.Chen@windriver.com>
----
- man/local.mk |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+[Gustavo: update for 8.23]
 
-diff --git a/man/local.mk b/man/local.mk
-index 7cef5e3..dc0865f 100644
---- a/man/local.mk
-+++ b/man/local.mk
-@@ -189,8 +189,8 @@ man/yes.1:       src/yes
+diff -Nura coreutils-8.23.orig/man/local.mk coreutils-8.23/man/local.mk
+--- coreutils-8.23.orig/man/local.mk	2014-10-24 16:52:29.720555852 -0300
++++ coreutils-8.23/man/local.mk	2014-10-24 16:52:59.381391498 -0300
+@@ -101,8 +101,8 @@
  	  && $(run_help2man)						\
  		     --source='$(PACKAGE_STRING)'			\
  		     --include=$(srcdir)/man/$$name.x			\
--		     --output=$$t/$$name.1 $$t/$$name			\
+-		     --output=$$t/$$name.1 $$t/$$argv			\
  		     --info-page='coreutils \(aq'$$name' invocation\(aq' \
-+		     --output=$$t/$$name.1 $$t/$$name			\
++		     --output=$$t/$$name.1 $$t/$$argv			\
  	  && sed \
  	       -e 's|$*\.td/||g' \
  	       -e '/For complete documentation/d' \
--- 
-1.7.9.5
-
