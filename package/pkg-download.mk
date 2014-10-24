@@ -63,7 +63,7 @@ github = https://github.com/$(1)/$(2)/archive/$(3)
 # $(1): the path to the file with the hashes
 # $(2): the full path to the file to check
 define VERIFY_HASH
-	if ! support/download/check-hash $(1) $(2); then \
+	if ! support/download/check-hash $(1) $(2) $(if $(QUIET),>/dev/null); then \
 		rm -f $(2); \
 		exit 1; \
 	fi
