@@ -21,11 +21,11 @@ define GENROMFS_INSTALL_TARGET_CMDS
 endef
 
 define HOST_GENROMFS_BUILD_CMDS
-  $(HOST_MAKE_ENV) $(MAKE) -C $(@D)
+	$(HOST_MAKE_ENV) $(MAKE) -C $(@D)
 endef
 
 define HOST_GENROMFS_INSTALL_CMDS
-  $(HOST_MAKE_ENV) $(MAKE) -C $(@D) PREFIX=$(HOST_DIR) install
+	$(HOST_MAKE_ENV) $(MAKE) -C $(@D) PREFIX=$(HOST_DIR) install
 endef
 
 $(eval $(generic-package))

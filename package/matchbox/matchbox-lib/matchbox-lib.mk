@@ -24,36 +24,36 @@ MATCHBOX_LIB_POST_INSTALL_STAGING_HOOKS += MATCHBOX_LIB_POST_INSTALL_FIXES
 
 ifeq ($(BR2_PACKAGE_X11R7_LIBXCOMPOSITE),y)
 ifeq ($(BR2_PACKAGE_X11R7_LIBXPM),y)
-  MATCHBOX_LIB_DEPENDENCIES += xlib_libXpm
+MATCHBOX_LIB_DEPENDENCIES += xlib_libXpm
 endif
 endif
 
 ifeq ($(BR2_PACKAGE_JPEG),y)
-  MATCHBOX_LIB_CONF_OPTS += --enable-jpeg
-  MATCHBOX_LIB_DEPENDENCIES += jpeg
+MATCHBOX_LIB_CONF_OPTS += --enable-jpeg
+MATCHBOX_LIB_DEPENDENCIES += jpeg
 else
-  MATCHBOX_LIB_CONF_OPTS += --disable-jpeg
+MATCHBOX_LIB_CONF_OPTS += --disable-jpeg
 endif
 
 ifeq ($(BR2_PACKAGE_LIBPNG),y)
-  MATCHBOX_LIB_CONF_OPTS += --enable-png
-  MATCHBOX_LIB_DEPENDENCIES += libpng
+MATCHBOX_LIB_CONF_OPTS += --enable-png
+MATCHBOX_LIB_DEPENDENCIES += libpng
 else
-  MATCHBOX_LIB_CONF_OPTS += --disable-png
+MATCHBOX_LIB_CONF_OPTS += --disable-png
 endif
 
 ifeq ($(BR2_PACKAGE_PANGO)$(BR2_PACKAGE_XLIB_LIBXFT)$(BR2_PACKAGE_XLIB_LIBXRENDER),yyy)
-  MATCHBOX_LIB_CONF_OPTS += --enable-pango
-  MATCHBOX_LIB_DEPENDENCIES += pango
+MATCHBOX_LIB_CONF_OPTS += --enable-pango
+MATCHBOX_LIB_DEPENDENCIES += pango
 else
-  MATCHBOX_LIB_CONF_OPTS += --disable-pango
+MATCHBOX_LIB_CONF_OPTS += --disable-pango
 endif
 
 ifeq ($(BR2_PACKAGE_XLIB_LIBXFT),y)
-  MATCHBOX_LIB_CONF_OPTS += --enable-xft
-  MATCHBOX_LIB_DEPENDENCIES += xlib_libXft
+MATCHBOX_LIB_CONF_OPTS += --enable-xft
+MATCHBOX_LIB_DEPENDENCIES += xlib_libXft
 else
-  MATCHBOX_LIB_CONF_OPTS += --disable-xft
+MATCHBOX_LIB_CONF_OPTS += --disable-xft
 endif
 
 ################################################################################

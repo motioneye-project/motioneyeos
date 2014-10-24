@@ -21,10 +21,10 @@ MATCHBOX_DESKTOP_AUTORECONF = YES
 ################################################################################
 
 ifeq ($(BR2_PACKAGE_STARTUP_NOTIFICATION),y)
-  MATCHBOX_DESKTOP_CONF_OPTS += --enable-startup-notification
-  MATCHBOX_DESKTOP_DEPENDENCIES += startup-notification
+MATCHBOX_DESKTOP_CONF_OPTS += --enable-startup-notification
+MATCHBOX_DESKTOP_DEPENDENCIES += startup-notification
 else
-  MATCHBOX_DESKTOP_CONF_OPTS += --disable-startup-notification
+MATCHBOX_DESKTOP_CONF_OPTS += --disable-startup-notification
 endif
 
 ################################################################################

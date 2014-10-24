@@ -72,8 +72,8 @@ endif
 
 ifeq ($(BR2_LINUX_KERNEL_APPENDED_DTB),y)
 ifneq ($(words $(KERNEL_DTS_NAME)),1)
-$(error Kernel with appended device tree needs exactly one DTS source.\
-  Check BR2_LINUX_KERNEL_INTREE_DTS_NAME or BR2_LINUX_KERNEL_CUSTOM_DTS_PATH.)
+$(error Kernel with appended device tree needs exactly one DTS source. \
+	Check BR2_LINUX_KERNEL_INTREE_DTS_NAME or BR2_LINUX_KERNEL_CUSTOM_DTS_PATH.)
 endif
 endif
 

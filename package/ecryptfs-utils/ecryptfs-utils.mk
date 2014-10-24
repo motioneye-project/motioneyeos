@@ -15,8 +15,8 @@ ECRYPTFS_UTILS_CONF_OPTS = --disable-pywrap --disable-pam
 
 #Needed for build system to find pk11func.h and libnss3.so
 ECRYPTFS_UTILS_CONF_ENV = \
-  NSS_CFLAGS="-I$(STAGING_DIR)/usr/include/nss -I$(STAGING_DIR)/usr/include/nspr" \
-  NSS_LIBS="-lnss3"
+	NSS_CFLAGS="-I$(STAGING_DIR)/usr/include/nss -I$(STAGING_DIR)/usr/include/nspr" \
+	NSS_LIBS="-lnss3"
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 	ECRYPTFS_UTILS_CONF_OPTS += --enable-openssl
