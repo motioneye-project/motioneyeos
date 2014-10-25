@@ -19,6 +19,6 @@ config BR2_PACKAGE_NETCAT_OPENBSD
           https://packages.debian.org/sid/netcat-openbsd
 
 comment "netcat-openbsd needs an (e)glibc toolchain w/ threads"
-    depends on BR2_PACKAGE_LIBBSD_ARCH_SUPPORTS
-    depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_TOOLCHAIN_USES_GLIBC
+	depends on BR2_PACKAGE_LIBBSD_ARCH_SUPPORTS
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_TOOLCHAIN_USES_GLIBC
 ~

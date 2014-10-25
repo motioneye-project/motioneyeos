@@ -10,14 +10,14 @@ SPICE_SITE = http://www.spice-space.org/download/releases
 SPICE_LICENSE = LGPLv2.1+
 SPICE_LICENSE_FILES = COPYING
 SPICE_INSTALL_STAGING = YES
-SPICE_DEPENDENCIES =    \
-    alsa-lib            \
-    celt051             \
-    jpeg                \
-    openssl             \
-    pixman              \
-    python-pyparsing    \
-    spice-protocol      \
+SPICE_DEPENDENCIES =        \
+	alsa-lib            \
+	celt051             \
+	jpeg                \
+	openssl             \
+	pixman              \
+	python-pyparsing    \
+	spice-protocol      \
 
 # We disable everything for now, because the dependency tree can become
 # quite deep if we try to enable some features, and I have not tested that.

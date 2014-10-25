@@ -42,10 +42,10 @@ endef
 PERL_POST_PATCH_HOOKS += PERL_CROSS_SET_POD
 
 ifeq ($(BR2_PACKAGE_BERKELEYDB),y)
-    PERL_DEPENDENCIES += berkeleydb
+PERL_DEPENDENCIES += berkeleydb
 endif
 ifeq ($(BR2_PACKAGE_GDBM),y)
-    PERL_DEPENDENCIES += gdbm
+PERL_DEPENDENCIES += gdbm
 endif
 
 # We have to override LD, because an external multilib toolchain ld is not
@@ -66,15 +66,15 @@ PERL_CONF_OPTS = \
 	-Dperladmin=root
 
 ifeq ($(shell expr $(PERL_VERSION_MAJOR) % 2), 1)
-    PERL_CONF_OPTS += -Dusedevel
+PERL_CONF_OPTS += -Dusedevel
 endif
 
 ifeq ($(BR2_PREFER_STATIC_LIB),y)
-    PERL_CONF_OPTS += --all-static --no-dynaloader
+PERL_CONF_OPTS += --all-static --no-dynaloader
 endif
 
 ifneq ($(BR2_LARGEFILE),y)
-    PERL_CONF_OPTS += -Uuselargefiles
+PERL_CONF_OPTS += -Uuselargefiles
 endif
 
 PERL_MODULES = $(call qstrip,$(BR2_PACKAGE_PERL_MODULES))

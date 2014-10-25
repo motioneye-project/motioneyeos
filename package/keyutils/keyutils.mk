@@ -11,13 +11,13 @@ KEYUTILS_LICENSE = GPLv2+ LGPLv2.1+
 KEYUTILS_LICENSE_FILES = LICENCE.GPL LICENCE.LGPL
 KEYUTILS_INSTALL_STAGING = YES
 
-KEYUTILS_MAKE_PARAMS =                \
-    INSTALL=$(INSTALL)                \
-    LIBDIR=/usr/lib                   \
-    USRLIBDIR=/usr/lib                \
-    CFLAGS="$(TARGET_CFLAGS)"         \
-    CPPFLAGS="$(TARGET_CPPFLAGS) -I." \
-    LNS="$(HOSTLN) -sf"
+KEYUTILS_MAKE_PARAMS =                    \
+	INSTALL=$(INSTALL)                \
+	LIBDIR=/usr/lib                   \
+	USRLIBDIR=/usr/lib                \
+	CFLAGS="$(TARGET_CFLAGS)"         \
+	CPPFLAGS="$(TARGET_CPPFLAGS) -I." \
+	LNS="$(HOSTLN) -sf"
 
 ifeq ($(BR2_PREFER_STATIC_LIB),y)
 KEYUTILS_MAKE_PARAMS += NO_SOLIB=1

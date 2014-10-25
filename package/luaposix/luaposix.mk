@@ -12,7 +12,7 @@ LUAPOSIX_DEPENDENCIES = luainterpreter host-lua
 LUAPOSIX_CONF_OPTS = --libdir="/usr/lib/lua/$(LUAINTERPRETER_ABIVER)" --datarootdir="/usr/share/lua/$(LUAINTERPRETER_ABIVER)"
 
 ifeq ($(BR2_PACKAGE_NCURSES),y)
-    LUAPOSIX_DEPENDENCIES += ncurses
+LUAPOSIX_DEPENDENCIES += ncurses
 endif
 
 $(eval $(autotools-package))

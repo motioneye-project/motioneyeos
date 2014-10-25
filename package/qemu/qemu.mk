@@ -46,16 +46,16 @@ HOST_QEMU_DEPENDENCIES = host-pkgconf host-zlib host-libglib2 host-pixman
 
 HOST_QEMU_ARCH = $(ARCH)
 ifeq ($(HOST_QEMU_ARCH),i486)
-    HOST_QEMU_ARCH = i386
+HOST_QEMU_ARCH = i386
 endif
 ifeq ($(HOST_QEMU_ARCH),i586)
-    HOST_QEMU_ARCH = i386
+HOST_QEMU_ARCH = i386
 endif
 ifeq ($(HOST_QEMU_ARCH),i686)
-    HOST_QEMU_ARCH = i386
+HOST_QEMU_ARCH = i386
 endif
 ifeq ($(HOST_QEMU_ARCH),powerpc)
-    HOST_QEMU_ARCH = ppc
+HOST_QEMU_ARCH = ppc
 endif
 HOST_QEMU_TARGETS = $(HOST_QEMU_ARCH)-linux-user
 
@@ -96,8 +96,8 @@ QEMU_OPTS =
 
 QEMU_VARS = \
 	LIBTOOL=$(HOST_DIR)/usr/bin/libtool \
-    PYTHON=$(HOST_DIR)/usr/bin/python \
-    PYTHONPATH=$(TARGET_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR)/site-packages
+	PYTHON=$(HOST_DIR)/usr/bin/python \
+	PYTHONPATH=$(TARGET_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR)/site-packages
 
 ifeq ($(BR2_PACKAGE_QEMU_SYSTEM),y)
 QEMU_OPTS += --enable-system
