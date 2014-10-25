@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-LIBCAP_VERSION = 2.22
+LIBCAP_VERSION = 2.24
 LIBCAP_SITE = https://www.kernel.org/pub/linux/libs/security/linux-privs/libcap2
-LIBCAP_SOURCE = libcap-$(LIBCAP_VERSION).tar.gz
+LIBCAP_SOURCE = libcap-$(LIBCAP_VERSION).tar.xz
 LIBCAP_LICENSE = GPLv2 or BSD-3c
 LIBCAP_LICENSE_FILES = License
 
