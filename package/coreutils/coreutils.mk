@@ -20,6 +20,30 @@ ifeq ($(BR2_PACKAGE_BUSYBOX),y)
 COREUTILS_DEPENDENCIES = busybox
 endif
 
+ifeq ($(BR2_PACKAGE_ACL),y)
+COREUTILS_DEPENDENCIES += acl
+else
+COREUTILS_CONF_OPTS += --disable-acl
+endif
+
+ifeq ($(BR2_PACKAGE_ATTR),y)
+COREUTILS_DEPENDENCIES += attr
+else
+COREUTILS_CONF_OPTS += --disable-xattr
+endif
+
+ifeq ($(BR2_PACKAGE_GMP),y)
+COREUTILS_DEPENDENCIES += gmp
+else
+COREUTILS_CONF_OPTS += --without-gmp
+endif
+
+ifeq ($(BR2_PACKAGE_LIBCAP),y)
+COREUTILS_DEPENDENCIES += libcap
+else
+COREUTILS_CONF_OPTS += --disable-libcap
+endif
+
 COREUTILS_BIN_PROGS = cat chgrp chmod chown cp date dd df dir echo false \
 	ln ls mkdir mknod mv pwd rm rmdir vdir sleep stty sync touch true \
 	uname join
@@ -61,7 +85,7 @@ COREUTILS_CONF_ENV = ac_cv_c_restrict=no \
 		utils_cv_localtime_cache=no \
 		PERL=missing
 
-COREUTILS_CONF_OPTS = --disable-rpath
+COREUTILS_CONF_OPTS = --disable-rpath --enable-single-binary=shebangs
 
 define COREUTILS_POST_INSTALL
 	# some things go in root rather than usr
