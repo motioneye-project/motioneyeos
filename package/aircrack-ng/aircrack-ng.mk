@@ -13,7 +13,7 @@ AIRCRACK_NG_DEPENDENCIES = openssl
 ifeq ($(BR2_PACKAGE_SQLITE),y)
 	AIRCRACK_NG_MAKE_OPTS = sqlite=true
 	AIRCRACK_NG_MAKE_OPTS += \
-		LIBSQL="-lsqlite3$(if $(BR2_PREFER_STATIC_LIB), -ldl -lpthread)"
+		LIBSQL="-lsqlite3$(if $(BR2_PREFER_STATIC_LIB),-lpthread)"
 
 	AIRCRACK_NG_DEPENDENCIES += sqlite
 else
@@ -21,7 +21,7 @@ else
 endif
 
 AIRCRACK_NG_LDFLAGS = $(TARGET_LDFLAGS) -lz \
-	$(if $(BR2_PREFER_STATIC_LIB),-ldl -lpthread)
+	$(if $(BR2_PREFER_STATIC_LIB),-lpthread)
 
 define AIRCRACK_NG_BUILD_CMDS
 	$(TARGET_CONFIGURE_OPTS) $(MAKE1) CC="$(TARGET_CC)" LD="$(TARGET_LD)" \
