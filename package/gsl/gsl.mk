@@ -19,8 +19,8 @@ GSL_CONFIG_SCRIPTS = gsl-config
 ifeq ($(BR2_TOOLCHAIN_USES_UCLIBC),y)
 ifneq ($(BR2_i386),y)
 GSL_CONF_ENV = \
-       ac_cv_have_decl_feenableexcept=no \
-       ac_cv_have_decl_fesettrapenable=no
+	ac_cv_have_decl_feenableexcept=no \
+	ac_cv_have_decl_fesettrapenable=no
 endif
 endif
 

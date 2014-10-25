@@ -76,8 +76,8 @@ endef
 
 ifeq ($(BR2_PACKAGE_BIND_SERVER),y)
 define BIND_INSTALL_INIT_SYSV
-        $(INSTALL) -m 0755 -D package/bind/S81named \
-                $(TARGET_DIR)/etc/init.d/S81named
+	$(INSTALL) -m 0755 -D package/bind/S81named \
+		$(TARGET_DIR)/etc/init.d/S81named
 endef
 else
 BIND_POST_INSTALL_TARGET_HOOKS += BIND_TARGET_REMOVE_SERVER

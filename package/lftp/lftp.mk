@@ -31,7 +31,7 @@ endif
 
 # Remove /usr/share/lftp
 define LFTP_REMOVE_DATA
-        $(RM) -fr $(TARGET_DIR)/usr/share/lftp
+	$(RM) -fr $(TARGET_DIR)/usr/share/lftp
 endef
 
 LFTP_POST_INSTALL_TARGET_HOOKS += LFTP_REMOVE_DATA

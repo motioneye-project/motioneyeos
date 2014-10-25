@@ -11,7 +11,7 @@ XCURSOR_TRANSPARENT_THEME_LICENSE = GPLv2
 XCURSOR_TRANSPARENT_THEME_LICENSE_FILES = COPYING
 
 define ICONS_DEFAULT_CONFIG_INSTALL
-        $(INSTALL) -m 0755 -D package/x11r7/xcursor-transparent-theme/index.theme \
+	$(INSTALL) -m 0755 -D package/x11r7/xcursor-transparent-theme/index.theme \
 		$(TARGET_DIR)/usr/share/icons/default/index.theme
 endef
 

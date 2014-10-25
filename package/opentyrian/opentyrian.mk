@@ -20,7 +20,7 @@ OPENTYRIAN_NETWORK = false
 endif
 
 define OPENTYRIAN_BUILD_CMDS
-        $(MAKE) PLATFORM=UNIX \
+	$(MAKE) PLATFORM=UNIX \
 		CC="$(TARGET_CC)" \
 		STRIP="/bin/true" \
 		SDL_CONFIG="$(STAGING_DIR)/usr/bin/sdl-config" \

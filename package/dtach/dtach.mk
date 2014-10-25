@@ -11,7 +11,7 @@ DTACH_LICENSE_FILES = COPYING
 
 # The Makefile does not have an install target.
 define DTACH_INSTALL_TARGET_CMDS
-        $(INSTALL) -D -m 0755 $(@D)/dtach $(TARGET_DIR)/usr/bin/dtach
+	$(INSTALL) -D -m 0755 $(@D)/dtach $(TARGET_DIR)/usr/bin/dtach
 endef
 
 $(eval $(autotools-package))

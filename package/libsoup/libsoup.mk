@@ -21,7 +21,7 @@ endif
 LIBSOUP_CONF_OPTS = --disable-glibtest
 
 LIBSOUP_DEPENDENCIES = host-pkgconf host-libglib2 \
-       libglib2 libxml2 sqlite host-intltool
+	libglib2 libxml2 sqlite host-intltool
 
 ifeq ($(BR2_PACKAGE_LIBSOUP_GNOME),y)
 LIBSOUP_CONF_OPTS += --with-gnome

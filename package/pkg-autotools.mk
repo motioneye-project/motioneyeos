@@ -162,7 +162,7 @@ define $(2)_CONFIGURE_CMDS
 	        $$(HOST_CONFIGURE_OPTS) \
 		CFLAGS="$$(HOST_CFLAGS)" \
 		LDFLAGS="$$(HOST_LDFLAGS)" \
-                $$($$(PKG)_CONF_ENV) \
+		$$($$(PKG)_CONF_ENV) \
 		CONFIG_SITE=/dev/null \
 		./configure \
 		--prefix="$$(HOST_DIR)/usr" \
@@ -187,8 +187,8 @@ endif
 # Hook to update config.sub and config.guess if needed
 #
 define UPDATE_CONFIG_HOOK
-       @$$(call MESSAGE,"Updating config.sub and config.guess")
-       $$(call CONFIG_UPDATE,$$(@D))
+	@$$(call MESSAGE,"Updating config.sub and config.guess")
+	$$(call CONFIG_UPDATE,$$(@D))
 endef
 
 $(2)_POST_PATCH_HOOKS += UPDATE_CONFIG_HOOK

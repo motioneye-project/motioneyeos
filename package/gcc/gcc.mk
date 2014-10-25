@@ -26,8 +26,8 @@ GCC_SOURCE ?= gcc-$(GCC_VERSION).tar.bz2
 #
 
 define HOST_GCC_XTENSA_OVERLAY_EXTRACT
-        tar xf $(BR2_XTENSA_OVERLAY_DIR)/xtensa_$(call qstrip,\
-                $(BR2_XTENSA_CORE_NAME)).tar -C $(@D) --strip-components=1 gcc
+	tar xf $(BR2_XTENSA_OVERLAY_DIR)/xtensa_$(call qstrip,\
+		$(BR2_XTENSA_CORE_NAME)).tar -C $(@D) --strip-components=1 gcc
 endef
 
 #

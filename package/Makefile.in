@@ -32,7 +32,7 @@ $(error BR2_TOOLCHAIN_BUILDROOT_VENDOR is not allowed to be empty)
 endif
 ifeq ($(TARGET_VENDOR),unknown)
 $(error BR2_TOOLCHAIN_BUILDROOT_VENDOR cannot be 'unknown'. \
-        It might be confused with the native toolchain)
+	It might be confused with the native toolchain)
 endif
 
 # Compute GNU_TARGET_NAME

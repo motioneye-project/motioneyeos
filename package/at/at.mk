@@ -15,10 +15,10 @@ AT_LICENSE = GPLv2+, GPLv3+, ISC
 AT_LICENSE_FILES = Copyright COPYING
 
 AT_CONF_OPTS = \
-        --with-jobdir=/var/spool/cron/atjobs \
-        --with-atspool=/var/spool/cron/atspool \
-        --with-daemon_username=root \
-        --with-daemon_groupname=root \
+	--with-jobdir=/var/spool/cron/atjobs \
+	--with-atspool=/var/spool/cron/atspool \
+	--with-daemon_username=root \
+	--with-daemon_groupname=root \
 	SENDMAIL=/usr/sbin/sendmail
 
 define AT_INSTALL_INITSCRIPT

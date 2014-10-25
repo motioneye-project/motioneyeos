@@ -11,7 +11,7 @@ DSTAT_LICENSE = GPLv2
 DSTAT_LICENSE_FILES = COPYING
 
 define DSTAT_INSTALL_TARGET_CMDS
-       $(MAKE) -C $(@D) DESTDIR=$(TARGET_DIR) install
+	$(MAKE) -C $(@D) DESTDIR=$(TARGET_DIR) install
 endef
 
 $(eval $(generic-package))

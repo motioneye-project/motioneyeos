@@ -34,15 +34,15 @@ define MIDORI_CONFIGURE_CMDS
 		$(HOST_DIR)/usr/bin/python2 ./waf configure \
 		--prefix=/usr			\
 		--disable-libnotify		\
-       )
+	)
 endef
 
 define MIDORI_BUILD_CMDS
-       (cd $(@D); $(HOST_DIR)/usr/bin/python2 ./waf build -j $(PARALLEL_JOBS))
+	(cd $(@D); $(HOST_DIR)/usr/bin/python2 ./waf build -j $(PARALLEL_JOBS))
 endef
 
 define MIDORI_INSTALL_TARGET_CMDS
-       (cd $(@D); $(HOST_DIR)/usr/bin/python2 ./waf --destdir=$(TARGET_DIR) install)
+	(cd $(@D); $(HOST_DIR)/usr/bin/python2 ./waf --destdir=$(TARGET_DIR) install)
 endef
 
 $(eval $(generic-package))

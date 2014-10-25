@@ -27,17 +27,17 @@ HOST_GCC_FINAL_SUBDIR = build
 HOST_GCC_FINAL_PRE_CONFIGURE_HOOKS += HOST_GCC_CONFIGURE_SYMLINK
 
 define  HOST_GCC_FINAL_CONFIGURE_CMDS
-        (cd $(HOST_GCC_FINAL_SRCDIR) && rm -rf config.cache; \
-                $(HOST_CONFIGURE_OPTS) \
-                CFLAGS="$(HOST_CFLAGS)" \
-                LDFLAGS="$(HOST_LDFLAGS)" \
-                $(HOST_GCC_FINAL_CONF_ENV) \
-                ./configure \
-                --prefix="$(HOST_DIR)/usr" \
-                --sysconfdir="$(HOST_DIR)/etc" \
-                --enable-static \
-                $(QUIET) $(HOST_GCC_FINAL_CONF_OPTS) \
-        )
+	(cd $(HOST_GCC_FINAL_SRCDIR) && rm -rf config.cache; \
+		$(HOST_CONFIGURE_OPTS) \
+		CFLAGS="$(HOST_CFLAGS)" \
+		LDFLAGS="$(HOST_LDFLAGS)" \
+		$(HOST_GCC_FINAL_CONF_ENV) \
+		./configure \
+		--prefix="$(HOST_DIR)/usr" \
+		--sysconfdir="$(HOST_DIR)/etc" \
+		--enable-static \
+		$(QUIET) $(HOST_GCC_FINAL_CONF_OPTS) \
+	)
 endef
 
 

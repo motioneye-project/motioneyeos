@@ -11,7 +11,7 @@ YMPD_LICENSE_FILE = LICENSE
 YMPD_DEPENDENCIES = libmpdclient
 
 define YMPD_MAKE_HOST_TOOL
-        $(HOSTCC) $(HOST_CFLAGS) $(@D)/htdocs/mkdata.c -o $(@D)/mkdata
+	$(HOSTCC) $(HOST_CFLAGS) $(@D)/htdocs/mkdata.c -o $(@D)/mkdata
 endef
 
 YMPD_PRE_BUILD_HOOKS += YMPD_MAKE_HOST_TOOL

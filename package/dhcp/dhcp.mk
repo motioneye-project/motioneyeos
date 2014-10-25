@@ -26,11 +26,11 @@ DHCP_CONF_OPTS = \
 	--with-relay6-pid-file=/var/run/dhcrelay6.pid
 
 ifeq ($(BR2_PACKAGE_DHCP_SERVER_DELAYED_ACK),y)
-        DHCP_CONF_OPTS += --enable-delayed-ack
+DHCP_CONF_OPTS += --enable-delayed-ack
 endif
 
 ifneq ($(BR2_INET_IPV6),y)
-        DHCP_CONF_OPTS += --disable-dhcpv6
+DHCP_CONF_OPTS += --disable-dhcpv6
 endif
 
 ifeq ($(BR2_PACKAGE_DHCP_SERVER),y)

@@ -106,9 +106,9 @@ config BR2_TARGET_GRUB2
 	  2. Extract, and rename OVMF.fd to bios.bin and
 	     CirrusLogic5446.rom to vgabios-cirrus.bin.
 	  3. qemu-system-{i386,x86-64} -L ovmf-dir/ -hda disk.img
-          4. Make sure to pass pci=nocrs to the kernel command line,
-             to workaround a bug in the EFI BIOS regarding the
-             EFI framebuffer.
+	  4. Make sure to pass pci=nocrs to the kernel command line,
+	     to workaround a bug in the EFI BIOS regarding the
+	     EFI framebuffer.
 
 	  http://www.gnu.org/software/grub/
 
