@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-TARGETCLI_FB_VERSION = v2.1.fb36
+TARGETCLI_FB_VERSION = v2.1.fb37
 TARGETCLI_FB_SITE = $(call github,agrover,targetcli-fb,$(TARGETCLI_FB_VERSION))
 TARGETCLI_FB_LICENSE = Apache-2.0
 TARGETCLI_FB_LICENSE_FILES = COPYING
