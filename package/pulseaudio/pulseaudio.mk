@@ -47,6 +47,14 @@ else
 PULSEAUDIO_CONF_OPTS += --without-caps
 endif
 
+# gtk3 support needs X11 backend
+ifeq ($(BR2_PACKAGE_LIBGTK3_X11),y)
+PULSEAUDIO_DEPENDENCIES += libgtk3
+PULSEAUDIO_CONF_OPTS += --enable-gtk3
+else
+PULSEAUDIO_CONF_OPTS += --disable-gtk3
+endif
+
 ifneq ($(BR2_INSTALL_LIBSTDCPP),y)
 # The optional webrtc echo canceller is written in C++, causing auto* to want
 # to link module-echo-cancel.so with CXX even if webrtc ISN'T used.
