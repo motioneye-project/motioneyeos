@@ -5,6 +5,7 @@ config BR2_PACKAGE_NEARDAL
 	depends on BR2_USE_MMU # dbus
 	select BR2_PACKAGE_DBUS
 	select BR2_PACKAGE_DBUS_GLIB
+	select BR2_PACKAGE_READLINE if !BR2_PACKAGE_LIBEDIT
 	help
 	  Provides a simple C API to exchange data with the neard NFC
 	  manager daemon.
