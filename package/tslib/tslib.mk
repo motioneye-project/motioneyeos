@@ -5,7 +5,7 @@
 ################################################################################
 
 TSLIB_VERSION = 1.1
-TSLIB_SITE = $(call github,kergoth,tslib,$(TSLIB_VERSION))
+TSLIB_SITE = https://github.com/kergoth/tslib/releases/download/$(TSLIB_VERSION)/
 TSLIB_LICENSE = GPL, LGPL
 TSLIB_LICENSE_FILES = COPYING
 
