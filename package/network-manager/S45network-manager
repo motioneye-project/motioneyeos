@@ -24,7 +24,7 @@ case "$1" in
 		;;
 	stop)
 		echo -n "Stopping NetworkManager ... "
-			[ ! -z "$PID" ] && kill $PID &> /dev/null
+			[ ! -z "$PID" ] && kill $PID > /dev/null 2>&1
 		if [ $? -gt 0 ]; then
 			echo "failed!"
 		else
