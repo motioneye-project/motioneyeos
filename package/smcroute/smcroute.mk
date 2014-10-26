@@ -4,8 +4,9 @@
 #
 ################################################################################
 
-SMCROUTE_VERSION = 1.99.2
-SMCROUTE_SITE = $(call github,troglobit,smcroute,$(SMCROUTE_VERSION))
+SMCROUTE_VERSION = 2.0.0
+SMCROUTE_SOURCE = smcroute-$(SMCROUTE_VERSION).tar.xz
+SMCROUTE_SITE = https://github.com/troglobit/smcroute/releases/download/$(SMCROUTE_VERSION)/
 SMCROUTE_LICENSE = GPLv2+
 SMCROUTE_LICENSE_FILES = COPYING
 
