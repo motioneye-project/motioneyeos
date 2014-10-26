@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-FLANN_VERSION = d0c04f4d290ebc3aa9411a3322992d298e51f5aa
+FLANN_VERSION = 04b4a56533faf8c8228d011d05ba376038364b49
 FLANN_SITE = $(call github,mariusmuja,flann,$(FLANN_VERSION))
 FLANN_INSTALL_STAGING = YES
 FLANN_LICENSE = BSD-3c
