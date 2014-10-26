@@ -7,12 +7,12 @@ case "$1" in
     start)
 	echo -n "Starting shairport-sync: "
 	start-stop-daemon -S -q -m -b -p /var/run/shairport-sync.pid --exec /usr/bin/shairport-sync -- $OPTIONS
-	[ $? == 0 ] && echo "OK" || echo "FAIL"
+	[ $? = 0 ] && echo "OK" || echo "FAIL"
 	;;
     stop)
 	echo -n "Stopping shairport-sync: "
 	start-stop-daemon -K -q -p /var/run/shairport-sync.pid
-	[ $? == 0 ] && echo "OK" || echo "FAIL"
+	[ $? = 0 ] && echo "OK" || echo "FAIL"
 	;;
     restart)
 	$0 stop

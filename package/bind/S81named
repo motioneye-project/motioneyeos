@@ -16,12 +16,12 @@ case "$1" in
 		fi
 		echo -n "Starting domain name daemon: "
 		start-stop-daemon -S -x $DAEMON -- -c $CONFIG -u named
-		[ $? == 0 ] && echo "OK" || echo "FAIL"
+		[ $? = 0 ] && echo "OK" || echo "FAIL"
 		;;
 	stop)
 		echo -n "Stopping domain name daemon: "
 		rndc stop || start-stop-daemon -K -x $DAEMON
-		[ $? == 0 ] && echo "OK" || echo "FAIL"
+		[ $? = 0 ] && echo "OK" || echo "FAIL"
 		;;
 	restart)
 		$0 stop || true

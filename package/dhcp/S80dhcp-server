@@ -18,12 +18,12 @@ case "$1" in
 		test -d /var/lib/dhcp/ || mkdir -p /var/lib/dhcp/
 		test -f /var/lib/dhcp/dhcpd.leases || touch /var/lib/dhcp/dhcpd.leases
 		start-stop-daemon -S -x /usr/sbin/dhcpd -- -q $INTERFACES
-		[ $? == 0 ] && echo "OK" || echo "FAIL"
+		[ $? = 0 ] && echo "OK" || echo "FAIL"
 		;;
 	stop)
 		echo -n "Stopping DHCP server: dhcpd3"
 		start-stop-daemon -K -x /usr/sbin/dhcpd
-		[ $? == 0 ] && echo "OK" || echo "FAIL"
+		[ $? = 0 ] && echo "OK" || echo "FAIL"
 		;;
 	restart | force-reload)
 		$0 stop

@@ -30,12 +30,12 @@ case "$1" in
 	start)
 		echo -n "Starting DHCP relay: "
 		start-stop-daemon -S -x /usr/sbin/dhcrelay -- -q $OPTIONS $IFCMD $SERVERS
-		[ $? == 0 ] && echo "OK" || echo "FAIL"
+		[ $? = 0 ] && echo "OK" || echo "FAIL"
 		;;
 	stop)
 		echo -n "Stopping DHCP relay: "
 		start-stop-daemon -K -x /usr/sbin/dhcrelay
-		[ $? == 0 ] && echo "OK" || echo "FAIL"
+		[ $? = 0 ] && echo "OK" || echo "FAIL"
 		;;
 	restart | force-reload)
 		$0 stop

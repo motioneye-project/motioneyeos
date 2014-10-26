@@ -16,12 +16,12 @@ case "$1" in
 	start)
 		echo "Starting inadyn: "
 		start-stop-daemon -S -x /usr/bin/inadyn
-		[ $? == 0 ] && echo "OK" || echo "FAIL"
+		[ $? = 0 ] && echo "OK" || echo "FAIL"
 		;;
 	stop)
 		echo  "Stopping inadyn: "
 		start-stop-daemon -q -K -x /usr/bin/inadyn
-		[ $? == 0 ] && echo "OK" || echo "FAIL"
+		[ $? = 0 ] && echo "OK" || echo "FAIL"
 		rm -f /var/run/inadyn/inadyn.pid
 		;;
 	restart)

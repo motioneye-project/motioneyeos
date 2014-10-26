@@ -11,12 +11,12 @@ PIDFILE=/var/run/xbmc.pid
 start() {
 	echo -n "Starting XBMC: "
 	start-stop-daemon -S -q -b -m -p $PIDFILE --exec $BIN -- $XBMC $XBMC_ARGS
-	[ $? == 0 ] && echo "OK" || echo "FAIL"
+	[ $? = 0 ] && echo "OK" || echo "FAIL"
 }
 stop() {
 	echo -n "Stopping XBMC: "
 	start-stop-daemon -K -q -p $PIDFILE
-	[ $? == 0 ] && echo "OK" || echo "FAIL"
+	[ $? = 0 ] && echo "OK" || echo "FAIL"
 }
 restart() {
 	stop
