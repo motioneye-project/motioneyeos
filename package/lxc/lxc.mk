@@ -4,12 +4,12 @@
 #
 ################################################################################
 
-LXC_VERSION = 1.0.4
-LXC_SITE = $(call github,lxc,lxc,lxc-$(LXC_VERSION))
+LXC_VERSION = 1.0.6
+LXC_SITE = https://linuxcontainers.org/downloads/
 LXC_LICENSE = LGPLv2.1+
 LXC_LICENSE_FILES = COPYING
 LXC_DEPENDENCIES = libcap host-pkgconf
-# configure not shipped
+# we're patching configure.ac
 LXC_AUTORECONF = YES
 LXC_CONF_OPTS = --disable-apparmor --with-distro=buildroot \
 	--disable-lua --disable-python \
