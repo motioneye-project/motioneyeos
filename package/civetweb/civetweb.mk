@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-CIVETWEB_VERSION = v1.3
+CIVETWEB_VERSION = v1.5
 CIVETWEB_SITE = $(call github,sunsetbrew,civetweb,$(CIVETWEB_VERSION))
 CIVETWEB_LICENSE = MIT
 CIVETWEB_LICENSE_FILES = LICENSE.md
