@@ -1,0 +1,7 @@
+# From http://lttng.org/files/babeltrace/babeltrace-1.2.3.tar.bz2.md5
+md5     c35b480304ba34aacbfb3934182cdd21  babeltrace-1.2.3.tar.bz2
+# From http://lttng.org/files/babeltrace/babeltrace-1.2.3.tar.bz2.sha1
+sha1    55d3ad8fb5df4ff025e063a0993be1667bfc6554  babeltrace-1.2.3.tar.bz2
+# Locally generated
+sha256  796fa6978102244d9c64d474baeac4e4292a0186660a53cf58f20d47226987ac  babeltrace-1.2.3.tar.bz2
+
