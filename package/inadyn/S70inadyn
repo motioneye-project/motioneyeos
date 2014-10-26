@@ -29,7 +29,7 @@ case "$1" in
 		"$0" start
 		;;
 		*)
-		echo $"Usage: $0 {start|stop|restart}"
+		echo "Usage: $0 {start|stop|restart}"
 		exit 1
 esac
 
