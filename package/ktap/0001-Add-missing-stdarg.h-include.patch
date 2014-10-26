@@ -1,0 +1,47 @@
+From dc135d8f1f2a843cebd4da0d4b17828911e162a6 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Sat, 1 Nov 2014 18:53:47 +0100
+Subject: [PATCH] Add missing <stdarg.h> include
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Fixes:
+
+In file included from userspace/kp_bcwrite.c:32:0:
+userspace/kp_util.h:74:14: error: unknown type name ‘va_list’
+   ErrMsg em, va_list argp);
+              ^
+userspace/kp_util.h:76:42: error: unknown type name ‘va_list’
+ const char *kp_sprintfv(const char *fmt, va_list argp);
+                                          ^
+In file included from userspace/kp_lex.c:28:0:
+userspace/kp_util.h:74:14: error: unknown type name ‘va_list’
+   ErrMsg em, va_list argp);
+              ^
+userspace/kp_util.h:76:42: error: unknown type name ‘va_list’
+ const char *kp_sprintfv(const char *fmt, va_list argp);
+
+Submitted upstream: https://github.com/ktap/ktap/pull/77
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ userspace/kp_util.h | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/userspace/kp_util.h b/userspace/kp_util.h
+index af0b221..5778dc4 100644
+--- a/userspace/kp_util.h
++++ b/userspace/kp_util.h
+@@ -1,6 +1,8 @@
+ #ifndef __KTAP_UTIL_H__
+ #define __KTAP_UTIL_H__
+ 
++#include <stdarg.h>
++
+ #include "../include/ktap_bc.h"
+ #include "../include/ktap_err.h"
+ 
+-- 
+2.0.0
+
