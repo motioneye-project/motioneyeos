@@ -1,0 +1,6 @@
+# From http://lttng.org/files/lttng-modules/lttng-modules-2.5.1.tar.bz2.sha1
+sha1   75d9662ed3f8d7c53833663a5d89fe31c015b3ca  lttng-modules-2.5.1.tar.bz2
+# From http://lttng.org/files/lttng-modules/lttng-modules-2.5.1.tar.bz2.md5
+md5    2d99bb7311ba92e82e3b675f0b8dee7d  lttng-modules-2.5.1.tar.bz2
+# Locally generated
+sha256 962238175f0959ac71b97fdde144a3f76a84f63aea6b3645f94da88512bcccdb  lttng-modules-2.5.1.tar.bz2
