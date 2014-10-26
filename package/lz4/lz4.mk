@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LZ4_VERSION = r119
+LZ4_VERSION = r123
 LZ4_SITE = $(call github,Cyan4973,lz4,$(LZ4_VERSION))
 LZ4_INSTALL_STAGING = YES
 LZ4_LICENSE = BSD-2c
