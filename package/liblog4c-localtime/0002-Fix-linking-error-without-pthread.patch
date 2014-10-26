@@ -8,6 +8,8 @@ available, but a call to these functions from log4c_fini() was outside
 the #if WITH_ROLLINGFILE conditional, causing linker errors when the
 library is used.
 
+Submitted upstream: https://github.com/rcmadruga/log4c-localtime/pull/1
+
 Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 ---

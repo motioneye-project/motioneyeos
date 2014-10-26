@@ -10,6 +10,8 @@ tests/log4c/Makefile.am: error: C++ source seen but 'CXX' is undefined
 So this commit adds the AC_PROG_CXX macro to configure.in, and ensures
 that the C++ test is only built if a C++ compiler is available.
 
+Submitted upstream: https://github.com/rcmadruga/log4c-localtime/pull/1
+
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 ---
  configure.in            | 3 +++

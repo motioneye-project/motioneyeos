@@ -8,6 +8,8 @@ When autoreconfiguring liblog4c-localtime, there is a warning from
 autoconf caused by an underquoted definition of AM_PATH_LOG4C. This
 patch fixes this warning.
 
+Submitted upstream: https://github.com/rcmadruga/log4c-localtime/pull/1
+
 Signed-off-by: Danomi Manchego <danomimanchego123@gmail.com>
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 ---

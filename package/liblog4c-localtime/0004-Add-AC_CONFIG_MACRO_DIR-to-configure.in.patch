@@ -6,6 +6,8 @@ Subject: [PATCH 4/5] Add AC_CONFIG_MACRO_DIR to configure.in
 Without AC_CONFIG_MACRO_DIR, when autoreconfiguring the package, it
 cannot find AM_PATH_EXPAT which is defined in config/expat.m4.
 
+Submitted upstream: https://github.com/rcmadruga/log4c-localtime/pull/1
+
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 ---
  configure.in | 1 +

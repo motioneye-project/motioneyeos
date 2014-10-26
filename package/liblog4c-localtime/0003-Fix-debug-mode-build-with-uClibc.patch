@@ -12,6 +12,8 @@ mcheck.h.
 To better support this situation, we add an AC_CHECK_HEADERS() check
 on mcheck.h, and then use HAVE_MCHECK_H were appropriate.
 
+Submitted upstream: https://github.com/rcmadruga/log4c-localtime/pull/1
+
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 ---
  configure.in     | 2 +-
