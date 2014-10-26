@@ -14,6 +14,12 @@ GD_LICENSE_FILES = COPYING
 GD_CONFIG_SCRIPTS = gdlib-config
 GD_CONF_OPTS = --without-x --disable-rpath
 
+# gd forgets to link utilities with -pthread even though it uses
+# pthreads, causing linking errors with static linking
+ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),y)
+GD_CONF_ENV += LDFLAGS="$(TARGET_LDFLAGS) -pthread"
+endif
+
 ifeq ($(BR2_PACKAGE_FONTCONFIG),y)
 GD_DEPENDENCIES += fontconfig
 GD_CONF_OPTS += --with-fontconfig
