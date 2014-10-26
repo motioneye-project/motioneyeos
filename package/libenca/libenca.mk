@@ -4,10 +4,9 @@
 #
 ################################################################################
 
-LIBENCA_VERSION = 1.15
+LIBENCA_VERSION = 1.16
 LIBENCA_SITE = $(call github,nijel,enca,$(LIBENCA_VERSION))
 LIBENCA_INSTALL_STAGING = YES
-LIBENCA_AUTORECONF = YES
 LIBENCA_LICENSE = GPLv2
 LIBENCA_LICENSE_FILES = COPYING
 LIBENCA_DEPENDENCIES = $(if $(BR2_PACKAGE_LIBICONV),libiconv)
