@@ -15,6 +15,7 @@ config BR2_PACKAGE_SYSTEMD
 	depends on BR2_INET_IPV6
 	depends on !BR2_PREFER_STATIC_LIB # kmod
 	depends on BR2_TOOLCHAIN_HAS_THREADS # dbus
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_7 # libcap
 	depends on BR2_USE_MMU # dbus
 	select BR2_PACKAGE_HAS_UDEV
 	select BR2_PACKAGE_DBUS # runtime dependency only
