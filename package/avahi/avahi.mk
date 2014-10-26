@@ -73,7 +73,6 @@ AVAHI_CONF_OPTS = \
 		--disable-gdbm \
 		--disable-python-dbus \
 		--disable-pygtk \
-		--disable-gtk3 \
 		--disable-mono \
 		--disable-monodoc \
 		--disable-stack-protector \
@@ -121,6 +120,13 @@ ifeq ($(BR2_PACKAGE_LIBGLADE),y)
 AVAHI_DEPENDENCIES += libglade
 else
 AVAHI_CONF_OPTS += --disable-gtk
+endif
+
+ifeq ($(BR2_PACKAGE_LIBGTK3),y)
+AVAHI_DEPENDENCIES += libgtk3
+AVAHI_CONF_OPTS += --enable-gtk3
+else
+AVAHI_CONF_OPTS += --disable-gtk3
 endif
 
 ifeq ($(BR2_PACKAGE_PYTHON),y)
