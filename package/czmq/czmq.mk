@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-CZMQ_VERSION = v2.2.0
+CZMQ_VERSION = v3.0.0
 CZMQ_SITE = $(call github,zeromq,czmq,$(CZMQ_VERSION))
 
 # Autoreconf required as we use the git tree
