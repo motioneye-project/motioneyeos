@@ -20,7 +20,6 @@ utmp:x:43:
 plugdev:x:46:
 staff:x:50:
 lock:x:54:
-haldaemon:x:68:
 dbus:x:81:
 netdev:x:82:
 ftp:x:83
