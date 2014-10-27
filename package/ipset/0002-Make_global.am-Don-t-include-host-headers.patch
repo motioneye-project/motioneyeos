@@ -1,0 +1,29 @@
+From 1f1b5ed5e8402214a6516a380247123e6dd75d2a Mon Sep 17 00:00:00 2001
+From: Baruch Siach <baruch@tkos.co.il>
+Date: Tue, 28 Oct 2014 00:19:25 +0200
+Subject: [PATCH] Make_global.am: Don't include host headers
+
+This is bad for cross compilation.
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+ Make_global.am | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/Make_global.am b/Make_global.am
+index 25c4d64715c7..11ea1c333186 100644
+--- a/Make_global.am
++++ b/Make_global.am
+@@ -71,8 +71,7 @@
+ #            curr:rev:age
+ LIBVERSION = 8:0:5
+ 
+-AM_CPPFLAGS = $(kinclude_CFLAGS) $(all_includes) -I$(top_srcdir)/include \
+-	-I/usr/local/include
++AM_CPPFLAGS = $(kinclude_CFLAGS) $(all_includes) -I$(top_srcdir)/include
+ 
+ AM_CFLAGS = -std=gnu99
+ 
+-- 
+2.1.1
+
