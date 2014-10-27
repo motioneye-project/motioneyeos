@@ -32,9 +32,9 @@ NDISC6_MAN8_ = $(addsuffix .8,$(NDISC6_SBIN_))
 
 define NDISC6_REMOVE_UNNEEDED
 	rm -rf $(addprefix $(TARGET_DIR)/usr/bin/,$(NDISC6_BIN_)) \
-	       $(addprefix $(TARGET_DIR)/usr/sbin/,$(NDISC6_SBIN_)) \
-	       $(addprefix $(TARGET_DIR)/usr/share/man/man1/,$(NDISC6_MAN1_)) \
-	       $(addprefix $(TARGET_DIR)/usr/share/man/man8/,$(NDISC6_MAN8_))
+		$(addprefix $(TARGET_DIR)/usr/sbin/,$(NDISC6_SBIN_)) \
+		$(addprefix $(TARGET_DIR)/usr/share/man/man1/,$(NDISC6_MAN1_)) \
+		$(addprefix $(TARGET_DIR)/usr/share/man/man8/,$(NDISC6_MAN8_))
 	$(if $(BR2_PACKAGE_NDISC6_RDNSSD),,\
 		rm -rf $(TARGET_DIR)/etc/rdnssd $(TARGET_DIR)/var/run/rdnssd)
 endef

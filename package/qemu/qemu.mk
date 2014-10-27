@@ -124,45 +124,45 @@ QEMU_OPTS += --disable-sdl
 endif
 
 define QEMU_CONFIGURE_CMDS
-	( cd $(@D);                                 \
-	    LIBS='$(QEMU_LIBS)'                     \
-	    $(TARGET_CONFIGURE_OPTS)                \
-	    $(TARGET_CONFIGURE_ARGS)                \
-	    $(QEMU_VARS)                            \
-	    ./configure                             \
-	        --prefix=/usr                       \
-	        --cross-prefix=$(TARGET_CROSS)      \
-	        --with-system-pixman                \
-	        --audio-drv-list=                   \
-	        --enable-kvm                        \
-	        --enable-attr                       \
-	        --enable-vhost-net                  \
-	        --disable-bsd-user                  \
-	        --disable-xen                       \
-	        --disable-slirp                     \
-	        --disable-vnc                       \
-	        --disable-virtfs                    \
-	        --disable-brlapi                    \
-	        --disable-curses                    \
-	        --disable-curl                      \
-	        --disable-fdt                       \
-	        --disable-bluez                     \
-	        --disable-guest-base                \
-	        --disable-uuid                      \
-	        --disable-vde                       \
-	        --disable-linux-aio                 \
-	        --disable-cap-ng                    \
-	        --disable-docs                      \
-	        --disable-spice                     \
-	        --disable-rbd                       \
-	        --disable-libiscsi                  \
-	        --disable-usb-redir                 \
-	        --disable-smartcard-nss             \
-	        --disable-strip                     \
-	        --disable-seccomp                   \
-	        --disable-sparse                    \
-	        --disable-tools                     \
-	        $(QEMU_OPTS)                        \
+	( cd $(@D);                                     \
+		LIBS='$(QEMU_LIBS)'                     \
+		$(TARGET_CONFIGURE_OPTS)                \
+		$(TARGET_CONFIGURE_ARGS)                \
+		$(QEMU_VARS)                            \
+		./configure                             \
+			--prefix=/usr                   \
+			--cross-prefix=$(TARGET_CROSS)  \
+			--with-system-pixman            \
+			--audio-drv-list=               \
+			--enable-kvm                    \
+			--enable-attr                   \
+			--enable-vhost-net              \
+			--disable-bsd-user              \
+			--disable-xen                   \
+			--disable-slirp                 \
+			--disable-vnc                   \
+			--disable-virtfs                \
+			--disable-brlapi                \
+			--disable-curses                \
+			--disable-curl                  \
+			--disable-fdt                   \
+			--disable-bluez                 \
+			--disable-guest-base            \
+			--disable-uuid                  \
+			--disable-vde                   \
+			--disable-linux-aio             \
+			--disable-cap-ng                \
+			--disable-docs                  \
+			--disable-spice                 \
+			--disable-rbd                   \
+			--disable-libiscsi              \
+			--disable-usb-redir             \
+			--disable-smartcard-nss         \
+			--disable-strip                 \
+			--disable-seccomp               \
+			--disable-sparse                \
+			--disable-tools                 \
+			$(QEMU_OPTS)                    \
 	)
 endef
 

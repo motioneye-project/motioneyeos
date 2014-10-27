@@ -20,10 +20,10 @@ WAYLAND_CONF_OPTS = --disable-scanner
 # which we vampirise and adapt from the host-wayland copy
 define WAYLAND_SCANNER_PC
 	$(INSTALL) -m 0644 -D $(HOST_DIR)/usr/lib/pkgconfig/wayland-scanner.pc \
-	              $(STAGING_DIR)/usr/lib/pkgconfig/wayland-scanner.pc
+		$(STAGING_DIR)/usr/lib/pkgconfig/wayland-scanner.pc
 	$(SED) 's:^prefix=.*:prefix=/usr:' \
-	    -e 's:^wayland_scanner=.*:wayland_scanner=$(HOST_DIR)/usr/bin/wayland-scanner:' \
-	    $(STAGING_DIR)/usr/lib/pkgconfig/wayland-scanner.pc
+		-e 's:^wayland_scanner=.*:wayland_scanner=$(HOST_DIR)/usr/bin/wayland-scanner:' \
+		$(STAGING_DIR)/usr/lib/pkgconfig/wayland-scanner.pc
 endef
 WAYLAND_POST_INSTALL_STAGING_HOOKS += WAYLAND_SCANNER_PC
 

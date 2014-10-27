@@ -18,7 +18,7 @@ XCB_PROTO_DEPENDENCIES = host-python
 # xml / python files, so ensure these expand to their full (host) paths
 define XCB_PROTO_FIXUP_PC_FILE
 	$(SED) 's|^\(xcbincludedir=\)|\1$(STAGING_DIR)|' \
-	    -e 's|^\(pythondir=\)|\1$(STAGING_DIR)|' \
+		-e 's|^\(pythondir=\)|\1$(STAGING_DIR)|' \
 		$(STAGING_DIR)/usr/lib/pkgconfig/xcb-proto.pc
 endef
 

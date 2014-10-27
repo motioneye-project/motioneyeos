@@ -33,20 +33,20 @@ HOST_TCL_CONF_OPTS = \
 # or configure without just removing the entire pkg directory.
 define HOST_TCL_REMOVE_PACKAGES
 	rm -fr $(@D)/pkgs/sqlite3.8.0 \
-	       $(@D)/pkgs/tdbc1.0.0 \
-	       $(@D)/pkgs/tdbcmysql1.0.0 \
-	       $(@D)/pkgs/tdbcodbc1.0.0 \
-	       $(@D)/pkgs/tdbcpostgres1.0.0 \
-	       $(@D)/pkgs/tdbcsqlite3-1.0.0
+		$(@D)/pkgs/tdbc1.0.0 \
+		$(@D)/pkgs/tdbcmysql1.0.0 \
+		$(@D)/pkgs/tdbcodbc1.0.0 \
+		$(@D)/pkgs/tdbcpostgres1.0.0 \
+		$(@D)/pkgs/tdbcsqlite3-1.0.0
 endef
 HOST_TCL_PRE_CONFIGURE_HOOKS += HOST_TCL_REMOVE_PACKAGES
 define TCL_REMOVE_PACKAGES
 	rm -fr $(if $(BR2_PACKAGE_SQLITE),,$(@D)/pkgs/sqlite3.8.0) \
-	       $(if $(BR2_PACKAGE_SQLITE),,$(@D)/pkgs/tdbc1.0.0) \
-	       $(@D)/pkgs/tdbcmysql1.0.0 \
-	       $(@D)/pkgs/tdbcodbc1.0.0 \
-	       $(@D)/pkgs/tdbcpostgres1.0.0 \
-	       $(if $(BR2_PACKAGE_SQLITE),,$(@D)/pkgs/tdbcsqlite3-1.0.0)
+		$(if $(BR2_PACKAGE_SQLITE),,$(@D)/pkgs/tdbc1.0.0) \
+		$(@D)/pkgs/tdbcmysql1.0.0 \
+		$(@D)/pkgs/tdbcodbc1.0.0 \
+		$(@D)/pkgs/tdbcpostgres1.0.0 \
+		$(if $(BR2_PACKAGE_SQLITE),,$(@D)/pkgs/tdbcsqlite3-1.0.0)
 endef
 TCL_PRE_CONFIGURE_HOOKS += TCL_REMOVE_PACKAGES
 
@@ -75,9 +75,9 @@ endif
 # configured whitelist.
 define TCL_REMOVE_EXTRA
 	rm -fr $(TARGET_DIR)/usr/lib/tclConfig.sh \
-	       $(TARGET_DIR)/usr/lib/tclooConfig.sh \
-	       $(TARGET_DIR)/usr/lib/tcl$(TCL_VERSION_MAJOR)/tclAppInit.c \
-	       $(TARGET_DIR)/usr/lib/tcl$(TCL_VERSION_MAJOR)/msgs
+		$(TARGET_DIR)/usr/lib/tclooConfig.sh \
+		$(TARGET_DIR)/usr/lib/tcl$(TCL_VERSION_MAJOR)/tclAppInit.c \
+		$(TARGET_DIR)/usr/lib/tcl$(TCL_VERSION_MAJOR)/msgs
 endef
 TCL_POST_INSTALL_TARGET_HOOKS += TCL_REMOVE_EXTRA
 

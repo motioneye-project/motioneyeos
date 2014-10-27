@@ -58,7 +58,7 @@ SPICE_MAKE_ENV = PYTHONPATH=$(TARGET_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR)/
 # libjpeg isn't, hence the two-line tweak
 define SPICE_POST_INSTALL_STAGING_FIX_PC
 	$(SED) 's/^\(Requires.private:.*\)$$/\1 zlib/; s/^\(Libs.private:.*\)$$/\1 -ljpeg/;'    \
-	       "$(STAGING_DIR)/usr/lib/pkgconfig/spice-server.pc"
+		"$(STAGING_DIR)/usr/lib/pkgconfig/spice-server.pc"
 endef
 SPICE_POST_INSTALL_STAGING_HOOKS += SPICE_POST_INSTALL_STAGING_FIX_PC
 

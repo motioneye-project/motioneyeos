@@ -15,14 +15,14 @@ endef
 
 define TINYALSA_INSTALL_STAGING_CMDS
 	$(INSTALL) -D -m 0755 $(@D)/libtinyalsa.so \
-			$(STAGING_DIR)/usr/lib/libtinyalsa.so
+		$(STAGING_DIR)/usr/lib/libtinyalsa.so
 	$(INSTALL) -D -m 0644 $(@D)/include/tinyalsa/asoundlib.h \
-			$(STAGING_DIR)/usr/include/tinyalsa/asoundlib.h
+		$(STAGING_DIR)/usr/include/tinyalsa/asoundlib.h
 endef
 
 define TINYALSA_INSTALL_TARGET_CMDS
 	$(INSTALL) -D -m 0755 $(@D)/libtinyalsa.so \
-			$(TARGET_DIR)/usr/lib/libtinyalsa.so
+		$(TARGET_DIR)/usr/lib/libtinyalsa.so
 	$(INSTALL) -D -m 0755 $(@D)/tinyplay $(TARGET_DIR)/usr/bin/tinyplay
 	$(INSTALL) -D -m 0755 $(@D)/tinycap $(TARGET_DIR)/usr/bin/tinycap
 	$(INSTALL) -D -m 0755 $(@D)/tinymix $(TARGET_DIR)/usr/bin/tinymix

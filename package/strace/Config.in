@@ -2,7 +2,7 @@ config BR2_PACKAGE_STRACE
 	bool "strace"
 	depends on !BR2_nios2
 	depends on !((BR2_mips || BR2_mipsel || BR2_mips64 || BR2_mips64el) \
-	             && BR2_TOOLCHAIN_USES_UCLIBC)
+		&& BR2_TOOLCHAIN_USES_UCLIBC)
 	depends on BR2_LARGEFILE
 	help
 	  A useful diagnostic, instructional, and debugging tool.
@@ -16,4 +16,4 @@ comment "strace needs a toolchain w/ largefile"
 
 comment "strace is not supported on MIPS using a uClibc toolchain"
 	depends on (BR2_mips || BR2_mipsel || BR2_mips64 || BR2_mips64el) && \
-	           BR2_TOOLCHAIN_USES_UCLIBC
+		BR2_TOOLCHAIN_USES_UCLIBC

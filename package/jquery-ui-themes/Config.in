@@ -14,76 +14,76 @@ choice
 	  Specify the jQuery UI theme to install.
 
 	config BR2_PACKAGE_JQUERY_UI_THEME_BLACK_TIE
-	       bool "black-tie"
+		bool "black-tie"
 
 	config BR2_PACKAGE_JQUERY_UI_THEME_BLITZER
-	       bool "blitzer"
+		bool "blitzer"
 
 	config BR2_PACKAGE_JQUERY_UI_THEME_CUPERTINO
-	       bool "cupertino"
+		bool "cupertino"
 
 	config BR2_PACKAGE_JQUERY_UI_THEME_DARK_HIVE
-	       bool "dark-hive"
+		bool "dark-hive"
 
 	config BR2_PACKAGE_JQUERY_UI_THEME_DOT_LUV
-	       bool "dot-luv"
+		bool "dot-luv"
 
 	config BR2_PACKAGE_JQUERY_UI_THEME_EGGPLANT
-	       bool "eggplant"
+		bool "eggplant"
 
 	config BR2_PACKAGE_JQUERY_UI_THEME_EXCITE_BIKE
-	       bool "excite-bike"
+		bool "excite-bike"
 
 	config BR2_PACKAGE_JQUERY_UI_THEME_FLICK
-	       bool "flick"
+		bool "flick"
 
 	config BR2_PACKAGE_JQUERY_UI_THEME_HOT_SNEAKS
-	       bool "hot-sneaks"
+		bool "hot-sneaks"
 
 	config BR2_PACKAGE_JQUERY_UI_THEME_HUMANITY
-	       bool "humanity"
+		bool "humanity"
 
 	config BR2_PACKAGE_JQUERY_UI_THEME_LE_FROG
-	       bool "le-frog"
+		bool "le-frog"
 
 	config BR2_PACKAGE_JQUERY_UI_THEME_MINT_CHOC
-	       bool "mint-choc"
+		bool "mint-choc"
 
 	config BR2_PACKAGE_JQUERY_UI_THEME_OVERCAST
-	       bool "overcast"
+		bool "overcast"
 
 	config BR2_PACKAGE_JQUERY_UI_THEME_PEPPER_GRINDER
-	       bool "pepper-grinder"
+		bool "pepper-grinder"
 
 	config BR2_PACKAGE_JQUERY_UI_THEME_REDMOND
-	       bool "redmond"
+		bool "redmond"
 
 	config BR2_PACKAGE_JQUERY_UI_THEME_SMOOTHNESS
-	       bool "smoothness"
+		bool "smoothness"
 
 	config BR2_PACKAGE_JQUERY_UI_THEME_SOUTH_STREET
-	       bool "south-street"
+		bool "south-street"
 
 	config BR2_PACKAGE_JQUERY_UI_THEME_START
-	       bool "start"
+		bool "start"
 
 	config BR2_PACKAGE_JQUERY_UI_THEME_SUNNY
-	       bool "sunny"
+		bool "sunny"
 
 	config BR2_PACKAGE_JQUERY_UI_THEME_SWANKY_PURSE
-	       bool "swanky-purse"
+		bool "swanky-purse"
 
 	config BR2_PACKAGE_JQUERY_UI_THEME_TRONTASTIC
-	       bool "trontastic"
+		bool "trontastic"
 
 	config BR2_PACKAGE_JQUERY_UI_THEME_UI_DARKNESS
-	       bool "ui-darkness"
+		bool "ui-darkness"
 
 	config BR2_PACKAGE_JQUERY_UI_THEME_UI_LIGHTNESS
-	       bool "ui-lightness"
+		bool "ui-lightness"
 
 	config BR2_PACKAGE_JQUERY_UI_THEME_VADER
-	       bool "vader"
+		bool "vader"
 
 endchoice
 

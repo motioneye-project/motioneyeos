@@ -96,9 +96,9 @@ PULSEAUDIO_DEPENDENCIES += libxcb xlib_libSM xlib_libXtst
 ifneq ($(BR2_ENABLE_LOCALE),y)
 define PULSEAUDIO_FIXUP_DESKTOP_FILES
 	cp $(@D)/src/daemon/pulseaudio.desktop.in \
-	   $(@D)/src/daemon/pulseaudio.desktop
+		$(@D)/src/daemon/pulseaudio.desktop
 	cp $(@D)/src/daemon/pulseaudio-kde.desktop.in \
-	   $(@D)/src/daemon/pulseaudio-kde.desktop
+		$(@D)/src/daemon/pulseaudio-kde.desktop
 endef
 PULSEAUDIO_POST_PATCH_HOOKS += PULSEAUDIO_FIXUP_DESKTOP_FILES
 endif

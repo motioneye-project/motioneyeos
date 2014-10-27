@@ -53,8 +53,8 @@ GPM_POST_PATCH_HOOKS += GPM_DISABLE_DOC_INSTALL
 ifeq ($(BR2_PACKAGE_GPM_INSTALL_TEST_TOOLS),)
 define GPM_REMOVE_TEST_TOOLS_FROM_TARGET
 	for tools in mev hltest mouse-test display-buttons \
-			get-versions display-coords; do \
-		rm -f $(TARGET_DIR)/usr/bin/$$tools ; \
+		get-versions display-coords; do \
+			rm -f $(TARGET_DIR)/usr/bin/$$tools ; \
 	done
 endef
 GPM_POST_INSTALL_TARGET_HOOKS += GPM_REMOVE_TEST_TOOLS_FROM_TARGET

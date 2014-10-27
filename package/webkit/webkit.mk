@@ -27,7 +27,7 @@ WEBKIT_INSTALL_TARGET_OPTS = -j1 DESTDIR=$(TARGET_DIR) install
 # in newer releases
 define DISABLE_INDEXED_DATABASE
 	$(SED) '/ENABLE_INDEXED_DATABASE/s:1:0:' \
-			$(@D)/Source/WebCore/GNUmakefile.features.am
+		$(@D)/Source/WebCore/GNUmakefile.features.am
 endef
 
 WEBKIT_PRE_CONFIGURE_HOOKS += DISABLE_INDEXED_DATABASE

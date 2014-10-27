@@ -74,7 +74,7 @@ TVHEADEND_POST_INSTALL_TARGET_HOOKS += TVHEADEND_CLEAN_SHARE
 #  - a non-root user to run as
 define TVHEADEND_INSTALL_DB
 	$(INSTALL) -D -m 0600 package/tvheadend/accesscontrol.1     \
-	              $(TARGET_DIR)/home/tvheadend/.hts/tvheadend/accesscontrol/1
+		$(TARGET_DIR)/home/tvheadend/.hts/tvheadend/accesscontrol/1
 	chmod -R go-rwx $(TARGET_DIR)/home/tvheadend
 endef
 TVHEADEND_POST_INSTALL_TARGET_HOOKS += TVHEADEND_INSTALL_DB
