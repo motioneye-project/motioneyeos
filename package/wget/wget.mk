@@ -4,15 +4,11 @@
 #
 ################################################################################
 
-WGET_VERSION = 1.15
+WGET_VERSION = 1.16
 WGET_SOURCE = wget-$(WGET_VERSION).tar.xz
 WGET_SITE = $(BR2_GNU_MIRROR)/wget
 WGET_LICENSE = GPLv3+
 WGET_LICENSE_FILES = COPYING
-
-# patching gnulib .m4 file
-WGET_AUTORECONF = YES
-WGET_GETTEXTIZE = YES
 
 # Prefer full-blown wget over busybox
 ifeq ($(BR2_PACKAGE_BUSYBOX),y)
