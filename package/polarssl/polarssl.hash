@@ -1,3 +1,2 @@
-# From https://polarssl.org/tech-updates/releases/polarssl-1.2.11-released
-sha1	40cb3a833245273946c2075e6c948bbcda8a1be9	polarssl-1.2.11-gpl.tgz
-sha256	b3e9d059c687980976b468d8260f658e9003aede1dbc4a918526e90abdaa7d75	polarssl-1.2.11-gpl.tgz
+# From https://polarssl.org/tech-updates/releases/polarssl-1.2.12-released
+sha256	63dd60e78d25c438648607bb177b063dcf5fbf3ced9ee794fcb165d101940131	polarssl-1.2.12-gpl.tgz
