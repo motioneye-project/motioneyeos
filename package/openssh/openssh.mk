@@ -12,6 +12,10 @@ OPENSSH_CONF_ENV = LD="$(TARGET_CC)" LDFLAGS="$(TARGET_CFLAGS)"
 OPENSSH_CONF_OPTS = --sysconfdir=/etc/ssh --disable-lastlog --disable-utmp \
 		--disable-utmpx --disable-wtmp --disable-wtmpx --disable-strip
 
+define OPENSSH_USERS
+sshd -1 sshd -1 * - - - SSH drop priv user
+endef
+
 # uClibc toolchain for ARC doesn't support PIE at the moment
 ifeq ($(BR2_arc),y)
 OPENSSH_CONF_OPTS += --without-pie
