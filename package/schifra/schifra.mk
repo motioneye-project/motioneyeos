@@ -12,7 +12,7 @@ SCHIFRA_LICENSE = schifra license
 SCHIFRA_LICENSE_FILES = schifra_license.txt
 
 SCHIFRA_MAKE_OPTS = COMPILER="$(TARGET_CXX)" \
-		   OPTIONS="$(TARGET_CFLAGS) $(TARGET_LDFLAGS) -o"
+		   OPTIONS="$(TARGET_CFLAGS) $(TARGET_LDFLAGS)"
 
 # The examples are the only buildable artefacts.
 ifeq ($(BR2_PACKAGE_SCHIFRA_EXAMPLES),y)
