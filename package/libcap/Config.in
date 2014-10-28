@@ -1,6 +1,5 @@
 config BR2_PACKAGE_LIBCAP
 	bool "libcap"
-	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_7
 	help
 	  This library implements the user-space interfaces to the
 	  POSIX 1003.1e capabilities available in Linux kernels. These
@@ -23,6 +22,3 @@ config BR2_PACKAGE_LIBCAP_TOOLS
 	  CONFIG_EXT2_FS_XATTR and CONFIG_EXT2_FS_SECURITY for ext2).
 
 endif
-
-comment "libcap needs headers >= 3.7"
-	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_7

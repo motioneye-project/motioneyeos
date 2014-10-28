@@ -1,14 +1,12 @@
-comment "squid needs a toolchain w/ C++, IPv6, headers >= 3.7"
+comment "squid needs a toolchain w/ C++, IPv6"
 	depends on BR2_USE_MMU
 	depends on !BR2_avr32 # toolchain too old
-	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_INET_IPV6 || \
-		!BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_7
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_INET_IPV6
 
 config BR2_PACKAGE_SQUID
 	bool "squid"
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_INET_IPV6
-	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_7 # libcap
 	# needs fork()
 	depends on BR2_USE_MMU
 	select BR2_PACKAGE_LIBCAP
