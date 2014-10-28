@@ -6,6 +6,7 @@ config BR2_PACKAGE_OPROFILE
 	select BR2_PACKAGE_LIBPFM4 if BR2_powerpc
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on !BR2_aarch64 && !BR2_nios2 # binutils
+	depends on BR2_USE_WCHAR # binutils
 	depends on !BR2_xtensa
 	# libpfm4 is needed on PowerPC, and requires thread support
 	depends on BR2_TOOLCHAIN_HAS_THREADS || !BR2_powerpc
@@ -25,10 +26,10 @@ config BR2_PACKAGE_OPROFILE
 	  interrupt handlers, kernel modules, the kernel, shared
 	  libraries, and applications.
 
-comment "oprofile needs a toolchain w/ C++"
+comment "oprofile needs a toolchain w/ C++, wchar"
 	depends on BR2_USE_MMU
 	depends on !BR2_aarch64 && !BR2_nios2 && !BR2_xtensa
-	depends on !BR2_INSTALL_LIBSTDCPP
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR
 
 comment "oprofile needs a toolchain w/ threads on PPC"
 	depends on BR2_USE_MMU && BR2_powerpc

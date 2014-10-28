@@ -2,6 +2,7 @@ config BR2_PACKAGE_BINUTILS
 	bool "binutils"
 	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE
 	depends on !BR2_aarch64 && !BR2_nios2
+	depends on BR2_USE_WCHAR
 	help
 	  Install binutils on the target
 
@@ -19,3 +20,7 @@ config BR2_PACKAGE_BINUTILS_TARGET
 	  http://www.gnu.org/software/binutils/
 
 endif
+
+comment "binutils needs a toolchain w/ wchar"
+	depends on !BR2_aarch64 && !BR2_nios2
+	depends on BR2_USE_WCHAR
