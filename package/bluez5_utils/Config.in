@@ -5,6 +5,7 @@ config BR2_PACKAGE_BLUEZ5_UTILS
 	depends on BR2_TOOLCHAIN_HAS_THREADS # dbus, libglib2
 	depends on BR2_USE_MMU # dbus
 	depends on BR2_INET_IPV6
+	depends on !BR2_PREFER_STATIC_LIB # uses dlfcn
 	depends on !BR2_PACKAGE_BLUEZ_UTILS # conflicts with 4.x version
 	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_4
 	select BR2_PACKAGE_DBUS
@@ -62,9 +63,10 @@ config BR2_PACKAGE_BLUEZ5_UTILS_TEST
 
 endif
 
-comment "bluez5-utils needs a toolchain w/ wchar, threads, IPv6, headers >= 3.4"
+comment "bluez5-utils needs a toolchain w/ wchar, threads, IPv6, headers >= 3.4, dynamic library"
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || \
-		!BR2_INET_IPV6 || !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_4
+		!BR2_INET_IPV6 || !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_4 || \
+		BR2_PREFER_STATIC_LIB
 	depends on BR2_USE_MMU
 
 comment "bluez5-utils conflicts with older bluez-utils version"
