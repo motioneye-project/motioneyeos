@@ -16,10 +16,6 @@ BINUTILS_VERSION = 2.21
 endif
 endif
 
-ifeq ($(BINUTILS_VERSION),2.23)
-BINUTILS_SOURCE = binutils-$(BINUTILS_VERSION).tar.gz
-endif
-
 ifeq ($(ARCH),avr32)
 BINUTILS_SITE = ftp://www.at91.com/pub/buildroot
 endif
