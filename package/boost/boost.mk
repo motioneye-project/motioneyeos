@@ -125,6 +125,7 @@ define BOOST_INSTALL_TARGET_CMDS
 	--user-config=$(@D)/user-config.jam \
 	$(BOOST_OPTS) \
 	--prefix=$(TARGET_DIR)/usr \
+	--ignore-site-config \
 	--layout=$(BOOST_LAYOUT) install )
 endef
 
@@ -132,6 +133,7 @@ define HOST_BOOST_BUILD_CMDS
 	(cd $(@D) && ./b2 -j$(PARALLEL_JOBS) -q -d+1 \
 	--user-config=$(@D)/user-config.jam \
 	$(HOST_BOOST_OPTS) \
+	--ignore-site-config \
 	--prefix=$(HOST_DIR)/usr )
 endef
 
@@ -140,6 +142,7 @@ define HOST_BOOST_INSTALL_CMDS
 	--user-config=$(@D)/user-config.jam \
 	$(HOST_BOOST_OPTS) \
 	--prefix=$(HOST_DIR)/usr \
+	--ignore-site-config \
 	--layout=$(BOOST_LAYOUT) install )
 endef
 
@@ -148,6 +151,7 @@ define BOOST_INSTALL_STAGING_CMDS
 	--user-config=$(@D)/user-config.jam \
 	$(BOOST_OPTS) \
 	--prefix=$(STAGING_DIR)/usr \
+	--ignore-site-config \
 	--layout=$(BOOST_LAYOUT) install)
 endef
 
