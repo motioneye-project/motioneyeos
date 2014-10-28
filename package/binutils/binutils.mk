@@ -12,7 +12,7 @@ ifeq ($(BR2_avr32),y)
 # avr32 uses a special version
 BINUTILS_VERSION = 2.18-avr32-1.0.1
 else
-BINUTILS_VERSION = 2.21
+BINUTILS_VERSION = 2.22
 endif
 endif
 
