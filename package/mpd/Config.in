@@ -265,6 +265,14 @@ config BR2_PACKAGE_MPD_TCP
 
 	  You want this on if mpd and the client(s) work
 	  on different machines (the usual scenario).
+
+config BR2_PACKAGE_MPD_UPNP
+	bool "UPnp"
+	select BR2_PACKAGE_EXPAT
+	select BR2_PACKAGE_LIBUPNP
+	help
+	  Enable mpd UPnP client support.
+
 endif
 
 comment "mpd needs a toolchain w/ C++, threads, wchar"

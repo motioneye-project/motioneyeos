@@ -199,6 +199,13 @@ else
 MPD_CONF_OPTS += --disable-twolame-encoder
 endif
 
+ifeq ($(BR2_PACKAGE_MPD_UPNP),y)
+MPD_DEPENDENCIES += expat libupnp
+MPD_CONF_OPTS += --enable-upnp
+else
+MPD_CONF_OPTS += --disable-upnp
+endif
+
 ifeq ($(BR2_PACKAGE_MPD_VORBIS),y)
 MPD_DEPENDENCIES += libvorbis
 MPD_CONF_OPTS += --enable-vorbis --enable-vorbis-encoder
