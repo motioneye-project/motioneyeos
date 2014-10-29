@@ -4,4 +4,4 @@ config BR2_PACKAGE_NUTTCP
 	help
 	  nuttcp is a TCP/UDP network testing tool, much like iperf
 
-	  http://www.lcp.nrl.navy.mil/nuttcp/nuttcp.html
+	  http://nuttcp.net
