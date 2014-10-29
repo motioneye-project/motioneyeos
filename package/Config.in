@@ -955,6 +955,7 @@ menu "Miscellaneous"
 endmenu
 
 menu "Mail"
+	source "package/dovecot/Config.in"
 	source "package/exim/Config.in"
 	source "package/fetchmail/Config.in"
 	source "package/heirloom-mailx/Config.in"
