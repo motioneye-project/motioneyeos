@@ -4,7 +4,7 @@ config BR2_PACKAGE_KEXEC
 		BR2_mips || BR2_mips64 || BR2_mipsel || BR2_mips64el || \
 		BR2_powerpc || BR2_sh4 || BR2_sh4a
 	help
-	  Kexec is a user space utiltity for loading another kernel
+	  Kexec is a user space utility for loading another kernel
 	  and asking the currently running kernel to do something with it.
 
 	  https://www.kernel.org/pub/linux/utils/kernel/kexec/
