@@ -14,7 +14,7 @@ JQUERY_UI_LICENSE = MIT
 JQUERY_UI_LICENSE_FILES = MIT-LICENSE.txt
 
 define JQUERY_UI_EXTRACT_CMDS
-	unzip -d $(@D) $(DL_DIR)/$(JQUERY_UI_SOURCE)
+	$(UNZIP) -d $(@D) $(DL_DIR)/$(JQUERY_UI_SOURCE)
 	mv $(@D)/jquery-ui-$(JQUERY_UI_VERSION)/* $(@D)
 	$(RM) -r $(@D)/jquery-ui-$(JQUERY_UI_VERSION)
 endef

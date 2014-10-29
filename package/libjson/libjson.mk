@@ -23,7 +23,7 @@ endif
 LIBJSON_MAKE_OPTS += BUILD_TYPE= CXXFLAGS="$(LIBJSON_CXXFLAGS)"
 
 define LIBJSON_EXTRACT_CMDS
-	unzip -d $(@D) $(DL_DIR)/$(LIBJSON_SOURCE)
+	$(UNZIP) -d $(@D) $(DL_DIR)/$(LIBJSON_SOURCE)
 	mv $(@D)/libjson/* $(@D)
 	$(RM) -r $(@D)/libjson
 	$(SED) '/ldconfig/d' $(@D)/makefile

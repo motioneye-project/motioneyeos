@@ -22,7 +22,7 @@ endif
 endif
 
 define ZXING_EXTRACT_CMDS
-	unzip -d $(BUILD_DIR) $(DL_DIR)/$(ZXING_SOURCE)
+	$(UNZIP) -d $(BUILD_DIR) $(DL_DIR)/$(ZXING_SOURCE)
 endef
 
 define ZXING_BUILD_CMDS

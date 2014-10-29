@@ -12,7 +12,7 @@ JQUERY_UI_THEMES_LICENSE_FILES = MIT-LICENSE.txt
 JQUERY_UI_THEMES_DEPENDENCIES = jquery-ui
 
 define JQUERY_UI_THEMES_EXTRACT_CMDS
-	unzip -d $(@D) $(DL_DIR)/$(JQUERY_UI_THEMES_SOURCE)
+	$(UNZIP) -d $(@D) $(DL_DIR)/$(JQUERY_UI_THEMES_SOURCE)
 	mv $(@D)/jquery-ui-themes-$(JQUERY_UI_THEMES_VERSION)/* $(@D)
 	$(RM) -r $(@D)/jquery-ui-themes-$(JQUERY_UI_THEMES_VERSION)
 endef

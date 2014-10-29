@@ -12,7 +12,7 @@ SAM_BA_LICENSE = BSD-like (partly binary-only)
 SAM_BA_LICENSE_FILES = doc/readme.txt
 
 define HOST_SAM_BA_EXTRACT_CMDS
-	unzip -d $(BUILD_DIR) $(DL_DIR)/$(SAM_BA_SOURCE)
+	$(UNZIP) -d $(BUILD_DIR) $(DL_DIR)/$(SAM_BA_SOURCE)
 	mv $(BUILD_DIR)/sam-ba_cdc_cdc_linux/* $(@D)
 	rmdir $(BUILD_DIR)/sam-ba_cdc_cdc_linux/
 endef

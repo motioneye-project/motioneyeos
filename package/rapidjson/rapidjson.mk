@@ -13,7 +13,7 @@ RAPIDJSON_INSTALL_TARGET = NO
 RAPIDJSON_INSTALL_STAGING = YES
 
 define RAPIDJSON_EXTRACT_CMDS
-	unzip -d $(@D) $(DL_DIR)/$(RAPIDJSON_SOURCE)
+	$(UNZIP) -d $(@D) $(DL_DIR)/$(RAPIDJSON_SOURCE)
 	mv $(@D)/rapidjson/* $(@D)
 	$(RM) -r $(@D)/rapidjson
 endef
