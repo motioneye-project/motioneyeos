@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-MXML_VERSION = 2.8
+MXML_VERSION = 2.9
 MXML_SITE = http://www.msweet.org/files/project3
 MXML_LICENSE = LGPLv2+ with exceptions
 MXML_LICENSE_FILES = COPYING
