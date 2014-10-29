@@ -49,6 +49,8 @@ config BR2_PACKAGE_DOVECOT_ZLIB
 	help
 	  Enable zlib support.
 
+source package/dovecot-pigeonhole/Config.in
+
 endif # BR2_PACKAGE_DOVECOT
 
 comment "dovecot needs a toolchain w/ IPv6"
