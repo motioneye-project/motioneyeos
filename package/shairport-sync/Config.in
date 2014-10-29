@@ -1,7 +1,7 @@
 config BR2_PACKAGE_SHAIRPORT_SYNC
 	bool "shairport-sync"
 	depends on BR2_USE_MMU # libdaemon
-	depends on BR2_TOOLCHAIN_HAS_THREADS # alsa_lib
+	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL
 	select BR2_PACKAGE_ALSA_LIB
 	select BR2_PACKAGE_ALSA_LIB_MIXER
 	select BR2_PACKAGE_LIBDAEMON
@@ -33,6 +33,6 @@ config BR2_PACKAGE_SHAIRPORT_SYNC_LIBSOXR
 
 endif
 
-comment "shairport-sync needs a toolchain w/ threads"
+comment "shairport-sync needs a toolchain w/ NPTL"
 	depends on BR2_USE_MMU
-	depends on !BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_TOOLCHAIN_HAS_THREADS_NPTL
