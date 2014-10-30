@@ -194,6 +194,12 @@ config BR2_UCLIBC_TARGET_ARCH
 	default i386	   if BR2_i386
 	default x86_64	   if BR2_x86_64
 
+config BR2_UCLIBC_ARC_TYPE
+	string
+	depends on BR2_UCLIBC_TARGET_ARCH = "arc"
+	default "ARC_CPU_700"	if BR2_arc750d
+	default "ARC_CPU_700"	if BR2_arc770d
+
 config BR2_UCLIBC_ARM_BX
 	bool
 	depends on BR2_UCLIBC_TARGET_ARCH = "arm"
