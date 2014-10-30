@@ -11,12 +11,15 @@ config BR2_arc750d
 config BR2_arc770d
 	bool "ARC 770D"
 
+config BR2_archs38
+	bool "ARC HS38"
+
 endchoice
 
 # Choice of atomic instructions presence
 config BR2_ARC_ATOMIC_EXT
 	bool "Atomic extension (LLOCK/SCOND instructions)"
-	default y if BR2_arc770d
+	default y if BR2_arc770d || BR2_archs38
 
 config BR2_ARCH_HAS_ATOMICS
 	default y if BR2_ARC_ATOMIC_EXT
@@ -36,3 +39,4 @@ config BR2_ENDIAN
 config BR2_GCC_TARGET_CPU
 	default "arc700" if BR2_arc750d
 	default "arc700" if BR2_arc770d
+	default "archs"	 if BR2_archs38

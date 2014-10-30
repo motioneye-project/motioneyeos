@@ -199,6 +199,7 @@ config BR2_UCLIBC_ARC_TYPE
 	depends on BR2_UCLIBC_TARGET_ARCH = "arc"
 	default "ARC_CPU_700"	if BR2_arc750d
 	default "ARC_CPU_700"	if BR2_arc770d
+	default "ARC_CPU_HS"	if BR2_archs38
 
 config BR2_UCLIBC_ARM_BX
 	bool
