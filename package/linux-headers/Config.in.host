@@ -27,11 +27,6 @@ choice
 		depends on !BR2_arc
 		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_4
 
-	config BR2_KERNEL_HEADERS_3_9
-		bool "Linux 3.9.x kernel headers"
-		depends on BR2_DEPRECATED_SINCE_2013_11
-		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_9
-
 	config BR2_KERNEL_HEADERS_3_10
 		bool "Linux 3.10.x kernel headers"
 		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_10
@@ -170,7 +165,6 @@ config BR2_DEFAULT_KERNEL_HEADERS
 	default "3.0.101"	if BR2_KERNEL_HEADERS_3_0
 	default "3.2.63"	if BR2_KERNEL_HEADERS_3_2
 	default "3.4.104"	if BR2_KERNEL_HEADERS_3_4
-	default "3.9.11"	if BR2_KERNEL_HEADERS_3_9
 	default "3.10.59"	if BR2_KERNEL_HEADERS_3_10
 	default "3.11.10"	if BR2_KERNEL_HEADERS_3_11
 	default "3.12.31"	if BR2_KERNEL_HEADERS_3_12
