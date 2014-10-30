@@ -101,6 +101,38 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2014.11"
 
+config BR2_sparc_sparchfleon
+	bool "sparchfleon CPU has been removed"
+	select BR2_LEGACY
+	help
+	  The sparchfleon CPU was only supported in a patched gcc 4.4
+	  version. Its support has been removed in favor of the leon3
+	  CPU starting from gcc 4.8.x.
+
+config BR2_sparc_sparchfleonv8
+	bool "sparchfleonv8 CPU has been removed"
+	select BR2_LEGACY
+	help
+	  The sparchfleonv8 CPU was only supported in a patched gcc
+	  4.4 version. Its support has been removed in favor of the
+	  leon3 CPU starting from gcc 4.8.x.
+
+config BR2_sparc_sparcsfleon
+	bool "sparcsfleon CPU has been removed"
+	select BR2_LEGACY
+	help
+	  The sparcsfleon CPU was only supported in a patched gcc 4.4
+	  version. Its support has been removed in favor of the leon3
+	  CPU starting from gcc 4.8.x.
+
+config BR2_sparc_sparcsfleonv8
+	bool "sparcsfleonv8 CPU has been removed"
+	select BR2_LEGACY
+	help
+	  The sparcsfleonv8 CPU was only supported in a patched gcc
+	  4.4 version. Its support has been removed in favor of the
+	  leon3 CPU starting from gcc 4.8.x.
+
 config BR2_PACKAGE_XLIB_LIBPCIACCESS
 	bool "xlib-libpciaccess option has been renamed"
 	depends on BR2_PACKAGE_XORG7

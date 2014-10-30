@@ -7,14 +7,8 @@ choice
 
 config BR2_sparc_v8
 	bool "v8"
-config BR2_sparc_sparchfleon
-	bool "hfleon"
-config BR2_sparc_sparchfleonv8
-	bool "hfleonv8"
-config BR2_sparc_sparcsfleon
-	bool "sfleon"
-config BR2_sparc_sparcsfleonv8
-	bool "sfleonv8"
+config BR2_sparc_leon3
+	bool "leon3"
 endchoice
 
 config BR2_ARCH
@@ -30,7 +24,4 @@ config BR2_GCC_TARGET_TUNE
 	default "v8"		if BR2_sparc_v8
 
 config BR2_GCC_TARGET_CPU
-	default "sparchfleon"	if BR2_sparc_sparchfleon
-	default "sparchfleonv8"	if BR2_sparc_sparchfleonv8
-	default "sparcsfleon"	if BR2_sparc_sparcsfleon
-	default "sparcsfleonv8"	if BR2_sparc_sparcsfleonv8
+	default "leon3"		if BR2_sparc_leon3

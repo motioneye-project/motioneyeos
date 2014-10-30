@@ -8,7 +8,6 @@ config BR2_GCC_SUPPORTS_GRAPHITE
 
 choice
 	prompt "GCC compiler Version"
-	default BR2_GCC_VERSION_4_4_X if BR2_sparc_sparchfleon || BR2_sparc_sparchfleonv8 || BR2_sparc_sparcsfleon || BR2_sparc_sparcsfleonv8
 	default BR2_GCC_VERSION_4_2_2_AVR32_2_1_5 if BR2_avr32
 	default BR2_GCC_VERSION_4_8_ARC if BR2_arc
 	default BR2_GCC_VERSION_4_9_X if BR2_microblaze || BR2_powerpc64le
@@ -31,6 +30,8 @@ choice
 		depends on !BR2_cortex_a5 && !BR2_cortex_a7 && \
 			!BR2_cortex_a12 && !BR2_cortex_a15 && !BR2_fa526 && \
 			!BR2_pj4
+		# SPARC -mcpu=leon3 appeared in gcc 4.8.3
+		depends on !BR2_sparc_leon3
 		# ARM EABIhf support appeared in gcc 4.6
 		depends on !BR2_ARM_EABIHF
 		# ARM VFPv4 support appeared in gcc 4.5
@@ -53,9 +54,8 @@ choice
 			!BR2_cortex_a15 && !BR2_fa526 && !BR2_pj4
 		# Broken or unsupported PPC cores
 		depends on !BR2_power8
-		# Broken or unsupported SPARC cores
-		depends on !BR2_sparc_sparchfleon && !BR2_sparc_sparchfleonv8 \
-			&& !BR2_sparc_sparcsfleon && !BR2_sparc_sparcsfleonv8
+		# SPARC -mcpu=leon3 appeared in gcc 4.8.3
+		depends on !BR2_sparc_leon3
 		# Broken or unsupported X86 cores
 		depends on !BR2_x86_corei7 && !BR2_x86_jaguar
 		# ARM EABIhf support appeared in gcc 4.6
@@ -73,9 +73,8 @@ choice
 		depends on !BR2_cortex_a12 && !BR2_pj4
 		# Broken or unsupported PPC cores
 		depends on !BR2_power8
-		# Broken or unsupported SPARC cores
-		depends on !BR2_sparc_sparchfleon && !BR2_sparc_sparchfleonv8 \
-			&& !BR2_sparc_sparcsfleon && !BR2_sparc_sparcsfleonv8
+		# SPARC -mcpu=leon3 appeared in gcc 4.8.3
+		depends on !BR2_sparc_leon3
 		# Broken or unsupported x86 cores
 		depends on !BR2_x86_jaguar
 		select BR2_GCC_NEEDS_MPC
@@ -89,9 +88,6 @@ choice
 		depends on !BR2_cortex_a12
 		# Broken or unsupported PPC cores
 		depends on !BR2_power8
-		# Broken or unsupported SPARC cores
-		depends on !BR2_sparc_sparchfleon && !BR2_sparc_sparchfleonv8 \
-			&& !BR2_sparc_sparcsfleon && !BR2_sparc_sparcsfleonv8
 		select BR2_GCC_NEEDS_MPC
 		select BR2_GCC_SUPPORTS_GRAPHITE
 
@@ -105,9 +101,6 @@ choice
 		bool "gcc 4.9.x"
 		# Broken or unsupported architectures
 		depends on !BR2_arc && !BR2_avr32 && !BR2_bfin
-		# Broken or unsupported SPARC cores
-		depends on !BR2_sparc_sparchfleon && !BR2_sparc_sparchfleonv8 \
-			&& !BR2_sparc_sparcsfleon && !BR2_sparc_sparcsfleonv8
 		# PR60102 https://gcc.gnu.org/bugzilla/show_bug.cgi?id=60102
 		select BR2_GCC_NEEDS_MPC
 		select BR2_GCC_SUPPORTS_GRAPHITE
