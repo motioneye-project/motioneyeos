@@ -101,6 +101,13 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2014.11"
 
+config BR2_GCC_VERSION_4_4_X
+	bool "gcc 4.4.x has been removed"
+	select BR2_LEGACY
+	help
+	  The 4.4.x version of gcc has been removed. Use a newer
+	  version instead.
+
 config BR2_sparc_sparchfleon
 	bool "sparchfleon CPU has been removed"
 	select BR2_LEGACY
