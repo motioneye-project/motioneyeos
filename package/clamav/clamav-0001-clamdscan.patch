@@ -1,0 +1,21 @@
+Fixes build error
+
+proto.c: In function ‘dconnect’:
+proto.c:86:67: error: invalid application of ‘sizeof’ to incomplete type ‘struct sockaddr_un’
+             if (connect(sockd, (struct sockaddr *)&nixsock, sizeof(nixsock)) == 0)
+
+Patch sent upstream: http://lurker.clamav.net/message/20140928.130829.5494fd68.en.html
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+
+diff -uNr clamav-0.98.3.org/clamdscan/proto.c clamav-0.98.3/clamdscan/proto.c
+--- clamav-0.98.3.org/clamdscan/proto.c	2014-05-06 20:39:56.000000000 +0200
++++ clamav-0.98.3/clamdscan/proto.c	2014-05-10 10:41:44.000000000 +0200
+@@ -35,6 +35,7 @@
+ #include <sys/stat.h>
+ #include <fcntl.h>
+ #include <sys/types.h>
++#include <sys/un.h>
+ #ifdef HAVE_SYS_SELECT_H
+ #include <sys/select.h>
+ #endif
