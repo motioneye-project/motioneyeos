@@ -11,6 +11,12 @@ MP4V2_INSTALL_STAGING = YES
 MP4V2_LICENSE = MPLv1.1
 MP4V2_LICENSE_FILES = COPYING
 
+# infrastructure passes --disable-debug if !BR2_ENABLE_DEBUG. With
+# mpv42 the only thing this option does is that it tries to strip any
+# -g* options from CFLAGS/CXXFLAGS. The logic to do so is
+# unfortunately buggy, so just pass --enable-debug to disable this
+MP4V2_CONF_OPTS = --enable-debug
+
 ifeq ($(BR2_LARGEFILE),y)
 MP4V2_CONF_OPTS += --enable-largefile
 else
