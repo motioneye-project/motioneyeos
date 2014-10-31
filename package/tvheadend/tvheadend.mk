@@ -42,7 +42,7 @@ define TVHEADEND_CONFIGURE_CMDS
 	 --prefix=/usr				\
 	 --arch="$(ARCH)"			\
 	 --cpu="$(BR2_GCC_TARGET_CPU)"		\
-	 --python="$(HOST_DIR)/usr/bin/python"	\
+	 --python="$(HOST_DIR)/usr/bin/python2"	\
 	 --disable-dvbscan			\
 	 --enable-bundle			\
 	 --disable-libffmpeg_static		\
