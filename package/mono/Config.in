@@ -7,6 +7,7 @@ config BR2_PACKAGE_MONO
 	bool "mono"
 	depends on BR2_PACKAGE_MONO_ARCH_SUPPORTS
 	depends on BR2_INET_IPV6
+	depends on BR2_TOOLCHAIN_HAS_THREADS
 	select BR2_PACKAGE_MONO_45 if !BR2_PACKAGE_MONO_20 && !BR2_PACKAGE_MONO_40
 	help
 	  An open source, cross-platform, implementation of C#
@@ -36,5 +37,5 @@ config BR2_PACKAGE_MONO_45
 
 endif
 
-comment "mono needs a toolchain w/ IPv6"
-	depends on !BR2_INET_IPV6
+comment "mono needs a toolchain w/ IPv6, threads"
+	depends on !BR2_INET_IPV6 || !BR2_TOOLCHAIN_HAS_THREADS
