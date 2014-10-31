@@ -11,23 +11,22 @@ function load_activity(feedurl, divid) {
           if (entry.title.indexOf("git commit") != -1)
             continue;
           loaded += 1;
-          if (loaded >= nb_display)
+          if (loaded > nb_display)
             break;
           var div = document.createElement("p");
           var link = document.createElement("a");
           var d = new Date(entry.publishedDate);
           var data = '[' + d.toLocaleDateString() + '] ' + entry.title
-          // Ensure all titles are the same length
-          if (data.length > 60) {
-            data = data.substr(0, 57)
-            data += '...'
-          }
           var text = document.createTextNode(data);
           link.appendChild(text);
           link.title = entry.title;
           link.href = entry.link
           div.appendChild(link);
           container.appendChild(div);
+        }
+        var empty = nb_display - loaded;
+        for (var i = 0; i < empty; i++) {
+          container.appendChild(document.createElement("p"));
         }
         console.log(loaded);
       }

@@ -1,33 +1,46 @@
 <!--#include file="header.html" -->
-
-<div class="hero-unit">
-  <div class="row-fluid">
-    <img src="images/logo.png" height="170" width="170" style="float: right;"
-        alt="Buildroot logo" />
-    <div class="span8">
-      <h1>Buildroot<br/><small>Making Embedded Linux Easy</small></h1>
-      <p>Buildroot is a simple, efficient and easy-to-use tool to generate
-      embedded Linux systems through cross-compilation.</p>
-    </div>
-    <div class="button_column pull-right">
-      <div class="btn-group btn-group-justified">
-        <div class="btn-group">
-          <a class="btn btn-primary btn-large" href="/about.html">Learn more &raquo;</a>
+<div class="row">
+  <div class="container" style="width:100%">
+    <div class="col-sm-10 col-sm-offset-1 jumbotron">
+      <div class="row">
+        <div class="col-sm-9">
+          <h1>Buildroot<br/><small>Making Embedded Linux Easy</small></h1>
+          <p>Buildroot is a simple, efficient and easy-to-use tool to generate
+          embedded Linux systems through cross-compilation.</p>
         </div>
-        <div class="btn-group">
-          <a class="btn btn-primary btn-large" href="/download.html">Download &raquo;</a>
+        <div class="col-sm-3">
+          <img src="images/logo.png" class="center-block" style="width:170px; heigth:170px;"
+          alt="Buildroot logo" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-offset-5 col-sm-7">
+          <div class="col-sm-6" style="margin-top:1em; padding-left:0px;">
+          <a class="btn btn-primary btn-lg" style="width:100%;" href="/about.html"><span class="glyphicon glyphicon-info-sign"></span> Learn more »</a>
+          </div>
+          <div class="col-sm-6" style="margin-top:1em; padding-left:0px;">
+          <a class="btn btn-primary btn-lg" style="width:100%;"href="/download.html"><span class="glyphicon glyphicon-cloud-download"></span> Download »</a>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<div class="row" style="line-height: 17px;">
-  <div class="span6" id="commit-activity">
-    <a href="http://git.buildroot.net/buildroot"><h2>Recent commits</h2></a>
+<div class="row">
+  <div class="col-sm-5 col-sm-offset-1">
+    <div class="panel panel-default">
+      <div class="panel-body" id="commit-activity">
+        <a href="http://git.buildroot.net/buildroot"><h2>Recent commits</h2></a>
+      </div>
+    </div>
   </div>
-  <div class="span6" id="mailing-list-activity">
-    <a href="http://dir.gmane.org/gmane.comp.lib.uclibc.buildroot"><h2>Recent discussions</h2></a>
+  <div class="col-sm-5" >
+    <div class="panel panel-default" style="min-height: 22em;">
+      <div class="panel-body" id="mailing-list-activity">
+        <a href="http://dir.gmane.org/gmane.comp.lib.uclibc.buildroot"><h2>Recent discussions</h2></a>
+      </div>
+    </div>
   </div>
 </div>
 
