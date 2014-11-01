@@ -1,0 +1,4 @@
+config BR2_PACKAGE_ADWAITA_ICON_THEME
+	bool "adwaita icon theme"
+	help
+	  Adwaita icon theme
