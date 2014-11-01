@@ -1,5 +1,6 @@
 config BR2_PACKAGE_QTUIO
 	bool "qtuio"
+	depends on BR2_PACKAGE_QT
 	depends on BR2_PACKAGE_QT_GUI_MODULE
 	help
 	  Implementation of an interface connecting TUIO messages
@@ -17,4 +18,5 @@ config BR2_QTUIO_EXAMPLES
 endif
 
 comment "qtuio depends on QT gui module"
+	depends on BR2_PACKAGE_QT
 	depends on !BR2_PACKAGE_QT_GUI_MODULE
