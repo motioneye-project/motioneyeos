@@ -28,7 +28,6 @@ function load_activity(feedurl, divid) {
         for (var i = 0; i < empty; i++) {
           container.appendChild(document.createElement("p"));
         }
-        console.log(loaded);
       }
     });
 }
