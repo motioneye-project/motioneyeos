@@ -1,0 +1,46 @@
+From 84fb6007dcc7f6b6da9f6dab77a487c22b6c7beb Mon Sep 17 00:00:00 2001
+From: Andrew G Morgan <morgan@kernel.org>
+Date: Sun, 9 Mar 2014 16:33:15 -0700
+Subject: [PATCH] Change the location we include linux/xattr.h
+
+This header stuff seems a bit fragile, but Serge reports including
+it in sys/capability.h was causing a lot of trouble building dependent
+app packages.
+
+From the perspective of libcap, this API is only needed internally in
+cap_file.c so we put an include there.
+
+Status: upstream.
+
+Signed-off-by: Andrew G Morgan <morgan@kernel.org>
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+---
+
+diff --git a/libcap/cap_file.c b/libcap/cap_file.c
+index d3dc1d0..553c2d2 100644
+--- a/libcap/cap_file.c
++++ b/libcap/cap_file.c
+@@ -10,6 +10,8 @@
+ #include <sys/stat.h>
+ #include <unistd.h>
+ 
++#include <linux/xattr.h>
++
+ #define XATTR_SECURITY_PREFIX "security."
+ 
+ #include "libcap.h"
+diff --git a/libcap/include/sys/capability.h b/libcap/include/sys/capability.h
+index 64ac50e..dddc75b 100644
+--- a/libcap/include/sys/capability.h
++++ b/libcap/include/sys/capability.h
+@@ -27,7 +27,6 @@ extern "C" {
+ #define __user
+ #endif
+ #include <linux/capability.h>
+-#include <linux/xattr.h>
+ 
+ /*
+  * POSIX capability types
+-- 
+2.0.4
+
