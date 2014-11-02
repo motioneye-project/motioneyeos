@@ -85,7 +85,7 @@ define TVHEADEND_INSTALL_INIT_SYSV
 endef
 
 define TVHEADEND_USERS
-tvheadend -1 tvheadend -1 * /home/tvheadend - video TVHeadend daemon
+	tvheadend -1 tvheadend -1 * /home/tvheadend - video TVHeadend daemon
 endef
 
 $(eval $(generic-package))

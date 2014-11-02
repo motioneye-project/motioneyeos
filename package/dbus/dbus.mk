@@ -11,7 +11,7 @@ DBUS_LICENSE_FILES = COPYING
 DBUS_INSTALL_STAGING = YES
 
 define DBUS_PERMISSIONS
-/usr/libexec/dbus-daemon-launch-helper f 4755 0 0 - - - - -
+	/usr/libexec/dbus-daemon-launch-helper f 4755 0 0 - - - - -
 endef
 
 define DBUS_USERS

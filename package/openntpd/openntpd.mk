@@ -16,7 +16,7 @@ define OPENNTPD_INSTALL_INIT_SYSV
 endef
 
 define OPENNTPD_USERS
-_ntp -1 _ntp -1 * - - - Network Time Protocol daemon
+	_ntp -1 _ntp -1 * - - - Network Time Protocol daemon
 endef
 
 $(eval $(autotools-package))

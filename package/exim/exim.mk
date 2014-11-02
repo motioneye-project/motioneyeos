@@ -105,7 +105,7 @@ define EXIM_INSTALL_TARGET_CMDS
 endef
 
 define EXIM_USERS
-exim 88 mail 8 * - - - exim
+	exim 88 mail 8 * - - - exim
 endef
 
 define EXIM_INSTALL_INIT_SYSV
