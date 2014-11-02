@@ -208,6 +208,11 @@ config BR2_PACKAGE_LINUX_FIRMWARE_CXGB4_T5
 	help
 	  Firmware files for Chelsio T5 1Gb and 10Gb ethernet cards (cxgb4)
 
+config BR2_PACKAGE_LINUX_FIRMWARE_RTL_8169
+	bool "Realtek 8169"
+	help
+	  Firmware files for Realtek 8169 gigabit ethernet cards
+
 endmenu
 
 menu "DVB firmware"

@@ -221,6 +221,25 @@ LINUX_FIRMWARE_FILES += cxgb4/t5fw-1.11.27.0.bin cxgb4/t5fw.bin
 LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENCE.chelsio_firmware
 endif
 
+ifeq ($(BR2_PACKAGE_LINUX_FIRMWARE_RTL_8169),y)
+LINUX_FIRMWARE_FILES += \
+	rtl_nic/rtl8168d-1.fw \
+	rtl_nic/rtl8168d-2.fw \
+	rtl_nic/rtl8168e-1.fw \
+	rtl_nic/rtl8168e-2.fw \
+	rtl_nic/rtl8168e-3.fw \
+	rtl_nic/rtl8168f-1.fw \
+	rtl_nic/rtl8168f-2.fw \
+	rtl_nic/rtl8105e-1.fw \
+	rtl_nic/rtl8402-1.fw \
+	rtl_nic/rtl8411-1.fw \
+	rtl_nic/rtl8411-2.fw \
+	rtl_nic/rtl8106e-1.fw \
+	rtl_nic/rtl8106e-2.fw \
+	rtl_nic/rtl8168g-2.fw \
+	rtl_nic/rtl8168g-3.fw
+endif
+
 ifeq ($(BR2_PACKAGE_LINUX_FIRMWARE_XCx000),y)
 LINUX_FIRMWARE_FILES += dvb-fe-xc4000-1.4.1.fw \
 			dvb-fe-xc5000-1.6.114.fw \
