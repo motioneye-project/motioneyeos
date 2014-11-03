@@ -61,12 +61,13 @@ define HOST_OPENSSL_CONFIGURE_CMDS
 	(cd $(@D); \
 		$(HOST_CONFIGURE_OPTS) \
 		./config \
-		--prefix=/usr \
-		--openssldir=/etc/ssl \
+		--prefix=$(HOST_DIR)/usr \
+		--openssldir=$(HOST_DIR)/etc/ssl \
 		--libdir=/lib \
 		shared \
-		no-zlib \
+		zlib-dynamic \
 	)
+	$(SED) "s:-O[0-9]:$(HOST_CFLAGS):" $(@D)/Makefile
 endef
 
 define OPENSSL_CONFIGURE_CMDS
@@ -106,7 +107,7 @@ define OPENSSL_INSTALL_STAGING_CMDS
 endef
 
 define HOST_OPENSSL_INSTALL_CMDS
-	$(MAKE1) -C $(@D) INSTALL_PREFIX=$(HOST_DIR) install
+	$(MAKE1) -C $(@D) install
 endef
 
 define OPENSSL_INSTALL_TARGET_CMDS
