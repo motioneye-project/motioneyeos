@@ -96,7 +96,7 @@ QEMU_OPTS =
 
 QEMU_VARS = \
 	LIBTOOL=$(HOST_DIR)/usr/bin/libtool \
-	PYTHON=$(HOST_DIR)/usr/bin/python \
+	PYTHON=$(HOST_DIR)/usr/bin/python2 \
 	PYTHONPATH=$(TARGET_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR)/site-packages
 
 ifeq ($(BR2_PACKAGE_QEMU_SYSTEM),y)
