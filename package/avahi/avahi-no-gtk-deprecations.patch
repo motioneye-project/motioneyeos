@@ -6,26 +6,25 @@ versions.
 For more details, see the Fedora bugzilla:
 https://bugzilla.redhat.com/show_bug.cgi?id=1001676
 
+[Peter: patch Makefile.in so we don't need autoreconf]
 Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
---- avahi-0.6.31/avahi-ui/Makefile.am.orig	2013-09-21 16:47:28.677659361 +0200
-+++ avahi-0.6.31/avahi-ui/Makefile.am	2013-09-21 16:47:34.852520537 +0200
-@@ -15,7 +15,7 @@
- # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
- # USA.
- 
--AM_CFLAGS=-I$(top_srcdir) -DG_DISABLE_DEPRECATED=1 -DGDK_DISABLE_DEPRECATED=1 -DGTK_DISABLE_DEPRECATED=1
-+AM_CFLAGS=-I$(top_srcdir)
+---
+ avahi-ui/Makefile.am |    2 +-
+ avahi-ui/Makefile.in |    3 +--
+ configure.ac         |    2 +-
+ 3 files changed, 3 insertions(+), 4 deletions(-)
+
+Index: avahi-0.6.31/avahi-ui/Makefile.in
+===================================================================
+--- avahi-0.6.31.orig/avahi-ui/Makefile.in
++++ avahi-0.6.31/avahi-ui/Makefile.in
+@@ -464,8 +464,7 @@
+ top_srcdir = @top_srcdir@
  
  # This cool debug trap works on i386/gcc only
- AM_CFLAGS+='-DDEBUG_TRAP=__asm__("int $$3")'
---- avahi-0.6.31/configure.ac.orig	2013-09-21 16:46:43.750669413 +0200
-+++ avahi-0.6.31/configure.ac	2013-09-21 16:47:02.566246400 +0200
-@@ -92,7 +92,7 @@
-     AC_MSG_CHECKING([whether stack-smashing protection is available])
-     ssp_old_cflags="$CFLAGS"
-     ssp_old_ldflags="$LDFLAGS"
--    CFLAGS="$CFLAGS -Werror -fstack-protector-all -fPIC"
-+    CFLAGS="$CFLAGS -fstack-protector-all -fPIC"
-     LDFLAGS="$LDFLAGS -Wl,-z,defs"
-     cat confdefs.h > conftest.c
-     cat >>conftest.c <<_ACEOF
+-AM_CFLAGS = -I$(top_srcdir) -DG_DISABLE_DEPRECATED=1 \
+-	-DGDK_DISABLE_DEPRECATED=1 -DGTK_DISABLE_DEPRECATED=1 \
++AM_CFLAGS = -I$(top_srcdir) \
+ 	'-DDEBUG_TRAP=__asm__("int $$3")' $(am__append_1)
+ pkglibdatadir = $(libdir)/avahi
+ desktopdir = $(datadir)/applications
