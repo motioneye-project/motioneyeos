@@ -4,12 +4,19 @@
 #
 ################################################################################
 
-STUNNEL_VERSION = 5.06
+STUNNEL_VERSION = 5.07
 STUNNEL_SITE = http://ftp.nluug.nl/pub/networking/stunnel/archive/5.x
 STUNNEL_DEPENDENCIES = openssl
-STUNNEL_CONF_OPTS = --with-ssl=$(STAGING_DIR)/usr --with-threads=fork
+STUNNEL_CONF_OPTS = --with-ssl=$(STAGING_DIR)/usr --with-threads=fork \
+	--disable-libwrap
 STUNNEL_LICENSE = GPLv2+
 STUNNEL_LICENSE_FILES = COPYING COPYRIGHT.GPL
+
+ifeq ($(BR2_INIT_SYSTEMD),y)
+STUNNEL_DEPENDENCIES += systemd
+else
+STUNNEL_CONF_OPTS += --disable-systemd
+endif
 
 define STUNNEL_INSTALL_CONF_SCRIPT
 	$(INSTALL) -m 0755 -D package/stunnel/S50stunnel $(TARGET_DIR)/etc/init.d/S50stunnel
