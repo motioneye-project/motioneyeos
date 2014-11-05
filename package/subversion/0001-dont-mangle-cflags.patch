@@ -1,0 +1,28 @@
+[PATCH] configure: don't mangle CFLAGS
+
+Ensure that the sed expression to strip debugging options from CFLAGS
+doesn't mangle flags like -mfloat-gprs=double, breaking the build.
+
+Patch configure instead of configure.ac as subversion currently doesn't
+cleanly autoreconf.
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ configure |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+Index: subversion-1.7.18/configure
+===================================================================
+--- subversion-1.7.18.orig/configure
++++ subversion-1.7.18/configure
+@@ -19798,8 +19798,8 @@
+       CFLAGS="$CFLAGS -DSVN_DEBUG -DAP_DEBUG"
+   CXXFLAGS="$CXXFLAGS -DSVN_DEBUG -DAP_DEBUG"
+ elif test "$enable_debugging" = "no" ; then
+-    CFLAGS="`echo $CFLAGS' ' | $SED -e 's/-g[0-9] //g' | $SED -e 's/-g//g'`"
+-    CXXFLAGS="`echo $CXXFLAGS' ' | $SED -e 's/-g[0-9] //g' | $SED -e 's/-g//g'`"
++    CFLAGS="`echo $CFLAGS' ' | $SED -e 's/-g[0-9]* //g'`"
++    CXXFLAGS="`echo $CXXFLAGS' ' | $SED -e 's/-g[0-9]* //g'`"
+         CFLAGS="$CFLAGS -DNDEBUG"
+     CXXFLAGS="$CXXFLAGS -DNDEBUG"
+ # elif test "$enable_debugging" = "maybe" ; then
