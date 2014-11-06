@@ -109,7 +109,7 @@ ifeq ($(BR2_ARM_CPU_ARMV5),y)
 MPLAYER_CONF_OPTS += --enable-armv5te
 endif
 
-ifeq ($(BR2_ARM_CPU_ARMV6),y)
+ifeq ($(BR2_ARM_CPU_ARMV6)$(BR2_ARM_CPU_ARMV7A),y)
 MPLAYER_CONF_OPTS += --enable-armv6
 endif
 
