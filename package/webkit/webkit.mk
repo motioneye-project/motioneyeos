@@ -40,6 +40,7 @@ WEBKIT_CONF_ENV = ac_cv_path_icu_config=$(STAGING_DIR)/usr/bin/icu-config \
 	AR_FLAGS="cru"
 
 WEBKIT_CONF_OPTS += \
+	--enable-dependency-tracking \
 	--with-gtk=2.0 \
 	--disable-geolocation \
 	--disable-webkit2 \
