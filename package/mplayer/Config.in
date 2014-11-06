@@ -30,4 +30,5 @@ endif
 comment "mplayer needs a toolchain w/ largefile"
 	depends on !(BR2_bfin || BR2_sh2a || BR2_sh4a || BR2_sh4aeb \
 		|| BR2_microblaze || BR2_aarch64 || BR2_nios2)
+	depends on !BR2_ARM_CPU_ARMV4
 	depends on !BR2_LARGEFILE
