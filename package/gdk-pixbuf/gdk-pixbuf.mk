@@ -58,6 +58,6 @@ HOST_GDK_PIXBUF_CONF_OPTS = \
 	--without-libjpeg \
 	--without-libtiff
 
-HOST_GDK_PIXBUF_DEPENDENCIES = host-libpng
+HOST_GDK_PIXBUF_DEPENDENCIES = host-libpng host-pkgconf host-libglib2
 
 $(eval $(host-autotools-package))
