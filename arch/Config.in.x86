@@ -18,12 +18,9 @@ choice
 	prompt "Target Architecture Variant"
 	depends on BR2_i386 || BR2_x86_64
 	default BR2_x86_i586 if BR2_i386
-	default BR2_x86_generic if BR2_x86_64
 	help
 	  Specific CPU variant to use
 
-config BR2_x86_generic
-	bool "generic"
 config BR2_x86_i386
 	bool "i386"
 	depends on !BR2_x86_64
@@ -197,7 +194,6 @@ config BR2_ARCH
 	default "i686"		if BR2_x86_athlon
 	default "i686"		if BR2_x86_athlon_4
 	default "x86_64"	if BR2_x86_64
-	default "i386"		if BR2_x86_generic
 
 config BR2_ENDIAN
 	default "LITTLE"
@@ -234,4 +230,3 @@ config BR2_GCC_TARGET_ARCH
 	default "c3"		if BR2_x86_c3
 	default "c3-2"		if BR2_x86_c32
 	default "geode"		if BR2_x86_geode
-	default "generic"	if BR2_x86_generic
