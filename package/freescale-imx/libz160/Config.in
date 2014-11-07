@@ -1,0 +1,5 @@
+config BR2_PACKAGE_LIBZ160
+	bool "libz160"
+	help
+	  An API for user space programs to perform 2D accelerated graphics
+	  operations on AMD GPU (included for examples in iMX5x chipsets)
