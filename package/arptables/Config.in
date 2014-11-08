@@ -1,12 +1,7 @@
 config BR2_PACKAGE_ARPTABLES
 	bool "arptables"
 	depends on BR2_USE_MMU # needs fork()
-	depends on !BR2_PREFER_STATIC_LIB # needs dlopen()
 	help
 	  Tool to set up, maintain, and inspect the tables of ARP rules.
 
 	  http://ebtables.sourceforge.net
-
-comment "arptables needs a toolchain w/ dynamic library"
-	depends on BR2_USE_MMU
-	depends on BR2_PREFER_STATIC_LIB
