@@ -101,6 +101,13 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2014.11"
 
+config BR2_x86_generic
+	bool "x86 generic variant has been removed"
+	select BR2_LEGACY
+	help
+	  The generic x86 CPU variant has been removed. Use another
+	  CPU variant insted.
+
 config BR2_GCC_VERSION_4_4_X
 	bool "gcc 4.4.x has been removed"
 	select BR2_LEGACY
