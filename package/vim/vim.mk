@@ -8,7 +8,9 @@ VIM_SITE = https://vim.googlecode.com/hg
 VIM_SITE_METHOD = hg
 # 7.4 release patchlevel 333
 VIM_VERSION = 8ae50e3ef8bf
-VIM_DEPENDENCIES = ncurses $(if $(BR2_NEEDS_GETTEXT_IF_LOCALE),gettext)
+# Win over busybox vi since vim is more feature-rich
+VIM_DEPENDENCIES = ncurses $(if $(BR2_NEEDS_GETTEXT_IF_LOCALE),gettext) \
+	$(if $(BR2_PACKAGE_BUSYBOX),busybox)
 VIM_SUBDIR = src
 VIM_CONF_ENV = vim_cv_toupper_broken=no \
 		vim_cv_terminfo=yes \
@@ -39,6 +41,12 @@ endef
 define VIM_REMOVE_DOCS
 	find $(TARGET_DIR)/usr/share/vim -type f -name "*.txt" -delete
 endef
+
+# Avoid oopses with vipw/vigr, lack of $EDITOR and 'vi' command expectation
+define VIM_INSTALL_VI_SYMLINK
+	ln -sf /usr/bin/vim $(TARGET_DIR)/bin/vi
+endef
+VIM_POST_INSTALL_TARGET_HOOKS += VIM_INSTALL_VI_SYMLINK
 
 ifeq ($(BR2_PACKAGE_VIM_RUNTIME),y)
 VIM_POST_INSTALL_TARGET_HOOKS += VIM_INSTALL_RUNTIME_CMDS
