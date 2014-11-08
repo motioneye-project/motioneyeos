@@ -99,6 +99,18 @@ QEMU_VARS = \
 	PYTHON=$(HOST_DIR)/usr/bin/python2 \
 	PYTHONPATH=$(TARGET_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR)/site-packages
 
+# If we want to specify only a subset of targets, we must still enable all
+# of them, so that QEMU properly builds its list of default targets, from
+# which it then checks if the specified sub-set is valid. That's what we
+# do in the first part of the if-clause.
+# Otherwise, if we do not want to pass a sub-set of targets, we then need
+# to either enable or disable -user and/or -system emulation appropriately.
+# That's what we do in the else-clause.
+ifneq ($(call qstrip,$(BR2_PACKAGE_QEMU_CUSTOM_TARGETS)),)
+QEMU_OPTS += --enable-system --enable-linux-user
+QEMU_OPTS += --target-list="$(call qstrip,$(BR2_PACKAGE_QEMU_CUSTOM_TARGETS))"
+else
+
 ifeq ($(BR2_PACKAGE_QEMU_SYSTEM),y)
 QEMU_OPTS += --enable-system
 else
@@ -111,8 +123,6 @@ else
 QEMU_OPTS += --disable-linux-user
 endif
 
-ifneq ($(call qstrip,$(BR2_PACKAGE_QEMU_CUSTOM_TARGETS)),)
-QEMU_OPTS += --target-list="$(call qstrip,$(BR2_PACKAGE_QEMU_CUSTOM_TARGETS))"
 endif
 
 ifeq ($(BR2_PACKAGE_QEMU_SDL),y)
