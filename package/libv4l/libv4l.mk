@@ -17,7 +17,7 @@ LIBV4L_LICENSE_FILES = COPYING COPYING.libv4l lib/libv4l1/libv4l1-kernelcode-lic
 
 ifeq ($(BR2_PACKAGE_ARGP_STANDALONE),y)
 LIBV4L_DEPENDENCIES += argp-standalone
-LIBV4L_CONF_ENV += LIBS="-largp"
+LIBV4L_LIBS += -largp
 endif
 
 LIBV4L_DEPENDENCIES += $(if $(BR2_PACKAGE_LIBICONV),libiconv)
@@ -38,8 +38,12 @@ endif
 
 ifeq ($(BR2_PACKAGE_LIBV4L_UTILS),y)
 LIBV4L_CONF_OPTS += --enable-v4l-utils
+# clock_gettime is used, which is provided by librt for glibc < 2.17
+LIBV4L_LIBS += -lrt
 else
 LIBV4L_CONF_OPTS += --disable-v4l-utils
 endif
+
+LIBV4L_CONF_ENV += LIBS="$(LIBV4L_LIBS)"
 
 $(eval $(autotools-package))
