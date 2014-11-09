@@ -1,6 +1,10 @@
 config BR2_PACKAGE_SCHIFRA
 	bool "schifra"
 	depends on BR2_INSTALL_LIBSTDCPP
+	# Upstream keep changing the tarball without doing new
+	# releases. This is not acceptable for Buildroot, as
+	# reproducible builds are very important.
+	depends on BR2_BROKEN
 	help
 	  Schifra is a very robust, highly optimized and extremely configurable
 	  Reed-Solomon error correcting code library for both software and IP
@@ -18,4 +22,5 @@ config BR2_PACKAGE_SCHIFRA_EXAMPLES
 endif
 
 comment "schifra needs a toolchain w/ C++"
+	depends on BR2_BROKEN
 	depends on !BR2_INSTALL_LIBSTDCPP
