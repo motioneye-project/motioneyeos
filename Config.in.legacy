@@ -106,7 +106,7 @@ config BR2_x86_generic
 	select BR2_LEGACY
 	help
 	  The generic x86 CPU variant has been removed. Use another
-	  CPU variant insted.
+	  CPU variant instead.
 
 config BR2_GCC_VERSION_4_4_X
 	bool "gcc 4.4.x has been removed"
