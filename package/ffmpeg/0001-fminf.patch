@@ -1,0 +1,94 @@
+Fix build error
+
+CC      libavdevice/alldevices.o
+In file included from ./libavutil/internal.h:167:0,
+                 from ./libavutil/common.h:415,
+                 from ./libavutil/avutil.h:289,
+                 from ./libavutil/log.h:25,
+                 from libavdevice/avdevice.h:46,
+                 from libavdevice/alldevices.c:22:
+./libavutil/libm.h:87:40: error: static declaration of 'fminf' follows non-static declaration
+ static av_always_inline av_const float fminf(float x, float y)
+                                        ^
+make: *** [libavdevice/alldevices.o] Error 1
+
+using buildroot-compiled uClibc toolchain, used defconfig:
+
+BR2_x86_64=y
+BR2_x86_corei7=y
+BR2_TOOLCHAIN_BUILDROOT_LARGEFILE=y
+BR2_TOOLCHAIN_BUILDROOT_INET_IPV6=y
+BR2_TOOLCHAIN_BUILDROOT_INET_RPC=y
+BR2_TOOLCHAIN_BUILDROOT_WCHAR=y
+BR2_TOOLCHAIN_BUILDROOT_CXX=y
+BR2_PACKAGE_FFMPEG=y
+BR2_PACKAGE_FFMPEG_GPL=y
+BR2_PACKAGE_FFMPEG_NONFREE=y
+BR2_PACKAGE_FFMPEG_FFPLAY=y
+BR2_PACKAGE_FFMPEG_FFSERVER=y
+BR2_PACKAGE_FFMPEG_AVRESAMPLE=y
+BR2_PACKAGE_FFMPEG_POSTPROC=y
+
+Patch ported from upstream commit:
+http://git.videolan.org/?p=ffmpeg.git;a=commitdiff;h=4436a8f44dedc83767b3d9da9beb85d1fae2ca30
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+
+
+From 4436a8f44dedc83767b3d9da9beb85d1fae2ca30 Mon Sep 17 00:00:00 2001
+From: Carl Eugen Hoyos <cehoyos@ag.or.at>
+Date: Sat, 8 Nov 2014 10:48:37 +0100
+Subject: [PATCH] Remove fminf() emulation.
+
+The emulation is unused and causes compilation trouble on systems
+where fminf() is defined in <math.h> but missing from libm.
+This should fix compilation on Debian powerpcspe.
+---
+ configure        |    2 --
+ libavutil/libm.h |   10 ----------
+ 2 files changed, 12 deletions(-)
+
+diff --git a/configure b/configure
+index 314e7ff..978ef12 100755
+--- a/configure
++++ b/configure
+@@ -1678,7 +1678,6 @@ MATH_FUNCS="
+     exp2
+     exp2f
+     expf
+-    fminf
+     isinf
+     isnan
+     ldexpf
+@@ -4813,7 +4812,6 @@ disabled crystalhd || check_lib libcrystalhd/libcrystalhd_if.h DtsCrystalHDVersi
+ atan2f_args=2
+ ldexpf_args=2
+ powf_args=2
+-fminf_args=2
+ 
+ for func in $MATH_FUNCS; do
+     eval check_mathfunc $func \${${func}_args:-1}
+diff --git a/libavutil/libm.h b/libavutil/libm.h
+index 28d5df8..6c17b28 100644
+--- a/libavutil/libm.h
++++ b/libavutil/libm.h
+@@ -82,16 +82,6 @@ static av_always_inline float cbrtf(float x)
+ #define exp2f(x) ((float)exp2(x))
+ #endif /* HAVE_EXP2F */
+ 
+-#if !HAVE_FMINF
+-#undef fminf
+-static av_always_inline av_const float fminf(float x, float y)
+-{
+-    //Note, the NaN special case is needed for C spec compliance, it should be
+-    //optimized away if the users compiler is configured to assume no NaN
+-    return x > y ? y : (x == x ? x : y);
+-}
+-#endif
+-
+ #if !HAVE_ISINF
+ static av_always_inline av_const int isinf(float x)
+ {
+-- 
+1.7.10.4
+
