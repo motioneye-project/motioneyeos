@@ -1,0 +1,55 @@
+Use $(LIBS) properly
+
+This patch makes sure the quota build system uses $(LIBS) where
+appropriate, so that it can be used to link with additional libraries,
+which is needed when linking statically.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/Makefile.in
+===================================================================
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -105,30 +105,40 @@
+ 	-$(INSTALL) -m $(DEF_MAN_MODE) *.8 $(ROOTDIR)$(mandir)/man8
+ 
+ quotaon: quotaon.o quotaon_xfs.o $(LIBOBJS)
++	$(CC) $(LDFLAGS) -o $@ $^ $(LIBS)
+ 
+ quotacheck: quotacheck.o quotacheck_v1.o quotacheck_v2.o quotaops.o $(LIBOBJS)
+-	$(CC) $(LDFLAGS) -o $@ $^ $(EXT2LIBS)
++	$(CC) $(LDFLAGS) -o $@ $^ $(EXT2LIBS) $(LIBS)
+ 
+ quota: quota.o quotaops.o $(LIBOBJS)
++	$(CC) $(LDFLAGS) -o $@ $^ $(LIBS)
+ 
+ quotasync: quotasync.o $(LIBOBJS)
++	$(CC) $(LDFLAGS) -o $@ $^ $(LIBS)
+ 
+ quot: quot.o $(LIBOBJS)
++	$(CC) $(LDFLAGS) -o $@ $^ $(LIBS)
+ 
+ repquota: repquota.o $(LIBOBJS)
++	$(CC) $(LDFLAGS) -o $@ $^ $(LIBS)
+ 
+ warnquota: warnquota.o $(LIBOBJS)
+-	$(CC) $(LDFLAGS) -o $@ $^ $(LDAPLIBS)
++	$(CC) $(LDFLAGS) -o $@ $^ $(LDAPLIBS) $(LIBS)
+ 
+ quotastats: quotastats.o common.o pot.o
++	$(CC) $(LDFLAGS) -o $@ $^ $(LIBS)
+ 
+ xqmstats: xqmstats.o common.o pot.o
++	$(CC) $(LDFLAGS) -o $@ $^ $(LIBS)
+ 
+ edquota: edquota.o quotaops.o $(LIBOBJS)
++	$(CC) $(LDFLAGS) -o $@ $^ $(LIBS)
+ 
+ setquota: setquota.o quotaops.o $(LIBOBJS)
++	$(CC) $(LDFLAGS) -o $@ $^ $(LIBS)
+ 
+ convertquota: convertquota.o $(LIBOBJS)
++	$(CC) $(LDFLAGS) -o $@ $^ $(LIBS)
+ 
+ rpc.rquotad: rquota_server.o rquota_svc.o svc_socket.o $(LIBOBJS)
+ 	$(CC) $(LDFLAGS) -o $@ $^ $(LIBS)
