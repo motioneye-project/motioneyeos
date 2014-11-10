@@ -7,7 +7,7 @@ comment "(e)glibc toolchains only available with shared lib support"
 	depends on BR2_PREFER_STATIC_LIB
 
 config BR2_TOOLCHAIN_EXTERNAL_LINARO_ARM
-	bool "Linaro ARM 2014.08"
+	bool "Linaro ARM 2014.09"
 	depends on BR2_arm
 	depends on BR2_ARM_CPU_ARMV7A
 	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86"
@@ -20,8 +20,8 @@ config BR2_TOOLCHAIN_EXTERNAL_LINARO_ARM
 	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_1
 	help
 	  Linaro toolchain for the ARM architecture. It uses Linaro
-	  GCC 2014.08 (based on gcc 4.9), Linaro GDB 2013.10 (based on
-	  GDB 7.6), eglibc 2.19, Binutils 2014.08 (based on 2.24). It
+	  GCC 2014.09 (based on gcc 4.9), Linaro GDB 2013.10 (based on
+	  GDB 7.6), eglibc 2.19, Binutils 2014.09 (based on 2.24). It
 	  generates code that runs on all Cortex-A profile devices,
 	  but tuned for the Cortex-A9. The code generated is Thumb 2,
 	  with the hard floating point calling convention, and uses
@@ -33,7 +33,7 @@ comment "Linaro toolchains available for Cortex-A + EABIhf"
 	depends on !BR2_PREFER_STATIC_LIB
 
 config BR2_TOOLCHAIN_EXTERNAL_LINARO_ARMEB
-	bool "Linaro armeb 2014.08"
+	bool "Linaro armeb 2014.09"
 	depends on BR2_armeb
 	depends on BR2_ARM_CPU_ARMV7A
 	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86"
@@ -46,8 +46,8 @@ config BR2_TOOLCHAIN_EXTERNAL_LINARO_ARMEB
 	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_1
 	help
 	  Linaro toolchain for the ARM big endian architecture. It
-	  uses Linaro GCC 2014.08 (based on gcc 4.9), Linaro GDB
-	  2013.10 (based on GDB 7.6), eglibc 2.19, Binutils 2014.08
+	  uses Linaro GCC 2014.09 (based on gcc 4.9), Linaro GDB
+	  2013.10 (based on GDB 7.6), eglibc 2.19, Binutils 2014.09
 	  (based on 2.24). It generates code that runs on all Cortex-A
 	  profile devices, but tuned for the Cortex-A9. The code
 	  generated is Thumb 2, with the hard floating point calling
@@ -813,7 +813,7 @@ config BR2_TOOLCHAIN_EXTERNAL_XILINX_MICROBLAZEBE_V2
 	  http://wiki.xilinx.com/mb-gnu-tools
 
 config BR2_TOOLCHAIN_EXTERNAL_LINARO_AARCH64
-	bool "Linaro AArch64 14.08"
+	bool "Linaro AArch64 14.09"
 	depends on BR2_aarch64
 	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86"
 	depends on !BR2_PREFER_STATIC_LIB
