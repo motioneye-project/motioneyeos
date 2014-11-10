@@ -1,13 +1,13 @@
-Fix various minor issues with rt-tests build system
+From f9a55a87af57780ea8940561d22cd6a90f461416 Mon Sep 17 00:00:00 2001
+From: Alexey Brodkin <abrodkin@synopsys.com>
+Date: Mon, 10 Nov 2014 11:44:55 +0300
+Subject: [PATCH] Fix various minor issues with rt-tests build system
 
 The issues fixed are :
 
  * Remove the automatic NUMA detection from the host
    architecture. This is broken when doing cross-compilation. One can
    still set NUMA=1 if NUMA support is desired.
-
- * Expand the CFLAGS provided through the environment instead of
-   overriding it.
 
  * Provide a HASPYTHON variable to tell whether the target system has
    Python or not. Otherwise, the build system simply tests whether
@@ -16,23 +16,29 @@ The issues fixed are :
    provide the correct Python module location for the target.
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Signed-off-by: Alexey Brodkin <abrodkin@synopsys.com>
+Cc: Peter Korsgaard <peter@korsgaard.com>
+---
+ Makefile | 10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
-Index: rt-tests/Makefile
-===================================================================
---- rt-tests.orig/Makefile
-+++ rt-tests/Makefile
-@@ -14,15 +14,11 @@
+diff --git a/Makefile b/Makefile
+index 318a5c6..645d138 100644
+--- a/Makefile
++++ b/Makefile
+@@ -14,17 +14,13 @@ bindir  ?= $(prefix)/bin
  mandir	?= $(prefix)/share/man
  srcdir	?= $(prefix)/src
  
--machinetype = $(shell uname -m | \
--    sed -e 's/i.86/i386/' -e 's/mips.*/mips/' -e 's/ppc.*/powerpc/')
+-machinetype = $(shell $(CC) -dumpmachine | \
+-    sed -e 's/-.*//' -e 's/i.86/i386/' -e 's/mips.*/mips/' -e 's/ppc.*/powerpc/')
 -ifneq ($(filter x86_64 i386 ia64 mips powerpc,$(machinetype)),)
 -NUMA 	:= 1
 -endif
 -
--CFLAGS = -D_GNU_SOURCE -Wall -Wno-nonnull -Isrc/include
-+override CFLAGS += -D_GNU_SOURCE -Wall -Wno-nonnull -Isrc/include
+ CFLAGS ?= -Wall -Wno-nonnull
+ CPPFLAGS += -D_GNU_SOURCE -Isrc/include
+ LDFLAGS ?=
  
 -PYLIB  := $(shell python -c 'import distutils.sysconfig;  print distutils.sysconfig.get_python_lib()')
 +ifeq ($(HASPYTHON),1)
@@ -41,3 +47,6 @@ Index: rt-tests/Makefile
  
  ifndef DEBUG
  	CFLAGS	+= -O2
+-- 
+1.9.3
+

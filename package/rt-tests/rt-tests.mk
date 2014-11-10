@@ -5,7 +5,7 @@
 ################################################################################
 
 RT_TESTS_SITE = git://git.kernel.org/pub/scm/linux/kernel/git/clrkwllms/rt-tests.git
-RT_TESTS_VERSION = v0.83
+RT_TESTS_VERSION = v0.89
 RT_TESTS_LICENSE = GPLv2+
 RT_TESTS_LICENSE_FILES = COPYING
 

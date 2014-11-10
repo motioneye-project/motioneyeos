@@ -1,4 +1,7 @@
-[PATCH] fix build with uClibc
+From 713224456f4a3242496af803413f670433f27c74 Mon Sep 17 00:00:00 2001
+From: Alexey Brodkin <abrodkin@synopsys.com>
+Date: Mon, 10 Nov 2014 11:55:27 +0300
+Subject: [PATCH] [PATCH] fix build with uClibc
 
 Fix two build issues with (modern) uClibc:
 - uClibc has clock_nanosleep() if built with UCLIBC_HAS_ADVANCED_REALTIME,
@@ -6,20 +9,20 @@ Fix two build issues with (modern) uClibc:
 - uClibc doesn't provide utmpx.h if not built with UCLIBC_HAS_UTMPX, which
   is included in several files (but not needed).
 
-Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
 ---
- src/backfire/sendme.c         |    1 -
- src/cyclictest/cyclictest.c   |    3 ++-
- src/pmqtest/pmqtest.c         |    1 -
- src/ptsematest/ptsematest.c   |    1 -
- src/sigwaittest/sigwaittest.c |    2 --
- src/svsematest/svsematest.c   |    1 -
+ src/backfire/sendme.c         | 1 -
+ src/cyclictest/cyclictest.c   | 3 ++-
+ src/pmqtest/pmqtest.c         | 1 -
+ src/ptsematest/ptsematest.c   | 1 -
+ src/sigwaittest/sigwaittest.c | 2 --
+ src/svsematest/svsematest.c   | 1 -
  6 files changed, 2 insertions(+), 7 deletions(-)
 
-Index: rt-tests-0.83/src/backfire/sendme.c
-===================================================================
---- rt-tests-0.83.orig/src/backfire/sendme.c
-+++ rt-tests-0.83/src/backfire/sendme.c
+diff --git a/src/backfire/sendme.c b/src/backfire/sendme.c
+index 8c169dd..b959951 100644
+--- a/src/backfire/sendme.c
++++ b/src/backfire/sendme.c
 @@ -32,7 +32,6 @@
  #include "rt-utils.h"
  #include "rt-get_cpu.h"
@@ -28,11 +31,11 @@ Index: rt-tests-0.83/src/backfire/sendme.c
  #include <sys/types.h>
  #include <sys/stat.h>
  #include <sys/time.h>
-Index: rt-tests-0.83/src/cyclictest/cyclictest.c
-===================================================================
---- rt-tests-0.83.orig/src/cyclictest/cyclictest.c
-+++ rt-tests-0.83/src/cyclictest/cyclictest.c
-@@ -23,6 +23,7 @@
+diff --git a/src/cyclictest/cyclictest.c b/src/cyclictest/cyclictest.c
+index 4547831..343e421 100644
+--- a/src/cyclictest/cyclictest.c
++++ b/src/cyclictest/cyclictest.c
+@@ -25,6 +25,7 @@
  #include <string.h>
  #include <time.h>
  #include <errno.h>
@@ -40,7 +43,7 @@ Index: rt-tests-0.83/src/cyclictest/cyclictest.c
  #include <limits.h>
  #include <linux/unistd.h>
  
-@@ -53,7 +54,7 @@
+@@ -56,7 +57,7 @@
  #define gettid() syscall(__NR_gettid)
  #define sigev_notify_thread_id _sigev_un._tid
  
@@ -49,10 +52,10 @@ Index: rt-tests-0.83/src/cyclictest/cyclictest.c
  #define MAKE_PROCESS_CPUCLOCK(pid, clock) \
  	((~(clockid_t) (pid) << 3) | (clockid_t) (clock))
  #define CPUCLOCK_SCHED          2
-Index: rt-tests-0.83/src/pmqtest/pmqtest.c
-===================================================================
---- rt-tests-0.83.orig/src/pmqtest/pmqtest.c
-+++ rt-tests-0.83/src/pmqtest/pmqtest.c
+diff --git a/src/pmqtest/pmqtest.c b/src/pmqtest/pmqtest.c
+index 336a8eb..2e34afe 100644
+--- a/src/pmqtest/pmqtest.c
++++ b/src/pmqtest/pmqtest.c
 @@ -33,7 +33,6 @@
  #include <sys/time.h>
  #include <sys/mman.h>
@@ -61,10 +64,10 @@ Index: rt-tests-0.83/src/pmqtest/pmqtest.c
  #include <mqueue.h>
  #include "rt-utils.h"
  #include "rt-get_cpu.h"
-Index: rt-tests-0.83/src/ptsematest/ptsematest.c
-===================================================================
---- rt-tests-0.83.orig/src/ptsematest/ptsematest.c
-+++ rt-tests-0.83/src/ptsematest/ptsematest.c
+diff --git a/src/ptsematest/ptsematest.c b/src/ptsematest/ptsematest.c
+index 7558a41..5358a65 100644
+--- a/src/ptsematest/ptsematest.c
++++ b/src/ptsematest/ptsematest.c
 @@ -33,7 +33,6 @@
  #include <sys/time.h>
  #include <sys/mman.h>
@@ -72,11 +75,11 @@ Index: rt-tests-0.83/src/ptsematest/ptsematest.c
 -#include <utmpx.h>
  #include "rt-utils.h"
  #include "rt-get_cpu.h"
- 
-Index: rt-tests-0.83/src/sigwaittest/sigwaittest.c
-===================================================================
---- rt-tests-0.83.orig/src/sigwaittest/sigwaittest.c
-+++ rt-tests-0.83/src/sigwaittest/sigwaittest.c
+ #include "error.h"
+diff --git a/src/sigwaittest/sigwaittest.c b/src/sigwaittest/sigwaittest.c
+index 428f5ce..85c32a2 100644
+--- a/src/sigwaittest/sigwaittest.c
++++ b/src/sigwaittest/sigwaittest.c
 @@ -31,11 +31,9 @@
  #include <signal.h>
  #include <string.h>
@@ -89,10 +92,10 @@ Index: rt-tests-0.83/src/sigwaittest/sigwaittest.c
  #include "rt-utils.h"
  #include "rt-get_cpu.h"
  
-Index: rt-tests-0.83/src/svsematest/svsematest.c
-===================================================================
---- rt-tests-0.83.orig/src/svsematest/svsematest.c
-+++ rt-tests-0.83/src/svsematest/svsematest.c
+diff --git a/src/svsematest/svsematest.c b/src/svsematest/svsematest.c
+index c1128cc..5d02550 100644
+--- a/src/svsematest/svsematest.c
++++ b/src/svsematest/svsematest.c
 @@ -31,7 +31,6 @@
  #include <sched.h>
  #include <string.h>
@@ -101,3 +104,6 @@ Index: rt-tests-0.83/src/svsematest/svsematest.c
  
  #include <linux/unistd.h>
  
+-- 
+1.9.3
+
