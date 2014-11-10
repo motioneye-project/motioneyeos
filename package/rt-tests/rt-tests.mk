@@ -4,9 +4,8 @@
 #
 ################################################################################
 
-RT_TESTS_SITE = http://snapshot.debian.org/archive/debian/20141023T043132Z/pool/main/r/rt-tests
-RT_TESTS_VERSION = 0.83
-RT_TESTS_SOURCE = rt-tests_$(RT_TESTS_VERSION).orig.tar.gz
+RT_TESTS_SITE = git://git.kernel.org/pub/scm/linux/kernel/git/clrkwllms/rt-tests.git
+RT_TESTS_VERSION = v0.83
 RT_TESTS_LICENSE = GPLv2+
 RT_TESTS_LICENSE_FILES = COPYING
 
