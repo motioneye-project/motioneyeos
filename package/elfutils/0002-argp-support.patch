@@ -9,19 +9,21 @@ out.
 This allows to build elfutils against uClibc with an external argp
 library.
 
-Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Based on the former patch by Thomas Petazzoni.
 
-Index: b/configure.ac
-===================================================================
---- a/configure.ac
-+++ b/configure.ac
-@@ -269,6 +269,13 @@
- 	enable_progs=yes)
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+
+diff -rup a/configure.ac b/configure.ac
+--- a/configure.ac	2014-11-07 15:00:38.663627402 +0000
++++ b/configure.ac	2014-11-07 15:02:30.233539737 +0000
+@@ -259,6 +259,13 @@ AC_ARG_ENABLE([progs],
+	enable_progs=yes)
  AM_CONDITIONAL(ENABLE_PROGS, test "$enable_progs" = yes)
- 
+
 +AC_CHECK_FUNC([argp_parse])
 +if test "$ac_cv_func_argp_parse" != yes; then
-+   AC_CHECK_LIB([argp],[argp_parse],ARGP_LIBS=-largp,
++	AC_CHECK_LIB([argp],[argp_parse],ARGP_LIBS=-largp,
 +		AC_MSG_ERROR([No argp_parse function available.]))
 +fi
 +AC_SUBST(ARGP_LIBS)
@@ -29,64 +31,63 @@ Index: b/configure.ac
  dnl Test for zlib and bzlib, gives ZLIB/BZLIB .am
  dnl conditional and config.h USE_ZLIB/USE_BZLIB #define.
  save_LIBS="$LIBS"
-Index: b/src/Makefile.am
-===================================================================
---- a/src/Makefile.am
-+++ b/src/Makefile.am
-@@ -98,26 +98,29 @@
- # Buggy old compilers.
- readelf_no_Werror = yes
- 
--readelf_LDADD = $(libdw) $(libebl) $(libelf) $(libeu) $(libmudflap) -ldl
-+readelf_LDADD = $(libdw) $(libebl) $(libelf) $(libeu) $(libmudflap) -ldl \
-+	$(ARGP_LIBS)
- nm_LDADD = $(libdw) $(libebl) $(libelf) $(libeu) $(libmudflap) -ldl \
+diff -rup a/libdw/Makefile.am b/libdw/Makefile.am
+--- a/libdw/Makefile.am	2014-08-27 10:25:17.000000000 +0100
++++ b/libdw/Makefile.am	2014-11-07 15:09:32.804794962 +0000
+@@ -110,7 +110,7 @@ libdw.so$(EXEEXT): $(srcdir)/libdw.map l
+		-Wl,--enable-new-dtags,-rpath,$(pkglibdir) \
+		-Wl,--version-script,$<,--no-undefined \
+		-Wl,--whole-archive $(filter-out $<,$^) -Wl,--no-whole-archive\
+-		-ldl $(zip_LIBS)
++		-ldl $(zip_LIBS) $(ARGP_LIBS)
+	if $(READELF) -d $@ | fgrep -q TEXTREL; then exit 1; fi
+	ln -fs $@ $@.$(VERSION)
+
+diff -rup a/src/Makefile.am b/src/Makefile.am
+--- a/src/Makefile.am	2014-11-07 15:00:35.867579484 +0000
++++ b/src/Makefile.am	2014-11-07 15:08:47.380013980 +0000
+@@ -94,27 +94,29 @@ readelf_no_Werror = yes
+ strings_no_Werror = yes
+ addr2line_no_Wformat = yes
+
+-readelf_LDADD = $(libdw) $(libebl) $(libelf) $(libeu) -ldl
++readelf_LDADD = $(libdw) $(libebl) $(libelf) $(libeu) -ldl $(ARGP_LIBS)
+ nm_LDADD = $(libdw) $(libebl) $(libelf) $(libeu) -ldl \
 -	   $(demanglelib)
--size_LDADD = $(libelf) $(libeu) $(libmudflap)
--strip_LDADD = $(libebl) $(libelf) $(libeu) $(libmudflap) -ldl
--ld_LDADD = $(libebl) $(libelf) $(libeu) $(libmudflap) -ldl
+-size_LDADD = $(libelf) $(libeu)
+-strip_LDADD = $(libebl) $(libelf) $(libeu) -ldl
+-ld_LDADD = $(libebl) $(libelf) $(libeu) -ldl
 +	   $(demanglelib) $(ARGP_LIBS)
-+size_LDADD = $(libelf) $(libeu) $(libmudflap) $(ARGP_LIBS)
-+strip_LDADD = $(libebl) $(libelf) $(libeu) $(libmudflap) -ldl $(ARGP_LIBS)
-+ld_LDADD = $(libebl) $(libelf) $(libeu) $(libmudflap) -ldl $(ARGP_LIBS)
++size_LDADD = $(libelf) $(libeu) $(ARGP_LIBS)
++strip_LDADD = $(libebl) $(libelf) $(libeu) -ldl $(ARGP_LIBS)
++ld_LDADD = $(libebl) $(libelf) $(libeu) -ldl $(ARGP_LIBS)
  if NATIVE_LD
  # -ldl is always needed for libebl.
  ld_LDADD += libld_elf.a
  endif
  ld_LDFLAGS = -rdynamic
--elflint_LDADD  = $(libebl) $(libelf) $(libeu) $(libmudflap) -ldl
--findtextrel_LDADD = $(libdw) $(libelf) $(libmudflap)
--addr2line_LDADD = $(libdw) $(libelf) $(libmudflap)
--elfcmp_LDADD = $(libebl) $(libelf) $(libmudflap) -ldl
--objdump_LDADD  = $(libasm) $(libebl) $(libelf) $(libeu) $(libmudflap) -ldl
--ranlib_LDADD = libar.a $(libelf) $(libeu) $(libmudflap)
--strings_LDADD = $(libelf) $(libeu) $(libmudflap)
--ar_LDADD = libar.a $(libelf) $(libeu) $(libmudflap)
--unstrip_LDADD = $(libebl) $(libelf) $(libdw) $(libeu) $(libmudflap) -ldl
-+elflint_LDADD  = $(libebl) $(libelf) $(libeu) $(libmudflap) -ldl $(ARGP_LIBS)
-+findtextrel_LDADD = $(libdw) $(libelf) $(libmudflap) $(ARGP_LIBS)
-+addr2line_LDADD = $(libdw) $(libelf) $(libmudflap) $(ARGP_LIBS)
-+elfcmp_LDADD = $(libebl) $(libelf) $(libmudflap) -ldl $(ARGP_LIBS)
-+objdump_LDADD  = $(libasm) $(libebl) $(libelf) $(libeu) $(libmudflap) -ldl \
+-elflint_LDADD  = $(libebl) $(libelf) $(libeu) -ldl
+-findtextrel_LDADD = $(libdw) $(libelf)
+-addr2line_LDADD = $(libdw) $(libelf)
+-elfcmp_LDADD = $(libebl) $(libelf) -ldl
+-objdump_LDADD  = $(libasm) $(libebl) $(libelf) $(libeu) -ldl
+-ranlib_LDADD = libar.a $(libelf) $(libeu)
+-strings_LDADD = $(libelf) $(libeu)
+-ar_LDADD = libar.a $(libelf) $(libeu)
+-unstrip_LDADD = $(libebl) $(libelf) $(libdw) $(libeu) -ldl
+-stack_LDADD = $(libebl) $(libelf) $(libdw) $(libeu) -ldl $(demanglelib)
++elflint_LDADD  = $(libebl) $(libelf) $(libeu) -ldl $(ARGP_LIBS)
++findtextrel_LDADD = $(libdw) $(libelf) $(ARGP_LIBS)
++addr2line_LDADD = $(libdw) $(libelf) $(ARGP_LIBS)
++elfcmp_LDADD = $(libebl) $(libelf) -ldl $(ARGP_LIBS)
++objdump_LDADD  = $(libasm) $(libebl) $(libelf) $(libeu) -ldl \
 +	$(ARGP_LIBS)
-+ranlib_LDADD = libar.a $(libelf) $(libeu) $(libmudflap) $(ARGP_LIBS)
-+strings_LDADD = $(libelf) $(libeu) $(libmudflap) $(ARGP_LIBS)
-+ar_LDADD = libar.a $(libelf) $(libeu) $(libmudflap) $(ARGP_LIBS)
-+unstrip_LDADD = $(libebl) $(libelf) $(libdw) $(libeu) $(libmudflap) -ldl \
-+	$(ARGP_LIBS)
- 
++ranlib_LDADD = libar.a $(libelf) $(libeu) $(ARGP_LIBS)
++strings_LDADD = $(libelf) $(libeu) $(ARGP_LIBS)
++ar_LDADD = libar.a $(libelf) $(libeu) $(ARGP_LIBS)
++unstrip_LDADD = $(libebl) $(libelf) $(libdw) $(libeu) -ldl $(ARGP_LIBS)
++stack_LDADD = $(libebl) $(libelf) $(libdw) $(libeu) -ldl \
++	$(demanglelib) $(ARGP_LIBS)
+
  ldlex.o: ldscript.c
  ldlex_no_Werror = yes
-Index: b/libdw/Makefile.am
-===================================================================
---- a/libdw/Makefile.am
-+++ b/libdw/Makefile.am
-@@ -111,7 +111,7 @@
- 		-Wl,--enable-new-dtags,-rpath,$(pkglibdir) \
- 		-Wl,--version-script,$<,--no-undefined \
- 		-Wl,--whole-archive $(filter-out $<,$^) -Wl,--no-whole-archive\
--		-ldl $(zip_LIBS)
-+		-ldl $(zip_LIBS) $(ARGP_LIBS)
- 	if readelf -d $@ | fgrep -q TEXTREL; then exit 1; fi
- 	ln -fs $@ $@.$(VERSION)
- 
