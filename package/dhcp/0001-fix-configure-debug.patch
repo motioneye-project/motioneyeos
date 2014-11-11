@@ -1,0 +1,23 @@
+AC_ARG_ENABLE is passed wrong parameters for action-if-given:
+If someone passed --enable-debug to configure enable_debug was set to 'yes',
+but if --disable-debug was passed the action is also called and debug was
+also set to 'yes' which is wrong.
+Use $enableval for this case.
+
+Reported upstream as ISC-Bugs #37780 (not publicly accesible).
+Thanks to Nathaniel Roach for pointing out the problem.
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+diff -Nura dhcp-4.1-ESV-R10.orig/configure.ac dhcp-4.1-ESV-R10/configure.ac
+--- dhcp-4.1-ESV-R10.orig/configure.ac	2014-11-11 09:50:07.719277076 -0300
++++ dhcp-4.1-ESV-R10/configure.ac	2014-11-11 09:51:10.722432148 -0300
+@@ -53,7 +53,7 @@
+ AC_ARG_ENABLE(debug,
+ 	AC_HELP_STRING([--enable-debug],
+ 		[create a debug-only version of the software (default is no).]),
+-		[enable_debug=yes],[enable_debug=no])
++		[enable_debug=$enableval],[enable_debug=no])
+ # This is very much off by default.
+ if test "$enable_debug" = "yes" ; then
+ 	AC_DEFINE([DEBUG], [1],
