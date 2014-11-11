@@ -4,12 +4,13 @@
 #
 ################################################################################
 
-ZEROMQ_VERSION = 4.0.4
+ZEROMQ_VERSION = 4.0.5
 ZEROMQ_SITE = http://download.zeromq.org
 ZEROMQ_INSTALL_STAGING = YES
 ZEROMQ_DEPENDENCIES = util-linux
 ZEROMQ_LICENSE = LGPLv3+ with exceptions
 ZEROMQ_LICENSE_FILES = COPYING COPYING.LESSER
+# For 0001-tests-disable-test_fork-if-fork-is-not-available.patch
 ZEROMQ_AUTORECONF = YES
 
 # Only tools/curve_keygen.c needs this, but it doesn't hurt to pass it
