@@ -7,7 +7,9 @@
 LIBMEMCACHED_VERSION_MAJOR = 1.0
 LIBMEMCACHED_VERSION = $(LIBMEMCACHED_VERSION_MAJOR).18
 LIBMEMCACHED_SITE = http://launchpad.net/libmemcached/$(LIBMEMCACHED_VERSION_MAJOR)/$(LIBMEMCACHED_VERSION)/+download
-LIBMEMCACHED_CONF_ENV = ac_cv_prog_cc_c99='-std=gnu99'
+LIBMEMCACHED_CONF_ENV = ac_cv_prog_cc_c99='-std=gnu99' \
+	ax_cv_check_cflags__Werror__fmudflapth=no \
+	ax_cv_check_cxxflags__Werror__fmudflapth=no
 LIBMEMCACHED_CONF_OPTS = --disable-dtrace
 LIBMEMCACHED_INSTALL_STAGING = YES
 LIBMEMCACHED_DEPENDENCIES = $(if $(BR2_PACKAGE_LIBEVENT),libevent)
