@@ -2,8 +2,11 @@ config BR2_PACKAGE_AIRCRACK_NG
 	bool "aircrack-ng"
 	depends on BR2_LARGEFILE
 	depends on BR2_USE_MMU # uses fork()
+	# libnl has issues when linking statically
+	# they need fixing in libnl itself
+	select BR2_PACKAGE_LIBNL if !BR2_PREFER_STATIC_LIB
 	select BR2_PACKAGE_OPENSSL
-	select BR2_PACKAGE_IW # runtime
+	select BR2_PACKAGE_ZLIB
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	help
 	  A set of tools for auditing wireless networks
