@@ -75,7 +75,8 @@ define NODEJS_CONFIGURE_CMDS
 		--prefix=/usr \
 		--without-snapshot \
 		--shared-zlib \
-		$(if $(BR2_PACKAGE_OPENSSL),--shared-openssl,--without-ssl) \
+		$(if $(BR2_PACKAGE_OPENSSL),--shared-openssl,\
+			--without-ssl --without-ssl2 --without-ssl3) \
 		$(if $(BR2_PACKAGE_NODEJS_NPM),,--without-npm) \
 		--without-dtrace \
 		--without-etw \
