@@ -1,12 +1,12 @@
 #! /bin/sh
 
 # Additional options that are passed to Shairport Sync
-OPTIONS=""
+OPTIONS="-d"
 
 case "$1" in
     start)
 	echo -n "Starting shairport-sync: "
-	start-stop-daemon -S -q -m -b -p /var/run/shairport-sync.pid --exec /usr/bin/shairport-sync -- $OPTIONS
+	start-stop-daemon -S -q -p /var/run/shairport-sync.pid --exec /usr/bin/shairport-sync -- $OPTIONS
 	[ $? = 0 ] && echo "OK" || echo "FAIL"
 	;;
     stop)
