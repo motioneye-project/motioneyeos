@@ -235,12 +235,8 @@ endif
 
 $(2)_POST_PATCH_HOOKS += UPDATE_CONFIG_HOOK
 
-# default values are not evaluated yet, so don't rely on this defaulting to YES
-ifneq ($$($(2)_LIBTOOL_PATCH),NO)
-$(2)_POST_PATCH_HOOKS += LIBTOOL_PATCH_HOOK
-endif
-
 ifeq ($$($(2)_AUTORECONF),YES)
+
 # This has to come before autoreconf
 ifeq ($$($(2)_GETTEXTIZE),YES)
 $(2)_PRE_CONFIGURE_HOOKS += GETTEXTIZE_HOOK
@@ -252,6 +248,14 @@ ifneq ($$($(2)_LIBTOOL_PATCH),NO)
 $(2)_PRE_CONFIGURE_HOOKS += LIBTOOL_PATCH_HOOK
 endif
 $(2)_DEPENDENCIES += host-automake host-autoconf host-libtool
+
+else # ! AUTORECONF = YES
+
+# default values are not evaluated yet, so don't rely on this defaulting to YES
+ifneq ($$($(2)_LIBTOOL_PATCH),NO)
+$(2)_POST_PATCH_HOOKS += LIBTOOL_PATCH_HOOK
+endif
+
 endif
 
 #
