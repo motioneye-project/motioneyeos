@@ -2,6 +2,29 @@
 
 	Fixes all over the tree and new features.
 
+	Toolchains: Use -mcpu / -march instead of -mtune. Support
+	additional ARC and sparc variants. Updated Code sourcery
+	and Linaro external toolchains.
+
+	Defconfigs: Freescale iMX6DL SabreSD, Minnowboard MAX, QEMU
+	powerpc64 pseries added and a number of updates to the
+	existing configurations.
+
+	Infrastructure: Buildroot is now less noisy when built with
+	the silent option (make -s).
+	A number of package infrastructure variables have been renamed
+	from *_OPT to *_OPTS for constency. Buildroot will complain if
+	the old names are used to assist in updating out of tree
+	packages.
+	Fixes for host systems where bash isn't located in /bin, and
+	older systems not supporting mktemp --tmpdir.
+	Various cleanups of users/groups in the default skeleton.
+	There is now an option to choose what shell /bin/sh points to.
+
+	Documentation: Various updates to the user manual. The
+	asciidoc documentation handling has now been extended so it
+	can be used by (BR2_EXTERNAL) packages.
+
 	Updated/fixed packages: acl, acpid, agentpp, aircrack-ng,
 	alsa-lib, alsamixergui, alsa-utils, apitrace, apr, apr-util,
 	argus, arptables, at, atftp, atk, attr, audiofile, aumix,
