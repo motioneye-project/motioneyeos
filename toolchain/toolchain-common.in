@@ -69,7 +69,7 @@ config BR2_GENERATE_LOCALE
 	string "Generate locale data"
 	default ""
 	depends on \
-		BR2_TOOLCHAIN_BUILDROOT      || \
+		BR2_TOOLCHAIN_BUILDROOT_UCLIBC || \
 		BR2_TOOLCHAIN_USES_GLIBC
 	help
 	  Generate support for a list of locales. Locales can be
