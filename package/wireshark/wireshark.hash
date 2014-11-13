@@ -1,3 +1,3 @@
-# From https://www.wireshark.org/download/SIGNATURES-1.12.1.txt
-md5	14b3e3d8979d1eb27ff085bb5f400e67	wireshark-1.12.1.tar.bz2
-sha1	e1508ea25ccf077c5a7fa2af3b88f3ae199f77fb	wireshark-1.12.1.tar.bz2
+# From https://www.wireshark.org/download/SIGNATURES-1.12.2.txt
+md5	2f2a16be8b087227cb17733c72288ae4	wireshark-1.12.2.tar.bz2
+sha1	0598fe285725f97045d7d08e6bde04686044b335	wireshark-1.12.2.tar.bz2
