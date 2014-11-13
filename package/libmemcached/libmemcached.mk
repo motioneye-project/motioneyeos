@@ -13,7 +13,7 @@ LIBMEMCACHED_CONF_ENV = ac_cv_prog_cc_c99='-std=gnu99' \
 LIBMEMCACHED_CONF_OPTS = --disable-dtrace
 LIBMEMCACHED_INSTALL_STAGING = YES
 LIBMEMCACHED_DEPENDENCIES = $(if $(BR2_PACKAGE_LIBEVENT),libevent)
-# For libmemcached-01-disable-tests.patch
+# For 0001-disable-tests.patch and 0002-disable-sanitizer.patch
 LIBMEMCACHED_AUTORECONF = YES
 LIBMEMCACHED_LICENSE = BSD-3c
 LIBMEMCACHED_LICENSE_FILES = COPYING
