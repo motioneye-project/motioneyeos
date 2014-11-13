@@ -47,12 +47,14 @@ UCLIBC_KCONFIG_OPTS = \
 
 UCLIBC_TARGET_ARCH = $(call qstrip,$(BR2_UCLIBC_TARGET_ARCH))
 
-ifeq ($(GENERATE_LOCALE),)
+UCLIBC_GENERATE_LOCALES = $(call qstrip,$(BR2_GENERATE_LOCALE))
+
+ifeq ($(UCLIBC_GENERATE_LOCALES),)
 # We need at least one locale
 UCLIBC_LOCALES = en_US
 else
 # Strip out the encoding part of locale names, if any
-UCLIBC_LOCALES = $(foreach locale,$(GENERATE_LOCALE),\
+UCLIBC_LOCALES = $(foreach locale,$(UCLIBC_GENERATE_LOCALES),\
 		   $(firstword $(subst .,$(space),$(locale))))
 endif
 
