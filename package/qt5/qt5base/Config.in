@@ -209,10 +209,8 @@ config BR2_PACKAGE_QT5BASE_DEFAULT_QPA
 	  different platform at runtime with the -platform option.
 
 config BR2_PACKAGE_QT5BASE_PRINTSUPPORT
-	bool "print support module"
-	select BR2_PACKAGE_QT5BASE_WIDGETS
-	help
-	  This option enables the Qt5PrintSupport
+	depends on BR2_PACKAGE_QT5BASE_WIDGETS
+	def_bool y
 
 config BR2_PACKAGE_QT5BASE_FONTCONFIG
 	bool "fontconfig support"
