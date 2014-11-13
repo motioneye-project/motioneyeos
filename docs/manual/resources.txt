@@ -60,7 +60,7 @@ project. Patches that have been sent to a mailing list are \'caught' by
 the system, and appear on a web page. Any comments posted that
 reference the patch are appended to the patch page too. For more
 information on Patchwork see
-http://jk.ozlabs.org/projects/patchwork[].
+http://jk.ozlabs.org/projects/patchwork/[].
 +
 Buildroot's Patchwork website is mainly for use by Buildroot's
 maintainer to ensure patches aren't missed. It is also used by Buildroot
