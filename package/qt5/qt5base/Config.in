@@ -37,9 +37,7 @@ config BR2_PACKAGE_QT5BASE_EXAMPLES
 	  If unsure, say N.
 
 config BR2_PACKAGE_QT5BASE_NETWORK
-	bool "network module"
-	help
-	  This options enables the Qt5Network library.
+       def_bool y
 
 config BR2_PACKAGE_QT5BASE_CONCURRENT
 	bool "concurrent module"
@@ -47,9 +45,7 @@ config BR2_PACKAGE_QT5BASE_CONCURRENT
 	  This options enables the Qt5Concurrent library.
 
 config BR2_PACKAGE_QT5BASE_SQL
-	bool "sql module"
-	help
-	  This options enables the Qt5Sql library.
+       def_bool y
 
 if BR2_PACKAGE_QT5BASE_SQL
 config BR2_PACKAGE_QT5BASE_MYSQL
@@ -101,14 +97,10 @@ endchoice
 endif
 
 config BR2_PACKAGE_QT5BASE_TEST
-	bool "test module"
-	help
-	  This options enables the Qt5Test library.
+	def_bool y
 
 config BR2_PACKAGE_QT5BASE_XML
-	bool "XML module"
-	help
-	  This options enables the Qt5Xml library.
+	def_bool y
 
 config BR2_PACKAGE_QT5BASE_GUI
 	bool "gui module"
