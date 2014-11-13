@@ -107,6 +107,12 @@ PYTHON3_CONF_ENV += \
 	ac_cv_file__dev_ptc=yes \
 	ac_cv_working_tzset=yes
 
+# uClibc is known to have a broken wcsftime() implementation, so tell
+# Python 3 to fall back to strftime() instead.
+ifeq ($(BR2_TOOLCHAIN_USES_UCLIBC),y)
+PYTHON3_CONF_ENV += ac_cv_func_wcsftime=no
+endif
+
 PYTHON3_CONF_OPTS += \
 	--without-ensurepip	\
 	--without-cxx-main 	\
