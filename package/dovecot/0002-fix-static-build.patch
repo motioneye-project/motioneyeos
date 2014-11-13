@@ -1,0 +1,24 @@
+Fix static build
+
+MODULE_SUFFIX is undefined when building statically; don't used it.
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Patch status: sent upstream
+(http://dovecot.org/pipermail/dovecot/2014-November/098694.html)
+
+diff -Nuar dovecot-2.2.15-orig/src/lib/module-dir.c dovecot-2.2.15/src/lib/module-dir.c
+--- dovecot-2.2.15-orig/src/lib/module-dir.c	2014-10-18 00:10:15.000000000 +0300
++++ dovecot-2.2.15/src/lib/module-dir.c	2014-11-13 19:27:29.417786313 +0200
+@@ -621,7 +621,11 @@
+ 	if (*p == '_')
+ 		fname = p + 1;
+ 
++#ifdef MODULE_SUFFIX
+ 	p = strstr(fname, MODULE_SUFFIX);
++#else
++	p = NULL;
++#endif
+ 	if (p == NULL)
+ 		return fname;
+ 
