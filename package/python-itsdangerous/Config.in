@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PYTHON_ITSDANGEROUS
+	bool "python-itsdangerous"
+	help
+	  Itsdangerous contains various helpers to pass data to
+	  untrusted environments and to get it back safe and sound.
+
+	  http://pythonhosted.org/itsdangerous/
