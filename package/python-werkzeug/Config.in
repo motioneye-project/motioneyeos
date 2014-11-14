@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PYTHON_WERKZEUG
+	bool "python-werkzeug"
+	help
+	  Werkzeug is a WSGI utility library for Python. It's widely
+	  used and BSD licensed.
+
+	  http://werkzeug.pocoo.org/

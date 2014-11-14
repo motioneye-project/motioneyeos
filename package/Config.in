@@ -523,6 +523,7 @@ menu "external python modules"
 	source "package/python-tornado/Config.in"
 	source "package/python-urwid/Config.in"
 	source "package/python-versiontools/Config.in"
+	source "package/python-werkzeug/Config.in"
 endmenu
 endif
 	source "package/ruby/Config.in"
