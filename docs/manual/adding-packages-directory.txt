@@ -191,15 +191,19 @@ construct rather than repeating the +depends on+ statement on the
 comment and other config options.
 
 The general format of a dependency +comment+ for package foo is:
+
 --------------------------
 foo needs a toolchain w/ featA, featB, featC
 --------------------------
 
 for example:
+
 --------------------------
 aircrack-ng needs a toolchain w/ largefile, threads
 --------------------------
+
 or
+
 --------------------------
 crda needs a toolchain w/ threads
 --------------------------
@@ -283,6 +287,7 @@ foo needs a Linux kernel to be built
 
 If there is a dependency on both toolchain options and the Linux
 kernel, use this format:
+
 --------------------------
 foo needs a toolchain w/ featA, featB, featC and a Linux kernel to be built
 --------------------------
