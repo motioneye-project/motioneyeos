@@ -75,7 +75,7 @@ define HOST_QEMU_BUILD_CMDS
 endef
 
 define HOST_QEMU_INSTALL_CMDS
-	$(HOST_MAKE_ENV) $(MAKE) -C $(@D) DESTDIR=$(HOST_DIR) install
+	$(HOST_MAKE_ENV) $(MAKE) -C $(@D) install
 endef
 
 $(eval $(host-generic-package))
