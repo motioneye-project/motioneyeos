@@ -11,13 +11,14 @@ create and how to create them, in order to avoid calls to mknod.
 This syntax is derived from the makedev utility, and more complete
 documentation can be found in the +package/makedevs/README+ file.
 
-It takes the form of a line for each file, with the following layout:
+It takes the form of a space separated list of fields, one file per
+line; the fields are:
 
 |===========================================================
 |name |type |mode |uid |gid |major |minor |start |inc |count
 |===========================================================
 
-There are a few non-trivial blocks here:
+There are a few non-trivial blocks:
 
 - +name+ is the path to the file you want to create/modify
 - +type+ is the type of the file, being one of:
@@ -35,22 +36,23 @@ There are a few non-trivial blocks here:
 
 Let's say you want to change the permissions of a given file; using
 this syntax, you will need to put:
--------------------------------------------------------------------
-/usr/bin/foobar	f	644	0	0	-	-	-	-	-
--------------------------------------------------------------------
+
+----
+/usr/bin/foobar f 644 0 0 - - -	- -
+----
 
 On the other hand, if you want to create the device file +/dev/hda+
 and the corresponding 15 files for the partitions, you will need for
 +/dev/hda+:
 
--------------------------------------------------------------------
-/dev/hda	b	640	0	0	3	0	0	0	-
--------------------------------------------------------------------
+----
+/dev/hda b 640 0 0 3 0 0 0 -
+----
 
 and then for device files corresponding to the partitions of
 +/dev/hda+, +/dev/hdaX+, +X+ ranging from 1 to 15:
 
--------------------------------------------------------------------
-/dev/hda	b	640	0	0	3	1	1	1	15
--------------------------------------------------------------------
+----
+/dev/hda b 640 0 0 3 1 1 1 15
+----
 
