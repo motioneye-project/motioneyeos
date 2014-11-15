@@ -1,4 +1,5 @@
 // -*- mode:doc -*- ;
+// vim: set syntax=asciidoc:
 
 [[makeuser-syntax]]
 == Makeusers syntax documentation

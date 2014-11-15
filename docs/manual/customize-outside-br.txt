@@ -1,4 +1,5 @@
 // -*- mode:doc -*- ;
+// vim: set syntax=asciidoc:
 
 [[outside-br-custom]]
 === Keeping customizations outside of Buildroot

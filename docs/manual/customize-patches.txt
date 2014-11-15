@@ -1,4 +1,5 @@
 // -*- mode:doc -*- ;
+// vim: set syntax=asciidoc:
 
 [[customize-patches]]
 === Adding project-specific patches
