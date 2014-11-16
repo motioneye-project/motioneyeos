@@ -14,7 +14,7 @@ AIRCRACK_NG_MAKE_OPTS = unstable=true
 
 # Account for libpthread in static
 AIRCRACK_NG_LDFLAGS = $(TARGET_LDFLAGS) \
-	$(if $(BR2_PREFER_STATIC_LIB),-lpthread)
+	$(if $(BR2_PREFER_STATIC_LIB),-lpthread -lz)
 
 # libnl support has issues when building static
 ifeq ($(BR2_PREFER_STATIC_LIB),y)
@@ -39,9 +39,10 @@ else
 	AIRCRACK_NG_MAKE_OPTS += pcre=false
 endif
 
+# Duplicate -lpthread, because it is also needed by sqlite
 ifeq ($(BR2_PACKAGE_SQLITE),y)
 	AIRCRACK_NG_DEPENDENCIES += sqlite
-	AIRCRACK_NG_MAKE_OPTS += sqlite=true LIBSQL="-lsqlite3"
+	AIRCRACK_NG_MAKE_OPTS += sqlite=true LIBSQL="-lsqlite3 $(if $(BR2_PREFER_STATIC_LIB),-lpthread)"
 else
 	AIRCRACK_NG_MAKE_OPTS += sqlite=false
 endif
