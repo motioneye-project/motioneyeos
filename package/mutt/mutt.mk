@@ -41,4 +41,20 @@ else
 MUTT_CONF_OPTS += --without-ssl
 endif
 
+# Avoid running tests to check for:
+#  - target system is *BSD
+#  - C99 conformance (snprintf, vsnprintf)
+#  - behaviour of the regex library
+#  - if mail spool directory is world/group writable
+#  - we have a working libiconv
+MUTT_CONF_ENV += \
+	mutt_cv_bsdish=no \
+	mutt_cv_c99_snprintf=yes \
+	mutt_cv_c99_vsnprintf=yes \
+	mutt_cv_regex_broken=no \
+	mutt_cv_worldwrite=yes \
+	mutt_cv_groupwrite=yes \
+	mutt_cv_iconv_good=yes \
+	mutt_cv_iconv_nontrans=no
+
 $(eval $(autotools-package))
