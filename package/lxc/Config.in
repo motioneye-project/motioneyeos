@@ -7,6 +7,7 @@ config BR2_PACKAGE_LXC
 	depends on BR2_USE_MMU # fork()
 	depends on !BR2_avr32 # no timerfd
 	depends on !BR2_nios2 # the toolchain doesn't support setns syscall
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0 # libcap
 	help
 	  Linux Containers (LXC), provides the ability to group and isolate
 	  of a set of processes in a jail by virtualizing and accounting the
@@ -14,8 +15,9 @@ config BR2_PACKAGE_LXC
 
 	  https://linuxcontainers.org/
 
-comment "lxc needs a toolchain w/ IPv6, threads, largefile"
+comment "lxc needs a toolchain w/ IPv6, threads, largefile, headers >= 3.0"
 	depends on BR2_USE_MMU
 	depends on !BR2_avr32 # no timerfd
 	depends on !BR2_nios2 # the toolchain doesn't support setns syscall
-	depends on !BR2_INET_IPV6 || !BR2_TOOLCHAIN_HAS_THREADS || !BR2_LARGEFILE
+	depends on !BR2_INET_IPV6 || !BR2_TOOLCHAIN_HAS_THREADS \
+                || !BR2_LARGEFILE || !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0

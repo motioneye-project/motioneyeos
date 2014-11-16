@@ -4,6 +4,7 @@ config BR2_PACKAGE_CDRKIT
 	select BR2_PACKAGE_LIBCAP
 	depends on BR2_LARGEFILE
 	depends on BR2_USE_MMU # fork
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0 # libcap
 	bool "cdrkit"
 	help
 	  cdrkit is a suite of programs for recording CDs and DVDs,
@@ -12,6 +13,6 @@ config BR2_PACKAGE_CDRKIT
 
 	  http://www.cdrkit.org/
 
-comment "cdrkit needs a toolchain w/ largefile"
+comment "cdrkit needs a toolchain w/ largefile, headers >= 3.0"
 	depends on BR2_USE_MMU
-	depends on !BR2_LARGEFILE
+	depends on !BR2_LARGEFILE || !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0
