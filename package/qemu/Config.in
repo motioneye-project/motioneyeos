@@ -54,6 +54,7 @@ comment "... or you can select emulator families to enable, below:"
 
 config BR2_PACKAGE_QEMU_SYSTEM
 	bool "Enable all systems emulation"
+	select BR2_PACKAGE_QEMU_FDT
 	help
 	  Say 'y' to build all system emulators/virtualisers that QEMU supports.
 
@@ -80,6 +81,15 @@ config BR2_PACKAGE_QEMU_SDL
 	help
 	  Say 'y' to enable the SDL frontend, that is, a graphical window
 	  presenting the VM's display.
+
+comment "Misc. features"
+
+config BR2_PACKAGE_QEMU_FDT
+        bool "Enable FDT"
+        select BR2_PACKAGE_DTC
+        help
+          Say 'y' here to have QEMU capable of constructing Device Trees,
+          and passing them to the VMs.
 
 endif # BR2_PACKAGE_QEMU_HAS_EMULS
 

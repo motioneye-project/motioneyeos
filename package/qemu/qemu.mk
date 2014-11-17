@@ -133,6 +133,13 @@ else
 QEMU_OPTS += --disable-sdl
 endif
 
+ifeq ($(BR2_PACKAGE_QEMU_FDT),y)
+QEMU_OPTS += --enable-fdt
+QEMU_DEPENDENCIES += dtc
+else
+QEMU_OPTS += --disable-fdt
+endif
+
 define QEMU_CONFIGURE_CMDS
 	( cd $(@D);                                     \
 		LIBS='$(QEMU_LIBS)'                     \
@@ -155,7 +162,6 @@ define QEMU_CONFIGURE_CMDS
 			--disable-brlapi                \
 			--disable-curses                \
 			--disable-curl                  \
-			--disable-fdt                   \
 			--disable-bluez                 \
 			--disable-guest-base            \
 			--disable-uuid                  \
