@@ -15,20 +15,23 @@ This problem was reported by "Ting Liu <b28495@freescale.com>"
  - move dummy definition from libkmod-internal.h to missing.h
  - update commit title]
 
+[Vicente: Adapt this patch to version 19.]
+
 Signed-off-by: Thomas De Schampheleire <thomas.de.schampheleire@gmail.com>
+Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
 
 Upstream-status: rejected, suggests to add in buildroot instead [1]
 
 [1] http://news.gmane.org/find-root.php?message_id=1412062906%2d27378%2d1%2dgit%2dsend%2demail%2dpatrickdepinguin%40gmail.com
 
 ---
- libkmod/missing.h |    4 ++++
+ shared/missing.h |    4 ++++
  1 files changed, 4 insertions(+), 0 deletions(-)
 
-diff --git a/libkmod/missing.h b/libkmod/missing.h
+diff --git a/shared/missing.h b/shared/missing.h
 index 4c0d136..e123e98 100644
---- a/libkmod/missing.h
-+++ b/libkmod/missing.h
+--- a/shared/missing.h
++++ b/shared/missing.h
 @@ -19,6 +19,10 @@
  # define __NR_finit_module -1
  #endif
