@@ -13,6 +13,7 @@ config BR2_PACKAGE_RPM
 	select BR2_PACKAGE_NEON_XML
 	select BR2_PACKAGE_NEON_ZLIB
 	select BR2_PACKAGE_NEON_SSL
+	select BR2_PACKAGE_ZLIB
 	help
 	  The RPM package management system.
 
