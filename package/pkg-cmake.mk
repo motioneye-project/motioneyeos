@@ -180,6 +180,25 @@ host-cmake-package = $(call inner-cmake-package,host-$(pkgname),$(call UPPERCASE
 # Generation of the CMake toolchain file
 ################################################################################
 
+# CMAKE_SYSTEM_PROCESSOR should match uname -m
+ifeq ($(BR2_ARM_CPU_ARMV4),y)
+CMAKE_SYSTEM_PROCESSOR_ARM_VARIANT = armv4
+else ifeq ($(BR2_ARM_CPU_ARMV5),y)
+CMAKE_SYSTEM_PROCESSOR_ARM_VARIANT = armv5
+else ifeq ($(BR2_ARM_CPU_ARMV6),y)
+CMAKE_SYSTEM_PROCESSOR_ARM_VARIANT = armv6
+else ifeq ($(BR2_ARM_CPU_ARMV7A),y)
+CMAKE_SYSTEM_PROCESSOR_ARM_VARIANT = armv7
+endif
+
+ifeq ($(BR2_arm),y)
+CMAKE_SYSTEM_PROCESSOR = $(CMAKE_SYSTEM_PROCESSOR_ARM_VARIANT)l
+else ifeq ($(BR2_armeb),y)
+CMAKE_SYSTEM_PROCESSOR = $(CMAKE_SYSTEM_PROCESSORARM_VARIANT)b
+else
+CMAKE_SYSTEM_PROCESSOR = $(BR2_ARCH)
+endif
+
 # In order to allow the toolchain to be relocated, we calculate the HOST_DIR
 # based on the toolchainfile.cmake file's location: $(HOST_DIR)/usr/share/buildroot
 # In all the other variables, HOST_DIR will be replaced by RELOCATED_HOST_DIR,
@@ -193,5 +212,6 @@ $(HOST_DIR)/usr/share/buildroot/toolchainfile.cmake:
 		-e 's:@@TARGET_LDFLAGS@@:$(call qstrip,$(TARGET_LDFLAGS)):' \
 		-e 's:@@TARGET_CC_NOCCACHE@@:$(subst $(HOST_DIR)/,,$(call qstrip,$(TARGET_CC_NOCCACHE))):' \
 		-e 's:@@TARGET_CXX_NOCCACHE@@:$(subst $(HOST_DIR)/,,$(call qstrip,$(TARGET_CXX_NOCCACHE))):' \
+		-e 's:@@CMAKE_SYSTEM_PROCESSOR@@:$(call qstrip,$(CMAKE_SYSTEM_PROCESSOR)):' \
 		$(TOPDIR)/support/misc/toolchainfile.cmake.in \
 		> $@
