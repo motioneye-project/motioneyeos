@@ -109,6 +109,13 @@ config BR2_powerpc_e300c3
 config BR2_powerpc_e500mc
 	bool "e500mc"
 	depends on !BR2_ARCH_IS_64
+config BR2_powerpc_e5500
+	bool "e5500"
+	depends on !BR2_powerpc64le
+config BR2_powerpc_e6500
+	bool "e6500"
+	depends on !BR2_powerpc64le
+	select BR2_POWERPC_CPU_HAS_ALTIVEC
 config BR2_powerpc_power4
 	bool "power4"
 config BR2_powerpc_power5
