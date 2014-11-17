@@ -92,7 +92,7 @@ MPLAYER_DEPENDENCIES += live555
 MPLAYER_CONF_OPTS += --enable-live
 MPLAYER_LIVE555 = liveMedia groupsock UsageEnvironment BasicUsageEnvironment
 MPLAYER_CFLAGS += \
-	$(addprefix -I$(STAGING_DIR)/usr/include/live/,$(MPLAYER_LIVE555))
+	$(addprefix -I$(STAGING_DIR)/usr/include/,$(MPLAYER_LIVE555))
 MPLAYER_LDFLAGS += $(addprefix -l,$(MPLAYER_LIVE555)) -lstdc++
 else
 MPLAYER_CONF_OPTS += --disable-live
