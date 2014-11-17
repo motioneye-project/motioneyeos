@@ -27,6 +27,8 @@ ERLANG_CONF_OPTS = --without-javac
 HOST_ERLANG_DEPENDENCIES = host-openssl
 HOST_ERLANG_CONF_OPTS = --without-javac --with-ssl=$(HOST_DIR)/usr
 
+HOST_ERLANG_CONF_OPTS += --without-termcap
+
 ifeq ($(BR2_PACKAGE_NCURSES),y)
 ERLANG_CONF_OPTS += --with-termcap
 ERLANG_DEPENDENCIES += ncurses
