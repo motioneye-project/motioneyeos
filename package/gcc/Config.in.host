@@ -30,7 +30,7 @@ choice
 		depends on !BR2_cortex_a7 && !BR2_cortex_a12 && \
 			!BR2_cortex_a15 && !BR2_fa526 && !BR2_pj4
 		# Broken or unsupported PPC cores
-		depends on !BR2_power8
+		depends on !BR2_powerpc_power8
 		# SPARC -mcpu=leon3 appeared in gcc 4.8.3
 		depends on !BR2_sparc_leon3
 		# Broken or unsupported X86 cores
@@ -49,7 +49,7 @@ choice
 		# Broken or unsupported ARM cores
 		depends on !BR2_cortex_a12 && !BR2_pj4
 		# Broken or unsupported PPC cores
-		depends on !BR2_power8
+		depends on !BR2_powerpc_power8
 		# SPARC -mcpu=leon3 appeared in gcc 4.8.3
 		depends on !BR2_sparc_leon3
 		# Broken or unsupported x86 cores
@@ -64,7 +64,7 @@ choice
 		# Broken or unsupported ARM cores
 		depends on !BR2_cortex_a12
 		# Broken or unsupported PPC cores
-		depends on !BR2_power8
+		depends on !BR2_powerpc_power8
 		select BR2_GCC_NEEDS_MPC
 		select BR2_GCC_SUPPORTS_GRAPHITE
 
