@@ -4,4 +4,4 @@ config BR2_PACKAGE_LIBGCRYPT
 	help
 	  LibGCrypt is GNU's basic cryptographic library.
 
-	  ftp://gd.tuwien.ac.at/privacy/gnupg/libgcrypt/
+	  http://www.gnu.org/software/libgcrypt/
