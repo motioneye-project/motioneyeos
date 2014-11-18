@@ -29,7 +29,8 @@ SQUID_CONF_OPTS =	--enable-async-io=8 --enable-linux-netfilter \
 			--enable-external-acl-helpers="file_userip" \
 			--with-logdir=/var/log/squid/ \
 			--with-pidfile=/var/run/squid.pid \
-			--with-swapdir=/var/cache/squid/
+			--with-swapdir=/var/cache/squid/ \
+			--enable-icap-client
 
 # On uClibc librt needs libpthread
 ifeq ($(BR2_TOOLCHAIN_HAS_THREADS)$(BR2_TOOLCHAIN_USES_UCLIBC),yy)
