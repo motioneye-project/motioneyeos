@@ -18,6 +18,9 @@ LIBSSH2_DEPENDENCIES += libgcrypt
 LIBSSH2_CONF_OPTS += --with-libgcrypt \
 	--with-libgcrypt-prefix=$(STAGING_DIR)/usr \
 	--without-openssl
+# configure.ac forgets to link to dependent libraries of gcrypt breaking static
+# linking
+LIBSSH2_CONF_ENV += LIBS="$(shell $(STAGING_DIR)/usr/bin/libgcrypt-config --libs)"
 else
 LIBSSH2_DEPENDENCIES += openssl
 LIBSSH2_CONF_OPTS += --with-openssl \
