@@ -35,12 +35,7 @@ define DHCPCD_BUILD_CMDS
 endef
 
 define DHCPCD_INSTALL_TARGET_CMDS
-	$(INSTALL) -D -m 0755 $(@D)/dhcpcd \
-		$(TARGET_DIR)/usr/sbin/dhcpcd
-	$(INSTALL) -D -m 0644 $(@D)/dhcpcd.conf \
-		$(TARGET_DIR)/etc/dhcpcd.conf
-	$(INSTALL) -D -m 0755 $(@D)/dhcpcd-run-hooks \
-		$(TARGET_DIR)/libexec/dhcpcd-run-hooks
+	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) install DESTDIR=$(TARGET_DIR)
 endef
 
 # NOTE: Even though this package has a configure script, it is not generated
