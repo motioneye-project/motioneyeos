@@ -12,18 +12,7 @@ RAPIDJSON_INSTALL_TARGET = NO
 RAPIDJSON_INSTALL_STAGING = YES
 
 define RAPIDJSON_INSTALL_STAGING_CMDS
-	$(INSTALL) -m 0755 -d $(STAGING_DIR)/usr/include/rapidjson
-	$(INSTALL) -m 0755 -d $(STAGING_DIR)/usr/include/rapidjson/internal
-	$(INSTALL) -m 0755 -d $(STAGING_DIR)/usr/include/rapidjson/error
-	$(INSTALL) -m 0755 -d $(STAGING_DIR)/usr/include/rapidjson/msinttypes
-	$(INSTALL) -m 0644 $(@D)/include/rapidjson/*.h \
-		$(STAGING_DIR)/usr/include/rapidjson
-	$(INSTALL) -m 0644 $(@D)/include/rapidjson/internal/*.h \
-		$(STAGING_DIR)/usr/include/rapidjson/internal
-	$(INSTALL) -m 0644 $(@D)/include/rapidjson/error/*.h \
-		$(STAGING_DIR)/usr/include/rapidjson/error
-	$(INSTALL) -m 0644 $(@D)/include/rapidjson/msinttypes/*.h \
-		$(STAGING_DIR)/usr/include/rapidjson/msinttypes
+	cp -dpfr $(@D)/include/* $(STAGING_DIR)/usr/include
 endef
 
 $(eval $(generic-package))
