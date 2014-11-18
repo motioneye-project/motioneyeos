@@ -1204,6 +1204,7 @@ endif
 	source "package/cpuload/Config.in"
 if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	source "package/dcron/Config.in"
+	source "package/debianutils/Config.in"
 endif
 	source "package/dsp-tools/Config.in"
 	source "package/ftop/Config.in"
