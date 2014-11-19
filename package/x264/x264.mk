@@ -42,6 +42,7 @@ define X264_CONFIGURE_CMDS
 		--cross-prefix="$(TARGET_CROSS)" \
 		--disable-ffms \
 		--enable-static \
+		--disable-opencl \
 		$(X264_CONF_OPTS) \
 	)
 endef
