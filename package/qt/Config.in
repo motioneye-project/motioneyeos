@@ -375,12 +375,14 @@ config BR2_PACKAGE_QT_WEBKIT
 	depends on BR2_PACKAGE_QT_GUI_MODULE
 	depends on BR2_PACKAGE_QT_NETWORK
 	depends on BR2_PACKAGE_QT_ARCH_SUPPORTS_WEBKIT
+	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL # needs pthread_getattr_np()
 	help
 	  Build the WebKit module.
 	  If unsure, say n.
 
-comment "WebKit needs shared library/gui/network support"
+comment "WebKit needs shared library/NPTL toolchain/gui/network support"
 	depends on !(BR2_PACKAGE_QT_SHARED && BR2_PACKAGE_QT_GUI_MODULE && BR2_PACKAGE_QT_NETWORK)
+	depends on !BR2_TOOLCHAIN_HAS_THREADS_NPTL
 	depends on BR2_PACKAGE_QT_ARCH_SUPPORTS_WEBKIT
 
 config BR2_PACKAGE_QT_STL
