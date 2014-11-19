@@ -1,5 +1,6 @@
 config BR2_PACKAGE_GRANTLEE
 	bool "grantlee"
+	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL # Qt Script
 	depends on BR2_PACKAGE_QT_ARCH_SUPPORTS_WEBKIT
 	depends on BR2_PACKAGE_QT
 	select BR2_PACKAGE_QT_STL
@@ -9,3 +10,7 @@ config BR2_PACKAGE_GRANTLEE
 	  Qt implemantation of the Django template framework
 
 	  http://www.grantlee.org
+
+comment "grantlee needs a toolchain with NPTL"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS_NPTL
+	depends on BR2_PACKAGE_QT_ARCH_SUPPORTS_WEBKIT
