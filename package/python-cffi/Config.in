@@ -1,6 +1,5 @@
 config BR2_PACKAGE_PYTHON_CFFI
 	bool "python-cffi"
-	depends on BR2_PACKAGE_PYTHON || BR2_PACKAGE_PYTHON3
 	select BR2_PACKAGE_LIBFFI
 	help
 	  This is the Foreign Function Interface for Python calling C
