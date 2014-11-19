@@ -43,7 +43,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_MYSQL_SERVER),y)
 MYSQL_DEPENDENCIES += host-mysql host-bison
-HOST_MYSQL_DEPENDENCIES = host-zlib
+HOST_MYSQL_DEPENDENCIES = host-zlib host-ncurses
 
 HOST_MYSQL_CONF_OPTS = \
 	--with-embedded-server \
