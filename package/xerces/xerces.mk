@@ -15,6 +15,12 @@ XERCES_CONF_OPTS = \
 	--disable-threads \
 	--with-gnu-ld
 
+define XERCES_DISABLE_SAMPLES
+	$(SED) 's/ samples//' $(@D)/Makefile.in
+endef
+
+XERCES_POST_PATCH_HOOKS += XERCES_DISABLE_SAMPLES
+
 ifeq ($(BR2_PACKAGE_LIBICONV),y)
 XERCES_CONF_ENV += LIBS=-liconv
 XERCES_DEPENDENCIES += libiconv
