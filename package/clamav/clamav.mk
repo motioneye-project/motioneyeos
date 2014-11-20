@@ -32,6 +32,10 @@ CLAMAV_CONF_OPTS = \
 
 ifeq ($(BR2_PACKAGE_BZIP2),y)
 CLAMAV_DEPENDENCIES += bzip2
+# autodetection gets confused if host has bzip2, so force it
+CLAMAV_CONF_ENV += \
+	ac_cv_libbz2_libs=-lbz2 \
+	ac_cv_libbz2_ltlibs=-lbz2
 else
 CLAMAV_CONF_OPTS += --disable-bzip2
 endif
