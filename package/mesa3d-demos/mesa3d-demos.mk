@@ -11,11 +11,11 @@ MESA3D_DEMOS_AUTORECONF = YES
 MESA3D_DEMOS_DEPENDENCIES = host-pkgconf
 MESA3D_DEMOS_LICENSE = MIT
 
-ifeq ($(BR2_PACKAGE_HAS_LIBGL),y)
-MESA3D_DEMOS_DEPENDENCIES += libgl libglew libglu
-MESA3D_DEMOS_CONF_OPTS += --enable-gl
+ifeq ($(BR2_PACKAGE_XORG7)$(BR2_PACKAGE_HAS_LIBGL),yy)
+MESA3D_DEMOS_DEPENDENCIES += libgl libglew libglu xlib_libX11 xlib_libXext
+MESA3D_DEMOS_CONF_OPTS += --enable-gl --enable-x11
 else
-MESA3D_DEMOS_CONF_OPTS += --disable-gl
+MESA3D_DEMOS_CONF_OPTS += --disable-gl --disable-x11
 endif
 
 ifeq ($(BR2_PACKAGE_HAS_LIBEGL),y)
