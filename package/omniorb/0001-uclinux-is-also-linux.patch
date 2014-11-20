@@ -1,0 +1,19 @@
+uclinux is also linux
+
+Patch status: sent upstream
+(http://www.omniorb-support.com/pipermail/omniorb-list/2014-November/031628.html)
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+
+diff -Nuar omniORB-4.1.6-orig/configure.ac omniORB-4.1.6/configure.ac
+--- omniORB-4.1.6-orig/configure.ac	2011-06-25 00:37:28.000000000 +0300
++++ omniORB-4.1.6/configure.ac	2014-11-20 07:05:25.072634260 +0200
+@@ -183,6 +183,7 @@
+ 
+ case "$host" in
+   *-*-linux-*)   plat_name="Linux";    plat_def="__linux__";    os_v="2";;
++  *-*-uclinux-*) plat_name="Linux";    plat_def="__linux__";    os_v="2";;
+   *-*-cygwin*)   plat_name="Cygwin";   plat_def="__cygwin__";   os_v="1";;
+   *-*-solaris*)  plat_name="SunOS";    plat_def="__sunos__";    os_v="5";;
+   *-*-osf3*)     plat_name="OSF1";     plat_def="__osf1__";     os_v="3";;
