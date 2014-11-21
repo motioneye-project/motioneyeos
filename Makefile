@@ -24,6 +24,19 @@
 # You shouldn't need to mess with anything beyond this point...
 #--------------------------------------------------------------
 
+# Trick for always running with a fixed umask
+UMASK=0022
+ifneq ($(shell umask),$(UMASK))
+.PHONY: all $(MAKECMDGOALS)
+
+all:
+	@umask $(UMASK) && $(MAKE) --no-print-directory
+
+$(MAKECMDGOALS):
+	@umask $(UMASK) && $(MAKE) --no-print-directory $@
+
+else # umask
+
 # This is our default rule, so must come first
 all:
 
@@ -937,3 +950,5 @@ include docs/manual/manual.mk
 -include $(BR2_EXTERNAL)/docs/*/*.mk
 
 .PHONY: $(noconfig_targets)
+
+endif #umask
