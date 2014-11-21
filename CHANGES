@@ -1,3 +1,22 @@
+2014.11, Not yet released:
+
+	Fixes all over the tree.
+
+	Inittab tweaks for shutdown handling (busybox and sysvinit).
+
+	Updated/fixed packages: aircrack-ng, botan, canfestival,
+	clamav, coreutils, czmq, dbus, dovecot, duma, e2fsprogs,
+	erlang, gcc, iputils, libcap, libgcrypt, libmemcached,
+	libssh2, libunwind, libv4l, linux-headers, mesa3d-demos, mutt,
+	mysql, ndisc6, nodejs, omniorb, perl-cross, php,
+	python-tornado, python3, qemu, qt5base, qt5webkit, rpm,
+	rt-tests, ruby, schifra, sdl_sound, shairport-sync, sysvinit,
+	tstools, tzdata, wireshark, x264
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#7646: strftime on datetime not works on python3
+
 2014.11-rc1, Released November 12th, 2014
 
 	Fixes all over the tree and new features.
