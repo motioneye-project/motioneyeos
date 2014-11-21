@@ -35,7 +35,7 @@ MAKEFLAGS += --no-print-directory
 all	:= \$(filter-out Makefile,\$(MAKECMDGOALS))
 
 _all:
-	\$(MAKE) \$(MAKEARGS) \$(all)
+	umask 0022 && \$(MAKE) \$(MAKEARGS) \$(all)
 
 Makefile:;
 
