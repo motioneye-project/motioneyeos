@@ -483,6 +483,7 @@ endif
 if BR2_PACKAGE_PYTHON || BR2_PACKAGE_PYTHON3
 menu "external python modules"
 	source "package/python-bottle/Config.in"
+	source "package/python-certifi/Config.in"
 	source "package/python-cffi/Config.in"
 	source "package/python-configobj/Config.in"
 	source "package/python-configshell-fb/Config.in"
