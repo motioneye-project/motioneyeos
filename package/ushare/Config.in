@@ -4,6 +4,10 @@ config BR2_PACKAGE_USHARE
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libupnp
 	select BR2_PACKAGE_LIBUPNP
 	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE
+	# ushare has a completely custom configure script that does
+	# broken things with library ordering, which breaks static
+	# linking.
+	depends on !BR2_PREFER_STATIC_LIB
 	help
 	  uShare is a UPnP (TM) A/V & DLNA Media Server.
 	  It implements the server component that provides UPnP media devices
@@ -11,5 +15,6 @@ config BR2_PACKAGE_USHARE
 
 	  http://ushare.geexbox.org/
 
-comment "ushare needs a toolchain w/ largefile, threads"
-	depends on !(BR2_LARGEFILE && BR2_TOOLCHAIN_HAS_THREADS)
+comment "ushare needs a toolchain w/ largefile, threads, dynamic library"
+	depends on !BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_THREADS || \
+		BR2_PREFER_STATIC_LIB
