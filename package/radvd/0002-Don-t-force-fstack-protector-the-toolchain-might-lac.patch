@@ -1,0 +1,27 @@
+From 324e1ebc7b86f68f49fb4f1c34a4de60d18dd3c1 Mon Sep 17 00:00:00 2001
+From: Gustavo Zacarias <gustavo@zacarias.com.ar>
+Date: Sun, 23 Nov 2014 12:17:11 +0100
+Subject: [PATCH 2/3] Don't force -fstack-protector, the toolchain might lack
+ support for it
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ Makefile.am | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/Makefile.am b/Makefile.am
+index 80633e7..8b5a2e4 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -43,7 +43,6 @@ DISABLE_WARNINGS = \
+ 
+ AM_CFLAGS = \
+ 	-fno-strict-aliasing \
+-	-fstack-protector \
+ 	$(ENABLE_WARNINGS) \
+ 	$(DISABLE_WARNINGS)
+ 
+-- 
+2.1.0
+
