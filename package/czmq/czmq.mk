@@ -19,7 +19,7 @@ CZMQ_LICENSE_FILES = LICENSE
 CZMQ_CONF_ENV = ac_cv_prog_czmq_have_asciidoc=no
 
 ifeq ($(BR2_PREFER_STATIC_LIB),y)
-CZMQ_CONF_OPTS += LIBS=-lstdc++
+CZMQ_CONF_OPTS += LIBS="-lstdc++ -lm"
 endif
 
 define CZMQ_CREATE_CONFIG_DIR
