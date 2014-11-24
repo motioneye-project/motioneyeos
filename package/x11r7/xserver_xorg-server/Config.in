@@ -50,13 +50,14 @@ config BR2_PACKAGE_XSERVER_XORG_SERVER
 	select BR2_PACKAGE_XUTIL_UTIL_MACROS
 	select BR2_PACKAGE_XKEYBOARD_CONFIG
 	depends on !BR2_avr32
+	depends on BR2_USE_MMU # fork()
 	help
 	  X.Org X server
 
 	  http://xorg.freedesktop.org
 
 comment "xorg-xserver is BROKEN on AVR32"
-	depends on BR2_avr32
+	depends on BR2_avr32 && BR2_USE_MMU
 
 if BR2_PACKAGE_XSERVER_XORG_SERVER
 
