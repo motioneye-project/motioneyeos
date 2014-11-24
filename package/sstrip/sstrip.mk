@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-SSTRIP_SITE = svn://dev.openwrt.org/openwrt/trunk/tools/sstrip
+SSTRIP_SITE = svn://svn.openwrt.org/openwrt/trunk/tools/sstrip
 SSTRIP_VERSION = 20154
 HOST_SSTRIP_BINARY = $(GNU_TARGET_NAME)-sstrip
 
