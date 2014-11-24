@@ -17,3 +17,4 @@ LIBUNISTRING_CONF_OPTS += --disable-threads
 endif
 
 $(eval $(autotools-package))
+$(eval $(host-autotools-package))
