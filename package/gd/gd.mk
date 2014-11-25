@@ -13,6 +13,7 @@ GD_LICENSE_FILES = COPYING
 
 GD_CONFIG_SCRIPTS = gdlib-config
 GD_CONF_OPTS = --without-x --disable-rpath
+GD_DEPENDENCIES = host-pkgconf
 
 # gd forgets to link utilities with -pthread even though it uses
 # pthreads, causing linking errors with static linking
