@@ -40,7 +40,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_LIBPNG),y)
 GD_DEPENDENCIES += libpng
-GD_CONF_OPTS += --with-png=$(STAGING_DIR)/usr
+GD_CONF_OPTS += --with-png
 else
 GD_CONF_OPTS += --without-png
 endif
