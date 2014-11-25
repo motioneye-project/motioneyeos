@@ -1,0 +1,21 @@
+stats: fix static link
+
+The stats.c file does not use the dlopen() familly of functions, but
+includes dlfcn.h, which is missing on uClibc when it is configured as
+a static-only C library.
+
+so, simply do not include dlfcn.h.
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+
+diff -durN clamav-0.98.5.orig/libclamav/stats.c clamav-0.98.5/libclamav/stats.c
+--- clamav-0.98.5.orig/libclamav/stats.c	2014-11-13 23:30:43.000000000 +0100
++++ clamav-0.98.5/libclamav/stats.c	2014-11-25 19:57:14.344291266 +0100
+@@ -41,7 +41,6 @@
+ #include <sys/sysctl.h>
+ #endif
+ #endif
+-#include <dlfcn.h>
+ #else
+ #include <Windows.h>
+ #include <tchar.h>
