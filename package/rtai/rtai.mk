@@ -11,7 +11,7 @@ RTAI_INSTALL_STAGING = YES
 
 # The <pkg>_CONFIG_SCRIPTS cannot apply here to the specificities of rtai-config
 define RTAI_POST_PATCH_FIXUP
-	(SED) 's%^staging=.*%staging=$(STAGING_DIR)%' $(STAGING_DIR)/usr/bin/rtai-config
+	$(SED) 's%^staging=.*%staging=$(STAGING_DIR)%' $(STAGING_DIR)/usr/bin/rtai-config
 endef
 
 RTAI_POST_INSTALL_STAGING_HOOKS += RTAI_POST_PATCH_FIXUP
