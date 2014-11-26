@@ -12,8 +12,16 @@ NFTABLES_DEPENDENCIES = gmp libmnl libnftnl readline host-bison host-flex \
 NFTABLES_LICENSE = GPLv2
 NFTABLES_LICENSE_FILES = COPYING
 
+NFTABLES_LIBS = -lncurses
+ifeq ($(BR2_PREFER_STATIC_LIB)$(BR2_PACKAGE_LIBNFTNL_JSON),yy)
+NFTABLES_LIBS += -ljansson -lm
+endif
+ifeq ($(BR2_PREFER_STATIC_LIB)$(BR2_PACKAGE_LIBNFTNL_XML),yy)
+NFTABLES_LIBS += -lmxml -lpthread
+endif
+
 NFTABLES_CONF_ENV = \
 	ac_cv_prog_CONFIG_PDF=no \
-	LIBS="-lncurses"
+	LIBS="$(NFTABLES_LIBS)"
 
 $(eval $(autotools-package))
