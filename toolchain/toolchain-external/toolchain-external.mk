@@ -625,6 +625,15 @@ define TOOLCHAIN_EXTERNAL_INSTALL_BFIN_FLAT
 endef
 endif
 
+# We use --hash-style=both to increase the compatibility of
+# the generated binary with older platforms, except for MIPS,
+# where the only acceptable hash style is 'sysv'
+ifeq ($(findstring mips,$(HOSTARCH)),mips)
+TOOLCHAIN_EXTERNAL_WRAPPER_HASH_STYLE = sysv
+else
+TOOLCHAIN_EXTERNAL_WRAPPER_HASH_STYLE = both
+endif
+
 # Build toolchain wrapper for preprocessor, C and C++ compiler and setup
 # symlinks for everything else. Skip gdb symlink when we are building our
 # own gdb to prevent two gdb's in output/host/usr/bin.
@@ -647,9 +656,8 @@ define TOOLCHAIN_EXTERNAL_INSTALL_WRAPPER
 			;; \
 		esac; \
 	done ;
-	# We use --hash-style=both to increase the compatibility of
-	# the generated binary with older platforms
-	$(HOSTCC) $(HOST_CFLAGS) $(TOOLCHAIN_EXTERNAL_WRAPPER_ARGS) -s -Wl,--hash-style=both \
+	$(HOSTCC) $(HOST_CFLAGS) $(TOOLCHAIN_EXTERNAL_WRAPPER_ARGS) \
+		-s -Wl,--hash-style=$(TOOLCHAIN_EXTERNAL_WRAPPER_HASH_STYLE) \
 		toolchain/toolchain-external/ext-toolchain-wrapper.c \
 		-o $(HOST_DIR)/usr/bin/ext-toolchain-wrapper
 endef
