@@ -8,7 +8,7 @@ NETWORKMANAGER_BIN=${sbindir}/NetworkManager
 
 [ -x $NETWORKMANAGER_BIN ] || exit 0
 
-PID=`pidof -o %PPID NetworkManager`
+PID=`pidof NetworkManager`
 case "$1" in
 	start)
 		echo -n "Starting NetworkManager ... "
