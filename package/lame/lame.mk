@@ -19,7 +19,7 @@ LAME_LICENSE_FILES = COPYING
 # So, if BR2_ENABLE_DEBUG is selected, then we have force lame to be
 # built without debug symbols for Aarch64 and MIPS because these
 # architectures don't have those macros defined.
-ifeq ($(BR2_ENABLE_DEBUG)$(BR2_aarch64)$(BR2_mips)$(BR2_mipsel)$(BR2_mips64)$(BR2_mips64el),yy)
+ifeq ($(BR2_ENABLE_DEBUG)$(BR2_aarch64)$(BR2_arm)$(BR2_armeb)$(BR2_mips)$(BR2_mipsel)$(BR2_mips64)$(BR2_mips64el),yy)
 LAME_CONF_OPTS += --disable-debug
 endif
 
