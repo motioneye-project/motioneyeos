@@ -20,7 +20,7 @@ BOTAN_CONF_OPTS = \
 	--cc-bin="$(TARGET_CXX)"
 
 ifeq ($(BR2_PREFER_STATIC_LIB),y)
-	BOTAN_CONF_OPTS += --disable-shared
+	BOTAN_CONF_OPTS += --disable-shared --no-autoload
 endif
 
 ifeq ($(BR2_PACKAGE_BZIP2),y)
