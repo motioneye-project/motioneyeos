@@ -1,0 +1,17 @@
+Drop the need for dpkg-architecture, we only build for linux.
+Thanks to Károly Kasza for catching this one.
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+diff -Nura ifupdown.orig/defn2c.pl ifupdown/defn2c.pl
+--- ifupdown.orig/defn2c.pl	2014-11-18 16:39:28.878772655 -0300
++++ ifupdown/defn2c.pl	2014-11-18 16:43:41.120456676 -0300
+@@ -2,7 +2,7 @@
+ 
+ use strict;
+ 
+-my $DEB_HOST_ARCH_OS = `dpkg-architecture -qDEB_HOST_ARCH_OS`;
++my $DEB_HOST_ARCH_OS = "linux";
+ 
+ $DEB_HOST_ARCH_OS =~ s/\n//;
+ 
