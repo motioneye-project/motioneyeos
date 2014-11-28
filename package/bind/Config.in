@@ -3,6 +3,7 @@ config BR2_PACKAGE_BIND
 	depends on BR2_INET_IPV6
 	depends on BR2_LARGEFILE
 	depends on BR2_USE_MMU # fork()
+	depends on !BR2_PREFER_STATIC_LIB
 	help
 	  BIND (Berkeley Internet Name Domain) is an implementation of
 	  the Domain Name System (DNS) protocols and provides an openly
@@ -38,6 +39,6 @@ config BR2_PACKAGE_BIND_TOOLS
 
 endif
 
-comment "bind needs a toolchain w/ largefile, IPv6"
+comment "bind needs a toolchain w/ largefile, IPv6, dynamic library"
 	depends on BR2_USE_MMU
-	depends on !(BR2_LARGEFILE || BR2_INET_IPV6)
+	depends on !BR2_LARGEFILE || !BR2_INET_IPV6 || BR2_PREFER_STATIC_LIB
