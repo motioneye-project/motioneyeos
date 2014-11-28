@@ -55,6 +55,8 @@ HOST_MONO_CONF_OPTS += \
 	--with-profile4=$(if $(BR2_PACKAGE_MONO_40),yes,no) \
 	--with-profile4_5=$(if $(BR2_PACKAGE_MONO_45),yes,no)
 
+HOST_MONO_MAKE_OPTS += EXTERNAL_MCS="$(@D)/mcs/class/lib/monolite/basic.exe"
+
 HOST_MONO_DEPENDENCIES = host-monolite host-gettext
 
 define HOST_MONO_SETUP_MONOLITE
