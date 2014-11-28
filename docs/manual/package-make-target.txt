@@ -69,6 +69,8 @@ graphs.
 
 | +dirclean+        | Remove the whole package build directory
 
+| +reinstall+       | Re-run the install commands
+
 | +rebuild+         | Re-run the compilation commands - this only makes
 sense when using the +OVERRIDE_SRCDIR+ feature or when you modified a file
 directly in the build directory
