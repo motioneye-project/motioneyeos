@@ -577,15 +577,19 @@ $(1)-graph-depends: graph-depends-requirements
 
 $(1)-dirclean:		$$($(2)_TARGET_DIRCLEAN)
 
-$(1)-clean-for-rebuild:
+$(1)-clean-for-reinstall:
 ifneq ($$($(2)_OVERRIDE_SRCDIR),)
 			rm -f $$($(2)_TARGET_RSYNC)
 endif
-			rm -f $$($(2)_TARGET_BUILD)
 			rm -f $$($(2)_TARGET_INSTALL_STAGING)
 			rm -f $$($(2)_TARGET_INSTALL_TARGET)
 			rm -f $$($(2)_TARGET_INSTALL_IMAGES)
 			rm -f $$($(2)_TARGET_INSTALL_HOST)
+
+$(1)-reinstall:		$(1)-clean-for-reinstall $(1)
+
+$(1)-clean-for-rebuild: $(1)-clean-for-reinstall
+			rm -f $$($(2)_TARGET_BUILD)
 
 $(1)-rebuild:		$(1)-clean-for-rebuild $(1)
 
