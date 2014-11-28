@@ -1,3 +1,26 @@
+2014.11-rc3, Released November 28th, 2014
+
+	Fixes all over the tree.
+
+	System: File permissions of /etc/random-seed made more
+	restrictive.
+
+	Toolchain: Various fixes related to locale handling, a fix for
+	building the toolchain wrapper on MIPS.
+
+	Updated/fixed packages: bind, binutils. botan, btrfsprogs,
+	clamav, czmq, dhcp, dillo, dovecot, erlang, flac, gd, glibc,
+	gptfdisk, gst1-validate, heirloom-mailx, lame, libksba,
+	libllcp, libnspr, libpng, libshairplay, libtirpc, linux,
+	linux-headers, mpdecimal, mpg123, network-manager, nfstables,
+	nfs-utils, openssl, pcituils, qt, radvd, rtai, sqlcipher,
+	sstrip, tcpdump, uclibc, uemacs, ushare, wayland, weston,
+	xl2tp, xserver_xorg-server
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#7670: Fails to build mpc-1.0.2 on latest Cygwin
+
 2014.11-rc2, Released November 21st, 2014
 
 	Fixes all over the tree.
