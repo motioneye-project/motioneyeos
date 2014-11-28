@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-PINENTRY_VERSION = 0.8.3
+PINENTRY_VERSION = 0.9.0
 PINENTRY_SOURCE = pinentry-$(PINENTRY_VERSION).tar.bz2
 PINENTRY_SITE = ftp://ftp.gnupg.org/gcrypt/pinentry
 PINENTRY_LICENSE = GPLv2+
