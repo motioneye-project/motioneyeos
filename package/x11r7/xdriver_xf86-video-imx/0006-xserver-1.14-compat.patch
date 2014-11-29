@@ -1,0 +1,34 @@
+Fix building using new Xorg 1.14
+
+mibstore functions are no longer supported. This patch removes them
+from this driver, following the pattern in
+http://patches.openembedded.org/patch/46133/
+
+This checkin shows when/where the changes to the X server were made
+that deleted the header mibstore.h and mentions the reasons.
+http://lists.x.org/archives/xorg-devel/2012-September/033575.html
+
+Upstream-Status: Pending
+
+Signed-off-by: Otavio Salvador <otavio@ossystems.com.br>
+
+Index: xserver-xorg-video-imx-11.09.01/src/imx_driver.c
+===================================================================
+--- xserver-xorg-video-imx-11.09.01.orig/src/imx_driver.c
++++ xserver-xorg-video-imx-11.09.01/src/imx_driver.c
+@@ -37,7 +37,6 @@
+ #include "xf86_OSproc.h"
+ 
+ #include "mipointer.h"
+-#include "mibstore.h"
+ #include "micmap.h"
+ #include "colormapst.h"
+ #include "xf86cmap.h"
+@@ -722,7 +721,6 @@ imxScreenInit(SCREEN_INIT_ARGS_DECL)
+ 	/* Initialize for X extensions. */
+ 	imxExtInit();
+ 
+-	miInitializeBackingStore(pScreen);
+ 	xf86SetBackingStore(pScreen);
+ 
+ 	/* software cursor */
