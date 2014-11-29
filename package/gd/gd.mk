@@ -33,6 +33,13 @@ else
 GD_CONF_OPTS += --without-freetype
 endif
 
+ifeq ($(BR2_PACKAGE_LIBICONV),y)
+GD_DEPENDENCIES += libiconv
+# not strictly needed for gd, but ensures -liconv ends up in
+# gdlib-config --libs output
+GD_CONF_ENV += LIBS="-liconv"
+endif
+
 ifeq ($(BR2_PACKAGE_JPEG),y)
 GD_DEPENDENCIES += jpeg
 GD_CONF_OPTS += --with-jpeg
