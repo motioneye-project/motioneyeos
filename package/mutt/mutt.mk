@@ -57,4 +57,11 @@ MUTT_CONF_ENV += \
 	mutt_cv_iconv_good=yes \
 	mutt_cv_iconv_nontrans=no
 
+MUTT_CONF_OPTS += --with-mailpath=/var/mail
+
+define MUTT_VAR_MAIL
+	ln -sf /tmp $(TARGET_DIR)/var/mail
+endef
+MUTT_POST_INSTALL_TARGET_HOOKS += MUTT_VAR_MAIL
+
 $(eval $(autotools-package))
