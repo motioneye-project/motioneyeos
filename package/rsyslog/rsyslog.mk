@@ -39,18 +39,16 @@ else
 endif
 
 define RSYSLOG_INSTALL_INIT_SYSV
-	[ -f $(TARGET_DIR)/etc/init.d/S01rsyslog ] || \
-		$(INSTALL) -m 0755 -D package/rsyslog/S01rsyslog \
-			$(TARGET_DIR)/etc/init.d/S01rsyslog
+	$(INSTALL) -m 0755 -D package/rsyslog/S01rsyslog \
+		$(TARGET_DIR)/etc/init.d/S01rsyslog
 endef
 
-define RSYSLOG_INSTALL_CONF_SCRIPT
-	[ -f $(TARGET_DIR)/etc/rsyslog.conf ] || \
-		$(INSTALL) -m 0644 -D $(@D)/platform/redhat/rsyslog.conf \
-			$(TARGET_DIR)/etc/rsyslog.conf
+define RSYSLOG_INSTALL_CONF
+	$(INSTALL) -m 0644 -D $(@D)/platform/redhat/rsyslog.conf \
+		$(TARGET_DIR)/etc/rsyslog.conf
 	mkdir -p $(TARGET_DIR)/etc/rsyslog.d
 endef
 
-RSYSLOG_POST_INSTALL_TARGET_HOOKS += RSYSLOG_INSTALL_CONF_SCRIPT
+RSYSLOG_POST_INSTALL_TARGET_HOOKS += RSYSLOG_INSTALL_CONF
 
 $(eval $(autotools-package))
