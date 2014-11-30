@@ -16,8 +16,6 @@ endef
 
 define TREE_INSTALL_TARGET_CMDS
 	$(INSTALL) -D -m 0755 $(@D)/tree $(TARGET_DIR)/usr/bin/tree
-	$(INSTALL) -D -m 0644 $(@D)/doc/tree.1 \
-		$(TARGET_DIR)/usr/share/man/man1/tree.1
 endef
 
 $(eval $(generic-package))
