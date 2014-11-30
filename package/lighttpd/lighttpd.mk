@@ -62,44 +62,30 @@ endif
 define LIGHTTPD_INSTALL_CONFIG
 	$(INSTALL) -d -m 0755 $(TARGET_DIR)/etc/lighttpd/conf.d
 	$(INSTALL) -d -m 0755 $(TARGET_DIR)/var/www
-
-	[ -f $(TARGET_DIR)/etc/lighttpd/lighttpd.conf ] || \
-		$(INSTALL) -D -m 755 $(@D)/doc/config/lighttpd.conf \
-			$(TARGET_DIR)/etc/lighttpd/lighttpd.conf
-
-	[ -f $(TARGET_DIR)/etc/lighttpd/modules.conf ] || \
-		$(INSTALL) -D -m 755 $(@D)/doc/config/modules.conf \
-			$(TARGET_DIR)/etc/lighttpd/modules.conf
-
-	[ -f $(TARGET_DIR)/etc/lighttpd/conf.d/access_log.conf ] || \
-		$(INSTALL) -D -m 755 $(@D)/doc/config/conf.d/access_log.conf \
-			$(TARGET_DIR)/etc/lighttpd/conf.d/access_log.conf
-
-	[ -f $(TARGET_DIR)/etc/lighttpd/conf.d/debug.conf ] || \
-		$(INSTALL) -D -m 755 $(@D)/doc/config/conf.d/debug.conf \
-			$(TARGET_DIR)/etc/lighttpd/conf.d/debug.conf
-
-	[ -f $(TARGET_DIR)/etc/lighttpd/conf.d/dirlisting.conf ] || \
-		$(INSTALL) -D -m 755 $(@D)/doc/config/conf.d/dirlisting.conf \
-			$(TARGET_DIR)/etc/lighttpd/conf.d/dirlisting.conf
-
-	[ -f $(TARGET_DIR)/etc/lighttpd/conf.d/mime.conf ] || \
-		$(INSTALL) -D -m 755 $(@D)/doc/config/conf.d/mime.conf \
-			$(TARGET_DIR)/etc/lighttpd/conf.d/mime.conf
+	$(INSTALL) -D -m 755 $(@D)/doc/config/lighttpd.conf \
+		$(TARGET_DIR)/etc/lighttpd/lighttpd.conf
+	$(INSTALL) -D -m 755 $(@D)/doc/config/modules.conf \
+		$(TARGET_DIR)/etc/lighttpd/modules.conf
+	$(INSTALL) -D -m 755 $(@D)/doc/config/conf.d/access_log.conf \
+		$(TARGET_DIR)/etc/lighttpd/conf.d/access_log.conf
+	$(INSTALL) -D -m 755 $(@D)/doc/config/conf.d/debug.conf \
+		$(TARGET_DIR)/etc/lighttpd/conf.d/debug.conf
+	$(INSTALL) -D -m 755 $(@D)/doc/config/conf.d/dirlisting.conf \
+		$(TARGET_DIR)/etc/lighttpd/conf.d/dirlisting.conf
+	$(INSTALL) -D -m 755 $(@D)/doc/config/conf.d/mime.conf \
+		$(TARGET_DIR)/etc/lighttpd/conf.d/mime.conf
 endef
 
 LIGHTTPD_POST_INSTALL_TARGET_HOOKS += LIGHTTPD_INSTALL_CONFIG
 
 define LIGHTTPD_INSTALL_INIT_SYSV
-	[ -f $(TARGET_DIR)/etc/init.d/S50lighttpd ] || \
-		$(INSTALL) -D -m 755 package/lighttpd/S50lighttpd \
-			$(TARGET_DIR)/etc/init.d/S50lighttpd
+	$(INSTALL) -D -m 755 package/lighttpd/S50lighttpd \
+		$(TARGET_DIR)/etc/init.d/S50lighttpd
 endef
 
 define LIGHTTPD_INSTALL_INIT_SYSTEMD
-	[ -f $(TARGET_DIR)/etc/systemd/system/lighttpd.service ] || \
-		$(INSTALL) -D -m 644 package/lighttpd/lighttpd.service \
-			$(TARGET_DIR)/etc/systemd/system/lighttpd.service
+	$(INSTALL) -D -m 644 package/lighttpd/lighttpd.service \
+		$(TARGET_DIR)/etc/systemd/system/lighttpd.service
 
 	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
 
