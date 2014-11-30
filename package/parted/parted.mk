@@ -7,7 +7,7 @@
 PARTED_VERSION = 3.1
 PARTED_SOURCE = parted-$(PARTED_VERSION).tar.xz
 PARTED_SITE = $(BR2_GNU_MIRROR)/parted
-PARTED_DEPENDENCIES = util-linux
+PARTED_DEPENDENCIES = host-pkgconf util-linux
 PARTED_INSTALL_STAGING = YES
 # For uclinux patch
 PARTED_AUTORECONF = YES
@@ -33,7 +33,7 @@ ifeq ($(BR2_PREFER_STATIC_LIB),y)
 PARTED_CONF_OPTS += --disable-dynamic-loading
 endif
 
-HOST_PARTED_DEPENDENCIES = host-util-linux
+HOST_PARTED_DEPENDENCIES = host-pkgconf host-util-linux
 HOST_PARTED_CONF_OPTS += \
 	--without-readline \
 	--disable-device-mapper \
