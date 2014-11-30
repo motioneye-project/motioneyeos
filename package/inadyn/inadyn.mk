@@ -20,10 +20,8 @@ INADYN_CONF_OPTS += --disable-ssl
 endif
 
 define INADYN_INSTALL_SAMPLE_CONFIG
-	@if [ ! -f $(TARGET_DIR)/etc/inadyn.conf ]; then \
-		$(INSTALL) -D -m 0600 package/inadyn/inadyn.conf \
-			$(TARGET_DIR)/etc/inadyn.conf; \
-	fi
+	$(INSTALL) -D -m 0600 package/inadyn/inadyn.conf \
+		$(TARGET_DIR)/etc/inadyn.conf
 endef
 INADYN_POST_INSTALL_TARGET_HOOKS += INADYN_INSTALL_SAMPLE_CONFIG
 
