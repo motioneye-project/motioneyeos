@@ -21,9 +21,11 @@ define INPUT_EVENT_DAEMON_INSTALL_TARGET_CMDS
 	[ -f $(TARGET_DIR)/etc/input-event-daemon.conf ] || \
 		$(INSTALL) -m 644 -D $(@D)/docs/sample.conf \
 			$(TARGET_DIR)/etc/input-event-daemon.conf
-	[ -f $(TARGET_DIR)/etc/init.d/S99input-event-daemon ] || \
-		$(INSTALL) -m 0755 -D package/input-event-daemon/S99input-event-daemon \
-			$(TARGET_DIR)/etc/init.d/S99input-event-daemon
+endef
+
+define INPUT_EVENT_DAEMON_INSTALL_INIT_SYSV
+	$(INSTALL) -m 0755 -D package/input-event-daemon/S99input-event-daemon \
+		$(TARGET_DIR)/etc/init.d/S99input-event-daemon
 endef
 
 $(eval $(generic-package))
