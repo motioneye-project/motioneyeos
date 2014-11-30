@@ -21,10 +21,8 @@ endef
 define SYSKLOGD_INSTALL_TARGET_CMDS
 	$(INSTALL) -D -m 0500 $(@D)/syslogd $(TARGET_DIR)/sbin/syslogd
 	$(INSTALL) -D -m 0500 $(@D)/klogd $(TARGET_DIR)/sbin/klogd
-	if [ ! -f $(TARGET_DIR)/etc/syslog.conf ]; then \
-		$(INSTALL) -D -m 0644 package/sysklogd/syslog.conf \
-			$(TARGET_DIR)/etc/syslog.conf; \
-	fi
+	$(INSTALL) -D -m 0644 package/sysklogd/syslog.conf \
+		$(TARGET_DIR)/etc/syslog.conf; \
 endef
 
 define SYSKLOGD_INSTALL_INIT_SYSV
