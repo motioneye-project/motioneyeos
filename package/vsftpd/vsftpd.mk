@@ -43,15 +43,16 @@ define VSFTPD_BUILD_CMDS
 		LDFLAGS="$(TARGET_LDFLAGS)" LIBS="$(VSFTPD_LIBS)" -C $(@D)
 endef
 
+define VSFTPD_INSTALL_INIT_SYSV
+	$(INSTALL) -D -m 755 package/vsftpd/S70vsftpd $(TARGET_DIR)/etc/init.d/S70vsftpd
+endef
+
 define VSFTPD_INSTALL_TARGET_CMDS
 	$(INSTALL) -D -m 755 $(@D)/vsftpd $(TARGET_DIR)/usr/sbin/vsftpd
 	$(INSTALL) -D -m 644 $(@D)/vsftpd.8 \
 		$(TARGET_DIR)/usr/share/man/man8/vsftpd.8
 	$(INSTALL) -D -m 644 $(@D)/vsftpd.conf.5 \
 		$(TARGET_DIR)/usr/share/man/man5/vsftpd.conf.5
-	test -f $(TARGET_DIR)/etc/init.d/S70vsftpd || \
-		$(INSTALL) -D -m 755 package/vsftpd/vsftpd-init \
-			$(TARGET_DIR)/etc/init.d/S70vsftpd
 	test -f $(TARGET_DIR)/etc/vsftpd.conf || \
 		$(INSTALL) -D -m 644 $(@D)/vsftpd.conf \
 			$(TARGET_DIR)/etc/vsftpd.conf
