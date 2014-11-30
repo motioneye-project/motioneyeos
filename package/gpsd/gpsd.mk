@@ -206,10 +206,11 @@ define GPSD_INSTALL_TARGET_CMDS
 		$(SCONS) \
 		$(GPSD_SCONS_OPTS) \
 		install)
-	if [ ! -f $(TARGET_DIR)/etc/init.d/S50gpsd ]; then \
-		$(INSTALL) -m 0755 -D package/gpsd/S50gpsd $(TARGET_DIR)/etc/init.d/S50gpsd; \
-		$(SED) 's,^DEVICES=.*,DEVICES=$(BR2_PACKAGE_GPSD_DEVICES),' $(TARGET_DIR)/etc/init.d/S50gpsd; \
-	fi
+endef
+
+define GPSD_INSTALL_INIT_SYSV
+	$(INSTALL) -m 0755 -D package/gpsd/S50gpsd $(TARGET_DIR)/etc/init.d/S50gpsd
+	$(SED) 's,^DEVICES=.*,DEVICES=$(BR2_PACKAGE_GPSD_DEVICES),' $(TARGET_DIR)/etc/init.d/S50gpsd
 endef
 
 define GPSD_INSTALL_STAGING_CMDS
