@@ -1,0 +1,25 @@
+configure: fix static link with popt
+
+Use pkg-config to find the popt library.
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+
+---
+Patch applied upstream:
+    https://github.com/mikebrady/shairport-sync/commit/1f759e57e8c0682613eaaf89a46fdf6db4c6b5cd
+
+diff -durN shairport-sync-2.1.8.orig/configure.ac shairport-sync-2.1.8/configure.ac
+--- shairport-sync-2.1.8.orig/configure.ac	2014-11-29 14:14:36.655955733 +0100
++++ shairport-sync-2.1.8/configure.ac	2014-11-29 14:16:21.072719327 +0100
+@@ -31,7 +31,10 @@
+ AC_CHECK_LIB([daemon],[daemon_log], , AC_MSG_ERROR(libdaemon needed))
+ AC_CHECK_LIB([pthread],[pthread_create], , AC_MSG_ERROR(pthread library needed))
+ AC_CHECK_LIB([m],[exp], , AC_MSG_ERROR(maths library needed))
+-AC_CHECK_LIB([popt],[poptGetContext], , AC_MSG_ERROR(libpopt needed))
++PKG_CHECK_MODULES(
++    [POPT], [popt],
++    [LIBS="${POPT_LIBS} ${LIBS}"
++     AC_DEFINE([HAVE_LIBPOPT],[1],[Define to 1 if you have popt])])
+ 
+ # Look for piddir flag
+ AC_ARG_WITH(piddir, [ --with-piddir=<pathname> Specify a pathname to a directory in which to write the PID file.], [

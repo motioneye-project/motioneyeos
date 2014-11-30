@@ -1,0 +1,41 @@
+configure: fix static link with openssl
+
+Use pkg-config to find openssl libraries, that will return all the
+dependent libraries of openssl as well (e.g. -lz) that can not be
+deduced in case of a static link.
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+
+---
+Patch applied upstream:
+    https://github.com/mikebrady/shairport-sync/commit/2a430ec434674ed8c1959698c061662bb7abc1a1
+
+diff -durN shairport-sync-2.1.8.orig/configure.ac shairport-sync-2.1.8/configure.ac
+--- shairport-sync-2.1.8.orig/configure.ac	2014-10-25 18:03:13.000000000 +0200
++++ shairport-sync-2.1.8/configure.ac	2014-11-29 12:52:41.507981720 +0100
+@@ -21,6 +21,8 @@
+ AC_PROG_CC
+ AC_PROG_INSTALL
+ 
++PKG_PROG_PKG_CONFIG([0.9.0])
++
+ # Checks for libraries.
+ if test "x${with_os_type}" = xlinux; then
+  AC_CHECK_LIB([rt],[clock_gettime], , AC_MSG_ERROR(librt needed))
+@@ -52,8 +56,14 @@
+     AC_MSG_ERROR(choose either "openssl" or "polarssl" encryption)
+   fi
+   if test "x${with_ssl}" = xopenssl ; then
+-    AC_CHECK_LIB([crypto], [MD5_Init], , AC_MSG_ERROR(libcrypto selected, but the library cannot be found!))
+-    AC_CHECK_LIB([ssl],[SSL_library_init], , AC_MSG_ERROR(openssl selected but the library cannot be found!))
++    PKG_CHECK_MODULES(
++        [CRYPTO], [libcrypto],
++        [LIBS="${CRYPTO_LIBS} ${LIBS}"
++         AC_DEFINE([HAVE_LIBCRYPTO],[1],[Define to 1 if you have libcrypto])])
++    PKG_CHECK_MODULES(
++        [SSL], [libssl],
++        [LIBS="${SSL_LIBS} ${LIBS}"
++         AC_DEFINE([HAVE_LIBSSL],[1],[Define to 1 if you have libssl])])
+   elif test "x${with_ssl}" = xpolarssl ; then
+     AC_CHECK_LIB([polarssl],[ssl_init], , AC_MSG_ERROR(PolarSSL selected but the library cannot be found!))
+   else

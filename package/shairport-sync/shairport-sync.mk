@@ -9,9 +9,12 @@ SHAIRPORT_SYNC_SITE = $(call github,mikebrady,shairport-sync,$(SHAIRPORT_SYNC_VE
 
 SHAIRPORT_SYNC_LICENSE = MIT, BSD-3c
 SHAIRPORT_SYNC_LICENSE_FILES = LICENSES
-SHAIRPORT_SYNC_DEPENDENCIES = alsa-lib libdaemon popt
+SHAIRPORT_SYNC_DEPENDENCIES = alsa-lib libdaemon popt host-pkgconf
+
+# Touching configure.ac with the patches
 SHAIRPORT_SYNC_AUTORECONF = YES
-SHAIRPORT_SYNC_CONF_OPTS = --with-alsa # required
+
+SHAIRPORT_SYNC_CONF_OPTS = --with-alsa
 
 # Avahi or tinysvcmdns (shaiport-sync bundles its own version of tinysvcmdns).
 # Avahi support needs libavahi-client, which is built by avahi if avahi-daemon
