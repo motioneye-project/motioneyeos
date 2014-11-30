@@ -30,8 +30,10 @@ define PORTMAP_INSTALL_TARGET_CMDS
 		$(TARGET_DIR)/usr/share/man/man8/pmap_dump.8
 	$(INSTALL) -D $(@D)/pmap_set.8 \
 		$(TARGET_DIR)/usr/share/man/man8/pmap_set.8
-	$(INSTALL) -m 0755 package/portmap/S13portmap \
-		$(TARGET_DIR)/etc/init.d
+endef
+
+define PORTMAP_INSTALL_INIT_SYSV
+	$(INSTALL) -D -m 0755 package/portmap/S13portmap $(TARGET_DIR)/etc/init.d/S13portmap
 endef
 
 $(eval $(generic-package))
