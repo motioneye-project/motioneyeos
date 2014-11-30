@@ -21,10 +21,8 @@ AT_CONF_OPTS = \
 	--with-daemon_groupname=root \
 	SENDMAIL=/usr/sbin/sendmail
 
-define AT_INSTALL_INITSCRIPT
+define AT_INSTALL_INIT_SYSV
 	$(INSTALL) -m 0755 -D package/at/S99at $(TARGET_DIR)/etc/init.d/S99at
 endef
-
-AT_POST_INSTALL_TARGET_HOOKS += AT_INSTALL_INITSCRIPT
 
 $(eval $(autotools-package))
