@@ -17,9 +17,8 @@ RPCBIND_DEPENDENCIES += libtirpc
 RPCBIND_CONF_OPTS += --with-rpcuser=root
 
 define RPCBIND_INSTALL_INIT_SYSV
-	[ -f $(TARGET_DIR)/etc/init.d/S30rpcbind ] || \
-		$(INSTALL) -m 0755 -D package/rpcbind/S30rpcbind \
-			$(TARGET_DIR)/etc/init.d/S30rpcbind
+	$(INSTALL) -m 0755 -D package/rpcbind/S30rpcbind \
+		$(TARGET_DIR)/etc/init.d/S30rpcbind
 endef
 
 $(eval $(autotools-package))
