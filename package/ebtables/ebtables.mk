@@ -28,7 +28,7 @@ define EBTABLES_INSTALL_TARGET_CMDS
 		$(@D)/$(EBTABLES_SUBDIR)/extensions/*.so; \
 		do \
 		$(INSTALL) -m 0755 -D $${so} \
-			$(TARGET_DIR)/lib/ebtables/`basename $${so}`; \
+			$(TARGET_DIR)/lib/ebtables/`basename $${so}` || exit 1; \
 	done
 	$(INSTALL) -m 0755 -D $(@D)/$(EBTABLES_SUBDIR)/ebtables \
 		$(TARGET_DIR)/sbin/ebtables
