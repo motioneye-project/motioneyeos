@@ -28,14 +28,12 @@ endef
 define AICCU_INSTALL_TARGET_CMDS
 	$(INSTALL) -D -m 0755 $(@D)/unix-console/aiccu \
 		$(TARGET_DIR)/usr/sbin/aiccu
-	[ -f $(TARGET_DIR)/etc/aiccu.conf ] || \
-		$(INSTALL) -D -m 0644 $(@D)/doc/aiccu.conf \
+	$(INSTALL) -D -m 0644 $(@D)/doc/aiccu.conf \
 		$(TARGET_DIR)/etc/aiccu.conf
 endef
 
 define AICCU_INSTALL_INIT_SYSV
-	[ -f $(TARGET_DIR)/etc/init.d/S50aiccu ] || \
-		$(INSTALL) -D -m 0755 $(@D)/doc/aiccu.init \
+	$(INSTALL) -D -m 0755 $(@D)/doc/aiccu.init \
 		$(TARGET_DIR)/etc/init.d/S50aiccu
 endef
 
