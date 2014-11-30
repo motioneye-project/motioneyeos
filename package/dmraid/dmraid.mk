@@ -18,9 +18,8 @@ DMRAID_LICENSE_FILES = $(DMRAID_SUBDIR)/LICENSE_GPL $(DMRAID_SUBDIR)/LICENSE
 DMRAID_DEPENDENCIES = lvm2
 
 define DMRAID_INSTALL_INIT_SYSV
-	[ -f $(TARGET_DIR)/etc/init.d/S20dmraid ] || \
-		$(INSTALL) -D -m 0755 package/dmraid/S20dmraid \
-			$(TARGET_DIR)/etc/init.d/S20dmraid
+	$(INSTALL) -D -m 0755 package/dmraid/S20dmraid \
+		$(TARGET_DIR)/etc/init.d/S20dmraid
 endef
 
 $(eval $(autotools-package))
