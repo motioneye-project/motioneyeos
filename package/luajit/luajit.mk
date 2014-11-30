@@ -64,6 +64,11 @@ define LUAJIT_INSTALL_TARGET_CMDS
 	$(MAKE) PREFIX="/usr" DESTDIR="$(TARGET_DIR)" LDCONFIG=true -C $(@D) install
 endef
 
+define LUAJIT_INSTALL_SYMLINK
+	ln -fs luajit $(TARGET_DIR)/usr/bin/lua
+endef
+LUAJIT_POST_INSTALL_TARGET_HOOKS += LUAJIT_INSTALL_SYMLINK
+
 define HOST_LUAJIT_BUILD_CMDS
 	$(MAKE) PREFIX="/usr" BUILDMODE=static -C $(@D) amalg
 endef
