@@ -18,9 +18,8 @@ endef
 define INPUT_EVENT_DAEMON_INSTALL_TARGET_CMDS
 	$(INSTALL) -m 755 -D $(@D)/input-event-daemon \
 		$(TARGET_DIR)/usr/bin/input-event-daemon
-	[ -f $(TARGET_DIR)/etc/input-event-daemon.conf ] || \
-		$(INSTALL) -m 644 -D $(@D)/docs/sample.conf \
-			$(TARGET_DIR)/etc/input-event-daemon.conf
+	$(INSTALL) -m 644 -D $(@D)/docs/sample.conf \
+		$(TARGET_DIR)/etc/input-event-daemon.conf
 endef
 
 define INPUT_EVENT_DAEMON_INSTALL_INIT_SYSV
