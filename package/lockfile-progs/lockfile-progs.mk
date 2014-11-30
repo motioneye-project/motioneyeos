@@ -21,7 +21,7 @@ endef
 
 define LOCKFILE_PROGS_INSTALL_TARGET_CMDS
 	for i in $(LOCKFILE_BINS); do \
-		$(INSTALL) -D -m 755 $(@D)/bin/$$i $(TARGET_DIR)/usr/bin/$$i; \
+		$(INSTALL) -D -m 755 $(@D)/bin/$$i $(TARGET_DIR)/usr/bin/$$i || exit 1; \
 	done
 endef
 
