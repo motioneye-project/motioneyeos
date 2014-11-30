@@ -61,11 +61,9 @@ ifeq ($(BR2_PACKAGE_XLIB_LIBXFT)$(BR2_PACKAGE_XLIB_LIBXRENDER),yy)
 	PANGO_CONF_OPTS += --with-xft
 endif
 
-define PANGO_INSTALL_INITSCRIPT
+define PANGO_INSTALL_INIT_SYSV
 	$(INSTALL) -m 755 -D package/pango/S25pango \
 		$(TARGET_DIR)/etc/init.d/S25pango
 endef
-
-PANGO_POST_INSTALL_TARGET_HOOKS += PANGO_INSTALL_INITSCRIPT
 
 $(eval $(autotools-package))
