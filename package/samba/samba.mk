@@ -177,10 +177,7 @@ SAMBA_POST_INSTALL_TARGET_HOOKS += SAMBA_REMOVE_SWAT_DOCUMENTATION
 endif
 
 define SAMBA_INSTALL_CONFIG
-	# install config
-	@if [ ! -f $(TARGET_DIR)/etc/samba/smb.conf ]; then \
-		$(INSTALL) -m 0644 -D package/samba/simple.conf $(TARGET_DIR)/etc/samba/smb.conf; \
-	fi
+	$(INSTALL) -m 0644 -D package/samba/simple.conf $(TARGET_DIR)/etc/samba/smb.conf
 endef
 
 SAMBA_POST_INSTALL_TARGET_HOOKS += SAMBA_INSTALL_CONFIG
