@@ -17,8 +17,6 @@ endef
 
 define IOSTAT_INSTALL_TARGET_CMDS
 	$(INSTALL) -D $(IOSTAT_DIR)/iostat $(TARGET_DIR)/usr/bin/iostat
-	$(INSTALL) -D $(IOSTAT_DIR)/iostat.8 \
-		$(TARGET_DIR)/usr/share/man/man8/iostat.8
 endef
 
 $(eval $(generic-package))
