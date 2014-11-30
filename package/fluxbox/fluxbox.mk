@@ -24,8 +24,8 @@ FLUXBOX_CONF_OPTS += --disable-imlib2
 endif
 
 define FLUXBOX_INSTALL_XSESSION_FILE
-	[ -f $(TARGET_DIR)/root/.xsession ] || $(INSTALL) -m 0755 -D \
-		package/fluxbox/xsession $(TARGET_DIR)/root/.xsession
+	$(INSTALL) -m 0755 -D package/fluxbox/xsession \
+		$(TARGET_DIR)/root/.xsession
 endef
 
 FLUXBOX_POST_INSTALL_TARGET_HOOKS += FLUXBOX_INSTALL_XSESSION_FILE
