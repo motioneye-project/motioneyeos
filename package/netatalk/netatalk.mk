@@ -50,12 +50,9 @@ else
 	NETATALK_CONF_OPTS += --disable-cups
 endif
 
-define NETATALK_INSTALL_EXTRA_FILES
-	[ -f $(TARGET_DIR)/etc/init.d/S50netatalk ] || \
-		$(INSTALL) -m 0755 -D package/netatalk/S50netatalk \
-			$(TARGET_DIR)/etc/init.d/S50netatalk
+define NETATALK_INSTALL_INIT_SYSV
+	$(INSTALL) -m 0755 -D package/netatalk/S50netatalk \
+		$(TARGET_DIR)/etc/init.d/S50netatalk
 endef
-
-NETATALK_POST_INSTALL_TARGET_HOOKS += NETATALK_INSTALL_EXTRA_FILES
 
 $(eval $(autotools-package))
