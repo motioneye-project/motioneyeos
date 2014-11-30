@@ -9,8 +9,6 @@ IOSTAT_SITE = http://www.linuxinsight.com/files
 IOSTAT_LICENSE = GPL
 IOSTAT_LICENSE_FILES = LICENSE
 
-iostat-source: $(DL_DIR)/$(IOSTAT_SOURCE)
-
 define IOSTAT_BUILD_CMDS
 	$(MAKE) -C $(@D) $(TARGET_CONFIGURE_OPTS)
 endef
