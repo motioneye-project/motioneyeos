@@ -24,12 +24,6 @@ define PORTMAP_INSTALL_TARGET_CMDS
 	for sbin in $(PORTMAP_SBINS); do \
 		$(INSTALL) -D $(@D)/$$sbin $(TARGET_DIR)/sbin/$$sbin; \
 	done
-	$(INSTALL) -D $(@D)/portmap.man \
-		$(TARGET_DIR)/usr/share/man/man8/portmap.8
-	$(INSTALL) -D $(@D)/pmap_dump.8 \
-		$(TARGET_DIR)/usr/share/man/man8/pmap_dump.8
-	$(INSTALL) -D $(@D)/pmap_set.8 \
-		$(TARGET_DIR)/usr/share/man/man8/pmap_set.8
 endef
 
 define PORTMAP_INSTALL_INIT_SYSV
