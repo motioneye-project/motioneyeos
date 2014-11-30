@@ -32,7 +32,7 @@ IRDA_UTILS_SBINS- += $(IRDA_UTILS_SBINS-y)
 
 define IRDA_UTILS_INSTALL_TARGET_CMDS
 	for i in $(IRDA_UTILS_SBINS-y); do \
-		$(INSTALL) -m 0755 -D $(@D)/$$i/$$i $(TARGET_DIR)/usr/sbin/$$i; \
+		$(INSTALL) -m 0755 -D $(@D)/$$i/$$i $(TARGET_DIR)/usr/sbin/$$i || exit 1; \
 	done
 endef
 
