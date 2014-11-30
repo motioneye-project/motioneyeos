@@ -19,9 +19,8 @@ STUNNEL_CONF_OPTS += --disable-systemd
 endif
 
 define STUNNEL_INSTALL_CONF
-	[ -f $(TARGET_DIR)/etc/stunnel/stunnel.conf ] || \
-		$(INSTALL) -m 0644 -D $(@D)/tools/stunnel.conf \
-			$(TARGET_DIR)/etc/stunnel/stunnel.conf
+	$(INSTALL) -m 0644 -D $(@D)/tools/stunnel.conf \
+		$(TARGET_DIR)/etc/stunnel/stunnel.conf
 	rm -f $(TARGET_DIR)/etc/stunnel/stunnel.conf-sample
 endef
 
