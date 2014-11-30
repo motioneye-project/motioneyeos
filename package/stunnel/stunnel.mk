@@ -18,14 +18,17 @@ else
 STUNNEL_CONF_OPTS += --disable-systemd
 endif
 
-define STUNNEL_INSTALL_CONF_SCRIPT
-	$(INSTALL) -m 0755 -D package/stunnel/S50stunnel $(TARGET_DIR)/etc/init.d/S50stunnel
+define STUNNEL_INSTALL_CONF
 	[ -f $(TARGET_DIR)/etc/stunnel/stunnel.conf ] || \
 		$(INSTALL) -m 0644 -D $(@D)/tools/stunnel.conf \
 			$(TARGET_DIR)/etc/stunnel/stunnel.conf
 	rm -f $(TARGET_DIR)/etc/stunnel/stunnel.conf-sample
 endef
 
-STUNNEL_POST_INSTALL_TARGET_HOOKS += STUNNEL_INSTALL_CONF_SCRIPT
+STUNNEL_POST_INSTALL_TARGET_HOOKS += STUNNEL_INSTALL_CONF
+
+define STUNNEL_INSTALL_INIT_SYSV
+	$(INSTALL) -m 0755 -D package/stunnel/S50stunnel $(TARGET_DIR)/etc/init.d/S50stunnel
+endef
 
 $(eval $(autotools-package))
