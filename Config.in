@@ -314,6 +314,10 @@ config BR2_DEPRECATED_SINCE_2014_08
 	bool
 	default y
 
+config BR2_DEPRECATED_SINCE_2015_02
+	bool
+	default y
+
 endif
 
 config BR2_ENABLE_DEBUG
