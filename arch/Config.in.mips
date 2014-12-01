@@ -9,18 +9,6 @@ choice
 	  64bit cabable: 3, 4, 64, 64r2
 	  non-64bit capable: 1, 2, 32, 32r2
 
-config BR2_mips_1
-	bool "mips I (generic)"
-	depends on !BR2_ARCH_IS_64 && BR2_DEPRECATED_SINCE_2013_11
-config BR2_mips_2
-	bool "mips II"
-	depends on !BR2_ARCH_IS_64 && BR2_DEPRECATED_SINCE_2013_11
-config BR2_mips_3
-	bool "mips III"
-	depends on BR2_DEPRECATED_SINCE_2013_11
-config BR2_mips_4
-	bool "mips IV"
-	depends on BR2_DEPRECATED_SINCE_2013_11
 config BR2_mips_32
 	bool "mips 32"
 	depends on !BR2_ARCH_IS_64
