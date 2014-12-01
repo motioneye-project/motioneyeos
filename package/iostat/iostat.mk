@@ -16,7 +16,7 @@ define IOSTAT_BUILD_CMDS
 endef
 
 define IOSTAT_INSTALL_TARGET_CMDS
-	$(INSTALL) -D $(IOSTAT_DIR)/iostat $(TARGET_DIR)/usr/bin/iostat
+	$(INSTALL) -D -m 0755 $(IOSTAT_DIR)/iostat $(TARGET_DIR)/usr/bin/iostat
 endef
 
 $(eval $(generic-package))
