@@ -224,18 +224,15 @@ else
 VLC_CONF_OPTS += --disable-libxml2
 endif
 
-# live555 installs a static library only, and vlc tries to link it into a
-# shared library - which doesn't work. So only enable live555 if static.
-ifeq ($(BR2_PACKAGE_LIVE555)$(BR2_PREFER_STATIC_LIB),yy)
+ifeq ($(BR2_PACKAGE_LIVE555),y)
 VLC_CONF_OPTS += --enable-live555
 VLC_DEPENDENCIES += live555
 VLC_CONF_ENV += \
 	LIVE555_CFLAGS="\
-		-I$(STAGING_DIR)/usr/include/live \
-		-I$(STAGING_DIR)/usr/include/live/BasicUsageEnvironment \
-		-I$(STAGING_DIR)/usr/include/live/groupsock \
-		-I$(STAGING_DIR)/usr/include/live/liveMedia \
-		-I$(STAGING_DIR)/usr/include/live/UsageEnvironment \
+		-I$(STAGING_DIR)/usr/include/BasicUsageEnvironment \
+		-I$(STAGING_DIR)/usr/include/groupsock \
+		-I$(STAGING_DIR)/usr/include/liveMedia \
+		-I$(STAGING_DIR)/usr/include/UsageEnvironment \
 		" \
 	LIVE555_LIBS="-L$(STAGING_DIR)/usr/lib -lliveMedia"
 else

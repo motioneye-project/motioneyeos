@@ -1,0 +1,9 @@
+config BR2_PACKAGE_PYTHON_WERKZEUG
+	bool "python-werkzeug"
+	select BR2_PACKAGE_PYTHON_ZLIB if BR2_PACKAGE_PYTHON # runtime
+	select BR2_PACKAGE_PYTHON3_ZLIB if BR2_PACKAGE_PYTHON3 # runtime
+	help
+	  Werkzeug is a WSGI utility library for Python. It's widely
+	  used and BSD licensed.
+
+	  http://werkzeug.pocoo.org/

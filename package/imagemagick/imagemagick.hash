@@ -1,2 +1,2 @@
-# Locally calculated after checking pgp signature
-sha256	a4cccc70179ff2c67550e063cdcb2e62907338ef3e68b45bb1c41931e515b3eb	ImageMagick-6.8.9-9.tar.xz
+# From ftp://ftp.nluug.nl/pub/ImageMagick/digest.rdf
+sha256  12331c904c691cb128865fdc97e5f8a2654576f9b032e274b74dd7617aa1b9b6  ImageMagick-6.9.0-0.tar.xz

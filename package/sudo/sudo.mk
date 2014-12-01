@@ -29,7 +29,7 @@ endef
 SUDO_POST_CONFIGURE_HOOKS += SUDO_BUILD_MKSIGNAME_MKSIGLIST_HOST
 
 define SUDO_PERMISSIONS
-	/usr/bin/sudo			 f 4755	0 0 - - - - -
+	/usr/bin/sudo f 4755 0 0 - - - - -
 endef
 
 $(eval $(autotools-package))

@@ -481,6 +481,7 @@ use Pod::Usage;
 use File::Basename;
 use Module::CoreList;
 use HTTP::Tiny;
+use Safe;
 use MetaCPAN::API::Tiny;
 
 my ($help, $man, $quiet, $force, $recommend, $test, $host);
@@ -505,8 +506,21 @@ my %need_dlopen;        # name -> 1 if requires dynamic library
 my %deps_build;         # name -> list of host dependencies
 my %deps_runtime;       # name -> list of target dependencies
 my %license_files;      # name -> list of license files
+my %checksum;           # author -> list of checksum
 my $mcpan = MetaCPAN::API::Tiny->new();
 my $ua = HTTP::Tiny->new();
+
+sub get_checksum {
+    my ($url) = @_;
+    my($path) = $url =~ m|^[^:/?#]+://[^/?#]*([^?#]*)|;
+    my($basename, $dirname) = fileparse( $path );
+    unless ($checksum{$dirname}) {
+        my $response = $ua->get(qq{http://cpan.metacpan.org${dirname}CHECKSUMS});
+        $checksum{$dirname} = $response->{content};
+    }
+    my $chksum = Safe->new->reval($checksum{$dirname});
+    return $chksum->{$basename}, $basename;
+}
 
 sub get_manifest {
     my ($author, $distname, $version) = @_;
@@ -608,6 +622,7 @@ while (my ($distname, $dist) = each %dist) {
     my $dirname = q{package/} . $fsname;
     my $cfgname = $dirname . q{/Config.in};
     my $mkname = $dirname . q{/} . $fsname . q{.mk};
+    my $hashname = $dirname . q{/} . $fsname . q{.hash};
     my $brname = brname( $fsname );
     mkdir $dirname unless -d $dirname;
     if ($need_target{$distname} && ($force || !-f $cfgname)) {
@@ -673,6 +688,17 @@ while (my ($distname, $dist) = each %dist) {
         say {$fh} qq{};
         say {$fh} qq{\$(eval \$(perl-package))} if $need_target{$distname};
         say {$fh} qq{\$(eval \$(host-perl-package))} if $need_host{$distname};
+        close $fh;
+    }
+    if ($force || !-f $hashname) {
+        my($checksum, $filename) = get_checksum($dist->{download_url});
+        my $md5 = $checksum->{md5};
+        my $sha256 = $checksum->{sha256};
+        say qq{write ${hashname}} unless $quiet;
+        open my $fh, q{>}, $hashname;
+        say {$fh} qq{# retrieved by scancpan from http://cpan.metacpan.org/};
+        say {$fh} qq{md5    ${md5} ${filename}};
+        say {$fh} qq{sha256 ${sha256} ${filename}};
         close $fh;
     }
 }

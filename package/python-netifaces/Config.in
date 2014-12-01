@@ -1,6 +1,5 @@
 config BR2_PACKAGE_PYTHON_NETIFACES
 	bool "python-netifaces"
-	depends on BR2_PACKAGE_PYTHON
 	help
 	  Portable access to network interfaces from Python.
 

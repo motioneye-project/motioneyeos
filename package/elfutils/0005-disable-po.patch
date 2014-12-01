@@ -1,0 +1,24 @@
+Disable the build of the po/ directory
+
+Building the po/ directory complains that the scripts in there have
+been generated with gettext 0.17, while we use gettext 0.18 in
+Buildroot. Since we don't care that much about po files anyway, just
+disable the build of this directory.
+
+Based on the former patch by Thomas Petazzoni.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+
+diff -rup a/Makefile.am b/Makefile.am
+--- a/Makefile.am	2014-11-07 15:14:39.018060884 +0000
++++ b/Makefile.am	2014-11-07 15:30:02.864918229 +0000
+@@ -28,7 +28,7 @@ endif
+
+ # Add doc back when we have some real content.
+ SUBDIRS = config m4 lib libelf libebl libdwelf libdwfl libdw libcpu libasm \
+-	  backends $(PROGS_SUBDIR) po tests
++	  backends $(PROGS_SUBDIR) tests
+
+ EXTRA_DIST = elfutils.spec GPG-KEY NOTES CONTRIBUTING \
+	     COPYING COPYING-GPLV2 COPYING-LGPLV3

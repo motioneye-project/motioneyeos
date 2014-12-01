@@ -240,6 +240,25 @@ config BR2_PACKAGE_SAMBA_LIBSMBCLIENT
 	  standards POSIX functions available for manipulating local
 	  files.
 
+config BR2_PACKAGE_SAMBA_LIBNSS_WINS
+	bool "libnss_wins"
+	default y
+	depends on BR2_TOOLCHAIN_USES_GLIBC
+	depends on BR2_PACKAGE_SAMBA_WINBINDD
+	help
+	  libnss_wins is a library that permits the Name Service Switch
+	  to resolve NetBIOS names.
+
+config BR2_PACKAGE_SAMBA_LIBNSS_WINBIND
+	bool "libnss_winbind"
+	default y
+	depends on BR2_TOOLCHAIN_USES_GLIBC
+	depends on BR2_PACKAGE_SAMBA_WINBINDD
+	help
+	  libnss_winbind is a library that permits the Name Service
+	  Switch to resolve user and group information from a Windows
+	  NT server.
+
 endmenu
 
 

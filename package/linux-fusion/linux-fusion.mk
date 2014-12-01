@@ -36,8 +36,8 @@ define LINUX_FUSION_INSTALL_TARGET_CMDS
 		$(LINUX_FUSION_MAKE_OPTS) \
 		INSTALL_MOD_PATH=$(TARGET_DIR) \
 		-C $(@D) install
-	mkdir -p $(LINUX_FUSION_ETC_DIR)
-	cp -dpf package/linux-fusion/40-fusion.rules $(LINUX_FUSION_ETC_DIR)
+	$(INSTALL) -D -m 644 package/linux-fusion/40-fusion.rules \
+		$(LINUX_FUSION_ETC_DIR)/40-fusion.rules
 endef
 
 $(eval $(generic-package))

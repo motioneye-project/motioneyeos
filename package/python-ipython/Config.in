@@ -1,6 +1,5 @@
 config BR2_PACKAGE_PYTHON_IPYTHON
 	bool "python-ipython"
-	depends on BR2_PACKAGE_PYTHON || BR2_PACKAGE_PYTHON3
 	help
 	  IPython is a command shell for interactive computing in multiple
 	  programming languages, originally developed for the Python

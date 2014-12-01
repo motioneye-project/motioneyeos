@@ -50,8 +50,8 @@ BUSYBOX_KCONFIG_EDITORS = menuconfig xconfig gconfig
 BUSYBOX_KCONFIG_OPTS = $(BUSYBOX_MAKE_OPTS)
 
 define BUSYBOX_PERMISSIONS
-	/bin/busybox			 f 4755	0 0 - - - - -
-	/usr/share/udhcpc/default.script f 755  0 0 - - - - -
+	/bin/busybox                     f 4755 0  0 - - - - -
+	/usr/share/udhcpc/default.script f 755  0  0 - - - - -
 endef
 
 # If mdev will be used for device creation enable it and copy S10mdev to /etc/init.d

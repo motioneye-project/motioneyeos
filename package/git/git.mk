@@ -4,8 +4,9 @@
 #
 ################################################################################
 
-GIT_VERSION = 1.8.5.4
-GIT_SITE = http://git-core.googlecode.com/files
+GIT_VERSION = 2.2.0
+GIT_SOURCE = git-$(GIT_VERSION).tar.xz
+GIT_SITE = https://www.kernel.org/pub/software/scm/git
 GIT_LICENSE = GPLv2 LGPLv2.1+
 GIT_LICENSE_FILES = COPYING LGPL-2.1
 GIT_DEPENDENCIES = zlib host-gettext

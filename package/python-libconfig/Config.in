@@ -3,7 +3,6 @@ comment "python-libconfig needs a toolchain w/ C++, largefile, threads"
 
 config BR2_PACKAGE_PYTHON_LIBCONFIG
 	bool "python-libconfig"
-	depends on BR2_PACKAGE_PYTHON || BR2_PACKAGE_PYTHON3
 	select BR2_PACKAGE_BOOST
 	select BR2_PACKAGE_BOOST_PYTHON
 	select BR2_PACKAGE_LIBCONFIG

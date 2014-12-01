@@ -45,7 +45,7 @@ your newly built U-Boot.
 
 2. Program the DTB to NOR flash
 
-    => tftp $loadaddr p1010rdb.dtb
+    => tftp $loadaddr p1010rdb-pa.dtb
     => erase 0xee000000 +$filesize
     => cp.b $loadaddr 0xee000000 $filesize
 
