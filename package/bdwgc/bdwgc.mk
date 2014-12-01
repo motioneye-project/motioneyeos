@@ -4,6 +4,8 @@
 #
 ################################################################################
 
+# When bumping the version number, check if the list of supported architectures
+# is still valid; see Config.log.
 BDWGC_VERSION = 7.2f
 BDWGC_SOURCE = gc-$(BDWGC_VERSION).tar.gz
 BDWGC_SITE = http://www.hboehm.info/gc/gc_source
