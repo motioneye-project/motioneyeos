@@ -1,3 +1,14 @@
+2014.11, Released December 1st, 2014
+
+	Minor fixes.
+
+	Infrastructure: LD_LIBRARY_PATH handling tweak to ensure
+	current working directory isn't searched.
+
+	Updated/fixed packages: gd, gdb, libwebsockets, luajit, mono,
+	parted, shairport-sync, util-linux, xapp_bdftopcf,
+	xserver_xorg-server
+
 2014.11-rc3, Released November 28th, 2014
 
 	Fixes all over the tree.
