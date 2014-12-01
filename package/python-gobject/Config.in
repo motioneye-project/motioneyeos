@@ -1,0 +1,14 @@
+config BR2_PACKAGE_PYTHON_GOBJECT
+	bool "python-gobject"
+	depends on BR2_USE_WCHAR # libglib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libglib2
+	depends on BR2_USE_MMU # libglib2
+	select BR2_PACKAGE_LIBGLIB2
+	help
+	  Python bindings for the GLib/GObject library
+
+	  https://wiki.gnome.org/action/show/Projects/PyGObject
+
+comment "python-gobject needs a toolchain w/ wchar, threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
