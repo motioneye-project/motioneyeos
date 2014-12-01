@@ -12,7 +12,7 @@ WIPE_LICENSE = GPLv2+
 WIPE_LICENSE_FILES = LICENSE
 
 define WIPE_INSTALL_TARGET_CMDS
-	$(INSTALL) -D $(@D)/wipe $(TARGET_DIR)/usr/bin/wipe
+	$(INSTALL) -D -m 0755 $(@D)/wipe $(TARGET_DIR)/usr/bin/wipe
 endef
 
 $(eval $(autotools-package))
