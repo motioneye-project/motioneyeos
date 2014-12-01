@@ -1,6 +1,5 @@
 config BR2_PACKAGE_MPFR
 	bool "mpfr"
-	default y if BR2_INSTALL_FORTRAN
 	select BR2_PACKAGE_GMP
 	help
 	  C library for multiple-precision floating-point computations

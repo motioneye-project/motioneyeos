@@ -118,25 +118,6 @@ config BR2_TOOLCHAIN_BUILDROOT_CXX
 comment "C++ support broken in uClibc with locale enabled with gcc 4.2"
 	depends on BR2_GCC_VERSION_4_2_2_AVR32_2_1_5 && BR2_TOOLCHAIN_BUILDROOT_LOCALE
 
-config BR2_INSTALL_OBJC
-	bool "Enable Objective-C support"
-	depends on !BR2_avr32
-	depends on BR2_DEPRECATED_SINCE_2013_11
-	help
-	  Enable the support for the Objective-C language in the
-	  cross-compiler, and install the Objective-C runtime to the
-	  target.
-
-config BR2_INSTALL_FORTRAN
-	bool "Enable Fortran support"
-	depends on !BR2_avr32
-	depends on BR2_DEPRECATED_SINCE_2013_11
-	select BR2_PACKAGE_LIBMPFR
-	help
-	  Enable the support for the Fortran language in the
-	  cross-compiler, and install the Fortran runtime to the
-	  target.
-
 config BR2_GCC_ENABLE_TLS
 	bool "Enable compiler tls support" if BR2_TOOLCHAIN_BUILDROOT_UCLIBC
 	default y

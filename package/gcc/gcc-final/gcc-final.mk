@@ -44,8 +44,6 @@ endef
 # Languages supported by the cross-compiler
 GCC_FINAL_CROSS_LANGUAGES-y = c
 GCC_FINAL_CROSS_LANGUAGES-$(BR2_INSTALL_LIBSTDCPP) += c++
-GCC_FINAL_CROSS_LANGUAGES-$(BR2_INSTALL_FORTRAN) += fortran
-GCC_FINAL_CROSS_LANGUAGES-$(BR2_INSTALL_OBJC)    += objc
 GCC_FINAL_CROSS_LANGUAGES = $(subst $(space),$(comma),$(GCC_FINAL_CROSS_LANGUAGES-y))
 
 HOST_GCC_FINAL_CONF_OPTS = \
@@ -129,14 +127,6 @@ endif
 
 ifeq ($(BR2_GCC_ENABLE_OPENMP),y)
 HOST_GCC_FINAL_USR_LIBS += libgomp
-endif
-
-ifeq ($(BR2_INSTALL_FORTRAN),y)
-HOST_GCC_FINAL_USR_LIBS += libgfortran
-endif
-
-ifeq ($(BR2_INSTALL_OBJC),y)
-HOST_GCC_FINAL_USR_LIBS += libobjc
 endif
 
 ifeq ($(BR2_GCC_ENABLE_LIBMUDFLAP),y)
