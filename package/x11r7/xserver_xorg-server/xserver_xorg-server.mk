@@ -144,9 +144,9 @@ ifeq ($(BR2_PACKAGE_FREETYPE),y)
 XSERVER_XORG_SERVER_DEPENDENCIES += freetype
 endif
 
-# libunwind support is broken on mips64
+# libunwind support is broken on MIPS64 n32
 # https://bugs.freedesktop.org/show_bug.cgi?id=79939
-ifeq ($(BR2_PACKAGE_LIBUNWIND)-$(BR2_mips64el),y-)
+ifeq ($(BR2_PACKAGE_LIBUNWIND)-$(BR2_MIPS_NABI32),y-)
 XSERVER_XORG_SERVER_DEPENDENCIES += libunwind
 else
 XSERVER_XORG_SERVER_CONF_OPTS += --disable-libunwind
