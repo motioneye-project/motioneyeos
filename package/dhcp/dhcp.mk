@@ -75,6 +75,7 @@ define DHCP_INSTALL_INIT_SYSV
 		$(TARGET_DIR)/etc/init.d/S80dhcp-relay
 endef
 
+ifeq ($(BR2_PACKAGE_DHCP_SERVER),y)
 define DHCP_INSTALL_INIT_SYSTEMD
 	$(INSTALL) -D -m 644 package/dhcp/dhcpd.service \
 		$(TARGET_DIR)/lib/systemd/system/dhcpd.service
@@ -89,6 +90,7 @@ define DHCP_INSTALL_INIT_SYSTEMD
 	echo "f /var/lib/dhcp/dhcpd.leases - - - - -" >> \
 		$(TARGET_DIR)/usr/lib/tmpfiles.d/dhcpd.conf
 endef
+endif
 
 define DHCP_INSTALL_TARGET_CMDS
 	$(DHCP_INSTALL_RELAY)
