@@ -146,7 +146,7 @@ else
 endif
 
 ifeq ($(BR2_PACKAGE_HOST_GDB_PYTHON),y)
-	HOST_GDB_CONF_OPTS += --with-python
+	HOST_GDB_CONF_OPTS += --with-python=$(HOST_DIR)/usr/bin/python2
 	HOST_GDB_DEPENDENCIES += host-python
 else
 	HOST_GDB_CONF_OPTS += --without-python
