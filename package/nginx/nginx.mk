@@ -88,7 +88,6 @@ endif
 
 # misc. modules
 NGINX_CONF_OPTS += \
-	$(if $(BR2_PACKAGE_NGINX_RTSIG_MODULE),--with-rtsig_module) \
 	$(if $(BR2_PACKAGE_NGINX_SELECT_MODULE),--with-select_module,--without-select_module) \
 	$(if $(BR2_PACKAGE_NGINX_POLL_MODULE),--with-poll_module,--without-poll_module)
 

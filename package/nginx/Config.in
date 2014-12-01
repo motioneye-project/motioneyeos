@@ -309,11 +309,6 @@ endif #BR2_PACKAGE_NGINX_MAIL
 
 comment "misc. modules"
 
-config BR2_PACKAGE_NGINX_RTSIG_MODULE
-	bool "ngx_rtsig_module"
-	help
-	  Enable ngx_rtsig_module
-
 config BR2_PACKAGE_NGINX_SELECT_MODULE
 	bool "ngx_select_module"
 	help
