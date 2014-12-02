@@ -71,7 +71,6 @@ AVAHI_CONF_OPTS = \
 		--disable-qt3 \
 		--disable-qt4 \
 		--disable-gdbm \
-		--disable-python-dbus \
 		--disable-pygtk \
 		--disable-mono \
 		--disable-monodoc \
@@ -142,6 +141,14 @@ AVAHI_DEPENDENCIES += python
 AVAHI_CONF_OPTS += --enable-python
 else
 AVAHI_CONF_OPTS += --disable-python
+endif
+
+ifeq ($(BR2_PACKAGE_DBUS_PYTHON),y)
+AVAHI_CONF_OPTS += --enable-python-dbus
+AVAHI_CONF_ENV  += py_cv_mod_dbus_=yes
+AVAHI_DEPENDENCIES += dbus-python
+else
+AVAHI_CONF_OPTS += --disable-python-dbus
 endif
 
 AVAHI_MAKE_OPTS += $(if $(BR2_NEEDS_GETTEXT_IF_LOCALE),LIBS=-lintl)
