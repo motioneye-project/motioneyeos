@@ -23,7 +23,6 @@ FFMPEG_CONF_OPTS = \
 	--enable-logging \
 	--enable-optimizations \
 	--disable-extra-warnings \
-	--disable-ffprobe \
 	--enable-avdevice \
 	--enable-avcodec \
 	--enable-avformat \
@@ -102,6 +101,12 @@ ifeq ($(BR2_PACKAGE_FFMPEG_AVRESAMPLE),y)
 FFMPEG_CONF_OPTS += --enable-avresample
 else
 FFMPEG_CONF_OPTS += --disable-avresample
+endif
+
+ifeq ($(BR2_PACKAGE_FFMPEG_FFPROBE),y)
+FFMPEG_CONF_OPTS += --enable-ffprobe
+else
+FFMPEG_CONF_OPTS += --disable-ffprobe
 endif
 
 ifeq ($(BR2_PACKAGE_FFMPEG_POSTPROC),y)

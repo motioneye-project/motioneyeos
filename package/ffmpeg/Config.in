@@ -49,6 +49,12 @@ config BR2_PACKAGE_FFMPEG_FFSERVER
 	help
 	  FFserver is a streaming server for both audio and video.
 
+config BR2_PACKAGE_FFMPEG_FFPROBE
+	bool "Build ffprobe"
+	help
+	  FFprobe is a utility to determine the audio and video
+	  characteristics of a container file.
+
 config BR2_PACKAGE_FFMPEG_AVRESAMPLE
 	bool "Build libavresample"
 	help
