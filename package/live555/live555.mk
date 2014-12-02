@@ -19,6 +19,7 @@ LIVE555_LIBRARY_LINK = $(TARGET_AR) cr
 else
 LIVE555_CONFIG_TARGET = linux-with-shared-libraries
 LIVE555_LIBRARY_LINK = $(TARGET_CC) -o
+LIVE555_CFLAGS += -fPIC
 endif
 
 ifndef ($(BR2_ENABLE_LOCALE),y)
