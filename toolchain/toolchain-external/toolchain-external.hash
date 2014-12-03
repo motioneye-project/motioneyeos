@@ -1,0 +1,7 @@
+# Sourcery CodeBench Lite for MIPS
+# From: https://sourcery.mentor.com/GNUToolchain/release2791
+md5  14facaac538a43533b89d969d7904d46  mips-2014.05-27-mips-linux-gnu-i686-pc-linux-gnu.tar.bz2
+# From: https://sourcery.mentor.com/GNUToolchain/release2640
+md5  0ba8bc4923c04728ee3787bed4cd5148  mips-2013.11-36-mips-linux-gnu-i686-pc-linux-gnu.tar.bz2
+# From: https://sourcery.mentor.com/GNUToolchain/release2554
+md5  937a383ab2aa5b154aa90fbc5d7b334e  mips-2013.05-66-mips-linux-gnu-i686-pc-linux-gnu.tar.bz2
