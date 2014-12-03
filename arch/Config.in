@@ -254,7 +254,7 @@ config BR2_ARCH_HAS_ATOMICS
 # Set up target binary format
 choice
 	prompt "Target Binary Format"
-	depends on BR2_bfin || BR2_m68k
+	default BR2_BINFMT_ELF if !(BR2_bfin || BR2_m68k)
 	default BR2_BINFMT_FDPIC if BR2_bfin
 	default BR2_BINFMT_FLAT if BR2_m68k
 
