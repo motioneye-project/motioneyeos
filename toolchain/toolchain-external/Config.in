@@ -188,6 +188,91 @@ config BR2_TOOLCHAIN_EXTERNAL_ARAGO_ARMV5TE_201109
 
 	  This toolchain uses software-floating point.
 
+config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_MIPS201411
+	bool "Sourcery CodeBench MIPS 2014.11"
+	depends on BR2_mips || BR2_mipsel || BR2_mips64 || BR2_mips64el
+	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86"
+	depends on !BR2_MIPS_NABI32
+	depends on !BR2_PREFER_STATIC_LIB
+	select BR2_TOOLCHAIN_EXTERNAL_GLIBC
+	select BR2_TOOLCHAIN_HAS_NATIVE_RPC
+	select BR2_INSTALL_LIBSTDCPP
+	select BR2_HOSTARCH_NEEDS_IA32_LIBS
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_16
+	help
+	  Sourcery CodeBench toolchain for the MIPS architecture, from
+	  Mentor Graphics. It uses gcc 4.9.1, binutils 2.24.51, glibc
+	  2.20, uClibc 0.9.30 and gdb 7.7.50, kernel headers 3.16.2. It
+	  has support for the following variants:
+	    - MIPS32r2 - Big-Endian, 2008 NaN, O32
+	      Select MIPS (big endian) core
+	      Disable BR2_SOFT_FLOAT
+	      Set BR2_TARGET_OPTIMIZATION to -mnan=2008
+	    - MIPS32r2 - Big-Endian, O32
+	      Select MIPS (big endian) core
+	      Disable BR2_SOFT_FLOAT
+	    - MIPS32r2 - Big-Endian, O32, MIPS16
+	      Select MIPS (big endian) core
+	      Disable BR2_SOFT_FLOAT
+	      Set BR2_TARGET_OPTIMIZATION to -mips16
+	    - MIPS32r2 - Big-Endian, Soft-Float, O32
+	      Select MIPS (big endian) core
+	      Select BR2_SOFT_FLOAT
+	    - MIPS32r2 - Big-Endian, Soft-Float, O32, MIPS16
+	      Select MIPS (big endian) core
+	      Select BR2_SOFT_FLOAT
+	      Set BR2_TARGET_OPTIMIZATION to -mips16
+	    - MIPS32r2 - Little-Endian, 2008 NaN, O32
+	      Select MIPS (little endian) core
+	      Disable BR2_SOFT_FLOAT
+	      Set BR2_TARGET_OPTIMIZATION to -mnan=2008
+	    - MIPS32r2 - Little-Endian, O32
+	      Select MIPS (little endian) core
+	      Disable BR2_SOFT_FLOAT
+	    - MIPS32r2 - Little-Endian, O32, MIPS16
+	      Select MIPS (little endian) core
+	      Disable BR2_SOFT_FLOAT
+	      Set BR2_TARGET_OPTIMIZATION to -mips16
+	    - MIPS32r2 - Little-Endian, Soft-Float, O32
+	      Select MIPS (little endian) core
+	      Select BR2_SOFT_FLOAT
+	    - MIPS32r2 - Little-Endian, Soft-Float, O32, MIPS16
+	      Select MIPS (little endian) core
+	      Select BR2_SOFT_FLOAT
+	      Set BR2_TARGET_OPTIMIZATION to -mips16
+	    - MIPS32r2 - Little-Endian, Soft-Float, O32, microMIPS
+	      Select MIPS (little endian) core
+	      Select BR2_SOFT_FLOAT
+	      Set BR2_TARGET_OPTIMIZATION to -mmicromips
+	    - MIPS32r2 - uClibc, Big-Endian, 2008 NaN, O32
+	      Not usable in Buildroot yet.
+	    - MIPS32r2 - uClibc, Big-Endian, O32
+	      Not usable in Buildroot yet.
+	    - MIPS32r2 - uClibc, Big-Endian, Soft-Float, O32
+	      Not usable in Buildroot yet.
+	    - MIPS32r2 - uClibc, Little-Endian, 2008 NaN, O32
+	      Not usable in Buildroot yet.
+	    - MIPS32r2 - uClibc, Little-Endian, O32
+	      Not usable in Buildroot yet.
+	    - MIPS32r2 - uClibc, Little-Endian, Soft-Float, O32
+	      Not usable in Buildroot yet.
+	    - MIPS64r2 - Big-Endian, N64
+	      Select MIPS64 (big endian) core
+	      Select the n64 ABI
+	      Disable BR2_SOFT_FLOAT
+	    - MIPS64r2 - Big-Endian, Soft-Float, N64
+	      Select MIPS64 (big endian) core
+	      Select the n64 ABI
+	      Select BR2_SOFT_FLOAT
+	    - MIPS64r2 - Little-Endian, N64
+	      Select MIPS64 (little endian) core
+	      Select the n64 ABI
+	      Disable BR2_SOFT_FLOAT
+	    - MIPS64r2 - Little-Endian, Soft-Float, N64
+	      Select MIPS64 (little endian) core
+	      Select the n64 ABI
+	      Select BR2_SOFT_FLOAT
+
 config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_MIPS201405
 	bool "Sourcery CodeBench MIPS 2014.05"
 	depends on BR2_mips || BR2_mipsel || BR2_mips64 || BR2_mips64el
@@ -318,111 +403,6 @@ config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_MIPS201311
 	      Select MIPS (little endian) core
 	      Disable BR2_SOFT_FLOAT
 	      Set BR2_TARGET_OPTIMIZATION to -mips16
-	    - MIPS32r2 - Little-Endian, Soft-Float, O32
-	      Select MIPS (little endian) core
-	      Select BR2_SOFT_FLOAT
-	    - MIPS32r2 - Little-Endian, Soft-Float, O32, MIPS16
-	      Select MIPS (little endian) core
-	      Select BR2_SOFT_FLOAT
-	      Set BR2_TARGET_OPTIMIZATION to -mips16
-	    - MIPS32r2 - Little-Endian, Soft-Float, O32, microMIPS
-	      Select MIPS (little endian) core
-	      Select BR2_SOFT_FLOAT
-	      Set BR2_TARGET_OPTIMIZATION to -mmicromips
-	    - MIPS32r2 - uClibc, Big-Endian, 2008 NaN, O32
-	      Not usable in Buildroot yet.
-	    - MIPS32r2 - uClibc, Big-Endian, O32
-	      Not usable in Buildroot yet.
-	    - MIPS32r2 - uClibc, Big-Endian, Soft-Float, O32
-	      Not usable in Buildroot yet.
-	    - MIPS32r2 - uClibc, Little-Endian, 2008 NaN, O32
-	      Not usable in Buildroot yet.
-	    - MIPS32r2 - uClibc, Little-Endian, O32
-	      Not usable in Buildroot yet.
-	    - MIPS32r2 - uClibc, Little-Endian, Soft-Float, O32
-	      Not usable in Buildroot yet.
-	    - MIPS64r2 - Big-Endian, N64
-	      Select MIPS64 (big endian) core
-	      Select the n64 ABI
-	      Disable BR2_SOFT_FLOAT
-	    - MIPS64r2 - Big-Endian, Soft-Float, N64
-	      Select MIPS64 (big endian) core
-	      Select the n64 ABI
-	      Select BR2_SOFT_FLOAT
-	    - MIPS64r2 - Little-Endian, N64
-	      Select MIPS64 (little endian) core
-	      Select the n64 ABI
-	      Disable BR2_SOFT_FLOAT
-	    - MIPS64r2 - Little-Endian, Soft-Float, N64
-	      Select MIPS64 (little endian) core
-	      Select the n64 ABI
-	      Select BR2_SOFT_FLOAT
-
-config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_MIPS201305
-	bool "Sourcery CodeBench MIPS 2013.05"
-	depends on BR2_mips || BR2_mipsel || BR2_mips64 || BR2_mips64el
-	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86"
-	depends on !BR2_MIPS_NABI32
-	depends on !BR2_PREFER_STATIC_LIB
-	select BR2_TOOLCHAIN_EXTERNAL_GLIBC
-	select BR2_TOOLCHAIN_HAS_NATIVE_RPC
-	select BR2_INSTALL_LIBSTDCPP
-	select BR2_HOSTARCH_NEEDS_IA32_LIBS
-	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_8
-	help
-	  Sourcery CodeBench toolchain for the MIPS architecture, from
-	  Mentor Graphics. It uses gcc 4.7.3, binutils 2.23.52, glibc
-	  2.17, uClibc 0.9.30 and gdb 7.4.50, kernel headers 3.8.2. It
-	  has support for the following variants:
-	    - MIPS32r2 - Big-Endian, 2008 NaN, O32
-	      Select MIPS (big endian) core
-	      Disable BR2_SOFT_FLOAT
-	      Set BR2_TARGET_OPTIMIZATION to -mnan=2008
-	    - MIPS32r2 - Big-Endian, 2008 NaN, O32, MIPS16
-	      Select MIPS (big endian) core
-	      Disable BR2_SOFT_FLOAT
-	      Set BR2_TARGET_OPTIMIZATION to -mnan=2008 -mips16
-	    - MIPS32r2 - Big-Endian, O32
-	      Select MIPS (big endian) core
-	      Disable BR2_SOFT_FLOAT
-	    - MIPS32r2 - Big-Endian, O32, MIPS16
-	      Select MIPS (big endian) core
-	      Disable BR2_SOFT_FLOAT
-	      Set BR2_TARGET_OPTIMIZATION to -mips16
-	    - MIPS32r2 - Big-Endian, O32, microMIPS
-	      Select MIPS (big endian) core
-	      Disable BR2_SOFT_FLOAT
-	      Set BR2_TARGET_OPTIMIZATION to -mmicromips
-	    - MIPS32r2 - Big-Endian, Soft-Float, O32
-	      Select MIPS (big endian) core
-	      Select BR2_SOFT_FLOAT
-	    - MIPS32r2 - Big-Endian, Soft-Float, O32, MIPS16
-	      Select MIPS (big endian) core
-	      Select BR2_SOFT_FLOAT
-	      Set BR2_TARGET_OPTIMIZATION to -mips16
-	    - MIPS32r2 - Big-Endian, Soft-Float, O32, microMIPS
-	      Select MIPS (big endian) core
-	      Select BR2_SOFT_FLOAT
-	      Set BR2_TARGET_OPTIMIZATION to -mmicromips
-	    - MIPS32r2 - Little-Endian, 2008 NaN, O32
-	      Select MIPS (little endian) core
-	      Disable BR2_SOFT_FLOAT
-	      Set BR2_TARGET_OPTIMIZATION to -mnan=2008
-	    - MIPS32r2 - Little-Endian, 2008 NaN, O32, MIPS16
-	      Select MIPS (little endian) core
-	      Disable BR2_SOFT_FLOAT
-	      Set BR2_TARGET_OPTIMIZATION to -mnan=2008 -mips16
-	    - MIPS32r2 - Little-Endian, O32
-	      Select MIPS (little endian) core
-	      Disable BR2_SOFT_FLOAT
-	    - MIPS32r2 - Little-Endian, O32, MIPS16
-	      Select MIPS (little endian) core
-	      Disable BR2_SOFT_FLOAT
-	      Set BR2_TARGET_OPTIMIZATION to -mips16
-	    - MIPS32r2 - Little-Endian, O32, microMIPS
-	      Select MIPS (little endian) core
-	      Disable BR2_SOFT_FLOAT
-	      Set BR2_TARGET_OPTIMIZATION to -mmicromips
 	    - MIPS32r2 - Little-Endian, Soft-Float, O32
 	      Select MIPS (little endian) core
 	      Select BR2_SOFT_FLOAT
@@ -992,9 +972,9 @@ config BR2_TOOLCHAIN_EXTERNAL_PREFIX
 	default "microblazeel-unknown-linux-gnu" if BR2_TOOLCHAIN_EXTERNAL_XILINX_MICROBLAZEEL_V2
 	default "microblaze-unknown-linux-gnu" if BR2_TOOLCHAIN_EXTERNAL_XILINX_MICROBLAZEBE_14_3
 	default "microblaze-unknown-linux-gnu" if BR2_TOOLCHAIN_EXTERNAL_XILINX_MICROBLAZEBE_V2
-	default "mips-linux-gnu"         if BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_MIPS201305
 	default "mips-linux-gnu"         if BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_MIPS201311
 	default "mips-linux-gnu"         if BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_MIPS201405
+	default "mips-linux-gnu"         if BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_MIPS201411
 	default "nios2-linux-gnu"        if BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_NIOSII201305
 	default "nios2-linux-gnu"        if BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_NIOSII201405
 	default "powerpc-linux-gnu"      if BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_POWERPC201009
