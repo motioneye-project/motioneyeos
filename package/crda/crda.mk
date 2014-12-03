@@ -18,7 +18,7 @@ CRDA_LICENSE_FILES = LICENSE
 #
 # libgcrypt needs -lgpg-error if linking statically, which is correctly
 # set by the libgcrypt-config script (and in the right order).
-ifeq ($(BR2_PREFER_STATIC_LIB),y)
+ifeq ($(BR2_STATIC_LIBS),y)
 CRDA_NLLIBS += -lnl-3 -lm -lpthread
 CRDA_LDLIBS += `$(STAGING_DIR)/usr/bin/libgcrypt-config --libs`
 endif

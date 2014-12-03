@@ -22,7 +22,7 @@ else
 X264_CONF_OPTS += --disable-asm
 endif
 
-ifeq ($(BR2_PREFER_STATIC_LIB),)
+ifeq ($(BR2_STATIC_LIBS),)
 X264_CONF_OPTS += --enable-pic --enable-shared
 endif
 

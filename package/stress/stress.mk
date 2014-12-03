@@ -15,12 +15,12 @@ STRESS_AUTORECONF = YES
 # SHARED_STATIC_LIBS_OPTS to tell packages to build static libraries,
 # if supported.
 #
-# If the BR2_PREFER_STATIC_LIB is not defined, we have to specify
+# If the BR2_STATIC_LIBS is not defined, we have to specify
 # --disable-static explicitly to get stress linked dynamically.
 #
 # Also, disable documentation by undefining makeinfo
 STRESS_CONF_OPTS = \
-	$(if $(BR2_PREFER_STATIC_LIB),,--disable-static) \
+	$(if $(BR2_STATIC_LIBS),,--disable-static) \
 	MAKEINFO=:
 
 $(eval $(autotools-package))

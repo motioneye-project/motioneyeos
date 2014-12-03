@@ -25,7 +25,7 @@ endif
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 PURE_FTPD_CONF_OPTS += --with-tls
 PURE_FTPD_DEPENDENCIES += openssl
-ifeq ($(BR2_PREFER_STATIC_LIB),y)
+ifeq ($(BR2_STATIC_LIBS),y)
 PURE_FTPD_CONF_ENV += LIBS='-lssl -lcrypto -lz'
 endif
 else

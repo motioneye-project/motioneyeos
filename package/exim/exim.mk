@@ -86,7 +86,7 @@ endef
 endif # CUSTOM_CONFIG
 
 # exim needs a bit of love to build statically
-ifeq ($(BR2_PREFER_STATIC_LIB),y)
+ifeq ($(BR2_STATIC_LIBS),y)
 EXIM_STATIC_FLAGS = LFLAGS="-pthread --static"
 endif
 

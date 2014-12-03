@@ -11,12 +11,12 @@ if BR2_PACKAGE_LIBNL
 config BR2_PACKAGE_LIBNL_TOOLS
 	bool "install tools"
 	# uses <dlfcn.h>
-	depends on !BR2_PREFER_STATIC_LIB
+	depends on !BR2_STATIC_LIBS
 	help
 	  Install binary tools.
 
 comment "libnl tools needs a toolchain w/ dynamic library"
-	depends on BR2_PREFER_STATIC_LIB
+	depends on BR2_STATIC_LIBS
 endif
 
 comment "libnl needs a toolchain w/ threads"

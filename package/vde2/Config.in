@@ -1,7 +1,7 @@
 config BR2_PACKAGE_VDE2
 	bool "vde2"
 	depends on BR2_USE_MMU # fork()
-	depends on !BR2_PREFER_STATIC_LIB # dlopen()
+	depends on !BR2_STATIC_LIBS # dlopen()
 	help
 	  VDE is an ethernet compliant virtual network that can be
 	  spawned over a set of physical computers over the Internet.
@@ -11,4 +11,4 @@ config BR2_PACKAGE_VDE2
 
 comment "vde2 needs a toolchain w/ dynamic library"
 	depends on BR2_USE_MMU
-	depends on BR2_PREFER_STATIC_LIB
+	depends on BR2_STATIC_LIBS

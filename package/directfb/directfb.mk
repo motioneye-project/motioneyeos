@@ -26,7 +26,7 @@ DIRECTFB_CONF_OPTS = \
 	--disable-video4linux2 \
 	--without-tools
 
-ifeq ($(BR2_PREFER_STATIC_LIB),y)
+ifeq ($(BR2_STATIC_LIBS),y)
 DIRECTFB_CONF_OPTS += --disable-dynload
 endif
 

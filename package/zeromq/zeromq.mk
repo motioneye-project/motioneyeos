@@ -15,7 +15,7 @@ ZEROMQ_AUTORECONF = YES
 
 # Only tools/curve_keygen.c needs this, but it doesn't hurt to pass it
 # for the rest of the build as well (which automatically includes stdc++).
-ifeq ($(BR2_PREFER_STATIC_LIB),y)
+ifeq ($(BR2_STATIC_LIBS),y)
 	ZEROMQ_CONF_OPTS += LIBS=-lstdc++
 endif
 

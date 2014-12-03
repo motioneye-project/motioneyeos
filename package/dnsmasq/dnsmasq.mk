@@ -25,7 +25,7 @@ endif
 ifeq ($(BR2_PACKAGE_DNSMASQ_DNSSEC),y)
 	DNSMASQ_DEPENDENCIES += gmp nettle
 	DNSMASQ_COPTS += -DHAVE_DNSSEC
-ifeq ($(BR2_PREFER_STATIC_LIB),y)
+ifeq ($(BR2_STATIC_LIBS),y)
 	DNSMASQ_COPTS += -DHAVE_DNSSEC_STATIC
 endif
 endif
@@ -57,7 +57,7 @@ ifeq ($(BR2_PACKAGE_DNSMASQ_LUA),y)
 	DNSMASQ_DEPENDENCIES += lua
 
 # liblua uses dlopen when dynamically linked
-ifneq ($(BR2_PREFER_STATIC_LIB),y)
+ifneq ($(BR2_STATIC_LIBS),y)
 	DNSMASQ_MAKE_OPTS += LIBS+="-ldl"
 endif
 

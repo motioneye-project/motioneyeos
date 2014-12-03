@@ -15,7 +15,7 @@ MSMTP_DEPENDENCIES += host-pkgconf
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 MSMTP_CONF_OPTS += --with-ssl=openssl
 MSMTP_DEPENDENCIES += openssl
-ifeq ($(BR2_PREFER_STATIC_LIB),y)
+ifeq ($(BR2_STATIC_LIBS),y)
 # openssl uses zlib, so we need to explicitly link with it when static
 MSMTP_CONF_ENV += LIBS=-lz
 endif

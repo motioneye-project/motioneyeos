@@ -13,9 +13,9 @@ AM335X_PRU_PACKAGE_INSTALL_STAGING = YES
 
 # The default 'all' rule builds everything, when we just need the library
 ifeq ($(BR2_ENABLE_DEBUG),y)
-AM335X_MAKE_TARGET = debug $(if $(BR2_PREFER_STATIC_LIB),,sodebug)
+AM335X_MAKE_TARGET = debug $(if $(BR2_STATIC_LIBS),,sodebug)
 else
-AM335X_MAKE_TARGET = release $(if $(BR2_PREFER_STATIC_LIB),,sorelease)
+AM335X_MAKE_TARGET = release $(if $(BR2_STATIC_LIBS),,sorelease)
 endif
 
 define AM335X_PRU_PACKAGE_BUILD_CMDS
@@ -44,7 +44,7 @@ define AM335X_PRU_PACKAGE_LN_DEBUG_STAGING_STATIC
 endef
 AM335X_PRU_PACKAGE_POST_INSTALL_STAGING_HOOKS += AM335X_PRU_PACKAGE_LN_DEBUG_STAGING_STATIC
 
-ifeq ($(BR2_PREFER_STATIC_LIB),)
+ifeq ($(BR2_STATIC_LIBS),)
 
 define AM335X_PRU_PACKAGE_LN_DEBUG_STAGING_SHARED
 	ln -sf libprussdrvd.so $(STAGING_DIR)/usr/lib/libprussdrv.so

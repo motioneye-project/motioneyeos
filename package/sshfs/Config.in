@@ -9,7 +9,7 @@ config BR2_PACKAGE_SSHFS
 	depends on BR2_USE_WCHAR # glib2
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libfuse, glib2
 	depends on BR2_USE_MMU # libfuse, glib2
-	depends on !BR2_PREFER_STATIC_LIB # libfuse
+	depends on !BR2_STATIC_LIBS # libfuse
 	help
 	  FUSE filesystem client based on the SSH File Transfer Protocol.
 
@@ -17,4 +17,4 @@ config BR2_PACKAGE_SSHFS
 
 comment "sshfs needs a toolchain w/ largefile, wchar, threads, dynamic library"
 	depends on BR2_USE_MMU
-	depends on !BR2_LARGEFILE || !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || BR2_PREFER_STATIC_LIB
+	depends on !BR2_LARGEFILE || !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS

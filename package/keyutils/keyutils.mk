@@ -19,7 +19,7 @@ KEYUTILS_MAKE_PARAMS =                    \
 	CPPFLAGS="$(TARGET_CPPFLAGS) -I." \
 	LNS="$(HOSTLN) -sf"
 
-ifeq ($(BR2_PREFER_STATIC_LIB),y)
+ifeq ($(BR2_STATIC_LIBS),y)
 KEYUTILS_MAKE_PARAMS += NO_SOLIB=1
 endif
 

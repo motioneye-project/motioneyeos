@@ -12,7 +12,7 @@ NGREP_LICENSE_FILES = LICENSE.txt
 NGREP_INSTALL_STAGING = YES
 
 NGREP_LIBS = -lpcap -lpcre
-ifeq ($(BR2_PREFER_STATIC_LIB),y)
+ifeq ($(BR2_STATIC_LIBS),y)
 NGREP_LIBS += $(shell $(STAGING_DIR)/usr/bin/pcap-config --static --additional-libs)
 endif
 NGREP_CONF_ENV += LIBS+="$(NGREP_LIBS)"

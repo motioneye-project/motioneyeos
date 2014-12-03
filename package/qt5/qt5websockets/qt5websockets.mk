@@ -47,7 +47,7 @@ define QT5WEBSOCKETS_INSTALL_TARGET_EXAMPLES
 endef
 endif
 
-ifneq ($(BR2_PREFER_STATIC_LIB),y)
+ifneq ($(BR2_STATIC_LIBS),y)
 define QT5WEBSOCKETS_INSTALL_TARGET_LIBS
 	cp -dpf $(STAGING_DIR)/usr/lib/libQt5WebSockets.so.* $(TARGET_DIR)/usr/lib
 endef

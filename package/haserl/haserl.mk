@@ -19,7 +19,7 @@ ifeq ($(BR2_PACKAGE_HASERL_WITH_LUA),y)
 	HASERL_DEPENDENCIES += lua
 
 # liblua uses dlopen when dynamically linked
-ifneq ($(BR2_PREFER_STATIC_LIB),y)
+ifneq ($(BR2_STATIC_LIBS),y)
 	HASERL_CONF_ENV += LIBS="-ldl"
 endif
 

@@ -15,7 +15,7 @@ NCURSES_LICENSE_FILES = README
 NCURSES_CONFIG_SCRIPTS = ncurses$(NCURSES_LIB_SUFFIX)5-config
 
 NCURSES_CONF_OPTS = \
-	$(if $(BR2_PREFER_STATIC_LIB),--without-shared,--with-shared) \
+	$(if $(BR2_STATIC_LIBS),--without-shared,--with-shared) \
 	--without-cxx \
 	--without-cxx-binding \
 	--without-ada \
@@ -40,7 +40,7 @@ ifeq ($(BR2_PACKAGE_NCURSES_WCHAR),y)
 NCURSES_CONF_OPTS += --enable-widec
 NCURSES_LIB_SUFFIX = w
 
-ifeq ($(BR2_PREFER_STATIC_LIB),y)
+ifeq ($(BR2_STATIC_LIBS),y)
 define NCURSES_LINK_LIBS
 	for lib in $(NCURSES_LIBS-y); do \
 		ln -sf $${lib}$(NCURSES_LIB_SUFFIX).a \
@@ -88,7 +88,7 @@ define NCURSES_BUILD_CMDS
 	$(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR)
 endef
 
-ifneq ($(BR2_PREFER_STATIC_LIB),y)
+ifneq ($(BR2_STATIC_LIBS),y)
 define NCURSES_INSTALL_TARGET_LIBS
 	for lib in $(NCURSES_LIBS-y); do \
 		cp -dpf $(NCURSES_DIR)/lib/$${lib}$(NCURSES_LIB_SUFFIX).so* \

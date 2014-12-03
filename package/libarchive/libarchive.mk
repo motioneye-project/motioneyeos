@@ -12,7 +12,7 @@ LIBARCHIVE_LICENSE_FILES = COPYING
 LIBARCHIVE_CONF_OPTS = --without-lzma
 
 ifeq ($(BR2_PACKAGE_LIBARCHIVE_BSDTAR),y)
-ifeq ($(BR2_PREFER_STATIC_LIB),y)
+ifeq ($(BR2_STATIC_LIBS),y)
 LIBARCHIVE_CONF_OPTS += --enable-bsdtar=static
 else
 LIBARCHIVE_CONF_OPTS += --enable-bsdtar=shared
@@ -22,7 +22,7 @@ LIBARCHIVE_CONF_OPTS += --disable-bsdtar
 endif
 
 ifeq ($(BR2_PACKAGE_LIBARCHIVE_BSDCPIO),y)
-ifeq ($(BR2_PREFER_STATIC_LIB),y)
+ifeq ($(BR2_STATIC_LIBS),y)
 LIBARCHIVE_CONF_OPTS += --enable-bsdcpio=static
 else
 LIBARCHIVE_CONF_OPTS += --enable-bsdcpio=shared

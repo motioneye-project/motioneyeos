@@ -3,7 +3,7 @@ config BR2_PACKAGE_LVM2
 	depends on BR2_LARGEFILE
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_USE_MMU # needs fork()
-	depends on !BR2_PREFER_STATIC_LIB # It fails to build statically
+	depends on !BR2_STATIC_LIBS # It fails to build statically
 	help
 	  This is LVM2, the rewrite of The Linux Logical Volume Manager.
 	  LVM supports enterprise level volume management of disk and disk
@@ -37,5 +37,5 @@ endif
 
 comment "lvm2 needs a toolchain w/ largefile, threads, dynamic library"
 	depends on BR2_USE_MMU
-	depends on !BR2_LARGEFILE || BR2_PREFER_STATIC_LIB || \
+	depends on !BR2_LARGEFILE || BR2_STATIC_LIBS || \
 		!BR2_TOOLCHAIN_HAS_THREADS

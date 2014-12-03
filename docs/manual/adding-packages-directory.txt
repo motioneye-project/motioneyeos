@@ -271,7 +271,7 @@ use in the comment.
 ** Comment string: +wchar+
 
 * dynamic library
-** Dependency symbol: +!BR2_PREFER_STATIC_LIB+
+** Dependency symbol: +!BR2_STATIC_LIBS+
 ** Comment string: +dynamic library+
 
 ==== Dependencies on a Linux kernel built by buildroot

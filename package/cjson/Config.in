@@ -1,7 +1,7 @@
 config BR2_PACKAGE_CJSON
 	bool "cJSON"
 	# For static build with cJSON.c directly see README
-	depends on !BR2_PREFER_STATIC_LIB
+	depends on !BR2_STATIC_LIBS
 	help
 	  An ultra-lightweight, portable, single-file, simple-as-can-be ANSI-C
 	  compliant JSON parser, under MIT license.

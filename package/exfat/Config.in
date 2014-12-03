@@ -4,7 +4,7 @@ config BR2_PACKAGE_EXFAT
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libfuse
 	depends on BR2_USE_MMU # libfuse
 	depends on BR2_USE_WCHAR
-	depends on !BR2_PREFER_STATIC_LIB # libfuse
+	depends on !BR2_STATIC_LIBS # libfuse
 	select BR2_PACKAGE_LIBFUSE
 	help
 	  A full-featured exFAT file system implementation for GNU/Linux
@@ -14,4 +14,4 @@ config BR2_PACKAGE_EXFAT
 
 comment "exfat needs a toolchain w/ largefile, wchar, threads, dynamic library"
 	depends on BR2_USE_MMU
-	depends on !BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_THREADS || !BR2_USE_WCHAR || BR2_PREFER_STATIC_LIB
+	depends on !BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_THREADS || !BR2_USE_WCHAR || BR2_STATIC_LIBS

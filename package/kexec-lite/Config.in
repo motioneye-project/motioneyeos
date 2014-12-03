@@ -1,7 +1,7 @@
 config BR2_PACKAGE_KEXEC_LITE
 	bool "kexec-lite"
 	depends on BR2_powerpc || BR2_powerpc64
-	depends on !BR2_PREFER_STATIC_LIB # dtc, elfutils
+	depends on !BR2_STATIC_LIBS # dtc, elfutils
 	depends on BR2_LARGEFILE # elfutils
 	depends on BR2_USE_WCHAR # elfutils
 	select BR2_PACKAGE_ELFUTILS
@@ -16,4 +16,4 @@ config BR2_PACKAGE_KEXEC_LITE
 
 comment "kexec-lite needs a toolchain w/ largefile, wchar, dynamic library"
 	depends on BR2_powerpc || BR2_powerpc64
-	depends on BR2_PREFER_STATIC_LIB || !BR2_LARGEFILE || !BR2_USE_WCHAR
+	depends on BR2_STATIC_LIBS || !BR2_LARGEFILE || !BR2_USE_WCHAR

@@ -10,7 +10,7 @@ KNOCK_LICENSE = GPLv2+
 KNOCK_LICENSE_FILES = COPYING
 KNOCK_DEPENDENCIES = libpcap
 
-ifeq ($(BR2_PREFER_STATIC_LIB),y)
+ifeq ($(BR2_STATIC_LIBS),y)
 KNOCK_CONF_OPTS = LIBS="$(shell $(STAGING_DIR)/usr/bin/pcap-config --static --additional-libs)"
 endif
 

@@ -92,7 +92,7 @@ if BR2_PACKAGE_STRONGSWAN_EAP
 
 config BR2_PACKAGE_STRONGSWAN_EAP_SIM_PCSC
 	bool "Enable EAP-SIM smart card backend"
-	depends on !BR2_PREFER_STATIC_LIB # pcsc-lite
+	depends on !BR2_STATIC_LIBS # pcsc-lite
 	select BR2_PACKAGE_PCSC_LITE
 
 endif

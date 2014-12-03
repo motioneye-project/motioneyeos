@@ -13,7 +13,7 @@ BMON_LICENSE_FILES = LICENSE
 BMON_AUTORECONF = YES
 
 # link dynamically unless explicitly requested otherwise
-ifeq ($(BR2_PREFER_STATIC_LIB),)
+ifeq ($(BR2_STATIC_LIBS),)
 BMON_CONF_OPTS += --disable-static
 else
 # forgets to explicitly link with pthread for libnl

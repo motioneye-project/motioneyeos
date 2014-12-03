@@ -47,7 +47,7 @@ MESA3D_CONF_OPTS += \
 	--disable-xa
 endif
 
-ifeq ($(BR2_PREFER_STATIC_LIB),)
+ifeq ($(BR2_STATIC_LIBS),)
 # fix for "configure: error: Cannot use static libraries for DRI drivers"
 MESA3D_CONF_OPTS += --disable-static
 endif

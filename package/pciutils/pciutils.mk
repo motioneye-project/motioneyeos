@@ -27,7 +27,7 @@ else
 	PCIUTILS_KMOD = no
 endif
 
-ifeq ($(BR2_PREFER_STATIC_LIB),y)
+ifeq ($(BR2_STATIC_LIBS),y)
 	PCIUTILS_SHARED=no
 else
 	PCIUTILS_SHARED=yes

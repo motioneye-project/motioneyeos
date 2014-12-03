@@ -9,7 +9,7 @@ config BR2_PACKAGE_LIBVA_INTEL_DRIVER
 	depends on BR2_i386 || BR2_x86_64
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libdrm/libpthread-stubs
 	depends on BR2_LARGEFILE # libdrm
-	depends on !BR2_PREFER_STATIC_LIB # libva
+	depends on !BR2_STATIC_LIBS # libva
 	help
 	  VA-API back-end driver for Intel graphics chips
 
@@ -17,5 +17,5 @@ config BR2_PACKAGE_LIBVA_INTEL_DRIVER
 
 comment "libva intel driver needs a toolchain w/ largefile, threads, dynamic library"
 	depends on !BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_THREADS || \
-		BR2_PREFER_STATIC_LIB
+		BR2_STATIC_LIBS
 	depends on BR2_i386 || BR2_x86_64

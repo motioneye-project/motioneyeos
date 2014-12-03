@@ -2,7 +2,7 @@ config BR2_PACKAGE_RUBY
 	bool "ruby"
 	depends on BR2_USE_WCHAR
 	depends on BR2_TOOLCHAIN_HAS_THREADS
-	depends on !BR2_PREFER_STATIC_LIB
+	depends on !BR2_STATIC_LIBS
 	help
 	  Object Oriented Scripting Language.
 
@@ -10,4 +10,4 @@ config BR2_PACKAGE_RUBY
 
 comment "ruby needs a toolchain w/ wchar, threads, dynamic library"
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || \
-		BR2_PREFER_STATIC_LIB
+		BR2_STATIC_LIBS

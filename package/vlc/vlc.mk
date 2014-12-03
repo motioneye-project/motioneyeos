@@ -45,7 +45,7 @@ VLC_CONF_OPTS += \
 	--disable-opencv
 
 # Building static and shared doesn't work, so force static off.
-ifeq ($(BR2_PREFER_STATIC_LIB),)
+ifeq ($(BR2_STATIC_LIBS),)
 VLC_CONF_OPTS += --disable-static
 endif
 

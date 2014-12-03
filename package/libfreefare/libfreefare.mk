@@ -10,7 +10,7 @@ LIBFREEFARE_DEPENDENCIES = libnfc openssl
 LIBFREEFARE_LICENSE = LGPLv3+ with exception
 LIBFREEFARE_LICENSE_FILES = COPYING
 
-ifeq ($(BR2_PREFER_STATIC_LIB),y)
+ifeq ($(BR2_STATIC_LIBS),y)
 # openssl needs zlib even if the libfreefare example itself doesn't
 LIBFREEFARE_CONF_ENV += LIBS='-lz'
 endif

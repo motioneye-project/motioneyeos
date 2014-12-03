@@ -45,12 +45,12 @@ config BR2_PACKAGE_OPENVMTOOLS_PAM
 	select BR2_PACKAGE_LINUX_PAM
 	# linux-pam needs locale and wchar, but we already have this
 	# dependency on the main symbol, above.
-	depends on !BR2_PREFER_STATIC_LIB
+	depends on !BR2_STATIC_LIBS
 	help
 	  Support for PAM in openvmtools
 
 comment "PAM support needs a toolchain w/ dynamic library"
-	depends on BR2_PREFER_STATIC_LIB
+	depends on BR2_STATIC_LIBS
 
 endif
 

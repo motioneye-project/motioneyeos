@@ -9,7 +9,7 @@ if BR2_PACKAGE_WIRELESS_TOOLS
 
 config BR2_PACKAGE_WIRELESS_TOOLS_LIB
 	bool "Install shared library"
-	depends on !BR2_PREFER_STATIC_LIB
+	depends on !BR2_STATIC_LIBS
 	help
 	  The shared library of wireless tools
 

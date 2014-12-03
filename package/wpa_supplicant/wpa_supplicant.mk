@@ -32,7 +32,7 @@ WPA_SUPPLICANT_CONFIG_DISABLE = \
 # And library order matters hence stick -lnl-3 first since it's appended
 # in the wpa_supplicant Makefiles as in LIBS+=-lnl-3 ... thus failing
 ifeq ($(BR2_PACKAGE_LIBNL),y)
-ifeq ($(BR2_PREFER_STATIC_LIB),y)
+ifeq ($(BR2_STATIC_LIBS),y)
 	WPA_SUPPLICANT_LIBS += -lnl-3 -lm -lpthread
 endif
 	WPA_SUPPLICANT_DEPENDENCIES += libnl
@@ -66,7 +66,7 @@ endif
 # Try to use openssl if it's already available
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 	WPA_SUPPLICANT_DEPENDENCIES += openssl
-	WPA_SUPPLICANT_LIBS += $(if $(BR2_PREFER_STATIC_LIB),-lcrypto -lz)
+	WPA_SUPPLICANT_LIBS += $(if $(BR2_STATIC_LIBS),-lcrypto -lz)
 	WPA_SUPPLICANT_CONFIG_EDITS += 's/\#\(CONFIG_TLS=openssl\)/\1/'
 else
 	WPA_SUPPLICANT_CONFIG_DISABLE += CONFIG_EAP_PWD

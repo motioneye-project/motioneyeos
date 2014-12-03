@@ -2,7 +2,7 @@ config BR2_PACKAGE_HEIRLOOM_MAILX
 	bool "heirloom-mailx"
 	# uses fork()
 	depends on BR2_USE_MMU
-	depends on !BR2_PREFER_STATIC_LIB
+	depends on !BR2_STATIC_LIBS
 	help
 	  Heirloom mailx (previously known as nail) is a mail user
 	  agent for Unix systems.
@@ -16,5 +16,5 @@ config BR2_PACKAGE_HEIRLOOM_MAILX
 	  http://heirloom.sourceforge.net/mailx.html
 
 comment "heirloom-mailx needs a toolchain w/ dynamic library"
-	depends on BR2_PREFER_STATIC_LIB
+	depends on BR2_STATIC_LIBS
 	depends on BR2_USE_MMU

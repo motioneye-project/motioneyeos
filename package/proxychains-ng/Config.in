@@ -1,11 +1,11 @@
 config BR2_PACKAGE_PROXYCHAINS_NG
 	bool "proxychains-ng"
 	depends on BR2_TOOLCHAIN_HAS_THREADS
-	depends on !BR2_PREFER_STATIC_LIB
+	depends on !BR2_STATIC_LIBS
 	help
 	  Force any tcp connections to flow through a proxy (or proxy chain)
 
 	  https://github.com/rofl0r/proxychains
 
 comment "proxychains-ng needs a toolchain w/ threads, dynamic library"
-	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_PREFER_STATIC_LIB
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS

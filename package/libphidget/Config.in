@@ -1,7 +1,7 @@
 config BR2_PACKAGE_LIBPHIDGET
 	bool "libphidget"
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libusb
-	depends on !BR2_PREFER_STATIC_LIB
+	depends on !BR2_STATIC_LIBS
 	select BR2_PACKAGE_LIBUSB
 	help
 	  The libphidget library provides an API for controlling Phidgets
@@ -23,4 +23,4 @@ config BR2_PACKAGE_LIBPHIDGET
 
 comment "libphidget needs a toolchain w/ threads, dynamic library"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS
-	depends on BR2_PREFER_STATIC_LIB
+	depends on BR2_STATIC_LIBS

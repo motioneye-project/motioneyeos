@@ -29,7 +29,7 @@ else
 PARTED_CONF_OPTS += --disable-device-mapper
 endif
 
-ifeq ($(BR2_PREFER_STATIC_LIB),y)
+ifeq ($(BR2_STATIC_LIBS),y)
 PARTED_CONF_OPTS += --disable-dynamic-loading
 endif
 

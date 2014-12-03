@@ -7,7 +7,7 @@ config BR2_PACKAGE_USHARE
 	# ushare has a completely custom configure script that does
 	# broken things with library ordering, which breaks static
 	# linking.
-	depends on !BR2_PREFER_STATIC_LIB
+	depends on !BR2_STATIC_LIBS
 	help
 	  uShare is a UPnP (TM) A/V & DLNA Media Server.
 	  It implements the server component that provides UPnP media devices
@@ -17,4 +17,4 @@ config BR2_PACKAGE_USHARE
 
 comment "ushare needs a toolchain w/ largefile, threads, dynamic library"
 	depends on !BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_THREADS || \
-		BR2_PREFER_STATIC_LIB
+		BR2_STATIC_LIBS

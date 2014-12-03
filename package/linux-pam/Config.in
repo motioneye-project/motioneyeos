@@ -9,7 +9,7 @@ config BR2_PACKAGE_LINUX_PAM
 	# modules. See
 	# https://lists.fedorahosted.org/pipermail/linux-pam-commits/2012-February/000105.html
 	# for details.
-	depends on !BR2_PREFER_STATIC_LIB
+	depends on !BR2_STATIC_LIBS
 	help
 	  A Security Framework that Provides Authentication for Applications
 
@@ -17,4 +17,4 @@ config BR2_PACKAGE_LINUX_PAM
 
 comment "linux-pam needs a toolchain w/ wchar, locale, dynamic library"
 	depends on !(BR2_ENABLE_LOCALE && BR2_USE_WCHAR) \
-		|| BR2_PREFER_STATIC_LIB
+		|| BR2_STATIC_LIBS

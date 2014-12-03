@@ -62,9 +62,9 @@ config BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_SWRAST
 	  infrastructure.
 
 comment "DRI drivers needs X.Org and a toolchain w/ dynamic library"
-	depends on BR2_PREFER_STATIC_LIB || !BR2_PACKAGE_XORG7
+	depends on BR2_STATIC_LIBS || !BR2_PACKAGE_XORG7
 
-if !BR2_PREFER_STATIC_LIB && BR2_PACKAGE_XORG7
+if !BR2_STATIC_LIBS && BR2_PACKAGE_XORG7
 
 comment "DRI drivers"
 
@@ -99,7 +99,7 @@ config BR2_PACKAGE_MESA3D_DRI_DRIVER_RADEON
 	help
 	  Legacy Radeon driver for R100 series GPUs.
 
-endif # !BR2_PREFER_STATIC_LIB && BR2_PACKAGE_XORG7
+endif # !BR2_STATIC_LIBS && BR2_PACKAGE_XORG7
 
 if BR2_PACKAGE_MESA3D_DRIVER
 

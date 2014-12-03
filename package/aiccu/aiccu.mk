@@ -15,7 +15,7 @@ AICCU_LFDLAGS = $(TARGET_LDFLAGS)
 
 # aiccu forgets to link with gnutls' dependencies breaking the build when
 # linking statically
-ifeq ($(BR2_PREFER_STATIC_LIB),y)
+ifeq ($(BR2_STATIC_LIBS),y)
 AICCU_LDFLAGS += $(shell $(PKG_CONFIG_HOST_BINARY) --static --libs gnutls)
 endif
 

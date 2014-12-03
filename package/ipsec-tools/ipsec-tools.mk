@@ -16,7 +16,7 @@ IPSEC_TOOLS_DEPENDENCIES = openssl flex host-flex
 IPSEC_TOOLS_MAKE_OPTS = CFLAGS='$(TARGET_CFLAGS)'
 
 # openssl uses zlib, so we need to explicitly link with it when static
-ifeq ($(BR2_PREFER_STATIC_LIB),y)
+ifeq ($(BR2_STATIC_LIBS),y)
 IPSEC_TOOLS_CONF_ENV += LIBS=-lz
 endif
 

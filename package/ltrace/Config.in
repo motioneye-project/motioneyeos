@@ -9,7 +9,7 @@ config BR2_PACKAGE_LTRACE
 	select BR2_PACKAGE_ELFUTILS
 	depends on BR2_LARGEFILE # elfutils
 	depends on BR2_USE_WCHAR # elfutils
-	depends on !BR2_PREFER_STATIC_LIB # elfutils
+	depends on !BR2_STATIC_LIBS # elfutils
 	help
 	  Debugging program which runs a specified command until it exits.
 	  While the command is executing, ltrace intercepts and records
@@ -19,4 +19,4 @@ config BR2_PACKAGE_LTRACE
 	  http://ltrace.org
 
 comment "ltrace needs toolchain w/ largefile, wchar, dynamic library"
-	depends on !BR2_LARGEFILE || !BR2_USE_WCHAR || BR2_PREFER_STATIC_LIB
+	depends on !BR2_LARGEFILE || !BR2_USE_WCHAR || BR2_STATIC_LIBS

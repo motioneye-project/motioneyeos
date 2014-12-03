@@ -632,7 +632,7 @@ while (my ($distname, $dist) = each %dist) {
         open my $fh, q{>}, $cfgname;
         say {$fh} qq{config BR2_PACKAGE_${brname}};
         say {$fh} qq{\tbool "${fsname}"};
-        say {$fh} qq{\tdepends on !BR2_PREFER_STATIC_LIB} if $need_dlopen{$distname};
+        say {$fh} qq{\tdepends on !BR2_STATIC_LIBS} if $need_dlopen{$distname};
         foreach my $dep (sort @{$deps_runtime{$distname}}) {
             my $brdep = brname( fsname( $dep ) );
             say {$fh} qq{\tselect BR2_PACKAGE_${brdep}};
@@ -642,7 +642,7 @@ while (my ($distname, $dist) = each %dist) {
         say {$fh} qq{\t  ${homepage}};
         if ($need_dlopen{$distname}) {
             say {$fh} qq{\ncomment "${fsname} needs a toolchain w/ dynamic library"};
-            say {$fh} qq{\tdepends on BR2_PREFER_STATIC_LIB};
+            say {$fh} qq{\tdepends on BR2_STATIC_LIBS};
         }
         close $fh;
     }

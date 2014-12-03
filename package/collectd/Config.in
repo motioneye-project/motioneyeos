@@ -4,7 +4,7 @@ config BR2_PACKAGE_COLLECTD
 	depends on BR2_USE_MMU
 	depends on BR2_INET_IPV6
 	depends on BR2_TOOLCHAIN_HAS_THREADS
-	depends on !BR2_PREFER_STATIC_LIB
+	depends on !BR2_STATIC_LIBS
 	help
 	  collectd is a daemon which collects system performance
 	  statistics periodically and provides mechanisms to store
@@ -59,7 +59,7 @@ config BR2_PACKAGE_COLLECTD_LOGFILE
 
 config BR2_PACKAGE_COLLECTD_NOTIFY_EMAIL
 	bool "notify_email"
-	depends on !BR2_PREFER_STATIC_LIB # libesmtp
+	depends on !BR2_STATIC_LIBS # libesmtp
 	select BR2_PACKAGE_LIBESMTP
 	select BR2_PACKAGE_OPENSSL
 	help
@@ -67,7 +67,7 @@ config BR2_PACKAGE_COLLECTD_NOTIFY_EMAIL
 	  configured recipients.
 
 comment "notify_email needs a toolchain w/ dynamic library"
-	depends on BR2_PREFER_STATIC_LIB
+	depends on BR2_STATIC_LIBS
 
 config BR2_PACKAGE_COLLECTD_SYSLOG
 	bool "syslog"
@@ -454,5 +454,5 @@ endmenu
 endif
 
 comment "collectd needs a toolchain w/ IPv6, threads, dynamic library"
-	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_INET_IPV6 || BR2_PREFER_STATIC_LIB
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_INET_IPV6 || BR2_STATIC_LIBS
 	depends on BR2_USE_MMU

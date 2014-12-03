@@ -23,7 +23,7 @@ endif
 # we don't have host-attr
 HOST_LIBCAP_DEPENDENCIES =
 
-ifeq ($(BR2_PREFER_STATIC_LIB),y)
+ifeq ($(BR2_STATIC_LIBS),y)
 LIBCAP_MAKE_TARGET = libcap.a
 LIBCAP_MAKE_INSTALL_TARGET = install-static
 else

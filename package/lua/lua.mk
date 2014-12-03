@@ -29,7 +29,7 @@ LUA_CFLAGS += -D_FILE_OFFSET_BITS=32
 endif
 endif
 
-ifeq ($(BR2_PREFER_STATIC_LIB),y)
+ifeq ($(BR2_STATIC_LIBS),y)
 	LUA_BUILDMODE = static
 else
 	LUA_BUILDMODE = dynamic

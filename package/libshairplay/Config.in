@@ -3,7 +3,7 @@ config BR2_PACKAGE_LIBSHAIRPLAY
 	depends on BR2_INET_IPV6
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_USE_MMU # avahi
-	depends on !BR2_PREFER_STATIC_LIB # avahi
+	depends on !BR2_STATIC_LIBS # avahi
 	select BR2_PACKAGE_AVAHI
 	select BR2_PACKAGE_AVAHI_DAEMON
 	select BR2_PACKAGE_AVAHI_LIBDNSSD_COMPATIBILITY # runtime
@@ -15,4 +15,4 @@ config BR2_PACKAGE_LIBSHAIRPLAY
 
 comment "libshairplay needs a toolchain w/ IPv6, threads, dynamic library"
 	depends on BR2_USE_MMU
-	depends on !BR2_INET_IPV6 || !BR2_TOOLCHAIN_HAS_THREADS || BR2_PREFER_STATIC_LIB
+	depends on !BR2_INET_IPV6 || !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS

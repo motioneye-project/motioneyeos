@@ -99,6 +99,18 @@ comment "----------------------------------------------------"
 endif
 
 ###############################################################################
+
+comment "Legacy options removed in 2015.02"
+
+config BR2_PREFER_STATIC_LIB
+	bool "static library option renamed"
+	select BR2_STATIC_LIBS
+	help
+	  The BR2_PREFER_STATIC_LIB was renamed to BR2_STATIC_LIBS. It
+	  highlights the fact that the option no longer "prefers"
+	  static libraries, but "enforces" static libraries (i.e
+	  shared libraries are completely unused).
+
 comment "Legacy options removed in 2014.11"
 
 config BR2_x86_generic

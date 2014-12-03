@@ -1,6 +1,6 @@
 config BR2_PACKAGE_DTC
 	bool "dtc (libfdt)"
-	depends on !BR2_PREFER_STATIC_LIB
+	depends on !BR2_STATIC_LIBS
 	help
 	  The Device Tree Compiler, dtc, takes as input a device-tree in
 	  a given format and outputs a device-tree in another format.
@@ -34,4 +34,4 @@ comment "dtdiff will not be installed: it requires bash"
 endif
 
 comment "dtc needs a toolchain w/ dynamic library"
-	depends on BR2_PREFER_STATIC_LIB
+	depends on BR2_STATIC_LIBS

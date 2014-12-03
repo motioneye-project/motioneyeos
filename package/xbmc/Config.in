@@ -111,7 +111,7 @@ config BR2_PACKAGE_XBMC_ALSA_LIB
 
 config BR2_PACKAGE_XBMC_AVAHI
 	bool "avahi"
-	depends on !BR2_PREFER_STATIC_LIB # avahi
+	depends on !BR2_STATIC_LIBS # avahi
 	select BR2_PACKAGE_AVAHI
 	select BR2_PACKAGE_AVAHI_DAEMON
 	help
@@ -127,13 +127,13 @@ config BR2_PACKAGE_XBMC_DBUS
 config BR2_PACKAGE_XBMC_LIBBLURAY
 	bool "blu-ray"
 	select BR2_PACKAGE_LIBBLURAY
-	depends on !BR2_PREFER_STATIC_LIB
+	depends on !BR2_STATIC_LIBS
 	help
 	  Enable Blu-ray input support.
 	  Select this if you want to play back Blu-ray content.
 
 comment "libbluray support needs a toolchain w/ dynamic library"
-	depends on BR2_PREFER_STATIC_LIB
+	depends on BR2_STATIC_LIBS
 
 config BR2_PACKAGE_XBMC_GOOM
 	bool "goom screensaver"
@@ -155,7 +155,7 @@ comment "rsxs needs an OpenGL backend"
 
 config BR2_PACKAGE_XBMC_LIBCEC
 	bool "hdmi cec"
-	depends on !BR2_PREFER_STATIC_LIB # libcec
+	depends on !BR2_STATIC_LIBS # libcec
 	depends on BR2_PACKAGE_HAS_UDEV
 	select BR2_PACKAGE_LIBCEC
 	help
@@ -163,7 +163,7 @@ config BR2_PACKAGE_XBMC_LIBCEC
 	  Select this if you want XBMC to support HDMI CEC.
 
 comment "hdmi cec support needs udev /dev management and a toolchain w/ dynamic library"
-	depends on BR2_PREFER_STATIC_LIB || !BR2_PACKAGE_HAS_UDEV
+	depends on BR2_STATIC_LIBS || !BR2_PACKAGE_HAS_UDEV
 
 config BR2_PACKAGE_XBMC_LIBMICROHTTPD
 	bool "web server"
@@ -219,12 +219,12 @@ config BR2_PACKAGE_XBMC_LIBUSB
 config BR2_PACKAGE_XBMC_LIBVA
 	bool "va"
 	select BR2_PACKAGE_LIBVA
-	depends on !BR2_PREFER_STATIC_LIB
+	depends on !BR2_STATIC_LIBS
 	help
 	  Enable libva support.
 
 comment "libva support needs toolchain w/ dynamic library"
-	depends on BR2_PREFER_STATIC_LIB
+	depends on BR2_STATIC_LIBS
 
 config BR2_PACKAGE_XBMC_WAVPACK
 	bool "wavpack"

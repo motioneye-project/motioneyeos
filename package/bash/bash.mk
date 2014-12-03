@@ -26,7 +26,7 @@ BASH_CONF_ENV += \
 BASH_MAKE = $(MAKE1)
 
 # The static build needs some trickery
-ifeq ($(BR2_PREFER_STATIC_LIB),y)
+ifeq ($(BR2_STATIC_LIBS),y)
 BASH_CONF_OPTS += --enable-static-link --without-bash-malloc
 # bash wants to redefine the getenv() function. To check whether this is
 # possible, AC_TRY_RUN is used which is not possible in

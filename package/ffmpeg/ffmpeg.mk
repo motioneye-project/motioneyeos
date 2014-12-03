@@ -337,7 +337,7 @@ else
 FFMPEG_CONF_OPTS += --disable-altivec
 endif
 
-ifeq ($(BR2_PREFER_STATIC_LIB),)
+ifeq ($(BR2_STATIC_LIBS),)
 FFMPEG_CONF_OPTS += --enable-pic
 else
 FFMPEG_CONF_OPTS += --disable-pic

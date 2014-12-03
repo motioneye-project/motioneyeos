@@ -1,6 +1,6 @@
 config BR2_PACKAGE_P11_KIT
 	bool "p11-kit"
-	depends on !BR2_PREFER_STATIC_LIB
+	depends on !BR2_STATIC_LIBS
 	depends on BR2_USE_MMU
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	select BR2_PACKAGE_LIBFFI
@@ -14,4 +14,4 @@ config BR2_PACKAGE_P11_KIT
 
 comment "p11-kit needs a toolchain w/ threads, dynamic library"
 	depends on BR2_USE_MMU
-	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_PREFER_STATIC_LIB
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS

@@ -8,7 +8,7 @@ config BR2_PACKAGE_CRYPTSETUP
 	depends on BR2_LARGEFILE # lvm2, util-linux
 	depends on BR2_TOOLCHAIN_HAS_THREADS # lvm2
 	depends on BR2_USE_MMU # lvm2, e2fsprogs
-	depends on !BR2_PREFER_STATIC_LIB # lvm2
+	depends on !BR2_STATIC_LIBS # lvm2
 	depends on BR2_USE_WCHAR # util-linux
 	help
 	  This tool helps manipulate dm-crypt and luks partitions for
@@ -19,4 +19,4 @@ config BR2_PACKAGE_CRYPTSETUP
 comment "cryptsetup needs a toolchain w/ largefile, wchar, threads, dynamic library"
 	depends on BR2_USE_MMU
 	depends on !BR2_LARGEFILE || !BR2_USE_WCHAR || \
-		BR2_PREFER_STATIC_LIB || !BR2_TOOLCHAIN_HAS_THREADS
+		BR2_STATIC_LIBS || !BR2_TOOLCHAIN_HAS_THREADS

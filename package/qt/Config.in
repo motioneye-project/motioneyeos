@@ -48,7 +48,7 @@ choice
 
 config BR2_PACKAGE_QT_SHARED
 	bool "Shared library"
-	depends on !BR2_PREFER_STATIC_LIB
+	depends on !BR2_STATIC_LIBS
 	help
 	  Create and use shared Qt libraries.
 	  If you have multiple programs that depend on Qt or intend to use

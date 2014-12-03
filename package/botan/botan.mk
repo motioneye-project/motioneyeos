@@ -19,7 +19,7 @@ BOTAN_CONF_OPTS = \
 	--cc=gcc \
 	--cc-bin="$(TARGET_CXX)"
 
-ifeq ($(BR2_PREFER_STATIC_LIB),y)
+ifeq ($(BR2_STATIC_LIBS),y)
 	BOTAN_CONF_OPTS += --disable-shared --no-autoload
 endif
 

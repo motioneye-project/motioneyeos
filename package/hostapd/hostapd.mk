@@ -31,7 +31,7 @@ HOSTAPD_CONFIG_DISABLE =
 # libnl-3 needs -lm (for rint) and -lpthread if linking statically
 # And library order matters hence stick -lnl-3 first since it's appended
 # in the hostapd Makefiles as in LIBS+=-lnl-3 ... thus failing
-ifeq ($(BR2_PREFER_STATIC_LIB),y)
+ifeq ($(BR2_STATIC_LIBS),y)
 HOSTAPD_LIBS += -lnl-3 -lm -lpthread
 endif
 
@@ -42,7 +42,7 @@ endif
 # Try to use openssl if it's already available
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 	HOSTAPD_DEPENDENCIES += openssl
-	HOSTAPD_LIBS += $(if $(BR2_PREFER_STATIC_LIB),-lcrypto -lz)
+	HOSTAPD_LIBS += $(if $(BR2_STATIC_LIBS),-lcrypto -lz)
 	HOSTAPD_CONFIG_EDITS += 's/\#\(CONFIG_TLS=openssl\)/\1/'
 else
 	HOSTAPD_CONFIG_DISABLE += CONFIG_EAP_PWD
