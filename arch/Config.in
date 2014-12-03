@@ -251,6 +251,10 @@ config BR2_GCC_TARGET_MODE
 config BR2_ARCH_HAS_ATOMICS
 	bool
 
+# Must be selected by binary formats that support shared libraries.
+config BR2_BINFMT_SUPPORTS_SHARED
+	bool
+
 # Set up target binary format
 choice
 	prompt "Target Binary Format"
@@ -261,6 +265,7 @@ choice
 config BR2_BINFMT_ELF
 	bool "ELF"
 	depends on !BR2_bfin && !BR2_m68k
+	select BR2_BINFMT_SUPPORTS_SHARED
 	help
 	  ELF (Executable and Linkable Format) is a format for libraries and
 	  executables used across different architectures and operating
@@ -269,6 +274,7 @@ config BR2_BINFMT_ELF
 config BR2_BINFMT_FDPIC
 	bool "FDPIC"
 	depends on BR2_bfin
+	select BR2_BINFMT_SUPPORTS_SHARED
 	help
 	  ELF FDPIC binaries are based on ELF, but allow the individual load
 	  segments of a binary to be located in memory independently of each
@@ -307,6 +313,7 @@ config BR2_BINFMT_FLAT_SEP_DATA
 config BR2_BINFMT_FLAT_SHARED
 	bool "Shared binary"
 	depends on BR2_bfin || BR2_m68k
+	select BR2_BINFMT_SUPPORTS_SHARED
 	help
 	  Allow to load and link indiviual FLAT binaries at run time.
 
