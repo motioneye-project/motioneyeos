@@ -145,7 +145,8 @@ HOST_NCURSES_CONF_OPTS = \
 	--without-manpages \
 	--without-cxx \
 	--without-cxx-binding \
-	--without-ada
+	--without-ada \
+	--without-normal
 
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
