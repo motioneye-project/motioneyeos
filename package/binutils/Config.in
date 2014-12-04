@@ -23,4 +23,4 @@ endif
 
 comment "binutils needs a toolchain w/ wchar"
 	depends on !BR2_aarch64 && !BR2_nios2
-	depends on BR2_USE_WCHAR
+	depends on !BR2_USE_WCHAR
