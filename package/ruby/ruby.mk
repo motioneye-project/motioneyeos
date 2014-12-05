@@ -64,6 +64,13 @@ else
 	RUBY_CONF_OPTS += --without-gmp
 endif
 
+# workaround for amazing build failure, see
+# http://lists.busybox.net/pipermail/buildroot/2014-December/114273.html
+define RUBY_REMOVE_VERCONF_H
+	rm -f $(@D)/verconf.h
+endef
+RUBY_POST_CONFIGURE_HOOKS += RUBY_REMOVE_VERCONF_H
+
 # Remove rubygems and friends, as they need extensions that aren't
 # built and a target compiler.
 RUBY_EXTENSIONS_REMOVE = rake* rdoc* rubygems*
