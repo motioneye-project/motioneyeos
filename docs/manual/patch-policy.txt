@@ -31,16 +31,23 @@ Most patches are provided within Buildroot, in the package
 directory; these typically aim to fix cross-compilation, libc support,
 or other such issues.
 
-These patch files should be named +<packagename>-<number>-<description>.patch+.
-
-A +series+ file, as used by +quilt+, may also be added in the
-package directory. In that case, the +series+ file defines the patch
-application order.
+These patch files should be named +<number>-<description>.patch+.
 
 .Notes
 - The patch files coming with Buildroot should not contain any package version
-reference in their filename.
-- The field +<number>+ in the patch file name refers to the 'apply order'.
+  reference in their filename.
+- The field +<number>+ in the patch file name refers to the 'apply order',
+  and shall start at 1; It is preferred to pad the number with zeros up to 4
+  digits, like 'git-format-patch' does. E.g.: +0001-foobar-the-buz.patch+
+- Previously, it was mandatory for patches to be prefixed with the name of
+  the package, like +<package>-<number>-<description>.patch+, but that is
+  no longer the case. Existing packages will be fixed as time passes. 'Do
+  not prefix patches with the package name.'
+- Previously, a +series+ file, as used by +quilt+, could also be added in
+  the package directory. In that case, the +series+ file defines the patch
+  application order. This is deprecated, and will be removed in the future.
+  'Do not use a series file.'
+
 
 ==== Global patch directory
 
