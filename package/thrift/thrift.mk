@@ -4,15 +4,17 @@
 #
 ################################################################################
 
-THRIFT_VERSION = 0.9.1
+THRIFT_VERSION = 0.9.2
 THRIFT_SITE = http://www.us.apache.org/dist/thrift/$(THRIFT_VERSION)
 THRIFT_DEPENDENCIES = host-pkgconf host-thrift boost libevent openssl zlib
 THRIFT_INSTALL_STAGING = YES
 HOST_THRIFT_DEPENDENCIES = host-boost host-libevent host-openssl host-pkgconf \
 	host-zlib host-bison host-flex
-THRIFT_CONF_OPTS = --with-sysroot=$(STAGING_DIR) --with-tests=no \
-	--with-boost=$(STAGING_DIR)
-HOST_THRIFT_CONF_OPTS = --with-sysroot=$(HOST_DIR) --with-tests=no
+THRIFT_CONF_OPTS = --with-sysroot=$(STAGING_DIR) \
+	--with-boost=$(STAGING_DIR) \
+	--disable-tests
+HOST_THRIFT_CONF_OPTS = --with-sysroot=$(HOST_DIR) \
+	--disable-tests
 THRIFT_AUTORECONF = YES
 THRIFT_LICENSE = Apache-2.0
 THRIFT_LICENSE_FILES = LICENSE
@@ -27,7 +29,8 @@ endif
 # This is just for the libraries / bindings
 THRIFT_LANG_CONF_OPTS += --without-csharp --without-java --without-erlang \
 	--without-python --without-perl --without-php --without-php_extension \
-	--without-ruby --without-haskell --without-go --without-d --without-qt4
+	--without-ruby --without-haskell --without-go --without-d \
+	--without-qt4 --without-lua
 HOST_THRIFT_CONF_OPTS += $(THRIFT_LANG_CONF_OPTS) --without-c_glib
 THRIFT_CONF_OPTS += $(THRIFT_LANG_CONF_OPTS)
 
