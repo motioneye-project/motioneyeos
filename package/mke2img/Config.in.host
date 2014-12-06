@@ -1,0 +1,9 @@
+config BR2_PACKAGE_HOST_MKE2IMG
+	bool "host mke2img"
+	select BR2_PACKAGE_HOST_E2FSPROGS
+	select BR2_PACKAGE_HOST_GENEXT2FS
+	help
+	  Easily create filesystems of the extend familly: ext2/3/4.
+
+	  This tool is bundled by, and specific to Buildroot. However, it can
+	  be used from post-images scripts is needed.
