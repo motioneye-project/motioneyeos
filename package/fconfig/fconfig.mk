@@ -5,7 +5,9 @@
 ################################################################################
 
 FCONFIG_VERSION = 20080329
-FCONFIG_SITE = http://andrzejekiert.ovh.org/software/fconfig
+# Real upstream location has been disabled
+# FCONFIG_SITE = http://andrzejekiert.ovh.org/software/fconfig
+FCONFIG_SITE = http://sources.buildroot.net
 FCONFIG_LICENSE = GPLv2+
 FCONFIG_LICENSE_FILES = fconfig.c
 
