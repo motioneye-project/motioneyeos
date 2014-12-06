@@ -41,6 +41,9 @@ config BR2_TARGET_ROOTFS_EXT2_REV
 	default 0   if BR2_TARGET_ROOTFS_EXT2_2r0
 	default 1   if !BR2_TARGET_ROOTFS_EXT2_2r0
 
+config BR2_TARGET_ROOTFS_EXT2_LABEL
+	string "filesystem label"
+
 config BR2_TARGET_ROOTFS_EXT2_BLOCKS
 	int "size in blocks (leave at 0 for auto calculation)"
 	default 0
