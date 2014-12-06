@@ -32,9 +32,10 @@ ifeq ($(BR2_PACKAGE_LIBICONV),y)
 TVHEADEND_DEPENDENCIES += libiconv
 endif
 
+TVHEADEND_CFLAGS = $(TARGET_CFLAGS)
 ifeq ($(BR2_PACKAGE_LIBURIPARSER),y)
 TVHEADEND_DEPENDENCIES += liburiparser
-TVHEADEND_CONF_ENV += CFLAGS="$(TARGET_CFLAGS) $(if $(BR2_USE_WCHAR),,-DURI_NO_UNICODE)"
+TVHEADEND_CFLAGS += $(if $(BR2_USE_WCHAR),,-DURI_NO_UNICODE)
 endif
 
 TVHEADEND_DEPENDENCIES += dtv-scan-tables
@@ -43,7 +44,7 @@ define TVHEADEND_CONFIGURE_CMDS
 	(cd $(@D);						\
 		$(TARGET_CONFIGURE_OPTS)			\
 		$(TARGET_CONFIGURE_ARGS)			\
-		$(TVHEADEND_CONF_ENV)				\
+		CFLAGS="$(TVHEADEND_CFLAGS)"			\
 		./configure					\
 			--prefix=/usr				\
 			--arch="$(ARCH)"			\
