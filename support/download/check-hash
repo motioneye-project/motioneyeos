@@ -3,8 +3,8 @@ set -e
 
 # Helper to check a file matches its known hash
 # Call it with:
-#   $1: the full path to the file to check
-#   $2: the path of the file containing all the the expected hashes
+#   $1: the path of the file containing all the the expected hashes
+#   $2: the full path to the file to check
 
 h_file="${1}"
 file="${2}"
