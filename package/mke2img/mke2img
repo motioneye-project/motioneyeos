@@ -100,7 +100,7 @@ main() {
     fi
 
     # Generate the filesystem
-    genext2fs_opts=( -b ${nb_blocks} -N ${nb_inodes} -d "${root_dir}" )
+    genext2fs_opts=( -z -b ${nb_blocks} -N ${nb_inodes} -d "${root_dir}" )
     if [ -n "${nb_res_blocks}" ]; then
         genext2fs_opts+=( -m ${nb_res_blocks} )
     fi
