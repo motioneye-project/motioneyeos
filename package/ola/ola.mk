@@ -4,18 +4,16 @@
 #
 ################################################################################
 
-OLA_VERSION = 0.8.33
-OLA_SITE = https://open-lighting.googlecode.com/files
+OLA_VERSION = 0.9.3
+OLA_SITE = $(call github,OpenLightingProject,ola,$(OLA_VERSION))
 
 OLA_LICENSE = LGPLv2.1+ (libola, libolacommon, Python bindings), GPLv2+ (libolaserver, olad, Python examples and tests)
 OLA_LICENSE_FILES = LICENCE GPL LGPL
 OLA_INSTALL_STAGING = YES
-
-# We modify configure.ac, so we need to autoreconf
 OLA_AUTORECONF = YES
 
 # util-linux provides uuid lib
-OLA_DEPENDENCIES = protobuf util-linux host-bison host-flex
+OLA_DEPENDENCIES = protobuf util-linux host-bison host-flex host-ola
 
 OLA_CONF_OPTS = \
 	ac_cv_have_pymod_google_protobuf=yes \
@@ -24,7 +22,31 @@ OLA_CONF_OPTS = \
 	--disable-unittests \
 	--disable-root-check \
 	--disable-java-libs \
-	--disable-fatal-warnings
+	--disable-fatal-warnings \
+	--with-ola-protoc=$(HOST_DIR)/usr/bin/ola_protoc
+
+HOST_OLA_DEPENDENCIES = host-util-linux host-protobuf
+
+# When building the host part, disable as much as possible to speed up
+# the configure step and avoid missing host dependencies.
+HOST_OLA_CONF_OPTS = \
+	--disable-all-plugins \
+	--disable-slp \
+	--disable-osc \
+	--disable-uart \
+	--disable-libusb \
+	--disable-libftdi \
+	--disable-http  \
+	--disable-examples \
+	--disable-unittests \
+	--disable-doxygen-html \
+	--disable-doxygen-doc
+
+# On the host side, we only need ola_protoc, so build and install this only.
+HOST_OLA_MAKE_OPTS = protoc/ola_protoc
+define HOST_OLA_INSTALL_CMDS
+	$(INSTALL) -D -m 0755 $(@D)/protoc/ola_protoc $(HOST_DIR)/usr/bin/ola_protoc
+endef
 
 # sets where to find python libs built for target and required by ola
 OLA_CONF_ENV = PYTHONPATH=$(TARGET_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR)/site-packages
@@ -149,3 +171,4 @@ OLA_CONF_OPTS += --disable-usbpro
 endif
 
 $(eval $(autotools-package))
+$(eval $(host-autotools-package))
