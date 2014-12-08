@@ -379,6 +379,7 @@ endif
 	source "package/ti-gfx/Config.in"
 	source "package/ti-uim/Config.in"
 	source "package/ti-utils/Config.in"
+	source "package/triggerhappy/Config.in"
 	source "package/uboot-tools/Config.in"
 	source "package/udev/Config.in"
 	source "package/udisks/Config.in"

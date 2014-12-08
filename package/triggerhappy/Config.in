@@ -1,0 +1,11 @@
+config BR2_PACKAGE_TRIGGERHAPPY
+	bool "triggerhappy"
+	depends on BR2_USE_MMU # fork()
+	help
+	  Triggerhappy is a hotkey daemon developed with small and
+	  embedded systems in mind, e.g. linux based routers. It
+	  attaches to the input device files and interprets the event
+	  data received and executes scripts configured in its
+	  configuration.
+
+	  https://github.com/wertarbyte/triggerhappy
