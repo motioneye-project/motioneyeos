@@ -245,6 +245,11 @@ comment "jack support needs a toolchain w/ largefile"
 	depends on BR2_ARCH_HAS_ATOMICS
 	depends on !BR2_LARGEFILE
 
+config BR2_PACKAGE_MPD_OSS
+	bool "oss"
+	help
+	  Enable OSS (Open Sound System) output support.
+
 config BR2_PACKAGE_MPD_PULSEAUDIO
 	bool "pulseaudio"
 	depends on BR2_LARGEFILE # pulseaudio -> libsndfile

@@ -175,6 +175,12 @@ else
 MPD_CONF_OPTS += --disable-opus
 endif
 
+ifeq ($(BR2_PACKAGE_MPD_OSS),y)
+MPD_CONF_OPTS += --enable-oss
+else
+MPD_CONF_OPTS += --disable-oss
+endif
+
 ifeq ($(BR2_PACKAGE_MPD_PULSEAUDIO),y)
 MPD_DEPENDENCIES += pulseaudio
 MPD_CONF_OPTS += --enable-pulse
