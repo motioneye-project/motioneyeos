@@ -51,7 +51,8 @@ config BR2_PACKAGE_MPD_LIBSOXR
 	select BR2_PACKAGE_LIBSOXR
 	help
 	  Enable libsoxr resampler support.
-	  The SoX Resampler library performs software sample-rate conversion.
+	  The SoX Resampler library performs software sample-rate
+	  conversion.
 
 comment "Decoder plugins"
 
@@ -65,8 +66,8 @@ config BR2_PACKAGE_MPD_AUDIOFILE
 config BR2_PACKAGE_MPD_DSD
 	bool "dsd"
 	help
-	  Enable Digital Speech Decoder (DSD) support to play audio files encoded
-	  in a digital speech format.
+	  Enable Digital Speech Decoder (DSD) support to play audio
+	  files encoded in a digital speech format.
 
 config BR2_PACKAGE_MPD_FAAD2
 	bool "faad2"
@@ -82,7 +83,8 @@ config BR2_PACKAGE_MPD_FFMPEG
 	depends on BR2_INET_IPV6
 	help
 	  Enable ffmpeg input support.
-	  Select this if you want to play back files supported by ffmpeg.
+	  Select this if you want to play back files supported by
+	  ffmpeg.
 
 comment "ffmpeg support needs a toolchain w/ largefile, IPv6"
 	depends on !(BR2_LARGEFILE && BR2_INET_IPV6)
@@ -145,7 +147,8 @@ config BR2_PACKAGE_MPD_TREMOR
 	select BR2_PACKAGE_TREMOR
 	help
 	  Enable vorbis input support.
-	  Select this if you want to play back OGG files on softfloat targets.
+	  Select this if you want to play back OGG files on softfloat
+	  targets.
 
 config BR2_PACKAGE_MPD_VORBIS
 	bool "vorbis"
@@ -153,7 +156,8 @@ config BR2_PACKAGE_MPD_VORBIS
 	select BR2_PACKAGE_LIBVORBIS
 	help
 	  Enable vorbis input/streaming support.
-	  Select this if you want to play back OGG files on hardfloat targets.
+	  Select this if you want to play back OGG files on hardfloat
+	  targets.
 
 config BR2_PACKAGE_MPD_WAVPACK
 	bool "wavpack"
@@ -263,8 +267,9 @@ config BR2_PACKAGE_MPD_AVAHI_SUPPORT
 	select BR2_PACKAGE_AVAHI_LIBDNSSD_COMPATIBILITY
 	help
 	  Enable Avahi (zeroconf) support.
-	  Select this for multicast DNS/DNS-SD service discovery support. This allows
-	  MPD to publish service information on a local network.
+	  Select this for multicast DNS/DNS-SD service discovery
+	  support. This allows MPD to publish service information on a
+	  local network.
 
 comment "avahi support needs a toolchain w/ dynamic library"
 	depends on BR2_PREFER_STATIC_LIB
