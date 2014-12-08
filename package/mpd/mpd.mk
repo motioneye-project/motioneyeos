@@ -162,6 +162,12 @@ else
 MPD_CONF_OPTS += --disable-mpc
 endif
 
+ifeq ($(BR2_PACKAGE_MPD_NEIGHBOR_DISCOVERY_SUPPORT),y)
+MPD_CONF_OPTS += --enable-neighbor-plugins
+else
+MPD_CONF_OPTS += --disable-neighbor-plugins
+endif
+
 ifeq ($(BR2_PACKAGE_MPD_OPUS),y)
 MPD_DEPENDENCIES += opus libogg
 MPD_CONF_OPTS += --enable-opus

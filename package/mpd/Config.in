@@ -274,6 +274,18 @@ config BR2_PACKAGE_MPD_AVAHI_SUPPORT
 comment "avahi support needs a toolchain w/ dynamic library"
 	depends on BR2_PREFER_STATIC_LIB
 
+config BR2_PACKAGE_MPD_NEIGHBOR_DISCOVERY_SUPPORT
+	bool "neighbor discovery support"
+	depends on BR2_PACKAGE_MPD_LIBSMBCLIENT || BR2_PACKAGE_MPD_UPNP
+	help
+	  Enable support for neighbor discovery.
+	  This option can be used in conjunction with the smbclient
+	  plugin to provide a list of SMB/CIFS servers or with the
+	  UPnP plugin to provide a list of UPnP servers on the local
+	  network.  The neighbor plugin needs configuration in
+	  mpd.conf. For further information take a look at the MPD
+	  documentation.
+
 config BR2_PACKAGE_MPD_TCP
 	bool "tcp sockets"
 	default y
