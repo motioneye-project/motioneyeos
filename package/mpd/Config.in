@@ -273,9 +273,9 @@ config BR2_PACKAGE_MPD_TCP
 	bool "tcp sockets"
 	default y
 	help
-	  Enable mpd to listen on tcp sockets.
+	  Enable MPD to listen on tcp sockets.
 
-	  You want this on if mpd and the client(s) work
+	  You want this on if MPD and the client(s) work
 	  on different machines (the usual scenario).
 
 config BR2_PACKAGE_MPD_UPNP
@@ -283,7 +283,7 @@ config BR2_PACKAGE_MPD_UPNP
 	select BR2_PACKAGE_EXPAT
 	select BR2_PACKAGE_LIBUPNP
 	help
-	  Enable mpd UPnP client support.
+	  Enable MPD UPnP client support.
 
 endif
 
