@@ -174,7 +174,7 @@ define DOWNLOAD_SCP
 	$(EXTRA_ENV) support/download/wrapper scp \
 		$(DL_DIR)/$(2) \
 		'$(call stripurischeme,$(call qstrip,$(1)))' && \
-	$(call VERIFY_HASH,$(PKGDIR)/$($(PKG)_NAME).hash,$(DL_DIR)/$(2))
+	$(call VERIFY_HASH,$(PKGDIR)/$($(PKG)_RAWNAME).hash,$(DL_DIR)/$(2))
 endef
 
 define SOURCE_CHECK_SCP
@@ -211,7 +211,7 @@ define DOWNLOAD_WGET
 	$(EXTRA_ENV) support/download/wrapper wget \
 		$(DL_DIR)/$(2) \
 		'$(call qstrip,$(1))' && \
-	$(call VERIFY_HASH,$(PKGDIR)/$($(PKG)_NAME).hash,$(DL_DIR)/$(2))
+	$(call VERIFY_HASH,$(PKGDIR)/$($(PKG)_RAWNAME).hash,$(DL_DIR)/$(2))
 endef
 
 define SOURCE_CHECK_WGET
@@ -227,7 +227,7 @@ define DOWNLOAD_LOCALFILES
 	$(EXTRA_ENV) support/download/wrapper cp \
 		$(DL_DIR)/$(2) \
 		$(call stripurischeme,$(call qstrip,$(1))) && \
-	$(call VERIFY_HASH,$(PKGDIR)/$($(PKG)_NAME).hash,$(DL_DIR)/$(2))
+	$(call VERIFY_HASH,$(PKGDIR)/$($(PKG)_RAWNAME).hash,$(DL_DIR)/$(2))
 endef
 
 define SOURCE_CHECK_LOCALFILES
