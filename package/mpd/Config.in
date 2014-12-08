@@ -279,7 +279,7 @@ config BR2_PACKAGE_MPD_TCP
 	  on different machines (the usual scenario).
 
 config BR2_PACKAGE_MPD_UPNP
-	bool "UPnp"
+	bool "UPnP"
 	select BR2_PACKAGE_EXPAT
 	select BR2_PACKAGE_LIBUPNP
 	help
