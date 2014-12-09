@@ -12,9 +12,11 @@ HOST_THRIFT_DEPENDENCIES = host-boost host-libevent host-openssl host-pkgconf \
 	host-zlib host-bison host-flex
 THRIFT_CONF_OPTS = --with-sysroot=$(STAGING_DIR) \
 	--with-boost=$(STAGING_DIR) \
-	--disable-tests
+	--disable-tests \
+	--disable-tutorial
 HOST_THRIFT_CONF_OPTS = --with-sysroot=$(HOST_DIR) \
-	--disable-tests
+	--disable-tests \
+	--disable-tutorial
 THRIFT_AUTORECONF = YES
 THRIFT_LICENSE = Apache-2.0
 THRIFT_LICENSE_FILES = LICENSE
