@@ -40,11 +40,9 @@ define MUSL_INSTALL_STAGING_CMDS
 		DESTDIR=$(STAGING_DIR) install-libs install-tools install-headers
 endef
 
-# prefix is set to an empty value to get the C library installed in
-# /lib and not /usr/lib
 define MUSL_INSTALL_TARGET_CMDS
 	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) \
-		DESTDIR=$(TARGET_DIR) prefix= install-libs
+		DESTDIR=$(TARGET_DIR) install-libs
 	$(RM) $(addprefix $(TARGET_DIR)/lib/,crt1.o crtn.o crti.o Scrt1.o)
 endef
 
