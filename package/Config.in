@@ -52,6 +52,7 @@ endif
 endmenu
 
 menu "Debugging, profiling and benchmark"
+	source "package/blktrace/Config.in"
 	source "package/bonnie/Config.in"
 	source "package/cache-calibrator/Config.in"
 	source "package/dhrystone/Config.in"
