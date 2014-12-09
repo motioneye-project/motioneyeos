@@ -11,5 +11,6 @@ XTERM_DEPENDENCIES = ncurses xlib_libXaw
 XTERM_INSTALL_TARGET_OPTS = DESTDIR=$(TARGET_DIR) install
 XTERM_LICENSE = MIT
 XTERM_LICENSE_FILES = version.c
+XTERM_CONF_OPTS = --enable-256-color
 
 $(eval $(autotools-package))
