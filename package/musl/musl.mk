@@ -27,6 +27,7 @@ define MUSL_CONFIGURE_CMDS
 			--target=$(GNU_TARGET_NAME) \
 			--host=$(GNU_TARGET_NAME) \
 			--prefix=/usr \
+			--libdir=/lib \
 			--disable-gcc-wrapper)
 endef
 
