@@ -558,8 +558,8 @@ sub fetch {
         my $manifest = get_manifest( $result->{author}, $name, $result->{version} );
         $need_dlopen{$name} = is_xs( $manifest );
         $license_files{$name} = find_license_files( $manifest );
-        my @deps_build = ();
-        my @deps_runtime = ();
+        my %build = ();
+        my %runtime = ();
         my $mb;
         foreach my $dep (@{$result->{dependency}}) {
             my $modname = ${$dep}{module};
@@ -578,19 +578,19 @@ sub fetch {
             next if !$recommend && ${$dep}{relationship} ne q{requires};
             my $distname = $mcpan->module( $modname )->{distribution};
             if (${$dep}{phase} eq q{runtime}) {
-                push @deps_runtime, $distname;
+                $runtime{$distname} = 1;
             }
             else { # configure, build
-                push @deps_build, $distname;
+                $build{$distname} = 1;
             }
         }
-        unshift @deps_build, q{Module-Build} if $mb;
-        $deps_build{$name} = \@deps_build;
-        $deps_runtime{$name} = \@deps_runtime;
-        foreach my $distname (@deps_build) {
+        $build{q{Module-Build}} = 1 if $mb;
+        $deps_build{$name} = [keys %build];
+        $deps_runtime{$name} = [keys %runtime];
+        foreach my $distname (@{$deps_build{$name}}) {
             fetch( $distname, 0, 1 );
         }
-        foreach my $distname (@deps_runtime) {
+        foreach my $distname (@{$deps_runtime{$name}}) {
             fetch( $distname, $need_target, $need_host );
             $need_dlopen{$name} ||= $need_dlopen{$distname};
         }
