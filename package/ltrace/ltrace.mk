@@ -21,7 +21,9 @@ LTRACE_POST_PATCH_HOOKS += LTRACE_CREATE_CONFIG_M4
 # We don't normally do so for uClibc and we can't know if it's external
 ifeq ($(BR2_PACKAGE_LIBUNWIND),y)
 ifeq ($(BR2_TOOLCHAIN_USES_UCLIBC),)
-LTRACE_CONF_OPTS += --with-libunwind=yes
+# --with-elfutils only selects unwinding support backend. elfutils is a
+# mandatory dependency regardless.
+LTRACE_CONF_OPTS += --with-libunwind=yes --with-elfutils=no
 LTRACE_DEPENDENCIES += libunwind
 else
 LTRACE_CONF_OPTS += --with-libunwind=no
