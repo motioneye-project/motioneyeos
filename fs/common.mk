@@ -106,7 +106,7 @@ endif
 endef
 
 define ROOTFS_TARGET
-$(call ROOTFS_TARGET_INTERNAL,$(1),$(call UPPERCASE,$(1)))
+	$(call ROOTFS_TARGET_INTERNAL,$(1),$(call UPPERCASE,$(1)))
 endef
 
 include $(sort $(wildcard fs/*/*.mk))

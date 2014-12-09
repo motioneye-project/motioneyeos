@@ -37,7 +37,7 @@ HOST_OMNIORB_CONF_OPTS += --disable-longdouble
 # required.  The tools however are host related and should never
 # be required on target.
 define OMNIORB_ENABLE_EXTRA_APPS
-$(SED) 's:SUBDIRS += lib:SUBDIRS += lib appl services:g' $(@D)/src/dir.mk
+	$(SED) 's:SUBDIRS += lib:SUBDIRS += lib appl services:g' $(@D)/src/dir.mk
 endef
 
 ifeq ($(BR2_PACKAGE_OMNIORB_WITH_APPS),y)
