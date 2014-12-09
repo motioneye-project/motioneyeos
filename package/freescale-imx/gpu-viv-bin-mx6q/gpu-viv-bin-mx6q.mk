@@ -37,12 +37,13 @@ endef
 # Make sure these commands are idempotent.
 define GPU_VIV_BIN_MX6Q_BUILD_CMDS
 	$(SED) 's/defined(LINUX)/defined(__linux__)/g' $(@D)/usr/include/*/*.h
-	for lib in EGL GAL VIVANTE; do \
+	for lib in EGL GAL VIVANTE GLESv2; do \
 		ln -sf lib$${lib}-$(GPU_VIV_BIN_MX6Q_LIB_TARGET).so \
 			$(@D)/usr/lib/lib$${lib}.so; \
 	done
-	ln -sf libGL.so.1.2 $(@D)/usr/lib/libGL.so.1
 	ln -sf libGL.so.1.2 $(@D)/usr/lib/libGL.so
+	ln -sf libGL.so.1.2 $(@D)/usr/lib/libGL.so.1
+	ln -sf libGL.so.1.2 $(@D)/usr/lib/libGL.so.1.2.0
 endef
 
 define GPU_VIV_BIN_MX6Q_INSTALL_STAGING_CMDS
@@ -71,7 +72,7 @@ endif
 define GPU_VIV_BIN_MX6Q_INSTALL_TARGET_CMDS
 	$(GPU_VIV_BIN_MX6Q_INSTALL_EXAMPLES)
 	cp -a $(@D)/usr/lib $(TARGET_DIR)/usr
-	for lib in EGL GAL VIVANTE; do \
+	for lib in EGL GAL VIVANTE GLESv2; do \
 		for f in $(TARGET_DIR)/usr/lib/lib$${lib}-*.so; do \
 			case $$f in \
 				*-$(GPU_VIV_BIN_MX6Q_LIB_TARGET).so) : ;; \
