@@ -91,11 +91,19 @@ UTIL_LINUX_CONF_OPTS += \
 	$(if $(BR2_PACKAGE_UTIL_LINUX_WRITE),--enable-write,--disable-write)
 
 # In the host version of util-linux, we so far only require libuuid,
-# and none of the util-linux utilities, so we disable all of them.
+# and none of the util-linux utilities, so we disable all of them, unless
+# BR2_PACKAGE_HOST_UTIL_LINUX is set
+
 HOST_UTIL_LINUX_CONF_OPTS += \
 	--enable-libuuid \
 	--disable-libblkid --disable-libmount \
-	--disable-all-programs --without-ncurses
+	--without-ncurses
+
+ifeq ($(BR2_PACKAGE_HOST_UTIL_LINUX),y)
+HOST_UTIL_LINUX_CONF_OPTS += --disable-makeinstall-chown
+else
+HOST_UTIL_LINUX_CONF_OPTS += --disable-all-programs
+endif
 
 # Avoid building the tools if they are disabled since we can't install on
 # a per-directory basis.
