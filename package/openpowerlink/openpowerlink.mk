@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-OPENPOWERLINK_VERSION = V1.08.4
+OPENPOWERLINK_VERSION = V1.08.5
 OPENPOWERLINK_SITE = http://git.code.sf.net/p/openpowerlink/code
 OPENPOWERLINK_SITE_METHOD = git
 OPENPOWERLINK_LICENSE = BSD-2c, GPLv2
