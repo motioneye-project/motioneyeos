@@ -4,9 +4,10 @@
 #
 ################################################################################
 
-MTR_VERSION = 0.85
-MTR_SITE = ftp://ftp.bitwizard.nl/mtr
-MTR_CONF_OPTS = --without-gtk --without-glib
+MTR_VERSION = v0.86
+MTR_SITE = $(call github,traviscross,mtr,$(MTR_VERSION))
+MTR_AUTORECONF = YES
+MTR_CONF_OPTS = --without-gtk
 MTR_DEPENDENCIES = host-pkgconf $(if $(BR2_PACKAGE_NCURSES),ncurses)
 MTR_LICENSE = GPLv2
 MTR_LICENSE_FILES = COPYING
