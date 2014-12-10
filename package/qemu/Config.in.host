@@ -1,0 +1,8 @@
+config BR2_PACKAGE_HOST_QEMU
+	bool "host qemu"
+	help
+	  QEMU is a generic and open source machine emulator and virtualizer.
+
+	  This option builds a user emulator for your selected architecture.
+
+	  http://www.qemu.org
