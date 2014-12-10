@@ -1,0 +1,54 @@
+From 9c11eef037dc1137ab7a4656e45afde7d1a615c4 Mon Sep 17 00:00:00 2001
+From: Romain Naour <romain.naour@openwide.fr>
+Date: Sat, 22 Nov 2014 16:38:01 +0100
+Subject: [PATCH 2/2] [FIX]: user space stack: enable dynamic build
+
+The build fail if BUILD_SHARED_LIBS is set to ON.
+
+Depending on BUILD_SHARED_LIBS, link with STATIC or SHARED.
+
+Signed-off-by: Romain Naour <romain.naour@openwide.fr>
+---
+ Examples/X86/Generic/powerlink_user_lib/CMakeLists.txt | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
+
+diff --git a/Examples/X86/Generic/powerlink_user_lib/CMakeLists.txt b/Examples/X86/Generic/powerlink_user_lib/CMakeLists.txt
+index 40b7756..27360f2 100644
+--- a/Examples/X86/Generic/powerlink_user_lib/CMakeLists.txt
++++ b/Examples/X86/Generic/powerlink_user_lib/CMakeLists.txt
+@@ -93,7 +93,13 @@ ENDIF(CFG_STORE_RESTORE)
+ #
+ # Set type of library
+ #
+-IF (WIN32)
++IF (UNIX)
++    IF (BUILD_SHARED_LIBS)
++        SET(LIB_TYPE "SHARED")
++    ELSE (BUILD_SHARED_LIBS)
++        SET(LIB_TYPE "STATIC")
++    ENDIF(BUILD_SHARED_LIBS)
++ELSEIF (WIN32)
+     IF(CFG_X86_WINDOWS_DLL)
+         SET(LIB_TYPE "SHARED")
+     ELSE(CFG_X86_WINDOWS_DLL)
+@@ -313,7 +319,7 @@ ENDIF ()
+ # Define library source code
+ #
+ IF (UNIX)
+-    ADD_LIBRARY(powerlink ${LIB_SOURCES} ${LIB_SOURCES_KERNEL} ${LIB_SOURCES_USER} ${LIB_HEADERS} ${LIB_HEADERS_KERNEL} ${LIB_HEADERS_USER} ${LIB_OBJDICT})
++    ADD_LIBRARY(powerlink ${LIB_TYPE} ${LIB_SOURCES} ${LIB_SOURCES_KERNEL} ${LIB_SOURCES_USER} ${LIB_HEADERS} ${LIB_HEADERS_KERNEL} ${LIB_HEADERS_USER} ${LIB_OBJDICT})
+ 
+     SET_PROPERTY(TARGET powerlink
+                  PROPERTY COMPILE_DEFINITIONS_DEBUG DEBUG;DEF_DEBUG_LVL=${CFG_DEBUG_LVL})
+@@ -330,7 +336,7 @@ ENDIF ()
+ # Installation
+ #
+ IF (UNIX)
+-    INSTALL(TARGETS powerlink ARCHIVE DESTINATION lib)
++    INSTALL(TARGETS powerlink ARCHIVE DESTINATION lib LIBRARY DESTINATION lib COMPONENT library)
+ ELSEIF (WIN32)
+     IF (CFG_X86_WINDOWS_DLL)
+         INSTALL(TARGETS openPOWERLINK RUNTIME DESTINATION bin)
+-- 
+1.9.3
+
