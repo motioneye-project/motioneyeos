@@ -569,6 +569,26 @@ config BR2_GLOBAL_PATCH_DIR
 	  Otherwise, if the directory <global-patch-dir>/<packagename> exists,
 	  then all *.patch files in the directory will be applied.
 
+menu "Advanced"
+
+config BR2_COMPILER_PARANOID_UNSAFE_PATH
+	bool "paranoid check of library/header paths"
+	help
+	  By default, when this option is disabled, when the Buildroot
+	  cross-compiler will encounter an unsafe library or header
+	  path (such as /usr/include, or /usr/lib), the compiler will
+	  display a warning.
+
+	  By enabling this option, this warning is turned into an
+	  error, which will completely abort the build when such
+	  unsafe paths are encountered.
+
+	  Note that this mechanism is available for both the internal
+	  toolchain (through gcc and binutils patches) and external
+	  toolchain backends (through the external toolchain wrapper).
+
+endmenu
+
 endmenu
 
 source "toolchain/Config.in"

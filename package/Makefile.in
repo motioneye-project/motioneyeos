@@ -398,6 +398,10 @@ else
 SHARED_STATIC_LIBS_OPTS = --enable-static --enable-shared
 endif
 
+ifeq ($(BR2_COMPILER_PARANOID_UNSAFE_PATH),y)
+export BR_COMPILER_PARANOID_UNSAFE_PATH=enabled
+endif
+
 include package/pkg-download.mk
 include package/pkg-autotools.mk
 include package/pkg-cmake.mk
