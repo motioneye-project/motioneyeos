@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-LIBUV_VERSION = v0.11.29
-LIBUV_SITE = $(call github,joyent,libuv,$(LIBUV_VERSION))
+LIBUV_VERSION = v1.0.2
+LIBUV_SITE = $(call github,libuv,libuv,$(LIBUV_VERSION))
 LIBUV_DEPENDENCIES = host-pkgconf
 LIBUV_INSTALL_STAGING = YES
 LIBUV_AUTORECONF = YES

@@ -7,7 +7,7 @@ config BR2_PACKAGE_LIBUV
 	  libuv is a multi-platform support library with a focus
 	  on asynchronous I/O.
 
-	  https://github.com/joyent/libuv
+	  https://github.com/libuv/libuv
 
 comment "libuv needs a toolchain w/ IPv6, threads"
 	depends on !BR2_INET_IPV6 || !BR2_TOOLCHAIN_HAS_THREADS
