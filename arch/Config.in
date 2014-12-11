@@ -305,14 +305,12 @@ config BR2_BINFMT_FLAT_ONE
 
 config BR2_BINFMT_FLAT_SEP_DATA
 	bool "Separate data and code region"
-	depends on BR2_bfin || BR2_m68k
 	help
 	  Allow for the data and text segments to be separated and placed in
 	  different regions of memory.
 
 config BR2_BINFMT_FLAT_SHARED
 	bool "Shared binary"
-	depends on BR2_bfin || BR2_m68k
 	select BR2_BINFMT_SUPPORTS_SHARED
 	help
 	  Allow to load and link indiviual FLAT binaries at run time.
