@@ -527,7 +527,7 @@ comment "enabling Stack Smashing Protection requires support in the toolchain"
 
 choice
 	bool "libraries"
-	default BR2_SHARED_STATIC_LIBS if BR2_BINFMT_SUPPORTS_SHARED
+	default BR2_SHARED_LIBS if BR2_BINFMT_SUPPORTS_SHARED
 	default BR2_STATIC_LIBS if !BR2_BINFMT_SUPPORTS_SHARED
 	help
 	  Select the type of libraries you want to use on the target.
