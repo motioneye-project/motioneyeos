@@ -60,17 +60,6 @@ domainseparator = $(if $(1),$(1),/)
 # github(user,package,version): returns site of GitHub repository
 github = https://github.com/$(1)/$(2)/archive/$(3)
 
-# Helper for checking a tarball's checksum
-# If the hash does not match, remove the incorrect file
-# $(1): the path to the file with the hashes
-# $(2): the full path to the file to check
-define VERIFY_HASH
-	if ! support/download/check-hash $(1) $(2) $(if $(QUIET),>/dev/null); then \
-		rm -f $(2); \
-		exit 1; \
-	fi
-endef
-
 ################################################################################
 # The DOWNLOAD_* helpers are in charge of getting a working copy
 # of the source repository for their corresponding SCM,
@@ -98,6 +87,7 @@ endef
 define DOWNLOAD_GIT
 	$(EXTRA_ENV) $(DL_WRAPPER) -b git \
 		-o $(DL_DIR)/$($(PKG)_SOURCE) \
+		-H $(PKGDIR)/$($(PKG)_RAWNAME).hash \
 		-- \
 		$($(PKG)_SITE) \
 		$($(PKG)_DL_VERSION) \
@@ -118,6 +108,7 @@ endef
 define DOWNLOAD_BZR
 	$(EXTRA_ENV) $(DL_WRAPPER) -b bzr \
 		-o $(DL_DIR)/$($(PKG)_SOURCE) \
+		-H $(PKGDIR)/$($(PKG)_RAWNAME).hash \
 		-- \
 		$($(PKG)_SITE) \
 		$($(PKG)_DL_VERSION) \
@@ -135,6 +126,7 @@ endef
 define DOWNLOAD_CVS
 	$(EXTRA_ENV) $(DL_WRAPPER) -b cvs \
 		-o $(DL_DIR)/$($(PKG)_SOURCE) \
+		-H $(PKGDIR)/$($(PKG)_RAWNAME).hash \
 		-- \
 		$(call stripurischeme,$(call qstrip,$($(PKG)_SITE))) \
 		$($(PKG)_DL_VERSION) \
@@ -154,6 +146,7 @@ endef
 define DOWNLOAD_SVN
 	$(EXTRA_ENV) $(DL_WRAPPER) -b svn \
 		-o $(DL_DIR)/$($(PKG)_SOURCE) \
+		-H $(PKGDIR)/$($(PKG)_RAWNAME).hash \
 		-- \
 		$($(PKG)_SITE) \
 		$($(PKG)_DL_VERSION) \
@@ -174,9 +167,9 @@ endef
 define DOWNLOAD_SCP
 	$(EXTRA_ENV) $(DL_WRAPPER) -b scp \
 		-o $(DL_DIR)/$(2) \
+		-H $(PKGDIR)/$($(PKG)_RAWNAME).hash \
 		-- \
-		'$(call stripurischeme,$(call qstrip,$(1)))' && \
-	$(call VERIFY_HASH,$(PKGDIR)/$($(PKG)_RAWNAME).hash,$(DL_DIR)/$(2))
+		'$(call stripurischeme,$(call qstrip,$(1)))'
 endef
 
 define SOURCE_CHECK_SCP
@@ -191,6 +184,7 @@ endef
 define DOWNLOAD_HG
 	$(EXTRA_ENV) $(DL_WRAPPER) -b hg \
 		-o $(DL_DIR)/$($(PKG)_SOURCE) \
+		-H $(PKGDIR)/$($(PKG)_RAWNAME).hash \
 		-- \
 		$($(PKG)_SITE) \
 		$($(PKG)_DL_VERSION) \
@@ -211,9 +205,9 @@ endef
 define DOWNLOAD_WGET
 	$(EXTRA_ENV) $(DL_WRAPPER) -b wget \
 		-o $(DL_DIR)/$(2) \
+		-H $(PKGDIR)/$($(PKG)_RAWNAME).hash \
 		-- \
-		'$(call qstrip,$(1))' && \
-	$(call VERIFY_HASH,$(PKGDIR)/$($(PKG)_RAWNAME).hash,$(DL_DIR)/$(2))
+		'$(call qstrip,$(1))'
 endef
 
 define SOURCE_CHECK_WGET
@@ -227,9 +221,9 @@ endef
 define DOWNLOAD_LOCALFILES
 	$(EXTRA_ENV) $(DL_WRAPPER) -b cp \
 		-o $(DL_DIR)/$(2) \
+		-H $(PKGDIR)/$($(PKG)_RAWNAME).hash \
 		-- \
-		$(call stripurischeme,$(call qstrip,$(1))) && \
-	$(call VERIFY_HASH,$(PKGDIR)/$($(PKG)_RAWNAME).hash,$(DL_DIR)/$(2))
+		$(call stripurischeme,$(call qstrip,$(1)))
 endef
 
 define SOURCE_CHECK_LOCALFILES

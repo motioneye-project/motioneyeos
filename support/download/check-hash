@@ -4,10 +4,15 @@ set -e
 # Helper to check a file matches its known hash
 # Call it with:
 #   $1: the path of the file containing all the the expected hashes
-#   $2: the full path to the file to check
+#   $2: the full path to the temporary file that was downloaded, and
+#       that is to be checked
+#   $3: the final basename of the file, to which it will be ultimately
+#       saved as, to be able to match it to the corresponding hashes
+#       in the .hash file
 
 h_file="${1}"
 file="${2}"
+base="${3}"
 
 # Does the hash-file exist?
 if [ ! -f "${h_file}" ]; then
@@ -30,7 +35,7 @@ check_one_hash() {
         sha224|sha256|sha384|sha512)    ;;
         *) # Unknown hash, exit with error
             printf "ERROR: unknown hash '%s' for '%s'\n"  \
-                   "${_h}" "${_file##*/}" >&2
+                   "${_h}" "${base}" >&2
             exit 1
             ;;
     esac
@@ -38,11 +43,11 @@ check_one_hash() {
     # Do the hashes match?
     _hash=$( ${_h}sum "${_file}" |cut -d ' ' -f 1 )
     if [ "${_hash}" = "${_known}" ]; then
-        printf "%s: OK (%s: %s)\n" "${_file##*/}" "${_h}" "${_hash}"
+        printf "%s: OK (%s: %s)\n" "${base}" "${_h}" "${_hash}"
         return 0
     fi
 
-    printf "ERROR: %s has wrong %s hash:\n" "${_file##*/}" "${_h}" >&2
+    printf "ERROR: %s has wrong %s hash:\n" "${base}" "${_h}" >&2
     printf "ERROR: expected: %s\n" "${_known}" >&2
     printf "ERROR: got     : %s\n" "${_hash}" >&2
     printf "ERROR: Incomplete download, or man-in-the-middle (MITM) attack\n" >&2
@@ -59,7 +64,7 @@ while read t h f; do
             continue
             ;;
         *)
-            if [ "${f}" = "${file##*/}" ]; then
+            if [ "${f}" = "${base}" ]; then
                 check_one_hash "${t}" "${h}" "${file}"
                 : $((nb_checks++))
             fi
@@ -69,9 +74,9 @@ done <"${h_file}"
 
 if [ ${nb_checks} -eq 0 ]; then
     if [ -n "${BR2_ENFORCE_CHECK_HASH}" ]; then
-        printf "ERROR: No hash found for %s\n" "${file}" >&2
+        printf "ERROR: No hash found for %s\n" "${base}" >&2
         exit 1
     else
-        printf "WARNING: No hash found for %s\n" "${file}" >&2
+        printf "WARNING: No hash found for %s\n" "${base}" >&2
     fi
 fi

@@ -21,14 +21,15 @@ set -e
 
 main() {
     local OPT OPTARG
-    local backend output
+    local backend output hfile
 
     # Parse our options; anything after '--' is for the backend
-    while getopts :hb:o: OPT; do
+    while getopts :hb:o:H: OPT; do
         case "${OPT}" in
         h)  help; exit 0;;
         b)  backend="${OPTARG}";;
         o)  output="${OPTARG}";;
+        H)  hfile="${OPTARG}";;
         :)  error "option '%s' expects a mandatory argument\n" "${OPTARG}";;
         \?) error "unknown option '%s'\n" "${OPTARG}";;
         esac
@@ -41,6 +42,9 @@ main() {
     fi
     if [ -z "${output}" ]; then
         error "no output specified, use -o\n"
+    fi
+    if [ -z "${hfile}" ]; then
+        error "no hash-file specified, use -H\n"
     fi
 
     # If the output file already exists, do not download it again
@@ -74,6 +78,13 @@ main() {
 
     # cd back to free the temp-dir, so we can remove it later
     cd "${OLDPWD}"
+
+    # Check if the downloaded file is sane, and matches the stored hashes
+    # for that file
+    if ! support/download/check-hash "${hfile}" "${tmpf}" "${output##*/}"; then
+        rm -rf "${tmpd}"
+        exit 1
+    fi
 
     # tmp_output is in the same directory as the final output, so we can
     # later move it atomically.
@@ -149,6 +160,10 @@ DESCRIPTION
 
     -o FILE
         Store the downloaded archive in FILE.
+
+    -H FILE
+        Use FILE to read hashes from, and check them against the downloaded
+        archive.
 
   Exit status:
     0   if OK
