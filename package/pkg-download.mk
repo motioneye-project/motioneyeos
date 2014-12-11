@@ -18,6 +18,8 @@ export SCP := $(call qstrip,$(BR2_SCP)) $(QUIET)
 SSH := $(call qstrip,$(BR2_SSH)) $(QUIET)
 export LOCALFILES := $(call qstrip,$(BR2_LOCALFILES))
 
+DL_WRAPPER = support/download/dl-wrapper
+
 # Default spider mode is 'DOWNLOAD'. Other possible values are 'SOURCE_CHECK'
 # used by the _source-check target and 'SHOW_EXTERNAL_DEPS', used by the
 # external-deps target.
@@ -95,8 +97,9 @@ endef
 # problems
 define DOWNLOAD_GIT
 	test -e $(DL_DIR)/$($(PKG)_SOURCE) || \
-	$(EXTRA_ENV) support/download/wrapper git \
-		$(DL_DIR)/$($(PKG)_SOURCE) \
+	$(EXTRA_ENV) $(DL_WRAPPER) -b git \
+		-o $(DL_DIR)/$($(PKG)_SOURCE) \
+		-- \
 		$($(PKG)_SITE) \
 		$($(PKG)_DL_VERSION) \
 		$($(PKG)_BASE_NAME)
@@ -115,8 +118,9 @@ endef
 
 define DOWNLOAD_BZR
 	test -e $(DL_DIR)/$($(PKG)_SOURCE) || \
-	$(EXTRA_ENV) support/download/wrapper bzr \
-		$(DL_DIR)/$($(PKG)_SOURCE) \
+	$(EXTRA_ENV) $(DL_WRAPPER) -b bzr \
+		-o $(DL_DIR)/$($(PKG)_SOURCE) \
+		-- \
 		$($(PKG)_SITE) \
 		$($(PKG)_DL_VERSION) \
 		$($(PKG)_BASE_NAME)
@@ -132,8 +136,9 @@ endef
 
 define DOWNLOAD_CVS
 	test -e $(DL_DIR)/$($(PKG)_SOURCE) || \
-	$(EXTRA_ENV) support/download/wrapper cvs \
-		$(DL_DIR)/$($(PKG)_SOURCE) \
+	$(EXTRA_ENV) $(DL_WRAPPER) -b cvs \
+		-o $(DL_DIR)/$($(PKG)_SOURCE) \
+		-- \
 		$(call stripurischeme,$(call qstrip,$($(PKG)_SITE))) \
 		$($(PKG)_DL_VERSION) \
 		$($(PKG)_RAWNAME) \
@@ -151,8 +156,9 @@ endef
 
 define DOWNLOAD_SVN
 	test -e $(DL_DIR)/$($(PKG)_SOURCE) || \
-	$(EXTRA_ENV) support/download/wrapper svn \
-		$(DL_DIR)/$($(PKG)_SOURCE) \
+	$(EXTRA_ENV) $(DL_WRAPPER) -b svn \
+		-o $(DL_DIR)/$($(PKG)_SOURCE) \
+		-- \
 		$($(PKG)_SITE) \
 		$($(PKG)_DL_VERSION) \
 		$($(PKG)_BASE_NAME)
@@ -171,8 +177,9 @@ endef
 # to prepend the path with a slash: scp://[user@]host:/absolutepath
 define DOWNLOAD_SCP
 	test -e $(DL_DIR)/$(2) || \
-	$(EXTRA_ENV) support/download/wrapper scp \
-		$(DL_DIR)/$(2) \
+	$(EXTRA_ENV) $(DL_WRAPPER) -b scp \
+		-o $(DL_DIR)/$(2) \
+		-- \
 		'$(call stripurischeme,$(call qstrip,$(1)))' && \
 	$(call VERIFY_HASH,$(PKGDIR)/$($(PKG)_RAWNAME).hash,$(DL_DIR)/$(2))
 endef
@@ -188,8 +195,9 @@ endef
 
 define DOWNLOAD_HG
 	test -e $(DL_DIR)/$($(PKG)_SOURCE) || \
-	$(EXTRA_ENV) support/download/wrapper hg \
-		$(DL_DIR)/$($(PKG)_SOURCE) \
+	$(EXTRA_ENV) $(DL_WRAPPER) -b hg \
+		-o $(DL_DIR)/$($(PKG)_SOURCE) \
+		-- \
 		$($(PKG)_SITE) \
 		$($(PKG)_DL_VERSION) \
 		$($(PKG)_BASE_NAME)
@@ -208,8 +216,9 @@ endef
 
 define DOWNLOAD_WGET
 	test -e $(DL_DIR)/$(2) || \
-	$(EXTRA_ENV) support/download/wrapper wget \
-		$(DL_DIR)/$(2) \
+	$(EXTRA_ENV) $(DL_WRAPPER) -b wget \
+		-o $(DL_DIR)/$(2) \
+		-- \
 		'$(call qstrip,$(1))' && \
 	$(call VERIFY_HASH,$(PKGDIR)/$($(PKG)_RAWNAME).hash,$(DL_DIR)/$(2))
 endef
@@ -224,8 +233,9 @@ endef
 
 define DOWNLOAD_LOCALFILES
 	test -e $(DL_DIR)/$(2) || \
-	$(EXTRA_ENV) support/download/wrapper cp \
-		$(DL_DIR)/$(2) \
+	$(EXTRA_ENV) $(DL_WRAPPER) -b cp \
+		-o $(DL_DIR)/$(2) \
+		-- \
 		$(call stripurischeme,$(call qstrip,$(1))) && \
 	$(call VERIFY_HASH,$(PKGDIR)/$($(PKG)_RAWNAME).hash,$(DL_DIR)/$(2))
 endef
