@@ -15,7 +15,6 @@ NCURSES_LICENSE_FILES = README
 NCURSES_CONFIG_SCRIPTS = ncurses$(NCURSES_LIB_SUFFIX)5-config
 
 NCURSES_CONF_OPTS = \
-	$(if $(BR2_STATIC_LIBS),--without-shared,--with-shared) \
 	--without-cxx \
 	--without-cxx-binding \
 	--without-ada \
@@ -34,6 +33,14 @@ NCURSES_CONF_OPTS = \
 # Install after busybox for the full-blown versions
 ifeq ($(BR2_PACKAGE_BUSYBOX),y)
 	NCURSES_DEPENDENCIES += busybox
+endif
+
+ifeq ($(BR2_STATIC_LIBS),y)
+NCURSES_CONF_OPTS += --without-shared --with-normal
+else ifeq ($(BR2_SHARED_LIBS),y)
+NCURSES_CONF_OPTS += --with-shared --without-normal
+else ifeq ($(BR2_SHARED_STATIC_LIBS),y)
+NCURSES_CONF_OPTS += --with-shared --with-normal
 endif
 
 ifeq ($(BR2_PACKAGE_NCURSES_WCHAR),y)
