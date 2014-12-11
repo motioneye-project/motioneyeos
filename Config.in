@@ -525,19 +525,45 @@ config BR2_ENABLE_SSP
 comment "enabling Stack Smashing Protection requires support in the toolchain"
 	depends on !BR2_TOOLCHAIN_HAS_SSP
 
-config BR2_STATIC_LIBS
-	bool "build statically linked applications, no dynamic libraries"
+choice
+	bool "libraries"
+	default BR2_SHARED_STATIC_LIBS if BR2_BINFMT_SUPPORTS_SHARED
+	default BR2_STATIC_LIBS if !BR2_BINFMT_SUPPORTS_SHARED
 	help
-	  Build all applications for the target statically linked.
-	  This potentially increases your filesystem size and should only be
-	  used if you know what you do.
+	  Select the type of libraries you want to use on the target.
 
-	  Note that some applications cannot be build statically and so are
-	  intentionally disabled.
+	  The default is to build dynamic libraries and use those on
+	  the target filesystem, except when the architecture and/or
+	  the selected binary format does not support shared
+	  libraries.
 
-	  The default (if this option is disabled) is to build dynamic
-	  libraries and dynamically link applications to use those on the
-	  target filesystem.
+config BR2_STATIC_LIBS
+	bool "static only"
+	help
+	  Build and use only static libraries. No shared libraries
+	  will be instaled on the target. This potentially increases
+	  your code size and should only be used if you know what you
+	  are doing. Note that some packages may not be available when
+	  this option is enabled, due to their need for dynamic
+	  library support.
+
+config BR2_SHARED_LIBS
+	bool "shared only"
+	depends on BR2_BINFMT_SUPPORTS_SHARED
+	help
+	  Build and use only shared libraries. This is the recommended
+	  solution as it saves space and build time.
+
+config BR2_SHARED_STATIC_LIBS
+	bool "both static and shared"
+	depends on BR2_BINFMT_SUPPORTS_SHARED
+	help
+	  Build both shared and static libraries, but link executables
+	  dynamically. While building both shared and static libraries
+	  take more time and more disk space, having static libraries
+	  may be useful to link some of the applications statically.
+
+endchoice
 
 
 config BR2_PACKAGE_OVERRIDE_FILE

@@ -284,7 +284,6 @@ config BR2_BINFMT_FDPIC
 config BR2_BINFMT_FLAT
 	bool "FLAT"
 	depends on BR2_bfin || BR2_m68k
-	select BR2_STATIC_LIBS
 	help
 	  FLAT binary is a relatively simple and lightweight executable format
 	  based on the original a.out format. It is widely used in environment
