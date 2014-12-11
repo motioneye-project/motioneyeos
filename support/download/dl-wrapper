@@ -49,7 +49,11 @@ main() {
 
     # If the output file already exists, do not download it again
     if [ -e "${output}" ]; then
-        exit 0
+        if support/download/check-hash "${hfile}" "${output}" "${output##*/}"; then
+            exit 0
+        fi
+        rm -f "${output}"
+        printf "Re-downloading '%s'...\n" "${output##*/}"
     fi
 
     # tmpd is a temporary directory in which backends may store intermediate
