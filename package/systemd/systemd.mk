@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-SYSTEMD_VERSION = 217
+SYSTEMD_VERSION = 218
 SYSTEMD_SITE = http://www.freedesktop.org/software/systemd
 SYSTEMD_SOURCE = systemd-$(SYSTEMD_VERSION).tar.xz
 SYSTEMD_LICENSE = LGPLv2.1+; GPLv2+ for udev; MIT-like license for few source files listed in README
@@ -38,11 +38,9 @@ SYSTEMD_CONF_OPTS += \
 	--with-dbussessionservicedir=/usr/share/dbus-1/services \
 	--with-dbussystemservicedir=/usr/share/dbus-1/system-services \
 	--with-dbusinterfacedir=/usr/share/dbus-1/interfaces \
-	--with-firmware-path=/lib/firmware \
 	--enable-split-usr \
 	--enable-introspection=no \
 	--disable-efi \
-	--disable-tcpwrap \
 	--disable-tests \
 	--disable-dbus \
 	--without-python
