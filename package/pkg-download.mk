@@ -96,7 +96,6 @@ endef
 # Messages for the type of clone used are provided to ease debugging in case of
 # problems
 define DOWNLOAD_GIT
-	test -e $(DL_DIR)/$($(PKG)_SOURCE) || \
 	$(EXTRA_ENV) $(DL_WRAPPER) -b git \
 		-o $(DL_DIR)/$($(PKG)_SOURCE) \
 		-- \
@@ -117,7 +116,6 @@ endef
 
 
 define DOWNLOAD_BZR
-	test -e $(DL_DIR)/$($(PKG)_SOURCE) || \
 	$(EXTRA_ENV) $(DL_WRAPPER) -b bzr \
 		-o $(DL_DIR)/$($(PKG)_SOURCE) \
 		-- \
@@ -135,7 +133,6 @@ define SHOW_EXTERNAL_DEPS_BZR
 endef
 
 define DOWNLOAD_CVS
-	test -e $(DL_DIR)/$($(PKG)_SOURCE) || \
 	$(EXTRA_ENV) $(DL_WRAPPER) -b cvs \
 		-o $(DL_DIR)/$($(PKG)_SOURCE) \
 		-- \
@@ -155,7 +152,6 @@ define SHOW_EXTERNAL_DEPS_CVS
 endef
 
 define DOWNLOAD_SVN
-	test -e $(DL_DIR)/$($(PKG)_SOURCE) || \
 	$(EXTRA_ENV) $(DL_WRAPPER) -b svn \
 		-o $(DL_DIR)/$($(PKG)_SOURCE) \
 		-- \
@@ -176,7 +172,6 @@ endef
 # Note that filepath is relative to the user's home directory, so you may want
 # to prepend the path with a slash: scp://[user@]host:/absolutepath
 define DOWNLOAD_SCP
-	test -e $(DL_DIR)/$(2) || \
 	$(EXTRA_ENV) $(DL_WRAPPER) -b scp \
 		-o $(DL_DIR)/$(2) \
 		-- \
@@ -194,7 +189,6 @@ endef
 
 
 define DOWNLOAD_HG
-	test -e $(DL_DIR)/$($(PKG)_SOURCE) || \
 	$(EXTRA_ENV) $(DL_WRAPPER) -b hg \
 		-o $(DL_DIR)/$($(PKG)_SOURCE) \
 		-- \
@@ -215,7 +209,6 @@ endef
 
 
 define DOWNLOAD_WGET
-	test -e $(DL_DIR)/$(2) || \
 	$(EXTRA_ENV) $(DL_WRAPPER) -b wget \
 		-o $(DL_DIR)/$(2) \
 		-- \
@@ -232,7 +225,6 @@ define SHOW_EXTERNAL_DEPS_WGET
 endef
 
 define DOWNLOAD_LOCALFILES
-	test -e $(DL_DIR)/$(2) || \
 	$(EXTRA_ENV) $(DL_WRAPPER) -b cp \
 		-o $(DL_DIR)/$(2) \
 		-- \

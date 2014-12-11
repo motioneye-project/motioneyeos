@@ -43,6 +43,11 @@ main() {
         error "no output specified, use -o\n"
     fi
 
+    # If the output file already exists, do not download it again
+    if [ -e "${output}" ]; then
+        exit 0
+    fi
+
     # tmpd is a temporary directory in which backends may store intermediate
     # by-products of the download.
     # tmpf is the file in which the backends should put the downloaded content.
