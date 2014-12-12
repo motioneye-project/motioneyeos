@@ -214,13 +214,15 @@ config BR2_TARGET_UBOOT_ETH1ADDR
 endif # BR2_TARGET_UBOOT_NETWORK
 
 config BR2_TARGET_UBOOT_SPL
-	bool "U-Boot SPL support"
+	bool "Install U-Boot SPL binary image"
 	depends on !BR2_TARGET_XLOADER
 	help
-	  Enable the U-Boot SPL support. SPL is a first stage
-	  bootloader loaded into internal memory in charge of
-	  enabling and configuring the external memory (DDR),
-	  and load the u-boot program into DDR.
+	  Install the U-Boot SPL binary image to the images
+	  directory.
+	  SPL is a first stage bootloader loaded into internal
+	  memory in charge of enabling and configuring the
+	  external memory (DDR), and load the u-boot program
+	  into DDR.
 
 config BR2_TARGET_UBOOT_SPL_NAME
 	string "U-Boot SPL target name"
