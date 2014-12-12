@@ -10,14 +10,14 @@ PIDFILE="/var/run/$NAME.pid"
 # Read configuration variable file if it is present
 [ -r "$CFGFILE" ] && . "$CFGFILE"
 
-do_start()
+start()
 {
 	echo -n "Starting $DESC: "
 	start-stop-daemon -S -q -p "$PIDFILE" -x "$DAEMON" -- $DAEMON_ARGS &&
 			echo "done" || echo "failed"
 }
 
-do_stop()
+stop()
 {
 	echo -n "Stopping $DESC: "
 	if start-stop-daemon -K -q -R TERM/30/KILL/5 -p "$PIDFILE" -n "$NAME"; then
@@ -31,14 +31,14 @@ do_stop()
 
 case "$1" in
 	start)
-		do_start
+		start
 		;;
 	stop)
-		do_stop
+		stop
 		;;
 	restart|reload)
-		do_stop
-		do_start
+		stop
+		start
 		;;
 	*)
 		echo "Usage: $0 {start|stop|restart|reload}" >&2
