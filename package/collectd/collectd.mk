@@ -134,6 +134,9 @@ endif
 ifeq ($(BR2_PACKAGE_LIBGCRYPT),y)
 	COLLECTD_DEPENDENCIES += libgcrypt
 	COLLECTD_CONF_OPTS += --with-libgcrypt=$(STAGING_DIR)/usr
+	COLLECTD_CONF_ENV += LIBGCRYPT_CONFIG=$(STAGING_DIR)/usr/bin/libgcrypt-config
+else
+	COLLECTD_CONF_OPTS += --with-libgcrypt=no
 endif
 
 # released software should not break on minor warnings
