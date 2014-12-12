@@ -41,7 +41,6 @@ define BERKELEYDB_CONFIGURE_CMDS
 		--with-pic \
 		--enable-o_direct \
 	)
-	$(SED) 's/\.lo/.o/g' $(@D)/build_unix/Makefile
 endef
 
 ifneq ($(BR2_PACKAGE_BERKELEYDB_TOOLS),y)
