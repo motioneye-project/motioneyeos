@@ -225,7 +225,7 @@ config BR2_TARGET_UBOOT_SPL
 	  into DDR.
 
 config BR2_TARGET_UBOOT_SPL_NAME
-	string "U-Boot SPL target name"
+	string "U-Boot SPL binary image name"
 	default "spl/u-boot-spl.bin"
 	depends on BR2_TARGET_UBOOT_SPL
 	help
