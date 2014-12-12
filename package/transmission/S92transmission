@@ -66,7 +66,7 @@ SCRIPTNAME=/etc/init.d/$NAME
 # Function that starts the daemon/service
 #
 
-do_start()
+start()
 {
     # Export the configuration/web directory, if set
     if [ -n "$TRANSMISSION_HOME" ]; then
@@ -91,7 +91,7 @@ do_start()
 #
 # Function that stops the daemon/service
 #
-do_stop()
+stop()
 {
         # Return
         #   0 if daemon has been stopped
@@ -121,7 +121,7 @@ do_stop()
 case "$1" in
   start)
         echo "Starting $DESC" "$NAME..."
-        do_start
+        start
         case "$?" in
                 0|1) echo "   Starting $DESC $NAME succeeded" ;;
                 *)   echo "   Starting $DESC $NAME failed" ;;
@@ -129,7 +129,7 @@ case "$1" in
         ;;
   stop)
         echo "Stopping $DESC $NAME..."
-        do_stop
+        stop
         case "$?" in
                 0|1) echo "   Stopping $DESC $NAME succeeded" ;;
                 *)   echo "   Stopping $DESC $NAME failed" ;;
@@ -141,10 +141,10 @@ case "$1" in
         # 'force-reload' alias
         #
         echo "Restarting $DESC $NAME..."
-        do_stop
+        stop
         case "$?" in
           0|1)
-                do_start
+                start
                 case "$?" in
                     0|1) echo "   Restarting $DESC $NAME succeeded" ;;
                     *)   echo "   Restarting $DESC $NAME failed: couldn't start $NAME" ;;
