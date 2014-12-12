@@ -43,6 +43,14 @@ define RSYSLOG_INSTALL_INIT_SYSV
 		$(TARGET_DIR)/etc/init.d/S01rsyslog
 endef
 
+define RSYSLOG_INSTALL_INIT_SYSTEMD
+	ln -sf /lib/systemd/system/rsyslog.service \
+		$(TARGET_DIR)/etc/systemd/system/syslog.service
+	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
+	ln -sf ../syslog.service \
+		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/syslog.service
+endef
+
 define RSYSLOG_INSTALL_CONF
 	$(INSTALL) -m 0644 -D $(@D)/platform/redhat/rsyslog.conf \
 		$(TARGET_DIR)/etc/rsyslog.conf
