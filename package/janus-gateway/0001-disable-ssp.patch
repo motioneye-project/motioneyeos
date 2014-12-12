@@ -1,0 +1,20 @@
+Do not force SSP usage
+
+The toolchain may not support SSP, so do not enforce its usage, let
+the package user pass the appropriate CFLAGS to enable SSP if needed.
+
+Signed-off-by: Gregory Dymarek <gregd72002@gmail.com>
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+diff -rupN janus-gateway-master.orig/Makefile.am janus-gateway-master/Makefile.am
+--- janus-gateway-master.orig/Makefile.am	2014-11-27 14:36:31.000000000 +0000
++++ janus-gateway-master/Makefile.am	2014-12-01 16:39:50.551935028 +0000
+@@ -14,7 +14,7 @@ AM_CFLAGS += -Wredundant-decls  # sophia
+ # some fairly big refactoring though, which can wait.
+ # AM_CFLAGS += -Wshadow -Wstrict-aliasing=2
+ 
+-AM_CFLAGS += -fstack-protector-all -g -ggdb -fPIC -rdynamic
++AM_CFLAGS += -g -ggdb -fPIC -rdynamic
+ 
+ # FIXME: make docs work with distcheck
+ DISTCHECK_CONFIGURE_FLAGS = --disable-docs --enable-post-processing
