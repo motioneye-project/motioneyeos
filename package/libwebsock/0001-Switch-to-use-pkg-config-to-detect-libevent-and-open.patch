@@ -1,0 +1,81 @@
+From a6c35dbab5a2a75c176e031122ee64152e50e5d3 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Thu, 1 Jan 2015 12:23:43 +0100
+Subject: [PATCH] Switch to use pkg-config to detect libevent and openssl
+
+Switching to pkg-config fixes a number of problems when detecting the
+libraries. For example the detection of libpthread was failing,
+because libevent_threads was added to LIBS before libevent itself,
+causing the libpthread test to fail due to missing symbols. pkg-config
+is anyway nowadays the preferred way for detecting libraries. It also
+has the benefit of working properly in static library situations.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ configure.ac | 36 ++++++++++++------------------------
+ 1 file changed, 12 insertions(+), 24 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index d4109ce..fc1cadc 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -27,35 +27,20 @@ AC_FUNC_MALLOC
+ AC_FUNC_REALLOC
+ AC_CHECK_FUNCS([memset socket strstr])
+ 
+-AC_CHECK_HEADERS([event2/thread.h], [
+-					LIBS="-levent_pthreads ${LIBS}"
+-				    ], [
+-                                                echo "libevent_pthreads required, failing"
+-                                                exit -1
+-                                                ])
+-AC_CHECK_LIB(pthread, pthread_create, [LIBS="-lpthread ${LIBS}"], [
++AC_CHECK_LIB(pthread, pthread_create, [PTHREAD_LIBS="-lpthread"], [
+                                                 echo "pthreads required, failing"
+                                                 exit -1
+                                                 ])
+-AC_CHECK_LIB(event, event_base_dispatch, [], [
+-						echo "libevent required, failing"
+-						exit -1
+-						])
++
++PKG_CHECK_MODULES([EVENT], [libevent])
++PKG_CHECK_MODULES([EVENT_PTHREAD], [libevent_pthreads])
+ 
+ AS_IF([test "x$with_ssl" != "xno"],
+ 	[
+-  	AC_CHECK_LIB([ssl], [SSL_CTX_new],
+-  		[
+-  			LIBS="-lssl ${LIBS}"
+-  			AC_CHECK_LIB([event_openssl], [bufferevent_openssl_socket_new], [
+-  				LIBS="-levent_openssl ${LIBS}"
+-  				have_ssl=yes
+-  			], [have_ssl=no])
+-  		], 
+-  		[have_ssl=no])
+-  	],
+-  	[have_ssl=no])
+-  	
++	PKG_CHECK_MODULES([SSL], [openssl], [have_ssl=yes], [have_ssl=no])
++	AS_IF([test "x${have_ssl}" = "xyes"],
++		[PKG_CHECK_MODULES([EVENT_OPENSSL], [libevent_openssl], [have_ssl=yes], [have_ssl=no])])])
++
+ AS_IF([test "x$have_ssl" = "xyes"],
+ 	[
+ 		AC_DEFINE([WEBSOCK_HAVE_SSL], [1], [Define if building SSL support])
+@@ -63,8 +48,11 @@ AS_IF([test "x$have_ssl" = "xyes"],
+ 	[AS_IF([test "x$with_ssl" = "xyes"],
+ 		[AC_MSG_ERROR([SSL support requested but not found])
+ 	])])
+-  	
++
+ AM_CONDITIONAL([HAVE_SSL], [test "x$have_ssl" = "xyes"])
++
++LIBS="${EVENT_LIBS} ${EVENT_PTHREAD_LIBS} ${PTHREAD_LIBS} ${SSL_LIBS} ${EVENT_OPENSSL_LIBS}"
++
+ AC_DEFINE_UNQUOTED([WEBSOCK_PACKAGE_VERSION], ["$PACKAGE_VERSION"], [libwebsock version])
+ AC_DEFINE_UNQUOTED([WEBSOCK_PACKAGE_STRING], ["$PACKAGE_STRING"], [libwebsock package string])
+ AC_DEFINE_UNQUOTED([WEBSOCK_PACKAGE_NAME], ["$PACKAGE_NAME"], [libwebsock package name])
+-- 
+2.1.0
+
