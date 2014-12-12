@@ -1,0 +1,20 @@
+Make libnice build in non-IPv6 configurations
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/stun/usages/bind.c
+===================================================================
+--- a/stun/usages/bind.c
++++ b/stun/usages/bind.c
+@@ -260,9 +260,11 @@
+       case AF_INET:
+         setsockopt (fd, SOL_IP, IP_RECVERR, &yes, sizeof (yes));
+         break;
++#ifdef IPV6_RECVERR
+       case AF_INET6:
+         setsockopt (fd, SOL_IPV6, IPV6_RECVERR, &yes, sizeof (yes));
+         break;
++#endif
+       default:
+         /* Nothing to do. */
+         break;
