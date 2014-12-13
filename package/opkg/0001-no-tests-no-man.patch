@@ -1,0 +1,24 @@
+Disable tests and mapages
+
+Tests are forcibly statically linked to libopkg, which does not work in
+a shared-only build.
+
+Since Buildroot does not care about testsuites, just disable building the
+tests. Disable manpages at the same time for the same reason.
+
+Note: dynamically linking with libopkg is also possible, but that would
+not be upstreamable (too much changes already in upstream).
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+
+diff -durN opkg-v0.2.2.orig/Makefile.am opkg-v0.2.2/Makefile.am
+--- opkg-v0.2.2.orig/Makefile.am	2014-04-01 22:31:59.000000000 +0200
++++ opkg-v0.2.2/Makefile.am	2014-12-13 14:13:49.684618796 +0100
+@@ -1,6 +1,6 @@
+ ACLOCAL_AMFLAGS = -I shave
+ 
+-SUBDIRS = libbb libopkg src tests utils man
++SUBDIRS = libbb libopkg src utils
+ 
+ 
+ HOST_CPU=@host_cpu@
