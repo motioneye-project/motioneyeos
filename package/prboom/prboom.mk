@@ -15,6 +15,12 @@ ifeq ($(BR2_PACKAGE_LIBPNG),y)
 PRBOOM_DEPENDENCIES += libpng
 endif
 
+ifeq ($(BR2_STATIC_LIBS),y)
+# SDL_mixer uses symbols from SDL, but ends up after it on the link
+# cmdline. Fix it by forcing the SDL libs at the very end
+PRBOOM_CONF_ENV += LIBS="$(shell $(STAGING_DIR)/usr/bin/sdl-config --static-libs)"
+endif
+
 PRBOOM_CONF_OPTS = \
 		--oldincludedir=$(STAGING_DIR)/usr/include \
 		--with-sdl-prefix=$(STAGING_DIR)/usr \
