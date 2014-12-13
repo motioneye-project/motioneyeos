@@ -24,7 +24,8 @@ MONO_CONF_OPTS = --disable-gtk-doc \
 	--disable-libraries \
 	--with-ikvm-native=no \
 	--enable-minimal=aot,profiler,debug \
-	--disable-mcs-build
+	--disable-mcs-build \
+	--enable-static
 
 # The libraries have been built by the host-mono build. Since they are
 # architecture-independent, we simply copy them to the target.
