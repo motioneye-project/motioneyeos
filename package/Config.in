@@ -961,6 +961,17 @@ endmenu
 
 endmenu
 
+menu "Mail"
+	source "package/dovecot/Config.in"
+	source "package/exim/Config.in"
+	source "package/fetchmail/Config.in"
+	source "package/heirloom-mailx/Config.in"
+	source "package/libesmtp/Config.in"
+	source "package/msmtp/Config.in"
+	source "package/mutt/Config.in"
+	source "package/sylpheed/Config.in"
+endmenu
+
 menu "Miscellaneous"
 	source "package/aespipe/Config.in"
 	source "package/bc/Config.in"
@@ -976,17 +987,6 @@ menu "Miscellaneous"
 	source "package/snowball-init/Config.in"
 	source "package/sound-theme-borealis/Config.in"
 	source "package/sound-theme-freedesktop/Config.in"
-endmenu
-
-menu "Mail"
-	source "package/dovecot/Config.in"
-	source "package/exim/Config.in"
-	source "package/fetchmail/Config.in"
-	source "package/heirloom-mailx/Config.in"
-	source "package/libesmtp/Config.in"
-	source "package/msmtp/Config.in"
-	source "package/mutt/Config.in"
-	source "package/sylpheed/Config.in"
 endmenu
 
 menu "Networking applications"
