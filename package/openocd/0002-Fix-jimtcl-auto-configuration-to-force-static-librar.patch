@@ -1,0 +1,35 @@
+From 3bef159779c8fd39a070ec5c8191e18ba2efa79d Mon Sep 17 00:00:00 2001
+From: Claudio Laurita <claudio.laurita@integrazionetotale.it>
+Date: Sun, 30 Nov 2014 18:21:58 +0100
+Subject: [PATCH 2/2] Fix jimtcl auto configuration to force static library
+ only. jimtcl ignores a --disable-shared option if a previous --enable-shared
+ option was given. This breaks openocd compilation if shared was the preferred
+ option in buildroot project.
+
+Signed-off-by: Claudio Laurita <claudio.laurita@integrazionetotale.it>
+---
+ jimtcl/auto.def | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
+
+diff --git a/jimtcl/auto.def b/jimtcl/auto.def
+index ddb0c1e..929ade0 100644
+--- a/jimtcl/auto.def
++++ b/jimtcl/auto.def
+@@ -181,12 +181,8 @@ if {[opt-bool references]} {
+     msg-result "Enabling references"
+     define JIM_REFERENCES
+ }
+-if {[opt-bool shared with-jim-shared]} {
+-    msg-result "Building shared library"
+-} else {
+-    msg-result "Building static library"
+-    define JIM_STATICLIB
+-}
++msg-result "Building static library"
++define JIM_STATICLIB
+ define JIM_INSTALL [opt-bool install-jim]
+ 
+ # Attributes of the extensions
+-- 
+2.1.3
+
