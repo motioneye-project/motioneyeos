@@ -1,0 +1,42 @@
+qt4: fix include paths
+
+Fix include paths in generated .moc files.
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+
+diff -durN pinentry-0.9.0.orig/qt4/pinentryconfirm.moc pinentry-0.9.0/qt4/pinentryconfirm.moc
+--- pinentry-0.9.0.orig/qt4/pinentryconfirm.moc	2014-09-18 10:35:48.000000000 +0200
++++ pinentry-0.9.0/qt4/pinentryconfirm.moc	2014-12-14 23:09:52.086048672 +0100
+@@ -6,7 +6,7 @@
+ ** WARNING! All changes made in this file will be lost!
+ *****************************************************************************/
+ 
+-#include "../../../s/pinentry/qt4/pinentryconfirm.h"
++#include "qt4/pinentryconfirm.h"
+ #if !defined(Q_MOC_OUTPUT_REVISION)
+ #error "The header file 'pinentryconfirm.h' doesn't include <QObject>."
+ #elif Q_MOC_OUTPUT_REVISION != 63
+diff -durN pinentry-0.9.0.orig/qt4/pinentrydialog.moc pinentry-0.9.0/qt4/pinentrydialog.moc
+--- pinentry-0.9.0.orig/qt4/pinentrydialog.moc	2014-09-18 10:35:48.000000000 +0200
++++ pinentry-0.9.0/qt4/pinentrydialog.moc	2014-12-14 23:09:36.357871032 +0100
+@@ -6,7 +6,7 @@
+ ** WARNING! All changes made in this file will be lost!
+ *****************************************************************************/
+ 
+-#include "../../../s/pinentry/qt4/pinentrydialog.h"
++#include "qt4/pinentrydialog.h"
+ #if !defined(Q_MOC_OUTPUT_REVISION)
+ #error "The header file 'pinentrydialog.h' doesn't include <QObject>."
+ #elif Q_MOC_OUTPUT_REVISION != 63
+diff -durN pinentry-0.9.0.orig/qt4/qsecurelineedit.moc pinentry-0.9.0/qt4/qsecurelineedit.moc
+--- pinentry-0.9.0.orig/qt4/qsecurelineedit.moc	2014-09-18 10:35:48.000000000 +0200
++++ pinentry-0.9.0/qt4/qsecurelineedit.moc	2014-12-14 23:09:18.693671498 +0100
+@@ -6,7 +6,7 @@
+ ** WARNING! All changes made in this file will be lost!
+ *****************************************************************************/
+ 
+-#include "../../../s/pinentry/qt4/qsecurelineedit.h"
++#include "qt4/qsecurelineedit.h"
+ #if !defined(Q_MOC_OUTPUT_REVISION)
+ #error "The header file 'qsecurelineedit.h' doesn't include <QObject>."
+ #elif Q_MOC_OUTPUT_REVISION != 63
