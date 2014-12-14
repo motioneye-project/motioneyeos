@@ -14,6 +14,12 @@ NMAP_CONF_OPTS = --without-liblua --without-zenmap \
 NMAP_LICENSE = GPLv2
 NMAP_LICENSE_FILES = COPYING
 
+# for 0001-libdnet-wrapper-configure.patch
+define NMAP_WRAPPER_EXEC
+	chmod +x $(@D)/libdnet-stripped/configure.gnu
+endef
+NMAP_POST_PATCH_HOOKS += NMAP_WRAPPER_EXEC
+
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 NMAP_CONF_OPTS += --with-openssl="$(STAGING_DIR)/usr"
 NMAP_DEPENDENCIES += openssl
