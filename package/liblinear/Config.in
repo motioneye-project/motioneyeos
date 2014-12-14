@@ -1,0 +1,7 @@
+config BR2_PACKAGE_LIBLINEAR
+	bool "liblinear"
+	help
+	  liblinear is a linear classifier for data with millions of instances and
+	  features.
+
+	  http://www.csie.ntu.edu.tw/~cjlin/liblinear/

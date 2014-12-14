@@ -1,0 +1,18 @@
+Makefile: add a rule to build a static library
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+diff -durN liblinear-1.96.orig/Makefile liblinear-1.96/Makefile
+--- liblinear-1.96.orig/Makefile	2014-11-15 07:50:23.000000000 +0100
++++ liblinear-1.96/Makefile	2014-12-14 00:23:00.135893956 +0100
+@@ -16,6 +16,11 @@
+ 	fi; \
+ 	$(CXX) $${SHARED_LIB_FLAG} linear.o tron.o blas/blas.a -o liblinear.so.$(SHVER)
+ 
++# Keeping blas/blas.a as a pre-requisite, to ensure all .o files are built
++static-lib: linear.o tron.o blas/blas.a
++	$(AR) rcv liblinear.a linear.o tron.o blas/*.o
++	$(RANLIB) liblinear.a
++
+ train: tron.o linear.o train.c blas/blas.a
+ 	$(CXX) $(CFLAGS) -o train train.c tron.o linear.o $(LIBS)
+ 
