@@ -47,8 +47,7 @@ ifeq ($(BR2_PACKAGE_NCURSES_WCHAR),y)
 NCURSES_CONF_OPTS += --enable-widec
 NCURSES_LIB_SUFFIX = w
 
-ifeq ($(BR2_STATIC_LIBS),y)
-define NCURSES_LINK_LIBS
+define NCURSES_LINK_LIBS_STATIC
 	for lib in $(NCURSES_LIBS-y); do \
 		ln -sf $${lib}$(NCURSES_LIB_SUFFIX).a \
 			$(1)/usr/lib/$${lib}.a; \
@@ -56,23 +55,22 @@ define NCURSES_LINK_LIBS
 	ln -sf libncurses$(NCURSES_LIB_SUFFIX).a \
 		$(1)/usr/lib/libcurses.a
 endef
-else
-define NCURSES_LINK_LIBS
+
+define NCURSES_LINK_LIBS_SHARED
 	for lib in $(NCURSES_LIBS-y); do \
-		ln -sf $${lib}$(NCURSES_LIB_SUFFIX).a \
-			$(1)/usr/lib/$${lib}.a; \
 		ln -sf $${lib}$(NCURSES_LIB_SUFFIX).so \
 			$(1)/usr/lib/$${lib}.so; \
 	done
-	ln -sf libncurses$(NCURSES_LIB_SUFFIX).a \
-		$(1)/usr/lib/libcurses.a
 	ln -sf libncurses$(NCURSES_LIB_SUFFIX).so \
 		$(1)/usr/lib/libcurses.so
 endef
-endif
 
-NCURSES_LINK_TARGET_LIBS = $(call NCURSES_LINK_LIBS, $(TARGET_DIR))
-NCURSES_LINK_STAGING_LIBS = $(call NCURSES_LINK_LIBS, $(STAGING_DIR))
+NCURSES_LINK_TARGET_LIBS = \
+	$(if $(BR2_STATIC_LIBS)$(BR2_SHARED_STATIC_LIBS),$(call NCURSES_LINK_LIBS_STATIC,$(TARGET_DIR))) \
+	$(if $(BR2_SHARED_LIBS)$(BR2_SHARED_STATIC_LIBS),$(call NCURSES_LINK_LIBS_SHARED,$(TARGET_DIR)))
+NCURSES_LINK_STAGING_LIBS = \
+	$(if $(BR2_STATIC_LIBS)$(BR2_SHARED_STATIC_LIBS),$(call NCURSES_LINK_LIBS_STATIC,$(STAGING_DIR))) \
+	$(if $(BR2_SHARED_LIBS)$(BR2_SHARED_STATIC_LIBS),$(call NCURSES_LINK_LIBS_SHARED,$(STAGING_DIR)))
 
 NCURSES_POST_INSTALL_STAGING_HOOKS += NCURSES_LINK_STAGING_LIBS
 
