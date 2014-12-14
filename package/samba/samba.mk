@@ -137,16 +137,16 @@ SAMBA_POST_INSTALL_TARGET_HOOKS += SAMBA_REMOVE_UNNEEDED_BINARIES
 
 ifeq ($(BR2_PACKAGE_SAMBA_LIBNSS_WINS),y)
 define SAMBA_INSTALL_LIBNSS_WINS
-	$(INSTALL) -m 0755 -D $(@D)/nsswitch/libnss_wins.so $(TARGET_DIR)/lib/libnss_wins.so
-	ln -snf libnss_wins.so $(TARGET_DIR)/lib/libnss_wins.so.2
+	$(INSTALL) -m 0755 -D $(@D)/nsswitch/libnss_wins.so $(TARGET_DIR)/lib/libnss_wins.so.2
+	ln -snf libnss_wins.so.2 $(TARGET_DIR)/lib/libnss_wins.so
 endef
 SAMBA_POST_INSTALL_TARGET_HOOKS += SAMBA_INSTALL_LIBNSS_WINS
 endif
 
 ifeq ($(BR2_PACKAGE_SAMBA_LIBNSS_WINBIND),y)
 define SAMBA_INSTALL_LIBNSS_WINBIND
-	$(INSTALL) -m 0755 -D $(@D)/nsswitch/libnss_winbind.so $(TARGET_DIR)/lib/libnss_winbind.so
-	ln -snf libnss_winbind.so $(TARGET_DIR)/lib/libnss_winbind.so.2
+	$(INSTALL) -m 0755 -D $(@D)/nsswitch/libnss_winbind.so $(TARGET_DIR)/lib/libnss_winbind.so.2
+	ln -snf libnss_winbind.so.2 $(TARGET_DIR)/lib/libnss_winbind.so
 endef
 SAMBA_POST_INSTALL_TARGET_HOOKS += SAMBA_INSTALL_LIBNSS_WINBIND
 endif
