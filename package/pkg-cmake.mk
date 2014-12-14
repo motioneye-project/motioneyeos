@@ -20,6 +20,17 @@
 #
 ################################################################################
 
+# Set compiler variables.
+ifeq ($(BR2_CCACHE),y)
+CMAKE_HOST_C_COMPILER="$(HOST_DIR)/usr/bin/ccache"
+CMAKE_HOST_CXX_COMPILER="$(HOST_DIR)/usr/bin/ccache"
+CMAKE_HOST_C_COMPILER_ARG1="$(HOSTCC_NOCCACHE)"
+CMAKE_HOST_CXX_COMPILER_ARG1="$(HOSTCXX_NOCCACHE)"
+else
+CMAKE_HOST_C_COMPILER="$$(HOSTCC)"
+CMAKE_HOST_CXX_COMPILER="$$(HOSTCXX)"
+endif
+
 ################################################################################
 # inner-cmake-package -- defines how the configuration, compilation and
 # installation of a CMake package should be done, implements a few hooks to
@@ -95,6 +106,13 @@ define $(2)_CONFIGURE_CMDS
 		-DCMAKE_C_FLAGS="$$(HOST_CFLAGS)" \
 		-DCMAKE_CXX_FLAGS="$$(HOST_CXXFLAGS)" \
 		-DCMAKE_EXE_LINKER_FLAGS="$$(HOST_LDFLAGS)" \
+		-DCMAKE_ASM_COMPILER="$$(HOSTAS)" \
+		-DCMAKE_C_COMPILER="$$(CMAKE_HOST_C_COMPILER)" \
+		-DCMAKE_CXX_COMPILER="$$(CMAKE_HOST_CXX_COMPILER)" \
+		$(if $$(CMAKE_HOST_C_COMPILER_ARG1),\
+			-DCMAKE_C_COMPILER_ARG1="$$(CMAKE_HOST_C_COMPILER_ARG1)" \
+			-DCMAKE_CXX_COMPILER_ARG1="$$(CMAKE_HOST_CXX_COMPILER_ARG1)" \
+		) \
 		-DCMAKE_COLOR_MAKEFILE=OFF \
 		-DBUILD_DOC=OFF \
 		-DBUILD_DOCS=OFF \
