@@ -1,5 +1,5 @@
 config BR2_PACKAGE_PRBOOM
-	bool "PrBoom"
+	bool "prboom"
 	select BR2_PACKAGE_SDL
 	select BR2_PACKAGE_SDL_MIXER
 	select BR2_PACKAGE_SDL_NET
