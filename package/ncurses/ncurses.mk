@@ -43,17 +43,17 @@ else ifeq ($(BR2_SHARED_STATIC_LIBS),y)
 NCURSES_CONF_OPTS += --with-shared --with-normal
 endif
 
-NCURSES_LIBS-y = libncurses
-NCURSES_LIBS-$(BR2_PACKAGE_NCURSES_TARGET_MENU) += libmenu
-NCURSES_LIBS-$(BR2_PACKAGE_NCURSES_TARGET_PANEL) += libpanel
-NCURSES_LIBS-$(BR2_PACKAGE_NCURSES_TARGET_FORM) += libform
+NCURSES_LIBS-y = ncurses
+NCURSES_LIBS-$(BR2_PACKAGE_NCURSES_TARGET_MENU) += menu
+NCURSES_LIBS-$(BR2_PACKAGE_NCURSES_TARGET_PANEL) += panel
+NCURSES_LIBS-$(BR2_PACKAGE_NCURSES_TARGET_FORM) += form
 
 ifeq ($(BR2_PACKAGE_NCURSES_WCHAR),y)
 NCURSES_CONF_OPTS += --enable-widec
 NCURSES_LIB_SUFFIX = w
 
 define NCURSES_LINK_LIBS_STATIC
-	for lib in $(NCURSES_LIBS-y); do \
+	for lib in $(NCURSES_LIBS-y:%=lib%); do \
 		ln -sf $${lib}$(NCURSES_LIB_SUFFIX).a \
 			$(1)/usr/lib/$${lib}.a; \
 	done
@@ -62,7 +62,7 @@ define NCURSES_LINK_LIBS_STATIC
 endef
 
 define NCURSES_LINK_LIBS_SHARED
-	for lib in $(NCURSES_LIBS-y); do \
+	for lib in $(NCURSES_LIBS-y:%=lib%); do \
 		ln -sf $${lib}$(NCURSES_LIB_SUFFIX).so \
 			$(1)/usr/lib/$${lib}.so; \
 	done
@@ -95,7 +95,7 @@ endef
 
 ifneq ($(BR2_STATIC_LIBS),y)
 define NCURSES_INSTALL_TARGET_LIBS
-	for lib in $(NCURSES_LIBS-y); do \
+	for lib in $(NCURSES_LIBS-y:%=lib%); do \
 		cp -dpf $(NCURSES_DIR)/lib/$${lib}$(NCURSES_LIB_SUFFIX).so* \
 			$(TARGET_DIR)/usr/lib/; \
 	done
