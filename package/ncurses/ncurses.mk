@@ -43,6 +43,14 @@ else ifeq ($(BR2_SHARED_STATIC_LIBS),y)
 NCURSES_CONF_OPTS += --with-shared --with-normal
 endif
 
+# configure can't find the soname for libgpm when cross compiling
+ifeq ($(BR2_PACKAGE_GPM),y)
+NCURSES_CONF_OPTS += --with-gpm=libgpm.so.2
+NCURSES_DEPENDENCIES += gpm
+else
+NCURSES_CONF_OPTS += --without-gpm
+endif
+
 NCURSES_LIBS-y = ncurses
 NCURSES_LIBS-$(BR2_PACKAGE_NCURSES_TARGET_MENU) += menu
 NCURSES_LIBS-$(BR2_PACKAGE_NCURSES_TARGET_PANEL) += panel
