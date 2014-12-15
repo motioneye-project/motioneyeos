@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-OPROFILE_VERSION = 0.9.9
+OPROFILE_VERSION = 1.0.0
 OPROFILE_SITE = http://downloads.sourceforge.net/project/oprofile/oprofile/oprofile-$(OPROFILE_VERSION)
 OPROFILE_LICENSE = GPLv2+
 OPROFILE_LICENSE_FILES = COPYING
@@ -14,7 +14,7 @@ OPROFILE_CONF_OPTS = \
 	--with-kernel=$(STAGING_DIR)/usr
 OPROFILE_AUTORECONF = YES
 OPROFILE_BINARIES = utils/ophelp pp/opannotate pp/oparchive pp/opgprof
-OPROFILE_BINARIES += pp/opreport opjitconv/opjitconv daemon/oprofiled
+OPROFILE_BINARIES += pp/opreport opjitconv/opjitconv
 OPROFILE_BINARIES += utils/op-check-perfevents libabi/opimport
 OPROFILE_BINARIES += pe_counting/ocount
 
@@ -60,7 +60,6 @@ define OPROFILE_INSTALL_TARGET_CMDS
 			$(TARGET_DIR)/usr/share/oprofile; \
 	fi
 	$(INSTALL) -m 644 $(@D)/libregex/stl.pat $(TARGET_DIR)/usr/share/oprofile
-	$(INSTALL) -m 755 $(@D)/utils/opcontrol $(TARGET_DIR)/usr/bin
 	$(INSTALL) -m 755 $(addprefix $(@D)/, $(OPROFILE_BINARIES)) $(TARGET_DIR)/usr/bin
 	$(INSTALL) -m 755 $(@D)/libopagent/.libs/*.so* $(TARGET_DIR)/usr/lib/oprofile
 endef
