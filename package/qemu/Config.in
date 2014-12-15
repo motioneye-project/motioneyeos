@@ -85,11 +85,11 @@ config BR2_PACKAGE_QEMU_SDL
 comment "Misc. features"
 
 config BR2_PACKAGE_QEMU_FDT
-        bool "Enable FDT"
-        select BR2_PACKAGE_DTC
-        help
-          Say 'y' here to have QEMU capable of constructing Device Trees,
-          and passing them to the VMs.
+	bool "Enable FDT"
+	select BR2_PACKAGE_DTC
+	help
+	  Say 'y' here to have QEMU capable of constructing Device Trees,
+	  and passing them to the VMs.
 
 endif # BR2_PACKAGE_QEMU_HAS_EMULS
 
