@@ -1,36 +1,35 @@
 #!/bin/sh
-#
-# Starts stunnel
-#
 
 start() {
-	echo -n "Starting stunnel: "
-	start-stop-daemon -S -q -p /var/run/stunnel.pid --exec /usr/bin/stunnel
-	echo "OK"
+  echo -n "Starting stunnel: "
+  start-stop-daemon -S -q -p /var/run/stunnel.pid --exec /usr/bin/stunnel
+  [ $? = 0 ] && echo "OK" || echo "FAIL"
 }
+
 stop() {
-	echo -n "Stopping stunnel: "
-	start-stop-daemon -K -q -p /var/run/stunnel.pid
-	echo "OK"
+  echo -n "Stopping stunnel: "
+  start-stop-daemon -K -q -p /var/run/stunnel.pid
+  [ $? = 0 ] && echo "OK" || echo "FAIL"
 }
+
 restart() {
-	stop
-	start
+  stop
+  start
 }
 
 case "$1" in
   start)
-	start
-	;;
+    start
+    ;;
   stop)
-	stop
-	;;
+    stop
+    ;;
   restart|reload)
-	restart
-	;;
+    restart
+    ;;
   *)
-	echo "Usage: $0 {start|stop|restart}"
-	exit 1
+    echo "Usage: $0 {start|stop|restart}"
+    exit 1
 esac
 
 exit $?
