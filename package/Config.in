@@ -948,6 +948,7 @@ endmenu
 
 menu "Security"
 	source "package/libselinux/Config.in"
+	source "package/libsemanage/Config.in"
 	source "package/libsepol/Config.in"
 endmenu
 
