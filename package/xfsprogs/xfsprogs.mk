@@ -14,7 +14,8 @@ XFSPROGS_CONF_OPTS = \
 	--enable-lib64=no \
 	--enable-gettext=no \
 	INSTALL_USER=root \
-	INSTALL_GROUP=root
+	INSTALL_GROUP=root \
+	--enable-static
 
 XFSPROGS_INSTALL_TARGET_OPTS = DIST_ROOT=$(TARGET_DIR) install
 
