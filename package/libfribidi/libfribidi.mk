@@ -10,7 +10,8 @@ LIBFRIBIDI_SITE = http://www.fribidi.org/download
 LIBFRIBIDI_LICENSE = LGPLv2.1+
 LIBFRIBIDI_LICENSE_FILES = COPYING
 LIBFRIBIDI_INSTALL_STAGING = YES
-# BR's libtool patch doesn't apply
+# Ships a beta libtool version hence our patch doesn't apply.
+# Run autoreconf to regenerate ltmain.sh.
 LIBFRIBIDI_AUTORECONF = YES
 LIBFRIBIDI_DEPENDENCIES = host-pkgconf
 
