@@ -1,0 +1,144 @@
+Changes are to allow ustr version 1.0.4 to cross compile in buildroot.
+
+Signed-off-by Clayton Shotwell <clshotwe@rockwellcollins.com>
+
+diff -urN a/ustr-compiler.h b/ustr-compiler.h
+--- a/ustr-compiler.h	2008-02-15 14:12:28.000000000 -0600
++++ b/ustr-compiler.h	2012-06-15 11:04:55.000000000 -0500
+@@ -13,10 +13,10 @@
+ 
+ /* We assume this is enough,
+  * C99 specifies that va_copy() exists and is a macro */
+-#ifdef va_copy
++#if defined va_copy
+ # define USTR_CONF_HAVE_VA_COPY 1
+ # define USTR__VA_COPY(x, y)   va_copy(x, y)
+-#elif __va_copy
++#elif defined __va_copy
+ # define USTR_CONF_HAVE_VA_COPY 1
+ # define USTR__VA_COPY(x, y) __va_copy(x, y)
+ #else
+diff -urN a/Makefile b/Makefile
+--- a/Makefile	2008-03-05 21:38:00.000000000 -0600
++++ b/Makefile	2013-09-10 16:54:45.916874387 -0500
+@@ -8,8 +8,8 @@
+ VERS_ESONAME =1
+ VERS_ESO     =$(VERS_ESONAME).0.4
+ 
+-DESTDIR =
+-prefix=/usr
++DESTDIR ?= 
++prefix ?= /usr
+ datadir=$(prefix)/share
+ libdir=$(prefix)/lib
+ libexecdir=$(prefix)/libexec
+@@ -18,7 +18,7 @@
+ SHRDIR=$(datadir)/ustr-$(VERS_FULL)
+ DOCSHRDIR=$(datadir)/doc/ustr-devel-$(VERS_FULL)
+ EXAMDIR=$(SHRDIR)/examples
+-mandir=$(datadir)/doc/man
++mandir=$(datadir)/man
+ MBINDIR=$(libexecdir)/ustr-$(VERS_FULL)
+ 
+ ###############################################################################
+@@ -28,12 +28,12 @@
+ ###############################################################################
+ HIDE=@
+ 
+-CC = cc
+-AR = ar
+-RANLIB = ranlib
+-LDCONFIG = /sbin/ldconfig
++CC ?= cc
++AR ?= ar
++RANLIB ?= ranlib
+ 
+-CFLAGS  = -O2 -g
++CFLAGS ?= -O2 -g
++LDFLAGS ?= 
+ 
+ # Debug versions...
+ WARNS = -W -Wall -Wundef -Wshadow -Wpointer-arith -Wbad-function-cast -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -Wnested-externs -Wno-format-zero-length -Wformat-nonliteral -Wformat-security # -Wfloat-equal -- no floats
+@@ -376,7 +376,7 @@
+ all-shared: all $(LIB_SHARED)
+ 		$(HIDE)echo Done shared
+ 
+-install: all-shared ustr.pc ustr-debug.pc
++install: all ustr.pc ustr-debug.pc
+ 		$(HIDE)echo Making directories
+ 		install -d $(DESTDIR)$(libdir)
+ 		install -d $(DESTDIR)$(includedir)
+@@ -389,16 +389,6 @@
+ 		install -d $(DESTDIR)$(libdir)/pkgconfig
+ 		$(HIDE)echo Installing files
+ 		install -m 644 -t $(DESTDIR)$(libdir) $(LIB_STATIC)
+-		install -m 755 -t $(DESTDIR)$(libdir) $(LIB_SHARED)
+-		-rm -f $(DESTDIR)$(libdir)/$(OPT_LIB_SHARED_NAME)
+-		ln -s $(OPT_LIB_SHARED) $(DESTDIR)$(libdir)/$(OPT_LIB_SHARED_NAME)
+-		-rm -f $(DESTDIR)$(libdir)/$(OPT_LIB_SHAREDEV)
+-		ln -s $(OPT_LIB_SHARED_NAME) $(DESTDIR)$(libdir)/$(OPT_LIB_SHAREDEV)
+-		-rm -f $(DESTDIR)$(libdir)/$(DBG_LIB_SHARED_NAME)
+-		ln -s $(DBG_LIB_SHARED) $(DESTDIR)$(libdir)/$(DBG_LIB_SHARED_NAME)
+-		-rm -f $(DESTDIR)$(libdir)/$(DBG_LIB_SHAREDEV)
+-		ln -s $(DBG_LIB_SHARED_NAME) $(DESTDIR)$(libdir)/$(DBG_LIB_SHAREDEV)
+-		$(LDCONFIG) -n $(DESTDIR)$(libdir)
+ 		install -pm 644 -t $(DESTDIR)$(includedir) $(SRC_HDRS)
+ 		install -pm 644 -t $(DESTDIR)$(SHRDIR) $(SRC_SRCS)
+ 		install -pm 644 -t $(DESTDIR)$(SHRDIR) $(XSRC_SRCS)
+@@ -409,13 +399,24 @@
+ 		install -m 755 -t $(DESTDIR)$(bindir) ustr-import
+ 		install -pm 644 -t $(DESTDIR)$(libdir)/pkgconfig ustr.pc ustr-debug.pc
+ 
++install-shared: all-shared install
++		$(HIDE)echo Installing files
++		install -m 755 -t $(DESTDIR)$(libdir) $(LIB_SHARED)
++		-rm -f $(DESTDIR)$(libdir)/$(OPT_LIB_SHARED_NAME)
++		ln -s $(OPT_LIB_SHARED) $(DESTDIR)$(libdir)/$(OPT_LIB_SHARED_NAME)
++		-rm -f $(DESTDIR)$(libdir)/$(OPT_LIB_SHAREDEV)
++		ln -s $(OPT_LIB_SHARED_NAME) $(DESTDIR)$(libdir)/$(OPT_LIB_SHAREDEV)
++		-rm -f $(DESTDIR)$(libdir)/$(DBG_LIB_SHARED_NAME)
++		ln -s $(DBG_LIB_SHARED) $(DESTDIR)$(libdir)/$(DBG_LIB_SHARED_NAME)
++		-rm -f $(DESTDIR)$(libdir)/$(DBG_LIB_SHAREDEV)
++		ln -s $(DBG_LIB_SHARED_NAME) $(DESTDIR)$(libdir)/$(DBG_LIB_SHAREDEV)
++
+ ustr-import-multilib: ustr-import-multilib.in
+ 		sed -e 's,@INCLUDEDIR@,$(includedir),g' -e 's,@MBINDIR@,$(MBINDIR),g' < $< > $@
+ 
+ install-multilib-linux: install autoconf_64b ustr-import-multilib
+ 		install -d $(DESTDIR)$(MBINDIR)
+-		$(HIDE)mlib=`./autoconf_64b`; \
+-                   if test "x$$mlib" = "x1"; then mlib=64; else mlib=32; fi; \
++		$(HIDE))if test "`echo "__SIZEOF_SIZE_T__" | $(CC) -E -x c - | tail -n 1`" = 8; then mlib=64; else mlib=32; fi; \
+                    mv -f $(DESTDIR)$(includedir)/ustr-conf-debug.h \
+                          $(DESTDIR)$(includedir)/ustr-conf-debug-$$mlib.h; \
+                    mv -f $(DESTDIR)$(includedir)/ustr-conf.h \
+@@ -451,7 +452,8 @@
+ 
+ ustr-import: ustr-import.in autoconf_64b autoconf_vsnprintf
+ 		$(HIDE)echo Creating $@
+-		$(HIDE)sz64=`./autoconf_64b`; vsnp=`./autoconf_vsnprintf`; \
++		$(HIDE)if test "`echo "__SIZEOF_SIZE_T__" | $(CC) -E -x c - | tail -n 1`" = 8; then sz64=1; else sz64=0; fi; \
++		if test "`./autoconf_vsnprintf`" = 0; then vsnp=0; else vsnp=1; fi; \
+ 		sed -e 's,@INCLUDEDIR@,$(includedir),g' -e 's,@SHRDIR@,$(SHRDIR),g' -e 's,@VERS@,$(VERS),g'  -e 's,@VERS_FULL@,$(VERS_FULL),g' -e "s,@HAVE_64bit_SIZE_MAX@,$$sz64,g" -e "s,@HAVE_RETARDED_VSNPRINTF@,$$vsnp,g" < $< > $@
+ 		$(HIDE)chmod 755 $@
+ 
+@@ -485,7 +487,8 @@
+ ustr-conf.h: ustr-conf.h.in autoconf_64b autoconf_vsnprintf
+ 		$(HIDE)echo Creating $@
+ 		$(HIDE)have_stdint_h=0; dbg1=0; dbg2=0; \
+-                sz64=`./autoconf_64b`; vsnp=`./autoconf_vsnprintf`; \
++                if test "`echo "__SIZEOF_SIZE_T__" | $(CC) -E -x c - | tail -n 1`" = 8; then sz64=1; else sz64=0; fi; \
++                if test "`./autoconf_vsnprintf`" = 0; then vsnp=0; else vsnp=1; fi; \
+                 if test -f "/usr/include/stdint.h"; then have_stdint_h=1; fi; \
+                 if test -f "$(prefix)/include/stdint.h"; then have_stdint_h=1; fi; \
+                 if test -f "$(includedir)/stdint.h"; then have_stdint_h=1; fi; \
+@@ -494,7 +497,8 @@
+ ustr-conf-debug.h: ustr-conf.h.in autoconf_64b autoconf_vsnprintf
+ 		$(HIDE)echo Creating $@
+ 		$(HIDE)have_stdint_h=0; dbg1=1; dbg2=1; \
+-                sz64=`./autoconf_64b`; vsnp=`./autoconf_vsnprintf`; \
++                if test "`echo "__SIZEOF_SIZE_T__" | $(CC) -E -x c - | tail -n 1`" = 8; then sz64=1; else sz64=0; fi; \
++                if test "`./autoconf_vsnprintf`" = 0; then vsnp=0; else vsnp=1; fi; \
+                 if test -f "/usr/include/stdint.h"; then have_stdint_h=1; fi; \
+                 if test -f "$(prefix)/include/stdint.h"; then have_stdint_h=1; fi; \
+                 if test -f "$(includedir)/stdint.h"; then have_stdint_h=1; fi; \

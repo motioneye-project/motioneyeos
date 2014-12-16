@@ -1,0 +1,10 @@
+config BR2_PACKAGE_USTR
+	bool "ustr"
+	depends on BR2_LARGEFILE
+	help
+	  A small, safe string library.
+
+	  http://www.and.org/ustr/
+
+comment "ustr requires a toolchain w/ largefile"
+	depends on !BR2_LARGEFILE
