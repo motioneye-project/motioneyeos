@@ -1140,6 +1140,7 @@ if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	source "package/tftpd/Config.in"
 endif
 	source "package/thttpd/Config.in"
+	source "package/tinc/Config.in"
 	source "package/tinyhttpd/Config.in"
 	source "package/tn5250/Config.in"
 	source "package/transmission/Config.in"
