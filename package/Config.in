@@ -1043,6 +1043,7 @@ endif
 	source "package/igmpproxy/Config.in"
 	source "package/inadyn/Config.in"
 	source "package/iperf/Config.in"
+	source "package/iperf3/Config.in"
 	source "package/iproute2/Config.in"
 	source "package/ipsec-tools/Config.in"
 	source "package/ipset/Config.in"
