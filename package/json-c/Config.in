@@ -8,4 +8,4 @@ config BR2_PACKAGE_JSON_C
 	  them as JSON formatted strings and parse JSON formatted
 	  strings back into the C representation of JSON objects.
 
-	  http://oss.metaparadigm.com/json-c/
+	  https://github.com/json-c/json-c/
