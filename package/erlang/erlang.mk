@@ -23,7 +23,7 @@ ERLANG_CONF_ENV += erl_xcomp_sysroot=$(STAGING_DIR)
 ERLANG_CONF_OPTS = --without-javac
 
 ifeq ($(BR2_PACKAGE_LIBATOMIC_OPS),y)
-ERLANG_DEPENDENCIES = libatomic_ops
+ERLANG_DEPENDENCIES += libatomic_ops
 ERLANG_CONF_OPTS += --with-libatomic_ops=$(STAGING_DIR)/usr
 endif
 
