@@ -74,6 +74,8 @@ GDB_CONF_ENV = \
 	bash_cv_have_mbstate_t=yes \
 	gdb_cv_func_sigsetjmp=yes
 
+# The shared only build is not supported by gdb, so enable static build for
+# build-in libraries with --enable-static.
 GDB_CONF_OPTS = \
 	--without-uiout \
 	--disable-gdbtk \
@@ -83,7 +85,8 @@ GDB_CONF_OPTS = \
 	$(if $(BR2_PACKAGE_GDB_SERVER),--enable-gdbserver) \
 	--with-curses \
 	--without-included-gettext \
-	--disable-werror
+	--disable-werror \
+	--enable-static
 
 ifeq ($(BR2_PACKAGE_GDB_TUI),y)
 	GDB_CONF_OPTS += --enable-tui
