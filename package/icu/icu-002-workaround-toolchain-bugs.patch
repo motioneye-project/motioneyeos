@@ -10,22 +10,23 @@ is trivial in this case. So it will avoid our users falling into this
 internal compiler error, and allow our autobuilders to test more
 packages using this Sourcery CodeBench toolchain.qq
 
-[Gustavo: update for ICU4C 51.2]
+[Gustavo: update for ICU4C 54.1]
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
 
 diff -Nura icu.orig/source/configure icu/source/configure
---- icu.orig/source/configure	2013-05-23 17:06:32.000000000 -0300
-+++ icu/source/configure	2013-06-29 15:43:04.202320953 -0300
-@@ -4066,7 +4066,7 @@
-         then
-             # Do not use -ansi. It limits us to C90, and it breaks some platforms.
-             # We use -std=c99 to disable the gnu99 defaults and its associated warnings
--            CFLAGS="$CFLAGS -Wall -std=c99 -pedantic -Wshadow -Wpointer-arith -Wmissing-prototypes -Wwrite-strings"
-+            CFLAGS="$CFLAGS -std=c99 -pedantic -Wshadow -Wpointer-arith -Wmissing-prototypes -Wwrite-strings"
+--- icu.orig/source/configure	2014-12-18 15:49:43.038628644 -0300
++++ icu/source/configure	2014-12-18 15:51:23.183083232 -0300
+@@ -4323,7 +4323,7 @@
+                 ;;
+             esac
+ 
+-            CFLAGS="$CFLAGS -Wall -pedantic -Wshadow -Wpointer-arith -Wmissing-prototypes -Wwrite-strings"
++            CFLAGS="$CFLAGS -pedantic -Wshadow -Wpointer-arith -Wmissing-prototypes -Wwrite-strings"
          else
              case "${host}" in
              *-*-cygwin)
-@@ -4078,7 +4078,7 @@
+@@ -4337,7 +4337,7 @@
          fi
          if test "$GXX" = yes
          then
