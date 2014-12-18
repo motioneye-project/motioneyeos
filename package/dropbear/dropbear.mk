@@ -8,7 +8,7 @@ DROPBEAR_VERSION = 2014.66
 DROPBEAR_SITE = http://matt.ucc.asn.au/dropbear/releases
 DROPBEAR_SOURCE = dropbear-$(DROPBEAR_VERSION).tar.bz2
 DROPBEAR_TARGET_BINS = dbclient dropbearkey dropbearconvert scp ssh
-DROPBEAR_MAKE =	$(MAKE) MULTI=1 SCPPROGRESS=1 \
+DROPBEAR_MAKE = $(MAKE) MULTI=1 SCPPROGRESS=1 \
 		PROGRAMS="dropbear dbclient dropbearkey dropbearconvert scp"
 
 DROPBEAR_LICENSE = MIT, BSD-2c-like, BSD-2c
