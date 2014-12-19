@@ -7,7 +7,7 @@
 In general, any new package should be added directly in the +package+
 directory and submitted to the Buildroot upstream project. How to add
 packages to Buildroot in general is explained in full detail in
-xref:adding-packages[] and will not be repeated here.  However, your
+xref:adding-packages[] and will not be repeated here. However, your
 project may need some proprietary packages that cannot be upstreamed.
 This section will explain how you can keep such project-specific
 packages in a project-specific directory.

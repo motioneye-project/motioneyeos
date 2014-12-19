@@ -6,7 +6,7 @@
 
 Sometimes it is needed to set specific permissions or ownership on files
 or device nodes. For example, certain files may need to be owned by
-root.  Since the post-build scripts are not run as root, you cannot do
+root. Since the post-build scripts are not run as root, you cannot do
 such changes from there unless you use an explicit fakeroot from the
 post-build script.
 

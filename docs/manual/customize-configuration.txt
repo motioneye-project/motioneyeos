@@ -37,7 +37,7 @@ store these configuration files is
 +board/<company>/<boardname>/foo.config+.
 
 Make sure that you create a configuration file 'before' changing
-the +BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE+ etc. options.  Otherwise,
+the +BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE+ etc. options. Otherwise,
 Buildroot will try to access this config file, which doesn't exist
 yet, and will fail. You can create the configuration file by running
 +make linux-menuconfig+ etc.
@@ -46,9 +46,9 @@ Buildroot provides a few helper targets to make the saving of
 configuration files easier.
 
 * +make linux-update-defconfig+ saves the linux configuration to the
-  path specified by +BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE+.  It
-  simplifies the config file by removing default values.  However,
-  this only works with kernels starting from 2.6.33.  For earlier
+  path specified by +BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE+. It
+  simplifies the config file by removing default values. However,
+  this only works with kernels starting from 2.6.33. For earlier
   kernels, use +make linux-update-config+.
 * +make busybox-update-config+ saves the busybox configuration to the
   path specified by +BR2_PACKAGE_BUSYBOX_CONFIG+.

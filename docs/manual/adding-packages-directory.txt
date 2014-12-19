@@ -134,7 +134,7 @@ config BR2_PACKAGE_E
   so it will not select +Package A+.
 
 * Since +Package B+ is selected but +Package A+ is not, this violates
-  the dependency of +Package B+ on +Package A+.  Therefore, in such a
+  the dependency of +Package B+ on +Package A+. Therefore, in such a
   situation, the transitive dependency has to be added explicitly:
 
 --------------------------
@@ -336,7 +336,7 @@ different way, using different infrastructures:
   compilation and installation of the package. This
   infrastructure must be used for all packages that do not use the
   autotools as their build system. In the future, other specialized
-  infrastructures might be written for other build systems.  We cover
+  infrastructures might be written for other build systems. We cover
   them through in a xref:generic-package-tutorial[tutorial] and a
   xref:generic-package-reference[reference].
 

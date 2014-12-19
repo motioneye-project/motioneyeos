@@ -102,7 +102,7 @@ This directory contains several subdirectories:
   +/dev/+ (Buildroot can't create them because Buildroot doesn't run
   as root and doesn't want to run as root). Also, it doesn't have the correct
   permissions (e.g. setuid for the busybox binary). Therefore, this directory
-  *should not be used on your target*.  Instead, you should use one of
+  *should not be used on your target*. Instead, you should use one of
   the images built in the +images/+ directory. If you need an
   extracted image of the root filesystem for booting over NFS, then
   use the tarball image generated in +images/+ and extract it as

@@ -33,7 +33,7 @@ your project can be skipped.
    Set +BR2_ROOTFS_OVERLAY+
    to +board/<manufacturer>/<boardname>/rootfs-overlay+.
 1. Create a post-build script
-   +board/<manufacturer>/<boardname>/post_build.sh+.  Set
+   +board/<manufacturer>/<boardname>/post_build.sh+. Set
    +BR2_ROOTFS_POST_BUILD_SCRIPT+ to
    +board/<manufacturer>/<boardname>/post_build.sh+
 1. If additional setuid permissions have to be set or device nodes have

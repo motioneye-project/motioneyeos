@@ -160,9 +160,9 @@ Makefile code necessary to make your package working.
 ==== +generic-package+ reference
 
 There are two variants of the generic target. The +generic-package+ macro is
-used for packages to be cross-compiled for the target.  The
+used for packages to be cross-compiled for the target. The
 +host-generic-package+ macro is used for host packages, natively compiled
-for the host.  It is possible to call both of them in a single +.mk+
+for the host. It is possible to call both of them in a single +.mk+
 file: once to create the rules to generate a target
 package and once to create the rules to generate a host package:
 
@@ -258,13 +258,13 @@ information is (assuming the package name is +libfoo+) :
   is unnecessary. When +HOST_LIBFOO_SITE_METHOD+ is not specified, it
   defaults to the value of +LIBFOO_SITE_METHOD+. +
   The possible values of +LIBFOO_SITE_METHOD+ are:
-  ** +wget+ for normal FTP/HTTP downloads of tarballs.  Used by
+  ** +wget+ for normal FTP/HTTP downloads of tarballs. Used by
      default when +LIBFOO_SITE+ begins with +http://+, +https://+ or
      +ftp://+.
-  ** +scp+ for downloads of tarballs over SSH with scp.  Used by
+  ** +scp+ for downloads of tarballs over SSH with scp. Used by
      default when +LIBFOO_SITE+ begins with +scp://+.
   ** +svn+ for retrieving source code from a Subversion repository.
-     Used by default when +LIBFOO_SITE+ begins with +svn://+.  When a
+     Used by default when +LIBFOO_SITE+ begins with +svn://+. When a
      +http://+ Subversion repository URL is specified in
      +LIBFOO_SITE+, one 'must' specify +LIBFOO_SITE_METHOD=svn+.
      Buildroot performs a checkout which is preserved as a tarball in
@@ -277,7 +277,7 @@ information is (assuming the package name is +libfoo+) :
      +LIBFOO_SITE+ 'must' contain the source URL as well as the remote
      repository directory. The module is the package name.
      +LIBFOO_VERSION+ is 'mandatory' and 'must' be a timestamp.
-  ** +git+ for retrieving source code from a Git repository.  Used by
+  ** +git+ for retrieving source code from a Git repository. Used by
      default when +LIBFOO_SITE+ begins with +git://+. The downloaded
      source code is cached as with the +svn+
      method.
@@ -288,13 +288,13 @@ information is (assuming the package name is +libfoo+) :
   ** +bzr+ for retrieving source code from a Bazaar repository. Used
      by default when +LIBFOO_SITE+ begins with +bzr://+. The
      downloaded source code is cached as with the +svn+ method.
-  ** +file+ for a local tarball.  One should use this when
+  ** +file+ for a local tarball. One should use this when
      +LIBFOO_SITE+ specifies a package tarball as a local filename.
      Useful for software that isn't available publicly or in version
      control.
-  ** +local+ for a local source code directory.  One should use this
+  ** +local+ for a local source code directory. One should use this
      when +LIBFOO_SITE+ specifies a local directory path containing
-     the package source code.  Buildroot copies the contents of the
+     the package source code. Buildroot copies the contents of the
      source directory into the package's build directory.
 
 * +LIBFOO_DEPENDENCIES+ lists the dependencies (in terms of package

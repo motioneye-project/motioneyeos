@@ -250,7 +250,7 @@ The best thing to rework a patch series is by interactive rebasing:
 information.
 
 When added to the individual commits, this changelog is added when
-editing the commit message.  Below the +Signed-off-by+ section, add
+editing the commit message. Below the +Signed-off-by+ section, add
 +---+ and your changelog.
 
 Although the changelog will be visible for the reviewers in the mail

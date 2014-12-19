@@ -23,7 +23,7 @@ xref:env-vars[] for more details.
 
 uClibc::
 +
-Configuration of uClibc is done in the same way as for BusyBox.  The
+Configuration of uClibc is done in the same way as for BusyBox. The
 configuration variable to specify an existing configuration file is
 +BR2_UCLIBC_CONFIG+. The command to make subsequent changes is +make
 uclibc-menuconfig+.
