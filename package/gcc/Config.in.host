@@ -32,7 +32,7 @@ choice
 		# Broken or unsupported PPC cores
 		depends on !BR2_powerpc_e5500 && !BR2_powerpc_e6500 && \
 			!BR2_powerpc_power8
-		# SPARC -mcpu=leon3 appeared in gcc 4.8.3
+		# SPARC -mcpu=leon3 appeared in gcc 4.8.x
 		depends on !BR2_sparc_leon3
 		# Broken or unsupported X86 cores
 		depends on !BR2_x86_corei7 && !BR2_x86_jaguar
@@ -52,7 +52,7 @@ choice
 		# Broken or unsupported PPC cores
 		depends on !BR2_powerpc_e5500 && !BR2_powerpc_e6500 && \
 			!BR2_powerpc_power8
-		# SPARC -mcpu=leon3 appeared in gcc 4.8.3
+		# SPARC -mcpu=leon3 appeared in gcc 4.8.x
 		depends on !BR2_sparc_leon3
 		# Broken or unsupported x86 cores
 		depends on !BR2_x86_jaguar
@@ -95,7 +95,7 @@ config BR2_GCC_VERSION
 	default "4.2.2-avr32-2.1.5" if BR2_GCC_VERSION_4_2_2_AVR32_2_1_5
 	default "4.5.4"     if BR2_GCC_VERSION_4_5_X
 	default "4.7.4"     if BR2_GCC_VERSION_4_7_X
-	default "4.8.3"     if BR2_GCC_VERSION_4_8_X
+	default "4.8.4"     if BR2_GCC_VERSION_4_8_X
 	default "4.9.2"     if BR2_GCC_VERSION_4_9_X
 	default "arc-2014.08" if BR2_GCC_VERSION_4_8_ARC
 
