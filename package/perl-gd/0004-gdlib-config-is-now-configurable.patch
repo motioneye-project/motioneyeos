@@ -1,0 +1,67 @@
+From f417f38929fe558d388b9a9343da9b2c0e6984aa Mon Sep 17 00:00:00 2001
+From: Romain Naour <romain.naour@openwide.fr>
+Date: Sat, 20 Dec 2014 23:22:41 +0100
+Subject: [PATCH] Makefile.PL: gdlib-config is now configurable
+
+Signed-off-by: Romain Naour <romain.naour@openwide.fr>
+---
+ Makefile.PL | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
+
+diff --git a/Makefile.PL b/Makefile.PL
+index dfe8ad7..0fa6ef3 100644
+--- a/Makefile.PL
++++ b/Makefile.PL
+@@ -21,7 +21,7 @@ END
+ my (@INC,@LIBPATH,@LIBS);
+ my $AUTOCONFIG = 0;      # global set by try_to_autoconfigure() below
+ 
+-my ($options,$lib_gd_path,$lib_ft_path,$lib_png_path,$lib_jpeg_path,$lib_xpm_path,$lib_zlib_path,$force);
++my ($options,$lib_gd_path,$lib_ft_path,$lib_png_path,$lib_jpeg_path,$lib_xpm_path,$lib_zlib_path,$force,$gdlib_config_path);
+ 
+ use Getopt::Long;
+ my $result = GetOptions("options=s"         => \$options,
+@@ -32,6 +32,7 @@ my $result = GetOptions("options=s"         => \$options,
+ 			"lib_xpm_path=s"    => \$lib_xpm_path,
+ 			"lib_zlib_path=s"   => \$lib_zlib_path,
+ 			"ignore_missing_gd" => \$force,
++			"gdlib_config_path=s" => \$gdlib_config_path,
+ 		       );
+ 
+ unless (try_to_autoconfigure(\$options,\$lib_gd_path,\@INC,\@LIBPATH,\@LIBS) || $force) {
+@@ -72,6 +73,7 @@ Configure GD module.
+      -lib_xpm_path  path            path to libxpm
+      -lib_zlib_path path            path to libpng
+      -ignore_missing_gd             Ignore missing or old libgd installations and try to compile anyway
++     -gdlib_config_path path        path to gdlib-config
+ 
+ If no options are passed on the command line.  The program will
+ attempt to autoconfigure itself with the gdlib-config program (present
+@@ -118,6 +120,15 @@ if( defined($lib_zlib_path) )
+     @INC     = ("-I$lib_zlib_path/include", @INC);
+     @LIBPATH = ("-L$lib_zlib_path/lib", @LIBPATH); 
+ }
++if( defined($gdlib_config_path) )
++{
++    print "gdlib-config used:          $gdlib_config_path\n";
++}
++else
++{
++    $gdlib_config_path = "gdlib-config";
++    print "$gdlib_config_path used from the PATH\n";
++}
+ #############################################################################################
+ 
+ if ($^O eq 'VMS'){
+@@ -275,7 +286,7 @@ exit 0;
+ 
+ sub try_to_autoconfigure {
+   my ($options,$lib_gd_path,$INC,$LIBPATH,$LIBS) = @_;
+-  my $config = `gdlib-config --all`;
++  my $config = `$gdlib_config_path --all`;
+   return unless $config;
+   $AUTOCONFIG++;
+ 
+-- 
+1.9.3
+
