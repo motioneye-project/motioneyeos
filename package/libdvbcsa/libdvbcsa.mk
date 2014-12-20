@@ -5,7 +5,7 @@
 ################################################################################
 
 LIBDVBCSA_VERSION = 1.1.0
-LIBDVBCSA_SITE = http://download.videolan.org/pub/videolan/libdvbcsa/$(LIBDVBCSA_VERSION)
+LIBDVBCSA_SITE = http://get.videolan.org/libdvbcsa/$(LIBDVBCSA_VERSION)
 LIBDVBCSA_LICENSE = GPLv2+
 LIBDVBCSA_LICENSE_FILES = COPYING
 LIBDVBCSA_INSTALL_STAGING = YES
