@@ -122,7 +122,7 @@ config BR2_USE_MMU
 
 config BR2_TARGET_OPTIMIZATION
 	string "Target Optimizations"
-	default "-pipe"
+	default ""
 	help
 	  Optimizations to use when building for the target host.
 	  NOTE: gcc optimization level is defined in build options.
