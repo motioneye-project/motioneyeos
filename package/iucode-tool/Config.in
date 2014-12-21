@@ -6,4 +6,4 @@ config BR2_PACKAGE_IUCODE_TOOL
 	help
 	  Intel processor microcode tool
 
-	  http://packages.debian.org/source/iucode-tool
+	  https://gitorious.org/iucode-tool
