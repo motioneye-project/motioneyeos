@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-UEMACS_VERSION = fa00fe882f719351fdf7a4c4100baf4f3eab4d61
-UEMACS_SITE = $(BR2_KERNEL_MIRROR)/scm/linux/kernel/git/torvalds/uemacs.git
+UEMACS_VERSION = 8841922689769960fa074fbb053cb8507f2f3ed9
+UEMACS_SITE = $(BR2_KERNEL_MIRROR)/scm/editors/uemacs/uemacs.git
 UEMACS_SITE_METHOD = git
 UEMACS_DEPENDENCIES = ncurses
 
