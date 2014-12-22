@@ -1,10 +1,5 @@
 #! /bin/sh
-#
-# System-V init script for the openntp daemon
-#
 
-PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
-DESC="network time protocol daemon"
 NAME=ntpd
 DAEMON=/usr/sbin/$NAME
 
@@ -14,31 +9,30 @@ test -x $DAEMON || exit 0
 # Read config file if it is present.
 if [ -r /etc/default/$NAME ]
 then
-	. /etc/default/$NAME
+  . /etc/default/$NAME
 fi
 
 case "$1" in
   start)
-	echo -n "Starting $DESC: $NAME"
-	start-stop-daemon -S -q -x $DAEMON -- -g
-	echo "."
-	;;
-  stop) echo -n "Stopping $DESC: $NAME"
-	start-stop-daemon -K -q -n $NAME
-	echo "."
-	;;
-  reload|force-reload) echo -n "Reloading $DESC configuration..."
-	start-stop-daemon -K -q -n $NAME -s 1
-	echo "done."
-  ;;
-  restart) echo "Restarting $DESC: $NAME"
-	$0 stop
-	sleep 1
-	$0 start
-	;;
-  *) echo "Usage: $0 {start|stop|restart|reload|force-reload}" >&2
-	exit 1
-	;;
+    echo -n "Starting $NAME: "
+    start-stop-daemon -S -q -x $DAEMON -- -g
+    [ $? = 0 ] && echo "OK" || echo "FAIL"
+    ;;
+  stop)
+    echo -n "Stopping $NAME: "
+    start-stop-daemon -K -q -n $NAME
+    [ $? = 0 ] && echo "OK" || echo "FAIL"
+    ;;
+  restart|reload)
+    echo "Restarting $NAME: "
+    $0 stop
+    sleep 1
+    $0 start
+    ;;
+  *)
+    echo "Usage: $0 {start|stop|restart|reload}" >&2
+    exit 1
+    ;;
 esac
 
 exit 0
