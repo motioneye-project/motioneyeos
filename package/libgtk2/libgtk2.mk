@@ -157,12 +157,12 @@ endif
 
 HOST_LIBGTK2_DEPENDENCIES = host-libglib2 host-libpng host-gdk-pixbuf
 HOST_LIBGTK2_CONF_OPTS = \
-		--disable-static \
-		--disable-glibtest \
-		--without-libtiff \
-		--without-libjpeg \
-		--with-gdktarget=none \
-		--disable-cups
+	--disable-static \
+	--disable-glibtest \
+	--without-libtiff \
+	--without-libjpeg \
+	--with-gdktarget=none \
+	--disable-cups
 
 define HOST_LIBGTK2_BUILD_CMDS
 	$(HOST_MAKE_ENV) make -C $(@D)/gtk gtk-update-icon-cache

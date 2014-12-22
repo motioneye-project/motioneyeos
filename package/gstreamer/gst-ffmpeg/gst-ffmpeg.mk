@@ -21,9 +21,9 @@ GST_FFMPEG_LICENSE_FILES = COPYING.LIB gst-libs/ext/libav/COPYING.LGPLv2.1 gst-l
 endif
 
 GST_FFMPEG_CONF_EXTRA_OPTS = \
-		--cross-prefix=$(TARGET_CROSS) \
-		--target-os=linux \
-		--pkg-config='$(PKG_CONFIG_HOST_BINARY)'
+	--cross-prefix=$(TARGET_CROSS) \
+	--target-os=linux \
+	--pkg-config='$(PKG_CONFIG_HOST_BINARY)'
 
 ifeq ($(BR2_PACKAGE_ZLIB),y)
 GST_FFMPEG_CONF_EXTRA_OPTS += --enable-zlib

@@ -15,24 +15,24 @@ DBUS_GLIB_CONF_ENV = ac_cv_have_abstract_sockets=yes \
 		have_abstract_sockets=yes
 
 DBUS_GLIB_CONF_OPTS = \
-		--disable-tests \
-		--disable-xml-docs \
-		--with-introspect-xml=$(DBUS_HOST_INTROSPECT) \
-		--with-dbus-binding-tool=$(DBUS_GLIB_HOST_BINARY) \
-		--disable-bash-completion \
-		--disable-doxygen-docs \
-		--enable-asserts=yes
+	--disable-tests \
+	--disable-xml-docs \
+	--with-introspect-xml=$(DBUS_HOST_INTROSPECT) \
+	--with-dbus-binding-tool=$(DBUS_GLIB_HOST_BINARY) \
+	--disable-bash-completion \
+	--disable-doxygen-docs \
+	--enable-asserts=yes
 
 DBUS_GLIB_DEPENDENCIES = host-pkgconf dbus host-dbus host-dbus-glib libglib2 expat
 
 HOST_DBUS_GLIB_DEPENDENCIES = host-dbus host-expat host-libglib2
 
 HOST_DBUS_GLIB_CONF_OPTS = \
-		--disable-tests \
-		--disable-xml-docs \
-		--disable-bash-completion \
-		--disable-doxygen-docs \
-		--enable-asserts=yes
+	--disable-tests \
+	--disable-xml-docs \
+	--disable-bash-completion \
+	--disable-doxygen-docs \
+	--enable-asserts=yes
 
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))

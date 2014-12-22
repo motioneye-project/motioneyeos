@@ -87,16 +87,16 @@ endef
 
 HOST_DBUS_DEPENDENCIES = host-pkgconf host-expat
 HOST_DBUS_CONF_OPTS = \
-		--with-dbus-user=dbus \
-		--disable-tests \
-		--disable-asserts \
-		--enable-abstract-sockets \
-		--disable-selinux \
-		--disable-xml-docs \
-		--disable-doxygen-docs \
-		--enable-dnotify \
-		--without-x \
-		--with-xml=expat
+	--with-dbus-user=dbus \
+	--disable-tests \
+	--disable-asserts \
+	--enable-abstract-sockets \
+	--disable-selinux \
+	--disable-xml-docs \
+	--disable-doxygen-docs \
+	--enable-dnotify \
+	--without-x \
+	--with-xml=expat
 
 # dbus for the host
 DBUS_HOST_INTROSPECT = $(HOST_DBUS_DIR)/introspect.xml

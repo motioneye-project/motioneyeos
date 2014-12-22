@@ -11,8 +11,8 @@ SDL_NET_LICENSE = zlib
 SDL_NET_LICENSE_FILES = COPYING
 
 SDL_NET_CONF_OPTS = \
-		--with-sdl-prefix=$(STAGING_DIR)/usr \
-		--with-sdl-exec-prefix=$(STAGING_DIR)/usr
+	--with-sdl-prefix=$(STAGING_DIR)/usr \
+	--with-sdl-exec-prefix=$(STAGING_DIR)/usr
 
 SDL_NET_INSTALL_STAGING = YES
 

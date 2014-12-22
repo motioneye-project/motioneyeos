@@ -10,8 +10,8 @@ VTUN_DEPENDENCIES = host-bison host-flex zlib lzo openssl
 VTUN_AUTORECONF = YES
 
 VTUN_CONF_OPTS = \
-		--with-ssl-headers=$(STAGING_DIR)/usr/include/openssl \
-		--with-lzo-headers=$(STAGING_DIR)/usr/include/lzo \
-		--with-lzo-lib=$(STAGING_DIR)/usr/lib
+	--with-ssl-headers=$(STAGING_DIR)/usr/include/openssl \
+	--with-lzo-headers=$(STAGING_DIR)/usr/include/lzo \
+	--with-lzo-lib=$(STAGING_DIR)/usr/lib
 
 $(eval $(autotools-package))

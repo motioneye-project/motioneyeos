@@ -16,7 +16,7 @@ FONTCONFIG_CONF_OPTS = --with-arch=$(GNU_TARGET_NAME) \
 		--disable-docs
 
 HOST_FONTCONFIG_CONF_OPTS = \
-		--disable-static
+	--disable-static
 
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))

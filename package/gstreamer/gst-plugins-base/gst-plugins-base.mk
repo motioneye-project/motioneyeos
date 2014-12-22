@@ -17,10 +17,10 @@ GST_PLUGINS_BASE_CONF_ENV =
 		ac_cv_header_stdint_t="stdint.h"
 
 GST_PLUGINS_BASE_CONF_OPTS = \
-		--disable-examples \
-		--disable-oggtest \
-		--disable-vorbistest \
-		--disable-freetypetest
+	--disable-examples \
+	--disable-oggtest \
+	--disable-vorbistest \
+	--disable-freetypetest
 
 GST_PLUGINS_BASE_DEPENDENCIES = gstreamer
 

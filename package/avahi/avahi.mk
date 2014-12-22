@@ -68,20 +68,20 @@ AVAHI_CONF_ENV = ac_cv_func_strtod=yes \
 		DATADIRNAME=share
 
 AVAHI_CONF_OPTS = \
-		--disable-qt3 \
-		--disable-qt4 \
-		--disable-gdbm \
-		--disable-pygtk \
-		--disable-mono \
-		--disable-monodoc \
-		--disable-stack-protector \
-		--with-distro=none \
-		--disable-manpages \
-		$(if $(BR2_PACKAGE_AVAHI_AUTOIPD),--enable,--disable)-autoipd \
-		--with-avahi-user=avahi \
-		--with-avahi-group=avahi \
-		--with-autoipd-user=avahi \
-		--with-autoipd-group=avahi
+	--disable-qt3 \
+	--disable-qt4 \
+	--disable-gdbm \
+	--disable-pygtk \
+	--disable-mono \
+	--disable-monodoc \
+	--disable-stack-protector \
+	--with-distro=none \
+	--disable-manpages \
+	$(if $(BR2_PACKAGE_AVAHI_AUTOIPD),--enable,--disable)-autoipd \
+	--with-avahi-user=avahi \
+	--with-avahi-group=avahi \
+	--with-autoipd-user=avahi \
+	--with-autoipd-group=avahi
 
 AVAHI_DEPENDENCIES = $(if $(BR2_NEEDS_GETTEXT_IF_LOCALE),gettext) host-intltool \
 	host-pkgconf host-gettext

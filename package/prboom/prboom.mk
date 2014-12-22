@@ -22,12 +22,12 @@ PRBOOM_CONF_ENV += LIBS="$(shell $(STAGING_DIR)/usr/bin/sdl-config --static-libs
 endif
 
 PRBOOM_CONF_OPTS = \
-		--oldincludedir=$(STAGING_DIR)/usr/include \
-		--with-sdl-prefix=$(STAGING_DIR)/usr \
-		--with-sdl-exec-prefix=$(STAGING_DIR)/usr \
-		--disable-cpu-opt \
-		--disable-sdltest \
-		--disable-gl
+	--oldincludedir=$(STAGING_DIR)/usr/include \
+	--with-sdl-prefix=$(STAGING_DIR)/usr \
+	--with-sdl-exec-prefix=$(STAGING_DIR)/usr \
+	--disable-cpu-opt \
+	--disable-sdltest \
+	--disable-gl
 
 # endianness detection isn't used when cross compiling
 define PRBOOM_BIG_ENDIAN_FIXUP

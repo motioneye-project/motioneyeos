@@ -12,10 +12,10 @@ BEECRYPT_LICENSE = LGPLv2.1+
 BEECRYPT_LICENSE_FILES = COPYING.LIB
 
 BEECRYPT_CONF_OPTS = \
-		--disable-expert-mode \
-		--without-java \
-		--without-python \
-		--disable-openmp
+	--disable-expert-mode \
+	--without-java \
+	--without-python \
+	--disable-openmp
 
 ifeq ($(BR2_PACKAGE_BEECRYPT_CPP),y)
 BEECRYPT_DEPENDENCIES += icu

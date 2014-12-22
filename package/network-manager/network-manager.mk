@@ -24,15 +24,15 @@ NETWORK_MANAGER_CONF_ENV = \
 
 
 NETWORK_MANAGER_CONF_OPTS = \
-		--mandir=$(STAGING_DIR)/usr/man/ \
-		--disable-tests \
-		--disable-qt \
-		--disable-more-warnings \
-		--without-docs \
-		--with-crypto=gnutls \
-		--with-iptables=/usr/sbin/iptables \
-		--disable-ifupdown \
-		--disable-ifnet
+	--mandir=$(STAGING_DIR)/usr/man/ \
+	--disable-tests \
+	--disable-qt \
+	--disable-more-warnings \
+	--without-docs \
+	--with-crypto=gnutls \
+	--with-iptables=/usr/sbin/iptables \
+	--disable-ifupdown \
+	--disable-ifnet
 
 ifeq ($(BR2_PACKAGE_NETWORK_MANAGER_TUI),y)
 	NETWORK_MANAGER_DEPENDENCIES += newt

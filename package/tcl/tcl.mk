@@ -19,15 +19,15 @@ TCL_AUTORECONF = YES
 # configured).  Don't need to worry about conditionally including
 # it in the configure options
 TCL_CONF_OPTS = \
-		--disable-symbols \
-		--disable-langinfo \
-		--disable-framework \
-		--with-system-sqlite
+	--disable-symbols \
+	--disable-langinfo \
+	--disable-framework \
+	--with-system-sqlite
 
 HOST_TCL_CONF_OPTS = \
-		--disable-symbols \
-		--disable-langinfo \
-		--disable-framework
+	--disable-symbols \
+	--disable-langinfo \
+	--disable-framework
 
 # I haven't found a good way to force pkgs to not build
 # or configure without just removing the entire pkg directory.

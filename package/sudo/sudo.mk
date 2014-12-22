@@ -12,13 +12,13 @@ SUDO_LICENSE_FILES = doc/LICENSE
 # Run autoreconf to regenerate ltmain.sh.
 SUDO_AUTORECONF = YES
 SUDO_CONF_OPTS = \
-		--without-lecture \
-		--without-sendmail \
-		--without-umask \
-		--with-logging=syslog \
-		--without-interfaces \
-		--without-pam \
-		--with-env-editor
+	--without-lecture \
+	--without-sendmail \
+	--without-umask \
+	--with-logging=syslog \
+	--without-interfaces \
+	--without-pam \
+	--with-env-editor
 
 # mksigname/mksiglist needs to run on build host to generate source files
 define SUDO_BUILD_MKSIGNAME_MKSIGLIST_HOST
