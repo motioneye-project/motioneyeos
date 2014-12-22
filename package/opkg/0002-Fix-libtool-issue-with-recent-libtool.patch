@@ -1,0 +1,35 @@
+From 932bf10f259a82ffc17060c032bfdddd0436ca2d Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Mon, 22 Dec 2014 09:45:33 +0100
+Subject: [PATCH 2/2] Fix libtool issue with recent libtool
+
+With recent libtool versions, autoreconf complains that the set of
+directories in AC_CONFIG_MACRO_DIR doesn't match the ones passed in
+ACLOCAL_AMFLAGS. This patch fixes that by using AC_CONFIG_MACRO_DIRS
+instead.
+
+Note that this patch will no longer be needed once we bump to opkg
+0.3.0, since the shave/ macro directory has been removed.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ configure.ac | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 1ea2e78..0e3964d 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -3,8 +3,7 @@ AC_INIT([opkg], [0.2.4])
+ AC_CONFIG_SRCDIR([libopkg/pkg.c])
+ 
+ AC_CONFIG_AUX_DIR([conf])
+-AC_CONFIG_MACRO_DIR([m4])
+-AC_CONFIG_MACRO_DIR([shave])
++AC_CONFIG_MACRO_DIRS([shave m4])
+ 
+ AM_INIT_AUTOMAKE
+ AC_CONFIG_HEADERS(config.h)
+-- 
+2.1.0
+

@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-OPKG_VERSION = v0.2.2
+OPKG_VERSION = v0.2.4
 OPKG_SITE = http://git.yoctoproject.org/git/opkg
 OPKG_SITE_METHOD = git
 # Uses PKG_CHECK_MODULES() in configure.ac
