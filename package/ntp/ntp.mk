@@ -5,25 +5,29 @@
 ################################################################################
 
 NTP_VERSION_MAJOR = 4.2
-NTP_VERSION = $(NTP_VERSION_MAJOR).6p5
+NTP_VERSION = $(NTP_VERSION_MAJOR).8
 NTP_SITE = http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-$(NTP_VERSION_MAJOR)
+NTP_DEPENDENCIES = host-pkgconf libevent
+# For 0001-fix-ntp-keygen-without-openssl.patch
+NTP_AUTORECONF = YES
 NTP_LICENSE = ntp license
 NTP_LICENSE_FILES = COPYRIGHT
 NTP_CONF_ENV = ac_cv_lib_md5_MD5Init=no
+NTP_CONF_OPTS = --with-shared \
+		--program-transform-name=s,,, \
+		--disable-tickadj \
+		--with-yielding-select=yes \
+		--disable-local-libevent
 
 ifneq ($(BR2_INET_IPV6),y)
 	NTP_CONF_ENV += isc_cv_have_in6addr_any=no
 endif
 
-NTP_CONF_OPTS = --with-shared \
-		--program-transform-name=s,,, \
-		--disable-tickadj
-
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 	NTP_CONF_OPTS += --with-crypto
 	NTP_DEPENDENCIES += openssl
 else
-	NTP_CONF_OPTS += --without-crypto
+	NTP_CONF_OPTS += --without-crypto --disable-openssl-random
 endif
 
 ifeq ($(BR2_PACKAGE_NTP_NTPSNMPD),y)
