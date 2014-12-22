@@ -4,4 +4,4 @@ config BR2_PACKAGE_UEMACS
 	help
 	  A small emacs.
 
-	  ftp://ftp.kernel.org/pub/software/editors/uemacs/
+	  https://git.kernel.org/cgit/editors/uemacs/uemacs.git/
