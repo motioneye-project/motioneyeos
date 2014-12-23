@@ -4,10 +4,10 @@
 #
 ################################################################################
 
-# This cset is on master. When a Gotham branch is made, we should
+# This cset is on master. When a Helix branch is made, we should
 # follow it, as incompatible changes in the plugins API can happen
 # on the master branch.
-KODI_ADDON_XVDR_VERSION = 82b5093ad33847f97a978cb620c9a87d2dbcf7eb
+KODI_ADDON_XVDR_VERSION = 328fa653b821a4edc1256a13833f30a4483e2819
 KODI_ADDON_XVDR_SITE = $(call github,pipelka,xbmc-addon-xvdr,$(KODI_ADDON_XVDR_VERSION))
 KODI_ADDON_XVDR_LICENSE = GPLv2+
 KODI_ADDON_XVDR_LICENSE_FILES = COPYING
