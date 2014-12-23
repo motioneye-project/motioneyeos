@@ -43,7 +43,8 @@ Then install SYSLINUX in the mounted partition:
 IMPORTANT: In order for the board to boot the Compact Flash with a recent
 config, the BIOS must use Logical Block Addressing (LBA). You can do it by
 choosing "Ide 0: AUTOCONFIG, LBA" under "IDE DRIVE GEOMETRY" in the "Basic CMOS
-Configuration" screen. For details about the CMOS setup, please see:
+Configuration" screen. Also, don't forget to set the 'active' (or 'bootable')
+flag on partition 1. For details about the CMOS setup, please see:
 http://wiki.embeddedarm.com/wiki/TS-5500#System_BIOS_Setup_Screens
 
 Connect a terminal program to the rs232 connector marked "COM2"
