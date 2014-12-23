@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-KODI_VERSION = 13.2-Gotham
+KODI_VERSION = 14.0-Helix
 KODI_SITE = $(call github,xbmc,xbmc,$(KODI_VERSION))
 KODI_LICENSE = GPLv2
 KODI_LICENSE_FILES = LICENSE.GPL
@@ -12,21 +12,12 @@ KODI_LICENSE_FILES = LICENSE.GPL
 # called TexturePacker. It is responsible to take all the images used in the
 # GUI and pack them in a blob.
 # http://wiki.xbmc.org/index.php?title=TexturePacker
-KODI_DEPENDENCIES = host-gawk host-gettext host-gperf host-infozip host-lzo host-sdl_image host-swig
-KODI_DEPENDENCIES += boost bzip2 expat flac fontconfig freetype jasper jpeg \
+KODI_DEPENDENCIES = host-gawk host-gettext host-gperf host-infozip host-lzo \
+	host-nasm host-sdl_image host-swig
+KODI_DEPENDENCIES += boost bzip2 expat ffmpeg fontconfig freetype jasper jpeg \
 	libass libcdio libcurl libfribidi libgcrypt libmad libmodplug libmpeg2 \
 	libogg libplist libpng libsamplerate libungif libvorbis libxml2 libxslt lzo ncurses \
 	openssl pcre python readline sqlite taglib tiff tinyxml yajl zlib
-
-# kodi@i386 depends on nasm
-KODI_DEPENDENCIES += $(if $(BR2_i386),host-nasm)
-
-# ffmpeg depends on yasm on MMX archs
-# kodi configure passes $(BR2_ARCH) to ffmpeg configure which adds
-# yasm as dependency for x86_64, even if BR2_x86_generic=y
-ifneq ($(BR2_X86_CPU_HAS_MMX)$(BR2_x86_64),)
-KODI_DEPENDENCIES += host-yasm
-endif
 
 KODI_CONF_ENV = \
 	PYTHON_VERSION="$(PYTHON_VERSION_MAJOR)" \
@@ -39,7 +30,7 @@ KODI_CONF_ENV = \
 	TEXTUREPACKER_NATIVE_ROOT="$(HOST_DIR)/usr"
 
 KODI_CONF_OPTS +=  \
-	--with-arch=$(BR2_ARCH) \
+	--with-ffmpeg=shared \
 	--disable-crystalhd \
 	--disable-dvdcss \
 	--disable-hal \
@@ -81,13 +72,6 @@ KODI_DEPENDENCIES += alsa-lib
 KODI_CONF_OPTS += --enable-alsa
 else
 KODI_CONF_OPTS += --disable-alsa
-endif
-
-ifeq ($(BR2_PACKAGE_LAME),y)
-KODI_DEPENDENCIES += lame
-KODI_CONF_OPTS += --enable-libmp3lame
-else
-KODI_CONF_OPTS += --disable-libmp3lame
 endif
 
 # quote from kodi/configure.in: "GLES overwrites GL if both set to yes."
