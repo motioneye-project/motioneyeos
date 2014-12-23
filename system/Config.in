@@ -263,13 +263,13 @@ if BR2_TARGET_GENERIC_GETTY
 menu "getty options"
 config BR2_TARGET_GENERIC_GETTY_PORT
 	string "TTY port"
-	default "ttyS0"
+	default "console"
 	help
 	  Specify a port to run a getty on.
 
 choice
 	prompt "Baudrate"
-	default BR2_TARGET_GENERIC_GETTY_BAUDRATE_115200
+	default BR2_TARGET_GENERIC_GETTY_BAUDRATE_KEEP
 	help
 	  Select a baudrate to use.
 
