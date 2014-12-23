@@ -1,6 +1,0 @@
-config BR2_PACKAGE_XBMC_PVR_ADDONS
-	bool "xbmc-pvr-addons"
-	help
-	  A collection of PVR backend addons for XBMC.
-
-	  https://github.com/opdenkamp/xbmc-pvr-addons

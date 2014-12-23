@@ -1,0 +1,6 @@
+config BR2_PACKAGE_KODI_PVR_ADDONS
+	bool "kodi-pvr-addons"
+	help
+	  A collection of PVR backend addons for Kodi
+
+	  https://github.com/opdenkamp/xbmc-pvr-addons

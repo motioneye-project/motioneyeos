@@ -238,6 +238,6 @@ config BR2_PACKAGE_KODI_WAVPACK
 comment "Kodi addons"
 
 source "package/xbmc-addon-xvdr/Config.in"
-source "package/xbmc-pvr-addons/Config.in"
+source "package/kodi-pvr-addons/Config.in"
 
 endif # BR2_PACKAGE_KODI
