@@ -245,6 +245,7 @@ if BR2_PACKAGE_KODI_OPTICALDRIVE
 comment "Kodi audioencoder addons"
 
 source "package/kodi-audioencoder-flac/Config.in"
+source "package/kodi-audioencoder-lame/Config.in"
 
 endif # BR2_PACKAGE_KODI_OPTICALDRIVE
 
