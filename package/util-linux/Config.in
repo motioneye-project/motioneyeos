@@ -118,6 +118,15 @@ config BR2_PACKAGE_UTIL_LINUX_MESG
 	help
 	  Control write access to your terminal
 
+config BR2_PACKAGE_UTIL_LINUX_NSENTER
+	bool "nsenter"
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0
+	help
+	  Enter the namespaces of another process.
+
+comment "nsenter needs a toolchain w/ headers >= 3.0"
+	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0
+
 config BR2_PACKAGE_UTIL_LINUX_MOUNT
 	bool "mount/umount"
 	help
