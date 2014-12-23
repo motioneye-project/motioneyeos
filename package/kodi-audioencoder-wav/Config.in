@@ -1,0 +1,6 @@
+config BR2_PACKAGE_KODI_AUDIOENCODER_WAV
+	bool "kodi-audioencoder-wav"
+	help
+	  An audioencoder addon for Kodi
+
+	  https://github.com/xbmc/audioencoder.wav
