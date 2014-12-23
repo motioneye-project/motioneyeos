@@ -240,7 +240,15 @@ config BR2_PACKAGE_KODI_OPTICALDRIVE
 	help
 	  Enable support for optical drives
 
-comment "Kodi addons"
+if BR2_PACKAGE_KODI_OPTICALDRIVE
+
+comment "Kodi audioencoder addons"
+
+source "package/kodi-audioencoder-flac/Config.in"
+
+endif # BR2_PACKAGE_KODI_OPTICALDRIVE
+
+comment "Kodi PVR addons"
 
 source "package/kodi-addon-xvdr/Config.in"
 source "package/kodi-pvr-addons/Config.in"
