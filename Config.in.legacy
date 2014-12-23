@@ -102,6 +102,125 @@ endif
 
 comment "Legacy options removed in 2015.02"
 
+config BR2_PACKAGE_XBMC
+	bool "xbmc options have been renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_KODI
+	help
+	  The XBMC media center project was renamed to Kodi entertainment center
+
+config BR2_PACKAGE_XBMC_ALSA_LIB
+	bool "xbmc options have been renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_KODI_ALSA_LIB
+	help
+	  The XBMC media center project was renamed to Kodi entertainment center
+
+config BR2_PACKAGE_XBMC_AVAHI
+	bool "xbmc options have been renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_KODI_AVAHI
+	help
+	  The XBMC media center project was renamed to Kodi entertainment center
+
+config BR2_PACKAGE_XBMC_DBUS
+	bool "xbmc options have been renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_KODI_DBUS
+	help
+	  The XBMC media center project was renamed to Kodi entertainment center
+
+config BR2_PACKAGE_XBMC_LIBBLURAY
+	bool "xbmc options have been renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_KODI_LIBBLURAY
+	help
+	  The XBMC media center project was renamed to Kodi entertainment center
+
+config BR2_PACKAGE_XBMC_GOOM
+	bool "xbmc options have been renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_KODI_GOOM
+	help
+	  The XBMC media center project was renamed to Kodi entertainment center
+
+config BR2_PACKAGE_XBMC_RSXS
+	bool "xbmc options have been renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_KODI_RSXS
+	help
+	  The XBMC media center project was renamed to Kodi entertainment center
+
+config BR2_PACKAGE_XBMC_LIBCEC
+	bool "xbmc options have been renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_KODI_LIBCEC
+	help
+	  The XBMC media center project was renamed to Kodi entertainment center
+
+config BR2_PACKAGE_XBMC_LIBMICROHTTPD
+	bool "xbmc options have been renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_KODI_LIBMICROHTTPD
+	help
+	  The XBMC media center project was renamed to Kodi entertainment center
+
+config BR2_PACKAGE_XBMC_LIBNFS
+	bool "xbmc options have been renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_KODI_LIBNFS
+	help
+	  The XBMC media center project was renamed to Kodi entertainment center
+
+config BR2_PACKAGE_XBMC_RTMPDUMP
+	bool "xbmc options have been renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_KODI_RTMPDUMP
+	help
+	  The XBMC media center project was renamed to Kodi entertainment center
+
+config BR2_PACKAGE_XBMC_LIBSHAIRPLAY
+	bool "xbmc options have been renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_KODI_LIBSHAIRPLAY
+	help
+	  The XBMC media center project was renamed to Kodi entertainment center
+
+config BR2_PACKAGE_XBMC_LIBSMBCLIENT
+	bool "xbmc options have been renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_KODI_LIBSMBCLIENT
+	help
+	  The XBMC media center project was renamed to Kodi entertainment center
+
+config BR2_PACKAGE_XBMC_LIBTHEORA
+	bool "xbmc options have been renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_KODI_LIBTHEORA
+	help
+	  The XBMC media center project was renamed to Kodi entertainment center
+
+config BR2_PACKAGE_XBMC_LIBUSB
+	bool "xbmc options have been renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_KODI_LIBUSB
+	help
+	  The XBMC media center project was renamed to Kodi entertainment center
+
+config BR2_PACKAGE_XBMC_LIBVA
+	bool "xbmc options have been renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_KODI_LIBVA
+	help
+	  The XBMC media center project was renamed to Kodi entertainment center
+
+config BR2_PACKAGE_XBMC_WAVPACK
+	bool "xbmc options have been renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_KODI_WAVPACK
+	help
+	  The XBMC media center project was renamed to Kodi entertainment center
+
 config BR2_PREFER_STATIC_LIB
 	bool "static library option renamed"
 	select BR2_LEGACY
@@ -114,6 +233,7 @@ config BR2_PREFER_STATIC_LIB
 	  Take care of updating the type of libraries you want under the
 	  "Build options" menu.
 
+###############################################################################
 comment "Legacy options removed in 2014.11"
 
 config BR2_x86_generic

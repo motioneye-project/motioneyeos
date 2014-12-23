@@ -1,5 +1,5 @@
 [Unit]
-Description = XBMC media center
+Description = Kodi Entertainment Center
 After = network.target
 
 [Service]

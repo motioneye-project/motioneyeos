@@ -21,6 +21,6 @@ XBMC_ADDON_XVDR_AUTORECONF = YES
 # This really is a runtime dependency, but we need XBMC to be installed
 # first, since we'll install files in XBMC's directories _after_ XBMC has
 # installed his own files
-XBMC_ADDON_XVDR_DEPENDENCIES = xbmc
+XBMC_ADDON_XVDR_DEPENDENCIES = kodi
 
 $(eval $(autotools-package))

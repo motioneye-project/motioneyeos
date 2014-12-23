@@ -1,35 +1,35 @@
-config BR2_PACKAGE_XBMC_ARCH_SUPPORTS
+config BR2_PACKAGE_KODI_ARCH_SUPPORTS
 	bool
 	default y if BR2_arm || BR2_i386 || BR2_x86_64
 
-comment "xbmc needs a toolchain w/ C++, IPv6, largefile, threads, wchar"
-	depends on BR2_PACKAGE_XBMC_ARCH_SUPPORTS
+comment "kodi needs a toolchain w/ C++, IPv6, largefile, threads, wchar"
+	depends on BR2_PACKAGE_KODI_ARCH_SUPPORTS
 	depends on !BR2_INET_IPV6 || !BR2_INSTALL_LIBSTDCPP || !BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_THREADS || !BR2_USE_WCHAR
 	depends on BR2_USE_MMU
 
-config BR2_PACKAGE_XBMC_EGL_GLES
+config BR2_PACKAGE_KODI_EGL_GLES
 	bool
 	default y
 	depends on BR2_PACKAGE_HAS_LIBEGL
 	depends on BR2_PACKAGE_HAS_LIBGLES
-	depends on !BR2_PACKAGE_XBMC_GL # prefer GL if available
+	depends on !BR2_PACKAGE_KODI_GL # prefer GL if available
 
-config BR2_PACKAGE_XBMC_GL
+config BR2_PACKAGE_KODI_GL
 	bool
 	default y
 	depends on BR2_PACKAGE_HAS_LIBGL
-	depends on !BR2_arm # xbmc needs egl/gles on arm
+	depends on !BR2_arm # kodi needs egl/gles on arm
 
-comment "xbmc needs an OpenGL or an openGL ES and EGL backend"
+comment "kodi needs an OpenGL or an openGL ES and EGL backend"
 	depends on BR2_i386 || BR2_x86_64
-	depends on !BR2_PACKAGE_XBMC_GL && !BR2_PACKAGE_XBMC_EGL_GLES
+	depends on !BR2_PACKAGE_KODI_GL && !BR2_PACKAGE_KODI_EGL_GLES
 
-comment "xbmc requires an OpenGL ES and EGL backend"
+comment "kodi requires an OpenGL ES and EGL backend"
 	depends on BR2_arm
-	depends on !BR2_PACKAGE_XBMC_EGL_GLES
+	depends on !BR2_PACKAGE_KODI_EGL_GLES
 
-menuconfig BR2_PACKAGE_XBMC
-	bool "xbmc"
+menuconfig BR2_PACKAGE_KODI
+	bool "kodi"
 	select BR2_NEEDS_HOST_JAVA
 	select BR2_PACKAGE_BOOST
 	select BR2_PACKAGE_BOOST_THREAD
@@ -44,8 +44,8 @@ menuconfig BR2_PACKAGE_XBMC
 	select BR2_PACKAGE_LIBCDIO
 	select BR2_PACKAGE_LIBCURL
 	select BR2_PACKAGE_LIBFRIBIDI
-	select BR2_PACKAGE_LIBGLEW if BR2_PACKAGE_XBMC_GL
-	select BR2_PACKAGE_LIBGLU if BR2_PACKAGE_XBMC_GL
+	select BR2_PACKAGE_LIBGLEW if BR2_PACKAGE_KODI_GL
+	select BR2_PACKAGE_LIBGLU if BR2_PACKAGE_KODI_GL
 	select BR2_PACKAGE_LIBGCRYPT
 	select BR2_PACKAGE_LIBID3TAG
 	select BR2_PACKAGE_LIBMAD
@@ -75,56 +75,56 @@ menuconfig BR2_PACKAGE_XBMC
 	select BR2_PACKAGE_PYTHON_UNICODEDATA
 	select BR2_PACKAGE_PYTHON_ZLIB
 	select BR2_PACKAGE_READLINE
-	select BR2_PACKAGE_SDL if BR2_PACKAGE_XBMC_GL
-	select BR2_PACKAGE_SDL_X11 if BR2_PACKAGE_XBMC_GL
-	select BR2_PACKAGE_SDL_IMAGE if BR2_PACKAGE_XBMC_GL
+	select BR2_PACKAGE_SDL if BR2_PACKAGE_KODI_GL
+	select BR2_PACKAGE_SDL_X11 if BR2_PACKAGE_KODI_GL
+	select BR2_PACKAGE_SDL_IMAGE if BR2_PACKAGE_KODI_GL
 	select BR2_PACKAGE_SQLITE
 	select BR2_PACKAGE_TAGLIB
 	select BR2_PACKAGE_TIFF
 	select BR2_PACKAGE_TINYXML
-	select BR2_PACKAGE_XLIB_XMU if BR2_PACKAGE_XBMC_GL # needed by rsxs screensaver
-	select BR2_PACKAGE_XLIB_XRANDR if BR2_PACKAGE_XBMC_GL
-	select BR2_PACKAGE_XLIB_XT if BR2_PACKAGE_XBMC_GL # needed by rsxs screensaver
+	select BR2_PACKAGE_XLIB_XMU if BR2_PACKAGE_KODI_GL # needed by rsxs screensaver
+	select BR2_PACKAGE_XLIB_XRANDR if BR2_PACKAGE_KODI_GL
+	select BR2_PACKAGE_XLIB_XT if BR2_PACKAGE_KODI_GL # needed by rsxs screensaver
 	select BR2_PACKAGE_YAJL
 	select BR2_PACKAGE_ZLIB
 	depends on BR2_INET_IPV6
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_LARGEFILE
 	depends on BR2_TOOLCHAIN_HAS_THREADS
-	depends on BR2_PACKAGE_XBMC_EGL_GLES || BR2_PACKAGE_XBMC_GL
+	depends on BR2_PACKAGE_KODI_EGL_GLES || BR2_PACKAGE_KODI_GL
 	depends on BR2_USE_MMU # python
 	depends on BR2_USE_WCHAR
-	depends on BR2_PACKAGE_XBMC_ARCH_SUPPORTS
+	depends on BR2_PACKAGE_KODI_ARCH_SUPPORTS
 	help
-	  XBMC is an award-winning free and open source (GPL) software
+	  Kodi is an award-winning free and open source (GPL) software
 	  media player and entertainment hub for digital media.
 
-	  http://xbmc.org
+	  http://kodi.tv
 
-if BR2_PACKAGE_XBMC
+if BR2_PACKAGE_KODI
 
-config BR2_PACKAGE_XBMC_ALSA_LIB
+config BR2_PACKAGE_KODI_ALSA_LIB
 	bool "alsa"
 	select BR2_PACKAGE_ALSA_LIB
 	help
 	  Enable alsa support.
 
-config BR2_PACKAGE_XBMC_AVAHI
+config BR2_PACKAGE_KODI_AVAHI
 	bool "avahi"
 	depends on !BR2_STATIC_LIBS # avahi
 	select BR2_PACKAGE_AVAHI
 	select BR2_PACKAGE_AVAHI_DAEMON
 	help
 	  Enable Avahi support.
-	  Select this if you want XBMC to support Bonjour protocol.
+	  Select this if you want Kodi to support Bonjour protocol.
 
-config BR2_PACKAGE_XBMC_DBUS
+config BR2_PACKAGE_KODI_DBUS
 	bool "dbus"
 	select BR2_PACKAGE_DBUS
 	help
 	  Enable D-Bus support
 
-config BR2_PACKAGE_XBMC_LIBBLURAY
+config BR2_PACKAGE_KODI_LIBBLURAY
 	bool "blu-ray"
 	select BR2_PACKAGE_LIBBLURAY
 	depends on !BR2_STATIC_LIBS
@@ -135,43 +135,43 @@ config BR2_PACKAGE_XBMC_LIBBLURAY
 comment "libbluray support needs a toolchain w/ dynamic library"
 	depends on BR2_STATIC_LIBS
 
-config BR2_PACKAGE_XBMC_GOOM
+config BR2_PACKAGE_KODI_GOOM
 	bool "goom screensaver"
-	depends on BR2_PACKAGE_XBMC_GL
+	depends on BR2_PACKAGE_KODI_GL
 	help
 	  Enable goom screensaver
 
 comment "goom needs an OpenGL backend"
-	depends on !BR2_PACKAGE_XBMC_GL
+	depends on !BR2_PACKAGE_KODI_GL
 
-config BR2_PACKAGE_XBMC_RSXS
+config BR2_PACKAGE_KODI_RSXS
 	bool "rsxs screensaver"
-	depends on BR2_PACKAGE_XBMC_GL
+	depends on BR2_PACKAGE_KODI_GL
 	help
 	  Enable goom screensaver
 
 comment "rsxs needs an OpenGL backend"
-	depends on !BR2_PACKAGE_XBMC_GL
+	depends on !BR2_PACKAGE_KODI_GL
 
-config BR2_PACKAGE_XBMC_LIBCEC
+config BR2_PACKAGE_KODI_LIBCEC
 	bool "hdmi cec"
 	depends on !BR2_STATIC_LIBS # libcec
 	depends on BR2_PACKAGE_HAS_UDEV
 	select BR2_PACKAGE_LIBCEC
 	help
 	  Enable CEC (Consumer Electronics Control) support.
-	  Select this if you want XBMC to support HDMI CEC.
+	  Select this if you want Kodi to support HDMI CEC.
 
 comment "hdmi cec support needs udev /dev management and a toolchain w/ dynamic library"
 	depends on BR2_STATIC_LIBS || !BR2_PACKAGE_HAS_UDEV
 
-config BR2_PACKAGE_XBMC_LIBMICROHTTPD
+config BR2_PACKAGE_KODI_LIBMICROHTTPD
 	bool "web server"
 	select BR2_PACKAGE_LIBMICROHTTPD
 	help
 	  Enable webserver feature
 
-config BR2_PACKAGE_XBMC_LIBNFS
+config BR2_PACKAGE_KODI_LIBNFS
 	bool "nfs"
 	depends on BR2_TOOLCHAIN_HAS_NATIVE_RPC
 	select BR2_PACKAGE_LIBNFS
@@ -181,42 +181,42 @@ config BR2_PACKAGE_XBMC_LIBNFS
 comment "nfs support needs a toolchain w/ RPC support"
 	depends on !BR2_TOOLCHAIN_HAS_NATIVE_RPC
 
-config BR2_PACKAGE_XBMC_RTMPDUMP
+config BR2_PACKAGE_KODI_RTMPDUMP
 	bool "rtmp"
 	select BR2_PACKAGE_RTMPDUMP
 	help
 	  Enable RTMP input support.
 	  Select this if you want to play back rtmp stream.
 
-config BR2_PACKAGE_XBMC_LIBSHAIRPLAY
+config BR2_PACKAGE_KODI_LIBSHAIRPLAY
 	bool "shairport"
 	select BR2_PACKAGE_LIBSHAIRPLAY
 	help
 	  Enable Shairport support.
 	  Select this if you want to stream content from an Apple device.
 
-config BR2_PACKAGE_XBMC_LIBSMBCLIENT
+config BR2_PACKAGE_KODI_LIBSMBCLIENT
 	bool "samba"
 	select BR2_PACKAGE_SAMBA
 	select BR2_PACKAGE_SAMBA_LIBSMBCLIENT
 	help
 	  Enable Samba support
 
-config BR2_PACKAGE_XBMC_LIBTHEORA
+config BR2_PACKAGE_KODI_LIBTHEORA
 	bool "theora"
 	select BR2_PACKAGE_LIBTHEORA
 	help
 	  Enable Theora input support.
 	  Select this if you want to play back OGG/OGV files (Video).
 
-config BR2_PACKAGE_XBMC_LIBUSB
+config BR2_PACKAGE_KODI_LIBUSB
 	bool "usb"
 	select BR2_PACKAGE_LIBUSB
 	select BR2_PACKAGE_LIBUSB_COMPAT
 	help
 	  Enable libusb support.
 
-config BR2_PACKAGE_XBMC_LIBVA
+config BR2_PACKAGE_KODI_LIBVA
 	bool "va"
 	select BR2_PACKAGE_LIBVA
 	depends on !BR2_STATIC_LIBS
@@ -226,16 +226,16 @@ config BR2_PACKAGE_XBMC_LIBVA
 comment "libva support needs toolchain w/ dynamic library"
 	depends on BR2_STATIC_LIBS
 
-config BR2_PACKAGE_XBMC_WAVPACK
+config BR2_PACKAGE_KODI_WAVPACK
 	bool "wavpack"
 	select BR2_PACKAGE_WAVPACK
 	help
 	  Enable WAV input support.
 	  Select this if you want to play back WV files.
 
-comment "XBMC addons"
+comment "Kodi addons"
 
 source "package/xbmc-addon-xvdr/Config.in"
 source "package/xbmc-pvr-addons/Config.in"
 
-endif # BR2_PACKAGE_XBMC
+endif # BR2_PACKAGE_KODI

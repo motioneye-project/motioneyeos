@@ -18,7 +18,7 @@ XBMC_PVR_ADDONS_DEPENDENCIES = boost zlib
 # This really is a runtime dependency, but we need XBMC to be installed
 # first, since we'll install files in XBMC's directories _after_ XBMC has
 # installed its own files
-XBMC_PVR_ADDONS_DEPENDENCIES += xbmc
+XBMC_PVR_ADDONS_DEPENDENCIES += kodi
 
 XBMC_PVR_ADDONS_CONF_OPTS = \
 	--enable-release \
