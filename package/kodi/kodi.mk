@@ -37,7 +37,6 @@ KODI_CONF_OPTS +=  \
 	--disable-joystick \
 	--disable-mysql \
 	--disable-openmax \
-	--disable-optical-drive \
 	--disable-projectm \
 	--disable-pulse \
 	--disable-ssh \
@@ -187,6 +186,12 @@ KODI_DEPENDENCIES += mesa3d libva
 KODI_CONF_OPTS += --enable-vaapi
 else
 KODI_CONF_OPTS += --disable-vaapi
+endif
+
+ifeq ($(BR2_PACKAGE_KODI_OPTICALDRIVE),y)
+KODI_CONF_OPTS += --enable-optical-drive --enable-dvdcss
+else
+KODI_CONF_OPTS += --disable-optical-drive --disable-dvdcss
 endif
 
 # Add HOST_DIR to PATH for codegenerator.mk to find swig

@@ -235,6 +235,11 @@ config BR2_PACKAGE_KODI_WAVPACK
 	  Enable WAV input support.
 	  Select this if you want to play back WV files.
 
+config BR2_PACKAGE_KODI_OPTICALDRIVE
+	bool "optical drive"
+	help
+	  Enable support for optical drives
+
 comment "Kodi addons"
 
 source "package/kodi-addon-xvdr/Config.in"
