@@ -11,19 +11,27 @@ NETSNMP_LICENSE = Various BSD-like
 NETSNMP_LICENSE_FILES = COPYING
 NETSNMP_INSTALL_STAGING = YES
 NETSNMP_CONF_ENV = ac_cv_NETSNMP_CAN_USE_SYSCTL=yes
-NETSNMP_CONF_OPTS = --with-persistent-directory=/var/lib/snmp \
-		--with-defaults --enable-mini-agent --without-rpm \
-		--with-logfile=none --without-kmem-usage $(DISABLE_IPV6) \
-		--enable-as-needed --without-perl-modules \
-		--disable-embedded-perl --disable-perl-cc-checks \
-		--disable-scripts --with-default-snmp-version="1" \
-		--enable-silent-libtool --enable-mfd-rewrites \
-		--with-sys-contact="root@localhost" \
-		--with-sys-location="Unknown" \
-		--with-mib-modules="$(call qstrip,$(BR2_PACKAGE_NETSNMP_WITH_MIB_MODULES))" \
-		--with-out-mib-modules="$(call qstrip,$(BR2_PACKAGE_NETSNMP_WITHOUT_MIB_MODULES))" \
-		--with-out-transports="Unix" \
-		--disable-manuals
+NETSNMP_CONF_OPTS = \
+	--with-persistent-directory=/var/lib/snmp \
+	--with-defaults \
+	--enable-mini-agent \
+	--without-rpm \
+	--with-logfile=none \
+	--without-kmem-usage $(DISABLE_IPV6) \
+	--enable-as-needed \
+	--without-perl-modules \
+	--disable-embedded-perl \
+	--disable-perl-cc-checks \
+	--disable-scripts \
+	--with-default-snmp-version="1" \
+	--enable-silent-libtool \
+	--enable-mfd-rewrites \
+	--with-sys-contact="root@localhost" \
+	--with-sys-location="Unknown" \
+	--with-mib-modules="$(call qstrip,$(BR2_PACKAGE_NETSNMP_WITH_MIB_MODULES))" \
+	--with-out-mib-modules="$(call qstrip,$(BR2_PACKAGE_NETSNMP_WITHOUT_MIB_MODULES))" \
+	--with-out-transports="Unix" \
+	--disable-manuals
 NETSNMP_INSTALL_STAGING_OPTS = DESTDIR=$(STAGING_DIR) LIB_LDCONFIG_CMD=true install
 NETSNMP_INSTALL_TARGET_OPTS = DESTDIR=$(TARGET_DIR) LIB_LDCONFIG_CMD=true install
 NETSNMP_MAKE = $(MAKE1)

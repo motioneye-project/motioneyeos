@@ -42,15 +42,18 @@ endif
 # they also contain the gdb sources, but gdb shouldn't be built, so we
 # disable it.
 BINUTILS_DISABLE_GDB_CONF_OPTS = \
-	--disable-sim --disable-gdb
+	--disable-sim \
+	--disable-gdb
 
 # We need to specify host & target to avoid breaking ARM EABI
-BINUTILS_CONF_OPTS = --disable-multilib --disable-werror \
-		--host=$(GNU_TARGET_NAME) \
-		--target=$(GNU_TARGET_NAME) \
-		--enable-install-libiberty \
-		$(BINUTILS_DISABLE_GDB_CONF_OPTS) \
-		$(BINUTILS_EXTRA_CONFIG_OPTIONS)
+BINUTILS_CONF_OPTS = \
+	--disable-multilib \
+	--disable-werror \
+	--host=$(GNU_TARGET_NAME) \
+	--target=$(GNU_TARGET_NAME) \
+	--enable-install-libiberty \
+	$(BINUTILS_DISABLE_GDB_CONF_OPTS) \
+	$(BINUTILS_EXTRA_CONFIG_OPTIONS)
 
 # Don't build documentation. It takes up extra space / build time,
 # and sometimes needs specific makeinfo versions to work
@@ -64,13 +67,16 @@ endif
 
 # "host" binutils should actually be "cross"
 # We just keep the convention of "host utility" for now
-HOST_BINUTILS_CONF_OPTS = --disable-multilib --disable-werror \
-			--target=$(GNU_TARGET_NAME) \
-			--disable-shared --enable-static \
-			--with-sysroot=$(STAGING_DIR) \
-			--enable-poison-system-directories \
-			$(BINUTILS_DISABLE_GDB_CONF_OPTS) \
-			$(BINUTILS_EXTRA_CONFIG_OPTIONS)
+HOST_BINUTILS_CONF_OPTS = \
+	--disable-multilib \
+	--disable-werror \
+	--target=$(GNU_TARGET_NAME) \
+	--disable-shared \
+	--enable-static \
+	--with-sysroot=$(STAGING_DIR) \
+	--enable-poison-system-directories \
+	$(BINUTILS_DISABLE_GDB_CONF_OPTS) \
+	$(BINUTILS_EXTRA_CONFIG_OPTIONS)
 
 # We just want libbfd and libiberty, not the full-blown binutils in staging
 define BINUTILS_INSTALL_STAGING_CMDS

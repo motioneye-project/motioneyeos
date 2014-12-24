@@ -10,8 +10,13 @@ LIBAO_DEPENDENCIES = host-pkgconf
 LIBAO_INSTALL_STAGING = YES
 LIBAO_LICENSE = GPLv2+
 LIBAO_LICENSE_FILES = COPYING
-LIBAO_CONF_OPTS = --disable-esd --disable-wmm --disable-arts \
-			--disable-nas --disable-pulse --disable-broken-oss
+LIBAO_CONF_OPTS = \
+	--disable-esd \
+	--disable-wmm \
+	--disable-arts \
+	--disable-nas \
+	--disable-pulse \
+	--disable-broken-oss
 
 ifeq ($(BR2_PACKAGE_ALSA_LIB),y)
 LIBAO_DEPENDENCIES += alsa-lib

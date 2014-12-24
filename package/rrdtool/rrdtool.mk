@@ -12,11 +12,17 @@ RRDTOOL_LICENSE_FILES = COPYING COPYRIGHT
 RRDTOOL_DEPENDENCIES = host-pkgconf freetype libart libpng zlib
 RRDTOOL_AUTORECONF = YES
 RRDTOOL_INSTALL_STAGING = YES
-RRDTOOL_CONF_ENV = rd_cv_ieee_works=yes rd_cv_null_realloc=nope \
-			ac_cv_func_mmap_fixed_mapped=yes
-RRDTOOL_CONF_OPTS = --disable-perl --disable-python --disable-ruby \
-			--disable-tcl --program-transform-name='' \
-			$(if $(BR2_TOOLCHAIN_HAS_THREADS),,--disable-pthread)
+RRDTOOL_CONF_ENV = \
+	rd_cv_ieee_works=yes \
+	rd_cv_null_realloc=nope \
+	ac_cv_func_mmap_fixed_mapped=yes
+RRDTOOL_CONF_OPTS = \
+	--disable-perl \
+	--disable-python \
+	--disable-ruby \
+	--disable-tcl \
+	--program-transform-name='' \
+	$(if $(BR2_TOOLCHAIN_HAS_THREADS),,--disable-pthread)
 RRDTOOL_MAKE = $(MAKE1)
 
 define RRDTOOL_REMOVE_EXAMPLES

@@ -11,18 +11,19 @@ GNUPLOT_LICENSE_FILES = Copyright
 
 GNUPLOT_AUTORECONF = YES
 
-GNUPLOT_CONF_OPTS = --without-x \
-		--disable-raise-console \
-		--disable-mouse \
-	        --without-tutorial \
-		--disable-demo \
-	        --without-row-help \
-		--disable-history-file \
-	        --without-lisp-files \
-	        --disable-wxwidgets \
-	        --without-lua \
-		--without-latex \
-	        --without-cairo
+GNUPLOT_CONF_OPTS = \
+	--without-x \
+	--disable-raise-console \
+	--disable-mouse \
+	--without-tutorial \
+	--disable-demo \
+	--without-row-help \
+	--disable-history-file \
+	--without-lisp-files \
+	--disable-wxwidgets \
+	--without-lua \
+	--without-latex \
+	--without-cairo
 
 ifeq ($(BR2_PACKAGE_GD)$(BR2_PACKAGE_LIBPNG),yy)
 GNUPLOT_CONF_OPTS += --with-gd

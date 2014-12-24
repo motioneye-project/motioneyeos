@@ -13,11 +13,12 @@ NTP_AUTORECONF = YES
 NTP_LICENSE = ntp license
 NTP_LICENSE_FILES = COPYRIGHT
 NTP_CONF_ENV = ac_cv_lib_md5_MD5Init=no
-NTP_CONF_OPTS = --with-shared \
-		--program-transform-name=s,,, \
-		--disable-tickadj \
-		--with-yielding-select=yes \
-		--disable-local-libevent
+NTP_CONF_OPTS = \
+	--with-shared \
+	--program-transform-name=s,,, \
+	--disable-tickadj \
+	--with-yielding-select=yes \
+	--disable-local-libevent
 
 ifneq ($(BR2_INET_IPV6),y)
 	NTP_CONF_ENV += isc_cv_have_in6addr_any=no

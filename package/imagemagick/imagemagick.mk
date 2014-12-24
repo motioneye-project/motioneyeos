@@ -27,19 +27,20 @@ else
 IMAGEMAGICK_CONF_ENV = ac_cv_sys_file_offset_bits=32
 endif
 
-IMAGEMAGICK_CONF_OPTS = --program-transform-name='s,,,' \
-		--disable-openmp \
-		--without-perl \
-		--without-wmf \
-		--without-openexr \
-		--without-jp2 \
-		--without-jbig \
-		--without-gvc \
-		--without-djvu \
-		--without-dps \
-		--without-gslib \
-		--without-fpx \
-		--without-x
+IMAGEMAGICK_CONF_OPTS = \
+	--program-transform-name='s,,,' \
+	--disable-openmp \
+	--without-perl \
+	--without-wmf \
+	--without-openexr \
+	--without-jp2 \
+	--without-jbig \
+	--without-gvc \
+	--without-djvu \
+	--without-dps \
+	--without-gslib \
+	--without-fpx \
+	--without-x
 
 IMAGEMAGICK_DEPENDENCIES = host-pkgconf
 

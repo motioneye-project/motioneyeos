@@ -13,12 +13,13 @@ PHP_INSTALL_TARGET_OPTS = INSTALL_ROOT=$(TARGET_DIR) install
 PHP_DEPENDENCIES = host-pkgconf
 PHP_LICENSE = PHP
 PHP_LICENSE_FILES = LICENSE
-PHP_CONF_OPTS = --mandir=/usr/share/man \
-		--infodir=/usr/share/info \
-		--disable-all \
-		--without-pear \
-		--with-config-file-path=/etc \
-		--disable-rpath
+PHP_CONF_OPTS = \
+	--mandir=/usr/share/man \
+	--infodir=/usr/share/info \
+	--disable-all \
+	--without-pear \
+	--with-config-file-path=/etc \
+	--disable-rpath
 PHP_CONF_ENV = EXTRA_LIBS="$(PHP_EXTRA_LIBS)"
 
 ifeq ($(BR2_ENDIAN),"BIG")
@@ -50,33 +51,34 @@ PHP_CONF_OPTS += $(if $(BR2_PACKAGE_PHP_CGI),,--disable-cgi)
 PHP_CONF_OPTS += $(if $(BR2_PACKAGE_PHP_FPM),--enable-fpm,--disable-fpm)
 
 ### Extensions
-PHP_CONF_OPTS += $(if $(BR2_PACKAGE_PHP_EXT_SOCKETS),--enable-sockets) \
-		$(if $(BR2_PACKAGE_PHP_EXT_POSIX),--enable-posix) \
-		$(if $(BR2_PACKAGE_PHP_EXT_SESSION),--enable-session) \
-		$(if $(BR2_PACKAGE_PHP_EXT_HASH),--enable-hash) \
-		$(if $(BR2_PACKAGE_PHP_EXT_DOM),--enable-dom) \
-		$(if $(BR2_PACKAGE_PHP_EXT_SIMPLEXML),--enable-simplexml) \
-		$(if $(BR2_PACKAGE_PHP_EXT_SOAP),--enable-soap) \
-		$(if $(BR2_PACKAGE_PHP_EXT_XML),--enable-xml) \
-		$(if $(BR2_PACKAGE_PHP_EXT_XMLREADER),--enable-xmlreader) \
-		$(if $(BR2_PACKAGE_PHP_EXT_XMLWRITER),--enable-xmlwriter) \
-		$(if $(BR2_PACKAGE_PHP_EXT_EXIF),--enable-exif) \
-		$(if $(BR2_PACKAGE_PHP_EXT_FTP),--enable-ftp) \
-		$(if $(BR2_PACKAGE_PHP_EXT_JSON),--enable-json) \
-		$(if $(BR2_PACKAGE_PHP_EXT_TOKENIZER),--enable-tokenizer) \
-		$(if $(BR2_PACKAGE_PHP_EXT_PCNTL),--enable-pcntl) \
-		$(if $(BR2_PACKAGE_PHP_EXT_SHMOP),--enable-shmop) \
-		$(if $(BR2_PACKAGE_PHP_EXT_SYSVMSG),--enable-sysvmsg) \
-		$(if $(BR2_PACKAGE_PHP_EXT_SYSVSEM),--enable-sysvsem) \
-		$(if $(BR2_PACKAGE_PHP_EXT_SYSVSHM),--enable-sysvshm) \
-		$(if $(BR2_PACKAGE_PHP_EXT_ZIP),--enable-zip) \
-		$(if $(BR2_PACKAGE_PHP_EXT_CTYPE),--enable-ctype) \
-		$(if $(BR2_PACKAGE_PHP_EXT_FILTER),--enable-filter) \
-		$(if $(BR2_PACKAGE_PHP_EXT_CALENDAR),--enable-calendar) \
-		$(if $(BR2_PACKAGE_PHP_EXT_FILEINFO),--enable-fileinfo) \
-		$(if $(BR2_PACKAGE_PHP_EXT_BCMATH),--enable-bcmath) \
-		$(if $(BR2_PACKAGE_PHP_EXT_MBSTRING),--enable-mbstring) \
-		$(if $(BR2_PACKAGE_PHP_EXT_PHAR),--enable-phar)
+PHP_CONF_OPTS += \
+	$(if $(BR2_PACKAGE_PHP_EXT_SOCKETS),--enable-sockets) \
+	$(if $(BR2_PACKAGE_PHP_EXT_POSIX),--enable-posix) \
+	$(if $(BR2_PACKAGE_PHP_EXT_SESSION),--enable-session) \
+	$(if $(BR2_PACKAGE_PHP_EXT_HASH),--enable-hash) \
+	$(if $(BR2_PACKAGE_PHP_EXT_DOM),--enable-dom) \
+	$(if $(BR2_PACKAGE_PHP_EXT_SIMPLEXML),--enable-simplexml) \
+	$(if $(BR2_PACKAGE_PHP_EXT_SOAP),--enable-soap) \
+	$(if $(BR2_PACKAGE_PHP_EXT_XML),--enable-xml) \
+	$(if $(BR2_PACKAGE_PHP_EXT_XMLREADER),--enable-xmlreader) \
+	$(if $(BR2_PACKAGE_PHP_EXT_XMLWRITER),--enable-xmlwriter) \
+	$(if $(BR2_PACKAGE_PHP_EXT_EXIF),--enable-exif) \
+	$(if $(BR2_PACKAGE_PHP_EXT_FTP),--enable-ftp) \
+	$(if $(BR2_PACKAGE_PHP_EXT_JSON),--enable-json) \
+	$(if $(BR2_PACKAGE_PHP_EXT_TOKENIZER),--enable-tokenizer) \
+	$(if $(BR2_PACKAGE_PHP_EXT_PCNTL),--enable-pcntl) \
+	$(if $(BR2_PACKAGE_PHP_EXT_SHMOP),--enable-shmop) \
+	$(if $(BR2_PACKAGE_PHP_EXT_SYSVMSG),--enable-sysvmsg) \
+	$(if $(BR2_PACKAGE_PHP_EXT_SYSVSEM),--enable-sysvsem) \
+	$(if $(BR2_PACKAGE_PHP_EXT_SYSVSHM),--enable-sysvshm) \
+	$(if $(BR2_PACKAGE_PHP_EXT_ZIP),--enable-zip) \
+	$(if $(BR2_PACKAGE_PHP_EXT_CTYPE),--enable-ctype) \
+	$(if $(BR2_PACKAGE_PHP_EXT_FILTER),--enable-filter) \
+	$(if $(BR2_PACKAGE_PHP_EXT_CALENDAR),--enable-calendar) \
+	$(if $(BR2_PACKAGE_PHP_EXT_FILEINFO),--enable-fileinfo) \
+	$(if $(BR2_PACKAGE_PHP_EXT_BCMATH),--enable-bcmath) \
+	$(if $(BR2_PACKAGE_PHP_EXT_MBSTRING),--enable-mbstring) \
+	$(if $(BR2_PACKAGE_PHP_EXT_PHAR),--enable-phar)
 
 ifeq ($(BR2_PACKAGE_PHP_EXT_MCRYPT),y)
 	PHP_CONF_OPTS += --with-mcrypt=$(STAGING_DIR)/usr

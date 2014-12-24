@@ -54,12 +54,15 @@ XSERVER_XORG_SERVER_DEPENDENCIES = 	\
 	mcookie 			\
 	host-pkgconf
 
-XSERVER_XORG_SERVER_CONF_OPTS = --disable-config-hal \
-		--disable-xnest --disable-xephyr --disable-dmx \
-		--with-builder-addr=buildroot@buildroot.org \
-		CFLAGS="$(TARGET_CFLAGS) -I$(STAGING_DIR)/usr/include/pixman-1" \
-		--with-fontrootdir=/usr/share/fonts/X11/ \
-		--$(if $(BR2_PACKAGE_XSERVER_XORG_SERVER_XVFB),en,dis)able-xvfb
+XSERVER_XORG_SERVER_CONF_OPTS = \
+	--disable-config-hal \
+	--disable-xnest \
+	--disable-xephyr \
+	--disable-dmx \
+	--with-builder-addr=buildroot@buildroot.org \
+	CFLAGS="$(TARGET_CFLAGS) -I$(STAGING_DIR)/usr/include/pixman-1" \
+	--with-fontrootdir=/usr/share/fonts/X11/ \
+	--$(if $(BR2_PACKAGE_XSERVER_XORG_SERVER_XVFB),en,dis)able-xvfb
 
 ifeq ($(BR2_PACKAGE_XSERVER_XORG_SERVER_MODULAR),y)
 XSERVER_XORG_SERVER_CONF_OPTS += --enable-xorg
@@ -69,8 +72,12 @@ XSERVER_XORG_SERVER_CONF_OPTS += --disable-xorg
 endif
 
 ifeq ($(BR2_PACKAGE_XSERVER_XORG_SERVER_KDRIVE),y)
-XSERVER_XORG_SERVER_CONF_OPTS += --enable-kdrive --enable-xfbdev \
-		--disable-glx --disable-dri --disable-xsdl
+XSERVER_XORG_SERVER_CONF_OPTS += \
+	--enable-kdrive \
+	--enable-xfbdev \
+	--disable-glx \
+	--disable-dri \
+	--disable-xsdl
 define XSERVER_CREATE_X_SYMLINK
 	ln -f -s Xfbdev $(TARGET_DIR)/usr/bin/X
 endef

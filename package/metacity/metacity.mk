@@ -12,10 +12,13 @@ METACITY_SITE = http://ftp.gnome.org/pub/gnome/sources/metacity/$(METACITY_VERSI
 METACITY_LICENSE = GPLv2+
 METACITY_LICENSE_FILES = COPYING
 
-METACITY_CONF_OPTS = --x-includes=$(STAGING_DIR)/usr/include/X11 \
-		--x-libraries=$(STAGING_DIR)/usr/lib \
-		--disable-glibtest --disable-gconf \
-		--disable-sm --disable-startup-notification
+METACITY_CONF_OPTS = \
+	--x-includes=$(STAGING_DIR)/usr/include/X11 \
+	--x-libraries=$(STAGING_DIR)/usr/lib \
+	--disable-glibtest \
+	--disable-gconf \
+	--disable-sm \
+	--disable-startup-notification
 
 METACITY_DEPENDENCIES = libgtk2 \
 	xlib_libX11 \

@@ -10,17 +10,19 @@ PROFTPD_SITE = ftp://ftp.proftpd.org/distrib/source
 PROFTPD_LICENSE = GPLv2+
 PROFTPD_LICENSE_FILES = COPYING
 
-PROFTPD_CONF_ENV = ac_cv_func_setpgrp_void=yes \
-		ac_cv_func_setgrent_void=yes
+PROFTPD_CONF_ENV = \
+	ac_cv_func_setpgrp_void=yes \
+	ac_cv_func_setgrent_void=yes
 
-PROFTPD_CONF_OPTS = --localstatedir=/var/run \
-		--disable-static \
-		--disable-curses \
-		--disable-ncurses \
-		--disable-facl \
-		--disable-dso \
-		--enable-shadow \
-		--with-gnu-ld
+PROFTPD_CONF_OPTS = \
+	--localstatedir=/var/run \
+	--disable-static \
+	--disable-curses \
+	--disable-ncurses \
+	--disable-facl \
+	--disable-dso \
+	--enable-shadow \
+	--with-gnu-ld
 
 ifeq ($(BR2_PACKAGE_PROFTPD_MOD_REWRITE),y)
 PROFTPD_CONF_OPTS += --with-modules=mod_rewrite

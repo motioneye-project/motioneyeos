@@ -25,13 +25,14 @@ VDE2_AUTORECONF = YES
 #
 # Note: disabled features can be added with corresponding dependencies
 #       in future commits.
-VDE2_CONF_OPTS = --disable-experimental  \
-		--disable-cryptcab      \
-		--disable-pcap          \
-		--disable-python        \
-		--disable-profile       \
-		--disable-kernel-switch \
-		--enable-tuntap         \
+VDE2_CONF_OPTS = \
+	--disable-experimental  \
+	--disable-cryptcab      \
+	--disable-pcap          \
+	--disable-python        \
+	--disable-profile       \
+	--disable-kernel-switch \
+	--enable-tuntap         \
 
 # Package does not build in parallel due to improper make rules
 VDE2_MAKE = $(MAKE1)

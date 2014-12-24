@@ -12,18 +12,20 @@ CUPS_LICENSE_FILES = LICENSE.txt
 CUPS_INSTALL_STAGING = YES
 CUPS_INSTALL_STAGING_OPTS = DESTDIR=$(STAGING_DIR) DSTROOT=$(STAGING_DIR) install
 CUPS_INSTALL_TARGET_OPTS = DESTDIR=$(TARGET_DIR) DSTROOT=$(TARGET_DIR) install
-CUPS_CONF_OPTS = --without-perl \
-		--without-java \
-		--without-php \
-		--disable-gnutls \
-		--disable-gssapi \
-		--libdir=/usr/lib
+CUPS_CONF_OPTS = \
+	--without-perl \
+	--without-java \
+	--without-php \
+	--disable-gnutls \
+	--disable-gssapi \
+	--libdir=/usr/lib
 CUPS_CONFIG_SCRIPTS = cups-config
 
-CUPS_DEPENDENCIES = $(if $(BR2_PACKAGE_ZLIB),zlib) \
-		    $(if $(BR2_PACKAGE_LIBPNG),libpng) \
-		    $(if $(BR2_PACKAGE_JPEG),jpeg) \
-		    $(if $(BR2_PACKAGE_TIFF),tiff)
+CUPS_DEPENDENCIES = \
+	$(if $(BR2_PACKAGE_ZLIB),zlib) \
+	$(if $(BR2_PACKAGE_LIBPNG),libpng) \
+	$(if $(BR2_PACKAGE_JPEG),jpeg) \
+	$(if $(BR2_PACKAGE_TIFF),tiff)
 
 ifeq ($(BR2_PACKAGE_DBUS),y)
 	CUPS_CONF_OPTS += --enable-dbus
