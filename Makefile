@@ -123,8 +123,9 @@ $(if $(BASE_DIR),, $(error output directory "$(O)" does not exist))
 # On subsequent invocations of make, it is read in. It can still be overridden
 # on the command line, therefore the file is re-created every time make is run.
 #
-# When BR2_EXTERNAL is not set, the .br-external file is removed and we point
-# to support/dummy-external. This makes sure we can unconditionally include the
+# When BR2_EXTERNAL is set to an empty value (e.g. explicitly in command
+# line), the .br-external file is removed and we point to
+# support/dummy-external. This makes sure we can unconditionally include the
 # Config.in and external.mk from the BR2_EXTERNAL directory. In this case,
 # override is necessary so the user can clear BR2_EXTERNAL from the command
 # line, but the dummy path is still used internally.
