@@ -29,5 +29,10 @@ GUILE_CFLAGS = \
 GUILE_CONF_ENV += GUILE_FOR_BUILD=$(HOST_DIR)/usr/bin/guile \
 	CFLAGS="$(TARGET_CFLAGS) $(GUILE_CFLAGS)"
 
+GUILE_CONF_OPTS += \
+	--with-libltdl-prefix=$(STAGING_DIR)/usr/lib \
+	--with-libgmp-prefix=$(STAGING_DIR)/usr/lib \
+	--with-libunistring-prefix=$(STAGING_DIR)/usr/lib
+
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
