@@ -17,6 +17,10 @@ LIBVNCSERVER_DEPENDENCIES = host-pkgconf
 # tarball, so we need to generate them.
 LIBVNCSERVER_AUTORECONF = YES
 
+# libvncserver does not get along with newer libva versions
+# https://github.com/LibVNC/libvncserver/issues/11
+LIBVNCSERVER_CONF_OPTS += --without-libva
+
 # only used for examples
 LIBVNCSERVER_CONF_OPTS += --with-sdl-config=/bin/false
 
