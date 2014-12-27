@@ -20,7 +20,7 @@ XERCES_DEPENDENCIES += libiconv
 endif
 
 ifeq ($(BR2_PACKAGE_LIBCURL),y)
-XERCES_CONF_OPTS += --enable-netaccessor-curl
+XERCES_CONF_OPTS += --enable-netaccessor-curl --with-curl=$(STAGING_DIR)/usr/lib
 XERCES_DEPENDENCIES += libcurl
 else
 XERCES_CONF_OPTS += --disable-network
