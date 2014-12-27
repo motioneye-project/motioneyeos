@@ -1,0 +1,27 @@
+From 5d68179a54b0a34d989722dcbe3b6eb962feb27d Mon Sep 17 00:00:00 2001
+From: Romain Naour <romain.naour@openwide.fr>
+Date: Tue, 23 Dec 2014 16:04:18 +0100
+Subject: [PATCH] config.mk.in: fix shared libraries build for uClibc
+
+Signed-off-by: Romain Naour <romain.naour@openwide.fr>
+---
+ config.mk.in | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/config.mk.in b/config.mk.in
+index c5d4160..45461cf 100644
+--- a/config.mk.in
++++ b/config.mk.in
+@@ -166,7 +166,8 @@ shliblefn = $(1:%=%.shlibledummy)
+ # HOST_OS is usually has a version number suffix, e.g. "aix5.3.0.0", so
+ # we compare based on prefix.
+ 
+-ifeq ($(patsubst linux-gnu%,linux-gnu,$(HOST_OS)),linux-gnu)
++# linux-uclibc is also a linux
++ifeq ($(patsubst linux-%,linux-,$(HOST_OS)),linux-)
+   # Assume linker is GNU Compiler (gcc)
+   SHARED_LIB_TYPE = unix
+   MUST_BUILD_SHLIB = Y
+-- 
+1.9.3
+
