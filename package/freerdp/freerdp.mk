@@ -63,4 +63,10 @@ else
 FREERDP_CONF_OPTS += -DWITH_XV=OFF
 endif
 
+ifeq ($(BR2_ARM_CPU_HAS_NEON),y)
+FREERDP_CONF_OPTS += -DWITH_NEON=ON
+else
+FREERDP_CONF_OPTS += -DWITH_NEON=OFF
+endif
+
 $(eval $(cmake-package))
