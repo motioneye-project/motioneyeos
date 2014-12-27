@@ -22,6 +22,10 @@ endif
 
 NFTABLES_CONF_ENV = \
 	ac_cv_prog_CONFIG_PDF=no \
-	LIBS="$(NFTABLES_LIBS)"
+	LIBS="$(NFTABLES_LIBS)" \
+	DBLATEX=no \
+	DOCBOOK2X_MAN=no \
+	DOCBOOK2MAN=no \
+	DB2X_DOCBOOK2MAN=no
 
 $(eval $(autotools-package))
