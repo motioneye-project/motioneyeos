@@ -58,6 +58,12 @@ else
 LIBVNCSERVER_CONF_OPTS += --without-jpeg
 endif
 
+ifeq ($(BR2_PACKAGE_LIBPNG),y)
+LIBVNCSERVER_DEPENDENCIES += libpng
+else
+LIBVNCSERVER_CONF_OPTS += --without-png
+endif
+
 ifeq ($(BR2_PACKAGE_ZLIB),y)
 LIBVNCSERVER_DEPENDENCIES += zlib
 else
