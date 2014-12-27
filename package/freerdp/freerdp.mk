@@ -69,4 +69,10 @@ else
 FREERDP_CONF_OPTS += -DWITH_NEON=OFF
 endif
 
+ifeq ($(BR2_X86_CPU_HAS_SSE2),y)
+FREERDP_CONF_OPTS += -DWITH_SSE2=ON
+else
+FREERDP_CONF_OPTS += -DWITH_SSE2=OFF
+endif
+
 $(eval $(cmake-package))
