@@ -4,13 +4,12 @@
 #
 ################################################################################
 
-DILLO_VERSION = 3.0.4
+DILLO_VERSION = 3.0.4.1
 DILLO_SOURCE = dillo-$(DILLO_VERSION).tar.bz2
 DILLO_SITE = http://www.dillo.org/download
 DILLO_LICENSE = GPLv3+
 DILLO_LICENSE_FILES = COPYING
-# dillo-0001-configure.ac-change-fltk-config-test-to-be-more-cros.patch
-# touches configure.ac
+# For 0001-configure.ac-change-fltk-config-test-to-be-more-cros.patch
 DILLO_AUTORECONF = YES
 
 DILLO_DEPENDENCIES = fltk
