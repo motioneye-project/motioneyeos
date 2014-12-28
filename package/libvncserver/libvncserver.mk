@@ -32,8 +32,8 @@ ifneq ($(BR2_INET_IPV6),y)
 LIBVNCSERVER_CONF_OPTS += --without-ipv6
 endif
 
-# openssl supports needs pthread
-ifeq ($(BR2_PACKAGE_OPENSSL)$(BR2_TOOLCHAIN_HAS_THREADS),yy)
+# openssl supports needs NPTL thread support
+ifeq ($(BR2_PACKAGE_OPENSSL)$(BR2_TOOLCHAIN_HAS_THREADS_NPTL),yy)
 LIBVNCSERVER_DEPENDENCIES += openssl
 else
 LIBVNCSERVER_CONF_OPTS += --without-crypto --without-ssl
