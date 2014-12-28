@@ -3,8 +3,7 @@ comment "Binutils Options"
 choice
 	prompt "Binutils Version"
 	depends on !BR2_arc
-	default BR2_BINUTILS_VERSION_2_24 if BR2_microblaze || BR2_powerpc64le
-	default BR2_BINUTILS_VERSION_2_22
+	default BR2_BINUTILS_VERSION_2_24
 	help
 	  Select the version of binutils you wish to use.
 
