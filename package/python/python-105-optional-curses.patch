@@ -12,16 +12,16 @@ Index: b/Makefile.pre.in
 ===================================================================
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -939,7 +939,7 @@
+@@ -972,7 +972,7 @@
  		multiprocessing multiprocessing/dummy \
  		unittest \
  		lib-old \
 -		curses $(MACHDEPS)
 +		$(MACHDEPS)
  
- TESTSUBDIRS = test test/audiodata test/data \
+ TESTSUBDIRS = test test/audiodata test/capath test/data \
  	test/cjkencodings test/decimaltestdata test/xmltestdata \
-@@ -981,6 +981,10 @@
+@@ -1014,6 +1014,10 @@
  	      lib-tk/test/test_ttk
  endif
  
@@ -36,7 +36,7 @@ Index: b/configure.ac
 ===================================================================
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2642,6 +2642,15 @@
+@@ -2645,6 +2645,15 @@
     DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} _tkinter"
  fi
  

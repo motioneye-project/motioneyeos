@@ -16,16 +16,16 @@ Index: b/Makefile.pre.in
 ===================================================================
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -932,7 +932,7 @@
- 		encodings compiler hotshot \
+@@ -965,7 +965,7 @@
  		email email/mime \
+ 		ensurepip ensurepip/_bundled \
  		json \
 -		logging bsddb csv importlib wsgiref \
 +		logging csv importlib wsgiref \
  		ctypes ctypes/macholib \
  		idlelib idlelib/Icons \
  		distutils distutils/command \
-@@ -948,7 +948,6 @@
+@@ -981,7 +981,6 @@
  	test/tracedmodules \
  	email/test email/test/data \
  	json/tests \
@@ -33,7 +33,7 @@ Index: b/Makefile.pre.in
  	ctypes/test \
  	idlelib/idle_test \
  	distutils/tests \
-@@ -989,6 +988,11 @@
+@@ -1022,6 +1021,11 @@
  LIBSUBDIRS += $(XMLLIBSUBDIRS)
  endif
  
@@ -49,7 +49,7 @@ Index: b/configure.ac
 ===================================================================
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2653,6 +2653,28 @@
+@@ -2656,6 +2656,28 @@
      	     DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} nis"
    	  fi])
  

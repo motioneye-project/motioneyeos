@@ -12,7 +12,7 @@ Index: b/Makefile.pre.in
 ===================================================================
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -934,7 +934,6 @@
+@@ -967,7 +967,6 @@
  		json \
  		logging csv importlib wsgiref \
  		ctypes ctypes/macholib \
@@ -20,7 +20,7 @@ Index: b/Makefile.pre.in
  		distutils distutils/command \
  		multiprocessing multiprocessing/dummy \
  		unittest \
-@@ -949,7 +948,6 @@
+@@ -982,7 +981,6 @@
  	email/test email/test/data \
  	json/tests \
  	ctypes/test \
@@ -32,7 +32,7 @@ Index: b/setup.py
 ===================================================================
 --- a/setup.py
 +++ b/setup.py
-@@ -2220,7 +2220,7 @@
+@@ -2223,7 +2223,7 @@
      import warnings
      warnings.filterwarnings("ignore",category=DeprecationWarning)
  

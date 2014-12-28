@@ -12,7 +12,7 @@ Index: b/Makefile.pre.in
 ===================================================================
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -928,7 +928,7 @@
+@@ -960,7 +960,7 @@
  	plat-mac/lib-scriptpackages/SystemEvents \
  	plat-mac/lib-scriptpackages/Terminal
  PLATMACPATH=:plat-mac:plat-mac/lib-scriptpackages
@@ -20,18 +20,18 @@ Index: b/Makefile.pre.in
 +LIBSUBDIRS=	site-packages \
  		encodings compiler hotshot \
  		email email/mime \
- 		json \
-@@ -941,8 +941,7 @@
+ 		ensurepip ensurepip/_bundled \
+@@ -974,8 +974,7 @@
  		lib-old \
  		curses $(MACHDEPS)
  
 -TESTSUBDIRS = lib-tk/test lib-tk/test/test_tkinter \
--	lib-tk/test/test_ttk test test/audiodata test/data \
-+TESTSUBDIRS = test test/audiodata test/data \
+-	lib-tk/test/test_ttk test test/audiodata test/capath test/data \
++TESTSUBDIRS = test test/audiodata test/capath test/data \
  	test/cjkencodings test/decimaltestdata test/xmltestdata \
  	test/imghdrdata \
  	test/subprocessdata \
-@@ -976,6 +975,12 @@
+@@ -1009,6 +1008,12 @@
  TESTSUBDIRS += sqlite3/test
  endif
  
@@ -48,7 +48,7 @@ Index: b/configure.ac
 ===================================================================
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2633,6 +2633,15 @@
+@@ -2636,6 +2636,15 @@
     DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} _sqlite3"
  fi
  

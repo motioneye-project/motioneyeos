@@ -8,9 +8,10 @@ but isn't actually referenced in modern kernels.
 
 Signed-off-by: Baruch Siach <baruch@tkos.co.il>
 ---
-diff -Nuar Python-2.7.8-orig/Modules/termios.c Python-2.7.8/Modules/termios.c
---- Python-2.7.8-orig/Modules/termios.c	2014-06-30 05:05:44.000000000 +0300
-+++ Python-2.7.8/Modules/termios.c	2014-07-18 06:16:43.393010357 +0300
+Index: b/Modules/termios.c
+===================================================================
+--- a/Modules/termios.c
++++ b/Modules/termios.c
 @@ -16,7 +16,9 @@
   * so this needs to be included first on that platform. */
  #include <termio.h>

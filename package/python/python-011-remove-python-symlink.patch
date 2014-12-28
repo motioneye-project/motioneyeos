@@ -10,7 +10,7 @@ Index: b/Makefile.pre.in
 ===================================================================
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -858,17 +858,10 @@
+@@ -890,17 +890,10 @@
  #  $(PYTHON) -> python2 -> python$(VERSION))
  # Also create equivalent chains for other installed files
  bininstall:	altbininstall

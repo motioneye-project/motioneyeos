@@ -15,19 +15,21 @@ Index: b/Makefile.pre.in
 ===================================================================
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -928,26 +928,42 @@
+@@ -960,27 +960,43 @@
  	plat-mac/lib-scriptpackages/SystemEvents \
  	plat-mac/lib-scriptpackages/Terminal
  PLATMACPATH=:plat-mac:plat-mac/lib-scriptpackages
 -LIBSUBDIRS=	lib-tk lib-tk/test lib-tk/test/test_tkinter \
--		lib-tk/test/test_ttk site-packages test test/audiodata test/data \
--		test/cjkencodings test/decimaltestdata test/xmltestdata \
+-		lib-tk/test/test_ttk site-packages test test/audiodata test/capath \
+-		test/data test/cjkencodings test/decimaltestdata test/xmltestdata \
 -		test/imghdrdata \
 -		test/subprocessdata \
 -		test/tracedmodules \
 +LIBSUBDIRS=	lib-tk site-packages \
  		encodings compiler hotshot \
 -		email email/mime email/test email/test/data \
++		email email/mime \
+ 		ensurepip ensurepip/_bundled \
 -		json json/tests \
 -		sqlite3 sqlite3/test \
 -		logging bsddb bsddb/test csv importlib wsgiref \
@@ -36,9 +38,8 @@ Index: b/Makefile.pre.in
 -		ctypes ctypes/test ctypes/macholib \
 -		idlelib idlelib/Icons idlelib/idle_test \
 -		distutils distutils/command distutils/tests $(XMLLIBSUBDIRS) \
-+		email email/mime \
 +		json \
-+		sqlite3 \
++		sqlite3  \
 +		logging bsddb csv importlib wsgiref \
 +		lib2to3 lib2to3/fixes lib2to3/pgen2 \
 +		ctypes ctypes/macholib \
@@ -51,7 +52,7 @@ Index: b/Makefile.pre.in
  		curses pydoc_data $(MACHDEPS)
 +
 +TESTSUBDIRS = lib-tk/test lib-tk/test/test_tkinter \
-+	lib-tk/test/test_ttk test test/audiodata test/data \
++	lib-tk/test/test_ttk test test/audiodata test/capath test/data \
 +	test/cjkencodings test/decimaltestdata test/xmltestdata \
 +	test/imghdrdata \
 +	test/subprocessdata \
@@ -61,7 +62,7 @@ Index: b/Makefile.pre.in
 +	sqlite3/test \
 +	bsddb/test \
 +	lib2to3/tests \
-+	lib2to3/tests/data lib2to3/tests/data/fixers lib2to3/tests/data/fixers/myfixes \
++ 	lib2to3/tests/data lib2to3/tests/data/fixers lib2to3/tests/data/fixers/myfixes \
 +	ctypes/test \
 +	idlelib/idle_test \
 +	distutils/tests \
@@ -78,7 +79,7 @@ Index: b/configure.ac
 ===================================================================
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2625,6 +2625,12 @@
+@@ -2628,6 +2628,12 @@
  fi
  
  

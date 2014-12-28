@@ -16,24 +16,24 @@ Index: b/Makefile.pre.in
 ===================================================================
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -934,7 +934,6 @@
+@@ -967,7 +967,6 @@
  		json \
- 		sqlite3 \
+ 		sqlite3  \
  		logging bsddb csv importlib wsgiref \
 -		lib2to3 lib2to3/fixes lib2to3/pgen2 \
  		ctypes ctypes/macholib \
  		idlelib idlelib/Icons \
  		distutils distutils/command $(XMLLIBSUBDIRS) \
-@@ -953,8 +952,6 @@
+@@ -986,8 +985,6 @@
  	json/tests \
  	sqlite3/test \
  	bsddb/test \
 -	lib2to3/tests \
--	lib2to3/tests/data lib2to3/tests/data/fixers lib2to3/tests/data/fixers/myfixes \
+- 	lib2to3/tests/data lib2to3/tests/data/fixers lib2to3/tests/data/fixers/myfixes \
  	ctypes/test \
  	idlelib/idle_test \
  	distutils/tests \
-@@ -968,6 +965,14 @@
+@@ -1001,6 +998,14 @@
  LIBSUBDIRS += pydoc_data
  endif
  
@@ -52,7 +52,7 @@ Index: b/configure.ac
 ===================================================================
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2636,6 +2636,12 @@
+@@ -2639,6 +2639,12 @@
  	AS_HELP_STRING([--disable-test-modules], [disable test modules]),
  	[ TEST_MODULES="${enableval}" ], [ TEST_MODULES=yes ])
  
@@ -69,7 +69,7 @@ Index: b/setup.py
 ===================================================================
 --- a/setup.py
 +++ b/setup.py
-@@ -2220,10 +2220,11 @@
+@@ -2223,10 +2223,11 @@
      import warnings
      warnings.filterwarnings("ignore",category=DeprecationWarning)
  

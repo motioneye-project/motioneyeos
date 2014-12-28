@@ -21,7 +21,7 @@ Index: b/setup.py
 ===================================================================
 --- a/setup.py
 +++ b/setup.py
-@@ -478,7 +478,7 @@
+@@ -480,7 +480,7 @@
                      for directory in reversed(options.dirs):
                          add_dir_to_list(dir_list, directory)
  

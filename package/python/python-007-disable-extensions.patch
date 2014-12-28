@@ -2,7 +2,7 @@ Index: b/Makefile.pre.in
 ===================================================================
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -153,6 +153,8 @@
+@@ -156,6 +156,8 @@
  # configure script arguments
  CONFIG_ARGS=	@CONFIG_ARGS@
  
@@ -11,7 +11,7 @@ Index: b/Makefile.pre.in
  
  # Subdirectories with code
  SRCDIRS= 	@SRCDIRS@
-@@ -464,6 +466,7 @@
+@@ -477,6 +479,7 @@
  	esac; \
  	$(RUNSHARED) CC='$(CC)' LDSHARED='$(BLDSHARED)' OPT='$(OPT)' \
  		_TCLTK_INCLUDES='$(TCLTK_INCLUDES)' _TCLTK_LIBS='$(TCLTK_LIBS)' \
@@ -19,7 +19,7 @@ Index: b/Makefile.pre.in
  		$(PYTHON_FOR_BUILD) $(srcdir)/setup.py $$quiet build
  
  # Build static library
-@@ -1158,7 +1161,8 @@
+@@ -1191,7 +1194,8 @@
  # Install the dynamically loadable modules
  # This goes into $(exec_prefix)
  sharedinstall: sharedmods
@@ -33,7 +33,7 @@ Index: b/configure.ac
 ===================================================================
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2281,6 +2281,8 @@
+@@ -2284,6 +2284,8 @@
  
  AC_PATH_TOOL([PKG_CONFIG], [pkg-config])
  
