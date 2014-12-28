@@ -1,0 +1,26 @@
+Make links buildable without LFS support.
+Author/status: unknown.
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+diff -Nura links-2.8/com-defs.h links-2.8.nonlfs/com-defs.h
+--- links-2.8/com-defs.h	2013-07-31 20:45:30.000000000 -0300
++++ links-2.8.nonlfs/com-defs.h	2014-12-28 08:42:47.352237462 -0300
+@@ -5,6 +5,9 @@
+ #define __EXTENSIONS__
+ #endif
+ 
++#include <features.h>
++/* uclibc without largefile support #errors on _FILE_OFFSET_BITS=64 */
++#if !(defined(__UCLIBC__) && !defined(__UCLIBC_HAS_LFS__))
+ #ifndef _LARGEFILE_SOURCE
+ #define _LARGEFILE_SOURCE	1
+ #endif
+@@ -20,6 +23,7 @@
+ #ifndef _FILE_OFFSET_BITS
+ #define _FILE_OFFSET_BITS	64
+ #endif
++#endif /* UCLIBC !LFS */
+ 
+ #if defined(vax) && !defined(__vax)
+ #define __vax	vax
