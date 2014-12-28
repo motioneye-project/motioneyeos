@@ -66,6 +66,12 @@ main() {
         # bitmaps size + slack
         nb_blocks=$(du -s -k "${root_dir}" |sed -r -e 's/[[:space:]]+.*$//')
         nb_blocks=$((500+(nb_blocks+nb_inodes/8)*11/10))
+        if [ ${gen} -ge 3 ]; then
+            # we add 1300 blocks (a bit more than 1 MiB, assuming 1KiB blocks)
+            # for the journal
+            # Note: I came to 1300 blocks after trial-and-error checks. YMMV.
+            nb_blocks=$((nb_blocks+1300))
+        fi
     fi
 
     # Upgrade to rev1 if needed
@@ -76,10 +82,6 @@ main() {
     # Add a journal for ext3 and above
     if [ ${gen} -ge 3 ]; then
         tune2fs_opts+=( -j -J size=1 )
-        # we add 1300 blocks (a bit more than 1 MiB, assuming 1KiB blocks)
-        # for the journal
-        # Note: I came to 1300 blocks after trial-and-error checks. YMMV.
-        nb_blocks=$((nb_blocks+1300))
     fi
 
     # Add ext4 specific features
