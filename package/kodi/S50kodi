@@ -4,7 +4,7 @@
 #
 
 BIN=/usr/bin/br-kodi
-KODI=/usr/lib/xbmc/xbmc.bin
+KODI=/usr/lib/xbmc/kodi.bin
 KODI_ARGS="--standalone -fs -n"
 PIDFILE=/var/run/kodi.pid
 

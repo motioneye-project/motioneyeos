@@ -203,16 +203,16 @@ endef
 KODI_PRE_CONFIGURE_HOOKS += KODI_BOOTSTRAP
 
 define KODI_CLEAN_UNUSED_ADDONS
-	rm -Rf $(TARGET_DIR)/usr/share/xbmc/addons/screensaver.rsxs.plasma
-	rm -Rf $(TARGET_DIR)/usr/share/xbmc/addons/visualization.milkdrop
-	rm -Rf $(TARGET_DIR)/usr/share/xbmc/addons/visualization.projectm
-	rm -Rf $(TARGET_DIR)/usr/share/xbmc/addons/visualization.itunes
+	rm -Rf $(TARGET_DIR)/usr/share/kodi/addons/screensaver.rsxs.plasma
+	rm -Rf $(TARGET_DIR)/usr/share/kodi/addons/visualization.milkdrop
+	rm -Rf $(TARGET_DIR)/usr/share/kodi/addons/visualization.projectm
+	rm -Rf $(TARGET_DIR)/usr/share/kodi/addons/visualization.itunes
 endef
 KODI_POST_INSTALL_TARGET_HOOKS += KODI_CLEAN_UNUSED_ADDONS
 
 define KODI_CLEAN_CONFLUENCE_SKIN
-	find $(TARGET_DIR)/usr/share/xbmc/addons/skin.confluence/media -name *.png -delete
-	find $(TARGET_DIR)/usr/share/xbmc/addons/skin.confluence/media -name *.jpg -delete
+	find $(TARGET_DIR)/usr/share/kodi/addons/skin.confluence/media -name *.png -delete
+	find $(TARGET_DIR)/usr/share/kodi/addons/skin.confluence/media -name *.jpg -delete
 endef
 KODI_POST_INSTALL_TARGET_HOOKS += KODI_CLEAN_CONFLUENCE_SKIN
 
@@ -223,12 +223,14 @@ endef
 KODI_POST_INSTALL_TARGET_HOOKS += KODI_INSTALL_BR_WRAPPER
 
 # When run from a startup script, Kodi has no $HOME where to store its
-# configuration, so ends up storing it in /.xbmc  (yes, at the root of
+# configuration, so ends up storing it in /.kodi  (yes, at the root of
 # the rootfs). This is a problem for read-only filesystems. But we can't
-# easily change that, so create /.xbmc as a symlink where we want the
-# config to eventually be.
+# easily change that, so create /.kodi as a symlink where we want the
+# config to eventually be. Add synlinks for the legacy XBMC name as well
 define KODI_INSTALL_CONFIG_DIR
 	$(INSTALL) -d -m 0755 $(TARGET_DIR)/var/kodi
+	ln -sf /var/kodi $(TARGET_DIR)/.kodi
+	ln -sf /var/kodi $(TARGET_DIR)/var/xbmc
 	ln -sf /var/kodi $(TARGET_DIR)/.xbmc
 endef
 KODI_POST_INSTALL_TARGET_HOOKS += KODI_INSTALL_CONFIG_DIR
