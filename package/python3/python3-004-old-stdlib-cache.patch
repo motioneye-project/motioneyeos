@@ -12,7 +12,7 @@ Index: b/configure.ac
 ===================================================================
 --- a/configure.ac
 +++ b/configure.ac
-@@ -349,6 +349,23 @@
+@@ -352,6 +352,23 @@
  AC_SUBST(FRAMEWORKUNIXTOOLSPREFIX)
  AC_SUBST(FRAMEWORKINSTALLAPPSPREFIX)
  
@@ -40,7 +40,7 @@ Index: b/Makefile.pre.in
 ===================================================================
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -157,6 +157,9 @@
+@@ -162,6 +162,9 @@
  # Options to enable prebinding (for fast startup prior to Mac OS X 10.3)
  OTHER_LIBTOOL_OPT=@OTHER_LIBTOOL_OPT@
  
@@ -50,7 +50,7 @@ Index: b/Makefile.pre.in
  # Environment to run shared python without installed libraries
  RUNSHARED=       @RUNSHARED@
  
-@@ -1231,21 +1234,21 @@
+@@ -1246,21 +1249,21 @@
  	fi
  	-PYTHONPATH=$(DESTDIR)$(LIBDEST)  $(RUNSHARED) \
  		$(PYTHON_FOR_BUILD) -Wi $(DESTDIR)$(LIBDEST)/compileall.py \

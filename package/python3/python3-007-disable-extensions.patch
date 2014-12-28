@@ -42,7 +42,7 @@ Index: b/Makefile.pre.in
 ===================================================================
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -175,6 +175,8 @@
+@@ -180,6 +180,8 @@
  # configure script arguments
  CONFIG_ARGS=	@CONFIG_ARGS@
  
@@ -51,7 +51,7 @@ Index: b/Makefile.pre.in
  
  # Subdirectories with code
  SRCDIRS= 	@SRCDIRS@
-@@ -561,6 +563,7 @@
+@@ -576,6 +578,7 @@
  	esac; \
  	$(RUNSHARED) CC='$(CC)' LDSHARED='$(BLDSHARED)' OPT='$(OPT)' \
  		_TCLTK_INCLUDES='$(TCLTK_INCLUDES)' _TCLTK_LIBS='$(TCLTK_LIBS)' \
@@ -59,7 +59,7 @@ Index: b/Makefile.pre.in
  		$(PYTHON_FOR_BUILD) $(srcdir)/setup.py $$quiet build
  
  # Build static library
-@@ -1371,7 +1374,8 @@
+@@ -1386,7 +1389,8 @@
  # Install the dynamically loadable modules
  # This goes into $(exec_prefix)
  sharedinstall: sharedmods
@@ -73,7 +73,7 @@ Index: b/configure.ac
 ===================================================================
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2349,6 +2349,8 @@
+@@ -2366,6 +2366,8 @@
  
  AC_PATH_TOOL([PKG_CONFIG], [pkg-config])
  
@@ -86,7 +86,7 @@ Index: b/setup.py
 ===================================================================
 --- a/setup.py
 +++ b/setup.py
-@@ -33,7 +33,10 @@
+@@ -39,7 +39,10 @@
  COMPILED_WITH_PYDEBUG = ('--with-pydebug' in sysconfig.get_config_var("CONFIG_ARGS"))
  
  # This global variable is used to hold the list of modules to be disabled.

@@ -11,7 +11,7 @@ Index: b/setup.py
 ===================================================================
 --- a/setup.py
 +++ b/setup.py
-@@ -278,6 +278,7 @@
+@@ -284,6 +284,7 @@
              print("Failed to build these modules:")
              print_three_column(failed)
              print()

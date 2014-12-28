@@ -20,7 +20,7 @@ Index: b/setup.py
 ===================================================================
 --- a/setup.py
 +++ b/setup.py
-@@ -421,6 +421,7 @@
+@@ -427,6 +427,7 @@
          in_incdirs = False
          inc_dirs = []
          lib_dirs = []
@@ -28,7 +28,7 @@ Index: b/setup.py
          try:
              if ret >> 8 == 0:
                  with open(tmpfile) as fp:
-@@ -432,6 +433,7 @@
+@@ -438,6 +439,7 @@
                          elif line.startswith("End of search list"):
                              in_incdirs = False
                          elif is_gcc and line.startswith("LIBRARY_PATH"):
@@ -36,7 +36,7 @@ Index: b/setup.py
                              for d in line.strip().split("=")[1].split(":"):
                                  d = os.path.normpath(d)
                                  if '/gcc/' not in d:
-@@ -443,6 +445,15 @@
+@@ -449,6 +451,15 @@
          finally:
              os.unlink(tmpfile)
  

@@ -43,7 +43,7 @@ Index: b/Lib/distutils/command/build_ext.py
 ===================================================================
 --- a/Lib/distutils/command/build_ext.py
 +++ b/Lib/distutils/command/build_ext.py
-@@ -248,7 +248,10 @@
+@@ -239,7 +239,10 @@
          if (sysconfig.get_config_var('Py_ENABLE_SHARED')):
              if not sysconfig.python_build:
                  # building third party extensions

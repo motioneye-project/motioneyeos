@@ -12,7 +12,7 @@ Index: b/Lib/distutils/command/build_ext.py
 ===================================================================
 --- a/Lib/distutils/command/build_ext.py
 +++ b/Lib/distutils/command/build_ext.py
-@@ -246,7 +246,7 @@
+@@ -237,7 +237,7 @@
          # Python's library directory must be appended to library_dirs
          # See Issues: #1600860, #4366
          if (sysconfig.get_config_var('Py_ENABLE_SHARED')):
