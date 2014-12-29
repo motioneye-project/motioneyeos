@@ -1,0 +1,37 @@
+From 2d965dce71df18221e625efbfe380b54e6441d64 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Mon, 29 Dec 2014 12:23:41 +0100
+Subject: [PATCH] Link mcaptest with -lrt
+
+The mcaptest tool uses the profiles/health/mcap.c source file, which
+calls clock_getres(). This function is defined in librt, so mcaptest
+should be linked against librt, otherwise one gets link failures such
+as:
+
+ld: profiles/health/mcap.o: undefined reference to symbol 'clock_getres@@GLIBC_2.2.5'
+ld: note: 'clock_getres@@GLIBC_2.2.5' is defined in DSO [...]/sysroot/lib64/librt.so.1 so try adding it to the linker command line
+[...]/sysroot/lib64/librt.so.1: could not read symbols: Invalid operation
+collect2: error: ld returned 1 exit status
+Makefile:4184: recipe for target 'tools/mcaptest' failed
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ Makefile.tools | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile.tools b/Makefile.tools
+index bc827fe..178b773 100644
+--- a/Makefile.tools
++++ b/Makefile.tools
+@@ -195,7 +195,7 @@ tools_mcaptest_SOURCES = tools/mcaptest.c \
+ 				btio/btio.h btio/btio.c \
+ 				src/log.c src/log.h \
+ 				profiles/health/mcap.h profiles/health/mcap.c
+-tools_mcaptest_LDADD = lib/libbluetooth-internal.la @GLIB_LIBS@
++tools_mcaptest_LDADD = lib/libbluetooth-internal.la @GLIB_LIBS@ -lrt
+ 
+ dist_man_MANS += tools/hciattach.1 tools/hciconfig.1 \
+ 			tools/hcitool.1 tools/hcidump.1 \
+-- 
+2.1.0
+
