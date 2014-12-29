@@ -75,4 +75,8 @@ else
 FREERDP_CONF_OPTS += -DWITH_SSE2=OFF
 endif
 
+ifeq ($(BR2_arm)$(BR2_armeb),y)
+FREERDP_CONF_OPTS += -DARM_FP_ABI=$(call qstrip,$(BR2_GCC_TARGET_FLOAT_ABI))
+endif
+
 $(eval $(cmake-package))
