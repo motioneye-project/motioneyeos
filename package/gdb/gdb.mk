@@ -23,7 +23,9 @@ ifeq ($(GDB_VERSION),6.7.1-avr32-2.1.5)
 GDB_SITE = ftp://www.at91.com/pub/buildroot
 endif
 
-ifeq ($(GDB_VERSION),7.8)
+# Starting from 7.8.x, bz2 tarballs no longer available, use .tar.xz
+# instead.
+ifneq ($(filter 7.8.%,$(GDB_VERSION)),)
 GDB_SOURCE = gdb-$(GDB_VERSION).tar.xz
 endif
 
