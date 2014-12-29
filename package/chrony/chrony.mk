@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-CHRONY_VERSION = 1.30
+CHRONY_VERSION = 1.31
 CHRONY_SITE = http://download.tuxfamily.org/chrony
 CHRONY_LICENSE = GPLv2
 CHRONY_LICENSE_FILES = COPYING
