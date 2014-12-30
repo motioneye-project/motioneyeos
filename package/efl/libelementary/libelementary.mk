@@ -12,11 +12,13 @@ LIBELEMENTARY_LICENSE_FILES = COPYING
 
 LIBELEMENTARY_INSTALL_STAGING = YES
 
-LIBELEMENTARY_DEPENDENCIES = libeina libevas libecore libedje host-libedje \
-				host-libeet
+LIBELEMENTARY_DEPENDENCIES = \
+	libeina libevas libecore libedje host-libedje \
+	host-libeet
 
-LIBELEMENTARY_CONF_OPTS = --with-edje-cc=$(HOST_DIR)/usr/bin/edje_cc \
-			 --with-eet-eet=$(HOST_DIR)/usr/bin/eet
+LIBELEMENTARY_CONF_OPTS = \
+	--with-edje-cc=$(HOST_DIR)/usr/bin/edje_cc \
+	--with-eet-eet=$(HOST_DIR)/usr/bin/eet
 
 # libethumb_client is only built when ethumbd is built.
 # ethumbd is only built if edbus is built.

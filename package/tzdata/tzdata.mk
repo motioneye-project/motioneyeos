@@ -11,8 +11,9 @@ TZDATA_DEPENDENCIES = host-tzdata
 HOST_TZDATA_DEPENDENCIES = host-zic
 TZDATA_LICENSE = Public domain
 
-TZDATA_DEFAULT_ZONELIST = africa antarctica asia australasia backward etcetera \
-			europe factory northamerica pacificnew southamerica
+TZDATA_DEFAULT_ZONELIST = \
+	africa antarctica asia australasia backward etcetera \
+	europe factory northamerica pacificnew southamerica
 
 ifeq ($(call qstrip,$(BR2_TARGET_TZ_ZONELIST)),default)
 TZDATA_ZONELIST = $(TZDATA_DEFAULT_ZONELIST)

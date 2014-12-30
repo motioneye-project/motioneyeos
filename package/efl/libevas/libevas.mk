@@ -14,8 +14,9 @@ LIBEVAS_INSTALL_STAGING = YES
 
 LIBEVAS_DEPENDENCIES = host-pkgconf zlib libeina freetype
 
-HOST_LIBEVAS_DEPENDENCIES = host-pkgconf host-zlib host-libeina \
-				host-freetype host-libpng host-libjpeg
+HOST_LIBEVAS_DEPENDENCIES = \
+	host-pkgconf host-zlib host-libeina \
+	host-freetype host-libpng host-libjpeg
 HOST_LIBEVAS_CONF_OPTS += \
 	--enable-image-loader-png \
 	--enable-image-loader-jpeg \
@@ -68,8 +69,9 @@ endif
 
 ifeq ($(BR2_PACKAGE_LIBEVAS_X11_GLX),y)
 LIBEVAS_CONF_OPTS += --enable-gl-xlib
-LIBEVAS_DEPENDENCIES += xproto_glproto xlib_libX11 xlib_libXrender \
-			xlib_libXext libeet
+LIBEVAS_DEPENDENCIES += \
+	xproto_glproto xlib_libX11 xlib_libXrender \
+	xlib_libXext libeet
 endif
 
 ifeq ($(BR2_PACKAGE_LIBEVAS_XCB),y)

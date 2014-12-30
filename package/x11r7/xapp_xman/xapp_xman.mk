@@ -11,9 +11,10 @@ XAPP_XMAN_LICENSE = MIT
 XAPP_XMAN_LICENSE_FILES = COPYING
 XAPP_XMAN_DEPENDENCIES = xlib_libXaw
 
-XAPP_XMAN_CONF_ENV = ac_cv_file__etc_man_conf=no \
-		ac_cv_file__etc_man_config=no \
-		ac_cv_file__etc_manpath_config=no \
-		ac_cv_file__usr_share_misc_man_conf=no
+XAPP_XMAN_CONF_ENV = \
+	ac_cv_file__etc_man_conf=no \
+	ac_cv_file__etc_man_config=no \
+	ac_cv_file__etc_manpath_config=no \
+	ac_cv_file__usr_share_misc_man_conf=no
 
 $(eval $(autotools-package))

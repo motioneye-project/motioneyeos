@@ -10,9 +10,10 @@ DBUS_GLIB_INSTALL_STAGING = YES
 DBUS_GLIB_LICENSE = AFLv2.1 GPLv2+
 DBUS_GLIB_LICENSE_FILES = COPYING
 
-DBUS_GLIB_CONF_ENV = ac_cv_have_abstract_sockets=yes \
-		ac_cv_func_posix_getpwnam_r=yes \
-		have_abstract_sockets=yes
+DBUS_GLIB_CONF_ENV = \
+	ac_cv_have_abstract_sockets=yes \
+	ac_cv_func_posix_getpwnam_r=yes \
+	have_abstract_sockets=yes
 
 DBUS_GLIB_CONF_OPTS = \
 	--disable-tests \

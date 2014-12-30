@@ -12,8 +12,9 @@ LIBEDJE_LICENSE_FILES = COPYING
 
 LIBEDJE_INSTALL_STAGING = YES
 
-LIBEDJE_DEPENDENCIES = host-pkgconf lua libeina libeet libecore libevas \
-			libembryo
+LIBEDJE_DEPENDENCIES = \
+	host-pkgconf lua libeina libeet libecore libevas \
+	libembryo
 
 ifeq ($(BR2_PACKAGE_LIBEDJE_CC),y)
 LIBEDJE_CONF_OPTS += --enable-edje-cc

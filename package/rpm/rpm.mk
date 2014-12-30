@@ -11,12 +11,16 @@ RPM_DEPENDENCIES = zlib beecrypt neon popt openssl
 RPM_LICENSE = LGPLv2.1
 RPM_LICENSE_FILES = COPYING.LIB
 
-RPM_CONF_ENV = CFLAGS="$(TARGET_CFLAGS) -I$(STAGING_DIR)/usr/include/beecrypt -I$(STAGING_DIR)/usr/include/neon -DHAVE_MUTEX_THREAD_ONLY" \
-		ac_cv_va_copy=yes
+RPM_CONF_ENV = \
+	CFLAGS="$(TARGET_CFLAGS) -I$(STAGING_DIR)/usr/include/beecrypt -I$(STAGING_DIR)/usr/include/neon -DHAVE_MUTEX_THREAD_ONLY" \
+	ac_cv_va_copy=yes
 
-RPM_CONF_OPTS = --disable-build-versionscript --disable-rpath \
+RPM_CONF_OPTS = \
+	--disable-build-versionscript \
+	--disable-rpath \
 	--without-selinux \
-	--without-python --without-perl \
+	--without-python \
+	--without-perl \
 	--with-openssl=external \
 	--with-zlib=$(STAGING_DIR) \
 	--with-libbeecrypt=$(STAGING_DIR) \

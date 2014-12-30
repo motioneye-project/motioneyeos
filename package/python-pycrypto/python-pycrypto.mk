@@ -10,8 +10,9 @@ PYTHON_PYCRYPTO_SITE = http://ftp.dlitz.net/pub/dlitz/crypto/pycrypto
 PYTHON_PYCRYPTO_SETUP_TYPE = distutils
 
 PYTHON_PYCRYPTO_LICENSE = Public Domain, Python 2.2 License (HMAC.py, setup.py)
-PYTHON_PYCRYPTO_LICENSE_FILES = COPYRIGHT LEGAL/copy/LICENSE.libtom \
-		LEGAL/copy/LICENSE.python-2.2
+PYTHON_PYCRYPTO_LICENSE_FILES = \
+	COPYRIGHT LEGAL/copy/LICENSE.libtom \
+	LEGAL/copy/LICENSE.python-2.2
 
 # The pycrypto package contains a LICENSE.orig file, but our patching
 # infrastrucure removes all .orig file, so we must rename that license

@@ -12,18 +12,21 @@ COLLECTD_LICENSE = GPLv2 LGPLv2.1
 COLLECTD_LICENSE_FILES = COPYING
 
 # These require unmet dependencies, are fringe, pointless or deprecated
-COLLECTD_PLUGINS_DISABLE = amqp apple_sensors aquaero ascent dbi email \
-		gmond hddtemp ipmi ipvs java libvirt lpar lvm madwifi mbmon \
-		modbus multimeter netapp netlink nginx \
-		notify_desktop notify_email numa nut onewire oracle perl pf \
-		pinba postgresql powerdns python redis routeros rrdcached \
-		sigrok tape target_v5upgrade teamspeak2 ted \
-		tokyotyrant uuid varnish vserver write_mongodb write_redis \
-		xmms zfs_arc
+COLLECTD_PLUGINS_DISABLE = \
+	amqp apple_sensors aquaero ascent dbi email \
+	gmond hddtemp ipmi ipvs java libvirt lpar lvm madwifi mbmon \
+	modbus multimeter netapp netlink nginx \
+	notify_desktop notify_email numa nut onewire oracle perl pf \
+	pinba postgresql powerdns python redis routeros rrdcached \
+	sigrok tape target_v5upgrade teamspeak2 ted \
+	tokyotyrant uuid varnish vserver write_mongodb write_redis \
+	xmms zfs_arc
 
 COLLECTD_CONF_ENV += LIBS="-lm"
 
-COLLECTD_CONF_OPTS += --with-nan-emulation --with-fp-layout=nothing \
+COLLECTD_CONF_OPTS += \
+	--with-nan-emulation \
+	--with-fp-layout=nothing \
 	--with-perl-bindings=no \
 	$(foreach p, $(COLLECTD_PLUGINS_DISABLE), --disable-$(p)) \
 	$(if $(BR2_PACKAGE_COLLECTD_AGGREGATION),--enable-aggregation,--disable-aggregation) \
@@ -98,7 +101,8 @@ COLLECTD_CONF_OPTS += --with-nan-emulation --with-fp-layout=nothing \
 	$(if $(BR2_PACKAGE_COLLECTD_WIRELESS),--enable-wireless,--disable-wireless) \
 	$(if $(BR2_PACKAGE_COLLECTD_WRITEHTTP),--enable-write_http,--disable-write_http)
 
-COLLECTD_DEPENDENCIES = host-pkgconf \
+COLLECTD_DEPENDENCIES = \
+	host-pkgconf \
 	$(if $(BR2_PACKAGE_COLLECTD_APACHE),libcurl) \
 	$(if $(BR2_PACKAGE_COLLECTD_BIND),libcurl libxml2) \
 	$(if $(BR2_PACKAGE_COLLECTD_CURL),libcurl) \

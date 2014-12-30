@@ -18,12 +18,15 @@ BIND_TARGET_SERVER_SBIN += lwresd named named-checkconf named-checkzone
 BIND_TARGET_SERVER_SBIN += named-compilezone rndc rndc-confgen dnssec-dsfromkey
 BIND_TARGET_SERVER_SBIN += dnssec-keyfromlabel dnssec-signzone
 BIND_TARGET_TOOLS_BIN = dig host nslookup nsupdate
-BIND_CONF_ENV = BUILD_CC="$(TARGET_CC)" \
-		BUILD_CFLAGS="$(TARGET_CFLAGS)"
+BIND_CONF_ENV = \
+	BUILD_CC="$(TARGET_CC)" \
+	BUILD_CFLAGS="$(TARGET_CFLAGS)"
 BIND_CONF_OPTS = \
 	--with-randomdev=/dev/urandom \
-	--enable-epoll --with-libtool \
-	--with-gssapi=no --enable-rrl
+	--enable-epoll \
+	--with-libtool \
+	--with-gssapi=no \
+	--enable-rrl
 
 ifeq ($(BR2_PACKAGE_LIBCAP),y)
 	BIND_CONF_OPTS += --enable-linux-caps

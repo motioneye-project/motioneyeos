@@ -12,13 +12,19 @@ WIRESHARK_LICENSE_FILES = COPYING
 WIRESHARK_DEPENDENCIES = libpcap libgcrypt libglib2
 # For wrong cflags patch
 WIRESHARK_AUTORECONF = YES
-WIRESHARK_CONF_ENV = LIBGCRYPT_CONFIG=$(STAGING_DIR)/usr/bin/libgcrypt-config \
-			ac_cv_path_PCAP_CONFIG=$(STAGING_DIR)/usr/bin/pcap-config
+WIRESHARK_CONF_ENV = \
+	LIBGCRYPT_CONFIG=$(STAGING_DIR)/usr/bin/libgcrypt-config \
+	ac_cv_path_PCAP_CONFIG=$(STAGING_DIR)/usr/bin/pcap-config
 
 # wireshark adds -I$includedir to CFLAGS, causing host/target headers mixup.
 # Work around it by pointing includedir at staging
-WIRESHARK_CONF_OPTS = --disable-wireshark --without-krb5 --disable-usr-local \
-		     --enable-static=no --with-gnutls=no --with-libsmi=no \
-		     --includedir=$(STAGING_DIR)/usr/include
+WIRESHARK_CONF_OPTS = \
+	--disable-wireshark \
+	--without-krb5 \
+	--disable-usr-local \
+	--enable-static=no \
+	--with-gnutls=no \
+	--with-libsmi=no \
+	--includedir=$(STAGING_DIR)/usr/include
 
 $(eval $(autotools-package))

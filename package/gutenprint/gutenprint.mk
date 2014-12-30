@@ -14,7 +14,8 @@ GUTENPRINT_LICENSE_FILES = COPYING
 # Needed, as we touch Makefile.am
 GUTENPRINT_AUTORECONF = YES
 
-GUTENPRINT_DEPENDENCIES = cups host-pkgconf \
+GUTENPRINT_DEPENDENCIES = \
+	cups host-pkgconf \
 	$(if $(BR2_PACKAGE_LIBICONV),libiconv)
 
 # host-gutenprint is needed to generate XML as part of compilation
@@ -22,21 +23,23 @@ GUTENPRINT_DEPENDENCIES = cups host-pkgconf \
 # so we need to build both a host package and a target package
 GUTENPRINT_DEPENDENCIES += host-gutenprint
 
-GUTENPRINT_CONF_ENV = ac_cv_path_CUPS_CONFIG=$(STAGING_DIR)/usr/bin/cups-config \
+GUTENPRINT_CONF_ENV = \
+	ac_cv_path_CUPS_CONFIG=$(STAGING_DIR)/usr/bin/cups-config \
 	ac_cv_path_IJS_CONFIG=""
 
-GUTENPRINT_CONF_OPTS = --disable-libgutenprintui2 \
-                      --disable-samples \
-                      --without-doc \
-                      --without-gimp2 \
-                      --without-foomatic \
-                      --without-foomatic3 \
-                      --disable-escputil \
-                      --disable-test \
-                      --disable-testpattern \
-                      --with-cups="/usr" \
-                      --with-sysroot="$(STAGING_DIR)" \
-                      --disable-cups-ppds
+GUTENPRINT_CONF_OPTS = \
+	--disable-libgutenprintui2 \
+	--disable-samples \
+	--without-doc \
+	--without-gimp2 \
+	--without-foomatic \
+	--without-foomatic3 \
+	--disable-escputil \
+	--disable-test \
+	--disable-testpattern \
+	--with-cups="/usr" \
+	--with-sysroot="$(STAGING_DIR)" \
+	--disable-cups-ppds
 
 # USE_PREGEN_XMLI18N_TMP_H is added by our patch
 GUTENPRINT_MAKE_ENV = BR2_USE_PREGEN_XMLI18N_TMP_H=$(HOST_DIR)/usr/include/xmli18n-tmp.h
@@ -53,18 +56,19 @@ HOST_GUTENPRINT_MAKE_ENV =
 # empty string to to disable this, not just to /bin/false like elsewhere.
 HOST_GUTENPRINT_CONF_ENV = ac_cv_path_CUPS_CONFIG=''
 
-HOST_GUTENPRINT_CONF_OPTS = --disable-libgutenprintui2 \
-                           --disable-samples \
-                           --without-gimp2 \
-                           --without-doc \
-                           --disable-nls \
-                           --disable-nls-macos \
-                           --without-foomatic \
-                           --without-foomatic3 \
-                           --disable-escputil \
-                           --disable-test \
-                           --disable-testpattern \
-                           --without-cups
+HOST_GUTENPRINT_CONF_OPTS = \
+	--disable-libgutenprintui2 \
+	--disable-samples \
+	--without-gimp2 \
+	--without-doc \
+	--disable-nls \
+	--disable-nls-macos \
+	--without-foomatic \
+	--without-foomatic3 \
+	--disable-escputil \
+	--disable-test \
+	--disable-testpattern \
+	--without-cups
 
 # Needed by autoreconf
 define GUTENPRINT_CREATE_M4_DIR
