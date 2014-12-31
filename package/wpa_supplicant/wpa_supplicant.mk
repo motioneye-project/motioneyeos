@@ -82,18 +82,18 @@ ifeq ($(BR2_PACKAGE_DBUS),y)
 ifeq ($(BR2_PACKAGE_WPA_SUPPLICANT_DBUS_OLD),y)
 	WPA_SUPPLICANT_CONFIG_ENABLE += CONFIG_CTRL_IFACE_DBUS=
 define WPA_SUPPLICANT_INSTALL_DBUS_OLD
-	$(INSTALL) -D \
-	  $(@D)/wpa_supplicant/dbus/$(WPA_SUPPLICANT_DBUS_OLD_SERVICE).service \
-	  $(TARGET_DIR)/usr/share/dbus-1/system-services/$(WPA_SUPPLICANT_DBUS_OLD_SERVICE).service
+	$(INSTALL) -m 0644 -D \
+		$(@D)/wpa_supplicant/dbus/$(WPA_SUPPLICANT_DBUS_OLD_SERVICE).service \
+		$(TARGET_DIR)/usr/share/dbus-1/system-services/$(WPA_SUPPLICANT_DBUS_OLD_SERVICE).service
 endef
 endif
 
 ifeq ($(BR2_PACKAGE_WPA_SUPPLICANT_DBUS_NEW),y)
 	WPA_SUPPLICANT_CONFIG_ENABLE += CONFIG_CTRL_IFACE_DBUS_NEW
 define WPA_SUPPLICANT_INSTALL_DBUS_NEW
-	$(INSTALL) -D \
-	  $(@D)/wpa_supplicant/dbus/$(WPA_SUPPLICANT_DBUS_NEW_SERVICE).service \
-	  $(TARGET_DIR)/usr/share/dbus-1/system-services/$(WPA_SUPPLICANT_DBUS_NEW_SERVICE).service
+	$(INSTALL) -m 0644 -D \
+		$(@D)/wpa_supplicant/dbus/$(WPA_SUPPLICANT_DBUS_NEW_SERVICE).service \
+		$(TARGET_DIR)/usr/share/dbus-1/system-services/$(WPA_SUPPLICANT_DBUS_NEW_SERVICE).service
 endef
 endif
 
@@ -115,10 +115,10 @@ endif
 define WPA_SUPPLICANT_CONFIGURE_CMDS
 	cp $(@D)/wpa_supplicant/defconfig $(WPA_SUPPLICANT_CONFIG)
 	sed -i $(patsubst %,-e 's/^#\(%\)/\1/',$(WPA_SUPPLICANT_CONFIG_ENABLE)) \
-	       $(patsubst %,-e 's/^\(%\)/#\1/',$(WPA_SUPPLICANT_CONFIG_DISABLE)) \
-	       $(patsubst %,-e '1i%=y',$(WPA_SUPPLICANT_CONFIG_SET)) \
-	       $(patsubst %,-e %,$(WPA_SUPPLICANT_CONFIG_EDITS)) \
-	       $(WPA_SUPPLICANT_CONFIG)
+		$(patsubst %,-e 's/^\(%\)/#\1/',$(WPA_SUPPLICANT_CONFIG_DISABLE)) \
+		$(patsubst %,-e '1i%=y',$(WPA_SUPPLICANT_CONFIG_SET)) \
+		$(patsubst %,-e %,$(WPA_SUPPLICANT_CONFIG_EDITS)) \
+		$(WPA_SUPPLICANT_CONFIG)
 endef
 
 # LIBS for wpa_supplicant, LIBS_c for wpa_cli, LIBS_p for wpa_passphrase
@@ -146,9 +146,9 @@ endif
 
 ifeq ($(BR2_PACKAGE_DBUS),y)
 define WPA_SUPPLICANT_INSTALL_DBUS
-	$(INSTALL) -D \
-	  $(@D)/wpa_supplicant/dbus/dbus-wpa_supplicant.conf \
-	  $(TARGET_DIR)/etc/dbus-1/system.d/wpa_supplicant.conf
+	$(INSTALL) -m 0644 -D \
+		$(@D)/wpa_supplicant/dbus/dbus-wpa_supplicant.conf \
+		$(TARGET_DIR)/etc/dbus-1/system.d/wpa_supplicant.conf
 	$(WPA_SUPPLICANT_INSTALL_DBUS_OLD)
 	$(WPA_SUPPLICANT_INSTALL_DBUS_NEW)
 endef
