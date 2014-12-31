@@ -1,2 +1,3 @@
-# Locally calculated
-sha256  3b4e2c666b33b32ad29ff0fe5c6538e757d3c73368e5dfa88bd59b4bc95cbabb  freetype-2.5.4.tar.bz2
+# From http://sourceforge.net/projects/freetype/files/freetype2/2.5.5/
+md5	2a7a314927011d5030903179cf183be0	freetype-2.5.5.tar.bz2
+sha1	7b7460ef51a8fdb17baae53c6658fc1ad000a1c2	freetype-2.5.5.tar.bz2
