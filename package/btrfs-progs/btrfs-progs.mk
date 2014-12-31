@@ -4,12 +4,11 @@
 #
 ################################################################################
 
-BTRFS_PROGS_VERSION = 3.17.3
+BTRFS_PROGS_VERSION = 3.18
 BTRFS_PROGS_SITE = https://www.kernel.org/pub/linux/kernel/people/kdave/btrfs-progs
 BTRFS_PROGS_SOURCE = btrfs-progs-v$(BTRFS_PROGS_VERSION).tar.xz
 BTRFS_PROGS_DEPENDENCIES = acl attr e2fsprogs lzo util-linux zlib
-BTRFS_PROGS_MAKE_FLAGS = DISABLE_DOCUMENTATION=1 \
-	$(if $(BR2_TOOLCHAIN_USES_UCLIBC),DISABLE_BACKTRACE=1)
+BTRFS_PROGS_MAKE_FLAGS = DISABLE_DOCUMENTATION=1
 BTRFS_PROGS_LICENSE = GPLv2
 BTRFS_PROGS_LICENSE_FILES = COPYING
 
