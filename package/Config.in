@@ -598,6 +598,7 @@ menu "Compression and decompression"
 	source "package/libarchive/Config.in"
 	source "package/lzo/Config.in"
 	source "package/snappy/Config.in"
+	source "package/szip/Config.in"
 	source "package/zlib/Config.in"
 endmenu
 
