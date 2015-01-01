@@ -16,15 +16,15 @@ config BR2_PACKAGE_LIBSEMANAGE
 
 	  http://selinuxproject.org/page/Main_Page
 
-comment "libsemanage needs a toolchain w/ largefile, threads"
-	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_LARGEFILE
-
 if BR2_PACKAGE_LIBSEMANAGE
 
 config BR2_PACKAGE_LIBSEMANAGE_PYTHON_BINDINGS
-	select BR2_PACKAGE_PYTHON
+	depends on BR2_PACKAGE_PYTHON
 	bool "python bindings"
 	help
-	  enable building python bindings
+	  Enable building python bindings
 
 endif
+
+comment "libsemanage needs a toolchain w/ largefile, threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_LARGEFILE
