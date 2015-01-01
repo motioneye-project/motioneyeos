@@ -1,6 +1,7 @@
 config BR2_PACKAGE_IMAGEMAGICK
 	bool "imagemagick"
 	depends on BR2_USE_MMU # fork()
+	depends on BR2_TOOLCHAIN_HAS_THREADS
 	help
 	  ImageMagick(R) is a software suite to create, edit, and compose
 	  bitmap images. It can read, convert and write images in a variety of
@@ -11,3 +12,7 @@ config BR2_PACKAGE_IMAGEMAGICK
 	  lines, polygons, ellipses and Bézier curves.
 
 	  http://www.imagemagick.org/
+
+comment "imagemagick needs a toolchain w/ threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
