@@ -16,7 +16,8 @@ OPENOCD_CONF_OPTS = \
 	--disable-doxygen-html \
 	--with-jim-shared=no \
 	--disable-shared \
-	--enable-dummy
+	--enable-dummy \
+	--disable-werror
 
 # Rely on the Config.in options of each individual adapter selecting
 # the dependencies they need.
@@ -93,7 +94,8 @@ HOST_OPENOCD_CONF_OPTS = \
 	--disable-doxygen-html \
 	--with-jim-shared=no \
 	--disable-shared \
-	--enable-dummy
+	--enable-dummy \
+	--disable-werror
 
 HOST_OPENOCD_DEPENDENCIES = host-libftdi host-libusb host-libusb-compat
 
