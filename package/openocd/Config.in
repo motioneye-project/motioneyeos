@@ -76,6 +76,7 @@ config BR2_PACKAGE_OPENOCD_OPENDOUS
 config BR2_PACKAGE_OPENOCD_AICE
 	bool "Andes JTAG Programmer"
 	select BR2_PACKAGE_LIBUSB
+	depends on BR2_USE_MMU # use fork()
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libusb
 	help
 	  Enable building support for the Andes JTAG
