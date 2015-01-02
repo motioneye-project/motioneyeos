@@ -21,15 +21,16 @@ set -e
 
 main() {
     local OPT OPTARG
-    local backend output hfile
+    local backend output hfile quiet
 
     # Parse our options; anything after '--' is for the backend
-    while getopts :hb:o:H: OPT; do
+    while getopts :hb:o:H:q OPT; do
         case "${OPT}" in
         h)  help; exit 0;;
         b)  backend="${OPTARG}";;
         o)  output="${OPTARG}";;
         H)  hfile="${OPTARG}";;
+        q)  quiet="-q";;
         :)  error "option '%s' expects a mandatory argument\n" "${OPTARG}";;
         \?) error "unknown option '%s'\n" "${OPTARG}";;
         esac
@@ -49,11 +50,11 @@ main() {
 
     # If the output file already exists, do not download it again
     if [ -e "${output}" ]; then
-        if support/download/check-hash "${hfile}" "${output}" "${output##*/}"; then
+        if support/download/check-hash ${quiet} "${hfile}" "${output}" "${output##*/}"; then
             exit 0
         fi
         rm -f "${output}"
-        printf "Re-downloading '%s'...\n" "${output##*/}"
+        warn "Re-downloading '%s'...\n" "${output##*/}"
     fi
 
     # tmpd is a temporary directory in which backends may store intermediate
@@ -75,7 +76,7 @@ main() {
     # If the backend fails, we can just remove the temporary directory to
     # remove all the cruft it may have left behind. Then we just exit in
     # error too.
-    if ! "${OLDPWD}/support/download/${backend}" "${tmpf}" "${@}"; then
+    if ! "${OLDPWD}/support/download/${backend}" ${quiet} "${tmpf}" "${@}"; then
         rm -rf "${tmpd}"
         exit 1
     fi
@@ -85,7 +86,7 @@ main() {
 
     # Check if the downloaded file is sane, and matches the stored hashes
     # for that file
-    if ! support/download/check-hash "${hfile}" "${tmpf}" "${output##*/}"; then
+    if ! support/download/check-hash ${quiet} "${hfile}" "${tmpf}" "${output##*/}"; then
         rm -rf "${tmpd}"
         exit 1
     fi
