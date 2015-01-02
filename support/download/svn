@@ -4,19 +4,27 @@
 set -e
 
 # Download helper for svn, to be called from the download wrapper script
-# Expected arguments:
-#   $1: output file
-#   $2: svn repo
-#   $3: svn revision
-#   $4: package's basename (eg. foobar-1.2.3)
-# And this environment:
+#
+# Call it as:
+#   .../svn [-q] OUT_FILE REPO_URL REV BASNAME
+#
+# Environment:
 #   SVN      : the svn command to call
+
+verbose=
+while getopts :q OPT; do
+    case "${OPT}" in
+    q)  verbose=-q;;
+    \?) printf "unknown option '%s'\n" "${OPTARG}" >&2; exit 1;;
+    esac
+done
+shift $((OPTIND-1))
 
 output="${1}"
 repo="${2}"
 rev="${3}"
 basename="${4}"
 
-${SVN} export "${repo}@${rev}" "${basename}"
+${SVN} export ${verbose} "${repo}@${rev}" "${basename}"
 
 tar czf "${output}" "${basename}"

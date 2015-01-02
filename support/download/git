@@ -4,13 +4,21 @@
 set -e
 
 # Download helper for git, to be called from the download wrapper script
-# Expected arguments:
-#   $1: output file
-#   $2: git repo
-#   $3: git cset
-#   $4: package's basename (eg. foobar-1.2.3)
-# And this environment:
+#
+# Call it as:
+#   .../git [-q] OUT_FILE REPO_URL CSET BASENAME
+#
+# Environment:
 #   GIT      : the git command to call
+
+verbose=-v
+while getopts :q OPT; do
+    case "${OPT}" in
+    q)  verbose=-q;;
+    \?) printf "unknown option '%s'\n" "${OPTARG}" >&2; exit 1;;
+    esac
+done
+shift $((OPTIND-1))
 
 output="${1}"
 repo="${2}"
@@ -22,7 +30,7 @@ basename="${4}"
 git_done=0
 if [ -n "$(${GIT} ls-remote "${repo}" "${cset}" 2>&1)" ]; then
     printf "Doing shallow clone\n"
-    if ${GIT} clone --depth 1 -b "${cset}" --bare "${repo}" "${basename}"; then
+    if ${GIT} clone ${verbose} --depth 1 -b "${cset}" --bare "${repo}" "${basename}"; then
         git_done=1
     else
         printf "Shallow clone failed, falling back to doing a full clone\n"
@@ -30,7 +38,7 @@ if [ -n "$(${GIT} ls-remote "${repo}" "${cset}" 2>&1)" ]; then
 fi
 if [ ${git_done} -eq 0 ]; then
     printf "Doing full clone\n"
-    ${GIT} clone --bare "${repo}" "${basename}"
+    ${GIT} clone ${verbose} --bare "${repo}" "${basename}"
 fi
 
 GIT_DIR="${basename}" \

@@ -4,13 +4,23 @@
 set -e
 
 # Download helper for cp, to be called from the download wrapper script
-# Expected arguments:
-#   $1: output file
-#   $2: source file
-# And this environment:
+#
+# Call it as:
+#   .../cp [-q] OUT_FILE SRC_FILE
+#
+# Environment:
 #   LOCALFILES: the cp command to call
+
+verbose=-v
+while getopts :q OPT; do
+    case "${OPT}" in
+    q)  verbose=;;
+    \?) printf "unknown option '%s'\n" "${OPTARG}" >&2; exit 1;;
+    esac
+done
+shift $((OPTIND-1))
 
 output="${1}"
 source="${2}"
 
-${LOCALFILES} "${source}" "${output}"
+${LOCALFILES} ${verbose} "${source}" "${output}"

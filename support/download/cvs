@@ -4,14 +4,21 @@
 set -e
 
 # Download helper for cvs, to be called from the download wrapper script
-# Expected arguments:
-#   $1: output file
-#   $2: cvs repo
-#   $3: cvs revision
-#   $4: package's name (eg. foobar)
-#   $5: package's basename (eg. foobar-1.2.3)
-# And this environment:
+#
+# Call it as:
+#   .../cvs [-q] OUT_FILE CVS_URL REV PKG_NAME BASENAME
+#
+# Environment:
 #   CVS      : the cvs command to call
+
+verbose=
+while getopts :q OPT; do
+    case "${OPT}" in
+    q)  verbose=-Q;;
+    \?) printf "unknown option '%s'\n" "${OPTARG}" >&2; exit 1;;
+    esac
+done
+shift $((OPTIND-1))
 
 output="${1}"
 repo="${2}"
@@ -19,7 +26,7 @@ rev="${3}"
 rawname="${4}"
 basename="${5}"
 
-${CVS} -z3 -d":pserver:anonymous@${repo}" \
+${CVS} ${verbose} -z3 -d":pserver:anonymous@${repo}" \
        co -d "${basename}" -r ":${rev}" -P "${rawname}"
 
 tar czf "${output}" "${basename}"

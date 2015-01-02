@@ -4,21 +4,29 @@
 set -e
 
 # Download helper for hg, to be called from the download wrapper script
-# Expected arguments:
-#   $1: output file
-#   $2: hg repo
-#   $3: hg cset
-#   $4: package's basename (eg. foobar-1.2.3)
-# And this environment:
+#
+# Call it as:
+#   .../hg [-q] OUT_FILE REPO_URL CSET BASENAME
+#
+# Environment:
 #   HG       : the hg command to call
+
+verbose=-v
+while getopts :q OPT; do
+    case "${OPT}" in
+    q)  verbose=-q;;
+    \?) printf "unknown option '%s'\n" "${OPTARG}" >&2; exit 1;;
+    esac
+done
+shift $((OPTIND-1))
 
 output="${1}"
 repo="${2}"
 cset="${3}"
 basename="${4}"
 
-${HG} clone --noupdate --rev "${cset}" "${repo}" "${basename}"
+${HG} clone ${verbose} --noupdate --rev "${cset}" "${repo}" "${basename}"
 
-${HG} archive --repository "${basename}" --type tgz \
+${HG} archive ${verbose} --repository "${basename}" --type tgz \
               --prefix "${basename}" --rev "${cset}" \
               "${output}"

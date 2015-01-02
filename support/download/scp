@@ -4,13 +4,23 @@
 set -e
 
 # Download helper for scp, to be called from the download wrapper script
-# Expected arguments:
-#   $1: output file
-#   $2: URL
-# And this environment:
+#
+# Call it as:
+#   .../scp [-q] OUT_FILE SRC_URL
+#
+# Environment:
 #   SCP       : the scp command to call
+
+verbose=-v
+while getopts :q OPT; do
+    case "${OPT}" in
+    q)  verbose=-q;;
+    \?) printf "unknown option '%s'\n" "${OPTARG}" >&2; exit 1;;
+    esac
+done
+shift $((OPTIND-1))
 
 output="${1}"
 url="${2}"
 
-${SCP} "${url}" "${output}"
+${SCP} ${verbose} "${url}" "${output}"

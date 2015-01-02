@@ -10,6 +10,14 @@ set -e
 #       saved as, to be able to match it to the corresponding hashes
 #       in the .hash file
 
+while getopts :q OPT; do
+    case "${OPT}" in
+    q)  exec >/dev/null;;
+    \?) exit 1;;
+    esac
+done
+shift $((OPTIND-1))
+
 h_file="${1}"
 file="${2}"
 base="${3}"
