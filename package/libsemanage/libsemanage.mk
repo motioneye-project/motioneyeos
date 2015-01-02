@@ -5,7 +5,7 @@
 ################################################################################
 
 LIBSEMANAGE_VERSION = 2.1.10
-LIBSEMANAGE_SITE = http://userspace.selinuxproject.org/releases/20130423/
+LIBSEMANAGE_SITE = https://raw.githubusercontent.com/wiki/SELinuxProject/selinux/files/releases/20130423
 LIBSEPOL_LICENSE = LGPLv2.1+
 LIBSEPOL_LICENSE_FILES = COPYING
 
