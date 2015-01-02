@@ -5,6 +5,4 @@ config BR2_PACKAGE_MSMTP
 	  mail to an SMTP server (for example at a free mail provider)
 	  which takes care of further delivery.
 
-	  Note that msmtp is licensed under GPLv3.
-
 	  http://msmtp.sourceforge.net/
