@@ -269,10 +269,10 @@ config BR2_LINUX_KERNEL_UIMAGE_LOADADDR
 	  If unsure, let this option empty.
 
 config BR2_LINUX_KERNEL_DTS_SUPPORT
-	bool "Device tree support"
+	bool "Build a Device Tree Blob (DTB)"
 	help
-	  Compile a device tree source into a device tree blob.
-	  Select the dts file to compile in the options below.
+	  Compile one or more device tree sources into device tree blobs.
+	  Select the dts files to compile in the options below.
 
 if BR2_LINUX_KERNEL_DTS_SUPPORT
 
