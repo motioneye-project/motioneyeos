@@ -4,8 +4,12 @@
 #
 ################################################################################
 
-MPDECIMAL_SITE = http://www.bytereef.org/software/mpdecimal/releases
-MPDECIMAL_VERSION = 2.4.0
+# Official site currently down
+# MPDECIMAL_SITE = http://www.bytereef.org/software/mpdecimal/releases
+
+MPDECIMAL_SITE = https://launchpad.net/ubuntu/+archive/primary/+files/
+MPDECIMAL_VERSION = 2.4.1
+MPDECIMAL_SOURCE = mpdecimal_$(MPDECIMAL_VERSION).orig.tar.gz
 MPDECIMAL_INSTALL_STAGING = YES
 MPDECIMAL_LICENSE = BSD-2c
 MPDECIMAL_LICENSE_FILES = LICENSE.txt
