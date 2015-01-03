@@ -10,7 +10,7 @@ UPX_SOURCE = upx-$(UPX_VERSION)-src.tar.bz2
 UPX_LICENSE = GPLv2+
 UPX_LICENSE_FILES = COPYING
 
-HOST_UPX_DEPENDENCIES = host-ucl
+HOST_UPX_DEPENDENCIES = host-ucl host-zlib
 
 # We need to specify all, otherwise the default target only prints a message
 # stating to "please choose a target for 'make'"... :-(
