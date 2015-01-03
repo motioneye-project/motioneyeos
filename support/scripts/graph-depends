@@ -76,6 +76,28 @@ host_colour = colours[2]
 
 allpkgs = []
 
+# Execute the "make <pkg>-show-version" command to get the version of a given
+# list of packages, and return the version formatted as a Python dictionary.
+def get_version(pkgs):
+    sys.stderr.write("Getting version for %s\n" % pkgs)
+    cmd = ["make", "-s", "--no-print-directory" ]
+    for pkg in pkgs:
+        cmd.append("%s-show-version" % pkg)
+    p = subprocess.Popen(cmd, stdout=subprocess.PIPE, universal_newlines=True)
+    output = p.communicate()[0]
+    if p.returncode != 0:
+        sys.stderr.write("Error getting version %s\n" % pkgs)
+        sys.exit(1)
+    output = output.split("\n")
+    if len(output) != len(pkgs) + 1:
+        sys.stderr.write("Error getting version\n")
+        sys.exit(1)
+    version = {}
+    for i in range(0, len(pkgs)):
+        pkg = pkgs[i]
+        version[pkg] = output[i]
+    return version
+
 # Execute the "make show-targets" command to get the list of the main
 # Buildroot TARGETS and return it formatted as a Python list. This
 # list is used as the starting point for full dependency graphs
@@ -257,6 +279,8 @@ def remove_extra_deps(deps):
     return deps
 
 dict_deps = remove_extra_deps(dict_deps)
+dict_version = get_version([pkg for pkg in allpkgs
+                                if pkg != "all" and not pkg.startswith("root")])
 
 # Print the attributes of a node: label and fill-color
 def print_attrs(pkg):
@@ -274,7 +298,11 @@ def print_attrs(pkg):
             color = host_colour
         else:
             color = target_colour
-    print("%s [label = \"%s\"]" % (name, label))
+    version = dict_version.get(pkg)
+    if version == "virtual":
+        print("%s [label = <<I>%s</I>>]" % (name, label))
+    else:
+        print("%s [label = \"%s\"]" % (name, label))
     print("%s [color=%s,style=filled]" % (name, color))
 
 # Print the dependency graph of a package
