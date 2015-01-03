@@ -313,6 +313,7 @@ endif
 	source "package/evemu/Config.in"
 	source "package/evtest/Config.in"
 	source "package/fan-ctrl/Config.in"
+	source "package/fbtft/Config.in"
 	source "package/fconfig/Config.in"
 	source "package/fis/Config.in"
 	source "package/flashrom/Config.in"
