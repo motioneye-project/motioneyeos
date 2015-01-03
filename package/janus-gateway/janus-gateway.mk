@@ -13,7 +13,8 @@ JANUS_GATEWAY_LICENSE_FILES = COPYING
 JANUS_GATEWAY_DEPENDENCIES = host-pkgconf libmicrohttpd jansson \
 	libnice sofia-sip libsrtp host-gengetopt openssl ding-libs
 
-# Straight out of the repository, no ./configure
+# Straight out of the repository, no ./configure, and we also patch
+# configure.ac.
 JANUS_GATEWAY_AUTORECONF = YES
 
 define JANUS_GATEWAY_M4
