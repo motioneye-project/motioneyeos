@@ -1,6 +1,7 @@
 comment "erlang needs a toolchain w/ threads, shared library"
+	depends on BR2_USE_MMU # fork()
 	depends on BR2_PACKAGE_LIBATOMIC_ARCH_SUPPORTS
-	depends on !BR2_TOOLCHAIN_HAS_THREADS && BR2_STATIC_LIBS
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS
 
 config BR2_PACKAGE_ERLANG
 	bool "erlang"
