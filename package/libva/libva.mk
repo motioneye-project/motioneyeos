@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBVA_VERSION = 1.4.1
+LIBVA_VERSION = 1.5.0
 LIBVA_SOURCE = libva-$(LIBVA_VERSION).tar.bz2
 LIBVA_SITE = http://www.freedesktop.org/software/vaapi/releases/libva
 LIBVA_LICENSE = MIT
