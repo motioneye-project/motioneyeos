@@ -14,7 +14,7 @@ set -e
 verbose=-v
 while getopts :q OPT; do
     case "${OPT}" in
-    q)  verbose=-q;;
+    q)  verbose=-q; exec >/dev/null;;
     \?) printf "unknown option '%s'\n" "${OPTARG}" >&2; exit 1;;
     esac
 done
