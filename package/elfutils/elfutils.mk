@@ -4,12 +4,13 @@
 #
 ################################################################################
 
-ELFUTILS_VERSION = 0.160
+ELFUTILS_VERSION = 0.161
 ELFUTILS_SOURCE = elfutils-$(ELFUTILS_VERSION).tar.bz2
 ELFUTILS_SITE = https://fedorahosted.org/releases/e/l/elfutils/$(ELFUTILS_VERSION)
 ELFUTILS_INSTALL_STAGING = YES
 ELFUTILS_LICENSE = GPLv3 GPLv2 LGPLv3
 ELFUTILS_LICENSE_FILES = COPYING COPYING-GPLV2 COPYING-LGPLV3
+ELFUTILS_PATCH = elfutils-portability-0.161.patch
 
 # The tarball does not have a generated configure script
 ELFUTILS_AUTORECONF = YES
