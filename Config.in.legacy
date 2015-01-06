@@ -102,6 +102,16 @@ endif
 
 comment "Legacy options removed in 2015.02"
 
+config BR2_PACKAGE_STRONGSWAN_TOOLS
+	bool "strongswan option has been removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_STRONGSWAN_PKI
+	select BR2_PACKAGE_STRONGSWAN_SCEP
+	help
+	  The tools option has been removed upstream and the different tools
+	  have been split between the pki and scep options, with others
+	  deprecated.
+
 config BR2_PACKAGE_XBMC_ADDON_XVDR
 	bool "xbmc options have been renamed"
 	select BR2_LEGACY
