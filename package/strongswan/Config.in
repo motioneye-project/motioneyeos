@@ -110,13 +110,21 @@ config BR2_PACKAGE_STRONGSWAN_SQL
 
 endif
 
-config BR2_PACKAGE_STRONGSWAN_TOOLS
-	bool "Enable additional utilities (openac, scepclient and pki)"
+config BR2_PACKAGE_STRONGSWAN_PKI
+	bool "Enable pki certificate utility"
 	default y
 
+config BR2_PACKAGE_STRONGSWAN_SCEP
+	bool "Enable SCEP client tool"
+
 config BR2_PACKAGE_STRONGSWAN_SCRIPTS
-	bool "Enable additional utilities (found in directory scripts)"
-	depends on BR2_PACKAGE_STRONGSWAN_CHARON || BR2_PACKAGE_STRONGSWAN_TOOLS
+	bool "Enable additional utilities (found in scripts directory)"
+	depends on BR2_PACKAGE_STRONGSWAN_CHARON
+	default y
+
+config BR2_PACKAGE_STRONGSWAN_VICI
+	bool "Enable vici/swanctl"
+	depends on BR2_PACKAGE_STRONGSWAN_CHARON
 	default y
 
 endif

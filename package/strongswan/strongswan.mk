@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-STRONGSWAN_VERSION = 5.1.3
+STRONGSWAN_VERSION = 5.2.2
 STRONGSWAN_SOURCE = strongswan-$(STRONGSWAN_VERSION).tar.bz2
 STRONGSWAN_SITE = http://download.strongswan.org
 STRONGSWAN_LICENSE = GPLv2+
@@ -28,8 +28,11 @@ STRONGSWAN_CONF_OPTS +=                                                         
 	--enable-unity=$(if $(BR2_PACKAGE_STRONGSWAN_UNITY),yes,no)                  \
 	--enable-stroke=$(if $(BR2_PACKAGE_STRONGSWAN_STROKE),yes,no)                \
 	--enable-sql=$(if $(BR2_PACKAGE_STRONGSWAN_SQL),yes,no)                      \
-	--enable-tools=$(if $(BR2_PACKAGE_STRONGSWAN_TOOLS),yes,no)                  \
-	--enable-scripts=$(if $(BR2_PACKAGE_STRONGSWAN_SCRIPTS),yes,no)
+	--enable-pki=$(if $(BR2_PACKAGE_STRONGSWAN_PKI),yes,no)                      \
+	--enable-scepclient=$(if $(BR2_PACKAGE_STRONGSWAN_SCEP),yes,no)              \
+	--enable-scripts=$(if $(BR2_PACKAGE_STRONGSWAN_SCRIPTS),yes,no)              \
+	--enable-vici=$(if $(BR2_PACKAGE_STRONGSWAN_VICI),yes,no)                    \
+	--enable-swanctl=$(if $(BR2_PACKAGE_STRONGSWAN_VICI),yes,no)
 
 ifeq ($(BR2_PACKAGE_STRONGSWAN_EAP),y)
 STRONGSWAN_CONF_OPTS +=               \
