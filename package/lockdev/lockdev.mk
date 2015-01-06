@@ -13,30 +13,39 @@ LOCKDEV_LICENSE_FILES = LICENSE
 LOCKDEV_INSTALL_STAGING = YES
 
 ifeq ($(BR2_STATIC_LIBS),y)
-define LOCKDEV_BUILD_CMDS
-	$(MAKE1) $(TARGET_CONFIGURE_OPTS) -C $(@D) static
-endef
+LOCKDEV_BUILD_ARGS = static
+LOCKDEV_INSTALL_ARGS = install_static
+else ifeq ($(BR2_SHARED_STATIC_LIBS),y)
+LOCKDEV_BUILD_ARGS = static shared
+LOCKDEV_INSTALL_ARGS = install_run install_static
+else # BR2_SHARED_LIBS
+LOCKDEV_BUILD_ARGS = shared
+LOCKDEV_INSTALL_ARGS = install_run
+endif
 
-define LOCKDEV_INSTALL_STAGING_CMDS
-	$(MAKE1) basedir=$(STAGING_DIR)/usr -C $(@D) install_dev
-endef
-
-else # BR2_STATIC_LIBS
-
-define LOCKDEV_BUILD_CMDS
-	$(MAKE1) $(TARGET_CONFIGURE_OPTS) -C $(@D) static shared
-endef
-
-define LOCKDEV_INSTALL_STAGING_CMDS
-	$(MAKE1) basedir=$(STAGING_DIR)/usr -C $(@D) install_dev install_run
+ifeq ($(BR2_SHARED_STATIC_LIBS)$(BR2_SHARED_LIBS),y)
+define LOCKDEV_CREATE_LINKS_STAGING
 	ln -sf liblockdev.$(LOCKDEV_VERSION).so $(STAGING_DIR)/usr/lib/liblockdev.so
 	ln -sf liblockdev.$(LOCKDEV_VERSION).so $(STAGING_DIR)/usr/lib/liblockdev.so.1
 endef
 
-define LOCKDEV_INSTALL_TARGET_CMDS
-	$(MAKE1) basedir=$(TARGET_DIR)/usr -C $(@D) install_run
+define LOCKDEV_CREATE_LINKS_TARGET
 	ln -sf liblockdev.$(LOCKDEV_VERSION).so $(TARGET_DIR)/usr/lib/liblockdev.so.1
 endef
-endif # BR2_STATIC_LIBS
+endif
+
+define LOCKDEV_BUILD_CMDS
+	$(MAKE1) $(TARGET_CONFIGURE_OPTS) -C $(@D) $(LOCKDEV_BUILD_ARGS)
+endef
+
+define LOCKDEV_INSTALL_STAGING_CMDS
+	$(MAKE1) basedir=$(STAGING_DIR)/usr -C $(@D) $(LOCKDEV_INSTALL_ARGS) install_dev
+	$(LOCKDEV_CREATE_LINKS_STAGING)
+endef
+
+define LOCKDEV_INSTALL_TARGET_CMDS
+	$(MAKE1) basedir=$(TARGET_DIR)/usr -C $(@D) $(LOCKDEV_INSTALL_ARGS)
+	$(LOCKDEV_CREATE_LINKS_TARGET)
+endef
 
 $(eval $(generic-package))
