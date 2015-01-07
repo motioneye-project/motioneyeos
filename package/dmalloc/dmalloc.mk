@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-DMALLOC_VERSION = 5.4.3
+DMALLOC_VERSION = 5.5.2
 DMALLOC_SOURCE = dmalloc-$(DMALLOC_VERSION).tgz
 DMALLOC_SITE = http://dmalloc.com/releases
 

@@ -1,0 +1,46 @@
+Fix shared library rules
+
+dmalloc uses ld -shared --whole-archive -o lib.so lib.a,
+but for some reason lists regular objects in addition
+to the archive, ending up with two copies of each symbol.
+
+Signed-off-by: Alex Suykov <alex.suykov@gmail.com>
+
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -257,7 +257,7 @@ shlib : $(BUILD_SL)
+ # via: http://256.com/gray/email.html
+ $(LIB_SL) : $(LIBRARY)
+ 	rm -f $@ $@.t
+-	@shlinkargs@ $(LIBRARY) $(OBJS) $(NORMAL_OBJS)
++	@shlinkargs@ $(LIBRARY)
+ 	mv $@.t $@
+ 
+ $(LIBRARY) : $(OBJS) $(NORMAL_OBJS)
+@@ -270,7 +270,7 @@ $(LIB_TH) : $(OBJS) $(THREAD_OBJS)
+ 
+ $(LIB_TH_SL) : $(LIB_TH)
+ 	rm -f $@ $@.t
+-	@shlinkargs@ $(LIB_TH) $(OBJS) $(THREAD_OBJS)
++	@shlinkargs@ $(LIB_TH)
+ 	mv $@.t $@
+ 
+ $(LIB_CXX) : $(OBJS) $(NORMAL_OBJS) $(CXX_OBJS)
+@@ -279,7 +279,7 @@ $(LIB_CXX) : $(OBJS) $(NORMAL_OBJS) $(CXX_OBJS)
+ 
+ $(LIB_CXX_SL) : $(LIB_CXX)
+ 	rm -f $@ $@.t
+-	@shlinkargs@ $(LIB_CXX) $(OBJS) $(NORMAL_OBJS) $(CXX_OBJS)
++	@shlinkargs@ $(LIB_CXX)
+ 	mv $@.t $@
+ 
+ $(LIB_TH_CXX) : $(OBJS) $(THREAD_OBJS) $(CXX_OBJS)
+@@ -288,7 +288,7 @@ $(LIB_TH_CXX) : $(OBJS) $(THREAD_OBJS) $(CXX_OBJS)
+ 
+ $(LIB_TH_CXX_SL) : $(LIB_TH_CXX)
+ 	rm -f $@ $@.t
+-	@shlinkargs@ $(LIB_TH_CXX) $(OBJS) $(THREAD_OBJS) $(CXX_OBJS)
++	@shlinkargs@ $(LIB_TH_CXX)
+ 	mv $@.t $@
+ 
+ threadssl : $(LIB_TH_SL)

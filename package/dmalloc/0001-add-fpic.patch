@@ -15,11 +15,9 @@ Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
  Makefile.in |   10 +++++-----
  1 file changed, 5 insertions(+), 5 deletions(-)
 
-Index: dmalloc-5.4.3/Makefile.in
-===================================================================
---- dmalloc-5.4.3.orig/Makefile.in
-+++ dmalloc-5.4.3/Makefile.in
-@@ -319,17 +319,17 @@
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -318,17 +318,17 @@
  # special _th versions of objects with the LOCK_THREADS variable defined to 1
  chunk_th.o : $(srcdir)/chunk.c
  	rm -f $@
@@ -39,8 +37,8 @@ Index: dmalloc-5.4.3/Makefile.in
 +	$(CC) $(CFLAGS) -fPIC $(CPPFLAGS) $(DEFS) $(INCS) -DLOCK_THREADS=1 \
  		-c $(srcdir)/malloc.c -o ./$@
  
- tests : $(TEST)
-@@ -355,7 +355,7 @@
+ tests : $(TEST) $(TEST_FC)
+@@ -360,7 +360,7 @@
  
  .c.o :
  	rm -f $@
@@ -49,7 +47,7 @@ Index: dmalloc-5.4.3/Makefile.in
  
  #
  # .cc.o auto-target doesn't work on some systems. 
-@@ -363,7 +363,7 @@
+@@ -368,7 +368,7 @@
  #
  dmallocc.o : $(srcdir)/dmallocc.cc
  	rm -f $@
@@ -57,4 +55,4 @@ Index: dmalloc-5.4.3/Makefile.in
 +	$(CXX) $(CFLAGS) -fPIC $(CPPFLAGS) $(DEFS) $(INCS) -c $(srcdir)/dmallocc.cc \
  		-o ./$@
  
- .texi.info :
+ #

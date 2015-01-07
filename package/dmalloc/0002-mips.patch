@@ -1,6 +1,6 @@
---- dmalloc/configure	2006-09-01 18:28:51.000000000 -0700
-+++ dmalloc-mips/configure	2006-09-01 18:49:07.000000000 -0700
-@@ -6114,7 +6114,7 @@
+--- a/configure
++++ b/configure
+@@ -7107,7 +7107,7 @@
  echo $ECHO_N "checking return.h macros work... $ECHO_C" >&6
  if test "$cross_compiling" = yes; then
     cat >>confdefs.h <<\_ACEOF
@@ -9,8 +9,8 @@
  _ACEOF
   echo "$as_me:$LINENO: result: no" >&5
  echo "${ECHO_T}no" >&6
---- dmalloc/return.h	2004-10-19 07:51:21.000000000 -0700
-+++ dmalloc-mips/return.h	2006-09-08 21:52:43.000000000 -0700
+--- a/return.h
++++ b/return.h
 @@ -106,26 +106,16 @@
  /*************************************/
  
