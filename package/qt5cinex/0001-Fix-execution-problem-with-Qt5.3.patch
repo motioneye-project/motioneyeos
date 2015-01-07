@@ -1,0 +1,64 @@
+From 9b045ee7988daf3bb4c7cbe1ed1b9d744820e82b Mon Sep 17 00:00:00 2001
+From: Pierre Le Magourou <pierre.lemagourou@openwide.fr>
+Date: Mon, 15 Dec 2014 11:54:51 +0100
+Subject: [PATCH] Fix execution problem with Qt5.3.
+
+This patch has been inspired from Open Embedded meta-qt5.
+
+Signed-off-by: Pierre Le Magourou <pierre.lemagourou@openwide.fr>
+---
+ content/SettingsView.qml | 4 ++--
+ content/Switch.qml       | 8 ++++----
+ 2 files changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/content/SettingsView.qml b/content/SettingsView.qml
+index 7944803..a0ddcc8 100644
+--- a/content/SettingsView.qml
++++ b/content/SettingsView.qml
+@@ -127,8 +127,8 @@ Item {
+             Switch {
+                 text: "Do you l-o-v-e colors?"
+                 checked: settings.showColors
+-                onText: "Yes"
+-                offText: "No!"
++                textON: "Yes"
++                textOFF: "No!"
+                 onCheckedChanged: {
+                     settings.showColors = checked;
+                 }
+diff --git a/content/Switch.qml b/content/Switch.qml
+index 967c03f..66955fc 100644
+--- a/content/Switch.qml
++++ b/content/Switch.qml
+@@ -6,8 +6,8 @@ Item {
+ 
+     property alias text: textItem.text
+     property bool checked: false
+-    property string onText: "On"
+-    property string offText: "Off"
++    property string textON: "On"
++    property string textOFF: "Off"
+ 
+     QtObject {
+         id: priv
+@@ -120,7 +120,7 @@ Item {
+             color: "#000000"
+             font.pixelSize: 18
+             font.bold: true
+-            text: onText
++            text: textON
+         }
+         Text {
+             anchors.verticalCenter: parent.verticalCenter
+@@ -129,7 +129,7 @@ Item {
+             color: "#ffffff"
+             font.pixelSize: 18
+             font.bold: true
+-            text: offText
++            text: textOFF
+         }
+ 
+         Image {
+-- 
+2.1.3
+
