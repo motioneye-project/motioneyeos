@@ -26,7 +26,7 @@ else
 endif
 
 ifeq ($(BR2_PACKAGE_CURL),y)
-	GIT_DEPENDENCIES += curl
+	GIT_DEPENDENCIES += libcurl
 	GIT_CONF_OPTS += --with-curl
 else
 	GIT_CONF_OPTS += --without-curl
