@@ -31,6 +31,7 @@ VIM_LICENSE_FILES = README.txt
 define VIM_INSTALL_TARGET_CMDS
 	cd $(@D)/src; \
 		$(MAKE) DESTDIR=$(TARGET_DIR) installvimbin; \
+		$(MAKE) DESTDIR=$(TARGET_DIR) installtools; \
 		$(MAKE) DESTDIR=$(TARGET_DIR) installlinks
 endef
 
