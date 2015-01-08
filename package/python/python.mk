@@ -33,6 +33,7 @@ HOST_PYTHON_CONF_OPTS += 	\
 	--disable-test-modules	\
 	--disable-bz2		\
 	--disable-ssl		\
+	--disable-ossaudiodev	\
 	--disable-pyo-build
 
 # Make sure that LD_LIBRARY_PATH overrides -rpath.
