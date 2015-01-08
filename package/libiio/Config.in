@@ -1,6 +1,5 @@
 config BR2_PACKAGE_LIBIIO
 	bool "libiio"
-	depends on BR2_TOOLCHAIN_HAS_THREADS
 	select BR2_PACKAGE_LIBIIO_LOCAL_BACKEND if !BR2_PACKAGE_LIBIIO_NETWORK_BACKEND
 	help
 	  Libiio is a library to ease the development of software
@@ -42,6 +41,3 @@ config BR2_PACKAGE_LIBIIO_TESTS
 	  Install the test programs (iio_info, iio_genxml, iio_readdev).
 
 endif
-
-comment "libiio needs a toolchain w/ threads"
-	depends on !BR2_TOOLCHAIN_HAS_THREADS
