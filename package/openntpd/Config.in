@@ -1,5 +1,7 @@
 config BR2_PACKAGE_OPENNTPD
 	bool "openntpd"
+	depends on BR2_INET_IPV6
+	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_USE_MMU # fork ()
 	depends on !BR2_PACKAGE_NTP # conflicting binaries
 	help
@@ -9,3 +11,7 @@ config BR2_PACKAGE_OPENNTPD
 	  redistributing the local clock. It just works.
 
 	  http://www.openntpd.org/
+
+comment "openntpd needs a toolchain w/ threads, IPv6"
+	depends on BR2_USE_MMU
+	depends on !BR2_INET_IPV6 || !BR2_TOOLCHAIN_HAS_THREADS
