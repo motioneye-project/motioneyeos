@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Buildroot wrapper to the collection of ext2/3/4 filesystem tools:
 # - genext2fs, to generate ext2 filesystem images
