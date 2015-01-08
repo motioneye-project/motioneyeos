@@ -1249,6 +1249,7 @@ endif
 	source "package/getent/Config.in"
 	source "package/htop/Config.in"
 	source "package/iprutils/Config.in"
+	source "package/irqbalance/Config.in"
 	source "package/keyutils/Config.in"
 	source "package/kmod/Config.in"
 	source "package/lxc/Config.in"
