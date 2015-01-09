@@ -740,6 +740,7 @@ menu "Hardware handling"
 endmenu
 
 menu "Javascript"
+	source "package/bootstrap/Config.in"
 	source "package/explorercanvas/Config.in"
 	source "package/flot/Config.in"
 	source "package/jquery/Config.in"
