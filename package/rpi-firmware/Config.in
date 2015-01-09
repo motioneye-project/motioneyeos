@@ -45,4 +45,15 @@ config BR2_PACKAGE_RPI_FIRMWARE_BOOT
 	default "_x"    if BR2_PACKAGE_RPI_FIRMWARE_X
 	default "_cd"   if BR2_PACKAGE_RPI_FIRMWARE_CD
 
+config BR2_PACKAGE_RPI_FIRMWARE_INSTALL_DTBS
+	bool "Install Device Tree Blobs (DTBs)"
+	help
+	  Say 'y' here if you want to boot your kernel that has support
+	  for the device tree.
+
+	  Note that the defconfig files in the Raspberry Pi fork of the
+	  Linux kernel do not enable support for the Device Tree. You'll
+	  have to provide your own Linux config or defconfig file with
+	  device tree enabled, to make use of those DTBs.
+
 endif # BR2_PACKAGE_RPI_FIRMWARE
