@@ -55,9 +55,7 @@ After building, you should obtain this tree:
     +-- rpi-firmware
     |   +-- bootcode.bin
     |   +-- config.txt
-    |   +-- fixup_cd.dat
     |   +-- fixup.dat
-    |   +-- start_cd.elf
     |   `-- start.elf
     `-- zImage
 
