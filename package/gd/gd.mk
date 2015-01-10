@@ -52,6 +52,13 @@ else
 GD_CONF_OPTS += --without-png
 endif
 
+ifeq ($(BR2_PACKAGE_TIFF),y)
+GD_DEPENDENCIES += tiff
+GD_CONF_OPTS += --with-tiff
+else
+GD_CONF_OPTS += --without-tiff
+endif
+
 ifeq ($(BR2_PACKAGE_XLIB_LIBXPM),y)
 GD_DEPENDENCIES += xlib_libXpm
 GD_CONF_OPTS += --with-xpm
