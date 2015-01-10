@@ -1,0 +1,27 @@
+Do not add (possibly poisoned) /usr/local/include and /usr/local/lib
+to gcc and ld search paths in configure.
+
+With BR2_COMPILER_PARANOID_UNSAFE_PATH enabled, poisoned paths result
+in hard errors, failing affected configure tests.
+
+Signed-off-by: Alex Suykov <alex.suykov@gmail.com>
+
+--- a/configure.ac
++++ b/configure.ac
+@@ -57,16 +57,6 @@
+ AC_TYPE_INT32_T
+ AC_TYPE_UINT32_T
+ 
+-dnl --------------------------------------
+-dnl Check whether to add /usr/local or not
+-dnl (this is somewhat a religious problem)
+-dnl --------------------------------------
+-dnl
+-if test "`$CPP -v < /dev/null 2>&1 | grep '/usr/local/include' 2>&1`" = ""; then
+-  CPPFLAGS="$CPPFLAGS -I/usr/local/include"
+-  LDFLAGS="$LDFLAGS -L/usr/local/lib"
+-fi
+-
+ dnl ------------------------------------
+ dnl Check for socket libs (AIX, Solaris)
+ dnl ------------------------------------
