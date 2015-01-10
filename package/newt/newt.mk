@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-NEWT_VERSION = 0.52.17
+NEWT_VERSION = 0.52.18
 NEWT_SITE = https://fedorahosted.org/releases/n/e/newt
 NEWT_INSTALL_STAGING = YES
 NEWT_DEPENDENCIES = popt slang \
