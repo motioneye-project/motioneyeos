@@ -394,6 +394,7 @@ endif
 	source "package/usbutils/Config.in"
 	source "package/w_scan/Config.in"
 	source "package/wipe/Config.in"
+	source "package/xorriso/Config.in"
 endmenu
 
 menu "Interpreter languages and scripting"
