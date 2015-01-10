@@ -60,6 +60,11 @@ config BR2_PACKAGE_PYTHON_CURSES
 	help
 	  curses module for Python.
 
+config BR2_PACKAGE_PYTHON_OSSAUDIODEV
+	bool "ossaudiodev module"
+	help
+	  ossaudiodev module for Python.
+
 config BR2_PACKAGE_PYTHON_PYEXPAT
 	select BR2_PACKAGE_EXPAT
 	bool "pyexpat"

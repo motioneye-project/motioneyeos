@@ -120,6 +120,12 @@ ifeq ($(BR2_PACKAGE_PYTHON_HASHLIB),y)
 PYTHON_DEPENDENCIES += openssl
 endif
 
+ifeq ($(BR2_PACKAGE_PYTHON_OSSAUDIODEV),y)
+PYTHON_CONF_OPTS += --enable-ossaudiodev
+else
+PYTHON_CONF_OPTS += --disable-ossaudiodev
+endif
+
 PYTHON_CONF_ENV += \
 	ac_cv_have_long_long_format=yes \
 	ac_cv_file__dev_ptmx=yes \
