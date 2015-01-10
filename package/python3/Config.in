@@ -61,6 +61,11 @@ config BR2_PACKAGE_PYTHON3_DECIMAL
 	help
 	  decimal module for Python3.
 
+config BR2_PACKAGE_PYTHON3_OSSAUDIODEV
+	bool "ossaudiodev module"
+	help
+	  ossaudiodev module for Python3.
+
 config BR2_PACKAGE_PYTHON3_PYEXPAT
 	select BR2_PACKAGE_EXPAT
 	bool "pyexpat"

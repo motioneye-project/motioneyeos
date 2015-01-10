@@ -1,0 +1,21 @@
+Add an option to disable the ossaudiodev module
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/configure.ac
+===================================================================
+--- a/configure.ac
++++ b/configure.ac
+@@ -2417,6 +2417,12 @@
+ fi
+ AC_SUBST(MPDEC)
+ 
++AC_ARG_ENABLE(ossaudiodev,
++	AS_HELP_STRING([--disable-ossaudiodev], [disable OSSAUDIODEV]),
++	[ if test "$enableval" = "no"; then
++	  DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} ossaudiodev"
++	  fi])
++
+ # Check for support for loadable sqlite extensions
+ AC_MSG_CHECKING(for --enable-loadable-sqlite-extensions)
+ AC_ARG_ENABLE(loadable-sqlite-extensions,

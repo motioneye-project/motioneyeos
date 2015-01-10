@@ -36,6 +36,7 @@ HOST_PYTHON3_CONF_OPTS += 	\
 	--enable-unicodedata	\
 	--disable-test-modules	\
 	--disable-idle3		\
+	--disable-ossaudiodev	\
 	--disable-pyo-build
 
 # Make sure that LD_LIBRARY_PATH overrides -rpath.
@@ -106,6 +107,12 @@ endif
 
 ifeq ($(BR2_PACKAGE_PYTHON3_ZLIB),y)
 PYTHON3_DEPENDENCIES += zlib
+endif
+
+ifeq ($(BR2_PACKAGE_PYTHON3_OSSAUDIODEV),y)
+PYTHON3_CONF_OPTS += --enable-ossaudiodev
+else
+PYTHON3_CONF_OPTS += --disable-ossaudiodev
 endif
 
 PYTHON3_CONF_ENV += \
