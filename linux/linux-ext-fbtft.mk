@@ -10,13 +10,13 @@ LINUX_EXTENSIONS += fbtft
 # for linux < 3.15 install to drivers/video/fbtft
 define FBTFT_PREPARE_KERNEL
 	if [ -e $(LINUX_DIR)/drivers/video/fbdev ]; then \
-		dest=$(LINUX_DIR)/drivers/video/fbdev ; \
+		dest=drivers/video/fbdev ; \
 	else \
-		dest=$(LINUX_DIR)/drivers/video/ ; \
+		dest=drivers/video ; \
 	fi ; \
-	mkdir -p $${dest}/fbtft; \
-	cp -dpfr $(FBTFT_DIR)/* $${dest}/fbtft/ ; \
-	echo 'source "drivers/video/fbdev/fbtft/Kconfig"' \
-		>> $${dest}/Kconfig ; \
-	echo 'obj-y += fbtft/' >> $${dest}/Makefile
+	mkdir -p $(LINUX_DIR)/$${dest}/fbtft; \
+	cp -dpfr $(FBTFT_DIR)/* $(LINUX_DIR)/$${dest}/fbtft/ ; \
+	echo "source \"$${dest}/fbtft/Kconfig\"" \
+		>> $(LINUX_DIR)/$${dest}/Kconfig ; \
+	echo 'obj-y += fbtft/' >> $(LINUX_DIR)/$${dest}/Makefile
 endef
