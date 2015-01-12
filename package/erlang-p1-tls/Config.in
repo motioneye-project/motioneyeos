@@ -1,0 +1,6 @@
+config BR2_PACKAGE_ERLANG_P1_TLS
+	bool "erlang-p1-tls"
+	help
+	  Erlang interface to OpenSSL
+
+	  https://github.com/processone/tls
