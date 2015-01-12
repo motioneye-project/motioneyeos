@@ -67,8 +67,3 @@ LIBCURL_POST_INSTALL_TARGET_HOOKS += LIBCURL_TARGET_CLEANUP
 endif
 
 $(eval $(autotools-package))
-
-curl: libcurl
-curl-clean: libcurl-clean
-curl-dirclean: libcurl-dirclean
-curl-source: libcurl-source
