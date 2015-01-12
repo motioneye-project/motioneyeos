@@ -1078,6 +1078,7 @@ endif
 	source "package/dnsmasq/Config.in"
 	source "package/dropbear/Config.in"
 	source "package/ebtables/Config.in"
+	source "package/ejabberd/Config.in"
 	source "package/ethtool/Config.in"
 	source "package/faifa/Config.in"
 	source "package/fmc/Config.in"

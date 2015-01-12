@@ -1,0 +1,35 @@
+#!/bin/sh
+#
+# Start/stop ejabberd
+#
+
+USER=ejabberd
+RUNDIR=/var/run/ejabberd
+
+mkrundir() {
+    install -d -o $USER -g $USER $RUNDIR
+}
+
+case "$1" in
+    start)
+	mkrundir
+        echo "Starting ejabberd..."
+        ejabberdctl start
+        ;;
+    stop)
+        echo -n "Stopping ejabberd... "
+        ejabberdctl stop > /dev/null
+        if [ $? -eq 3 ] || ejabberdctl stopped; then
+            echo "OK"
+        else
+            echo "failed"
+        fi
+        ;;
+    restart|reload)
+        "$0" stop
+        "$0" start
+        ;;
+    *)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 1
+esac

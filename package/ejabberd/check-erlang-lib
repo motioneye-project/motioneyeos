@@ -1,0 +1,55 @@
+#!/bin/sh -e
+# Helper to bypass AC_ERLANG_CHECK_LIB
+#
+# Ejabberd releases do not download specific versions of its erlang
+# dependencies.  Instead, it clones the master branch of a git
+# repository and asks erl to provide the library version.  However,
+# the target erl program cannot be called from the host. So, this
+# script aims at finding the library version installed on the target,
+# without calling erlang.
+
+usage() {
+    cat <<EOF
+Usage:
+        $0 library
+Look for Erlang's library in TARGET_DIR/usr/lib/erlang/lib.
+
+If the library is found, it returns the path to the latest version,
+relative to TARGET_DIR. Otherwise, it returns "not found".
+
+If there are several versions, it returns an error because it does not
+know which one Erlang uses.
+
+EOF
+}
+
+die () {
+    echo "$@" >&2
+    exit 1
+}
+
+if [ $# -ne 1 ]; then
+    usage
+    exit 0
+else
+    library="$1"
+fi
+
+target_dir="${TARGET_DIR:-output/target}"
+
+[ -d "$target_dir" ] || die "TARGET_DIR is not a directory. Please \
+specify the TARGET_DIR environment variable."
+
+case "$(ls -1d -- "$target_dir/usr/lib/erlang/lib/$library-"* | wc -l)" in
+    0)
+        echo "not found"
+        ;;
+    1)
+        echo "$target_dir/usr/lib/erlang/lib/$library-"* \
+            | sed -e "s,^$target_dir,,"
+        ;;
+    *)
+        die "Several versions of $library have been found. Please \
+        remove the unused ones."
+        ;;
+esac

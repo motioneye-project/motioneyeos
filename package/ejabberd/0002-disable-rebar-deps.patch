@@ -1,0 +1,70 @@
+Description: remove make targets for deps
+ Without this patch, dependencies would be downloaded and compiled
+ using rebar at build time.
+Author: Philipp Huebner <debalance@debian.org>
+
+Index: ejabberd/Makefile.in
+===================================================================
+--- ejabberd.orig/Makefile.in
++++ ejabberd/Makefile.in
+@@ -68,26 +68,11 @@ else
+   INIT_USER=$(INSTALLUSER)
+ endif
+ 
+-all: deps src
++all: src
+ 
+-deps: deps/.got
+-
+-deps/.got:
+-	rm -rf deps/.got
+-	rm -rf deps/.built
+-	$(REBAR) get-deps && :> deps/.got
+-
+-deps/.built: deps/.got
+-	$(REBAR) compile && :> deps/.built
+-
+-src: deps/.built
++src:
+ 	$(REBAR) skip_deps=true compile
+ 
+-update:
+-	rm -rf deps/.got
+-	rm -rf deps/.built
+-	$(REBAR) update-deps && :> deps/.got
+-
+ translations:
+ 	contrib/extract_translations/prepare-translation.sh -updateall
+ 
+@@ -103,8 +88,6 @@ spec:
+ 	$(ERL) -noinput +B -pa ebin -pa deps/*/ebin -eval \
+ 	'case xml_gen:compile("tools/xmpp_codec.spec") of ok -> halt(0); _ -> halt(1) end.'
+ 
+-DLLs := $(wildcard deps/*/priv/*.so) $(wildcard deps/*/priv/lib/*.so)
+-
+ install: all
+ 	#
+ 	# Configuration files
+@@ -139,14 +122,11 @@ install: all
+ 	$(INSTALL) -d $(BEAMDIR)
+ 	$(INSTALL) -m 644 ebin/*.app $(BEAMDIR)
+ 	$(INSTALL) -m 644 ebin/*.beam $(BEAMDIR)
+-	$(INSTALL) -m 644 deps/*/ebin/*.app $(BEAMDIR)
+-	$(INSTALL) -m 644 deps/*/ebin/*.beam $(BEAMDIR)
+ 	rm -f $(BEAMDIR)/configure.beam
+ 	#
+ 	# ejabberd header files
+ 	$(INSTALL) -d $(INCLUDEDIR)
+ 	$(INSTALL) -m 644 include/*.hrl $(INCLUDEDIR)
+-	$(INSTALL) -m 644 deps/*/include/*.hrl $(INCLUDEDIR)
+ 	#
+ 	# Binary C programs
+ 	$(INSTALL) -d $(PBINDIR)
+@@ -156,7 +136,6 @@ install: all
+ 	#
+ 	# Binary system libraries
+ 	$(INSTALL) -d $(SODIR)
+-	$(INSTALL) -m 644 $(DLLs) $(SODIR)
+ 	#
+ 	# Translated strings
+ 	$(INSTALL) -d $(MSGSDIR)

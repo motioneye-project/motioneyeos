@@ -1,0 +1,20 @@
+Description: remove make targets for deps
+ Without this patch, dependencies would be downloaded and compiled
+ using rebar at build time.
+Author: Philipp Huebner <debalance@debian.org>
+
+Index: ejabberd/rebar.config.script
+===================================================================
+--- ejabberd.orig/rebar.config.script
++++ ejabberd/rebar.config.script
+@@ -126,9 +126,7 @@ Config = [{erl_opts, Macros ++ HiPE ++ D
+           {sub_dirs, ["rel"]},
+           {keep_build_info, true},
+           {ct_extra_params, "-include "
+-           ++ filename:join([Cwd, "tools"])},
+-          {post_hooks, PostHooks ++ CfgPostHooks},
+-          {deps, Deps ++ CfgDeps}],
++           ++ filename:join([Cwd, "tools"])}],
+ %%io:format("ejabberd configuration:~n  ~p~n", [Config]),
+ Config.
+ 
