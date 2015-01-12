@@ -1,0 +1,11 @@
+config BR2_PACKAGE_ERLANG_LAGER
+	bool "erlang-lager"
+	select BR2_PACKAGE_ERLANG_GOLDRUSH
+	help
+	  Lager (as in the beer) is a logging framework for
+	  Erlang. Its purpose is to provide a more traditional way to
+	  perform logging in an erlang application that plays nicely
+	  with traditional UNIX logging tools like logrotate and
+	  syslog.
+
+	  https://github.com/basho/lager

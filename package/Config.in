@@ -400,6 +400,7 @@ menu "Interpreter languages and scripting"
 if BR2_PACKAGE_ERLANG
 menu "Erlang libraries/modules"
 	source "package/erlang-goldrush/Config.in"
+	source "package/erlang-lager/Config.in"
 endmenu
 endif
 	source "package/guile/Config.in"
