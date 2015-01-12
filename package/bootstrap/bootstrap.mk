@@ -14,8 +14,13 @@ define BOOTSTRAP_EXTRACT_CMDS
 endef
 
 define BOOTSTRAP_INSTALL_TARGET_CMDS
-	mkdir -p $(TARGET_DIR)/var/www/bootstrap
-	cp -dpfr $(@D)/dist/* $(TARGET_DIR)/var/www/bootstrap
+	$(INSTALL) -m 0644 -D $(@D)/dist/css/bootstrap-theme.min.css \
+		$(TARGET_DIR)/var/www/bootstrap/css/bootstrap-theme.min.css
+	$(INSTALL) -m 0644 -D $(@D)/dist/css/bootstrap.min.css \
+		$(TARGET_DIR)/var/www/bootstrap/css/bootstrap.min.css
+	$(INSTALL) -m 0644 -D $(@D)/dist/js/bootstrap.min.js \
+		$(TARGET_DIR)/var/www/bootstrap/js/bootstrap.min.js
+	cp -r $(@D)/dist/fonts $(TARGET_DIR)/var/www/bootstrap/
 endef
 
 $(eval $(generic-package))
