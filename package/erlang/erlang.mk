@@ -4,6 +4,7 @@
 #
 ################################################################################
 
+# See note below when updating Erlang
 ERLANG_VERSION = 17.4
 ERLANG_SITE = http://www.erlang.org/download
 ERLANG_SOURCE = otp_src_$(ERLANG_VERSION).tar.gz
@@ -15,6 +16,10 @@ ERLANG_INSTALL_STAGING = YES
 
 # Touching erts/configure.in
 ERLANG_AUTORECONF = YES
+
+# Whenever updating Erlang, this value should be updated as well, to the
+# value of EI_VSN in the file lib/erl_interface/vsn.mk
+ERLANG_EI_VSN = 3.7.20
 
 # The configure checks for these functions fail incorrectly
 ERLANG_CONF_ENV = ac_cv_func_isnan=yes ac_cv_func_isinf=yes
