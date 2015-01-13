@@ -8,7 +8,7 @@ config BR2_PACKAGE_DTC
 	  Note that only the library is installed.
 	  If you want the programs, say 'y' here, and to "dtc programs", below.
 
-	  http://git.jdl.com/gitweb/?p=dtc.git  (no home page)
+	  https://git.kernel.org/cgit/utils/dtc/dtc.git
 
 if BR2_PACKAGE_DTC
 

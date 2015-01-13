@@ -4,8 +4,9 @@
 #
 ################################################################################
 
-DTC_VERSION = v1.4.0
-DTC_SITE = git://git.jdl.com/software/dtc.git
+DTC_VERSION = 1.4.0
+DTC_SOURCE = dtc-$(DTC_VERSION).tar.xz
+DTC_SITE = https://www.kernel.org/pub/software/utils/dtc
 DTC_LICENSE = GPLv2+/BSD-2c
 DTC_LICENSE_FILES = README.license GPL
 DTC_INSTALL_STAGING = YES
