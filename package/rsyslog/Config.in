@@ -11,6 +11,6 @@ config BR2_PACKAGE_RSYSLOG
 
 	  http://www.rsyslog.com
 
-comment "rsyslog needs a toolchain w/ largefile, wchar, threads"
+comment "rsyslog needs a toolchain w/ threads"
 	depends on BR2_USE_MMU
-	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_LARGEFILE || !BR2_USE_WCHAR
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
