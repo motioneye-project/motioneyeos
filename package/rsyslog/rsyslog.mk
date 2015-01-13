@@ -39,8 +39,8 @@ else
 endif
 
 define RSYSLOG_INSTALL_INIT_SYSV
-	$(INSTALL) -m 0755 -D package/rsyslog/S01rsyslog \
-		$(TARGET_DIR)/etc/init.d/S01rsyslog
+	$(INSTALL) -m 0755 -D package/rsyslog/S01logging \
+		$(TARGET_DIR)/etc/init.d/S01logging
 endef
 
 define RSYSLOG_INSTALL_INIT_SYSTEMD
