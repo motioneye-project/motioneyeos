@@ -42,9 +42,8 @@ config BR2_PACKAGE_CONNMAN_WISPR
 config BR2_PACKAGE_CONNMAN_BLUETOOTH
 	bool "enable Bluetooth support"
 	help
-	  Enable Bluetooth (PAN profile) support. The start of
-	  bluetoothd is automatically detected and only a runtime
-	  dependency.
+	  Enable Bluetooth support. The start of bluetoothd is
+	  automatically detected and only a runtime dependency.
 
 config BR2_PACKAGE_CONNMAN_LOOPBACK
 	bool "enable loopback support"
