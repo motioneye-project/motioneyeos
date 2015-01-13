@@ -1,0 +1,40 @@
+From 818d59f093100d5f39db34d5686a9d983172d307 Mon Sep 17 00:00:00 2001
+From: Steve James <ste@junkomatic.net>
+Date: Sun, 5 Apr 2015 16:30:46 +0200
+Subject: [PATCH 2/2] Add install recipe
+
+Upstream-Status: Submitted [https://github.com/google/leveldb/pull/276]
+
+Signed-off-by: Steve James <ste@junkomatic.net>
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ Makefile | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+
+diff --git a/Makefile b/Makefile
+index 2bd2cad..530f2c3 100644
+--- a/Makefile
++++ b/Makefile
+@@ -225,3 +225,19 @@ else
+ .c.o:
+ 	$(CC) $(CFLAGS) -c $< -o $@
+ endif
++
++INSTALL_ROOT = /
++INSTALL_PREFIX= usr/local
++
++install: $(SHARED) $(LIBRARY)
++	install -d -m 0755 $(INSTALL_ROOT)$(INSTALL_PREFIX)/include/leveldb
++	install -D -m 0644 include/leveldb/*.h $(INSTALL_ROOT)$(INSTALL_PREFIX)/include/leveldb
++	install -d -m 0755 $(INSTALL_ROOT)$(INSTALL_PREFIX)/lib
++  ifneq (,$(LIBRARY))
++	install -m 0644 $(LIBRARY) $(INSTALL_ROOT)$(INSTALL_PREFIX)/lib
++  endif
++  ifneq (,$(SHARED))
++	install -m 0755 $(SHARED3) $(INSTALL_ROOT)$(INSTALL_PREFIX)/lib
++	ln -sf $(SHARED3) $(INSTALL_ROOT)$(INSTALL_PREFIX)/lib/$(SHARED1)
++	ln -sf $(SHARED3) $(INSTALL_ROOT)$(INSTALL_PREFIX)/lib/$(SHARED2)
++  endif
+-- 
+2.1.0
+
