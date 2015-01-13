@@ -4,15 +4,13 @@
 #
 ################################################################################
 
-RSYSLOG_VERSION = 7.6.7
+RSYSLOG_VERSION = 8.7.0
 RSYSLOG_SITE = http://rsyslog.com/files/download/rsyslog
 RSYSLOG_LICENSE = GPLv3 LGPLv3 Apache-2.0
 RSYSLOG_LICENSE_FILES = COPYING COPYING.LESSER COPYING.ASL20
 RSYSLOG_DEPENDENCIES = zlib libestr liblogging json-c host-pkgconf
-
-RSYSLOG_CONF_OPTS = --disable-testbench \
-		   --enable-cached-man-pages \
-		   --disable-generate-man-pages
+RSYSLOG_CONF_ENV = ac_cv_prog_cc_c99='-std=c99'
+RSYSLOG_CONF_OPTS = --disable-generate-man-pages
 
 # Build after BusyBox
 ifeq ($(BR2_PACKAGE_BUSYBOX),y)
