@@ -10,7 +10,12 @@ RSYSLOG_LICENSE = GPLv3 LGPLv3 Apache-2.0
 RSYSLOG_LICENSE_FILES = COPYING COPYING.LESSER COPYING.ASL20
 RSYSLOG_DEPENDENCIES = zlib libestr liblogging json-c host-pkgconf
 RSYSLOG_CONF_ENV = ac_cv_prog_cc_c99='-std=c99'
-RSYSLOG_CONF_OPTS = --disable-generate-man-pages
+RSYSLOG_PLUGINS = imdiag imfile impstats imptcp \
+	mmanon mmaudit mmfields mmjsonparse mmpstrucdata mmsequence mmutf8fix \
+	mail omprog omruleset omstdout omuxsock \
+	pmaixforwardedfrom pmciscoios pmcisconames pmlastmsg pmsnare
+RSYSLOG_CONF_OPTS = --disable-generate-man-pages \
+	$(foreach x,$(call qstrip,$(RSYSLOG_PLUGINS)),--enable-$(x))
 
 # Build after BusyBox
 ifeq ($(BR2_PACKAGE_BUSYBOX),y)
