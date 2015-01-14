@@ -65,4 +65,9 @@ define SQUID_USERS
 	squid -1 squid -1 * - - - Squid proxy cache
 endef
 
+define SQUID_INSTALL_INIT_SYSV
+	$(INSTALL) -m 755 -D package/squid/S97squid \
+		$(TARGET_DIR)/etc/init.d/S97squid
+endef
+
 $(eval $(autotools-package))
