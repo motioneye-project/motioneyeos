@@ -31,9 +31,9 @@ endif
 ifeq ($(BR2_PACKAGE_LIBGCRYPT),y)
 RSYSLOG_DEPENDENCIES += libgcrypt
 RSYSLOG_CONF_ENV += LIBGCRYPT_CONFIG=$(STAGING_DIR)/usr/bin/libgcrypt-config
-RSYSLOG_CONF_OPTS += --enable-libgcrypt=yes
+RSYSLOG_CONF_OPTS += --enable-libgcrypt
 else
-RSYSLOG_CONF_OPTS += --enable-libgcrypt=no
+RSYSLOG_CONF_OPTS += --disable-libgcrypt
 endif
 
 ifeq ($(BR2_PACKAGE_MYSQL),y)
