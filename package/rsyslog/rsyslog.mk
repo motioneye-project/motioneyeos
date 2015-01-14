@@ -21,38 +21,38 @@ RSYSLOG_AUTORECONF = YES
 
 # Build after BusyBox
 ifeq ($(BR2_PACKAGE_BUSYBOX),y)
-	RSYSLOG_DEPENDENCIES += busybox
+RSYSLOG_DEPENDENCIES += busybox
 endif
 
 ifeq ($(BR2_PACKAGE_LIBEE),y)
-	RSYSLOG_DEPENDENCIES += libee
+RSYSLOG_DEPENDENCIES += libee
 endif
 
 ifeq ($(BR2_PACKAGE_LIBGCRYPT),y)
-	RSYSLOG_DEPENDENCIES += libgcrypt
-	RSYSLOG_CONF_ENV += LIBGCRYPT_CONFIG=$(STAGING_DIR)/usr/bin/libgcrypt-config
-	RSYSLOG_CONF_OPTS += --enable-libgcrypt=yes
+RSYSLOG_DEPENDENCIES += libgcrypt
+RSYSLOG_CONF_ENV += LIBGCRYPT_CONFIG=$(STAGING_DIR)/usr/bin/libgcrypt-config
+RSYSLOG_CONF_OPTS += --enable-libgcrypt=yes
 else
-	RSYSLOG_CONF_OPTS += --enable-libgcrypt=no
+RSYSLOG_CONF_OPTS += --enable-libgcrypt=no
 endif
 
 ifeq ($(BR2_PACKAGE_MYSQL),y)
-	RSYSLOG_DEPENDENCIES += mysql
-	RSYSLOG_CONF_OPTS += --enable-mysql
-	RSYSLOG_CONF_ENV += ac_cv_prog_MYSQL_CONFIG=$(STAGING_DIR)/usr/bin/mysql_config
+RSYSLOG_DEPENDENCIES += mysql
+RSYSLOG_CONF_OPTS += --enable-mysql
+RSYSLOG_CONF_ENV += ac_cv_prog_MYSQL_CONFIG=$(STAGING_DIR)/usr/bin/mysql_config
 endif
 
 ifeq ($(BR2_PACKAGE_POSTGRESQL),y)
-	RSYSLOG_DEPENDENCIES += postgresql
-	RSYSLOG_CONF_OPTS += --enable-pgsql
-	RSYSLOG_CONF_ENV += ac_cv_prog_PG_CONFIG=$(STAGING_DIR)/usr/bin/pg_config
+RSYSLOG_DEPENDENCIES += postgresql
+RSYSLOG_CONF_OPTS += --enable-pgsql
+RSYSLOG_CONF_ENV += ac_cv_prog_PG_CONFIG=$(STAGING_DIR)/usr/bin/pg_config
 endif
 
 ifeq ($(BR2_PACKAGE_UTIL_LINUX_LIBUUID),y)
-	RSYSLOG_DEPENDENCIES += util-linux
-	RSYSLOG_CONF_OPTS += --enable-uuid
+RSYSLOG_DEPENDENCIES += util-linux
+RSYSLOG_CONF_OPTS += --enable-uuid
 else
-	RSYSLOG_CONF_OPTS += --disable-uuid
+RSYSLOG_CONF_OPTS += --disable-uuid
 endif
 
 define RSYSLOG_INSTALL_INIT_SYSV
