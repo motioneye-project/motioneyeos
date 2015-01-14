@@ -1,0 +1,27 @@
+From b8d32eff8dbfff5a93b6ea6ee9f5747e16cb32c4 Mon Sep 17 00:00:00 2001
+From: Gustavo Zacarias <gustavo@zacarias.com.ar>
+Date: Wed, 14 Jan 2015 10:53:20 -0300
+Subject: [PATCH] src/Makefile.am: drop hardcoded -ldl
+
+This breaks static builds where the toolchain completely lacks libdl.
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+---
+ src/Makefile.am | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/Makefile.am b/src/Makefile.am
+index 7d6c905..374598a 100644
+--- a/src/Makefile.am
++++ b/src/Makefile.am
+@@ -11,6 +11,6 @@ lib_LTLIBRARIES = libnetfilter_conntrack.la
+ libnetfilter_conntrack_la_LIBADD = conntrack/libnfconntrack.la \
+ 				   expect/libnfexpect.la \
+ 				   ${LIBNFNETLINK_LIBS} ${LIBMNL_LIBS}
+-libnetfilter_conntrack_la_LDFLAGS = -Wc,-nostartfiles -lnfnetlink -ldl 	\
++libnetfilter_conntrack_la_LDFLAGS = -Wc,-nostartfiles -lnfnetlink \
+ 				    -version-info $(LIBVERSION)
+ libnetfilter_conntrack_la_SOURCES = main.c callback.c
+-- 
+2.0.5
+
