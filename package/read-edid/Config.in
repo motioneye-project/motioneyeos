@@ -1,6 +1,5 @@
 config BR2_PACKAGE_READ_EDID
 	bool "read-edid"
-	depends on BR2_i386
 	help
 	  Read-edid is a pair of tools for reading the EDID from a
 	  monitor.  It should work with most monitors made since 1996
@@ -10,5 +9,7 @@ config BR2_PACKAGE_READ_EDID
 	  the raw edid information from the monitor, and parse-edid,
 	  which turns the raw binary information into an
 	  XF86Config-compatible monitor section.
+
+	  Notice that the get-edid tool is only available on x86.
 
 	  http://polypux.org/projects/read-edid/
