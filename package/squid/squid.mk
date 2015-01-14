@@ -39,7 +39,8 @@ SQUID_CONF_OPTS = \
 	--with-logdir=/var/log/squid/ \
 	--with-pidfile=/var/run/squid.pid \
 	--with-swapdir=/var/cache/squid/ \
-	--enable-icap-client
+	--enable-icap-client \
+	--with-default-user=squid
 
 # On uClibc librt needs libpthread
 ifeq ($(BR2_TOOLCHAIN_HAS_THREADS)$(BR2_TOOLCHAIN_USES_UCLIBC),yy)
@@ -59,5 +60,9 @@ define SQUID_CLEANUP_TARGET
 endef
 
 SQUID_POST_INSTALL_TARGET_HOOKS += SQUID_CLEANUP_TARGET
+
+define SQUID_USERS
+	squid -1 squid -1 * - - - Squid proxy cache
+endef
 
 $(eval $(autotools-package))
