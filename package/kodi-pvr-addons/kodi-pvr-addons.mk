@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-# This cset is on the branch 'master'
-# When Kodi is released this should be updated to the corresponding branch
-KODI_PVR_ADDONS_VERSION = 78397afa33774b484a1649c379d9b5e6eb3180c0
+# This cset is on the branch 'helix'
+# When Kodi is updated, this should be updated to the corresponding branch
+KODI_PVR_ADDONS_VERSION = 9f63d1bc39ffcb28f8aea580ea0669211e4d16e5
 KODI_PVR_ADDONS_SITE = $(call github,opdenkamp,xbmc-pvr-addons,$(KODI_PVR_ADDONS_VERSION))
 KODI_PVR_ADDONS_LICENSE = GPLv3+
 KODI_PVR_ADDONS_LICENSE_FILES = COPYING
