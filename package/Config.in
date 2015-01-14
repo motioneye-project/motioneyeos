@@ -964,6 +964,7 @@ endmenu
 menu "Text and terminal handling"
 	source "package/enchant/Config.in"
 	source "package/icu/Config.in"
+	source "package/libcli/Config.in"
 	source "package/libedit/Config.in"
 	source "package/libenca/Config.in"
 	source "package/libestr/Config.in"
