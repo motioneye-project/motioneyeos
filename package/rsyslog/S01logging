@@ -2,7 +2,6 @@
 
 start() {
   echo -n "Starting rsyslog daemon: "
-  umask 077
   start-stop-daemon -S -q -p /var/run/rsyslogd.pid --exec /usr/sbin/rsyslogd
   [ $? = 0 ] && echo "OK" || echo "FAIL"
 }
