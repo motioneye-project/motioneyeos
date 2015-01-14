@@ -40,12 +40,16 @@ ifeq ($(BR2_PACKAGE_MYSQL),y)
 RSYSLOG_DEPENDENCIES += mysql
 RSYSLOG_CONF_OPTS += --enable-mysql
 RSYSLOG_CONF_ENV += ac_cv_prog_MYSQL_CONFIG=$(STAGING_DIR)/usr/bin/mysql_config
+else
+RSYSLOG_CONF_OPTS += --disable-mysql
 endif
 
 ifeq ($(BR2_PACKAGE_POSTGRESQL),y)
 RSYSLOG_DEPENDENCIES += postgresql
 RSYSLOG_CONF_OPTS += --enable-pgsql
 RSYSLOG_CONF_ENV += ac_cv_prog_PG_CONFIG=$(STAGING_DIR)/usr/bin/pg_config
+else
+RSYSLOG_CONF_OPTS += --disable-pgsql
 endif
 
 ifeq ($(BR2_PACKAGE_UTIL_LINUX_LIBUUID),y)
