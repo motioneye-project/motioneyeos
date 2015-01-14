@@ -16,6 +16,8 @@ RSYSLOG_PLUGINS = imdiag imfile impstats imptcp \
 	pmaixforwardedfrom pmciscoios pmcisconames pmlastmsg pmsnare
 RSYSLOG_CONF_OPTS = --disable-generate-man-pages \
 	$(foreach x,$(call qstrip,$(RSYSLOG_PLUGINS)),--enable-$(x))
+# For mysql and pgsql support patches
+RSYSLOG_AUTORECONF = YES
 
 # Build after BusyBox
 ifeq ($(BR2_PACKAGE_BUSYBOX),y)
@@ -32,6 +34,18 @@ ifeq ($(BR2_PACKAGE_LIBGCRYPT),y)
 	RSYSLOG_CONF_OPTS += --enable-libgcrypt=yes
 else
 	RSYSLOG_CONF_OPTS += --enable-libgcrypt=no
+endif
+
+ifeq ($(BR2_PACKAGE_MYSQL),y)
+	RSYSLOG_DEPENDENCIES += mysql
+	RSYSLOG_CONF_OPTS += --enable-mysql
+	RSYSLOG_CONF_ENV += ac_cv_prog_MYSQL_CONFIG=$(STAGING_DIR)/usr/bin/mysql_config
+endif
+
+ifeq ($(BR2_PACKAGE_POSTGRESQL),y)
+	RSYSLOG_DEPENDENCIES += postgresql
+	RSYSLOG_CONF_OPTS += --enable-pgsql
+	RSYSLOG_CONF_ENV += ac_cv_prog_PG_CONFIG=$(STAGING_DIR)/usr/bin/pg_config
 endif
 
 ifeq ($(BR2_PACKAGE_UTIL_LINUX_LIBUUID),y)
