@@ -102,6 +102,14 @@ endif
 
 comment "Legacy options removed in 2015.02"
 
+config BR2_PACKAGE_GOB2
+	bool "gob2 target package removed"
+	select BR2_LEGACY
+	help
+	  The gob2 target package has been removed, it's been
+	  deprecated for some time now and was essentially useless
+	  without a target toolchain.
+
 config BR2_PACKAGE_DISTCC
 	bool "distcc target package removed"
 	select BR2_LEGACY
