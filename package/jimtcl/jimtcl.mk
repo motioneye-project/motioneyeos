@@ -32,10 +32,11 @@ JIMTCL_INSTALL_LIB =
 else
 JIMTCL_SHARED = --shared
 JIMTCL_LIB = so.$(JIMTCL_VERSION)
-JIMTCL_INSTALL_LIB = \
+define JIMTCL_INSTALL_LIB
 	$(INSTALL) -D $(@D)/libjim.$(JIMTCL_LIB) \
-	$(TARGET_DIR)/usr/lib/libjim.$(JIMTCL_LIB); \
+		$(TARGET_DIR)/usr/lib/libjim.$(JIMTCL_LIB)
 	ln -s libjim.$(JIMTCL_LIB) $(TARGET_DIR)/usr/lib/libjim.so
+endef
 endif
 
 define JIMTCL_CONFIGURE_CMDS
