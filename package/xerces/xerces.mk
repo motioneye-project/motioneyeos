@@ -11,8 +11,9 @@ XERCES_LICENSE = Apache-2.0
 XERCES_LICENSE_FILES = LICENSE
 XERCES_MAKE = $(MAKE1)
 XERCES_INSTALL_STAGING = YES
-XERCES_CONF_OPTS = --disable-threads \
-		  --with-gnu-ld
+XERCES_CONF_OPTS = \
+	--disable-threads \
+	--with-gnu-ld
 
 ifeq ($(BR2_PACKAGE_LIBICONV),y)
 XERCES_CONF_ENV += LIBS=-liconv

@@ -14,8 +14,9 @@ LIBNSPR_LICENSE = MPLv2.0
 LIBNSPR_LICENSE_FILES = nspr/LICENSE
 
 # Set the host CFLAGS and LDFLAGS so NSPR does not guess wrongly
-LIBNSPR_CONF_ENV = HOST_CFLAGS="-g -O2" \
-		   HOST_LDFLAGS="-lc"
+LIBNSPR_CONF_ENV = \
+	HOST_CFLAGS="-g -O2" \
+	HOST_LDFLAGS="-lc"
 # NSPR mixes up --build and --host
 LIBNSPR_CONF_OPTS = --host=$(GNU_HOST_NAME)
 LIBNSPR_CONF_OPTS += --$(if $(BR2_ARCH_IS_64),en,dis)able-64bit

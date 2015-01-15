@@ -18,7 +18,8 @@ LIBGTK3_CONF_ENV = \
 	ac_cv_path_GDK_PIXBUF_CSOURCE=$(HOST_DIR)/usr/bin/gdk-pixbuf-csource \
 	PKG_CONFIG_FOR_BUILD=$(HOST_DIR)/usr/bin/pkgconf
 
-LIBGTK3_CONF_OPTS = --disable-glibtest \
+LIBGTK3_CONF_OPTS = \
+	--disable-glibtest \
 	--enable-explicit-deps=no \
 	--enable-gtk2-dependency \
 	--disable-introspection
@@ -147,8 +148,9 @@ HOST_LIBGTK3_DEPENDENCIES = \
 	host-gdk-pixbuf \
 	host-pkgconf
 
-HOST_LIBGTK3_CFLAGS = $(shell $(HOST_DIR)/usr/bin/pkgconf \
-		      --cflags --libs gdk-pixbuf-2.0)
+HOST_LIBGTK3_CFLAGS = \
+	$(shell $(HOST_DIR)/usr/bin/pkgconf \
+	--cflags --libs gdk-pixbuf-2.0)
 
 define HOST_LIBGTK3_CONFIGURE_CMDS
 	echo "#define GETTEXT_PACKAGE \"gtk30\"" >> $(@D)/gtk/config.h

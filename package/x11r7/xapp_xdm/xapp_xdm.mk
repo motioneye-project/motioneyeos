@@ -11,8 +11,9 @@ XAPP_XDM_LICENSE = MIT
 XAPP_XDM_LICENSE_FILES = COPYING
 XAPP_XDM_CONF_ENV = ac_cv_file__dev_urandom=yes
 XAPP_XDM_DEPENDENCIES = xapp_sessreg xapp_xrdb xlib_libX11 xlib_libXaw xlib_libXdmcp xlib_libXinerama xlib_libXt xproto_xineramaproto xproto_xproto
-XAPP_XDM_CONF_OPTS = --with-utmp-file=/var/adm/utmpx \
-		    --with-wtmp-file=/var/adm/wtmpx
+XAPP_XDM_CONF_OPTS = \
+	--with-utmp-file=/var/adm/utmpx \
+	--with-wtmp-file=/var/adm/wtmpx
 
 define XAPP_XDM_INSTALL_INIT_SYSV
 	$(INSTALL) -m 0755 -D package/x11r7/xapp_xdm/S99xdm \

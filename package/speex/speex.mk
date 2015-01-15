@@ -11,9 +11,10 @@ SPEEX_LICENSE_FILES = COPYING
 
 SPEEX_INSTALL_STAGING = YES
 SPEEX_DEPENDENCIES = libogg
-SPEEX_CONF_OPTS = --with-ogg-libraries=$(STAGING_DIR)/usr/lib \
-		 --with-ogg-includes=$(STAGING_DIR)/usr/include \
-		 --enable-fixed-point
+SPEEX_CONF_OPTS = \
+	--with-ogg-libraries=$(STAGING_DIR)/usr/lib \
+	--with-ogg-includes=$(STAGING_DIR)/usr/include \
+	--enable-fixed-point
 
 ifeq ($(BR2_PACKAGE_SPEEX_ARM4),y)
 	SPEEX_CONF_OPTS += --enable-arm4-asm
