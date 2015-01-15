@@ -102,6 +102,13 @@ endif
 
 comment "Legacy options removed in 2015.02"
 
+config BR2_PACKAGE_M4
+	bool "m4 target package removed"
+	select BR2_LEGACY
+	help
+	  The m4 target package has been removed, it's been
+	  deprecated for some time now.
+
 config BR2_PACKAGE_FLEX_BINARY
 	bool "flex binary in target option removed"
 	select BR2_LEGACY
