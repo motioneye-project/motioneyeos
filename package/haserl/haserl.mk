@@ -4,12 +4,8 @@
 #
 ################################################################################
 
-HASERL_VERSION = $(call qstrip,$(BR2_PACKAGE_HASERL_VERSION))
-ifeq ($(BR2_PACKAGE_HASERL_VERSION_0_8_X),y)
-HASERL_SITE = http://downloads.sourceforge.net/project/haserl/haserl/$(HASERL_VERSION)
-else
+HASERL_VERSION = 0.9.33
 HASERL_SITE = http://downloads.sourceforge.net/project/haserl/haserl-devel
-endif
 HASERL_LICENSE = GPLv2
 HASERL_LICENSE_FILES = COPYING
 HASERL_DEPENDENCIES = host-pkgconf
