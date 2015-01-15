@@ -102,6 +102,14 @@ endif
 
 comment "Legacy options removed in 2015.02"
 
+config BR2_PACKAGE_FLEX_BINARY
+	bool "flex binary in target option removed"
+	select BR2_LEGACY
+	help
+	  The flex binary in the target option has been removed.
+	  It's been deprecated for some time now and is essentially a
+	  development tool which isn't very useful in the target.
+
 config BR2_PACKAGE_BISON
 	bool "bison target package removed"
 	select BR2_LEGACY

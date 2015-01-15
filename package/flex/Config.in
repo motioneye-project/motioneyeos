@@ -6,24 +6,3 @@ config BR2_PACKAGE_FLEX
 	  programs that perform pattern-matching on text.
 
 	  http://flex.sourceforge.net/
-
-if BR2_PACKAGE_FLEX
-
-config BR2_PACKAGE_FLEX_BINARY
-	bool "Install flex binary on target"
-	# needs fork()
-	depends on BR2_USE_MMU
-	# runtime dependency
-	select BR2_PACKAGE_M4
-	# development tool, useless on the target
-	depends on BR2_DEPRECATED_SINCE_2014_02
-	depends on BR2_USE_WCHAR # m4
-	help
-	  Install the flex binary tool in the target filesystem.
-
-comment "flex binary needs a toolchain w/ wchar"
-	depends on BR2_DEPRECATED_SINCE_2014_02
-	depends on BR2_USE_MMU
-	depends on !BR2_USE_WCHAR
-
-endif
