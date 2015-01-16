@@ -33,6 +33,17 @@ config BR2_PACKAGE_LUAINTERPRETER_ABI_VERSION
 	default "5.2"	if BR2_PACKAGE_LUA_5_2
 	default "5.3"	if BR2_PACKAGE_LUA_5_3
 
+if BR2_PACKAGE_LUA_5_3
+config BR2_PACKAGE_LUA_32BITS
+	bool "Use 32 bit numbers"
+	default y if !BR2_ARCH_IS_64
+	help
+	  Use a 32 bit data type for numbers / integers instead of the
+	  default 64 bit type.  This option is particularly attractive
+	  for small machines and embedded systems.
+
+endif
+
 choice
 	prompt "Lua command-line editing"
 	default BR2_PACKAGE_LUA_EDITING_NONE

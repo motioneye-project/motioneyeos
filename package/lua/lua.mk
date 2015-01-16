@@ -58,6 +58,14 @@ ifneq ($(BR2_LARGEFILE),y)
 	LUA_CFLAGS += -D_FILE_OFFSET_BITS=32
 endif
 
+ifeq ($(BR2_PACKAGE_LUA_32BITS),y)
+define LUA_32BITS_LUACONF
+	$(SED) 's/\/\* #define LUA_32BITS \*\//#define LUA_32BITS/' $(@D)/src/luaconf.h
+endef
+
+LUA_POST_PATCH_HOOKS += LUA_32BITS_LUACONF
+endif
+
 # We never want to have host-readline and host-ncurses as dependencies
 # of host-lua.
 HOST_LUA_DEPENDENCIES =
