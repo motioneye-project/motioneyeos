@@ -27,9 +27,8 @@ define JQUERY_UI_INSTALL_TARGET_CMDS
 	$(INSTALL) -m 0644 -D $(@D)/themes/base/minified/jquery-ui.min.css \
 		$(TARGET_DIR)/var/www/jquery-ui.css
 	$(INSTALL) -d $(TARGET_DIR)/var/www/images
-	cp -a $(@D)/themes/base/minified/images/*.png \
-		$(TARGET_DIR)/var/www/images
-	chmod 0644 $(TARGET_DIR)/var/www/images/*.png
+	$(INSTALL) -m 0644 -t $(TARGET_DIR)/var/www/images \
+		$(@D)/themes/base/minified/images/*.png
 endef
 
 $(eval $(generic-package))
