@@ -4,10 +4,14 @@
 #
 ################################################################################
 
+ifeq ($(BR2_PACKAGE_LUA_5_3),y)
+LUA_VERSION = 5.3.0
+else
 ifeq ($(BR2_PACKAGE_LUA_5_2),y)
 LUA_VERSION = 5.2.3
 else
 LUA_VERSION = 5.1.5
+endif
 endif
 LUA_SITE = http://www.lua.org/ftp
 LUA_INSTALL_STAGING = YES
@@ -23,10 +27,11 @@ LUA_PROVIDES = luainterpreter
 LUA_CFLAGS = -Wall -fPIC -DLUA_USE_POSIX
 
 ifeq ($(BR2_PACKAGE_LUA_5_2),y)
-LUA_CFLAGS += -DLUA_COMPAT_ALL
-ifneq ($(BR2_LARGEFILE),y)
-LUA_CFLAGS += -D_FILE_OFFSET_BITS=32
+	LUA_CFLAGS += -DLUA_COMPAT_ALL
 endif
+
+ifeq ($(BR2_PACKAGE_LUA_5_3),y)
+	LUA_CFLAGS += -DLUA_COMPAT_5_2
 endif
 
 ifeq ($(BR2_STATIC_LIBS),y)
@@ -47,6 +52,10 @@ ifeq ($(BR2_PACKAGE_LUA_LINENOISE),y)
 	LUA_MYLIBS += -llinenoise
 	LUA_CFLAGS += -DLUA_USE_LINENOISE
 endif
+endif
+
+ifneq ($(BR2_LARGEFILE),y)
+	LUA_CFLAGS += -D_FILE_OFFSET_BITS=32
 endif
 
 # We never want to have host-readline and host-ncurses as dependencies
