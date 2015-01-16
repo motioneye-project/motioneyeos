@@ -326,6 +326,26 @@ config BR2_TARGET_GENERIC_REMOUNT_ROOTFS_RW
 
 endif # BR2_ROOTFS_SKELETON_DEFAULT
 
+
+config BR2_SYSTEM_DHCP
+	string "Network interface to configure through DHCP"
+	default ""
+	depends on !BR2_PACKAGE_SYSTEMD_NETWORKD && (BR2_PACKAGE_BUSYBOX || BR2_PACKAGE_IFUPDOWN)
+	help
+	  Enter here the name of the network interface (E.G. eth0) to
+	  automatically configure through DHCP at bootup.
+
+	  If left empty, no automatic DHCP requests will take place.
+
+	  For more complicated network setups use an overlay to overwrite
+	  /etc/network/interfaces or add a networkd configuration file.
+
+comment "automatic network configuration via DHCP is not compatible with networkd"
+	depends on BR2_PACKAGE_SYSTEMD_NETWORKD
+
+comment "automatic network configuration via DHCP needs ifupdown or busybox"
+	depends on !(BR2_PACKAGE_BUSYBOX || BR2_PACKAGE_IFUPDOWN)
+
 config BR2_TARGET_TZ_INFO
 	bool "Install timezone info"
 	# No timezone for musl; only for uClibc or (e)glibc.
