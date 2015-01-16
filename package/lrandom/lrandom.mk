@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-ifeq ($(BR2_PACKAGE_LUA_5_2),y)
+ifeq ($(BR2_PACKAGE_LUA_5_2)$(BR2_PACKAGE_LUA_5_3),y)
 LRANDOM_VERSION = 20120430.52-1
 else
 LRANDOM_VERSION = 20120430.51-1
