@@ -132,6 +132,7 @@ config BR2_TARGET_GRUB2_I386_EFI
 
 config BR2_TARGET_GRUB2_X86_64_EFI
 	bool "x86-64-efi"
+	depends on BR2_ARCH_IS_64
 	help
 	  Select this option if the platform you're targetting has a
 	  64 bits EFI BIOS.
