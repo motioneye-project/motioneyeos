@@ -48,8 +48,13 @@ config BR2_LINUX_KERNEL_CUSTOM_VERSION
 config BR2_LINUX_KERNEL_CUSTOM_TARBALL
 	bool "Custom tarball"
 	help
-	  This option allows to specify the http or ftp location of a
-	  specific kernel source tarball
+	  This option allows to specify a URL pointing to a kernel source
+	  tarball. This URL can use any protocol recognized by Buildroot,
+	  like http://, ftp://, file:// or scp://.
+
+	  When pointing to a local tarball using file://, you may want to
+	  use a make variable like $(TOPDIR) to reference the root of the
+	  Buildroot tree.
 
 config BR2_LINUX_KERNEL_CUSTOM_GIT
 	bool "Custom Git repository"
