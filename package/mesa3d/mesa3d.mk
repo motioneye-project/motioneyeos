@@ -36,7 +36,7 @@ MESA3D_DEPENDENCIES += \
 	libxcb
 MESA3D_CONF_OPTS += --enable-glx
 # quote from mesa3d configure "Building xa requires at least one non swrast gallium driver."
-ifneq ($(BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_NOUVEAU)$(BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_SVGA),)
+ifneq ($(BR2_PACKAGE_MESA3D_NEEDS_XA),)
 MESA3D_CONF_OPTS += --enable-xa
 else
 MESA3D_CONF_OPTS += --disable-xa

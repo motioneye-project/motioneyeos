@@ -36,6 +36,9 @@ config BR2_PACKAGE_PROVIDES_LIBGL
 config BR2_PACKAGE_MESA3D_DRIVER
 	bool
 
+config BR2_PACKAGE_MESA3D_NEEDS_XA
+	bool
+
 comment "Gallium drivers"
 
 config BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_NOUVEAU
@@ -43,6 +46,7 @@ config BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_NOUVEAU
 	depends on BR2_i386 || BR2_x86_64
 	select BR2_PACKAGE_MESA3D_GALLIUM_DRIVER
 	select BR2_PACKAGE_LIBDRM_NOUVEAU
+	select BR2_PACKAGE_MESA3D_NEEDS_XA
 	help
 	  Supports all Nvidia GPUs.
 
@@ -51,6 +55,7 @@ config BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_SVGA
 	depends on BR2_i386 || BR2_x86_64
 	select BR2_PACKAGE_MESA3D_GALLIUM_DRIVER
 	select BR2_PACKAGE_LIBDRM_VMWGFX
+	select BR2_PACKAGE_MESA3D_NEEDS_XA
 	help
 	  This is a virtual GPU driver for VMWare virtual machines.
 
