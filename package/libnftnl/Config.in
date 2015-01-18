@@ -2,7 +2,6 @@ config BR2_PACKAGE_LIBNFTNL
 	bool "libnftnl"
 	depends on BR2_INET_IPV6
 	depends on BR2_LARGEFILE
-	depends on BR2_TOOLCHAIN_HAS_THREADS
 	# bad headers, no sa_family_t in linux/socket.h
 	depends on !(BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_POWERPC201103 || BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_POWERPC201009)
 	select BR2_PACKAGE_LIBMNL
@@ -25,12 +24,15 @@ config BR2_PACKAGE_LIBNFTNL_JSON
 
 config BR2_PACKAGE_LIBNFTNL_XML
 	bool "enable XML support"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
 	select BR2_PACKAGE_MXML
 	help
 	  Enable XML parsing support
 
+comment "libnftnl XML parsing support needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
+
 endif
 
-comment "libnftnl needs a toolchain w/ threads, IPv6, largefile"
-	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_INET_IPV6 || \
-		!BR2_LARGEFILE
+comment "libnftnl needs a toolchain w/ IPv6, largefile"
+	depends on !BR2_INET_IPV6 || !BR2_LARGEFILE
