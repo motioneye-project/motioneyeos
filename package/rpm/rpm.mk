@@ -46,7 +46,10 @@ endif
 
 # xz payload support needs a toolchain w/ C++
 ifeq ($(BR2_PACKAGE_XZ)$(BR2_INSTALL_LIBSTDCPP),yy)
-RPM_CONF_OPTS += --with-xz
+RPM_DEPENDENCIES += xz
+RPM_CONF_OPTS += --with-xz=external
+else
+RPM_CONF_OPTS += --with-xz=none
 endif
 
 ifeq ($(BR2_PACKAGE_BZIP2),y)
