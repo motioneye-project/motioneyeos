@@ -34,14 +34,14 @@ ifeq ($(BR2_PACKAGE_PCRE),y)
 RPM_DEPENDENCIES += pcre
 RPM_CONF_OPTS += --with-pcre=external
 else
-RPM_CONF_OPTS += --with-pcre=no
+RPM_CONF_OPTS += --with-pcre=none
 endif
 
 ifeq ($(BR2_PACKAGE_FILE),y)
 RPM_DEPENDENCIES += file
 RPM_CONF_OPTS += --with-file=external
 else
-RPM_CONF_OPTS += --with-file=no
+RPM_CONF_OPTS += --with-file=none
 endif
 
 # xz payload support needs a toolchain w/ C++
