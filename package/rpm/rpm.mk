@@ -26,6 +26,10 @@ RPM_CONF_OPTS = \
 	--with-libbeecrypt=$(STAGING_DIR) \
 	--with-popt=$(STAGING_DIR)
 
+ifeq ($(BR2_NEEDS_GETTEXT_IF_LOCALE),y)
+RPM_DEPENDENCIES += gettext
+endif
+
 ifeq ($(BR2_PACKAGE_PCRE),y)
 RPM_DEPENDENCIES += pcre
 RPM_CONF_OPTS += --with-pcre=external
