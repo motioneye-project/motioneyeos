@@ -77,9 +77,11 @@ endif
 
 # quote from kodi/configure.in: "GLES overwrites GL if both set to yes."
 # we choose the opposite because opengl offers more features, like libva support
+# GL means X11, and under X11, Kodi needs libdrm; libdrm is forcefully selected
+# by a modular Xorg server, which Kodi already depends on.
 ifeq ($(BR2_PACKAGE_KODI_GL),y)
 KODI_DEPENDENCIES += libglew libglu libgl sdl_image xlib_libX11 xlib_libXext \
-	xlib_libXmu xlib_libXrandr xlib_libXt
+	xlib_libXmu xlib_libXrandr xlib_libXt libdrm
 KODI_CONF_OPTS += --enable-gl --enable-sdl --enable-x11 --enable-xrandr --disable-gles
 ifeq ($(BR2_PACKAGE_KODI_RSXS),y)
 # fix rsxs compile
