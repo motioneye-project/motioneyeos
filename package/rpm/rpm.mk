@@ -44,11 +44,12 @@ else
 RPM_CONF_OPTS += --with-file=no
 endif
 
-ifeq ($(BR2_PACKAGE_RPM_XZ_PAYLOADS),y)
+# xz payload support needs a toolchain w/ C++
+ifeq ($(BR2_PACKAGE_XZ)$(BR2_INSTALL_LIBSTDCPP),yy)
 RPM_CONF_OPTS += --with-xz
 endif
 
-ifeq ($(BR2_PACKAGE_RPM_BZIP2_PAYLOADS),y)
+ifeq ($(BR2_PACKAGE_BZIP2),y)
 RPM_CONF_OPTS += --with-bzip2
 RPM_DEPENDENCIES += bzip2
 endif

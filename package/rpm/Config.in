@@ -19,22 +19,3 @@ config BR2_PACKAGE_RPM
 	  The RPM package management system.
 
 	  http://rpm5.org
-
-if BR2_PACKAGE_RPM
-
-config BR2_PACKAGE_RPM_BZIP2_PAYLOADS
-	bool "support for bzip2 payloads"
-	select BR2_PACKAGE_BZIP2
-	help
-	  Support for bzip2 payloads in RPM.
-
-config BR2_PACKAGE_RPM_XZ_PAYLOADS
-	bool "support for xz payloads"
-	depends on BR2_INSTALL_LIBSTDCPP
-	help
-	  Support for xz payloads in RPM.
-
-comment "xz payload support needs a toolchain w/ C++"
-	depends on !BR2_INSTALL_LIBSTDCPP
-
-endif

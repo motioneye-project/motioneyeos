@@ -102,6 +102,22 @@ endif
 
 comment "Legacy options removed in 2015.02"
 
+config BR2_PACKAGE_RPM_BZIP2_PAYLOADS
+	bool "rpm's bzip2 payloads option has been removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_BZIP2
+	help
+	  The bzip2 payloads option rely entirely on the dependant package bzip2.
+	  So, you need to select it to enable this feature.
+
+config BR2_PACKAGE_RPM_XZ_PAYLOADS
+	bool "rpm's xz payloads option has been removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_XZ
+	help
+	  The xz payloads option rely entirely on the dependant package xz.
+	  So, you need to select it to enable this feature.
+
 config BR2_PACKAGE_M4
 	bool "m4 target package removed"
 	select BR2_LEGACY
