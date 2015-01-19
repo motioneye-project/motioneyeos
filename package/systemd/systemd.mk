@@ -133,6 +133,14 @@ else
 SYSTEMD_CONF_OPTS += --disable-smack
 endif
 
+ifeq ($(BR2_PACKAGE_BASH),)
+SYSTEMD_CONF_OPTS += --with-bashcompletiondir=
+endif
+
+ifeq ($(BR2_PACKAGE_ZSH),)
+SYSTEMD_CONF_OPTS += --with-zshcompletiondir=
+endif
+
 # mq_getattr needs -lrt
 SYSTEMD_MAKE_OPTS += LIBS=-lrt
 SYSTEMD_MAKE_OPTS += LDFLAGS+=-ldl

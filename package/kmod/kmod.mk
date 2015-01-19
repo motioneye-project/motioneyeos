@@ -64,6 +64,10 @@ else
 KMOD_CONF_OPTS += --disable-tools
 endif
 
+ifeq ($(BR2_PACKAGE_BASH),)
+KMOD_CONF_OPTS += --with-bashcompletiondir=
+endif
+
 # We only install depmod, since that's the only tool used for the
 # host.
 define HOST_KMOD_INSTALL_TOOLS
