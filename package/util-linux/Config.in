@@ -26,6 +26,11 @@ config BR2_PACKAGE_UTIL_LINUX_LIBMOUNT
 	help
 	  Install libmount.
 
+config BR2_PACKAGE_UTIL_LINUX_LIBSMARTCOLS
+	bool "libsmartcols"
+	help
+	  Install libsmartcols.
+
 config BR2_PACKAGE_UTIL_LINUX_LIBUUID
 	bool "libuuid"
 	help
@@ -36,6 +41,7 @@ config BR2_PACKAGE_UTIL_LINUX_BINARIES
 	depends on BR2_USE_MMU # fork()
 	select BR2_PACKAGE_UTIL_LINUX_LIBBLKID
 	select BR2_PACKAGE_UTIL_LINUX_LIBMOUNT
+	select BR2_PACKAGE_UTIL_LINUX_LIBSMARTCOLS
 	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
 	help
 	  Install the basic set of util-linux binaries.
@@ -51,6 +57,11 @@ config BR2_PACKAGE_UTIL_LINUX_ARCH
 	bool "arch"
 	help
 	  Print machine architecture
+
+config BR2_PACKAGE_UTIL_LINUX_BFS
+	bool "bfs"
+	help
+	  SCO bfs filesystem support
 
 config BR2_PACKAGE_UTIL_LINUX_CHFN_CHSH
 	bool "chfn/chsh"
@@ -86,15 +97,30 @@ config BR2_PACKAGE_UTIL_LINUX_FALLOCATE
 	help
 	  Preallocate space to a file
 
+config BR2_PACKAGE_UTIL_LINUX_FDFORMAT
+	bool "fdformat"
+	help
+	  Low-level format a floppy disk
+
 config BR2_PACKAGE_UTIL_LINUX_FSCK
 	bool "fsck"
 	help
 	  Check and repair a linux filesystem
 
+config BR2_PACKAGE_UTIL_LINUX_HWCLOCK
+	bool "hwclock"
+	help
+	  Query or set the hardware clock (RTC)
+
 config BR2_PACKAGE_UTIL_LINUX_KILL
 	bool "kill"
 	help
 	  Send a signal to a process
+
+config BR2_PACKAGE_UTIL_LINUX_LAST
+	bool "last"
+	help
+	  Show a listing of last logged in users
 
 config BR2_PACKAGE_UTIL_LINUX_LOGIN_UTILS
 	bool "login utilities"
@@ -118,6 +144,11 @@ config BR2_PACKAGE_UTIL_LINUX_MESG
 	help
 	  Control write access to your terminal
 
+config BR2_PACKAGE_UTIL_LINUX_MINIX
+	bool "minix"
+	help
+	  Minix filesystem support
+
 config BR2_PACKAGE_UTIL_LINUX_NSENTER
 	bool "nsenter"
 	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0
@@ -127,15 +158,30 @@ config BR2_PACKAGE_UTIL_LINUX_NSENTER
 comment "nsenter needs a toolchain w/ headers >= 3.0"
 	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0
 
+config BR2_PACKAGE_UTIL_LINUX_MORE
+	bool "more"
+	help
+	  File perusal filter for crt viewing
+
 config BR2_PACKAGE_UTIL_LINUX_MOUNT
 	bool "mount/umount"
 	help
 	  Mount/unmount filesystems
 
+config BR2_PACKAGE_UTIL_LINUX_MOUNTPOINT
+	bool "mountpoint"
+	help
+	  See if a directory is a mountpoint
+
 config BR2_PACKAGE_UTIL_LINUX_NEWGRP
 	bool "newgrp"
 	help
 	  Log in to a new group
+
+config BR2_PACKAGE_UTIL_LINUX_NOLOGIN
+	bool "nologin"
+	help
+	  Politely refuse a login
 
 config BR2_PACKAGE_UTIL_LINUX_PIVOT_ROOT
 	bool "pivot_root"
@@ -167,10 +213,26 @@ config BR2_PACKAGE_UTIL_LINUX_SCHEDUTILS
 	help
 	  Scheduling utilities (chrt, ionice, taskset)
 
+config BR2_PACKAGE_UTIL_LINUX_SETPRIV
+	bool "setpriv"
+	select BR2_PACKAGE_LIBCAP_NG
+	help
+	  Run a program with different Linux privilege settings
+
+config BR2_PACKAGE_UTIL_LINUX_SETTERM
+	bool "setterm"
+	help
+	  Set terminal attributes
+
 config BR2_PACKAGE_UTIL_LINUX_SWITCH_ROOT
 	bool "switch_root"
 	help
 	  Switch to another filesystem as the root of the mount tree
+
+config BR2_PACKAGE_UTIL_LINUX_UL
+	bool "ul"
+	help
+	  Do underlining
 
 config BR2_PACKAGE_UTIL_LINUX_UNSHARE
 	bool "unshare"
@@ -197,7 +259,7 @@ config BR2_PACKAGE_UTIL_LINUX_WALL
 	help
 	  Send a message to everybody's terminal
 
-config BR2_PACKAGE_WDCTL
+config BR2_PACKAGE_UTIL_LINUX_WDCTL
 	bool "wdctl"
 	help
 	  Shows hardware watchdog status
