@@ -19,6 +19,20 @@ TAR_DEPENDENCIES += busybox
 HOST_TAR_DEPENDENCIES =
 endif
 
+ifeq ($(BR2_PACKAGE_ACL),y)
+TAR_DEPENDENCIES += acl
+TAR_CONF_OPTS += --with-posix-acls
+else
+TAR_CONF_OPTS += --without-posix-acls
+endif
+
+ifeq ($(BR2_PACKAGE_ATTR),y)
+TAR_DEPENDENCIES += attr
+TAR_CONF_OPTS += --with-xattrs
+else
+TAR_CONF_OPTS += --without-xattrs
+endif
+
 $(eval $(autotools-package))
 
 # host-tar: use cpio.gz instead of tar.gz to prevent chicken-egg problem
