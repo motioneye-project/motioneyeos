@@ -20,23 +20,40 @@ DOSFSTOOLS_DEPENDENCIES += libiconv
 DOSFSTOOLS_LDLIBS += -liconv
 endif
 
-FATLABEL_BINARY = fatlabel
-FSCK_FAT_BINARY = fsck.fat
-MKFS_FAT_BINARY = mkfs.fat
-
 define DOSFSTOOLS_BUILD_CMDS
 	$(MAKE) $(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(DOSFSTOOLS_CFLAGS)" LDLIBS="$(DOSFSTOOLS_LDLIBS)" -C $(@D)
 endef
 
-DOSFSTOOLS_INSTALL_BIN_FILES_$(BR2_PACKAGE_DOSFSTOOLS_FATLABEL)+=$(FATLABEL_BINARY)
-DOSFSTOOLS_INSTALL_BIN_FILES_$(BR2_PACKAGE_DOSFSTOOLS_FSCK_FAT)+=$(FSCK_FAT_BINARY)
-DOSFSTOOLS_INSTALL_BIN_FILES_$(BR2_PACKAGE_DOSFSTOOLS_MKFS_FAT)+=$(MKFS_FAT_BINARY)
+ifeq ($(BR2_PACKAGE_DOSFSTOOLS_FATLABEL),y)
+define DOSFSTOOLS_INSTALL_FATLABEL
+	$(INSTALL) -D -m 755 $(@D)/fatlabel $(TARGET_DIR)/sbin/fatlabel
+	ln -sf fatlabel $(TARGET_DIR)/sbin/dosfslabel
+endef
+endif
+
+ifeq ($(BR2_PACKAGE_DOSFSTOOLS_FSCK_FAT),y)
+define DOSFSTOOLS_INSTALL_FSCK_FAT
+	$(INSTALL) -D -m 755 $(@D)/fsck.fat $(TARGET_DIR)/sbin/fsck.fat
+	ln -fs fsck.fat $(TARGET_DIR)/sbin/dosfsck
+	ln -fs fsck.fat $(TARGET_DIR)/sbin/fsck.msdos
+	ln -fs fsck.fat $(TARGET_DIR)/sbin/fsck.vfat
+endef
+endif
+
+ifeq ($(BR2_PACKAGE_DOSFSTOOLS_MKFS_FAT),y)
+define DOSFSTOOLS_INSTALL_MKFS_FAT
+	$(INSTALL) -D -m 755 $(@D)/mkfs.fat $(TARGET_DIR)/sbin/mkfs.fat
+	ln -fs mkfs.fat $(TARGET_DIR)/sbin/mkdosfs
+	ln -fs mkfs.fat $(TARGET_DIR)/sbin/mkfs.msdos
+	ln -fs mkfs.fat $(TARGET_DIR)/sbin/mkfs.vfat
+endef
+endif
 
 define DOSFSTOOLS_INSTALL_TARGET_CMDS
-	test -z "$(DOSFSTOOLS_INSTALL_BIN_FILES_y)" || \
-	$(INSTALL) -m 755 $(addprefix $(@D)/,$(DOSFSTOOLS_INSTALL_BIN_FILES_y)) \
-		$(TARGET_DIR)/sbin/
+	$(DOSFSTOOLS_INSTALL_FATLABEL)
+	$(DOSFSTOOLS_INSTALL_FSCK_FAT)
+	$(DOSFSTOOLS_INSTALL_MKFS_FAT)
 endef
 
 define HOST_DOSFSTOOLS_BUILD_CMDS
