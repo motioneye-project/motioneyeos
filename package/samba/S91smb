@@ -10,6 +10,7 @@
 mkdir -p /var/cache/samba
 mkdir -p /var/log/samba
 mkdir -p /var/lock/subsys
+mkdir -p /var/run/samba
 
 RETVAL=0
 
@@ -33,13 +34,13 @@ stop() {
 	echo -n "Shutting down SMB services: "
 	kill -9 `pidof smbd`
 	RETVAL=$?
-	rm -f /var/run/smbd.pid
+	rm -f /var/run/samba/smbd.pid
 	echo "done"
 
 	echo -n "Shutting down NMB services: "
 	kill -9 `pidof nmbd`
 	RETVAL2=$?
-	rm -f /var/run/nmbd.pid
+	rm -f /var/run/samba/nmbd.pid
 
 	[ $RETVAL -eq 0 -a $RETVAL2 -eq 0 ] && rm -f /var/lock/subsys/smb
 	echo "done"

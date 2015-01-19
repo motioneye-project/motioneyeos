@@ -33,11 +33,11 @@ SAMBA_CONF_ENV = \
 	$(if $(BR2_PACKAGE_SAMBA_AVAHI),AVAHI_LIBS=-pthread)
 
 SAMBA_CONF_OPTS = \
-	--with-piddir=/var/run \
-	--with-lockdir=/var/lock \
-	--with-logfilebase=/var/log \
-	--with-configdir=/etc/samba \
-	--with-privatedir=/etc/samba \
+	--with-fhs \
+	--with-piddir=/var/run/samba \
+	--with-lockdir=/var/cache/samba \
+	--with-ncalrpcdir=/var/run/ncalrpc \
+	--with-nmbdsocketdir=/var/run/nmbd \
 	\
 	--disable-cups \
 	--enable-shared-libs \
