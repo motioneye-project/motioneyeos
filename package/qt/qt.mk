@@ -52,6 +52,14 @@ endif
 
 endif
 
+# Qt has some assembly function that are not present in thumb1 mode:
+# Error: selected processor does not support Thumb mode `swp r3,r7,[r4]'
+# so, we desactivate thumb mode
+ifeq ($(BR2_ARM_INSTRUCTIONS_THUMB),y)
+QT_CFLAGS += -marm
+QT_CXXFLAGS += -marm
+endif
+
 ifeq ($(BR2_PACKAGE_QT_QT3SUPPORT),y)
 QT_CONFIGURE_OPTS += -qt3support
 else
