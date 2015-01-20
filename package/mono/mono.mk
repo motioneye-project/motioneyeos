@@ -4,7 +4,7 @@
 #
 #############################################################
 
-MONO_VERSION = 3.10.0
+MONO_VERSION = 3.12.0
 MONO_SITE = http://download.mono-project.com/sources/mono/
 MONO_SOURCE = mono-$(MONO_VERSION).tar.bz2
 MONO_LICENSE = GPLv2 or MIT (compiler, tools), LGPLv2 (runtime libs), MIT (class libs) or commercial
