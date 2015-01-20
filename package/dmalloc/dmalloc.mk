@@ -14,6 +14,7 @@ DMALLOC_LICENSE_FILES = dmalloc.h.1
 
 DMALLOC_INSTALL_STAGING = YES
 DMALLOC_CONF_OPTS = --enable-shlib
+DMALLOC_CFLAGS = $(TARGET_CFLAGS)
 
 ifeq ($(BR2_INSTALL_LIBSTDCPP),y)
 DMALLOC_CONF_OPTS += --enable-cxx
@@ -26,6 +27,15 @@ DMALLOC_CONF_OPTS += --enable-threads
 else
 DMALLOC_CONF_OPTS += --disable-threads
 endif
+
+# dmalloc has some assembly function that are not present in thumb1 mode:
+# Error: lo register required -- `str lr,[sp,#4]'
+# so, we desactivate thumb mode
+ifeq ($(BR2_ARM_INSTRUCTIONS_THUMB),y)
+DMALLOC_CFLAGS += -marm
+endif
+
+DMALLOC_CONF_ENV = CFLAGS="$(DMALLOC_CFLAGS)"
 
 define DMALLOC_POST_PATCH
 	$(SED) 's/^ac_cv_page_size=0$$/ac_cv_page_size=12/' $(@D)/configure
