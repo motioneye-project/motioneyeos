@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PYTHON_PYXB
+	bool "python-pyxb"
+	help
+	  PyXB is a pure Python package that generates Python code
+	  for classes that correspond to data structures defined by XMLSchema.
+
+	  http://pyxb.sourceforge.net/
