@@ -3,20 +3,30 @@
 # Start logging
 #
 
-case "$1" in
-  start)
+start() {
 	echo -n "Starting logging: "
 	start-stop-daemon -b -S -q -m -p /var/run/syslogd.pid --exec /sbin/syslogd -- -n
 	start-stop-daemon -b -S -q -m -p /var/run/klogd.pid --exec /sbin/klogd -- -n
 	echo "OK"
-	;;
-  stop)
+}
+
+stop() {
 	echo -n "Stopping logging: "
 	start-stop-daemon -K -q -p /var/run/syslogd.pid
 	start-stop-daemon -K -q -p /var/run/klogd.pid
 	echo "OK"
+}
+
+case "$1" in
+  start)
+	start
+	;;
+  stop)
+	stop
 	;;
   restart|reload)
+	stop
+	start
 	;;
   *)
 	echo "Usage: $0 {start|stop|restart}"
