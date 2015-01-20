@@ -17,7 +17,7 @@ ifeq ($(BR2_PACKAGE_LIGHTNING_DISASSEMBLER),y)
 LIGHTNING_DEPENDENCIES += binutils zlib
 LIGHTNING_CONF_OPTS += --enable-disassembler
 # binutils libraries are not explicitly linked against gettext
-LIGHTNING_CONF_ENV += $(if $(BR2_PACKAGE_GETTEXT),LIBS=-lintl)
+LIGHTNING_CONF_ENV += $(if $(BR2_NEEDS_GETTEXT_IF_LOCALE),LIBS=-lintl)
 endif
 
 $(eval $(autotools-package))
