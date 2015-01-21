@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-REDIS_VERSION = 2.6.17
+REDIS_VERSION = 2.8.19
 REDIS_SITE = http://download.redis.io/releases
 REDIS_LICENSE = BSD-3c (core); MIT and BSD family licenses (Bundled components)
 REDIS_LICENSE_FILES = COPYING
