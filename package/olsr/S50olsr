@@ -1,21 +1,23 @@
 #!/bin/sh
-#
-# Starts OLSRD daemon
-#
 
 case "$1" in
   start)
-  	echo "Starting OLSRd daemon: "
-	/usr/sbin/olsrd -d 0
-	;;
+    echo -n "Starting oslrd daemon: "
+    start-stop-daemon -S -q -x /usr/sbin/olsrd -- -d 0 -pidfile /run/olsrd.pid
+    [ $? = 0 ] && echo "OK" || echo "FAIL"
+    ;;
   stop)
-  	echo "Stopping OLSRd daemon: "
-	killall olsrd
-	;;
+    echo -n "Stopping olsrd daemon: "
+    start-stop-daemon -K -q -p /run/olsrd.pid
+    [ $? = 0 ] && echo "OK" || echo "FAIL"
+    ;;
+  restart)
+    $0 stop
+    $0 start
+    ;;
   *)
-	echo "Usage: $0 {start|stop}"
-	exit 1
+    echo "Usage: $0 {start|stop|restart}"
+    exit 1
 esac
 
 exit $?
-

@@ -5,7 +5,7 @@
 ################################################################################
 
 OLSR_VERSION_MAJOR = 0.6
-OLSR_VERSION = $(OLSR_VERSION_MAJOR).6.2
+OLSR_VERSION = $(OLSR_VERSION_MAJOR).8
 OLSR_SOURCE = olsrd-$(OLSR_VERSION).tar.bz2
 OLSR_SITE = http://www.olsr.org/releases/$(OLSR_VERSION_MAJOR)
 OLSR_PLUGINS = arprefresh bmf dot_draw dyn_gw dyn_gw_plain httpinfo jsoninfo \
@@ -31,12 +31,13 @@ define OLSR_INSTALL_TARGET_CMDS
 			LDCONFIG=/bin/true DESTDIR=$(TARGET_DIR) \
 			prefix="/usr" install ; \
 	done
-	test -r $(TARGET_DIR)/etc/olsrd.conf || \
-		$(INSTALL) -D -m 0644 $(@D)/files/olsrd.conf.default.lq $(TARGET_DIR)/etc/olsrd.conf
+	$(INSTALL) -D -m 0644 $(@D)/files/olsrd.conf.default.lq \
+		$(TARGET_DIR)/etc/olsrd/olsrd.conf
 endef
 
 define OLSR_INSTALL_INIT_SYSV
-	$(INSTALL) -D -m 0755 package/olsr/S50olsr $(TARGET_DIR)/etc/init.d/S50olsr
+	$(INSTALL) -D -m 0755 package/olsr/S50olsr \
+		$(TARGET_DIR)/etc/init.d/S50olsr
 endef
 
 $(eval $(generic-package))
