@@ -31,6 +31,9 @@ config BR2_ARM_CPU_HAS_VFPV4
 	bool
 	select BR2_ARM_CPU_HAS_VFPV3
 
+config BR2_ARM_CPU_HAS_ARM
+	bool
+
 config BR2_ARM_CPU_HAS_THUMB
 	bool
 
@@ -58,83 +61,100 @@ choice
 
 config BR2_arm920t
 	bool "arm920t"
+	select BR2_ARM_CPU_HAS_ARM
 	select BR2_ARM_CPU_HAS_THUMB
 	select BR2_ARM_CPU_ARMV4
 config BR2_arm922t
 	bool "arm922t"
+	select BR2_ARM_CPU_HAS_ARM
 	select BR2_ARM_CPU_HAS_THUMB
 	select BR2_ARM_CPU_ARMV4
 config BR2_arm926t
 	bool "arm926t"
+	select BR2_ARM_CPU_HAS_ARM
 	select BR2_ARM_CPU_MAYBE_HAS_VFPV2
 	select BR2_ARM_CPU_HAS_THUMB
 	select BR2_ARM_CPU_ARMV5
 config BR2_arm1136jf_s
 	bool "arm1136jf-s"
+	select BR2_ARM_CPU_HAS_ARM
 	select BR2_ARM_CPU_HAS_VFPV2
 	select BR2_ARM_CPU_HAS_THUMB
 	select BR2_ARM_CPU_ARMV6
 config BR2_arm1176jz_s
 	bool "arm1176jz-s"
+	select BR2_ARM_CPU_HAS_ARM
 	select BR2_ARM_CPU_HAS_THUMB
 	select BR2_ARM_CPU_ARMV6
 config BR2_arm1176jzf_s
 	bool "arm1176jzf-s"
+	select BR2_ARM_CPU_HAS_ARM
 	select BR2_ARM_CPU_HAS_VFPV2
 	select BR2_ARM_CPU_HAS_THUMB
 	select BR2_ARM_CPU_ARMV6
 config BR2_cortex_a5
 	bool "cortex-A5"
+	select BR2_ARM_CPU_HAS_ARM
 	select BR2_ARM_CPU_MAYBE_HAS_NEON
 	select BR2_ARM_CPU_MAYBE_HAS_VFPV4
 	select BR2_ARM_CPU_HAS_THUMB2
 	select BR2_ARM_CPU_ARMV7A
 config BR2_cortex_a7
 	bool "cortex-A7"
+	select BR2_ARM_CPU_HAS_ARM
 	select BR2_ARM_CPU_HAS_NEON
 	select BR2_ARM_CPU_HAS_VFPV4
 	select BR2_ARM_CPU_HAS_THUMB2
 	select BR2_ARM_CPU_ARMV7A
 config BR2_cortex_a8
 	bool "cortex-A8"
+	select BR2_ARM_CPU_HAS_ARM
 	select BR2_ARM_CPU_HAS_NEON
 	select BR2_ARM_CPU_HAS_VFPV3
 	select BR2_ARM_CPU_HAS_THUMB2
 	select BR2_ARM_CPU_ARMV7A
 config BR2_cortex_a9
 	bool "cortex-A9"
+	select BR2_ARM_CPU_HAS_ARM
 	select BR2_ARM_CPU_MAYBE_HAS_NEON
 	select BR2_ARM_CPU_MAYBE_HAS_VFPV3
 	select BR2_ARM_CPU_HAS_THUMB2
 	select BR2_ARM_CPU_ARMV7A
 config BR2_cortex_a12
 	bool "cortex-A12"
+	select BR2_ARM_CPU_HAS_ARM
 	select BR2_ARM_CPU_HAS_NEON
 	select BR2_ARM_CPU_HAS_VFPV4
 	select BR2_ARM_CPU_HAS_THUMB2
 	select BR2_ARM_CPU_ARMV7A
 config BR2_cortex_a15
 	bool "cortex-A15"
+	select BR2_ARM_CPU_HAS_ARM
 	select BR2_ARM_CPU_HAS_NEON
 	select BR2_ARM_CPU_HAS_VFPV4
 	select BR2_ARM_CPU_HAS_THUMB2
 	select BR2_ARM_CPU_ARMV7A
 config BR2_fa526
 	bool "fa526/626"
+	select BR2_ARM_CPU_HAS_ARM
 	select BR2_ARM_CPU_ARMV4
 config BR2_pj4
 	bool "pj4"
+	select BR2_ARM_CPU_HAS_ARM
 	select BR2_ARM_CPU_HAS_VFPV3
 	select BR2_ARM_CPU_ARMV7A
 config BR2_strongarm
 	bool "strongarm sa110/sa1100"
+	select BR2_ARM_CPU_HAS_ARM
 	select BR2_ARM_CPU_ARMV4
 config BR2_xscale
 	bool "xscale"
+	select BR2_ARM_CPU_HAS_ARM
 	select BR2_ARM_CPU_HAS_THUMB
 	select BR2_ARM_CPU_ARMV5
 config BR2_iwmmxt
 	bool "iwmmxt"
+	select BR2_ARM_CPU_HAS_ARM
 	select BR2_ARM_CPU_ARMV5
 endchoice
 
@@ -318,10 +338,10 @@ endchoice
 
 choice
 	prompt "ARM instruction set"
-	depends on BR2_ARM_CPU_HAS_THUMB || BR2_ARM_CPU_HAS_THUMB2
 
-config BR2_ARM_INSTRUCTIONS_ARM_CHOICE
+config BR2_ARM_INSTRUCTIONS_ARM
 	bool "ARM"
+	depends on BR2_ARM_CPU_HAS_ARM
 	help
 	  This option instructs the compiler to generate regular ARM
 	  instructions, that are all 32 bits wide.
@@ -345,10 +365,6 @@ config BR2_ARM_INSTRUCTIONS_THUMB2
 	  compiled binary size.
 
 endchoice
-
-config BR2_ARM_INSTRUCTIONS_ARM
-	def_bool y
-	depends on !(BR2_ARM_INSTRUCTIONS_THUMB || BR2_ARM_INSTRUCTIONS_THUMB2)
 
 config BR2_ARCH
 	default "arm"	if BR2_arm
