@@ -7,4 +7,4 @@ config BR2_PACKAGE_QT5XMLPATTERNS
 
 	  This package corresponds to the qt5xmlpatterns module.
 
-	  http://qt-project.org
+	  http://qt.io

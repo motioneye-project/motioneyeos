@@ -8,4 +8,4 @@ config BR2_PACKAGE_QT5IMAGEFORMATS
 
 	  This package corresponds to the qt5imageformats module.
 
-	  http://qt-project.org
+	  http://qt.io

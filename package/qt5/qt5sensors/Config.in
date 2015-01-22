@@ -7,4 +7,4 @@ config BR2_PACKAGE_QT5SENSORS
 
 	  This package corresponds to the qt5sensors module.
 
-	  http://qt-project.org
+	  http://qt.io

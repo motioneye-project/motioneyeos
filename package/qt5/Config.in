@@ -29,7 +29,7 @@ menuconfig BR2_PACKAGE_QT5
 	  This option enables the Qt5 framework. Sub-options allow to
 	  select which modules should be built.
 
-	  http://qt-project.org
+	  http://qt.io
 
 if BR2_PACKAGE_QT5
 source "package/qt5/qt5base/Config.in"

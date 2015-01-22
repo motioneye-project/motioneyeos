@@ -7,4 +7,4 @@ config BR2_PACKAGE_QT5SERIALPORT
 
 	  This package corresponds to the qt5serialport module.
 
-	  http://qt-project.org
+	  http://qt.io

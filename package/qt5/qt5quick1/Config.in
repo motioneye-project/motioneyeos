@@ -15,7 +15,7 @@ config BR2_PACKAGE_QT5QUICK1
 
 	  This package corresponds to the qt5quick1 module.
 
-	  http://qt-project.org
+	  http://qt.io
 
 comment "qt5quick1 needs a toolchain w/ dynamic library"
 	depends on BR2_PACKAGE_QT5_JSCORE_AVAILABLE

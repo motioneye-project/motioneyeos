@@ -10,7 +10,7 @@ config BR2_PACKAGE_QT5DECLARATIVE
 
 	  This package corresponds to the qt5declarative module.
 
-	  http://qt-project.org
+	  http://qt.io
 
 if BR2_PACKAGE_QT5DECLARATIVE
 

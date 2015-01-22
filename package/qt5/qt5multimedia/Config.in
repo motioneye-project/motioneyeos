@@ -9,4 +9,4 @@ config BR2_PACKAGE_QT5MULTIMEDIA
 
 	  This package corresponds to the qt5multimedia module.
 
-	  http://qt-project.org
+	  http://qt.io

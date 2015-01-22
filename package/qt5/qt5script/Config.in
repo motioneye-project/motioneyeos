@@ -8,4 +8,4 @@ config BR2_PACKAGE_QT5SCRIPT
 
 	  This package corresponds to the qt5script module.
 
-	  http://qt-project.org
+	  http://qt.io

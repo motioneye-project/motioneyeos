@@ -15,7 +15,7 @@ config BR2_PACKAGE_QT5CONNECTIVITY
 
 	  This package corresponds to the qt5connectivity module.
 
-	  http://qt-project.org
+	  http://qt.io
 
 comment "qt5connectivity needs a toolchain w/ wchar, threads, dynamic library"
 	depends on !BR2_avr32 && BR2_USE_MMU

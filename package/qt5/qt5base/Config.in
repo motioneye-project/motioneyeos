@@ -12,7 +12,7 @@ config BR2_PACKAGE_QT5BASE
 	  contains the base Qt libraries: QtCore, QtNetwork, QtGui,
 	  QtWidgets, etc.
 
-	  http://qt-project.org
+	  http://qt.io
 
 if BR2_PACKAGE_QT5BASE
 

@@ -7,4 +7,4 @@ config BR2_PACKAGE_QT5WEBKIT_EXAMPLES
 
 	  This package contains examples for the qt5webkit module.
 
-	  http://qt-project.org
+	  http://qt.io

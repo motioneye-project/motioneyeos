@@ -10,7 +10,7 @@ config BR2_PACKAGE_QT5GRAPHICALEFFECTS
 
 	  This package corresponds to the qt5graphicaleffects module.
 
-	  http://qt-project.org
+	  http://qt.io
 
 comment "qt5graphicaleffects needs an OpenGL-capable backend"
 	depends on !BR2_PACKAGE_QT5_GL_AVAILABLE
