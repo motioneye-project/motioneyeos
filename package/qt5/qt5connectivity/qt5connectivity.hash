@@ -1,4 +1,4 @@
-# Hashes from: http://download.qt-project.org/official_releases/qt/5.3/5.3.2/submodules/qtconnectivity-opensource-src-5.3.2.tar.xz.mirrorlist
-sha256 2eb972b85697e9752ed2f2f7e194393650743737a9fe5f48177734c4dbd9096f qtconnectivity-opensource-src-5.3.2.tar.xz
-sha1   a8c4a48078fd0137a0d00c01e11eb356db20e1bb                         qtconnectivity-opensource-src-5.3.2.tar.xz
-md5    e496963407bb0c7b2e6c07133715a9cf                                 qtconnectivity-opensource-src-5.3.2.tar.xz
+# Hashes from: http://download.qt-project.org/official_releases/qt/5.4/5.4.0/submodules/qtconnectivity-opensource-src-5.4.0.tar.xz.mirrorlist
+sha256 636685bbcccac28f6c8c2d1bee7c9b06a74bc5c11d9c87a424d80093f19b1038 qtconnectivity-opensource-src-5.4.0.tar.xz
+sha1   08b1e365195cf0ed2d35d5f7fb3d6bda9a9e1dbe                         qtconnectivity-opensource-src-5.4.0.tar.xz
+md5    c1fc247771a2fd1d238db8ffc4e65bbf                                 qtconnectivity-opensource-src-5.4.0.tar.xz

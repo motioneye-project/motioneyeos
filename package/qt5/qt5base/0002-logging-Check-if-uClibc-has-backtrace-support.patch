@@ -1,0 +1,48 @@
+From 9f03adc74fa06e9559e8bb85f1cfd942397328b5 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Fatih=20A=C5=9F=C4=B1c=C4=B1?= <fatih.asici@gmail.com>
+Date: Wed, 24 Dec 2014 17:29:11 +0200
+Subject: [PATCH] logging: Check if uClibc has backtrace support
+
+execinfo.h is optional in uClibc. We need to check
+__UCLIBC_HAS_BACKTRACE__ if uClibc is used.
+
+Change-Id: Ie28be85b0b70472df1fc4a208581bb66ad34229e
+Sent-Upstream: https://codereview.qt-project.org/#/c/102628/
+Signed-off-by: Fatih Aşıcı <fatih.asici@gmail.com>
+---
+ src/corelib/global/qlogging.cpp | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
+
+diff --git a/src/corelib/global/qlogging.cpp b/src/corelib/global/qlogging.cpp
+index 50d35a6..fa897d6 100644
+--- a/src/corelib/global/qlogging.cpp
++++ b/src/corelib/global/qlogging.cpp
+@@ -77,14 +77,21 @@
+ #endif
+ 
+ #if !defined QT_NO_REGULAREXPRESSION && !defined(QT_BOOTSTRAPPED)
+-#  if (defined(__GLIBC__) && defined(__GLIBCXX__)) || (__has_include(<cxxabi.h>) && __has_include(<execinfo.h>))
++#  ifdef __UCLIBC__
++#    if __UCLIBC_HAS_BACKTRACE__
++#      define QLOGGING_HAVE_BACKTRACE
++#    endif
++#  elif (defined(__GLIBC__) && defined(__GLIBCXX__)) || (__has_include(<cxxabi.h>) && __has_include(<execinfo.h>))
+ #    define QLOGGING_HAVE_BACKTRACE
+-#    include <qregularexpression.h>
+-#    include <cxxabi.h>
+-#    include <execinfo.h>
+ #  endif
+ #endif
+ 
++#ifdef QLOGGING_HAVE_BACKTRACE
++#  include <qregularexpression.h>
++#  include <cxxabi.h>
++#  include <execinfo.h>
++#endif
++
+ #include <stdio.h>
+ 
+ QT_BEGIN_NAMESPACE
+-- 
+1.9.1
+

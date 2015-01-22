@@ -24,10 +24,9 @@ config BR2_PACKAGE_QT5BASE_LICENSE_APPROVED
 	  By doing this you will not be asked while the library is compiled.
 	  Please read and understand the license terms before approving this.
 
-	  LGPL v2.1: http://qt-project.org/doc/qt-5.0/qtdoc/lgpl.html
-	  GPL  v3.0: http://qt-project.org/doc/qt-5.0/qtdoc/gpl.html
+	  LGPL: http://doc.qt.io/qt-5/lgpl.html
 
-	  See also http://qt-project.org/doc/qt-5.0/qtdoc/licensing.html
+	  See also http://doc.qt.io/qt-5/licensing.html
 
 config BR2_PACKAGE_QT5BASE_EXAMPLES
 	bool "Compile and install examples (with code)"

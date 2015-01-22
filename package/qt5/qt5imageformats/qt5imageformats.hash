@@ -1,4 +1,4 @@
-# Hashes from: http://download.qt-project.org/official_releases/qt/5.3/5.3.2/submodules/qtimageformats-opensource-src-5.3.2.tar.xz.mirrorlist
-sha256 d303cbceb73774edc0cfdbde6b97b0e41077e242ff6520710890f81bea40e2d4 qtimageformats-opensource-src-5.3.2.tar.xz
-sha1   4b8068f4f958d0c637b86638219c006990ae0efa                         qtimageformats-opensource-src-5.3.2.tar.xz
-md5    255bb7f28c667ab91303e6af271753b5                                 qtimageformats-opensource-src-5.3.2.tar.xz
+# Hashes from: http://download.qt-project.org/official_releases/qt/5.4/5.4.0/submodules/qtimageformats-opensource-src-5.4.0.tar.xz.mirrorlist
+sha256 c89b678df71e44f8cff7b5f8362b7d61430a7aa7cd70147be1267d87ac8fe046 qtimageformats-opensource-src-5.4.0.tar.xz
+sha1   6590b61c51a186837c3d2058d8192886d970f92a                         qtimageformats-opensource-src-5.4.0.tar.xz
+md5    608dbe53d5d3a0872eb20025b681d1dc                                 qtimageformats-opensource-src-5.4.0.tar.xz
