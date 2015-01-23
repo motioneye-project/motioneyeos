@@ -132,7 +132,7 @@ rootfs, there are further steps to do.
 Extract (as root!) the contents of the rootfs.tar archive into the second
 partition you created above:
 
-  $ sudo tar xf rootfs.tar -C /mnt/mountpointroot
+  $ sudo tar xf ./output/images/rootfs.tar -C /mnt/mountpointroot
 
 Finish
 ======
