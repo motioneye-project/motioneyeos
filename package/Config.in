@@ -558,6 +558,7 @@ menu "external python modules"
 	source "package/python-versiontools/Config.in"
 	source "package/python-webpy/Config.in"
 	source "package/python-werkzeug/Config.in"
+	source "package/python-zope-interface/Config.in"
 endmenu
 endif
 	source "package/ruby/Config.in"
