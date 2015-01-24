@@ -1,0 +1,30 @@
+From 93189390de7322da78bc5b807f4cadaff46393c9 Mon Sep 17 00:00:00 2001
+From: Romain Naour <romain.naour@openwide.fr>
+Date: Thu, 22 Jan 2015 22:45:30 +0100
+Subject: [PATCH 3/6] Makefile: Use CFLAGS from command line
+
+Replace CFLAGS_NOOPT by CFLAGS when calling unix/configure script
+to create 'flags' file which contains all variables used to build
+zip binary.
+
+Signed-off-by: Romain Naour <romain.naour@openwide.fr>
+---
+ unix/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/unix/Makefile b/unix/Makefile
+index abd0c44..db62368 100644
+--- a/unix/Makefile
++++ b/unix/Makefile
+@@ -177,7 +177,7 @@ uninstall:
+ 
+ 
+ flags:  unix/configure
+-	sh unix/configure "${CC}" "${CFLAGS_NOOPT}" "${IZ_BZIP2}"
++	sh unix/configure "${CC}" "${CFLAGS}" "${IZ_BZIP2}"
+ 
+ # These symbols, when #defined using -D have these effects on compilation:
+ # ZMEM                  - includes C language versions of memset(), memcpy(),
+-- 
+1.9.3
+
