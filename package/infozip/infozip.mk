@@ -14,9 +14,12 @@ ifeq ($(BR2_PACKAGE_BZIP2),y)
 INFOZIP_DEPENDENCIES += bzip2
 endif
 
+# Infozip's default CFLAGS.
+INFOZIP_CFLAGS = -I. -DUNIX
+
 define INFOZIP_BUILD_CMDS
 	$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(@D) \
-		CFLAGS="$(TARGET_CFLAGS) -I. -DUNIX" \
+		CFLAGS="$(TARGET_CFLAGS) $(INFOZIP_CFLAGS)" \
 		AS="$(TARGET_CC) -c" \
 		-f unix/Makefile generic
 endef
@@ -28,7 +31,7 @@ endef
 
 define HOST_INFOZIP_BUILD_CMDS
 	$(MAKE) $(HOST_CONFIGURE_OPTS) -C $(@D) \
-		CFLAGS="$(HOST_CFLAGS) -I. -DUNIX" \
+		CFLAGS="$(HOST_CFLAGS) $(INFOZIP_CFLAGS)" \
 		AS="$(HOSTCC) -c" \
 		-f unix/Makefile generic
 endef
