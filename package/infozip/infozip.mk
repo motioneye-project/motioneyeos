@@ -17,6 +17,10 @@ endif
 # Infozip's default CFLAGS.
 INFOZIP_CFLAGS = -I. -DUNIX
 
+# Disable the support of 16-bit UIDs/GIDs, the test in unix/configure was
+# removed since it can't work for cross-compilation.
+INFOZIP_CFLAGS += -DUIDGID_NOT_16BIT
+
 define INFOZIP_BUILD_CMDS
 	$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(@D) \
 		CFLAGS="$(TARGET_CFLAGS) $(INFOZIP_CFLAGS)" \
