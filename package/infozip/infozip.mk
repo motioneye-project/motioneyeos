@@ -21,9 +21,14 @@ INFOZIP_CFLAGS = -I. -DUNIX
 # removed since it can't work for cross-compilation.
 INFOZIP_CFLAGS += -DUIDGID_NOT_16BIT
 
+# infozip already defines _LARGEFILE_SOURCE and _LARGEFILE64_SOURCE when
+# necessary, redefining it on the command line causes some warnings.
+INFOZIP_TARGET_CFLAGS = \
+	$(filter-out -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE,$(TARGET_CFLAGS))
+
 define INFOZIP_BUILD_CMDS
 	$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(@D) \
-		CFLAGS="$(TARGET_CFLAGS) $(INFOZIP_CFLAGS)" \
+		CFLAGS="$(INFOZIP_TARGET_CFLAGS) $(INFOZIP_CFLAGS)" \
 		AS="$(TARGET_CC) -c" \
 		-f unix/Makefile generic
 endef
