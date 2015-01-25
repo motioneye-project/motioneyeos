@@ -763,6 +763,7 @@ menu "Javascript"
 endmenu
 
 menu "JSON/XML"
+	source "package/benejson/Config.in"
 	source "package/cjson/Config.in"
 	source "package/expat/Config.in"
 	source "package/ezxml/Config.in"
