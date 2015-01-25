@@ -1,0 +1,27 @@
+From d3d6ca63cb86727533d7d83c98e70002bb04f343 Mon Sep 17 00:00:00 2001
+From: Samuel Martin <s.martin49@gmail.com>
+Date: Wed, 21 Jan 2015 11:18:59 +0100
+Subject: [PATCH] libftdi.pc: requires libusb (fix static build)
+
+---
+ libftdi.pc.in | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/libftdi.pc.in b/libftdi.pc.in
+index 2061b91..57f0a09 100644
+--- a/libftdi.pc.in
++++ b/libftdi.pc.in
+@@ -5,8 +5,8 @@ includedir=@includedir@
+ 
+ Name: libftdi
+ Description: Library to program and control the FTDI USB controller
+-Requires:
++Requires: libusb
+ Version: @VERSION@
+-Libs: -L${libdir} -lftdi -lusb
++Libs: -L${libdir} -lftdi
+ Cflags: -I${includedir}
+ 
+-- 
+2.1.0
+
