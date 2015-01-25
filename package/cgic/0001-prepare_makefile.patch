@@ -1,0 +1,44 @@
+Makefile: fix for cross-compilation
+
+Probably-Signed-off-by: Dave Bender <bender@benegon.com>
+[yann.morin.1998@free.fr: patch was made by Dave, but he
+ forgot his SoB line, so I added it]
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+diff -rupN cgic206/Makefile cgic206-br/Makefile
+--- cgic206/Makefile	2014-03-16 18:17:11.000000000 -0400
++++ cgic206-br/Makefile	2015-01-16 11:18:03.714874000 -0500
+@@ -1,15 +1,14 @@
+-CFLAGS=-g -Wall
+-CC=gcc
+-AR=ar
+-RANLIB=ranlib
+ LIBS=-L./ -lcgic
+ 
+ all: libcgic.a cgictest.cgi capture
+ 
+ install: libcgic.a
+-	cp libcgic.a /usr/local/lib
+-	cp cgic.h /usr/local/include
+-	@echo libcgic.a is in /usr/local/lib. cgic.h is in /usr/local/include.
++	cp libcgic.a $(PREFIX)/usr/lib
++	cp cgic.h $(PREFIX)/usr/include
++	@echo libcgic.a is in $(PREFIX)/usr/lib. cgic.h is in $(PREFIX)/usr/include.
++
++cgi.o: cgic.c cgic.h
++	$(CC) $(CFLAGS) cgic.c -o cgic.o
+ 
+ libcgic.a: cgic.o cgic.h
+ 	rm -f libcgic.a
+@@ -19,10 +18,10 @@ libcgic.a: cgic.o cgic.h
+ #mingw32 and cygwin users: replace .cgi with .exe
+ 
+ cgictest.cgi: cgictest.o libcgic.a
+-	gcc cgictest.o -o cgictest.cgi ${LIBS}
++	$(CC) cgictest.o -o cgictest.cgi ${LIBS}
+ 
+ capture: capture.o libcgic.a
+-	gcc capture.o -o capture ${LIBS}
++	$(CC) capture.o -o capture ${LIBS}
+ 
+ clean:
+ 	rm -f *.o *.a cgictest.cgi capture
