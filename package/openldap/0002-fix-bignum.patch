@@ -1,0 +1,38 @@
+configure: correctly detect bignum
+
+Building with bignum is currently not possible, since we're checking
+ol_with_tls against a value it is never assigned in any case.
+
+Since bignum is from openssl, and openssl is the preferred TLS
+implementation, if the bignum headers are found, it means we do have
+TLS and it is opensl.
+
+So, keep the check for the bignum header, but check against ol_link_tls
+which means that openssl is enabled when we find the bignum headers.
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+
+diff -durN openldap-2.4.40.orig/configure openldap-2.4.40/configure
+--- openldap-2.4.40.orig/configure	2014-09-19 03:48:49.000000000 +0200
++++ openldap-2.4.40/configure	2015-01-25 18:44:54.216879362 +0100
+@@ -23478,7 +23478,7 @@
+ 
+ 	if test "$ac_cv_header_openssl_bn_h" = "yes" &&
+ 		test "$ac_cv_header_openssl_crypto_h" = "yes" &&
+-		test "$ol_with_tls" = "found" ; then
++		test "$ol_link_tls" = "yes" ; then
+ 		ol_with_mp=bignum
+ 
+ $as_echo "#define USE_MP_BIGNUM 1" >>confdefs.h
+diff -durN openldap-2.4.40.orig/configure.in openldap-2.4.40/configure.in
+--- openldap-2.4.40.orig/configure.in	2014-09-19 03:48:49.000000000 +0200
++++ openldap-2.4.40/configure.in	2015-01-25 18:44:37.628676446 +0100
+@@ -2367,7 +2367,7 @@
+ 	AC_CHECK_HEADERS(openssl/crypto.h)
+ 	if test "$ac_cv_header_openssl_bn_h" = "yes" &&
+ 		test "$ac_cv_header_openssl_crypto_h" = "yes" &&
+-		test "$ol_with_tls" = "found" ; then
++		test "$ol_link_tls" = "yes" ; then
+ 		ol_with_mp=bignum
+ 		AC_DEFINE(USE_MP_BIGNUM,1,[define to use OpenSSL BIGNUM for MP])
+ 	elif test $ol_with_mp = bignum ; then

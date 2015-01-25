@@ -1,0 +1,13 @@
+config BR2_PACKAGE_OPENLDAP
+	bool "openldap"
+	depends on BR2_USE_WCHAR
+	help
+	  OpenLDAP Software is an open source implementation of
+	  the Lightweight Directory Access Protocol.
+
+	  This only installs client-side support.
+
+	  http://www.openldap.org/
+
+comment "openldap needs a toolchain w/ wchar"
+	depends on !BR2_USE_WCHAR
