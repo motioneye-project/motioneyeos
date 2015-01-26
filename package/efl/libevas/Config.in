@@ -175,7 +175,7 @@ config BR2_PACKAGE_LIBEVAS_JPEG
 
 config BR2_PACKAGE_LIBEVAS_GIF
 	bool "libevas gif loader"
-	select BR2_PACKAGE_LIBUNGIF
+	select BR2_PACKAGE_GIFLIB
 	help
 	  This enables the loader code that loads gif files using
 	  libungif.

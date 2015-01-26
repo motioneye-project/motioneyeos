@@ -180,7 +180,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_LIBEVAS_GIF),y)
 LIBEVAS_CONF_OPTS += --enable-image-loader-gif
-LIBEVAS_DEPENDENCIES += libungif
+LIBEVAS_DEPENDENCIES += giflib
 else
 LIBEVAS_CONF_OPTS += --disable-image-loader-gif
 endif
