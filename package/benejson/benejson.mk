@@ -9,8 +9,16 @@ BENEJSON_SITE = $(call github,codehero,benejson,$(BENEJSON_VERSION))
 BENEJSON_LICENSE = MIT
 BENEJSON_LICENSE_FILES = LICENSE
 BENEJSON_INSTALL_STAGING = YES
-
 BENEJSON_DEPENDENCIES = host-scons
+
+# wchar support needs to be manually disabled
+ifeq ($(BR2_USE_WCHAR),)
+define BENEJSON_DISABLE_WCHAR
+	$(SED) 's,^#define BNJ_WCHAR_SUPPORT,#undef BNJ_WCHAR_SUPPORT,' \
+		$(@D)/benejson/benejson.h
+endef
+BENEJSON_POST_PATCH_HOOKS += BENEJSON_DISABLE_WCHAR
+endif
 
 define BENEJSON_BUILD_CMDS
 	(cd $(@D); \
