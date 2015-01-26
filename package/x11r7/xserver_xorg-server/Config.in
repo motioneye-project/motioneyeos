@@ -90,11 +90,6 @@ config BR2_PACKAGE_XSERVER_XORG_SERVER_KDRIVE
 
 endchoice
 
-config BR2_PACKAGE_XSERVER_XORG_SERVER_NULL_CURSOR
-	bool "Null root cursor"
-	help
-	  Don't display root cursor.
-
 config BR2_PACKAGE_XSERVER_XORG_SERVER_AIGLX
 	bool "Enable AIGLX Extension"
 	help

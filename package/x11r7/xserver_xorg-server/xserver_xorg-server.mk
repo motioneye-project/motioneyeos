@@ -112,12 +112,6 @@ else
 XSERVER_XORG_SERVER_CONF_OPTS += --disable-dri --disable-glx
 endif
 
-ifeq ($(BR2_PACKAGE_XSERVER_XORG_SERVER_NULL_CURSOR),y)
-XSERVER_XORG_SERVER_CONF_OPTS += --enable-null-root-cursor
-else
-XSERVER_XORG_SERVER_CONF_OPTS += --disable-null-root-cursor
-endif
-
 ifeq ($(BR2_PACKAGE_XSERVER_XORG_SERVER_AIGLX),y)
 XSERVER_XORG_SERVER_CONF_OPTS += --enable-aiglx
 else
