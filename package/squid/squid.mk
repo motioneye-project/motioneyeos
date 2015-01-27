@@ -21,8 +21,8 @@ SQUID_CONF_ENV = \
 	ac_cv_func___va_copy=yes \
 	ac_cv_func_strnstr=no \
 	ac_cv_have_squid=yes \
-	ACLOCAL="$(ACLOCAL)" \
-	AUTOMAKE="$(AUTOMAKE)"
+	BUILXCXX="$(HOSTCXX)" \
+	BUILDCXXFLAGS="$(HOST_CXXFLAGS)"
 SQUID_CONF_OPTS = \
 	--enable-async-io=8 \
 	--enable-linux-netfilter \
