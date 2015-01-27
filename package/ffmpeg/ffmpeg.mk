@@ -49,7 +49,6 @@ FFMPEG_CONF_OPTS = \
 	--disable-libopencv \
 	--disable-libdc1394 \
 	--disable-libfaac \
-	--disable-libfreetype \
 	--disable-libgsm \
 	--disable-libmp3lame \
 	--disable-libnut \
@@ -232,6 +231,22 @@ FFMPEG_CONF_OPTS += --enable-libvpx
 FFMPEG_DEPENDENCIES += libvpx
 else
 FFMPEG_CONF_OPTS += --disable-libvpx
+endif
+
+# ffmpeg freetype support require fenv.h which is only
+# available/working on glibc
+ifeq ($(BR2_PACKAGE_FREETYPE)$(BR2_TOOLCHAIN_USES_GLIBC),yy)
+FFMPEG_CONF_OPTS += --enable-libfreetype
+FFMPEG_DEPENDENCIES += freetype
+else
+FFMPEG_CONF_OPTS += --disable-libfreetype
+endif
+
+ifeq ($(BR2_PACKAGE_FONTCONFIG),y)
+FFMPEG_CONF_OPTS += --enable-fontconfig
+FFMPEG_DEPENDENCIES += fontconfig
+else
+FFMPEG_CONF_OPTS += --disable-fontconfig
 endif
 
 ifeq ($(BR2_PACKAGE_X264)$(BR2_PACKAGE_FFMPEG_GPL),yy)
