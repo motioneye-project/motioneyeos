@@ -12,3 +12,4 @@ PYTHON_MARKUPSAFE_LICENSE = BSD-3c
 PYTHON_MARKUPSAFE_LICENSE_FILES = LICENSE
 
 $(eval $(python-package))
+$(eval $(host-python-package))
