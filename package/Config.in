@@ -365,6 +365,7 @@ endif
 	source "package/sdparm/Config.in"
 	source "package/setserial/Config.in"
 	source "package/sg3_utils/Config.in"
+	source "package/sigrok-cli/Config.in"
 	source "package/sispmctl/Config.in"
 	source "package/smartmontools/Config.in"
 	source "package/smstools3/Config.in"
