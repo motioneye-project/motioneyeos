@@ -26,8 +26,8 @@ config BR2_PACKAGE_FBV_JPEG
 config BR2_PACKAGE_FBV_GIF
 	bool "GIF support"
 	default y
-	select BR2_PACKAGE_LIBUNGIF
+	select BR2_PACKAGE_GIFLIB
 	help
-	  Enable support for GIF using libungif.
+	  Enable support for GIF using giflib.
 
 endif # BR2_PACKAGE_FBV
