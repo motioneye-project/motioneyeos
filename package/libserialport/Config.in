@@ -1,0 +1,8 @@
+config BR2_PACKAGE_LIBSERIALPORT
+	bool "libserialport"
+	help
+	  Serial port access library.
+
+	  This library is a part of the sigrok software suite.
+
+	  http://sigrok.org/wiki/Libserialport
