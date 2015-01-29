@@ -12,7 +12,13 @@ SIGROK_CLI_LICENSE_FILES = COPYING
 # Git checkout has no configure script
 SIGROK_CLI_AUTORECONF = YES
 SIGROK_CLI_DEPENDENCIES = host-pkgconf libsigrok
-SIGROK_CLI_CONF_OPTS = --with-libsigrokdecode=NO
+
+ifeq ($(BR2_PACKAGE_LIBSIGROKDECODE),y)
+SIGROK_CLI_CONF_OPTS += --with-libsigrokdecode
+SIGROK_CLI_DEPENDENCIES += libsigrokdecode
+else
+SIGROK_CLI_CONF_OPTS += --with-libsigrokdecode=NO
+endif
 
 define SIGROK_CLI_ADD_MISSING
 	mkdir -p $(@D)/autostuff
