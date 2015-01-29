@@ -1,0 +1,22 @@
+config BR2_PACKAGE_LIBSIGROK
+	bool "libsigrok"
+	select BR2_PACKAGE_LIBSERIALPORT
+	select BR2_PACKAGE_LIBZIP
+	select BR2_PACKAGE_LIBGLIB2
+	# libglib2
+	depends on BR2_USE_WCHAR
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_USE_MMU
+	help
+	  Libsigrok is a shared library written in C, which provides
+	  the basic hardware access drivers for logic analyzers and
+	  other supported devices, as well as input/output file format
+	  support.
+
+	  This library is a part of the sigrok software suite.
+
+	  http://sigrok.org/wiki/Libsigrok
+
+comment "libsigrok needs a toolchain w/ wchar, threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
