@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-KODI_VERSION = 14.0-Helix
+KODI_VERSION = 14.1-Helix
 KODI_SITE = $(call github,xbmc,xbmc,$(KODI_VERSION))
 KODI_LICENSE = GPLv2
 KODI_LICENSE_FILES = LICENSE.GPL
