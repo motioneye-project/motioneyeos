@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-OLA_VERSION = 0.9.3
+OLA_VERSION = 0.9.4
 OLA_SITE = $(call github,OpenLightingProject,ola,$(OLA_VERSION))
 
 OLA_LICENSE = LGPLv2.1+ (libola, libolacommon, Python bindings), GPLv2+ (libolaserver, olad, Python examples and tests)
@@ -23,7 +23,7 @@ OLA_CONF_OPTS = \
 	--disable-root-check \
 	--disable-java-libs \
 	--disable-fatal-warnings \
-	--with-ola-protoc=$(HOST_DIR)/usr/bin/ola_protoc
+	--with-ola-protoc-plugin=$(HOST_DIR)/usr/bin/ola_protoc_plugin
 
 HOST_OLA_DEPENDENCIES = host-util-linux host-protobuf
 
@@ -42,10 +42,11 @@ HOST_OLA_CONF_OPTS = \
 	--disable-doxygen-html \
 	--disable-doxygen-doc
 
-# On the host side, we only need ola_protoc, so build and install this only.
-HOST_OLA_MAKE_OPTS = protoc/ola_protoc
+# On the host side, we only need ola_protoc_plugin, so build and install this
+# only.
+HOST_OLA_MAKE_OPTS = protoc/ola_protoc_plugin
 define HOST_OLA_INSTALL_CMDS
-	$(INSTALL) -D -m 0755 $(@D)/protoc/ola_protoc $(HOST_DIR)/usr/bin/ola_protoc
+	$(INSTALL) -D -m 0755 $(@D)/protoc/ola_protoc_plugin $(HOST_DIR)/usr/bin/ola_protoc_plugin
 endef
 
 # sets where to find python libs built for target and required by ola
