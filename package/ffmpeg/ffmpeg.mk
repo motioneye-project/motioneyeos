@@ -234,8 +234,9 @@ FFMPEG_CONF_OPTS += --disable-libvpx
 endif
 
 # ffmpeg freetype support require fenv.h which is only
-# available/working on glibc
-ifeq ($(BR2_PACKAGE_FREETYPE)$(BR2_TOOLCHAIN_USES_GLIBC),yy)
+# available/working on glibc.
+# The microblaze variant doesn't provide the needed exceptions
+ifeq ($(BR2_PACKAGE_FREETYPE)$(BR2_TOOLCHAIN_USES_GLIBC)x$(BR2_microblaze),yyx)
 FFMPEG_CONF_OPTS += --enable-libfreetype
 FFMPEG_DEPENDENCIES += freetype
 else
