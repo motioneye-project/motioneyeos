@@ -21,7 +21,6 @@ IPSEC_TOOLS_CONF_ENV += LIBS=-lz
 endif
 
 IPSEC_TOOLS_CONF_OPTS = \
-	  --disable-hybrid \
 	  --without-libpam \
 	  --disable-gssapi \
 	  --with-kernel-headers=$(STAGING_DIR)/usr/include
@@ -60,6 +59,12 @@ ifneq ($(BR2_PACKAGE_IPSEC_TOOLS_READLINE), y)
 IPSEC_TOOLS_CONF_OPTS += --without-readline
 else
 IPSEC_DEPENDENCIES += readline
+endif
+
+ifeq ($(BR2_PACKAGE_IPSEC_TOOLS_HYBRID), y)
+IPSEC_TOOLS_CONF_OPTS += --enable-hybrid
+else
+IPSEC_TOOLS_CONF_OPTS += --disable-hybrid
 endif
 
 ifeq ($(BR2_PACKAGE_IPSEC_SECCTX_DISABLE),y)

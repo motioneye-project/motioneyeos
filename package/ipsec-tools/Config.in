@@ -48,6 +48,12 @@ config BR2_PACKAGE_IPSEC_TOOLS_READLINE
 	select BR2_PACKAGE_READLINE
 	bool "Enable readline input support"
 
+config BR2_PACKAGE_IPSEC_TOOLS_HYBRID
+	bool "Enable hybrid, both mode-cfg and xauth support"
+	help
+	  Hybrid mode is required for successful interoperability
+	  (e.g. Cisco VPN Client).
+
 choice
 	prompt "Security context"
 	default BR2_PACKAGE_IPSEC_SECCTX_DISABLE
