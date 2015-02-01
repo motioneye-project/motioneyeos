@@ -25,43 +25,43 @@ IPSEC_TOOLS_CONF_OPTS = \
 	  --disable-gssapi \
 	  --with-kernel-headers=$(STAGING_DIR)/usr/include
 
-ifeq ($(BR2_PACKAGE_IPSEC_TOOLS_ADMINPORT), y)
+ifeq ($(BR2_PACKAGE_IPSEC_TOOLS_ADMINPORT),y)
 IPSEC_TOOLS_CONF_OPTS += --enable-adminport
 else
 IPSEC_TOOLS_CONF_OPTS += --disable-adminport
 endif
 
-ifeq ($(BR2_PACKAGE_IPSEC_TOOLS_NATT), y)
+ifeq ($(BR2_PACKAGE_IPSEC_TOOLS_NATT),y)
 IPSEC_TOOLS_CONF_OPTS += --enable-natt
 else
 IPSEC_TOOLS_CONF_OPTS += --disable-natt
 endif
 
-ifeq ($(BR2_PACKAGE_IPSEC_TOOLS_FRAG), y)
+ifeq ($(BR2_PACKAGE_IPSEC_TOOLS_FRAG),y)
 IPSEC_TOOLS_CONF_OPTS += --enable-frag
 else
 IPSEC_TOOLS_CONF_OPTS += --disable-frag
 endif
 
-ifeq ($(BR2_PACKAGE_IPSEC_TOOLS_DPD), y)
+ifeq ($(BR2_PACKAGE_IPSEC_TOOLS_DPD),y)
 IPSEC_TOOLS_CONF_OPTS += --enable-dpd
 else
 IPSEC_TOOLS_CONF_OPTS += --disable-dpd
 endif
 
-ifeq ($(BR2_PACKAGE_IPSEC_TOOLS_STATS), y)
+ifeq ($(BR2_PACKAGE_IPSEC_TOOLS_STATS),y)
 IPSEC_TOOLS_CONF_OPTS += --enable-stats
 else
 IPSEC_TOOLS_CONF_OPTS += --disable-stats
 endif
 
-ifneq ($(BR2_PACKAGE_IPSEC_TOOLS_READLINE), y)
+ifneq ($(BR2_PACKAGE_IPSEC_TOOLS_READLINE),y)
 IPSEC_TOOLS_CONF_OPTS += --without-readline
 else
 IPSEC_DEPENDENCIES += readline
 endif
 
-ifeq ($(BR2_PACKAGE_IPSEC_TOOLS_HYBRID), y)
+ifeq ($(BR2_PACKAGE_IPSEC_TOOLS_HYBRID),y)
 IPSEC_TOOLS_CONF_OPTS += --enable-hybrid
 else
 IPSEC_TOOLS_CONF_OPTS += --disable-hybrid
