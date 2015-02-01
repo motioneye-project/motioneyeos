@@ -20,13 +20,10 @@ endef
 BENEJSON_POST_PATCH_HOOKS += BENEJSON_DISABLE_WCHAR
 endif
 
-define BENEJSON_BUILD_CMDS
-	(cd $(@D); \
-		$(TARGET_CONFIGURE_OPTS) CROSS=$(TARGET_CROSS) \
-		$(SCONS))
-endef
+BENEJSON_SCONS_TARGETS = include
 
 ifeq ($(BR2_STATIC_LIBS)$(BR2_SHARED_STATIC_LIBS),y)
+BENEJSON_SCONS_TARGETS += lib/libbenejson.a
 define BENEJSON_INSTALL_STATIC_LIB
 	$(INSTALL) -D -m 0644 $(@D)/lib/libbenejson.a \
 		$(1)/usr/lib/libbenejson.a
@@ -34,11 +31,18 @@ endef
 endif # Static enabled
 
 ifeq ($(BR2_SHARED_LIBS)$(BR2_SHARED_STATIC_LIBS),y)
+BENEJSON_SCONS_TARGETS += lib/libbenejson.so
 define BENEJSON_INSTALL_SHARED_LIB
 	$(INSTALL) -D -m 0644 $(@D)/lib/libbenejson.so \
 		$(1)/usr/lib/libbenejson.so
 endef
 endif # Shared enabled
+
+define BENEJSON_BUILD_CMDS
+	(cd $(@D); \
+		$(TARGET_CONFIGURE_OPTS) CROSS=$(TARGET_CROSS) \
+		$(SCONS) $(BENEJSON_SCONS_TARGETS))
+endef
 
 define BENEJSON_INSTALL_STAGING_CMDS
 	$(INSTALL) -D -m 0644 $(@D)/include/benejson/benejson.h \
