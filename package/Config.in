@@ -341,6 +341,7 @@ endif
 	source "package/lvm2/Config.in"
 	source "package/mdadm/Config.in"
 	source "package/media-ctl/Config.in"
+	source "package/memtest86/Config.in"
 	source "package/memtester/Config.in"
 	source "package/minicom/Config.in"
 	source "package/nanocom/Config.in"
