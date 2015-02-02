@@ -22,6 +22,10 @@ else
 MATCHBOX_PANEL_CONF_OPTS += --disable-startup-notification
 endif
 
+ifeq ($(BR2_PACKAGE_WIRELESS_TOOLS),y)
+MATCHBOX_PANEL_DEPENDENCIES += wireless_tools
+endif
+
 ################################################################################
 
 $(eval $(autotools-package))
