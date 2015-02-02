@@ -28,5 +28,6 @@ $(eval $(host-autotools-package))
 
 # variables used by other packages
 AUTOMAKE = $(HOST_DIR)/usr/bin/automake
-ACLOCAL_DIR = $(HOST_DIR)/usr/share/aclocal
+ACLOCAL_DIR = $(STAGING_DIR)/usr/share/aclocal
+ACLOCAL_HOST_DIR = $(HOST_DIR)/usr/share/aclocal
 ACLOCAL = $(HOST_DIR)/usr/bin/aclocal -I $(ACLOCAL_DIR)
