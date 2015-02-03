@@ -66,6 +66,12 @@ $$($(2)_DIR)/.stamp_kconfig_fixup_done: $$($(2)_DIR)/.config
 # Before running configure, the configuration file should be present and fixed
 $$($(2)_TARGET_CONFIGURE): $$($(2)_DIR)/.stamp_kconfig_fixup_done
 
+# Only enable the foo-*config targets when the package is actually enabled.
+# Note: the variable $(2)_KCONFIG_VAR is not related to the kconfig
+# infrastructure, but defined by pkg-generic.mk. The generic infrastructure is
+# already called above, so we can effectively use this variable.
+ifeq ($$($$($(2)_KCONFIG_VAR)),y)
+
 # Configuration editors (menuconfig, ...)
 $$(addprefix $(1)-,$$($(2)_KCONFIG_EDITORS)): $$($(2)_DIR)/.stamp_kconfig_fixup_done
 	$$($(2)_MAKE_ENV) $$(MAKE) -C $$($(2)_DIR) \
@@ -91,6 +97,8 @@ $(1)-update-config: $$($(2)_DIR)/.stamp_kconfig_fixup_done
 $(1)-update-defconfig: $(1)-savedefconfig
 	cp -f $$($(2)_DIR)/defconfig $$($(2)_KCONFIG_FILE)
 	touch --reference $$($(2)_DIR)/.config $$($(2)_KCONFIG_FILE)
+
+endif # package enabled
 
 endef # inner-kconfig-package
 
