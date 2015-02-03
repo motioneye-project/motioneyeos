@@ -160,6 +160,7 @@ comment "nsenter needs a toolchain w/ headers >= 3.0"
 
 config BR2_PACKAGE_UTIL_LINUX_MORE
 	bool "more"
+	select BR2_PACKAGE_NCURSES
 	help
 	  File perusal filter for crt viewing
 
