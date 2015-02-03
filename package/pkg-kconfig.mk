@@ -47,8 +47,13 @@ $$($(2)_KCONFIG_FILE): | $(1)-patch
 
 # The .config file is obtained by copying it from the specified source
 # configuration file, after the package has been patched.
+# Since the file could be a defconfig file it needs to be expanded to a
+# full .config first. We use 'make oldconfig' because this can be safely
+# done even when the package does not support defconfigs.
 $$($(2)_DIR)/.config: $$($(2)_KCONFIG_FILE)
 	$$(INSTALL) -m 0644 $$($(2)_KCONFIG_FILE) $$($(2)_DIR)/.config
+	@yes "" | $$($(2)_MAKE_ENV) $$(MAKE) -C $$($(2)_DIR) \
+		$$($(2)_KCONFIG_OPTS) oldconfig
 
 # In order to get a usable, consistent configuration, some fixup may be needed.
 # The exact rules are specified by the package .mk file.
@@ -68,9 +73,21 @@ $$(addprefix $(1)-,$$($(2)_KCONFIG_EDITORS)): $$($(2)_DIR)/.stamp_kconfig_fixup_
 	rm -f $$($(2)_DIR)/.stamp_{kconfig_fixup_done,configured,built}
 	rm -f $$($(2)_DIR)/.stamp_{target,staging}_installed
 
+$(1)-savedefconfig: $$($(2)_DIR)/.stamp_kconfig_fixup_done
+	$$($(2)_MAKE_ENV) $$(MAKE) -C $$($(2)_DIR) \
+		$$($(2)_KCONFIG_OPTS) savedefconfig
+
 # Target to copy back the configuration to the source configuration file
 $(1)-update-config: $$($(2)_DIR)/.stamp_kconfig_fixup_done
 	cp --preserve=timestamps -f $$($(2)_DIR)/.config $$($(2)_KCONFIG_FILE)
+
+# Note: make sure the timestamp of the stored configuration is not newer than
+# the .config to avoid a useless rebuild. Note that, contrary to
+# $(1)-update-config, the reference for 'touch' is _not_ the file from which
+# we copy.
+$(1)-update-defconfig: $(1)-savedefconfig
+	cp -f $$($(2)_DIR)/defconfig $$($(2)_KCONFIG_FILE)
+	touch --reference $$($(2)_DIR)/.config $$($(2)_KCONFIG_FILE)
 
 endef # inner-kconfig-package
 
