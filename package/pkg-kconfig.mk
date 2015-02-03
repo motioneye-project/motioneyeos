@@ -41,9 +41,13 @@ ifndef $(2)_KCONFIG_FILE
 $$(error Internal error: no value specified for $(2)_KCONFIG_FILE)
 endif
 
+# The config file could be in-tree, so before depending on it the package should
+# be extracted (and patched) first
+$$($(2)_KCONFIG_FILE): | $(1)-patch
+
 # The .config file is obtained by copying it from the specified source
 # configuration file, after the package has been patched.
-$$($(2)_DIR)/.config: $$($(2)_KCONFIG_FILE) | $(1)-patch
+$$($(2)_DIR)/.config: $$($(2)_KCONFIG_FILE)
 	$$(INSTALL) -m 0644 $$($(2)_KCONFIG_FILE) $$($(2)_DIR)/.config
 
 # In order to get a usable, consistent configuration, some fixup may be needed.
