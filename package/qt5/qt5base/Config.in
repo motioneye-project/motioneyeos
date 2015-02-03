@@ -28,6 +28,19 @@ config BR2_PACKAGE_QT5BASE_LICENSE_APPROVED
 
 	  See also http://doc.qt.io/qt-5/licensing.html
 
+config BR2_PACKAGE_QT5BASE_CONFIG_FILE
+	string "Config file"
+	help
+	  Configure options allow to set which modules are being
+	  compiled or not in Qt, but Qt also provide a more
+	  fine-grained mechanism to configure which features should be
+	  enabled or disabled, through a header file. Examples of such
+	  header files can be found in src/corelib/global/qconfig-*.h
+	  in the Qt sources.
+
+	  This option allows to set the path of such a configuration
+	  file, which Buildroot will give to Qt at compile time.
+
 config BR2_PACKAGE_QT5BASE_EXAMPLES
 	bool "Compile and install examples (with code)"
 	select BR2_PACKAGE_QT5BASE_NETWORK
