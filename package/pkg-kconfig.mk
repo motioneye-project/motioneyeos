@@ -78,8 +78,11 @@ $(1)-savedefconfig: $$($(2)_DIR)/.stamp_kconfig_fixup_done
 		$$($(2)_KCONFIG_OPTS) savedefconfig
 
 # Target to copy back the configuration to the source configuration file
+# Even though we could use 'cp --preserve-timestamps' here, the separate
+# cp and 'touch --reference' is used for symmetry with $(1)-update-defconfig.
 $(1)-update-config: $$($(2)_DIR)/.stamp_kconfig_fixup_done
-	cp --preserve=timestamps -f $$($(2)_DIR)/.config $$($(2)_KCONFIG_FILE)
+	cp -f $$($(2)_DIR)/.config $$($(2)_KCONFIG_FILE)
+	touch --reference $$($(2)_DIR)/.config $$($(2)_KCONFIG_FILE)
 
 # Note: make sure the timestamp of the stored configuration is not newer than
 # the .config to avoid a useless rebuild. Note that, contrary to
