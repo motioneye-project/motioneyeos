@@ -8,6 +8,16 @@ config BR2_PACKAGE_DROPBEAR
 
 if BR2_PACKAGE_DROPBEAR
 
+config BR2_PACKAGE_DROPBEAR_CLIENT
+	bool "client programs"
+	default y
+	help
+	  Provides the programs: dbclient, ssh
+
+	  Note that the following programs are also used server-side
+	  and are therefore always build regardless this setting:
+	  dropbear, dropbearkey, dropbearconvert, scp
+
 config BR2_PACKAGE_DROPBEAR_DISABLE_REVERSEDNS
 	bool "disable reverse DNS lookups"
 	help
