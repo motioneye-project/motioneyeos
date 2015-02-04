@@ -106,6 +106,7 @@ config BR2_PACKAGE_PHP_EXT_MYSQL
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_USE_MMU # mysql
 	depends on BR2_TOOLCHAIN_HAS_THREADS # mysql
+	depends on !BR2_avr32 # mysql
 	select BR2_PACKAGE_MYSQL
 	help
 	  MySQL support
@@ -115,6 +116,7 @@ config BR2_PACKAGE_PHP_EXT_MYSQLI
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_USE_MMU # mysql
 	depends on BR2_TOOLCHAIN_HAS_THREADS # mysql
+	depends on !BR2_avr32 # mysql
 	select BR2_PACKAGE_MYSQL
 	select BR2_PACKAGE_PHP_EXT_MYSQL
 	help
@@ -132,13 +134,15 @@ config BR2_PACKAGE_PHP_EXT_PDO_MYSQL
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_USE_MMU # mysql
 	depends on BR2_TOOLCHAIN_HAS_THREADS # mysql
+	depends on !BR2_avr32 # mysql
 	select BR2_PACKAGE_MYSQL
 	help
 	  PDO driver for MySQL
 
-comment "MySQL drivers need a toolchain w/ C++"
+comment "MySQL drivers need a toolchain w/ C++, threads"
 	depends on BR2_USE_MMU
-	depends on !BR2_INSTALL_LIBSTDCPP
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_avr32
 
 config BR2_PACKAGE_PHP_EXT_PDO_POSTGRESQL
 	bool "PostgreSQL"
