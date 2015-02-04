@@ -13,7 +13,10 @@ LOG4CXX_LICENSE_FILES = LICENSE
 
 LOG4CXX_CONF_OPTS = \
 	--with-apr=$(STAGING_DIR)/usr/bin/apr-1-config \
-	--with-apr-util=$(STAGING_DIR)/usr/bin/apu-1-config
+	--with-apr-util=$(STAGING_DIR)/usr/bin/apu-1-config \
+	--disable-dot \
+	--disable-doxygen \
+	--disable-html-docs
 
 LOG4CXX_DEPENDENCIES = apr apr-util
 
