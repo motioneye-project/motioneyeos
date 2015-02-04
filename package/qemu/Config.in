@@ -54,9 +54,13 @@ comment "... or you can select emulator families to enable, below:"
 
 config BR2_PACKAGE_QEMU_SYSTEM
 	bool "Enable all systems emulation"
+	depends on !BR2_STATIC_LIBS # dtc
 	select BR2_PACKAGE_QEMU_FDT
 	help
 	  Say 'y' to build all system emulators/virtualisers that QEMU supports.
+
+comment "systems emulation needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS
 
 config BR2_PACKAGE_QEMU_LINUX_USER
 	bool "Enable all Linux user-land emulation"
@@ -86,10 +90,14 @@ comment "Misc. features"
 
 config BR2_PACKAGE_QEMU_FDT
 	bool "Enable FDT"
+	depends on !BR2_STATIC_LIBS # dtc
 	select BR2_PACKAGE_DTC
 	help
 	  Say 'y' here to have QEMU capable of constructing Device Trees,
 	  and passing them to the VMs.
+
+comment "FDT support needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS
 
 endif # BR2_PACKAGE_QEMU_HAS_EMULS
 
