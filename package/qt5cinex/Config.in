@@ -1,7 +1,7 @@
-comment "qt5cinex needs an OpenGL-capable backend"
+comment "qt5cinex needs an Open(E)GL-capable backend"
 	depends on BR2_PACKAGE_QT5
 	depends on BR2_PACKAGE_QT5_JSCORE_AVAILABLE
-	depends on !BR2_PACKAGE_QT5_GL_AVAILABLE
+	depends on !BR2_PACKAGE_QT5_GL_AVAILABLE || !BR2_PACKAGE_HAS_LIBEGL
 
 config BR2_PACKAGE_QT5CINEX
 	bool "qt5cinex"
@@ -11,6 +11,7 @@ config BR2_PACKAGE_QT5CINEX
 	select BR2_PACKAGE_QT5BASE_WIDGETS
 	select BR2_PACKAGE_QT5BASE_EGLFS
 	select BR2_PACKAGE_QT5GRAPHICALEFFECTS
+	depends on BR2_PACKAGE_HAS_LIBEGL # qt5base-eglfs
 	depends on BR2_PACKAGE_QT5_GL_AVAILABLE
 	# No comment needed for this option, it's an architecture
 	# dependency.
