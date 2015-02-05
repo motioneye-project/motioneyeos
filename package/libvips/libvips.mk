@@ -33,11 +33,9 @@ LIBVIPS_DEPENDENCIES = \
 	host-pkgconf libglib2 \
 	libxml2 $(if $(BR2_NEEDS_GETTEXT_IF_LOCALE),gettext)
 
-ifeq ($(BR2_INSTALL_LIBSTDCPP),y)
+# --disable-cxx is broken upstream
+# https://github.com/jcupitt/libvips/issues/231
 LIBVIPS_CONF_OPTS += --enable-cxx
-else
-LIBVIPS_CONF_OPTS += --disable-cxx
-endif
 
 ifeq ($(BR2_PACKAGE_JPEG),y)
 LIBVIPS_CONF_OPTS += --with-jpeg
