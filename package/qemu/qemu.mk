@@ -16,7 +16,7 @@ QEMU_LICENSE_FILES = COPYING COPYING.LIB
 #-------------------------------------------------------------
 # Host-qemu
 
-HOST_QEMU_DEPENDENCIES = host-pkgconf host-zlib host-libglib2 host-pixman
+HOST_QEMU_DEPENDENCIES = host-pkgconf host-python host-zlib host-libglib2 host-pixman
 
 #       BR ARCH         qemu
 #       -------         ----
@@ -94,6 +94,7 @@ define HOST_QEMU_CONFIGURE_CMDS
 		--interp-prefix=$(STAGING_DIR)          \
 		--cc="$(HOSTCC)"                        \
 		--host-cc="$(HOSTCC)"                   \
+		--python=$(HOST_DIR)/usr/bin/python2    \
 		--extra-cflags="$(HOST_CFLAGS)"         \
 		--extra-ldflags="$(HOST_LDFLAGS)"
 endef
