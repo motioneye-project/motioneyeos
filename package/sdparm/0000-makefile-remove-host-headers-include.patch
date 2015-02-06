@@ -1,0 +1,19 @@
+src/Makefile.am: remove host headers incdlue
+
+Using host headers is bad for cross compilation. Instead, use the '=' prefix
+which expands to the current sysroot.
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+diff -Nuar sdparm-1.09-orig/src/Makefile.am sdparm-1.09/src/Makefile.am
+--- sdparm-1.09-orig/src/Makefile.am	2014-09-23 18:48:44.000000000 +0300
++++ sdparm-1.09/src/Makefile.am	2015-02-06 09:33:43.693477667 +0200
+@@ -41,7 +41,7 @@
+ 			../lib/sg_pt_common.c
+ 
+ if HAVE_SGUTILS
+-INCLUDES = -I/usr/include/scsi
++INCLUDES = -I=/scsi
+ sdparm_LDADD = @GETOPT_O_FILES@ @os_libs@ @SGUTILS_LIBS@
+ sdparm_DEPENDENCIES = @GETOPT_O_FILES@
+ else
