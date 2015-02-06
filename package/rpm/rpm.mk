@@ -7,7 +7,7 @@
 RPM_VERSION_MAJOR = 5.2
 RPM_VERSION = $(RPM_VERSION_MAJOR).0
 RPM_SITE = http://rpm5.org/files/rpm/rpm-$(RPM_VERSION_MAJOR)
-RPM_DEPENDENCIES = zlib beecrypt neon popt openssl
+RPM_DEPENDENCIES = host-pkgconf zlib beecrypt neon popt openssl
 RPM_LICENSE = LGPLv2.1
 RPM_LICENSE_FILES = COPYING.LIB
 
@@ -22,9 +22,9 @@ RPM_CONF_OPTS = \
 	--without-python \
 	--without-perl \
 	--with-openssl=external \
-	--with-zlib=$(STAGING_DIR) \
+	--with-zlib=external \
 	--with-libbeecrypt=$(STAGING_DIR) \
-	--with-popt=$(STAGING_DIR)
+	--with-popt=external
 
 ifeq ($(BR2_NEEDS_GETTEXT_IF_LOCALE),y)
 RPM_DEPENDENCIES += gettext
