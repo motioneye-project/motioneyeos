@@ -1,4 +1,4 @@
-From 8f489c24e1770c2852efcaff9419d54bfadf0854 Mon Sep 17 00:00:00 2001
+From 2a8fab27a4308335282752164bebcfc77771fd3f Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Date: Fri, 6 Feb 2015 14:56:10 +0100
 Subject: [PATCH] mono-context.h: fix build on MIPS
@@ -16,10 +16,10 @@ Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
  1 file changed, 2 insertions(+)
 
 diff --git a/mono/utils/mono-context.h b/mono/utils/mono-context.h
-index d96eb75..ad56e2c 100755
+index 3b01b49..8852a63 100755
 --- a/mono/utils/mono-context.h
 +++ b/mono/utils/mono-context.h
-@@ -464,6 +464,8 @@ mono_ia64_context_get_fp (MonoContext *ctx)
+@@ -460,6 +460,8 @@ mono_ia64_context_get_fp (MonoContext *ctx)
  
  #elif ((defined(__mips__) && !defined(MONO_CROSS_COMPILE)) || (defined(TARGET_MIPS))) && SIZEOF_REGISTER == 4 /* defined(__ia64__) */
  
