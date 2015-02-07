@@ -1,0 +1,63 @@
+Fix cross-compilation
+
+Fetched httpd-2.4.x-cross_compile.diff from upstream bugtracker:
+https://issues.apache.org/bugzilla/show_bug.cgi?id=51257#c6
+
+which is a bundle of upstream revisions:
+    http://svn.apache.org/viewvc?view=revision&revision=1327907
+    http://svn.apache.org/viewvc?view=revision&revision=1328390
+    http://svn.apache.org/viewvc?view=revision&revision=1328714
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+
+Index: server/Makefile.in
+===================================================================
+--- a/server/Makefile.in	(revision 1328714)
++++ b/server/Makefile.in	(working copy)
+@@ -22,9 +22,14 @@
+ include $(top_builddir)/build/rules.mk
+ include $(top_srcdir)/build/library.mk
+ 
++ifdef CC_FOR_BUILD
++gen_test_char: gen_test_char.c
++	$(CC_FOR_BUILD) $(CFLAGS_FOR_BUILD) -DCROSS_COMPILE -o $@ $<
++else
+ gen_test_char_OBJECTS = gen_test_char.lo
+ gen_test_char: $(gen_test_char_OBJECTS)
+ 	$(LINK) $(EXTRA_LDFLAGS) $(gen_test_char_OBJECTS) $(EXTRA_LIBS)
++endif
+ 
+ test_char.h: gen_test_char
+ 	./gen_test_char > test_char.h
+Index: configure.in
+===================================================================
+--- a/configure.in	(revision 1328714)
++++ b/configure.in	(working copy)
+@@ -193,6 +193,14 @@
+ dnl Try to get c99 support for variadic macros
+ ifdef([AC_PROG_CC_C99], [AC_PROG_CC_C99])
+ 
++dnl In case of cross compilation we set CC_FOR_BUILD to cc unless
++dnl we got already CC_FOR_BUILD from environment.
++if test "x${build_alias}" != "x${host_alias}"; then
++  if test "x${CC_FOR_BUILD}" = "x"; then
++    CC_FOR_BUILD=cc
++  fi
++fi
++
+ if test "x${cache_file}" = "x/dev/null"; then
+   # Likewise, ensure that CC and CPP are passed through to the pcre
+   # configure script iff caching is disabled (the autoconf 2.5x default).
+Index: acinclude.m4
+===================================================================
+--- a/acinclude.m4	(revision 1328714)
++++ ab/cinclude.m4	(working copy)
+@@ -53,6 +53,8 @@
+   APACHE_SUBST(CPPFLAGS)
+   APACHE_SUBST(CFLAGS)
+   APACHE_SUBST(CXXFLAGS)
++  APACHE_SUBST(CC_FOR_BUILD)
++  APACHE_SUBST(CFLAGS_FOR_BUILD)
+   APACHE_SUBST(LTFLAGS)
+   APACHE_SUBST(LDFLAGS)
+   APACHE_SUBST(LT_LDFLAGS)
