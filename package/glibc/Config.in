@@ -38,6 +38,9 @@ config BR2_GLIBC_VERSION_2_19
 config BR2_GLIBC_VERSION_2_20
 	bool "2.20"
 
+config BR2_GLIBC_VERSION_2_21
+	bool "2.21"
+
 endchoice
 
 endif
