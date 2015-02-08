@@ -1,0 +1,21 @@
+Do not harcode invalid path to ncursesw headers
+
+Adding /usr/include/ncursesw is obviously invalid when
+cross-compiling. Since the ncursesw headers are no longer installed in
+usr/include/ncursesw/, but directly in usr/include, there is anyway no
+need for a special header path.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/setup.py
+===================================================================
+--- a/setup.py
++++ b/setup.py
+@@ -1287,7 +1287,6 @@
+         panel_library = 'panel'
+         if curses_library == 'ncursesw':
+             curses_defines.append(('HAVE_NCURSESW', '1'))
+-            curses_includes.append('/usr/include/ncursesw')
+             # Bug 1464056: If _curses.so links with ncursesw,
+             # _curses_panel.so must link with panelw.
+             panel_library = 'panelw'
