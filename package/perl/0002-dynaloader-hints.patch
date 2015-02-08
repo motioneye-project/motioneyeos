@@ -1,0 +1,13 @@
+Buildroot puts nlist.h into sysroot/usr/include,
+which is in the default include path.
+
+Signed-off-by: Alex Suykov <alex.suykov@gmail.com>
+
+--- a/ext/DynaLoader/hints/linux.pl
++++ b/ext/DynaLoader/hints/linux.pl
+@@ -1,5 +1 @@
+-# XXX Configure test needed.
+-# Some Linux releases like to hide their <nlist.h>
+-$self->{CCFLAGS} = $Config{ccflags} . ' -I/usr/include/libelf'
+-	if -f "/usr/include/libelf/nlist.h";
+ 1;
