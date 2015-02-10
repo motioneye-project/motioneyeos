@@ -211,6 +211,7 @@ endif
 	source "package/linux-fusion/Config.in"
 	source "package/lite/Config.in"
 	source "package/mesa3d/Config.in"
+	source "package/mesa3d-headers/Config.in"
 	source "package/ocrad/Config.in"
 	source "package/psplash/Config.in"
 	source "package/sawman/Config.in"
