@@ -14,6 +14,7 @@ GIT_DEPENDENCIES = zlib host-gettext
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 	GIT_DEPENDENCIES += openssl
 	GIT_CONF_OPTS += --with-openssl
+	GIT_CONF_ENV_LIBS += $(if $(BR2_STATIC_LIBS),-lz)
 else
 	GIT_CONF_OPTS += --without-openssl
 endif
@@ -41,7 +42,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_LIBICONV),y)
 	GIT_DEPENDENCIES += libiconv
-	GIT_CONF_ENV += LIBS=-liconv
+	GIT_CONF_ENV_LIBS += -liconv
 	GIT_CONF_OPTS += --with-iconv=/usr/lib
 else
 	GIT_CONF_OPTS += --without-iconv
@@ -56,7 +57,7 @@ endif
 
 # assume yes for these tests, configure will bail out otherwise
 # saying error: cannot run test program while cross compiling
-GIT_CONF_ENV += ac_cv_fread_reads_directories=yes \
-	ac_cv_snprintf_returns_bogus=yes
+GIT_CONF_ENV = ac_cv_fread_reads_directories=yes \
+	ac_cv_snprintf_returns_bogus=yes LIBS='$(GIT_CONF_ENV_LIBS)'
 
 $(eval $(autotools-package))
