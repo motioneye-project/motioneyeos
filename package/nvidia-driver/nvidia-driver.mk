@@ -70,6 +70,55 @@ define NVIDIA_DRIVER_EXTRACT_CMDS
 	rm -rf $(@D)/tmp-extract
 endef
 
+# Build and install the kernel modules if needed
+ifeq ($(BR2_PACKAGE_NVIDIA_DRIVER_MODULE),y)
+
+NVIDIA_DRIVER_DEPENDENCIES += linux
+
+# NVidia uses the legacy naming scheme for the x86 architecture, when i386
+# and x86_64 were still considered two separate architectures in the Linux
+# kernel.
+NVIDIA_DRIVER_ARCH = $(if $(BR2_i386),i386,$(BR2_ARCH))
+
+NVIDIA_DRIVER_MOD_DIRS = kernel
+NVIDIA_DRIVER_MOD_FILES = kernel/nvidia.ko
+# nvidia-uvm.ko only available for x86_64
+ifeq ($(BR2_x86_64)$(BR2_PACKAGE_NVIDIA_DRIVER_CUDA),yy)
+NVIDIA_DRIVER_MOD_DIRS += kernel/uvm
+NVIDIA_DRIVER_MOD_FILES += kernel/uvm/nvidia-uvm.ko
+endif
+
+# We can not use '$(MAKE) -C $(@D)/$${dir}' because NVidia's uses its own
+# Makefile to build a kernel module, which includes a lot of assumptions
+# on where to find its own sub-Makefile fragments, and fails if make is
+# not run from the directory where the module's source files are. Hence
+# our little trick to cd in there first.
+# That's also the reason why we do not use LINUX_MAKE_FLAGS or the other
+# linux-specific variables, since NVidia's Makefile does not understand
+# them.
+define NVIDIA_DRIVER_BUILD_CMDS
+	for dir in $(NVIDIA_DRIVER_MOD_DIRS); do \
+		(cd $(@D)/$${dir} && \
+		  $(MAKE) SYSSRC="$(LINUX_DIR)" SYSOUT="$(LINUX_DIR)" \
+				CC="$(TARGET_CC)" LD="$(TARGET_LD)" HOSTCC="$(HOSTCC)" \
+				ARCH=$(NVIDIA_DRIVER_ARCH) module) || exit 1; \
+	done
+endef
+
+# We do not use module-install because NVidia's Makefile requires root.
+# Also, we do not install it in the expected location (in nvidia/ rather
+# than in kernel/drivers/video/)
+define NVIDIA_DRIVER_INSTALL_KERNEL_MODULE
+	for mod in $(NVIDIA_DRIVER_MOD_FILES); do \
+		$(INSTALL) -D -m 0644 $(@D)/$${mod} \
+			$(TARGET_DIR)/lib/modules/$(LINUX_VERSION_PROBED)/nvidia/$${mod##*/} \
+		|| exit 1; \
+	done
+	$(HOST_DIR)/sbin/depmod -a -b $(TARGET_DIR) $(LINUX_VERSION_PROBED)
+endef
+
+endif # BR2_PACKAGE_NVIDIA_DRIVER_MODULE == y
+
 # Helper to install libraries
 # $1: destination directory (target or staging)
 #
@@ -112,6 +161,7 @@ define NVIDIA_DRIVER_INSTALL_TARGET_CMDS
 		$(INSTALL) -D -m 0644 $(@D)/$${m##*/} \
 			$(TARGET_DIR)/usr/lib/xorg/modules/$${m}; \
 	done
+	$(NVIDIA_DRIVER_INSTALL_KERNEL_MODULE)
 endef
 
 $(eval $(generic-package))
