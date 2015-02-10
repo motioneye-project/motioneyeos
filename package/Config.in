@@ -349,6 +349,7 @@ endif
 	source "package/minicom/Config.in"
 	source "package/nanocom/Config.in"
 	source "package/neard/Config.in"
+	source "package/nvidia-driver/Config.in"
 	source "package/ofono/Config.in"
 	source "package/ola/Config.in"
 	source "package/on2-8170-modules/Config.in"
