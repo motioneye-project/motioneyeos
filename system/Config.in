@@ -369,6 +369,7 @@ config BR2_TARGET_TZ_ZONELIST
 
 config BR2_TARGET_LOCALTIME
 	string "default local time"
+	default "Etc/UTC"
 	help
 	  The time zone to install as the default local time, expressed as a
 	  tzdata location, such as:
