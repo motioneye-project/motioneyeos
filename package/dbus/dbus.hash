@@ -1,2 +1,2 @@
-# Locally calculated
-sha256	83425250a6a4c93b9ab4a349771a7700e8ddff2d73a5a088222ca47ae9ce1f1a  dbus-1.8.14.tar.gz
+# Locally calculated after checking pgp signature
+sha256	7f795268efd343ff0498786acb35097564390d40b1b6158daf1b4f742b522b07  dbus-1.8.16.tar.gz
