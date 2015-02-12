@@ -15,6 +15,7 @@ XDRIVER_XF86_INPUT_EVDEV_DEPENDENCIES = \
 	xserver_xorg-server \
 	xproto_randrproto \
 	xproto_xproto \
-	udev
+	udev \
+	$(if $(BR2_PACKAGE_MTDEV),mtdev)
 
 $(eval $(autotools-package))
