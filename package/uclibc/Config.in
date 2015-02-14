@@ -129,7 +129,9 @@ choice
 		select BR2_TOOLCHAIN_HAS_THREADS_NPTL
 		depends on !BR2_arc
 		depends on !BR2_bfin
-		depends on !BR2_xtensa
+		# There is NPTL support for Xtensa in uClibc-ng, but
+		# not in the main uClibc repository.
+		depends on !BR2_xtensa || !BR2_UCLIBC_VERSION_XTENSA_GIT
 		depends on !BR2_x86_i386
 endchoice
 
