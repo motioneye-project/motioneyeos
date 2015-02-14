@@ -97,8 +97,8 @@ LIB_EXTERNAL_LIBS += $(call qstrip,$(BR2_TOOLCHAIN_EXTRA_EXTERNAL_LIBS))
 # mangling the path to find the base directory of the sysroot.
 #
 # Note that we do not use the -print-sysroot option, because it is
-# only available since gcc 4.4.x, and we still support 4.2.x (for
-# AVR32) and 4.3.x.
+# only available since gcc 4.4.x, and we only recently dropped support
+# for 4.2.x and 4.3.x.
 #
 # When doing this, we don't pass any option to gcc that could select a
 # multilib variant (such as -march) as we want the "main" sysroot,
