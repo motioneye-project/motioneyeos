@@ -72,6 +72,8 @@ LIBEVAS_CONF_OPTS += --enable-gl-xlib
 LIBEVAS_DEPENDENCIES += \
 	xproto_glproto xlib_libX11 xlib_libXrender \
 	xlib_libXext libeet
+else
+LIBEVAS_CONF_OPTS += --disable-gl-xlib
 endif
 
 ifeq ($(BR2_PACKAGE_LIBEVAS_XCB),y)
