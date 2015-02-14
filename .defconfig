@@ -6,7 +6,6 @@ BR2_HAVE_DOT_CONFIG=y
 # BR2_alpha is not set
 # BR2_arm is not set
 # BR2_armeb is not set
-# BR2_avr32 is not set
 # BR2_cris is not set
 # BR2_ia64 is not set
 BR2_i386=y

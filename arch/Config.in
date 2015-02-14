@@ -61,7 +61,7 @@ config BR2_avr32
 	# components. If you're interested by AVR32, contact the
 	# Buildroot community. Otherwise, its support will be removed
 	# by the 2015.02 release.
-	depends on BR2_DEPRECATED_SINCE_2014_08
+	depends on BR2_BROKEN
 	help
 	  The AVR32 is a 32-bit RISC microprocessor architecture designed by
 	  Atmel.
