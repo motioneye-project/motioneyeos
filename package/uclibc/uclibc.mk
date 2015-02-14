@@ -11,6 +11,9 @@ UCLIBC_LICENSE_FILES = COPYING.LIB
 
 ifeq ($(BR2_UCLIBC_VERSION_SNAPSHOT),y)
 UCLIBC_SITE = http://www.uclibc.org/downloads/snapshots
+else ifeq ($(BR2_UCLIBC_NG_VERSION_1_0_0),y)
+UCLIBC_SITE = http://downloads.uclibc-ng.org/releases/$(UCLIBC_VERSION)/
+UCLIBC_SOURCE = uClibc-ng-$(UCLIBC_VERSION).tar.xz
 else ifeq ($(BR2_UCLIBC_VERSION_ARC_GIT),y)
 UCLIBC_SITE = $(call github,foss-for-synopsys-dwc-arc-processors,uClibc,$(UCLIBC_VERSION))
 UCLIBC_SOURCE = uClibc-$(UCLIBC_VERSION).tar.gz
@@ -475,6 +478,21 @@ define UCLIBC_INSTALL_UTILS_TARGET
 endef
 endif
 
+# gcc produces binaries that use ld{64,}-uClibc.so.0 as the program
+# interpreter, but since uClibc-ng version is 1.0.0, it generates
+# ld{64,}-uClibc.so.1. In order to avoid changing gcc, we simply
+# create the necessary symbolic links here.
+ifeq ($(BR2_UCLIBC_NG_VERSION_1_0_0),y)
+define UCLIBC_INSTALL_LDSO_SYMLINKS
+	if [ -e $(TARGET_DIR)/lib/ld64-uClibc.so.1 ]; then \
+		(cd $(TARGET_DIR)/lib;ln -sf ld64-uClibc.so.1 ld64-uClibc.so.0) \
+	fi
+	if [ -e $(TARGET_DIR)/lib/ld-uClibc.so.1 ]; then \
+		(cd $(TARGET_DIR)/lib;ln -sf ld-uClibc.so.1 ld-uClibc.so.0) \
+	fi
+endef
+endif
+
 define UCLIBC_INSTALL_TARGET_CMDS
 	$(MAKE1) -C $(@D) \
 		$(UCLIBC_MAKE_FLAGS) \
@@ -485,6 +503,7 @@ define UCLIBC_INSTALL_TARGET_CMDS
 	$(UCLIBC_INSTALL_UTILS_TARGET)
 	$(UCLIBC_BUILD_TEST_SUITE)
 	$(UCLIBC_INSTALL_TEST_SUITE)
+	$(UCLIBC_INSTALL_LDSO_SYMLINKS)
 endef
 
 # STATIC has no ld* tools, only getconf
