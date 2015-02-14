@@ -31,7 +31,8 @@ endif
 # Add zlib support if enabled
 ifeq ($(BR2_PACKAGE_ZLIB),y)
 LIBSSH2_DEPENDENCIES += zlib
-LIBSSH2_CONF_OPTS += --with-libz
+LIBSSH2_CONF_OPTS += --with-libz \
+	--with-libz-prefix=$(STAGING_DIR)/usr
 else
 LIBSSH2_CONF_OPTS += --without-libz
 endif
