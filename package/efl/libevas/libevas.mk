@@ -205,6 +205,13 @@ else
 LIBEVAS_CONF_OPTS += --disable-font-loader-eet
 endif
 
+ifeq ($(BR2_PACKAGE_FONTCONFIG),y)
+LIBEVAS_CONF_OPTS += --enable-fontconfig
+LIBEVAS_DEPENDENCIES += fontconfig
+else
+LIBEVAS_CONF_OPTS += --disable-fontconfig
+endif
+
 # libevas installs the source code of examples on the target, which
 # are generally not useful.
 define LIBEVAS_REMOVE_EXAMPLES
