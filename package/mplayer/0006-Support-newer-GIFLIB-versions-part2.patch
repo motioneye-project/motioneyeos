@@ -1,0 +1,44 @@
+Support newer GIFLIB versions - Part 2
+
+Adding another patch to fix the problem with new versions of libgif.
+This patch has been sent upstream:
+
+  https://lists.mplayerhq.hu/pipermail/mplayer-dev-eng/2015-February/072848.html
+
+Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+
+Support newer GIFLIB versions - Part 2
+
+This patch is necessary because the previous upstream patch is
+incomplete. Without this one, MPlayer will fail to compile displaying
+an error message like this one:
+
+libvo/vo_gif89a.c: In function 'uninit':
+libvo/vo_gif89a.c:374:3: error: too few arguments to function 'EGifCloseFile'
+   EGifCloseFile(new_gif); // also frees gif storage space.
+
+Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+---
+
+diff -rup a/libmpdemux/demux_gif.c b/libmpdemux/demux_gif.c
+--- a/libmpdemux/demux_gif.c	2015-02-13 15:39:56.582310414 +0000
++++ b/libmpdemux/demux_gif.c	2015-02-13 15:48:06.396837922 +0000
+@@ -48,6 +48,7 @@ typedef struct {
+ #if defined GIFLIB_MAJOR && GIFLIB_MAJOR >= 5
+ #define DGifOpen(a, b) DGifOpen(a, b, NULL)
+ #define DGifOpenFileHandle(a) DGifOpenFileHandle(a, NULL)
++#define DGifCloseFile(a) DGifCloseFile(a, NULL)
+ #define GifError() (gif ? gif->Error : 0)
+ #define GifErrorString() GifErrorString(gif->Error)
+ #endif
+diff -rup a/libvo/vo_gif89a.c b/libvo/vo_gif89a.c
+--- a/libvo/vo_gif89a.c	2015-02-13 15:39:56.631311186 +0000
++++ b/libvo/vo_gif89a.c	2015-02-13 15:45:25.392168294 +0000
+@@ -71,6 +71,7 @@ const LIBVO_EXTERN(gif89a)
+ 
+ #if defined GIFLIB_MAJOR && GIFLIB_MAJOR >= 5
+ #define EGifOpenFileName(a, b) EGifOpenFileName(a, b, NULL)
++#define EGifCloseFile(a) EGifCloseFile(a, NULL)
+ #define MakeMapObject GifMakeMapObject
+ #define FreeMapObject GifFreeMapObject
+ #define QuantizeBuffer GifQuantizeBuffer
