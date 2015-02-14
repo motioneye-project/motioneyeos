@@ -17,6 +17,10 @@ choice
 		bool "uClibc 0.9.33.x"
 		depends on !(BR2_arc || BR2_xtensa)
 
+	config BR2_UCLIBC_VERSION_ARC_GIT
+		bool "uClibc Git ARC"
+		depends on BR2_arc
+
 	config BR2_UCLIBC_VERSION_XTENSA_GIT
 		bool "uClibc Git Xtensa"
 		depends on BR2_xtensa
@@ -37,14 +41,14 @@ config BR2_USE_UCLIBC_SNAPSHOT
 config BR2_UCLIBC_VERSION_STRING
 	string
 	default 0.9.33.2	if BR2_UCLIBC_VERSION_0_9_33
-	default "arc-2014.12" if BR2_arc
+	default "arc-2014.12" if BR2_UCLIBC_VERSION_ARC_GIT
 	default "7bf35c8b7d4a1f97174eb49f47f33946b282114c" if BR2_UCLIBC_VERSION_XTENSA_GIT
 	default BR2_USE_UCLIBC_SNAPSHOT	if BR2_UCLIBC_VERSION_SNAPSHOT
 
 config BR2_UCLIBC_CONFIG
 	string "uClibc configuration file to use?"
 	default "package/uclibc/uClibc-0.9.33.config" if BR2_UCLIBC_VERSION_0_9_33
-	default "package/uclibc/uClibc-snapshot.config" if BR2_arc
+	default "package/uclibc/uClibc-snapshot.config" if BR2_UCLIBC_VERSION_ARC_GIT
 	default "package/uclibc/uClibc-snapshot.config" if BR2_UCLIBC_VERSION_SNAPSHOT
 	default "package/uclibc/uClibc-snapshot.config" if BR2_UCLIBC_VERSION_XTENSA_GIT
 	help

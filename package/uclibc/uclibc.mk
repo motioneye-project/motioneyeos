@@ -11,7 +11,7 @@ UCLIBC_LICENSE_FILES = COPYING.LIB
 
 ifeq ($(BR2_UCLIBC_VERSION_SNAPSHOT),y)
 UCLIBC_SITE = http://www.uclibc.org/downloads/snapshots
-else ifeq ($(BR2_arc),y)
+else ifeq ($(BR2_UCLIBC_VERSION_ARC_GIT),y)
 UCLIBC_SITE = $(call github,foss-for-synopsys-dwc-arc-processors,uClibc,$(UCLIBC_VERSION))
 UCLIBC_SOURCE = uClibc-$(UCLIBC_VERSION).tar.gz
 else ifeq ($(BR2_UCLIBC_VERSION_XTENSA_GIT),y)
