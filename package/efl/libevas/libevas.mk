@@ -107,16 +107,25 @@ LIBEVAS_CONF_ENV += \
 	GL_EET_LIBS='-leet'
 endif
 
+# libevas OpenGL flavor
 ifeq ($(BR2_PACKAGE_LIBEVAS_GL),y)
 LIBEVAS_DEPENDENCIES += mesa3d libeet
 endif
 
 ifeq ($(BR2_PACKAGE_LIBEVAS_GLES_SGX),y)
 LIBEVAS_CONF_OPTS += --enable-gl-flavor-gles --enable-gles-variety-sgx
+else
+LIBEVAS_CONF_OPTS += --disable-gles-variety-sgx
 endif
 
 ifeq ($(BR2_PACKAGE_LIBEVAS_GLES_S3C6410),y)
 LIBEVAS_CONF_OPTS += --enable-gl-flavor-gles --enable-gles-variety-s3c6410
+else
+LIBEVAS_CONF_OPTS += --disable-gles-variety-s3c6410
+endif
+
+ifeq ($(BR2_PACKAGE_LIBEVAS_GLES_SGX)$(BR2_PACKAGE_LIBEVAS_GLES_S3C6410),)
+LIBEVAS_CONF_OPTS += --disable-gl-flavor-gles
 endif
 
 # code options
