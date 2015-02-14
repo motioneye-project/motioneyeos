@@ -17,6 +17,7 @@ GNUTLS_DEPENDENCIES = host-pkgconf nettle pcre \
 	$(if $(BR2_PACKAGE_ZLIB),zlib)
 GNUTLS_CONF_OPTS = \
 	--with-libnettle-prefix=$(STAGING_DIR)/usr \
+	--with-librt-prefix=$(STAGING_DIR) \
 	--disable-rpath \
 	--disable-doc \
 	--disable-guile \
