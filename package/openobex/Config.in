@@ -11,7 +11,6 @@ if BR2_PACKAGE_OPENOBEX
 
 config BR2_PACKAGE_OPENOBEX_BLUEZ
 	bool "enable bluez support"
-	depends on !BR2_avr32
 	depends on !BR2_STATIC_LIBS # bluez_utils
 	depends on BR2_USE_WCHAR # libglib2
 	depends on BR2_TOOLCHAIN_HAS_THREADS # dbus, alsa-lib, libglib2
@@ -19,7 +18,7 @@ config BR2_PACKAGE_OPENOBEX_BLUEZ
 	select BR2_PACKAGE_BLUEZ_UTILS
 
 comment "bluez support needs a toolchain w/ wchar, threads, dynamic library"
-	depends on !BR2_avr32 && BR2_USE_MMU
+	depends on BR2_USE_MMU
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS
 
 config BR2_PACKAGE_OPENOBEX_LIBUSB

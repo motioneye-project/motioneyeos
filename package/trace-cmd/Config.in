@@ -2,7 +2,6 @@ config BR2_PACKAGE_TRACE_CMD
 	bool "trace-cmd"
 	depends on BR2_LARGEFILE
 	depends on BR2_TOOLCHAIN_HAS_THREADS
-	depends on !BR2_avr32 # AVR32 does not have TLS support
 	depends on BR2_USE_MMU # fork()
 	depends on !BR2_STATIC_LIBS # dlopen()
 	help

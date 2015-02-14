@@ -4,7 +4,6 @@ config BR2_PACKAGE_MYSQL
 	depends on BR2_USE_MMU # fork()
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	# Toolchain is not up to the task
-	depends on !BR2_avr32
 	select BR2_PACKAGE_NCURSES
 	select BR2_PACKAGE_READLINE
 	help

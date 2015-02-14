@@ -19,11 +19,6 @@ OPROFILE_BINARIES = \
 	utils/op-check-perfevents libabi/opimport \
 	pe_counting/ocount
 
-# No perf_events support in kernel for avr32
-ifneq ($(BR2_avr32),y)
-OPROFILE_BINARIES += pe_profiling/operf
-endif
-
 ifeq ($(BR2_i386),y)
 OPROFILE_ARCH = i386
 endif

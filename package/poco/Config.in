@@ -4,7 +4,7 @@ config BR2_PACKAGE_POCO
 	depends on BR2_USE_WCHAR
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on !(BR2_arc || BR2_bfin || BR2_microblaze || BR2_mipsel \
-		|| BR2_xtensa || BR2_avr32)
+		|| BR2_xtensa)
 	select BR2_PACKAGE_ZLIB
 	select BR2_PACKAGE_PCRE
 	help
@@ -55,7 +55,6 @@ config BR2_PACKAGE_POCO_DATA_SQLITE
 config BR2_PACKAGE_POCO_DATA_MYSQL
 	bool "mysql"
 	depends on BR2_USE_MMU # mysql
-	depends on !BR2_avr32 # mysql
 	select BR2_PACKAGE_POCO_DATA
 	select BR2_PACKAGE_MYSQL
 
@@ -65,4 +64,4 @@ comment "poco needs a toolchain w/ wchar, threads, C++"
 	depends on !BR2_USE_WCHAR || !BR2_INSTALL_LIBSTDCPP \
 		|| !BR2_TOOLCHAIN_HAS_THREADS
 	depends on !(BR2_arc || BR2_bfin || BR2_microblaze || BR2_mipsel \
-		|| BR2_xtensa || BR2_avr32)
+		|| BR2_xtensa)

@@ -1,6 +1,5 @@
 config BR2_PACKAGE_LIBCAP_NG
 	bool "libcap-ng"
-	depends on !BR2_avr32 # lacks TLS
 	help
 	  The libcap-ng library is intended to make programming with
 	  posix capabilities much easier than the traditional libcap

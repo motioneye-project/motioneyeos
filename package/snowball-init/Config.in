@@ -2,7 +2,6 @@ config BR2_PACKAGE_SNOWBALL_INIT
 	bool "snowball-init"
 	# Runtime dependency, needed by snowball startup script
 	select BR2_PACKAGE_BLUEZ_UTILS
-	depends on !BR2_avr32
 	depends on !BR2_STATIC_LIBS # bluez_utils
 	depends on BR2_USE_WCHAR # libglib2
 	depends on BR2_TOOLCHAIN_HAS_THREADS # dbus, alsa-lib, libglib2
@@ -14,5 +13,5 @@ config BR2_PACKAGE_SNOWBALL_INIT
 	  http://www.igloocommunity.org
 
 comment "snowball-init needs a toolchain w/ wchar, threads, dynamic library"
-	depends on !BR2_avr32 && BR2_USE_MMU
+	depends on BR2_USE_MMU
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS

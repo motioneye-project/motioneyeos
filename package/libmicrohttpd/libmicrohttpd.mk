@@ -21,9 +21,4 @@ LIBMICROHTTPD_LICENSE = LGPLv2.1+ or eCos
 LIBMICROHTTPD_CONF_OPTS += --disable-https
 endif
 
-ifeq ($(BR2_avr32),y)
-# no epoll_create1
-LIBMICROHTTPD_CONF_OPTS += --disable-epoll
-endif
-
 $(eval $(autotools-package))

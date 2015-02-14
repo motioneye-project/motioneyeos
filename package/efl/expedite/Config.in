@@ -5,7 +5,6 @@ config BR2_PACKAGE_EXPEDITE
 	select BR2_PACKAGE_LIBEET
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libevas
-	depends on !BR2_avr32 # libevas
 	help
 	  Expedite is the official Evas benchmark tool. It can test different
 	  engines, such as X11, XRender, OpenGL (also ES variant), SDL,
@@ -15,4 +14,3 @@ config BR2_PACKAGE_EXPEDITE
 comment "expedite needs a toolchain w/ C++, threads"
 	depends on !BR2_INSTALL_LIBSTDCPP
 	depends on !BR2_TOOLCHAIN_HAS_THREADS
-	depends on !BR2_avr32

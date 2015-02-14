@@ -1,5 +1,4 @@
 comment "libedje needs a toolchain w/ threads"
-	depends on !BR2_avr32
 	depends on !BR2_TOOLCHAIN_HAS_THREADS
 
 config BR2_PACKAGE_LIBEDJE
@@ -11,7 +10,6 @@ config BR2_PACKAGE_LIBEDJE
 	select BR2_PACKAGE_LIBEMBRYO
 	select BR2_PACKAGE_LIBEVAS
 	select BR2_PACKAGE_LUA
-	depends on !BR2_avr32 # libevas
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libevas
 	help
 	  A graphical layout and animation library for animated

@@ -1,7 +1,6 @@
 config BR2_PACKAGE_OPENPGM
 	bool "openpgm"
 	# The following toolchains lack required compiler intrinsics
-	depends on !BR2_avr32
 	depends on !BR2_TOOLCHAIN_EXTERNAL_BLACKFIN_UCLINUX_2013R1
 	depends on !BR2_TOOLCHAIN_EXTERNAL_BLACKFIN_UCLINUX_2012R2
 	depends on BR2_TOOLCHAIN_HAS_THREADS
@@ -18,4 +17,3 @@ config BR2_PACKAGE_OPENPGM
 
 comment "openpgm needs a toolchain w/ wchar, threads, IPv6"
 	depends on !(BR2_TOOLCHAIN_HAS_THREADS && BR2_INET_IPV6 && BR2_USE_WCHAR)
-	depends on !BR2_avr32

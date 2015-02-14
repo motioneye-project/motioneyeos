@@ -5,7 +5,6 @@ config BR2_PACKAGE_LXC
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_LARGEFILE
 	depends on BR2_USE_MMU # fork()
-	depends on !BR2_avr32 # no timerfd
 	# the toolchain doesn't support setns syscall
 	depends on !BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_NIOSII201305
 	depends on !BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_NIOSII201405
@@ -19,7 +18,6 @@ config BR2_PACKAGE_LXC
 
 comment "lxc needs a toolchain w/ IPv6, threads, largefile, headers >= 3.0"
 	depends on BR2_USE_MMU
-	depends on !BR2_avr32 # no timerfd
 	depends on !BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_NIOSII201305
 	depends on !BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_NIOSII201405
 	depends on !BR2_INET_IPV6 || !BR2_TOOLCHAIN_HAS_THREADS \

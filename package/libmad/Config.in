@@ -1,6 +1,5 @@
 config BR2_PACKAGE_LIBMAD
 	bool "libmad"
-	select BR2_PACKAGE_LIBMAD_ASO if BR2_avr32
 	help
 	  High-quality MPEG audio decoder.  All computations are performed
 	  with fixed-point integer arithmetic, making it ideal for systems

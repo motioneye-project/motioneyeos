@@ -1,6 +1,5 @@
 config BR2_PACKAGE_NETWORK_MANAGER
 	bool "networkmanager"
-	depends on !BR2_avr32 # udev
 	depends on BR2_INET_IPV6
 	depends on BR2_LARGEFILE # acl
 	depends on BR2_USE_WCHAR # libglib2 and gnutls
@@ -54,7 +53,6 @@ config BR2_PACKAGE_NETWORK_MANAGER_PPPD
 endif
 
 comment "NetworkManager needs udev /dev management and a toolchain w/ IPv6, largefile, wchar, threads, headers >= 3.7"
-	depends on !BR2_avr32
 	depends on BR2_USE_MMU
 	depends on !BR2_INET_IPV6 || !BR2_LARGEFILE || !BR2_USE_WCHAR || \
 		!BR2_TOOLCHAIN_HAS_THREADS || \

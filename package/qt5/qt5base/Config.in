@@ -53,7 +53,6 @@ config BR2_PACKAGE_QT5BASE_MYSQL
 	select BR2_PACKAGE_NCURSES
 	select BR2_PACKAGE_READLINE
 	depends on BR2_USE_MMU # mysql
-	depends on !BR2_avr32 # mysql
 	help
 	  Build MySQL plugin
 	  If unsure, say n.

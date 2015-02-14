@@ -1,5 +1,4 @@
 comment "elfutils needs a toolchain w/ largefile, wchar, dynamic library"
-	depends on !BR2_avr32
 	depends on !BR2_bfin
 	depends on !BR2_LARGEFILE || !BR2_USE_WCHAR || BR2_STATIC_LIBS
 
@@ -10,9 +9,6 @@ config BR2_PACKAGE_ELFUTILS
 	depends on BR2_LARGEFILE
 	depends on BR2_USE_WCHAR
 	depends on !BR2_STATIC_LIBS
-	# canonicalize_file_name() not available on uClibc 0.9.31, used
-	# only for AVR32
-	depends on !BR2_avr32
 	# build issue caused by the _ prefix used on blackfin for
 	# assembly symbols
 	depends on !BR2_bfin

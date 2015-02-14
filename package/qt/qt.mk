@@ -225,8 +225,6 @@ endif
 
 ifeq ($(BR2_arm)$(BR2_armeb),y)
 QT_EMB_PLATFORM = arm
-else ifeq ($(BR2_avr32),y)
-QT_EMB_PLATFORM = avr32
 else ifeq ($(BR2_i386),y)
 QT_EMB_PLATFORM = x86
 else ifeq ($(BR2_x86_64),y)
