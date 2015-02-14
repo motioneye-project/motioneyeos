@@ -13,13 +13,9 @@ choice
 	help
 	  Select the version of uClibc you wish to use.
 
-	config BR2_UCLIBC_VERSION_0_9_31
-		bool "uClibc 0.9.31.x"
-		depends on BR2_avr32
-
 	config BR2_UCLIBC_VERSION_0_9_33
 		bool "uClibc 0.9.33.x"
-		depends on !(BR2_arc || BR2_avr32 || BR2_xtensa)
+		depends on !(BR2_arc || BR2_xtensa)
 
 	config BR2_UCLIBC_VERSION_XTENSA_GIT
 		bool "uClibc Git Xtensa"
@@ -40,7 +36,6 @@ config BR2_USE_UCLIBC_SNAPSHOT
 
 config BR2_UCLIBC_VERSION_STRING
 	string
-	default 0.9.31.1	if BR2_UCLIBC_VERSION_0_9_31
 	default 0.9.33.2	if BR2_UCLIBC_VERSION_0_9_33
 	default "arc-2014.12" if BR2_arc
 	default "7bf35c8b7d4a1f97174eb49f47f33946b282114c" if BR2_UCLIBC_VERSION_XTENSA_GIT
@@ -48,7 +43,6 @@ config BR2_UCLIBC_VERSION_STRING
 
 config BR2_UCLIBC_CONFIG
 	string "uClibc configuration file to use?"
-	default "package/uclibc/uClibc-0.9.31.config" if BR2_UCLIBC_VERSION_0_9_31
 	default "package/uclibc/uClibc-0.9.33.config" if BR2_UCLIBC_VERSION_0_9_33
 	default "package/uclibc/uClibc-snapshot.config" if BR2_arc
 	default "package/uclibc/uClibc-snapshot.config" if BR2_UCLIBC_VERSION_SNAPSHOT
@@ -98,7 +92,7 @@ config BR2_TOOLCHAIN_BUILDROOT_LOCALE
 
 choice
 	prompt "Thread library implementation"
-	default BR2_PTHREADS_NATIVE if !(BR2_avr32 || BR2_xtensa)
+	default BR2_PTHREADS_NATIVE if !BR2_xtensa
 	default BR2_PTHREADS_OLD
 	help
 	  Use this option to select the thread library implementation
@@ -125,7 +119,6 @@ choice
 		select BR2_TOOLCHAIN_HAS_THREADS
 		select BR2_TOOLCHAIN_HAS_THREADS_NPTL
 		depends on !BR2_arc
-		depends on !BR2_avr32
 		depends on !BR2_bfin
 		depends on !BR2_xtensa
 		depends on !BR2_x86_i386
@@ -183,7 +176,6 @@ config BR2_UCLIBC_TARGET_ARCH
 	string
 	default arc	   if BR2_arcle || BR2_arceb
 	default arm	   if BR2_arm	|| BR2_armeb
-	default avr32	   if BR2_avr32
 	default bfin	   if BR2_bfin
 	default m68k	   if BR2_m68k
 	default mips	   if BR2_mips || BR2_mipsel || BR2_mips64 || BR2_mips64el

@@ -7,10 +7,8 @@ config BR2_PACKAGE_FIO
 	# release of uClibc, but is part of uClibc Git, and backported
 	# in Buildroot patch set of uClibc 0.9.33. Therefore, we
 	# disable the build of fio for external uClibc toolchains
-	# (which use an unknown uClibc version) and for 0.9.31 which
-	# don't have posix_madvise().
-	depends on !BR2_TOOLCHAIN_EXTERNAL_UCLIBC && \
-		!BR2_UCLIBC_VERSION_0_9_31
+	# (which use an unknown uClibc version)
+	depends on !BR2_TOOLCHAIN_EXTERNAL_UCLIBC
 	# fio uses fallocate() which becomes fallocate64() while compiling
 	# with BR2_LARGEFILE but fallocate64() is not available on nios2
 	depends on !BR2_nios2
