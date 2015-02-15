@@ -167,8 +167,6 @@ config BR2_PRIMARY_SITE
 	  default if the file is not found.
 	  Valid URIs are URIs recognized by $(WGET) and scp URIs of the form
 	  scp://[user@]host:path.
-	  NOTE: This works for all packages using the central package
-	  infrastructure (generic, autotools, cmake, ...)
 
 config BR2_PRIMARY_SITE_ONLY
 	bool "Only allow downloads from primary download site"
