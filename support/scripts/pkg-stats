@@ -94,6 +94,7 @@ for i in $(find boot/ linux/ package/ -name '*.mk' | sort) ; do
 
     if test \
 	$i = "boot/common.mk" -o \
+	$i = "linux/linux-ext-fbtft.mk" -o \
 	$i = "linux/linux-ext-xenomai.mk" -o \
 	$i = "linux/linux-ext-rtai.mk" -o \
 	$i = "package/efl/efl.mk" -o \
@@ -106,6 +107,7 @@ for i in $(find boot/ linux/ package/ -name '*.mk' | sort) ; do
 	$i = "package/opengl/opengl.mk" -o \
 	$i = "package/qt5/qt5.mk" -o \
 	$i = "package/x11r7/x11r7.mk" -o \
+	$i = "package/doc-asciidoc.mk" -o \
 	$i = "package/pkg-autotools.mk" -o \
 	$i = "package/pkg-cmake.mk" -o \
 	$i = "package/pkg-kconfig.mk" -o \
