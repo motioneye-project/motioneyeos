@@ -4,14 +4,14 @@
 #
 ################################################################################
 
-WESTON_VERSION = 1.6.0
+WESTON_VERSION = 1.7.0
 WESTON_SITE = http://wayland.freedesktop.org/releases
 WESTON_SOURCE = weston-$(WESTON_VERSION).tar.xz
 WESTON_LICENSE = MIT
 WESTON_LICENSE_FILES = COPYING
 
 WESTON_DEPENDENCIES = host-pkgconf wayland libxkbcommon pixman libpng \
-	jpeg mtdev udev cairo
+	jpeg mtdev udev cairo libinput
 
 WESTON_CONF_OPTS = \
 	--with-dtddir=$(STAGING_DIR)/usr/share/wayland \
@@ -24,13 +24,6 @@ WESTON_CONF_OPTS = \
 	--disable-headless-compositor \
 	--disable-weston-launch \
 	--disable-colord
-
-ifeq ($(BR2_PACKAGE_LIBINPUT),y)
-WESTON_DEPENDENCIES += libinput
-WESTON_CONF_OPTS += --enable-libinput-backend
-else
-WESTON_CONF_OPTS += --disable-libinput-backend
-endif
 
 ifeq ($(BR2_PACKAGE_LIBUNWIND),y)
 WESTON_DEPENDENCIES += libunwind
