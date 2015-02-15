@@ -1,3 +1,3 @@
-# From http://lists.x.org/archives/xorg-announce/2014-December/002506.html
-sha1	cf903e3b02cd4f4b075d139ee7d6b0a3741cd9cf				xorg-server-1.16.3.tar.bz2
-sha256	5e0f443238af1078b48f6eea98a382861b59187da221c2cf714d31c1d560b0fb	xorg-server-1.16.3.tar.bz2
+# From http://lists.x.org/archives/xorg-announce/2015-February/002532.html
+sha1	b2ccace1316fb94a23514a760227c156bd6116cd  				xorg-server-1.16.4.tar.bz2
+sha256	abb6e1cc9213a9915a121f48576ff6739a0b8cdb3d32796f9a7743c9a6efc871	xorg-server-1.16.4.tar.bz2
