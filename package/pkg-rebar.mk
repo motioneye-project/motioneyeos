@@ -209,7 +209,7 @@ $(2)_CONF_ENV += $$(REBAR_HOST_DEPS_ENV)
 ifndef $(2)_BUILD_CMDS
 define $(2)_BUILD_CMDS
 	(cd $$(@D); \
-		CC="$$(HOST_CC)" \
+		CC="$$(HOSTCC)" \
 		CFLAGS="$$(HOST_CFLAGS)" \
 		LDFLAGS="$$(HOST_LDFLAGS)" \
 		$$(REBAR_HOST_DEPS_ENV) \
