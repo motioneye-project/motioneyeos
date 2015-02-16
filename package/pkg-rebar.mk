@@ -74,7 +74,7 @@ endef
 # For target packages for example, one uses this to setup symbolic
 # links from $(STAGING_DIR)/usr/share/rebar/deps/<erlang-app> to
 # $(STAGING_DIR)/usr/lib/erlang/lib/<erlang-app>-<version>. This
-# infrastructure points rebar at the former in order to tell rebar do
+# infrastructure points rebar at the former in order to tell rebar to
 # NOT download dependencies during the build stage, and instead use
 # the already available dependencies.
 #
@@ -195,7 +195,7 @@ $(2)_DEPENDENCIES ?= $$(filter-out host-automake host-autoconf host-libtool \
 				host-gettext host-toolchain host-erlang-rebar $(1),\
     $$(patsubst host-host-%,host-%,$$(addprefix host-,$$($(3)_DEPENDENCIES))))
 else
-# Same deal, if _USE_BUNLDED_REBAR is NO.
+# Same deal, if _USE_BUNDLED_REBAR is NO.
 $(2)_DEPENDENCIES ?= $$(filter-out  host-toolchain host-erlang-rebar $(1),\
 	$$(patsubst host-host-%,host-%,$$(addprefix host-,$$($(3)_DEPENDENCIES))))
 endif
