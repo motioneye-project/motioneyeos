@@ -43,7 +43,7 @@ REBAR_TARGET_DEPS_ENV = \
 
 # Install an Erlang application from $(@D).
 #
-# i.e., define a recipe that installs the "ebin priv $(2)" directories
+# i.e., define a recipe that installs the "bin ebin priv $(2)" directories
 # from $(@D) to $(1)$($(PKG)_ERLANG_LIBDIR).
 #
 #  argument 1 should typically be $(HOST_DIR), $(TARGET_DIR),
@@ -57,7 +57,7 @@ REBAR_TARGET_DEPS_ENV = \
 #
 define install-erlang-directories
 	$(INSTALL) -d $(1)/$($(PKG)_ERLANG_LIBDIR)
-	for dir in ebin priv $(2); do                                   \
+	for dir in bin ebin priv $(2); do                               \
 		if test -d $(@D)/$$dir; then                            \
 			cp -r $(@D)/$$dir $(1)$($(PKG)_ERLANG_LIBDIR);  \
 		fi;                                                     \
