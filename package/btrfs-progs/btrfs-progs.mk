@@ -18,7 +18,7 @@ BTRFS_PROGS_MAKE_TARGET = static
 BTRFS_PROGS_MAKE_INSTALL_TARGET = install-static
 ifeq ($(BR2_NEEDS_GETTEXT_IF_LOCALE),y)
 # Add -lintl for libuuid
-BTRFS_PROGS_MAKE_FLAGS += lib_LIBS="-luuid -lblkid -lm -lz -llzo2 -L. -lintl"
+BTRFS_PROGS_MAKE_FLAGS += lib_LIBS="-luuid -lblkid -lz -llzo2 -L. -lintl -pthread"
 endif
 else
 BTRFS_PROGS_MAKE_TARGET = all
