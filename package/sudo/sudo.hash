@@ -1,3 +1,2 @@
-# From announcement http://www.sudo.ws/pipermail/sudo-announce/2014-May/000132.html
-md5	fcd8d0d9f9f0397d076ee901e242ed39	sudo-1.8.10p3.tar.gz
-sha256	6eda135fa68163108f1c24de6975de5ddb09d75730bb62d6390bda7b04345400	sudo-1.8.10p3.tar.gz
+# From http://www.sudo.ws/pipermail/sudo-announce/2015-February/000136.html
+sha256	163b51841de8ad19276581a6782d61f5948f1f72a0a843371a1c167d3dc4f3b0	sudo-1.8.12.tar.gz
