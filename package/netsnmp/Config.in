@@ -9,6 +9,18 @@ config BR2_PACKAGE_NETSNMP
 
 if BR2_PACKAGE_NETSNMP
 
+config BR2_PACKAGE_NETSNMP_SERVER
+	bool "server"
+	default y
+	help
+	  The snmpd server.
+
+config BR2_PACKAGE_NETSNMP_CLIENTS
+	bool "clients"
+	default y
+	help
+	  The net-snmp clients (snmpget, snmpwalk, etc).
+
 config BR2_PACKAGE_NETSNMP_ENABLE_MIBS
 	bool "Install MIB files on target and enable MIB loading code"
 	default y
