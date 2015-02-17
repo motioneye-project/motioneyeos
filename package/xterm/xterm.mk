@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-XTERM_VERSION = 306
+XTERM_VERSION = 314
 XTERM_SOURCE = xterm-$(XTERM_VERSION).tgz
 XTERM_SITE = ftp://invisible-island.net/xterm
 XTERM_DEPENDENCIES = ncurses xlib_libXaw
