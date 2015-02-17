@@ -55,4 +55,16 @@ OPENLDAP_CONF_OPTS += \
 # executable it is supposed to install, resulting in an error.
 OPENLDAP_MAKE_ENV = STRIP="$(TARGET_STRIP)"
 
+ifeq ($(BR2_PACKAGE_OPENLDAP_CLIENTS),)
+OPENLDAP_CLIENTS = \
+	ldapurl ldapexop ldapcompare ldapwhoami \
+	ldappasswd ldapmodrdn ldapdelete ldapmodify \
+	ldapsearch
+define OPENLDAP_REMOVE_CLIENTS
+	$(RM) -f $(foreach p,$(OPENLDAP_CLIENTS),$(TARGET_DIR)/usr/bin/$(p))
+	$(RM) -rf $(TARGET_DIR)/etc/openldap
+endef
+OPENLDAP_POST_INSTALL_TARGET_HOOKS += OPENLDAP_REMOVE_CLIENTS
+endif
+
 $(eval $(autotools-package))
