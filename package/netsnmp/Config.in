@@ -49,4 +49,11 @@ config BR2_PACKAGE_NETSNMP_ENABLE_DEBUGGING
 	  support, including the ability to log with DEBUGMSG(),
 	  DEBUGMSGTL() and companion macros.
 
+config BR2_PACKAGE_NETSNMP_OPENSSL_INTERNAL
+	bool "Enable minimal internal OpenSSL code"
+	depends on !BR2_PACKAGE_OPENSSL
+	help
+	  Enable a minimal internal copy of OpenSSL usable for USM
+	  security. It will not enable the usage of SNMP over (D)TLS.
+
 endif

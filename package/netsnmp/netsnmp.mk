@@ -54,6 +54,8 @@ ifeq ($(BR2_STATIC_LIBS),y)
 	# openssl uses zlib, so we need to explicitly link with it when static
 	NETSNMP_CONF_ENV += LIBS=-lz
 endif
+else ifeq ($(BR2_PACKAGE_NETSNMP_OPENSSL_INTERNAL),y)
+	NETSNMP_CONF_OPTS += --with-openssl=internal
 else
 	NETSNMP_CONF_OPTS += --without-openssl
 endif
