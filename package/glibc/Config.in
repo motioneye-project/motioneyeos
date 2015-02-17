@@ -33,6 +33,7 @@ choice
 	default BR2_GLIBC_VERSION_2_20
 
 config BR2_GLIBC_VERSION_2_20
+	depends on !BR2_nios2
 	bool "2.20"
 
 config BR2_GLIBC_VERSION_2_21
