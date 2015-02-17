@@ -6,10 +6,7 @@
 
 IMAGEMAGICK_VERSION = 6.9.0-4
 IMAGEMAGICK_SOURCE = ImageMagick-$(IMAGEMAGICK_VERSION).tar.xz
-# The official ImageMagick site only keeps the latest versions
-# available, which is annoying. Use an alternate site that keeps all
-# older versions.
-IMAGEMAGICK_SITE = ftp://ftp.nluug.nl/pub/ImageMagick
+IMAGEMAGICK_SITE = http://www.imagemagick.org/download/releases
 IMAGEMAGICK_LICENSE = Apache-2.0
 IMAGEMAGICK_LICENSE_FILES = LICENSE
 
