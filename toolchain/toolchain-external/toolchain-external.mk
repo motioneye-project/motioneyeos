@@ -436,15 +436,26 @@ define toolchain_find_libc_a
 $$(readlink -f $$(LANG=C $(1) -print-file-name=libc.a))
 endef
 
-# Returns the sysroot location for the given compiler + flags
+# Returns the sysroot location for the given compiler + flags. We need
+# to handle cases where libc.a is in:
+#
+#  - lib/
+#  - usr/lib/
+#  - lib32/
+#  - lib64/
+#  - lib32-fp/ (Cavium toolchain)
+#  - lib64-fp/ (Cavium toolchain)
+#  - usr/lib/<tuple>/ (Linaro toolchain)
+#
+# And variations on these.
 define toolchain_find_sysroot
-$$(echo -n $(call toolchain_find_libc_a,$(1)) | sed -r -e 's:(usr/)?lib(32|64)?/([^/]*/)?libc\.a::')
+$$(echo -n $(call toolchain_find_libc_a,$(1)) | sed -r -e 's:(usr/)?lib(32|64)?([^/]*)?/([^/]*/)?libc\.a::')
 endef
 
 # Returns the lib subdirectory for the given compiler + flags (i.e
 # typically lib32 or lib64 for some toolchains)
 define toolchain_find_libdir
-$$(echo -n $(call toolchain_find_libc_a,$(1)) | sed -r -e 's:.*/(usr/)?(lib(32|64)?)/([^/]*/)?libc.a:\2:')
+$$(echo -n $(call toolchain_find_libc_a,$(1)) | sed -r -e 's:.*/(usr/)?(lib(32|64)?([^/]*)?)/([^/]*/)?libc.a:\2:')
 endef
 
 # Checks for an already installed toolchain: check the toolchain
