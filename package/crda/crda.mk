@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-CRDA_VERSION = 3.13
+CRDA_VERSION = 3.18
 CRDA_SOURCE = crda-$(CRDA_VERSION).tar.xz
 CRDA_SITE = $(BR2_KERNEL_MIRROR)/software/network/crda
 CRDA_DEPENDENCIES = host-pkgconf host-python-m2crypto \
