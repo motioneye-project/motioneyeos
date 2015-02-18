@@ -6,9 +6,9 @@ config BR2_PACKAGE_MJPG_STREAMER
 	depends on !BR2_STATIC_LIBS # plugins need dlopen()
 	select BR2_PACKAGE_JPEG
 	help
-	  MJPG-streamer takes JPGs from Linux-UVC compatible webcams, filesystem
-	  or other input plugins and streams them as M-JPEG via HTTP to
-	  webbrowsers, VLC and other software.
+	  MJPG-streamer takes JPGs from Linux-UVC compatible webcams,
+	  filesystem or other input plugins and streams them as
+	  M-JPEG via HTTP to webbrowsers, VLC and other software.
 
 	  http://mjpg-streamer.sourceforge.net
 
