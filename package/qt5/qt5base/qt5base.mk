@@ -67,8 +67,7 @@ QT5BASE_CONFIGURE_OPTS += -no-sql-mysql
 endif
 
 ifeq ($(BR2_PACKAGE_QT5BASE_PSQL),y)
-QT5BASE_CONFIGURE_OPTS += -plugin-sql-psql
-QT5BASE_CONFIGURE_ENV  += PSQL_LIBS=-L$(STAGING_DIR)/usr/lib
+QT5BASE_CONFIGURE_OPTS += -plugin-sql-psql -psql_config $(STAGING_DIR)/usr/bin/pg_config
 QT5BASE_DEPENDENCIES   += postgresql
 else
 QT5BASE_CONFIGURE_OPTS += -no-sql-psql

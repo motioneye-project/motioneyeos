@@ -1,0 +1,60 @@
+From 95f2e4001f9c1721cbdb26d3f9c38511adae9c4b Mon Sep 17 00:00:00 2001
+From: Peter Seiderer <ps.report@gmx.net>
+Date: Thu, 19 Feb 2015 22:41:02 +0100
+Subject: [PATCH] configure: add '-psql_config' option
+
+Allow setting of pg_config path for cross compilation (do
+the same as for mysql_config).
+
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+---
+ configure | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/configure b/configure
+index 0c66ecf..a832ae3 100755
+--- a/configure
++++ b/configure
+@@ -578,6 +578,7 @@ CFG_WIDGETS=yes
+ CFG_QCONFIG=full
+ CFG_DEBUG=auto
+ CFG_MYSQL_CONFIG=
++CFG_PSQL_CONFIG=
+ CFG_DEBUG_RELEASE=no
+ CFG_FORCEDEBUGINFO=no
+ CFG_SHARED=yes
+@@ -885,6 +886,7 @@ while [ "$#" -gt 0 ]; do
+     -arch| \
+     -host-arch| \
+     -mysql_config| \
++    -psql_config| \
+     -qpa| \
+     -qconfig| \
+     -qreal| \
+@@ -1066,6 +1068,9 @@ while [ "$#" -gt 0 ]; do
+     mysql_config)
+ 	CFG_MYSQL_CONFIG="$VAL"
+ 	;;
++    psql_config)
++	CFG_PSQL_CONFIG="$VAL"
++	;;
+     prefix)
+         QT_INSTALL_PREFIX="$VAL"
+         ;;
+@@ -4369,10 +4374,11 @@ for _SQLDR in $CFG_SQL_AVAILABLE; do
+             ;;
+         psql)
+             if [ "$CFG_SQL_psql" != "no" ]; then
++		[ -z "$CFG_PSQL_CONFIG" ] && CFG_PSQL_CONFIG=`"$WHICH" pg_config`
+                 # Be careful not to use native pg_config when cross building.
+                 if [ "$XPLATFORM_MINGW" != "yes" ] && "$WHICH" pg_config >/dev/null 2>&1; then
+-                    QT_CFLAGS_PSQL=`pg_config --includedir 2>/dev/null | filterIncludePath`
+-                    QT_LFLAGS_PSQL=`pg_config --libdir 2>/dev/null | filterLibraryPath`
++                    QT_CFLAGS_PSQL=`$CFG_PSQL_CONFIG --includedir 2>/dev/null | filterIncludePath`
++                    QT_LFLAGS_PSQL=`$CFG_PSQL_CONFIG --libdir 2>/dev/null | filterLibraryPath`
+                 fi
+                 [ -z "$QT_CFLAGS_PSQL" ] || QT_CFLAGS_PSQL="-I$QT_CFLAGS_PSQL"
+                 [ -z "$QT_LFLAGS_PSQL" ] || QT_LFLAGS_PSQL="-L$QT_LFLAGS_PSQL"
+-- 
+2.1.4
+
