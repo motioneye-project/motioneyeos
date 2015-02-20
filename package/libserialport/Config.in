@@ -1,8 +1,9 @@
 config BR2_PACKAGE_LIBSERIALPORT
 	bool "libserialport"
 	help
-	  Serial port access library.
-
-	  This library is a part of the sigrok software suite.
+	  Libserialport is a minimal, cross-platform shared
+	  library written in C that is intended to take care
+	  of the OS-specific details when writing software
+	  that uses serial ports.
 
 	  http://sigrok.org/wiki/Libserialport
