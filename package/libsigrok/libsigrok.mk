@@ -13,7 +13,7 @@ LIBSIGROK_LICENSE_FILES = COPYING
 LIBSIGROK_AUTORECONF = YES
 LIBSIGROK_INSTALL_STAGING = YES
 LIBSIGROK_DEPENDENCIES = libglib2 libzip host-pkgconf
-LIBSIGROK_CONF_OPTS = --disable-libudev --disable-bindings --disable-glibtest
+LIBSIGROK_CONF_OPTS = --disable-bindings --disable-glibtest
 
 define LIBSIGROK_ADD_MISSING
 	mkdir -p $(@D)/autostuff
