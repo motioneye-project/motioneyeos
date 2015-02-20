@@ -269,6 +269,11 @@ config BR2_PACKAGE_UTIL_LINUX_WRITE
 	help
 	  Send a message to another user
 
+config BR2_PACKAGE_UTIL_LINUX_ZRAMCTL
+	bool "zramctl"
+	help
+	  Set up and control zram devices
+
 endif
 
 endif
