@@ -21,6 +21,13 @@ endef
 
 LIBSIGROK_PRE_CONFIGURE_HOOKS += LIBSIGROK_ADD_MISSING
 
+ifeq ($(BR2_PACKAGE_LIBSERIALPORT),y)
+LIBSIGROK_CONF_OPTS += --enable-libserialport
+LIBSIGROK_DEPENDENCIES += libserialport
+else
+LIBSIGROK_CONF_OPTS += --disable-libserialport
+endif
+
 ifeq ($(BR2_PACKAGE_LIBFTDI),y)
 LIBSIGROK_CONF_OPTS += --enable-libftdi
 LIBSIGROK_DEPENDENCIES += libftdi
