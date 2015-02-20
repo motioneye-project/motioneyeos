@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-EXFAT_UTILS_VERSION = 1.1.0
+EXFAT_UTILS_VERSION = 1.1.1
 EXFAT_UTILS_SITE = http://distfiles.gentoo.org/distfiles
 EXFAT_UTILS_DEPENDENCIES = host-scons
 EXFAT_UTILS_LICENSE = GPLv3+
