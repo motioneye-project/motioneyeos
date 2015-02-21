@@ -234,6 +234,7 @@ config BR2_PACKAGE_UTIL_LINUX_SWITCH_ROOT
 
 config BR2_PACKAGE_UTIL_LINUX_UL
 	bool "ul"
+	select BR2_PACKAGE_NCURSES
 	help
 	  Do underlining
 
