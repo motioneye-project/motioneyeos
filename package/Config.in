@@ -1091,6 +1091,7 @@ endif
 	source "package/fping/Config.in"
 	source "package/gesftpserver/Config.in"
 	source "package/gutenprint/Config.in"
+	source "package/hans/Config.in"
 	source "package/hiawatha/Config.in"
 	source "package/hostapd/Config.in"
 	source "package/hplip/Config.in"
