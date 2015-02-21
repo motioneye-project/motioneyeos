@@ -223,6 +223,7 @@ config BR2_PACKAGE_UTIL_LINUX_SETPRIV
 
 config BR2_PACKAGE_UTIL_LINUX_SETTERM
 	bool "setterm"
+	select BR2_PACKAGE_NCURSES
 	help
 	  Set terminal attributes
 
