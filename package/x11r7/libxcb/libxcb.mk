@@ -16,8 +16,8 @@ LIBXCB_DEPENDENCIES = \
 	host-libxslt libpthread-stubs xcb-proto xlib_libXdmcp xlib_libXau \
 	host-xcb-proto host-python host-pkgconf
 
-LIBXCB_CONF_OPTS = --disable-build-docs
-HOST_LIBXCB_CONF_OPTS = --disable-build-docs
+LIBXCB_CONF_OPTS = --with-doxygen=no
+HOST_LIBXCB_CONF_OPTS = --with-doxygen=no
 
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
