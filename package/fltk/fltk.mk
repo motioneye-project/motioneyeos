@@ -8,8 +8,15 @@ FLTK_VERSION = 1.3.2
 FLTK_SOURCE = fltk-$(FLTK_VERSION)-source.tar.gz
 FLTK_SITE = http://fltk.org/pub/fltk/$(FLTK_VERSION)
 FLTK_INSTALL_STAGING = YES
+# We force --libdir=/usr/lib, because by default, it is set to
+# ${exec_prefix}/lib, which doesn't match the condition used by the
+# fltk build system to decide whether it should pass a -rpath,/usr/lib
+# or not. Since this rpath breaks the build, we want the fltk build
+# system to not pass it, which requires having --libdir set to
+# /usr/lib.
 FLTK_CONF_OPTS = --enable-threads --with-x --disable-gl \
-	--disable-localjpeg --disable-localpng --disable-localzlib
+	--disable-localjpeg --disable-localpng --disable-localzlib \
+	--libdir=/usr/lib
 FLTK_DEPENDENCIES = jpeg libpng xlib_libX11 xlib_libXext xlib_libXt
 FLTK_CONFIG_SCRIPTS = fltk-config
 FLTK_LICENSE = LGPLv2 with exceptions
