@@ -64,18 +64,52 @@ ifeq ($(BR2_arm)$(BR2_armeb),y)
 FREERDP_CONF_OPTS += -DARM_FP_ABI=$(call qstrip,$(BR2_GCC_TARGET_FLOAT_ABI))
 endif
 
-ifeq ($(BR2_PACKAGE_XLIB_LIBXEXT),y)
-FREERDP_DEPENDENCIES += xlib_libXext
-FREERDP_CONF_OPTS += -DWITH_X11=ON
+#---------------------------------------
+# Enabling server and/or client
+
+ifeq ($(BR2_PACKAGE_FREERDP_SERVER),y)
+FREERDP_CONF_OPTS += -DWITH_SERVER=ON -DWITH_SERVER_INTERFACE=ON
 else
-FREERDP_CONF_OPTS += -DWITH_X11=OFF
+FREERDP_CONF_OPTS += -DWITH_SERVER=OFF -DWITH_SERVER_INTERFACE=OFF
 endif
 
+ifeq ($(BR2_PACKAGE_FREERDP_CLIENT),y)
+FREERDP_CONF_OPTS += -DWITH_CLIENT=ON -DWITH_CLIENT_INTERFACE=ON
+else
+FREERDP_CONF_OPTS += -DWITH_CLIENT=OFF -DWITH_CLIENT_INTERFACE=OFF
+endif
+
+#---------------------------------------
+# X.Org libs for client and/or server
+
+ifneq ($(BR2_PACKAGE_FREERDP_SERVER)$(BR2_PACKAGE_FREERDP_CLIENT),)
+
+# Those two are mandatory for both the server and the client
+FREERDP_DEPENDENCIES += xlib_libX11 xlib_libXext
+FREERDP_CONF_OPTS += -DWITH_X11=ON
+
+# The following libs are either optional or mandatory only for either
+# the server or the client. A mandatory library for either one is
+# selected from Kconfig, so we can make it conditional here
 ifeq ($(BR2_PACKAGE_XLIB_LIBXCURSOR),y)
 FREERDP_CONF_OPTS += -DWITH_XCURSOR=ON
 FREERDP_DEPENDENCIES += xlib_libXcursor
 else
 FREERDP_CONF_OPTS += -DWITH_XCURSOR=OFF
+endif
+
+ifeq ($(BR2_PACKAGE_XLIB_LIBXDAMAGE),y)
+FREERDP_CONF_OPTS += -DWITH_XDAMAGE=ON
+FREERDP_DEPENDENCIES += xlib_libXdamage
+else
+FREERDP_CONF_OPTS += -DWITH_XDAMAGE=OFF
+endif
+
+ifeq ($(BR2_PACKAGE_XLIB_LIBXFIXES),y)
+FREERDP_CONF_OPTS += -DWITH_XFIXES=ON
+FREERDP_DEPENDENCIES += xlib_libXfixes
+else
+FREERDP_CONF_OPTS += -DWITH_XFIXES=OFF
 endif
 
 ifeq ($(BR2_PACKAGE_XLIB_LIBXI),y)
@@ -99,11 +133,25 @@ else
 FREERDP_CONF_OPTS += -DWITH_XKBFILE=OFF
 endif
 
+ifeq ($(BR2_PACKAGE_XLIB_LIBXRANDR),y)
+FREERDP_CONF_OPTS += -DWITH_XRANDR=ON
+FREERDP_DEPENDENCIES += xlib_libXrandr
+else
+FREERDP_CONF_OPTS += -DWITH_XRANDR=OFF
+endif
+
 ifeq ($(BR2_PACKAGE_XLIB_LIBXRENDER),y)
 FREERDP_CONF_OPTS += -DWITH_XRENDER=ON
 FREERDP_DEPENDENCIES += xlib_libXrender
 else
 FREERDP_CONF_OPTS += -DWITH_XRENDER=OFF
+endif
+
+ifeq ($(BR2_PACKAGE_XLIB_LIBXTST),y)
+FREERDP_CONF_OPTS += -DWITH_XTEST=ON
+FREERDP_DEPENDENCIES += xlib_libXtst
+else
+FREERDP_CONF_OPTS += -DWITH_XTEST=OFF
 endif
 
 ifeq ($(BR2_PACKAGE_XLIB_LIBXV),y)
@@ -112,5 +160,11 @@ FREERDP_DEPENDENCIES += xlib_libXv
 else
 FREERDP_CONF_OPTS += -DWITH_XV=OFF
 endif
+
+else # ! SERVER && ! CLIENT
+
+FREERDP_CONF_OPTS += -DWITH_X11=OFF
+
+endif # ! USES_XLIBS
 
 $(eval $(cmake-package))
