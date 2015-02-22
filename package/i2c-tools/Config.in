@@ -7,4 +7,4 @@ config BR2_PACKAGE_I2C_TOOLS
 	  a bus probing tool, a chip dumper, register-level access helpers,
 	  EEPROM decoding scripts, and more.
 
-	  http://www.lm-sensors.org
+	  http://www.lm-sensors.org/wiki/I2CTools
