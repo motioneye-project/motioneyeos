@@ -10,6 +10,12 @@ config BR2_PACKAGE_FREERDP
 
 	  http://www.freerdp.com/
 
+	  Note: this also installs a key and certificate in
+	  /etc/freerdp/keys/ . These are publicly-known, as they
+	  are present in FreeRDP's source tree. It is strongly
+	  suggested that you overwrite them with your own set,
+	  either in an overlay rootfs or in a post-build script.
+
 if BR2_PACKAGE_FREERDP
 
 config BR2_PACKAGE_FREERDP_SERVER

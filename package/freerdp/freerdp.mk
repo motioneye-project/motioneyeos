@@ -71,15 +71,6 @@ endif
 
 ifeq ($(BR2_PACKAGE_FREERDP_SERVER),y)
 FREERDP_CONF_OPTS += -DWITH_SERVER=ON -DWITH_SERVER_INTERFACE=ON
-# Install the server key and certificate, so that a client can connect.
-# A user can override them with its own in a post-build script, if needed.
-define FREERDP_INSTALL_KEYS
-	$(INSTALL) -D $(@D)/server/X11/server.key \
-		      $(TARGET_DIR)/etc/freerdp/keys/server.key
-	$(INSTALL) -D $(@D)/server/X11/server.crt \
-		      $(TARGET_DIR)/etc/freerdp/keys/server.crt
-endef
-FREERDP_POST_INSTALL_TARGET_HOOKS += FREERDP_INSTALL_KEYS
 else
 FREERDP_CONF_OPTS += -DWITH_SERVER=OFF -DWITH_SERVER_INTERFACE=OFF
 endif
@@ -177,5 +168,19 @@ else # ! SERVER && ! CLIENT
 FREERDP_CONF_OPTS += -DWITH_X11=OFF
 
 endif # ! SERVER && ! CLIENT
+
+# Install the server key and certificate, so that a client can connect.
+# A user can override them with its own in a post-build script, if needed.
+# We install them even if the server is not enabled, since another server
+# can be built and linked with libfreerdp (e.g. weston with the  RDP
+# backend). Key and cert are installed world-readable, so non-root users
+# can start a server.
+define FREERDP_INSTALL_KEYS
+	$(INSTALL) -m 0644 -D $(@D)/server/X11/server.key \
+		      $(TARGET_DIR)/etc/freerdp/keys/server.key
+	$(INSTALL) -m 0644 -D $(@D)/server/X11/server.crt \
+		      $(TARGET_DIR)/etc/freerdp/keys/server.crt
+endef
+FREERDP_POST_INSTALL_TARGET_HOOKS += FREERDP_INSTALL_KEYS
 
 $(eval $(cmake-package))
