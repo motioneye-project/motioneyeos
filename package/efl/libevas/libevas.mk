@@ -65,6 +65,8 @@ endif
 ifeq ($(BR2_PACKAGE_LIBEVAS_X11),y)
 LIBEVAS_CONF_OPTS += --enable-software-xlib
 LIBEVAS_DEPENDENCIES += xlib_libX11 xlib_libXext
+else
+LIBEVAS_CONF_OPTS += --disable-software-xlib
 endif
 
 ifeq ($(BR2_PACKAGE_LIBEVAS_X11_GLX),y)
