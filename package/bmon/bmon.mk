@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-BMON_VERSION = 3.5
+BMON_VERSION = 3.6
 BMON_SITE = https://github.com/tgraf/bmon/releases/download/v$(BMON_VERSION)/
 BMON_DEPENDENCIES = host-pkgconf libconfuse libnl ncurses
 BMON_LICENSE = BSD-2c
