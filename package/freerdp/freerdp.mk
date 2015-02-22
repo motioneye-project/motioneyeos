@@ -176,6 +176,6 @@ else # ! SERVER && ! CLIENT
 
 FREERDP_CONF_OPTS += -DWITH_X11=OFF
 
-endif # ! USES_XLIBS
+endif # ! SERVER && ! CLIENT
 
 $(eval $(cmake-package))
