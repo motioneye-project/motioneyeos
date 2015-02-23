@@ -41,6 +41,7 @@ config BR2_PACKAGE_WESTON_FBDEV
 
 config BR2_PACKAGE_WESTON_RDP
 	bool "RDP compositor"
+	depends on BR2_USE_WCHAR # freerdp
 	select BR2_PACKAGE_FREERDP
 	select BR2_PACKAGE_WESTON_HAS_COMPOSITOR
 	help
@@ -55,6 +56,9 @@ config BR2_PACKAGE_WESTON_RDP
 	  By default, Buildroot installs such files in /etc/freerdp/server/
 	  so you may want to change them in a post-build script or a rootfs
 	  overlay.
+
+comment "RDP compositor needs a toolchain w/ wchar"
+	depends on !BR2_USE_WCHAR
 
 # rpi-userland is an EGL/GLES provider, so we can't select it
 config BR2_PACKAGE_WESTON_RPI
