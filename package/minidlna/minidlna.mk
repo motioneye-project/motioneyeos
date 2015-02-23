@@ -24,4 +24,19 @@ MINIDLNA_CONF_OPTS = \
 	--disable-static
 endif
 
+define MINIDLNA_INSTALL_INIT_SYSV
+	$(INSTALL) -D -m 0755 package/minidlna/S60minidlnad \
+		$(TARGET_DIR)/etc/init.d/S60minidlnad
+endef
+
+define MINIDLNA_INSTALL_INIT_SYSTEMD
+	$(INSTALL) -D -m 0755 package/minidlna/minidlnad.service \
+		$(TARGET_DIR)/lib/systemd/system/minidlnad.service
+
+	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
+
+	ln -fs ../minidlnad.service \
+		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/minidlnad.service
+endef
+
 $(eval $(autotools-package))
