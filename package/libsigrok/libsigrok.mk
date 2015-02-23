@@ -13,7 +13,7 @@ LIBSIGROK_LICENSE_FILES = COPYING
 LIBSIGROK_AUTORECONF = YES
 LIBSIGROK_INSTALL_STAGING = YES
 LIBSIGROK_DEPENDENCIES = libglib2 libzip host-pkgconf
-LIBSIGROK_CONF_OPTS = --disable-bindings --disable-glibtest
+LIBSIGROK_CONF_OPTS = --disable-glibtest --disable-java --disable-python
 
 define LIBSIGROK_ADD_MISSING
 	mkdir -p $(@D)/autostuff
@@ -44,6 +44,13 @@ endif
 
 ifeq ($(BR2_PACKAGE_GLIBMM),y)
 LIBSIGROK_DEPENDENCIES += glibmm
+endif
+
+ifeq ($(BR2_PACKAGE_LIBSIGROKCXX),y)
+LIBSIGROK_CONF_OPTS += --enable-cxx
+LIBSIGROK_DEPENDENCIES += host-autoconf-archive glibmm
+else
+LIBSIGROK_CONF_OPTS += --disable-cxx
 endif
 
 $(eval $(autotools-package))
