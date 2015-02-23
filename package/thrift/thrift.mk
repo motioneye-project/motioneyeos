@@ -11,7 +11,8 @@ THRIFT_INSTALL_STAGING = YES
 HOST_THRIFT_DEPENDENCIES = host-boost host-libevent host-openssl host-pkgconf \
 	host-zlib host-bison host-flex
 THRIFT_CONF_OPTS = --with-sysroot=$(STAGING_DIR) \
-	--with-boost=$(STAGING_DIR) \
+	--with-boost \
+	--with-boost-libdir=$(STAGING_DIR)/usr/lib \
 	--disable-tests \
 	--disable-tutorial
 HOST_THRIFT_CONF_OPTS = --with-sysroot=$(HOST_DIR) \
