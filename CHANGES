@@ -1,3 +1,14 @@
+2015.02-rc3, Released February 24th, 2015
+
+	Minor fixes.
+
+	Cmake and rebar (erlang) infrastructure fixes.
+
+	Updated/fixed packages: bind, btrfs-progs, busybox, e2fsprogs,
+	evtest, ffmpeg, fltk, gnutls, i2c-tools, imagemagick, libxcb,
+	make, mjpg-streamer, netsnmp, opentyrian, php, polarssl,
+	qt5base, samba, samba4, sudo, util-linux, xserver_xorg-server
+
 2015.02-rc2, Released February 15th, 2015
 
 	Minor fixes.
