@@ -1,0 +1,17 @@
+Fix broken modinfo.
+
+From upstream: http://busybox.net/downloads/fixes-1.23.1/busybox-1.23.1-modinfo.patch
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+--- busybox-1.23.1/modutils/modinfo.c
++++ busybox-1.23.1-modinfo/modutils/modinfo.c
+@@ -154,7 +154,7 @@ int modinfo_main(int argc UNUSED_PARAM,
+ 		if (colon == NULL)
+ 			continue;
+ 		*colon = '\0';
+-		filename2modname(tokens[0], name);
++		filename2modname(bb_basename(tokens[0]), name);
+ 		for (i = 0; argv[i]; i++) {
+ 			if (fnmatch(argv[i], name, 0) == 0) {
+ 				modinfo(tokens[0], uts.release, &env);
