@@ -27,11 +27,11 @@ config BR2_PACKAGE_GST_PLUGINS_GOOD_BZ2
 
 config BR2_PACKAGE_GST_PLUGINS_GOOD_ZLIB
 	bool "zlib support"
-	depends on BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_QTDEMUX || BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_ID3DEMUX || BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_MATROSKA
+	depends on BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_ISOMP4 || BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_ID3DEMUX || BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_MATROSKA
 	select BR2_PACKAGE_ZLIB
 	help
 	  Enable zlib support for the following plugins:
-	  id3demux, qtdemux, matroska
+	  id3demux, isomp4, matroska
 
 comment "dependency-less plugins"
 
