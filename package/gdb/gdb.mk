@@ -151,6 +151,7 @@ else
 endif
 
 ifeq ($(GDB_FROM_GIT),y)
+GDB_DEPENDENCIES += host-texinfo
 HOST_GDB_DEPENDENCIES += host-texinfo
 else
 # don't generate documentation
