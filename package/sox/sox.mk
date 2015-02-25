@@ -78,6 +78,12 @@ else
 SOX_CONF_OPTS += --without-amrwb --without-amrnb
 endif
 
+ifeq ($(BR2_PACKAGE_OPUSFILE),y)
+SOX_DEPENDENCIES += opusfile
+else
+SOX_CONF_OPTS += --without-opus
+endif
+
 ifeq ($(BR2_PACKAGE_PULSEAUDIO),y)
 SOX_DEPENDENCIES += pulseaudio
 else
