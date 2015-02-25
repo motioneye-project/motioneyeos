@@ -69,7 +69,8 @@ LIBGTK2_CONF_ENV = \
 	ac_cv_path_GTK_UPDATE_ICON_CACHE=$(HOST_DIR)/usr/bin/gtk-update-icon-cache \
 	ac_cv_path_GDK_PIXBUF_CSOURCE=$(HOST_DIR)/usr/bin/gdk-pixbuf-csource \
 	ac_cv_prog_F77=no \
-	ac_cv_path_CUPS_CONFIG=no
+	ac_cv_path_CUPS_CONFIG=no \
+	DB2HTML=false
 
 LIBGTK2_CONF_OPTS = --disable-glibtest --enable-explicit-deps=no
 
