@@ -1,0 +1,33 @@
+From 3107a0161bf30f7e3e0c356c3d040d99634fbf5b Mon Sep 17 00:00:00 2001
+From: jfigus <foleyj@cisco.com>
+Date: Thu, 26 Feb 2015 12:25:08 -0500
+Subject: [PATCH] A autoconf checks for libz and libdl when OpenSSL is enabled
+ to allow for static linking of OpenSSL (via CFLAGS=-static).
+
+[Romain:
+  Drop the configure part of the patch since Buildroot
+  use AUTORECONF in libsrtp.mk]
+
+Signed-off-by: Romain Naour <romain.naour@openwide.fr>
+---
+ configure.in | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/configure.in b/configure.in
+index ee30daf..71df46b 100644
+--- a/configure.in
++++ b/configure.in
+@@ -147,6 +147,10 @@ if test "$enable_openssl" = "yes"; then
+    LDFLAGS="$LDFLAGS $(pkg-config --libs openssl)";
+    CFLAGS="$CFLAGS $(pkg-config --cflags openssl)";
+ 
++   AC_CHECK_LIB([dl], [dlopen], [],
++             [AC_MSG_FAILURE([can't find libdl])])
++   AC_CHECK_LIB([z], [inflate], [],
++             [AC_MSG_FAILURE([can't find libz])])
+    AC_CHECK_LIB([crypto], [EVP_EncryptInit], [],
+              [AC_MSG_FAILURE([can't find openssl >1.0.1 crypto lib])])
+    AC_CHECK_LIB([crypto], [EVP_aes_128_ctr], [],
+-- 
+1.9.3
+
