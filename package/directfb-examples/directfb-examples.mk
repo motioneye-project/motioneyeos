@@ -98,7 +98,6 @@ define DIRECTFB_EXAMPLES_INSTALL_TARGET_CMDS
 	$(Q)mkdir -p $(TARGET_DIR)/usr/share/directfb-examples/fonts/
 	$(Q)for file in $(DIRECTFB_EXAMPLES_TARGETS_y); do \
 	        cp -dpf $(STAGING_DIR)/$$file $(TARGET_DIR)/$$file; \
-		$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/$$file; \
 	done
 	$(Q)cp -rdpf $(STAGING_DIR)/usr/share/directfb-examples/fonts/decker.ttf $(TARGET_DIR)/usr/share/directfb-examples/fonts/
 	$(Q)for file in $(DIRECTFB_EXAMPLES_FONT_y); do \
