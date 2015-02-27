@@ -15,7 +15,8 @@ GPM_DEPENDENCIES = host-bison
 # if not already installed in staging dir, gpm Makefile may fail to find some
 # of the headers needed to generate build dependencies, the first time it is
 # built. CPPFLAGS is used to pass the right include path to dependency rules.
-GPM_CONF_ENV = CPPFLAGS="$(TARGET_CPPFLAGS) -I$(@D)/src/headers/"
+GPM_CONF_ENV = CPPFLAGS="$(TARGET_CPPFLAGS) -I$(@D)/src/headers/" \
+			   ac_cv_path_emacs=no
 
 # For some reason, Microblaze gcc does not define __ELF__, which gpm
 # configure script uses to determine whether the architecture uses ELF
