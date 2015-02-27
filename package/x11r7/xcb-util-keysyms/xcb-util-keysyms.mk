@@ -13,4 +13,6 @@ XCB_UTIL_KEYSYMS_LICENSE = MIT
 
 XCB_UTIL_KEYSYMS_INSTALL_STAGING = YES
 
+XCB_UTIL_KEYSYMS_DEPENDENCIES = host-pkgconf libxcb
+
 $(eval $(autotools-package))

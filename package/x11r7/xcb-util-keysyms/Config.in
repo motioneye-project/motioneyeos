@@ -1,5 +1,6 @@
 config BR2_PACKAGE_XCB_UTIL_KEYSYMS
 	bool "xcb-util-keysyms"
+	select BR2_PACKAGE_LIBXCB
 	help
 	  The XCB util modules provides a number of libraries which sit on top
 	  of libxcb, the core X protocol library, and some of the extension
