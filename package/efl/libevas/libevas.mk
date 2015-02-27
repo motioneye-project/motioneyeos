@@ -225,6 +225,13 @@ else
 LIBEVAS_CONF_OPTS += --disable-fontconfig
 endif
 
+ifeq ($(BR2_PACKAGE_LIBFRIBIDI),y)
+LIBEVAS_CONF_OPTS += --enable-fribidi
+LIBEVAS_DEPENDENCIES += libfribidi
+else
+LIBEVAS_CONF_OPTS += --disable-fribidi
+endif
+
 # libevas installs the source code of examples on the target, which
 # are generally not useful.
 define LIBEVAS_REMOVE_EXAMPLES
