@@ -102,6 +102,14 @@ endif
 
 comment "Legacy options removed in 2015.02"
 
+config BR2_PACKAGE_LIBGC
+	bool "libgc package removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_BDWGC
+	help
+	  libgc has been removed because we have the same package under a
+	  different name, bdwgc.
+
 config BR2_PACKAGE_WDCTL
 	bool "util-linux' wdctl option has been renamed"
 	select BR2_LEGACY
