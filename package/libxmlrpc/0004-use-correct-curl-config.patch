@@ -55,7 +55,7 @@ Index: b/lib/curl_transport/Makefile
  $(SRCDIR)/common.mk: srcdir blddir
  
 -CURL_VERSION := $(shell curl-config --vernum)
-+CURL_VERSION := $(shell $CURL_CONFIG --vernum)
++CURL_VERSION := $(shell $(CURL_CONFIG) --vernum)
  
  # Some time at or before Curl 7.12, <curl/types.h> became an empty file
  # (no-op).  Some time after Curl 7.18, <curl/types.h> ceased to exist.
@@ -64,7 +64,7 @@ Index: b/lib/curl_transport/Makefile
  endif
  
 -CURL_INCLUDES := $(shell curl-config --cflags)
-+CURL_INCLUDES := $(shell $CURL_CONFIG --cflags)
++CURL_INCLUDES := $(shell $(CURL_CONFIG) --cflags)
  # We expect that curl-config --cflags just gives us -I options, because
  # we need just the -I options for 'make dep'.  Plus, it's scary to think
  # of what any other compiler flag would do to our compile.
@@ -77,7 +77,7 @@ Index: b/src/cpp/test/Makefile
  
  ifeq ($(MUST_BUILD_CURL_CLIENT),yes)
 -  LIBS += $(shell curl-config --libs)
-+  LIBS += $(shell $CURL_CONFIG --libs)
++  LIBS += $(shell $(CURL_CONFIG) --libs)
  endif
  ifeq ($(MUST_BUILD_LIBWWW_CLIENT),yes)
    LIBS += $(shell libwww-config --libs)
@@ -90,7 +90,7 @@ Index: b/tools/common.mk
  endif
  ifeq ($(MUST_BUILD_CURL_CLIENT),yes)
 -  CLIENT_LDLIBS += $(shell curl-config --libs)
-+  CLIENT_LDLIBS += $(shell $CURL_CONFIG --libs)
++  CLIENT_LDLIBS += $(shell $(CURL_CONFIG) --libs)
  endif
  ifeq ($(MUST_BUILD_WININET_CLIENT),yes)
    CLIENT_LDLIBS += $(shell wininet-config --libs)
