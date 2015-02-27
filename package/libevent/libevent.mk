@@ -26,6 +26,11 @@ endif
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 LIBEVENT_DEPENDENCIES += openssl
 LIBEVENT_CONF_OPTS += --enable-openssl
+# openssl needs zlib but configure forgets to link against it causing
+# openssl detection to fail
+ifeq ($(BR2_STATIC_LIBS),y)
+LIBEVENT_CONF_ENV += OPENSSL_LIBADD='-lz'
+endif
 else
 LIBEVENT_CONF_OPTS += --disable-openssl
 endif
