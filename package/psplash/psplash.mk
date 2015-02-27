@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-PSPLASH_VERSION = afd4e228c606a9998feae44a3fed4474803240b7
+PSPLASH_VERSION = 14c8f7b705de944beb4de3f296506d80871e410f
 PSPLASH_SITE = git://git.yoctoproject.org/psplash
 PSPLASH_LICENSE = GPLv2+
 PSPLASH_AUTORECONF = YES
