@@ -15,4 +15,10 @@ LIBFRIBIDI_INSTALL_STAGING = YES
 LIBFRIBIDI_AUTORECONF = YES
 LIBFRIBIDI_DEPENDENCIES = host-pkgconf
 
+ifeq ($(BR2_PACKAGE_LIBGLIB2),y)
+ LIBFRIBIDI_DEPENDENCIES += libglib2
+else
+ LIBFRIBIDI_CONF_OPTS += --with-glib=no
+endif
+
 $(eval $(autotools-package))
