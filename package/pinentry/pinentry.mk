@@ -21,7 +21,7 @@ endif
 
 # pinentry-ncurses backend
 ifeq ($(BR2_PACKAGE_PINENTRY_NCURSES),y)
-PINENTRY_CONF_OPTS += --enable-ncurses
+PINENTRY_CONF_OPTS += --enable-ncurses --with-ncurses-include-dir=none
 PINENTRY_DEPENDENCIES += ncurses
 else
 PINENTRY_CONF_OPTS += --disable-ncurses
