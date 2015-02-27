@@ -1,7 +1,6 @@
 config BR2_PACKAGE_GUILE
 	bool "guile"
 	depends on BR2_TOOLCHAIN_HAS_THREADS
-	depends on BR2_PACKAGE_BDWGC_ARCH_SUPPORTS # bdwgc
 	depends on BR2_PACKAGE_LIBATOMIC_ARCH_SUPPORTS # bdwgc
 	depends on BR2_USE_WCHAR # libunistring
 	select BR2_PACKAGE_LIBUNISTRING
