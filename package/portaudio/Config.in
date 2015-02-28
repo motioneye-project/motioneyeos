@@ -15,7 +15,6 @@ if BR2_PACKAGE_PORTAUDIO
 config BR2_PACKAGE_PORTAUDIO_ALSA
 	bool "alsa support"
 	select BR2_PACKAGE_ALSA_LIB
-	depends on BR2_TOOLCHAIN_HAS_THREADS # alsa-lib
 	default y
 	help
 	  Compile with ALSA support.
