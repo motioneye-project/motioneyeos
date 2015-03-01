@@ -1,3 +1,17 @@
+2015.02, Released March 1st, 2015
+
+	Minor fixes.
+
+	Updated/fixed packages: civetweb, ding-libs,
+	directfb-examples, glibc, gnupg, gnupg2, gpm,
+	gst-plugins-good, gst1-plugins-good, freetype, libao, libevas,
+	libevent, libfribidi, libgcrypt, libgtk2, libshout, libsrtp,
+	libtheora, libupnpp, libxmlrpc, linux, make, opus, pinentry,
+	rpi-firmware, shared-mime-info, vlc, vorbis-tools,
+	xcb-util-keysyms
+
+	Removed packages: libgc
+
 2015.02-rc3, Released February 24th, 2015
 
 	Minor fixes.
