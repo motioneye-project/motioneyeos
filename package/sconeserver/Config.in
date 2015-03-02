@@ -35,7 +35,6 @@ config BR2_PACKAGE_SCONESERVER_HTTP_SCONESITE_IMAGE
 config BR2_PACKAGE_SCONESERVER_MYSQL
 	bool "mysql"
 	depends on BR2_USE_MMU # mysql
-	depends on !BR2_avr32 # mysql
 	select BR2_PACKAGE_MYSQL
 	help
 	  MySQL module for Sconeserver
@@ -45,14 +44,13 @@ config BR2_PACKAGE_SCONESERVER_BLUETOOTH
 	depends on BR2_USE_WCHAR # bluez->libglib2
 	depends on BR2_USE_MMU # bluez->dbus
 	depends on BR2_TOOLCHAIN_HAS_THREADS # bluez->dbus, bluez->libglib2
-	depends on !BR2_avr32 # bluez_utils
 	depends on !BR2_STATIC_LIBS # bluez_utils
 	select BR2_PACKAGE_BLUEZ_UTILS
 	help
 	  Bluetooth module for Sconeserver
 
 comment "bluetooth support needs a toolchain w/ wchar, threads, dynamic library"
-	depends on !BR2_avr32 && BR2_USE_MMU
+	depends on BR2_USE_MMU
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS
 
 config BR2_PACKAGE_SCONESERVER_RSS

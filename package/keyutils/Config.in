@@ -1,6 +1,6 @@
 config BR2_PACKAGE_KEYUTILS
 	bool "keyutils"
-	depends on !BR2_avr32 && !BR2_microblaze
+	depends on !BR2_microblaze
 	depends on BR2_USE_MMU # fork()
 	help
 	  These tools are used to control the key management system

@@ -53,21 +53,6 @@ config BR2_aarch64
 	  http://www.arm.com/products/processors/instruction-set-architectures/armv8-architecture.php
 	  http://en.wikipedia.org/wiki/ARM
 
-config BR2_avr32
-	bool "AVR32"
-	select BR2_SOFT_FLOAT
-	# This architecture is obsolete and complicated to maintain to
-	# do the lack of upstream support in the major toolchain
-	# components. If you're interested by AVR32, contact the
-	# Buildroot community. Otherwise, its support will be removed
-	# by the 2015.02 release.
-	depends on BR2_DEPRECATED_SINCE_2014_08
-	help
-	  The AVR32 is a 32-bit RISC microprocessor architecture designed by
-	  Atmel.
-	  http://www.atmel.com/
-	  http://en.wikipedia.org/wiki/Avr32
-
 config BR2_bfin
 	bool "Blackfin"
 	help
@@ -326,10 +311,6 @@ endif
 
 if BR2_aarch64
 source "arch/Config.in.aarch64"
-endif
-
-if BR2_avr32
-source "arch/Config.in.avr32"
 endif
 
 if BR2_bfin

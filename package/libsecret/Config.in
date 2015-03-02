@@ -4,8 +4,6 @@ config BR2_PACKAGE_LIBSECRET
 	depends on BR2_USE_WCHAR # gettext dep in libglib2
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libglib2
 	depends on BR2_USE_MMU # libglib2
-	# Triggers an internal compiler error on AVR32
-	depends on !BR2_avr32
 	help
 	  libsecret is a library for storing and retrieving passwords and other
 	  secrets. It communicates with the "Secret Service" using DBus.
@@ -15,6 +13,5 @@ config BR2_PACKAGE_LIBSECRET
 	  https://wiki.gnome.org/Libsecret
 
 comment "libsecret needs a toolchain w/ wchar, threads"
-	depends on !BR2_avr32
 	depends on BR2_USE_MMU
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS

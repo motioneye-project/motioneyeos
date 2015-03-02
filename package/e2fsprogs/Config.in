@@ -50,7 +50,7 @@ config BR2_PACKAGE_E2FSPROGS_E2UNDO
 
 config BR2_PACKAGE_E2FSPROGS_E4DEFRAG
 	bool "e4defrag"
-	depends on !BR2_avr32 && !BR2_nios2 # fallocate not implemented
+	depends on !BR2_nios2 # fallocate not implemented
 	depends on !BR2_TOOLCHAIN_USES_UCLIBC # sync_file_range not impl
 
 comment "e4defrag needs an (e)glibc or musl toolchain"

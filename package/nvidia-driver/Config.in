@@ -1,0 +1,66 @@
+comment "nvidia-driver needs an (e)glibc toolchain and a modular Xorg server"
+	depends on BR2_i386 || BR2_x86_64
+	depends on !BR2_TOOLCHAIN_USES_GLIBC \
+		|| !BR2_PACKAGE_XSERVER_XORG_SERVER_MODULAR
+
+config BR2_PACKAGE_NVIDIA_DRIVER
+	bool "nvidia-driver"
+	depends on BR2_i386 || BR2_x86_64
+	depends on BR2_TOOLCHAIN_USES_GLIBC
+	depends on BR2_PACKAGE_XSERVER_XORG_SERVER_MODULAR
+	select BR2_PACKAGE_MESA3D_HEADERS
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBXEXT
+	select BR2_PACKAGE_HAS_LIBGL
+	select BR2_PACKAGE_HAS_LIBEGL
+	select BR2_PACKAGE_HAS_LIBGLES
+	help
+	  The binary-only driver blob for NVidia cards.
+	  This is the userland part only.
+
+	  http://www.nvidia.com/
+
+if BR2_PACKAGE_NVIDIA_DRIVER
+
+config BR2_PACKAGE_PROVIDES_LIBGL
+	default "nvidia-driver"
+
+config BR2_PACKAGE_PROVIDES_LIBEGL
+	default "nvidia-driver"
+
+config BR2_PACKAGE_PROVIDES_LIBGLES
+	default "nvidia-driver"
+
+config BR2_PACKAGE_NVIDIA_DRIVER_CUDA
+	bool "CUDA support"
+
+config BR2_PACKAGE_NVIDIA_DRIVER_OPENCL
+	bool "OpenCL support"
+	depends on BR2_PACKAGE_NVIDIA_DRIVER_CUDA
+
+config BR2_PACKAGE_NVIDIA_DRIVER_PRIVATE_LIBS
+	bool "Install private libraries"
+	help
+	  Two libraries require special agreement with NVidia to
+	  develop code linking to those libraries: libnvidia-ifr.so
+	  and libnvidia-fbc.so (to grab and encode an OpenGL buffer or
+	  an X framebuffer.)
+
+	  Say 'y' here if you plan on running a program that uses
+	  those private libraries.
+
+comment "nvidia kernel module needs a kernel to be built"
+	depends on !BR2_LINUX_KERNEL
+
+config BR2_PACKAGE_NVIDIA_DRIVER_MODULE
+	bool "nvidia kernel module"
+	depends on BR2_LINUX_KERNEL
+	help
+	  Build the nvidia.ko kernel module.
+
+	  If CUDA support (above) is set, and the target is x86_64, then
+	  this will also build the nvidia-uvm.ko kernel module, which
+	  provides Unified Memory access to the GPU and CPU memories for
+	  CUDA programs.
+
+endif # BR2_PACKAGE_NVIDIA_DRIVER

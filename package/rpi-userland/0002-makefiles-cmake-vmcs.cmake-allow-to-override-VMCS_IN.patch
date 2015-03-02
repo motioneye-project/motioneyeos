@@ -1,6 +1,6 @@
-From fec2560cfcb8d3398e4f1ccc3de7923365873676 Mon Sep 17 00:00:00 2001
+From 8894136ff80a8c6eeadf1799af59aa3aa7b87827 Mon Sep 17 00:00:00 2001
 From: Samuel Martin <s.martin49@gmail.com>
-Date: Sat, 5 Jan 2013 16:04:55 +0100
+Date: Sat, 24 Jan 2015 19:44:50 +0100
 Subject: [PATCH] makefiles/cmake/vmcs.cmake: allow to override
  VMCS_INSTALL_PREFIX
 
@@ -23,4 +23,5 @@ index 0f8641b..cc70cca 100644
  endif()
  
 -- 
-1.8.1
+1.9.1
+

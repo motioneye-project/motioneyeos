@@ -1,6 +1,5 @@
 config BR2_PACKAGE_ZMQPP
 	bool "zmqpp"
-	depends on !BR2_avr32 # compiler needs c++0x support
 	depends on !BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_POWERPC201103 # c++0x support
 	depends on !BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_POWERPC201009 # c++0x support
 	depends on BR2_INSTALL_LIBSTDCPP
@@ -18,7 +17,6 @@ config BR2_PACKAGE_ZMQPP
 	  http://github.com/benjamg/zmqpp
 
 comment "zmqpp needs a toolchain w/ C++, IPv6, largefile, wchar, threads"
-	depends on !BR2_avr32
 	depends on !(BR2_INSTALL_LIBSTDCPP && BR2_INET_IPV6 && BR2_LARGEFILE \
 		&& BR2_USE_WCHAR && BR2_TOOLCHAIN_HAS_THREADS)
 

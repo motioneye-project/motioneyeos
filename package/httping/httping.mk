@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-HTTPING_VERSION = 2.3.4
+HTTPING_VERSION = 2.4
 HTTPING_SOURCE = httping-$(HTTPING_VERSION).tgz
 HTTPING_SITE = http://www.vanheusden.com/httping
 HTTPING_LICENSE = GPLv2

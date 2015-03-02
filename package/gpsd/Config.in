@@ -174,9 +174,6 @@ config BR2_PACKAGE_GPSD_NMEA2000
 	bool "NMEA2000"
 	select BR2_PACKAGE_GPSD_NAVCOM
 	select BR2_PACKAGE_GPSD_AIVDM
-	# uClibc 0.9.31, used on AVR32, does not have the necessary
-	# CAN definitions.
-	depends on !BR2_avr32
 	help
 	  NMEA2000/CAN support
 

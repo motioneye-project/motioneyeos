@@ -21,7 +21,6 @@ MONO_AUTORECONF = YES
 MONO_CONF_OPTS = --disable-gtk-doc \
 	--with-mcs-docs=no \
 	--with-moonlight=no \
-	--disable-libraries \
 	--with-ikvm-native=no \
 	--enable-minimal=aot,profiler,debug \
 	--disable-mcs-build \

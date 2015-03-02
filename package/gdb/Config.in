@@ -40,10 +40,10 @@ config BR2_PACKAGE_GDB_DEBUGGER
 	bool "full debugger"
 	select BR2_PACKAGE_NCURSES
 	depends on BR2_USE_WCHAR
-	depends on !BR2_sh && !BR2_sh64 && !BR2_avr32 && !BR2_microblaze && !BR2_bfin
+	depends on !BR2_sh && !BR2_sh64 && !BR2_microblaze && !BR2_bfin
 
 comment "full gdb on target needs a toolchain w/ wchar"
-	depends on !BR2_sh && !BR2_sh64 && !BR2_avr32 && !BR2_microblaze && !BR2_bfin
+	depends on !BR2_sh && !BR2_sh64 && !BR2_microblaze && !BR2_bfin
 	depends on !BR2_USE_WCHAR
 
 if BR2_PACKAGE_GDB_DEBUGGER

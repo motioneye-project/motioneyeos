@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBNSS_VERSION = 3.17.3
+LIBNSS_VERSION = 3.17.4
 LIBNSS_SOURCE = nss-$(LIBNSS_VERSION).tar.gz
 LIBNSS_SITE = https://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_$(subst .,_,$(LIBNSS_VERSION))_RTM/src
 LIBNSS_DISTDIR = dist
@@ -36,7 +36,6 @@ ifeq ($(BR2_MIPS_NABI32),)
 LIBNSS_BUILD_VARS += USE_64=1
 endif
 endif
-
 
 define LIBNSS_BUILD_CMDS
 	$(MAKE1) -C $(@D)/nss coreconf \

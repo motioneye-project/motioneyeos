@@ -15,9 +15,12 @@ This change was automated with the following scriptlet
   typedef long\t\t__kernel_long_t;\
   typedef unsigned long\t__kernel_ulong_t;'
 
-Whitespace in arm, avr32, hppa, sparc was then manually fixed up.
+Whitespace in arm, hppa, sparc was then manually fixed up.
 
 Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
+[yann.morin.1998@free.fr: remove avr32 bits, now Buildroot no longer
+ supports it]
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
 --
 Here's a cleaned up patch which should get the whitespace right. I'm a
 bit iffy about the sparc changes they make sense to me but it's not a
@@ -27,7 +30,6 @@ I can break this up per arch or per maintainer if requested.
 
  libc/sysdeps/linux/alpha/bits/kernel_types.h      |    2 ++
  libc/sysdeps/linux/arm/bits/kernel_types.h        |    2 ++
- libc/sysdeps/linux/avr32/bits/kernel_types.h      |    2 ++
  libc/sysdeps/linux/bfin/bits/kernel_types.h       |    2 ++
  libc/sysdeps/linux/c6x/bits/kernel_types.h        |    2 ++
  libc/sysdeps/linux/cris/bits/kernel_types.h       |    2 ++
@@ -54,7 +56,6 @@ Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 ---
  libc/sysdeps/linux/alpha/bits/kernel_types.h      | 2 ++
  libc/sysdeps/linux/arm/bits/kernel_types.h        | 2 ++
- libc/sysdeps/linux/avr32/bits/kernel_types.h      | 2 ++
  libc/sysdeps/linux/bfin/bits/kernel_types.h       | 2 ++
  libc/sysdeps/linux/c6x/bits/kernel_types.h        | 2 ++
  libc/sysdeps/linux/cris/bits/kernel_types.h       | 2 ++
@@ -102,19 +103,6 @@ index 766a306..6b36f32 100644
  
  typedef struct {
  #ifdef __USE_ALL
-diff --git a/libc/sysdeps/linux/avr32/bits/kernel_types.h b/libc/sysdeps/linux/avr32/bits/kernel_types.h
-index f7d8b52..c551d57 100644
---- a/libc/sysdeps/linux/avr32/bits/kernel_types.h
-+++ b/libc/sysdeps/linux/avr32/bits/kernel_types.h
-@@ -39,6 +39,8 @@ typedef unsigned int		__kernel_gid32_t;
- typedef unsigned short		__kernel_old_uid_t;
- typedef unsigned short		__kernel_old_gid_t;
- typedef unsigned short		__kernel_old_dev_t;
-+typedef long			__kernel_long_t;
-+typedef unsigned long		__kernel_ulong_t;
- 
- #ifdef __GNUC__
- typedef long long		__kernel_loff_t;
 diff --git a/libc/sysdeps/linux/bfin/bits/kernel_types.h b/libc/sysdeps/linux/bfin/bits/kernel_types.h
 index d69a875..9fec595 100644
 --- a/libc/sysdeps/linux/bfin/bits/kernel_types.h

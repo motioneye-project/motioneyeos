@@ -1,6 +1,5 @@
 config BR2_PACKAGE_EUDEV
 	bool "eudev"
-	depends on !BR2_avr32 # no epoll_create1
 	depends on BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_EUDEV
 	depends on BR2_USE_MMU # uses fork()
 	depends on BR2_LARGEFILE # util-linux
@@ -32,11 +31,9 @@ config BR2_PACKAGE_EUDEV_RULES_GEN
 endif
 
 comment "eudev needs eudev /dev management"
-	depends on !BR2_avr32
 	depends on BR2_USE_MMU
 	depends on !BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_EUDEV
 
 comment "eudev needs a toolchain w/ largefile, wchar, dynamic library"
-	depends on !BR2_avr32
 	depends on BR2_USE_MMU
 	depends on !BR2_LARGEFILE || !BR2_USE_WCHAR || BR2_STATIC_LIBS

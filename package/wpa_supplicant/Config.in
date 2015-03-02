@@ -1,7 +1,6 @@
 config BR2_PACKAGE_WPA_SUPPLICANT
 	bool "wpa_supplicant"
 	depends on BR2_USE_MMU # fork()
-	depends on !BR2_avr32 # no epoll_create1
 	help
 	  WPA supplicant for secure wireless networks
 

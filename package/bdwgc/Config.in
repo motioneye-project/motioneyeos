@@ -1,13 +1,5 @@
-config BR2_PACKAGE_BDWGC_ARCH_SUPPORTS
-	bool
-	default y
-	depends on BR2_arm || BR2_armeb || BR2_avr32 || BR2_i386 \
-		|| BR2_mips || BR2_mipsel || BR2_powerpc || BR2_sh \
-		|| BR2_sparc || BR2_x86_64
-
 config BR2_PACKAGE_BDWGC
 	bool "bdwgc"
-	depends on BR2_PACKAGE_BDWGC_ARCH_SUPPORTS
 	depends on BR2_PACKAGE_LIBATOMIC_ARCH_SUPPORTS
 	select BR2_PACKAGE_LIBATOMIC_OPS
 	help

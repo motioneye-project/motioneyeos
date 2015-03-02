@@ -1,0 +1,13 @@
+comment "opusfile needs a toolchain w/ largefile"
+	depends on !BR2_LARGEFILE
+
+config BR2_PACKAGE_OPUSFILE
+	bool "opusfile"
+	depends on BR2_LARGEFILE
+	select BR2_PACKAGE_LIBOGG
+	select BR2_PACKAGE_OPUS
+	help
+	  A convenient high-level API for decoding and basic manipulation
+	  of all Ogg Opus audio streams.
+
+	  http://opus-codec.org

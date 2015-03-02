@@ -1,6 +1,5 @@
 config BR2_PACKAGE_CWIID
 	bool "cwiid"
-	depends on !BR2_avr32 # bluez_utils
 	depends on !BR2_STATIC_LIBS # bluez_utils
 	depends on BR2_USE_WCHAR # bluez_utils -> libglib2
 	depends on BR2_TOOLCHAIN_HAS_THREADS # bluez_utils -> dbus, alsa-lib, libglib2
@@ -27,5 +26,4 @@ endif
 
 comment "cwiid needs a toolchain w/ dynamic lib, threads, wchar"
 	depends on BR2_STATIC_LIBS || !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
-	depends on !BR2_avr32
 	depends on !BR2_USE_MMU

@@ -45,10 +45,4 @@ define PRBOOM_INSTALL_TARGET_CMDS
 	$(INSTALL) -D $(@D)/data/prboom.wad $(TARGET_DIR)/usr/share/games/doom/prboom.wad
 endef
 
-define PRBOOM_UINSTALL_TARGET_CMDS
-	rm -rf $(TARGET_DIR)/usr/share/games/doom/prboom.wad \
-		$(TARGET_DIR)/usr/games/prboom-game-server \
-		$(TARGET_DIR)/usr/games/prboom
-endef
-
 $(eval $(autotools-package))

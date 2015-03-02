@@ -54,6 +54,8 @@ ifeq ($(BR2_STATIC_LIBS),y)
 	# openssl uses zlib, so we need to explicitly link with it when static
 	NETSNMP_CONF_ENV += LIBS=-lz
 endif
+else ifeq ($(BR2_PACKAGE_NETSNMP_OPENSSL_INTERNAL),y)
+	NETSNMP_CONF_OPTS += --with-openssl=internal
 else
 	NETSNMP_CONF_OPTS += --without-openssl
 endif
@@ -65,6 +67,18 @@ endif
 
 ifneq ($(BR2_PACKAGE_NETSNMP_ENABLE_DEBUGGING),y)
 	NETSNMP_CONF_OPTS += --disable-debugging
+endif
+
+ifeq ($(BR2_PACKAGE_NETSNMP_SERVER),y)
+	NETSNMP_CONF_OPTS += --enable-agent
+else
+	NETSNMP_CONF_OPTS += --disable-agent
+endif
+
+ifeq ($(BR2_PACKAGE_NETSNMP_CLIENTS),y)
+	NETSNMP_CONF_OPTS += --enable-applications
+else
+	NETSNMP_CONF_OPTS += --disable-applications
 endif
 
 # Remove IPv6 MIBs if there's no IPv6
@@ -84,10 +98,12 @@ endef
 
 NETSNMP_POST_INSTALL_TARGET_HOOKS += NETSNMP_REMOVE_BLOAT_MIBS
 
+ifeq ($(BR2_PACKAGE_NETSNMP_SERVER),y)
 define NETSNMP_INSTALL_INIT_SYSV
 	$(INSTALL) -D -m 0755 package/netsnmp/S59snmpd \
 		$(TARGET_DIR)/etc/init.d/S59snmpd
 endef
+endif
 
 define NETSNMP_STAGING_NETSNMP_CONFIG_FIXUP
 	$(SED) 	"s,^includedir=.*,includedir=\'$(STAGING_DIR)/usr/include\',g" \

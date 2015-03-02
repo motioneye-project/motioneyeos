@@ -1,5 +1,4 @@
 comment "weston needs udev and a toolchain w/ threads, dynamic library, headers >= 3.0"
-	depends on !BR2_avr32
 	depends on BR2_ARCH_HAS_ATOMICS
 	depends on !BR2_PACKAGE_HAS_UDEV || !BR2_TOOLCHAIN_HAS_THREADS || \
 		!BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0 || BR2_STATIC_LIBS
@@ -13,8 +12,8 @@ config BR2_PACKAGE_WESTON
 	select BR2_PACKAGE_LIBPNG
 	select BR2_PACKAGE_JPEG
 	select BR2_PACKAGE_MTDEV
+	select BR2_PACKAGE_LIBINPUT
 	depends on BR2_PACKAGE_HAS_UDEV
-	depends on !BR2_avr32 # wayland
 	depends on !BR2_STATIC_LIBS # wayland
 	depends on BR2_TOOLCHAIN_HAS_THREADS # wayland
 	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0
@@ -39,6 +38,27 @@ config BR2_PACKAGE_WESTON_HAS_COMPOSITOR
 
 config BR2_PACKAGE_WESTON_FBDEV
 	bool "fbdev compositor"
+
+config BR2_PACKAGE_WESTON_RDP
+	bool "RDP compositor"
+	depends on BR2_USE_WCHAR # freerdp
+	select BR2_PACKAGE_FREERDP
+	select BR2_PACKAGE_WESTON_HAS_COMPOSITOR
+	help
+	  This enables the RDP backend, which allows accessing weston
+	  through the network with any RDP-compliant client.
+
+	  Please note that one must pass those options to weston for RDP
+	  to be functional:
+	    --rdp-tls-cert=/path/to/server.crt
+	    --rdp-tls-key=/path/to/server.key
+
+	  By default, Buildroot installs such files in /etc/freerdp/server/
+	  so you may want to change them in a post-build script or a rootfs
+	  overlay.
+
+comment "RDP compositor needs a toolchain w/ wchar"
+	depends on !BR2_USE_WCHAR
 
 # rpi-userland is an EGL/GLES provider, so we can't select it
 config BR2_PACKAGE_WESTON_RPI

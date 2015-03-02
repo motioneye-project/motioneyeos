@@ -5,7 +5,7 @@ comment "Kernel Header Options"
 
 choice
 	prompt "Kernel Headers"
-	default BR2_KERNEL_HEADERS_3_18
+	default BR2_KERNEL_HEADERS_3_19
 	help
 	  Select the version of kernel header files you wish to use.
 	  You must select the correct set of header files to match
@@ -14,58 +14,71 @@ choice
 	config BR2_KERNEL_HEADERS_3_0
 		bool "Linux 3.0.x kernel headers"
 		depends on BR2_DEPRECATED_SINCE_2014_08
-		depends on !BR2_arc
+		depends on !BR2_arc && !BR2_nios2
 		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0
 
 	config BR2_KERNEL_HEADERS_3_2
 		bool "Linux 3.2.x kernel headers"
-		depends on !BR2_arc
+		depends on !BR2_arc && !BR2_nios2
 		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_2
 
 	config BR2_KERNEL_HEADERS_3_4
 		bool "Linux 3.4.x kernel headers"
-		depends on !BR2_arc
+		depends on !BR2_arc && !BR2_nios2
 		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_4
 
 	config BR2_KERNEL_HEADERS_3_10
 		bool "Linux 3.10.x kernel headers"
+		depends on !BR2_nios2
 		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_10
 
 	config BR2_KERNEL_HEADERS_3_11
 		bool "Linux 3.11.x kernel headers"
 		depends on BR2_DEPRECATED_SINCE_2014_08
+		depends on !BR2_nios2
 		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_11
 
 	config BR2_KERNEL_HEADERS_3_12
 		bool "Linux 3.12.x kernel headers"
+		depends on !BR2_nios2
 		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_12
 
 	config BR2_KERNEL_HEADERS_3_13
 		bool "Linux 3.13.x kernel headers"
 		depends on BR2_DEPRECATED_SINCE_2014_08
+		depends on !BR2_nios2
 		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_13
 
 	config BR2_KERNEL_HEADERS_3_14
 		bool "Linux 3.14.x kernel headers"
+		depends on !BR2_nios2
 		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_14
 
 	config BR2_KERNEL_HEADERS_3_15
 		bool "Linux 3.15.x kernel headers"
 		depends on BR2_DEPRECATED_SINCE_2014_08
+		depends on !BR2_nios2
 		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_15
 
 	config BR2_KERNEL_HEADERS_3_16
 		bool "Linux 3.16.x kernel headers"
 		depends on BR2_DEPRECATED_SINCE_2015_02
+		depends on !BR2_nios2
 		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_16
 
 	config BR2_KERNEL_HEADERS_3_17
 		bool "Linux 3.17.x kernel headers"
+		depends on !BR2_nios2
 		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_17
 
 	config BR2_KERNEL_HEADERS_3_18
 		bool "Linux 3.18.x kernel headers"
+		depends on !BR2_nios2
 		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_18
+
+	config BR2_KERNEL_HEADERS_3_19
+		bool "Linux 3.19.x kernel headers"
+		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_19
 
 	config BR2_KERNEL_HEADERS_VERSION
 		bool "Manually specified Linux version"
@@ -87,6 +100,10 @@ choice
 
 	  This is used to hide/show some packages that have strict
 	  requirements on the version of kernel headers.
+
+config BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_3_19
+	bool "3.19.x"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_19
 
 config BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_3_18
 	bool "3.18.x"
@@ -172,15 +189,16 @@ endchoice
 config BR2_DEFAULT_KERNEL_HEADERS
 	string
 	default "3.0.101"	if BR2_KERNEL_HEADERS_3_0
-	default "3.2.66"	if BR2_KERNEL_HEADERS_3_2
+	default "3.2.67"	if BR2_KERNEL_HEADERS_3_2
 	default "3.4.106"	if BR2_KERNEL_HEADERS_3_4
-	default "3.10.68"	if BR2_KERNEL_HEADERS_3_10
+	default "3.10.70"	if BR2_KERNEL_HEADERS_3_10
 	default "3.11.10"	if BR2_KERNEL_HEADERS_3_11
-	default "3.12.37"	if BR2_KERNEL_HEADERS_3_12
+	default "3.12.38"	if BR2_KERNEL_HEADERS_3_12
 	default "3.13.11"	if BR2_KERNEL_HEADERS_3_13
-	default "3.14.32"	if BR2_KERNEL_HEADERS_3_14
+	default "3.14.34"	if BR2_KERNEL_HEADERS_3_14
 	default "3.15.10"	if BR2_KERNEL_HEADERS_3_15
 	default "3.16.7"	if BR2_KERNEL_HEADERS_3_16
 	default "3.17.8"	if BR2_KERNEL_HEADERS_3_17
-	default "3.18.6"	if BR2_KERNEL_HEADERS_3_18
+	default "3.18.8"	if BR2_KERNEL_HEADERS_3_18
+	default "3.19"		if BR2_KERNEL_HEADERS_3_19
 	default BR2_DEFAULT_KERNEL_VERSION if BR2_KERNEL_HEADERS_VERSION

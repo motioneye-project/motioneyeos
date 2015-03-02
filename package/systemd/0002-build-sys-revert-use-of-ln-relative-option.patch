@@ -10,9 +10,9 @@ for example).
 
 Signed-off-by: Eric Le Bihan <eric.le.bihan.dev@free.fr>
 ---
- Makefile.am  |   21 ++++++---------------
+ Makefile.am  |   19 +++++--------------
  configure.ac |    2 --
- 2 files changed, 6 insertions(+), 17 deletions(-)
+ 2 files changed, 5 insertions(+), 16 deletions(-)
 
 diff --git a/Makefile.am b/Makefile.am
 index e238cde..02b39ea 100644
@@ -66,15 +66,6 @@ index e238cde..02b39ea 100644
  
  dbus1-generator-uninstall-hook:
  	rm -f $(DESTDIR)$(usergeneratordir)/systemd-dbus1-generator
-@@ -2188,7 +2179,7 @@ systemd_bus_proxyd_LDADD = \
- bus-proxyd-install-hook:
- 	$(AM_V_at)$(MKDIR_P) $(DESTDIR)$(bindir)
- 	$(AM_V_RM)rm -f $(DESTDIR)$(bindir)/systemd-stdio-bridge
--	$(AM_V_LN)$(LN_S) --relative -f $(DESTDIR)$(rootlibexecdir)/systemd-bus-proxyd $(DESTDIR)$(bindir)/systemd-stdio-bridge
-+	$(AM_V_LN)$(LN_S) -f $(rootlibexecdir)/systemd-bus-proxyd $(DESTDIR)$(bindir)/systemd-stdio-bridge
- 
- bus-proxyd-uninstall-hook:
- 	rm -f $(DESTDIR)$(bindir)/systemd-stdio-bridge
 diff --git a/configure.ac b/configure.ac
 index ae88382..ec220af 100644
 --- a/configure.ac

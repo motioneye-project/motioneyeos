@@ -3,58 +3,24 @@ Fix libmount build under uClibc
 See https://bugs.gentoo.org/show_bug.cgi?id=406303
 http://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/sys-apps/util-linux/files/util-linux-2.21.1-no-printf-alloc.patch?revision=1.2
 
-[Gustavo: Ported to util-linux-2.25.1]
+[Gustavo: Ported to util-linux-2.26]
 
 Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
 
-diff -Nura util-linux-2.25.1.orig/configure.ac util-linux-2.25.1/configure.ac
---- util-linux-2.25.1.orig/configure.ac	2014-09-05 10:44:45.302080174 -0300
-+++ util-linux-2.25.1/configure.ac	2014-09-05 10:45:07.183832640 -0300
-@@ -791,7 +791,6 @@
+diff -Nura util-linux-2.26.orig/configure.ac util-linux-2.26/configure.ac
+--- util-linux-2.26.orig/configure.ac	2015-02-19 09:11:13.146192401 -0300
++++ util-linux-2.26/configure.ac	2015-02-20 08:13:32.740006582 -0300
+@@ -840,7 +840,6 @@
+ )
  UL_BUILD_INIT([libmount])
- UL_REQUIRES_LINUX([libmount])
  UL_REQUIRES_BUILD([libmount], [libblkid])
 -UL_REQUIRES_HAVE([libmount], [scanf_alloc_modifier], [scanf string alloc modifier])
  AM_CONDITIONAL([BUILD_LIBMOUNT], [test "x$build_libmount" = xyes])
  AM_CONDITIONAL([BUILD_LIBMOUNT_TESTS], [test "x$build_libmount" = xyes -a "x$enable_static" = xyes])
  
-diff -Nura util-linux-2.25.1.orig/lib/colors.c util-linux-2.25.1/lib/colors.c
---- util-linux-2.25.1.orig/lib/colors.c	2014-09-05 10:44:45.301080140 -0300
-+++ util-linux-2.25.1/lib/colors.c	2014-09-05 13:12:00.175205476 -0300
-@@ -16,6 +16,10 @@
- #include "pathnames.h"
- #include "strutils.h"
- 
-+#ifndef HAVE_SCANF_MS_MODIFIER
-+# define UL_SCNsA "%s"
-+#endif
-+
- /*
-  * terminal-colors.d file types
-  */
-@@ -577,9 +581,19 @@
- 		if (*p == '\0' || *p == '#')
- 			continue;
- 
-+#ifndef HAVE_SCANF_MS_MODIFIER
-+		size_t len = strlen(p) + 1;
-+		cn = malloc(len);
-+		seq = malloc(len);
-+#endif
-+
- 		rc = sscanf(p,  UL_SCNsA" "	/* name */
- 				UL_SCNsA,	/* color */
-+#ifdef HAVE_SCANF_MS_MODIFIER
- 				&cn, &seq);
-+#else
-+				cn, seq);
-+#endif
- 		if (rc == 2 && cn && seq)
- 			rc = colors_add_scheme(cc, cn, seq);	/* set rc=0 on success */
- 		if (rc) {
-diff -Nura util-linux-2.25.1.orig/libmount/src/tab_parse.c util-linux-2.25.1/libmount/src/tab_parse.c
---- util-linux-2.25.1.orig/libmount/src/tab_parse.c	2014-09-05 10:44:45.276079280 -0300
-+++ util-linux-2.25.1/libmount/src/tab_parse.c	2014-09-05 10:51:22.500738967 -0300
+diff -Nura util-linux-2.26.orig/libmount/src/tab_parse.c util-linux-2.26/libmount/src/tab_parse.c
+--- util-linux-2.26.orig/libmount/src/tab_parse.c	2015-02-16 09:57:34.070017496 -0300
++++ util-linux-2.26/libmount/src/tab_parse.c	2015-02-20 08:13:32.741006617 -0300
 @@ -22,6 +22,10 @@
  #include "pathnames.h"
  #include "strutils.h"

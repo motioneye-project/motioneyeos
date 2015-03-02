@@ -1,6 +1,5 @@
 config BR2_PACKAGE_DIALOG
 	bool "dialog"
-	depends on BR2_TOOLCHAIN_HAS_THREADS # fork()
 	depends on BR2_USE_MMU # fork()
 	select BR2_PACKAGE_NCURSES
 	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
@@ -12,7 +11,3 @@ config BR2_PACKAGE_DIALOG
 	  of a script to interact with the user in a much friendlier manner.
 
 	  http://invisible-island.net/dialog/dialog.html
-
-comment "dialog needs a toolchain w/ threads"
-	depends on !BR2_TOOLCHAIN_HAS_THREADS
-	depends on BR2_USE_MMU

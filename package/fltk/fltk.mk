@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-FLTK_VERSION = 1.3.2
+FLTK_VERSION = 1.3.3
 FLTK_SOURCE = fltk-$(FLTK_VERSION)-source.tar.gz
 FLTK_SITE = http://fltk.org/pub/fltk/$(FLTK_VERSION)
 FLTK_INSTALL_STAGING = YES
@@ -25,6 +25,20 @@ FLTK_LICENSE_FILES = COPYING
 ifeq ($(BR2_PACKAGE_CAIRO),y)
 FLTK_CONF_OPTS += --enable-cairo
 FLTK_DEPENDENCIES += cairo
+endif
+
+ifeq ($(BR2_PACKAGE_XLIB_LIBXCURSOR),y)
+FLTK_DEPENDENCIES += xlib_libXcursor
+FLTK_CONF_OPTS += --enable-xcursor
+else
+FLTK_CONF_OPTS += --disable-xcursor
+endif
+
+ifeq ($(BR2_PACKAGE_XLIB_LIBXFIXES),y)
+FLTK_DEPENDENCIES += xlib_libXfixes
+FLTK_CONF_OPTS += --enable-xfixes
+else
+FLTK_CONF_OPTS += --disable-xfixes
 endif
 
 ifeq ($(BR2_PACKAGE_XLIB_LIBXFT),y)

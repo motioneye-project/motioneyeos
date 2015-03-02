@@ -4,7 +4,6 @@ config BR2_PACKAGE_BTRFS_PROGS
 	depends on BR2_USE_WCHAR # util-linux
 	depends on BR2_USE_MMU # util-linux
 	depends on BR2_TOOLCHAIN_HAS_THREADS
-	depends on !BR2_avr32 # toolchain issues
 	select BR2_PACKAGE_ACL
 	select BR2_PACKAGE_ATTR
 	select BR2_PACKAGE_E2FSPROGS
@@ -20,6 +19,5 @@ config BR2_PACKAGE_BTRFS_PROGS
 
 comment "btrfs-progs needs a toolchain w/ largefile, wchar, threads"
 	depends on BR2_USE_MMU
-	depends on !BR2_avr32
 	depends on !BR2_LARGEFILE || !BR2_USE_WCHAR || \
 		!BR2_TOOLCHAIN_HAS_THREADS

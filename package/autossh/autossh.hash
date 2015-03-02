@@ -1,4 +1,2 @@
-# From http://www.harding.motd.ca/autossh/autossh-1.4d.cksums
-md5	89c09b50aa2d57814f808d727e937d0f	autossh-1.4d.tgz
-sha1	27da23c357f8d263aba6ecf3e8792a3552d90e50	autossh-1.4d.tgz
-sha256	00008fe458bde4c94e98bfa96e1e6e18c4107a1f9fc8a538556b82e91ddedc16	autossh-1.4d.tgz
+# From http://www.harding.motd.ca/autossh/autossh-1.4e.cksums
+sha256	9e8e10a59d7619176f4b986e256f776097a364d1be012781ea52e08d04679156	autossh-1.4e.tgz

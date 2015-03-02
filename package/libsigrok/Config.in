@@ -1,6 +1,5 @@
 config BR2_PACKAGE_LIBSIGROK
 	bool "libsigrok"
-	select BR2_PACKAGE_LIBSERIALPORT
 	select BR2_PACKAGE_LIBZIP
 	select BR2_PACKAGE_LIBGLIB2
 	# libglib2
@@ -16,6 +15,21 @@ config BR2_PACKAGE_LIBSIGROK
 	  This library is a part of the sigrok software suite.
 
 	  http://sigrok.org/wiki/Libsigrok
+
+if BR2_PACKAGE_LIBSIGROK
+
+config BR2_PACKAGE_LIBSIGROKCXX
+	bool "build C++ bindings"
+	select BR2_PACKAGE_GLIBMM
+	depends on BR2_INSTALL_LIBSTDCPP
+	help
+	  Build libsigrok C++ bindings as well.
+
+comment "C++ bindings need a toolchain w/ C++"
+	depends on BR2_PACKAGE_LIBSIGROK
+	depends on !BR2_INSTALL_LIBSTDCPP
+
+endif
 
 comment "libsigrok needs a toolchain w/ wchar, threads"
 	depends on BR2_USE_MMU

@@ -1,7 +1,7 @@
 config BR2_PACKAGE_LIBAIO
 	bool "libaio"
 	depends on \
-		BR2_arm   || BR2_armeb || BR2_avr32  || BR2_i386    || \
+		BR2_arm   || BR2_armeb || BR2_i386   || \
 		BR2_m68k  || BR2_mips  || BR2_mipsel || BR2_powerpc || \
 		BR2_sparc || BR2_x86_64
 	help

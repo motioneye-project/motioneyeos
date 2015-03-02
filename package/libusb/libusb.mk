@@ -17,10 +17,6 @@ LIBUSB_INSTALL_STAGING = YES
 HOST_LIBUSB_CONF_OPTS = --disable-udev
 HOST_LIBUSB_DEPENDENCIES = host-pkgconf
 
-ifeq ($(BR2_avr32),y)
-LIBUSB_CONF_OPTS += --disable-timerfd
-endif
-
 ifeq ($(BR2_PACKAGE_HAS_UDEV),y)
 LIBUSB_DEPENDENCIES += udev
 else

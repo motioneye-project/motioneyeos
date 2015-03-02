@@ -8,17 +8,9 @@
 # If not, we do like other packages
 BINUTILS_VERSION = $(call qstrip,$(BR2_BINUTILS_VERSION))
 ifeq ($(BINUTILS_VERSION),)
-ifeq ($(BR2_avr32),y)
-# avr32 uses a special version
-BINUTILS_VERSION = 2.18-avr32-1.0.1
-else
 BINUTILS_VERSION = 2.22
 endif
-endif
 
-ifeq ($(ARCH),avr32)
-BINUTILS_SITE = ftp://www.at91.com/pub/buildroot
-endif
 ifeq ($(BR2_arc),y)
 BINUTILS_SITE = $(call github,foss-for-synopsys-dwc-arc-processors,binutils-gdb,$(BINUTILS_VERSION))
 BINUTILS_SOURCE = binutils-$(BINUTILS_VERSION).tar.gz

@@ -16,7 +16,6 @@ if BR2_PACKAGE_LIBEDBUS
 
 config BR2_PACKAGE_LIBEDBUS_BLUEZ
 	bool "bluez support"
-	depends on !BR2_avr32 # bluez_utils
 	depends on !BR2_STATIC_LIBS # bluez_utils
 	depends on BR2_USE_WCHAR # bluez_utils -> glib2
 	depends on BR2_TOOLCHAIN_HAS_THREADS # bluez_utils -> glib2
@@ -25,7 +24,6 @@ config BR2_PACKAGE_LIBEDBUS_BLUEZ
 	  Bluetooth support.
 
 comment "bluez support needs a toolchain w/ wchar, threads, dynamic library"
-	depends on !BR2_avr32
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS
 
 config BR2_PACKAGE_LIBEDBUS_CONNMAN

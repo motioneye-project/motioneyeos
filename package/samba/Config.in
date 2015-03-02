@@ -2,7 +2,6 @@ config BR2_PACKAGE_SAMBA
 	bool "samba"
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_USE_MMU # fork()
-	depends on !BR2_avr32 # binary too large, relocations don't fit
 	depends on !BR2_nios2 # binary too large, relocations don't fit
 	select BR2_PACKAGE_POPT
 	help
@@ -16,7 +15,6 @@ config BR2_PACKAGE_SAMBA
 		so choose only the components you need.
 
 comment "samba needs a toolchain w/ threads"
-	depends on !BR2_avr32
 	depends on BR2_USE_MMU
 	depends on !BR2_TOOLCHAIN_HAS_THREADS
 

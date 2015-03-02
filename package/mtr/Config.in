@@ -1,8 +1,5 @@
 config BR2_PACKAGE_MTR
 	bool "mtr"
-	# res_mkquery() only available in 0.9.33+
-	depends on !BR2_UCLIBC_VERSION_0_9_31
-	depends on !BR2_avr32
 	help
 	  mtr combines the functionality of the 'traceroute' and 'ping'
 	  programs in a single network diagnostic tool.

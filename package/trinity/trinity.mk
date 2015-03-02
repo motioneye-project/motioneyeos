@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-TRINITY_VERSION = 5d2dfe9727eb9c8dc44c31e95968e8d85284ffcc
+TRINITY_VERSION = c8c41f99500b5854c2061a08962b8908c872d852
 TRINITY_SITE = $(call github,kernelslacker,trinity,$(TRINITY_VERSION))
 TRINITY_LICENSE = GPLv2
 TRINITY_LICENSE_FILES = COPYING

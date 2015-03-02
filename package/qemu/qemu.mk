@@ -22,7 +22,6 @@ HOST_QEMU_DEPENDENCIES = host-pkgconf host-python host-zlib host-libglib2 host-p
 #       -------         ----
 #       arm             arm
 #       armeb           armeb
-#       avr32           not supported
 #       bfin            not supported
 #       i386            i386
 #       i486            i386

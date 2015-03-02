@@ -13,12 +13,10 @@ config BR2_PACKAGE_QT5_JSCORE_AVAILABLE
 
 comment "Qt5 needs a toolchain w/ wchar, IPv6, NPTL, C++"
 	depends on !BR2_PACKAGE_QT
-	depends on !BR2_avr32
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR || !BR2_INET_IPV6 || !BR2_TOOLCHAIN_HAS_THREADS_NPTL
 
 menuconfig BR2_PACKAGE_QT5
 	bool "Qt5"
-	depends on !BR2_avr32
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_USE_WCHAR
 	depends on BR2_INET_IPV6

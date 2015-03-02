@@ -1,0 +1,37 @@
+From 5054d20d45571cc85339351fde52f872eeb82206 Mon Sep 17 00:00:00 2001
+From: Phil Sutter <phil@nwl.cc>
+Date: Tue, 10 Feb 2015 04:57:05 +0100
+Subject: [PATCH] fix compilation against linux-3.19
+
+Commit f938612dd97d481b8b5bf960c992ae577f081c17 in linux.git removes
+get_unused_fd() macro. This patch changes the calling code to use it's
+content 'get_unused_fd_flags(0)' instead. Checking for when
+get_unused_fd_flags was introduced shows it's been there since 2.6.23 at
+least, so probably no need to make this change conditional on the target
+kernel version.
+
+Original patch by Ricardo Ribalda Delgado for Open Embedded, reported by
+Oleg Rakhmanov.
+
+Signed-off-by: Phil Sutter <phil@nwl.cc>
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+---
+ ioctl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/ioctl.c b/ioctl.c
+index 5a55a76..b23f5fd 100644
+--- a/ioctl.c
++++ b/ioctl.c
+@@ -546,7 +546,7 @@ static int
+ clonefd(struct file *filp)
+ {
+ 	int ret;
+-	ret = get_unused_fd();
++	ret = get_unused_fd_flags(0);
+ 	if (ret >= 0) {
+ 			get_file(filp);
+ 			fd_install(ret, filp);
+-- 
+2.0.5
+
