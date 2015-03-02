@@ -18,8 +18,13 @@ BDWGC_DEPENDENCIES = libatomic_ops host-pkgconf
 # solution.
 BDWGC_AUTORECONF = YES
 
+BDWGC_CFLAGS = $(TARGET_CFLAGS)
+ifeq ($(BR2_STATIC_LIBS),y)
+BDWGC_CFLAGS += -DGC_NO_DLOPEN
+endif
+
 # Ensure we use the system libatomic_ops, and not the internal one.
-BDWGC_CONF_OPTS = --with-libatomic-ops=yes
+BDWGC_CONF_OPTS = --with-libatomic-ops=yes CFLAGS="$(BDWGC_CFLAGS)"
 HOST_BDWGC_CONF_OPTS = --with-libatomic-ops=yes
 
 $(eval $(autotools-package))
