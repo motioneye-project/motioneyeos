@@ -6,6 +6,10 @@ md5  14facaac538a43533b89d969d7904d46  mips-2014.05-27-mips-linux-gnu-i686-pc-li
 # From: https://sourcery.mentor.com/GNUToolchain/release2640
 md5  0ba8bc4923c04728ee3787bed4cd5148  mips-2013.11-36-mips-linux-gnu-i686-pc-linux-gnu.tar.bz2
 
+# Sourcery CodeBench Lite for AMD64
+# From https://sourcery.mentor.com/GNUToolchain/release2777
+md5	a1f8650d1a5ff726cca0893522fd8745	amd-2014.05-25-x86_64-amd-linux-gnu-i686-pc-linux-gnu.tar.bz2
+
 ######################################
 # Next hashes are all locally computed
 
