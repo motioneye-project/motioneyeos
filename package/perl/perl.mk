@@ -85,6 +85,7 @@ endif
 define PERL_CONFIGURE_CMDS
 	(cd $(@D); HOSTCC='$(HOSTCC_NOCACHE)' ./configure $(PERL_CONF_OPTS))
 	$(SED) 's/UNKNOWN-/Buildroot $(BR2_VERSION_FULL) /' $(@D)/patchlevel.h
+	touch $(@D)/x2p/a2p.c # prevents regen by yacc
 endef
 
 define PERL_BUILD_CMDS
