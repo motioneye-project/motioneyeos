@@ -804,62 +804,6 @@ config BR2_TOOLCHAIN_EXTERNAL_BLACKFIN_UCLINUX_2012R2
 	  Toolchain for the Blackfin architecture, from
 	  http://blackfin.uclinux.org.
 
-config BR2_TOOLCHAIN_EXTERNAL_XILINX_MICROBLAZEEL_14_3
-	bool "Xilinx Little Endian Microblaze GNU Tools 14.3"
-	depends on BR2_microblazeel
-	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86"
-	depends on !BR2_STATIC_LIBS
-	depends on BR2_DEPRECATED_SINCE_2014_02
-	select BR2_TOOLCHAIN_EXTERNAL_GLIBC
-	select BR2_TOOLCHAIN_HAS_NATIVE_RPC
-	select BR2_HOSTARCH_NEEDS_IA32_LIBS
-	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_3
-	help
-	  Toolchain for the Microblaze architecture, from
-	  http://git.xilinx.com/?p=microblaze-gnu.git;a=tree;f=binaries. It
-	  uses gcc 4.6.2, binutils 2.21.53, glibc 2.14 and gdb 7.4.50.
-
-config BR2_TOOLCHAIN_EXTERNAL_XILINX_MICROBLAZEEL_V2
-	bool "Xilinx Little Endian Microblaze GNU Tools v2"
-	depends on BR2_microblazeel
-	depends on BR2_HOSTARCH = "x86_64"
-	depends on !BR2_STATIC_LIBS
-	depends on BR2_DEPRECATED_SINCE_2014_02
-	select BR2_TOOLCHAIN_EXTERNAL_GLIBC
-	select BR2_TOOLCHAIN_HAS_NATIVE_RPC
-	# kernel headers: 2.6.37
-	help
-	  Toolchain for the Microblaze architecture, from
-	  http://wiki.xilinx.com/mb-gnu-tools
-
-config BR2_TOOLCHAIN_EXTERNAL_XILINX_MICROBLAZEBE_14_3
-	bool "Xilinx Big Endian Microblaze GNU Tools"
-	depends on BR2_microblazebe
-	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86"
-	depends on !BR2_STATIC_LIBS
-	depends on BR2_DEPRECATED_SINCE_2014_02
-	select BR2_TOOLCHAIN_EXTERNAL_GLIBC
-	select BR2_TOOLCHAIN_HAS_NATIVE_RPC
-	select BR2_HOSTARCH_NEEDS_IA32_LIBS
-	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_3
-	help
-	  Toolchain for the Microblaze architecture, from
-	  http://git.xilinx.com/?p=microblaze-gnu.git;a=tree;f=binaries. It
-	  uses gcc 4.6.2, binutils 2.21.53, glibc 2.14 and gdb 7.4.50.
-
-config BR2_TOOLCHAIN_EXTERNAL_XILINX_MICROBLAZEBE_V2
-	bool "Xilinx Big Endian Microblaze GNU Tools"
-	depends on BR2_microblazebe
-	depends on BR2_HOSTARCH = "x86_64"
-	depends on !BR2_STATIC_LIBS
-	depends on BR2_DEPRECATED_SINCE_2014_02
-	select BR2_TOOLCHAIN_EXTERNAL_GLIBC
-	select BR2_TOOLCHAIN_HAS_NATIVE_RPC
-	# kernel headers: 2.6.37
-	help
-	  Toolchain for the Microblaze architecture, from
-	  http://wiki.xilinx.com/mb-gnu-tools
-
 config BR2_TOOLCHAIN_EXTERNAL_LINARO_AARCH64
 	bool "Linaro AArch64 14.09"
 	depends on BR2_aarch64
@@ -968,10 +912,6 @@ config BR2_TOOLCHAIN_EXTERNAL_PREFIX
 	default "arm-arago-linux-gnueabi" if BR2_TOOLCHAIN_EXTERNAL_ARAGO_ARMV5TE_201109
 	default "aarch64-linux-gnu"      if BR2_TOOLCHAIN_EXTERNAL_LINARO_AARCH64
 	default "aarch64-linux-gnu"      if BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_AARCH64
-	default "microblazeel-unknown-linux-gnu" if BR2_TOOLCHAIN_EXTERNAL_XILINX_MICROBLAZEEL_14_3
-	default "microblazeel-unknown-linux-gnu" if BR2_TOOLCHAIN_EXTERNAL_XILINX_MICROBLAZEEL_V2
-	default "microblaze-unknown-linux-gnu" if BR2_TOOLCHAIN_EXTERNAL_XILINX_MICROBLAZEBE_14_3
-	default "microblaze-unknown-linux-gnu" if BR2_TOOLCHAIN_EXTERNAL_XILINX_MICROBLAZEBE_V2
 	default "mips-linux-gnu"         if BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_MIPS201311
 	default "mips-linux-gnu"         if BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_MIPS201405
 	default "mips-linux-gnu"         if BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_MIPS201411
