@@ -75,7 +75,7 @@ config BR2_PACKAGE_COLLECTD_SYSLOG
 	help
 	  Logs to the standard UNIX logging mechanism.
 
-config BR2_PACKAGE_THRESHOLD
+config BR2_PACKAGE_COLLECTD_THRESHOLD
 	bool "threshold"
 	help
 	  Checks values against configured thresholds and creates notifications
@@ -211,6 +211,15 @@ config BR2_PACKAGE_COLLECTD_IPTABLES
 	help
 	  Gather statistics from iptables packet filter.
 
+config BR2_PACKAGE_COLLECTD_IPVS
+	bool "ipvs"
+	help
+	  Extracts statistics from IP Virtual Server (IPVS), the
+	  transport-layer load-balancer of the LVS project.
+	  It stores traffic and connections history for each of the
+	  Real Servers (RS) behind a local Virtual Server (VS).
+	  Collectd must be run on Directors (in LVS jargon).
+
 config BR2_PACKAGE_COLLECTD_IRQ
 	bool "irq"
 	help
@@ -246,6 +255,12 @@ config BR2_PACKAGE_COLLECTD_MEMORY
 	help
 	  Collects physical memory utilization.
 
+config BR2_PACKAGE_COLLECTD_MODBUS
+	bool "modbus"
+	select BR2_PACKAGE_MODBUS
+	help
+	  Reads register values from a modbus "slave" via Modbus/TCP.
+
 config BR2_PACKAGE_COLLECTD_MYSQL
 	bool "mysql"
 	depends on BR2_INSTALL_LIBSTDCPP # mysql
@@ -255,10 +270,27 @@ config BR2_PACKAGE_COLLECTD_MYSQL
 	help
 	  Connects to a MySQL database and issues a "show status" command.
 
+comment "netlink support needs a toolchain w/ largefile"
+	depends on !BR2_LARGEFILE
+
+config BR2_PACKAGE_COLLECTD_NETLINK
+	bool "netlink"
+	depends on BR2_LARGEFILE
+	select BR2_PACKAGE_LIBMNL
+	help
+	  Get statistics for interfaces, qdiscs, classes, and filters.
+
 config BR2_PACKAGE_COLLECTD_NFS
 	bool "nfs"
 	help
 	  Collects information about the usage of the Network File System.
+
+config BR2_PACKAGE_COLLECTD_NGINX
+	bool "nginx"
+	select BR2_PACKAGE_LIBCURL
+	help
+	  Collects the number of requests handled by the nginx daemon
+	  since startup and the number of current connections by state.
 
 config BR2_PACKAGE_COLLECTD_NTPD
 	bool "ntpd"
@@ -281,6 +313,19 @@ config BR2_PACKAGE_COLLECTD_PING
 	select BR2_PACKAGE_LIBOPING
 	help
 	  Mesures network latency using ICMP "echo requests".
+
+comment "postgresql needs a toolchain w/ glibc"
+	depends on !BR2_TOOLCHAIN_USES_GLIBC
+
+config BR2_PACKAGE_COLLECTD_POSTGRESQL
+	bool "postgresql"
+	depends on BR2_TOOLCHAIN_USES_GLIBC
+	select BR2_PACKAGE_POSTGRESQL
+	help
+	  Connects to and executes SQL statements on a PostgreSQL
+	  database. It then reads back the results and, depending on the
+	  configuration, the returned values are then converted into
+	  collectd “value lists”.
 
 config BR2_PACKAGE_COLLECTD_PROCESSES
 	bool "processes"
