@@ -29,7 +29,7 @@ choice
 		# SPARC -mcpu=leon3 appeared in gcc 4.8.x
 		depends on !BR2_sparc_leon3
 		# Broken or unsupported X86 cores
-		depends on !BR2_x86_corei7 && !BR2_x86_jaguar
+		depends on !BR2_x86_corei7 && !BR2_x86_jaguar && !BR2_x86_steamroller
 		# ARM EABIhf support appeared in gcc 4.6
 		depends on !BR2_ARM_EABIHF
 		# musl patches only for gcc 4.7+
@@ -49,7 +49,7 @@ choice
 		# SPARC -mcpu=leon3 appeared in gcc 4.8.x
 		depends on !BR2_sparc_leon3
 		# Broken or unsupported x86 cores
-		depends on !BR2_x86_jaguar
+		depends on !BR2_x86_jaguar && !BR2_x86_steamroller
 		select BR2_GCC_NEEDS_MPC
 
 	config BR2_GCC_VERSION_4_8_X
