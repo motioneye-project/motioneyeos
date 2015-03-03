@@ -5,6 +5,7 @@
 ################################################################################
 
 LIBASS_VERSION = 0.10.2
+LIBASS_SOURCE = libass-$(LIBASS_VERSION).tar.xz
 LIBASS_SITE = http://libass.googlecode.com/files
 LIBASS_INSTALL_STAGING = YES
 LIBASS_LICENSE = ISC
