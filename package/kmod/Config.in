@@ -1,6 +1,7 @@
 config BR2_PACKAGE_KMOD
 	bool "kmod"
 	depends on !BR2_STATIC_LIBS
+	depends on BR2_LARGEFILE
 	help
 	  handle kernel modules
 
@@ -16,3 +17,6 @@ config BR2_PACKAGE_KMOD_TOOLS
 	  modinfo, modprobe, rmmod).
 
 endif
+
+comment "kmod needs a toolchain w/ largefile, dynamic library"
+	depends on !BR2_LARGEFILE || BR2_STATIC_LIBS
