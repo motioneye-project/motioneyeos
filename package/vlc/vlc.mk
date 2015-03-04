@@ -117,6 +117,13 @@ else
 VLC_CONF_OPTS += --disable-flac
 endif
 
+ifeq ($(BR2_PACKAGE_FREERDP),y)
+VLC_CONF_OPTS += --enable-libfreerdp
+VLC_DEPENDENCIES += freerdp
+else
+VLC_CONF_OPTS += --disable-libfreerdp
+endif
+
 ifeq ($(BR2_PACKAGE_HAS_LIBGL),y)
 VLC_CONF_OPTS += --enable-glx
 VLC_DEPENDENCIES += libgl
