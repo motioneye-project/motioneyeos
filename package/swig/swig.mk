@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-SWIG_MAJOR = 2.0
-SWIG_VERSION = $(SWIG_MAJOR).12
+SWIG_VERSION_MAJOR = 2.0
+SWIG_VERSION = $(SWIG_VERSION_MAJOR).12
 SWIG_SITE = http://downloads.sourceforge.net/project/swig/swig/swig-$(SWIG_VERSION)
 SWIG_DEPENDENCIES = host-bison
 HOST_SWIG_CONF_OPTS = \
@@ -25,11 +25,11 @@ SWIG_LICENSE_FILES = LICENSE LICENSE-GPL LICENSE-UNIVERSITIES
 # swig, so that our swig always gets used.
 
 define HOST_SWIG_INSTALL_SYMLINK
-	ln -fs $(HOST_DIR)/usr/bin/swig $(HOST_DIR)/usr/bin/swig$(SWIG_MAJOR)
+	ln -fs $(HOST_DIR)/usr/bin/swig $(HOST_DIR)/usr/bin/swig$(SWIG_VERSION_MAJOR)
 endef
 
 HOST_SWIG_POST_INSTALL_HOOKS += HOST_SWIG_INSTALL_SYMLINK
 
 $(eval $(host-autotools-package))
 
-SWIG = $(HOST_DIR)/usr/bin/swig$(SWIG_MAJOR)
+SWIG = $(HOST_DIR)/usr/bin/swig$(SWIG_VERSION_MAJOR)
