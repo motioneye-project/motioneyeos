@@ -41,6 +41,8 @@ endif
 
 ifeq ($(KERNEL_ARCH),i386)
 BAREBOX_ARCH = x86
+else ifeq ($(KERNEL_ARCH),x86_64)
+BAREBOX_ARCH = x86
 else ifeq ($(KERNEL_ARCH),powerpc)
 BAREBOX_ARCH = ppc
 else
