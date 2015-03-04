@@ -37,7 +37,6 @@ KODI_CONF_OPTS +=  \
 	--disable-dvdcss \
 	--disable-hal \
 	--disable-joystick \
-	--disable-mysql \
 	--disable-openmax \
 	--disable-projectm \
 	--disable-pulse \
@@ -45,6 +44,14 @@ KODI_CONF_OPTS +=  \
 	--disable-vdpau \
 	--disable-vtbdecoder \
 	--enable-optimizations
+
+ifeq ($(BR2_PACKAGE_MYSQL),y)
+KODI_CONF_OPTS += --enable-mysql
+KODI_CONF_ENV += ac_cv_path_MYSQL_CONFIG="$(STAGING_DIR)/usr/bin/mysql_config"
+KODI_DEPENDENCIES += mysql
+else
+KODI_CONF_OPTS += --disable-mysql
+endif
 
 ifeq ($(BR2_PACKAGE_RPI_USERLAND),y)
 KODI_DEPENDENCIES += rpi-userland
