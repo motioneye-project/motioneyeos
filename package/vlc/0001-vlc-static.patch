@@ -13,7 +13,7 @@ diff -uNr vlc-2.1.5.org/bin/Makefile.am vlc-2.1.5/bin/Makefile.am
 diff -uNr vlc-2.1.5.org/Makefile.am vlc-2.1.5/Makefile.am
 --- vlc-2.1.5.org/Makefile.am	2014-02-14 18:40:50.000000000 +0100
 +++ vlc-2.1.5/Makefile.am	2014-08-03 12:29:52.059010766 +0200
-@@ -607,7 +607,7 @@
+@@ -932,7 +932,7 @@
  	cd lib && $(MAKE) $(AM_MAKEFLAGS) libvlc.la
  
  core: libvlc vlc$(EXEEXT)

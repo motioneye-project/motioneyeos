@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-VLC_VERSION = 2.1.6
+VLC_VERSION = 2.2.0
 VLC_SITE = http://get.videolan.org/vlc/$(VLC_VERSION)
 VLC_SOURCE = vlc-$(VLC_VERSION).tar.xz
 VLC_LICENSE = GPLv2+ LGPLv2.1+
@@ -28,9 +28,7 @@ VLC_CONF_OPTS += \
 	--disable-shout \
 	--disable-twolame \
 	--disable-dca \
-	--disable-dirac \
 	--disable-schroedinger \
-	--disable-quicksync \
 	--disable-fluidsynth \
 	--disable-zvbi \
 	--disable-kate \
@@ -42,7 +40,17 @@ VLC_CONF_OPTS += \
 	--disable-projectm \
 	--disable-vsxu \
 	--disable-mtp \
-	--disable-opencv
+	--disable-opencv \
+	--disable-mmal-codec \
+	--disable-mmal-vout \
+	--disable-dvdnav \
+	--disable-vpx \
+	--disable-jpeg \
+	--disable-x262 \
+	--disable-x265 \
+	--disable-mfx \
+	--disable-vdpau \
+	--disable-addonmanagermodules \
 
 # Building static and shared doesn't work, so force static off.
 ifeq ($(BR2_STATIC_LIBS),)
@@ -118,17 +126,21 @@ VLC_CONF_OPTS += --disable-flac
 endif
 
 ifeq ($(BR2_PACKAGE_FREERDP),y)
-VLC_CONF_OPTS += --enable-libfreerdp
+VLC_CONF_OPTS += --enable-freerdp
 VLC_DEPENDENCIES += freerdp
 else
 VLC_CONF_OPTS += --disable-libfreerdp
 endif
 
 ifeq ($(BR2_PACKAGE_HAS_LIBGL),y)
-VLC_CONF_OPTS += --enable-glx
 VLC_DEPENDENCIES += libgl
+endif
+
+ifeq ($(BR2_PACKAGE_HAS_LIBGLES),y)
+VLC_CONF_OPTS += --enable-gles1 --enable-gles2
+VLC_DEPENDENCIES += libgles
 else
-VLC_CONF_OPTS += --disable-glx
+VLC_CONF_OPTS += --disable-gles1 --disable-gles2
 endif
 
 ifeq ($(BR2_PACKAGE_OPUS),y)
@@ -183,10 +195,10 @@ VLC_CONF_OPTS += --disable-png
 endif
 
 ifeq ($(BR2_PACKAGE_LIBRSVG),y)
-VLC_CONF_OPTS += --enable-svg
+VLC_CONF_OPTS += --enable-svg --enable-svgdec
 VLC_DEPENDENCIES += librsvg
 else
-VLC_CONF_OPTS += --disable-svg
+VLC_CONF_OPTS += --disable-svg --disable-svgdec
 endif
 
 ifeq ($(BR2_PACKAGE_LIBTHEORA),y)
