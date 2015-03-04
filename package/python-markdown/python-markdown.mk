@@ -12,3 +12,4 @@ PYTHON_MARKDOWN_LICENSE_FILES = LICENSE.md
 PYTHON_MARKDOWN_SETUP_TYPE = distutils
 
 $(eval $(python-package))
+$(eval $(host-python-package))
