@@ -1,6 +1,11 @@
+comment "quagga needs a toolchain w/ IPv6"
+	depends on BR2_USE_MMU
+	depends on !BR2_INET_IPV6
+
 config BR2_PACKAGE_QUAGGA
 	bool "quagga"
 	depends on BR2_USE_MMU # fork()
+	depends on BR2_INET_IPV6
 	help
 	  Routing software suite, providing implementations of
 	  OSPFv2, OSPFv3 (IPv6), RIP v1 and v2, RIPng (IPv6) and BGPv4+.
@@ -11,12 +16,8 @@ if BR2_PACKAGE_QUAGGA
 
 config BR2_PACKAGE_QUAGGA_ZEBRA
 	bool "zebra daemon"
-	depends on BR2_INET_IPV6
 	help
 	  Build zebra daemon.
-
-comment "zebra daemon needs a toolchain w/ IPv6"
-	depends on !BR2_INET_IPV6
 
 config BR2_PACKAGE_QUAGGA_TCP_ZEBRA
 	bool "Use TCP sockets between zebra and protocol daemons"
@@ -30,7 +31,6 @@ config BR2_PACKAGE_QUAGGA_TCP_ZEBRA
 
 config BR2_PACKAGE_QUAGGA_BABELD
 	bool "BABEL protocol"
-	depends on BR2_INET_IPV6
 	help
 	  Build babeld daemon.
 
@@ -59,7 +59,6 @@ config BR2_PACKAGE_QUAGGA_OPAQUE_LSA
 
 config BR2_PACKAGE_QUAGGA_OSPF6D
 	bool "OSPFv3 (IPv6) protocol"
-	depends on BR2_INET_IPV6
 	help
 	  Build ospf6d daemon.
 
@@ -70,9 +69,13 @@ config BR2_PACKAGE_QUAGGA_RIPD
 
 config BR2_PACKAGE_QUAGGA_RIPNGD
 	bool "RIPng (IPv6) protocol"
-	depends on BR2_INET_IPV6
 	help
 	  Build ripngd daemon.
+
+config BR2_PACKAGE_QUAGGA_PIMD
+	bool "PIMd protocol"
+	help
+	  Provides IPv4 PIM-SSM multicast routing.
 
 config BR2_PACKAGE_QUAGGA_WATCHQUAGGA
 	bool "Build watchquagga"
