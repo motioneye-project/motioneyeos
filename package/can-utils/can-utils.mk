@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-CAN_UTILS_VERSION = 111f8d3acf6f6b30bf208fd9c98399c5fb9d29de
-CAN_UTILS_SITE = git://gitorious.org/linux-can/can-utils.git
+CAN_UTILS_VERSION = 002f8eba8703e88cdc6e97f6447a4ce346b739da
+CAN_UTILS_SITE = $(call github,linux-can,can-utils,$(CAN_UTILS_VERSION))
 CAN_UTILS_AUTORECONF = YES
 
 $(eval $(autotools-package))
