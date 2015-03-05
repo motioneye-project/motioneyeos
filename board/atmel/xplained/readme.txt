@@ -52,8 +52,8 @@ sudo mount /dev/mmcblk0p2 /media/rootfs
 Copy the bootloaders, kernel image and Device Tree blob to the first
 partition:
 
-cp output/images/sama5d3_xplained-sdcardboot-uboot-3.6.2.bin /media/boot/boot.bin
-cp output/images/u-boot.bin /media/boot/u-boot.bin
+cp output/images/uboot-spl.bin /media/boot/boot.bin
+cp output/images/u-boot.img /media/boot/u-boot.img
 cp output/images/zImage /media/boot/zImage
 cp output/images/at91-sama5d3_xplained.dtb /media/boot/at91-sama5d3_xplained.dtb
 
