@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-SAMBA4_VERSION = 4.1.17
-SAMBA4_SITE = http://ftp.samba.org/pub/samba/stable
+SAMBA4_VERSION = 4.2.0
+SAMBA4_SITE = http://ftp.samba.org/pub/samba
 SAMBA4_SOURCE = samba-$(SAMBA4_VERSION).tar.gz
 SAMBA4_LICENSE = GPLv3+
 SAMBA4_LICENSE_FILES = COPYING
@@ -69,6 +69,15 @@ else
 SAMBA4_CONF_OPTS += --without-regedit
 endif
 
+# The ctdb tests (cluster) need bash and take up some space
+# They're normally intended for debugging so remove them
+define SAMBA4_REMOVE_CTDB_TESTS
+	rm -rf $(TARGET_DIR)/usr/lib/ctdb-tests
+	rm -rf $(TARGET_DIR)/usr/share/ctdb-tests
+	rm -f $(TARGET_DIR)/usr/bin/ctdb_run_*tests
+endef
+SAMBA4_POST_INSTALL_TARGET_HOOKS += SAMBA4_REMOVE_CTDB_TESTS
+
 define SAMBA4_CONFIGURE_CMDS
 	cp package/samba4/samba4-cache.txt $(@D)/cache.txt;
 	echo 'Checking uname machine type: $(BR2_ARCH)' >>$(@D)/cache.txt;
@@ -93,9 +102,7 @@ define SAMBA4_CONFIGURE_CMDS
 			--without-pam \
 			--without-dmapi \
 			--disable-glusterfs \
-			--without-ldap \
-			--without-cluster-support \
-			--without-ads \
+			--with-cluster-support \
 			--bundled-libraries='!asn1_compile,!compile_et' \
 			$(SAMBA4_CONF_OPTS) \
 	)
@@ -119,18 +126,27 @@ endef
 SAMBA4_POST_INSTALL_TARGET_HOOKS += SAMBA4_BUILD_PYC_FILES
 endif
 
+ifeq ($(BR2_PACKAGE_SAMBA4_AD_DC),)
+SAMBA4_CONF_OPTS += --without-ad-dc
+endif
+
+ifeq ($(BR2_PACKAGE_SAMBA4_ADS),y)
+SAMBA4_CONF_OPTS += --with-ads --with-ldap --with-shared-modules=idmap_ad
+SAMBA4_DEPENDENCIES += openldap
+else
+SAMBA4_CONF_OPTS += --without-ads --without-ldap
+endif
+
+ifeq ($(BR2_PACKAGE_SAMBA4_SMBTORTURE),)
+define SAMBA4_REMOVE_SMBTORTURE
+	rm -f $(TARGET_DIR)/usr/bin/smbtorture
+endef
+SAMBA4_POST_INSTALL_TARGET_HOOKS += SAMBA4_REMOVE_SMBTORTURE
+endif
+
 define SAMBA4_INSTALL_INIT_SYSV
 	$(INSTALL) -m 0755 -D package/samba4/S91smb \
 		$(TARGET_DIR)/etc/init.d/S91smb
 endef
-
-# uClibc doesn't honor $ORIGIN so we need to move a few libs
-ifeq ($(BR2_TOOLCHAIN_USES_UCLIBC),y)
-define SAMBA4_MOVE_LIBS
-	mv -f $(TARGET_DIR)/usr/lib/samba/libreplace* $(TARGET_DIR)/usr/lib
-	mv -f $(TARGET_DIR)/usr/lib/samba/libtalloc* $(TARGET_DIR)/usr/lib
-endef
-SAMBA4_POST_INSTALL_TARGET_HOOKS += SAMBA4_MOVE_LIBS
-endif
 
 $(eval $(generic-package))
