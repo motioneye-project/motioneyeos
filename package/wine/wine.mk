@@ -29,6 +29,13 @@ ifeq ($(BR2_TOOLCHAIN_EXTERNAL),y)
 WINE_CONF_OPTS += TARGETFLAGS="-b $(call qstrip,$(BR2_TOOLCHAIN_EXTERNAL_PREFIX))"
 endif
 
+ifeq ($(BR2_PACKAGE_ALSA_LIB)$(BR2_PACKAGE_ALSA_LIB_SEQ),yy)
+WINE_CONF_OPTS += --with-alsa
+WINE_DEPENDENCIES += alsa-lib
+else
+WINE_CONF_OPTS += --without-alsa
+endif
+
 ifeq ($(BR2_PACKAGE_CUPS),y)
 WINE_CONF_OPTS += --with-cups
 WINE_DEPENDENCIES += cups
