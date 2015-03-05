@@ -34,7 +34,7 @@ else
 	CUPS_CONF_OPTS += --disable-dbus
 endif
 
-ifeq ($(BR2_PACKAGE_XORG7),y)
+ifeq ($(BR2_PACKAGE_XLIB_LIBX11),y)
 	CUPS_DEPENDENCIES += xlib_libX11
 endif
 
