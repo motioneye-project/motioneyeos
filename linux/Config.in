@@ -140,10 +140,10 @@ choice
 	default BR2_LINUX_KERNEL_USE_DEFCONFIG
 
 config BR2_LINUX_KERNEL_USE_DEFCONFIG
-	bool "Using a defconfig"
+	bool "Using an in-tree defconfig file"
 
 config BR2_LINUX_KERNEL_USE_CUSTOM_CONFIG
-	bool "Using a custom config file"
+	bool "Using a custom (def)config file"
 
 endchoice
 
@@ -160,6 +160,9 @@ config BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE
 	depends on BR2_LINUX_KERNEL_USE_CUSTOM_CONFIG
 	help
 	  Path to the kernel configuration file
+
+	  Note: this can be a defconfig file or a complete .config file,
+	  which can later be saved back with make linux-update-(def)config.
 
 #
 # Binary format
