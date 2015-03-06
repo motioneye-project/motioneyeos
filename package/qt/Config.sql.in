@@ -23,7 +23,7 @@ config BR2_PACKAGE_QT_IBASE
 
 config BR2_PACKAGE_QT_ODBC
 	bool "ODBC Driver"
-	depends on BROKEN # libodbc not in BR
+	select BR2_PACKAGE_UNIXODBC
 	help
 	  Build ODBC driver
 	  If unsure, say n.
