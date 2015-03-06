@@ -1,0 +1,4 @@
+# http://www.lttng.org/files/urcu/userspace-rcu-0.8.6.tar.bz2.sha1
+sha1  f10e9bf812557cd0c2a35a277e04010ec278d25d  userspace-rcu-0.8.6.tar.bz2
+# Locally generated
+sha256 b1a5d3bce014ba7a702759bc60b692c1cd46ff0e8a5b53f0d0a95e22db74ab21 userspace-rcu-0.8.6.tar.bz2
