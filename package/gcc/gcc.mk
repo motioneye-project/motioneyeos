@@ -132,6 +132,10 @@ else
 HOST_GCC_COMMON_CONF_OPTS += --disable-tls
 endif
 
+ifeq ($(BR2_GCC_ENABLE_LTO),y)
+HOST_GCC_COMMON_CONF_OPTS += --enable-plugins --enable-lto
+endif
+
 ifeq ($(BR2_GCC_ENABLE_LIBMUDFLAP),y)
 HOST_GCC_COMMON_CONF_OPTS += --enable-libmudflap
 else

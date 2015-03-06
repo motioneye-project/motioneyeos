@@ -96,5 +96,9 @@ BINUTILS_PRE_PATCH_HOOKS += BINUTILS_XTENSA_PRE_PATCH
 HOST_BINUTILS_PRE_PATCH_HOOKS += BINUTILS_XTENSA_PRE_PATCH
 endif
 
+ifeq ($(BR2_BINUTILS_ENABLE_LTO),y)
+HOST_BINUTILS_CONF_OPTS += --enable-plugins --enable-lto
+endif
+
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))

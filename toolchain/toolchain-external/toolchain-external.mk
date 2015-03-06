@@ -647,12 +647,20 @@ endif
 # Build toolchain wrapper for preprocessor, C and C++ compiler and setup
 # symlinks for everything else. Skip gdb symlink when we are building our
 # own gdb to prevent two gdb's in output/host/usr/bin.
+# When the link-time-optimazation flag '-flto' is used, then the compiler
+# and binutils have to support lto. ar/ranlib need to be called with the
+# lto plugin. The wrappers *-gcc-ar and *-gcc-ranlib provided by GCC could
+# be used as drop-ins for ar/runlib when Makefiles are used which do not
+# pass the lto arguments.
 define TOOLCHAIN_EXTERNAL_INSTALL_WRAPPER
 	$(Q)$(call MESSAGE,"Building ext-toolchain wrapper")
 	mkdir -p $(HOST_DIR)/usr/bin; cd $(HOST_DIR)/usr/bin; \
 	for i in $(TOOLCHAIN_EXTERNAL_CROSS)*; do \
 		base=$${i##*/}; \
 		case "$$base" in \
+		*-ar|*-ranlib|*-nm) \
+			ln -sf $$(echo $$i | sed 's%^$(HOST_DIR)%../..%') .; \
+			;; \
 		*cc|*cc-*|*++|*++-*|*cpp) \
 			ln -sf ext-toolchain-wrapper $$base; \
 			;; \

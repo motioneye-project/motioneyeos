@@ -38,6 +38,9 @@ config BR2_BINUTILS_VERSION
 	default "2.24"		if BR2_BINUTILS_VERSION_2_24
 	default "2.25"		if BR2_BINUTILS_VERSION_2_25
 
+config BR2_BINUTILS_ENABLE_LTO
+	bool
+
 config BR2_BINUTILS_EXTRA_CONFIG_OPTIONS
 	string "Additional binutils options"
 	default ""
