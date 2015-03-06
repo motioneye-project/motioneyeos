@@ -53,10 +53,10 @@ config BR2_PACKAGE_VALGRIND_DHAT
 	help
 	  This option allows to install the DHAT tool
 
-config BR2_PACKAGE_VALGRIND_PTRCHECK
-	bool "Ptrcheck: an experimental head, stack and global array overrun detector"
+config BR2_PACKAGE_VALGRIND_SGCHECK
+	bool "SGCheck: an experimental stack and global array overrun detector"
 	help
-	  This option allows to install the Ptrcheck tool
+	  This option allows to install the SGCheck tool
 
 config BR2_PACKAGE_VALGRIND_BBV
 	bool "BBV: an experimental basic block vector generation tool"

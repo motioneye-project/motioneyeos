@@ -99,7 +99,16 @@ comment "----------------------------------------------------"
 endif
 
 ###############################################################################
+comment "Legacy options removed in 2015.05"
 
+config BR2_PACKAGE_VALGRIND_PTRCHECK
+	bool "valgrind's PTRCheck was renamed to SGCheck"
+	select BR2_LEGACY
+	select BR2_PACKAGE_VALGRIND_SGCHECK
+	help
+	  PTRCheck was renamed to SGCheck in valgrind
+
+###############################################################################
 comment "Legacy options removed in 2015.02"
 
 config BR2_PACKAGE_LIBGC
