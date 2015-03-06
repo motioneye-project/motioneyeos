@@ -159,6 +159,12 @@ config BR2_PACKAGE_PHP_EXT_PDO_SQLITE
 	help
 	  SQLite3 driver for PDO
 
+config BR2_PACKAGE_PHP_EXT_PDO_UNIXODBC
+	bool "unixODBC"
+	select BR2_PACKAGE_UNIXODBC
+	help
+	  unixODBC driver for PDO
+
 endif
 
 comment "Human language and character encoding support"
