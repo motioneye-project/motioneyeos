@@ -1,5 +1,7 @@
 config BR2_PACKAGE_CUPS
 	bool "cups"
+	# serious security issues, needs upgrading
+	depends on BR2_DEPRECATED_SINCE_2015_05
 	# needs fork()
 	depends on BR2_USE_MMU
 	help

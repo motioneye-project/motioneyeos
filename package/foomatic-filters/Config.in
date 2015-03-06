@@ -1,10 +1,14 @@
 comment "foomatic-filters needs a toolchain w/ threads"
+	# because of cups security issues
+	depends on BR2_DEPRECATED_SINCE_2015_05
 	depends on BR2_PACKAGE_CUPS
 	depends on !BR2_TOOLCHAIN_HAS_THREADS
 
 config BR2_PACKAGE_FOOMATIC_FILTERS
 	bool "foomatic_filters"
 	depends on BR2_PACKAGE_CUPS
+	# because of cups security issues
+	depends on BR2_DEPRECATED_SINCE_2015_05
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libusb
 	select BR2_PACKAGE_LIBUSB
 	select BR2_PACKAGE_ENSCRIPT

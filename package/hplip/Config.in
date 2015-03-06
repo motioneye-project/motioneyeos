@@ -1,5 +1,7 @@
 config BR2_PACKAGE_HPLIP
 	bool "hplip"
+	# because of cups security issues
+	depends on BR2_DEPRECATED_SINCE_2015_05
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_PACKAGE_CUPS
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libusb
