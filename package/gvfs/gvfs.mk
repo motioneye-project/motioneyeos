@@ -58,11 +58,11 @@ else
 GVFS_CONF_OPTS += --disable-http
 endif
 
-ifeq ($(BR2_PACKAGE_SAMBA_LIBSMBCLIENT),y)
-GVFS_DEPENDENCIES += samba
+ifeq ($(BR2_PACKAGE_SAMBA4),y)
+GVFS_DEPENDENCIES += samba4
 GVFS_CONF_OPTS += \
 	--enable-samba \
-	--with-samba-includes=$(STAGING_DIR)/usr/include \
+	--with-samba-includes=$(STAGING_DIR)/usr/include/samba-4.0 \
 	--with-samba-libs=$(STAGING_DIR)/usr/lib \
 	ac_cv_lib_smbclient_smbc_option_get=yes
 else
