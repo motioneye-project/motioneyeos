@@ -114,7 +114,7 @@ MPD_CONF_OPTS += --disable-nfs
 endif
 
 ifeq ($(BR2_PACKAGE_MPD_LIBSMBCLIENT),y)
-MPD_DEPENDENCIES += samba
+MPD_DEPENDENCIES += samba4
 MPD_CONF_OPTS += --enable-smbclient
 else
 MPD_CONF_OPTS += --disable-smbclient
