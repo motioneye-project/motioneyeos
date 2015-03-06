@@ -53,4 +53,13 @@ else
 APR_UTIL_CONF_OPTS += --without-crypto
 endif
 
+ifeq ($(BR2_PACKAGE_UNIXODBC),y)
+APR_UTIL_CONF_OPTS += --with-odbc="$(STAGING_DIR)/usr"
+# avoid using target binary $(STAGING_DIR)/usr/bin/odbc_config
+APR_UTIL_CONF_ENV += ac_cv_path_ODBC_CONFIG=""
+APR_UTIL_DEPENDENCIES += unixodbc
+else
+APR_UTIL_CONF_OPTS += --without-odbc
+endif
+
 $(eval $(autotools-package))
