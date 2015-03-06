@@ -13,7 +13,7 @@ config BR2_PACKAGE_LTTNG_TOOLS
 	depends on BR2_USE_WCHAR # util-linux
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	help
-	  Userspace utilities for the LTTng 2.0 tracing
+	  Userspace utilities for the LTTng 2.x tracing
 	  infrastructure.
 
 	  Those utilities are required on the target system to start
