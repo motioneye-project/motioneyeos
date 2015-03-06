@@ -140,7 +140,7 @@ KODI_CONF_OPTS += --disable-webserver
 endif
 
 ifeq ($(BR2_PACKAGE_KODI_LIBSMBCLIENT),y)
-KODI_DEPENDENCIES += samba
+KODI_DEPENDENCIES += samba4
 KODI_CONF_OPTS += --enable-samba
 else
 KODI_CONF_OPTS += --disable-samba
