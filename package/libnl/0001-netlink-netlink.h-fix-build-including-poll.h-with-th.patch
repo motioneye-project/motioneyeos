@@ -1,0 +1,30 @@
+From 14128766e80823f79a3b2c97573da1aea5c16ea8 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?J=C3=B6rg=20Krause?= <jkrause@posteo.de>
+Date: Mon, 1 Sep 2014 12:38:10 +0200
+Subject: [PATCH 1/2] netlink/netlink.h: fix build including <poll.h> with the
+ musl C library
+
+https://github.com/thom311/libnl/pull/64
+
+Signed-off-by: Thomas Haller <thaller@redhat.com>
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ include/netlink/netlink.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/netlink/netlink.h b/include/netlink/netlink.h
+index 28dba06..61656b3 100644
+--- a/include/netlink/netlink.h
++++ b/include/netlink/netlink.h
+@@ -16,7 +16,7 @@
+ #include <stdint.h>
+ #include <string.h>
+ #include <stdlib.h>
+-#include <sys/poll.h>
++#include <poll.h>
+ #include <sys/socket.h>
+ #include <sys/types.h>
+ #include <sys/time.h>
+-- 
+2.1.0
+
