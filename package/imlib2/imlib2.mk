@@ -4,12 +4,13 @@
 #
 ################################################################################
 
-IMLIB2_VERSION = 1.4.5
+IMLIB2_VERSION = 1.4.6
 IMLIB2_SOURCE = imlib2-$(IMLIB2_VERSION).tar.bz2
 IMLIB2_SITE = http://downloads.sourceforge.net/project/enlightenment/imlib2-src/$(IMLIB2_VERSION)
 IMLIB2_LICENSE = imlib2 license
 IMLIB2_LICENSE_FILES = COPYING
 
+IMLIB2_AUTORECONF = YES
 IMLIB2_INSTALL_STAGING = YES
 IMLIB2_DEPENDENCIES = host-pkgconf freetype
 IMLIB2_CONF_OPTS = --with-freetype-config=$(STAGING_DIR)/usr/bin/freetype-config
