@@ -12,14 +12,20 @@ CMAKE_LICENSE_FILES = Copyright.txt
 
 HOST_CMAKE_DEPENDENCIES = host-pkgconf
 
+# Get rid of -I* options from $(HOST_CPPFLAGS) to prevent that a
+# header available in $(HOST_DIR)/usr/include is used instead of a
+# CMake internal header, e.g. lzma* headers of the xz package
+HOST_CMAKE_CFLAGS = $(shell echo $(HOST_CFLAGS) | sed -r "s%$(HOST_CPPFLAGS)%%")
+HOST_CMAKE_CXXFLAGS = $(shell echo $(HOST_CXXFLAGS) | sed -r "s%$(HOST_CPPFLAGS)%%")
+
 define HOST_CMAKE_CONFIGURE_CMDS
 	(cd $(@D); \
 		LDFLAGS="$(HOST_LDFLAGS)" \
-		CFLAGS="$(HOST_CFLAGS)" \
+		CFLAGS="$(HOST_CMAKE_CFLAGS)" \
 		./bootstrap --prefix=$(HOST_DIR)/usr \
 			--parallel=$(PARALLEL_JOBS) -- \
-			-DCMAKE_C_FLAGS="$(HOST_CFLAGS)" \
-			-DCMAKE_CXX_FLAGS="$(HOST_CXXFLAGS)" \
+			-DCMAKE_C_FLAGS="$(HOST_CMAKE_CFLAGS)" \
+			-DCMAKE_CXX_FLAGS="$(HOST_CMAKE_CXXFLAGS)" \
 			-DCMAKE_EXE_LINKER_FLAGS="$(HOST_LDFLAGS)" \
 			-DBUILD_CursesDialog=OFF \
 	)
