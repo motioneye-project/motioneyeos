@@ -1,0 +1,43 @@
+From 17bf7bf95da6ed5b522205c321efcf838c48b13d Mon Sep 17 00:00:00 2001
+From: Kim Woelders <kim@woelders.dk>
+Date: Sun, 4 Aug 2013 08:05:27 +0200
+Subject: [PATCH 1/5] GIF loader: Fix for libgif version 5.
+
+---
+ src/modules/loaders/loader_gif.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/src/modules/loaders/loader_gif.c b/src/modules/loaders/loader_gif.c
+index 23b8fd0..d1c2ae2 100644
+--- a/src/modules/loaders/loader_gif.c
++++ b/src/modules/loaders/loader_gif.c
+@@ -29,6 +29,7 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
+    /* already data in this image - dont load it again */
+    if (im->data)
+       return 0;
++
+ #ifndef __EMX__
+    fd = open(im->real_file, O_RDONLY);
+ #else
+@@ -36,12 +37,18 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
+ #endif
+    if (fd < 0)
+       return 0;
++
++#if GIFLIB_MAJOR >= 5
++   gif = DGifOpenFileHandle(fd, NULL);
++#else
+    gif = DGifOpenFileHandle(fd);
++#endif
+    if (!gif)
+      {
+         close(fd);
+         return 0;
+      }
++
+    do
+      {
+         if (DGifGetRecordType(gif, &rec) == GIF_ERROR)
+-- 
+2.3.1
+

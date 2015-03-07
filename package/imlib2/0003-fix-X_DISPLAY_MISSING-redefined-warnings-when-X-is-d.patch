@@ -1,7 +1,7 @@
-From 49e3034ab714c9f05a6c0a04cf85ecbdb65c02d5 Mon Sep 17 00:00:00 2001
+From aaf62d4c605726e6c5f6869bd6834eca03c50d9c Mon Sep 17 00:00:00 2001
 From: Mike Frysinger <vapier@gentoo.org>
 Date: Mon, 28 Jul 2014 22:59:35 -0400
-Subject: [PATCH 1/2] fix X_DISPLAY_MISSING redefined warnings when X is
+Subject: [PATCH 3/5] fix X_DISPLAY_MISSING redefined warnings when X is
  disabled
 
 This is set up in config.h by configure, so avoid defining it again.

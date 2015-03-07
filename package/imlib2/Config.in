@@ -23,7 +23,7 @@ config BR2_PACKAGE_IMLIB2_PNG
 
 config BR2_PACKAGE_IMLIB2_GIF
 	bool "GIF support"
-	select BR2_PACKAGE_LIBUNGIF
+	select BR2_PACKAGE_GIFLIB
 
 config BR2_PACKAGE_IMLIB2_TIFF
 	bool "TIFF support"

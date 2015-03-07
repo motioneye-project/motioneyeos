@@ -39,7 +39,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_IMLIB2_GIF),y)
 	IMLIB2_CONF_OPTS += --with-gif
-	IMLIB2_DEPENDENCIES += libungif
+	IMLIB2_DEPENDENCIES += giflib
 else
 	IMLIB2_CONF_OPTS += --without-gif
 endif

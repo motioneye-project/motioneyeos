@@ -1,7 +1,7 @@
-From f5caf5432609938794d7a72afe059cfcfccd38bf Mon Sep 17 00:00:00 2001
+From c7f6ae523bbe165e50c44c21744f56f6f4b575c5 Mon Sep 17 00:00:00 2001
 From: Mike Frysinger <vapier@gentoo.org>
 Date: Mon, 28 Jul 2014 23:01:23 -0400
-Subject: [PATCH 2/2] do not link with X libs when X is disabled
+Subject: [PATCH 4/5] do not link with X libs when X is disabled
 
 URL: https://bugs.gentoo.org/517670
 ---
