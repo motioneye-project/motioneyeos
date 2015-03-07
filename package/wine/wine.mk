@@ -16,7 +16,22 @@ WINE_CONF_OPTS = \
 	--with-wine-tools=../host-wine-$(WINE_VERSION) \
 	--disable-tests \
 	--disable-win64 \
-	--without-opengl
+	--without-capi \
+	--without-coreaudio \
+	--without-gettext \
+	--without-gettextpo \
+	--without-gphoto \
+	--without-gsm \
+	--without-hal \
+	--without-ldap \
+	--without-netapi \
+	--without-openal \
+	--without-opencl \
+	--without-opengl \
+	--without-osmesa \
+	--without-oss \
+	--without-xshape \
+	--without-xshm
 
 # Wine uses a wrapper around gcc, and uses the value of --host to
 # construct the filename of the gcc to call.  But for external
