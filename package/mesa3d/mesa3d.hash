@@ -1,2 +1,2 @@
-# From http://cgit.freedesktop.org/mesa/mesa/commit/?h=10.4&id=41bdeda10210b8f1d358c04b25af2fbfe3335531
-sha256	bf60000700a9d58e3aca2bfeee7e781053b0d839e61a95b1883e05a2dee247a0	MesaLib-10.4.5.tar.bz2
+# From http://lists.freedesktop.org/archives/mesa-announce/2015-March/000144.html
+sha256	d8baedd20e79ccd98a5a7b05e23d59a30892e68de1fcc057ca6873dafca02735	MesaLib-10.4.6.tar.bz2
