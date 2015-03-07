@@ -11,7 +11,7 @@ config BR2_PACKAGE_LTTNG_LIBUST
 	depends on !BR2_TOOLCHAIN_HAS_GCC_BUG_58854 # liburcu/gcc-4.8.x bug
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	help
-	  Userspace tracing library for the Lttng tracing
+	  Userspace tracing library for the LTTng 2.x tracing
 	  infrastructure. It allows userspace programs to create
 	  custom trace events that are integrated with all other
 	  events gathered by LTTng.
