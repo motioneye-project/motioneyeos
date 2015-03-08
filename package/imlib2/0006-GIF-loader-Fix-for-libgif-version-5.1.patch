@@ -1,7 +1,7 @@
-From 8531957235f8702f8bdafac31059812d66e95c23 Mon Sep 17 00:00:00 2001
+From aa16abfa6c0198668b6a4e101fde8b42ec9cdb68 Mon Sep 17 00:00:00 2001
 From: Heiko Becker <heirecka@exherbo.org>
 Date: Mon, 13 Oct 2014 17:41:25 +0200
-Subject: [PATCH 5/5] GIF loader: Fix for libgif version 5.1
+Subject: [PATCH 6/6] GIF loader: Fix for libgif version 5.1
 
 Summary:
 From giflib-5.1.0's NEWS:
