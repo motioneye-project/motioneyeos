@@ -1,0 +1,25 @@
+config BR2_PACKAGE_CMAKE
+	bool
+
+config BR2_PACKAGE_CMAKE_CTEST
+	bool "ctest"
+	select BR2_PACKAGE_CMAKE
+	select BR2_PACKAGE_ZLIB
+	select BR2_PACKAGE_LIBCURL
+	select BR2_PACKAGE_LIBARCHIVE
+	select BR2_PACKAGE_EXPAT
+	select BR2_PACKAGE_BZIP2
+	select BR2_PACKAGE_XZ
+	depends on BR2_USE_WCHAR # libarchive
+	depends on BR2_INSTALL_LIBSTDCPP
+	help
+	  CTest is a testing tool distributed as a part of CMake. It
+	  can be used to automate updating (using CVS for example),
+	  configuring, building, testing, performing memory checking,
+	  performing coverage, and submitting results to a CDash or
+	  Dart dashboard system.
+
+	  http://www.cmake.org/
+
+comment "ctest needs a toolchain w/ C++, wchar"
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR

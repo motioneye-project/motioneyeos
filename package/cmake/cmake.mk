@@ -11,6 +11,14 @@ CMAKE_LICENSE = BSD-3c
 CMAKE_LICENSE_FILES = Copyright.txt
 
 HOST_CMAKE_DEPENDENCIES = host-pkgconf
+CMAKE_DEPENDENCIES = zlib libcurl libarchive expat bzip2 xz
+
+CMAKE_CONF_OPTS = \
+	-DKWSYS_LFS_WORKS=$(if $(BR2_LARGEFILE),TRUE,FALSE) \
+	-DKWSYS_CHAR_IS_SIGNED=TRUE \
+	-DCMAKE_USE_SYSTEM_LIBRARIES=1 \
+	-DCTEST_USE_XMLRPC=OFF \
+	-DBUILD_CursesDialog=OFF
 
 # Get rid of -I* options from $(HOST_CPPFLAGS) to prevent that a
 # header available in $(HOST_DIR)/usr/include is used instead of a
@@ -39,4 +47,26 @@ define HOST_CMAKE_INSTALL_CMDS
 	$(HOST_MAKE_ENV) $(MAKE) -C $(@D) install
 endef
 
+define CMAKE_REMOVE_EXTRA_DATA
+	rm $(TARGET_DIR)/usr/bin/{cmake,cpack}
+	rm -fr $(TARGET_DIR)/usr/share/cmake-$(CMAKE_VERSION_MAJOR)/{completions,editors}
+	rm -fr $(TARGET_DIR)/usr/share/cmake-$(CMAKE_VERSION_MAJOR)/{Help,include}
+endef
+
+define CMAKE_INSTALL_CTEST_CFG_FILE
+	$(INSTALL) -m 0644 -D $(@D)/Modules/CMake.cmake \
+		$(TARGET_DIR)/usr/share/cmake-$(CMAKE_VERSION_MAJOR)/Modules/CMake.cmake.ctest
+endef
+
+CMAKE_POST_INSTALL_TARGET_HOOKS += CMAKE_REMOVE_EXTRA_DATA
+CMAKE_POST_INSTALL_TARGET_HOOKS += CMAKE_INSTALL_CTEST_CFG_FILE
+
+define CMAKE_INSTALL_TARGET_CMDS
+	(cd $(@D); \
+		$(HOST_MAKE_ENV) DESTDIR=$(TARGET_DIR) \
+		cmake -P cmake_install.cmake \
+	)
+endef
+
+$(eval $(cmake-package))
 $(eval $(host-generic-package))

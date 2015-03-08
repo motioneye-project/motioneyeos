@@ -1,0 +1,23 @@
+ctest fails on the target, because it cannot find CMake.cmake inside
+CMAKE_DATA_DIR (typically set to "/usr/share/cmake-3.0"): all *.cmake
+files are removed at build time via the target-finalize rule.
+
+This buildroot-specific patch makes sure ctest looks also for
+"Modules/CMake.cmake.ctest" before complaining
+
+Signed-off-by: Davide Viti <zinosat@tiscali.it>
+
+--- cmake-3.0.2/Source/cmake.cxx~	2014-09-11 15:24:01.000000000 +0200
++++ cmake-3.0.2/Source/cmake.cxx	2014-11-25 15:48:04.461033690 +0100
+@@ -957,7 +957,10 @@
+      "Path to cpack program executable.", cmCacheManager::INTERNAL);
+ #endif
+   if(!cmSystemTools::FileExists(
+-       (cmSystemTools::GetCMakeRoot()+"/Modules/CMake.cmake").c_str()))
++       (cmSystemTools::GetCMakeRoot()+"/Modules/CMake.cmake").c_str()) &&
++     !cmSystemTools::FileExists(
++       (cmSystemTools::GetCMakeRoot()+"/Modules/CMake.cmake.ctest").c_str())
++     )
+     {
+     // couldn't find modules
+     cmSystemTools::Error("Could not find CMAKE_ROOT !!!\n"
