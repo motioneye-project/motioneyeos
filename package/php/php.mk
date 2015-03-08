@@ -154,6 +154,10 @@ ifeq ($(BR2_PACKAGE_PHP_EXT_MYSQLI),y)
 	PHP_CONF_OPTS += --with-mysqli=$(STAGING_DIR)/usr/bin/mysql_config
 	PHP_DEPENDENCIES += mysql
 endif
+ifeq ($(BR2_PACKAGE_PHP_EXT_SQLITE),y)
+	PHP_CONF_OPTS += --with-sqlite3=$(STAGING_DIR)/usr
+	PHP_DEPENDENCIES += sqlite
+endif
 
 ### PDO
 ifeq ($(BR2_PACKAGE_PHP_EXT_PDO),y)

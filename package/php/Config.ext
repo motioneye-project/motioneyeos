@@ -120,6 +120,12 @@ config BR2_PACKAGE_PHP_EXT_MYSQLI
 	help
 	  MySQL Improved extension support
 
+config BR2_PACKAGE_PHP_EXT_SQLITE
+	bool "SQLite3"
+	select BR2_PACKAGE_SQLITE
+	help
+	  SQLite3 support
+
 config BR2_PACKAGE_PHP_EXT_PDO
 	bool "PDO"
 	help
