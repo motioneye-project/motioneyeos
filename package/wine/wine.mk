@@ -23,7 +23,6 @@ WINE_CONF_OPTS = \
 	--without-gphoto \
 	--without-gsm \
 	--without-hal \
-	--without-ldap \
 	--without-netapi \
 	--without-openal \
 	--without-opencl \
@@ -158,6 +157,13 @@ WINE_CONF_OPTS += --with-curses
 WINE_DEPENDENCIES += ncurses
 else
 WINE_CONF_OPTS += --without-curses
+endif
+
+ifeq ($(BR2_PACKAGE_OPENLDAP),y)
+WINE_CONF_OPTS += --with-ldap
+WINE_DEPENDENCIES += openldap
+else
+WINE_CONF_OPTS += --without-ldap
 endif
 
 ifeq ($(BR2_PACKAGE_SANE_BACKENDS),y)
