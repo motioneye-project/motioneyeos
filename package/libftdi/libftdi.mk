@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBFTDI_VERSION = 0.19
+LIBFTDI_VERSION = 0.20
 LIBFTDI_SITE = http://www.intra2net.com/en/developer/libftdi/download
 LIBFTDI_DEPENDENCIES = libusb-compat libusb
 LIBFTDI_INSTALL_STAGING = YES
