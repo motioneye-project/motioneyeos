@@ -8,7 +8,7 @@ ifeq ($(BR2_PACKAGE_LUA_5_3),y)
 LUA_VERSION = 5.3.0
 else
 ifeq ($(BR2_PACKAGE_LUA_5_2),y)
-LUA_VERSION = 5.2.3
+LUA_VERSION = 5.2.4
 else
 LUA_VERSION = 5.1.5
 endif
