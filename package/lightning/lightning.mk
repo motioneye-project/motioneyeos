@@ -5,7 +5,7 @@
 ################################################################################
 
 LIGHTNING_VERSION = 2.0.5
-LIGHTNING_SITE = http://ftp.gnu.org/gnu/lightning/
+LIGHTNING_SITE = http://ftp.gnu.org/gnu/lightning
 LIGHTNING_LICENSE = LGPLv3+
 LIGHTNING_LICENSE_FILES = COPYING.LESSER
 LIGHTNING_INSTALL_STAGING = YES

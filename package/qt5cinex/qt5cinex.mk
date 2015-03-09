@@ -5,7 +5,7 @@
 ################################################################################
 
 QT5CINEX_VERSION = 1.0
-QT5CINEX_SITE = http://quitcoding.com/download/
+QT5CINEX_SITE = http://quitcoding.com/download
 
 ifeq ($(BR2_PACKAGE_QT5CINEX_HD),y)
 QT5CINEX_HD = "rpi_"

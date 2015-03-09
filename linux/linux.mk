@@ -36,7 +36,7 @@ LINUX_SITE = $(BR2_KERNEL_MIRROR)/linux/kernel/v4.x
 endif
 # release candidates are in testing/ subdir
 ifneq ($(findstring -rc,$(LINUX_VERSION)),)
-LINUX_SITE := $(LINUX_SITE)/testing/
+LINUX_SITE := $(LINUX_SITE)/testing
 endif # -rc
 endif
 

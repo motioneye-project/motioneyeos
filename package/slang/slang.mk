@@ -5,7 +5,7 @@
 ################################################################################
 
 SLANG_VERSION = 2.3.0
-SLANG_SITE = http://www.jedsoft.org/releases/slang/
+SLANG_SITE = http://www.jedsoft.org/releases/slang
 SLANG_LICENSE = GPLv2+
 SLANG_LICENSE_FILES = COPYING
 SLANG_INSTALL_STAGING = YES

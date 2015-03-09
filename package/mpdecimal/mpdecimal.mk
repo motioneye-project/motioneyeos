@@ -7,7 +7,7 @@
 # Official site currently down
 # MPDECIMAL_SITE = http://www.bytereef.org/software/mpdecimal/releases
 
-MPDECIMAL_SITE = https://launchpad.net/ubuntu/+archive/primary/+files/
+MPDECIMAL_SITE = https://launchpad.net/ubuntu/+archive/primary/+files
 MPDECIMAL_VERSION = 2.4.1
 MPDECIMAL_SOURCE = mpdecimal_$(MPDECIMAL_VERSION).orig.tar.gz
 MPDECIMAL_INSTALL_STAGING = YES
