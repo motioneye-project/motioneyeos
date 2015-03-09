@@ -15,4 +15,7 @@ LIBEVDEV_DEPENDENCIES = host-pkgconf
 
 LIBEVDEV_INSTALL_STAGING = YES
 
+# patched configure.ac
+LIBEVDEV_AUTORECONF = YES
+
 $(eval $(autotools-package))
