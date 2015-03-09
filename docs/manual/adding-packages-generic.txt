@@ -242,7 +242,7 @@ information is (assuming the package name is +libfoo+) :
   +LIBFOO_SITE+.
   Examples: +
     +LIBFOO_SITE=http://www.libfoosoftware.org/libfoo+ +
-    +LIBFOO_SITE=http://svn.xiph.org/trunk/Tremor/+ +
+    +LIBFOO_SITE=http://svn.xiph.org/trunk/Tremor+ +
     +LIBFOO_SITE=/opt/software/libfoo.tar.gz+ +
     +LIBFOO_SITE=$(TOPDIR)/../src/libfoo/+
 
