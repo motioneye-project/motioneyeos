@@ -4,15 +4,13 @@
 #
 ################################################################################
 
-QUAGGA_VERSION = 0.99.24
+QUAGGA_VERSION = 0.99.24.1
 QUAGGA_SOURCE = quagga-$(QUAGGA_VERSION).tar.xz
 QUAGGA_SITE = http://download.savannah.gnu.org/releases/quagga
 QUAGGA_DEPENDENCIES = host-gawk
 QUAGGA_LICENSE = GPLv2+
 QUAGGA_LICENSE_FILES = COPYING
 QUAGGA_CONF_OPTS = --program-transform-name=''
-# Upstream missed some bits when packaging it
-QUAGGA_AUTORECONF = YES
 
 QUAGGA_CONF_OPTS += $(if $(BR2_PACKAGE_QUAGGA_ZEBRA),--enable-zebra,--disable-zebra)
 QUAGGA_CONF_OPTS += $(if $(BR2_PACKAGE_QUAGGA_BABELD),--enable-babeld,--disable-babeld)
