@@ -1,6 +1,7 @@
 config BR2_PACKAGE_FREERDP
 	bool "freerdp"
 	depends on BR2_USE_WCHAR
+	depends on !BR2_STATIC_LIBS # uses dlfcn.h
 	select BR2_PACKAGE_OPENSSL
 	select BR2_PACKAGE_ZLIB
 	help
@@ -39,5 +40,5 @@ comment "freerdp server and client need X.Org"
 
 endif
 
-comment "freerdp needs a toolchain w/ wchar"
-	depends on !BR2_USE_WCHAR
+comment "freerdp needs a toolchain w/ wchar, dynamic library"
+	depends on !BR2_USE_WCHAR || BR2_STATIC_LIBS
