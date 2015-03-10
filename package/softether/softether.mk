@@ -28,12 +28,6 @@ SOFTETHER_CONF_OPTS = \
 	--with-openssl="$(STAGING_DIR)/usr" \
 	--with-zlib="$(STAGING_DIR)/usr"
 
-# softether uses clock_gettime but forgets to link against -lrt
-# breaking the build against older libc's that don't provide this
-# symbol in libc
-SOFTETHER_CONF_ENV += LIBS+=" -lrt"
-HOST_SOFTETHER_CONF_ENV += LIBS+=" -lrt"
-
 # host-libiconv does not exist, therefore we need this extra line
 HOST_SOFTETHER_DEPENDENCIES = host-pkgconf host-openssl host-readline
 
