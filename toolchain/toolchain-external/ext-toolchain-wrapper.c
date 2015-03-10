@@ -63,7 +63,7 @@ static char *predef_args[] = {
 #ifdef BR_MIPS_TARGET_LITTLE_ENDIAN
 	"-EL",
 #endif
-#ifdef BR_MIPS_TARGET_BIG_ENDIAN
+#if defined(BR_MIPS_TARGET_BIG_ENDIAN) || defined(BR_ARC_TARGET_BIG_ENDIAN)
 	"-EB",
 #endif
 #ifdef BR_ADDITIONAL_CFLAGS

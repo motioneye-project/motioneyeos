@@ -22,6 +22,7 @@
 #    default glibc-based variant is.
 #  * Analog Devices toolchains for the Blackfin architecture
 #  * Xilinx toolchains for the Microblaze architecture
+#  * Synopsys DesignWare toolchains for ARC cores
 #
 # The basic principle is the following
 #
@@ -217,6 +218,10 @@ ifeq ($(BR2_mips)$(BR2_mips64),y)
 TOOLCHAIN_EXTERNAL_WRAPPER_ARGS += -DBR_MIPS_TARGET_BIG_ENDIAN
 TOOLCHAIN_EXTERNAL_CFLAGS += -EB
 endif
+ifeq ($(BR2_arceb),y)
+TOOLCHAIN_EXTERNAL_WRAPPER_ARGS += -DBR_ARC_TARGET_BIG_ENDIAN
+TOOLCHAIN_EXTERNAL_CFLAGS += -EB
+endif
 ifneq ($(BR2_TARGET_OPTIMIZATION),)
 TOOLCHAIN_EXTERNAL_CFLAGS += $(call qstrip,$(BR2_TARGET_OPTIMIZATION))
 # We create a list like '"-mfoo", "-mbar", "-mbarfoo"' so that each
@@ -378,6 +383,19 @@ TOOLCHAIN_EXTERNAL_SOURCE = crossx86-powerpc-linux-musl-$(TOOLCHAIN_EXTERNAL_VER
 else ifeq ($(BR2_x86_64),y)
 TOOLCHAIN_EXTERNAL_SOURCE = crossx86-x86_64-linux-musl-$(TOOLCHAIN_EXTERNAL_VERSION).tar.xz
 endif
+else ifeq ($(BR2_TOOLCHAIN_EXTERNAL_SYNOPSYS_ARC_2014_12),y)
+TOOLCHAIN_EXTERNAL_SITE = https://github.com/foss-for-synopsys-dwc-arc-processors/toolchain/releases/download/arc-2014.12
+ifeq ($(BR2_arc750d)$(BR2_arc770d),y)
+TOOLCHAIN_EXTERNAL_SYNOPSYS_CORE = arc700
+else
+TOOLCHAIN_EXTERNAL_SYNOPSYS_CORE = archs
+endif
+ifeq ($(BR2_arcle),y)
+TOOLCHAIN_EXTERNAL_SYNOPSYS_ENDIANESS = le
+else
+TOOLCHAIN_EXTERNAL_SYNOPSYS_ENDIANESS = be
+endif
+TOOLCHAIN_EXTERNAL_SOURCE = arc_gnu_2014.12_prebuilt_uclibc_$(TOOLCHAIN_EXTERNAL_SYNOPSYS_ENDIANESS)_$(TOOLCHAIN_EXTERNAL_SYNOPSYS_CORE)_linux_install.tar.gz
 else
 # Custom toolchain
 TOOLCHAIN_EXTERNAL_SITE = $(dir $(call qstrip,$(BR2_TOOLCHAIN_EXTERNAL_URL)))
