@@ -19,6 +19,11 @@ SOFTETHER_DEPENDENCIES += libiconv
 SOFTETHER_CONF_ENV = LIBS+=" -liconv"
 endif
 
+ifeq ($(BR2_STATIC_LIBS),y)
+# openssl needs zlib
+SOFTETHER_CONF_ENV += LIBS+=" -lz"
+endif
+
 SOFTETHER_CONF_OPTS = \
 	--with-openssl="$(STAGING_DIR)/usr" \
 	--with-zlib="$(STAGING_DIR)/usr"
