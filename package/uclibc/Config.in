@@ -7,6 +7,15 @@ config BR2_PACKAGE_UCLIBC
 
 comment "uClibc Options"
 
+config BR2_UCLIBC_VERSION_SUPPORTS_LINUXTHREADS
+       bool
+
+config BR2_UCLIBC_VERSION_SUPPORTS_LINUXTHREADS_OLD
+       bool
+
+config BR2_UCLIBC_VERSION_SUPPORTS_NPTL
+       bool
+
 choice
 	prompt "uClibc C library Version"
 	default BR2_UCLIBC_VERSION_0_9_33
@@ -15,21 +24,39 @@ choice
 
 	config BR2_UCLIBC_VERSION_0_9_33
 		bool "uClibc 0.9.33.x"
+		select BR2_UCLIBC_VERSION_SUPPORTS_LINUXTHREADS \
+		       if !BR2_bfin
+		select BR2_UCLIBC_VERSION_SUPPORTS_LINUXTHREADS_OLD
+		select BR2_UCLIBC_VERSION_SUPPORTS_NPTL \
+		       if !BR2_bfin && !BR2_x86_i386
 		depends on !(BR2_arc || BR2_xtensa)
 
 	config BR2_UCLIBC_VERSION_ARC_GIT
 		bool "uClibc Git ARC"
+		select BR2_UCLIBC_VERSION_SUPPORTS_LINUXTHREADS
+		select BR2_UCLIBC_VERSION_SUPPORTS_LINUXTHREADS_OLD
 		depends on BR2_arc
 
 	config BR2_UCLIBC_NG_VERSION_1_0_0
 		bool "uClibc-ng 1.0.0"
+		select BR2_UCLIBC_VERSION_SUPPORTS_LINUXTHREADS \
+		       if BR2_bfin || BR2_m68k
+		select BR2_UCLIBC_VERSION_SUPPORTS_LINUXTHREADS_OLD \
+		       if BR2_bfin || BR2_m68k || BR2_arm || BR2_armeb
+		select BR2_UCLIBC_VERSION_SUPPORTS_NPTL \
+		       if !BR2_arc && !BR2_bfin && !BR2_m68k && !BR2_x86_i386
 
 	config BR2_UCLIBC_VERSION_XTENSA_GIT
 		bool "uClibc Git Xtensa"
 		depends on BR2_xtensa
+		select BR2_UCLIBC_SUPPORTS_LINUXTHREADS_OLD
 
 	config BR2_UCLIBC_VERSION_SNAPSHOT
 		bool "daily snapshot"
+		select BR2_UCLIBC_SUPPORTS_LINUXTHREADS if !BR2_bfin && !BR2_xtensa
+		select BR2_UCLIBC_SUPPORTS_LINUXTHREADS_OLD
+		select BR2_UCLIBC_VERSION_SUPPORTS_NPTL \
+		       if !BR2_bfin && !BR2_x86_i386 && !BR2_xtensa
 		depends on !(BR2_arc)
 
 endchoice
@@ -101,8 +128,9 @@ config BR2_TOOLCHAIN_BUILDROOT_LOCALE
 
 choice
 	prompt "Thread library implementation"
-	default BR2_PTHREADS_NATIVE if !BR2_xtensa
-	default BR2_PTHREADS_OLD
+	default BR2_PTHREADS_NATIVE if BR2_UCLIBC_VERSION_SUPPORTS_NPTL
+	default BR2_PTHREADS_OLD if BR2_UCLIBC_VERSION_SUPPORTS_LINUXTHREADS_OLD
+	default BR2_PTHREADS if BR2_UCLIBC_VERSION_SUPPORTS_LINUXTHREADS
 	help
 	  Use this option to select the thread library implementation
 	  that should be used in your toolchain. Not all thread
@@ -115,24 +143,19 @@ choice
 
 	config BR2_PTHREADS
 		bool "linuxthreads"
-		depends on !BR2_bfin
-		depends on !BR2_xtensa
 		select BR2_TOOLCHAIN_HAS_THREADS
+		depends on BR2_UCLIBC_VERSION_SUPPORTS_LINUXTHREADS
 
 	config BR2_PTHREADS_OLD
 		bool "linuxthreads (stable/old)"
 		select BR2_TOOLCHAIN_HAS_THREADS
+		depends on BR2_UCLIBC_VERSION_SUPPORTS_LINUXTHREADS_OLD
 
 	config BR2_PTHREADS_NATIVE
 		bool "Native POSIX Threading (NPTL)"
 		select BR2_TOOLCHAIN_HAS_THREADS
 		select BR2_TOOLCHAIN_HAS_THREADS_NPTL
-		depends on !BR2_arc
-		depends on !BR2_bfin
-		# There is NPTL support for Xtensa in uClibc-ng, but
-		# not in the main uClibc repository.
-		depends on !BR2_xtensa || !BR2_UCLIBC_VERSION_XTENSA_GIT
-		depends on !BR2_x86_i386
+		depends on BR2_UCLIBC_VERSION_SUPPORTS_NPTL
 endchoice
 
 config BR2_PTHREAD_DEBUG
