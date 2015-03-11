@@ -124,20 +124,6 @@ define BUSYBOX_PREFER_STATIC
 endef
 endif
 
-# Disable usage of inetd if netkit-base package is selected
-ifeq ($(BR2_PACKAGE_NETKITBASE),y)
-define BUSYBOX_NETKITBASE
-	$(call KCONFIG_DISABLE_OPT,CONFIG_INETD,$(BUSYBOX_BUILD_CONFIG))
-endef
-endif
-
-# Disable usage of telnetd if netkit-telnetd package is selected
-ifeq ($(BR2_PACKAGE_NETKITTELNET),y)
-define BUSYBOX_NETKITTELNET
-	$(call KCONFIG_DISABLE_OPT,CONFIG_TELNETD,$(BUSYBOX_BUILD_CONFIG))
-endef
-endif
-
 # Disable shadow passwords support if unsupported by the C library
 ifeq ($(BR2_TOOLCHAIN_HAS_SHADOW_PASSWORDS),)
 define BUSYBOX_INTERNAL_SHADOW_PASSWORDS
@@ -193,8 +179,6 @@ define BUSYBOX_KCONFIG_FIXUP_CMDS
 	$(BUSYBOX_PREFER_STATIC)
 	$(BUSYBOX_SET_MDEV)
 	$(BUSYBOX_SET_CRYPT_SHA)
-	$(BUSYBOX_NETKITBASE)
-	$(BUSYBOX_NETKITTELNET)
 	$(BUSYBOX_INTERNAL_SHADOW_PASSWORDS)
 	$(BUSYBOX_SET_INIT)
 	$(BUSYBOX_SET_WATCHDOG)
