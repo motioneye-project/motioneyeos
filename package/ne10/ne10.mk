@@ -4,10 +4,11 @@
 #
 ################################################################################
 
-NE10_VERSION = v1.0.0
+NE10_VERSION = v1.2.0
 NE10_SITE = $(call github,projectNe10,Ne10,$(NE10_VERSION))
 NE10_LICENSE = BSD-3c or Apache-2.0
 NE10_LICENSE_FILES = doc/LICENSE
+NE10_INSTALL_STAGING = YES
 
 NE10_CONF_OPTS = -DGNULINUX_PLATFORM=ON
 
