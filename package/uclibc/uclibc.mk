@@ -11,7 +11,7 @@ UCLIBC_LICENSE_FILES = COPYING.LIB
 
 ifeq ($(BR2_UCLIBC_VERSION_SNAPSHOT),y)
 UCLIBC_SITE = http://www.uclibc.org/downloads/snapshots
-else ifeq ($(BR2_UCLIBC_NG_VERSION_1_0_0),y)
+else ifeq ($(BR2_UCLIBC_VERSION_NG),y)
 UCLIBC_SITE = http://downloads.uclibc-ng.org/releases/$(UCLIBC_VERSION)
 UCLIBC_SOURCE = uClibc-ng-$(UCLIBC_VERSION).tar.xz
 else ifeq ($(BR2_UCLIBC_VERSION_ARC_GIT),y)
@@ -482,7 +482,7 @@ endif
 # interpreter, but since uClibc-ng version is 1.0.0, it generates
 # ld{64,}-uClibc.so.1. In order to avoid changing gcc, we simply
 # create the necessary symbolic links here.
-ifeq ($(BR2_UCLIBC_NG_VERSION_1_0_0),y)
+ifeq ($(BR2_UCLIBC_VERSION_NG),y)
 define UCLIBC_INSTALL_LDSO_SYMLINKS
 	if [ -e $(TARGET_DIR)/lib/ld64-uClibc.so.1 ]; then \
 		(cd $(TARGET_DIR)/lib;ln -sf ld64-uClibc.so.1 ld64-uClibc.so.0) \
