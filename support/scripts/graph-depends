@@ -186,17 +186,8 @@ def pkg_node_name(pkg):
     return pkg.replace("-","")
 
 TARGET_EXCEPTIONS = [
-    "target-generic-securetty",
-    "target-generic-issue",
-    "target-generic-getty-busybox",
-    "target-generic-do-remount-rw",
-    "target-generic-dont-remount-rw",
     "target-finalize",
-    "erase-fakeroots",
-    "target-generic-hostname",
-    "target-root-passwd",
     "target-post-image",
-    "target-purgelocales",
 ]
 
 # In full mode, start with the result of get_targets() to get the main
