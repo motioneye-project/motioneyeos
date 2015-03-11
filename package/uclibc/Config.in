@@ -133,10 +133,7 @@ choice
 	default BR2_PTHREADS if BR2_UCLIBC_VERSION_SUPPORTS_LINUXTHREADS
 	help
 	  Use this option to select the thread library implementation
-	  that should be used in your toolchain. Not all thread
-	  variants work with all versions of uClibc, the "linuxthreads
-	  (stable/old)" may be a working fallback if you need
-	  threading at all.
+	  that should be used in your toolchain.
 
 	config BR2_PTHREADS_NONE
 		bool "none"
