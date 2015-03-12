@@ -1114,6 +1114,7 @@ endif
 	source "package/dhcpcd/Config.in"
 	source "package/dhcpdump/Config.in"
 	source "package/dnsmasq/Config.in"
+	source "package/drbd-utils/Config.in"
 	source "package/dropbear/Config.in"
 	source "package/ebtables/Config.in"
 	source "package/ejabberd/Config.in"
