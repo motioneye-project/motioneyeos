@@ -16,12 +16,6 @@ MP4V2_LICENSE_FILES = COPYING
 # disable it
 MP4V2_CONF_ENV = ac_cv_prog_FOUND_HELP2MAN=no
 
-# infrastructure passes --disable-debug if !BR2_ENABLE_DEBUG. With
-# mpv42 the only thing this option does is that it tries to strip any
-# -g* options from CFLAGS/CXXFLAGS. The logic to do so is
-# unfortunately buggy, so just pass --enable-debug to disable this
-MP4V2_CONF_OPTS = --enable-debug --enable-largefile
-
 ifeq ($(BR2_PACKAGE_MP4V2_UTIL),y)
 MP4V2_CONF_OPTS += --enable-util
 else
