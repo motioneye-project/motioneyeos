@@ -50,6 +50,9 @@ config BR2_PACKAGE_BOOST_LAYOUT
 	default "tagged" if BR2_PACKAGE_BOOST_LAYOUT_TAGGED
 	default "versioned" if BR2_PACKAGE_BOOST_LAYOUT_VERSIONED
 
+config BR2_PACKAGE_BOOST_ATOMIC
+	bool "boost-atomic"
+
 config BR2_PACKAGE_BOOST_CHRONO
 	bool "boost-chrono"
 
