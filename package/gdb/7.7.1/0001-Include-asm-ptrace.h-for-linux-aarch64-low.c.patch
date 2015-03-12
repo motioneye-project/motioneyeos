@@ -1,0 +1,36 @@
+From cbc39812c1721d7edd20285134fdf748d0f26127 Mon Sep 17 00:00:00 2001
+From: Ramana Radhakrishnan <ramana.radhakrishnan@arm.com>
+Date: Fri, 23 May 2014 09:01:14 +0100
+Subject: [PATCH] Include asm/ptrace.h for linux-aarch64-low.c
+
+A recent change to glibc removed asm/ptrace.h from user.h for AArch64.
+This meant that cross-native builds of gdbserver using trunk glibc broke
+because linux-aarch64-low.c because user_hwdebug_state couldn't be found.
+
+This is like commit #036cd38182bde32d8297b630cd5c861d53b8949e
+
+2014-05-23  Ramana Radhakrishnan  <ramana.radhakrishnan@arm.com>
+
+        * linux-aarch64-low.c (asm/ptrace.h): Include.
+[Romain:
+  - rebase on top of 7.7.1]
+Signed-off-by: Romain Naour <romain.naour@openwide.fr>
+---
+ gdb/gdbserver/linux-aarch64-low.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/gdb/gdbserver/linux-aarch64-low.c b/gdb/gdbserver/linux-aarch64-low.c
+index 1b0da6c..ba66bc8 100644
+--- a/gdb/gdbserver/linux-aarch64-low.c
++++ b/gdb/gdbserver/linux-aarch64-low.c
+@@ -26,6 +26,7 @@
+ #include <signal.h>
+ #include <sys/user.h>
+ #include <sys/ptrace.h>
++#include <asm/ptrace.h>
+ #include <sys/uio.h>
+ 
+ #include "gdb_proc_service.h"
+-- 
+1.9.3
+
