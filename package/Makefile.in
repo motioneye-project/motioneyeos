@@ -373,12 +373,6 @@ ifneq ($(BR2_INSTALL_LIBSTDCPP),y)
 TARGET_CONFIGURE_OPTS += CXX=false
 endif
 
-ifeq ($(BR2_ENABLE_DEBUG),y)
-ENABLE_DEBUG := --enable-debug
-else
-ENABLE_DEBUG := --disable-debug
-endif
-
 ifeq ($(BR2_STATIC_LIBS),y)
 SHARED_STATIC_LIBS_OPTS = --enable-static --disable-shared
 TARGET_CFLAGS += -static

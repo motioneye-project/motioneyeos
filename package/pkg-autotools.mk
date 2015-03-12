@@ -202,7 +202,6 @@ define $(2)_CONFIGURE_CMDS
 		--disable-dependency-tracking \
 		--enable-ipv6 \
 		$$(DISABLE_NLS) \
-		$$(ENABLE_DEBUG) \
 		$$(SHARED_STATIC_LIBS_OPTS) \
 		$$(QUIET) $$($$(PKG)_CONF_OPTS) \
 	)
