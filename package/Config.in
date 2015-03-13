@@ -674,6 +674,7 @@ menu "Database"
 	source "package/redis/Config.in"
 	source "package/sqlcipher/Config.in"
 	source "package/sqlite/Config.in"
+	source "package/unixodbc/Config.in"
 endmenu
 
 menu "Filesystem"

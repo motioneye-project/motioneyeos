@@ -1,0 +1,39 @@
+Fix pthread detection
+
+configure.in always calls AC_CHECK_COMP_OPT(pthread) which succeeds with the
+toolchain used although it does not contain thread support:
+
+checking for mutex_lock in -lthread ... no
+checking for pthread_mutex_lock in -lpthread... no
+checking for pthread_mutex_lock in -lc... no
+checking if compiler accepts -pthread... yes
+checking for pthread_mutex_lock in -lc... no
+checking for pthread_mutex_lock in -lpthread... no
+
+This positive configure check leads to
+
+    CFLAGS="$CFLAGS -pthread"
+
+in ./configure, line 15757 which causes a compilation bug
+/home/br/br4/output/host/opt/ext-toolchain/bin/../lib/gcc/arm-buildroot-linux-uclibcgnueabi/4.8.3/../../../../arm-buildroot-linux-uclibcgnueab
+
+using this defconfig
+http://autobuild.buildroot.net/results/e86/e86e97ff7887f1bdc6bf913498392ff50f56ea88/defconfig
+
+This patch disables the freebsd-only code path. Patching configure directly
+prevents the need for autoreconf.
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+
+diff -uNr unixODBC-2.3.2.org/configure unixODBC-2.3.2/configure
+--- unixODBC-2.3.2.org/configure	2013-10-08 10:56:03.000000000 +0200
++++ unixODBC-2.3.2/configure	2015-03-13 21:19:59.210429211 +0100
+@@ -15746,7 +15746,7 @@
+ 
+     fi
+ 
+-    if test "x$gotthread" = "xno"; then
++    if test "x$gotthread" = "xnot_needed_for_buildroot"; then
+       if test "x$ac_cv_c_compiler_gnu" = "xyes"; then
+                 { $as_echo "$as_me:${as_lineno-$LINENO}: checking if compiler accepts -pthread" >&5
+ $as_echo_n "checking if compiler accepts -pthread... " >&6; }
