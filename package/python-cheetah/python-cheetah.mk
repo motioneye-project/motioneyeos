@@ -10,4 +10,9 @@ PYTHON_CHEETAH_SITE = http://pypi.python.org/packages/source/C/Cheetah
 PYTHON_CHEETAH_LICENSE = MIT
 PYTHON_CHEETAH_SETUP_TYPE = setuptools
 
+# The dependency on host-python-markdown is needed to prevent
+# setuptools from downloading markdown if it is not installed yet.
+HOST_PYTHON_CHEETAH_DEPENDENCIES = host-python-markdown
+
 $(eval $(python-package))
+$(eval $(host-python-package))
