@@ -107,6 +107,10 @@ typical packages will therefore only use a few of them.
 ** +BUILD_EXAMPLE+, +BUILD_EXAMPLES+ are disabled;
 ** +BUILD_TEST+, +BUILD_TESTS+, +BUILD_TESTING+ are disabled.
 
+* +LIBFOO_SUPPORTS_IN_SOURCE_BUILD = NO+ should be set when the package
+  cannot be built inside the source tree but needs a separate build
+  directory.
+
 * +LIBFOO_MAKE+, to specify an alternate +make+ command. This is
   typically useful when parallel make is enabled in the configuration
   (using +BR2_JLEVEL+) but that this feature should be disabled for
