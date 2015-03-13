@@ -323,6 +323,14 @@ define LINUX_INSTALL_TARGET_CMDS
 	$(LINUX_INSTALL_HOST_TOOLS)
 endef
 
+# Note: our package infrastructure uses the full-path of the last-scanned
+# Makefile to determine what package we're currently defining, using the
+# last directory component in the path. As such, including other Makefile,
+# like below, before we call one of the *-package macro is usally not
+# working.
+# However, since the files we include here are in the same directory as
+# the current Makefile, we are OK. But this is a hard requirement: files
+# included here *must* be in the same directory!
 include $(sort $(wildcard linux/linux-ext-*.mk))
 
 $(eval $(kconfig-package))
