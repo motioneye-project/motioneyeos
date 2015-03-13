@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-GPTFDISK_VERSION = 0.8.6
+GPTFDISK_VERSION = 0.8.10
 GPTFDISK_SITE = http://downloads.sourceforge.net/sourceforge/gptfdisk
 GPTFDISK_LICENSE = GPLv2+
 GPTFDISK_LICENSE_FILES = COPYING
@@ -19,11 +19,6 @@ GPTFDISK_DEPENDENCIES += popt
 endif
 ifeq ($(BR2_PACKAGE_GPTFDISK_CGDISK),y)
 GPTFDISK_DEPENDENCIES += ncurses
-endif
-
-ifeq ($(BR2_PACKAGE_ICU),y)
-GPTFDISK_DEPENDENCIES += icu
-GPTFDISK_MAKE_OPTS += USE_UTF16=y
 endif
 
 ifeq ($(BR2_NEEDS_GETTEXT_IF_LOCALE)$(BR2_STATIC_LIBS),yy)
