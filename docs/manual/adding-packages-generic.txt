@@ -308,6 +308,15 @@ information is (assuming the package name is +libfoo+) :
   a similar way, +HOST_LIBFOO_DEPENDENCIES+ lists the dependencies for
   the current host package.
 
+* +LIBFOO_PATCH_DEPENDENCIES+ lists the dependencies (in terms of
+  package name) that are required for the current package to be
+  patched. These dependencies are guaranteed to be extracted and
+  patched before the current package is patched. In a similar way,
+  +HOST_LIBFOO_PATCH_DEPENDENCIES+ lists the dependencies for the
+  current host package.
+  This is seldom used; usually, +LIBFOO_DEPENDENCIES+ is what you
+  really want to use.
+
 * +LIBFOO_PROVIDES+ lists all the virtual packages +libfoo+ is an
   implementation of. See xref:virtual-package-tutorial[].
 
