@@ -4,9 +4,7 @@
 # Patch the linux kernel with RTAI extension
 ################################################################################
 
-ifeq ($(BR2_LINUX_KERNEL_EXT_RTAI),y)
-# Add dependency to RTAI (user-space) which provide kernel patches
-LINUX_PATCH_DEPENDENCIES += rtai
+LINUX_EXTENSIONS += rtai
 
 RTAI_PATCH = $(call qstrip,$(BR2_LINUX_KERNEL_EXT_RTAI_PATCH))
 
@@ -41,7 +39,3 @@ define RTAI_PREPARE_KERNEL
 		$(notdir $(RTAI_PATCH))
 endef
 endif
-
-LINUX_PRE_PATCH_HOOKS += RTAI_PREPARE_KERNEL
-
-endif #BR2_LINUX_EXT_RTAI

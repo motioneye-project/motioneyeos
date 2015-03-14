@@ -4,9 +4,7 @@
 # Patch the linux kernel with fbtft extension
 ################################################################################
 
-ifeq ($(BR2_LINUX_KERNEL_EXT_FBTFT),y)
-# Add dependency to fbtft package (download helper for the fbtft source)
-LINUX_PATCH_DEPENDENCIES += fbtft
+LINUX_EXTENSIONS += fbtft
 
 # for linux >= 3.15 install to drivers/video/fbdev/fbtft
 # for linux < 3.15 install to drivers/video/fbtft
@@ -22,7 +20,3 @@ define FBTFT_PREPARE_KERNEL
 		>> $${dest}/Kconfig ; \
 	echo 'obj-y += fbtft/' >> $${dest}/Makefile
 endef
-
-LINUX_PRE_PATCH_HOOKS += FBTFT_PREPARE_KERNEL
-
-endif #BR2_LINUX_KERNEL_EXT_FBTFT
