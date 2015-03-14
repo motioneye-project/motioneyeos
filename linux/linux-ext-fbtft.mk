@@ -6,7 +6,7 @@
 
 ifeq ($(BR2_LINUX_KERNEL_EXT_FBTFT),y)
 # Add dependency to fbtft package (download helper for the fbtft source)
-LINUX_DEPENDENCIES += fbtft
+LINUX_PATCH_DEPENDENCIES += fbtft
 
 # for linux >= 3.15 install to drivers/video/fbdev/fbtft
 # for linux < 3.15 install to drivers/video/fbtft

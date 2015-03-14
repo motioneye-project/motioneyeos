@@ -6,7 +6,7 @@
 
 ifeq ($(BR2_LINUX_KERNEL_EXT_RTAI),y)
 # Add dependency to RTAI (user-space) which provide kernel patches
-LINUX_DEPENDENCIES += rtai-patch
+LINUX_PATCH_DEPENDENCIES += rtai
 
 RTAI_PATCH = $(call qstrip,$(BR2_LINUX_KERNEL_EXT_RTAI_PATCH))
 

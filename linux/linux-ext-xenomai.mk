@@ -6,7 +6,7 @@
 
 ifeq ($(BR2_LINUX_KERNEL_EXT_XENOMAI),y)
 # Add dependency to xenomai (user-space) which provide ksrc part
-LINUX_DEPENDENCIES += xenomai
+LINUX_PATCH_DEPENDENCIES += xenomai
 
 # Adeos patch version
 XENOMAI_ADEOS_PATCH = $(call qstrip,$(BR2_LINUX_KERNEL_EXT_XENOMAI_ADEOS_PATCH))
