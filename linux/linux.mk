@@ -327,6 +327,13 @@ endef
 # included here *must* be in the same directory!
 include $(sort $(wildcard linux/linux-ext-*.mk))
 
+LINUX_PATCH_DEPENDENCIES += $(foreach ext,$(LINUX_EXTENSIONS),\
+	$(if $(BR2_LINUX_KERNEL_EXT_$(call UPPERCASE,$(ext))),$(ext)))
+
+LINUX_PRE_PATCH_HOOKS += $(foreach ext,$(LINUX_EXTENSIONS),\
+	$(if $(BR2_LINUX_KERNEL_EXT_$(call UPPERCASE,$(ext))),\
+		$(call UPPERCASE,$(ext))_PREPARE_KERNEL))
+
 $(eval $(kconfig-package))
 
 # Support for rebuilding the kernel after the cpio archive has
