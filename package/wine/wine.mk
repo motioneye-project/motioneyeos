@@ -243,6 +243,10 @@ else
 WINE_CONF_OPTS += --without-zlib
 endif
 
+# host-gettext is essential for .po file support in host-wine wrc
+HOST_WINE_DEPENDENCIES += host-gettext
+HOST_WINE_CONF_OPTS += --with-gettext --with-gettextpo
+
 # Wine needs to enable 64-bit build tools on 64-bit host
 ifeq ($(HOSTARCH),x86_64)
 HOST_WINE_CONF_OPTS += --enable-win64
@@ -280,8 +284,6 @@ HOST_WINE_CONF_OPTS += \
 	--without-curses \
 	--without-dbus \
 	--without-fontconfig \
-	--without-gettext \
-	--without-gettextpo \
 	--without-gphoto \
 	--without-glu \
 	--without-gnutls \
