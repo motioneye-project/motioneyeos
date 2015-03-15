@@ -1,0 +1,13 @@
+config BR2_PACKAGE_XDRIVER_XF86_INPUT_LIBINPUT
+	bool "xf86-input-libinput"
+	depends on BR2_PACKAGE_HAS_UDEV # libinput
+	select BR2_PACKAGE_LIBINPUT
+	select BR2_PACKAGE_XPROTO_INPUTPROTO
+	select BR2_PACKAGE_XPROTO_XPROTO
+	help
+	  This is an X driver based on libinput. It is a thin wrapper around
+	  libinput, so while it does provide all features that libinput supports
+	  it does little beyond.
+
+comment "xf86-input-libinput requires udev to be enabled"
+	depends on !BR2_PACKAGE_HAS_UDEV
