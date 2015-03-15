@@ -173,17 +173,21 @@ ifeq ($(BR2_PACKAGE_XSERVER_XORG_SERVER_MODULAR),y)
 ifeq ($(BR2_PACKAGE_XPROTO_DRI2PROTO),y)
 XSERVER_XORG_SERVER_DEPENDENCIES += xproto_dri2proto
 XSERVER_XORG_SERVER_CONF_OPTS += --enable-dri2
+else
+XSERVER_XORG_SERVER_CONF_OPTS += --disable-dri2
 endif
 ifeq ($(BR2_PACKAGE_XPROTO_DRI3PROTO),y)
 XSERVER_XORG_SERVER_DEPENDENCIES += xlib_libxshmfence xproto_dri3proto
 XSERVER_XORG_SERVER_CONF_OPTS += --enable-dri3
-endif
 ifeq ($(BR2_PACKAGE_MESA3D_OPENGL_EGL),y)
 XSERVER_XORG_SERVER_DEPENDENCIES += libepoxy
 XSERVER_XORG_SERVER_CONF_OPTS += --enable-glamor
 endif
 else
-XSERVER_XORG_SERVER_CONF_OPTS += --disable-dri2 --disable-dri3
+XSERVER_XORG_SERVER_CONF_OPTS += --disable-dri3 --disable-glamor
+endif
+else
+XSERVER_XORG_SERVER_CONF_OPTS += --disable-dri2 --disable-dri3 --disable-glamor
 endif
 
 ifeq ($(BR2_PACKAGE_XLIB_LIBXSCRNSAVER),y)
