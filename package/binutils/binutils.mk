@@ -8,8 +8,12 @@
 # If not, we do like other packages
 BINUTILS_VERSION = $(call qstrip,$(BR2_BINUTILS_VERSION))
 ifeq ($(BINUTILS_VERSION),)
+ifeq ($(BR2_arc),y)
+BINUTILS_VERSION = arc-2014.12
+else
 BINUTILS_VERSION = 2.22
 endif
+endif # BINUTILS_VERSION
 
 ifeq ($(BR2_arc),y)
 BINUTILS_SITE = $(call github,foss-for-synopsys-dwc-arc-processors,binutils-gdb,$(BINUTILS_VERSION))
