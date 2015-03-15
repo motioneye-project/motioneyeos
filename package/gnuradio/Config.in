@@ -1,7 +1,7 @@
-comment "gnuradio needs a toolchain w/ C++, IPV6, threads, largefile, wchar"
+comment "gnuradio needs a toolchain w/ C++, IPV6, NPTL, largefile, wchar"
 	depends on BR2_USE_MMU
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR || \
-		!BR2_TOOLCHAIN_HAS_THREADS || !BR2_LARGEFILE || \
+		!BR2_TOOLCHAIN_HAS_THREADS_NPTL || !BR2_LARGEFILE || \
 		!BR2_INET_IPV6
 
 config BR2_PACKAGE_GNURADIO
@@ -9,7 +9,7 @@ config BR2_PACKAGE_GNURADIO
 	depends on BR2_INET_IPV6 # boost
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_LARGEFILE # boost
-	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL
 	depends on BR2_USE_MMU # use fork()
 	depends on BR2_USE_WCHAR # boost
 	select BR2_PACKAGE_BOOST
