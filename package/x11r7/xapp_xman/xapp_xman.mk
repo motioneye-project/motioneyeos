@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-XAPP_XMAN_VERSION = 1.1.3
+XAPP_XMAN_VERSION = 1.1.4
 XAPP_XMAN_SOURCE = xman-$(XAPP_XMAN_VERSION).tar.bz2
 XAPP_XMAN_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_XMAN_LICENSE = MIT
