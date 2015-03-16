@@ -9,3 +9,44 @@ config BR2_PACKAGE_FFTW
 	  double precision.
 
 	  http://www.fftw.org
+
+if BR2_PACKAGE_FFTW
+
+choice
+	prompt "fftw precision"
+	default BR2_PACKAGE_FFTW_PRECISION_DOUBLE
+	help
+	  Selects fftw precision
+
+config BR2_PACKAGE_FFTW_PRECISION_SINGLE
+	bool "single"
+	help
+	  Compile fftw in single precision, i.e. use 'float' for floating
+	  point type.
+
+config BR2_PACKAGE_FFTW_PRECISION_DOUBLE
+	bool "double"
+	help
+	  Compile fftw in double precision (the default), i.e. use 'double'
+	  for floating point type.
+
+config BR2_PACKAGE_FFTW_PRECISION_LONG_DOUBLE
+	bool "long double"
+	# long-double precision require long-double trigonometric routines
+	depends on !(BR2_TOOLCHAIN_BUILDROOT_UCLIBC && \
+		(BR2_arm || BR2_mips || BR2_mipsel))
+	help
+	  Compile fftw in long double precision, i.e. use 'long double'
+	  for floating point type.
+
+config BR2_PACKAGE_FFTW_PRECISION_QUAD
+	bool "quad"
+	# quad-precision needs to have a gcc with libquadmath
+	depends on (BR2_i386 || BR2_x86_64) && BR2_USE_WCHAR
+	help
+	  Compile fftw in quadruple precision, i.e. use '__float128' for
+	  floating point type.
+
+endchoice
+
+endif
