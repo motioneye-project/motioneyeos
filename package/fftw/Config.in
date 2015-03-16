@@ -49,4 +49,17 @@ config BR2_PACKAGE_FFTW_PRECISION_QUAD
 
 endchoice
 
+config BR2_PACKAGE_FFTW_FAST
+	bool "optimise for speed over accuracy"
+	help
+	  Optimise for fast math functions, at the expense of accuracy.
+
+	  Say 'y' if you need speed and can live with inaccuracies in
+	  the results. Say 'n' (the default) if accuracy is of utmost
+	  importance.
+
+	  This basically uses gcc's -Ofast optimisation level, which in
+	  turn is basically using gcc's -ffast-math. See the gcc manual
+	  for what this means.
+
 endif

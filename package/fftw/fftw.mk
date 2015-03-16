@@ -14,4 +14,11 @@ FFTW_CONF_OPTS += $(if $(BR2_PACKAGE_FFTW_PRECISION_SINGLE),--enable,--disable)-
 FFTW_CONF_OPTS += $(if $(BR2_PACKAGE_FFTW_PRECISION_LONG_DOUBLE),--enable,--disable)-long-double
 FFTW_CONF_OPTS += $(if $(BR2_PACKAGE_FFTW_PRECISION_QUAD),--enable,--disable)-quad-precision
 
+FFTW_CFLAGS = $(TARGET_CFLAGS)
+ifeq ($(BR2_PACKAGE_FFTW_FAST),y)
+FFTW_CFLAGS += -Ofast
+endif
+
+FFTW_CONF_OPTS += CFLAGS="$(FFTW_CFLAGS)"
+
 $(eval $(autotools-package))
