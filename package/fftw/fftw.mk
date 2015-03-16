@@ -35,6 +35,7 @@ FFTW_CONF_OPTS += --enable-threads --with-combined-threads
 else
 FFTW_CONF_OPTS += --disable-threads
 endif
+FFTW_CONF_OPTS += $(if $(BR2_GCC_ENABLE_OPENMP),--enable,--disable)-openmp
 
 FFTW_CONF_OPTS += CFLAGS="$(FFTW_CFLAGS)"
 
