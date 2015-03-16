@@ -29,6 +29,13 @@ FFTW_CONF_OPTS += $(if $(BR2_PACKAGE_FFTW_USE_SSE2),--enable,--disable)-sse2
 FFTW_CONF_OPTS += $(if $(BR2_PACKAGE_FFTW_USE_NEON),--enable,--disable)-neon
 FFTW_CFLAGS += $(if $(BR2_PACKAGE_FFTW_USE_NEON),-mfpu=neon)
 
+# Generic optimisations
+ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),y)
+FFTW_CONF_OPTS += --enable-threads --with-combined-threads
+else
+FFTW_CONF_OPTS += --disable-threads
+endif
+
 FFTW_CONF_OPTS += CFLAGS="$(FFTW_CFLAGS)"
 
 $(eval $(autotools-package))
