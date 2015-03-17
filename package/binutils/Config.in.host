@@ -12,20 +12,16 @@ choice
 			   !BR2_powerpc64le && !BR2_nios2
 		bool "binutils 2.22"
 
-	# bfin disabled for newer binutils due to
-	# https://sourceware.org/bugzilla/show_bug.cgi?id=17334
 	config BR2_BINUTILS_VERSION_2_23_2
-		depends on !BR2_aarch64 && !BR2_bfin && !BR2_microblaze && \
+		depends on !BR2_aarch64 && !BR2_microblaze && \
 			   !BR2_powerpc64le && !BR2_nios2
 		bool "binutils 2.23.2"
 
 	config BR2_BINUTILS_VERSION_2_24
-		depends on !BR2_bfin
 		depends on !BR2_nios2 # supported, but broken on Nios-II
 		bool "binutils 2.24"
 
 	config BR2_BINUTILS_VERSION_2_25
-		depends on !BR2_bfin
 		bool "binutils 2.25"
 
 endchoice
