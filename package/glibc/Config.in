@@ -11,6 +11,8 @@ choice
 
 config BR2_EGLIBC_VERSION_2_18
 	bool "2.18-svnr23787"
+	# Build breakage
+	depends on !BR2_sparc
 
 config BR2_EGLIBC_VERSION_2_19
 	bool "2.19-svnr25243"
