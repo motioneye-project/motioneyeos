@@ -82,6 +82,12 @@ config BR2_PACKAGE_QUAGGA_WATCHQUAGGA
 	help
 	  Build and install watchquagga, a zebra/protocol daemon supervisor.
 
+config BR2_PACKAGE_QUAGGA_VTYSH
+	bool "Build vtysh"
+	select BR2_PACKAGE_READLINE
+	help
+	  Build and install vtysh, a vty shell for Quagga.
+
 config BR2_PACKAGE_QUAGGA_SNMP
 	bool "SNMP support"
 	depends on BR2_USE_MMU # net-snmp

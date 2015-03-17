@@ -32,4 +32,11 @@ QUAGGA_CONF_OPTS += --enable-snmp=agentx
 QUAGGA_DEPENDENCIES += netsnmp
 endif
 
+ifeq ($(BR2_PACKAGE_QUAGGA_VTYSH),y)
+QUAGGA_CONF_OPTS += --enable-vtysh
+QUAGGA_DEPENDENCIES += readline
+else
+QUAGGA_CONF_OPTS += --disable-vtysh
+endif
+
 $(eval $(autotools-package))
