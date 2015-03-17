@@ -17,7 +17,9 @@ AVRDUDE_DEPENDENCIES = elfutils libusb libusb-compat ncurses \
 AVRDUDE_LICENSE = GPLv2+
 AVRDUDE_LICENSE_FILES = avrdude/COPYING
 
-ifeq ($(BR2_PACKAGE_LIBFTDI),y)
+ifeq ($(BR2_PACKAGE_LIBFTDI1),y)
+AVRDUDE_DEPENDENCIES += libftdi1
+else ifeq ($(BR2_PACKAGE_LIBFTDI),y)
 AVRDUDE_DEPENDENCIES += libftdi
 endif
 
