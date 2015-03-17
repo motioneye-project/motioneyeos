@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-MCELOG_VERSION = v109
+MCELOG_VERSION = v111
 MCELOG_SITE = $(BR2_KERNEL_MIRROR)/scm/utils/cpu/mce/mcelog.git
 MCELOG_SITE_METHOD = git
 MCELOG_LICENSE = GPLv2
