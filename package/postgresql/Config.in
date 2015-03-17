@@ -1,5 +1,6 @@
 config BR2_PACKAGE_POSTGRESQL
 	bool "postgresql"
+	depends on BR2_USE_MMU # fork()
 	help
 	  PostgreSQL is a powerful, open source object-relational
 	  database system.
