@@ -34,6 +34,8 @@ choice
 
 config BR2_GLIBC_VERSION_2_20
 	depends on !BR2_nios2
+	# Broken see https://bugs.busybox.net/show_bug.cgi?id=7941
+	depends on !BR2_sparc
 	bool "2.20"
 
 config BR2_GLIBC_VERSION_2_21
