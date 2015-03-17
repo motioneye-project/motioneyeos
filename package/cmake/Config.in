@@ -1,3 +1,12 @@
+config BR2_PACKAGE_CMAKE_ARCH_SUPPORTS
+	bool
+	default y
+	depends on BR2_arm    || BR2_armeb       || BR2_aarch64  || \
+		BR2_m68k      || BR2_mips        || BR2_mips64   || \
+		BR2_mipsel    || BR2_mips64el    || BR2_powerpc  || \
+		BR2_powerpc64 || BR2_powerpc64le || BR2_sparc    || \
+		BR2_i386      || BR2_x86_64
+
 config BR2_PACKAGE_CMAKE
 	bool
 
@@ -10,6 +19,7 @@ config BR2_PACKAGE_CMAKE_CTEST
 	select BR2_PACKAGE_EXPAT
 	select BR2_PACKAGE_BZIP2
 	select BR2_PACKAGE_XZ
+	depends on BR2_PACKAGE_CMAKE_ARCH_SUPPORTS
 	depends on BR2_USE_WCHAR # libarchive
 	depends on BR2_INSTALL_LIBSTDCPP
 	help
@@ -22,4 +32,5 @@ config BR2_PACKAGE_CMAKE_CTEST
 	  http://www.cmake.org/
 
 comment "ctest needs a toolchain w/ C++, wchar"
+	depends on BR2_PACKAGE_CMAKE_ARCH_SUPPORTS
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR
