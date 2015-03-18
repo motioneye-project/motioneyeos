@@ -59,7 +59,15 @@ config BR2_armeb
 	  http://en.wikipedia.org/wiki/ARM
 
 config BR2_aarch64
-	bool "AArch64"
+	bool "AArch64 (little endian)"
+	select BR2_ARCH_IS_64
+	help
+	  Aarch64 is a 64-bit architecture developed by ARM Holdings.
+	  http://www.arm.com/products/processors/instruction-set-architectures/armv8-architecture.php
+	  http://en.wikipedia.org/wiki/ARM
+
+config BR2_aarch64_be
+	bool "AArch64 (big endian)"
 	select BR2_ARCH_IS_64
 	select BR2_ARCH_HAS_MMU_MANDATORY
 	help
@@ -347,7 +355,7 @@ if BR2_arm || BR2_armeb
 source "arch/Config.in.arm"
 endif
 
-if BR2_aarch64
+if BR2_aarch64 || BR2_aarch64_be
 source "arch/Config.in.aarch64"
 endif
 

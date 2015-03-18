@@ -23,8 +23,8 @@ source "package/linux-headers/Config.in.host"
 choice
 	prompt "C library"
 	default BR2_TOOLCHAIN_UCLIBC
-	default BR2_TOOLCHAIN_BUILDROOT_GLIBC if BR2_aarch64 || BR2_microblaze \
-		|| BR2_mips64 || BR2_mips64el || BR2_powerpc64
+	default BR2_TOOLCHAIN_BUILDROOT_GLIBC if BR2_aarch64 || BR2_aarch64_be \
+		|| BR2_microblaze || BR2_mips64 || BR2_mips64el || BR2_powerpc64
 
 config BR2_TOOLCHAIN_BUILDROOT_UCLIBC
 	bool "uClibc"
@@ -42,11 +42,12 @@ config BR2_TOOLCHAIN_BUILDROOT_UCLIBC
 
 config BR2_TOOLCHAIN_BUILDROOT_EGLIBC
 	bool "eglibc"
-	depends on BR2_arm    || BR2_armeb    || BR2_aarch64 || \
-		   BR2_i386   || BR2_mips     || BR2_mipsel  || \
-		   BR2_mips64 || BR2_mips64el || BR2_powerpc || \
-		   BR2_sh     || BR2_sh64     || BR2_sparc   || \
-		   BR2_x86_64 || BR2_microblaze || BR2_powerpc64
+	depends on BR2_arm        || BR2_armeb    || BR2_aarch64    || \
+		   BR2_aarch64_be || BR2_i386     || BR2_mips       || \
+		   BR2_mipsel     || BR2_mips64   || BR2_mips64el   || \
+		   BR2_powerpc    || BR2_sh       || BR2_sh64       || \
+		   BR2_sparc      || BR2_x86_64   || BR2_microblaze || \
+		   BR2_powerpc64
 	depends on BR2_USE_MMU
 	depends on !BR2_STATIC_LIBS
 	depends on BR2_DEPRECATED_SINCE_2015_08
@@ -61,12 +62,12 @@ config BR2_TOOLCHAIN_BUILDROOT_EGLIBC
 
 config BR2_TOOLCHAIN_BUILDROOT_GLIBC
 	bool "glibc"
-	depends on BR2_arm         || BR2_armeb    || BR2_aarch64 || \
-		   BR2_i386        || BR2_mips     || BR2_mipsel  || \
-		   BR2_mips64      || BR2_mips64el || BR2_powerpc || \
-		   BR2_powerpc64   || BR2_powerpc64le || BR2_sh   || \
-		   BR2_sh64        || BR2_sparc    || BR2_x86_64  || \
-		   BR2_microblaze  || BR2_nios2
+	depends on BR2_arm         || BR2_armeb      || BR2_aarch64 || \
+		   BR2_aarch64_be  || BR2_i386       || BR2_mips    || \
+		   BR2_mipsel      || BR2_mips64     || BR2_mips64el|| \
+		   BR2_powerpc     || BR2_powerpc64  || BR2_powerpc64le || \
+		   BR2_sh          || BR2_sh64       || BR2_sparc   || \
+		   BR2_x86_64      || BR2_microblaze || BR2_nios2
 	depends on BR2_USE_MMU
 	depends on !BR2_STATIC_LIBS
 	depends on !BR2_powerpc_SPE
