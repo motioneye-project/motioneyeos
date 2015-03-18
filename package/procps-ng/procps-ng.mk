@@ -24,6 +24,13 @@ PROCPS_NG_DEPENDENCIES += gettext
 PROCPS_NG_CONF_OPTS += LIBS=-lintl
 endif
 
+ifeq ($(BR2_PACKAGE_SYSTEMD),y)
+PROCPS_NG_DEPENDENCIES += systemd
+PROCPS_NG_CONF_OPTS += --with-systemd
+else
+PROCPS_NG_CONF_OPTS += --without-systemd
+endif
+
 # We need this to make procps-ng binaries installed in $(TARGET_DIR)/usr
 # instead of $(TARGET_DIR)/usr/usr
 PROCPS_NG_CONF_OPTS += --exec-prefix=
