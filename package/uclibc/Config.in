@@ -49,12 +49,12 @@ choice
 	config BR2_UCLIBC_VERSION_XTENSA_GIT
 		bool "uClibc Git Xtensa"
 		depends on BR2_xtensa
-		select BR2_UCLIBC_SUPPORTS_LINUXTHREADS_OLD
+		select BR2_UCLIBC_VERSION_SUPPORTS_LINUXTHREADS_OLD
 
 	config BR2_UCLIBC_VERSION_SNAPSHOT
 		bool "daily snapshot"
-		select BR2_UCLIBC_SUPPORTS_LINUXTHREADS if !BR2_bfin && !BR2_xtensa
-		select BR2_UCLIBC_SUPPORTS_LINUXTHREADS_OLD
+		select BR2_UCLIBC_VERSION_SUPPORTS_LINUXTHREADS if !BR2_bfin && !BR2_xtensa
+		select BR2_UCLIBC_VERSION_SUPPORTS_LINUXTHREADS_OLD
 		select BR2_UCLIBC_VERSION_SUPPORTS_NPTL \
 		       if !BR2_bfin && !BR2_x86_i386 && !BR2_xtensa
 		depends on !(BR2_arc)
