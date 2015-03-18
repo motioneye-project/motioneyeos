@@ -4,12 +4,15 @@
 #
 ################################################################################
 
-GAWK_VERSION = 4.1.0
+GAWK_VERSION = 4.1.1
 GAWK_SOURCE = gawk-$(GAWK_VERSION).tar.xz
 GAWK_SITE = $(BR2_GNU_MIRROR)/gawk
 GAWK_DEPENDENCIES = host-gawk $(if $(BR2_PACKAGE_MPFR),mpfr)
 GAWK_LICENSE = GPLv3+
 GAWK_LICENSE_FILES = COPYING
+# beta libtool version
+GAWK_AUTORECONF = YES
+GAWK_GETTEXTIZE = YES
 
 # Prefer full-blown gawk over busybox awk
 ifeq ($(BR2_PACKAGE_BUSYBOX),y)
