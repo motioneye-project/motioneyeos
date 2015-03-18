@@ -301,6 +301,18 @@ else
 FFMPEG_CONF_OPTS += --disable-sse42
 endif
 
+ifeq ($(BR2_X86_CPU_HAS_AVX),y)
+FFMPEG_CONF_OPTS += --enable-avx
+else
+FFMPEG_CONF_OPTS += --disable-avx
+endif
+
+ifeq ($(BR2_X86_CPU_HAS_AVX2),y)
+FFMPEG_CONF_OPTS += --enable-avx2
+else
+FFMPEG_CONF_OPTS += --disable-avx2
+endif
+
 # Explicitly disable everything that doesn't match for ARM
 # FFMPEG "autodetects" by compiling an extended instruction via AS
 # This works on compilers that aren't built for generic by default
