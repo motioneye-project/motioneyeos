@@ -33,6 +33,12 @@ endif
 
 # We need this to make procps-ng binaries installed in $(TARGET_DIR)/usr
 # instead of $(TARGET_DIR)/usr/usr
-PROCPS_NG_CONF_OPTS += --exec-prefix=
+PROCPS_NG_CONF_OPTS += \
+	--prefix=/usr \
+	--exec-prefix=/ \
+	--sysconfdir=/etc \
+	--libdir=/usr/lib \
+	--bindir=/usr/bin \
+	--sbindir=/usr/sbin
 
 $(eval $(autotools-package))
