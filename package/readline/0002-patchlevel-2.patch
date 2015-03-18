@@ -1,0 +1,48 @@
+From http://ftp.gnu.org/pub/gnu/readline/readline-6.3-patches/readline63-002
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+			   READLINE PATCH REPORT
+			   =====================
+
+Readline-Release: 6.3
+Patch-ID: readline63-002
+
+Bug-Reported-by:	Anatol Pomozov <anatol.pomozov@gmail.com>
+Bug-Reference-ID:	<CAOMFOmXy3mT2So5GQ5F-smCVArQuAeBwZ2QKzgCtMeXJoDeYOQ@mail.gmail.com>
+Bug-Reference-URL:	http://lists.gnu.org/archive/html/bug-readline/2014-03/msg00010.html
+
+Bug-Description:
+
+When in callback mode, some readline commands can cause readline to seg
+fault by passing invalid contexts to callback functions.
+
+Patch (apply with `patch -p0'):
+
+*** a/readline-6.3/readline.c	2013-10-28 14:58:06.000000000 -0400
+--- b/readline.c	2014-03-10 14:15:02.000000000 -0400
+***************
+*** 745,749 ****
+  
+    RL_CHECK_SIGNALS ();
+!   if (r == 0)			/* success! */
+      {
+        _rl_keyseq_chain_dispose ();
+--- 745,750 ----
+  
+    RL_CHECK_SIGNALS ();
+!   /* We only treat values < 0 specially to simulate recursion. */
+!   if (r >= 0 || (r == -1 && (cxt->flags & KSEQ_SUBSEQ) == 0))	/* success! or failure! */
+      {
+        _rl_keyseq_chain_dispose ();
+*** a/readline-6.3/patchlevel	2013-11-15 08:11:11.000000000 -0500
+--- b/patchlevel	2014-03-21 08:28:40.000000000 -0400
+***************
+*** 1,3 ****
+  # Do not edit -- exists only for use by patch
+  
+! 1
+--- 1,3 ----
+  # Do not edit -- exists only for use by patch
+  
+! 2
