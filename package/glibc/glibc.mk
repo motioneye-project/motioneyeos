@@ -90,6 +90,7 @@ define GLIBC_CONFIGURE_CMDS
 		--prefix=/usr \
 		--enable-shared \
 		$(if $(BR2_SOFT_FLOAT),--without-fp,--with-fp) \
+		$(if $(BR2_x86_64),--enable-lock-elision) \
 		--with-pkgversion="Buildroot" \
 		--without-cvs \
 		--disable-profile \
