@@ -41,4 +41,10 @@ PROCPS_NG_CONF_OPTS += \
 	--bindir=/usr/bin \
 	--sbindir=/usr/sbin
 
+# Allows unicode characters to show in 'watch'
+ifeq ($(BR2_PACKAGE_NCURSES_WCHAR),y)
+PROCPS_NG_CONF_OPTS += \
+	--enable-watch8bit
+endif
+
 $(eval $(autotools-package))
