@@ -35,7 +35,6 @@ config BR2_PACKAGE_DVDRW_TOOLS
 if BR2_PACKAGE_DVDRW_TOOLS
 choice
 	prompt "Media Backend"
-	default BR2_PACKAGE_DVDRW_CDRKIT_BACKEND
 	help
 	  Choose which media backend program to use.
 
