@@ -1,0 +1,18 @@
+config BR2_PACKAGE_POWERTOP
+	bool "powertop"
+	# pciutils dependency
+	depends on !BR2_bfin
+	# libnl dependency
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	select BR2_PACKAGE_NCURSES
+	select BR2_PACKAGE_PCIUTILS
+	select BR2_PACKAGE_LIBNL
+	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT
+	help
+	  A tool to diagnose issues with power consumption and power management
+
+	  https://01.org/powertop/
+
+comment "powertop needs a toolchain w/ threads"
+	depends on !BR2_bfin
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
