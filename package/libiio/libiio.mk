@@ -41,8 +41,8 @@ endef
 define LIBIIO_INSTALL_INIT_SYSTEMD
 	$(INSTALL) -d $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
 	$(INSTALL) -D -m 0644 $(@D)/debian/iiod.service \
-		$(TARGET_DIR)/lib/systemd/system/iiod.service
-	ln -fs /lib/systemd/system/iiod.service \
+		$(TARGET_DIR)/usr/lib/systemd/system/iiod.service
+	ln -fs ../../../../usr/lib/systemd/system/iiod.service \
 		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/iiod.service
 endef
 endif
