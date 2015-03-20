@@ -26,9 +26,9 @@ endef
 
 define IRQBALANCE_INSTALL_INIT_SYSTEMD
 	$(INSTALL) -D -m 644 package/irqbalance/irqbalance.service \
-		$(TARGET_DIR)/etc/systemd/system/irqbalance.service
+		$(TARGET_DIR)/usr/lib/systemd/system/irqbalance.service
 	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
-	ln -fs ../irqbalance.service \
+	ln -fs ../../../../usr/lib/systemd/system/irqbalance.service \
 		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/irqbalance.service
 endef
 
