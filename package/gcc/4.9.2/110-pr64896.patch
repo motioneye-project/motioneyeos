@@ -1,0 +1,59 @@
+From fc39d7d6f0ac90086814306a43de38ad65c13f13 Mon Sep 17 00:00:00 2001
+From: yroux <yroux@138bc75d-0d04-0410-961f-82ee72b054a4>
+Date: Tue, 10 Mar 2015 19:20:30 +0000
+Subject: [PATCH] gcc/ 2015-03-10  Yvan Roux  <yvan.roux@linaro.org>
+
+	Backport from trunk r220489.
+	2015-02-06  Jakub Jelinek  <jakub@redhat.com>
+
+	PR ipa/64896
+	* cgraphunit.c (cgraph_node::expand_thunk): If
+	restype is not is_gimple_reg_type nor the thunk_fndecl
+	returns aggregate_value_p, set restmp to a temporary variable
+	instead of resdecl.
+
+gcc/testsuite/
+2015-03-10  Yvan Roux  <yvan.roux@linaro.org>
+
+	Backport from trunk r220489.
+	2015-02-06  Jakub Jelinek  <jakub@redhat.com>
+
+	PR ipa/64896
+	* g++.dg/ipa/pr64896.C: New test.
+
+
+
+git-svn-id: svn+ssh://gcc.gnu.org/svn/gcc/branches/gcc-4_9-branch@221333 138bc75d-0d04-0410-961f-82ee72b054a4
+---
+ gcc/ChangeLog                      | 11 +++++++++++
+ gcc/cgraphunit.c                   | 11 ++++++++---
+ gcc/testsuite/ChangeLog            |  8 ++++++++
+ gcc/testsuite/g++.dg/ipa/pr64896.C | 29 +++++++++++++++++++++++++++++
+ 4 files changed, 56 insertions(+), 3 deletions(-)
+ create mode 100644 gcc/testsuite/g++.dg/ipa/pr64896.C
+
+diff --git a/gcc/cgraphunit.c b/gcc/cgraphunit.c
+index 8f57607..130fc0d 100644
+--- a/gcc/cgraphunit.c
++++ b/gcc/cgraphunit.c
+@@ -1572,9 +1572,14 @@ expand_thunk (struct cgraph_node *node, bool output_asm_thunks)
+ 	    restmp = gimple_fold_indirect_ref (resdecl);
+ 	  else if (!is_gimple_reg_type (restype))
+ 	    {
+-	      restmp = resdecl;
+-	      add_local_decl (cfun, restmp);
+-	      BLOCK_VARS (DECL_INITIAL (current_function_decl)) = restmp;
++	      if (aggregate_value_p (resdecl, TREE_TYPE (thunk_fndecl)))
++		{
++		  restmp = resdecl;
++		  add_local_decl (cfun, restmp);
++		  BLOCK_VARS (DECL_INITIAL (current_function_decl)) = restmp;
++		}
++	      else
++		restmp = create_tmp_var (restype, "retval");
+ 	    }
+ 	  else
+ 	    restmp = create_tmp_reg (restype, "retval");
+-- 
+1.8.1.4
+
