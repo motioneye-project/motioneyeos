@@ -85,9 +85,9 @@ endef
 
 define POSTGRESQL_INSTALL_INIT_SYSTEMD
 	$(INSTALL) -D -m 644 package/postgresql/postgresql.service \
-		$(TARGET_DIR)/etc/systemd/system/postgresql.service
+		$(TARGET_DIR)/usr/lib/systemd/system/postgresql.service
 	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
-	ln -fs ../postgresql.service \
+	ln -fs ../../../../usr/lib/systemd/system/postgresql.service \
 		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/postgresql.service
 endef
 
