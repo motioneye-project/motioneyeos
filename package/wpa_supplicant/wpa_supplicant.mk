@@ -165,4 +165,15 @@ define WPA_SUPPLICANT_INSTALL_TARGET_CMDS
 	$(WPA_SUPPLICANT_INSTALL_DBUS)
 endef
 
+define WPA_SUPPLICANT_INSTALL_INIT_SYSTEMD
+	$(INSTALL) -m 0644 -D $(@D)/$(WPA_SUPPLICANT_SUBDIR)/systemd/wpa_supplicant.service \
+		$(TARGET_DIR)/usr/lib/systemd/system/wpa_supplicant.service
+	$(INSTALL) -m 0644 -D $(@D)/$(WPA_SUPPLICANT_SUBDIR)/systemd/wpa_supplicant@.service \
+		$(TARGET_DIR)/usr/lib/systemd/system/wpa_supplicant@.service
+	$(INSTALL) -m 0644 -D $(@D)/$(WPA_SUPPLICANT_SUBDIR)/systemd/wpa_supplicant-nl80211@.service \
+		$(TARGET_DIR)/usr/lib/systemd/system/wpa_supplicant-nl80211@.service
+	$(INSTALL) -m 0644 -D $(@D)/$(WPA_SUPPLICANT_SUBDIR)/systemd/wpa_supplicant-wired@.service \
+		$(TARGET_DIR)/usr/lib/systemd/system/wpa_supplicant-wired@.service
+endef
+
 $(eval $(generic-package))
