@@ -71,9 +71,10 @@ define NTP_INSTALL_INIT_SYSV
 endef
 
 define NTP_INSTALL_INIT_SYSTEMD
-	$(INSTALL) -D -m 644 package/ntp/ntpd.service $(TARGET_DIR)/etc/systemd/system/ntpd.service
+	$(INSTALL) -D -m 644 package/ntp/ntpd.service $(TARGET_DIR)/usr/lib/systemd/system/ntpd.service
 	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
-	ln -fs ../ntpd.service $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/ntpd.service
+	ln -fs ../../../../usr/lib/systemd/system/ntpd.service \
+		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/ntpd.service
 endef
 endif
 
