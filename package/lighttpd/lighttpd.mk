@@ -84,12 +84,12 @@ define LIGHTTPD_INSTALL_INIT_SYSV
 endef
 
 define LIGHTTPD_INSTALL_INIT_SYSTEMD
-	$(INSTALL) -D -m 0644 package/lighttpd/lighttpd.service \
-		$(TARGET_DIR)/etc/systemd/system/lighttpd.service
+	$(INSTALL) -D -m 0644 $(@D)/doc/systemd/lighttpd.service \
+		$(TARGET_DIR)/usr/lib/systemd/system/lighttpd.service
 
 	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
 
-	ln -fs ../lighttpd.service \
+	ln -fs ../../../../usr/lib/systemd/lighttpd.service \
 		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/lighttpd.service
 endef
 
