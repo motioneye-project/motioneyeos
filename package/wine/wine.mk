@@ -27,9 +27,7 @@ WINE_CONF_OPTS = \
 	--without-openal \
 	--without-opencl \
 	--without-osmesa \
-	--without-oss \
-	--without-xshape \
-	--without-xshm
+	--without-oss
 
 # Wine uses a wrapper around gcc, and uses the value of --host to
 # construct the filename of the gcc to call.  But for external
@@ -205,6 +203,13 @@ WINE_CONF_OPTS += --with-xcursor
 WINE_DEPENDENCIES += xlib_libXcursor
 else
 WINE_CONF_OPTS += --without-xcursor
+endif
+
+ifeq ($(BR2_PACKAGE_XLIB_LIBXEXT),y)
+WINE_CONF_OPTS += --with-xshape --with-xshm
+WINE_DEPENDENCIES += xlib_libXext
+else
+WINE_CONF_OPTS += --without-xshape --without-xshm
 endif
 
 ifeq ($(BR2_PACKAGE_XLIB_LIBXI),y)
