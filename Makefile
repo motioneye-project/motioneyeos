@@ -435,7 +435,7 @@ world: target-post-image
 
 .PHONY: all world toolchain dirs clean distclean source outputmakefile \
 	legal-info legal-info-prepare legal-info-clean printvars help \
-	target-finalize target-post-image \
+	list-defconfigs target-finalize target-post-image \
 	$(TARGETS) $(TARGETS_ROOTFS) \
 	$(TARGETS_DIRCLEAN) $(TARGETS_SOURCE) $(TARGETS_LEGAL_INFO) \
 	$(BUILD_DIR) $(STAGING_DIR) $(TARGET_DIR) \
@@ -907,6 +907,11 @@ endif
 	@echo '  make V=0|1             - 0 => quiet build (default), 1 => verbose build'
 	@echo '  make O=dir             - Locate all output files in "dir", including .config'
 	@echo
+	@echo 'For further details, see README, generate the Buildroot manual, or consult'
+	@echo 'it on-line at http://buildroot.org/docs.html'
+	@echo
+
+list-defconfigs:
 	@echo 'Built-in configs:'
 	@$(foreach b, $(sort $(notdir $(wildcard $(TOPDIR)/configs/*_defconfig))), \
 	  printf "  %-35s - Build for %s\\n" $(b) $(b:_defconfig=);)
@@ -916,9 +921,6 @@ ifneq ($(wildcard $(BR2_EXTERNAL)/configs/*_defconfig),)
 	@$(foreach b, $(sort $(notdir $(wildcard $(BR2_EXTERNAL)/configs/*_defconfig))), \
 	  printf "  %-35s - Build for %s\\n" $(b) $(b:_defconfig=);)
 endif
-	@echo
-	@echo 'For further details, see README, generate the Buildroot manual, or consult'
-	@echo 'it on-line at http://buildroot.org/docs.html'
 	@echo
 
 release: OUT = buildroot-$(BR2_VERSION)

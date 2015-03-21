@@ -100,6 +100,6 @@ And then in +$(BR2_EXTERNAL)/package/package1+ and
 
  * One can store Buildroot defconfigs in the +configs+ subdirectory of
    +$(BR2_EXTERNAL)+. Buildroot will automatically show them in the
-   output of +make help+ and allow them to be loaded with the normal
-   +make <name>_defconfig+ command. They will be visible under the
-   +User-provided configs+' label in the 'make help' output.
+   output of +make list-defconfigs+ and allow them to be loaded with the
+   normal +make <name>_defconfig+ command. They will be visible under the
+   +User-provided configs+' label in the 'make list-defconfigs' output.

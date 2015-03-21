@@ -12,6 +12,12 @@ This is a collection of tips that help you make the most of Buildroot.
  $ make V=1 <target>
 --------------------
 
+.Display the list of boards with a defconfig:
+
+--------------------
+ $ make list-defconfigs
+--------------------
+
 .Display all available targets:
 
 --------------------
