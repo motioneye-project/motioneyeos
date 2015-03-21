@@ -2,7 +2,9 @@ config BR2_PACKAGE_WINE
 	bool "wine"
 	depends on BR2_TOOLCHAIN_USES_GLIBC
 	# Wine only builds on certain architectures
-	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86"
+	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86" || \
+	           BR2_HOSTARCH = "powerpc" || BR2_HOSTARCH = "arm" || \
+	           BR2_HOSTARCH = "aarch64"
 	# Wine has much CPU specific code and mostly makes sense on x86
 	depends on BR2_i386
 	help
