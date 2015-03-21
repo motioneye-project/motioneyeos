@@ -873,6 +873,20 @@ help:
 	@echo '  randpackageconfig      - New config with random answer to package options'
 	@echo '  allyespackageconfig    - New config where pkg options are accepted with yes'
 	@echo '  allnopackageconfig     - New config where package options are answered with no'
+	@echo
+	@echo 'Package-specific:'
+	@echo '  <pkg>                  - Build and install <pkg> and all its dependencies'
+	@echo '  <pkg>-source           - Only download the source files for <pkg>'
+	@echo '  <pkg>-extract          - Extract <pkg> sources'
+	@echo '  <pkg>-patch            - Apply patches to <pkg>'
+	@echo '  <pkg>-depends          - Build <pkg>'\''s dependencies'
+	@echo '  <pkg>-configure        - Build <pkg> up to the configure step'
+	@echo '  <pkg>-build            - Build <pkg> up to the build step'
+	@echo '  <pkg>-graph-depends    - Generate a graph of <pkg>'\''s dependencies'
+	@echo '  <pkg>-dirclean         - Remove <pkg> build directory'
+	@echo '  <pkg>-reconfigure      - Restart the build from the configure step'
+	@echo '  <pkg>-rebuild          - Restart the build from the build step'
+	@echo '  <pkg>-legal-info       - Generate license information for <pkg>'
 ifeq ($(BR2_PACKAGE_BUSYBOX),y)
 	@echo '  busybox-menuconfig     - Run BusyBox menuconfig'
 endif
