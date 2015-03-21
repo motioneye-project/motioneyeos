@@ -26,7 +26,6 @@ WINE_CONF_OPTS = \
 	--without-netapi \
 	--without-openal \
 	--without-opencl \
-	--without-opengl \
 	--without-osmesa \
 	--without-oss \
 	--without-xshape \
@@ -108,6 +107,13 @@ WINE_CONF_OPTS += --with-cms
 WINE_DEPENDENCIES += lcms2
 else
 WINE_CONF_OPTS += --without-cms
+endif
+
+ifeq ($(BR2_PACKAGE_HAS_LIBGL),y)
+WINE_CONF_OPTS += --with-opengl
+WINE_DEPENDENCIES += libgl
+else
+WINE_CONF_OPTS += --without-opengl
 endif
 
 ifeq ($(BR2_PACKAGE_LIBGLU),y)
