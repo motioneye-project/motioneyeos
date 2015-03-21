@@ -1,59 +1,20 @@
+Buildroot is a simple, efficient and easy-to-use tool to generate embedded
+Linux systems through cross-compilation.
+
+The documentation can be found in docs/manual. You can generate a text
+document with 'make manual-text' and read output/docs/manual/manual.text.
+Online documentation can be found at http://buildroot.org/docs.html
+
 To build and use the buildroot stuff, do the following:
 
 1) run 'make menuconfig'
-2) select the packages you wish to compile
+2) select the target architecture and the packages you wish to compile
 3) run 'make'
 4) wait while it compiles
-5) Use your shiny new root filesystem. Depending on which sort of
-    root filesystem you selected, you may want to loop mount it,
-    chroot into it, nfs mount it on your target device, burn it
-    to flash, or whatever is appropriate for your target system.
+5) find the kernel, bootloader, root filesystem, etc. in output/images
 
 You do not need to be root to build or run buildroot.  Have fun!
 
-Offline build:
-==============
-
-In order to do an offline-build (not connected to the net), fetch all
-selected source by issuing a
-$ make source
-
-before you disconnect.
-If your build-host is never connected, then you have to copy buildroot
-and your toplevel .config to a machine that has an internet-connection
-and issue "make source" there, then copy the content of your dl/ dir to
-the build-host.
-
-Building out-of-tree:
-=====================
-
-Buildroot supports building out of tree with a syntax similar
-to the Linux kernel. To use it, add O=<directory> to the
-make command line, E.G.:
-
-$ make O=/tmp/build
-
-And all the output files (including .config) will be located under /tmp/build.
-
-More finegrained configuration:
-===============================
-
-You can specify a config-file for uClibc:
-$ make UCLIBC_CONFIG_FILE=/my/uClibc.config
-
-And you can specify a config-file for busybox:
-$ make BUSYBOX_CONFIG_FILE=/my/busybox.config
-
-To use a non-standard host-compiler (if you do not have 'gcc'),
-make sure that the compiler is in your PATH and that the library paths are
-setup properly, if your compiler is built dynamically:
-$ make HOSTCC=gcc-4.3.orig HOSTCXX=gcc-4.3-mine
-
-Depending on your configuration, there are some targets you can use to
-use menuconfig of certain packages. This includes:
-$ make HOSTCC=gcc-4.3 linux-menuconfig
-$ make HOSTCC=gcc-4.3 uclibc-menuconfig
-$ make HOSTCC=gcc-4.3 busybox-menuconfig
-
 Please feed suggestions, bug reports, insults, and bribes back to the
 buildroot mailing list: buildroot@buildroot.org
+You can also find us on #buildroot on Freenode IRC.
