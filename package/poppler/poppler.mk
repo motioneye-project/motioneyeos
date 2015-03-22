@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-POPPLER_VERSION = 0.24.5
+POPPLER_VERSION = 0.32.0
 POPPLER_SOURCE = poppler-$(POPPLER_VERSION).tar.xz
 POPPLER_SITE = http://poppler.freedesktop.org
 POPPLER_DEPENDENCIES = fontconfig
@@ -67,6 +67,13 @@ POPPLER_DEPENDENCIES += qt
 POPPLER_CONF_OPTS += --enable-poppler-qt4
 else
 POPPLER_CONF_OPTS += --disable-poppler-qt4
+endif
+
+ifeq ($(BR2_PACKAGE_OPENJPEG),y)
+POPPLER_DEPENDENCIES += openjpeg
+POPPLER_CONF_OPTS += -enable-libopenjpeg=openjpeg2
+else
+POPPLER_CONF_OPTS += -enable-libopenjpeg=none
 endif
 
 $(eval $(autotools-package))
