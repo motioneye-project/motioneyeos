@@ -117,6 +117,18 @@ config BR2_TARGET_UBOOT_FORMAT_SB
 	depends on BR2_arm
 	bool "u-boot.sb"
 
+config BR2_TARGET_UBOOT_FORMAT_SD
+	depends on BR2_arm
+	bool "u-boot.sd"
+	help
+	  This is Freescale i.MX28 SB format, with a header for booting
+	  from an SD card.
+
+	  U-boot includes an mxsboot tool to generate this format,
+	  starting from 2011.12.
+
+	  See doc/README.mxs (or doc/README.mx28_common before 2013.07)
+
 config BR2_TARGET_UBOOT_FORMAT_CUSTOM
 	bool "Custom (specify below)"
 	help
