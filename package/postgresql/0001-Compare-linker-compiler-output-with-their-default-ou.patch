@@ -1,0 +1,56 @@
+From 58d05b2a57802345f43e628bc0807dbf0116cdcc Mon Sep 17 00:00:00 2001
+From: Max Filippov <jcmvbkbc@gmail.com>
+Date: Fri, 20 Mar 2015 16:37:51 +0300
+Subject: [PATCH] Compare linker/compiler output with their default output
+
+linker and compiler may have noisy output by default, making
+acx_pthread.m4 believe that pthread options that it tries are ignored
+as invalid.
+
+Record default compiler and linker output and see if adding pthread
+option changes that, instead of assuming that linker and compiler are
+silent by default.
+
+Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
+---
+ config/acx_pthread.m4 | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
+
+diff --git a/config/acx_pthread.m4 b/config/acx_pthread.m4
+index 581164b..d254612 100644
+--- a/config/acx_pthread.m4
++++ b/config/acx_pthread.m4
+@@ -80,6 +80,22 @@
+ esac
+ 
+ if test x"$acx_pthread_ok" = xno; then
++
++cat >conftest.$ac_ext <<_ACEOF
++int
++main (int argc, char **argv)
++{
++  (void) argc;
++  (void) argv;
++  return 0;
++}
++_ACEOF
++rm -f conftest.$ac_objext conftest$ac_exeext
++
++# Record the default linker and compiler output
++ld_default_output="`(eval $ac_link 2>&1 1>&5)`"
++cc_default_output="`(eval $ac_compile 2>&1 1>&5)`"
++
+ for flag in $acx_pthread_flags; do
+ 
+         tryPTHREAD_CFLAGS=""
+@@ -143,7 +159,7 @@
+ _ACEOF
+             rm -f conftest.$ac_objext conftest$ac_exeext
+             # Check both linking and compiling, because they might tolerate different options.
+-            if test "`(eval $ac_link 2>&1 1>&5)`" = "" && test "`(eval $ac_compile 2>&1 1>&5)`" = ""; then
++            if test "`(eval $ac_link 2>&1 1>&5)`" = "$ld_default_output" && test "`(eval $ac_compile 2>&1 1>&5)`" = "$cc_default_output"; then
+                 # we continue with more flags because Linux needs -lpthread
+                 # for libpq builds on PostgreSQL.  The test above only
+                 # tests for building binaries, not shared libraries.
+-- 
+1.8.1.4
