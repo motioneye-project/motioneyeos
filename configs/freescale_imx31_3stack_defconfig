@@ -1,0 +1,22 @@
+# architecture
+BR2_arm=y
+BR2_arm1136jf_s_r0=y
+BR2_ARM_EABIHF=y
+
+# toolchain
+BR2_KERNEL_HEADERS_VERSION=y
+# Note: sadly the Linux kernel will not boot on the i.MX31 PDK, starting with
+# v3.16 and at least up to v4.0-rc4; this is why we use v3.15.y here.
+BR2_DEFAULT_KERNEL_VERSION="3.15.10"
+BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_3_15=y
+
+# system
+BR2_TARGET_GENERIC_GETTY_PORT="ttymxc0"
+
+# kernel
+BR2_LINUX_KERNEL=y
+BR2_LINUX_KERNEL_SAME_AS_HEADERS=y
+BR2_LINUX_KERNEL_DEFCONFIG="imx_v6_v7"
+BR2_LINUX_KERNEL_ZIMAGE=y
+BR2_TARGET_ROOTFS_CPIO_GZIP=y
+BR2_TARGET_ROOTFS_INITRAMFS=y
