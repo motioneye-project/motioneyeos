@@ -24,6 +24,7 @@
 import sys
 import subprocess
 import argparse
+from fnmatch import fnmatch
 
 # Modes of operation:
 MODE_FULL = 1   # draw full dependency graph for all selected packages
@@ -43,6 +44,7 @@ parser.add_argument("--depth", '-d', metavar="DEPTH", dest="depth", type=int, de
                     help="Limit the dependency graph to DEPTH levels; 0 means no limit.")
 parser.add_argument("--stop-on", "-s", metavar="PACKAGE", dest="stop_list", action="append",
                     help="Do not graph past this package (can be given multiple times)." \
+                       + " Can be a package name or a glob, or" \
                        + " 'virtual' to stop on virtual packages.")
 parser.add_argument("--colours", "-c", metavar="COLOR_LIST", dest="colours",
                     default="lightblue,grey,gainsboro",
@@ -312,8 +314,9 @@ def print_pkg_deps(depth, pkg):
     print_attrs(pkg)
     if pkg not in dict_deps:
         return
-    if pkg in stop_list:
-        return
+    for p in stop_list:
+        if fnmatch(pkg, p):
+            return
     if dict_version.get(pkg) == "virtual" and "virtual" in stop_list:
         return
     if max_depth == 0 or depth < max_depth:
