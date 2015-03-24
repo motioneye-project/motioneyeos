@@ -46,6 +46,8 @@ parser.add_argument("--stop-on", "-s", metavar="PACKAGE", dest="stop_list", acti
                     help="Do not graph past this package (can be given multiple times)." \
                        + " Can be a package name or a glob, or" \
                        + " 'virtual' to stop on virtual packages.")
+parser.add_argument("--exclude", "-x", metavar="PACKAGE", dest="exclude_list", action="append",
+                    help="Like --stop-on, but do not add PACKAGE to the graph.")
 parser.add_argument("--colours", "-c", metavar="COLOR_LIST", dest="colours",
                     default="lightblue,grey,gainsboro",
                     help="Comma-separated list of the three colours to use" \
@@ -70,6 +72,11 @@ if args.stop_list is None:
     stop_list = []
 else:
     stop_list = args.stop_list
+
+if args.exclude_list is None:
+    exclude_list = []
+else:
+    exclude_list = args.exclude_list
 
 transitive = args.transitive
 
@@ -321,8 +328,14 @@ def print_pkg_deps(depth, pkg):
         return
     if max_depth == 0 or depth < max_depth:
         for d in dict_deps[pkg]:
-            print("%s -> %s" % (pkg_node_name(pkg), pkg_node_name(d)))
-            print_pkg_deps(depth+1, d)
+            add = True
+            for p in exclude_list:
+                if fnmatch(d,p):
+                    add = False
+                    break
+            if add:
+                print("%s -> %s" % (pkg_node_name(pkg), pkg_node_name(d)))
+                print_pkg_deps(depth+1, d)
 
 # Start printing the graph data
 print("digraph G {")
