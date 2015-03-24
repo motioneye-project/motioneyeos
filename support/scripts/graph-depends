@@ -36,11 +36,14 @@ max_depth = 0
 # Whether to draw the transitive dependencies
 transitive = True
 
-parser = argparse.ArgumentParser(description="Graph pacakges dependencies")
+parser = argparse.ArgumentParser(description="Graph packages dependencies")
 parser.add_argument("--package", '-p', metavar="PACKAGE",
                     help="Graph the dependencies of PACKAGE")
 parser.add_argument("--depth", '-d', metavar="DEPTH", dest="depth", type=int, default=0,
                     help="Limit the dependency graph to DEPTH levels; 0 means no limit.")
+parser.add_argument("--stop-on", "-s", metavar="PACKAGE", dest="stop_list", action="append",
+                    help="Do not graph past this package (can be given multiple times)." \
+                       + " 'virtual' to stop on virtual packages.")
 parser.add_argument("--colours", "-c", metavar="COLOR_LIST", dest="colours",
                     default="lightblue,grey,gainsboro",
                     help="Comma-separated list of the three colours to use" \
@@ -60,6 +63,11 @@ else:
     rootpkg = args.package
 
 max_depth = args.depth
+
+if args.stop_list is None:
+    stop_list = []
+else:
+    stop_list = args.stop_list
 
 transitive = args.transitive
 
@@ -303,6 +311,10 @@ def print_pkg_deps(depth, pkg):
     done_deps.append(pkg)
     print_attrs(pkg)
     if pkg not in dict_deps:
+        return
+    if pkg in stop_list:
+        return
+    if dict_version.get(pkg) == "virtual" and "virtual" in stop_list:
         return
     if max_depth == 0 or depth < max_depth:
         for d in dict_deps[pkg]:
