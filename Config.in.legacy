@@ -101,6 +101,13 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2015.05"
 
+config BR2_TARGET_GENERIC_PASSWD_DES
+	bool "Encoding passwords with DES has been removed"
+	select BR2_LEGACY
+	help
+	  Paswords can now only be encoded with either of md5, sha256 or sha512.
+	  The default is md5, which is stronger that DES (but still pretty weak).
+
 config BR2_PACKAGE_GTK2_THEME_HICOLOR
 	bool "hicolor (default theme) is a duplicate"
 	select BR2_LEGACY

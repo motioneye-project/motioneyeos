@@ -27,14 +27,6 @@ choice
 
 	  Note: this is used at build-time, and *not* at runtime.
 
-config BR2_TARGET_GENERIC_PASSWD_DES
-	bool "des"
-	help
-	  Use standard 56-bit DES-based crypt(3) to encode passwords.
-
-	  Old, wildly available, but also the weakest, very susceptible to
-	  brute-force attacks.
-
 config BR2_TARGET_GENERIC_PASSWD_MD5
 	bool "md5"
 	help
@@ -67,7 +59,6 @@ endchoice # Passwd encoding
 
 config BR2_TARGET_GENERIC_PASSWD_METHOD
 	string
-	default "des"       if BR2_TARGET_GENERIC_PASSWD_DES
 	default "md5"       if BR2_TARGET_GENERIC_PASSWD_MD5
 	default "sha-256"   if BR2_TARGET_GENERIC_PASSWD_SHA256
 	default "sha-512"   if BR2_TARGET_GENERIC_PASSWD_SHA512
