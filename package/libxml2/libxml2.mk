@@ -16,7 +16,7 @@ ifneq ($(BR2_LARGEFILE),y)
 LIBXML2_CONF_ENV = CC="$(TARGET_CC) $(TARGET_CFLAGS) -DNO_LARGEFILE_SOURCE"
 endif
 
-LIBXML2_CONF_OPTS = --with-gnu-ld --without-python --without-debug --without-lzma
+LIBXML2_CONF_OPTS = --with-gnu-ld --without-python --without-debug
 
 HOST_LIBXML2_DEPENDENCIES = host-pkgconf
 LIBXML2_DEPENDENCIES = host-pkgconf
@@ -28,6 +28,13 @@ LIBXML2_DEPENDENCIES += zlib
 LIBXML2_CONF_OPTS += --with-zlib=$(STAGING_DIR)/usr
 else
 LIBXML2_CONF_OPTS += --without-zlib
+endif
+
+ifeq ($(BR2_PACKAGE_XZ),y)
+LIBXML2_DEPENDENCIES += xz
+LIBXML2_CONF_OPTS += --with-lzma
+else
+LIBXML2_CONF_OPTS += --without-lzma
 endif
 
 LIBXML2_DEPENDENCIES += $(if $(BR2_PACKAGE_LIBICONV),libiconv)
