@@ -186,6 +186,7 @@ config BR2_PACKAGE_OPENOCD_PRESTO
 config BR2_PACKAGE_OPENOCD_OPENJTAG
 	bool "OpenJTAG Programmer"
 	select BR2_PACKAGE_LIBFTDI1
+	select BR2_PACKAGE_LIBUSB_COMPAT # needs usb.h
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libftdi -> libusb
 	depends on BR2_ARCH_HAS_ATOMICS
 	help
