@@ -208,6 +208,14 @@ The +graph-depends+ behaviour can be controlled by setting options in the
 * +--depth N+, +-d N+, to limit the dependency depth to +N+ levels. The
   default, +0+, means no limit.
 
+* +--stop-on PKG+, +-s PKG+, to stop the graph on the package +PKG+.
+  +PKG+ can be an actual package name, a glob, or the keyword 'virtual'
+  (to stop on virtual packages). The package is still present on the
+  graph, but its dependencies are not.
+
+* +--exclude PKG+, +-x PKG+, like +--stop-on+, but also omits +PKG+ from
+  the graph.
+
 * +--transitive+, +--no-transitive+, to draw (or not) the transitive
   dependencies. The default is to not draw transitive dependencies.
 
