@@ -40,4 +40,16 @@ config BR2_PACKAGE_LIBIIO_TESTS
 	help
 	  Install the test programs (iio_info, iio_genxml, iio_readdev).
 
+config BR2_PACKAGE_LIBIIO_BINDINGS_CSHARP
+	bool "Install C# bindings"
+	depends on BR2_PACKAGE_MONO
+	help
+	  Install the C# bindings.
+
+config BR2_PACKAGE_LIBIIO_BINDINGS_PYTHON
+	bool "Install Python bindings"
+	depends on BR2_PACKAGE_PYTHON
+	help
+	  Install the Python bindings.
+
 endif
