@@ -1,5 +1,4 @@
 aiccu.h, common.c, common.h: fixes for deprecated GNUTLS functions and types
-resolver.c: fixes for selection of wrong resolver function under uclibc
 
 Signed-off-by: Michael Rommel <rommel@layer-7.net>
 
@@ -72,33 +71,3 @@ diff -purN aiccu_20070115.orig/common/common.h aiccu_20070115/common/common.h
  #endif
  };
  
-diff -purN aiccu_20070115.orig/common/resolver.c aiccu_20070115/common/resolver.c
---- aiccu_20070115.orig/common/resolver.c	2006-07-23 16:55:14.000000000 +0200
-+++ aiccu_20070115/common/resolver.c	2013-08-31 23:44:31.574866862 +0200
-@@ -26,7 +26,7 @@
- 
- int getrrs(const char *label, int rrtype, void gotrec(unsigned int num, int type, const char *record))
- {
--#ifdef _LINUX
-+#if defined(_LINUX) && !defined(__UCLIBC__)
- 	struct __res_state	res;
- #endif
- 	unsigned char		answer[8192];
-@@ -38,7 +38,7 @@ int getrrs(const char *label, int rrtype
- 	uint16_t		type = 0, class = 0;
- 	uint32_t		ttl = 0;
- 
--#ifdef _LINUX
-+#if defined(_LINUX) && !defined(__UCLIBC__)
- 	memset(&res, 0, sizeof(res));
- 	res.options = RES_DEBUG;
- 	res_ninit(&res);
-@@ -47,7 +47,7 @@ int getrrs(const char *label, int rrtype
- #endif
- 
- 	memset(answer, 0, sizeof(answer));
--#ifdef _LINUX
-+#if defined(_LINUX) && !defined(__UCLIBC__)
- 	ret = res_nquery(&res, label, C_IN, rrtype, answer, sizeof(answer));
- #else
- 	ret = res_query(label, C_IN, rrtype, answer, sizeof(answer));
