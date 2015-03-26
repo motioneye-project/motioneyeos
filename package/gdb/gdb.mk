@@ -6,6 +6,7 @@
 
 GDB_VERSION = $(call qstrip,$(BR2_GDB_VERSION))
 GDB_SITE = $(BR2_GNU_MIRROR)/gdb
+GDB_SOURCE = gdb-$(GDB_VERSION).tar.xz
 
 ifeq ($(BR2_arc),y)
 GDB_SITE = $(call github,foss-for-synopsys-dwc-arc-processors,binutils-gdb,$(GDB_VERSION))
@@ -19,13 +20,11 @@ GDB_SOURCE = gdb-$(GDB_VERSION).tar.gz
 GDB_FROM_GIT = y
 endif
 
-# Starting from 7.8.x, bz2 tarballs no longer available, use .tar.xz
-# instead.
-ifneq ($(filter 7.8.%,$(GDB_VERSION)),)
-GDB_SOURCE = gdb-$(GDB_VERSION).tar.xz
+# Use .tar.bz2 for 7.7.x since there was no .tar.xz release back then
+ifneq ($(filter 7.7.%,$(GDB_VERSION)),)
+GDB_SOURCE = gdb-$(GDB_VERSION).tar.bz2
 endif
 
-GDB_SOURCE ?= gdb-$(GDB_VERSION).tar.bz2
 GDB_LICENSE = GPLv2+ LGPLv2+ GPLv3+ LGPLv3+
 GDB_LICENSE_FILES = COPYING COPYING.LIB COPYING3 COPYING3.LIB
 
