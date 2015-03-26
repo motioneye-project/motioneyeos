@@ -1,5 +1,5 @@
 config BR2_PACKAGE_HOST_E2TOOLS
-	bool "host-e2tools"
+	bool "host e2tools"
 	select BR2_PACKAGE_HOST_E2FSPROGS
 	help
 	  E2tools is a simple set of GPL'ed utilities to read, write,
