@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-HASERL_VERSION = 0.9.33
+HASERL_VERSION = 0.9.35
 HASERL_SITE = http://downloads.sourceforge.net/project/haserl/haserl-devel
 HASERL_LICENSE = GPLv2
 HASERL_LICENSE_FILES = COPYING
