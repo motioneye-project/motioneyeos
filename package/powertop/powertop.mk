@@ -18,4 +18,12 @@ POWERTOP_DEPENDENCIES += gettext
 POWERTOP_CONF_ENV += LIBS='-lintl'
 endif
 
+# Help powertop at finding the right ncurses library depending on
+# which one is available.
+ifeq ($(BR2_PACKAGE_NCURSES_WCHAR),y)
+POWERTOP_CONF_ENV += ac_cv_search_delwin="-lncursesw"
+else
+POWERTOP_CONF_ENV += ac_cv_search_delwin="-lncurses"
+endif
+
 $(eval $(autotools-package))
