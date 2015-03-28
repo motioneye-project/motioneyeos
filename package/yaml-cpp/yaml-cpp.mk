@@ -10,4 +10,6 @@ YAML_CPP_INSTALL_STAGING = YES
 YAML_CPP_LICENSE = MIT
 YAML_CPP_LICENSE_FILES = license.txt
 
+YAML_CPP_DEPENDENCIES = boost
+
 $(eval $(cmake-package))
