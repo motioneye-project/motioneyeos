@@ -166,6 +166,14 @@ else
 MPLAYER_CONF_OPTS += --disable-gif
 endif
 
+# We intentionally don't pass --enable-librtmp to let autodetection
+# find which library to link with.
+ifeq ($(BR2_PACKAGE_RTMPDUMP),y)
+MPLAYER_DEPENDENCIES += rtmpdump
+else
+MPLAYER_CONF_OPTS += --disable-librtmp
+endif
+
 ifeq ($(BR2_PACKAGE_LZO),y)
 MPLAYER_DEPENDENCIES += lzo
 MPLAYER_CONF_OPTS += --enable-liblzo
