@@ -54,6 +54,13 @@ else
 MPLAYER_CONF_OPTS += --disable-termcap
 endif
 
+ifeq ($(BR2_PACKAGE_SAMBA_SMBCLIENT),y)
+MPLAYER_CONF_OPTS += --enable-smb
+MPLAYER_DEPENDENCIES += samba
+else
+MPLAYER_CONF_OPTS += --disable-smb
+endif
+
 ifeq ($(BR2_PACKAGE_LIBDVDREAD),y)
 MPLAYER_CONF_OPTS +=  \
 	--enable-dvdread \
