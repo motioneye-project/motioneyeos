@@ -45,6 +45,14 @@ else
 MPLAYER_CONF_OPTS += --disable-freetype
 endif
 
+# We intentionally don't pass --enable-fontconfig, to let the
+# autodetection find which library to link with.
+ifeq ($(BR2_PACKAGE_FONTCONFIG),y)
+MPLAYER_DEPENDENCIES += fontconfig
+else
+MPLAYER_CONF_OPTS += --disable-fontconfig
+endif
+
 # We intentionally don't pass --enable-termcap, in order to let the
 # autodetection find with which library to link with. Otherwise, we
 # would have to pass it manually.
