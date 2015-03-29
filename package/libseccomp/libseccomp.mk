@@ -4,18 +4,17 @@
 #
 ################################################################################
 
-LIBSECCOMP_VERSION = 2.1.1
-LIBSECCOMP_SITE = http://downloads.sourceforge.net/project/libseccomp/libseccomp-$(LIBSECCOMP_VERSION)
+LIBSECCOMP_VERSION = v2.2.0
+LIBSECCOMP_SITE = $(call github,seccomp,libseccomp,$(LIBSECCOMP_VERSION))
 LIBSECCOMP_LICENSE = LGPLv2.1
 LIBSECCOMP_LICENSE_FILES = LICENSE
 LIBSECCOMP_INSTALL_STAGING = YES
+LIBSECCOMP_AUTORECONF = YES
 
-# Needed for configure to find our system headers:
-LIBSECCOMP_CONF_ENV = SYSROOT=$(STAGING_DIR)
-LIBSECCOMP_MAKE_ENV = $(TARGET_CONFIGURE_OPTS)
-LIBSECCOMP_MAKE_OPTS = SUBDIRS_BUILD=src
-LIBSECCOMP_INSTALL_STAGING_OPTS = SUBDIRS_BUILD=src SUBDIRS_INSTALL="src include" DESTDIR=$(STAGING_DIR) install
-LIBSECCOMP_INSTALL_TARGET_OPTS = SUBDIRS_BUILD=src SUBDIRS_INSTALL="src include" DESTDIR=$(TARGET_DIR) install
+# Needed for autoreconf to work properly, see ./autogen.sh
+define LIBSECCOMP_FIXUP_M4_DIR
+	mkdir $(@D)/m4
+endef
+LIBSECCOMP_POST_EXTRACT_HOOKS += LIBSECCOMP_FIXUP_M4_DIR
 
-# Not a real autotools package, but works quite OK nonetheless
 $(eval $(autotools-package))
