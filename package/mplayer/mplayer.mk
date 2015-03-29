@@ -111,6 +111,12 @@ else
 MPLAYER_CONF_OPTS += --disable-mencoder
 endif
 
+# We intentionally don't pass --disable-ass-internal --enable-ass and
+# let autodetection find which library to link with.
+ifeq ($(BR2_PACKAGE_LIBASS),y)
+MPLAYER_DEPENDENCIES += libass
+endif
+
 ifeq ($(BR2_PACKAGE_TREMOR),y)
 MPLAYER_DEPENDENCIES += tremor
 MPLAYER_CONF_OPTS += --disable-tremor-internal --enable-tremor
