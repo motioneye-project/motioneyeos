@@ -4,16 +4,19 @@
 #
 ################################################################################
 
-OPENVMTOOLS_VERSION = 9.4.6-1770165
+OPENVMTOOLS_VERSION = 9.10.0-2476743
 OPENVMTOOLS_SOURCE = open-vm-tools-$(OPENVMTOOLS_VERSION).tar.gz
-OPENVMTOOLS_SITE = http://downloads.sourceforge.net/project/open-vm-tools/open-vm-tools/stable-9.4.x
+OPENVMTOOLS_SITE = http://downloads.sourceforge.net/project/open-vm-tools/open-vm-tools/stable-9.10.0
 OPENVMTOOLS_LICENSE = LGPLv2.1
 OPENVMTOOLS_LICENSE_FILES = COPYING
-# Autoreconf needed because package is distributed without a configure script
-# See http://sourceforge.net/p/open-vm-tools/mailman/message/32550385/
+# Autoreconf needed or config/missing will run configure again at buildtime
 OPENVMTOOLS_AUTORECONF = YES
-OPENVMTOOLS_CONF_OPTS = --without-icu --without-x --without-gtk2 --without-gtkmm --without-kernel-modules
-OPENVMTOOLS_DEPENDENCIES = libglib2
+OPENVMTOOLS_CONF_OPTS = --with-dnet \
+	--without-icu --without-x --without-gtk2 \
+	--without-gtkmm --without-kernel-modules \
+	--disable-deploypkg --without-xerces
+OPENVMTOOLS_CONF_ENV += CUSTOM_DNET_CPPFLAGS=" "
+OPENVMTOOLS_DEPENDENCIES = libglib2 libdnet
 
 # When libfuse is available, openvmtools can build vmblock-fuse, so
 # make sure that libfuse gets built first
@@ -21,24 +24,19 @@ ifeq ($(BR2_PACKAGE_LIBFUSE),y)
 OPENVMTOOLS_DEPENDENCIES += libfuse
 endif
 
+ifeq ($(BR2_PACKAGE_OPENSSL),y)
+OPENVMTOOLS_CONF_OPTS += --with-ssl
+OPENVMTOOLS_DEPENDENCIES += openssl
+else
+OPENVMTOOLS_CONF_OPTS += --without-ssl
+endif
+
 ifeq ($(BR2_PACKAGE_OPENVMTOOLS_PROCPS),y)
-# Set CUSTOM_PROCPS_LIBS to " " otherwise -L/lib is used by default.
-OPENVMTOOLS_CONF_ENV += CUSTOM_PROCPS_NAME=procps \
-	CUSTOM_PROCPS_LIBS=" "
 OPENVMTOOLS_CONF_OPTS += --with-procps
+OPENVMTOOLS_CONF_ENV += CUSTOM_PROCPS_NAME=procps
 OPENVMTOOLS_DEPENDENCIES += procps-ng
 else
 OPENVMTOOLS_CONF_OPTS += --without-procps
-endif
-
-ifeq ($(BR2_PACKAGE_OPENVMTOOLS_DNET),y)
-# Needed because if it is defined configure will
-# use a different method to check for dnet
-OPENVMTOOLS_CONF_ENV += CUSTOM_DNET_CPPFLAGS=" "
-OPENVMTOOLS_CONF_OPTS += --with-dnet
-OPENVMTOOLS_DEPENDENCIES += libdnet
-else
-OPENVMTOOLS_CONF_OPTS += --without-dnet
 endif
 
 ifeq ($(BR2_PACKAGE_OPENVMTOOLS_PAM),y)
@@ -49,6 +47,7 @@ OPENVMTOOLS_CONF_OPTS += --without-pam
 endif
 
 # symlink needed by lib/system/systemLinux.c (or will cry in /var/log/messages)
+# defined in lib/misc/hostinfoPosix.c
 # /sbin/shutdown needed for Guest OS restart/shutdown from hypervisor
 define OPENVMTOOLS_POST_INSTALL_TARGET_THINGIES
 	ln -fs os-release $(TARGET_DIR)/etc/lfs-release
