@@ -53,6 +53,14 @@ else
 MPLAYER_CONF_OPTS += --disable-fontconfig
 endif
 
+# We intentionally don't pass --enable-fribidi, to let the
+# autodetection find which library to link with.
+ifeq ($(BR2_PACKAGE_LIBFRIBIDI),y)
+MPLAYER_DEPENDENCIES += libfribidi
+else
+MPLAYER_CONF_OPTS += --disable-fribidi
+endif
+
 # We intentionally don't pass --enable-termcap, in order to let the
 # autodetection find with which library to link with. Otherwise, we
 # would have to pass it manually.
