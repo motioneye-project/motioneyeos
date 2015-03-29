@@ -45,6 +45,15 @@ else
 MPLAYER_CONF_OPTS += --disable-freetype
 endif
 
+# We intentionally don't pass --enable-termcap, in order to let the
+# autodetection find with which library to link with. Otherwise, we
+# would have to pass it manually.
+ifeq ($(BR2_PACKAGE_NCURSES),y)
+MPLAYER_DEPENDENCIES += ncurses
+else
+MPLAYER_CONF_OPTS += --disable-termcap
+endif
+
 ifeq ($(BR2_PACKAGE_LIBDVDREAD),y)
 MPLAYER_CONF_OPTS +=  \
 	--enable-dvdread \
