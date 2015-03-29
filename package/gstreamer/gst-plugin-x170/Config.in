@@ -3,6 +3,7 @@ config BR2_PACKAGE_GST_PLUGIN_X170
 	depends on BR2_arm926t
 	# glibc toolchain includes WCHAR and threading for libglib2
 	depends on BR2_TOOLCHAIN_USES_GLIBC # on2-8170-libs
+	depends on BR2_LINUX_KERNEL # on2-8170-libs
 	select BR2_PACKAGE_ON2_8170_LIBS
 	help
 	  GStreamer plug-in to use the Hantro X170 video decoder present on
@@ -10,6 +11,6 @@ config BR2_PACKAGE_GST_PLUGIN_X170
 
 	  http://www.at91.com/linux4sam/bin/view/Linux4SAM/SAM9M10Gstreamer
 
-comment "gst-plugin-x170 needs an (e)glibc toolchain"
+comment "gst-plugin-x170 needs an (e)glibc toolchain and a Linux kernel to be built"
 	depends on BR2_arm926t
-	depends on !BR2_TOOLCHAIN_USES_GLIBC
+	depends on !BR2_LINUX_KERNEL || !BR2_TOOLCHAIN_USES_GLIBC
