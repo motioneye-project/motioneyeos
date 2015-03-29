@@ -99,6 +99,11 @@ else
 MPLAYER_CONF_OPTS += --disable-bluray
 endif
 
+# cdio support is broken in buildroot atm due to missing libcdio-paranoia
+# package and this patch
+# https://github.com/pld-linux/mplayer/blob/master/mplayer-libcdio.patch
+MPLAYER_CONF_OPTS += --disable-libcdio
+
 ifeq ($(BR2_PACKAGE_LIBDVDREAD),y)
 MPLAYER_CONF_OPTS +=  \
 	--enable-dvdread \
