@@ -129,7 +129,7 @@ config BR2_LINUX_KERNEL_PATCH
 	  A space-separated list of patches to apply to the
 	  kernel. Each patch can be described as an URL, a local file
 	  path, or a directory. In the case of a directory, all files
-	  matching linux-*.patch in the directory will be applied.
+	  matching *.patch in the directory will be applied.
 
 #
 # Configuration selection
