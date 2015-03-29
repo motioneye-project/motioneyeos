@@ -151,6 +151,13 @@ ifeq ($(BR2_PACKAGE_LIBASS),y)
 MPLAYER_DEPENDENCIES += libass
 endif
 
+# We intentionally don't pass --enable-libmpeg2 and let autodetection
+# find which library to link with.
+ifeq ($(BR2_PACKAGE_LIBMPEG2),y)
+MPLAYER_DEPENDENCIES += libmpeg2
+MPLAYER_CONF_OPTS += --disable-libmpeg2-internal
+endif
+
 ifeq ($(BR2_PACKAGE_TREMOR),y)
 MPLAYER_DEPENDENCIES += tremor
 MPLAYER_CONF_OPTS += --disable-tremor-internal --enable-tremor
