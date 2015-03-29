@@ -76,7 +76,7 @@ ifeq ($(DL_MODE),DOWNLOAD)
 	$(Q)if test ! -e $(DL_DIR)/$($(PKG)_SOURCE); then \
 		$(call MESSAGE,"Downloading") ; \
 	else \
-		for p in $($(PKG)_PATCH) ; do \
+		for p in $($(PKG)_PATCH) $($(PKG)_EXTRA_DOWNLOADS) ; do \
 			if test ! -e $(DL_DIR)/`basename $$p` ; then \
 				$(call MESSAGE,"Downloading") ; \
 				break ; \
