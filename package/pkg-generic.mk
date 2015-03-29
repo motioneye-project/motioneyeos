@@ -546,6 +546,11 @@ $$($(2)_TARGET_EXTRACT):	$$($(2)_TARGET_SOURCE)
 $(1)-depends:		$$($(2)_FINAL_DEPENDENCIES)
 
 $(1)-source:		$$($(2)_TARGET_SOURCE)
+
+$(1)-external-deps:
+	@for p in $$($(2)_SOURCE) $$($(2)_PATCH) $$($(2)_EXTRA_DOWNLOADS) ; do \
+		echo `basename $$$$p` ; \
+	done
 else
 # In the package override case, the sequence of steps
 #  source, by rsyncing
@@ -564,6 +569,9 @@ $(1)-extract:		$(1)-rsync
 $(1)-rsync:		$$($(2)_TARGET_RSYNC)
 
 $(1)-source:		$$($(2)_TARGET_RSYNC_SOURCE)
+
+$(1)-external-deps:
+	@echo "file://$$($(2)_OVERRIDE_SRCDIR)"
 endif
 
 $(1)-show-version:
