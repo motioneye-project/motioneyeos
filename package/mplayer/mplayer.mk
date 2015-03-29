@@ -138,6 +138,13 @@ else
 MPLAYER_CONF_OPTS += --disable-faad
 endif
 
+ifeq ($(BR2_PACKAGE_LAME),y)
+MPLAYER_DEPENDENCIES += lame
+MPLAYER_CONF_OPTS += --enable-mp3lame
+else
+MPLAYER_CONF_OPTS += --disable-mp3lame
+endif
+
 # We intentionally don't pass --disable-ass-internal --enable-ass and
 # let autodetection find which library to link with.
 ifeq ($(BR2_PACKAGE_LIBASS),y)
