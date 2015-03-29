@@ -61,6 +61,13 @@ else
 MPLAYER_CONF_OPTS += --disable-smb
 endif
 
+ifeq ($(BR2_PACKAGE_LIBBLURAY),y)
+MPLAYER_CONF_OPTS += --enable-bluray
+MPLAYER_DEPENDENCIES += libbluray
+else
+MPLAYER_CONF_OPTS += --disable-bluray
+endif
+
 ifeq ($(BR2_PACKAGE_LIBDVDREAD),y)
 MPLAYER_CONF_OPTS +=  \
 	--enable-dvdread \
