@@ -159,6 +159,13 @@ else
 MPLAYER_CONF_OPTS += --disable-gif
 endif
 
+ifeq ($(BR2_PACKAGE_LZO),y)
+MPLAYER_DEPENDENCIES += lzo
+MPLAYER_CONF_OPTS += --enable-liblzo
+else
+MPLAYER_CONF_OPTS += --disable-liblzo
+endif
+
 MPLAYER_DEPENDENCIES += $(if $(BR2_PACKAGE_LIBTHEORA),libtheora)
 MPLAYER_DEPENDENCIES += $(if $(BR2_PACKAGE_LIBPNG),libpng)
 MPLAYER_DEPENDENCIES += $(if $(BR2_PACKAGE_JPEG),jpeg)
