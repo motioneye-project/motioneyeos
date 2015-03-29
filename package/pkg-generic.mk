@@ -777,6 +777,36 @@ ifneq ($$(call suitable-extractor,$$($(2)_SOURCE)),$$(XZCAT))
 DL_TOOLS_DEPENDENCIES += $$(firstword $$(call suitable-extractor,$$($(2)_SOURCE)))
 endif
 
+# Ensure all virtual targets are PHONY. Listed alphabetically.
+.PHONY:	$(1) \
+	$(1)-all-external-deps \
+	$(1)-all-legal-info \
+	$(1)-all-source \
+	$(1)-build \
+	$(1)-clean-for-rebuild \
+	$(1)-clean-for-reconfigure \
+	$(1)-clean-for-reinstall \
+	$(1)-configure \
+	$(1)-depends \
+	$(1)-dirclean \
+	$(1)-external-deps \
+	$(1)-extract \
+	$(1)-graph-depends \
+	$(1)-install \
+	$(1)-install-host \
+	$(1)-install-images \
+	$(1)-install-staging \
+	$(1)-install-target \
+	$(1)-legal-info \
+	$(1)-patch \
+	$(1)-rebuild \
+	$(1)-reconfigure \
+	$(1)-reinstall \
+	$(1)-rsync \
+	$(1)-show-depends \
+	$(1)-show-version \
+	$(1)-source
+
 endif # $(2)_KCONFIG_VAR
 endef # inner-generic-package
 
