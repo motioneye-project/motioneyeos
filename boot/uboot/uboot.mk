@@ -58,6 +58,10 @@ else ifeq ($(BR2_TARGET_UBOOT_FORMAT_SD),y)
 UBOOT_BIN = u-boot.sd
 UBOOT_MAKE_TARGET = u-boot.sb
 UBOOT_DEPENDENCIES += host-elftosb
+else ifeq ($(BR2_TARGET_UBOOT_FORMAT_NAND),y)
+UBOOT_BIN = u-boot.nand
+UBOOT_MAKE_TARGET = u-boot.sb
+UBOOT_DEPENDENCIES += host-elftosb
 else ifeq ($(BR2_TARGET_UBOOT_FORMAT_CUSTOM),y)
 UBOOT_BIN = $(call qstrip,$(BR2_TARGET_UBOOT_FORMAT_CUSTOM_NAME))
 else
@@ -133,6 +137,12 @@ define UBOOT_BUILD_CMDS
 		$(UBOOT_MAKE_TARGET)
 	$(if $(BR2_TARGET_UBOOT_FORMAT_SD),
 		$(@D)/tools/mxsboot sd $(@D)/u-boot.sb $(@D)/u-boot.sd)
+	$(if $(BR2_TARGET_UBOOT_FORMAT_NAND),
+		$(@D)/tools/mxsboot \
+			-w $(BR2_TARGET_UBOOT_FORMAT_NAND_PAGE_SIZE)	\
+			-o $(BR2_TARGET_UBOOT_FORMAT_NAND_OOB_SIZE)	\
+			-e $(BR2_TARGET_UBOOT_FORMAT_NAND_ERASE_SIZE)	\
+			nand $(@D)/u-boot.sb $(@D)/u-boot.nand)
 endef
 
 define UBOOT_BUILD_OMAP_IFT
@@ -142,6 +152,8 @@ endef
 
 define UBOOT_INSTALL_IMAGES_CMDS
 	cp -dpf $(@D)/$(UBOOT_BIN) $(BINARIES_DIR)/
+	$(if $(BR2_TARGET_UBOOT_FORMAT_NAND),
+		cp -dpf $(@D)/$(UBOOT_MAKE_TARGET) $(BINARIES_DIR))
 	$(if $(BR2_TARGET_UBOOT_SPL),
 		cp -dpf $(@D)/$(call qstrip,$(BR2_TARGET_UBOOT_SPL_NAME)) $(BINARIES_DIR)/)
 	$(if $(BR2_TARGET_UBOOT_ENVIMAGE),

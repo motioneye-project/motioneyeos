@@ -142,6 +142,63 @@ config BR2_TARGET_UBOOT_FORMAT_SD
 
 	  See doc/README.mxs (or doc/README.mx28_common before 2013.07)
 
+config BR2_TARGET_UBOOT_FORMAT_NAND
+	depends on BR2_arm
+	bool "u-boot.nand"
+	help
+	  This is Freescale i.MX28 BootStream format (.sb), with a header
+	  for booting from a NAND flash.
+
+	  U-boot includes an mxsboot tool to generate this format,
+	  starting from 2011.12.
+
+	  There are two possibilities when preparing an image writable to
+	  NAND flash:
+	  1) The NAND was not written at all yet or the BCB (Boot Control
+	  Blocks) is broken. In this case, the NAND image 'u-boot.nand'
+	  needs to written.
+	  2) The NAND flash was already written with a good BCB. This
+	  applies after 'u-boot.nand' was correctly written. There is no
+	  need to write the BCB again. In this case, the bootloader can be
+	  upgraded by writing 'u-boot.sb'.
+
+	  To satisfy both cases, the 'u-boot.nand' image obtained from
+	  mxsboot as well as the U-Boot make target 'u-boot.sb' are copied
+	  to the binaries directory.
+
+	  See doc/README.mxs (or doc/README.mx28_common before 2013.07)
+
+if BR2_TARGET_UBOOT_FORMAT_NAND
+
+config BR2_TARGET_UBOOT_FORMAT_NAND_PAGE_SIZE
+	int "NAND page size"
+	default 2048
+	help
+	  The NAND page size of the targets NAND flash in bytes as a
+	  decimal integer value.
+
+	  The value provided here is passed to the -w option of mxsboot.
+
+config BR2_TARGET_UBOOT_FORMAT_NAND_OOB_SIZE
+	int "NAND OOB size"
+	default 64
+	help
+	  The NAND OOB size of the targets NAND flash in bytes as a
+	  decimal integer value.
+
+	  The value provided here is passed to the -o option of mxsboot.
+
+config BR2_TARGET_UBOOT_FORMAT_NAND_ERASE_SIZE
+	int "NAND erase size"
+	default 131072
+	help
+	  The NAND eraseblock size of the targets NAND flash in bytes as
+	  a decimal integer value.
+
+	  The value provided here is passed to the -e option of mxsboot.
+
+endif
+
 config BR2_TARGET_UBOOT_FORMAT_CUSTOM
 	bool "Custom (specify below)"
 	help
