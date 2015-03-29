@@ -100,6 +100,13 @@ else
 MPLAYER_CONF_OPTS += --disable-live
 endif
 
+ifeq ($(BR2_PACKAGE_GIFLIB),y)
+MPLAYER_DEPENDENCIES += giflib
+MPLAYER_CONF_OPTS += --enable-gif
+else
+MPLAYER_CONF_OPTS += --disable-gif
+endif
+
 MPLAYER_DEPENDENCIES += $(if $(BR2_PACKAGE_LIBTHEORA),libtheora)
 MPLAYER_DEPENDENCIES += $(if $(BR2_PACKAGE_LIBPNG),libpng)
 MPLAYER_DEPENDENCIES += $(if $(BR2_PACKAGE_JPEG),jpeg)
