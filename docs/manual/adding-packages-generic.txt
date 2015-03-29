@@ -219,7 +219,7 @@ information is (assuming the package name is +libfoo+) :
   +LIBFOO_SITE+. If +HOST_LIBFOO_PATCH+ is not specified, it defaults
   to +LIBFOO_PATCH+. Note that patches that are included in Buildroot
   itself use a different mechanism: all files of the form
-  +<packagename>-*.patch+ present in the package directory inside
+  +*.patch+ present in the package directory inside
   Buildroot will be applied to the package after extraction (see
   xref:patch-policy[patching a package]). Finally, patches listed in
   the +LIBFOO_PATCH+ variable are applied _before_ the patches stored

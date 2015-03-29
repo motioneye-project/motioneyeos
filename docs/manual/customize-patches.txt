@@ -33,12 +33,11 @@ follows:
 * If a +series+ file exists in the package directory, then patches are
   applied according to the +series+ file;
 +
-* Otherwise, patch files matching +<packagename>-*.patch+
-  are applied in alphabetical order.
-  So, to ensure they are applied in the right order, it is highly
-  recommended to name the patch files like this:
-  +<packagename>-<number>-<description>.patch+, where +<number>+
-  refers to the 'apply order'.
+* Otherwise, patch files matching +*.patch+ are applied in
+  alphabetical order.  So, to ensure they are applied in the right
+  order, it is highly recommended to name the patch files like this:
+  +<number>-<description>.patch+, where +<number>+ refers to the
+  'apply order'.
 
 For information about how patches are applied for a package, see
 xref:patch-apply-order[]
