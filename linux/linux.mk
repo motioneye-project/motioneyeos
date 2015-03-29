@@ -42,6 +42,12 @@ endif
 
 LINUX_PATCHES = $(call qstrip,$(BR2_LINUX_KERNEL_PATCH))
 
+# We rely on the generic package infrastructure to download and apply
+# remote patches (downloaded from ftp, http or https). For local
+# patches, we can't rely on that infrastructure, because there might
+# be directories in the patch list (unlike for other packages).
+LINUX_PATCH = $(filter ftp://% http://% https://%,$(LINUX_PATCHES))
+
 LINUX_INSTALL_IMAGES = YES
 LINUX_DEPENDENCIES += host-kmod host-lzop
 
@@ -150,29 +156,17 @@ else
 LINUX_IMAGE_PATH = $(KERNEL_ARCH_PATH)/boot/$(LINUX_IMAGE_NAME)
 endif # BR2_LINUX_KERNEL_VMLINUX
 
-define LINUX_DOWNLOAD_PATCHES
-	$(if $(LINUX_PATCHES),
-		@$(call MESSAGE,"Download additional patches"))
-	$(foreach patch,$(filter ftp://% http://% https://%,$(LINUX_PATCHES)),\
-		$(call DOWNLOAD_WGET,$(patch),$(notdir $(patch)))$(sep))
-endef
-
-LINUX_POST_DOWNLOAD_HOOKS += LINUX_DOWNLOAD_PATCHES
-
-define LINUX_APPLY_PATCHES
-	for p in $(LINUX_PATCHES) ; do \
-		if echo $$p | grep -q -E "^ftp://|^http://|^https://" ; then \
-			$(APPLY_PATCHES) $(@D) $(DL_DIR) `basename $$p` || exit 1; \
-		elif test -d $$p ; then \
-			$(APPLY_PATCHES) $(@D) $$p linux-\*.patch || exit 1; \
+define LINUX_APPLY_LOCAL_PATCHES
+	for p in $(filter-out ftp://% http://% https://%,$(LINUX_PATCHES)) ; do \
+		if test -d $$p ; then \
+			$(APPLY_PATCHES) $(@D) $$p linux-\*.patch || exit 1 ; \
 		else \
 			$(APPLY_PATCHES) $(@D) `dirname $$p` `basename $$p` || exit 1; \
 		fi \
 	done
 endef
 
-LINUX_POST_PATCH_HOOKS += LINUX_APPLY_PATCHES
-
+LINUX_POST_PATCH_HOOKS += LINUX_APPLY_LOCAL_PATCHES
 
 ifeq ($(BR2_LINUX_KERNEL_USE_DEFCONFIG),y)
 KERNEL_SOURCE_CONFIG = $(KERNEL_ARCH_PATH)/configs/$(call qstrip,$(BR2_LINUX_KERNEL_DEFCONFIG))_defconfig
