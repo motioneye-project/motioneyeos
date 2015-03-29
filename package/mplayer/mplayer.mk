@@ -53,6 +53,13 @@ else
 MPLAYER_CONF_OPTS += --disable-fontconfig
 endif
 
+ifeq ($(BR2_PACKAGE_LIBENCA),y)
+MPLAYER_CONF_OPTS += --enable-enca
+MPLAYER_DEPENDENCIES += libenca
+else
+MPLAYER_CONF_OPTS += --disable-enca
+endif
+
 # We intentionally don't pass --enable-fribidi, to let the
 # autodetection find which library to link with.
 ifeq ($(BR2_PACKAGE_LIBFRIBIDI),y)
