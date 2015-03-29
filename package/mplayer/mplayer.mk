@@ -118,6 +118,13 @@ else
 MPLAYER_CONF_OPTS += --disable-mencoder
 endif
 
+ifeq ($(BR2_PACKAGE_FAAD2),y)
+MPLAYER_DEPENDENCIES += faad2
+MPLAYER_CONF_OPTS += --enable-faad
+else
+MPLAYER_CONF_OPTS += --disable-faad
+endif
+
 # We intentionally don't pass --disable-ass-internal --enable-ass and
 # let autodetection find which library to link with.
 ifeq ($(BR2_PACKAGE_LIBASS),y)
