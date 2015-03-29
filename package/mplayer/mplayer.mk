@@ -174,6 +174,13 @@ else
 MPLAYER_CONF_OPTS += --disable-librtmp
 endif
 
+ifeq ($(BR2_PACKAGE_SPEEX),y)
+MPLAYER_DEPENDENCIES += speex
+MPLAYER_CONF_OPTS += --enable-speex
+else
+MPLAYER_CONF_OPTS += --disable-speex
+endif
+
 ifeq ($(BR2_PACKAGE_LZO),y)
 MPLAYER_DEPENDENCIES += lzo
 MPLAYER_CONF_OPTS += --enable-liblzo
