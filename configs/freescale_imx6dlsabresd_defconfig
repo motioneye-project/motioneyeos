@@ -3,7 +3,7 @@ BR2_arm=y
 BR2_cortex_a9=y
 
 # patches
-BR2_GLOBAL_PATCH_DIR="board/freescale/imx6sabresd/patches"
+BR2_GLOBAL_PATCH_DIR="board/freescale/imx6sabre/patches"
 
 # toolchain
 BR2_KERNEL_HEADERS_VERSION=y

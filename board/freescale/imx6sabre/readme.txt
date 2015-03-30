@@ -11,12 +11,12 @@ http://cache.freescale.com/files/32bit/doc/quick_start_guide/SABRESDB_IMX6_QSG.p
 Build
 =====
 
-First, configure Buildroot for your SABRESD board.
-For i.MX6Q:
+First, configure Buildroot for your SABRE board.
+For i.MX6Q SABRE SD board:
 
   make freescale_imx6qsabresd_defconfig
 
-For i.MX6DL:
+For i.MX6DL SABRE SD board:
 
   make freescale_imx6dlsabresd_defconfig
 
@@ -44,13 +44,16 @@ and copy the bootloader, kernel, DTBs and root filesystem as needed.
 
 *** WARNING! The script will destroy all the card content. Use with care! ***
 
-  ./board/freescale/imx6sabresd/create-boot-sd.sh <your-sd-device>
+  ./board/freescale/create-boot-sd.sh <your-sd-device>
 
-Boot the SABRESD board
-======================
+Boot the SABRE board
+====================
 
-To boot your newly created system (refer to the SABRESD Quick Start Guide for
-guidance):
+SABRE SD
+--------
+
+To boot your newly created system on a SABRE SD Board (refer to the SABRE SD
+Quick Start Guide for guidance):
 - insert the SD card in the SD3 slot of the board;
 - locate the BOOT dip switches (SW6), set dips 2 and 7 to ON, all others to OFF;
 - connect a Micro USB cable to Debug Port and connect using a terminal emulator
