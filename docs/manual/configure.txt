@@ -109,20 +109,19 @@ most important ones allow to:
  * Change the version of the GCC compiler, binutils and the C library.
 
  * Select a number of toolchain options (uClibc only): whether the
-   toolchain should have largefile support (i.e. support for files
-   larger than 2 GB on 32 bits systems), IPv6 support, RPC support
-   (used mainly for NFS), wide-char support, locale support (for
-   internationalization), C++ support or thread support. Depending on
-   which options you choose, the number of userspace applications and
-   libraries visible in Buildroot menus will change: many applications
-   and libraries require certain toolchain options to be enabled. Most
-   packages show a comment when a certain toolchain option is required
-   to be able to enable those packages. If needed, you can further
-   refine the uClibc configuration by running +make
-   uclibc-menuconfig+. Note however that all packages in Buildroot are
-   tested against the default uClibc configuration bundled in
-   Buildroot: if you deviate from this configuration by removing
-   features from uClibc, some packages may no longer build.
+   toolchain should have IPv6 support, RPC support (used mainly for
+   NFS), wide-char support, locale support (for internationalization),
+   C++ support or thread support. Depending on which options you choose,
+   the number of userspace applications and libraries visible in
+   Buildroot menus will change: many applications and libraries require
+   certain toolchain options to be enabled. Most packages show a comment
+   when a certain toolchain option is required to be able to enable
+   those packages. If needed, you can further refine the uClibc
+   configuration by running +make uclibc-menuconfig+. Note however that
+   all packages in Buildroot are tested against the default uClibc
+   configuration bundled in Buildroot: if you deviate from this
+   configuration by removing features from uClibc, some packages may no
+   longer build.
 
 It is worth noting that whenever one of those options is modified,
 then the entire toolchain and system must be rebuilt. See
@@ -178,8 +177,8 @@ Then, you have three solutions to use an external toolchain:
   external toolchain uses the 'glibc' library, you only have to tell
   whether your toolchain supports C\++ or not and whether it has
   built-in RPC support. If your external toolchain uses the 'uClibc'
-  library, then you have to tell Buildroot if it supports largefile,
-  IPv6, RPC, wide-char, locale, program invocation, threads and
+  library, then you have to tell Buildroot if it supports IPv6,
+  RPC, wide-char, locale, program invocation, threads and
   C++. At the beginning of the execution, Buildroot will tell you if
   the selected options do not match the toolchain configuration.
 

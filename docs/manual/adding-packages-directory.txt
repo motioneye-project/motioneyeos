@@ -124,20 +124,21 @@ is not met.
 An example illustrates both the usage of +select+ and +depends on+.
 
 --------------------------
-config BR2_PACKAGE_ACL
-        bool "acl"
-        select BR2_PACKAGE_ATTR
-        depends on BR2_LARGEFILE
+config BR2_PACKAGE_RRDTOOL
+	bool "rrdtool"
+	depends on BR2_USE_WCHAR
+	select BR2_PACKAGE_FREETYPE
+	select BR2_PACKAGE_LIBART
+	select BR2_PACKAGE_LIBPNG
+	select BR2_PACKAGE_ZLIB
         help
-          POSIX Access Control Lists, which are used to define more
-          fine-grained discretionary access rights for files and
-          directories.
-          This package also provides libacl.
+	  RRDtool is the OpenSource industry standard, high performance
+	  data logging and graphing system for time series data.
 
-          http://savannah.nongnu.org/projects/acl
+	  http://oss.oetiker.ch/rrdtool/
 
-comment "acl needs a toolchain w/ largefile"
-        depends on !BR2_LARGEFILE
+comment "rrdtool needs a toolchain w/ wchar"
+	depends on !BR2_USE_WCHAR
 --------------------------
 
 
@@ -206,10 +207,10 @@ coding style].
 ==== Dependencies on target and toolchain options
 
 Many packages depend on certain options of the toolchain: the choice of
-C library, C++ support, largefile support, thread support, RPC support,
-IPv6 support, wchar support, or dynamic library support. Some packages
-can only be built on certain target architectures, or if an MMU is
-available in the processor.
+C library, C++ support, thread support, RPC support, IPv6 support,
+wchar support, or dynamic library support. Some packages can only be
+built on certain target architectures, or if an MMU is available in the
+processor.
 
 These dependencies have to be expressed with the appropriate 'depends
 on' statements in the Config.in file. Additionally, for dependencies on
@@ -241,7 +242,7 @@ foo needs a toolchain w/ featA, featB, featC
 for example:
 
 --------------------------
-aircrack-ng needs a toolchain w/ largefile, threads
+mpd needs a toolchain w/ C++, threads, wchar
 --------------------------
 
 or
@@ -286,10 +287,6 @@ use in the comment.
 * C++ support
 ** Dependency symbol: +BR2_INSTALL_LIBSTDCPP+
 ** Comment string: `C++`
-
-* largefile support
-** Dependency symbol: +BR2_LARGEFILE+
-** Comment string: +largefile+
 
 * thread support
 ** Dependency symbol: +BR2_TOOLCHAIN_HAS_THREADS+
