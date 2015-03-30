@@ -82,8 +82,7 @@ LIBGTK2_CONF_OPTS += \
 	--x-libraries=$(STAGING_DIR)/usr/lib \
 	--with-gdktarget=x11
 LIBGTK2_DEPENDENCIES += \
-	xlib_libXcomposite fontconfig xlib_libX11 \
-	xlib_libXext xlib_libXrender
+	fontconfig xlib_libX11 xlib_libXext xlib_libXrender
 
 ifeq ($(BR2_PACKAGE_XLIB_LIBXINERAMA),y)
 	LIBGTK2_CONF_OPTS += --enable-xinerama
