@@ -32,9 +32,7 @@ APR_CONF_ENV += apr_cv_pthreads_lib="-lpthread"
 endif
 
 # Fix lfs detection when cross compiling
-ifeq ($(BR2_LARGEFILE),y)
 APR_CONF_ENV += apr_cv_use_lfs64=yes
-endif
 
 define APR_CLEANUP_UNNEEDED_FILES
 	$(RM) -rf $(TARGET_DIR)/usr/build-1/

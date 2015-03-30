@@ -42,11 +42,7 @@ else
 QT5BASE_CONFIGURE_OPTS += -shared
 endif
 
-ifeq ($(BR2_LARGEFILE),y)
 QT5BASE_CONFIGURE_OPTS += -largefile
-else
-QT5BASE_CONFIGURE_OPTS += -no-largefile
-endif
 
 ifeq ($(BR2_PACKAGE_QT5BASE_LICENSE_APPROVED),y)
 QT5BASE_CONFIGURE_OPTS += -opensource -confirm-license

@@ -1,6 +1,5 @@
 config BR2_PACKAGE_ZLOG
 	bool "zlog"
-	depends on BR2_LARGEFILE
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on !BR2_STATIC_LIBS
 	help
@@ -9,5 +8,5 @@ config BR2_PACKAGE_ZLOG
 
 	  https://github.com/HardySimpson/zlog
 
-comment "zlog needs a toolchain w/ threads, largefile, dynamic library"
-	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_LARGEFILE || BR2_STATIC_LIBS
+comment "zlog needs a toolchain w/ threads, dynamic library"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS

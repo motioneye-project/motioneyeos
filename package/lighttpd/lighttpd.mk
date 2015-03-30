@@ -13,8 +13,7 @@ LIGHTTPD_LICENSE_FILES = COPYING
 LIGHTTPD_DEPENDENCIES = host-pkgconf
 LIGHTTPD_CONF_OPTS = \
 	--libdir=/usr/lib/lighttpd \
-	--libexecdir=/usr/lib \
-	$(if $(BR2_LARGEFILE),,--disable-lfs)
+	--libexecdir=/usr/lib
 
 ifeq ($(BR2_PACKAGE_LIGHTTPD_OPENSSL),y)
 LIGHTTPD_DEPENDENCIES += openssl

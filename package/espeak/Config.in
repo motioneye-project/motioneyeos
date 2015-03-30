@@ -30,13 +30,8 @@ config BR2_PACKAGE_ESPEAK_AUDIO_BACKEND_ALSA
 
 config BR2_PACKAGE_ESPEAK_AUDIO_BACKEND_PULSEAUDIO
 	bool "pulseaudio"
-	depends on BR2_LARGEFILE # pulseaudio
 	depends on BR2_ARCH_HAS_ATOMICS # pulseaudio
 	select BR2_PACKAGE_PULSEAUDIO
-
-comment "pulseaudio backend needs a toolchain with largefile"
-	depends on !BR2_LARGEFILE
-	depends on BR2_ARCH_HAS_ATOMICS
 
 endchoice
 

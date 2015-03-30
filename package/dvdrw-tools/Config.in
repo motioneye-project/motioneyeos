@@ -1,7 +1,7 @@
-comment "dvdrw-tools needs a toolchain w/ threads, C++, wchar, largefile"
+comment "dvdrw-tools needs a toolchain w/ threads, C++, wchar"
 	depends on BR2_USE_MMU
 	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_INSTALL_LIBSTDCPP || \
-		!BR2_USE_WCHAR || !BR2_LARGEFILE
+		!BR2_USE_WCHAR
 
 config BR2_PACKAGE_DVDRW_TOOLS
 	bool "dvdrw-tools"
@@ -9,7 +9,6 @@ config BR2_PACKAGE_DVDRW_TOOLS
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_USE_WCHAR
-	depends on BR2_LARGEFILE
 	help
 	  The dvd+rw-tools are used to master Blu-ray Disc
 	  and DVD Disc media, both +RW/+R and -RW/-R. Note:

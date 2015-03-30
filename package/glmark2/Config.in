@@ -10,12 +10,10 @@ config BR2_PACKAGE_GLMARK2_GL
 	depends on BR2_PACKAGE_MESA3D_DRI_DRIVER
 
 comment "glmark2 needs an OpenGL or an openGL ES and EGL backend provided by mesa3d"
-	depends on BR2_LARGEFILE
 	depends on !BR2_PACKAGE_GLMARK2_GL && !BR2_PACKAGE_GLMARK2_EGL_GLES
 
 config BR2_PACKAGE_GLMARK2
 	bool "glmark2"
-	depends on BR2_LARGEFILE
 	depends on BR2_PACKAGE_GLMARK2_GL || BR2_PACKAGE_GLMARK2_EGL_GLES
 	select BR2_PACKAGE_JPEG
 	select BR2_PACKAGE_LIBPNG
@@ -24,6 +22,6 @@ config BR2_PACKAGE_GLMARK2
 
 	  https://github.com/glmark2/glmark2
 
-comment "glmark2 needs udev /dev management and a toolchain w/ C++, largefile, NPTL"
-	depends on !BR2_LARGEFILE || !BR2_INSTALL_LIBSTDCPP || \
+comment "glmark2 needs udev /dev management and a toolchain w/ C++, NPTL"
+	depends on !BR2_INSTALL_LIBSTDCPP || \
 		!BR2_TOOLCHAIN_HAS_THREADS_NPTL || !BR2_PACKAGE_HAS_UDEV

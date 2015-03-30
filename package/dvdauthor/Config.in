@@ -17,14 +17,13 @@ if BR2_PACKAGE_DVDAUTHOR
 config BR2_PACKAGE_DVDAUTHOR_DVDUNAUTHOR
 	bool "dvdunauthor"
 	select BR2_PACKAGE_LIBDVDREAD
-	depends on BR2_LARGEFILE # libdvdread
 	depends on !BR2_STATIC_LIBS # libdvdread
 	help
 	  This option enables the dvdunauthor program, which requires
 	  libdvdread.
 
-comment "dvdunauthor needs a toolchain w/ dynamic library, largefile"
-	depends on !BR2_LARGEFILE || BR2_STATIC_LIBS
+comment "dvdunauthor needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS
 
 endif
 

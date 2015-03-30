@@ -68,10 +68,6 @@ define DNSMASQ_ENABLE_LUA
 endef
 endif
 
-ifneq ($(BR2_LARGEFILE),y)
-DNSMASQ_COPTS += -DNO_LARGEFILE
-endif
-
 ifeq ($(BR2_PACKAGE_DBUS),y)
 DNSMASQ_DEPENDENCIES += dbus
 endif

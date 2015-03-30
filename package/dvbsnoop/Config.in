@@ -1,6 +1,5 @@
 config BR2_PACKAGE_DVBSNOOP
 	bool "dvbsnoop"
-	depends on BR2_LARGEFILE
 	help
 	  Dvbsnoop is just a simple tool to analyze, view or debug a transport
 	  stream (TS), program elementary stream (PES) or even a program stream
@@ -20,6 +19,3 @@ config BR2_PACKAGE_DVBSNOOP
 
 	  http://dvbsnoop.sourceforge.net
 	  http://en.wikipedia.org/wiki/DBox2
-
-comment "dvbsnoop needs a toolchain w/ largefile"
-	depends on !BR2_LARGEFILE

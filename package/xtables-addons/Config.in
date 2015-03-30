@@ -1,14 +1,12 @@
 comment "xtables-addons needs a Linux kernel to be built"
 	depends on !BR2_LINUX_KERNEL
 
-comment "xtables-addons needs a toolchain w/ dynamic library, largefile, threads"
-	depends on BR2_STATIC_LIBS || !BR2_LARGEFILE || \
-		!BR2_TOOLCHAIN_HAS_THREADS
+comment "xtables-addons needs a toolchain w/ dynamic library, threads"
+	depends on BR2_STATIC_LIBS || !BR2_TOOLCHAIN_HAS_THREADS
 
 config BR2_PACKAGE_XTABLES_ADDONS
 	bool "xtables-addons"
 	depends on BR2_LINUX_KERNEL
-	depends on BR2_LARGEFILE
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on !BR2_STATIC_LIBS # extensions are .so
 	select BR2_PACKAGE_IPTABLES

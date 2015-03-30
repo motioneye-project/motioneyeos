@@ -13,13 +13,12 @@ config BR2_PACKAGE_LIBTFDI1_LIBFTDIPP1
 	bool "libfdtipp1"
 	select BR2_PACKAGE_BOOST
 	depends on BR2_INSTALL_LIBSTDCPP # boost
-	depends on BR2_LARGEFILE # boost
 	depends on BR2_TOOLCHAIN_HAS_THREADS # boost
 	help
 	  C++ bindings for libftdi
 
-comment "libfdtipp1 needs a toolchain w/ C++, largefile"
-	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_LARGEFILE
+comment "libfdtipp1 needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP
 
 config BR2_PACKAGE_LIBTFDI1_PYTHON_BINDINGS
 	bool "python bindings"

@@ -5,7 +5,6 @@ config BR2_PACKAGE_OPENVMTOOLS
 	depends on BR2_USE_WCHAR # libglib2
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libglib2
 	depends on BR2_TOOLCHAIN_HAS_NATIVE_RPC
-	depends on BR2_LARGEFILE
 	depends on BR2_ENABLE_LOCALE
 	select BR2_PACKAGE_LIBGLIB2
 	help
@@ -54,8 +53,8 @@ comment "PAM support needs a toolchain w/ dynamic library"
 
 endif
 
-comment "openvmtools needs a toolchain w/ wchar, threads, RPC, largefile, locale"
+comment "openvmtools needs a toolchain w/ wchar, threads, RPC, locale"
 	depends on BR2_i386 || BR2_x86_64
 	depends on BR2_USE_MMU
 	depends on !BR2_USE_WCHAR ||!BR2_TOOLCHAIN_HAS_THREADS || \
-	!BR2_TOOLCHAIN_HAS_NATIVE_RPC || !BR2_LARGEFILE || !BR2_ENABLE_LOCALE
+	!BR2_TOOLCHAIN_HAS_NATIVE_RPC || !BR2_ENABLE_LOCALE

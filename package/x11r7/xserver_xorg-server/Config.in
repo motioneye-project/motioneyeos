@@ -64,15 +64,15 @@ choice
 
 config BR2_PACKAGE_XSERVER_XORG_SERVER_MODULAR
 	bool "Modular X.org"
-	depends on BR2_LARGEFILE && BR2_INSTALL_LIBSTDCPP
+	depends on BR2_INSTALL_LIBSTDCPP
 	help
 	  This variant of the X.org server is the full-blown variant,
 	  as used by desktop GNU/Linux distributions. The drivers (for
 	  input and graphics) are built separately from the X.org
 	  server (see the xdriver* packages).
 
-comment "Modular X.org needs a toolchain w/ largefile, C++"
-	depends on !(BR2_LARGEFILE && BR2_INSTALL_LIBSTDCPP)
+comment "Modular X.org needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP
 
 config BR2_PACKAGE_XSERVER_XORG_SERVER_KDRIVE
 	bool "KDrive / TinyX"

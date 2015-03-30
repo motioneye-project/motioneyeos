@@ -1,6 +1,5 @@
 config BR2_PACKAGE_LIBDVDNAV
 	bool "libdvdnav"
-	depends on BR2_LARGEFILE # libdvdread
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on !BR2_STATIC_LIBS # libdvdread
 	select BR2_PACKAGE_LIBDVDREAD
@@ -11,5 +10,5 @@ config BR2_PACKAGE_LIBDVDNAV
 
 	  http://www.mplayerhq.hu
 
-comment "libdvdnav needs a toolchain w/ dynamic library, largefile, threads"
-	depends on !BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS
+comment "libdvdnav needs a toolchain w/ dynamic library, threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS

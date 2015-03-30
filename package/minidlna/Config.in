@@ -1,6 +1,5 @@
 config BR2_PACKAGE_MINIDLNA
 	bool "minidlna"
-	depends on BR2_LARGEFILE # ffmpeg
 	depends on BR2_INET_IPV6 # ffmpeg
 	depends on BR2_USE_WCHAR # flac
 	depends on BR2_USE_MMU # fork
@@ -23,6 +22,6 @@ config BR2_PACKAGE_MINIDLNA
 
 	  http://minidlna.sourceforge.net/
 
-comment "minidlna needs a toolchain w/ largefile, IPv6, threads, wchar"
+comment "minidlna needs a toolchain w/ IPv6, threads, wchar"
 	depends on BR2_USE_MMU
-	depends on !(BR2_LARGEFILE && BR2_INET_IPV6 && BR2_TOOLCHAIN_HAS_THREADS && BR2_USE_WCHAR)
+	depends on !(BR2_INET_IPV6 && BR2_TOOLCHAIN_HAS_THREADS && BR2_USE_WCHAR)

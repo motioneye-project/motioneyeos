@@ -1,13 +1,8 @@
 config BR2_PACKAGE_PIFMRDS
 	bool "pifmrds"
 	depends on BR2_arm
-	depends on BR2_LARGEFILE # libsndfile
 	select BR2_PACKAGE_LIBSNDFILE
 	help
 	  pifmrds, FM-RDS transmitter using the Raspberry Pi's PWM
 
 	  https://github.com/ChristopheJacquet/PiFmRds
-
-comment "pifmrds needs a toolchain w/ largefile"
-	depends on BR2_arm
-	depends on !BR2_LARGEFILE

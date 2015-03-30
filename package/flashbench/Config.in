@@ -1,6 +1,5 @@
 config BR2_PACKAGE_FLASHBENCH
 	bool "flashbench"
-	depends on BR2_LARGEFILE
 	help
 	  Flashbench - Identify characteristics of flash media.
 
@@ -9,6 +8,3 @@ config BR2_PACKAGE_FLASHBENCH
 	  survey.
 
 	  https://wiki.linaro.org/WorkingGroups/KernelConsolidation/Projects/FlashCardSurvey
-
-comment "flashbench needs a toolchain w/ largefile"
-	depends on !BR2_LARGEFILE

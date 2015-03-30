@@ -45,11 +45,7 @@ config BR2_PACKAGE_DNSMASQ_LUA
 config BR2_PACKAGE_DNSMASQ_CONNTRACK
 	bool "conntrack marking support"
 	select BR2_PACKAGE_LIBNETFILTER_CONNTRACK
-	depends on BR2_LARGEFILE
 	help
 	  Enable DNS query connection marking in netfilter.
-
-comment "conntrack marking support needs a toolchain w/ largefile"
-	depends on !BR2_LARGEFILE
 
 endif

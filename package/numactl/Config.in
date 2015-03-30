@@ -2,7 +2,6 @@ config BR2_PACKAGE_NUMACTL
 	bool "numactl"
 	# numactl uses some system calls that are not available on all
 	# architectures.
-	depends on BR2_LARGEFILE
 	depends on BR2_i386 || BR2_mips || BR2_mipsel || \
 		BR2_mips64 || BR2_mips64el || BR2_powerpc || BR2_x86_64
 	help
@@ -11,8 +10,3 @@ config BR2_PACKAGE_NUMACTL
 	  policy to the operating system before running your program.
 
 	  http://oss.sgi.com/projects/libnuma/
-
-comment "numactl needs a toolchain w/ largefile"
-	depends on BR2_i386 || BR2_mips || BR2_mipsel || \
-		BR2_mips64 || BR2_mips64el || BR2_powerpc || BR2_x86_64
-	depends on !BR2_LARGEFILE

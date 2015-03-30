@@ -1,6 +1,5 @@
 config BR2_PACKAGE_LIBDVDREAD
 	bool "libdvdread"
-	depends on BR2_LARGEFILE
 	depends on !BR2_STATIC_LIBS
 	help
 	  libdvdread provides a simple foundation for reading
@@ -8,5 +7,5 @@ config BR2_PACKAGE_LIBDVDREAD
 
 	  http://www.mplayerhq.hu/MPlayer/releases/dvdnav/
 
-comment "libdvdread needs a toolchain w/ dynamic library, largefile"
-	depends on !BR2_LARGEFILE || BR2_STATIC_LIBS
+comment "libdvdread needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS

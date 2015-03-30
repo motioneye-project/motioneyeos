@@ -2,7 +2,6 @@ config BR2_PACKAGE_KEXEC_LITE
 	bool "kexec-lite"
 	depends on BR2_powerpc || BR2_powerpc64
 	depends on !BR2_STATIC_LIBS # dtc, elfutils
-	depends on BR2_LARGEFILE # elfutils
 	depends on BR2_USE_WCHAR # elfutils
 	select BR2_PACKAGE_ELFUTILS
 	select BR2_PACKAGE_DTC
@@ -14,6 +13,6 @@ config BR2_PACKAGE_KEXEC_LITE
 	  This package is a tiny implementation of the kexec userspace
 	  components, for devicetree-based platforms.
 
-comment "kexec-lite needs a toolchain w/ largefile, wchar, dynamic library"
+comment "kexec-lite needs a toolchain w/ wchar, dynamic library"
 	depends on BR2_powerpc || BR2_powerpc64
-	depends on BR2_STATIC_LIBS || !BR2_LARGEFILE || !BR2_USE_WCHAR
+	depends on BR2_STATIC_LIBS || !BR2_USE_WCHAR

@@ -1,6 +1,5 @@
 config BR2_PACKAGE_UDPCAST
 	bool "udpcast"
-	depends on BR2_LARGEFILE
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_USE_MMU # fork()
 	help
@@ -9,9 +8,9 @@ config BR2_PACKAGE_UDPCAST
 
 	  http://www.udpcast.linux.lu/
 
-comment "udpcast needs a toolchain w/ largefile, threads"
+comment "udpcast needs a toolchain w/ threads"
 	depends on BR2_USE_MMU
-	depends on !BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
 
 if BR2_PACKAGE_UDPCAST
 

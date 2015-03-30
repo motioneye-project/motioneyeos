@@ -39,12 +39,11 @@ config BR2_PACKAGE_EXIV2_XMP
 	bool "XMP support"
 	select BR2_PACKAGE_EXPAT
 	depends on BR2_TOOLCHAIN_HAS_THREADS
-	depends on BR2_LARGEFILE
 	help
 	  Build with XMP support
 
-comment "xmp support needs a toolchain w/ threads, and largefile"
-	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_LARGEFILE
+comment "xmp support needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
 
 config BR2_PACKAGE_EXIV2_LENSDATA
 	bool "Nikon lens name database"

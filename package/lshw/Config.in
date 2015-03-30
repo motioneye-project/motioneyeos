@@ -1,7 +1,6 @@
 config BR2_PACKAGE_LSHW
 	bool "lshw"
 	depends on BR2_INSTALL_LIBSTDCPP
-	depends on BR2_LARGEFILE
 	depends on BR2_USE_WCHAR
 	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE
 	help
@@ -10,5 +9,5 @@ config BR2_PACKAGE_LSHW
 
 	  http://ezix.org/project/wiki/HardwareLiSter
 
-comment "lshw needs a toolchain w/ C++, largefile, wchar"
-	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_LARGEFILE || !BR2_USE_WCHAR
+comment "lshw needs a toolchain w/ C++, wchar"
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR

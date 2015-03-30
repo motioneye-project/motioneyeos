@@ -1,6 +1,5 @@
 config BR2_PACKAGE_BTRFS_PROGS
 	bool "btrfs-progs"
-	depends on BR2_LARGEFILE # acl, attr
 	depends on BR2_USE_WCHAR # util-linux
 	depends on BR2_USE_MMU # util-linux
 	depends on BR2_TOOLCHAIN_HAS_THREADS
@@ -17,7 +16,6 @@ config BR2_PACKAGE_BTRFS_PROGS
 
 	  https://btrfs.wiki.kernel.org/index.php/Main_Page
 
-comment "btrfs-progs needs a toolchain w/ largefile, wchar, threads"
+comment "btrfs-progs needs a toolchain w/ wchar, threads"
 	depends on BR2_USE_MMU
-	depends on !BR2_LARGEFILE || !BR2_USE_WCHAR || \
-		!BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS

@@ -2,7 +2,6 @@ config BR2_PACKAGE_LIBFUSE
 	bool "libfuse"
 	# Really doesn't like static, see fuse/lib/fuse.c
 	depends on !BR2_STATIC_LIBS
-	depends on BR2_LARGEFILE
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_USE_MMU # fork()
 	help
@@ -10,6 +9,6 @@ config BR2_PACKAGE_LIBFUSE
 
 	  http://fuse.sourceforge.net/
 
-comment "libfuse needs a toolchain w/ largefile, threads, dynamic library"
+comment "libfuse needs a toolchain w/ threads, dynamic library"
 	depends on BR2_USE_MMU
-	depends on !BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS

@@ -1,11 +1,7 @@
 config BR2_PACKAGE_ATTR
 	bool "attr"
-	depends on BR2_LARGEFILE
 	help
 	  Commands for Manipulating Filesystem Extended Attributes.
 	  This package also provides libattr.
 
 	  http://savannah.nongnu.org/projects/attr
-
-comment "attr needs a toolchain w/ largefile"
-	depends on !BR2_LARGEFILE

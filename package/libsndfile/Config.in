@@ -1,15 +1,8 @@
 config BR2_PACKAGE_LIBSNDFILE
 	bool "libsndfile"
-	# The absence of largefile doesn't prevent libsndfile to
-	# build, but at runtime the code assumes that off_t is 64
-	# bits, and asserts if not.
-	depends on BR2_LARGEFILE
 	help
 	  Libsndfile is a C library for reading and writing files containing
 	  sampled sound (such as MS Windows WAV and the Apple/SGI AIFF format)
 	  through one standard library interface.
 
 	  http://www.mega-nerd.com/libsndfile/
-
-comment "libsndfile needs a toolchain w/ largefile"
-	depends on !BR2_LARGEFILE

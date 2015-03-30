@@ -1,6 +1,5 @@
 config BR2_PACKAGE_LIBNETFILTER_CTHELPER
 	bool "libnetfilter_cthelper"
-	depends on BR2_LARGEFILE
 	select BR2_PACKAGE_LIBMNL
 	help
 	  libnetfilter_cthelper is the userspace library that provides
@@ -8,6 +7,3 @@ config BR2_PACKAGE_LIBNETFILTER_CTHELPER
 	  available since Linux kernel 3.6.
 
 	  http://www.netfilter.org/projects/libnetfilter_cthelper/
-
-comment "libnetfilter_cthelper needs a toolchain w/ largefile"
-	depends on !BR2_LARGEFILE

@@ -1,6 +1,5 @@
 config BR2_PACKAGE_INOTIFY_TOOLS
 	bool "inotify-tools"
-	depends on BR2_LARGEFILE
 	depends on BR2_USE_MMU # fork()
 	help
 	  inotify-tools is a C library and a set of command-line
@@ -10,7 +9,3 @@ config BR2_PACKAGE_INOTIFY_TOOLS
 	  binaries.
 
 	  https://github.com/rvoicilas/inotify-tools
-
-comment "inotify-tools needs a toolchain w/ largefile"
-	depends on BR2_USE_MMU
-	depends on !BR2_LARGEFILE

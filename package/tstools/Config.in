@@ -1,6 +1,5 @@
 config BR2_PACKAGE_TSTOOLS
 	bool "tstools"
-	depends on BR2_LARGEFILE
 	depends on BR2_USE_MMU # fork()
 	help
 	  This is a set of cross-platform command line tools for
@@ -16,7 +15,3 @@ config BR2_PACKAGE_TSTOOLS
 	  used to store data on DVDs.
 
 	  https://code.google.com/p/tstools/
-
-comment "tstools needs a toolchain w/ largefile"
-	depends on !BR2_LARGEFILE
-	depends on BR2_USE_MMU

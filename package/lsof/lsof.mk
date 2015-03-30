@@ -17,9 +17,6 @@ LSOF_LICENSE_FILES = dialects/linux/dproto.h
 LSOF_DEPENDENCIES += $(if $(BR2_PACKAGE_BUSYBOX),busybox)
 
 BR2_LSOF_CFLAGS =
-ifeq ($(BR2_LARGEFILE),)
-BR2_LSOF_CFLAGS += -U_FILE_OFFSET_BITS
-endif
 ifeq ($(BR2_INET_IPV6),)
 BR2_LSOF_CFLAGS += -UHASIPv6
 endif

@@ -1,7 +1,6 @@
 config BR2_PACKAGE_GST_FFMPEG
 	bool "gst-ffmpeg"
 	select BR2_PACKAGE_GST_PLUGINS_BASE
-	depends on BR2_LARGEFILE
 	depends on BR2_INET_IPV6
 	help
 	  GStreamer plugin containing one plugin with a set of elements using
@@ -23,5 +22,5 @@ config BR2_PACKAGE_GST_FFMPEG_GPL
 
 endif
 
-comment "gst-ffmpeg needs a toolchain w/ largefile, IPv6"
-	depends on !(BR2_LARGEFILE && BR2_INET_IPV6)
+comment "gst-ffmpeg needs a toolchain w/ IPv6"
+	depends on !BR2_INET_IPV6

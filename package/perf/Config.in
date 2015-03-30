@@ -1,7 +1,6 @@
 config BR2_PACKAGE_PERF
 	bool "perf"
 	depends on BR2_LINUX_KERNEL
-	depends on BR2_LARGEFILE
 	help
 	  perf (sometimes "Perf Events" or perf tools, originally
 	  "Performance Counters for Linux") - is a performance
@@ -18,5 +17,5 @@ config BR2_PACKAGE_PERF
 
 	  https://perf.wiki.kernel.org/
 
-comment "perf needs a toolchain w/ largefile and a Linux kernel to be built"
-	depends on !BR2_LINUX_KERNEL || !BR2_LARGEFILE
+comment "perf needs a Linux kernel to be built"
+	depends on !BR2_LINUX_KERNEL

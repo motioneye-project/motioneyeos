@@ -15,10 +15,6 @@ CIVETWEB_LIBS = -lpthread -lm -ldl
 CIVETWEB_SYSCONFDIR = /etc
 CIVETWEB_HTMLDIR = /var/www
 
-ifneq ($(BR2_LARGEFILE),y)
-CIVETWEB_COPT += -DSQLITE_DISABLE_LFS
-endif
-
 ifeq ($(BR2_INET_IPV6),y)
 CIVETWEB_CONF_OPTS += WITH_IPV6=1
 endif

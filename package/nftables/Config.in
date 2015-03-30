@@ -1,7 +1,6 @@
 config BR2_PACKAGE_NFTABLES
 	bool "nftables"
 	depends on BR2_INET_IPV6
-	depends on BR2_LARGEFILE
 	depends on BR2_USE_WCHAR
 	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_4
 	select BR2_PACKAGE_GMP
@@ -17,6 +16,6 @@ config BR2_PACKAGE_NFTABLES
 
 	  http://www.netfilter.org/projects/nftables/index.html
 
-comment "nftables needs a toolchain w/ IPv6, largefile, wchar, headers >= 3.4"
-	depends on !BR2_INET_IPV6 || !BR2_LARGEFILE || \
+comment "nftables needs a toolchain w/ IPv6, wchar, headers >= 3.4"
+	depends on !BR2_INET_IPV6 || \
 		!BR2_USE_WCHAR || !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_4

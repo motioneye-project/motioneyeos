@@ -5,7 +5,6 @@ config BR2_PACKAGE_AVRDUDE
 	select BR2_PACKAGE_LIBUSB_COMPAT
 	select BR2_PACKAGE_NCURSES
 	depends on BR2_TOOLCHAIN_HAS_THREADS
-	depends on BR2_LARGEFILE # elfutils
 	depends on BR2_USE_WCHAR # elfutils
 	depends on !BR2_STATIC_LIBS # elfutils
 	depends on !BR2_bfin # elfutils
@@ -15,6 +14,6 @@ config BR2_PACKAGE_AVRDUDE
 
 	  https://github.com/kcuzner/avrdude
 
-comment "avrdude needs a toolchain w/ threads, largefile, wchar, dynamic library"
-	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_LARGEFILE || !BR2_USE_WCHAR || BR2_STATIC_LIBS
+comment "avrdude needs a toolchain w/ threads, wchar, dynamic library"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_USE_WCHAR || BR2_STATIC_LIBS
 	depends on !BR2_bfin

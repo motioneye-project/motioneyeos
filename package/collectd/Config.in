@@ -270,12 +270,8 @@ config BR2_PACKAGE_COLLECTD_MYSQL
 	help
 	  Connects to a MySQL database and issues a "show status" command.
 
-comment "netlink support needs a toolchain w/ largefile"
-	depends on !BR2_LARGEFILE
-
 config BR2_PACKAGE_COLLECTD_NETLINK
 	bool "netlink"
-	depends on BR2_LARGEFILE
 	select BR2_PACKAGE_LIBMNL
 	help
 	  Get statistics for interfaces, qdiscs, classes, and filters.

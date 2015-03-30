@@ -69,10 +69,6 @@ ifeq ($(BR2_STATIC_LIBS),y)
 PERL_CONF_OPTS += --all-static --no-dynaloader
 endif
 
-ifneq ($(BR2_LARGEFILE),y)
-PERL_CONF_OPTS += -Uuselargefiles
-endif
-
 PERL_MODULES = $(call qstrip,$(BR2_PACKAGE_PERL_MODULES))
 ifneq ($(PERL_MODULES),)
 PERL_CONF_OPTS += --only-mod=$(subst $(space),$(comma),$(PERL_MODULES))

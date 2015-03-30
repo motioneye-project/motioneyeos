@@ -1,11 +1,7 @@
 config BR2_PACKAGE_LIBMNL
 	bool "libmnl"
-	depends on BR2_LARGEFILE
 	help
 	  libmnl is a minimalistic user-space library oriented
 	  to Netlink developers.
 
 	  http://netfilter.org/projects/libmnl/
-
-comment "libmnl needs a toolchain w/ largefile"
-	depends on !BR2_LARGEFILE

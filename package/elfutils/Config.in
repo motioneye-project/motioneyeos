@@ -1,12 +1,11 @@
-comment "elfutils needs a toolchain w/ largefile, wchar, dynamic library"
+comment "elfutils needs a toolchain w/ wchar, dynamic library"
 	depends on !BR2_bfin
-	depends on !BR2_LARGEFILE || !BR2_USE_WCHAR || BR2_STATIC_LIBS
+	depends on !BR2_USE_WCHAR || BR2_STATIC_LIBS
 
 config BR2_PACKAGE_ELFUTILS
 	bool "elfutils"
 	select BR2_PACKAGE_ARGP_STANDALONE if BR2_TOOLCHAIN_USES_UCLIBC
 	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT
-	depends on BR2_LARGEFILE
 	depends on BR2_USE_WCHAR
 	depends on !BR2_STATIC_LIBS
 	# build issue caused by the _ prefix used on blackfin for

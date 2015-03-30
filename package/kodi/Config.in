@@ -2,9 +2,9 @@ config BR2_PACKAGE_KODI_ARCH_SUPPORTS
 	bool
 	default y if BR2_arm || BR2_i386 || BR2_x86_64
 
-comment "kodi needs a toolchain w/ C++, IPv6, largefile, threads, wchar"
+comment "kodi needs a toolchain w/ C++, IPv6, threads, wchar"
 	depends on BR2_PACKAGE_KODI_ARCH_SUPPORTS
-	depends on !BR2_INET_IPV6 || !BR2_INSTALL_LIBSTDCPP || !BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_THREADS || !BR2_USE_WCHAR
+	depends on !BR2_INET_IPV6 || !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS || !BR2_USE_WCHAR
 	depends on BR2_USE_MMU
 
 config BR2_PACKAGE_KODI_EGL_GLES
@@ -93,7 +93,6 @@ menuconfig BR2_PACKAGE_KODI
 	select BR2_PACKAGE_ZLIB
 	depends on BR2_INET_IPV6
 	depends on BR2_INSTALL_LIBSTDCPP
-	depends on BR2_LARGEFILE
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_PACKAGE_KODI_EGL_GLES || BR2_PACKAGE_KODI_GL
 	depends on BR2_USE_MMU # python

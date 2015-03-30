@@ -1,6 +1,5 @@
 config BR2_PACKAGE_LZ4
 	bool "lz4"
-	depends on BR2_LARGEFILE
 	help
 	  LZ4 is a very fast lossless compression algorithm, providing
 	  compression speed at 400 MB/s per core, scalable with multi-cores
@@ -9,6 +8,3 @@ config BR2_PACKAGE_LZ4
 	  on multi-core systems.
 
 	  https://code.google.com/p/lz4/
-
-comment "lz4 needs a toolchain w/ largefile"
-	depends on !BR2_LARGEFILE

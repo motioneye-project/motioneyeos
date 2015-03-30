@@ -10,7 +10,6 @@ config BR2_PACKAGE_SYSTEMD_ARCH_SUPPORTS
 config BR2_PACKAGE_SYSTEMD
 	bool "systemd"
 	depends on BR2_INIT_SYSTEMD
-	depends on BR2_LARGEFILE # util-linux
 	depends on BR2_USE_WCHAR # util-linux
 	depends on BR2_INET_IPV6
 	depends on !BR2_STATIC_LIBS # kmod

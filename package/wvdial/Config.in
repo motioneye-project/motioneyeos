@@ -1,7 +1,6 @@
 config BR2_PACKAGE_WVDIAL
 	bool "wvdial"
 	depends on BR2_INSTALL_LIBSTDCPP
-	depends on BR2_LARGEFILE
 	depends on BR2_USE_MMU # wvstreams
 	select BR2_PACKAGE_WVSTREAMS
 	help
@@ -9,6 +8,6 @@ config BR2_PACKAGE_WVDIAL
 
 	  http://wvdial.googlecode.com/
 
-comment "wvdial needs a toolchain w/ C++, largefile"
+comment "wvdial needs a toolchain w/ C++"
 	depends on BR2_USE_MMU
-	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_LARGEFILE
+	depends on !BR2_INSTALL_LIBSTDCPP

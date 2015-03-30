@@ -1,6 +1,5 @@
 config BR2_PACKAGE_LIBUPNP
 	bool "libupnp"
-	depends on BR2_LARGEFILE
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	help
 	  The portable SDK for UPnP(tm) Devices (libupnp) provides developers
@@ -10,5 +9,5 @@ config BR2_PACKAGE_LIBUPNP
 
 	  http://pupnp.sourceforge.net/
 
-comment "libupnp needs a toolchain w/ largefile, threads"
-	depends on !(BR2_LARGEFILE && BR2_TOOLCHAIN_HAS_THREADS)
+comment "libupnp needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS

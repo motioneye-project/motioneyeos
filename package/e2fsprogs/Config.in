@@ -1,7 +1,6 @@
 
 config BR2_PACKAGE_E2FSPROGS
 	bool "e2fsprogs"
-	depends on BR2_LARGEFILE
 	depends on BR2_USE_WCHAR # util-linux
 	depends on BR2_USE_MMU # util-linux/libblkid
 	select BR2_PACKAGE_UTIL_LINUX
@@ -99,5 +98,5 @@ config BR2_PACKAGE_E2FSPROGS_UUIDGEN
 
 endif
 
-comment "e2fsprogs needs a toolchain w/ largefile, wchar"
-	depends on !(BR2_LARGEFILE && BR2_USE_WCHAR)
+comment "e2fsprogs needs a toolchain w/ wchar"
+	depends on !BR2_USE_WCHAR

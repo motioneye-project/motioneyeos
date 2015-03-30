@@ -2,7 +2,6 @@ config BR2_PACKAGE_XORRISO
 	bool "xorriso"
 	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
 	depends on BR2_USE_WCHAR
-	depends on BR2_LARGEFILE
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_USE_MMU # fork()
 	help
@@ -19,6 +18,6 @@ config BR2_PACKAGE_XORRISO
 	  http://libburnia-project.org/
 	  http://www.gnu.org/software/xorriso
 
-comment "xorriso needs a toolchain w/ wchar, largefile, threads"
+comment "xorriso needs a toolchain w/ wchar, threads"
 	depends on BR2_USE_MMU
-	depends on !BR2_USE_WCHAR || !BR2_LARGEFILE || !BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS

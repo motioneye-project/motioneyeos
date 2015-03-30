@@ -1,7 +1,6 @@
 config BR2_PACKAGE_NODEJS
 	bool "nodejs"
 	depends on BR2_INET_IPV6
-	depends on BR2_LARGEFILE
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_arm || BR2_i386 || BR2_x86_64 || BR2_mipsel
@@ -16,11 +15,11 @@ config BR2_PACKAGE_NODEJS
 
 	  http://nodejs.org/
 
-comment "nodejs needs a toolchain w/ C++, IPv6, largefile, threads"
+comment "nodejs needs a toolchain w/ C++, IPv6, threads"
 	depends on BR2_USE_MMU
 	depends on BR2_arm || BR2_i386 || BR2_x86_64 || BR2_mipsel
 	depends on !BR2_ARM_CPU_ARMV4
-	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_LARGEFILE || \
+	depends on !BR2_INSTALL_LIBSTDCPP || \
 		!BR2_TOOLCHAIN_HAS_THREADS || !BR2_INET_IPV6
 
 if BR2_PACKAGE_NODEJS

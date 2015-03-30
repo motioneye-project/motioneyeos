@@ -1,7 +1,6 @@
 config BR2_PACKAGE_ACL
 	bool "acl"
 	select BR2_PACKAGE_ATTR
-	depends on BR2_LARGEFILE
 	help
 	  POSIX Access Control Lists, which are used to define more
 	  fine-grained discretionary access rights for files and
@@ -9,6 +8,3 @@ config BR2_PACKAGE_ACL
 	  This package also provides libacl.
 
 	  http://savannah.nongnu.org/projects/acl
-
-comment "acl needs a toolchain w/ largefile"
-	depends on !BR2_LARGEFILE

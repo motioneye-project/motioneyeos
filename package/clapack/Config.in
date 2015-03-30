@@ -1,6 +1,5 @@
 config BR2_PACKAGE_CLAPACK
 	bool "cblas/clapack"
-	depends on BR2_LARGEFILE
 	depends on !(BR2_mips || BR2_mipsel || BR2_mips64 || BR2_mips64el)
 	# _fpu_control is used on PowerPC, but not available with
 	# uClibc
@@ -25,9 +24,3 @@ config BR2_PACKAGE_CLAPACK_ARITH_H
 
 	  In any case an 'arithchk' program is built (but not installed), to be run
 	  on the target to generate this arith.h header.
-
-comment "cblas/clapack needs a toolchain w/ largefile"
-	depends on !BR2_LARGEFILE
-	depends on !BR2_bfin
-	depends on !(BR2_mips || BR2_mipsel || BR2_mips64 || BR2_mips64el)
-	depends on !(BR2_powerpc && BR2_TOOLCHAIN_USES_UCLIBC)

@@ -1,6 +1,5 @@
 config BR2_PACKAGE_TWOLAME
 	bool "twolame"
-	depends on BR2_LARGEFILE # libsndfile
 	select BR2_PACKAGE_LIBSNDFILE
 	help
 	  TwoLAME is an optimised MPEG Audio Layer 2 (MP2) encoder based on
@@ -8,6 +7,3 @@ config BR2_PACKAGE_TWOLAME
 	  code and portions of LAME.
 
 	  http://www.twolame.org/
-
-comment "twolame needs a toolchain w/ largefile"
-	depends on !BR2_LARGEFILE

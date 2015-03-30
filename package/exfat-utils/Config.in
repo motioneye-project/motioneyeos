@@ -1,11 +1,10 @@
 config BR2_PACKAGE_EXFAT_UTILS
 	bool "exfat-utils"
-	depends on BR2_LARGEFILE
 	depends on BR2_USE_WCHAR
 	help
 	  exFAT filesystem utilities.
 
 	  http://code.google.com/p/exfat/
 
-comment "exfat-utils needs a toolchain w/ largefile, wchar"
-	depends on !BR2_LARGEFILE || !BR2_USE_WCHAR
+comment "exfat-utils needs a toolchain w/ wchar"
+	depends on !BR2_USE_WCHAR

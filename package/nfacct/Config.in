@@ -1,12 +1,8 @@
 config BR2_PACKAGE_NFACCT
 	bool "nfacct"
-	depends on BR2_LARGEFILE
 	select BR2_PACKAGE_LIBNETFILTER_ACCT
 	help
 	  nfacct is the command line tool to create/retrieve/delete
 	  netfilter accounting objects.
 
 	  http://www.netfilter.org/projects/nfacct/
-
-comment "nfacct needs a toolchain w/ largefile"
-	depends on !BR2_LARGEFILE

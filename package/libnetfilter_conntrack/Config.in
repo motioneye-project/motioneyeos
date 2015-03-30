@@ -1,6 +1,5 @@
 config BR2_PACKAGE_LIBNETFILTER_CONNTRACK
 	bool "libnetfilter_conntrack"
-	depends on BR2_LARGEFILE
 	select BR2_PACKAGE_LIBMNL
 	select BR2_PACKAGE_LIBNFNETLINK
 	help
@@ -9,6 +8,3 @@ config BR2_PACKAGE_LIBNETFILTER_CONNTRACK
 	  connection tracking state table.
 
 	  http://www.netfilter.org/projects/libnetfilter_conntrack/
-
-comment "libnetfilter_conntrack needs a toolchain w/ largefile"
-	depends on !BR2_LARGEFILE

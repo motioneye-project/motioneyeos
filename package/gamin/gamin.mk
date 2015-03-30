@@ -16,10 +16,6 @@ GAMIN_CONF_OPTS += --without-python
 
 GAMIN_CONF_ENV = have_abstract_sockets=no
 
-ifneq ($(BR2_LARGEFILE),y)
-GAMIN_CONF_ENV += CC="$(TARGET_CC) $(TARGET_CFLAGS) -DNO_LARGEFILE_SOURCE"
-endif
-
 GAMIN_DEPENDENCIES = libglib2
 
 $(eval $(autotools-package))

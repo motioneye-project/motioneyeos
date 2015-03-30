@@ -1,7 +1,6 @@
 config BR2_PACKAGE_BCACHE_TOOLS
 	bool "bcache tools"
 	depends on BR2_PACKAGE_HAS_UDEV
-	depends on BR2_LARGEFILE # util-linux
 	depends on BR2_USE_WCHAR # util-linux
 	depends on BR2_USE_MMU # util-linux (libblkid)
 	select BR2_PACKAGE_UTIL_LINUX
@@ -17,6 +16,6 @@ config BR2_PACKAGE_BCACHE_TOOLS
 	  This is the user space bcache tools, required to setup the linux
 	  bcache feature of the Linux kernel.
 
-comment "bcache-tools needs udev /dev management and a toolchain w/ largefile, wchar"
+comment "bcache-tools needs udev /dev management and a toolchain w/ wchar"
 	depends on BR2_USE_MMU
-	depends on !BR2_PACKAGE_HAS_UDEV || !BR2_LARGEFILE || !BR2_USE_WCHAR
+	depends on !BR2_PACKAGE_HAS_UDEV || !BR2_USE_WCHAR

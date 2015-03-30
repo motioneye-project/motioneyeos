@@ -54,10 +54,6 @@ LUA_CFLAGS += -DLUA_USE_LINENOISE
 endif
 endif
 
-ifneq ($(BR2_LARGEFILE),y)
-LUA_CFLAGS += -D_FILE_OFFSET_BITS=32
-endif
-
 ifeq ($(BR2_PACKAGE_LUA_32BITS),y)
 define LUA_32BITS_LUACONF
 	$(SED) 's/\/\* #define LUA_32BITS \*\//#define LUA_32BITS/' $(@D)/src/luaconf.h
