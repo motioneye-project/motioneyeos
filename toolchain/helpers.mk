@@ -239,6 +239,9 @@ check_musl = \
 # uClibc configuration of the external toolchain, for a particular
 # feature.
 #
+# If 'Buildroot option name' ($2) is empty it means the uClibc option
+# is mandatory.
+#
 # $1: uClibc macro name
 # $2: Buildroot option name
 # $3: uClibc config file
@@ -246,13 +249,20 @@ check_musl = \
 #
 check_uclibc_feature = \
 	IS_IN_LIBC=`grep -q "\#define $(1) 1" $(3) && echo y` ; \
-	if [ "$($(2))" != "y" -a "$${IS_IN_LIBC}" = "y" ] ; then \
-		echo "$(4) available in C library, please enable $(2)" ; \
-		exit 1 ; \
-	fi ; \
-	if [ "$($(2))" = "y" -a "$${IS_IN_LIBC}" != "y" ] ; then \
-		echo "$(4) not available in C library, please disable $(2)" ; \
-		exit 1 ; \
+	if [ -z "$(2)" ] ; then \
+		if [ "$${IS_IN_LIBC}" != "y" ] ; then \
+			echo "$(4) not available in C library, toolchain unsuitable for Buildroot" ; \
+			exit 1 ; \
+		fi ; \
+	else \
+		if [ "$($(2))" != "y" -a "$${IS_IN_LIBC}" = "y" ] ; then \
+			echo "$(4) available in C library, please enable $(2)" ; \
+			exit 1 ; \
+		fi ; \
+		if [ "$($(2))" = "y" -a "$${IS_IN_LIBC}" != "y" ] ; then \
+			echo "$(4) not available in C library, please disable $(2)" ; \
+			exit 1 ; \
+		fi ; \
 	fi
 
 #
