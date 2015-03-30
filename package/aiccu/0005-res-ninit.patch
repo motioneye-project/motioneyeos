@@ -9,7 +9,7 @@ Signed-off-by: Alex Suykov <alex.suykov@gmail.com>
  int getrrs(const char *label, int rrtype, void gotrec(unsigned int num, int type, const char *record))
  {
 -#ifdef _LINUX
-+#ifdef __GLIBC__
++#if defined(__GLIBC__) && !defined(__UCLIBC__)
  	struct __res_state	res;
  #endif
  	unsigned char		answer[8192];
@@ -18,7 +18,7 @@ Signed-off-by: Alex Suykov <alex.suykov@gmail.com>
  	uint32_t		ttl = 0;
  
 -#ifdef _LINUX
-+#ifdef __GLIBC__
++#if defined(__GLIBC__) && !defined(__UCLIBC__)
  	memset(&res, 0, sizeof(res));
  	res.options = RES_DEBUG;
  	res_ninit(&res);
@@ -27,7 +27,7 @@ Signed-off-by: Alex Suykov <alex.suykov@gmail.com>
  
  	memset(answer, 0, sizeof(answer));
 -#ifdef _LINUX
-+#ifdef __GLIBC__
++#if defined(__GLIBC__) && !defined(__UCLIBC__)
  	ret = res_nquery(&res, label, C_IN, rrtype, answer, sizeof(answer));
  #else
  	ret = res_query(label, C_IN, rrtype, answer, sizeof(answer));
