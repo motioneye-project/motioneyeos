@@ -86,11 +86,6 @@ config BR2_UCLIBC_CONFIG
 	  See also docs/README in this package.
 	  If unsure, use the default.
 
-config BR2_TOOLCHAIN_BUILDROOT_LARGEFILE
-	bool
-	select BR2_LARGEFILE
-	default y
-
 config BR2_TOOLCHAIN_BUILDROOT_INET_IPV6
 	bool "Enable IPv6 support"
 	select BR2_INET_IPV6
