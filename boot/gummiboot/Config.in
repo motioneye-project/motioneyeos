@@ -4,7 +4,6 @@ config BR2_TARGET_GUMMIBOOT
 	select BR2_PACKAGE_GNU_EFI
 	select BR2_PACKAGE_UTIL_LINUX
 	select BR2_PACKAGE_UTIL_LINUX_LIBBLKID
-	depends on BR2_LARGEFILE # util-linux
 	depends on BR2_USE_WCHAR # util-linux
 	help
 	  gummiboot is a simple UEFI boot manager which executes
@@ -24,5 +23,5 @@ config BR2_TARGET_GUMMIBOOT
 
 	  http://freedesktop.org/wiki/Software/gummiboot/
 
-comment "gummiboot needs a toolchain w/ largefile, wchar"
-	depends on !(BR2_LARGEFILE && BR2_USE_WCHAR)
+comment "gummiboot needs a toolchain w/ wchar"
+	depends on !BR2_USE_WCHAR
