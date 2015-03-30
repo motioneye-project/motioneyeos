@@ -5,10 +5,6 @@
 # so put it here instead
 source "package/gdb/Config.in.host"
 
-config BR2_LARGEFILE
-	bool
-	default y
-
 config BR2_INET_IPV6
 	bool
 
