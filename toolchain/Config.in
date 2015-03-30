@@ -9,7 +9,6 @@ config BR2_TOOLCHAIN
 # Should be selected for glibc or eglibc
 config BR2_TOOLCHAIN_USES_GLIBC
 	bool
-	select BR2_LARGEFILE
 	select BR2_INET_IPV6
 	select BR2_USE_WCHAR
 	select BR2_ENABLE_LOCALE
@@ -24,7 +23,6 @@ config BR2_TOOLCHAIN_USES_UCLIBC
 
 config BR2_TOOLCHAIN_USES_MUSL
 	bool
-	select BR2_LARGEFILE
 	select BR2_INET_IPV6
 	select BR2_USE_WCHAR
 	select BR2_ENABLE_LOCALE
