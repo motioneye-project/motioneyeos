@@ -128,4 +128,7 @@ else
 MESA3D_CONF_OPTS += --disable-gles1 --disable-gles2
 endif
 
+# Avoid automatic search of llvm-config
+MESA3D_CONF_OPTS += --with-llvm-prefix=$(STAGING_DIR)/usr/bin
+
 $(eval $(autotools-package))
