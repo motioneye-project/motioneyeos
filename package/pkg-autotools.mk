@@ -201,7 +201,6 @@ define $(2)_CONFIGURE_CMDS
 		--with-fop=no \
 		--disable-dependency-tracking \
 		$$(DISABLE_NLS) \
-		$$(DISABLE_LARGEFILE) \
 		$$(DISABLE_IPV6) \
 		$$(ENABLE_DEBUG) \
 		$$(SHARED_STATIC_LIBS_OPTS) \
