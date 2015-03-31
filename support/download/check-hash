@@ -9,6 +9,15 @@ set -e
 #   $3: the final basename of the file, to which it will be ultimately
 #       saved as, to be able to match it to the corresponding hashes
 #       in the .hash file
+#
+# Exit codes:
+#   0:  the hash file exists and the file to check matches all its hashes,
+#       or the hash file does not exist
+#   1:  unknown command-line option
+#   2:  the hash file exists and the file to check does not match at least
+#       one of its hashes
+#   3:  the hash file exists and there was no hash to check the file against
+#   4:  the hash file exists and at least one hash type is unknown
 
 while getopts :q OPT; do
     case "${OPT}" in
@@ -48,7 +57,7 @@ check_one_hash() {
         *) # Unknown hash, exit with error
             printf "ERROR: unknown hash '%s' for '%s'\n"  \
                    "${_h}" "${base}" >&2
-            exit 1
+            exit 4
             ;;
     esac
 
@@ -64,7 +73,7 @@ check_one_hash() {
     printf "ERROR: got     : %s\n" "${_hash}" >&2
     printf "ERROR: Incomplete download, or man-in-the-middle (MITM) attack\n" >&2
 
-    exit 1
+    exit 2
 }
 
 # Do we know one or more hashes for that file?
@@ -87,7 +96,7 @@ done <"${h_file}"
 if [ ${nb_checks} -eq 0 ]; then
     if [ -n "${BR2_ENFORCE_CHECK_HASH}" ]; then
         printf "ERROR: No hash found for %s\n" "${base}" >&2
-        exit 1
+        exit 3
     else
         printf "WARNING: No hash found for %s\n" "${base}" >&2
     fi
