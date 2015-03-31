@@ -4,14 +4,15 @@
 #
 ################################################################################
 
-HARFBUZZ_VERSION = 0.9.22
+HARFBUZZ_VERSION = 0.9.40
 HARFBUZZ_SITE = http://www.freedesktop.org/software/harfbuzz/release
 HARFBUZZ_SOURCE = harfbuzz-$(HARFBUZZ_VERSION).tar.bz2
 HARFBUZZ_LICENSE = MIT, ISC (ucdn library)
 HARFBUZZ_LICENSE_FILES = COPYING src/hb-ucdn/COPYING
 HARFBUZZ_INSTALL_STAGING = YES
-
 HARFBUZZ_CONF_OPTS = --without-coretext --without-uniscribe --without-graphite2
+# beta libtool version
+HARFBUZZ_AUTORECONF = YES
 
 ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),y)
 # forgets to link test programs with -pthread breaking static link
