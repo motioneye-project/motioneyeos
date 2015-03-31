@@ -45,10 +45,19 @@ main() {
         error "no output specified, use -o\n"
     fi
 
-    # If the output file already exists, do not download it again
+    # If the output file already exists and:
+    # - there's no .hash file: do not download it again and exit promptly
+    # - matches all its hashes: do not download it again and exit promptly
+    # - fails at least one of its hashes: force a re-download
+    # - there's no hash (but a .hash file): consider it a hard error
     if [ -e "${output}" ]; then
         if support/download/check-hash ${quiet} "${hfile}" "${output}" "${output##*/}"; then
             exit 0
+        elif [ ${?} -ne 2 ]; then
+            # Do not remove the file, otherwise it might get re-downloaded
+            # from a later location (i.e. primary -> upstream -> mirror).
+            # Do not print a message, check-hash already did.
+            exit 1
         fi
         rm -f "${output}"
         warn "Re-downloading '%s'...\n" "${output##*/}"
