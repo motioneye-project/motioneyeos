@@ -420,8 +420,9 @@ The format of this file is one line for each file for which to check the
 hash, each line being space-separated, with these three fields:
 
 * the type of hash, one of:
-** +sha1+, +sha224+, +sha256+, +sha384+, +sha512+
+** +sha1+, +sha224+, +sha256+, +sha384+, +sha512+, +none+
 * the hash of the file:
+** for +none+, one or more non-space chars, usually just the string +xxx+
 ** for +sha1+, 40 hexadecimal characters
 ** for +sha224+, 56 hexadecimal characters
 ** for +sha256+, 64 hexadecimal characters
@@ -445,9 +446,14 @@ comment line above the hashes.
 *Note:* the number of spaces does not matter, so one can use spaces to
 properly align the different fields.
 
+The +none+ hash type is reserved to those archives downloaded from a
+repository, like a 'git clone', a 'subversion checkout'... or archives
+downloaded with the xref:github-download-url[github helper].
+
 The example below defines a +sha1+ and a +sha256+ published by upstream for
 the main +libfoo-1.2.3.tar.bz2+ tarball, plus two locally-computed hashes,
-a +sha256+ for a downloaded patch, and a +sha1+ for a downloaded binary blob:
+a +sha256+ for a downloaded patch, a +sha1+ for a downloaded binary blob,
+and an archive with no hash:
 
 ----
 # Hashes from: http://www.foosoftware.org/download/libfoo-1.2.3.tar.bz2.{sha1,sha256}:
@@ -457,6 +463,9 @@ sha256 efc8103cc3bcb06bda6a781532d12701eb081ad83e8f90004b39ab81b65d4369 libfoo-1
 # No upstream hashes for the following:
 sha256 ff52101fb90bbfc3fe9475e425688c660f46216d7e751c4bbdb1dc85cdccacb9 libfoo-fix-blabla.patch
 sha1   2d608f3c318c6b7557d551a5a09314f03452f1a1                         libfoo-data.bin
+
+# Explicitly no hash for that file, comes from a git-clone:
+none   xxx                                                              libfoo-1234.tar.gz
 ----
 
 If the +.hash+ file is present, and it contains one or more hashes for a

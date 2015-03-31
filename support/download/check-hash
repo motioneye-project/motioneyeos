@@ -38,7 +38,11 @@ check_one_hash() {
     # Note: md5 is supported, but undocumented on purpose.
     # Note: sha3 is not supported, since there is currently no implementation
     #       (the NIST has yet to publish the parameters).
+    # Note: 'none' means there is explicitly no hash for that file.
     case "${_h}" in
+        none)
+            return 0
+            ;;
         md5|sha1)                       ;;
         sha224|sha256|sha384|sha512)    ;;
         *) # Unknown hash, exit with error
