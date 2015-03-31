@@ -30,10 +30,10 @@ HPLIP_CONF_OPTS = \
 	--includedir=$(STAGING_DIR)/usr/include
 
 ifeq ($(BR2_PACKAGE_DBUS),y)
-	HPLIP_CONF_OPTS += --enable-dbus-build
-	HPLIP_DEPENDENCIES += dbus
+HPLIP_CONF_OPTS += --enable-dbus-build
+HPLIP_DEPENDENCIES += dbus
 else
-	HPLIP_CONF_OPTS += --disable-dbus-build
+HPLIP_CONF_OPTS += --disable-dbus-build
 endif
 
 define HPLIP_POST_INSTALL_TARGET_FIXUP

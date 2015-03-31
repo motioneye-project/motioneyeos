@@ -22,7 +22,7 @@ FMLIB_MAKE_OPTS = \
 	PREFIX="$(STAGING_DIR)/usr"
 
 ifeq ($(BR2_powerpc_e500mc),y)
-	FMLIB_ARCHTYPE = ppce500mc
+FMLIB_ARCHTYPE = ppce500mc
 endif
 
 define FMLIB_BUILD_CMDS

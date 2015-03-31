@@ -25,10 +25,10 @@ LIBCGROUP_CONF_OPTS = \
 	--disable-initscript-install
 
 ifeq ($(BR2_PACKAGE_LINUX_PAM),y)
-	LIBCGROUP_DEPENDENCIES += linux-pam
-	LIBCGROUP_CONF_OPTS += --enable-pam
+LIBCGROUP_DEPENDENCIES += linux-pam
+LIBCGROUP_CONF_OPTS += --enable-pam
 else
-	LIBCGROUP_CONF_OPTS += --disable-pam
+LIBCGROUP_CONF_OPTS += --disable-pam
 endif
 
 $(eval $(autotools-package))

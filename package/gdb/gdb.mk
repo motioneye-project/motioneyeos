@@ -86,16 +86,16 @@ GDB_CONF_OPTS = \
 	--enable-static
 
 ifeq ($(BR2_PACKAGE_GDB_TUI),y)
-	GDB_CONF_OPTS += --enable-tui
+GDB_CONF_OPTS += --enable-tui
 else
-	GDB_CONF_OPTS += --disable-tui
+GDB_CONF_OPTS += --disable-tui
 endif
 
 ifeq ($(BR2_PACKAGE_GDB_PYTHON),y)
-	GDB_CONF_OPTS += --with-python=$(TOPDIR)/package/gdb/gdb-python-config
-	GDB_DEPENDENCIES += python
+GDB_CONF_OPTS += --with-python=$(TOPDIR)/package/gdb/gdb-python-config
+GDB_DEPENDENCIES += python
 else
-	GDB_CONF_OPTS += --without-python
+GDB_CONF_OPTS += --without-python
 endif
 
 # This removes some unneeded Python scripts and XML target description
@@ -137,16 +137,16 @@ HOST_GDB_CONF_OPTS = \
 	--disable-sim
 
 ifeq ($(BR2_PACKAGE_HOST_GDB_TUI),y)
-	HOST_GDB_CONF_OPTS += --enable-tui
+HOST_GDB_CONF_OPTS += --enable-tui
 else
-	HOST_GDB_CONF_OPTS += --disable-tui
+HOST_GDB_CONF_OPTS += --disable-tui
 endif
 
 ifeq ($(BR2_PACKAGE_HOST_GDB_PYTHON),y)
-	HOST_GDB_CONF_OPTS += --with-python=$(HOST_DIR)/usr/bin/python2
-	HOST_GDB_DEPENDENCIES += host-python
+HOST_GDB_CONF_OPTS += --with-python=$(HOST_DIR)/usr/bin/python2
+HOST_GDB_DEPENDENCIES += host-python
 else
-	HOST_GDB_CONF_OPTS += --without-python
+HOST_GDB_CONF_OPTS += --without-python
 endif
 
 ifeq ($(GDB_FROM_GIT),y)

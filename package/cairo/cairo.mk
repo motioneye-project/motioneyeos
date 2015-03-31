@@ -65,7 +65,7 @@ CAIRO_CONF_ENV = \
 	gl_cv_c_restrict=no
 
 ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),)
-	CAIRO_CONF_ENV += CPPFLAGS="$(TARGET_CPPFLAGS) -DCAIRO_NO_MUTEX=1"
+CAIRO_CONF_ENV += CPPFLAGS="$(TARGET_CPPFLAGS) -DCAIRO_NO_MUTEX=1"
 endif
 
 CAIRO_CONF_OPTS = \
@@ -78,97 +78,97 @@ CAIRO_DEPENDENCIES = host-pkgconf fontconfig pixman
 # DirectFB. Break circular dependency by disabling DirectFB support in Cairo
 # (which is experimental)
 ifeq ($(BR2_PACKAGE_DIRECTFB)x$(BR2_PACKAGE_DIRECTFB_SVG),yx)
-	CAIRO_CONF_OPTS += --enable-directfb
-	CAIRO_DEPENDENCIES += directfb
+CAIRO_CONF_OPTS += --enable-directfb
+CAIRO_DEPENDENCIES += directfb
 else
-	CAIRO_CONF_OPTS += --disable-directfb
+CAIRO_CONF_OPTS += --disable-directfb
 endif
 
 ifeq ($(BR2_PACKAGE_FREETYPE),y)
-	CAIRO_CONF_OPTS += --enable-ft
-	CAIRO_DEPENDENCIES += freetype
+CAIRO_CONF_OPTS += --enable-ft
+CAIRO_DEPENDENCIES += freetype
 else
-	CAIRO_CONF_OPTS += --disable-ft
+CAIRO_CONF_OPTS += --disable-ft
 endif
 
 ifeq ($(BR2_PACKAGE_LIBGLIB2),y)
-	CAIRO_CONF_OPTS += --enable-gobject
-	CAIRO_DEPENDENCIES += libglib2
+CAIRO_CONF_OPTS += --enable-gobject
+CAIRO_DEPENDENCIES += libglib2
 else
-	CAIRO_CONF_OPTS += --disable-gobject
+CAIRO_CONF_OPTS += --disable-gobject
 endif
 
 ifeq ($(BR2_PACKAGE_HAS_LIBGLES),y)
-	CAIRO_CONF_OPTS += --enable-glesv2
-	CAIRO_DEPENDENCIES += libgles
+CAIRO_CONF_OPTS += --enable-glesv2
+CAIRO_DEPENDENCIES += libgles
 else
-	CAIRO_CONF_OPTS += --disable-glesv2
+CAIRO_CONF_OPTS += --disable-glesv2
 endif
 
 ifeq ($(BR2_PACKAGE_HAS_LIBOPENVG),y)
-	CAIRO_CONF_OPTS += --enable-vg
-	CAIRO_DEPENDENCIES += libopenvg
+CAIRO_CONF_OPTS += --enable-vg
+CAIRO_DEPENDENCIES += libopenvg
 else
-	CAIRO_CONF_OPTS += --disable-vg
+CAIRO_CONF_OPTS += --disable-vg
 endif
 
 ifeq ($(BR2_PACKAGE_XORG7),y)
-	CAIRO_CONF_OPTS += --enable-xlib --enable-xcb --with-x
-	CAIRO_DEPENDENCIES += xlib_libX11 xlib_libXext
+CAIRO_CONF_OPTS += --enable-xlib --enable-xcb --with-x
+CAIRO_DEPENDENCIES += xlib_libX11 xlib_libXext
 else
-	CAIRO_CONF_OPTS += --disable-xlib --disable-xcb --without-x
+CAIRO_CONF_OPTS += --disable-xlib --disable-xcb --without-x
 endif
 
 ifeq ($(BR2_PACKAGE_XLIB_LIBXRENDER),y)
-	CAIRO_CONF_OPTS += --enable-xlib-xrender
-	CAIRO_DEPENDENCIES += xlib_libXrender
+CAIRO_CONF_OPTS += --enable-xlib-xrender
+CAIRO_DEPENDENCIES += xlib_libXrender
 else
-	CAIRO_CONF_OPTS += --disable-xlib-xrender
+CAIRO_CONF_OPTS += --disable-xlib-xrender
 endif
 
 ifeq ($(BR2_PACKAGE_CAIRO_PS),y)
-	CAIRO_CONF_OPTS += --enable-ps
-	CAIRO_DEPENDENCIES += zlib
+CAIRO_CONF_OPTS += --enable-ps
+CAIRO_DEPENDENCIES += zlib
 else
-	CAIRO_CONF_OPTS += --disable-ps
+CAIRO_CONF_OPTS += --disable-ps
 endif
 
 ifeq ($(BR2_PACKAGE_CAIRO_PDF),y)
-	CAIRO_CONF_OPTS += --enable-pdf
-	CAIRO_DEPENDENCIES += zlib
+CAIRO_CONF_OPTS += --enable-pdf
+CAIRO_DEPENDENCIES += zlib
 else
-	CAIRO_CONF_OPTS += --disable-pdf
+CAIRO_CONF_OPTS += --disable-pdf
 endif
 
 ifeq ($(BR2_PACKAGE_CAIRO_PNG),y)
-	CAIRO_CONF_OPTS += --enable-png
-	CAIRO_DEPENDENCIES += libpng
+CAIRO_CONF_OPTS += --enable-png
+CAIRO_DEPENDENCIES += libpng
 else
-	CAIRO_CONF_OPTS += --disable-png
+CAIRO_CONF_OPTS += --disable-png
 endif
 
 ifeq ($(BR2_PACKAGE_CAIRO_SCRIPT),y)
-	CAIRO_CONF_OPTS += --enable-script
+CAIRO_CONF_OPTS += --enable-script
 else
-	CAIRO_CONF_OPTS += --disable-script
+CAIRO_CONF_OPTS += --disable-script
 endif
 
 ifeq ($(BR2_PACKAGE_CAIRO_SVG),y)
-	CAIRO_CONF_OPTS += --enable-svg
+CAIRO_CONF_OPTS += --enable-svg
 else
-	CAIRO_CONF_OPTS += --disable-svg
+CAIRO_CONF_OPTS += --disable-svg
 endif
 
 ifeq ($(BR2_PACKAGE_CAIRO_TEE),y)
-	CAIRO_CONF_OPTS += --enable-tee
+CAIRO_CONF_OPTS += --enable-tee
 else
-	CAIRO_CONF_OPTS += --disable-tee
+CAIRO_CONF_OPTS += --disable-tee
 endif
 
 ifeq ($(BR2_PACKAGE_CAIRO_XML),y)
-	CAIRO_CONF_OPTS += --enable-xml
+CAIRO_CONF_OPTS += --enable-xml
 else
-	CAIRO_CONF_OPTS += --disable-xml
+CAIRO_CONF_OPTS += --disable-xml
 endif
 
 $(eval $(autotools-package))

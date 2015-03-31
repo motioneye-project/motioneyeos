@@ -29,44 +29,47 @@ BIND_CONF_OPTS = \
 	--enable-rrl
 
 ifeq ($(BR2_PACKAGE_LIBCAP),y)
-	BIND_CONF_OPTS += --enable-linux-caps
-	BIND_DEPENDENCIES += libcap
+BIND_CONF_OPTS += --enable-linux-caps
+BIND_DEPENDENCIES += libcap
 else
-	BIND_CONF_OPTS += --disable-linux-caps
+BIND_CONF_OPTS += --disable-linux-caps
 endif
 
 ifeq ($(BR2_PACKAGE_LIBXML2),y)
-	BIND_CONF_OPTS += --with-libxml2=$(STAGING_DIR)/usr --enable-newstats
-	BIND_DEPENDENCIES += libxml2
+BIND_CONF_OPTS += --with-libxml2=$(STAGING_DIR)/usr --enable-newstats
+BIND_DEPENDENCIES += libxml2
 else
-	BIND_CONF_OPTS += --with-libxml2=no
+BIND_CONF_OPTS += --with-libxml2=no
 endif
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
-	BIND_DEPENDENCIES += openssl
-	BIND_CONF_ENV += ac_cv_func_EVP_sha256=yes \
-		ac_cv_func_EVP_sha384=yes ac_cv_func_EVP_sha512=yes
-	BIND_CONF_OPTS += --with-openssl=$(STAGING_DIR)/usr LIBS="-lz" \
-		--with-ecdsa=yes
+BIND_DEPENDENCIES += openssl
+BIND_CONF_ENV += \
+	ac_cv_func_EVP_sha256=yes \
+	ac_cv_func_EVP_sha384=yes \
+	ac_cv_func_EVP_sha512=yes
+BIND_CONF_OPTS += \
+	--with-openssl=$(STAGING_DIR)/usr LIBS="-lz" \
+	--with-ecdsa=yes
 # GOST cipher support requires openssl extra engines
 ifeq ($(BR2_PACKAGE_OPENSSL_ENGINES),y)
-	BIND_CONF_OPTS += --with-gost=yes
+BIND_CONF_OPTS += --with-gost=yes
 else
-	BIND_CONF_OPTS += --with-gost=no
+BIND_CONF_OPTS += --with-gost=no
 endif
 else
-	BIND_CONF_OPTS += --with-openssl=no
+BIND_CONF_OPTS += --with-openssl=no
 endif
 
 # Used by dnssec-checkds and dnssec-coverage
 ifeq ($(BR2_PACKAGE_PYTHON)$(BR2_PACKAGE_PYTHON3),)
-	BIND_CONF_OPTS += --with-python=no
+BIND_CONF_OPTS += --with-python=no
 endif
 
 ifeq ($(BR2_PACKAGE_READLINE),y)
-	BIND_DEPENDENCIES += readline
+BIND_DEPENDENCIES += readline
 else
-	BIND_CONF_OPTS += --with-readline=no
+BIND_CONF_OPTS += --with-readline=no
 endif
 
 define BIND_TARGET_REMOVE_SERVER

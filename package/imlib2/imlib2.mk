@@ -17,45 +17,45 @@ IMLIB2_CONF_OPTS = --with-freetype-config=$(STAGING_DIR)/usr/bin/freetype-config
 IMLIB2_CONFIG_SCRIPTS = imlib2-config
 
 ifeq ($(BR2_PACKAGE_IMLIB2_X),y)
-	IMLIB2_CONF_OPTS += --with-x
-	IMLIB2_DEPENDENCIES += xlib_libX11 xlib_libXext
+IMLIB2_CONF_OPTS += --with-x
+IMLIB2_DEPENDENCIES += xlib_libX11 xlib_libXext
 else
-	IMLIB2_CONF_OPTS += --without-x
+IMLIB2_CONF_OPTS += --without-x
 endif
 
 ifeq ($(BR2_PACKAGE_IMLIB2_JPEG),y)
-	IMLIB2_CONF_OPTS += --with-jpeg
-	IMLIB2_DEPENDENCIES += jpeg
+IMLIB2_CONF_OPTS += --with-jpeg
+IMLIB2_DEPENDENCIES += jpeg
 else
-	IMLIB2_CONF_OPTS += --without-jpeg
+IMLIB2_CONF_OPTS += --without-jpeg
 endif
 
 ifeq ($(BR2_PACKAGE_IMLIB2_PNG),y)
-	IMLIB2_CONF_OPTS += --with-png
-	IMLIB2_DEPENDENCIES += libpng
+IMLIB2_CONF_OPTS += --with-png
+IMLIB2_DEPENDENCIES += libpng
 else
-	IMLIB2_CONF_OPTS += --without-png
+IMLIB2_CONF_OPTS += --without-png
 endif
 
 ifeq ($(BR2_PACKAGE_IMLIB2_GIF),y)
-	IMLIB2_CONF_OPTS += --with-gif
-	IMLIB2_DEPENDENCIES += giflib
+IMLIB2_CONF_OPTS += --with-gif
+IMLIB2_DEPENDENCIES += giflib
 else
-	IMLIB2_CONF_OPTS += --without-gif
+IMLIB2_CONF_OPTS += --without-gif
 endif
 
 ifeq ($(BR2_PACKAGE_IMLIB2_TIFF),y)
-	IMLIB2_CONF_OPTS += --with-tiff
-	IMLIB2_DEPENDENCIES += tiff
+IMLIB2_CONF_OPTS += --with-tiff
+IMLIB2_DEPENDENCIES += tiff
 else
-	IMLIB2_CONF_OPTS += --without-tiff
+IMLIB2_CONF_OPTS += --without-tiff
 endif
 
 ifeq ($(BR2_PACKAGE_IMLIB2_ID3),y)
-	IMLIB2_CONF_OPTS += --with-id3
-	IMLIB2_DEPENDENCIES += libid3tag
+IMLIB2_CONF_OPTS += --with-id3
+IMLIB2_DEPENDENCIES += libid3tag
 else
-	IMLIB2_CONF_OPTS += --without-id3
+IMLIB2_CONF_OPTS += --without-id3
 endif
 
 # drop -L<dir> from linker flags

@@ -18,33 +18,33 @@ AIRCRACK_NG_LDFLAGS = $(TARGET_LDFLAGS) \
 
 # libnl support has issues when building static
 ifeq ($(BR2_STATIC_LIBS),y)
-	AIRCRACK_NG_MAKE_OPTS += libnl=false
+AIRCRACK_NG_MAKE_OPTS += libnl=false
 else
-	AIRCRACK_NG_MAKE_OPTS += libnl=true
-	AIRCRACK_NG_DEPENDENCIES += libnl
+AIRCRACK_NG_MAKE_OPTS += libnl=true
+AIRCRACK_NG_DEPENDENCIES += libnl
 endif
 
 ifeq ($(BR2_PACKAGE_LIBPCAP),y)
-	AIRCRACK_NG_DEPENDENCIES += libpcap
-	AIRCRACK_NG_MAKE_OPTS += HAVE_PCAP=yes \
-		$(if $(BR2_STATIC_LIBS),LIBPCAP="-lpcap $(shell $(STAGING_DIR)/usr/bin/pcap-config --static --additional-libs)")
+AIRCRACK_NG_DEPENDENCIES += libpcap
+AIRCRACK_NG_MAKE_OPTS += HAVE_PCAP=yes \
+	$(if $(BR2_STATIC_LIBS),LIBPCAP="-lpcap $(shell $(STAGING_DIR)/usr/bin/pcap-config --static --additional-libs)")
 else
-	AIRCRACK_NG_MAKE_OPTS += HAVE_PCAP=no
+AIRCRACK_NG_MAKE_OPTS += HAVE_PCAP=no
 endif
 
 ifeq ($(BR2_PACKAGE_PCRE),y)
-	AIRCRACK_NG_DEPENDENCIES += pcre
-	AIRCRACK_NG_MAKE_OPTS += pcre=true
+AIRCRACK_NG_DEPENDENCIES += pcre
+AIRCRACK_NG_MAKE_OPTS += pcre=true
 else
-	AIRCRACK_NG_MAKE_OPTS += pcre=false
+AIRCRACK_NG_MAKE_OPTS += pcre=false
 endif
 
 # Duplicate -lpthread, because it is also needed by sqlite
 ifeq ($(BR2_PACKAGE_SQLITE),y)
-	AIRCRACK_NG_DEPENDENCIES += sqlite
-	AIRCRACK_NG_MAKE_OPTS += sqlite=true LIBSQL="-lsqlite3 $(if $(BR2_STATIC_LIBS),-lpthread)"
+AIRCRACK_NG_DEPENDENCIES += sqlite
+AIRCRACK_NG_MAKE_OPTS += sqlite=true LIBSQL="-lsqlite3 $(if $(BR2_STATIC_LIBS),-lpthread)"
 else
-	AIRCRACK_NG_MAKE_OPTS += sqlite=false
+AIRCRACK_NG_MAKE_OPTS += sqlite=false
 endif
 
 define AIRCRACK_NG_BUILD_CMDS

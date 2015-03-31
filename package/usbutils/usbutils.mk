@@ -13,7 +13,7 @@ USBUTILS_LICENSE_FILES = COPYING
 
 # Build after busybox since it's got a lightweight lsusb
 ifeq ($(BR2_PACKAGE_BUSYBOX),y)
-	USBUTILS_DEPENDENCIES += busybox
+USBUTILS_DEPENDENCIES += busybox
 endif
 
 # Nice lsusb.py script only if there's python

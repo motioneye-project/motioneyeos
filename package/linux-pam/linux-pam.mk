@@ -22,8 +22,8 @@ LINUX_PAM_LICENSE = BSD-3c
 LINUX_PAM_LICENSE_FILES = Copyright
 
 ifeq ($(BR2_NEEDS_GETTEXT_IF_LOCALE),y)
-	LINUX_PAM_DEPENDENCIES += gettext
-	LINUX_PAM_MAKE_OPTS += LIBS=-lintl
+LINUX_PAM_DEPENDENCIES += gettext
+LINUX_PAM_MAKE_OPTS += LIBS=-lintl
 endif
 
 # Install default pam config (deny everything)

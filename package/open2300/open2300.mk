@@ -17,10 +17,10 @@ OPEN2300_CFLAGS = $(TARGET_CFLAGS)
 OPEN2300_LDFLAGS = $(TARGET_LDFLAGS)
 
 ifeq ($(BR2_PACKAGE_MYSQL),y)
-	OPEN2300_DEPENDENCIES += mysql
-	OPEN2300_BINS += mysql2300 mysqlhistlog2300
-	OPEN2300_CFLAGS += -I$(STAGING_DIR)/usr/include/mysql
-	OPEN2300_LDFLAGS += -L$(STAGING_DIR)/usr/lib/mysql -lmysqlclient
+OPEN2300_DEPENDENCIES += mysql
+OPEN2300_BINS += mysql2300 mysqlhistlog2300
+OPEN2300_CFLAGS += -I$(STAGING_DIR)/usr/include/mysql
+OPEN2300_LDFLAGS += -L$(STAGING_DIR)/usr/lib/mysql -lmysqlclient
 endif
 
 define OPEN2300_BUILD_CMDS

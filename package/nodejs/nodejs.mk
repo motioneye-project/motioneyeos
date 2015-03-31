@@ -14,7 +14,7 @@ NODEJS_LICENSE = MIT (core code); MIT, Apache and BSD family licenses (Bundled c
 NODEJS_LICENSE_FILES = LICENSE
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
-	NODEJS_DEPENDENCIES += openssl
+NODEJS_DEPENDENCIES += openssl
 endif
 
 # nodejs build system is based on python, but only support python-2.6 or

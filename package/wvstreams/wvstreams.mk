@@ -29,28 +29,28 @@ WVSTREAMS_CONF_OPTS += \
 WVSTREAMS_CONF_ENV += LIBS=-lz
 
 ifneq ($(BR2_STATIC_LIBS),y)
-	WVSTREAMS_CONF_ENV += CFLAGS="$(TARGET_CFLAGS) -fPIC"
+WVSTREAMS_CONF_ENV += CFLAGS="$(TARGET_CFLAGS) -fPIC"
 endif
 
 ifeq ($(BR2_PACKAGE_DBUS),y)
-	WVSTREAMS_DEPENDENCIES += dbus
-	WVSTREAMS_CONF_OPTS += --with-dbus
+WVSTREAMS_DEPENDENCIES += dbus
+WVSTREAMS_CONF_OPTS += --with-dbus
 else
-	WVSTREAMS_CONF_OPTS += --without-dbus
+WVSTREAMS_CONF_OPTS += --without-dbus
 endif
 
 ifeq ($(BR2_PACKAGE_QT),y)
-	WVSTREAMS_DEPENDENCIES += qt
-	WVSTREAMS_CONF_OPTS += --with-qt
+WVSTREAMS_DEPENDENCIES += qt
+WVSTREAMS_CONF_OPTS += --with-qt
 else
-	WVSTREAMS_CONF_OPTS += --without-qt
+WVSTREAMS_CONF_OPTS += --without-qt
 endif
 
 ifeq ($(BR2_PACKAGE_VALGRIND),y)
-	WVSTREAMS_DEPENDENCIES += valgrind
-	WVSTREAMS_CONF_OPTS += --with-valgrind
+WVSTREAMS_DEPENDENCIES += valgrind
+WVSTREAMS_CONF_OPTS += --with-valgrind
 else
-	WVSTREAMS_CONF_OPTS += --without-valgrind
+WVSTREAMS_CONF_OPTS += --without-valgrind
 endif
 
 $(eval $(autotools-package))

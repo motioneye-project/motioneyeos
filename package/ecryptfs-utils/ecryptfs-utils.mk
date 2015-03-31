@@ -19,10 +19,10 @@ ECRYPTFS_UTILS_CONF_ENV = \
 	NSS_LIBS="-lnss3"
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
-	ECRYPTFS_UTILS_CONF_OPTS += --enable-openssl
-	ECRYPTFS_UTILS_DEPENDENCIES += openssl
+ECRYPTFS_UTILS_CONF_OPTS += --enable-openssl
+ECRYPTFS_UTILS_DEPENDENCIES += openssl
 else
-	ECRYPTFS_UTILS_CONF_OPTS += --disable-openssl
+ECRYPTFS_UTILS_CONF_OPTS += --disable-openssl
 endif
 
 $(eval $(autotools-package))

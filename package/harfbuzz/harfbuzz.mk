@@ -19,31 +19,31 @@ HARFBUZZ_CONF_ENV = LDFLAGS="$(TARGET_LDFLAGS) -pthread"
 endif
 
 ifeq ($(BR2_PACKAGE_CAIRO),y)
-	HARFBUZZ_DEPENDENCIES += cairo
-	HARFBUZZ_CONF_OPTS += --with-cairo=yes
+HARFBUZZ_DEPENDENCIES += cairo
+HARFBUZZ_CONF_OPTS += --with-cairo=yes
 else
-	HARFBUZZ_CONF_OPTS += --with-cairo=no
+HARFBUZZ_CONF_OPTS += --with-cairo=no
 endif
 
 ifeq ($(BR2_PACKAGE_FREETYPE),y)
-	HARFBUZZ_DEPENDENCIES += freetype
-	HARFBUZZ_CONF_OPTS += --with-freetype=yes
+HARFBUZZ_DEPENDENCIES += freetype
+HARFBUZZ_CONF_OPTS += --with-freetype=yes
 else
-	HARFBUZZ_CONF_OPTS += --with-freetype=no
+HARFBUZZ_CONF_OPTS += --with-freetype=no
 endif
 
 ifeq ($(BR2_PACKAGE_LIBGLIB2),y)
-	HARFBUZZ_DEPENDENCIES += libglib2
-	HARFBUZZ_CONF_OPTS += --with-glib=yes
+HARFBUZZ_DEPENDENCIES += libglib2
+HARFBUZZ_CONF_OPTS += --with-glib=yes
 else
-	HARFBUZZ_CONF_OPTS += --with-glib=no
+HARFBUZZ_CONF_OPTS += --with-glib=no
 endif
 
 ifeq ($(BR2_PACKAGE_ICU),y)
-	HARFBUZZ_DEPENDENCIES += icu
-	HARFBUZZ_CONF_OPTS += --with-icu=yes
+HARFBUZZ_DEPENDENCIES += icu
+HARFBUZZ_CONF_OPTS += --with-icu=yes
 else
-	HARFBUZZ_CONF_OPTS += --with-icu=no
+HARFBUZZ_CONF_OPTS += --with-icu=no
 endif
 
 $(eval $(autotools-package))

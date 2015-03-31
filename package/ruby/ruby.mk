@@ -14,7 +14,8 @@ HOST_RUBY_DEPENDENCIES = host-pkgconf
 RUBY_MAKE_ENV = $(TARGET_MAKE_ENV)
 RUBY_MAKE = $(MAKE1)
 RUBY_CONF_OPTS = --disable-install-doc --disable-rpath --disable-rubygems
-HOST_RUBY_CONF_OPTS = --disable-install-doc \
+HOST_RUBY_CONF_OPTS = \
+	--disable-install-doc \
 	--with-out-ext=curses,openssl,readline \
 	--without-gmp
 RUBY_LICENSE = Ruby or BSD-2c, BSD-3c, others
@@ -38,31 +39,31 @@ endif
 
 # Force optionals to build before we do
 ifeq ($(BR2_PACKAGE_BERKELEYDB),y)
-	RUBY_DEPENDENCIES += berkeleydb
+RUBY_DEPENDENCIES += berkeleydb
 endif
 ifeq ($(BR2_PACKAGE_GDBM),y)
-	RUBY_DEPENDENCIES += gdbm
+RUBY_DEPENDENCIES += gdbm
 endif
 ifeq ($(BR2_PACKAGE_LIBYAML),y)
-	RUBY_DEPENDENCIES += libyaml
+RUBY_DEPENDENCIES += libyaml
 endif
 ifeq ($(BR2_PACKAGE_NCURSES),y)
-	RUBY_DEPENDENCIES += ncurses
+RUBY_DEPENDENCIES += ncurses
 endif
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
-	RUBY_DEPENDENCIES += openssl
+RUBY_DEPENDENCIES += openssl
 endif
 ifeq ($(BR2_PACKAGE_READLINE),y)
-	RUBY_DEPENDENCIES += readline
+RUBY_DEPENDENCIES += readline
 endif
 ifeq ($(BR2_PACKAGE_ZLIB),y)
-	RUBY_DEPENDENCIES += zlib
+RUBY_DEPENDENCIES += zlib
 endif
 ifeq ($(BR2_PACKAGE_GMP),y)
-	RUBY_DEPENDENCIES += gmp
-	RUBY_CONF_OPTS += --with-gmp
+RUBY_DEPENDENCIES += gmp
+RUBY_CONF_OPTS += --with-gmp
 else
-	RUBY_CONF_OPTS += --without-gmp
+RUBY_CONF_OPTS += --without-gmp
 endif
 
 # workaround for amazing build failure, see

@@ -19,39 +19,39 @@ SLANG_POST_PATCH_HOOKS += SLANG_DISABLE_TERMCAP
 
 # Absolute path hell, sigh...
 ifeq ($(BR2_PACKAGE_LIBPNG),y)
-	SLANG_CONF_OPTS += --with-png=$(STAGING_DIR)/usr
-	SLANG_DEPENDENCIES += libpng
+SLANG_CONF_OPTS += --with-png=$(STAGING_DIR)/usr
+SLANG_DEPENDENCIES += libpng
 else
-	SLANG_CONF_OPTS += --with-png=no
+SLANG_CONF_OPTS += --with-png=no
 endif
 ifeq ($(BR2_PACKAGE_PCRE),y)
-	SLANG_CONF_OPTS += --with-pcre=$(STAGING_DIR)/usr
-	SLANG_DEPENDENCIES += pcre
+SLANG_CONF_OPTS += --with-pcre=$(STAGING_DIR)/usr
+SLANG_DEPENDENCIES += pcre
 else
-	SLANG_CONF_OPTS += --with-pcre=no
+SLANG_CONF_OPTS += --with-pcre=no
 endif
 ifeq ($(BR2_PACKAGE_ZLIB),y)
-	SLANG_CONF_OPTS += --with-z=$(STAGING_DIR)/usr
-	SLANG_DEPENDENCIES += zlib
+SLANG_CONF_OPTS += --with-z=$(STAGING_DIR)/usr
+SLANG_DEPENDENCIES += zlib
 else
-	SLANG_CONF_OPTS += --with-z=no
+SLANG_CONF_OPTS += --with-z=no
 endif
 
 ifeq ($(BR2_PACKAGE_NCURSES),y)
-	SLANG_DEPENDENCIES += ncurses
+SLANG_DEPENDENCIES += ncurses
 else
-	SLANG_CONF_OPTS += ac_cv_path_nc5config=no
+SLANG_CONF_OPTS += ac_cv_path_nc5config=no
 endif
 
 ifeq ($(BR2_PACKAGE_READLINE),y)
-	SLANG_CONF_OPTS += --with-readline=gnu
-	SLANG_DEPENDENCIES += readline
+SLANG_CONF_OPTS += --with-readline=gnu
+SLANG_DEPENDENCIES += readline
 endif
 
 ifeq ($(BR2_STATIC_LIBS),y)
-	SLANG_MAKE_OPTS = static
-	SLANG_INSTALL_STAGING_OPTS = DESTDIR=$(STAGING_DIR) install-static
-	SLANG_INSTALL_TARGET_OPTS = DESTDIR=$(TARGET_DIR) install-static
+SLANG_MAKE_OPTS = static
+SLANG_INSTALL_STAGING_OPTS = DESTDIR=$(STAGING_DIR) install-static
+SLANG_INSTALL_TARGET_OPTS = DESTDIR=$(TARGET_DIR) install-static
 endif
 
 $(eval $(autotools-package))

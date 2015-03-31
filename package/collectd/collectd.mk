@@ -131,28 +131,28 @@ COLLECTD_DEPENDENCIES = \
 
 # include/library fixups
 ifeq ($(BR2_PACKAGE_LIBCURL),y)
-	COLLECTD_CONF_OPTS += --with-libcurl=$(STAGING_DIR)/usr
+COLLECTD_CONF_OPTS += --with-libcurl=$(STAGING_DIR)/usr
 endif
 ifeq ($(BR2_PACKAGE_MYSQL),y)
-	COLLECTD_CONF_OPTS += --with-libmysql=$(STAGING_DIR)/usr
+COLLECTD_CONF_OPTS += --with-libmysql=$(STAGING_DIR)/usr
 endif
 ifeq ($(BR2_PACKAGE_NETSNMP),y)
-	COLLECTD_CONF_OPTS += --with-libnetsnmp=$(STAGING_DIR)/usr/bin/net-snmp-config
+COLLECTD_CONF_OPTS += --with-libnetsnmp=$(STAGING_DIR)/usr/bin/net-snmp-config
 endif
 ifeq ($(BR2_PACKAGE_POSTGRESQL),y)
-	COLLECTD_CONF_OPTS += --with-libpq=$(STAGING_DIR)/usr/bin/pg_config
+COLLECTD_CONF_OPTS += --with-libpq=$(STAGING_DIR)/usr/bin/pg_config
 endif
 ifeq ($(BR2_PACKAGE_YAJL),y)
-	COLLECTD_CONF_OPTS += --with-yajl=$(STAGING_DIR)/usr
+COLLECTD_CONF_OPTS += --with-yajl=$(STAGING_DIR)/usr
 endif
 
 # network can use libgcrypt
 ifeq ($(BR2_PACKAGE_LIBGCRYPT),y)
-	COLLECTD_DEPENDENCIES += libgcrypt
-	COLLECTD_CONF_OPTS += --with-libgcrypt=$(STAGING_DIR)/usr
-	COLLECTD_CONF_ENV += LIBGCRYPT_CONFIG=$(STAGING_DIR)/usr/bin/libgcrypt-config
+COLLECTD_DEPENDENCIES += libgcrypt
+COLLECTD_CONF_OPTS += --with-libgcrypt=$(STAGING_DIR)/usr
+COLLECTD_CONF_ENV += LIBGCRYPT_CONFIG=$(STAGING_DIR)/usr/bin/libgcrypt-config
 else
-	COLLECTD_CONF_OPTS += --with-libgcrypt=no
+COLLECTD_CONF_OPTS += --with-libgcrypt=no
 endif
 
 # released software should not break on minor warnings

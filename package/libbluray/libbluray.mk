@@ -13,19 +13,19 @@ LIBBLURAY_LICENSE_FILES = COPYING
 LIBBLURAY_DEPENDENCIES = host-pkgconf
 
 ifeq ($(BR2_PACKAGE_LIBICONV),y)
-	LIBBLURAY_DEPENDENCIES += libiconv
+LIBBLURAY_DEPENDENCIES += libiconv
 endif
 
 ifeq ($(BR2_PACKAGE_FREETYPE),y)
-	LIBBLURAY_DEPENDENCIES += freetype
+LIBBLURAY_DEPENDENCIES += freetype
 else
-	LIBBLURAY_CONF_OPTS += --without-freetype
+LIBBLURAY_CONF_OPTS += --without-freetype
 endif
 
 ifeq ($(BR2_PACKAGE_LIBXML2),y)
-	LIBBLURAY_DEPENDENCIES += libxml2
+LIBBLURAY_DEPENDENCIES += libxml2
 else
-	LIBBLURAY_CONF_OPTS += --without-libxml2
+LIBBLURAY_CONF_OPTS += --without-libxml2
 endif
 
 $(eval $(autotools-package))

@@ -36,21 +36,22 @@ GNUTLS_CONF_OPTS += $(if $(BR2_PACKAGE_ZLIB),--with-libz-prefix=$(STAGING_DIR)/u
 # gnutls needs libregex, but pcre can be used too
 # The check isn't cross-compile friendly
 GNUTLS_CONF_ENV += libopts_cv_with_libregex=yes
-GNUTLS_CONF_OPTS += --with-regex-header=pcreposix.h \
+GNUTLS_CONF_OPTS += \
+	--with-regex-header=pcreposix.h \
 	--with-libregex-cflags="`$(PKG_CONFIG_HOST_BINARY) libpcreposix --cflags`" \
 	--with-libregex-libs="`$(PKG_CONFIG_HOST_BINARY) libpcreposix --libs`"
 
 # Consider crywrap as part of tools because it needs WCHAR, and it's so too
 ifeq ($(BR2_PACKAGE_GNUTLS_TOOLS),)
-	GNUTLS_CONF_OPTS += --disable-crywrap
+GNUTLS_CONF_OPTS += --disable-crywrap
 endif
 
 # libidn support for nommu must exclude the crywrap wrapper (uses fork)
 GNUTLS_CONF_OPTS += $(if $(BR2_USE_MMU),,--disable-crywrap)
 
 ifeq ($(BR2_PACKAGE_CRYPTODEV_LINUX),y)
-	GNUTLS_CONF_OPTS += --enable-cryptodev
-	GNUTLS_DEPENDENCIES += cryptodev-linux
+GNUTLS_CONF_OPTS += --enable-cryptodev
+GNUTLS_DEPENDENCIES += cryptodev-linux
 endif
 
 # Some examples in doc/examples use wchar

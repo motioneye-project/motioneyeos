@@ -28,27 +28,27 @@ CUPS_DEPENDENCIES = \
 	$(if $(BR2_PACKAGE_TIFF),tiff)
 
 ifeq ($(BR2_PACKAGE_DBUS),y)
-	CUPS_CONF_OPTS += --enable-dbus
-	CUPS_DEPENDENCIES += dbus
+CUPS_CONF_OPTS += --enable-dbus
+CUPS_DEPENDENCIES += dbus
 else
-	CUPS_CONF_OPTS += --disable-dbus
+CUPS_CONF_OPTS += --disable-dbus
 endif
 
 ifeq ($(BR2_PACKAGE_XLIB_LIBX11),y)
-	CUPS_DEPENDENCIES += xlib_libX11
+CUPS_DEPENDENCIES += xlib_libX11
 endif
 
 ifeq ($(BR2_PACKAGE_PYTHON),y)
-	CUPS_CONF_OPTS += --with-python
-	CUPS_DEPENDENCIES += python
+CUPS_CONF_OPTS += --with-python
+CUPS_DEPENDENCIES += python
 else
-	CUPS_CONF_OPTS += --without-python
+CUPS_CONF_OPTS += --without-python
 endif
 
 ifeq ($(BR2_PACKAGE_CUPS_PDFTOPS),y)
-	CUPS_CONF_OPTS += --enable-pdftops
+CUPS_CONF_OPTS += --enable-pdftops
 else
-	CUPS_CONF_OPTS += --disable-pdftops
+CUPS_CONF_OPTS += --disable-pdftops
 endif
 
 # standard autoreconf fails with autoheader failures

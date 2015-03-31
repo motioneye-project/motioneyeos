@@ -14,7 +14,7 @@ NET_TOOLS_LICENSE_FILES = COPYING
 
 # Install after busybox for the full-blown versions
 ifeq ($(BR2_PACKAGE_BUSYBOX),y)
-	NET_TOOLS_DEPENDENCIES += busybox
+NET_TOOLS_DEPENDENCIES += busybox
 endif
 
 define NET_TOOLS_CONFIGURE_CMDS

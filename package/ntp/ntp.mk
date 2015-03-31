@@ -19,29 +19,29 @@ NTP_CONF_OPTS = \
 	--disable-local-libevent
 
 ifneq ($(BR2_INET_IPV6),y)
-	NTP_CONF_ENV += isc_cv_have_in6addr_any=no
+NTP_CONF_ENV += isc_cv_have_in6addr_any=no
 endif
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
-	NTP_CONF_OPTS += --with-crypto
-	NTP_DEPENDENCIES += openssl
+NTP_CONF_OPTS += --with-crypto
+NTP_DEPENDENCIES += openssl
 else
-	NTP_CONF_OPTS += --without-crypto --disable-openssl-random
+NTP_CONF_OPTS += --without-crypto --disable-openssl-random
 endif
 
 ifeq ($(BR2_PACKAGE_NTP_NTPSNMPD),y)
-	NTP_CONF_OPTS += \
-		--with-net-snmp-config=$(STAGING_DIR)/usr/bin/net-snmp-config
-	NTP_DEPENDENCIES += netsnmp
+NTP_CONF_OPTS += \
+	--with-net-snmp-config=$(STAGING_DIR)/usr/bin/net-snmp-config
+NTP_DEPENDENCIES += netsnmp
 else
-	NTP_CONF_OPTS += --without-ntpsnmpd
+NTP_CONF_OPTS += --without-ntpsnmpd
 endif
 
 ifeq ($(BR2_PACKAGE_NTP_NTPD_ATOM_PPS),y)
-	NTP_CONF_OPTS += --enable-ATOM
-	NTP_DEPENDENCIES += pps-tools
+NTP_CONF_OPTS += --enable-ATOM
+NTP_DEPENDENCIES += pps-tools
 else
-	NTP_CONF_OPTS += --disable-ATOM
+NTP_CONF_OPTS += --disable-ATOM
 endif
 
 define NTP_PATCH_FIXUPS

@@ -10,14 +10,18 @@ OPENVPN_SITE = http://swupdate.openvpn.net/community/releases
 OPENVPN_DEPENDENCIES = host-pkgconf
 OPENVPN_LICENSE = GPLv2
 OPENVPN_LICENSE_FILES = COPYRIGHT.GPL
-OPENVPN_CONF_OPTS = --disable-plugin-auth-pam --enable-iproute2 \
+OPENVPN_CONF_OPTS = \
+	--disable-plugin-auth-pam \
+	--enable-iproute2 \
 	$(if $(BR2_STATIC_LIBS),--disable-plugins)
 OPENVPN_CONF_ENV = IFCONFIG=/sbin/ifconfig \
 	NETSTAT=/bin/netstat \
 	ROUTE=/sbin/route
 
 ifeq ($(BR2_PACKAGE_OPENVPN_SMALL),y)
-OPENVPN_CONF_OPTS += --enable-small --disable-plugins \
+OPENVPN_CONF_OPTS += \
+	--enable-small \
+	--disable-plugins \
 	--disable-eurephia
 endif
 
@@ -32,19 +36,19 @@ OPENVPN_CONF_ENV += IPROUTE=/sbin/ip
 endif
 
 ifeq ($(BR2_PACKAGE_OPENVPN_LZO),y)
-	OPENVPN_DEPENDENCIES += lzo
+OPENVPN_DEPENDENCIES += lzo
 else
-	OPENVPN_CONF_OPTS += --disable-lzo
+OPENVPN_CONF_OPTS += --disable-lzo
 endif
 
 ifeq ($(BR2_PACKAGE_OPENVPN_CRYPTO_OPENSSL),y)
-	OPENVPN_CONF_OPTS += --with-crypto-library=openssl
-	OPENVPN_DEPENDENCIES += openssl
+OPENVPN_CONF_OPTS += --with-crypto-library=openssl
+OPENVPN_DEPENDENCIES += openssl
 endif
 
 ifeq ($(BR2_PACKAGE_OPENVPN_CRYPTO_POLARSSL),y)
-	OPENVPN_CONF_OPTS += --with-crypto-library=polarssl
-	OPENVPN_DEPENDENCIES += polarssl
+OPENVPN_CONF_OPTS += --with-crypto-library=polarssl
+OPENVPN_DEPENDENCIES += polarssl
 endif
 
 define OPENVPN_INSTALL_TARGET_CMDS

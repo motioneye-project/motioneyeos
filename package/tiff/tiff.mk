@@ -39,62 +39,62 @@ TIFF_TOOLS_TO_DELETE = \
 	tiffsplit \
 
 ifeq ($(BR2_PACKAGE_TIFF_TIFF2PDF),)
-	TIFF_TOOLS_TO_DELETE += tiff2pdf
+TIFF_TOOLS_TO_DELETE += tiff2pdf
 endif
 ifeq ($(BR2_PACKAGE_TIFF_TIFFCP),)
-	TIFF_TOOLS_TO_DELETE += tiffcp
+TIFF_TOOLS_TO_DELETE += tiffcp
 endif
 
 ifneq ($(BR2_PACKAGE_TIFF_CCITT),y)
-	TIFF_CONF_OPTS += --disable-ccitt
+TIFF_CONF_OPTS += --disable-ccitt
 endif
 
 ifneq ($(BR2_PACKAGE_TIFF_PACKBITS),y)
-	TIFF_CONF_OPTS += --disable-packbits
+TIFF_CONF_OPTS += --disable-packbits
 endif
 
 ifneq ($(BR2_PACKAGE_TIFF_LZW),y)
-	TIFF_CONF_OPTS += --disable-lzw
+TIFF_CONF_OPTS += --disable-lzw
 endif
 
 ifneq ($(BR2_PACKAGE_TIFF_THUNDER),y)
-	TIFF_CONF_OPTS += --disable-thunder
+TIFF_CONF_OPTS += --disable-thunder
 endif
 
 ifneq ($(BR2_PACKAGE_TIFF_NEXT),y)
-	TIFF_CONF_OPTS += --disable-next
+TIFF_CONF_OPTS += --disable-next
 endif
 
 ifneq ($(BR2_PACKAGE_TIFF_LOGLUV),y)
-	TIFF_CONF_OPTS += --disable-logluv
+TIFF_CONF_OPTS += --disable-logluv
 endif
 
 ifneq ($(BR2_PACKAGE_TIFF_MDI),y)
-	TIFF_CONF_OPTS += --disable-mdi
+TIFF_CONF_OPTS += --disable-mdi
 endif
 
 ifneq ($(BR2_PACKAGE_TIFF_ZLIB),y)
-	TIFF_CONF_OPTS += --disable-zlib
+TIFF_CONF_OPTS += --disable-zlib
 else
-	TIFF_DEPENDENCIES += zlib
+TIFF_DEPENDENCIES += zlib
 endif
 
 ifneq ($(BR2_PACKAGE_TIFF_PIXARLOG),y)
-	TIFF_CONF_OPTS += --disable-pixarlog
+TIFF_CONF_OPTS += --disable-pixarlog
 endif
 
 ifneq ($(BR2_PACKAGE_TIFF_JPEG),y)
-	TIFF_CONF_OPTS += --disable-jpeg
+TIFF_CONF_OPTS += --disable-jpeg
 else
-	TIFF_DEPENDENCIES += jpeg
+TIFF_DEPENDENCIES += jpeg
 endif
 
 ifneq ($(BR2_PACKAGE_TIFF_OLD_JPEG),y)
-	TIFF_CONF_OPTS += --disable-old-jpeg
+TIFF_CONF_OPTS += --disable-old-jpeg
 endif
 
 ifneq ($(BR2_PACKAGE_TIFF_JBIG),y)
-	TIFF_CONF_OPTS += --disable-jbig
+TIFF_CONF_OPTS += --disable-jbig
 endif
 
 define TIFF_REMOVE_TOOLS_FIXUP

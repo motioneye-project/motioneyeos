@@ -28,36 +28,36 @@ POSTGRESQL_CONF_ENV += pgac_cv_type_locale_t=no
 endif
 
 ifneq ($(BR2_TOOLCHAIN_HAS_THREADS),y)
-	POSTGRESQL_CONF_OPTS += --disable-thread-safety
+POSTGRESQL_CONF_OPTS += --disable-thread-safety
 endif
 
 ifeq ($(BR2_arcle)$(BR2_arceb)$(BR2_microblazeel)$(BR2_microblazebe)$(BR2_nios2)$(BR2_xtensa),y)
-	POSTGRESQL_CONF_OPTS += --disable-spinlocks
+POSTGRESQL_CONF_OPTS += --disable-spinlocks
 endif
 
 ifeq ($(BR2_PACKAGE_READLINE),y)
-	POSTGRESQL_DEPENDENCIES += readline
+POSTGRESQL_DEPENDENCIES += readline
 else
-	POSTGRESQL_CONF_OPTS += --without-readline
+POSTGRESQL_CONF_OPTS += --without-readline
 endif
 
 ifeq ($(BR2_PACKAGE_ZLIB),y)
-	POSTGRESQL_DEPENDENCIES += zlib
+POSTGRESQL_DEPENDENCIES += zlib
 else
-	POSTGRESQL_CONF_OPTS += --without-zlib
+POSTGRESQL_CONF_OPTS += --without-zlib
 endif
 
 ifeq ($(BR2_PACKAGE_TZDATA),y)
-	POSTGRESQL_DEPENDENCIES += tzdata
-	POSTGRESQL_CONF_OPTS += --with-system-tzdata=/usr/share/zoneinfo
+POSTGRESQL_DEPENDENCIES += tzdata
+POSTGRESQL_CONF_OPTS += --with-system-tzdata=/usr/share/zoneinfo
 else
-	POSTGRESQL_DEPENDENCIES += host-zic
-	POSTGRESQL_CONF_ENV += ZIC=$$(ZIC)
+POSTGRESQL_DEPENDENCIES += host-zic
+POSTGRESQL_CONF_ENV += ZIC=$$(ZIC)
 endif
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
-	POSTGRESQL_DEPENDENCIES += openssl
-	POSTGRESQL_CONF_OPTS += --with-openssl
+POSTGRESQL_DEPENDENCIES += openssl
+POSTGRESQL_CONF_OPTS += --with-openssl
 endif
 
 define POSTGRESQL_USERS

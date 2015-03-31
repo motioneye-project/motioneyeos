@@ -23,38 +23,38 @@ OPENSSL_PRE_CONFIGURE_HOOKS += OPENSSL_DISABLE_APPS
 endif
 
 ifeq ($(BR2_PACKAGE_CRYPTODEV_LINUX),y)
-	OPENSSL_CFLAGS += -DHAVE_CRYPTODEV -DUSE_CRYPTODEV_DIGESTS
-	OPENSSL_DEPENDENCIES += cryptodev-linux
+OPENSSL_CFLAGS += -DHAVE_CRYPTODEV -DUSE_CRYPTODEV_DIGESTS
+OPENSSL_DEPENDENCIES += cryptodev-linux
 endif
 
 ifeq ($(BR2_PACKAGE_OCF_LINUX),y)
-	OPENSSL_CFLAGS += -DHAVE_CRYPTODEV -DUSE_CRYPTODEV_DIGESTS
-	OPENSSL_DEPENDENCIES += ocf-linux
+OPENSSL_CFLAGS += -DHAVE_CRYPTODEV -DUSE_CRYPTODEV_DIGESTS
+OPENSSL_DEPENDENCIES += ocf-linux
 endif
 
 # Some architectures are optimized in OpenSSL
 ifeq ($(ARCH),arm)
-	OPENSSL_TARGET_ARCH = armv4
+OPENSSL_TARGET_ARCH = armv4
 endif
 ifeq ($(ARCH),powerpc)
 # 4xx cores seem to have trouble with openssl's ASM optimizations
 ifeq ($(BR2_powerpc_401)$(BR2_powerpc_403)$(BR2_powerpc_405)$(BR2_powerpc_405fp)$(BR2_powerpc_440)$(BR2_powerpc_440fp),)
-	OPENSSL_TARGET_ARCH = ppc
+OPENSSL_TARGET_ARCH = ppc
 endif
 endif
 ifeq ($(ARCH),powerpc64)
-	OPENSSL_TARGET_ARCH = ppc64
+OPENSSL_TARGET_ARCH = ppc64
 endif
 ifeq ($(ARCH),powerpc64le)
-	OPENSSL_TARGET_ARCH = ppc64le
+OPENSSL_TARGET_ARCH = ppc64le
 endif
 ifeq ($(ARCH),x86_64)
-	OPENSSL_TARGET_ARCH = x86_64
+OPENSSL_TARGET_ARCH = x86_64
 endif
 
 # Workaround for bug #3445
 ifeq ($(BR2_x86_i386),y)
-	OPENSSL_TARGET_ARCH = generic32 386
+OPENSSL_TARGET_ARCH = generic32 386
 endif
 
 define HOST_OPENSSL_CONFIGURE_CMDS

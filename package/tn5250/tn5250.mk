@@ -12,10 +12,10 @@ TN5250_LICENSE = LGPLv2.1+
 TN5250_LICENSE_FILES = COPYING
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
-	TN5250_CONF_OPTS += --with-ssl-dir=$(STAGING_DIR)/usr
-	TN5250_DEPENDENCIES += openssl
+TN5250_CONF_OPTS += --with-ssl-dir=$(STAGING_DIR)/usr
+TN5250_DEPENDENCIES += openssl
 else
-	TN5250_CONF_OPTS += --without-ssl
+TN5250_CONF_OPTS += --without-ssl
 endif
 
 define TN5250_INSTALL_FIXES

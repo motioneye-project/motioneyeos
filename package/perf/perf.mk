@@ -29,13 +29,13 @@ PERF_MAKE_FLAGS = \
 # backtrace will contain only several functions from the top of stack,
 # instead of the complete backtrace.
 ifeq ($(BR2_arc),y)
-	PERF_MAKE_FLAGS += NO_BACKTRACE=1
+PERF_MAKE_FLAGS += NO_BACKTRACE=1
 endif
 
 ifeq ($(BR2_PACKAGE_ELFUTILS),y)
-	PERF_DEPENDENCIES += elfutils
+PERF_DEPENDENCIES += elfutils
 else
-	PERF_MAKE_FLAGS += NO_LIBELF=1 NO_DWARF=1
+PERF_MAKE_FLAGS += NO_LIBELF=1 NO_DWARF=1
 endif
 
 define PERF_BUILD_CMDS

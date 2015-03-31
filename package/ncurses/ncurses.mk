@@ -32,7 +32,7 @@ NCURSES_CONF_OPTS = \
 
 # Install after busybox for the full-blown versions
 ifeq ($(BR2_PACKAGE_BUSYBOX),y)
-	NCURSES_DEPENDENCIES += busybox
+NCURSES_DEPENDENCIES += busybox
 endif
 
 ifeq ($(BR2_STATIC_LIBS),y)
@@ -174,7 +174,8 @@ define HOST_NCURSES_BUILD_CMDS
 endef
 
 HOST_NCURSES_CONF_OPTS = \
-	--with-shared --without-gpm \
+	--with-shared \
+	--without-gpm \
 	--without-manpages \
 	--without-cxx \
 	--without-cxx-binding \

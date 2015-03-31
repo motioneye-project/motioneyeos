@@ -13,7 +13,7 @@ MAKE_LICENSE_FILES = COPYING
 
 # Disable the 'load' operation for static builds since it needs dlopen
 ifeq ($(BR2_STATIC_LIBS),y)
-	MAKE_CONF_OPTS += --disable-load
+MAKE_CONF_OPTS += --disable-load
 endif
 
 ifeq ($(BR2_PACKAGE_GUILE),y)

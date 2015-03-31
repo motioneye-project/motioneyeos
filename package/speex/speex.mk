@@ -17,11 +17,11 @@ SPEEX_CONF_OPTS = \
 	--enable-fixed-point
 
 ifeq ($(BR2_PACKAGE_SPEEX_ARM4),y)
-	SPEEX_CONF_OPTS += --enable-arm4-asm
+SPEEX_CONF_OPTS += --enable-arm4-asm
 endif
 
 ifeq ($(BR2_PACKAGE_SPEEX_ARM5E),y)
-	SPEEX_CONF_OPTS += --enable-arm5e-asm
+SPEEX_CONF_OPTS += --enable-arm5e-asm
 endif
 
 define SPEEX_LIBTOOL_FIXUP

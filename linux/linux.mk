@@ -52,7 +52,7 @@ LINUX_INSTALL_IMAGES = YES
 LINUX_DEPENDENCIES += host-kmod host-lzop
 
 ifeq ($(BR2_LINUX_KERNEL_UBOOT_IMAGE),y)
-	LINUX_DEPENDENCIES += host-uboot-tools
+LINUX_DEPENDENCIES += host-uboot-tools
 endif
 
 LINUX_MAKE_FLAGS = \

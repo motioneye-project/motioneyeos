@@ -11,16 +11,16 @@ HASERL_LICENSE_FILES = COPYING
 HASERL_DEPENDENCIES = host-pkgconf
 
 ifeq ($(BR2_PACKAGE_HASERL_WITH_LUA),y)
-	HASERL_CONF_OPTS += --with-lua
-	HASERL_DEPENDENCIES += lua
+HASERL_CONF_OPTS += --with-lua
+HASERL_DEPENDENCIES += lua
 
 # liblua uses dlopen when dynamically linked
 ifneq ($(BR2_STATIC_LIBS),y)
-	HASERL_CONF_ENV += LIBS="-ldl"
+HASERL_CONF_ENV += LIBS="-ldl"
 endif
 
 else
-	HASERL_CONF_OPTS += --without-lua
+HASERL_CONF_OPTS += --without-lua
 endif
 
 define HASERL_REMOVE_EXAMPLES

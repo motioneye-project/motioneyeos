@@ -21,7 +21,7 @@ LIBGCRYPT_CONF_OPTS = \
 
 # Code doesn't build in thumb mode
 ifeq ($(BR2_arm),y)
-	LIBGCRYPT_CONF_ENV += CFLAGS="$(patsubst -mthumb,,$(TARGET_CFLAGS))"
+LIBGCRYPT_CONF_ENV += CFLAGS="$(patsubst -mthumb,,$(TARGET_CFLAGS))"
 endif
 
 # Tests use fork()

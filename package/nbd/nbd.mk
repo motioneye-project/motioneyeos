@@ -19,10 +19,10 @@ NBD_CONF_ENV = ac_cv_header_linux_falloc_h=no
 endif
 
 ifneq ($(BR2_NBD_CLIENT),y)
-	NBD_TOREMOVE += nbd-client
+NBD_TOREMOVE += nbd-client
 endif
 ifneq ($(BR2_NBD_SERVER),y)
-	NBD_TOREMOVE += nbd-server
+NBD_TOREMOVE += nbd-server
 endif
 
 define NBD_CLEANUP_AFTER_INSTALL

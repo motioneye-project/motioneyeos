@@ -22,19 +22,19 @@ TRANSMISSION_LICENSE = GPLv2 or GPLv3 with OpenSSL exception
 TRANSMISSION_LICENSE_FILES = COPYING
 
 ifeq ($(BR2_PACKAGE_TRANSMISSION_UTP),y)
-	TRANSMISSION_CONF_OPTS += --enable-utp
+TRANSMISSION_CONF_OPTS += --enable-utp
 else
-	TRANSMISSION_CONF_OPTS += --disable-utp
+TRANSMISSION_CONF_OPTS += --disable-utp
 endif
 
 ifeq ($(BR2_PACKAGE_TRANSMISSION_CLI),y)
-	TRANSMISSION_CONF_OPTS += --enable-cli
+TRANSMISSION_CONF_OPTS += --enable-cli
 else
-	TRANSMISSION_CONF_OPTS += --disable-cli
+TRANSMISSION_CONF_OPTS += --disable-cli
 endif
 
 ifeq ($(BR2_PACKAGE_TRANSMISSION_DAEMON),y)
-	TRANSMISSION_CONF_OPTS += --enable-daemon
+TRANSMISSION_CONF_OPTS += --enable-daemon
 
 define TRANSMISSION_INSTALL_INIT_SYSV
 	$(INSTALL) -m 0755 -D package/transmission/S92transmission \
@@ -42,20 +42,20 @@ define TRANSMISSION_INSTALL_INIT_SYSV
 endef
 
 else
-	TRANSMISSION_CONF_OPTS += --disable-daemon
+TRANSMISSION_CONF_OPTS += --disable-daemon
 endif
 
 ifeq ($(BR2_PACKAGE_TRANSMISSION_REMOTE),y)
-	TRANSMISSION_CONF_OPTS += --enable-remote
+TRANSMISSION_CONF_OPTS += --enable-remote
 else
-	TRANSMISSION_CONF_OPTS += --disable-remote
+TRANSMISSION_CONF_OPTS += --disable-remote
 endif
 
 ifeq ($(BR2_PACKAGE_TRANSMISSION_GTK),y)
-	TRANSMISSION_CONF_OPTS += --enable-gtk
-	TRANSMISSION_DEPENDENCIES += libgtk2
+TRANSMISSION_CONF_OPTS += --enable-gtk
+TRANSMISSION_DEPENDENCIES += libgtk2
 else
-	TRANSMISSION_CONF_OPTS += --disable-gtk
+TRANSMISSION_CONF_OPTS += --disable-gtk
 endif
 
 $(eval $(autotools-package))

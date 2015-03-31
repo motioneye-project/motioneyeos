@@ -40,45 +40,45 @@ NETSNMP_CONFIG_SCRIPTS = net-snmp-config
 NETSNMP_BLOAT_MIBS = BRIDGE DISMAN-EVENT DISMAN-SCHEDULE DISMAN-SCRIPT EtherLike RFC-1215 RFC1155-SMI RFC1213 SCTP SMUX
 
 ifeq ($(BR2_ENDIAN),"BIG")
-	NETSNMP_CONF_OPTS += --with-endianness=big
+NETSNMP_CONF_OPTS += --with-endianness=big
 else
-	NETSNMP_CONF_OPTS += --with-endianness=little
+NETSNMP_CONF_OPTS += --with-endianness=little
 endif
 
 # OpenSSL
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
-	NETSNMP_DEPENDENCIES += openssl
-	NETSNMP_CONF_OPTS += \
-		--with-openssl=$(STAGING_DIR)/usr/include/openssl
+NETSNMP_DEPENDENCIES += openssl
+NETSNMP_CONF_OPTS += \
+	--with-openssl=$(STAGING_DIR)/usr/include/openssl
 ifeq ($(BR2_STATIC_LIBS),y)
-	# openssl uses zlib, so we need to explicitly link with it when static
-	NETSNMP_CONF_ENV += LIBS=-lz
+# openssl uses zlib, so we need to explicitly link with it when static
+NETSNMP_CONF_ENV += LIBS=-lz
 endif
 else ifeq ($(BR2_PACKAGE_NETSNMP_OPENSSL_INTERNAL),y)
-	NETSNMP_CONF_OPTS += --with-openssl=internal
+NETSNMP_CONF_OPTS += --with-openssl=internal
 else
-	NETSNMP_CONF_OPTS += --without-openssl
+NETSNMP_CONF_OPTS += --without-openssl
 endif
 
 ifneq ($(BR2_PACKAGE_NETSNMP_ENABLE_MIBS),y)
-	NETSNMP_CONF_OPTS += --disable-mib-loading
-	NETSNMP_CONF_OPTS += --disable-mibs
+NETSNMP_CONF_OPTS += --disable-mib-loading
+NETSNMP_CONF_OPTS += --disable-mibs
 endif
 
 ifneq ($(BR2_PACKAGE_NETSNMP_ENABLE_DEBUGGING),y)
-	NETSNMP_CONF_OPTS += --disable-debugging
+NETSNMP_CONF_OPTS += --disable-debugging
 endif
 
 ifeq ($(BR2_PACKAGE_NETSNMP_SERVER),y)
-	NETSNMP_CONF_OPTS += --enable-agent
+NETSNMP_CONF_OPTS += --enable-agent
 else
-	NETSNMP_CONF_OPTS += --disable-agent
+NETSNMP_CONF_OPTS += --disable-agent
 endif
 
 ifeq ($(BR2_PACKAGE_NETSNMP_CLIENTS),y)
-	NETSNMP_CONF_OPTS += --enable-applications
+NETSNMP_CONF_OPTS += --enable-applications
 else
-	NETSNMP_CONF_OPTS += --disable-applications
+NETSNMP_CONF_OPTS += --disable-applications
 endif
 
 # Remove IPv6 MIBs if there's no IPv6

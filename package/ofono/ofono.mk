@@ -27,17 +27,17 @@ define OFONO_INSTALL_INIT_SYSV
 endef
 
 ifeq ($(BR2_PACKAGE_HAS_UDEV),y)
-	OFONO_CONF_OPTS += --enable-udev
-	OFONO_DEPENDENCIES += udev
+OFONO_CONF_OPTS += --enable-udev
+OFONO_DEPENDENCIES += udev
 else
-	OFONO_CONF_OPTS += --disable-udev
+OFONO_CONF_OPTS += --disable-udev
 endif
 
 ifeq ($(BR2_PACKAGE_BLUEZ_UTILS),y)
-	OFONO_CONF_OPTS += --enable-bluetooth
-	OFONO_DEPENDENCIES += bluez_utils
+OFONO_CONF_OPTS += --enable-bluetooth
+OFONO_DEPENDENCIES += bluez_utils
 else
-	OFONO_CONF_OPTS += --disable-bluetooth
+OFONO_CONF_OPTS += --disable-bluetooth
 endif
 
 $(eval $(autotools-package))

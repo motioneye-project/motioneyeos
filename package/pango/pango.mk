@@ -78,7 +78,8 @@ PANGO_DEPENDENCIES = \
 	freetype
 
 ifeq ($(BR2_PACKAGE_XORG7),y)
-PANGO_CONF_OPTS += --x-includes=$(STAGING_DIR)/usr/include/X11 \
+PANGO_CONF_OPTS += \
+	--x-includes=$(STAGING_DIR)/usr/include/X11 \
 	--x-libraries=$(STAGING_DIR)/usr/lib
 PANGO_DEPENDENCIES += xlib_libX11
 endif

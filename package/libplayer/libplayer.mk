@@ -26,22 +26,22 @@ define LIBPLAYER_CONFIGURE_CMDS
 endef
 
 ifeq ($(BR2_PACKAGE_LIBPLAYER_MPLAYER),y)
-	LIBPLAYER_DEPENDENCIES += mplayer
-	LIBPLAYER_CONF_OPTS += --enable-mplayer
+LIBPLAYER_DEPENDENCIES += mplayer
+LIBPLAYER_CONF_OPTS += --enable-mplayer
 else
-	LIBPLAYER_CONF_OPTS += --disable-mplayer
+LIBPLAYER_CONF_OPTS += --disable-mplayer
 endif
 
 ifeq ($(BR2_PACKAGE_LIBPLAYER_GSTREAMER),y)
-	LIBPLAYER_DEPENDENCIES += gstreamer
-	LIBPLAYER_CONF_OPTS += --enable-gstreamer
+LIBPLAYER_DEPENDENCIES += gstreamer
+LIBPLAYER_CONF_OPTS += --enable-gstreamer
 else
-	LIBPLAYER_CONF_OPTS += --disable-gstreamer
+LIBPLAYER_CONF_OPTS += --disable-gstreamer
 endif
 
 ifeq ($(BR2_PACKAGE_LIBPLAYER_PYTHON),y)
-	LIBPLAYER_DEPENDENCIES += python
-	LIBPLAYER_CONF_OPTS += --enable-binding-python
+LIBPLAYER_DEPENDENCIES += python
+LIBPLAYER_CONF_OPTS += --enable-binding-python
 endif
 
 $(eval $(autotools-package))

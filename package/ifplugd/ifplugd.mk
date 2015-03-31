@@ -17,7 +17,7 @@ IFPLUGD_DEPENDENCIES = libdaemon
 
 # Prefer big ifplugd
 ifeq ($(BR2_PACKAGE_BUSYBOX),y)
-	IFPLUGD_DEPENDENCIES += busybox
+IFPLUGD_DEPENDENCIES += busybox
 endif
 
 define IFPLUGD_INSTALL_FIXUP

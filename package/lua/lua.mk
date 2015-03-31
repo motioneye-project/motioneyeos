@@ -27,35 +27,35 @@ LUA_PROVIDES = luainterpreter
 LUA_CFLAGS = -Wall -fPIC -DLUA_USE_POSIX
 
 ifeq ($(BR2_PACKAGE_LUA_5_2),y)
-	LUA_CFLAGS += -DLUA_COMPAT_ALL
+LUA_CFLAGS += -DLUA_COMPAT_ALL
 endif
 
 ifeq ($(BR2_PACKAGE_LUA_5_3),y)
-	LUA_CFLAGS += -DLUA_COMPAT_5_2
+LUA_CFLAGS += -DLUA_COMPAT_5_2
 endif
 
 ifeq ($(BR2_STATIC_LIBS),y)
-	LUA_BUILDMODE = static
+LUA_BUILDMODE = static
 else
-	LUA_BUILDMODE = dynamic
-	LUA_CFLAGS += -DLUA_USE_DLOPEN
-	LUA_MYLIBS += -ldl
+LUA_BUILDMODE = dynamic
+LUA_CFLAGS += -DLUA_USE_DLOPEN
+LUA_MYLIBS += -ldl
 endif
 
 ifeq ($(BR2_PACKAGE_LUA_READLINE),y)
-	LUA_DEPENDENCIES = readline ncurses
-	LUA_MYLIBS += -lreadline -lhistory -lncurses
-	LUA_CFLAGS += -DLUA_USE_READLINE
+LUA_DEPENDENCIES = readline ncurses
+LUA_MYLIBS += -lreadline -lhistory -lncurses
+LUA_CFLAGS += -DLUA_USE_READLINE
 else
 ifeq ($(BR2_PACKAGE_LUA_LINENOISE),y)
-	LUA_DEPENDENCIES = linenoise
-	LUA_MYLIBS += -llinenoise
-	LUA_CFLAGS += -DLUA_USE_LINENOISE
+LUA_DEPENDENCIES = linenoise
+LUA_MYLIBS += -llinenoise
+LUA_CFLAGS += -DLUA_USE_LINENOISE
 endif
 endif
 
 ifneq ($(BR2_LARGEFILE),y)
-	LUA_CFLAGS += -D_FILE_OFFSET_BITS=32
+LUA_CFLAGS += -D_FILE_OFFSET_BITS=32
 endif
 
 ifeq ($(BR2_PACKAGE_LUA_32BITS),y)

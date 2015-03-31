@@ -19,27 +19,27 @@ BOTAN_CONF_OPTS = \
 	--cc-bin="$(TARGET_CXX)"
 
 ifeq ($(BR2_STATIC_LIBS),y)
-	BOTAN_CONF_OPTS += --disable-shared --no-autoload
+BOTAN_CONF_OPTS += --disable-shared --no-autoload
 endif
 
 ifeq ($(BR2_PACKAGE_BZIP2),y)
-	BOTAN_DEPENDENCIES += bzip2
-	BOTAN_CONF_OPTS += --with-bzip2
+BOTAN_DEPENDENCIES += bzip2
+BOTAN_CONF_OPTS += --with-bzip2
 endif
 
 ifeq ($(BR2_PACKAGE_GMP),y)
-	BOTAN_DEPENDENCIES += gmp
-	BOTAN_CONF_OPTS += --with-gnump
+BOTAN_DEPENDENCIES += gmp
+BOTAN_CONF_OPTS += --with-gnump
 endif
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
-	BOTAN_DEPENDENCIES += openssl
-	BOTAN_CONF_OPTS += --with-openssl
+BOTAN_DEPENDENCIES += openssl
+BOTAN_CONF_OPTS += --with-openssl
 endif
 
 ifeq ($(BR2_PACKAGE_ZLIB),y)
-	BOTAN_DEPENDENCIES += zlib
-	BOTAN_CONF_OPTS += --with-zlib
+BOTAN_DEPENDENCIES += zlib
+BOTAN_CONF_OPTS += --with-zlib
 endif
 
 define BOTAN_CONFIGURE_CMDS

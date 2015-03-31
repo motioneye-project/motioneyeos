@@ -14,9 +14,9 @@ RSYNC_CONF_OPTS = \
 	--with-included-popt=no
 
 ifeq ($(BR2_PACKAGE_ACL),y)
-	RSYNC_DEPENDENCIES += acl
+RSYNC_DEPENDENCIES += acl
 else
-	RSYNC_CONF_OPTS += --disable-acl-support
+RSYNC_CONF_OPTS += --disable-acl-support
 endif
 
 $(eval $(autotools-package))

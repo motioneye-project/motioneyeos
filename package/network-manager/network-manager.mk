@@ -35,24 +35,24 @@ NETWORK_MANAGER_CONF_OPTS = \
 	--disable-ifnet
 
 ifeq ($(BR2_PACKAGE_NETWORK_MANAGER_TUI),y)
-	NETWORK_MANAGER_DEPENDENCIES += newt
-	NETWORK_MANAGER_CONF_OPTS += --with-nmtui=yes
+NETWORK_MANAGER_DEPENDENCIES += newt
+NETWORK_MANAGER_CONF_OPTS += --with-nmtui=yes
 else
-	NETWORK_MANAGER_CONF_OPTS += --with-nmtui=no
+NETWORK_MANAGER_CONF_OPTS += --with-nmtui=no
 endif
 
 ifeq ($(BR2_PACKAGE_NETWORK_MANAGER_PPPD),y)
-	NETWORK_MANAGER_DEPENDENCIES += pppd
-	NETWORK_MANAGER_CONF_OPTS += --enable-ppp
+NETWORK_MANAGER_DEPENDENCIES += pppd
+NETWORK_MANAGER_CONF_OPTS += --enable-ppp
 else
-	NETWORK_MANAGER_CONF_OPTS += --disable-ppp
+NETWORK_MANAGER_CONF_OPTS += --disable-ppp
 endif
 
 ifeq ($(BR2_PACKAGE_NETWORK_MANAGER_MODEM_MANAGER),y)
-	NETWORK_MANAGER_DEPENDENCIES += modem-manager
-	NETWORK_MANAGER_CONF_OPTS += --with-modem-manager-1
+NETWORK_MANAGER_DEPENDENCIES += modem-manager
+NETWORK_MANAGER_CONF_OPTS += --with-modem-manager-1
 else
-	NETWORK_MANAGER_CONF_OPTS += --without-modem-manager-1
+NETWORK_MANAGER_CONF_OPTS += --without-modem-manager-1
 endif
 
 ifeq ($(BR2_PACKAGE_DHCP_CLIENT),y)
