@@ -11,7 +11,7 @@ config BR2_PACKAGE_POLARSSL
 	  use it in your own proprietary applications, you have to
 	  purchase a commercial license.
 
-	  http://polarssl.org/
+	  https://tls.mbed.org/
 
 if BR2_PACKAGE_POLARSSL
 
