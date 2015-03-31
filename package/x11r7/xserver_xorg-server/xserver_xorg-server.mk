@@ -64,6 +64,17 @@ XSERVER_XORG_SERVER_CONF_OPTS = \
 	--with-fontrootdir=/usr/share/fonts/X11/ \
 	--$(if $(BR2_PACKAGE_XSERVER_XORG_SERVER_XVFB),en,dis)able-xvfb
 
+ifeq ($(BR2_PACKAGE_SYSTEMD),y)
+XSERVER_XORG_CONF_OPTS += \
+	--with-systemd-daemon \
+	--enable-systemd-logind
+XSERVER_XORG_SERVER_DEPENDENCIES += systemd
+else
+XSERVER_XORG_CONF_OPTS += \
+	--without-systemd-daemon \
+	--disable-systemd-logind
+endif
+
 ifeq ($(BR2_PACKAGE_XSERVER_XORG_SERVER_MODULAR),y)
 XSERVER_XORG_SERVER_CONF_OPTS += --enable-xorg
 XSERVER_XORG_SERVER_DEPENDENCIES += libpciaccess
