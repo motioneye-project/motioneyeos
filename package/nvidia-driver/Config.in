@@ -55,9 +55,20 @@ endif # BR2_PACKAGE_NVIDIA_DRIVER_XORG
 config BR2_PACKAGE_NVIDIA_DRIVER_CUDA
 	bool "CUDA support"
 
+if BR2_PACKAGE_NVIDIA_DRIVER_CUDA
+
 config BR2_PACKAGE_NVIDIA_DRIVER_OPENCL
 	bool "OpenCL support"
-	depends on BR2_PACKAGE_NVIDIA_DRIVER_CUDA
+
+config BR2_PACKAGE_NVIDIA_DRIVER_CUDA_PROGS
+	bool "CUDA MPS server and control"
+	depends on BR2_x86_64
+	help
+	  Say 'y' here if you need to run more than one program
+	  doing CUDA at the same time. The MPS server will be
+	  launched automatically when needed.
+
+endif # BR2_PACKAGE_NVIDIA_DRIVER_CUDA
 
 comment "nvidia kernel module needs a kernel to be built"
 	depends on !BR2_LINUX_KERNEL

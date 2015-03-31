@@ -57,6 +57,9 @@ endif # X drivers
 
 ifeq ($(BR2_PACKAGE_NVIDIA_DRIVER_CUDA),y)
 NVIDIA_DRIVER_LIBS += libcuda libnvidia-compiler libnvcuvid libnvidia-encode
+ifeq ($(BR2_PACKAGE_NVIDIA_DRIVER_CUDA_PROGS),y)
+NVIDIA_DRIVER_PROGS = nvidia-cuda-mps-control nvidia-cuda-mps-server
+endif
 endif
 
 ifeq ($(BR2_PACKAGE_NVIDIA_DRIVER_OPENCL),y)
@@ -164,6 +167,10 @@ define NVIDIA_DRIVER_INSTALL_TARGET_CMDS
 	for m in $(NVIDIA_DRIVER_X_MODS); do \
 		$(INSTALL) -D -m 0644 $(@D)/$${m##*/} \
 			$(TARGET_DIR)/usr/lib/xorg/modules/$${m}; \
+	done
+	for p in $(NVIDIA_DRIVER_PROGS); do \
+		$(INSTALL) -D -m 0755 $(@D)/$${p} \
+			$(TARGET_DIR)/usr/bin/$${p}; \
 	done
 	$(NVIDIA_DRIVER_INSTALL_KERNEL_MODULE)
 endef
