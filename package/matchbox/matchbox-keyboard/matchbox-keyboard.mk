@@ -20,15 +20,11 @@ endef
 
 MATCHBOX_KEYBOARD_POST_INSTALL_TARGET_HOOKS += MATCHBOX_KEYBOARD_POST_INSTALL_FIXES
 
-################################################################################
-
 ifeq ($(BR2_PACKAGE_CAIRO),y)
 MATCHBOX_KEYBOARD_CONF_OPTS += --enable-cairo
 MATCHBOX_KEYBOARD_DEPENDENCIES += cairo
 else
 MATCHBOX_KEYBOARD_DEPENDENCIES += xlib_libXft
 endif
-
-################################################################################
 
 $(eval $(autotools-package))

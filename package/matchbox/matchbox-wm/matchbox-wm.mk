@@ -16,8 +16,6 @@ MATCHBOX_WM_CONF_OPTS = --enable-expat
 # Workaround bug in configure script
 MATCHBOX_WM_CONF_ENV = expat=yes
 
-################################################################################
-
 ifeq ($(BR2_PACKAGE_X11R7_LIBXCOMPOSITE),y)
 ifeq ($(BR2_PACKAGE_X11R7_LIBXPM),y)
 MATCHBOX_WM_CONF_OPTS += --enable-composite
@@ -39,7 +37,5 @@ MATCHBOX_WM_DEPENDENCIES += startup-notification
 else
 MATCHBOX_WM_CONF_OPTS += --disable-startup-notification
 endif
-
-################################################################################
 
 $(eval $(autotools-package))

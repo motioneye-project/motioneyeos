@@ -20,8 +20,6 @@ endef
 
 MATCHBOX_LIB_POST_INSTALL_STAGING_HOOKS += MATCHBOX_LIB_POST_INSTALL_FIXES
 
-################################################################################
-
 ifeq ($(BR2_PACKAGE_X11R7_LIBXCOMPOSITE),y)
 ifeq ($(BR2_PACKAGE_X11R7_LIBXPM),y)
 MATCHBOX_LIB_DEPENDENCIES += xlib_libXpm
@@ -55,7 +53,5 @@ MATCHBOX_LIB_DEPENDENCIES += xlib_libXft
 else
 MATCHBOX_LIB_CONF_OPTS += --disable-xft
 endif
-
-################################################################################
 
 $(eval $(autotools-package))
