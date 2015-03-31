@@ -23,7 +23,7 @@ file="${2}"
 base="${3}"
 
 # Does the hash-file exist?
-if [ ! -f "${h_file}" ]; then
+if [ -z "${h_file}" -o ! -f "${h_file}" ]; then
     exit 0
 fi
 

@@ -44,9 +44,6 @@ main() {
     if [ -z "${output}" ]; then
         error "no output specified, use -o\n"
     fi
-    if [ -z "${hfile}" ]; then
-        error "no hash-file specified, use -H\n"
-    fi
 
     # If the output file already exists, do not download it again
     if [ -e "${output}" ]; then
