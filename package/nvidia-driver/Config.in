@@ -1,19 +1,11 @@
-comment "nvidia-driver needs an (e)glibc toolchain and a modular Xorg server"
+comment "nvidia-driver needs an (e)glibc toolchain"
 	depends on BR2_i386 || BR2_x86_64
-	depends on !BR2_TOOLCHAIN_USES_GLIBC \
-		|| !BR2_PACKAGE_XSERVER_XORG_SERVER_MODULAR
+	depends on !BR2_TOOLCHAIN_USES_GLIBC
 
 config BR2_PACKAGE_NVIDIA_DRIVER
 	bool "nvidia-driver"
 	depends on BR2_i386 || BR2_x86_64
 	depends on BR2_TOOLCHAIN_USES_GLIBC
-	depends on BR2_PACKAGE_XSERVER_XORG_SERVER_MODULAR
-	select BR2_PACKAGE_MESA3D_HEADERS
-	select BR2_PACKAGE_XLIB_LIBX11
-	select BR2_PACKAGE_XLIB_LIBXEXT
-	select BR2_PACKAGE_HAS_LIBGL
-	select BR2_PACKAGE_HAS_LIBEGL
-	select BR2_PACKAGE_HAS_LIBGLES
 	help
 	  The binary-only driver blob for NVidia cards.
 	  This is the userland part only.
@@ -21,6 +13,22 @@ config BR2_PACKAGE_NVIDIA_DRIVER
 	  http://www.nvidia.com/
 
 if BR2_PACKAGE_NVIDIA_DRIVER
+
+comment "nvidia-driver X.org drivers needs a modular Xorg server"
+	depends on !BR2_PACKAGE_XSERVER_XORG_SERVER_MODULAR
+
+config BR2_PACKAGE_NVIDIA_DRIVER_XORG
+	bool "X.org drivers"
+	default y
+	depends on BR2_PACKAGE_XSERVER_XORG_SERVER_MODULAR
+	select BR2_PACKAGE_MESA3D_HEADERS
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBXEXT
+	select BR2_PACKAGE_HAS_LIBGL
+	select BR2_PACKAGE_HAS_LIBEGL
+	select BR2_PACKAGE_HAS_LIBGLES
+
+if BR2_PACKAGE_NVIDIA_DRIVER_XORG
 
 config BR2_PACKAGE_PROVIDES_LIBGL
 	default "nvidia-driver"
@@ -30,13 +38,6 @@ config BR2_PACKAGE_PROVIDES_LIBEGL
 
 config BR2_PACKAGE_PROVIDES_LIBGLES
 	default "nvidia-driver"
-
-config BR2_PACKAGE_NVIDIA_DRIVER_CUDA
-	bool "CUDA support"
-
-config BR2_PACKAGE_NVIDIA_DRIVER_OPENCL
-	bool "OpenCL support"
-	depends on BR2_PACKAGE_NVIDIA_DRIVER_CUDA
 
 config BR2_PACKAGE_NVIDIA_DRIVER_PRIVATE_LIBS
 	bool "Install private libraries"
@@ -48,6 +49,15 @@ config BR2_PACKAGE_NVIDIA_DRIVER_PRIVATE_LIBS
 
 	  Say 'y' here if you plan on running a program that uses
 	  those private libraries.
+
+endif # BR2_PACKAGE_NVIDIA_DRIVER_XORG
+
+config BR2_PACKAGE_NVIDIA_DRIVER_CUDA
+	bool "CUDA support"
+
+config BR2_PACKAGE_NVIDIA_DRIVER_OPENCL
+	bool "OpenCL support"
+	depends on BR2_PACKAGE_NVIDIA_DRIVER_CUDA
 
 comment "nvidia kernel module needs a kernel to be built"
 	depends on !BR2_LINUX_KERNEL

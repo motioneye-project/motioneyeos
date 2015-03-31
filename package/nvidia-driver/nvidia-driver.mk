@@ -13,6 +13,8 @@ NVIDIA_DRIVER_LICENSE_FILES = LICENSE
 NVIDIA_DRIVER_REDISTRIBUTE = NO
 NVIDIA_DRIVER_INSTALL_STAGING = YES
 
+ifeq ($(BR2_PACKAGE_NVIDIA_DRIVER_XORG),y)
+
 # Since nvidia-driver are binary blobs, the below dependencies are not
 # strictly speaking build dependencies of nvidia-driver. However, they
 # are build dependencies of packages that depend on nvidia-driver, so
@@ -38,15 +40,6 @@ NVIDIA_DRIVER_LIBS = \
 	libvdpau libvdpau_nvidia \
 	libnvidia-ml
 
-ifeq ($(BR2_PACKAGE_NVIDIA_DRIVER_CUDA),y)
-NVIDIA_DRIVER_LIBS += libcuda libnvidia-compiler libnvcuvid libnvidia-encode
-endif
-
-ifeq ($(BR2_PACKAGE_NVIDIA_DRIVER_OPENCL),y)
-NVIDIA_DRIVER_LIBS_NO_VERSION += libOpenCL.so.1.0.0
-NVIDIA_DRIVER_LIBS += libnvidia-opencl
-endif
-
 # Those libraries are 'private' libraries requiring an agreement with
 # NVidia to develop code for those libs. There seems to be no restriction
 # on using those libraries (e.g. if the user has such an agreement, or
@@ -59,6 +52,17 @@ endif
 NVIDIA_DRIVER_X_MODS = drivers/nvidia_drv.so \
 	extensions/libglx.so.$(NVIDIA_DRIVER_VERSION) \
 	libnvidia-wfb.so.$(NVIDIA_DRIVER_VERSION)
+
+endif # X drivers
+
+ifeq ($(BR2_PACKAGE_NVIDIA_DRIVER_CUDA),y)
+NVIDIA_DRIVER_LIBS += libcuda libnvidia-compiler libnvcuvid libnvidia-encode
+endif
+
+ifeq ($(BR2_PACKAGE_NVIDIA_DRIVER_OPENCL),y)
+NVIDIA_DRIVER_LIBS_NO_VERSION += libOpenCL.so.1.0.0
+NVIDIA_DRIVER_LIBS += libnvidia-opencl
+endif
 
 # The downloaded archive is in fact an auto-extract script. So, it can run
 # virtually everywhere, and it is fine enough to provide useful options.
