@@ -94,10 +94,6 @@ while read t h f; do
 done <"${h_file}"
 
 if [ ${nb_checks} -eq 0 ]; then
-    if [ -n "${BR2_ENFORCE_CHECK_HASH}" ]; then
-        printf "ERROR: No hash found for %s\n" "${base}" >&2
-        exit 3
-    else
-        printf "WARNING: No hash found for %s\n" "${base}" >&2
-    fi
+    printf "ERROR: No hash found for %s\n" "${base}" >&2
+    exit 3
 fi

@@ -475,10 +475,10 @@ not match, Buildroot considers this an error, deletes the downloaded file,
 and aborts.
 
 If the +.hash+ file is present, but it does not contain a hash for a
-downloaded file, no check is done for that file. If you set the
-environment variable +BR2_ENFORCE_CHECK_HASH+ to a non-empty value, and
-there is no hash for a downloaded file, Buildroot considers this an
-error, deletes the downloaded file, and aborts.
+downloaded file, Buildroot considers this an error and aborts. However,
+the downloaded file is left in the download directory since this
+typically indicates that the +.hash+ file is wrong but the downloaded
+file is probably OK.
 
 Sources that are downloaded from a version control system (git, subversion,
 etc...) can not have a hash, because the version control system and tar
