@@ -471,4 +471,10 @@ environment variable +BR2_ENFORCE_CHECK_HASH+ to a non-empty value, and
 there is no hash for a downloaded file, Buildroot considers this an
 error, deletes the downloaded file, and aborts.
 
+Sources that are downloaded from a version control system (git, subversion,
+etc...) can not have a hash, because the version control system and tar
+may not create exactly the same file (dates, files ordering...), so the
+hash could be wrong even for a valid download. Therefore, the hash check
+is entirely skipped for such sources.
+
 If the +.hash+ file is missing, then no check is done at all.
