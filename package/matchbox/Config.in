@@ -8,7 +8,12 @@ config BR2_PACKAGE_MATCHBOX
 	select BR2_PACKAGE_XLIB_LIBXDAMAGE
 	select BR2_PACKAGE_XLIB_LIBXCURSOR
 	help
-	  http://projects.o-hand.com/matchbox
+	  Matchbox is an Open Source base environment for the X Window
+	  System running on non-desktop embedded platforms such as
+	  handhelds, set-top boxes, kiosks and anything else for which
+	  screen space, input mechanisms or system resources are limited.
+
+	  http://matchbox-project.org/
 
 if BR2_PACKAGE_MATCHBOX
 
