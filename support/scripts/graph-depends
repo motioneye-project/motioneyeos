@@ -333,6 +333,10 @@ def print_pkg_deps(depth, pkg):
                 if fnmatch(d,p):
                     add = False
                     break
+                if dict_version.get(d) == "virtual" \
+                and "virtual" in exclude_list:
+                    add = False
+                    break
             if add:
                 print("%s -> %s" % (pkg_node_name(pkg), pkg_node_name(d)))
                 print_pkg_deps(depth+1, d)
