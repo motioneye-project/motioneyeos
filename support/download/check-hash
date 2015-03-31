@@ -33,6 +33,7 @@ base="${3}"
 
 # Does the hash-file exist?
 if [ -z "${h_file}" -o ! -f "${h_file}" ]; then
+    printf "WARNING: no hash file for %s\n" "${base}" >&2
     exit 0
 fi
 
