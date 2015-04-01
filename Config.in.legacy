@@ -101,6 +101,13 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2015.05"
 
+config BR2_PACKAGE_GTK2_THEME_HICOLOR
+	bool "hicolor (default theme) is a duplicate"
+	select BR2_LEGACY
+	select BR2_PACKAGE_HICOLOR_ICON_THEME
+	help
+	  The option was just a duplicate of hicolor icon theme.
+
 config BR2_PACKAGE_VALGRIND_PTRCHECK
 	bool "valgrind's PTRCheck was renamed to SGCheck"
 	select BR2_LEGACY

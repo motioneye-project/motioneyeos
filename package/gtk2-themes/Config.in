@@ -1,6 +1,0 @@
-menu "GTK Themes"
-depends on BR2_PACKAGE_LIBGTK2
-
-source "package/gtk2-themes/gtk2-theme-hicolor/Config.in"
-
-endmenu
