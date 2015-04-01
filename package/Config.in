@@ -186,6 +186,26 @@ menu "Games"
 	source "package/rubix/Config.in"
 endmenu
 
+menu "Fonts, icons, sounds and themes"
+
+comment "Fonts"
+	source "package/dejavu/Config.in"
+	source "package/ghostscript-fonts/Config.in"
+	source "package/liberation/Config.in"
+
+comment "Icons"
+	source "package/adwaita-icon-theme/Config.in"
+	source "package/hicolor-icon-theme/Config.in"
+
+comment "Sounds"
+	source "package/sound-theme-borealis/Config.in"
+	source "package/sound-theme-freedesktop/Config.in"
+
+comment "Themes"
+	source "package/gtk2-engines/Config.in"
+
+endmenu
+
 menu "Graphic libraries and applications (graphic/text)"
 
 comment "Graphic applications"
@@ -265,9 +285,6 @@ comment "X applications"
 	source "package/xvkbd/Config.in"
 
 comment "X libraries and helper libraries"
-	source "package/dejavu/Config.in"
-	source "package/ghostscript-fonts/Config.in"
-	source "package/liberation/Config.in"
 	source "package/libsexy/Config.in"
 	source "package/x11r7/xkeyboard-config/Config.in"
 
@@ -697,7 +714,6 @@ menu "Filesystem"
 endmenu
 
 menu "Graphics"
-	source "package/adwaita-icon-theme/Config.in"
 	source "package/atk/Config.in"
 	source "package/cairo/Config.in"
 	source "package/exiv2/Config.in"
@@ -708,9 +724,7 @@ menu "Graphics"
 	source "package/gdk-pixbuf/Config.in"
 	source "package/giblib/Config.in"
 	source "package/giflib/Config.in"
-	source "package/gtk2-engines/Config.in"
 	source "package/harfbuzz/Config.in"
-	source "package/hicolor-icon-theme/Config.in"
 	source "package/imlib2/Config.in"
 	source "package/jasper/Config.in"
 	source "package/jpeg/Config.in"
@@ -1063,8 +1077,6 @@ menu "Miscellaneous"
 	source "package/qemu/Config.in"
 	source "package/shared-mime-info/Config.in"
 	source "package/snowball-init/Config.in"
-	source "package/sound-theme-borealis/Config.in"
-	source "package/sound-theme-freedesktop/Config.in"
 	source "package/wine/Config.in"
 endmenu
 
