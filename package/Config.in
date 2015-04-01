@@ -184,6 +184,7 @@ menu "Games"
 	source "package/opentyrian-data/Config.in"
 	source "package/prboom/Config.in"
 	source "package/rubix/Config.in"
+	source "package/sl/Config.in"
 endmenu
 
 menu "Fonts, icons, sounds and themes"
