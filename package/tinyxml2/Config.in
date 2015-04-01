@@ -1,0 +1,11 @@
+config BR2_PACKAGE_TINYXML2
+	bool "tinyxml2"
+	depends on BR2_INSTALL_LIBSTDCPP
+	help
+	  TinyXML-2 is a simple, small, efficient, C++ XML parser that can be
+	  easily integrating into other programs.
+
+	  http://www.grinninglizard.com/tinyxml2/index.html
+
+comment "tinyxml2 needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP
