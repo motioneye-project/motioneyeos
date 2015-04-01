@@ -17,6 +17,15 @@ config BR2_PACKAGE_LINUX_FIRMWARE_INTEL_SST_DSP
 
 endmenu # Audio
 
+menu "Video firmware"
+
+config BR2_PACKAGE_LINUX_FIRMWARE_RADEON
+	bool "AMD Radeon video card firmware"
+	help
+	  Firmware files for AMD Radeon video cards.
+
+endmenu # Video
+
 menu "WiFi firmware"
 
 config BR2_PACKAGE_LINUX_FIRMWARE_ATHEROS_6002
