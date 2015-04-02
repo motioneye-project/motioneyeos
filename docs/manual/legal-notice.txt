@@ -115,10 +115,18 @@ Buildroot, with the name used in the manifest files:
 * `LGPL`:
   http://www.gnu.org/licenses/lgpl.html[
   GNU Lesser General Public License] (any version);
-* `BSD-4c`: Original BSD 4-clause license;
-* `BSD-3c`: BSD 3-clause license;
-* `BSD-2c`: BSD 2-clause license;
-* `MIT`: MIT-style license.
+* `BSD-4c`:
+  http://directory.fsf.org/wiki/License:BSD_4Clause[
+  Original BSD 4-clause license];
+* `BSD-3c`:
+  http://opensource.org/licenses/BSD-3-Clause[
+  BSD 3-clause license];
+* `BSD-2c`:
+  http://opensource.org/licenses/BSD-2-Clause[
+  BSD 2-clause license];
+* `MIT`:
+  http://opensource.org/licenses/mit-license.html[
+  MIT-style license];
 * `Apache-2.0`:
   http://apache.org/licenses/LICENSE-2.0.html[
   Apache License, version 2.0];
