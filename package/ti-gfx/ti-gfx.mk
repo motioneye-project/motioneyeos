@@ -7,7 +7,7 @@
 # SDK 5_01_01_01 only support EABIhf so we downgrade to 5_01_00_01 if EABIhf is
 # not available.
 ifeq ($(BR2_ARM_EABIHF),y)
-TI_GFX_VERSION = 5_01_01_01
+TI_GFX_VERSION = 5_01_01_02
 TI_GFX_SOURCE = Graphics_SDK_setuplinux_hardfp_$(TI_GFX_VERSION).bin
 else
 TI_GFX_VERSION = 5_01_00_01
