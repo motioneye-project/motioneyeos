@@ -25,9 +25,11 @@ define CA_CERTIFICATES_INSTALL_TARGET_CMDS
 	rm -f  $(TARGET_DIR)/etc/ssl/certs/*
 
 	# Create symlinks to certificates under /etc/ssl/certs
+	# and generate the bundle
 	cd $(TARGET_DIR) ;\
 	for i in `find usr/share/ca-certificates -name "*.crt"` ; do \
 		ln -sf ../../../$$i etc/ssl/certs/`basename $${i} .crt`.pem ;\
+		cat $$i >>etc/ssl/certs/ca-certificates.crt ;\
 	done
 
 	# Create symlinks to the certificates by their hash values
