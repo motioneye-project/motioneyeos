@@ -1,4 +1,4 @@
-# Hashes from: http://download.qt.io/official_releases/qt/5.4/5.4.0/submodules/qtscript-opensource-src-5.4.0.tar.xz.mirrorlist
-sha256 f5f35702ec36f24b17878348af1aa1ecf93056a9ddf475097b3fdd52c3330ed0 qtscript-opensource-src-5.4.0.tar.xz
-sha1   7ca8d6ccbc97fb24a9e76b69eeaa5e7e9c321955                         qtscript-opensource-src-5.4.0.tar.xz
-md5    b38b35643d85aea25ff1cbea84f76a82                                 qtscript-opensource-src-5.4.0.tar.xz
+# Hashes from: http://download.qt.io/official_releases/qt/5.4/5.4.1/submodules/qtscript-opensource-src-5.4.1.tar.xz.mirrorlist
+sha256 f432acc8376b86279faee273ff4e26226059d0cffbaced35e05a559d2efbcbaf qtscript-opensource-src-5.4.1.tar.xz
+sha1   1b9ede97f3120c95c2dce322b6140eeb20416044                         qtscript-opensource-src-5.4.1.tar.xz
+md5    70165fd13fa0ba5b1f577f849f0c4f12                                 qtscript-opensource-src-5.4.1.tar.xz

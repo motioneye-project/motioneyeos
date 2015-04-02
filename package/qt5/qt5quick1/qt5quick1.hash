@@ -1,4 +1,4 @@
-# Hashes from: http://download.qt.io/official_releases/qt/5.4/5.4.0/submodules/qtquick1-opensource-src-5.4.0.tar.xz.mirrorlist
-sha256 d5a8b77c1c4832383f3c5a39c6dc60e992e61e684e7fbbdf9a208c31d9d032dc qtquick1-opensource-src-5.4.0.tar.xz
-sha1   d4af107f1227f111b7a65924d2ce5e3c08c7ee20                         qtquick1-opensource-src-5.4.0.tar.xz
-md5    c1c5b1072137773d308c8b498cf35d05                                 qtquick1-opensource-src-5.4.0.tar.xz
+# Hashes from: http://download.qt.io/official_releases/qt/5.4/5.4.1/submodules/qtquick1-opensource-src-5.4.1.tar.xz.mirrorlist
+sha256 eb5324c784eef15b3d0f7e2fc2265b0f2e823a31330e88e09379972313ca432d qtquick1-opensource-src-5.4.1.tar.xz
+sha1   f89cccdeac4c31157ac8b97fa96d426b5bb18630                         qtquick1-opensource-src-5.4.1.tar.xz
+md5    16d711d20238e3220fc4030dab608f0b                                 qtquick1-opensource-src-5.4.1.tar.xz

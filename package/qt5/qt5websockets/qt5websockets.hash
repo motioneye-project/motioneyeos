@@ -1,4 +1,4 @@
-# Hashes from: http://download.qt.io/official_releases/qt/5.4/5.4.0/submodules/qtwebsockets-opensource-src-5.4.0.tar.xz.mirrorlist
-sha256 2acd274a4a983cdd2288678d9005429fded51b5277d0621c4a953fa4f4f4cbdf qtwebsockets-opensource-src-5.4.0.tar.xz
-sha1   d0b7e62bbdd634de01d5321f94a4bdff8b228cf5                         qtwebsockets-opensource-src-5.4.0.tar.xz
-md5    0c406bca48296d0d99cc93b00f40aca7                                 qtwebsockets-opensource-src-5.4.0.tar.xz
+# Hashes from: http://download.qt.io/official_releases/qt/5.4/5.4.1/submodules/qtwebsockets-opensource-src-5.4.1.tar.xz.mirrorlist
+sha256 daf56f98c5e267253bd2d2e421472fc02faa1703a9063cc14cf8afce6967ab44 qtwebsockets-opensource-src-5.4.1.tar.xz
+sha1   3fb9be047b67673f40d272faab5ba0c8055e7717                         qtwebsockets-opensource-src-5.4.1.tar.xz
+md5    308e1e9126e6fab8b06616db9810973e                                 qtwebsockets-opensource-src-5.4.1.tar.xz

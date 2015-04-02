@@ -1,4 +1,4 @@
-# Hashes from: http://download.qt.io/official_releases/qt/5.4/5.4.0/submodules/qtdeclarative-opensource-src-5.4.0.tar.xz.mirrorlist
-sha256 e67c9275b0f6869a7c1e8023ad7c0a23fb19f8a8d2f350371e954ead0cfad7b6 qtdeclarative-opensource-src-5.4.0.tar.xz
-sha1   12c12d50c71cfb1f18c7fabfabe4ad4b364b09fe                         qtdeclarative-opensource-src-5.4.0.tar.xz
-md5    4f928e52e72b5e867b50b4d409d5e99b                                 qtdeclarative-opensource-src-5.4.0.tar.xz
+# Hashes from: http://download.qt.io/official_releases/qt/5.4/5.4.1/submodules/qtdeclarative-opensource-src-5.4.1.tar.xz.mirrorlist
+sha256 15124e242a8a4a8fc5bedd32910b3b0b372b6c2b63f99572c4a2427e668d4417 qtdeclarative-opensource-src-5.4.1.tar.xz
+sha1   fb345784035caafef2d848bb29ad6bfce8ec2f8f                         qtdeclarative-opensource-src-5.4.1.tar.xz
+md5    86dfe5c41e14a142c72fdaa6a64f933c                                 qtdeclarative-opensource-src-5.4.1.tar.xz

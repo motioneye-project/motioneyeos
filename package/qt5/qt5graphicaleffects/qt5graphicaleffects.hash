@@ -1,4 +1,4 @@
-# Hashes from: http://download.qt.io/official_releases/qt/5.4/5.4.0/submodules/qtgraphicaleffects-opensource-src-5.4.0.tar.xz.mirrorlist
-sha256 a43f10e532180eb8400fec65752b36c1adaa9aaf672146035ef630d324a38b19 qtgraphicaleffects-opensource-src-5.4.0.tar.xz
-sha1   b83755ae9457d7a43691e6668a7f7330ff373bdf                         qtgraphicaleffects-opensource-src-5.4.0.tar.xz
-md5    4d26d56c55b0117c37d96e85755da6a4                                 qtgraphicaleffects-opensource-src-5.4.0.tar.xz
+# Hashes from: http://download.qt.io/official_releases/qt/5.4/5.4.1/submodules/qtgraphicaleffects-opensource-src-5.4.1.tar.xz.mirrorlist
+sha256 bae2f0e8120f0b4e6e1b56a486713821615d0af7c69fb4ecdcbabc22b8f8351c qtgraphicaleffects-opensource-src-5.4.1.tar.xz
+sha1   9d0637176c9ce0006917dc52e6d20c975f0fb9a8                         qtgraphicaleffects-opensource-src-5.4.1.tar.xz
+md5    02bec01c2af9a7d08582fbffbfa4976a                                 qtgraphicaleffects-opensource-src-5.4.1.tar.xz

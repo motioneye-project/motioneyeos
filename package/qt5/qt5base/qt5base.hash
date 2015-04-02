@@ -1,4 +1,4 @@
-# Hashes from: http://download.qt.io/official_releases/qt/5.4/5.4.0/submodules/qtbase-opensource-src-5.4.0.tar.xz.mirrorlist
-sha256 daea240ba5e77bc2d78ec21a2cb664eed83b3d4ad409b6277a6f7d4c0c8e91d1 qtbase-opensource-src-5.4.0.tar.xz
-sha1   2e3d32f32e36a92782ca66c260940824746900bd                         qtbase-opensource-src-5.4.0.tar.xz
-md5    eaaa72a5cb25713ca8d17f3a8d149765                                 qtbase-opensource-src-5.4.0.tar.xz
+# Hashes from: http://download.qt.io/official_releases/qt/5.4/5.4.1/submodules/qtbase-opensource-src-5.4.1.tar.xz.mirrorlist
+sha256 8574a593830959c0f7e5430fe77a43832ea7f5299e14a397a74576b3df7fb1b7 qtbase-opensource-src-5.4.1.tar.xz
+sha1   134ec03371722cc31e2041a82c255cec708ca848                         qtbase-opensource-src-5.4.1.tar.xz
+md5    9507825e558c980fed602de1f16ec7ae                                 qtbase-opensource-src-5.4.1.tar.xz
