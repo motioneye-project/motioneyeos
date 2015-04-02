@@ -13,6 +13,7 @@ LINPHONE_CONF_OPTS = \
 	--disable-strict
 # configure is out of sync causing deplibs linking issues
 LINPHONE_AUTORECONF = YES
+LINPHONE_INSTALL_STAGING = YES
 LINPHONE_DEPENDENCIES = host-pkgconf ortp mediastreamer libeXosip2 speex
 LINPHONE_LICENSE = GPLv2+
 LINPHONE_LICENSE_FILES = COPYING
