@@ -22,4 +22,11 @@ MC_DEPENDENCIES += ncurses
 MC_CONF_OPTS += --with-screen=ncurses
 endif
 
+ifeq ($(BR2_PACKAGE_XLIB_LIBX11),y)
+MC_CONF_OPTS += --with-x
+MC_DEPENDENCIES += xlib_libX11
+else
+MC_CONF_OPTS += --without-x
+endif
+
 $(eval $(autotools-package))
