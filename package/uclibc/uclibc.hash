@@ -4,5 +4,5 @@ sha256	62333167b79afb0b25a843513288c67b59547acf653e8fbe62ee64e71ebd1587	uClibc-0
 # Locally calculated
 sha256	0a9085a11615296cfe7783f16ff29073393eb330749947adece0eeddb31705a4	uClibc-arc-2014.08.tar.gz
 
-# http://downloads.uclibc-ng.org/releases/1.0.0/uClibc-ng-1.0.0.tar.xz.sha256
-sha256	56258bfa62e3a70c5d29480ccd8f8d94fc2740233a493d8c66b6e7a37830b9d1	uClibc-ng-1.0.0.tar.xz
+# From http://www.uclibc-ng.org/trac/
+sha256  e561040293ba4f21dcf3285ca1f683b5a8493eb0ffd3b3e495122cfde5a64a0e        uClibc-ng-1.0.1.tar.xz
