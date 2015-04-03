@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-WEBP_VERSION = 0.3.1
+WEBP_VERSION = 0.4.3
 WEBP_SOURCE = libwebp-$(WEBP_VERSION).tar.gz
-WEBP_SITE = https://webp.googlecode.com/files
+WEBP_SITE = http://downloads.webmproject.org/releases/webp
 WEBP_LICENSE = BSD-3c
 WEBP_LICENSE_FILES = COPYING
 WEBP_INSTALL_STAGING = YES
