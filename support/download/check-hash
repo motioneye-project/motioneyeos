@@ -96,5 +96,5 @@ done <"${h_file}"
 
 if [ ${nb_checks} -eq 0 ]; then
     printf "ERROR: No hash found for %s\n" "${base}" >&2
-    exit 3
+    exit 0
 fi
