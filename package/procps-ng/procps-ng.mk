@@ -11,7 +11,7 @@ PROCPS_NG_LICENSE = GPLv2+, libproc and libps LGPLv2+
 PROCPS_NG_LICENSE_FILES = COPYING COPYING.LIB
 PROCPS_NG_INSTALL_STAGING = YES
 
-PROCPS_NG_DEPENDENCIES = ncurses
+PROCPS_NG_DEPENDENCIES = ncurses host-pkgconf
 
 # If both procps-ng and busybox are selected, make certain procps-ng
 # wins the fight over who gets to have their utils actually installed.
