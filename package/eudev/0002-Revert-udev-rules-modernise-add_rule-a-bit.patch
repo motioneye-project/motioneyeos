@@ -1,0 +1,46 @@
+From d2aeb8b63dfcb15161c4dd3e80491c844c3f0581 Mon Sep 17 00:00:00 2001
+From: "Yann E. MORIN" <yann.morin.1998@free.fr>
+Date: Sat, 4 Apr 2015 13:47:32 +0200
+Subject: [PATCH] Revert "udev: rules - modernise add_rule a bit"
+
+Initialisers for anonymous unions are unknown to gcc-4.5, which is still
+quite widely used.
+
+See the following build failure, reported by the Buildroot autobuilders:
+    http://autobuild.buildroot.org/results/11e/11ebb926b891862e270b9cb39fd2ed4344b736a8/build-end.log
+
+This reverts commit 5cb98078479d93e25099c1cb73fa9c46aa9ccf29.
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+Cc: Tom Gundersen <teg@jklm.no>
+---
+Notes:
+  - submitted upstream: https://github.com/gentoo/eudev/pull/113
+
+---
+ src/udev/udev-rules.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/src/udev/udev-rules.c b/src/udev/udev-rules.c
+index 5a4792e..3a96c8a 100644
+--- a/src/udev/udev-rules.c
++++ b/src/udev/udev-rules.c
+@@ -1047,11 +1047,11 @@ static int add_rule(struct udev_rules *rules, char *line,
+                     const char *filename, unsigned int filename_off, unsigned int lineno) {
+         char *linepos;
+         const char *attr;
+-        struct rule_tmp rule_tmp = {
+-                .rules = rules,
+-                .rule.type = TK_RULE,
+-        };
++        struct rule_tmp rule_tmp;
+ 
++        memzero(&rule_tmp, sizeof(struct rule_tmp));
++        rule_tmp.rules = rules;
++        rule_tmp.rule.type = TK_RULE;
+         /* the offset in the rule is limited to unsigned short */
+         if (filename_off < USHRT_MAX)
+                 rule_tmp.rule.rule.filename_off = filename_off;
+-- 
+1.9.1
+
