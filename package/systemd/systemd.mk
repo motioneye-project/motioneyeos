@@ -71,6 +71,12 @@ else
 SYSTEMD_CONF_OPTS += --disable-seccomp
 endif
 
+ifeq ($(BR2_PACKAGE_SYSTEMD_KDBUS),y)
+SYSTEMD_CONF_OPTS += --enable-kdbus
+else
+SYSTEMD_CONF_OPTS += --disable-kdbus
+endif
+
 ifeq ($(BR2_PACKAGE_SYSTEMD_ALL_EXTRAS),y)
 SYSTEMD_DEPENDENCIES += xz libgcrypt
 SYSTEMD_CONF_OPTS += \

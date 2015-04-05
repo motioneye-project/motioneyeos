@@ -73,6 +73,11 @@ config BR2_PACKAGE_SYSTEMD_ALL_EXTRAS
 	  Enable extra features for Systemd: journal compression and
 	  signing.
 
+config BR2_PACKAGE_SYSTEMD_KDBUS
+	bool "enable kdbus support"
+	help
+	  Enable kdbus support for Systemd.
+
 config BR2_PACKAGE_SYSTEMD_JOURNAL_GATEWAY
 	bool "HTTP server for journal events"
 	select BR2_PACKAGE_LIBMICROHTTPD
