@@ -2,6 +2,8 @@ config BR2_PACKAGE_WVSTREAMS
 	bool "wvstreams"
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_USE_MMU # fork()
+	# toolchain lacks program_invocation_*
+	depends on !BR2_TOOLCHAIN_EXTERNAL_SYNOPSYS_ARC_2014_12
 	select BR2_PACKAGE_OPENSSL
 	select BR2_PACKAGE_ZLIB
 	help
@@ -12,3 +14,4 @@ config BR2_PACKAGE_WVSTREAMS
 comment "wvstreams needs a toolchain w/ C++"
 	depends on BR2_USE_MMU
 	depends on !BR2_INSTALL_LIBSTDCPP
+	depends on !BR2_TOOLCHAIN_EXTERNAL_SYNOPSYS_ARC_2014_12
