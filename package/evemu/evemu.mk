@@ -8,7 +8,7 @@ EVEMU_VERSION = 2.1.0
 EVEMU_SITE = http://www.freedesktop.org/software/evemu
 EVEMU_SOURCE = evemu-$(EVEMU_VERSION).tar.xz
 EVEMU_LICENSE = LGPLv3 (library), GPLv3 (tools)
-EVEMU_LICENSE_FILES = COPYING COPYING.GPL3
+EVEMU_LICENSE_FILES = COPYING
 
 # asciidoc used to generate manpages, which we don't need, and if it's
 # present on the build host, it ends getting called with our host-python
