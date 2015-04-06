@@ -31,8 +31,12 @@ h_file="${1}"
 file="${2}"
 base="${3}"
 
+# Bail early if no hash to check
+if [ -z "${h_file}" ]; then
+    exit 0
+fi
 # Does the hash-file exist?
-if [ -z "${h_file}" -o ! -f "${h_file}" ]; then
+if [ ! -f "${h_file}" ]; then
     printf "WARNING: no hash file for %s\n" "${base}" >&2
     exit 0
 fi
