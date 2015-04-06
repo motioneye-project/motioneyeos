@@ -1,5 +1,5 @@
-comment "espeak needs a toolchain w/ C++, wchar, threads"
-	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR
+comment "espeak needs a toolchain w/ C++, wchar, threads, dynamic library"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR || BR2_STATIC_LIBS
 	depends on BR2_USE_MMU
 
 config BR2_PACKAGE_ESPEAK
@@ -8,6 +8,8 @@ config BR2_PACKAGE_ESPEAK
 	depends on BR2_USE_WCHAR
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_USE_MMU # fork()
+	# does not properly support building only a static version
+	depends on !BR2_STATIC_LIBS
 	help
 	  espeak is a speech synthesizer software for English and
 	  other languages.
