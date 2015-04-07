@@ -4,13 +4,11 @@
 #
 ################################################################################
 
-LIBVPX_VERSION = v1.3.0
-LIBVPX_SITE = http://git.chromium.org/webm/libvpx.git
-LIBVPX_SITE_METHOD = git
-
+LIBVPX_VERSION = 1.4.0
+LIBVPX_SOURCE = libvpx-$(LIBVPX_VERSION).tar.bz2
+LIBVPX_SITE = http://storage.googleapis.com/downloads.webmproject.org/releases/webm
 LIBVPX_LICENSE = BSD-3c
 LIBVPX_LICENSE_FILES = LICENSE PATENTS
-
 LIBVPX_INSTALL_STAGING = YES
 
 # ld is being used with cc options. therefore, pretend ld is cc.
