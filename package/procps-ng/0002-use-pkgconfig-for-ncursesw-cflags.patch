@@ -1,0 +1,56 @@
+Don't assume ncursesw headers are in ../usr/include/ncursesw/..
+On a pure build/system without legacy ncurses that may not be true.
+Since we're using pkg-config let it provide the correct include path.
+
+Status: contacted one of the maintainers on sf.net
+(ticket submission closed to the public, no other way of contacting them).
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+diff -Nura procps-ng-3.3.10.orig/configure.ac procps-ng-3.3.10/configure.ac
+--- procps-ng-3.3.10.orig/configure.ac	2015-04-07 19:21:55.729819952 -0300
++++ procps-ng-3.3.10/configure.ac	2015-04-07 19:32:09.511706653 -0300
+@@ -138,7 +138,8 @@
+   ])
+   AM_CONDITIONAL(WITH_NCURSES, true)
+   if test "$enable_watch8bit" = yes; then
+-    PKG_CHECK_MODULES([NCURSESW], [ncursesw], [WATCH_NCURSES_LIBS="$NCURSESW_LIBS"], [
++    PKG_CHECK_MODULES([NCURSESW], [ncursesw], [WATCH_NCURSES_LIBS="$NCURSESW_LIBS"]
++    [WATCH_NCURSES_CFLAGS="$NCURSESW_CFLAGS"], [
+       AC_CHECK_LIB([ncursesw], [addwstr], [WATCH_NCURSES_LIBS=-lncursesw],
+                    [AC_MSG_ERROR([Cannot find ncurses wide library ncursesw with --enable-watch8bit])])
+     ])
+@@ -148,6 +149,7 @@
+ fi
+ AC_SUBST([NCURSES_LIBS])
+ AC_SUBST([WATCH_NCURSES_LIBS])
++AC_SUBST([WATCH_NCURSES_CFLAGS])
+ 
+ AC_ARG_WITH([systemd],
+   [AS_HELP_STRING([--with-systemd], [enable systemd support])],
+diff -Nura procps-ng-3.3.10.orig/Makefile.am procps-ng-3.3.10/Makefile.am
+--- procps-ng-3.3.10.orig/Makefile.am	2015-04-07 19:21:55.655817434 -0300
++++ procps-ng-3.3.10/Makefile.am	2015-04-07 19:32:54.516238136 -0300
+@@ -83,6 +83,7 @@
+ slabtop_LDADD = @NCURSES_LIBS@
+ watch_SOURCES = watch.c $(top_srcdir)/lib/strutils.c $(top_srcdir)/lib/fileutils.c
+ watch_LDADD = @WATCH_NCURSES_LIBS@
++watch_CFLAGS = @WATCH_NCURSES_CFLAGS@
+ endif
+ 
+ if BUILD_SKILL
+diff -Nura procps-ng-3.3.10.orig/watch.c procps-ng-3.3.10/watch.c
+--- procps-ng-3.3.10.orig/watch.c	2015-04-07 19:21:55.707819203 -0300
++++ procps-ng-3.3.10/watch.c	2015-04-07 19:22:27.323895083 -0300
+@@ -51,10 +51,8 @@
+ #ifdef WITH_WATCH8BIT
+ # include <wchar.h>
+ # include <wctype.h>
+-# include <ncursesw/ncurses.h>
+-#else
+-# include <ncurses.h>
+ #endif	/* WITH_WATCH8BIT */
++#include <ncurses.h>
+ 
+ #ifdef FORCE_8BIT
+ # undef isprint
