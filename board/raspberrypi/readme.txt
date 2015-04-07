@@ -32,6 +32,10 @@ Alternatively, if you want to test support for the Device Tree:
 
   $ make raspberrypi_dt_defconfig
 
+For Raspberry Pi 2 use a different defconfig:
+
+  $ make raspberrypi2_defconfig
+
 If you want to use a persistent rootfs, skip to "Build the rootfs", below.
 
 For a volatile rootfs, you have to slightly adjust the configuration:
