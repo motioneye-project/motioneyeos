@@ -3,7 +3,7 @@ config BR2_PACKAGE_LIBVPX
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	help
 	  A high-quality, open video format that's freely available to
-	  everyone.
+	  everyone. Supports the VP8 and VP9 formats.
 
 	  http://webmproject.org
 
