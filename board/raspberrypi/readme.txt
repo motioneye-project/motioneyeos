@@ -23,7 +23,7 @@ Configure Buildroot
 -------------------
 
 The raspberrypi_defconfig configuration is a minimal configuration with
-all that is required to bring the Raspberry Pi. You should base your
+all that is required to bring the Raspberry Pi up. You should base your
 work on this defconfig:
 
   $ make raspberrypi_defconfig
