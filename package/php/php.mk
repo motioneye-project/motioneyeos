@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-PHP_VERSION = 5.5.23
+PHP_VERSION = 5.6.7
 PHP_SITE = http://www.php.net/distributions
 PHP_SOURCE = php-$(PHP_VERSION).tar.xz
 PHP_INSTALL_STAGING = YES
