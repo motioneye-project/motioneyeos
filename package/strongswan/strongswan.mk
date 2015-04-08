@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-STRONGSWAN_VERSION = 5.2.2
+STRONGSWAN_VERSION = 5.3.0
 STRONGSWAN_SOURCE = strongswan-$(STRONGSWAN_VERSION).tar.bz2
 STRONGSWAN_SITE = http://download.strongswan.org
 STRONGSWAN_LICENSE = GPLv2+
@@ -12,6 +12,7 @@ STRONGSWAN_LICENSE_FILES = COPYING LICENSE
 STRONGSWAN_DEPENDENCIES = host-pkgconf
 STRONGSWAN_CONF_OPTS += \
 	--without-lib-prefix \
+	--enable-led \
 	--enable-pkcs11=yes \
 	--enable-kernel-netlink=$(if $(BR2_INET_IPV6),yes,no) \
 	--enable-socket-default=$(if $(BR2_INET_IPV6),yes,no) \
@@ -68,6 +69,17 @@ ifeq ($(BR2_PACKAGE_STRONGSWAN_SQL),y)
 STRONGSWAN_DEPENDENCIES += \
 	$(if $(BR2_PACKAGE_SQLITE),sqlite) \
 	$(if $(BR2_PACKAGE_MYSQL),mysql)
+endif
+
+ifeq ($(BR2_PACKAGE_IPTABLES),y)
+STRONGSWAN_DEPENDENCIES += iptables
+STRONGSWAN_CONF_OPTS += \
+	--enable-connmark \
+	--enable-forecast
+else
+STRONGSWAN_COF_OPTS += \
+	--disable-connmark \
+	--disable-forecast
 endif
 
 $(eval $(autotools-package))
