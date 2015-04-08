@@ -18,7 +18,7 @@ KODI_DEPENDENCIES = host-gawk host-gettext host-gperf host-infozip host-lzo \
 	host-nasm host-sdl_image host-swig
 KODI_DEPENDENCIES += boost bzip2 expat ffmpeg fontconfig freetype jasper jpeg \
 	libass libcdio libcurl libfribidi libgcrypt libmad libmodplug libmpeg2 \
-	libogg libplist libpng libsamplerate libungif libvorbis libxml2 libxslt lzo ncurses \
+	libogg libplist libpng libsamplerate libvorbis libxml2 libxslt lzo ncurses \
 	openssl pcre python readline sqlite taglib tiff tinyxml yajl zlib
 
 KODI_CONF_ENV = \
