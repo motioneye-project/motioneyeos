@@ -70,7 +70,7 @@ $$($(2)_TARGET_CONFIGURE): $$($(2)_DIR)/.stamp_kconfig_fixup_done
 ifeq ($$($$($(2)_KCONFIG_VAR)),y)
 
 # FOO_KCONFIG_FILE is required
-ifndef $(2)_KCONFIG_FILE
+ifeq ($$($(2)_KCONFIG_FILE),)
 $$(error Internal error: no value specified for $(2)_KCONFIG_FILE)
 endif
 
