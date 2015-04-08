@@ -1,5 +1,7 @@
 config BR2_PACKAGE_LIBUNGIF
 	bool "libungif"
+	depends on !BR2_PACKAGE_GIFLIB
+	depends on BR2_DEPRECATED_SINCE_2015_02 # giflib
 	help
 	  libungif is a library for handling the uncompressed GIF image format.
 
