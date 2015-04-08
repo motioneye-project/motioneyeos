@@ -10,6 +10,11 @@ config BR2_PACKAGE_PHP_EXT_FILEINFO
 	help
 	  File Information support
 
+config BR2_PACKAGE_PHP_EXT_OPCACHE
+	bool "OPcache"
+	help
+	  Enable the Zend OPcache accelerator.
+
 config BR2_PACKAGE_PHP_EXT_READLINE
 	bool "Readline"
 	select BR2_PACKAGE_NCURSES

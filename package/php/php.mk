@@ -38,6 +38,19 @@ PHP_CONFIG_SCRIPTS = php-config
 
 PHP_CFLAGS = $(TARGET_CFLAGS)
 
+# The OPcache extension isn't cross-compile friendly
+# Throw some defines here to avoid patching heavily
+ifeq ($(BR2_PACKAGE_PHP_EXT_OPCACHE),y)
+PHP_CONF_OPTS += --enable-opcache
+PHP_CONF_ENV += ac_cv_func_mprotect=yes
+PHP_CFLAGS += \
+	-DHAVE_SHM_IPC \
+	-DHAVE_SHM_MMAP_ANON \
+	-DHAVE_SHM_MMAP_ZERO \
+	-DHAVE_SHM_MMAP_POSIX \
+	-DHAVE_SHM_MMAP_FILE
+endif
+
 # We need to force dl "detection"
 ifeq ($(BR2_STATIC_LIBS),)
 PHP_CONF_ENV += ac_cv_func_dlopen=yes ac_cv_lib_dl_dlopen=yes
