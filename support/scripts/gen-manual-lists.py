@@ -87,7 +87,7 @@ def get_symbol_parents(item, root=None, enable_choice=False):
     """ Return the list of the item's parents. The last item of the list is
     the closest parent, the first the furthest.
 
-    :param item:          Item from which the the parent list is generated
+    :param item:          Item from which the parent list is generated
     :param root:          Root item stopping the search (not included in the
                           parent list)
     :param enable_choice: Flag enabling choices to appear in the parent list

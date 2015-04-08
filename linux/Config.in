@@ -288,12 +288,12 @@ if BR2_LINUX_KERNEL_DTS_SUPPORT
 # We have mainly three cases when it comes to device tree support:
 #   1) We don't want any support at all. Then the ..DTS_SUPPORT
 #      variable won't be set
-#   2) We want device tree support, so we need the user to enter
-#      the device tree name or the the path to the custom device
-#      he uses, but the kernel abstracts this from us and only
-#      build an image that looks like a regular kernel image. In
-#      this case, we only need to derive the kernel image name from
-#      the given device tree name, and all the rest is as usual
+#   2) We want device tree support, so we need the user to enter the
+#      device tree name or the path to the custom device he uses, but
+#      the kernel abstracts this from us and only build an image that
+#      looks like a regular kernel image. In this case, we only need
+#      to derive the kernel image name from the given device tree
+#      name, and all the rest is as usual
 #   3) We want device tree support, but the kernel requires us to
 #      build the device tree blob separately. In this case, some
 #      more logic will be needed.

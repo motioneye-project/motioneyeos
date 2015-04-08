@@ -6,7 +6,7 @@ Zedboard information including schematics, reference designs, and manuals are
 available from http://www.zedboard.org .
 
 The U-Boot firmware for the Xilinx Zynq All Programmable SoC depends
-on some propietary code. This dependency consists of a pair of
+on some proprietary code. This dependency consists of a pair of
 files are available from the Xilinx SDK installation.
 
 You will need these files from Xilinx SDK installation to generate
@@ -53,7 +53,7 @@ the clean, or uboot-dirclean targets are made.
 
 Resulting system
 ----------------
-A FAT32 partition should be created at the beggining of the SD Card
+A FAT32 partition should be created at the beginning of the SD Card
 and the following files should be installed:
 	/boot.bin
 	/devicetree.dtb

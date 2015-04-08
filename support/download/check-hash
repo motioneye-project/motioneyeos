@@ -3,7 +3,7 @@ set -e
 
 # Helper to check a file matches its known hash
 # Call it with:
-#   $1: the path of the file containing all the the expected hashes
+#   $1: the path of the file containing all the expected hashes
 #   $2: the full path to the temporary file that was downloaded, and
 #       that is to be checked
 #   $3: the final basename of the file, to which it will be ultimately
