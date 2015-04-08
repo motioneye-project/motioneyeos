@@ -22,6 +22,13 @@ PHP_CONF_OPTS = \
 	--disable-rpath
 PHP_CONF_ENV = EXTRA_LIBS="$(PHP_EXTRA_LIBS)"
 
+# PHP can't be AUTORECONFed the standard way unfortunately
+PHP_DEPENDENCIES += host-autoconf host-automake host-libtool
+define PHP_BUILDCONF
+	cd $(@D) ; ./buildconf --force
+endef
+PHP_PRE_CONFIGURE_HOOKS += PHP_BUILDCONF
+
 ifeq ($(BR2_ENDIAN),"BIG")
 PHP_CONF_ENV += ac_cv_c_bigendian_php=yes
 else

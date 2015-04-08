@@ -4,11 +4,12 @@ a host-php instance and really probably nobody needs the phar tool
 on the target.
 
 Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+[Gustavo: update for autoreconf/configure.in]
 
-diff -Nura php-5.5.14.orig/configure php-5.5.14/configure
---- php-5.5.14.orig/configure	2014-07-08 09:52:52.657753194 -0300
-+++ php-5.5.14/configure	2014-07-08 09:53:07.610243933 -0300
-@@ -112930,13 +112930,8 @@
+diff -Nura php-5.6.7.orig/configure.in php-5.6.7/configure.in
+--- php-5.6.7.orig/configure.in	2015-04-08 11:08:10.815835010 -0300
++++ php-5.6.7/configure.in	2015-04-08 11:16:20.460467444 -0300
+@@ -1437,13 +1437,8 @@
  INLINE_CFLAGS="$INLINE_CFLAGS $standard_libtool_flag"
  CXXFLAGS="$CXXFLAGS $standard_libtool_flag"
  
