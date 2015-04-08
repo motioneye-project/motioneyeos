@@ -6,10 +6,11 @@
 
 THRIFT_VERSION = 0.9.2
 THRIFT_SITE = http://www.us.apache.org/dist/thrift/$(THRIFT_VERSION)
-THRIFT_DEPENDENCIES = host-pkgconf host-thrift boost libevent openssl zlib
+THRIFT_DEPENDENCIES = host-autoconf-archive host-pkgconf host-thrift boost \
+	libevent openssl zlib
 THRIFT_INSTALL_STAGING = YES
-HOST_THRIFT_DEPENDENCIES = host-bison host-boost host-flex host-libevent \
-	host-openssl host-pkgconf host-zlib
+HOST_THRIFT_DEPENDENCIES = host-autoconf-archive host-bison host-boost \
+	host-flex host-libevent host-openssl host-pkgconf host-zlib
 
 THRIFT_CONF_OPTS = --with-sysroot=$(STAGING_DIR) \
 	--with-boost \
