@@ -20,7 +20,9 @@ PHP_CONF_OPTS = \
 	--without-pear \
 	--with-config-file-path=/etc \
 	--disable-rpath
-PHP_CONF_ENV = EXTRA_LIBS="$(PHP_EXTRA_LIBS)"
+PHP_CONF_ENV = \
+	ac_cv_func_strcasestr=yes \
+	EXTRA_LIBS="$(PHP_EXTRA_LIBS)"
 
 # PHP can't be AUTORECONFed the standard way unfortunately
 PHP_DEPENDENCIES += host-autoconf host-automake host-libtool
