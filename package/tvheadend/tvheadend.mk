@@ -40,6 +40,16 @@ endif
 
 TVHEADEND_DEPENDENCIES += dtv-scan-tables
 
+# The tvheadend build system expects the transponder data to be present inside
+# its source tree. To prevent a download initiated by the build system just
+# copy the data files in the right place and add the corresponding stamp file.
+define TVHEADEND_INSTALL_DTV_SCAN_TABLES
+	$(INSTALL) -d $(@D)/data/dvb-scan
+	cp -r $(TARGET_DIR)/usr/share/dvb/* $(@D)/data/dvb-scan/
+	touch $(@D)/data/dvb-scan/.stamp
+endef
+TVHEADEND_PRE_CONFIGURE_HOOKS += TVHEADEND_INSTALL_DTV_SCAN_TABLES
+
 define TVHEADEND_CONFIGURE_CMDS
 	(cd $(@D);						\
 		$(TARGET_CONFIGURE_OPTS)			\
@@ -57,13 +67,7 @@ define TVHEADEND_CONFIGURE_CMDS
 	)
 endef
 
-# The tvheadend build system expects the transponder data to be present inside
-# its source tree. To prevent a downloaded initiated by the build system just
-# copy the data files in the right place and add the corresponding stamp file.
 define TVHEADEND_BUILD_CMDS
-	$(INSTALL) -d $(@D)/data/dvb-scan
-	cp -r $(TARGET_DIR)/usr/share/dvb/* $(@D)/data/dvb-scan/
-	touch $(@D)/data/dvb-scan/.stamp
 	$(MAKE) -C $(@D)
 endef
 
