@@ -4,12 +4,19 @@
 #
 ################################################################################
 
-PCIUTILS_VERSION = 3.3.0
+PCIUTILS_VERSION = 3.3.1
 PCIUTILS_SITE = $(BR2_KERNEL_MIRROR)/software/utils/pciutils
 PCIUTILS_SOURCE = pciutils-$(PCIUTILS_VERSION).tar.xz
 PCIUTILS_INSTALL_STAGING = YES
 PCIUTILS_LICENSE = GPLv2+
 PCIUTILS_LICENSE_FILES = COPYING
+
+ifeq ($(BR2_PACKAGE_HAS_UDEV),y)
+PCIUTILS_DEPENDENCIES += udev
+PCIUTILS_MAKE_OPTS += HWDB=yes
+else
+PCIUTILS_MAKE_OPTS += HWDB=no
+endif
 
 ifeq ($(BR2_PACKAGE_ZLIB),y)
 PCIUTILS_ZLIB=yes
@@ -33,7 +40,7 @@ else
 PCIUTILS_SHARED=yes
 endif
 
-PCIUTILS_MAKE_OPTS = \
+PCIUTILS_MAKE_OPTS += \
 	CC="$(TARGET_CC)" \
 	HOST="$(KERNEL_ARCH)-linux" \
 	OPT="$(TARGET_CFLAGS)" \
