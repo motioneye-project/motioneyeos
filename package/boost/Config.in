@@ -88,7 +88,7 @@ comment "boost-locale needs a toolchain w/ wchar"
 	depends on !BR2_USE_WCHAR
 
 config BR2_PACKAGE_BOOST_LOG
-        bool "boost-log"
+	bool "boost-log"
 
 config BR2_PACKAGE_BOOST_MATH
 	bool "boost-math"
