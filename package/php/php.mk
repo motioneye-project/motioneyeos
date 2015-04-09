@@ -25,7 +25,7 @@ PHP_CONF_ENV = EXTRA_LIBS="$(PHP_EXTRA_LIBS)"
 # PHP can't be AUTORECONFed the standard way unfortunately
 PHP_DEPENDENCIES += host-autoconf host-automake host-libtool
 define PHP_BUILDCONF
-	cd $(@D) ; ./buildconf --force
+	cd $(@D) ; $(TARGET_MAKE_ENV) ./buildconf --force
 endef
 PHP_PRE_CONFIGURE_HOOKS += PHP_BUILDCONF
 
