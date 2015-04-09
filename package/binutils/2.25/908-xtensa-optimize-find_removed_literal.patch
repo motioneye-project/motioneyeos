@@ -1,0 +1,146 @@
+From 288c2b709e5e6841484e1a129eaccd299db36877 Mon Sep 17 00:00:00 2001
+From: Max Filippov <jcmvbkbc@gmail.com>
+Date: Sat, 4 Apr 2015 14:49:42 +0300
+Subject: [PATCH 3/4] xtensa: optimize find_removed_literal
+
+find_removed_literal uses linear search to find removed literal by its
+VMA. The list of literals is fixed at that point, build an ordered index
+array and use binary search instead.
+
+Original profile:
+
+% time    self  children    called     name
+-----------------------------------------
+         56.72    0.00  297578/669392      translate_reloc
+         70.86    0.00  371814/669392      relax_section
+  67.9  127.58    0.00  669392         find_removed_literal
+-----------------------------------------
+
+Same data, after optimization:
+
+% time    self  children    called     name
+-----------------------------------------
+          0.00    0.00  297578/669392      translate_reloc
+          0.00    0.00  371814/669392      relax_section
+   0.0    0.00    0.00  669392         find_removed_literal
+          0.00    0.00   23838/23838       map_removed_literal
+-----------------------------------------
+
+2015-04-03  Max Filippov  <jcmvbkbc@gmail.com>
+bfd/
+	* elf32-xtensa.c (removed_literal_map_entry): new typedef.
+	(removed_literal_map_entry_struct): new structure.
+	(removed_literal_list_struct): add new fields: n_map and map.
+	(map_removed_literal, removed_literal_compare): new functions.
+	(find_removed_literal): build index array for literals ordered
+	by VMA, use binary search to find removed literal.
+
+Backported from: 3439c466273378021821473d3fc84990e089ae34
+Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
+---
+ bfd/elf32-xtensa.c | 64 +++++++++++++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 58 insertions(+), 6 deletions(-)
+
+diff --git a/bfd/elf32-xtensa.c b/bfd/elf32-xtensa.c
+index 21b2871..51733ad 100644
+--- a/bfd/elf32-xtensa.c
++++ b/bfd/elf32-xtensa.c
+@@ -5832,6 +5832,7 @@ print_action_list (FILE *fp, text_action_list *action_list)
+    by the "from" offset field.  */
+ 
+ typedef struct removed_literal_struct removed_literal;
++typedef struct removed_literal_map_entry_struct removed_literal_map_entry;
+ typedef struct removed_literal_list_struct removed_literal_list;
+ 
+ struct removed_literal_struct
+@@ -5841,10 +5842,19 @@ struct removed_literal_struct
+   removed_literal *next;
+ };
+ 
++struct removed_literal_map_entry_struct
++{
++  bfd_vma addr;
++  removed_literal *literal;
++};
++
+ struct removed_literal_list_struct
+ {
+   removed_literal *head;
+   removed_literal *tail;
++
++  unsigned n_map;
++  removed_literal_map_entry *map;
+ };
+ 
+ 
+@@ -5893,6 +5903,39 @@ add_removed_literal (removed_literal_list *removed_list,
+     }
+ }
+ 
++static void
++map_removed_literal (removed_literal_list *removed_list)
++{
++  unsigned n_map = 0;
++  unsigned i;
++  removed_literal_map_entry *map = NULL;
++  removed_literal *r = removed_list->head;
++
++  for (i = 0; r; ++i, r = r->next)
++    {
++      if (i == n_map)
++	{
++	  n_map = (n_map * 2) + 2;
++	  map = bfd_realloc (map, n_map * sizeof (*map));
++	}
++      map[i].addr = r->from.target_offset;
++      map[i].literal = r;
++    }
++  removed_list->map = map;
++  removed_list->n_map = i;
++}
++
++static int
++removed_literal_compare (const void *a, const void *b)
++{
++  const removed_literal_map_entry *pa = a;
++  const removed_literal_map_entry *pb = b;
++
++  if (pa->addr == pb->addr)
++    return 0;
++  else
++    return pa->addr < pb->addr ? -1 : 1;
++}
+ 
+ /* Check if the list of removed literals contains an entry for the
+    given address.  Return the entry if found.  */
+@@ -5900,12 +5943,21 @@ add_removed_literal (removed_literal_list *removed_list,
+ static removed_literal *
+ find_removed_literal (removed_literal_list *removed_list, bfd_vma addr)
+ {
+-  removed_literal *r = removed_list->head;
+-  while (r && r->from.target_offset < addr)
+-    r = r->next;
+-  if (r && r->from.target_offset == addr)
+-    return r;
+-  return NULL;
++  removed_literal_map_entry *p;
++  removed_literal *r = NULL;
++
++  if (removed_list->map == NULL)
++    map_removed_literal (removed_list);
++
++  p = bsearch (&addr, removed_list->map, removed_list->n_map,
++	       sizeof (*removed_list->map), removed_literal_compare);
++  if (p)
++    {
++      while (p != removed_list->map && (p - 1)->addr == addr)
++	--p;
++      r = p->literal;
++    }
++  return r;
+ }
+ 
+ 
+-- 
+1.8.1.4
+
