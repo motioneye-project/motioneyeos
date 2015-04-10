@@ -37,6 +37,12 @@ config BR2_PACKAGE_GNURADIO_BLOCKS
 	help
 	  GNU Radio basic block library
 
+config BR2_PACKAGE_GNURADIO_FEC
+	bool "gr-fec support"
+	select BR2_PACKAGE_GNURADIO_BLOCKS
+	help
+	  FEC signal processing blocks
+
 config BR2_PACKAGE_GNURADIO_PYTHON
 	bool "python support"
 	select BR2_PACKAGE_BOOST_PYTHON
@@ -44,4 +50,58 @@ config BR2_PACKAGE_GNURADIO_PYTHON
 	help
 	  Enable python component
 
+config BR2_PACKAGE_GNURADIO_UTILS
+	bool "gr-utils support"
+	select BR2_PACKAGE_GNURADIO_PYTHON
+	help
+	  Misc python utilities
+
+comment "gr-fft, -filter, -analog, -channels, -digital, -trellis, -pager depends fftw's single precision"
+	depends on !BR2_PACKAGE_FFTW_PRECISION_SINGLE
+
+if BR2_PACKAGE_FFTW_PRECISION_SINGLE
+
+config BR2_PACKAGE_GNURADIO_ANALOG
+	bool "gr-analog support"
+	select BR2_PACKAGE_GNURADIO_FILTER
+	help
+	  Analog communications blocks
+
+config BR2_PACKAGE_GNURADIO_CHANNELS
+	bool "gr-channels support"
+	select BR2_PACKAGE_GNURADIO_ANALOG
+	help
+	  Channel model blocks
+
+config BR2_PACKAGE_GNURADIO_DIGITAL
+	bool "gr-digital support"
+	select BR2_PACKAGE_GNURADIO_ANALOG
+	help
+	  Digital communications blocks
+
+config BR2_PACKAGE_GNURADIO_FFT
+	bool "gr-fft support"
+	select BR2_PACKAGE_GNURADIO_BLOCKS
+	help
+	  FFT signal processing blocks
+
+config BR2_PACKAGE_GNURADIO_FILTER
+	bool "gr-filter support"
+	select BR2_PACKAGE_GNURADIO_FFT
+	help
+	  Filter signal processing blocks
+
+config BR2_PACKAGE_GNURADIO_PAGER
+	bool "gr-flex support"
+	select BR2_PACKAGE_GNURADIO_ANALOG
+	help
+	  FLEX pager decoder implementation blocks
+
+config BR2_PACKAGE_GNURADIO_TRELLIS
+	bool "gr-trellis support"
+	select BR2_PACKAGE_GNURADIO_DIGITAL
+	help
+	  Trellis coded modulation blocks
+
+endif
 endif
