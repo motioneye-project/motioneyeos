@@ -51,6 +51,13 @@ else
 GD_CONF_OPTS += --without-png
 endif
 
+ifeq ($(BR2_PACKAGE_LIBVPX),y)
+GD_DEPENDENCIES += libvpx
+GD_CONF_OPTS += --with-vpx
+else
+GD_CONF_OPTS += --without-vpx
+endif
+
 ifeq ($(BR2_PACKAGE_TIFF),y)
 GD_DEPENDENCIES += tiff
 GD_CONF_OPTS += --with-tiff
