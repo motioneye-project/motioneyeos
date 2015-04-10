@@ -52,6 +52,12 @@
 #
 # [End of example]
 
+config BR2_SKIP_LEGACY
+	bool
+	option env="SKIP_LEGACY"
+
+if !BR2_SKIP_LEGACY
+
 config BR2_LEGACY
 	bool
 	help
@@ -1288,3 +1294,5 @@ config BR2_BFIN_FLAT
 	select BR2_LEGACY
 
 endmenu
+
+endif # !SKIP_LEGACY
