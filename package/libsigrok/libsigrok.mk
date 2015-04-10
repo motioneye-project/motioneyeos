@@ -48,7 +48,11 @@ endif
 
 ifeq ($(BR2_PACKAGE_LIBSIGROKCXX),y)
 LIBSIGROK_CONF_OPTS += --enable-cxx
-LIBSIGROK_DEPENDENCIES += host-autoconf-archive glibmm
+LIBSIGROK_DEPENDENCIES += \
+	host-autoconf-archive \
+	glibmm \
+	host-doxygen \
+	$(if $(BR2_PACKAGE_PYTHON3),host-python3,host-python)
 else
 LIBSIGROK_CONF_OPTS += --disable-cxx
 endif
