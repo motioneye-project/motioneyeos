@@ -1,0 +1,418 @@
+Patch committed upstream
+https://bitbucket.org/libgd/gd-libgd/commits/a79232c5fa692c3b6e3f5bc95ecfc455424c3f54?at=master
+
+Downloaded from Gentoo
+https://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/media-libs/gd/files/gd-2.1.1-webp.patch?revision=1.1&view=markup
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+
+---
+https://bugs.gentoo.org/545956
+
+From a79232c5fa692c3b6e3f5bc95ecfc455424c3f54 Mon Sep 17 00:00:00 2001
+From: Pierre Joye <pierre.php@gmail.com>
+Date: Tue, 20 Jan 2015 04:55:11 +0100
+Subject: [PATCH] fix #129, drop VPX usage in favor of libwebp
+
+---
+ configure.ac          |  80 +++++------------
+ src/gd_webp.c         | 231 +++++++++++++++++++++-----------------------------
+ tests/Makefile.am     |   2 +-
+ tests/webp/bug00111.c |   2 +-
+ 4 files changed, 122 insertions(+), 193 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 1024a3a..8923186 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -317,63 +317,6 @@ if test "$with_xpm" != no; then
+ fi
+ AM_CONDITIONAL([HAVE_LIBXPM], test "$with_xpm" = yes)
+ 
+-dnl check for libvpx by default
+-AC_ARG_WITH(vpx,dnl
+-[  --with-vpx=DIR         where to find the vpx library])
+-
+-case $with_vpx in
+-no) ;;
+-yes|"")
+-  PKG_CHECK_MODULES([LIBVPX], vpx, [with_vpx=yes],
+-  [
+-    PKG_CHECK_MODULES([LIBVPX], libvpx, [with_vpx=yes],
+-    [
+-      if test "$with_vpx" = yes; then
+-        AC_MSG_ERROR([VPX support requested, but not found])
+-      fi
+-      with_vpx=no
+-    ])
+-  ])
+-  ;;
+-*)
+-  save_LIBS="$LIBS"
+-  save_CPPFLAGS="$CPPFLAGS"
+-
+-  if test -d "$with_vpx"; then
+-    LIBVPX_CFLAGS="-I$with_vpx/include"
+-    LIBVPX_LIBS="-L$with_vpx/lib -lvpx"
+-  fi
+-
+-  CPPFLAGS="$CPPFLAGS $LIBVPX_CFLAGS"
+-  LIBS="$LIBS $LIBVPX_LIBS"
+-
+-  AC_CHECK_LIB(vpx,vpx_codec_destroy,
+-    [
+-      if test -z "$LIBVPX_LIBS"; then
+-        LIBVPX_LIBS="-lvpx"
+-      fi
+-      with_vpx=yes
+-    ],[
+-      if test "$with_vpx" != ""; then
+-        AC_MSG_ERROR([vpx support requested, but not found])
+-      else
+-        with_vpx=no
+-      fi
+-    ])
+-
+-  CPPFLAGS="$save_CPPFLAGS"
+-  LIBS="$save_LIBS"
+-  ;;
+-esac
+-
+-if test "$with_vpx" != no; then
+-  CPPFLAGS="$CPPFLAGS $LIBVPX_CFLAGS"
+-  LIBS="$LIBS $LIBVPX_LIBS"
+-  FEATURES="GD_VPX $FEATURES"
+-  AC_DEFINE(HAVE_LIBVPX, 1, [ Define if you have the VPX library. ])
+-fi
+-AM_CONDITIONAL([HAVE_LIBVPX], test "$with_vpx" = yes)
+-
+ dnl check for libtiff by default
+ AC_ARG_WITH(tiff,dnl
+ [  --with-tiff=DIR         where to find the TIFF library])
+@@ -437,6 +380,27 @@ if test "$mingw_cv_win32_host" = yes; then
+ AC_DEFINE([BGDWIN32], [], [Define is you are building for Win32 API])
+ fi
+ 
++
++dnl check for libwebp by default
++AC_ARG_WITH(webp,dnl
++[  --with-webp=DIR         where to find the webp library],
++  [if test -d "$withval"; then
++     LDFLAGS="$LDFLAGS -L$withval/lib"
++     CFLAGS="$CFLAGS -I$withval/include"
++   fi],
++  withval=yes)
++
++if test "$withval" != no; then
++  AC_CHECK_LIB(webp,WebPGetInfo,
++    [LIBS="-lwebp $LIBS" 
++     FEATURES="GD_WEBP $FEATURES"
++     AC_DEFINE(HAVE_LIBWEBP, 1, [ Define if you have the webp library. ])])
++     with_webp=yes
++else
++  with_webp=no
++fi
++AM_CONDITIONAL([HAVE_LIBWEBP], test "$with_webp" = yes)
++
+ dnl report configuration
+ AC_MSG_RESULT([
+ ** Configuration summary for $PACKAGE $VERSION:
+@@ -444,7 +408,7 @@ AC_MSG_RESULT([
+    Support for Zlib:                 $with_zlib
+    Support for PNG library:          $with_png
+    Support for JPEG library:         $ac_cv_lib_jpeg_jpeg_set_defaults
+-   Support for VPX library:          $with_vpx
++   Support for WebP library:         $with_webp
+    Support for TIFF library:         $with_tiff
+    Support for Freetype 2.x library: $with_freetype
+    Support for Fontconfig library:   $with_fontconfig
+diff --git a/src/gd_webp.c b/src/gd_webp.c
+index a3ae1ac..c44bd80 100644
+--- a/src/gd_webp.c
++++ b/src/gd_webp.c
+@@ -2,33 +2,21 @@
+ #include "config.h"
+ #endif /* HAVE_CONFIG_H */
+ 
++
++#ifdef HAVE_LIBWEBP
+ #include <stdio.h>
+ #include <math.h>
+ #include <string.h>
+ #include <stdlib.h>
+ #include "gd.h"
+ #include "gd_errors.h"
+-
+-#ifdef HAVE_LIBVPX
+-#include "webpimg.h"
+ #include "gdhelpers.h"
++#include "webp/decode.h"
++#include "webp/encode.h"
+ 
+-extern void gd_YUV420toRGBA(uint8* Y,
+-				  uint8* U,
+-				  uint8* V,
+-				  gdImagePtr im);
+-
+-extern void gd_RGBAToYUV420(gdImagePtr im2,
+-				  uint8* Y,
+-				  uint8* U,
+-				  uint8* V);
+-
+-const char * gdWebpGetVersionString()
+-{
+-	return "not defined";
+-}
++#define GD_WEBP_ALLOC_STEP (4*1024)
+ 
+-BGD_DECLARE(gdImagePtr) gdImageCreateFromWebp (FILE * inFile)
++gdImagePtr gdImageCreateFromWebp (FILE * inFile)
+ {
+ 	gdImagePtr im;
+ 	gdIOCtx *in = gdNewFileCtx(inFile);
+@@ -38,42 +26,16 @@ BGD_DECLARE(gdImagePtr) gdImageCreateFromWebp (FILE * inFile)
+ 	return im;
+ }
+ 
+-BGD_DECLARE(gdImagePtr) gdImageCreateFromWebpPtr (int size, void *data)
++gdImagePtr gdImageCreateFromWebpCtx (gdIOCtx * infile)
+ {
+-	int	width, height, ret;
+- 	unsigned char   *Y = NULL;
+-	unsigned char   *U = NULL;
+-	unsigned char   *V = NULL;
+-	gdImagePtr im;
+-
+-	ret = WebPDecode(data, size, &Y, &U, &V, &width, &height);
+-	if (ret != webp_success) {
+-		if (Y) free(Y);
+-		if (U) free(U);
+-		if (V) free(V);
+-		gd_error("WebP decode: fail to decode input data");
+-		return NULL;
+-	}
+-	im = gdImageCreateTrueColor(width, height);
+-	if (!im) {
+-		return NULL;
+-	}
+-	gd_YUV420toRGBA(Y, U, V, im);
+-	return im;
+-}
+-
+-#define GD_WEBP_ALLOC_STEP (4*1024)
+-
+-BGD_DECLARE(gdImagePtr) gdImageCreateFromWebpCtx (gdIOCtx * infile)
+-{
+-	int	width, height, ret;
+-	unsigned char   *filedata = NULL;
++	int    width, height;
++	uint8_t   *filedata = NULL;
++	uint8_t    *argb = NULL;
+ 	unsigned char   *read, *temp;
+-	unsigned char   *Y = NULL;
+-	unsigned char   *U = NULL;
+-	unsigned char   *V = NULL;
+ 	size_t size = 0, n;
+ 	gdImagePtr im;
++	int x, y;
++	uint8_t *p;
+ 
+ 	do {
+ 		temp = gdRealloc(filedata, size+GD_WEBP_ALLOC_STEP);
+@@ -89,23 +51,97 @@ BGD_DECLARE(gdImagePtr) gdImageCreateFromWebpCtx (gdIOCtx * infile)
+ 		}
+ 
+ 		n = gdGetBuf(read, GD_WEBP_ALLOC_STEP, infile);
+-		size += n;
+-	} while (n>0);
++		if (n>0 && n!=EOF) {
++			size += n;
++		}
++	} while (n>0 && n!=EOF);
+ 
+-	ret = WebPDecode(filedata, size, &Y, &U, &V, &width, &height);
+-	gdFree(filedata);
+-	if (ret != webp_success) {
+-		if (Y) free(Y);
+-		if (U) free(U);
+-		if (V) free(V);
+-		gd_error("WebP decode: fail to decode input data");
++	if (WebPGetInfo(filedata,size, &width, &height) == 0) {
++		gd_error("gd-webp cannot get webp info");
+ 		return NULL;
+ 	}
++
+ 	im = gdImageCreateTrueColor(width, height);
+-	gd_YUV420toRGBA(Y, U, V, im);
++	if (!im) {
++		return NULL;
++	}
++	argb = WebPDecodeARGB(filedata, size, &width, &height);
++	if (!argb) {
++		gd_error("gd-webp cannot allocate temporary buffer");
++		gdFree(argb);
++		return NULL;
++	}
++	for (y = 0, p = argb;  y < height; y++) {
++		for (x = 0; x < width; x++) {
++			register uint8_t a = gdAlphaMax - (*(p++) >> 1);
++			register uint8_t r = *(p++);
++			register uint8_t g = *(p++);
++			register uint8_t b = *(p++);
++			im->tpixels[y][x] = gdTrueColorAlpha(r, g, b, a);
++		}
++	}
++	gdFree(filedata);
++	free(argb);
++	im->saveAlphaFlag = 1;
+ 	return im;
+ }
+ 
++void gdImageWebpCtx (gdImagePtr im, gdIOCtx * outfile, int quantization)
++{
++	uint8_t *argb;
++	int x, y;
++	uint8_t *p;
++	uint8_t *out;
++	size_t out_size;
++
++	if (im == NULL) {
++		return;
++	}
++
++	if (!gdImageTrueColor(im)) {
++		gd_error("Paletter image not supported by webp");
++		return;
++	}
++
++	if (quantization == -1) {
++		quantization = 80;
++	}
++
++	argb = (uint8_t *)gdMalloc(gdImageSX(im) * 4 * gdImageSY(im));
++	if (!argb) {
++		return;
++	}
++	p = argb;
++	for (y = 0; y < gdImageSY(im); y++) {
++		for (x = 0; x < gdImageSX(im); x++) {
++			register int c;
++			register char a;
++			c = im->tpixels[y][x];
++			a = gdTrueColorGetAlpha(c);
++			if (a == 127) {
++				a = 0;
++			} else {
++				a = 255 - ((a << 1) + (a >> 6));
++			}
++			*(p++) = gdTrueColorGetRed(c);
++			*(p++) = gdTrueColorGetGreen(c);
++			*(p++) = gdTrueColorGetBlue(c); 
++			*(p++) = a;
++		}
++	}
++	out_size = WebPEncodeRGBA(argb, gdImageSX(im), gdImageSY(im), gdImageSX(im) * 4, quantization, &out);
++	printf("outsize: %i\n", out_size);
++	if (out_size == 0) {
++		gd_error("gd-webp encoding failed");
++		goto freeargb;
++	}
++	gdPutBuf(out, out_size, outfile);
++	free(out);
++
++freeargb:
++	gdFree(argb);
++}
++
+ BGD_DECLARE(void) gdImageWebpEx (gdImagePtr im, FILE * outFile, int quantization)
+ {
+ 	gdIOCtx *out = gdNewFileCtx(outFile);
+@@ -116,7 +152,7 @@ BGD_DECLARE(void) gdImageWebpEx (gdImagePtr im, FILE * outFile, int quantization
+ BGD_DECLARE(void) gdImageWebp (gdImagePtr im, FILE * outFile)
+ {
+ 	gdIOCtx *out = gdNewFileCtx(outFile);
+-  	gdImageWebpCtx(im, out, -1);
++	gdImageWebpCtx(im, out, -1);
+ 	out->gd_free(out);
+ }
+ 
+@@ -140,75 +176,4 @@ BGD_DECLARE(void *) gdImageWebpPtrEx (gdImagePtr im, int *size, int quantization
+ 	out->gd_free(out);
+ 	return rv;
+ }
+-
+-/*
+- * Maps normalized QP (quality) to VP8 QP
+- */
+-int mapQualityToVP8QP(int quality) {
+-#define MIN_QUALITY 0
+-#define MAX_QUALITY 100
+-#define MIN_VP8QP 1
+-#define MAX_VP8QP 63
+-	const float scale = MAX_VP8QP - MIN_VP8QP;
+-	const float vp8qp =
+-	scale * (MAX_QUALITY - quality) / (MAX_QUALITY - MIN_QUALITY) + MIN_VP8QP;
+-	if (quality < MIN_QUALITY || quality > MAX_QUALITY) {
+-		gd_error("Wrong quality value %d.", quality);
+-		return -1;
+-	}
+-
+-	return (int)(vp8qp + 0.5);
+-}
+-
+-/* This routine is based in part on code from Dale Lutz (Safe Software Inc.)
+- *  and in part on demo code from Chapter 15 of "PNG: The Definitive Guide"
+- *  (http://www.cdrom.com/pub/png/pngbook.html).
+- */
+-BGD_DECLARE(void) gdImageWebpCtx (gdImagePtr im, gdIOCtx * outfile, int quantization)
+-{
+-	int width = im->sx;
+-	int height = im->sy;
+-
+-	int  yuv_width, yuv_height, yuv_nbytes, ret;
+-	int vp8_quality;
+-	unsigned char *Y = NULL,
+-				  *U = NULL,
+-				  *V = NULL;
+-	unsigned char *filedata = NULL;
+-
+-	/* Conversion to Y,U,V buffer */
+-	yuv_width = (width + 1) >> 1;
+-	yuv_height = (height + 1) >> 1;
+-	yuv_nbytes = width * height + 2 * yuv_width * yuv_height;
+-
+-	if ((Y = (unsigned char *)gdCalloc(yuv_nbytes, sizeof(unsigned char))) == NULL) {
+-		gd_error("gd-webp error: cannot allocate Y buffer");
+-		return;
+-	}
+-	if (quantization == -1) {
+-		quantization = 80;
+-	}
+-	vp8_quality = mapQualityToVP8QP(quantization);
+-
+-	U = Y + width * height;
+-	V = U + yuv_width * yuv_height;
+-	gd_RGBAToYUV420(im, Y, U, V);
+-
+-	/* Encode Y,U,V and write data to file */
+-	ret = WebPEncode(Y, U, V, width, height, width, yuv_width, yuv_height, yuv_width,
+-					 vp8_quality, &filedata, &yuv_nbytes, NULL);
+-	gdFree(Y);
+-
+-	if (ret != webp_success) {
+-		if (filedata) {
+-			free(filedata);
+-		}
+-		gd_error("gd-webp error: WebP Encoder failed");
+-		return;
+-	}
+-
+-	gdPutBuf (filedata, yuv_nbytes, outfile);
+-	free(filedata);
+-}
+-
+-#endif /* HAVE_LIBVPX */
++#endif /* HAVE_LIBWEBP */
+-- 
+2.3.5
+
