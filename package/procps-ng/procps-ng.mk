@@ -13,6 +13,7 @@ PROCPS_NG_INSTALL_STAGING = YES
 PROCPS_NG_DEPENDENCIES = ncurses host-pkgconf
 # For 0002-use-pkgconfig-for-ncursesw-cflags.patch
 PROCPS_NG_AUTORECONF = YES
+PROCPS_NG_GETTEXTIZE = YES
 
 # If both procps-ng and busybox are selected, make certain procps-ng
 # wins the fight over who gets to have their utils actually installed.
