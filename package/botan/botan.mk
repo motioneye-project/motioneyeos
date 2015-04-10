@@ -16,7 +16,8 @@ BOTAN_CONF_OPTS = \
 	--cpu=$(BR2_ARCH) \
 	--os=linux \
 	--cc=gcc \
-	--cc-bin="$(TARGET_CXX)"
+	--cc-bin="$(TARGET_CXX)" \
+	--prefix=/usr
 
 ifeq ($(BR2_STATIC_LIBS),y)
 BOTAN_CONF_OPTS += --disable-shared --no-autoload
