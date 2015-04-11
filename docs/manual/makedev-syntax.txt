@@ -24,6 +24,7 @@ There are a few non-trivial blocks:
 - +type+ is the type of the file, being one of:
   * f: a regular file
   * d: a directory
+  * r: a directory recursively
   * c: a character device file
   * b: a block device file
   * p: a named pipe
@@ -38,7 +39,14 @@ Let's say you want to change the permissions of a given file; using
 this syntax, you will need to put:
 
 ----
-/usr/bin/foobar f 644 0 0 - - -	- -
+/usr/bin/foobar f 644 0 0 - - - - -
+----
+
+Alternatively, if you want to change owner/permission of a directory
+recursively, you can put:
+
+----
+/usr/share/myapp r 750 myuser myuser - - - - -
 ----
 
 On the other hand, if you want to create the device file +/dev/hda+
