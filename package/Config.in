@@ -179,6 +179,7 @@ endmenu
 menu "Fonts, icons, sounds and themes"
 
 comment "Fonts"
+	source "package/bitstream-vera/Config.in"
 	source "package/dejavu/Config.in"
 	source "package/ghostscript-fonts/Config.in"
 	source "package/liberation/Config.in"
