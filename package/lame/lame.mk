@@ -8,6 +8,7 @@ LAME_VERSION_MAJOR = 3.99
 LAME_VERSION = $(LAME_VERSION_MAJOR).5
 LAME_SITE = http://downloads.sourceforge.net/project/lame/lame/$(LAME_VERSION_MAJOR)
 LAME_DEPENDENCIES = host-pkgconf
+LAME_AUTORECONF = YES
 LAME_INSTALL_STAGING = YES
 LAME_CONF_ENV = GTK_CONFIG=/bin/false
 LAME_CONF_OPTS = --enable-dynamic-frontends
