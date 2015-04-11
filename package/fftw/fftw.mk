@@ -18,7 +18,7 @@ FFTW_CONF_OPTS += $(if $(BR2_PACKAGE_FFTW_PRECISION_QUAD),--enable,--disable)-qu
 
 FFTW_CFLAGS = $(TARGET_CFLAGS)
 ifeq ($(BR2_PACKAGE_FFTW_FAST),y)
-FFTW_CFLAGS += -Ofast
+FFTW_CFLAGS += -O3 -ffast-math
 endif
 
 # x86 optimisations
