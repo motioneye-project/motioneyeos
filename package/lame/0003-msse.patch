@@ -1,0 +1,24 @@
+Fix compile on 32bit Intel
+
+Downloaded from
+http://anonscm.debian.org/cgit/pkg-multimedia/lame.git/tree/debian/patches/msse.patch
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+
+Description: Build xmm_quantize_sub.c with -msse
+Author: Sebastian Ramacher <sramacher@debian.org>
+Bug: http://sourceforge.net/p/lame/bugs/443/
+Bug-Debian: https://bugs.debian.org/760047
+Forwarded: http://sourceforge.net/p/lame/bugs/443/
+Last-Update: 2014-08-31
+
+--- lame-3.99.5+repack1.orig/libmp3lame/vector/Makefile.am
++++ lame-3.99.5+repack1/libmp3lame/vector/Makefile.am
+@@ -20,6 +20,7 @@ xmm_sources = xmm_quantize_sub.c
+ 
+ if WITH_XMM
+ liblamevectorroutines_la_SOURCES = $(xmm_sources)
++liblamevectorroutines_la_CFLAGS = -msse
+ endif
+ 
+ noinst_HEADERS = lame_intrin.h
