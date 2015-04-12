@@ -48,6 +48,8 @@ rootfs-iso9660: $(BINARIES_DIR)/rootfs.iso9660
 rootfs-iso9660-show-depends:
 	@echo $(ROOTFS_ISO9660_DEPENDENCIES)
 
+.PHONY: rootfs-iso9660 rootfs-iso9660-show-depends
+
 ################################################################################
 #
 # Toplevel Makefile options
