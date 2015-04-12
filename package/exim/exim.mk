@@ -9,7 +9,7 @@ EXIM_SOURCE = exim-$(EXIM_VERSION).tar.bz2
 EXIM_SITE = ftp://ftp.exim.org/pub/exim/exim4
 EXIM_LICENSE = GPLv2+
 EXIM_LICENSE_FILES = LICENCE
-EXIM_DEPENDENCIES = pcre berkeleydb
+EXIM_DEPENDENCIES = pcre berkeleydb host-pkgconf
 
 # Modify a variable value. It must already exist in the file, either
 # commented or not.
@@ -62,6 +62,14 @@ define EXIM_USE_DEFAULT_CONFIG_FILE_CLAMAV
 endef
 endif
 
+ifeq ($(BR2_PACKAGE_OPENSSL),y)
+EXIM_DEPENDENCIES += openssl
+define EXIM_USE_DEFAULT_CONFIG_FILE_OPENSSL
+	$(call exim-config-change,SUPPORT_TLS,yes)
+	$(call exim-config-change,USE_OPENSSL_PC,openssl)
+endef
+endif
+
 # this specific toolchain lacks libnsl
 ifeq ($(BR2_TOOLCHAIN_EXTERNAL_SYNOPSYS_ARC_2014_12),y)
 define EXIM_REMOVE_LIBNSL_FROM_MAKEFILE
@@ -89,6 +97,7 @@ define EXIM_CONFIGURE_CMDS
 	$(EXIM_USE_DEFAULT_CONFIG_FILE)
 	$(EXIM_USE_DEFAULT_CONFIG_FILE_DOVECOT)
 	$(EXIM_USE_DEFAULT_CONFIG_FILE_CLAMAV)
+	$(EXIM_USE_DEFAULT_CONFIG_FILE_OPENSSL)
 	$(EXIM_CONFIGURE_TOOLCHAIN)
 endef
 endif # CUSTOM_CONFIG
@@ -101,7 +110,7 @@ endif
 # "The -j (parallel) flag must not be used with make"
 # (http://www.exim.org/exim-html-current/doc/html/spec_html/ch04.html)
 define EXIM_BUILD_CMDS
-	build=br $(MAKE1) -C $(@D) $(EXIM_STATIC_FLAGS)
+	$(TARGET_MAKE_ENV) build=br $(MAKE1) -C $(@D) $(EXIM_STATIC_FLAGS)
 endef
 
 # Need to replicate the LFLAGS in install, as exim still wants to build
