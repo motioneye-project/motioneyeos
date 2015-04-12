@@ -100,6 +100,12 @@ $(1)-update-defconfig: $(1)-savedefconfig
 
 endif # package enabled
 
+.PHONY: \
+	$(1)-update-config \
+	$(1)-update-defconfig \
+	$(1)-savedefconfig \
+	$$(addprefix $(1)-,$$($(2)_KCONFIG_EDITORS))
+
 endef # inner-kconfig-package
 
 ################################################################################
