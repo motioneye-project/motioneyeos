@@ -33,7 +33,8 @@ ifeq ($(BR2_PACKAGE_GDB_DEBUGGER),)
 GDB_SUBDIR = gdb/gdbserver
 HOST_GDB_SUBDIR = .
 else
-GDB_DEPENDENCIES = ncurses
+GDB_DEPENDENCIES = ncurses \
+	$(if $(BR2_PACKAGE_LIBICONV),libiconv)
 endif
 
 # For the host variant, we really want to build with XML support,
@@ -96,6 +97,20 @@ GDB_CONF_OPTS += --with-python=$(TOPDIR)/package/gdb/gdb-python-config
 GDB_DEPENDENCIES += python
 else
 GDB_CONF_OPTS += --without-python
+endif
+
+ifeq ($(BR2_PACKAGE_EXPAT),y)
+GDB_CONF_OPTS += --with-expat
+GDB_DEPENDENCIES += expat
+else
+GDB_CONF_OPTS += --without-expat
+endif
+
+ifeq ($(BR2_PACKAGE_ZLIB),y)
+GDB_CONF_OPTS += --with-zlib
+GDB_DEPENDENCIES += zlib
+else
+GDB_CONF_OPTS += --without-zlib
 endif
 
 # This removes some unneeded Python scripts and XML target description
