@@ -116,7 +116,7 @@ def get_version(pkgs):
     return version
 
 # Execute the "make show-targets" command to get the list of the main
-# Buildroot TARGETS and return it formatted as a Python list. This
+# Buildroot PACKAGES and return it formatted as a Python list. This
 # list is used as the starting point for full dependency graphs
 def get_targets():
     sys.stderr.write("Getting targets\n")
