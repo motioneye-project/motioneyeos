@@ -15,9 +15,14 @@ config BR2_PACKAGE_OPENSSL_BIN
 	bool "openssl binary"
 	# uses fork()
 	depends on BR2_USE_MMU
+	depends on !BR2_STATIC_LIBS
 	help
 	  Install the openssl binary to the target file system. This is a
 	  command line tool for doing various crypthographic stuff.
+
+comment "openssl binary needs a toolchain w/ dynamic library"
+	depends on BR2_USE_MMU
+	depends on BR2_STATIC_LIBS
 
 config BR2_PACKAGE_OPENSSL_ENGINES
 	bool "openssl additional engines"
