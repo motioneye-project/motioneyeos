@@ -4,7 +4,7 @@ After = network.target
 
 [Service]
 Type = simple
-ExecStart = /usr/lib/xbmc/xbmc.bin --standalone -fs -n
+ExecStart = /usr/lib/kodi/kodi.bin --standalone -fs -n
 Restart = on-failure
 
 [Install]
