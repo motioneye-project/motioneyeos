@@ -1,0 +1,13 @@
+config BR2_PACKAGE_LIBFREEIMAGE
+	bool "libfreeimage"
+	depends on !BR2_STATIC_LIBS
+	help
+	  FreeImage is an Open Source library project for developers who
+	  would like to support popular graphics image formats like PNG,
+	  BMP, JPEG, TIFF and others as needed by today's multimedia
+	  applications.
+
+	  http://freeimage.sourceforge.net
+
+comment "libfreeimage needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS
