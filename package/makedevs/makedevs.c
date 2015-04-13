@@ -369,7 +369,7 @@ void bb_show_usage(void)
 	exit(1);
 }
 
-bb_recursive(const char *fpath, const struct stat *sb,
+int bb_recursive(const char *fpath, const struct stat *sb,
 		int tflag, struct FTW *ftwbuf){
 
 	if (chown(fpath, recursive_uid, recursive_gid) == -1) {
