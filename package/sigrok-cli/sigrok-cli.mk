@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-SIGROK_CLI_VERSION = 198487f611d8a7be4fa15017c22fa01a56551ca6
+SIGROK_CLI_VERSION = c59bf72b694ab1d08b2ea44de4349c277e206414
 # No https access on upstream git
 SIGROK_CLI_SITE = git://sigrok.org/sigrok-cli
 SIGROK_CLI_LICENSE = GPLv3+
