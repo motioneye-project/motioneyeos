@@ -60,7 +60,7 @@ endef
 
 # Helper functions to determine the name of a package and its
 # directory from its makefile directory, using the $(MAKEFILE_LIST)
-# variable provided by make. This is used by the *TARGETS macros to
+# variable provided by make. This is used by the *-package macros to
 # automagically find where the package is located.
 pkgdir = $(dir $(lastword $(MAKEFILE_LIST)))
 pkgname = $(lastword $(subst /, ,$(pkgdir)))
