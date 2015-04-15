@@ -25,6 +25,12 @@ case "$1" in
         mkrundir || exit 1
         echo -n "Starting ejabberd... "
         ctl start --spool "$SPOOLDIR"
+        # Wait until ejabberd is up and running.
+        if ctl started; then
+            echo "done"
+        else
+            echo "failed"
+        fi
         ;;
     stop)
         echo -n "Stopping ejabberd... "
