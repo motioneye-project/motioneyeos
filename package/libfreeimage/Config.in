@@ -1,5 +1,6 @@
 config BR2_PACKAGE_LIBFREEIMAGE
 	bool "libfreeimage"
+	depends on BR2_INSTALL_LIBSTDCPP
 	depends on !BR2_STATIC_LIBS
 	help
 	  FreeImage is an Open Source library project for developers who
@@ -9,5 +10,5 @@ config BR2_PACKAGE_LIBFREEIMAGE
 
 	  http://freeimage.sourceforge.net
 
-comment "libfreeimage needs a toolchain w/ dynamic library"
-	depends on BR2_STATIC_LIBS
+comment "libfreeimage needs a toolchain w/ C++, dynamic library"
+	depends on BR2_STATIC_LIBS || !BR2_INSTALL_LIBSTDCPP
