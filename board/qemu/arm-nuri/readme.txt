@@ -6,5 +6,6 @@ The login prompt will appear in the terminal that started Qemu. The
 graphical window is the framebuffer.
 
 Startup time is slow because of the SMP CPU emulation so be patient.
+This emulation is known to be flaky.
 
-Tested with QEMU 2.2.0
+Tested with QEMU 2.2.1
