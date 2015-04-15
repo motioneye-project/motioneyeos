@@ -4,7 +4,7 @@ comment "samba4 needs an (e)glibc toolchain"
 config BR2_PACKAGE_SAMBA4
 	bool "samba4"
 	depends on !BR2_PACKAGE_SAMBA
-	depends on BR2_TOOLCHAIN_USES_GLIBC # needs nss.h, $ORIGIN support
+	depends on BR2_TOOLCHAIN_USES_GLIBC # needs $ORIGIN support
 	depends on !BR2_nios2 # binary too large, relocations don't fit
 	select BR2_PACKAGE_E2FSPROGS
 	select BR2_PACKAGE_POPT
