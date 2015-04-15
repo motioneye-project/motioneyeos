@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-RADVD_VERSION = 2.10
+RADVD_VERSION = 2.11
 RADVD_SOURCE = radvd-$(RADVD_VERSION).tar.xz
 RADVD_SITE = http://www.litech.org/radvd/dist
 RADVD_DEPENDENCIES = host-bison flex host-flex host-pkgconf
