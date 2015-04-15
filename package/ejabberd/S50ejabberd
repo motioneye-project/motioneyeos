@@ -3,11 +3,16 @@
 # Start/stop ejabberd
 #
 
+NAME=ejabberd
 USER=ejabberd
 RUNDIR=/var/run/ejabberd
+SPOOLDIR=/var/lib/ejabberd
+
+# Read configuration variable file if it is present.
+[ -r /etc/default/$NAME ] && . /etc/default/$NAME
 
 mkrundir() {
-    install -d -o "$USER" -g "$USER" "$RUNDIR"
+    install -d -o "$USER" -g "$USER" "$RUNDIR" "$SPOOLDIR"
 }
 
 # Run ejabberdctl as user $USER.
@@ -19,7 +24,7 @@ case "$1" in
     start)
         mkrundir || exit 1
         echo -n "Starting ejabberd... "
-        ctl start
+        ctl start --spool "$SPOOLDIR"
         ;;
     stop)
         echo -n "Stopping ejabberd... "
