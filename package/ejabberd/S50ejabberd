@@ -7,29 +7,41 @@ USER=ejabberd
 RUNDIR=/var/run/ejabberd
 
 mkrundir() {
-    install -d -o $USER -g $USER $RUNDIR
+    install -d -o "$USER" -g "$USER" "$RUNDIR"
+}
+
+# Run ejabberdctl as user $USER.
+ctl() {
+    su $USER -c "ejabberdctl $*"
 }
 
 case "$1" in
     start)
-	mkrundir
-        echo "Starting ejabberd..."
-        ejabberdctl start
+        mkrundir || exit 1
+        echo -n "Starting ejabberd... "
+        ctl start
         ;;
     stop)
         echo -n "Stopping ejabberd... "
-        ejabberdctl stop > /dev/null
-        if [ $? -eq 3 ] || ejabberdctl stopped; then
+        ctl stop > /dev/null
+        if [ $? -eq 3 ] || ctl stopped; then
             echo "OK"
         else
             echo "failed"
         fi
         ;;
-    restart|reload)
+    status)
+        ctl status
+        ;;
+    restart|force-reload)
         "$0" stop
         "$0" start
         ;;
+    live)
+        mkrundir || exit 1
+        ctl live
+        ;;
     *)
-        echo "Usage: $0 {start|stop|restart}"
+        echo "Usage: $0 {start|stop|status|restart|force-reload|live}"
         exit 1
 esac
