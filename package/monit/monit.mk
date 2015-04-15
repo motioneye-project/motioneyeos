@@ -4,19 +4,13 @@
 #
 ################################################################################
 
-MONIT_VERSION = 5.7
+MONIT_VERSION = 5.12.2
 MONIT_SITE = http://mmonit.com/monit/dist
 MONIT_LICENSE = AGPLv3 with OpenSSL exception
 MONIT_LICENSE_FILES = COPYING
 #
 # Touching Makefile.am:
 MONIT_AUTORECONF = YES
-
-# Missing m4/ directory in the source tree
-define MONIT_M4
-	mkdir $(@D)/m4
-endef
-MONIT_POST_PATCH_HOOKS += MONIT_M4
 
 MONIT_CONF_ENV = \
 	libmonit_cv_setjmp_available=yes \
