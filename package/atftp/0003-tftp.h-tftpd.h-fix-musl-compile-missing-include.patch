@@ -1,0 +1,40 @@
+From 77e399899d9d7297d23c321811b628febdf0fd92 Mon Sep 17 00:00:00 2001
+From: Peter Seiderer <ps.report@gmx.net>
+Date: Thu, 16 Apr 2015 22:43:49 +0200
+Subject: [PATCH] tftp.h/tftpd.h: fix musl compile (missing include)
+
+Add sys/types.h include for u_char typedef.
+
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+---
+ tftp.h  | 1 +
+ tftpd.h | 1 +
+ 2 files changed, 2 insertions(+)
+
+diff --git a/tftp.h b/tftp.h
+index 12bd6aa..32a3f63 100644
+--- a/tftp.h
++++ b/tftp.h
+@@ -19,6 +19,7 @@
+ 
+ #include <sys/time.h>
+ #include <sys/times.h>
++#include <sys/types.h>
+ #include "tftp_def.h"
+ #include "config.h"
+ 
+diff --git a/tftpd.h b/tftpd.h
+index 945065e..60d3a49 100644
+--- a/tftpd.h
++++ b/tftpd.h
+@@ -20,6 +20,7 @@
+ #include <pthread.h>
+ #include <arpa/tftp.h>
+ #include <arpa/inet.h>
++#include <sys/types.h>
+ #include "tftp_io.h"
+ 
+ /*
+-- 
+2.1.4
+

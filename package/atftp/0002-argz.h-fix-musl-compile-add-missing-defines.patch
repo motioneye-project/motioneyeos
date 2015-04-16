@@ -1,0 +1,42 @@
+From 543e67919f5cacf309ac88ab091331e41af4224b Mon Sep 17 00:00:00 2001
+From: Peter Seiderer <ps.report@gmx.net>
+Date: Thu, 16 Apr 2015 22:41:57 +0200
+Subject: [PATCH] argz.h: fix musl compile (add missing defines)
+
+Add __THROW, __BEGIN_DECLS, __END_DECLS and __attribute_pure__ defines.
+
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+---
+ argz.h | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+
+diff --git a/argz.h b/argz.h
+index 582be55..bdf9f62 100644
+--- a/argz.h
++++ b/argz.h
+@@ -48,6 +48,22 @@
+ # define __const const
+ #endif
+ 
++#ifndef __THROW
++# define __THROW
++#endif
++
++#ifndef __BEGIN_DECLS
++# define __BEGIN_DECLS
++#endif
++
++#ifndef __END_DECLS
++# define __END_DECLS
++#endif
++
++#ifndef __attribute_pure__
++# define __attribute_pure__
++#endif
++
+ #ifndef __error_t_defined
+ typedef int error_t;
+ #endif
+-- 
+2.1.4
+
