@@ -583,9 +583,11 @@ endif
 	mkdir -p $(TARGET_DIR)/var/cache/ldconfig
 	if [ -x "$(TARGET_CROSS)ldconfig" ]; \
 	then \
-		$(TARGET_CROSS)ldconfig -r $(TARGET_DIR); \
+		$(TARGET_CROSS)ldconfig -r $(TARGET_DIR) \
+					-f $(TARGET_DIR)/etc/ld.so.conf; \
 	else \
-		/sbin/ldconfig -r $(TARGET_DIR); \
+		/sbin/ldconfig -r $(TARGET_DIR) \
+			       -f $(TARGET_DIR)/etc/ld.so.conf; \
 	fi
 	( \
 		echo "NAME=Buildroot"; \
