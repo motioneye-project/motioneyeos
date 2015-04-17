@@ -3,4 +3,4 @@ config BR2_PACKAGE_HOST_E2FSPROGS
 	help
 	  The EXT2/3/4 file system utilities.
 
-	  http://e2fsprogs.sf.net
+	  http://e2fsprogs.sourceforge.net

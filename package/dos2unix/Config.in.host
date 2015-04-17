@@ -3,4 +3,4 @@ config BR2_PACKAGE_HOST_DOS2UNIX
 	help
 	  dos2unix converts text file line endings between CRLF and LF
 
-	  http://freshmeat.net/projects/dos2unix
+	  http://freecode.com/projects/dos2unix

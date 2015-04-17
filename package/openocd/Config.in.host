@@ -3,4 +3,4 @@ config BR2_PACKAGE_HOST_OPENOCD
 	help
 	  OpenOCD - Open On-Chip Debugger
 
-	  http://openocd.berlios.de/web/
+	  http://openocd.org/
