@@ -4,10 +4,9 @@
 #
 ################################################################################
 
-# Revision 791:
-CANFESTIVAL_VERSION = 7740ac6fdedc
-CANFESTIVAL_SOURCE = $(CANFESTIVAL_VERSION).tar.bz2
-CANFESTIVAL_SITE = http://dev.automforge.net/CanFestival-3/archive
+CANFESTIVAL_VERSION = 7740ac6fdedc23e1ed6908d3d7db54833c88572b
+CANFESTIVAL_SITE = http://dev.automforge.net/CanFestival-3
+CANFESTIVAL_SITE_METHOD = hg
 CANFESTIVAL_LICENSE = LGPLv2.1+
 CANFESTIVAL_LICENSE_FILES = COPYING LICENCE
 CANFESTIVAL_INSTALL_STAGING = YES
