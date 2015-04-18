@@ -72,12 +72,15 @@ config BR2_TARGET_UBOOT_VERSION
 
 config BR2_TARGET_UBOOT_CUSTOM_PATCH_DIR
 	string "custom patch dir"
+	depends on BR2_DEPRECATED_SINCE_2015_05
 	help
 	  If your board requires custom patches, add the path to the
 	  directory containing the patches here. The patches must be
 	  named uboot-<something>.patch.
 
 	  Most users may leave this empty
+
+	  NOTE: Use BR2_TARGET_UBOOT_PATCH instead.
 
 config BR2_TARGET_UBOOT_PATCH
 	string "Custom U-Boot patches"
