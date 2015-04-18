@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-PERL_GDGRAPH_VERSION = 1.48
+PERL_GDGRAPH_VERSION = 1.49
 PERL_GDGRAPH_SOURCE = GDGraph-$(PERL_GDGRAPH_VERSION).tar.gz
 PERL_GDGRAPH_SITE = $(BR2_CPAN_MIRROR)/authors/id/R/RU/RUZ
 PERL_GDGRAPH_DEPENDENCIES = perl perl-gd perl-gdtextutil
