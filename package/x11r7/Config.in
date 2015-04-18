@@ -19,6 +19,7 @@ if BR2_PACKAGE_XORG7
 		source package/x11r7/xcb-util/Config.in
 		source package/x11r7/xcb-util-image/Config.in
 		source package/x11r7/xcb-util-keysyms/Config.in
+		source package/x11r7/xcb-util-renderutil/Config.in
 		source package/x11r7/xcb-util-wm/Config.in
 		source package/x11r7/xlib_libFS/Config.in
 		source package/x11r7/xlib_libICE/Config.in
