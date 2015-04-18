@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LPEG_VERSION = 0.12.1-1
+LPEG_VERSION = 0.12.2-1
 LPEG_LICENSE = MIT
 
 $(eval $(luarocks-package))
