@@ -4,3 +4,23 @@ config BR2_PACKAGE_HOST_UBOOT_TOOLS
 	  Companion tools for Das U-Boot bootloader.
 
 	  http://www.denx.de/wiki/U-Boot/WebHome
+
+if BR2_PACKAGE_HOST_UBOOT_TOOLS
+
+config BR2_PACKAGE_HOST_UBOOT_TOOLS_FIT_SIGNATURE_SUPPORT
+	bool "FIT signature verification support"
+	help
+	  Enables support for FIT Signature Verification.
+
+	  Flat Image Trees (FIT) supports hashing of images so that
+	  these hashes can be checked on loading. This protects
+	  against corruption of the image. However it does not prevent
+	  the substitution of one image for another.
+
+	  The signature feature allows the hash to be signed with a
+	  private key such that it can be verified using a public key
+	  later. Provided that the private key is kept secret and the
+	  public key is stored in a non-volatile place, any image can
+	  be verified in this way.
+
+endif
