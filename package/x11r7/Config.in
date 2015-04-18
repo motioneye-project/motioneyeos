@@ -89,6 +89,7 @@ if BR2_PACKAGE_XORG7
 		source package/x11r7/xapp_xclipboard/Config.in
 		source package/x11r7/xapp_xclock/Config.in
 		source package/x11r7/xapp_xcmsdb/Config.in
+		source package/x11r7/xapp_xcompmgr/Config.in
 		source package/x11r7/xapp_xconsole/Config.in
 		source package/x11r7/xapp_xcursorgen/Config.in
 		source package/x11r7/xapp_xdbedizzy/Config.in
