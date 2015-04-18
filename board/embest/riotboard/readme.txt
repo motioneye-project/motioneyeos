@@ -15,9 +15,9 @@ your SD-card:
 
 sudo dd if=output/images/u-boot.imx of=/dev/sdX bs=1k seek=1
 
-Create 1 partition on the SD-card using your favourite tool. The partition
-should be big enough to hold your rootfs, for example 128MiB. Here's how an
-example of such partition layout:
+Create 1 partition on the SD-card using your favourite tool. The
+partition should be big enough to hold your rootfs, for example
+128MiB. Here's an example partition layout:
 
    Device Boot      Start         End      Blocks   Id  System
 /dev/sdX1            2048      264191      131072   83  Linux
@@ -30,7 +30,7 @@ Deploy your rootfs to the SD-card:
 
 sudo mkdir /mnt/sdcard/
 sudo mount /dev/sdX1 /mnt/sdcard/
-sudo tar xf rootfs.tar -C /mnt/sdcard/
+sudo tar xf output/images/rootfs.tar -C /mnt/sdcard/
 sudo umount /dev/sdX1
 
 3. Running buildroot
