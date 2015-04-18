@@ -89,6 +89,8 @@ endef
 
 UBOOT_POST_EXTRACT_HOOKS += UBOOT_COPY_OLD_LICENSE_FILE
 
+# Prior to Buildroot 2015.05, only patch directories were supported. New
+# configurations use BR2_TARGET_UBOOT_PATCH instead.
 ifneq ($(call qstrip,$(BR2_TARGET_UBOOT_CUSTOM_PATCH_DIR)),)
 define UBOOT_APPLY_CUSTOM_PATCHES
 	$(APPLY_PATCHES) $(@D) $(BR2_TARGET_UBOOT_CUSTOM_PATCH_DIR) \*.patch
@@ -96,6 +98,24 @@ endef
 
 UBOOT_POST_PATCH_HOOKS += UBOOT_APPLY_CUSTOM_PATCHES
 endif
+
+# Analogous code exists in linux/linux.mk. Basically, the generic
+# package infrastructure handles downloading and applying remote
+# patches. Local patches are handled depending on whether they are
+# directories or files.
+UBOOT_PATCHES = $(call qstrip,$(BR2_TARGET_UBOOT_PATCH))
+UBOOT_PATCH = $(filter ftp://% http://% https://%,$(UBOOT_PATCHES))
+
+define UBOOT_APPLY_LOCAL_PATCHES
+	for p in $(filter-out ftp://% http://% https://%,$(UBOOT_PATCHES)) ; do \
+		if test -d $$p ; then \
+			$(APPLY_PATCHES) $(@D) $$p \*.patch || exit 1 ; \
+		else \
+			$(APPLY_PATCHES) $(@D) `dirname $$p` `basename $$p` || exit 1; \
+		fi \
+	done
+endef
+UBOOT_POST_PATCH_HOOKS += UBOOT_APPLY_LOCAL_PATCHES
 
 define UBOOT_CONFIGURE_CMDS
 	$(TARGET_CONFIGURE_OPTS) 	\

@@ -79,6 +79,16 @@ config BR2_TARGET_UBOOT_CUSTOM_PATCH_DIR
 
 	  Most users may leave this empty
 
+config BR2_TARGET_UBOOT_PATCH
+	string "Custom U-Boot patches"
+	help
+	  A space-separated list of patches to apply to U-Boot.
+	  Each patch can be described as an URL, a local file path,
+	  or a directory. In the case of a directory, all files
+	  matching *.patch in the directory will be applied.
+
+	  Most users may leave this empty
+
 choice
 	prompt "U-Boot binary format"
 	default BR2_TARGET_UBOOT_FORMAT_BIN
