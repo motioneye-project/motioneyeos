@@ -102,6 +102,7 @@ if BR2_PACKAGE_XORG7
 		source package/x11r7/xapp_xeyes/Config.in
 		source package/x11r7/xapp_xf86dga/Config.in
 		source package/x11r7/xapp_xfd/Config.in
+		source package/x11r7/xapp_xfindproxy/Config.in
 		source package/x11r7/xapp_xfontsel/Config.in
 		source package/x11r7/xapp_xfs/Config.in
 		source package/x11r7/xapp_xfsinfo/Config.in
