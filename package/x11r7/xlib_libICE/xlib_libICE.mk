@@ -10,6 +10,6 @@ XLIB_LIBICE_SITE = http://xorg.freedesktop.org/releases/individual/lib
 XLIB_LIBICE_LICENSE = MIT
 XLIB_LIBICE_LICENSE_FILES = COPYING
 XLIB_LIBICE_INSTALL_STAGING = YES
-XLIB_LIBICE_DEPENDENCIES = xlib_xtrans xproto_xproto
+XLIB_LIBICE_DEPENDENCIES = xlib_xtrans xproto_xproto host-pkgconf
 
 $(eval $(autotools-package))
