@@ -11,7 +11,7 @@ VALA_SOURCE = vala-$(VALA_VERSION).tar.xz
 VALA_LICENSE = LGPLv2.1+
 VALA_LICENSE_FILES = COPYING
 
-HOST_VALA_DEPENDENCIES = host-flex host-libglib2
+HOST_VALA_DEPENDENCIES = host-bison host-flex host-libglib2
 # Yes, the autoconf script understands ':' as "xsltproc is not
 # available".
 HOST_VALA_CONF_ENV = ac_cv_path_XSLTPROC=:
