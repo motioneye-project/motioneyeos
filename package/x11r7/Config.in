@@ -255,6 +255,7 @@ if BR2_PACKAGE_XORG7
 		source package/x11r7/xproto_xf86vidmodeproto/Config.in
 		source package/x11r7/xproto_xineramaproto/Config.in
 		source package/x11r7/xproto_xproto/Config.in
+		source package/x11r7/xproto_xproxymanagementprotocol/Config.in
 	endmenu
 	menu "X11R7 Utilities"
 		source package/x11r7/xutil_makedepend/Config.in
