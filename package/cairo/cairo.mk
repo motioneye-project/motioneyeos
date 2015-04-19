@@ -74,6 +74,33 @@ CAIRO_CONF_OPTS = \
 
 CAIRO_DEPENDENCIES = host-pkgconf fontconfig pixman
 
+# Just the bare minimum to make other host-* packages happy
+HOST_CAIRO_CONF_OPTS = \
+	--enable-trace=no \
+	--enable-interpreter=no \
+	--disable-directfb \
+	--enable-ft \
+	--disable-gobject \
+	--disable-glesv2 \
+	--disable-vg \
+	--disable-xlib \
+	--disable-xcb \
+	--without-x \
+	--disable-xlib-xrender \
+	--disable-ps \
+	--disable-pdf \
+	--enable-png \
+	--disable-script \
+	--disable-svg \
+	--disable-tee \
+	--disable-xml
+HOST_CAIRO_DEPENDENCIES = \
+	host-freetype \
+	host-fontconfig \
+	host-libpng \
+	host-pixman \
+	host-pkgconf
+
 # DirectFB svg support rely on Cairo and Cairo DirectFB support depends on
 # DirectFB. Break circular dependency by disabling DirectFB support in Cairo
 # (which is experimental)
@@ -172,3 +199,4 @@ CAIRO_CONF_OPTS += --disable-xml
 endif
 
 $(eval $(autotools-package))
+$(eval $(host-autotools-package))
