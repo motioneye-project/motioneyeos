@@ -1,0 +1,11 @@
+config BR2_PACKAGE_PERL_CRYPT_OPENSSL_RSA
+	bool "perl-crypt-openssl-rsa"
+	depends on !BR2_STATIC_LIBS
+	select BR2_PACKAGE_PERL_CRYPT_OPENSSL_RANDOM
+	help
+	  RSA encoding and decoding, using the openSSL libraries
+
+	  https://metacpan.org/release/Crypt-OpenSSL-RSA
+
+comment "perl-crypt-openssl-rsa needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS
