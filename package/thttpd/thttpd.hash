@@ -1,0 +1,3 @@
+# From http://snapshot.debian.org/archive/debian/20141023T043132Z/pool/main/t/thttpd/thttpd_2.25b-11.dsc
+sha256	07719b08b1cff6a21c08697a7bcb4395425b07ee753106262fb62a03a7d32360	thttpd_2.25b.orig.tar.gz
+sha256	4d213c18daf121d21412cc54864fbca250e1773a91df6573373e1d2273a2cec9	thttpd_2.25b-11.diff.gz
