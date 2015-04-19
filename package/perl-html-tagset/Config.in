@@ -1,0 +1,6 @@
+config BR2_PACKAGE_PERL_HTML_TAGSET
+	bool "perl-html-tagset"
+	help
+	  HTML::Tagset - data tables useful in parsing HTML
+
+	  http://www.cpan.org/modules/by-authors/id/P/PE/PETDANCE/
