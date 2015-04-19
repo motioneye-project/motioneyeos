@@ -15,11 +15,13 @@ PYTHON_SIP_DEPENDENCIES = qt
 ifeq ($(BR2_PACKAGE_PYTHON),y)
 PYTHON_SIP_DEPENDENCIES += python
 HOST_PYTHON_SIP_DEPENDENCIES += host-python
-PYTHON_SIP_PYTHON_DIR = python$(PYTHON_VERSION_MAJOR)
+PYTHON_SIP_LIB_DIR = usr/lib/python$(PYTHON_VERSION_MAJOR)/site-packages
+PYTHON_SIP_INCLUDE_DIR = usr/include/python$(PYTHON_VERSION_MAJOR)
 else ifeq ($(BR2_PACKAGE_PYTHON3),y)
 PYTHON_SIP_DEPENDENCIES += python3
 HOST_PYTHON_SIP_DEPENDENCIES += host-python3
-PYTHON_SIP_PYTHON_DIR = python$(PYTHON3_VERSION_MAJOR)
+PYTHON_SIP_LIB_DIR = usr/lib/python$(PYTHON3_VERSION_MAJOR)/site-packages
+PYTHON_SIP_INCLUDE_DIR = usr/include/python$(PYTHON3_VERSION_MAJOR)m
 endif
 
 define HOST_PYTHON_SIP_CONFIGURE_CMDS
@@ -39,8 +41,8 @@ define PYTHON_SIP_CONFIGURE_CMDS
 	(cd $(@D); \
 		$(TARGET_MAKE_ENV) $(TARGET_CONFIGURE_OPTS) $(HOST_DIR)/usr/bin/python configure.py \
 			--bindir $(TARGET_DIR)/usr/bin \
-			--destdir $(TARGET_DIR)/usr/lib/$(PYTHON_SIP_PYTHON_DIR)/site-packages \
-			--incdir $(STAGING_DIR)/usr/include/$(PYTHON_SIP_PYTHON_DIR)  \
+			--destdir $(TARGET_DIR)/$(PYTHON_SIP_LIB_DIR) \
+			--incdir $(STAGING_DIR)/$(PYTHON_SIP_INCLUDE_DIR)  \
 			--sipdir $(TARGET_DIR)/usr/share/sip \
 			--sysroot $(STAGING_DIR)/usr \
 			--use-qmake && \
