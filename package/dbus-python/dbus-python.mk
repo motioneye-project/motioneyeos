@@ -28,6 +28,4 @@ DBUS_PYTHON_CONF_ENV += \
 	PYTHON_LIBS="$(shell $(STAGING_DIR)/usr/bin/python3-config --ldflags)"
 endif
 
-
-
 $(eval $(autotools-package))
