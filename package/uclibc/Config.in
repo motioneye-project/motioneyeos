@@ -87,11 +87,9 @@ config BR2_UCLIBC_CONFIG
 	  If unsure, use the default.
 
 config BR2_TOOLCHAIN_BUILDROOT_INET_IPV6
-	bool "Enable IPv6 support"
+	bool
 	select BR2_INET_IPV6
-	help
-	  Enable this option if you want your toolchain to support
-	  IPv6.
+	default y
 
 config BR2_TOOLCHAIN_BUILDROOT_INET_RPC
 	bool "Enable RPC support"
