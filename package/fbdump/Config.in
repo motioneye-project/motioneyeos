@@ -5,3 +5,5 @@ config BR2_PACKAGE_FBDUMP
 	  framebuffer  device and write them out as a PPM file. Currently,
 	  most packed-pixel framebuffer formats and the vga16 framebuffer
 	  are supported.
+
+	  http://www.rcdrummond.net/fbdump
