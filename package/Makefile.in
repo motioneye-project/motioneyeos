@@ -369,12 +369,6 @@ else
 DISABLE_NLS :=--disable-nls
 endif
 
-ifeq ($(BR2_INET_IPV6),y)
-DISABLE_IPV6 = --enable-ipv6
-else
-DISABLE_IPV6 = --disable-ipv6
-endif
-
 ifneq ($(BR2_INSTALL_LIBSTDCPP),y)
 TARGET_CONFIGURE_OPTS += CXX=false
 endif
