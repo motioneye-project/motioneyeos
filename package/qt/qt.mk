@@ -474,13 +474,6 @@ define QT_QMAKE_SET
 	$(SED) '/include.*qws.conf/a$(1) = $(2)' $(3)/mkspecs/qws/linux-$(QT_EMB_PLATFORM)-g++/qmake.conf
 endef
 
-ifneq ($(BR2_INET_IPV6),y)
-define QT_CONFIGURE_IPV6
-	$(SED) 's/^CFG_IPV6=auto/CFG_IPV6=no/' $(@D)/configure
-	$(SED) 's/^CFG_IPV6IFNAME=auto/CFG_IPV6IFNAME=no/' $(@D)/configure
-endef
-endif
-
 ifneq ($(QT_CONFIG_FILE),)
 define QT_CONFIGURE_CONFIG_FILE
 	cp $(QT_CONFIG_FILE) $(@D)/src/corelib/global/qconfig-buildroot.h

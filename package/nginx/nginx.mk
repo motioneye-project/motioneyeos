@@ -14,7 +14,8 @@ NGINX_CONF_OPTS = \
 	--with-cc="$(TARGET_CC)" \
 	--with-cpp="$(TARGET_CC)" \
 	--with-cc-opt="$(TARGET_CFLAGS)" \
-	--with-ld-opt="$(TARGET_LDFLAGS)"
+	--with-ld-opt="$(TARGET_LDFLAGS)" \
+	--with-ipv6
 
 # www-data user and group are used for nginx. Because these user and group
 # are already set by buildroot, it is not necessary to redefine them.
@@ -63,8 +64,7 @@ NGINX_CONF_OPTS += \
 	--http-uwsgi-temp-path=/var/tmp/nginx/uwsgi
 
 NGINX_CONF_OPTS += \
-	$(if $(BR2_PACKAGE_NGINX_FILE_AIO),--with-file-aio) \
-	$(if $(BR2_INET_IPV6),--with-ipv6)
+	$(if $(BR2_PACKAGE_NGINX_FILE_AIO),--with-file-aio)
 
 ifeq ($(BR2_PACKAGE_PCRE),y)
 NGINX_DEPENDENCIES += pcre

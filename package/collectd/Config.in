@@ -2,7 +2,6 @@ config BR2_PACKAGE_COLLECTD
 	bool "collectd"
 	# Uses fork()
 	depends on BR2_USE_MMU
-	depends on BR2_INET_IPV6
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on !BR2_STATIC_LIBS
 	help
@@ -305,7 +304,6 @@ config BR2_PACKAGE_COLLECTD_OPENVPN
 
 config BR2_PACKAGE_COLLECTD_PING
 	bool "ping"
-	depends on BR2_INET_IPV6
 	select BR2_PACKAGE_LIBOPING
 	help
 	  Mesures network latency using ICMP "echo requests".
@@ -446,7 +444,6 @@ config BR2_PACKAGE_COLLECTD_GRAPHITE
 
 config BR2_PACKAGE_COLLECTD_NETWORK
 	bool "network"
-	depends on BR2_INET_IPV6
 	help
 	  Send/receive values from other instances of collectd.
 
@@ -489,6 +486,6 @@ endmenu
 
 endif
 
-comment "collectd needs a toolchain w/ IPv6, threads, dynamic library"
-	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_INET_IPV6 || BR2_STATIC_LIBS
+comment "collectd needs a toolchain w/ threads, dynamic library"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS
 	depends on BR2_USE_MMU

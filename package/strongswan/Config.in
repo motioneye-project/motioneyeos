@@ -22,9 +22,6 @@ menuconfig BR2_PACKAGE_STRONGSWAN
 
 if BR2_PACKAGE_STRONGSWAN
 
-comment "kernel-netlink and socket-default options need a toolchain w/ IPv6"
-	depends on !BR2_INET_IPV6
-
 choice
 	prompt "Cryptographic backend"
 	default BR2_PACKAGE_STRONGSWAN_GMP

@@ -2,7 +2,6 @@ config BR2_PACKAGE_TCL
 	bool "tcl"
 	# fork()
 	depends on BR2_USE_MMU
-	depends on BR2_INET_IPV6
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	# See this mailing list thread:
 	# http://lists.busybox.net/pipermail/buildroot/2015-March/121198.html
@@ -12,10 +11,9 @@ config BR2_PACKAGE_TCL
 
 	  http://www.tcl.tk
 
-comment "tcl needs a toolchain w/ ipv6, threads, dynamic library"
+comment "tcl needs a toolchain w/ threads, dynamic library"
 	depends on BR2_USE_MMU
-	depends on !BR2_INET_IPV6 || !BR2_TOOLCHAIN_HAS_THREADS || \
-		BR2_STATIC_LIBS
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS
 
 if BR2_PACKAGE_TCL
 

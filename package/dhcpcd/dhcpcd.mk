@@ -10,10 +10,6 @@ DHCPCD_SITE = http://roy.marples.name/downloads/dhcpcd
 DHCPCD_DEPENDENCIES = host-pkgconf
 DHCPCD_LICENSE = BSD-2c
 
-ifeq ($(BR2_INET_IPV6),)
-DHCPCD_CONFIG_OPTS += --disable-ipv6
-endif
-
 ifeq ($(BR2_STATIC_LIBS),y)
 DHCPCD_CONFIG_OPTS += --enable-static
 endif

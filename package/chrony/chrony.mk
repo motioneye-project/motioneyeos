@@ -23,10 +23,6 @@ else
 CHRONY_CONF_OPTS += --disable-readline
 endif
 
-ifneq ($(BR2_INET_IPV6),y)
-CHRONY_CONF_OPTS += --disable-ipv6
-endif
-
 # Ditch the doc build, needs makeinfo and we don't need them
 define CHRONY_DISABLE_DOCS
 	$(SED) 's/chronyc chrony.txt/chronyc/' $(@D)/Makefile.in

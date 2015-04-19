@@ -1,6 +1,5 @@
 config BR2_PACKAGE_OPENOBEX
 	bool "openobex"
-	depends on BR2_INET_IPV6
 	help
 	  Free open source implementation of the Object Exchange (OBEX)
 	  protocol.
@@ -41,6 +40,3 @@ config BR2_PACKAGE_OPENOBEX_DUMP
 	bool "enable protocol dumping for debugging"
 
 endif
-
-comment "openobex needs a toolchain w/ IPv6"
-	depends on !BR2_INET_IPV6

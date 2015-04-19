@@ -139,11 +139,7 @@ config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_SPECTRUM
 	bool "spectrum"
 
 config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_UDP
-	depends on BR2_INET_IPV6
 	bool "udp"
-
-comment "udp needs a toolchain w/ IPv6"
-	depends on !BR2_INET_IPV6
 
 config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_VIDEOBOX
 	bool "videobox"

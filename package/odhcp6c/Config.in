@@ -1,10 +1,5 @@
-comment "odhcp6c needs a toolchain w/ IPv6"
-	depends on !BR2_INET_IPV6
-	depends on BR2_USE_MMU
-
 config BR2_PACKAGE_ODHCP6C
 	bool "odhcp6c"
-	depends on BR2_INET_IPV6
 	depends on BR2_USE_MMU # fork()
 	help
 	  odhcp6c is a minimal DHCPv6 and RA-client for use in embedded Linux

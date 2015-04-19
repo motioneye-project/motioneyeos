@@ -29,11 +29,6 @@ else
 GPSD_SCONS_OPTS += ncurses=no
 endif
 
-# Disable IPv6, if we don't support it
-ifneq ($(BR2_INET_IPV6),y)
-GPSD_SCONS_OPTS += ipv6=no
-endif
-
 # Build libgpsmm if we've got C++
 ifeq ($(BR2_INSTALL_LIBSTDCPP),y)
 GPSD_LDFLAGS += -lstdc++

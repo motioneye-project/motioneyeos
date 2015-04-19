@@ -1,6 +1,5 @@
 config BR2_PACKAGE_LIBSHAIRPLAY
 	bool "libshairplay"
-	depends on BR2_INET_IPV6
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_USE_MMU # avahi
 	depends on !BR2_STATIC_LIBS # avahi
@@ -13,6 +12,6 @@ config BR2_PACKAGE_LIBSHAIRPLAY
 
 	  https://github.com/juhovh/shairplay
 
-comment "libshairplay needs a toolchain w/ IPv6, threads, dynamic library"
+comment "libshairplay needs a toolchain w/ threads, dynamic library"
 	depends on BR2_USE_MMU
-	depends on !BR2_INET_IPV6 || !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS

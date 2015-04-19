@@ -13,18 +13,12 @@ SCONESERVER_LICENSE_FILES = COPYING
 
 SCONESERVER_AUTORECONF = YES
 SCONESERVER_DEPENDENCIES += pcre
-SCONESERVER_CONF_OPTS += --with-ip --with-local
+SCONESERVER_CONF_OPTS += --with-ip --with-local --with-ip6
 
 # Sconeserver configure script fails to find the libxml2 headers.
 ifeq ($(BR2_PACKAGE_LIBXML2),y)
 SCONESERVER_CONF_OPTS += \
 	--with-xml2-config="$(STAGING_DIR)/usr/bin/xml2-config"
-endif
-
-ifeq ($(BR2_INET_IPV6),y)
-SCONESERVER_CONF_OPTS += --with-ip6
-else
-SCONESERVER_CONF_OPTS += --without-ip6
 endif
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)

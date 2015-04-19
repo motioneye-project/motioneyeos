@@ -61,13 +61,6 @@ else
 PHP_CONF_ENV += ac_cv_func_dlopen=no ac_cv_lib_dl_dlopen=no
 endif
 
-# Workaround for non-IPv6 uClibc toolchain
-ifeq ($(BR2_TOOLCHAIN_USES_UCLIBC),y)
-ifneq ($(BR2_INET_IPV6),y)
-PHP_CFLAGS += -DHAVE_DEPRECATED_DNS_FUNCS
-endif
-endif
-
 PHP_CONF_OPTS += $(if $(BR2_PACKAGE_PHP_CLI),,--disable-cli)
 PHP_CONF_OPTS += $(if $(BR2_PACKAGE_PHP_CGI),,--disable-cgi)
 PHP_CONF_OPTS += $(if $(BR2_PACKAGE_PHP_FPM),--enable-fpm,--disable-fpm)

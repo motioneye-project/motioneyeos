@@ -1,6 +1,6 @@
 config BR2_PACKAGE_IPUTILS
 	bool "iputils"
-	select BR2_PACKAGE_OPENSSL if BR2_INET_IPV6
+	select BR2_PACKAGE_OPENSSL
 	depends on BR2_USE_MMU # fork()
 	help
 	  This package is set of small useful utilities for Linux networking.

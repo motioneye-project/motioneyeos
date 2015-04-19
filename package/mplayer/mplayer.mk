@@ -264,21 +264,9 @@ define MPLAYER_CONFIGURE_CMDS
 		--enable-cross-compile \
 		--disable-ivtv \
 		--enable-dynamic-plugins \
+		--enable-inet6 \
 	)
 endef
-
-# this is available on uClibc 0.9.31 even without ipv6 support, breaking the
-# build in ffmpeg/libavformat/udp.c
-ifneq ($(BR2_INET_IPV6),y)
-define MPLAYER_FIXUP_IPV6_MREQ_DETECTION
-	$(SED) 's/\(#define HAVE_STRUCT_IPV6_MREQ\) 1/\1 0/' $(@D)/config.h
-endef
-
-MPLAYER_POST_CONFIGURE_HOOKS += MPLAYER_FIXUP_IPV6_MREQ_DETECTION
-MPLAYER_CONF_OPTS += --disable-inet6
-else
-MPLAYER_CONF_OPTS += --enable-inet6
-endif
 
 define MPLAYER_BUILD_CMDS
 	$(MAKE) -C $(@D)

@@ -1,6 +1,5 @@
 config BR2_PACKAGE_ULOGD
 	bool "ulogd"
-	depends on BR2_INET_IPV6
 	depends on !BR2_STATIC_LIBS
 	depends on BR2_USE_MMU
 	# ulog support removed for kernels >= 3.17
@@ -15,7 +14,7 @@ config BR2_PACKAGE_ULOGD
 
 	  http://www.netfilter.org/projects/ulogd/
 
-comment "ulogd needs a toolchain w/ IPv6, dynamic library"
-	depends on !BR2_INET_IPV6 || BR2_STATIC_LIBS
+comment "ulogd needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS
 	depends on BR2_USE_MMU
 	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_17

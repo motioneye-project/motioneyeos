@@ -13,12 +13,6 @@ X11VNC_DEPENDENCIES = xlib_libXt xlib_libXext xlib_libXtst
 X11VNC_LICENSE = GPLv2+
 X11VNC_LICENSE_FILES = COPYING
 
-ifneq ($(BR2_INET_IPV6),y)
-# configure option only used for libvncserver
-X11VNC_CONF_OPTS += --without-ipv6
-X11VNC_CONF_ENV += CFLAGS='$(TARGET_CFLAGS) -DX11VNC_IPV6=0'
-endif
-
 ifeq ($(BR2_PACKAGE_AVAHI_DAEMON)$(BR2_PACKAGE_DBUS),yy)
 X11VNC_DEPENDENCIES += avahi dbus
 else

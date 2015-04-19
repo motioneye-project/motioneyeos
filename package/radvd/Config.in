@@ -1,13 +1,8 @@
 config BR2_PACKAGE_RADVD
 	bool "radvd"
 	depends on BR2_USE_MMU # fork()
-	depends on BR2_INET_IPV6
 	select BR2_PACKAGE_FLEX
 	help
 	  IPv6 Router Advertisement Daemon.
 
 	  http://www.litech.org/radvd/
-
-comment "radvd needs a toolchain w/ IPv6"
-	depends on BR2_USE_MMU
-	depends on !BR2_INET_IPV6

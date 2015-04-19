@@ -1,12 +1,7 @@
 config BR2_PACKAGE_EBTABLES
 	bool "ebtables"
-	depends on BR2_INET_IPV6
 	depends on BR2_USE_MMU # fork()
 	help
 	  Ethernet bridge frame table administration
 
 	  http://ebtables.sourceforge.net
-
-comment "ebtables needs a toolchain w/ IPv6"
-	depends on BR2_USE_MMU
-	depends on !BR2_INET_IPV6

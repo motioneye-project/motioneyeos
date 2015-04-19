@@ -5,7 +5,6 @@ config BR2_PACKAGE_OPENPGM
 	depends on !BR2_TOOLCHAIN_EXTERNAL_BLACKFIN_UCLINUX_2013R1
 	depends on !BR2_TOOLCHAIN_EXTERNAL_BLACKFIN_UCLINUX_2012R2
 	depends on BR2_TOOLCHAIN_HAS_THREADS
-	depends on BR2_INET_IPV6
 	depends on BR2_USE_WCHAR
 	help
 	  OpenPGM is an open source implementation of the Pragmatic General
@@ -16,5 +15,5 @@ config BR2_PACKAGE_OPENPGM
 
 	  http://code.google.com/p/openpgm/
 
-comment "openpgm needs a toolchain w/ wchar, threads, IPv6"
-	depends on !(BR2_TOOLCHAIN_HAS_THREADS && BR2_INET_IPV6 && BR2_USE_WCHAR)
+comment "openpgm needs a toolchain w/ wchar, threads"
+	depends on !(BR2_TOOLCHAIN_HAS_THREADS && BR2_USE_WCHAR)

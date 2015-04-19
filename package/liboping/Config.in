@@ -1,11 +1,7 @@
 config BR2_PACKAGE_LIBOPING
 	bool "liboping"
-	depends on BR2_INET_IPV6
 	help
 	  liboping is a C library to generate ICMP echo requests,
 	  better known as "ping packets".
 
 	  http://noping.cc/
-
-comment "liboping needs a toolchain w/ IPv6"
-	depends on !BR2_INET_IPV6

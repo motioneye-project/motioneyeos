@@ -17,7 +17,7 @@ NETSNMP_CONF_OPTS = \
 	--enable-mini-agent \
 	--without-rpm \
 	--with-logfile=none \
-	--without-kmem-usage $(DISABLE_IPV6) \
+	--without-kmem-usage \
 	--enable-as-needed \
 	--without-perl-modules \
 	--disable-embedded-perl \
@@ -79,15 +79,6 @@ ifeq ($(BR2_PACKAGE_NETSNMP_CLIENTS),y)
 NETSNMP_CONF_OPTS += --enable-applications
 else
 NETSNMP_CONF_OPTS += --disable-applications
-endif
-
-# Remove IPv6 MIBs if there's no IPv6
-ifneq ($(BR2_INET_IPV6),y)
-define NETSNMP_REMOVE_MIBS_IPV6
-	rm -f $(TARGET_DIR)/usr/share/snmp/mibs/IPV6*
-endef
-
-NETSNMP_POST_INSTALL_TARGET_HOOKS += NETSNMP_REMOVE_MIBS_IPV6
 endif
 
 define NETSNMP_REMOVE_BLOAT_MIBS

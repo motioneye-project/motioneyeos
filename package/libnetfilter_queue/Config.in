@@ -1,6 +1,5 @@
 config BR2_PACKAGE_LIBNETFILTER_QUEUE
 	bool "libnetfilter_queue"
-	depends on BR2_INET_IPV6
 	select BR2_PACKAGE_LIBNFNETLINK
 	select BR2_PACKAGE_LIBMNL
 	help
@@ -9,6 +8,3 @@ config BR2_PACKAGE_LIBNETFILTER_QUEUE
 	  connection tracking timeout infrastructure.
 
 	  http://www.netfilter.org/projects/libnetfilter_queue/
-
-comment "libnetfilter_queue needs a toolchain w/ IPv6"
-	depends on !BR2_INET_IPV6

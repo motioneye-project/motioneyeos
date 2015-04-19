@@ -1,6 +1,5 @@
 config BR2_PACKAGE_OPENNTPD
 	bool "openntpd"
-	depends on BR2_INET_IPV6
 	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL
 	depends on BR2_USE_MMU # fork ()
 	depends on !BR2_PACKAGE_NTP # conflicting binaries
@@ -12,6 +11,6 @@ config BR2_PACKAGE_OPENNTPD
 
 	  http://www.openntpd.org/
 
-comment "openntpd needs a toolchain w/ NPTL, IPv6"
+comment "openntpd needs a toolchain w/ NPTL"
 	depends on BR2_USE_MMU
-	depends on !BR2_INET_IPV6 || !BR2_TOOLCHAIN_HAS_THREADS_NPTL
+	depends on !BR2_TOOLCHAIN_HAS_THREADS_NPTL

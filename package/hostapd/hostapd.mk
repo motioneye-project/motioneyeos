@@ -35,10 +35,6 @@ ifeq ($(BR2_STATIC_LIBS),y)
 HOSTAPD_LIBS += -lnl-3 -lm -lpthread
 endif
 
-ifeq ($(BR2_INET_IPV6),)
-HOSTAPD_CONFIG_DISABLE += CONFIG_IPV6
-endif
-
 # Try to use openssl if it's already available
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 HOSTAPD_DEPENDENCIES += openssl

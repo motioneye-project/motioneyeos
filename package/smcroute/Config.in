@@ -1,6 +1,5 @@
 config BR2_PACKAGE_SMCROUTE
 	bool "smcroute"
-	depends on BR2_INET_IPV6
 	depends on BR2_USE_MMU # fork()
 	help
 	  SMCRoute is a command line tool to manipulate the multicast
@@ -11,7 +10,3 @@ config BR2_PACKAGE_SMCROUTE
 	  MLD signaling exists.
 
 	  https://github.com/troglobit/smcroute
-
-comment "smcroute needs a toolchain w/ IPv6"
-	depends on !BR2_INET_IPV6
-	depends on BR2_USE_MMU

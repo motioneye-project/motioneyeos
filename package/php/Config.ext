@@ -274,12 +274,8 @@ config BR2_PACKAGE_PHP_EXT_SNMP
 
 config BR2_PACKAGE_PHP_EXT_SOCKETS
 	bool "sockets"
-	depends on BR2_INET_IPV6
 	help
 	  Sockets support
-
-comment "sockets support needs a toolchain w/ IPv6"
-	depends on !BR2_INET_IPV6
 
 comment "Process Control"
 

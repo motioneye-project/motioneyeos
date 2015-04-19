@@ -9,17 +9,11 @@ POSTGRESQL_SOURCE = postgresql-$(POSTGRESQL_VERSION).tar.bz2
 POSTGRESQL_SITE = http://ftp.postgresql.org/pub/source/v$(POSTGRESQL_VERSION)
 POSTGRESQL_LICENSE = PostgreSQL
 POSTGRESQL_LICENSE_FILES = COPYRIGHT
-
 POSTGRESQL_INSTALL_STAGING = YES
 POSTGRESQL_CONFIG_SCRIPTS = pg_config
+POSTGRESQL_CONF_ENV = ac_cv_type_struct_sockaddr_in6=yes
 
 ifeq ($(BR2_TOOLCHAIN_USES_UCLIBC),y)
-# overwrite IPV6 detection
-ifeq ($(BR2_INET_IPV6),y)
-POSTGRESQL_CONF_ENV += ac_cv_type_struct_sockaddr_in6=yes
-else
-POSTGRESQL_CONF_ENV += ac_cv_type_struct_sockaddr_in6=no
-endif
 # PostgreSQL does not build against uClibc with locales
 # enabled, due to an uClibc bug, see
 # http://lists.uclibc.org/pipermail/uclibc/2014-April/048326.html

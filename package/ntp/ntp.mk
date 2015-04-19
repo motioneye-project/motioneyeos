@@ -18,10 +18,6 @@ NTP_CONF_OPTS = \
 	--with-yielding-select=yes \
 	--disable-local-libevent
 
-ifneq ($(BR2_INET_IPV6),y)
-NTP_CONF_ENV += isc_cv_have_in6addr_any=no
-endif
-
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 NTP_CONF_OPTS += --with-crypto
 NTP_DEPENDENCIES += openssl

@@ -16,11 +16,6 @@ LSOF_LICENSE_FILES = dialects/linux/dproto.h
 # Make certain full-blown lsof gets built after the busybox version (1.20+)
 LSOF_DEPENDENCIES += $(if $(BR2_PACKAGE_BUSYBOX),busybox)
 
-BR2_LSOF_CFLAGS =
-ifeq ($(BR2_INET_IPV6),)
-BR2_LSOF_CFLAGS += -UHASIPv6
-endif
-
 ifeq ($(BR2_USE_WCHAR),)
 define LSOF_CONFIGURE_WCHAR_FIXUPS
 	$(SED) 's,^#define[[:space:]]*HASWIDECHAR.*,#undef HASWIDECHAR,' \
@@ -44,7 +39,7 @@ endef
 
 define LSOF_CONFIGURE_CMDS
 	(cd $(@D) ; \
-		echo n | $(TARGET_CONFIGURE_OPTS) DEBUG="$(TARGET_CFLAGS) $(BR2_LSOF_CFLAGS)" \
+		echo n | $(TARGET_CONFIGURE_OPTS) DEBUG="$(TARGET_CFLAGS)" \
 		LSOF_INCLUDE="$(STAGING_DIR)/usr/include" LSOF_CFLAGS_OVERRIDE=1 \
 		LINUX_CLIB=-DGLIBCV=2 ./Configure linux)
 	$(LSOF_CONFIGURE_WCHAR_FIXUPS)
@@ -52,7 +47,7 @@ define LSOF_CONFIGURE_CMDS
 endef
 
 define LSOF_BUILD_CMDS
-	$(MAKE) $(TARGET_CONFIGURE_OPTS) DEBUG="$(TARGET_CFLAGS) $(BR2_LSOF_CFLAGS)" -C $(@D)
+	$(MAKE) $(TARGET_CONFIGURE_OPTS) DEBUG="$(TARGET_CFLAGS)" -C $(@D)
 endef
 
 define LSOF_INSTALL_TARGET_CMDS

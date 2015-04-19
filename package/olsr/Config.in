@@ -1,7 +1,6 @@
 config BR2_PACKAGE_OLSR
 	bool "olsrd"
 	depends on BR2_USE_MMU # fork()
-	depends on BR2_INET_IPV6
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	help
 	  The Optimized Link State Routing protocol (OLSR) is a
@@ -13,6 +12,6 @@ config BR2_PACKAGE_OLSR
 
 	  http://www.olsr.org/
 
-comment "olsr needs a toolchain w/ IPv6, threads"
+comment "olsr needs a toolchain w/ threads"
 	depends on BR2_USE_MMU
-	depends on !BR2_INET_IPV6 || !BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_TOOLCHAIN_HAS_THREADS

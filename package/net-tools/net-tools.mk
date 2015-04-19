@@ -28,12 +28,10 @@ define NET_TOOLS_ENABLE_I18N
 endef
 endif
 
-# Enable IPv6 when appropiate
-ifeq ($(BR2_INET_IPV6),y)
+# Enable IPv6
 define NET_TOOLS_ENABLE_IPV6
 	$(SED) 's:_AFINET6 0:_AFINET6 1:' $(@D)/config.h
 endef
-endif
 
 NET_TOOLS_POST_CONFIGURE_HOOKS += NET_TOOLS_ENABLE_I18N NET_TOOLS_ENABLE_IPV6
 

@@ -1,6 +1,5 @@
 config BR2_PACKAGE_TRANSMISSION
 	bool "transmission"
-	depends on BR2_INET_IPV6
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_USE_MMU # fork()
 	select BR2_PACKAGE_ZLIB
@@ -48,6 +47,6 @@ comment "transmission-gtk needs a toolchain w/ locale"
 	depends on BR2_PACKAGE_LIBGTK2 && !BR2_ENABLE_LOCALE
 endif
 
-comment "transmission needs a toolchain w/ IPv6, threads"
+comment "transmission needs a toolchain w/ threads"
 	depends on BR2_USE_MMU
-	depends on !BR2_INET_IPV6 || !BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_TOOLCHAIN_HAS_THREADS

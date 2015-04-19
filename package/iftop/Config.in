@@ -2,7 +2,6 @@ config BR2_PACKAGE_IFTOP
 	bool "iftop"
 	select BR2_PACKAGE_NCURSES
 	select BR2_PACKAGE_LIBPCAP
-	depends on BR2_INET_IPV6
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	help
 	  iftop does for network usage what top(1) does for CPU usage.
@@ -12,5 +11,5 @@ config BR2_PACKAGE_IFTOP
 
 	  http://www.ex-parrot.com/pdw/iftop/
 
-comment "iftop needs a toolchain w/ IPv6, threads"
-	depends on !BR2_INET_IPV6 || !BR2_TOOLCHAIN_HAS_THREADS
+comment "iftop needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS

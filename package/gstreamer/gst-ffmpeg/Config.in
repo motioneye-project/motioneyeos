@@ -1,7 +1,6 @@
 config BR2_PACKAGE_GST_FFMPEG
 	bool "gst-ffmpeg"
 	select BR2_PACKAGE_GST_PLUGINS_BASE
-	depends on BR2_INET_IPV6
 	help
 	  GStreamer plugin containing one plugin with a set of elements using
 	  the Libav library.  It contains most popular decoders as well as
@@ -21,6 +20,3 @@ config BR2_PACKAGE_GST_FFMPEG_GPL
 	  be under GPL.
 
 endif
-
-comment "gst-ffmpeg needs a toolchain w/ IPv6"
-	depends on !BR2_INET_IPV6

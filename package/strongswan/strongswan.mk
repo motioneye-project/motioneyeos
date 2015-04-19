@@ -14,8 +14,8 @@ STRONGSWAN_CONF_OPTS += \
 	--without-lib-prefix \
 	--enable-led \
 	--enable-pkcs11=yes \
-	--enable-kernel-netlink=$(if $(BR2_INET_IPV6),yes,no) \
-	--enable-socket-default=$(if $(BR2_INET_IPV6),yes,no) \
+	--enable-kernel-netlink=yes \
+	--enable-socket-default=yes \
 	--enable-openssl=$(if $(BR2_PACKAGE_STRONGSWAN_OPENSSL),yes,no) \
 	--enable-gcrypt=$(if $(BR2_PACKAGE_STRONGSWAN_GCRYPT),yes,no) \
 	--enable-gmp=$(if $(BR2_PACKAGE_STRONGSWAN_GMP),yes,no) \
