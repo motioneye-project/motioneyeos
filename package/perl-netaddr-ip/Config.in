@@ -1,0 +1,10 @@
+config BR2_PACKAGE_PERL_NETADDR_IP
+	bool "perl-netaddr-ip"
+	depends on !BR2_STATIC_LIBS
+	help
+	  NetAddr::IP - Manages IPv4 and IPv6 addresses and subnets
+
+	  https://metacpan.org/release/NetAddr-IP
+
+comment "perl-netaddr-ip needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS
