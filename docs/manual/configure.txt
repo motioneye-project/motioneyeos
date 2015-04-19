@@ -109,8 +109,8 @@ most important ones allow to:
  * Change the version of the GCC compiler, binutils and the C library.
 
  * Select a number of toolchain options (uClibc only): whether the
-   toolchain should have IPv6 support, RPC support (used mainly for
-   NFS), wide-char support, locale support (for internationalization),
+   toolchain should have RPC support (used mainly for NFS),
+   wide-char support, locale support (for internationalization),
    C++ support or thread support. Depending on which options you choose,
    the number of userspace applications and libraries visible in
    Buildroot menus will change: many applications and libraries require
@@ -177,9 +177,9 @@ Then, you have three solutions to use an external toolchain:
   external toolchain uses the 'glibc' library, you only have to tell
   whether your toolchain supports C\++ or not and whether it has
   built-in RPC support. If your external toolchain uses the 'uClibc'
-  library, then you have to tell Buildroot if it supports IPv6,
-  RPC, wide-char, locale, program invocation, threads and
-  C++. At the beginning of the execution, Buildroot will tell you if
+  library, then you have to tell Buildroot if it supports RPC,
+  wide-char, locale, program invocation, threads and C++.
+  At the beginning of the execution, Buildroot will tell you if
   the selected options do not match the toolchain configuration.
 
 Our external toolchain support has been tested with toolchains from

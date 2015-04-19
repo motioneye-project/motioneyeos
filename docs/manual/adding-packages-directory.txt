@@ -207,10 +207,9 @@ coding style].
 ==== Dependencies on target and toolchain options
 
 Many packages depend on certain options of the toolchain: the choice of
-C library, C++ support, thread support, RPC support, IPv6 support,
-wchar support, or dynamic library support. Some packages can only be
-built on certain target architectures, or if an MMU is available in the
-processor.
+C library, C++ support, thread support, RPC support, wchar support,
+or dynamic library support. Some packages can only be built on certain
+target architectures, or if an MMU is available in the processor.
 
 These dependencies have to be expressed with the appropriate 'depends
 on' statements in the Config.in file. Additionally, for dependencies on
@@ -300,10 +299,6 @@ use in the comment.
 * RPC support
 ** Dependency symbol: +BR2_TOOLCHAIN_HAS_NATIVE_RPC+
 ** Comment string: +RPC+
-
-* IPv6 support
-** Dependency symbol: +BR2_INET_IPV6+
-** Comment string: +IPv6+ (lowercase v)
 
 * wchar support
 ** Dependency symbol: +BR2_USE_WCHAR+
