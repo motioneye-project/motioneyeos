@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-MEMSTAT_VERSION = 0.8
-MEMSTAT_SITE = http://snapshot.debian.org/archive/debian/20141023T043132Z/pool/main/m/memstat
+MEMSTAT_VERSION = 1.0
+MEMSTAT_SITE = http://downloads.sourceforge.net/project/memstattool
 MEMSTAT_SOURCE = memstat_$(MEMSTAT_VERSION).tar.gz
 MEMSTAT_LICENSE = GPL
 MEMSTAT_LICENSE_FILES = debian/copyright
