@@ -67,6 +67,7 @@ PANGO_CONF_ENV = \
 	ac_cv_path_FREETYPE_CONFIG=$(STAGING_DIR)/usr/bin/freetype-config
 
 PANGO_CONF_OPTS = --enable-explicit-deps=no
+HOST_PANGO_CONF_OPTS = --enable-explicit-deps=no
 
 PANGO_DEPENDENCIES = \
 	$(if $(BR2_NEEDS_GETTEXT_IF_LOCALE),gettext) \
@@ -76,6 +77,13 @@ PANGO_DEPENDENCIES = \
 	harfbuzz \
 	fontconfig \
 	freetype
+HOST_PANGO_DEPENDENCIES = \
+	host-pkgconf \
+	host-libglib2 \
+	host-cairo \
+	host-harfbuzz \
+	host-fontconfig \
+	host-freetype
 
 ifeq ($(BR2_PACKAGE_XORG7),y)
 PANGO_CONF_OPTS += \
@@ -95,3 +103,4 @@ define PANGO_INSTALL_INIT_SYSV
 endef
 
 $(eval $(autotools-package))
+$(eval $(host-autotools-package))
