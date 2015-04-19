@@ -1,0 +1,11 @@
+config BR2_PACKAGE_PERL_NET_DNS
+	bool "perl-net-dns"
+	depends on !BR2_STATIC_LIBS
+	select BR2_PACKAGE_PERL_DIGEST_HMAC
+	help
+	  Net::DNS is a DNS resolver implemented in Perl.
+
+	  http://www.net-dns.org
+
+comment "perl-net-dns needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS
