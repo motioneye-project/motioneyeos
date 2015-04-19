@@ -11,6 +11,20 @@ HARFBUZZ_LICENSE = MIT, ISC (ucdn library)
 HARFBUZZ_LICENSE_FILES = COPYING src/hb-ucdn/COPYING
 HARFBUZZ_INSTALL_STAGING = YES
 HARFBUZZ_CONF_OPTS = --without-coretext --without-uniscribe --without-graphite2
+
+# freetype & glib2 support required by host-pango
+HOST_HARFBUZZ_DEPENDENCIES = \
+	host-freetype \
+	host-libglib2
+HOST_HARFBUZZ_CONF_OPTS = \
+	--without-corext \
+	--without-uniscribe \
+	--without-graphite2 \
+	--with-cairo=no \
+	--with-icu=no \
+	--with-freetype=yes \
+	--with-glib=yes
+
 # beta libtool version
 HARFBUZZ_AUTORECONF = YES
 
@@ -48,3 +62,4 @@ HARFBUZZ_CONF_OPTS += --with-icu=no
 endif
 
 $(eval $(autotools-package))
+$(eval $(host-autotools-package))
