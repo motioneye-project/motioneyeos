@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-FLICKCURL_VERSION = 1.25
+FLICKCURL_VERSION = 1.26
 FLICKCURL_SITE = http://download.dajobe.org/flickcurl
 FLICKCURL_LICENSE = LGPLv2.1+ or GPLv2+ or Apache 2.0+
 FLICKCURL_LICENSE_FILES = COPYING COPYING.LIB LICENSE-2.0.txt LICENSE.html
