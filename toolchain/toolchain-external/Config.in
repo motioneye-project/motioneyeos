@@ -630,44 +630,6 @@ config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_SH201103
 	    - SH4A, uClibc, big endian
 	      Not usable in Buildroot yet.
 
-config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_SH2A_201103
-	bool "Sourcery CodeBench SH 2011.03"
-	depends on BR2_sh2a
-	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86"
-	select BR2_TOOLCHAIN_EXTERNAL_UCLIBC
-	select BR2_TOOLCHAIN_HAS_NATIVE_RPC
-	select BR2_USE_WCHAR
-	select BR2_TOOLCHAIN_HAS_THREADS
-	select BR2_TOOLCHAIN_HAS_THREADS_DEBUG
-	select BR2_INSTALL_LIBSTDCPP
-	select BR2_HOSTARCH_NEEDS_IA32_LIBS
-	# kernel headers: 2.6.38
-	help
-	  Sourcery CodeBench toolchain for the SuperH architecture,
-	  from Mentor Graphics. It uses gcc 4.5.2, binutils 2.20,
-	  uClibc 0.9.30, gdb 7.2.50 and kernel headers 2.6.38. It has
-	  support for the following variants:
-	    - SH2A, uClibc, big endian
-
-config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_SH2A_201009
-	bool "Sourcery CodeBench SH 2010.09"
-	depends on BR2_sh2a
-	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86"
-	select BR2_TOOLCHAIN_EXTERNAL_UCLIBC
-	select BR2_TOOLCHAIN_HAS_NATIVE_RPC
-	select BR2_USE_WCHAR
-	select BR2_TOOLCHAIN_HAS_THREADS
-	select BR2_TOOLCHAIN_HAS_THREADS_DEBUG
-	select BR2_INSTALL_LIBSTDCPP
-	select BR2_HOSTARCH_NEEDS_IA32_LIBS
-	# kernel headers: 2.6.35
-	help
-	  Sourcery CodeBench toolchain for the SuperH architecture,
-	  from Mentor Graphics. It uses gcc 4.5.1, binutils 2.20,
-	  uClibc 0.9.30, gdb 7.2.50 and kernel headers 2.6.35.2. It
-	  has support for the following variants:
-	    - SH2A, uClibc, big endian
-
 config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_AMD64_201405
 	bool "Sourcery CodeBench AMD64 2014.05"
 	depends on BR2_x86_64
