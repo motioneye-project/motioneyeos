@@ -5,10 +5,6 @@
 # so put it here instead
 source "package/gdb/Config.in.host"
 
-config BR2_INET_IPV6
-	bool
-	default y
-
 config BR2_TOOLCHAIN_HAS_GCC_BUG_58595
 	bool
 
