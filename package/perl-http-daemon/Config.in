@@ -1,0 +1,8 @@
+config BR2_PACKAGE_PERL_HTTP_DAEMON
+	bool "perl-http-daemon"
+	select BR2_PACKAGE_PERL_HTTP_MESSAGE
+	help
+	  Instances of the `HTTP::Daemon' class are HTTP/1.1 servers that listen
+	  on a socket for incoming requests.
+
+	  http://github.com/gisle/http-daemon
