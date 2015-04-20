@@ -1291,6 +1291,7 @@ endif
 	source "package/tinc/Config.in"
 	source "package/tinyhttpd/Config.in"
 	source "package/tn5250/Config.in"
+	source "package/tor/Config.in"
 	source "package/transmission/Config.in"
 	source "package/tvheadend/Config.in"
 	source "package/udpcast/Config.in"
