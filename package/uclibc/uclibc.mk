@@ -398,12 +398,10 @@ endef
 
 ifeq ($(BR2_UCLIBC_INSTALL_TEST_SUITE),y)
 define UCLIBC_BUILD_TEST_SUITE
-	$(MAKE1) -C $(@D)/test \
+	$(MAKE1) -C $(@D) \
 		$(UCLIBC_MAKE_FLAGS) \
-		ARCH_CFLAGS=-I$(STAGING_DIR)/usr/include \
 		UCLIBC_ONLY=1 \
-		TEST_INSTALLED_UCLIBC=1 \
-		compile
+		test_compile
 endef
 endif
 
