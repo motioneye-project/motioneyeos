@@ -88,6 +88,12 @@ AVAHI_DEPENDENCIES = \
 	$(if $(BR2_NEEDS_GETTEXT_IF_LOCALE),gettext) host-intltool \
 	host-pkgconf host-gettext
 
+AVAHI_CFLAGS = $(TARGET_CFLAGS)
+
+ifeq ($(BR2_PACKAGE_SYSTEMD),)
+AVAHI_CFLAGS += -DDISABLE_SYSTEMD
+endif
+
 ifneq ($(BR2_PACKAGE_AVAHI_DAEMON)$(BR2_PACKAGE_AVAHI_AUTOIPD),)
 AVAHI_DEPENDENCIES += libdaemon
 else
@@ -154,6 +160,8 @@ else
 AVAHI_CONF_OPTS += --disable-python-dbus
 endif
 
+AVAHI_CONF_ENV += CFLAGS="$(AVAHI_CFLAGS)"
+
 AVAHI_MAKE_OPTS += $(if $(BR2_NEEDS_GETTEXT_IF_LOCALE),LIBS=-lintl)
 
 define AVAHI_USERS
@@ -185,10 +193,10 @@ ifeq ($(BR2_PACKAGE_AVAHI_DAEMON),y)
 define AVAHI_INSTALL_INIT_SYSTEMD
 	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
 
-	ln -fs /lib/systemd/system/avahi-daemon.service \
+	ln -fs ../../../../usr/lib/systemd/system/avahi-daemon.service \
 		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/avahi-daemon.service
 
-	ln -fs /lib/systemd/system/avahi-dnsconfd.service \
+	ln -fs ../../../../usr/lib/systemd/system/avahi-dnsconfd.service \
 		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/avahi-dnsconfd.service
 
 	$(INSTALL) -D -m 644 package/avahi/avahi_tmpfiles.conf \
