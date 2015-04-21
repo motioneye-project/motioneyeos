@@ -57,6 +57,9 @@ config BR2_PACKAGE_ALSA_UTILS_ACONNECT
 	select BR2_PACKAGE_ALSA_LIB_SEQ
 	bool "aconnect"
 
+config BR2_PACKAGE_ALSA_UTILS_ALSAUCM
+	bool "alsaucm"
+
 config BR2_PACKAGE_ALSA_UTILS_APLAYMIDI
 	select BR2_PACKAGE_ALSA_LIB_SEQ
 	bool "aplaymidi"
