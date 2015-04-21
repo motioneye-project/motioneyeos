@@ -38,7 +38,6 @@ XSERVER_XORG_SERVER_DEPENDENCIES = 	\
 	xproto_glproto 			\
 	xproto_inputproto 		\
 	xproto_kbproto 			\
-	xproto_presentproto 		\
 	xproto_randrproto 		\
 	xproto_renderproto 		\
 	xproto_resourceproto 		\
@@ -73,6 +72,12 @@ else
 XSERVER_XORG_SERVER_CONF_OPTS += \
 	--without-systemd-daemon \
 	--disable-systemd-logind
+endif
+
+# Present protocol only required for xserver 1.15+, but does not matter if
+# enabled for older versions as they don't use it (not even optionally).
+ifeq ($(BR2_PACKAGE_XPROTO_PRESENTPROTO),y)
+XSERVER_XORG_SERVER_DEPENDENCIES += xproto_presentproto
 endif
 
 ifeq ($(BR2_PACKAGE_XSERVER_XORG_SERVER_MODULAR),y)
