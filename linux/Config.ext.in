@@ -44,12 +44,6 @@ config BR2_LINUX_KERNEL_EXT_RTAI
 	help
 	  RTAI Kernel part.
 
-config BR2_LINUX_KERNEL_EXT_RTAI_PATCH
-	depends on BR2_LINUX_KERNEL_EXT_RTAI
-	string "Path for RTAI patch file"
-	help
-	  Optionally, explicitly specify the RTAI patch to use.
-
 # fbtft
 config BR2_LINUX_KERNEL_EXT_FBTFT
 	bool "FB TFT drivers"

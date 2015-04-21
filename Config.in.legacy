@@ -107,6 +107,11 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2015.05"
 
+config BR2_LINUX_KERNEL_EXT_RTAI_PATCH
+	bool "RTAI patch file path has been removed"
+	help
+	  This option has never worked, so it has been removed.
+
 config BR2_TARGET_GENERIC_PASSWD_DES
 	bool "Encoding passwords with DES has been removed"
 	select BR2_LEGACY
