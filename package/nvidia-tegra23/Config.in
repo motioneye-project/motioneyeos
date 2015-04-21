@@ -29,6 +29,7 @@ config BR2_PACKAGE_NVIDIA_TEGRA23_TEGRA3
 endchoice
 
 source "package/nvidia-tegra23/nvidia-tegra23-binaries/Config.in"
+source "package/nvidia-tegra23/nvidia-tegra23-codecs/Config.in"
 endif
 
 comment "nvidia-tegra23 needs Xorg <= 1.14 and a (e)glibc toolchain w/ EABIhf"
