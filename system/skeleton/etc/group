@@ -21,6 +21,6 @@ plugdev:x:46:
 staff:x:50:
 lock:x:54:
 netdev:x:82:
-ftp:x:83
+ftp:x:83:
 nogroup:x:99:
 users:x:100:
