@@ -57,6 +57,18 @@ config BR2_PACKAGE_XSERVER_XORG_SERVER
 if BR2_PACKAGE_XSERVER_XORG_SERVER
 
 choice
+	bool "X Window System server version"
+
+config BR2_PACKAGE_XSERVER_XORG_SERVER_V_1_17
+	bool "1.17.1"
+
+endchoice
+
+config BR2_PACKAGE_XSERVER_XORG_SERVER_VERSION
+	string
+	default "1.17.1" if BR2_PACKAGE_XSERVER_XORG_SERVER_V_1_17
+
+choice
 	prompt "X Window System server type"
 	default BR2_PACKAGE_XSERVER_XORG_SERVER_KDRIVE
 	help
