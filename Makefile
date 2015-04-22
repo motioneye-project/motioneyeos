@@ -577,7 +577,7 @@ ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),y)
 endif
 
 	mkdir -p $(TARGET_DIR)/etc
-	# Mandatory configuration file and auxilliary cache directory
+	# Mandatory configuration file and auxiliary cache directory
 	# for recent versions of ldconfig
 	touch $(TARGET_DIR)/etc/ld.so.conf
 	mkdir -p $(TARGET_DIR)/var/cache/ldconfig
