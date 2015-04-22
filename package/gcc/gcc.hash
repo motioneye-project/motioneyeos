@@ -1,0 +1,10 @@
+# From ftp://gcc.gnu.org/pub/gcc/releases/gcc-4.5.4/sha512.sum
+sha512  78696b287d46aacd6f150920da376ea32f58ad9f0dafd2d3b7fa6dbdd8dd7afe659108d1dfaa5807617fc5248719f50b39c37ade0173ea5b9fec2091f4656115  gcc-4.5.4.tar.bz2
+# From ftp://gcc.gnu.org/pub/gcc/releases/gcc-4.7.4/sha512.sum
+sha512  dfcb737073191e628231031a3571ec77ee760a59377630f4a6e4fdfa66f9ddad39fde47e3f0f227eb43cdf90e0d34cde5abdc9ac892c1e111a911062a66c9189  gcc-4.7.4.tar.bz2
+# From ftp://gcc.gnu.org/pub/gcc/releases/gcc-4.8.4/sha512.sum
+sha512  b4c84ebd754c026029d706ef52c4242df4dcadc6a22cc5669b3aa37ac9dc25bc9cd9651fda83fb24dd5d17b1710e6865a35bb6c5cd9b95d0971717453935ae8e  gcc-4.8.4.tar.bz2
+# From ftp://gcc.gnu.org/pub/gcc/releases/gcc-4.9.2/sha512.sum
+sha512  e96cba06d572dbe7f382a2b00fd9297dcf9f9219d46a9ad0bd904dc36d5e7db3335e422640b79a27fed6fde91b0731732b94a0e2fbcd47344d6779f8ba1f4f9c  gcc-4.9.2.tar.bz2
+# No hash for the ARC variant, comes from the github-helper:
+none  xxx  gcc-arc-2014.12.tar.gz
