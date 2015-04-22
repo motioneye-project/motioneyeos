@@ -99,6 +99,12 @@ while read t h f; do
 done <"${h_file}"
 
 if [ ${nb_checks} -eq 0 ]; then
+    case " ${BR_NO_CHECK_HASH_FOR} " in
+    *" ${base} "*)
+        # File explicitly has no hash
+        exit 0
+        ;;
+    esac
     printf "ERROR: No hash found for %s\n" "${base}" >&2
     exit 0
 fi
