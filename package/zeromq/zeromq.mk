@@ -11,7 +11,17 @@ ZEROMQ_DEPENDENCIES = util-linux
 ZEROMQ_LICENSE = LGPLv3+ with exceptions
 ZEROMQ_LICENSE_FILES = COPYING COPYING.LESSER
 # For 0001-tests-disable-test_fork-if-fork-is-not-available.patch
+# and 0002-acinclude.m4-make-kernel-specific-flags-cacheable.patch
 ZEROMQ_AUTORECONF = YES
+
+# Assume these flags are always available. It is true, at least for
+# SOCK_CLOEXEC, since linux v2.6.27.
+# Note: the flag TCP_KEEPALIVE is NOT available so we do not include it.
+ZEROMQ_CONF_ENV = libzmq_cv_sock_cloexec=yes \
+	libzmq_cv_so_keepalive=yes \
+	libzmq_cv_tcp_keepcnt=yes \
+	libzmq_cv_tcp_keepidle=yes \
+	libzmq_cv_tcp_keepintvl=yes
 
 # Only tools/curve_keygen.c needs this, but it doesn't hurt to pass it
 # for the rest of the build as well (which automatically includes stdc++).
