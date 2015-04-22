@@ -322,17 +322,19 @@ $(2)_RAWNAME			=  $$(patsubst host-%,%,$(1))
 # sanitize the package version that is used in paths, directory and file names.
 # Forward slashes may appear in the package's version when pointing to a
 # version control system branch or tag, for example remotes/origin/1_10_stable.
+# Similar for spaces and colons (:) that may appear in date-based revisions for
+# CVS.
 ifndef $(2)_VERSION
  ifdef $(3)_VERSION
   $(2)_DL_VERSION := $$(strip $$($(3)_VERSION))
-  $(2)_VERSION := $$(subst /,_,$$(strip $$($(3)_VERSION)))
+  $(2)_VERSION := $$(call sanitize,$$($(3)_VERSION))
  else
   $(2)_VERSION = undefined
   $(2)_DL_VERSION = undefined
  endif
 else
   $(2)_DL_VERSION := $$(strip $$($(2)_VERSION))
-  $(2)_VERSION := $$(strip $$(subst /,_,$$($(2)_VERSION)))
+  $(2)_VERSION := $$(call sanitize,$$($(2)_VERSION))
 endif
 
 $(2)_BASE_NAME	=  $(1)-$$($(2)_VERSION)

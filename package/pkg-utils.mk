@@ -37,6 +37,11 @@ endef
 $(eval $(call caseconvert-helper,UPPERCASE,$(join $(addsuffix :,$([FROM])),$([TO]))))
 $(eval $(call caseconvert-helper,LOWERCASE,$(join $(addsuffix :,$([TO])),$([FROM]))))
 
+# Sanitize macro cleans up generic strings so it can be used as a filename
+# and in rules. Particularly useful for VCS version strings, that can contain
+# slashes, colons (OK in filenames but not in rules), and spaces.
+sanitize = $(subst $(space),_,$(subst :,_,$(subst /,_,$(strip $(1)))))
+
 #
 # Manipulation of .config files based on the Kconfig
 # infrastructure. Used by the BusyBox package, the Linux kernel
