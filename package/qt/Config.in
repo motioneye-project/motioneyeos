@@ -120,6 +120,16 @@ config BR2_PACKAGE_QT_CONFIG_FILE
 	  This option allows to set the path of such a configuration
 	  file, which Buildroot will give to Qt at compile time.
 
+config BR2_PACKAGE_QT_QT_COORD_TYPE_DOUBLE
+	bool "QT_COORD_TYPE to double"
+	help
+	  Set QT_COORD_TYPE to double. On ARM-based platforms, qreal
+	  is a typedef for float for performance reasons, but for
+	  QT_COORD_TYPE, some people may want to use a double type
+	  anyway for precision.
+
+	  If unsure say n.
+
 config BR2_PACKAGE_QT_QT3SUPPORT
 	bool "Compatibility with Qt3"
 	depends on BR2_PACKAGE_QT_GUI_MODULE
