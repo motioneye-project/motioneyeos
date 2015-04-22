@@ -39,7 +39,7 @@ config BR2_PACKAGE_LUA_32BITS
 	default y if !BR2_ARCH_IS_64
 	help
 	  Use a 32 bit data type for numbers / integers instead of the
-	  default 64 bit type.  This option is particularly attractive
+	  default 64 bit type. This option is particularly attractive
 	  for small machines and embedded systems.
 
 endif

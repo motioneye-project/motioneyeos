@@ -7,7 +7,7 @@ config BR2_PACKAGE_LIBASSUAN
 	  Assuan protocol.
 
 	  This protocol is used for IPC between most newer GnuPG
-	  components.  Both, server and client side functions are
+	  components. Both, server and client side functions are
 	  provided.
 
 	  http://www.gnupg.org/related_software/libassuan/

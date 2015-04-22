@@ -34,7 +34,7 @@ choice
 	prompt "Version"
 	default BR2_PACKAGE_SUNXI_MALI_R3P0
 	help
-	  Select the version of the kernel module.  For the sunxi-kernel, the
+	  Select the version of the kernel module. For the sunxi-kernel, the
 	  appropriate version number is r3p0. For other kernels, use the maliver
 	  application to determine the appropriate version.
 

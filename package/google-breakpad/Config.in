@@ -13,7 +13,7 @@ config BR2_PACKAGE_GOOGLE_BREAKPAD
 	  to distribute an application to users with compiler-provided
 	  debugging information removed, record crashes in compact
 	  "minidump" files, send them back to your server, and produce
-	  C and C++ stack traces from these minidumps.  Breakpad can
+	  C and C++ stack traces from these minidumps. Breakpad can
 	  also write minidumps on request for programs that have not
 	  crashed.
 

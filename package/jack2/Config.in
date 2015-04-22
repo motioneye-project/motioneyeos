@@ -15,7 +15,7 @@ config BR2_PACKAGE_JACK2
 
 	  JACK is a low-latency sound server, allowing multiple
 	  applications to connect to one audio device, and to share
-	  audio between themselves.  This package contains the daemon
+	  audio between themselves. This package contains the daemon
 	  jackd as well as some example clients.
 
 	  http://jackaudio.org/

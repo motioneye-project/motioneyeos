@@ -2,7 +2,7 @@ config BR2_PACKAGE_GSL
 	bool "gsl"
 	help
 	  The GNU Scientific Library (GSL) is a numerical library for
-	  C and C++ programmers.  The library provides a wide range of
+	  C and C++ programmers. The library provides a wide range of
 	  mathematical routines such as random number generators,
 	  special functions and least-squares fitting. There are over
 	  1000 functions in total with an extensive test suite.

@@ -133,7 +133,7 @@ config BR2_PACKAGE_MESA3D_OPENGL_ES
 	bool "OpenGL ES"
 	select BR2_PACKAGE_HAS_LIBGLES
 	help
-	  Use the Khronos OpenGL ES APIs.  This is commonly used on embedded
+	  Use the Khronos OpenGL ES APIs. This is commonly used on embedded
 	  systems and represents a subset of the OpenGL API.
 
 endif # BR2_PACKAGE_MESA3D_DRIVER

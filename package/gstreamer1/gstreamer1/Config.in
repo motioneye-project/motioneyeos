@@ -23,7 +23,7 @@ config BR2_PACKAGE_GSTREAMER1_TRACE
 	bool "enable tracing subsystem"
 	default y
 	help
-	  Enable the tracing subsystem within gstreamer.  This may increase CPU
+	  Enable the tracing subsystem within gstreamer. This may increase CPU
 	  overhead by a small amount.
 
 config BR2_PACKAGE_GSTREAMER1_GST_DEBUG

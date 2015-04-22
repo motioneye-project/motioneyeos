@@ -3,7 +3,7 @@ config BR2_PACKAGE_DCRON
 	depends on BR2_USE_MMU # fork()
 	help
 	  dcron is a time-based job scheduler with anacron-like
-	  features.  It works as a background daemon that parses
+	  features. It works as a background daemon that parses
 	  individual crontab files and executes commands on behalf of
 	  the users in question.
 

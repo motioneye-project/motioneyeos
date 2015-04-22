@@ -4,7 +4,7 @@ config BR2_PACKAGE_JSONCPP
 	help
 	  JsonCpp is a C++ library that allows manipulating JSON
 	  values, including serialization and deserialization to and
-	  from strings.  It can also preserve existing comment in
+	  from strings. It can also preserve existing comment in
 	  unserialization/serialization steps, making it a convenient
 	  format to store user input files.
 

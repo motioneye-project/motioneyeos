@@ -16,7 +16,7 @@ config BR2_PACKAGE_GPU_VIV_BIN_MX6Q
 	  Userspace libraries for Vivante GPU on i.MX6 platforms
 
 	  It contains libraries and headers for GLES, OpenCL, and
-	  OpenVG.  It also contains a DRI plugin for X11. It also
+	  OpenVG. It also contains a DRI plugin for X11. It also
 	  contains a plugin for DirectFB-1.4.0, but that doesn't work
 	  together with buildroot's DirectFB version.
 

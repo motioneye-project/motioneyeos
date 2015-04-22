@@ -5,6 +5,6 @@ config BR2_PACKAGE_OPENSSH
 	select BR2_PACKAGE_ZLIB
 	help
 	  A free version of the SSH protocol suite of network connectivity
-	  tools.  The standard 'ssh', 'sshd', 'scp', and friends.
+	  tools. The standard 'ssh', 'sshd', 'scp', and friends.
 
 	  http://www.openssh.com/

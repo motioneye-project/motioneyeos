@@ -36,7 +36,7 @@ if BR2_PACKAGE_XENOMAI
 config BR2_PACKAGE_XENOMAI_VERSION
 	string "Custom Xenomai version"
 	help
-	  Manually select Xenomai version.  If left empty, the default
+	  Manually select Xenomai version. If left empty, the default
 	  version will be used.
 
 	  Make sure that the selected version has a patch for your

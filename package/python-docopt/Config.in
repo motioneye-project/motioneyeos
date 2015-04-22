@@ -2,7 +2,7 @@ config BR2_PACKAGE_PYTHON_DOCOPT
 	bool "python-docopt"
 	help
 	  docopt helps you create most beautiful command-line
-	  interfaces easily.  The option parser is generated based on
+	  interfaces easily. The option parser is generated based on
 	  the beautiful help message that you write yourself. This way
 	  you don't need to write this stupid repeatable parser-code,
 	  and instead can write only the help message-- the way you

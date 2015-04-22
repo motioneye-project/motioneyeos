@@ -5,7 +5,7 @@ config BR2_PACKAGE_GAWK
 	depends on !BR2_STATIC_LIBS
 	help
 	  A special-purpose programming language which is data driven
-	  rather than procedural.  Allows for simple data-reformatting jobs
+	  rather than procedural. Allows for simple data-reformatting jobs
 	  with just a few lines of code.
 
 	  http://www.gnu.org/software/gawk/

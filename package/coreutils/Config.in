@@ -3,7 +3,7 @@ config BR2_PACKAGE_COREUTILS
 	depends on BR2_USE_WCHAR
 	depends on BR2_USE_MMU # fork()
 	help
-	  All of the basic file/text/shell utilities.  These are the
+	  All of the basic file/text/shell utilities. These are the
 	  core utilities which are expected to exist on every system.
 	  BusyBox implements many of the most common.
 

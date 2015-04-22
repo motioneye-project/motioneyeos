@@ -2,7 +2,7 @@ config BR2_PACKAGE_MPG123
 	bool "mpg123"
 	depends on BR2_USE_MMU # fork - in the application
 	help
-	  Fast, free and portable MPEG audio player for Unix.  It supports
+	  Fast, free and portable MPEG audio player for Unix. It supports
 	  MPEG 1.0/2.0 layers 1, 2 and 3.
 
 	  http://www.mpg123.de/

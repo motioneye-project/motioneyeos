@@ -6,7 +6,7 @@ config BR2_PACKAGE_E2TOOLS
 	depends on BR2_USE_MMU # e2fsprogs
 	help
 	  E2tools is a simple set of GPL'ed utilities to read, write,
-	  and manipulate files in an ext2/ext3 filesystem.  These
+	  and manipulate files in an ext2/ext3 filesystem. These
 	  utilities access a filesystem directly using the ext2fs
 	  library.
 

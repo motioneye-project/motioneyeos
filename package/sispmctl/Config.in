@@ -8,7 +8,7 @@ config BR2_PACKAGE_SISPMCTL
 	help
 	  sispmctl is an application enabling the use of the GEMBIRD
 	  SiS-PM and mSiS(sispm) USB-controlled power-outlet device
-	  under Linux.  Note that the device is also sold under
+	  under Linux. Note that the device is also sold under
 	  different Names, i.e. as "IntelliPlug" in Germany.
 
 	  http://sispmctl.sourceforge.net/

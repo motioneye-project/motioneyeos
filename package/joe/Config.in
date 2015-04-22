@@ -6,7 +6,7 @@ config BR2_PACKAGE_JOE
 
 	  JOE is an easy-to-use, full featured terminal-based screen editor.
 	  Its behavior is a blending of WordStar and GNU-EMACS (but it does
-	  not use code from either program).  It is a great editor for new
+	  not use code from either program). It is a great editor for new
 	  users or as an alternative to vi.
 
 	  http://joe-editor.sf.net

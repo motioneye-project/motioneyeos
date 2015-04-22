@@ -1,7 +1,7 @@
 config BR2_PACKAGE_LIBMAD
 	bool "libmad"
 	help
-	  High-quality MPEG audio decoder.  All computations are performed
+	  High-quality MPEG audio decoder. All computations are performed
 	  with fixed-point integer arithmetic, making it ideal for systems
 	  without a floating-point unit.
 

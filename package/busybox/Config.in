@@ -2,7 +2,7 @@ config BR2_PACKAGE_BUSYBOX
 	bool "BusyBox"
 	default y
 	help
-	  The Swiss Army Knife of embedded Linux.  It slices, it dices, it
+	  The Swiss Army Knife of embedded Linux. It slices, it dices, it
 	  makes Julian Fries.
 
 	  http://busybox.net/

@@ -1,8 +1,8 @@
 config BR2_PACKAGE_ED
 	bool "ed"
 	help
-	  A line-oriented text editor.  Used to create, display, modify,
-	  and otherwise manipulate text files.  Often used in scripts
+	  A line-oriented text editor. Used to create, display, modify,
+	  and otherwise manipulate text files. Often used in scripts
 	  rather than invoked directly.
 
 	  http://www.gnu.org/software/ed/

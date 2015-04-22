@@ -44,7 +44,7 @@ config BR2_PACKAGE_BLUEZ5_UTILS_GATTTOOL
 	help
 	  Generic Attribute Profile (GATT) support. This provides
 	  profile discovery and description services for Bluetooth Low
-	  Energy.  This will install the gatttool utility.
+	  Energy. This will install the gatttool utility.
 
 	  It is always built with BlueZ 5.x, but upstream choose not
 	  to install it by default.

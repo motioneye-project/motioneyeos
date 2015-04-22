@@ -5,7 +5,7 @@ config BR2_PACKAGE_CPPUNIT
 	depends on !BR2_STATIC_LIBS
 	help
 	  CppUnit is the C++ port of the famous JUnit framework for
-	  unit testing.  Test output is in XML or text format for
+	  unit testing. Test output is in XML or text format for
 	  automatic testing and GUI based for supervised tests.
 
 	  http://www.freedesktop.org/wiki/Software/cppunit/
