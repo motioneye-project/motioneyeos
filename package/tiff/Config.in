@@ -60,14 +60,9 @@ config BR2_PACKAGE_TIFF_JBIG
 	default y
 endmenu
 
-config BR2_PACKAGE_TIFF_TIFF2PDF
-	bool "tiff2pdf"
+config BR2_PACKAGE_TIFF_UTILITIES
+	bool "tiff utilities"
 	help
-	  tiff2pdf utility
-
-config BR2_PACKAGE_TIFF_TIFFCP
-	bool "tiffcp"
-	help
-	  tiffcp utility
+	  Install all tiff utilities.
 
 endif

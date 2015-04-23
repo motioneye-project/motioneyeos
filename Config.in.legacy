@@ -107,6 +107,22 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2015.05"
 
+config BR2_PACKAGE_TIFF_TIFF2PDF
+	bool "tiff utility-specific option removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_TIFF_UTILITIES
+	help
+	  utility-specific options have been removed in favour of
+	  the new option BR2_PACKAGE_TIFF_UTILITIES.
+
+config BR2_PACKAGE_TIFF_TIFFCP
+	bool "tiff utility-specific option removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_TIFF_UTILITIES
+	help
+	  utility-specific options have been removed in favour of
+	  the new option BR2_PACKAGE_TIFF_UTILITIES.
+
 config BR2_LINUX_KERNEL_EXT_RTAI_PATCH
 	bool "RTAI patch file path has been removed"
 	help
