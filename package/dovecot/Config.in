@@ -1,5 +1,6 @@
 config BR2_PACKAGE_DOVECOT
 	bool "dovecot"
+	depends on !BR2_STATIC_LIBS
 	depends on BR2_USE_MMU # fork()
 	help
 	  Dovecot is an open source IMAP and POP3 email server for Linux/UNIX-
@@ -51,3 +52,7 @@ config BR2_PACKAGE_DOVECOT_ZLIB
 source package/dovecot-pigeonhole/Config.in
 
 endif # BR2_PACKAGE_DOVECOT
+
+comment "dovecot needs a toolchain w/ dynamic library"
+	depends on BR2_USE_MMU
+	depends on !BR2_STATIC_LIBS
