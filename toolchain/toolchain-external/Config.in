@@ -814,7 +814,7 @@ config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_AARCH64
 	  glibc 2.18, gdb 7.7.50 and kernel headers 3.13.
 
 config BR2_TOOLCHAIN_EXTERNAL_MUSL_CROSS
-	bool "Musl 1.1.1 toolchain"
+	bool "Musl 1.1.6 toolchain"
 	depends on (BR2_arm && BR2_ARM_EABI) || (BR2_armeb && BR2_ARM_EABI) || \
 		(BR2_i386 && !BR2_x86_i386) || BR2_microblazebe || BR2_mips || \
 		BR2_mipsel || (BR2_powerpc && BR2_powerpc_CLASSIC) || BR2_x86_64
@@ -825,8 +825,8 @@ config BR2_TOOLCHAIN_EXTERNAL_MUSL_CROSS
 	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_12
 	help
 	  Toolchain based on the Musl C library, provided by the
-	  musl-cross project. It uses gcc 4.8.3, binutils 2.24 and
-	  musl 1.1.1. It does not have a cross debugger included.
+	  musl-cross project. It uses gcc 4.9.2, binutils 2.25 and
+	  musl 1.1.6. It does not have a cross debugger included.
 
 	  The ARM toolchain is built for ARMv4t, soft-float.
 	  The x86 toolchain is built for i486.
