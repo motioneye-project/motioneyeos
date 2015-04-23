@@ -32,8 +32,8 @@ HOST_QEMU_DEPENDENCIES = host-pkgconf host-python host-zlib host-libglib2 host-p
 #       microblaze      microblaze
 #       mips            mips
 #       mipsel          mipsel
-#       mips64          ?
-#       mips64el        ?
+#       mips64          mips64
+#       mips64el        mips64el
 #       powerpc         ppc
 #       sh2a            not supported
 #       sh4             sh4
