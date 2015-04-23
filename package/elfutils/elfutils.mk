@@ -34,6 +34,7 @@ ELFUTILS_CONF_ENV += \
 
 ifeq ($(BR2_TOOLCHAIN_USES_UCLIBC),y)
 ELFUTILS_DEPENDENCIES += argp-standalone
+ELFUTILS_CONF_OPTS += --disable-symbol-versioning
 endif
 
 ifeq ($(BR2_PACKAGE_ZLIB),y)
