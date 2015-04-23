@@ -10,7 +10,7 @@ config BR2_PACKAGE_OPENTYRIAN
 	  to play the game.
 	  If you want some sound, activate ALSA with OSS emulation.
 
-	  http://code.google.com/p/opentyrian/
+	  https://bitbucket.org/opentyrian/opentyrian/wiki/Home
 
 if BR2_PACKAGE_OPENTYRIAN
 

@@ -5,7 +5,7 @@
 ################################################################################
 
 OPENTYRIAN_VERSION = 9c9f0ec3532b
-OPENTYRIAN_SITE = https://code.google.com/p/opentyrian/
+OPENTYRIAN_SITE = https://bitbucket.org/opentyrian/opentyrian
 OPENTYRIAN_SITE_METHOD = hg
 OPENTYRIAN_LICENSE = GPLv2+
 OPENTYRIAN_LICENSE_FILES = COPYING
