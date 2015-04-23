@@ -44,7 +44,7 @@ define HOST_CMAKE_BUILD_CMDS
 endef
 
 define HOST_CMAKE_INSTALL_CMDS
-	$(HOST_MAKE_ENV) $(MAKE) -C $(@D) install
+	$(HOST_MAKE_ENV) $(MAKE) -C $(@D) install/fast
 endef
 
 define CMAKE_REMOVE_EXTRA_DATA
