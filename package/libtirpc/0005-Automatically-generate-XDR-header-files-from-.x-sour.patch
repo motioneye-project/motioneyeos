@@ -4,6 +4,7 @@ Date: Sat, 10 Nov 2012 17:29:53 +0100
 Subject: [PATCH] Automatically generate XDR header files from .x sources using
  rpcgen
 
+[Gustavo: update after dropping non-IPv6 support]
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 ---
  Makefile.am           |  22 +-
@@ -75,7 +76,7 @@ index f086255..a9db71b 100644
 @@ -8,7 +8,7 @@
  noinst_HEADERS = rpc_com.h
  
- AM_CPPFLAGS = -I$(top_srcdir)/tirpc -DPORTMAP \
+ AM_CPPFLAGS = -I$(top_srcdir)/tirpc -DPORTMAP -DINET6 \
 -		-D_GNU_SOURCE -Wall -pipe  
 +		-D_GNU_SOURCE -Wall -pipe -I$(top_builddir)/tirpc
  
