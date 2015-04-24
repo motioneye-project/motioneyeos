@@ -40,6 +40,15 @@ NVIDIA_DRIVER_LIBS = \
 	libvdpau libvdpau_nvidia \
 	libnvidia-ml
 
+# Install the gl.pc file
+define NVIDIA_DRIVER_INSTALL_GL_DEV
+	$(INSTALL) -D -m 0644 $(@D)/libGL.la $(STAGING_DIR)/usr/lib/libGL.la
+	$(SED) 's:__GENERATED_BY__:Buildroot:' $(STAGING_DIR)/usr/lib/libGL.la
+	$(SED) 's:__LIBGL_PATH__:/usr/lib:' $(STAGING_DIR)/usr/lib/libGL.la
+	$(SED) 's:-L[^[:space:]]\+::' $(STAGING_DIR)/usr/lib/libGL.la
+	$(INSTALL) -D -m 0644 package/nvidia-driver/gl.pc $(STAGING_DIR)/usr/lib/pkgconfig/gl.pc
+endef
+
 # Those libraries are 'private' libraries requiring an agreement with
 # NVidia to develop code for those libs. There seems to be no restriction
 # on using those libraries (e.g. if the user has such an agreement, or
@@ -154,11 +163,7 @@ endef
 # For staging, install libraries and development files
 define NVIDIA_DRIVER_INSTALL_STAGING_CMDS
 	$(call NVIDIA_DRIVER_INSTALL_LIBS,$(STAGING_DIR))
-	$(INSTALL) -D -m 0644 $(@D)/libGL.la $(STAGING_DIR)/usr/lib/libGL.la
-	$(SED) 's:__GENERATED_BY__:Buildroot:' $(STAGING_DIR)/usr/lib/libGL.la
-	$(SED) 's:__LIBGL_PATH__:/usr/lib:' $(STAGING_DIR)/usr/lib/libGL.la
-	$(SED) 's:-L[^[:space:]]\+::' $(STAGING_DIR)/usr/lib/libGL.la
-	$(INSTALL) -D -m 0644 package/nvidia-driver/gl.pc $(STAGING_DIR)/usr/lib/pkgconfig/gl.pc
+	$(NVIDIA_DRIVER_INSTALL_GL_DEV)
 endef
 
 # For target, install libraries and X.org modules
