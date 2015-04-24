@@ -1,0 +1,29 @@
+From 7086438e488fa57c1add720590256f2c92602877 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?J=C3=B6rg=20Krause?= <joerg.krause@embedded.rocks>
+Date: Tue, 31 Mar 2015 00:31:34 +0200
+Subject: [PATCH 2/4] lib/libfec.c: fix build against musl
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Add missing #include <sys/types.h> for u_long.
+
+Signed-off-by: Jörg Krause <joerg.krause@embedded.rocks>
+---
+ lib/libfec.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/lib/libfec.c b/lib/libfec.c
+index ff5a127..c5e7749 100644
+--- a/lib/libfec.c
++++ b/lib/libfec.c
+@@ -45,6 +45,7 @@
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
++#include <sys/types.h>
+
+ /*
+  * stuff used for testing purposes only
+--
+2.3.6
