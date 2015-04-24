@@ -750,6 +750,7 @@ endmenu
 
 menu "Graphics"
 	source "package/atk/Config.in"
+	source "package/bullet/Config.in"
 	source "package/cairo/Config.in"
 	source "package/exiv2/Config.in"
 	source "package/fltk/Config.in"
