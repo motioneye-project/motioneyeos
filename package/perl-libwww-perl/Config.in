@@ -1,10 +1,12 @@
-config BR2_PACKAGE_PERL_LIBWWW
-	bool "perl-libwww"
+config BR2_PACKAGE_PERL_LIBWWW_PERL
+	bool "perl-libwww-perl"
 	select BR2_PACKAGE_PERL_ENCODE_LOCALE
 	select BR2_PACKAGE_PERL_FILE_LISTING
 	select BR2_PACKAGE_PERL_HTML_PARSER
 	select BR2_PACKAGE_PERL_HTTP_COOKIES
 	select BR2_PACKAGE_PERL_HTTP_DAEMON
+	select BR2_PACKAGE_PERL_HTTP_DATE
+	select BR2_PACKAGE_PERL_HTTP_MESSAGE
 	select BR2_PACKAGE_PERL_HTTP_NEGOTIATE
 	select BR2_PACKAGE_PERL_LWP_MEDIATYPES
 	select BR2_PACKAGE_PERL_NET_HTTP
@@ -13,4 +15,4 @@ config BR2_PACKAGE_PERL_LIBWWW
 	help
 	  The World-Wide Web library for Perl
 
-	  https://github.com/libwww-perl/libwww-perl
+	  https://metacpan.org/release/libwww-perl
