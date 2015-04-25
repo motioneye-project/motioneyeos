@@ -163,6 +163,7 @@ config BR2_sh
 
 config BR2_sh64
 	bool "SuperH64"
+	depends on BR2_DEPRECATED_SINCE_2015_05
 	help
 	  SuperH64 (or SH) is a 64-bit reduced instruction set computer (RISC)
 	  instruction set architecture (ISA) developed by Hitachi.
