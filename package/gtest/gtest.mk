@@ -30,6 +30,20 @@ define GTEST_INSTALL_STAGING_CMDS
 	$(INSTALL) -D -m 0755 $(@D)/libgtest_main.a $(STAGING_DIR)/usr/lib/libgtest_main.a
 	$(INSTALL) -d -m 0755 $(STAGING_DIR)/usr/include/gtest/
 	cp -rp $(@D)/include/gtest/* $(STAGING_DIR)/usr/include/gtest/
+	# Generate the gtest-config script manually, since the CMake
+	# build system is not doing it.
+	sed 's%@PACKAGE_TARNAME@%gtest%;\
+		s%@PACKAGE_VERSION@%$(GTEST_VERSION)%;\
+		s%@prefix@%$(STAGING_DIR)/usr%;\
+		s%@exec_prefix@%$(STAGING_DIR)/usr%;\
+		s%@libdir@%$(STAGING_DIR)/usr/lib%;\
+		s%@includedir@%$(STAGING_DIR)/usr/include%;\
+		s%@bindir@%$(STAGING_DIR)/usr/bin%;\
+		s%@PTHREAD_CFLAGS@%%;\
+		s%@PTHREAD_LIBS@%-lpthread%;' \
+		$(@D)/scripts/gtest-config.in \
+		> $(STAGING_DIR)/usr/bin/gtest-config
+	chmod +x $(STAGING_DIR)/usr/bin/gtest-config
 endef
 
 $(eval $(cmake-package))
