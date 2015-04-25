@@ -33,11 +33,17 @@ endif
 # Turn off features that aren't available in QWS and current qt
 # configuration.
 PYTHON_PYQT_QTDETAIL_DISABLE_FEATURES = \
-	PyQt_Accessibility PyQt_SessionManager PyQt_qreal_double \
+	PyQt_Accessibility PyQt_SessionManager \
 	PyQt_Shortcut PyQt_RawFont
 
 ifeq ($(BR2_PACKAGE_QT_OPENSSL),)
 PYTHON_PYQT_QTDETAIL_DISABLE_FEATURES += PyQt_OpenSSL
+endif
+
+# PyQt_qreal_double must be disabled on a number of architectures that
+# use float for qreal.
+ifeq ($(BR2_PACKAGE_PYTHON_PYQT_ARCH_USES_QREAL_FLOAT),y)
+PYTHON_PYQT_QTDETAIL_DISABLE_FEATURES += PyQt_qreal_double
 endif
 
 define PYTHON_PYQT_QTDETAIL
