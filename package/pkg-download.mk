@@ -20,9 +20,8 @@ export LOCALFILES := $(call qstrip,$(BR2_LOCALFILES))
 
 DL_WRAPPER = support/download/dl-wrapper
 
-# Default spider mode is 'DOWNLOAD'. Other possible values are 'SOURCE_CHECK'
-# used by the _source-check target and 'SHOW_EXTERNAL_DEPS', used by the
-# external-deps target.
+# Default spider mode is 'DOWNLOAD'. Other possible value is
+# 'SOURCE_CHECK' used by the _source-check target.
 DL_MODE = DOWNLOAD
 
 # DL_DIR may have been set already from the environment
@@ -74,11 +73,6 @@ export BR_NO_CHECK_HASH_FOR
 # The SOURCE_CHECK_* helpers are in charge of simply checking that the source
 # is available for download. This can be used to make sure one will be able
 # to get all the sources needed for one's build configuration.
-#
-# The SHOW_EXTERNAL_DEPS_* helpers simply output to the console the names
-# of the files that will be downloaded, or path and revision of the
-# source repositories, producing a list of all the "external dependencies"
-# of a given build configuration.
 ################################################################################
 
 # Try a shallow clone - but that only works if the version is a ref (tag or
@@ -103,11 +97,6 @@ define SOURCE_CHECK_GIT
   $(GIT) ls-remote --heads $($(PKG)_SITE) > /dev/null
 endef
 
-define SHOW_EXTERNAL_DEPS_GIT
-	echo $($(PKG)_SOURCE)
-endef
-
-
 define DOWNLOAD_BZR
 	$(EXTRA_ENV) $(DL_WRAPPER) -b bzr \
 		-o $(DL_DIR)/$($(PKG)_SOURCE) \
@@ -120,10 +109,6 @@ endef
 
 define SOURCE_CHECK_BZR
 	$(BZR) ls --quiet $($(PKG)_SITE) > /dev/null
-endef
-
-define SHOW_EXTERNAL_DEPS_BZR
-	echo $($(PKG)_SOURCE)
 endef
 
 define DOWNLOAD_CVS
@@ -142,10 +127,6 @@ define SOURCE_CHECK_CVS
 	$(CVS) -d:pserver:anonymous:@$(call stripurischeme,$(call qstrip,$($(PKG)_SITE))) login
 endef
 
-define SHOW_EXTERNAL_DEPS_CVS
-	echo $($(PKG)_SOURCE)
-endef
-
 define DOWNLOAD_SVN
 	$(EXTRA_ENV) $(DL_WRAPPER) -b svn \
 		-o $(DL_DIR)/$($(PKG)_SOURCE) \
@@ -158,10 +139,6 @@ endef
 
 define SOURCE_CHECK_SVN
   $(SVN) ls $($(PKG)_SITE)@$($(PKG)_DL_VERSION) > /dev/null
-endef
-
-define SHOW_EXTERNAL_DEPS_SVN
-  echo $($(PKG)_SOURCE)
 endef
 
 # SCP URIs should be of the form scp://[user@]host:filepath
@@ -180,11 +157,6 @@ define SOURCE_CHECK_SCP
 	$(SSH) $(call domain,$(1),:) ls '$(call notdomain,$(1),:)' > /dev/null
 endef
 
-define SHOW_EXTERNAL_DEPS_SCP
-	echo $(2)
-endef
-
-
 define DOWNLOAD_HG
 	$(EXTRA_ENV) $(DL_WRAPPER) -b hg \
 		-o $(DL_DIR)/$($(PKG)_SOURCE) \
@@ -201,11 +173,6 @@ define SOURCE_CHECK_HG
   $(HG) incoming --force -l1 $($(PKG)_SITE) > /dev/null
 endef
 
-define SHOW_EXTERNAL_DEPS_HG
-  echo $($(PKG)_SOURCE)
-endef
-
-
 define DOWNLOAD_WGET
 	$(EXTRA_ENV) $(DL_WRAPPER) -b wget \
 		-o $(DL_DIR)/$(2) \
@@ -219,10 +186,6 @@ define SOURCE_CHECK_WGET
   $(WGET) --spider '$(call qstrip,$(1))'
 endef
 
-define SHOW_EXTERNAL_DEPS_WGET
-  echo $(2)
-endef
-
 define DOWNLOAD_LOCALFILES
 	$(EXTRA_ENV) $(DL_WRAPPER) -b cp \
 		-o $(DL_DIR)/$(2) \
@@ -234,10 +197,6 @@ endef
 
 define SOURCE_CHECK_LOCALFILES
   test -e $(call stripurischeme,$(call qstrip,$(1)))
-endef
-
-define SHOW_EXTERNAL_DEPS_LOCALFILES
-  echo $(2)
 endef
 
 ################################################################################

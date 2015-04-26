@@ -122,13 +122,10 @@ $(BUILD_DIR)/%/.stamp_rsynced:
 	$(foreach hook,$($(PKG)_POST_RSYNC_HOOKS),$(call $(hook))$(sep))
 	$(Q)touch $@
 
-# Handle the SOURCE_CHECK and SHOW_EXTERNAL_DEPS cases for rsynced
-# packages
+# Handle the SOURCE_CHECK case for rsynced packages
 $(BUILD_DIR)/%/.stamp_rsync_sourced:
 ifeq ($(DL_MODE),SOURCE_CHECK)
 	test -d $(SRCDIR)
-else ifeq ($(DL_MODE),SHOW_EXTERNAL_DEPS)
-	echo "file://$(SRCDIR)"
 else
 	@true # Nothing to do to source a local package
 endif
