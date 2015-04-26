@@ -212,14 +212,18 @@ endef
 ################################################################################
 
 define DOWNLOAD
-	$(call DOWNLOAD_INNER,$(1),$(notdir $(1)))
+	$(call DOWNLOAD_INNER,$(1),$(notdir $(1)),$(DL_MODE))
+endef
+
+define SOURCE_CHECK
+	$(call DOWNLOAD_INNER,$(1),$(notdir $(1)),SOURCE_CHECK)
 endef
 
 define DOWNLOAD_INNER
 	$(Q)if test -n "$(call qstrip,$(BR2_PRIMARY_SITE))" ; then \
 		case "$(call geturischeme,$(BR2_PRIMARY_SITE))" in \
-			scp) $(call $(DL_MODE)_SCP,$(BR2_PRIMARY_SITE)/$(2),$(2)) && exit ;; \
-			*) $(call $(DL_MODE)_WGET,$(BR2_PRIMARY_SITE)/$(2),$(2)) && exit ;; \
+			scp) $(call $(3)_SCP,$(BR2_PRIMARY_SITE)/$(2),$(2)) && exit ;; \
+			*) $(call $(3)_WGET,$(BR2_PRIMARY_SITE)/$(2),$(2)) && exit ;; \
 		esac ; \
 	fi ; \
 	if test "$(BR2_PRIMARY_SITE_ONLY)" = "y" ; then \
@@ -232,18 +236,18 @@ define DOWNLOAD_INNER
 			scheme="$($(PKG)_SITE_METHOD)" ; \
 		fi ; \
 		case "$$scheme" in \
-			git) $($(DL_MODE)_GIT) && exit ;; \
-			svn) $($(DL_MODE)_SVN) && exit ;; \
-			cvs) $($(DL_MODE)_CVS) && exit ;; \
-			bzr) $($(DL_MODE)_BZR) && exit ;; \
-			file) $($(DL_MODE)_LOCALFILES) && exit ;; \
-			scp) $($(DL_MODE)_SCP) && exit ;; \
-			hg) $($(DL_MODE)_HG) && exit ;; \
-			*) $(call $(DL_MODE)_WGET,$(1),$(2)) && exit ;; \
+			git) $($(3)_GIT) && exit ;; \
+			svn) $($(3)_SVN) && exit ;; \
+			cvs) $($(3)_CVS) && exit ;; \
+			bzr) $($(3)_BZR) && exit ;; \
+			file) $($(3)_LOCALFILES) && exit ;; \
+			scp) $($(3)_SCP) && exit ;; \
+			hg) $($(3)_HG) && exit ;; \
+			*) $(call $(3)_WGET,$(1),$(2)) && exit ;; \
 		esac ; \
 	fi ; \
 	if test -n "$(call qstrip,$(BR2_BACKUP_SITE))" ; then \
-		$(call $(DL_MODE)_WGET,$(BR2_BACKUP_SITE)/$(2),$(2)) && exit ; \
+		$(call $(3)_WGET,$(BR2_BACKUP_SITE)/$(2),$(2)) && exit ; \
 	fi ; \
 	exit 1
 endef
