@@ -614,8 +614,9 @@ target-post-image: $(TARGETS_ROOTFS) target-finalize
 
 source: $(PACKAGES_SOURCE) $(HOST_SOURCE)
 
+_external-deps: $(foreach p,$(PACKAGES),$(p)-all-external-deps)
 external-deps:
-	@$(MAKE1) -Bs DL_MODE=SHOW_EXTERNAL_DEPS $(EXTRAMAKEARGS) source | sort -u
+	@$(MAKE1) -Bs $(EXTRAMAKEARGS) _external-deps | sort -u
 
 legal-info-clean:
 	@rm -fr $(LEGAL_INFO_DIR)
