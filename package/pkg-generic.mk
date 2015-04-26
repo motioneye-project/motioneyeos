@@ -550,6 +550,12 @@ $(1)-depends:		$$($(2)_FINAL_DEPENDENCIES)
 
 $(1)-source:		$$($(2)_TARGET_SOURCE)
 
+$(1)-source-check:
+	$$(foreach p,$$($(2)_SOURCE) $$($(2)_EXTRA_DOWNLOADS) $$($(2)_PATCH),\
+		$$(if $$(findstring ://,$$(p)),\
+			$$(call SOURCE_CHECK,$$(p)),\
+			$$(call SOURCE_CHECK,$$($(2)_SITE:/=)/$$(p)))$$(sep))
+
 $(1)-external-deps:
 	@for p in $$($(2)_SOURCE) $$($(2)_PATCH) $$($(2)_EXTRA_DOWNLOADS) ; do \
 		echo `basename $$$$p` ; \
@@ -573,6 +579,9 @@ $(1)-rsync:		$$($(2)_TARGET_RSYNC)
 
 $(1)-source:		$$($(2)_TARGET_RSYNC_SOURCE)
 
+$(1)-source-check:
+	test -d $$($(2)_OVERRIDE_SRCDIR)
+
 $(1)-external-deps:
 	@echo "file://$$($(2)_OVERRIDE_SRCDIR)"
 endif
@@ -592,6 +601,9 @@ $(1)-graph-depends: graph-depends-requirements
 
 $(1)-all-source:	$(1)-source
 $(1)-all-source:	$$(foreach p,$$($(2)_FINAL_ALL_DEPENDENCIES),$$(p)-all-source)
+
+$(1)-all-source-check:	$(1)-source-check
+$(1)-all-source-check:	$$(foreach p,$$($(2)_FINAL_ALL_DEPENDENCIES),$$(p)-all-source-check)
 
 $(1)-all-external-deps:	$(1)-external-deps
 $(1)-all-external-deps:	$$(foreach p,$$($(2)_FINAL_ALL_DEPENDENCIES),$$(p)-all-external-deps)
@@ -788,6 +800,7 @@ endif
 	$(1)-all-external-deps \
 	$(1)-all-legal-info \
 	$(1)-all-source \
+	$(1)-all-source-check \
 	$(1)-build \
 	$(1)-clean-for-rebuild \
 	$(1)-clean-for-reconfigure \
@@ -811,7 +824,8 @@ endif
 	$(1)-rsync \
 	$(1)-show-depends \
 	$(1)-show-version \
-	$(1)-source
+	$(1)-source \
+	$(1)-source-check
 
 endif # $(2)_KCONFIG_VAR
 endef # inner-generic-package
