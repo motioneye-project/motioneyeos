@@ -77,6 +77,22 @@ noconfig_targets := menuconfig nconfig gconfig xconfig config oldconfig randconf
 	randpackageconfig allyespackageconfig allnopackageconfig \
 	print-version olddefconfig
 
+# Some global targets do not trigger a build, but are used to collect
+# metadata, or do various checks. When such targets are triggered,
+# some packages should not do their configuration sanity
+# checks. Provide them a BR_BUILDING variable set to 'y' when we're
+# actually building and they should do their sanity checks.
+#
+# We're building in two situations: when MAKECMDGOALS is empty
+# (default target is to build), or when MAKECMDGOALS contains
+# something else than one of the nobuild_targets.
+nobuild_targets := source
+ifeq ($(MAKECMDGOALS),)
+BR_BUILDING = y
+else ifneq ($(filter-out $(nobuild_targets),$(MAKECMDGOALS)),)
+BR_BUILDING = y
+endif
+
 # Strip quotes and then whitespaces
 qstrip = $(strip $(subst ",,$(1)))
 #"))
