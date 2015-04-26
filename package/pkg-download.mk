@@ -90,7 +90,7 @@ endef
 # TODO: improve to check that the given PKG_DL_VERSION exists on the remote
 # repository
 define SOURCE_CHECK_GIT
-  $(GIT) ls-remote --heads $($(PKG)_SITE) > /dev/null
+	$(GIT) ls-remote --heads $($(PKG)_SITE) > /dev/null
 endef
 
 define DOWNLOAD_BZR
@@ -134,7 +134,7 @@ define DOWNLOAD_SVN
 endef
 
 define SOURCE_CHECK_SVN
-  $(SVN) ls $($(PKG)_SITE)@$($(PKG)_DL_VERSION) > /dev/null
+	$(SVN) ls $($(PKG)_SITE)@$($(PKG)_DL_VERSION) > /dev/null
 endef
 
 # SCP URIs should be of the form scp://[user@]host:filepath
@@ -166,7 +166,7 @@ endef
 # TODO: improve to check that the given PKG_DL_VERSION exists on the remote
 # repository
 define SOURCE_CHECK_HG
-  $(HG) incoming --force -l1 $($(PKG)_SITE) > /dev/null
+	$(HG) incoming --force -l1 $($(PKG)_SITE) > /dev/null
 endef
 
 define DOWNLOAD_WGET
@@ -179,7 +179,7 @@ define DOWNLOAD_WGET
 endef
 
 define SOURCE_CHECK_WGET
-  $(WGET) --spider '$(call qstrip,$(1))'
+	$(WGET) --spider '$(call qstrip,$(1))'
 endef
 
 define DOWNLOAD_LOCALFILES
@@ -192,7 +192,7 @@ define DOWNLOAD_LOCALFILES
 endef
 
 define SOURCE_CHECK_LOCALFILES
-  test -e $(call stripurischeme,$(call qstrip,$(1)))
+	test -e $(call stripurischeme,$(call qstrip,$(1)))
 endef
 
 ################################################################################
