@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-CCACHE_VERSION = 3.1.11
+CCACHE_VERSION = 3.2.1
 CCACHE_SITE = http://samba.org/ftp/ccache
 CCACHE_SOURCE = ccache-$(CCACHE_VERSION).tar.xz
 CCACHE_LICENSE = GPLv3+, others
@@ -19,7 +19,7 @@ CCACHE_LICENSE_FILES = LICENSE.txt GPL-3.0.txt
 # to use HOSTCC_NOCCACHE as the compiler. Instead, we take the easy
 # path: tell ccache to use its internal copy of zlib, so that ccache
 # has zero dependency besides the C library.
-HOST_CCACHE_CONF_OPTS += ccache_cv_zlib_1_2_3=no
+HOST_CCACHE_CONF_OPTS += --with-bundled-zlib
 
 # Patch host-ccache as follows:
 #  - Use BR_CACHE_DIR instead of CCACHE_DIR, because CCACHE_DIR
@@ -34,11 +34,11 @@ HOST_CCACHE_CONF_OPTS += ccache_cv_zlib_1_2_3=no
 #    the need to specify BR_CACHE_DIR when invoking ccache directly.
 define HOST_CCACHE_PATCH_CONFIGURATION
 	sed -i 's,getenv("CCACHE_DIR"),getenv("BR_CACHE_DIR"),' $(@D)/ccache.c
-	sed -i 's,getenv("CCACHE_COMPILERCHECK"),"none",' $(@D)/ccache.c
-	sed -i 's,"%s/.ccache","$(BR_CACHE_DIR)",' $(@D)/ccache.c
+	sed -i 's,conf->compiler_check = x_strdup("mtime"),conf->compiler_check = x_strdup("none"),' $(@D)/conf.c
+	sed -i 's,"%s/.ccache","$(BR_CACHE_DIR)",' $(@D)/conf.c
 endef
 
-HOST_CCACHE_POST_CONFIGURE_HOOKS += HOST_CCACHE_PATCH_CONFIGURATION
+HOST_CCACHE_POST_PATCH_HOOKS += HOST_CCACHE_PATCH_CONFIGURATION
 
 define HOST_CCACHE_MAKE_CACHE_DIR
 	mkdir -p $(BR_CACHE_DIR)
