@@ -50,7 +50,7 @@ Index: b/Makefile.pre.in
  # Environment to run shared python without installed libraries
  RUNSHARED=       @RUNSHARED@
  
-@@ -1246,21 +1249,21 @@
+@@ -1247,21 +1250,21 @@
  	fi
  	-PYTHONPATH=$(DESTDIR)$(LIBDEST)  $(RUNSHARED) \
  		$(PYTHON_FOR_BUILD) -Wi $(DESTDIR)$(LIBDEST)/compileall.py \

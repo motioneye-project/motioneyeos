@@ -24,11 +24,11 @@ Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
  Misc/python-config.sh.in | 12 ++++++------
  1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/Misc/python-config.sh.in b/Misc/python-config.sh.in
-index 64c81e5..f75eec5 100644
+Index: b/Misc/python-config.sh.in
+===================================================================
 --- a/Misc/python-config.sh.in
 +++ b/Misc/python-config.sh.in
-@@ -29,12 +29,12 @@ prefix_real=$(installed_prefix "$0")
+@@ -29,12 +29,12 @@
  
  # Use sed to fix paths from their built-to locations to their installed-to
  # locations.
@@ -46,7 +46,7 @@ index 64c81e5..f75eec5 100644
  VERSION="@VERSION@"
  LIBM="@LIBM@"
  LIBC="@LIBC@"
-@@ -48,7 +48,7 @@ OPT="@OPT@"
+@@ -48,7 +48,7 @@
  PY_ENABLE_SHARED="@PY_ENABLE_SHARED@"
  LDVERSION="@LDVERSION@"
  LIBDEST=${prefix}/lib/python${VERSION}
@@ -55,6 +55,3 @@ index 64c81e5..f75eec5 100644
  SO="@SO@"
  PYTHONFRAMEWORK="@PYTHONFRAMEWORK@"
  INCDIR="-I$includedir/python${VERSION}${ABIFLAGS}"
--- 
-2.1.3
-

@@ -19,7 +19,7 @@ Index: b/Makefile.pre.in
 ===================================================================
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -1149,7 +1149,7 @@
+@@ -1150,7 +1150,7 @@
  		logging csv wsgiref urllib \
  		ctypes ctypes/macholib \
  		idlelib idlelib/Icons \
@@ -28,7 +28,7 @@ Index: b/Makefile.pre.in
  		importlib \
  		turtledemo \
  		multiprocessing multiprocessing/dummy \
-@@ -1221,6 +1221,10 @@
+@@ -1222,6 +1222,10 @@
  LIBSUBDIRS += curses
  endif
  
@@ -43,7 +43,7 @@ Index: b/configure.ac
 ===================================================================
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2369,13 +2369,21 @@
+@@ -2372,13 +2372,21 @@
  AC_SUBST(DISABLED_EXTENSIONS)
  
  # Check for use of the system expat library
@@ -74,7 +74,7 @@ Index: b/setup.py
 ===================================================================
 --- a/setup.py
 +++ b/setup.py
-@@ -1426,7 +1426,7 @@
+@@ -1414,7 +1414,7 @@
          #
          # More information on Expat can be found at www.libexpat.org.
          #

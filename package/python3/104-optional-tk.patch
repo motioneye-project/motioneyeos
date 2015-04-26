@@ -12,7 +12,7 @@ Index: b/Makefile.pre.in
 ===================================================================
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -1139,7 +1139,7 @@
+@@ -1140,7 +1140,7 @@
  EXTRAPLATDIR= @EXTRAPLATDIR@
  MACHDEPS=	$(PLATDIR) $(EXTRAPLATDIR)
  XMLLIBSUBDIRS=  xml xml/dom xml/etree xml/parsers xml/sax
@@ -21,7 +21,7 @@ Index: b/Makefile.pre.in
  		site-packages \
  		asyncio \
  		collections concurrent concurrent/futures encodings \
-@@ -1157,8 +1157,7 @@
+@@ -1158,8 +1158,7 @@
  		venv venv/scripts venv/scripts/posix \
  		curses $(MACHDEPS)
  
@@ -31,7 +31,7 @@ Index: b/Makefile.pre.in
  		test/test_email test/test_email/data \
  		test/test_json \
  		test/audiodata \
-@@ -1212,6 +1211,12 @@
+@@ -1213,6 +1212,12 @@
  TESTSUBDIRS += sqlite3/test
  endif
  
@@ -48,7 +48,7 @@ Index: b/configure.ac
 ===================================================================
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2681,6 +2681,15 @@
+@@ -2684,6 +2684,15 @@
     DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} _sqlite3"
  fi
  

@@ -15,7 +15,7 @@ Index: b/Makefile.pre.in
 ===================================================================
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -1100,7 +1100,9 @@
+@@ -1101,7 +1101,9 @@
  	-rm -f $(DESTDIR)$(LIBPC)/python3.pc
  	(cd $(DESTDIR)$(LIBPC); $(LN) -s python-$(VERSION).pc python3.pc)
  	-rm -f $(DESTDIR)$(BINDIR)/idle3
@@ -25,7 +25,7 @@ Index: b/Makefile.pre.in
  	-rm -f $(DESTDIR)$(BINDIR)/pydoc3
  ifeq (@PYDOC@,yes)
  	(cd $(DESTDIR)$(BINDIR); $(LN) -s pydoc$(VERSION) pydoc3)
-@@ -1148,7 +1150,6 @@
+@@ -1149,7 +1151,6 @@
  		html json http dbm xmlrpc \
  		logging csv wsgiref urllib \
  		ctypes ctypes/macholib \
@@ -33,7 +33,7 @@ Index: b/Makefile.pre.in
  		distutils distutils/command \
  		importlib \
  		turtledemo \
-@@ -1225,6 +1226,10 @@
+@@ -1226,6 +1227,10 @@
  LIBSUBDIRS += $(XMLLIBSUBDIRS)
  endif
  
@@ -48,7 +48,7 @@ Index: b/configure.ac
 ===================================================================
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2743,6 +2743,12 @@
+@@ -2746,6 +2746,12 @@
  	AS_HELP_STRING([--disable-lib2to3], [disable lib2to3]),
  	[ LIB2TO3="${enableval}" ], [ LIB2TO3=yes ])
  
@@ -65,7 +65,7 @@ Index: b/setup.py
 ===================================================================
 --- a/setup.py
 +++ b/setup.py
-@@ -2213,11 +2213,13 @@
+@@ -2201,11 +2201,13 @@
      import warnings
      warnings.filterwarnings("ignore",category=DeprecationWarning)
  

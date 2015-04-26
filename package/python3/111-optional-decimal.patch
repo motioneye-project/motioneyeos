@@ -12,7 +12,7 @@ Index: b/configure.ac
 ===================================================================
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2402,13 +2402,20 @@
+@@ -2405,13 +2405,20 @@
  AC_MSG_RESULT($with_system_ffi)
  
  # Check for use of the system libmpdec library
@@ -42,7 +42,7 @@ Index: b/setup.py
 ===================================================================
 --- a/setup.py
 +++ b/setup.py
-@@ -1980,7 +1980,7 @@
+@@ -1968,7 +1968,7 @@
      def _decimal_ext(self):
          extra_compile_args = []
          undef_macros = []

@@ -16,7 +16,7 @@ Index: b/Makefile.pre.in
 ===================================================================
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -1106,7 +1106,9 @@
+@@ -1107,7 +1107,9 @@
  	(cd $(DESTDIR)$(BINDIR); $(LN) -s pydoc$(VERSION) pydoc3)
  endif
  	-rm -f $(DESTDIR)$(BINDIR)/2to3
@@ -26,7 +26,7 @@ Index: b/Makefile.pre.in
  	-rm -f $(DESTDIR)$(BINDIR)/pyvenv
  	(cd $(DESTDIR)$(BINDIR); $(LN) -s pyvenv-$(VERSION) pyvenv)
  	if test "x$(LIPO_32BIT_FLAGS)" != "x" ; then \
-@@ -1146,7 +1148,6 @@
+@@ -1147,7 +1149,6 @@
  		html json http dbm xmlrpc \
  		sqlite3 \
  		logging csv wsgiref urllib \
@@ -34,7 +34,7 @@ Index: b/Makefile.pre.in
  		ctypes ctypes/macholib \
  		idlelib idlelib/Icons \
  		distutils distutils/command $(XMLLIBSUBDIRS) \
-@@ -1188,9 +1189,6 @@
+@@ -1189,9 +1190,6 @@
                  test/test_importlib/namespace_pkgs/module_and_namespace_package \
                  test/test_importlib/namespace_pkgs/module_and_namespace_package/a_test \
  		sqlite3/test \
@@ -44,7 +44,7 @@ Index: b/Makefile.pre.in
  		ctypes/test \
  		idlelib/idle_test \
  		distutils/tests \
-@@ -1203,6 +1201,14 @@
+@@ -1204,6 +1202,14 @@
  LIBSUBDIRS += pydoc_data
  endif
  
@@ -59,7 +59,7 @@ Index: b/Makefile.pre.in
  ifeq (@TEST_MODULES@,yes)
  LIBSUBDIRS += $(TESTSUBDIRS)
  endif
-@@ -1298,10 +1304,12 @@
+@@ -1299,10 +1305,12 @@
  		-d $(LIBDEST)/site-packages -f $(STDLIB_CACHE_FLAGS) \
  		-x badsyntax $(DESTDIR)$(LIBDEST)/site-packages
  endif
@@ -76,7 +76,7 @@ Index: b/setup.py
 ===================================================================
 --- a/setup.py
 +++ b/setup.py
-@@ -2213,10 +2213,11 @@
+@@ -2201,10 +2201,11 @@
      import warnings
      warnings.filterwarnings("ignore",category=DeprecationWarning)
  
@@ -94,7 +94,7 @@ Index: b/configure.ac
 ===================================================================
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2684,6 +2684,12 @@
+@@ -2687,6 +2687,12 @@
  	AS_HELP_STRING([--disable-test-modules], [disable test modules]),
  	[ TEST_MODULES="${enableval}" ], [ TEST_MODULES=yes ])
  

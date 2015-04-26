@@ -8,9 +8,10 @@ but isn't actually referenced in modern kernels.
 
 Signed-off-by: Baruch Siach <baruch@tkos.co.il>
 ---
-diff -Nuar Python-3.4.1-orig/Modules/termios.c Python-3.4.1/Modules/termios.c
---- Python-3.4.1-orig/Modules/termios.c	2014-05-19 08:19:39.000000000 +0300
-+++ Python-3.4.1/Modules/termios.c	2014-08-06 21:16:11.892362933 +0300
+Index: b/Modules/termios.c
+===================================================================
+--- a/Modules/termios.c
++++ b/Modules/termios.c
 @@ -9,7 +9,9 @@
  #endif
  

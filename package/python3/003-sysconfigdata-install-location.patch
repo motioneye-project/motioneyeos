@@ -21,7 +21,7 @@ Index: b/Makefile.pre.in
 ===================================================================
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -558,6 +558,9 @@
+@@ -559,6 +559,9 @@
  		rm -f ./pybuilddir.txt ; \
  		exit 1 ; \
  	fi
@@ -31,7 +31,7 @@ Index: b/Makefile.pre.in
  
  # Build the shared modules
  # Under GNU make, MAKEFLAGS are sorted and normalized; the 's' for
-@@ -1196,7 +1199,7 @@
+@@ -1197,7 +1200,7 @@
  		else	true; \
  		fi; \
  	done
@@ -40,7 +40,7 @@ Index: b/Makefile.pre.in
  	do \
  		if test -x $$i; then \
  			$(INSTALL_SCRIPT) $$i $(DESTDIR)$(LIBDEST); \
-@@ -1206,6 +1209,11 @@
+@@ -1207,6 +1210,11 @@
  			echo $(INSTALL_DATA) $$i $(LIBDEST); \
  		fi; \
  	done
@@ -52,7 +52,7 @@ Index: b/Makefile.pre.in
  	@for d in $(LIBSUBDIRS); \
  	do \
  		a=$(srcdir)/Lib/$$d; \
-@@ -1529,7 +1537,7 @@
+@@ -1533,7 +1541,7 @@
  	find build -name 'fficonfig.h' -exec rm -f {} ';' || true
  	find build -name '*.py' -exec rm -f {} ';' || true
  	find build -name '*.py[co]' -exec rm -f {} ';' || true

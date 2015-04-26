@@ -51,7 +51,7 @@ Index: b/Makefile.pre.in
  
  # Subdirectories with code
  SRCDIRS= 	@SRCDIRS@
-@@ -576,6 +578,7 @@
+@@ -577,6 +579,7 @@
  	esac; \
  	$(RUNSHARED) CC='$(CC)' LDSHARED='$(BLDSHARED)' OPT='$(OPT)' \
  		_TCLTK_INCLUDES='$(TCLTK_INCLUDES)' _TCLTK_LIBS='$(TCLTK_LIBS)' \
@@ -59,7 +59,7 @@ Index: b/Makefile.pre.in
  		$(PYTHON_FOR_BUILD) $(srcdir)/setup.py $$quiet build
  
  # Build static library
-@@ -1386,7 +1389,8 @@
+@@ -1387,7 +1390,8 @@
  # Install the dynamically loadable modules
  # This goes into $(exec_prefix)
  sharedinstall: sharedmods
@@ -73,9 +73,9 @@ Index: b/configure.ac
 ===================================================================
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2366,6 +2366,8 @@
+@@ -2369,6 +2369,8 @@
  
- AC_PATH_TOOL([PKG_CONFIG], [pkg-config])
+ PKG_PROG_PKG_CONFIG
  
 +AC_SUBST(DISABLED_EXTENSIONS)
 +

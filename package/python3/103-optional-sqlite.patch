@@ -12,7 +12,7 @@ Index: b/configure.ac
 ===================================================================
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2672,6 +2672,15 @@
+@@ -2675,6 +2675,15 @@
        AC_CHECK_FUNCS(pthread_atfork)
  fi
  
@@ -32,7 +32,7 @@ Index: b/Makefile.pre.in
 ===================================================================
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -1146,7 +1146,6 @@
+@@ -1147,7 +1147,6 @@
  		email email/mime \
  		ensurepip ensurepip/_bundled \
  		html json http dbm xmlrpc \
@@ -40,7 +40,7 @@ Index: b/Makefile.pre.in
  		logging csv wsgiref urllib \
  		ctypes ctypes/macholib \
  		idlelib idlelib/Icons \
-@@ -1188,7 +1187,6 @@
+@@ -1189,7 +1188,6 @@
  		test/test_importlib/namespace_pkgs/project3/parent/child \
                  test/test_importlib/namespace_pkgs/module_and_namespace_package \
                  test/test_importlib/namespace_pkgs/module_and_namespace_package/a_test \
@@ -48,7 +48,7 @@ Index: b/Makefile.pre.in
  		ctypes/test \
  		idlelib/idle_test \
  		distutils/tests \
-@@ -1209,6 +1207,11 @@
+@@ -1210,6 +1208,11 @@
  	lib2to3/tests/data/fixers/myfixes
  endif
  
