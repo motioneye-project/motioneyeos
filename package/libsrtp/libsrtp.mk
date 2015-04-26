@@ -4,9 +4,8 @@
 #
 ################################################################################
 
-LIBSRTP_VERSION = v1.5.0
+LIBSRTP_VERSION = v1.5.2
 LIBSRTP_SITE = $(call github,cisco,libsrtp,$(LIBSRTP_VERSION))
-LIBSRTP_AUTORECONF = YES
 LIBSRTP_INSTALL_STAGING = YES
 LIBSRTP_LICENSE = BSD-3c
 LIBSRTP_LICENSE_FILES = LICENSE
