@@ -25,12 +25,8 @@ endef
 
 $(eval $(generic-package))
 
-ifeq ($(BR2_TARGET_XLOADER),y)
-# we NEED a board name unless we're at make source
-ifeq ($(filter source,$(MAKECMDGOALS)),)
+ifeq ($(BR2_TARGET_XLOADER)$(BR_BUILDING),yy)
 ifeq ($(XLOADER_BOARD_NAME),)
 $(error NO x-loader board name set. Check your BR2_BOOT_XLOADER_BOARDNAME setting)
 endif
-endif
-
 endif

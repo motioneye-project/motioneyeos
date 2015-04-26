@@ -106,11 +106,8 @@ endif
 
 $(eval $(kconfig-package))
 
-ifeq ($(BR2_TARGET_BAREBOX),y)
-# we NEED a board defconfig file unless we're at make source
-ifeq ($(filter source,$(MAKECMDGOALS)),)
+ifeq ($(BR2_TARGET_BAREBOX)$(BR_BUILDING),yy)
 ifeq ($(BAREBOX_SOURCE_CONFIG),)
 $(error No Barebox config file. Check your BR2_TARGET_BAREBOX_BOARD_DEFCONFIG or BR2_TARGET_BAREBOX_CUSTOM_CONFIG_FILE settings)
-endif
 endif
 endif

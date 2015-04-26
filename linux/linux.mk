@@ -354,7 +354,7 @@ $(LINUX_DIR)/.stamp_initramfs_rebuilt: $(LINUX_DIR)/.stamp_target_installed $(LI
 linux-rebuild-with-initramfs: $(LINUX_DIR)/.stamp_initramfs_rebuilt
 
 # Checks to give errors that the user can understand
-ifeq ($(filter source,$(MAKECMDGOALS)),)
+ifeq ($(BR_BUILDING),y)
 ifeq ($(BR2_LINUX_KERNEL_USE_DEFCONFIG),y)
 ifeq ($(call qstrip,$(BR2_LINUX_KERNEL_DEFCONFIG)),)
 $(error No kernel defconfig name specified, check your BR2_LINUX_KERNEL_DEFCONFIG setting)

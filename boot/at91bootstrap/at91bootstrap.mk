@@ -40,11 +40,8 @@ endef
 
 $(eval $(generic-package))
 
-ifeq ($(BR2_TARGET_AT91BOOTSTRAP),y)
-# we NEED a board name unless we're at make source
-ifeq ($(filter source,$(MAKECMDGOALS)),)
+ifeq ($(BR2_TARGET_AT91BOOTSTRAP)$(BR_BUILDING),yy)
 ifeq ($(AT91BOOTSTRAP_BOARD),)
 $(error No AT91Bootstrap board name set. Check your BR2_TARGET_AT91BOOTSTRAP_BOARD setting)
-endif
 endif
 endif

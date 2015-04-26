@@ -164,8 +164,7 @@ define UBOOT_INSTALL_OMAP_IFT_IMAGE
 endef
 
 ifeq ($(BR2_TARGET_UBOOT_OMAP_IFT),y)
-# we NEED a config file unless we're at make source
-ifeq ($(filter source,$(MAKECMDGOALS)),)
+ifeq ($(BR_BUILDING),y)
 ifeq ($(call qstrip,$(BR2_TARGET_UBOOT_OMAP_IFT_CONFIG)),)
 $(error No gpsign config file. Check your BR2_TARGET_UBOOT_OMAP_IFT_CONFIG setting)
 endif
@@ -179,8 +178,7 @@ UBOOT_POST_INSTALL_IMAGES_HOOKS += UBOOT_INSTALL_OMAP_IFT_IMAGE
 endif
 
 ifeq ($(BR2_TARGET_UBOOT_ENVIMAGE),y)
-# we NEED a environment settings unless we're at make source
-ifeq ($(filter source,$(MAKECMDGOALS)),)
+ifeq ($(BR_BUILDING),y)
 ifeq ($(call qstrip,$(BR2_TARGET_UBOOT_ENVIMAGE_SOURCE)),)
 $(error Please define a source file for Uboot environment (BR2_TARGET_UBOOT_ENVIMAGE_SOURCE setting))
 endif
@@ -193,9 +191,7 @@ endif
 
 $(eval $(generic-package))
 
-ifeq ($(BR2_TARGET_UBOOT),y)
-# we NEED a board name unless we're at make source
-ifeq ($(filter source,$(MAKECMDGOALS)),)
+ifeq ($(BR2_TARGET_UBOOT)$(BR_BUILDING),yy)
 ifeq ($(UBOOT_BOARD_NAME),)
 $(error No U-Boot board name set. Check your BR2_TARGET_UBOOT_BOARDNAME setting)
 endif
@@ -221,5 +217,4 @@ $(error No custom U-Boot repository URL specified. Check your BR2_TARGET_UBOOT_C
 endif # qstrip BR2_TARGET_UBOOT_CUSTOM_CUSTOM_REPO_VERSION
 endif # BR2_TARGET_UBOOT_CUSTOM_GIT || BR2_TARGET_UBOOT_CUSTOM_HG
 
-endif # filter source
-endif # BR2_TARGET_UBOOT
+endif # BR2_TARGET_UBOOT && BR_BUILDING
