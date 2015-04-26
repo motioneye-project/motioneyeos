@@ -42,7 +42,8 @@ on GitHub. As GitHub is known to have changed download mechanisms in the
 past, the 'github' helper function should be used as shown below.
 
 ------------------------
-FOO_VERSION = v1.0 # tag or full commit ID
+# Use a tag or a full commit ID
+FOO_VERSION = v1.0
 FOO_SITE = $(call github,<user>,<package>,$(FOO_VERSION))
 ------------------------
 
