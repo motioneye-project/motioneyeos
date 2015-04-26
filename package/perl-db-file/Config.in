@@ -1,0 +1,12 @@
+config BR2_PACKAGE_PERL_DB_FILE
+	bool "perl-db-file"
+	depends on !BR2_STATIC_LIBS
+	select BR2_PACKAGE_BERKELEYDB
+	select BR2_PACKAGE_BERKELEYDB_COMPAT185
+	help
+	  Perl5 access to Berkeley DB version 1.x
+
+	  https://metacpan.org/release/DB_File
+
+comment "perl-db_file needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS
