@@ -1,11 +1,13 @@
 configure: on Linux, the BSD functions require linking against libbsd
 
 Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+(Rebased against 20150325-3.1)
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
 
 diff -durN libedit-20130712-3.1.orig/configure.ac libedit-20130712-3.1/configure.ac
 --- libedit-20130712-3.1.orig/configure.ac	2013-07-12 20:39:22.000000000 +0200
 +++ libedit-20130712-3.1/configure.ac	2013-07-28 23:35:35.012676469 +0200
-@@ -108,6 +108,10 @@
+@@ -117,6 +117,10 @@
  #AC_FUNC_REALLOC
  AC_TYPE_SIGNAL
  AC_FUNC_STAT

@@ -10,10 +10,11 @@ config BR2_PACKAGE_LIBEDIT
 	  The official homepage is at:
 	  http://ftp.netbsd.org/pub/NetBSD/NetBSD-release-5-0/src/lib/libedit/
 
-	  Jess Thrysoee maintains an autotoolified packaged, which we use
+	  Jess Thrysoee maintains an autotoolified package, which we use
 	  in Buildroot as it makes it much simpler than using the upstream
-	  sources which require pmake:
-	  http://www.thrysoee.dk/editline/
+	  sources which require pmake.
+
+	  http://www.thrysoee.dk/editline
 
 comment "libedit needs a toolchain w/ wchar"
 	depends on BR2_USE_MMU
