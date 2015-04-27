@@ -12,10 +12,14 @@ if BR2_PACKAGE_CIVETWEB
 config BR2_CIVETWEB_WITH_LUA
 	bool "enable Lua support"
 	# required by the bundled Sqlite3 and Lua code
+	depends on !BR2_STATIC_LIBS
 	help
 	  Enable Lua support in Civetweb. Note that this will use a
 	  version of Lua and Sqlite bundled within the Civetweb
 	  sources, and not the packages from Buildroot.
+
+comment "lua support needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS
 
 endif
 
