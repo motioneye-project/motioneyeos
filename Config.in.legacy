@@ -107,6 +107,15 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2015.05"
 
+config BR2_CIVETWEB_WITH_LUA
+	bool "civetweb lua option renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_CIVETWEB_WITH_LUA
+	help
+	  civetweb's lua option has been renamed to
+	  BR2_PACKAGE_CIVETWEB_WITH_LUA to be aligned with how other
+	  packages name options.
+
 config BR2_PACKAGE_TIFF_TIFF2PDF
 	bool "tiff utility-specific option removed"
 	select BR2_LEGACY

@@ -9,7 +9,7 @@ config BR2_PACKAGE_CIVETWEB
 
 if BR2_PACKAGE_CIVETWEB
 
-config BR2_CIVETWEB_WITH_LUA
+config BR2_PACKAGE_CIVETWEB_WITH_LUA
 	bool "enable Lua support"
 	# required by the bundled Sqlite3 and Lua code
 	depends on !BR2_STATIC_LIBS
