@@ -1,3 +1,7 @@
+comment "python3 needs a toolchain w/ wchar, threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
+
 config BR2_PACKAGE_PYTHON3
 	bool "python3"
 	depends on !BR2_PACKAGE_PYTHON
@@ -10,10 +14,6 @@ config BR2_PACKAGE_PYTHON3
 	  The python language interpreter.
 
 	  http://www.python.org/
-
-comment "python3 needs a toolchain w/ wchar, threads"
-	depends on BR2_USE_MMU
-	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
 
 if BR2_PACKAGE_PYTHON3
 
