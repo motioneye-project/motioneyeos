@@ -86,6 +86,12 @@ config BR2_UCLIBC_CONFIG
 	  See also docs/README in this package.
 	  If unsure, use the default.
 
+config BR2_UCLIBC_CONFIG_FRAGMENT_FILES
+	string "Additional uClibc configuration fragment files"
+	help
+	  A space-separated list of configuration fragment files,
+	  that will be merged to the main uClibc configuration file.
+
 config BR2_TOOLCHAIN_BUILDROOT_INET_RPC
 	bool "Enable RPC support"
 	select BR2_TOOLCHAIN_HAS_NATIVE_RPC
