@@ -34,8 +34,14 @@ This snippet creates the following make targets:
 
 * +foo-menuconfig+, which calls the package's +menuconfig+ target
 
-* +foo-update-config+, which copies the configuration back to the source
-  configuration file.
+* +foo-update-config+, which copies the configuration back to the
+  source configuration file. It is not possible to use this target
+  when fragment files are set.
+
+* +foo-update-defconfig+, which copies the configuration back to the
+  source configuration file. The configuration file will only list the
+  options that differ from the default values. It is not possible to
+  use this target when fragment files are set.
 
 and ensures that the source configuration file is copied to the build
 directory at the right moment.
@@ -45,6 +51,11 @@ be set to suit the needs of the package under consideration:
 
 * +FOO_KCONFIG_EDITORS+: a space-separated list of kconfig editors to
   support, for example 'menuconfig xconfig'. By default, 'menuconfig'.
+
+* +FOO_KCONFIG_FRAGMENT_FILES+: a space-separated list of configuration
+  fragment files that are merged to the main configuration file.
+  Fragment files are typically used when there is a desire to stay in sync
+  with an upstream (def)config file, with some minor modifications.
 
 * +FOO_KCONFIG_OPTS+: extra options to pass when calling the kconfig
   editors. This may need to include '$(FOO_MAKE_OPTS)', for example. By
