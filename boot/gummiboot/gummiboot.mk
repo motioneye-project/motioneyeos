@@ -4,7 +4,8 @@
 #
 ################################################################################
 
-GUMMIBOOT_SITE = git://anongit.freedesktop.org/gummiboot
+GUMMIBOOT_SITE = http://cgit.freedesktop.org/gummiboot
+GUMMIBOOT_SITE_METHOD = git
 GUMMIBOOT_VERSION = 43
 GUMMIBOOT_LICENSE = LGPLv2.1+
 GUMMIBOOT_LICENSE_FILES = LICENSE
