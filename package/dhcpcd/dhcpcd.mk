@@ -20,8 +20,8 @@ endif
 
 define DHCPCD_CONFIGURE_CMDS
 	(cd $(@D); \
-	$(TARGET_CONFIGURE_OPTS) ./configure \
-		--os=linux \
+	$(TARGET_CONFIGURE_OPTS) CFLAGS="$(TARGET_CFLAGS) -D_GNU_SOURCE" \
+		./configure --os=linux \
 		$(DHCPCD_CONFIG_OPTS) )
 endef
 
