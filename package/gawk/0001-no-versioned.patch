@@ -2,25 +2,25 @@ Disabled versioned installation of binaries to save space.
 Also use symlinks where it's appropiate.
 
 Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
----
+[Gustavo: update for 4.1.2]
 
-diff -Nura gawk-4.0.0.orig/Makefile.in gawk-4.0.0/Makefile.in
---- gawk-4.0.0.orig/Makefile.in	2011-06-24 05:16:13.000000000 -0300
-+++ gawk-4.0.0/Makefile.in	2011-11-11 15:31:16.429577288 -0300
-@@ -403,7 +403,7 @@
- MAINTAINERCLEANFILES = version.c
+diff -Nura gawk-4.1.2.orig/Makefile.in gawk-4.1.2/Makefile.in
+--- gawk-4.1.2.orig/Makefile.in	2015-04-29 16:11:09.367925925 -0300
++++ gawk-4.1.2/Makefile.in	2015-04-29 16:11:25.308466495 -0300
+@@ -554,7 +554,7 @@
+ CLEANFILES = core core.*
  
  # We want hard links for install-exec-hook, below
 -LN = ln
 +LN = $(LN_S)
- all: config.h
- 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
  
-@@ -1011,6 +1011,7 @@
+ # For some make's, e.g. OpenBSD, that don't define this
+ RM = rm -f
+@@ -1173,6 +1173,7 @@
  # (This is done universally, which may not always be right, but
  # there's no easy way to distinguish GNU from non-GNU systems.)
  install-exec-hook:
 +foo:
  	(cd $(DESTDIR)$(bindir); \
  	$(LN) gawk$(EXEEXT) gawk-$(VERSION)$(EXEEXT) 2>/dev/null ; \
- 	$(LN) pgawk$(EXEEXT) pgawk-$(VERSION)$(EXEEXT) 2>/dev/null ; \
+ 	if [ ! -f awk$(EXEEXT) ]; \
