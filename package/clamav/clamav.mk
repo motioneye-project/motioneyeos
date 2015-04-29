@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-CLAMAV_VERSION = 0.98.6
+CLAMAV_VERSION = 0.98.7
 CLAMAV_SITE = http://sourceforge.net/projects/clamav/files/clamav/$(CLAMAV_VERSION)
 CLAMAV_LICENSE = GPLv2
 CLAMAV_LICENSE_FILES = COPYING COPYING.bzip2 COPYING.file COPYING.getopt \
@@ -16,7 +16,8 @@ CLAMAV_DEPENDENCIES = openssl zlib $(if $(BR2_NEEDS_GETTEXT_IF_LOCALE),gettext)
 
 # mmap cannot be detected when cross-compiling, needed for mempool support
 CLAMAV_CONF_ENV = \
-	ac_cv_c_mmap_private=yes
+	ac_cv_c_mmap_private=yes \
+	have_cv_ipv6=yes
 
 CLAMAV_CONF_OPTS = \
 	--with-dbdir=/var/lib/clamav \
