@@ -239,18 +239,18 @@ endif
 # {/usr,}/lib/arm-linux-gnueabihf, but Buildroot copies them to
 # {/usr,}/lib, so we need to create a symbolic link.
 define TOOLCHAIN_EXTERNAL_LINARO_ARMHF_SYMLINK
-	ln -sf . $(TARGET_DIR)/lib/arm-linux-gnueabihf
-	ln -sf . $(TARGET_DIR)/usr/lib/arm-linux-gnueabihf
+	ln -snf . $(TARGET_DIR)/lib/arm-linux-gnueabihf
+	ln -snf . $(TARGET_DIR)/usr/lib/arm-linux-gnueabihf
 endef
 
 define TOOLCHAIN_EXTERNAL_LINARO_ARMEBHF_SYMLINK
-	ln -sf . $(TARGET_DIR)/lib/armeb-linux-gnueabihf
-	ln -sf . $(TARGET_DIR)/usr/lib/armeb-linux-gnueabihf
+	ln -snf . $(TARGET_DIR)/lib/armeb-linux-gnueabihf
+	ln -snf . $(TARGET_DIR)/usr/lib/armeb-linux-gnueabihf
 endef
 
 define TOOLCHAIN_EXTERNAL_LINARO_AARCH64_SYMLINK
-	ln -sf . $(TARGET_DIR)/lib/aarch64-linux-gnu
-	ln -sf . $(TARGET_DIR)/usr/lib/aarch64-linux-gnu
+	ln -snf . $(TARGET_DIR)/lib/aarch64-linux-gnu
+	ln -snf . $(TARGET_DIR)/usr/lib/aarch64-linux-gnu
 endef
 
 ifeq ($(BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_ARM201305),y)
