@@ -1,0 +1,31 @@
+config BR2_PACKAGE_XDRIVER_XF86_VIDEO_IMX_VIV
+	bool "xf86-video-imx-viv"
+	depends on BR2_PACKAGE_GPU_VIV_BIN_MX6Q_OUTPUT_X11
+	select BR2_PACKAGE_MESA3D # Needed in order to compile xorg with glx/dri
+	select BR2_PACKAGE_MESA3D_DRI_DRIVER
+	select BR2_PACKAGE_LIBDRM
+	select BR2_PACKAGE_XPROTO_XPROTO
+	select BR2_PACKAGE_XPROTO_XF86DRIPROTO
+	help
+	  X.Org driver for iMX6 GPU (Vivante)
+
+	  Notice EGL and GLes2 APIs are correctly supported. This driver should
+	  also be able to provide Desktop OpenGL implementation but, this
+	  feature seems broken since quite some time.
+
+	  To use this driver, add correct configuration to your
+	  /etc/X11/xorg.conf:
+
+	  Section "Device"
+	    [...]
+	    Driver          "vivante"
+	    Option          "vivante_fbdev" "/dev/fbX"
+	  EndSection
+
+	  Don't forget to load galcore.ko and create /dev/galcore before using
+	  this driver (else, Xorg will exit with an obscur message like
+	  "Segmentation fault at address 0xc").
+
+comment "xf86-video-imx-viv depends on gpu-viv-bin-mx6q with X11 output"
+	depends on BR2_arm
+	depends on !BR2_PACKAGE_GPU_VIV_BIN_MX6Q_OUTPUT_X11
