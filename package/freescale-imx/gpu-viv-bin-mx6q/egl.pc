@@ -7,4 +7,4 @@ Name: egl
 Description: Freescale gpu-viv-bin-mx6q implementation of EGL
 Version: 1.0
 Libs: -L${libdir} -lGAL -lEGL
-Cflags: -I${includedir}/ -DEGL_API_FB=1
+Cflags: -I${includedir}/

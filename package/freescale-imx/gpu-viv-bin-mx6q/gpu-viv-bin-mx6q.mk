@@ -46,16 +46,22 @@ define GPU_VIV_BIN_MX6Q_BUILD_CMDS
 	ln -sf libGL.so.1.2 $(@D)/usr/lib/libGL.so.1.2.0
 endef
 
+ifeq ($(GPU_VIV_BIN_MX6Q_LIB_TARGET),fb)
+define GPU_VIV_BIN_MX6Q_FIXUP_FB_HEADERS
+	$(SED) '/#define EGLAPIENTRY/ a \
+		#if !defined(EGL_API_X11) && !defined(EGL_API_DFB) && !defined(EGL_API_FB) \n\
+		#define EGL_API_FB \n\
+		#endif' $(STAGING_DIR)/usr/include/EGL/eglvivante.h
+endef
+endif
+
 define GPU_VIV_BIN_MX6Q_INSTALL_STAGING_CMDS
 	cp -r $(@D)/usr/* $(STAGING_DIR)/usr
+	$(GPU_VIV_BIN_MX6Q_FIXUP_FB_HEADERS)
 	for lib in egl glesv2 vg; do \
 		$(INSTALL) -m 0644 -D \
 			package/freescale-imx/gpu-viv-bin-mx6q/$${lib}.pc \
 			$(STAGING_DIR)/usr/lib/pkgconfig/$${lib}.pc; \
-		if [ "$(GPU_VIV_BIN_MX6Q_LIB_TARGET)" != "fb" ]; then \
-			$(SED) "s/-DEGL_API_FB=1//" \
-				$(STAGING_DIR)/usr/lib/pkgconfig/$${lib}.pc; \
-		fi; \
 	done
 endef
 

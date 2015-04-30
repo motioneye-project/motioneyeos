@@ -7,4 +7,4 @@ Name: vg
 Description: Freescale gpu-viv-bin-mx6q implementation of OpenVG
 Version: 1.1
 Libs: -L${libdir} -lGAL -lEGL -lOpenVG
-Cflags: -I${includedir}/ -DEGL_API_FB=1
+Cflags: -I${includedir}/
