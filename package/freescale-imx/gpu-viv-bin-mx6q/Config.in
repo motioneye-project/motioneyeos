@@ -33,8 +33,8 @@ choice
 config BR2_PACKAGE_GPU_VIV_BIN_MX6Q_OUTPUT_X11
 	bool "X11"
 	depends on BR2_PACKAGE_XORG7
-	select BR2_PACKAGE_XLIB_LIBXDAMAGE
-	select BR2_PACKAGE_XLIB_LIBXEXT
+	select BR2_PACKAGE_XLIB_LIBXDAMAGE # Runtime dependency
+	select BR2_PACKAGE_XLIB_LIBXEXT # Runtime dependency
 
 comment "X11 backend needs Xorg package"
 	depends on !BR2_PACKAGE_XORG7
