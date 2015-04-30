@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-MONOLITE_VERSION = 111
+MONOLITE_VERSION = 117
 MONOLITE_SITE = http://storage.bos.xamarin.com/mono-dist-master/latest
 MONOLITE_SOURCE = monolite-$(MONOLITE_VERSION)-latest.tar.gz
 MONOLITE_LICENSE = LGPLv2 or commercial
