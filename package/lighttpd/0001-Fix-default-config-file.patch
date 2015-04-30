@@ -51,8 +51,8 @@ diff -Nurp a/doc/config/lighttpd.conf b/doc/config/lighttpd.conf
  ##
 -server.username  = "lighttpd"
 -server.groupname = "lighttpd"
-+# server.username  = "lighttpd"
-+# server.groupname = "lighttpd"
++server.username  = "www-data"
++server.groupname = "www-data"
  
  ## 
  ## enable core files.
