@@ -1,0 +1,63 @@
+The vivante headers pull in X11 defines which break eglconvenience
+
+* Adds a missing include to qeglplatformcontext.cpp
+* Fix namespace collision on CursorShape, pulled in from X11/X.h
+* Do not pass MESA_EGL_NO_X11_HEADERS when xcb is use
+
+[based on patch from Yocto project]
+Signed-off-by: Jérôme Pouiller <jezz@sysmic.org>
+
+
+diff -Nuar a/src/platformsupport/eglconvenience/eglconvenience.pri b/src/platformsupport/eglconvenience/eglconvenience.pri
+--- a/src/platformsupport/eglconvenience/eglconvenience.pri	2014-08-07 16:53:50.038277168 -0400
++++ b/src/platformsupport/eglconvenience/eglconvenience.pri	2014-08-07 16:54:52.874278651 -0400
+@@ -30,8 +30,10 @@
+         }
+     }
+ 
+-    # Avoid X11 header collision
+-    DEFINES += MESA_EGL_NO_X11_HEADERS
++    !contains(QT_CONFIG,xcb) {
++        # Avoid X11 header collision
++        DEFINES += MESA_EGL_NO_X11_HEADERS
++    }
+ 
+     contains(QT_CONFIG,xlib) {
+         HEADERS += \
+diff -Nuar a/src/platformsupport/eglconvenience/qeglplatformcontext.cpp b/src/platformsupport/eglconvenience/qeglplatformcontext.cpp
+--- a/src/platformsupport/eglconvenience/qeglplatformcontext.cpp	2014-08-07 16:53:50.038277168 -0400
++++ b/src/platformsupport/eglconvenience/qeglplatformcontext.cpp	2014-08-07 16:56:00.630280249 -0400
+@@ -39,6 +39,7 @@
+ **
+ ****************************************************************************/
+ 
++#include <qtextstream.h>
+ #include "qeglplatformcontext_p.h"
+ #include "qeglconvenience_p.h"
+ #include "qeglpbuffer_p.h"
+--- a/src/platformsupport/eglconvenience/qeglplatformcursor_p.h	2014-08-07 16:53:50.038277168 -0400
++++ b/src/platformsupport/eglconvenience/qeglplatformcursor_p.h	2014-08-07 16:58:49.014284222 -0400
+@@ -42,6 +42,11 @@
+ #ifndef QEGLPLATFORMCURSOR_H
+ #define QEGLPLATFORMCURSOR_H
+ 
++// avoid namespace collision with X11/X.h
++#ifdef CursorShape
++#undef CursorShape
++#endif
++
+ #include <qpa/qplatformcursor.h>
+ #include <qpa/qplatformscreen.h>
+ 
+--- a/src/platformsupport/eglconvenience/qeglplatformcursor.cpp	2014-08-07 16:53:50.038277168 -0400
++++ b/src/platformsupport/eglconvenience/qeglplatformcursor.cpp	2014-08-07 17:00:36.806286766 -0400
+@@ -49,8 +49,8 @@
+ 
+ #include <QtPlatformSupport/private/qdevicediscovery_p.h>
+ 
+-#include "qeglplatformcursor_p.h"
+ #include "qeglplatformintegration_p.h"
++#include "qeglplatformcursor_p.h"
+ 
+ QT_BEGIN_NAMESPACE
+ 
