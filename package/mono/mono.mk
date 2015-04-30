@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-MONO_VERSION = 3.12.0
+MONO_VERSION = 4.0.1
 MONO_SITE = http://download.mono-project.com/sources/mono
 MONO_SOURCE = mono-$(MONO_VERSION).tar.bz2
 MONO_LICENSE = GPLv2 or MIT (compiler, tools), LGPLv2 (runtime libs), MIT (class libs) or commercial
@@ -47,13 +47,6 @@ HOST_MONO_CONF_OPTS = --disable-gtk-doc \
 	--with-ikvm-native=no \
 	--enable-minimal=aot,profiler,debug \
 	--enable-static
-
-# These options refer to the target mono, not the host. We use the host
-# only to compile libraries, then we copy them to the target.
-HOST_MONO_CONF_OPTS += \
-	--with-profile2=$(if $(BR2_PACKAGE_MONO_20),yes,no) \
-	--with-profile4=$(if $(BR2_PACKAGE_MONO_40),yes,no) \
-	--with-profile4_5=$(if $(BR2_PACKAGE_MONO_45),yes,no)
 
 # ensure monolite is used
 HOST_MONO_MAKE_OPTS += EXTERNAL_MCS=false

@@ -107,6 +107,27 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2015.05"
 
+config BR2_PACKAGE_MONO_20
+	bool "2.0/3.5 .Net Runtime"
+	select BR2_LEGACY
+	help
+	  This option no longer exists, all versions of the .Net
+	  runtime are now installed.
+
+config BR2_PACKAGE_MONO_40
+	bool "4.0 .Net Runtime"
+	select BR2_LEGACY
+	help
+	  This option no longer exists, all versions of the .Net
+	  runtime are now installed.
+
+config BR2_PACKAGE_MONO_45
+	bool "4.5 .Net Runtime"
+	select BR2_LEGACY
+	help
+	  This option no longer exists, all versions of the .Net
+	  runtime are now installed.
+
 config BR2_CIVETWEB_WITH_LUA
 	bool "civetweb lua option renamed"
 	select BR2_LEGACY
