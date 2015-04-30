@@ -578,4 +578,11 @@ else
 GST_PLUGINS_BAD_CONF_OPTS += --disable-vcd
 endif
 
+ifeq ($(BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_VP8),y)
+GST_PLUGINS_BAD_CONF_OPTS += --enable-vp8
+GST_PLUGINS_BAD_DEPENDENCIES += libvpx
+else
+GST_PLUGINS_BAD_CONF_OPTS += --disable-vp8
+endif
+
 $(eval $(autotools-package))
