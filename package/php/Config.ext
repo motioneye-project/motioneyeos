@@ -15,8 +15,12 @@ config BR2_PACKAGE_PHP_EXT_OPCACHE
 	help
 	  Enable the Zend OPcache accelerator.
 
+comment "Readline needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS
+
 config BR2_PACKAGE_PHP_EXT_READLINE
 	bool "Readline"
+	depends on !BR2_STATIC_LIBS
 	select BR2_PACKAGE_NCURSES
 	select BR2_PACKAGE_READLINE
 	help
