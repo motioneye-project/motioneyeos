@@ -1,0 +1,56 @@
+These tests use absolute directories and host leakage is granted
+when cups and systemd are around. In fact there's no way these could work
+in any predictable manner.
+
+CUPS support was in fact disabled upstream since it's not required
+in commit efb04936b8ad3bf313c289a522ae5832e22c1b7e
+
+And for systemd we never handled it properly anyway.
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+diff -Nura sane-backends-1.0.24.orig/configure sane-backends-1.0.24/configure
+--- sane-backends-1.0.24.orig/configure	2015-05-01 09:51:19.479785064 -0300
++++ sane-backends-1.0.24/configure	2015-05-01 10:08:49.834447226 -0300
+@@ -9649,33 +9649,6 @@
+ 
+ fi
+ 
+-$as_echo "checking for cups"
+-if test -e /usr/include/cups/cups.h ; then
+-
+-$as_echo "#define HAVE_CUPS 1" >>confdefs.h
+-
+-	with_cups="yes"
+-	LIBS="-lcups  $LIBS"
+-else
+-	$as_echo "cups.h not found, you may want to install a cups development package"
+-	$as_echo "in order to autodetect network scanners in kodakaio."
+-	with_cups="no"
+-fi
+-
+-$as_echo_n "Checking for systemd..."
+-if test -e /usr/include/systemd/sd-daemon.h ; then
+-
+-$as_echo "#define HAVE_SYSTEMD 1" >>confdefs.h
+-
+-    with_systemd="yes"
+-    SYSTEMD_LIBS=" -lsystemd-daemon"
+-
+-    $as_echo "yes"
+-else
+-    with_systemd="no"
+-    $as_echo "no"
+-fi
+-
+ 
+ # Check whether --enable-libusb_1_0 was given.
+ if test "${enable_libusb_1_0+set}" = set; then :
+@@ -21180,7 +21153,6 @@
+ echo "IPv6 support:  `eval eval echo ${ipv6}`"
+ echo "Avahi support: `eval eval echo ${enable_avahi}`"
+ echo "SNMP support:  `eval eval echo ${with_snmp}`"
+-echo "CUPS support:  `eval eval echo ${with_cups}`"
+ echo "-> The following backends will be built:"
+ for backend in ${BACKENDS} ; do
+   echo $ECHO_N "${backend} "
