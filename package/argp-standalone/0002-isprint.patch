@@ -9,10 +9,19 @@ Restrict isprint argument range to values representable by unsigned char.
 
 Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
 ---
-diff -bu argp-standalone-1.3/argp.h argp-standalone-1.3-/argp.h
---- argp-standalone-1.3/argp.h	2015-04-28 10:31:39.015319337 +0300
-+++ argp-standalone-1.3-/argp.h	2015-04-28 10:27:46.526770624 +0300
-@@ -577,7 +577,7 @@
+Index: b/argp.h
+===================================================================
+--- a/argp.h
++++ b/argp.h
+@@ -23,6 +23,7 @@
+ 
+ #include <stdio.h>
+ #include <ctype.h>
++#include <limits.h>
+ 
+ #define __need_error_t
+ #include <errno.h>
+@@ -577,7 +578,7 @@
    else
      {
        int __key = __opt->key;
@@ -21,9 +30,10 @@ diff -bu argp-standalone-1.3/argp.h argp-standalone-1.3-/argp.h
      }
  }
  
-diff -bu argp-standalone-1.3/argp-parse.c argp-standalone-1.3-/argp-parse.c
---- argp-standalone-1.3/argp-parse.c	2015-04-28 10:31:39.016319380 +0300
-+++ argp-standalone-1.3-/argp-parse.c	2015-04-28 10:27:21.810818130 +0300
+Index: b/argp-parse.c
+===================================================================
+--- a/argp-parse.c
++++ b/argp-parse.c
 @@ -1292,7 +1292,7 @@
        int __key = __opt->key;
        /* FIXME: whether or not a particular key implies a short option
