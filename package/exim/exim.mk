@@ -70,13 +70,6 @@ define EXIM_USE_DEFAULT_CONFIG_FILE_OPENSSL
 endef
 endif
 
-# this specific toolchain lacks libnsl
-ifeq ($(BR2_TOOLCHAIN_EXTERNAL_SYNOPSYS_ARC_2014_12),y)
-define EXIM_REMOVE_LIBNSL_FROM_MAKEFILE
-	$(SED) 's/-lnsl//g' $(@D)/OS/Makefile-Linux
-endef
-endif
-
 define EXIM_CONFIGURE_TOOLCHAIN
 	$(call exim-config-add,CC,$(TARGET_CC))
 	$(call exim-config-add,CFLAGS,$(TARGET_CFLAGS))
