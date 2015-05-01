@@ -264,6 +264,14 @@ define PHP_INSTALL_INIT_SYSTEMD
 	ln -fs ../../../../usr/lib/systemd/system/php-fpm.service \
 		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/php-fpm.service
 endef
+
+define PHP_INSTALL_FPM_CONF
+	$(INSTALL) -D -m 0644 package/php/php-fpm.conf \
+		$(TARGET_DIR)/etc/php-fpm.conf
+	rm -f $(TARGET_DIR)/etc/php-fpm.conf.default
+endef
+
+PHP_POST_INSTALL_TARGET_HOOKS += PHP_INSTALL_FPM_CONF
 endif
 
 define PHP_EXTENSIONS_FIXUP
