@@ -251,6 +251,21 @@ PHP_CONF_OPTS += \
 PHP_DEPENDENCIES += jpeg libpng freetype
 endif
 
+ifeq ($(BR2_PACKAGE_PHP_FPM),y)
+define PHP_INSTALL_INIT_SYSV
+	$(INSTALL) -D -m 0755 $(@D)/sapi/fpm/init.d.php-fpm \
+		$(TARGET_DIR)/etc/init.d/S49php-fpm
+endef
+
+define PHP_INSTALL_INIT_SYSTEMD
+	$(INSTALL) -D -m 0644 $(@D)/sapi/fpm/php-fpm.service \
+		$(TARGET_DIR)/usr/lib/systemd/system/php-fpm.service
+	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
+	ln -fs ../../../../usr/lib/systemd/system/php-fpm.service \
+		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/php-fpm.service
+endef
+endif
+
 define PHP_EXTENSIONS_FIXUP
 	$(SED) "/prefix/ s:/usr:$(STAGING_DIR)/usr:" \
 		$(STAGING_DIR)/usr/bin/phpize
