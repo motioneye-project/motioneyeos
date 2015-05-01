@@ -10,6 +10,8 @@ WINE_SITE = http://downloads.sourceforge.net/project/wine/Source
 WINE_LICENSE = LGPLv2.1+
 WINE_LICENSE_FILES = COPYING.LIB LICENSE
 WINE_DEPENDENCIES = host-bison host-flex host-wine
+# For 0002-detect-ncursesw.patch
+WINE_AUTORECONF = YES
 
 # Wine needs its own directory structure and tools for cross compiling
 WINE_CONF_OPTS = \
