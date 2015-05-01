@@ -32,6 +32,12 @@ ifneq ($(BR2_STATIC_LIBS),y)
 WVSTREAMS_CONF_ENV += CFLAGS="$(TARGET_CFLAGS) -fPIC"
 endif
 
+# wvstreams uses argp.h which can be provided by the argp-standalone
+# package
+ifeq ($(BR2_PACKAGE_ARGP_STANDALONE),y)
+WVSTREAMS_DEPENDENCIES += argp-standalone
+endif
+
 ifeq ($(BR2_PACKAGE_DBUS),y)
 WVSTREAMS_DEPENDENCIES += dbus
 WVSTREAMS_CONF_OPTS += --with-dbus
