@@ -1,0 +1,12 @@
+config BR2_PACKAGE_PYTHON_PYXML
+	bool "python-pyxml"
+	depends on BR2_PACKAGE_PYTHON
+	select BR2_PACKAGE_EXPAT
+	help
+	  This is the Python XML package. The distribution contains a
+	  validating XML parser, an implementation of the SAX and DOM
+	  programming interfaces, an interface to the Expat parser (and the
+	  Expat parser itself), and a C helper module that can speed up
+	  xmllib.py by a factor of 5. There's even documentation!
+
+	  http://pyxml.sourceforge.net/topics/index.html
