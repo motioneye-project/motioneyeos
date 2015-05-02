@@ -11,11 +11,6 @@ in util/Makefile.am is wrong because it adds target cflags to the
 compilation of makestrs, which is built for the build machine, which
 leads to build failures when cross-compiling.
 
-We also remove the inclusion of <X11/Xos.h> from makestrs.c, because
-it was the only non-standard header being included (and therefore
-possibly requiring special cflags), but it was in reality not useful
-at all to build makestrs.c.
-
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 ---
  util/Makefile.am |    1 -
@@ -33,18 +28,6 @@ index dedfa6b..cc6f3fc 100644
 -AM_CFLAGS = $(XT_CFLAGS)
  makestrs_SOURCES = makestrs.c
  
- 
-diff --git a/util/makestrs.c b/util/makestrs.c
-index a52866a..00c861f 100644
---- a/util/makestrs.c
-+++ b/util/makestrs.c
-@@ -27,7 +27,6 @@ in this Software without prior written authorization from The Open Group.
- /* Constructs string definitions */
- 
- #include <stdio.h>
--#include <X11/Xos.h>
- #include <stdlib.h>
- #include <unistd.h>
  
 -- 
 1.7.9.5
