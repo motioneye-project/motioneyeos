@@ -46,6 +46,13 @@ LIBCURL_CONF_OPTS += --without-ssl --without-gnutls \
 	--without-polarssl --without-nss
 endif
 
+ifeq ($(BR2_PACKAGE_C_ARES),y)
+LIBCURL_DEPENDENCIES += c-ares
+LIBCURL_CONF_OPTS += --enable-ares
+else
+LIBCURL_CONF_OPTS += --disable-ares
+endif
+
 # Configure curl to support libssh2
 ifeq ($(BR2_PACKAGE_LIBSSH2),y)
 LIBCURL_DEPENDENCIES += libssh2
