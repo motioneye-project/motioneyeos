@@ -1,7 +1,5 @@
 config BR2_PACKAGE_NETWORK_MANAGER
 	bool "networkmanager"
-	depends on BR2_USE_WCHAR # libglib2 and gnutls
-	depends on BR2_TOOLCHAIN_HAS_THREADS # dbus, libglib2
 	depends on BR2_USE_MMU # dbus
 	depends on BR2_PACKAGE_HAS_UDEV
 	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_7
@@ -51,8 +49,8 @@ config BR2_PACKAGE_NETWORK_MANAGER_PPPD
 	  This option enables support for PPPD daemon
 endif
 
-comment "NetworkManager needs udev /dev management and a (e)glibc toolchain w/ wchar, threads, headers >= 3.7"
+comment "NetworkManager needs udev /dev management and a (e)glibc toolchain w/ headers >= 3.7"
 	depends on BR2_USE_MMU
-	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || \
-		!BR2_PACKAGE_HAS_UDEV || !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_7 || \
+	depends on !BR2_PACKAGE_HAS_UDEV || \
+		!BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_7 || \
 		!BR2_TOOLCHAIN_USES_GLIBC
