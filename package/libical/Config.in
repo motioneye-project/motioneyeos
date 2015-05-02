@@ -1,11 +1,14 @@
 config BR2_PACKAGE_LIBICAL
 	bool "libical"
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on !BR2_STATIC_LIBS
 	depends on BR2_USE_WCHAR
 	help
 	  libical is an Open Source (MPL/LGPL) implementation of the IETF's
 	  iCalendar Calendaring and Scheduling protocols.
 
-	  http://www.citadel.org/doku.php/documentation:featured_projects:libical
+	  http://libical.github.io/libical
 
-comment "libical needs a toolchain w/ wchar"
-	depends on !BR2_USE_WCHAR
+comment "libical needs a toolchain w/ C++, dynamic library, wchar"
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR || \
+		BR2_STATIC_LIBS
