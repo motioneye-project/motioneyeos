@@ -7,3 +7,5 @@ config BR2_PACKAGE_LIBATOMIC_OPS
 	depends on BR2_PACKAGE_LIBATOMIC_ARCH_SUPPORTS
 	help
 	  Atomic operations library
+
+	  https://github.com/ivmai/libatomic_ops
