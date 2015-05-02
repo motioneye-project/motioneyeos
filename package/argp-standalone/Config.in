@@ -1,5 +1,7 @@
 config BR2_PACKAGE_ARGP_STANDALONE
 	bool "argp-standalone"
+	# glibc provides its own argp implementation.
+	depends on !BR2_TOOLCHAIN_USES_GLIBC
 	help
 	  Glibc hierarchical argument parsing standalone library.
 
