@@ -11,6 +11,7 @@ ifeq ($(BAREBOX_VERSION),custom)
 BAREBOX_TARBALL = $(call qstrip,$(BR2_TARGET_BAREBOX_CUSTOM_TARBALL_LOCATION))
 BAREBOX_SITE = $(patsubst %/,%,$(dir $(BAREBOX_TARBALL)))
 BAREBOX_SOURCE = $(notdir $(BAREBOX_TARBALL))
+BR_NO_CHECK_HASH_FOR += $(BAREBOX_SOURCE)
 else ifeq ($(BR2_TARGET_BAREBOX_CUSTOM_GIT),y)
 BAREBOX_SITE = $(call qstrip,$(BR2_TARGET_BAREBOX_CUSTOM_GIT_REPO_URL))
 BAREBOX_SITE_METHOD = git
@@ -18,6 +19,9 @@ else
 # Handle stable official Barebox versions
 BAREBOX_SOURCE = barebox-$(BAREBOX_VERSION).tar.bz2
 BAREBOX_SITE = http://www.barebox.org/download
+ifeq ($(BR2_TARGET_BAREBOX_CUSTOM_VERSION),y)
+BR_NO_CHECK_HASH_FOR += $(BAREBOX_SOURCE)
+endif
 endif
 
 BAREBOX_DEPENDENCIES = host-lzop
