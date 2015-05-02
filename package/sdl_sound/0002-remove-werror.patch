@@ -1,0 +1,29 @@
+Do not add -Werror when --enable-debug is used
+
+Using -Werror causes some problems due to warnings in the SDL_sound
+code, so let's disable it.
+
+We patch configure directly, because:
+
+ 1/ configure.in doesn't autoreconf properly out of the box.
+
+ 2/ the length of the configure or configure.in patch would be exactly
+    the same (one line), or maybe more for the configure.in patch if
+    we want the package to autoreconf properly
+
+ 3/ the patch will never go upstream, because upstream is dead.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/configure
+===================================================================
+--- a/configure
++++ b/configure
+@@ -19561,7 +19561,6 @@
+   else
+     CFLAGS="-O0"
+   fi
+-  CFLAGS="$CFLAGS -Werror"
+ 
+ cat >>confdefs.h <<\_ACEOF
+ #define DEBUG 1
