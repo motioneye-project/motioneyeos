@@ -1,1 +1,1 @@
-dwc_otg.fiq_fix_enable=1 sdhci-bcm2708.sync_after_dma=0 dwc_otg.lpm_enable=0 console=tty1 root=/dev/mmcblk0p2 rootwait
+root=/dev/mmcblk0p2 rootwait
