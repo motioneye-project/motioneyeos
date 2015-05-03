@@ -294,36 +294,9 @@ endif
 # Staging installation step. Only define it if not already defined by
 # the package .mk file.
 #
-# Most autotools packages install libtool .la files alongside any
-# installed libraries. These .la files sometimes refer to paths
-# relative to the sysroot, which libtool will interpret as absolute
-# paths to host libraries instead of the target libraries. Since this
-# is not what we want, these paths are fixed by prefixing them with
-# $(STAGING_DIR).  As we configure with --prefix=/usr, this fix
-# needs to be applied to any path that starts with /usr.
-#
-# To protect against the case that the output or staging directories
-# or the pre-installed external toolchain themselves are under /usr,
-# we first substitute away any occurrences of these directories as
-# @BASE_DIR@, @STAGING_DIR@ and @TOOLCHAIN_EXTERNAL_INSTALL_DIR@ respectively.
-# Note that STAGING_DIR can be outside BASE_DIR when the user sets
-# BR2_HOST_DIR to a custom value. Note that TOOLCHAIN_EXTERNAL_INSTALL_DIR
-# can be under @BASE_DIR@ when it's a downloaded toolchain, and can be empty
-# when we use an internal toolchain.
-#
 ifndef $(2)_INSTALL_STAGING_CMDS
 define $(2)_INSTALL_STAGING_CMDS
 	$$(TARGET_MAKE_ENV) $$($$(PKG)_MAKE_ENV) $$($$(PKG)_MAKE) $$($$(PKG)_INSTALL_STAGING_OPTS) -C $$($$(PKG)_SRCDIR)
-	find $$(STAGING_DIR)/usr/lib* -name "*.la" | xargs --no-run-if-empty \
-		$$(SED) "s:$$(BASE_DIR):@BASE_DIR@:g" \
-			-e "s:$$(STAGING_DIR):@STAGING_DIR@:g" \
-			$$(if $$(TOOLCHAIN_EXTERNAL_INSTALL_DIR),\
-				-e "s:$$(TOOLCHAIN_EXTERNAL_INSTALL_DIR):@TOOLCHAIN_EXTERNAL_INSTALL_DIR@:g") \
-			-e "s:\(['= ]\)/usr:\\1@STAGING_DIR@/usr:g" \
-			$$(if $$(TOOLCHAIN_EXTERNAL_INSTALL_DIR),\
-				-e "s:@TOOLCHAIN_EXTERNAL_INSTALL_DIR@:$$(TOOLCHAIN_EXTERNAL_INSTALL_DIR):g") \
-			-e "s:@STAGING_DIR@:$$(STAGING_DIR):g" \
-			-e "s:@BASE_DIR@:$$(BASE_DIR):g"
 endef
 endif
 
