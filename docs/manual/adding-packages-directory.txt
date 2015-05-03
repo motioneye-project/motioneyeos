@@ -442,6 +442,13 @@ strong hash yourself (preferably +sha256+, but not +md5+), and mention
 this in a comment line above the hashes.
 
 .Note
+If +libfoo+ is from GitHub (see xref:github-download-url[] for details), we
+can only accept a +.hash+ file if the package is a released (e.g. uploaded
+by the maintainer) tarball. Otherwise, the automatically generated tarball
+may change over time, and thus its hashes may be different each time it is
+downloaded, causing a +.hash+ mismatch for that tarball.
+
+.Note
 The number of spaces does not matter, so one can use spaces (or tabs) to
 properly align the different fields.
 
