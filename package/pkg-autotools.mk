@@ -304,10 +304,13 @@ endif
 # needs to be applied to any path that starts with /usr.
 #
 # To protect against the case that the output or staging directories
-# themselves are under /usr, we first substitute away any occurrences
-# of these directories as @BASE_DIR@ and @STAGING_DIR@. Note that
-# STAGING_DIR can be outside BASE_DIR when the user sets BR2_HOST_DIR
-# to a custom value.
+# or the pre-installed external toolchain themselves are under /usr,
+# we first substitute away any occurrences of these directories as
+# @BASE_DIR@, @STAGING_DIR@ and @TOOLCHAIN_EXTERNAL_INSTALL_DIR@ respectively.
+# Note that STAGING_DIR can be outside BASE_DIR when the user sets
+# BR2_HOST_DIR to a custom value. Note that TOOLCHAIN_EXTERNAL_INSTALL_DIR
+# can be under @BASE_DIR@ when it's a downloaded toolchain, and can be empty
+# when we use an internal toolchain.
 #
 ifndef $(2)_INSTALL_STAGING_CMDS
 define $(2)_INSTALL_STAGING_CMDS
@@ -315,7 +318,11 @@ define $(2)_INSTALL_STAGING_CMDS
 	find $$(STAGING_DIR)/usr/lib* -name "*.la" | xargs --no-run-if-empty \
 		$$(SED) "s:$$(BASE_DIR):@BASE_DIR@:g" \
 			-e "s:$$(STAGING_DIR):@STAGING_DIR@:g" \
+			$$(if $$(TOOLCHAIN_EXTERNAL_INSTALL_DIR),\
+				-e "s:$$(TOOLCHAIN_EXTERNAL_INSTALL_DIR):@TOOLCHAIN_EXTERNAL_INSTALL_DIR@:g") \
 			-e "s:\(['= ]\)/usr:\\1@STAGING_DIR@/usr:g" \
+			$$(if $$(TOOLCHAIN_EXTERNAL_INSTALL_DIR),\
+				-e "s:@TOOLCHAIN_EXTERNAL_INSTALL_DIR@:$$(TOOLCHAIN_EXTERNAL_INSTALL_DIR):g") \
 			-e "s:@STAGING_DIR@:$$(STAGING_DIR):g" \
 			-e "s:@BASE_DIR@:$$(BASE_DIR):g"
 endef
