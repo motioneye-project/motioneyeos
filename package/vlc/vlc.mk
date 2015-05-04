@@ -88,6 +88,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_DIRECTFB),y)
 VLC_CONF_OPTS += --enable-directfb
+VLC_CONF_ENV += ac_cv_path_DIRECTFB_CONFIG=$(STAGING_DIR)/usr/bin/directfb-config
 VLC_DEPENDENCIES += directfb
 else
 VLC_CONF_OPTS += --disable-directfb
