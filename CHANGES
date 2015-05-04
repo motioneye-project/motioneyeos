@@ -26,15 +26,20 @@
 	been added. Missing hashes now stop the build unless
 	explicitly disabled.
 
-	Spaces and colons (:) are now supported in
-	package versions. Dependencies can now be listed for the patch
-	step (<PKG>_PATCH_DEPENDENCIES). Kconfig and Linux kernel
+	Spaces and colons (:) are now supported in package
+	versions. Dependencies can now be listed for the patch step
+	(<PKG>_PATCH_DEPENDENCIES). Kconfig and Linux kernel
 	extensions infrastructure has been added.
 
 	Makedevs now has a recursive (r) option.
 
 	The variable containing the list of packages to build has been
 	renamed from TARGETS to PACKAGES.
+
+	Make external-deps / legal-info / source / source-check have
+	been reimplemented using the package infrastructure, so their
+	output/behaviour may differ from earlier (some packages were
+	not included in the past).
 
 	The old insecure DES password encoding is no longer supported.
 
