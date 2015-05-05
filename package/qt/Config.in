@@ -417,6 +417,7 @@ config BR2_PACKAGE_QT_ARCH_SUPPORTS_WEBKIT
 
 config BR2_PACKAGE_QT_WEBKIT
 	bool "WebKit Module"
+	depends on BR2_PACKAGE_QT_SCRIPT
 	depends on BR2_PACKAGE_QT_SHARED
 	depends on BR2_PACKAGE_QT_GUI_MODULE
 	depends on BR2_PACKAGE_QT_NETWORK
@@ -426,8 +427,9 @@ config BR2_PACKAGE_QT_WEBKIT
 	  Build the WebKit module.
 	  If unsure, say n.
 
-comment "WebKit needs shared library/NPTL toolchain/gui/network support"
-	depends on !(BR2_PACKAGE_QT_SHARED && BR2_PACKAGE_QT_GUI_MODULE && BR2_PACKAGE_QT_NETWORK)
+comment "WebKit needs shared library/NPTL toolchain/script/gui/network support"
+	depends on !(BR2_PACKAGE_QT_SCRIPT && BR2_PACKAGE_QT_SHARED && \
+		BR2_PACKAGE_QT_GUI_MODULE && BR2_PACKAGE_QT_NETWORK)
 	depends on !BR2_TOOLCHAIN_HAS_THREADS_NPTL
 	depends on BR2_PACKAGE_QT_ARCH_SUPPORTS_WEBKIT
 
