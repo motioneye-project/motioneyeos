@@ -121,7 +121,6 @@ config BR2_PACKAGE_QT_CONFIG_FILE
 	  file, which Buildroot will give to Qt at compile time.
 
 config BR2_PACKAGE_QT_QT_COORD_TYPE_DOUBLE
-	depends on BR2_SOFT_FLOAT
 	bool "QT_COORD_TYPE to double"
 	help
 	  Set QT_COORD_TYPE to double. On ARM-based platforms, qreal
