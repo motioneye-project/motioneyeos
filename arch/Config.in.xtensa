@@ -33,6 +33,23 @@ config BR2_XTENSA_OVERLAY_DIR
 	  configurations. They are provided by the processor vendor or
 	  directly from Tensilica.
 
+choice
+	prompt "Target Architecture Endianness"
+	depends on BR2_XTENSA_CUSTOM
+	default BR2_XTENSA_LITTLE_ENDIAN
+
+config BR2_XTENSA_LITTLE_ENDIAN
+	bool "Little endian"
+
+config BR2_XTENSA_BIG_ENDIAN
+	bool "Big endian"
+
+endchoice
+
+config BR2_ENDIAN
+	default "LITTLE"	if BR2_XTENSA_LITTLE_ENDIAN
+	default "BIG"		if BR2_xtensa_fsf || BR2_XTENSA_BIG_ENDIAN
+
 config BR2_ARCH
 	default "xtensa"	if BR2_xtensa
 
