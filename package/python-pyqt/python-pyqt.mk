@@ -14,8 +14,10 @@ PYTHON_PYQT_DEPENDENCIES = python-sip host-python-sip qt
 
 ifeq ($(BR2_PACKAGE_PYTHON),y)
 PYTHON_PYQT_PYTHON_DIR = python$(PYTHON_VERSION_MAJOR)
+PYTHON_PYQT_RM_PORT_BASE = port_v3
 else ifeq ($(BR2_PACKAGE_PYTHON3),y)
 PYTHON_PYQT_PYTHON_DIR = python$(PYTHON3_VERSION_MAJOR)
+PYTHON_PYQT_RM_PORT_BASE = port_v2
 endif
 
 ifeq ($(BR2_PACKAGE_QT_EMBEDDED),y)
@@ -105,6 +107,7 @@ endef
 define PYTHON_PYQT_INSTALL_TARGET_CMDS
 	$(TARGET_MAKE_ENV) $(TARGET_CONFIGURE_OPTS) $(MAKE) -C $(@D) install
 	touch $(TARGET_DIR)/usr/lib/$(PYTHON_PYQT_PYTHON_DIR)/site-packages/PyQt4/__init__.py
+	$(RM) -rf $(TARGET_DIR)/usr/lib/$(PYTHON_PYQT_PYTHON_DIR)/site-packages/PyQt4/uic/$(PYTHON_PYQT_RM_PORT_BASE)
 	PYTHONPATH="$(PYTHON_PATH)" \
 		$(HOST_DIR)/usr/bin/python -c "import compileall; \
 		compileall.compile_dir('$(TARGET_DIR)/usr/lib/$(PYTHON_PYQT_PYTHON_DIR)/site-packages/PyQt4')"
