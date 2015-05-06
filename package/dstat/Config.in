@@ -3,6 +3,7 @@ config BR2_PACKAGE_DSTAT
 	depends on BR2_USE_WCHAR # python
 	depends on BR2_USE_MMU # python
 	depends on BR2_TOOLCHAIN_HAS_THREADS # python
+	depends on !BR2_STATIC_LIBS # python
 	select BR2_PACKAGE_PYTHON
 	help
 	  Dstat, written in Python, is a versatile replacement for vmstat,
@@ -21,6 +22,6 @@ config BR2_PACKAGE_DSTAT
 
 	  http://dag.wieers.com/home-made/dstat/
 
-comment "dstat needs a toolchain w/ wchar, threads"
+comment "dstat needs a toolchain w/ wchar, threads, dynamic library"
 	depends on BR2_USE_MMU
-	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS
