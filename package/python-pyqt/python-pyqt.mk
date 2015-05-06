@@ -40,6 +40,12 @@ ifeq ($(BR2_PACKAGE_QT_OPENSSL),)
 PYTHON_PYQT_QTDETAIL_DISABLE_FEATURES += PyQt_OpenSSL
 endif
 
+# Yes, this looks a bit weird: when OpenGL ES is available, we have to
+# disable the feature that consists in not having OpenGL ES support.
+ifeq ($(BR2_PACKAGE_QT_OPENGL_ES),y)
+PYTHON_PYQT_QTDETAIL_DISABLE_FEATURES += PyQt_NoOpenGLES
+endif
+
 # PyQt_qreal_double must be disabled on a number of architectures that
 # use float for qreal.
 ifeq ($(BR2_PACKAGE_PYTHON_PYQT_ARCH_USES_QREAL_FLOAT),y)
