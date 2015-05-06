@@ -26,7 +26,16 @@ rev="${3}"
 rawname="${4}"
 basename="${5}"
 
+if [[ ${rev} =~ ^[0-9] ]]; then
+    # Date, because a tag or a branch cannot begin with a number
+    select="-D"
+else
+    # Tag or branch
+    select="-r"
+fi
+
+export TZ=UTC
 ${CVS} ${verbose} -z3 -d":pserver:anonymous@${repo}" \
-       co -d "${basename}" -r ":${rev}" -P "${rawname}"
+       co -d "${basename}" ${select} "${rev}" -P "${rawname}"
 
 tar czf "${output}" "${basename}"
