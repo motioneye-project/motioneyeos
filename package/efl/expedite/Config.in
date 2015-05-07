@@ -12,5 +12,4 @@ config BR2_PACKAGE_EXPEDITE
 	  reproduce real world usage cases.
 
 comment "expedite needs a toolchain w/ C++, threads"
-	depends on !BR2_INSTALL_LIBSTDCPP
-	depends on !BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS
