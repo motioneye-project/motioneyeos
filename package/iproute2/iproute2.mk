@@ -61,7 +61,8 @@ define IPROUTE2_BUILD_CMDS
 	$(SED) 's/$$(CCOPTS)//' $(@D)/netem/Makefile
 	$(TARGET_MAKE_ENV) $(MAKE) \
 		DBM_INCLUDE="$(STAGING_DIR)/usr/include" \
-		CCOPTS="$(TARGET_CFLAGS) -D_GNU_SOURCE" -C $(@D)
+		CCOPTS="$(TARGET_CFLAGS) -D_GNU_SOURCE" \
+		SHARED_LIBS="$(if $(BR2_STATIC_LIBS),n,y)" -C $(@D)
 endef
 
 define IPROUTE2_INSTALL_TARGET_CMDS
