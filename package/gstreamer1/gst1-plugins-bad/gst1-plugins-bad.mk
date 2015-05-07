@@ -544,13 +544,6 @@ else
 GST1_PLUGINS_BAD_CONF_OPTS += --disable-bz2
 endif
 
-ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_CDAUDIO),y)
-GST1_PLUGINS_BAD_CONF_OPTS += --enable-cdaudio
-GST1_PLUGINS_BAD_DEPENDENCIES += libcdaudio
-else
-GST1_PLUGINS_BAD_CONF_OPTS += --disable-cdaudio
-endif
-
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_CURL),y)
 GST1_PLUGINS_BAD_CONF_OPTS += --enable-curl
 GST1_PLUGINS_BAD_DEPENDENCIES += libcurl
@@ -661,23 +654,6 @@ GST1_PLUGINS_BAD_CONF_OPTS += --enable-rsvg
 GST1_PLUGINS_BAD_DEPENDENCIES += librsvg
 else
 GST1_PLUGINS_BAD_CONF_OPTS += --disable-rsvg
-endif
-
-ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_EGLGLES),y)
-GST1_PLUGINS_BAD_CONF_OPTS += --enable-eglgles
-GST1_PLUGINS_BAD_DEPENDENCIES += libegl libgles
-
-ifeq ($(BR2_PACKAGE_RPI_USERLAND),y)
-# RPI has odd locations for several required headers.
-GST1_PLUGINS_BAD_CONF_OPTS += --with-egl-window-system=rpi
-GST1_PLUGINS_BAD_CONF_ENV += \
-	CFLAGS="$(TARGET_CFLAGS) \
-	-I$(STAGING_DIR)/usr/include/IL \
-	-I$(STAGING_DIR)/usr/include/interface/vcos/pthreads \
-	-I$(STAGING_DIR)/usr/include/interface/vmcs_host/linux"
-endif
-else
-GST1_PLUGINS_BAD_CONF_OPTS += --disable-eglgles
 endif
 
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_SDL),y)
