@@ -1,0 +1,65 @@
+From 69acf13fa679628259063c4d0cd17e59b8bb0b75 Mon Sep 17 00:00:00 2001
+From: xantares <xantares09@hotmail.com>
+Date: Fri, 14 Nov 2014 19:40:58 +0100
+Subject: [PATCH] Use BUILD_SHARED_LIBS cmake standard.
+
+Signed-off-by: Romain Naour <romain.naour@openwide.fr>
+---
+ CMakeLists.txt | 27 +++++++++------------------
+ 1 file changed, 9 insertions(+), 18 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 91c61a4..4375bb9 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -10,8 +10,8 @@ include(GNUInstallDirs)
+ ################################
+ # set lib version here
+ 
+-set(GENERIC_LIB_VERSION "2.2.0")
+-set(GENERIC_LIB_SOVERSION "2")
++set(GENERIC_LIB_VERSION "2.2.0")
++set(GENERIC_LIB_SOVERSION "2")
+ 
+ 
+ ################################
+@@ -46,12 +46,8 @@ endif(MSVC)
+ 
+ ################################
+ # Add targets
+-set(BUILD_STATIC_LIBS ON CACHE BOOL "Set to ON to build static libraries")
+-if(BUILD_STATIC_LIBS)
+-	add_library(tinyxml2static STATIC tinyxml2.cpp tinyxml2.h)
+-	set_target_properties(tinyxml2static PROPERTIES OUTPUT_NAME tinyxml2)
+-endif(BUILD_STATIC_LIBS)
+-add_library(tinyxml2 SHARED tinyxml2.cpp tinyxml2.h)
++option(BUILD_SHARED_LIBS "build shared or static libraries" ON)
++add_library(tinyxml2 tinyxml2.cpp tinyxml2.h)
+ set_target_properties(tinyxml2 PROPERTIES
+         COMPILE_DEFINITIONS "TINYXML2_EXPORT"
+ 	VERSION "${GENERIC_LIB_VERSION}"
+@@ -63,16 +59,11 @@ add_dependencies(test ${TARGET_DATA_COPY})
+ target_link_libraries(test tinyxml2)
+ 
+ 
+-if(BUILD_STATIC_LIBS)
+-	install(TARGETS tinyxml2 tinyxml2static
+-		RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+-		LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+-		ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
+-else(BUILD_STATIC_LIBS)
+-	install(TARGETS tinyxml2
+-		RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+-		LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
+-endif(BUILD_STATIC_LIBS)
++install(TARGETS tinyxml2
++        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
++        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
++        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
++
+ install(FILES tinyxml2.h DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+ 
+ foreach(p LIB INCLUDE)
+-- 
+1.9.3
+
