@@ -117,6 +117,13 @@ config BR2_TOOLCHAIN_BUILDROOT_CXX
 	  C++ language and you want C++ libraries to be installed on
 	  your target system.
 
+config BR2_TOOLCHAIN_BUILDROOT_FORTRAN
+	bool "Enable Fortran support"
+	help
+	  Enable this option if you want your toolchain to support the
+	  Fortran language and you want Fortran libraries to be
+	  installed on your target system.
+
 config BR2_GCC_ENABLE_TLS
 	bool "Enable compiler tls support" if BR2_TOOLCHAIN_BUILDROOT_UCLIBC
 	default y
