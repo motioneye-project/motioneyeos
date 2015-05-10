@@ -16,5 +16,15 @@ XLIB_LIBXFONT_CONF_OPTS = --disable-devel-docs
 
 HOST_XLIB_LIBXFONT_CONF_OPTS = --disable-devel-docs
 
+ifeq ($(BR2_microblaze),y)
+# The microblaze toolchains don't define the __ELF__ preprocessor
+# symbol even though they do use the elf format. LibXfont checks for
+# this symbol to know if weak symbols are supported, and otherwise
+# falls back to emulation code using dlopen - Causing linker issues
+# for stuff using libXfont.
+# Work around it by defining the symbol here as well.
+XLIB_LIBXFONT_CONF_ENV += CFLAGS="$(TARGET_CFLAGS) -D__ELF__"
+endif
+
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
