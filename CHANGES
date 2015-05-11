@@ -1,3 +1,27 @@
+2015.05-rc2, Released May 11th, 2015
+
+	Minor fixes.
+
+	Toolchain: PR56780 backport to GCC 4.8.4 to fix GDB linking
+	issues. Context functions enabled for uClibc snapshot /
+	uClibc-NG.
+
+	Architectures: Endian handling symbol for Xtensa, binutils
+	fixes.
+
+	Infrastructure: Fix for kernel module stripping when
+	localversion contains spaces.
+
+	Updated/fixed packages: at, autoconf-archive, binutils,
+	cc-tool, cryptsetup, dstat, expedite, freerdp, giflib,
+	gnuchess, guile, ipmiutil, iproute2, mono, monolite, neard,
+	ola, poppler, postgresql, python-qt, qt, sqlite, valgrind,
+	xlib_libXfont
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#8086: Cannot select systemd as init with Linaro 2014.09...
+
 2015.05-rc1, Released May 4th, 2015
 
 	Fixes all over the tree and new features.
