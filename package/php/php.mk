@@ -109,6 +109,11 @@ endif
 ifeq ($(BR2_PACKAGE_PHP_EXT_OPENSSL),y)
 PHP_CONF_OPTS += --with-openssl=$(STAGING_DIR)/usr
 PHP_DEPENDENCIES += openssl
+# openssl needs zlib, but the configure script forgets to link against
+# it causing detection failures with static linking
+ifeq ($(BR2_STATIC_LIBS),y)
+PHP_CONF_ENV += LIBS='-lz'
+endif
 endif
 
 ifeq ($(BR2_PACKAGE_PHP_EXT_LIBXML2),y)
