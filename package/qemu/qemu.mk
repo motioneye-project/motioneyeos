@@ -38,8 +38,8 @@ HOST_QEMU_DEPENDENCIES = host-pkgconf host-python host-zlib host-libglib2 host-p
 #       sh2a            not supported
 #       sh4             sh4
 #       sh4eb           sh4eb
-#       sh4a            ?
-#       sh4aeb          ?
+#       sh4a            sh4
+#       sh4aeb          sh4eb
 #       sh64            not supported
 #       sparc           sparc
 
@@ -55,6 +55,12 @@ HOST_QEMU_ARCH = i386
 endif
 ifeq ($(HOST_QEMU_ARCH),powerpc)
 HOST_QEMU_ARCH = ppc
+endif
+ifeq ($(HOST_QEMU_ARCH),sh4a)
+HOST_QEMU_ARCH = sh4
+endif
+ifeq ($(HOST_QEMU_ARCH),sh4aeb)
+HOST_QEMU_ARCH = sh4eb
 endif
 HOST_QEMU_TARGETS = $(HOST_QEMU_ARCH)-linux-user
 
