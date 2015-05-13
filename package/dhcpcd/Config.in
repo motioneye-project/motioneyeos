@@ -1,9 +1,11 @@
+comment "dhcpcd needs a toolchain w/ headers >= 3.1"
+	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_1
+
 config BR2_PACKAGE_DHCPCD
 	bool "dhcpcd"
 	# No support for AI_ADDRCONFIG
 	depends on !BR2_TOOLCHAIN_EXTERNAL_BLACKFIN_UCLINUX_2012R2
-	# bad headers, no sa_family_t in linux/socket.h
-	depends on !(BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_POWERPC201103 || BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_POWERPC201009)
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_1 # sa_family_t in linux/socket.h
 	help
 	  An RFC2131 compliant DHCP client
 
