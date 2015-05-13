@@ -10,7 +10,7 @@ CZMQ_SITE = $(call github,zeromq,czmq,$(CZMQ_VERSION))
 # Autoreconf required as we use the git tree
 CZMQ_AUTORECONF = YES
 CZMQ_INSTALL_STAGING = YES
-CZMQ_DEPENDENCIES = zeromq
+CZMQ_DEPENDENCIES = zeromq host-pkgconf
 CZMQ_LICENSE = MPLv2.0
 CZMQ_LICENSE_FILES = LICENSE
 
