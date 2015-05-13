@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-ARMADILLO_VERSION_MAJOR = 4.000
-ARMADILLO_VERSION = $(ARMADILLO_VERSION_MAJOR).4
+ARMADILLO_VERSION_MAJOR = 5.100
+ARMADILLO_VERSION = $(ARMADILLO_VERSION_MAJOR).2
 ARMADILLO_SITE = http://downloads.sourceforge.net/project/arma
 ARMADILLO_DEPENDENCIES = clapack
 ARMADILLO_INSTALL_STAGING = YES
