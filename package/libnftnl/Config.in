@@ -1,7 +1,9 @@
+comment "libnftnl needs a toolchain w/ headers >= 3.1"
+	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_1
+
 config BR2_PACKAGE_LIBNFTNL
 	bool "libnftnl"
-	# bad headers, no sa_family_t in linux/socket.h
-	depends on !(BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_POWERPC201103 || BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_POWERPC201009)
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_1
 	select BR2_PACKAGE_LIBMNL
 	help
 	  libnftnl is a userspace library providing a low-level
