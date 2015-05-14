@@ -48,6 +48,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_LIBSIGROKCXX),y)
 LIBSIGROK_CONF_OPTS += --enable-cxx
+LIBSIGROK_AUTORECONF_OPTS += -I $(HOST_DIR)/usr/share/autoconf-archive
 LIBSIGROK_DEPENDENCIES += \
 	host-autoconf-archive \
 	glibmm \
