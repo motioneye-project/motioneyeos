@@ -1,6 +1,10 @@
+comment "lcdproc needs a toolchain w/  dynamic library"
+	depends on BR2_STATIC_LIBS
+
 config BR2_PACKAGE_LCDPROC
 	bool "lcdproc"
 	depends on BR2_USE_MMU # fork()
+	depends on !BR2_STATIC_LIBS
 	select BR2_PACKAGE_FREETYPE
 	select BR2_PACKAGE_NCURSES
 	select BR2_PACKAGE_ZLIB
