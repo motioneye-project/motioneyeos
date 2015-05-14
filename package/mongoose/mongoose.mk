@@ -10,7 +10,7 @@ MONGOOSE_LICENSE = GPLv2
 MONGOOSE_LICENSE_FILES = LICENSE
 MONGOOSE_INSTALL_STAGING = YES
 
-MONGOOSE_CFLAGS = $(TARGET_CFLAGS) $(TARGET_LDFLAGS)
+MONGOOSE_CFLAGS = $(TARGET_CFLAGS) $(TARGET_LDFLAGS) -DMONGOOSE_NO_DL
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 MONGOOSE_DEPENDENCIES += openssl
@@ -21,7 +21,7 @@ endif
 define MONGOOSE_BUILD_CMDS
 	$(TARGET_CC) $(@D)/examples/web_server/web_server.c $(@D)/mongoose.c \
 		-I$(@D) -o $(@D)/examples/web_server/web_server \
-		$(MONGOOSE_CFLAGS) -pthread -ldl
+		$(MONGOOSE_CFLAGS) -pthread
 	$(TARGET_CC) -c $(@D)/mongoose.c $(MONGOOSE_CFLAGS) -o $(@D)/mongoose.o
 	$(TARGET_AR) rcs $(@D)/libmongoose.a $(@D)/mongoose.o
 endef
