@@ -1,4 +1,5 @@
 comment "python-libconfig needs a toolchain w/ C++, threads"
+	depends on BR2_PACKAGE_BOOST_ARCH_SUPPORTS
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS
 
 config BR2_PACKAGE_PYTHON_LIBCONFIG
@@ -8,6 +9,7 @@ config BR2_PACKAGE_PYTHON_LIBCONFIG
 	select BR2_PACKAGE_LIBCONFIG
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_PACKAGE_BOOST_ARCH_SUPPORTS
 	help
 	  Python bindings to the C++ library libconfig
 

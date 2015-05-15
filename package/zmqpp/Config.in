@@ -26,6 +26,7 @@ if BR2_PACKAGE_ZMQPP
 config BR2_PACKAGE_ZMQPP_CLIENT
 	bool "zmqpp client"
 	depends on BR2_TOOLCHAIN_HAS_THREADS # boost
+	depends on BR2_PACKAGE_BOOST_ARCH_SUPPORTS
 	select BR2_PACKAGE_BOOST
 	select BR2_PACKAGE_BOOST_PROGRAM_OPTIONS
 	help
@@ -33,6 +34,7 @@ config BR2_PACKAGE_ZMQPP_CLIENT
 	  used to listen or send to zeromq sockets.
 
 comment "zmqpp client needs a toolchain w/ threads"
+	depends on BR2_PACKAGE_BOOST_ARCH_SUPPORTS
 	depends on !BR2_TOOLCHAIN_HAS_THREADS
 
 endif
