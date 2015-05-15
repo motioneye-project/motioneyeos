@@ -1,0 +1,30 @@
+From 2c9271fa662b98e2a451b859f2506edf5f91c9bf Mon Sep 17 00:00:00 2001
+From: Lionel Orry <lionel.orry@gmail.com>
+Date: Fri, 15 May 2015 11:27:57 +0200
+Subject: [PATCH] add cstdlib header to ensure EXIT_FAILURE presence
+
+Using some cross-compiling toolchains, EXIT_FAILURE is not always
+properly defined without this inclusion.
+
+Add myself to AUTHORS.
+
+Signed-off-by: Lionel Orry <lionel.orry@gmail.com>
+---
+ src/client/main.cpp | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/client/main.cpp b/src/client/main.cpp
+index 082c06b..760f01a 100644
+--- a/src/client/main.cpp
++++ b/src/client/main.cpp
+@@ -3,6 +3,7 @@
+  *      Author: @benjamg
+  */
+ 
++#include <cstdlib>
+ #include <array>
+ #include <iostream>
+ #include <tuple>
+-- 
+2.1.0
+
