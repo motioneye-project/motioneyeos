@@ -1,0 +1,27 @@
+Use the gold linker only for target builds
+
+Availability of the gold linker is only tested with the
+cross-compiler, not the host compiler, so Qt shouldn't assume it's
+available when doing host builds.
+
+This fixes build failures occuring when cross-compiling Qt5 with a
+gold capable cross-compiler, on a host that has a too old compiler to
+support gold.
+
+Bug reported upstream at https://bugreports.qt.io/browse/QTBUG-46125.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/mkspecs/features/default_post.prf
+===================================================================
+--- a/mkspecs/features/default_post.prf
++++ b/mkspecs/features/default_post.prf
+@@ -62,7 +62,7 @@
+     QMAKE_LIBFLAGS += $$QMAKE_LIBFLAGS_RELEASE
+ }
+ 
+-use_gold_linker: QMAKE_LFLAGS += $$QMAKE_LFLAGS_USE_GOLD
++!host_build: use_gold_linker: QMAKE_LFLAGS += $$QMAKE_LFLAGS_USE_GOLD
+ 
+ dll:win32: QMAKE_LFLAGS += $$QMAKE_LFLAGS_DLL
+ static:mac: QMAKE_LFLAGS += $$QMAKE_LFLAGS_STATIC_LIB
