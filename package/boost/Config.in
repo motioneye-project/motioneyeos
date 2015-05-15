@@ -99,9 +99,13 @@ comment "boost-locale needs a toolchain w/ wchar"
 config BR2_PACKAGE_BOOST_LOG
 	bool "boost-log"
 	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL
+	# for some reason, uClibc on PowerPC fails to build the boost
+	# log module
+	depends on !(BR2_powerpc && BR2_TOOLCHAIN_USES_UCLIBC)
 
 comment "boost-log needs a toolchain w/ NPTL"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS_NPTL
+	depends on !(BR2_powerpc && BR2_TOOLCHAIN_USES_UCLIBC)
 
 config BR2_PACKAGE_BOOST_MATH
 	bool "boost-math"
