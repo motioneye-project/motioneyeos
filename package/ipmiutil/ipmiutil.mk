@@ -12,7 +12,8 @@ IPMIUTIL_LICENSE_FILES = COPYING
 IPMIUTIL_AUTORECONF = YES
 # tests against distro libcrypto so it might get a false positive when
 # the openssl version is old, so force it off
-IPMIUTIL_CONF_OPTS = CPPFLAGS="$(TARGET_CPPFLAGS) -DSKIP_MD2"
+# SKIP_MD2 can be used only if ALLOW_GNU is defined.
+IPMIUTIL_CONF_OPTS = CPPFLAGS="$(TARGET_CPPFLAGS) -DALLOW_GNU -DSKIP_MD2"
 IPMIUTIL_DEPENDENCIES = openssl
 
 $(eval $(autotools-package))
