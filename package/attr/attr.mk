@@ -26,4 +26,14 @@ ATTR_INSTALL_TARGET_OPTS = 			\
 	exec_prefix=$(TARGET_DIR)/usr 		\
 	install install-lib
 
+# The libdir variable in libattr.la is empty, so let's fix it. This is
+# probably due to attr not using automake, and not doing fully the
+# right thing with libtool.
+define ATTR_FIX_LIBTOOL_LA_LIBDIR
+	$(SED) "s,libdir=.*,libdir='$(STAGING_DIR)'," \
+		$(STAGING_DIR)/usr/lib/libattr.la
+endef
+
+ATTR_POST_INSTALL_STAGING_HOOKS += ATTR_FIX_LIBTOOL_LA_LIBDIR
+
 $(eval $(autotools-package))

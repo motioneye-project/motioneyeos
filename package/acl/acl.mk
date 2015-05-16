@@ -27,4 +27,14 @@ ACL_INSTALL_TARGET_OPTS = 			\
 	exec_prefix=$(TARGET_DIR)/usr 		\
 	install install-lib
 
+# The libdir variable in libacl.la is empty, so let's fix it. This is
+# probably due to acl not using automake, and not doing fully the
+# right thing with libtool.
+define ACL_FIX_LIBTOOL_LA_LIBDIR
+	$(SED) "s,libdir=.*,libdir='$(STAGING_DIR)'," \
+		$(STAGING_DIR)/usr/lib/libacl.la
+endef
+
+ACL_POST_INSTALL_STAGING_HOOKS += ACL_FIX_LIBTOOL_LA_LIBDIR
+
 $(eval $(autotools-package))
