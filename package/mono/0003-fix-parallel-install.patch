@@ -1,0 +1,40 @@
+mcs: fix installation with parallel make
+
+In mcs/ the install of xbuild_12 and xbuild_14 will end-up installing
+the same files:
+    ${NETFRAMEWORK_DIR}/v2.0/RedistList/FrameworkList.xml
+    ${NETFRAMEWORK_DIR}/v3.0/RedistList/FrameworkList.xml
+    ${NETFRAMEWORK_DIR}/v3.5/RedistList/FrameworkList.xml
+    ${NETFRAMEWORK_DIR}/v4.0/Profile/Client/RedistList/FrameworkList.xml
+    ${NETFRAMEWORK_DIR}/v4.0/RedistList/FrameworkList.xml
+    ${NETFRAMEWORK_DIR}/v4.5.1/RedistList/FrameworkList.xml
+    ${NETFRAMEWORK_DIR}/v4.5/RedistList/FrameworkList.xml
+
+This is because there is no atomicity when installing each file, and
+xbuild_12 and xbuild_14 may well run in parallel, each trying to install
+each of those files; but the 'install' utility will first check if the
+target file exists or not, and behaves differently if it does than if it
+does not, thus leading to build failures like so:
+    http://autobuild.buildroot.org/results/c32/c3288c5d1fb94474f14a4a889e76135878d403bc/build-end.log
+
+So, ensure ordering of the install of xbuild_12 and xbuild_14 (the
+ordering is completely arbitrary, either way gives the same installed
+files).
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+Cc: Angelo Compagnucci <angelo.compagnucci@gmail.com>
+
+diff -durN host-mono-4.0.0.orig/mcs/Makefile host-mono-4.0.0/mcs/Makefile
+--- host-mono-4.0.0.orig/mcs/Makefile	2015-04-09 16:55:53.000000000 +0200
++++ host-mono-4.0.0/mcs/Makefile	2015-05-16 17:25:44.475542483 +0200
+@@ -43,6 +43,10 @@
+ profile-do--%:
+ 	$(MAKE) PROFILE=$(subst --, ,$*)
+ 
++# xbuild_12 and xbuild_14 will try to install the same files, so they need
++# to be ordered
++profile-do--xbuild_14--install: profile-do--xbuild_12--install
++
+ # We don't want to run the tests in parallel.  We want behaviour like -k.
+ profiles-do--run-test:
+ 	ret=:; $(foreach p,$(PROFILES), { $(MAKE) PROFILE=$(p) run-test || ret=false; }; ) $$ret
