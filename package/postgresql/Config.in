@@ -1,6 +1,10 @@
 config BR2_PACKAGE_POSTGRESQL
 	bool "postgresql"
 	depends on BR2_USE_MMU # fork()
+	# fails to build in a pure static linking scenario, and
+	# postgresql is unlikely to be used in a pure statically
+	# linked environment.
+	depends on !BR2_STATIC_LIBS
 	help
 	  PostgreSQL is a powerful, open source object-relational
 	  database system.
@@ -13,3 +17,6 @@ config BR2_PACKAGE_POSTGRESQL
 	  archives with pg_dump and pg_restore.
 
 	  http://www.postgresql.org
+
+comment "postgresql needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS

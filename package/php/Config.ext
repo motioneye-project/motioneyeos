@@ -159,8 +159,13 @@ config BR2_PACKAGE_PHP_EXT_PDO_POSTGRESQL
 	bool "PostgreSQL"
 	select BR2_PACKAGE_POSTGRESQL
 	depends on BR2_USE_MMU # postgresql
+	depends on !BR2_STATIC_LIBS
 	help
 	  PDO driver for PostgreSQL
+
+comment "PostgreSQL drivers need a toolchain w/ dynamic library"
+	depends on BR2_USE_MMU
+	depends on BR2_STATIC_LIBS
 
 config BR2_PACKAGE_PHP_EXT_PDO_SQLITE
 	bool "SQLite3"

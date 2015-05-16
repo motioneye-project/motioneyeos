@@ -33,11 +33,15 @@ if BR2_PACKAGE_BANDWIDTHD
 config BR2_PACKAGE_BANDWIDTHD_POSTGRESQL
 	bool "enable postgresql log target support"
 	select BR2_PACKAGE_POSTGRESQL
+	depends on !BR2_STATIC_LIBS
 	help
 	  Enable support for logging the bandwidthd data to a remote
 	  (or local) postgresql server. This data can then be viewed
 	  through a php site. See README in the source code
 	  (github.com/nroach44/bandwidthd) for more information.
+
+comment "postgresql support needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS
 
 config BR2_PACKAGE_BANDWIDTHD_SQLITE3
 	bool "enable sqlite3 log storage"
