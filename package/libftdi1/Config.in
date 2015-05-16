@@ -9,8 +9,8 @@ config BR2_PACKAGE_LIBFTDI1
 
 if BR2_PACKAGE_LIBFTDI1
 
-config BR2_PACKAGE_LIBTFDI1_LIBFTDIPP1
-	bool "libfdtipp1"
+config BR2_PACKAGE_LIBFTDI1_LIBFTDIPP1
+	bool "libftdipp1"
 	select BR2_PACKAGE_BOOST
 	depends on BR2_INSTALL_LIBSTDCPP # boost
 	depends on BR2_TOOLCHAIN_HAS_THREADS # boost
@@ -18,17 +18,17 @@ config BR2_PACKAGE_LIBTFDI1_LIBFTDIPP1
 	help
 	  C++ bindings for libftdi
 
-comment "libfdtipp1 needs a toolchain w/ C++"
+comment "libftdipp1 needs a toolchain w/ C++"
 	depends on !BR2_INSTALL_LIBSTDCPP
 	depends on BR2_PACKAGE_BOOST_ARCH_SUPPORTS
 
-config BR2_PACKAGE_LIBTFDI1_PYTHON_BINDINGS
+config BR2_PACKAGE_LIBFTDI1_PYTHON_BINDINGS
 	bool "python bindings"
 	depends on BR2_PACKAGE_PYTHON || BR2_PACKAGE_PYTHON3
 	help
 	  Python bindings for libftdi
 
-config BR2_PACKAGE_LIBTFDI1_FDTI_EEPROM
+config BR2_PACKAGE_LIBFTDI1_FDTI_EEPROM
 	select BR2_PACKAGE_LIBCONFUSE
 	bool "ftdi_eeprom tool"
 
