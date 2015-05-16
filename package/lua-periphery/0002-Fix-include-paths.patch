@@ -1,0 +1,89 @@
+From b0a48721c48e0857458eb46b36ae575281412c64 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Sat, 16 May 2015 15:12:30 +0200
+Subject: [PATCH 2/2] Fix include paths for c-periphery
+
+The lua-periphery source code is designed to have c-periphery cloned
+and built internally, so the include paths are written with this
+assumption.
+
+This commit adjusts the header paths of the c-periphery headers to be
+compatible with a separated build/installation of c-periphery.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ src/lua_gpio.c   | 2 +-
+ src/lua_i2c.c    | 2 +-
+ src/lua_mmio.c   | 2 +-
+ src/lua_serial.c | 2 +-
+ src/lua_spi.c    | 2 +-
+ 5 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/lua-periphery/src/lua_gpio.c b/lua-periphery/src/lua_gpio.c
+index cfeb03d..711d7e1 100644
+--- a/lua-periphery/src/lua_gpio.c
++++ b/lua-periphery/src/lua_gpio.c
+@@ -13,7 +13,7 @@
+ #include <stdint.h>
+ #include <errno.h>
+ 
+-#include <c-periphery/src/gpio.h>
++#include <c-periphery/gpio.h>
+ #include "lua_periphery.h"
+ #include "lua_51compat.h"
+ 
+diff --git a/lua-periphery/src/lua_i2c.c b/lua-periphery/src/lua_i2c.c
+index ebdab79..7b38f6f 100644
+--- a/lua-periphery/src/lua_i2c.c
++++ b/lua-periphery/src/lua_i2c.c
+@@ -13,7 +13,7 @@
+ #include <stdint.h>
+ #include <errno.h>
+ 
+-#include <c-periphery/src/i2c.h>
++#include <c-periphery/i2c.h>
+ #include "lua_periphery.h"
+ #include "lua_51compat.h"
+ 
+diff --git a/lua-periphery/src/lua_mmio.c b/lua-periphery/src/lua_mmio.c
+index 5ab1188..7dd399b 100644
+--- a/lua-periphery/src/lua_mmio.c
++++ b/lua-periphery/src/lua_mmio.c
+@@ -13,7 +13,7 @@
+ #include <stdint.h>
+ #include <errno.h>
+ 
+-#include <c-periphery/src/mmio.h>
++#include <c-periphery/mmio.h>
+ #include "lua_periphery.h"
+ #include "lua_51compat.h"
+ 
+diff --git a/lua-periphery/src/lua_serial.c b/lua-periphery/src/lua_serial.c
+index 7d332af..85afa4a 100644
+--- a/lua-periphery/src/lua_serial.c
++++ b/lua-periphery/src/lua_serial.c
+@@ -13,7 +13,7 @@
+ #include <stdint.h>
+ #include <errno.h>
+ 
+-#include <c-periphery/src/serial.h>
++#include <c-periphery/serial.h>
+ #include "lua_periphery.h"
+ #include "lua_51compat.h"
+ 
+diff --git a/lua-periphery/src/lua_spi.c b/lua-periphery/src/lua_spi.c
+index a4735a2..0c1e583 100644
+--- a/lua-periphery/src/lua_spi.c
++++ b/lua-periphery/src/lua_spi.c
+@@ -13,7 +13,7 @@
+ #include <stdint.h>
+ #include <errno.h>
+ 
+-#include <c-periphery/src/spi.h>
++#include <c-periphery/spi.h>
+ #include "lua_periphery.h"
+ #include "lua_51compat.h"
+ 
+-- 
+2.1.0
+
