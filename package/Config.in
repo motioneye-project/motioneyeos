@@ -811,6 +811,7 @@ menu "Graphics"
 endmenu
 
 menu "Hardware handling"
+	source "package/c-periphery/Config.in"
 	source "package/ccid/Config.in"
 	source "package/dtc/Config.in"
 	source "package/gnu-efi/Config.in"
