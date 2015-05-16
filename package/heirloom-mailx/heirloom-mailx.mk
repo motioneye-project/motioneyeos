@@ -18,8 +18,11 @@ define HEIRLOOM_MAILX_CONFIGURE_CMDS
 	(cd $(@D); $(TARGET_CONFIGURE_OPTS) $(SHELL) ./makeconfig)
 endef
 
+# -fPIC is needed to build with NIOS2 toolchains.
 define HEIRLOOM_MAILX_BUILD_CMDS
-	$(TARGET_CONFIGURE_OPTS) $(MAKE) -C $(@D)
+	$(TARGET_CONFIGURE_OPTS) $(MAKE) \
+		CFLAGS="$(TARGET_CFLAGS) -fPIC" \
+		-C $(@D)
 endef
 
 define HEIRLOOM_MAILX_INSTALL_TARGET_CMDS
