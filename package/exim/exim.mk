@@ -46,6 +46,8 @@ define EXIM_USE_DEFAULT_CONFIG_FILE
 	$(call exim-config-change,PCRE_CONFIG,no)
 	$(call exim-config-change,HAVE_ICONV,no)
 	$(call exim-config-unset,EXIM_MONITOR)
+	$(call exim-config-change,AUTH_PLAINTEXT,yes)
+	$(call exim-config-change,AUTH_CRAM_MD5,yes)
 endef
 
 ifeq ($(BR2_PACKAGE_DOVECOT),y)
