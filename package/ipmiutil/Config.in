@@ -3,7 +3,6 @@ config BR2_PACKAGE_IPMIUTIL
 	depends on BR2_USE_MMU
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_x86_64 || BR2_i386
-	select BR2_PACKAGE_OPENSSL
 	help
 	  The ipmiutil package provides easy-to-use utilities to view
 	  the SEL, perform an IPMI chassis reset, set up the IPMI LAN
