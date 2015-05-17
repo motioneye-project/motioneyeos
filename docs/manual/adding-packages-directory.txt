@@ -35,8 +35,9 @@ config BR2_PACKAGE_LIBFOO
 
 The +bool+ line, +help+ line and other metadata information about the
 configuration option must be indented with one tab. The help text
-itself should be indented with one tab and two spaces, and it must
-mention the upstream URL of the project.
+itself should be indented with one tab and two spaces, lines should
+not be longer than 72 columns, and it must mention the upstream URL
+of the project.
 
 You can add other sub-options into a +if
 BR2_PACKAGE_LIBFOO...endif+ statement to configure particular things

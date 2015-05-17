@@ -40,6 +40,8 @@ config BR2_PACKAGE_LIBFOO
 * The help text itself should be indented with one tab and two
   spaces.
 
+* The help text should be wrapped to fit 72 columns.
+
 The +Config.in+ files are the input for the configuration tool
 used in Buildroot, which is the regular _Kconfig_. For further
 details about the _Kconfig_ language, refer to
