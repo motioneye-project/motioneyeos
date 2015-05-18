@@ -8,10 +8,10 @@ PHP_ICONV_H_PATH which, again, uses test and absolute paths.
 Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
 [Gustavo: convert to nice m4 instead of patching configure]
 
-diff -Nura php-5.6.7.orig/aclocal.m4 php-5.6.7/aclocal.m4
---- php-5.6.7.orig/aclocal.m4	2015-04-08 11:08:11.208848359 -0300
-+++ php-5.6.7/aclocal.m4	2015-04-08 11:42:17.321044950 -0300
-@@ -2474,7 +2474,7 @@
+diff -Nura php-5.6.8.orig/acinclude.m4 php-5.6.8/acinclude.m4
+--- php-5.6.8.orig/acinclude.m4	2015-05-18 20:06:48.557099001 +0200
++++ php-5.6.8/acinclude.m4	2015-05-18 20:07:33.177099001 +0200
+@@ -2470,7 +2470,7 @@
    dnl
    if test "$found_iconv" = "no"; then
  
