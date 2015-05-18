@@ -301,6 +301,9 @@ define PHP_INSTALL_FIXUP
 		$(TARGET_DIR)/etc/php.ini
 	$(SED) 's%;date.timezone =.*%date.timezone = $(PHP_LOCALTIME)%' \
 		$(TARGET_DIR)/etc/php.ini
+	$(if $(BR2_PACKAGE_PHP_EXT_OPCACHE),
+		$(SED) '/;extension=php_xsl.dll/azend_extension=opcache.so' \
+		$(TARGET_DIR)/etc/php.ini)
 endef
 
 PHP_POST_INSTALL_TARGET_HOOKS += PHP_INSTALL_FIXUP
