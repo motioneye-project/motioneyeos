@@ -64,9 +64,15 @@ config BR2_PACKAGE_SCONESERVER_LOCATION
 	depends on BR2_USE_MMU # gpsd
 	depends on BR2_TOOLCHAIN_HAS_THREADS # gpsd
 	depends on !BR2_microblaze # gpsd
+	depends on !BR2_STATIC_LIBS # gpsd
 	select BR2_PACKAGE_GPSD
 	help
 	  Location module for Sconeserver
+
+comment "location support needs a toolchain w/ theads, dynamic library"
+	depends on BR2_USE_MMU
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBRARY
+	depends on !BR2_microblaze
 
 config BR2_PACKAGE_SCONESERVER_LETTUCE
 	bool "lettuce"

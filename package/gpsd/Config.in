@@ -1,6 +1,6 @@
-comment "gpsd needs a toolchain w/ threads"
+comment "gpsd needs a toolchain w/ threads, dynamic library"
 	depends on BR2_USE_MMU
-	depends on !BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS
 	depends on !BR2_microblaze
 
 config BR2_PACKAGE_GPSD
@@ -8,6 +8,8 @@ config BR2_PACKAGE_GPSD
 	# Uses fork()
 	depends on BR2_USE_MMU
 	depends on BR2_TOOLCHAIN_HAS_THREADS
+	# Always tries to build a shared library
+	depends on !BR2_STATIC_LIBS
 	# triggers gcc ice
 	depends on !BR2_microblaze
 	help
