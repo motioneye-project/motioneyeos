@@ -4,7 +4,8 @@
 #
 ################################################################################
 
-PHP_VERSION = 5.6.8
+PHP_VERSION_MAJOR = 5.6
+PHP_VERSION = $(PHP_VERSION_MAJOR).8
 PHP_SITE = http://www.php.net/distributions
 PHP_SOURCE = php-$(PHP_VERSION).tar.xz
 PHP_INSTALL_STAGING = YES
