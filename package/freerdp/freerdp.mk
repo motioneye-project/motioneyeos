@@ -17,7 +17,8 @@ FREERDP_CONF_OPTS = -DWITH_MANPAGES=OFF -Wno-dev
 
 ifeq ($(BR2_PACKAGE_GSTREAMER),y)
 FREERDP_CONF_OPTS += -DWITH_GSTREAMER=ON
-FREERDP_DEPENDENCIES += gstreamer
+# freerdp needs gstinterface and gstapp from gst-plugins-base
+FREERDP_DEPENDENCIES += gstreamer gst-plugins-base
 else
 FREERDP_CONF_OPTS += -DWITH_GSTREAMER=OFF
 endif
