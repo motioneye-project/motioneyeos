@@ -107,6 +107,22 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2015.05"
 
+config BR2_TARGET_ROOTFS_JFFS2_NANDFLASH_512_16K
+	bool "jffs2 16kB erasesize NAND flash option renamed"
+	select BR2_LEGACY
+	select BR2_TARGET_ROOTFS_JFFS2_NANDFLASH_16K
+	help
+	  The JFFS2 NAND flash options now longer include the page
+	  size.
+
+config BR2_TARGET_ROOTFS_JFFS2_NANDFLASH_2K_128K
+	bool "jffs2 128kB erasesize NAND flash option renamed"
+	select BR2_LEGACY
+	select BR2_TARGET_ROOTFS_JFFS2_NANDFLASH_128K
+	help
+	  The JFFS2 NAND flash options now longer include the page
+	  size.
+
 config BR2_PACKAGE_MONO_20
 	bool "2.0/3.5 .Net Runtime"
 	select BR2_LEGACY

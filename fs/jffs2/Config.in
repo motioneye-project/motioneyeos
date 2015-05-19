@@ -17,31 +17,24 @@ config BR2_TARGET_ROOTFS_JFFS2_DATAFLASH_528
 	bool "AT45 dataflash with 528 byte pagesize"
 	select BR2_TARGET_ROOTFS_JFFS2_NOCLEANMARKER
 
-config BR2_TARGET_ROOTFS_JFFS2_NANDFLASH_512_16K
-	bool "NAND flash with 512B Page and 16 kB erasesize"
+config BR2_TARGET_ROOTFS_JFFS2_NANDFLASH_16K
+	bool "NAND flash with 16 kB erasesize"
 	select BR2_TARGET_ROOTFS_JFFS2_NOCLEANMARKER
 
-config BR2_TARGET_ROOTFS_JFFS2_NANDFLASH_2K_128K
-	bool "NAND flash with 2kB Page and 128 kB erasesize"
+config BR2_TARGET_ROOTFS_JFFS2_NANDFLASH_128K
+	bool "NAND flash with 128 kB erasesize"
 	select BR2_TARGET_ROOTFS_JFFS2_NOCLEANMARKER
 
 config BR2_TARGET_ROOTFS_JFFS2_FLASH_128
-	bool "Parallel flash with 4 kB pagesize and 128 kB erase size"
+	bool "Parallel flash with 128 kB erase size"
 
 config BR2_TARGET_ROOTFS_JFFS2_FLASH_64
-	bool "Parallel flash with 4 kB pagesize and 64 kB erase size"
+	bool "Parallel flash with 64 kB erase size"
 
 config BR2_TARGET_ROOTFS_JFFS2_CUSTOM
-	bool "Select custom page and erase size"
+	bool "Select custom erase size"
 
 endchoice
-
-config BR2_TARGET_ROOTFS_JFFS2_CUSTOM_PAGESIZE
-	hex "Page Size"
-	depends on BR2_TARGET_ROOTFS_JFFS2_CUSTOM
-	default 0x1000
-	help
-	  Set to pagesize of memory
 
 config BR2_TARGET_ROOTFS_JFFS2_CUSTOM_EBSIZE
 	hex "Erase block size"
@@ -50,22 +43,12 @@ config BR2_TARGET_ROOTFS_JFFS2_CUSTOM_EBSIZE
 	help
 	  Set to erase size of memory
 
-config BR2_TARGET_ROOTFS_JFFS2_PAGESIZE
-	hex
-	default 0x420 if BR2_TARGET_ROOTFS_JFFS2_DATAFLASH_1056
-	default 0x210 if BR2_TARGET_ROOTFS_JFFS2_DATAFLASH_528
-	default 0x200 if BR2_TARGET_ROOTFS_JFFS2_NANDFLASH_512_16K
-	default 0x800 if BR2_TARGET_ROOTFS_JFFS2_NANDFLASH_2K_128K
-	default 0x1000 if BR2_TARGET_ROOTFS_JFFS2_FLASH_128
-	default 0x1000 if BR2_TARGET_ROOTFS_JFFS2_FLASH_64
-	default BR2_TARGET_ROOTFS_JFFS2_CUSTOM_PAGESIZE if BR2_TARGET_ROOTFS_JFFS2_CUSTOM
-
 config BR2_TARGET_ROOTFS_JFFS2_EBSIZE
 	hex
 	default 0x2100 if BR2_TARGET_ROOTFS_JFFS2_DATAFLASH_1056
 	default 0x1080 if BR2_TARGET_ROOTFS_JFFS2_DATAFLASH_528
-	default 0x4000 if BR2_TARGET_ROOTFS_JFFS2_NANDFLASH_512_16K
-	default 0x20000 if BR2_TARGET_ROOTFS_JFFS2_NANDFLASH_2K_128K
+	default 0x4000 if BR2_TARGET_ROOTFS_JFFS2_NANDFLASH_16K
+	default 0x20000 if BR2_TARGET_ROOTFS_JFFS2_NANDFLASH_128K
 	default 0x20000 if BR2_TARGET_ROOTFS_JFFS2_FLASH_128
 	default 0x10000 if BR2_TARGET_ROOTFS_JFFS2_FLASH_64
 	default BR2_TARGET_ROOTFS_JFFS2_CUSTOM_EBSIZE if BR2_TARGET_ROOTFS_JFFS2_CUSTOM
@@ -74,8 +57,8 @@ config BR2_TARGET_ROOTFS_JFFS2_NOCLEANMARKER
 	bool "Do not use Cleanmarker"
 	default y if BR2_TARGET_ROOTFS_JFFS2_DATAFLASH_1056
 	default y if BR2_TARGET_ROOTFS_JFFS2_DATAFLASH_528
-	default y if BR2_TARGET_ROOTFS_JFFS2_NANDFLASH_512_16K
-	default y if BR2_TARGET_ROOTFS_JFFS2_NANDFLASH_2K_128K
+	default y if BR2_TARGET_ROOTFS_JFFS2_NANDFLASH_16K
+	default y if BR2_TARGET_ROOTFS_JFFS2_NANDFLASH_128K
 	help
 	  Do not use cleanmarkers if using NAND flash or Dataflash where
 	  the pagesize is not a power of 2
@@ -107,5 +90,23 @@ config BR2_TARGET_ROOTFS_JFFS2_SUMMARY
 	help
 	  A summarised image can be mounted faster if support is
 	  enabled in the kernel (CONFIG_JFFS2_SUMMARY)
+
+config BR2_TARGET_ROOTFS_JFFS2_USE_CUSTOM_PAGESIZE
+	bool "Select custom virtual memory page size"
+	help
+	  Use a custom virtual memory page size.  Note that this is not related to
+	  the flash memory page size.  Using this option is only needed if Linux is
+	  configured to use a page size different than 4kB.
+
+
+config BR2_TARGET_ROOTFS_JFFS2_CUSTOM_PAGESIZE
+	hex "Virtual memory page size"
+	depends on BR2_TARGET_ROOTFS_JFFS2_USE_CUSTOM_PAGESIZE
+	default 0x1000
+	help
+	  Set to virtual memory page size of target system (in bytes).  This value
+	  should match the virtual page size in Linux (i.e. this should have the
+	  same value as the value of the PAGE_SIZE macro in Linux).  It is not
+	  related to the flash memory page size.
 
 endif
