@@ -1,0 +1,38 @@
+From c561766ab4ee4b3420b72e33fac4a75fb9194430 Mon Sep 17 00:00:00 2001
+From: Min RK <benjaminrk@gmail.com>
+Date: Mon, 16 Feb 2015 14:59:54 -0800
+Subject: [PATCH] allow `--without-libsodium`
+
+and `--with-libsodium=no` to disable linking against libsodium.
+
+Without this patch, it is not possible to disable linking with libsodium present on the default path.
+
+Backport from upstream commit
+faaf4550263395b84e6a80d3f9d7ba8816cdd714.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ configure.ac | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index 194fcb2..3d5f6d6 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -257,7 +257,12 @@ esac
+ # Checks for libraries
+ AC_CHECK_LIB([pthread], [pthread_create])
+ AC_CHECK_LIB([rt], [clock_gettime])
+-AC_CHECK_LIB([sodium], [sodium_init],,AC_MSG_WARN(libsodium is needed for CURVE security))
++
++if test "x$with_libsodium" != "xno"; then
++    AC_CHECK_LIB([sodium], [sodium_init],,AC_MSG_WARN(libsodium is needed for CURVE security))
++else
++    AC_MSG_WARN(libsodium is needed for CURVE security)
++fi
+ 
+ #
+ # Check if the compiler supports -fvisibility=hidden flag. MinGW32 uses __declspec
+-- 
+2.4.5
+
