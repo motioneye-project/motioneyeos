@@ -1,0 +1,22 @@
+Use correct dependency in Makefile.am
+
+Depending on a libtool library should be done using the .la name, not on
+the object file.
+
+Fixes hard-to-reproduce parallel build failures, like so:
+    http://autobuild.buildroot.org/results/aed/aed3690689b60844e3278626da3c3eb75f2a2586/build-end.log
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+
+diff -durN sqlite-3081000.orig/Makefile.am sqlite-3081000/Makefile.am
+--- sqlite-3081000.orig/Makefile.am	2015-05-07 16:59:22.000000000 +0200
++++ sqlite-3081000/Makefile.am	2015-05-20 23:30:03.878784079 +0200
+@@ -7,7 +7,7 @@
+ 
+ bin_PROGRAMS = sqlite3
+ sqlite3_SOURCES = shell.c sqlite3.h
+-sqlite3_LDADD = sqlite3.$(OBJEXT) @READLINE_LIBS@
++sqlite3_LDADD = libsqlite3.la @READLINE_LIBS@
+ 
+ include_HEADERS = sqlite3.h sqlite3ext.h
+ 
