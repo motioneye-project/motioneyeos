@@ -174,7 +174,6 @@ define QT5BASE_CONFIGURE_CMDS
 		PKG_CONFIG_LIBDIR="$(STAGING_DIR)/usr/lib/pkgconfig" \
 		PKG_CONFIG_SYSROOT_DIR="$(STAGING_DIR)" \
 		MAKEFLAGS="$(MAKEFLAGS) -j$(PARALLEL_JOBS)" \
-		$(QT5BASE_CONFIGURE_ENV) \
 		./configure \
 		-v \
 		-prefix /usr \
