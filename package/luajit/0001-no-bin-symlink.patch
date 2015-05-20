@@ -1,4 +1,4 @@
-Do not use a symlink for the binary, simply name if luajit
+Do not use a symlink for the binary, simply name it luajit
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 
