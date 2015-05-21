@@ -40,6 +40,13 @@ else
 DOVECOT_CONF_OPTS += --without-bzlib
 endif
 
+ifeq ($(BR2_PACKAGE_ICU),y)
+DOVECOT_CONF_OPTS += --with-icu
+DOVECOT_DEPENDENCIES += icu
+else
+DOVECOT_CONF_OPTS += --without-icu
+endif
+
 ifeq ($(BR2_PACKAGE_LIBCAP),y)
 DOVECOT_CONF_OPTS += --with-libcap
 DOVECOT_DEPENDENCIES += libcap
