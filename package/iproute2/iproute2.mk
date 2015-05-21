@@ -7,7 +7,7 @@
 IPROUTE2_VERSION = 4.0.0
 IPROUTE2_SOURCE = iproute2-$(IPROUTE2_VERSION).tar.xz
 IPROUTE2_SITE = $(BR2_KERNEL_MIRROR)/linux/utils/net/iproute2
-IPROUTE2_DEPENDENCIES = host-bison host-flex
+IPROUTE2_DEPENDENCIES = host-bison host-flex host-pkgconf
 IPROUTE2_LICENSE = GPLv2
 IPROUTE2_LICENSE_FILES = COPYING
 
@@ -23,7 +23,6 @@ IPROUTE2_DEPENDENCIES += iptables
 define IPROUTE2_WITH_IPTABLES
 	# Makefile is busted so it never passes IPT_LIB_DIR properly
 	$(SED) "s/-DIPT/-DXT/" $(IPROUTE2_DIR)/tc/Makefile
-	echo "TC_CONFIG_XT:=y" >>$(IPROUTE2_DIR)/Config
 endef
 else
 define IPROUTE2_WITH_IPTABLES
@@ -53,7 +52,6 @@ define IPROUTE2_CONFIGURE_CMDS
 	$(SED) 's/gcc/$$CC $$CFLAGS/g' $(@D)/configure
 	cd $(@D) && $(TARGET_CONFIGURE_OPTS) ./configure
 	$(SED) 's/-Werror//' $(IPROUTE2_DIR)/Makefile
-	echo "IPT_LIB_DIR:=/usr/lib/xtables" >>$(IPROUTE2_DIR)/Config
 	$(IPROUTE2_DISABLE_ARPD)
 	$(IPROUTE2_WITH_IPTABLES)
 endef
