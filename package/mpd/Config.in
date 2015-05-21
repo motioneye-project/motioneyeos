@@ -226,9 +226,13 @@ config BR2_PACKAGE_MPD_AO
 config BR2_PACKAGE_MPD_JACK2
 	bool "jack2"
 	depends on BR2_ARCH_HAS_ATOMICS
+	depends on !BR2_STATIC_LIBS # jack2
 	select BR2_PACKAGE_JACK2
 	help
 	  Enable jack output support.
+
+comment "jack support needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS
 
 config BR2_PACKAGE_MPD_OSS
 	bool "oss"
