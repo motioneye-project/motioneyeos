@@ -13,4 +13,4 @@ config BR2_PACKAGE_LEAFNODE2
 	  For example, you can add this line to inetd.conf:
 	  nntp    stream  tcp     nowait  news    /usr/sbin/leafnode
 
-	  http://www.dt.e-technik.uni-dortmund.de/~ma/leafnode/beta/
+	  http://www.dt.e-technik.tu-dortmund.de/~ma/leafnode/beta

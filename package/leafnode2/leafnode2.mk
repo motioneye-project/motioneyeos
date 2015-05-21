@@ -6,7 +6,7 @@
 
 LEAFNODE2_VERSION = 2.0.0.alpha20140727b
 LEAFNODE2_SOURCE = leafnode-$(LEAFNODE2_VERSION).tar.bz2
-LEAFNODE2_SITE = http://home.pages.de/~mandree/leafnode/beta
+LEAFNODE2_SITE = http://www.dt.e-technik.tu-dortmund.de/~ma/leafnode/beta
 LEAFNODE2_LICENSE = LGPLv2.1
 LEAFNODE2_LICENSE_FILES = COPYING COPYING.LGPL
 LEAFNODE2_DEPENDENCIES = host-pcre pcre
