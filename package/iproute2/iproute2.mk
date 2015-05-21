@@ -18,7 +18,7 @@ IPROUTE2_DEPENDENCIES += busybox
 endif
 
 # If we've got iptables enable xtables support for tc
-ifeq ($(BR2_PACKAGE_IPTABLES),y)
+ifeq ($(BR2_PACKAGE_IPTABLES)x$(BR2_STATIC_LIBS),yx)
 IPROUTE2_DEPENDENCIES += iptables
 define IPROUTE2_WITH_IPTABLES
 	# Makefile is busted so it never passes IPT_LIB_DIR properly
@@ -29,6 +29,7 @@ else
 define IPROUTE2_WITH_IPTABLES
 	# em_ipset needs xtables, but configure misdetects it
 	echo "TC_CONFIG_IPSET:=n" >>$(IPROUTE2_DIR)/Config
+	echo "TC_CONFIG_XT:=n" >>$(IPROUTE2_DIR)/Config
 endef
 endif
 
