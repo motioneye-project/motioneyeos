@@ -10,7 +10,11 @@ config BR2_PACKAGE_FLASHROM
 	depends on BR2_TOOLCHAIN_HAS_THREADS 	# libusb
 	depends on BR2_ARCH_HAS_ATOMICS 	# libftdi
 	help
-	  BIOS-updating utility.
+	  flashrom is a utility for identifying, reading, writing,
+	  verifying and erasing flash chips. It is designed to flash
+	  BIOS/EFI/coreboot/firmware/optionROM images on mainboards,
+	  network/graphics/storage controller cards, and various other
+	  programmer devices.
 
 	  http://flashrom.org/
 
