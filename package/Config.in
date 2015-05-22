@@ -90,6 +90,7 @@ endif
 	source "package/pax-utils/Config.in"
 	source "package/perf/Config.in"
 	source "package/pv/Config.in"
+	source "package/racehound/Config.in"
 	source "package/ramsmp/Config.in"
 	source "package/ramspeed/Config.in"
 	source "package/rt-tests/Config.in"
