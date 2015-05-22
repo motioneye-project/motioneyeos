@@ -21,13 +21,17 @@ ifeq ($(BR2_PACKAGE_GPTFDISK_CGDISK),y)
 GPTFDISK_DEPENDENCIES += ncurses
 endif
 
-ifeq ($(BR2_NEEDS_GETTEXT_IF_LOCALE)$(BR2_STATIC_LIBS),yy)
-GPTFDISK_MAKE_OPTS += LDLIBS=-lintl
+ifeq ($(BR2_STATIC_LIBS),y)
+# gptfdisk dependencies may link against libintl/libiconv, so we need
+# to do so as well when linking statically
+GPTFDISK_LDLIBS = \
+	$(if $(BR2_PACKAGE_GETTEXT),-lintl) \
+	$(if $(BR2_PACKAGE_LIBICONV),-liconv)
 endif
 
 define GPTFDISK_BUILD_CMDS
 	$(TARGET_MAKE_ENV) $(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(@D) \
-		$(GPTFDISK_MAKE_OPTS) $(GPTFDISK_TARGETS_y)
+		LDLIBS='$(GPTFDISK_LDLIBS)' $(GPTFDISK_TARGETS_y)
 endef
 
 define GPTFDISK_INSTALL_TARGET_CMDS
