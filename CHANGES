@@ -1,3 +1,30 @@
+2015.05-rc3, Released May 22nd, 2015
+
+	Several fixes, mainly related to static linking.
+
+	Updated/fixed packages: acl, alsa-utils, apr, armadillo, attr,
+	autoconf-archive, binutils, boost, czmq, dhcpcd, duma,
+	enlightenment, exim, fbterm, freerdp, gcc, gdk-pixbuf,
+	google-breakpad, gpsd, heirloom-mailx, hwloc, ipmiutil,
+	iproute2, jack2, jasper, kmod, lcdproc, leafnode2, libcap-ng,
+	libftdi1, libmatroska, libmemcached, libmodbus, libnftnl,
+	libsigrok, libupnpp, libuv, libxml-parser-perl, linux,
+	linux-headers, lirc-tools, lua-periphery, lxc, mongoose, mono,
+	mpg123, mosquitto, neardal, newt, ntp, ola, openldap, opencv,
+	php, postgresql, protobuf, pulseaudio, python-pyqt, qemu, qt,
+	qt5base, rpi-userland, rsyslog, snmppp, sqlite, tiff,
+	tinyxml2, uboot-tools, unionfs, ux5000-firmware, usbredir,
+	ushare, vpnc, vsftpd, wavpack, wireless_tools, wsapi,
+	wvstreams, xmlstarlet, zeromq, zmqpp
+
+	New packages: c-periphery
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#8106: mkfs.jffs2 uses the --pagesize parameter incorrectly
+	#8111: 2015.05.rc2 LIBFOO_CONF_OPTS not working
+	#8126: exim lacks plaintext and cram-md5 auth
+
 2015.05-rc2, Released May 11th, 2015
 
 	Minor fixes.
