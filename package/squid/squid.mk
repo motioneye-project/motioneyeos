@@ -81,4 +81,12 @@ define SQUID_INSTALL_INIT_SYSV
 		$(TARGET_DIR)/etc/init.d/S97squid
 endef
 
+define SQUID_INSTALL_INIT_SYSTEMD
+	$(INSTALL) -D -m 0644 $(@D)/tools/squid.service \
+		$(TARGET_DIR)/usr/lib/systemd/system/squid.service
+	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
+	ln -sf ../../../..//usr/lib/systemd/system/squid.service \
+		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/squid.service
+endef
+
 $(eval $(autotools-package))
