@@ -190,6 +190,16 @@ define TI_GFX_INSTALL_INIT_SYSV
 		$(TARGET_DIR)/etc/init.d/S80ti-gfx
 endef
 
+define TI_GFX_INSTALL_INIT_SYSTEMD
+	$(INSTALL) -D -m 755 package/ti-gfx/S80ti-gfx \
+		$(TARGET_DIR)/usr/lib/systemd/scripts/ti-gfx
+	$(INSTALL) -D -m 644 package/ti-gfx/ti-gfx.service \
+		$(TARGET_DIR)/usr/lib/systemd/system/ti-gfx.service
+	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
+	ln -sf ../../../../usr/lib/systemd/system/ti-gfx.service \
+		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/ti-gfx.service
+endef
+
 define TI_GFX_INSTALL_TARGET_CMDS
 	$(TI_GFX_INSTALL_KM_CMDS)
 	$(TI_GFX_INSTALL_BINS_CMDS)

@@ -1,0 +1,11 @@
+[Unit]
+Description=TI graphics driver
+
+[Service]
+Type=oneshot
+ExecStart=/usr/lib/systemd/scripts/ti-gfx start
+ExecStop=/usr/lib/systemd/scripts/ti-gfx stop
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
