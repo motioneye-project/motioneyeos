@@ -155,4 +155,20 @@ define SAMBA4_INSTALL_INIT_SYSV
 		$(TARGET_DIR)/etc/init.d/S91smb
 endef
 
+define SAMBA4_INSTALL_INIT_SYSTEMD
+	$(INSTALL) -D -m 644 $(@D)/packaging/systemd/nmb.service \
+		$(TARGET_DIR)/usr/lib/systemd/system/nmb.service
+	$(INSTALL) -D -m 644 $(@D)/packaging/systemd/smb.service \
+		$(TARGET_DIR)/usr/lib/systemd/system/smb.service
+	$(INSTALL) -D -m 644 $(@D)/packaging/systemd/winbind.service \
+		$(TARGET_DIR)/usr/lib/systemd/system/winbind.service
+	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
+	ln -sf ../../../../usr/lib/systemd/system/nmb.service \
+		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/nmb.service
+	ln -sf ../../../../usr/lib/systemd/system/smb.service \
+		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/smb.service
+	ln -sf ../../../../usr/lib/systemd/system/winbind.service \
+		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/winbind.service
+endef
+
 $(eval $(generic-package))
