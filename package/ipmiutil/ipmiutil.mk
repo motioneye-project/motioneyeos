@@ -8,7 +8,7 @@ IPMIUTIL_VERSION = 2.9.5
 IPMIUTIL_SITE = http://sourceforge.net/projects/ipmiutil/files/
 IPMIUTIL_LICENSE = BSD-3c
 IPMIUTIL_LICENSE_FILES = COPYING
-# We're patching configure.ac
+# We're patching configure.ac , lib/Makefile.am and lib/lanplus/Makefile.am
 IPMIUTIL_AUTORECONF = YES
 
 IPMIUTIL_MAKE = $(MAKE1)
