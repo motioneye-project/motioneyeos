@@ -1,0 +1,10 @@
+[Unit]
+Description=Task scheduler daemon
+After=syslog.target
+
+[Service]
+ExecStart=/usr/sbin/crond -f -S
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
