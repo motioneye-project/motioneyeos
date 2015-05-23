@@ -1,0 +1,10 @@
+[Unit]
+Description=Process Control System
+After=syslog.target
+
+[Service]
+ExecStart=/usr/bin/supervisord -n
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
