@@ -103,6 +103,14 @@ define MYSQL_INSTALL_INIT_SYSV
 		$(TARGET_DIR)/etc/init.d/S97mysqld
 endef
 
+define MYSQL_INSTALL_INIT_SYSTEMD
+	$(INSTALL) -D -m 644 package/mysql/mysqld.service \
+		$(TARGET_DIR)/usr/lib/systemd/system/mysqld.service
+	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
+	ln -sf ../../../../usr/lib/systemd/system/mysqld.service \
+		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/mysqld.service
+endef
+
 else
 MYSQL_CONF_OPTS += \
 	--without-server
