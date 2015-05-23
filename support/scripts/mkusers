@@ -318,6 +318,9 @@ add_one_user() {
         *)  fail "home must be an absolute path\n";;
     esac
     case "${passwd}" in
+        -)
+            _passwd=""
+            ;;
         !=*)
             _passwd='!'"$( encode_password "${passwd#!=}" )"
             ;;

@@ -31,7 +31,8 @@ Where:
   then login is disabled. If prefixed with +=+, then it is interpreted
   as clear-text, and will be crypt-encoded (using MD5). If prefixed with
   +!=+, then the password will be crypt-encoded (using MD5) and login
-  will be disabled. If set to +*+, then login is not allowed.
+  will be disabled. If set to +*+, then login is not allowed. If set to 
+  +-+, then no password value will be set.
 - +home+ is the desired home directory for the user. If set to '-', no
   home directory will be created, and the user's home will be +/+.
   Explicitly setting +home+ to +/+ is not allowed.
