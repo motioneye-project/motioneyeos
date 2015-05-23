@@ -1,0 +1,10 @@
+[Unit]
+Description=Precision Time Protocol daemon
+After=syslog.target network.target
+
+[Service]
+ExecStart=/usr/sbin/ptpd2 -C -g
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
