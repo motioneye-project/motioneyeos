@@ -40,4 +40,12 @@ define OLSR_INSTALL_INIT_SYSV
 		$(TARGET_DIR)/etc/init.d/S50olsr
 endef
 
+define OLSR_INSTALL_INIT_SYSTEMD
+	$(INSTALL) -D -m 644 package/olsr/olsr.service \
+		$(TARGET_DIR)/usr/lib/systemd/system/olsr.service
+	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
+	ln -sf ../../../../usr/lib/systemd/system/olsr.service \
+		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/olsr.service
+endef
+
 $(eval $(generic-package))
