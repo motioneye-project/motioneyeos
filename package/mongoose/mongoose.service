@@ -1,0 +1,10 @@
+[Unit]
+Description=Mongoose HTTP server
+After=network.target
+
+[Service]
+ExecStart=/usr/sbin/mongoose -document_root /var/www -listening_port 80
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

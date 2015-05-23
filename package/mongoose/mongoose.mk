@@ -36,6 +36,14 @@ define MONGOOSE_INSTALL_INIT_SYSV
 		$(TARGET_DIR)/etc/init.d/S85mongoose
 endef
 
+define MONGOOSE_INSTALL_INIT_SYSTEMD
+	$(INSTALL) -D -m 644 package/mongoose/mongoose.service \
+		$(TARGET_DIR)/usr/lib/systemd/system/mongoose.service
+	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
+	ln -sf ../../../../usr/lib/systemd/system/mongoose.service \
+		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/mongoose.service
+endef
+
 define MONGOOSE_INSTALL_STAGING_CMDS
 	$(INSTALL) -D -m 644 $(@D)/libmongoose.a \
 		$(STAGING_DIR)/usr/lib/libmongoose.a
