@@ -19,6 +19,13 @@ define RPI_USERLAND_INSTALL_INIT_SYSV
 	$(INSTALL) -m 0755 -D package/rpi-userland/S94vcfiled \
 		$(TARGET_DIR)/etc/init.d/S94vcfiled
 endef
+define RPI_USERLAND_INSTALL_INIT_SYSTEMD
+	$(INSTALL) -D -m 644 package/rpi-userland/vcfiled.service \
+		$(TARGET_DIR)/usr/lib/systemd/system/vcfiled.service
+	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
+	ln -sf ../../../../usr/lib/systemd/system/vcfiled.service \
+		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/vcfiled.service
+endef
 endif
 
 define RPI_USERLAND_POST_TARGET_CLEANUP
