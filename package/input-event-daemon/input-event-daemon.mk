@@ -27,4 +27,12 @@ define INPUT_EVENT_DAEMON_INSTALL_INIT_SYSV
 		$(TARGET_DIR)/etc/init.d/S99input-event-daemon
 endef
 
+define INPUT_EVENT_DAEMON_INSTALL_INIT_SYSTEMD
+	$(INSTALL) -D -m 644 package/input-event-daemon/input-event-daemon.service \
+		$(TARGET_DIR)/usr/lib/systemd/system/input-event-daemon.service
+	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
+	ln -sf /usr/lib/systemd/system/input-event-daemon.service \
+		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/input-event-daemon.service
+endef
+
 $(eval $(generic-package))
