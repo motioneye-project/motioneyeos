@@ -1,0 +1,10 @@
+[Unit]
+Description=Exim MTA
+After=syslog.target network.target
+
+[Service]
+ExecStart=/usr/bin/exim -bdf
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
