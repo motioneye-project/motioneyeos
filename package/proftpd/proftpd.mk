@@ -55,4 +55,12 @@ define PROFTPD_INSTALL_INIT_SYSV
 	$(INSTALL) -D -m 0755 package/proftpd/S50proftpd $(TARGET_DIR)/etc/init.d/S50proftpd
 endef
 
+define PROFTPD_INSTALL_INIT_SYSTEMD
+	$(INSTALL) -D -m 644 package/proftpd/proftpd.service \
+		$(TARGET_DIR)/usr/lib/systemd/system/proftpd.service
+	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
+	ln -sf ../../../../usr/lib/systemd/system/proftpd.service \
+		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/proftpd.service
+endef
+
 $(eval $(autotools-package))
