@@ -213,6 +213,13 @@ endif
 ifeq ($(BR2_PACKAGE_PCRE),y)
 PHP_CONF_OPTS += --with-pcre-regex=$(STAGING_DIR)/usr
 PHP_DEPENDENCIES += pcre
+else
+# The bundled pcre library is not configurable through ./configure options,
+# and by default is configured to be thread-safe, so it wants pthreads. So
+# we must explicitly tell it when we don't have threads.
+ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),)
+PHP_CFLAGS += -DSLJIT_SINGLE_THREADED=1
+endif
 endif
 
 ifeq ($(BR2_PACKAGE_PHP_EXT_CURL),y)
