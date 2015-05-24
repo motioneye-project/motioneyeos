@@ -33,27 +33,27 @@ to the Buildroot output directory.
 Some examples:
 
 -----
- buildroot/ $ make BR2_EXTERNAL=/path/to/foobar menuconfig
+buildroot/ $ make BR2_EXTERNAL=/path/to/foobar menuconfig
 -----
 
 From now on, external definitions from the +/path/to/foobar+
 directory will be used:
 
 -----
- buildroot/ $ make
- buildroot/ $ make legal-info
+buildroot/ $ make
+buildroot/ $ make legal-info
 -----
 
 We can switch to another external definitions directory at any time:
 
 -----
- buildroot/ $ make BR2_EXTERNAL=/where/we/have/barfoo xconfig
+buildroot/ $ make BR2_EXTERNAL=/where/we/have/barfoo xconfig
 -----
 
 Or disable the usage of external definitions:
 
 -----
- buildroot/ $ make BR2_EXTERNAL= xconfig
+buildroot/ $ make BR2_EXTERNAL= xconfig
 -----
 
 +BR2_EXTERNAL+ allows three different things:
