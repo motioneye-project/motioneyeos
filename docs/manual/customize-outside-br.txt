@@ -25,7 +25,8 @@ there is no need to pass +BR2_EXTERNAL+ at every +make+ invocation. It
 can however be changed at any time by passing a new value, and can be
 removed by passing an empty value.
 
-*Note:* the +BR2_EXTERNAL+ path can be either an absolute or a relative path,
+.Note
+The +BR2_EXTERNAL+ path can be either an absolute or a relative path,
 but if it's passed as a relative path, it is important to note that it
 is interpreted relative to the main Buildroot source directory, *not*
 to the Buildroot output directory.
@@ -75,7 +76,10 @@ buildroot/ $ make BR2_EXTERNAL= xconfig
    logic. Buildroot automatically includes +$(BR2_EXTERNAL)/Config.in+ to
    make it appear in the top-level configuration menu, and includes
    +$(BR2_EXTERNAL)/external.mk+ with the rest of the makefile logic.
-   Providing those two files is mandatory, but they can be empty.
++
+.Note
+Providing +Config.in+ and +external.mk+ is mandatory, but they can be
+   empty.
 +
 The main usage of this is to store package recipes. The recommended
    way to do this is to write a +$(BR2_EXTERNAL)/Config.in+ file that
