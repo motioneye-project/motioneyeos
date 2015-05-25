@@ -24,9 +24,15 @@ endif
 ifeq ($(BR2_STATIC_LIBS),y)
 # gptfdisk dependencies may link against libintl/libiconv, so we need
 # to do so as well when linking statically
-GPTFDISK_LDLIBS = \
-	$(if $(BR2_PACKAGE_GETTEXT),-lintl) \
-	$(if $(BR2_PACKAGE_LIBICONV),-liconv)
+ifeq ($(BR2_PACKAGE_GETTEXT),y)
+GPTFDISK_DEPENDENCIES += gettext
+GPTFDISK_LDLIBS += -lintl
+endif
+
+ifeq ($(BR2_PACKAGE_LIBICONV),y)
+GPTFDISK_DEPENDENCIES += libiconv
+GPTFDISK_LDLIBS += -liconv
+endif
 endif
 
 define GPTFDISK_BUILD_CMDS
