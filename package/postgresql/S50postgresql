@@ -13,7 +13,7 @@ fi
 
 start() {
 	echo -n "Starting postgresql: "
-	su - postgres -c '/usr/bin/pg_ctl start -D /var/lib/pgsql -l logfile'
+	su - postgres -c '/usr/bin/pg_ctl start -w -D /var/lib/pgsql -l logfile'
 	echo "OK"
 }
 stop() {
