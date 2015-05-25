@@ -51,7 +51,6 @@ endif
 define IPROUTE2_CONFIGURE_CMDS
 	$(SED) 's/gcc/$$CC $$CFLAGS/g' $(@D)/configure
 	cd $(@D) && $(TARGET_CONFIGURE_OPTS) ./configure
-	$(SED) 's/-Werror//' $(IPROUTE2_DIR)/Makefile
 	$(IPROUTE2_DISABLE_ARPD)
 	$(IPROUTE2_WITH_IPTABLES)
 endef
