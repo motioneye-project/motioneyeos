@@ -1,0 +1,49 @@
+if itest.s a$bootfile == a; then
+        bootfile=u-boot.imx
+fi
+
+setenv stdout serial,vga
+echo "check U-Boot" ;
+setenv offset 0x400
+if ${fs}load ${dtype} ${disk}:1 12000000 $bootfile || ${fs}load ${dtype} ${disk}:1 12000000 u-boot.nopadding ; then
+      echo "read $filesize bytes from SD card" ;
+      if sf probe || sf probe || \
+	 sf probe 1 27000000 || sf probe 1 27000000 ; then
+	   echo "probed SPI ROM" ;
+	   if sf read 0x12400000 $offset $filesize ; then
+	       if cmp.b 0x12000000 0x12400000 $filesize ; then
+		   echo "------- U-Boot versions match" ;
+	       else
+		   echo "Need U-Boot upgrade" ;
+		   echo "Program in 5 seconds" ;
+		   for n in 5 4 3 2 1 ; do
+			echo $n ;
+			sleep 1 ;
+		   done
+		   echo "erasing" ;
+		   sf erase 0 0xC0000 ;
+		   # two steps to prevent bricking
+		   echo "programming" ;
+		   sf write 0x12000000 $offset $filesize ;
+		   echo "verifying" ;
+		   if sf read 0x12400000 $offset $filesize ; then
+		       if cmp.b 0x12000000 0x12400000 $filesize ; then
+			   while echo "---- U-Boot upgraded. reset" ; do
+				sleep 120
+			   done
+		       else
+			   echo "Read verification error" ;
+		       fi
+		   else
+			echo "Error re-reading EEPROM" ;
+		   fi
+	       fi
+	   else
+	       echo "Error reading boot loader from EEPROM" ;
+	   fi
+      else
+	   echo "Error initializing EEPROM" ;
+      fi ;
+else
+     echo "No U-Boot image found on SD card" ;
+fi
