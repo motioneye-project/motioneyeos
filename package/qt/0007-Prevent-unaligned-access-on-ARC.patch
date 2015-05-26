@@ -1,0 +1,92 @@
+From 9392d29bf0ad0390c6895933fdec0f690d2bdedf Mon Sep 17 00:00:00 2001
+From: Alexey Brodkin <abrodkin@synopsys.com>
+Date: Wed, 20 May 2015 10:53:59 +0300
+Subject: [PATCH 2/2] Prevent unaligned access on ARC
+
+As many other architectures ARC cores by default don't support
+unaligned word access to data.
+
+Even though it's possible to enable unaligned access to data in
+ARC HS38 core (we're talking about configuration of core design)
+to make sure Qt could be executed on any flavour of ARC fall-back
+to byte-accesses is used.
+
+Change-Id: I96068d40b449f11ba987ed1e5d5e44f493d1eb5f
+
+This patch was submited in upstream Qt4 and if it ever gets accepted,
+it should be removed from Buildroot.
+
+https://codereview.qt-project.org/#/c/112668
+---
+ src/3rdparty/webkit/Source/JavaScriptCore/runtime/UString.h |  2 +-
+ src/3rdparty/webkit/Source/JavaScriptCore/wtf/Platform.h    | 13 ++++++++++++-
+ .../webkit/Source/JavaScriptCore/wtf/text/AtomicString.cpp  |  2 +-
+ .../webkit/Source/JavaScriptCore/wtf/text/StringHash.h      |  2 +-
+ 4 files changed, 15 insertions(+), 4 deletions(-)
+
+diff --git a/src/3rdparty/webkit/Source/JavaScriptCore/runtime/UString.h b/src/3rdparty/webkit/Source/JavaScriptCore/runtime/UString.h
+index 2d76809..ee9b7f0 100644
+--- a/src/3rdparty/webkit/Source/JavaScriptCore/runtime/UString.h
++++ b/src/3rdparty/webkit/Source/JavaScriptCore/runtime/UString.h
+@@ -202,7 +202,7 @@ struct UStringHash {
+ 
+         // FIXME: perhaps we should have a more abstract macro that indicates when
+         // going 4 bytes at a time is unsafe
+-#if CPU(ARM) || CPU(SH4) || CPU(MIPS) || CPU(SPARC)
++#if CPU(ARM) || CPU(SH4) || CPU(MIPS) || CPU(SPARC) || CPU(ARC)
+         const UChar* aChars = a->characters();
+         const UChar* bChars = b->characters();
+         for (unsigned i = 0; i != aLength; ++i) {
+diff --git a/src/3rdparty/webkit/Source/JavaScriptCore/wtf/Platform.h b/src/3rdparty/webkit/Source/JavaScriptCore/wtf/Platform.h
+index e8b03be..cd17e9c 100644
+--- a/src/3rdparty/webkit/Source/JavaScriptCore/wtf/Platform.h
++++ b/src/3rdparty/webkit/Source/JavaScriptCore/wtf/Platform.h
+@@ -369,7 +369,18 @@
+ 
+ #endif /* ARM */
+ 
+-#if CPU(ARM) || CPU(MIPS) || CPU(SH4)
++/* CPU(ARC) - ARC, any version*/
++#if   defined(arc) \
++    || defined(__arc__) \
++    || defined(ARC) \
++    || defined(_ARC_)
++#define WTF_CPU_ARC 1
++#if defined(__BIG_ENDIAN__)
++#define WTF_CPU_BIG_ENDIAN 1
++#endif
++#endif
++
++#if CPU(ARM) || CPU(MIPS) || CPU(SH4) || CPU(ARC)
+ #define WTF_CPU_NEEDS_ALIGNED_ACCESS 1
+ #endif
+ 
+diff --git a/src/3rdparty/webkit/Source/JavaScriptCore/wtf/text/AtomicString.cpp b/src/3rdparty/webkit/Source/JavaScriptCore/wtf/text/AtomicString.cpp
+index 9dd655e..bd3ab95 100644
+--- a/src/3rdparty/webkit/Source/JavaScriptCore/wtf/text/AtomicString.cpp
++++ b/src/3rdparty/webkit/Source/JavaScriptCore/wtf/text/AtomicString.cpp
+@@ -142,7 +142,7 @@ static inline bool equal(StringImpl* string, const UChar* characters, unsigned l
+ 
+     // FIXME: perhaps we should have a more abstract macro that indicates when
+     // going 4 bytes at a time is unsafe
+-#if CPU(ARM) || CPU(SH4) || CPU(MIPS) || CPU(SPARC)
++#if CPU(ARM) || CPU(SH4) || CPU(MIPS) || CPU(SPARC) || CPU(ARC)
+     const UChar* stringCharacters = string->characters();
+     for (unsigned i = 0; i != length; ++i) {
+         if (*stringCharacters++ != *characters++)
+diff --git a/src/3rdparty/webkit/Source/JavaScriptCore/wtf/text/StringHash.h b/src/3rdparty/webkit/Source/JavaScriptCore/wtf/text/StringHash.h
+index 4637c3d..91cef81 100644
+--- a/src/3rdparty/webkit/Source/JavaScriptCore/wtf/text/StringHash.h
++++ b/src/3rdparty/webkit/Source/JavaScriptCore/wtf/text/StringHash.h
+@@ -55,7 +55,7 @@ namespace WTF {
+ 
+             // FIXME: perhaps we should have a more abstract macro that indicates when
+             // going 4 bytes at a time is unsafe
+-#if CPU(ARM) || CPU(SH4) || CPU(MIPS) || CPU(SPARC)
++#if CPU(ARM) || CPU(SH4) || CPU(MIPS) || CPU(SPARC) || CPU(ARC)
+             const UChar* aChars = a->characters();
+             const UChar* bChars = b->characters();
+             for (unsigned i = 0; i != aLength; ++i) {
+-- 
+2.1.0
+
