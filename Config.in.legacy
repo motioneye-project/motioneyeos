@@ -107,6 +107,15 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2015.08"
 
+config BR2_PACKAGE_GPU_VIV_BIN_MX6Q
+	bool "gpu-viv-bin-mx6q"
+	select BR2_LEGACY
+	select BR2_PACKAGE_IMX_GPU_VIV
+	help
+	  Vivante graphics libraries have been renamed to
+	  BR2_PACKAGE_IMX_GPU_VIV to be aligned with upstream package
+	  name.
+
 config BR2_PACKAGE_LIBSEMANAGE_PYTHON_BINDINGS
 	depends on BR2_PACKAGE_PYTHON
 	bool "libsemanage python bindings removed"

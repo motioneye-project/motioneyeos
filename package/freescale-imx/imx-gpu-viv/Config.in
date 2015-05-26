@@ -1,9 +1,9 @@
-comment "gpu-viv-bin-mx6q needs an (e)glibc toolchain"
+comment "imx-gpu-viv needs an (e)glibc toolchain"
 	depends on BR2_arm
 	depends on !BR2_TOOLCHAIN_USES_GLIBC
 
-config BR2_PACKAGE_GPU_VIV_BIN_MX6Q
-	bool "gpu-viv-bin-mx6q"
+config BR2_PACKAGE_IMX_GPU_VIV
+	bool "imx-gpu-viv"
 	select BR2_PACKAGE_HAS_LIBEGL
 	select BR2_PACKAGE_HAS_LIBGLES
 	select BR2_PACKAGE_HAS_LIBOPENVG
@@ -21,7 +21,7 @@ config BR2_PACKAGE_GPU_VIV_BIN_MX6Q
 	  This library is provided by Freescale as-is and doesn't have
 	  an upstream.
 
-if BR2_PACKAGE_GPU_VIV_BIN_MX6Q
+if BR2_PACKAGE_IMX_GPU_VIV
 
 choice
 	prompt "Output option"
@@ -30,7 +30,7 @@ choice
 	  direct framebuffer access, one for X11 rendering.
 	  Choose here which version to install.
 
-config BR2_PACKAGE_GPU_VIV_BIN_MX6Q_OUTPUT_X11
+config BR2_PACKAGE_IMX_GPU_VIV_OUTPUT_X11
 	bool "X11"
 	depends on BR2_PACKAGE_XORG7
 	select BR2_PACKAGE_XLIB_LIBXDAMAGE # Runtime dependency
@@ -39,26 +39,26 @@ config BR2_PACKAGE_GPU_VIV_BIN_MX6Q_OUTPUT_X11
 comment "X11 backend needs Xorg package"
 	depends on !BR2_PACKAGE_XORG7
 
-config BR2_PACKAGE_GPU_VIV_BIN_MX6Q_OUTPUT_FB
+config BR2_PACKAGE_IMX_GPU_VIV_OUTPUT_FB
 	bool "Framebuffer"
 
 endchoice
 
-config BR2_PACKAGE_GPU_VIV_BIN_MX6Q_OUTPUT
+config BR2_PACKAGE_IMX_GPU_VIV_OUTPUT
 	string
-	default "x11" if BR2_PACKAGE_GPU_VIV_BIN_MX6Q_OUTPUT_X11
-	default "fb" if BR2_PACKAGE_GPU_VIV_BIN_MX6Q_OUTPUT_FB
+	default "x11" if BR2_PACKAGE_IMX_GPU_VIV_OUTPUT_X11
+	default "fb" if BR2_PACKAGE_IMX_GPU_VIV_OUTPUT_FB
 
 config BR2_PACKAGE_PROVIDES_LIBEGL
-	default "gpu-viv-bin-mx6q"
+	default "imx-gpu-viv"
 
 config BR2_PACKAGE_PROVIDES_LIBGLES
-	default "gpu-viv-bin-mx6q"
+	default "imx-gpu-viv"
 
 config BR2_PACKAGE_PROVIDES_LIBOPENVG
-	default "gpu-viv-bin-mx6q"
+	default "imx-gpu-viv"
 
-config BR2_PACKAGE_GPU_VIV_BIN_MX6Q_EXAMPLES
+config BR2_PACKAGE_IMX_GPU_VIV_EXAMPLES
 	bool "install examples"
 	help
 	  Copy the Vivante examples to the target.

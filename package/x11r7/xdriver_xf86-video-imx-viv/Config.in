@@ -1,6 +1,6 @@
 config BR2_PACKAGE_XDRIVER_XF86_VIDEO_IMX_VIV
 	bool "xf86-video-imx-viv"
-	depends on BR2_PACKAGE_GPU_VIV_BIN_MX6Q_OUTPUT_X11
+	depends on BR2_PACKAGE_IMX_GPU_VIV_OUTPUT_X11
 	select BR2_PACKAGE_MESA3D # Needed in order to compile xorg with glx/dri
 	select BR2_PACKAGE_MESA3D_DRI_DRIVER
 	select BR2_PACKAGE_LIBDRM
@@ -26,6 +26,6 @@ config BR2_PACKAGE_XDRIVER_XF86_VIDEO_IMX_VIV
 	  this driver (else, Xorg will exit with an obscur message like
 	  "Segmentation fault at address 0xc").
 
-comment "xf86-video-imx-viv depends on gpu-viv-bin-mx6q with X11 output"
+comment "xf86-video-imx-viv depends on imx-gpu-viv with X11 output"
 	depends on BR2_arm
-	depends on !BR2_PACKAGE_GPU_VIV_BIN_MX6Q_OUTPUT_X11
+	depends on !BR2_PACKAGE_IMX_GPU_VIV_OUTPUT_X11
