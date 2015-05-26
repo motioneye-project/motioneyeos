@@ -1,13 +1,18 @@
-*******************************************************
-Freescale i.MX6Q and i.MX6DL SABRESD development boards
-*******************************************************
+********************************************************
+Freescale i.MX6 Q, DL and SoloX SABRE development boards
+********************************************************
 
-This file documents the Buildroot support for the Freescale SABRE Board for
-Smart Devices Based on the i.MX 6 Series (SABRESD), as well as the Freescale
-SABRE Board for Automotive Infotainment.
+This file documents the Buildroot support for the Freescale SABRE Board
+for Smart Devices Based on the i.MX 6 and i.MX 6SoloX Series (SABRESD),
+as well as the Freescale SABRE Board for Automotive Infotainment.
 
-Read the SABRESD Quick Start Guide for an introduction to the board:
+Read the i.MX 6 SABRESD Quick Start Guide for an introduction to the
+board:
 http://cache.freescale.com/files/32bit/doc/quick_start_guide/SABRESDB_IMX6_QSG.pdf
+
+Read the i.MX 6 SoloX SABRESD Quick Start Guide for an introduction to
+the board:
+http://cache.freescale.com/files/32bit/doc/user_guide/IMX6SOLOXQSG.pdf
 
 Read the SABRE for Automotive Infotainment Quick Start Guide for an
 introduction to the board:
@@ -25,6 +30,10 @@ For i.MX6DL SABRE SD board:
 
   make freescale_imx6dlsabresd_defconfig
 
+For i.MX6 SoloX SABRE SD board:
+
+  make freescale_imx6sxsabresd_defconfig
+
 For i.MX6Q SABRE Auto board:
 
   make freescale_imx6qsabreauto_defconfig
@@ -38,12 +47,12 @@ Build all components:
   make
 
 You will find in ./output/images/ the following files:
-  - imx6dl-sabresd.dtb or imx6q-sabresd.dtb or imx6q-sabreauto.dtb or
-    imx6dl-sabreauto.dtb
+  - imx6dl-sabresd.dtb or imx6q-sabresd.dtb or imx6sx-sdb.dtb or
+    imx6q-sabreauto.dtb or imx6dl-sabreauto.dtb
   - rootfs.ext2
   - rootfs.tar
   - u-boot.imx
-  - uImage
+  - uImage, or zImage for i.MX6 SoloX
 
 Create a bootable SD card
 =========================
@@ -63,16 +72,42 @@ and copy the bootloader, kernel, DTBs and root filesystem as needed.
 Boot the SABRE board
 ====================
 
-SABRE SD
---------
+i.MX6 SABRE SD
+--------------
 
-To boot your newly created system on a SABRE SD Board (refer to the SABRE SD
-Quick Start Guide for guidance):
+To boot your newly created system on an i.MX6 SABRE SD Board (refer to
+the i.MX6 SABRE SD Quick Start Guide for guidance):
 - insert the SD card in the SD3 slot of the board;
 - locate the BOOT dip switches (SW6), set dips 2 and 7 to ON, all others to OFF;
 - connect a Micro USB cable to Debug Port and connect using a terminal emulator
   at 115200 bps, 8n1;
 - power on the board.
+
+i.MX6 SoloX SABRE SD
+--------------------
+
+To boot your newly created system on an i.MX6 SoloX SABRE SD Board
+(refer to the i.MX6 SoloX SABRE SD Quick Start Guide for guidance):
+- insert the SD card in the J4-SD4 socket at the bottom of the board;
+- Set the SW10, SW11 and SW12 DIP switches at the top of the board in
+  their default position, to boot from SD card. Reference configuration:
+
+    SW10
+     1   2   3   4   5   6   7   8
+    off off off off off off off off
+
+    SW11
+     1   2  3  4  5   6   7   8
+    off off ON ON ON off off off
+
+    SW12
+     1  2   3   4   5   6   7   8
+    off ON off off off off off off
+
+- connect a Micro USB cable to the J16 Debug Port at the bottom of the
+  board. This is a dual UART debug port; connect to the first tty using
+  a terminal emulator at 115200 bps, 8n1;
+- power on the board with the SW1-PWR switch at the top of the board.
 
 SABRE Auto
 ----------
