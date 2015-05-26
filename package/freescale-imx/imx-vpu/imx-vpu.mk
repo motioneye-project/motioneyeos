@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-IMX_VPU_VERSION = $(FREESCALE_IMX_VERSION)
+IMX_VPU_VERSION = 5.4.27
 IMX_VPU_SITE = $(FREESCALE_IMX_SITE)
 IMX_VPU_SOURCE = imx-vpu-$(IMX_VPU_VERSION).bin
 
