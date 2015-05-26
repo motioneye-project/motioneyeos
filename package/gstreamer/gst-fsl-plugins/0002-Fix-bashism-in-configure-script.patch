@@ -25,7 +25,7 @@ index 5968eb6..1a31a06 100755
  fi
  AC_SUBST(VPU_LIBS)
  
-@@ -176,15 +176,15 @@ AC_SUBST(RT_CFLAGS)
+@@ -176,14 +176,14 @@ AC_SUBST(RT_CFLAGS)
  AC_SUBST(RT_LIBS)
  
  FSL_MM_CORE_CFLAGS=`$PKG_CONFIG --cflags libfslaudiocodec 2>/dev/null`
@@ -40,10 +40,8 @@ index 5968eb6..1a31a06 100755
  FSL_MM_CORE_LIBS=`$PKG_CONFIG --libs libfslaudiocodec 2>/dev/null`
 -FSL_MM_CORE_LIBS+=`$PKG_CONFIG --libs libfslvideocodec 2>/dev/null`
 -FSL_MM_CORE_LIBS+=`$PKG_CONFIG --libs libfslparser 2>/dev/null`
--FSL_MM_CORE_LIBS+=`$PKG_CONFIG --libs libfslvpuwrap 2>/dev/null`
 +FSL_MM_CORE_LIBS="$FSL_MM_CORE_LIBS `$PKG_CONFIG --libs libfslvideocodec 2>/dev/null`"
 +FSL_MM_CORE_LIBS="$FSL_MM_CORE_LIBS `$PKG_CONFIG --libs libfslparser 2>/dev/null`"
-+FSL_MM_CORE_LIBS="$FSL_MM_CORE_LIBS `$PKG_CONFIG --libs libfslvpuwrap 2>/dev/null`"
  AC_SUBST(FSL_MM_CORE_LIBS)
  
  EXTRAPLATFORMCFLAGS="-DARM -D_GNUC_"
