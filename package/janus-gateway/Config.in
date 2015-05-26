@@ -10,12 +10,13 @@ config BR2_PACKAGE_JANUS_GATEWAY
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libglib2, libmicrohttpd
 	depends on BR2_USE_WCHAR # libnice -> libglib2
 	depends on BR2_USE_MMU # libnice
+	depends on !BR2_STATIC_LIBS # dlopen
 	help
 	  Janus is an open source, general purpose, WebRTC gateway
 	  designed and developed by Meetecho.
 
 	  https://github.com/meetecho/janus-gateway
 
-comment "janus-gateway needs a toolchain w/ threads, wchar"
+comment "janus-gateway needs a toolchain w/ dynamic library, threads, wchar"
 	depends on BR2_USE_MMU
-	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_USE_WCHAR
+	depends on BR2_STATIC_LIBS || !BR2_TOOLCHAIN_HAS_THREADS || !BR2_USE_WCHAR
