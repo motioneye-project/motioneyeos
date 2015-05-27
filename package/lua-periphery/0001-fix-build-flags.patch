@@ -1,0 +1,21 @@
+Fix build flags to build properly with uClibc
+
+Building with -std=c99 -D_DEFAULT_SOURCE hides the struct timespec and
+nanosleep() definitions from <time.h> in uClibc. Work around that by
+using -std=gnu99 instead.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/lua-periphery/Makefile
+===================================================================
+--- a/lua-periphery/Makefile
++++ b/lua-periphery/Makefile
+@@ -16,7 +16,7 @@
+ 
+ ###########################################################################
+ 
+-CFLAGS += -std=c99 -pedantic -D_DEFAULT_SOURCE
++CFLAGS += -std=gnu99 -pedantic
+ CFLAGS += -Wall -Wextra -Wno-unused-parameter $(DEBUG) -fPIC -I. $(LUA_CFLAGS)
+ LDFLAGS += -shared
+ 
