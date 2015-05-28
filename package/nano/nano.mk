@@ -8,7 +8,9 @@ NANO_VERSION = 2.4.2
 NANO_SITE = $(BR2_GNU_MIRROR)/nano
 NANO_LICENSE = GPLv3+
 NANO_LICENSE_FILES = COPYING
-NANO_CONF_OPTS = --without-slang
+NANO_CONF_OPTS = \
+	--without-slang \
+	--with-wordbounds
 NANO_DEPENDENCIES = ncurses
 
 ifeq ($(BR2_PACKAGE_NCURSES_WCHAR),y)
