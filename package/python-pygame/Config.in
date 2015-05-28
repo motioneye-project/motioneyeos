@@ -1,6 +1,5 @@
 config BR2_PACKAGE_PYTHON_PYGAME
 	bool "python-pygame"
-	depends on BR2_PACKAGE_PYTHON
 	select BR2_PACKAGE_SDL
 	help
 	  Pygame is a cross-platfrom library designed to make it easy to write
