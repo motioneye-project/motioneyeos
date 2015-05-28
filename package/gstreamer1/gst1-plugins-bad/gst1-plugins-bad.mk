@@ -85,6 +85,64 @@ GST1_PLUGINS_BAD_CONF_OPTS += \
 
 GST1_PLUGINS_BAD_DEPENDENCIES = gst1-plugins-base gstreamer1
 
+ifeq ($(BR2_PACKAGE_RPI_USERLAND),y)
+# RPI has odd locations for several required headers.
+GST1_PLUGINS_BAD_CONF_ENV += \
+	CPPFLAGS="$(TARGET_CPPFLAGS) \
+	-I$(STAGING_DIR)/usr/include/IL \
+	-I$(STAGING_DIR)/usr/include/interface/vcos/pthreads \
+	-I$(STAGING_DIR)/usr/include/interface/vmcs_host/linux"
+endif
+
+ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_LIB_OPENGL_OPENGL),y)
+GST1_PLUGINS_BAD_CONF_OPTS += --enable-opengl
+GST1_PLUGINS_BAD_DEPENDENCIES += libgl libglu
+else
+GST1_PLUGINS_BAD_CONF_OPTS += --disable-opengl
+endif
+
+ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_LIB_OPENGL_GLES2),y)
+GST1_PLUGINS_BAD_CONF_OPTS += --enable-gles2
+GST1_PLUGINS_BAD_DEPENDENCIES += libgles
+else
+GST1_PLUGINS_BAD_CONF_OPTS += --disable-gles2
+endif
+
+ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_LIB_OPENGL_GLX),y)
+GST1_PLUGINS_BAD_CONF_OPTS += --enable-glx
+GST1_PLUGINS_BAD_DEPENDENCIES += xproto_glproto xlib_libXrender
+else
+GST1_PLUGINS_BAD_CONF_OPTS += --disable-glx
+endif
+
+ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_LIB_OPENGL_EGL),y)
+GST1_PLUGINS_BAD_CONF_OPTS += --enable-egl
+GST1_PLUGINS_BAD_DEPENDENCIES += libegl
+else
+GST1_PLUGINS_BAD_CONF_OPTS += --disable-egl
+endif
+
+ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_LIB_OPENGL_X11),y)
+GST1_PLUGINS_BAD_CONF_OPTS += --enable-x11
+GST1_PLUGINS_BAD_DEPENDENCIES += xlib_libX11 xlib_libXext
+else
+GST1_PLUGINS_BAD_CONF_OPTS += --disable-x11
+endif
+
+ifneq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_LIB_OPENGL_WAYLAND)$(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_WAYLAND),)
+GST1_PLUGINS_BAD_CONF_OPTS += --enable-wayland
+GST1_PLUGINS_BAD_DEPENDENCIES += wayland
+else
+GST1_PLUGINS_BAD_CONF_OPTS += --disable-wayland
+endif
+
+ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_LIB_OPENGL_DISPMANX),y)
+GST1_PLUGINS_BAD_CONF_OPTS += --enable-dispmanx
+GST1_PLUGINS_BAD_DEPENDENCIES += rpi-userland
+else
+GST1_PLUGINS_BAD_CONF_OPTS += --disable-dispmanx
+endif
+
 ifeq ($(BR2_PACKAGE_ORC),y)
 GST1_PLUGINS_BAD_DEPENDENCIES += orc
 GST1_PLUGINS_BAD_CONF_OPTS += --enable-orc
@@ -578,13 +636,6 @@ else
 GST1_PLUGINS_BAD_CONF_OPTS += --disable-directfb
 endif
 
-ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_WAYLAND),y)
-GST1_PLUGINS_BAD_CONF_OPTS += --enable-wayland
-GST1_PLUGINS_BAD_DEPENDENCIES += wayland
-else
-GST1_PLUGINS_BAD_CONF_OPTS += --disable-wayland
-endif
-
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_FAAD),y)
 GST1_PLUGINS_BAD_CONF_OPTS += --enable-faad
 GST1_PLUGINS_BAD_DEPENDENCIES += faad2
@@ -654,6 +705,12 @@ GST1_PLUGINS_BAD_CONF_OPTS += --enable-rsvg
 GST1_PLUGINS_BAD_DEPENDENCIES += librsvg
 else
 GST1_PLUGINS_BAD_CONF_OPTS += --disable-rsvg
+endif
+
+ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_GL),y)
+GST1_PLUGINS_BAD_CONF_OPTS += --enable-gl
+else
+GST1_PLUGINS_BAD_CONF_OPTS += --disable-gl
 endif
 
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_SDL),y)
