@@ -73,12 +73,6 @@ export BR_NO_CHECK_HASH_FOR =
 # to get all the sources needed for one's build configuration.
 ################################################################################
 
-# Try a shallow clone - but that only works if the version is a ref (tag or
-# branch). Before trying to do a shallow clone we check if $($(PKG)_DL_VERSION)
-# is in the list provided by git ls-remote. If not we fall back on a full clone.
-#
-# Messages for the type of clone used are provided to ease debugging in case of
-# problems
 define DOWNLOAD_GIT
 	$(EXTRA_ENV) $(DL_WRAPPER) -b git \
 		-o $(DL_DIR)/$($(PKG)_SOURCE) \
