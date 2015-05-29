@@ -1,28 +1,16 @@
-Link against math libraries when needed
+Link libfcgi against the math library.
 
-Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Signed-off-by: Thomas Claveirole <thomas.claveirole@green-communications.fr>
 
-Index: b/cgi-fcgi/Makefile.am
+Index: b/libfcgi/Makefile.am
 ===================================================================
---- a/cgi-fcgi/Makefile.am
-+++ b/cgi-fcgi/Makefile.am
-@@ -11,5 +11,5 @@
- LIBDIR      = ../libfcgi
- LIBFCGI     = $(LIBDIR)/libfcgi.la
+--- a/libfcgi/Makefile.am
++++ b/libfcgi/Makefile.am
+@@ -18,6 +18,7 @@
+                      os_@SYSTEM@.c
+ libfcgi_la_CC      = @PTHREAD_CC@
+ libfcgi_la_CFLAGS  = @PTHREAD_CFLAGS@
++libfcgi_la_LIBADD  = -lm
  
--LDADD = $(LIBFCGI)
-+LDADD = $(LIBFCGI) -lm
- cgi_fcgi_SOURCES = $(INCLUDE_FILES) cgi-fcgi.c
-Index: b/examples/Makefile.am
-===================================================================
---- a/examples/Makefile.am
-+++ b/examples/Makefile.am
-@@ -21,7 +21,7 @@
- LIBDIR      = ../libfcgi
- LIBFCGI     = $(LIBDIR)/libfcgi.la
- 
--LDADD = $(LIBFCGI)
-+LDADD = $(LIBFCGI) -lm
- 
- echo_SOURCES       = $(INCLUDE_FILES) echo.c
- echo_x_SOURCES     = $(INCLUDE_FILES) echo-x.c
+ libfcgi___la_SOURCES = $(INCLUDE_FILES)       \
+                        $(INCLUDEDIR)/fcgio.h  \
