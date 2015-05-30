@@ -209,6 +209,10 @@ PHP_DEPENDENCIES += unixodbc
 endif
 endif
 
+define PHP_DISABLE_PCRE_JIT
+	$(SED) '/^#define SUPPORT_JIT/d' $(@D)/ext/pcre/pcrelib/config.h
+endef
+
 ### Use external PCRE if it's available
 ifeq ($(BR2_PACKAGE_PCRE),y)
 PHP_CONF_OPTS += --with-pcre-regex=$(STAGING_DIR)/usr
@@ -219,6 +223,10 @@ else
 # we must explicitly tell it when we don't have threads.
 ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),)
 PHP_CFLAGS += -DSLJIT_SINGLE_THREADED=1
+endif
+# check ext/pcre/pcrelib/sljit/sljitConfigInternal.h for supported archs
+ifeq ($(BR2_i386)$(BR2_x86_64)$(BR2_arm)$(BR2_armeb)$(BR2_aarch64)$(BR2_mips)$(BR2_mipsel)$(BR2_mips64)$(BR2_mips64el)$(BR2_powerpc)$(BR2_sparc),)
+PHP_POST_CONFIGURE_HOOKS += PHP_DISABLE_PCRE_JIT
 endif
 endif
 
