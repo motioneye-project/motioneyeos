@@ -25,6 +25,10 @@ PHP_CONF_ENV = \
 	ac_cv_func_strcasestr=yes \
 	EXTRA_LIBS="$(PHP_EXTRA_LIBS)"
 
+ifeq ($(BR2_STATIC_LIBS),y)
+PHP_CONF_ENV += LIBS="$(PHP_STATIC_LIBS)"
+endif
+
 ifeq ($(BR2_TARGET_LOCALTIME),)
 PHP_LOCALTIME = UTC
 else
@@ -112,9 +116,7 @@ PHP_CONF_OPTS += --with-openssl=$(STAGING_DIR)/usr
 PHP_DEPENDENCIES += openssl
 # openssl needs zlib, but the configure script forgets to link against
 # it causing detection failures with static linking
-ifeq ($(BR2_STATIC_LIBS),y)
-PHP_CONF_ENV += LIBS='-lz'
-endif
+PHP_STATIC_LIBS += $(shell $(PKG_CONFIG_HOST_BINARY) --libs --static openssl)
 endif
 
 ifeq ($(BR2_PACKAGE_PHP_EXT_LIBXML2),y)
@@ -185,6 +187,7 @@ endif
 ifeq ($(BR2_PACKAGE_PHP_EXT_SQLITE),y)
 PHP_CONF_OPTS += --with-sqlite3=$(STAGING_DIR)/usr
 PHP_DEPENDENCIES += sqlite
+PHP_STATIC_LIBS += $(shell $(PKG_CONFIG_HOST_BINARY) --libs --static sqlite3)
 endif
 
 ### PDO
@@ -206,6 +209,9 @@ endif
 ifeq ($(BR2_PACKAGE_PHP_EXT_PDO_UNIXODBC),y)
 PHP_CONF_OPTS += --with-pdo-odbc=unixODBC,$(STAGING_DIR)/usr
 PHP_DEPENDENCIES += unixodbc
+ifeq ($(BR2_STATIC_LIBS)$(BR2_TOOLCHAIN_HAS_THREADS),yy)
+PHP_STATIC_LIBS += -lpthread
+endif
 endif
 endif
 
