@@ -16,7 +16,6 @@ LIBGCRYPT_CONFIG_SCRIPTS = libgcrypt-config
 LIBGCRYPT_CONF_ENV = \
 	ac_cv_sys_symbol_underscore=no
 LIBGCRYPT_CONF_OPTS = \
-	--disable-optimization \
 	--with-gpg-error-prefix=$(STAGING_DIR)/usr
 
 # Code doesn't build in thumb mode
