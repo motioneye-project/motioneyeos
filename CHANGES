@@ -1,3 +1,13 @@
+2015.05, Released May 31st, 2015
+
+	Minor fixes.
+
+	Updated/fixed packages: conntrack-tools, directfb, fio, flite,
+	gptfdisk, ipmiutil, iproute2, janus-gateway, keyutils, knock,
+	libelementary, libgcrypt, libgsasl, libjpeg, libstrophe,
+	lttng-libust, nbd, ncurses, nmap, php, postgresql, python,
+	python3, sconeserver, udpcast, upmpdcli
+
 2015.05-rc3, Released May 22nd, 2015
 
 	Several fixes, mainly related to static linking.
