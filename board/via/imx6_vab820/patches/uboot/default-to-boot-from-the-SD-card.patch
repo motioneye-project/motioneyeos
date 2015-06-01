@@ -1,0 +1,25 @@
+From 6e72bef18c928753c9861c1f6fc8c2c4dd5d1e97 Mon Sep 17 00:00:00 2001
+From: Gergely Imreh <imrehg@gmail.com>
+Date: Thu, 30 Apr 2015 16:24:38 +0800
+Subject: [PATCH] default to boot from the SD card
+
+---
+ include/configs/mx6qvab820_common.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/configs/mx6qvab820_common.h b/include/configs/mx6qvab820_common.h
+index 99bc8a9..2e70c94 100644
+--- a/include/configs/mx6qvab820_common.h
++++ b/include/configs/mx6qvab820_common.h
+@@ -216,7 +216,7 @@
+ 	"bootcmd_mmc=setenv mmcdev 1; setenv rootdev 0; setenv mmcname mmc; run bootcmd_main;\0"
+ 
+ #define CONFIG_BOOTCOMMAND \
+-	"run bootcmd_mmc"
++	"run bootcmd_sd"
+ 
+ #define CONFIG_ARP_TIMEOUT     200UL
+ 
+-- 
+2.3.7
+

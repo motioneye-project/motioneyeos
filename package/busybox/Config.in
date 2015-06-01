@@ -20,6 +20,12 @@ config BR2_PACKAGE_BUSYBOX_CONFIG
 
 	  Most people will just use the default BusyBox configuration file.
 
+config BR2_PACKAGE_BUSYBOX_CONFIG_FRAGMENT_FILES
+	string "Additional BusyBox configuration fragment files"
+	help
+	  A space-separated list of configuration fragment files,
+	  that will be merged to the main BusyBox configuration file.
+
 config BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	bool "Show packages that are also provided by busybox"
 	help
