@@ -105,6 +105,15 @@ comment "----------------------------------------------------"
 endif
 
 ###############################################################################
+comment "Legacy options removed in 2015.08"
+
+config BR2_TARGET_UBOOT_NETWORK
+	bool "U-Boot custom network settings removed"
+	select BR2_LEGACY
+	help
+	  U-Boot's custom network settings options have been removed.
+
+###############################################################################
 comment "Legacy options removed in 2015.05"
 
 config BR2_TARGET_ROOTFS_JFFS2_NANDFLASH_512_16K

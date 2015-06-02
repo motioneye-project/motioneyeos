@@ -192,52 +192,6 @@ config BR2_TARGET_UBOOT_OMAP_IFT_CONFIG
 
 endif
 
-menuconfig BR2_TARGET_UBOOT_NETWORK
-	bool "Custom Network Settings"
-	depends on BR2_DEPRECATED_SINCE_2014_05
-	help
-	  Custom network settings for U-boot
-
-if BR2_TARGET_UBOOT_NETWORK
-
-config BR2_TARGET_UBOOT_SERVERIP
-	string "server ip"
-	default "10.175.196.221"
-	help
-	  TFTP server ip address
-
-config BR2_TARGET_UBOOT_IPADDR
-	string "ip address"
-	default "10.175.196.18"
-	help
-	  Target ip address
-
-config BR2_TARGET_UBOOT_GATEWAY
-	string "gateway ip"
-	default "10.175.196.1"
-	help
-	  Gateway ip address
-
-config BR2_TARGET_UBOOT_NETMASK
-	string "netmask"
-	default "255.255.255.0"
-	help
-	  Network Mask
-
-config BR2_TARGET_UBOOT_ETHADDR
-	string "ethernet address"
-	default "04:25:fe:ed:00:18"
-	help
-	  Target MAC address for the ethernet interface.
-	  This should be changed for production units
-
-config BR2_TARGET_UBOOT_ETH1ADDR
-	string "ethernet 2 address"
-	help
-	  Target MAC address for the second ethernet interface.
-
-endif # BR2_TARGET_UBOOT_NETWORK
-
 config BR2_TARGET_UBOOT_SPL
 	bool "Install U-Boot SPL binary image"
 	depends on !BR2_TARGET_XLOADER
