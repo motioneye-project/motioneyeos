@@ -1345,6 +1345,10 @@ menu "Real-Time"
 	source "package/xenomai/Config.in"
 endmenu
 
+menu "Security"
+	source "package/setools/Config.in"
+endmenu
+
 menu "Shell and utilities"
 comment "Shells"
 if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
