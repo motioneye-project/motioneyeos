@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-DADO_VERSION = 1.5.2-1
+DADO_VERSION = 1.6.0-1
 DADO_LICENSE = MIT
 
 $(eval $(luarocks-package))
