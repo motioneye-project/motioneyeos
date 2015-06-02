@@ -6,7 +6,7 @@ Index: b/Makefile
 ===================================================================
 --- a/Makefile
 +++ b/Makefile
-@@ -42,8 +42,7 @@
+@@ -43,8 +43,7 @@
  INSTALL_MAN= $(INSTALL_SHARE)/man/man1
  INSTALL_PKGCONFIG= $(INSTALL_LIB)/pkgconfig
  
@@ -16,7 +16,7 @@ Index: b/Makefile
  INSTALL_ANAME= libluajit-$(ABIVER).a
  INSTALL_SONAME= libluajit-$(ABIVER).so.$(MAJVER).$(MINVER).$(RELVER)
  INSTALL_SOSHORT= libluajit-$(ABIVER).so
-@@ -57,7 +56,6 @@
+@@ -58,7 +57,6 @@
  INSTALL_SHORT1= $(INSTALL_LIB)/$(INSTALL_SOSHORT)
  INSTALL_SHORT2= $(INSTALL_LIB)/$(INSTALL_SOSHORT)
  INSTALL_T= $(INSTALL_BIN)/$(INSTALL_TNAME)
