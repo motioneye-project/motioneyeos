@@ -372,19 +372,6 @@ config BR2_STRIP_strip
 	  symbols on the target are needed for native debugging, but
 	  not when remote debugging is used.
 
-config BR2_STRIP_sstrip
-	bool "sstrip"
-	select BR2_PACKAGE_SSTRIP_HOST
-	depends on !BR2_PACKAGE_HOST_ELF2FLT
-	depends on BR2_DEPRECATED_SINCE_2014_05
-	help
-	  Binaries and libraries in the target filesystem will be
-	  stripped using the 'sstrip' command, which strips a little
-	  bit more than the traditional 'strip' command. This allows to
-	  save space, mainly by removing debugging symbols. Debugging
-	  symbols on the target are needed for native debugging, but
-	  not when remote debugging is used.
-
 config BR2_STRIP_none
 	bool "none"
 	help
