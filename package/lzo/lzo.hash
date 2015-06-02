@@ -1,2 +1,2 @@
-# Locally calculated
-sha256 ac1b3e4dee46febe9fd28737eb7f5692d3232ef1a01da10444394c3d47536614 lzo-2.08.tar.gz
+# From http://www.oberhumer.com/opensource/lzo/
+sha1 e2a60aca818836181e7e6f8c4f2c323aca6ac057 lzo-2.09.tar.gz

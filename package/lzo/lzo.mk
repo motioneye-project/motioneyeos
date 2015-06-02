@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LZO_VERSION = 2.08
+LZO_VERSION = 2.09
 LZO_SITE = http://www.oberhumer.com/opensource/lzo/download
 LZO_LICENSE = GPLv2+
 LZO_LICENSE_FILES = COPYING
