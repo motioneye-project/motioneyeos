@@ -16,15 +16,5 @@ config BR2_PACKAGE_LIBSEMANAGE
 
 	  http://selinuxproject.org/page/Main_Page
 
-if BR2_PACKAGE_LIBSEMANAGE
-
-config BR2_PACKAGE_LIBSEMANAGE_PYTHON_BINDINGS
-	depends on BR2_PACKAGE_PYTHON
-	bool "python bindings"
-	help
-	  Enable building python bindings
-
-endif
-
 comment "libsemanage needs a toolchain w/ threads, dynamic library"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS

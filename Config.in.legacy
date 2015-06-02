@@ -107,6 +107,13 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2015.08"
 
+config BR2_PACKAGE_LIBSEMANAGE_PYTHON_BINDINGS
+	depends on BR2_PACKAGE_PYTHON
+	bool "libsemanage python bindings removed"
+	help
+	  This option has been removed, since the libsemanage Python
+	  bindings on the target were not useful.
+
 config BR2_TARGET_UBOOT_NETWORK
 	bool "U-Boot custom network settings removed"
 	select BR2_LEGACY
