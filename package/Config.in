@@ -1384,6 +1384,7 @@ endmenu
 menu "System tools"
 	source "package/acl/Config.in"
 	source "package/attr/Config.in"
+	source "package/audit/Config.in"
 if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	source "package/bootutils/Config.in"
 	source "package/coreutils/Config.in"
