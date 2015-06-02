@@ -1,0 +1,3 @@
+# Locally calculated after checking pgp signature
+# ftp://ftp.infradead.org/pub/mtd-utils/mtd-utils-1.5.1.tar.bz2.asc
+sha256 3b2ed1d05f73bd3789a85bebf5072874a72f8daf63552fd44a94e2a9acf1620b mtd-utils-1.5.1.tar.bz2
