@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-AT91BOOTSTRAP3_VERSION = v3.7.1
+AT91BOOTSTRAP3_VERSION = v3.7.2
 AT91BOOTSTRAP3_SITE = $(call github,linux4sam,at91bootstrap,$(AT91BOOTSTRAP3_VERSION))
 AT91BOOTSTRAP3_LICENSE = Atmel License
 AT91BOOTSTRAP3_LICENSE_FILES = main.c
