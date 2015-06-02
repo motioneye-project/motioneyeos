@@ -4,8 +4,15 @@
 #
 ################################################################################
 
-AT91BOOTSTRAP3_VERSION = v3.7.2
+AT91BOOTSTRAP3_VERSION = $(call qstrip,$(BR2_TARGET_AT91BOOTSTRAP3_VERSION))
+
+ifeq ($(BR2_TARGET_AT91BOOTSTRAP3_CUSTOM_GIT),y)
+AT91BOOTSTRAP3_SITE = $(call qstrip,$(BR2_TARGET_AT91BOOTSTRAP3_CUSTOM_REPO_URL))
+AT91BOOTSTRAP3_SITE_METHOD = git
+else
 AT91BOOTSTRAP3_SITE = $(call github,linux4sam,at91bootstrap,$(AT91BOOTSTRAP3_VERSION))
+endif
+
 AT91BOOTSTRAP3_LICENSE = Atmel License
 AT91BOOTSTRAP3_LICENSE_FILES = main.c
 
@@ -57,4 +64,14 @@ ifeq ($(call qstrip,$(BR2_TARGET_AT91BOOTSTRAP3_CUSTOM_CONFIG_FILE)),)
 $(error No at91bootstrap3 configuration file specified, check your BR2_TARGET_AT91BOOTSTRAP3_CUSTOM_CONFIG_FILE setting)
 endif
 endif
+
+ifeq ($(BR2_TARGET_AT91BOOTSTRAP3_CUSTOM_GIT),y)
+ifeq ($(call qstrip,$(BR2_TARGET_AT91BOOTSTRAP3_CUSTOM_REPO_URL)),)
+$(error No custom at91bootstrap3 repository URL specified. Check your BR2_TARGET_AT91BOOTSTRAP3_CUSTOM_REPO_URL setting)
+endif
+ifeq ($(call qstrip,$(BR2_TARGET_AT91BOOTSTRAP3_CUSTOM_REPO_VERSION)),)
+$(error No custom at91bootstrap3 repository version specified. Check your BR2_TARGET_AT91BOOTSTRAP3_CUSTOM_REPO_VERSION setting)
+endif
+endif
+
 endif
