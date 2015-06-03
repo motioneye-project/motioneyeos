@@ -20,6 +20,13 @@ else
 MATCHBOX_PANEL_CONF_OPTS += --disable-startup-notification
 endif
 
+# Using ACPI is only possible on x86 (32- or 64-bit) or AArch64
+ifeq ($(BR2_aarch64)$(BR2_i386)$(BR2_x86_64),y)
+MATCHBOX_PANEL_CONF_OPTS += --enable-acpi-linux
+else
+MATCHBOX_PANEL_CONF_OPTS += --disable-acpi-linux
+endif
+
 ifeq ($(BR2_PACKAGE_WIRELESS_TOOLS),y)
 MATCHBOX_PANEL_DEPENDENCIES += wireless_tools
 endif
