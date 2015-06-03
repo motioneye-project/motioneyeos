@@ -11,14 +11,15 @@ MATCHBOX_LICENSE = GPLv2+
 MATCHBOX_LICENSE_FILES = COPYING
 
 MATCHBOX_DEPENDENCIES = matchbox-lib
-MATCHBOX_CONF_OPTS = --enable-expat --disable-gconf --disable-composite
+MATCHBOX_CONF_OPTS = \
+	--enable-expat \
+	--disable-gconf \
+	--disable-composite \
+	--disable-standalone \
+	--disable-standalone-xft
 
 # Workaround bug in configure script
 MATCHBOX_CONF_ENV = expat=yes
-
-ifeq ($(BR2_PACKAGE_XLIB_LIBXFT),y)
-MATCHBOX_DEPENDENCIES += xlib_libXft
-endif
 
 ifeq ($(BR2_PACKAGE_STARTUP_NOTIFICATION),y)
 MATCHBOX_CONF_OPTS += --enable-startup-notification
