@@ -39,4 +39,8 @@ ifeq ($(BR2_PACKAGE_XLIB_LIBXCURSOR),y)
 MATCHBOX_DEPENDENCIES += xlib_libXcursor
 endif
 
+ifeq ($(BR2_PACKAGE_XLIB_LIBXFIXES),y)
+MATCHBOX_DEPENDENCIES += xlib_libXfixes
+endif
+
 $(eval $(autotools-package))
