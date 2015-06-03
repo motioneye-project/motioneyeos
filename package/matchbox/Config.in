@@ -1,5 +1,5 @@
 config BR2_PACKAGE_MATCHBOX
-	bool "MatchBox Window Manager"
+	bool "matchbox"
 	depends on BR2_PACKAGE_XORG7
 	depends on BR2_USE_MMU # fork()
 	select BR2_PACKAGE_FONTCONFIG

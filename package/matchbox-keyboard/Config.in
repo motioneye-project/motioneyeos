@@ -1,5 +1,5 @@
 config BR2_PACKAGE_MATCHBOX_KEYBOARD
-	bool "Matchbox Virtual Keyboard"
+	bool "matchbox-keyboard"
 	select BR2_PACKAGE_XLIB_LIBXTST
 	select BR2_PACKAGE_XLIB_LIBXFT if !BR2_PACKAGE_CAIRO
 	select BR2_PACKAGE_MATCHBOX_FAKEKEY
