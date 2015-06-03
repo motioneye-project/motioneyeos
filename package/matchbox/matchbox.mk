@@ -35,4 +35,8 @@ else
 MATCHBOX_CONF_OPTS += --disable-session
 endif
 
+ifeq ($(BR2_PACKAGE_XLIB_LIBXCURSOR),y)
+MATCHBOX_DEPENDENCIES += xlib_libXcursor
+endif
+
 $(eval $(autotools-package))
