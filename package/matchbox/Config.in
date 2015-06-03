@@ -18,12 +18,12 @@ config BR2_PACKAGE_MATCHBOX
 
 if BR2_PACKAGE_MATCHBOX
 
-source "package/matchbox/matchbox-lib/Config.in"
-source "package/matchbox/matchbox-panel/Config.in"
-source "package/matchbox/matchbox-desktop/Config.in"
-source "package/matchbox/matchbox-common/Config.in"
-source "package/matchbox/matchbox-fakekey/Config.in"
-source "package/matchbox/matchbox-keyboard/Config.in"
-source "package/matchbox/matchbox-startup-monitor/Config.in"
+source "package/matchbox-common/Config.in"
+source "package/matchbox-desktop/Config.in"
+source "package/matchbox-fakekey/Config.in"
+source "package/matchbox-keyboard/Config.in"
+source "package/matchbox-lib/Config.in"
+source "package/matchbox-panel/Config.in"
+source "package/matchbox-startup-monitor/Config.in"
 
 endif

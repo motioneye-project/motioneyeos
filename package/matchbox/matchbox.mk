@@ -36,6 +36,3 @@ MATCHBOX_CONF_OPTS += --disable-startup-notification
 endif
 
 $(eval $(autotools-package))
-
-# After we called a package infra, we can include more files
-include $(sort $(wildcard package/matchbox/*/*.mk))
