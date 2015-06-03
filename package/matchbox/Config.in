@@ -1,4 +1,4 @@
-config BR2_PACKAGE_MATCHBOX
+menuconfig BR2_PACKAGE_MATCHBOX
 	bool "matchbox"
 	depends on BR2_PACKAGE_XORG7
 	depends on BR2_USE_MMU # fork()
