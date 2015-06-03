@@ -8,6 +8,7 @@ config BR2_PACKAGE_MATCHBOX
 	select BR2_PACKAGE_XLIB_LIBXDAMAGE
 	select BR2_PACKAGE_XLIB_LIBXCURSOR
 	select BR2_PACKAGE_MATCHBOX_LIB
+	select BR2_PACKAGE_MATCHBOX_WM
 	help
 	  Matchbox is an Open Source base environment for the X Window
 	  System running on non-desktop embedded platforms such as
@@ -19,6 +20,7 @@ config BR2_PACKAGE_MATCHBOX
 if BR2_PACKAGE_MATCHBOX
 
 source "package/matchbox/matchbox-lib/Config.in"
+source "package/matchbox/matchbox-wm/Config.in"
 
 config BR2_PACKAGE_MATCHBOX_PANEL
 	bool "Matchbox Panel"
