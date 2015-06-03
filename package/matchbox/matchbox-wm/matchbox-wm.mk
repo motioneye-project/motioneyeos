@@ -25,10 +25,7 @@ endif
 endif
 
 ifeq ($(BR2_PACKAGE_XLIB_LIBXFT),y)
-#MATCHBOX_WM_OPTS += --enable-standalone-xft
 MATCHBOX_WM_DEPENDENCIES += xlib_libXft
-else
-#MATCHBOX_WM_OPTS += --disable-standalone-xft
 endif
 
 ifeq ($(BR2_PACKAGE_STARTUP_NOTIFICATION),y)
