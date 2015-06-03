@@ -11,7 +11,7 @@ MATCHBOX_LICENSE = GPLv2+
 MATCHBOX_LICENSE_FILES = COPYING
 
 MATCHBOX_DEPENDENCIES = matchbox-lib
-MATCHBOX_CONF_OPTS = --enable-expat
+MATCHBOX_CONF_OPTS = --enable-expat --disable-gconf
 
 # Workaround bug in configure script
 MATCHBOX_CONF_ENV = expat=yes
