@@ -27,4 +27,11 @@ else
 MATCHBOX_CONF_OPTS += --disable-startup-notification
 endif
 
+ifeq ($(BR2_PACKAGE_MATCHBOX_SM),y)
+MATCHBOX_CONF_OPTS += --enable-session
+MATCHBOX_DEPENDENCIES += xlib_libSM
+else
+MATCHBOX_CONF_OPTS += --disable-session
+endif
+
 $(eval $(autotools-package))

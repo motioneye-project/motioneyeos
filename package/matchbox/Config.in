@@ -17,6 +17,14 @@ menuconfig BR2_PACKAGE_MATCHBOX
 
 if BR2_PACKAGE_MATCHBOX
 
+config BR2_PACKAGE_MATCHBOX_SM
+	bool "session manager"
+	select BR2_PACKAGE_XLIB_LIBSM
+	help
+	  Enable support for the Session Manager.
+
+comment "matchbox utilities"
+
 source "package/matchbox-common/Config.in"
 source "package/matchbox-desktop/Config.in"
 source "package/matchbox-fakekey/Config.in"
