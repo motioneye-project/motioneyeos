@@ -1,0 +1,9 @@
+config BR2_PACKAGE_MATCHBOX_COMMON
+	bool "Matchbox session common files"
+	depends on BR2_PACKAGE_MATCHBOX_PANEL && BR2_PACKAGE_MATCHBOX_DESKTOP
+	help
+	  Common desktop folders and matchbox-session script.
+
+config BR2_PACKAGE_MATCHBOX_COMMON_PDA
+	bool "PDA style desktop folders"
+	depends on BR2_PACKAGE_MATCHBOX_COMMON

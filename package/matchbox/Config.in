@@ -23,16 +23,7 @@ source "package/matchbox/matchbox-lib/Config.in"
 source "package/matchbox/matchbox-wm/Config.in"
 source "package/matchbox/matchbox-panel/Config.in"
 source "package/matchbox/matchbox-desktop/Config.in"
-
-config BR2_PACKAGE_MATCHBOX_COMMON
-	bool "Matchbox session common files"
-	depends on BR2_PACKAGE_MATCHBOX_PANEL && BR2_PACKAGE_MATCHBOX_DESKTOP
-	help
-	  Common desktop folders and matchbox-session script.
-
-config BR2_PACKAGE_MATCHBOX_COMMON_PDA
-	bool "PDA style desktop folders"
-	depends on BR2_PACKAGE_MATCHBOX_COMMON
+source "package/matchbox/matchbox-common/Config.in"
 
 config BR2_PACKAGE_MATCHBOX_KEYBOARD
 	bool "Matchbox Virtual Keyboard"
