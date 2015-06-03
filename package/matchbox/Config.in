@@ -22,12 +22,7 @@ if BR2_PACKAGE_MATCHBOX
 source "package/matchbox/matchbox-lib/Config.in"
 source "package/matchbox/matchbox-wm/Config.in"
 source "package/matchbox/matchbox-panel/Config.in"
-
-config BR2_PACKAGE_MATCHBOX_DESKTOP
-	bool "Matchbox Desktop"
-	select BR2_PACKAGE_ZLIB
-	help
-	  A PDA style application launcher or 'item browser'.
+source "package/matchbox/matchbox-desktop/Config.in"
 
 config BR2_PACKAGE_MATCHBOX_COMMON
 	bool "Matchbox session common files"
