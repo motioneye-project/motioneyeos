@@ -108,8 +108,8 @@ config BR2_NEEDS_GETTEXT_IF_LOCALE
 	default y if (BR2_NEEDS_GETTEXT && BR2_ENABLE_LOCALE)
 
 config BR2_USE_MMU
-	bool "Enable MMU support" if BR2_arm || BR2_armeb || BR2_sh || BR2_xtensa
-	default y if !BR2_bfin
+	bool "Enable MMU support" if BR2_ARCH_HAS_MMU_OPTIONAL
+	default y if BR2_ARCH_HAS_MMU_OPTIONAL || BR2_ARCH_HAS_MMU_MANDATORY
 	help
 	  If your target has a MMU, you should say Y here.  If you
 	  are unsure, just say Y.

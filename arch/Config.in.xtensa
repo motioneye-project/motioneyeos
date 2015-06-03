@@ -3,8 +3,10 @@ choice
 	depends on BR2_xtensa
 	default BR2_xtensa_fsf
 config BR2_XTENSA_CUSTOM
+	select BR2_ARCH_HAS_MMU_OPTIONAL
 	bool "Custom Xtensa processor configuration"
 config BR2_xtensa_fsf
+	select BR2_ARCH_HAS_MMU_MANDATORY
 	bool "fsf - Default configuration"
 endchoice
 

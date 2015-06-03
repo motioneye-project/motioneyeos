@@ -9,6 +9,12 @@ config BR2_KERNEL_64_USERLAND_32
 config BR2_SOFT_FLOAT
 	bool
 
+config BR2_ARCH_HAS_MMU_MANDATORY
+	bool
+
+config BR2_ARCH_HAS_MMU_OPTIONAL
+	bool
+
 choice
 	prompt "Target Architecture"
 	default BR2_i386
@@ -17,6 +23,7 @@ choice
 
 config BR2_arcle
 	bool "ARC (little endian)"
+	select BR2_ARCH_HAS_MMU_MANDATORY
 	help
 	  Synopsys' DesignWare ARC Processor Cores are a family of 32-bit CPUs
 	  that can be used from deeply embedded to high performance host
@@ -24,6 +31,7 @@ config BR2_arcle
 
 config BR2_arceb
 	bool "ARC (big endian)"
+	select BR2_ARCH_HAS_MMU_MANDATORY
 	help
 	  Synopsys' DesignWare ARC Processor Cores are a family of 32-bit CPUs
 	  that can be used from deeply embedded to high performance host
@@ -31,6 +39,7 @@ config BR2_arceb
 
 config BR2_arm
 	bool "ARM (little endian)"
+	# MMU support is set by the subarchitecture file, arch/Config.in.arm
 	help
 	  ARM is a 32-bit reduced instruction set computer (RISC) instruction
 	  set architecture (ISA) developed by ARM Holdings. Little endian.
@@ -39,6 +48,7 @@ config BR2_arm
 
 config BR2_armeb
 	bool "ARM (big endian)"
+	# MMU support is set by the subarchitecture file, arch/Config.in.arm
 	help
 	  ARM is a 32-bit reduced instruction set computer (RISC) instruction
 	  set architecture (ISA) developed by ARM Holdings. Big endian.
@@ -48,6 +58,7 @@ config BR2_armeb
 config BR2_aarch64
 	bool "AArch64"
 	select BR2_ARCH_IS_64
+	select BR2_ARCH_HAS_MMU_MANDATORY
 	help
 	  Aarch64 is a 64-bit architecture developed by ARM Holdings.
 	  http://www.arm.com/products/processors/instruction-set-architectures/armv8-architecture.php
@@ -63,12 +74,14 @@ config BR2_bfin
 
 config BR2_i386
 	bool "i386"
+	select BR2_ARCH_HAS_MMU_MANDATORY
 	help
 	  Intel i386 architecture compatible microprocessor
 	  http://en.wikipedia.org/wiki/I386
 
 config BR2_m68k
 	bool "m68k"
+	select BR2_ARCH_HAS_MMU_MANDATORY
 	depends on BROKEN # ice in uclibc / inet_ntoa_r
 	help
 	  Motorola 68000 family microprocessor
@@ -76,6 +89,7 @@ config BR2_m68k
 
 config BR2_microblazeel
 	bool "Microblaze AXI (little endian)"
+	select BR2_ARCH_HAS_MMU_MANDATORY
 	help
 	  Soft processor core designed for Xilinx FPGAs from Xilinx. AXI bus
 	  based architecture (little endian)
@@ -84,6 +98,7 @@ config BR2_microblazeel
 
 config BR2_microblazebe
 	bool "Microblaze non-AXI (big endian)"
+	select BR2_ARCH_HAS_MMU_MANDATORY
 	help
 	  Soft processor core designed for Xilinx FPGAs from Xilinx. PLB bus
 	  based architecture (non-AXI, big endian)
@@ -92,6 +107,7 @@ config BR2_microblazebe
 
 config BR2_mips
 	bool "MIPS (big endian)"
+	select BR2_ARCH_HAS_MMU_MANDATORY
 	help
 	  MIPS is a RISC microprocessor from MIPS Technologies. Big endian.
 	  http://www.mips.com/
@@ -99,6 +115,7 @@ config BR2_mips
 
 config BR2_mipsel
 	bool "MIPS (little endian)"
+	select BR2_ARCH_HAS_MMU_MANDATORY
 	help
 	  MIPS is a RISC microprocessor from MIPS Technologies. Little endian.
 	  http://www.mips.com/
@@ -107,6 +124,7 @@ config BR2_mipsel
 config BR2_mips64
 	bool "MIPS64 (big endian)"
 	select BR2_ARCH_IS_64
+	select BR2_ARCH_HAS_MMU_MANDATORY
 	help
 	  MIPS is a RISC microprocessor from MIPS Technologies. Big endian.
 	  http://www.mips.com/
@@ -115,6 +133,7 @@ config BR2_mips64
 config BR2_mips64el
 	bool "MIPS64 (little endian)"
 	select BR2_ARCH_IS_64
+	select BR2_ARCH_HAS_MMU_MANDATORY
 	help
 	  MIPS is a RISC microprocessor from MIPS Technologies. Little endian.
 	  http://www.mips.com/
@@ -122,6 +141,7 @@ config BR2_mips64el
 
 config BR2_nios2
 	bool "Nios II"
+	select BR2_ARCH_HAS_MMU_MANDATORY
 	help
 	  Nios II is a soft core processor from Altera Corporation.
 	  http://www.altera.com/
@@ -129,6 +149,7 @@ config BR2_nios2
 
 config BR2_powerpc
 	bool "PowerPC"
+	select BR2_ARCH_HAS_MMU_MANDATORY
 	help
 	  PowerPC is a RISC architecture created by Apple-IBM-Motorola alliance.
 	  Big endian.
@@ -138,6 +159,7 @@ config BR2_powerpc
 config BR2_powerpc64
 	bool "PowerPC64 (big endian)"
 	select BR2_ARCH_IS_64
+	select BR2_ARCH_HAS_MMU_MANDATORY
 	help
 	  PowerPC is a RISC architecture created by Apple-IBM-Motorola alliance.
 	  Big endian.
@@ -147,6 +169,7 @@ config BR2_powerpc64
 config BR2_powerpc64le
 	bool "PowerPC64 (little endian)"
 	select BR2_ARCH_IS_64
+	select BR2_ARCH_HAS_MMU_MANDATORY
 	help
 	  PowerPC is a RISC architecture created by Apple-IBM-Motorola alliance.
 	  Little endian.
@@ -155,6 +178,7 @@ config BR2_powerpc64le
 
 config BR2_sh
 	bool "SuperH"
+	select BR2_ARCH_HAS_MMU_OPTIONAL
 	help
 	  SuperH (or SH) is a 32-bit reduced instruction set computer (RISC)
 	  instruction set architecture (ISA) developed by Hitachi.
@@ -164,6 +188,7 @@ config BR2_sh
 config BR2_sh64
 	bool "SuperH64"
 	depends on BR2_DEPRECATED_SINCE_2015_05
+	select BR2_ARCH_HAS_MMU_MANDATORY
 	help
 	  SuperH64 (or SH) is a 64-bit reduced instruction set computer (RISC)
 	  instruction set architecture (ISA) developed by Hitachi.
@@ -172,6 +197,7 @@ config BR2_sh64
 
 config BR2_sparc
 	bool "SPARC"
+	select BR2_ARCH_HAS_MMU_MANDATORY
 	help
 	  SPARC (from Scalable Processor Architecture) is a RISC instruction
 	  set architecture (ISA) developed by Sun Microsystems.
@@ -181,6 +207,7 @@ config BR2_sparc
 config BR2_x86_64
 	bool "x86_64"
 	select BR2_ARCH_IS_64
+	select BR2_ARCH_HAS_MMU_MANDATORY
 	help
 	  x86-64 is an extension of the x86 instruction set (Intel i386
 	  architecture compatible microprocessor).
@@ -188,6 +215,7 @@ config BR2_x86_64
 
 config BR2_xtensa
 	bool "Xtensa"
+	# MMU support is set by the subarchitecture file, arch/Config.in.xtensa
 	help
 	  Xtensa is a Tensilica processor IP architecture.
 	  http://en.wikipedia.org/wiki/Xtensa
