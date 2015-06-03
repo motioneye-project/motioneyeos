@@ -26,5 +26,6 @@ source "package/matchbox/matchbox-desktop/Config.in"
 source "package/matchbox/matchbox-common/Config.in"
 source "package/matchbox/matchbox-fakekey/Config.in"
 source "package/matchbox/matchbox-keyboard/Config.in"
+source "package/matchbox/matchbox-startup-monitor/Config.in"
 
 endif
