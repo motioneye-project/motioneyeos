@@ -11,18 +11,10 @@ MATCHBOX_LICENSE = GPLv2+
 MATCHBOX_LICENSE_FILES = COPYING
 
 MATCHBOX_DEPENDENCIES = matchbox-lib
-MATCHBOX_CONF_OPTS = --enable-expat --disable-gconf
+MATCHBOX_CONF_OPTS = --enable-expat --disable-gconf --disable-composite
 
 # Workaround bug in configure script
 MATCHBOX_CONF_ENV = expat=yes
-
-ifeq ($(BR2_PACKAGE_X11R7_LIBXCOMPOSITE),y)
-ifeq ($(BR2_PACKAGE_X11R7_LIBXPM),y)
-MATCHBOX_CONF_OPTS += --enable-composite
-MATCHBOX_DEPENDENCIES += xlib_libXcomposite
-MATCHBOX_DEPENDENCIES += xlib_libXpm
-endif
-endif
 
 ifeq ($(BR2_PACKAGE_XLIB_LIBXFT),y)
 MATCHBOX_DEPENDENCIES += xlib_libXft
