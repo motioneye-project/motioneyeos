@@ -14,6 +14,8 @@ MATCHBOX_COMMON_DEPENDENCIES = matchbox-lib
 
 ifeq ($(strip $(BR2_PACKAGE_MATCHBOX_COMMON_PDA)),y)
 MATCHBOX_COMMON_CONF_OPTS += --enable-pda-folders
+else
+MATCHBOX_COMMON_CONF_OPTS += --disable-pda-folders
 endif
 
 $(eval $(autotools-package))
