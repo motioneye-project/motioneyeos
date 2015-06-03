@@ -21,12 +21,7 @@ if BR2_PACKAGE_MATCHBOX
 
 source "package/matchbox/matchbox-lib/Config.in"
 source "package/matchbox/matchbox-wm/Config.in"
-
-config BR2_PACKAGE_MATCHBOX_PANEL
-	bool "Matchbox Panel"
-	help
-	  A flexible always present 'window bar' for holding
-	  application launchers.
+source "package/matchbox/matchbox-panel/Config.in"
 
 config BR2_PACKAGE_MATCHBOX_DESKTOP
 	bool "Matchbox Desktop"
