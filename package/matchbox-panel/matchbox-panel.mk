@@ -27,7 +27,7 @@ else
 MATCHBOX_PANEL_CONF_OPTS += --disable-acpi-linux
 endif
 
-ifeq ($(BR2_PACKAGE_WIRELESS_TOOLS),y)
+ifeq ($(BR2_PACKAGE_WIRELESS_TOOLS_LIB),y)
 MATCHBOX_PANEL_DEPENDENCIES += wireless_tools
 endif
 
