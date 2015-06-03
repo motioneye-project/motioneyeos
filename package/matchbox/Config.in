@@ -15,7 +15,7 @@ config BR2_PACKAGE_MATCHBOX
 	  handhelds, set-top boxes, kiosks and anything else for which
 	  screen space, input mechanisms or system resources are limited.
 
-	  http://matchbox-project.org/
+	  https://www.yoctoproject.org/tools-resources/projects/matchbox
 
 if BR2_PACKAGE_MATCHBOX
 
