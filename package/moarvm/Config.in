@@ -1,0 +1,19 @@
+config BR2_PACKAGE_MOARVM
+	bool "moarvm"
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libuv
+	depends on !BR2_STATIC_LIBS # libuv
+	depends on BR2_USE_MMU # libuv
+	depends on BR2_PACKAGE_LIBATOMIC_ARCH_SUPPORTS # libatomic_ops
+	select BR2_PACKAGE_LIBUV
+	select BR2_PACKAGE_LIBATOMIC_OPS
+	help
+	  Short for "Metamodel On A Runtime", MoarVM is a virtual machine
+	  built especially for Rakudo Perl 6 and the NQP Compiler Toolchain.
+
+	  http://moarvm.com
+
+comment "moarvm needs a toolchain w/ threads, dynamic library"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS
+	depends on BR2_USE_MMU
+	depends on BR2_PACKAGE_LIBATOMIC_ARCH_SUPPORTS
+
