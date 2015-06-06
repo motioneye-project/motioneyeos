@@ -23,6 +23,7 @@ if BR2_PACKAGE_OPKG
 config BR2_PACKAGE_OPKG_GPG_SIGN
 	bool "gnupg support"
 	select BR2_PACKAGE_LIBGPGME
+	select BR2_PACKAGE_LIBGPG_ERROR
 	help
 	  Enable opkg package signature checking support using
 	  gnupg/libgpgme.

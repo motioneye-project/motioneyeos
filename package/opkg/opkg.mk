@@ -22,8 +22,10 @@ endef
 
 ifeq ($(BR2_PACKAGE_OPKG_GPG_SIGN),y)
 OPKG_CONF_OPTS += --enable-gpg
-OPKG_CONF_ENV = ac_cv_path_GPGME_CONFIG=$(STAGING_DIR)/usr/bin/gpgme-config
-OPKG_DEPENDENCIES += libgpgme
+OPKG_CONF_ENV += \
+	ac_cv_path_GPGME_CONFIG=$(STAGING_DIR)/usr/bin/gpgme-config \
+	ac_cv_path_GPGERR_CONFIG=$(STAGING_DIR)/usr/bin/gpg-error-config
+OPKG_DEPENDENCIES += libgpgme libgpg-error
 else
 OPKG_CONF_OPTS += --disable-gpg
 endif
