@@ -1,6 +1,7 @@
-comment "samba4 needs an (e)glibc or uClibc-ng toolchain w/ RPC, wchar"
-	depends on !BR2_TOOLCHAIN_USES_GLIBC || !BR2_UCLIBC_VERSION_NG
-	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_NATIVE_RPC
+comment "samba4 needs an (e)glibc or uClibc-ng toolchain w/ RPC, wchar, dynamic library, threads"
+	depends on (!BR2_TOOLCHAIN_USES_GLIBC && !BR2_UCLIBC_VERSION_NG) \
+		|| !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_NATIVE_RPC \
+		|| BR2_STATIC_LIBS || !BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_USE_MMU
 
 config BR2_PACKAGE_SAMBA4
@@ -9,6 +10,8 @@ config BR2_PACKAGE_SAMBA4
 	depends on BR2_USE_MMU # fork()
 	depends on BR2_USE_WCHAR # e2fsprogs
 	depends on BR2_TOOLCHAIN_HAS_NATIVE_RPC
+	depends on BR2_TOOLCHAIN_HAS_THREADS # python -> libffi
+	depends on !BR2_STATIC_LIBS # python
 	# needs $ORIGIN support
 	depends on BR2_TOOLCHAIN_USES_GLIBC || BR2_UCLIBC_VERSION_NG
 	depends on !BR2_nios2 # binary too large, relocations don't fit
