@@ -13,6 +13,11 @@ if BR2_TARGET_ROOTFS_ISO9660
 config BR2_TARGET_ROOTFS_ISO9660_BOOT_MENU
 	string "Boot menu.lst file"
 	default "fs/iso9660/menu.lst"
+	help
+	  Use this option to provide a custom Grub menu.lst file. Note
+	  that the strings __KERNEL_PATH__ and __INITRD_PATH__ will
+	  automatically be replaced by the path to the kernel and
+	  initrd images respectively.
 
 endif
 

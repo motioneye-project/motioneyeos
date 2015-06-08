@@ -22,12 +22,14 @@ endif
 
 ifeq ($(BR2_TARGET_ROOTFS_INITRAMFS),y)
 define ROOTFS_ISO9660_INITRD
-	$(SED) '/initrd/d'  $(ROOTFS_ISO9660_TARGET_DIR)/boot/grub/menu.lst
+	$(SED) '/__INITRD_PATH__/d'  $(ROOTFS_ISO9660_TARGET_DIR)/boot/grub/menu.lst
 endef
 else
 define ROOTFS_ISO9660_INITRD
 	$(INSTALL) -D -m 0644 $(BINARIES_DIR)/rootfs.cpio$(ROOTFS_CPIO_COMPRESS_EXT) \
-		$(ROOTFS_ISO9660_TARGET_DIR)/initrd
+		$(ROOTFS_ISO9660_TARGET_DIR)/boot/initrd
+	$(SED) "s%__INITRD_PATH__%/boot/initrd%" \
+		$(ROOTFS_ISO9660_TARGET_DIR)/boot/grub/menu.lst
 endef
 endif
 
@@ -38,7 +40,10 @@ define ROOTFS_ISO9660_PREPARATION
 		$(ROOTFS_ISO9660_TARGET_DIR)/boot/grub/stage2_eltorito
 	$(INSTALL) -D -m 0644 $(ROOTFS_ISO9660_BOOT_MENU) \
 		$(ROOTFS_ISO9660_TARGET_DIR)/boot/grub/menu.lst
-	$(INSTALL) -D -m 0644 $(LINUX_IMAGE_PATH) $(ROOTFS_ISO9660_TARGET_DIR)/kernel
+	$(INSTALL) -D -m 0644 $(LINUX_IMAGE_PATH) \
+		$(ROOTFS_ISO9660_TARGET_DIR)/boot/$(LINUX_IMAGE_NAME)
+	$(SED) "s%__KERNEL_PATH__%/boot/$(LINUX_IMAGE_NAME)%" \
+		$(ROOTFS_ISO9660_TARGET_DIR)/boot/grub/menu.lst
 	$(ROOTFS_ISO9660_SPLASHSCREEN)
 	$(ROOTFS_ISO9660_INITRD)
 endef

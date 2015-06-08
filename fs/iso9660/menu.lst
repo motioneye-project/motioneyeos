@@ -12,8 +12,8 @@ foreground 	000000
 background 	cccccc
 
 title		Buildroot ISO9660 image
-kernel		/kernel
-initrd		/initrd
+kernel		__KERNEL_PATH__
+initrd		__INITRD_PATH__
 
 title		Hard Drive (first partition)
 rootnoverify	(hd0)
