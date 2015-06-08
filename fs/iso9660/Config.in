@@ -58,6 +58,15 @@ config BR2_TARGET_ROOTFS_ISO9660_INITRD
 	  contain a kernel image, an initrd image (unless an initramfs
 	  linked into the kernel is used) and the bootloader.
 
+config BR2_TARGET_ROOTFS_ISO9660_HYBRID
+	bool "Build hybrid image"
+	depends on BR2_TARGET_ROOTFS_ISO9660_ISOLINUX
+	help
+	  Enable this option to build an hybrid image, i.e an image
+	  which can either be booted from a CD-ROM or from a device
+	  which BIOS considers a hard disk or ZIP disk, e.g. a USB key
+	  or similar.
+
 endif
 
 comment "iso image needs a Linux kernel and one of grub or isolinux to be built"
