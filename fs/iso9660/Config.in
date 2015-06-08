@@ -2,6 +2,7 @@ config BR2_TARGET_ROOTFS_ISO9660
 	bool "iso image"
 	depends on (BR2_i386 || BR2_x86_64)
 	depends on BR2_LINUX_KERNEL
+	depends on BR2_TARGET_GRUB
 	select BR2_LINUX_KERNEL_INSTALL_TARGET \
 	       if (!BR2_TARGET_ROOTFS_ISO9660_INITRD && !BR2_TARGET_ROOTFS_INITRAMFS)
 	help
@@ -25,7 +26,7 @@ choice
 
 config BR2_TARGET_ROOTFS_ISO9660_GRUB
 	bool "grub"
-	select BR2_TARGET_GRUB
+	depends on BR2_TARGET_GRUB
 	select BR2_TARGET_GRUB_FS_ISO9660
 
 endchoice
@@ -52,6 +53,6 @@ config BR2_TARGET_ROOTFS_ISO9660_INITRD
 
 endif
 
-comment "iso image needs a Linux kernel to be built"
+comment "iso image needs a Linux kernel and grub to be built"
 	depends on BR2_i386 || BR2_x86_64
-	depends on !BR2_LINUX_KERNEL
+	depends on !BR2_LINUX_KERNEL || !BR2_TARGET_GRUB
