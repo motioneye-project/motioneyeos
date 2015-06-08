@@ -12,7 +12,7 @@ ROOTFS_ISO9660_DEPENDENCIES = grub host-cdrkit host-fakeroot linux rootfs-cpio
 ifeq ($(BR2_TARGET_GRUB_SPLASH),y)
 define ROOTFS_ISO9660_SPLASHSCREEN
 	$(INSTALL) -D -m 0644 boot/grub/splash.xpm.gz \
-		$(ROOTFS_ISO9660_TARGET_DIR)/splash.xpm.gz
+		$(ROOTFS_ISO9660_TARGET_DIR)/boot/grub/splash.xpm.gz
 endef
 else
 define ROOTFS_ISO9660_SPLASHSCREEN

@@ -5,7 +5,7 @@ timeout		10
 color 		cyan/blue white/blue
 
 # Gets enabled/disabled depending on Grub support for splashimage
-splashimage	/splash.xpm.gz
+splashimage	/boot/grub/splash.xpm.gz
 
 # Used when a splashimage is enabled
 foreground 	000000
