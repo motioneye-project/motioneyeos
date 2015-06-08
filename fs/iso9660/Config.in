@@ -4,8 +4,6 @@ config BR2_TARGET_ROOTFS_ISO9660
 	depends on BR2_LINUX_KERNEL
 	select BR2_LINUX_KERNEL_INSTALL_TARGET \
 	       if (!BR2_TARGET_ROOTFS_ISO9660_INITRD && !BR2_TARGET_ROOTFS_INITRAMFS)
-	select BR2_TARGET_GRUB
-	select BR2_TARGET_GRUB_FS_ISO9660
 	help
 	  Build a bootable ISO9660 image. By default, the root
 	  filesystem is directly packed as the ISO9660 filesystem,
@@ -22,9 +20,19 @@ config BR2_TARGET_ROOTFS_ISO9660
 
 if BR2_TARGET_ROOTFS_ISO9660
 
+choice
+	prompt "Bootloader"
+
+config BR2_TARGET_ROOTFS_ISO9660_GRUB
+	bool "grub"
+	select BR2_TARGET_GRUB
+	select BR2_TARGET_GRUB_FS_ISO9660
+
+endchoice
+
 config BR2_TARGET_ROOTFS_ISO9660_BOOT_MENU
 	string "Boot menu.lst file"
-	default "fs/iso9660/menu.lst"
+	default "fs/iso9660/menu.lst" if BR2_TARGET_ROOTFS_ISO9660_GRUB
 	help
 	  Use this option to provide a custom Grub menu.lst file. Note
 	  that the strings __KERNEL_PATH__ and __INITRD_PATH__ will
