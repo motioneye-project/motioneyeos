@@ -46,7 +46,7 @@ endef
 ROOTFS_ISO9660_PRE_GEN_HOOKS += ROOTFS_ISO9660_PREPARATION
 
 define ROOTFS_ISO9660_CMD
-	$(HOST_DIR)/usr/bin/genisoimage -R -b boot/grub/stage2_eltorito \
+	$(HOST_DIR)/usr/bin/genisoimage -J -R -b boot/grub/stage2_eltorito \
 		-no-emul-boot -boot-load-size 4 -boot-info-table \
 		-o $@ $(ISO9660_TARGET_DIR)
 endef
