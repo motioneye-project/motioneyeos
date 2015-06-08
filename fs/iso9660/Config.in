@@ -2,11 +2,23 @@ config BR2_TARGET_ROOTFS_ISO9660
 	bool "iso image"
 	depends on (BR2_i386 || BR2_x86_64)
 	depends on BR2_LINUX_KERNEL
-	select BR2_TARGET_ROOTFS_CPIO
+	select BR2_LINUX_KERNEL_INSTALL_TARGET \
+	       if (!BR2_TARGET_ROOTFS_ISO9660_INITRD && !BR2_TARGET_ROOTFS_INITRAMFS)
 	select BR2_TARGET_GRUB
 	select BR2_TARGET_GRUB_FS_ISO9660
 	help
-	  Build a bootable iso9660 image
+	  Build a bootable ISO9660 image. By default, the root
+	  filesystem is directly packed as the ISO9660 filesystem,
+	  which means the root filesystem will be read-only. It
+	  requires ISO9660 filesystem support and CDROM support in the
+	  kernel.
+
+	  However, if BR2_TARGET_ROOTFS_INITRAMFS or
+	  BR2_TARGET_ROOTFS_ISO9660_INITRD have been enabled, the
+	  ISO9660 filesystem will only contain a kernel image and
+	  optionally an external initrd image. In this case, the
+	  filesystem being in RAM, it will be read/write. No ISO9660
+	  or CDROM support is needed in the kernel.
 
 if BR2_TARGET_ROOTFS_ISO9660
 
@@ -18,6 +30,17 @@ config BR2_TARGET_ROOTFS_ISO9660_BOOT_MENU
 	  that the strings __KERNEL_PATH__ and __INITRD_PATH__ will
 	  automatically be replaced by the path to the kernel and
 	  initrd images respectively.
+
+config BR2_TARGET_ROOTFS_ISO9660_INITRD
+	bool "Use initrd"
+	default y
+	select BR2_TARGET_ROOTFS_CPIO
+	help
+	  Enable this option to have the root filesystem bundled as an
+	  initrd/initramfs rather than directly as the ISO9660
+	  filesystem. With this option enabled, the ISO9660 will only
+	  contain a kernel image, an initrd image (unless an initramfs
+	  linked into the kernel is used) and the bootloader.
 
 endif
 

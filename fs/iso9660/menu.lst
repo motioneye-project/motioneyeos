@@ -12,7 +12,7 @@ foreground 	000000
 background 	cccccc
 
 title		Buildroot ISO9660 image
-kernel		__KERNEL_PATH__
+kernel		__KERNEL_PATH__ root=/dev/sr0
 initrd		__INITRD_PATH__
 
 title		Hard Drive (first partition)
