@@ -193,11 +193,9 @@ class Buildroot:
         self.base_dir = os.environ.get("TOPDIR")
         self.output_dir = os.environ.get("O")
         self.package_dir = os.path.join(self.base_dir, self.package_dirname)
-        # The kconfiglib requires an environment variable named "srctree" to
-        # load the configuration, so set it.
-        os.environ.update({'srctree': self.base_dir})
         self.config = kconfiglib.Config(os.path.join(self.base_dir,
-                                                     self.root_config))
+                                                     self.root_config),
+                                        self.base_dir)
         self._deprecated = self.config.get_symbol(self.deprecated_symbol)
 
         self.gen_date = datetime.datetime.utcnow()
