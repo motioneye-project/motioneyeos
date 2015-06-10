@@ -1,0 +1,13 @@
+config BR2_PACKAGE_GFLAGS
+	bool "gflags"
+	depends on BR2_INSTALL_LIBSTDCPP
+	help
+	  The gflags package contains a C++ library that implements
+	  commandline flags processing. It includes built-in support for
+	  standard types such as string and the ability to define flags
+	  in the source file in which they are used.
+
+	  https://github.com/gflags/gflags
+
+comment "gflags needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP
