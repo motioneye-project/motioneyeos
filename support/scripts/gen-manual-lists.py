@@ -24,11 +24,6 @@
 ## Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 ##
 
-## Note about python2.
-##
-## This script can currently only be run using python2 interpreter due to
-## its kconfiglib dependency (which is not yet python3 friendly).
-
 from __future__ import print_function
 from __future__ import unicode_literals
 
