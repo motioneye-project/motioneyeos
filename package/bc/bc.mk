@@ -4,8 +4,9 @@
 #
 ################################################################################
 
-BC_VERSION = 1.06
-BC_SITE = $(BR2_GNU_MIRROR)/bc
+BC_VERSION = 1.06.95
+BC_SOURCE = bc-$(BC_VERSION).tar.bz2
+BC_SITE = http://alpha.gnu.org/gnu/bc
 BC_DEPENDENCIES = host-flex
 BC_LICENSE = GPLv2+ LGPLv2.1+
 BC_LICENSE_FILES = COPYING COPYING.LIB
