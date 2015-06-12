@@ -7,11 +7,12 @@ PHP_ICONV_H_PATH which, again, uses test and absolute paths.
 
 Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
 [Gustavo: convert to nice m4 instead of patching configure]
+[Gustavo: update for 5.6.10]
 
-diff -Nura php-5.6.8.orig/acinclude.m4 php-5.6.8/acinclude.m4
---- php-5.6.8.orig/acinclude.m4	2015-05-18 20:06:48.557099001 +0200
-+++ php-5.6.8/acinclude.m4	2015-05-18 20:07:33.177099001 +0200
-@@ -2470,7 +2470,7 @@
+diff -Nura php-5.6.10.orig/acinclude.m4 php-5.6.10/acinclude.m4
+--- php-5.6.10.orig/acinclude.m4	2015-06-12 16:09:06.274355813 -0300
++++ php-5.6.10/acinclude.m4	2015-06-12 16:10:10.884544865 -0300
+@@ -2474,7 +2474,7 @@
    dnl
    if test "$found_iconv" = "no"; then
  
@@ -20,10 +21,10 @@ diff -Nura php-5.6.8.orig/acinclude.m4 php-5.6.8/acinclude.m4
        if test -r $i/include/giconv.h; then
          AC_DEFINE(HAVE_GICONV_H, 1, [ ])
          ICONV_DIR=$i
-diff -Nura php-5.6.7.orig/ext/iconv/config.m4 php-5.6.7/ext/iconv/config.m4
---- php-5.6.7.orig/ext/iconv/config.m4	2015-04-08 11:08:11.184847544 -0300
-+++ php-5.6.7/ext/iconv/config.m4	2015-04-08 11:39:07.823608030 -0300
-@@ -14,28 +14,8 @@
+diff -Nura php-5.6.10.orig/ext/iconv/config.m4 php-5.6.10/ext/iconv/config.m4
+--- php-5.6.10.orig/ext/iconv/config.m4	2015-06-12 16:09:07.792407246 -0300
++++ php-5.6.10/ext/iconv/config.m4	2015-06-12 16:11:07.752471600 -0300
+@@ -14,28 +14,6 @@
    ])
  
    if test "$iconv_avail" != "no"; then
@@ -40,7 +41,7 @@ diff -Nura php-5.6.7.orig/ext/iconv/config.m4 php-5.6.7/ext/iconv/config.m4
 -    else
 -      PHP_ICONV_PREFIX="$ICONV_DIR"
 -    fi
- 
+-
 -    CFLAGS="-I$PHP_ICONV_PREFIX/include $CFLAGS"
 -    LDFLAGS="-L$PHP_ICONV_PREFIX/$PHP_LIBDIR $LDFLAGS"
 -
@@ -48,8 +49,7 @@ diff -Nura php-5.6.7.orig/ext/iconv/config.m4 php-5.6.7/ext/iconv/config.m4
 -      PHP_ICONV_H_PATH="$PHP_ICONV_PREFIX/include/giconv.h"
 -    else
 -      PHP_ICONV_H_PATH="$PHP_ICONV_PREFIX/include/iconv.h"
--    fi 
-+    PHP_ICONV_H_PATH="iconv.h"
+-	fi
  
      AC_MSG_CHECKING([if iconv is glibc's])
      AC_TRY_LINK([#include <gnu/libc-version.h>],[gnu_get_libc_version();],
