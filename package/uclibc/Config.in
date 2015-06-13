@@ -43,11 +43,6 @@ choice
 		select BR2_UCLIBC_VERSION_SUPPORTS_NPTL \
 		       if !BR2_arc && !BR2_m68k && !BR2_x86_i386
 
-	config BR2_UCLIBC_VERSION_XTENSA_GIT
-		bool "uClibc Git Xtensa"
-		depends on BR2_xtensa
-		select BR2_UCLIBC_VERSION_SUPPORTS_LINUXTHREADS_OLD
-
 	config BR2_UCLIBC_VERSION_SNAPSHOT
 		bool "daily snapshot"
 		select BR2_UCLIBC_VERSION_SUPPORTS_LINUXTHREADS if !BR2_xtensa
@@ -70,7 +65,6 @@ config BR2_UCLIBC_VERSION_STRING
 	default "0.9.33.2"	if BR2_UCLIBC_VERSION_0_9_33
 	default "arc-2014.12" if BR2_UCLIBC_VERSION_ARC_GIT
 	default "1.0.2"		if BR2_UCLIBC_VERSION_NG
-	default "7bf35c8b7d4a1f97174eb49f47f33946b282114c" if BR2_UCLIBC_VERSION_XTENSA_GIT
 	default BR2_USE_UCLIBC_SNAPSHOT	if BR2_UCLIBC_VERSION_SNAPSHOT
 
 config BR2_UCLIBC_CONFIG
@@ -79,7 +73,6 @@ config BR2_UCLIBC_CONFIG
 	default "package/uclibc/uClibc-ng.config" if BR2_UCLIBC_VERSION_NG
 	default "package/uclibc/uClibc-snapshot.config" if BR2_UCLIBC_VERSION_ARC_GIT
 	default "package/uclibc/uClibc-snapshot.config" if BR2_UCLIBC_VERSION_SNAPSHOT
-	default "package/uclibc/uClibc-snapshot.config" if BR2_UCLIBC_VERSION_XTENSA_GIT
 	help
 	  Some people may wish to use their own modified uClibc configuration
 	  file and will specify their config file location with this option.
