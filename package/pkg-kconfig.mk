@@ -95,11 +95,24 @@ $$(error Internal error: no value specified for $(2)_KCONFIG_FILE)
 endif
 
 # Configuration editors (menuconfig, ...)
+#
+# Apply the kconfig fixups right after exiting the configurators, so
+# that the user always sees a .config file that is clean wrt. our
+# requirements.
+#
+# Because commands in $(1)_FIXUP_KCONFIG are probably using $(@D), we
+# fake it for the configurators (otherwise it is set to just '.', i.e.
+# the current directory where make is run, which happens to be in
+# $(TOPDIR), because the target of the rule is not an actual file, so
+# does not have any path component).
+#
+$$(addprefix $(1)-,$$($(2)_KCONFIG_EDITORS)): @D=$$($(2)_DIR)
 $$(addprefix $(1)-,$$($(2)_KCONFIG_EDITORS)): $$($(2)_DIR)/.stamp_kconfig_fixup_done
 	$$($(2)_MAKE_ENV) $$(MAKE) -C $$($(2)_DIR) \
 		$$($(2)_KCONFIG_OPTS) $$(subst $(1)-,,$$@)
 	rm -f $$($(2)_DIR)/.stamp_{kconfig_fixup_done,configured,built}
 	rm -f $$($(2)_DIR)/.stamp_{target,staging,images}_installed
+	$$(call $(2)_FIXUP_DOT_CONFIG)
 
 $(1)-savedefconfig: $$($(2)_DIR)/.stamp_kconfig_fixup_done
 	$$($(2)_MAKE_ENV) $$(MAKE) -C $$($(2)_DIR) \
