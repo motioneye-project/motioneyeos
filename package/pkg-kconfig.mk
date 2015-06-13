@@ -38,8 +38,24 @@ $(2)_KCONFIG_FIXUP_CMDS ?=
 $(2)_KCONFIG_FRAGMENT_FILES ?=
 
 # The config file as well as the fragments could be in-tree, so before
-# depending on them the package should be extracted (and patched) first
+# depending on them the package should be extracted (and patched) first.
+#
+# Since those files only have a order-only dependency, make would treat
+# any missing one as a "force" target:
+#   https://www.gnu.org/software/make/manual/make.html#Force-Targets
+# and would forcibly any rule that depend on those files, causing a
+# rebuild of the kernel each time make is called.
+#
+# So, we provide a recipe that checks all of those files exist, to
+# overcome that standard make behaviour.
+#
 $$($(2)_KCONFIG_FILE) $$($(2)_KCONFIG_FRAGMENT_FILES): | $(1)-patch
+	for f in $$($(2)_KCONFIG_FILE) $$($(2)_KCONFIG_FRAGMENT_FILES); do \
+		if [ ! -f "$$$${f}" ]; then \
+			printf "Kconfig fragment '%s' for '%s' does not exist\n" "$$$${f}" "$(1)"; \
+			exit 1; \
+		fi; \
+	done
 
 # The specified source configuration file and any additional configuration file
 # fragments are merged together to .config, after the package has been patched.
