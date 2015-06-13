@@ -37,9 +37,9 @@ $(2)_KCONFIG_OPTS ?=
 $(2)_KCONFIG_FIXUP_CMDS ?=
 $(2)_KCONFIG_FRAGMENT_FILES ?=
 
-# The config file could be in-tree, so before depending on it the package should
-# be extracted (and patched) first
-$$($(2)_KCONFIG_FILE): | $(1)-patch
+# The config file as well as the fragments could be in-tree, so before
+# depending on them the package should be extracted (and patched) first
+$$($(2)_KCONFIG_FILE) $$($(2)_KCONFIG_FRAGMENT_FILES): | $(1)-patch
 
 # The specified source configuration file and any additional configuration file
 # fragments are merged together to .config, after the package has been patched.
