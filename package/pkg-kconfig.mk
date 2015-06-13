@@ -96,9 +96,10 @@ endif
 
 # Configuration editors (menuconfig, ...)
 #
-# Apply the kconfig fixups right after exiting the configurators, so
-# that the user always sees a .config file that is clean wrt. our
-# requirements.
+# We need to apply the configuration fixups right after a configuration
+# editor exits, so that it is possible to save the configuration right
+# after exiting an editor, and so the user always sees a .config file
+# that is clean wrt. our requirements.
 #
 # Because commands in $(1)_FIXUP_KCONFIG are probably using $(@D), we
 # fake it for the configurators (otherwise it is set to just '.', i.e.
@@ -114,14 +115,36 @@ $$(addprefix $(1)-,$$($(2)_KCONFIG_EDITORS)): $$($(2)_DIR)/.stamp_kconfig_fixup_
 	rm -f $$($(2)_DIR)/.stamp_{target,staging,images}_installed
 	$$(call $(2)_FIXUP_DOT_CONFIG)
 
-$(1)-savedefconfig: $$($(2)_DIR)/.stamp_kconfig_fixup_done
+# Saving back the configuration
+#
+# Ideally, that should directly depend on $$($(2)_DIR)/.stamp_kconfig_fixup_done,
+# but that breaks the use-case in PR-8156 (from a clean tree):
+#   make menuconfig           <- enable kernel, use an in-tree defconfig, save and exit
+#   make linux-menuconfig     <- enable/disable whatever option, save and exit
+#   make menuconfig           <- change to use a custom defconfig file, set a path, save and exit
+#   make linux-update-config  <- should save to the new custom defconfig file
+#
+# Because of that use-case, saving the configuration can *not* directly
+# depend on the stamp file, because it itself depends on the .config,
+# which in turn depends on the (newly-set an non-existent) custom
+# defconfig file.
+#
+# Instead, we use an PHONY rule that will catch that situation.
+#
+$(1)-check-configuration-done:
+	@if [ ! -f $$($(2)_DIR)/.stamp_kconfig_fixup_done ]; then \
+		echo "$(1) is not yet configured"; \
+		exit 1; \
+	fi
+
+$(1)-savedefconfig: $(1)-check-configuration-done
 	$$($(2)_MAKE_ENV) $$(MAKE) -C $$($(2)_DIR) \
 		$$($(2)_KCONFIG_OPTS) savedefconfig
 
 # Target to copy back the configuration to the source configuration file
 # Even though we could use 'cp --preserve-timestamps' here, the separate
 # cp and 'touch --reference' is used for symmetry with $(1)-update-defconfig.
-$(1)-update-config: $$($(2)_DIR)/.stamp_kconfig_fixup_done
+$(1)-update-config: $(1)-check-configuration-done
 	@$$(if $$($(2)_KCONFIG_FRAGMENT_FILES), \
 		echo "Unable to perform $(1)-update-config when fragment files are set"; exit 1)
 	cp -f $$($(2)_DIR)/.config $$($(2)_KCONFIG_FILE)
@@ -143,6 +166,7 @@ endif # package enabled
 	$(1)-update-config \
 	$(1)-update-defconfig \
 	$(1)-savedefconfig \
+	$(1)-check-configuration-done \
 	$$(addprefix $(1)-,$$($(2)_KCONFIG_EDITORS))
 
 endef # inner-kconfig-package
