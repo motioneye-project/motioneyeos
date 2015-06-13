@@ -1,0 +1,17 @@
+Use the appropiate MAKEINFO variable rather than the hardcoded makeinfo
+command directly, otherwise missing logic never works.
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+diff -Nura bc-1.06.95.orig/doc/Makefile.in bc-1.06.95/doc/Makefile.in
+--- bc-1.06.95.orig/doc/Makefile.in	2015-06-13 09:39:46.946620294 -0300
++++ bc-1.06.95/doc/Makefile.in	2015-06-13 09:40:10.019407630 -0300
+@@ -96,7 +96,7 @@
+ LIBOBJS = @LIBOBJS@
+ LIBS = @LIBS@
+ LTLIBOBJS = @LTLIBOBJS@
+-MAKEINFO = makeinfo --no-split
++MAKEINFO = @MAKEINFO@ --no-split
+ OBJEXT = @OBJEXT@
+ PACKAGE = @PACKAGE@
+ PACKAGE_BUGREPORT = @PACKAGE_BUGREPORT@
