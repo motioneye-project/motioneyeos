@@ -1,23 +1,25 @@
-From a20f33ad121fb1e9d1fbc31a0044546450677e7a Mon Sep 17 00:00:00 2001
+From 7aa1fe6a0f9280571117c30c03c2cc521cd86ec3 Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Date: Sat, 23 Jun 2012 21:58:07 +0200
 Subject: [PATCH] uClibc without RPC support does not install rpcent.h
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+[yann.morin.1998@free.fr: update for 0.3.1]
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
 ---
  tirpc/rpc/rpcent.h | 5 +++--
  1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/tirpc/rpc/rpcent.h b/tirpc/rpc/rpcent.h
-index c865e51..45775ed 100644
+index 147f909..4a58180 100644
 --- a/tirpc/rpc/rpcent.h
 +++ b/tirpc/rpc/rpcent.h
-@@ -46,8 +46,9 @@
- 
- __BEGIN_DECLS
+@@ -48,8 +48,9 @@
+ extern "C" {
+ #endif
  
 -/* These are defined in /usr/include/rpc/netdb.h */
--#if 0
+-#if !defined(__GLIBC__)
 +/* These are defined in /usr/include/rpc/netdb.h, unless we are using
 +   the C library without RPC support. */
 +#if defined(__UCLIBC__) && !defined(__UCLIBC_HAS_RPC__)
@@ -25,5 +27,5 @@ index c865e51..45775ed 100644
  	char	*r_name;	/* name of server for this rpc program */
  	char	**r_aliases;	/* alias list */
 -- 
-2.0.0
+1.9.1
 

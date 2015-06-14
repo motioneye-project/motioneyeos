@@ -1,9 +1,11 @@
-From c4c4550dafabda05d78ca4aa9969db8a4f70affe Mon Sep 17 00:00:00 2001
+From 866b651bcb9f93f47582e5e2e4f1eb3155025298 Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Date: Sat, 10 Nov 2012 16:21:01 +0100
 Subject: [PATCH] Add rpcgen program from nfs-utils sources
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+[yann.morin.1998@free.fr: update for 0.3.1]
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
 ---
  Makefile.am          |    2 +-
  configure.ac         |   14 +-
@@ -42,7 +44,7 @@ Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
  create mode 100644 rpcgen/rpcgen.1
 
 diff --git a/Makefile.am b/Makefile.am
-index 9b812eb..6edf029 100644
+index 466b6dd..8558289 100644
 --- a/Makefile.am
 +++ b/Makefile.am
 @@ -1,4 +1,4 @@
@@ -52,12 +54,12 @@ index 9b812eb..6edf029 100644
  
  noinst_HEADERS	       = tirpc/reentrant.h \
 diff --git a/configure.ac b/configure.ac
-index 11df020..4110225 100644
+index e3cb8af..0ea2e6e 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -34,5 +34,17 @@ AC_CHECK_LIB([pthread], [pthread_create])
- AC_CHECK_LIB([nsl], [yp_get_default_domain])
- 
+@@ -58,6 +58,18 @@ AC_CHECK_HEADERS([arpa/inet.h fcntl.h libintl.h limits.h locale.h netdb.h netine
+ AC_CHECK_LIB([pthread], [pthread_create])
+ AC_CHECK_FUNCS([getrpcbyname getrpcbynumber setrpcent endrpcent getrpcent])
  
 -AC_CONFIG_FILES([Makefile src/Makefile man/Makefile doc/Makefile])
 +AM_CONDITIONAL(CROSS_COMPILING, test $cross_compiling = yes)
@@ -74,6 +76,7 @@ index 11df020..4110225 100644
 +AC_CONFIG_FILES([Makefile src/Makefile man/Makefile doc/Makefile rpcgen/Makefile])
 +
  AC_OUTPUT(libtirpc.pc)
+ 
 diff --git a/rpcgen/Makefile.am b/rpcgen/Makefile.am
 new file mode 100644
 index 0000000..2277b6f
@@ -6501,5 +6504,5 @@ index 0000000..89df7ed
 +.%T The rpcgen chapter in the NETP manual
 +.Re
 -- 
-2.0.0
+1.9.1
 

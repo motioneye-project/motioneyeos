@@ -1,4 +1,4 @@
-From 99ecb155efdfcf474c5701ab7e6ad1cbe88f500f Mon Sep 17 00:00:00 2001
+From eba198c27f2b8d3f0b27ea4a42f3dc79d397440c Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Date: Sat, 10 Nov 2012 17:29:53 +0100
 Subject: [PATCH] Automatically generate XDR header files from .x sources using
@@ -6,31 +6,32 @@ Subject: [PATCH] Automatically generate XDR header files from .x sources using
 
 [Gustavo: update after dropping non-IPv6 support]
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+[yann.morin.1998@free.fr: update for 0.3.1]
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
 ---
- Makefile.am           |  22 +-
+ Makefile.am           |  19 +-
  src/Makefile.am       |   2 +-
  tirpc/rpc/rpcb_prot.h | 797 --------------------------------------------------
  tirpc/rpcsvc/crypt.h  | 109 -------
- 4 files changed, 20 insertions(+), 910 deletions(-)
+ 4 files changed, 17 insertions(+), 910 deletions(-)
  delete mode 100644 tirpc/rpc/rpcb_prot.h
  delete mode 100644 tirpc/rpcsvc/crypt.h
 
 diff --git a/Makefile.am b/Makefile.am
-index 6edf029..4e4dc32 100644
+index 8558289..aa5908e 100644
 --- a/Makefile.am
 +++ b/Makefile.am
-@@ -1,6 +1,10 @@
+@@ -1,6 +1,9 @@
  SUBDIRS = src man doc rpcgen
  ACLOCAL_AMFLAGS = -I m4
  
-+GENFILES = \
-+			tirpc/rpcsvc/crypt.h \
-+			tirpc/rpc/rpcb_prot.h
++GENFILES	       = tirpc/rpcsvc/crypt.h \
++			 tirpc/rpc/rpcb_prot.h
 +
  noinst_HEADERS	       = tirpc/reentrant.h \
  			 tirpc/getpeereid.h \
  			 tirpc/libc_private.h \
-@@ -8,7 +12,6 @@ noinst_HEADERS	       = tirpc/reentrant.h \
+@@ -8,7 +11,6 @@ noinst_HEADERS	       = tirpc/reentrant.h \
  
  nobase_include_HEADERS = tirpc/netconfig.h \
  			 tirpc/rpcsvc/crypt.x \
@@ -38,7 +39,7 @@ index 6edf029..4e4dc32 100644
  			 tirpc/rpc/xdr.h \
  			 tirpc/rpc/types.h \
  			 tirpc/rpc/svc_soc.h \
-@@ -20,7 +23,6 @@ nobase_include_HEADERS = tirpc/netconfig.h \
+@@ -20,7 +22,6 @@ nobase_include_HEADERS = tirpc/netconfig.h \
  			 tirpc/rpc/rpcent.h \
  			 tirpc/rpc/rpc_com.h \
  			 tirpc/rpc/rpcb_prot.x \
@@ -46,12 +47,11 @@ index 6edf029..4e4dc32 100644
  			 tirpc/rpc/rpcb_clnt.h \
  			 tirpc/rpc/raw.h \
  			 tirpc/rpc/pmap_rmt.h \
-@@ -37,7 +39,21 @@ nobase_include_HEADERS = tirpc/netconfig.h \
- 			 tirpc/rpc/auth.h \
- 			 tirpc/rpc/auth_gss.h \
- 			 tirpc/rpc/auth_des.h
--    
-+
+@@ -51,5 +52,17 @@ endif
+ pkgconfigdir=$(libdir)/pkgconfig
+ pkgconfig_DATA = libtirpc.pc
+ 
+-CLEANFILES	       = cscope.* *~
 +nobase_nodist_include_HEADERS = $(GENFILES)
 +BUILT_SOURCES = $(GENFILES)
 +
@@ -64,20 +64,17 @@ index 6edf029..4e4dc32 100644
 +
 +force:
 +
-+CLEANFILES = $(GENFILES)
-+
- pkgconfigdir=$(libdir)/pkgconfig
- pkgconfig_DATA = libtirpc.pc
- 
++CLEANFILES	       = cscope.* *~ $(GENFILES)
+ DISTCLEANFILES	       = Makefile.in libtirpc*.tar.gz
 diff --git a/src/Makefile.am b/src/Makefile.am
-index f086255..a9db71b 100644
+index 7428e92..0356171 100644
 --- a/src/Makefile.am
 +++ b/src/Makefile.am
 @@ -8,7 +8,7 @@
- noinst_HEADERS = rpc_com.h
+ noinst_HEADERS = rpc_com.h debug.h
  
- AM_CPPFLAGS = -I$(top_srcdir)/tirpc -DPORTMAP -DINET6 \
--		-D_GNU_SOURCE -Wall -pipe  
+ AM_CPPFLAGS = -I$(top_srcdir)/tirpc -include config.h -DPORTMAP -DINET6 \
+-		-D_GNU_SOURCE -Wall -pipe
 +		-D_GNU_SOURCE -Wall -pipe -I$(top_builddir)/tirpc
  
  lib_LTLIBRARIES = libtirpc.la
@@ -1001,5 +998,5 @@ index da1f9cc..0000000
 -
 -#endif /* !_CRYPT_H_RPCGEN */
 -- 
-2.0.0
+1.9.1
 

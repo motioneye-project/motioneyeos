@@ -1,70 +1,28 @@
-From 4285205401faeb12b4ed7ebbc4658af9eae73eb4 Mon Sep 17 00:00:00 2001
+From 9ab72f908af734b5a940fb459394072cfa9fc3a8 Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Date: Sat, 23 Jun 2012 21:57:39 +0200
 Subject: [PATCH] Disable parts of TIRPC requiring NIS support
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+[yann.morin.1998@free.fr: update for 0.3.1]
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
 ---
- src/Makefile.am  | 3 +--
- src/rpc_soc.c    | 2 ++
- tirpc/rpc/auth.h | 3 +++
- 3 files changed, 6 insertions(+), 2 deletions(-)
+ src/Makefile.am | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/src/Makefile.am b/src/Makefile.am
-index 3029b78..b5db263 100644
+index 75bd4bf..7428e92 100644
 --- a/src/Makefile.am
 +++ b/src/Makefile.am
-@@ -50,8 +50,7 @@ libtirpc_la_SOURCES = auth_none.c auth_unix.c authunix_prot.c bindresvport.c cln
-         pmap_prot.c pmap_prot2.c pmap_rmt.c rpc_prot.c rpc_commondata.c \
+@@ -52,7 +52,7 @@ libtirpc_la_SOURCES = auth_none.c auth_unix.c authunix_prot.c bindresvport.c cln
          rpc_callmsg.c rpc_generic.c rpc_soc.c rpcb_clnt.c rpcb_prot.c \
          rpcb_st_xdr.c svc.c svc_auth.c svc_dg.c svc_auth_unix.c svc_auth_none.c \
--        svc_generic.c svc_raw.c svc_run.c svc_simple.c svc_vc.c getpeereid.c \
--        auth_time.c auth_des.c authdes_prot.c
-+        svc_generic.c svc_raw.c svc_run.c svc_simple.c svc_vc.c getpeereid.c
+         svc_generic.c svc_raw.c svc_run.c svc_simple.c svc_vc.c getpeereid.c \
+-        auth_time.c debug.c
++        debug.c
  
  ## XDR
  libtirpc_la_SOURCES += xdr.c xdr_rec.c xdr_array.c xdr_float.c xdr_mem.c xdr_reference.c xdr_stdio.c
-diff --git a/src/rpc_soc.c b/src/rpc_soc.c
-index 4213ca0..2603548 100644
---- a/src/rpc_soc.c
-+++ b/src/rpc_soc.c
-@@ -520,6 +520,7 @@ clnt_broadcast(prog, vers, proc, xargs, argsp, xresults, resultsp, eachresult)
- 	    (resultproc_t) rpc_wrap_bcast, "udp");
- }
- 
-+#if 0
- /*
-  * Create the client des authentication object. Obsoleted by
-  * authdes_seccreate().
-@@ -551,6 +552,7 @@ fallback:
- 	dummy = authdes_seccreate(servername, window, NULL, ckey);
- 	return (dummy);
- }
-+#endif
- 
- /*
-  * Create a client handle for a unix connection. Obsoleted by clnt_vc_create()
-diff --git a/tirpc/rpc/auth.h b/tirpc/rpc/auth.h
-index 4ce11f0..b894e44 100644
---- a/tirpc/rpc/auth.h
-+++ b/tirpc/rpc/auth.h
-@@ -305,6 +305,8 @@ extern AUTH *authunix_create(char *, uid_t, uid_t, int, uid_t *);
- extern AUTH *authunix_create_default(void);	/* takes no parameters */
- extern AUTH *authnone_create(void);		/* takes no parameters */
- __END_DECLS
-+
-+#if 0
- /*
-  * DES style authentication
-  * AUTH *authsecdes_create(servername, window, timehost, ckey)
-@@ -318,6 +320,7 @@ extern AUTH *authdes_create (char *, u_int, struct sockaddr *, des_block *);
- extern AUTH *authdes_seccreate (const char *, const u_int, const  char *,
-     const  des_block *);
- __END_DECLS
-+#endif
- 
- __BEGIN_DECLS
- extern bool_t xdr_opaque_auth		(XDR *, struct opaque_auth *);
 -- 
-2.0.0
+1.9.1
 
