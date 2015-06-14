@@ -1,2 +1,2 @@
-# Locally computed
-sha256  860fac5f5f57f7a2dfc1ba682dbd1f5c0f0b597f761571277b6ed6561e22365a  tzdata2015c.tar.gz
+# From 2015e release anouncement.  See http://mm.icann.org/pipermail/tz-announce/2015-June/000032.html
+sha512  86498190a20c5c67827aa75f7e9c6aa6c19d58a88a70425ce70d5ae7cea42dc7386eb2867fa455fcfcdedc6a105ad70fbbdc7c27c7a58a51bd21d76a135983ce  tzdata2015e.tar.gz
