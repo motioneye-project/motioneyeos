@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LINUX_FIRMWARE_VERSION = f66291398181d24856fd2d19454d246199abd5ea
+LINUX_FIRMWARE_VERSION = 3161bfa479d5e9ed4f46b57df9bcecbbc4f8eb3c
 LINUX_FIRMWARE_SITE = http://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git
 LINUX_FIRMWARE_SITE_METHOD = git
 
@@ -175,7 +175,6 @@ endif
 ifeq ($(BR2_PACKAGE_LINUX_FIRMWARE_TI_WL18XX),y)
 LINUX_FIRMWARE_FILES += \
 	ti-connectivity/wl18xx-fw.bin \
-	ti-connectivity/wl18xx-conf.bin \
 	ti-connectivity/wl18xx-fw-2.bin \
 	ti-connectivity/wl18xx-fw-3.bin \
 	ti-connectivity/wl18xx-fw-4.bin \
