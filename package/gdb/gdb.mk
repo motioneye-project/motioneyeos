@@ -101,6 +101,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_EXPAT),y)
 GDB_CONF_OPTS += --with-expat
+GDB_CONF_OPTS += --with-libexpat-prefix=$(STAGING_DIR)/usr
 GDB_DEPENDENCIES += expat
 else
 GDB_CONF_OPTS += --without-expat
