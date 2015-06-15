@@ -20,8 +20,22 @@ config BR2_PACKAGE_DIRECTFB_MULTI
 comment "directfb multi application needs a Linux kernel to be built"
 	depends on !BR2_LINUX_KERNEL
 
+config BR2_PACKAGE_DIRECTFB_DEBUG_SUPPORT
+	bool "directfb debugging support"
+	default y
+	help
+	  Compile DirectFB with debugging support. It provides
+	  functions to print debug information, for DirectFB as well as
+	  external DirectFB drivers.
+
+	  When disabled, DirectFB does not print any debug information.
+	  The drivers will be installed to and loaded from
+	  /usr/lib/directfb-<version>-pure instead of
+	  /usr/lib/directfb-<version>.
+
 config BR2_PACKAGE_DIRECTFB_DEBUG
 	bool "directfb debugging"
+	depends on BR2_PACKAGE_DIRECTFB_DEBUG_SUPPORT
 	help
 	  Compile DirectFB with lots of debug output
 

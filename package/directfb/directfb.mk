@@ -39,8 +39,13 @@ DIRECTFB_CONF_OPTS += --enable-multi --enable-fusion
 DIRECTFB_DEPENDENCIES += linux-fusion
 endif
 
+ifeq ($(BR2_PACKAGE_DIRECTFB_DEBUG_SUPPORT),y)
+DIRECTFB_CONF_OPTS += --enable-debug-support
 ifeq ($(BR2_PACKAGE_DIRECTFB_DEBUG),y)
 DIRECTFB_CONF_OPTS += --enable-debug
+endif
+else
+DIRECTFB_CONF_OPTS += --disable-debug-support
 endif
 
 ifeq ($(BR2_PACKAGE_DIRECTFB_TRACE),y)
