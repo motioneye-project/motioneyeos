@@ -5,7 +5,7 @@
 ################################################################################
 
 # When updating the version, please also update mesa3d-headers
-MESA3D_VERSION = 10.5.7
+MESA3D_VERSION = 10.6.0
 MESA3D_SOURCE = mesa-$(MESA3D_VERSION).tar.xz
 MESA3D_SITE = ftp://ftp.freedesktop.org/pub/mesa/$(MESA3D_VERSION)
 MESA3D_LICENSE = MIT, SGI, Khronos
@@ -19,6 +19,14 @@ MESA3D_PROVIDES =
 MESA3D_DEPENDENCIES = \
 	expat \
 	libdrm
+
+ifeq ($(BR2_PACKAGE_OPENSSL),y)
+MESA3D_DEPENDENCIES += openssl
+MESA3D_CONF_OPTS += --with-sha1=libcrypto
+else ifeq ($(BR2_PACKAGE_LIBGCRYPT),y)
+MESA3D_DEPENDENCIES += libgcrypt
+MESA3D_CONF_OPTS += --with-sha1=libgcrypt
+endif
 
 ifeq ($(BR2_PACKAGE_XORG7),y)
 MESA3D_DEPENDENCIES += \
