@@ -5,7 +5,7 @@
 ################################################################################
 
 GPM_VERSION = 1.20.7
-GPM_SOURCE = gpm-$(GPM_VERSION).tar.bz2
+GPM_SOURCE = gpm-$(GPM_VERSION).tar.lzma
 GPM_SITE = http://www.nico.schottelius.org/software/gpm/archives
 GPM_LICENSE = GPLv2+
 GPM_LICENSE_FILES = COPYING
