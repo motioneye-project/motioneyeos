@@ -31,6 +31,12 @@ ifeq ($(BR2_PACKAGE_EUDEV_RULES_GEN),y)
 EUDEV_CONF_OPTS += --enable-rule_generator
 endif
 
+ifeq ($(BR2_PACKAGE_EUDEV_ENABLE_HWDB),y)
+EUDEV_CONF_OPTS += --enable-hwdb
+else
+EUDEV_CONF_OPTS += --disable-hwdb
+endif
+
 ifeq ($(BR2_PACKAGE_LIBGLIB2),y)
 EUDEV_CONF_OPTS += --enable-gudev
 EUDEV_DEPENDENCIES += libglib2

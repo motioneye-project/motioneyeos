@@ -27,6 +27,12 @@ config BR2_PACKAGE_EUDEV_RULES_GEN
 	help
 	  Enable persistent rules generator
 
+config BR2_PACKAGE_EUDEV_ENABLE_HWDB
+	bool "enable hwdb installation"
+	default y
+	help
+	  Enables hardware database installation to /etc/udev/hwdb.d
+
 endif
 
 comment "eudev needs eudev /dev management"
