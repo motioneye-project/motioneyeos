@@ -236,10 +236,10 @@ endchoice # /bin/sh
 
 config BR2_SYSTEM_BIN_SH
 	string
-	default "/bin/busybox" if BR2_SYSTEM_BIN_SH_BUSYBOX
-	default "/bin/bash"    if BR2_SYSTEM_BIN_SH_BASH
-	default "/bin/dash"    if BR2_SYSTEM_BIN_SH_DASH
-	default "/bin/zsh"     if BR2_SYSTEM_BIN_SH_ZSH
+	default "busybox" if BR2_SYSTEM_BIN_SH_BUSYBOX
+	default "bash"    if BR2_SYSTEM_BIN_SH_BASH
+	default "dash"    if BR2_SYSTEM_BIN_SH_DASH
+	default "zsh"     if BR2_SYSTEM_BIN_SH_ZSH
 
 config BR2_TARGET_GENERIC_GETTY
 	bool "Run a getty (login prompt) after boot"
