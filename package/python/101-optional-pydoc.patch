@@ -40,7 +40,7 @@ Index: b/configure.ac
 ===================================================================
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2627,6 +2627,11 @@
+@@ -2633,6 +2633,11 @@
        AC_CHECK_FUNCS(pthread_atfork)
  fi
  
@@ -56,7 +56,7 @@ Index: b/setup.py
 ===================================================================
 --- a/setup.py
 +++ b/setup.py
-@@ -2222,6 +2222,12 @@
+@@ -2211,6 +2211,12 @@
      # turn off warnings when deprecated modules are imported
      import warnings
      warnings.filterwarnings("ignore",category=DeprecationWarning)
@@ -69,7 +69,7 @@ Index: b/setup.py
      setup(# PyPI Metadata (PEP 301)
            name = "Python",
            version = sys.version.split()[0],
-@@ -2242,9 +2248,7 @@
+@@ -2231,9 +2237,7 @@
            ext_modules=[Extension('_struct', ['_struct.c'])],
  
            # Scripts to install

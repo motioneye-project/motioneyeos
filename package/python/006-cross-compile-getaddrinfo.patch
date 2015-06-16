@@ -2,7 +2,7 @@ Index: b/configure.ac
 ===================================================================
 --- a/configure.ac
 +++ b/configure.ac
-@@ -3346,7 +3346,7 @@
+@@ -3353,7 +3353,7 @@
  
  AC_MSG_RESULT($ac_cv_buggy_getaddrinfo)
  

@@ -32,7 +32,7 @@ Index: b/setup.py
 ===================================================================
 --- a/setup.py
 +++ b/setup.py
-@@ -2223,7 +2223,7 @@
+@@ -2212,7 +2212,7 @@
      import warnings
      warnings.filterwarnings("ignore",category=DeprecationWarning)
  

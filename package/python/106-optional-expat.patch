@@ -43,7 +43,7 @@ Index: b/configure.ac
 ===================================================================
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2292,13 +2292,21 @@
+@@ -2298,13 +2298,21 @@
  AC_SUBST(DISABLED_EXTENSIONS)
  
  # Check for use of the system expat library
@@ -74,7 +74,7 @@ Index: b/setup.py
 ===================================================================
 --- a/setup.py
 +++ b/setup.py
-@@ -1474,7 +1474,7 @@
+@@ -1463,7 +1463,7 @@
          #
          # More information on Expat can be found at www.libexpat.org.
          #

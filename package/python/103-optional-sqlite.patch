@@ -12,7 +12,7 @@ Index: b/configure.ac
 ===================================================================
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2627,6 +2627,15 @@
+@@ -2633,6 +2633,15 @@
        AC_CHECK_FUNCS(pthread_atfork)
  fi
  

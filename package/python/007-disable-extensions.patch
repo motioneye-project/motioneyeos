@@ -33,9 +33,9 @@ Index: b/configure.ac
 ===================================================================
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2284,6 +2284,8 @@
+@@ -2290,6 +2290,8 @@
  
- AC_PATH_TOOL([PKG_CONFIG], [pkg-config])
+ PKG_PROG_PKG_CONFIG
  
 +AC_SUBST(DISABLED_EXTENSIONS)
 +
