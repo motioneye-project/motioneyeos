@@ -8,10 +8,10 @@ Index: b/src/lua.c
 ===================================================================
 --- a/src/lua.c
 +++ b/src/lua.c
-@@ -85,6 +85,15 @@
-           add_history(lua_tostring(L, idx));  /* add it to history */
+@@ -83,6 +83,15 @@
+ #define lua_saveline(L,line)	((void)L, add_history(line))
  #define lua_freeline(L,b)	((void)L, free(b))
-
+ 
 +#elif defined(LUA_USE_LINENOISE)
 +
 +#include <linenoise.h>
@@ -22,5 +22,5 @@ Index: b/src/lua.c
 +#define lua_freeline(L,b)	((void)L, free(b))
 +
  #else				/* }{ */
-
+ 
  #define lua_readline(L,b,p) \
