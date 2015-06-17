@@ -5,8 +5,8 @@ Android method.
 
 Signed-off-by: Karoly Kasza <kaszak@gmail.com>
 
---- open-vm-tools-9.10.0-2476743.orig/lib/misc/idLinux.c	2015-03-29 12:19:30.776922510 +0200
-+++ open-vm-tools-9.10.0-2476743/lib/misc/idLinux.c	2015-03-29 12:30:30.000000000 +0200
+--- openvmtools-stable-9.10.0.orig/open-vm-tools/lib/misc/idLinux.c	2015-06-17 10:04:00.000000000 +0200
++++ openvmtools-stable-9.10.0/open-vm-tools/lib/misc/idLinux.c		2015-06-17 10:04:00.000000000 +0200
 @@ -997,7 +997,7 @@
  static Bool
  IdIsSetUGid(void)

@@ -4,14 +4,15 @@ Disable the mandatory flag -Werror in configure.ac.
 
 Signed-off-by: Karoly Kasza <kaszak@gmail.com>
 
---- open-vm-tools-9.4.6-1770165.orig/configure.ac	2014-07-02 00:21:14.000000000 +0200
-+++ open-vm-tools-9.4.6-1770165/configure.ac	2014-09-15 16:03:47.565900402 +0200
-@@ -832,7 +832,7 @@
+--- openvmtools-stable-9.10.0.orig/open-vm-tools/configure.ac	2015-06-17 10:02:00.000000000 +0200
++++ openvmtools-stable-9.10.0/open-vm-tools/configure.ac	2015-06-17 10:02:00.000000000 +0200
+@@ -935,7 +935,7 @@
  
  ### General flags / actions
  CFLAGS="$CFLAGS -Wall"
 -CFLAGS="$CFLAGS -Werror"
 +# CFLAGS="$CFLAGS -Werror"
  
- # -Wno-unknown-pragmas is due to gcc not understanding '#pragma ident' in Xlib.h on OpenSolaris.
- for TEST_CFLAG in -Wno-pointer-sign -Wno-unused-value -fno-strict-aliasing \
+ # -Wno-unknown-pragmas is due to gcc not understanding '#pragma ident'
+ # in Xlib.h on OpenSolaris.
+

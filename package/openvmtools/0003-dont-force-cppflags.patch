@@ -4,9 +4,8 @@ This is so horribly broken for cross-compilation. :-(
 
 Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
 
-diff -durN openvmtools-9.4.6-1770165.orig/m4/vmtools.m4 openvmtools-9.4.6-1770165/m4/vmtools.m4
---- openvmtools-9.4.6-1770165.orig/m4/vmtools.m4	2014-07-02 00:21:14.000000000 +0200
-+++ openvmtools-9.4.6-1770165/m4/vmtools.m4	2014-09-21 12:39:15.901659888 +0200
+--- openvmtools-stable-9.10.0.orig/open-vm-tools/m4/vmtools.m4	2015-06-17 10:03:00.000000000 +0200
++++ openvmtools-stable-9.10.0/open-vm-tools/m4/vmtools.m4	2015-06-17 10:03:00.000000000 +0200
 @@ -281,10 +281,10 @@
        if test "$os" = freebsd; then
           CUSTOM_$1_CPPFLAGS="-I/usr/local/include"
