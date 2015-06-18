@@ -4,16 +4,23 @@
 #
 ################################################################################
 
-I2C_TOOLS_VERSION = 3.1.1
+I2C_TOOLS_VERSION = 3.1.2
 I2C_TOOLS_SOURCE = i2c-tools-$(I2C_TOOLS_VERSION).tar.bz2
 I2C_TOOLS_SITE = http://dl.lm-sensors.org/i2c-tools/releases
 I2C_TOOLS_LICENSE = GPLv2+, GPLv2 (py-smbus)
 I2C_TOOLS_LICENSE_FILES = COPYING
 
-# Build/install steps mirror the distutil python package type in the python package
-# infrastructure
 ifeq ($(BR2_PACKAGE_PYTHON),y)
 I2C_TOOLS_DEPENDENCIES += python
+endif
+
+ifeq ($(BR2_PACKAGE_PYTHON3),y)
+I2C_TOOLS_DEPENDENCIES += python3
+endif
+
+# Build/install steps mirror the distutil python package type in the python package
+# infrastructure
+ifeq ($(BR2_PACKAGE_PYTHON)$(BR2_PACKAGE_PYTHON3),y)
 # BASE_ENV taken from PKG_PYTHON_DISTUTILS_ENV in package/pkg-python.mk
 I2C_TOOLS_PYTHON_BASE_ENV = \
 	$(PKG_PYTHON_DISTUTILS_ENV) \
