@@ -22,6 +22,13 @@ else
 FLUXBOX_CONF_OPTS += --disable-imlib2
 endif
 
+ifeq ($(BR2_PACKAGE_XLIB_LIBXPM),y)
+FLUXBOX_CONF_OPTS += --enable-xpm --with-xpm-prefix=$(STAGING_DIR)/usr
+FLUXBOX_DEPENDENCIES += xlib_libXpm
+else
+FLUXBOX_CONF_OPTS += --disable-xpm
+endif
+
 define FLUXBOX_INSTALL_XSESSION_FILE
 	$(INSTALL) -m 0755 -D package/fluxbox/xsession \
 		$(TARGET_DIR)/root/.xsession
