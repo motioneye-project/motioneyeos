@@ -40,7 +40,7 @@ endef
 EJABBERD_POST_INSTALL_TARGET_HOOKS += EJABBERD_FIX_EJABBERDCTL
 
 define EJABBERD_USERS
-ejabberd -1 ejabberd -1 * /var/lib/ejabberd /bin/sh - ejabberd daemon
+	ejabberd -1 ejabberd -1 * /var/lib/ejabberd /bin/sh - ejabberd daemon
 endef
 
 define EJABBERD_INSTALL_INIT_SYSV

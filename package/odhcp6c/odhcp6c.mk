@@ -10,7 +10,7 @@ ODHCP6C_LICENSE = GPLv2
 ODHCP6C_LICENSE_FILES = COPYING
 
 define ODHCP6C_INSTALL_SCRIPT
-        $(INSTALL) -m 0755 -D $(@D)/odhcp6c-example-script.sh \
+	$(INSTALL) -m 0755 -D $(@D)/odhcp6c-example-script.sh \
 		$(TARGET_DIR)/usr/sbin/odhcp6c-update
 endef
 
