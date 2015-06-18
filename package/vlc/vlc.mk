@@ -206,6 +206,13 @@ else
 VLC_CONF_OPTS += --disable-svg --disable-svgdec
 endif
 
+ifeq ($(BR2_PACKAGE_LIBSIDPLAY2),y)
+VLC_CONF_OPTS += --enable-sid
+VLC_DEPENDENCIES += libsidplay2
+else
+VLC_CONF_OPTS += --disable-sid
+endif
+
 ifeq ($(BR2_PACKAGE_LIBTHEORA),y)
 VLC_CONF_OPTS += --enable-theora
 VLC_DEPENDENCIES += libtheora
