@@ -16,8 +16,19 @@ SUDO_CONF_OPTS = \
 	--without-umask \
 	--with-logging=syslog \
 	--without-interfaces \
-	--without-pam \
 	--with-env-editor
+
+ifeq ($(BR2_PACKAGE_LINUX_PAM),y)
+define SUDO_INSTALL_PAM_CONF
+	$(INSTALL) -D -m 0644 package/sudo/sudo.pam $(TARGET_DIR)/etc/pam.d/sudo
+endef
+
+SUDO_DEPENDENCIES += linux-pam
+SUDO_CONF_OPTS += --with-pam
+SUDO_POST_INSTALL_TARGET_HOOKS += SUDO_INSTALL_PAM_CONF
+else
+SUDO_CONF_OPTS += --without-pam
+endif
 
 # mksigname/mksiglist needs to run on build host to generate source files
 define SUDO_BUILD_MKSIGNAME_MKSIGLIST_HOST
