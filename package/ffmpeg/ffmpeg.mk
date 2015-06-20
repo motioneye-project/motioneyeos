@@ -261,6 +261,11 @@ ifeq ($(BR2_X86_CPU_HAS_MMX),y)
 FFMPEG_CONF_OPTS += --enable-yasm
 FFMPEG_DEPENDENCIES += host-yasm
 else
+ifeq ($(BR2_x86_i586),y)
+# Needed to work around a bug with gcc 5.x:
+# error: 'asm' operand has impossible constraints
+FFMPEG_CONF_OPTS += --disable-inline-asm
+endif
 FFMPEG_CONF_OPTS += --disable-yasm
 FFMPEG_CONF_OPTS += --disable-mmx
 endif
