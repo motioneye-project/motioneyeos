@@ -8,13 +8,13 @@ config BR2_PACKAGE_UCLIBC
 comment "uClibc Options"
 
 config BR2_UCLIBC_VERSION_SUPPORTS_LINUXTHREADS
-       bool
+	bool
 
 config BR2_UCLIBC_VERSION_SUPPORTS_LINUXTHREADS_OLD
-       bool
+	bool
 
 config BR2_UCLIBC_VERSION_SUPPORTS_NPTL
-       bool
+	bool
 
 choice
 	prompt "uClibc C library Version"

@@ -4,4 +4,4 @@ config BR2_PACKAGE_OPENJPEG
 	  The OpenJPEG library is an open-source JPEG 2000 codec
 	  written in C.
 
-          http://www.openjpeg.org
+	  http://www.openjpeg.org

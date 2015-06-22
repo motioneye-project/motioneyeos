@@ -227,7 +227,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_QT_X11),y)
 QT_DEPENDENCIES += fontconfig xlib_libXi xlib_libX11 xlib_libXrender \
-                xlib_libXcursor xlib_libXrandr xlib_libXext xlib_libXv
+	xlib_libXcursor xlib_libXrandr xlib_libXext xlib_libXv
 # Using pkg-config avoids us some logic to redefine and sed again mkspecs files
 # to add X11 include path and link options
 QT_CFLAGS += $(shell $(PKG_CONFIG_HOST_BINARY) --cflags x11)

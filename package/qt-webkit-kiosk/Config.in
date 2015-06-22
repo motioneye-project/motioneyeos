@@ -16,8 +16,8 @@ config BR2_PACKAGE_QT_WEBKIT_KIOSK
 if BR2_PACKAGE_QT_WEBKIT_KIOSK
 
 config BR2_PACKAGE_QT_WEBKIT_KIOSK_SOUNDS
-        bool "Install browser sound files"
-        help
-          Deploy browser sound files on target
+	bool "Install browser sound files"
+	help
+	  Deploy browser sound files on target
 
 endif
