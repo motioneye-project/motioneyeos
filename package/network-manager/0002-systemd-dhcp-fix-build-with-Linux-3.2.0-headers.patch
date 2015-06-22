@@ -1,0 +1,37 @@
+From 7f84150e9f6aa7e900d70178e0fc0acc6cfba651 Mon Sep 17 00:00:00 2001
+From: Lubomir Rintel <lkundrak@v3.sk>
+Date: Fri, 15 May 2015 16:38:10 +0200
+Subject: [PATCH] systemd-dhcp: fix build with Linux 3.2.0 headers
+
+Fixes build on Ubuntu 12.04.
+
+systemd/src/libsystemd-network/dhcp-network.c: In function '_bind_raw_socket':
+systemd/src/libsystemd-network/dhcp-network.c:75:17: error: 'BPF_XOR' undeclared (first use in this function)
+systemd/src/libsystemd-network/dhcp-network.c:75:17: note: each undeclared identifier is reported only once for each function it appears in
+make[4]: *** [libsystemd_nm_la-dhcp-network.lo] Error 1
+
+(cherry picked from commit 3811a68389b9277533f2eee8372927ca6238653e)
+
+Signed-off-by: Petr Vorel <petr.vorel@gmail.com>
+---
+ src/dhcp-manager/systemd-dhcp/nm-sd-adapt.h | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/src/dhcp-manager/systemd-dhcp/nm-sd-adapt.h b/src/dhcp-manager/systemd-dhcp/nm-sd-adapt.h
+index 6d500f4..f8856a1 100644
+--- a/src/dhcp-manager/systemd-dhcp/nm-sd-adapt.h
++++ b/src/dhcp-manager/systemd-dhcp/nm-sd-adapt.h
+@@ -38,6 +38,11 @@
+
+ #include "nm-logging.h"
+
++/* Missing in Linux 3.2.0, in Ubuntu 12.04 */
++#ifndef BPF_XOR
++#define BPF_XOR 0xa0
++#endif
++
+ static inline guint32
+ _slog_level_to_nm (int slevel)
+ {
+--
+2.1.4
