@@ -1,0 +1,36 @@
+From 2f1b033094df266008d9c4070cd7be33e93a4e12 Mon Sep 17 00:00:00 2001
+From: Baruch Siach <baruch@tkos.co.il>
+Date: Fri, 19 Jun 2015 08:08:32 +0300
+Subject: [PATCH] Fix build against musl libc
+
+musl does not include sys/ttydefaults.h from sys/termios.h. Include it
+explicitly.
+
+Fixes build failures like:
+
+gpsmon.o: In function `main':
+gpsmon.c:(.text.startup+0x8f4): undefined reference to `CTRL'
+
+Upstream status: sent
+(http://lists.nongnu.org/archive/html/gpsd-dev/2015-06/msg00031.html)
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+ gpsmon.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/gpsmon.c b/gpsmon.c
+index c3001c865821..0ccf74110b5a 100644
+--- a/gpsmon.c
++++ b/gpsmon.c
+@@ -20,6 +20,7 @@
+ #include <sys/types.h>
+ #include <sys/stat.h>
+ #include <sys/select.h>
++#include <sys/ttydefaults.h>
+ #include <fcntl.h>
+ #include <unistd.h>
+ 
+-- 
+2.1.4
+
