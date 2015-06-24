@@ -2,8 +2,6 @@ config BR2_PACKAGE_ULOGD
 	bool "ulogd"
 	depends on !BR2_STATIC_LIBS
 	depends on BR2_USE_MMU
-	# ulog support removed for kernels >= 3.17
-	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_17
 	select BR2_PACKAGE_LIBMNL
 	select BR2_PACKAGE_LIBNETFILTER_ACCT
 	select BR2_PACKAGE_LIBNETFILTER_CONNTRACK
@@ -17,4 +15,3 @@ config BR2_PACKAGE_ULOGD
 comment "ulogd needs a toolchain w/ dynamic library"
 	depends on BR2_STATIC_LIBS
 	depends on BR2_USE_MMU
-	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_17
