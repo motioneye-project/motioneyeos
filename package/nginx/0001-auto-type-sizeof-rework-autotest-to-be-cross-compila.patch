@@ -1,4 +1,4 @@
-From 81289d1d1adaf5a767a4b4d1309c286468cfd37f Mon Sep 17 00:00:00 2001
+From fe05ccf80afe5de33d4f9c5e5545390c450bcd2d Mon Sep 17 00:00:00 2001
 From: Samuel Martin <s.martin49@gmail.com>
 Date: Thu, 24 Apr 2014 23:27:32 +0200
 Subject: [PATCH 1/5] auto/type/sizeof: rework autotest to be cross-compilation
@@ -9,12 +9,16 @@ runtime. This way, it does not break when cross-compiling for a
 different CPU architecture.
 
 Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+
+Refresh for 1.8.0.
+
+Signed-off-by: Danomi Manchego <danomimanchego123@gmail.com>
 ---
  auto/types/sizeof | 42 ++++++++++++++++++++++++++++--------------
  1 file changed, 28 insertions(+), 14 deletions(-)
 
 diff --git a/auto/types/sizeof b/auto/types/sizeof
-index 9215a54..c2c3ede 100644
+index a5f66bb..c6f31ec 100644
 --- a/auto/types/sizeof
 +++ b/auto/types/sizeof
 @@ -14,7 +14,7 @@ END
@@ -82,7 +86,7 @@ index 9215a54..c2c3ede 100644
 -
  case $ngx_size in
      4)
-         if [ "$ngx_type"="long" ]; then
+         ngx_max_value=2147483647
 -- 
-1.9.2
+1.9.1
 

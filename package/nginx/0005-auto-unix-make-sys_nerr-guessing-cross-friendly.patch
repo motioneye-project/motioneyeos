@@ -1,4 +1,4 @@
-From 8c19cea5e667f325ececdc1678bfddf063af0da2 Mon Sep 17 00:00:00 2001
+From 08617a8d29ee22831175697555558fec8f52772c Mon Sep 17 00:00:00 2001
 From: Samuel Martin <s.martin49@gmail.com>
 Date: Sun, 1 Jun 2014 16:05:04 +0200
 Subject: [PATCH 5/5] auto/unix: make sys_nerr guessing cross-friendly
@@ -11,15 +11,19 @@ macro if defined, or the EHWPOISON (which is currently the last errno)
 otherwise.
 
 Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+
+Refresh for 1.8.0.
+
+Signed-off-by: Danomi Manchego <danomimanchego123@gmail.com>
 ---
- auto/os/sys_nerr | 77 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ auto/os/sys_nerr | 78 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
  auto/unix        | 10 ++++++++
- 2 files changed, 87 insertions(+)
+ 2 files changed, 88 insertions(+)
  create mode 100644 auto/os/sys_nerr
 
 diff --git a/auto/os/sys_nerr b/auto/os/sys_nerr
 new file mode 100644
-index 0000000..25e7c22
+index 0000000..8970f5f
 --- /dev/null
 +++ b/auto/os/sys_nerr
 @@ -0,0 +1,78 @@
@@ -102,10 +106,10 @@ index 0000000..25e7c22
 +
 +echo " $ngx_sys_nerr"
 diff --git a/auto/unix b/auto/unix
-index b7cc9cb..1a49ba3 100755
+index 7dbf9d1..00a7370 100755
 --- a/auto/unix
 +++ b/auto/unix
-@@ -550,6 +550,10 @@ ngx_feature_incs='#include <errno.h>
+@@ -595,6 +595,10 @@ ngx_feature_incs='#include <errno.h>
                    #include <stdio.h>'
  ngx_feature_path=
  ngx_feature_libs=
@@ -116,7 +120,7 @@ index b7cc9cb..1a49ba3 100755
  ngx_feature_test='printf("%d", sys_nerr);'
  . auto/feature
  
-@@ -598,6 +602,12 @@ if [ $ngx_found = no ]; then
+@@ -643,6 +647,12 @@ if [ $ngx_found = no ]; then
      . auto/feature
  fi
  
@@ -130,5 +134,5 @@ index b7cc9cb..1a49ba3 100755
  ngx_feature="localtime_r()"
  ngx_feature_name="NGX_HAVE_LOCALTIME_R"
 -- 
-1.9.2
+1.9.1
 

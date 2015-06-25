@@ -1,4 +1,4 @@
-From 7d1bc0364feab22299abeeb29ae2cfdcabd7e2c0 Mon Sep 17 00:00:00 2001
+From 71939b727a8fa9f722934700948a5b68960f6183 Mon Sep 17 00:00:00 2001
 From: Samuel Martin <s.martin49@gmail.com>
 Date: Thu, 29 May 2014 18:52:10 +0200
 Subject: [PATCH 3/5] auto/*: set ngx_feature_run_force_result for each feature
@@ -11,6 +11,10 @@ These ngx_force_* variables are passed through the environment at configure
 time.
 
 Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+
+Refresh for 1.8.0.
+
+Signed-off-by: Danomi Manchego <danomimanchego123@gmail.com>
 ---
  auto/cc/conf            | 3 +++
  auto/cc/name            | 1 +
@@ -73,7 +77,7 @@ index d1e484a..3724916 100644
                        #include <atomic_ops.h>"
      ngx_feature_path=
 diff --git a/auto/os/darwin b/auto/os/darwin
-index b97518a..30f323c 100644
+index 1d3e3d3..11b7276 100644
 --- a/auto/os/darwin
 +++ b/auto/os/darwin
 @@ -27,6 +27,7 @@ NGX_KQUEUE_CHECKED=YES
@@ -137,7 +141,7 @@ index 19bf832..16848b2 100644
  ngx_feature_path=
  ngx_feature_libs=
 diff --git a/auto/unix b/auto/unix
-index 10fd3d2..b7cc9cb 100755
+index 6e54531..7dbf9d1 100755
 --- a/auto/unix
 +++ b/auto/unix
 @@ -99,6 +99,7 @@ if test -z "$NGX_KQUEUE_CHECKED"; then
@@ -148,7 +152,7 @@ index 10fd3d2..b7cc9cb 100755
          ngx_feature_incs="#include <sys/event.h>
                            #include <sys/time.h>"
          ngx_feature_path=
-@@ -544,6 +545,7 @@ ngx_feature_test="char buf[1]; ssize_t n; n = pwrite(1, buf, 1, 0);
+@@ -589,6 +590,7 @@ ngx_feature_test="char buf[1]; ssize_t n; n = pwrite(1, buf, 1, 0);
  ngx_feature="sys_nerr"
  ngx_feature_name="NGX_SYS_NERR"
  ngx_feature_run=value
@@ -156,7 +160,7 @@ index 10fd3d2..b7cc9cb 100755
  ngx_feature_incs='#include <errno.h>
                    #include <stdio.h>'
  ngx_feature_path=
-@@ -558,6 +560,7 @@ if [ $ngx_found = no ]; then
+@@ -603,6 +605,7 @@ if [ $ngx_found = no ]; then
      ngx_feature="_sys_nerr"
      ngx_feature_name="NGX_SYS_NERR"
      ngx_feature_run=value
@@ -164,7 +168,7 @@ index 10fd3d2..b7cc9cb 100755
      ngx_feature_incs='#include <errno.h>
                        #include <stdio.h>'
      ngx_feature_path=
-@@ -573,6 +576,7 @@ if [ $ngx_found = no ]; then
+@@ -618,6 +621,7 @@ if [ $ngx_found = no ]; then
      ngx_feature='maximum errno'
      ngx_feature_name=NGX_SYS_NERR
      ngx_feature_run=value
@@ -172,7 +176,7 @@ index 10fd3d2..b7cc9cb 100755
      ngx_feature_incs='#include <errno.h>
                        #include <string.h>
                        #include <stdio.h>'
-@@ -631,6 +635,7 @@ ngx_feature_test="void *p; p = memalign(4096, 4096);
+@@ -676,6 +680,7 @@ ngx_feature_test="void *p; p = memalign(4096, 4096);
  ngx_feature="mmap(MAP_ANON|MAP_SHARED)"
  ngx_feature_name="NGX_HAVE_MAP_ANON"
  ngx_feature_run=yes
@@ -180,7 +184,7 @@ index 10fd3d2..b7cc9cb 100755
  ngx_feature_incs="#include <sys/mman.h>"
  ngx_feature_path=
  ngx_feature_libs=
-@@ -644,6 +649,7 @@ ngx_feature_test="void *p;
+@@ -689,6 +694,7 @@ ngx_feature_test="void *p;
  ngx_feature='mmap("/dev/zero", MAP_SHARED)'
  ngx_feature_name="NGX_HAVE_MAP_DEVZERO"
  ngx_feature_run=yes
@@ -188,7 +192,7 @@ index 10fd3d2..b7cc9cb 100755
  ngx_feature_incs="#include <sys/mman.h>
                    #include <sys/stat.h>
                    #include <fcntl.h>"
-@@ -659,6 +665,7 @@ ngx_feature_test='void *p; int  fd;
+@@ -704,6 +710,7 @@ ngx_feature_test='void *p; int  fd;
  ngx_feature="System V shared memory"
  ngx_feature_name="NGX_HAVE_SYSVSHM"
  ngx_feature_run=yes
@@ -196,7 +200,7 @@ index 10fd3d2..b7cc9cb 100755
  ngx_feature_incs="#include <sys/ipc.h>
                    #include <sys/shm.h>"
  ngx_feature_path=
-@@ -673,6 +680,7 @@ ngx_feature_test="int  id;
+@@ -718,6 +725,7 @@ ngx_feature_test="int  id;
  ngx_feature="POSIX semaphores"
  ngx_feature_name="NGX_HAVE_POSIX_SEM"
  ngx_feature_run=yes
@@ -205,5 +209,5 @@ index 10fd3d2..b7cc9cb 100755
  ngx_feature_path=
  ngx_feature_libs=
 -- 
-1.9.2
+1.9.1
 
