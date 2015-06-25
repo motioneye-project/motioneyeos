@@ -21,7 +21,6 @@ comment "OpenCV modules"
 
 config BR2_PACKAGE_OPENCV_LIB_CALIB3D
 	bool "calib3d"
-	default y
 	select BR2_PACKAGE_OPENCV_LIB_FEATURES2D
 	select BR2_PACKAGE_OPENCV_LIB_IMGPROC
 	help
@@ -30,7 +29,6 @@ config BR2_PACKAGE_OPENCV_LIB_CALIB3D
 
 config BR2_PACKAGE_OPENCV_LIB_FEATURES2D
 	bool "features2d"
-	default y
 	select BR2_PACKAGE_OPENCV_LIB_FLANN
 	select BR2_PACKAGE_OPENCV_LIB_IMGPROC
 	select BR2_PACKAGE_OPENCV_LIB_ML
@@ -40,7 +38,6 @@ config BR2_PACKAGE_OPENCV_LIB_FEATURES2D
 
 config BR2_PACKAGE_OPENCV_LIB_FLANN
 	bool "flann"
-	default y
 	# opencv_core dependency is already enabled
 	help
 	  Include opencv_flann (clustering and search in multi-dimensional spaces)
@@ -48,7 +45,6 @@ config BR2_PACKAGE_OPENCV_LIB_FLANN
 
 config BR2_PACKAGE_OPENCV_LIB_HIGHGUI
 	bool "highgui"
-	default y
 	select BR2_PACKAGE_OPENCV_LIB_IMGCODECS
 	select BR2_PACKAGE_OPENCV_LIB_IMGPROC
 	select BR2_PACKAGE_OPENCV_LIB_VIDEOIO
@@ -58,28 +54,24 @@ config BR2_PACKAGE_OPENCV_LIB_HIGHGUI
 
 config BR2_PACKAGE_OPENCV_LIB_IMGCODECS
 	bool "imgcodecs"
-	default y
 	select BR2_PACKAGE_OPENCV_LIB_IMGPROC
 	help
 	  Include opencv_imgcodecs (image codecs) module into the OpenCV build.
 
 config BR2_PACKAGE_OPENCV_LIB_IMGPROC
 	bool "imgproc"
-	default y
 	# opencv_core dependency is already enabled
 	help
 	  Include opencv_imgproc (image processing) module into the OpenCV build.
 
 config BR2_PACKAGE_OPENCV_LIB_ML
 	bool "ml"
-	default y
 	# opencv_core dependency is already enabled
 	help
 	  Include opencv_ml (machine learning) module into the OpenCV build.
 
 config BR2_PACKAGE_OPENCV_LIB_OBJDETECT
 	bool "objdetect"
-	default y
 	# opencv_core dependency is already enabled
 	select BR2_PACKAGE_OPENCV_LIB_IMGPROC
 	select BR2_PACKAGE_OPENCV_LIB_ML
@@ -88,7 +80,6 @@ config BR2_PACKAGE_OPENCV_LIB_OBJDETECT
 
 config BR2_PACKAGE_OPENCV_LIB_PHOTO
 	bool "photo"
-	default y
 	select BR2_PACKAGE_OPENCV_LIB_IMGPROC
 	help
 	  Include opencv_photo (computational photography) module into the OpenCV
@@ -137,7 +128,6 @@ config BR2_PACKAGE_OPENCV_LIB_TS
 
 config BR2_PACKAGE_OPENCV_LIB_VIDEOIO
 	bool "videoio"
-	default y
 	select BR2_PACKAGE_OPENCV_LIB_IMGCODECS
 	select BR2_PACKAGE_OPENCV_LIB_IMGPROC
 	help
@@ -145,7 +135,6 @@ config BR2_PACKAGE_OPENCV_LIB_VIDEOIO
 
 config BR2_PACKAGE_OPENCV_LIB_VIDEO
 	bool "video"
-	default y
 	select BR2_PACKAGE_OPENCV_LIB_IMGPROC
 	help
 	  Include opencv_video (video analysis) module into the OpenCV build.
