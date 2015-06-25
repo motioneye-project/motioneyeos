@@ -5,7 +5,7 @@ config BR2_PACKAGE_DOSFSTOOLS
 	help
 	  Tools for creating and checking DOS FAT filesystems.
 
-	  http://www.daniel-baumann.ch/software/dosfstools/
+	  https://github.com/dosfstools/dosfstools
 
 if BR2_PACKAGE_DOSFSTOOLS
 
