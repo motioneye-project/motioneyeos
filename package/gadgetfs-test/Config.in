@@ -8,12 +8,8 @@ if BR2_PACKAGE_GADGETFS_TEST
 
 config BR2_PACKAGE_GADGETFS_TEST_USE_AIO
 	bool "use asynchronous i/o"
+	depends on BR2_PACKAGE_LIBAIO_ARCH_SUPPORTS
 	select BR2_PACKAGE_LIBAIO
-	# libaio is available only on few architectures
-	depends on \
-		BR2_arm   || BR2_armeb || BR2_i386   || \
-		BR2_m68k  || BR2_mips  || BR2_mipsel || BR2_powerpc || \
-		BR2_sparc || BR2_x86_64
 	help
 	  Select this to have gadgetfs-test do asynchronous I/O using
 	  the libaio library.
