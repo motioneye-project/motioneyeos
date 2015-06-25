@@ -78,8 +78,6 @@ OPENCV_CONF_OPTS += \
 	-DBUILD_opencv_ml=$(if $(BR2_PACKAGE_OPENCV_LIB_ML),ON,OFF) \
 	-DBUILD_opencv_objdetect=$(if $(BR2_PACKAGE_OPENCV_LIB_OBJDETECT),ON,OFF) \
 	-DBUILD_opencv_photo=$(if $(BR2_PACKAGE_OPENCV_LIB_PHOTO),ON,OFF) \
-	-DBUILD_opencv_python2=OFF \
-	-DBUILD_opencv_python3=OFF \
 	-DBUILD_opencv_shape=$(if $(BR2_PACKAGE_OPENCV_LIB_SHAPE),ON,OFF) \
 	-DBUILD_opencv_stitching=$(if $(BR2_PACKAGE_OPENCV_LIB_STITCHING),ON,OFF) \
 	-DBUILD_opencv_superres=$(if $(BR2_PACKAGE_OPENCV_LIB_SUPERRES),ON,OFF) \
@@ -280,6 +278,37 @@ OPENCV_CONF_OPTS += \
 OPENCV_DEPENDENCIES += $(if $(BR2_PACKAGE_LIBV4L),libv4l)
 else
 OPENCV_CONF_OPTS += -DWITH_V4L=OFF -DWITH_LIBV4L=OFF
+endif
+
+ifeq ($(BR2_PACKAGE_OPENCV_LIB_PYTHON),y)
+ifeq ($(BR2_PACKAGE_PYTHON),y)
+OPENCV_CONF_OPTS += \
+	-DBUILD_opencv_python2=ON \
+	-DBUILD_opencv_python3=OFF \
+	-DPYTHON2_EXECUTABLE=$(HOST_DIR)/usr/bin/python2 \
+	-DPYTHON2_INCLUDE_PATH=$(STAGING_DIR)/usr/include/python$(PYTHON_VERSION_MAJOR) \
+	-DPYTHON2_LIBRARIES=$(STAGING_DIR)/usr/lib/libpython$(PYTHON_VERSION_MAJOR).so \
+	-DPYTHON2_NUMPY_INCLUDE_DIRS=$(STAGING_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR)/site-packages/numpy/core/include \
+	-DPYTHON2_PACKAGES_PATH=/usr/lib/python$(PYTHON_VERSION_MAJOR)/site-packages \
+	-DPYTHON2_NUMPY_VERSION=$(PYTHON_NUMPY_VERSION)
+OPENCV_DEPENDENCIES += python
+else
+OPENCV_CONF_OPTS += \
+	-DBUILD_opencv_python2=OFF \
+	-DBUILD_opencv_python3=ON \
+	-DPYTHON3_EXECUTABLE=$(HOST_DIR)/usr/bin/python3 \
+	-DPYTHON3_INCLUDE_PATH=$(STAGING_DIR)/usr/include/python$(PYTHON3_VERSION_MAJOR)m \
+	-DPYTHON3_LIBRARIES=$(STAGING_DIR)/usr/lib/libpython$(PYTHON3_VERSION_MAJOR)m.so \
+	-DPYTHON3_NUMPY_INCLUDE_DIRS=$(STAGING_DIR)/usr/lib/python$(PYTHON3_VERSION_MAJOR)/site-packages/numpy/core/include \
+	-DPYTHON3_PACKAGES_PATH=/usr/lib/python$(PYTHON3_VERSION_MAJOR)/site-packages \
+	-DPYTHON3_NUMPY_VERSION=$(PYTHON_NUMPY_VERSION)
+OPENCV_DEPENDENCIES += python3
+endif
+OPENCV_DEPENDENCIES += python-numpy
+else
+OPENCV_CONF_OPTS += \
+	-DBUILD_opencv_python2=OFF \
+	-DBUILD_opencv_python3=OFF
 endif
 
 # Installation hooks:
