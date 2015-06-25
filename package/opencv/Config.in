@@ -4,9 +4,14 @@ menuconfig BR2_PACKAGE_OPENCV
 	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_USE_WCHAR
+	depends on !BR2_STATIC_LIBS # include dlfcn.h
 	help
 	  OpenCV (Open Source Computer Vision) is a library of programming
 	  functions for real time computer vision.
+
+	  Note that the opencv_core module and the opencv_hal library
+	  are always built and installed, not matter which other
+	  modules are enabled below.
 
 	  http://opencv.org/
 
@@ -20,12 +25,6 @@ config BR2_PACKAGE_OPENCV_LIB_CALIB3D
 	help
 	  Include opencv_calib3d module into the OpenCV build.
 
-config BR2_PACKAGE_OPENCV_LIB_CONTRIB
-	bool "contrib"
-	default y
-	help
-	  Include opencv_contrib module into the OpenCV build.
-
 config BR2_PACKAGE_OPENCV_LIB_FEATURES2D
 	bool "features2d"
 	default y
@@ -38,16 +37,17 @@ config BR2_PACKAGE_OPENCV_LIB_FLANN
 	help
 	  Include opencv_flann module into the OpenCV build.
 
-config BR2_PACKAGE_OPENCV_LIB_GPU
-	bool "gpu"
-	help
-	  Include opencv_gpu module into the OpenCV build.
-
 config BR2_PACKAGE_OPENCV_LIB_HIGHGUI
 	bool "highgui"
 	default y
 	help
 	  Include opencv_highgui module into the OpenCV build.
+
+config BR2_PACKAGE_OPENCV_LIB_IMGCODECS
+	bool "imgcodecs"
+	default y
+	help
+	  Include opencv_imgcodecs module into the OpenCV build.
 
 config BR2_PACKAGE_OPENCV_LIB_IMGPROC
 	bool "imgproc"
@@ -55,22 +55,11 @@ config BR2_PACKAGE_OPENCV_LIB_IMGPROC
 	help
 	  Include opencv_imgproc module into the OpenCV build.
 
-config BR2_PACKAGE_OPENCV_LIB_LEGACY
-	bool "legacy"
-	default y
-	help
-	  Include opencv_legacy module into the OpenCV build.
-
 config BR2_PACKAGE_OPENCV_LIB_ML
-	bool "ml (machine learning)"
+	bool "ml"
 	default y
 	help
 	  Include opencv_ml module into the OpenCV build.
-
-config BR2_PACKAGE_OPENCV_LIB_NONFREE
-	bool "nonfree"
-	help
-	  Include opencv_nonfree module into the OpenCV build.
 
 config BR2_PACKAGE_OPENCV_LIB_OBJDETECT
 	bool "objdetect"
@@ -85,6 +74,12 @@ config BR2_PACKAGE_OPENCV_LIB_PHOTO
 	  Include opencv_photo module into the OpenCV build.
 
 comment "opencv_python module requires numpy which is not yet available."
+
+config BR2_PACKAGE_OPENCV_LIB_SHAPE
+	bool "shape (shape descriptors and matchers)"
+	default y
+	help
+	  Include opencv_shape module into the OpenCV build.
 
 config BR2_PACKAGE_OPENCV_LIB_STITCHING
 	bool "stitching"
@@ -105,6 +100,12 @@ config BR2_PACKAGE_OPENCV_LIB_TS
 	default y
 	help
 	  Include opencv_ts module into the OpenCV build.
+
+config BR2_PACKAGE_OPENCV_LIB_VIDEOIO
+	bool "videoio (media i/o)"
+	default y
+	help
+	  Include opencv_videoio module into the OpenCV build.
 
 config BR2_PACKAGE_OPENCV_LIB_VIDEO
 	bool "video"
@@ -219,5 +220,8 @@ config BR2_PACKAGE_OPENCV_INSTALL_DATA
 
 endif # BR2_PACKAGE_OPENCV
 
-comment "opencv needs a toolchain w/ C++, NPTL, wchar"
-	depends on !(BR2_INSTALL_LIBSTDCPP && BR2_USE_WCHAR && BR2_TOOLCHAIN_HAS_THREADS_NPTL)
+comment "opencv needs a toolchain w/ C++, NPTL, wchar, dynamic library"
+	depends on !BR2_INSTALL_LIBSTDCPP || \
+		!BR2_USE_WCHAR || \
+		!BR2_TOOLCHAIN_HAS_THREADS_NPTL || \
+		BR2_STATIC_LIBS
