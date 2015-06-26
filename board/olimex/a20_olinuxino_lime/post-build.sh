@@ -6,3 +6,7 @@
 MKIMAGE=$HOST_DIR/usr/bin/mkimage
 
 $MKIMAGE -A arm -O linux -T script -C none -d $2 $3/boot.scr
+
+if [ -e $BINARIES_DIR/script.bin ]; then
+	cp $BINARIES_DIR/script.bin $3/script.bin
+fi

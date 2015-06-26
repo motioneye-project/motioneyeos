@@ -6,10 +6,23 @@ Intro
 This is a open hardware board,
 see https://www.olimex.com/Products/OLinuXino/open-source-hardware
 
+The legacy linux-sunxi kernels are based on the vendor code drops.
+It is only useful when accelerated 3D graphics and multimedia support
+is strictly necessary.
+
+The Mainline Kernel is already a much better choice for a headless server.
+And also the mainline kernel works fine even for a basic Linux desktop
+system running on top of a simple framebuffer, which may be good enough for
+the users who do not need fancy 3D graphics or video playback acceleration.
+
 How to build it
 ===============
 
     $ make olimex_a20_olinuxino_lime_defconfig
+
+or
+
+    $ make olimex_a20_olinuxino_lime_mali_defconfig
 
 Compile everything and build the rootfs image:
 
@@ -23,7 +36,8 @@ After building, you should get a tree like this:
     output/images/
     +-- rootfs.ext2
     +-- rootfs.ext4 -> rootfs.ext2
-    +-- sun7i-a20-olinuxino-lime.dtb
+    +-- script.bin (mali)
+    +-- sun7i-a20-olinuxino-lime.dtb (mainline)
     +-- u-boot.bin
     +-- u-boot-sunxi-with-spl.bin
     `-- zImage
