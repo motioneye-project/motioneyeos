@@ -97,7 +97,7 @@ config BR2_GCC_VERSION
 	default "4.8.5"     if BR2_GCC_VERSION_4_8_X
 	default "4.9.3"     if BR2_GCC_VERSION_4_9_X
 	default "5.1.0"     if BR2_GCC_VERSION_5_1_X
-	default "arc-2014.12" if BR2_GCC_VERSION_4_8_ARC
+	default "arc-2015.06-rc1" if BR2_GCC_VERSION_4_8_ARC
 
 config BR2_EXTRA_GCC_CONFIG_OPTIONS
 	string "Additional gcc options"
