@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-IPROUTE2_VERSION = 4.0.0
+IPROUTE2_VERSION = 4.1.0
 IPROUTE2_SOURCE = iproute2-$(IPROUTE2_VERSION).tar.xz
 IPROUTE2_SITE = $(BR2_KERNEL_MIRROR)/linux/utils/net/iproute2
 IPROUTE2_DEPENDENCIES = host-bison host-flex host-pkgconf
@@ -15,6 +15,10 @@ IPROUTE2_LICENSE_FILES = COPYING
 # the fight over who gets to have their utils actually installed.
 ifeq ($(BR2_PACKAGE_BUSYBOX),y)
 IPROUTE2_DEPENDENCIES += busybox
+endif
+
+ifeq ($(BR2_PACKAGE_LIBMNL),y)
+IPROUTE2_DEPENDENCIES += libmnl
 endif
 
 # If we've got iptables enable xtables support for tc
