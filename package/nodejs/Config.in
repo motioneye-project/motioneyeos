@@ -22,6 +22,21 @@ comment "nodejs needs a toolchain w/ C++, threads"
 
 if BR2_PACKAGE_NODEJS
 
+choice
+	prompt "Node.js version"
+	default BR2_BR2_PACKAGE_NODEJS_0_10_39
+	help
+	  Select the version of Node.js you wish to use.
+
+config BR2_BR2_PACKAGE_NODEJS_0_10_39
+	bool "v0.10.39"
+
+endchoice
+
+config BR2_PACKAGE_NODEJS_VERSION_STRING
+	string
+	default "0.10.39"	if BR2_BR2_PACKAGE_NODEJS_0_10_39
+
 menu "Module Selection"
 
 config BR2_PACKAGE_NODEJS_NPM
