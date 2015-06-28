@@ -45,4 +45,16 @@ config BR2_PACKAGE_RPI_FIRMWARE_BOOT
 	default "_x"    if BR2_PACKAGE_RPI_FIRMWARE_X
 	default "_cd"   if BR2_PACKAGE_RPI_FIRMWARE_CD
 
+config BR2_PACKAGE_RPI_FIRMWARE_INSTALL_DTBS
+	bool "Install Device Tree Blobs (DTBs)"
+	depends on !BR2_LINUX_KERNEL_DTS_SUPPORT
+	default y
+	help
+	  If you are using a Linux kernel <= 3.18, you should say 'y' here.
+
+	  If you are using a Linux kernel >= 3.19, you should say 'n' here,
+	  and enable BR2_LINUX_KERNEL_DTS_SUPPORT to let the kernel build
+	  the DTB.
+
+
 endif # BR2_PACKAGE_RPI_FIRMWARE
