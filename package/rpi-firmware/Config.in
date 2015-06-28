@@ -56,5 +56,13 @@ config BR2_PACKAGE_RPI_FIRMWARE_INSTALL_DTBS
 	  and enable BR2_LINUX_KERNEL_DTS_SUPPORT to let the kernel build
 	  the DTB.
 
+config BR2_PACKAGE_RPI_FIRMWARE_INSTALL_DTB_OVERLAYS
+	bool "Install DTB overlays"
+	depends on BR2_PACKAGE_RPI_FIRMWARE_INSTALL_DTBS \
+		|| BR2_LINUX_KERNEL_DTS_SUPPORT
+	default y
+	help
+	  Say 'y' here if you need to load one or more of the DTB overlays,
+	  to support HATs (Hardware Attached on Top, add-on modules).
 
 endif # BR2_PACKAGE_RPI_FIRMWARE
