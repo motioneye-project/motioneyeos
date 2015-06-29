@@ -7,7 +7,7 @@ This is a open hardware board,
 see https://www.olimex.com/Products/OLinuXino/open-source-hardware
 
 The legacy linux-sunxi kernels are based on the vendor code drops.
-It is only useful when accelerated 3D graphics and multimedia support
+They are only useful when accelerated 3D graphics and multimedia support
 is strictly necessary.
 
 The Mainline Kernel is already a much better choice for a headless server.
