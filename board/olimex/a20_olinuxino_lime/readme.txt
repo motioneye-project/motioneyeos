@@ -15,6 +15,8 @@ And also the mainline kernel works fine even for a basic Linux desktop
 system running on top of a simple framebuffer, which may be good enough for
 the users who do not need fancy 3D graphics or video playback acceleration.
 
+(see http://linux-sunxi.org/Linux_Kernel for more details)
+
 How to build it
 ===============
 
