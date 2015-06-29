@@ -1,7 +1,8 @@
 config BR2_PACKAGE_QEMU_ARCH_SUPPORTS_TARGET
 	bool
 	# Only tested on these architectures
-	default y if BR2_i386 || BR2_mips || BR2_mipsel || BR2_x86_64
+	default y if BR2_aarch64 || BR2_i386 || BR2_mips || BR2_mipsel \
+		|| BR2_x86_64
 
 comment "QEMU requires a toolchain with wchar, threads"
 	depends on BR2_PACKAGE_QEMU_ARCH_SUPPORTS_TARGET
