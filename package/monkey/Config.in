@@ -1,0 +1,23 @@
+config BR2_PACKAGE_MONKEY
+	bool "monkey"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_STATIC_LIBS # dlopen()
+	depends on BR2_USE_MMU # fork()
+	help
+	  Monkey Server is a fast and lightweight web server for Linux platforms.
+
+	  http://monkey-project.com/
+
+if BR2_PACKAGE_MONKEY
+
+config BR2_PACKAGE_MONKEY_SHARED
+	bool "install shared library"
+	help
+	  Build Monkey as a shared library in addition to stand-alone
+	  server
+
+endif
+
+comment "monkey needs an toolchain w/ threads, dynamic library"
+	depends on BR2_USE_MMU
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS
