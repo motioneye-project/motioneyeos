@@ -17,8 +17,13 @@ ifeq ($(BR2_PACKAGE_BUSYBOX),y)
 IPROUTE2_DEPENDENCIES += busybox
 endif
 
-ifeq ($(BR2_PACKAGE_LIBMNL),y)
+# tipc support needs 3.18+ headers and libmnl
+ifeq ($(BR2_PACKAGE_LIBMNL)$(BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_18),yy)
 IPROUTE2_DEPENDENCIES += libmnl
+else
+define IPROUTE2_DISABLE_TIPC
+	$(SED) '/HAVE_MNL/d' $(@D)/Config
+endef
 endif
 
 # If we've got iptables enable xtables support for tc
@@ -57,6 +62,7 @@ define IPROUTE2_CONFIGURE_CMDS
 	cd $(@D) && $(TARGET_CONFIGURE_OPTS) ./configure
 	$(IPROUTE2_DISABLE_ARPD)
 	$(IPROUTE2_WITH_IPTABLES)
+	$(IPROUTE2_DISABLE_TIPC)
 endef
 
 define IPROUTE2_BUILD_CMDS
