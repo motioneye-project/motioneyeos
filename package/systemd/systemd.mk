@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-SYSTEMD_VERSION = 219
+SYSTEMD_VERSION = 221
 SYSTEMD_SITE = http://www.freedesktop.org/software/systemd
 SYSTEMD_SOURCE = systemd-$(SYSTEMD_VERSION).tar.xz
 SYSTEMD_LICENSE = LGPLv2.1+; GPLv2+ for udev; MIT-like license for few source files listed in README
@@ -39,6 +39,7 @@ SYSTEMD_CONF_OPTS += \
 	--with-dbussystemservicedir=/usr/share/dbus-1/system-services \
 	--enable-split-usr \
 	--disable-efi \
+	--disable-gnuefi \
 	--disable-tests \
 	--disable-dbus \
 	--without-python
@@ -61,13 +62,6 @@ SYSTEMD_CONF_OPTS += --enable-acl
 SYSTEMD_DEPENDENCIES += acl
 else
 SYSTEMD_CONF_OPTS += --disable-acl
-endif
-
-ifeq ($(BR2_PACKAGE_LIBGLIB2),y)
-SYSTEMD_CONF_OPTS += --enable-gudev
-SYSTEMD_DEPENDENCIES += libglib2
-else
-SYSTEMD_CONF_OPTS += --disable-gudev
 endif
 
 ifeq ($(BR2_PACKAGE_LIBSECCOMP),y)
