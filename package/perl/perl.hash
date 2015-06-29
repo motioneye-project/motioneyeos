@@ -4,4 +4,4 @@ sha1   63126c683b4c79c35008a47d56f7beae876c569f                         perl-5.2
 sha256 e5a4713bc65e1da98ebd833dce425c000768bfe84d17ec5183ec5ca249db71ab perl-5.20.2.tar.bz2
 
 # No upstream hashes for the following
-sha256 e25c5d9289b98db8f9d6a27bda9de12028ffc37eeede2d2fbfb10590d36fbf8f perl-5.20.2-cross-0.9.6.tar.gz
+sha256 36cabbc937cc66e59c8ae414d7753190d54a022cae0012c09ee5bbee78bc0aa0 perl-5.20.2-cross-0.9.7.tar.gz
