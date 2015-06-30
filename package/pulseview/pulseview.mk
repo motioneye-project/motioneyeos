@@ -8,7 +8,7 @@
 
 # No https access on upstream git
 PULSEVIEW_SITE = git://sigrok.org/pulseview
-PULSEVIEW_VERSION = 198f9bc74d6c955a72e3e3282c2b0ba16ef39a62
+PULSEVIEW_VERSION = ec6cc07fed12f5070eee6b8cb11343e83d42533c
 PULSEVIEW_LICENSE = GPLv3+
 PULSEVIEW_LICENSE_FILES = COPYING
 PULSEVIEW_DEPENDENCIES = libsigrok qt5base qt5svg boost
