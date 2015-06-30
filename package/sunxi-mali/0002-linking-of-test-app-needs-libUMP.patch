@@ -1,0 +1,18 @@
+linking of test app needs libUMP
+
+Signed-off-by: Francois Perrad <francois.perrad@gadz.org>
+
+diff --git a/test/Makefile b/test/Makefile
+index 700416e..92085cb 100644
+--- a/test/Makefile
++++ b/test/Makefile
+@@ -5,7 +5,7 @@
+ all: test
+ 
+ test: ../config.mk test.c
+-	$(CC) $(CFLAGS) -o $@ test.c -lEGL -lGLESv2
++	$(CC) $(CFLAGS) -o $@ test.c -lEGL -lGLESv2 -lUMP
+ 
+ clean:
+ 	rm -f test
+
