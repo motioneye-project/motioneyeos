@@ -1,0 +1,21 @@
+fix parallel build if UCLIBC_HAS_LOCALE is enabled for arm/xtensa
+
+Signed-off-by: Waldemar Brodkorb <wbx@uclibc-ng.org>
+ 
+diff -Nur uClibc-ng-1.0.3.orig/Makefile.in uClibc-ng-1.0.3/Makefile.in
+--- uClibc-ng-1.0.3.orig/Makefile.in	2015-06-13 20:26:56.000000000 +0200
++++ uClibc-ng-1.0.3/Makefile.in	2015-06-29 20:23:26.000000000 +0200
+@@ -183,11 +183,12 @@
+ headers-y += $(target-headers-sysdep)
+ 
+ headers: $(top_builddir)include/bits/uClibc_config.h | subdirs
++	$(Q)$(if $(UCLIBC_HAS_LOCALE),$(MAKE) -C extra/locale locale_headers)
++
+ subdirs: $(addprefix $(top_builddir),$(subdirs))
+ 
+ $(pregen-headers-y): $(headers_dep)
+ pregen: headers $(pregen-headers-y) $(headers_dep)
+-	$(Q)$(if $(UCLIBC_HAS_LOCALE),$(MAKE) -C extra/locale locale_headers)
+ 
+ $(top_builddir)include/bits/sysnum.h: $(top_srcdir)extra/scripts/gen_bits_syscall_h.sh | $(top_builddir)include/bits
+ 	@$(disp_gen)
