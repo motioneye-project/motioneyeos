@@ -5,7 +5,7 @@
 ################################################################################
 
 WMCTRL_VERSION = 1.07
-WMCTRL_SITE = http://tomas.styblo.name/wmctrl/dist
+WMCTRL_SITE = https://sites.google.com/site/tstyblo/wmctrl
 WMCTRL_LICENSE = GPLv2+
 WMCTRL_LICENSE_FILES = COPYING
 
