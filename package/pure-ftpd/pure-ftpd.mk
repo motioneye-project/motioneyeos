@@ -6,6 +6,7 @@
 
 PURE_FTPD_VERSION = 1.0.41
 PURE_FTPD_SITE = http://download.pureftpd.org/pub/pure-ftpd/releases
+PURE_FTPD_SOURCE = pure-ftpd-$(PURE_FTPD_VERSION).tar.bz2
 PURE_FTPD_LICENSE = ISC
 PURE_FTPD_LICENSE_FILES = COPYING
 PURE_FTPD_DEPENDENCIES = $(if $(BR2_PACKAGE_LIBICONV),libiconv)
