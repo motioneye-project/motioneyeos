@@ -1,4 +1,4 @@
-# From:  ftp://mirror.switch.ch/mirror/OpenLDAP/openldap-release/openldap-2.4.40.sha1
-sha1  0cfac3b024b99de2e2456cc7254481b6644e0b96  openldap-2.4.40.tgz
+# From http://www.openldap.org/software/download/OpenLDAP/openldap-release/openldap-2.4.41.sha1
+sha1  c6880df9fec928a5f010b78a4285b497e8a12d6b  openldap-2.4.41.tgz
 # Locally computed:
-sha256  d12611a5c25b6499293c2bb7b435dc2b174db73e83f5a8cb7e34f2ce5fa6dadb  openldap-2.4.40.tgz
+sha256  27856bb4a8b44feca2b326c309000e16a9dadd52362c8ab6eec6c67a43737f6e  openldap-2.4.41.tgz

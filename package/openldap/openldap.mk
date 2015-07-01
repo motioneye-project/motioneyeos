@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-OPENLDAP_VERSION = 2.4.40
+OPENLDAP_VERSION = 2.4.41
 OPENLDAP_SOURCE = openldap-$(OPENLDAP_VERSION).tgz
 OPENLDAP_SITE = ftp://ftp.openldap.org/pub/OpenLDAP/openldap-release
 OPENLDAP_LICENSE = OpenLDAP Public License
