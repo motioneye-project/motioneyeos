@@ -1,0 +1,42 @@
+# architecture
+BR2_arm=y
+BR2_cortex_a9=y
+
+# patches
+BR2_GLOBAL_PATCH_DIR="board/freescale/warpboard/patches/"
+
+# lock to 4.0 headers to avoid breaking with newer kernels
+BR2_KERNEL_HEADERS_VERSION=y
+BR2_DEFAULT_KERNEL_VERSION="4.0"
+BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_4_0=y
+
+# system
+BR2_TARGET_GENERIC_HOSTNAME="warpboard"
+BR2_TARGET_GENERIC_GETTY_PORT="ttymxc0"
+
+# rootfs overlay
+BR2_ROOTFS_OVERLAY="board/freescale/warpboard/rootfs_overlay"
+
+# kernel
+BR2_LINUX_KERNEL=y
+BR2_LINUX_KERNEL_CUSTOM_TARBALL=y
+BR2_LINUX_KERNEL_CUSTOM_TARBALL_LOCATION="http://github.com/Freescale/linux-fslc/tarball/38ec11d/linux-fslc-38ec11d.tar.gz"
+BR2_LINUX_KERNEL_DEFCONFIG="imx_v6_v7"
+BR2_LINUX_KERNEL_ZIMAGE=y
+BR2_LINUX_KERNEL_DTS_SUPPORT=y
+BR2_LINUX_KERNEL_INTREE_DTS_NAME="imx6sl-warp"
+
+# wifi firmware for brcm4330
+BR2_PACKAGE_LINUX_FIRMWARE=y
+BR2_PACKAGE_LINUX_FIRMWARE_BRCM_BCM43XX=y
+
+# uboot
+BR2_TARGET_UBOOT=y
+BR2_TARGET_UBOOT_BOARDNAME="warp"
+BR2_TARGET_UBOOT_CUSTOM_VERSION=y
+BR2_TARGET_UBOOT_CUSTOM_VERSION_VALUE="2015.07-rc2"
+BR2_TARGET_UBOOT_FORMAT_IMX=y
+
+# host utility
+BR2_PACKAGE_HOST_DFU_UTIL=y
+BR2_PACKAGE_HOST_IMX_USB_LOADER=y

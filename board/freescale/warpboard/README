@@ -1,0 +1,65 @@
+Build
+=====
+
+First, configure Buildroot for your WarpBoard.
+  make warpboard_defconfig
+
+Build all components:
+  make
+
+You will find in ./output/images/ the following files:
+  - imx6sl-warp.dtb
+  - rootfs.tar
+  - u-boot.imx
+  - zImage
+
+Update uboot
+============
+
+- Put warpboard in USB download mode by closing the j2 jumper on the
+  daugther board
+
+- Load u-boot.imx in the WarpBoard by using the imx-usb-loader host utility:
+
+  $ ./output/host/usr/bin/imx_usb -c output/host/etc/imx-loader.d/ output/images/u-boot.imx
+
+- U-Boot will appear in minicom
+
+- Reset the U-Boot environment to its default:
+ => env default -f -a
+ => saveenv
+
+- Run the DFU toocommand in U-Boot:
+ => dfu 0 mmc 0
+
+- Transfer U-Boot into flash by running this command in host side:
+
+ $ sudo ./output/host/usr/bin/dfu-util -D output/images/u-boot.imx -a boot
+
+- remove power and put the WarpBoard back into normal boot mode by
+  opening the j2 jumper.
+
+Update linux & rootfs
+=====================
+
+Run the 'ums' command from the u6Boot prompt to mount the eMMC as mass
+storage and update zImage, device tree (imx6sl-warp.dtb) and rootfs
+file (rootfs.tar) :
+
+=> ums 0 mmc 0
+
+Put the zImage and DTB files in the warp-vfat partition and extract as
+root the rootfs.tar tarball in the warp-rootfs partition.
+
+Using bluetooth
+================
+
+Enable the bluez_utils or bluez5_utils package, and then run:
+
+$ hciattach /dev/ttymxc4 any
+$ hciconfig hci0 up
+
+Using Wifi
+==========
+
+$ ifconfig wlan0 up
