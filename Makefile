@@ -58,8 +58,8 @@ export HOSTARCH := $(shell uname -m | \
 #
 # Taking into account the above considerations, if you still want to execute
 # this top-level Makefile in parallel comment the ".NOTPARALLEL" line and
-# build using the following command:
-#	make BR2_JLEVEL= -j$((`getconf _NPROCESSORS_ONLN`+1))
+# use the -j<jobs> option when building, e.g:
+#      make -j$((`getconf _NPROCESSORS_ONLN`+1))
 .NOTPARALLEL:
 
 # absolute path
