@@ -43,4 +43,8 @@ else
 LVM2_CONF_OPTS += --disable-applib
 endif
 
+ifeq ($(BR2_arc),y)
+LVM2_CONF_ENV += ac_cv_flag_HAVE_PIE=no
+endif
+
 $(eval $(autotools-package))
