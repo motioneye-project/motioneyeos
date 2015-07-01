@@ -26,4 +26,9 @@ else
 MODEM_MANAGER_CONF_OPTS += --without-mbim
 endif
 
+define MODEM_MANAGER_INSTALL_INIT_SYSV
+	$(INSTALL) -m 0755 -D package/modem-manager/S44modem-manager \
+		$(TARGET_DIR)/etc/init.d/S44modem-manager
+endef
+
 $(eval $(autotools-package))
