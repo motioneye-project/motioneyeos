@@ -1,10 +1,22 @@
-A20-OLinuXino-LIME
+A20-OLinuXino-LIME and A20-OLinuXino-MICRO
 
 Intro
 =====
 
-This is a open hardware board,
-see https://www.olimex.com/Products/OLinuXino/open-source-hardware
+These are open hardware boards, both based an the AllWinners A20 SoC.
+
+for more details about the boards see the following pages:
+ - https://www.olimex.com/Products/OLinuXino/open-source-hardware
+ - https://www.olimex.com/Products/OLinuXino/A20/A20-OLinuXino-MICRO/
+ - https://www.olimex.com/Products/OLinuXino/A20/A20-OLinuXino-LIME/
+
+The following defconfigs are available:
+ - olimex_a20_olinuxino_micro_defconfig
+   for the A20-OLinuXino-MICRO board using mainline kernel
+ - olimex_a20_olinuxino_lime_defconfig
+   for the A20-OLinuXino-LIME board using mainline kernel
+ - olimex_a20_olinuxino_lime_mali_defconfig
+   for the A20-OLinuXino-LIME board using legacy linux-sunxi kernel
 
 The legacy linux-sunxi kernels are based on the vendor code drops.
 They are only useful when accelerated 3D graphics and multimedia support
@@ -20,11 +32,9 @@ the users who do not need fancy 3D graphics or video playback acceleration.
 How to build it
 ===============
 
-    $ make olimex_a20_olinuxino_lime_defconfig
+Configure Buildroot:
 
-or
-
-    $ make olimex_a20_olinuxino_lime_mali_defconfig
+    $ make <board>_defconfig
 
 Compile everything and build the rootfs image:
 
@@ -38,8 +48,9 @@ After building, you should get a tree like this:
     output/images/
     +-- rootfs.ext2
     +-- rootfs.ext4 -> rootfs.ext2
-    +-- script.bin (mali)
-    +-- sun7i-a20-olinuxino-lime.dtb (mainline)
+    +-- script.bin (lime_mali)
+    +-- sun7i-a20-olinuxino-lime.dtb (lime, mainline)
+    +-- sun7i-a20-olinuxino-micro.dtb (micro, mainline)
     +-- u-boot.bin
     +-- u-boot-sunxi-with-spl.bin
     `-- zImage
@@ -98,5 +109,5 @@ Copy images on the SD card
 Finish
 ======
 
-Eject the SD card, insert it in the A20-OLinuXino-LIME board, and power it up.
+Eject the SD card, insert it in the A20-OLinuXino board, and power it up.
 
