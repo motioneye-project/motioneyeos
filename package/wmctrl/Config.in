@@ -16,7 +16,7 @@ config BR2_PACKAGE_WMCTRL
 	  always-above or sticky, and to activate, close, move,
 	  resize, maximize and minimize them.
 
-	  http://tomas.styblo.name/wmctrl/
+	  https://sites.google.com/site/tstyblo/wmctrl/
 
 comment "wmctrl needs a toolchain w/ wchar, threads"
 	depends on BR2_USE_MMU
