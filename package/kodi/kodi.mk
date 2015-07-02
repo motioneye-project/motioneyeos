@@ -34,7 +34,6 @@ KODI_CONF_ENV = \
 KODI_CONF_OPTS +=  \
 	--with-ffmpeg=shared \
 	--disable-crystalhd \
-	--disable-dvdcss \
 	--disable-hal \
 	--disable-joystick \
 	--disable-openmax \
