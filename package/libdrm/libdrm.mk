@@ -19,6 +19,8 @@ LIBDRM_CONF_OPTS = \
 	--disable-cairo-tests \
 	--disable-manpages
 
+LIBDRM_CONF_ENV = ac_cv_prog_cc_c99='-std=gnu99'
+
 ifeq ($(BR2_PACKAGE_LIBDRM_INTEL),y)
 LIBDRM_CONF_OPTS += --enable-intel
 LIBDRM_DEPENDENCIES += libatomic_ops libpciaccess
