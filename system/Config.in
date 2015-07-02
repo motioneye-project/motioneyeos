@@ -176,26 +176,43 @@ endif
 
 if BR2_ROOTFS_SKELETON_DEFAULT
 
+config BR2_TARGET_ENABLE_ROOT_LOGIN
+	bool "Enable root login with password"
+	default y
+	help
+	  Allow root to log in with a password.
+
+	  If not enabled, root will not be able to log in with a password.
+	  However, if you have an ssh server and you add an ssh key, you
+	  can still allow root to log in. Alternatively, you can use sudo
+	  to become root.
+
 config BR2_TARGET_GENERIC_ROOT_PASSWD
 	string "Root password"
 	default ""
+	depends on BR2_TARGET_ENABLE_ROOT_LOGIN
 	help
-	  Set the initial root password (in clear). It will be md5-encrypted.
+	  Set the initial root password.
 
 	  If set to empty (the default), then no root password will be set,
 	  and root will need no password to log in.
 
-	  WARNING! WARNING!
-	  Although pretty strong, MD5 is now an old hash function, and
-	  suffers from some weaknesses, which makes it susceptible to attacks.
-	  It is showing its age, so this root password should not be trusted
-	  to properly secure any product that can be shipped to the wide,
-	  hostile world.
+	  If the password starts with any of $1$, $5$ or $6$, it is considered
+	  to be already crypt-encoded with respectively md5, sha256 or sha512.
+	  Any other value is taken to be a clear-text value, and is crypt-encoded
+	  as per the "Passwords encoding" scheme, above.
+
+	  Note: "$" signs in the hashed password must be doubled. For example,
+	  if the hashed password is "$1$longsalt$v35DIIeMo4yUfI23yditq0",
+	  then you must enter it as "$$1$$longsalt$$v35DIIeMo4yUfI23yditq0"
+	  (this is necessary otherwise make would attempt to interpret the $
+	  as a variable expansion).
 
 	  WARNING! WARNING!
-	  The password appears in clear in the .config file, and may appear
+	  The password appears as-is in the .config file, and may appear
 	  in the build log! Avoid using a valuable password if either the
-	  .config file or the build log may be distributed!
+	  .config file or the build log may be distributed, or at the
+	  very least use a strong cryptographic hash for your password!
 
 choice
 	bool "/bin/sh"
