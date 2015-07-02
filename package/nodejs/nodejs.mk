@@ -107,6 +107,8 @@ define NODEJS_INSTALL_MODULES
 		$(TARGET_CONFIGURE_OPTS) \
 		LD="$(TARGET_CXX)" \
 		npm_config_arch=$(NODEJS_CPU) \
+		npm_config_target_arch=$(NODEJS_CPU) \
+		npm_config_build_from_source=true \
 		npm_config_nodedir=$(BUILD_DIR)/nodejs-$(NODEJS_VERSION) \
 		$(HOST_DIR)/usr/bin/npm install \
 		$(NODEJS_MODULES_LIST) \
