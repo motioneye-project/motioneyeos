@@ -1,0 +1,46 @@
+From 6bfa497dceb83de5257c64da59fbcf6a32d83305 Mon Sep 17 00:00:00 2001
+From: Martin Bark <martin@barkynet.com>
+Date: Tue, 30 Jun 2015 09:45:07 +0100
+Subject: [PATCH 4/4] fix build error without OpenSSL support
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: Jörg Krause <jkrause@posteo.de>
+[Martin: adapt to 0.12.5]
+Signed-off-by: Martin Bark <martin@barkynet.com>
+---
+ src/node.cc | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/src/node.cc b/src/node.cc
+index e669706..d43b791 100644
+--- a/src/node.cc
++++ b/src/node.cc
+@@ -2934,8 +2934,10 @@ static void PrintHelp() {
+          "                       present.\n"
+ #endif
+ #endif
++#if HAVE_OPENSSL
+          "  --enable-ssl2        enable ssl2\n"
+          "  --enable-ssl3        enable ssl3\n"
++#endif
+          "\n"
+          "Environment variables:\n"
+ #ifdef _WIN32
+@@ -3003,10 +3005,12 @@ static void ParseArgs(int* argc,
+     } else if (strcmp(arg, "--version") == 0 || strcmp(arg, "-v") == 0) {
+       printf("%s\n", NODE_VERSION);
+       exit(0);
++#if HAVE_OPENSSL
+     } else if (strcmp(arg, "--enable-ssl2") == 0) {
+       SSL2_ENABLE = true;
+     } else if (strcmp(arg, "--enable-ssl3") == 0) {
+       SSL3_ENABLE = true;
++#endif
+     } else if (strcmp(arg, "--help") == 0 || strcmp(arg, "-h") == 0) {
+       PrintHelp();
+       exit(0);
+-- 
+2.1.4
+
