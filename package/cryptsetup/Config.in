@@ -15,7 +15,7 @@ config BR2_PACKAGE_CRYPTSETUP
 	  This tool helps manipulate dm-crypt and luks partitions for
 	  on-disk encryption.
 
-	  https://code.google.com/p/cryptsetup/
+	  https://gitlab.com/cryptsetup/cryptsetup
 
 comment "cryptsetup needs a toolchain w/ wchar, threads, dynamic library"
 	depends on BR2_USE_MMU
