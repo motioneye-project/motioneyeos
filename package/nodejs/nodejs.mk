@@ -111,6 +111,14 @@ define NODEJS_INSTALL_MODULES
 		$(HOST_DIR)/usr/bin/npm install \
 		$(NODEJS_MODULES_LIST) \
 	)
+
+	# Symlink all executables in $(TARGET_DIR)/usr/lib/node_modules/.bin to
+	# $(TARGET_DIR)/usr/bin so they are accessible from the command line
+	cd $(TARGET_DIR)/usr/bin; \
+	for f in ../../usr/lib/node_modules/.bin/*; do \
+		[ -f "$${f}" -a -x "$${f}" ] || continue; \
+		ln -sf "$${f}" "$${f##*/}" || exit 1; \
+	done
 endef
 endif
 
