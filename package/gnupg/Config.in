@@ -16,6 +16,11 @@ config BR2_PACKAGE_GNUPG
 
 if BR2_PACKAGE_GNUPG
 
+config BR2_PACKAGE_GNUPG_AES
+	bool "AES support"
+	help
+	  Support for the AES cipher
+
 config BR2_PACKAGE_GNUPG_RSA
 	bool "RSA support"
 	help

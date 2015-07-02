@@ -31,6 +31,12 @@ else
 GNUPG_CONF_OPTS += --without-readline
 endif
 
+ifeq ($(BR2_PACKAGE_GNUPG_AES),y)
+GNUPG_CONF_OPTS += --enable-aes
+else
+GNUPG_CONF_OPTS += --disable-aes
+endif
+
 ifeq ($(BR2_PACKAGE_GNUPG_RSA),y)
 GNUPG_CONF_OPTS += --enable-rsa
 else
