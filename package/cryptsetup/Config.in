@@ -2,10 +2,11 @@ config BR2_PACKAGE_CRYPTSETUP
 	bool "cryptsetup"
 	select BR2_PACKAGE_POPT
 	select BR2_PACKAGE_LVM2
-	select BR2_PACKAGE_E2FSPROGS
+	select BR2_PACKAGE_UTIL_LINUX
+	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
 	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE
 	depends on BR2_TOOLCHAIN_HAS_THREADS # lvm2
-	depends on BR2_USE_MMU # lvm2, e2fsprogs
+	depends on BR2_USE_MMU # lvm2
 	depends on !BR2_STATIC_LIBS # lvm2
 	depends on BR2_USE_WCHAR # util-linux
 	# Triggers the _gp link issue
