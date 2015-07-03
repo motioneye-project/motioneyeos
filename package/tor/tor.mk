@@ -32,6 +32,7 @@ else
 TOR_CONF_OPTS += --disable-seccomp
 endif
 
+# uses gnu extensions
 TOR_CONF_ENV = ac_cv_prog_cc_c99='-std=gnu99'
 
 $(eval $(autotools-package))
