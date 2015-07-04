@@ -4,11 +4,11 @@
 #
 ################################################################################
 
-# The latest 0.13 version is not yet compatible with cloog 0.18.2, so
+# The latest 0.15 version is not yet compatible with cloog 0.18.3, so
 # bumping isl is not possible until a new version of cloog is
 # published.
-ISL_VERSION = 0.12.2
-ISL_SOURCE = isl-$(ISL_VERSION).tar.bz2
+ISL_VERSION = 0.14.1
+ISL_SOURCE = isl-$(ISL_VERSION).tar.xz
 ISL_SITE = http://isl.gforge.inria.fr
 ISL_LICENSE = MIT
 ISL_LICENSE_FILES = LICENSE
