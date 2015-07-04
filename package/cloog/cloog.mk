@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-CLOOG_VERSION = 0.18.2
+CLOOG_VERSION = 0.18.3
 CLOOG_SITE = http://www.bastoul.net/cloog/pages/download
 CLOOG_LICENSE = LGPLv2.1+
 CLOOG_DEPENDENCIES = gmp isl
