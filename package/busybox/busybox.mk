@@ -152,7 +152,8 @@ define BUSYBOX_INSTALL_WATCHDOG_SCRIPT
 endef
 endif
 
-ifeq ($(BR2_PACKAGE_LINUX_PAM),y)
+# PAM support requires thread support in the toolchain
+ifeq ($(BR2_PACKAGE_LINUX_PAM)$(BR2_TOOLCHAIN_HAS_THREADS),yy)
 define BUSYBOX_LINUX_PAM
 	$(call KCONFIG_ENABLE_OPT,CONFIG_PAM,$(BUSYBOX_BUILD_CONFIG))
 endef
