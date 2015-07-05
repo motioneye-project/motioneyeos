@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-OLA_VERSION = 0.9.4
+OLA_VERSION = 0.9.6
 OLA_SITE = $(call github,OpenLightingProject,ola,$(OLA_VERSION))
 
 OLA_LICENSE = LGPLv2.1+ (libola, libolacommon, Python bindings), GPLv2+ (libolaserver, olad, Python examples and tests)
