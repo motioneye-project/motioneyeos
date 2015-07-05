@@ -63,36 +63,25 @@ config BR2_PACKAGE_OPENCV_GUI_NONE
 
 config BR2_PACKAGE_OPENCV_WITH_GTK
 	bool "gtk2"
-	depends on BR2_ARCH_HAS_ATOMICS # libgtk2 -> cairo
-	depends on BR2_USE_MMU # libgtk2 -> libglib2
-	depends on BR2_USE_WCHAR # libgtk2 -> libglib2
-	depends on BR2_TOOLCHAIN_HAS_THREADS # libgtk2 -> libglib2
-	depends on BR2_INSTALL_LIBSTDCPP
-	depends on BR2_PACKAGE_XORG7
-	select BR2_PACKAGE_LIBGTK2
+	depends on BR2_PACKAGE_LIBGTK2
 
-comment "gtk2 needs X.org and a toolchain w/ wchar, threads, C++"
+comment "gtk2 support needs libgtk2"
 	depends on BR2_USE_MMU # libgtk2 -> glib2
 	depends on BR2_ARCH_HAS_ATOMICS # libgtk2 -> cairo
-	depends on !BR2_PACKAGE_XORG7 || \
-		!BR2_USE_WCHAR || \
-		!BR2_TOOLCHAIN_HAS_THREADS || \
-		!BR2_INSTALL_LIBSTDCPP
+	depends on !BR2_PACKAGE_LIBGTK2
 
 config BR2_PACKAGE_OPENCV_WITH_QT
 	bool "qt4"
-	depends on BR2_INSTALL_LIBSTDCPP
-	depends on BR2_USE_MMU # qt
-	select BR2_PACKAGE_QT
+	depends on BR2_PACKAGE_QT
 	select BR2_PACKAGE_QT_STL
 	select BR2_PACKAGE_QT_GUI_MODULE
 	select BR2_PACKAGE_QT_TEST
 	help
-	  Use Qt with QtTest module and STL support
+	  Use Qt4 with QtTest and QtGui modules and STL support, as GUI toolkit.
 
-comment "qt4 needs a toolchain w/ C++"
+comment "qt4 support needs qt"
 	depends on BR2_USE_MMU # qt
-	depends on !BR2_INSTALL_LIBSTDCPP
+	depends on !BR2_PACKAGE_QT
 
 endchoice
 
