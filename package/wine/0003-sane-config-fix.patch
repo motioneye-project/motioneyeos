@@ -1,0 +1,21 @@
+Add support for SANE_CONFIG variable
+
+Instead of using directly the sane-config command, allow to pass a
+SANE_CONFIG environment variable to override where to find the
+sane-config tool.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/configure.ac
+===================================================================
+--- a/configure.ac
++++ b/configure.ac
+@@ -1375,7 +1375,7 @@
+ if test "x$with_sane" != "xno"
+ then
+     ac_save_CPPFLAGS="$CPPFLAGS"
+-    WINE_PACKAGE_FLAGS(SANE,[libsane],,[`sane-config --cflags 2>/dev/null`],[`sane-config --ldflags 2>/dev/null`])
++    WINE_PACKAGE_FLAGS(SANE,[libsane],,[`${SANE_CONFIG:-sane-config} --cflags 2>/dev/null`],[`${SANE_CONFIG:-sane-config} --ldflags 2>/dev/null`])
+     AC_CHECK_HEADER(sane/sane.h,
+         [WINE_CHECK_SONAME(sane,sane_init,,[SANE_CFLAGS=""],[$SANE_LIBS])],
+         [SANE_CFLAGS=""])
