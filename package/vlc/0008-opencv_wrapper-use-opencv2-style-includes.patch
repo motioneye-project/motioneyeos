@@ -1,0 +1,36 @@
+Backport from: https://git.videolan.org/?p=vlc.git;a=commit;h=cc236e4652255902f2c2cee3b18f83367f35a8c7
+
+From cc236e4652255902f2c2cee3b18f83367f35a8c7 Mon Sep 17 00:00:00 2001
+From: Samuel Martin <s.martin49@gmail.com>
+Date: Sun, 24 May 2015 14:30:09 +0200
+Subject: [PATCH 8/9] opencv_wrapper: use opencv2-style includes
+
+If old opencv1-style legacy include directory is available, this change
+becomes purely cosmetic (maybe will compile a bit faster).
+It becomes an FTBFS fix when opencv1-style include directory is missing
+(i.e. from opencv-3.0).
+
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+Signed-off-by: Jean-Baptiste Kempf <jb@videolan.org>
+---
+ modules/video_filter/opencv_wrapper.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/modules/video_filter/opencv_wrapper.c b/modules/video_filter/opencv_wrapper.c
+index e36e1a5..5d74241 100644
+--- a/modules/video_filter/opencv_wrapper.c
++++ b/modules/video_filter/opencv_wrapper.c
+@@ -39,8 +39,8 @@
+ #include <vlc_image.h>
+ #include "filter_picture.h"
+ 
+-#include <cxcore.h>
+-#include <cv.h>
++#include <opencv2/core/core_c.h>
++#include <opencv2/core/types_c.h>
+ 
+ /*****************************************************************************
+  * Local prototypes
+-- 
+2.4.2
+

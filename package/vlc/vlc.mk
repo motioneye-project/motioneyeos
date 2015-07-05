@@ -44,7 +44,6 @@ VLC_CONF_OPTS += \
 	--disable-projectm \
 	--disable-vsxu \
 	--disable-mtp \
-	--disable-opencv \
 	--disable-mmal-codec \
 	--disable-mmal-vout \
 	--disable-dvdnav \
@@ -146,6 +145,13 @@ VLC_CONF_OPTS += --enable-gles2
 VLC_DEPENDENCIES += libgles
 else
 VLC_CONF_OPTS += --disable-gles2
+endif
+
+ifeq ($(BR2_PACKAGE_OPENCV),y)
+VLC_CONF_OPTS += --enable-opencv
+VLC_DEPENDENCIES += opencv
+else
+VLC_CONF_OPTS += --disable-opencv
 endif
 
 ifeq ($(BR2_PACKAGE_OPUS),y)
