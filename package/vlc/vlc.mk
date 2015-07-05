@@ -66,6 +66,12 @@ else
 VLC_CONF_OPTS += --disable-altivec
 endif
 
+ifeq ($(BR2_X86_CPU_HAS_SSE),y)
+VLC_CONF_OPTS += --enable-sse
+else
+VLC_CONF_OPTS += --disable-sse
+endif
+
 ifeq ($(BR2_PACKAGE_ALSA_LIB),y)
 VLC_CONF_OPTS += --enable-alsa
 VLC_DEPENDENCIES += alsa-lib
