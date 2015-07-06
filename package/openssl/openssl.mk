@@ -14,14 +14,6 @@ HOST_OPENSSL_DEPENDENCIES = host-zlib
 OPENSSL_TARGET_ARCH = generic32
 OPENSSL_CFLAGS = $(TARGET_CFLAGS)
 
-ifeq ($(BR2_PACKAGE_OPENSSL_BIN),)
-define OPENSSL_DISABLE_APPS
-	$(SED) '/^build_apps/! s/build_apps//' $(@D)/Makefile.org
-	$(SED) '/^DIRS=/ s/apps//' $(@D)/Makefile.org
-endef
-OPENSSL_PRE_CONFIGURE_HOOKS += OPENSSL_DISABLE_APPS
-endif
-
 ifeq ($(BR2_USE_MMU),)
 OPENSSL_CFLAGS += -DHAVE_FORK=0
 endif
@@ -138,6 +130,21 @@ define OPENSSL_INSTALL_FIXUPS_SHARED
 	do chmod +w $$i; done
 endef
 OPENSSL_POST_INSTALL_TARGET_HOOKS += OPENSSL_INSTALL_FIXUPS_SHARED
+endif
+
+ifeq ($(BR2_PACKAGE_PERL),)
+define OPENSSL_REMOVE_PERL_SCRIPTS
+	$(RM) -f $(TARGET_DIR)/etc/ssl/misc/{CA.pl,tsget}
+endef
+OPENSSL_POST_INSTALL_TARGET_HOOKS += OPENSSL_REMOVE_PERL_SCRIPTS
+endif
+
+ifeq ($(BR2_PACKAGE_OPENSSL_BIN),)
+define OPENSSL_REMOVE_BIN
+	$(RM) -f $(TARGET_DIR)/usr/bin/openssl
+	$(RM) -f $(TARGET_DIR)/etc/ssl/misc/{CA.*,c_*}
+endef
+OPENSSL_POST_INSTALL_TARGET_HOOKS += OPENSSL_REMOVE_BIN
 endif
 
 ifneq ($(BR2_PACKAGE_OPENSSL_ENGINES),y)
