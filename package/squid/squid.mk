@@ -60,6 +60,8 @@ endif
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 SQUID_CONF_OPTS += --with-openssl
 SQUID_DEPENDENCIES += openssl
+else
+SQUID_CONF_OPTS += --without-openssl
 endif
 
 ifeq ($(BR2_PACKAGE_GNUTLS),y)
