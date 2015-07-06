@@ -3,7 +3,12 @@ config BR2_PACKAGE_LIBSIGSEGV
 	depends on !BR2_xtensa
 	depends on !BR2_arc # no ucontext_i.sym file
 	depends on !BR2_microblaze
+	# No ucontext support in uclibc for powerpc
+	depends on !(BR2_powerpc && BR2_TOOLCHAIN_USES_UCLIBC)
 	help
 	  Library for handling page faults in user mode.
 
 	  http://libsigsegv.sourceforge.net/
+
+comment "libsigsegv needs an (e)glibc toolchain"
+	depends on BR2_powerpc && BR2_TOOLCHAIN_USES_UCLIBC
