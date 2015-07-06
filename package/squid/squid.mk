@@ -62,6 +62,13 @@ SQUID_CONF_OPTS += --with-openssl
 SQUID_DEPENDENCIES += openssl
 endif
 
+ifeq ($(BR2_PACKAGE_GNUTLS),y)
+SQUID_CONF_OPTS += --with-gnutls
+SQUID_DEPENDENCIES += gnutls
+else
+SQUID_CONF_OPTS += --without-gnutls
+endif
+
 define SQUID_CLEANUP_TARGET
 	rm -f $(addprefix $(TARGET_DIR)/usr/bin/, \
 		RunCache RunAccel)
