@@ -69,6 +69,4 @@ define NTP_INSTALL_INIT_SYSTEMD
 endef
 endif
 
-NTP_POST_PATCH_HOOKS += NTP_PATCH_FIXUPS
-
 $(eval $(autotools-package))
