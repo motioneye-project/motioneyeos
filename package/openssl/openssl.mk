@@ -90,6 +90,14 @@ define OPENSSL_CONFIGURE_CMDS
 	$(SED) "s: build_tests::" $(@D)/Makefile
 endef
 
+# libdl is not available in a static build, and this is not implied by no-dso
+ifeq ($(BR2_STATIC_LIBS),y)
+define OPENSSL_FIXUP_STATIC_MAKEFILE
+	$(SED) 's/-ldl//g' $(@D)/Makefile
+endef
+OPENSSL_POST_CONFIGURE_HOOKS += OPENSSL_FIXUP_STATIC_MAKEFILE
+endif
+
 define HOST_OPENSSL_BUILD_CMDS
 	$(MAKE1) -C $(@D)
 endef
