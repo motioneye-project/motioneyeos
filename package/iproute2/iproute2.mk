@@ -4,10 +4,11 @@
 #
 ################################################################################
 
-IPROUTE2_VERSION = 4.1.0
+IPROUTE2_VERSION = 4.1.1
 IPROUTE2_SOURCE = iproute2-$(IPROUTE2_VERSION).tar.xz
 IPROUTE2_SITE = $(BR2_KERNEL_MIRROR)/linux/utils/net/iproute2
-IPROUTE2_DEPENDENCIES = host-bison host-flex host-pkgconf
+IPROUTE2_DEPENDENCIES = host-bison host-flex host-pkgconf \
+	$(if $(BR2_PACKAGE_LIBMNL),libmnl)
 IPROUTE2_LICENSE = GPLv2
 IPROUTE2_LICENSE_FILES = COPYING
 
@@ -15,15 +16,6 @@ IPROUTE2_LICENSE_FILES = COPYING
 # the fight over who gets to have their utils actually installed.
 ifeq ($(BR2_PACKAGE_BUSYBOX),y)
 IPROUTE2_DEPENDENCIES += busybox
-endif
-
-# tipc support needs 3.18+ headers and libmnl
-ifeq ($(BR2_PACKAGE_LIBMNL)$(BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_18),yy)
-IPROUTE2_DEPENDENCIES += libmnl
-else
-define IPROUTE2_DISABLE_TIPC
-	$(SED) '/HAVE_MNL/d' $(@D)/Config
-endef
 endif
 
 # If we've got iptables enable xtables support for tc
