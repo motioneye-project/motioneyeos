@@ -1,0 +1,30 @@
+upstream: https://github.com/processone/ejabberd/pull/628
+Author: Johan Oudinet <johan.oudinet@gmail.com>
+
+From 0e7d2b73be335353e9938668a699b3dbb7011c56 Mon Sep 17 00:00:00 2001
+From: Johan Oudinet <johan.oudinet@gmail.com>
+Date: Tue, 30 Jun 2015 10:53:45 +0200
+Subject: [PATCH] configure.ac: add AC_CONFIG_MACRO_DIR
+
+Otherwise, autoconf fails to find extra macros defined in the m4
+directory.
+---
+ configure.ac | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/configure.ac b/configure.ac
+index a3e2638..0a60de0 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -6,6 +6,8 @@ AC_INIT(ejabberd, m4_esyscmd([echo `git describe --tags 2>/dev/null || echo 0.0`
+ REQUIRE_ERLANG_MIN="5.9.1 (Erlang/OTP R15B01)"
+ REQUIRE_ERLANG_MAX="9.0.0 (No Max)"
+ 
++AC_CONFIG_MACRO_DIR([m4])
++
+ # Checks for programs.
+ AC_PROG_MAKE_SET
+ AC_PROG_INSTALL
+-- 
+2.1.4
+

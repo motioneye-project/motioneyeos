@@ -1,0 +1,20 @@
+Description: disable ERLANG_DEPRECATED_CHECK
+ Without this patch, the configure will try to execute erlang to check
+ if it uses deprecated types. Assume the answer is false.
+Author: Johan Oudinet <johan.oudinet@gmail.com>
+
+Index: ejabberd/configure.ac
+====================================================================
+diff --git a/configure.ac b/configure.ac
+index 6ae0a24..e5498df 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -252,7 +252,7 @@ if test "$ENABLEUSER" != ""; then
+   AC_SUBST([INSTALLUSER], [$ENABLEUSER])
+ fi
+ 
+-ERLANG_DEPRECATED_TYPES_CHECK
++AC_SUBST(erlang_deprecated_types, false)
+ 
+ if test "$sqlite" = "true"; then
+    AX_LIB_SQLITE3([3.6.19])

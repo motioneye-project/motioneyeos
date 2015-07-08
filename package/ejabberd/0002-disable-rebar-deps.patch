@@ -5,9 +5,11 @@ Author: Philipp Huebner <debalance@debian.org>
 
 Index: ejabberd/Makefile.in
 ===================================================================
---- ejabberd.orig/Makefile.in
-+++ ejabberd/Makefile.in
-@@ -68,26 +68,11 @@ else
+diff --git a/Makefile.in b/Makefile.in
+index ffd1d30..09cb8d7 100644
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -74,26 +74,11 @@ else
    INIT_USER=$(INSTALLUSER)
  endif
  
@@ -33,10 +35,10 @@ Index: ejabberd/Makefile.in
 -	rm -rf deps/.built
 -	$(REBAR) update-deps && :> deps/.got
 -
- translations:
- 	contrib/extract_translations/prepare-translation.sh -updateall
+ xref: all
+ 	$(REBAR) skip_deps=true xref
  
-@@ -103,8 +88,6 @@ spec:
+@@ -109,8 +94,6 @@ spec:
  	$(ERL) -noinput +B -pa ebin -pa deps/*/ebin -eval \
  	'case xml_gen:compile("tools/xmpp_codec.spec") of ok -> halt(0); _ -> halt(1) end.'
  
@@ -45,14 +47,16 @@ Index: ejabberd/Makefile.in
  install: all
  	#
  	# Configuration files
-@@ -139,14 +122,11 @@ install: all
+@@ -151,8 +134,6 @@ install: all
  	$(INSTALL) -d $(BEAMDIR)
  	$(INSTALL) -m 644 ebin/*.app $(BEAMDIR)
  	$(INSTALL) -m 644 ebin/*.beam $(BEAMDIR)
 -	$(INSTALL) -m 644 deps/*/ebin/*.app $(BEAMDIR)
 -	$(INSTALL) -m 644 deps/*/ebin/*.beam $(BEAMDIR)
- 	rm -f $(BEAMDIR)/configure.beam
- 	#
+ 	# Install Elixir and Elixir dependancies
+ 	-$(INSTALL) -m 644 deps/*/lib/*/ebin/*.app $(BEAMDIR)
+ 	-$(INSTALL) -m 644 deps/*/lib/*/ebin/*.beam $(BEAMDIR)
+@@ -161,7 +142,6 @@ install: all
  	# ejabberd header files
  	$(INSTALL) -d $(INCLUDEDIR)
  	$(INSTALL) -m 644 include/*.hrl $(INCLUDEDIR)
@@ -60,11 +64,11 @@ Index: ejabberd/Makefile.in
  	#
  	# Binary C programs
  	$(INSTALL) -d $(PBINDIR)
-@@ -156,7 +136,6 @@ install: all
+@@ -173,7 +153,6 @@ install: all
  	#
  	# Binary system libraries
  	$(INSTALL) -d $(SODIR)
 -	$(INSTALL) -m 644 $(DLLs) $(SODIR)
+ 	-[ -f $(SODIR)/jiffy.so ] && (cd $(PRIVDIR); ln -s lib/jiffy.so; true)
+ 	-[ -f $(SODIR)/sqlite3_drv.so ] && (cd $(PRIVDIR); ln -s lib/sqlite3_drv.so; true)
  	#
- 	# Translated strings
- 	$(INSTALL) -d $(MSGSDIR)

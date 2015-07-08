@@ -4,11 +4,11 @@
 #
 ################################################################################
 
-EJABBERD_VERSION = 14.07
+EJABBERD_VERSION = 15.06
 EJABBERD_SITE = $(call github,processone,ejabberd,$(EJABBERD_VERSION))
 EJABBERD_LICENSE = GPLv2+ with OpenSSL exception
 EJABBERD_LICENSE_FILES = COPYING
-EJABBERD_DEPENDENCIES = openssl host-erlang-lager erlang-lager \
+EJABBERD_DEPENDENCIES = getent openssl host-erlang-lager erlang-lager \
 	erlang-p1-cache-tab erlang-p1-iconv erlang-p1-sip \
 	erlang-p1-stringprep erlang-p1-xml erlang-p1-yaml erlang-p1-zlib
 

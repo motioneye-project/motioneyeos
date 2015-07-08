@@ -9,6 +9,7 @@ config BR2_PACKAGE_EJABBERD
 	select BR2_PACKAGE_ERLANG_P1_XML
 	select BR2_PACKAGE_ERLANG_P1_YAML
 	select BR2_PACKAGE_ERLANG_P1_ZLIB
+	select BR2_PACKAGE_GETENT
 	select BR2_PACKAGE_OPENSSL
 	help
 	  Ejabberd is a Jabber/XMPP instant messaging server, written

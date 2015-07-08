@@ -6,55 +6,57 @@ Author: Johan Oudinet <johan.oudinet@gmail.com>
 
 Index: ejabberd/Makefile.in
 ===================================================================
---- ejabberd.orig/Makefile.in	2014-10-28 12:36:49.228713322 +0100
-+++ ejabberd/Makefile.in	2014-10-28 13:53:13.538888807 +0100
-@@ -91,10 +91,10 @@ spec:
+diff --git a/Makefile.in b/Makefile.in
+index ffd1d30..a60c5b7 100644
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -114,10 +114,8 @@ DLLs := $(wildcard deps/*/priv/*.so) $(wildcard deps/*/priv/lib/*.so)
  install: all
  	#
  	# Configuration files
 -	$(INSTALL) -d -m 750 $(G_USER) $(ETCDIR)
-+	$(INSTALL) -d $(ETCDIR)
- 	[ -f $(ETCDIR)/ejabberd.yml ] \
+-	[ -f $(ETCDIR)/ejabberd.yml ] \
 -		&& $(INSTALL) -b -m 640 $(G_USER) ejabberd.yml.example $(ETCDIR)/ejabberd.yml-new \
 -		|| $(INSTALL) -b -m 640 $(G_USER) ejabberd.yml.example $(ETCDIR)/ejabberd.yml
-+		&& $(INSTALL) -b -m 644 $(G_USER) ejabberd.yml.example $(ETCDIR)/ejabberd.yml-new \
-+		|| $(INSTALL) -b -m 644 $(G_USER) ejabberd.yml.example $(ETCDIR)/ejabberd.yml
++	$(INSTALL) -d $(ETCDIR)
++	$(INSTALL) -b -m 644 $(G_USER) ejabberd.yml.example $(ETCDIR)/ejabberd.yml
  	$(SED) -e "s*{{rootdir}}*@prefix@*" \
  		-e "s*{{installuser}}*@INSTALLUSER@*" \
- 		-e "s*{{libdir}}*@libdir@*" \
-@@ -104,13 +104,12 @@ install: all
+ 		-e "s*{{bindir}}*@bindir@*" \
+@@ -127,14 +125,11 @@ install: all
+ 		-e "s*{{docdir}}*@docdir@*" \
  		-e "s*{{erl}}*@ERL@*" ejabberdctl.template \
  		> ejabberdctl.example
- 	[ -f $(ETCDIR)/ejabberdctl.cfg ] \
+-	[ -f $(ETCDIR)/ejabberdctl.cfg ] \
 -		&& $(INSTALL) -b -m 640 $(G_USER) ejabberdctl.cfg.example $(ETCDIR)/ejabberdctl.cfg-new \
 -		|| $(INSTALL) -b -m 640 $(G_USER) ejabberdctl.cfg.example $(ETCDIR)/ejabberdctl.cfg
-+		&& $(INSTALL) -b -m 644 $(G_USER) ejabberdctl.cfg.example $(ETCDIR)/ejabberdctl.cfg-new \
-+		|| $(INSTALL) -b -m 644 $(G_USER) ejabberdctl.cfg.example $(ETCDIR)/ejabberdctl.cfg
++	$(INSTALL) -b -m 644 $(G_USER) ejabberdctl.cfg.example $(ETCDIR)/ejabberdctl.cfg
  	$(INSTALL) -b -m 644 $(G_USER) inetrc $(ETCDIR)/inetrc
  	#
  	# Administration script
 -	[ -d $(SBINDIR) ] || $(INSTALL) -d -m 755 $(SBINDIR)
 -	$(INSTALL) -m 550 $(G_USER) ejabberdctl.example $(SBINDIR)/ejabberdctl
 +	$(INSTALL) -D ejabberdctl.example $(SBINDIR)/ejabberdctl
- 	#
- 	# Init script
- 	$(SED) -e "s*@ctlscriptpath@*$(SBINDIR)*" \
-@@ -129,10 +128,7 @@ install: all
- 	$(INSTALL) -m 644 include/*.hrl $(INCLUDEDIR)
+ 	# Elixir binaries
+ 	[ -d $(BINDIR) ] || $(INSTALL) -d -m 755 $(BINDIR)
+ 	-[ -f deps/elixir/bin/iex ] && $(INSTALL) -m 550 $(G_USER) deps/elixir/bin/iex $(BINDIR)/iex
+@@ -165,9 +160,9 @@ install: all
  	#
  	# Binary C programs
--	$(INSTALL) -d $(PBINDIR)
+ 	$(INSTALL) -d $(PBINDIR)
 -	$(INSTALL) -m 750 $(O_USER) tools/captcha.sh $(PBINDIR)
--	-[ -f deps/p1_pam/priv/bin/epam ] \
--		&& $(INSTALL) -m 750 $(O_USER) deps/p1_pam/priv/bin/epam $(PBINDIR)
-+	$(INSTALL) -D tools/captcha.sh $(PBINDIR)/captcha.sh
+-	$(INSTALL) -m 750 $(O_USER) tools/joincluster $(PBINDIR)
+-	$(INSTALL) -m 750 $(O_USER) tools/leavecluster $(PBINDIR)
++	$(INSTALL) tools/captcha.sh $(PBINDIR)
++	$(INSTALL) tools/joincluster $(PBINDIR)
++	$(INSTALL) tools/leavecluster $(PBINDIR)
+ 	-[ -f deps/p1_pam/priv/bin/epam ] \
+ 		&& $(INSTALL) -m 750 $(O_USER) deps/p1_pam/priv/bin/epam $(PBINDIR)
  	#
- 	# Binary system libraries
- 	$(INSTALL) -d $(SODIR)
-@@ -140,22 +136,6 @@ install: all
- 	# Translated strings
- 	$(INSTALL) -d $(MSGSDIR)
- 	$(INSTALL) -m 644 priv/msgs/*.msg $(MSGSDIR)
+@@ -184,29 +179,6 @@ install: all
+ 	# Copy lite.sql
+ 	-[ -d deps/sqlite3 ] && $(INSTALL) -d $(SQLDIR)
+ 	-[ -d deps/sqlite3 ] && $(INSTALL) -m 644 sql/lite.sql $(SQLDIR)
 -	#
 -	# Spool directory
 -	$(INSTALL) -d -m 750 $(O_USER) $(SPOOLDIR)
@@ -71,6 +73,12 @@ Index: ejabberd/Makefile.in
 -	$(INSTALL) -d -m 750 $(O_USER) $(LOGDIR)
 -	$(CHOWN_COMMAND) -R @INSTALLUSER@ $(LOGDIR) >$(CHOWN_OUTPUT)
 -	chmod -R 750 $(LOGDIR)
+-	#
+-	# Documentation
+-	$(INSTALL) -d $(DOCDIR)
+-	[ -f doc/guide.html ] \
+-		&& $(INSTALL) -m 644 doc/guide.html $(DOCDIR) \
+-		|| echo "Documentation not included in sources"
+-	$(INSTALL) -m 644 COPYING $(DOCDIR)
  
  uninstall: uninstall-binary
-

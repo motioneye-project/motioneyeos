@@ -6,16 +6,22 @@ Author: Philipp Huebner <debalance@debian.org>
 
 Index: ejabberd/Makefile.in
 ===================================================================
---- ejabberd.orig/Makefile.in
-+++ ejabberd/Makefile.in
-@@ -260,10 +260,6 @@ dialyzer: erlang_plt deps_plt ejabberd_p
+diff --git a/Makefile.in b/Makefile.in
+index ffd1d30..835d611 100644
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -306,14 +306,8 @@ dialyzer: erlang_plt deps_plt ejabberd_plt
  	status=$$? ; if [ $$status -ne 2 ]; then exit $$status; else exit 0; fi
  
  test:
 -	@echo "************************** NOTICE ***************************************"
 -	@cat test/README
 -	@echo "*************************************************************************"
+-	@cd priv && ln -sf ../sql
 -	$(REBAR) skip_deps=true ct
  
- .PHONY: src doc edoc dialyzer Makefile TAGS clean clean-rel distclean rel \
+ quicktest:
+-	$(REBAR) skip_deps=true ct suites=elixir
+ 
+ .PHONY: src edoc dialyzer Makefile TAGS clean clean-rel distclean rel \
  	install uninstall uninstall-binary uninstall-all translations deps test spec \
