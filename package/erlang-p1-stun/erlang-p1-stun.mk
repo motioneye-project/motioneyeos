@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-ERLANG_P1_STUN_VERSION = a7c07b6
+ERLANG_P1_STUN_VERSION = a3dce07
 ERLANG_P1_STUN_SITE = $(call github,processone,stun,$(ERLANG_P1_STUN_VERSION))
 ERLANG_P1_STUN_LICENSE = GPLv2+
 ERLANG_P1_STUN_LICENSE_FILES = COPYING
