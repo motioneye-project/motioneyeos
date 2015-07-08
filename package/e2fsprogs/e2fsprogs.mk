@@ -102,6 +102,20 @@ ifeq ($(BR2_PACKAGE_E2FSPROGS_E2FSCK),y)
 E2FSPROGS_POST_INSTALL_TARGET_HOOKS += E2FSPROGS_TARGET_E2FSCK_SYMLINKS
 endif
 
+# Remove busybox tune2fs and e2label, since we want the e2fsprogs full
+# blown variants to take precedence, but they are not installed in the
+# same location.
+ifeq ($(BR2_PACKAGE_BUSYBOX),y)
+E2FSPROGS_DEPENDENCIES += busybox
+
+define E2FSPROGS_REMOVE_BUSYBOX_APPLETS
+	$(RM) -f $(TARGET_DIR)/sbin/tune2fs
+	$(RM) -f $(TARGET_DIR)/sbin/e2label
+
+endef
+E2FSPROGS_POST_INSTALL_TARGET_HOOKS += E2FSPROGS_REMOVE_BUSYBOX_APPLETS
+endif
+
 define E2FSPROGS_TARGET_TUNE2FS_SYMLINK
 	ln -sf e2label $(TARGET_DIR)/usr/sbin/tune2fs
 endef
