@@ -3,30 +3,26 @@
 # Start/stop ejabberd
 #
 
-NAME=ejabberd
-USER=ejabberd
+CTL=/usr/sbin/ejabberdctl
+DEFAULT=/etc/default/ejabberd
+INSTALLUSER=ejabberd
 RUNDIR=/var/run/ejabberd
-SPOOLDIR=/var/lib/ejabberd
 
-# Read configuration variable file if it is present.
-[ -r /etc/default/$NAME ] && . /etc/default/$NAME
+# Read default configuration file if present.
+[ -r "$DEFAULT" ] && . "$DEFAULT"
 
+# Create RUNDIR.
 mkrundir() {
-    install -d -o "$USER" -g "$USER" "$RUNDIR" "$SPOOLDIR"
-}
-
-# Run ejabberdctl as user $USER.
-ctl() {
-    su $USER -c "ejabberdctl $*"
+    install -d -o "$INSTALLUSER" -g "$INSTALLUSER" "$RUNDIR"
 }
 
 case "$1" in
     start)
         mkrundir || exit 1
         echo -n "Starting ejabberd... "
-        ctl start --spool "$SPOOLDIR"
+        "$CTL" start
         # Wait until ejabberd is up and running.
-        if ctl started; then
+        if "$CTL" started; then
             echo "done"
         else
             echo "failed"
@@ -34,23 +30,23 @@ case "$1" in
         ;;
     stop)
         echo -n "Stopping ejabberd... "
-        ctl stop > /dev/null
-        if [ $? -eq 3 ] || ctl stopped; then
+        "$CTL" stop > /dev/null
+        if [ $? -eq 3 ] || "$CTL" stopped; then
             echo "OK"
         else
             echo "failed"
         fi
         ;;
     status)
-        ctl status
+        "$CTL" status
         ;;
     restart|force-reload)
-        "$0" stop
+        "$0" stop || true
         "$0" start
         ;;
     live)
         mkrundir || exit 1
-        ctl live
+        "$CTL" live
         ;;
     *)
         echo "Usage: $0 {start|stop|status|restart|force-reload|live}"
