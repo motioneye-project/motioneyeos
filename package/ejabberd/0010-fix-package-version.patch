@@ -1,0 +1,19 @@
+Description: fix package version
+ Without this patch, the configure tries to guess the version from the
+ last git tag, which is incorrect here as we are not inside ejabberd
+ git repository.
+Signed-off-by: Johan Oudinet <johan.oudinet@gmail.com>
+
+diff --git a/configure.ac b/configure.ac
+index e7bb43b..e7faac4 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -2,7 +2,7 @@
+ # Process this file with autoconf to produce a configure script.
+ 
+ AC_PREREQ(2.53)
+-AC_INIT(ejabberd, m4_esyscmd([echo `git describe --tags 2>/dev/null || echo 0.0` | sed 's/-g.*//;s/-/./' | tr -d '\012']), [ejabberd@process-one.net], [ejabberd])
++AC_INIT(ejabberd, [15.06], [ejabberd@process-one.net], [ejabberd])
+ REQUIRE_ERLANG_MIN="5.9.1 (Erlang/OTP R15B01)"
+ REQUIRE_ERLANG_MAX="9.0.0 (No Max)"
+ 
