@@ -411,6 +411,7 @@ endif
 	source "package/snowball-hdmiservice/Config.in"
 	source "package/sredird/Config.in"
 	source "package/statserial/Config.in"
+	source "package/stm32flash/Config.in"
 	source "package/sunxi-cedarx/Config.in"
 	source "package/sunxi-mali/Config.in"
 	source "package/sunxi-mali-prop/Config.in"
