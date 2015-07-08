@@ -11,22 +11,19 @@
 
 case "$1" in
 	start|"")
-		if [ "$VERBOSE" != no ]
-		then
-			echo -n "Initializing random number generator... "
-		fi
-		# Load and then save 512 bytes,
-		# which is the size of the entropy pool
-		if [ -f /etc/random-seed ]
-		then
-			cat /etc/random-seed >/dev/urandom
-		fi
 		# check for read only file system
 		if ! touch /etc/random-seed 2>/dev/null
 		then
 			echo "read-only file system detected...done"
 			exit
 		fi
+		if [ "$VERBOSE" != no ]
+		then
+			echo -n "Initializing random number generator... "
+		fi
+		# Load and then save 512 bytes,
+		# which is the size of the entropy pool
+		cat /etc/random-seed >/dev/urandom
 		rm -f /etc/random-seed
 		umask 077
 		dd if=/dev/urandom of=/etc/random-seed count=1 \
