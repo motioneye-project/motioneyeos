@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-ERLANG_P1_XML_VERSION = b530983
+ERLANG_P1_XML_VERSION = 2c61083
 ERLANG_P1_XML_SITE = $(call github,processone,xml,$(ERLANG_P1_XML_VERSION))
 ERLANG_P1_XML_LICENSE = GPLv2+
 ERLANG_P1_XML_LICENSE_FILES = COPYING
