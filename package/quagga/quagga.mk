@@ -39,4 +39,8 @@ else
 QUAGGA_CONF_OPTS += --disable-vtysh
 endif
 
+ifeq ($(BR2_arc),y)
+QUAGGA_CONF_OPTS += --disable-pie
+endif
+
 $(eval $(autotools-package))
