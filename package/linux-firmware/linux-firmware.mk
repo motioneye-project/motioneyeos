@@ -151,6 +151,7 @@ endif
 
 # wl128x
 ifeq ($(BR2_PACKAGE_LINUX_FIRMWARE_TI_WL128X),y)
+# wl1271-nvs.bin and wl12xx-nvs.bin are symlinks to wl127x-nvs.bin
 LINUX_FIRMWARE_FILES += \
 	ti-connectivity/wl128x-fw-3.bin				\
 	ti-connectivity/wl128x-fw-ap.bin			\
@@ -159,6 +160,7 @@ LINUX_FIRMWARE_FILES += \
 	ti-connectivity/wl1271-nvs.bin				\
 	ti-connectivity/wl128x-nvs.bin				\
 	ti-connectivity/wl12xx-nvs.bin				\
+	ti-connectivity/wl127x-nvs.bin				\
 	ti-connectivity/wl128x-fw-4-mr.bin			\
 	ti-connectivity/wl128x-fw-4-plt.bin			\
 	ti-connectivity/wl128x-fw-4-sr.bin			\
@@ -166,18 +168,19 @@ LINUX_FIRMWARE_FILES += \
 	ti-connectivity/wl128x-fw-5-plt.bin			\
 	ti-connectivity/wl128x-fw-5-sr.bin			\
 	ti-connectivity/TIInit_7.2.31.bts
-# wl12xx-nvs.bin (above) is a symlink to:
-LINUX_FIRMWARE_FILES += ti-connectivity/wl127x-nvs.bin
 LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENCE.ti-connectivity
 endif
 
 # wl18xx
 ifeq ($(BR2_PACKAGE_LINUX_FIRMWARE_TI_WL18XX),y)
+# wl1271-nvs.bin is a symlink to wl127x-nvs.bin
 LINUX_FIRMWARE_FILES += \
 	ti-connectivity/wl18xx-fw.bin \
 	ti-connectivity/wl18xx-fw-2.bin \
 	ti-connectivity/wl18xx-fw-3.bin \
 	ti-connectivity/wl18xx-fw-4.bin \
+	ti-connectivity/wl1271-nvs.bin \
+	ti-connectivity/wl127x-nvs.bin \
 	ti-connectivity/TIInit_7.2.31.bts
 LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENCE.ti-connectivity
 endif
