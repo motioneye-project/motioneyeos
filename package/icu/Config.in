@@ -19,9 +19,10 @@ config BR2_PACKAGE_ICU_CUSTOM_DATA_PATH
 	string "Path to custom data library file"
 	help
 	  This option allows to define the path to a custom data
-	  library generated with
-	  http://apps.icu-project.org/datacustom/ICUData51.html. Leave
-	  empty to not use this functionality.
+	  library generated with http://apps.icu-project.org/datacustom/
+	  Make sure you select the appropiate version to match the one
+	  provided by buildroot.
+	  Leave empty to not use this functionality.
 
 endif
 
