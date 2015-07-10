@@ -6,4 +6,4 @@ config BR2_PACKAGE_BOOTUTILS
 	  either by label or explicit label= on the kernel command line,
 	  mounting it, and 'switchroot'ing is automated.
 
-	  http://bootutils.pr.linuxrulz.org/
+	  http://bootutils.sourceforge.net/
