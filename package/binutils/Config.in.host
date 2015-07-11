@@ -7,11 +7,6 @@ choice
 	help
 	  Select the version of binutils you wish to use.
 
-	config BR2_BINUTILS_VERSION_2_22
-		depends on !BR2_aarch64 && !BR2_microblaze && \
-			   !BR2_powerpc64le && !BR2_nios2
-		bool "binutils 2.22"
-
 	config BR2_BINUTILS_VERSION_2_23_2
 		depends on !BR2_aarch64 && !BR2_microblaze && \
 			   !BR2_powerpc64le && !BR2_nios2
@@ -30,7 +25,6 @@ endchoice
 config BR2_BINUTILS_VERSION
 	string
 	default "arc-2015.06-rc1"	if BR2_arc
-	default "2.22"		if BR2_BINUTILS_VERSION_2_22
 	default "2.23.2"	if BR2_BINUTILS_VERSION_2_23_2
 	default "2.24"		if BR2_BINUTILS_VERSION_2_24
 	default "2.25"		if BR2_BINUTILS_VERSION_2_25
