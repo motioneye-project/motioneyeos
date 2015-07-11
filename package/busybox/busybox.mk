@@ -52,7 +52,6 @@ BUSYBOX_KCONFIG_OPTS = $(BUSYBOX_MAKE_OPTS)
 
 define BUSYBOX_PERMISSIONS
 	/bin/busybox                     f 4755 0  0 - - - - -
-	/usr/share/udhcpc/default.script f 755  0  0 - - - - -
 endef
 
 # If mdev will be used for device creation enable it and copy S10mdev to /etc/init.d
@@ -127,6 +126,15 @@ define BUSYBOX_INTERNAL_SHADOW_PASSWORDS
 endef
 endif
 
+define BUSYBOX_INSTALL_UDHCPC_SCRIPT
+	if grep -q CONFIG_UDHCPC=y $(@D)/.config; then \
+		$(INSTALL) -m 0755 -D package/busybox/udhcpc.script \
+			$(TARGET_DIR)/usr/share/udhcpc/default.script; \
+		$(INSTALL) -m 0755 -d \
+			$(TARGET_DIR)/usr/share/udhcpc/default.script.d; \
+	fi
+endef
+
 ifeq ($(BR2_INIT_BUSYBOX),y)
 define BUSYBOX_SET_INIT
 	$(call KCONFIG_ENABLE_OPT,CONFIG_INIT,$(BUSYBOX_BUILD_CONFIG))
@@ -189,10 +197,7 @@ endef
 
 define BUSYBOX_INSTALL_TARGET_CMDS
 	$(BUSYBOX_MAKE_ENV) $(MAKE) $(BUSYBOX_MAKE_OPTS) -C $(@D) install
-	$(INSTALL) -m 0755 -D package/busybox/udhcpc.script \
-		$(TARGET_DIR)/usr/share/udhcpc/default.script
-	$(INSTALL) -m 0755 -d \
-		$(TARGET_DIR)/usr/share/udhcpc/default.script.d
+	$(BUSYBOX_INSTALL_UDHCPC_SCRIPT)
 	$(BUSYBOX_INSTALL_MDEV_CONF)
 endef
 
