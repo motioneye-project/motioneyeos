@@ -178,11 +178,11 @@ config BR2_TARGET_UBOOT_FORMAT_ELF
 
 config BR2_TARGET_UBOOT_FORMAT_SB
 	depends on BR2_arm
-	bool "u-boot.sb"
+	bool "u-boot.sb (Freescale i.MX28)"
 
 config BR2_TARGET_UBOOT_FORMAT_SD
 	depends on BR2_arm
-	bool "u-boot.sd"
+	bool "u-boot.sd (Freescale i.MX28)"
 	help
 	  This is Freescale i.MX28 SB format, with a header for booting
 	  from an SD card.
@@ -194,7 +194,7 @@ config BR2_TARGET_UBOOT_FORMAT_SD
 
 config BR2_TARGET_UBOOT_FORMAT_NAND
 	depends on BR2_arm
-	bool "u-boot.nand"
+	bool "u-boot.nand (Freescale i.MX28)"
 	help
 	  This is Freescale i.MX28 BootStream format (.sb), with a header
 	  for booting from a NAND flash.
