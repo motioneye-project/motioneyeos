@@ -21,6 +21,7 @@ NFS_UTILS_CONF_OPTS = \
 	--disable-uuid \
 	--disable-ipv6 \
 	--without-tcp-wrappers \
+	--with-statedir=/run/nfs \
 	--with-rpcgen=internal
 
 NFS_UTILS_TARGETS_$(BR2_PACKAGE_NFS_UTILS_RPCDEBUG) += usr/sbin/rpcdebug
@@ -36,8 +37,8 @@ endif
 
 define NFS_UTILS_INSTALL_FIXUP
 	rm -f $(NFS_UTILS_TARGETS_)
+	touch $(TARGET_DIR)/etc/exports
 endef
-
 NFS_UTILS_POST_INSTALL_TARGET_HOOKS += NFS_UTILS_INSTALL_FIXUP
 
 define NFS_UTILS_INSTALL_INIT_SYSV

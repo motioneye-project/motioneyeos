@@ -8,19 +8,9 @@
 [ -x /usr/sbin/rpc.mountd ] || exit 0
 [ -x /usr/sbin/exportfs ] || exit 0
 
-# Don't fail if /etc/exports doesn't exist; create a bare-bones version and continue.
-[ -r /etc/exports ] || \
-    { touch /etc/exports && chmod u+rw,g+r,o+r /etc/exports ; } || \
-    { echo "/etc/exports does not exist" ; exit 0 ; }
-    
-# The /var/lib/nfs directory is actually on a tmpfs filesystem.
-mkdir -p /var/lib/nfs/sm
-mkdir -p /var/lib/nfs/sm.bak
 mkdir -p /var/lock/subsys
-touch /var/lib/nfs/etab
-touch /var/lib/nfs/rmtab
-touch /var/lib/nfs/state
-touch /var/lib/nfs/xtab
+mkdir -p /run/nfs/sm
+touch /run/nfs/rmtab
 
 start() {
 	# Start daemons.
