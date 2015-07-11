@@ -322,6 +322,14 @@ ifndef $(2)_SUBDIR
  endif
 endif
 
+ifndef $(2)_STRIP_COMPONENTS
+ ifdef $(3)_STRIP_COMPONENTS
+  $(2)_STRIP_COMPONENTS = $$($(3)_STRIP_COMPONENTS)
+ else
+  $(2)_STRIP_COMPONENTS ?= 1
+ endif
+endif
+
 $(2)_SRCDIR		       = $$($(2)_DIR)/$$($(2)_SUBDIR)
 $(2)_BUILDDIR		       ?= $$($(2)_SRCDIR)
 
@@ -431,7 +439,7 @@ $(2)_TARGET_DIRCLEAN =		$$($(2)_DIR)/.stamp_dircleaned
 # default extract command
 $(2)_EXTRACT_CMDS ?= \
 	$$(if $$($(2)_SOURCE),$$(INFLATE$$(suffix $$($(2)_SOURCE))) $$(DL_DIR)/$$($(2)_SOURCE) | \
-	$$(TAR) $$(TAR_STRIP_COMPONENTS)=1 -C $$($(2)_DIR) $$(TAR_OPTIONS) -)
+	$$(TAR) $$(TAR_STRIP_COMPONENTS)=$$($(2)_STRIP_COMPONENTS) -C $$($(2)_DIR) $$(TAR_OPTIONS) -)
 
 # pre/post-steps hooks
 $(2)_PRE_DOWNLOAD_HOOKS         ?=
