@@ -303,6 +303,15 @@ information is (assuming the package name is +libfoo+) :
      the package source code. Buildroot copies the contents of the
      source directory into the package's build directory.
 
+* +LIBFOO_STRIP_COMPONENTS+ is the number of leading components
+  (directories) that tar must strip from file names on extraction.
+  The tarball for most packages has one leading component named
+  "<pkg-name>-<pkg-version>", thus Buildroot passes
+  --strip-components=1 to tar to remove it.
+  For non-standard packages that don't have this component, or
+  that have more than one leading component to strip, set this
+  variable with the value to be passed to tar. Default: 1.
+
 * +LIBFOO_DEPENDENCIES+ lists the dependencies (in terms of package
   name) that are required for the current target package to
   compile. These dependencies are guaranteed to be compiled and
