@@ -298,17 +298,17 @@ $(2)_RAWNAME			=  $$(patsubst host-%,%,$(1))
 # Similar for spaces and colons (:) that may appear in date-based revisions for
 # CVS.
 ifndef $(2)_VERSION
- ifdef $(3)_VERSION
-  $(2)_DL_VERSION := $$(strip $$($(3)_VERSION))
-  $(2)_VERSION := $$(call sanitize,$$($(3)_VERSION))
+ ifdef $(3)_DL_VERSION
+  $(2)_DL_VERSION := $$($(3)_DL_VERSION)
+ else ifdef $(3)_VERSION
+  $(2)_DL_VERSION := $$($(3)_VERSION)
  else
-  $(2)_VERSION = undefined
   $(2)_DL_VERSION = undefined
  endif
 else
-  $(2)_DL_VERSION := $$(strip $$($(2)_VERSION))
-  $(2)_VERSION := $$(call sanitize,$$($(2)_VERSION))
+ $(2)_DL_VERSION := $$(strip $$($(2)_VERSION))
 endif
+$(2)_VERSION := $$(call sanitize,$$($(2)_DL_VERSION))
 
 $(2)_BASE_NAME	=  $(1)-$$($(2)_VERSION)
 $(2)_DL_DIR	=  $$(DL_DIR)/$$($(2)_BASE_NAME)
