@@ -556,6 +556,12 @@ target-finalize: $(PACKAGES)
 ifneq ($(BR2_PACKAGE_GDB),y)
 	rm -rf $(TARGET_DIR)/usr/share/gdb
 endif
+ifneq ($(BR2_PACKAGE_BASH),y)
+	rm -rf $(TARGET_DIR)/usr/share/bash-completion
+endif
+ifneq ($(BR2_PACKAGE_ZSH),y)
+	rm -rf $(TARGET_DIR)/usr/share/zsh
+endif
 	rm -rf $(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/man
 	rm -rf $(TARGET_DIR)/usr/info $(TARGET_DIR)/usr/share/info
 	rm -rf $(TARGET_DIR)/usr/doc $(TARGET_DIR)/usr/share/doc

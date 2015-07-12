@@ -26,12 +26,6 @@ UTIL_LINUX_CONF_OPTS += \
 	--disable-makeinstall-chown \
 	--without-python
 
-ifeq ($(BR2_PACKAGE_BASH),)
-UTIL_LINUX_CONF_OPTS += \
-	--disable-bash-completion \
-	--with-bashcompletiondir=
-endif
-
 # We don't want the host-busybox dependency to be added automatically
 HOST_UTIL_LINUX_DEPENDENCIES = host-pkgconf
 
