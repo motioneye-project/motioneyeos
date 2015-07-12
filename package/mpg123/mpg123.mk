@@ -69,7 +69,7 @@ MPG123_CONF_OPTS += --with-default-audio=alsa
 MPG123_DEPENDENCIES += alsa-lib
 endif
 
-MPG123_CONF_OPTS += --with-audio=$(shell echo $(MPG123_AUDIO) | tr ' ' ,)
+MPG123_CONF_OPTS += --with-audio=$(subst $(space),$(comma),$(MPG123_AUDIO))
 
 ifeq ($(BR2_PACKAGE_LIBTOOL),y)
 MPG123_DEPENDENCIES += libtool
