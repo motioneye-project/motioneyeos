@@ -3,7 +3,8 @@ SoCkit
 Intro
 =====
 
-This is the buildroot board support for the Arrow SoCkit Evaluation Board.
+This is the buildroot board support for the Arrow SoCkit Evaluation Board
+and the Altera Cyclone 5 Development Board.
 
 A good source of information is :
 http://www.rocketboards.org/foswiki/Documentation/ArrowSoCKitEvaluationBoard
@@ -46,6 +47,10 @@ all that is required to bring the SoCkit :
 
   $ make altera_sockit_defconfig
 
+and for the SoC Development Board :
+
+  $ make altera_sockdk_defconfig
+
 Build everything
 ----------------
 
@@ -63,7 +68,7 @@ After building, you should obtain this tree:
     ├── rootfs.ext2
     ├── rootfs.ext3 -> rootfs.ext2
     ├── rootfs.tar
-    ├── socfpga_cyclone5_sockit.dtb
+    ├── socfpga_cyclone5_sockit.dtb or socfpga_cyclone5_socdk.dtb
     ├── socfpga.dtb
     ├── u-boot.img
     ├── u-boot-spl.bin
