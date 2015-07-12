@@ -13,8 +13,8 @@ Signed-off-by: Samuel Martin <s.martin49@gmail.com>
 
 diff --git a/config/config.in b/config/config.in
 index 914d2bf..43f1a56 100644
---- a/config/config.in
-+++ b/config/config.in
+--- a/flite-1.4-release/config/config.in
++++ b/flite-1.4-release/config/config.in
 @@ -49,6 +49,6 @@ include $(TOP)/config/$(langvox).lv
  prefix        = @prefix@
  exec_prefix   = @exec_prefix@

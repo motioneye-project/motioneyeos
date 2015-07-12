@@ -7,18 +7,6 @@
 FLITE_VERSION = 1.4
 FLITE_SOURCE = flite-$(FLITE_VERSION)-release.tar.bz2
 FLITE_SITE = http://www.speech.cs.cmu.edu/flite/packed/flite-$(FLITE_VERSION)
-FLITE_LICENSE = BSD-4c
-FLITE_LICENSE_FILES = COPYING
-
-FLITE_INSTALL_STAGING = YES
-# Patching configure.in
-FLITE_AUTORECONF = YES
-FLITE_DEPENDENCIES = host-pkgconf
-
-# Sadly, Flite does not support parallel build, especially when building its
-# shared libraries.
-FLITE_MAKE = $(MAKE1)
-
 # $ tar tf flite-1.4-release.tar.bz2
 # ...
 # flite-1.4-release//install-sh
@@ -32,14 +20,21 @@ FLITE_MAKE = $(MAKE1)
 # flite-1.4-release/config/config.in
 # flite-1.4-release/config/system.mak.in
 #
-# So, the strip-component trick does not work at all.
-# Let's redefine the extract command.
-define FLITE_EXTRACT_CMDS
-	$(INFLATE$(suffix $(FLITE_SOURCE))) $(DL_DIR)/$(FLITE_SOURCE) | \
-		$(TAR) -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	rsync -ar $(BUILD_DIR)/$(subst .tar.bz2,,$(FLITE_SOURCE))/* $(FLITE_DIR)/
-	$(RM) -rf $(BUILD_DIR)/$(subst .tar.bz2,,$(FLITE_SOURCE))
-endef
+# So, we set FLITE_STRIP_COMPONENTS=0 to avoid writing to "/", and then
+# build in flite-1.4-release/
+FLITE_STRIP_COMPONENTS = 0
+FLITE_SUBDIR = flite-$(FLITE_VERSION)-release
+FLITE_LICENSE = BSD-4c
+FLITE_LICENSE_FILES = COPYING
+
+FLITE_INSTALL_STAGING = YES
+# Patching configure.in
+FLITE_AUTORECONF = YES
+FLITE_DEPENDENCIES = host-pkgconf
+
+# Sadly, Flite does not support parallel build, especially when building its
+# shared libraries.
+FLITE_MAKE = $(MAKE1)
 
 ifeq ($(BR2_PACKAGE_ALSA_LIB),y)
 FLITE_DEPENDENCIES += alsa-lib
