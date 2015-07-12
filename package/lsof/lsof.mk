@@ -34,7 +34,7 @@ endif
 define LSOF_EXTRACT_CMDS
 	$(call suitable-extractor,$(LSOF_SOURCE)) $(DL_DIR)/$(LSOF_SOURCE) | \
 		$(TAR) -O $(TAR_OPTIONS) - lsof_$(LSOF_VERSION)/lsof_$(LSOF_VERSION)_src.tar | \
-	$(TAR) $(TAR_STRIP_COMPONENTS)=1 -C $(LSOF_DIR) $(TAR_OPTIONS) -
+	$(TAR) --strip-components=1 -C $(LSOF_DIR) $(TAR_OPTIONS) -
 endef
 
 define LSOF_CONFIGURE_CMDS

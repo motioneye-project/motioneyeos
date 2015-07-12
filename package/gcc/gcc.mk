@@ -53,7 +53,7 @@ endef
 
 define HOST_GCC_EXTRACT_CMDS
 	$(call suitable-extractor,$(GCC_SOURCE)) $(DL_DIR)/$(GCC_SOURCE) | \
-		$(TAR) $(TAR_STRIP_COMPONENTS)=1 -C $(@D) \
+		$(TAR) --strip-components=1 -C $(@D) \
 		--exclude='libjava/*' \
 		--exclude='libgo/*' \
 		--exclude='gcc/testsuite/*' \

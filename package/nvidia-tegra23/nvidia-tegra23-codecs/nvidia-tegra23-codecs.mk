@@ -16,11 +16,11 @@ define NVIDIA_TEGRA23_CODECS_EXTRACT_CMDS
 	$(INSTALL) -d $(@D)
 	$(call suitable-extractor,$(NVIDIA_TEGRA23_CODECS_SOURCE)) \
 		$(DL_DIR)/$(NVIDIA_TEGRA23_CODECS_SOURCE) | \
-	$(TAR) $(TAR_STRIP_COMPONENTS)=0 -C $(@D) $(TAR_OPTIONS) -
+	$(TAR) --strip-components=0 -C $(@D) $(TAR_OPTIONS) -
 	$(INSTALL) -d $(@D)/restricted_codecs
 	$(call suitable-extractor,$(@D)/restricted_codecs.tbz2) \
 		$(@D)/restricted_codecs.tbz2 | \
-	$(TAR) $(TAR_STRIP_COMPONENTS)=0 -C $(@D)/restricted_codecs/ $(TAR_OPTIONS) -
+	$(TAR) --strip-components=0 -C $(@D)/restricted_codecs/ $(TAR_OPTIONS) -
 endef
 
 define NVIDIA_TEGRA23_CODECS_INSTALL_TARGET_CMDS

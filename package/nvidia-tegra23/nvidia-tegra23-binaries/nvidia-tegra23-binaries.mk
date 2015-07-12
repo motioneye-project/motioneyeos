@@ -37,11 +37,11 @@ define NVIDIA_TEGRA23_BINARIES_EXTRACT_FURTHER
 	$(INSTALL) -d $(@D)/nv_tegra/nvidia_drivers
 	$(call suitable-extractor,$(@D)/nv_tegra/nvidia_drivers.tbz2) \
 		$(@D)/nv_tegra/nvidia_drivers.tbz2 | \
-	$(TAR) $(TAR_STRIP_COMPONENTS)=0 -C $(@D)/nv_tegra/nvidia_drivers/ $(TAR_OPTIONS) -
+	$(TAR) --strip-components=0 -C $(@D)/nv_tegra/nvidia_drivers/ $(TAR_OPTIONS) -
 	$(INSTALL) -d $(@D)/nv_tegra/nv_sample_apps/nvgstapps
 	$(call suitable-extractor,$(@D)/nv_tegra/nv_sample_apps/nvgstapps.tbz2) \
 		$(@D)/nv_tegra/nv_sample_apps/nvgstapps.tbz2 | \
-	$(TAR) $(TAR_STRIP_COMPONENTS)=0 -C $(@D)/nv_tegra/nv_sample_apps/nvgstapps/ $(TAR_OPTIONS) -
+	$(TAR) --strip-components=0 -C $(@D)/nv_tegra/nv_sample_apps/nvgstapps/ $(TAR_OPTIONS) -
 endef
 NVIDIA_TEGRA23_BINARIES_POST_EXTRACT_HOOKS += NVIDIA_TEGRA23_BINARIES_EXTRACT_FURTHER
 
