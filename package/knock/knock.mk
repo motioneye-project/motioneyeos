@@ -11,7 +11,7 @@ KNOCK_LICENSE_FILES = COPYING
 KNOCK_DEPENDENCIES = libpcap
 
 ifeq ($(BR2_STATIC_LIBS),y)
-KNOCK_CONF_OPTS = LIBS="$(shell $(STAGING_DIR)/usr/bin/pcap-config --static --additional-libs)"
+KNOCK_CONF_OPTS = LIBS="`$(STAGING_DIR)/usr/bin/pcap-config --static --additional-libs`"
 endif
 
 $(eval $(autotools-package))

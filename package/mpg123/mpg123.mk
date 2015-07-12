@@ -54,7 +54,7 @@ MPG123_CONF_OPTS += --with-default-audio=portaudio
 MPG123_DEPENDENCIES += portaudio
 # configure script does NOT use pkg-config to figure out how to link
 # with portaudio, breaking static linking as portaudio uses pthreads
-MPG123_CONF_ENV += LIBS='$(shell $(PKG_CONFIG_HOST_BINARY) --libs portaudio-2.0)'
+MPG123_CONF_ENV += LIBS="`$(PKG_CONFIG_HOST_BINARY) --libs portaudio-2.0`"
 endif
 
 ifeq ($(BR2_PACKAGE_SDL),y)

@@ -14,7 +14,7 @@ PTPD2_LICENSE = BSD-2c
 PTPD2_LICENSE_FILES = COPYRIGHT
 
 ifeq ($(BR2_STATIC_LIBS),y)
-PTPD2_CONF_OPTS += LIBS="$(shell $(STAGING_DIR)/usr/bin/pcap-config --static --additional-libs)"
+PTPD2_CONF_OPTS += LIBS="`$(STAGING_DIR)/usr/bin/pcap-config --static --additional-libs`"
 endif
 
 ifeq ($(BR2_PACKAGE_NETSNMP),y)

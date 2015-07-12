@@ -16,7 +16,7 @@ MADPLAY_DEPENDENCIES = libmad libid3tag $(if $(BR2_PACKAGE_GETTEXT),gettext)
 ifeq ($(BR2_PACKAGE_MADPLAY_ALSA),y)
 MADPLAY_CONF_OPTS += --with-alsa
 MADPLAY_DEPENDENCIES += host-pkgconf alsa-lib
-MADPLAY_CONF_ENV += LIBS="$(shell $(PKG_CONFIG_HOST_BINARY) --libs alsa)"
+MADPLAY_CONF_ENV += LIBS="`$(PKG_CONFIG_HOST_BINARY) --libs alsa`"
 endif
 
 $(eval $(autotools-package))

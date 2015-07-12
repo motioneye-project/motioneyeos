@@ -149,8 +149,7 @@ HOST_LIBGTK3_DEPENDENCIES = \
 	host-pkgconf
 
 HOST_LIBGTK3_CFLAGS = \
-	$(shell $(HOST_DIR)/usr/bin/pkgconf \
-	--cflags --libs gdk-pixbuf-2.0)
+	`$(HOST_DIR)/usr/bin/pkgconf --cflags --libs gdk-pixbuf-2.0`
 
 define HOST_LIBGTK3_CONFIGURE_CMDS
 	echo "#define GETTEXT_PACKAGE \"gtk30\"" >> $(@D)/gtk/config.h

@@ -35,7 +35,7 @@ GDK_PIXBUF_CONF_OPTS += --without-libtiff
 else
 GDK_PIXBUF_DEPENDENCIES += tiff host-pkgconf
 GDK_PIXBUF_CONF_ENV += \
-	LIBS='$(shell $(PKG_CONFIG_HOST_BINARY) --libs libtiff-4)'
+	LIBS="`$(PKG_CONFIG_HOST_BINARY) --libs libtiff-4`"
 endif
 
 ifeq ($(BR2_PACKAGE_XLIB_LIBX11),y)

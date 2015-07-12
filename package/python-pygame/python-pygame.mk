@@ -66,14 +66,14 @@ define PYTHON_PYGAME_UNCONFIGURE_SCRAP
 endef
 endif
 
-PYTHON_PYGAME_SDL_FLAGS = $(shell $(STAGING_DIR)/usr/bin/sdl-config --cflags)
-PYTHON_PYGAME_SDL_FLAGS += $(shell $(STAGING_DIR)/usr/bin/sdl-config --libs)
+PYTHON_PYGAME_SDL_FLAGS = `$(STAGING_DIR)/usr/bin/sdl-config --cflags`
+PYTHON_PYGAME_SDL_FLAGS += `$(STAGING_DIR)/usr/bin/sdl-config --libs`
 
 # Pygame needs a Setup file where options should be commented out if
 # dependencies are not available
 define PYTHON_PYGAME_CONFIGURE_CMDS
 	cp -f $(@D)/Setup.in $(@D)/Setup
-	$(SED) 's~^SDL = ~SDL = $(PYTHON_PYGAME_SDL_FLAGS) \n#~' $(@D)/Setup
+	$(SED) "s~^SDL = ~SDL = $(PYTHON_PYGAME_SDL_FLAGS) \n#~" $(@D)/Setup
 	$(SED) 's/^pypm/#pypm/' $(@D)/Setup
 	$(PYTHON_PYGAME_UNCONFIGURE_IMAGE)
 	$(PYTHON_PYGAME_UNCONFIGURE_FONT)

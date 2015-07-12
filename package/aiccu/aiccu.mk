@@ -16,7 +16,7 @@ AICCU_LFDLAGS = $(TARGET_LDFLAGS)
 # aiccu forgets to link with gnutls' dependencies breaking the build when
 # linking statically
 ifeq ($(BR2_STATIC_LIBS),y)
-AICCU_LDFLAGS += $(shell $(PKG_CONFIG_HOST_BINARY) --static --libs gnutls)
+AICCU_LDFLAGS += `$(PKG_CONFIG_HOST_BINARY) --static --libs gnutls`
 endif
 
 # dummy RPM_OPT_FLAGS to disable stripping

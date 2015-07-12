@@ -20,13 +20,13 @@ PYTHON_GOBJECT_DEPENDENCIES += python host-python
 
 PYTHON_GOBJECT_CONF_ENV = \
 	PYTHON=$(HOST_DIR)/usr/bin/python2 \
-	PYTHON_INCLUDES="$(shell $(STAGING_DIR)/usr/bin/python2-config --includes)"
+	PYTHON_INCLUDES="`$(STAGING_DIR)/usr/bin/python2-config --includes`"
 else
 PYTHON_GOBJECT_DEPENDENCIES += python3 host-python3
 
 PYTHON_GOBJECT_CONF_ENV = \
 	PYTHON=$(HOST_DIR)/usr/bin/python3 \
-	PYTHON_INCLUDES="$(shell $(STAGING_DIR)/usr/bin/python3-config --includes)"
+	PYTHON_INCLUDES="`$(STAGING_DIR)/usr/bin/python3-config --includes`"
 endif
 
 ifeq ($(BR2_PACKAGE_LIBFFI),y)

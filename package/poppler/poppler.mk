@@ -24,7 +24,7 @@ ifeq ($(BR2_PACKAGE_TIFF),y)
 POPPLER_CONF_OPTS += --enable-libtiff
 # Help poppler to find libtiff in static linking scenarios
 POPPLER_CONF_ENV += \
-	LIBTIFF_LIBS="$(shell $(PKG_CONFIG_HOST_BINARY) --libs libtiff-4)"
+	LIBTIFF_LIBS="`$(PKG_CONFIG_HOST_BINARY) --libs libtiff-4`"
 POPPLER_DEPENDENCIES += tiff
 else
 POPPLER_CONF_OPTS += --disable-libtiff

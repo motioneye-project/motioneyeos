@@ -27,7 +27,7 @@ endif
 ifeq ($(BR2_PACKAGE_LIBPCAP),y)
 AIRCRACK_NG_DEPENDENCIES += libpcap
 AIRCRACK_NG_MAKE_OPTS += HAVE_PCAP=yes \
-	$(if $(BR2_STATIC_LIBS),LIBPCAP="-lpcap $(shell $(STAGING_DIR)/usr/bin/pcap-config --static --additional-libs)")
+	$(if $(BR2_STATIC_LIBS),LIBPCAP="-lpcap `$(STAGING_DIR)/usr/bin/pcap-config --static --additional-libs`")
 else
 AIRCRACK_NG_MAKE_OPTS += HAVE_PCAP=no
 endif

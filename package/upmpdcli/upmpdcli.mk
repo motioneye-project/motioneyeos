@@ -19,7 +19,7 @@ ifeq ($(BR2_STATIC_LIBS),y)
 # manually pass it to make.
 UPMPDCLI_DEPENDENCIES += host-pkgconf
 UPMPDCLI_MAKE_OPTS = \
-	LIBS='$(shell $(PKG_CONFIG_HOST_BINARY) --libs expat libcurl libupnp)'
+	LIBS="`$(PKG_CONFIG_HOST_BINARY) --libs expat libcurl libupnp`"
 endif
 
 # Upmpdcli only runs if user upmpdcli exists

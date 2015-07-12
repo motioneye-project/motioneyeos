@@ -12,7 +12,7 @@ IFTOP_LICENSE_FILES = COPYING
 
 IFTOP_LIBS = -lpcap
 ifeq ($(BR2_STATIC_LIBS),y)
-IFTOP_LIBS += $(shell $(STAGING_DIR)/usr/bin/pcap-config --static --additional-libs)
+IFTOP_LIBS += `$(STAGING_DIR)/usr/bin/pcap-config --static --additional-libs`
 endif
 IFTOP_CONF_ENV += LIBS+="$(IFTOP_LIBS)"
 

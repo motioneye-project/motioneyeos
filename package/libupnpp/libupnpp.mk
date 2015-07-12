@@ -16,7 +16,7 @@ LIBUPNPP_DEPENDENCIES = expat libcurl libupnp
 ifeq ($(BR2_STATIC_LIBS),y)
 LIBUPNPP_DEPENDENCIES += host-pkgconf
 LIBUPNPP_CONF_ENV += \
-	LIBS='$(shell $(PKG_CONFIG_HOST_BINARY) --libs libupnp libcurl)'
+	LIBS="`$(PKG_CONFIG_HOST_BINARY) --libs libupnp libcurl`"
 endif
 
 $(eval $(autotools-package))

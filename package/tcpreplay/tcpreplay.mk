@@ -16,9 +16,9 @@ TCPREPLAY_CONF_OPTS = --with-libpcap=$(STAGING_DIR)/usr
 TCPREPLAY_DEPENDENCIES = libpcap
 
 # libpcap may depend on symbols in other libs
-TCPREPLAY_LIBS = $(shell $(STAGING_DIR)/usr/bin/pcap-config --static --libs)
-TCPREPLAY_CONF_ENV += ac_cv_search_pcap_close='$(TCPREPLAY_LIBS)' \
-	LIBS="$(TCPREPLAY_LIBS)"
+TCPREPLAY_LIBS = $(STAGING_DIR)/usr/bin/pcap-config --static --libs
+TCPREPLAY_CONF_ENV += ac_cv_search_pcap_close="`$(TCPREPLAY_LIBS)`" \
+	LIBS="`$(TCPREPLAY_LIBS)`"
 
 ifeq ($(BR2_PACKAGE_TCPDUMP),y)
 TCPREPLAY_CONF_ENV += ac_cv_path_tcpdump_path=/usr/sbin/tcpdump

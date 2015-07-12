@@ -19,7 +19,7 @@ TCPDUMP_CONF_OPTS = \
 TCPDUMP_DEPENDENCIES = zlib libpcap
 
 ifeq ($(BR2_STATIC_LIBS),y)
-TCPDUMP_CONF_OPTS += LIBS="$(shell $(STAGING_DIR)/usr/bin/pcap-config --static --additional-libs)"
+TCPDUMP_CONF_OPTS += LIBS="`$(STAGING_DIR)/usr/bin/pcap-config --static --additional-libs`"
 endif
 
 # make install installs an unneeded extra copy of the tcpdump binary

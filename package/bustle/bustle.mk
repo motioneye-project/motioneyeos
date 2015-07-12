@@ -12,7 +12,7 @@ BUSTLE_DEPENDENCIES = libglib2 libpcap host-pkgconf
 
 BUSTLE_PCAP_FLAGS = "-lpcap"
 ifeq ($(BR2_STATIC_LIBS),y)
-BUSTLE_PCAP_FLAGS += $(shell $(STAGING_DIR)/usr/bin/pcap-config --static --additional-libs)
+BUSTLE_PCAP_FLAGS += `$(STAGING_DIR)/usr/bin/pcap-config --static --additional-libs`
 endif
 
 define BUSTLE_BUILD_CMDS

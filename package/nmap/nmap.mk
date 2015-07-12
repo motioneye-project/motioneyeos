@@ -15,10 +15,10 @@ NMAP_LICENSE = GPLv2
 NMAP_LICENSE_FILES = COPYING
 
 # needed by libpcap
-NMAP_LIBS_FOR_STATIC_LINK += $(shell $(STAGING_DIR)/usr/bin/pcap-config --static --additional-libs)
+NMAP_LIBS_FOR_STATIC_LINK += `$(STAGING_DIR)/usr/bin/pcap-config --static --additional-libs`
 
 ifeq ($(BR2_STATIC_LIBS),y)
-NMAP_CONF_ENV += LIBS='$(NMAP_LIBS_FOR_STATIC_LINK)'
+NMAP_CONF_ENV += LIBS="$(NMAP_LIBS_FOR_STATIC_LINK)"
 endif
 
 # for 0001-libdnet-wrapper-configure.patch
