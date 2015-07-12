@@ -72,16 +72,14 @@ SYSTEMD_CONF_OPTS += --disable-seccomp
 endif
 
 ifeq ($(BR2_PACKAGE_SYSTEMD_ALL_EXTRAS),y)
-SYSTEMD_DEPENDENCIES += \
-	xz 		\
-	libgcrypt
-SYSTEMD_CONF_OPTS += 	\
-	--enable-xz 	\
+SYSTEMD_DEPENDENCIES += xz libgcrypt
+SYSTEMD_CONF_OPTS += \
+	--enable-xz \
 	--enable-gcrypt	\
 	--with-libgcrypt-prefix=$(STAGING_DIR)/usr
 else
-SYSTEMD_CONF_OPTS += 	\
-	--disable-xz 	\
+SYSTEMD_CONF_OPTS += \
+	--disable-xz \
 	--disable-gcrypt
 endif
 
@@ -143,7 +141,8 @@ define SYSTEMD_INSTALL_INIT_HOOK
 	ln -fs ../bin/systemctl $(TARGET_DIR)/sbin/poweroff
 	ln -fs ../bin/systemctl $(TARGET_DIR)/sbin/reboot
 
-	ln -fs ../../../lib/systemd/system/multi-user.target $(TARGET_DIR)/etc/systemd/system/default.target
+	ln -fs ../../../lib/systemd/system/multi-user.target \
+		$(TARGET_DIR)/etc/systemd/system/default.target
 endef
 
 define SYSTEMD_INSTALL_MACHINEID_HOOK
