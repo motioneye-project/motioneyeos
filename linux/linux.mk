@@ -88,6 +88,8 @@ else ifeq ($(BR2_LINUX_KERNEL_USE_CUSTOM_DTS),y)
 KERNEL_DTS_NAME = $(basename $(filter %.dts,$(notdir $(call qstrip,$(BR2_LINUX_KERNEL_CUSTOM_DTS_PATH)))))
 endif
 
+ifeq ($(BR_BUILDING),y)
+
 ifeq ($(BR2_LINUX_KERNEL_DTS_SUPPORT)$(KERNEL_DTS_NAME),y)
 $(error No kernel device tree source specified, check your \
 BR2_LINUX_KERNEL_USE_INTREE_DTS / BR2_LINUX_KERNEL_USE_CUSTOM_DTS settings)
@@ -99,6 +101,8 @@ $(error Kernel with appended device tree needs exactly one DTS source. \
 	Check BR2_LINUX_KERNEL_INTREE_DTS_NAME or BR2_LINUX_KERNEL_CUSTOM_DTS_PATH.)
 endif
 endif
+
+endif # BR_BUILDING
 
 KERNEL_DTBS = $(addsuffix .dtb,$(KERNEL_DTS_NAME))
 
