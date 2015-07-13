@@ -36,7 +36,7 @@ ZEROMQ_CONF_OPTS += --with-system-pgm
 endif
 
 # ZeroMQ uses libsodium if it's available.
-ifeq ($(BR2_PACKAGE_LIBSODIUM), y)
+ifeq ($(BR2_PACKAGE_LIBSODIUM),y)
 ZEROMQ_DEPENDENCIES += libsodium
 ZEROMQ_CONF_OPTS += --with-libsodium="$(STAGING_DIR)/usr"
 else
