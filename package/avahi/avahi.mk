@@ -90,7 +90,10 @@ AVAHI_DEPENDENCIES = \
 
 AVAHI_CFLAGS = $(TARGET_CFLAGS)
 
-ifeq ($(BR2_PACKAGE_SYSTEMD),)
+ifeq ($(BR2_PACKAGE_SYSTEMD),y)
+AVAHI_CONF_OPTS += --with-systemdsystemunitdir=/usr/lib/systemd/system
+else
+AVAHI_CONF_OPTS += --with-systemdsystemunitdir=no
 AVAHI_CFLAGS += -DDISABLE_SYSTEMD
 endif
 
