@@ -10,6 +10,7 @@
 
 mkdir -p /var/lock/subsys
 mkdir -p /run/nfs/sm
+mkdir -p /run/nfs/sm.bak
 touch /run/nfs/rmtab
 
 start() {
