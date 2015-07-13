@@ -265,6 +265,7 @@ comment "QT libraries and helper libraries"
 	source "package/qextserialport/Config.in"
 	source "package/qjson/Config.in"
 	source "package/qtuio/Config.in"
+	source "package/quazip/Config.in"
 	source "package/qwt/Config.in"
 endif
 	source "package/weston/Config.in"

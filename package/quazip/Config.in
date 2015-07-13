@@ -1,0 +1,9 @@
+config BR2_PACKAGE_QUAZIP
+	bool "quazip"
+	select BR2_PACKAGE_ZLIB
+	help
+	  QuaZIP is a simple C++ wrapper over Gilles Vollant's
+	  ZIP/UNZIP package that can be used to access ZIP
+	  archives. It uses the Qt toolkit.
+
+	  http://quazip.sourceforge.net
