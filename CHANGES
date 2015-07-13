@@ -1,3 +1,14 @@
+2015.08-rc1, not yet released
+
+	Fixes all over the tree and new features.
+
+	Infrastructure: Buildroot takes better care now of generating
+	predictable permissions in the target filesystem. However,
+	existing permissions on a custom skeleton or rootfs overlay
+	will no longer be preserved. Therefore, it is necessary to
+	add a permission table (BR2_ROOTFS_DEVICE_TABLE) to set
+	the required permissions.
+
 2015.05, Released May 31st, 2015
 
 	Minor fixes.
