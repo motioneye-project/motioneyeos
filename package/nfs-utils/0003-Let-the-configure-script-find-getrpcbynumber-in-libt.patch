@@ -1,0 +1,46 @@
+From 87f88b28ac01b6449463f00b660fe7416d7f9a55 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Sat, 10 Nov 2012 18:53:03 +0100
+Subject: [PATCH] Let the configure script find getrpcbynumber in libtirpc
+
+The getrpcbynumber() function may not be available in the C library,
+but only in the libtirpc library. Take this into account when checking
+for the existence of getrpcbynumber() and getrpcbynumber_r().
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ configure.ac | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index 8e427e3..6e42c96 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -433,11 +433,23 @@ AC_FUNC_STAT
+ AC_FUNC_VPRINTF
+ AC_CHECK_FUNCS([alarm atexit dup2 fdatasync ftruncate getcwd \
+                gethostbyaddr gethostbyname gethostname getmntent \
+-               getnameinfo getrpcbyname getrpcbynumber getrpcbynumber_r getifaddrs \
++               getnameinfo getrpcbyname getifaddrs \
+                gettimeofday hasmntopt inet_ntoa innetgr memset mkdir pathconf \
+                ppoll realpath rmdir select socket strcasecmp strchr strdup \
+                strerror strrchr strtol strtoul sigprocmask name_to_handle_at])
+
++save_CFLAGS=$CFLAGS
++save_LIBS=$LIBS
++CFLAGS="$CFLAGS $AM_CPPFLAGS"
++LIBS="$LIBS $LIBTIRPC"
++AC_CHECK_FUNCS([getrpcbynumber getrpcbynumber_r])
++CFLAGS=$save_CFLAGS
++LIBS=$save_LIBS
++
++if test "$ac_cv_func_getrpcbynumber_r" != "yes" -a "$ac_cv_func_getrpcbynumber" != "yes"; then
++   AC_MSG_ERROR([Neither getrpcbynumber_r nor getrpcbynumber are available])
++fi
++
+ dnl *************************************************************
+ dnl Check for data sizes
+ dnl *************************************************************
+--
+2.1.0
+

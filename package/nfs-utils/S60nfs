@@ -21,7 +21,6 @@ start() {
 
 	echo -n "Starting NFS services: "
 	/usr/sbin/exportfs -r
-	rpc.statd
 	echo "done"
 
 	echo -n "Starting NFS daemon: "
