@@ -721,6 +721,17 @@ define TOOLCHAIN_EXTERNAL_INSTALL_GDBINIT
 	fi
 endef
 
+# uClibc-ng dynamic loader is called ld-uClibc.so.1, but gcc is not
+# patched specifically for uClibc-ng, so it continues to generate
+# binaries that expect the dynamic loader to be named ld-uClibc.so.0,
+# like with the original uClibc. Therefore, we create an additional
+# symbolic link to make uClibc-ng systems work properly.
+define TOOLCHAIN_EXTERNAL_FIXUP_UCLIBCNG_LDSO
+	if test -e $(TARGET_DIR)/lib/ld-uClibc.so.1; then \
+		ln -sf ld-uClibc.so.1 $(TARGET_DIR)/lib/ld-uClibc.so.0 ; \
+	fi
+endef
+
 define TOOLCHAIN_EXTERNAL_INSTALL_STAGING_CMDS
 	$(TOOLCHAIN_EXTERNAL_INSTALL_SYSROOT_LIBS)
 	$(TOOLCHAIN_EXTERNAL_INSTALL_WRAPPER)
@@ -734,6 +745,7 @@ define TOOLCHAIN_EXTERNAL_INSTALL_TARGET_CMDS
 	$(TOOLCHAIN_EXTERNAL_INSTALL_TARGET_LIBS)
 	$(TOOLCHAIN_EXTERNAL_INSTALL_BFIN_FDPIC)
 	$(TOOLCHAIN_EXTERNAL_INSTALL_BFIN_FLAT)
+	$(TOOLCHAIN_EXTERNAL_FIXUP_UCLIBCNG_LDSO)
 endef
 
 $(eval $(generic-package))
