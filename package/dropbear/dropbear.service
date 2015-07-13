@@ -3,6 +3,19 @@ Description=Dropbear SSH daemon
 After=syslog.target network.target auditd.service
 
 [Service]
+# If /etc/dropbear is not a directory, and
+#   - the filesystem is RO (i.e. we can not rm the symlink),
+#     create the directory pointed to by the symlink.
+#   - the filesystem is RW (i.e. we can rm the symlink),
+#     replace the symlink with an actual directory
+ExecStartPre=/bin/sh -c '\
+if ! [ -d /etc/dropbear ]; then \
+    if rm -f /etc/dropbear; then \
+        mkdir -p /etc/dropbear; \
+    else \
+        mkdir -p $(readlink /etc/dropbear); \
+    fi; \
+fi'
 ExecStart=/usr/sbin/dropbear -F -R
 ExecReload=/bin/kill -HUP $MAINPID
 
