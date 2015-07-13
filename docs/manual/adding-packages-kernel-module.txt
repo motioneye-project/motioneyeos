@@ -128,7 +128,7 @@ configure the build of the kernel module:
 * +FOO_MODULE_MAKE_OPTS+ may be set to contain extra variable definitions
   to pass to the Linux buildsystem.
 
-Yo may also reference (but you may *not* set!) those variables:
+You may also reference (but you may *not* set!) those variables:
 
  * +LINUX_DIR+ contains the path to where the Linux kernel has been
    extracted and built.
