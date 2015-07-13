@@ -168,6 +168,14 @@ endef
 BUSYBOX_DEPENDENCIES += linux-pam
 endif
 
+# Telnet support
+define BUSYBOX_INSTALL_TELNET_SCRIPT
+	if grep -q CONFIG_FEATURE_TELNETD_STANDALONE=y $(@D)/.config; then \
+		$(INSTALL) -m 0755 -D package/busybox/S50telnet \
+			$(TARGET_DIR)/etc/init.d/S50telnet ; \
+	fi
+endef
+
 # Enable "noclobber" in install.sh, to prevent BusyBox from overwriting any
 # full-blown versions of apps installed by other packages with sym/hard links.
 define BUSYBOX_NOCLOBBER_INSTALL
@@ -205,6 +213,7 @@ define BUSYBOX_INSTALL_INIT_SYSV
 	$(BUSYBOX_INSTALL_MDEV_SCRIPT)
 	$(BUSYBOX_INSTALL_LOGGING_SCRIPT)
 	$(BUSYBOX_INSTALL_WATCHDOG_SCRIPT)
+	$(BUSYBOX_INSTALL_TELNET_SCRIPT)
 endef
 
 $(eval $(kconfig-package))
