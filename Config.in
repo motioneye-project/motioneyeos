@@ -218,8 +218,6 @@ config BR2_GNU_MIRROR
 	     http://ftp.gnu.org/pub/gnu
 	     http://mirror.aarnet.edu.au/pub/gnu
 
-endif
-
 config BR2_LUAROCKS_MIRROR
 	string "LuaRocks mirror"
 	default "http://rocks.moonscript.org"
@@ -238,6 +236,8 @@ config BR2_CPAN_MIRROR
 
 	  The list of mirrors is available at:
 	  http://search.cpan.org/mirror
+
+endif
 
 endmenu
 
