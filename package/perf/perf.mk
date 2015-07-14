@@ -36,6 +36,10 @@ ifeq ($(BR2_PACKAGE_SLANG),y)
 PERF_DEPENDENCIES += slang
 endif
 
+ifeq ($(BR2_PACKAGE_NUMACTL),y)
+PERF_DEPENDENCIES += numactl
+endif
+
 ifeq ($(BR2_PACKAGE_ELFUTILS),y)
 PERF_DEPENDENCIES += elfutils
 else
