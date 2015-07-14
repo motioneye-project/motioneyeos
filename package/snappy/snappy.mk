@@ -13,4 +13,7 @@ SNAPPY_AUTORECONF = YES
 SNAPPY_DEPENDENCIES = host-pkgconf
 SNAPPY_INSTALL_STAGING = YES
 
+# Disable tests
+SNAPPY_CONF_OPTS = --disable-gtest
+
 $(eval $(autotools-package))
