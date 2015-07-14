@@ -43,10 +43,13 @@ all:
 # Set and export the version string
 export BR2_VERSION := 2015.08-git
 
+# Save running make version since it's clobbered by the make package
+RUNNING_MAKE_VERSION := $(MAKE_VERSION)
+
 # Check for minimal make version (note: this check will break at make 10.x)
 MIN_MAKE_VERSION = 3.81
-ifneq ($(firstword $(sort $(MAKE_VERSION) $(MIN_MAKE_VERSION))),$(MIN_MAKE_VERSION))
-$(error You have make '$(MAKE_VERSION)' installed. GNU make >= $(MIN_MAKE_VERSION) is required)
+ifneq ($(firstword $(sort $(RUNNING_MAKE_VERSION) $(MIN_MAKE_VERSION))),$(MIN_MAKE_VERSION))
+$(error You have make '$(RUNNING_MAKE_VERSION)' installed. GNU make >= $(MIN_MAKE_VERSION) is required)
 endif
 
 export HOSTARCH := $(shell uname -m | \
