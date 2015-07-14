@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-DEJAVU_VERSION = 2.34
+DEJAVU_VERSION = 2.35
 DEJAVU_SITE = http://sourceforge.net/projects/dejavu/files/dejavu/$(DEJAVU_VERSION)
 DEJAVU_SOURCE = dejavu-fonts-ttf-$(DEJAVU_VERSION).tar.bz2
 DEJAVU_LICENSE_FILES = LICENSE
