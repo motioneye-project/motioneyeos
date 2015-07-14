@@ -89,14 +89,14 @@ endif
 TARGET_FINALIZE_HOOKS += SYSTEM_BIN_SH
 
 ifeq ($(BR2_TARGET_GENERIC_GETTY),y)
-ifeq ($(BR2_PACKAGE_SYSVINIT),y)
+ifeq ($(BR2_INIT_SYSV),y)
 # In sysvinit inittab, the "id" must not be longer than 4 bytes, so we
 # skip the "tty" part and keep only the remaining.
 define SYSTEM_GETTY
 	$(SED) '/# GENERIC_SERIAL$$/s~^.*#~$(shell echo $(TARGET_GENERIC_GETTY_PORT) | tail -c+4)::respawn:/sbin/getty -L $(TARGET_GENERIC_GETTY_OPTIONS) $(TARGET_GENERIC_GETTY_PORT) $(TARGET_GENERIC_GETTY_BAUDRATE) $(TARGET_GENERIC_GETTY_TERM) #~' \
 		$(TARGET_DIR)/etc/inittab
 endef
-else
+else ifeq ($(BR2_INIT_BUSYBOX),y)
 # Add getty to busybox inittab
 define SYSTEM_GETTY
 	$(SED) '/# GENERIC_SERIAL$$/s~^.*#~$(TARGET_GENERIC_GETTY_PORT)::respawn:/sbin/getty -L $(TARGET_GENERIC_GETTY_OPTIONS) $(TARGET_GENERIC_GETTY_PORT) $(TARGET_GENERIC_GETTY_BAUDRATE) $(TARGET_GENERIC_GETTY_TERM) #~' \
@@ -106,6 +106,7 @@ endif
 TARGET_FINALIZE_HOOKS += SYSTEM_GETTY
 endif
 
+ifeq ($(BR2_INIT_BUSYBOX)$(BR2_INIT_SYSV),y)
 ifeq ($(BR2_TARGET_GENERIC_REMOUNT_ROOTFS_RW),y)
 # Find commented line, if any, and remove leading '#'s
 define SYSTEM_REMOUNT_RW
@@ -118,5 +119,6 @@ define SYSTEM_REMOUNT_RW
 endef
 endif
 TARGET_FINALIZE_HOOKS += SYSTEM_REMOUNT_RW
+endif
 
 endif # BR2_ROOTFS_SKELETON_DEFAULT
