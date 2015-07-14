@@ -1,0 +1,17 @@
+Make the libcrypt test somewhat cross-compilation compliant
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/src/Makefile
+===================================================================
+--- a/src/Makefile
++++ b/src/Makefile
+@@ -78,7 +78,7 @@
+ endif
+ 
+ # Additional libs for GNU libc.
+-ifneq ($(wildcard /usr/lib*/libcrypt.a),)
++ifneq ($(wildcard $(SYSROOT)/usr/lib*/libcrypt.a),)
+   SULOGINLIBS	+= -lcrypt
+ endif
+ 
