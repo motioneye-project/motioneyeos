@@ -34,6 +34,10 @@ ifeq ($(BR2_aarch64),y)
 AUDIT_CONF_OPTS += --with-aarch64
 endif
 
+define AUDIT_INSTALL_INIT_SYSV
+	$(INSTALL) -D -m 755 package/audit/S01auditd $(TARGET_DIR)/etc/init.d/S01auditd
+endef
+
 define AUDIT_INSTALL_CLEANUP
 	$(RM) -rf $(TARGET_DIR)/etc/rc.d
 	$(RM) -rf $(TARGET_DIR)/etc/sysconfig
