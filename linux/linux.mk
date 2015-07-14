@@ -313,6 +313,8 @@ define LINUX_INSTALL_TARGET_CMDS
 	$(LINUX_INSTALL_HOST_TOOLS)
 endef
 
+# Include all our extensions and tools definitions.
+#
 # Note: our package infrastructure uses the full-path of the last-scanned
 # Makefile to determine what package we're currently defining, using the
 # last directory component in the path. As such, including other Makefile,
@@ -322,6 +324,7 @@ endef
 # the current Makefile, we are OK. But this is a hard requirement: files
 # included here *must* be in the same directory!
 include $(sort $(wildcard linux/linux-ext-*.mk))
+include $(sort $(wildcard linux/linux-tool-*.mk))
 
 LINUX_PATCH_DEPENDENCIES += $(foreach ext,$(LINUX_EXTENSIONS),\
 	$(if $(BR2_LINUX_KERNEL_EXT_$(call UPPERCASE,$(ext))),$(ext)))
@@ -329,6 +332,27 @@ LINUX_PATCH_DEPENDENCIES += $(foreach ext,$(LINUX_EXTENSIONS),\
 LINUX_PRE_PATCH_HOOKS += $(foreach ext,$(LINUX_EXTENSIONS),\
 	$(if $(BR2_LINUX_KERNEL_EXT_$(call UPPERCASE,$(ext))),\
 		$(call UPPERCASE,$(ext))_PREPARE_KERNEL))
+
+# Install Linux kernel tools in the staging directory since some tools
+# may install shared libraries and headers (e.g. cpupower). The kernel
+# image is NOT installed in the staging directory.
+LINUX_INSTALL_STAGING = YES
+
+LINUX_DEPENDENCIES += $(foreach tool,$(LINUX_TOOLS),\
+	$(if $(BR2_LINUX_KERNEL_TOOL_$(call UPPERCASE,$(tool))),\
+		$($(call UPPERCASE,$(tool))_DEPENDENCIES)))
+
+LINUX_POST_BUILD_HOOKS += $(foreach tool,$(LINUX_TOOLS),\
+	$(if $(BR2_LINUX_KERNEL_TOOL_$(call UPPERCASE,$(tool))),\
+		$(call UPPERCASE,$(tool))_BUILD_CMDS))
+
+LINUX_POST_INSTALL_STAGING_HOOKS += $(foreach tool,$(LINUX_TOOLS),\
+	$(if $(BR2_LINUX_KERNEL_TOOL_$(call UPPERCASE,$(tool))),\
+		$(call UPPERCASE,$(tool))_INSTALL_STAGING_CMDS))
+
+LINUX_POST_INSTALL_TARGET_HOOKS += $(foreach tool,$(LINUX_TOOLS),\
+	$(if $(BR2_LINUX_KERNEL_TOOL_$(call UPPERCASE,$(tool))),\
+		$(call UPPERCASE,$(tool))_INSTALL_TARGET_CMDS))
 
 # Checks to give errors that the user can understand
 ifeq ($(BR_BUILDING),y)
