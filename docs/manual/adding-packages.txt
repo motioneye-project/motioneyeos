@@ -33,6 +33,8 @@ include::adding-packages-kernel-module.txt[]
 
 include::adding-packages-asciidoc.txt[]
 
+include::adding-packages-linux-kernel-spec-infra.txt[]
+
 include::adding-packages-hooks.txt[]
 
 include::adding-packages-gettext.txt[]
