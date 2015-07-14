@@ -3,6 +3,7 @@ Description=VideoCore file server daemon
 
 [Service]
 ExecStart=/usr/sbin/vcfiled --foreground
+Restart=always
 
 [Install]
 WantedBy=multi-user.target
