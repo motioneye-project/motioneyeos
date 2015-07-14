@@ -30,7 +30,7 @@ choice
 	  Select the version of Node.js you wish to use.
 
 config BR2_BR2_PACKAGE_NODEJS_0_10_X
-	bool "v0.10.39"
+	bool "v0.10.40"
 
 # V8 included with v0.12.5 requires at least ARMv6
 config BR2_BR2_PACKAGE_NODEJS_0_12_X
@@ -41,7 +41,7 @@ endchoice
 
 config BR2_PACKAGE_NODEJS_VERSION_STRING
 	string
-	default "0.10.39"	if BR2_BR2_PACKAGE_NODEJS_0_10_X
+	default "0.10.40"	if BR2_BR2_PACKAGE_NODEJS_0_10_X
 	default "0.12.7"	if BR2_BR2_PACKAGE_NODEJS_0_12_X
 
 menu "Module Selection"
