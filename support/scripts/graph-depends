@@ -271,16 +271,17 @@ def remove_transitive_deps(pkg,deps):
             new_d.append(d[i])
     return new_d
 
-# This function removes the dependency on the 'toolchain' package
-def remove_toolchain_deps(pkg,deps):
-    return [p for p in deps[pkg] if not p == 'toolchain']
+# This function removes the dependency on some 'mandatory' package, like the
+# 'toolchain' package, or the 'skeleton' package
+def remove_mandatory_deps(pkg,deps):
+    return [p for p in deps[pkg] if p not in ['toolchain', 'skeleton']]
 
 # This functions trims down the dependency list of all packages.
 # It applies in sequence all the dependency-elimination methods.
 def remove_extra_deps(deps):
     for pkg in list(deps.keys()):
         if not pkg == 'all':
-            deps[pkg] = remove_toolchain_deps(pkg,deps)
+            deps[pkg] = remove_mandatory_deps(pkg,deps)
     for pkg in list(deps.keys()):
         if not transitive or pkg == 'all':
             deps[pkg] = remove_transitive_deps(pkg,deps)
