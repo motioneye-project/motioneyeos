@@ -32,7 +32,7 @@ between distributions).
 ** +perl+ (version 5.8.7 or any later)
 ** +tar+
 ** +cpio+
-** +python+ (version 2.6 or 2.7)
+** +python+ (version 2.6 or any later)
 ** +unzip+
 ** +rsync+
 
