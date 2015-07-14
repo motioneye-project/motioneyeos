@@ -10,8 +10,15 @@ PERF_VERSION = $(call qstrip,$(BR2_LINUX_KERNEL_VERSION))
 
 PERF_DEPENDENCIES = linux host-flex host-bison
 
+ifeq ($(KERNEL_ARCH),x86_64)
+PERF_ARCH=x86
+else
+PERF_ARCH=$(KERNEL_ARCH)
+endif
+
 PERF_MAKE_FLAGS = \
 	$(LINUX_MAKE_FLAGS) \
+	ARCH=$(PERF_ARCH) \
 	NO_LIBAUDIT=1 \
 	NO_NEWT=1 \
 	NO_GTK2=1 \
