@@ -44,6 +44,20 @@ ifeq ($(BR2_microblaze),y)
 DBUS_CONF_OPTS += --disable-inotify
 endif
 
+ifeq ($(BR2_PACKAGE_LIBSELINUX),y)
+DBUS_CONF_OPTS += --enable-selinux
+DBUS_DEPENDENCIES += libselinux
+else
+DBUS_CONF_OPTS += --disable-selinux
+endif
+
+ifeq ($(BR2_PACKAGE_AUDIT),y)
+DBUS_CONF_OPTS += --enable-libaudit
+DBUS_DEPENDENCIES += audit libcap-ng
+else
+DBUS_CONF_OPTS += --disable-libaudit
+endif
+
 ifeq ($(BR2_PACKAGE_XLIB_LIBX11),y)
 DBUS_CONF_OPTS += --with-x
 DBUS_DEPENDENCIES += xlib_libX11
