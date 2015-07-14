@@ -476,7 +476,7 @@ endef
 
 # Checks to give errors that the user can understand
 # Must be before we call to kconfig-package
-ifeq ($(BR_BUILDING),y)
+ifeq ($(BR2_PACKAGE_UCLIBC)$(BR_BUILDING),yy)
 ifeq ($(call qstrip,$(BR2_UCLIBC_CONFIG)),)
 $(error No uClibc configuration file specified, check your BR2_UCLIBC_CONFIG setting)
 endif

@@ -225,7 +225,7 @@ endef
 
 # Checks to give errors that the user can understand
 # Must be before we call to kconfig-package
-ifeq ($(BR_BUILDING),y)
+ifeq ($(BR2_PACKAGE_BUSYBOX)$(BR_BUILDING),yy)
 ifeq ($(call qstrip,$(BR2_PACKAGE_BUSYBOX_CONFIG)),)
 $(error No BusyBox configuration file specified, check your BR2_PACKAGE_BUSYBOX_CONFIG setting)
 endif
