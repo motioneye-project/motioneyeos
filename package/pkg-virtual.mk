@@ -50,7 +50,7 @@ $(2)_VERSION = virtual
 # This must be repeated from inner-generic-package, otherwise we get an empty
 # _DEPENDENCIES
 ifeq ($(4),host)
-$(2)_DEPENDENCIES ?= $$(filter-out host-toolchain $(1),\
+$(2)_DEPENDENCIES ?= $$(filter-out host-skeleton host-toolchain $(1),\
 	$$(patsubst host-host-%,host-%,$$(addprefix host-,$$($(3)_DEPENDENCIES))))
 endif
 
