@@ -143,7 +143,7 @@ therefore only use a few of them, or none.
 * +HOST_PYTHON_FOO_NEEDS_HOST_PYTHON+, to define the host python
   interpreter. The usage of this variable is limited to host
   packages. The two supported value are +python2+ and +python3+. It
-  will ensures the right host python package is available and will
+  will ensure the right host python package is available and will
   invoke it for the build. If some build steps are overloaded, the
   right python interpreter must be explicitly called in the commands.
 
