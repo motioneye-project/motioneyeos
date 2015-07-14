@@ -29,12 +29,12 @@ endif
 endif
 
 define OPENSWAN_BUILD_CMDS
-	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) \
+	$(TARGET_MAKE_ENV) $(MAKE1) -C $(@D) \
 		$(OPENSWAN_MAKE_OPTS) programs
 endef
 
 define OPENSWAN_INSTALL_TARGET_CMDS
-	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) \
+	$(TARGET_MAKE_ENV) $(MAKE1) -C $(@D) \
 		$(OPENSWAN_MAKE_OPTS) DESTDIR=$(TARGET_DIR) install
 endef
 
