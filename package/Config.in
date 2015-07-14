@@ -150,6 +150,7 @@ endmenu
 menu "Filesystem and flash utilities"
 	source "package/btrfs-progs/Config.in"
 	source "package/cifs-utils/Config.in"
+	source "package/cpio/Config.in"
 	source "package/cramfs/Config.in"
 	source "package/curlftpfs/Config.in"
 	source "package/dosfstools/Config.in"
