@@ -107,6 +107,15 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2015.08"
 
+config BR2_PACKAGE_PERF
+	bool "perf option has been renamed"
+	select BR2_LEGACY
+	select BR2_LINUX_KERNEL_TOOL_PERF
+	help
+	  The perf package has been moved as a Linux tools package,
+	  and the option to enable it is now
+	  BR2_LINUX_KERNEL_TOOL_PERF.
+
 config BR2_BINUTILS_VERSION_2_22
 	bool "binutils 2.22 removed"
 	select BR2_LEGACY

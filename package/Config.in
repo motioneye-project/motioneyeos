@@ -89,7 +89,6 @@ endif
 	source "package/netperf/Config.in"
 	source "package/oprofile/Config.in"
 	source "package/pax-utils/Config.in"
-	source "package/perf/Config.in"
 	source "package/pv/Config.in"
 	source "package/racehound/Config.in"
 	source "package/ramsmp/Config.in"
