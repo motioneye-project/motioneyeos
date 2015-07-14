@@ -1,0 +1,11 @@
+menu "Linux Kernel Tools"
+
+config BR2_LINUX_KERNEL_TOOL_CPUPOWER
+	bool "cpupower"
+	depends on !BR2_bfin # pciutils
+	select BR2_PACKAGE_PCIUTILS
+	help
+	  cpupower is a collection of tools to examine and tune power
+	  saving related features of your processor.
+
+endmenu

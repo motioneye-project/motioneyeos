@@ -364,6 +364,9 @@ config BR2_LINUX_KERNEL_INSTALL_TARGET
 # Linux extensions
 source "linux/Config.ext.in"
 
+# Linux tools
+source "linux/Config.tools.in"
+
 endif # BR2_LINUX_KERNEL
 
 endmenu
