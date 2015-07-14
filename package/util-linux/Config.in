@@ -52,11 +52,6 @@ config BR2_PACKAGE_UTIL_LINUX_AGETTY
 	help
 	  Alternative linux getty
 
-config BR2_PACKAGE_UTIL_LINUX_ARCH
-	bool "arch"
-	help
-	  Print machine architecture
-
 config BR2_PACKAGE_UTIL_LINUX_BFS
 	bool "bfs"
 	help
@@ -80,11 +75,6 @@ config BR2_PACKAGE_UTIL_LINUX_CRAMFS
 	select BR2_PACKAGE_ZLIB
 	help
 	  Build fsck.cramfs and mkfs.cramfs
-
-config BR2_PACKAGE_UTIL_LINUX_DDATE
-	bool "ddate"
-	help
-	  Convert Gregorian dates to Discordian dates
 
 config BR2_PACKAGE_UTIL_LINUX_EJECT
 	bool "eject"
@@ -120,6 +110,11 @@ config BR2_PACKAGE_UTIL_LINUX_LAST
 	bool "last"
 	help
 	  Show a listing of last logged in users
+
+config BR2_PACKAGE_UTIL_LINUX_LINE
+	bool "line"
+	help
+	  Read one line
 
 config BR2_PACKAGE_UTIL_LINUX_LOGIN_UTILS
 	bool "login utilities"
@@ -231,6 +226,12 @@ config BR2_PACKAGE_UTIL_LINUX_SWITCH_ROOT
 	bool "switch_root"
 	help
 	  Switch to another filesystem as the root of the mount tree
+
+config BR2_PACKAGE_UTIL_LINUX_TUNELP
+	bool "tunelp"
+	select BR2_PACKAGE_NCURSES
+	help
+	  Set various parameters for the lp device
 
 config BR2_PACKAGE_UTIL_LINUX_UL
 	bool "ul"

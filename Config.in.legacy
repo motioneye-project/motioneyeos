@@ -612,6 +612,19 @@ config BR2_PACKAGE_WDCTL
 	  util-linux' wdctl option has been renamed to BR2_PACKAGE_UTIL_LINUX_WDCTL
 	  to be aligned with how the other options are named.
 
+config BR2_PACKAGE_UTIL_LINUX_ARCH
+	bool "util-linux' arch option has been removed"
+	select BR2_LEGACY
+	help
+	  util-linux' arch was dropped in util-linux 2.23, in favor of
+	  the coreutils version.
+
+config BR2_PACKAGE_UTIL_LINUX_DDATE
+	bool "util-linux' ddate option has been removed"
+	select BR2_LEGACY
+	help
+	  util-linux' ddate was dropped in util-linux 2.23.
+
 config BR2_PACKAGE_RPM_BZIP2_PAYLOADS
 	bool "rpm's bzip2 payloads option has been removed"
 	select BR2_LEGACY
