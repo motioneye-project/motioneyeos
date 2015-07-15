@@ -1,7 +1,8 @@
-comment "weston needs udev and a toolchain w/ threads, dynamic library, headers >= 3.0"
+comment "weston needs udev and a toolchain w/ locale, threads, dynamic library, headers >= 3.0"
 	depends on BR2_ARCH_HAS_ATOMICS
 	depends on !BR2_PACKAGE_HAS_UDEV || !BR2_TOOLCHAIN_HAS_THREADS || \
-		!BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0 || BR2_STATIC_LIBS
+		!BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0 || BR2_STATIC_LIBS || \
+		!BR2_ENABLE_LOCALE
 
 config BR2_PACKAGE_WESTON
 	bool "weston"
@@ -13,6 +14,7 @@ config BR2_PACKAGE_WESTON
 	select BR2_PACKAGE_JPEG
 	select BR2_PACKAGE_MTDEV
 	select BR2_PACKAGE_LIBINPUT
+	depends on BR2_ENABLE_LOCALE # libinput
 	depends on BR2_PACKAGE_HAS_UDEV
 	depends on !BR2_STATIC_LIBS # wayland
 	depends on BR2_TOOLCHAIN_HAS_THREADS # wayland
