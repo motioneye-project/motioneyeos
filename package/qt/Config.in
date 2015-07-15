@@ -409,7 +409,7 @@ config BR2_PACKAGE_QT_ARCH_SUPPORTS_WEBKIT
 	bool
 	# see src/3rdparty/webkit/Source/JavaScriptCore/wtf/Platform.h
 	# see http://lists.busybox.net/pipermail/buildroot/2014-November/112605.html
-	default y if BR2_arm || BR2_armeb || BR2_i386 || BR2_microblazeel || \
+	default y if BR2_arc || BR2_arm || BR2_armeb || BR2_i386 || BR2_microblazeel || \
 		BR2_microblazebe || BR2_mips || BR2_mipsel || \
 		(BR2_mips64 || BR2_mips64el) && !BR2_MIPS_NABI32 || BR2_powerpc || \
 		BR2_powerpc64 || BR2_powerpc64le || BR2_sparc || BR2_x86_64
@@ -455,7 +455,7 @@ config BR2_PACKAGE_QT_OPENSSL
 config BR2_PACKAGE_QT_ARCH_SUPPORTS_SCRIPT
 	bool
 	# see http://lists.busybox.net/pipermail/buildroot/2014-November/112605.html
-	default y if BR2_arm || BR2_armeb || aarch64 || BR2_i386 || \
+	default y if BR2_arc || BR2_arm || BR2_armeb || aarch64 || BR2_i386 || \
 		BR2_microblazeel || BR2_microblazebe || BR2_mips || BR2_mipsel || \
 		BR2_mips64 || BR2_mips64el || BR2_nios2 || BR2_powerpc || \
 		BR2_powerpc64 || BR2_powerpc64le || BR2_sh4 || BR2_sh4eb || \
