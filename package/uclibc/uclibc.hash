@@ -5,7 +5,7 @@ sha256	62333167b79afb0b25a843513288c67b59547acf653e8fbe62ee64e71ebd1587	uClibc-0
 sha256  c037dbaea685380c75b112b5503778a90fa95ac524728770131aa17e29474915        uClibc-ng-1.0.4.tar.xz
 
 # No hash for the ARC variant, comes from the github-helper
-none	xxx	uClibc-arc-2015.06-rc1.tar.gz
+none	xxx	uClibc-arc-2015.06.tar.gz
 
 # No hash for this git snapshot
 none  xxx  uClibc-7bf35c8b7d4a1f97174eb49f47f33946b282114c.tar.gz
