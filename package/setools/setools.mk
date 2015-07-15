@@ -7,7 +7,7 @@
 SETOOLS_VERSION = 3.3.8
 SETOOLS_SOURCE = setools-$(SETOOLS_VERSION).tar.bz2
 SETOOLS_SITE = https://raw.githubusercontent.com/wiki/TresysTechnology/setools3/files/dists/setools-$(SETOOLS_VERSION)/
-SETOOLS_DEPENDENCIES = libselinux libsepol sqlite libxml2 bzip2
+SETOOLS_DEPENDENCIES = libselinux libsepol sqlite libxml2 bzip2 host-bison
 SETOOLS_INSTALL_STAGING = YES
 SETOOLS_LICENSE = GPLv2+ LGPLv2.1+
 SETOOLS_LICENSE_FILES = COPYING COPYING.GPL COPYING.LGPL
@@ -32,7 +32,7 @@ SETOOLS_CONF_OPTS = \
 	--with-selinux-devel="$(STAGING_DIR)/usr"
 
 HOST_SETOOLS_DEPENDENCIES = host-libselinux host-libsepol host-sqlite \
-	host-libxml2 host-bzip2
+	host-libxml2 host-bzip2 host-bison
 
 ifeq ($(BR2_PACKAGE_PYTHON3),y)
 HOST_SETOOLS_PYTHON_VERSION=$(PYTHON3_VERSION_MAJOR)
