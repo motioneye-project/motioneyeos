@@ -7,4 +7,4 @@ config BR2_PACKAGE_SDL_GFX
 	  circles or polygons, an interpolating rotozoomer for SDL
 	  surfaces, framerate control and MMX image filters.
 
-	  http://www.ferzkopp.net/joomla/content/view/19/14/
+	  http://cms.ferzkopp.net/index.php/software/13-sdl-gfx
