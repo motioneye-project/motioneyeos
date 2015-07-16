@@ -127,11 +127,24 @@ define UBOOT_APPLY_LOCAL_PATCHES
 endef
 UBOOT_POST_PATCH_HOOKS += UBOOT_APPLY_LOCAL_PATCHES
 
+ifeq ($(BR2_TARGET_UBOOT_BUILD_SYSTEM_LEGACY),y)
 define UBOOT_CONFIGURE_CMDS
 	$(TARGET_CONFIGURE_OPTS) 	\
 		$(MAKE) -C $(@D) $(UBOOT_MAKE_OPTS)		\
 		$(UBOOT_BOARD_NAME)_config
 endef
+else ifeq ($(BR2_TARGET_UBOOT_BUILD_SYSTEM_KCONFIG),y)
+ifeq ($(BR2_TARGET_UBOOT_USE_DEFCONFIG),y)
+UBOOT_SOURCE_CONFIG = $(UBOOT_DIR)/configs/$(call qstrip,\
+	$(BR2_TARGET_UBOOT_BOARD_DEFCONFIG))_defconfig
+else ifeq ($(BR2_TARGET_UBOOT_USE_CUSTOM_CONFIG),y)
+UBOOT_SOURCE_CONFIG = $(call qstrip,$(BR2_TARGET_UBOOT_CUSTOM_CONFIG_FILE))
+endif # BR2_TARGET_UBOOT_USE_DEFCONFIG
+
+UBOOT_KCONFIG_FILE = $(UBOOT_SOURCE_CONFIG)
+UBOOT_KCONFIG_EDITORS = menuconfig xconfig gconfig nconfig
+UBOOT_KCONFIG_OPTS = $(UBOOT_MAKE_OPTS)
+endif # BR2_TARGET_UBOOT_BUILD_SYSTEM_LEGACY
 
 define UBOOT_BUILD_CMDS
 	$(TARGET_CONFIGURE_OPTS) 	\
@@ -204,25 +217,50 @@ endif
 UBOOT_DEPENDENCIES += host-uboot-tools
 endif
 
-$(eval $(generic-package))
-
 ifeq ($(BR2_TARGET_UBOOT)$(BR_BUILDING),yy)
+
+#
+# Check U-Boot board name (for legacy) or the defconfig/custom config
+# file options (for kconfig)
+#
+ifeq ($(BR2_TARGET_UBOOT_BUILD_SYSTEM_LEGACY),y)
 ifeq ($(UBOOT_BOARD_NAME),)
 $(error No U-Boot board name set. Check your BR2_TARGET_UBOOT_BOARDNAME setting)
-endif
+endif # UBOOT_BOARD_NAME
+else ifeq ($(BR2_TARGET_UBOOT_BUILD_SYSTEM_KCONFIG),y)
+ifeq ($(BR2_TARGET_UBOOT_USE_DEFCONFIG),y)
+ifeq ($(call qstrip,$(BR2_TARGET_UBOOT_BOARD_DEFCONFIG)),)
+$(error No board defconfig name specified, check your BR2_TARGET_UBOOT_DEFCONFIG setting)
+endif # qstrip BR2_TARGET_UBOOT_BOARD_DEFCONFIG
+endif # BR2_TARGET_UBOOT_USE_DEFCONFIG
+ifeq ($(BR2_TARGET_UBOOT_USE_CUSTOM_CONFIG),y)
+ifeq ($(call qstrip,$(BR2_TARGET_UBOOT_CUSTOM_CONFIG_FILE)),)
+$(error No board configuration file specified, check your BR2_TARGET_UBOOT_CUSTOM_CONFIG_FILE setting)
+endif # qstrip BR2_TARGET_UBOOT_CUSTOM_CONFIG_FILE
+endif # BR2_TARGET_UBOOT_USE_CUSTOM_CONFIG
+endif # BR2_TARGET_UBOOT_BUILD_SYSTEM_LEGACY
 
+#
+# Check custom version option
+#
 ifeq ($(BR2_TARGET_UBOOT_CUSTOM_VERSION),y)
 ifeq ($(call qstrip,$(BR2_TARGET_UBOOT_CUSTOM_VERSION_VALUE)),)
 $(error No custom U-Boot version specified. Check your BR2_TARGET_UBOOT_CUSTOM_VERSION_VALUE setting)
 endif # qstrip BR2_TARGET_UBOOT_CUSTOM_VERSION_VALUE
 endif # BR2_TARGET_UBOOT_CUSTOM_VERSION
 
+#
+# Check custom tarball option
+#
 ifeq ($(BR2_TARGET_UBOOT_CUSTOM_TARBALL),y)
 ifeq ($(call qstrip,$(BR2_TARGET_UBOOT_CUSTOM_TARBALL_LOCATION)),)
 $(error No custom U-Boot tarball specified. Check your BR2_TARGET_UBOOT_CUSTOM_TARBALL_LOCATION setting)
 endif # qstrip BR2_TARGET_UBOOT_CUSTOM_TARBALL_LOCATION
 endif # BR2_TARGET_UBOOT_CUSTOM_TARBALL
 
+#
+# Check Git/Mercurial repo options
+#
 ifeq ($(BR2_TARGET_UBOOT_CUSTOM_GIT)$(BR2_TARGET_UBOOT_CUSTOM_HG),y)
 ifeq ($(call qstrip,$(BR2_TARGET_UBOOT_CUSTOM_REPO_URL)),)
 $(error No custom U-Boot repository URL specified. Check your BR2_TARGET_UBOOT_CUSTOM_REPO_URL setting)
@@ -233,3 +271,9 @@ endif # qstrip BR2_TARGET_UBOOT_CUSTOM_CUSTOM_REPO_VERSION
 endif # BR2_TARGET_UBOOT_CUSTOM_GIT || BR2_TARGET_UBOOT_CUSTOM_HG
 
 endif # BR2_TARGET_UBOOT && BR_BUILDING
+
+ifeq ($(BR2_TARGET_UBOOT_BUILD_SYSTEM_LEGACY),y)
+$(eval $(generic-package))
+else ifeq ($(BR2_TARGET_UBOOT_BUILD_SYSTEM_KCONFIG),y)
+$(eval $(kconfig-package))
+endif # BR2_TARGET_UBOOT_BUILD_SYSTEM_LEGACY
