@@ -58,6 +58,15 @@ config BR2_PACKAGE_BLUEZ5_UTILS_EXPERIMENTAL
 	help
 	  Build BlueZ 5.x experimental plugins (SAP, NFC, ...).
 
+config BR2_PACKAGE_BLUEZ5_PLUGINS_SIXAXIS
+	bool "build sixaxis plugin"
+	depends on BR2_PACKAGE_HAS_UDEV
+	help
+	  Build BlueZ 5.x sixaxis plugin (support Sony Dualshock controller)
+
+comment "sixaxis plugin needs udev /dev management"
+	depends on !BR2_PACKAGE_HAS_UDEV
+
 config BR2_PACKAGE_BLUEZ5_UTILS_TEST
 	bool "build tests"
 	help

@@ -41,6 +41,13 @@ else
 BLUEZ5_UTILS_CONF_OPTS += --disable-experimental
 endif
 
+# enable sixaxis plugin
+ifeq ($(BR2_PACKAGE_BLUEZ5_PLUGINS_SIXAXIS),y)
+BLUEZ5_UTILS_CONF_OPTS += --enable-sixaxis
+else
+BLUEZ5_UTILS_CONF_OPTS += --disable-sixaxis
+endif
+
 # install gatttool (For some reason upstream choose not to do it by default)
 ifeq ($(BR2_PACKAGE_BLUEZ5_UTILS_GATTTOOL),y)
 define BLUEZ5_UTILS_INSTALL_GATTTOOL
