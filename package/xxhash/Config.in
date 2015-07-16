@@ -1,0 +1,7 @@
+config BR2_PACKAGE_XXHASH
+	bool "xxhash"
+	help
+	  xxHash is an extremely fast hash algorithm, running at RAM
+	  speed limits.
+
+	  https://github.com/Cyan4973/xxHash
