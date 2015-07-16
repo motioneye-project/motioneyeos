@@ -50,3 +50,11 @@ kernel. The corresponding configuration variables are
 +BR2_TARGET_BAREBOX_USE_CUSTOM_CONFIG+ and
 +BR2_TARGET_BAREBOX_USE_DEFCONFIG+. To open the configuration editor,
 use +make barebox-menuconfig+.
+
+U-Boot::
++
+Configuration of U-Boot (version 2015.04 or newer) is done in the same
+way as for the Linux kernel. The corresponding configuration variables
+are +BR2_TARGET_UBOOT_USE_CUSTOM_CONFIG+ and
++BR2_TARGET_UBOOT_USE_DEFCONFIG+. To open the configuration editor,
+use +make uboot-menuconfig+.

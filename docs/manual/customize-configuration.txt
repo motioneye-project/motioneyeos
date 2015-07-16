@@ -24,8 +24,8 @@ Alternatively, you can copy the file to any other place and rebuild with
 [[customize-store-package-config]]
 === Storing the configuration of other components
 
-The configuration files for BusyBox, the Linux kernel, Barebox and
-uClibc should be stored as well if changed. For each of these
+The configuration files for BusyBox, the Linux kernel, Barebox, U-Boot
+and uClibc should be stored as well if changed. For each of these
 components, a Buildroot configuration option exists to point to an input
 configuration file, e.g. +BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE+. To store
 their configuration, set these configuration options to a path where you
@@ -56,6 +56,8 @@ configuration files easier.
   path specified by +BR2_UCLIBC_CONFIG+.
 * +make barebox-update-defconfig+ saves the barebox configuration to the
   path specified by +BR2_TARGET_BAREBOX_CUSTOM_CONFIG_FILE+.
+* +make uboot-update-defconfig+ saves the U-Boot configuration to the
+  path specified by +BR2_TARGET_UBOOT_CUSTOM_CONFIG_FILE+.
 * For at91bootstrap3, no helper exists so you have to copy the config
   file manually to +BR2_TARGET_AT91BOOTSTRAP3_CUSTOM_CONFIG_FILE+.
 

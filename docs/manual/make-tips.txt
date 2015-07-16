@@ -34,6 +34,8 @@ some settings in the +.config+ file may hide some targets:
   selected in the internal toolchain backend;
 * +barebox-menuconfig+ and +barebox-savedefconfig+ only work when the
   +barebox+ bootloader is enabled.
+* +uboot-menuconfig+ and +uboot-savedefconfig+ only work when the
+  +U-Boot+ bootloader is enabled.
 
 .Cleaning:
 
