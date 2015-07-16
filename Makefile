@@ -25,15 +25,15 @@
 #--------------------------------------------------------------
 
 # Trick for always running with a fixed umask
-UMASK=0022
+UMASK = 0022
 ifneq ($(shell umask),$(UMASK))
-.PHONY: all $(MAKECMDGOALS)
+.PHONY: _all $(MAKECMDGOALS)
 
-all:
-	@umask $(UMASK) && $(MAKE) --no-print-directory
+$(MAKECMDGOALS): _all
+	@:
 
-$(MAKECMDGOALS):
-	@umask $(UMASK) && $(MAKE) --no-print-directory $@
+_all:
+	@umask $(UMASK) && $(MAKE) --no-print-directory $(MAKECMDGOALS)
 
 else # umask
 
