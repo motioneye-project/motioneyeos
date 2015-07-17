@@ -3,6 +3,7 @@ config BR2_PACKAGE_CC_TOOL
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_PACKAGE_BOOST_ARCH_SUPPORTS
+	depends on BR2_USE_WCHAR # boost-filesystem
 	select BR2_PACKAGE_LIBUSB
 	select BR2_PACKAGE_BOOST
 	select BR2_PACKAGE_BOOST_PROGRAM_OPTIONS
@@ -17,6 +18,6 @@ config BR2_PACKAGE_CC_TOOL
 
 	  http://sourceforge.net/projects/cctool/
 
-comment "cc-tool needs a toolchain w/ C++, threads"
+comment "cc-tool needs a toolchain w/ C++, threads, wchar"
 	depends on BR2_PACKAGE_BOOST_ARCH_SUPPORTS
-	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS || !BR2_USE_WCHAR

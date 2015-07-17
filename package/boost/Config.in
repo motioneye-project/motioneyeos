@@ -77,6 +77,10 @@ config BR2_PACKAGE_BOOST_EXCEPTION
 
 config BR2_PACKAGE_BOOST_FILESYSTEM
 	bool "boost-filesystem"
+	depends on BR2_USE_WCHAR
+
+comment "boost-filesystem needs a toolchain w/ wchar"
+	depends on !BR2_USE_WCHAR
 
 config BR2_PACKAGE_BOOST_GRAPH
 	bool "boost-graph"
