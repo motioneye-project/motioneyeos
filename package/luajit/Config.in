@@ -8,6 +8,7 @@ config BR2_PACKAGE_LUAJIT_ARCH_SUPPORTS
 config BR2_PACKAGE_LUAJIT
 	bool "luajit"
 	select BR2_PACKAGE_HAS_LUAINTERPRETER
+	depends on !BR2_STATIC_LIBS # dlopen
 	# Luajit is only available for some target architectures, and
 	# has some complexity wrt 32/64. See luajit.mk for details.
 	depends on BR2_PACKAGE_LUAJIT_ARCH_SUPPORTS
@@ -32,3 +33,6 @@ config BR2_PACKAGE_LUAINTERPRETER_ABI_VERSION
 	default "5.1"
 
 endif
+
+comment "luajit needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS
