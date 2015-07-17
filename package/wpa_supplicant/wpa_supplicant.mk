@@ -32,7 +32,7 @@ WPA_SUPPLICANT_CONFIG_DISABLE = \
 # libnl-3 needs -lm (for rint) and -lpthread if linking statically
 # And library order matters hence stick -lnl-3 first since it's appended
 # in the wpa_supplicant Makefiles as in LIBS+=-lnl-3 ... thus failing
-ifeq ($(BR2_PACKAGE_LIBNL),y)
+ifeq ($(BR2_PACKAGE_WPA_SUPPLICANT_NL80211),y)
 ifeq ($(BR2_STATIC_LIBS),y)
 WPA_SUPPLICANT_LIBS += -lnl-3 -lm -lpthread
 endif
