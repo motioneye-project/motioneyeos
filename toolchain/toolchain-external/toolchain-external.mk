@@ -670,7 +670,7 @@ endif
 # Build toolchain wrapper for preprocessor, C and C++ compiler and setup
 # symlinks for everything else. Skip gdb symlink when we are building our
 # own gdb to prevent two gdb's in output/host/usr/bin.
-# When the link-time-optimazation flag '-flto' is used, then the compiler
+# When the link-time-optimization flag '-flto' is used, then the compiler
 # and binutils have to support lto. ar/ranlib need to be called with the
 # lto plugin. The wrappers *-gcc-ar and *-gcc-ranlib provided by GCC could
 # be used as drop-ins for ar/runlib when Makefiles are used which do not
