@@ -1,0 +1,42 @@
+From 366cc86e4f8ff6f00f0b731dc6f78d22c7ac9e0a Mon Sep 17 00:00:00 2001
+From: Claudiu Zissulescu <claziss@synopsys.com>
+Date: Tue, 7 Jul 2015 17:59:52 +0200
+Subject: [PATCH] Differentiate between a bss TLS initialized symbol.
+
+Back-port from https://github.com/foss-for-synopsys-dwc-arc-processors/gcc/commit/366cc86e4f8ff6f00f0b731dc6f78d22c7ac9e0a
+
+This patch fixes "undefined reference to .tdata" observed in many autobuilder
+results for ARC.
+
+Once the next release of ARC GNU tools happens this patch must be removed from
+Buildroot.
+
+---
+ gcc/config/arc/arc.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/gcc/config/arc/arc.c b/gcc/config/arc/arc.c
+index b6eb3b5..73c3a87 100644
+--- a/gcc/config/arc/arc.c
++++ b/gcc/config/arc/arc.c
+@@ -5262,10 +5262,15 @@ arc_legitimize_tls_address (rtx addr, enum tls_model model)
+     {
+     case TLS_MODEL_LOCAL_DYNAMIC:
+       rtx base;
+-      tree base_decl; base_decl
+-	= lookup_attribute ("tls9", DECL_ATTRIBUTES (SYMBOL_REF_DECL (addr)));
++      tree base_decl, decl;
++      decl = SYMBOL_REF_DECL (addr);
++      base_decl = lookup_attribute ("tls9", DECL_ATTRIBUTES (decl));
+       const char *base_name; base_name = DTPOFF_ZERO_SYM;
+       rtvec v;
++
++      if (bss_initializer_p (decl))
++	base_name = ".tbss";
++
+       if (base_decl && TREE_VALUE (base_decl)
+ 	  && TREE_VALUE (TREE_VALUE (base_decl)))
+ 	{
+-- 
+2.4.3
+
