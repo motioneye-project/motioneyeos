@@ -254,6 +254,7 @@ endif
 	source "package/sdl_net/Config.in"
 	source "package/sdl_sound/Config.in"
 	source "package/sdl_ttf/Config.in"
+	source "package/sdl2/Config.in"
 
 comment "Other GUIs"
 	source "package/efl/Config.in"
