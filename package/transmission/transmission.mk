@@ -36,9 +36,28 @@ endif
 ifeq ($(BR2_PACKAGE_TRANSMISSION_DAEMON),y)
 TRANSMISSION_CONF_OPTS += --enable-daemon
 
+ifeq ($(BR2_PACKAGE_SYSTEMD),y)
+TRANSMISSION_DEPENDENCIES += systemd
+TRANSMISSION_CONF_OPTS += --with-systemd-daemon
+else
+TRANSMISSION_CONF_OPTS += --without-systemd-daemon
+endif
+
+define TRANSMISSION_USERS
+	transmission -1 transmission -1 * /var/lib/transmission - transmission Transmission Daemon
+endef
+
 define TRANSMISSION_INSTALL_INIT_SYSV
 	$(INSTALL) -m 0755 -D package/transmission/S92transmission \
 		$(TARGET_DIR)/etc/init.d/S92transmission
+endef
+
+define TRANSMISSION_INSTALL_INIT_SYSTEMD
+	$(INSTALL) -D -m 0755 $(@D)/daemon/transmission-daemon.service \
+		$(TARGET_DIR)/usr/lib/systemd/system/transmission-daemon.service
+	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
+	ln -fs ../../../../usr/lib/systemd/system/transmission-daemon.service \
+		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/transmission-daemon.service
 endef
 
 else
