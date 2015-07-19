@@ -32,7 +32,7 @@ index 6deccc3..85b25fd 100644
 +        h->got_first_iframe = 1;
 +    }
 +
-     ret = ff_dxva2_common_end_frame(avctx, &h->cur_pic_ptr->f,
+     ret = ff_dxva2_common_end_frame(avctx, h->cur_pic_ptr->f,
                                      &ctx_pic->pp, sizeof(ctx_pic->pp),
                                      &ctx_pic->qm, sizeof(ctx_pic->qm),
 diff --git a/libavcodec/h264.c b/libavcodec/h264.c
@@ -40,9 +40,9 @@ index 222bf58..ea2ec17 100644
 --- a/libavcodec/h264.c
 +++ b/libavcodec/h264.c
 @@ -1085,6 +1085,7 @@ void ff_h264_flush_change(H264Context *h)
-     h->list_count = 0;
-     h->current_slice = 0;
      h->mmco_reset = 1;
+     for (i = 0; i < h->nb_slice_ctx; i++)
+         h->slice_ctx[i].list_count = 0;
 +    h->got_first_iframe = 0;
  }
  
