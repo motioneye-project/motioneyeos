@@ -7,8 +7,8 @@
 MONKEY_VERSION_MAJOR = 1.5
 MONKEY_VERSION = $(MONKEY_VERSION_MAJOR).6
 MONKEY_SITE = http://monkey-project.com/releases/$(MONKEY_VERSION_MAJOR)/
-MONKEY_LICENCE = Apache-2.0
-MONKEY_LICENCE_FILE = LICENSE
+MONKEY_LICENSE = Apache-2.0
+MONKEY_LICENSE_FILES = LICENSE
 
 # This package has a configure script, but it's not using
 # autoconf/automake, so we're using the generic-package
