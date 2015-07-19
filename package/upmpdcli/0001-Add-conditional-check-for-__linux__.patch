@@ -1,0 +1,32 @@
+From 69740cf6fe35413edc4b6adc502ba70ce8de8557 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?J=C3=B6rg=20Krause?= <joerg.krause@embedded.rocks>
+Date: Sun, 19 Jul 2015 08:48:13 +0200
+Subject: [PATCH 1/1] Add conditional check for __linux__
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+When building upmpdcli with certain toolchains using the compiler flag
+-std=c++0x let gcc not define "linux" or "__linux", but "__linux__".
+
+Signed-off-by: Jörg Krause <joerg.krause@embedded.rocks>
+---
+ src/closefrom.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/closefrom.cpp b/src/closefrom.cpp
+index 4429b20..0cd7957 100644
+--- a/src/closefrom.cpp
++++ b/src/closefrom.cpp
+@@ -111,7 +111,7 @@ int libclf_closefrom(int fd0)
+ }
+ 
+ /*************************************************************************/
+-#elif (defined(linux) || defined(__linux))
++#elif (defined(linux) || defined(__linux) || defined(__linux__))
+ 
+ /* Use /proc/self/fd directory */
+ #include <sys/types.h>
+-- 
+2.4.6
+
