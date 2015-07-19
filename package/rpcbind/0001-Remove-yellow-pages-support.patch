@@ -1,4 +1,4 @@
-From 249e25c5cc675c212ca4e4a3342bff8f59285b1a Mon Sep 17 00:00:00 2001
+From 226b9c57ff403b407dbf1ff8a615da455a4cbd23 Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Date: Sat, 10 Nov 2012 22:03:43 +0100
 Subject: [PATCH] Remove yellow pages support
@@ -13,20 +13,20 @@ Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
  1 file changed, 18 deletions(-)
 
 diff --git a/src/security.c b/src/security.c
-index d272f74..8d5863c 100644
+index 0c9453f..abc81bb 100644
 --- a/src/security.c
 +++ b/src/security.c
-@@ -23,9 +23,6 @@
+@@ -24,9 +24,6 @@
  #include <rpcsvc/mount.h>
  #include <rpcsvc/rquota.h>
  #include <rpcsvc/nfs_prot.h>
 -#include <rpcsvc/yp.h>
 -#include <rpcsvc/ypclnt.h>
 -#include <rpcsvc/yppasswd.h>
- 
- #include "rpcbind.h"
- 
-@@ -308,24 +305,9 @@ check_callit(SVCXPRT *xprt, struct r_rmtcall_args *args, int versnum /*__unused*
+ #else
+ # define MOUNTPROC_MNT	1
+ # define MOUNTPROC_UMNT	3
+@@ -325,24 +322,9 @@ check_callit(SVCXPRT *xprt, struct r_rmtcall_args *args, int versnum /*__unused*
  		    args->rmt_proc != MOUNTPROC_UMNT)
  			break;
  		goto deny;
@@ -52,5 +52,5 @@ index d272f74..8d5863c 100644
  		break;
  	}
 -- 
-2.0.0
+2.4.5
 
