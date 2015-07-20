@@ -20,7 +20,4 @@ endef
 # The Makefile installs several versions of the libraries, but we only
 # need one of them, depending on the platform.
 
-# without AUTORECONF, configure fails to find install-sh.
-LIBFSLPARSER_AUTORECONF = YES
-
 $(eval $(autotools-package))
