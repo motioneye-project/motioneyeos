@@ -883,6 +883,7 @@ menu "Hardware handling"
 endmenu
 
 menu "Javascript"
+	source "package/angularjs/Config.in"
 	source "package/bootstrap/Config.in"
 	source "package/explorercanvas/Config.in"
 	source "package/flot/Config.in"
