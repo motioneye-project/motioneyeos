@@ -4,4 +4,7 @@ config BR2_PACKAGE_DEBIANUTILS
 	help
 	  Miscellaneous utilities specific to Debian.
 
+	  The specific utilities included are: add-shell installkernel
+	  ischroot remove-shell run-parts savelog tempfile which.
+
 	  https://tracker.debian.org/pkg/debianutils
