@@ -31,7 +31,8 @@ config BR2_PACKAGE_NETSNMP_ENABLE_MIBS
 
 config BR2_PACKAGE_NETSNMP_WITH_MIB_MODULES
 	string "Build with these MIB modules"
-	default "host ucd-snmp/dlmod agentx"
+	default "host ucd-snmp/dlmod agentx" if !BR2_STATIC_LIBS
+	default "host agentx" if BR2_STATIC_LIBS
 	help
 	  Specify which MIB modules to include.
 
