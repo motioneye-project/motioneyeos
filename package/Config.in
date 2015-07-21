@@ -390,6 +390,7 @@ endif
 	source "package/ola/Config.in"
 	source "package/on2-8170-modules/Config.in"
 	source "package/open2300/Config.in"
+	source "package/openipmi/Config.in"
 	source "package/openocd/Config.in"
 	source "package/openpowerlink/Config.in"
 	source "package/owl-linux/Config.in"
