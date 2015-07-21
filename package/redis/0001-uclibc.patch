@@ -6,40 +6,18 @@ against uclibc.  Patch originates from:
   Mike Steinert, mike.steinert@gmail.com
 
 Signed-off-by: Daniel Price <daniel.price@gmail.com>
+[Martin: adapt to 3.0.3]
+Signed-off-by: Martin Bark <martin@barkynet.com>
 
 =========================================================================
 diff -ur old/src/config.h new/src/config.h
 --- old/src/config.h	2012-10-26 07:20:24.000000000 -0700
 +++ new/src/config.h	2012-10-31 13:41:51.206309564 -0700
-@@ -1,6 +1,10 @@
- #ifndef __CONFIG_H
- #define __CONFIG_H
- 
-+#if defined(__unix) || defined(__linux__)
-+#include <features.h>
-+#endif
-+
- #ifdef __APPLE__
- #include <AvailabilityMacros.h>
- #endif
-@@ -25,7 +29,7 @@
+@@ -62,7 +62,7 @@
  #endif
  
  /* Test for backtrace() */
--#if defined(__APPLE__) || defined(__linux__)
-+#if (defined(__APPLE__) || defined(__linux__) && !defined(__UCLIBC__))
+-#if defined(__APPLE__) || (defined(__linux__) && defined(__GLIBC__))
++#if defined(__APPLE__) || (defined(__linux__) && defined(__GLIBC__) && !defined(__UCLIBC__))
  #define HAVE_BACKTRACE 1
  #endif
- 
-diff -ur old/src/Makefile new/src/Makefile
---- old/src/Makefile	2012-10-26 07:20:24.000000000 -0700
-+++ new/src/Makefile	2012-10-31 13:40:39.224728830 -0700
-@@ -135,7 +135,7 @@
- 	echo REDIS_LDFLAGS=$(REDIS_LDFLAGS) >> .make-settings
- 	echo PREV_FINAL_CFLAGS=$(FINAL_CFLAGS) >> .make-settings
- 	echo PREV_FINAL_LDFLAGS=$(FINAL_LDFLAGS) >> .make-settings
--	-(cd ../deps && $(MAKE) $(DEPENDENCY_TARGETS))
-+	-(cd ../deps && $(MAKE) CC="$(CC)" $(DEPENDENCY_TARGETS))
- 
- .PHONY: persist-settings
- 
