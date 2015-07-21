@@ -1,4 +1,4 @@
-# Hashes from: http://download.qt.io/official_releases/qt/5.4/5.4.1/submodules/qtserialport-opensource-src-5.4.1.tar.xz.mirrorlist
-sha256 79d99e826bf49e469a651cdc2d499d8b54e52bb8aaa279719a3afa03eba5d0ff qtserialport-opensource-src-5.4.1.tar.xz
-sha1   c87b381d6a0b6445c7fab54ef2807a555bfbcb47                         qtserialport-opensource-src-5.4.1.tar.xz
-md5    2333d25916a74260ce39b8a77c7c4288                                 qtserialport-opensource-src-5.4.1.tar.xz
+# Hashes from: http://download.qt.io/official_releases/qt/5.5/5.5.0/submodules/qtserialport-opensource-src-5.5.0.tar.xz.mirrorlist
+sha256 a60e2d2113c1c3895b71c901921f83b81e9b3c59e3620cf94bd8647730efa866 qtserialport-opensource-src-5.5.0.tar.xz
+sha1   371da46f2f2ad652a22b0f04e4b48f088976d3ce                         qtserialport-opensource-src-5.5.0.tar.xz
+md5    8a76f051ed28a9c925d32f5864d33e78                                 qtserialport-opensource-src-5.5.0.tar.xz

@@ -1,4 +1,4 @@
-# Hashes from: http://download.qt.io/official_releases/qt/5.4/5.4.1/submodules/qtwebkit-examples-opensource-src-5.4.1.tar.xz.mirrorlist
-sha256 19187bb31c349c67f90c92df896f14f9167b982bdef5187e83fd68407826720a qtwebkit-examples-opensource-src-5.4.1.tar.xz
-sha1   7a150502661a3af7dde5c546cdd4a335068a0298                         qtwebkit-examples-opensource-src-5.4.1.tar.xz
-md5    783bfd27e79769f3ceeb206a4921400b                                 qtwebkit-examples-opensource-src-5.4.1.tar.xz
+# Hashes from: http://download.qt.io/official_releases/qt/5.5/5.5.0/submodules/qtwebkit-examples-opensource-src-5.5.0.tar.xz.mirrorlist
+sha256 d25564fb56e8e06ad782390c7a7cf2c80f52c1dac5a8cac6ad5382711cd4bd12 qtwebkit-examples-opensource-src-5.5.0.tar.xz
+sha1   706464b813e9910fefd4af83e479a8247fd50a68                         qtwebkit-examples-opensource-src-5.5.0.tar.xz
+md5    5005737b4b29a76c70d2d08e5b105a66                                 qtwebkit-examples-opensource-src-5.5.0.tar.xz

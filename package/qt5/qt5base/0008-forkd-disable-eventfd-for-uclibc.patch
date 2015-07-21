@@ -1,0 +1,32 @@
+From 62ef0d97cfa2ed0142fc69c6e6395a570bea9215 Mon Sep 17 00:00:00 2001
+From: Julien Corjon <corjon.j@ecagroup.com>
+Date: Tue, 21 Jul 2015 11:59:57 +0200
+Subject: [PATCH] forkd - disable eventfd for uClibc <= 0.9.33
+
+eventfd is not implemented in uClibc <= 0.9.33
+
+Upstream-Status : https://bugreports.qt.io/browse/QTBUG-47337
+
+Signed-off-by: Julien Corjon <corjon.j@ecagroup.com>
+---
+ src/3rdparty/forkfd/forkfd.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/src/3rdparty/forkfd/forkfd.c b/src/3rdparty/forkfd/forkfd.c
+index 8d08f40..fa47cdf 100644
+--- a/src/3rdparty/forkfd/forkfd.c
++++ b/src/3rdparty/forkfd/forkfd.c
+@@ -48,6 +48,10 @@
+ #  if (defined(__GLIBC__) && (__GLIBC__ << 16) + __GLIBC_MINOR__ >= 0x209) || defined(__BIONIC__)
+ #    define HAVE_PIPE2    1
+ #  endif
++#  if (defined(__UCLIBC__) && (__UCLIBC_MAJOR__ == 0) && (__UCLIBC_MINOR__ < 9 || (__UCLIBC_MINOR__ == 9 && __UCLIBC_SUBLEVEL__ <= 33)))
++#    undef HAVE_EVENTFD
++#    undef HAVE_PIPE2
++#  endif
+ #endif
+ 
+ #if _POSIX_VERSION-0 >= 200809L || _XOPEN_VERSION-0 >= 500
+-- 
+2.1.0
+

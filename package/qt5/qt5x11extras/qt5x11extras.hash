@@ -1,4 +1,4 @@
-# Hashes from: http://download.qt.io/official_releases/qt/5.4/5.4.1/submodules/qtx11extras-opensource-src-5.4.1.tar.xz.mirrorlist
-sha256 20a61cdb9f925e9ab959bed1e7aeb1855b721619d5dc5f3691b8c1ce186e8c2e qtx11extras-opensource-src-5.4.1.tar.xz
-sha1   7a75f936df70ac551cfc7b08914365cbb25b122d                         qtx11extras-opensource-src-5.4.1.tar.xz
-md5    87d555e0c7eccaa462a9bba85fb2d4de                                 qtx11extras-opensource-src-5.4.1.tar.xz
+# Hashes from: http://download.qt.io/official_releases/qt/5.5/5.5.0/submodules/qtx11extras-opensource-src-5.5.0.tar.xz.mirrorlist
+sha256 bcb3cec5c9f0b551f0e2de30824c8be08620fbbe466ad4846beb2ad636d0b979 qtx11extras-opensource-src-5.5.0.tar.xz
+sha1   2eb25a96cc061b364d5fc30125a5ca9904857e89                         qtx11extras-opensource-src-5.5.0.tar.xz
+md5    9bee6d5c127ba8cc878ac7c2664d99f9                                 qtx11extras-opensource-src-5.5.0.tar.xz

@@ -49,15 +49,16 @@ diff -Nuar a/src/platformsupport/eglconvenience/qeglplatformcontext.cpp b/src/pl
  #include <qpa/qplatformcursor.h>
  #include <qpa/qplatformscreen.h>
  
---- a/src/platformsupport/eglconvenience/qeglplatformcursor.cpp	2014-08-07 16:53:50.038277168 -0400
-+++ b/src/platformsupport/eglconvenience/qeglplatformcursor.cpp	2014-08-07 17:00:36.806286766 -0400
-@@ -49,8 +49,8 @@
+--- qt5base-5.5.0.orig/src/platformsupport/eglconvenience/qeglplatformcursor.cpp
++++ qt5base-5.5.0/src/platformsupport/eglconvenience/qeglplatformcursor.cpp
+@@ -41,8 +41,8 @@
  
- #include <QtPlatformSupport/private/qdevicediscovery_p.h>
+ #include <QtGui/private/qguiapplication_p.h>
  
 -#include "qeglplatformcursor_p.h"
  #include "qeglplatformintegration_p.h"
 +#include "qeglplatformcursor_p.h"
+ #include "qeglplatformscreen_p.h"
  
  QT_BEGIN_NAMESPACE
  
