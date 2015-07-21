@@ -17,4 +17,8 @@ config BR2_PACKAGE_QT5WEBKIT
 
 	  This package corresponds to the qt5webkit module.
 
+	  This package has been tagged as deprecated since version
+	  5.5.0 and should be replaced by Qt WebEngine module in
+	  new design.
+
 	  http://qt.io

@@ -15,6 +15,10 @@ config BR2_PACKAGE_QT5QUICK1
 
 	  This package corresponds to the qt5quick1 module.
 
+	  This package has been tagged as deprecated since version
+	  5.5.0 and should be replaced by Qt Quick module in new
+	  design.
+
 	  http://qt.io
 
 comment "qt5quick1 needs a toolchain w/ dynamic library"

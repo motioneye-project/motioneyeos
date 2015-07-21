@@ -8,4 +8,8 @@ config BR2_PACKAGE_QT5SCRIPT
 
 	  This package corresponds to the qt5script module.
 
+	  This package has been tagged as deprecated since version
+	  5.5.0 and should be replaced by Qt QML module in new
+	  design.
+
 	  http://qt.io
