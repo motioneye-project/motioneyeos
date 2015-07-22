@@ -254,6 +254,7 @@ menu "Audio decoder addons"
 	source "package/kodi-audiodecoder-nosefart/Config.in"
 	source "package/kodi-audiodecoder-sidplay/Config.in"
 	source "package/kodi-audiodecoder-snesapu/Config.in"
+	source "package/kodi-audiodecoder-stsound/Config.in"
 endmenu
 
 menu "Audio encoder addons"
