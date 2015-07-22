@@ -286,4 +286,8 @@ menu "PVR addons"
 	source "package/kodi-pvr-wmc/Config.in"
 endmenu
 
+menu "Screensavers"
+	source "package/kodi-screensaver-asteroids/Config.in"
+endmenu
+
 endif # BR2_PACKAGE_KODI
