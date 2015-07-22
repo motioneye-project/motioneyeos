@@ -14,34 +14,6 @@ Signed-off-by: Maxime Hadjinlian <maxime.hadjinlian@gmail.com>
  lib/timidity/configure.in                    | 6 +++---
  4 files changed, 6 insertions(+), 12 deletions(-)
 
-diff --git a/lib/enca/configure b/lib/enca/configure
-index c839a51..7af5a09 100644
---- a/lib/enca/configure
-+++ b/lib/enca/configure
-@@ -12011,9 +12011,6 @@ fi
- if test "$prefix" = "NONE"; then
-   LDFLAGS="$LDFLAGS -L$ac_default_prefix/lib"
-   CPPFLAGS="$CPPFLAGS -I$ac_default_prefix/include"
--else
--  LDFLAGS="$LDFLAGS -L$prefix/lib"
--  CPPFLAGS="$CPPFLAGS -I$prefix/include"
- fi
- 
- 
-diff --git a/lib/enca/configure.ac b/lib/enca/configure.ac
-index 41434df..47d5367 100644
---- a/lib/enca/configure.ac
-+++ b/lib/enca/configure.ac
-@@ -100,9 +100,6 @@ dnl Dirty path hack.  Helps some people with badly set up search paths.
- if test "$prefix" = "NONE"; then
-   LDFLAGS="$LDFLAGS -L$ac_default_prefix/lib"
-   CPPFLAGS="$CPPFLAGS -I$ac_default_prefix/include"
--else
--  LDFLAGS="$LDFLAGS -L$prefix/lib"
--  CPPFLAGS="$CPPFLAGS -I$prefix/include"
- fi
- 
- dnl Checks for libraries.
 diff --git a/lib/libdvd/libdvdread/misc/dvdread-config.sh b/lib/libdvd/libdvdread/misc/dvdread-config.sh
 index e170c7e..25ee893 100644
 --- a/lib/libdvd/libdvdread/misc/dvdread-config.sh
@@ -59,23 +31,3 @@ index e170c7e..25ee893 100644
 -fi      
 +      echo $dvdreadlib
 +fi
-diff --git a/lib/timidity/configure.in b/lib/timidity/configure.in
-index 9f2835b..733470a 100644
---- a/lib/timidity/configure.in
-+++ b/lib/timidity/configure.in
-@@ -100,9 +100,9 @@ done
- 
- # add $prefix if specified.
- if test "x$prefix" != xNONE -a "x$prefix" != "x$ac_default_prefix" -a "x$prefix" != "x/usr"; then
--  LDFLAGS="-L$prefix/lib $LDFLAGS"
--  SHLDFLAGS="-L$prefix/lib $SHLDFLAGS"
--  CPPFLAGS="-I$prefix/include $CPPFLAGS"
-+  LDFLAGS="$LDFLAGS"
-+  SHLDFLAGS="$SHLDFLAGS"
-+  CPPFLAGS="$CPPFLAGS"
- fi
- 
- dnl add --with-includes, --with-libraries
--- 
-1.8.5.2
-
