@@ -15,14 +15,14 @@ Steps to create a working system for Zedboard:
 
 The expected output:
 
- U-Boot SPL 2015.07-rc2 (Jun 18 2015 - 16:42:58)
+ U-Boot SPL 2015.07 (Jul 22 2015 - 12:01:55)
  mmc boot
  reading system.dtb
  spl_load_image_fat_os: error reading image system.dtb, err - -1
  reading u-boot-dtb.img
  reading u-boot-dtb.img
 
- U-Boot 2015.07-rc2 (Jun 18 2015 - 16:42:58 +0200)
+ U-Boot 2015.07 (Jul 22 2015 - 12:01:55 +0200)
 
  Model: Zynq ZED Board
  I2C:   ready
