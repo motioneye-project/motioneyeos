@@ -258,6 +258,7 @@ endmenu
 
 menu "PVR addons"
 	source "package/kodi-addon-xvdr/Config.in"
+	source "package/kodi-pvr-argustv/Config.in"
 endmenu
 
 endif # BR2_PACKAGE_KODI

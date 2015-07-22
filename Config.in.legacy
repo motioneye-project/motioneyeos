@@ -110,6 +110,7 @@ comment "Legacy options removed in 2015.08"
 config BR2_PACKAGE_KODI_PVR_ADDONS
 	bool "Kodi PVR addon was split"
 	select BR2_LEGACY
+	select BR2_PACKAGE_KODI_PVR_ARGUSTV
 	help
 	  Kodi PVR addon was split into seperate modules
 
