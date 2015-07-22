@@ -1,5 +1,6 @@
 config BR2_PACKAGE_KODI_AUDIOENCODER_VORBIS
 	bool "kodi-audioencoder-vorbis"
+	select BR2_PACKAGE_KODI_OPTICALDRIVE
 	select BR2_PACKAGE_LIBOGG
 	select BR2_PACKAGE_LIBVORBIS
 	help

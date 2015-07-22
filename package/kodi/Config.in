@@ -245,20 +245,14 @@ config BR2_PACKAGE_KODI_WAVPACK
 	  Select this if you want to play back WV files.
 
 config BR2_PACKAGE_KODI_OPTICALDRIVE
-	bool "optical drive"
-	help
-	  Enable support for optical drives
+	bool
 
-if BR2_PACKAGE_KODI_OPTICALDRIVE
-
-comment "Kodi audioencoder addons"
-
-source "package/kodi-audioencoder-flac/Config.in"
-source "package/kodi-audioencoder-lame/Config.in"
-source "package/kodi-audioencoder-vorbis/Config.in"
-source "package/kodi-audioencoder-wav/Config.in"
-
-endif # BR2_PACKAGE_KODI_OPTICALDRIVE
+menu "Audio encoder addons"
+	source "package/kodi-audioencoder-flac/Config.in"
+	source "package/kodi-audioencoder-lame/Config.in"
+	source "package/kodi-audioencoder-vorbis/Config.in"
+	source "package/kodi-audioencoder-wav/Config.in"
+endmenu
 
 comment "Kodi PVR addons"
 

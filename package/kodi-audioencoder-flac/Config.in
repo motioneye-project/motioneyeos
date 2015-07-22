@@ -1,6 +1,7 @@
 config BR2_PACKAGE_KODI_AUDIOENCODER_FLAC
 	bool "kodi-audioencoder-flac"
 	select BR2_PACKAGE_FLAC
+	select BR2_PACKAGE_KODI_OPTICALDRIVE
 	select BR2_PACKAGE_LIBOGG
 	help
 	  An audioencoder addon for Kodi
