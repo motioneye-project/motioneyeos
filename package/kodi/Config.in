@@ -273,6 +273,7 @@ menu "PVR addons"
 	source "package/kodi-pvr-vbox/Config.in"
 	source "package/kodi-pvr-vdr-vnsi/Config.in"
 	source "package/kodi-pvr-vuplus/Config.in"
+	source "package/kodi-pvr-wmc/Config.in"
 endmenu
 
 endif # BR2_PACKAGE_KODI
