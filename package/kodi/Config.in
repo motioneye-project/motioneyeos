@@ -251,6 +251,7 @@ config BR2_PACKAGE_KODI_OPTICALDRIVE
 
 menu "Audio decoder addons"
 	source "package/kodi-audiodecoder-modplug/Config.in"
+	source "package/kodi-audiodecoder-nosefart/Config.in"
 endmenu
 
 menu "Audio encoder addons"
