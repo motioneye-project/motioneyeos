@@ -298,6 +298,7 @@ endmenu
 
 menu "Visualisations"
 	source "package/kodi-visualisation-shadertoy/Config.in"
+	source "package/kodi-visualisation-waveform/Config.in"
 endmenu
 
 endif # BR2_PACKAGE_KODI
