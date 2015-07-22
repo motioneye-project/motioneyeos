@@ -124,6 +124,7 @@ config BR2_PACKAGE_KODI_PVR_ADDONS
 	select BR2_PACKAGE_KODI_PVR_STALKER
 	select BR2_PACKAGE_KODI_PVR_VBOX
 	select BR2_PACKAGE_KODI_PVR_VDR_VNSI
+	select BR2_PACKAGE_KODI_PVR_VUPLUS
 	help
 	  Kodi PVR addon was split into seperate modules
 
