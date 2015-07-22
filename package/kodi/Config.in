@@ -293,6 +293,7 @@ menu "Screensavers"
 	source "package/kodi-screensaver-greynetic/Config.in"
 	source "package/kodi-screensaver-pingpong/Config.in"
 	source "package/kodi-screensaver-pyro/Config.in"
+	source "package/kodi-screensaver-stars/Config.in"
 endmenu
 
 endif # BR2_PACKAGE_KODI
