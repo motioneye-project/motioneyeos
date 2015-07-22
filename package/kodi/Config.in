@@ -296,4 +296,8 @@ menu "Screensavers"
 	source "package/kodi-screensaver-stars/Config.in"
 endmenu
 
+menu "Visualisations"
+	source "package/kodi-visualisation-shadertoy/Config.in"
+endmenu
+
 endif # BR2_PACKAGE_KODI
