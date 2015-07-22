@@ -256,6 +256,7 @@ menu "Audio decoder addons"
 	source "package/kodi-audiodecoder-snesapu/Config.in"
 	source "package/kodi-audiodecoder-stsound/Config.in"
 	source "package/kodi-audiodecoder-timidity/Config.in"
+	source "package/kodi-audiodecoder-vgmstream/Config.in"
 endmenu
 
 menu "Audio encoder addons"
