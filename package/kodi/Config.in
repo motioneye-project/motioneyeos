@@ -290,6 +290,7 @@ menu "Screensavers"
 	source "package/kodi-screensaver-asteroids/Config.in"
 	source "package/kodi-screensaver-biogenesis/Config.in"
 	source "package/kodi-screensaver-crystalmorph/Config.in"
+	source "package/kodi-screensaver-greynetic/Config.in"
 endmenu
 
 endif # BR2_PACKAGE_KODI

@@ -1,0 +1,10 @@
+config BR2_PACKAGE_KODI_SCREENSAVER_GREYNETIC
+	bool "kodi-screensaver-greynetic"
+	depends on BR2_PACKAGE_KODI_GL
+	help
+	  Greynetic screensaver for Kodi
+
+	  https://github.com/notspiff/screensaver.greynetic
+
+comment "kodi-screensaver-greynetic needs an OpenGL backend"
+	depends on !BR2_PACKAGE_KODI_GL
