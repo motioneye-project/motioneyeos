@@ -15,8 +15,15 @@ QPID_PROTON_DEPENDENCIES = \
 	util-linux \
 	$(if $(BR2_PACKAGE_OPENSSL),openssl)
 
+# Language bindings are enabled when host-swig tool is present in HOST_DIR.
+# For now, disable all of them.
 QPID_PROTON_CONF_OPTS = \
 	-DBUILD_JAVA=OFF \
+	-DBUILD_JAVASCRIPT=OFF \
+	-DBUILD_PERL=OFF \
+	-DBUILD_PHP=OFF \
+	-DBUILD_PYTHON=OFF \
+	-DBUILD_RUBY=OFF \
 	-DENABLE_VALGRIND=OFF \
 	-DENABLE_WARNING_ERROR=OFF \
 	-DPYTHON_EXECUTABLE=$(HOST_DIR)/usr/bin/python2
