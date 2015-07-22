@@ -1,0 +1,7 @@
+config BR2_PACKAGE_KODI_PVR_MYTHTV
+	bool "kodi-pvr-mythtv"
+	select BR2_PACKAGE_KODI_PLATFORM
+	help
+	  MythTV PVR for Kodi
+
+	  https://github.com/kodi-pvr/pvr.mythtv
