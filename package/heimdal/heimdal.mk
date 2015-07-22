@@ -24,6 +24,7 @@ HOST_HEIMDAL_CONF_OPTS = \
 	--without-x \
 	--disable-heimdal-documentation
 HOST_HEIMDAL_CONF_ENV = MAKEINFO=true
+HEIMDAL_MAKE = $(MAKE1)
 HEIMDAL_LICENSE = BSD-3c
 HEIMDAL_LICENSE_FILES = LICENSE
 # 0002-kadm5-fix-race-in-Makefile-with-kadm5_err.h.patch
