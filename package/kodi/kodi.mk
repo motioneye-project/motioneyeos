@@ -186,6 +186,12 @@ else
 KODI_CONF_OPTS += --disable-libcec
 endif
 
+ifeq ($(BR2_PACKAGE_KODI_LIRC),y)
+KODI_CONF_OPTS += --enable-lirc
+else
+KODI_CONF_OPTS += --disable-lirc
+endif
+
 ifeq ($(BR2_PACKAGE_KODI_WAVPACK),y)
 KODI_DEPENDENCIES += wavpack
 endif
