@@ -266,6 +266,7 @@ menu "PVR addons"
 	source "package/kodi-pvr-iptvsimple/Config.in"
 	source "package/kodi-pvr-mediaportal-tvserver/Config.in"
 	source "package/kodi-pvr-mythtv/Config.in"
+	source "package/kodi-pvr-nextpvr/Config.in"
 endmenu
 
 endif # BR2_PACKAGE_KODI
