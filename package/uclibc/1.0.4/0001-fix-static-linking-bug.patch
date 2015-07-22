@@ -1,0 +1,64 @@
+From 76513cbe06ec45d6cf0310c00eaf71d3250ed57f Mon Sep 17 00:00:00 2001
+From: Waldemar Brodkorb <wbx@uclibc-ng.org>
+Date: Wed, 22 Jul 2015 14:54:07 +0200
+Subject: [PATCH] fix static builds of pthread apps for x86/x86_64
+
+Found via buildroot autobuilder.
+
+Signed-off-by: Waldemar Brodkorb <wbx@openadk.org>
+---
+ libpthread/nptl/sysdeps/unix/sysv/linux/i386/i486/lowlevellock.S |    6 ++++++
+ libpthread/nptl/sysdeps/unix/sysv/linux/x86_64/lowlevellock.S    |    6 ++++++
+ 2 files changed, 12 insertions(+)
+
+diff --git a/libpthread/nptl/sysdeps/unix/sysv/linux/i386/i486/lowlevellock.S b/libpthread/nptl/sysdeps/unix/sysv/linux/i386/i486/lowlevellock.S
+index f38703b..ff9a784 100644
+--- a/libpthread/nptl/sysdeps/unix/sysv/linux/i386/i486/lowlevellock.S
++++ b/libpthread/nptl/sysdeps/unix/sysv/linux/i386/i486/lowlevellock.S
+@@ -70,6 +70,9 @@
+ 	.globl	__lll_lock_wait_private
+ 	.type	__lll_lock_wait_private,@function
+ 	.hidden	__lll_lock_wait_private
++#ifndef IS_IN_libpthread
++	.weak	__lll_lock_wait_private
++#endif
+ 	.align	16
+ __lll_lock_wait_private:
+ 	cfi_startproc
+@@ -320,6 +323,9 @@ __lll_timedlock_wait:
+ 	.globl	__lll_unlock_wake_private
+ 	.type	__lll_unlock_wake_private,@function
+ 	.hidden	__lll_unlock_wake_private
++#ifndef IS_IN_libpthread
++	.weak	__lll_unlock_wake_private
++#endif
+ 	.align	16
+ __lll_unlock_wake_private:
+ 	cfi_startproc
+diff --git a/libpthread/nptl/sysdeps/unix/sysv/linux/x86_64/lowlevellock.S b/libpthread/nptl/sysdeps/unix/sysv/linux/x86_64/lowlevellock.S
+index 50aacea..894c683 100644
+--- a/libpthread/nptl/sysdeps/unix/sysv/linux/x86_64/lowlevellock.S
++++ b/libpthread/nptl/sysdeps/unix/sysv/linux/x86_64/lowlevellock.S
+@@ -75,6 +75,9 @@
+ 	.globl	__lll_lock_wait_private
+ 	.type	__lll_lock_wait_private,@function
+ 	.hidden	__lll_lock_wait_private
++#ifndef IS_IN_libpthread
++	.weak   __lll_lock_wait_private
++#endif
+ 	.align	16
+ __lll_lock_wait_private:
+ 	cfi_startproc
+@@ -317,6 +320,9 @@ __lll_timedlock_wait:
+ 	.globl	__lll_unlock_wake_private
+ 	.type	__lll_unlock_wake_private,@function
+ 	.hidden	__lll_unlock_wake_private
++#ifndef IS_IN_libpthread
++	.weak	__lll_unlock_wake_private
++#endif
+ 	.align	16
+ __lll_unlock_wake_private:
+ 	cfi_startproc
+-- 
+1.7.10.4
+
