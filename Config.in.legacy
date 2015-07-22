@@ -120,6 +120,7 @@ config BR2_PACKAGE_KODI_PVR_ADDONS
 	select BR2_PACKAGE_KODI_PVR_MYTHTV
 	select BR2_PACKAGE_KODI_PVR_NEXTPVR
 	select BR2_PACKAGE_KODI_PVR_NJOY
+	select BR2_PACKAGE_KODI_PVR_PCTV
 	help
 	  Kodi PVR addon was split into seperate modules
 
