@@ -104,15 +104,16 @@ endif
 # that is clean wrt. our requirements.
 #
 # Because commands in $(1)_FIXUP_KCONFIG are probably using $(@D), we
-# fake it for the configurators (otherwise it is set to just '.', i.e.
-# the current directory where make is run, which happens to be in
-# $(TOPDIR), because the target of the rule is not an actual file, so
-# does not have any path component).
+# need to have a valid @D set. But, because the configurators rules are
+# not real files and do not contain the path to the package build dir,
+# @D would be just '.' in this case. So, we use an intermediate rule
+# with a stamp-like file which path is in the package build dir, so we
+# end up having a valid @D.
 #
-$$(addprefix $(1)-,$$($(2)_KCONFIG_EDITORS)): @D=$$($(2)_DIR)
-$$(addprefix $(1)-,$$($(2)_KCONFIG_EDITORS)): $$($(2)_DIR)/.stamp_kconfig_fixup_done
+$$(addprefix $(1)-,$$($(2)_KCONFIG_EDITORS)): $(1)-%: $$($(2)_DIR)/.kconfig_editor_%
+$$($(2)_DIR)/.kconfig_editor_%: $$($(2)_DIR)/.stamp_kconfig_fixup_done
 	$$($(2)_MAKE_ENV) $$(MAKE) -C $$($(2)_DIR) \
-		$$($(2)_KCONFIG_OPTS) $$(subst $(1)-,,$$@)
+		$$($(2)_KCONFIG_OPTS) $$(*)
 	rm -f $$($(2)_DIR)/.stamp_{kconfig_fixup_done,configured,built}
 	rm -f $$($(2)_DIR)/.stamp_{target,staging,images}_installed
 	$$(call $(2)_FIXUP_DOT_CONFIG)
@@ -169,6 +170,7 @@ endif # package enabled
 	$(1)-update-defconfig \
 	$(1)-savedefconfig \
 	$(1)-check-configuration-done \
+	$$($(2)_DIR)/.kconfig_editor_% \
 	$$(addprefix $(1)-,$$($(2)_KCONFIG_EDITORS))
 
 endef # inner-kconfig-package
