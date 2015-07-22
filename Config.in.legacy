@@ -113,6 +113,7 @@ config BR2_PACKAGE_KODI_PVR_ADDONS
 	select BR2_PACKAGE_KODI_PVR_ARGUSTV
 	select BR2_PACKAGE_KODI_PVR_DVBLINK
 	select BR2_PACKAGE_KODI_PVR_DVBVIEWER
+	select BR2_PACKAGE_KODI_PVR_FILMON
 	help
 	  Kodi PVR addon was split into seperate modules
 
