@@ -254,9 +254,8 @@ menu "Audio encoder addons"
 	source "package/kodi-audioencoder-wav/Config.in"
 endmenu
 
-comment "Kodi PVR addons"
-
-source "package/kodi-addon-xvdr/Config.in"
-source "package/kodi-pvr-addons/Config.in"
+menu "PVR addons"
+	source "package/kodi-addon-xvdr/Config.in"
+endmenu
 
 endif # BR2_PACKAGE_KODI

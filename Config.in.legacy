@@ -107,6 +107,12 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2015.08"
 
+config BR2_PACKAGE_KODI_PVR_ADDONS
+	bool "Kodi PVR addon was split"
+	select BR2_LEGACY
+	help
+	  Kodi PVR addon was split into seperate modules
+
 config BR2_BINUTILS_VERSION_2_23_2
 	bool "binutils 2.23 option renamed"
 	select BR2_LEGACY
