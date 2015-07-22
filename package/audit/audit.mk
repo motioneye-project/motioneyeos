@@ -14,7 +14,7 @@ AUDIT_INSTALL_STAGING = YES
 # Patching Makefile.am
 AUDIT_AUTORECONF = YES
 
-AUDIT_CONF_OPTS = --without-python --disable-zos-remote
+AUDIT_CONF_OPTS = --without-python --without-python3 --disable-zos-remote
 
 ifeq ($(BR2_PACKAGE_LIBCAP_NG),y)
 AUDIT_DEPENDENCIES += libcap-ng
