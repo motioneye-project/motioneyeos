@@ -1,0 +1,10 @@
+config BR2_PACKAGE_KODI_SCREENSAVER_BIOGENESIS
+	bool "kodi-screensaver-biogenesis"
+	depends on BR2_PACKAGE_KODI_GL
+	help
+	  BioGenesis screensaver for Kodi
+
+	  https://github.com/notspiff/screensaver.biogenesis
+
+comment "kodi-screensaver-biogenesis needs an OpenGL backend"
+	depends on !BR2_PACKAGE_KODI_GL
