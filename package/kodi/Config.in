@@ -298,6 +298,7 @@ endmenu
 
 menu "Visualisations"
 	source "package/kodi-visualisation-shadertoy/Config.in"
+	source "package/kodi-visualisation-spectrum/Config.in"
 	source "package/kodi-visualisation-waveform/Config.in"
 endmenu
 
