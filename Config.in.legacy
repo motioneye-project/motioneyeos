@@ -115,6 +115,7 @@ config BR2_PACKAGE_KODI_PVR_ADDONS
 	select BR2_PACKAGE_KODI_PVR_DVBVIEWER
 	select BR2_PACKAGE_KODI_PVR_FILMON
 	select BR2_PACKAGE_KODI_PVR_HTS
+	select BR2_PACKAGE_KODI_PVR_IPTVSIMPLE
 	help
 	  Kodi PVR addon was split into seperate modules
 
