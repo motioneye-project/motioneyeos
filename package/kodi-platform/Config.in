@@ -1,0 +1,7 @@
+config BR2_PACKAGE_KODI_PLATFORM
+	bool
+	select BR2_PACKAGE_LIBPLATFORM
+	help
+	  Kodi add-on platform support library
+
+	  https://github.com/xbmc/kodi-platform
