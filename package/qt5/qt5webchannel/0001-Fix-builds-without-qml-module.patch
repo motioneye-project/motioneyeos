@@ -1,0 +1,61 @@
+From 4dee412aa655e1dc7f9e01869abcab47e0179422 Mon Sep 17 00:00:00 2001
+From: Julien Corjon <corjon.j@ecagroup.com>
+Date: Wed, 22 Jul 2015 09:24:04 +0200
+Subject: [PATCH] Fix builds without qml module
+
+When we build without qml module we cannot use QJSValue in qmetaobjectpublisher
+To prevent QJSValue inclusiion I use a preprocessor directive QT_HAVE_QML. This
+is probably not the best solution but I do not know any other QML directive.
+
+Upstream--Status: https://bugreports.qt.io/browse/QTBUG-47360
+Signed-off-by: Julien Corjon <corjon.j@ecagroup.com>
+---
+ src/webchannel/qmetaobjectpublisher.cpp | 4 ++++
+ src/webchannel/webchannel.pro           | 2 ++
+ 2 files changed, 6 insertions(+)
+
+diff --git a/src/webchannel/qmetaobjectpublisher.cpp b/src/webchannel/qmetaobjectpublisher.cpp
+index 0cad569..b0e9652 100644
+--- a/src/webchannel/qmetaobjectpublisher.cpp
++++ b/src/webchannel/qmetaobjectpublisher.cpp
+@@ -41,7 +41,9 @@
+ #include <QDebug>
+ #include <QJsonObject>
+ #include <QJsonArray>
++#ifdef QT_HAVE_QML
+ #include <QJSValue>
++#endif
+ #include <QUuid>
+ 
+ QT_BEGIN_NAMESPACE
+@@ -486,12 +488,14 @@ QJsonValue QMetaObjectPublisher::wrapResult(const QVariant &result, QWebChannelA
+         if (!classInfo.isEmpty())
+             objectInfo[KEY_DATA] = classInfo;
+         return objectInfo;
++#ifdef QT_HAVE_QML
+     } else if (result.canConvert<QJSValue>()) {
+         // Workaround for keeping QJSValues from QVariant.
+         // Calling QJSValue::toVariant() converts JS-objects/arrays to QVariantMap/List
+         // instead of stashing a QJSValue itself into a variant.
+         // TODO: Improve QJSValue-QJsonValue conversion in Qt.
+         return wrapResult(result.value<QJSValue>().toVariant(), transport, parentObjectId);
++#endif
+     } else if (result.canConvert<QVariantList>()) {
+         // recurse and potentially wrap contents of the array
+         return wrapList(result.toList(), transport);
+diff --git a/src/webchannel/webchannel.pro b/src/webchannel/webchannel.pro
+index eba8123..f476d6f 100644
+--- a/src/webchannel/webchannel.pro
++++ b/src/webchannel/webchannel.pro
+@@ -30,6 +30,8 @@ SOURCES += \
+ qtHaveModule(qml) {
+     QT += qml
+ 
++    QMAKE_CXXFLAGS += "-DQT_HAVE_QML"
++
+     SOURCES += \
+         qqmlwebchannel.cpp \
+         qqmlwebchannelattached.cpp
+-- 
+2.1.0
+
