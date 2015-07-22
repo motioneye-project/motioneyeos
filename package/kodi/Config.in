@@ -270,6 +270,7 @@ menu "PVR addons"
 	source "package/kodi-pvr-njoy/Config.in"
 	source "package/kodi-pvr-pctv/Config.in"
 	source "package/kodi-pvr-stalker/Config.in"
+	source "package/kodi-pvr-vbox/Config.in"
 endmenu
 
 endif # BR2_PACKAGE_KODI
