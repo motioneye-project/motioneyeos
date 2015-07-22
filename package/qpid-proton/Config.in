@@ -1,5 +1,6 @@
 config BR2_PACKAGE_QPID_PROTON
 	bool "qpid-proton"
+	depends on !BR2_STATIC_LIBS # build a shared library
 	depends on BR2_USE_WCHAR # util-linux
 	select BR2_PACKAGE_UTIL_LINUX
 	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
@@ -13,5 +14,5 @@ config BR2_PACKAGE_QPID_PROTON
 
 	  https://qpid.apache.org/proton/
 
-comment "qpid-proton needs a toolchain w/ wchar"
-	depends on !BR2_USE_WCHAR
+comment "qpid-proton needs a toolchain w/ dynamic library, wchar"
+	depends on BR2_STATIC_LIBS || !BR2_USE_WCHAR
