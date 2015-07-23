@@ -11,6 +11,8 @@ config BR2_PACKAGE_OPENIPMI
 	  to interact with IPMI enabled devices. OpenIPMI also provides
 	  an IPMI BMC simulator.
 
+	  http://openipmi.sourceforge.net
+
 comment "openipmi needs a toolchain w/ dynamic library, threads"
 	depends on BR2_USE_MMU
 	depends on BR2_STATIC_LIBS || !BR2_TOOLCHAIN_HAS_THREADS
