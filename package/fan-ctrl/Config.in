@@ -1,6 +1,9 @@
 config BR2_PACKAGE_FAN_CTRL
 	bool "fan-ctrl"
 	depends on BR2_USE_MMU # fork()
+	# SourceForge is down, not backup location, let's disable for
+	# now.
+	depends on BR2_BROKEN
 	help
 	  Fan-ctrl is a little daemon that controls the speed of one
 	  or more system or CPU fans. It does so by monitoring
