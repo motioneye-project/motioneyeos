@@ -1,4 +1,4 @@
-From fc53290b7f2be918856883cd174cf18f06a085cf Mon Sep 17 00:00:00 2001
+From 583ad557faf86c5532e16dafff19bfdcc349752d Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?J=C3=B6rg=20Krause?= <joerg.krause@embedded.rocks>
 Date: Mon, 20 Jul 2015 20:30:11 +0200
 Subject: [PATCH 1/1] Disable parts of TIRPC requiring NIS support
