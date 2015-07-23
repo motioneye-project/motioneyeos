@@ -8,5 +8,5 @@ config BR2_PACKAGE_PERL_DB_FILE
 
 	  https://metacpan.org/release/DB_File
 
-comment "perl-db_file needs a toolchain w/ dynamic library"
+comment "perl-db-file needs a toolchain w/ dynamic library"
 	depends on BR2_STATIC_LIBS

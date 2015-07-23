@@ -607,6 +607,7 @@ say scalar keys %dist, q{ packages fetched.} unless $quiet;
 # Buildroot package name: lowercase
 sub fsname {
     my $name = shift;
+    $name =~ s|_|-|g;
     return q{perl-} . lc $name;
 }
 
