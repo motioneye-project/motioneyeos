@@ -57,6 +57,7 @@ define C_ICAP_TUNE_INSTALLATION
 		$(STAGING_DIR)/usr/bin/{c-icap,c-icap-libicapapi}-config
 	$(SED) 's%INCDIR2=.*%INCDIR2=$(STAGING_DIR)/usr/include/c_icap%' \
 		$(STAGING_DIR)/usr/bin/{c-icap,c-icap-libicapapi}-config
+	$(SED) 's%-L$$LIBDIR %%' $(STAGING_DIR)/usr/bin/c-icap-libicapapi-config
 endef
 
 C_ICAP_POST_INSTALL_TARGET_HOOKS += C_ICAP_TUNE_INSTALLATION
