@@ -25,7 +25,7 @@ HOST_HARFBUZZ_CONF_OPTS = \
 	--with-freetype=yes \
 	--with-glib=yes
 
-# beta libtool version
+# beta libtool version and patching Makefile.am
 HARFBUZZ_AUTORECONF = YES
 
 ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),y)
