@@ -9,6 +9,10 @@ REDIS_SITE = http://download.redis.io/releases
 REDIS_LICENSE = BSD-3c (core); MIT and BSD family licenses (Bundled components)
 REDIS_LICENSE_FILES = COPYING
 
+define REDIS_USERS
+	redis -1 redis -1 * /var/lib/redis /bin/false - Redis Server
+endef
+
 # Redis doesn't support DESTDIR (yet, see
 # https://github.com/antirez/redis/pull/609).  We set PREFIX
 # instead.
