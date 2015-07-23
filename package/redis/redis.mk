@@ -26,6 +26,8 @@ endef
 define REDIS_INSTALL_TARGET_CMDS
 	$(TARGET_MAKE_ENV) $(MAKE) $(REDIS_BUILDOPTS) -C $(@D) \
 		LDCONFIG=true install
+	$(INSTALL) -D -m 0644 $(@D)/redis.conf \
+		$(TARGET_DIR)/etc/redis.conf
 endef
 
 $(eval $(generic-package))
