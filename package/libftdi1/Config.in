@@ -15,11 +15,12 @@ config BR2_PACKAGE_LIBFTDI1_LIBFTDIPP1
 	depends on BR2_INSTALL_LIBSTDCPP # boost
 	depends on BR2_TOOLCHAIN_HAS_THREADS # boost
 	depends on BR2_PACKAGE_BOOST_ARCH_SUPPORTS
+	depends on BR2_USE_WCHAR # boost
 	help
 	  C++ bindings for libftdi
 
-comment "libftdipp1 needs a toolchain w/ C++"
-	depends on !BR2_INSTALL_LIBSTDCPP
+comment "libftdipp1 needs a toolchain w/ C++, wchar"
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR
 	depends on BR2_PACKAGE_BOOST_ARCH_SUPPORTS
 
 config BR2_PACKAGE_LIBFTDI1_PYTHON_BINDINGS

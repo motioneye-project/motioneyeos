@@ -3,6 +3,7 @@ config BR2_PACKAGE_YAML_CPP
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_TOOLCHAIN_HAS_THREADS # boost
 	depends on BR2_PACKAGE_BOOST_ARCH_SUPPORTS
+	depends on BR2_USE_WCHAR # boost
 	select BR2_PACKAGE_BOOST
 	help
 	  yaml-cpp is a YAML parser and emitter in C++ matching
@@ -10,6 +11,6 @@ config BR2_PACKAGE_YAML_CPP
 
 	  https://code.google.com/p/yaml-cpp/
 
-comment "yaml-cpp needs a toolchain w/ C++, threads"
+comment "yaml-cpp needs a toolchain w/ C++, threads, wchar"
 	depends on BR2_PACKAGE_BOOST_ARCH_SUPPORTS
-	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS || !BR2_USE_WCHAR
