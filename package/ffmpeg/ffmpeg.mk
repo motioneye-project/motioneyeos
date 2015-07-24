@@ -41,6 +41,7 @@ FFMPEG_CONF_OPTS = \
 	--enable-runtime-cpudetect \
 	--disable-hardcoded-tables \
 	--disable-memalign-hack \
+	--disable-msa \
 	--enable-hwaccels \
 	--disable-avisynth \
 	--disable-frei0r \
