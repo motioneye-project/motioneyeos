@@ -1,33 +1,43 @@
-Fix GCC 5.x preprocessor failure
+Fix gcc 5.x build failure
 
-Building ncurses 5.9 with GCC 5.x fails with a syntax error, caused by
-earlier preprocessing. This failure is more likely when building for
-host (e.g. host-ncurses) that recently updated to GCC 5.x.
+Extracted from upstream commit
+http://ncurses.scripts.mit.edu/?p=ncurses.git;a=commit;h=97bb4678dc03e753290b39bbff30ba2825df9517.
 
-This patch is taken from the following link (more information is also
-available here):
-https://groups.google.com/forum/#!topic/sage-trac/U31shviuqzk
++ modify MKlib_gen.sh to work around change in development version of
+  gcc introduced here:
+  https://gcc.gnu.org/ml/gcc-patches/2014-06/msg02185.html
+  https://gcc.gnu.org/ml/gcc-patches/2014-07/msg00236.html
+  (reports by Marcus Shawcroft, Maohui Lei).
 
-Signed-off-by: Doug Kehn <rdkehn@yahoo.com>
+Original author: Thomas E. Dickey <dickey@invisible-island.net>
+Signed-off-by: Mikhail Peselnik <bas@bmail.ru>
 
-Index: b/ncurses/base/MKlib_gen.sh
-===================================================================
---- a/ncurses/base/MKlib_gen.sh
-+++ b/ncurses/base/MKlib_gen.sh
-@@ -62,7 +62,15 @@ if test "${LC_MESSAGES+set}" = set; then
- if test "${LC_CTYPE+set}"    = set; then LC_CTYPE=C;    export LC_CTYPE;    fi
- if test "${LC_COLLATE+set}"  = set; then LC_COLLATE=C;  export LC_COLLATE;  fi
+--- a/ncurses/base/MKlib_gen.sh.orig	2015-07-23 21:52:32.239481505 +0300
++++ b/ncurses/base/MKlib_gen.sh	2015-07-23 21:53:20.772966587 +0300
+@@ -437,11 +437,22 @@
+ 	-e 's/gen_$//' \
+ 	-e 's/  / /g' >>$TMP
  
--preprocessor="$1 -DNCURSES_INTERNALS -I../include"
-+# Work around "unexpected" output of GCC 5.1.0's cpp w.r.t. #line directives
-+# by simply suppressing them:
-+case `$1 -dumpversion 2>/dev/null` in
-+	5.[01].*)  # assume a "broken" one
-+		preprocessor="$1 -P -DNCURSES_INTERNALS -I../include"
-+		;;
-+	*)
-+		preprocessor="$1 -DNCURSES_INTERNALS -I../include"
-+esac
- AWK="$2"
- USE="$3"
- 
++cat >$ED1 <<EOF
++s/  / /g
++s/^ //
++s/ $//
++s/P_NCURSES_BOOL/NCURSES_BOOL/g
++EOF
++
++# A patch discussed here:
++#       https://gcc.gnu.org/ml/gcc-patches/2014-06/msg02185.html
++# introduces spurious #line markers.  Work around that by ignoring the system's
++# attempt to define "bool" and using our own symbol here.
++sed -e 's/bool/P_NCURSES_BOOL/g' $TMP > $ED2
++cat $ED2 >$TMP
++
+ $preprocessor $TMP 2>/dev/null \
+-| sed \
+-	-e 's/  / /g' \
+-	-e 's/^ //' \
+-	-e 's/_Bool/NCURSES_BOOL/g' \
++| sed -f $ED1 \
+ | $AWK -f $AW2 \
+ | sed -f $ED3 \
+ | sed \
