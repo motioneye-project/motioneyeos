@@ -1,4 +1,4 @@
-From cb2f393afdb444bf97a7327991f8f5a2c2f64082 Mon Sep 17 00:00:00 2001
+From 15adb318818f5d0ac609ef2b87643dd760487cb6 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?J=C3=B6rg=20Krause?= <joerg.krause@embedded.rocks>
 Date: Mon, 20 Jul 2015 20:30:11 +0200
 Subject: [PATCH 1/1] Disable parts of TIRPC requiring NIS support
@@ -16,7 +16,7 @@ Signed-off-by: Jörg Krause <joerg.krause@embedded.rocks>
  1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/src/Makefile.am b/src/Makefile.am
-index 6cc567a..2b26a29 100644
+index 6cc567a..9834f9a 100644
 --- a/src/Makefile.am
 +++ b/src/Makefile.am
 @@ -51,7 +51,7 @@ libtirpc_la_SOURCES = auth_none.c auth_unix.c authunix_prot.c bindresvport.c cln
@@ -24,7 +24,7 @@ index 6cc567a..2b26a29 100644
          rpcb_st_xdr.c svc.c svc_auth.c svc_dg.c svc_auth_unix.c svc_auth_none.c \
          svc_generic.c svc_raw.c svc_run.c svc_simple.c svc_vc.c getpeereid.c \
 -        auth_time.c auth_des.c authdes_prot.c debug.c
-+        debug.c
++        auth_des.c authdes_prot.c debug.c
  
  ## XDR
  libtirpc_la_SOURCES += xdr.c xdr_rec.c xdr_array.c xdr_float.c xdr_mem.c xdr_reference.c xdr_stdio.c
