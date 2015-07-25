@@ -28,6 +28,26 @@ define RPI_USERLAND_INSTALL_INIT_SYSTEMD
 endef
 endif
 
+ifeq ($(BR2_PACKAGE_RPI_USERLAND_HELLO),y)
+
+RPI_USERLAND_CONF_OPTS += -DALL_APPS=ON
+
+define RPI_USERLAND_EXTRA_LIBS_TARGET
+	$(INSTALL) -m 0644 -D \
+		$(@D)/build/lib/libilclient.so \
+		$(TARGET_DIR)/usr/lib/libilcient.so
+endef
+RPI_USERLAND_POST_INSTALL_TARGET_HOOKS += RPI_USERLAND_EXTRA_LIBS_TARGET
+
+define RPI_USERLAND_EXTRA_LIBS_STAGING
+	$(INSTALL) -m 0644 -D \
+		$(@D)/build/lib/libilclient.so \
+		$(STAGING_DIR)/usr/lib/libilcient.so
+endef
+RPI_USERLAND_POST_INSTALL_STAGING_HOOKS += RPI_USERLAND_EXTRA_LIBS_STAGING
+
+endif # BR2_PACKAGE_RPI_USERLAND_HELLO
+
 define RPI_USERLAND_POST_TARGET_CLEANUP
 	rm -f $(TARGET_DIR)/etc/init.d/vcfiled
 	rm -f $(TARGET_DIR)/usr/share/install/vcfiled

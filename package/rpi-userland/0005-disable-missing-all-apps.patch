@@ -1,0 +1,30 @@
+From 249f6c8b44581083dfb16ebf66bfe94f7c9fb163 Mon Sep 17 00:00:00 2001
+From: "Yann E. MORIN" <yann.morin.1998@free.fr>
+Date: Fri, 24 Jul 2015 20:20:33 +0200
+Subject: [PATCH] host-applications: disable missing applications
+
+Those applications are missing from the public rpi-firmware package, so
+do not even try to build them.
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+---
+ host_applications/linux/CMakeLists.txt | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/host_applications/linux/CMakeLists.txt b/host_applications/linux/CMakeLists.txt
+index ea4e016..4a87862 100644
+--- a/host_applications/linux/CMakeLists.txt
++++ b/host_applications/linux/CMakeLists.txt
+@@ -10,9 +10,7 @@ add_subdirectory(apps/smem)
+ add_subdirectory(libs/debug_sym)
+ 
+ if(ALL_APPS)
+- add_subdirectory(apps/vcdbg)
+  # add_subdirectory(apps/smct)
+- add_subdirectory(apps/edid_parser)
+  add_subdirectory(apps/hello_pi)
+ endif()
+ 
+-- 
+1.9.1
+
