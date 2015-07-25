@@ -1,0 +1,24 @@
+Comment out the hardcoded debug defines. If extra debug is needed, we can add it
+as a define in the make flags.
+
+Signed-off-by: Christian Stewart <christian@paral.in>
+
+diff --git a/include/autoconf.h b/include/autoconf.h
+--- a/include/autoconf.h
++++ b/include/autoconf.h
+@@ -130,12 +130,12 @@
+ /*
+  * Debug Related Config
+  */
+-#define DBG	1
++//#define DBG	1
+ 
+-#define CONFIG_DEBUG /* DBG_871X, etc... */
++//#define CONFIG_DEBUG /* DBG_871X, etc... */
+ //#define CONFIG_DEBUG_RTL871X /* RT_TRACE, RT_PRINT_DATA, _func_enter_, _func_exit_ */
+ 
+-#define CONFIG_PROC_DEBUG
++//#define CONFIG_PROC_DEBUG
+ 
+ 
+ //#define DBG_TX
