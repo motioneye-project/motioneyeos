@@ -329,6 +329,7 @@ unexport CONFIG_SITE
 unexport QMAKESPEC
 unexport TERMINFO
 unexport MACHINE
+unexport O
 
 GNU_HOST_NAME := $(shell support/gnuconfig/config.guess)
 
