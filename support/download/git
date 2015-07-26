@@ -11,7 +11,7 @@ set -e
 # Environment:
 #   GIT      : the git command to call
 
-verbose=-v
+verbose=
 while getopts :q OPT; do
     case "${OPT}" in
     q)  verbose=-q; exec >/dev/null;;

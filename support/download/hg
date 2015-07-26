@@ -11,7 +11,7 @@ set -e
 # Environment:
 #   HG       : the hg command to call
 
-verbose=-v
+verbose=
 while getopts :q OPT; do
     case "${OPT}" in
     q)  verbose=-q;;
