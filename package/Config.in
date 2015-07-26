@@ -851,7 +851,7 @@ menu "Graphics"
 	source "package/webkit/Config.in"
 	source "package/webkitgtk24/Config.in"
 	source "package/webp/Config.in"
-	source "package/zxing/Config.in"
+	source "package/zxing-cpp/Config.in"
 endmenu
 
 menu "Hardware handling"

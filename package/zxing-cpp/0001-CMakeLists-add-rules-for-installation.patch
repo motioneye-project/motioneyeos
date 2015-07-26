@@ -1,0 +1,33 @@
+From 2bc58a87dd629cef4cd2c62c5132c319bede61fa Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Sun, 4 Oct 2015 11:49:52 +0100
+Subject: [PATCH] CMakeLists: add rules for installation
+
+This commit adds some CMake rules that allow to do a "make install" to
+install the zxing binary, its library and corresponding header files.
+
+Submitted upstream: https://github.com/glassechidna/zxing-cpp/pull/31
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ CMakeLists.txt | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index f49b28d..7151d90 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -68,6 +68,10 @@ file(GLOB_RECURSE ZXING_FILES
+ )
+ add_executable(zxing ${ZXING_FILES})
+ target_link_libraries(zxing libzxing)
++install(TARGETS zxing libzxing
++	LIBRARY DESTINATION lib
++	RUNTIME DESTINATION bin)
++install(DIRECTORY core/src/zxing/ DESTINATION include/zxing FILES_MATCHING PATTERN "*.h")
+ 
+ # Add testrunner executable.
+ find_package(CPPUNIT)
+-- 
+2.6.0
+
