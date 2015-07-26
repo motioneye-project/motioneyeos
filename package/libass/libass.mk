@@ -4,9 +4,11 @@
 #
 ################################################################################
 
-LIBASS_VERSION = 0.10.2
+LIBASS_VERSION = 0.12.3
 LIBASS_SOURCE = libass-$(LIBASS_VERSION).tar.xz
-LIBASS_SITE = http://libass.googlecode.com/files
+# Do not use the github helper here, the generated tarball is *NOT*
+# the same as the one uploaded by upstream for the release.
+LIBASS_SITE = https://github.com/libass/libass/releases/download/$(LIBASS_VERSION)
 LIBASS_INSTALL_STAGING = YES
 LIBASS_LICENSE = ISC
 LIBASS_LICENSE_FILES = COPYING
