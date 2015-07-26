@@ -87,7 +87,6 @@ config BR2_PACKAGE_XSERVER_XORG_SERVER_VERSION
 
 choice
 	prompt "X Window System server type"
-	default BR2_PACKAGE_XSERVER_XORG_SERVER_KDRIVE
 	help
 	  Select the X Window System server to use
 
