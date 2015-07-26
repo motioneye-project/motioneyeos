@@ -17,9 +17,9 @@ XINETD_CFLAGS = $(TARGET_CFLAGS)
 #     flags (so this case 2 is implicit and not visible below)
 #  3. We don't have RPC support, pass -DNO_RPC to disable it
 ifeq ($(BR2_PACKAGE_LIBTIRPC),y)
-XINETD_DEPENDENCIES += libtirpc
-XINETD_CFLAGS += -I$(STAGING_DIR)/usr/include/tirpc/
-XINETD_LIBS += -ltirpc
+XINETD_DEPENDENCIES += libtirpc host-pkgconf
+XINETD_CFLAGS += "`$(PKG_CONFIG_HOST_BINARY) --cflags libtirpc`"
+XINETD_LIBS += "`$(PKG_CONFIG_HOST_BINARY) --libs libtirpc`"
 else ifeq ($(BR2_TOOLCHAIN_HAS_NATIVE_RPC),)
 XINETD_CFLAGS += -DNO_RPC
 endif
