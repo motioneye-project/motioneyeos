@@ -11,7 +11,7 @@ RPCBIND_LICENSE = BSD-3c
 RPCBIND_LICENSE_FILES = COPYING
 
 RPCBIND_CONF_ENV += \
-	CFLAGS="$(TARGET_CFLAGS) -I$(STAGING_DIR)/usr/include/tirpc/"
+	CFLAGS="$(TARGET_CFLAGS) `$(PKG_CONFIG_HOST_BINARY) --cflags libtirpc`"
 RPCBIND_DEPENDENCIES += libtirpc host-pkgconf
 RPCBIND_CONF_OPTS += --with-rpcuser=root
 RPCBIND_CONF_OPTS += --with-systemdsystemunitdir=no
