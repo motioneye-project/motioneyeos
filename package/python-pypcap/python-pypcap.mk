@@ -4,9 +4,8 @@
 #
 ################################################################################
 
-PYTHON_PYPCAP_VERSION = 102
-PYTHON_PYPCAP_SITE = https://pypcap.googlecode.com/svn/trunk
-PYTHON_PYPCAP_SITE_METHOD = svn
+PYTHON_PYPCAP_VERSION = 6f46e7bf29a648256ddc732a7d0ec83d3ffca390
+PYTHON_PYPCAP_SITE = $(call github,dugsong,pypcap,$(PYTHON_PYPCAP_VERSION))
 PYTHON_PYPCAP_LICENSE = BSD-3c
 PYTHON_PYPCAP_LICENSE_FILES = LICENSE
 PYTHON_PYPCAP_SETUP_TYPE = distutils
