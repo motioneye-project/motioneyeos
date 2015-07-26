@@ -15,8 +15,8 @@ CONNTRACK_TOOLS_LICENSE_FILES = COPYING
 
 ifeq ($(BR2_PACKAGE_LIBTIRPC),y)
 CONNTRACK_TOOLS_CONF_ENV += \
-	CFLAGS="$(TARGET_CFLAGS) -I$(STAGING_DIR)/usr/include/tirpc/"
-CONNTRACK_TOOLS_DEPENDENCIES += libtirpc
+	CFLAGS="$(TARGET_CFLAGS) `$(PKG_CONFIG_HOST_BINARY) --cflags libtirpc`"
+CONNTRACK_TOOLS_DEPENDENCIES += libtirpc host-pkgconf
 endif
 
 $(eval $(autotools-package))
