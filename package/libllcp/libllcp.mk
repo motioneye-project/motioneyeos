@@ -4,9 +4,8 @@
 #
 ################################################################################
 
-LIBLLCP_VERSION = cf0c4b3c9df98851c6092c130192130c3f5a46bd
-LIBLLCP_SITE = https://libllcp.googlecode.com/git
-LIBLLCP_SITE_METHOD = git
+LIBLLCP_VERSION = 05dfa8003433a7070bfd8ae02efdb0203bbf34aa
+LIBLLCP_SITE = $(call github,nfc-tools,libllcp,$(LIBLLCP_VERSION))
 LIBLLCP_DEPENDENCIES = host-pkgconf libnfc
 # There's no ./configure in the repository, so we need to autoreconf
 LIBLLCP_AUTORECONF = YES
