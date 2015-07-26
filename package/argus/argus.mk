@@ -13,10 +13,10 @@ ARGUS_LICENSE = GPLv2+
 ARGUS_LICENSE_FILES = README
 
 ifeq ($(BR2_PACKAGE_LIBTIRPC),y)
-ARGUS_DEPENDENCIES += libtirpc
+ARGUS_DEPENDENCIES += libtirpc host-pkgconf
 ARGUS_CONF_ENV += \
-	CFLAGS="$(TARGET_CFLAGS) -I$(STAGING_DIR)/usr/include/tirpc/" \
-	LDFLAGS="$(TARGET_LDFLAGS) -ltirpc"
+	CFLAGS="$(TARGET_CFLAGS) `$(PKG_CONFIG_HOST_BINARY) --cflags libtirpc`" \
+	LIBS="`$(PKG_CONFIG_HOST_BINARY) --libs libtirpc`"
 endif
 
 $(eval $(autotools-package))
