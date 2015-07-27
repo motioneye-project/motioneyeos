@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-RTL8821AU_VERSION = f58e4a7fb27551bdbb4aee9db6086dd6ad996c8d
+RTL8821AU_VERSION = fef8c9d67d076eee9dfb9e19cb7cb69815d5a207
 RTL8821AU_SITE = $(call github,ulli-kroll,rtl8821au,$(RTL8821AU_VERSION))
 RTL8821AU_LICENSE = GPLv2, proprietary (rtl8821au.bin firmware)
 RTL8821AU_LICENSE_FILES = COPYING
