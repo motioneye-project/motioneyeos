@@ -36,6 +36,10 @@ endef
 
 MONO_POST_INSTALL_TARGET_HOOKS += MONO_INSTALL_LIBS
 
+ifeq ($(BR2_PACKAGE_LIBICONV),y)
+MONO_DEPENDENCIES += libiconv
+endif
+
 MONO_DEPENDENCIES += host-mono
 
 ## Mono managed
