@@ -63,11 +63,13 @@ need to do AUTORECONF).
 
 You can see on the release page if it's an uploaded tarball or a git tag:
 
-- If there is a green download button, like
-  https://github.com/zedshaw/mongrel2/releases/tag/v1.9.1[mongrel2], then it
-  was uploaded by the maintainer and you should use the link of that button to
-  specify +FOO_SITE+, and not use the 'github' helper.
-- If there is grey download button, like
-  https://github.com/xbmc/xbmc/releases/tag/13.2-Gotham[xbmc], then it's an
-  automatically generated tarball and you should use the 'github' helper
-  function.
+image::github_hash_mongrel2.png[]
+
+- If it looks like the image above then it was uploaded by the
+  maintainer and you should use that link (in that example:
+  'mongrel2-v1.9.2.tar.bz2') to specify +FOO_SITE+, and not use the
+  'github' helper.
+
+- On the other hand, if there's is *only* the "Source code" link, then
+  it's an automatically generated tarball and you should use the
+  'github' helper function.
