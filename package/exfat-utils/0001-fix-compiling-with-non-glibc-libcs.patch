@@ -3,6 +3,9 @@
 libexfat would only compile on Linux with __GLIBC__ defined. Changed
 to use __linux__ which likely better fits the original intent.
 
+Upstream status: applied.
+See https://groups.google.com/forum/#!topic/exfat/8g3yumqrf1A.
+
 Signed-off-by: Brendan Heading <brendanheading@gmail.com>
 ---
  platform.h |    2 +-
