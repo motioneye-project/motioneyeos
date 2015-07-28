@@ -12,12 +12,14 @@ start() {
 	echo -n "Starting dropbear sshd: "
 	umask 077
 
-	# If /etc/dropbear is not a directory, and
+	# If /etc/dropbear is a symlink to /var/run/dropbear, and
 	#   - the filesystem is RO (i.e. we can not rm the symlink),
 	#     create the directory pointed to by the symlink.
 	#   - the filesystem is RW (i.e. we can rm the symlink),
 	#     replace the symlink with an actual directory
-	if ! [ -d /etc/dropbear ]; then
+	if [ -L /etc/dropbear \
+	     -a "$(readlink -f /etc/dropbear)" = "/var/run/dropbear" ]
+	then
 		if rm -f /etc/dropbear; then
 			mkdir -p /etc/dropbear
 		else
