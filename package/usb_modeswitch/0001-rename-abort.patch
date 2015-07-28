@@ -1,0 +1,105 @@
+abort() is a C library function and used by Jim, so it results in
+a duplicate definition and confusion when linking statically.
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+diff -Nura usb-modeswitch-2.2.5.orig/usb_modeswitch.c usb-modeswitch-2.2.5/usb_modeswitch.c
+--- usb-modeswitch-2.2.5.orig/usb_modeswitch.c	2015-07-28 08:24:41.043352748 -0300
++++ usb-modeswitch-2.2.5/usb_modeswitch.c	2015-07-28 08:38:43.557315576 -0300
+@@ -544,7 +544,7 @@
+ 		libusb_open(dev, &devh);
+ 		if (devh == NULL) {
+ 			SHOW_PROGRESS(output,"Error opening the device. Abort\n\n");
+-			abort();
++			abortOut();
+ 		}
+ 	}
+ 
+@@ -574,18 +574,18 @@
+ 			ResponseEndpoint = find_first_bulk_endpoint(LIBUSB_ENDPOINT_IN);
+ 		if (!MessageEndpoint) {
+ 			fprintf(stderr,"Error: message endpoint not given or found. Abort\n\n");
+-			abort();
++			abortOut();
+ 		}
+ 		if (!ResponseEndpoint) {
+ 			fprintf(stderr,"Error: response endpoint not given or found. Abort\n\n");
+-			abort();
++			abortOut();
+ 		}
+ 		SHOW_PROGRESS(output,"Use endpoints 0x%02x (out) and 0x%02x (in)\n", MessageEndpoint, ResponseEndpoint);
+ 	}
+ 
+ 	if (interfaceClass == -1) {
+ 		fprintf(stderr, "Error: Could not get class of interface %d. Does it exist? Abort\n\n",Interface);
+-		abort();
++		abortOut();
+ 	}
+ 
+ 	if (defaultClass == 0)
+@@ -601,7 +601,7 @@
+ 		if (defaultClass != 8) {
+ 			fprintf(stderr, "Error: can't use storage command in MessageContent with interface %d;\n"
+ 				"       interface class is %d, expected 8. Abort\n\n", Interface, defaultClass);
+-			abort();
++			abortOut();
+ 		}
+ 
+ 	if (InquireDevice && show_progress) {
+@@ -629,7 +629,7 @@
+ 	 */
+ 	if ( ModeMap & (ModeMap-1) ) {
+ 		fprintf(output,"Multiple special modes selected; check configuration. Abort\n\n");
+-		abort();
++		abortOut();
+ 	}
+ 
+ 	if ((strlen(MessageContent) || StandardEject) && ModeMap ) {
+@@ -1339,7 +1339,7 @@
+ 	ret = libusb_claim_interface(devh, Interface);
+ 	if (ret < 0) {
+ 		SHOW_PROGRESS(output," Could not claim interface (error %d). Abort\n", ret);
+-		abort();
++		abortOut();
+ 	}
+ //	libusb_clear_halt(devh, MessageEndpoint);
+ 	if (show_progress)
+@@ -1832,7 +1832,7 @@
+ 	int ret = libusb_get_active_config_descriptor(dev, &active_config);
+ 	if (ret < 0) {
+ 		SHOW_PROGRESS(output," Determining the active configuration failed (error %d). Abort\n", ret);
+-		abort();
++		abortOut();
+ 	}
+ 	return active_config->bConfigurationValue;
+ }
+@@ -1878,7 +1878,7 @@
+ 			}
+ 			if (file==NULL) {
+ 				fprintf(stderr, "Error: Could not find file %s. Abort\n\n", FileName);
+-				abort();
++				abortOut();
+ 			} else {
+ 				token = fgets(Str, LINE_DIM-1, file);
+ 			}
+@@ -2014,7 +2014,7 @@
+ 		closelog();
+ }
+ 
+-void abort()
++void abortOut()
+ {
+ 	close_all();
+ 	exit(1);
+diff -Nura usb-modeswitch-2.2.5.orig/usb_modeswitch.h usb-modeswitch-2.2.5/usb_modeswitch.h
+--- usb-modeswitch-2.2.5.orig/usb_modeswitch.h	2015-07-28 08:24:41.043352748 -0300
++++ usb-modeswitch-2.2.5/usb_modeswitch.h	2015-07-28 08:38:54.986708480 -0300
+@@ -61,7 +61,7 @@
+ void printVersion();
+ void printHelp();
+ void close_all();
+-void abort();
++void abortOut();
+ int readArguments(int argc, char **argv);
+ void deviceDescription();
+ int deviceInquire();
