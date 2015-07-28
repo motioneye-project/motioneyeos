@@ -1,0 +1,81 @@
+From 9b79d39b027f0a44215c4c13f7fd23b710727c37 Mon Sep 17 00:00:00 2001
+From: Alexey Brodkin <abrodkin@synopsys.com>
+Date: Thu, 16 Jul 2015 11:38:29 +0300
+Subject: [PATCH] ARCv2: update memset() so it could be used without double
+ load/stores
+
+Existing version of memset() relies on existence of 64-bit load/stores.
+While ARC HS38 may not have those instructions implemented in SoC.
+
+Proposed implementation checks if "-mno-ll64" option was passed to gcc
+(for ARCv2 "-mll64" is set implicitly by default) by checking __LL64__
+definition and if it is not defined uses 32-bit load/stores.
+
+Signed-off-by: Claudiu Zissulescu <claziss@synopsys.com>
+Signed-off-by: Alexey Brodkin <abrodkin@synopsys.com>
+Cc: Vineet Gupta <vgupta@synopsys.com>
+---
+ libc/string/arc/arcv2/memset.S | 30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
+
+diff --git a/libc/string/arc/arcv2/memset.S b/libc/string/arc/arcv2/memset.S
+index d076ad1..0918d37 100644
+--- a/libc/string/arc/arcv2/memset.S
++++ b/libc/string/arc/arcv2/memset.S
+@@ -52,6 +52,7 @@ ENTRY(memset)
+ 	lpnz	@.Lset64bytes
+ 	;; LOOP START
+ 	PREWRITE(r3, 64)	;Prefetch the next write location
++#ifdef __LL64__
+ 	std.ab	r4, [r3, 8]
+ 	std.ab	r4, [r3, 8]
+ 	std.ab	r4, [r3, 8]
+@@ -60,16 +61,45 @@ ENTRY(memset)
+ 	std.ab	r4, [r3, 8]
+ 	std.ab	r4, [r3, 8]
+ 	std.ab	r4, [r3, 8]
++#else
++	st.ab	r4, [r3, 4]
++	st.ab	r4, [r3, 4]
++	st.ab	r4, [r3, 4]
++	st.ab	r4, [r3, 4]
++	st.ab	r4, [r3, 4]
++	st.ab	r4, [r3, 4]
++	st.ab	r4, [r3, 4]
++	st.ab	r4, [r3, 4]
++	st.ab	r4, [r3, 4]
++	st.ab	r4, [r3, 4]
++	st.ab	r4, [r3, 4]
++	st.ab	r4, [r3, 4]
++	st.ab	r4, [r3, 4]
++	st.ab	r4, [r3, 4]
++	st.ab	r4, [r3, 4]
++	st.ab	r4, [r3, 4]
++#endif
+ .Lset64bytes:
+ 
+ 	lsr.f	lp_count, r2, 5 ;Last remaining  max 124 bytes
+ 	lpnz	.Lset32bytes
+ 	;; LOOP START
+ 	prefetchw [r3, 32]	;Prefetch the next write location
++#ifdef __LL64__
+ 	std.ab	r4, [r3, 8]
+ 	std.ab	r4, [r3, 8]
+ 	std.ab	r4, [r3, 8]
+ 	std.ab	r4, [r3, 8]
++#else
++	st.ab	r4, [r3, 4]
++	st.ab	r4, [r3, 4]
++	st.ab	r4, [r3, 4]
++	st.ab	r4, [r3, 4]
++	st.ab	r4, [r3, 4]
++	st.ab	r4, [r3, 4]
++	st.ab	r4, [r3, 4]
++	st.ab	r4, [r3, 4]
++#endif
+ .Lset32bytes:
+ 
+ 	and.f	lp_count, r2, 0x1F ;Last remaining 31 bytes
+-- 
+2.4.3
+
