@@ -11,6 +11,9 @@ CC_TOOL_LICENSE = GPLv2
 CC_TOOL_LICENSE_FILES = COPYING
 CC_TOOL_DEPENDENCIES = boost libusb
 
+# we're patching boost.m4
+CC_TOOL_AUTORECONF = YES
+
 # Configure script "discovers" boost in /usr/local if not given explicitly
 CC_TOOL_CONF_OPTS = --with-boost=$(STAGING_DIR)/usr
 
