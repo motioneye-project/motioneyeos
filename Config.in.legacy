@@ -107,6 +107,33 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2015.08"
 
+config BR2_BINUTILS_VERSION_2_23_2
+	bool "binutils 2.23 option renamed"
+	select BR2_LEGACY
+	select BR2_BINUTILS_VERSION_2_23_X
+	help
+	  The binutils version option has been renamed to match the
+	  same patchlevel logic used by gcc. The new option is now
+	  BR2_BINUTILS_VERSION_2_23_X.
+
+config BR2_BINUTILS_VERSION_2_24
+	bool "binutils 2.24 option renamed"
+	select BR2_LEGACY
+	select BR2_BINUTILS_VERSION_2_24_X
+	help
+	  The binutils version option has been renamed to match the
+	  same patchlevel logic used by gcc. The new option is now
+	  BR2_BINUTILS_VERSION_2_24_X.
+
+config BR2_BINUTILS_VERSION_2_25
+	bool "binutils 2.25 option renamed"
+	select BR2_LEGACY
+	select BR2_BINUTILS_VERSION_2_25_X
+	help
+	  The binutils version option has been renamed to match the
+	  same patchlevel logic used by gcc. The new option is now
+	  BR2_BINUTILS_VERSION_2_25_X.
+
 config BR2_PACKAGE_PERF
 	bool "perf option has been renamed"
 	select BR2_LEGACY
