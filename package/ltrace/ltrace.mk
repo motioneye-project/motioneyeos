@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LTRACE_VERSION = be0c6870e08a3be43b3a0d210fb8dc7614b1e82f
+LTRACE_VERSION = c22d359433b333937ee3d803450dc41998115685
 LTRACE_SITE = git://anonscm.debian.org/collab-maint/ltrace.git
 LTRACE_DEPENDENCIES = elfutils
 LTRACE_CONF_OPTS = --disable-werror
