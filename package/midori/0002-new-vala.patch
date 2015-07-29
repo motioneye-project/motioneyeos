@@ -1,0 +1,26 @@
+Fix build with newer (0.28+) vala versions, from:
+http://www.linuxquestions.org/questions/slackware-14/midori-compile-fail-ambiguous-reference-between-glib-and-gtk-4175542325/
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+diff -Nura midori-0.5.9.orig/extensions/history-list.vala midori-0.5.9/extensions/history-list.vala
+--- midori-0.5.9.orig/extensions/history-list.vala	2015-07-03 21:05:01.183360199 -0300
++++ midori-0.5.9/extensions/history-list.vala	2015-07-03 21:05:48.959900926 -0300
+@@ -319,7 +319,7 @@
+         }
+ 
+         private void create_widgets () {
+-            ListStore model;
++            Gtk.ListStore model;
+             TreeIter iter;
+             TreeIter? active_iter = null;
+ 
+@@ -331,7 +331,7 @@
+ 
+             var tab_closing_behavior = this.hl_manager.get_integer ("TabClosingBehavior");
+ 
+-            model = new ListStore (2, typeof (string), typeof (int));
++            model = new Gtk.ListStore (2, typeof (string), typeof (int));
+ 
+             model.append (out iter);
+             model.set (iter, TabClosingBehaviorModel.TEXT, _("Do nothing"),

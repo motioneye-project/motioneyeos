@@ -1,0 +1,43 @@
+Disable libnotify support, we've got no package and it's not very useful
+in embedded targets anyway.
+The webmedia extension requires libnotify as well.
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+diff -Nura midori-0.5.9.orig/CMakeLists.txt midori-0.5.9/CMakeLists.txt
+--- midori-0.5.9.orig/CMakeLists.txt	2015-03-30 15:57:29.554632932 -0300
++++ midori-0.5.9/CMakeLists.txt	2015-03-30 15:57:35.299830192 -0300
+@@ -143,16 +143,7 @@
+     endif ()
+ endif ()
+ 
+-if (WIN32)
+-    add_definitions("-DLIBNOTIFY_VERSION=\"No\"")
+-else ()
+-    pkg_check_modules(NOTIFY REQUIRED libnotify)
+-    add_definitions("-DLIBNOTIFY_VERSION=\"${NOTIFY_VERSION}\"")
+-    add_definitions("-DHAVE_LIBNOTIFY")
+-    set(OPTS_INCLUDE_DIRS "${OPTS_INCLUDE_DIRS};${NOTIFY_INCLUDE_DIRS}")
+-    set(OPTS_LIBRARIES "${OPTS_LIBRARIES};${NOTIFY_LIBRARIES}")
+-    set(PKGS ${PKGS} libnotify)
+-endif ()
++add_definitions("-DLIBNOTIFY_VERSION=\"No\"")
+ 
+ option(USE_GTK3 "Use GTK+3" OFF)
+ option(HALF_BRO_INCOM_WEBKIT2 "Serve as a guniea pig" OFF)
+diff -Nura midori-0.5.9.orig/extensions/CMakeLists.txt midori-0.5.9/extensions/CMakeLists.txt
+--- midori-0.5.9.orig/extensions/CMakeLists.txt	2015-03-30 15:57:29.544632589 -0300
++++ midori-0.5.9/extensions/CMakeLists.txt	2015-03-30 15:57:51.777395949 -0300
+@@ -24,11 +24,7 @@
+          )
+ endif ()
+ 
+-# FIXME: re-enable webmedia extension
+-# once we have working notifications on win
+-if (WIN32)
+-    list(REMOVE_ITEM EXTENSIONS "webmedia-now-playing.vala")
+-endif()
++list(REMOVE_ITEM EXTENSIONS "webmedia-now-playing.vala")
+ 
+ foreach(UNIT_SRC ${EXTENSIONS})
+     string(FIND ${UNIT_SRC} ".c" UNIT_EXTENSION)

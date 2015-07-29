@@ -1,20 +1,35 @@
+comment "midori needs libgtk2 and a toolchain w/ C++, wchar, NPTL"
+	depends on BR2_PACKAGE_WEBKITGTK24_ARCH_SUPPORTS
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR || \
+		!BR2_TOOLCHAIN_HAS_THREADS_NPTL || !BR2_PACKAGE_LIBGTK2
+
 config BR2_PACKAGE_MIDORI
 	bool "midori"
-	select BR2_PACKAGE_WEBKIT
-	select BR2_PACKAGE_LIBSEXY
+	select BR2_PACKAGE_LIBSOUP
+	select BR2_PACKAGE_LIBSOUP_GNOME
+	select BR2_PACKAGE_LIBXML2
+	select BR2_PACKAGE_SQLITE
+	select BR2_PACKAGE_WEBKITGTK24
 	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE
 	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
-	depends on BR2_PACKAGE_LIBGTK2
-	depends on BR2_INSTALL_LIBSTDCPP # webkit
-	depends on BR2_TOOLCHAIN_HAS_THREADS # webkit -> enchant -> libglib2
-	depends on BR2_USE_WCHAR	 # webkit
-	depends on BR2_PACKAGE_WEBKIT_ARCH_SUPPORTS
+	depends on (BR2_PACKAGE_LIBGTK2 && BR2_PACKAGE_XORG7)
+	depends on BR2_INSTALL_LIBSTDCPP # webkitgtk24
+	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL # webkitgtk24
+	depends on BR2_USE_WCHAR # webkitgtk24
+	depends on BR2_PACKAGE_WEBKITGTK24_ARCH_SUPPORTS
 	help
 	  Midori is a lightweight web browser based on WebKit
 
-	  http://software.twotoasts.de/?page=midori
+	  http://www.midori-browser.org/
 
-comment "midori needs libgtk2 and a toolchain w/ C++, wchar, threads"
-	depends on BR2_PACKAGE_WEBKIT_ARCH_SUPPORTS
-	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR || \
-		!BR2_TOOLCHAIN_HAS_THREADS || !BR2_PACKAGE_LIBGTK2
+if BR2_PACKAGE_MIDORI
+
+config BR2_PACKAGE_MIDORI_HTTPS
+	bool "HTTPS support"
+	select BR2_PACKAGE_CA_CERTIFICATES # runtime
+	select BR2_PACKAGE_GLIB_NETWORKING
+	select BR2_PACKAGE_GNUTLS # for glib-networking
+	help
+	  Enable HTTPS protocol support
+
+endif

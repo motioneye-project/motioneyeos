@@ -4,45 +4,45 @@
 #
 ################################################################################
 
-MIDORI_VERSION_MAJOR = 0.4
-MIDORI_VERSION = $(MIDORI_VERSION_MAJOR).6
-MIDORI_SOURCE = midori-$(MIDORI_VERSION).tar.bz2
-MIDORI_SITE = http://archive.xfce.org/src/apps/midori/$(MIDORI_VERSION_MAJOR)
+MIDORI_VERSION = 0.5.9
+MIDORI_SOURCE = midori_$(MIDORI_VERSION)_all_.tar.bz2
+MIDORI_SITE = https://launchpad.net/midori/trunk/$(MIDORI_VERSION)/+download
 MIDORI_LICENSE = LGPLv2.1+
 MIDORI_LICENSE_FILES = COPYING
 MIDORI_DEPENDENCIES = \
 	host-intltool \
+	host-librsvg \
 	host-pkgconf \
 	host-vala \
 	host-python \
-	libgtk2 \
-	libsexy \
-	webkit \
+	libsoup \
+	libxml2 \
+	sqlite \
+	webkitgtk24 \
 	$(if $(BR2_NEEDS_GETTEXT_IF_LOCALE),gettext) \
 	$(if $(BR2_PACKAGE_LIBICONV),libiconv)
 
-ifneq ($(BR2_PACKAGE_XORG7),y)
-define MIDORI_WITHOUT_X11
-	$(SED) "s/check_pkg ('x11')/#check_pkg ('x11')/" $(@D)/wscript
+MIDORI_CONF_OPTS = \
+	-DUSE_ZEITGEIST=OFF
+
+# Requires uClibc backtrace support, normally not enabled
+ifeq ($(BR2_TOOLCHAIN_USES_UCLIBC),y)
+define MIDORI_REMOVE_DEVPET
+	rm -f $(@D)/extensions/devpet.vala
 endef
+MIDORI_POST_PATCH_HOOKS += MIDORI_REMOVE_DEVPET
 endif
 
-define MIDORI_CONFIGURE_CMDS
-	$(MIDORI_WITHOUT_X11)
-	(cd $(@D); \
-		$(TARGET_CONFIGURE_OPTS)	\
-		$(HOST_DIR)/usr/bin/python2 ./waf configure \
-		--prefix=/usr			\
-		--disable-libnotify		\
-	)
-endef
+ifeq ($(BR2_PACKAGE_MIDORI_HTTPS),y)
+MIDORI_DEPENDENCIES += glib-networking
+endif
 
-define MIDORI_BUILD_CMDS
-	(cd $(@D); $(HOST_DIR)/usr/bin/python2 ./waf build -j $(PARALLEL_JOBS))
-endef
+ifeq ($(BR2_PACKAGE_LIBGTK3),y)
+MIDORI_CONF_OPTS += -DUSE_GTK3=ON -DHALF_BRO_INCOM_WEBKIT2=ON
+MIDORI_DEPENDENCIES += libgtk3
+else
+MIDORI_CONF_OPTS += -DUSE_GTK3=OFF
+MIDORI_DEPENDENCIES += libgtk2
+endif
 
-define MIDORI_INSTALL_TARGET_CMDS
-	(cd $(@D); $(HOST_DIR)/usr/bin/python2 ./waf --destdir=$(TARGET_DIR) install)
-endef
-
-$(eval $(generic-package))
+$(eval $(cmake-package))
