@@ -20,8 +20,8 @@ endif
 
 ifeq ($(BR2_PACKAGE_LIBTIRPC),y)
 QUOTA_DEPENDENCIES += libtirpc host-pkgconf
-QUOTA_CFLAGS += "`$(PKG_CONFIG_HOST_BINARY) --cflags libtirpc`"
-QUOTA_LIBS += "`$(PKG_CONFIG_HOST_BINARY) --libs libtirpc`"
+QUOTA_CFLAGS += `$(PKG_CONFIG_HOST_BINARY) --cflags libtirpc`
+QUOTA_LIBS += `$(PKG_CONFIG_HOST_BINARY) --libs libtirpc`
 endif
 
 QUOTA_MAKE_OPTS = $(TARGET_CONFIGURE_OPTS) CFLAGS="$(QUOTA_CFLAGS) -D_GNU_SOURCE" LIBS="$(QUOTA_LIBS)"
