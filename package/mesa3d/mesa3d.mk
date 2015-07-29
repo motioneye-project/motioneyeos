@@ -121,6 +121,10 @@ endif
 #     remove dri.pc and gl.pc in this case (MESA3D_REMOVE_OPENGL_PC)
 MESA3D_CONF_OPTS += --enable-opengl
 
+# libva and mesa3d have a circular dependency
+# we do not need libva support in mesa3d, therefore disable this option
+MESA3D_CONF_OPTS += --disable-va
+
 ifeq ($(BR2_PACKAGE_MESA3D_OPENGL_EGL),y)
 MESA3D_PROVIDES += libegl
 MESA3D_EGL_PLATFORMS = drm
