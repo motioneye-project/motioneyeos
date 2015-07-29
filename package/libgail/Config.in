@@ -6,6 +6,7 @@ config BR2_PACKAGE_LIBGAIL
 	depends on BR2_INSTALL_LIBSTDCPP # pango -> freetype
 	depends on BR2_ARCH_HAS_ATOMICS # pango -> cairo
 	depends on BR2_PACKAGE_LIBGTK2
+	depends on BR2_DEPRECATED_SINCE_2015_08
 	select BR2_PACKAGE_PANGO
 	help
 	  GAIL provides accessibility support for gtk+ and
@@ -27,3 +28,4 @@ comment "libgail needs a toolchain w/ C++, wchar, threads"
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_USE_MMU
 	depends on BR2_ARCH_HAS_ATOMICS
+	depends on BR2_DEPRECATED_SINCE_2015_08
