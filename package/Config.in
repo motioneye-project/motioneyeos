@@ -835,6 +835,7 @@ menu "Graphics"
 	source "package/tiff/Config.in"
 	source "package/wayland/Config.in"
 	source "package/webkit/Config.in"
+	source "package/webkitgtk24/Config.in"
 	source "package/webp/Config.in"
 	source "package/zxing/Config.in"
 endmenu
