@@ -2,6 +2,7 @@ config BR2_PACKAGE_LIBFREEIMAGE
 	bool "libfreeimage"
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on !BR2_STATIC_LIBS
+	depends on BR2_USE_WCHAR
 	# compiler issue: "Error: invalid register number `63'"
 	depends on !BR2_arc
 	# Numerous build issues
@@ -14,7 +15,7 @@ config BR2_PACKAGE_LIBFREEIMAGE
 
 	  http://freeimage.sourceforge.net
 
-comment "libfreeimage needs a toolchain w/ C++, dynamic library"
+comment "libfreeimage needs a toolchain w/ C++, dynamic library, wchar"
 	depends on !BR2_arc
 	depends on !BR2_bfin
-	depends on BR2_STATIC_LIBS || !BR2_INSTALL_LIBSTDCPP
+	depends on BR2_STATIC_LIBS || !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR
