@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBSERIALPORT_VERSION = e31f2c6b8b8f2b7e554df911cc9a3482b99632b4
+LIBSERIALPORT_VERSION = f77bb46df5d883527da8b7eb4a5328ea7e990dbb
 # No https access on upstream git
 LIBSERIALPORT_SITE = git://sigrok.org/libserialport
 LIBSERIALPORT_LICENSE = LGPLv3+
