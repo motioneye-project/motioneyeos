@@ -68,8 +68,8 @@ ROOTFS_ISO9660_BOOTLOADER_CONFIG_PATH = \
 	$(ROOTFS_ISO9660_TARGET_DIR)/isolinux/isolinux.cfg
 ROOTFS_ISO9660_BOOT_IMAGE = isolinux/isolinux.bin
 define ROOTFS_ISO9660_INSTALL_BOOTLOADER
-	$(INSTALL) -D -m 0644 $(BINARIES_DIR)/syslinux/isolinux.bin \
-		$(ROOTFS_ISO9660_TARGET_DIR)/isolinux/isolinux.bin
+	$(INSTALL) -D -m 0644 $(BINARIES_DIR)/syslinux/* \
+		$(ROOTFS_ISO9660_TARGET_DIR)/isolinux/
 	$(INSTALL) -D -m 0644 $(HOST_DIR)/usr/share/syslinux/ldlinux.c32 \
 		$(ROOTFS_ISO9660_TARGET_DIR)/isolinux/ldlinux.c32
 endef
