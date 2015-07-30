@@ -12,4 +12,7 @@ YAML_CPP_LICENSE_FILES = license.txt
 
 YAML_CPP_DEPENDENCIES = boost
 
+# Disable testing and parse tools
+YAML_CPP_CONF_OPTS += -DYAML_CPP_BUILD_TOOLS=OFF
+
 $(eval $(cmake-package))
