@@ -44,6 +44,13 @@ else
 EUDEV_CONF_OPTS += --disable-gudev
 endif
 
+ifeq ($(BR2_PACKAGE_LIBSELINUX),y)
+EUDEV_CONF_OPTS += --enable-selinux
+EUDEV_DEPENDENCIES += libselinux
+else
+EUDEV_CONF_OPTS += --disable-selinux
+endif
+
 define EUDEV_INSTALL_INIT_SYSV
 	$(INSTALL) -m 0755 package/eudev/S10udev $(TARGET_DIR)/etc/init.d/S10udev
 endef
