@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-EXIM_VERSION = 4.85
+EXIM_VERSION = 4.86
 EXIM_SOURCE = exim-$(EXIM_VERSION).tar.bz2
 EXIM_SITE = ftp://ftp.exim.org/pub/exim/exim4
 EXIM_LICENSE = GPLv2+
