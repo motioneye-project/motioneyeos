@@ -16,6 +16,9 @@
 #  ROOTFS_$(FSTYPE)_PRE_GEN_HOOKS, a list of hooks to call before
 #  generating the filesystem image
 #
+#  ROOTFS_$(FSTYPE)_POST_GEN_HOOKS, a list of hooks to call after
+#  generating the filesystem image
+#
 #  ROOTFS_$(FSTYPE)_POST_TARGETS, the list of targets that should be
 #  run after running the main filesystem target. This is useful for
 #  initramfs, to rebuild the kernel once the initramfs is generated.
@@ -96,6 +99,7 @@ endif
 ifneq ($$(ROOTFS_$(2)_COMPRESS_CMD),)
 	PATH=$$(BR_PATH) $$(ROOTFS_$(2)_COMPRESS_CMD) $$@ > $$@$$(ROOTFS_$(2)_COMPRESS_EXT)
 endif
+	$$(foreach hook,$$(ROOTFS_$(2)_POST_GEN_HOOKS),$$(call $$(hook))$$(sep))
 
 rootfs-$(1)-show-depends:
 	@echo $$(ROOTFS_$(2)_DEPENDENCIES)
