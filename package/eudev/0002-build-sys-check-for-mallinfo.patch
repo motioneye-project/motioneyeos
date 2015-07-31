@@ -1,0 +1,93 @@
+From 1205e0b50067c5ebfa082f149f0996304aa04335 Mon Sep 17 00:00:00 2001
+From: Romain Naour <romain.naour@openwide.fr>
+Date: Thu, 30 Jul 2015 16:55:45 +0200
+Subject: [PATCH] build-sys: check for mallinfo
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+mallinfo is not specified by POSIX or the C standards, therefore
+it's not available for all libc libraries (musl).
+
+Add the ability to disable mallinfo statistics.
+
+Fixes:
+selinux-util.c: In function ‘mac_selinux_init’:
+selinux-util.c:70:25: error: storage size of ‘before_mallinfo’ isn’t known
+         struct mallinfo before_mallinfo, after_mallinfo;
+
+Signed-off-by: Romain Naour <romain.naour@openwide.fr>
+---
+ configure.ac              |  3 +++
+ src/shared/selinux-util.c | 15 +++++++++++++++
+ 2 files changed, 18 insertions(+)
+
+diff --git a/configure.ac b/configure.ac
+index ec23ab5..4a293b2 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -226,6 +226,9 @@ else
+ fi
+ AC_SUBST(sushell)
+ 
++# selinux-util.c uses struct mallinfo which is not available for all C libraries (musl).
++AC_CHECK_FUNCS([mallinfo])
++
+ # ------------------------------------------------------------------------------
+ 
+ AC_CHECK_DECL([unshare],
+diff --git a/src/shared/selinux-util.c b/src/shared/selinux-util.c
+index 756215e..4e0866b 100644
+--- a/src/shared/selinux-util.c
++++ b/src/shared/selinux-util.c
+@@ -67,7 +67,10 @@ int mac_selinux_init(const char *prefix) {
+ 
+ #ifdef HAVE_SELINUX
+         usec_t before_timestamp, after_timestamp;
++
++#ifdef HAVE_MALLINFO
+         struct mallinfo before_mallinfo, after_mallinfo;
++#endif
+ 
+         if (!mac_selinux_use())
+                 return 0;
+@@ -75,7 +78,10 @@ int mac_selinux_init(const char *prefix) {
+         if (label_hnd)
+                 return 0;
+ 
++#ifdef HAVE_MALLINFO
+         before_mallinfo = mallinfo();
++#endif
++
+         before_timestamp = now(CLOCK_MONOTONIC);
+ 
+         if (prefix) {
+@@ -92,9 +98,14 @@ int mac_selinux_init(const char *prefix) {
+                 r = security_getenforce() == 1 ? -errno : 0;
+         } else  {
+                 char timespan[FORMAT_TIMESPAN_MAX];
++
++#ifdef HAVE_MALLINFO
+                 int l;
++#endif
+ 
+                 after_timestamp = now(CLOCK_MONOTONIC);
++
++#ifdef HAVE_MALLINFO
+                 after_mallinfo = mallinfo();
+ 
+                 l = after_mallinfo.uordblks > before_mallinfo.uordblks ? after_mallinfo.uordblks - before_mallinfo.uordblks : 0;
+@@ -102,6 +113,10 @@ int mac_selinux_init(const char *prefix) {
+                 log_debug("Successfully loaded SELinux database in %s, size on heap is %iK.",
+                           format_timespan(timespan, sizeof(timespan), after_timestamp - before_timestamp, 0),
+                           (l+1023)/1024);
++#else
++                log_debug("Successfully loaded SELinux database in %s",
++                          format_timespan(timespan, sizeof(timespan), after_timestamp - before_timestamp, 0));
++#endif
+         }
+ #endif
+ 
+-- 
+2.4.3
+

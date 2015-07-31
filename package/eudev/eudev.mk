@@ -11,6 +11,11 @@ EUDEV_LICENSE = GPLv2+ (programs), LGPLv2.1+ (libraries)
 EUDEV_LICENSE_FILES = COPYING
 EUDEV_INSTALL_STAGING = YES
 
+# configure.ac is patched by:
+# 0002-build-sys-check-for-mallinfo.patch
+# 0003-build-sys-check-for-strndupa.patch
+EUDEV_AUTORECONF = YES
+
 # mq_getattr is in librt
 EUDEV_CONF_ENV += LIBS=-lrt
 

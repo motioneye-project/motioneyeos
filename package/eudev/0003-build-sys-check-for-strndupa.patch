@@ -1,0 +1,69 @@
+From 0b04a8347981ceb1030768c3002ac3c2bc0a0bf1 Mon Sep 17 00:00:00 2001
+From: Romain Naour <romain.naour@openwide.fr>
+Date: Thu, 30 Jul 2015 17:31:31 +0200
+Subject: [PATCH] build-sys: check for strndupa
+
+strndupa is a GNU extension, therefore it's not available
+for all libc libraries (musl).
+
+This patch is based on the one proposed by Emil Renner Berthing for
+systemd [1].
+
+[1] http://lists.freedesktop.org/archives/systemd-devel/2014-September/023190.html
+
+Signed-off-by: Romain Naour <romain.naour@openwide.fr>
+---
+ configure.ac              |  3 ++-
+ src/shared/missing.h      | 11 +++++++++++
+ src/shared/selinux-util.c |  1 +
+ 3 files changed, 14 insertions(+), 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index 4a293b2..9c383c2 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -66,8 +66,9 @@ AC_C_INLINE
+ AC_TYPE_MODE_T
+ AC_TYPE_PID_T
+ AC_CHECK_MEMBERS([struct stat.st_rdev])
+-AC_CHECK_DECLS([getrandom, gettid, name_to_handle_at, accept4, mkostemp], [], [], [[#include <sys/types.h>
++AC_CHECK_DECLS([getrandom, gettid, name_to_handle_at, accept4, mkostemp, strndupa], [], [], [[#include <sys/types.h>
+ #include <unistd.h>
++#include <string.h>
+ #include <sys/mount.h>
+ #include <fcntl.h>
+ #include <sys/socket.h>
+diff --git a/src/shared/missing.h b/src/shared/missing.h
+index 2dc9d84..9031119 100644
+--- a/src/shared/missing.h
++++ b/src/shared/missing.h
+@@ -158,3 +158,14 @@ static inline int name_to_handle_at(int fd, const char *name, struct file_handle
+ #ifndef AT_EMPTY_PATH
+ #define AT_EMPTY_PATH 0x1000
+ #endif
++
++#if !HAVE_DECL_STRNDUPA
++#define strndupa(s, n) \
++  ({ \
++    const char *__old = (s); \
++    size_t __len = strnlen(__old, (n)); \
++    char *__new = (char *)alloca(__len + 1); \
++    __new[__len] = '\0'; \
++    (char *)memcpy(__new, __old, __len); \
++  })
++#endif
+diff --git a/src/shared/selinux-util.c b/src/shared/selinux-util.c
+index 4e0866b..a18a5a7 100644
+--- a/src/shared/selinux-util.c
++++ b/src/shared/selinux-util.c
+@@ -31,6 +31,7 @@
+ #include "strv.h"
+ #include "path-util.h"
+ #include "selinux-util.h"
++#include "missing.h"
+ 
+ #ifdef HAVE_SELINUX
+ DEFINE_TRIVIAL_CLEANUP_FUNC(security_context_t, freecon);
+-- 
+2.4.3
+
