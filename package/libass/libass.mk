@@ -18,6 +18,12 @@ LIBASS_DEPENDENCIES = \
 	libfribidi \
 	$(if $(BR2_PACKAGE_LIBICONV),libiconv)
 
+# configure: WARNING: Install yasm for a significantly faster libass build.
+# only for Intel archs
+ifeq ($(BR2_i386)$(BR2_x86_64),y)
+LIBASS_DEPENDENCIES += host-yasm
+endif
+
 ifeq ($(BR2_PACKAGE_FONTCONFIG),y)
 LIBASS_DEPENDENCIES += fontconfig
 LIBASS_CONF_OPTS += --enable-fontconfig
