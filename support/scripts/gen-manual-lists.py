@@ -178,7 +178,7 @@ class Buildroot:
         'deprecated': {
             'filename': "deprecated-list",
             'root_menu': None,
-            'filter': "_is_deprecated",
+            'filter': "_is_deprecated_feature",
             'format': "_format_symbol_prompt_location",
             'sorted': False,
         },
@@ -277,6 +277,9 @@ class Buildroot:
 
     def _is_virtual_package(self, symbol):
         return self._is_package(symbol, 'virtual')
+
+    def _is_deprecated_feature(self, symbol):
+        return symbol.get_prompts() and self._is_deprecated(symbol)
 
     def _exists_virt_symbol(self, pkg_name):
         """ Return True if a symbol exists that defines the package as
