@@ -2,7 +2,7 @@
 sha256	62333167b79afb0b25a843513288c67b59547acf653e8fbe62ee64e71ebd1587	uClibc-0.9.33.2.tar.xz
 
 # From http://www.uclibc-ng.org/
-sha256  c037dbaea685380c75b112b5503778a90fa95ac524728770131aa17e29474915        uClibc-ng-1.0.4.tar.xz
+sha256  7a16bc9ff03b8f74f1f0cf921412f08e48a15285d9d555560d5cca915a28df5f        uClibc-ng-1.0.5.tar.xz
 
 # No hash for the ARC variant, comes from the github-helper
 none	xxx	uClibc-arc-2015.06.tar.gz
