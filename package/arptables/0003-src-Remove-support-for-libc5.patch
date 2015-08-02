@@ -1,0 +1,64 @@
+From 5f1379ff68bfedb56309527bee266a591b27a19e Mon Sep 17 00:00:00 2001
+From: Felix Janda <felix.janda@posteo.de>
+Date: Sat, 16 May 2015 10:31:41 +0200
+Subject: [PATCH 2/2] src: Remove support for libc5
+
+Fixes compilation with musl libc
+
+Backport of upstream commit f4ab8f63f11a72f14687a6646d04ae1bae3fa45f
+Upstream status: backport
+Signed-off-by: Felix Janda <felix.janda@posteo.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Brendan Heading <brendanheading@gmail.com>
+---
+ include/libarptc/arpt_kernel_headers.h | 12 ------------
+ libarptc/libarptc.c                    |  4 ----
+ 2 files changed, 16 deletions(-)
+
+diff --git a/include/libarptc/arpt_kernel_headers.h b/include/libarptc/arpt_kernel_headers.h
+index 442cc54..140e999 100644
+--- a/include/libarptc/arpt_kernel_headers.h
++++ b/include/libarptc/arpt_kernel_headers.h
+@@ -5,7 +5,6 @@
+ 
+ #include <limits.h>
+ 
+-#if defined(__GLIBC__) && __GLIBC__ == 2
+ #include <netinet/ip.h>
+ #include <netinet/in.h>
+ #include <netinet/ip_icmp.h>
+@@ -14,16 +13,5 @@
+ #include <netinet/ether.h>
+ #include <net/if.h>
+ #include <sys/types.h>
+-#else
+-#include <sys/socket.h>
+-#include <linux/ip.h>
+-#include <linux/in.h>
+-#include <linux/if.h>
+-#include <linux/icmp.h>
+-#include <linux/tcp.h>
+-#include <linux/udp.h>
+-#include <linux/types.h>
+-#include <linux/in6.h>
+-#endif
+ 
+ #endif
+diff --git a/libarptc/libarptc.c b/libarptc/libarptc.c
+index 701bae0..9c5a5b0 100644
+--- a/libarptc/libarptc.c
++++ b/libarptc/libarptc.c
+@@ -23,10 +23,6 @@
+ #define inline
+ #endif
+ 
+-#if !defined(__GLIBC__) || (__GLIBC__ < 2)
+-typedef unsigned int socklen_t;
+-#endif
+-
+ #include "libarptc/libarptc.h"
+ 
+ #define IP_VERSION	4
+-- 
+2.4.3
+
