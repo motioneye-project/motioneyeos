@@ -101,7 +101,7 @@ endif
 # webkit1 (old API) uses gtk2, webkit2 (new API) uses gtk3
 # Both can be built simultaneously, prefer "newer" for size/time savings
 # gtk2 is mandatory for plugin support
-ifeq ($(BR2_PACKAGE_LIBGTK3),y)
+ifeq ($(BR2_PACKAGE_LIBGTK3_X11),y)
 WEBKITGTK24_CONF_OPTS += \
 	--with-gtk=3.0 \
 	--disable-webkit1
