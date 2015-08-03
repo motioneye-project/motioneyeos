@@ -4,15 +4,13 @@
 #
 ################################################################################
 
-ZEROMQ_VERSION = 4.0.5
+ZEROMQ_VERSION = 4.1.2
 ZEROMQ_SITE = http://download.zeromq.org
 ZEROMQ_INSTALL_STAGING = YES
 ZEROMQ_DEPENDENCIES = util-linux
 ZEROMQ_LICENSE = LGPLv3+ with exceptions
 ZEROMQ_LICENSE_FILES = COPYING COPYING.LESSER
-# For 0001-tests-disable-test_fork-if-fork-is-not-available.patch
-# and 0002-acinclude.m4-make-kernel-specific-flags-cacheable.patch
-# and 0004-allow-without-libsodium.patch
+# For 0001-acinclude.m4-make-kernel-specific-flags-cacheable.patch
 ZEROMQ_AUTORECONF = YES
 
 # Assume these flags are always available. It is true, at least for
