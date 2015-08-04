@@ -254,3 +254,47 @@ config BR2_TOOLCHAIN_HEADERS_AT_LEAST
 	default "3.1"  if BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_1
 	default "3.0"  if BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0
 	default "2.6"
+
+config BR2_TOOLCHAIN_GCC_AT_LEAST_4_3
+	bool
+
+config BR2_TOOLCHAIN_GCC_AT_LEAST_4_4
+	bool
+	select BR2_TOOLCHAIN_GCC_AT_LEAST_4_3
+
+config BR2_TOOLCHAIN_GCC_AT_LEAST_4_5
+	bool
+	select BR2_TOOLCHAIN_GCC_AT_LEAST_4_4
+
+config BR2_TOOLCHAIN_GCC_AT_LEAST_4_6
+	bool
+	select BR2_TOOLCHAIN_GCC_AT_LEAST_4_5
+
+config BR2_TOOLCHAIN_GCC_AT_LEAST_4_7
+	bool
+	select BR2_TOOLCHAIN_GCC_AT_LEAST_4_6
+
+config BR2_TOOLCHAIN_GCC_AT_LEAST_4_8
+	bool
+	select BR2_TOOLCHAIN_GCC_AT_LEAST_4_7
+
+config BR2_TOOLCHAIN_GCC_AT_LEAST_4_9
+	bool
+	select BR2_TOOLCHAIN_GCC_AT_LEAST_4_8
+
+config BR2_TOOLCHAIN_GCC_AT_LEAST_5
+	bool
+	select BR2_TOOLCHAIN_GCC_AT_LEAST_4_9
+
+# This order guarantees that the highest version is set, as kconfig
+# stops affecting a value on the first matching default.
+config BR2_TOOLCHAIN_GCC_AT_LEAST
+	string
+	default "5"	if BR2_TOOLCHAIN_GCC_AT_LEAST_5
+	default "4.9"	if BR2_TOOLCHAIN_GCC_AT_LEAST_4_9
+	default "4.8"	if BR2_TOOLCHAIN_GCC_AT_LEAST_4_8
+	default "4.7"	if BR2_TOOLCHAIN_GCC_AT_LEAST_4_7
+	default "4.6"	if BR2_TOOLCHAIN_GCC_AT_LEAST_4_6
+	default "4.5"	if BR2_TOOLCHAIN_GCC_AT_LEAST_4_5
+	default "4.4"	if BR2_TOOLCHAIN_GCC_AT_LEAST_4_4
+	default "4.3"	if BR2_TOOLCHAIN_GCC_AT_LEAST_4_3
