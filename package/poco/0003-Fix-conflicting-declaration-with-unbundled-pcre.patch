@@ -1,0 +1,56 @@
+From 4e1165e1081e75de842567b16ae963cbed54e2a3 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?J=C3=B6rg=20Krause?= <joerg.krause@embedded.rocks>
+Date: Tue, 4 Aug 2015 11:09:12 +0200
+Subject: [PATCH 3/3] Fix conflicting declaration with unbundled pcre
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Building poco 1.6.1 with the `--unbundled` config options fails due to an
+conflicting declaration of `pcre`:
+
+```sh
+In file included from src/RegularExpression.cpp:21:0:
+/usr/include/pcre.h:325:26: error: conflicting declaration ‘typedef struct real_pcre pcre’
+ typedef struct real_pcre pcre;
+                          ^
+In file included from src/RegularExpression.cpp:17:0:
+include/Poco/RegularExpression.h:37:34: note: previous declaration as ‘typedef struct real_pcre8_or_16 pcre’
+  typedef struct real_pcre8_or_16 pcre;
+```
+
+Upstream status:
+https://github.com/pocoproject/poco/pull/897
+
+Signed-off-by: Jörg Krause <joerg.krause@embedded.rocks>
+---
+ Foundation/include/Poco/RegularExpression.h | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/Foundation/include/Poco/RegularExpression.h b/Foundation/include/Poco/RegularExpression.h
+index e1bc063..989ed52 100644
+--- a/Foundation/include/Poco/RegularExpression.h
++++ b/Foundation/include/Poco/RegularExpression.h
+@@ -26,7 +26,9 @@
+ #include "Poco/Foundation.h"
+ #include <vector>
+ 
+-
++#if defined(POCO_UNBUNDLED)
++#include <pcre.h>
++#else
+ //
+ // Copy these definitions from pcre.h
+ // to avoid pulling in the entire header file
+@@ -37,7 +39,7 @@ extern "C"
+ 	typedef struct real_pcre8_or_16 pcre;
+ 	struct pcre_extra;
+ }
+-
++#endif
+ 
+ namespace Poco {
+ 
+-- 
+2.5.0
+
