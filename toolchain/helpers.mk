@@ -175,6 +175,36 @@ check_kernel_headers_version = \
 	fi
 
 #
+# Check the specific gcc version actually matches the version in the
+# toolchain
+#
+# $1: path to gcc
+# $2: expected gcc version
+#
+# Some details about the sed expression:
+# - 1!d
+#   - delete if not line 1
+#
+# - s/^[^)]+\) ([^[:space:]]+).*/\1/
+#   - eat all until the first ')' character followed by a space
+#   - match as many non-space chars as possible
+#   - eat all the remaining chars on the line
+#   - replace by the matched expression
+#
+# - s/\.[[:digit:]]+$//
+#   - eat a dot followed by as many digits as possible up to the end
+#     of line
+#   - replace with nothing
+#
+check_gcc_version = \
+	expected_version="$(strip $2)" ; \
+	real_version=`$(1) --version | sed -r -e '1!d; s/^[^)]+\) ([^[:space:]]+).*/\1/; s/\.[[:digit:]]+$$//;'` ; \
+	if [ "$${real_version}" != "$${expected_version}" ] ; then \
+		echo "Incorrect selection of gcc version: expected $${expected_version}, got $${real_version}" ; \
+		exit 1 ; \
+	fi
+
+#
 # Check the availability of a particular glibc feature. This function
 # is used to check toolchain options that are always supported by
 # glibc, so we simply check that the corresponding option is properly
