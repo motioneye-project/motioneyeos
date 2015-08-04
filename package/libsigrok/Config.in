@@ -6,6 +6,8 @@ config BR2_PACKAGE_LIBSIGROK
 	depends on BR2_USE_WCHAR
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_USE_MMU
+	# std=c11
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_7
 	help
 	  Libsigrok is a shared library written in C, which provides
 	  the basic hardware access drivers for logic analyzers and
@@ -22,20 +24,15 @@ config BR2_PACKAGE_LIBSIGROKCXX
 	bool "build C++ bindings"
 	select BR2_PACKAGE_GLIBMM
 	depends on BR2_INSTALL_LIBSTDCPP
-	# CS powerpc g++ are too old. libsigrokcxx needs C++11
-	depends on !BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_POWERPC201103 && \
-		!BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_POWERPC201009
 	help
 	  Build libsigrok C++ bindings as well.
 
 comment "C++ bindings need a toolchain w/ C++"
 	depends on BR2_PACKAGE_LIBSIGROK
 	depends on !BR2_INSTALL_LIBSTDCPP
-	depends on !BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_POWERPC201103 && \
-		!BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_POWERPC201009
 
 endif
 
-comment "libsigrok needs a toolchain w/ wchar, threads"
+comment "libsigrok needs a toolchain w/ wchar, threads, gcc >= 4.7"
 	depends on BR2_USE_MMU
-	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || !BR2_TOOLCHAIN_GCC_AT_LEAST_4_7
