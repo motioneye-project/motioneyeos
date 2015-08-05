@@ -1,7 +1,8 @@
-comment "midori needs libgtk2 and a toolchain w/ C++, wchar, NPTL"
+comment "midori needs libgtk2 and a toolchain w/ C++, wchar, NPTL, gcc >= 4.8"
 	depends on BR2_PACKAGE_WEBKITGTK24_ARCH_SUPPORTS
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR || \
-		!BR2_TOOLCHAIN_HAS_THREADS_NPTL || !BR2_PACKAGE_LIBGTK2
+		!BR2_TOOLCHAIN_HAS_THREADS_NPTL || !BR2_PACKAGE_LIBGTK2 \
+		|| !BR2_TOOLCHAIN_GCC_AT_LEAST_4_8
 
 config BR2_PACKAGE_MIDORI
 	bool "midori"
@@ -16,6 +17,7 @@ config BR2_PACKAGE_MIDORI
 	depends on BR2_INSTALL_LIBSTDCPP # webkitgtk24
 	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL # webkitgtk24
 	depends on BR2_USE_WCHAR # webkitgtk24
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_8 # webkitgtk24
 	depends on BR2_PACKAGE_WEBKITGTK24_ARCH_SUPPORTS
 	help
 	  Midori is a lightweight web browser based on WebKit
