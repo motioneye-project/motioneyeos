@@ -1,0 +1,56 @@
+musl gcc5 fixes
+
+Fetch from:
+http://git.alpinelinux.org/cgit/aports/plain/main/mpd/musl-gcc5-fixes.patch
+
+Problem has been reported upstream and closed with WONTFIX:
+http://bugs.musicpd.org/view.php?id=4387
+http://bugs.musicpd.org/view.php?id=4110
+
+however...
+
+POSIX does not permit using PTHREAD_COND_INITIALIZER except for static
+initialization, and certainly does not permit using it as a value
+
+also POSIX does not specify the type of the object (it's opaque) so if
+there are any types for which their code would be invalid C++, then their
+code is invalid
+
+also, volatile in the type is necessary. without that, LTO can break the code.
+
+Signed-off-by: Jörg Krause <joerg.krause@embedded.rocks>
+
+--- ./src/notify.hxx.orig
++++ ./src/notify.hxx
+@@ -28,7 +28,7 @@
+ 	Cond cond;
+ 	bool pending;
+ 
+-#if !defined(WIN32) && !defined(__NetBSD__) && !defined(__BIONIC__)
++#if defined(__GLIBC__)
+ 	constexpr
+ #endif
+ 	notify():pending(false) {}
+--- ./src/thread/PosixCond.hxx.orig
++++ ./src/thread/PosixCond.hxx
+@@ -41,7 +41,7 @@
+ 	pthread_cond_t cond;
+ 
+ public:
+-#if defined(__NetBSD__) || defined(__BIONIC__)
++#if !defined(__GLIBC__)
+ 	/* NetBSD's PTHREAD_COND_INITIALIZER is not compatible with
+ 	   "constexpr" */
+ 	PosixCond() {
+--- ./src/thread/PosixMutex.hxx.orig
++++ ./src/thread/PosixMutex.hxx
+@@ -41,7 +41,7 @@
+ 	pthread_mutex_t mutex;
+ 
+ public:
+-#if defined(__NetBSD__) || defined(__BIONIC__)
++#if !defined(__GLIBC__)
+ 	/* NetBSD's PTHREAD_MUTEX_INITIALIZER is not compatible with
+ 	   "constexpr" */
+ 	PosixMutex() {
+
