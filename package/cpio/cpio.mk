@@ -16,8 +16,7 @@ CPIO_PATCH = \
 	https://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/app-arch/cpio/files/cpio-2.11-stat.patch
 
 # cpio uses argp.h which is not provided by uclibc or musl by default.
-# Use the argp-standalone package to provide this but make sure
-# the host package does not try to use the host version.
+# Use the argp-standalone package to provide this.
 ifeq ($(BR2_PACKAGE_ARGP_STANDALONE),y)
 CPIO_DEPENDENCIES += argp-standalone
 endif
