@@ -1,6 +1,5 @@
 config BR2_PACKAGE_JQUERY_VALIDATION
-	bool "jQuery-Validation"
-	select BR2_PACKAGE_JQUERY
+	bool "jquery-validation"
 	help
 	  The jQuery Validation Plugin provides drop-in validation for
 	  your existing forms, while making all kinds of

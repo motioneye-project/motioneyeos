@@ -947,6 +947,8 @@ menu "Javascript"
 	source "package/explorercanvas/Config.in"
 	source "package/flot/Config.in"
 	source "package/jquery/Config.in"
+if BR2_PACKAGE_JQUERY
+menu "external jQuery plugins"
 	source "package/jquery-datetimepicker/Config.in"
 	source "package/jquery-keyboard/Config.in"
 	source "package/jquery-mobile/Config.in"
@@ -954,6 +956,8 @@ menu "Javascript"
 	source "package/jquery-ui/Config.in"
 	source "package/jquery-ui-themes/Config.in"
 	source "package/jquery-validation/Config.in"
+endmenu
+endif
 	source "package/jsmin/Config.in"
 	source "package/json-javascript/Config.in"
 endmenu

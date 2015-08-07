@@ -1,6 +1,5 @@
 config BR2_PACKAGE_JQUERY_KEYBOARD
-	bool "jQuery keyboard"
-	select BR2_PACKAGE_JQUERY
+	bool "jquery-keyboard"
 	select BR2_PACKAGE_JQUERY_UI
 	help
 	  Virtual Keyboard using jQuery UI
