@@ -15,10 +15,10 @@ CPIO_PATCH = \
 	https://projects.archlinux.org/svntogit/packages.git/plain/cpio/trunk/cpio-2.11-check_for_symlinks-CVE-2015-1197.patch \
 	https://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/app-arch/cpio/files/cpio-2.11-stat.patch
 
-# cpio uses argp.h which is not provided by uclibc by default.
+# cpio uses argp.h which is not provided by uclibc or musl by default.
 # Use the argp-standalone package to provide this but make sure
 # the host package does not try to use the host version.
-ifeq ($(BR2_TOOLCHAIN_USES_UCLIBC),y)
+ifeq ($(BR2_PACKAGE_ARGP_STANDALONE),y)
 CPIO_DEPENDENCIES += argp-standalone
 endif
 
