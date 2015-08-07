@@ -22,7 +22,7 @@ LIBGPGME_CONF_OPTS = --with-gpg=/usr/bin/gpg \
 	--disable-gpg-test
 
 # Handle argp-standalone or it errors out during build
-ifeq ($(BR2_PACKAGE_ARGP_STANDALONE)$(BR2_TOOLCHAIN_USES_UCLIBC),yy)
+ifeq ($(BR2_PACKAGE_ARGP_STANDALONE),y)
 LIBGPGME_CONF_ENV += LIBS="-largp"
 LIBGPGME_DEPENDENCIES += argp-standalone
 endif
