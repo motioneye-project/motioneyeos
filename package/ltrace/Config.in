@@ -9,6 +9,7 @@ config BR2_PACKAGE_LTRACE
 	select BR2_PACKAGE_ELFUTILS
 	depends on BR2_USE_WCHAR # elfutils
 	depends on !BR2_STATIC_LIBS # elfutils
+	depends on BR2_TOOLCHAIN_USES_UCLIBC || BR2_TOOLCHAIN_USES_GLIBC # elfutils
 	help
 	  Debugging program which runs a specified command until it exits.
 	  While the command is executing, ltrace intercepts and records
@@ -17,5 +18,6 @@ config BR2_PACKAGE_LTRACE
 
 	  http://ltrace.org
 
-comment "ltrace needs toolchain w/ wchar, dynamic library"
+comment "ltrace needs a uclibc or (e)glibc toolchain w/ wchar, dynamic library"
 	depends on !BR2_USE_WCHAR || BR2_STATIC_LIBS
+	depends on !BR2_TOOLCHAIN_USES_UCLIBC && !BR2_TOOLCHAIN_USES_GLIBC
