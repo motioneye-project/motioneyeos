@@ -2,11 +2,12 @@ config BR2_PACKAGE_ZNC
 	bool "znc"
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_USE_MMU # fork()
+	depends on !BR2_STATIC_LIBS
 	help
 	  Advanced IRC bouncer
 
 	  http://www.znc.in
 
-comment "znc needs a toolchain w/ C++"
-	depends on !BR2_INSTALL_LIBSTDCPP
+comment "znc needs a toolchain w/ C++, dynamic library"
+	depends on !BR2_INSTALL_LIBSTDCPP || BR2_STATIC_LIBS
 	depends on BR2_USE_MMU
