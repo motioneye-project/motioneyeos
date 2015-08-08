@@ -1,8 +1,8 @@
 config BR2_PACKAGE_DAWGDIC
 	bool "dawgdic"
 	depends on BR2_INSTALL_LIBSTDCPP
-	# std=c11
-	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_7
+	# needs std::strtoll
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_6
 	help
 	  dawgdic provides a library for building and accessing
 	  dictionaries implemented with directed acyclic word graphs
@@ -15,5 +15,5 @@ config BR2_PACKAGE_DAWGDIC
 
 	  https://github.com/stil/dawgdic
 
-comment "dawgdic needs a toolchain w/ C++, gcc >= 4.7"
-	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_GCC_AT_LEAST_4_7
+comment "dawgdic needs a toolchain w/ C++, gcc >= 4.6"
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_GCC_AT_LEAST_4_6
