@@ -1,0 +1,19 @@
+Kernel modesettings support also depends on dri2, see
+http://cgit.freedesktop.org/xorg/xserver/tree/hw/xfree86/drivers/modesetting/Makefile.am#n46
+
+Patch sent upstream: https://bugs.freedesktop.org/show_bug.cgi?id=91584
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+
+diff -uNr xorg-server-1.17.2.org/configure.ac xorg-server-1.17.2/configure.ac
+--- xorg-server-1.17.2.org/configure.ac	2015-06-16 17:42:40.000000000 +0200
++++ xorg-server-1.17.2/configure.ac	2015-08-08 10:44:59.702382624 +0200
+@@ -2036,7 +2036,7 @@
+ 	        XORG_SYS_LIBS="$XORG_SYS_LIBS $XORG_MODULES_LIBS"
+ 	fi
+ 
+-	if test "x$DRM" = xyes; then
++	if test "x$DRM" = xyes -a "x$DRI2" = xyes; then
+ 		dnl 2.4.46 is required for cursor hotspot support.
+ 		PKG_CHECK_EXISTS(libdrm >= 2.4.46)
+ 		XORG_DRIVER_MODESETTING=yes

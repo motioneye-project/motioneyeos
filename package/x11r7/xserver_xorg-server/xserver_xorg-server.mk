@@ -10,7 +10,10 @@ XSERVER_XORG_SERVER_SITE = http://xorg.freedesktop.org/releases/individual/xserv
 XSERVER_XORG_SERVER_LICENSE = MIT
 XSERVER_XORG_SERVER_LICENSE_FILES = COPYING
 XSERVER_XORG_SERVER_INSTALL_STAGING = YES
+# xfont_font-util is needed only for autoreconf
+XSERVER_XORG_SERVER_AUTORECONF = YES
 XSERVER_XORG_SERVER_DEPENDENCIES = 	\
+	xfont_font-util			\
 	xutil_util-macros 		\
 	xlib_libXfont 			\
 	xlib_libX11 			\
@@ -143,8 +146,8 @@ endif
 ifeq ($(BR2_PACKAGE_HAS_UDEV),y)
 XSERVER_XORG_SERVER_DEPENDENCIES += udev
 XSERVER_XORG_SERVER_CONF_OPTS += --enable-config-udev
-# udev kms support depends on libdrm
-ifeq ($(BR2_PACKAGE_LIBDRM),y)
+# udev kms support depends on libdrm and dri2
+ifeq ($(BR2_PACKAGE_LIBDRM)$(BR2_PACKAGE_XPROTO_DRI2PROTO),yy)
 XSERVER_XORG_SERVER_DEPENDENCIES += libdrm
 XSERVER_XORG_SERVER_CONF_OPTS += --enable-config-udev-kms --enable-libdrm
 else
