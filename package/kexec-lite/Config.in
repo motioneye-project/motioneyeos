@@ -16,5 +16,5 @@ config BR2_PACKAGE_KEXEC_LITE
 
 comment "kexec-lite needs a uClibc or (e)glibc toolchain w/ wchar, dynamic library"
 	depends on BR2_powerpc || BR2_powerpc64
-	depends on BR2_STATIC_LIBS || !BR2_USE_WCHAR
-	depends on !BR2_TOOLCHAIN_USES_UCLIBC && !BR2_TOOLCHAIN_USES_GLIBC
+	depends on BR2_STATIC_LIBS || !BR2_USE_WCHAR \
+		|| !(BR2_TOOLCHAIN_USES_UCLIBC || BR2_TOOLCHAIN_USES_GLIBC)
