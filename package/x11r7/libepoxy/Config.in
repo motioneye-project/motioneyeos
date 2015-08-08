@@ -1,7 +1,13 @@
 config BR2_PACKAGE_LIBEPOXY
 	bool "epoxy"
-	depends on BR2_PACKAGE_MESA3D
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XUTIL_UTIL_MACROS
+	depends on BR2_PACKAGE_HAS_LIBEGL
 	help
-	  Epoxy is a library for handling OpenGL function pointer management for you.
+	  Epoxy is a library for handling OpenGL function pointer
+	  management for you.
 
 	  https://github.com/anholt/libepoxy
+
+comment "epoxy needs an OpenGL EGL backend"
+	depends on !BR2_PACKAGE_HAS_LIBEGL
