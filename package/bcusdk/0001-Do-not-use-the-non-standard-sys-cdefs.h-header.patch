@@ -1,0 +1,48 @@
+From c36db3f798bf576f42d81a0c51198b17d7112e8c Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Sat, 8 Aug 2015 17:43:28 +0200
+Subject: [PATCH] Do not use the non-standard <sys/cdefs.h> header
+
+<sys/cdefs.h> is glibc-specific, and should be used only internally by
+glibc, not by external libraries/programs. It is not available in all
+standard C libraries.
+
+Submitted upstream: https://sourceforge.net/p/bcusdk/patches/3/
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ eibd/include/eibclient.h | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
+
+diff --git a/eibd/include/eibclient.h b/eibd/include/eibclient.h
+index 2781878..b095a1c 100644
+--- a/eibd/include/eibclient.h
++++ b/eibd/include/eibclient.h
+@@ -27,10 +27,11 @@
+ #ifndef EIBCLIENT_H
+ #define EIBCLIENT_H
+ 
+-#include <sys/cdefs.h>
+ #include <stdint.h>
+ 
+-__BEGIN_DECLS;
++#ifdef	__cplusplus
++extern "C" {
++#endif
+ 
+ #include "eibloadresult.h"
+ 
+@@ -889,5 +890,9 @@ int EIB_Cache_LastUpdates_async (EIBConnection * con, uint16_t start,
+ 				 uint16_t * end);
+ 
+ 
+-__END_DECLS
++
++#ifdef	__cplusplus
++}
++#endif
++
+ #endif
+-- 
+2.5.0
+
