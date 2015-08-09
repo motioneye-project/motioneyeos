@@ -1,0 +1,38 @@
+The gcc predefines for Linux are __sparc_v8__/__sparc_v7__
+
+Signed-off-by: Waldemar Brodkorb <wbx@openadk.org>
+
+diff -Nur postgresql-9.4.4.orig/src/include/storage/s_lock.h postgresql-9.4.4/src/include/storage/s_lock.h
+--- postgresql-9.4.4.orig/src/include/storage/s_lock.h	2015-06-09 21:29:38.000000000 +0200
++++ postgresql-9.4.4/src/include/storage/s_lock.h	2015-08-09 19:57:06.000000000 +0200
+@@ -420,12 +420,12 @@
+ :		"=r"(_res), "+m"(*lock)
+ :		"r"(lock)
+ :		"memory");
+-#if defined(__sparcv7)
++#if defined(__sparcv7) || defined(__sparc_v7__)
+ 	/*
+ 	 * No stbar or membar available, luckily no actually produced hardware
+ 	 * requires a barrier.
+ 	 */
+-#elif defined(__sparcv8)
++#elif defined(__sparcv8) || defined(__sparc_v8__)
+ 	/* stbar is available (and required for both PSO, RMO), membar isn't */
+ 	__asm__ __volatile__ ("stbar	 \n":::"memory");
+ #else
+@@ -438,13 +438,13 @@
+ 	return (int) _res;
+ }
+ 
+-#if defined(__sparcv7)
++#if defined(__sparcv7) || defined(__sparc_v7__)
+ /*
+  * No stbar or membar available, luckily no actually produced hardware
+  * requires a barrier.
+  */
+ #define S_UNLOCK(lock)		(*((volatile slock_t *) (lock)) = 0)
+-#elif defined(__sparcv8)
++#elif defined(__sparcv8) || defined(__sparc_v8__)
+ /* stbar is available (and required for both PSO, RMO), membar isn't */
+ #define S_UNLOCK(lock)	\
+ do \
