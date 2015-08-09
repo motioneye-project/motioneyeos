@@ -58,11 +58,6 @@ MESA3D_CONF_OPTS += \
 	--disable-xa
 endif
 
-ifeq ($(BR2_STATIC_LIBS),)
-# fix for "configure: error: Cannot use static libraries for DRI drivers"
-MESA3D_CONF_OPTS += --disable-static
-endif
-
 # Drivers
 
 #Gallium Drivers
