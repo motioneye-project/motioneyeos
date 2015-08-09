@@ -191,16 +191,12 @@ check_kernel_headers_version = \
 #   - eat all the remaining chars on the line
 #   - replace by the matched expression
 #
-# - s/\.[[:digit:]]+$//
-#   - eat a dot followed by as many digits as possible up to the end
-#     of line
-#   - replace with nothing
-#
 check_gcc_version = \
 	expected_version="$(strip $2)" ; \
-	real_version=`$(1) --version | sed -r -e '1!d; s/^[^)]+\) ([^[:space:]]+).*/\1/; s/\.[[:digit:]]+$$//;'` ; \
-	if [ "$${real_version}" != "$${expected_version}" ] ; then \
-		echo "Incorrect selection of gcc version: expected $${expected_version}, got $${real_version}" ; \
+	real_version=`$(1) --version | sed -r -e '1!d; s/^[^)]+\) ([^[:space:]]+).*/\1/;'` ; \
+	if [[ ! "$${real_version}" =~ ^$${expected_version}\. ]] ; then \
+		printf "Incorrect selection of gcc version: expected %s.x, got %s\n" \
+			"$${expected_version}" "$${real_version}" ; \
 		exit 1 ; \
 	fi
 
