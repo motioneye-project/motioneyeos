@@ -11,4 +11,10 @@ TINC_LICENSE = GPLv2+ with OpenSSL exception
 TINC_LICENSE_FILES = COPYING COPYING.README
 TINC_CONF_ENV = CFLAGS="$(TARGET_CFLAGS) -std=c99"
 
+ifeq ($(BR2_arc),y)
+TINC_CONF_ENV += \
+	ax_cv_check_cflags___fPIE=no \
+	ax_cv_check_ldflags___pie=no
+endif
+
 $(eval $(autotools-package))
