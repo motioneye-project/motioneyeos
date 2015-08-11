@@ -1,0 +1,7 @@
+config BR2_PACKAGE_LIBBROADVOICE
+	bool "libbroadvoice"
+	help
+	  broadvoice - a library for the BroadVoice 16 and 32 speech
+	  codecs
+
+	  https://www.broadcom.com/support/broadvoice
