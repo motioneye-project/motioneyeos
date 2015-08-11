@@ -1,0 +1,39 @@
+From d7b84f69c5e92178e110552cce27f900744e1779 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?J=C3=B6rg=20Krause?= <joerg.krause@embedded.rocks>
+Date: Thu, 30 Jul 2015 23:47:05 +0200
+Subject: [PATCH 1/1] Remove Werror
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+-Werror shouldn't be used in released code since it can cause random build
+failures on moderate warnings. It also depends on the used toolchain since
+different toolchains may or may not print the same warnings.
+
+Backported from: d7b84f69c5e92178e110552cce27f900744e1779
+
+Signed-off-by: Jörg Krause <joerg.krause@embedded.rocks>
+---
+ CMakeLists.txt | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index cab0de8..62bf203 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -97,10 +97,10 @@ endif( MSVC )
+ 
+ if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+   # using regular Clang or AppleClang
+-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Werror -Wall -Wconversion -Wshadow -Wno-sign-conversion")
++  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Wconversion -Wshadow -Wno-sign-conversion")
+ elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+   # using GCC
+-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Werror -Wall -Wconversion -Wshadow -Wextra -pedantic")
++  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Wconversion -Wshadow -Wextra -pedantic")
+   # not yet ready for -Wsign-conversion
+ endif()
+ 
+-- 
+2.5.0
+
