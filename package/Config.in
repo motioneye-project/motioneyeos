@@ -955,6 +955,7 @@ menu "Multimedia"
 	source "package/libplayer/Config.in"
 	source "package/libtheora/Config.in"
 	source "package/live555/Config.in"
+	source "package/libyuv/Config.in"
 	source "package/mediastreamer/Config.in"
 	source "package/x264/Config.in"
 endmenu
