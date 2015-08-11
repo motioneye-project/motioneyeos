@@ -27,7 +27,7 @@ choice
 		select BR2_UCLIBC_VERSION_SUPPORTS_LINUXTHREADS
 		select BR2_UCLIBC_VERSION_SUPPORTS_LINUXTHREADS_OLD
 		select BR2_UCLIBC_VERSION_SUPPORTS_NPTL if !BR2_x86_i386
-		depends on !(BR2_arc || BR2_xtensa)
+		depends on !(BR2_arc || BR2_mips64 || BR2_mips64el || BR2_xtensa)
 
 	config BR2_UCLIBC_VERSION_ARC_GIT
 		bool "uClibc Git ARC"
@@ -50,7 +50,7 @@ choice
 		select BR2_UCLIBC_VERSION_SUPPORTS_LINUXTHREADS_OLD
 		select BR2_UCLIBC_VERSION_SUPPORTS_NPTL \
 		       if !BR2_x86_i386 && !BR2_xtensa
-		depends on !(BR2_arc)
+		depends on !(BR2_arc || BR2_mips64 || BR2_mips64el)
 
 endchoice
 
