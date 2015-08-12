@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-TZDATA_VERSION = 2015e
+TZDATA_VERSION = 2015f
 TZDATA_SOURCE = tzdata$(TZDATA_VERSION).tar.gz
 TZDATA_SITE = ftp://ftp.iana.org/tz/releases
 TZDATA_STRIP_COMPONENTS = 0
