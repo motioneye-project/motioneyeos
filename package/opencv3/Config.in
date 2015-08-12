@@ -5,8 +5,6 @@ menuconfig BR2_PACKAGE_OPENCV3
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_USE_WCHAR
 	depends on !BR2_STATIC_LIBS # include dlfcn.h
-	# Causes some toolchain failures on Xtensa
-	depends on !BR2_xtensa
 	depends on !BR2_PACKAGE_OPENCV
 	help
 	  OpenCV (Open Source Computer Vision) is a library of programming
@@ -337,7 +335,6 @@ config BR2_PACKAGE_OPENCV3_INSTALL_DATA
 endif # BR2_PACKAGE_OPENCV3
 
 comment "opencv3 needs a toolchain w/ C++, NPTL, wchar, dynamic library"
-	depends on !BR2_xtensa
 	depends on !BR2_INSTALL_LIBSTDCPP || \
 		!BR2_USE_WCHAR || \
 		!BR2_TOOLCHAIN_HAS_THREADS_NPTL || \
