@@ -91,7 +91,7 @@ endif
 # code size and performance, the linker can usually optimize away the
 # overhead when a call ends up within a certain range.
 #
-# Use text-section-literals for Xtensa globally.
+# Use auto-litpools for Xtensa globally.
 # Collecting literals into separate section can be advantageous if that
 # section is placed into DTCM at link time. This is applicable for code
 # running on bare metal, but makes no sense under linux, where userspace
@@ -100,7 +100,7 @@ endif
 # instruction can only access literals in 256 KBytes range.
 #
 ifeq ($(BR2_xtensa),y)
-TARGET_ABI += -mlongcalls -mtext-section-literals
+TARGET_ABI += -mlongcalls -mauto-litpools
 endif
 
 ifeq ($(BR2_arc)$(BR2_ARC_ATOMIC_EXT),yy)
