@@ -1,10 +1,26 @@
 #!/usr/bin/env perl
 #
 # Originaly from: https://github.com/raspberrypi/tools/blob/master/mkimage/mkknlimg
-# Original cset : 92a2df13b887f4799554bf92c4fc78d53668c868
+# Original cset : f5642106425d430e1f82ee064121a5fd0e05a386
+#
+# ----------------------------------------------------------------------
+# mkknlimg by Phil Elwell for Raspberry Pi
+# based on extract-ikconfig by Dick Streefland
+#
+# (c) 2009,2010 Dick Streefland <dick@streefland.net>
+# (c) 2014,2015 Raspberry Pi (Trading) Limited <info@raspberrypi.org>
+#
+# Licensed under the terms of the GNU General Public License.
+# ----------------------------------------------------------------------
 
 use strict;
+use warnings;
 use integer;
+
+use constant FLAG_PI   => 1;
+use constant FLAG_DTOK => 2;
+use constant FLAG_DDTK => 4;
+use constant FLAG_283X => 8;
 
 my $trailer_magic = 'RPTL';
 
@@ -12,13 +28,23 @@ my $tmpfile1 = "/tmp/mkknlimg_$$.1";
 my $tmpfile2 = "/tmp/mkknlimg_$$.2";
 
 my $dtok = 0;
+my $ddtk = 0;
+my $is_283x = 0;
 
-while ($ARGV[0] =~ /^-/)
+while (@ARGV && ($ARGV[0] =~ /^-/))
 {
     my $arg = shift(@ARGV);
     if ($arg eq '--dtok')
     {
 	$dtok = 1;
+    }
+    elsif ($arg eq '--ddtk')
+    {
+	$ddtk = 1;
+    }
+    elsif ($arg eq '--283x')
+    {
+	$is_283x = 1;
     }
     else
     {
@@ -32,56 +58,68 @@ usage() if (@ARGV != 2);
 my $kernel_file = $ARGV[0];
 my $out_file = $ARGV[1];
 
-my @wanted_config_lines =
-(
-	'CONFIG_BCM2708_DT'
-);
+if (! -r $kernel_file)
+{
+    print ("* File '$kernel_file' not found\n");
+    usage();
+}
 
-my @wanted_strings =
-(
-	'bcm2708_fb',
-	'brcm,bcm2708-pinctrl',
-	'brcm,bcm2835-gpio',
-	'of_find_property'
-);
+my $wanted_configs =
+{
+	'CONFIG_BCM2708_DT' => FLAG_PI | FLAG_DTOK,
+	'CONFIG_ARCH_BCM2835' => FLAG_PI | FLAG_DTOK | FLAG_283X,
+};
+
+my $wanted_strings =
+{
+	'bcm2708_fb' => FLAG_PI,
+	'brcm,bcm2835-mmc' => FLAG_PI,
+	'brcm,bcm2835-sdhost' => FLAG_PI,
+	'brcm,bcm2708-pinctrl' => FLAG_PI | FLAG_DTOK,
+	'brcm,bcm2835-gpio' => FLAG_PI | FLAG_DTOK,
+	'brcm,bcm2835-pm-wdt' => FLAG_PI | FLAG_DTOK | FLAG_283X,
+	'of_overlay_apply' => FLAG_DTOK | FLAG_DDTK,
+};
 
 my $res = try_extract($kernel_file, $tmpfile1);
-
-$res = try_decompress('\037\213\010', 'xy',    'gunzip', 0,
-		      $kernel_file, $tmpfile1, $tmpfile2) if (!$res);
-$res = try_decompress('\3757zXZ\000', 'abcde', 'unxz --single-stream', -1,
-		      $kernel_file, $tmpfile1, $tmpfile2) if (!$res);
-$res = try_decompress('BZh',          'xy',    'bunzip2', 0,
-		      $kernel_file, $tmpfile1, $tmpfile2) if (!$res);
-$res = try_decompress('\135\0\0\0',   'xxx',   'unlzma', 0,
-		      $kernel_file, $tmpfile1, $tmpfile2) if (!$res);
-$res = try_decompress('\211\114\132', 'xy',    'lzop -d', 0,
-		      $kernel_file, $tmpfile1, $tmpfile2) if (!$res);
+$res ||= try_decompress('\037\213\010', 'xy',    'gunzip', 0,
+			$kernel_file, $tmpfile1, $tmpfile2);
+$res ||= try_decompress('\3757zXZ\000', 'abcde', 'unxz --single-stream', -1,
+			$kernel_file, $tmpfile1, $tmpfile2);
+$res ||= try_decompress('BZh',          'xy',    'bunzip2', 0,
+			$kernel_file, $tmpfile1, $tmpfile2);
+$res ||= try_decompress('\135\0\0\0',   'xxx',   'unlzma', 0,
+			$kernel_file, $tmpfile1, $tmpfile2);
+$res ||= try_decompress('\211\114\132', 'xy',    'lzop -d', 0,
+			$kernel_file, $tmpfile1, $tmpfile2);
+$res ||= try_decompress('\002\041\114\030', 'xy',    'lz4 -d', 1,
+			$kernel_file, $tmpfile1, $tmpfile2);
 
 my $append_trailer;
 my $trailer;
+my $kver = '?';
+
+$append_trailer = $dtok;
 
 if ($res)
 {
-    print("Version: $res->{''}\n");
+    $kver = $res->{'kver'} || '?';
+    my $flags = $res->{'flags'};
+    print("Version: $kver\n");
 
-    $append_trailer = $dtok;
-    if (!$dtok)
+    if ($flags & FLAG_PI)
     {
-	if (config_bool($res, 'bcm2708_fb'))
-	{
-	    $dtok ||= config_bool($res, 'CONFIG_BCM2708_DT');
-	    $dtok ||= config_bool($res, 'brcm,bcm2708-pinctrl');
-	    $dtok ||= config_bool($res, 'brcm,bcm2835-gpio');
-	    $append_trailer = 1;
-	}
-	else
-	{
-	    print ("* This doesn't look like a Raspberry Pi kernel. In pass-through mode.\n");
-	}
+	$append_trailer = 1;
+	$dtok ||= ($flags & FLAG_DTOK) != 0;
+	$is_283x ||= ($flags & FLAG_283X) != 0;
+	$ddtk ||= ($flags & FLAG_DDTK) != 0;
+    }
+    else
+    {
+	print ("* This doesn't look like a Raspberry Pi kernel. In pass-through mode.\n");
     }
 }
-else
+elsif (!$dtok)
 {
     print ("* Is this a valid kernel? In pass-through mode.\n");
 }
@@ -89,12 +127,16 @@ else
 if ($append_trailer)
 {
     printf("DT: %s\n", $dtok ? "y" : "n");
+    printf("DDT: %s\n", $ddtk ? "y" : "n");
+    printf("283x: %s\n", $is_283x ? "y" : "n");
 
     my @atoms;
 
     push @atoms, [ $trailer_magic, pack('V', 0) ];
-    push @atoms, [ 'KVer', $res->{''} ];
+    push @atoms, [ 'KVer', $kver ];
     push @atoms, [ 'DTOK', pack('V', $dtok) ];
+    push @atoms, [ 'DDTK', pack('V', $ddtk) ];
+    push @atoms, [ '283x', pack('V', $is_283x) ];
 
     $trailer = pack_trailer(\@atoms);
     $atoms[0]->[1] = pack('V', length($trailer));
@@ -102,17 +144,31 @@ if ($append_trailer)
     $trailer = pack_trailer(\@atoms);
 }
 
-die "* Failed to open '$kernel_file'\n" if (!open(my $ifh, '<', $kernel_file));
-die "* Failed to create '$out_file'\n" if (!open(my $ofh, '>', $out_file));
-
-my $copybuf;
+my $ofh;
 my $total_len = 0;
-while (1)
+
+if ($out_file eq $kernel_file)
 {
+    die "* Failed to open '$out_file' for append\n"
+	if (!open($ofh, '>>', $out_file));
+    $total_len = tell($ofh);
+}
+else
+{
+    die "* Failed to open '$kernel_file'\n"
+	if (!open(my $ifh, '<', $kernel_file));
+    die "* Failed to create '$out_file'\n"
+	if (!open($ofh, '>', $out_file));
+
+    my $copybuf;
+    while (1)
+    {
 	my $bytes = sysread($ifh, $copybuf, 64*1024);
 	last if (!$bytes);
 	syswrite($ofh, $copybuf, $bytes);
 	$total_len += $bytes;
+    }
+    close($ifh);
 }
 
 if ($trailer)
@@ -122,7 +178,6 @@ if ($trailer)
     syswrite($ofh, $trailer);
 }
 
-close($ifh);
 close($ofh);
 
 exit($trailer ? 0 : 1);
@@ -135,7 +190,7 @@ END {
 
 sub usage
 {
-	print ("Usage: mkknlimg [--dtok] <vmlinux|zImage|bzImage> <outfile>\n");
+	print ("Usage: mkknlimg [--dtok] [--283x] <vmlinux|zImage|bzImage> <outfile>\n");
 	exit(1);
 }
 
@@ -149,40 +204,9 @@ sub try_extract
 
 	chomp($ver);
 
-	my $res = { ''=>$ver };
-	my $string_pattern = '^('.join('|', @wanted_strings).')$';
-
-	my @matches = `strings \"$knl\" | grep -E \"$string_pattern\"`;
-	foreach my $match (@matches)
-	{
-	    chomp($match);
-	    $res->{$match} = 1;
-	}
-
-	my $config_pattern = '^('.join('|', @wanted_config_lines).')=(.*)$';
-	my $cf1 = 'IKCFG_ST\037\213\010';
-	my $cf2 = '0123456789';
-
-	my $pos = `tr "$cf1\n$cf2" "\n$cf2=" < "$knl" | grep -abo "^$cf2"`;
-	if ($pos)
-	{
-		$pos =~ s/:.*[\r\n]*$//s;
-		$pos += 8;
-		my $err = (system("tail -c+$pos \"$knl\" | zcat > $tmp 2> /dev/null") >> 8);
-		if (($err == 0) || ($err == 2))
-		{
-			if (open(my $fh, '<', $tmp))
-			{
-				while (my $line = <$fh>)
-				{
-					chomp($line);
-					$res->{$1} = $2 if ($line =~ /$config_pattern/);
-				}
-
-				close($fh);
-			}
-		}
-	}
+	my $res = { 'kver'=>$ver };
+	$res->{'flags'} = strings_to_flags($knl, $wanted_strings) |
+			  configs_to_flags($knl, $tmp, $wanted_configs);
 
 	return $res;
 }
@@ -197,6 +221,7 @@ sub try_decompress
 	{
 		chomp($pos);
 		$pos = (split(/[\r\n]+/, $pos))[$idx];
+		return undef if (!defined($pos));
 		$pos =~ s/:.*[\r\n]*$//s;
 		my $cmd = "tail -c+$pos \"$knl\" | $zcat > $tmp2 2> /dev/null";
 		my $err = (system($cmd) >> 8);
@@ -206,6 +231,59 @@ sub try_decompress
 	}
 
 	return undef;
+}
+
+
+sub strings_to_flags
+{
+	my ($knl, $strings) = @_;
+	my $string_pattern = '^('.join('|', keys(%$strings)).')$';
+	my $flags = 0;
+
+	my @matches = `strings \"$knl\" | grep -E \"$string_pattern\"`;
+	foreach my $match (@matches)
+	{
+	    chomp($match);
+	    $flags |= $strings->{$match};
+	}
+
+	return $flags;
+}
+
+sub configs_to_flags
+{
+	my ($knl, $tmp, $configs) = @_;
+	my $config_pattern = '^('.join('|', keys(%$configs)).')=(.*)$';
+	my $cf1 = 'IKCFG_ST\037\213\010';
+	my $cf2 = '0123456789';
+	my $flags = 0;
+
+	my $pos = `tr "$cf1\n$cf2" "\n$cf2=" < "$knl" | grep -abo "^$cf2"`;
+	if ($pos)
+	{
+		$pos =~ s/:.*[\r\n]*$//s;
+		$pos += 8;
+		my $err = (system("tail -c+$pos \"$knl\" | zcat > $tmp 2> /dev/null") >> 8);
+		if (($err == 0) || ($err == 2))
+		{
+			if (open(my $fh, '<', $tmp))
+			{
+				while (my $line = <$fh>)
+				{
+					chomp($line);
+					if (($line =~ /$config_pattern/) &&
+					    (($2 eq 'y') || ($2 eq 'm')))
+					{
+					    $flags |= $configs->{$1};
+					}
+				}
+
+				close($fh);
+			}
+		}
+	}
+
+	return $flags;
 }
 
 sub pack_trailer
@@ -218,10 +296,4 @@ sub pack_trailer
 		$trailer .= pack('a*x!4Va4', $atom->[1], length($atom->[1]), $atom->[0]);
 	}
 	return $trailer;
-}
-
-sub config_bool
-{
-	my ($configs, $wanted) = @_;
-	return (($configs->{$wanted} eq 'y') || ($configs->{$wanted} eq '1'));
 }
