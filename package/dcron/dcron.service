@@ -3,8 +3,8 @@ Description=Task scheduler daemon
 After=syslog.target
 
 [Service]
-ExecStart=/usr/sbin/crond -f -S
-Restart=always
+ExecStart=/usr/sbin/crond -S
+Type=forking
 
 [Install]
 WantedBy=multi-user.target
