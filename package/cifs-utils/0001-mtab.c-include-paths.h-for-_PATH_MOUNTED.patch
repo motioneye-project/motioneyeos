@@ -1,0 +1,31 @@
+From 6603cef0f06c450196a1bca06bb143d8fcda5651 Mon Sep 17 00:00:00 2001
+From: Felix Janda <felix.janda@posteo.de>
+Date: Fri, 5 Dec 2014 23:19:29 +0100
+Subject: [PATCH 1/1] mtab.c: include <paths.h> for _PATH_MOUNTED
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Backported from: 6603cef0f06c450196a1bca06bb143d8fcda5651
+
+Signed-off-by: Felix Janda <felix.janda@posteo.de>
+Signed-off-by: Jörg Krause <joerg.krause@embedded.rocks>
+---
+ mtab.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/mtab.c b/mtab.c
+index 7b365b3..a662a3c 100644
+--- a/mtab.c
++++ b/mtab.c
+@@ -38,6 +38,7 @@
+ #include <mntent.h>
+ #include <stdlib.h>
+ #include <signal.h>
++#include <paths.h>
+ #include "mount.h"
+ #include "config.h"
+ 
+-- 
+2.5.0
+
