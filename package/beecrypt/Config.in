@@ -17,13 +17,15 @@ config BR2_PACKAGE_BEECRYPT_CPP
 	depends on BR2_USE_WCHAR # icu
 	depends on !BR2_BINFMT_FLAT # icu
 	depends on BR2_ARCH_HAS_ATOMICS # icu
+	depends on !BR2_STATIC_LIBS
 	select BR2_PACKAGE_ICU
 	help
 	  Enable C++ support. This pulls in the (large) icu package.
 
-comment "C++ support needs a toolchain w/ wchar"
+comment "C++ support needs a toolchain w/ C++, wchar, dynamic libraries"
 	depends on !BR2_BINFMT_FLAT
 	depends on BR2_ARCH_HAS_ATOMICS
-	depends on BR2_INSTALL_LIBSTDCPP && !BR2_USE_WCHAR
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR \
+		|| BR2_STATIC_LIBS
 
 endif # BR2_PACKAGE_BEECRYPT
