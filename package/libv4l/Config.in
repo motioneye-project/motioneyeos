@@ -14,7 +14,7 @@ config BR2_PACKAGE_LIBV4L
 	  layer on top of video4linux2 devices. libv4l consists of 3 different
 	  libraries: libv4lconvert, libv4l1 and libv4l2.
 
-	  http://freshmeat.net/projects/libv4l
+	  http://linuxtv.org/wiki/index.php/V4l-utils
 
 if BR2_PACKAGE_LIBV4L
 
