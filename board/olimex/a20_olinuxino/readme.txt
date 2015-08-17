@@ -17,6 +17,8 @@ The following defconfigs are available:
    for the A20-OLinuXino-LIME board using mainline kernel
  - olimex_a20_olinuxino_lime_mali_defconfig
    for the A20-OLinuXino-LIME board using legacy linux-sunxi kernel
+ - olimex_a20_olinuxino_lime2_defconfig
+   for the A20-OLinuXino-LIME2 board using mainline kernel
 
 The legacy linux-sunxi kernels are based on the vendor code drops.
 They are only useful when accelerated 3D graphics and multimedia support
@@ -50,6 +52,7 @@ After building, you should get a tree like this:
     +-- rootfs.ext4 -> rootfs.ext2
     +-- script.bin (lime_mali)
     +-- sun7i-a20-olinuxino-lime.dtb (lime, mainline)
+    +-- sun7i-a20-olinuxino-lime2.dtb (lime2, mainline)
     +-- sun7i-a20-olinuxino-micro.dtb (micro, mainline)
     +-- u-boot.bin
     +-- u-boot-sunxi-with-spl.bin
