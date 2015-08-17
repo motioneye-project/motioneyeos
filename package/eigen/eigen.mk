@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-# version 3.2
-EIGEN_VERSION = ffa86ffb5570
+# version 3.2.5
+EIGEN_VERSION = 175a47a35f0c
 EIGEN_SITE = https://bitbucket.org/eigen/eigen
 EIGEN_SITE_METHOD = hg
 EIGEN_LICENSE = MPL2, BSD-3c, LGPLv2.1
