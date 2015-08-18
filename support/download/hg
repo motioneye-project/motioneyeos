@@ -25,7 +25,7 @@ repo="${2}"
 cset="${3}"
 basename="${4}"
 
-${HG} clone ${verbose} --noupdate --rev "${cset}" "${repo}" "${basename}"
+${HG} clone ${verbose} --noupdate "${repo}" "${basename}"
 
 ${HG} archive ${verbose} --repository "${basename}" --type tgz \
               --prefix "${basename}" --rev "${cset}" \
