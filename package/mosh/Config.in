@@ -1,5 +1,6 @@
-comment "mosh needs a toolchain w/ C++, threads"
-	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_INSTALL_LIBSTDCPP
+comment "mosh needs a toolchain w/ C++, threads, dynamic library"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_INSTALL_LIBSTDCPP \
+		|| BR2_STATIC_LIBS
 	depends on !(BR2_arm || BR2_i386 || BR2_mipsel || BR2_x86_64)
 
 config BR2_PACKAGE_MOSH
@@ -7,6 +8,7 @@ config BR2_PACKAGE_MOSH
 	depends on BR2_arm || BR2_i386 || BR2_mipsel || BR2_x86_64 # protobuf
 	depends on BR2_INSTALL_LIBSTDCPP # protobuf
 	depends on BR2_TOOLCHAIN_HAS_THREADS # protobuf
+	depends on !BR2_STATIC_LIBS # protobuf
 	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86" # protobuf
 	select BR2_PACKAGE_PROTOBUF
 	select BR2_PACKAGE_NCURSES
