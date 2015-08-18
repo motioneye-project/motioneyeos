@@ -18,7 +18,7 @@ start() {
 	#   - the filesystem is RW (i.e. we can rm the symlink),
 	#     replace the symlink with an actual directory
 	if [ -L /etc/dropbear \
-	     -a "$(readlink -f /etc/dropbear)" = "/var/run/dropbear" ]
+	     -a "$(readlink /etc/dropbear)" = "/var/run/dropbear" ]
 	then
 		if rm -f /etc/dropbear; then
 			mkdir -p /etc/dropbear
