@@ -10,4 +10,5 @@ config BR2_PACKAGE_LIBRTAS
 	  http://librtas.sourceforge.net/
 
 comment "librtas needs an (e)glibc toolchain"
+	depends on BR2_powerpc || BR2_powerpc64 || BR2_powerpc64le
 	depends on !BR2_TOOLCHAIN_USES_GLIBC
