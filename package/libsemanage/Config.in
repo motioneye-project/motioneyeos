@@ -5,6 +5,7 @@ config BR2_PACKAGE_LIBSEMANAGE
 	select BR2_PACKAGE_BZIP2
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on !BR2_STATIC_LIBS
+	depends on !BR2_arc
 	help
 	  libsemanage is the policy management library. It uses
 	  libsepol for binary policy manipulation and libselinux for
@@ -17,4 +18,5 @@ config BR2_PACKAGE_LIBSEMANAGE
 	  http://selinuxproject.org/page/Main_Page
 
 comment "libsemanage needs a toolchain w/ threads, dynamic library"
+	depends on !BR2_arc
 	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS

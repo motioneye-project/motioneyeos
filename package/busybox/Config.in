@@ -36,6 +36,7 @@ config BR2_PACKAGE_BUSYBOX_SELINUX
 	select BR2_PACKAGE_LIBSELINUX
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on !BR2_STATIC_LIBS
+	depends on !BR2_arc
 	bool "Enable SELinux support"
 	help
 	  Enable SELinux support in BusyBox. Please note that
