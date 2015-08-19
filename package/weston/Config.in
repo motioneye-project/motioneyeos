@@ -41,8 +41,12 @@ config BR2_PACKAGE_WESTON_HAS_COMPOSITOR
 config BR2_PACKAGE_WESTON_FBDEV
 	bool "fbdev compositor"
 
+# RDP backend needs FreeRDP master, while we only have stable-1.1
+comment "RDP backend is broken"
+
 config BR2_PACKAGE_WESTON_RDP
 	bool "RDP compositor"
+	depends on BROKEN # needs FreeRDP master
 	depends on BR2_USE_WCHAR # freerdp
 	select BR2_PACKAGE_FREERDP
 	select BR2_PACKAGE_WESTON_HAS_COMPOSITOR
@@ -60,6 +64,7 @@ config BR2_PACKAGE_WESTON_RDP
 	  overlay.
 
 comment "RDP compositor needs a toolchain w/ wchar"
+	depends on BROKEN # needs FreeRDP master
 	depends on !BR2_USE_WCHAR
 
 # rpi-userland is an EGL/GLES provider, so we can't select it
