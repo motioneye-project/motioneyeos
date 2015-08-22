@@ -1,5 +1,6 @@
 BR2_arm=y
 BR2_arm1176jzf_s=y
+BR2_ARM_EABIHF=y
 
 BR2_TARGET_GENERIC_GETTY_PORT="tty1"
 
