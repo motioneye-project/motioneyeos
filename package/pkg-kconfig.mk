@@ -96,6 +96,16 @@ $$(error Internal error: no value specified for $(2)_KCONFIG_FILE)
 endif
 endif
 
+# For the configurators, we do want to use the system-provided host
+# tools, not the ones we build. This is particularly true for
+# pkg-config; if we use our pkg-config (from host-pkgconf), then it
+# would not look for the .pc from the host, but we do need them,
+# especially to find ncurses, GTK+, Qt (resp. for menuconfig and
+# nconfig, gconfig, xconfig).
+# So we simply remove our PATH and PKG_CONFIG_* variables.
+$(2)_CONFIGURATOR_MAKE_ENV = \
+	$$(filter-out PATH=% PKG_CONFIG=% PKG_CONFIG_SYSROOT_DIR=% PKG_CONFIG_LIBDIR=%,$$($(2)_MAKE_ENV))
+
 # Configuration editors (menuconfig, ...)
 #
 # We need to apply the configuration fixups right after a configuration
@@ -112,7 +122,7 @@ endif
 #
 $$(addprefix $(1)-,$$($(2)_KCONFIG_EDITORS)): $(1)-%: $$($(2)_DIR)/.kconfig_editor_%
 $$($(2)_DIR)/.kconfig_editor_%: $$($(2)_DIR)/.stamp_kconfig_fixup_done
-	$$($(2)_MAKE_ENV) $$(MAKE) -C $$($(2)_DIR) \
+	$$($(2)_CONFIGURATOR_MAKE_ENV) $$(MAKE) -C $$($(2)_DIR) \
 		$$($(2)_KCONFIG_OPTS) $$(*)
 	rm -f $$($(2)_DIR)/.stamp_{kconfig_fixup_done,configured,built}
 	rm -f $$($(2)_DIR)/.stamp_{target,staging,images}_installed
