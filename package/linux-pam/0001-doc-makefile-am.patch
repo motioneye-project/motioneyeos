@@ -3,6 +3,9 @@ Disable generation of documentation
 Generation of documentation is not necessary in Buildroot, disable it completely.
 
 Signed-off-by: Dmitry Golubovsky <golubovsky@gmail.com>
+Signed-off-by: Brendan Heading <brendanheading@gmail.com>
+
+Upstream-status: inappropriate
 
 diff -urN a/doc/Makefile.am b/doc/Makefile.am
 --- a/doc/Makefile.am	2012-08-15 06:08:43.000000000 -0500
