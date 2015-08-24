@@ -194,38 +194,6 @@ config BR2_TARGET_UBOOT_NETWORK
 	help
 	  U-Boot's custom network settings options have been removed.
 
-config BR2_PACKAGE_OPENCV_LIB_CONTRIB
-	bool "opencv contrib module no longer exists"
-	select BR2_LEGACY
-	help
-	  OpenCV >=3.0 does not come with in-tree contrib modules.
-
-	  They have been moved out of the OpenCV base tree, into the opencv_contrib
-	  repository:
-	    https://github.com/Itseez/opencv_contrib
-
-config BR2_PACKAGE_OPENCV_LIB_GPU
-	bool "opencv gpu module no longer exists"
-	select BR2_LEGACY
-	help
-	  opencv_gpu module no longer exists as is in OpenCV >=3.0.
-
-	  It has been split into several modules prefixed with "cuda" that require
-	  Cuda programming toolkit, which is not available in Buildroot. So cuda
-	  modules are forcibly disabled in Buildroot.
-
-config BR2_PACKAGE_OPENCV_LIB_LEGACY
-	bool "opencv legacy module no longer exists"
-	select BR2_LEGACY
-	help
-	  opencv_legacy module no longer exists in OpenCV >=3.0.
-
-config BR2_PACKAGE_OPENCV_LIB_NONFREE
-	bool "opencv nonfree module no longer exists"
-	select BR2_LEGACY
-	help
-	  opencv_nonfree module no longer exists in OpenCV >=3.0.
-
 ###############################################################################
 comment "Legacy options removed in 2015.05"
 

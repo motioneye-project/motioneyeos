@@ -7,6 +7,7 @@ menuconfig BR2_PACKAGE_OPENCV3
 	depends on !BR2_STATIC_LIBS # include dlfcn.h
 	# Causes some toolchain failures on Xtensa
 	depends on !BR2_xtensa
+	depends on !BR2_PACKAGE_OPENCV
 	help
 	  OpenCV (Open Source Computer Vision) is a library of programming
 	  functions for real time computer vision.
