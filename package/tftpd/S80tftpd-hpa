@@ -4,9 +4,9 @@ OPTIONS="-c -l -s /var/lib/tftpboot"
 
 set -e
 
-PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
 DESC="HPA's tftpd"
-NAME=in.tftpd
+NAME=tftpd
 DAEMON=/usr/sbin/$NAME
 PIDFILE=/var/run/$NAME.pid
 SCRIPTNAME=/etc/init.d/S80tftpd-hpa
