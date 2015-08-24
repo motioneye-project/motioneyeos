@@ -1,3 +1,34 @@
+2015.08-rc2, Released August, 24th 2015
+
+	Fixes all over the tree.
+
+	Toolchain: fix gcc build on NIOS-II.
+
+	Infrastructure: add <fs>_POST_GEN_HOOKS mechanism to fix
+	hybrid ISO image generation.
+
+	Architectures: add arm1136j-s variant.
+
+	Updated/fixed packages: apitrace, audit, bcusdk, bdwgc,
+	beecrypt, boost, bwm-ng, cdrkit, c-icap, cifs-utils, clapack,
+	c-periphery, cpio, cramfs, czmq, dawgdic, dnsmasq, dosfstools,
+	dropbear, elfutils, empty, eudev, fan-ctrl, filemq, gnutls,
+	guile, haveged, imlib2, libcec, libepoxy, libev, libgpgme,
+	libiio, libnetfilter_queue, libnfnetlink, libpfm4, libpthsem,
+	librtas, libselinux, libsigsegv, libsodium, libv4l, lightning,
+	linux, lirc-tools, lrzsz, mono, mosh, mpd, msmtp, nbd,
+	netatalk, nodejs, ola, opencv, oprofile, php, poco,
+	postgresql, powertop, protobuf, protobuf-c, qt5base,
+	qt5quickcontrols, rapidjson, rng-tools, squid, sysdig,
+	sysstat, tftpd, tinc, tz, util-linux, webkitgtk24, weston,
+	wireshark, wvstreams, xdriver_xf86-input-synaptics, zyre.
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#8276: package/dropbear: symlink resolution incorrect
+	#8286: Error with buildroot
+	#8301: ldconfig parameter in Makefile
+
 2015.08-rc1, Released August, 5th 2015
 
 	Fixes all over the tree and new features.
