@@ -13,6 +13,10 @@ LIBMBIM_INSTALL_STAGING = YES
 
 LIBMBIM_DEPENDENCIES = libglib2 udev
 
+ifeq ($(BR2_INIT_SYSTEMD),y)
+LIBMBIM_DEPENDENCIES += libgudev
+endif
+
 # we don't want -Werror
 LIBMBIM_CONF_OPTS = --enable-more-warnings=no
 
