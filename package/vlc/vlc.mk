@@ -153,9 +153,13 @@ else
 VLC_CONF_OPTS += --disable-gles2
 endif
 
-ifeq ($(BR2_PACKAGE_OPENCV3),y)
+ifeq ($(BR2_PACKAGE_OPENCV)$(BR2_PACKAGE_OPENCV3),y)
 VLC_CONF_OPTS += --enable-opencv
+ifeq ($(BR2_PACKAGE_OPENCV),y)
+VLC_DEPENDENCIES += opencv
+else
 VLC_DEPENDENCIES += opencv3
+endif
 else
 VLC_CONF_OPTS += --disable-opencv
 endif
