@@ -1,7 +1,7 @@
 # Please note that this is only a sample, we recommend you to change it to fit
 # your needs.
 # You should override this file using a post-build script.
-# See http://buildroot.org/downloads/manual/manual.html#rootfs-custom
+# See http://buildroot.org/manual.html#rootfs-custom
 # and http://elinux.org/RPiconfig for a description of config.txt syntax
 
 kernel=zImage
