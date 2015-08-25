@@ -9,9 +9,6 @@ test -r /etc/default/dropbear && . /etc/default/dropbear
 start() {
 	DROPBEAR_ARGS="$DROPBEAR_ARGS -R"
 
-	echo -n "Starting dropbear sshd: "
-	umask 077
-
 	# If /etc/dropbear is a symlink to /var/run/dropbear, and
 	#   - the filesystem is RO (i.e. we can not rm the symlink),
 	#     create the directory pointed to by the symlink.
@@ -20,12 +17,17 @@ start() {
 	if [ -L /etc/dropbear \
 	     -a "$(readlink /etc/dropbear)" = "/var/run/dropbear" ]
 	then
-		if rm -f /etc/dropbear; then
+		if rm -f /etc/dropbear >/dev/null 2>&1; then
 			mkdir -p /etc/dropbear
 		else
-			mkdir -p $(readlink /etc/dropbear)
+			echo "No persistent location to store SSH host keys. New keys will be"
+			echo "generated at each boot. Are you sure this is what you want to do?"
+			mkdir -p "$(readlink /etc/dropbear)"
 		fi
 	fi
+
+	echo -n "Starting dropbear sshd: "
+	umask 077
 
 	start-stop-daemon -S -q -p /var/run/dropbear.pid \
 		--exec /usr/sbin/dropbear -- $DROPBEAR_ARGS
