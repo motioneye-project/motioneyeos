@@ -13,7 +13,8 @@ TN5250_LICENSE_FILES = COPYING
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 TN5250_CONF_OPTS += --with-ssl-dir=$(STAGING_DIR)/usr
-TN5250_DEPENDENCIES += openssl
+TN5250_CONF_ENV += LIBS="`$(PKG_CONFIG_HOST_BINARY) --libs openssl`"
+TN5250_DEPENDENCIES += openssl host-pkgconf
 else
 TN5250_CONF_OPTS += --without-ssl
 endif
