@@ -28,8 +28,9 @@ There are a few non-trivial blocks:
   * c: a character device file
   * b: a block device file
   * p: a named pipe
-- +mode+, +uid+ and +gid+ are the usual permissions settings
-- +major+ and +minor+ are here for device files - set to - for other
+- +mode+, +uid+ and +gid+ are the usual permissions settings (only
+  numerical values are allowed)
+- +major+ and +minor+ are here for device files, set to +-+ for other
   files
 - +start+, +inc+ and +count+ are for when you want to create a batch
   of files, and can be reduced to a loop, beginning at +start+,
@@ -43,10 +44,12 @@ this syntax, you will need to put:
 ----
 
 Alternatively, if you want to change owner/permission of a directory
-recursively, you can put:
+recursively, you can put (to set UID to 123, GID to 456 and access
+rights to rwxr-x--- for the directory /usr/share/myapp and all files
+and directories below it):
 
 ----
-/usr/share/myapp r 750 myuser myuser - - - - -
+/usr/share/myapp r 750 123 456 - - - - -
 ----
 
 On the other hand, if you want to create the device file +/dev/hda+
