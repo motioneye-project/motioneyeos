@@ -82,7 +82,7 @@ main() {
 
     # Upgrade to rev1 if needed
     if [ ${rev} -ge 1 ]; then
-        tune2fs_O_opts+=",filetype"
+        tune2fs_O_opts+=",filetype,sparse_super"
     fi
 
     # Add a journal for ext3 and above
