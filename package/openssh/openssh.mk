@@ -26,6 +26,10 @@ endef
 ifeq ($(BR2_arc),y)
 OPENSSH_CONF_OPTS += --without-pie
 endif
+# PIE and static does not work on Linux
+ifeq ($(BR2_STATIC_LIBS),y)
+OPENSSH_CONF_OPTS += --without-pie
+endif
 
 OPENSSH_DEPENDENCIES = zlib openssl
 
