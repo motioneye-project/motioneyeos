@@ -1,0 +1,25 @@
+Downloaded from
+http://anonscm.debian.org/cgit/pkg-nlnetlabs/ldns.git/plain/debian/patches/fix-double-free-for-answers-bigger-than-4096.patch
+
+which is a backport from upstream
+http://git.nlnetlabs.nl/ldns/commit/?h=develop&id=2853eb352b4461e98f2926ace4ea3810cedf4167
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+
+From 2853eb352b4461e98f2926ace4ea3810cedf4167 Mon Sep 17 00:00:00 2001
+From: Willem Toorop <willem@nlnetlabs.nl>
+Date: Tue, 28 Jan 2014 11:06:38 +0100
+Subject: bugfix #548: Double free for answers > 4096
+
+in ldns_resolver_send_pkt.  Thank you sunthought@gmail.com
+---
+--- ldns.orig/resolver.c
++++ ldns/resolver.c
+@@ -1117,6 +1117,7 @@ ldns_resolver_send_pkt(ldns_pkt **answer
+ 					ldns_pkt_set_edns_udp_size(query_pkt
+ 							, 4096);
+ 					ldns_pkt_free(answer_pkt);
++					answer_pkt = NULL;
+ 					/* Nameservers should not become 
+ 					 * unreachable because fragments are
+ 					 * dropped (network error). We might
