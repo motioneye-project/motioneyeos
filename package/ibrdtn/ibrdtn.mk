@@ -17,7 +17,6 @@ IBRDTN_CONF_OPTS += --with-compression
 IBRDTN_DEPENDENCIES += zlib
 else
 IBRDTN_CONF_OPTS += --without-compression
-IBRDTN_DEPENDENCIES += zlib
 endif
 
 ifeq ($(BR2_PACKAGE_LIBGLIB2),y)
