@@ -217,6 +217,16 @@ config BR2_sparc
 	  http://www.oracle.com/sun
 	  http://en.wikipedia.org/wiki/Sparc
 
+config BR2_sparc64
+	bool "SPARC64"
+	select BR2_ARCH_IS_64
+	select BR2_ARCH_HAS_MMU_MANDATORY
+	help
+	  SPARC (from Scalable Processor Architecture) is a RISC instruction
+	  set architecture (ISA) developed by Sun Microsystems.
+	  http://www.oracle.com/sun
+	  http://en.wikipedia.org/wiki/Sparc
+
 config BR2_x86_64
 	bool "x86_64"
 	select BR2_ARCH_IS_64
@@ -388,7 +398,7 @@ if BR2_sh || BR2_sh64
 source "arch/Config.in.sh"
 endif
 
-if BR2_sparc
+if BR2_sparc || BR2_sparc64
 source "arch/Config.in.sparc"
 endif
 
