@@ -1,0 +1,51 @@
+From 401673e9d37ea1e6da0bc335b1d7a2bbf445c690 Mon Sep 17 00:00:00 2001
+From: Felix Janda <felix.janda@posteo.de>
+Date: Sat, 2 May 2015 21:51:38 +0200
+Subject: [PATCH 2/3] include: remove libc5 support code
+
+Current code makes the assumption that !defined(__GLIBC__) means libc5
+which is very unlikely the case nowadays.
+
+Fixes compile error because of conflict between kernel and musl headers.
+
+Backported from :
+http://git.netfilter.org/iptables/commit/?id=0bb1859e2d6dd79a0a59c3ee65f6a78cba118b86
+
+Upstream-Status: backport
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Brendan Heading <brendanheading@gmail.com>
+---
+ include/libiptc/ipt_kernel_headers.h | 12 ------------
+ 1 file changed, 12 deletions(-)
+
+diff --git a/include/libiptc/ipt_kernel_headers.h b/include/libiptc/ipt_kernel_headers.h
+index 18861fe..a5963e9 100644
+--- a/include/libiptc/ipt_kernel_headers.h
++++ b/include/libiptc/ipt_kernel_headers.h
+@@ -5,7 +5,6 @@
+ 
+ #include <limits.h>
+ 
+-#if defined(__GLIBC__) && __GLIBC__ == 2
+ #include <netinet/ip.h>
+ #include <netinet/in.h>
+ #include <netinet/ip_icmp.h>
+@@ -13,15 +12,4 @@
+ #include <netinet/udp.h>
+ #include <net/if.h>
+ #include <sys/types.h>
+-#else /* libc5 */
+-#include <sys/socket.h>
+-#include <linux/ip.h>
+-#include <linux/in.h>
+-#include <linux/if.h>
+-#include <linux/icmp.h>
+-#include <linux/tcp.h>
+-#include <linux/udp.h>
+-#include <linux/types.h>
+-#include <linux/in6.h>
+-#endif
+ #endif
+-- 
+2.4.3
+
