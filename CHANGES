@@ -1,3 +1,19 @@
+2015.08, Not yet released
+
+	Minor fixes.
+
+	OpenCV 3.x package renamed to opencv3. OpenCV 2.4.x
+	reintroduced as opencv.
+
+	Updated/fixed packages: bootutils, canfestival, cppcms,
+	curlftpfs, dhcpdump, dropbear, erlang-p1-tls, gnuradio, ipkg,
+	libgudev, libmbim, libweksock, linux-pam, ltrace, midori,
+	network-manager, openssh, perl-file-listing,
+	perl-http-cookies, perl-http-daemon, perl-http-negotiate,
+	perl-www-robotrules, python-can, qt5base, qt5multimedia,
+	setools, sysvinit, tinyalsa, tn5250, tvheadend, uboot, vlc,
+	x264, xserver_xorg-server, zyre
+
 2015.08-rc2, Released August, 24th 2015
 
 	Fixes all over the tree.
