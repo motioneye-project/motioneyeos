@@ -6,9 +6,9 @@
 	reintroduced as opencv.
 
 	Updated/fixed packages: bootutils, canfestival, cppcms,
-	curlftpfs, dhcpdump, dropbear, erlang-p1-tls, gnuradio, ipkg,
-	libgudev, libmbim, libweksock, linux-pam, ltrace, midori,
-	network-manager, openssh, perl-file-listing,
+	curlftpfs, dhcpdump, dropbear, erlang-p1-tls, exfat, gnuradio,
+	ipkg, libgudev, libmbim, libwebsock, linux-pam, lm-sensors,
+	ltrace, midori, network-manager, openssh, perl-file-listing,
 	perl-http-cookies, perl-http-daemon, perl-http-negotiate,
 	perl-www-robotrules, python-can, qt5base, qt5multimedia,
 	setools, sysvinit, tinyalsa, tn5250, tvheadend, uboot, vlc,
