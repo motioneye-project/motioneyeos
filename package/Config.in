@@ -140,9 +140,6 @@ if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 endif
 	source "package/sstrip/Config.in"
 	source "package/subversion/Config.in"
-if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
-	source "package/tar/Config.in"
-endif
 	source "package/tree/Config.in"
 	source "package/yasm/Config.in"
 endmenu
@@ -1508,6 +1505,7 @@ endif
 	source "package/systemd/Config.in"
 if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	source "package/sysvinit/Config.in"
+	source "package/tar/Config.in"
 endif
 	source "package/util-linux/Config.in"
 endmenu
