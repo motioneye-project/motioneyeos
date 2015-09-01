@@ -4,8 +4,9 @@
 #
 ################################################################################
 
-LINUX_FUSION_VERSION = 9.0.2
+LINUX_FUSION_VERSION = 9.0.3
 LINUX_FUSION_SITE = http://directfb.org/downloads/Core/linux-fusion
+LINUX_FUSION_SOURCE = linux-fusion-$(LINUX_FUSION_VERSION).tar.xz
 LINUX_FUSION_INSTALL_STAGING = YES
 LINUX_FUSION_DEPENDENCIES = linux
 LINUX_FUSION_LICENSE = GPLv2+
