@@ -105,6 +105,19 @@ comment "----------------------------------------------------"
 endif
 
 ###############################################################################
+comment "Legacy options removed in 2015.11"
+
+config BR2_PACKAGE_DIVINE
+	bool "divine package removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_DIRECTFB_DIVINE
+	help
+	  This option has been removed because the divine package no
+	  longer exists: it was merged inside DirectFB itself. This
+	  feature can now be enabled using the
+	  BR2_PACKAGE_DIRECTFB_DIVINE option.
+
+###############################################################################
 comment "Legacy options removed in 2015.08"
 
 config BR2_PACKAGE_KODI_PVR_ADDONS
