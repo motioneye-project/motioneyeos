@@ -14,11 +14,9 @@ DIRECTFB_INSTALL_STAGING = YES
 DIRECTFB_AUTORECONF = YES
 
 DIRECTFB_CONF_OPTS = \
-	--disable-explicit-deps \
 	--enable-zlib \
 	--enable-freetype \
 	--enable-fbdev \
-	--disable-sysfs \
 	--disable-sdl \
 	--disable-vnc \
 	--disable-osx \
