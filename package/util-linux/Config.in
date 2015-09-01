@@ -149,15 +149,6 @@ config BR2_PACKAGE_UTIL_LINUX_MINIX
 	help
 	  Minix filesystem support
 
-config BR2_PACKAGE_UTIL_LINUX_NSENTER
-	bool "nsenter"
-	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0
-	help
-	  Enter the namespaces of another process.
-
-comment "nsenter needs a toolchain w/ headers >= 3.0"
-	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0
-
 config BR2_PACKAGE_UTIL_LINUX_MORE
 	bool "more"
 	select BR2_PACKAGE_NCURSES
@@ -184,15 +175,24 @@ config BR2_PACKAGE_UTIL_LINUX_NOLOGIN
 	help
 	  Politely refuse a login
 
-config BR2_PACKAGE_UTIL_LINUX_PIVOT_ROOT
-	bool "pivot_root"
+config BR2_PACKAGE_UTIL_LINUX_NSENTER
+	bool "nsenter"
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0
 	help
-	  Change the root filesystem
+	  Enter the namespaces of another process.
+
+comment "nsenter needs a toolchain w/ headers >= 3.0"
+	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0
 
 config BR2_PACKAGE_UTIL_LINUX_PARTX
 	bool "partition utilities"
 	help
 	  Partition tools (addpart, delpart, partx)
+
+config BR2_PACKAGE_UTIL_LINUX_PIVOT_ROOT
+	bool "pivot_root"
+	help
+	  Change the root filesystem
 
 config BR2_PACKAGE_UTIL_LINUX_RAW
 	bool "raw"
