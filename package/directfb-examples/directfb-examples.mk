@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-DIRECTFB_EXAMPLES_VERSION = 1.6.0
+DIRECTFB_EXAMPLES_VERSION = 1.7.0
 DIRECTFB_EXAMPLES_SITE = http://www.directfb.org/downloads/Extras
 DIRECTFB_EXAMPLES_SOURCE = DirectFB-examples-$(DIRECTFB_EXAMPLES_VERSION).tar.gz
 DIRECTFB_EXAMPLES_LICENSE = MIT
