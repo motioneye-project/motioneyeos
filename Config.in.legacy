@@ -107,6 +107,215 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2015.11"
 
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_ANDI
+	bool "DirectFB example df_andi has been removed"
+	select BR2_PACKAGE_DIRECTFB_EXAMPLES
+	help
+	  The per-DirectFB example options have been removed. The
+	  BR2_PACKAGE_DIRECTFB_EXAMPLES option now installs all
+	  examples.
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_BLTLOAD
+	bool "DirectFB example df_bltload has been removed"
+	select BR2_PACKAGE_DIRECTFB_EXAMPLES
+	help
+	  The per-DirectFB example options have been removed. The
+	  BR2_PACKAGE_DIRECTFB_EXAMPLES option now installs all
+	  examples.
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_CPULOAD
+	bool "DirectFB example df_cpuload has been removed"
+	select BR2_PACKAGE_DIRECTFB_EXAMPLES
+	help
+	  The per-DirectFB example options have been removed. The
+	  BR2_PACKAGE_DIRECTFB_EXAMPLES option now installs all
+	  examples.
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_DATABUFFER
+	bool "DirectFB example df_databuffer has been removed"
+	select BR2_PACKAGE_DIRECTFB_EXAMPLES
+	help
+	  The per-DirectFB example options have been removed. The
+	  BR2_PACKAGE_DIRECTFB_EXAMPLES option now installs all
+	  examples.
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_DIOLOAD
+	bool "DirectFB example df_dioload has been removed"
+	select BR2_PACKAGE_DIRECTFB_EXAMPLES
+	help
+	  The per-DirectFB example options have been removed. The
+	  BR2_PACKAGE_DIRECTFB_EXAMPLES option now installs all
+	  examples.
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_DOK
+	bool "DirectFB example df_dok has been removed"
+	select BR2_PACKAGE_DIRECTFB_EXAMPLES
+	help
+	  The per-DirectFB example options have been removed. The
+	  BR2_PACKAGE_DIRECTFB_EXAMPLES option now installs all
+	  examples.
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_DRIVERTEST
+	bool "DirectFB example df_drivertest has been removed"
+	select BR2_PACKAGE_DIRECTFB_EXAMPLES
+	help
+	  The per-DirectFB example options have been removed. The
+	  BR2_PACKAGE_DIRECTFB_EXAMPLES option now installs all
+	  examples.
+
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_FIRE
+	bool "DirectFB example df_fire has been removed"
+	select BR2_PACKAGE_DIRECTFB_EXAMPLES
+	help
+	  The per-DirectFB example options have been removed. The
+	  BR2_PACKAGE_DIRECTFB_EXAMPLES option now installs all
+	  examples.
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_FLIP
+	bool "DirectFB example df_flip has been removed"
+	select BR2_PACKAGE_DIRECTFB_EXAMPLES
+	help
+	  The per-DirectFB example options have been removed. The
+	  BR2_PACKAGE_DIRECTFB_EXAMPLES option now installs all
+	  examples.
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_FONTS
+	bool "DirectFB example df_fonts has been removed"
+	select BR2_PACKAGE_DIRECTFB_EXAMPLES
+	help
+	  The per-DirectFB example options have been removed. The
+	  BR2_PACKAGE_DIRECTFB_EXAMPLES option now installs all
+	  examples.
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_INPUT
+	bool "DirectFB example df_input has been removed"
+	select BR2_PACKAGE_DIRECTFB_EXAMPLES
+	help
+	  The per-DirectFB example options have been removed. The
+	  BR2_PACKAGE_DIRECTFB_EXAMPLES option now installs all
+	  examples.
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_JOYSTICK
+	bool "DirectFB example df_joystick has been removed"
+	select BR2_PACKAGE_DIRECTFB_EXAMPLES
+	help
+	  The per-DirectFB example options have been removed. The
+	  BR2_PACKAGE_DIRECTFB_EXAMPLES option now installs all
+	  examples.
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_KNUCKLES
+	bool "DirectFB example df_knuckles has been removed"
+	select BR2_PACKAGE_DIRECTFB_EXAMPLES
+	help
+	  The per-DirectFB example options have been removed. The
+	  BR2_PACKAGE_DIRECTFB_EXAMPLES option now installs all
+	  examples.
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_LAYER
+	bool "DirectFB example df_layer has been removed"
+	select BR2_PACKAGE_DIRECTFB_EXAMPLES
+	help
+	  The per-DirectFB example options have been removed. The
+	  BR2_PACKAGE_DIRECTFB_EXAMPLES option now installs all
+	  examples.
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_MATRIX
+	bool "DirectFB example df_matrix has been removed"
+	select BR2_PACKAGE_DIRECTFB_EXAMPLES
+	help
+	  The per-DirectFB example options have been removed. The
+	  BR2_PACKAGE_DIRECTFB_EXAMPLES option now installs all
+	  examples.
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_MATRIX_WATER
+	bool "DirectFB example df_matrix_water has been removed"
+	select BR2_PACKAGE_DIRECTFB_EXAMPLES
+	help
+	  The per-DirectFB example options have been removed. The
+	  BR2_PACKAGE_DIRECTFB_EXAMPLES option now installs all
+	  examples.
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_NEO
+	bool "DirectFB example df_neo has been removed"
+	select BR2_PACKAGE_DIRECTFB_EXAMPLES
+	help
+	  The per-DirectFB example options have been removed. The
+	  BR2_PACKAGE_DIRECTFB_EXAMPLES option now installs all
+	  examples.
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_NETLOAD
+	bool "DirectFB example df_netload has been removed"
+	select BR2_PACKAGE_DIRECTFB_EXAMPLES
+	help
+	  The per-DirectFB example options have been removed. The
+	  BR2_PACKAGE_DIRECTFB_EXAMPLES option now installs all
+	  examples.
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_PALETTE
+	bool "DirectFB example df_palette has been removed"
+	select BR2_PACKAGE_DIRECTFB_EXAMPLES
+	help
+	  The per-DirectFB example options have been removed. The
+	  BR2_PACKAGE_DIRECTFB_EXAMPLES option now installs all
+	  examples.
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_PARTICLE
+	bool "DirectFB example df_particle has been removed"
+	select BR2_PACKAGE_DIRECTFB_EXAMPLES
+	help
+	  The per-DirectFB example options have been removed. The
+	  BR2_PACKAGE_DIRECTFB_EXAMPLES option now installs all
+	  examples.
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_PORTER
+	bool "DirectFB example df_porter has been removed"
+	select BR2_PACKAGE_DIRECTFB_EXAMPLES
+	help
+	  The per-DirectFB example options have been removed. The
+	  BR2_PACKAGE_DIRECTFB_EXAMPLES option now installs all
+	  examples.
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_STRESS
+	bool "DirectFB example df_stress has been removed"
+	select BR2_PACKAGE_DIRECTFB_EXAMPLES
+	help
+	  The per-DirectFB example options have been removed. The
+	  BR2_PACKAGE_DIRECTFB_EXAMPLES option now installs all
+	  examples.
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_TEXTURE
+	bool "DirectFB example df_texture has been removed"
+	select BR2_PACKAGE_DIRECTFB_EXAMPLES
+	help
+	  The per-DirectFB example options have been removed. The
+	  BR2_PACKAGE_DIRECTFB_EXAMPLES option now installs all
+	  examples.
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_VIDEO
+	bool "DirectFB example df_video has been removed"
+	select BR2_PACKAGE_DIRECTFB_EXAMPLES
+	help
+	  The per-DirectFB example options have been removed. The
+	  BR2_PACKAGE_DIRECTFB_EXAMPLES option now installs all
+	  examples.
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_VIDEO_PARTICLE
+	bool "DirectFB example df_video_particle has been removed"
+	select BR2_PACKAGE_DIRECTFB_EXAMPLES
+	help
+	  The per-DirectFB example options have been removed. The
+	  BR2_PACKAGE_DIRECTFB_EXAMPLES option now installs all
+	  examples.
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_WINDOW
+	bool "DirectFB example df_window has been removed"
+	select BR2_PACKAGE_DIRECTFB_EXAMPLES
+	help
+	  The per-DirectFB example options have been removed. The
+	  BR2_PACKAGE_DIRECTFB_EXAMPLES option now installs all
+	  examples.
+
 config BR2_PACKAGE_SAWMAN
 	bool "sawman package removed"
 	select BR2_LEGACY
