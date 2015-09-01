@@ -106,6 +106,13 @@ else
 DIRECTFB_CONF_OPTS += --disable-gif
 endif
 
+ifeq ($(BR2_PACKAGE_DIRECTFB_TIFF),y)
+DIRECTFB_CONF_OPTS += --enable-tiff
+DIRECTFB_DEPENDENCIES += tiff
+else
+DIRECTFB_CONF_OPTS += --disable-tiff
+endif
+
 ifeq ($(BR2_PACKAGE_DIRECTFB_PNG),y)
 DIRECTFB_CONF_OPTS += --enable-png
 DIRECTFB_DEPENDENCIES += libpng
