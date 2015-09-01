@@ -179,6 +179,10 @@ config BR2_PACKAGE_QT5BASE_LINUXFB
 config BR2_PACKAGE_QT5BASE_DIRECTFB
 	bool "directfb support"
 	select BR2_PACKAGE_DIRECTFB
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_5 # directfb
+
+comment "directfb needs a toolchain w/ gcc >= 4.5"
+	depends on !BR2_TOOLCHAIN_GCC_AT_LEAST_4_5
 
 config BR2_PACKAGE_QT5BASE_XCB
 	bool "X.org XCB support"
