@@ -53,6 +53,18 @@ ifeq ($(BR2_PACKAGE_DIRECTFB_TRACE),y)
 DIRECTFB_CONF_OPTS += --enable-trace
 endif
 
+ifeq ($(BR2_PACKAGE_DIRECTFB_DIVINE),y)
+DIRECTFB_CONF_OPTS += --enable-divine
+else
+DIRECTFB_CONF_OPTS += --disable-divine
+endif
+
+ifeq ($(BR2_PACKAGE_DIRECTFB_SAWMAN),y)
+DIRECTFB_CONF_OPTS += --enable-sawman
+else
+DIRECTFB_CONF_OPTS += --disable-sawman
+endif
+
 DIRECTFB_GFX = \
 	$(if $(BR2_PACKAGE_DIRECTFB_ATI128),ati128) \
 	$(if $(BR2_PACKAGE_DIRECTFB_CLE266),cle266) \
