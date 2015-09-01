@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-HARFBUZZ_VERSION = 1.0.1
+HARFBUZZ_VERSION = 1.0.2
 HARFBUZZ_SITE = http://www.freedesktop.org/software/harfbuzz/release
 HARFBUZZ_SOURCE = harfbuzz-$(HARFBUZZ_VERSION).tar.bz2
 HARFBUZZ_LICENSE = MIT, ISC (ucdn library)
@@ -24,9 +24,6 @@ HOST_HARFBUZZ_CONF_OPTS = \
 	--with-icu=no \
 	--with-freetype=yes \
 	--with-glib=yes
-
-# beta libtool version and patching Makefile.am
-HARFBUZZ_AUTORECONF = YES
 
 ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),y)
 # forgets to link test programs with -pthread breaking static link
