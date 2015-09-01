@@ -107,6 +107,16 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2015.11"
 
+config BR2_PACKAGE_SAWMAN
+	bool "sawman package removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_DIRECTFB_SAWMAN
+	help
+	  This option has been removed because the sawman package no
+	  longer exists: it was merged inside DirectFB itself. This
+	  feature can now be enabled using the
+	  BR2_PACKAGE_DIRECTFB_SAWMAN option.
+
 config BR2_PACKAGE_DIVINE
 	bool "divine package removed"
 	select BR2_LEGACY
