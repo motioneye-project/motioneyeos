@@ -260,12 +260,11 @@ config BR2_SYSTEM_BIN_SH
 	default "dash"    if BR2_SYSTEM_BIN_SH_DASH
 	default "zsh"     if BR2_SYSTEM_BIN_SH_ZSH
 
-config BR2_TARGET_GENERIC_GETTY
+menuconfig BR2_TARGET_GENERIC_GETTY
 	bool "Run a getty (login prompt) after boot"
 	default y
 
 if BR2_TARGET_GENERIC_GETTY
-menu "getty options"
 config BR2_TARGET_GENERIC_GETTY_PORT
 	string "TTY port"
 	default "console"
@@ -313,7 +312,6 @@ config BR2_TARGET_GENERIC_GETTY_OPTIONS
 	help
 	  Any other flags you want to pass to getty,
 	  Refer to getty --help for details.
-endmenu
 endif
 
 config BR2_TARGET_GENERIC_REMOUNT_ROOTFS_RW
