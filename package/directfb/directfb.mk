@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-DIRECTFB_VERSION_MAJOR = 1.6
-DIRECTFB_VERSION = $(DIRECTFB_VERSION_MAJOR).3
+DIRECTFB_VERSION_MAJOR = 1.7
+DIRECTFB_VERSION = $(DIRECTFB_VERSION_MAJOR).7
 DIRECTFB_SITE = http://www.directfb.org/downloads/Core/DirectFB-$(DIRECTFB_VERSION_MAJOR)
 DIRECTFB_SOURCE = DirectFB-$(DIRECTFB_VERSION).tar.gz
 DIRECTFB_LICENSE = LGPLv2.1+
@@ -35,8 +35,10 @@ DIRECTFB_CONFIG_SCRIPTS = directfb-config
 DIRECTFB_DEPENDENCIES = freetype zlib
 
 ifeq ($(BR2_PACKAGE_DIRECTFB_MULTI),y)
-DIRECTFB_CONF_OPTS += --enable-multi --enable-fusion
+DIRECTFB_CONF_OPTS += --enable-multi --enable-multi-kernel
 DIRECTFB_DEPENDENCIES += linux-fusion
+else
+DIRECTFB_CONF_OPTS += --disable-multi --disable-multi-kernel
 endif
 
 ifeq ($(BR2_PACKAGE_DIRECTFB_DEBUG_SUPPORT),y)

@@ -6,9 +6,11 @@ http://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/dev-libs/DirectFB/files/
 
 Signed-off-by: Carsten Schoenert <c.schoenert@gmail.com>
 
---- directfb-1.6.3/gfxdrivers/cyber5k/cyber5k.c
-+++ directfb-1.6.3/gfxdrivers/cyber5k/cyber5k.c
-@@ -636,7 +636,8 @@ osdSetRegion( CoreLayer
+Index: b/gfxdrivers/cyber5k/cyber5k.c
+===================================================================
+--- a/gfxdrivers/cyber5k/cyber5k.c
++++ b/gfxdrivers/cyber5k/cyber5k.c
+@@ -640,7 +640,8 @@
                CoreLayerRegionConfigFlags  updated,
                CoreSurface                *surface,
                CorePalette                *palette,
@@ -18,7 +20,7 @@ Signed-off-by: Carsten Schoenert <c.schoenert@gmail.com>
  {
       DFBResult ret;
  
-@@ -644,7 +645,7 @@ osdSetRegion( CoreLayer
+@@ -648,7 +649,7 @@
       ret = oldPrimaryFuncs.SetRegion( layer, oldPrimaryDriverData,
                                        layer_data, region_data,
                                        config, updated, surface,
@@ -27,9 +29,11 @@ Signed-off-by: Carsten Schoenert <c.schoenert@gmail.com>
       if (ret)
            return ret;
  
---- directfb-1.6.3/gfxdrivers/radeon/radeon_crtc1.c
-+++ directfb-1.6.3/gfxdrivers/radeon/radeon_crtc1.c
-@@ -147,14 +147,15 @@ crtc1SetRegion( CoreLayer
+Index: b/gfxdrivers/radeon/radeon_crtc1.c
+===================================================================
+--- a/gfxdrivers/radeon/radeon_crtc1.c
++++ b/gfxdrivers/radeon/radeon_crtc1.c
+@@ -147,14 +147,15 @@
                  CoreLayerRegionConfigFlags  updated,
                  CoreSurface                *surface,
                  CorePalette                *palette,
@@ -47,9 +51,11 @@ Signed-off-by: Carsten Schoenert <c.schoenert@gmail.com>
       }
  
       return DFB_OK;
---- directfb-1.6.3/gfxdrivers/cle266/uc_primary.c
-+++ directfb-1.6.3/gfxdrivers/cle266/uc_primary.c
-@@ -138,7 +138,8 @@ osdSetRegion( CoreLayer
+Index: b/gfxdrivers/cle266/uc_primary.c
+===================================================================
+--- a/gfxdrivers/cle266/uc_primary.c
++++ b/gfxdrivers/cle266/uc_primary.c
+@@ -142,7 +142,8 @@
                CoreLayerRegionConfigFlags  updated,
                CoreSurface                *surface,
                CorePalette                *palette,
@@ -59,7 +65,7 @@ Signed-off-by: Carsten Schoenert <c.schoenert@gmail.com>
  {
       DFBResult     ret;
       UcDriverData *ucdrv = (UcDriverData*) driver_data;
-@@ -147,7 +148,7 @@ osdSetRegion( CoreLayer
+@@ -151,7 +152,7 @@
       ret = ucOldPrimaryFuncs.SetRegion( layer, ucOldPrimaryDriverData,
                                          layer_data, region_data,
                                          config, updated, surface,
@@ -68,9 +74,11 @@ Signed-off-by: Carsten Schoenert <c.schoenert@gmail.com>
       if (ret)
            return ret;
  
---- directfb-1.6.3/gfxdrivers/unichrome/uc_primary.c
-+++ directfb-1.6.3/gfxdrivers/unichrome/uc_primary.c
-@@ -135,7 +135,8 @@ osdSetRegion( CoreLayer
+Index: b/gfxdrivers/unichrome/uc_primary.c
+===================================================================
+--- a/gfxdrivers/unichrome/uc_primary.c
++++ b/gfxdrivers/unichrome/uc_primary.c
+@@ -139,7 +139,8 @@
                CoreLayerRegionConfigFlags  updated,
                CoreSurface                *surface,
                CorePalette                *palette,
@@ -80,7 +88,7 @@ Signed-off-by: Carsten Schoenert <c.schoenert@gmail.com>
  {
       DFBResult     ret;
       UcDriverData *ucdrv = (UcDriverData*) driver_data;
-@@ -144,7 +145,7 @@ osdSetRegion( CoreLayer
+@@ -148,7 +149,7 @@
       ret = ucOldPrimaryFuncs.SetRegion( layer, ucOldPrimaryDriverData,
                                          layer_data, region_data,
                                          config, updated, surface,
@@ -89,4 +97,3 @@ Signed-off-by: Carsten Schoenert <c.schoenert@gmail.com>
       if (ret)
            return ret;
  
-
