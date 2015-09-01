@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-RPI_USERLAND_VERSION = b834074d0c0d9d7e64c133ab14ed691999cee990
+RPI_USERLAND_VERSION = b864a841e5a459a66a890c22b3a34127cd226238
 RPI_USERLAND_SITE = $(call github,raspberrypi,userland,$(RPI_USERLAND_VERSION))
 RPI_USERLAND_LICENSE = BSD-3c
 RPI_USERLAND_LICENSE_FILES = LICENCE

@@ -1,0 +1,33 @@
+From e84c85cfa6742becbd4f82047ce92290bb3ec19a Mon Sep 17 00:00:00 2001
+From: Baruch Siach <baruch@tkos.co.il>
+Date: Tue, 4 Aug 2015 10:15:17 +0200
+Subject: [PATCH 2/2] poco: don't build debug libraries
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Remove the debug libraries build dependency from the default target.
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+[Jörg: Update to version 1.6.1 from github]
+Signed-off-by: Jörg Krause <joerg.krause@embedded.rocks>
+---
+ build/rules/compile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/build/rules/compile b/build/rules/compile
+index 1945e3c..e0d7fbc 100644
+--- a/build/rules/compile
++++ b/build/rules/compile
+@@ -14,7 +14,7 @@
+ 
+ all: $(DEFAULT_TARGET)
+ all_static: static_debug static_release
+-all_shared: shared_debug shared_release
++all_shared: shared_release
+ all_debug: static_debug shared_debug
+ all_release: static_release shared_release
+ 
+-- 
+2.5.0
+

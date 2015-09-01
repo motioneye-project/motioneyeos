@@ -71,6 +71,9 @@ config BR2_PACKAGE_MTD_MTD_DEBUG
 	bool "mtd_debug"
 	default y
 
+config BR2_PACKAGE_MTD_MTDPART
+	bool "mtdpart"
+
 config BR2_PACKAGE_MTD_NANDDUMP
 	bool "nanddump"
 	default y
