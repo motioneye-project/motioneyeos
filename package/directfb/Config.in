@@ -45,10 +45,6 @@ config BR2_PACKAGE_DIRECTFB_TRACE
 	help
 	  Enable call tracing for DirectFB applications
 
-config BR2_PACKAGE_DIRECTFB_UNIQUE
-	bool "enable unique window manager"
-	depends on BR2_UNIMPLEMENTED
-
 config BR2_PACKAGE_DIRECTFB_ATI128
 	bool "compile ati128 graphics driver"
 	depends on BR2_i386 || BR2_x86_64
