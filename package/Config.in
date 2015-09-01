@@ -296,7 +296,6 @@ comment "X libraries and helper libraries"
 	source "package/x11r7/xkeyboard-config/Config.in"
 
 comment "X window managers"
-	source "package/blackbox/Config.in"
 	source "package/enlightenment/Config.in"
 	source "package/fluxbox/Config.in"
 	source "package/matchbox/Config.in"

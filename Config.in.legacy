@@ -107,6 +107,13 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2015.11"
 
+config BR2_PACKAGE_BLACKBOX
+	bool "blackbox package has been removed"
+	select BR2_LEGACY
+	help
+	  Upstream is dead and the package has been deprecated for
+	  some time. There are other alternative maintained WMs.
+
 config BR2_KERNEL_HEADERS_3_0
 	bool "kernel headers version 3.0.x are no longer supported"
 	select BR2_KERNEL_HEADERS_3_2
