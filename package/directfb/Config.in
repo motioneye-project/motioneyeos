@@ -45,10 +45,6 @@ config BR2_PACKAGE_DIRECTFB_TRACE
 	help
 	  Enable call tracing for DirectFB applications
 
-config BR2_PACKAGE_DIRECTFB_XSERVER
-	bool "build with X server backend"
-	depends on BR2_PACKAGE_XORG7
-
 config BR2_PACKAGE_DIRECTFB_UNIQUE
 	bool "enable unique window manager"
 	depends on BR2_UNIMPLEMENTED

@@ -22,7 +22,8 @@ DIRECTFB_CONF_OPTS = \
 	--disable-osx \
 	--disable-video4linux \
 	--disable-video4linux2 \
-	--without-tools
+	--without-tools \
+	--disable-x11
 
 ifeq ($(BR2_STATIC_LIBS),y)
 DIRECTFB_CONF_OPTS += --disable-dynload
@@ -50,12 +51,6 @@ endif
 
 ifeq ($(BR2_PACKAGE_DIRECTFB_TRACE),y)
 DIRECTFB_CONF_OPTS += --enable-trace
-endif
-
-ifeq ($(BR2_PACKAGE_XSERVER),y)
-DIRECTFB_CONF_OPTS += --enable-x11
-else
-DIRECTFB_CONF_OPTS += --disable-x11
 endif
 
 ifeq ($(BR2_PACKAGE_DIRECTFB_UNIQUE),y)
