@@ -4,4 +4,4 @@ config BR2_PACKAGE_EBTABLES
 	help
 	  Ethernet bridge frame table administration
 
-	  http://ebtables.sourceforge.net
+	  http://ebtables.netfilter.org/
