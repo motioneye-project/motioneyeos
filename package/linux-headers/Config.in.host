@@ -11,12 +11,6 @@ choice
 	  You must select the correct set of header files to match
 	  the kernel you intend to use on your target system.
 
-	config BR2_KERNEL_HEADERS_3_0
-		bool "Linux 3.0.x kernel headers"
-		depends on BR2_DEPRECATED_SINCE_2014_08
-		depends on !BR2_arc && !BR2_nios2
-		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0
-
 	config BR2_KERNEL_HEADERS_3_2
 		bool "Linux 3.2.x kernel headers"
 		depends on !BR2_arc && !BR2_nios2
@@ -32,33 +26,15 @@ choice
 		depends on !BR2_nios2
 		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_10
 
-	config BR2_KERNEL_HEADERS_3_11
-		bool "Linux 3.11.x kernel headers"
-		depends on BR2_DEPRECATED_SINCE_2014_08
-		depends on !BR2_nios2
-		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_11
-
 	config BR2_KERNEL_HEADERS_3_12
 		bool "Linux 3.12.x kernel headers"
 		depends on !BR2_nios2
 		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_12
 
-	config BR2_KERNEL_HEADERS_3_13
-		bool "Linux 3.13.x kernel headers"
-		depends on BR2_DEPRECATED_SINCE_2014_08
-		depends on !BR2_nios2
-		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_13
-
 	config BR2_KERNEL_HEADERS_3_14
 		bool "Linux 3.14.x kernel headers"
 		depends on !BR2_nios2
 		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_14
-
-	config BR2_KERNEL_HEADERS_3_15
-		bool "Linux 3.15.x kernel headers"
-		depends on BR2_DEPRECATED_SINCE_2014_08
-		depends on !BR2_nios2
-		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_15
 
 	config BR2_KERNEL_HEADERS_3_16
 		bool "Linux 3.16.x kernel headers"
@@ -215,15 +191,11 @@ endchoice
 
 config BR2_DEFAULT_KERNEL_HEADERS
 	string
-	default "3.0.101"	if BR2_KERNEL_HEADERS_3_0
 	default "3.2.71"	if BR2_KERNEL_HEADERS_3_2
 	default "3.4.108"	if BR2_KERNEL_HEADERS_3_4
 	default "3.10.87"	if BR2_KERNEL_HEADERS_3_10
-	default "3.11.10"	if BR2_KERNEL_HEADERS_3_11
 	default "3.12.47"	if BR2_KERNEL_HEADERS_3_12
-	default "3.13.11"	if BR2_KERNEL_HEADERS_3_13
 	default "3.14.51"	if BR2_KERNEL_HEADERS_3_14
-	default "3.15.10"	if BR2_KERNEL_HEADERS_3_15
 	default "3.16.7"	if BR2_KERNEL_HEADERS_3_16
 	default "3.17.8"	if BR2_KERNEL_HEADERS_3_17
 	default "3.18.20"	if BR2_KERNEL_HEADERS_3_18
