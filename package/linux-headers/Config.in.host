@@ -5,7 +5,7 @@ comment "Kernel Header Options"
 
 choice
 	prompt "Kernel Headers"
-	default BR2_KERNEL_HEADERS_4_1
+	default BR2_KERNEL_HEADERS_4_2
 	help
 	  Select the version of kernel header files you wish to use.
 	  You must select the correct set of header files to match
@@ -91,6 +91,10 @@ choice
 		bool "Linux 4.1.x kernel headers"
 		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_1
 
+	config BR2_KERNEL_HEADERS_4_2
+		bool "Linux 4.2.x kernel headers"
+		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_2
+
 	config BR2_KERNEL_HEADERS_VERSION
 		bool "Manually specified Linux version"
 endchoice
@@ -111,6 +115,10 @@ choice
 
 	  This is used to hide/show some packages that have strict
 	  requirements on the version of kernel headers.
+
+config BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_4_2
+	bool "4.2.x"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_2
 
 config BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_4_1
 	bool "4.1.x"
@@ -222,4 +230,5 @@ config BR2_DEFAULT_KERNEL_HEADERS
 	default "3.19.8"	if BR2_KERNEL_HEADERS_3_19
 	default "4.0.9"		if BR2_KERNEL_HEADERS_4_0
 	default "4.1.5"		if BR2_KERNEL_HEADERS_4_1
+	default "4.2"		if BR2_KERNEL_HEADERS_4_2
 	default BR2_DEFAULT_KERNEL_VERSION if BR2_KERNEL_HEADERS_VERSION
