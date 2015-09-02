@@ -10,14 +10,11 @@ IMX_VPU_SOURCE = imx-vpu-$(IMX_VPU_VERSION).bin
 
 IMX_VPU_INSTALL_STAGING = YES
 
-# imx-vpu needs access to imx-specific kernel headers
-IMX_VPU_DEPENDENCIES += linux
 IMX_VPU_MAKE_ENV = \
 	$(TARGET_MAKE_ENV) \
 	$(TARGET_CONFIGURE_OPTS) \
 	CROSS_COMPILE="$(CCACHE) $(TARGET_CROSS)" \
-	PLATFORM=$(BR2_PACKAGE_FREESCALE_IMX_PLATFORM) \
-	INCLUDE="-idirafter $(LINUX_DIR)/include"
+	PLATFORM=$(BR2_PACKAGE_FREESCALE_IMX_PLATFORM)
 
 IMX_VPU_LICENSE = Freescale Semiconductor Software License Agreement
 IMX_VPU_LICENSE_FILES = EULA vpu/EULA.txt
