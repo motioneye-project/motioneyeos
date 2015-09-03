@@ -12,7 +12,13 @@ TARGETCLI_FB_SETUP_TYPE = setuptools
 TARGETCLI_FB_DEPENDENCIES = python-configshell-fb python-rtslib-fb python-six
 
 define TARGETCLI_FB_INSTALL_INIT_SYSV
-	$(INSTALL) -m 0755 -D package/targetcli-fb/S50target $(TARGET_DIR)/etc/init.d/S50target
+	$(INSTALL) -m 0755 -D package/targetcli-fb/S50target \
+		$(TARGET_DIR)/etc/init.d/S50target
+endef
+
+define TARGETCLI_FB_INSTALL_INIT_SYSTEMD
+	$(INSTALL) -m 0644 -D package/targetcli-fb/target.service \
+		$(TARGET_DIR)/usr/lib/systemd/system/target.service
 endef
 
 # Targetcli stores its configuration in /etc/target/saveconfig.json
