@@ -1,0 +1,59 @@
+Don't reference wchar_t when D2U_UNICODE is not defined.
+
+Patch status: upstream (http://sourceforge.net/p/dos2unix/code/736)
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+
+diff -Nuar dos2unix-7.3.orig/common.c dos2unix-7.3/common.c
+--- dos2unix-7.3.orig/common.c	2015-08-21 02:02:31.000000000 +0300
++++ dos2unix-7.3/common.c	2015-09-02 22:13:33.648486366 +0300
+@@ -1615,9 +1615,11 @@
+     } else if (pFlag->status & WRONG_CODEPAGE) {
+       d2u_fprintf(stderr,"%s: ",progname);
+       d2u_fprintf(stderr, _("code page %d is not supported.\n"), pFlag->ConvMode);
++#ifdef D2U_UNICODE
+     } else if (pFlag->status & WCHAR_T_TOO_SMALL) {
+       d2u_fprintf(stderr,"%s: ",progname);
+       d2u_fprintf(stderr, _("Skipping UTF-16 file %s, the size of wchar_t is %d bytes.\n"), "stdin", (int)sizeof(wchar_t));
++#endif
+     } else if (pFlag->status & UNICODE_CONVERSION_ERROR) {
+       d2u_fprintf(stderr,"%s: ",progname);
+       d2u_fprintf(stderr, _("Skipping UTF-16 file %s, an UTF-16 conversion error occurred on line %u.\n"), "stdin", pFlag->line_nr);
+@@ -1701,9 +1703,11 @@
+   } else if (pFlag->status & WRONG_CODEPAGE) {
+     d2u_fprintf(stderr,"%s: ",progname);
+     d2u_fprintf(stderr, _("code page %d is not supported.\n"), pFlag->ConvMode);
++#ifdef D2U_UNICODE
+   } else if (pFlag->status & WCHAR_T_TOO_SMALL) {
+     d2u_fprintf(stderr,"%s: ",progname);
+     d2u_fprintf(stderr, _("Skipping UTF-16 file %s, the size of wchar_t is %d bytes.\n"), infile, (int)sizeof(wchar_t));
++#endif
+   } else if (pFlag->status & UNICODE_CONVERSION_ERROR) {
+     d2u_fprintf(stderr,"%s: ",progname);
+     d2u_fprintf(stderr, _("Skipping UTF-16 file %s, an UTF-16 conversion error occurred on line %u.\n"), infile, pFlag->line_nr);
+@@ -1781,9 +1785,11 @@
+   } else if (pFlag->status & WRONG_CODEPAGE) {
+     d2u_fprintf(stderr,"%s: ",progname);
+     d2u_fprintf(stderr, _("code page %d is not supported.\n"), pFlag->ConvMode);
++#ifdef D2U_UNICODE
+   } else if (pFlag->status & WCHAR_T_TOO_SMALL) {
+     d2u_fprintf(stderr,"%s: ",progname);
+     d2u_fprintf(stderr, _("Skipping UTF-16 file %s, the size of wchar_t is %d bytes.\n"), infile, (int)sizeof(wchar_t));
++#endif
+   } else if (pFlag->status & UNICODE_CONVERSION_ERROR) {
+     d2u_fprintf(stderr,"%s: ",progname);
+     d2u_fprintf(stderr, _("Skipping UTF-16 file %s, an UTF-16 conversion error occurred on line %u.\n"), infile, pFlag->line_nr);
+@@ -1834,11 +1840,13 @@
+       d2u_fprintf(stderr,"%s: ",progname);
+       d2u_fprintf(stderr, _("Skipping symbolic link %s, target is not a regular file.\n"), infile);
+     }
++#ifdef D2U_UNICODE
+   } else if (pFlag->status & WCHAR_T_TOO_SMALL) {
+     if (pFlag->verbose) {
+       d2u_fprintf(stderr,"%s: ",progname);
+       d2u_fprintf(stderr, _("Skipping UTF-16 file %s, the size of wchar_t is %d bytes.\n"), infile, (int)sizeof(wchar_t));
+     }
++#endif
+   }
+ }
+ 
