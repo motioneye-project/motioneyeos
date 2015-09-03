@@ -44,6 +44,11 @@
 
 define inner-kernel-module
 
+# If the package is enabled, ensure the kernel will support modules
+ifeq ($$(BR2_PACKAGE_$(2)),y)
+LINUX_NEEDS_MODULES = y
+endif
+
 # The kernel must be built first.
 $(2)_DEPENDENCIES += linux
 
