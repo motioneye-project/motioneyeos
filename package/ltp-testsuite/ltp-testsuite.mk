@@ -10,6 +10,7 @@ LTP_TESTSUITE_SITE = http://downloads.sourceforge.net/project/ltp/LTP%20Source/l
 LTP_TESTSUITE_LICENSE = GPLv2 GPLv2+
 LTP_TESTSUITE_LICENSE_FILES = COPYING
 LTP_TESTSUITE_CONF_OPTS += \
+			   --with-power-management-testsuite \
 			   --with-realtime-testsuite
 
 # Needs libcap with file attrs which needs attr, so both required
