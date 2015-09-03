@@ -4,4 +4,4 @@ config BR2_PACKAGE_DOS2UNIX
 	help
 	  dos2unix converts text file line endings between CRLF and LF
 
-	  http://freshmeat.net/projects/dos2unix
+	  http://waterlan.home.xs4all.nl/dos2unix.html
