@@ -12,6 +12,12 @@ RACEHOUND_SUPPORTS_IN_SOURCE_BUILD = NO
 
 RACEHOUND_DEPENDENCIES = elfutils linux
 
+# We're building a kernel module without using the kernel-module infra,
+# so we need to tell we want module support in the kernel
+ifeq ($(BR2_PACKAGE_RACEHOUND),y)
+LINUX_NEEDS_MODULES = y
+endif
+
 # override auto detection (uses host parameters, not cross compile
 # ready)
 RACEHOUND_CONF_OPTS += \

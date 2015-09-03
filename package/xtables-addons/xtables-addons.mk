@@ -16,6 +16,12 @@ XTABLES_ADDONS_CONF_OPTS = \
 	--with-xtables="$(STAGING_DIR)/usr" \
 	--with-xtlibdir="/usr/lib/xtables"
 
+# We're building a kernel module without using the kernel-module infra,
+# so we need to tell we want module support in the kernel
+ifeq ($(BR2_PACKAGE_XTABLES_ADDONS),y)
+LINUX_NEEDS_MODULES = y
+endif
+
 # geoip helpers need perl with modules and unzip so disable
 define XTABLES_DISABLE_GEOIP_HELPERS
 	$(SED) 's/ geoip//' $(@D)/Makefile.in

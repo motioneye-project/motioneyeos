@@ -91,6 +91,10 @@ ifeq ($(BR2_PACKAGE_NVIDIA_DRIVER_MODULE),y)
 
 NVIDIA_DRIVER_DEPENDENCIES += linux
 
+# We're building a kernel module without using the kernel-module infra,
+# so we need to tell we want module support in the kernel
+LINUX_NEEDS_MODULES = y
+
 # NVidia uses the legacy naming scheme for the x86 architecture, when i386
 # and x86_64 were still considered two separate architectures in the Linux
 # kernel.
