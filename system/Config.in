@@ -78,6 +78,10 @@ config BR2_INIT_SYSV
 	select BR2_PACKAGE_INITSCRIPTS
 	select BR2_PACKAGE_SYSVINIT
 
+# In Buildroot, we decided not to support a split-usr when systemd is
+# used as an init system. This is a design decision, not a systemd
+# issue. Thus the select is with BR2_INIT_SYSTEMD (below) rather than
+# with BR2_PACKAGE_SYSTEMD.
 config BR2_INIT_SYSTEMD
 	bool "systemd"
 	depends on BR2_PACKAGE_SYSTEMD_ARCH_SUPPORTS
@@ -88,6 +92,7 @@ config BR2_INIT_SYSTEMD
 	depends on BR2_USE_MMU
 	depends on !BR2_STATIC_LIBS
 	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_10
+	select BR2_ROOTFS_MERGED_USR
 	select BR2_PACKAGE_SYSTEMD
 
 comment "systemd needs (e)glibc toolchain, headers >= 3.10"
@@ -177,6 +182,18 @@ config BR2_ROOTFS_SKELETON_CUSTOM_PATH
 endif
 
 if BR2_ROOTFS_SKELETON_DEFAULT
+
+config BR2_ROOTFS_MERGED_USR
+	bool "Use symlinks to /usr for /bin, /sbin and /lib"
+	help
+	  If you say 'n' here, then /bin, /sbin and /lib and their
+	  counterparts in /usr will be separate directories. This
+	  is the historical UNIX way. In this case, /usr can be a
+	  filesystem on a partition separate from / .
+
+	  If you say 'y' here, then /bin, /sbin and /lib will be symlinks
+	  to their counterparts in /usr. In this case, /usr can not be a
+	  separate filesystem.
 
 config BR2_TARGET_ENABLE_ROOT_LOGIN
 	bool "Enable root login with password"

@@ -19,15 +19,29 @@ else
 SKELETON_PATH = system/skeleton
 endif
 
+ifeq ($(BR2_ROOTFS_MERGED_USR),y)
+define SKELETON_USR_SYMLINKS_OR_DIRS
+	ln -snf usr/bin $(TARGET_DIR)/bin
+	ln -snf usr/sbin $(TARGET_DIR)/sbin
+	ln -snf usr/lib $(TARGET_DIR)/lib
+endef
+else
+define SKELETON_USR_SYMLINKS_OR_DIRS
+	$(INSTALL) -d -m 0755 $(TARGET_DIR)/bin
+	$(INSTALL) -d -m 0755 $(TARGET_DIR)/sbin
+	$(INSTALL) -d -m 0755 $(TARGET_DIR)/lib
+endef
+endif
+
 define SKELETON_INSTALL_TARGET_CMDS
 	rsync -a --ignore-times $(SYNC_VCS_EXCLUSIONS) \
 		--chmod=u=rwX,go=rX --exclude .empty --exclude '*~' \
 		$(SKELETON_PATH)/ $(TARGET_DIR)/
+	$(SKELETON_USR_SYMLINKS_OR_DIRS)
+	ln -snf lib $(TARGET_DIR)/$(LIB_SYMLINK)
+	ln -snf lib $(TARGET_DIR)/usr/$(LIB_SYMLINK)
 	$(INSTALL) -m 0644 support/misc/target-dir-warning.txt \
 		$(TARGET_DIR_WARNING_FILE)
-	ln -snf lib $(TARGET_DIR)/$(LIB_SYMLINK)
-	mkdir -p $(TARGET_DIR)/usr
-	ln -snf lib $(TARGET_DIR)/usr/$(LIB_SYMLINK)
 endef
 
 SKELETON_TARGET_GENERIC_HOSTNAME = $(call qstrip,$(BR2_TARGET_GENERIC_HOSTNAME))

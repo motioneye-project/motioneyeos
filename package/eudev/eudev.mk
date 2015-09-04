@@ -22,15 +22,17 @@ EUDEV_CONF_ENV += LIBS=-lrt
 EUDEV_CONF_OPTS =		\
 	--disable-manpages	\
 	--sbindir=/sbin		\
-	--with-rootlibdir=/lib	\
 	--libexecdir=/lib	\
 	--with-firmware-path=/lib/firmware	\
 	--disable-introspection			\
-	--enable-split-usr			\
 	--enable-libkmod
 
 EUDEV_DEPENDENCIES = host-gperf host-pkgconf util-linux kmod
 EUDEV_PROVIDES = udev
+
+ifeq ($(BR2_ROOTFS_MERGED_USR),)
+EUDEV_CONF_OPTS += --with-rootlibdir=/lib --enable-split-usr
+endif
 
 ifeq ($(BR2_PACKAGE_EUDEV_RULES_GEN),y)
 EUDEV_CONF_OPTS += --enable-rule_generator
