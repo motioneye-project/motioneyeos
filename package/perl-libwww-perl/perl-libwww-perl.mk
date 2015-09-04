@@ -10,7 +10,6 @@ PERL_LIBWWW_PERL_SITE = $(BR2_CPAN_MIRROR)/authors/id/E/ET/ETHER
 PERL_LIBWWW_PERL_LICENSE = Artistic or GPLv1+
 PERL_LIBWWW_LICENSE_FILES = README
 PERL_LIBWWW_PERL_DEPENDENCIES = \
-	perl \
 	perl-encode-locale \
 	perl-file-listing \
 	perl-html-parser \
