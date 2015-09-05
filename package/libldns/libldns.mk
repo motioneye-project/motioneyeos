@@ -17,13 +17,20 @@ LIBLDNS_CONF_OPTS = \
 	--without-pyldnsx
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
-LIBLDNS_DEPENDENCIES += host-pkgconf openssl
+LIBLDNS_DEPENDENCIES += openssl
 LIBLDNS_CONF_OPTS += \
 	--with-ssl=$(STAGING_DIR)/usr \
 	--enable-dane \
 	--enable-ecdsa \
 	--enable-gost \
 	--enable-sha2
+
+ifeq ($(BR2_STATIC_LIBS),y)
+LIBLDNS_DEPENDENCIES += host-pkgconf
+# missing -lz breaks configure, add it using pkgconf
+LIBLDNS_CONF_ENV += LIBS="`$(PKG_CONFIG_HOST_BINARY) --libs openssl`"
+endif
+
 else
 LIBLDNS_CONF_OPTS += \
 	--without-ssl \
@@ -32,5 +39,9 @@ LIBLDNS_CONF_OPTS += \
 	--disable-gost \
 	--disable-sha2
 endif
+
+# the linktest make target fails with static linking, and we are only
+# interested in the lib target anyway
+LIBLDNS_MAKE_OPTS = lib
 
 $(eval $(autotools-package))
