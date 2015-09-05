@@ -560,12 +560,8 @@ sub fetch {
         $license_files{$name} = find_license_files( $manifest );
         my %build = ();
         my %runtime = ();
-        my $mb;
         foreach my $dep (@{$result->{dependency}}) {
             my $modname = ${$dep}{module};
-            $mb = 1 if $modname eq q{Module::Build};
-            # Module::Build has a special treatment, because it is a core module,
-            # but some module require a very recent version of it
             next if $modname eq q{perl};
             next if $modname =~ m|^Alien|;
             next if $modname =~ m|^Win32|;
@@ -584,7 +580,6 @@ sub fetch {
                 $build{$distname} = 1;
             }
         }
-        $build{q{Module-Build}} = 1 if $mb;
         $deps_build{$name} = [keys %build];
         $deps_runtime{$name} = [keys %runtime];
         foreach my $distname (@{$deps_build{$name}}) {
