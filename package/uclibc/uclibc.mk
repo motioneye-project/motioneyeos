@@ -434,21 +434,6 @@ define UCLIBC_INSTALL_UTILS_TARGET
 endef
 endif
 
-# gcc produces binaries that use ld{64,}-uClibc.so.0 as the program
-# interpreter, but since uClibc-ng version is 1.0.0, it generates
-# ld{64,}-uClibc.so.1. In order to avoid changing gcc, we simply
-# create the necessary symbolic links here.
-ifeq ($(BR2_UCLIBC_VERSION_NG),y)
-define UCLIBC_INSTALL_LDSO_SYMLINKS
-	if [ -e $(TARGET_DIR)/lib/ld64-uClibc.so.1 ]; then \
-		(cd $(TARGET_DIR)/lib;ln -sf ld64-uClibc.so.1 ld64-uClibc.so.0) \
-	fi
-	if [ -e $(TARGET_DIR)/lib/ld-uClibc.so.1 ]; then \
-		(cd $(TARGET_DIR)/lib;ln -sf ld-uClibc.so.1 ld-uClibc.so.0) \
-	fi
-endef
-endif
-
 define UCLIBC_INSTALL_TARGET_CMDS
 	$(MAKE1) -C $(@D) \
 		$(UCLIBC_MAKE_FLAGS) \
