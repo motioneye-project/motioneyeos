@@ -72,6 +72,11 @@ config BR2_PACKAGE_FREERDP_CLIENT_X11
 comment "server and X11 client need X.Org"
 	depends on !BR2_PACKAGE_XORG7
 
+config BR2_PACKAGE_FREERDP_CLIENT_WL
+	bool "wayland client"
+	default y
+	depends on BR2_PACKAGE_WAYLAND
+
 endif
 
 comment "freerdp needs a toolchain w/ wchar, dynamic library, threads"

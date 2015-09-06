@@ -85,12 +85,12 @@ ifeq ($(BR2_PACKAGE_FREERDP_SERVER),y)
 FREERDP_CONF_OPTS += -DWITH_SERVER=ON
 endif
 
-ifeq ($(BR2_PACKAGE_FREERDP_CLIENT_X11),y)
+ifneq ($(BR2_PACKAGE_FREERDP_CLIENT_X11)$(BR2_PACKAGE_FREERDP_CLIENT_WL),)
 FREERDP_CONF_OPTS += -DWITH_CLIENT=ON
 endif
 
 #---------------------------------------
-# X.Org libs for client and/or server
+# Libraries for client and/or server
 
 # The FreeRDP buildsystem uses non-orthogonal options. For example it
 # is not possible to build the server and the wayland client without
@@ -191,6 +191,13 @@ else
 FREERDP_CONF_OPTS += -DWITH_XV=OFF
 endif
 
+ifeq ($(BR2_PACKAGE_WAYLAND),y)
+FREERDP_DEPENDENCIES += wayland
+FREERDP_CONF_OPTS += -DWITH_WAYLAND=ON
+else
+FREERDP_CONF_OPTS += -DWITH_WAYLAND=OFF
+endif
+
 #---------------------------------------
 # Post-install hooks to cleanup and install missing stuff
 
@@ -218,13 +225,20 @@ endef
 FREERDP_POST_INSTALL_STAGING_HOOKS += FREERDP_RM_CLIENT_X11_LIB
 endif # ! X client
 
+# Wayland client is always built as soon as wayland is enabled, so
+# manually remove it if the user does not want it.
+ifeq ($(BR2_PACKAGE_FREERDP_CLIENT_WL),)
+define FREERDP_RM_CLIENT_WL
+	rm -f $(TARGET_DIR)/usr/bin/wlfreerdp
+endef
+FREERDP_POST_INSTALL_TARGET_HOOKS += FREERDP_RM_CLIENT_WL
+endif
+
 # Remove static libraries in unusual dir
 define FREERDP_CLEANUP
 	rm -rf $(TARGET_DIR)/usr/lib/freerdp
 endef
 FREERDP_POST_INSTALL_TARGET_HOOKS += FREERDP_CLEANUP
-
-FREERDP_CONF_OPTS += -DWITH_WAYLAND=OFF
 
 # Install the server key and certificate, so that a client can connect.
 # A user can override them with its own in a post-build script, if needed.
