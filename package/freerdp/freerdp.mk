@@ -85,18 +85,38 @@ ifeq ($(BR2_PACKAGE_FREERDP_SERVER),y)
 FREERDP_CONF_OPTS += -DWITH_SERVER=ON
 endif
 
-ifeq ($(BR2_PACKAGE_FREERDP_CLIENT),y)
+ifeq ($(BR2_PACKAGE_FREERDP_CLIENT_X11),y)
 FREERDP_CONF_OPTS += -DWITH_CLIENT=ON
 endif
 
 #---------------------------------------
 # X.Org libs for client and/or server
 
-ifneq ($(BR2_PACKAGE_FREERDP_SERVER)$(BR2_PACKAGE_FREERDP_CLIENT),)
+# The FreeRDP buildsystem uses non-orthogonal options. For example it
+# is not possible to build the server and the wayland client without
+# also building the X client. That's because the dependencies of the
+# server (the X libraries) are a superset of those of the X client.
+# So, as soon as FreeRDP is configured for the server and the wayland
+# client, it will believe it also has to build the X client, because
+# the libraries it needs are enabled.
+#
+# Furthermore, the shadow server is always built, even if there's nothing
+# it can serve (i.e. the X libs are disabled).
+#
+# So, we do not care whether we build too much; we remove, as
+# post-install hooks, whatever we do not want.
 
-# Those two are mandatory for both the server and the client
+# If Xorg is enabled, and the server or the X client are, then libX11
+# and libXext are forcibly enabled at the Kconfig level. However, if
+# Xorg is enabled but neither the server nor the X client are, then
+# there's nothing that guarantees those two libs are enabled. So we
+# really must check for them.
+ifeq ($(BR2_PACKAGE_XLIB_LIBX11)$(BR2_PACKAGE_XLIB_LIBX11),yy)
 FREERDP_DEPENDENCIES += xlib_libX11 xlib_libXext
 FREERDP_CONF_OPTS += -DWITH_X11=ON
+else
+FREERDP_CONF_OPTS += -DWITH_X11=OFF
+endif
 
 # The following libs are either optional or mandatory only for either
 # the server or the client. A mandatory library for either one is
@@ -171,12 +191,6 @@ else
 FREERDP_CONF_OPTS += -DWITH_XV=OFF
 endif
 
-else # ! SERVER && ! CLIENT
-
-FREERDP_CONF_OPTS += -DWITH_X11=OFF
-
-endif # ! SERVER && ! CLIENT
-
 #---------------------------------------
 # Post-install hooks to cleanup and install missing stuff
 
@@ -188,6 +202,27 @@ define FREERDP_RM_SHADOW_SERVER
 endef
 FREERDP_POST_INSTALL_TARGET_HOOKS += FREERDP_RM_SHADOW_SERVER
 endif # ! server
+
+# X client is always built as soon as a client is enabled and the
+# necessary libs are enabled (e.g. because of the server), so manually
+# remove it if the user does not want it.
+ifeq ($(BR2_PACKAGE_FREERDP_CLIENT_X11),)
+define FREERDP_RM_CLIENT_X11
+	rm -f $(TARGET_DIR)/usr/bin/xfreerdp
+	rm -f $(TARGET_DIR)/usr/lib/libxfreerdp-client*
+endef
+FREERDP_POST_INSTALL_TARGET_HOOKS += FREERDP_RM_CLIENT_X11
+define FREERDP_RM_CLIENT_X11_LIB
+	rm -f $(STAGING_DIR)/usr/lib/libxfreerdp-client*
+endef
+FREERDP_POST_INSTALL_STAGING_HOOKS += FREERDP_RM_CLIENT_X11_LIB
+endif # ! X client
+
+# Remove static libraries in unusual dir
+define FREERDP_CLEANUP
+	rm -rf $(TARGET_DIR)/usr/lib/freerdp
+endef
+FREERDP_POST_INSTALL_TARGET_HOOKS += FREERDP_CLEANUP
 
 FREERDP_CONF_OPTS += -DWITH_WAYLAND=OFF
 

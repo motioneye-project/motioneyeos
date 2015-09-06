@@ -107,6 +107,13 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2015.11"
 
+# Since FreeRDP has new dependencies, protect this legacy to avoid the
+# infamous "unmet direct dependencies" kconfig error.
+config BR2_PACKAGE_FREERDP_CLIENT
+	bool "freerdp client option renamed"
+	depends on BR2_PACKAGE_FREERDP
+	select BR2_PACKAGE_FREERDP_CLIENT_X11
+
 config BR2_PACKAGE_BLACKBOX
 	bool "blackbox package has been removed"
 	select BR2_LEGACY

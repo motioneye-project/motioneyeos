@@ -62,14 +62,14 @@ config BR2_PACKAGE_FREERDP_SERVER
 	select BR2_PACKAGE_XLIB_LIBXEXT
 	select BR2_PACKAGE_XLIB_LIBXFIXES
 
-config BR2_PACKAGE_FREERDP_CLIENT
-	bool "client"
+config BR2_PACKAGE_FREERDP_CLIENT_X11
+	bool "X11 client"
 	default y
 	depends on BR2_PACKAGE_XORG7
 	select BR2_PACKAGE_XLIB_LIBX11
 	select BR2_PACKAGE_XLIB_LIBXEXT
 
-comment "server and client need X.Org"
+comment "server and X11 client need X.Org"
 	depends on !BR2_PACKAGE_XORG7
 
 endif
