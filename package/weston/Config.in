@@ -41,13 +41,11 @@ config BR2_PACKAGE_WESTON_HAS_COMPOSITOR
 config BR2_PACKAGE_WESTON_FBDEV
 	bool "fbdev compositor"
 
-# RDP backend needs FreeRDP master, while we only have stable-1.1
-comment "RDP backend is broken"
-
+# FreeRDP needs threads and !static, already the case for weston
 config BR2_PACKAGE_WESTON_RDP
 	bool "RDP compositor"
-	depends on BROKEN # needs FreeRDP master
 	depends on BR2_USE_WCHAR # freerdp
+	depends on BR2_USE_MMU # freerdp, libglib2
 	select BR2_PACKAGE_FREERDP
 	select BR2_PACKAGE_WESTON_HAS_COMPOSITOR
 	help
