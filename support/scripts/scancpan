@@ -534,7 +534,7 @@ sub is_xs {
     # This heuristic determines if a module is a native extension, by searching
     # some file extension types in the MANIFEST of the distribution.
     # It was inspired by http://deps.cpantesters.org/static/purity.html
-    return $manifest =~ m/\.(swg|xs|c|h|i)\n/;
+    return $manifest =~ m/\.(swg|xs|c|h|i)[\n\s]/;
 }
 
 sub find_license_files {
