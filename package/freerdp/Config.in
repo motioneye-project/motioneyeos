@@ -3,15 +3,15 @@ config BR2_PACKAGE_FREERDP
 	depends on BR2_USE_WCHAR
 	depends on !BR2_STATIC_LIBS # uses dlfcn.h
 	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_USE_MMU # libglib2
 	select BR2_PACKAGE_OPENSSL
 	select BR2_PACKAGE_ZLIB
-	select BR2_PACKAGE_GST_PLUGINS_BASE if BR2_PACKAGE_GSTREAMER
-	select BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_APP if BR2_PACKAGE_GSTREAMER
+	select BR2_PACKAGE_LIBGLIB2
 	help
 	  FreeRDP is a free implementation of the Remote Desktop
 	  Protocol (RDP), released under the Apache license
 
-	  This only installs the freerdp library.
+	  This only installs the freerdp libraries.
 
 	  http://www.freerdp.com/
 
@@ -24,7 +24,7 @@ config BR2_PACKAGE_FREERDP
 if BR2_PACKAGE_FREERDP
 
 config BR2_PACKAGE_FREERDP_SERVER
-	bool "build server"
+	bool "server"
 	depends on BR2_PACKAGE_XORG7
 	select BR2_PACKAGE_XLIB_LIBX11
 	select BR2_PACKAGE_XLIB_LIBXDAMAGE
@@ -32,13 +32,13 @@ config BR2_PACKAGE_FREERDP_SERVER
 	select BR2_PACKAGE_XLIB_LIBXFIXES
 
 config BR2_PACKAGE_FREERDP_CLIENT
-	bool "build client"
+	bool "client"
 	default y
 	depends on BR2_PACKAGE_XORG7
 	select BR2_PACKAGE_XLIB_LIBX11
 	select BR2_PACKAGE_XLIB_LIBXEXT
 
-comment "freerdp server and client need X.Org"
+comment "server and client need X.Org"
 	depends on !BR2_PACKAGE_XORG7
 
 endif

@@ -4,10 +4,10 @@
 #
 ################################################################################
 
-# Changeset on the stable-1.1 branch
-FREERDP_VERSION = 770c67d340d5f0a7b48d53a1ae0fc23aff748fc4
+# Changeset on the master branch
+FREERDP_VERSION = 17834af7bb378f85a3b3cc4dcadaa5125a337e16
 FREERDP_SITE = $(call github,FreeRDP,FreeRDP,$(FREERDP_VERSION))
-FREERDP_DEPENDENCIES = openssl zlib
+FREERDP_DEPENDENCIES = libglib2 openssl zlib
 FREERDP_LICENSE = Apache-2.0
 FREERDP_LICENSE_FILES = LICENSE
 
@@ -15,13 +15,7 @@ FREERDP_INSTALL_STAGING = YES
 
 FREERDP_CONF_OPTS = -DWITH_MANPAGES=OFF -Wno-dev
 
-ifeq ($(BR2_PACKAGE_GSTREAMER),y)
-FREERDP_CONF_OPTS += -DWITH_GSTREAMER=ON
-# freerdp needs gstinterface and gstapp from gst-plugins-base
-FREERDP_DEPENDENCIES += gstreamer gst-plugins-base
-else
-FREERDP_CONF_OPTS += -DWITH_GSTREAMER=OFF
-endif
+FREERDP_CONF_OPTS += -DWITH_GSTREAMER_0_10=OFF -DWITH_GSTREAMER_1_0=OFF
 
 ifeq ($(BR2_PACKAGE_CUPS),y)
 FREERDP_CONF_OPTS += -DWITH_CUPS=ON
@@ -70,16 +64,17 @@ endif
 #---------------------------------------
 # Enabling server and/or client
 
+# Clients and server interface must always be enabled to build the
+# corresponding libraries.
+FREERDP_CONF_OPTS += -DWITH_SERVER_INTERFACE=ON
+FREERDP_CONF_OPTS += -DWITH_CLIENT_INTERFACE=ON
+
 ifeq ($(BR2_PACKAGE_FREERDP_SERVER),y)
-FREERDP_CONF_OPTS += -DWITH_SERVER=ON -DWITH_SERVER_INTERFACE=ON
-else
-FREERDP_CONF_OPTS += -DWITH_SERVER=OFF -DWITH_SERVER_INTERFACE=OFF
+FREERDP_CONF_OPTS += -DWITH_SERVER=ON
 endif
 
 ifeq ($(BR2_PACKAGE_FREERDP_CLIENT),y)
-FREERDP_CONF_OPTS += -DWITH_CLIENT=ON -DWITH_CLIENT_INTERFACE=ON
-else
-FREERDP_CONF_OPTS += -DWITH_CLIENT=OFF -DWITH_CLIENT_INTERFACE=OFF
+FREERDP_CONF_OPTS += -DWITH_CLIENT=ON
 endif
 
 #---------------------------------------
@@ -170,6 +165,20 @@ FREERDP_CONF_OPTS += -DWITH_X11=OFF
 
 endif # ! SERVER && ! CLIENT
 
+#---------------------------------------
+# Post-install hooks to cleanup and install missing stuff
+
+# Shadow server is always installed, no matter what, so we manually
+# remove it if the user does not want the server.
+ifeq ($(BR2_PACKAGE_FREERDP_SERVER),)
+define FREERDP_RM_SHADOW_SERVER
+	rm -f $(TARGET_DIR)/usr/bin/freerdp-shadow
+endef
+FREERDP_POST_INSTALL_TARGET_HOOKS += FREERDP_RM_SHADOW_SERVER
+endif # ! server
+
+FREERDP_CONF_OPTS += -DWITH_WAYLAND=OFF
+
 # Install the server key and certificate, so that a client can connect.
 # A user can override them with its own in a post-build script, if needed.
 # We install them even if the server is not enabled, since another server
@@ -177,9 +186,9 @@ endif # ! SERVER && ! CLIENT
 # backend). Key and cert are installed world-readable, so non-root users
 # can start a server.
 define FREERDP_INSTALL_KEYS
-	$(INSTALL) -m 0644 -D $(@D)/server/X11/server.key \
+	$(INSTALL) -m 0644 -D $(@D)/server/Sample/server.key \
 		      $(TARGET_DIR)/etc/freerdp/keys/server.key
-	$(INSTALL) -m 0644 -D $(@D)/server/X11/server.crt \
+	$(INSTALL) -m 0644 -D $(@D)/server/Sample/server.crt \
 		      $(TARGET_DIR)/etc/freerdp/keys/server.crt
 endef
 FREERDP_POST_INSTALL_TARGET_HOOKS += FREERDP_INSTALL_KEYS
