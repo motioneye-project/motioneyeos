@@ -21,6 +21,12 @@ HOST_ELF2FLT_CONF_OPTS = \
 	--with-libiberty=$(HOST_BINUTILS_DIR)/libiberty/libiberty.a \
 	--target=$(GNU_TARGET_NAME)
 
-HOST_ELF2FLT_CONF_ENV = LIBS=-lz
+HOST_ELF2FLT_LIBS = -lz
+
+ifeq ($(BR2_GCC_ENABLE_LTO),y)
+HOST_ELF2FLT_LIBS += -ldl
+endif
+
+HOST_ELF2FLT_CONF_ENV = LIBS="$(HOST_ELF2FLT_LIBS)"
 
 $(eval $(host-autotools-package))
