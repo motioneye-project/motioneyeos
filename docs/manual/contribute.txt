@@ -298,6 +298,14 @@ $ git format-patch --subject-prefix "PATCH v4" \
     -M -s -o outgoing origin/master
 ---------------------
 
+When you provide a new version of a patch, please mark the old one as
+superseded in http://patchwork.buildroot.org[patchwork]. You need to
+create an account on http://patchwork.buildroot.org[patchwork] to be
+able to modify the status of your patches. Note that you can only change
+the status of patches you submitted yourself, which means the email
+address you register in http://patchwork.buildroot.org[patchwork] should
+match the one you use for sending patches to the mailing list.
+
 [[reporting-bugs]]
 === Reporting issues/bugs or getting help
 
