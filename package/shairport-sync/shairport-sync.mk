@@ -4,17 +4,20 @@
 #
 ################################################################################
 
-SHAIRPORT_SYNC_VERSION = 2.2.4
+SHAIRPORT_SYNC_VERSION = 2.4
 SHAIRPORT_SYNC_SITE = $(call github,mikebrady,shairport-sync,$(SHAIRPORT_SYNC_VERSION))
 
 SHAIRPORT_SYNC_LICENSE = MIT, BSD-3c
 SHAIRPORT_SYNC_LICENSE_FILES = LICENSES
-SHAIRPORT_SYNC_DEPENDENCIES = alsa-lib libdaemon popt host-pkgconf
+SHAIRPORT_SYNC_DEPENDENCIES = alsa-lib libconfig libdaemon popt host-pkgconf
 
 # Touching configure.ac with the patches
 SHAIRPORT_SYNC_AUTORECONF = YES
 
-SHAIRPORT_SYNC_CONF_OPTS = --with-alsa
+SHAIRPORT_SYNC_CONF_OPTS = --with-alsa \
+	--with-metadata \
+	--with-pipe \
+	--with-stdout
 
 # Avahi or tinysvcmdns (shaiport-sync bundles its own version of tinysvcmdns).
 # Avahi support needs libavahi-client, which is built by avahi if avahi-daemon
@@ -45,6 +48,8 @@ endif
 define SHAIRPORT_SYNC_INSTALL_TARGET_CMDS
 	$(INSTALL) -D -m 0755 $(@D)/shairport-sync \
 		$(TARGET_DIR)/usr/bin/shairport-sync
+	$(INSTALL) -D -m 0644 $(@D)/scripts/shairport-sync.conf \
+		$(TARGET_DIR)/etc/shairport-sync.conf
 endef
 
 define SHAIRPORT_SYNC_INSTALL_INIT_SYSV
