@@ -4,11 +4,11 @@
 #
 ################################################################################
 
-SUNXI_TOOLS_VERSION = v1.2
+SUNXI_TOOLS_VERSION = 82b9c656868d99553f11b1c8853ca808c7ce41ae
 SUNXI_TOOLS_SITE = $(call github,linux-sunxi,sunxi-tools,$(SUNXI_TOOLS_VERSION))
 SUNXI_TOOLS_LICENSE = GPLv2+
 SUNXI_TOOLS_LICENSE_FILES = COPYING
-HOST_SUNXI_TOOLS_DEPENDENCIES = host-libusb
+HOST_SUNXI_TOOLS_DEPENDENCIES = host-libusb host-pkgconf
 FEX2BIN = $(HOST_DIR)/usr/bin/fex2bin
 
 define HOST_SUNXI_TOOLS_BUILD_CMDS
