@@ -12,6 +12,10 @@ SETOOLS_INSTALL_STAGING = YES
 SETOOLS_LICENSE = GPLv2+ LGPLv2.1+
 SETOOLS_LICENSE_FILES = COPYING COPYING.GPL COPYING.LGPL
 
+# Race condition reported upstream:
+# https://github.com/TresysTechnology/setools3/issues/5
+SETOOLS_MAKE = $(MAKE1)
+
 # configure.ac is patched by the cross compile patch,
 # so autoreconf is necessary
 SETOOLS_AUTORECONF = YES
