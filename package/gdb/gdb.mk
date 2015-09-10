@@ -11,13 +11,11 @@ GDB_SOURCE = gdb-$(GDB_VERSION).tar.xz
 ifeq ($(BR2_arc),y)
 GDB_SITE = $(call github,foss-for-synopsys-dwc-arc-processors,binutils-gdb,$(GDB_VERSION))
 GDB_SOURCE = gdb-$(GDB_VERSION).tar.gz
-GDB_FROM_GIT = y
 endif
 
 ifeq ($(BR2_microblaze),y)
 GDB_SITE = $(call github,Xilinx,gdb,$(GDB_VERSION))
 GDB_SOURCE = gdb-$(GDB_VERSION).tar.gz
-GDB_FROM_GIT = y
 endif
 
 # Use .tar.bz2 for 7.7.x since there was no .tar.xz release back then
@@ -52,6 +50,13 @@ endef
 GDB_PRE_PATCH_HOOKS += GDB_XTENSA_PRE_PATCH
 HOST_GDB_PRE_PATCH_HOOKS += GDB_XTENSA_PRE_PATCH
 endif
+
+# Prevent gdb to build the documentation
+define GDB_DISABLE_DOC
+	$(SED) '/^SUBDIRS =/ s/doc//' $(@D)/gdb/Makefile.in
+endef
+GDB_PRE_CONFIGURE_HOOKS += GDB_DISABLE_DOC
+HOST_GDB_PRE_CONFIGURE_HOOKS += GDB_DISABLE_DOC
 
 # When gdb sources are fetched from the binutils-gdb repository, they
 # also contain the binutils sources, but binutils shouldn't be built,
@@ -163,15 +168,6 @@ HOST_GDB_CONF_OPTS += --with-python=$(HOST_DIR)/usr/bin/python2
 HOST_GDB_DEPENDENCIES += host-python
 else
 HOST_GDB_CONF_OPTS += --without-python
-endif
-
-ifeq ($(GDB_FROM_GIT),y)
-GDB_DEPENDENCIES += host-texinfo
-HOST_GDB_DEPENDENCIES += host-texinfo
-else
-# don't generate documentation
-GDB_CONF_ENV += ac_cv_prog_MAKEINFO=missing
-HOST_GDB_CONF_ENV += ac_cv_prog_MAKEINFO=missing
 endif
 
 # legacy $arch-linux-gdb symlink
