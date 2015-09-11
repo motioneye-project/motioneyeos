@@ -17,7 +17,12 @@ MTD_DEPENDENCIES = zlib lzo
 endif
 
 ifeq ($(BR2_PACKAGE_MTD_MKFSUBIFS),y)
-MTD_DEPENDENCIES += util-linux zlib lzo
+MTD_DEPENDENCIES += util-linux zlib lzo host-pkgconf
+define MTD_ADD_MISSING_LINTL
+	$(SED) "/^LDLIBS_mkfs\.ubifs/ s%$$% `$(PKG_CONFIG_HOST_BINARY) --libs uuid`%" \
+		$(@D)/Makefile
+endef
+MTD_POST_PATCH_HOOKS += MTD_ADD_MISSING_LINTL
 endif
 
 ifeq ($(BR2_PACKAGE_BUSYBOX),y)
