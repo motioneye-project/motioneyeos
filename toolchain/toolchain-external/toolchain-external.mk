@@ -673,7 +673,8 @@ endif
 # pass the lto arguments.
 define TOOLCHAIN_EXTERNAL_INSTALL_WRAPPER
 	$(Q)$(call MESSAGE,"Building ext-toolchain wrapper")
-	mkdir -p $(HOST_DIR)/usr/bin; cd $(HOST_DIR)/usr/bin; \
+	$(Q)mkdir -p $(HOST_DIR)/usr/bin
+	$(Q)cd $(HOST_DIR)/usr/bin; \
 	for i in $(TOOLCHAIN_EXTERNAL_CROSS)*; do \
 		base=$${i##*/}; \
 		case "$$base" in \
@@ -692,7 +693,7 @@ define TOOLCHAIN_EXTERNAL_INSTALL_WRAPPER
 			ln -sf $$(echo $$i | sed 's%^$(HOST_DIR)%../..%') .; \
 			;; \
 		esac; \
-	done ;
+	done
 	$(HOSTCC) $(HOST_CFLAGS) $(TOOLCHAIN_EXTERNAL_WRAPPER_ARGS) \
 		-s -Wl,--hash-style=$(TOOLCHAIN_EXTERNAL_WRAPPER_HASH_STYLE) \
 		toolchain/toolchain-external/ext-toolchain-wrapper.c \
@@ -701,7 +702,7 @@ endef
 
 # This sed magic is taken from Linux headers_install.sh script.
 define TOOLCHAIN_EXTERNAL_SANITIZE_KERNEL_HEADERS
-	$(Q)$(call MESSAGE,"Sanitizing kernel headers");
+	$(Q)$(call MESSAGE,"Sanitizing kernel headers")
 	find $(STAGING_DIR)/usr/include/linux/ -name "*.h" | xargs sed -r -i \
 		-e 's/([ \t(])(__user|__force|__iomem)[ \t]/\1/g' \
 		-e 's/__attribute_const__([ \t]|$$)/\1/g' \
@@ -711,9 +712,13 @@ define TOOLCHAIN_EXTERNAL_SANITIZE_KERNEL_HEADERS
 		-e 's@#(ifndef|define|endif[ \t]*/[*])[ \t]*_UAPI@#\1 @'
 endef
 
+#
+# Generate gdbinit file for use with Buildroot
+#
 define TOOLCHAIN_EXTERNAL_INSTALL_GDBINIT
-	if test -f $(TARGET_CROSS)gdb ; then \
-		$(call gen_gdbinit_file) ; \
+	$(Q)if test -f $(TARGET_CROSS)gdb ; then \
+		$(call MESSAGE,"Installing gdbinit"); \
+		$(gen_gdbinit_file); \
 	fi
 endef
 
@@ -723,10 +728,10 @@ endef
 # like with the original uClibc. Therefore, we create an additional
 # symbolic link to make uClibc-ng systems work properly.
 define TOOLCHAIN_EXTERNAL_FIXUP_UCLIBCNG_LDSO
-	if test -e $(TARGET_DIR)/lib/ld-uClibc.so.1; then \
+	$(Q)if test -e $(TARGET_DIR)/lib/ld-uClibc.so.1; then \
 		ln -sf ld-uClibc.so.1 $(TARGET_DIR)/lib/ld-uClibc.so.0 ; \
 	fi
-	if test -e $(TARGET_DIR)/lib/ld64-uClibc.so.1; then \
+	$(Q)if test -e $(TARGET_DIR)/lib/ld64-uClibc.so.1; then \
 		ln -sf ld64-uClibc.so.1 $(TARGET_DIR)/lib/ld64-uClibc.so.0 ; \
 	fi
 endef
