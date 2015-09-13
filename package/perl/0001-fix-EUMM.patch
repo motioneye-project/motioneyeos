@@ -1,0 +1,18 @@
+fix EUMM 7.04_01 which comes with Perl 5.22.0
+
+with static lib build, we cannot call _find_magic_vstring(),
+which does a `require B;` and B is not a pure Perl module.
+
+Signed-off-by: Francois Perrad <francois.perrad@gadz.org>
+
+--- a/cpan/ExtUtils-MakeMaker/lib/ExtUtils/MakeMaker/version/vpp.pm
++++ b/cpan/ExtUtils-MakeMaker/lib/ExtUtils/MakeMaker/version/vpp.pm
+@@ -933,7 +933,7 @@ sub _un_vstring {
+     if ( length($value) >= 3 && $value !~ /[._]/
+ 	&& _is_non_alphanumeric($value)) {
+ 	my $tvalue;
+-	if ( $] ge 5.008_001 ) {
++	if ( $Config{usedl} && ( $] ge 5.008_001 ) ) {
+ 	    $tvalue = _find_magic_vstring($value);
+ 	    $value = $tvalue if length $tvalue;
+ 	}
