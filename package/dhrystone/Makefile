@@ -1,4 +1,4 @@
-CPPFLAGS += -DNO_PROTOTYPES=1
+CPPFLAGS += -DNO_PROTOTYPES=1 -DHZ=100
 LDLIBS += -lm
 
 all: dhrystone
