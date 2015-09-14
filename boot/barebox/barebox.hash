@@ -1,5 +1,5 @@
-# http://www.barebox.org/download/barebox-2015.07.0.tar.bz2.md5
-md5 8747cb02b607c2a92280f4c7db820828 barebox-2015.07.0.tar.bz2
+# http://www.barebox.org/download/barebox-2015.09.0.tar.bz2.md5
+md5 8ce178b4e19cc350fcdbdd8c539eaf37 barebox-2015.09.0.tar.bz2
 
 # Locally calculated
-sha256 0971be9a328b5e6b26912e3fa29ededdc061d4c3cf16d327e24d83cd5ca06695 barebox-2015.07.0.tar.bz2
+sha256 32759e368627aa6c1b51eb8f4c3f767c4ac37dda1d6495a2664c4f54f9db1626 barebox-2015.09.0.tar.bz2
