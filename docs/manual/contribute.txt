@@ -25,7 +25,7 @@ for more information on obtaining a Buildroot git tree.
 === Reproducing, analyzing and fixing bugs
 
 A first way of contributing is to have a look at the open bug reports in
-the https://bugs.busybox.net/buglist.cgi?product=buildroot[Buildroot bug
+the https://bugs.buildroot.org/buglist.cgi?product=buildroot[Buildroot bug
 tracker]. As we strive to keep the bug count as small as possible, all
 help in reproducing, analyzing and fixing reported bugs is more than
 welcome. Don't hesitate to add a comment to bug reports reporting your

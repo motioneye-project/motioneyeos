@@ -42,7 +42,7 @@ better as it will reach more people, both developers and users.
 Bug tracker::
 +
 Bugs in Buildroot can be reported via the mailing list or alternatively
-via the https://bugs.busybox.net/buglist.cgi?product=buildroot[Buildroot
+via the https://bugs.buildroot.org/buglist.cgi?product=buildroot[Buildroot
 bugtracker]. Please refer to xref:reporting-bugs[] before creating a bug
 report.
 
