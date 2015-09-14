@@ -17,11 +17,11 @@ main method of interaction for Buildroot users and developers.
 +
 Only subscribers to the Buildroot mailing list are allowed to post to
 this list. You can subscribe via the
-http://lists.busybox.net/mailman/listinfo/buildroot[mailing list info
+http://lists.buildroot.org/mailman/listinfo/buildroot[mailing list info
 page].
 +
 Mails that are sent to the mailing list are also available in the
-http://lists.busybox.net/pipermail/buildroot[mailing list archives] and
+http://lists.buildroot.org/pipermail/buildroot[mailing list archives] and
 via http://gmane.org[Gmane], at
 http://dir.gmane.org/gmane.comp.lib.uclibc.buildroot[+gmane.comp.lib.uclibc.buildroot+].
 Please search the mailing list archives before asking questions, since
