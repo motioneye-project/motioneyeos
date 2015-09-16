@@ -15,7 +15,8 @@ LIBSELINUX_INSTALL_STAGING = YES
 
 LIBSELINUX_MAKE_OPTS = \
 	$(TARGET_CONFIGURE_OPTS) \
-	LDFLAGS="$(TARGET_LDFLAGS) -lpcre -lpthread"
+	LDFLAGS="$(TARGET_LDFLAGS) -lpcre -lpthread" \
+	ARCH=$(KERNEL_ARCH)
 
 define LIBSELINUX_BUILD_CMDS
 	# DESTDIR is needed during the compile to compute library and
