@@ -54,6 +54,7 @@ VLC_CONF_OPTS += \
 	--disable-mfx \
 	--disable-vdpau \
 	--disable-addonmanagermodules \
+	--enable-run-as-root \
 
 # Building static and shared doesn't work, so force static off.
 ifeq ($(BR2_STATIC_LIBS),)
