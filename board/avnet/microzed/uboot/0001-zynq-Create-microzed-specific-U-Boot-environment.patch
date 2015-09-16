@@ -1,0 +1,41 @@
+From a4c0058967a551385da5e16d2787d9f704cab225 Mon Sep 17 00:00:00 2001
+From: Jan Viktorin <viktorin@rehivetech.com>
+Date: Thu, 18 Jun 2015 16:26:02 +0200
+Subject: [PATCH] zynq: Create microzed-specific U-Boot environment
+
+This is a copy of the patch supplied for Zedboard.
+
+Signed-off-by: Davide Viti <d.viti@infosolution.it>
+
+--- a/include/configs/zynq_microzed.h	2015-07-14 19:32:21.000000000 +0200
++++ b/include/configs/zynq_microzed.h	2015-09-02 12:19:35.728503472 +0200
+@@ -22,4 +22,29 @@
+ 
+ #include <configs/zynq-common.h>
+ 
++#undef CONFIG_EXTRA_ENV_SETTINGS
++#define CONFIG_EXTRA_ENV_SETTINGS \
++	"envload=mmc info && if fatload mmc 0 0x1000 uEnv.txt;"\
++	" then echo Importing uEnv.txt; env import -t 0x1000"  \
++	" $filesize; fi;\0"                                    \
++	"bootcmd=run $modeboot\0"                              \
++	"modeboot=sdboot\0"                                    \
++	"baudrate=115200\0"                                    \
++	"bootenv=uEnv.txt\0"                                   \
++	"devicetree_image=zynq-zed.dtb\0"                      \
++	"kernel_image=uImage\0"                                \
++	"ramdisk_image=rootfs.cpio.uboot\0"                    \
++	"fpga_image=system.bit\0"                              \
++	"sdboot=echo Booting from SD...;"                      \
++	" run envload; run fpgaboot;"                          \
++	" fatload mmc 0 0x1000000 ${kernel_image}"             \
++	" && fatload mmc 0 0x2000000 ${ramdisk_image}"         \
++	" && fatload mmc 0 0x3000000 ${devicetree_image}"      \
++	" && bootm 0x1000000 0x2000000 0x3000000\0"            \
++	"fpgaboot=if fatload mmc 0 0x1000000 ${fpga_image};"   \
++	" then echo Booting FPGA from ${fpga_image};"          \
++	" fpga info 0 && fpga loadb 0 0x1000000 $filesize;"    \
++	" else echo FPGA image ${fpga_image} was not found,"   \
++	" skipping...; fi;\0"
++
+ #endif /* __CONFIG_ZYNQ_MICROZED_H */
