@@ -510,6 +510,7 @@ endmenu
 endif
 	source "package/lutok/Config.in"
 	source "package/micropython/Config.in"
+	source "package/micropython-lib/Config.in"
 	source "package/moarvm/Config.in"
 	source "package/mono/Config.in"
 if BR2_PACKAGE_MONO
