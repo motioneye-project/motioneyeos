@@ -12,7 +12,7 @@ MICROPYTHON_DEPENDENCIES = host-pkgconf libffi
 
 # Use fallback implementation for exception handling on architectures that don't
 # have explicit support.
-ifeq ($(BR2_powerpc),y)
+ifeq ($(BR2_powerpc)$(BR2_sh)$(BR2_xtensa),y)
 MICROPYTHON_CFLAGS = -DMICROPY_GCREGS_SETJMP=1
 endif
 
