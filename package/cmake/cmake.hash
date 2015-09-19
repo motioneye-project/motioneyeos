@@ -1,2 +1,2 @@
-# Locally calculated
-sha256 45f4d3fa8a2f61cc092ae461aac4cac1bab4ac6706f98274ea7f314dd315c6d0 cmake-3.1.3.tar.gz
+# From http://www.cmake.org/files/v3.3/cmake-3.3.2-SHA-256.txt
+sha256	e75a178d6ebf182b048ebfe6e0657c49f0dc109779170bad7ffcb17463f2fc22	cmake-3.3.2.tar.gz
