@@ -13,6 +13,19 @@ VALGRIND_CONF_OPTS = --disable-tls
 VALGRIND_AUTORECONF = YES
 VALGRIND_INSTALL_STAGING = YES
 
+# When Valgrind detects a 32-bit MIPS architecture, it forcibly adds
+# -march=mips32 to CFLAGS; when it detects a 64-bit MIPS architecture,
+# it forcibly adds -march=mips64. This causes Valgrind to be built
+# always for the first ISA revision level (R1), even when the user has
+# configured Buildroot for the second ISA revision level (R2).
+#
+# Override the CFLAGS variable (which Valgrind appends to its CFLAGS)
+# and pass the right -march option, so they take precedence over
+# Valgrind's wrongfully detected value.
+ifeq ($(BR2_mips)$(BR2_mipsel)$(BR2_mips64)$(BR2_mips64el),y)
+VALGRIND_CONF_ENV += CFLAGS="$(TARGET_CFLAGS) -march=$(BR2_GCC_TARGET_ARCH)"
+endif
+
 # On ARM, Valgrind only supports ARMv7, and uses the arch part of the
 # host tuple to determine whether it's being built for ARMv7 or
 # not. Therefore, we adjust the host tuple to specify we're on
