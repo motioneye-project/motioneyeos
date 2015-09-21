@@ -4,7 +4,8 @@
 #
 ################################################################################
 
-LINKS_VERSION = 2.9
+LINKS_VERSION = 2.12
+LINKS_SOURCE = links-$(LINKS_VERSION).tar.bz2
 LINKS_SITE = http://links.twibright.com/download
 LINKS_DEPENDENCIES = host-pkgconf
 LINKS_LICENSE = GPLv2+
