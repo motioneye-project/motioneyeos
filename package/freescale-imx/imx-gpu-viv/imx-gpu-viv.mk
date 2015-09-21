@@ -62,15 +62,37 @@ define IMX_GPU_VIV_FIXUP_FB_HEADERS
 endef
 endif
 
+ifeq ($(BR2_PACKAGE_IMX_GPU_VIV_G2D),y)
+define IMX_GPU_VIV_INSTALL_G2D_STAGING
+	cp -dpfr $(@D)/g2d/usr/include/* $(STAGING_DIR)/usr/include/
+	cp -dpfr $(@D)/g2d/usr/lib/* $(STAGING_DIR)/usr/lib/
+endef
+endif
+
 define IMX_GPU_VIV_INSTALL_STAGING_CMDS
 	cp -r $(@D)/gpu-core/usr/* $(STAGING_DIR)/usr
 	$(IMX_GPU_VIV_FIXUP_FB_HEADERS)
+	$(IMX_GPU_VIV_INSTALL_G2D_STAGING)
 	for lib in egl glesv2 vg; do \
 		$(INSTALL) -m 0644 -D \
 			$(@D)/gpu-core/usr/lib/pkgconfig/$${lib}.pc \
 			$(STAGING_DIR)/usr/lib/pkgconfig/$${lib}.pc; \
 	done
 endef
+
+ifeq ($(BR2_PACKAGE_IMX_GPU_VIV_APITRACE),y)
+ifeq ($(IMX_GPU_VIV_LIB_TARGET),x11)
+define IMX_GPU_VIV_INSTALL_APITRACE
+	cp -dpfr $(@D)/apitrace/x11/usr/bin/* $(TARGET_DIR)/usr/bin/
+	cp -dpfr $(@D)/apitrace/x11/usr/lib/* $(TARGET_DIR)/usr/lib/
+endef
+else
+define IMX_GPU_VIV_INSTALL_APITRACE
+	cp -dpfr $(@D)/apitrace/non-x11/usr/bin/* $(TARGET_DIR)/usr/bin/
+	cp -dpfr $(@D)/apitrace/non-x11/usr/lib/* $(TARGET_DIR)/usr/lib/
+endef
+endif
+endif
 
 ifeq ($(BR2_PACKAGE_IMX_GPU_VIV_EXAMPLES),y)
 define IMX_GPU_VIV_INSTALL_EXAMPLES
@@ -79,11 +101,26 @@ define IMX_GPU_VIV_INSTALL_EXAMPLES
 endef
 endif
 
+ifeq ($(BR2_PACKAGE_IMX_GPU_VIV_G2D),y)
+define IMX_GPU_VIV_INSTALL_G2D
+	cp -dpfr $(@D)/g2d/usr/lib/* $(TARGET_DIR)/usr/lib/
+endef
+endif
+
+ifeq ($(BR2_PACKAGE_IMX_GPU_VIV_GMEM_INFO),y)
+define IMX_GPU_VIV_INSTALL_GMEM_INFO
+	cp -dpfr $(@D)/gpu-tools/gmem-info/usr/bin/* $(TARGET_DIR)/usr/bin/
+endef
+endif
+
 # On the target, remove the unused libraries.
 # Note that this is _required_, else ldconfig may create symlinks
 # to the wrong library
 define IMX_GPU_VIV_INSTALL_TARGET_CMDS
+	$(IMX_GPU_VIV_INSTALL_APITRACE)
 	$(IMX_GPU_VIV_INSTALL_EXAMPLES)
+	$(IMX_GPU_VIV_INSTALL_G2D)
+	$(IMX_GPU_VIV_INSTALL_GMEM_INFO)
 	cp -a $(@D)/gpu-core/usr/lib $(TARGET_DIR)/usr
 	for lib in EGL GAL VIVANTE GLESv2; do \
 		for f in $(TARGET_DIR)/usr/lib/lib$${lib}-*.so; do \
