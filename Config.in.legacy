@@ -363,6 +363,14 @@ config BR2_PACKAGE_DIRECTFB_EXAMPLES_WINDOW
 	  BR2_PACKAGE_DIRECTFB_EXAMPLES option now installs all
 	  examples.
 
+config BR2_PACKAGE_KOBS_NG
+	bool "kobs-ng was replaced by imx-kobs"
+	select BR2_LEGACY
+	select BR2_PACKAGE_IMX_KOBS
+	help
+	  The outdated kobs-ng has been replaced by the Freescale-
+	  maintained imx-kobs package.
+
 config BR2_PACKAGE_SAWMAN
 	bool "sawman package removed"
 	select BR2_LEGACY
