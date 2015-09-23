@@ -4,14 +4,11 @@
 #
 ################################################################################
 
-MICROPYTHON_VERSION = v1.4.5
+MICROPYTHON_VERSION = v1.4.6
 MICROPYTHON_SITE = $(call github,micropython,micropython,$(MICROPYTHON_VERSION))
 MICROPYTHON_LICENSE = MIT
 MICROPYTHON_LICENSE_FILES = LICENSE
 MICROPYTHON_DEPENDENCIES = host-pkgconf libffi
-MICROPYTHON_PATCH = \
-	https://github.com/micropython/micropython/commit/8b4fb4fe140e9cf57fcfa258d0d2d6fe19090fc5.patch \
-	https://github.com/micropython/micropython/commit/587914169cc6ff7f0513bd14c42dcbb275bf77bd.patch
 
 # Use fallback implementation for exception handling on architectures that don't
 # have explicit support.
