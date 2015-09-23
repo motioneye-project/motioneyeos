@@ -41,6 +41,12 @@ else
 OPENVPN_CONF_OPTS += --disable-lzo
 endif
 
+ifeq ($(BR2_PACKAGE_OPENVPN_PWSAVE),y)
+OPENVPN_CONF_OPTS += --enable-password-save
+else
+OPENVPN_CONF_OPTS += --disable-password-save
+endif
+
 ifeq ($(BR2_PACKAGE_OPENVPN_CRYPTO_OPENSSL),y)
 OPENVPN_CONF_OPTS += --with-crypto-library=openssl
 OPENVPN_DEPENDENCIES += openssl
