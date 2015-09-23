@@ -4,9 +4,10 @@
 #
 ################################################################################
 
-LIBSTROPHE_VERSION = 0.8.6
+LIBSTROPHE_VERSION = 0.8.8
 LIBSTROPHE_SITE = $(call github,strophe,libstrophe,$(LIBSTROPHE_VERSION))
 LIBSTROPHE_DEPENDENCIES = openssl host-pkgconf
+# Doesn't ship configure
 LIBSTROPHE_AUTORECONF = YES
 LIBSTROPHE_LICENSE = MIT or GPLv3
 LIBSTROPHE_LICENSE_FILES = MIT-LICENSE.txt GPL-LICENSE.txt
