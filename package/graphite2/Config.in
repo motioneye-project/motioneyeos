@@ -1,0 +1,13 @@
+config BR2_PACKAGE_GRAPHITE2
+	bool "graphite2"
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on !BR2_STATIC_LIBS
+	help
+	  Graphite is a project within SIL's scripts and software dev
+	  groups to provide cross-platform rendering for complex
+	  writing systems.
+
+	  http://sourceforge.net/projects/silgraphite/
+
+comment "graphite2 needs a toolchain w/ C++, dynamic library"
+	depends on !BR2_INSTALL_LIBSTDCPP || BR2_STATIC_LIBS
