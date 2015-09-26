@@ -88,7 +88,7 @@ endef
 
 ifeq ($(BR2_PACKAGE_MESA3D_DRI_DRIVER),)
 MESA3D_CONF_OPTS += \
-	--without-dri-drivers --disable-dri --disable-dri3
+	--without-dri-drivers --disable-dri3
 MESA3D_POST_INSTALL_STAGING_HOOKS += MESA3D_REMOVE_OPENGL_PC
 else
 ifeq ($(BR2_PACKAGE_XPROTO_DRI3PROTO),y)
@@ -102,7 +102,6 @@ MESA3D_DEPENDENCIES += xlib_libXxf86vm
 endif
 MESA3D_PROVIDES += libgl
 MESA3D_CONF_OPTS += \
-	--enable-dri \
 	--enable-shared-glapi \
 	--enable-driglx-direct \
 	--with-dri-drivers=$(subst $(space),$(comma),$(MESA3D_DRI_DRIVERS-y))
@@ -120,7 +119,7 @@ endif
 #   - it is needed for GLES (mesa3d's ./configure is a bit weird)
 #   - but if no DRI driver is enabled, then libgl is not built,
 #     remove dri.pc and gl.pc in this case (MESA3D_REMOVE_OPENGL_PC)
-MESA3D_CONF_OPTS += --enable-opengl
+MESA3D_CONF_OPTS += --enable-opengl --enable-dri
 
 # libva and mesa3d have a circular dependency
 # we do not need libva support in mesa3d, therefore disable this option
@@ -128,7 +127,9 @@ MESA3D_CONF_OPTS += --disable-va
 
 ifeq ($(BR2_PACKAGE_MESA3D_OPENGL_EGL),y)
 MESA3D_PROVIDES += libegl
+ifeq ($(BR2_PACKAGE_MESA3D_DRI_DRIVER),y)
 MESA3D_EGL_PLATFORMS = drm
+endif
 ifeq ($(BR2_PACKAGE_WAYLAND),y)
 MESA3D_DEPENDENCIES += wayland
 MESA3D_EGL_PLATFORMS += wayland
