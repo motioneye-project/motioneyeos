@@ -11,4 +11,11 @@ XDRIVER_XF86_INPUT_VMMOUSE_LICENSE = MIT
 XDRIVER_XF86_INPUT_VMMOUSE_LICENSE_FILES = COPYING
 XDRIVER_XF86_INPUT_VMMOUSE_DEPENDENCIES = xserver_xorg-server xproto_inputproto xproto_randrproto xproto_xproto
 
+ifeq ($(BR2_PACKAGE_HAS_UDEV),y)
+XDRIVER_XF86_INPUT_VMMOUSE_CONF_OPTS += --with-libudev
+XDRIVER_XF86_INPUT_VMMOUSE_DEPENDENCIES += udev
+else
+XDRIVER_XF86_INPUT_VMMOUSE_CONF_OPTS += --without-libudev
+endif
+
 $(eval $(autotools-package))
