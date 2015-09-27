@@ -524,6 +524,8 @@ endef
 ifeq ($(BR2_TOOLCHAIN_EXTERNAL_MUSL),y)
 ifeq ($(BR2_i386),y)
 MUSL_ARCH = i386
+else ifeq ($(BR2_ARM_EABIHF),y)
+MUSL_ARCH = armhf
 else
 MUSL_ARCH = $(ARCH)
 endif
