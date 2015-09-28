@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBDCADEC_VERSION = 7b3b44cd180c9345c98be9062eac701eab5c7454
+LIBDCADEC_VERSION = 2a9186e34ce557d3af1a20f5b558d1e6687708b9
 LIBDCADEC_SITE = $(call github,foo86,dcadec,$(LIBDCADEC_VERSION))
 LIBDCADEC_LICENSE = LGPLv2.1+
 LIBDCADEC_LICENSE_FILES = COPYING.LGPLv2.1
