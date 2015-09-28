@@ -1,28 +1,24 @@
-[PATCH] configure: don't mangle CFLAGS
+[PATCH] configure.ac: don't mangle CFLAGS
 
 Ensure that the sed expression to strip debugging options from CFLAGS
 doesn't mangle flags like -mfloat-gprs=double, breaking the build.
 
-Patch configure instead of configure.ac as subversion currently doesn't
-cleanly autoreconf.
+[Vincent: adapt to 1.9.2 and patch configure.ac instead of configure]
 
 Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
----
- configure |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
 
-Index: subversion-1.7.18/configure
-===================================================================
---- subversion-1.7.18.orig/configure
-+++ subversion-1.7.18/configure
-@@ -19798,8 +19798,8 @@
-       CFLAGS="$CFLAGS -DSVN_DEBUG -DAP_DEBUG"
+diff -Nrup a/configure.ac b/configure.ac
+--- a/configure.ac	2015-07-27 00:03:10.000000000 +0100
++++ b/configure.ac	2015-09-28 10:33:39.175048493 +0100
+@@ -1110,8 +1110,8 @@ if test "$enable_debugging" = "yes" ; th
    CXXFLAGS="$CXXFLAGS -DSVN_DEBUG -DAP_DEBUG"
  elif test "$enable_debugging" = "no" ; then
--    CFLAGS="`echo $CFLAGS' ' | $SED -e 's/-g[0-9] //g' | $SED -e 's/-g//g'`"
--    CXXFLAGS="`echo $CXXFLAGS' ' | $SED -e 's/-g[0-9] //g' | $SED -e 's/-g//g'`"
-+    CFLAGS="`echo $CFLAGS' ' | $SED -e 's/-g[0-9]* //g'`"
-+    CXXFLAGS="`echo $CXXFLAGS' ' | $SED -e 's/-g[0-9]* //g'`"
-         CFLAGS="$CFLAGS -DNDEBUG"
-     CXXFLAGS="$CXXFLAGS -DNDEBUG"
- # elif test "$enable_debugging" = "maybe" ; then
+   AC_MSG_NOTICE([Disabling debugging])
+-  CFLAGS=["`echo $CFLAGS' ' | $SED -e 's/-g[0-9] //g' -e 's/-g //g'`"]
+-  CXXFLAGS=["`echo $CXXFLAGS' ' | $SED -e 's/-g[0-9] //g' -e 's/-g //g'`"]
++  CFLAGS=["`echo $CFLAGS' ' | $SED -e 's/-g[0-9]* //g'`"]
++  CXXFLAGS=["`echo $CXXFLAGS' ' | $SED -e 's/-g[0-9]* //g'`"]
+   dnl Compile with NDEBUG to get rid of assertions
+   CFLAGS="$CFLAGS -DNDEBUG"
+   CXXFLAGS="$CXXFLAGS -DNDEBUG"
