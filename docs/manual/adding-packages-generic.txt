@@ -227,7 +227,9 @@ information is (assuming the package name is +libfoo+) :
 
 * +LIBFOO_SITE+ provides the location of the package, which can be a
   URL or a local filesystem path. HTTP, FTP and SCP are supported URL
-  types for retrieving package tarballs. Git, Subversion, Mercurial,
+  types for retrieving package tarballs. In these cases don't include a
+  trailing slash: it will be added by Buildroot between the directory
+  and the filename as appropriate. Git, Subversion, Mercurial,
   and Bazaar are supported URL types for retrieving packages directly
   from source code management systems. There is a helper function to make
   it easier to download source tarballs from GitHub (refer to
@@ -246,7 +248,7 @@ information is (assuming the package name is +libfoo+) :
     +LIBFOO_SITE=http://www.libfoosoftware.org/libfoo+ +
     +LIBFOO_SITE=http://svn.xiph.org/trunk/Tremor+ +
     +LIBFOO_SITE=/opt/software/libfoo.tar.gz+ +
-    +LIBFOO_SITE=$(TOPDIR)/../src/libfoo/+
+    +LIBFOO_SITE=$(TOPDIR)/../src/libfoo+
 
 * +LIBFOO_EXTRA_DOWNLOADS+ is a space-separated list of additional
   files that Buildroot should download. If an entry contains +://+
