@@ -5,7 +5,7 @@
 ################################################################################
 
 SP_OOPS_EXTRACT_VERSION = 0.0.7-1
-SP_OOPS_EXTRACT_SITE = http://repository.maemo.org/pool/maemo5.0/free/s/sp-oops-extract/
+SP_OOPS_EXTRACT_SITE = http://repository.maemo.org/pool/maemo5.0/free/s/sp-oops-extract
 SP_OOPS_EXTRACT_SOURCE = sp-oops-extract_$(SP_OOPS_EXTRACT_VERSION).tar.gz
 SP_OOPS_EXTRACT_LICENSE = GPLv2
 SP_OOPS_EXTRACT_LICENSE_FILES = COPYING

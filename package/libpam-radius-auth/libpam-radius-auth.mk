@@ -5,7 +5,7 @@
 ################################################################################
 
 LIBPAM_RADIUS_AUTH_VERSION = 1.4.0
-LIBPAM_RADIUS_AUTH_SITE = ftp://ftp.freeradius.org/pub/radius/
+LIBPAM_RADIUS_AUTH_SITE = ftp://ftp.freeradius.org/pub/radius
 LIBPAM_RADIUS_AUTH_SOURCE = pam_radius-$(LIBPAM_RADIUS_AUTH_VERSION).tar.gz
 LIBPAM_RADIUS_AUTH_DEPENDENCIES = linux-pam
 LIBPAM_RADIUS_AUTH_INSTALL_STAGING = YES

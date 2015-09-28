@@ -6,7 +6,7 @@
 
 IBRDTND_VERSION = 1.0.1
 IBRDTND_SOURCE = ibrdtnd-$(IBRDTND_VERSION).tar.gz
-IBRDTND_SITE = https://www.ibr.cs.tu-bs.de/projects/ibr-dtn/releases/
+IBRDTND_SITE = https://www.ibr.cs.tu-bs.de/projects/ibr-dtn/releases
 IBRDTND_LICENSE = Apache-2.0
 IBRDTND_LICENSE_FILES = COPYING
 IBRDTND_DEPENDENCIES = ibrdtn ibrcommon

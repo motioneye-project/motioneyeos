@@ -6,7 +6,7 @@
 
 IBRCOMMON_VERSION = 1.0.1
 IBRCOMMON_SOURCE = ibrcommon-$(IBRCOMMON_VERSION).tar.gz
-IBRCOMMON_SITE = https://www.ibr.cs.tu-bs.de/projects/ibr-dtn/releases/
+IBRCOMMON_SITE = https://www.ibr.cs.tu-bs.de/projects/ibr-dtn/releases
 IBRCOMMON_INSTALL_STAGING = YES
 IBRCOMMON_LICENSE = Apache-2.0
 IBRCOMMON_LICENSE_FILES = COPYING README

@@ -6,7 +6,7 @@
 
 ANGULARJS_VERSION = 1.4.3
 ANGULARJS_SOURCE = angular-$(ANGULARJS_VERSION).zip
-ANGULARJS_SITE = https://code.angularjs.org/$(ANGULARJS_VERSION)/
+ANGULARJS_SITE = https://code.angularjs.org/$(ANGULARJS_VERSION)
 ANGULARJS_LICENSE = MIT
 # There's no separate license file in the archive, so use angular.js instead.
 ANGULARJS_LICENSE_FILES = angular.js

@@ -6,7 +6,7 @@
 
 IBRDTN_VERSION = 1.0.1
 IBRDTN_SOURCE = ibrdtn-$(IBRDTN_VERSION).tar.gz
-IBRDTN_SITE = https://www.ibr.cs.tu-bs.de/projects/ibr-dtn/releases/
+IBRDTN_SITE = https://www.ibr.cs.tu-bs.de/projects/ibr-dtn/releases
 IBRDTN_INSTALL_STAGING = YES
 IBRDTN_LICENSE = Apache-2.0
 IBRDTN_LICENSE_FILES = COPYING
