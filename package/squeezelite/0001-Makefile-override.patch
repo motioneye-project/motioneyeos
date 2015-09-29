@@ -1,0 +1,42 @@
+This patch is applied to squeezelite Makefile to add override
+directive for CFLAGS and LDFLAGS assignment.
+This enables adding flags to CFLAGS and LDFLAGS in Makefile.
+
+Signed-off-by: Hiroshi Kawashima <kei-k@ca2.so-net.ne.jp>
+
+diff -ruN a/Makefile b/Makefile
+--- a/Makefile	2015-02-01 23:56:21.000000000 +0900
++++ b/Makefile	2015-09-29 20:06:52.268069187 +0900
+@@ -1,4 +1,6 @@
+ # Cross compile support - create a Makefile which defines these three variables and then includes this Makefile...
++override CFLAGS += $(OPTS)
++override LDFLAGS += -lasound -lpthread -lm -lrt
+ CFLAGS  ?= -Wall -fPIC -O2 $(OPTS)
+ LDFLAGS ?= -lasound -lpthread -lm -lrt
+ EXECUTABLE ?= squeezelite
+@@ -52,20 +54,20 @@
+ 
+ # add optional link options
+ ifneq (,$(findstring $(OPT_LINKALL), $(CFLAGS)))
+-	LDFLAGS += $(LINKALL)
++	override LDFLAGS += $(LINKALL)
+ ifneq (,$(findstring $(OPT_FF), $(CFLAGS)))
+-	LDFLAGS += $(LINKALL_FF)
++	override LDFLAGS += $(LINKALL_FF)
+ endif
+ ifneq (,$(findstring $(OPT_RESAMPLE), $(CFLAGS)))
+-	LDFLAGS += $(LINKALL_RESAMPLE)
++	override LDFLAGS += $(LINKALL_RESAMPLE)
+ endif
+ ifneq (,$(findstring $(OPT_IR), $(CFLAGS)))
+-	LDFLAGS += $(LINKALL_IR)
++	override LDFLAGS += $(LINKALL_IR)
+ endif
+ else
+ # if not LINKALL and linux add LINK_LINUX
+ ifeq ($(UNAME), Linux)
+-	LDFLAGS += $(LINK_LINUX)
++	override LDFLAGS += $(LINK_LINUX)
+ endif
+ endif
+ 
