@@ -24,6 +24,12 @@ else
 LIBBLURAY_CONF_OPTS += --without-freetype
 endif
 
+ifeq ($(BR2_PACKAGE_FONTCONFIG),y)
+LIBBLURAY_DEPENDENCIES += fontconfig
+else
+LIBBLURAY_CONF_OPTS += --without-fontconfig
+endif
+
 ifeq ($(BR2_PACKAGE_LIBXML2),y)
 LIBBLURAY_DEPENDENCIES += libxml2
 else
