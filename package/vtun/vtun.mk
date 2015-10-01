@@ -14,4 +14,7 @@ VTUN_CONF_OPTS = \
 	--with-lzo-headers=$(STAGING_DIR)/usr/include/lzo \
 	--with-lzo-lib=$(STAGING_DIR)/usr/lib
 
+# Assumes old-style gcc inline symbol visibility rules
+VTUN_CONF_ENV = CFLAGS="$(TARGET_CFLAGS) -std=gnu89"
+
 $(eval $(autotools-package))
