@@ -1,4 +1,4 @@
 # from https://red.libssh.org/projects/libssh/files/
-md5	bffc9dc548c3bae3a3afc5ac1654b272	libssh-0.7.1.tar.xz
-# Locally calculated
-sha256	2fc7ccf96d3263cbd8ab520118cb94d9a2e11714c61e22b3f761fc5352fd046d  libssh-0.7.1.tar.xz
+md5	5d7d468937649a6dfc6186edfff083db	libssh-0.7.2.tar.xz
+# Locally calculated after checking signature on uncompressed libssh-0.7.2.tar
+sha256	a32c45b9674141cab4bde84ded7d53e931076c6b0f10b8fd627f3584faebae62  libssh-0.7.2.tar.xz
