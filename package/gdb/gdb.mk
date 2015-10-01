@@ -54,6 +54,12 @@ endif
 # Prevent gdb to build the documentation
 define GDB_DISABLE_DOC
 	$(SED) '/^SUBDIRS =/ s/doc//' $(@D)/gdb/Makefile.in
+	if test -e $(@D)/bfd/doc/Makefile.in ; then \
+		$(SED) 's/^INFO_DEPS =.*$$/INFO_DEPS =/' $(@D)/bfd/doc/Makefile.in ; \
+	fi
+	if test -e $(@D)/gprof/Makefile.in ; then \
+		$(SED) 's/^INFO_DEPS =.*$$/INFO_DEPS =/' $(@D)/gprof/Makefile.in ; \
+	fi
 endef
 GDB_PRE_CONFIGURE_HOOKS += GDB_DISABLE_DOC
 HOST_GDB_PRE_CONFIGURE_HOOKS += GDB_DISABLE_DOC
