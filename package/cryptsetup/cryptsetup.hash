@@ -1,2 +1,2 @@
 # From https://www.kernel.org/pub/linux/utils/cryptsetup/v1.6/sha256sums.asc
-sha256	c23c24c8d662032da8650c1c84985221be8bbedf4737c1540bba7e4517dfe820	cryptsetup-1.6.7.tar.xz
+sha256	45a6ccd3c65b7d904e58e1cb3656a7e997190b6a05b5ff7c6887e4a41c5f19bc	cryptsetup-1.6.8.tar.xz
