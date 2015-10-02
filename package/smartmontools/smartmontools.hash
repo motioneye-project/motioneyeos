@@ -1,2 +1,3 @@
-# Locally computed:
-sha256  a777065d1a5965d71b3672e054b09b7696200ec73aaf45ab636f34016538fe19  smartmontools-6.3.tar.gz
+# From http://sourceforge.net/projects/smartmontools/files/smartmontools/6.4/
+md5	56812c8312fd123ed40ef65afde1049e	smartmontools-6.4.tar.gz
+sha1	855c7d555dd405e5b392b1631dc36dd9632db8b8	smartmontools-6.4.tar.gz
