@@ -6,6 +6,8 @@
 
 CPIO_VERSION = 2.12
 CPIO_SITE = http://ftp.gnu.org/gnu/cpio
+CPIO_CONF_OPTS = --bindir=/bin
+CPIO_DEPENDENCIES = $(if $(BR2_PACKAGE_BUSYBOX),busybox)
 CPIO_LICENSE = GPLv3+
 CPIO_LICENSE_FILES = COPYING
 
