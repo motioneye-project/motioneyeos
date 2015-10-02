@@ -4,8 +4,9 @@
 #
 ################################################################################
 
-ZSH_VERSION = 5.0.7
+ZSH_VERSION = 5.1.1
 ZSH_SITE = http://www.zsh.org/pub
+ZSH_SOURCE = zsh-$(ZSH_VERSION).tar.xz
 ZSH_DEPENDENCIES = ncurses
 ZSH_CONF_OPTS = --bindir=/bin
 ZSH_LICENSE = MIT-like
