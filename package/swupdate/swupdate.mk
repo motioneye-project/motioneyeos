@@ -103,4 +103,12 @@ define SWUPDATE_INSTALL_TARGET_CMDS
 		cp -dpf $(@D)/www/* $(TARGET_DIR)/var/www/swupdate)
 endef
 
+# Checks to give errors that the user can understand
+# Must be before we call to kconfig-package
+ifeq ($(BR2_PACKAGE_SWUPDATE)$(BR_BUILDING),yy)
+ifeq ($(call qstrip,$(BR2_PACKAGE_SWUPDATE_CONFIG)),)
+$(error No Swupdate configuration file specified, check your BR2_PACKAGE_SWUPDATE_CONFIG setting)
+endif
+endif
+
 $(eval $(kconfig-package))
