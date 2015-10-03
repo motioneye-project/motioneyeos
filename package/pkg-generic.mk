@@ -847,6 +847,10 @@ endif
 	$(1)-source \
 	$(1)-source-check
 
+ifeq ($$(patsubst %/,ERROR,$$($(2)_SITE)),ERROR)
+$$(error $(2)_SITE ($$($(2)_SITE)) cannot have a trailing slash)
+endif
+
 endif # $(2)_KCONFIG_VAR
 endef # inner-generic-package
 
