@@ -4,9 +4,8 @@
 #
 ################################################################################
 
-SYSTEMD_VERSION = 221
-SYSTEMD_SITE = http://www.freedesktop.org/software/systemd
-SYSTEMD_SOURCE = systemd-$(SYSTEMD_VERSION).tar.xz
+SYSTEMD_VERSION = 226
+SYSTEMD_SITE = $(call github,systemd,systemd,v$(SYSTEMD_VERSION))
 SYSTEMD_LICENSE = LGPLv2.1+, GPLv2+ (udev), Public Domain (few source files, see README)
 SYSTEMD_LICENSE_FILES = LICENSE.GPL2 LICENSE.LGPL2.1 README
 SYSTEMD_INSTALL_STAGING = YES
@@ -50,6 +49,11 @@ SYSTEMD_CFLAGS = $(TARGET_CFLAGS) -fno-lto
 SYSTEMD_CONF_ENV = \
 	CFLAGS="$(SYSTEMD_CFLAGS)" \
 	ac_cv_path_KMOD=/usr/bin/kmod
+
+define SYSTEMD_RUN_INTLTOOLIZE
+	cd $(@D) && $(HOST_DIR)/usr/bin/intltoolize --force --automake
+endef
+SYSTEMD_PRE_CONFIGURE_HOOKS += SYSTEMD_RUN_INTLTOOLIZE
 
 ifeq ($(BR2_PACKAGE_SYSTEMD_COMPAT),y)
 SYSTEMD_CONF_OPTS += --enable-compat-libs
