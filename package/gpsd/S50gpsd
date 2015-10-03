@@ -9,11 +9,11 @@ DEVICES=/dev/ttyS1
 PIDFILE=/var/run/$NAME.pid
 
 start() {
-        echo -n "Starting $NAME: "
+        printf "Starting $NAME: "
         start-stop-daemon -S -q -p $PIDFILE --exec $DAEMON -- -P $PIDFILE $DEVICES && echo "OK" || echo "Failed"
 }
 stop() {
-        echo -n "Stopping $NAME: "
+        printf "Stopping $NAME: "
         start-stop-daemon -K -q -p $PIDFILE && echo "OK" || echo "Failed"
         rm -f $PIDFILE
 }

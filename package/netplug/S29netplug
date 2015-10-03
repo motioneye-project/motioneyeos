@@ -39,7 +39,7 @@ fi
 case "$1" in
   start)
 	# Start daemon.
-	echo -n "Starting network plug daemon: "
+	printf "Starting network plug daemon: "
 	start-stop-daemon -S -q -p /var/run/netplugd.pid -x /sbin/netplugd ${NETPLUGDARGS}
 	RETVAL=$?
 	echo
@@ -47,7 +47,7 @@ case "$1" in
 	;;
   stop)
 	# Stop daemon.
-	echo -n "Shutting down network plug daemon: "
+	printf "Shutting down network plug daemon: "
 	start-stop-daemon -K -n netplugd
 	RETVAL=$?
 	echo

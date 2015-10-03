@@ -8,7 +8,7 @@ test -f $DAEMON || exit 0
 [ ! -f /var/log/wtmp ] && touch /var/log/wtmp
 
 start() {
-	echo -n "Starting ProFTPD: "
+	printf "Starting ProFTPD: "
 	$DAEMON
 	if [ $? != 0 ]; then
 		echo "FAILED"
@@ -19,7 +19,7 @@ start() {
 }
 
 stop() {
-	echo -n "Stopping ProFTPD: "
+	printf "Stopping ProFTPD: "
 	killall proftpd
         echo "done"
 }

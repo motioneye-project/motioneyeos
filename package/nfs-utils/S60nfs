@@ -15,20 +15,20 @@ touch /run/nfs/rmtab
 
 start() {
 	# Start daemons.
-	echo -n "Starting NFS statd: "
+	printf "Starting NFS statd: "
 	rpc.statd
 	touch /var/lock/subsys/nfslock
 	echo "done"
 
-	echo -n "Starting NFS services: "
+	printf "Starting NFS services: "
 	/usr/sbin/exportfs -r
 	echo "done"
 
-	echo -n "Starting NFS daemon: "
+	printf "Starting NFS daemon: "
 	rpc.nfsd 2
 	echo "done"
 
-	echo -n "Starting NFS mountd: "
+	printf "Starting NFS mountd: "
 	rpc.mountd
 	echo "done"
 	touch /var/lock/subsys/nfs
@@ -36,7 +36,7 @@ start() {
 
 stop() {
 	# Stop daemons.
-	echo -n "Shutting down NFS mountd: "
+	printf "Shutting down NFS mountd: "
 	killall -q rpc.mountd
 	echo "done"
 
@@ -44,13 +44,13 @@ stop() {
 	kill -9 `pidof nfsd` 2>/dev/null
 	echo "done"
 
-	echo -n "Shutting down NFS services: "
+	printf "Shutting down NFS services: "
 	/usr/sbin/exportfs -au
 	rm -f /var/lock/subsys/nfs
 	killall -q rpc.statd
 	echo "done"
 
-	echo -n "Stopping NFS statd: "
+	printf "Stopping NFS statd: "
 	killall -q rpc.statd
 	echo "done"
 	rm -f /var/lock/subsys/nfslock

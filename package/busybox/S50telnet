@@ -4,14 +4,14 @@
 #
 
 start() {
-      echo -n "Starting telnetd: "
+      printf "Starting telnetd: "
       start-stop-daemon -S -q -m -b -p /var/run/telnetd.pid \
 			-x /usr/sbin/telnetd -- -F
       [ $? = 0 ] && echo "OK" || echo "FAIL"
 }
 
 stop() {
-	echo -n "Stopping telnetd: "
+	printf "Stopping telnetd: "
 	start-stop-daemon -K -q -p /var/run/telnetd.pid \
 			  -x /usr/sbin/telnetd
 	[ $? = 0 ] && echo "OK" || echo "FAIL"

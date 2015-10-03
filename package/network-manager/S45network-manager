@@ -11,7 +11,7 @@ NETWORKMANAGER_BIN=${sbindir}/NetworkManager
 PID=`pidof NetworkManager`
 case "$1" in
 	start)
-		echo -n "Starting NetworkManager ... "
+		printf "Starting NetworkManager ... "
 		[ ! -d /var/run/NetworkManager ] && install -d /var/run/NetworkManager
 		if [ -z "$PID" ]; then
 			$NETWORKMANAGER_BIN
@@ -23,7 +23,7 @@ case "$1" in
 		fi
 		;;
 	stop)
-		echo -n "Stopping NetworkManager ... "
+		printf "Stopping NetworkManager ... "
 			[ ! -z "$PID" ] && kill $PID > /dev/null 2>&1
 		if [ $? -gt 0 ]; then
 			echo "failed!"

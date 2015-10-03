@@ -9,7 +9,7 @@ PID="/var/run/vmtoolsd.pid"
 
 case "$1" in
   start)
-    echo -n "Starting vmtoolsd: "
+    printf "Starting vmtoolsd: "
     start-stop-daemon -S -q -x $EXEC -- $ARGS $PID
     if [ $? != 0 ]; then
       echo "FAILED"
@@ -19,7 +19,7 @@ case "$1" in
     fi
   ;;
   stop)
-    echo -n "Stopping vmtoolsd: "
+    printf "Stopping vmtoolsd: "
     start-stop-daemon -K -q -p $PID
     echo "OK"
   ;;

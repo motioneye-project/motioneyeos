@@ -8,17 +8,17 @@ mkdir -p /var/www
 
 case "$1" in
   start)
-	echo -n "Starting $NAME: "
+	printf "Starting $NAME: "
 	$NAME > /dev/null &
 	echo "done"
 	;;
   stop)
-	echo -n "Stopping $NAME: "
+	printf "Stopping $NAME: "
 	killall -9 $NAME
 	echo "done"
 	;;
   restart)
-	echo -n "Restarting $NAME: "
+	printf "Restarting $NAME: "
 	killall -9 $NAME
 	sleep 1
 	$NAME > /dev/null &

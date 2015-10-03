@@ -1,14 +1,14 @@
 #!/bin/sh
 
 start() {
-	echo -n "Starting mosquitto: "
+	printf "Starting mosquitto: "
 	start-stop-daemon -S -q -m -b -p /var/run/mosquitto.pid \
 		--exec /usr/sbin/mosquitto \
 		-- -c /etc/mosquitto/mosquitto.conf
 	[ $? = 0 ] && echo "OK" || echo "FAIL"
 }
 stop() {
-	echo -n "Stopping mosquitto: "
+	printf "Stopping mosquitto: "
 	start-stop-daemon -K -q -p /var/run/mosquitto.pid
 	[ $? = 0 ] && echo "OK" || echo "FAIL"
 }

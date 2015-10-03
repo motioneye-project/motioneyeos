@@ -2,13 +2,13 @@
 
 case "$1" in
 	start)
-		echo -n "Starting logging: "
+		printf "Starting logging: "
 		/sbin/syslogd -m 0
 		/sbin/klogd
 		echo "OK"
 		;;
 	stop)
-		echo -n "Stopping logging: "
+		printf "Stopping logging: "
 		[ -f /var/run/klogd.pid ] && kill `cat /var/run/klogd.pid`
 		[ -f /var/run/syslogd.pid ] && kill `cat /var/run/syslogd.pid`
 		echo "OK"

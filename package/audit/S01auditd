@@ -14,7 +14,7 @@ CONFIG=/etc/audit/auditd.conf
 PIDFILE=/var/run/${NAME}.pid
 
 start(){
-	echo -n "Starting ${NAME}: "
+	printf "Starting ${NAME}: "
 
 	# Create dir to store log files in if one doesn't exist. Create
 	# the directory with SELinux permissions if possible
@@ -38,20 +38,20 @@ start(){
 }
 
 stop(){
-	echo -n "Stopping ${NAME}: "
+	printf "Stopping ${NAME}: "
 
 	start-stop-daemon -K -q -p ${PIDFILE}
 	[ $? = 0 ] && echo "OK" || echo "FAIL"
 }
 
 reload(){
-	echo -n "Reloading ${NAME} configuration: "
+	printf "Reloading ${NAME} configuration: "
 	start-stop-daemon --stop -s 1 -p ${PIDFILE} 1>/dev/null
 	[ $? = 0 ] && echo "OK" || echo "FAIL"
 }
 
 rotate(){
-	echo -n "Rotating ${NAME} logs: "
+	printf "Rotating ${NAME} logs: "
 	start-stop-daemon --stop -s 10 -p ${PIDFILE} 1>/dev/null
 	[ $? = 0 ] && echo "OK" || echo "FAIL"
 }

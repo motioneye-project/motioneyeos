@@ -2,12 +2,12 @@
 
 case "$1" in
 	start)
-		echo -n "Starting cron ... "
+		printf "Starting cron ... "
 		start-stop-daemon -S -q -m -b -p /var/run/dcron.pid --exec /usr/sbin/crond -- -f
 		echo "done."
 		;;
 	stop)
-		echo -n "Stopping cron ..."
+		printf "Stopping cron ..."
 		start-stop-daemon -K -q -p /var/run/dcron.pid
 		echo "done."
 		;;

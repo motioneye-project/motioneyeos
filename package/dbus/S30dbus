@@ -21,7 +21,7 @@
 RETVAL=0
 
 start() {
-    echo -n "Starting system message bus: "
+    printf "Starting system message bus: "
 
     dbus-uuidgen --ensure
     dbus-daemon --system
@@ -31,7 +31,7 @@ start() {
 }
 
 stop() {
-    echo -n "Stopping system message bus: "
+    printf "Stopping system message bus: "
 
     ## we don't want to kill all the per-user $processname, we want
     ## to use the pid file *only*; because we use the fake nonexistent 

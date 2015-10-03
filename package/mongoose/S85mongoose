@@ -21,12 +21,12 @@ case "$1" in
 	echo "$NAME."
 	;;
   stop)
-	echo -n "Stopping $DESC: "
+	printf "Stopping $DESC: "
 	start-stop-daemon -K -x "$DAEMON"
 	echo "$NAME."
 	;;
   restart|force-reload)
-	echo -n "Restarting $DESC: "
+	printf "Restarting $DESC: "
 	start-stop-daemon -K -x "$DAEMON"
 	sleep 1
 	start-stop-daemon -S -x "$DAEMON" -b -- $OPTIONS

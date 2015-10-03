@@ -26,7 +26,7 @@ start() {
 		fi
 	fi
 
-	echo -n "Starting dropbear sshd: "
+	printf "Starting dropbear sshd: "
 	umask 077
 
 	start-stop-daemon -S -q -p /var/run/dropbear.pid \
@@ -34,7 +34,7 @@ start() {
 	[ $? = 0 ] && echo "OK" || echo "FAIL"
 }
 stop() {
-	echo -n "Stopping dropbear sshd: "
+	printf "Stopping dropbear sshd: "
 	start-stop-daemon -K -q -p /var/run/dropbear.pid
 	[ $? = 0 ] && echo "OK" || echo "FAIL"
 }

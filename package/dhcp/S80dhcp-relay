@@ -28,12 +28,12 @@ DHCRELAYPID=/var/run/dhcrelay.pid
 
 case "$1" in
 	start)
-		echo -n "Starting DHCP relay: "
+		printf "Starting DHCP relay: "
 		start-stop-daemon -S -x /usr/sbin/dhcrelay -- -q $OPTIONS $IFCMD $SERVERS
 		[ $? = 0 ] && echo "OK" || echo "FAIL"
 		;;
 	stop)
-		echo -n "Stopping DHCP relay: "
+		printf "Stopping DHCP relay: "
 		start-stop-daemon -K -x /usr/sbin/dhcrelay
 		[ $? = 0 ] && echo "OK" || echo "FAIL"
 		;;

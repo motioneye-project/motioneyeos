@@ -4,7 +4,7 @@ RADVD=/usr/sbin/radvd
 
 echo "1" > /proc/sys/net/ipv6/conf/all/forwarding
 
-echo -n "Starting radvd: "
+printf "Starting radvd: "
 if [ ! -x "${RADVD}" ]; then
 	echo "missing"
 	exit 1

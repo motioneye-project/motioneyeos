@@ -3,7 +3,7 @@
 [ -f /sbin/portmap ] || exit 0
 
 start() {
-	echo -n "Starting portmap: "
+	printf "Starting portmap: "
 	portmap
 	mkdir -p /var/lock/subsys
 	touch /var/lock/subsys/portmap
@@ -12,7 +12,7 @@ start() {
 
 
 stop() {
-        echo -n "Stopping portmap: "
+        printf "Stopping portmap: "
 	echo
         killall portmap
         rm -rf /var/lock/subsys

@@ -6,7 +6,7 @@
 #
 
 start() {
-	echo -n "Starting lirc: "
+	printf "Starting lirc: "
 	mkdir -p /var/run/lirc
 	ln -sf /var/run/lirc/lircd /dev/lircd
 	start-stop-daemon -b -S -q -m -p /var/run/lirc.pid --exec /usr/sbin/lircd -- -n -O /etc/lirc/lirc_options.conf
@@ -14,7 +14,7 @@ start() {
 }
 
 stop() {
-	echo -n "Stopping lirc: "
+	printf "Stopping lirc: "
 	start-stop-daemon -K -q -p /var/run/lirc.pid
 	echo "OK"
 }

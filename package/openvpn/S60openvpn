@@ -14,8 +14,8 @@ test -d $CONFIG_DIR || exit 0
 
 start_vpn () {
     $DAEMON --daemon --writepid /var/run/openvpn.$NAME.pid \
-            --config $CONFIG_DIR/$NAME.conf --cd $CONFIG_DIR || echo -n " FAILED->"
-    echo -n " $NAME"
+            --config $CONFIG_DIR/$NAME.conf --cd $CONFIG_DIR || printf " FAILED->"
+    printf " $NAME"
 }
 stop_vpn () {
    kill `cat $PIDFILE` || true
@@ -24,7 +24,7 @@ stop_vpn () {
 
 case "$1" in
 start)
-  echo -n "Starting openvpn:"
+  printf "Starting openvpn:"
 
   if test -z $2 ; then
     for CONFIG in `cd $CONFIG_DIR; ls *.conf 2> /dev/null`; do
@@ -36,21 +36,21 @@ start)
       NAME=$2
       start_vpn
     else
-      echo -n " No such VPN: $2"
+      printf " No such VPN: $2"
     fi
   fi
   echo "."
 
   ;;
 stop)
-  echo -n "Stopping openvpn:"
+  printf "Stopping openvpn:"
 
   if test -z $2 ; then
     for PIDFILE in `ls /var/run/openvpn.*.pid 2> /dev/null`; do
       NAME=`echo $PIDFILE | cut -c18-`
       NAME=${NAME%%.pid}
       stop_vpn
-      echo -n " $NAME"
+      printf " $NAME"
     done
   else
     if test -e /var/run/openvpn.$2.pid ; then
@@ -58,16 +58,16 @@ stop)
       NAME=`echo $PIDFILE | cut -c18-`
       NAME=${NAME%%.pid}
       stop_vpn
-      echo -n " $NAME"
+      printf " $NAME"
     else
-      echo -n " No such VPN: $2"
+      printf " No such VPN: $2"
     fi
   fi
   echo "."
   ;;
 # We only 'reload' for running VPNs. New ones will only start with 'start' or 'restart'.
 reload|force-reload)
-  echo -n "Reloading openvpn:"
+  printf "Reloading openvpn:"
   for PIDFILE in `ls /var/run/openvpn.*.pid 2> /dev/null`; do
     NAME=`echo $PIDFILE | cut -c18-`
     NAME=${NAME%%.pid}
@@ -76,12 +76,12 @@ reload|force-reload)
       stop_vpn
       sleep 1
       start_vpn
-      echo -n "(restarted)"
+      printf "(restarted)"
     else
       kill -HUP `cat $PIDFILE` || true
 #    start-stop-daemon --stop --signal HUP --quiet --oknodo \
 #      --exec $DAEMON --pidfile $PIDFILE
-    echo -n " $NAME"
+    printf " $NAME"
     fi
   done
   echo "."

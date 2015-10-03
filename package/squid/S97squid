@@ -5,7 +5,7 @@
 
 case "$1" in
   start)
-    echo -n "Starting squid: "
+    printf "Starting squid: "
     if [ ! -d /var/log/squid ]; then
       mkdir -p /var/log/squid
       chown squid:squid /var/log/squid
@@ -15,19 +15,19 @@ case "$1" in
     ;;
 
    stop)
-    echo -n "Stopping squid: "
+    printf "Stopping squid: "
     /usr/sbin/squid -k shutdown
     [ $? = 0 ] && echo "OK" || echo "FAIL"
     ;;
 
   reload)
-    echo -n "Reloading squid configuration: "
+    printf "Reloading squid configuration: "
     /usr/sbin/squid -k reconfigure
     [ $? = 0 ] && echo "OK" || echo "FAIL"
     ;;
 
   restart)
-    echo -n "Restarting squid: "
+    printf "Restarting squid: "
     /usr/sbin/squid -k restart
     [ $? = 0 ] && echo "OK" || echo "FAIL"
     ;;
