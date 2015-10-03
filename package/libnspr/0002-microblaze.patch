@@ -1,12 +1,12 @@
 Add Microblaze support
 
-[Gustavo: update for nspr 4.10.6]
+[Gustavo: update for nspr 4.10.9]
 Signed-off-by: Spenser Gilliland <spenser@gillilanding.com>
 
-diff -Nura nspr-4.10.6.nios2/nspr/pr/include/md/_linux.cfg nspr-4.10.6/nspr/pr/include/md/_linux.cfg
---- nspr-4.10.6.nios2/nspr/pr/include/md/_linux.cfg	2014-06-18 10:29:15.816361425 -0300
-+++ nspr-4.10.6/nspr/pr/include/md/_linux.cfg	2014-06-18 10:26:59.908768508 -0300
-@@ -969,6 +969,56 @@
+diff -Nura nspr-4.10.9.orig/nspr/pr/include/md/_linux.cfg nspr-4.10.9/nspr/pr/include/md/_linux.cfg
+--- nspr-4.10.9.orig/nspr/pr/include/md/_linux.cfg	2015-10-03 08:13:11.845414714 -0300
++++ nspr-4.10.9/nspr/pr/include/md/_linux.cfg	2015-10-03 08:13:20.435708195 -0300
+@@ -1062,6 +1062,56 @@
  #define PR_BYTES_PER_WORD_LOG2   2
  #define PR_BYTES_PER_DWORD_LOG2  3
  
@@ -63,15 +63,18 @@ diff -Nura nspr-4.10.6.nios2/nspr/pr/include/md/_linux.cfg nspr-4.10.6/nspr/pr/i
  #else
  
  #error "Unknown CPU architecture"
-diff -Nura nspr-4.10.6.nios2/nspr/pr/include/md/_linux.h nspr-4.10.6/nspr/pr/include/md/_linux.h
---- nspr-4.10.6.nios2/nspr/pr/include/md/_linux.h	2014-06-18 10:29:15.817361459 -0300
-+++ nspr-4.10.6/nspr/pr/include/md/_linux.h	2014-06-18 10:26:59.909768537 -0300
-@@ -55,6 +55,8 @@
- #define _PR_SI_ARCHITECTURE "avr32"
- #elif defined(__m32r__)
+diff -Nura nspr-4.10.9.orig/nspr/pr/include/md/_linux.h nspr-4.10.9/nspr/pr/include/md/_linux.h
+--- nspr-4.10.9.orig/nspr/pr/include/md/_linux.h	2015-10-03 08:13:11.845414714 -0300
++++ nspr-4.10.9/nspr/pr/include/md/_linux.h	2015-10-03 08:14:53.351882603 -0300
+@@ -57,8 +57,11 @@
  #define _PR_SI_ARCHITECTURE "m32r"
+ #elif defined(__or1k__)
+ #define _PR_SI_ARCHITECTURE "or1k"
 +#elif defined(__microblaze__)
 +#define _PR_SI_ARCHITECTURE "microblaze"
  #elif defined(nios2)
  #define _PR_SI_ARCHITECTURE "nios2"
++#elif defined(nios2)
  #else
+ #error "Unknown CPU architecture"
+ #endif
