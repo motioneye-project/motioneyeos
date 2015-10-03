@@ -23,6 +23,7 @@ define DHCPCD_CONFIGURE_CMDS
 	(cd $(@D); \
 	$(TARGET_CONFIGURE_OPTS) ./configure \
 		--os=linux \
+		--libexecdir=/lib/dhcpcd \
 		$(DHCPCD_CONFIG_OPTS) )
 endef
 
