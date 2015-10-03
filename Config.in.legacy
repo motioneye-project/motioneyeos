@@ -107,6 +107,12 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2015.11"
 
+config BR2_PACKAGE_SCHIFRA
+	bool "schifra package has been removed"
+	help
+	  Schifra package has been maked broken since 2014.11 release and
+	  haven't been fixed since then.
+
 config BR2_PACKAGE_ZXING
 	bool "zxing option has been renamed"
 	select BR2_LEGACY
