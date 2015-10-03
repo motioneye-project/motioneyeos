@@ -6,8 +6,37 @@
 # Debian ifupdown needs the /run/network lock directory
 mkdir -p /run/network
 
+# In case we have a slow-to-appear interface (e.g. eth-over-USB),
+# and we need to configure it, wait until it appears, but not too
+# long either. WAIT_DELAY is in seconds.
+WAIT_DELAY=15
+
+wait_for_interfaces() {
+	IFACES=$(awk '/^auto/ { print $2 }' /etc/network/interfaces)
+	[ -n "$IFACES" ] || return
+
+	printf "Waiting for network interfaces to appear"
+
+	for i in $(seq $WAIT_DELAY); do
+	    for IFACE in $IFACES; do
+		if [ ! -e "/sys/class/net/$IFACE" ]; then
+		    printf "."
+		    sleep 1
+		    continue 2
+		fi
+	    done
+
+	    printf " ok\n"; return
+	done
+
+	printf " timeout\n"
+	exit 1
+}
+
 case "$1" in
   start)
+	wait_for_interfaces
+
  	echo "Starting network..."
 	/sbin/ifup -a
 	;;
