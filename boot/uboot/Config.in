@@ -139,6 +139,13 @@ config BR2_TARGET_UBOOT_CUSTOM_CONFIG_FILE
 	  Path to the U-Boot configuration file.
 endif
 
+config BR2_TARGET_UBOOT_NEEDS_DTC
+	bool "U-Boot needs dtc"
+	select BR2_PACKAGE_HOST_DTC
+	help
+	  Select this option if your U-Boot board configuration
+	  requires the Device Tree compiler to be available.
+
 choice
 	prompt "U-Boot binary format"
 	default BR2_TARGET_UBOOT_FORMAT_BIN

@@ -77,6 +77,10 @@ UBOOT_MAKE_OPTS += \
 	CROSS_COMPILE="$(TARGET_CROSS)" \
 	ARCH=$(UBOOT_ARCH)
 
+ifeq ($(BR2_TARGET_UBOOT_NEEDS_DTC),y)
+UBOOT_DEPENDENCIES += host-dtc
+endif
+
 # Helper function to fill the U-Boot config.h file.
 # Argument 1: option name
 # Argument 2: option value
