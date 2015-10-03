@@ -14,8 +14,8 @@ Signed-off-by: Eric Le Bihan <eric.le.bihan.dev@free.fr>
 Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de> (rebased for mesa3d 10.3)
 
 diff -uNr Mesa-10.3.0-rc2.org/src/egl/main/Makefile.am Mesa-10.3.0-rc2/src/egl/main/Makefile.am
---- Mesa-10.3.0-rc2.org/src/egl/main/Makefile.am	2014-08-29 00:00:57.000000000 +0200
-+++ Mesa-10.3.0-rc2/src/egl/main/Makefile.am	2014-09-02 21:35:52.548071820 +0200
+--- Mesa-10.3.0-rc2.org/src/egl/Makefile.am	2014-08-29 00:00:57.000000000 +0200
++++ Mesa-10.3.0-rc2/src/egl/Makefile.am	2014-09-02 21:35:52.548071820 +0200
 @@ -85,9 +85,6 @@
  
  pkgconfig_DATA = egl.pc
