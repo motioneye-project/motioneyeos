@@ -110,6 +110,12 @@ endif
 
 # APIs
 
+ifeq ($(BR2_PACKAGE_MESA3D_OSMESA),y)
+MESA3D_CONF_OPTS += --enable-osmesa
+else
+MESA3D_CONF_OPTS += --disable-osmesa
+endif
+
 # Always enable OpenGL:
 #   - it is needed for GLES (mesa3d's ./configure is a bit weird)
 #   - but if no DRI driver is enabled, then libgl is not built,

@@ -117,6 +117,13 @@ config BR2_PACKAGE_MESA3D_DRI_DRIVER_RADEON
 
 endif # BR2_PACKAGE_XORG7
 
+comment "Off-screen Rendering"
+
+config BR2_PACKAGE_MESA3D_OSMESA
+	bool "OSMesa library"
+	help
+	  The OSMesa API provides functions for making off-screen renderings.
+
 if BR2_PACKAGE_MESA3D_DRIVER
 
 comment "Additional API Support"
