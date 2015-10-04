@@ -74,7 +74,7 @@ endif
 UBOOT_ARCH = $(KERNEL_ARCH)
 
 UBOOT_MAKE_OPTS += \
-	CROSS_COMPILE="$(CCACHE) $(TARGET_CROSS)" \
+	CROSS_COMPILE="$(TARGET_CROSS)" \
 	ARCH=$(UBOOT_ARCH)
 
 # Helper function to fill the U-Boot config.h file.
