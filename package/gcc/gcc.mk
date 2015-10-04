@@ -235,4 +235,38 @@ HOST_GCC_COMMON_CONF_OPTS += \
 	--with-long-double-128
 endif
 
+HOST_GCC_COMMON_TOOLCHAIN_WRAPPER_ARGS += -DBR_CROSS_PATH_SUFFIX='".real"'
+
+# The LTO support in gcc creates wrappers for ar, ranlib and nm which load
+# the lto plugin. These wrappers are called *-gcc-ar, *-gcc-ranlib, and
+# *-gcc-nm and should be used instead of the real programs when -flto is
+# used. However, we should not add the toolchain wrapper for them, and they
+# match the *cc-* pattern. Therefore, an additional case is added for *-ar,
+# *-ranlib and *-nm.
+# Avoid that a .real is symlinked a second time.
+# Also create <arch>-linux-<tool> symlinks.
+define HOST_GCC_INSTALL_WRAPPER_AND_SIMPLE_SYMLINKS
+	$(Q)cd $(HOST_DIR)/usr/bin; \
+	for i in $(GNU_TARGET_NAME)-*; do \
+		case "$$i" in \
+		*.real) \
+			;; \
+		*-ar|*-ranlib|*-nm) \
+			ln -snf $$i $(ARCH)-linux$${i##$(GNU_TARGET_NAME)}; \
+			;; \
+		*cc|*cc-*|*++|*++-*|*cpp) \
+			rm -f $$i.real; \
+			mv $$i $$i.real; \
+			ln -sf toolchain-wrapper $$i; \
+			ln -sf toolchain-wrapper $(ARCH)-linux$${i##$(GNU_TARGET_NAME)}; \
+			ln -snf $$i.real $(ARCH)-linux$${i##$(GNU_TARGET_NAME)}.real; \
+			;; \
+		*) \
+			ln -snf $$i $(ARCH)-linux$${i##$(GNU_TARGET_NAME)}; \
+			;; \
+		esac; \
+	done
+
+endef
+
 include $(sort $(wildcard package/gcc/*/*.mk))
