@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-ZXING_CPP_VERSION = 4abdbb62c9939014eca3e43ac7dfa30daa344536
+ZXING_CPP_VERSION = fa34227d26e0b388e65b81936a2681952928f5be
 ZXING_CPP_SITE = $(call github,glassechidna,zxing-cpp,$(ZXING_CPP_VERSION))
 ZXING_CPP_LICENSE = Apache-2.0
 ZXING_CPP_LICENSE_FILES = COPYING
