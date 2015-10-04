@@ -1,7 +1,7 @@
 /**
- * Buildroot wrapper for external toolchains. This simply executes the real
- * toolchain with a number of arguments (sysroot/arch/..) hardcoded,
- * to ensure the external toolchain uses the correct configuration.
+ * Buildroot wrapper for toolchains. This simply executes the real toolchain
+ * with a number of arguments (sysroot/arch/..) hardcoded, to ensure the
+ * toolchain uses the correct configuration.
  * The hardcoded path arguments are defined relative to the actual location
  * of the binary.
  *
