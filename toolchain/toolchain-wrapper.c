@@ -23,6 +23,9 @@
 #include <stdlib.h>
 #include <errno.h>
 
+#ifdef BR_CCACHE
+static char ccache_path[PATH_MAX];
+#endif
 static char path[PATH_MAX];
 static char sysroot[PATH_MAX];
 
@@ -40,6 +43,9 @@ static char sysroot[PATH_MAX];
 #define EXCLUSIVE_ARGS	3
 
 static char *predef_args[] = {
+#ifdef BR_CCACHE
+	ccache_path,
+#endif
 	path,
 	"--sysroot", sysroot,
 #ifdef BR_ABI
@@ -147,6 +153,13 @@ int main(int argc, char **argv)
 		perror(__FILE__ ": overflow");
 		return 3;
 	}
+#ifdef BR_CCACHE
+	ret = snprintf(ccache_path, sizeof(ccache_path), "%s/usr/bin/ccache", absbasedir);
+	if (ret >= sizeof(ccache_path)) {
+		perror(__FILE__ ": overflow");
+		return 3;
+	}
+#endif
 	ret = snprintf(sysroot, sizeof(sysroot), "%s/" BR_SYSROOT, absbasedir);
 	if (ret >= sizeof(sysroot)) {
 		perror(__FILE__ ": overflow");
@@ -251,7 +264,7 @@ int main(int argc, char **argv)
 		}
 	}
 
-	if (execv(path, args))
+	if (execv(args[0], args))
 		perror(path);
 
 	free(args);
