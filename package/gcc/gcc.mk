@@ -23,9 +23,10 @@ GCC_SOURCE ?= gcc-$(GCC_VERSION).tar.bz2
 # Xtensa special hook
 #
 
+HOST_GCC_XTENSA_OVERLAY_TAR = $(BR2_XTENSA_OVERLAY_DIR)/xtensa_$(call qstrip,$(BR2_XTENSA_CORE_NAME)).tar
+
 define HOST_GCC_XTENSA_OVERLAY_EXTRACT
-	tar xf $(BR2_XTENSA_OVERLAY_DIR)/xtensa_$(call qstrip,\
-		$(BR2_XTENSA_CORE_NAME)).tar -C $(@D) --strip-components=1 gcc
+	tar xf $(HOST_GCC_XTENSA_OVERLAY_TAR) -C $(@D) --strip-components=1 gcc
 endef
 
 #
@@ -236,6 +237,30 @@ HOST_GCC_COMMON_CONF_OPTS += \
 endif
 
 HOST_GCC_COMMON_TOOLCHAIN_WRAPPER_ARGS += -DBR_CROSS_PATH_SUFFIX='".real"'
+
+ifeq ($(BR2_CCACHE),y)
+HOST_GCC_COMMON_CCACHE_HASH_FILES += $(DL_DIR)/$(GCC_SOURCE)
+# Cfr. PATCH_BASE_DIRS in .stamp_patched, but we catch both versioned and
+# unversioned patches unconditionally
+HOST_GCC_COMMON_CCACHE_HASH_FILES += \
+	$(wildcard \
+		package/gcc/$(GCC_VERSION)/*.patch \
+		$(addsuffix $((PKG)_RAWNAME)/$(GCC_VERSION)/*.patch,$(call qstrip,$(BR2_GLOBAL_PATCH_DIR))) \
+		$(addsuffix $((PKG)_RAWNAME)/*.patch,$(call qstrip,$(BR2_GLOBAL_PATCH_DIR))))
+ifeq ($(BR2_xtensa),y)
+HOST_GCC_COMMON_CCACHE_HASH_FILES += $(HOST_GCC_XTENSA_OVERLAY_TAR)
+endif
+ifeq ($(ARCH),powerpc)
+ifneq ($(BR2_SOFT_FLOAT),)
+HOST_GCC_COMMON_CCACHE_HASH_FILES += package/gcc/$(GCC_VERSION)/1000-powerpc-link-with-math-lib.patch.conditional
+endif
+endif
+
+HOST_GCC_COMMON_TOOLCHAIN_WRAPPER_ARGS += -DBR_CCACHE_HASH=\"`\
+	printf '%s' $($(PKG)_CONF_OPTS) $(GCC_VERSION) \
+		| sha256sum - $(HOST_GCC_COMMON_CCACHE_HASH_FILES) \
+		| cut -c -64 | tr -d '\n'`\"
+endif # BR2_CCACHE
 
 # The LTO support in gcc creates wrappers for ar, ranlib and nm which load
 # the lto plugin. These wrappers are called *-gcc-ar, *-gcc-ranlib, and

@@ -264,12 +264,24 @@ int main(int argc, char **argv)
 		debug = atoi(env_debug);
 		if (debug > 0) {
 			fprintf(stderr, "Toolchain wrapper executing:");
+#ifdef BR_CCACHE_HASH
+			fprintf(stderr, "%sCCACHE_COMPILERCHECK='string:" BR_CCACHE_HASH "'",
+				(debug == 2) ? "\n    " : " ");
+#endif
 			for (i = 0; exec_args[i]; i++)
 				fprintf(stderr, "%s'%s'",
 					(debug == 2) ? "\n    " : " ", exec_args[i]);
 			fprintf(stderr, "\n");
 		}
 	}
+
+#ifdef BR_CCACHE_HASH
+	/* Allow compilercheck to be overridden through the environment */
+	if (setenv("CCACHE_COMPILERCHECK", "string:" BR_CCACHE_HASH, 0)) {
+		perror(__FILE__ ": Failed to set CCACHE_COMPILERCHECK");
+		return 3;
+	}
+#endif
 
 	if (execv(exec_args[0], exec_args))
 		perror(path);
