@@ -13,7 +13,7 @@ MPDECIMAL_CONF_OPTS = LD="$(TARGET_CC)"
 MPDECIMAL_AUTORECONF = YES
 
 # On i386, by default, mpdecimal tries to uses <fenv.h> which is not
-# available in musl/glibc. So in this case, we tell mpdecimal to use
+# available in musl/uclibc. So in this case, we tell mpdecimal to use
 # the generic 32 bits code, which is anyway the one used on ARM,
 # PowerPC, etc.
 ifeq ($(BR2_TOOLCHAIN_USES_GLIBC),)
