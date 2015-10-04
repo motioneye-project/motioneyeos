@@ -256,8 +256,10 @@ HOST_GCC_COMMON_CCACHE_HASH_FILES += package/gcc/$(GCC_VERSION)/1000-powerpc-lin
 endif
 endif
 
+# _CONF_OPTS contains some references to the absolute path of $(HOST_DIR),
+# so substitute those away.
 HOST_GCC_COMMON_TOOLCHAIN_WRAPPER_ARGS += -DBR_CCACHE_HASH=\"`\
-	printf '%s' $($(PKG)_CONF_OPTS) $(GCC_VERSION) \
+	printf '%s' $(subst $(HOST_DIR),@HOST_DIR@,$($(PKG)_CONF_OPTS)) \
 		| sha256sum - $(HOST_GCC_COMMON_CCACHE_HASH_FILES) \
 		| cut -c -64 | tr -d '\n'`\"
 endif # BR2_CCACHE

@@ -286,6 +286,33 @@ config BR2_CCACHE_INITIAL_SETUP
 
 	  These initial settings are applied after ccache has been compiled.
 
+config BR2_CCACHE_USE_BASEDIR
+	bool "Use relative paths"
+	default y
+	help
+	  Allow ccache to convert absolute paths within the output
+	  directory into relative paths.
+
+	  During the build, many -I include directives are given with
+	  an absolute path. These absolute paths end up in the hashes
+	  that are computed by ccache. Therefore, when you build from a
+	  different directory, the hash will be different and the
+	  cached object will not be used.
+
+	  To improve cache performance, set this option to y. This
+	  allows ccache to rewrite absolute paths within the output
+	  directory into relative paths. Note that only paths within
+	  the output directory will be rewritten; therefore, if you
+	  change BR2_HOST_DIR to point outside the output directory and
+	  subsequently move it to a different location, this will lead
+	  to cache misses.
+
+	  This option has as a result that the debug information in the
+	  object files also has only relative paths. Therefore, make
+	  sure you cd to the build directory before starting gdb. See
+	  the section "COMPILING IN DIFFERENT DIRECTORIES" in the
+	  ccache manual for more information.
+
 endif
 
 config BR2_DEPRECATED

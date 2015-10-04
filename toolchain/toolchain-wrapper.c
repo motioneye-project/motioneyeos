@@ -268,6 +268,10 @@ int main(int argc, char **argv)
 			fprintf(stderr, "%sCCACHE_COMPILERCHECK='string:" BR_CCACHE_HASH "'",
 				(debug == 2) ? "\n    " : " ");
 #endif
+#ifdef BR_CCACHE_BASEDIR
+			fprintf(stderr, "%sCCACHE_BASEDIR='" BR_CCACHE_BASEDIR "'",
+				(debug == 2) ? "\n    " : " ");
+#endif
 			for (i = 0; exec_args[i]; i++)
 				fprintf(stderr, "%s'%s'",
 					(debug == 2) ? "\n    " : " ", exec_args[i]);
@@ -279,6 +283,13 @@ int main(int argc, char **argv)
 	/* Allow compilercheck to be overridden through the environment */
 	if (setenv("CCACHE_COMPILERCHECK", "string:" BR_CCACHE_HASH, 0)) {
 		perror(__FILE__ ": Failed to set CCACHE_COMPILERCHECK");
+		return 3;
+	}
+#endif
+#ifdef BR_CCACHE_BASEDIR
+	/* Allow compilercheck to be overridden through the environment */
+	if (setenv("CCACHE_BASEDIR", BR_CCACHE_BASEDIR, 0)) {
+		perror(__FILE__ ": Failed to set CCACHE_BASEDIR");
 		return 3;
 	}
 #endif

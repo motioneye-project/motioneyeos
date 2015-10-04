@@ -33,3 +33,23 @@ make CCACHE_OPTIONS="--max-size=5G" ccache-options
 # zero statistics counters
 make CCACHE_OPTIONS="--zero-stats" ccache-options
 -----------------
+
++ccache+ makes a hash of the source files and of the compiler options.
+If a compiler option is different, the cached object file will not be
+used. Many compiler options, however, contain an absolute path to the
+staging directory. Because of this, building in a different output
+directory would lead to many cache misses.
+
+To avoid this issue, buildroot has the +Use relative paths+ option
+(+BR2_CCACHE_USE_BASEDIR+). This will rewrite all absolute paths that
+point inside the output directory into relative paths. Thus, changing
+the output directory no longer leads to cache misses.
+
+A disadvantage of the relative paths is that they also end up to be
+relative paths in the object file. Therefore, for example, the debugger
+will no longer find the file, unless you cd to the output directory
+first.
+
+See https://ccache.samba.org/manual.html#_compiling_in_different_directories[the
+ccache manual's section on "Compiling in different directories"] for
+more details about this rewriting of absolute paths.
