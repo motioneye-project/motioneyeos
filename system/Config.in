@@ -110,11 +110,11 @@ config BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_DEVTMPFS
 	bool "Dynamic using devtmpfs only"
 
 config BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_MDEV
-	bool "Dynamic using mdev"
+	bool "Dynamic using devtmpfs + mdev"
 	select BR2_PACKAGE_BUSYBOX
 
 config BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_EUDEV
-	bool "Dynamic using eudev"
+	bool "Dynamic using devtmpfs + eudev"
 	depends on BR2_USE_WCHAR
 	depends on !BR2_STATIC_LIBS
 	depends on BR2_USE_MMU # eudev
