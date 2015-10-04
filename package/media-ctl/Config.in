@@ -1,0 +1,9 @@
+config BR2_PACKAGE_MEDIA_CTL
+	bool "media-ctl"
+	help
+	  Media controller control application
+
+	  Useful mostly with ARM OMAP processors to configure and
+	  control the image subsystem
+
+	  http://git.ideasonboard.org/media-ctl.git

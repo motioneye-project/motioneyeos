@@ -1,0 +1,16 @@
+When libomxdynamicloader.so is loaded, it complains that RM_Deinit can't be resolved.
+Link explicitly against omxil-bellagio so that ld.so can find the reference.
+
+Signed-off-by: Qais Yousef <qais.yousef@imgtec.com>
+
+--- bellagio-0.9.3/src/dynamic_loader/Makefile.am.old	2012-03-23 15:07:47.379021034 +0000
++++ bellagio-0.9.3/src/dynamic_loader/Makefile.am	2012-03-23 15:08:47.563034818 +0000
+@@ -3,7 +3,7 @@
+ omxdynamicloader_LTLIBRARIES = libomxdynamicloader.la
+ libomxdynamicloader_la_SOURCES = ste_dynamic_component_loader.c ste_dynamic_component_loader.h
+ 
+-libomxdynamicloader_la_LDFLAGS =
++libomxdynamicloader_la_LDFLAGS = -lomxil-bellagio -L$(abs_top_srcdir)/src/.libs
+ libomxdynamicloader_la_CFLAGS = -I$(top_srcdir)/include \
+ 			-I$(top_srcdir)/src \
+ 			-I$(top_srcdir)/src/base \

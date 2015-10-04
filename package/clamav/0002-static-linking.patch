@@ -1,0 +1,58 @@
+Fix detection of statically linked libraries
+
+Patch submitted upstream: https://bugzilla.clamav.net/show_bug.cgi?id=11132
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+
+diff -uNr clamav-0.98.4.org/m4/reorganization/libs/curl.m4 clamav-0.98.4/m4/reorganization/libs/curl.m4
+--- clamav-0.98.4.org/m4/reorganization/libs/curl.m4	2014-05-21 17:25:05.000000000 +0200
++++ clamav-0.98.4/m4/reorganization/libs/curl.m4	2014-09-28 15:39:26.714111527 +0200
+@@ -38,7 +38,7 @@
+     save_LDFLAGS="$LDFLAGS"
+     LDFLAGS="$CURL_LDFLAGS"
+     AC_CHECK_LIB([curl], [curl_easy_init], [curl_msg="";have_curl="yes";CLAMSUBMIT_LIBS="$CLAMSUBMIT_LIBS $CURL_LDFLAGS";CLAMSUBMIT_CFLAGS="$CLAMSUBMIT_CFLAGS $CURL_CPPFLAGS"],
+-            [AC_MSG_WARN([Your libcurl is misconfigured. Please use the web interface for submitting FPs/FNs.])])
++            [AC_MSG_WARN([Your libcurl is misconfigured. Please use the web interface for submitting FPs/FNs.])], [$CURL_LDFLAGS])
+     LDFLAGS="$save_LDFLAGS"
+ fi
+ 
+diff -uNr clamav-0.98.4.org/m4/reorganization/libs/openssl.m4 clamav-0.98.4/m4/reorganization/libs/openssl.m4
+--- clamav-0.98.4.org/m4/reorganization/libs/openssl.m4	2014-05-22 15:18:22.000000000 +0200
++++ clamav-0.98.4/m4/reorganization/libs/openssl.m4	2014-09-28 15:15:18.280323868 +0200
+@@ -26,7 +26,7 @@
+ save_CFLAGS="$CFLAGS"
+ save_LIBS="$LIBS"
+ 
+-SSL_LIBS="-lssl -lcrypto"
++SSL_LIBS="-lssl -lcrypto -lz"
+ 
+ if test "$LIBSSL_HOME" != "/usr"; then
+     SSL_LDFLAGS="-L$LIBSSL_HOME/lib"
+@@ -41,12 +41,12 @@
+ have_ssl="no"
+ have_crypto="no"
+ 
+-AC_CHECK_LIB([ssl], [SSL_library_init], [have_ssl="yes"], [AC_MSG_ERROR([Your OpenSSL installation is misconfigured or missing])], [-lcrypto])
++AC_CHECK_LIB([ssl], [SSL_library_init], [have_ssl="yes"], [AC_MSG_ERROR([Your OpenSSL installation is misconfigured or missing])], [-lcrypto -lz])
+ 
+-AC_CHECK_LIB([crypto], [EVP_EncryptInit], [have_crypto="yes"], [AC_MSG_ERROR([Your OpenSSL installation is misconfigured or missing])])
++AC_CHECK_LIB([crypto], [EVP_EncryptInit], [have_crypto="yes"], [AC_MSG_ERROR([Your OpenSSL installation is misconfigured or missing])], [-lcrypto -lz])
+ 
+ dnl OpenSSL 0.9.8 is the minimum required version due to X509_VERIFY_PARAM
+-AC_CHECK_LIB([ssl], [X509_VERIFY_PARAM_new], [], [AC_MSG_ERROR([Your OpenSSL installation is missing the X509_VERIFY_PARAM function. Please upgrade to a more recent version of OpenSSL.])], [-lcrypto])
++AC_CHECK_LIB([ssl], [X509_VERIFY_PARAM_new], [], [AC_MSG_ERROR([Your OpenSSL installation is missing the X509_VERIFY_PARAM function. Please upgrade to a more recent version of OpenSSL.])], [-lcrypto -lz])
+ 
+ LDFLAGS="$save_LDFLAGS"
+ CFLAGS="$save_CFLAGS"
+diff -uNr clamav-0.98.4.org/m4/reorganization/libs/xml.m4 clamav-0.98.4/m4/reorganization/libs/xml.m4
+--- clamav-0.98.4.org/m4/reorganization/libs/xml.m4	2014-05-21 17:25:05.000000000 +0200
++++ clamav-0.98.4/m4/reorganization/libs/xml.m4	2014-09-28 15:57:41.836339462 +0200
+@@ -67,7 +67,7 @@
+     save_LDFLAGS="$LDFLAGS"
+     LDFLAGS="$LDFLAGS $XML_LIBS"
+ 
+-    AC_CHECK_LIB([xml2], [xmlTextReaderRead], [working_xml="yes"], [working_xml="no"])
++    AC_CHECK_LIB([xml2], [xmlTextReaderRead], [working_xml="yes"], [working_xml="no"], [$XML_LIBS])
+ 
+     CPPFLAGS="$save_CPPFLAGS"
+     LDFLAGS="$save_LDFLAGS"

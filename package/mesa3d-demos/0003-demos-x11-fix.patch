@@ -1,0 +1,30 @@
+This patch ensures that programs which depend on x11 are not build if x11
+is not available.
+
+Signed-off-by: Spenser Gilliland <spenser@gillilanding.com>
+---
+Index: mesa3d-demos-8.1.0/src/egl/opengles2/Makefile.am
+===================================================================
+--- mesa3d-demos-8.1.0.orig/src/egl/opengles2/Makefile.am
++++ mesa3d-demos-8.1.0/src/egl/opengles2/Makefile.am
+@@ -35,9 +35,10 @@ AM_LDFLAGS = \
+ 
+ if HAVE_EGL
+ if HAVE_GLESV2
+-bin_PROGRAMS = \
++bin_PROGRAMS = es2gears_screen
++if HAVE_X11
++bin_PROGRAMS += \
+ 	es2_info \
+-	es2gears_screen \
+ 	es2gears_x11 \
+ 	es2tri
+ if HAVE_WAYLAND
+@@ -45,6 +46,7 @@ bin_PROGRAMS += es2gears_wayland
+ endif
+ endif
+ endif
++endif
+ 
+ es2_info_LDADD = $(X11_LIBS)
+ es2tri_LDADD = $(X11_LIBS)

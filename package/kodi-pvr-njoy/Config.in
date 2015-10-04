@@ -1,0 +1,7 @@
+config BR2_PACKAGE_KODI_PVR_NJOY
+	bool "kodi-pvr-njoy"
+	select BR2_PACKAGE_KODI_PLATFORM
+	help
+	  Kodi's Njoy N7 client addon
+
+	  https://github.com/kodi-pvr/pvr.njoy

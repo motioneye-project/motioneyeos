@@ -1,0 +1,79 @@
+Status: upstream
+https://github.com/erlang/otp/pull/658
+
+Signed-off-by: Johan Oudinet <johan.oudinet@gmail.com>
+
+From 73392fcb6f8fddba57de6fb7ae6eeafa0e444686 Mon Sep 17 00:00:00 2001
+From: Johan Oudinet <johan.oudinet@gmail.com>
+Date: Tue, 24 Mar 2015 15:54:31 +0100
+Subject: [PATCH] erts: Fix incorrect use of AC_EGREP_CPP
+
+Using 'AC_EGREP_CPP(yes' without restraining the pattern always return
+true if it runs from a path containing the string 'yes'.
+---
+ erts/aclocal.m4   |  2 +-
+ erts/configure.in | 17 +++++++++--------
+ 2 files changed, 10 insertions(+), 9 deletions(-)
+
+diff --git a/erts/aclocal.m4 b/erts/aclocal.m4
+index 5735cde..70a5b40 100644
+--- a/erts/aclocal.m4
++++ b/erts/aclocal.m4
+@@ -559,7 +559,7 @@ dnl
+ 
+ AC_DEFUN(LM_SYS_MULTICAST,
+ [AC_CACHE_CHECK([for multicast support], ac_cv_sys_multicast_support,
+-[AC_EGREP_CPP(yes,
++[AC_EGREP_CPP(^yes$,
+ [#include <sys/types.h>
+ #include <sys/socket.h>
+ #include <netinet/in.h>
+diff --git a/erts/configure.in b/erts/configure.in
+index b3fe48d..9e19e33 100644
+--- a/erts/configure.in
++++ b/erts/configure.in
+@@ -1555,10 +1555,11 @@ if test "$have_gethostbyname_r" = yes; then
+ 				    [Define to flavour of gethostbyname_r]))
+ 		;;
+ 		*)
+-			AC_EGREP_CPP(yes,[#include <stdio.h>
+-			  #ifdef __GLIBC__
+-			  yes
+-			  #endif
++			AC_EGREP_CPP(^yes$,[
++#include <stdio.h>
++#ifdef __GLIBC__
++yes
++#endif
+ 			  ], AC_DEFINE(HAVE_GETHOSTBYNAME_R, GHBN_R_GLIBC,
+ 				[Define to flavour of gethostbyname_r]))
+ 		;;
+@@ -4303,10 +4304,10 @@ case "$erl_xcomp_without_sysroot-$with_ssl" in
+ 			SSL_INCLUDE="-I$dir/include"
+ 			old_CPPFLAGS=$CPPFLAGS
+ 			CPPFLAGS=$SSL_INCLUDE
+-			AC_EGREP_CPP(yes,[
++			AC_EGREP_CPP(^yes$,[
+ #include <openssl/opensslv.h>
+ #if OPENSSL_VERSION_NUMBER >= 0x0090700fL
+-  yes
++yes
+ #endif
+ 			],[
+ 			ssl_found=yes
+@@ -4501,10 +4502,10 @@ if test "x$SSL_APP" != "x" ; then
+     AC_MSG_CHECKING(for OpenSSL kerberos 5 support)
+     old_CPPFLAGS=$CPPFLAGS
+     CPPFLAGS=$SSL_INCLUDE
+-    AC_EGREP_CPP(yes,[
++    AC_EGREP_CPP(^yes$,[
+ #include <openssl/opensslconf.h>
+ #ifndef OPENSSL_NO_KRB5
+-  yes
++yes
+ #endif
+       ],[
+       AC_MSG_RESULT([yes])
+-- 
+2.1.0
+

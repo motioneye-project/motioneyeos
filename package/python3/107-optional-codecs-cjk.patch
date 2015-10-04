@@ -1,0 +1,25 @@
+Add an option to disable CJK codecs
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+---
+ configure.ac |    6 ++++++
+ 1 file changed, 6 insertions(+)
+
+Index: b/configure.ac
+===================================================================
+--- a/configure.ac
++++ b/configure.ac
+@@ -2692,6 +2692,12 @@
+    DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} _sqlite3"
+ fi
+ 
++AC_ARG_ENABLE(codecs-cjk,
++	AS_HELP_STRING([--disable-codecs-cjk], [disable CJK codecs]),
++	[ if test "$enableval" = "no"; then
++		DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} _codecs_kr _codecs_jp _codecs_cn _codecs_tw _codecs_hk _codecs_iso2022"
++	fi])
++
+ AC_SUBST(TK)
+ AC_ARG_ENABLE(tk,
+ 	AS_HELP_STRING([--disable-tk], [disable tk]),

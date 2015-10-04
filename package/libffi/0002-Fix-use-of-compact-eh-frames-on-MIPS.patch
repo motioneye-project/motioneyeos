@@ -1,0 +1,27 @@
+Newer MIPS toolchains use a different (compact) eh_frame format.
+libffi don't like them, so we have to switch to the older format.
+
+This patch add -mno-compact-eh to CFLAGS when compiling for
+Mips and compiler support it.
+
+Signed-off-by: Jérôme Pouiller <jezz@sysmic.org>
+
+--- a/configure.ac	2013-08-08 14:53:11.884267155 +0200
++++ b/configure.ac	2013-08-08 14:54:14.437493244 +0200
+@@ -430,6 +430,16 @@
+ AM_CONDITIONAL(FFI_EXEC_TRAMPOLINE_TABLE, test x$FFI_EXEC_TRAMPOLINE_TABLE = x1)
+ AC_SUBST(FFI_EXEC_TRAMPOLINE_TABLE)
+ 
++if test x$TARGET = xMIPS; then
++    save_CFLAGS="$CFLAGS"
++    CFLAGS=-mno-compact-eh
++    AC_MSG_CHECKING([whether the C compiler needs -mno-compact-eh])
++    AC_COMPILE_IFELSE([AC_LANG_PROGRAM([])],
++                      [AC_MSG_RESULT([yes])]; [save_CFLAGS="$save_CFLAGS -mno-compact-eh"],
++                      [AC_MSG_RESULT([no])])
++    CFLAGS="$save_CFLAGS"
++fi
++
+ if test x$TARGET = xX86_64; then
+     AC_CACHE_CHECK([assembler supports unwind section type],
+ 	libffi_cv_as_x86_64_unwind_section_type, [

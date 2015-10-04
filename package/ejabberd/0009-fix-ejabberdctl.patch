@@ -1,0 +1,21 @@
+Description: fix ejabberdctl
+ Change default values so ejabberdctl run commands as ejabberd user
+ Also add a way for the user to change default values.
+Signed-off-by: Johan Oudinet <johan.oudinet@gmail.com>
+
+diff --git a/ejabberdctl.template b/ejabberdctl.template
+index 79f4438..df0abba 100755
+--- a/ejabberdctl.template
++++ b/ejabberdctl.template
+@@ -14,7 +14,10 @@ SCRIPT_DIR=`cd ${0%/*} && pwd`
+ ERL={{erl}}
+ IEX={{bindir}}/iex
+ EPMD={{bindir}}/epmd
+-INSTALLUSER={{installuser}}
++INSTALLUSER=ejabberd
++
++# Read default configuration file if present.
++[ ! -r /etc/default/ejabberd ] || . /etc/default/ejabberd
+ 
+ # check the proper system user is used if defined
+ if [ "$INSTALLUSER" != "" ] ; then

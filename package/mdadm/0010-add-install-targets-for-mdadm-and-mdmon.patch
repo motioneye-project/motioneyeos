@@ -1,0 +1,32 @@
+From a1a9243671b1e23123f57e879890325154b8e00d Mon Sep 17 00:00:00 2001
+From: Christophe Vu-Brugier <cvubrugier@lacie.com>
+Date: Wed, 6 Mar 2013 16:03:14 +0100
+Subject: [PATCH] Add install targets for mdadm and mdmon
+
+
+Signed-off-by: Christophe Vu-Brugier <cvubrugier@lacie.com>
+---
+ Makefile |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/Makefile b/Makefile
+index 315455b..27d8eeb 100644
+--- a/Makefile
++++ b/Makefile
+@@ -231,8 +231,12 @@ $(MON_OBJS) : $(INCL) mdmon.h
+ sha1.o : sha1.c sha1.h md5.h
+ 	$(CC) $(CFLAGS) -DHAVE_STDINT_H -o sha1.o -c sha1.c
+ 
+-install : mdadm mdmon install-man install-udev
++install : install-mdadm install-mdmon install-man install-udev
++
++install-mdadm :
+ 	$(INSTALL) -D $(STRIP) -m 755 mdadm $(DESTDIR)$(BINDIR)/mdadm
++
++install-mdmon :
+ 	$(INSTALL) -D $(STRIP) -m 755 mdmon $(DESTDIR)$(BINDIR)/mdmon
+ 
+ install-static : mdadm.static install-man
+-- 
+1.7.10.4
+

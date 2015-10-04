@@ -1,0 +1,20 @@
+Fixes uclibc build as uclibc does not include backtrace functionality
+
+Signed-of-by: Spenser Gilliland <spenser@gillilanding.com>
+Signed-of-by: Markos Chandras <markos.chandras@imgtec.com>
+
+Index: webkit-1.11.5/Source/WTF/wtf/Assertions.cpp
+===================================================================
+--- webkit-1.11.5.orig/Source/WTF/wtf/Assertions.cpp
++++ webkit-1.11.5/Source/WTF/wtf/Assertions.cpp
+@@ -61,8 +61,10 @@
+ #if (OS(DARWIN) || (OS(LINUX) && !defined(__UCLIBC__))) && !OS(ANDROID)
+ #include <cxxabi.h>
+ #include <dlfcn.h>
++#if !defined(__UCLIBC__)
+ #include <execinfo.h>
+ #endif
++#endif
+ 
+ #if OS(ANDROID)
+ #include "android/log.h"

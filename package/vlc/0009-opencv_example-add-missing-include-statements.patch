@@ -1,0 +1,29 @@
+Backport from: https://git.videolan.org/?p=vlc.git;a=commit;h=b82416d7000a993b33e903095a590fe32212a85e
+
+From b82416d7000a993b33e903095a590fe32212a85e Mon Sep 17 00:00:00 2001
+From: Samuel Martin <s.martin49@gmail.com>
+Date: Sun, 24 May 2015 14:30:10 +0200
+Subject: [PATCH 9/9] opencv_example: add missing #include statements
+
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+Signed-off-by: Jean-Baptiste Kempf <jb@videolan.org>
+---
+ modules/video_filter/opencv_example.cpp | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/modules/video_filter/opencv_example.cpp b/modules/video_filter/opencv_example.cpp
+index ae3af05..998f286 100644
+--- a/modules/video_filter/opencv_example.cpp
++++ b/modules/video_filter/opencv_example.cpp
+@@ -41,6 +41,8 @@
+ 
+ #include <opencv2/core/core_c.h>
+ #include <opencv2/core/core.hpp>
++#include <opencv2/imgproc/imgproc_c.h>
++#include <opencv2/imgproc/imgproc.hpp>
+ #include <opencv2/objdetect/objdetect.hpp>
+ 
+ /*****************************************************************************
+-- 
+2.4.2
+

@@ -1,0 +1,4 @@
+config BR2_PACKAGE_XFONT_FONT_MUTT_MISC
+	bool "font-mutt-misc"
+	help
+	  No description available

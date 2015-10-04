@@ -1,0 +1,15 @@
+comment "fmlib needs a Linux kernel to be built"
+	depends on BR2_powerpc_e500mc
+	depends on !BR2_LINUX_KERNEL
+
+config BR2_PACKAGE_FMLIB
+	bool "fmlib"
+	depends on BR2_powerpc_e500mc
+	depends on BR2_LINUX_KERNEL
+	help
+	  The Frame Manager library provides Freescale PowerPC platforms an
+	  API on top of the Frame Manager driver ioctl calls, that provides
+	  a user space application with a simple way to configure driver
+	  parameters and PCD (parse - classify - distribute) rules.
+
+	  http://git.freescale.com/git/cgit.cgi/ppc/sdk/fmlib.git/tree/README

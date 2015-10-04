@@ -1,0 +1,14 @@
+comment "lzip needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP
+
+config BR2_PACKAGE_LZIP
+	bool "lzip"
+	depends on BR2_INSTALL_LIBSTDCPP
+	help
+	  Lzip is a lossless data compressor with a user interface similar
+	  to the one of gzip or bzip2.
+	  Lzip is about as fast as gzip, compresses most files more than
+	  bzip2, and is better than both from a data recovery perspective.
+	  Lzip is a clean implementation of the LZMA algorithm.
+
+	  http://savannah.nongnu.org/projects/lzip

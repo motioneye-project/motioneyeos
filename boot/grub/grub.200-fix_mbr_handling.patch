@@ -1,0 +1,13 @@
+Index: b/stage2/disk_io.c
+===================================================================
+--- a/stage2/disk_io.c
++++ b/stage2/disk_io.c
+@@ -365,7 +365,7 @@
+ int
+ devwrite (unsigned int sector, int sector_count, char *buf)
+ {
+-#if defined(GRUB_UTIL) && defined(__linux__)
++#if defined(GRUB_UTIL) && defined(__linux__) && !defined(SUPPORT_LOOPDEV)
+   if (current_partition != 0xFFFFFF
+       && is_disk_device (device_map, current_drive))
+     {

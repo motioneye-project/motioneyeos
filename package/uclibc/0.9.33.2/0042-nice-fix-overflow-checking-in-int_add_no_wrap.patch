@@ -1,0 +1,44 @@
+From e6735556ed0a5e791ea81a015a90c130a0eea060 Mon Sep 17 00:00:00 2001
+From: Xi Wang <xi@mit.edu>
+Date: Wed, 20 Feb 2013 12:45:45 -0500
+Subject: [PATCH] nice: fix overflow checking in int_add_no_wrap()
+
+In C, signed integer overflow is undefined behavior.  Many compilers
+optimize away checks like `a + b < a'.
+
+Use safe precondition testing instead.
+
+Signed-off-by: Xi Wang <xi@mit.edu>
+Signed-off-by: Bernhard Reutner-Fischer <rep.dot.nop@gmail.com>
+---
+ libc/sysdeps/linux/common/nice.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/libc/sysdeps/linux/common/nice.c b/libc/sysdeps/linux/common/nice.c
+index 3694db8..ed39946 100644
+--- a/libc/sysdeps/linux/common/nice.c
++++ b/libc/sysdeps/linux/common/nice.c
+@@ -25,15 +25,15 @@ static __inline__ _syscall1(int, __syscall_nice, int, incr)
+ 
+ static __inline__ int int_add_no_wrap(int a, int b)
+ {
+-	int s = a + b;
+-
+ 	if (b < 0) {
+-		if (s > a) s = INT_MIN;
++		if (a < INT_MIN - b)
++			return INT_MIN;
+ 	} else {
+-		if (s < a) s = INT_MAX;
++		if (a > INT_MAX - b)
++			return INT_MAX;
+ 	}
+ 
+-	return s;
++	return a + b;
+ }
+ 
+ static __inline__ int __syscall_nice(int incr)
+-- 
+1.7.10.4
+

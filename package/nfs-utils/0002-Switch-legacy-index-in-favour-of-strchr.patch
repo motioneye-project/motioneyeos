@@ -1,0 +1,72 @@
+From a1d45736286939b822fcc7b9c74843f6f90a747e Mon Sep 17 00:00:00 2001
+From: Gustavo Zacarias <gustavo@zacarias.com.ar>
+Date: Sat, 10 Nov 2012 18:58:15 +0100
+Subject: [PATCH] Switch legacy index() in favour of strchr() Updated for 1.2.6
+ from the previous patch by Frederik Pasch.
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+---
+ support/nfs/nfs_mntent.c | 6 +++---
+ utils/mount/error.c      | 2 +-
+ utils/mountd/fsloc.c     | 2 +-
+ 3 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/support/nfs/nfs_mntent.c b/support/nfs/nfs_mntent.c
+index a2118a2..7496ed6 100644
+--- a/support/nfs/nfs_mntent.c
++++ b/support/nfs/nfs_mntent.c
+@@ -9,7 +9,7 @@
+  */
+
+ #include <stdio.h>
+-#include <string.h>		/* for index */
++#include <string.h>		/* for strchr */
+ #include <ctype.h>		/* for isdigit */
+ #include <sys/stat.h>		/* for umask */
+ #include <unistd.h>		/* for ftruncate */
+@@ -172,7 +172,7 @@ nfs_getmntent (mntFILE *mfp) {
+ 			return NULL;
+
+ 		mfp->mntent_lineno++;
+-		s = index (buf, '\n');
++		s = strchr (buf, '\n');
+ 		if (s == NULL) {
+ 			/* Missing final newline?  Otherwise extremely */
+ 			/* long line - assume file was corrupted */
+@@ -180,7 +180,7 @@ nfs_getmntent (mntFILE *mfp) {
+ 				fprintf(stderr, _("[mntent]: warning: no final "
+ 					"newline at the end of %s\n"),
+ 					mfp->mntent_file);
+-				s = index (buf, 0);
++				s = strchr (buf, 0);
+ 			} else {
+ 				mfp->mntent_errs = 1;
+ 				goto err;
+diff --git a/utils/mount/error.c b/utils/mount/error.c
+index e06f598..7bd1d27 100644
+--- a/utils/mount/error.c
++++ b/utils/mount/error.c
+@@ -62,7 +62,7 @@ static int rpc_strerror(int spos)
+ 	char *tmp;
+
+ 	if (estr) {
+-		if ((ptr = index(estr, ':')))
++		if ((ptr = strchr(estr, ':')))
+ 			estr = ++ptr;
+
+ 		tmp = &errbuf[spos];
+diff --git a/utils/mountd/fsloc.c b/utils/mountd/fsloc.c
+index bc737d1..ddbe92f 100644
+--- a/utils/mountd/fsloc.c
++++ b/utils/mountd/fsloc.c
+@@ -127,7 +127,7 @@ static struct servers *method_list(char *data)
+ 	bool v6esc = false;
+
+ 	xlog(L_NOTICE, "method_list(%s)", data);
+-	for (ptr--, listsize=1; ptr; ptr=index(ptr, ':'), listsize++)
++	for (ptr--, listsize=1; ptr; ptr=strchr(ptr, ':'), listsize++)
+ 		ptr++;
+ 	list = malloc(listsize * sizeof(char *));
+ 	copy = strdup(data);
+--
+2.1.0

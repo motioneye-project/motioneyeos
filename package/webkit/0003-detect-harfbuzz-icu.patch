@@ -1,0 +1,28 @@
+harfbuzz-icu detections based on the following upstream commits
+
+- 5f3ae29ffb29c499c1825578ba7f3ffcbf1aa8b9
+- ad2a23ec44b692bde43a13b658990770caa8dfc5
+- 22b4786377142424bfb6562ff029997acd0846d1
+
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+
+Index: webkit-1.11.5/configure.ac
+===================================================================
+--- webkit-1.11.5.orig/configure.ac
++++ webkit-1.11.5/configure.ac
+@@ -938,6 +938,15 @@ PKG_CHECK_MODULES([FREETYPE],
+                   freetype2 >= $FREETYPE2_REQUIRED_VERSION
+                   harfbuzz])
+ fi
++# HarfBuzz 0.9.18 splits harbuzz-icu into a separate library.
++# Since we support earlier HarfBuzz versions we keep this conditional for now.
++m4_define([harfbuzz_required_version], [0.9.7])
++if $PKG_CONFIG --atleast-version 0.9.18 harfbuzz; then
++	PKG_CHECK_MODULES([HARFBUZZ_ICU], [harfbuzz-icu >= $harfbuzz_required_version])
++	FREETYPE_CFLAGS+=" $HARFBUZZ_ICU_CFLAGS"
++	FREETYPE_LIBS+=" $HARFBUZZ_ICU_LIBS"
++fi
++
+ AC_SUBST([FREETYPE_CFLAGS])
+ AC_SUBST([FREETYPE_LIBS])
+ 

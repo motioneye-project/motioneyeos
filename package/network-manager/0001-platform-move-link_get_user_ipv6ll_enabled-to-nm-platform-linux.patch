@@ -1,0 +1,87 @@
+From: Lubomir Rintel <lkundrak@v3.sk>
+Date: Mon, 20 Jul 2015 11:01:04 +0200
+Subject: [PATCH] platform: move link_get_user_ipv6ll_enabled() to	nm-platform-linux
+Source: https://mail.gnome.org/archives/networkmanager-list/2015-July/msg00028.html
+
+This fixes build error kernels headers < 3.17.
+
+Reported-by: Petr Vorel <petr.vorel@gmail.com>
+Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
+Signed-off-by: Petr Vorel <petr.vorel@gmail.com>
+---
+ src/platform/nm-linux-platform.c | 16 ++++++++++++++++
+ src/platform/nm-platform.c       | 11 ++---------
+ src/platform/nm-platform.h       |  1 +
+ 3 files changed, 19 insertions(+), 9 deletions(-)
+
+diff --git a/src/platform/nm-linux-platform.c b/src/platform/nm-linux-platform.c
+index f3a9254..b6b8e33 100644
+--- a/src/platform/nm-linux-platform.c
++++ b/src/platform/nm-linux-platform.c
+@@ -2987,6 +2987,21 @@ link_set_user_ipv6ll_enabled (NMPlatform *platform, int ifindex, gboolean enable
+ }
+
+ static gboolean
++link_get_user_ipv6ll_enabled (NMPlatform *platform, int ifindex)
++{
++#if HAVE_LIBNL_INET6_ADDR_GEN_MODE
++       {
++               const NMPlatformLink *pllink;
++
++               pllink = nm_platform_link_get (platform, ifindex);
++               if (pllink && pllink->inet6_addr_gen_mode_inv)
++                       return _nm_platform_uint8_inv (pllink->inet6_addr_gen_mode_inv) == IN6_ADDR_GEN_MODE_NONE;
++       }
++#endif
++       return FALSE;
++}
++
++static gboolean
+ link_supports_carrier_detect (NMPlatform *platform, int ifindex)
+ {
+        const char *name = nm_platform_link_get_name (platform, ifindex);
+@@ -4968,6 +4968,7 @@
+	platform_class->link_get_udev_device = link_get_udev_device;
+
+	platform_class->link_set_user_ipv6ll_enabled = link_set_user_ipv6ll_enabled;
++	platform_class->link_get_user_ipv6ll_enabled = link_get_user_ipv6ll_enabled;
+
+	platform_class->link_set_address = link_set_address;
+	platform_class->link_get_permanent_address = link_get_permanent_address;
+
+diff --git a/src/platform/nm-platform.c b/src/platform/nm-platform.c
+index 8803377..ee4b1a1 100644
+--- a/src/platform/nm-platform.c
++++ b/src/platform/nm-platform.c
+@@ -965,15 +965,8 @@
+
+	g_return_val_if_fail (ifindex >= 0, FALSE);
+
+-#if HAVE_LIBNL_INET6_ADDR_GEN_MODE
+-	{
+-		const NMPlatformLink *pllink;
+-
+-		pllink = nm_platform_link_get (self, ifindex);
+-		if (pllink && pllink->inet6_addr_gen_mode_inv)
+-			return _nm_platform_uint8_inv (pllink->inet6_addr_gen_mode_inv) == IN6_ADDR_GEN_MODE_NONE;
+-	}
+-#endif
++	if (klass->link_get_user_ipv6ll_enabled)
++		return klass->link_get_user_ipv6ll_enabled (self, ifindex);
+	return FALSE;
+ }
+
+diff --git a/src/platform/nm-platform.h b/src/platform/nm-platform.h
+index 16eb351..9ef4080 100644
+--- a/src/platform/nm-platform.h
++++ b/src/platform/nm-platform.h
+@@ -446,6 +446,7 @@
+	GObject *(*link_get_udev_device) (NMPlatform *self, int ifindex);
+
+	gboolean (*link_set_user_ipv6ll_enabled) (NMPlatform *, int ifindex, gboolean enabled);
++	gboolean (*link_get_user_ipv6ll_enabled) (NMPlatform *, int ifindex);
+
+	gboolean (*link_get_permanent_address) (NMPlatform *,
+	                                        int ifindex,
+--
+2.4.3

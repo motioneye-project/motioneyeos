@@ -1,0 +1,8 @@
+config BR2_ARCH
+	default "nios2"
+
+config BR2_ENDIAN
+	default "LITTLE"
+
+config BR2_ARCH_HAS_ATOMICS
+	default y

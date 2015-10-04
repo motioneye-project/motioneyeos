@@ -1,0 +1,4 @@
+config BR2_PACKAGE_XDATA_XBITMAPS
+	bool "xbitmaps"
+	help
+	  No description available

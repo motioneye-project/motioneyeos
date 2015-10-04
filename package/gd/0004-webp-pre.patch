@@ -1,0 +1,37 @@
+Patch committed upstream
+https://bitbucket.org/libgd/gd-libgd/commits/c7e5dc617c7466c44935cdefbe7e79de319f98ca?at=master
+
+Downloaded from Gentoo
+https://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/media-libs/gd/files/gd-2.1.1-webp-pre.patch?revision=1.1&view=markup
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+
+---
+https://bugs.gentoo.org/545956
+
+From c7e5dc617c7466c44935cdefbe7e79de319f98ca Mon Sep 17 00:00:00 2001
+From: Pierre Joye <pierre.php@gmail.com>
+Date: Sat, 17 Jan 2015 08:20:17 +0100
+Subject: [PATCH]  fix #111, invalid default quantization
+
+---
+ src/gd_webp.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/src/gd_webp.c b/src/gd_webp.c
+index fae3861..a3ae1ac 100644
+--- a/src/gd_webp.c
++++ b/src/gd_webp.c
+@@ -185,6 +185,9 @@ BGD_DECLARE(void) gdImageWebpCtx (gdImagePtr im, gdIOCtx * outfile, int quantiza
+ 		gd_error("gd-webp error: cannot allocate Y buffer");
+ 		return;
+ 	}
++	if (quantization == -1) {
++		quantization = 80;
++	}
+ 	vp8_quality = mapQualityToVP8QP(quantization);
+ 
+ 	U = Y + width * height;
+-- 
+2.3.5
+

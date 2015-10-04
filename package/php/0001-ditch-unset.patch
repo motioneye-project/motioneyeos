@@ -1,0 +1,26 @@
+Unsetting ac_cv_{func,lib}_* is bad, you can't feed the configure cache.
+Terminate them with extreme prejudice.
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+diff -Nura php-5.6.8.orig/acinclude.m4 php-5.6.8/acinclude.m4
+--- php-5.6.8.orig/acinclude.m4	2015-04-15 20:05:57.000000000 +0200
++++ php-5.6.8/acinclude.m4	2015-05-18 20:03:50.833099001 +0200
+@@ -1897,8 +1897,6 @@
+ dnl
+ AC_DEFUN([PHP_CHECK_FUNC_LIB],[
+   ifelse($2,,:,[
+-  unset ac_cv_lib_$2[]_$1
+-  unset ac_cv_lib_$2[]___$1
+   unset found
+   AC_CHECK_LIB($2, $1, [found=yes], [
+     AC_CHECK_LIB($2, __$1, [found=yes], [found=no])
+@@ -1930,8 +1928,6 @@
+ dnl Defines HAVE_func and HAVE_library if found and adds the library to LIBS.
+ dnl
+ AC_DEFUN([PHP_CHECK_FUNC],[
+-  unset ac_cv_func_$1
+-  unset ac_cv_func___$1
+   unset found
+   
+   AC_CHECK_FUNC($1, [found=yes],[ AC_CHECK_FUNC(__$1,[found=yes],[found=no]) ])

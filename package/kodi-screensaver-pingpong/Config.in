@@ -1,0 +1,10 @@
+config BR2_PACKAGE_KODI_SCREENSAVER_PINGPONG
+	bool "kodi-screensaver-pingpong"
+	depends on BR2_PACKAGE_KODI_GL
+	help
+	  Ping-pong screensaver for Kodi
+
+	  https://github.com/notspiff/screensaver.pingpong
+
+comment "kodi-screensaver-greynetic needs an OpenGL backend"
+	depends on !BR2_PACKAGE_KODI_GL

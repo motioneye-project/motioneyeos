@@ -1,0 +1,36 @@
+#!/bin/bash
+
+MOTION_SVN="/usr/bin/motion-svn"
+MOTION_MRDAVE="/usr/bin/motion-mrdave"
+MOTION_MMAL="/usr/bin/motion-mmal"
+
+if [ "$1" == "-h" ]; then
+    # when asked about version , always report MrDave's,
+    # as it's the most featureful one
+    motion=$MOTION_MRDAVE
+
+else
+    conf_count=$(ls -1 /data/etc/thread-*.conf 2>/dev/null | wc -l)
+
+    if [ "$conf_count" -eq 0 ]; then # no cameras
+        motion=$MOTION_MRDAVE
+
+    elif [ "$conf_count" -eq 1 ]; then # one camera
+        if cat /data/etc/thread-*.conf | grep -E '^videodevice' &>/dev/null && 
+           lsmod | grep bcm2835_v4l2 &>/dev/null; then # RPI CSI camera module
+
+            motion=$MOTION_MMAL
+        else
+            motion=$MOTION_MRDAVE
+        
+        fi
+        
+    else # two or more cameras
+        motion=$MOTION_MRDAVE
+    fi
+fi
+
+echo "using motion binary $motion"
+
+exec $motion "$*"
+

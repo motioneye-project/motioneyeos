@@ -1,0 +1,105 @@
+Adjust link order of libz to solve bug with static linking
+and remove host paths when looking for openssl.
+
+[Vincent:
+ - Adapt the patch to make it apply on the new version.]
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+
+diff -uNr a/configure.ac b/configure.ac
+--- a/configure.ac	2015-06-10 17:01:31.000000000 +0200
++++ b/configure.ac	2015-06-18 16:22:27.652903761 +0200
+@@ -604,11 +604,11 @@
+       fi
+   ])
+ 
+-TOR_SEARCH_LIBRARY(openssl, $tryssldir, [-lssl -lcrypto $TOR_LIB_GDI],
++TOR_SEARCH_LIBRARY(openssl, $tryssldir, [-lssl -lcrypto -lz $TOR_LIB_GDI],
+     [#include <openssl/rand.h>],
+     [void RAND_add(const void *buf, int num, double entropy);],
+     [RAND_add((void*)0,0,0); exit(0);], [],
+-    [/usr/local/openssl /usr/lib/openssl /usr/local/ssl /usr/lib/ssl /usr/local /usr/athena /opt/openssl])
++    [])
+ 
+ dnl XXXX check for OPENSSL_VERSION_NUMBER == SSLeay()
+ 
+diff -uNr a/src/or/include.am b/src/or/include.am
+--- a/src/or/include.am	2015-02-24 16:33:30.000000000 +0100
++++ b/src/or/include.am	2015-06-18 16:24:10.042349070 +0200
+@@ -110,7 +110,7 @@
+ src_or_tor_LDADD = src/or/libtor.a src/common/libor.a \
+ 	src/common/libor-crypto.a $(LIBDONNA) \
+ 	src/common/libor-event.a \
+-	@TOR_ZLIB_LIBS@ @TOR_LIB_MATH@ @TOR_LIBEVENT_LIBS@ @TOR_OPENSSL_LIBS@ \
++	@TOR_LIB_MATH@ @TOR_LIBEVENT_LIBS@ @TOR_OPENSSL_LIBS@ @TOR_ZLIB_LIBS@ \
+ 	@TOR_LIB_WS32@ @TOR_LIB_GDI@ @CURVE25519_LIBS@ @TOR_SYSTEMD_LIBS@
+ 
+ if COVERAGE_ENABLED
+diff -uNr a/src/test/include.am b/src/test/include.am
+--- a/src/test/include.am	2015-03-10 15:26:37.000000000 +0100
++++ b/src/test/include.am	2015-06-18 16:28:06.867732744 +0200
+@@ -91,8 +91,8 @@
+ src_test_test_LDADD = src/or/libtor-testing.a src/common/libor-testing.a \
+ 	src/common/libor-crypto-testing.a $(LIBDONNA) \
+ 	src/common/libor-event-testing.a src/trunnel/libor-trunnel-testing.a \
+-	@TOR_ZLIB_LIBS@ @TOR_LIB_MATH@ @TOR_LIBEVENT_LIBS@ \
+-	@TOR_OPENSSL_LIBS@ @TOR_LIB_WS32@ @TOR_LIB_GDI@ @CURVE25519_LIBS@ \
++	@TOR_LIB_MATH@ @TOR_LIBEVENT_LIBS@ \
++	@TOR_OPENSSL_LIBS@ @TOR_ZLIB_LIBS@ @TOR_LIB_WS32@ @TOR_LIB_GDI@ @CURVE25519_LIBS@ \
+ 	@TOR_SYSTEMD_LIBS@
+ 
+ src_test_test_slow_CPPFLAGS = $(src_test_test_CPPFLAGS)
+@@ -105,8 +105,8 @@
+ src_test_bench_LDADD = src/or/libtor.a src/common/libor.a \
+ 	src/common/libor-crypto.a $(LIBDONNA) \
+ 	src/common/libor-event.a \
+-	@TOR_ZLIB_LIBS@ @TOR_LIB_MATH@ @TOR_LIBEVENT_LIBS@ \
+-	@TOR_OPENSSL_LIBS@ @TOR_LIB_WS32@ @TOR_LIB_GDI@ @CURVE25519_LIBS@ \
++	@TOR_LIB_MATH@ @TOR_LIBEVENT_LIBS@ \
++	@TOR_OPENSSL_LIBS@ @TOR_ZLIB_LIBS@ @TOR_LIB_WS32@ @TOR_LIB_GDI@ @CURVE25519_LIBS@ \
+ 	@TOR_SYSTEMD_LIBS@
+ 
+ src_test_test_workqueue_LDFLAGS = @TOR_LDFLAGS_zlib@ @TOR_LDFLAGS_openssl@ \
+@@ -115,8 +115,8 @@
+ 	src/common/libor-testing.a \
+ 	src/common/libor-crypto-testing.a $(LIBDONNA) \
+ 	src/common/libor-event-testing.a \
+-	@TOR_ZLIB_LIBS@ @TOR_LIB_MATH@ @TOR_LIBEVENT_LIBS@ \
+-	@TOR_OPENSSL_LIBS@ @TOR_LIB_WS32@ @TOR_LIB_GDI@ @CURVE25519_LIBS@
++	@TOR_LIB_MATH@ @TOR_LIBEVENT_LIBS@ \
++	@TOR_OPENSSL_LIBS@ @TOR_ZLIB_LIBS@ @TOR_LIB_WS32@ @TOR_LIB_GDI@ @CURVE25519_LIBS@
+ 
+ noinst_HEADERS+= \
+ 	src/test/fakechans.h \
+@@ -133,8 +133,8 @@
+ src_test_test_ntor_cl_LDFLAGS = @TOR_LDFLAGS_zlib@ @TOR_LDFLAGS_openssl@
+ src_test_test_ntor_cl_LDADD = src/or/libtor.a src/common/libor.a \
+ 	src/common/libor-crypto.a $(LIBDONNA) \
+-	@TOR_ZLIB_LIBS@ @TOR_LIB_MATH@ \
+-	@TOR_OPENSSL_LIBS@ @TOR_LIB_WS32@ @TOR_LIB_GDI@ @CURVE25519_LIBS@
++	@TOR_LIB_MATH@ \
++	@TOR_OPENSSL_LIBS@ @TOR_ZLIB_LIBS@ @TOR_LIB_WS32@ @TOR_LIB_GDI@ @CURVE25519_LIBS@
+ src_test_test_ntor_cl_AM_CPPFLAGS =	       \
+ 	-I"$(top_srcdir)/src/or"
+ NTOR_TEST_DEPS=src/test/test-ntor-cl
+diff -uNr a/src/tools/include.am b/src/tools/include.am
+--- a/src/tools/include.am	2015-02-24 16:33:31.000000000 +0100
++++ b/src/tools/include.am	2015-06-18 16:29:48.460515701 +0200
+@@ -9,14 +9,14 @@
+ src_tools_tor_gencert_LDFLAGS = @TOR_LDFLAGS_zlib@ @TOR_LDFLAGS_openssl@
+ src_tools_tor_gencert_LDADD = src/common/libor.a src/common/libor-crypto.a \
+ 	$(LIBDONNA) \
+-        @TOR_LIB_MATH@ @TOR_ZLIB_LIBS@ @TOR_OPENSSL_LIBS@ \
++        @TOR_LIB_MATH@ @TOR_OPENSSL_LIBS@ @TOR_ZLIB_LIBS@ \
+         @TOR_LIB_WS32@ @TOR_LIB_GDI@ @CURVE25519_LIBS@
+ 
+ src_tools_tor_checkkey_SOURCES = src/tools/tor-checkkey.c
+ src_tools_tor_checkkey_LDFLAGS = @TOR_LDFLAGS_zlib@ @TOR_LDFLAGS_openssl@
+ src_tools_tor_checkkey_LDADD = src/common/libor.a src/common/libor-crypto.a \
+ 	$(LIBDONNA) \
+-        @TOR_LIB_MATH@ @TOR_ZLIB_LIBS@ @TOR_OPENSSL_LIBS@ \
++        @TOR_LIB_MATH@ @TOR_OPENSSL_LIBS@ @TOR_ZLIB_LIBS@ \
+         @TOR_LIB_WS32@ @TOR_LIB_GDI@ @CURVE25519_LIBS@
+ 
+ include src/tools/tor-fw-helper/include.am

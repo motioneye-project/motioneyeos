@@ -1,0 +1,38 @@
+From 29411db7b6cf872e73b5560c46dd941f91e704cd Mon Sep 17 00:00:00 2001
+From: Mike Frysinger <vapier@gentoo.org>
+Date: Sat, 26 Jan 2013 14:13:12 -0500
+Subject: [PATCH] buildsys: gen_bits_syscall_h: do not leave undefined SYS_xxx
+ around
+
+If we end up doing '#undef __NR_xxx', we don't want to leave the
+corresponding SYS_xxx symbol defined.  So undef it too.
+
+For example, with the ARM EABI layer, we have a bunch of legacy
+syscalls that we define early on and then later undefine (such
+as __NR_utime).  But we left SYS_utime defined so code that tests
+for that define before using it would be broken (since it'd be
+defined to a non-existent symbol).
+
+URL: https://bugs.gentoo.org/425006
+Signed-off-by: Mike Frysinger <vapier@gentoo.org>
+---
+ extra/scripts/gen_bits_syscall_h.sh |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/extra/scripts/gen_bits_syscall_h.sh b/extra/scripts/gen_bits_syscall_h.sh
+index f6353ba..fd141f0 100755
+--- a/extra/scripts/gen_bits_syscall_h.sh
++++ b/extra/scripts/gen_bits_syscall_h.sh
+@@ -40,7 +40,8 @@ $CC -E $INCLUDE_OPTS - |
+   sed -ne 's/^UCLIBC\(__ARM_NR_\|__NR_\)\([A-Za-z0-9_]*\) *\(.*\)/#undef \1\2\
+ #define \1\2 \3\
+ #define SYS_\2 \1\2/gp' \
+-     -e 's/^UNDEFUCLIBC\(__ARM_NR_\|__NR_\)\([A-Za-z0-9_]*\).*/#undef \1\2/gp'
++     -e 's/^UNDEFUCLIBC\(__ARM_NR_\|__NR_\)\([A-Za-z0-9_]*\).*/#undef \1\2\
++#undef SYS_\2/gp'
+   echo ;
+   echo "#endif" ;
+ )
+-- 
+1.7.10.4
+

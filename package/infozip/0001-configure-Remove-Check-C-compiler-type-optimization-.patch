@@ -1,0 +1,130 @@
+From 0f5e1658c05746b17f05a1bade263cad19b37e79 Mon Sep 17 00:00:00 2001
+From: Romain Naour <romain.naour@openwide.fr>
+Date: Thu, 22 Jan 2015 15:20:25 +0100
+Subject: [PATCH 1/6] configure: Remove "Check C compiler type (optimization
+ options)"
+
+This test force optimization to -O3
+while it is already set in CFLAGS
+
+Signed-off-by: Romain Naour <romain.naour@openwide.fr>
+---
+ unix/configure | 98 ----------------------------------------------------------
+ 1 file changed, 98 deletions(-)
+
+diff --git a/unix/configure b/unix/configure
+index 73ba803..4185fee 100644
+--- a/unix/configure
++++ b/unix/configure
+@@ -22,108 +22,10 @@ LFLAGS1=''
+ LFLAGS2=''
+ LN="ln -s"
+ 
+-CFLAGS_OPT=''
+-
+ # bzip2
+ IZ_BZIP2=${3-}
+ CFLAGS_BZ=''
+ 
+-
+-echo 'Check C compiler type (optimization options)'
+-# Sun C?
+-cat > conftest.c << _EOF_
+-int main()
+-{
+-#ifndef __SUNPRO_C
+-   bad code
+-#endif
+-   return 0;
+-}
+-_EOF_
+-$CC $CFLAGS -c conftest.c > /dev/null 2>/dev/null
+-if test $? -eq 0; then
+-  CFLAGS_OPT='-xO3'
+-  echo "  Sun C ($CFLAGS_OPT)"
+-else
+-  # Tru64 DEC/Compaq/HP C?
+-  cat > conftest.c << _EOF_
+-int main()
+-{
+-#ifndef __DECC
+-   bad code
+-#endif
+-   return 0;
+-}
+-_EOF_
+-  $CC $CFLAGS -c conftest.c > /dev/null 2>/dev/null
+-  if test $? -eq 0; then
+-    CFLAGS_OPT='-O3'
+-    echo "  DEC C ($CFLAGS_OPT)"
+-  else
+-    # HP-UX HP C?
+-    cat > conftest.c << _EOF_
+-int main()
+-{
+-#ifdef __GNUC__
+-   bad code
+-#endif
+-#ifndef __hpux
+-   bad code
+-#endif
+-   return 0;
+-}
+-_EOF_
+-    $CC $CFLAGS -c conftest.c > /dev/null 2>/dev/null
+-    if test $? -eq 0; then
+-      # HP-UX, not GCC.  Lame bundled or real ANSI compiler?
+-      CFLAGS_OPT_TRY="+O3 +Onolimit"
+-      $CC $CFLAGS $CFLAGS_OPT_TRY -c conftest.c 2>&1 | \
+-       grep '(Bundled)' > /dev/null
+-      if test $? -ne 0; then
+-        CFLAGS_OPT="$CFLAGS_OPT_TRY"
+-        echo "  HP-UX ANSI C ($CFLAGS_OPT)"
+-      else
+-        echo '  HP-UX Bundled C (no opt)'
+-      fi
+-    else
+-      # GNU C?
+-      cat > conftest.c << _EOF_
+-int main()
+-{
+-#ifndef __GNUC__
+-   bad code
+-#endif
+-   return 0;
+-}
+-_EOF_
+-      $CC $CFLAGS -c conftest.c > /dev/null 2>/dev/null
+-      if test $? -eq 0; then
+-        CFLAGS_OPT='-O3'
+-        echo "  GNU C ($CFLAGS_OPT)"
+-        # Special Mac OS X shared library "ld" option?
+-        if test ` uname -s 2> /dev/null ` = 'Darwin'; then
+-          lf='-Wl,-search_paths_first'
+-          $CC $CFLAGS $lf conftest.c > /dev/null 2>/dev/null
+-          if test $? -eq 0; then
+-            LFLAGS2="${LFLAGS2} ${lf}"
+-          fi
+-          rm -f conftest
+-        fi
+-      else
+-        CFLAGS_OPT='-O'
+-        echo "  Other-unknown C ($CFLAGS_OPT)"
+-      fi
+-    fi
+-  fi
+-fi
+-
+-# optimization flags
+-if test -n "${CFLAGS_OPT}"; then
+-  CFLAGS="${CFLAGS} ${CFLAGS_OPT}"
+-  CFLAGS_BZ="${CFLAGS_BZ} ${CFLAGS_OPT}"
+-fi
+-
+-
+ # bzip2
+ 
+ echo "Check bzip2 support"
+-- 
+1.9.3
+

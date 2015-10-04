@@ -1,0 +1,17 @@
+$(mkdir_p) is obsolete for newer automake, use $(MKDIR_P) instead.
+Upstream should really gettextize with a newer version before packing up.
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+diff -Nura Linux-PAM-1.1.7.orig/po/Makefile.in.in Linux-PAM-1.1.7/po/Makefile.in.in
+--- Linux-PAM-1.1.7.orig/po/Makefile.in.in	2013-09-11 20:45:16.610770002 -0300
++++ Linux-PAM-1.1.7/po/Makefile.in.in	2013-09-11 20:45:28.030145316 -0300
+@@ -31,7 +31,7 @@
+ INSTALL = @INSTALL@
+ INSTALL_DATA = @INSTALL_DATA@
+ mkinstalldirs = $(SHELL) @install_sh@ -d
+-mkdir_p = @mkdir_p@
++mkdir_p = @MKDIR_P@
+ 
+ GMSGFMT_ = @GMSGFMT@
+ GMSGFMT_no = @GMSGFMT@

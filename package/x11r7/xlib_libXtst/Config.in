@@ -1,0 +1,8 @@
+config BR2_PACKAGE_XLIB_LIBXTST
+	bool "libXtst"
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBXI
+	select BR2_PACKAGE_XLIB_LIBXEXT
+	select BR2_PACKAGE_XPROTO_RECORDPROTO
+	help
+	  X.Org Xtst library

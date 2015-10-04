@@ -1,0 +1,11 @@
+config BR2_PACKAGE_BATCTL
+	bool "batctl"
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libnl
+	select BR2_PACKAGE_LIBNL
+	help
+	  Batctl is the configuration and debugging tool for batman-adv.
+
+	  http://www.open-mesh.org/projects/batman-adv/wiki/Using-batctl
+
+comment "batctl needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS

@@ -1,0 +1,14 @@
+config BR2_PACKAGE_JSONCPP
+	depends on BR2_INSTALL_LIBSTDCPP
+	bool "jsoncpp"
+	help
+	  JsonCpp is a C++ library that allows manipulating JSON
+	  values, including serialization and deserialization to and
+	  from strings. It can also preserve existing comment in
+	  unserialization/serialization steps, making it a convenient
+	  format to store user input files.
+
+	  https://github.com/open-source-parsers/jsoncpp
+
+comment "jsoncpp needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP

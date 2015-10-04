@@ -1,0 +1,168 @@
+From 6b2250a1a39362abe53e78a45897caecf65ec73f Mon Sep 17 00:00:00 2001
+From: Filippo Arcidiacono <filippo.arcidiacono@st.com>
+Date: Thu, 9 May 2013 11:42:23 +0200
+Subject: [PATCH] libubacktrace: fix backtrace for statically linked
+ application
+
+libgcc_s.so's unwinder could not access unwind tables of statically
+linked binaries, so we really want to use _Unwind_* stuff from
+libgcc_eh.a.
+It required to build backtrace.c differentiating between shared and
+static case.
+
+Signed-off-by: Filippo Arcidiacono <filippo.arcidiacono@st.com>
+Signed-off-by: Carmelo Amoroso <carmelo.amoroso@st.com>
+(cherry picked from commit 71c10c484e7dc113396cccb7e503befb759c6346)
+
+Signed-off-by: Carmelo Amoroso <carmelo.amoroso@st.com>
+---
+ libubacktrace/Makefile.in       |   23 ++++++++++++++---------
+ libubacktrace/arm/Makefile.arch |    2 +-
+ libubacktrace/arm/backtrace.c   |    7 +++++++
+ libubacktrace/backtrace.c       |    7 +++++++
+ 4 files changed, 29 insertions(+), 10 deletions(-)
+
+diff --git a/libubacktrace/Makefile.in b/libubacktrace/Makefile.in
+index 8a4b081..612bf2d 100644
+--- a/libubacktrace/Makefile.in
++++ b/libubacktrace/Makefile.in
+@@ -25,11 +25,13 @@ libubacktrace_ARCH_OUT:=$(libubacktrace_OUT)/$(TARGET_ARCH)
+ -include $(libubacktrace_ARCH_DIR)/Makefile.arch
+ 
+ libubacktrace_SRC-y :=
+-libubacktrace_SRC-$(UCLIBC_HAS_BACKTRACE) := backtrace.c backtracesyms.c backtracesymsfd.c
++libubacktrace_SRC-$(UCLIBC_HAS_BACKTRACE) := backtracesyms.c backtracesymsfd.c
++libubacktrace_SRC_SHARED-$(UCLIBC_HAS_BACKTRACE) := backtrace.c
+ 
+ # remove generic sources, if arch specific version is present
+ ifneq ($(strip $(libubacktrace_ARCH_SRC-y)),)
+ libubacktrace_SRC-y := $(filter-out $(notdir $(libubacktrace_ARCH_SRC-y)),$(libubacktrace_SRC-y))
++libubacktrace_SRC_SHARED-y := $(filter-out $(notdir $(libubacktrace_ARCH_SRC-y)),$(libubacktrace_SRC_SHARED-y))
+ endif
+ 
+ # -fasynchronous-unwind-tables is required for backtrace to work using dwarf2
+@@ -43,12 +45,19 @@ endif
+ libubacktrace_SRCS := $(patsubst %.c,$(libubacktrace_DIR)/%.c,$(libubacktrace_SRC-y))
+ libubacktrace_OBJS := $(patsubst $(libubacktrace_DIR)/%.c,$(libubacktrace_OUT)/%.o,$(libubacktrace_SRCS))
+ 
++libubacktrace_SHARED_SRCS := $(patsubst %.c,$(libubacktrace_DIR)/%.c,$(libubacktrace_SHARED_SRC-y))
++libubacktrace_SHARED_OBJS := $(patsubst $(libubacktrace_DIR)/%.c,$(libubacktrace_OUT)/%.s,$(libubacktrace_SHARED_SRCS))
++
++libubacktrace-shared-y	:= $(libubacktrace_SHARED_OBJS:.os=.oS)
++libubacktrace-static-y	:= $(libubacktrace_SHARED_OBJS)
++
+ ifeq ($(DOPIC),y)
+-libubacktrace-a-y += $(libubacktrace_OBJS:.o=.os)
++libubacktrace-a-y += $(libubacktrace_OBJS:.o=.os) $(libubacktrace-static-y:.o=.os)
+ else
+-libubacktrace-a-y += $(libubacktrace_OBJS)
++libubacktrace-a-y += $(libubacktrace_OBJS) $(libubacktrace-static-y)
+ endif
+-libubacktrace-so-y += $(libubacktrace_OBJS:.o=.os)
++libubacktrace-so-y += $(libubacktrace_OBJS:.o=.os) $(libubacktrace-shared-y)
++
+ 
+ lib-a-$(UCLIBC_HAS_BACKTRACE) += $(top_builddir)lib/libubacktrace.a
+ lib-so-$(UCLIBC_HAS_BACKTRACE) += $(top_builddir)lib/libubacktrace.so
+@@ -56,11 +65,7 @@ lib-so-$(UCLIBC_HAS_BACKTRACE) += $(top_builddir)lib/libubacktrace.so
+ objclean-y += CLEAN_libubacktrace
+ 
+ ifeq ($(DOMULTI),n)
+-ifeq ($(DOPIC),y)
+-$(top_builddir)lib/libubacktrace.so: $(top_builddir)lib/libubacktrace.a $(libdl.depend)
+-else
+ $(top_builddir)lib/libubacktrace.so: $(libubacktrace_OUT)/libubacktrace_so.a $(libdl.depend)
+-endif
+ 	$(call link.so,$(libubacktrace_FULL_NAME),$(ABI_VERSION))
+ else
+ $(top_builddir)lib/libubacktrace.so: $(libubacktrace_OUT)/libubacktrace.oS | $(libdl.depend)
+@@ -71,7 +76,7 @@ $(libubacktrace_OUT)/libubacktrace_so.a: $(libubacktrace-so-y)
+ 	$(Q)$(RM) $@
+ 	$(do_ar)
+ 
+-$(libubacktrace_OUT)/libubacktrace.oS: $(libubacktrace_SRCS) $(libubacktrace_ARCH_SRCS)
++$(libubacktrace_OUT)/libubacktrace.oS: $(libubacktrace_SRCS) $(libubacktrace_ARCH_SRCS) $(libubacktrace_SHARED_SRCS)
+ 	$(Q)$(RM) $@
+ 	$(compile-m)
+ 
+diff --git a/libubacktrace/arm/Makefile.arch b/libubacktrace/arm/Makefile.arch
+index 53b8c0e..b3fb500 100644
+--- a/libubacktrace/arm/Makefile.arch
++++ b/libubacktrace/arm/Makefile.arch
+@@ -14,4 +14,4 @@ libubacktrace-a-y+=$(libubacktrace_ARCH_OBJS:.o=.os)
+ else
+ libubacktrace-a-y+=$(libubacktrace_ARCH_OBJS)
+ endif
+-libubacktrace-so-y+=$(libubacktrace_ARCH_OBJS:.o=.os)
++libubacktrace-so-y+=$(libubacktrace_ARCH_OBJS:.o=.oS)
+diff --git a/libubacktrace/arm/backtrace.c b/libubacktrace/arm/backtrace.c
+index d4eca32..5955189 100644
+--- a/libubacktrace/arm/backtrace.c
++++ b/libubacktrace/arm/backtrace.c
+@@ -25,6 +25,7 @@ struct trace_arg
+   int cnt, size;
+ };
+ 
++#ifdef SHARED
+ static _Unwind_Reason_Code (*unwind_backtrace) (_Unwind_Trace_Fn, void *);
+ static _Unwind_VRS_Result (*unwind_vrs_get) (_Unwind_Context *,
+ 					     _Unwind_VRS_RegClass,
+@@ -42,6 +43,10 @@ static void backtrace_init (void)
+ 		abort();
+ 	}
+ }
++#else
++# define unwind_backtrace _Unwind_Backtrace
++# define unwind_vrs_get _Unwind_VRS_Get
++#endif
+ /* This function is identical to "_Unwind_GetGR", except that it uses
+    "unwind_vrs_get" instead of "_Unwind_VRS_Get".  */
+ static inline _Unwind_Word
+@@ -80,8 +85,10 @@ int backtrace (void **array, int size)
+ {
+ 	struct trace_arg arg = { .array = array, .size = size, .cnt = -1 };
+ 
++#ifdef SHARED
+ 	if (unwind_backtrace == NULL)
+ 		backtrace_init();
++#endif
+ 
+ 	if (size >= 1)
+ 		unwind_backtrace (backtrace_helper, &arg);
+diff --git a/libubacktrace/backtrace.c b/libubacktrace/backtrace.c
+index fdd5981..1e0a0ec 100644
+--- a/libubacktrace/backtrace.c
++++ b/libubacktrace/backtrace.c
+@@ -33,6 +33,7 @@ struct trace_arg
+   int cnt, size;
+ };
+ 
++#ifdef SHARED
+ static _Unwind_Reason_Code (*unwind_backtrace) (_Unwind_Trace_Fn, void *);
+ static _Unwind_Ptr (*unwind_getip) (struct _Unwind_Context *);
+ 
+@@ -47,6 +48,10 @@ static void backtrace_init (void)
+ 		abort();
+ 	}
+ }
++#else
++# define unwind_backtrace _Unwind_Backtrace
++# define unwind_getip _Unwind_GetIP
++#endif
+ 
+ static _Unwind_Reason_Code
+ backtrace_helper (struct _Unwind_Context *ctx, void *a)
+@@ -71,8 +76,10 @@ int backtrace (void **array, int size)
+ {
+ 	struct trace_arg arg = { .array = array, .size = size, .cnt = -1 };
+ 
++#ifdef SHARED
+ 	if (unwind_backtrace == NULL)
+ 		backtrace_init();
++#endif
+ 
+ 	if (size >= 1)
+ 		unwind_backtrace (backtrace_helper, &arg);
+-- 
+1.7.10.4
+

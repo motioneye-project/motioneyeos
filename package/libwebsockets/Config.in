@@ -1,0 +1,10 @@
+config BR2_PACKAGE_LIBWEBSOCKETS
+	bool "libwebsockets"
+	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_ZLIB
+	help
+	  Libwebsockets is a lightweight pure C library built to use
+	  minimal CPU and memory resources, and provide fast throughput
+	  in both directions.
+
+	  http://libwebsockets.org/

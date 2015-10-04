@@ -1,0 +1,21 @@
+config BR2_PACKAGE_LIBVNCSERVER
+	bool "libvncserver"
+	depends on BR2_USE_MMU # VNCommand.c uses fork()
+	help
+	  libvncserver is a VNC server/client library.
+
+	  http://libvncserver.sourceforge.net/
+
+if BR2_PACKAGE_LIBVNCSERVER
+
+config BR2_PACKAGE_LIBVNCSERVER_TIGHTPNG
+	bool "TightPNG encoding support"
+	select BR2_PACKAGE_JPEG
+	select BR2_PACKAGE_LIBPNG
+	help
+	  TightPNG encoding speeds up HTML5 based VNC clients like
+	  noVNC.
+
+	  http://wiki.qemu.org/VNC_Tight_PNG
+
+endif

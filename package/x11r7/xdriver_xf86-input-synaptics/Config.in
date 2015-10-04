@@ -1,0 +1,8 @@
+config BR2_PACKAGE_XDRIVER_XF86_INPUT_SYNAPTICS
+	bool "xf86-input-synaptics"
+	select BR2_PACKAGE_XPROTO_INPUTPROTO
+	select BR2_PACKAGE_XPROTO_RANDRPROTO
+	select BR2_PACKAGE_XPROTO_XPROTO
+	select BR2_PACKAGE_MTDEV
+	help
+	  X.Org driver for synaptics input devices

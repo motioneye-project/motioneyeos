@@ -1,0 +1,38 @@
+Fix build with gcc 4.9
+
+cairo fails to build with gcc 4.9 due to a bad interaction of cairo
+modules with the LTO mechanism. The suggested workaround is to pass
+-ffat-lto-objects. See
+https://bugs.freedesktop.org/show_bug.cgi?id=77060 for the upstream
+bug report, and
+https://bugs.archlinux.org/task/40313?project=1&openedfrom=-1+week for
+the ArchLinux bug report.
+
+This patch passes -ffat-lto-objects when gcc understands this option,
+in order to provide compatibility with gcc versions older than 4.8,
+which did not provide this option, but are anyway unaffected by the
+issue.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/configure.ac
+===================================================================
+--- a/configure.ac
++++ b/configure.ac
+@@ -37,6 +37,16 @@
+ m4_include(build/configure.ac.pthread)  dnl checks for pthreads
+ AC_CACHE_SAVE
+ 
++old_cflags=$CFLAGS
++CFLAGS=-ffat-lto-objects
++AC_MSG_CHECKING([whether CC supports -ffat-lto-objects])
++AC_COMPILE_IFELSE([AC_LANG_PROGRAM([])],
++    [AC_MSG_RESULT([yes])]
++    [LTO_CFLAGS=-ffat-lto-objects],
++    [AC_MSG_RESULT([no])]
++)
++CFLAGS="${old_CFLAGS} ${LTO_CFLAGS}"
++
+ dnl ===========================================================================
+ 
+ AC_CHECK_LIB(z, compress,

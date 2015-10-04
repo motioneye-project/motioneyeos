@@ -1,0 +1,87 @@
+config BR2_PACKAGE_CANFESTIVAL_ARCH_SUPPORTS
+	bool
+	default y if BR2_i386 || BR2_x86_64 || BR2_powerpc || BR2_arm
+
+comment "canfestival needs a toolchain w/ threads and dynamic library"
+	depends on BR2_PACKAGE_CANFESTIVAL_ARCH_SUPPORTS
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS
+
+config BR2_PACKAGE_CANFESTIVAL
+	bool "canfestival"
+	depends on BR2_PACKAGE_CANFESTIVAL_ARCH_SUPPORTS
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_STATIC_LIBS
+	help
+	  CanFestival is an OpenSource CANOpen framework, licensed under
+	  LGPLv2.1 and GPLv2 for some drivers (virtual_kernel, lincan and
+	  copcican_comedi).
+
+	  http://www.canfestival.org
+
+if BR2_PACKAGE_CANFESTIVAL
+
+choice
+	prompt "driver"
+	default BR2_PACKAGE_CANFESTIVAL_SOCKET
+
+# - The AnaGate CAN(duo) [1], PeakSystem CAN [2] and CO-PCICAN [3]
+#   drivers are not available (not packaged in Buildroot), so their
+#   support are disabled.
+# - The virtual_kernel driver is disabled because it uses very old
+#   kernel APIs, that have been renamed, or marked as deprecated or
+#   removed for a long while. The question has been raised on the
+#   canfestival mailing list [4].
+#
+# [1] http://www.anagate.de/en/index.html
+# [2] http://www.peak-system.com/linux/
+# [3] http://www.cosateq.com/
+# [4] http://sourceforge.net/p/canfestival/mailman/message/32519648/
+
+config BR2_PACKAGE_CANFESTIVAL_VIRTUAL
+	bool "virtual"
+	help
+	  Unix pipe based virtual CAN driver.
+
+config BR2_PACKAGE_CANFESTIVAL_SOCKET
+	bool "socket"
+	help
+	  SocketCAN (the standard mainline CAN bus interface).
+
+	  http://developer.berlios.de/projects/socketcan/
+
+config BR2_PACKAGE_CANFESTIVAL_LINCAN
+	bool "lincan"
+	help
+	  Lincan driver.
+
+	  http://www.ocera.org/download/components/WP7/lincan-0.3.3.html
+
+config BR2_PACKAGE_CANFESTIVAL_CAN4LINUX
+	bool "can4linux"
+	help
+	  Can4linux driver.
+
+	  http://www.port.de/engl/canprod/hw_can4linux.html
+
+endchoice
+
+config BR2_PACKAGE_CANFESTIVAL_DRIVER
+	string
+	default "virtual"	  if BR2_PACKAGE_CANFESTIVAL_VIRTUAL
+	default "socket"	  if BR2_PACKAGE_CANFESTIVAL_SOCKET
+	default "lincan"	  if BR2_PACKAGE_CANFESTIVAL_LINCAN
+	default "can4linux"	  if BR2_PACKAGE_CANFESTIVAL_CAN4LINUX
+
+config BR2_PACKAGE_CANFESTIVAL_ADDITIONAL_OPTIONS
+	string "additional configure options"
+	help
+	  Additional options can be passed directly to the configure script
+	  (e.g.: --MAX_CAN_BUS_ID=..., --SDO_MAX_LENGTH_TRANSFER=...,
+	  --SDO_BLOCK_SIZE=...).
+
+config BR2_PACKAGE_CANFESTIVAL_INSTALL_EXAMPLES
+	bool "install examples"
+	help
+	  Install binary application examples.
+
+endif

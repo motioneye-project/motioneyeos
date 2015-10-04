@@ -1,0 +1,107 @@
+From 045b035bd9ebbd45f40dda36b143ede869eb5f16 Mon Sep 17 00:00:00 2001
+From: Sagaert Johan <sagaert.johan@skynet.be>
+Date: Fri, 31 Oct 2014 12:25:48 +0100
+Subject: [PATCH 2/2] cmake: disable shared library build when
+ BUILD_SHARED_LIBS is off
+
+Original patch from Samuel Martin, reworked by Sagaert Johan when
+updating libwebsockets.
+
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+Signed-off-by: Sagaert Johan <sagaert.johan@skynet.be>
+[yann.morin.1998@free.fr: further fix after the version bumped]
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+---
+ CMakeLists.txt | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 7978845..89853ce 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -372,14 +372,19 @@ source_group("Sources"          FILES ${SOURCES})
+ #
+ # Create the lib.
+ #
++set(_libs_websockets websockets)
+ add_library(websockets STATIC
+ 			${HDR_PRIVATE}
+ 			${HDR_PUBLIC}
+ 			${SOURCES})
++
++if(BUILD_SHARED_LIBS)
++list(APPEND _libs_websockets websockets_shared)
+ add_library(websockets_shared SHARED
+ 			${HDR_PRIVATE}
+ 			${HDR_PUBLIC}
+ 			${SOURCES})
++endif()
+ 
+ if (WIN32)
+ 	# On Windows libs have the same file ending (.lib)
+@@ -400,15 +405,17 @@ endif(WIN32)
+ 
+ # We want the shared lib to be named "libwebsockets"
+ # not "libwebsocket_shared".
++if(BUILD_SHARED_LIBS)
+ set_target_properties(websockets_shared
+-		PROPERTIES 
++		PROPERTIES
+ 		OUTPUT_NAME websockets)
++endif()
+ 
+ # Set the so version of the lib.
+ # Equivalent to LDFLAGS=-version-info x:x:x
+ if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
+-	foreach(lib websockets websockets_shared)
+-		set_target_properties(${lib} 
++	foreach(lib ${_libs_websockets})
++		set_target_properties(${lib}
+ 			PROPERTIES
+ 			SOVERSION ${SOVERSION})
+ 	endforeach()
+@@ -460,7 +467,7 @@ if (NOT LWS_WITHOUT_EXTENSIONS)
+ 	endif()
+ 
+ 	# Make sure ZLib is compiled before the libs.
+-	foreach (lib websockets websockets_shared)
++	foreach (lib ${_libs_websockets})
+ 		add_dependencies(${lib} ZLIB)
+ 	endforeach()
+ 
+@@ -524,7 +531,7 @@ if (UNIX)
+ endif()
+ 
+ # Setup the linking for all libs.
+-foreach (lib websockets websockets_shared)
++foreach (lib ${_libs_websockets})
+ 	target_link_libraries(${lib} ${LIB_LIST})
+ endforeach()
+ 
+@@ -793,7 +800,7 @@
+ set(LWS_INSTALL_CMAKE_DIR ${DEF_INSTALL_CMAKE_DIR} CACHE PATH "Installation directory for CMake files")
+ 
+ # Export targets (This is used for other CMake projects to easily find the libraries and include files).
+-export(TARGETS websockets websockets_shared
++export(TARGETS ${_libs_websockets}
+         FILE "${PROJECT_BINARY_DIR}/LibwebsocketsTargets.cmake")
+ export(PACKAGE libwebsockets)
+ 
+@@ -829,7 +835,7 @@
+                 ${PROJECT_BINARY_DIR}/LibwebsocketsConfigVersion.cmake 
+                 @ONLY)
+ 
+-set_target_properties(websockets websockets_shared 
++set_target_properties(${_libs_websockets}
+ 					PROPERTIES PUBLIC_HEADER "${HDR_PUBLIC}")
+ 
+ #
+@@ -837,7 +843,7 @@
+ #
+ 
+ # Install libs and headers.
+-install(TARGETS websockets websockets_shared
++install(TARGETS ${_libs_websockets}
+ 		EXPORT LibwebsocketsTargets
+ 		LIBRARY DESTINATION "${LWS_INSTALL_LIB_DIR}${LIB_SUFFIX}" COMPONENT libraries
+ 		ARCHIVE DESTINATION "${LWS_INSTALL_LIB_DIR}${LIB_SUFFIX}" COMPONENT libraries

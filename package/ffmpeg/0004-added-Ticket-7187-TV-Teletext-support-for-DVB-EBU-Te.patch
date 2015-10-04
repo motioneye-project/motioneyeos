@@ -1,0 +1,47 @@
+From e9236f6fe3fae1ad4a3a2b6b63db493b083f0b21 Mon Sep 17 00:00:00 2001
+From: Cory Fields <theuni-nospam-@xbmc.org>
+Date: Mon, 28 Jun 2010 02:10:50 -0400
+Subject: [PATCH 04/13] added: Ticket #7187, TV Teletext support for DVB EBU
+ Teletext streams
+
+Patch part of the XBMC patch set for ffmpeg, downloaded from
+https://github.com/xbmc/FFmpeg/.
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ libavcodec/avcodec.h | 4 ++++
+ libavformat/mpegts.c | 2 ++
+ 2 files changed, 6 insertions(+)
+
+diff --git a/libavcodec/avcodec.h b/libavcodec/avcodec.h
+index dabae1b..dd6ef3f 100644
+--- a/libavcodec/avcodec.h
++++ b/libavcodec/avcodec.h
+@@ -520,6 +520,10 @@ enum AVCodecID {
+     AV_CODEC_ID_PJS        = MKBETAG('P','h','J','S'),
+     AV_CODEC_ID_ASS        = MKBETAG('A','S','S',' '),  ///< ASS as defined in Matroska
+ 
++    /* data codecs */
++    AV_CODEC_ID_VBI_DATA= 0x17500,
++    AV_CODEC_ID_VBI_TELETEXT,
++
+     /* other specific kind of codecs (generally used for attachments) */
+     AV_CODEC_ID_FIRST_UNKNOWN = 0x18000,           ///< A dummy ID pointing at the start of various fake codecs.
+     AV_CODEC_ID_TTF = 0x18000,
+diff --git a/libavformat/mpegts.c b/libavformat/mpegts.c
+index 97da0a3..5dd28f1 100644
+--- a/libavformat/mpegts.c
++++ b/libavformat/mpegts.c
+@@ -729,6 +729,8 @@ static const StreamType DESC_types[] = {
+     { 0x7b, AVMEDIA_TYPE_AUDIO,    AV_CODEC_ID_DTS          },
+     { 0x56, AVMEDIA_TYPE_SUBTITLE, AV_CODEC_ID_DVB_TELETEXT },
+     { 0x59, AVMEDIA_TYPE_SUBTITLE, AV_CODEC_ID_DVB_SUBTITLE }, /* subtitling descriptor */
++    { 0x45, AVMEDIA_TYPE_DATA,         AV_CODEC_ID_VBI_DATA }, /* VBI Data descriptor */
++    { 0x46, AVMEDIA_TYPE_DATA,     AV_CODEC_ID_VBI_TELETEXT }, /* VBI Teletext descriptor */
+     { 0 },
+ };
+ 
+-- 
+2.1.0
+

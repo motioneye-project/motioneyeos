@@ -1,0 +1,28 @@
+Add an option to disable NIS
+
+NIS is not necessarily available in uClibc, so we need an option to
+not compile support for it.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+---
+ configure.ac |    6 ++++++
+ 1 file changed, 6 insertions(+)
+
+Index: b/configure.ac
+===================================================================
+--- a/configure.ac
++++ b/configure.ac
+@@ -2698,6 +2698,12 @@
+ 		DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} _codecs_kr _codecs_jp _codecs_cn _codecs_tw _codecs_hk _codecs_iso2022"
+ 	fi])
+ 
++AC_ARG_ENABLE(nis,
++	AS_HELP_STRING([--disable-nis], [disable NIS]),
++	[ if test "$enableval" = "no"; then
++    	     DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} nis"
++  	  fi])
++
+ AC_SUBST(TK)
+ AC_ARG_ENABLE(tk,
+ 	AS_HELP_STRING([--disable-tk], [disable tk]),

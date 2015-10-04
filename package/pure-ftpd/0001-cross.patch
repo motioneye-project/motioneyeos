@@ -1,0 +1,25 @@
+Do not include host paths when cross-compiling.
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+
+diff -uNr pure-ftpd-1.0.36.org/configure pure-ftpd-1.0.36/configure
+--- pure-ftpd-1.0.36.org/configure	2012-03-16 06:29:23.000000000 +0100
++++ pure-ftpd-1.0.36/configure	2014-09-28 19:55:56.650529713 +0200
+@@ -6319,17 +6319,6 @@
+ 
+ 
+ 
+-if test -d /usr/local/include; then
+-  CPPFLAGS="$CPPFLAGS -I/usr/local/include"
+-fi
+-
+-if test -d /usr/kerberos/include; then
+-  CPPFLAGS="$CPPFLAGS -I/usr/kerberos/include"
+-fi
+-
+-if test -d /usr/local/lib; then
+-  LDFLAGS="$LDFLAGS -L/usr/local/lib"
+-fi
+ 
+ if uname | fgrep SunOS > /dev/null 2> /dev/null ; then
+   CPPFLAGS="$CPPFLAGS -D_XPG4_2=1"

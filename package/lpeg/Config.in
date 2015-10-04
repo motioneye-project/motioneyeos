@@ -1,0 +1,8 @@
+config BR2_PACKAGE_LPEG
+	bool "lpeg"
+	depends on BR2_PACKAGE_HAS_LUAINTERPRETER
+	help
+	  LPeg is a new pattern-matching library for Lua,
+	  based on Parsing Expression Grammars (PEGs).
+
+	  http://www.inf.puc-rio.br/~roberto/lpeg/lpeg.html

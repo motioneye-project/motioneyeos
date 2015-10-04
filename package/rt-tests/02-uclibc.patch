@@ -1,0 +1,109 @@
+From 713224456f4a3242496af803413f670433f27c74 Mon Sep 17 00:00:00 2001
+From: Alexey Brodkin <abrodkin@synopsys.com>
+Date: Mon, 10 Nov 2014 11:55:27 +0300
+Subject: [PATCH] [PATCH] fix build with uClibc
+
+Fix two build issues with (modern) uClibc:
+- uClibc has clock_nanosleep() if built with UCLIBC_HAS_ADVANCED_REALTIME,
+  conflicting with emulation function
+- uClibc doesn't provide utmpx.h if not built with UCLIBC_HAS_UTMPX, which
+  is included in several files (but not needed).
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ src/backfire/sendme.c         | 1 -
+ src/cyclictest/cyclictest.c   | 3 ++-
+ src/pmqtest/pmqtest.c         | 1 -
+ src/ptsematest/ptsematest.c   | 1 -
+ src/sigwaittest/sigwaittest.c | 2 --
+ src/svsematest/svsematest.c   | 1 -
+ 6 files changed, 2 insertions(+), 7 deletions(-)
+
+diff --git a/src/backfire/sendme.c b/src/backfire/sendme.c
+index 8c169dd..b959951 100644
+--- a/src/backfire/sendme.c
++++ b/src/backfire/sendme.c
+@@ -32,7 +32,6 @@
+ #include "rt-utils.h"
+ #include "rt-get_cpu.h"
+ 
+-#include <utmpx.h>
+ #include <sys/types.h>
+ #include <sys/stat.h>
+ #include <sys/time.h>
+diff --git a/src/cyclictest/cyclictest.c b/src/cyclictest/cyclictest.c
+index 4547831..343e421 100644
+--- a/src/cyclictest/cyclictest.c
++++ b/src/cyclictest/cyclictest.c
+@@ -25,6 +25,7 @@
+ #include <string.h>
+ #include <time.h>
+ #include <errno.h>
++#include <features.h>
+ #include <limits.h>
+ #include <linux/unistd.h>
+ 
+@@ -56,7 +57,7 @@
+ #define gettid() syscall(__NR_gettid)
+ #define sigev_notify_thread_id _sigev_un._tid
+ 
+-#ifdef __UCLIBC__
++#if defined(__UCLIBC__) && !defined(__UCLIBC_HAS_ADVANCED_REALTIME__)
+ #define MAKE_PROCESS_CPUCLOCK(pid, clock) \
+ 	((~(clockid_t) (pid) << 3) | (clockid_t) (clock))
+ #define CPUCLOCK_SCHED          2
+diff --git a/src/pmqtest/pmqtest.c b/src/pmqtest/pmqtest.c
+index 336a8eb..2e34afe 100644
+--- a/src/pmqtest/pmqtest.c
++++ b/src/pmqtest/pmqtest.c
+@@ -33,7 +33,6 @@
+ #include <sys/time.h>
+ #include <sys/mman.h>
+ #include <linux/unistd.h>
+-#include <utmpx.h>
+ #include <mqueue.h>
+ #include "rt-utils.h"
+ #include "rt-get_cpu.h"
+diff --git a/src/ptsematest/ptsematest.c b/src/ptsematest/ptsematest.c
+index 7558a41..5358a65 100644
+--- a/src/ptsematest/ptsematest.c
++++ b/src/ptsematest/ptsematest.c
+@@ -33,7 +33,6 @@
+ #include <sys/time.h>
+ #include <sys/mman.h>
+ #include <linux/unistd.h>
+-#include <utmpx.h>
+ #include "rt-utils.h"
+ #include "rt-get_cpu.h"
+ #include "error.h"
+diff --git a/src/sigwaittest/sigwaittest.c b/src/sigwaittest/sigwaittest.c
+index 428f5ce..85c32a2 100644
+--- a/src/sigwaittest/sigwaittest.c
++++ b/src/sigwaittest/sigwaittest.c
+@@ -31,11 +31,9 @@
+ #include <signal.h>
+ #include <string.h>
+ #include <time.h>
+-#include <utmpx.h>
+ #include <sys/types.h>
+ #include <sys/time.h>
+ #include <linux/unistd.h>
+-#include <utmpx.h>
+ #include "rt-utils.h"
+ #include "rt-get_cpu.h"
+ 
+diff --git a/src/svsematest/svsematest.c b/src/svsematest/svsematest.c
+index c1128cc..5d02550 100644
+--- a/src/svsematest/svsematest.c
++++ b/src/svsematest/svsematest.c
+@@ -31,7 +31,6 @@
+ #include <sched.h>
+ #include <string.h>
+ #include <time.h>
+-#include <utmpx.h>
+ 
+ #include <linux/unistd.h>
+ 
+-- 
+1.9.3
+

@@ -1,0 +1,11 @@
+config BR2_PACKAGE_LIBDVDREAD
+	bool "libdvdread"
+	depends on !BR2_STATIC_LIBS
+	help
+	  libdvdread provides a simple foundation for reading
+	  DVD-Video images.
+
+	  http://www.mplayerhq.hu/MPlayer/releases/dvdnav/
+
+comment "libdvdread needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS

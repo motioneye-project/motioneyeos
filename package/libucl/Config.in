@@ -1,0 +1,15 @@
+config BR2_PACKAGE_LIBUCL
+	bool "libucl"
+	help
+	  Universal configuration library parser
+
+	  Libucl is a parser and C API to parse and generate ucl
+	  objects. Libucl consist of several groups of functions:
+	  parser, emitting, conversion, generation, iteration,
+	  validation, and utility. These functions can be used to work
+	  with several formats: JSON, compact JSON, configuration
+	  (nginx like), and YAML. Libucl has clear design that should
+	  be very convenient for reading and writing and makes for an
+	  ideal parser with high performance.
+
+	  https://github.com/vstakhov/libucl

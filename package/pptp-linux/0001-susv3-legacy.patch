@@ -1,0 +1,29 @@
+bzero is deprecated in POSIX.1-2001 and removed for POSIX.1-2008 so
+switch to memset instead.
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+diff -Nura pptp-1.8.0.orig/pptp_callmgr.c pptp-1.8.0/pptp_callmgr.c
+--- pptp-1.8.0.orig/pptp_callmgr.c	2013-10-23 05:10:46.000000000 -0300
++++ pptp-1.8.0/pptp_callmgr.c	2014-03-31 16:47:42.617643298 -0300
+@@ -340,7 +340,7 @@
+     }
+ #endif
+     if (localbind.s_addr != INADDR_NONE) {
+-        bzero(&src, sizeof(src));
++	memset(&src, 0, sizeof(src));
+         src.i.sin_family = AF_INET;
+         src.i.sin_addr   = localbind;
+         if (bind(s, &src.a, sizeof(src.i)) != 0) {
+diff -Nura pptp-1.8.0.orig/pptp_gre.c pptp-1.8.0/pptp_gre.c
+--- pptp-1.8.0.orig/pptp_gre.c	2013-10-23 05:10:46.000000000 -0300
++++ pptp-1.8.0/pptp_gre.c	2014-03-31 16:47:30.745249066 -0300
+@@ -103,7 +103,7 @@
+     }
+ #endif
+     if (localbind.s_addr != INADDR_NONE) {
+-        bzero(&loc_addr, sizeof(loc_addr));
++	memset(&loc_addr, 0, sizeof(loc_addr));
+         loc_addr.i.sin_family = AF_INET;
+         loc_addr.i.sin_addr   = localbind;
+         if (bind(s, &loc_addr.a, sizeof(loc_addr.i)) != 0) {

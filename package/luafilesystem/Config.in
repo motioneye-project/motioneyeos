@@ -1,0 +1,8 @@
+config BR2_PACKAGE_LUAFILESYSTEM
+	bool "luafilesystem"
+	depends on BR2_PACKAGE_HAS_LUAINTERPRETER
+	help
+	  LuaFileSystem offers a portable way to access
+	  the underlying directory structure and file attributes.
+
+	  http://keplerproject.github.com/luafilesystem/

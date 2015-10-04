@@ -1,0 +1,45 @@
+#!/bin/sh
+# $Header: /var/cvs/uClibc/extra/scripts/getent,v 1.2 2005/02/02 14:18:01 solar Exp $
+#
+# Closely (not perfectly) emulate the behavior of glibc's getent utility
+#
+#passwd|shadow|group|aliases|hosts|networks|ethers|netgroup|protocols|services|rpc
+# only returns the first match (by design)
+# dns based search is not supported (hosts,networks)
+# case-insensitive matches not supported (ethers; others?)
+# may return false-positives (hosts,protocols,rpc,services,ethers)
+#
+# Taken from uClibc 0.9.33.
+
+export PATH="${PATH}:/bin:/usr/bin"
+
+file="/etc/$1"
+case $1 in
+	passwd|group)
+		match="^$2:\|^[^:]*:[^:]*:$2:" ;;
+	shadow)
+		match="^$2:" ;;
+	networks|netgroup)
+		match="^[[:space:]]*$2\>" ;;
+	hosts|protocols|rpc|services|ethers)
+		match="\<$2\>" ;;
+	aliases)
+		match="^[[:space:]]*$2[[:space:]]*:" ;;
+	""|-h|--help)
+		echo "USAGE: $0 database [key]"
+		exit 0 ;;
+	*)
+		echo "$0: Unknown database: $1" 1>&2
+		exit 1 ;;
+esac
+
+if [ ! -f "$file" ] ; then
+	echo "$0: Could not find database file for $1" 1>&2
+	exit 1
+fi
+
+if [ $# -eq 1 ] ; then
+	exec cat "$file"
+else
+	sed "s/#.*//; /$match/q; d" "$file" | grep . || exit 2
+fi

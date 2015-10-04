@@ -1,0 +1,28 @@
+From 790e8f620f06834f3fd03c310cbecd1416536987 Mon Sep 17 00:00:00 2001
+From: Will Newton <will.newton@linaro.org>
+Date: Tue, 28 May 2013 18:31:46 +0100
+Subject: [PATCH 2/5] Add stack direction for the AArch64 architecture
+
+On this architecture, the stack grows downward.
+
+Signed-off-by: Will Newton <will.newton@linaro.org>
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ m4/stack-direction.m4 | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/m4/stack-direction.m4 b/m4/stack-direction.m4
+index 39c1a28..3f70530 100644
+--- a/m4/stack-direction.m4
++++ b/m4/stack-direction.m4
+@@ -13,6 +13,7 @@ AC_DEFUN([SV_STACK_DIRECTION],
+     case "$host_cpu" in
+       dnl See the #define STACK_GROWS_DOWNWARD in gcc-3.1/gcc/config/*/*.h.
+       a29k | \
++      aarch64* | \
+       alpha* | \
+       arc | \
+       arm* | strongarm* | xscale* | \
+-- 
+2.1.0
+

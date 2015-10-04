@@ -1,0 +1,16 @@
+config BR2_PACKAGE_FAIFA
+	bool "faifa"
+	select BR2_PACKAGE_LIBPCAP
+	depends on !BR2_STATIC_LIBS
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	help
+	  Faifa can configure any Intellon-based Power Line
+	  Communication device using Intellon INT5000 and INT6000
+	  series chips (6000 and 6300 chips). It supports all
+	  Intellon-specific management and control frames as well as
+	  standard management frames.
+
+	  https://dev.open-plc.org
+
+comment "faifa needs a toolchain w/ dynamic library, threads"
+	depends on BR2_STATIC_LIBS || !BR2_TOOLCHAIN_HAS_THREADS

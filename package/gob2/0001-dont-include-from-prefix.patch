@@ -1,0 +1,40 @@
+[PATCH] Don't search $prefix/include for header files
+
+Don't add $prefix/include to the header file search path, as that breaks
+cross compilation (build $prefix/include isn't the same as target
+$prefix/include).
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ src/Makefile.am |    3 +--
+ src/Makefile.in |    3 +--
+ 2 files changed, 2 insertions(+), 4 deletions(-)
+
+Index: gob2-2.0.15/src/Makefile.am
+===================================================================
+--- gob2-2.0.15.orig/src/Makefile.am
++++ gob2-2.0.15/src/Makefile.am
+@@ -17,8 +17,7 @@ INCLUDES = \
+ 	-I$(top_builddir)	\
+ 	-I$(top_builddir)/src	\
+ 	-I$(top_srcdir)		\
+-	-I$(top_srcdir)/src	\
+-	-I$(includedir)
++	-I$(top_srcdir)/src
+ 
+ if NOINSTGOB
+ noinst_PROGRAMS = @NOINSTGOB@
+Index: gob2-2.0.15/src/Makefile.in
+===================================================================
+--- gob2-2.0.15.orig/src/Makefile.in
++++ gob2-2.0.15/src/Makefile.in
+@@ -193,8 +193,7 @@ INCLUDES = \
+ 	-I$(top_builddir)	\
+ 	-I$(top_builddir)/src	\
+ 	-I$(top_srcdir)		\
+-	-I$(top_srcdir)/src	\
+-	-I$(includedir)
++	-I$(top_srcdir)/src
+ 
+ @NOINSTGOB_TRUE@noinst_PROGRAMS = @NOINSTGOB@
+ @NOINSTGOB_FALSE@bin_PROGRAMS = @INSTGOB@

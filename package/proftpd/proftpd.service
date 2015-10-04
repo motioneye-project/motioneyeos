@@ -1,0 +1,10 @@
+[Unit]
+Description=FTP server
+After=syslog.target network.target
+
+[Service]
+ExecStart=/usr/sbin/proftpd -n -q
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

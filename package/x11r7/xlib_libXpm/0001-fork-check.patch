@@ -1,0 +1,21 @@
+Allow usage when fork() is not available
+
+When fork() is not available, we need to define NO_ZPIPE so that
+libXpm doesn't try to fork/exec to use a pipe to uncompress compressed
+.xpm files. There is obviously a loss of functionality, but loading
+uncompressed .xpm files should continue to work.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/configure.ac
+===================================================================
+--- a/configure.ac
++++ b/configure.ac
+@@ -22,6 +22,7 @@
+ 
+ # Checks for library functions
+ AC_CHECK_FUNCS([strlcat])
++AC_CHECK_FUNC([fork],[], AC_DEFINE(NO_ZPIPE))
+ 
+ # Obtain compiler/linker options for dependencies
+ PKG_CHECK_MODULES(XPM, xproto x11)

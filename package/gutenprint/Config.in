@@ -1,0 +1,17 @@
+config BR2_PACKAGE_GUTENPRINT
+	bool "gutenprint"
+	# because of cups security issues
+	depends on BR2_DEPRECATED_SINCE_2015_05
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_PACKAGE_CUPS
+	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
+	help
+	  Gutenprint, formerly named Gimp-Print, is a suite of printer
+	  drivers that may be used with most common UNIX print spooling
+	  systems, including CUPS, lpr, LPRng, or others
+
+	  http://gimp-print.sourceforge.net/
+
+comment "gutenprint needs a toolchain w/ C++"
+	depends on BR2_PACKAGE_CUPS
+	depends on !BR2_INSTALL_LIBSTDCPP

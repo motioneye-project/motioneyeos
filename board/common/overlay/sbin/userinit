@@ -1,0 +1,8 @@
+#!/bin/sh
+
+if [ -r /data/etc/userinit.sh ]; then
+    /bin/bash /data/etc/userinit.sh
+fi
+
+exit 0
+

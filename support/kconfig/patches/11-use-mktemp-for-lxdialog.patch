@@ -1,0 +1,17 @@
+---
+ lxdialog/check-lxdialog.sh |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+Index: b/lxdialog/check-lxdialog.sh
+===================================================================
+--- a/lxdialog/check-lxdialog.sh
++++ b/lxdialog/check-lxdialog.sh
+@@ -36,7 +36,7 @@
+ }
+ 
+ # Temp file, try to clean up after us
+-tmp=.lxdialog.tmp
++tmp=$(mktemp)
+ trap "rm -f $tmp" 0 1 2 3 15
+ 
+ # Check if we can link to ncurses

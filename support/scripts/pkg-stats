@@ -1,0 +1,410 @@
+#!/usr/bin/env bash
+
+# Copyright (C) 2009 by Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+
+# This script generates an HTML file that contains a report about all
+# Buildroot packages, their usage of the different package
+# infrastructure and possible cleanup actions
+#
+# Run the script from the Buildroot toplevel directory:
+#
+#  ./support/scripts/pkg-stats > /tmp/pkg.html
+#
+
+echo "<head>
+<style type=\"text/css\">
+table {
+  width: 100%;
+}
+td {
+  border: 1px solid black;
+}
+td.centered {
+  text-align: center;
+}
+td.wrong {
+  background: #ff9a69;
+}
+td.correct {
+  background: #d2ffc4;
+}
+td.nopatches {
+  background: #d2ffc4;
+}
+
+td.somepatches {
+  background: #ffd870;
+}
+
+td.lotsofpatches {
+  background: #ff9a69;
+}
+</style>
+<title>Statistics of Buildroot packages</title>
+</head>
+
+<a href=\"#results\">Results</a><br/>
+
+<table>
+<tr>
+<td>Id</td>
+<td>Package</td>
+<td class=\"centered\">Patch count</td>
+<td class=\"centered\">Infrastructure</td>
+<td class=\"centered\">License</td>
+<td class=\"centered\">License files</td>
+<td class=\"centered\">Hash file</td>
+</tr>
+"
+
+autotools_packages=0
+cmake_packages=0
+kconfig_packages=0
+luarocks_package=0
+perl_packages=0
+python_packages=0
+rebar_packages=0
+virtual_packages=0
+generic_packages=0
+manual_packages=0
+packages_with_licence=0
+packages_without_licence=0
+packages_with_license_files=0
+packages_without_license_files=0
+packages_with_hash_file=0
+packages_without_hash_file=0
+total_patch_count=0
+cnt=0
+
+for i in $(find boot/ linux/ package/ -name '*.mk' | sort) ; do
+
+    if test \
+	$i = "boot/common.mk" -o \
+	$i = "linux/linux-ext-fbtft.mk" -o \
+	$i = "linux/linux-ext-xenomai.mk" -o \
+	$i = "linux/linux-ext-rtai.mk" -o \
+	$i = "package/efl/efl.mk" -o \
+	$i = "package/freescale-imx/freescale-imx.mk" -o \
+	$i = "package/gcc/gcc.mk" -o \
+	$i = "package/gstreamer/gstreamer.mk" -o \
+	$i = "package/gstreamer1/gstreamer1.mk" -o \
+	$i = "package/gtk2-themes/gtk2-themes.mk" -o \
+	$i = "package/matchbox/matchbox.mk" -o \
+	$i = "package/opengl/opengl.mk" -o \
+	$i = "package/qt5/qt5.mk" -o \
+	$i = "package/x11r7/x11r7.mk" -o \
+	$i = "package/doc-asciidoc.mk" -o \
+	$i = "package/pkg-autotools.mk" -o \
+	$i = "package/pkg-cmake.mk" -o \
+	$i = "package/pkg-kconfig.mk" -o \
+	$i = "package/pkg-luarocks.mk" -o \
+	$i = "package/pkg-perl.mk" -o \
+	$i = "package/pkg-python.mk" -o \
+	$i = "package/pkg-rebar.mk" -o \
+	$i = "package/pkg-virtual.mk" -o \
+	$i = "package/pkg-download.mk" -o \
+	$i = "package/pkg-generic.mk" -o \
+	$i = "package/pkg-utils.mk" ; then
+	echo "skipping $i" 1>&2
+	continue
+    fi
+
+    cnt=$((cnt+1))
+
+    hashost=0
+    hastarget=0
+    infratype=""
+
+    # Determine package infrastructure
+    if grep -E "\(host-autotools-package\)" $i > /dev/null ; then
+	infratype="autotools"
+	hashost=1
+    fi
+
+    if grep -E "\(autotools-package\)" $i > /dev/null ; then
+	infratype="autotools"
+	hastarget=1
+    fi
+
+    if grep -E "\(kconfig-package\)" $i > /dev/null ; then
+	infratype="kconfig"
+	hastarget=1
+    fi
+
+    if grep -E "\(host-luarocks-package\)" $i > /dev/null ; then
+	infratype="luarocks"
+	hashost=1
+    fi
+
+    if grep -E "\(luarocks-package\)" $i > /dev/null ; then
+	infratype="luarocks"
+	hastarget=1
+    fi
+
+    if grep -E "\(host-perl-package\)" $i > /dev/null ; then
+	infratype="perl"
+	hashost=1
+    fi
+
+    if grep -E "\(perl-package\)" $i > /dev/null ; then
+	infratype="perl"
+	hastarget=1
+    fi
+
+    if grep -E "\(host-python-package\)" $i > /dev/null ; then
+	infratype="python"
+	hashost=1
+    fi
+
+    if grep -E "\(python-package\)" $i > /dev/null ; then
+	infratype="python"
+	hastarget=1
+    fi
+
+    if grep -E "\(host-rebar-package\)" $i > /dev/null ; then
+	infratype="rebar"
+	hashost=1
+    fi
+
+    if grep -E "\(rebar-package\)" $i > /dev/null ; then
+	infratype="rebar"
+	hastarget=1
+    fi
+
+    if grep -E "\(host-virtual-package\)" $i > /dev/null ; then
+	infratype="virtual"
+	hashost=1
+    fi
+
+    if grep -E "\(virtual-package\)" $i > /dev/null ; then
+	infratype="virtual"
+	hastarget=1
+    fi
+
+    if grep -E "\(host-generic-package\)" $i > /dev/null ; then
+	infratype="generic"
+	hashost=1
+    fi
+
+    if grep -E "\(generic-package\)" $i > /dev/null ; then
+	infratype="generic"
+	hastarget=1
+    fi
+
+    if grep -E "\(host-cmake-package\)" $i > /dev/null ; then
+	infratype="cmake"
+	hashost=1
+    fi
+
+    if grep -E "\(cmake-package\)" $i > /dev/null ; then
+	infratype="cmake"
+	hastarget=1
+    fi
+
+    pkg=$(basename $i)
+    dir=$(dirname $i)
+    pkg=${pkg%.mk}
+    pkgvariable=$(echo ${pkg} | tr "a-z-" "A-Z_")
+
+
+    # Count packages per infrastructure
+    if [ -z ${infratype} ] ; then
+	infratype="manual"
+	manual_packages=$(($manual_packages+1))
+    elif [ ${infratype} = "autotools" ]; then
+	autotools_packages=$(($autotools_packages+1))
+    elif [ ${infratype} = "cmake" ]; then
+	cmake_packages=$(($cmake_packages+1))
+    elif [ ${infratype} = "kconfig" ]; then
+	kconfig_packages=$(($kconfig_packages+1))
+    elif [ ${infratype} = "luarocks" ]; then
+	luarocks_packages=$(($luarocks_packages+1))
+    elif [ ${infratype} = "perl" ]; then
+	perl_packages=$(($perl_packages+1))
+    elif [ ${infratype} = "python" ]; then
+	python_packages=$(($python_packages+1))
+    elif [ ${infratype} = "rebar" ]; then
+	rebar_packages=$(($rebar_packages+1))
+    elif [ ${infratype} = "virtual" ]; then
+	virtual_packages=$(($virtual_packages+1))
+    elif [ ${infratype} = "generic" ]; then
+	generic_packages=$(($generic_packages+1))
+    fi
+
+    if grep -qE "^${pkgvariable}_LICENSE[ ]*=" $i ; then
+	packages_with_license=$(($packages_with_license+1))
+	license=1
+    else
+	packages_without_license=$(($packages_without_license+1))
+	license=0
+    fi
+
+    if grep -qE "^${pkgvariable}_LICENSE_FILES[ ]*=" $i ; then
+	packages_with_license_files=$(($packages_with_license_files+1))
+	license_files=1
+    else
+	packages_without_license_files=$(($packages_without_license_files+1))
+	license_files=0
+    fi
+
+    if test -f ${dir}/${pkg}.hash; then
+	packages_with_hash_file=$(($packages_with_hash_file+1))
+	hash_file=1
+    else
+	packages_without_hash_file=$(($packages_without_hash_file+1))
+	hash_file=0
+    fi
+
+    echo "<tr>"
+
+    echo "<td>$cnt</td>"
+    echo "<td>$i</td>"
+
+    package_dir=$(dirname $i)
+    patch_count=$(find ${package_dir} -name '*.patch' | wc -l)
+    total_patch_count=$(($total_patch_count+$patch_count))
+
+    if test $patch_count -lt 1 ; then
+	patch_count_class="nopatches"
+    elif test $patch_count -lt 5 ; then
+	patch_count_class="somepatches"
+    else
+	patch_count_class="lotsofpatches"
+    fi
+
+    echo "<td class=\"centered ${patch_count_class}\">"
+    echo "<b>$patch_count</b>"
+    echo "</td>"
+
+    if [ ${infratype} = "manual" ] ; then
+	echo "<td class=\"centered wrong\"><b>manual</b></td>"
+    else
+	echo "<td class=\"centered correct\">"
+	echo "<b>${infratype}</b><br/>"
+	if [ ${hashost} -eq 1 -a ${hastarget} -eq 1 ]; then
+	    echo "target + host"
+	elif [ ${hashost} -eq 1 ]; then
+	    echo "host"
+	else
+	    echo "target"
+	fi
+	echo "</td>"
+    fi
+
+    if [ ${license} -eq 0 ] ; then
+	echo "<td class=\"centered wrong\">No</td>"
+    else
+	echo "<td class=\"centered correct\">Yes</td>"
+    fi
+
+    if [ ${license_files} -eq 0 ] ; then
+	echo "<td class=\"centered wrong\">No</td>"
+    else
+	echo "<td class=\"centered correct\">Yes</td>"
+    fi
+
+    if [ ${hash_file} -eq 0 ] ; then
+	echo "<td class=\"centered wrong\">No</td>"
+    else
+	echo "<td class=\"centered correct\">Yes</td>"
+    fi
+
+    echo "</tr>"
+
+done
+echo "</table>"
+
+echo "<a id="results"></a>"
+echo "<table>"
+echo "<tr>"
+echo "<td>Packages using the <i>generic</i> infrastructure</td>"
+echo "<td>$generic_packages</td>"
+echo "</tr>"
+echo "<tr>"
+echo "<td>Packages using the <i>cmake</i> infrastructure</td>"
+echo "<td>$cmake_packages</td>"
+echo "</tr>"
+echo "<tr>"
+echo "<td>Packages using the <i>autotools</i> infrastructure</td>"
+echo "<td>$autotools_packages</td>"
+echo "</tr>"
+echo "<tr>"
+echo "<td>Packages using the <i>luarocks</i> infrastructure</td>"
+echo "<td>$luarocks_packages</td>"
+echo "</tr>"
+echo "<tr>"
+echo "<td>Packages using the <i>kconfig</i> infrastructure</td>"
+echo "<td>$kconfig_packages</td>"
+echo "</tr>"
+echo "<tr>"
+echo "<td>Packages using the <i>perl</i> infrastructure</td>"
+echo "<td>$perl_packages</td>"
+echo "</tr>"
+echo "<tr>"
+echo "<td>Packages using the <i>python</i> infrastructure</td>"
+echo "<td>$python_packages</td>"
+echo "</tr>"
+echo "<tr>"
+echo "<td>Packages using the <i>rebar</i> infrastructure</td>"
+echo "<td>$rebar_packages</td>"
+echo "</tr>"
+echo "<tr>"
+echo "<td>Packages using the <i>virtual</i> infrastructure</td>"
+echo "<td>$virtual_packages</td>"
+echo "</tr>"
+echo "<tr>"
+echo "<td>Packages not using any infrastructure</td>"
+echo "<td>$manual_packages</td>"
+echo "</tr>"
+echo "<tr>"
+echo "<td>Packages having license information</td>"
+echo "<td>$packages_with_license</td>"
+echo "</tr>"
+echo "<tr>"
+echo "<td>Packages not having licence information</td>"
+echo "<td>$packages_without_license</td>"
+echo "</tr>"
+echo "<tr>"
+echo "<td>Packages having license files information</td>"
+echo "<td>$packages_with_license_files</td>"
+echo "</tr>"
+echo "<tr>"
+echo "<td>Packages not having licence files information</td>"
+echo "<td>$packages_without_license_files</td>"
+echo "</tr>"
+echo "<tr>"
+echo "<td>Packages having hash file</td>"
+echo "<td>$packages_with_hash_file</td>"
+echo "</tr>"
+echo "<tr>"
+echo "<td>Packages not having hash file</td>"
+echo "<td>$packages_without_hash_file</td>"
+echo "</tr>"
+echo "<tr>"
+echo "<td>Number of patches in all packages</td>"
+echo "<td>$total_patch_count</td>"
+echo "</tr>"
+echo "<tr>"
+echo "<td>TOTAL</td>"
+echo "<td>$cnt</td>"
+echo "</tr>"
+echo "</table>"
+
+echo "<hr/>"
+echo "<i>Updated on $(LANG=C date), Git commit $(git log master -n 1 --pretty=format:%H)</i>"
+echo "</body>"
+echo "</html>"

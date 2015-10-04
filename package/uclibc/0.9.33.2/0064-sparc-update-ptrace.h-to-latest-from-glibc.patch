@@ -1,0 +1,151 @@
+From 085465e5c507822b25daec6c0fc1a78da48bff9e Mon Sep 17 00:00:00 2001
+From: Gustavo Zacarias <gustavo@zacarias.com.ar>
+Date: Sun, 7 Sep 2014 12:01:34 -0300
+Subject: [PATCH] sparc: update ptrace.h to latest from glibc
+
+Update sys/ptrace.h to latest glibc release for a lot of missing
+definitions.
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+Signed-off-by: Bernhard Reutner-Fischer <rep.dot.nop@gmail.com>
+---
+ libc/sysdeps/linux/sparc/sys/ptrace.h | 97 +++++++++++++++++++++++++++++++++--
+ 1 file changed, 92 insertions(+), 5 deletions(-)
+
+diff --git a/libc/sysdeps/linux/sparc/sys/ptrace.h b/libc/sysdeps/linux/sparc/sys/ptrace.h
+index 26fa4b3..0f6c2cc 100644
+--- a/libc/sysdeps/linux/sparc/sys/ptrace.h
++++ b/libc/sysdeps/linux/sparc/sys/ptrace.h
+@@ -1,5 +1,5 @@
+ /* `ptrace' debugger support interface.  Linux/SPARC version.
+-   Copyright (C) 1996, 1997, 1998, 1999, 2000 Free Software Foundation, Inc.
++   Copyright (C) 1996-2014 Free Software Foundation, Inc.
+    This file is part of the GNU C Library.
+ 
+    The GNU C Library is free software; you can redistribute it and/or
+@@ -20,7 +20,7 @@
+ #define _SYS_PTRACE_H	1
+ 
+ #include <features.h>
+-
++#include <bits/types.h>
+ #include <bits/wordsize.h>
+ 
+ /* Linux/SPARC kernels up to 2.3.18 do not care much
+@@ -147,12 +147,11 @@ enum __ptrace_request
+ #endif
+ 
+   /* Continue and stop at the next (return from) syscall.  */
+-  PTRACE_SYSCALL = 24
++  PTRACE_SYSCALL = 24,
+ #define PTRACE_SYSCALL PTRACE_SYSCALL
+ 
+ #if __WORDSIZE == 64
+ 
+-  ,
+   /* Get all floating point registers used by a processes.
+      This is not supported on all machines.  */
+    PTRACE_GETFPREGS = 25,
+@@ -160,10 +159,98 @@ enum __ptrace_request
+ 
+   /* Set all floating point registers used by a processes.
+      This is not supported on all machines.  */
+-   PTRACE_SETFPREGS = 26
++   PTRACE_SETFPREGS = 26,
+ #define PT_SETFPREGS PTRACE_SETFPREGS
+ 
+ #endif
++
++  /* Set ptrace filter options.  */
++  PTRACE_SETOPTIONS = 0x4200,
++#define PT_SETOPTIONS PTRACE_SETOPTIONS
++
++  /* Get last ptrace message.  */
++  PTRACE_GETEVENTMSG = 0x4201,
++#define PT_GETEVENTMSG PTRACE_GETEVENTMSG
++
++  /* Get siginfo for process.  */
++  PTRACE_GETSIGINFO = 0x4202,
++#define PT_GETSIGINFO PTRACE_GETSIGINFO
++
++  /* Set new siginfo for process.  */
++  PTRACE_SETSIGINFO = 0x4203,
++#define PT_SETSIGINFO PTRACE_SETSIGINFO
++
++  /* Get register content.  */
++  PTRACE_GETREGSET = 0x4204,
++#define PTRACE_GETREGSET PTRACE_GETREGSET
++
++  /* Set register content.  */
++  PTRACE_SETREGSET = 0x4205,
++#define PTRACE_SETREGSET PTRACE_SETREGSET
++
++  /* Like PTRACE_ATTACH, but do not force tracee to trap and do not affect
++     signal or group stop state.  */
++  PTRACE_SEIZE = 0x4206,
++#define PTRACE_SEIZE PTRACE_SEIZE
++
++  /* Trap seized tracee.  */
++  PTRACE_INTERRUPT = 0x4207,
++#define PTRACE_INTERRUPT PTRACE_INTERRUPT
++
++  /* Wait for next group event.  */
++  PTRACE_LISTEN = 0x4208,
++#define PTRACE_LISTEN PTRACE_LISTEN
++
++  PTRACE_PEEKSIGINFO = 0x4209
++#define PTRACE_PEEKSIGINFO PTRACE_PEEKSIGINFO
++};
++
++
++/* Flag for PTRACE_LISTEN.  */
++enum __ptrace_flags
++{
++  PTRACE_SEIZE_DEVEL = 0x80000000
++};
++
++/* Options set using PTRACE_SETOPTIONS.  */
++enum __ptrace_setoptions
++{
++  PTRACE_O_TRACESYSGOOD	= 0x00000001,
++  PTRACE_O_TRACEFORK	= 0x00000002,
++  PTRACE_O_TRACEVFORK   = 0x00000004,
++  PTRACE_O_TRACECLONE	= 0x00000008,
++  PTRACE_O_TRACEEXEC	= 0x00000010,
++  PTRACE_O_TRACEVFORKDONE = 0x00000020,
++  PTRACE_O_TRACEEXIT	= 0x00000040,
++  PTRACE_O_TRACESECCOMP = 0x00000080,
++  PTRACE_O_EXITKILL	= 0x00100000,
++  PTRACE_O_MASK		= 0x001000ff
++};
++
++/* Wait extended result codes for the above trace options.  */
++enum __ptrace_eventcodes
++{
++  PTRACE_EVENT_FORK	= 1,
++  PTRACE_EVENT_VFORK	= 2,
++  PTRACE_EVENT_CLONE	= 3,
++  PTRACE_EVENT_EXEC	= 4,
++  PTRACE_EVENT_VFORK_DONE = 5,
++  PTRACE_EVENT_EXIT	= 6,
++  PTRACE_EVENT_SECCOMP  = 7
++};
++
++/* Arguments for PTRACE_PEEKSIGINFO.  */
++struct __ptrace_peeksiginfo_args
++{
++  __uint64_t off;	/* From which siginfo to start.  */
++  __uint32_t flags;	/* Flags for peeksiginfo.  */
++  __int32_t nr;		/* How many siginfos to take.  */
++};
++
++enum __ptrace_peeksiginfo_flags
++{
++  /* Read signals from a shared (process wide) queue.  */
++  PTRACE_PEEKSIGINFO_SHARED = (1 << 0)
+ };
+ 
+ /* Perform process tracing functions.  REQUEST is one of the values
+-- 
+2.0.4
+

@@ -1,0 +1,69 @@
+config BR2_PACKAGE_CONNMAN
+	bool "connman"
+	select BR2_PACKAGE_DBUS
+	select BR2_PACKAGE_LIBGLIB2
+	select BR2_PACKAGE_IPTABLES
+	depends on BR2_USE_WCHAR # libglib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # dbus, libglib2
+	depends on BR2_USE_MMU # dbus, libglib2
+	depends on !BR2_STATIC_LIBS # needs dlopen()
+	help
+	  The Connection Manager (ConnMan) project provides a daemon
+	  for managing internet connections within embedded devices
+	  running the Linux operating system.
+
+	  For more information, see https://01.org/connman
+
+if BR2_PACKAGE_CONNMAN
+
+config BR2_PACKAGE_CONNMAN_ETHERNET
+	bool "enable Ethernet support"
+	default y
+
+config BR2_PACKAGE_CONNMAN_WIFI
+	bool "enable WiFi support"
+	select BR2_PACKAGE_WPA_SUPPLICANT # runtime
+	select BR2_PACKAGE_WPA_SUPPLICANT_DBUS_NEW # runtime
+	help
+	  Enable WiFi support (scan and static/dhcp interface
+	  setup). ConnMan detects the start of wpa_supplicant
+	  automatically.
+
+config BR2_PACKAGE_CONNMAN_WISPR
+	bool "enable WISPr support"
+	select BR2_PACKAGE_GNUTLS
+	help
+	  Enable support for Wireless Internet Service Provider
+	  roaming (WISPr). A RADIUS server is used to authenticate the
+	  subscriber's credentials.
+
+config BR2_PACKAGE_CONNMAN_BLUETOOTH
+	bool "enable Bluetooth support"
+	help
+	  Enable Bluetooth support. The start of bluetoothd is
+	  automatically detected and only a runtime dependency.
+
+config BR2_PACKAGE_CONNMAN_LOOPBACK
+	bool "enable loopback support"
+
+config BR2_PACKAGE_CONNMAN_NEARD
+	bool "enable neard support"
+	select BR2_PACKAGE_NEARD
+
+config BR2_PACKAGE_CONNMAN_OFONO
+	bool "enable ofono support"
+	depends on !BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_NIOSII201405 # libcap-ng
+	select BR2_PACKAGE_OFONO
+
+config BR2_PACKAGE_CONNMAN_DEBUG
+	bool "enable compiling with debugging information"
+
+config BR2_PACKAGE_CONNMAN_CLIENT
+	bool "enable command line client"
+	select BR2_PACKAGE_READLINE
+
+endif # BR2_PACKAGE_CONNMAN
+
+comment "connman needs a toolchain w/ wchar, threads, resolver, dynamic library"
+	depends on BR2_USE_MMU
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS

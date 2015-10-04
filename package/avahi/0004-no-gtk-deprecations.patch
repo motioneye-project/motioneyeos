@@ -1,0 +1,30 @@
+Patch from http://pkgs.fedoraproject.org/cgit/avahi.git/plain/avahi-0.6.31-no-deprecations.patch?id=b3f4de05e331258c5123e3acc144e452595c2112
+
+Don't disable deprecated GTK support, as that breaks builds with modern GTK3
+versions.
+
+For more details, see the Fedora bugzilla:
+https://bugzilla.redhat.com/show_bug.cgi?id=1001676
+
+[Peter: patch Makefile.in so we don't need autoreconf]
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ avahi-ui/Makefile.am |    2 +-
+ avahi-ui/Makefile.in |    3 +--
+ configure.ac         |    2 +-
+ 3 files changed, 3 insertions(+), 4 deletions(-)
+
+Index: avahi-0.6.31/avahi-ui/Makefile.in
+===================================================================
+--- avahi-0.6.31.orig/avahi-ui/Makefile.in
++++ avahi-0.6.31/avahi-ui/Makefile.in
+@@ -464,8 +464,7 @@
+ top_srcdir = @top_srcdir@
+ 
+ # This cool debug trap works on i386/gcc only
+-AM_CFLAGS = -I$(top_srcdir) -DG_DISABLE_DEPRECATED=1 \
+-	-DGDK_DISABLE_DEPRECATED=1 -DGTK_DISABLE_DEPRECATED=1 \
++AM_CFLAGS = -I$(top_srcdir) \
+ 	'-DDEBUG_TRAP=__asm__("int $$3")' $(am__append_1)
+ pkglibdatadir = $(libdir)/avahi
+ desktopdir = $(datadir)/applications

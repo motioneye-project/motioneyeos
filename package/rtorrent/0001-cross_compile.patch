@@ -1,0 +1,27 @@
+Fix cross compilation, based on OpenWRT patch.
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+diff -Nura rtorrent-0.9.2/configure.ac rtorrent-0.9.2-cross/configure.ac
+--- rtorrent-0.9.2/configure.ac	2012-04-20 03:55:30.000000000 -0300
++++ rtorrent-0.9.2-cross/configure.ac	2012-05-09 11:06:49.436474039 -0300
+@@ -4,7 +4,6 @@
+ 
+ AM_INIT_AUTOMAKE
+ AM_CONFIG_HEADER(config.h)
+-AM_PATH_CPPUNIT(1.9.6)
+ 
+ AC_PROG_CXX
+ AC_PROG_LIBTOOL
+diff -Nura rtorrent-0.9.2/scripts/common.m4 rtorrent-0.9.2-cross/scripts/common.m4
+--- rtorrent-0.9.2/scripts/common.m4	2012-03-13 09:10:49.000000000 -0300
++++ rtorrent-0.9.2-cross/scripts/common.m4	2012-05-09 11:05:56.620102678 -0300
+@@ -223,7 +223,7 @@
+ AC_DEFUN([TORRENT_CHECK_EXECINFO], [
+   AC_MSG_CHECKING(for execinfo.h)
+ 
+-  AC_RUN_IFELSE([AC_LANG_SOURCE([
++  AC_LINK_IFELSE([AC_LANG_SOURCE([
+       #include <execinfo.h>
+       int main() { backtrace((void**)0, 0); backtrace_symbols((char**)0, 0); return 0;}
+       ])],

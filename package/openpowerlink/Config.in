@@ -1,0 +1,118 @@
+comment "openpowerlink needs a toolchain w/ C++, threads"
+	depends on BR2_USE_MMU
+	depends on BR2_i386 || BR2_x86_64
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS
+
+config BR2_PACKAGE_OPENPOWERLINK
+	bool "openpowerlink"
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_i386 || BR2_x86_64
+	depends on BR2_USE_MMU # qt
+	help
+	  openPOWERLINK is an Open Source Industrial Ethernet
+	  stack implementing the POWERLINK protocol for Managing Node
+	  (MN, POWERLINK Master) and Controlled Node (CN, POWERLINK Slave).
+
+	  It is provided by
+	  SYSTEC electronic (http://www.systec-electronic.com),
+	  B&R (http://www.br-automation.com) and
+	  Kalycito (http://www.kalycito.com).
+
+	  https://sourceforge.net/projects/openpowerlink/
+
+if BR2_PACKAGE_OPENPOWERLINK
+
+choice
+	prompt "stack implementation"
+
+config BR2_PACKAGE_OPENPOWERLINK_LIBPCAP
+	bool "userspace stack"
+	select BR2_PACKAGE_LIBPCAP
+	help
+	  The Linux userspace implementation of the openPOWERLINK stack provides
+	  all functions for a software based POWERLINK solution running as Linux
+	  userspace application. The stack uses the libpcap library for accessing
+	  the network interface and is therefore totally independant of the used
+	  network card and driver.
+
+config BR2_PACKAGE_OPENPOWERLINK_KERNEL_MODULE
+	bool "kernel stack"
+	depends on BR2_LINUX_KERNEL
+	help
+	  The openPOWERLINK stack may be implemented as Linux kernel module.
+	  This solution provides the best performance, but is limited to the
+	  available openPOWERLINK network drivers.
+	  You may select BR2_PACKAGE_PCIUTILS for lscpi,
+	  and BR2_PACKAGE_PROCPS for ps command.
+	  These commands are used in EplLoad and EplUndload scripts.
+
+endchoice
+
+if BR2_PACKAGE_OPENPOWERLINK_KERNEL_MODULE
+
+choice
+	prompt "select Ethernet Powerlink Driver"
+
+config BR2_PACKAGE_OPENPOWERLINK_82573
+	bool "Intel 82573"
+
+config BR2_PACKAGE_OPENPOWERLINK_8255x
+	bool "Intel 8255x"
+
+config BR2_PACKAGE_OPENPOWERLINK_I210
+	bool "Intel I210"
+
+config BR2_PACKAGE_OPENPOWERLINK_RTL8139
+	bool "Realtek RTL-8139"
+
+endchoice
+
+endif
+
+choice
+	prompt "Select MN/CN mode"
+
+	config BR2_PACKAGE_OPENPOWERLINK_MN
+	bool "MN"
+	help
+	  Enable Managing Node mode
+
+	config BR2_PACKAGE_OPENPOWERLINK_CN
+	bool "CN"
+	help
+	  Enable Controlled Node mode
+
+endchoice
+
+menu "openpowerlink demos"
+
+config BR2_PACKAGE_OPENPOWERLINK_DEMO_MN_CONSOLE
+	bool "console MN demo"
+	depends on BR2_PACKAGE_OPENPOWERLINK_MN
+
+config BR2_PACKAGE_OPENPOWERLINK_DEMO_MN_QT
+	bool "qt MN demo"
+	depends on BR2_PACKAGE_OPENPOWERLINK_MN
+	depends on BR2_INSTALL_LIBSTDCPP
+	select BR2_PACKAGE_QT
+	select BR2_PACKAGE_QT_STL
+
+config BR2_PACKAGE_OPENPOWERLINK_DEMO_CN_CONSOLE
+	bool "console CN demo"
+	depends on !BR2_PACKAGE_OPENPOWERLINK_MN
+
+config BR2_PACKAGE_OPENPOWERLINK_DEMO_LINUX_KERNEL
+	bool "kernel demo"
+	depends on BR2_PACKAGE_OPENPOWERLINK_KERNEL_MODULE
+	depends on BR2_PACKAGE_OPENPOWERLINK_MN
+
+endmenu
+
+config BR2_PACKAGE_OPENPOWERLINK_DEBUG_LEVEL
+	string "debug level for openpowerlink stack"
+	default "0xEC000000L"
+	help
+	  Debug level to be used for openPOWERLINK debugging functions.
+
+endif

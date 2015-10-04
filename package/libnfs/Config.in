@@ -1,0 +1,10 @@
+config BR2_PACKAGE_LIBNFS
+	bool "libnfs"
+	depends on BR2_TOOLCHAIN_HAS_NATIVE_RPC
+	help
+	  nfs userspace implementation.
+
+	  http://github.com/sahlberg/libnfs
+
+comment "libnfs needs a toolchain w/ RPC"
+	depends on !BR2_TOOLCHAIN_HAS_NATIVE_RPC

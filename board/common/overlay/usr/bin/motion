@@ -1,0 +1,11 @@
+#!/bin/bash
+
+MOTION_SVN="/usr/bin/motion-svn"
+MOTION_MRDAVE="/usr/bin/motion-mrdave"
+
+motion=$MOTION_MRDAVE
+
+echo "using motion binary $motion"
+
+exec $motion "$*"
+

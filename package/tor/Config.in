@@ -1,0 +1,19 @@
+config BR2_PACKAGE_TOR
+	bool "tor"
+	depends on BR2_USE_MMU # fork()
+	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL
+	select BR2_PACKAGE_LIBEVENT
+	select BR2_PACKAGE_OPENSSL
+	select BR2_PACKAGE_ZLIB
+	help
+	  Tor is free software and an open network that helps you
+	  defend against traffic analysis, a form of network
+	  surveillance that threatens personal freedom and privacy,
+	  confidential business activities and relationships, and
+	  state security.
+
+	  https://www.torproject.org
+
+comment "tor needs a toolchain w/ NPTL"
+	depends on BR2_USE_MMU
+	depends on !BR2_TOOLCHAIN_HAS_THREADS_NPTL

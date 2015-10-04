@@ -1,0 +1,74 @@
+config BR2_PACKAGE_IPSEC_TOOLS
+	bool "ipsec-tools"
+	select BR2_PACKAGE_OPENSSL
+	select BR2_PACKAGE_FLEX
+	depends on BR2_USE_MMU # fork()
+	help
+	  This package is required to support IPSec for Linux 2.6+
+
+	  http://ipsec-tools.sourceforge.net/
+
+if BR2_PACKAGE_IPSEC_TOOLS
+
+config BR2_PACKAGE_IPSEC_TOOLS_ADMINPORT
+	default y
+	bool "Enable racoonctl(8)"
+	help
+	  Lets racoon to listen to racoon admin port, which is to
+	  be contacted by racoonctl(8).
+
+config BR2_PACKAGE_IPSEC_TOOLS_NATT
+	bool "Enable NAT-Traversal"
+	help
+	  This needs kernel support, which is available on Linux. On
+	  NetBSD, NAT-Traversal kernel support has not been integrated
+	  yet, you can get it from here:
+
+	  http://ipsec-tools.sourceforge.net/netbsd_nat-t.diff If you
+
+	  live in a country where software patents are legal, using
+	  NAT-Traversal might infringe a patent.
+
+config BR2_PACKAGE_IPSEC_TOOLS_FRAG
+	bool "Enable IKE fragmentation"
+	help
+	  Enable IKE fragmentation, which is a workaround for
+	  broken routers that drop fragmented packets
+
+config BR2_PACKAGE_IPSEC_TOOLS_DPD
+	bool "Enable DPD (Dead Peer Detection)"
+	help
+	  Enable dead peer detection support
+
+config BR2_PACKAGE_IPSEC_TOOLS_STATS
+	default y
+	bool "Enable statistics logging function"
+
+config BR2_PACKAGE_IPSEC_TOOLS_READLINE
+	select BR2_PACKAGE_READLINE
+	bool "Enable readline input support"
+
+config BR2_PACKAGE_IPSEC_TOOLS_HYBRID
+	bool "Enable hybrid, both mode-cfg and xauth support"
+	help
+	  Hybrid mode is required for successful interoperability
+	  (e.g. Cisco VPN Client).
+
+choice
+	prompt "Security context"
+	default BR2_PACKAGE_IPSEC_SECCTX_DISABLE
+	help
+	  Selects whether or not to enable security context support.
+
+config BR2_PACKAGE_IPSEC_SECCTX_DISABLE
+	bool "Disable security context support"
+
+config BR2_PACKAGE_IPSEC_SECCTX_ENABLE
+	bool "Enable SELinux security context support"
+
+config BR2_PACKAGE_IPSEC_SECCTX_KERNEL
+	bool "Enable kernel security context"
+
+endchoice
+
+endif

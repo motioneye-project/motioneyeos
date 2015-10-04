@@ -1,0 +1,11 @@
+config BR2_PACKAGE_IRQBALANCE
+	bool "irqbalance"
+	help
+	  Irqbalance is a daemon to help balance the cpu load generated
+	  by interrupts across all of a systems cpus.
+	  Irqbalance identifies the highest volume interrupt sources,
+	  and isolates them to a single unique cpu, so that load is
+	  spread as much as possible over an entire processor set, while
+	  minimizing cache hit rates for irq handlers.
+
+	  https://github.com/Irqbalance/irqbalance

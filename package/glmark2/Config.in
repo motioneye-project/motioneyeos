@@ -1,0 +1,27 @@
+config BR2_PACKAGE_GLMARK2_EGL_GLES
+	bool
+	default y
+	depends on BR2_PACKAGE_MESA3D_OPENGL_EGL
+	depends on BR2_PACKAGE_MESA3D_OPENGL_ES
+
+config BR2_PACKAGE_GLMARK2_GL
+	bool
+	default y
+	depends on BR2_PACKAGE_MESA3D_DRI_DRIVER
+
+comment "glmark2 needs an OpenGL or an openGL ES and EGL backend provided by mesa3d"
+	depends on !BR2_PACKAGE_GLMARK2_GL && !BR2_PACKAGE_GLMARK2_EGL_GLES
+
+config BR2_PACKAGE_GLMARK2
+	bool "glmark2"
+	depends on BR2_PACKAGE_GLMARK2_GL || BR2_PACKAGE_GLMARK2_EGL_GLES
+	select BR2_PACKAGE_JPEG
+	select BR2_PACKAGE_LIBPNG
+	help
+	  glmark2 is an OpenGL 2.0 and ES 2.0 benchmark.
+
+	  https://github.com/glmark2/glmark2
+
+comment "glmark2 needs udev /dev management and a toolchain w/ C++, NPTL"
+	depends on !BR2_INSTALL_LIBSTDCPP || \
+		!BR2_TOOLCHAIN_HAS_THREADS_NPTL || !BR2_PACKAGE_HAS_UDEV

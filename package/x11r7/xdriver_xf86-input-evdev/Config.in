@@ -1,0 +1,12 @@
+config BR2_PACKAGE_XDRIVER_XF86_INPUT_EVDEV
+	bool "xf86-input-evdev"
+	depends on BR2_PACKAGE_HAS_UDEV # libudev is configure dependency
+	select BR2_PACKAGE_LIBEVDEV
+	select BR2_PACKAGE_XPROTO_INPUTPROTO
+	select BR2_PACKAGE_XPROTO_RANDRPROTO
+	select BR2_PACKAGE_XPROTO_XPROTO
+	help
+	  Generic Linux input driver
+
+comment "xf86-input-evdev requires udev to be enabled"
+	depends on !BR2_PACKAGE_HAS_UDEV

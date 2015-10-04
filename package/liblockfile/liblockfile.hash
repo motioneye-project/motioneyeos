@@ -1,0 +1,3 @@
+# From http://snapshot.debian.org/archive/debian/20141023T043132Z/pool/main/libl/liblockfile/liblockfile_1.08-4.dsc
+sha256	d63293d5091d7fdc0259563694e4d68771310dbc4e70e188e6b68e7a776405cb	liblockfile_1.08.orig.tar.gz
+sha256	e1343c37b83722abdaa1b5d98e1696748ca134ad36752b8affebebd51ef78468	liblockfile_1.08-4.debian.tar.bz2

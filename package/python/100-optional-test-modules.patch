@@ -1,0 +1,94 @@
+Add an option to disable installation of test modules
+
+The Python standard distribution comes with many test modules, that
+are not necessarly useful on embedded targets.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+
+---
+ Makefile.pre.in |   40 +++++++++++++++++++++++++++-------------
+ configure.in    |    6 ++++++
+ 2 files changed, 33 insertions(+), 13 deletions(-)
+
+Index: b/Makefile.pre.in
+===================================================================
+--- a/Makefile.pre.in
++++ b/Makefile.pre.in
+@@ -960,27 +960,43 @@
+ 	plat-mac/lib-scriptpackages/SystemEvents \
+ 	plat-mac/lib-scriptpackages/Terminal
+ PLATMACPATH=:plat-mac:plat-mac/lib-scriptpackages
+-LIBSUBDIRS=	lib-tk lib-tk/test lib-tk/test/test_tkinter \
+-		lib-tk/test/test_ttk site-packages test test/audiodata test/capath \
+-		test/data test/cjkencodings test/decimaltestdata test/xmltestdata \
+-		test/imghdrdata \
+-		test/subprocessdata \
+-		test/tracedmodules \
++LIBSUBDIRS=	lib-tk site-packages \
+ 		encodings compiler hotshot \
+-		email email/mime email/test email/test/data \
++		email email/mime \
+ 		ensurepip ensurepip/_bundled \
+-		json json/tests \
+-		sqlite3 sqlite3/test \
+-		logging bsddb bsddb/test csv importlib wsgiref \
+-		lib2to3 lib2to3/fixes lib2to3/pgen2 lib2to3/tests \
+-		lib2to3/tests/data lib2to3/tests/data/fixers lib2to3/tests/data/fixers/myfixes \
+-		ctypes ctypes/test ctypes/macholib \
+-		idlelib idlelib/Icons idlelib/idle_test \
+-		distutils distutils/command distutils/tests $(XMLLIBSUBDIRS) \
++		json \
++		sqlite3  \
++		logging bsddb csv importlib wsgiref \
++		lib2to3 lib2to3/fixes lib2to3/pgen2 \
++		ctypes ctypes/macholib \
++		idlelib idlelib/Icons \
++		distutils distutils/command $(XMLLIBSUBDIRS) \
+ 		multiprocessing multiprocessing/dummy \
+-		unittest unittest/test \
++		unittest \
+ 		lib-old \
+ 		curses pydoc_data $(MACHDEPS)
++
++TESTSUBDIRS = lib-tk/test lib-tk/test/test_tkinter \
++	lib-tk/test/test_ttk test test/audiodata test/capath test/data \
++	test/cjkencodings test/decimaltestdata test/xmltestdata \
++	test/imghdrdata \
++	test/subprocessdata \
++	test/tracedmodules \
++	email/test email/test/data \
++	json/tests \
++	sqlite3/test \
++	bsddb/test \
++	lib2to3/tests \
++ 	lib2to3/tests/data lib2to3/tests/data/fixers lib2to3/tests/data/fixers/myfixes \
++	ctypes/test \
++	idlelib/idle_test \
++	distutils/tests \
++	unittest/test
++
++ifeq (@TEST_MODULES@,yes)
++LIBSUBDIRS += $(TESTSUBDIRS)
++endif
++
+ libinstall:	build_all $(srcdir)/Lib/$(PLATDIR) $(srcdir)/Modules/xxmodule.c
+ 	@for i in $(SCRIPTDIR) $(LIBDEST); \
+ 	do \
+Index: b/configure.ac
+===================================================================
+--- a/configure.ac
++++ b/configure.ac
+@@ -2634,6 +2634,12 @@
+ fi
+ 
+ 
++AC_SUBST(TEST_MODULES)
++
++AC_ARG_ENABLE(test-modules,
++	AS_HELP_STRING([--disable-test-modules], [disable test modules]),
++	[ TEST_MODULES="${enableval}" ], [ TEST_MODULES=yes ])
++
+ # Check for enable-ipv6
+ AH_TEMPLATE(ENABLE_IPV6, [Define if --enable-ipv6 is specified])
+ AC_MSG_CHECKING([if --enable-ipv6 is specified])

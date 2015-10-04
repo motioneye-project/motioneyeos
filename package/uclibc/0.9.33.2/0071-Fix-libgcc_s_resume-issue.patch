@@ -1,0 +1,56 @@
+From 7ed8bacef45a2537646e7235092bd2e5408cd0b5 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Sun, 14 Jun 2015 15:14:22 +0200
+Subject: [PATCH] Fix libgcc_s_resume issue
+
+When built with gcc 5.1, uClibc fails to build with the following
+issue:
+
+    LD librt-0.9.33.2.so
+  librt/librt_so.a(rt-unwind-resume.oS): In function `_Unwind_Resume':
+  rt-unwind-resume.c:(.text+0x3c): undefined reference to `libgcc_s_resume'
+  collect2: error: ld returned 1 exit status
+  make[2]: *** [lib/librt.so] Error 1
+
+This commit fixes the code in a way similar to what was done in glibc
+in commit:
+
+   https://sourceware.org/git/gitweb.cgi?p=glibc.git;a=commitdiff;h=175cef4163dd60f95106cfd5f593b8a4e09d02c9
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ libpthread/nptl/sysdeps/unix/sysv/linux/arm/unwind-forcedunwind.c | 3 ++-
+ libpthread/nptl/sysdeps/unix/sysv/linux/arm/unwind-resume.c       | 3 ++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/libpthread/nptl/sysdeps/unix/sysv/linux/arm/unwind-forcedunwind.c b/libpthread/nptl/sysdeps/unix/sysv/linux/arm/unwind-forcedunwind.c
+index f4d6f41..a6a0515 100644
+--- a/libpthread/nptl/sysdeps/unix/sysv/linux/arm/unwind-forcedunwind.c
++++ b/libpthread/nptl/sysdeps/unix/sysv/linux/arm/unwind-forcedunwind.c
+@@ -27,7 +27,8 @@
+ #define __libc_fatal(x)         {/*write(STDERR_FILENO, x, strlen(x));*/ abort();}
+ 
+ static void *libgcc_s_handle;
+-static void (*libgcc_s_resume) (struct _Unwind_Exception *exc);
++static void (*libgcc_s_resume) (struct _Unwind_Exception *exc)
++  __attribute_used__;
+ static _Unwind_Reason_Code (*libgcc_s_personality)
+   (_Unwind_State, struct _Unwind_Exception *, struct _Unwind_Context *);
+ static _Unwind_Reason_Code (*libgcc_s_forcedunwind)
+diff --git a/libpthread/nptl/sysdeps/unix/sysv/linux/arm/unwind-resume.c b/libpthread/nptl/sysdeps/unix/sysv/linux/arm/unwind-resume.c
+index f9a4ffb..e2e2e0b 100644
+--- a/libpthread/nptl/sysdeps/unix/sysv/linux/arm/unwind-resume.c
++++ b/libpthread/nptl/sysdeps/unix/sysv/linux/arm/unwind-resume.c
+@@ -25,7 +25,8 @@
+ #define __libc_dlclose          dlclose
+ #define __libc_fatal(x)         {/*write(STDERR_FILENO, x, strlen(x));*/ abort();}
+ 
+-static void (*libgcc_s_resume) (struct _Unwind_Exception *exc);
++static void (*libgcc_s_resume) (struct _Unwind_Exception *exc)
++  __attribute_used__;
+ static _Unwind_Reason_Code (*libgcc_s_personality)
+   (_Unwind_State, struct _Unwind_Exception *, struct _Unwind_Context *);
+ 
+-- 
+2.1.0
+

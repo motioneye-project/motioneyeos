@@ -1,0 +1,45 @@
+#!/bin/sh
+
+[ -f /etc/udev/udev.conf ] || exit 0
+
+source /etc/udev/udev.conf
+
+start() {
+    echo -n "Starting eudev: "
+    echo '\000\000\000\000' > /proc/sys/kernel/hotplug
+    /sbin/udevd --daemon
+    [ $? == 0 ] && echo "done" || echo "failed"
+    /sbin/udevadm trigger --type=subsystems --action=add
+    /sbin/udevadm trigger --type=devices --action=add
+    /sbin/udevadm settle --timeout=30
+}
+
+stop() {
+    echo -n "Stopping eudev: "
+    udevadm control --stop-exec-queue
+    killall udevd
+    [ $? == 0 ] && echo "done" || echo "failed"
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+
+    stop)
+        stop
+        ;;
+    
+    restart)
+        stop
+        start
+        ;;
+
+    *)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 1
+        ;;
+esac
+
+exit 0
+

@@ -1,0 +1,3 @@
+# Locally calculated after checking pgp signature
+# Also from http://www.openssh.com/txt/release-6.9 (sha256 is base64 encoded)
+sha256	6e074df538f357d440be6cf93dc581a21f22d39e236f217fcd8eacbb6c896cfe	openssh-6.9p1.tar.gz

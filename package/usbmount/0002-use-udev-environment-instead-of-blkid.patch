@@ -1,0 +1,71 @@
+udev can provide all the values that usbmount determined using the
+blkid binary. This patch drops use of blkid in favor of using the
+environment variables set by udev. Thus it removes the dependency
+on blkid from usbmount.
+
+Signed-off-by: Sven Neumann <s.neumann@raumfeld.com>
+--- usbmount-0.0.22/usbmount.orig	2013-06-18 14:44:40.143096147 +0200
++++ usbmount-0.0.22/usbmount	2013-06-19 16:13:09.882434896 +0200
+@@ -59,11 +59,6 @@
+     exit 0
+ fi
+ 
+-if [ ! -x /sbin/blkid ]; then
+-    log err "cannot execute /sbin/blkid"
+-    exit 1
+-fi
+-
+ # Per Policy 9.3.2, directories under /var/run have to be created
+ # after every reboot.
+ if [ ! -e /var/run/usbmount ]; then
+@@ -83,15 +78,7 @@
+     trap '( lockfile-remove /var/run/usbmount/.mount )' 0
+     log debug "acquired lock /var/run/usbmount/.mount.lock"
+ 
+-    # Grab device information from device and "divide it"
+-    #   FIXME: improvement: implement mounting by label (notice that labels
+-    #   can contain spaces, which makes things a little bit less comfortable).
+-    DEVINFO=$(/sbin/blkid -p $DEVNAME)
+-    FSTYPE=$(echo "$DEVINFO" | sed 's/.*[[:blank:]]TYPE="\([^"]*\)".*/\1/g; s/[[:blank:]]*//g;')
+-    UUID=$(echo "$DEVINFO"   | sed 's/.*[[:blank:]]UUID="\([^"]*\)".*/\1/g; s/[[:blank:]]*//g;')
+-    USAGE=$(echo "$DEVINFO"  | sed 's/.*[[:blank:]]USAGE="\([^"]*\)".*/\1/g; s/[[:blank:]]*//g;')
+-
+-    if ! echo $USAGE | egrep -q "(filesystem|disklabel)"; then
++    if ! echo $ID_FS_USAGE | egrep -q "(filesystem|disklabel)"; then
+ 	log info "$DEVNAME does not contain a filesystem or disklabel"
+ 	exit 1
+     fi
+@@ -101,14 +88,14 @@
+ 	log info "executing command: mount $DEVNAME"
+ 	mount $DEVNAME || log err "mount by DEVNAME with $DEVNAME wasn't successful; return code $?"
+ 
+-    elif grep -q "^[[:blank:]]*UUID=$UUID" /etc/fstab; then
+-        log info "executing command: mount -U $UUID"
+-	mount -U $UUID || log err "mount by UUID with $UUID wasn't successful; return code $?"
++    elif grep -q "^[[:blank:]]*UUID=$ID_FS_UUID" /etc/fstab; then
++        log info "executing command: mount -U $ID_FS_UUID"
++	mount -U $ID_FS_UUID || log err "mount by UUID with $ID_FS_UUID wasn't successful; return code $?"
+ 
+     else
+-	log debug "$DEVNAME contains filesystem type $FSTYPE"
++	log debug "$DEVNAME contains filesystem type $ID_FS_TYPE"
+ 
+-	fstype=$FSTYPE
++	fstype=$ID_FS_TYPE
+ 	# Test if the filesystem type is in the list of filesystem
+ 	# types to mount.
+ 	if in_list "$fstype" "$FILESYSTEMS"; then
+@@ -176,11 +163,13 @@
+ 
+ 		# Run hook scripts; ignore errors.
+ 		export UM_DEVICE="$DEVNAME"
++		export UM_UUID="$ID_FS_UUID"
+ 		export UM_MOUNTPOINT="$mountpoint"
+ 		export UM_FILESYSTEM="$fstype"
+ 		export UM_MOUNTOPTIONS="$options"
+ 		export UM_VENDOR="$vendor"
+ 		export UM_MODEL="$model"
++		export UM_LABEL="$ID_FS_LABEL"
+ 		log info "executing command: run-parts /etc/usbmount/mount.d"
+ 		run-parts /etc/usbmount/mount.d || :
+ 	    else

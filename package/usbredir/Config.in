@@ -1,0 +1,29 @@
+comment "usbredir needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
+
+config BR2_PACKAGE_USBREDIR
+	bool "usbredir"
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libusb
+	select BR2_PACKAGE_LIBUSB
+	help
+	  usbredir is the name of a network protocol for sending usb device
+	  traffic over a network connection. It is also the name of the
+	  software package offering a parsing library, a usbredirhost library
+	  and several utilities implementing this protocol.
+
+	  Note: only the library is installed, not the utilities. Say 'y'
+	  below if you want the server too.
+
+	  http://www.spice-space.org/page/UsbRedir
+
+if BR2_PACKAGE_USBREDIR
+
+config BR2_PACKAGE_USBREDIR_SERVER
+	bool "usbredirserver on target"
+	help
+	  If you want to serve usbredir requests on your target, say 'y'
+	  here to have the usbredir server on the target.
+
+	  Note: the server is not required to use the library.
+
+endif

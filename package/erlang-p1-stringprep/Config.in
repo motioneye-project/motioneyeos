@@ -1,0 +1,6 @@
+config BR2_PACKAGE_ERLANG_P1_STRINGPREP
+	bool "erlang-p1-stringprep"
+	help
+	  Erlang interface to stringprep
+
+	  https://github.com/processone/stringprep

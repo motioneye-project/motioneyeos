@@ -1,0 +1,1490 @@
+Upstream patch for DFG implementation for MIPS
+
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+
+From c921d19863ccf66bdd0ffa5d38eaf05efab6b136 Mon Sep 17 00:00:00 2001
+From: "commit-queue@webkit.org"
+ <commit-queue@webkit.org@268f45cc-cd09-0410-ab3c-d52691b4dbfc>
+Date: Mon, 18 Feb 2013 19:25:23 +0000
+Subject: [PATCH] MIPS DFG implementation.
+ https://bugs.webkit.org/show_bug.cgi?id=101328
+
+Patch by Balazs Kilvady <kilvadyb@homejinni.com> on 2013-02-18
+Reviewed by Oliver Hunt.
+
+DFG implementation for MIPS.
+
+Source/JavaScriptCore:
+
+* assembler/MIPSAssembler.h:
+(JSC::MIPSAssembler::MIPSAssembler):
+(JSC::MIPSAssembler::sllv):
+(JSC::MIPSAssembler::movd):
+(MIPSAssembler):
+(JSC::MIPSAssembler::negd):
+(JSC::MIPSAssembler::labelForWatchpoint):
+(JSC::MIPSAssembler::label):
+(JSC::MIPSAssembler::vmov):
+(JSC::MIPSAssembler::linkDirectJump):
+(JSC::MIPSAssembler::maxJumpReplacementSize):
+(JSC::MIPSAssembler::revertJumpToMove):
+(JSC::MIPSAssembler::replaceWithJump):
+* assembler/MacroAssembler.h:
+(MacroAssembler):
+(JSC::MacroAssembler::poke):
+* assembler/MacroAssemblerMIPS.h:
+(JSC::MacroAssemblerMIPS::add32):
+(MacroAssemblerMIPS):
+(JSC::MacroAssemblerMIPS::and32):
+(JSC::MacroAssemblerMIPS::lshift32):
+(JSC::MacroAssemblerMIPS::mul32):
+(JSC::MacroAssemblerMIPS::or32):
+(JSC::MacroAssemblerMIPS::rshift32):
+(JSC::MacroAssemblerMIPS::urshift32):
+(JSC::MacroAssemblerMIPS::sub32):
+(JSC::MacroAssemblerMIPS::xor32):
+(JSC::MacroAssemblerMIPS::store32):
+(JSC::MacroAssemblerMIPS::jump):
+(JSC::MacroAssemblerMIPS::branchAdd32):
+(JSC::MacroAssemblerMIPS::branchMul32):
+(JSC::MacroAssemblerMIPS::branchSub32):
+(JSC::MacroAssemblerMIPS::branchNeg32):
+(JSC::MacroAssemblerMIPS::call):
+(JSC::MacroAssemblerMIPS::loadDouble):
+(JSC::MacroAssemblerMIPS::moveDouble):
+(JSC::MacroAssemblerMIPS::swapDouble):
+(JSC::MacroAssemblerMIPS::subDouble):
+(JSC::MacroAssemblerMIPS::mulDouble):
+(JSC::MacroAssemblerMIPS::divDouble):
+(JSC::MacroAssemblerMIPS::negateDouble):
+(JSC::MacroAssemblerMIPS::branchEqual):
+(JSC::MacroAssemblerMIPS::branchNotEqual):
+(JSC::MacroAssemblerMIPS::branchTruncateDoubleToInt32):
+(JSC::MacroAssemblerMIPS::branchTruncateDoubleToUint32):
+(JSC::MacroAssemblerMIPS::truncateDoubleToInt32):
+(JSC::MacroAssemblerMIPS::truncateDoubleToUint32):
+(JSC::MacroAssemblerMIPS::branchDoubleNonZero):
+(JSC::MacroAssemblerMIPS::branchDoubleZeroOrNaN):
+(JSC::MacroAssemblerMIPS::invert):
+(JSC::MacroAssemblerMIPS::replaceWithJump):
+(JSC::MacroAssemblerMIPS::maxJumpReplacementSize):
+* dfg/DFGAssemblyHelpers.h:
+(AssemblyHelpers):
+(JSC::DFG::AssemblyHelpers::preserveReturnAddressAfterCall):
+(JSC::DFG::AssemblyHelpers::restoreReturnAddressBeforeReturn):
+(JSC::DFG::AssemblyHelpers::debugCall):
+* dfg/DFGCCallHelpers.h:
+(CCallHelpers):
+(JSC::DFG::CCallHelpers::setupArguments):
+(JSC::DFG::CCallHelpers::setupArgumentsWithExecState):
+* dfg/DFGFPRInfo.h:
+(DFG):
+(FPRInfo):
+(JSC::DFG::FPRInfo::toRegister):
+(JSC::DFG::FPRInfo::toIndex):
+(JSC::DFG::FPRInfo::debugName):
+* dfg/DFGGPRInfo.h:
+(DFG):
+(GPRInfo):
+(JSC::DFG::GPRInfo::toRegister):
+(JSC::DFG::GPRInfo::toIndex):
+(JSC::DFG::GPRInfo::debugName):
+* dfg/DFGSpeculativeJIT.h:
+(SpeculativeJIT):
+* jit/JSInterfaceJIT.h:
+(JSInterfaceJIT):
+* runtime/JSGlobalData.h:
+(JSC::ScratchBuffer::allocationSize):
+(ScratchBuffer):
+
+Source/WTF:
+
+* wtf/Platform.h:
+
+git-svn-id: http://svn.webkit.org/repository/webkit/trunk@143247 268f45cc-cd09-0410-ab3c-d52691b4dbfc
+---
+ Source/JavaScriptCore/ChangeLog                    |  90 ++++
+ Source/JavaScriptCore/assembler/MIPSAssembler.h    | 109 ++++-
+ Source/JavaScriptCore/assembler/MacroAssembler.h   |   7 +
+ .../JavaScriptCore/assembler/MacroAssemblerMIPS.h  | 480 +++++++++++++++++++--
+ Source/JavaScriptCore/dfg/DFGAssemblyHelpers.h     |  19 +-
+ Source/JavaScriptCore/dfg/DFGCCallHelpers.h        |  92 ++--
+ Source/JavaScriptCore/dfg/DFGFPRInfo.h             |  68 +++
+ Source/JavaScriptCore/dfg/DFGGPRInfo.h             |  67 +++
+ Source/JavaScriptCore/dfg/DFGSpeculativeJIT.h      |   4 +-
+ Source/JavaScriptCore/jit/JSInterfaceJIT.h         |   4 +
+ Source/JavaScriptCore/runtime/JSGlobalData.h       |   6 +-
+ Source/WTF/ChangeLog                               |  11 +
+ Source/WTF/wtf/Platform.h                          |   4 +
+ 13 files changed, 888 insertions(+), 73 deletions(-)
+
+diff --git a/Source/JavaScriptCore/assembler/MIPSAssembler.h b/Source/JavaScriptCore/assembler/MIPSAssembler.h
+index 026f87e..7f553bb 100644
+--- a/Source/JavaScriptCore/assembler/MIPSAssembler.h
++++ b/Source/JavaScriptCore/assembler/MIPSAssembler.h
+@@ -152,6 +152,8 @@ public:
+     typedef SegmentedVector<AssemblerLabel, 64> Jumps;
+ 
+     MIPSAssembler()
++        : m_indexOfLastWatchpoint(INT_MIN)
++        , m_indexOfTailOfLastWatchpoint(INT_MIN)
+     {
+     }
+ 
+@@ -325,7 +327,7 @@ public:
+         emitInst(0x00000000 | (rd << OP_SH_RD) | (rt << OP_SH_RT) | ((shamt & 0x1f) << OP_SH_SHAMT));
+     }
+ 
+-    void sllv(RegisterID rd, RegisterID rt, int rs)
++    void sllv(RegisterID rd, RegisterID rt, RegisterID rs)
+     {
+         emitInst(0x00000004 | (rd << OP_SH_RD) | (rt << OP_SH_RT) | (rs << OP_SH_RS));
+     }
+@@ -527,6 +529,16 @@ public:
+         emitInst(0x46200004 | (fd << OP_SH_FD) | (fs << OP_SH_FS));
+     }
+ 
++    void movd(FPRegisterID fd, FPRegisterID fs)
++    {
++        emitInst(0x46200006 | (fd << OP_SH_FD) | (fs << OP_SH_FS));
++    }
++
++    void negd(FPRegisterID fd, FPRegisterID fs)
++    {
++        emitInst(0x46200007 | (fd << OP_SH_FD) | (fs << OP_SH_FS));
++    }
++
+     void truncwd(FPRegisterID fd, FPRegisterID fs)
+     {
+         emitInst(0x4620000d | (fd << OP_SH_FD) | (fs << OP_SH_FS));
+@@ -619,9 +631,24 @@ public:
+         return m_buffer.label();
+     }
+ 
++    AssemblerLabel labelForWatchpoint()
++    {
++        AssemblerLabel result = m_buffer.label();
++        if (static_cast<int>(result.m_offset) != m_indexOfLastWatchpoint)
++            result = label();
++        m_indexOfLastWatchpoint = result.m_offset;
++        m_indexOfTailOfLastWatchpoint = result.m_offset + maxJumpReplacementSize();
++        return result;
++    }
++
+     AssemblerLabel label()
+     {
+-        return m_buffer.label();
++        AssemblerLabel result = m_buffer.label();
++        while (UNLIKELY(static_cast<int>(result.m_offset) < m_indexOfTailOfLastWatchpoint)) {
++            nop();
++            result = m_buffer.label();
++        }
++        return result;
+     }
+ 
+     AssemblerLabel align(int alignment)
+@@ -664,14 +691,24 @@ public:
+     // Assembly helpers for moving data between fp and registers.
+     void vmov(RegisterID rd1, RegisterID rd2, FPRegisterID rn)
+     {
++#if WTF_MIPS_ISA_REV(2) && WTF_MIPS_FP64
++        mfc1(rd1, rn);
++        mfhc1(rd2, rn);
++#else
+         mfc1(rd1, rn);
+         mfc1(rd2, FPRegisterID(rn + 1));
++#endif
+     }
+ 
+     void vmov(FPRegisterID rd, RegisterID rn1, RegisterID rn2)
+     {
++#if WTF_MIPS_ISA_REV(2) && WTF_MIPS_FP64
++        mtc1(rn1, rd);
++        mthc1(rn2, rd);
++#else
+         mtc1(rn1, rd);
+         mtc1(rn2, FPRegisterID(rd + 1));
++#endif
+     }
+ 
+     static unsigned getCallReturnOffset(AssemblerLabel call)
+@@ -688,6 +725,35 @@ public:
+     // writable region of memory; to modify the code in an execute-only execuable
+     // pool the 'repatch' and 'relink' methods should be used.
+ 
++    static size_t linkDirectJump(void* code, void* to)
++    {
++        MIPSWord* insn = reinterpret_cast<MIPSWord*>(reinterpret_cast<intptr_t>(code));
++        size_t ops = 0;
++        int32_t slotAddr = reinterpret_cast<int>(insn) + 4;
++        int32_t toAddr = reinterpret_cast<int>(to);
++
++        if ((slotAddr & 0xf0000000) != (toAddr & 0xf0000000)) {
++            // lui
++            *insn = 0x3c000000 | (MIPSRegisters::t9 << OP_SH_RT) | ((toAddr >> 16) & 0xffff);
++            ++insn;
++            // ori
++            *insn = 0x34000000 | (MIPSRegisters::t9 << OP_SH_RT) | (MIPSRegisters::t9 << OP_SH_RS) | (toAddr & 0xffff);
++            ++insn;
++            // jr
++            *insn = 0x00000008 | (MIPSRegisters::t9 << OP_SH_RS);
++            ++insn;
++            ops = 4 * sizeof(MIPSWord);
++        } else {
++            // j
++            *insn = 0x08000000 | ((toAddr & 0x0fffffff) >> 2);
++            ++insn;
++            ops = 2 * sizeof(MIPSWord);
++        }
++        // nop
++        *insn = 0x00000000;
++        return ops;
++    }
++
+     void linkJump(AssemblerLabel from, AssemblerLabel to)
+     {
+         ASSERT(to.isSet());
+@@ -825,29 +891,36 @@ public:
+ #endif
+     }
+ 
+-    static void revertJumpToMove(void* instructionStart, RegisterID rt, int imm)
++    static ptrdiff_t maxJumpReplacementSize()
+     {
+-        MIPSWord* insn = static_cast<MIPSWord*>(instructionStart) + 1;
+-        ASSERT((*insn & 0xfc000000) == 0x34000000);
+-        *insn = (*insn & 0xfc1f0000) | (imm & 0xffff);
+-        cacheFlush(insn, sizeof(MIPSWord));
++        return sizeof(MIPSWord) * 4;
+     }
+ 
+-    static void replaceWithJump(void* instructionStart, void* to)
++    static void revertJumpToMove(void* instructionStart, RegisterID rt, int imm)
+     {
+-        MIPSWord* instruction = reinterpret_cast<MIPSWord*>(instructionStart);
+-        intptr_t jumpTo = reinterpret_cast<intptr_t>(to);
++        MIPSWord* insn = static_cast<MIPSWord*>(instructionStart);
++        size_t codeSize = 2 * sizeof(MIPSWord);
+ 
+         // lui
+-        instruction[0] = 0x3c000000 | (MIPSRegisters::t9 << OP_SH_RT) | ((jumpTo >> 16) & 0xffff);
++        *insn = 0x3c000000 | (rt << OP_SH_RT) | ((imm >> 16) & 0xffff);
++        ++insn;
+         // ori
+-        instruction[1] = 0x34000000 | (MIPSRegisters::t9 << OP_SH_RT) | (MIPSRegisters::t9 << OP_SH_RS) | (jumpTo & 0xffff);
+-        // jr
+-        instruction[2] = 0x00000008 | (MIPSRegisters::t9 << OP_SH_RS);
+-        // nop
+-        instruction[3] = 0x0;
++        *insn = 0x34000000 | (rt << OP_SH_RS) | (rt << OP_SH_RT) | (imm & 0xffff);
++        ++insn;
++        // if jr $t9
++        if (*insn == 0x03200008) {
++            *insn = 0x00000000;
++            codeSize += sizeof(MIPSWord);
++        }
++        cacheFlush(insn, codeSize);
++    }
+ 
+-        cacheFlush(instruction, sizeof(MIPSWord) * 4);
++    static void replaceWithJump(void* instructionStart, void* to)
++    {
++        ASSERT(!(bitwise_cast<uintptr_t>(instructionStart) & 3));
++        ASSERT(!(bitwise_cast<uintptr_t>(to) & 3));
++        size_t ops = linkDirectJump(instructionStart, to);
++        cacheFlush(instructionStart, ops);
+     }
+ 
+     static void replaceWithLoad(void* instructionStart)
+@@ -1023,6 +1096,8 @@ private:
+ 
+     AssemblerBuffer m_buffer;
+     Jumps m_jumps;
++    int m_indexOfLastWatchpoint;
++    int m_indexOfTailOfLastWatchpoint;
+ };
+ 
+ } // namespace JSC
+diff --git a/Source/JavaScriptCore/assembler/MacroAssembler.h b/Source/JavaScriptCore/assembler/MacroAssembler.h
+index 60a93db..1f0c3de 100644
+--- a/Source/JavaScriptCore/assembler/MacroAssembler.h
++++ b/Source/JavaScriptCore/assembler/MacroAssembler.h
+@@ -200,6 +200,13 @@ public:
+     }
+ #endif
+     
++#if CPU(MIPS)
++    void poke(FPRegisterID src, int index = 0)
++    {
++        ASSERT(!(index & 1));
++        storeDouble(src, addressForPoke(index));
++    }
++#endif
+ 
+     // Backwards banches, these are currently all implemented using existing forwards branch mechanisms.
+     void branchPtr(RelationalCondition cond, RegisterID op1, TrustedImmPtr imm, Label target)
+diff --git a/Source/JavaScriptCore/assembler/MacroAssemblerMIPS.h b/Source/JavaScriptCore/assembler/MacroAssemblerMIPS.h
+index 43ad434..4f14960 100644
+--- a/Source/JavaScriptCore/assembler/MacroAssemblerMIPS.h
++++ b/Source/JavaScriptCore/assembler/MacroAssemblerMIPS.h
+@@ -114,6 +114,11 @@ public:
+         m_assembler.addu(dest, dest, src);
+     }
+ 
++    void add32(RegisterID op1, RegisterID op2, RegisterID dest)
++    {
++        m_assembler.addu(dest, op1, op2);
++    }
++
+     void add32(TrustedImm32 imm, RegisterID dest)
+     {
+         add32(imm, dest, dest);
+@@ -267,6 +272,11 @@ public:
+         m_assembler.andInsn(dest, dest, src);
+     }
+ 
++    void and32(RegisterID op1, RegisterID op2, RegisterID dest)
++    {
++        m_assembler.andInsn(dest, op1, op2);
++    }
++
+     void and32(TrustedImm32 imm, RegisterID dest)
+     {
+         if (!imm.m_value && !m_fixedWidth)
+@@ -283,9 +293,16 @@ public:
+         }
+     }
+ 
+-    void lshift32(TrustedImm32 imm, RegisterID dest)
++    void and32(TrustedImm32 imm, RegisterID src, RegisterID dest)
+     {
+-        m_assembler.sll(dest, dest, imm.m_value);
++        if (!imm.m_value && !m_fixedWidth)
++            move(MIPSRegisters::zero, dest);
++        else if (imm.m_value > 0 && imm.m_value < 65535 && !m_fixedWidth)
++            m_assembler.andi(dest, src, imm.m_value);
++        else {
++            move(imm, immTempRegister);
++            m_assembler.andInsn(dest, src, immTempRegister);
++        }
+     }
+ 
+     void lshift32(RegisterID shiftAmount, RegisterID dest)
+@@ -293,11 +310,33 @@ public:
+         m_assembler.sllv(dest, dest, shiftAmount);
+     }
+ 
++    void lshift32(RegisterID src, RegisterID shiftAmount, RegisterID dest)
++    {
++        m_assembler.sllv(dest, src, shiftAmount);
++    }
++
++    void lshift32(TrustedImm32 imm, RegisterID dest)
++    {
++        move(imm, immTempRegister);
++        m_assembler.sllv(dest, dest, immTempRegister);
++    }
++
++    void lshift32(RegisterID src, TrustedImm32 imm, RegisterID dest)
++    {
++        move(imm, immTempRegister);
++        m_assembler.sllv(dest, src, immTempRegister);
++    }
++
+     void mul32(RegisterID src, RegisterID dest)
+     {
+         m_assembler.mul(dest, dest, src);
+     }
+ 
++    void mul32(RegisterID op1, RegisterID op2, RegisterID dest)
++    {
++        m_assembler.mul(dest, op1, op2);
++    }
++
+     void mul32(TrustedImm32 imm, RegisterID src, RegisterID dest)
+     {
+         if (!imm.m_value && !m_fixedWidth)
+@@ -348,6 +387,24 @@ public:
+         m_assembler.orInsn(dest, dest, dataTempRegister);
+     }
+ 
++    void or32(TrustedImm32 imm, RegisterID src, RegisterID dest)
++    {
++        if (!imm.m_value && !m_fixedWidth)
++            return;
++
++        if (imm.m_value > 0 && imm.m_value < 65535 && !m_fixedWidth) {
++            m_assembler.ori(dest, src, imm.m_value);
++            return;
++        }
++
++        /*
++            li      dataTemp, imm
++            or      dest, src, dataTemp
++        */
++        move(imm, dataTempRegister);
++        m_assembler.orInsn(dest, src, dataTempRegister);
++    }
++
+     void or32(RegisterID src, AbsoluteAddress dest)
+     {
+         load32(dest.m_ptr, dataTempRegister);
+@@ -360,6 +417,11 @@ public:
+         m_assembler.srav(dest, dest, shiftAmount);
+     }
+ 
++    void rshift32(RegisterID src, RegisterID shiftAmount, RegisterID dest)
++    {
++        m_assembler.srav(dest, src, shiftAmount);
++    }
++
+     void rshift32(TrustedImm32 imm, RegisterID dest)
+     {
+         m_assembler.sra(dest, dest, imm.m_value);
+@@ -375,16 +437,31 @@ public:
+         m_assembler.srlv(dest, dest, shiftAmount);
+     }
+ 
++    void urshift32(RegisterID src, RegisterID shiftAmount, RegisterID dest)
++    {
++        m_assembler.srlv(dest, src, shiftAmount);
++    }
++
+     void urshift32(TrustedImm32 imm, RegisterID dest)
+     {
+         m_assembler.srl(dest, dest, imm.m_value);
+     }
+ 
++    void urshift32(RegisterID src, TrustedImm32 imm, RegisterID dest)
++    {
++        m_assembler.srl(dest, src, imm.m_value);
++    }
++
+     void sub32(RegisterID src, RegisterID dest)
+     {
+         m_assembler.subu(dest, dest, src);
+     }
+ 
++    void sub32(RegisterID op1, RegisterID op2, RegisterID dest)
++    {
++        m_assembler.subu(dest, op1, op2);
++    }
++
+     void sub32(TrustedImm32 imm, RegisterID dest)
+     {
+         if (imm.m_value >= -32767 && imm.m_value <= 32768
+@@ -495,6 +572,11 @@ public:
+         m_assembler.xorInsn(dest, dest, src);
+     }
+ 
++    void xor32(RegisterID op1, RegisterID op2, RegisterID dest)
++    {
++        m_assembler.xorInsn(dest, op1, op2);
++    }
++
+     void xor32(TrustedImm32 imm, RegisterID dest)
+     {
+         if (imm.m_value == -1) {
+@@ -510,6 +592,21 @@ public:
+         m_assembler.xorInsn(dest, dest, immTempRegister);
+     }
+ 
++    void xor32(TrustedImm32 imm, RegisterID src, RegisterID dest)
++    {
++        if (imm.m_value == -1) {
++            m_assembler.nor(dest, src, MIPSRegisters::zero);
++            return;
++        }
++
++        /*
++            li  immTemp, imm
++            xor dest, dest, immTemp
++        */
++        move(imm, immTempRegister);
++        m_assembler.xorInsn(dest, src, immTempRegister);
++    }
++
+     void sqrtDouble(FPRegisterID src, FPRegisterID dst)
+     {
+         m_assembler.sqrtd(dst, src);
+@@ -989,6 +1086,44 @@ public:
+         }
+     }
+ 
++    void store32(TrustedImm32 imm, BaseIndex address)
++    {
++        if (address.offset >= -32768 && address.offset <= 32767 && !m_fixedWidth) {
++            /*
++                sll     addrTemp, address.index, address.scale
++                addu    addrTemp, addrTemp, address.base
++                sw      src, address.offset(addrTemp)
++            */
++            m_assembler.sll(addrTempRegister, address.index, address.scale);
++            m_assembler.addu(addrTempRegister, addrTempRegister, address.base);
++            if (!imm.m_value)
++                m_assembler.sw(MIPSRegisters::zero, addrTempRegister, address.offset);
++            else {
++                move(imm, immTempRegister);
++                m_assembler.sw(immTempRegister, addrTempRegister, address.offset);
++            }
++        } else {
++            /*
++                sll     addrTemp, address.index, address.scale
++                addu    addrTemp, addrTemp, address.base
++                lui     immTemp, (address.offset + 0x8000) >> 16
++                addu    addrTemp, addrTemp, immTemp
++                sw      src, (address.offset & 0xffff)(at)
++            */
++            m_assembler.sll(addrTempRegister, address.index, address.scale);
++            m_assembler.addu(addrTempRegister, addrTempRegister, address.base);
++            m_assembler.lui(immTempRegister, (address.offset + 0x8000) >> 16);
++            m_assembler.addu(addrTempRegister, addrTempRegister, immTempRegister);
++            if (!imm.m_value && !m_fixedWidth)
++                m_assembler.sw(MIPSRegisters::zero, addrTempRegister, address.offset);
++            else {
++                move(imm, immTempRegister);
++                m_assembler.sw(immTempRegister, addrTempRegister, address.offset);
++            }
++        }
++    }
++
++
+     void store32(RegisterID src, const void* address)
+     {
+         /*
+@@ -1336,6 +1471,15 @@ public:
+         m_fixedWidth = false;
+     }
+ 
++    void jump(AbsoluteAddress address)
++    {
++        m_fixedWidth = true;
++        load32(address.m_ptr, MIPSRegisters::t9);
++        m_assembler.jr(MIPSRegisters::t9);
++        m_assembler.nop();
++        m_fixedWidth = false;
++    }
++
+     void moveDoubleToInts(FPRegisterID src, RegisterID dest1, RegisterID dest2)
+     {
+         m_assembler.vmov(dest1, dest2, src);
+@@ -1404,6 +1548,53 @@ public:
+         return Jump();
+     }
+ 
++    Jump branchAdd32(ResultCondition cond, RegisterID op1, RegisterID op2, RegisterID dest)
++    {
++        ASSERT((cond == Overflow) || (cond == Signed) || (cond == Zero) || (cond == NonZero));
++        if (cond == Overflow) {
++            /*
++                move    dataTemp, op1
++                xor     cmpTemp, dataTemp, op2
++                bltz    cmpTemp, No_overflow    # diff sign bit -> no overflow
++                addu    dest, dataTemp, op2
++                xor     cmpTemp, dest, dataTemp
++                bgez    cmpTemp, No_overflow    # same sign big -> no overflow
++                nop
++                b       Overflow
++                nop
++                nop
++                nop
++                nop
++                nop
++            No_overflow:
++            */
++            move(op1, dataTempRegister);
++            m_assembler.xorInsn(cmpTempRegister, dataTempRegister, op2);
++            m_assembler.bltz(cmpTempRegister, 10);
++            m_assembler.addu(dest, dataTempRegister, op2);
++            m_assembler.xorInsn(cmpTempRegister, dest, dataTempRegister);
++            m_assembler.bgez(cmpTempRegister, 7);
++            m_assembler.nop();
++            return jump();
++        }
++        if (cond == Signed) {
++            add32(op1, op2, dest);
++            // Check if dest is negative.
++            m_assembler.slt(cmpTempRegister, dest, MIPSRegisters::zero);
++            return branchNotEqual(cmpTempRegister, MIPSRegisters::zero);
++        }
++        if (cond == Zero) {
++            add32(op1, op2, dest);
++            return branchEqual(dest, MIPSRegisters::zero);
++        }
++        if (cond == NonZero) {
++            add32(op1, op2, dest);
++            return branchNotEqual(dest, MIPSRegisters::zero);
++        }
++        ASSERT(0);
++        return Jump();
++    }
++
+     Jump branchAdd32(ResultCondition cond, TrustedImm32 imm, RegisterID dest)
+     {
+         move(imm, immTempRegister);
+@@ -1417,6 +1608,111 @@ public:
+         return branchAdd32(cond, immTempRegister, dest);
+     }
+ 
++    Jump branchAdd32(ResultCondition cond, TrustedImm32 imm, AbsoluteAddress dest)
++    {
++        ASSERT((cond == Overflow) || (cond == Signed) || (cond == Zero) || (cond == NonZero));
++        if (cond == Overflow) {
++            /*
++                move    dataTemp, dest
++                xori    cmpTemp, dataTemp, imm
++                bltz    cmpTemp, No_overflow    # diff sign bit -> no overflow
++                addiu   dataTemp, dataTemp, imm
++                move    dest, dataTemp
++                xori    cmpTemp, dataTemp, imm
++                bgez    cmpTemp, No_overflow    # same sign big -> no overflow
++                nop
++                b       Overflow
++                nop
++                nop
++                nop
++                nop
++                nop
++            No_overflow:
++            */
++            if (imm.m_value >= -32768 && imm.m_value  <= 32767 && !m_fixedWidth) {
++                load32(dest.m_ptr, dataTempRegister);
++                m_assembler.xori(cmpTempRegister, dataTempRegister, imm.m_value);
++                m_assembler.bltz(cmpTempRegister, 10);
++                m_assembler.addiu(dataTempRegister, dataTempRegister, imm.m_value);
++                store32(dataTempRegister, dest.m_ptr);
++                m_assembler.xori(cmpTempRegister, dataTempRegister, imm.m_value);
++                m_assembler.bgez(cmpTempRegister, 7);
++                m_assembler.nop();
++            } else {
++                load32(dest.m_ptr, dataTempRegister);
++                move(imm, immTempRegister);
++                m_assembler.xorInsn(cmpTempRegister, dataTempRegister, immTempRegister);
++                m_assembler.bltz(cmpTempRegister, 10);
++                m_assembler.addiu(dataTempRegister, dataTempRegister, immTempRegister);
++                store32(dataTempRegister, dest.m_ptr);
++                m_assembler.xori(cmpTempRegister, dataTempRegister, immTempRegister);
++                m_assembler.bgez(cmpTempRegister, 7);
++                m_assembler.nop();
++            }
++            return jump();
++        }
++        move(imm, immTempRegister);
++        load32(dest.m_ptr, dataTempRegister);
++        add32(immTempRegister, dataTempRegister);
++        store32(dataTempRegister, dest.m_ptr);
++        if (cond == Signed) {
++            // Check if dest is negative.
++            m_assembler.slt(cmpTempRegister, dataTempRegister, MIPSRegisters::zero);
++            return branchNotEqual(cmpTempRegister, MIPSRegisters::zero);
++        }
++        if (cond == Zero)
++            return branchEqual(dataTempRegister, MIPSRegisters::zero);
++        if (cond == NonZero)
++            return branchNotEqual(dataTempRegister, MIPSRegisters::zero);
++        ASSERT(0);
++        return Jump();
++    }
++
++    Jump branchMul32(ResultCondition cond, RegisterID src1, RegisterID src2, RegisterID dest)
++    {
++        ASSERT((cond == Overflow) || (cond == Signed) || (cond == Zero) || (cond == NonZero));
++        if (cond == Overflow) {
++            /*
++                mult    src, dest
++                mfhi    dataTemp
++                mflo    dest
++                sra     addrTemp, dest, 31
++                beq     dataTemp, addrTemp, No_overflow # all sign bits (bit 63 to bit 31) are the same -> no overflow
++                nop
++                b       Overflow
++                nop
++                nop
++                nop
++                nop
++                nop
++            No_overflow:
++            */
++            m_assembler.mult(src1, src2);
++            m_assembler.mfhi(dataTempRegister);
++            m_assembler.mflo(dest);
++            m_assembler.sra(addrTempRegister, dest, 31);
++            m_assembler.beq(dataTempRegister, addrTempRegister, 7);
++            m_assembler.nop();
++            return jump();
++        }
++        if (cond == Signed) {
++            mul32(src1, src2, dest);
++            // Check if dest is negative.
++            m_assembler.slt(cmpTempRegister, dest, MIPSRegisters::zero);
++            return branchNotEqual(cmpTempRegister, MIPSRegisters::zero);
++        }
++        if (cond == Zero) {
++            mul32(src1, src2, dest);
++            return branchEqual(dest, MIPSRegisters::zero);
++        }
++        if (cond == NonZero) {
++            mul32(src1, src2, dest);
++            return branchNotEqual(dest, MIPSRegisters::zero);
++        }
++        ASSERT(0);
++        return Jump();
++    }
++
+     Jump branchMul32(ResultCondition cond, RegisterID src, RegisterID dest)
+     {
+         ASSERT((cond == Overflow) || (cond == Signed) || (cond == Zero) || (cond == NonZero));
+@@ -1465,8 +1761,7 @@ public:
+     Jump branchMul32(ResultCondition cond, TrustedImm32 imm, RegisterID src, RegisterID dest)
+     {
+         move(imm, immTempRegister);
+-        move(src, dest);
+-        return branchMul32(cond, immTempRegister, dest);
++        return branchMul32(cond, immTempRegister, src, dest);
+     }
+ 
+     Jump branchSub32(ResultCondition cond, RegisterID src, RegisterID dest)
+@@ -1525,8 +1820,60 @@ public:
+     Jump branchSub32(ResultCondition cond, RegisterID src, TrustedImm32 imm, RegisterID dest)
+     {
+         move(imm, immTempRegister);
+-        move(src, dest);
+-        return branchSub32(cond, immTempRegister, dest);
++        return branchSub32(cond, src, immTempRegister, dest);
++    }
++
++    Jump branchSub32(ResultCondition cond, RegisterID op1, RegisterID op2, RegisterID dest)
++    {
++        ASSERT((cond == Overflow) || (cond == Signed) || (cond == Zero) || (cond == NonZero));
++        if (cond == Overflow) {
++            /*
++                move    dataTemp, op1
++                xor     cmpTemp, dataTemp, op2
++                bgez    cmpTemp, No_overflow    # same sign bit -> no overflow
++                subu    dest, dataTemp, op2
++                xor     cmpTemp, dest, dataTemp
++                bgez    cmpTemp, No_overflow    # same sign bit -> no overflow
++                nop
++                b       Overflow
++                nop
++                nop
++                nop
++                nop
++                nop
++            No_overflow:
++            */
++            move(op1, dataTempRegister);
++            m_assembler.xorInsn(cmpTempRegister, dataTempRegister, op2);
++            m_assembler.bgez(cmpTempRegister, 10);
++            m_assembler.subu(dest, dataTempRegister, op2);
++            m_assembler.xorInsn(cmpTempRegister, dest, dataTempRegister);
++            m_assembler.bgez(cmpTempRegister, 7);
++            m_assembler.nop();
++            return jump();
++        }
++        if (cond == Signed) {
++            sub32(op1, op2, dest);
++            // Check if dest is negative.
++            m_assembler.slt(cmpTempRegister, dest, MIPSRegisters::zero);
++            return branchNotEqual(cmpTempRegister, MIPSRegisters::zero);
++        }
++        if (cond == Zero) {
++            sub32(op1, op2, dest);
++            return branchEqual(dest, MIPSRegisters::zero);
++        }
++        if (cond == NonZero) {
++            sub32(op1, op2, dest);
++            return branchNotEqual(dest, MIPSRegisters::zero);
++        }
++        ASSERT(0);
++        return Jump();
++    }
++
++    Jump branchNeg32(ResultCondition cond, RegisterID srcDest)
++    {
++        m_assembler.li(dataTempRegister, -1);
++        return branchMul32(cond, dataTempRegister, srcDest);
+     }
+ 
+     Jump branchOr32(ResultCondition cond, RegisterID src, RegisterID dest)
+@@ -1578,7 +1925,8 @@ public:
+ 
+     Call call(RegisterID target)
+     {
+-        m_assembler.jalr(target);
++        move(target, MIPSRegisters::t9);
++        m_assembler.jalr(MIPSRegisters::t9);
+         m_assembler.nop();
+         return Call(m_assembler.label(), Call::None);
+     }
+@@ -1822,7 +2170,7 @@ public:
+                 lui     immTemp, (address.offset + 0x8000) >> 16
+                 addu    addrTemp, addrTemp, immTemp
+                 lwc1    dest, (address.offset & 0xffff)(at)
+-                lwc1    dest+4, (address.offset & 0xffff + 4)(at)
++                lwc1    dest+1, (address.offset & 0xffff + 4)(at)
+             */
+             m_assembler.sll(addrTempRegister, address.index, address.scale);
+             m_assembler.addu(addrTempRegister, addrTempRegister, address.base);
+@@ -2009,6 +2357,19 @@ public:
+ #endif
+     }
+ 
++    void moveDouble(FPRegisterID src, FPRegisterID dest)
++    {
++        if (src != dest || m_fixedWidth)
++            m_assembler.movd(dest, src);
++    }
++
++    void swapDouble(FPRegisterID fr1, FPRegisterID fr2)
++    {
++        moveDouble(fr1, fpTempRegister);
++        moveDouble(fr2, fr1);
++        moveDouble(fpTempRegister, fr2);
++    }
++
+     void addDouble(FPRegisterID src, FPRegisterID dest)
+     {
+         m_assembler.addd(dest, dest, src);
+@@ -2036,6 +2397,11 @@ public:
+         m_assembler.subd(dest, dest, src);
+     }
+ 
++    void subDouble(FPRegisterID op1, FPRegisterID op2, FPRegisterID dest)
++    {
++        m_assembler.subd(dest, op1, op2);
++    }
++
+     void subDouble(Address src, FPRegisterID dest)
+     {
+         loadDouble(src, fpTempRegister);
+@@ -2053,11 +2419,32 @@ public:
+         m_assembler.muld(dest, dest, fpTempRegister);
+     }
+ 
++    void mulDouble(FPRegisterID op1, FPRegisterID op2, FPRegisterID dest)
++    {
++        m_assembler.muld(dest, op1, op2);
++    }
++
+     void divDouble(FPRegisterID src, FPRegisterID dest)
+     {
+         m_assembler.divd(dest, dest, src);
+     }
+ 
++    void divDouble(FPRegisterID op1, FPRegisterID op2, FPRegisterID dest)
++    {
++        m_assembler.divd(dest, op1, op2);
++    }
++
++    void divDouble(Address src, FPRegisterID dest)
++    {
++        loadDouble(src, fpTempRegister);
++        m_assembler.divd(dest, dest, fpTempRegister);
++    }
++
++    void negateDouble(FPRegisterID src, FPRegisterID dest)
++    {
++        m_assembler.negd(dest, src);
++    }
++
+     void convertInt32ToDouble(RegisterID src, FPRegisterID dest)
+     {
+         m_assembler.mtc1(src, fpTempRegister);
+@@ -2117,6 +2504,8 @@ public:
+ 
+     Jump branchEqual(RegisterID rs, RegisterID rt)
+     {
++        m_assembler.nop();
++        m_assembler.nop();
+         m_assembler.appendJump();
+         m_assembler.beq(rs, rt, 0);
+         m_assembler.nop();
+@@ -2126,6 +2515,8 @@ public:
+ 
+     Jump branchNotEqual(RegisterID rs, RegisterID rt)
+     {
++        m_assembler.nop();
++        m_assembler.nop();
+         m_assembler.appendJump();
+         m_assembler.bne(rs, rt, 0);
+         m_assembler.nop();
+@@ -2192,11 +2583,33 @@ public:
+     // If the result is not representable as a 32 bit value, branch.
+     // May also branch for some values that are representable in 32 bits
+     // (specifically, in this case, INT_MAX 0x7fffffff).
+-    Jump branchTruncateDoubleToInt32(FPRegisterID src, RegisterID dest)
++    enum BranchTruncateType { BranchIfTruncateFailed, BranchIfTruncateSuccessful };
++    Jump branchTruncateDoubleToInt32(FPRegisterID src, RegisterID dest, BranchTruncateType branchType = BranchIfTruncateFailed)
++    {
++        m_assembler.truncwd(fpTempRegister, src);
++        m_assembler.mfc1(dest, fpTempRegister);
++        return branch32(branchType == BranchIfTruncateFailed ? Equal : NotEqual, dest, TrustedImm32(0x7fffffff));
++    }
++
++    Jump branchTruncateDoubleToUint32(FPRegisterID src, RegisterID dest, BranchTruncateType branchType = BranchIfTruncateFailed)
++    {
++        m_assembler.truncwd(fpTempRegister, src);
++        m_assembler.mfc1(dest, fpTempRegister);
++        return branch32(branchType == BranchIfTruncateFailed ? Equal : NotEqual, dest, TrustedImm32(0));
++    }
++
++    // Result is undefined if the value is outside of the integer range.
++    void truncateDoubleToInt32(FPRegisterID src, RegisterID dest)
++    {
++        m_assembler.truncwd(fpTempRegister, src);
++        m_assembler.mfc1(dest, fpTempRegister);
++    }
++
++    // Result is undefined if src > 2^31
++    void truncateDoubleToUint32(FPRegisterID src, RegisterID dest)
+     {
+         m_assembler.truncwd(fpTempRegister, src);
+         m_assembler.mfc1(dest, fpTempRegister);
+-        return branch32(Equal, dest, TrustedImm32(0x7fffffff));
+     }
+ 
+     // Convert 'src' to an integer, and places the resulting 'dest'.
+@@ -2218,28 +2631,43 @@ public:
+ 
+     Jump branchDoubleNonZero(FPRegisterID reg, FPRegisterID scratch)
+     {
+-#if WTF_MIPS_ISA_REV(2) && WTF_MIPS_FP64
+-        m_assembler.mtc1(MIPSRegisters::zero, scratch);
+-        m_assembler.mthc1(MIPSRegisters::zero, scratch);
+-#else
+-        m_assembler.mtc1(MIPSRegisters::zero, scratch);
+-        m_assembler.mtc1(MIPSRegisters::zero, FPRegisterID(scratch + 1));
+-#endif
++        m_assembler.vmov(scratch, MIPSRegisters::zero, MIPSRegisters::zero);
+         return branchDouble(DoubleNotEqual, reg, scratch);
+     }
+ 
+     Jump branchDoubleZeroOrNaN(FPRegisterID reg, FPRegisterID scratch)
+     {
+-#if WTF_MIPS_ISA_REV(2) && WTF_MIPS_FP64
+-        m_assembler.mtc1(MIPSRegisters::zero, scratch);
+-        m_assembler.mthc1(MIPSRegisters::zero, scratch);
+-#else
+-        m_assembler.mtc1(MIPSRegisters::zero, scratch);
+-        m_assembler.mtc1(MIPSRegisters::zero, FPRegisterID(scratch + 1));
+-#endif
++        m_assembler.vmov(scratch, MIPSRegisters::zero, MIPSRegisters::zero);
+         return branchDouble(DoubleEqualOrUnordered, reg, scratch);
+     }
+ 
++    // Invert a relational condition, e.g. == becomes !=, < becomes >=, etc.
++    static RelationalCondition invert(RelationalCondition cond)
++    {
++        RelationalCondition r;
++        if (cond == Equal)
++            r = NotEqual;
++        else if (cond == NotEqual)
++            r = Equal;
++        else if (cond == Above)
++            r = BelowOrEqual;
++        else if (cond == AboveOrEqual)
++            r = Below;
++        else if (cond == Below)
++            r = AboveOrEqual;
++        else if (cond == BelowOrEqual)
++            r = Above;
++        else if (cond == GreaterThan)
++            r = LessThanOrEqual;
++        else if (cond == GreaterThanOrEqual)
++            r = LessThan;
++        else if (cond == LessThan)
++            r = GreaterThanOrEqual;
++        else if (cond == LessThanOrEqual)
++            r = GreaterThan;
++        return r;
++    }
++
+     void nop()
+     {
+         m_assembler.nop();
+@@ -2252,12 +2680,12 @@ public:
+ 
+     static void replaceWithJump(CodeLocationLabel instructionStart, CodeLocationLabel destination)
+     {
+-        RELEASE_ASSERT_NOT_REACHED();
++        MIPSAssembler::replaceWithJump(instructionStart.dataLocation(), destination.dataLocation());
+     }
+     
+     static ptrdiff_t maxJumpReplacementSize()
+     {
+-        RELEASE_ASSERT_NOT_REACHED();
++        MIPSAssembler::maxJumpReplacementSize();
+         return 0;
+     }
+ 
+diff --git a/Source/JavaScriptCore/dfg/DFGAssemblyHelpers.h b/Source/JavaScriptCore/dfg/DFGAssemblyHelpers.h
+index fa0f5e0..573d8dc 100644
+--- a/Source/JavaScriptCore/dfg/DFGAssemblyHelpers.h
++++ b/Source/JavaScriptCore/dfg/DFGAssemblyHelpers.h
+@@ -93,6 +93,23 @@ public:
+     }
+ #endif
+ 
++#if CPU(MIPS)
++    ALWAYS_INLINE void preserveReturnAddressAfterCall(RegisterID reg)
++    {
++        move(returnAddressRegister, reg);
++    }
++
++    ALWAYS_INLINE void restoreReturnAddressBeforeReturn(RegisterID reg)
++    {
++        move(reg, returnAddressRegister);
++    }
++
++    ALWAYS_INLINE void restoreReturnAddressBeforeReturn(Address address)
++    {
++        loadPtr(address, returnAddressRegister);
++    }
++#endif
++
+     void emitGetFromCallFrameHeaderPtr(JSStack::CallFrameHeaderEntry entry, GPRReg to)
+     {
+         loadPtr(Address(GPRInfo::callFrameRegister, entry * sizeof(Register)), to);
+@@ -193,7 +210,7 @@ public:
+         move(TrustedImmPtr(scratchBuffer->activeLengthPtr()), GPRInfo::regT0);
+         storePtr(TrustedImmPtr(scratchSize), GPRInfo::regT0);
+ 
+-#if CPU(X86_64) || CPU(ARM)
++#if CPU(X86_64) || CPU(ARM) || CPU(MIPS)
+         move(TrustedImmPtr(buffer), GPRInfo::argumentGPR2);
+         move(TrustedImmPtr(argument), GPRInfo::argumentGPR1);
+         move(GPRInfo::callFrameRegister, GPRInfo::argumentGPR0);
+diff --git a/Source/JavaScriptCore/dfg/DFGCCallHelpers.h b/Source/JavaScriptCore/dfg/DFGCCallHelpers.h
+index 8adde05..3d99f6f 100644
+--- a/Source/JavaScriptCore/dfg/DFGCCallHelpers.h
++++ b/Source/JavaScriptCore/dfg/DFGCCallHelpers.h
+@@ -576,6 +576,39 @@ public:
+         poke(GPRInfo::nonArgGPR0);
+     }
+ #endif // CPU(ARM_HARDFP)
++#elif CPU(MIPS)
++    ALWAYS_INLINE void setupArguments(FPRReg arg1)
++    {
++        moveDouble(arg1, FPRInfo::argumentFPR0);
++    }
++
++    ALWAYS_INLINE void setupArguments(FPRReg arg1, FPRReg arg2)
++    {
++        if (arg2 != FPRInfo::argumentFPR0) {
++            moveDouble(arg1, FPRInfo::argumentFPR0);
++            moveDouble(arg2, FPRInfo::argumentFPR1);
++        } else if (arg1 != FPRInfo::argumentFPR1) {
++            moveDouble(arg2, FPRInfo::argumentFPR1);
++            moveDouble(arg1, FPRInfo::argumentFPR0);
++        } else {
++            // Swap arg1, arg2.
++            swapDouble(FPRInfo::argumentFPR0, FPRInfo::argumentFPR1);
++        }
++    }
++
++    ALWAYS_INLINE void setupArgumentsWithExecState(FPRReg arg1, GPRReg arg2)
++    {
++        assembler().vmov(GPRInfo::argumentGPR2, GPRInfo::argumentGPR3, arg1);
++        move(GPRInfo::callFrameRegister, GPRInfo::argumentGPR0);
++        poke(arg2, 4);
++    }
++
++    ALWAYS_INLINE void setupArgumentsWithExecState(GPRReg arg1, GPRReg arg2, FPRReg arg3)
++    {
++        setupStubArguments(arg1, arg2);
++        move(GPRInfo::callFrameRegister, GPRInfo::argumentGPR0);
++        poke(arg3, 4);
++    }
+ #else
+ #error "DFG JIT not supported on this platform."
+ #endif
+@@ -803,119 +836,126 @@ public:
+     // These methods are suitable for any calling convention that provides for
+     // exactly 4 argument registers, e.g. ARMv7.
+ #if NUMBER_OF_ARGUMENT_REGISTERS == 4
++
++#if CPU(MIPS)
++#define POKE_ARGUMENT_OFFSET 4
++#else
++#define POKE_ARGUMENT_OFFSET 0
++#endif
++
+     ALWAYS_INLINE void setupArgumentsWithExecState(GPRReg arg1, GPRReg arg2, GPRReg arg3, GPRReg arg4)
+     {
+-        poke(arg4);
++        poke(arg4, POKE_ARGUMENT_OFFSET);
+         setupArgumentsWithExecState(arg1, arg2, arg3);
+     }
+ 
+     ALWAYS_INLINE void setupArgumentsWithExecState(GPRReg arg1, GPRReg arg2, GPRReg arg3, TrustedImm32 arg4)
+     {
+-        poke(arg4);
++        poke(arg4, POKE_ARGUMENT_OFFSET);
+         setupArgumentsWithExecState(arg1, arg2, arg3);
+     }
+ 
+     ALWAYS_INLINE void setupArgumentsWithExecState(GPRReg arg1, TrustedImmPtr arg2, TrustedImm32 arg3, GPRReg arg4)
+     {
+-        poke(arg4);
++        poke(arg4, POKE_ARGUMENT_OFFSET);
+         setupArgumentsWithExecState(arg1, arg2, arg3);
+     }
+ 
+     ALWAYS_INLINE void setupArgumentsWithExecState(GPRReg arg1, TrustedImmPtr arg2, TrustedImm32 arg3, GPRReg arg4, GPRReg arg5)
+     {
+-        poke(arg5, 1);
+-        poke(arg4);
++        poke(arg5, POKE_ARGUMENT_OFFSET + 1);
++        poke(arg4, POKE_ARGUMENT_OFFSET);
+         setupArgumentsWithExecState(arg1, arg2, arg3);
+     }
+ 
+     ALWAYS_INLINE void setupArgumentsWithExecState(GPRReg arg1, GPRReg arg2, TrustedImm32 arg3, TrustedImm32 arg4)
+     {
+-        poke(arg4);
++        poke(arg4, POKE_ARGUMENT_OFFSET);
+         setupArgumentsWithExecState(arg1, arg2, arg3);
+     }
+ 
+     ALWAYS_INLINE void setupArgumentsWithExecState(TrustedImm32 arg1, TrustedImm32 arg2, GPRReg arg3, GPRReg arg4)
+     {
+-        poke(arg4);
++        poke(arg4, POKE_ARGUMENT_OFFSET);
+         setupArgumentsWithExecState(arg1, arg2, arg3);
+     }
+ 
+     ALWAYS_INLINE void setupArgumentsWithExecState(GPRReg arg1, GPRReg arg2, GPRReg arg3, TrustedImmPtr arg4)
+     {
+-        poke(arg4);
++        poke(arg4, POKE_ARGUMENT_OFFSET);
+         setupArgumentsWithExecState(arg1, arg2, arg3);
+     }
+ 
+     ALWAYS_INLINE void setupArgumentsWithExecState(GPRReg arg1, GPRReg arg2, GPRReg arg3, GPRReg arg4, GPRReg arg5)
+     {
+-        poke(arg5, 1);
+-        poke(arg4);
++        poke(arg5, POKE_ARGUMENT_OFFSET + 1);
++        poke(arg4, POKE_ARGUMENT_OFFSET);
+         setupArgumentsWithExecState(arg1, arg2, arg3);
+     }
+ 
+     ALWAYS_INLINE void setupArgumentsWithExecState(TrustedImm32 arg1, GPRReg arg2, GPRReg arg3, GPRReg arg4)
+     {
+-        poke(arg4);
++        poke(arg4, POKE_ARGUMENT_OFFSET);
+         setupArgumentsWithExecState(arg1, arg2, arg3);
+     }
+ 
+     ALWAYS_INLINE void setupArgumentsWithExecState(TrustedImm32 arg1, GPRReg arg2, GPRReg arg3, TrustedImmPtr arg4)
+     {
+-        poke(arg4);
++        poke(arg4, POKE_ARGUMENT_OFFSET);
+         setupArgumentsWithExecState(arg1, arg2, arg3);
+     }
+ 
+     ALWAYS_INLINE void setupArgumentsWithExecState(TrustedImm32 arg1, GPRReg arg2, TrustedImm32 arg3, TrustedImmPtr arg4)
+     {
+-        poke(arg4);
++        poke(arg4, POKE_ARGUMENT_OFFSET);
+         setupArgumentsWithExecState(arg1, arg2, arg3);
+     }
+ 
+     ALWAYS_INLINE void setupArgumentsWithExecState(TrustedImm32 arg1, GPRReg arg2, TrustedImm32 arg3, GPRReg arg4)
+     {
+-        poke(arg4);
++        poke(arg4, POKE_ARGUMENT_OFFSET);
+         setupArgumentsWithExecState(arg1, arg2, arg3);
+     }
+ 
+     ALWAYS_INLINE void setupArgumentsWithExecState(GPRReg arg1, GPRReg arg2, TrustedImm32 arg3, GPRReg arg4, GPRReg arg5)
+     {
+-        poke(arg5, 1);
+-        poke(arg4);
++        poke(arg5, POKE_ARGUMENT_OFFSET + 1);
++        poke(arg4, POKE_ARGUMENT_OFFSET);
+         setupArgumentsWithExecState(arg1, arg2, arg3);
+     }
+ 
+     ALWAYS_INLINE void setupArgumentsWithExecState(GPRReg arg1, GPRReg arg2, TrustedImm32 arg3, GPRReg arg4, TrustedImm32 arg5)
+     {
+-        poke(arg5, 1);
+-        poke(arg4);
++        poke(arg5, POKE_ARGUMENT_OFFSET + 1);
++        poke(arg4, POKE_ARGUMENT_OFFSET);
+         setupArgumentsWithExecState(arg1, arg2, arg3);
+     }
+ 
+     ALWAYS_INLINE void setupArgumentsWithExecState(TrustedImm32 arg1, GPRReg arg2, GPRReg arg3, GPRReg arg4, TrustedImmPtr arg5)
+     {
+-        poke(arg5, 1);
+-        poke(arg4);
++        poke(arg5, POKE_ARGUMENT_OFFSET + 1);
++        poke(arg4, POKE_ARGUMENT_OFFSET);
+         setupArgumentsWithExecState(arg1, arg2, arg3);
+     }
+ 
+     ALWAYS_INLINE void setupArgumentsWithExecState(TrustedImm32 arg1, GPRReg arg2, GPRReg arg3, TrustedImm32 arg4, TrustedImm32 arg5)
+     {
+-        poke(arg5, 1);
+-        poke(arg4);
++        poke(arg5, POKE_ARGUMENT_OFFSET + 1);
++        poke(arg4, POKE_ARGUMENT_OFFSET);
+         setupArgumentsWithExecState(arg1, arg2, arg3);
+     }
+ 
+     ALWAYS_INLINE void setupArgumentsWithExecState(TrustedImm32 arg1, TrustedImm32 arg2, TrustedImm32 arg3, GPRReg arg4, GPRReg arg5)
+     {
+-        poke(arg5, 1);
+-        poke(arg4);
++        poke(arg5, POKE_ARGUMENT_OFFSET + 1);
++        poke(arg4, POKE_ARGUMENT_OFFSET);
+         setupArgumentsWithExecState(arg1, arg2, arg3);
+     }
+ 
+     ALWAYS_INLINE void setupArgumentsWithExecState(TrustedImm32 arg1, GPRReg arg2, GPRReg arg3, GPRReg arg4, GPRReg arg5)
+     {
+-        poke(arg5, 1);
+-        poke(arg4);
++        poke(arg5, POKE_ARGUMENT_OFFSET + 1);
++        poke(arg4, POKE_ARGUMENT_OFFSET);
+         setupArgumentsWithExecState(arg1, arg2, arg3);
+     }
+ 
+diff --git a/Source/JavaScriptCore/dfg/DFGFPRInfo.h b/Source/JavaScriptCore/dfg/DFGFPRInfo.h
+index 17aaa7d..e18ec06 100644
+--- a/Source/JavaScriptCore/dfg/DFGFPRInfo.h
++++ b/Source/JavaScriptCore/dfg/DFGFPRInfo.h
+@@ -164,6 +164,74 @@ public:
+ 
+ #endif
+ 
++#if CPU(MIPS)
++
++class FPRInfo {
++public:
++    typedef FPRReg RegisterType;
++    static const unsigned numberOfRegisters = 6;
++
++    // Temporary registers.
++    static const FPRReg fpRegT0 = MIPSRegisters::f0;
++    static const FPRReg fpRegT1 = MIPSRegisters::f4;
++    static const FPRReg fpRegT2 = MIPSRegisters::f6;
++    static const FPRReg fpRegT3 = MIPSRegisters::f8;
++    static const FPRReg fpRegT4 = MIPSRegisters::f10;
++    static const FPRReg fpRegT5 = MIPSRegisters::f18;
++
++    static const FPRReg returnValueFPR = MIPSRegisters::f0;
++
++    static const FPRReg argumentFPR0 = MIPSRegisters::f12;
++    static const FPRReg argumentFPR1 = MIPSRegisters::f14;
++
++    static FPRReg toRegister(unsigned index)
++    {
++        static const FPRReg registerForIndex[numberOfRegisters] = {
++            fpRegT0, fpRegT1, fpRegT2, fpRegT3, fpRegT4, fpRegT5 };
++
++        ASSERT(index < numberOfRegisters);
++        return registerForIndex[index];
++    }
++
++    static unsigned toIndex(FPRReg reg)
++    {
++        ASSERT(reg != InvalidFPRReg);
++        ASSERT(reg < 20);
++        static const unsigned indexForRegister[20] = {
++            0, InvalidIndex, InvalidIndex, InvalidIndex,
++            1, InvalidIndex, 2, InvalidIndex,
++            3, InvalidIndex, 4, InvalidIndex,
++            InvalidIndex, InvalidIndex, InvalidIndex, InvalidIndex,
++            InvalidIndex, InvalidIndex, 5, InvalidIndex,
++        };
++        unsigned result = indexForRegister[reg];
++        ASSERT(result != InvalidIndex);
++        return result;
++    }
++
++    static const char* debugName(FPRReg reg)
++    {
++        ASSERT(reg != InvalidFPRReg);
++        ASSERT(reg < 32);
++        static const char* nameForRegister[32] = {
++            "f0", "f1", "f2", "f3",
++            "f4", "f5", "f6", "f7",
++            "f8", "f9", "f10", "f11",
++            "f12", "f13", "f14", "f15"
++            "f16", "f17", "f18", "f19"
++            "f20", "f21", "f22", "f23"
++            "f24", "f25", "f26", "f27"
++            "f28", "f29", "f30", "f31"
++        };
++        return nameForRegister[reg];
++    }
++private:
++
++    static const unsigned InvalidIndex = 0xffffffff;
++};
++
++#endif
++
+ typedef RegisterBank<FPRInfo>::iterator fpr_iterator;
+ 
+ } } // namespace JSC::DFG
+diff --git a/Source/JavaScriptCore/dfg/DFGGPRInfo.h b/Source/JavaScriptCore/dfg/DFGGPRInfo.h
+index 3d07556..aa634cd 100644
+--- a/Source/JavaScriptCore/dfg/DFGGPRInfo.h
++++ b/Source/JavaScriptCore/dfg/DFGGPRInfo.h
+@@ -461,6 +461,73 @@ private:
+ 
+ #endif
+ 
++#if CPU(MIPS)
++#define NUMBER_OF_ARGUMENT_REGISTERS 4
++
++class GPRInfo {
++public:
++    typedef GPRReg RegisterType;
++    static const unsigned numberOfRegisters = 6;
++
++    // Temporary registers.
++    static const GPRReg regT0 = MIPSRegisters::v0;
++    static const GPRReg regT1 = MIPSRegisters::v1;
++    static const GPRReg regT2 = MIPSRegisters::t4;
++    static const GPRReg regT3 = MIPSRegisters::t5;
++    static const GPRReg regT4 = MIPSRegisters::t6;
++    static const GPRReg regT5 = MIPSRegisters::t7;
++    // These registers match the baseline JIT.
++    static const GPRReg cachedResultRegister = regT0;
++    static const GPRReg cachedResultRegister2 = regT1;
++    static const GPRReg callFrameRegister = MIPSRegisters::s0;
++    // These constants provide the names for the general purpose argument & return value registers.
++    static const GPRReg argumentGPR0 = MIPSRegisters::a0;
++    static const GPRReg argumentGPR1 = MIPSRegisters::a1;
++    static const GPRReg argumentGPR2 = MIPSRegisters::a2;
++    static const GPRReg argumentGPR3 = MIPSRegisters::a3;
++    static const GPRReg nonArgGPR0 = regT2;
++    static const GPRReg nonArgGPR1 = regT3;
++    static const GPRReg nonArgGPR2 = regT4;
++    static const GPRReg returnValueGPR = regT0;
++    static const GPRReg returnValueGPR2 = regT1;
++    static const GPRReg nonPreservedNonReturnGPR = regT5;
++
++    static GPRReg toRegister(unsigned index)
++    {
++        ASSERT(index < numberOfRegisters);
++        static const GPRReg registerForIndex[numberOfRegisters] = { regT0, regT1, regT2, regT3, regT4, regT5 };
++        return registerForIndex[index];
++    }
++
++    static unsigned toIndex(GPRReg reg)
++    {
++        ASSERT(reg != InvalidGPRReg);
++        ASSERT(reg < 16);
++        static const unsigned indexForRegister[16] = { InvalidIndex, InvalidIndex, 0, 1, InvalidIndex, InvalidIndex, InvalidIndex, InvalidIndex, InvalidIndex, InvalidIndex, InvalidIndex, InvalidIndex, 2, 3, 4, 5 };
++        unsigned result = indexForRegister[reg];
++        ASSERT(result != InvalidIndex);
++        return result;
++    }
++
++    static const char* debugName(GPRReg reg)
++    {
++        ASSERT(reg != InvalidGPRReg);
++        ASSERT(reg < 16);
++        static const char* nameForRegister[16] = {
++            "zero", "at", "v0", "v1",
++            "a0", "a1", "a2", "a3",
++            "t0", "t1", "t2", "t3",
++            "t4", "t5", "t6", "t7"
++        };
++        return nameForRegister[reg];
++    }
++private:
++
++    static const unsigned InvalidIndex = 0xffffffff;
++};
++
++#endif
++
+ typedef RegisterBank<GPRInfo>::iterator gpr_iterator;
+ 
+ } } // namespace JSC::DFG
+diff --git a/Source/JavaScriptCore/dfg/DFGSpeculativeJIT.h b/Source/JavaScriptCore/dfg/DFGSpeculativeJIT.h
+index ea33f38..247274b 100644
+--- a/Source/JavaScriptCore/dfg/DFGSpeculativeJIT.h
++++ b/Source/JavaScriptCore/dfg/DFGSpeculativeJIT.h
+@@ -1241,7 +1241,7 @@ public:
+ 
+ // EncodedJSValue in JSVALUE32_64 is a 64-bit integer. When being compiled in ARM EABI, it must be aligned even-numbered register (r0, r2 or [sp]).
+ // To avoid assemblies from using wrong registers, let's occupy r1 or r3 with a dummy argument when necessary.
+-#if COMPILER_SUPPORTS(EABI) && CPU(ARM)
++#if (COMPILER_SUPPORTS(EABI) && CPU(ARM)) || CPU(MIPS)
+ #define EABI_32BIT_DUMMY_ARG      TrustedImm32(0),
+ #else
+ #define EABI_32BIT_DUMMY_ARG
+@@ -1691,7 +1691,7 @@ public:
+     }
+ #endif
+     
+-#if !defined(NDEBUG) && !CPU(ARM)
++#if !defined(NDEBUG) && !CPU(ARM) && !CPU(MIPS)
+     void prepareForExternalCall()
+     {
+         // We're about to call out to a "native" helper function. The helper
+diff --git a/Source/JavaScriptCore/jit/JSInterfaceJIT.h b/Source/JavaScriptCore/jit/JSInterfaceJIT.h
+index 7fdeaf0..48ad6b2 100644
+--- a/Source/JavaScriptCore/jit/JSInterfaceJIT.h
++++ b/Source/JavaScriptCore/jit/JSInterfaceJIT.h
+@@ -125,6 +125,10 @@ namespace JSC {
+         static const RegisterID cachedResultRegister = MIPSRegisters::v0;
+         static const RegisterID firstArgumentRegister = MIPSRegisters::a0;
+         
++#if ENABLE(VALUE_PROFILER)
++        static const RegisterID bucketCounterRegister = MIPSRegisters::s3;
++#endif
++
+         // regT0 must be v0 for returning a 32-bit value.
+         static const RegisterID regT0 = MIPSRegisters::v0;
+         
+diff --git a/Source/JavaScriptCore/runtime/JSGlobalData.h b/Source/JavaScriptCore/runtime/JSGlobalData.h
+index 5d47ab9..c02f336 100644
+--- a/Source/JavaScriptCore/runtime/JSGlobalData.h
++++ b/Source/JavaScriptCore/runtime/JSGlobalData.h
+@@ -141,14 +141,18 @@ namespace JSC {
+             return result;
+         }
+ 
+-        static size_t allocationSize(size_t bufferSize) { return sizeof(size_t) + bufferSize; }
++        static size_t allocationSize(size_t bufferSize) { return sizeof(ScratchBuffer) + bufferSize; }
+         void setActiveLength(size_t activeLength) { m_activeLength = activeLength; }
+         size_t activeLength() const { return m_activeLength; };
+         size_t* activeLengthPtr() { return &m_activeLength; };
+         void* dataBuffer() { return m_buffer; }
+ 
+         size_t m_activeLength;
++#if CPU(MIPS) && (defined WTF_MIPS_ARCH_REV && WTF_MIPS_ARCH_REV == 2)
++        void* m_buffer[0] __attribute__((aligned(8)));
++#else
+         void* m_buffer[0];
++#endif
+     };
+ #if COMPILER(MSVC)
+ #pragma warning(pop)
+diff --git a/Source/WTF/wtf/Platform.h b/Source/WTF/wtf/Platform.h
+index 1698247..2d90359 100644
+--- a/Source/WTF/wtf/Platform.h
++++ b/Source/WTF/wtf/Platform.h
+@@ -818,6 +818,10 @@
+ #if CPU(ARM_TRADITIONAL)
+ #define ENABLE_DFG_JIT 1
+ #endif
++/* Enable the DFG JIT on MIPS. */
++#if CPU(MIPS)
++#define ENABLE_DFG_JIT 1
++#endif
+ #endif
+ 
+ /* If the jit is not available, enable the LLInt C Loop: */
+-- 
+1.8.3.2
+

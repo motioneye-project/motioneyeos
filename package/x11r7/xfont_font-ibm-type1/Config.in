@@ -1,0 +1,4 @@
+config BR2_PACKAGE_XFONT_FONT_IBM_TYPE1
+	bool "font-ibm-type1"
+	help
+	  No description available

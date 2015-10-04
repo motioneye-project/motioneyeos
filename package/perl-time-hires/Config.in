@@ -1,0 +1,6 @@
+config BR2_PACKAGE_PERL_TIME_HIRES
+	bool "perl-time-hires"
+	help
+	  High resolution alarm, sleep, gettimeofday, interval timers
+
+	  http://search.cpan.org/dist/Time-HiRes/HiRes.pm

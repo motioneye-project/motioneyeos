@@ -1,0 +1,23 @@
+Makefile: do not use check_config
+
+test(1) only uses the second to compare two files dates.
+test(1) also does a strict comparison wrt. dates.
+
+But, on very fast systems, the configure and .config.mk
+files may be created in the same second, and so would lead
+to a false comparison of the files' dates.
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+
+diff -durN tvheadend-c84bc2b72b462ef2dbed305f3fd0bb3fa5046fc3.orig/Makefile tvheadend-c84bc2b72b462ef2dbed305f3fd0bb3fa5046fc3/Makefile
+--- tvheadend-c84bc2b72b462ef2dbed305f3fd0bb3fa5046fc3.orig/Makefile	2014-03-09 14:47:43.780025330 +0100
++++ tvheadend-c84bc2b72b462ef2dbed305f3fd0bb3fa5046fc3/Makefile	2014-03-09 14:48:40.836539093 +0100
+@@ -516,7 +516,7 @@
+ 	$(ROOTDIR)/configure $(CONFIGURE_ARGS)
+ 
+ # Binary
+-${PROG}: check_config make_webui $(OBJS)
++${PROG}: make_webui $(OBJS)
+ 	$(CC) -o $@ $(OBJS) $(CFLAGS) $(LDFLAGS)
+ 
+ # Object

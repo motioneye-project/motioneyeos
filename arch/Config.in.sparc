@@ -1,0 +1,22 @@
+choice
+	prompt "Target Architecture Variant"
+	depends on BR2_sparc
+	default BR2_sparc_v8
+	help
+	  Specific CPU variant to use
+
+config BR2_sparc_v8
+	bool "v8"
+config BR2_sparc_leon3
+	bool "leon3"
+endchoice
+
+config BR2_ARCH
+	default "sparc"	if BR2_sparc
+
+config BR2_ENDIAN
+	default "BIG"
+
+config BR2_GCC_TARGET_CPU
+	default "leon3"		if BR2_sparc_leon3
+	default "v8"		if BR2_sparc_v8

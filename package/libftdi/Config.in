@@ -1,0 +1,24 @@
+config BR2_PACKAGE_LIBFTDI
+	bool "libftdi"
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libusb
+	depends on BR2_ARCH_HAS_ATOMICS
+	select BR2_PACKAGE_LIBUSB
+	select BR2_PACKAGE_LIBUSB_COMPAT
+	help
+	  Userspace access to FTDI USB interface chips
+
+	  http://www.intra2net.com/en/developer/libftdi/index.php
+
+if BR2_PACKAGE_LIBFTDI
+
+config BR2_PACKAGE_LIBTFDI_CPP
+	depends on BR2_INSTALL_LIBSTDCPP
+	bool "C++ bindings"
+	help
+	  C++ bindings for libftdi
+
+endif # BR2_PACKAGE_LIBFTDI
+
+comment "libftdi needs a toolchain w/ threads"
+	depends on BR2_ARCH_HAS_ATOMICS
+	depends on !BR2_TOOLCHAIN_HAS_THREADS

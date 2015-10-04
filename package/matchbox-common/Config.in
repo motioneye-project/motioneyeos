@@ -1,0 +1,10 @@
+config BR2_PACKAGE_MATCHBOX_COMMON
+	bool "matchbox-common"
+	select BR2_PACKAGE_MATCHBOX_LIB
+	depends on BR2_PACKAGE_MATCHBOX_PANEL || BR2_PACKAGE_MATCHBOX_DESKTOP
+	help
+	  Common desktop folders and matchbox-session script.
+
+config BR2_PACKAGE_MATCHBOX_COMMON_PDA
+	bool "PDA style app folder"
+	depends on BR2_PACKAGE_MATCHBOX_COMMON

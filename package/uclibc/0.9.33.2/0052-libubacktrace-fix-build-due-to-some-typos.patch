@@ -1,0 +1,39 @@
+From bcfb096af20bac667381c1601e54c78bcbb09d42 Mon Sep 17 00:00:00 2001
+From: Filippo Arcidiacono <filippo.arcidiacono@st.com>
+Date: Mon, 13 May 2013 14:06:11 +0200
+Subject: [PATCH] libubacktrace: fix build due to some typos
+
+Commit 71c10c484e7dc113396cccb7e503befb759c6346 broke libubactrace build
+due to some typos, so that backtrace.o[sS] were not built.
+This definetively fixes this problem.
+
+Signed-off-by: Filippo Arcidiacono <filippo.arcidiacono@st.com>
+Signed-off-by: Carmelo Amoroso <carmelo.amoroso@st.com>
+(cherry picked from commit e19afed1bd3af6bf8976912517c0677d238309f8)
+
+Signed-off-by: Carmelo Amoroso <carmelo.amoroso@st.com>
+---
+ libubacktrace/Makefile.in |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/libubacktrace/Makefile.in b/libubacktrace/Makefile.in
+index 612bf2d..1cd5f83 100644
+--- a/libubacktrace/Makefile.in
++++ b/libubacktrace/Makefile.in
+@@ -45,10 +45,10 @@ endif
+ libubacktrace_SRCS := $(patsubst %.c,$(libubacktrace_DIR)/%.c,$(libubacktrace_SRC-y))
+ libubacktrace_OBJS := $(patsubst $(libubacktrace_DIR)/%.c,$(libubacktrace_OUT)/%.o,$(libubacktrace_SRCS))
+ 
+-libubacktrace_SHARED_SRCS := $(patsubst %.c,$(libubacktrace_DIR)/%.c,$(libubacktrace_SHARED_SRC-y))
+-libubacktrace_SHARED_OBJS := $(patsubst $(libubacktrace_DIR)/%.c,$(libubacktrace_OUT)/%.s,$(libubacktrace_SHARED_SRCS))
++libubacktrace_SHARED_SRCS := $(patsubst %.c,$(libubacktrace_DIR)/%.c,$(libubacktrace_SRC_SHARED-y))
++libubacktrace_SHARED_OBJS := $(patsubst $(libubacktrace_DIR)/%.c,$(libubacktrace_OUT)/%.o,$(libubacktrace_SHARED_SRCS))
+ 
+-libubacktrace-shared-y	:= $(libubacktrace_SHARED_OBJS:.os=.oS)
++libubacktrace-shared-y	:= $(libubacktrace_SHARED_OBJS:.o=.oS)
+ libubacktrace-static-y	:= $(libubacktrace_SHARED_OBJS)
+ 
+ ifeq ($(DOPIC),y)
+-- 
+1.7.10.4
+

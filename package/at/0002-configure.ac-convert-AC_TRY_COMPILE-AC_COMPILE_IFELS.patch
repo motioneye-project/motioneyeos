@@ -1,0 +1,34 @@
+From e12c96cccab550eda31cf7bb1dedddd3670ffe69 Mon Sep 17 00:00:00 2001
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+Date: Tue, 1 Dec 2009 17:22:22 +0100
+Subject: [PATCH 2/5] configure.ac: convert AC_TRY_COMPILE -> AC_COMPILE_IFELSE
+
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+---
+ configure.ac |   10 +++++-----
+ 1 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 997a37f..cab80ed 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -40,11 +40,11 @@ case "$host" in
+ esac
+ 
+ AC_MSG_CHECKING(__attribute__((noreturn)))
+-AC_TRY_COMPILE([], [void __attribute__((noreturn)) panic(void);],
+-    AC_MSG_RESULT(yes)
+-    AC_DEFINE(HAVE_ATTRIBUTE_NORETURN, 1,
+-              [Define to 1 if compiler supports __attribute__((noreturn))]),
+-    AC_MSG_RESULT(no)
++AC_COMPILE_IFELSE(
++       [AC_LANG_PROGRAM([[]], [[void __attribute__((noreturn)) panic(void);]])],
++       [AC_MSG_RESULT(yes)
++        AC_DEFINE(HAVE_ATTRIBUTE_NORETURN, 1, Define to 1 if compiler supports __attribute__((noreturn)))],
++       [AC_MSG_RESULT(no)]
+ )
+ dnl Checks for libraries.
+ 
+-- 
+1.6.5.3
+

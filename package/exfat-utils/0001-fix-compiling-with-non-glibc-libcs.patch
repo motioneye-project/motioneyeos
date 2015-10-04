@@ -1,0 +1,26 @@
+[PATCH] fix compilation when libc does not define __GLIBC__
+
+libexfat would only compile on Linux with __GLIBC__ defined. Changed
+to use __linux__ which likely better fits the original intent.
+
+Upstream status: applied.
+See https://groups.google.com/forum/#!topic/exfat/8g3yumqrf1A.
+
+Signed-off-by: Brendan Heading <brendanheading@gmail.com>
+---
+ platform.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+Index: libexfat/libexfat/platform.h
+===================================================================
+--- libexfat/libexfat/platform.h	(revision 422)
++++ libexfat/libexfat/platform.h	(working copy)
+@@ -24,7 +24,7 @@
+ #ifndef PLATFORM_H_INCLUDED
+ #define PLATFORM_H_INCLUDED
+ 
+-#if defined(__GLIBC__)
++#if defined(__linux__)
+ 
+ #include <endian.h>
+ #include <byteswap.h>

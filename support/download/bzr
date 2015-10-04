@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+# We want to catch any unexpected failure, and exit immediately
+set -e
+
+# Download helper for bzr, to be called from the download wrapper script
+#
+# Call it as:
+#   .../bzr [-q] OUT_FILE REPO_URL REV BASENAME
+#
+# Environment:
+#   BZR      : the bzr command to call
+
+
+verbose=
+while getopts :q OPT; do
+    case "${OPT}" in
+    q)  verbose=-q;;
+    \?) printf "unknown option '%s'\n" "${OPTARG}" >&2; exit 1;;
+    esac
+done
+shift $((OPTIND-1))
+
+output="${1}"
+repo="${2}"
+rev="${3}"
+basename="${4}"
+
+${BZR} export ${verbose} --root="${basename}/" --format=tgz "${output}" "${repo}" -r "${rev}"

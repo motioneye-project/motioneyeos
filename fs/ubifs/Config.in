@@ -1,0 +1,149 @@
+config BR2_TARGET_ROOTFS_UBIFS
+	bool "ubifs root filesystem"
+	help
+	  Build a ubifs root filesystem
+
+if BR2_TARGET_ROOTFS_UBIFS
+
+config BR2_TARGET_ROOTFS_UBIFS_LEBSIZE
+	hex "logical eraseblock size"
+	default 0x1f800
+	help
+	  Logical eraseblock (LEB) size. The value provided here is
+	  passed to the -e/--leb-size option of mkfs.ubifs.
+
+config BR2_TARGET_ROOTFS_UBIFS_MINIOSIZE
+	hex "minimum I/O unit size"
+	default 0x800
+	help
+	  Minimum I/O unit size. The value provided here is passed
+	  to the -m/--min-io-size option of mkfs.ubifs/ubinize.
+
+config BR2_TARGET_ROOTFS_UBIFS_MAXLEBCNT
+	int "maximum logical eraseblock count"
+	default 2048
+	help
+	  Maximum logical eraseblock (LEB) count. The value provided
+	  here is passed to the -c/--max-leb-cnt option of mkfs.ubifs.
+
+choice
+	prompt "ubifs runtime compression"
+	default BR2_TARGET_ROOTFS_UBIFS_RT_LZO
+	help
+	  Select which compression format to use at run-time within
+	  the ubifs file system. The choice made here is passed to
+	  the -x/--compr option of mkfs.ubifs
+
+config BR2_TARGET_ROOTFS_UBIFS_RT_NONE
+	bool "no compression"
+	help
+	  Don't use run-time compression.
+
+config BR2_TARGET_ROOTFS_UBIFS_RT_ZLIB
+	bool "gzip"
+	help
+	  Use zlib compression at run-time.
+
+config BR2_TARGET_ROOTFS_UBIFS_RT_LZO
+	bool "lzo"
+	help
+	  Use lzo compression at run-time.
+
+endchoice
+
+choice
+	prompt "Compression method"
+	default BR2_TARGET_ROOTFS_UBIFS_NONE
+	help
+	  Select which compression format to compress the final image
+	  into.
+
+config BR2_TARGET_ROOTFS_UBIFS_NONE
+	bool "no compression"
+	help
+	  Do not compress the ubifs filesystem.
+
+config BR2_TARGET_ROOTFS_UBIFS_GZIP
+	bool "gzip"
+	help
+	  Do compress the ubifs filesystem with gzip.
+
+config BR2_TARGET_ROOTFS_UBIFS_BZIP2
+	bool "bzip2"
+	help
+	  Do compress the ubifs filesystem with bzip2.
+
+config BR2_TARGET_ROOTFS_UBIFS_LZMA
+	bool "lzma"
+	help
+	  Do compress the ubifs filesystem with lzma.
+
+config BR2_TARGET_ROOTFS_UBIFS_LZO
+	bool "lzo"
+	help
+	  Do compress the ubifs filesystem with lzop.
+
+config BR2_TARGET_ROOTFS_UBIFS_XZ
+	bool "xz"
+	help
+	  Do compress the ubifs filesystem with xz.
+
+endchoice
+
+config BR2_TARGET_ROOTFS_UBIFS_OPTS
+	string "Additional mkfs.ubifs options"
+	help
+	  Any additional mkfs.ubifs options you may want to include.
+
+config BR2_TARGET_ROOTFS_UBI
+	bool "Embed into an UBI image"
+	help
+	  Build an ubi image from the ubifs one (with ubinize).
+
+if BR2_TARGET_ROOTFS_UBI
+
+config BR2_TARGET_ROOTFS_UBI_PEBSIZE
+	hex "physical eraseblock size"
+	default 0x20000
+	help
+	  Tells ubinize the physical eraseblock (PEB) size of the
+	  flash chip the ubi image is created for. The value provided
+	  here is passed to the -p/--peb-size option of ubinize.
+
+config BR2_TARGET_ROOTFS_UBI_SUBSIZE
+	int "sub-page size"
+	default 512
+	help
+	  Tells ubinize that the flash supports sub-pages and the sub-page
+	  size. Use 0 if sub-pages are not supported on flash chip.
+	  The value provided here is passed to the -s/--sub-page-size
+	  option of ubinize.
+
+config BR2_TARGET_ROOTFS_UBI_USE_CUSTOM_CONFIG
+	bool "Use custom config file"
+	help
+	  Select this option to use a custom ubinize configuration file,
+	  rather than the default configuration used by Buildroot (which
+	  defines a single dynamic volume marked as auto-resize).  Passing
+	  a custom ubinize configuration file allows you to create several
+	  volumes, specify volume types, etc.
+
+	  As a convenience, buildroot replaces the string
+	  "BR2_ROOTFS_UBIFS_PATH" with the path to the built ubifs file.
+	  So the volume defined for the root filesystem can specify the
+	  image path as:  image=BR2_ROOTFS_UBIFS_PATH
+
+config BR2_TARGET_ROOTFS_UBI_CUSTOM_CONFIG_FILE
+	string "Configuration file path"
+	depends on BR2_TARGET_ROOTFS_UBI_USE_CUSTOM_CONFIG
+	help
+	  Path to the ubinize configuration file.
+
+config BR2_TARGET_ROOTFS_UBI_OPTS
+	string "Additional ubinize options"
+	help
+	  Any additional ubinize options you may want to include.
+
+endif # BR2_TARGET_ROOTFS_UBI
+
+endif # BR2_TARGET_ROOTFS_UBIFS

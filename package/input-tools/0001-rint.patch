@@ -1,0 +1,18 @@
+diff -urN joystick-20051019.orig/utils/jscal.c joystick-20051019/utils/jscal.c
+--- joystick-20051019.orig/utils/jscal.c	2004-10-19 09:51:52.000000000 +0200
++++ joystick-20051019/utils/jscal.c	2009-01-18 10:48:50.000000000 +0100
+@@ -141,10 +141,10 @@
+ 	c = 32767.0 / (inputs.cmin[1] - inputs.cmax[0]);
+ 	d = 32767.0 / (inputs.cmin[2] - inputs.cmax[1]);
+ 
+-	results[0] = rint(a);
+-	results[1] = rint(b);
+-	results[2] = rint(c*16384.0);
+-	results[3] = rint(d*16384.0);
++	results[0] = (int) (a + 0.5);
++	results[1] = (int) (b + 0.5);
++	results[2] = (int) (c*16384.0 + 0.5);
++	results[3] = (int) (d*16384.0 + 0.5);
+ 
+ 	return 1;
+ }

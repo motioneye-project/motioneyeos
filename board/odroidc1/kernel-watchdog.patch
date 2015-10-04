@@ -1,0 +1,18 @@
+diff -uNr linux-odroidc-3.10.y/arch/arm/boot/dts/meson8b_odroidc.dts linux-odroidc-3.10.y.patched/arch/arm/boot/dts/meson8b_odroidc.dts
+--- linux-odroidc-3.10.y/arch/arm/boot/dts/meson8b_odroidc.dts	2015-07-19 13:49:28.484871168 +0300
++++ linux-odroidc-3.10.y.patched/arch/arm/boot/dts/meson8b_odroidc.dts	2015-07-19 13:50:26.938200673 +0300
+@@ -1001,4 +1001,14 @@
+ 		reserve-iomap = "true";
+ 	};
+ 
++    amlogic-watchdog {
++        compatible = "amlogic,aml-wdt";
++        default_timeout=<15>;
++        reset_watchdog_method=<0>;//0:sysfs,1:kernel
++        reset_watchdog_time=<2>;
++        shutdown_timeout=<10>;
++        firmware_timeout=<6>;
++        suspend_timeout=<6>;
++    };
++
+ }; /* end of / */

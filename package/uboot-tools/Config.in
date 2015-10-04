@@ -1,0 +1,56 @@
+config BR2_PACKAGE_UBOOT_TOOLS
+	bool "u-boot tools"
+	help
+	  Companion tools for Das U-Boot bootloader.
+
+	  http://www.denx.de/wiki/U-Boot/WebHome
+
+if BR2_PACKAGE_UBOOT_TOOLS
+
+config BR2_PACKAGE_UBOOT_TOOLS_MKIMAGE
+	bool "mkimage"
+	help
+	  The mkimage tool from Das U-Boot bootloader, which allows
+	  generation of U-Boot images in various formats.
+
+if BR2_PACKAGE_UBOOT_TOOLS_MKIMAGE
+
+config BR2_PACKAGE_UBOOT_TOOLS_MKIMAGE_FIT_SIGNATURE_SUPPORT
+	bool "FIT signature verification support"
+	select BR2_PACKAGE_OPENSSL
+	help
+	  Enables support for FIT Signature Verification.
+
+	  Flat Image Trees (FIT) supports hashing of images so that
+	  these hashes can be checked on loading. This protects
+	  against corruption of the image. However it does not prevent
+	  the substitution of one image for another.
+
+	  The signature feature allows the hash to be signed with a
+	  private key such that it can be verified using a public key
+	  later. Provided that the private key is kept secret and the
+	  public key is stored in a non-volatile place, any image can
+	  be verified in this way.
+
+	  Enabling this option pulls in a dependency on libssl and
+	  libcrypto, and possibly GPL/OpenSSL licensing
+	  incompatibility issues.
+
+endif
+
+config BR2_PACKAGE_UBOOT_TOOLS_MKENVIMAGE
+	bool "mkenvimage"
+	help
+	  The mkenvimage tool from Das U-Boot bootloader, which allows
+	  generation of a valid binary environment image from a text file
+	  describing the key=value pairs of the environment.
+
+config BR2_PACKAGE_UBOOT_TOOLS_FWPRINTENV
+	bool "fw_printenv"
+	default y
+	help
+	  The fw_printenv / fw_setenv tools from Das U-Boot
+	  bootloader, which allows access to the U-Boot environment
+	  from Linux.
+
+endif

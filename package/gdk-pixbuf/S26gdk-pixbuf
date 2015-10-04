@@ -1,0 +1,19 @@
+#!/bin/sh
+#
+# run gdk-pixbuf-query-loaders if needed
+
+FILE=/usr/lib/gdk-pixbuf-2.0/2.10.0/loaders.cache
+
+case "$1" in
+    start|"")
+	if [ ! -f "$FILE" ] ; then
+	    /usr/bin/gdk-pixbuf-query-loaders --update-cache
+	fi
+	;;
+    stop)
+	;;
+    *)
+	echo "Usage: $0 {start|stop}" >&2
+	exit 1
+	;;
+esac

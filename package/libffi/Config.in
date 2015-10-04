@@ -1,0 +1,13 @@
+config BR2_PACKAGE_LIBFFI
+	bool "libffi"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	help
+	  The libffi library provides a portable, high level
+	  programming interface to various calling conventions. This
+	  allows a programmer to call any function specified by a call
+	  interface description at run-time.
+
+	  http://sourceware.org/libffi/
+
+comment "libffi needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS

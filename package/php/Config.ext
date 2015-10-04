@@ -1,0 +1,403 @@
+menu "Extensions"
+
+config BR2_PACKAGE_PHP_EXT_CALENDAR
+	bool "Calendar"
+	help
+	  Calendar and event support
+
+config BR2_PACKAGE_PHP_EXT_FILEINFO
+	bool "Fileinfo"
+	help
+	  File Information support
+
+config BR2_PACKAGE_PHP_EXT_OPCACHE
+	bool "OPcache"
+	help
+	  Enable the Zend OPcache accelerator.
+
+comment "Readline needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS
+
+config BR2_PACKAGE_PHP_EXT_READLINE
+	bool "Readline"
+	depends on !BR2_STATIC_LIBS
+	select BR2_PACKAGE_NCURSES
+	select BR2_PACKAGE_READLINE
+	help
+	  Readline support
+
+config BR2_PACKAGE_PHP_EXT_SESSION
+	bool "Session"
+	default y
+	help
+	  Session support
+
+comment "Compression extensions"
+
+config BR2_PACKAGE_PHP_EXT_BZIP2
+	bool "bzip2"
+	select BR2_PACKAGE_BZIP2
+	help
+	  bzip2 read/write support
+
+config BR2_PACKAGE_PHP_EXT_PHAR
+	bool "phar"
+	help
+	  PHP Archive support
+
+config BR2_PACKAGE_PHP_EXT_ZIP
+	bool "zip"
+	select BR2_PACKAGE_ZLIB
+	help
+	  Zip read/write support
+
+config BR2_PACKAGE_PHP_EXT_ZLIB
+	bool "zlib"
+	select BR2_PACKAGE_ZLIB
+	default y
+	help
+	  zlib support
+
+comment "Cryptography extensions"
+
+config BR2_PACKAGE_PHP_EXT_HASH
+	bool "hash"
+	help
+	  HASH message digest framework
+
+config BR2_PACKAGE_PHP_EXT_MCRYPT
+	bool "mcrypt"
+	help
+	  mcrypt support
+
+config BR2_PACKAGE_PHP_EXT_OPENSSL
+	bool "openssl"
+	select BR2_PACKAGE_OPENSSL
+	help
+	  openssl support
+
+comment "Database extensions"
+
+config BR2_PACKAGE_PHP_EXT_DBA
+	bool "DBA"
+	help
+	  Database Abstraction Layer
+
+if BR2_PACKAGE_PHP_EXT_DBA
+
+config BR2_PACKAGE_PHP_EXT_DBA_CDB
+	bool "cdb"
+	help
+	  CDB handler
+
+config BR2_PACKAGE_PHP_EXT_DBA_DB4
+	bool "db4/5"
+	select BR2_PACKAGE_BERKELEYDB
+	help
+	  BerkeleyDB version 4/5 handler
+
+config BR2_PACKAGE_PHP_EXT_DBA_FLAT
+	bool "flat"
+	default y
+	help
+	  Flat file handler
+
+config BR2_PACKAGE_PHP_EXT_DBA_INI
+	bool "ini"
+	default y
+	help
+	  INI file handler
+
+endif
+
+config BR2_PACKAGE_PHP_EXT_MYSQL
+	bool "Mysql"
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_USE_MMU # mysql
+	depends on BR2_TOOLCHAIN_HAS_THREADS # mysql
+	select BR2_PACKAGE_MYSQL
+	help
+	  MySQL support
+
+config BR2_PACKAGE_PHP_EXT_MYSQLI
+	bool "Mysqli"
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_USE_MMU # mysql
+	depends on BR2_TOOLCHAIN_HAS_THREADS # mysql
+	select BR2_PACKAGE_MYSQL
+	select BR2_PACKAGE_PHP_EXT_MYSQL
+	help
+	  MySQL Improved extension support
+
+config BR2_PACKAGE_PHP_EXT_SQLITE
+	bool "SQLite3"
+	select BR2_PACKAGE_SQLITE
+	help
+	  SQLite3 support
+
+config BR2_PACKAGE_PHP_EXT_PDO
+	bool "PDO"
+	help
+	  PHP Data Objects support
+
+if BR2_PACKAGE_PHP_EXT_PDO
+
+config BR2_PACKAGE_PHP_EXT_PDO_MYSQL
+	bool "MySQL"
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_USE_MMU # mysql
+	depends on BR2_TOOLCHAIN_HAS_THREADS # mysql
+	select BR2_PACKAGE_MYSQL
+	help
+	  PDO driver for MySQL
+
+comment "MySQL drivers need a toolchain w/ C++, threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS
+
+config BR2_PACKAGE_PHP_EXT_PDO_POSTGRESQL
+	bool "PostgreSQL"
+	select BR2_PACKAGE_POSTGRESQL
+	depends on BR2_USE_MMU # postgresql
+	depends on !BR2_STATIC_LIBS
+	help
+	  PDO driver for PostgreSQL
+
+comment "PostgreSQL drivers need a toolchain w/ dynamic library"
+	depends on BR2_USE_MMU
+	depends on BR2_STATIC_LIBS
+
+config BR2_PACKAGE_PHP_EXT_PDO_SQLITE
+	bool "SQLite3"
+	select BR2_PACKAGE_SQLITE
+	help
+	  SQLite3 driver for PDO
+
+config BR2_PACKAGE_PHP_EXT_PDO_UNIXODBC
+	bool "unixODBC"
+	select BR2_PACKAGE_UNIXODBC
+	help
+	  unixODBC driver for PDO
+
+endif
+
+comment "Human language and character encoding support"
+
+config BR2_PACKAGE_PHP_EXT_GETTEXT
+	bool "Gettext"
+	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT
+	depends on BR2_USE_WCHAR
+	help
+	  Gettext support
+
+comment "Gettext support needs a toolchain w/ wchar"
+	depends on !BR2_USE_WCHAR
+
+config BR2_PACKAGE_PHP_EXT_ICONV
+	bool "iconv"
+	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
+	help
+	  iconv character set conversion support
+
+config BR2_PACKAGE_PHP_EXT_INTL
+	bool "intl"
+	select BR2_PACKAGE_ICU
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_USE_WCHAR
+	depends on !BR2_BINFMT_FLAT # icu
+	depends on BR2_TOOLCHAIN_HAS_THREADS # icu
+	depends on BR2_ARCH_HAS_ATOMICS # icu
+	help
+	  Internationalization support
+
+comment "intl support needs a toolchain w/ C++, wchar, threads"
+	depends on !BR2_BINFMT_FLAT
+	depends on BR2_ARCH_HAS_ATOMICS
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
+
+config BR2_PACKAGE_PHP_EXT_MBSTRING
+	bool "mbstring"
+	help
+	  multibyte string support
+
+comment "Image processing"
+
+config BR2_PACKAGE_PHP_EXT_EXIF
+	bool "EXIF"
+	help
+	  EXIF support
+
+config BR2_PACKAGE_PHP_EXT_GD
+	bool "GD"
+	select BR2_PACKAGE_FREETYPE
+	select BR2_PACKAGE_JPEG
+	select BR2_PACKAGE_LIBPNG
+	help
+	  GD support
+
+comment "Mathematical extensions"
+
+config BR2_PACKAGE_PHP_EXT_BCMATH
+	bool "BC math"
+	help
+	  BCMath arbitrary precision mathematics support
+
+config BR2_PACKAGE_PHP_EXT_GMP
+	bool "GMP"
+	select BR2_PACKAGE_GMP
+	help
+	  GNU Multiple Precision support
+
+comment "Other basic extensions"
+
+config BR2_PACKAGE_PHP_EXT_JSON
+	bool "JSON"
+	help
+	  JavaScript Object Serialization support
+
+config BR2_PACKAGE_PHP_EXT_TOKENIZER
+	bool "Tokenizer"
+	help
+	  Tokenizer functions support
+
+comment "Other services"
+
+config BR2_PACKAGE_PHP_EXT_CURL
+	bool "cURL"
+	select BR2_PACKAGE_LIBCURL
+	help
+	  cURL for URL streams
+
+config BR2_PACKAGE_PHP_EXT_FTP
+	bool "FTP"
+	help
+	  FTP support
+
+config BR2_PACKAGE_PHP_EXT_SNMP
+	bool "SNMP"
+	depends on BR2_USE_MMU # netsnmp fork()
+	select BR2_PACKAGE_NETSNMP
+	select BR2_PACKAGE_NETSNMP_ENABLE_MIBS
+	help
+	  SNMP support
+
+config BR2_PACKAGE_PHP_EXT_SOCKETS
+	bool "sockets"
+	help
+	  Sockets support
+
+comment "Process Control"
+
+config BR2_PACKAGE_PHP_EXT_PCNTL
+	bool "PCNTL"
+	depends on BR2_USE_MMU # fork()
+	help
+	  Process control support
+
+config BR2_PACKAGE_PHP_EXT_POSIX
+	bool "Posix"
+	default y
+	help
+	  POSIX.1 (IEEE 1003.1) function support
+
+config BR2_PACKAGE_PHP_EXT_SHMOP
+	bool "shmop"
+	help
+	  Shared memory support
+
+config BR2_PACKAGE_PHP_EXT_SYSVMSG
+	bool "sysvmsg"
+	help
+	  System V message queue support
+
+config BR2_PACKAGE_PHP_EXT_SYSVSEM
+	bool "sysvsem"
+	help
+	  System V semaphore support
+
+config BR2_PACKAGE_PHP_EXT_SYSVSHM
+	bool "sysvshm"
+	help
+	  System V shared memory support
+
+comment "Variable and Type related"
+
+config BR2_PACKAGE_PHP_EXT_CTYPE
+	bool "Ctype"
+	help
+	  Character type checking support
+
+config BR2_PACKAGE_PHP_EXT_FILTER
+	bool "Filter"
+	help
+	  Input filter support
+
+comment "Web services"
+
+config BR2_PACKAGE_PHP_EXT_SOAP
+	bool "SOAP"
+	select BR2_PACKAGE_PHP_EXT_LIBXML2
+	help
+	  SOAP support
+
+config BR2_PACKAGE_PHP_EXT_XMLRPC
+	bool "XML-RPC"
+	select BR2_PACKAGE_PHP_EXT_LIBXML2
+	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
+	help
+	  XML-RPC support
+
+comment "XML manipulation"
+
+config BR2_PACKAGE_PHP_EXT_DOM
+	bool "DOM"
+	select BR2_PACKAGE_PHP_EXT_LIBXML2
+	help
+	  Document Object Model support
+
+config BR2_PACKAGE_PHP_EXT_LIBXML2
+	bool "libxml"
+	select BR2_PACKAGE_LIBXML2
+	help
+	  libxml2 support
+
+config BR2_PACKAGE_PHP_EXT_SIMPLEXML
+	bool "SimpleXML"
+	select BR2_PACKAGE_PHP_EXT_LIBXML2
+	help
+	  SimpleXML support
+
+config BR2_PACKAGE_PHP_EXT_WDDX
+	bool "WDDX"
+	select BR2_PACKAGE_EXPAT
+	select BR2_PACKAGE_PHP_EXT_LIBXML2
+	help
+	  WDDX support
+
+config BR2_PACKAGE_PHP_EXT_XML
+	bool "XML Parser"
+	select BR2_PACKAGE_PHP_EXT_LIBXML2
+	help
+	  XML Parser support
+
+config BR2_PACKAGE_PHP_EXT_XMLREADER
+	bool "XMLReader"
+	select BR2_PACKAGE_PHP_EXT_LIBXML2
+	help
+	  XMLReader support
+
+config BR2_PACKAGE_PHP_EXT_XMLWRITER
+	bool "XMLWriter"
+	select BR2_PACKAGE_PHP_EXT_LIBXML2
+	help
+	  XMLWriter support
+
+config BR2_PACKAGE_PHP_EXT_XSL
+	bool "XSL"
+	select BR2_PACKAGE_PHP_EXT_DOM
+	select BR2_PACKAGE_PHP_EXT_LIBXML2
+	select BR2_PACKAGE_LIBXSLT
+	help
+	  XSL transformation support
+
+endmenu

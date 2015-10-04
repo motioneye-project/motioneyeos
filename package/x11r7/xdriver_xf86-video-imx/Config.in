@@ -1,0 +1,32 @@
+config BR2_PACKAGE_XDRIVER_XF86_VIDEO_IMX
+	bool "xf86-video-imx"
+	depends on BR2_ARM_EABI # libz160
+	depends on BR2_TOOLCHAIN_USES_GLIBC # libz160
+	depends on BR2_LINUX_KERNEL # linux/mxcfb.h
+	depends on BR2_PACKAGE_GPU_AMD_BIN_MX51_OUTPUT_X11
+	select BR2_PACKAGE_LIBZ160
+	select BR2_PACKAGE_XPROTO_FONTSPROTO
+	select BR2_PACKAGE_XPROTO_RANDRPROTO
+	select BR2_PACKAGE_XPROTO_RENDERPROTO
+	select BR2_PACKAGE_XPROTO_VIDEOPROTO
+	select BR2_PACKAGE_XPROTO_XF86DGAPROTO
+	select BR2_PACKAGE_XPROTO_XPROTO
+	help
+	  X.Org driver for iMX5 GPU
+
+	  To use this driver, add the correct configuration to your
+	  /etc/X11/xorg.conf, as follows:
+
+	  Section "Device"
+	    [...]
+	    Driver "imx"
+	    Option "fbdev" "/dev/fb0"
+	  EndSection
+
+comment "xf86-video-imx needs an EABI toolchain w/ (e)glibc"
+	depends on BR2_arm
+	depends on !BR2_ARM_EABI || !BR2_TOOLCHAIN_USES_GLIBC
+
+comment "xf86-video-imx needs gpu-amd-bin-mx51 with X11 output and a Linux kernel to be built"
+	depends on BR2_arm
+	depends on !BR2_LINUX_KERNEL || !BR2_PACKAGE_GPU_AMD_BIN_MX51_OUTPUT_X11

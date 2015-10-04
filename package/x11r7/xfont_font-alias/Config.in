@@ -1,0 +1,4 @@
+config BR2_PACKAGE_XFONT_FONT_ALIAS
+	bool "font-alias"
+	help
+	  No description available

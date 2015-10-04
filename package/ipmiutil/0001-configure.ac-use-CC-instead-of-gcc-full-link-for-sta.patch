@@ -1,0 +1,43 @@
+From 2909bfbc97559cf3e28c9045f64e3078aacca354 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Sat, 4 Apr 2015 17:59:32 +0200
+Subject: [PATCH] configure.ac: use CC instead of gcc, full link for stack
+ protector test
+
+Using gcc directly is incorrect when cross-compiling, $CC should be
+used instead.
+
+Also, for the stack protector test, a full link is needed, since just
+the compilation can work, but the link can fail due to libssp not
+being available in the toolchain.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ configure.ac | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index c1193c6..61efbc5 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -308,7 +308,7 @@ else
+ 	echo $ECHO_N "checking compile warning flags ... $ECHO_C"
+ 	cfwarn="-Wno-pointer-sign -Wno-sign-conversion -Wunused-result -Wgnu-designator"
+ 	echo "int main() { return(1); }" >$tmpc
+-	gcc -o $tmpo -c $cfwarn $tmpc  >/dev/null 2>&1
++	$CC -o $tmpo -c $cfwarn $tmpc  >/dev/null 2>&1
+ 	if test $? -ne 0 ; then
+ 	   cfwarn=
+ 	   echo "skip"
+@@ -319,7 +319,7 @@ else
+ 	echo $ECHO_N "checking compile fortify flags ... $ECHO_C"
+ 	cfhard="-fstack-protector --param=ssp-buffer-size=4 -D_FORTIFY_SOURCE=2"
+ 	echo "int main() { return(1); }" >$tmpc
+-	gcc -o $tmpo -c $cfhard $tmpc  >/dev/null 2>&1
++	$CC -o $tmpo $cfhard $tmpc  >/dev/null 2>&1
+ 	if test $? -ne 0 ; then
+ 	   cfhard=
+ 	   echo "skip"
+-- 
+2.1.0
+

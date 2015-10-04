@@ -1,0 +1,30 @@
+#!/bin/sh
+
+case "$1" in
+	start)
+		if [ ! -d /var/mysql/mysql ] ; then
+			echo "Creating MySQL system tables..."
+			mysql_install_db --user=mysql --ldata=/var/mysql
+		fi
+
+		# We don't use start-stop-daemon because mysqld has
+		# its own wrapper script.
+		echo -n "Starting mysql..."
+		/usr/bin/mysqld_safe --pid-file=/var/run/mysqld.pid &
+		echo "done."
+		;;
+	stop)
+		echo -n "Stopping mysql..."
+		if test -f /var/run/mysqld.pid ; then
+			kill `cat /var/run/mysqld.pid`
+		fi
+		echo "done."
+		;;
+	restart)
+		$0 stop
+		$0 start
+		;;
+	*)
+		echo "Usage: /etc/init.d/mysqld {start|stop|restart}"
+		;;
+esac

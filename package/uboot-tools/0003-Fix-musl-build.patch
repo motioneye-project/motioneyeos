@@ -1,0 +1,71 @@
+From bf738fda390787a10db0c9a4be9fcafd6707a90e Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?J=C3=B6rg=20Krause?= <joerg.krause@embedded.rocks>
+Date: Sat, 18 Apr 2015 08:00:46 +0200
+Subject: [PATCH 1/1] Fix musl build
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+This patch fixes cross-compiling U-Boot tools with the musl C library:
+  * including <sys/types.h> is needed for ulong
+  * defining _GNU_SOURCE is needed for loff_t
+
+Signed-off-by: Jörg Krause <joerg.krause@embedded.rocks>
+---
+ include/image.h    | 1 +
+ tools/env/fw_env.c | 2 ++
+ tools/imagetool.h  | 1 +
+ tools/proftool.c   | 1 +
+ 4 files changed, 5 insertions(+)
+
+diff --git a/include/image.h b/include/image.h
+index 3844be6..ac2fd6e 100644
+--- a/include/image.h
++++ b/include/image.h
+@@ -18,6 +18,7 @@
+
+ #include "compiler.h"
+ #include <asm/byteorder.h>
++#include <sys/types.h>
+
+ /* Define this to avoid #ifdefs later on */
+ struct lmb;
+diff --git a/tools/env/fw_env.c b/tools/env/fw_env.c
+index 1173eea..daa02a7 100644
+--- a/tools/env/fw_env.c
++++ b/tools/env/fw_env.c
+@@ -8,6 +8,8 @@
+  * SPDX-License-Identifier:	GPL-2.0+
+  */
+
++#define _GNU_SOURCE
++
+ #include <errno.h>
+ #include <env_flags.h>
+ #include <fcntl.h>
+diff --git a/tools/imagetool.h b/tools/imagetool.h
+index 3e15b4e..b7874f4 100644
+--- a/tools/imagetool.h
++++ b/tools/imagetool.h
+@@ -16,6 +16,7 @@
+ #include <stdlib.h>
+ #include <string.h>
+ #include <sys/stat.h>
++#include <sys/types.h>
+ #include <time.h>
+ #include <unistd.h>
+ #include <u-boot/sha1.h>
+diff --git a/tools/proftool.c b/tools/proftool.c
+index 3482951..9ce7a77 100644
+--- a/tools/proftool.c
++++ b/tools/proftool.c
+@@ -16,6 +16,7 @@
+ #include <string.h>
+ #include <unistd.h>
+ #include <sys/param.h>
++#include <sys/types.h>
+
+ #include <compiler.h>
+ #include <trace.h>
+--
+2.3.5

@@ -1,0 +1,15 @@
+Set correct Python executable path
+
+Signed-off-by: Philippe Proulx <eeppeliteloop@gmail.com>
+
+--- python-ipython-2.1.0/setupbase.py	2014-05-21 15:19:12.000000000 -0400
++++ python-ipython-2.1.0-new/setupbase.py	2014-07-23 23:34:32.892030423 -0400
+@@ -394,7 +394,7 @@ class build_scripts_entrypt(build_script
+ 
+             mod, func = entrypt.split(':')
+             with open(outfile, 'w') as f:
+-                f.write(script_src.format(executable=sys.executable,
++                f.write(script_src.format(executable='/usr/bin/env python',
+                                           mod=mod, func=func))
+ 
+         return outfiles, outfiles

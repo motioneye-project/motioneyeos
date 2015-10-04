@@ -1,0 +1,14 @@
+config BR2_PACKAGE_QT5WEBKIT_EXAMPLES
+	bool "qt5webkit examples"
+	depends on BR2_PACKAGE_QT5WEBKIT
+	help
+	  Qt is a cross-platform application and UI framework for
+	  developers using C++.
+
+	  This package contains examples for the qt5webkit module.
+
+	  This package has been tagged as deprecated since version
+	  5.5.0 and should be replaced by Qt WebEngine module in
+	  new design.
+
+	  http://qt.io

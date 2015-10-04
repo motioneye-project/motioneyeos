@@ -1,0 +1,66 @@
+From 2f0580cece3ab2baaf9214f434c7146e389566a4 Mon Sep 17 00:00:00 2001
+From: Nathan Sidwell <nathan@codesourcery.com>
+Date: Fri, 22 Mar 2013 17:48:51 +0100
+Subject: [PATCH] Fix some fragileness in dlopen/do_dlopen wrapper & worker
+ pair.
+
+do_dlopen contains __builtin_return_address to determine from
+whence it was called, and uses that to determine which dynamic
+object's data it should use to start the search.  (In the bug I was
+tracking, this related to whether the application's RPATH was used or
+not.)  For that to work, it has to have been inlined into the wrapper
+function.
+
+As it happens, it wasn't being inlined.  That's an unfortunate compiler
+behaviour, but it isn't wrong and shouldn't have caused dlopen to fail.
+
+This patch changes things so the wrapper function determines the
+return address, and passes it to the worker.  If the worker's inlined,
+the generated code should be exactly the same as before.
+
+Signed-off-by: Nathan Sidwell <nathan@codesourcery.com>
+Signed-off-by: Bernd Schmidt <bernds@codesourcery.com>
+Signed-off-by: Bernhard Reutner-Fischer <rep.dot.nop@gmail.com>
+---
+ ldso/libdl/libdl.c |    8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
+
+diff --git a/ldso/libdl/libdl.c b/ldso/libdl/libdl.c
+index 71ade1f..018c720 100644
+--- a/ldso/libdl/libdl.c
++++ b/ldso/libdl/libdl.c
+@@ -296,11 +296,10 @@ static ptrdiff_t _dl_build_local_scope (struct elf_resolve **list,
+ 	return p - list;
+ }
+ 
+-static void *do_dlopen(const char *libname, int flag)
++static void *do_dlopen(const char *libname, int flag, ElfW(Addr) from)
+ {
+ 	struct elf_resolve *tpnt, *tfrom;
+ 	struct dyn_elf *dyn_chain, *rpnt = NULL, *dyn_ptr, *relro_ptr, *handle;
+-	ElfW(Addr) from;
+ 	struct elf_resolve *tpnt1;
+ 	void (*dl_brk) (void);
+ 	int now_flag;
+@@ -320,8 +319,6 @@ static void *do_dlopen(const char *libname, int flag)
+ 		return NULL;
+ 	}
+ 
+-	from = (ElfW(Addr)) __builtin_return_address(0);
+-
+ 	if (!_dl_init) {
+ 		_dl_init = true;
+ 		_dl_malloc_function = malloc;
+@@ -661,7 +658,8 @@ void *dlopen(const char *libname, int flag)
+ 	void *ret;
+ 
+ 	__UCLIBC_MUTEX_CONDITIONAL_LOCK(_dl_mutex, 1);
+-	ret = do_dlopen(libname, flag);
++	ret = do_dlopen(libname, flag,
++			(ElfW(Addr)) __builtin_return_address(0));
+ 	__UCLIBC_MUTEX_CONDITIONAL_UNLOCK(_dl_mutex, 1);
+ 
+ 	return ret;
+-- 
+1.7.10.4
+

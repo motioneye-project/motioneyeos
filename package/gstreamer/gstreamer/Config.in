@@ -1,0 +1,36 @@
+config BR2_PACKAGE_GSTREAMER
+	bool "gstreamer 0.10"
+	depends on BR2_USE_WCHAR # glib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # glib2
+	depends on BR2_USE_MMU # glib2
+	select BR2_PACKAGE_LIBGLIB2
+	help
+	  GStreamer is an open source multimedia framework.
+
+	  This 0.10.x version of GStreamer is incompatible with
+	  GStreamer 1.X.
+
+	  http://gstreamer.freedesktop.org/
+
+if BR2_PACKAGE_GSTREAMER
+
+config BR2_PACKAGE_GSTREAMER_GST_DEBUG
+	bool "enable gst-debug trace support"
+	default y
+	help
+	  Enable support for the gst-debug tracing functionality in gstreamer.
+	  This has limited CPU overhead, but does increase the rootfs size
+	  somewhat.
+
+config BR2_PACKAGE_GSTREAMER_PLUGIN_REGISTRY
+	bool "enable plugin registry"
+	default y
+	help
+	  Enable support for the GStreamer plugin registry. This may increase
+	  the launch-time for a GStreamer application.
+
+endif
+
+comment "gstreamer 0.10 needs a toolchain w/ wchar, threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS

@@ -1,0 +1,23 @@
+#!/bin/sh
+#
+# Upload microcode into the processor.
+#
+
+microcode_file="/usr/share/misc/intel-microcode.dat"
+
+case "$1" in
+  start)
+	echo "Starting iucode-tool:"
+	/usr/sbin/iucode_tool -k $microcode_file
+	echo "done"
+	;;
+  stop)
+	;;
+  restart|reload)
+	;;
+  *)
+	echo "Usage: $0 {start|stop|restart}"
+	exit 1
+esac
+
+exit $?

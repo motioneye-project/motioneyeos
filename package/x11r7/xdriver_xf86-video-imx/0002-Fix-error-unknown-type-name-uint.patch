@@ -1,0 +1,33 @@
+From ccdfce5e75ba707deacdd5808a8f3de8744848d0 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
+Date: Tue, 5 Feb 2013 10:57:47 +0100
+Subject: [PATCH] Fix "error: unknown type name 'uint'"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+In file included from imx_driver.c:33:0:
+.../sysroots/imx53qsb/usr/src/kernel/include/linux/mxcfb.h:107:2: error: unknown type name 'uint'
+
+Upstream-Status: Pending
+
+Signed-off-by: Eric Bénard <eric@eukrea.com>
+---
+ src/imx_driver.c |    1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/imx_driver.c b/src/imx_driver.c
+index f4b3e38..4cf662d 100644
+--- a/src/imx_driver.c
++++ b/src/imx_driver.c
+@@ -29,6 +29,7 @@
+ #include <errno.h>
+ #include <fcntl.h>
+ #include <string.h>
++#include <sys/types.h>
+ #include <linux/fb.h>
+ #include <linux/mxcfb.h>
+ 
+-- 
+1.7.10.4
+

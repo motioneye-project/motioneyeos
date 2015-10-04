@@ -1,0 +1,31 @@
+Conditionally compile per innetgr availability
+
+innetgr is not available/functional in uclibc, provide conditions for compilation.
+
+Signed-off-by: Dmitry Golubovsky <golubovsky@gmail.com>
+
+Index: linux-pam-1.1.4/modules/pam_succeed_if/pam_succeed_if.c
+============================================================================
+--- linux-pam-1.1.4/modules/pam_succeed_if/pam_succeed_if.c	2011-06-21 05:04:56.000000000 -0400
++++ linux-pam-1.1.4/modules/pam_succeed_if/pam_succeed_if.c	2012-08-09 21:05:02.000000000 -0400
+@@ -233,16 +233,20 @@
+ static int
+ evaluate_innetgr(const char *host, const char *user, const char *group)
+ {
++#ifdef HAVE_INNETGR
+ 	if (innetgr(group, host, user, NULL) == 1)
+ 		return PAM_SUCCESS;
++#endif /* HAVE_INNETGR */
+ 	return PAM_AUTH_ERR;
+ }
+ /* Return PAM_SUCCESS if the (host,user) is NOT in the netgroup. */
+ static int
+ evaluate_notinnetgr(const char *host, const char *user, const char *group)
+ {
++#ifdef HAVE_INNETGR
+ 	if (innetgr(group, host, user, NULL) == 0)
+ 		return PAM_SUCCESS;
++#endif /* HAVE_INNETGR */
+ 	return PAM_AUTH_ERR;
+ }
+ 

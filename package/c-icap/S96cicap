@@ -1,0 +1,27 @@
+#!/bin/sh
+
+# (Re)create directories
+mkdir -p /var/run/c-icap
+mkdir -p /var/log/c-icap
+
+case "$1" in
+    start)
+	echo -n "Starting c-icap server: "
+	start-stop-daemon -S -q -b -m -p /var/run/c-icap.pid \
+			  -x /usr/bin/c-icap -- -N
+	[ $? == 0 ] && echo "OK" || echo "FAIL"
+	;;
+    stop)
+	echo -n "Stopping c-icap server: "
+	start-stop-daemon -K -q -p /var/run/c-icap.pid
+	[ $? = 0 ] && echo "OK" || echo "FAIL"
+	;;
+    restart|reload)
+	$0 stop
+	sleep 1
+	$0 start
+	;;
+     *)
+	echo "Usage: /etc/init.d/S96cicap {start|stop|restart|reload}"
+	exit 1
+esac

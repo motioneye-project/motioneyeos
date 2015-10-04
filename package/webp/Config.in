@@ -1,0 +1,7 @@
+config BR2_PACKAGE_WEBP
+	bool "webp"
+	help
+	  WebP is a new image format that provides lossless and lossy
+	  compression for images on the web
+
+	  https://developers.google.com/speed/webp/

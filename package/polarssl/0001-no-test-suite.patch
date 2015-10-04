@@ -1,0 +1,27 @@
+Add BUILD_TESTS option to disable test suite
+
+By default, PolarSSL builds a fairly extensive test suite to validate
+the library. In the context of Buildroot, building this test suite is
+not really useful, so we add a BUILD_TESTS to disable its build.
+
+[Gustavo: update for 1.2.11]
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+diff -Nura polarssl-1.2.11.orig/CMakeLists.txt polarssl-1.2.11/CMakeLists.txt
+--- polarssl-1.2.11.orig/CMakeLists.txt	2014-07-11 17:14:43.414651327 -0300
++++ polarssl-1.2.11/CMakeLists.txt	2014-07-11 17:23:00.573498626 -0300
+@@ -49,9 +49,11 @@
+ add_subdirectory(library)
+ add_subdirectory(include)
+ 
+-if(CMAKE_COMPILER_IS_GNUCC)
++option(BUILD_TESTS "Build tests." ON)
++
++if(CMAKE_COMPILER_IS_GNUCC AND BUILD_TESTS)
+   add_subdirectory(tests)
+-endif(CMAKE_COMPILER_IS_GNUCC)
++endif(CMAKE_COMPILER_IS_GNUCC AND BUILD_TESTS)
+ if(CMAKE_COMPILER_IS_CLANG)
+   add_subdirectory(tests)
+ endif(CMAKE_COMPILER_IS_CLANG)

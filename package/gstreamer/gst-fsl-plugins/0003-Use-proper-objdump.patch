@@ -1,0 +1,36 @@
+From c58b658a93b1b6d6e94ba0306d58de845012cef6 Mon Sep 17 00:00:00 2001
+From: "Arnout Vandecappelle (Essensium/Mind)" <arnout@mind.be>
+Date: Tue, 18 Dec 2012 12:22:52 +0100
+Subject: [PATCH] Use proper objdump
+
+If the OBJDUMP environment variable is set, that should be used rather
+than the objdump in PATH.
+
+Signed-off-by: Arnout Vandecappelle (Essensium/Mind) <arnout@mind.be>
+---
+ configure.ac |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 1a31a06..cc7557d 100755
+--- a/configure.ac
++++ b/configure.ac
+@@ -17,7 +17,7 @@ AC_DEFUN([FIND_PARSER_SONAME],
+     AC_MSG_CHECKING([for lib_$1_parser_$2_elinux.3.0.so soname])
+     path=`$PKG_CONFIG --variable=libdir libfslparser`
+     SONAME=$( $CC -print-file-name=$PKG_CONFIG_SYSROOT_DIR$path/lib_$1_parser_$2_elinux.so | \
+-	    while read output; do objdump -p $output | \
++	    while read output; do $OBJDUMP -p $output | \
+ 	    grep "SONAME" | \
+ 	    sed -e 's/ \+SONAME \+//'; done 2> /dev/null )
+     if [[ -z "$SONAME" ]]; then
+@@ -36,7 +36,7 @@ AC_DEFUN([FIND_ACODEC_SONAME],
+     AC_MSG_CHECKING([for lib_$1_wrap_$2_elinux.so soname])
+     path=`$PKG_CONFIG --variable=libdir libfslaudiocodec`
+     SONAME=$( $CC -print-file-name=$PKG_CONFIG_SYSROOT_DIR$path/wrap/lib_$1_wrap_$2_elinux.so | \
+-	    while read output; do objdump -p $output | \
++	    while read output; do $OBJDUMP -p $output | \
+ 	    grep "SONAME" | \
+ 	    sed -e 's/ \+SONAME \+//'; done 2> /dev/null )
+     if [[ -z "$SONAME" ]]; then
+-- 

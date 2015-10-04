@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PYTHON_PYCLI
+	bool "python-pycli"
+	help
+	  The cli package is a framework for making simple, correct
+	  command line applications in Python.
+
+	  https://pythonhosted.org/pyCLI/

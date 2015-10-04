@@ -1,0 +1,204 @@
+#!/bin/sh
+
+mkdir -p /var/lib/dhcp
+dh_conf="/var/cache/dhclient.conf"
+sys_static_conf="/etc/static_ip.conf"
+static_conf="/data/etc/static_ip.conf"
+watch_conf="/data/etc/watch.conf"
+
+link_watch=yes
+link_watch_timeout=20
+ip_watch=yes
+ip_watch_timeout=40
+
+link_nego_timeout=10
+eth=eth0
+wlan=wlan0
+
+if [ -f $watch_conf ]; then
+    source $watch_conf
+fi
+
+if [ -f $sys_static_conf ] && ! [ -f $static_conf ]; then
+    mkdir -p $(dirname $static_conf)
+    cp $sys_static_conf $static_conf
+fi
+
+test -r $static_conf && source $static_conf
+
+watch_eth() {
+    count=0
+    while true; do
+        sleep 5
+        if mii-tool $eth 2>&1 | grep "link ok" > /dev/null; then
+            count=0
+        else
+            if [ $count -lt $link_watch_timeout ]; then
+                count=$(($count + 5))
+                logger -t ethernet -s "disconnected"
+            else
+                logger -t ethernet -s "disconnected for $link_watch_timeout seconds, rebooting"
+                reboot
+            fi
+        fi
+    done
+}
+
+watch_ip() {
+    iface=$1
+    count=0
+    while true; do
+        sleep 5
+        if ip addr show dev $iface | grep inet &>/dev/null; then
+            count=0
+        else
+            if [ $count -lt $ip_watch_timeout ]; then
+                count=$(($count + 5))
+                logger -t network -s "$iface has no IP address"
+            else
+                logger -t network -s "$iface had no IP address for $ip_watch_timeout seconds, rebooting"
+                reboot
+            fi
+        fi
+    done
+}
+
+start_lo() {
+    ifconfig lo up
+}
+
+start_wlan() {
+    if ! ifconfig $wlan >/dev/null 2>&1; then
+        echo "$wlan: no device"
+        return
+    fi
+
+    if [ "$(cat /sys/class/net/$wlan/carrier 2>/dev/null)" != "1" ]; then
+        echo "$wlan: no link"
+        return
+    fi
+
+    if [ -n "$static_ip" ]; then
+        echo "$wlan: setting static IP to $static_ip"
+        ifconfig $wlan $static_ip up
+        static_ip="" # won't be used again
+    else
+        echo "$wlan: starting dhclient"
+        dhclient -cf "$dh_conf" $wlan
+    fi
+
+    if [ "$ip_watch" == "yes" ]; then
+        watch_ip $wlan &
+    fi
+}
+
+start_eth() {
+    # wait up to 3 seconds for driver
+    count=0
+    while ! ifconfig $eth >/dev/null 2>&1; do
+        sleep 1
+        count=$(($count + 1))
+        if [ $count -ge 3 ]; then
+            echo "$eth: no device"
+            return
+        fi
+    done
+
+    # bring it up
+    ifconfig $eth up
+
+    # wait up to 3 seconds for operstate
+    count=0
+    while [ "$(cat /sys/class/net/$eth/operstate 2>&1)" == "unknown" ]; do
+        sleep 1
+        count=$(($count + 1))
+        if [ $count -ge    3 ]; then
+            echo "$eth: no link"
+            return
+        fi
+    done
+
+    # wait up to link_nego_timeout seconds for link
+    count=0
+    while [ "$(cat /sys/class/net/$eth/carrier 2>&1)" != "1" ]; do
+        sleep 1
+        count=$(($count + 1))
+        if [ $count -ge $link_nego_timeout ]; then
+            echo "$eth: no link"
+            return
+        fi
+    done
+
+    if [ -n "$static_ip" ]; then
+        echo "$eth: setting static IP to $static_ip"
+        ifconfig $eth $static_ip up
+        static_ip="" # won't be used again
+    else
+        echo "$eth: starting dhclient"
+        dhclient -cf "$dh_conf" $eth
+    fi
+
+    if [ "$link_watch" == "yes" ]; then
+        watch_eth &
+    fi
+
+    if [ "$ip_watch" == "yes" ]; then
+        watch_ip $eth &
+    fi
+}
+
+start() {
+    hostname=$(hostname)
+    echo "send host-name = \"$hostname\";" > /var/cache/dhclient.conf
+
+    start_lo
+    start_wlan
+    
+    # if wifi or ppp connection configured, start eth in background
+    ssid=$(cat /data/etc/wpa_supplicant.conf 2>&1 | grep ssid | grep -v scan_ssid | cut -d '"' -f 2)
+    if [ -n "$ssid" ] || [ -r /data/etc/ppp/modem ]; then
+        start_eth &>/dev/null &
+    else
+        start_eth
+    fi
+
+    if [ -n "$static_gw" ]; then
+        echo "setting static gateway to $static_gw"
+        ip route add default via $static_gw
+    fi
+
+    if [ -n "$static_dns" ]; then
+        echo "setting static DNS server to $static_dns"
+        echo "nameserver $static_dns" > /etc/resolv.conf
+    fi
+
+    # print the current network configuration
+    ifconfig -a
+}
+
+case "$1" in
+    start)
+        echo -n "Starting network: "
+        start
+        echo "done"
+        ;;
+
+    stop)
+        echo -n "Stopping network: "
+        killall dhclient
+        ps | grep S40network | grep -v $$ | grep -v grep | tr -s ' ' | sed -e 's/^\s//' | cut -d ' ' -f 1 | xargs -r kill
+        echo "done"
+        ;;
+
+    restart|reload)
+        "$0" stop
+        "$0" start
+        ;;
+
+    *)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 1
+esac
+
+exit $?
+

@@ -1,0 +1,45 @@
+Upstream patch to fix link against libm
+
+The upstream patch is modified to also include the necessary
+Makefile.in, which avoids the need for autoreconfiguring the
+package. Autoreconfiguring the package unfortunately doesn't work, due
+to AM_GCONF_SOURCE_2 and AM_NLS macros being missing.
+
+http://git.gnome.org/browse/metacity/commit/src/tools/Makefile.am?id=13d0d52eb885598885b6ff4b73c795c8f29c2a6b
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+From 13d0d52eb885598885b6ff4b73c795c8f29c2a6b Mon Sep 17 00:00:00 2001
+From: Matthias Clasen <mclasen@redhat.com>
+Date: Sun, 02 May 2010 14:50:42 +0000
+Subject: fails to link with pedantic linkers
+
+---
+(limited to 'src/tools/Makefile.am')
+
+Index: b/src/tools/Makefile.am
+===================================================================
+--- a/src/tools/Makefile.am
++++ b/src/tools/Makefile.am
+@@ -26,7 +26,7 @@
+ 
+ metacity_message_LDADD= @METACITY_MESSAGE_LIBS@
+ metacity_window_demo_LDADD= @METACITY_WINDOW_DEMO_LIBS@
+-metacity_mag_LDADD= @METACITY_WINDOW_DEMO_LIBS@
++metacity_mag_LDADD= @METACITY_WINDOW_DEMO_LIBS@ -lm
+ metacity_grayscale_LDADD = @METACITY_WINDOW_DEMO_LIBS@
+ 
+ EXTRA_DIST=$(icon_DATA)
+Index: b/src/tools/Makefile.in
+===================================================================
+--- a/src/tools/Makefile.in
++++ b/src/tools/Makefile.in
+@@ -281,7 +281,7 @@
+ 
+ metacity_message_LDADD = @METACITY_MESSAGE_LIBS@
+ metacity_window_demo_LDADD = @METACITY_WINDOW_DEMO_LIBS@
+-metacity_mag_LDADD = @METACITY_WINDOW_DEMO_LIBS@
++metacity_mag_LDADD = @METACITY_WINDOW_DEMO_LIBS@ -lm
+ metacity_grayscale_LDADD = @METACITY_WINDOW_DEMO_LIBS@
+ EXTRA_DIST = $(icon_DATA)
+ all: all-am

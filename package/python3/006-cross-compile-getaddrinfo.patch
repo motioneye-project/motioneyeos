@@ -1,0 +1,21 @@
+Disable buggy_getaddrinfo configure test when cross-compiling with IPv6 support
+
+Signed-off-by: Vanya Sergeev <vsergeev at gmail.com>
+
+---
+ configure.ac |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+Index: b/configure.ac
+===================================================================
+--- a/configure.ac
++++ b/configure.ac
+@@ -3432,7 +3432,7 @@
+ 
+ AC_MSG_RESULT($ac_cv_buggy_getaddrinfo)
+ 
+-if test $have_getaddrinfo = no || test "$ac_cv_buggy_getaddrinfo" = yes
++if test $have_getaddrinfo = no || test "$cross_compiling" != "yes" -a "$ac_cv_buggy_getaddrinfo" = yes
+ then
+ 	if test $ipv6 = yes
+ 	then

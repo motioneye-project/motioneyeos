@@ -1,0 +1,11 @@
+config BR2_PACKAGE_PATCH
+	bool "patch"
+	depends on BR2_USE_WCHAR
+	help
+	  Take patch files (containing difference listings) and apply them
+	  to original files, producing patched versions.
+
+	  http://www.gnu.org/software/patch/
+
+comment "patch needs a toolchain w/ wchar"
+	depends on !BR2_USE_WCHAR

@@ -1,0 +1,26 @@
+From af4a27a17bbdbe941f2462e116c2e4c8ade110e3 Mon Sep 17 00:00:00 2001
+From: Mike Frysinger <vapier@gentoo.org>
+Date: Fri, 19 Nov 2010 23:35:20 -0500
+Subject: [PATCH 1/4] README: fix typo in tcp wrapper doc
+
+Signed-off-by: Mike Frysinger <vapier@gentoo.org>
+---
+ README |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/README b/README
+index 0da54cc..916de7e 100644
+--- a/README
++++ b/README
+@@ -18,7 +18,7 @@ There is no "./configure", just use "make".
+ 
+ Some make variable can be used to control compilation.
+ 
+- NO_TCP_WRAPPER=  if non-empty, doen't use tcp_wrappers
++ NO_TCP_WRAPPER=  if non-empty, don't use tcp_wrappers
+  USE_DNS=	  if set, tcp_wrappers can check peers based on hostname
+ 		  as well as IP address.  This should only be used if you
+ 		  are certain that gethostbyname will never trigger a
+-- 
+1.7.3.1
+

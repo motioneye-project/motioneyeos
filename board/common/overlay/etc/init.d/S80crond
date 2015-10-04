@@ -1,0 +1,38 @@
+#!/bin/sh 
+
+mkdir -p /data/etc/crontabs/
+
+start() {
+    echo -n "Starting crond: "
+    /usr/sbin/crond
+    [ $? == 0 ] && echo "done" || echo "failed"
+}
+
+stop() {
+    echo -n "Stopping crond: "
+    kill `pidof crond` 2>/dev/null
+    [ $? == 0 ] && echo "done" || echo "failed"
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+
+    stop)
+        stop
+        ;;
+    
+    restart)
+        stop
+        start
+        ;;
+
+    *)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 1
+        ;;
+esac
+
+exit 0
+

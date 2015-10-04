@@ -1,0 +1,16 @@
+configure.ac: uclinux is also linux
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+diff -Nura igmpproxy-0.1.orig/configure.ac igmpproxy-0.1/configure.ac
+--- igmpproxy-0.1.orig/configure.ac	2014-03-12 18:43:02.369323771 -0300
++++ igmpproxy-0.1/configure.ac	2014-03-12 18:43:22.129979179 -0300
+@@ -7,7 +7,7 @@
+ 
+ AC_CANONICAL_HOST
+ case $host_os in
+-	linux*) os=linux;;
++	linux*|uclinux*) os=linux;;
+ 	freebsd*) os=freebsd;;
+ 	netbsd*) os=netbsd;;
+ 	openbsd*) os=openbsd;;

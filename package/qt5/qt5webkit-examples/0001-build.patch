@@ -1,0 +1,30 @@
+This patch improves the qt5webkit examples build for 2 aspects:
+
+# Allows to build even if qt5base examples are not enabled
+# Builds xmlpatterns example only if the qt5xmlpattern package has been built
+
+Signed-off-by: Massimo Callegari <massimocallegari@yahoo.it>
+
+Index: b/examples/webkitwidgets/webkitwidgets.pro
+===================================================================
+--- /dev/null
++++ b/examples/webkitwidgets/webkitwidgets.pro
+@@ -8,5 +8,6 @@
+             framecapture \
+             browser \
+             embedded \
+-            scroller \
+-            xmlpatterns
++            scroller
++
++qtHaveModule(xmlpatterns): SUBDIRS += xmlpatterns
+Index: b/qtwebkit-examples.pro
+===================================================================
+--- /dev/null
++++ b/qtwebkit-examples.pro
+@@ -3,3 +3,4 @@
+ load(qt_parts)
+ 
+ SUBDIRS += doc
++SUBDIRS += examples
+

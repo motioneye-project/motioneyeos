@@ -1,0 +1,213 @@
+From 71939b727a8fa9f722934700948a5b68960f6183 Mon Sep 17 00:00:00 2001
+From: Samuel Martin <s.martin49@gmail.com>
+Date: Thu, 29 May 2014 18:52:10 +0200
+Subject: [PATCH 3/5] auto/*: set ngx_feature_run_force_result for each feature
+ requiring run test
+
+Each feature requiring a run test has a matching preset variable (called
+ngx_force_*) used to set ngx_feature_run_force_result.
+
+These ngx_force_* variables are passed through the environment at configure
+time.
+
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+
+Refresh for 1.8.0.
+
+Signed-off-by: Danomi Manchego <danomimanchego123@gmail.com>
+---
+ auto/cc/conf            | 3 +++
+ auto/cc/name            | 1 +
+ auto/lib/libatomic/conf | 1 +
+ auto/os/darwin          | 3 +++
+ auto/os/linux           | 4 ++++
+ auto/unix               | 8 ++++++++
+ 6 files changed, 20 insertions(+)
+
+diff --git a/auto/cc/conf b/auto/cc/conf
+index edc6d74..a61ade4 100644
+--- a/auto/cc/conf
++++ b/auto/cc/conf
+@@ -159,6 +159,7 @@ if [ "$NGX_PLATFORM" != win32 ]; then
+     ngx_feature="gcc builtin atomic operations"
+     ngx_feature_name=NGX_HAVE_GCC_ATOMIC
+     ngx_feature_run=yes
++    ngx_feature_run_force_result="$ngx_force_gcc_have_atomic"
+     ngx_feature_incs=
+     ngx_feature_path=
+     ngx_feature_libs=
+@@ -179,6 +180,7 @@ if [ "$NGX_PLATFORM" != win32 ]; then
+         ngx_feature="C99 variadic macros"
+         ngx_feature_name="NGX_HAVE_C99_VARIADIC_MACROS"
+         ngx_feature_run=yes
++        ngx_feature_run_force_result="$ngx_force_c99_have_variadic_macros"
+         ngx_feature_incs="#include <stdio.h>
+ #define var(dummy, ...)  sprintf(__VA_ARGS__)"
+         ngx_feature_path=
+@@ -193,6 +195,7 @@ if [ "$NGX_PLATFORM" != win32 ]; then
+     ngx_feature="gcc variadic macros"
+     ngx_feature_name="NGX_HAVE_GCC_VARIADIC_MACROS"
+     ngx_feature_run=yes
++    ngx_feature_run_force_result="$ngx_force_gcc_have_variadic_macros"
+     ngx_feature_incs="#include <stdio.h>
+ #define var(dummy, args...)  sprintf(args)"
+     ngx_feature_path=
+diff --git a/auto/cc/name b/auto/cc/name
+index 51a7ed9..d237d47 100644
+--- a/auto/cc/name
++++ b/auto/cc/name
+@@ -8,6 +8,7 @@ if [ "$NGX_PLATFORM" != win32 ]; then
+     ngx_feature="C compiler"
+     ngx_feature_name=
+     ngx_feature_run=yes
++    ngx_feature_run_force_result="$ngx_force_c_compiler"
+     ngx_feature_incs=
+     ngx_feature_path=
+     ngx_feature_libs=
+diff --git a/auto/lib/libatomic/conf b/auto/lib/libatomic/conf
+index d1e484a..3724916 100644
+--- a/auto/lib/libatomic/conf
++++ b/auto/lib/libatomic/conf
+@@ -15,6 +15,7 @@ else
+     ngx_feature="atomic_ops library"
+     ngx_feature_name=NGX_HAVE_LIBATOMIC
+     ngx_feature_run=yes
++    ngx_feature_run_force_result="$ngx_force_have_libatomic"
+     ngx_feature_incs="#define AO_REQUIRE_CAS
+                       #include <atomic_ops.h>"
+     ngx_feature_path=
+diff --git a/auto/os/darwin b/auto/os/darwin
+index 1d3e3d3..11b7276 100644
+--- a/auto/os/darwin
++++ b/auto/os/darwin
+@@ -27,6 +27,7 @@ NGX_KQUEUE_CHECKED=YES
+ ngx_feature="kqueue's EVFILT_TIMER"
+ ngx_feature_name="NGX_HAVE_TIMER_EVENT"
+ ngx_feature_run=yes
++ngx_feature_run_force_result="$ngx_force_have_timer_event"
+ ngx_feature_incs="#include <sys/event.h>
+                   #include <sys/time.h>"
+ ngx_feature_path=
+@@ -57,6 +58,7 @@ ngx_feature_test="int      kq;
+ ngx_feature="Darwin 64-bit kqueue millisecond timeout bug"
+ ngx_feature_name=NGX_DARWIN_KEVENT_BUG
+ ngx_feature_run=bug
++ngx_feature_run_force_result="$ngx_force_kevent_bug"
+ ngx_feature_incs="#include <sys/event.h>
+                   #include <sys/time.h>"
+ ngx_feature_path=
+@@ -87,6 +89,7 @@ CC_AUX_FLAGS="$CC_AUX_FLAGS"
+ ngx_feature="sendfile()"
+ ngx_feature_name="NGX_HAVE_SENDFILE"
+ ngx_feature_run=yes
++ngx_feature_run_force_result="$ngx_force_have_sendfile"
+ ngx_feature_incs="#include <sys/types.h>
+                   #include <sys/socket.h>
+                   #include <sys/uio.h>
+diff --git a/auto/os/linux b/auto/os/linux
+index 19bf832..16848b2 100644
+--- a/auto/os/linux
++++ b/auto/os/linux
+@@ -49,6 +49,7 @@ fi
+ ngx_feature="epoll"
+ ngx_feature_name="NGX_HAVE_EPOLL"
+ ngx_feature_run=yes
++ngx_feature_run_force_result="$ngx_force_have_epoll"
+ ngx_feature_incs="#include <sys/epoll.h>"
+ ngx_feature_path=
+ ngx_feature_libs=
+@@ -106,6 +107,7 @@ CC_AUX_FLAGS="$cc_aux_flags -D_GNU_SOURCE"
+ ngx_feature="sendfile()"
+ ngx_feature_name="NGX_HAVE_SENDFILE"
+ ngx_feature_run=yes
++ngx_feature_run_force_result="$ngx_force_have_sendfile"
+ ngx_feature_incs="#include <sys/sendfile.h>
+                   #include <errno.h>"
+ ngx_feature_path=
+@@ -127,6 +129,7 @@ CC_AUX_FLAGS="$cc_aux_flags -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64"
+ ngx_feature="sendfile64()"
+ ngx_feature_name="NGX_HAVE_SENDFILE64"
+ ngx_feature_run=yes
++ngx_feature_run_force_result="$ngx_force_have_sendfile64"
+ ngx_feature_incs="#include <sys/sendfile.h>
+                   #include <errno.h>"
+ ngx_feature_path=
+@@ -145,6 +148,7 @@ ngx_include="sys/prctl.h"; . auto/include
+ ngx_feature="prctl(PR_SET_DUMPABLE)"
+ ngx_feature_name="NGX_HAVE_PR_SET_DUMPABLE"
+ ngx_feature_run=yes
++ngx_feature_run_force_result="$ngx_force_have_pr_set_dumpable"
+ ngx_feature_incs="#include <sys/prctl.h>"
+ ngx_feature_path=
+ ngx_feature_libs=
+diff --git a/auto/unix b/auto/unix
+index 6e54531..7dbf9d1 100755
+--- a/auto/unix
++++ b/auto/unix
+@@ -99,6 +99,7 @@ if test -z "$NGX_KQUEUE_CHECKED"; then
+         ngx_feature="kqueue's EVFILT_TIMER"
+         ngx_feature_name="NGX_HAVE_TIMER_EVENT"
+         ngx_feature_run=yes
++        ngx_feature_run_force_result="$ngx_force_have_timer_event"
+         ngx_feature_incs="#include <sys/event.h>
+                           #include <sys/time.h>"
+         ngx_feature_path=
+@@ -589,6 +590,7 @@ ngx_feature_test="char buf[1]; ssize_t n; n = pwrite(1, buf, 1, 0);
+ ngx_feature="sys_nerr"
+ ngx_feature_name="NGX_SYS_NERR"
+ ngx_feature_run=value
++ngx_feature_run_force_result="$ngx_force_sys_nerr"
+ ngx_feature_incs='#include <errno.h>
+                   #include <stdio.h>'
+ ngx_feature_path=
+@@ -603,6 +605,7 @@ if [ $ngx_found = no ]; then
+     ngx_feature="_sys_nerr"
+     ngx_feature_name="NGX_SYS_NERR"
+     ngx_feature_run=value
++    ngx_feature_run_force_result="$ngx_force_sys_nerr"
+     ngx_feature_incs='#include <errno.h>
+                       #include <stdio.h>'
+     ngx_feature_path=
+@@ -618,6 +621,7 @@ if [ $ngx_found = no ]; then
+     ngx_feature='maximum errno'
+     ngx_feature_name=NGX_SYS_NERR
+     ngx_feature_run=value
++    ngx_feature_run_force_result="$ngx_force_sys_nerr"
+     ngx_feature_incs='#include <errno.h>
+                       #include <string.h>
+                       #include <stdio.h>'
+@@ -676,6 +680,7 @@ ngx_feature_test="void *p; p = memalign(4096, 4096);
+ ngx_feature="mmap(MAP_ANON|MAP_SHARED)"
+ ngx_feature_name="NGX_HAVE_MAP_ANON"
+ ngx_feature_run=yes
++ngx_feature_run_force_result="$ngx_force_have_map_anon"
+ ngx_feature_incs="#include <sys/mman.h>"
+ ngx_feature_path=
+ ngx_feature_libs=
+@@ -689,6 +694,7 @@ ngx_feature_test="void *p;
+ ngx_feature='mmap("/dev/zero", MAP_SHARED)'
+ ngx_feature_name="NGX_HAVE_MAP_DEVZERO"
+ ngx_feature_run=yes
++ngx_feature_run_force_result="$ngx_force_have_map_devzero"
+ ngx_feature_incs="#include <sys/mman.h>
+                   #include <sys/stat.h>
+                   #include <fcntl.h>"
+@@ -704,6 +710,7 @@ ngx_feature_test='void *p; int  fd;
+ ngx_feature="System V shared memory"
+ ngx_feature_name="NGX_HAVE_SYSVSHM"
+ ngx_feature_run=yes
++ngx_feature_run_force_result="$ngx_force_have_sysvshm"
+ ngx_feature_incs="#include <sys/ipc.h>
+                   #include <sys/shm.h>"
+ ngx_feature_path=
+@@ -718,6 +725,7 @@ ngx_feature_test="int  id;
+ ngx_feature="POSIX semaphores"
+ ngx_feature_name="NGX_HAVE_POSIX_SEM"
+ ngx_feature_run=yes
++ngx_feature_run_force_result="$ngx_force_have_posix_sem"
+ ngx_feature_incs="#include <semaphore.h>"
+ ngx_feature_path=
+ ngx_feature_libs=
+-- 
+1.9.1
+

@@ -1,0 +1,17 @@
+config BR2_PACKAGE_CDRKIT
+	# Needed for libbz
+	select BR2_PACKAGE_BZIP2
+	select BR2_PACKAGE_LIBCAP
+	depends on BR2_USE_MMU # fork
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0 # libcap
+	bool "cdrkit"
+	help
+	  cdrkit is a suite of programs for recording CDs and DVDs,
+	  blanking CD-RW media, creating ISO-9660 filesystem images,
+	  extracting audio CD data, and more.
+
+	  http://www.cdrkit.org/
+
+comment "cdrkit needs a toolchain w/ headers >= 3.0"
+	depends on BR2_USE_MMU
+	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0

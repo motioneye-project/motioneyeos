@@ -1,0 +1,63 @@
+From bf4a4a4e2b0479322fe16c9e1f15f146daa893ee Mon Sep 17 00:00:00 2001
+From: Romain Naour <romain.naour@openwide.fr>
+Date: Thu, 21 Aug 2014 18:18:16 +0200
+Subject: [PATCH] rename log_msg to libinput_log_msg
+
+This fixes a conflict between libevdev and libinput on the definition
+of the log_msg() symbol.
+
+http://autobuild.buildroot.net/results/c13/c133b7c706ee31302125df8ca94f4d0f0152c6c6/build-end.log
+
+Signed-off-by: Romain Naour <romain.naour@openwide.fr>
+[yann.morin.1998@free.fr: rebase on-top of 0.6.0]
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+[ps.report@gmx.net: rebase on top of 0.7.0]
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+---
+ src/libinput-private.h | 14 +++++++-------
+ src/libinput.c         |  2 +-
+ 2 files changed, 8 insertions(+), 8 deletions(-)
+
+diff --git a/src/libinput-private.h b/src/libinput-private.h
+index b36dc95..98f91b3 100644
+--- a/src/libinput-private.h
++++ b/src/libinput-private.h
+@@ -179,15 +179,15 @@ struct libinput_event_listener {
+ typedef void (*libinput_source_dispatch_t)(void *data);
+ 
+ 
+-#define log_debug(li_, ...) log_msg((li_), LIBINPUT_LOG_PRIORITY_DEBUG, __VA_ARGS__)
+-#define log_info(li_, ...) log_msg((li_), LIBINPUT_LOG_PRIORITY_INFO, __VA_ARGS__)
+-#define log_error(li_, ...) log_msg((li_), LIBINPUT_LOG_PRIORITY_ERROR, __VA_ARGS__)
+-#define log_bug_kernel(li_, ...) log_msg((li_), LIBINPUT_LOG_PRIORITY_ERROR, "kernel bug: " __VA_ARGS__)
+-#define log_bug_libinput(li_, ...) log_msg((li_), LIBINPUT_LOG_PRIORITY_ERROR, "libinput bug: " __VA_ARGS__)
+-#define log_bug_client(li_, ...) log_msg((li_), LIBINPUT_LOG_PRIORITY_ERROR, "client bug: " __VA_ARGS__)
++#define log_debug(li_, ...) libinput_log_msg((li_), LIBINPUT_LOG_PRIORITY_DEBUG, __VA_ARGS__)
++#define log_info(li_, ...) libinput_log_msg((li_), LIBINPUT_LOG_PRIORITY_INFO, __VA_ARGS__)
++#define log_error(li_, ...) libinput_log_msg((li_), LIBINPUT_LOG_PRIORITY_ERROR, __VA_ARGS__)
++#define log_bug_kernel(li_, ...) libinput_log_msg((li_), LIBINPUT_LOG_PRIORITY_ERROR, "kernel bug: " __VA_ARGS__)
++#define log_bug_libinput(li_, ...) libinput_log_msg((li_), LIBINPUT_LOG_PRIORITY_ERROR, "libinput bug: " __VA_ARGS__)
++#define log_bug_client(li_, ...) libinput_log_msg((li_), LIBINPUT_LOG_PRIORITY_ERROR, "client bug: " __VA_ARGS__)
+ 
+ void
+-log_msg(struct libinput *libinput,
++libinput_log_msg(struct libinput *libinput,
+ 	enum libinput_log_priority priority,
+ 	const char *format, ...);
+ 
+diff --git a/src/libinput.c b/src/libinput.c
+index 279cce0..5748e5e 100644
+--- a/src/libinput.c
++++ b/src/libinput.c
+@@ -107,7 +107,7 @@ log_msg_va(struct libinput *libinput,
+ }
+ 
+ void
+-log_msg(struct libinput *libinput,
++libinput_log_msg(struct libinput *libinput,
+ 	enum libinput_log_priority priority,
+ 	const char *format, ...)
+ {
+-- 
+2.1.2
+

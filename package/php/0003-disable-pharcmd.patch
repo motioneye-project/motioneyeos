@@ -1,0 +1,27 @@
+Disable the 'phar' command-line tool build/installation since it requires
+php to run and pack up phar itself in phar format. This would require
+a host-php instance and really probably nobody needs the phar tool
+on the target.
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+[Gustavo: update for autoreconf/configure.in]
+
+diff -Nura php-5.6.7.orig/configure.in php-5.6.7/configure.in
+--- php-5.6.7.orig/configure.in	2015-04-08 11:08:10.815835010 -0300
++++ php-5.6.7/configure.in	2015-04-08 11:16:20.460467444 -0300
+@@ -1437,13 +1437,8 @@
+ INLINE_CFLAGS="$INLINE_CFLAGS $standard_libtool_flag"
+ CXXFLAGS="$CXXFLAGS $standard_libtool_flag"
+ 
+-if test "$PHP_PHAR" != "no" && test "$PHP_CLI" != "no"; then
+-  pharcmd=pharcmd
+-  pharcmd_install=install-pharcmd
+-else
+-  pharcmd=
+-  pharcmd_install=
+-fi;
++pharcmd=
++pharcmd_install=
+ 
+ all_targets="$lcov_target \$(OVERALL_TARGET) \$(PHP_MODULES) \$(PHP_ZEND_EX) \$(PHP_BINARIES) $pharcmd"
+ install_targets="$install_sapi $install_modules $install_binaries install-build install-headers install-programs $install_pear $pharcmd_install"

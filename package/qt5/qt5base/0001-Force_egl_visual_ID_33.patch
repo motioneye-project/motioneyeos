@@ -1,0 +1,27 @@
+Workaround EGL initialization failure due visual mismatch
+
+Error:
+
+Warning: EGL suggested using X Visual ID 33 (RGB888) for EGL config 28 (RGB444), but this is incompatable
+Unable to find an X11 visual which matches EGL config 28
+Could not initialize EGL
+Aborted
+
+Upstream-Status: Inappropriate [workaround]
+
+Signed-off-by: Otavio Salvador <otavio@ossystems.com.br>
+Signed-off-by: Jérôme Pouiller <jezz@sysmic.org>
+
+diff -Naur qtbase-opensource-src-5.1.1_original/src/platformsupport/eglconvenience/qxlibeglintegration.cpp qtbase-opensource-src-5.1.1/src/platformsupport/eglconvenience/qxlibeglintegration.cpp
+--- qtbase-opensource-src-5.1.1_original/src/platformsupport/eglconvenience/qxlibeglintegration.cpp	2013-12-25 19:08:42.163895341 -0800
++++ qtbase-opensource-src-5.1.1/src/platformsupport/eglconvenience/qxlibeglintegration.cpp	2013-12-25 19:09:37.207893799 -0800
+@@ -180,5 +180,9 @@
+     }
+ 
+     qWarning("Unable to find an X11 visual which matches EGL config %d", configId);
++#ifdef ENABLE_MX6_WORKAROUND
++    return (VisualID)33;
++#else
+     return (VisualID)0;
++#endif
+ }

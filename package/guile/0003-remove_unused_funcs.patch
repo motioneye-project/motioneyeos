@@ -1,0 +1,36 @@
+Remove unused static inline functions str_upcase_l() and 
+str_downcase_l() that cause the compilation error:
+'dereferencing pointer to incomplete type'.
+
+Signed-off-by: Pedro Aguilar <paguilar@paguilar.org>
+
+diff -Nau guile-2.0.11.orig/libguile/i18n.c guile-2.0.11/libguile/i18n.c
+--- guile-2.0.11.orig/libguile/i18n.c	2014-01-21 22:25:11.000000000 +0100
++++ guile-2.0.11/libguile/i18n.c	2014-11-04 23:18:52.675435613 +0100
+@@ -851,26 +851,6 @@
+   *dst = '\0';
+ }
+ 
+-#ifdef USE_GNU_LOCALE_API
+-static inline void
+-str_upcase_l (register char *dst, register const char *src,
+-	      scm_t_locale locale)
+-{
+-  for (; *src != '\0'; src++, dst++)
+-    *dst = toupper_l (*src, locale);
+-  *dst = '\0';
+-}
+-
+-static inline void
+-str_downcase_l (register char *dst, register const char *src,
+-		scm_t_locale locale)
+-{
+-  for (; *src != '\0'; src++, dst++)
+-    *dst = tolower_l (*src, locale);
+-  *dst = '\0';
+-}
+-#endif
+-
+ 
+ SCM_DEFINE (scm_string_locale_lt, "string-locale<?", 2, 1, 0,
+ 	    (SCM s1, SCM s2, SCM locale),

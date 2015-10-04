@@ -1,0 +1,26 @@
+[PATCH] configure.ac: don't hardcode include files search paths
+
+Breaks cross compilation if host has libart/freetype.
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ configure.ac |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+Index: rrdtool-1.2.30/configure.ac
+===================================================================
+--- rrdtool-1.2.30.orig/configure.ac
++++ rrdtool-1.2.30/configure.ac
+@@ -524,10 +524,10 @@
+ 
+ CORE_LIBS="$LIBS"
+ 
+-EX_CHECK_ALL(art_lgpl_2, art_vpath_add_point,       libart_lgpl/libart.h,   libart-2.0,  2.3.17, ftp://ftp.gnome.org/pub/GNOME/sources/libart_lgpl/2.3/, /usr/include/libart-2.0)
++EX_CHECK_ALL(art_lgpl_2, art_vpath_add_point,       libart_lgpl/libart.h,   libart-2.0,  2.3.17, ftp://ftp.gnome.org/pub/GNOME/sources/libart_lgpl/2.3/, "")
+ EX_CHECK_ALL(z,          zlibVersion,               zlib.h,                 zlib,        1.2.3,  http://www.gzip.org/zlib/, "")
+ EX_CHECK_ALL(png,        png_access_version_number, png.h,                  libpng,      1.2.10,  http://prdownloads.sourceforge.net/libpng/, "")
+-EX_CHECK_ALL(freetype,   FT_Init_FreeType,          ft2build.h,		    freetype2,   2.1.10,  http://prdownloads.sourceforge.net/freetype/, /usr/include/freetype2)
++EX_CHECK_ALL(freetype,   FT_Init_FreeType,          ft2build.h,		    freetype2,   2.1.10,  http://prdownloads.sourceforge.net/freetype/, "")
+ 
+ if test "$EX_CHECK_ALL_ERR" = "YES"; then
+   AC_MSG_ERROR([Please fix the library issues listed above and try again.])

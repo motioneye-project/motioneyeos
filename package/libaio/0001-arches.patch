@@ -1,0 +1,671 @@
+Patch borrowed from OpenEmbedded, available at
+recipes/libaio/libaio-0.3.106/00_arches.patch in their source
+tree. The patch has been adapted to remove the ARM-related
+definitions, since they have been merged in later versions of libaio.
+
+The patch adds various architecture specific definitions (syscall
+number and macros) for m68k, MIPS, PA/RISC and Sparc. Amongst these,
+Buildroot mostly only cares about MIPS, but it was just easier to take
+the whole OpenEmbedded patch.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ src/libaio.h         |   24 +++++
+ src/syscall-m68k.h   |   78 +++++++++++++++++
+ src/syscall-mips.h   |  223 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ src/syscall-parisc.h |  146 +++++++++++++++++++++++++++++++++
+ src/syscall-sparc.h  |  130 +++++++++++++++++++++++++++++
+ src/syscall.h        |    8 +
+ 7 files changed, 725 insertions(+)
+
+Index: libaio-0.3.109/src/libaio.h
+===================================================================
+--- libaio-0.3.109.orig/src/libaio.h
++++ libaio-0.3.109/src/libaio.h
+@@ -83,6 +83,30 @@
+ #define PADDEDptr(x, y)	x; unsigned y
+ #define PADDEDul(x, y)	unsigned long x; unsigned y
+ #  endif
++#elif defined(__m68k__) /* big endian, 32 bits */
++#define PADDED(x, y)	unsigned y; x
++#define PADDEDptr(x, y)	unsigned y; x
++#define PADDEDul(x, y)	unsigned y; unsigned long x
++#elif defined(__sparc__) /* big endian, 32 bits */
++#define PADDED(x, y)	unsigned y; x
++#define PADDEDptr(x, y)	unsigned y; x
++#define PADDEDul(x, y)	unsigned y; unsigned long x
++#elif defined(__hppa__) /* big endian, 32 bits */
++#define PADDED(x, y)	unsigned y; x
++#define PADDEDptr(x, y)	unsigned y; x
++#define PADDEDul(x, y)	unsigned y; unsigned long x
++#elif defined(__mips__)
++#  if defined (__MIPSEB__) /* big endian, 32 bits */
++#define PADDED(x, y)	unsigned y; x
++#define PADDEDptr(x, y)	unsigned y; x
++#define PADDEDul(x, y)	unsigned y; unsigned long x
++#  elif defined(__MIPSEL__) /* little endian, 32 bits */
++#define PADDED(x, y)	x; unsigned y
++#define PADDEDptr(x, y)	x; unsigned y
++#define PADDEDul(x, y)	unsigned long x; unsigned y
++#  else
++#    error "neither mipseb nor mipsel?"
++#  endif
+ #else
+ #error	endian?
+ #endif
+Index: libaio-0.3.109/src/syscall-m68k.h
+===================================================================
+--- /dev/null
++++ libaio-0.3.109/src/syscall-m68k.h
+@@ -0,0 +1,78 @@
++#define __NR_io_setup		241
++#define __NR_io_destroy		242
++#define __NR_io_getevents	243
++#define __NR_io_submit		244
++#define __NR_io_cancel		245
++
++#define io_syscall1(type,fname,sname,atype,a) \
++type fname(atype a) \
++{ \
++register long __res __asm__ ("%d0") = __NR_##sname; \
++register long __a __asm__ ("%d1") = (long)(a); \
++__asm__ __volatile__ ("trap  #0" \
++		      : "+d" (__res) \
++		      : "d" (__a)  ); \
++return (type) __res; \
++}
++
++#define io_syscall2(type,fname,sname,atype,a,btype,b) \
++type fname(atype a,btype b) \
++{ \
++register long __res __asm__ ("%d0") = __NR_##sname; \
++register long __a __asm__ ("%d1") = (long)(a); \
++register long __b __asm__ ("%d2") = (long)(b); \
++__asm__ __volatile__ ("trap  #0" \
++		      : "+d" (__res) \
++		      : "d" (__a), "d" (__b) \
++		     ); \
++return (type) __res; \
++}
++
++#define io_syscall3(type,fname,sname,atype,a,btype,b,ctype,c) \
++type fname(atype a,btype b,ctype c) \
++{ \
++register long __res __asm__ ("%d0") = __NR_##sname; \
++register long __a __asm__ ("%d1") = (long)(a); \
++register long __b __asm__ ("%d2") = (long)(b); \
++register long __c __asm__ ("%d3") = (long)(c); \
++__asm__ __volatile__ ("trap  #0" \
++		      : "+d" (__res) \
++		      : "d" (__a), "d" (__b), \
++			"d" (__c) \
++		     ); \
++return (type) __res; \
++}
++
++#define io_syscall4(type,fname,sname,atype,a,btype,b,ctype,c,dtype,d) \
++type fname (atype a, btype b, ctype c, dtype d) \
++{ \
++register long __res __asm__ ("%d0") = __NR_##sname; \
++register long __a __asm__ ("%d1") = (long)(a); \
++register long __b __asm__ ("%d2") = (long)(b); \
++register long __c __asm__ ("%d3") = (long)(c); \
++register long __d __asm__ ("%d4") = (long)(d); \
++__asm__ __volatile__ ("trap  #0" \
++		      : "+d" (__res) \
++		      : "d" (__a), "d" (__b), \
++			"d" (__c), "d" (__d)  \
++		     ); \
++return (type) __res; \
++}
++
++#define io_syscall5(type,fname,sname,atype,a,btype,b,ctype,c,dtype,d,etype,e) \
++type fname (atype a,btype b,ctype c,dtype d,etype e) \
++{ \
++register long __res __asm__ ("%d0") = __NR_##sname; \
++register long __a __asm__ ("%d1") = (long)(a); \
++register long __b __asm__ ("%d2") = (long)(b); \
++register long __c __asm__ ("%d3") = (long)(c); \
++register long __d __asm__ ("%d4") = (long)(d); \
++register long __e __asm__ ("%d5") = (long)(e); \
++__asm__ __volatile__ ("trap  #0" \
++		      : "+d" (__res) \
++		      : "d" (__a), "d" (__b), \
++			"d" (__c), "d" (__d), "d" (__e)  \
++		     ); \
++return (type) __res; \
++}
++
+Index: libaio-0.3.109/src/syscall-mips.h
+===================================================================
+--- /dev/null
++++ libaio-0.3.109/src/syscall-mips.h
+@@ -0,0 +1,223 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (C) 1995, 96, 97, 98, 99, 2000 by Ralf Baechle
++ * Copyright (C) 1999, 2000 Silicon Graphics, Inc.
++ *
++ * Changed system calls macros _syscall5 - _syscall7 to push args 5 to 7 onto
++ * the stack. Robin Farine for ACN S.A, Copyright (C) 1996 by ACN S.A
++ */
++
++#ifndef _MIPS_SIM_ABI32
++#define _MIPS_SIM_ABI32			1
++#define _MIPS_SIM_NABI32		2
++#define _MIPS_SIM_ABI64			3
++#endif
++
++#if _MIPS_SIM == _MIPS_SIM_ABI32
++
++/*
++ * Linux o32 style syscalls are in the range from 4000 to 4999.
++ */
++#define __NR_Linux			4000
++#define __NR_io_setup			(__NR_Linux + 241)
++#define __NR_io_destroy			(__NR_Linux + 242)
++#define __NR_io_getevents		(__NR_Linux + 243)
++#define __NR_io_submit			(__NR_Linux + 244)
++#define __NR_io_cancel			(__NR_Linux + 245)
++
++#endif /* _MIPS_SIM == _MIPS_SIM_ABI32 */
++
++#if _MIPS_SIM == _MIPS_SIM_ABI64
++
++/*
++ * Linux 64-bit syscalls are in the range from 5000 to 5999.
++ */
++#define __NR_Linux			5000
++#define __NR_io_setup			(__NR_Linux + 200)
++#define __NR_io_destroy			(__NR_Linux + 201)
++#define __NR_io_getevents		(__NR_Linux + 202)
++#define __NR_io_submit			(__NR_Linux + 203)
++#define __NR_io_cancel			(__NR_Linux + 204)
++#endif /* _MIPS_SIM == _MIPS_SIM_ABI64 */
++
++#if _MIPS_SIM == _MIPS_SIM_NABI32
++
++/*
++ * Linux N32 syscalls are in the range from 6000 to 6999.
++ */
++#define __NR_Linux			6000
++#define __NR_io_setup			(__NR_Linux + 200)
++#define __NR_io_destroy			(__NR_Linux + 201)
++#define __NR_io_getevents		(__NR_Linux + 202)
++#define __NR_io_submit			(__NR_Linux + 203)
++#define __NR_io_cancel			(__NR_Linux + 204)
++#endif /* _MIPS_SIM == _MIPS_SIM_NABI32 */
++
++#define io_syscall1(type,fname,sname,atype,a) \
++type fname(atype a) \
++{ \
++	register unsigned long __a0 asm("$4") = (unsigned long) a; \
++	register unsigned long __a3 asm("$7"); \
++	unsigned long __v0; \
++	\
++	__asm__ volatile ( \
++	".set\tnoreorder\n\t" \
++	"li\t$2, %3\t\t\t# " #fname "\n\t" \
++	"syscall\n\t" \
++	"move\t%0, $2\n\t" \
++	".set\treorder" \
++	: "=&r" (__v0), "=r" (__a3) \
++	: "r" (__a0), "i" (__NR_##sname) \
++	: "$2", "$8", "$9", "$10", "$11", "$12", "$13", "$14", "$15", "$24", \
++	  "memory"); \
++	\
++	if (__a3 == 0) \
++		return (type) __v0; \
++	return (type) -1; \
++}
++
++#define io_syscall2(type,fname,sname,atype,a,btype,b) \
++type fname(atype a, btype b) \
++{ \
++	register unsigned long __a0 asm("$4") = (unsigned long) a; \
++	register unsigned long __a1 asm("$5") = (unsigned long) b; \
++	register unsigned long __a3 asm("$7"); \
++	unsigned long __v0; \
++	\
++	__asm__ volatile ( \
++	".set\tnoreorder\n\t" \
++	"li\t$2, %4\t\t\t# " #fname "\n\t" \
++	"syscall\n\t" \
++	"move\t%0, $2\n\t" \
++	".set\treorder" \
++	: "=&r" (__v0), "=r" (__a3) \
++	: "r" (__a0), "r" (__a1), "i" (__NR_##sname) \
++	: "$2", "$8", "$9", "$10", "$11", "$12", "$13", "$14", "$15", "$24", \
++	  "memory"); \
++	\
++	if (__a3 == 0) \
++		return (type) __v0; \
++	return (type) -1; \
++}
++
++#define io_syscall3(type,fname,sname,atype,a,btype,b,ctype,c) \
++type fname(atype a, btype b, ctype c) \
++{ \
++	register unsigned long __a0 asm("$4") = (unsigned long) a; \
++	register unsigned long __a1 asm("$5") = (unsigned long) b; \
++	register unsigned long __a2 asm("$6") = (unsigned long) c; \
++	register unsigned long __a3 asm("$7"); \
++	unsigned long __v0; \
++	\
++	__asm__ volatile ( \
++	".set\tnoreorder\n\t" \
++	"li\t$2, %5\t\t\t# " #fname "\n\t" \
++	"syscall\n\t" \
++	"move\t%0, $2\n\t" \
++	".set\treorder" \
++	: "=&r" (__v0), "=r" (__a3) \
++	: "r" (__a0), "r" (__a1), "r" (__a2), "i" (__NR_##sname) \
++	: "$2", "$8", "$9", "$10", "$11", "$12", "$13", "$14", "$15", "$24", \
++	  "memory"); \
++	\
++	if (__a3 == 0) \
++		return (type) __v0; \
++	return (type) -1; \
++}
++
++#define io_syscall4(type,fname,sname,atype,a,btype,b,ctype,c,dtype,d) \
++type fname(atype a, btype b, ctype c, dtype d) \
++{ \
++	register unsigned long __a0 asm("$4") = (unsigned long) a; \
++	register unsigned long __a1 asm("$5") = (unsigned long) b; \
++	register unsigned long __a2 asm("$6") = (unsigned long) c; \
++	register unsigned long __a3 asm("$7") = (unsigned long) d; \
++	unsigned long __v0; \
++	\
++	__asm__ volatile ( \
++	".set\tnoreorder\n\t" \
++	"li\t$2, %5\t\t\t# " #fname "\n\t" \
++	"syscall\n\t" \
++	"move\t%0, $2\n\t" \
++	".set\treorder" \
++	: "=&r" (__v0), "+r" (__a3) \
++	: "r" (__a0), "r" (__a1), "r" (__a2), "i" (__NR_##sname) \
++	: "$2", "$8", "$9", "$10", "$11", "$12", "$13", "$14", "$15", "$24", \
++	  "memory"); \
++	\
++	if (__a3 == 0) \
++		return (type) __v0; \
++	return (type) -1; \
++}
++
++#if (_MIPS_SIM == _MIPS_SIM_ABI32)
++
++/*
++ * Using those means your brain needs more than an oil change ;-)
++ */
++
++#define io_syscall5(type,fname,sname,atype,a,btype,b,ctype,c,dtype,d,etype,e) \
++type fname(atype a, btype b, ctype c, dtype d, etype e) \
++{ \
++	register unsigned long __a0 asm("$4") = (unsigned long) a; \
++	register unsigned long __a1 asm("$5") = (unsigned long) b; \
++	register unsigned long __a2 asm("$6") = (unsigned long) c; \
++	register unsigned long __a3 asm("$7") = (unsigned long) d; \
++	unsigned long __v0; \
++	\
++	__asm__ volatile ( \
++	".set\tnoreorder\n\t" \
++	"lw\t$2, %6\n\t" \
++	"subu\t$29, 32\n\t" \
++	"sw\t$2, 16($29)\n\t" \
++	"li\t$2, %5\t\t\t# " #fname "\n\t" \
++	"syscall\n\t" \
++	"move\t%0, $2\n\t" \
++	"addiu\t$29, 32\n\t" \
++	".set\treorder" \
++	: "=&r" (__v0), "+r" (__a3) \
++	: "r" (__a0), "r" (__a1), "r" (__a2), "i" (__NR_##sname), \
++	  "m" ((unsigned long)e) \
++	: "$2", "$8", "$9", "$10", "$11", "$12", "$13", "$14", "$15", "$24", \
++	  "memory"); \
++	\
++	if (__a3 == 0) \
++		return (type) __v0; \
++	return (type) -1; \
++}
++
++#endif /* (_MIPS_SIM == _MIPS_SIM_ABI32) */
++
++#if (_MIPS_SIM == _MIPS_SIM_NABI32) || (_MIPS_SIM == _MIPS_SIM_ABI64)
++
++#define io_syscall5(type,fname,sname,atype,a,btype,b,ctype,c,dtype,d,etype,e) \
++type fname (atype a,btype b,ctype c,dtype d,etype e) \
++{ \
++	register unsigned long __a0 asm("$4") = (unsigned long) a; \
++	register unsigned long __a1 asm("$5") = (unsigned long) b; \
++	register unsigned long __a2 asm("$6") = (unsigned long) c; \
++	register unsigned long __a3 asm("$7") = (unsigned long) d; \
++	register unsigned long __a4 asm("$8") = (unsigned long) e; \
++	unsigned long __v0; \
++	\
++	__asm__ volatile ( \
++	".set\tnoreorder\n\t" \
++	"li\t$2, %6\t\t\t# " #fname "\n\t" \
++	"syscall\n\t" \
++	"move\t%0, $2\n\t" \
++	".set\treorder" \
++	: "=&r" (__v0), "+r" (__a3) \
++	: "r" (__a0), "r" (__a1), "r" (__a2), "r" (__a4), "i" (__NR_##sname) \
++	: "$2", "$9", "$10", "$11", "$12", "$13", "$14", "$15", "$24", \
++	  "memory"); \
++	\
++	if (__a3 == 0) \
++		return (type) __v0; \
++	return (type) -1; \
++}
++
++#endif /* (_MIPS_SIM == _MIPS_SIM_NABI32) || (_MIPS_SIM == _MIPS_SIM_ABI64) */
++
+Index: libaio-0.3.109/src/syscall-parisc.h
+===================================================================
+--- /dev/null
++++ libaio-0.3.109/src/syscall-parisc.h
+@@ -0,0 +1,146 @@
++/*
++ * Linux system call numbers.
++ *
++ * Cary Coutant says that we should just use another syscall gateway
++ * page to avoid clashing with the HPUX space, and I think he's right:
++ * it will would keep a branch out of our syscall entry path, at the
++ * very least.  If we decide to change it later, we can ``just'' tweak
++ * the LINUX_GATEWAY_ADDR define at the bottom and make __NR_Linux be
++ * 1024 or something.  Oh, and recompile libc. =)
++ *
++ * 64-bit HPUX binaries get the syscall gateway address passed in a register
++ * from the kernel at startup, which seems a sane strategy.
++ */
++
++#define __NR_Linux                0
++#define __NR_io_setup           (__NR_Linux + 215)
++#define __NR_io_destroy         (__NR_Linux + 216)
++#define __NR_io_getevents       (__NR_Linux + 217)
++#define __NR_io_submit          (__NR_Linux + 218)
++#define __NR_io_cancel          (__NR_Linux + 219)
++
++#define SYS_ify(syscall_name)   __NR_##syscall_name
++
++/* Assume all syscalls are done from PIC code just to be
++ * safe. The worst case scenario is that you lose a register
++ * and save/restore r19 across the syscall. */
++#define PIC
++
++/* Definition taken from glibc 2.3.3
++ * sysdeps/unix/sysv/linux/hppa/sysdep.h
++ */
++
++#ifdef PIC
++/* WARNING: CANNOT BE USED IN A NOP! */
++# define K_STW_ASM_PIC	"       copy %%r19, %%r4\n"
++# define K_LDW_ASM_PIC	"       copy %%r4, %%r19\n"
++# define K_USING_GR4	"%r4",
++#else
++# define K_STW_ASM_PIC	" \n"
++# define K_LDW_ASM_PIC	" \n"
++# define K_USING_GR4
++#endif
++
++/* GCC has to be warned that a syscall may clobber all the ABI
++   registers listed as "caller-saves", see page 8, Table 2
++   in section 2.2.6 of the PA-RISC RUN-TIME architecture
++   document. However! r28 is the result and will conflict with
++   the clobber list so it is left out. Also the input arguments
++   registers r20 -> r26 will conflict with the list so they
++   are treated specially. Although r19 is clobbered by the syscall
++   we cannot say this because it would violate ABI, thus we say
++   r4 is clobbered and use that register to save/restore r19
++   across the syscall. */
++
++#define K_CALL_CLOB_REGS "%r1", "%r2", K_USING_GR4 \
++			 "%r20", "%r29", "%r31"
++
++#undef K_INLINE_SYSCALL
++#define K_INLINE_SYSCALL(name, nr, args...)	({			\
++	long __sys_res;							\
++	{								\
++		register unsigned long __res __asm__("r28");		\
++		K_LOAD_ARGS_##nr(args)					\
++		/* FIXME: HACK stw/ldw r19 around syscall */		\
++		__asm__ volatile(					\
++			K_STW_ASM_PIC					\
++			"	ble  0x100(%%sr2, %%r0)\n"		\
++			"	ldi %1, %%r20\n"			\
++			K_LDW_ASM_PIC					\
++			: "=r" (__res)					\
++			: "i" (SYS_ify(name)) K_ASM_ARGS_##nr		\
++			: "memory", K_CALL_CLOB_REGS K_CLOB_ARGS_##nr	\
++		);							\
++		__sys_res = (long)__res;				\
++	}								\
++	__sys_res;							\
++})
++
++#define K_LOAD_ARGS_0()
++#define K_LOAD_ARGS_1(r26)					\
++	register unsigned long __r26 __asm__("r26") = (unsigned long)(r26);   \
++	K_LOAD_ARGS_0()
++#define K_LOAD_ARGS_2(r26,r25)					\
++	register unsigned long __r25 __asm__("r25") = (unsigned long)(r25);   \
++	K_LOAD_ARGS_1(r26)
++#define K_LOAD_ARGS_3(r26,r25,r24)				\
++	register unsigned long __r24 __asm__("r24") = (unsigned long)(r24);   \
++	K_LOAD_ARGS_2(r26,r25)
++#define K_LOAD_ARGS_4(r26,r25,r24,r23)				\
++	register unsigned long __r23 __asm__("r23") = (unsigned long)(r23);   \
++	K_LOAD_ARGS_3(r26,r25,r24)
++#define K_LOAD_ARGS_5(r26,r25,r24,r23,r22)			\
++	register unsigned long __r22 __asm__("r22") = (unsigned long)(r22);   \
++	K_LOAD_ARGS_4(r26,r25,r24,r23)
++#define K_LOAD_ARGS_6(r26,r25,r24,r23,r22,r21)			\
++	register unsigned long __r21 __asm__("r21") = (unsigned long)(r21);   \
++	K_LOAD_ARGS_5(r26,r25,r24,r23,r22)
++
++/* Even with zero args we use r20 for the syscall number */
++#define K_ASM_ARGS_0
++#define K_ASM_ARGS_1 K_ASM_ARGS_0, "r" (__r26)
++#define K_ASM_ARGS_2 K_ASM_ARGS_1, "r" (__r25)
++#define K_ASM_ARGS_3 K_ASM_ARGS_2, "r" (__r24)
++#define K_ASM_ARGS_4 K_ASM_ARGS_3, "r" (__r23)
++#define K_ASM_ARGS_5 K_ASM_ARGS_4, "r" (__r22)
++#define K_ASM_ARGS_6 K_ASM_ARGS_5, "r" (__r21)
++
++/* The registers not listed as inputs but clobbered */
++#define K_CLOB_ARGS_6
++#define K_CLOB_ARGS_5 K_CLOB_ARGS_6, "%r21"
++#define K_CLOB_ARGS_4 K_CLOB_ARGS_5, "%r22"
++#define K_CLOB_ARGS_3 K_CLOB_ARGS_4, "%r23"
++#define K_CLOB_ARGS_2 K_CLOB_ARGS_3, "%r24"
++#define K_CLOB_ARGS_1 K_CLOB_ARGS_2, "%r25"
++#define K_CLOB_ARGS_0 K_CLOB_ARGS_1, "%r26"
++
++#define io_syscall1(type,fname,sname,type1,arg1)			\
++type fname(type1 arg1)							\
++{									\
++    return K_INLINE_SYSCALL(sname, 1, arg1);				\
++}
++
++#define io_syscall2(type,fname,sname,type1,arg1,type2,arg2)		\
++type fname(type1 arg1, type2 arg2)					\
++{									\
++    return K_INLINE_SYSCALL(sname, 2, arg1, arg2);			\
++}
++
++#define io_syscall3(type,fname,sname,type1,arg1,type2,arg2,type3,arg3)	\
++type fname(type1 arg1, type2 arg2, type3 arg3)				\
++{									\
++    return K_INLINE_SYSCALL(sname, 3, arg1, arg2, arg3);		\
++}
++
++#define io_syscall4(type,fname,sname,type1,arg1,type2,arg2,type3,arg3,type4,arg4) \
++type fname(type1 arg1, type2 arg2, type3 arg3, type4 arg4)		\
++{									\
++    return K_INLINE_SYSCALL(sname, 4, arg1, arg2, arg3, arg4);		\
++}
++
++#define io_syscall5(type,fname,sname,type1,arg1,type2,arg2,type3,arg3,type4,arg4,type5,arg5) \
++type fname(type1 arg1, type2 arg2, type3 arg3, type4 arg4, type5 arg5)	\
++{									\
++    return K_INLINE_SYSCALL(sname, 5, arg1, arg2, arg3, arg4, arg5);	\
++}
++
+Index: libaio-0.3.109/src/syscall-sparc.h
+===================================================================
+--- /dev/null
++++ libaio-0.3.109/src/syscall-sparc.h
+@@ -0,0 +1,130 @@
++/* $Id: unistd.h,v 1.74 2002/02/08 03:57:18 davem Exp $ */
++
++/*
++ * System calls under the Sparc.
++ *
++ * Don't be scared by the ugly clobbers, it is the only way I can
++ * think of right now to force the arguments into fixed registers
++ * before the trap into the system call with gcc 'asm' statements.
++ *
++ * Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)
++ *
++ * SunOS compatibility based upon preliminary work which is:
++ *
++ * Copyright (C) 1995 Adrian M. Rodriguez (adrian@remus.rutgers.edu)
++ */
++
++
++#define __NR_io_setup		268
++#define __NR_io_destroy		269
++#define __NR_io_submit		270
++#define __NR_io_cancel		271
++#define __NR_io_getevents	272
++
++
++#define io_syscall1(type,fname,sname,type1,arg1) \
++type fname(type1 arg1) \
++{ \
++long __res; \
++register long __g1 __asm__ ("g1") = __NR_##sname; \
++register long __o0 __asm__ ("o0") = (long)(arg1); \
++__asm__ __volatile__ ("t 0x10\n\t" \
++		      "bcc 1f\n\t" \
++		      "mov %%o0, %0\n\t" \
++		      "sub %%g0, %%o0, %0\n\t" \
++		      "1:\n\t" \
++		      : "=r" (__res), "=&r" (__o0) \
++		      : "1" (__o0), "r" (__g1) \
++		      : "cc"); \
++if (__res < -255 || __res >= 0) \
++	return (type) __res; \
++return -1; \
++}
++
++#define io_syscall2(type,fname,sname,type1,arg1,type2,arg2) \
++type fname(type1 arg1,type2 arg2) \
++{ \
++long __res; \
++register long __g1 __asm__ ("g1") = __NR_##sname; \
++register long __o0 __asm__ ("o0") = (long)(arg1); \
++register long __o1 __asm__ ("o1") = (long)(arg2); \
++__asm__ __volatile__ ("t 0x10\n\t" \
++		      "bcc 1f\n\t" \
++		      "mov %%o0, %0\n\t" \
++		      "sub %%g0, %%o0, %0\n\t" \
++		      "1:\n\t" \
++		      : "=r" (__res), "=&r" (__o0) \
++		      : "1" (__o0), "r" (__o1), "r" (__g1) \
++		      : "cc"); \
++if (__res < -255 || __res >= 0) \
++	return (type) __res; \
++return -1; \
++}
++
++#define io_syscall3(type,fname,sname,type1,arg1,type2,arg2,type3,arg3) \
++type fname(type1 arg1,type2 arg2,type3 arg3) \
++{ \
++long __res; \
++register long __g1 __asm__ ("g1") = __NR_##sname; \
++register long __o0 __asm__ ("o0") = (long)(arg1); \
++register long __o1 __asm__ ("o1") = (long)(arg2); \
++register long __o2 __asm__ ("o2") = (long)(arg3); \
++__asm__ __volatile__ ("t 0x10\n\t" \
++		      "bcc 1f\n\t" \
++		      "mov %%o0, %0\n\t" \
++		      "sub %%g0, %%o0, %0\n\t" \
++		      "1:\n\t" \
++		      : "=r" (__res), "=&r" (__o0) \
++		      : "1" (__o0), "r" (__o1), "r" (__o2), "r" (__g1) \
++		      : "cc"); \
++if (__res < -255 || __res>=0) \
++	return (type) __res; \
++return -1; \
++}
++
++#define io_syscall4(type,fname,sname,type1,arg1,type2,arg2,type3,arg3,type4,arg4) \
++type fname(type1 arg1, type2 arg2, type3 arg3, type4 arg4) \
++{ \
++long __res; \
++register long __g1 __asm__ ("g1") = __NR_##sname; \
++register long __o0 __asm__ ("o0") = (long)(arg1); \
++register long __o1 __asm__ ("o1") = (long)(arg2); \
++register long __o2 __asm__ ("o2") = (long)(arg3); \
++register long __o3 __asm__ ("o3") = (long)(arg4); \
++__asm__ __volatile__ ("t 0x10\n\t" \
++		      "bcc 1f\n\t" \
++		      "mov %%o0, %0\n\t" \
++		      "sub %%g0, %%o0, %0\n\t" \
++		      "1:\n\t" \
++		      : "=r" (__res), "=&r" (__o0) \
++		      : "1" (__o0), "r" (__o1), "r" (__o2), "r" (__o3), "r" (__g1) \
++		      : "cc"); \
++if (__res < -255 || __res>=0) \
++	return (type) __res; \
++return -1; \
++}
++
++#define io_syscall5(type,fname,sname,type1,arg1,type2,arg2,type3,arg3,type4,arg4, \
++	  type5,arg5) \
++type fname(type1 arg1,type2 arg2,type3 arg3,type4 arg4,type5 arg5) \
++{ \
++long __res; \
++register long __g1 __asm__ ("g1") = __NR_##sname; \
++register long __o0 __asm__ ("o0") = (long)(arg1); \
++register long __o1 __asm__ ("o1") = (long)(arg2); \
++register long __o2 __asm__ ("o2") = (long)(arg3); \
++register long __o3 __asm__ ("o3") = (long)(arg4); \
++register long __o4 __asm__ ("o4") = (long)(arg5); \
++__asm__ __volatile__ ("t 0x10\n\t" \
++		      "bcc 1f\n\t" \
++		      "mov %%o0, %0\n\t" \
++		      "sub %%g0, %%o0, %0\n\t" \
++		      "1:\n\t" \
++		      : "=r" (__res), "=&r" (__o0) \
++		      : "1" (__o0), "r" (__o1), "r" (__o2), "r" (__o3), "r" (__o4), "r" (__g1) \
++		      : "cc"); \
++if (__res < -255 || __res>=0) \
++	return (type) __res; \
++return -1; \
++}
++
+Index: libaio-0.3.109/src/syscall.h
+===================================================================
+--- libaio-0.3.109.orig/src/syscall.h
++++ libaio-0.3.109/src/syscall.h
+@@ -24,6 +24,14 @@
+ #include "syscall-alpha.h"
+ #elif defined(__arm__)
+ #include "syscall-arm.h"
++#elif defined(__m68k__)
++#include "syscall-m68k.h"
++#elif defined(__sparc__)
++#include "syscall-sparc.h"
++#elif defined(__hppa__)
++#include "syscall-parisc.h"
++#elif defined(__mips__)
++#include "syscall-mips.h"
+ #else
+ #error "add syscall-arch.h"
+ #endif

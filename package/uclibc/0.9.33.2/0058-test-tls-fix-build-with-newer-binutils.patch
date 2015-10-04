@@ -1,0 +1,37 @@
+From 931e8391565323ed2e589c83b83a7345813a5514 Mon Sep 17 00:00:00 2001
+From: Baruch Siach <baruch@tkos.co.il>
+Date: Wed, 02 Oct 2013 07:08:29 +0000
+Subject: test: tls: fix build with newer binutils
+
+Fix the following build failures:
+
+ld: tst-tls10.o: undefined reference to symbol 'f2a'
+ld: tst-tls12.o: undefined reference to symbol 'a1'
+
+binutils ld defaults to --no-copy-dt-needed-entries since version 2.22. Add
+library dependencies explicitly.
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+Signed-off-by: Bernhard Reutner-Fischer <rep.dot.nop@gmail.com>
+---
+(limited to 'test')
+
+diff --git a/test/tls/Makefile.in b/test/tls/Makefile.in
+index 875c607..7ab4e2a 100644
+--- a/test/tls/Makefile.in
++++ b/test/tls/Makefile.in
+@@ -102,9 +102,9 @@ LDFLAGS_tst-tls6 := -ldl
+ LDFLAGS_tst-tls7 := -ldl
+ LDFLAGS_tst-tls8 := -ldl
+ LDFLAGS_tst-tls9 := -ldl
+-LDFLAGS_tst-tls10 := -Wl,-rpath-link=. tst-tlsmod8.so
+-LDFLAGS_tst-tls11 := -Wl,-rpath-link=. tst-tlsmod10.so
+-LDFLAGS_tst-tls12 := -Wl,-rpath-link=. tst-tlsmod12.so
++LDFLAGS_tst-tls10 := -Wl,-rpath-link=. tst-tlsmod8.so tst-tlsmod7.so
++LDFLAGS_tst-tls11 := -Wl,-rpath-link=. tst-tlsmod9.so tst-tlsmod10.so
++LDFLAGS_tst-tls12 := -Wl,-rpath-link=. tst-tlsmod11.so tst-tlsmod12.so
+ LDFLAGS_tst-tls13 := -ldl -Wl,-rpath-link=.
+ LDFLAGS_tst-tls14 := -ldl -Wl,-rpath-link=. tst-tlsmod14a.so
+ LDFLAGS_tst-tls15 := -ldl -Wl,-rpath-link=.
+--
+cgit v0.9.1

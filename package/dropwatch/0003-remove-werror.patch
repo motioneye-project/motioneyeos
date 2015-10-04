@@ -1,0 +1,18 @@
+-Werror shouldn't be used in released code since it can
+cause random build failures on moderate warnings. It also
+depends on the used toolchain since different toolchains may
+or may not print the same warnings.
+
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+
+Index: dropwatch-1.4/src/Makefile
+===================================================================
+--- dropwatch-1.4.orig/src/Makefile
++++ dropwatch-1.4/src/Makefile
+@@ -1,5 +1,5 @@
+ all: dropwatch
+-CFLAGS+=-c -g -D_GNU_SOURCE -Wall -Werror `pkg-config --cflags libnl-3.0`
++CFLAGS+=-c -g -D_GNU_SOURCE -Wall `pkg-config --cflags libnl-3.0`
+ LDFLAGS=-lbfd -lreadline -lnl-3 -lnl-genl-3
+ OBJFILES := main.o lookup.o\
+ 	 lookup_bfd.o lookup_kas.o

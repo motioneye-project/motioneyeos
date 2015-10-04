@@ -1,0 +1,42 @@
+From 4f849e1d2287206cfb7ff0fdeca96c22383b0d53 Mon Sep 17 00:00:00 2001
+From: Samuel Martin <s.martin49@gmail.com>
+Date: Mon, 29 Dec 2014 19:05:13 +0100
+Subject: [PATCH] cmake: libxml2 detection: try first the CMake module from
+ libxml2
+
+Libxml2 >=2.9.2 provides its own CMake module, so check for it before
+falling back on the CMake's module FindLibXml2.cmake.
+
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+---
+ CMakeLists.txt | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 393fee3..b4f1d26 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -38,7 +38,19 @@ endif()
+ find_library(AVAHI_CLIENT_LIBRARIES avahi-client)
+ find_library(AVAHI_COMMON_LIBRARIES avahi-common)
+ find_library(PTHREAD_LIBRARIES pthread)
+-include(FindLibXml2)
++
++# Since libxml2-2.9.2, libxml2 provides its own LibXml2-config.cmake, with all
++# variables correctly set.
++# So, try first to find the CMake module provided by libxml2 package, then fallback
++# on the CMake's FindLibXml2.cmake module (which can lack some definition, especially
++# in static build case).
++find_package(LibXml2 QUIET NO_MODULE)
++if(DEFINED LIBXML2_VERSION_STRING)
++  set(LIBXML2_FOUND ON)
++  set(LIBXML2_INCLUDE_DIR ${LIBXML2_INCLUDE_DIRS})
++else()
++  include(FindLibXml2)
++endif()
+ 
+ set(LIBIIO_CFILES channel.c device.c context.c buffer.c utilities.c)
+ set(LIBIIO_HEADERS iio.h)
+-- 
+2.2.1
+

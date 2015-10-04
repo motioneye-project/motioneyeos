@@ -1,0 +1,24 @@
+config BR2_PACKAGE_FIO
+	bool "fio"
+	depends on BR2_USE_MMU # fork()
+	depends on !BR2_STATIC_LIBS
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	# fio uses posix_madvise(), which is not part of any official
+	# release of uClibc, but is part of uClibc Git, and backported
+	# in Buildroot patch set of uClibc 0.9.33. Therefore, we
+	# disable the build of fio for external uClibc toolchains
+	# (which use an unknown uClibc version)
+	depends on !BR2_TOOLCHAIN_EXTERNAL_UCLIBC
+	# fio uses fallocate() which becomes fallocate64() while compiling with
+	# largefile support, but fallocate64() is not available on nios2
+	depends on !BR2_nios2
+	help
+	  fio is an I/O tool meant to be used both for benchmark
+	  and stress/hardware verification.
+
+	  http://git.kernel.dk/?p=fio.git;a=summary
+
+comment "fio needs a toolchain w/ dynamic library, threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS
+	depends on !BR2_nios2
+	depends on BR2_USE_MMU

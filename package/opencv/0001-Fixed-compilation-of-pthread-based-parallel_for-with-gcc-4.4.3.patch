@@ -1,0 +1,62 @@
+Backport from https://github.com/Itseez/opencv/commit/1f983ec39c97298b0c8ce409a1cc229ecf14e55c
+
+From 1f983ec39c97298b0c8ce409a1cc229ecf14e55c Mon Sep 17 00:00:00 2001
+From: Maksim Shabunin <maksim.shabunin@itseez.com>
+Date: Tue, 9 Jun 2015 13:59:48 +0300
+Subject: [PATCH] Fixed compilation of pthread-based parallel_for with gcc
+ 4.4.3
+
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+---
+ modules/core/src/parallel.cpp | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
+
+diff --git a/modules/core/src/parallel.cpp b/modules/core/src/parallel.cpp
+index b1e7567..0b593ee 100644
+--- a/modules/core/src/parallel.cpp
++++ b/modules/core/src/parallel.cpp
+@@ -132,8 +132,14 @@
+ namespace cv
+ {
+     ParallelLoopBody::~ParallelLoopBody() {}
++#if defined HAVE_PTHREADS && HAVE_PTHREADS
++    void parallel_for_pthreads(const cv::Range& range, const cv::ParallelLoopBody& body, double nstripes);
++    size_t parallel_pthreads_get_threads_num();
++    void parallel_pthreads_set_threads_num(int num);
++#endif
+ }
+ 
++
+ namespace
+ {
+ #ifdef CV_PARALLEL_FRAMEWORK
+@@ -301,7 +307,7 @@ void cv::parallel_for_(const cv::Range& range, const cv::ParallelLoopBody& body,
+         }
+ 
+ #elif defined HAVE_PTHREADS
+-        void parallel_for_pthreads(const Range& range, const ParallelLoopBody& body, double nstripes);
++
+         parallel_for_pthreads(range, body, nstripes);
+ 
+ #else
+@@ -361,8 +367,6 @@ int cv::getNumThreads(void)
+ 
+ #elif defined HAVE_PTHREADS
+ 
+-        size_t parallel_pthreads_get_threads_num();
+-
+         return parallel_pthreads_get_threads_num();
+ 
+ #else
+@@ -424,8 +428,6 @@ void cv::setNumThreads( int threads )
+ 
+ #elif defined HAVE_PTHREADS
+ 
+-    void parallel_pthreads_set_threads_num(int num);
+-
+     parallel_pthreads_set_threads_num(threads);
+ 
+ #endif
+-- 
+2.4.4
+

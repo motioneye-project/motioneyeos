@@ -1,0 +1,37 @@
+From bb08cd16cb0353b3d4116ca8959dbecd2e78f545 Mon Sep 17 00:00:00 2001
+From: Peter Korsgaard <jacmet@sunsite.dk>
+Date: Tue, 3 Jul 2012 15:54:57 +0200
+Subject: [PATCH 1/8] bits/time.h: sync with glibc 2.16
+
+CLOCK_MONOTONIC_RAW is available since 2.6.28
+(2d42244ae71d: clocksource: introduce CLOCK_MONOTONIC_RAW), and
+CLOCK_*_COARSE since 2.6.32 (da15cfdae033: time: Introduce
+CLOCK_REALTIME_COARSE).
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+Signed-off-by: Bernhard Reutner-Fischer <rep.dot.nop@gmail.com>
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ libc/sysdeps/linux/common/bits/time.h | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/libc/sysdeps/linux/common/bits/time.h b/libc/sysdeps/linux/common/bits/time.h
+index 7ed54bf..c871223 100644
+--- a/libc/sysdeps/linux/common/bits/time.h
++++ b/libc/sysdeps/linux/common/bits/time.h
+@@ -54,6 +54,12 @@
+ #   define CLOCK_PROCESS_CPUTIME_ID	2
+ /* Thread-specific CPU-time clock.  */
+ #   define CLOCK_THREAD_CPUTIME_ID	3
++/* Monotonic system-wide clock, not adjusted for frequency scaling.  */
++#   define CLOCK_MONOTONIC_RAW		4
++/* Identifier for system-wide realtime clock, updated only on ticks.  */
++#   define CLOCK_REALTIME_COARSE	5
++/* Monotonic system-wide clock, updated only on ticks.  */
++#   define CLOCK_MONOTONIC_COARSE	6
+ 
+ /* Flag to indicate time is absolute.  */
+ #   define TIMER_ABSTIME		1
+-- 
+1.8.1.2
+

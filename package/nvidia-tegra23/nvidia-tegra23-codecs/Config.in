@@ -1,0 +1,7 @@
+config BR2_PACKAGE_NVIDIA_TEGRA23_CODECS
+	bool "nvidia-tegra23 codecs"
+	depends on BR2_PACKAGE_NVIDIA_TEGRA23_BINARIES
+	help
+	  NVIDIA Tegra restricted codecs from Linux For Tegra 16.5.
+
+	  https://developer.nvidia.com/linux-tegra-rel-16

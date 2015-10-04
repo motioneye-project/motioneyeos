@@ -1,0 +1,43 @@
+From d2f01ba6fa2a065156fad686d1849309c661e527 Mon Sep 17 00:00:00 2001
+From: Samuel Martin <s.martin49@gmail.com>
+Date: Sun, 31 Aug 2014 12:07:31 +0200
+Subject: [PATCH 2/2] cmake: use the standard CMake flag to drive the shared
+ object build
+
+If BUILD_SHARED_LIBS is set and SHARED undefined, then drive SHARED with
+the BUILD_SHARED_LIBS value.
+
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+---
+ CMakeLists.txt | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index b13f78c..db75510 100755
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -7,11 +7,16 @@ project(libmpc C)
+ set(CMAKE_VERBOSE_MAKEFILE false)
+ TEST_BIG_ENDIAN(MPC_ENDIANNESS)
+ 
+-if(WIN32)
+-  option(SHARED "Use shared libmpcdec" OFF)
+-else(WIN32)
+-  option(SHARED "Use shared libmpcdec" ON)
+-endif(WIN32)
++# Use the standard CMake flag to drive the shared object build.
++if(DEFINED BUILD_SHARED_LIBS AND NOT DEFINED SHARED)
++  set(SHARED ${BUILD_SHARED_LIBS})
++else()
++  if(WIN32)
++    option(SHARED "Use shared libmpcdec" OFF)
++  else(WIN32)
++    option(SHARED "Use shared libmpcdec" ON)
++  endif(WIN32)
++endif()
+ 
+ add_definitions(-DFAST_MATH -DCVD_FASTLOG)
+ 
+-- 
+2.1.0
+

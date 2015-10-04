@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+# We want to catch any unexpected failure, and exit immediately
+set -e
+
+# Download helper for svn, to be called from the download wrapper script
+#
+# Call it as:
+#   .../svn [-q] OUT_FILE REPO_URL REV BASNAME
+#
+# Environment:
+#   SVN      : the svn command to call
+
+verbose=
+while getopts :q OPT; do
+    case "${OPT}" in
+    q)  verbose=-q;;
+    \?) printf "unknown option '%s'\n" "${OPTARG}" >&2; exit 1;;
+    esac
+done
+shift $((OPTIND-1))
+
+output="${1}"
+repo="${2}"
+rev="${3}"
+basename="${4}"
+
+${SVN} export ${verbose} "${repo}@${rev}" "${basename}"
+
+tar czf "${output}" "${basename}"

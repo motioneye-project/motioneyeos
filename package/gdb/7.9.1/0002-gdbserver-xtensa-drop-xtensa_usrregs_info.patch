@@ -1,0 +1,47 @@
+From deb44829ecc1dd38275af0fcf91acd319e227a89 Mon Sep 17 00:00:00 2001
+From: Max Filippov <jcmvbkbc@gmail.com>
+Date: Fri, 17 Apr 2015 03:07:41 +0300
+Subject: [PATCH 1/2] gdbserver/xtensa: drop xtensa_usrregs_info
+
+xtensa_usrregs_info refers to undefined variables xtensa_num_regs and
+xtensa_regmap. Drop xtensa_usrregs_info and replace pointer to usrregs
+in regs_info with NULL since all registers are read/set through regsets.
+
+2015-04-17  Max Filippov  <jcmvbkbc@gmail.com>
+gdb/gdbserver/
+	* linux-xtensa-low.c (xtensa_usrregs_info): Remove.
+	(regs_info): Replace usrregs pointer with NULL.
+
+Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
+---
+Backported from: deb44829ecc1dd38275af0fcf91acd319e227a89
+Changes to ChangeLog are dropped.
+
+ gdb/gdbserver/linux-xtensa-low.c | 8 +-------
+ 2 files changed, 6 insertions(+), 7 deletions(-)
+
+diff --git a/gdb/gdbserver/linux-xtensa-low.c b/gdb/gdbserver/linux-xtensa-low.c
+index f7fafaf..e786da5 100644
+--- a/gdb/gdbserver/linux-xtensa-low.c
++++ b/gdb/gdbserver/linux-xtensa-low.c
+@@ -186,16 +186,10 @@ static struct regsets_info xtensa_regsets_info =
+     NULL, /* disabled_regsets */
+   };
+ 
+-static struct usrregs_info xtensa_usrregs_info =
+-  {
+-    xtensa_num_regs,
+-    xtensa_regmap,
+-  };
+-
+ static struct regs_info regs_info =
+   {
+     NULL, /* regset_bitmap */
+-    &xtensa_usrregs_info,
++    NULL, /* usrregs */
+     &xtensa_regsets_info
+   };
+ 
+-- 
+1.8.1.4
+

@@ -1,0 +1,18 @@
+config BR2_PACKAGE_BLACKBOX
+	bool "blackbox"
+	depends on BR2_PACKAGE_XORG7
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_USE_MMU # fork()
+	# upstream dead since 2005
+	depends on BR2_DEPRECATED_SINCE_2014_08
+	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
+	select BR2_PACKAGE_XLIB_LIBX11
+	help
+	  Blackbox is a fast, lightweight window manager for the X
+	  Window System.
+
+	  http://blackboxwm.sourceforge.net/
+
+comment "blackbox needs a toolchain w/ C++"
+	depends on BR2_PACKAGE_XORG7 && BR2_USE_MMU
+	depends on !BR2_INSTALL_LIBSTDCPP

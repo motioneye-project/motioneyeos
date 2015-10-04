@@ -1,0 +1,48 @@
+From 83b4f84b1c490b9bb816e1ecbc743d80d48cc06d Mon Sep 17 00:00:00 2001
+From: "Arnout Vandecappelle (Essensium/Mind)" <arnout@mind.be>
+Date: Tue, 18 Dec 2012 12:05:22 +0100
+Subject: [PATCH] Fix bashism in configure script.
+
+The configure script uses +=, which is not POSIX. Debians that
+have the default dash as /bin/sh define a variable ending with
++ instead of appending to it.
+
+Signed-off-by: Arnout Vandecappelle (Essensium/Mind) <arnout@mind.be>
+---
+ configure.ac | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 5968eb6..1a31a06 100755
+--- a/configure.ac
++++ b/configure.ac
+@@ -152,7 +152,7 @@ AC_SUBST(GST_PLUGINS_BASE_LIBS)
+ AC_CHECK_HEADERS([vpu_lib.h], [HAVE_VPU_LIB=yes], [HAVE_VPU_LIB=no])
+ if test "x$HAVE_VPU_LIB" = "xyes"; then
+     VPU_LIBS=`$PKG_CONFIG --libs libfslvpuwrap 2>/dev/null`
+-    VPU_LIBS+=" -lvpu"
++    VPU_LIBS="$VPU_LIBS -lvpu"
+ fi
+ AC_SUBST(VPU_LIBS)
+ 
+@@ -176,14 +176,14 @@ AC_SUBST(RT_CFLAGS)
+ AC_SUBST(RT_LIBS)
+ 
+ FSL_MM_CORE_CFLAGS=`$PKG_CONFIG --cflags libfslaudiocodec 2>/dev/null`
+-FSL_MM_CORE_CFLAGS+=`$PKG_CONFIG --cflags libfslvideocodec 2>/dev/null`
+-FSL_MM_CORE_CFLAGS+=`$PKG_CONFIG --cflags libfslparser 2>/dev/null`
+-FSL_MM_CORE_CFLAGS+=`$PKG_CONFIG --cflags libfslvpuwrap 2>/dev/null`
++FSL_MM_CORE_CFLAGS="$FSL_MM_CORE_CFLAGS `$PKG_CONFIG --cflags libfslvideocodec 2>/dev/null`"
++FSL_MM_CORE_CFLAGS="$FSL_MM_CORE_CFLAGS `$PKG_CONFIG --cflags libfslparser 2>/dev/null`"
++FSL_MM_CORE_CFLAGS="$FSL_MM_CORE_CFLAGS `$PKG_CONFIG --cflags libfslvpuwrap 2>/dev/null`"
+ AC_SUBST(FSL_MM_CORE_CFLAGS)
+ 
+ FSL_MM_CORE_LIBS=`$PKG_CONFIG --libs libfslaudiocodec 2>/dev/null`
+-FSL_MM_CORE_LIBS+=`$PKG_CONFIG --libs libfslvideocodec 2>/dev/null`
+-FSL_MM_CORE_LIBS+=`$PKG_CONFIG --libs libfslparser 2>/dev/null`
++FSL_MM_CORE_LIBS="$FSL_MM_CORE_LIBS `$PKG_CONFIG --libs libfslvideocodec 2>/dev/null`"
++FSL_MM_CORE_LIBS="$FSL_MM_CORE_LIBS `$PKG_CONFIG --libs libfslparser 2>/dev/null`"
+ AC_SUBST(FSL_MM_CORE_LIBS)
+ 
+ EXTRAPLATFORMCFLAGS="-DARM -D_GNUC_"
+-- 

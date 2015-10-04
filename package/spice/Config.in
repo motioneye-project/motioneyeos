@@ -1,0 +1,69 @@
+comment "spice server needs a toolchain w/ wchar, threads"
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
+
+comment "spice server depends on python (for pyparsing)"
+	depends on BR2_i386 || BR2_x86_64
+	depends on !BR2_PACKAGE_PYTHON
+
+config BR2_PACKAGE_SPICE
+	bool "spice server"
+	depends on BR2_i386 || BR2_x86_64
+	depends on BR2_PACKAGE_PYTHON
+	depends on BR2_USE_WCHAR # libglib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libglib2
+	select BR2_PACKAGE_ALSA_LIB
+	select BR2_PACKAGE_CELT051
+	select BR2_PACKAGE_JPEG
+	select BR2_PACKAGE_LIBGLIB2
+	select BR2_PACKAGE_OPENSSL
+	select BR2_PACKAGE_PIXMAN
+	select BR2_PACKAGE_PYTHON_PYPARSING
+	select BR2_PACKAGE_SPICE_PROTOCOL
+	help
+	  The Spice project aims to provide a complete open source
+	  solution for interaction with virtualized desktop devices.
+	  The Spice project deals with both the virtualized devices
+	  and the front-end. Interaction between front-end and
+	  back-end is done using VD-Interfaces.
+
+	  This package implements the server-part of Spice.
+
+	  http://www.spice-space.org/
+
+if BR2_PACKAGE_SPICE
+
+comment "client depends on X.org"
+	depends on !BR2_PACKAGE_XORG7
+
+config BR2_PACKAGE_SPICE_CLIENT
+	bool "Enable client"
+	depends on BR2_PACKAGE_XORG7
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_INSTALL_LIBSTDCPP
+	select BR2_PACKAGE_XLIB_LIBXFIXES
+	select BR2_PACKAGE_XLIB_LIBXRANDR
+
+comment "client needs a toolchain w/ threads, C++"
+	depends on BR2_PACKAGE_XORG7
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_INSTALL_LIBSTDCPP
+
+config BR2_PACKAGE_SPICE_GUI
+	bool "Enable GUI"
+	depends on BR2_PACKAGE_SPICE_CLIENT
+	depends on !BR2_STATIC_LIBS
+	select BR2_PACKAGE_CEGUI06
+	help
+	  Say 'y' here to enable the Graphical User Interface (GUI)
+	  start dialog.
+
+comment "gui needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS
+
+config BR2_PACKAGE_SPICE_TUNNEL
+	bool "Enable network redirection"
+	select BR2_PACKAGE_SLIRP
+	help
+	  Say 'y' here to enable network redirection, aka tunnelling
+	  through a SLIP/SLIRP session.
+
+endif # BR2_PACKAGE_SPICE

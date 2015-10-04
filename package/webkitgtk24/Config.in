@@ -1,0 +1,55 @@
+config BR2_PACKAGE_WEBKITGTK24_ARCH_SUPPORTS
+	bool
+	# ARM needs BLX, so v5t+, BE completely untested so disabled
+	default y if BR2_arm && !BR2_ARM_CPU_ARMV4
+	# i386 / x86_64 external toolchains have issues and old gcc versions
+	# https://bugs.webkit.org/show_bug.cgi?id=132231
+	# https://stackoverflow.com/questions/9140019/yield-is-not-a-member-of-stdthis-thread
+	default y if BR2_i386 || BR2_x86_64
+	depends on !BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_X86_201209
+	depends on !BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_X86_201203
+	depends on !BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_X86_201109
+	# Disabled on MIPS big endian due to sigbus
+	default y if BR2_mipsel || BR2_mips64el
+	# Disabled on PowerPC pending runtime testing
+	# Disabled on SuperH because of segfault
+	depends on BR2_USE_MMU # libglib2
+
+comment "webkitgtk24 needs libgtk2 and a toolchain w/ C++, wchar, NPTL"
+	depends on BR2_PACKAGE_WEBKITGTK24_ARCH_SUPPORTS
+	depends on BR2_ARCH_HAS_ATOMICS
+	depends on !BR2_PACKAGE_LIBGTK2 || !BR2_PACKAGE_XORG7 || \
+		!BR2_TOOLCHAIN_HAS_THREADS_NPTL || !BR2_INSTALL_LIBSTDCPP \
+		|| !BR2_USE_WCHAR
+	depends on BR2_USE_MMU
+
+config BR2_PACKAGE_WEBKITGTK24
+	bool "webkitgtk 2.4.x"
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_USE_WCHAR
+	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL
+	depends on (BR2_PACKAGE_LIBGTK2 && BR2_PACKAGE_XORG7)
+	depends on BR2_PACKAGE_WEBKITGTK24_ARCH_SUPPORTS
+	depends on BR2_ARCH_HAS_ATOMICS
+	select BR2_PACKAGE_CAIRO
+	select BR2_PACKAGE_CAIRO_PNG
+	select BR2_PACKAGE_ENCHANT
+	select BR2_PACKAGE_HARFBUZZ
+	select BR2_PACKAGE_ICU
+	select BR2_PACKAGE_JPEG
+	select BR2_PACKAGE_LIBCURL
+	select BR2_PACKAGE_LIBSECRET
+	select BR2_PACKAGE_LIBSOUP
+	select BR2_PACKAGE_LIBXML2
+	select BR2_PACKAGE_LIBXSLT
+	select BR2_PACKAGE_SQLITE
+	select BR2_PACKAGE_WEBP
+	select BR2_PACKAGE_XLIB_LIBXT if BR2_PACKAGE_XORG7
+	select BR2_PACKAGE_XLIB_LIBXCOMPOSITE if BR2_PACKAGE_HAS_LIBGL || \
+		(BR2_PACKAGE_HAS_LIBGLES && BR2_PACKAGE_HAS_LIBEGL)
+	select BR2_PACKAGE_XLIB_LIBXDAMAGE if BR2_PACKAGE_HAS_LIBGL || \
+		(BR2_PACKAGE_HAS_LIBGLES && BR2_PACKAGE_HAS_LIBEGL)
+	help
+	  WebKit is an open source, standards compliant web browser engine.
+
+	  http://www.webkitgtk.org/

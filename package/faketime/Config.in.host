@@ -1,0 +1,7 @@
+config BR2_PACKAGE_HOST_FAKETIME
+	bool "host faketime"
+	help
+	  Faketime reports faked system time to programs without
+	  having to change the system-wide time.
+
+	  https://github.com/wolfcw/libfaketime

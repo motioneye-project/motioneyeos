@@ -1,0 +1,34 @@
+[PATCH] fix build issue with gcc 4.6+
+
+Debian patch from http://patch-tracker.debian.org/patch/series/dl/blackbox/0.70.1-13/textpropertytostring-unconditional.diff
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+
+Description: Declare bt::textPropertyToString unconditionally.
+Author: Jakub Wilk <jwilk@debian.org>
+Forwarded: no
+Bug-Debian: http://bugs.debian.org/614468
+Last-Update: 2011-03-12
+
+--- a/lib/Util.hh
++++ b/lib/Util.hh
+@@ -25,6 +25,8 @@
+ #ifndef __Util_hh
+ #define __Util_hh
+ 
++#include <X11/Xutil.h>
++
+ #include <limits.h>
+ #include <string>
+ 
+@@ -94,10 +96,8 @@
+ 
+   std::string tolower(const std::string &string);
+ 
+-#ifdef _XUTIL_H_
+   std::string textPropertyToString(::Display *display,
+                                    ::XTextProperty& text_prop);
+-#endif
+ 
+ } // namespace bt
+ 

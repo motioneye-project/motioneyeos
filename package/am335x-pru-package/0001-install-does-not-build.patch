@@ -1,0 +1,23 @@
+Makefile: do not force the release build on install
+
+If we did build any of the other targets, and are just interested
+in those and not the release one, we still want to use the 'install'
+rule, but not build (and install) the release libraries.
+
+So, remove the dependency on the 'release' target from the 'install'
+rule.
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+
+diff -durN am335x-pru-package-506e074859891a2b350eb4f5fcb451c4961410ea.orig/pru_sw/app_loader/interface/Makefile am335x-pru-package-506e074859891a2b350eb4f5fcb451c4961410ea/pru_sw/app_loader/interface/Makefile
+--- am335x-pru-package-506e074859891a2b350eb4f5fcb451c4961410ea.orig/pru_sw/app_loader/interface/Makefile	2014-08-18 00:24:36.000000000 +0200
++++ am335x-pru-package-506e074859891a2b350eb4f5fcb451c4961410ea/pru_sw/app_loader/interface/Makefile	2014-10-12 11:39:17.144682697 +0200
+@@ -38,7 +38,7 @@
+ 
+ all:	debug release sodebug sorelease
+ 
+-install: release
++install:
+ 	install -m 0755 -d $(DESTDIR)$(PREFIX)/lib
+ 	install -m 0755 -d $(DESTDIR)$(PREFIX)/include
+ 	install -m 0644 $(LIBDIR)/* $(DESTDIR)$(PREFIX)/lib

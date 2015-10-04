@@ -1,0 +1,50 @@
+config BR2_PACKAGE_AVAHI
+	bool "avahi"
+	# libdaemon uses fork()
+	depends on BR2_USE_MMU
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_STATIC_LIBS
+	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE
+	help
+	  Avahi is a system which facilitates service
+	  discovery on a local network.
+
+	  http://www.avahi.org/
+
+if BR2_PACKAGE_AVAHI
+
+config BR2_PACKAGE_AVAHI_AUTOIPD
+	bool "IPv4LL network address configuration daemon"
+	default y
+	select BR2_PACKAGE_LIBDAEMON
+	help
+	  Avahi-autoipd implements IPv4LL, "Dynamic Configuration of
+	  IPv4 Link-Local Addresses" (IETF RFC3927), a protocol for
+	  automatic IP address configuration from the link-local
+	  169.254.0.0/16 range without the need for a central server.
+	  It is primarily intended to be used in ad-hoc networks which
+	  lack a DHCP server.
+
+config BR2_PACKAGE_AVAHI_DAEMON
+	bool "mDNS/DNS-SD daemon"
+	select BR2_PACKAGE_LIBDAEMON
+	select BR2_PACKAGE_EXPAT
+	help
+	  The Avahi mDNS/DNS-SD daemon implementing Apple's ZeroConf
+	  architecture (also known as "Rendezvous" or "Bonjour").
+	  The daemon registers local IP addresses and services using
+	  mDNS/DNS-SD.
+
+config BR2_PACKAGE_AVAHI_LIBDNSSD_COMPATIBILITY
+	bool "libdns_sd compatibility (Bonjour)"
+	depends on BR2_PACKAGE_AVAHI_DAEMON
+	select BR2_PACKAGE_DBUS
+	help
+	  Enable the libdns_sd (Bonjour) compatibility library support
+	  for legacy applications.
+
+endif
+
+comment "avahi needs a toolchain w/ threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_TOOLCHAIN_HAS_THREADS

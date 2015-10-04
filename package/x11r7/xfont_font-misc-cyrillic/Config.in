@@ -1,0 +1,4 @@
+config BR2_PACKAGE_XFONT_FONT_MISC_CYRILLIC
+	bool "font-misc-cyrillic"
+	help
+	  No description available

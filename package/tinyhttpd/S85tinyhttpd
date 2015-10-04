@@ -1,0 +1,33 @@
+#! /bin/sh
+
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+NAME=tinyhttpd
+
+test -x /usr/sbin/$NAME || exit 0
+mkdir -p /var/www
+
+case "$1" in
+  start)
+	echo -n "Starting $NAME: "
+	$NAME > /dev/null &
+	echo "done"
+	;;
+  stop)
+	echo -n "Stopping $NAME: "
+	killall -9 $NAME
+	echo "done"
+	;;
+  restart)
+	echo -n "Restarting $NAME: "
+	killall -9 $NAME
+	sleep 1
+	$NAME > /dev/null &
+	echo "done"
+	;;
+  *)
+	echo "Usage: /etc/init.d/S85tinyhttpd {start|stop|restart}" >&2
+	exit 1
+	;;
+esac
+
+exit 0

@@ -1,0 +1,18 @@
+config BR2_PACKAGE_LIBTIRPC
+	bool "libtirpc"
+	# uClibc toolchains provided by ADI don't have AI_ADDRCONFIG
+	# support. Note that since they provide native RPC support, we
+	# don't need to propagate this dependency to reverse
+	# dependencies of libtirpc for which native RPC support can be
+	# used instead of libtirpc.
+	depends on !BR2_TOOLCHAIN_EXTERNAL_BLACKFIN_UCLINUX_2012R2
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	help
+	  Libtirpc is a port of Sun's Transport-Independent RPC
+	  library to Linux.
+
+	  http://sourceforge.net/projects/libtirpc/
+
+comment "libtirpc needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_EXTERNAL_BLACKFIN_UCLINUX_2012R2
+	depends on !BR2_TOOLCHAIN_HAS_THREADS

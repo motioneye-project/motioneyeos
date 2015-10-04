@@ -1,0 +1,24 @@
+config BR2_PACKAGE_LIBBSD_ARCH_SUPPORTS
+	bool
+	# libbsd requires a.out.h, which is only available for those
+	# architectures: arm, x86 (and alpha, currently not supported in Buildroot;
+	# also m68k which is currently not enabled, so can't be tested.)
+	default y if BR2_arm || BR2_i386 || BR2_x86_64
+
+config BR2_PACKAGE_LIBBSD
+	bool "libbsd"
+	depends on BR2_PACKAGE_LIBBSD_ARCH_SUPPORTS
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_TOOLCHAIN_USES_GLIBC
+	help
+	  This library provides useful functions commonly found on BSD
+	  systems, and lacking on others like GNU systems, thus making
+	  it easier to port projects with strong BSD origins, without
+	  needing to embed the same code over and over again on each
+	  project.
+
+	  http://libbsd.freedesktop.org/
+
+comment "libbsd needs an (e)glibc toolchain w/ threads"
+	depends on BR2_PACKAGE_LIBBSD_ARCH_SUPPORTS
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_TOOLCHAIN_USES_GLIBC

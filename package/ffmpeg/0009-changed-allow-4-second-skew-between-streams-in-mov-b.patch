@@ -1,0 +1,33 @@
+From 4bcec3ef0042244b0ade00d132368d0872f73c72 Mon Sep 17 00:00:00 2001
+From: Joakim Plate <elupus@ecce.se>
+Date: Wed, 8 Dec 2010 14:03:43 +0000
+Subject: [PATCH 09/13] changed: allow 4 second skew between streams in mov
+ before attempting to seek
+
+Patch part of the XBMC patch set for ffmpeg, downloaded from
+https://github.com/xbmc/FFmpeg/.
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ libavformat/mov.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/libavformat/mov.c b/libavformat/mov.c
+index 8d66c0a..127ffd9 100644
+--- a/libavformat/mov.c
++++ b/libavformat/mov.c
+@@ -4028,8 +4028,8 @@ static AVIndexEntry *mov_find_next_sample(AVFormatContext *s, AVStream **st)
+             if (!sample || (!s->pb->seekable && current_sample->pos < sample->pos) ||
+                 (s->pb->seekable &&
+                  ((msc->pb != s->pb && dts < best_dts) || (msc->pb == s->pb &&
+-                 ((FFABS(best_dts - dts) <= AV_TIME_BASE && current_sample->pos < sample->pos) ||
+-                  (FFABS(best_dts - dts) > AV_TIME_BASE && dts < best_dts)))))) {
++                 ((FFABS(best_dts - dts) <= 4*AV_TIME_BASE && current_sample->pos < sample->pos) ||
++                  (FFABS(best_dts - dts) > 4*AV_TIME_BASE && dts < best_dts)))))) {
+                 sample = current_sample;
+                 best_dts = dts;
+                 *st = avst;
+-- 
+2.1.0
+

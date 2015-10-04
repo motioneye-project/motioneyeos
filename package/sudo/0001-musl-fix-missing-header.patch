@@ -1,0 +1,19 @@
+Header sys/types.h is needed for id_t
+
+Patch reported as bug upstream:
+http://bugzilla.sudo.ws/show_bug.cgi?id=711
+
+Signed-off-by: Jörg Krause <joerg.krause@embedded.rocks>
+
+diff -purN sudo-1.8.14p3.orig/include/sudo_util.h sudo-1.8.14p3/include/sudo_util.h
+--- sudo-1.8.14p3.orig/include/sudo_util.h	2015-07-22 14:22:49.000000000 +0200
++++ sudo-1.8.14p3/include/sudo_util.h	2015-08-01 09:35:15.077909614 +0200
+@@ -23,6 +23,8 @@
+ # include "compat/stdbool.h"
+ #endif /* HAVE_STDBOOL_H */
+ 
++#include <sys/types.h>
++
+ /*
+  * Macros for operating on struct timeval.
+  */

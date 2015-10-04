@@ -1,0 +1,37 @@
+Taken from archlinux redis package
+See https://projects.archlinux.org/svntogit/community.git/tree/trunk/redis.conf-sane-defaults.patch?h=packages/redis&id=5b2491ea61b746f289acebd12bc66e337d7e5b88
+
+Signed-off-by: Martin Bark <martin@barkynet.com>
+
+=========================================================================
+diff --git a/redis.conf b/redis.conf
+index 6efb6ac..344e021 100644
+--- a/redis.conf
++++ b/redis.conf
+@@ -61,7 +61,7 @@ tcp-backlog 511
+ # Examples:
+ #
+ # bind 192.168.1.100 10.0.0.1
+-# bind 127.0.0.1
++bind 127.0.0.1
+ 
+ # Specify the path for the Unix socket that will be used to listen for
+ # incoming connections. There is no default, so Redis will not listen
+@@ -87,7 +87,7 @@ timeout 0
+ # On other kernels the period depends on the kernel configuration.
+ #
+ # A reasonable value for this option is 60 seconds.
+-tcp-keepalive 0
++tcp-keepalive 60
+ 
+ # Specify the server verbosity level.
+ # This can be one of:
+@@ -184,7 +184,7 @@ dbfilename dump.rdb
+ # The Append Only File will also be created inside this directory.
+ # 
+ # Note that you must specify a directory here, not a file name.
+-dir ./
++dir /var/lib/redis/
+ 
+ ################################# REPLICATION #################################
+ 

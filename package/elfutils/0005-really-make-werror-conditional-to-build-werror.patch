@@ -1,0 +1,24 @@
+Really make -Werror conditional to BUILD_WERROR
+
+Otherwise it will fail with an error message like this one:
+
+elf_getarsym.c:290:9: error: 'n' may be used uninitialized in this
+function [-Werror=maybe-uninitialized]
+    arsym[n].as_name = NULL;
+	 ^
+cc1: all warnings being treated as errors
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+
+diff -rup a/config/eu.am b/config/eu.am
+--- a/config/eu.am	2014-11-10 16:19:14.356031479 +0000
++++ b/config/eu.am	2014-11-10 16:21:11.702072011 +0000
+@@ -35,7 +35,6 @@ LD_AS_NEEDED = @LD_AS_NEEDED@
+ DEFS = -D_GNU_SOURCE -DHAVE_CONFIG_H -DLOCALEDIR='"${localedir}"'
+ AM_CPPFLAGS = -I. -I$(srcdir) -I$(top_srcdir)/lib -I..
+ AM_CFLAGS = -std=gnu99 -Wall -Wshadow \
+-	    $(if $($(*F)_no_Werror),,-Werror) \
+ 	    $(if $($(*F)_no_Wunused),,-Wunused $(WEXTRA)) \
+ 	    $(if $($(*F)_no_Wformat),-Wno-format,-Wformat=2) \
+ 	    $($(*F)_CFLAGS)

@@ -1,0 +1,37 @@
+From fec308fdfaf9f557ef5fb17c308c48259012b825 Mon Sep 17 00:00:00 2001
+From: Filippo Arcidiacono <filippo.arcidiacono@st.com>
+Date: Thu, 12 Jul 2012 09:24:39 +0200
+Subject: [PATCH] librt: re-add SIGCANCEL to the list of blocked signal in
+ helper thread
+
+Indeed if the libpthread is before the libc in the library look up
+the SIGCANCEL is removed from the list of the blocked signal by
+sigfillset func, this can produce the handler not properly called.
+This commit revert what Denys modified in commit
+162cfaea20d807f0ae329efe39292a9b22593b41.
+
+Signed-off-by: Filippo Arcidiacono <filippo.arcidiacono@st.com>
+Signed-off-by: Carmelo Amoroso <carmelo.amoroso@st.com>
+(cherry picked from commit cb43f2afba0633400387fa7c55dda3396517f58a)
+
+Signed-off-by: Carmelo Amoroso <carmelo.amoroso@st.com>
+---
+ libpthread/nptl/sysdeps/unix/sysv/linux/timer_routines.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/libpthread/nptl/sysdeps/unix/sysv/linux/timer_routines.c b/libpthread/nptl/sysdeps/unix/sysv/linux/timer_routines.c
+index 4319d8d..2681961 100644
+--- a/libpthread/nptl/sysdeps/unix/sysv/linux/timer_routines.c
++++ b/libpthread/nptl/sysdeps/unix/sysv/linux/timer_routines.c
+@@ -175,7 +175,7 @@ __start_helper_thread (void)
+   sigset_t ss;
+   sigset_t oss;
+   sigfillset (&ss);
+-  /*__sigaddset (&ss, SIGCANCEL); - already done by sigfillset */
++  __sigaddset (&ss, SIGCANCEL);
+   INTERNAL_SYSCALL_DECL (err);
+   INTERNAL_SYSCALL (rt_sigprocmask, err, 4, SIG_SETMASK, &ss, &oss, _NSIG / 8);
+ 
+-- 
+1.7.10.4
+

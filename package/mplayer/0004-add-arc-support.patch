@@ -1,0 +1,13 @@
+--- mplayer-1.1/configure	2013-12-03 00:32:10.815571460 -0800
++++ mplayer-1.1-arc/configure	2013-11-29 00:34:29.238297709 -0800
+@@ -2492,6 +2492,10 @@
+   generic)
+     arch='generic'
+     ;;
++  arc)
++    arch='arc'
++    iproc='arc'
++    ;;
+ 
+   *)
+     echo "The architecture of your CPU ($host_arch) is not supported by this configure script"

@@ -1,0 +1,228 @@
+From 4f3062b90b12f3e031a1c949c50a79e0d13de485 Mon Sep 17 00:00:00 2001
+From: bart <bart@a5019735-40e9-0310-863c-91ae7b9d1cf9>
+Date: Sat, 13 Sep 2014 10:53:00 +0000
+Subject: [PATCH] configure.ac: Generalize glibc version check
+
+git-svn-id: svn://svn.valgrind.org/valgrind/trunk@14530 a5019735-40e9-0310-863c-91ae7b9d1cf9
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ configure.ac        | 139 +++++++---------------------------------------------
+ coregrind/m_redir.c |  11 ++---
+ 2 files changed, 22 insertions(+), 128 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index ba11ec6..863cd7e 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -875,141 +875,41 @@ AC_EGREP_CPP([BIONIC_LIBC], [
+ GLIBC_VERSION="bionic")
+ 
+ 
+-AC_MSG_CHECKING([the GLIBC_VERSION version])
++AC_MSG_CHECKING([the glibc version])
+ 
+ case "${GLIBC_VERSION}" in
+      2.2)
+-	AC_MSG_RESULT(2.2 family)
+-	AC_DEFINE([GLIBC_2_2], 1, [Define to 1 if you're using glibc 2.2.x])
++	AC_MSG_RESULT(${GLIBC_VERSION} family)
+ 	DEFAULT_SUPP="glibc-2.2.supp ${DEFAULT_SUPP}"
+ 	DEFAULT_SUPP="glibc-2.2-LinuxThreads-helgrind.supp ${DEFAULT_SUPP}"
+ 	DEFAULT_SUPP="glibc-2.X-drd.supp ${DEFAULT_SUPP}"
+ 	;;
+-
+-     2.3)
+-	AC_MSG_RESULT(2.3 family)
+-	AC_DEFINE([GLIBC_2_3], 1, [Define to 1 if you're using glibc 2.3.x])
+-	DEFAULT_SUPP="glibc-2.3.supp ${DEFAULT_SUPP}"
+-	DEFAULT_SUPP="glibc-2.34567-NPTL-helgrind.supp ${DEFAULT_SUPP}"
+-	DEFAULT_SUPP="glibc-2.X-drd.supp ${DEFAULT_SUPP}"
+-	;;
+-
+-     2.4)
+-	AC_MSG_RESULT(2.4 family)
+-	AC_DEFINE([GLIBC_2_4], 1, [Define to 1 if you're using glibc 2.4.x])
+-	DEFAULT_SUPP="glibc-2.4.supp ${DEFAULT_SUPP}"
+-	DEFAULT_SUPP="glibc-2.34567-NPTL-helgrind.supp ${DEFAULT_SUPP}"
+-	DEFAULT_SUPP="glibc-2.X-drd.supp ${DEFAULT_SUPP}"
+-	;;
+-
+-     2.5)
+-	AC_MSG_RESULT(2.5 family)
+-	AC_DEFINE([GLIBC_2_5], 1, [Define to 1 if you're using glibc 2.5.x])
+-	DEFAULT_SUPP="glibc-2.5.supp ${DEFAULT_SUPP}"
+-	DEFAULT_SUPP="glibc-2.34567-NPTL-helgrind.supp ${DEFAULT_SUPP}"
+-	DEFAULT_SUPP="glibc-2.X-drd.supp ${DEFAULT_SUPP}"
+-	;;
+-     2.6)
+-	AC_MSG_RESULT(2.6 family)
+-	AC_DEFINE([GLIBC_2_6], 1, [Define to 1 if you're using glibc 2.6.x])
+-	DEFAULT_SUPP="glibc-2.6.supp ${DEFAULT_SUPP}"
+-	DEFAULT_SUPP="glibc-2.34567-NPTL-helgrind.supp ${DEFAULT_SUPP}"
+-	DEFAULT_SUPP="glibc-2.X-drd.supp ${DEFAULT_SUPP}"
+-	;;
+-     2.7)
+-	AC_MSG_RESULT(2.7 family)
+-	AC_DEFINE([GLIBC_2_7], 1, [Define to 1 if you're using glibc 2.7.x])
+-	DEFAULT_SUPP="glibc-2.X.supp ${DEFAULT_SUPP}"
+-	DEFAULT_SUPP="glibc-2.34567-NPTL-helgrind.supp ${DEFAULT_SUPP}"
+-	DEFAULT_SUPP="glibc-2.X-drd.supp ${DEFAULT_SUPP}"
+-	;;
+-     2.8)
+-	AC_MSG_RESULT(2.8 family)
+-	AC_DEFINE([GLIBC_2_8], 1, [Define to 1 if you're using glibc 2.8.x])
+-	DEFAULT_SUPP="glibc-2.X.supp ${DEFAULT_SUPP}"
+-	DEFAULT_SUPP="glibc-2.34567-NPTL-helgrind.supp ${DEFAULT_SUPP}"
+-	DEFAULT_SUPP="glibc-2.X-drd.supp ${DEFAULT_SUPP}"
+-	;;
+-     2.9)
+-	AC_MSG_RESULT(2.9 family)
+-	AC_DEFINE([GLIBC_2_9], 1, [Define to 1 if you're using glibc 2.9.x])
+-	DEFAULT_SUPP="glibc-2.X.supp ${DEFAULT_SUPP}"
+-	DEFAULT_SUPP="glibc-2.34567-NPTL-helgrind.supp ${DEFAULT_SUPP}"
+-	DEFAULT_SUPP="glibc-2.X-drd.supp ${DEFAULT_SUPP}"
+-	;;
+-     2.10)
+-	AC_MSG_RESULT(2.10 family)
+-	AC_DEFINE([GLIBC_2_10], 1, [Define to 1 if you're using glibc 2.10.x])
+-	DEFAULT_SUPP="glibc-2.X.supp ${DEFAULT_SUPP}"
+-	DEFAULT_SUPP="glibc-2.34567-NPTL-helgrind.supp ${DEFAULT_SUPP}"
+-	DEFAULT_SUPP="glibc-2.X-drd.supp ${DEFAULT_SUPP}"
+-	;;
+-     2.11)
+-	AC_MSG_RESULT(2.11 family)
+-	AC_DEFINE([GLIBC_2_11], 1, [Define to 1 if you're using glibc 2.11.x])
+-	DEFAULT_SUPP="glibc-2.X.supp ${DEFAULT_SUPP}"
+-	DEFAULT_SUPP="glibc-2.34567-NPTL-helgrind.supp ${DEFAULT_SUPP}"
+-	DEFAULT_SUPP="glibc-2.X-drd.supp ${DEFAULT_SUPP}"
+-        ;;
+-     2.12)
+-	AC_MSG_RESULT(2.12 family)
+-	AC_DEFINE([GLIBC_2_12], 1, [Define to 1 if you're using glibc 2.12.x])
+-	DEFAULT_SUPP="glibc-2.X.supp ${DEFAULT_SUPP}"
+-	DEFAULT_SUPP="glibc-2.34567-NPTL-helgrind.supp ${DEFAULT_SUPP}"
+-	DEFAULT_SUPP="glibc-2.X-drd.supp ${DEFAULT_SUPP}"
+-	;;
+-     2.13)
+-	AC_MSG_RESULT(2.13 family)
+-	AC_DEFINE([GLIBC_2_13], 1, [Define to 1 if you're using glibc 2.13.x])
+-	DEFAULT_SUPP="glibc-2.X.supp ${DEFAULT_SUPP}"
+-	DEFAULT_SUPP="glibc-2.34567-NPTL-helgrind.supp ${DEFAULT_SUPP}"
+-	DEFAULT_SUPP="glibc-2.X-drd.supp ${DEFAULT_SUPP}"
+-	;;
+-     2.14)
+-	AC_MSG_RESULT(2.14 family)
+-	AC_DEFINE([GLIBC_2_14], 1, [Define to 1 if you're using glibc 2.14.x])
+-	DEFAULT_SUPP="glibc-2.X.supp ${DEFAULT_SUPP}"
++     2.[[3-6]])
++	AC_MSG_RESULT(${GLIBC_VERSION} family)
++	DEFAULT_SUPP="glibc-${GLIBC_VERSION}.supp ${DEFAULT_SUPP}"
+ 	DEFAULT_SUPP="glibc-2.34567-NPTL-helgrind.supp ${DEFAULT_SUPP}"
+ 	DEFAULT_SUPP="glibc-2.X-drd.supp ${DEFAULT_SUPP}"
+ 	;;
+-     2.15)
+-	AC_MSG_RESULT(2.15 family)
+-	AC_DEFINE([GLIBC_2_15], 1, [Define to 1 if you're using glibc 2.15.x])
++     2.[[7-9]])
++	AC_MSG_RESULT(${GLIBC_VERSION} family)
+ 	DEFAULT_SUPP="glibc-2.X.supp ${DEFAULT_SUPP}"
+ 	DEFAULT_SUPP="glibc-2.34567-NPTL-helgrind.supp ${DEFAULT_SUPP}"
+ 	DEFAULT_SUPP="glibc-2.X-drd.supp ${DEFAULT_SUPP}"
+ 	;;
+-     2.16)
+-	AC_MSG_RESULT(2.16 family)
+-	AC_DEFINE([GLIBC_2_16], 1, [Define to 1 if you're using glibc 2.16.x])
++     2.10|2.11)
++	AC_MSG_RESULT(${GLIBC_VERSION} family)
++	AC_DEFINE([GLIBC_MANDATORY_STRLEN_REDIRECT], 1,
++		  [Define to 1 if strlen() has been optimized heavily (amd64 glibc >= 2.10)])
+ 	DEFAULT_SUPP="glibc-2.X.supp ${DEFAULT_SUPP}"
+ 	DEFAULT_SUPP="glibc-2.34567-NPTL-helgrind.supp ${DEFAULT_SUPP}"
+ 	DEFAULT_SUPP="glibc-2.X-drd.supp ${DEFAULT_SUPP}"
+ 	;;
+-     2.17)
+-	AC_MSG_RESULT(2.17 family)
+-	AC_DEFINE([GLIBC_2_17], 1, [Define to 1 if you're using glibc 2.17.x])
+-	DEFAULT_SUPP="glibc-2.X.supp ${DEFAULT_SUPP}"
+-	DEFAULT_SUPP="glibc-2.34567-NPTL-helgrind.supp ${DEFAULT_SUPP}"
+-	DEFAULT_SUPP="glibc-2.X-drd.supp ${DEFAULT_SUPP}"
+-	;;
+-     2.18)
+-	AC_MSG_RESULT(2.18 family)
+-	AC_DEFINE([GLIBC_2_18], 1, [Define to 1 if you're using glibc 2.18.x])
+-	DEFAULT_SUPP="glibc-2.X.supp ${DEFAULT_SUPP}"
+-	DEFAULT_SUPP="glibc-2.34567-NPTL-helgrind.supp ${DEFAULT_SUPP}"
+-	DEFAULT_SUPP="glibc-2.X-drd.supp ${DEFAULT_SUPP}"
+-	;;
+-     2.19)
+-	AC_MSG_RESULT(2.19 family)
+-	AC_DEFINE([GLIBC_2_19], 1, [Define to 1 if you're using glibc 2.19.x])
+-	DEFAULT_SUPP="glibc-2.X.supp ${DEFAULT_SUPP}"
+-	DEFAULT_SUPP="glibc-2.34567-NPTL-helgrind.supp ${DEFAULT_SUPP}"
+-	DEFAULT_SUPP="glibc-2.X-drd.supp ${DEFAULT_SUPP}"
+-	;;
+-     2.20)
+-	AC_MSG_RESULT(2.20 family)
+-	AC_DEFINE([GLIBC_2_20], 1, [Define to 1 if you're using glibc 2.20.x])
++     2.*)
++	AC_MSG_RESULT(${GLIBC_VERSION} family)
++	AC_DEFINE([GLIBC_MANDATORY_STRLEN_REDIRECT], 1,
++		  [Define to 1 if strlen() has been optimized heavily (amd64 glibc >= 2.10)])
++	AC_DEFINE([GLIBC_MANDATORY_INDEX_AND_STRLEN_REDIRECT], 1,
++		  [Define to 1 if index() and strlen() have been optimized heavily (x86 glibc >= 2.12)])
+ 	DEFAULT_SUPP="glibc-2.X.supp ${DEFAULT_SUPP}"
+ 	DEFAULT_SUPP="glibc-2.34567-NPTL-helgrind.supp ${DEFAULT_SUPP}"
+ 	DEFAULT_SUPP="glibc-2.X-drd.supp ${DEFAULT_SUPP}"
+@@ -1024,10 +924,9 @@ case "${GLIBC_VERSION}" in
+ 	AC_DEFINE([BIONIC_LIBC], 1, [Define to 1 if you're using Bionic])
+ 	DEFAULT_SUPP="bionic.supp ${DEFAULT_SUPP}"
+ 	;;
+-
+-     *)
++     2.0|2.1|*)
+ 	AC_MSG_RESULT([unsupported version ${GLIBC_VERSION}])
+-	AC_MSG_ERROR([Valgrind requires glibc version 2.2 - 2.19])
++	AC_MSG_ERROR([Valgrind requires glibc version 2.2 or later])
+ 	AC_MSG_ERROR([or Darwin or Bionic libc])
+ 	;;
+ esac
+diff --git a/coregrind/m_redir.c b/coregrind/m_redir.c
+index 9d3c9b1..9aee707 100644
+--- a/coregrind/m_redir.c
++++ b/coregrind/m_redir.c
+@@ -53,7 +53,7 @@
+ #include "pub_core_demangle.h"     // VG_(maybe_Z_demangle)
+ #include "pub_core_libcproc.h"     // VG_(libdir)
+ 
+-#include "config.h" /* GLIBC_2_* */
++#include "config.h" /* GLIBC_MANDATORY_*_REDIRECT */
+ 
+ 
+ /* This module is a critical part of the redirection/intercept system.
+@@ -1242,10 +1242,7 @@ void VG_(redir_initialise) ( void )
+       start, otherwise ld.so (glibc-2.3.5) makes a lot of noise. */
+    if (0==VG_(strcmp)("Memcheck", VG_(details).name)) {
+       const HChar** mandatory;
+-#     if defined(GLIBC_2_2) || defined(GLIBC_2_3) || defined(GLIBC_2_4) \
+-         || defined(GLIBC_2_5) || defined(GLIBC_2_6) || defined(GLIBC_2_7) \
+-         || defined(GLIBC_2_8) || defined(GLIBC_2_9) \
+-         || defined(GLIBC_2_10) || defined(GLIBC_2_11)
++#     ifndef GLIBC_MANDATORY_INDEX_AND_STRLEN_REDIRECT
+       mandatory = NULL;
+ #     else
+       /* for glibc-2.12 and later, this is mandatory - can't sanely
+@@ -1282,9 +1279,7 @@ void VG_(redir_initialise) ( void )
+       add_hardwired_spec(
+          "ld-linux-x86-64.so.2", "strlen",
+          (Addr)&VG_(amd64_linux_REDIR_FOR_strlen),
+-#        if defined(GLIBC_2_2) || defined(GLIBC_2_3) || defined(GLIBC_2_4) \
+-            || defined(GLIBC_2_5) || defined(GLIBC_2_6) || defined(GLIBC_2_7) \
+-            || defined(GLIBC_2_8) || defined(GLIBC_2_9)
++#        ifndef GLIBC_MANDATORY_STRLEN_REDIRECT
+          NULL
+ #        else
+          /* for glibc-2.10 and later, this is mandatory - can't sanely
+-- 
+2.1.4
+

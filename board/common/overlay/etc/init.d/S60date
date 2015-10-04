@@ -1,0 +1,121 @@
+#!/bin/sh
+
+sys_conf="/etc/date.conf"
+conf="/data/etc/date.conf"
+
+if [ -f $sys_conf ] && ! [ -f $conf ]; then
+    mkdir -p $(dirname $conf)
+    cp $sys_conf $conf
+fi
+
+if ! [ -f $conf ]; then
+    exit
+fi
+
+date_timeout=10
+date_method=http
+date_host="google.com"
+date_interval="900"
+
+source $conf
+
+kill_after_timeout() {
+    sleep $date_timeout
+    ps aux | grep httplib | grep -v  grep | tr -s ' ' | cut -d ' ' -f 2 | xargs -r kill
+}
+
+set_current_date_http() {
+    kill_after_timeout &
+
+    timestamp=$(python -c "import calendar, httplib, email.utils; conn = httplib.HTTPConnection('$date_host'); conn.request('HEAD', '/'); \
+            print calendar.timegm(email.utils.parsedate(conn.getresponse().getheader('date')))")
+    
+    if [ -n "$timestamp" ]; then
+        date +%s -s @$timestamp > /dev/null
+    else
+        return 1
+    fi
+}
+
+set_current_date_ntp() {
+    cat /etc/ntp.conf | grep server | head -n 1 | cut -d ' ' -f 2 | xargs ntpdate -t $date_timeout -s
+}
+
+start_http() {
+    echo -n "Setting current date using http: "
+    set_current_date_http
+    [ $? == 0 ] && date || echo "failed"
+    
+    echo -n "Starting http date updater: "
+    while true; do
+        sleep $date_interval
+        set_current_date_http
+    done &
+    [ $? == 0 ] && echo "done" || echo "failed"
+}
+
+start_ntp() {
+    mkdir -p /var/lib/ntp
+    
+    echo -n "Setting current date using ntp: "
+    set_current_date_ntp
+    [ $? == 0 ] && date || echo "failed"
+
+    echo -n "Starting ntpd: "
+    ntpd -g -c /etc/ntp.conf
+    [ $? == 0 ] && echo "done" || echo "failed"
+}
+
+stop_http() {
+    echo -n "Shutting down date updater: "
+    ps | grep S60date | grep -v $$ | grep -v grep | tr -s ' ' | sed -e 's/^\s//' | cut -d ' ' -f 1 | xargs -r kill
+    [ $? == 0 ] && echo "done" || echo "failed"
+}
+
+stop_ntp() {
+    echo -n "Shutting down ntpd: "
+    kill `pidof ntpd`&>/dev/null
+    [ $? == 0 ] && echo "done" || echo "failed"
+}
+
+start() {
+    if [ "$date_method" == "http" ]; then
+        start_http
+    else
+        start_ntp
+    fi
+}
+
+stop() {
+    if [ "$date_method" == "http" ]; then
+        stop_http
+    else
+        stop_ntp
+    fi        
+}
+
+restart() {
+    stop
+    start
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+
+    stop)
+        stop
+        ;;
+
+    restart)
+        restart
+        ;;
+
+    *)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 1
+esac
+
+exit $?
+

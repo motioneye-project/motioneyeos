@@ -1,0 +1,15 @@
+config BR2_PACKAGE_FEH
+	bool "feh"
+	depends on BR2_PACKAGE_XORG7
+	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_XLIB_LIBXINERAMA
+	select BR2_PACKAGE_XLIB_LIBXT
+	select BR2_PACKAGE_IMLIB2
+	select BR2_PACKAGE_IMLIB2_PNG
+	select BR2_PACKAGE_IMLIB2_JPEG
+	select BR2_PACKAGE_IMLIB2_X
+	select BR2_PACKAGE_LIBCURL
+	help
+	  feh is an X11 image viewer aimed mostly at console users.
+
+	  http://feh.finalrewind.org/

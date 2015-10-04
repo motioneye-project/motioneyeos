@@ -1,0 +1,11 @@
+# Locally calculated after checking pgp signature
+sha256	62333167b79afb0b25a843513288c67b59547acf653e8fbe62ee64e71ebd1587	uClibc-0.9.33.2.tar.xz
+
+# From http://www.uclibc-ng.org/
+sha256  7a16bc9ff03b8f74f1f0cf921412f08e48a15285d9d555560d5cca915a28df5f        uClibc-ng-1.0.5.tar.xz
+
+# No hash for the ARC variant, comes from the github-helper
+none	xxx	uClibc-arc-2015.06.tar.gz
+
+# No hash for this git snapshot
+none  xxx  uClibc-7bf35c8b7d4a1f97174eb49f47f33946b282114c.tar.gz

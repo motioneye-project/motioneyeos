@@ -1,0 +1,13 @@
+config BR2_PACKAGE_PYTHON_PYSNMP
+	bool "python-pysnmp"
+	depends on BR2_INSTALL_LIBSTDCPP # pyasn
+	select BR2_PACKAGE_PYTHON_PYASN
+	select BR2_PACKAGE_PYTHON_PYCRYPTO
+	help
+	  PySNMP is a cross-platform, pure-Python SNMP engine
+	  implementation.
+
+	  http://pysnmp.sf.net
+
+comment "python-pysnmp needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP

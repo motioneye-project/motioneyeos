@@ -1,0 +1,36 @@
+configure: re-order SSL libs when linking
+
+When doing static builds, the ordering of libs is important, as the
+linker does not back-pedal to previous libraries specified on the
+command line to find missing symbols, and only searches for those
+missing symbols in the following libs.
+
+Thus, as -lssl needs symbols from -lcrypto, it needs to come before
+-lcrypto.
+
+And globally, we do *not* append new libraries, we prepend them.
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+
+diff -durN a/configure.in b/configure.in
+--- a/configure.in	2014-10-16 11:12:08.000000000 +0200
++++ b/configure.in	2015-05-30 15:44:25.540329788 +0200
+@@ -133,12 +133,14 @@
+     [AC_MSG_ERROR([header file <openssl/ssl.h> is required for OpenSSL, use --with-openssl-path=PATH])]
+   )
+   AC_CHECK_LIB([crypto],[CRYPTO_new_ex_data],
+-    [SSL_LIBADD="$SSL_LIBADD -lcrypto"],
+-    [AC_MSG_ERROR([library 'crypto' is required for OpenSSL])]
++    [SSL_LIBADD="-lcrypto $SSL_LIBADD"],
++    [AC_MSG_ERROR([library 'crypto' is required for OpenSSL])],
++    [$SSL_LIBADD]
+   )
+   AC_CHECK_LIB([ssl],[SSL_library_init],
+-    [SSL_LIBADD="$SSL_LIBADD -lssl"],
+-    [AC_MSG_ERROR([library 'ssl' is required for OpenSSL])]
++    [SSL_LIBADD="-lssl $SSL_LIBADD"],
++    [AC_MSG_ERROR([library 'ssl' is required for OpenSSL])],
++    [$SSL_LIBADD]
+   )
+   AC_SUBST(SSL_LIBADD)
+ fi

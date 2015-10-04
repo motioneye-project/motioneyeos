@@ -1,0 +1,36 @@
+Index: b/grub/asmstub.c
+===================================================================
+--- a/grub/asmstub.c
++++ b/grub/asmstub.c
+@@ -18,10 +18,13 @@
+  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+  */
+ 
++#include <features.h>
++#if !defined __UCLIBC__ || (defined __UCLIBC__ && defined __UCLIBC_HAS_LFS__)
+ /* Try to use glibc's transparant LFS support. */
+ #define _LARGEFILE_SOURCE	1
+ /* lseek becomes synonymous with lseek64.  */
+ #define _FILE_OFFSET_BITS	64
++#endif
+ 
+ /* Simulator entry point. */
+ int grub_stage2 (void);
+Index: b/lib/device.c
+===================================================================
+--- a/lib/device.c
++++ b/lib/device.c
+@@ -18,10 +18,13 @@
+  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+  */
+ 
++#include <features.h>
++#if !defined __UCLIBC__ || (defined __UCLIBC__ && defined __UCLIBC_HAS_LFS__)
+ /* Try to use glibc's transparant LFS support. */
+ #define _LARGEFILE_SOURCE       1
+ /* lseek becomes synonymous with lseek64.  */
+ #define _FILE_OFFSET_BITS       64
++#endif
+ 
+ #include <stdio.h>
+ #include <stdlib.h>

@@ -1,0 +1,4 @@
+config BR2_PACKAGE_XFONT_FONT_DEC_MISC
+	bool "font-dec-misc"
+	help
+	  No description available

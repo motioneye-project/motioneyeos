@@ -1,0 +1,12 @@
+config BR2_PACKAGE_USBUTILS
+	bool "usbutils"
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libusb
+	depends on BR2_PACKAGE_HAS_UDEV # needs hwdb
+	select BR2_PACKAGE_LIBUSB
+	help
+	  USB enumeration utilities
+
+	  http://linux-usb.sourceforge.net/
+
+comment "usbutils needs udev /dev management and toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_PACKAGE_HAS_UDEV

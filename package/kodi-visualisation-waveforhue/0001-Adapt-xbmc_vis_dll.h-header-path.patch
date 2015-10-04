@@ -1,0 +1,26 @@
+From d80b2dfeab475b066004d831c0d28c0dab064ca6 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Thu, 30 Jul 2015 10:24:53 +0200
+Subject: [PATCH] Adapt xbmc_vis_dll.h header path
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ src/Main_gles.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/Main_gles.cpp b/src/Main_gles.cpp
+index 3c22bf8..f5666e9 100644
+--- a/src/Main_gles.cpp
++++ b/src/Main_gles.cpp
+@@ -38,7 +38,7 @@
+ #include <GLES2/gl2ext.h>
+ #endif
+ 
+-#include "addons/include/xbmc_vis_dll.h"
++#include "kodi/xbmc_vis_dll.h"
+ #include "VisGUIShader.h"
+ 
+ //th
+-- 
+2.5.0
+

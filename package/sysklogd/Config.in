@@ -1,0 +1,7 @@
+config BR2_PACKAGE_SYSKLOGD
+	bool "syslogd & klogd"
+	depends on BR2_USE_MMU # fork()
+	help
+	  System log daemons syslogd and klogd.
+
+	  http://www.infodrom.org/projects/sysklogd/

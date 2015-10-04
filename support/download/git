@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+
+# We want to catch any unexpected failure, and exit immediately
+set -e
+
+# Download helper for git, to be called from the download wrapper script
+#
+# Call it as:
+#   .../git [-q] OUT_FILE REPO_URL CSET BASENAME
+#
+# Environment:
+#   GIT      : the git command to call
+
+verbose=
+while getopts :q OPT; do
+    case "${OPT}" in
+    q)  verbose=-q; exec >/dev/null;;
+    \?) printf "unknown option '%s'\n" "${OPTARG}" >&2; exit 1;;
+    esac
+done
+shift $((OPTIND-1))
+
+output="${1}"
+repo="${2}"
+cset="${3}"
+basename="${4}"
+
+# Try a shallow clone, since it is faster than a full clone - but that only
+# works if the version is a ref (tag or branch). Before trying to do a shallow
+# clone we check if ${cset} is in the list provided by git ls-remote. If not
+# we fall back on a full clone.
+#
+# Messages for the type of clone used are provided to ease debugging in case of
+# problems
+git_done=0
+if [ -n "$(${GIT} ls-remote "${repo}" "${cset}" 2>&1)" ]; then
+    printf "Doing shallow clone\n"
+    if ${GIT} clone ${verbose} --depth 1 -b "${cset}" --bare "${repo}" "${basename}"; then
+        git_done=1
+    else
+        printf "Shallow clone failed, falling back to doing a full clone\n"
+    fi
+fi
+if [ ${git_done} -eq 0 ]; then
+    printf "Doing full clone\n"
+    ${GIT} clone ${verbose} --bare "${repo}" "${basename}"
+fi
+
+GIT_DIR="${basename}" \
+${GIT} archive --prefix="${basename}/" -o "${output}.tmp" --format=tar "${cset}"
+
+gzip <"${output}.tmp" >"${output}"

@@ -1,0 +1,43 @@
+Fix gcc 5.x build failure
+
+Extracted from upstream commit
+http://ncurses.scripts.mit.edu/?p=ncurses.git;a=commit;h=97bb4678dc03e753290b39bbff30ba2825df9517.
+
++ modify MKlib_gen.sh to work around change in development version of
+  gcc introduced here:
+  https://gcc.gnu.org/ml/gcc-patches/2014-06/msg02185.html
+  https://gcc.gnu.org/ml/gcc-patches/2014-07/msg00236.html
+  (reports by Marcus Shawcroft, Maohui Lei).
+
+Original author: Thomas E. Dickey <dickey@invisible-island.net>
+Signed-off-by: Mikhail Peselnik <bas@bmail.ru>
+
+--- a/ncurses/base/MKlib_gen.sh.orig	2015-07-23 21:52:32.239481505 +0300
++++ b/ncurses/base/MKlib_gen.sh	2015-07-23 21:53:20.772966587 +0300
+@@ -437,11 +437,22 @@
+ 	-e 's/gen_$//' \
+ 	-e 's/  / /g' >>$TMP
+ 
++cat >$ED1 <<EOF
++s/  / /g
++s/^ //
++s/ $//
++s/P_NCURSES_BOOL/NCURSES_BOOL/g
++EOF
++
++# A patch discussed here:
++#       https://gcc.gnu.org/ml/gcc-patches/2014-06/msg02185.html
++# introduces spurious #line markers.  Work around that by ignoring the system's
++# attempt to define "bool" and using our own symbol here.
++sed -e 's/bool/P_NCURSES_BOOL/g' $TMP > $ED2
++cat $ED2 >$TMP
++
+ $preprocessor $TMP 2>/dev/null \
+-| sed \
+-	-e 's/  / /g' \
+-	-e 's/^ //' \
+-	-e 's/_Bool/NCURSES_BOOL/g' \
++| sed -f $ED1 \
+ | $AWK -f $AW2 \
+ | sed -f $ED3 \
+ | sed \

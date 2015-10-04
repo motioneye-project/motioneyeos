@@ -1,0 +1,28 @@
+Fix HAVE_INTROSPECTION does not appear in AM_CONDITIONAL
+
+During autoreconf GOBJECT_INTROSPECTION_CHECK could not be resolved because we
+don't have introspection which provides its custom m4 macro. Reconfigure fails
+with:
+
+gdk/Makefile.am:196: error: HAVE_INTROSPECTION does not appear in AM_CONDITIONAL
+gtk/Makefile.am:1347: error: HAVE_INTROSPECTION does not appear in AM_CONDITIONAL
+
+We avoid to add a copy of introspection.m4 in the m4 directory of libgtk3 by
+adding a check, as performed in Systemd.
+
+Signed-off-by: Hadrien Boutteville <hadrien.boutteville@gmail.com>
+
+--- a/configure.ac
++++ b/configure.ac
+@@ -1621,7 +1621,10 @@
+ # GObject introspection
+ ##################################################
+
+-GOBJECT_INTROSPECTION_CHECK(introspection_required_version)
++m4_ifdef([GOBJECT_INTROSPECTION_CHECK],
++         [GOBJECT_INTROSPECTION_CHECK(introspection_required_version)],
++         [AM_CONDITIONAL([HAVE_INTROSPECTION], [false])
++          enable_introspection=no])
+
+ ##################################################
+ # colord module

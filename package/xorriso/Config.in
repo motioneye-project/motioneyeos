@@ -1,0 +1,23 @@
+config BR2_PACKAGE_XORRISO
+	bool "xorriso"
+	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
+	depends on BR2_USE_WCHAR
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_USE_MMU # fork()
+	help
+	  xorriso cd/dvd/bd iso 9660 manipulation and disc burner.
+
+	  libburnia is a project for reading, mastering and writing
+	  optical discs. Currently it is comprised of libraries named
+	  libisofs, libburn, libisoburn, a cdrecord emulator named
+	  cdrskin, and an integrated multi-session tool named xorriso.
+	  The software runs on GNU/Linux, FreeBSD, Solaris, NetBSD.
+	  It is base of the GNU xorriso package and is actively
+	  maintained.
+
+	  http://libburnia-project.org/
+	  http://www.gnu.org/software/xorriso
+
+comment "xorriso needs a toolchain w/ wchar, threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS

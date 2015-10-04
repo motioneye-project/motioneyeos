@@ -1,0 +1,33 @@
+From b64a04250b1f35923434158beb6ddb5726b41eac Mon Sep 17 00:00:00 2001
+From: Eric Le Bihan <eric.le.bihan.dev@free.fr>
+Date: Mon, 27 Oct 2014 10:34:38 +0100
+Subject: [PATCH 1/1] Fix undefined reference to get_xkb()
+
+When configuring Gtk+ with --disable-xkb, the build fails because of an
+undefined reference to get_xkb().
+
+This patch fixes this issue.
+
+Signed-off-by: Eric Le Bihan <eric.le.bihan.dev@free.fr>
+---
+ gdk/x11/gdkkeys-x11.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/gdk/x11/gdkkeys-x11.c b/gdk/x11/gdkkeys-x11.c
+index c45a971..6a5481b 100644
+--- a/gdk/x11/gdkkeys-x11.c
++++ b/gdk/x11/gdkkeys-x11.c
+@@ -1498,8 +1498,10 @@ gdk_x11_keymap_map_virtual_modifiers (GdkKeymap       *keymap,
+   int i, j;
+   gboolean retval;
+ 
++#ifdef HAVE_XKB
+   if (KEYMAP_USE_XKB (keymap))
+     get_xkb (keymap_x11);
++#endif
+ 
+   retval = TRUE;
+ 
+-- 
+1.9.1
+

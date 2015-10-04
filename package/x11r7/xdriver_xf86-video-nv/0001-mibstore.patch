@@ -1,0 +1,86 @@
+From fc78fe98222b0204b8a2872a529763d6fe5048da Mon Sep 17 00:00:00 2001
+From: Adam Jackson <ajax@redhat.com>
+Date: Tue, 25 Sep 2012 12:54:49 +0000
+Subject: Remove mibstore.h
+
+Signed-off-by: Adam Jackson <ajax@redhat.com>
+---
+Fetch from:
+http://cgit.freedesktop.org/xorg/driver/xf86-video-nv/commit/?id=fc78fe98222b0204b8a2872a529763d6fe5048da
+
+Signed-off-by: Bernd Kuhls <berndkuhls@hotmail.com>
+
+diff --git a/src/g80_driver.c b/src/g80_driver.c
+index cc4e197..719b96c 100644
+--- a/src/g80_driver.c
++++ b/src/g80_driver.c
+@@ -34,7 +34,6 @@
+ #include <xf86Resources.h>
+ #endif
+ #include <mipointer.h>
+-#include <mibstore.h>
+ #include <micmap.h>
+ #include <xf86cmap.h>
+ #include <fb.h>
+@@ -833,7 +832,6 @@ G80ScreenInit(SCREEN_INIT_ARGS_DECL)
+         }
+     }
+ 
+-    miInitializeBackingStore(pScreen);
+     xf86SetBackingStore(pScreen);
+     xf86SetSilkenMouse(pScreen);
+ 
+diff --git a/src/nv_driver.c b/src/nv_driver.c
+index 6dad6e5..8f35334 100644
+--- a/src/nv_driver.c
++++ b/src/nv_driver.c
+@@ -2550,7 +2550,6 @@ NVScreenInit(SCREEN_INIT_ARGS_DECL)
+     if (!pNv->NoAccel)
+ 	NVAccelInit(pScreen);
+     
+-    miInitializeBackingStore(pScreen);
+     xf86SetBackingStore(pScreen);
+     xf86SetSilkenMouse(pScreen);
+ 
+diff --git a/src/nv_include.h b/src/nv_include.h
+index fb190bf..f174eef 100644
+--- a/src/nv_include.h
++++ b/src/nv_include.h
+@@ -24,9 +24,6 @@
+ /* All drivers initialising the SW cursor need this */
+ #include "mipointer.h"
+ 
+-/* All drivers implementing backing store need this */
+-#include "mibstore.h"
+-
+ #include "micmap.h"
+ 
+ #include "xf86DDC.h"
+diff --git a/src/riva_driver.c b/src/riva_driver.c
+index e0667ef..759501e 100644
+--- a/src/riva_driver.c
++++ b/src/riva_driver.c
+@@ -1168,7 +1168,6 @@ RivaScreenInit(SCREEN_INIT_ARGS_DECL)
+     if (!pRiva->NoAccel)
+ 	RivaAccelInit(pScreen);
+     
+-    miInitializeBackingStore(pScreen);
+     xf86SetBackingStore(pScreen);
+     xf86SetSilkenMouse(pScreen);
+ 
+diff --git a/src/riva_include.h b/src/riva_include.h
+index f2c5302..c7aeef7 100644
+--- a/src/riva_include.h
++++ b/src/riva_include.h
+@@ -22,9 +22,6 @@
+ /* All drivers initialising the SW cursor need this */
+ #include "mipointer.h"
+ 
+-/* All drivers implementing backing store need this */
+-#include "mibstore.h"
+-
+ #include "micmap.h"
+ 
+ #include "xf86DDC.h"
+--
+cgit v0.9.0.2-2-gbebe

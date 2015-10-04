@@ -1,0 +1,16 @@
+tvheadend: remove -Werror from CFLAGS
+
+Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+
+diff -durN tvheadend-c84bc2b72b462ef2dbed305f3fd0bb3fa5046fc3.orig/Makefile tvheadend-c84bc2b72b462ef2dbed305f3fd0bb3fa5046fc3/Makefile
+--- tvheadend-c84bc2b72b462ef2dbed305f3fd0bb3fa5046fc3.orig/Makefile	2014-03-09 14:50:48.437688482 +0100
++++ tvheadend-c84bc2b72b462ef2dbed305f3fd0bb3fa5046fc3/Makefile	2014-03-09 14:54:00.411418749 +0100
+@@ -32,7 +32,7 @@
+ ifeq ($(CONFIG_W_UNUSED_RESULT),yes)
+ CFLAGS  += -Wunused-result
+ endif
+-CFLAGS  += -Wall -Werror -Wwrite-strings -Wno-deprecated-declarations
++CFLAGS  += -Wall -Wwrite-strings -Wno-deprecated-declarations
+ CFLAGS  += -Wmissing-prototypes
+ CFLAGS  += -fms-extensions -funsigned-char -fno-strict-aliasing
+ CFLAGS  += -D_FILE_OFFSET_BITS=64

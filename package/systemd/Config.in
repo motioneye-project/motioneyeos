@@ -1,0 +1,142 @@
+config BR2_PACKAGE_SYSTEMD_ARCH_SUPPORTS
+	bool
+	# see src/shared/architecture.h
+	default y if BR2_arm || BR2_armeb || BR2_i386 || BR2_mips || \
+		BR2_mipsel || BR2_powerpc || BR2_powerpc64 || \
+		BR2_powerpc64le || BR2_sh4 || BR2_sh4eb || \
+		BR2_sh4a || BR2_sh4aeb || BR2_sparc || BR2_x86_64 || \
+		BR2_aarch64 || BR2_m68k
+
+config BR2_PACKAGE_SYSTEMD
+	bool "systemd"
+	depends on BR2_INIT_SYSTEMD
+	depends on BR2_USE_WCHAR # util-linux
+	depends on !BR2_STATIC_LIBS # kmod
+	depends on BR2_TOOLCHAIN_HAS_THREADS # dbus
+	depends on BR2_USE_MMU # dbus
+	select BR2_PACKAGE_HAS_UDEV
+	select BR2_PACKAGE_DBUS # runtime dependency only
+	select BR2_PACKAGE_LIBCAP
+	select BR2_PACKAGE_UTIL_LINUX
+	select BR2_PACKAGE_UTIL_LINUX_LIBBLKID
+	select BR2_PACKAGE_UTIL_LINUX_LIBMOUNT
+	select BR2_PACKAGE_UTIL_LINUX_BINARIES
+	select BR2_PACKAGE_UTIL_LINUX_MOUNT
+	select BR2_PACKAGE_UTIL_LINUX_NOLOGIN
+	select BR2_PACKAGE_KMOD
+	select BR2_PACKAGE_BUSYBOX_SHOW_OTHERS # kmod-tools
+	select BR2_PACKAGE_KMOD_TOOLS
+	help
+	  systemd is a system and service manager for Linux, compatible with
+	  SysV and LSB init scripts. systemd provides aggressive parallelization
+	  capabilities, uses socket and D-Bus activation for starting services,
+	  offers on-demand starting of daemons, keeps track of processes using
+	  Linux cgroups, supports snapshotting and restoring of the system
+	  state, maintains mount and automount points and implements an
+	  elaborate transactional dependency-based service control logic.
+	  It can work as a drop-in replacement for sysvinit.
+
+	  Systemd requires a Linux kernel >= 3.0 with the following options
+	  enabled:
+
+	  - CONFIG_CGROUPS
+	  - CONFIG_INOTIFY_USER
+	  - CONFIG_FHANDLE
+	  - CONFIG_AUTOFS4_FS
+	  - CONFIG_TMPFS_POSIX_ACL
+	  - CONFIG_TMPFS_XATTR
+
+	  These options will be automatically enabled by Buildroot if
+	  it is responsible for building the kernel. Otherwise, if you
+	  are building your kernel outside of Buildroot, make sure
+	  these options are enabled.
+
+	  Systemd also provides udev, the userspace device daemon.
+
+	  The selection of other packages will enable some features:
+
+	  - libglib2 package will add support for gudev.
+	  - acl package will add support for multi-seat.
+
+	  http://freedesktop.org/wiki/Software/systemd
+
+if BR2_PACKAGE_SYSTEMD
+
+config BR2_PACKAGE_PROVIDES_UDEV
+	default "systemd"
+
+config BR2_PACKAGE_SYSTEMD_ALL_EXTRAS
+	bool "enable all extras"
+	select BR2_PACKAGE_XZ
+	select BR2_PACKAGE_LIBGCRYPT
+	help
+	  Enable extra features for Systemd: journal compression and
+	  signing.
+
+config BR2_PACKAGE_SYSTEMD_KDBUS
+	bool "enable kdbus support"
+	help
+	  Enable kdbus support for Systemd.
+
+config BR2_PACKAGE_SYSTEMD_JOURNAL_GATEWAY
+	bool "HTTP server for journal events"
+	select BR2_PACKAGE_LIBMICROHTTPD
+	help
+	  systemd-journal-gatewayd serves journal events over the
+	  network. Clients must connect using HTTP. The server
+	  listens on port 19531 by default.
+
+	  http://www.freedesktop.org/software/systemd/man/systemd-journal-gatewayd.service.html
+
+config BR2_PACKAGE_SYSTEMD_NETWORKD
+	bool "enable network manager"
+	help
+	  systemd-networkd is a system service that manages networks.
+	  It detects and configures network devices as they appear, as well as
+	  creating virtual network devices.
+
+	  This simple network configuration solution is an alternative to
+	  dhcpcd or ISC dhcp.
+
+	  http://www.freedesktop.org/software/systemd/man/systemd-networkd.html
+
+config BR2_PACKAGE_SYSTEMD_TIMESYNCD
+	bool "enable SNTP client"
+	depends on BR2_PACKAGE_SYSTEMD_NETWORKD
+	help
+	  systemd-timesyncd is a service that may be used to synchronize the
+	  local system clock with a Network Time Protocol Server.
+
+	  This simple NTP solution is an alternative to sntp/ntpd from the ntp
+	  package.
+
+	  http://www.freedesktop.org/software/systemd/man/systemd-timesyncd.html
+
+config BR2_PACKAGE_SYSTEMD_COMPAT
+	bool "enable compatibility libraries"
+	help
+	  Since systemd 209, the following libraries have been merged into
+	  libsystemd.so:
+
+	  - libsystemd-daemon
+	  - libsystemd-id128
+	  - libsystemd-journal
+	  - libsystemd-login
+
+	  This option enables the installation of compatibility *.pc files.
+
+config BR2_PACKAGE_SYSTEMD_SMACK_SUPPORT
+	bool "enable SMACK support"
+	select BR2_PACKAGE_ATTR
+	select BR2_PACKAGE_SMACK
+	help
+	  Enable support for SMACK, the Simple Mandatory Access Control
+	  Kernel, a minimal approach to Access Control implemented as a kernel
+	  LSM.
+
+	  This feature requires a kernel >= 3.8.
+
+	  When this feature is enabled, Systemd mounts smackfs and manages
+	  security labels for sockets.
+
+endif

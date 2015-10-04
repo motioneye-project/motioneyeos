@@ -1,0 +1,13 @@
+config BR2_PACKAGE_CACHE_CALIBRATOR
+	bool "cache-calibrator"
+	help
+	  Cache calibrator is a small C program that is supposed to
+	  analyze a computers (cache-) memory system and extract
+	  useful information
+
+	  http://homepages.cwi.nl/~manegold/Calibrator/
+
+	  It is also recommended as a load generator for realtime
+	  testing in:
+
+	  https://rt.wiki.kernel.org/index.php/RT_PREEMPT_HOWTO

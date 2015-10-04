@@ -1,0 +1,59 @@
+#!/bin/sh
+#
+# Starts dropbear sshd.
+#
+
+# Allow a few customizations from a config file
+test -r /etc/default/dropbear && . /etc/default/dropbear
+
+start() {
+	DROPBEAR_ARGS="$DROPBEAR_ARGS -R"
+
+	echo -n "Starting dropbear sshd: "
+	umask 077
+
+	# If /etc/dropbear is a symlink to /var/run/dropbear, and
+	#   - the filesystem is RO (i.e. we can not rm the symlink),
+	#     create the directory pointed to by the symlink.
+	#   - the filesystem is RW (i.e. we can rm the symlink),
+	#     replace the symlink with an actual directory
+	if [ -L /etc/dropbear \
+	     -a "$(readlink -f /etc/dropbear)" = "/var/run/dropbear" ]
+	then
+		if rm -f /etc/dropbear; then
+			mkdir -p /etc/dropbear
+		else
+			mkdir -p $(readlink /etc/dropbear)
+		fi
+	fi
+
+	start-stop-daemon -S -q -p /var/run/dropbear.pid \
+		--exec /usr/sbin/dropbear -- $DROPBEAR_ARGS
+	[ $? = 0 ] && echo "OK" || echo "FAIL"
+}
+stop() {
+	echo -n "Stopping dropbear sshd: "
+	start-stop-daemon -K -q -p /var/run/dropbear.pid
+	[ $? = 0 ] && echo "OK" || echo "FAIL"
+}
+restart() {
+	stop
+	start
+}
+
+case "$1" in
+  start)
+  	start
+	;;
+  stop)
+  	stop
+	;;
+  restart|reload)
+  	restart
+	;;
+  *)
+	echo "Usage: $0 {start|stop|restart}"
+	exit 1
+esac
+
+exit $?

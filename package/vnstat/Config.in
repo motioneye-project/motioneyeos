@@ -1,0 +1,11 @@
+config BR2_PACKAGE_VNSTAT
+	bool "vnstat"
+	depends on BR2_USE_MMU # fork()
+	help
+	  vnStat is a console-based network traffic monitor that keeps a log of
+	  network traffic for the selected interface(s). It uses the network
+	  interface statistics provided by the kernel as information source.
+	  This means that vnStat won't actually be sniffing any traffic and also
+	  ensures light use of system resources.
+
+	  http://humdi.net/vnstat

@@ -1,0 +1,27 @@
+config BR2_PACKAGE_SOFTETHER
+	bool "softether"
+	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
+	select BR2_PACKAGE_OPENSSL
+	select BR2_PACKAGE_READLINE
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_USE_MMU # fork()
+	depends on BR2_USE_WCHAR
+	help
+	  The SoftEther Server is a fully integrated implementation of the SSTP,
+	  L2TP, L2TPv3, OpenVPN, and IPSec virtual private networking protocols
+	  on Linux and several other platforms. It is generally compatible with
+	  other implementations by Apple, Cisco, Juniper, Microsoft, et al.
+
+	  Convenient Layer-2 and Layer-3 bridging capabilities can connect
+	  several branch offices into a single broadcast or routing domain, even
+	  behind a NAT or without a static IPv4 address.
+
+	  In addition to supporting most VPN protocols, the SoftEther Client can
+	  penetrate hardened firewalls and captured gateways through HTTPS, DNS,
+	  and ICMP exfiltration.
+
+	  http://www.softether.org
+
+comment "softether needs a toolchain w/ wchar, threads"
+	depends on BR2_USE_MMU
+	depends on !(BR2_USE_WCHAR && BR2_TOOLCHAIN_HAS_THREADS)

@@ -1,0 +1,68 @@
+comment "imx-gpu-viv needs an (e)glibc toolchain"
+	depends on BR2_arm
+	depends on !BR2_TOOLCHAIN_USES_GLIBC
+
+config BR2_PACKAGE_IMX_GPU_VIV
+	bool "imx-gpu-viv"
+	select BR2_PACKAGE_HAS_LIBEGL
+	select BR2_PACKAGE_HAS_LIBGLES
+	select BR2_PACKAGE_HAS_LIBOPENVG
+	depends on BR2_arm # Only relevant for i.MX6
+	# Library binaries are linked against libc.so.6
+	depends on BR2_TOOLCHAIN_USES_GLIBC
+	help
+	  Userspace libraries for Vivante GPU on i.MX6 platforms
+
+	  It contains libraries and headers for GLES, OpenCL, and
+	  OpenVG. It also contains a DRI plugin for X11. It also
+	  contains a plugin for DirectFB-1.4.0, but that doesn't work
+	  together with buildroot's DirectFB version.
+
+	  This library is provided by Freescale as-is and doesn't have
+	  an upstream.
+
+if BR2_PACKAGE_IMX_GPU_VIV
+
+choice
+	prompt "Output option"
+	help
+	  There are two versions of this library: one for
+	  direct framebuffer access, one for X11 rendering.
+	  Choose here which version to install.
+
+config BR2_PACKAGE_IMX_GPU_VIV_OUTPUT_X11
+	bool "X11"
+	depends on BR2_PACKAGE_XORG7
+	select BR2_PACKAGE_XLIB_LIBXDAMAGE # Runtime dependency
+	select BR2_PACKAGE_XLIB_LIBXEXT # Runtime dependency
+
+comment "X11 backend needs Xorg package"
+	depends on !BR2_PACKAGE_XORG7
+
+config BR2_PACKAGE_IMX_GPU_VIV_OUTPUT_FB
+	bool "Framebuffer"
+
+endchoice
+
+config BR2_PACKAGE_IMX_GPU_VIV_OUTPUT
+	string
+	default "x11" if BR2_PACKAGE_IMX_GPU_VIV_OUTPUT_X11
+	default "fb" if BR2_PACKAGE_IMX_GPU_VIV_OUTPUT_FB
+
+config BR2_PACKAGE_PROVIDES_LIBEGL
+	default "imx-gpu-viv"
+
+config BR2_PACKAGE_PROVIDES_LIBGLES
+	default "imx-gpu-viv"
+
+config BR2_PACKAGE_PROVIDES_LIBOPENVG
+	default "imx-gpu-viv"
+
+config BR2_PACKAGE_IMX_GPU_VIV_EXAMPLES
+	bool "install examples"
+	help
+	  Copy the Vivante examples to the target.
+
+	  Warning: examples take approximately 150 MB of disk space.
+
+endif

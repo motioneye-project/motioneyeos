@@ -1,0 +1,10 @@
+config BR2_PACKAGE_XDRIVER_XF86_VIDEO_WSFB
+	bool "xf86-video-wsfb"
+	select BR2_PACKAGE_XPROTO_FONTSPROTO
+	select BR2_PACKAGE_XPROTO_RANDRPROTO
+	select BR2_PACKAGE_XPROTO_RENDERPROTO
+	select BR2_PACKAGE_XPROTO_XEXTPROTO
+	select BR2_PACKAGE_XPROTO_XPROTO
+	depends on BROKEN # Fails to build. Actually this is OpenBSD/NetBSD stuff.
+	help
+	  WSFB based chips video driver

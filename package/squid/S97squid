@@ -1,0 +1,40 @@
+#!/bin/sh
+
+[ -x /usr/sbin/squid ] || exit 0
+[ -f /etc/squid.conf ] || exit 0
+
+case "$1" in
+  start)
+    echo -n "Starting squid: "
+    if [ ! -d /var/log/squid ]; then
+      mkdir -p /var/log/squid
+      chown squid:squid /var/log/squid
+    fi
+    start-stop-daemon -S -x /usr/sbin/squid
+    [ $? = 0 ] && echo "OK" || echo "FAIL"
+    ;;
+
+   stop)
+    echo -n "Stopping squid: "
+    /usr/sbin/squid -k shutdown
+    [ $? = 0 ] && echo "OK" || echo "FAIL"
+    ;;
+
+  reload)
+    echo -n "Reloading squid configuration: "
+    /usr/sbin/squid -k reconfigure
+    [ $? = 0 ] && echo "OK" || echo "FAIL"
+    ;;
+
+  restart)
+    echo -n "Restarting squid: "
+    /usr/sbin/squid -k restart
+    [ $? = 0 ] && echo "OK" || echo "FAIL"
+    ;;
+
+  *)
+    echo "Usage: $0 {start|stop|reload|restart}"
+    exit 1
+esac
+
+exit 0

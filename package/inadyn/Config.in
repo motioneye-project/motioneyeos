@@ -1,0 +1,14 @@
+config BR2_PACKAGE_INADYN
+	bool "inadyn"
+	depends on BR2_USE_MMU # Uses fork()
+	depends on !BR2_STATIC_LIBS # dlopen()
+	help
+	  INADYN is a free DynDNS client. It gives the possibility
+	  to have your own fixed hostname registered on the internet,
+	  although your IP might be changing.
+
+	  https://github.com/troglobit/inadyn
+
+comment "inadyn needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS
+	depends on BR2_USE_MMU

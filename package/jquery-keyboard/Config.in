@@ -1,0 +1,8 @@
+config BR2_PACKAGE_JQUERY_KEYBOARD
+	bool "jQuery keyboard"
+	select BR2_PACKAGE_JQUERY
+	select BR2_PACKAGE_JQUERY_UI
+	help
+	  Virtual Keyboard using jQuery UI
+
+	  https://github.com/Mottie/Keyboard

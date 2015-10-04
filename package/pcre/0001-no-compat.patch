@@ -1,0 +1,31 @@
+Kill ABI compatibility bits, we don't need them.
+Fixes build failures on non-ELF (blackfin) targets.
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+diff -Nura pcre-8.32.orig/pcrecpp.cc pcre-8.32/pcrecpp.cc
+--- pcre-8.32.orig/pcrecpp.cc	2012-12-28 08:32:10.193847937 -0300
++++ pcre-8.32/pcrecpp.cc	2012-12-28 08:32:26.924376180 -0300
+@@ -58,22 +58,6 @@
+ // Special object that stands-in for no argument
+ Arg RE::no_arg((void*)NULL);
+ 
+-// This is for ABI compatibility with old versions of pcre (pre-7.6),
+-// which defined a global no_arg variable instead of putting it in the
+-// RE class.  This works on GCC >= 3, at least.  It definitely works
+-// for ELF, but may not for other object formats (Mach-O, for
+-// instance, does not support aliases.)  We could probably have a more
+-// inclusive test if we ever needed it.  (Note that not only the
+-// __attribute__ syntax, but also __USER_LABEL_PREFIX__, are
+-// gnu-specific.)
+-#if defined(__GNUC__) && __GNUC__ >= 3 && defined(__ELF__)
+-# define ULP_AS_STRING(x)            ULP_AS_STRING_INTERNAL(x)
+-# define ULP_AS_STRING_INTERNAL(x)   #x
+-# define USER_LABEL_PREFIX_STR       ULP_AS_STRING(__USER_LABEL_PREFIX__)
+-extern Arg no_arg
+-  __attribute__((alias(USER_LABEL_PREFIX_STR "_ZN7pcrecpp2RE6no_argE")));
+-#endif
+-
+ // If a regular expression has no error, its error_ field points here
+ static const string empty_string;
+ 

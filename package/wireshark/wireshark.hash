@@ -1,0 +1,3 @@
+# From https://www.wireshark.org/download/SIGNATURES-1.12.6.txt
+md5  25ad2bc1c2a21396827c238fcff51bf3  wireshark-1.12.6.tar.bz2
+sha1  5b592bd0389b76d3bdee6a7336e9492f8162c94d  wireshark-1.12.6.tar.bz2

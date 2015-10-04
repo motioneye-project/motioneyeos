@@ -1,0 +1,19 @@
+config BR2_PACKAGE_APACHE
+	bool "apache"
+	select BR2_PACKAGE_APR_UTIL
+	select BR2_PACKAGE_PCRE
+	depends on !BR2_STATIC_LIBS
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_USE_MMU # apr
+	help
+	  The Apache HTTP Server Project is an effort to develop and maintain an
+	  open-source HTTP server for modern operating systems including UNIX
+	  and Windows NT. The goal of this project is to provide a secure,
+	  efficient and extensible server that provides HTTP services in sync
+	  with the current HTTP standards.
+
+	  http://httpd.apache.org
+
+comment "apache needs a toolchain w/ dynamic library, threads"
+	depends on BR2_USE_MMU
+	depends on BR2_STATIC_LIBS || !BR2_TOOLCHAIN_HAS_THREADS

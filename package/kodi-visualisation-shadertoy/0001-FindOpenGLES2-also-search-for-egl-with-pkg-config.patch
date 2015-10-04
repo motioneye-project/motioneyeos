@@ -1,0 +1,44 @@
+From 9c428c3c9f120a11468f98546bcc754d2c3302af Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Thu, 30 Jul 2015 10:02:15 +0200
+Subject: [PATCH] FindOpenGLES2: also search for egl with pkg-config
+
+The non-pkg-config path looks for both EGL *and* OpenGL ES, but not
+the pkg-config path, which might lead to missing libraries/headers if
+egl.pc has more header paths or libraries than glesv2.pc.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ CMakeLists.txt      | 2 +-
+ FindOpenGLES2.cmake | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 8b084cf..81bbe27 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -24,7 +24,7 @@ else()
+   endif()
+ endif()
+ 
+-include_directories(${OpenGL_INCLUDE_DIR}
++include_directories(${OpenGL_INCLUDE_DIR} ${OpenGLES2_INCLUDE_DIRS}
+                     ${GLEW_INCLUDE_DIR}
+                     ${KODI_INCLUDE_DIR}
+                     ${PROJECT_SOURCE_DIR}/lib/kissfft
+diff --git a/FindOpenGLES2.cmake b/FindOpenGLES2.cmake
+index e1b7d21..2a9ce0d 100644
+--- a/FindOpenGLES2.cmake
++++ b/FindOpenGLES2.cmake
+@@ -7,7 +7,7 @@
+ 
+ find_package(PkgConfig)
+ if(PKG_CONFIG_FOUND)
+-  pkg_check_modules(OpenGLES2 glesv2)
++  pkg_check_modules(OpenGLES2 glesv2 egl)
+ endif(PKG_CONFIG_FOUND)
+ 
+ if(NOT OPENGLES2_FOUND)
+-- 
+2.5.0
+

@@ -1,0 +1,20 @@
+uCLibc does not define RTLD_NOLOAD.
+
+[Gustavo: update for nss 3.16.1]
+Signed-off-by: Will Newton <will.newton@imgtec.com>
+
+diff -Nura nss-3.16.1.orig/nss/lib/freebl/stubs.c nss-3.16.1/nss/lib/freebl/stubs.c
+--- nss-3.16.1.orig/nss/lib/freebl/stubs.c	2014-06-18 10:34:30.529997002 -0300
++++ nss-3.16.1/nss/lib/freebl/stubs.c	2014-06-18 10:36:25.508882650 -0300
+@@ -594,6 +594,11 @@
+     return SECSuccess;
+ }
+ 
++/* uClibc does not define RTLD_NOLOAD. */
++#ifndef RTLD_NOLOAD
++#define RTLD_NOLOAD 0
++#endif
++
+ /*
+  * fetch the library if it's loaded. For NSS it should already be loaded
+  */

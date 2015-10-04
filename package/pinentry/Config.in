@@ -1,0 +1,52 @@
+menuconfig BR2_PACKAGE_PINENTRY
+	bool "pinentry"
+	# At least one backend is needed to avoid build breakage
+	select BR2_PACKAGE_PINENTRY_NCURSES if !BR2_PACKAGE_PINENTRY_GTK2 && !BR2_PACKAGE_PINENTRY_QT4
+	help
+	  A collection of simple PIN or pass-phrase entry dialogs
+
+	  https://www.gnupg.org/related_software/pinentry/
+
+if BR2_PACKAGE_PINENTRY
+
+config BR2_PACKAGE_PINENTRY_NCURSES
+	bool "pinentry-ncurses"
+	select BR2_PACKAGE_NCURSES
+	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
+	help
+	  The pinentry-ncurses tool
+
+config BR2_PACKAGE_PINENTRY_GTK2
+	bool "pinentry-gtk2"
+	depends on BR2_PACKAGE_XORG7
+	depends on BR2_USE_WCHAR
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_USE_MMU
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_ARCH_HAS_ATOMICS # libgtk2 -> cairo
+	select BR2_PACKAGE_LIBGTK2
+	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
+	help
+	  The pinentry-gtk2 tool
+
+comment "pinentry-gtk2 needs X and a toolchain w/ wchar, threads, C++"
+	depends on BR2_USE_MMU
+	depends on BR2_ARCH_HAS_ATOMICS
+	depends on !BR2_PACKAGE_XORG7 || !BR2_USE_WCHAR || \
+		!BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS
+
+config BR2_PACKAGE_PINENTRY_QT4
+	bool "pinentry-qt4"
+	depends on BR2_USE_MMU # fork
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	select BR2_PACKAGE_QT
+	select BR2_PACKAGE_QT_GUI_MODULE
+	help
+	  The pinentry-qt4 tool
+
+comment "pinentry-qt4 needs a toolchain w/ C++, threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS
+
+endif

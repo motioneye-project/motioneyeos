@@ -1,0 +1,41 @@
+#!/bin/sh 
+
+[ -f /etc/proftpd.conf ] || exit 0
+
+mkdir -p /var/run/proftpd
+touch /var/log/wtmp
+
+start() {
+    echo -n "Starting proftpd: "
+    /usr/sbin/proftpd &>/dev/null
+    [ $? == 0 ] && echo "done" || echo "failed"
+}
+
+stop() {
+    echo -n "Stopping proftpd: "
+    kill -9 `pidof proftpd` 2>/dev/null
+    [ $? == 0 ] && echo "done" || echo "failed"
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+
+    stop)
+        stop
+        ;;
+    
+    restart)
+        stop
+        start
+        ;;
+
+    *)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 1
+        ;;
+esac
+
+exit 0
+

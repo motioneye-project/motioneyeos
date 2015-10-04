@@ -1,0 +1,8 @@
+config BR2_PACKAGE_PERL_WWW_ROBOTRULES
+	bool "perl-www-robotrules"
+	select PERL_URI
+	help
+	  This module provides functions that deal the date formats used by the
+	  HTTP protocol (and then some more)
+
+	  http://github.com/gisle/www-robotrules

@@ -1,0 +1,49 @@
+config BR2_PACKAGE_LIBMAD
+	bool "libmad"
+	help
+	  High-quality MPEG audio decoder. All computations are performed
+	  with fixed-point integer arithmetic, making it ideal for systems
+	  without a floating-point unit.
+
+	  http://www.underbit.com/products/mad/
+
+if BR2_PACKAGE_LIBMAD
+
+choice
+	prompt "Speed vs. accuracy"
+	default BR2_PACKAGE_LIBMAD_OPTIMIZATION_DEFAULT
+
+config BR2_PACKAGE_LIBMAD_OPTIMIZATION_DEFAULT
+	bool "Default"
+	help
+	  Keep optimizations balanced between speed and accuracy.
+
+config BR2_PACKAGE_LIBMAD_OPTIMIZATION_SPEED
+	bool "Optimize for speed over accuracy"
+	help
+	  Compromise accuracy for speed.
+
+config BR2_PACKAGE_LIBMAD_OPTIMIZATION_ACCURACY
+	bool "Optimize for accuracy over speed"
+	help
+	  Compromise speed for accuracy.
+
+endchoice
+
+config BR2_PACKAGE_LIBMAD_SSO
+	bool "Subband synthesis optimization"
+	help
+	  Use the subband synthesis optimization, with reduced accuracy.
+
+config BR2_PACKAGE_LIBMAD_ASO
+	bool "Architecture-specific optimizations"
+	default y
+	help
+	  Use certain architecture-specific optimizations.
+
+config BR2_PACKAGE_LIBMAD_STRICT_ISO
+	bool "Strict ISO/IEC interpretations"
+	help
+	  Use strict ISO/IEC interpretations.
+
+endif

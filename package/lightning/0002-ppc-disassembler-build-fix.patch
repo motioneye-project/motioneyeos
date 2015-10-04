@@ -1,0 +1,53 @@
+From 361caf28545aa0c2b2ab8d1cbd334fbdd952f373 Mon Sep 17 00:00:00 2001
+From: Paulo Andrade <pcpa@gnu.org>
+Date: Thu, 15 Jan 2015 14:56:38 -0200
+Subject: [PATCH 4/4] PPC: Only call binutils function if it is available
+
+	* configure.ac, lib/jit_disasm.c: Rewrite workaround
+	to apparent problem to initialize powerpc disassembler.
+---
+diff --git a/configure.ac b/configure.ac
+index 749659b..d26e777 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -230,6 +230,13 @@ elif test $cpu = arm; then
+ 	return 1;
+     }
+     ]])],[ac_cv_test_arm_swf=yes],[],[ac_cv_test_arm_swf=no])
++elif test $cpu = ppc; then
++    if test "x$DISASSEMBLER" != "xno"; then
++	save_LIBS="$LIBS"
++	LIBS="$LIBS $SHLIB"
++	AC_CHECK_FUNCS(disassemble_init_for_target disassemble_init_powerpc)
++	LIBS="$save_LIBS"
++    fi
+ fi
+ CFLAGS=$save_CFLAGS
+ 
+diff --git a/lib/jit_disasm.c b/lib/jit_disasm.c
+index 01158de..86e5441 100644
+--- a/lib/jit_disasm.c
++++ b/lib/jit_disasm.c
+@@ -91,11 +91,19 @@ jit_init_debug(const char *progname)
+ #  if defined(__powerpc__)
+     disasm_info.arch = bfd_arch_powerpc;
+     disasm_info.mach = bfd_mach_ppc64;
++#    if HAVE_DISASSEMBLE_INIT_FOR_TARGET
++    disassemble_init_for_target(&disasm_info);
++#    elif HAVE_DISASSEMBLE_INIT_POWERPC
+     disassemble_init_powerpc(&disasm_info);
++#    endif
+ #    if defined(__powerpc64__)
+     disasm_info.disassembler_options = "64";
+ #    endif
++#    if HAVE_DISASSEMBLE_INIT_FOR_TARGET
++    disassemble_init_for_target(&disasm_info);
++#    elif HAVE_DISASSEMBLE_INIT_POWERPC
+     disassemble_init_powerpc(&disasm_info);
++#    endif
+ #  endif
+ #  if defined(__sparc__)
+     disasm_info.endian = disasm_info.display_endian = BFD_ENDIAN_BIG;
+-- 
+2.1.4
+

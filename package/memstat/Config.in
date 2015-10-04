@@ -1,0 +1,9 @@
+config BR2_PACKAGE_MEMSTAT
+	bool "memstat"
+	help
+	  Memstat lists all the processes, executables, and shared
+	  libraries that are using up virtual memory. It's helpful to
+	  see how the shared memory is used and which 'old' libs are
+	  loaded.
+
+	  http://sourceforge.net/projects/memstattool

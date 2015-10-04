@@ -1,0 +1,24 @@
+From 3c03e4b81c9de73e57a56029f7f8cda8bec24e91 Mon Sep 17 00:00:00 2001
+From: Romain Naour <romain.naour@openwide.fr>
+Date: Sat, 10 Jan 2015 15:48:21 +0100
+Subject: [PATCH] configure.in: remove unsafe headers path
+
+Forcing /usr/local/include headers path in CFLAGS is unsafe for
+cross-compilation.
+
+Signed-off-by: Romain Naour <romain.naour@openwide.fr>
+[Gustavo: update to just patch configure and avoid an autoreconf]
+---
+
+diff -Nura sane-backends-1.0.24.orig/configure sane-backends-1.0.24/configure
+--- sane-backends-1.0.24.orig/configure	2015-05-01 09:51:19.479785064 -0300
++++ sane-backends-1.0.24/configure	2015-05-01 09:51:48.411767378 -0300
+@@ -5192,8 +5192,6 @@
+ fi
+ 
+ 
+-INCLUDES="${INCLUDES} -I/usr/local/include"
+-
+ 
+ if test "${ac_cv_c_compiler_gnu}" = "yes"; then
+   NORMAL_CFLAGS="\

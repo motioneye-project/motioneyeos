@@ -1,0 +1,25 @@
+Remove hardcoded path to libnl3 include directory
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+[Gustavo: update for 1.7.2]
+
+diff -Nura libpcap-1.7.2.orig/configure.in libpcap-1.7.2/configure.in
+--- libpcap-1.7.2.orig/configure.in	2015-03-14 08:02:05.538706347 -0300
++++ libpcap-1.7.2/configure.in	2015-03-14 08:17:22.637519050 -0300
+@@ -461,14 +461,13 @@
+ 			#
+ 			# Yes, we have libnl 3.x.
+ 			#
+-			LIBS="${libnldir} -lnl-genl-3 -lnl-3 $LIBS"
++			LIBS="-lnl-genl-3 -lnl-3 $LIBS"
+ 			AC_DEFINE(HAVE_LIBNL,1,[if libnl exists])
+ 			AC_DEFINE(HAVE_LIBNL_3_x,1,[if libnl exists and is version 3.x])
+ 			AC_DEFINE(HAVE_LIBNL_NLE,1,[libnl has NLE_FAILURE])
+ 			AC_DEFINE(HAVE_LIBNL_SOCKETS,1,[libnl has new-style socket api])
+-			V_INCLS="$V_INCLS ${incdir}"
+ 			have_any_nl="yes"
+-		],[], ${incdir} ${libnldir} -lnl-genl-3 -lnl-3 )
++		],[], -lnl-genl-3 -lnl-3 )
+ 
+ 		if test x$have_any_nl = xno ; then
+ 			#

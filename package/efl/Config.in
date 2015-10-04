@@ -1,0 +1,30 @@
+menuconfig BR2_PACKAGE_EFL
+	bool "Enlightenment Foundation Libraries"
+	depends on BR2_USE_WCHAR
+	# libeina uses madvise(). To revisit when bumping EFL to 1.8
+	depends on BR2_USE_MMU
+	help
+	  Enlightenment Foundation Libraries
+
+	  http://enlightenment.org
+
+if BR2_PACKAGE_EFL
+
+source "package/efl/expedite/Config.in"
+source "package/efl/libeina/Config.in"
+source "package/efl/libecore/Config.in"
+source "package/efl/libeet/Config.in"
+source "package/efl/libefreet/Config.in"
+source "package/efl/libeio/Config.in"
+source "package/efl/libevas/Config.in"
+source "package/efl/libevas-generic-loaders/Config.in"
+source "package/efl/libembryo/Config.in"
+source "package/efl/libedje/Config.in"
+source "package/efl/libethumb/Config.in"
+source "package/efl/libelementary/Config.in"
+source "package/efl/libedbus/Config.in"
+
+endif # BR2_PACKAGE_EFL
+
+comment "EFL needs a toolchain w/ wchar"
+	depends on !BR2_USE_WCHAR

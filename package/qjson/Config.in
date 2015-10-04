@@ -1,0 +1,8 @@
+config BR2_PACKAGE_QJSON
+	bool "qjson"
+	depends on BR2_PACKAGE_QT || BR2_PACKAGE_QT5
+	help
+	  QJson is a Qt-based library that maps JSON data to
+	  QVariant objects and vice versa.
+
+	  http://qjson.sourceforge.net

@@ -1,0 +1,72 @@
+configure: fix calls to {gdlib,net-snmp}-config
+
+nut directly calls to {gdlib,net-snmp}-config. In Buildroot,
+those are not in the PATH, and nut would catch those of the
+system (if they are installed), or miss them entirely.
+
+Fix that by using environment variables that will tell where
+to look for them.
+
+Note: libusb also uses libusb-config, but only as a fallback
+if pkg-config fails. Since we ensure that pkg-config exists,
+and libusb is properly installed before we build nut, there
+is no need to fix the libusb-config calls, since they won't
+be called at all.
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+
+diff -durN nut-2.6.5.orig/m4/nut_check_libgd.m4 nut-2.6.5/m4/nut_check_libgd.m4
+--- nut-2.6.5.orig/m4/nut_check_libgd.m4	2012-07-31 19:38:56.000000000 +0200
++++ nut-2.6.5/m4/nut_check_libgd.m4	2013-11-01 16:24:02.626549810 +0100
+@@ -20,7 +20,7 @@
+ 	LIBS="-lgd -lpng -lz -ljpeg -lfreetype -lm -lXpm -lX11"
+ 
+ 	AC_MSG_CHECKING(for gd version via gdlib-config)
+-	GD_VERSION=`gdlib-config --version 2>/dev/null`
++	GD_VERSION=`${GDLIB_CONFIG} --version 2>/dev/null`
+ 	if test "$?" != "0" -o -z "${GD_VERSION}"; then
+ 		GD_VERSION="none"
+ 	fi
+@@ -34,9 +34,9 @@
+ 		AC_MSG_WARN([[If gd detection fails, upgrade gd or use --with-gd-includes and --with-gd-libs]])
+ 		;;
+ 	*)
+-		CFLAGS="`gdlib-config --includes 2>/dev/null`"
+-		LDFLAGS="`gdlib-config --ldflags 2>/dev/null`"
+-		LIBS="`gdlib-config --libs 2>/dev/null`"
++		CFLAGS="`${GDLIB_CONFIG} --includes 2>/dev/null`"
++		LDFLAGS="`${GDLIB_CONFIG} --ldflags 2>/dev/null`"
++		LIBS="`${GDLIB_CONFIG} --libs 2>/dev/null`"
+ 		;;
+ 	esac
+ 
+diff -durN nut-2.6.5.orig/m4/nut_check_libnetsnmp.m4 nut-2.6.5/m4/nut_check_libnetsnmp.m4
+--- nut-2.6.5.orig/m4/nut_check_libnetsnmp.m4	2012-07-31 19:38:56.000000000 +0200
++++ nut-2.6.5/m4/nut_check_libnetsnmp.m4	2013-11-01 16:30:07.398282923 +0100
+@@ -15,7 +15,7 @@
+ 
+ 	dnl See which version of the Net-SNMP library (if any) is installed
+ 	AC_MSG_CHECKING(for Net-SNMP version via net-snmp-config)
+-	SNMP_VERSION=`net-snmp-config --version 2>/dev/null`
++	SNMP_VERSION=`${NET_SNMP_CONFIG} --version 2>/dev/null`
+ 	if test "$?" != "0" -o -z "${SNMP_VERSION}"; then
+ 		SNMP_VERSION="none"
+ 	fi
+@@ -33,7 +33,7 @@
+ 			CFLAGS="${withval}"
+ 			;;
+ 		esac
+-	], [CFLAGS="`net-snmp-config --base-cflags 2>/dev/null`"])
++	], [CFLAGS="`${NET_SNMP_CONFIG} --base-cflags 2>/dev/null`"])
+ 	AC_MSG_RESULT([${CFLAGS}])
+ 
+ 	AC_MSG_CHECKING(for Net-SNMP libs)
+@@ -48,7 +48,7 @@
+ 			LIBS="${withval}"
+ 			;;
+ 		esac
+-	], [LIBS="`net-snmp-config --libs 2>/dev/null`"])
++	], [LIBS="`${NET_SNMP_CONFIG} --libs 2>/dev/null`"])
+ 	AC_MSG_RESULT([${LIBS}])
+ 
+ 	dnl Check if the Net-SNMP library is usable

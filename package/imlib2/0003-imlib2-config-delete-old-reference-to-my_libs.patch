@@ -1,0 +1,28 @@
+From 534e736e52b6be0da58397ef05f55d47f3794ea7 Mon Sep 17 00:00:00 2001
+From: Mike Frysinger <vapier@gentoo.org>
+Date: Sat, 18 Jan 2014 13:56:54 -0500
+Subject: [PATCH 3/6] imlib2-config: delete old reference to @my_libs@
+
+This was cleaned up a while ago, but this file was missed.
+
+URL: https://bugs.gentoo.org/497894
+---
+ imlib2-config.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/imlib2-config.in b/imlib2-config.in
+index cf814c6..965f7c3 100644
+--- a/imlib2-config.in
++++ b/imlib2-config.in
+@@ -46,7 +46,7 @@ while test $# -gt 0; do
+       ;;
+     --libs)
+       libdirs=-L@libdir@
+-      echo $libdirs -lImlib2 @my_libs@
++      echo $libdirs -lImlib2
+       ;;
+     *)
+       echo "${usage}" 1>&2
+-- 
+2.3.1
+

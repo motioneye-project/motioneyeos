@@ -1,0 +1,42 @@
+Make linux-uclibcgnueabi an alias for linux-uclibceabi since it's
+what we use in buildroot toolchains.
+Also add support for musl libc which is a backport from 1.17.x with
+a slight tweak for musleabi (non-hf).
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+diff -Nura dpkg-1.16.15.orig/ostable dpkg-1.16.15/ostable
+--- dpkg-1.16.15.orig/ostable	2014-11-07 08:09:07.358304926 -0300
++++ dpkg-1.16.15/ostable	2014-11-07 09:35:06.158580079 -0300
+@@ -14,8 +14,10 @@
+ # system part of the output of the GNU config.guess script.
+ #
+ # <Debian name>		<GNU name>		<config.guess regex>
+-uclibceabi-linux	linux-uclibceabi	linux[^-]*-uclibceabi
++uclibceabi-linux	linux-uclibceabi	linux[^-]*-uclibc.*eabi
+ uclibc-linux		linux-uclibc		linux[^-]*-uclibc
++musleabihf-linux	linux-musleabihf	linux[^-]*-musleabihf
++musl-linux		linux-musl		linux[^-]*-musl[^-]*
+ gnueabihf-linux		linux-gnueabihf		linux[^-]*-gnueabihf
+ gnueabi-linux		linux-gnueabi		linux[^-]*-gnueabi
+ gnuabin32-linux		linux-gnuabin32		linux[^-]*-gnuabin32
+@@ -33,6 +35,6 @@
+ bsd-netbsd		netbsd			netbsd[^-]*
+ bsd-openbsd		openbsd			openbsd[^-]*
+ sysv-solaris		solaris			solaris[^-]*
+-uclibceabi-uclinux	uclinux-uclibceabi	uclinux[^-]*-uclibceabi
++uclibceabi-uclinux	uclinux-uclibceabi	uclinux[^-]*-uclibc.*eabi
+ uclibc-uclinux		uclinux-uclibc		uclinux[^-]*(-uclibc.*)?
+ tos-mint		mint			mint[^-]*
+diff -Nura dpkg-1.16.15.orig/triplettable dpkg-1.16.15/triplettable
+--- dpkg-1.16.15.orig/triplettable	2014-11-07 08:09:07.345304482 -0300
++++ dpkg-1.16.15/triplettable	2014-11-07 09:35:29.098364036 -0300
+@@ -5,6 +5,8 @@
+ # <Debian triplet>	<Debian arch>
+ uclibceabi-linux-arm	uclibc-linux-armel
+ uclibc-linux-<cpu>	uclibc-linux-<cpu>
++musleabihf-linux-arm	musl-linux-armhf
++musl-linux-<cpu>	musl-linux-<cpu>
+ gnueabihf-linux-arm	armhf
+ gnueabi-linux-arm	armel
+ gnuabin32-linux-mips64el	mipsn32el

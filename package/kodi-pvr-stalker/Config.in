@@ -1,0 +1,7 @@
+config BR2_PACKAGE_KODI_PVR_STALKER
+	bool "kodi-pvr-stalker"
+	select BR2_PACKAGE_KODI_PLATFORM
+	help
+	  A PVR Client that connects Kodi to Stalker Middleware
+
+	  https://github.com/kodi-pvr/pvr.stalker

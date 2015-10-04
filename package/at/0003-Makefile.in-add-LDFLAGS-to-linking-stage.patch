@@ -1,0 +1,38 @@
+From 8720a71757f3626bf3bbc3a7aa2185e6387e5689 Mon Sep 17 00:00:00 2001
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+Date: Tue, 1 Dec 2009 20:37:31 +0100
+Subject: [PATCH 3/5] Makefile.in: add LDFLAGS to linking stage
+
+The linking stage ignores the LDFLAGS, this breaks if the flex library
+lives in a non standard location.
+
+This patch add LDFLAGS to both "at" and "atd" linking stage.
+
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+---
+ Makefile.in |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/Makefile.in b/Makefile.in
+index dae6b7d..b766bbb 100644
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -65,13 +65,13 @@ LIST = Filelist Filelist.asc
+ all: at atd atrun
+ 
+ at: $(ATOBJECTS)
+-	$(CC) $(CFLAGS) -o at $(ATOBJECTS) $(LIBS) $(LEXLIB)
++	$(CC) $(CFLAGS) $(LDFLAGS) -o at $(ATOBJECTS) $(LIBS) $(LEXLIB)
+ 	rm -f $(CLONES)
+ 	$(LN_S) -f at atq
+ 	$(LN_S) -f at atrm
+ 
+ atd: $(RUNOBJECTS)
+-	$(CC) $(CFLAGS) -o atd $(RUNOBJECTS) $(LIBS) $(PAMLIB)
++	$(CC) $(CFLAGS) $(LDFLAGS) -o atd $(RUNOBJECTS) $(LIBS) $(PAMLIB)
+ 
+ y.tab.c y.tab.h: parsetime.y
+ 	$(YACC) -d parsetime.y
+-- 
+1.6.5.3
+

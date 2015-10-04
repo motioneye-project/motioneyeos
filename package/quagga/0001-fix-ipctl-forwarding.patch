@@ -1,0 +1,27 @@
+Add definitions for IPCTL_FORWARDING and IP6CTL_FORWARDING.
+
+Inspired from
+http://svn.gnumonks.org/trunk/grouter/build/src/quagga/quagga/quagga-0.99.1-forward_sysctl-2.6.14.patch
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: quagga-0.99.16/zebra/ipforward_sysctl.c
+===================================================================
+--- quagga-0.99.16.orig/zebra/ipforward_sysctl.c	2010-06-20 23:40:45.000000000 +0200
++++ quagga-0.99.16/zebra/ipforward_sysctl.c	2010-06-20 23:41:37.000000000 +0200
+@@ -31,6 +31,15 @@
+ 
+ #define MIB_SIZ 4
+ 
++/* Fix for recent (2.6.14) kernel headers */
++#ifndef IPCTL_FORWARDING
++#define IPCTL_FORWARDING NET_IPV4_FORWARD
++#endif
++
++#ifndef IP6CTL_FORWARDING
++#define IP6CTL_FORWARDING NET_IPV6_FORWARDING
++#endif
++
+ extern struct zebra_privs_t zserv_privs;
+ 
+ /* IPv4 forwarding control MIB. */

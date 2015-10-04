@@ -1,0 +1,60 @@
+From: Maarten ter Huurne <maarten@treewalker.org>
+Date: Sat, 13 Sep 2014 10:27:27 +0200
+Subject: Removed redundant compiler sanity checks
+
+AC_PROG_CC already performs sanity checks. And unlike the removed
+checks, it does so in a way that supports cross compilation.
+
+Signed-off-by: Maarten ter Huurne <maarten@treewalker.org>
+---
+ configure.in | 27 ---------------------------
+ 1 file changed, 27 deletions(-)
+
+diff --git a/configure.in b/configure.in
+index 87fd43b..572c2a3 100644
+--- a/configure.in
++++ b/configure.in
+@@ -47,31 +47,6 @@ AC_PROG_GCC_TRADITIONAL
+ AC_ISC_POSIX
+ AC_USE_SYSTEM_EXTENSIONS
+ 
+-AC_TRY_RUN(main(){exit(0);},,[
+-if test $CC != cc ; then
+-AC_NOTE(Your $CC failed - restarting with CC=cc)
+-AC_NOTE()
+-CC=cc
+-export CC
+-exec $0 $configure_args
+-fi
+-])
+-
+-AC_TRY_RUN(main(){exit(0);},,
+-exec 5>&2
+-eval $ac_link
+-AC_NOTE(CC=$CC; CFLAGS=$CFLAGS; LIBS=$LIBS;)
+-AC_NOTE($ac_compile)
+-AC_MSG_ERROR(Can't run the compiler - sorry))
+-
+-AC_TRY_RUN([
+-main()
+-{
+-  int __something_strange_();
+-  __something_strange_(0);
+-}
+-],AC_MSG_ERROR(Your compiler does not set the exit status - sorry))
+-
+ AC_PROG_AWK
+ 
+ AC_PROG_INSTALL
+@@ -1299,8 +1274,6 @@ fi
+ dnl Ptx bug workaround -- insert -lc after -ltermcap
+ test -n "$seqptx" && LIBS="-ltermcap -lc -lsocket -linet -lnsl -lsec -lseq"
+ 
+-AC_TRY_RUN(main(){exit(0);},,AC_MSG_ERROR(Can't run the compiler - internal error. Sorry.))
+-
+ ETCSCREENRC=
+ AC_MSG_CHECKING(for the global screenrc file)
+ AC_ARG_WITH(sys-screenrc, [  --with-sys-screenrc=path to the global screenrc file], [ ETCSCREENRC="${withval}" ])
+-- 
+1.8.4.5
+

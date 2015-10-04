@@ -1,0 +1,18 @@
+config BR2_PACKAGE_C_ICAP
+	bool "c-icap"
+	depends on !BR2_PREFER_STATIC_LIB
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_USE_MMU # fork()
+	help
+	  c-icap is an implementation of an ICAP server. It can be
+	  used with HTTP proxies that support the ICAP protocol to
+	  implement content adaptation and filtering services.  Most
+	  of the commercial HTTP proxies must support the ICAP
+	  protocol.  The open source Squid 3.x proxy server supports
+	  it.
+
+	  http://c-icap.sourceforge.net/
+
+comment "c-icap needs a toolchain w/ threads and dynamic library"
+	depends on BR2_USE_MMU
+	depends on BR2_PREFER_STATIC_LIB  || !BR2_TOOLCHAIN_HAS_THREADS

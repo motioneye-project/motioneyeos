@@ -1,0 +1,15 @@
+comment "libethumb needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
+
+config BR2_PACKAGE_LIBETHUMB
+	bool "libethumb"
+	select BR2_PACKAGE_LIBEINA
+	select BR2_PACKAGE_LIBEVAS
+	select BR2_PACKAGE_LIBECORE
+	select BR2_PACKAGE_LIBECORE_EVAS
+	select BR2_PACKAGE_LIBEDJE
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libevas
+	help
+	  Ethumb is a library for generating thumbnail images of documents.
+
+	  http://trac.enlightenment.org/e/wiki/Ethumb

@@ -1,0 +1,30 @@
+From 543460903545b59903bc83221a6cea02afd0e04f Mon Sep 17 00:00:00 2001
+From: Mirko Vogt <dev@nanl.de>
+Date: Fri, 21 Sep 2012 17:29:15 +0200
+Subject: [PATCH] _vfprintf.c: use 'fputws_unlocked(S, F)' instead of
+ 'fputws(S, F)'
+
+This eliminates a source of reproduceable freezes
+
+Signed-off-by: Mirko Vogt <dev@nanl.de>
+Signed-off-by: Bernhard Reutner-Fischer <rep.dot.nop@gmail.com>
+---
+ libc/stdio/_vfprintf.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/libc/stdio/_vfprintf.c b/libc/stdio/_vfprintf.c
+index 3db8cdf..069db16 100644
+--- a/libc/stdio/_vfprintf.c
++++ b/libc/stdio/_vfprintf.c
+@@ -1229,7 +1229,7 @@ static size_t _fp_out_narrow(FILE *fp, intptr_t type, intptr_t len, intptr_t buf
+ #define STRLEN  wcslen
+ #define _PPFS_init _ppwfs_init
+ /* Pulls in fseek: */
+-#define OUTPUT(F,S)			fputws(S,F)
++#define OUTPUT(F,S)			fputws_unlocked(S,F)
+ /* TODO: #define OUTPUT(F,S)		_wstdio_fwrite((S),wcslen(S),(F)) */
+ #define _outnwcs(stream, wstring, len)	_wstdio_fwrite((const wchar_t *)(wstring), len, stream)
+ #define FP_OUT _fp_out_wide
+-- 
+1.7.10.4
+

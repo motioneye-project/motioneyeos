@@ -1,0 +1,28 @@
+From 36139b29cccae008c74924d81ea67d265327f7ac Mon Sep 17 00:00:00 2001
+From: Gustavo Zacarias <gustavo@zacarias.com.ar>
+Date: Mon, 26 Jan 2015 09:55:04 -0300
+Subject: [PATCH] thread/Name: include stdio.h for prctl as well
+
+We're still using snprintf so we need it, otherwise it leads to build
+failure.
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+---
+ src/thread/Name.hxx | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/thread/Name.hxx b/src/thread/Name.hxx
+index 1576b3f..8d46d33 100644
+--- a/src/thread/Name.hxx
++++ b/src/thread/Name.hxx
+@@ -26,6 +26,7 @@
+ #  include <stdio.h>
+ #elif defined(HAVE_PRCTL)
+ #  include <sys/prctl.h>
++#  include <stdio.h>
+ #  ifdef PR_SET_NAME
+ #    define HAVE_THREAD_NAME
+ #  endif
+-- 
+2.0.5
+

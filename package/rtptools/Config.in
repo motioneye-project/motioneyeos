@@ -1,0 +1,7 @@
+config BR2_PACKAGE_RTPTOOLS
+	bool "rtptools"
+	help
+	  The rtptools distribution consists of a number of small
+	  applications that can be used for processing RTP data.
+
+	  http://www.cs.columbia.edu/irt/software/rtptools/

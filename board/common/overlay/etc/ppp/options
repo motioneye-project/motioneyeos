@@ -1,0 +1,13 @@
+lock
+crtscts
+modem
+passive
+novj
+defaultroute
+noipdefault
+usepeerdns
+noauth
+hide-password
+persist
+holdoff 10
+maxfail 0

@@ -1,0 +1,4 @@
+config BR2_PACKAGE_XFONT_FONT_SCREEN_CYRILLIC
+	bool "font-screen-cyrillic"
+	help
+	  No description available

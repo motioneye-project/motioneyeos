@@ -1,0 +1,38 @@
+config BR2_PACKAGE_SHAIRPORT_SYNC
+	bool "shairport-sync"
+	depends on BR2_USE_MMU # libdaemon
+	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL
+	select BR2_PACKAGE_ALSA_LIB
+	select BR2_PACKAGE_ALSA_LIB_MIXER
+	select BR2_PACKAGE_LIBDAEMON
+	select BR2_PACKAGE_POLARSSL if !BR2_PACKAGE_OPENSSL
+	select BR2_PACKAGE_POPT
+	help
+	  Shairport Sync emulates an AirPort Express for the purpose of
+	  streaming audio from iTunes, iPods, iPhones, iPads and AppleTVs.
+	  Audio played by a Shairport Sync-powered device stays in synchrony
+	  with the source and thus with other devices that are playing the same
+	  source synchronously. Thus, for example, synchronised multi-room
+	  audio is possible without difficulty.
+
+	  https://github.com/mikebrady/shairport-sync
+
+if BR2_PACKAGE_SHAIRPORT_SYNC
+
+config BR2_PACKAGE_SHAIRPORT_SYNC_LIBSOXR
+	bool "libsoxr support"
+	select BR2_PACKAGE_LIBSOXR
+	help
+	  Enable support for libsoxr, the SoX Resampler library.
+
+	  Briefly, Shairport Sync keeps in step with the audio source by
+	  deleting or inserting frames of audio into the stream as needed. This
+	  "interpolation" is normally inaudible, but it can be heard in some
+	  circumstances. Libsoxr allows this interpolation to be done much more
+	  smoothly and subtly.
+
+endif
+
+comment "shairport-sync needs a toolchain w/ NPTL"
+	depends on BR2_USE_MMU
+	depends on !BR2_TOOLCHAIN_HAS_THREADS_NPTL

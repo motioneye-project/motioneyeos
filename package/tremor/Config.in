@@ -1,0 +1,7 @@
+config BR2_PACKAGE_TREMOR
+	bool "tremor (fixed point vorbis decoder)"
+	help
+	  Tremor is a fixed point implementation of an Ogg Vorbis
+	  decoder. It provides a decoding API similar to libvorbis,
+	  but gives much better performance on systems without a
+	  floating-point unit.

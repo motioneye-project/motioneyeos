@@ -1,0 +1,30 @@
+From b8fb56dcd9686d1bdaf02c2f4f395bb185c093d7 Mon Sep 17 00:00:00 2001
+From: Carmelo Amoroso <carmelo.amoroso@st.com>
+Date: Mon, 27 May 2013 16:30:36 +0200
+Subject: [PATCH] libc: elf: explicitly include uClibc_page.h to make
+ PAGE_SIZE visible
+
+Signed-off-by: Filippo Arcidiacono <filippo.arcidiacono@st.com>
+Signed-off-by: Carmelo Amoroso <carmelo.amoroso@st.com>
+(cherry picked from commit 215c2868aca096364a4725a42c3ffb46dc4e8b39)
+
+Signed-off-by: Carmelo Amoroso <carmelo.amoroso@st.com>
+---
+ libc/misc/elf/dl-support.c |    1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/libc/misc/elf/dl-support.c b/libc/misc/elf/dl-support.c
+index f194692..908fb06 100644
+--- a/libc/misc/elf/dl-support.c
++++ b/libc/misc/elf/dl-support.c
+@@ -19,6 +19,7 @@
+ #include <ldsodefs.h>
+ #include <string.h>
+ #endif
++#include <bits/uClibc_page.h>
+ 
+ #if defined(USE_TLS) && USE_TLS
+ 
+-- 
+1.7.10.4
+

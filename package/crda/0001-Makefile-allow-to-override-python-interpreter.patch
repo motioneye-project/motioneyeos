@@ -1,0 +1,34 @@
+From 6831024a247fd89c7f7adcbee8a0be991b3caaf4 Mon Sep 17 00:00:00 2001
+From: Samuel Martin <s.martin49@gmail.com>
+Date: Sun, 2 Mar 2014 23:45:44 +0100
+Subject: [PATCH] Makefile: allow to override python interpreter
+
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+---
+ Makefile | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/Makefile b/Makefile
+index 1d34bde..d7134ff 100644
+--- a/Makefile
++++ b/Makefile
+@@ -42,6 +42,7 @@ LDLIBS += -lgcrypt
+ reglib.o: keys-gcrypt.c
+ 
+ endif
++PYTHON ?= python2
+ MKDIR ?= mkdir -p
+ INSTALL ?= install
+ 
+@@ -103,7 +104,7 @@ $(REG_BIN):
+ keys-%.c: utils/key2pub.py $(wildcard $(PUBKEY_DIR)/*.pem)
+ 	$(NQ) '  GEN ' $@
+ 	$(NQ) '  Trusted pubkeys:' $(wildcard $(PUBKEY_DIR)/*.pem)
+-	$(Q)./utils/key2pub.py --$* $(wildcard $(PUBKEY_DIR)/*.pem) $@
++	$(Q)$(PYTHON) ./utils/key2pub.py --$* $(wildcard $(PUBKEY_DIR)/*.pem) $@
+ 
+ %.o: %.c regdb.h reglib.h
+ 	$(NQ) '  CC  ' $@
+-- 
+1.9.0
+

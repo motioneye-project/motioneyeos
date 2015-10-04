@@ -1,0 +1,8 @@
+config BR2_PACKAGE_SER2NET
+	bool "ser2net"
+	depends on BR2_USE_MMU # fork()
+	help
+	  Ser2net provides a way for a user to connect from a network
+	  connection to a serial port..
+
+	  http://ser2net.sourceforge.net

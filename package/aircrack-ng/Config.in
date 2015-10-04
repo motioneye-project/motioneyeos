@@ -1,0 +1,17 @@
+config BR2_PACKAGE_AIRCRACK_NG
+	bool "aircrack-ng"
+	depends on BR2_USE_MMU # uses fork()
+	# libnl has issues when linking statically
+	# they need fixing in libnl itself
+	select BR2_PACKAGE_LIBNL if !BR2_STATIC_LIBS
+	select BR2_PACKAGE_OPENSSL
+	select BR2_PACKAGE_ZLIB
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	help
+	  A set of tools for auditing wireless networks
+
+	  http://www.aircrack-ng.org/
+
+comment "aircrack-ng needs a toolchain w/ threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_TOOLCHAIN_HAS_THREADS

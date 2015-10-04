@@ -1,0 +1,20 @@
+Fix compile warning being treated as error:
+
+codec/svg.c: In function 'DecodeBlock':
+codec/svg.c:240:5: error: implicit declaration of function 'rsvg_handle_render_cairo' [-Werror=implicit-function-declaration]
+cc1: some warnings being treated as errors
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+
+diff -uNr vlc-2.2.1.org/configure.ac vlc-2.2.1/configure.ac
+--- vlc-2.2.1.org/configure.ac	2015-04-13 09:57:54.000000000 +0200
++++ vlc-2.2.1/configure.ac	2015-04-24 20:54:35.349039010 +0200
+@@ -864,7 +864,7 @@
+ dnl  Compiler warnings
+ dnl
+ 
+-RDC_PROG_CC_WFLAGS([all extra sign-compare undef pointer-arith bad-function-cast write-strings missing-prototypes volatile-register-var error-implicit-function-declaration])
++RDC_PROG_CC_WFLAGS([all extra sign-compare undef pointer-arith bad-function-cast write-strings missing-prototypes volatile-register-var])
+ RDC_PROG_CC_FLAGS([-pipe])
+ AC_LANG_PUSH([C++])
+ RDC_PROG_CXX_WFLAGS([all extra sign-compare undef pointer-arith volatile-register-var])

@@ -1,0 +1,19 @@
+version.cpp: remove useless header inclusion
+
+The inclusion of link.h header is not required and can create build
+error with some toolchains.
+The patch is pushed on the upstream for the next release.
+http://dev.exiv2.org/issues/1007
+
+Signed-off-by: Nicolas Serafini <nicolas.serafini@sensefly.com>
+
+--- exiv2-0.24.orig/src/version.cpp	2013-12-01 13:13:42.000000000 +0100
++++ exiv2-0.24/src/version.cpp	2014-12-04 09:30:39.667234130 +0100
+@@ -116,7 +116,6 @@ typedef string_v::iterator  string_i;
+ #elif defined(__linux__)
+ # include <unistd.h>
+ // http://syprog.blogspot.com/2011/12/listing-loaded-shared-objects-in-linux.html
+-# include "link.h"
+ # include <dlfcn.h>
+   struct something
+   {

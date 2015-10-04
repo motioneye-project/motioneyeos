@@ -1,0 +1,14 @@
+config BR2_PACKAGE_LIBUV
+	bool "libuv"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_USE_MMU # fork()
+	depends on !BR2_STATIC_LIBS
+	help
+	  libuv is a multi-platform support library with a focus
+	  on asynchronous I/O.
+
+	  https://github.com/libuv/libuv
+
+comment "libuv needs a toolchain w/ threads, dynamic library"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS
+	depends on BR2_USE_MMU

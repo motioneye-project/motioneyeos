@@ -1,0 +1,30 @@
+Disable the new pngfix and png-fix-itxt tools: they take up space, fail to
+build on some oddball toolchain configurations and aren't expected/needed
+in a non-interactive embedded system.
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+diff -Nura libpng-1.6.10.orig/Makefile.am libpng-1.6.10/Makefile.am
+--- libpng-1.6.10.orig/Makefile.am	2014-03-17 08:51:25.812005079 -0300
++++ libpng-1.6.10/Makefile.am	2014-03-17 09:14:28.807586433 -0300
+@@ -10,7 +10,7 @@
+ check_PROGRAMS= pngtest pngunknown pngstest pngvalid pngimage
+ 
+ # Utilities - installed
+-bin_PROGRAMS= pngfix png-fix-itxt
++bin_PROGRAMS=
+ 
+ # This ensures that pnglibconf.h gets built at the start of 'make all' or
+ # 'make check', but it does not add dependencies to the individual programs,
+diff -Nura libpng-1.6.10.orig/Makefile.in libpng-1.6.10/Makefile.in
+--- libpng-1.6.10.orig/Makefile.in	2014-03-17 08:51:25.807005070 -0300
++++ libpng-1.6.10/Makefile.in	2014-03-17 09:14:44.846617623 -0300
+@@ -87,7 +87,7 @@
+ host_triplet = @host@
+ check_PROGRAMS = pngtest$(EXEEXT) pngunknown$(EXEEXT) \
+ 	pngstest$(EXEEXT) pngvalid$(EXEEXT) pngimage$(EXEEXT)
+-bin_PROGRAMS = pngfix$(EXEEXT) png-fix-itxt$(EXEEXT)
++bin_PROGRAMS =
+ @PNG_ARM_NEON_TRUE@am__append_1 = arm/arm_init.c\
+ @PNG_ARM_NEON_TRUE@	arm/filter_neon.S arm/filter_neon_intrinsics.c
+ 

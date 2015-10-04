@@ -1,0 +1,40 @@
+By default, the boost test option is mandatory for build environment
+detection. 
+This patch suppress this dependency and allows the test part only if
+build_test is enabled at the Buildroot level.
+
+Signed-off-by: Gwenhael Goavec-Merou <gwenhael.goavec-merou@trabucayre.com>
+---
+Index: gnuradio-3.7.5/volk/cmake/VolkBoost.cmake
+===================================================================
+--- gnuradio-3.7.5.orig/volk/cmake/VolkBoost.cmake
++++ gnuradio-3.7.5/volk/cmake/VolkBoost.cmake
+@@ -29,7 +29,6 @@ set(__INCLUDED_VOLK_BOOST_CMAKE TRUE)
+ set(BOOST_REQUIRED_COMPONENTS
+     filesystem
+     system
+-    unit_test_framework
+     program_options
+ )
+ 
+Index: gnuradio-3.7.5/volk/lib/CMakeLists.txt
+===================================================================
+--- gnuradio-3.7.5.orig/volk/lib/CMakeLists.txt
++++ gnuradio-3.7.5/volk/lib/CMakeLists.txt
+@@ -540,8 +540,9 @@ endif(ENABLE_STATIC_LIBS)
+ # Build the QA test application
+ ########################################################################
+ 
++find_package(Boost "1.35" COMPONENTS "unit_test_framework")
+ 
+-if(Boost_FOUND)
++if(Boost_FOUND AND BUILD_TEST)
+ 
+     set_source_files_properties(
+         ${CMAKE_CURRENT_SOURCE_DIR}/testqa.cc PROPERTIES
+@@ -558,4 +559,4 @@ if(Boost_FOUND)
+     target_link_libraries(test_all volk ${Boost_LIBRARIES})
+     add_test(qa_volk_test_all test_all)
+ 
+-endif(Boost_FOUND)
++endif(Boost_FOUND AND BUILD_TEST)

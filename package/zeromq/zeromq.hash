@@ -1,0 +1,4 @@
+# Locally calculated from download (no sig, hash)
+sha256	f9162ead6d68521e5154d871bac304f88857308bb02366b81bb588497a345927	zeromq-4.1.2.tar.gz
+# From http://download.zeromq.org/SHA1SUMS:
+sha1	86c17096f7f4bf46cbcd2ad242cf8fec8a7cfb7b	zeromq-4.1.2.tar.gz

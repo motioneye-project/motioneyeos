@@ -1,0 +1,27 @@
+Fix usage of gdlib-config
+
+gnuplot configure.in script properly takes care of finding
+gdlib-config using AC_PATH_PROG... but then directly uses gdlib-config
+instead of going through the GDLIB_CONFIG variable that AC_PATH_PROG
+has defined. Which means that whenever a gdlib-config binary not in
+the PATH is being used, it does not use it.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/configure.in
+===================================================================
+--- a/configure.in
++++ b/configure.in
+@@ -537,9 +537,9 @@
+ if test "$with_gd" != no; then
+   AC_PATH_PROG([GDLIB_CONFIG], [gdlib-config])
+   if test -n "$GDLIB_CONFIG"; then
+-    libgd_CPPFLAGS=`gdlib-config --cflags`
+-    libgd_LDFLAGS=`gdlib-config --ldflags`
+-    libgd_LIBS=`gdlib-config --libs`
++    libgd_CPPFLAGS=`$GDLIB_CONFIG --cflags`
++    libgd_LDFLAGS=`$GDLIB_CONFIG --ldflags`
++    libgd_LIBS=`$GDLIB_CONFIG --libs`
+   elif test -d "$with_gd"; then
+     libgd_CPPFLAGS="-I$with_gd/include"
+     libgd_LDFLAGS="-L$with_gd/lib"

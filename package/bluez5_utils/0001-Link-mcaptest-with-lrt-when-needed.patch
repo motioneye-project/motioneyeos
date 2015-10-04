@@ -1,0 +1,54 @@
+From 54b8977c2f854d04f9c6383e2cac76ea4cde3eaa Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Mon, 29 Dec 2014 12:23:41 +0100
+Subject: [PATCH] Link mcaptest with -lrt when needed
+
+The mcaptest tool uses the profiles/health/mcap.c source file, which
+calls clock_getres(). This function is defined in librt in some C
+libraries, so mcaptest should be linked against librt when needed,
+otherwise one gets link failures such as:
+
+ld: profiles/health/mcap.o: undefined reference to symbol 'clock_getres@@GLIBC_2.2.5'
+ld: note: 'clock_getres@@GLIBC_2.2.5' is defined in DSO [...]/sysroot/lib64/librt.so.1 so try adding it to the linker command line
+[...]/sysroot/lib64/librt.so.1: could not read symbols: Invalid operation
+collect2: error: ld returned 1 exit status
+Makefile:4184: recipe for target 'tools/mcaptest' failed
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ Makefile.tools | 2 +-
+ configure.ac   | 5 +++++
+ 2 files changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/Makefile.tools b/Makefile.tools
+index bc827fe..fef3db5 100644
+--- a/Makefile.tools
++++ b/Makefile.tools
+@@ -195,7 +195,7 @@ tools_mcaptest_SOURCES = tools/mcaptest.c \
+ 				btio/btio.h btio/btio.c \
+ 				src/log.c src/log.h \
+ 				profiles/health/mcap.h profiles/health/mcap.c
+-tools_mcaptest_LDADD = lib/libbluetooth-internal.la @GLIB_LIBS@
++tools_mcaptest_LDADD = lib/libbluetooth-internal.la @GLIB_LIBS@ @RT_LIBS@
+ 
+ dist_man_MANS += tools/hciattach.1 tools/hciconfig.1 \
+ 			tools/hcitool.1 tools/hcidump.1 \
+diff --git a/configure.ac b/configure.ac
+index 4739c10..b0afba6 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -54,6 +54,11 @@ AC_CHECK_LIB(pthread, pthread_create, dummy=yes,
+ AC_CHECK_LIB(dl, dlopen, dummy=yes,
+ 			AC_MSG_ERROR(dynamic linking loader is required))
+ 
++AC_SEARCH_LIBS([clock_getres], [rt],
++			[test "$ac_cv_search_clock_getres" = "none required" ||
++			RT_LIBS=$ac_cv_search_clock_getres])
++AC_SUBST([RT_LIBS])
++
+ PKG_CHECK_MODULES(GLIB, glib-2.0 >= 2.28, dummy=yes,
+ 				AC_MSG_ERROR(GLib >= 2.28 is required))
+ AC_SUBST(GLIB_CFLAGS)
+-- 
+2.1.0
+

@@ -1,0 +1,19 @@
+config BR2_PACKAGE_NFTABLES
+	bool "nftables"
+	depends on BR2_USE_WCHAR
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_4
+	select BR2_PACKAGE_GMP
+	select BR2_PACKAGE_LIBMNL
+	select BR2_PACKAGE_LIBNFTNL
+	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT
+	help
+	  nftables is the project that aims to replace the existing
+	  {ip,ip6,arp,eb}tables framework.
+	  Basically, this project provides a new packet filtering framework,
+	  a new userspace utility and also a compatibility layer
+	  for {ip,ip6}tables.
+
+	  http://www.netfilter.org/projects/nftables/index.html
+
+comment "nftables needs a toolchain w/ wchar, headers >= 3.4"
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_4

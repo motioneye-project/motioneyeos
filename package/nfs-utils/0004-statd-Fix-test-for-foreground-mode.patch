@@ -1,0 +1,30 @@
+From ca1fd7153937e147f66d1ca3edbe9c2615f33880 Mon Sep 17 00:00:00 2001
+From: Chris Mayo <aklhfex@gmail.com>
+Date: Sun, 1 Feb 2015 12:03:46 -0500
+Subject: [PATCH] statd: Fix test for foreground mode
+
+daemon_init parameter has the opposite sense
+to code removed in commit 7addf9d
+
+Signed-off-by: Chris Mayo <aklhfex@gmail.com>
+Signed-off-by: Steve Dickson <steved@redhat.com>
+---
+ utils/statd/statd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/utils/statd/statd.c b/utils/statd/statd.c
+index 60ce6d1..2b7a167 100644
+--- a/utils/statd/statd.c
++++ b/utils/statd/statd.c
+@@ -393,7 +393,7 @@ int main (int argc, char **argv)
+ 		simulator (--argc, ++argv);	/* simulator() does exit() */
+ #endif
+ 
+-	daemon_init(!(run_mode & MODE_NODAEMON));
++	daemon_init((run_mode & MODE_NODAEMON));
+ 
+ 	if (run_mode & MODE_LOG_STDERR) {
+ 		xlog_syslog(0);
+-- 
+2.4.5
+

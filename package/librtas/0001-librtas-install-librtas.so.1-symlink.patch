@@ -1,0 +1,31 @@
+Add a line to the librtas Makefile to create librtas.so.1 when
+performing "make install".
+
+Without this patch programs linked with librtas will fail at run time:
+
+error while loading shared libraries: librtas.so.1: cannot open shared
+object file: No such file or directory
+
+A patch has been submitted upstream so it is likely that this patch
+can be dropped after the next release of librtas.
+
+Signed-off-by: Sam Bobroff <sam.bobroff@au1.ibm.com>
+---
+ librtas_src/Makefile |    1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/librtas_src/Makefile b/librtas_src/Makefile
+index 3a10222..deba29d 100644
+--- a/librtas_src/Makefile
++++ b/librtas_src/Makefile
+@@ -33,6 +33,7 @@ install:
+ 	@$(call install_lib,$(LIBRTAS),$(DESTDIR))
+ 	@$(call install_inc,$(HEADERS),$(DESTDIR))
+ 	@ln -sf $(LIBRTAS) $(DESTDIR)/$(LIB_DIR)$(call is_lib64,$(LIBRTAS))/$(LIBRTAS_SONAME)
++	@ln -sf $(LIBRTAS) $(DESTDIR)/$(LIB_DIR)$(call is_lib64,$(LIBRTAS))/$(LIBRTAS_SONAME).1
+ 
+ uninstall:
+ 	@$(call uninstall_lib,$(LIBRTAS),$(DESTDIR))
+-- 
+1.7.10.4
+

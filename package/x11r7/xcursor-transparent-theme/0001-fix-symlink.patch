@@ -1,0 +1,37 @@
+Do not symlink to a host directory
+
+The installation of xcursor-transparent-theme creates many symbolic
+links to the 'transp' cursor file, but it does so using an absolute
+directory, that happens to point to the installation location, which
+is incorrect when cross-compiling.
+
+Also add the -f option so that the package can be reinstalled even if
+it has already been installed.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/cursors/Makefile.am
+===================================================================
+--- a/cursors/Makefile.am
++++ b/cursors/Makefile.am
+@@ -91,6 +91,6 @@
+ 	$(INSTALL_DATA) $(CURSOR_REAL) $(DESTDIR)$(CURSOR_DIR)/ 
+ 	for CURSOR in $(CURSOR_NAMES); do \
+ 		echo '-- Installing cursor '$$CURSOR; \
+-		ln -s $(DESTDIR)$(CURSOR_DIR)/transp $(DESTDIR)$(CURSOR_DIR)/$$CURSOR; \
++		ln -sf transp $(DESTDIR)$(CURSOR_DIR)/$$CURSOR; \
+ 	done
+ 
+Index: b/cursors/Makefile.in
+===================================================================
+--- a/cursors/Makefile.in
++++ b/cursors/Makefile.in
+@@ -177,7 +177,7 @@
+ 	$(INSTALL_DATA) $(CURSOR_REAL) $(DESTDIR)$(CURSOR_DIR)/ 
+ 	for CURSOR in $(CURSOR_NAMES); do \
+ 		echo '-- Installing cursor '$$CURSOR; \
+-		ln -s $(DESTDIR)$(CURSOR_DIR)/transp $(DESTDIR)$(CURSOR_DIR)/$$CURSOR; \
++		ln -sf transp $(DESTDIR)$(CURSOR_DIR)/$$CURSOR; \
+ 	done
+ 
+ # Tell versions [3.59,3.63) of GNU make to not export all variables.

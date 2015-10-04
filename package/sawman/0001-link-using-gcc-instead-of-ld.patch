@@ -1,0 +1,19 @@
+sawman: Link using gcc instead of ld
+
+Using ld may cause a link failure due to using the default emulation
+linker which is configured when building the linker in binutils.  Using
+gcc instead will pass the appropriate -m value because the compiler 
+knows the ABI you are using.
+
+Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+--- SaWMan-1.6.3/rules/libobject.make.orig	2013-12-17 15:54:22.137856874 +0000
++++ SaWMan-1.6.3/rules/libobject.make	2013-12-17 15:54:44.233201909 +0000
+@@ -3,7 +3,7 @@
+ 	if test -d $<.tmp; then rmdir $<.tmp; fi
+ 	mkdir $<.tmp
+ 	(cd $<.tmp && $(AR) x ../../$<)
+-	$(LD) -o $@ -r $<.tmp/*.o
++	$(CC) -nostdlib -o $@ -r $<.tmp/*.o
+ 	rm -f $<.tmp/*.o && rmdir $<.tmp
+ 
+ .PHONY: $(LTLIBRARIES:%.la=.libs/%.a)

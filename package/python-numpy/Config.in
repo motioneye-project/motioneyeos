@@ -1,0 +1,17 @@
+config BR2_PACKAGE_PYTHON_NUMPY
+	bool "python-numpy"
+	# Numpy has some CPU specific code
+	depends on BR2_aarch64 || BR2_arm || BR2_armeb || BR2_i386 \
+		|| BR2_mips || BR2_mipsel || BR2_powerpc || BR2_powerpc64 \
+		|| BR2_sh || BR2_x86_64
+	# numpy needs fenv.h. Available for all architectures in
+	# glibc, but only for x86 and x86-64 in uClibc.
+	depends on !BR2_TOOLCHAIN_USES_UCLIBC || BR2_i386 || BR2_x86_64
+	help
+	  NumPy is the fundamental package for scientific computing
+	  with Python.
+
+	  Note that NumPy needs fenv.h fully supported by the
+	  C library.
+
+	  http://www.numpy.org/

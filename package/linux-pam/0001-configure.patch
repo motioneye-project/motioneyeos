@@ -1,0 +1,19 @@
+Add check for ruserok
+
+ruserok is not available/functional in uclibc, provide conditions for compilation
+where needed.
+
+Signed-off-by: Dmitry Golubovsky <golubovsky@gmail.com>
+
+diff -urN a/configure.in b/configure.in
+--- a/configure.in	2012-08-17 03:48:24.000000000 -0500
++++ b/configure.in	2013-07-17 09:49:23.760254684 -0500
+@@ -526,7 +526,7 @@
+ AC_CHECK_FUNCS(strcspn strdup strspn strstr strtol uname)
+ AC_CHECK_FUNCS(getutent_r getpwnam_r getpwuid_r getgrnam_r getgrgid_r getspnam_r)
+ AC_CHECK_FUNCS(getgrouplist getline getdelim)
+-AC_CHECK_FUNCS(inet_ntop inet_pton innetgr ruserok_af)
++AC_CHECK_FUNCS(inet_ntop inet_pton innetgr ruserok_af ruserok)
+ 
+ AC_CHECK_FUNCS(unshare, [UNSHARE=yes], [UNSHARE=no])
+ AM_CONDITIONAL([HAVE_UNSHARE], [test "$UNSHARE" = yes])

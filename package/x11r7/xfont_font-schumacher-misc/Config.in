@@ -1,0 +1,4 @@
+config BR2_PACKAGE_XFONT_FONT_SCHUMACHER_MISC
+	bool "font-schumacher-misc"
+	help
+	  No description available

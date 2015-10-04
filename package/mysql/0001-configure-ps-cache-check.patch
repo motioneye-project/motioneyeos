@@ -1,0 +1,39 @@
+Patch borrowed from
+http://cgit.openembedded.org/cgit.cgi/openembedded/tree/recipes/mysql/files/configure-ps-cache-check.patch
+
+It allows to specify through ac_cv_FIND_PROC how ps should be used on
+the target to find the PID of a program.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+---
+ configure.in |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
+
+Index: mysql-5.1.53/configure.in
+===================================================================
+--- mysql-5.1.53.orig/configure.in
++++ mysql-5.1.53/configure.in
+@@ -462,8 +462,8 @@
+ # then Make, then shell.  The autoconf substitution uses single quotes, so 
+ # no unprotected single quotes should appear in the expression.
+ AC_PATH_PROG(PS, ps, ps)
+-AC_MSG_CHECKING("how to check if pid exists")
+-PS=$ac_cv_path_PS
++AC_CACHE_CHECK([how to check if pid exists], [ac_cv_FIND_PROC],
++[
+ # Linux style
+ if $PS wwwp $$ 2> /dev/null | grep -- "$0" > /dev/null
+ then
+@@ -502,8 +502,9 @@
+       AC_MSG_ERROR([Could not find the right ps and/or grep switches. Which OS is this?  See the Installation chapter in the Reference Manual.])
+   esac
+ fi
+-AC_SUBST(FIND_PROC)
+-AC_MSG_RESULT("$FIND_PROC")
++ac_cv_FIND_PROC="$FIND_PROC"
++])
++AC_SUBST([FIND_PROC], [$ac_cv_FIND_PROC])
+ 
+ # Check if a pid is valid
+ AC_PATH_PROG(KILL, kill, kill)

@@ -1,0 +1,244 @@
+This makes it possible to build the demos against opengl
+implementations other than Mesa 
+
+Signed-off-by: Spenser Gilliland <spenser@gillilanding.com>
+---
+Index: mesa3d-demos-8.1.0/src/egl/eglut/eglut.c
+===================================================================
+--- mesa3d-demos-8.1.0.orig/src/egl/eglut/eglut.c
++++ mesa3d-demos-8.1.0/src/egl/eglut/eglut.c
+@@ -76,8 +76,9 @@ _eglutNow(void)
+ static void
+ _eglutDestroyWindow(struct eglut_window *win)
+ {
+-   if (_eglut->surface_type != EGL_PBUFFER_BIT &&
+-       _eglut->surface_type != EGL_SCREEN_BIT_MESA)
++
++   if (_eglut->surface_type == EGL_WINDOW_BIT ||
++       _eglut->surface_type == EGL_PIXMAP_BIT)
+       eglDestroySurface(_eglut->dpy, win->surface);
+ 
+    _eglutNativeFiniWindow(win);
+@@ -175,7 +176,9 @@ _eglutCreateWindow(const char *title, in
+             win->config, win->native.u.pixmap, NULL);
+       break;
+    case EGL_PBUFFER_BIT:
++#ifdef EGL_MESA_screen_surface
+    case EGL_SCREEN_BIT_MESA:
++#endif
+       win->surface = win->native.u.surface;
+       break;
+    default:
+@@ -289,8 +292,10 @@ eglutDestroyWindow(int win)
+    if (window->index != win)
+       return;
+ 
++#ifdef EGL_MESA_screen_surface
+    /* XXX it causes some bug in st/egl KMS backend */
+    if ( _eglut->surface_type != EGL_SCREEN_BIT_MESA)
++#endif
+       eglMakeCurrent(_eglut->dpy, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);
+ 
+    _eglutDestroyWindow(_eglut->current);
+Index: mesa3d-demos-8.1.0/src/egl/eglut/eglut_screen.c
+===================================================================
+--- mesa3d-demos-8.1.0.orig/src/egl/eglut/eglut_screen.c
++++ mesa3d-demos-8.1.0/src/egl/eglut/eglut_screen.c
+@@ -35,26 +35,33 @@
+ 
+ #define MAX_MODES 100
+ 
++#ifdef EGL_MESA_screen_surface
+ static EGLScreenMESA kms_screen;
+ static EGLModeMESA kms_mode;
+ static EGLint kms_width, kms_height;
++#endif
+ 
+ void
+ _eglutNativeInitDisplay(void)
+ {
++#ifdef EGL_MESA_screen_surface
+    _eglut->native_dpy = EGL_DEFAULT_DISPLAY;
+    _eglut->surface_type = EGL_SCREEN_BIT_MESA;
++#endif
+ }
+ 
+ void
+ _eglutNativeFiniDisplay(void)
+ {
++#ifdef EGL_MESA_screen_surface
+    kms_screen = 0;
+    kms_mode = 0;
+    kms_width = 0;
+    kms_height = 0;
++#endif
+ }
+ 
++#ifdef EGL_MESA_screen_surface
+ static void
+ init_kms(void)
+ {
+@@ -94,19 +101,23 @@ init_kms(void)
+    kms_width = width;
+    kms_height = height;
+ }
++#endif
+ 
+ void
+ _eglutNativeInitWindow(struct eglut_window *win, const char *title,
+                        int x, int y, int w, int h)
+ {
++#ifdef EGL_MESA_screen_surface
+    EGLint surf_attribs[16];
+    EGLint i;
++#endif
+    const char *exts;
+ 
+    exts = eglQueryString(_eglut->dpy, EGL_EXTENSIONS);
+    if (!exts || !strstr(exts, "EGL_MESA_screen_surface"))
+       _eglutFatal("EGL_MESA_screen_surface is not supported\n");
+ 
++#ifdef EGL_MESA_screen_surface
+    init_kms();
+ 
+    i = 0;
+@@ -128,14 +139,17 @@ _eglutNativeInitWindow(struct eglut_wind
+ 
+    win->native.width = kms_width;
+    win->native.height = kms_height;
++#endif
+ }
+ 
+ void
+ _eglutNativeFiniWindow(struct eglut_window *win)
+ {
++#ifdef EGL_MESA_screen_surface
+    eglShowScreenSurfaceMESA(_eglut->dpy,
+          kms_screen, EGL_NO_SURFACE, 0);
+    eglDestroySurface(_eglut->dpy, win->native.u.surface);
++#endif
+ }
+ 
+ void
+Index: mesa3d-demos-8.1.0/src/egl/opengl/demo1.c
+===================================================================
+--- mesa3d-demos-8.1.0.orig/src/egl/opengl/demo1.c
++++ mesa3d-demos-8.1.0/src/egl/opengl/demo1.c
+@@ -18,6 +18,7 @@
+ static void
+ TestScreens(EGLDisplay dpy)
+ {
++#ifdef EGL_MESA_screen_surface
+ #define MAX 8
+    EGLScreenMESA screens[MAX];
+    EGLint numScreens;
+@@ -28,6 +29,7 @@ TestScreens(EGLDisplay dpy)
+    for (i = 0; i < numScreens; i++) {
+       printf(" Screen %d handle: %d\n", i, (int) screens[i]);
+    }
++#endif
+ }
+ 
+ /**
+Index: mesa3d-demos-8.1.0/src/egl/opengl/demo2.c
+===================================================================
+--- mesa3d-demos-8.1.0.orig/src/egl/opengl/demo2.c
++++ mesa3d-demos-8.1.0/src/egl/opengl/demo2.c
+@@ -16,6 +16,7 @@
+ 
+ /*#define FRONTBUFFER*/
+ 
++#ifdef EGL_MESA_screen_surface
+ static void _subset_Rectf(GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2,
+                           GLfloat r, GLfloat g, GLfloat b)
+ {
+@@ -95,12 +96,13 @@ TestScreens(EGLDisplay dpy)
+       printf(" Screen %d handle: %d\n", i, (int) screens[i]);
+    }
+ }
+-
++#endif
+ 
+ int
+ main(int argc, char *argv[])
+ {
+    int maj, min;
++#ifdef EGL_MESA_screen_surface
+    EGLContext ctx;
+    EGLSurface pbuffer, screen_surf;
+    EGLConfig configs[10];
+@@ -115,6 +117,7 @@ main(int argc, char *argv[])
+    EGLModeMESA mode;
+    EGLScreenMESA screen;
+    EGLint count;
++#endif
+ 
+    EGLDisplay d = eglGetDisplay(EGL_DEFAULT_DISPLAY);
+    assert(d);
+@@ -132,6 +135,7 @@ main(int argc, char *argv[])
+       exit(1);
+    }
+ 
++#ifdef EGL_MESA_screen_surface
+    eglGetConfigs(d, configs, 10, &numConfigs);
+    printf("Got %d EGL configs:\n", numConfigs);
+    for (i = 0; i < numConfigs; i++) {
+@@ -211,6 +215,7 @@ main(int argc, char *argv[])
+    eglDestroySurface(d, pbuffer);
+    eglDestroyContext(d, ctx);
+    eglTerminate(d);
++#endif
+ 
+    return 0;
+ }
+Index: mesa3d-demos-8.1.0/src/egl/opengl/demo3.c
+===================================================================
+--- mesa3d-demos-8.1.0.orig/src/egl/opengl/demo3.c
++++ mesa3d-demos-8.1.0/src/egl/opengl/demo3.c
+@@ -46,7 +46,7 @@ GLubyte OpenGL_bits[] = {
+    0x3e, 0x00, 0x00, 0xf8, 0x0c, 0x00, 
+ };
+ 
+-
++#ifdef EGL_MESA_screen_surface
+ static void Init(void)
+ {
+ 
+@@ -551,11 +551,13 @@ write_ppm(const char *filename, const GL
+       fclose(f);
+    }
+ }
++#endif
+ 
+ int
+ main(int argc, char *argv[])
+ {
+    int maj, min;
++#ifdef EGL_MESA_screen_surface
+    EGLContext ctx;
+    EGLSurface screen_surf;
+    EGLConfig configs[10];
+@@ -566,6 +568,7 @@ main(int argc, char *argv[])
+    const GLubyte *bitmap;
+    EGLint screenAttribs[32];
+    EGLint i;
++#endif
+ 
+    EGLDisplay d = eglGetDisplay(EGL_DEFAULT_DISPLAY);
+    assert(d);
+@@ -583,6 +586,7 @@ main(int argc, char *argv[])
+       exit(1);
+    }
+ 
++#ifdef EGL_MESA_screen_surface
+    eglGetConfigs(d, configs, 10, &numConfigs);
+    eglGetScreensMESA(d, &screen, 1, &count);
+    eglGetModesMESA(d, screen, &mode, 1, &count);
+@@ -642,6 +646,7 @@ main(int argc, char *argv[])
+    eglDestroySurface(d, screen_surf);
+    eglDestroyContext(d, ctx);
+    eglTerminate(d);
++#endif
+ 
+    return 0;
+ }

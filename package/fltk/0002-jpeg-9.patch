@@ -1,0 +1,26 @@
+From http://www.fltk.org/str.php?L2920
+However it's not yet applied apparently until bundled jpeg is upgraded.
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+diff -Nura fltk-1.3.2.orig/src/Fl_JPEG_Image.cxx fltk-1.3.2/src/Fl_JPEG_Image.cxx
+--- fltk-1.3.2.orig/src/Fl_JPEG_Image.cxx	2014-07-03 12:56:27.731197463 -0300
++++ fltk-1.3.2/src/Fl_JPEG_Image.cxx	2014-07-03 12:56:57.907218257 -0300
+@@ -155,7 +155,7 @@
+   
+   jpeg_create_decompress(&dinfo);
+   jpeg_stdio_src(&dinfo, fp);
+-  jpeg_read_header(&dinfo, 1);
++  jpeg_read_header(&dinfo, TRUE);
+   
+   dinfo.quantize_colors      = (boolean)FALSE;
+   dinfo.out_color_space      = JCS_RGB;
+@@ -333,7 +333,7 @@
+   
+   jpeg_create_decompress(&dinfo);
+   jpeg_mem_src(&dinfo, data);
+-  jpeg_read_header(&dinfo, 1);
++  jpeg_read_header(&dinfo, TRUE);
+   
+   dinfo.quantize_colors      = (boolean)FALSE;
+   dinfo.out_color_space      = JCS_RGB;

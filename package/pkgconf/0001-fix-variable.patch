@@ -1,0 +1,29 @@
+[PATCH] prefix sysroot to include/libdir path variables
+
+Prefix includedir / libdir variable values with sysroot if a variable is
+requested (--variable=<name>), similar to how it's done for -I / -L flags.
+
+This is sometimes used to find header files (E.G. in gst-plugins configure),
+so ensure the sysroot'ed files are used.
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+Signed-off-by: Bernd Kuhls <berndkuhls@hotmail.com>
+
+diff -Nura pkgconf-0.8.9.orig/main.c pkgconf-0.8.9/main.c
+--- pkgconf-0.8.9.orig/main.c	2012-10-24 14:32:08.236508699 -0300
++++ pkgconf-0.8.9/main.c	2012-10-24 14:54:36.771070217 -0300
+@@ -298,7 +298,13 @@
+ 	if (eflag != PKG_ERRF_OK)
+ 		return false;
+ 
+-	printf("%s\n", req.buf);
++	if ( !strcmp(req.variable, "includedir") ||
++	  !strcmp(req.variable, "mapdir") ||
++	  !strcmp(req.variable, "sdkdir") ||
++	  !strcmp(req.variable, "libdir"))
++		printf("%s%s\n", sysroot_dir, req.buf);
++	else
++		printf("%s\n", req.buf);
+ 	return true;
+ }
+ 

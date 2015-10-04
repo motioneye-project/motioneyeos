@@ -1,0 +1,8 @@
+config BR2_PACKAGE_PTPD2
+	bool "ptpd2"
+	select BR2_PACKAGE_LIBPCAP
+	help
+	  The PTP daemon (PTPd) implements the Precision Time protocol
+	  (PTP) as defined by the IEEE-1588-2008.
+
+	  http://ptpd.sourceforge.net/

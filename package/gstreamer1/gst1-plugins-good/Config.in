@@ -1,0 +1,370 @@
+menuconfig BR2_PACKAGE_GST1_PLUGINS_GOOD
+	bool "gst1-plugins-good"
+	select BR2_PACKAGE_GST1_PLUGINS_BASE
+	select BR2_PACKAGE_XLIB_LIBX11 if BR2_PACKAGE_XORG7
+	select BR2_PACKAGE_XLIB_LIBXEXT if BR2_PACKAGE_XORG7
+	select BR2_PACKAGE_XLIB_LIBXV if BR2_PACKAGE_XORG7
+	help
+	  A set of well-supported plug-ins for GStreamer under the preferred
+	  license.
+
+	  http://gstreamer.freedesktop.org/
+
+if BR2_PACKAGE_GST1_PLUGINS_GOOD
+
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_JPEG
+	bool "jpeg (JPEG support)"
+	select BR2_PACKAGE_JPEG
+	help
+	  JPeg plugin library
+
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_PNG
+	bool "png (PNG support)"
+	select BR2_PACKAGE_LIBPNG
+	help
+	  PNG plugin library
+
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_BZ2
+	bool "bz2 support"
+	depends on BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_MATROSKA
+	select BR2_PACKAGE_BZIP2
+	help
+	  Enable bz2 support for the following plugins:
+	  matroska
+
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_ZLIB
+	bool "zlib support"
+	depends on BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_ISOMP4 || BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_ID3DEMUX || BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_MATROSKA
+	select BR2_PACKAGE_ZLIB
+	help
+	  Enable zlib support for the following plugins:
+	  id3demux, isomp4, matroska
+
+comment "dependency-less plugins"
+
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_ALPHA
+	bool "alpha"
+	help
+	  adds an alpha channel to video - constant or via chroma-keying
+
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_APETAG
+	bool "apetag"
+	help
+	  APEv1/2 tag reader
+
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_AUDIOFX
+	bool "audiofx"
+	help
+	  Audio effects plugin
+
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_AUDIOPARSERS
+	bool "audioparsers"
+	help
+	  Parsers for various audio formats
+
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_AUPARSE
+	bool "auparse"
+	help
+	  parses au streams
+
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_AUTODETECT
+	bool "autodetect"
+	help
+	  Plugin contains auto-detection plugins for video/audio in- and outputs
+
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_AVI
+	bool "avi (*.avi video)"
+	default y
+	help
+	  AVI stream handling
+
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_CUTTER
+	bool "cutter"
+	help
+	  Audio Cutter to split audio into non-silent bits
+
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_DEBUGUTILS
+	bool "debugutils"
+	help
+	  elements for testing and debugging
+
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_DEINTERLACE
+	bool "deinterlace"
+	help
+	  Deinterlacer
+
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_DTMF
+	bool "dtmf"
+	help
+	  DTMF plugin
+
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_EFFECTV
+	bool "effectv"
+	help
+	  effect plugins from the effectv project
+
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_EQUALIZER
+	bool "equalizer"
+	help
+	  GStreamer audio equalizers
+
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_FLV
+	bool "flv"
+	help
+	  FLV muxing and demuxing plugin
+
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_FLX
+	bool "flx"
+	help
+	  FLC/FLI/FLX video decoder
+
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_GOOM
+	bool "goom"
+	help
+	  GOOM visualization filter
+
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_GOOM2K1
+	bool "goom2k1"
+	help
+	  GOOM 2k1 visualization filter
+
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_ICYDEMUX
+	bool "icydemux"
+	help
+	  Demux ICY tags from a stream
+
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_ID3DEMUX
+	bool "id3demux (*.mp3 audio)"
+	help
+	  Demux ID3v1 and ID3v2 tags from a file
+
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_IMAGEFREEZE
+	bool "imagefreeze"
+	help
+	  Still frame stream generator
+
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_INTERLEAVE
+	bool "interleave"
+	help
+	  Audio interleaver/deinterleaver
+
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_ISOMP4
+	bool "isomp4"
+	default y
+	help
+	  ISO base media file format support (mp4, 3gpp, qt, mj2)
+
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_LAW
+	bool "law"
+
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_LEVEL
+	bool "level"
+	help
+	  Audio level plugin
+
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_MATROSKA
+	bool "matroska"
+	help
+	  Matroska and WebM stream handling
+
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_MONOSCOPE
+	bool "monoscope"
+	help
+	  Monoscope visualization
+
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_MULTIFILE
+	bool "multifile"
+	help
+	  Reads/Writes buffers from/to sequentially named files
+
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_MULTIPART
+	bool "multipart"
+	help
+	  multipart stream manipulation
+
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_REPLAYGAIN
+	bool "replaygain"
+	help
+	  ReplayGain volume normalization
+
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_RTP
+	bool "rtp"
+	help
+	  Real-time protocol plugins
+
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_RTPMANAGER
+	bool "rtpmanager"
+	help
+	  RTP session management plugin library
+
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_RTSP
+	bool "rtsp"
+	help
+	  transfer data via RTSP
+
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_SHAPEWIPE
+	bool "shapewipe"
+	help
+	  Shape Wipe transition filter
+
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_SMPTE
+	bool "smpte"
+	help
+	  Apply the standard SMPTE transitions on video images
+
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_SPECTRUM
+	bool "spectrum"
+	help
+	  Run an FFT on the audio signal, output spectrum data
+
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_UDP
+	bool "udp"
+	help
+	  transfer data via UDP
+
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_VIDEOBOX
+	bool "videobox"
+	help
+	  resizes a video by adding borders or cropping
+
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_VIDEOCROP
+	bool "videocrop"
+	help
+	  Crops video into a user-defined region
+
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_VIDEOFILTER
+	bool "videofilter"
+	help
+	  Video filters plugin
+
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_VIDEOMIXER
+	bool "videomixer"
+	help
+	  Video mixer
+
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_WAVENC
+	bool "wavenc"
+	help
+	  Encode raw audio into WAV
+
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_WAVPARSE
+	bool "wavparse (*.wav audio)"
+	default y
+	help
+	  Parse a .wav file into raw audio
+
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_Y4M
+	bool "y4m"
+	help
+	  Encodes a YUV frame into the yuv4mpeg format (mjpegtools)
+
+comment "plugins with external dependencies"
+
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_OSS
+	bool "ossaudio (OSS audio)"
+	help
+	  OSS (Open Sound System) support for GStreamer
+
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_OSS4
+	bool "oss4 (Open Sound System 4)"
+	help
+	  Open Sound System (OSS) version 4 support for GStreamer
+
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_V4L2
+	bool "v4l2"
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0 # multi planar api
+	help
+	  elements for Video 4 Linux
+
+comment "v4l2 needs toolchain w/ headers >= 3.0"
+	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0
+
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_CAIRO
+	bool "cairo"
+	depends on BR2_ARCH_HAS_ATOMICS # cairo
+	select BR2_PACKAGE_CAIRO
+	select BR2_PACKAGE_CAIRO_PNG
+	help
+	  Cairo-based elements
+
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_FLAC
+	bool "flac (libFLAC)"
+	depends on BR2_USE_WCHAR # flac
+	select BR2_PACKAGE_FLAC
+	help
+	  The FLAC Lossless compressor Codec
+
+comment "flac needs a toolchain w/ wchar"
+	depends on !BR2_USE_WCHAR
+
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_GDKPIXBUF
+	bool "gdkpixbuf"
+	select BR2_PACKAGE_GDK_PIXBUF
+	depends on BR2_USE_WCHAR # gdk-pixbuf -> libglib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # gdk-pixbuf -> libglib2
+	help
+	  GdkPixbuf-based image decoder, overlay and sink
+
+comment "gdkpixbuf needs a toolchain w/ wchar, threads"
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
+
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_PULSE
+	depends on BR2_TOOLCHAIN_HAS_THREADS # pulseaudio
+	depends on BR2_USE_MMU # pulseaudio
+	depends on BR2_ARCH_HAS_ATOMICS # pulseaudio
+	depends on !BR2_STATIC_LIBS # pulseaudio
+	select BR2_PACKAGE_PULSEAUDIO
+	bool "pulseaudio"
+	help
+	  PulseAudio plugin library
+
+comment "pulseaudio support needs a toolchain w/ threads, dynamic library"
+	depends on BR2_USE_MMU
+	depends on BR2_ARCH_HAS_ATOMICS
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS
+
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_SOUPHTTPSRC
+	bool "souphttpsrc (http client)"
+	depends on BR2_USE_WCHAR # libsoup -> glib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libsoup -> glib2
+	select BR2_PACKAGE_LIBSOUP
+	help
+	  libsoup HTTP client src/sink
+
+comment "souphttpsrc needs a toolchain w/ wchar, threads"
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
+
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_SPEEX
+	bool "speex"
+	select BR2_PACKAGE_SPEEX
+	help
+	  Speex plugin library
+
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_TAGLIB
+	bool "taglib"
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_USE_WCHAR
+	select BR2_PACKAGE_TAGLIB
+	help
+	  Taglib tagging plugin library
+
+comment "taglib needs a toolchain w/ C++, wchar"
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR
+
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_VPX
+	bool "vpx (webm)"
+	select BR2_PACKAGE_LIBVPX
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libvpx
+	help
+	  VP8 plugin
+
+comment "libvpx needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
+
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_WAVPACK
+	bool "wavpack (*.wv audio)"
+	select BR2_PACKAGE_WAVPACK
+	help
+	  Wavpack lossless/lossy audio format handling
+
+endif

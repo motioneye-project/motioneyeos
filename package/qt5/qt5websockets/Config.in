@@ -1,0 +1,11 @@
+config BR2_PACKAGE_QT5WEBSOCKETS
+	bool "qt5websockets"
+	select BR2_PACKAGE_QT5BASE
+	select BR2_PACKAGE_QT5BASE_NETWORK
+	help
+	  Qt is a cross-platform application and UI framework for
+	  developers using C++.
+
+	  This package corresponds to the qt5websockets module.
+
+	  http://qt.io

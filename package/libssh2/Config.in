@@ -1,0 +1,10 @@
+config BR2_PACKAGE_LIBSSH2
+	bool "libssh2"
+	select BR2_PACKAGE_LIBGCRYPT if !BR2_PACKAGE_OPENSSL
+	help
+	  libssh2 is a client-side C library implementing the SSH2
+	  protocol as defined by Internet Drafts: SECSH-TRANS(22),
+	  SECSH-USERAUTH(25), SECSH-CONNECTION(23), SECSH-ARCH(20),
+	  SECSH-FILEXFER(06)*, SECSH-DHGEX(04), and SECSH-NUMBERS(10)
+
+	  http://www.libssh2.org/

@@ -1,0 +1,8 @@
+config BR2_PACKAGE_PYTHON_KEYRING
+	bool "python-keyring"
+	depends on BR2_PACKAGE_PYTHON
+	help
+	  The Python keyring lib provides a easy way to access the
+	  system keyring service from Python.
+
+	  https://pypi.python.org/pypi/keyring

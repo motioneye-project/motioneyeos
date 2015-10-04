@@ -1,0 +1,4 @@
+config BR2_PACKAGE_XFONT_FONT_ADOBE_UTOPIA_75DPI
+	bool "font-adobe-utopia-75dpi"
+	help
+	  No description available

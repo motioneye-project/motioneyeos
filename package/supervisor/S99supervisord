@@ -1,0 +1,29 @@
+#!/bin/sh
+
+mkdir -p /var/log/supervisor
+
+case "$1" in
+	start)
+		echo -n "Starting supervisord: "
+		start-stop-daemon -S -q -p /var/run/supervisord.pid --exec /usr/bin/supervisord
+		echo "done"
+		;;
+	stop)
+		echo -n "Stopping supervisord: "
+		start-stop-daemon -K -q -p /var/run/supervisord.pid
+		echo "done"
+		;;
+	restart)
+		"$0" stop
+		sleep 5
+		"$0" start
+		;;
+	reload)
+		start-stop-daemon -K -q -p /var/run/supervisord.pid -s HUP
+		;;
+	*)
+		echo "Usage: $0 {start|stop|restart|reload}"
+		exit 1
+esac
+
+exit $?

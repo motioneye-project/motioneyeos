@@ -1,0 +1,24 @@
+config BR2_PACKAGE_PCMANFM
+	bool "pcmanfm"
+	select BR2_PACKAGE_LIBFM
+	select BR2_PACKAGE_MENU_CACHE
+	select BR2_PACKAGE_LIBGLIB2
+	select BR2_PACKAGE_LIBGTK2
+	depends on BR2_PACKAGE_XORG7
+	depends on BR2_USE_WCHAR # libglib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libglib2
+	depends on BR2_USE_MMU # libglib2
+	depends on BR2_INSTALL_LIBSTDCPP # libgtk2
+	depends on BR2_ARCH_HAS_ATOMICS # libgtk2
+	help
+	  PCMan File Manager (PCManFM) is a file manager application developed
+	  by Hong Jen Yee from Taiwan which is meant to be a replacement for
+	  Nautilus, Konqueror and Thunar.
+
+	  http://wiki.lxde.org/en/PCManFM
+
+comment "pcmanfm needs X.org and a toolchain w/ wchar, threads, C++"
+	depends on BR2_USE_MMU
+	depends on BR2_ARCH_HAS_ATOMICS
+	depends on !BR2_USE_WCHAR || !BR2_INSTALL_LIBSTDCPP || \
+		!BR2_TOOLCHAIN_HAS_THREADS || !BR2_PACKAGE_XORG7

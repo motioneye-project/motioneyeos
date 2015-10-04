@@ -1,0 +1,75 @@
+From 7fb1a4468b9d0314cffcdd1fd2a156e6f8c5101b Mon Sep 17 00:00:00 2001
+From: Mike Frysinger <vapier@gentoo.org>
+Date: Mon, 28 Jul 2014 22:59:35 -0400
+Subject: [PATCH 4/6] fix X_DISPLAY_MISSING redefined warnings when X is
+ disabled
+
+This is set up in config.h by configure, so avoid defining it again.
+---
+ src/bin/imlib2_conv.c | 2 ++
+ src/lib/api.c         | 2 ++
+ src/lib/image.h       | 2 ++
+ src/lib/script.c      | 2 ++
+ 4 files changed, 8 insertions(+)
+
+diff --git a/src/bin/imlib2_conv.c b/src/bin/imlib2_conv.c
+index 1b05b1f..1c46d0c 100644
+--- a/src/bin/imlib2_conv.c
++++ b/src/bin/imlib2_conv.c
+@@ -8,7 +8,9 @@
+ #include <stdio.h>
+ #include <string.h>
+ 
++#ifndef X_DISPLAY_MISSING
+ #define X_DISPLAY_MISSING
++#endif
+ #include <Imlib2.h>
+ 
+ #define PROG_NAME "imlib2_conv"
+diff --git a/src/lib/api.c b/src/lib/api.c
+index e29eaf0..178d2ca 100644
+--- a/src/lib/api.c
++++ b/src/lib/api.c
+@@ -4,8 +4,10 @@
+ #include <X11/Xutil.h>
+ #include <X11/extensions/shape.h>
+ #else
++#ifndef X_DISPLAY_MISSING
+ #define X_DISPLAY_MISSING
+ #endif
++#endif
+ #include <string.h>
+ #include <stdarg.h>
+ #include "common.h"
+diff --git a/src/lib/image.h b/src/lib/image.h
+index eef59d2..52dde9d 100644
+--- a/src/lib/image.h
++++ b/src/lib/image.h
+@@ -5,7 +5,9 @@
+ # ifdef BUILD_X11
+ #  include <X11/Xlib.h>
+ # else
++#ifndef X_DISPLAY_MISSING
+ #  define X_DISPLAY_MISSING
++#endif
+ # endif
+ 
+ # include <dlfcn.h>
+diff --git a/src/lib/script.c b/src/lib/script.c
+index 55ebd4e..7c974c0 100644
+--- a/src/lib/script.c
++++ b/src/lib/script.c
+@@ -13,8 +13,10 @@
+ #ifdef BUILD_X11
+ #include <X11/Xlib.h>
+ #else
++#ifndef X_DISPLAY_MISSING
+ #define X_DISPLAY_MISSING
+ #endif
++#endif
+ #include "image.h"
+ #include "file.h"
+ #include "dynamic_filters.h"
+-- 
+2.3.1
+

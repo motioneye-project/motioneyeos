@@ -1,0 +1,22 @@
+Fix compilation error with musl-based toolchain
+
+linux_sysfs.c:751:15: error: 'PATH_MAX' undeclared (first use in this function)
+     char name[PATH_MAX];
+
+Patch already sent upstream by Felix Janda
+http://lists.x.org/archives/xorg-devel/2014-December/044723.html
+
+Signed-off-by: Felix Janda <felix.janda at posteo.de>
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+
+diff -uNr libpciaccess-0.13.3.org/src/linux_sysfs.c libpciaccess-0.13.3/src/linux_sysfs.c
+--- libpciaccess-0.13.3.org/src/linux_sysfs.c	2015-02-04 00:59:14.000000000 +0100
++++ libpciaccess-0.13.3/src/linux_sysfs.c	2015-04-10 21:57:35.000000000 +0200
+@@ -44,6 +44,7 @@
+ #include <sys/mman.h>
+ #include <dirent.h>
+ #include <errno.h>
++#include <limits.h>
+ 
+ #if defined(__i386__) || defined(__x86_64__) || defined(__arm__)
+ #include <sys/io.h>

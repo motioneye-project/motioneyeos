@@ -1,0 +1,9 @@
+config BR2_PACKAGE_BOOTUTILS
+	bool "bootutils"
+	help
+	  BootUtils is a collection of utilities to facilitate booting of
+	  Linux 2.6-based systems. The process of finding the root volume
+	  either by label or explicit label= on the kernel command line,
+	  mounting it, and 'switchroot'ing is automated.
+
+	  http://bootutils.sourceforge.net/

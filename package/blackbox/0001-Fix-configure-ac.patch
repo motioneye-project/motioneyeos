@@ -1,0 +1,34 @@
+blackbox: merge existing patch and fix lpthread
+
+Merge the current configure patch into this one so it will patch 
+configure.ac instead. Also add pthread to libs to fix a linkage problem.
+
+Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+--- blackbox-0.70.1/configure.ac.orig	2013-12-17 11:02:38.799055141 +0000
++++ blackbox-0.70.1/configure.ac	2013-12-17 11:09:08.421204545 +0000
+@@ -8,14 +8,6 @@ AC_CONFIG_SRCDIR([src/blackbox.cc])
+ dnl Determine default prefix
+ test "x$prefix" = "xNONE" && prefix="$ac_default_prefix"
+ 
+-dnl Look in the most logical places for external libraries
+-CPPFLAGS="$CPPFLAGS -I$prefix/include"
+-LDFLAGS="$LDFLAGS -L$prefix/lib"
+-if test "x$prefix" != "x/usr/local"; then
+-  CPPFLAGS="$CPPFLAGS -I/usr/local/include"
+-  LDFLAGS="$LDFLAGS -L/usr/local/lib"
+-fi
+-
+ dnl Locate required external software
+ AC_PROG_CC
+ 
+@@ -128,6 +120,10 @@ int main(int, char **)
+                   [AC_MSG_RESULT([no])]
+                  )
+ 
++dnl required pthread
++AC_CHECK_LIB([pthread],
++	     [pthread_cancel],
++	     [LIBS="$LIBS -lpthread"])
+ dnl needed for some X11 libs
+ AC_CHECK_LIB([nsl],
+              [t_open],

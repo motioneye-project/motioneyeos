@@ -1,0 +1,16 @@
+config BR2_PACKAGE_IPERF3
+	bool "iperf3"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	help
+	  iperf is a tool for active measurements of the maximum
+	  achievable bandwidth on IP networks.
+	  It supports tuning of various parameters related to timing,
+	  protocols, and buffers. For each test it reports the bandwidth,
+	  loss, and other parameters.
+	  It's a redesign of the NLANR/DAST iperf(2) and is not
+	  backward compatible.
+
+	  https://github.com/esnet/iperf
+
+comment "iperf3 needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS

@@ -1,0 +1,28 @@
+Define PTRACE_GETSIGINFO on PowerPC when not available
+
+uClibc 0.9.33.2 does not define PTRACE_GETSIGINFO in PowerPC. Even
+though Buildroot has a uClibc patch doing that, it doesn't solve the
+case of external uClibc toolchain from other sources (such as
+Crosstool-NG). Therefore, this patch modifies Valgrind to define
+PTRACE_GETSIGINFO on PowerPC to the right value, when such definition
+is not available from the C library.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/coregrind/vgdb-invoker-ptrace.c
+===================================================================
+--- a/coregrind/vgdb-invoker-ptrace.c
++++ b/coregrind/vgdb-invoker-ptrace.c
+@@ -71,6 +71,12 @@
+ #   endif
+ #endif
+ 
++#if defined(__powerpc__)
++# ifndef PTRACE_GETSIGINFO
++#  define PTRACE_GETSIGINFO 0x4202
++# endif
++#endif
++
+ #if VEX_HOST_WORDSIZE == 8
+ typedef Addr64 CORE_ADDR;
+ #elif VEX_HOST_WORDSIZE == 4

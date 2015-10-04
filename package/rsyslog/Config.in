@@ -1,0 +1,17 @@
+config BR2_PACKAGE_RSYSLOG
+	bool "rsyslog"
+	select BR2_PACKAGE_ZLIB
+	select BR2_PACKAGE_LIBESTR
+	select BR2_PACKAGE_LIBLOGGING
+	select BR2_PACKAGE_JSON_C
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_USE_MMU # fork()
+	depends on !BR2_STATIC_LIBS # modules
+	help
+	  Rsyslog is a powerful and flexible syslog implementation
+
+	  http://www.rsyslog.com
+
+comment "rsyslog needs a toolchain w/ threads, dynamic library"
+	depends on BR2_USE_MMU
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS

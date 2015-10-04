@@ -1,0 +1,20 @@
+Fix compilation with ccache enabled
+
+When ccache is enabled the CROSS_COMPILE variable contains a space, so
+it must be properly quoted.
+
+Signed-off-by: Doug Kehn <rdkehn@yahoo.com>
+
+Index: cryptodev-linux-1.7/Makefile
+===================================================================
+--- cryptodev-linux-1.7.orig/Makefile
++++ cryptodev-linux-1.7/Makefile
+@@ -18,7 +18,7 @@ ifneq (${ARCH},)
+ KERNEL_MAKE_OPTS += ARCH=${ARCH}
+ endif
+ ifneq (${CROSS_COMPILE},)
+-KERNEL_MAKE_OPTS += CROSS_COMPILE=${CROSS_COMPILE}
++KERNEL_MAKE_OPTS += CROSS_COMPILE="${CROSS_COMPILE}"
+ endif
+ 
+ build: version.h

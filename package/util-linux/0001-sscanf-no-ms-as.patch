@@ -1,0 +1,141 @@
+Fix libmount build under uClibc
+
+See https://bugs.gentoo.org/show_bug.cgi?id=406303
+http://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/sys-apps/util-linux/files/util-linux-2.21.1-no-printf-alloc.patch?revision=1.2
+
+[Gustavo: Ported to util-linux-2.26]
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+diff -Nura util-linux-2.26.orig/configure.ac util-linux-2.26/configure.ac
+--- util-linux-2.26.orig/configure.ac	2015-02-19 09:11:13.146192401 -0300
++++ util-linux-2.26/configure.ac	2015-02-20 08:13:32.740006582 -0300
+@@ -840,7 +840,6 @@
+ )
+ UL_BUILD_INIT([libmount])
+ UL_REQUIRES_BUILD([libmount], [libblkid])
+-UL_REQUIRES_HAVE([libmount], [scanf_alloc_modifier], [scanf string alloc modifier])
+ AM_CONDITIONAL([BUILD_LIBMOUNT], [test "x$build_libmount" = xyes])
+ AM_CONDITIONAL([BUILD_LIBMOUNT_TESTS], [test "x$build_libmount" = xyes -a "x$enable_static" = xyes])
+ 
+diff -Nura util-linux-2.26.orig/libmount/src/tab_parse.c util-linux-2.26/libmount/src/tab_parse.c
+--- util-linux-2.26.orig/libmount/src/tab_parse.c	2015-02-16 09:57:34.070017496 -0300
++++ util-linux-2.26/libmount/src/tab_parse.c	2015-02-20 08:13:32.741006617 -0300
+@@ -22,6 +22,10 @@
+ #include "pathnames.h"
+ #include "strutils.h"
+ 
++#ifndef HAVE_SCANF_MS_MODIFIER
++# define UL_SCNsA "%s"
++#endif
++
+ static int next_number(char **s, int *num)
+ {
+ 	char *end = NULL;
+@@ -52,16 +56,31 @@
+ 	int rc, n = 0, xrc;
+ 	char *src = NULL, *fstype = NULL, *optstr = NULL;
+ 
++#ifndef HAVE_SCANF_MS_MODIFIER
++	size_t len = strlen(s) + 1;
++	src = malloc(len);
++	fstype = malloc(len);
++	fs->target = malloc(len);
++	optstr = malloc(len);
++#endif
++
+ 	rc = sscanf(s,	UL_SCNsA" "	/* (1) source */
+ 			UL_SCNsA" "	/* (2) target */
+ 			UL_SCNsA" "	/* (3) FS type */
+ 			UL_SCNsA" "	/* (4) options */
+ 			"%n",		/* byte count */
+ 
++#ifdef HAVE_SCANF_MS_MODIFIER
+ 			&src,
+ 			&fs->target,
+ 			&fstype,
+ 			&optstr,
++#else
++			src,
++			fs->target,
++			fstype,
++			optstr,
++#endif
+ 			&n);
+ 	xrc = rc;
+ 
+@@ -127,6 +146,16 @@
+ 	unsigned int maj, min;
+ 	char *fstype = NULL, *src = NULL, *p;
+ 
++#ifndef HAVE_SCANF_MS_MODIFIER
++	size_t len = strlen(s) + 1;
++	fs->root = malloc(len);
++	fs->target = malloc(len);
++	fs->vfs_optstr = malloc(len);
++	fs->fs_optstr = malloc(len);
++	fstype = malloc(len);
++	src = malloc(len);
++#endif
++
+ 	rc = sscanf(s,	"%d "		/* (1) id */
+ 			"%d "		/* (2) parent */
+ 			"%u:%u "	/* (3) maj:min */
+@@ -138,9 +167,15 @@
+ 			&fs->id,
+ 			&fs->parent,
+ 			&maj, &min,
++#ifdef HAVE_SCANF_MS_MODIFIER
+ 			&fs->root,
+ 			&fs->target,
+ 			&fs->vfs_optstr,
++#else
++			fs->root,
++			fs->target,
++			fs->vfs_optstr,
++#endif
+ 			&end);
+ 
+ 	if (rc >= 7 && end > 0)
+@@ -160,9 +195,15 @@
+ 			UL_SCNsA" "	/* (9) source */
+ 			UL_SCNsA,	/* (10) fs options (fs specific) */
+ 
++#ifdef HAVE_SCANF_MS_MODIFIER
+ 			&fstype,
+ 			&src,
+ 			&fs->fs_optstr);
++#else
++			fstype,
++			src,
++			fs->fs_optstr);
++#endif
+ 
+ 	if (rc >= 10) {
+ 		size_t sz;
+@@ -281,14 +322,25 @@
+ 	int rc;
+ 	char *src = NULL;
+ 
++#ifndef HAVE_SCANF_MS_MODIFIER
++	size_t len = strlen(s) + 1;
++	src = malloc(len);
++	fs->swaptype = malloc(len);
++#endif
++
+ 	rc = sscanf(s,	UL_SCNsA" "	/* (1) source */
+ 			UL_SCNsA" "	/* (2) type */
+ 			"%ju"		/* (3) size */
+ 			"%ju"		/* (4) used */
+ 			"%d",		/* priority */
+ 
++#ifdef HAVE_SCANF_MS_MODIFIER
+ 			&src,
+ 			&fs->swaptype,
++#else
++			src,
++			fs->swaptype,
++#endif
+ 			&fsz,
+ 			&usz,
+ 			&fs->priority);

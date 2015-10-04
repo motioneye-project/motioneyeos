@@ -1,0 +1,29 @@
+config BR2_PACKAGE_LIBEVAS_GENERIC_LOADERS
+	bool "libevas generic loaders"
+	select BR2_PACKAGE_LIBEINA
+	select BR2_PACKAGE_ZLIB
+	help
+	  These are additional "generic" loaders for Evas that are
+	  stand-alone executables that evas may run from its generic
+	  loader module.
+
+	  http://trac.enlightenment.org/e/wiki/Evas_Generic_Loaders
+
+if BR2_PACKAGE_LIBEVAS_GENERIC_LOADERS
+
+config BR2_PACKAGE_LIBEVAS_GENERIC_LOADERS_SVG
+	bool "SVG loader"
+	select BR2_PACKAGE_LIBRSVG
+	select BR2_PACKAGE_CAIRO
+	depends on BR2_USE_WCHAR # librsvg -> glib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # librsvg -> glib2
+	depends on BR2_INSTALL_LIBSTDCPP # librsvg -> pango
+	depends on BR2_ARCH_HAS_ATOMICS # cairo
+	help
+	  This option enables the Evas generic SVG loader
+
+comment "SVG loader needs a toolchain w/ wchar, threads, C++"
+	depends on BR2_ARCH_HAS_ATOMICS
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || !BR2_INSTALL_LIBSTDCPP
+
+endif

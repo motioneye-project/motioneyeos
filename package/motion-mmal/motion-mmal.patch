@@ -1,0 +1,41 @@
+diff -uNr motion-mmal-test/CMakeLists.txt motion-mmal-patched/CMakeLists.txt
+--- motion-mmal-test/CMakeLists.txt	2014-12-14 14:02:22.000000000 +0200
++++ motion-mmal-patched/CMakeLists.txt	2015-01-17 19:18:53.145027025 +0200
+@@ -67,8 +67,6 @@
+ 
+ set(CMAKE_INCLUDE_CURRENT_DIR ON)
+ include_directories(
+-					${ROOTFSPATH}/usr/include/mysql
+-					${ROOTFSPATH}/usr/include/postgresql
+ 					${USERLANDPATH}
+ 					${USERLANDPATH}/interface/vcos
+ 					${USERLANDPATH}/interface/vcos/pthreads
+@@ -144,11 +142,10 @@
+ 						avcodec
+ 						avutil
+ 						z
+-						mysqlclient
+-						pq
+ 						rt
+ 						bcm_host
+ 						vcos
++						vchostif
+ 						vchiq_arm
+ 						mmal_core
+ 						mmal_util
+diff -uNr motion-mmal-test/config.h motion-mmal-patched/config.h
+--- motion-mmal-test/config.h	2014-12-14 14:02:22.000000000 +0200
++++ motion-mmal-patched/config.h	2015-01-17 19:19:20.952463935 +0200
+@@ -20,10 +20,10 @@
+ #define HAVE_MEMORY_H 1
+ 
+ /* Define to 1 if you have MySQL support */
+-#define HAVE_MYSQL 1
++//#define HAVE_MYSQL 1
+ 
+ /* Define to 1 if you have PostgreSQL support */
+-#define HAVE_PGSQL 1
++//#define HAVE_PGSQL 1
+ 
+ /* Define to 1 if you have SDL support */
+ /* #undef HAVE_SDL */

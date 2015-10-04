@@ -1,0 +1,6 @@
+config BR2_PACKAGE_SREDIRD
+	bool "sredird"
+	help
+	  Sredird is a serial port redirector that is compliant with
+	  the RFC 2217 "Telnet Com Port Control Option" protocol. This
+	  protocol lets you share a serial port through the network.

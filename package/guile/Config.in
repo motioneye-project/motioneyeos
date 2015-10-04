@@ -1,0 +1,19 @@
+config BR2_PACKAGE_GUILE
+	bool "guile"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_PACKAGE_LIBATOMIC_ARCH_SUPPORTS # bdwgc
+	depends on BR2_USE_WCHAR # libunistring
+	select BR2_PACKAGE_LIBUNISTRING
+	select BR2_PACKAGE_LIBFFI
+	select BR2_PACKAGE_GMP
+	select BR2_PACKAGE_BDWGC
+	select BR2_PACKAGE_LIBTOOL
+	help
+	  Guile is an interpreter and compiler for the Scheme
+	  programming language, a clean and elegant dialect of Lisp.
+
+	  http://www.gnu.org/software/guile
+
+comment "guile needs a toolchain w/ threads, wchar"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_USE_WCHAR
+

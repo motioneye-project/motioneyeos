@@ -1,0 +1,17 @@
+Expliticly link with -lpthread if smbd is compiled with
+avahi support. Otherwise the binary will fail to run.
+
+Signed-off-by: Sven Neumann <s.neumann@raumfeld.com>
+
+diff -Nura samba-3.6.16.orig/source3/Makefile.in samba-3.6.16/source3/Makefile.in
+--- samba-3.6.16.orig/source3/Makefile.in	2013-06-21 08:12:39.995871935 -0300
++++ samba-3.6.16/source3/Makefile.in	2013-06-21 08:13:17.778103805 -0300
+@@ -1783,7 +1783,7 @@
+ 		$(KRB5LIBS) $(DYNEXP) $(PRINT_LIBS) $(AUTH_LIBS) \
+ 		$(ACL_LIBS) $(PASSDB_LIBS) $(LIBS) $(DNSSD_LIBS) $(AVAHI_LIBS) \
+ 		$(POPT_LIBS) @SMBD_LIBS@ $(LIBTALLOC_LIBS) $(LIBTEVENT_LIBS) $(LIBTDB_LIBS) \
+-		$(LIBWBCLIENT_LIBS) $(ZLIB_LIBS)
++		$(LIBWBCLIENT_LIBS) $(ZLIB_LIBS) $(PTHREAD_LDFLAGS)
+
+ bin/nmbd@EXEEXT@: $(BINARY_PREREQS) $(NMBD_OBJ) @BUILD_POPT@ $(LIBTALLOC) $(LIBTEVENT) $(LIBTDB) $(LIBWBCLIENT)
+ 	@echo Linking $@

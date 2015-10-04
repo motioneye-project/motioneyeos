@@ -1,0 +1,10 @@
+config BR2_PACKAGE_NET_TOOLS
+	bool "net-tools"
+	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE
+	help
+	  A collection of programs that form the base set of the NET-3
+	  networking distribution for the Linux operating system.
+	  Includes: arp, hostname, ifconfig, netstat, rarp, route,
+	  plipconfig, slattach, mii-tool, iptunnel and ipmaddr.
+
+	  http://sourceforge.net/projects/net-tools/

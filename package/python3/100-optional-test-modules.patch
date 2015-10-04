@@ -1,0 +1,108 @@
+Add an option to disable installation of test modules
+
+The Python standard distribution comes with many test modules, that
+are not necessarly useful on embedded targets.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+
+---
+ Makefile.pre.in |   50 ++++++++++++++++++++++++++++++++------------------
+ configure.ac    |    6 ++++++
+ 2 files changed, 38 insertions(+), 18 deletions(-)
+
+Index: b/Makefile.pre.in
+===================================================================
+--- a/Makefile.pre.in
++++ b/Makefile.pre.in
+@@ -1136,8 +1136,30 @@
+ EXTRAPLATDIR= @EXTRAPLATDIR@
+ MACHDEPS=	$(PLATDIR) $(EXTRAPLATDIR)
+ XMLLIBSUBDIRS=  xml xml/dom xml/etree xml/parsers xml/sax
+-LIBSUBDIRS=	tkinter tkinter/test tkinter/test/test_tkinter \
+-		tkinter/test/test_ttk site-packages test \
++LIBSUBDIRS=	tkinter \
++		site-packages \
++		asyncio \
++		collections concurrent concurrent/futures encodings \
++		email email/mime \
++		ensurepip ensurepip/_bundled \
++		html json http dbm xmlrpc \
++		sqlite3 \
++		logging csv wsgiref urllib \
++		lib2to3 lib2to3/fixes lib2to3/pgen2 \
++		ctypes ctypes/macholib \
++		idlelib idlelib/Icons \
++		distutils distutils/command $(XMLLIBSUBDIRS) \
++		importlib \
++		turtledemo \
++		multiprocessing multiprocessing/dummy \
++		unittest \
++		venv venv/scripts venv/scripts/posix \
++		curses pydoc_data $(MACHDEPS)
++
++TESTSUBDIRS = 	tkinter/test tkinter/test/test_tkinter tkinter/test/test_ttk \
++		test test/test_asyncio \
++		test/test_email test/test_email/data \
++		test/test_json \
+ 		test/audiodata \
+ 		test/capath test/data \
+ 		test/cjkencodings test/decimaltestdata test/xmltestdata \
+@@ -1164,28 +1186,22 @@
+ 		test/test_importlib/namespace_pkgs/project3/parent/child \
+                 test/test_importlib/namespace_pkgs/module_and_namespace_package \
+                 test/test_importlib/namespace_pkgs/module_and_namespace_package/a_test \
+-		asyncio \
+-		test/test_asyncio \
+-		collections concurrent concurrent/futures encodings \
+-		email email/mime test/test_email test/test_email/data \
+-		ensurepip ensurepip/_bundled \
+-		html json test/test_json http dbm xmlrpc \
+-		sqlite3 sqlite3/test \
+-		logging csv wsgiref urllib \
+-		lib2to3 lib2to3/fixes lib2to3/pgen2 lib2to3/tests \
++		sqlite3/test \
++		lib2to3/tests \
+ 		lib2to3/tests/data lib2to3/tests/data/fixers \
+ 		lib2to3/tests/data/fixers/myfixes \
+-		ctypes ctypes/test ctypes/macholib \
+-		idlelib idlelib/Icons idlelib/idle_test \
+-		distutils distutils/command distutils/tests $(XMLLIBSUBDIRS) \
+-		importlib test/test_importlib test/test_importlib/builtin \
++		ctypes/test \
++		idlelib/idle_test \
++		distutils/tests \
++		test/test_importlib test/test_importlib/builtin \
+ 		test/test_importlib/extension test/test_importlib/frozen \
+ 		test/test_importlib/import_ test/test_importlib/source \
+-		turtledemo \
+-		multiprocessing multiprocessing/dummy \
+-		unittest unittest/test unittest/test/testmock \
+-		venv venv/scripts venv/scripts/posix \
+-		curses pydoc_data $(MACHDEPS)
++		unittest/test unittest/test/testmock
++
++ifeq (@TEST_MODULES@,yes)
++LIBSUBDIRS += $(TESTSUBDIRS)
++endif
++
+ libinstall:	build_all $(srcdir)/Lib/$(PLATDIR) $(srcdir)/Modules/xxmodule.c
+ 	@for i in $(SCRIPTDIR) $(LIBDEST); \
+ 	do \
+Index: b/configure.ac
+===================================================================
+--- a/configure.ac
++++ b/configure.ac
+@@ -2676,6 +2676,12 @@
+ fi
+ 
+ 
++AC_SUBST(TEST_MODULES)
++
++AC_ARG_ENABLE(test-modules,
++	AS_HELP_STRING([--disable-test-modules], [disable test modules]),
++	[ TEST_MODULES="${enableval}" ], [ TEST_MODULES=yes ])
++
+ # Check for enable-ipv6
+ AH_TEMPLATE(ENABLE_IPV6, [Define if --enable-ipv6 is specified])
+ AC_MSG_CHECKING([if --enable-ipv6 is specified])

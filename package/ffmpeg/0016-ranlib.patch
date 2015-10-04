@@ -1,0 +1,35 @@
+Fix ranlib check when cross-compiling
+
+Without this patch /usr/bin/ranlib is tested for "-D", not ranlib from the
+cross-compiler suite being in use.
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+
+diff -uNr ffmpeg-2.6.2.org/configure ffmpeg-2.6.2/configure
+--- ffmpeg-2.6.2.org/configure	2015-04-12 00:47:55.000000000 +0200
++++ ffmpeg-2.6.2/configure	2015-04-16 21:53:24.313202517 +0200
+@@ -2719,11 +2719,6 @@
+ nm_default="nm -g"
+ objformat="elf"
+ pkg_config_default=pkg-config
+-if ranlib 2>&1 | grep -q "\-D "; then
+-    ranlib_default="ranlib -D"
+-else
+-    ranlib_default="ranlib"
+-fi
+ strip_default="strip"
+ yasmexe_default="yasm"
+ windres_default="windres"
+@@ -3001,6 +2996,12 @@
+         die "Must specify target arch and OS when cross-compiling"
+ fi
+ 
++if "${cross_prefix}ranlib" 2>&1 | grep -q "\-D "; then
++    ranlib_default="ranlib -D"
++else
++    ranlib_default="ranlib"
++fi
++
+ test -n "$valgrind" && toolchain="valgrind-memcheck"
+ 
+ case "$toolchain" in

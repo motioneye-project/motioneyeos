@@ -1,0 +1,24 @@
+comment "tvheadend needs a toolchain w/ NPTL, headers >= 3.2"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS_NPTL || !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_2
+
+config BR2_PACKAGE_TVHEADEND
+	bool "tvheadend"
+	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_2
+	select BR2_PACKAGE_DTV_SCAN_TABLES
+	select BR2_PACKAGE_FFMPEG_AVRESAMPLE if BR2_PACKAGE_FFMPEG
+	select BR2_PACKAGE_FFMPEG_SWSCALE if BR2_PACKAGE_FFMPEG
+	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
+	select BR2_PACKAGE_OPENSSL
+	help
+	  Tvheadend is a TV streaming server for Linux supporting DVB-S,
+	  DVB-S2, DVB-C, DVB-T, ATSC, IPTV, and Analog video (V4L) as
+	  input sources.
+
+	  https://www.lonelycoder.com/redmine/projects/tvheadend/
+
+	  Note:
+	    - a default user has been created to log in the web configuration
+	      GUI: admin/admin; you can change it at your discretion at runtime.
+	    - if you want Avahi support, you'll need to enable:
+	          Avahi, D-Bus, libdaemon

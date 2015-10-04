@@ -1,0 +1,12 @@
+config BR2_PACKAGE_CPIO
+	bool "cpio"
+	# Need argp.h support
+	select BR2_PACKAGE_ARGP_STANDALONE if BR2_TOOLCHAIN_USES_UCLIBC
+	depends on BR2_USE_WCHAR
+	help
+	  cpio archive utility for creation and extraction.
+
+	  https://www.gnu.org/software/cpio/
+
+comment "cpio needs a toolchain w/ wchar"
+	depends on !BR2_USE_WCHAR

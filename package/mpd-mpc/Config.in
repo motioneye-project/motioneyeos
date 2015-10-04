@@ -1,0 +1,7 @@
+config BR2_PACKAGE_MPD_MPC
+	bool "mpd-mpc"
+	select BR2_PACKAGE_LIBMPDCLIENT
+	help
+	  A minimalist command line interface to MPD.
+
+	  http://www.musicpd.org/clients/mpc/

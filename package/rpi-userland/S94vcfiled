@@ -1,0 +1,47 @@
+#!/bin/sh
+
+NAME=vcfiled
+DESC="VideoCore file server daemon $NAME"
+DAEMON="/usr/sbin/$NAME"
+DAEMON_ARGS=""
+CFGFILE="/etc/default/$NAME"
+PIDFILE="/var/run/$NAME.pid"
+
+# Read configuration variable file if it is present
+[ -r "$CFGFILE" ] && . "$CFGFILE"
+
+start()
+{
+	echo -n "Starting $DESC: "
+	start-stop-daemon -S -q -p "$PIDFILE" -x "$DAEMON" -- $DAEMON_ARGS &&
+			echo "done" || echo "failed"
+}
+
+stop()
+{
+	echo -n "Stopping $DESC: "
+	if start-stop-daemon -K -q -R TERM/30/KILL/5 -p "$PIDFILE" -n "$NAME"; then
+		# This daemon does not remove its PID file when it exits.
+		rm -f "$PIDFILE"
+		echo "done"
+	else
+		echo "failed"
+	fi
+}
+
+case "$1" in
+	start)
+		start
+		;;
+	stop)
+		stop
+		;;
+	restart|reload)
+		stop
+		start
+		;;
+	*)
+		echo "Usage: $0 {start|stop|restart|reload}" >&2
+		exit 1
+		;;
+esac

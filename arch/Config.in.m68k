@@ -1,0 +1,16 @@
+config BR2_ARCH
+	default "m68k"		if BR2_m68k
+
+config BR2_ENDIAN
+	default "BIG"
+
+config BR2_ARCH_HAS_ATOMICS
+	default y
+
+config BR2_GCC_TARGET_ARCH
+	default "68000"		if BR2_m68k_68000
+	default "68010"		if BR2_m68k_68010
+	default "68020"		if BR2_m68k_68020
+	default "68030"		if BR2_m68k_68030
+	default "68040"		if BR2_m68k_68040
+	default "68060"		if BR2_m68k_68060

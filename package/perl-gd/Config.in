@@ -1,0 +1,14 @@
+config BR2_PACKAGE_PERL_GD
+	bool "perl-gd"
+	depends on !BR2_STATIC_LIBS
+	select BR2_PACKAGE_ZLIB
+	select BR2_PACKAGE_LIBPNG
+	select BR2_PACKAGE_FREETYPE
+	select BR2_PACKAGE_GD
+	help
+	  Interface to Gd Graphics Library
+
+	  https://metacpan.org/release/GD
+
+comment "perl-gd needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS

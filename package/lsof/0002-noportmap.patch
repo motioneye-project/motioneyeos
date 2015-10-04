@@ -1,0 +1,18 @@
+--- a/print.c	2006-08-23 13:37:43.000000000 -0600
++++ b/print.c	2006-08-23 13:38:29.000000000 -0600
+@@ -148,6 +148,7 @@
+ static void
+ fill_portmap()
+ {
++#if !defined __UCLIBC__ || (defined __UCLIBC__ && defined __UCLIBC_HAS_RPC__)
+ 	char buf[128], *cp, *nm;
+ 	CLIENT *c;
+ 	int h, port, pr;
+@@ -266,6 +267,7 @@
+ 	    Pth[pr][h] = pt;
+ 	}
+ 	clnt_destroy(c);
++#endif
+ }
+ 
+ 

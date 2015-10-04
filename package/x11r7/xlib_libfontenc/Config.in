@@ -1,0 +1,5 @@
+config BR2_PACKAGE_XLIB_LIBFONTENC
+	bool "libfontenc"
+	select BR2_PACKAGE_XPROTO_XPROTO
+	help
+	  X.Org fontenc library

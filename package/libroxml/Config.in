@@ -1,0 +1,12 @@
+config BR2_PACKAGE_LIBROXML
+	bool "roxml"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	help
+	  libroxml is a light and powerful xml parsing library with
+	  xpath handling. Roxml is a binary using libroxml to explore
+	  xml file from shell scripts.
+
+	  http://www.libroxml.net
+
+comment "libroxml needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS

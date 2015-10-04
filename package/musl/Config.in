@@ -1,0 +1,5 @@
+# For legal-info
+config BR2_PACKAGE_MUSL
+	bool
+	depends on BR2_TOOLCHAIN_USES_MUSL
+	default y

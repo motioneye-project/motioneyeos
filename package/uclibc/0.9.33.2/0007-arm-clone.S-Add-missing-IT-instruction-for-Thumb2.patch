@@ -1,0 +1,29 @@
+From c12211a2f1832169e31063512b3e2081e503e856 Mon Sep 17 00:00:00 2001
+From: Will Newton <will.newton@linaro.org>
+Date: Tue, 2 Apr 2013 13:53:35 +0100
+Subject: [PATCH 7/8] arm/clone.S: Add missing IT instruction for Thumb2.
+
+The conditional load needs to be made part of an IT block on Thumb2
+cores.
+
+Signed-off-by: Will Newton <will.newton@linaro.org>
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ libc/sysdeps/linux/arm/clone.S | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/libc/sysdeps/linux/arm/clone.S b/libc/sysdeps/linux/arm/clone.S
+index e4101ba..1f7f09d 100644
+--- a/libc/sysdeps/linux/arm/clone.S
++++ b/libc/sysdeps/linux/arm/clone.S
+@@ -111,6 +111,7 @@ __clone:
+ 	ldr	r4, [sp, #12]
+ 	DO_CALL (clone)
+ 	movs	a1, a1
++	IT(t, ne)
+ 	ldmnefd	sp!, {r4}
+ 	blt	__error
+ 	IT(t, ne)
+-- 
+1.8.1.2
+

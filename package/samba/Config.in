@@ -1,0 +1,292 @@
+config BR2_PACKAGE_SAMBA
+	bool "samba"
+	depends on BR2_DEPRECATED_SINCE_2015_05
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_USE_MMU # fork()
+	depends on !BR2_nios2 # binary too large, relocations don't fit
+	select BR2_PACKAGE_POPT
+	help
+	  Provides secure, stable and fast file and print services
+	  for all clients using the SMB/CIFS protocol, such as all
+	  versions of DOS, Windows, OS/2, Linux and many others.
+
+	  http://www.samba.org/
+
+	  NOTE: A complete Samba install takes over 50MB of space,
+		so choose only the components you need.
+
+comment "samba needs a toolchain w/ threads"
+	depends on BR2_DEPRECATED_SINCE_2015_05
+	depends on BR2_USE_MMU
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
+
+if BR2_PACKAGE_SAMBA
+
+config BR2_PACKAGE_SAMBA_MAX_DEBUGLEVEL
+	int "Maximum level of compiled-in debug messages"
+	range -1 10000
+	default -1
+	help
+	  Define the level of compiled-in debug messages.
+	  This allows for big space savings, -1 being the lowest (none).
+
+config BR2_PACKAGE_SAMBA_LIBICONV
+	bool "extended encodings (libiconv)"
+	depends on !BR2_ENABLE_LOCALE
+	select BR2_PACKAGE_LIBICONV
+	help
+	  Include libiconv support for extended conversion of filename
+	  enconding. Samba has built-in support for UTF-8, ISO-8859-1
+	  and ASCII, so this is only required if you want to support
+	  other encodings.
+
+menu "Samba tools selection"
+
+config BR2_PACKAGE_SAMBA_EVENTLOGADM
+	bool "eventlogadm"
+	default y
+	help
+	  Write Eventlog records to a tdb or perform other eventlog functions
+
+config BR2_PACKAGE_SAMBA_FINDSMB
+	bool "findsmb"
+	default y
+	depends on BR2_PACKAGE_SAMBA_SMBCLIENT
+	depends on BR2_PACKAGE_SAMBA_NMBLOOKUP
+	depends on BR2_PACKAGE_PERL
+	help
+	  Script to browse network
+
+comment "findsmb       - disabled (requires nmblookup, smbclient and perl)"
+	depends on !BR2_PACKAGE_SAMBA_SMBCLIENT || !BR2_PACKAGE_SAMBA_NMBLOOKUP || !BR2_PACKAGE_PERL
+
+config BR2_PACKAGE_SAMBA_NET
+	bool "net"
+	default y
+	help
+	  Distributed SMB/CIFS Server Management Utility
+
+config BR2_PACKAGE_SAMBA_NMBD
+	bool "nmbd"
+	default y
+	help
+	  NetBIOS name server to provide NetBIOS over IP naming services
+	  to clients
+
+config BR2_PACKAGE_SAMBA_NMBLOOKUP
+	bool "nmblookup"
+	default y
+	help
+	  Query NetBIOS names and map them to IP addresses in a network
+	  using NetBIOS over TCP/IP queries
+
+config BR2_PACKAGE_SAMBA_NTLM_AUTH
+	bool "ntlm_auth"
+	default y
+	help
+	  Helper utility that authenticates users using NT/LM authentication
+
+config BR2_PACKAGE_SAMBA_PDBEDIT
+	bool "pdbedit"
+	default y
+	help
+	  Manage the SAM database (Database of Samba Users)
+
+config BR2_PACKAGE_SAMBA_PROFILES
+	bool "profiles"
+	default y
+	help
+	  Utility that reports and changes SIDs in Windows NT registry files
+
+config BR2_PACKAGE_SAMBA_RPCCLIENT
+	bool "rpcclient"
+	select BR2_PACKAGE_READLINE
+	default y
+	help
+	  Tool for executing client side MS-RPC functions using RPC
+	  calls from a UNIX workstation.
+
+config BR2_PACKAGE_SAMBA_SMBCACLS
+	bool "smbcacls"
+	default y
+	help
+	  Set or get ACLs on an NT file or directory names
+
+config BR2_PACKAGE_SAMBA_SMBCLIENT
+	bool "smbclient"
+	select BR2_PACKAGE_READLINE
+	default y
+	help
+	  ftp-like client to access SMB/CIFS resources on servers
+
+config BR2_PACKAGE_SAMBA_SMBCONTROL
+	bool "smbcontrol"
+	default y
+	help
+	  Send messages to smbd, nmbd or winbindd processes
+
+config BR2_PACKAGE_SAMBA_SMBCQUOTAS
+	bool "smbcquotas"
+	default y
+	help
+	  Set or get QUOTAs of NTFS 5 shares
+
+config BR2_PACKAGE_SAMBA_SMBD
+	bool "smbd"
+	default y
+	help
+	  The server daemon that provides filesharing and printing services
+
+config BR2_PACKAGE_SAMBA_SMBGET
+	bool "smbget"
+	default y
+	help
+	  wget-like utility for download files over SMB
+
+config BR2_PACKAGE_SAMBA_SMBLDBTOOLS
+	bool "smbldbtools"
+	default y
+	help
+	  ldbadd ldbdel ldbedit ldbmodify ldbrename ldbsearch tools
+
+config BR2_PACKAGE_SAMBA_SMBPASSWD
+	bool "smbpasswd"
+	default y
+	help
+	  Change a user's SMB passwd
+
+config BR2_PACKAGE_SAMBA_SMBSHARESEC
+	bool "smbsharesec"
+	default y
+	help
+	  Manipulate share permissions on SMB file shares
+
+config BR2_PACKAGE_SAMBA_SMBSPOOL
+	bool "smbspool"
+	default y
+	help
+	  Send a print file to an SMB printer
+
+config BR2_PACKAGE_SAMBA_SMBSTATUS
+	bool "smbstatus"
+	default y
+	help
+	  Report on current Samba connections
+
+config BR2_PACKAGE_SAMBA_SMBTREE
+	bool "smbtree"
+	default y
+	help
+	  A text based smb network browser
+
+config BR2_PACKAGE_SAMBA_SWAT
+	bool "swat"
+	default y
+	help
+	  Samba Web Administration Tool
+
+config BR2_PACKAGE_SAMBA_SMBTA_UTIL
+	bool "smbta-util"
+	default y
+	help
+	  Tool to ease the configuration of the vfs_smb_traffic_analyzer
+	  module regarding data encryption.
+
+config BR2_PACKAGE_SAMBA_SMBTAR
+	bool "smbtar"
+	default y
+	depends on BR2_PACKAGE_SAMBA_SMBCLIENT
+	help
+	  tar-like script that wraps smbclient
+
+comment "smbtar        - disabled (requires smbclient)"
+	depends on !BR2_PACKAGE_SAMBA_SMBCLIENT
+
+config BR2_PACKAGE_SAMBA_TDB
+	bool "tdb"
+	default y
+	help
+	  Tools to operate on the .tdb database files
+
+config BR2_PACKAGE_SAMBA_TESTPARM
+	bool "testparm"
+	default y
+	help
+	  Check an smb.conf configuration file for internal correctness
+
+config BR2_PACKAGE_SAMBA_WINBINDD
+	bool "winbindd"
+	default y
+	help
+	  Name Service Switch daemon for resolving names from NT servers
+
+config BR2_PACKAGE_SAMBA_WBINFO
+	bool "wbinfo"
+	default y
+	depends on BR2_PACKAGE_SAMBA_WINBINDD
+	help
+	  Query information from winbind daemon
+
+endmenu
+
+
+menu "Samba libraries selection"
+
+config BR2_PACKAGE_SAMBA_LIBSMBCLIENT
+	bool "libsmbclient"
+	help
+	  libsmbclient is a library toolset that permits applications
+	  to manipulate CIFS/SMB network resources using many of the
+	  standards POSIX functions available for manipulating local
+	  files.
+
+config BR2_PACKAGE_SAMBA_LIBNSS_WINS
+	bool "libnss_wins"
+	default y
+	depends on BR2_TOOLCHAIN_USES_GLIBC
+	depends on BR2_PACKAGE_SAMBA_WINBINDD
+	help
+	  libnss_wins is a library that permits the Name Service Switch
+	  to resolve NetBIOS names.
+
+config BR2_PACKAGE_SAMBA_LIBNSS_WINBIND
+	bool "libnss_winbind"
+	default y
+	depends on BR2_TOOLCHAIN_USES_GLIBC
+	depends on BR2_PACKAGE_SAMBA_WINBINDD
+	help
+	  libnss_winbind is a library that permits the Name Service
+	  Switch to resolve user and group information from a Windows
+	  NT server.
+
+endmenu
+
+
+menu "Samba support selection"
+
+config BR2_PACKAGE_SAMBA_AVAHI
+	bool "support avahi"
+	default y
+	depends on BR2_PACKAGE_AVAHI_DAEMON
+	depends on BR2_USE_MMU # dbus
+	select BR2_PACKAGE_DBUS
+	help
+	  Include support for avahi
+
+comment "support avahi - disabled (requires avahi-daemon)"
+	depends on BR2_USE_MMU
+	depends on !BR2_PACKAGE_AVAHI_DAEMON
+
+config BR2_PACKAGE_SAMBA_GAMIN
+	bool "support gamin"
+	default y
+	depends on BR2_PACKAGE_GAMIN
+	help
+	  Include support for gamin
+
+comment "support gamin - disabled (requires gamin)"
+	depends on !BR2_PACKAGE_GAMIN
+
+endmenu
+
+endif

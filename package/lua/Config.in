@@ -1,0 +1,71 @@
+config BR2_PACKAGE_LUA
+	bool "lua"
+	select BR2_PACKAGE_HAS_LUAINTERPRETER
+	help
+	  Lua is a powerful, fast, light-weight, embeddable scripting language.
+
+	  http://www.lua.org/
+
+if BR2_PACKAGE_LUA
+
+config BR2_PACKAGE_PROVIDES_LUAINTERPRETER
+	default "lua"
+
+choice
+	prompt "Lua Version"
+	default BR2_PACKAGE_LUA_5_1
+	help
+	  Select the version of Lua API/ABI you wish to use.
+
+	config BR2_PACKAGE_LUA_5_1
+		bool "Lua 5.1.x"
+
+	config BR2_PACKAGE_LUA_5_2
+		bool "Lua 5.2.x"
+
+	config BR2_PACKAGE_LUA_5_3
+		bool "Lua 5.3.x"
+
+endchoice
+
+config BR2_PACKAGE_LUAINTERPRETER_ABI_VERSION
+	default "5.1"	if BR2_PACKAGE_LUA_5_1
+	default "5.2"	if BR2_PACKAGE_LUA_5_2
+	default "5.3"	if BR2_PACKAGE_LUA_5_3
+
+if BR2_PACKAGE_LUA_5_3
+config BR2_PACKAGE_LUA_32BITS
+	bool "Use 32 bit numbers"
+	default y if !BR2_ARCH_IS_64
+	help
+	  Use a 32 bit data type for numbers / integers instead of the
+	  default 64 bit type. This option is particularly attractive
+	  for small machines and embedded systems.
+
+endif
+
+choice
+	prompt "Lua command-line editing"
+	default BR2_PACKAGE_LUA_EDITING_NONE
+
+config BR2_PACKAGE_LUA_EDITING_NONE
+	bool "none"
+	help
+	  None.
+
+config BR2_PACKAGE_LUA_READLINE
+	bool "readline support"
+	select BR2_PACKAGE_READLINE
+	select BR2_PACKAGE_NCURSES
+	help
+	  Enables command-line editing in the Lua interpreter.
+
+config BR2_PACKAGE_LUA_LINENOISE
+	bool "linenoise support"
+	select BR2_PACKAGE_LINENOISE
+	help
+	  Enables command-line editing in the Lua interpreter.
+
+endchoice
+
+endif

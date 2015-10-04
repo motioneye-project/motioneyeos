@@ -1,0 +1,39 @@
+config BR2_PACKAGE_TOVID
+	bool "tovid"
+	depends on BR2_USE_MMU # fork()
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_USE_WCHAR
+	depends on BR2_PACKAGE_PYTHON || BR2_PACKAGE_PYTHON3
+	depends on !BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_NIOSII201305 # ffmpeg
+	depends on !BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_NIOSII201405 # ffmpeg
+	depends on BR2_PACKAGE_MPLAYER_ARCH_SUPPORTS
+	# The below dependencies are runtime dependencies only
+	select BR2_PACKAGE_BUSYBOX_SHOW_OTHERS # procps_ng
+	select BR2_PACKAGE_DVDAUTHOR
+	select BR2_PACKAGE_DVDRW_TOOLS
+	select BR2_PACKAGE_FFMPEG
+	select BR2_PACKAGE_IMAGEMAGICK
+	select BR2_PACKAGE_JPEG
+	select BR2_PACKAGE_MJPEGTOOLS
+	select BR2_PACKAGE_MPLAYER
+	select BR2_PACKAGE_PROCPS_NG # pgrep and pkill
+	select BR2_PACKAGE_SOX
+	help
+	  The tovid suite, also known simply as tovid, is a collection
+	  of shell and Python scripts for creating DVDs and
+	  (S)VCDs. It is pronounced "to vid" (because it converts to
+	  video disc formats).
+
+	  http://tovid.wikia.com/wiki/Installing_tovid
+
+comment "tovid needs a toolchain w/ threads, C++, wchar"
+	depends on BR2_USE_MMU
+	depends on BR2_PACKAGE_MPLAYER_ARCH_SUPPORTS
+	depends on !BR2_TOOLCHAIN_HAS_THREADS \
+		|| !BR2_INSTALL_LIBSTDCPP \
+		|| !BR2_USE_WCHAR
+
+comment "tovid depends on python or python3"
+	depends on !BR2_PACKAGE_PYTHON && !BR2_PACKAGE_PYTHON3
+	depends on BR2_PACKAGE_MPLAYER_ARCH_SUPPORTS

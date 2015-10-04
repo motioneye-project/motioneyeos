@@ -1,0 +1,62 @@
+Add option to disable the sqlite3 module
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+
+---
+ Makefile.pre.in |    9 +++++++--
+ configure.ac    |    9 +++++++++
+ 2 files changed, 16 insertions(+), 2 deletions(-)
+
+Index: b/configure.ac
+===================================================================
+--- a/configure.ac
++++ b/configure.ac
+@@ -2675,6 +2675,15 @@
+       AC_CHECK_FUNCS(pthread_atfork)
+ fi
+ 
++AC_SUBST(SQLITE3)
++AC_ARG_ENABLE(sqlite3,
++	AS_HELP_STRING([--disable-sqlite3], [disable sqlite3]),
++	[ SQLITE3="${enableval}" ], [ SQLITE3=yes ])
++
++if test "$SQLITE3" = "no" ; then
++   DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} _sqlite3"
++fi
++
+ AC_SUBST(PYDOC)
+ 
+ AC_ARG_ENABLE(pydoc,
+Index: b/Makefile.pre.in
+===================================================================
+--- a/Makefile.pre.in
++++ b/Makefile.pre.in
+@@ -1147,7 +1147,6 @@
+ 		email email/mime \
+ 		ensurepip ensurepip/_bundled \
+ 		html json http dbm xmlrpc \
+-		sqlite3 \
+ 		logging csv wsgiref urllib \
+ 		ctypes ctypes/macholib \
+ 		idlelib idlelib/Icons \
+@@ -1189,7 +1188,6 @@
+ 		test/test_importlib/namespace_pkgs/project3/parent/child \
+                 test/test_importlib/namespace_pkgs/module_and_namespace_package \
+                 test/test_importlib/namespace_pkgs/module_and_namespace_package/a_test \
+-		sqlite3/test \
+ 		ctypes/test \
+ 		idlelib/idle_test \
+ 		distutils/tests \
+@@ -1210,6 +1208,11 @@
+ 	lib2to3/tests/data/fixers/myfixes
+ endif
+ 
++ifeq (@SQLITE3@,yes)
++LIBSUBDIRS += sqlite3
++TESTSUBDIRS += sqlite3/test
++endif
++
+ ifeq (@TEST_MODULES@,yes)
+ LIBSUBDIRS += $(TESTSUBDIRS)
+ endif

@@ -1,0 +1,20 @@
+Partially roll back upstream commit 4711119089e1ad08dad206f4fded68f1972fdeed
+since released versions of uClibc don't support isfdtype().
+
+Signed-off-by: Gustavo Zaarias <gustavo@zacarias.com.ar>
+
+diff -Nura acpid-2.0.22.orig/sock.c acpid-2.0.22/sock.c
+--- acpid-2.0.22.orig/sock.c	2014-04-22 18:04:19.706841764 -0300
++++ acpid-2.0.22/sock.c	2014-04-22 18:05:08.285479625 -0300
+@@ -53,7 +53,10 @@
+ int
+ is_socket(int fd)
+ {
+-    return (isfdtype(fd, S_IFSOCK) == 1);
++	int v;
++	socklen_t l = sizeof(int);
++
++	return (getsockopt(fd, SOL_SOCKET, SO_TYPE, (char *)&v, &l) == 0);
+ }
+ 
+ /* accept a new client connection */

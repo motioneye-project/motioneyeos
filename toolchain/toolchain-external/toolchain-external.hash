@@ -1,0 +1,76 @@
+# Sourcery CodeBench Lite for MIPS
+# From: https://sourcery.mentor.com/GNUToolchain/release3068
+md5  0fcdc0fee260c7bed060c999bfe8440d  mips-2015.05-18-mips-linux-gnu-i686-pc-linux-gnu.tar.bz2
+# From: https://sourcery.mentor.com/GNUToolchain/release2935
+md5  ad4a66e4791606c5df70f48c4a97b0ec  mips-2014.11-22-mips-linux-gnu-i686-pc-linux-gnu.tar.bz2
+# From: https://sourcery.mentor.com/GNUToolchain/release2791
+md5  14facaac538a43533b89d969d7904d46  mips-2014.05-27-mips-linux-gnu-i686-pc-linux-gnu.tar.bz2
+
+# Sourcery CodeBench Lite for AMD64
+# From https://sourcery.mentor.com/GNUToolchain/release2777
+md5	a1f8650d1a5ff726cca0893522fd8745	amd-2014.05-25-x86_64-amd-linux-gnu-i686-pc-linux-gnu.tar.bz2
+
+######################################
+# Next hashes are all locally computed
+
+# Blackfin toolchains from Analog Devices
+sha256 fba010929c7355a0286fc4b1817d6065ee21380d3c2993383d3778f0b998ca9d  blackfin-toolchain-2012R2-RC2.i386.tar.bz2
+sha256 90284fe72125f381817da505b6f91f2b0c86a763ffe2c722c7d6b3ae60b25010  blackfin-toolchain-2013R1-RC1.i386.tar.bz2
+sha256 e424e90d8481d942a40266d78d1488726561fed3ec38403094f98055e61889d0  blackfin-toolchain-2014R1-RC2.i386.tar.bz2
+sha256 436ca3d901b152094cd6be2b6e274c59643387f46bb0563db1adcab1202f1455  blackfin-toolchain-uclibc-full-2012R2-RC2.i386.tar.bz2
+sha256 4d66a3390ae9e1c4b9aad214757791a5e0c45ef2bb31977fa6d3a80d96290237  blackfin-toolchain-uclibc-full-2013R1-RC1.i386.tar.bz2
+sha256 c65b1b4b918d5185349d62a3b7bf43b4b21e1175c52598ec047ca56b3f11d857  blackfin-toolchain-uclibc-full-2014R1-RC2.i386.tar.bz2
+
+# Mentor's Sourcery CodeBench Lite toolchains
+# ARM
+sha256 395f1c504a8fb6b7a10663143627b7eee2edc8fd884aa13c4b8505a3623960f5  arm-2013.05-24-arm-none-linux-gnueabi-i686-pc-linux-gnu.tar.bz2
+sha256 8455854d3b3abbc2328e6c061c6b9625ef8f9c1f236db9f1771877715bd70b9b  arm-2013.11-33-arm-none-linux-gnueabi-i686-pc-linux-gnu.tar.bz2
+sha256 39ee0e789034334ecc89af94e838e3a4815400ac5ff980f808f466b04778532e  arm-2014.05-29-arm-none-linux-gnueabi-i686-pc-linux-gnu.tar.bz2
+# NiosII
+sha256 29567361910b020751ea8041ecb45b3cc74714e71c6deb4981b678772b746b33  sourceryg++-2013.05-43-nios2-linux-gnu-i686-pc-linux-gnu.tar.bz2
+sha256 fb02fe3d595bd80a6e0ebc9d59a64010d84ae8d13f47e241b3a335f42b0414dc  sourceryg++-2014.05-47-nios2-linux-gnu-i686-pc-linux-gnu.tar.bz2
+# PowerPC
+sha256 d68d1a2a055ece3824a1a11fcc0a8e813ee1d215025247cce0d877caa12c4b54  freescale-2010.09-55-powerpc-linux-gnu-i686-pc-linux-gnu.tar.bz2
+sha256 525e1f53abbf65c2974ae9af762c45bb38520fe5fc50e968a23fe6a18e9eec04  freescale-2011.03-38-powerpc-linux-gnu-i686-pc-linux-gnu.tar.bz2
+sha256 d6c94587d546197836e7e1a6909f6aabfa5879e91f501ab03088a6887cc242fc  mentor-2012.03-71-powerpc-mentor-linux-gnu-i686-pc-linux-gnu.tar.bz2
+# SuperH
+sha256 ce8115844619a8b02f85e801999fe4cc2e603788be784ae860a070f92ab8053d  renesas-2011.03-37-sh-linux-gnu-i686-pc-linux-gnu.tar.bz2
+sha256 a545a9d412c47d85edcad09a86fe1d12a48e2b6e19d0ccf86b63d2cf0bffa687  renesas-2012.03-35-sh-linux-gnu-i686-pc-linux-gnu.tar.bz2
+sha256 59d6766fde244931aa52db01433d5acd051998762a931121c5fc109536a1a802  renesas-2012.09-61-sh-linux-gnu-i686-pc-linux-gnu.tar.bz2
+sha256 deaae7338c51f526ef809857e0335080e22ddbc2355cad14ade0813b40cd2e22  renesas-2010.09-60-sh-uclinux-i686-pc-linux-gnu.tar.bz2
+sha256 e7d87fc62daecfb3989168bc5b84e099013fe9b796df3da5daebd2e0c0b1af6c  renesas-2011.03-36-sh-uclinux-i686-pc-linux-gnu.tar.bz2
+# x86
+sha256 5f308a3fe0752f181fd0d33a70a17efb8300d0e34a94ed18a1a0304dc18e150e  ia32-2011.09-24-i686-pc-linux-gnu-i386-linux.tar.bz2
+sha256 6ac2f0d9ec56242ecbe4315533f3e00a675909850a41bdafc052fbfe27ece300  ia32-2012.03-27-i686-pc-linux-gnu-i386-linux.tar.bz2
+sha256 ea804cf02014369da52abc4f64e91e96bde2dd2230aca96109459013d4545458  ia32-2012.09-62-i686-pc-linux-gnu-i386-linux.tar.bz2
+# Aarch64
+sha256 8ea78c5988b2bb507534f1ad46aa46659f66b39d55f2fc40e163a90b4195e70f  aarch64-2014.05-30-aarch64-linux-gnu-i686-pc-linux-gnu.tar.bz2
+
+# ARM toolchains from Texas Instrument's Arago project
+sha256 f2febf3b3c565536461ad4405f1bcb835d75a6afb2a8bec958a1248cb4b81fc7  arago-2011.09-armv7a-linux-gnueabi-sdk.tar.bz2
+sha256 254af7d02eb3bcc8345c78e131700bc995d65b68232caaed21150a5fd1456070  arago-2011.09-armv5te-linux-gnueabi-sdk.tar.bz2
+
+# ARM and Aarch64 toolchains from Linaro
+sha256 0cffac0caea0eb3c8bdddfa14be011ce366680f40aeddbefc7cf23cb6d4f1891  gcc-linaro-arm-linux-gnueabihf-4.9-2014.09_linux.tar.xz
+sha256 4bc9d86390f8fa67a693ba4768ba5b12faaf7dd37c706c05ccd9321e765226e4  gcc-linaro-armeb-linux-gnueabihf-4.9-2014.09_linux.tar.xz
+sha256 3954f496ab01de67241109e82abfaa9b7625fdab4f05e79e7902e9814a07b832  gcc-linaro-aarch64-linux-gnu-4.9-2014.09_linux.tar.xz
+
+# Synopsys DesignWare ARC toolchains
+sha256 1fa4ea2c8616623205f1c7beca02ea31b019099528a7433e5b020b0876b93bf3  arc_gnu_2014.12_prebuilt_uclibc_le_arc700_linux_install.tar.gz
+sha256 1080f07fcae2bfc176a3ea8d30b9ed8eaecab70fb786639d6ec70cae8322df10  arc_gnu_2014.12_prebuilt_uclibc_be_arc700_linux_install.tar.gz
+sha256 aaaf6facd1f60a3cd2a537154ea39cd7d70501c175e30e01a97e8df6cb8226c7  arc_gnu_2014.12_prebuilt_uclibc_le_archs_linux_install.tar.gz
+sha256 30711c5f15762764d4cd5ec1e6ced5b1fddd03aac41c424b0c4ec8a45d5d79cd  arc_gnu_2014.12_prebuilt_uclibc_be_archs_linux_install.tar.gz
+
+# Prebuilt musl toolchains from musl-cross
+sha256 26da90f5cf5e5220b1d6424420ab9f3877a1826a2a5268a62d390711c0e73cd0  crossx86-arm-linux-musleabi-1.1.6.tar.xz
+sha256 c3b1c79a48e999c8f655cd008d04ba53c4f76217fa3c289566dab174e8ef8711  crossx86-arm-linux-musleabihf-1.1.6.tar.xz
+sha256 b74ebf6e92b69bb7c7651cc8ff87a14c41fd9c043af9db7304b293c291c830b5  crossx86-armeb-linux-musleabi-1.1.6.tar.xz
+sha256 740716209e1aef0442fe8e200a1b2582d9d86e86ff6d113ab9678b592121e2f9  crossx86-i486-linux-musl-1.1.6.tar.xz
+sha256 7a0da8bd22c25ad11acc8309d8541b7b7966ccefcf136d860d38bf625c05b53e  crossx86-microblaze-linux-musl-1.1.6.tar.xz
+sha256 b89503aeb02a5201476ff4bb014879f1989868c9c25f2af84e2fc04bec7acf2e  crossx86-mips-linux-musl-1.1.6.tar.xz
+sha256 552996f7a8132f8be994513156a30f4c03fff4873b76726b98e4e0056257367f  crossx86-mipsel-linux-musl-1.1.6.tar.xz
+sha256 c49f7425ac9d0629cd9893d7bc247d5e6847c9eb5d11924dbc440b9d10f6c2bb  crossx86-powerpc-linux-musl-1.1.6.tar.xz
+sha256 79a1a4be93e2a63acb137170e98bdfbf744bd9ca7b15b76ab512d1e0dfec834e  crossx86-sh4-linux-musl-1.1.6.tar.xz
+sha256 aec4d560dc601e397fc86a9759166005afba22ad666d1a48019b5102c534ccc1  crossx86-sh4eb-linux-musl-1.1.6.tar.xz
+sha256 68eda0795aacd4371b45a6c58c5c75e86c0c2fdf7ebc2c0b7d3752462c848260  crossx86-x86_64-linux-musl-1.1.6.tar.xz
+sha256 6bef5ee2cdb9fa35e49ce0a270f6d7c48f3268c6f6345ad5ca0b8137982b4690  crossx86-x86_64-x32-linux-musl-1.1.6.tar.xz

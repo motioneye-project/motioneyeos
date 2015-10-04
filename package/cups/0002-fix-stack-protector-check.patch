@@ -1,0 +1,25 @@
+[PATCH]: use AC_TRY_LINK for stack protector check
+
+Actually try to link an executable to test for stack protector support,
+as gcc seems to accept the -fstack-protector argument even when it's
+compiled with --disable-libssp (but linking fails with a error
+finding -lssp_nonshared).
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ config-scripts/cups-compiler.m4 |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+Index: cups-1.3.9/config-scripts/cups-compiler.m4
+===================================================================
+--- cups-1.3.9.orig/config-scripts/cups-compiler.m4
++++ cups-1.3.9/config-scripts/cups-compiler.m4
+@@ -109,7 +109,7 @@ if test -n "$GCC"; then
+ 	AC_MSG_CHECKING(if GCC supports -fstack-protector)
+ 	OLDCFLAGS="$CFLAGS"
+ 	CFLAGS="$CFLAGS -fstack-protector"
+-	AC_TRY_COMPILE(,,
++	AC_TRY_LINK(,,
+ 		OPTIM="$OPTIM -fstack-protector"
+ 		AC_MSG_RESULT(yes),
+ 		AC_MSG_RESULT(no))

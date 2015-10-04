@@ -1,0 +1,41 @@
+From 2cb4b7e947f64580592afaf221d4b261d980bb45 Mon Sep 17 00:00:00 2001
+From: Peter Seiderer <ps.report@gmx.net>
+Date: Tue, 19 May 2015 21:30:21 +0200
+Subject: [PATCH] Disable gold linker/new dtags support for host builds
+
+There is no test for gold linker and new dtags support for the host build
+(only for the target compiler/build) which leads to trouble in some cross
+compiling environments (see [1] for details).
+
+So disable gold linker/new dtags support unconditionally for host builds.
+
+[1] http://lists.busybox.net/pipermail/buildroot/2015-May/128303.html
+
+Task-number: QTBUG-46125
+Change-Id: Ic62828704dcce461487d63860705158cce3e4af8
+Reviewed-by: Oswald Buddenhagen <oswald.buddenhagen@theqtcompany.com>
+---
+ mkspecs/features/default_post.prf | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/mkspecs/features/default_post.prf b/mkspecs/features/default_post.prf
+index 8e68b95..bcaddc8 100644
+--- a/mkspecs/features/default_post.prf
++++ b/mkspecs/features/default_post.prf
+@@ -62,8 +62,11 @@ debug {
+     QMAKE_LIBFLAGS += $$QMAKE_LIBFLAGS_RELEASE
+ }
+ 
+-use_gold_linker: QMAKE_LFLAGS += $$QMAKE_LFLAGS_USE_GOLD
+-enable_new_dtags: QMAKE_LFLAGS += $$QMAKE_LFLAGS_NEW_DTAGS
++# disable special linker flags for host builds (no proper test for host support yet)
++!host_build {
++    use_gold_linker: QMAKE_LFLAGS += $$QMAKE_LFLAGS_USE_GOLD
++    enable_new_dtags: QMAKE_LFLAGS += $$QMAKE_LFLAGS_NEW_DTAGS
++}
+ 
+ dll:win32: QMAKE_LFLAGS += $$QMAKE_LFLAGS_DLL
+ static:mac: QMAKE_LFLAGS += $$QMAKE_LFLAGS_STATIC_LIB
+-- 
+2.1.0
+

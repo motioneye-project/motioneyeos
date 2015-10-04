@@ -1,0 +1,25 @@
+comment "python-pyqt needs a toolchain w/ C++, threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS
+
+config BR2_PACKAGE_PYTHON_PYQT
+	bool "python-pyqt"
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_TOOLCHAIN_HAS_THREADS # qt
+	depends on BR2_USE_MMU # qt
+	select BR2_PACKAGE_QT
+	select BR2_PACKAGE_PYTHON_SIP
+	help
+	  PyQt4 for Qt Embedded 4 bindings.
+
+	  http://www.riverbankcomputing.com/software/pyqt/
+
+if BR2_PACKAGE_PYTHON_PYQT
+
+config BR2_PACKAGE_PYTHON_PYQT_ARCH_USES_QREAL_FLOAT
+	bool
+	default y if BR2_arm || BR2_armeb
+	default y if BR2_sh4 || BR2_sh4eb || BR2_sh4a || BR2_sh4aeb
+	default y if (BR2_mipsel || BR2_mips) && BR2_PACKAGE_QT_EMBEDDED
+
+endif

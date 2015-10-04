@@ -1,0 +1,28 @@
+comment "libedje needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
+
+config BR2_PACKAGE_LIBEDJE
+	bool "libedje"
+	select BR2_PACKAGE_LIBEINA
+	select BR2_PACKAGE_LIBEET
+	select BR2_PACKAGE_LIBECORE
+	select BR2_PACKAGE_LIBECORE_EVAS
+	select BR2_PACKAGE_LIBEMBRYO
+	select BR2_PACKAGE_LIBEVAS
+	select BR2_PACKAGE_LUA
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libevas
+	help
+	  A graphical layout and animation library for animated
+	  resizable, compressed and scalable themes.
+
+	  http://trac.enlightenment.org/e/wiki/Edje
+
+if BR2_PACKAGE_LIBEDJE
+
+config BR2_PACKAGE_LIBEDJE_CC
+	bool "build edje_cc"
+	help
+	  Build and install the Edje compiler for the target. Normally this
+	  is not required.
+
+endif

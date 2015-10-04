@@ -1,0 +1,4 @@
+config BR2_PACKAGE_XPROTO_INPUTPROTO
+	bool "inputproto"
+	help
+	  X.Org Input protocol headers

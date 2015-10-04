@@ -1,0 +1,53 @@
+From 5b348e7be67957f4be6fcfa4942128c04f6db905 Mon Sep 17 00:00:00 2001
+From: Adrian Alonso <b38018@freescale.com>
+Date: Thu, 4 Aug 2011 14:24:26 -0500
+Subject: [PATCH] xf86-video-imxfb: fix m4 hardcodded paths
+
+* Fix m4 macros lookup location; remove /usr/share/aclocal path
+
+Signed-off-by: Adrian Alonso <b38018@freescale.com>
+---
+ Makefile.am  |    2 +-
+ Makefile.in  |    2 +-
+ configure.ac |    2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/Makefile.am b/Makefile.am
+index 6752256..e205657 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -20,4 +20,4 @@
+ 
+ AUTOMAKE_OPTIONS = foreign
+ SUBDIRS = src
+-ACLOCAL_AMFLAGS = -I /usr/share/aclocal
++ACLOCAL_AMFLAGS = -I m4
+diff --git a/Makefile.in b/Makefile.in
+index 5c0ba0e..f829db7 100644
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -243,7 +243,7 @@ top_builddir = @top_builddir@
+ top_srcdir = @top_srcdir@
+ AUTOMAKE_OPTIONS = foreign
+ SUBDIRS = src
+-ACLOCAL_AMFLAGS = -I /usr/share/aclocal
++ACLOCAL_AMFLAGS = -I m4
+ all: config.h
+ 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
+ 
+diff --git a/configure.ac b/configure.ac
+index a1ac73b..0078b86 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -29,7 +29,7 @@ AC_INIT([xf86-video-imx],
+ AC_CONFIG_SRCDIR([Makefile.am])
+ AM_CONFIG_HEADER([config.h])
+ AC_CONFIG_AUX_DIR(.)
+-AC_CONFIG_MACRO_DIR([/usr/share/aclocal])
++AC_CONFIG_MACRO_DIR([m4])
+ 
+ AM_INIT_AUTOMAKE([dist-bzip2])
+ 
+-- 
+1.7.4.1
+

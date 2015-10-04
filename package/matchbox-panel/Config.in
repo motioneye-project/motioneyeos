@@ -1,0 +1,6 @@
+config BR2_PACKAGE_MATCHBOX_PANEL
+	bool "matchbox-panel"
+	select BR2_PACKAGE_MATCHBOX_LIB
+	help
+	  A flexible always present 'window bar' for holding
+	  application launchers.

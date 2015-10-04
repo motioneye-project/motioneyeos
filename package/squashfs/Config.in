@@ -1,0 +1,48 @@
+config BR2_PACKAGE_SQUASHFS
+	bool "squashfs"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_SQUASHFS_GZIP if !(BR2_PACKAGE_SQUASHFS_LZMA || BR2_PACKAGE_SQUASHFS_LZO)
+	help
+	  Tools to generate SquashFS filesystems.
+
+	  http://squashfs.sourceforge.net/
+
+if BR2_PACKAGE_SQUASHFS
+
+config BR2_PACKAGE_SQUASHFS_GZIP
+	bool "gzip support"
+	default y
+	select BR2_PACKAGE_ZLIB
+	help
+	  Support GZIP compression algorithm
+
+config BR2_PACKAGE_SQUASHFS_LZ4
+	bool "lz4 support"
+	select BR2_PACKAGE_LZ4
+	help
+	  Support LZ4 compression algorithm
+
+config BR2_PACKAGE_SQUASHFS_LZMA
+	bool "lzma support"
+	select BR2_PACKAGE_XZ
+	help
+	  Support LZMA compression algorithm
+
+config BR2_PACKAGE_SQUASHFS_LZO
+	bool "lzo support"
+	select BR2_PACKAGE_LZO
+	help
+	  Support LZO compression algorithm
+
+config BR2_PACKAGE_SQUASHFS_XZ
+	bool "xz support"
+	select BR2_PACKAGE_XZ
+	help
+	  Support XZ compression algorithm
+
+endif
+
+comment "squashfs needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_USE_MMU

@@ -1,0 +1,22 @@
+[PATCH] add lstat64 to *64 emulation
+
+pv nowadays also uses lstat64, so add it to the emulation defines for !LFS
+builds.
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ autoconf/header.in |    1 +
+ 1 file changed, 1 insertion(+)
+
+Index: pv-1.5.7/autoconf/header.in
+===================================================================
+--- pv-1.5.7.orig/autoconf/header.in
++++ pv-1.5.7/autoconf/header.in
+@@ -76,6 +76,7 @@
+ # endif
+ # define open64 open
+ # define lseek64 lseek
++# define lstat64 lstat
+ #endif
+ 
+ #undef HAVE_IPC

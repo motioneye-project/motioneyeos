@@ -1,0 +1,62 @@
+config BR2_PACKAGE_GD
+	bool "gd"
+	help
+	  GD is a graphics library. It allows your code to quickly
+	  draw images complete with lines, arcs, text, multiple
+	  colours, cut and paste from other images, flood fills, and
+	  write out the result as a PNG file. This is particularly
+	  useful in World Wide Web applications, where PNG is one of
+	  the formats accepted for inline images by most browsers.
+
+	  http://libgd.bitbucket.org/
+
+if BR2_PACKAGE_GD
+
+menu "gd tools"
+
+config BR2_PACKAGE_GD_ANNOTATE
+	bool "annotate"
+
+config BR2_PACKAGE_GD_BDFTOGD
+	bool "bdftogd"
+	depends on BR2_PACKAGE_PERL
+
+config BR2_PACKAGE_GD_GD2COPYPAL
+	bool "gd2copypal"
+
+config BR2_PACKAGE_GD_GD2TOGIF
+	bool "gd2togif"
+
+config BR2_PACKAGE_GD_GD2TOPNG
+	bool "gd2topng"
+	select BR2_PACKAGE_LIBPNG
+
+config BR2_PACKAGE_GD_GDCMPGIF
+	bool "gdcmpgif"
+
+config BR2_PACKAGE_GD_GDPARTTOPNG
+	bool "gdparttopng"
+	select BR2_PACKAGE_LIBPNG
+
+config BR2_PACKAGE_GD_GDTOPNG
+	bool "gdtopng"
+	select BR2_PACKAGE_LIBPNG
+
+config BR2_PACKAGE_GD_GIFTOGD2
+	bool "giftogd2"
+
+config BR2_PACKAGE_GD_PNGTOGD
+	bool "pngtogd"
+	select BR2_PACKAGE_LIBPNG
+
+config BR2_PACKAGE_GD_PNGTOGD2
+	bool "pngtogd2"
+	select BR2_PACKAGE_LIBPNG
+
+config BR2_PACKAGE_GD_WEBPNG
+	bool "webpng"
+	select BR2_PACKAGE_LIBPNG
+
+endmenu
+
+endif

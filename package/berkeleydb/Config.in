@@ -1,0 +1,21 @@
+config BR2_PACKAGE_BERKELEYDB
+	bool "berkeleydb"
+	help
+	  The Berkeley database. A very common library for database
+	  applications.
+
+	  http://www.sleepycat.com/products/db.shtml
+
+if BR2_PACKAGE_BERKELEYDB
+
+config BR2_PACKAGE_BERKELEYDB_COMPAT185
+	bool "DB 1.85 compatibility"
+	help
+	  Build and install DB 1.85 compatibility API.
+
+config BR2_PACKAGE_BERKELEYDB_TOOLS
+	bool "install tools"
+	help
+	  Install berkeleydb tools, mostly useful for debugging purposes.
+
+endif

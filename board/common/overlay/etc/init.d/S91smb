@@ -1,0 +1,68 @@
+#!/bin/sh
+
+[ -f /etc/samba/smb.conf ] || exit 0
+
+mkdir -p /var/log/samba
+mkdir -p /var/lib/samba/private
+
+start() {
+    echo -n "Setting smb admin password: "
+    if [ -f /data/etc/motion.conf ]; then
+        password=$(cat /data/etc/motion.conf | grep admin_password | cut -d ' ' -f 3)
+    fi
+    echo -e "$password\n$password\n" | /usr/bin/smbpasswd -a admin -s > /dev/null
+    [ $? == 0 ] && echo "done" || echo "failed"
+
+    echo -n "Starting smbd: "
+    smbd -D
+    [ $? == 0 ] && echo "done" || echo "failed"
+
+    echo -n "Starting nmbd: "
+    nmbd -D
+    [ $? == 0 ] && echo "done" || echo "failed"
+}
+
+stop() {
+    echo -n "Shutting down smbd: "
+    kill -9 `pidof smbd` 2>/dev/null
+    [ $? == 0 ] && echo "done" || echo "failed"
+
+    echo -n "Shutting down nmbd: "
+    kill -9 `pidof nmbd` 2>/dev/null
+    [ $? == 0 ] && echo "done" || echo "failed"
+}
+
+restart() {
+    stop
+    start
+}
+
+reload() {
+    echo -n "Reloading smb.conf file: "
+    kill -HUP `pidof smbd` 2>/dev/null
+    [ $? == 0 ] && echo "done" || echo "failed"
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+
+    stop)
+        stop
+        ;;
+
+    restart)
+        restart
+        ;;
+
+    reload)
+        reload
+        ;;
+
+    *)
+        echo "Usage: $0 {start|stop|restart|reload}"
+        exit 1
+esac
+
+exit $?

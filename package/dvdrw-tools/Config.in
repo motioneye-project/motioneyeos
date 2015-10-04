@@ -1,0 +1,57 @@
+comment "dvdrw-tools needs a toolchain w/ threads, C++, wchar"
+	depends on BR2_USE_MMU
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_INSTALL_LIBSTDCPP || \
+		!BR2_USE_WCHAR
+
+config BR2_PACKAGE_DVDRW_TOOLS
+	bool "dvdrw-tools"
+	depends on BR2_USE_MMU # fork()
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_USE_WCHAR
+	help
+	  The dvd+rw-tools are used to master Blu-ray Disc
+	  and DVD Disc media, both +RW/+R and -RW/-R. Note:
+	  The +RW in the name is a historical artifact. This
+	  package contains the widely used growisofs program.
+
+	  Buildroot does not support packages with a '+' sign
+	  in their name, which explains why it is named
+	  dvdrw-tools and not dvd+rw-tools.
+
+	  Because dvd+rw-tools does not directly interact with
+	  disc media it uses a separate media backend program.
+	  The usual backend is mkisofs from the cdrtools package.
+	  However, cdrtools is not currently part of buildroot.
+
+	  The Linux From Scratch project uses uses xorriso for the
+	  media backend and Ubuntu uses cdrkit for the backend.
+	  Choose the one which seems most appropriate for your use.
+	  NOTE: xorriso does not currently support UDF.
+
+	  http://fy.chalmers.se/~appro/linux/DVD+RW/tools
+
+if BR2_PACKAGE_DVDRW_TOOLS
+choice
+	prompt "Media Backend"
+	help
+	  Choose which media backend program to use.
+
+config BR2_PACKAGE_DVDRW_TOOLS_CDRKIT_BACKEND
+	bool "cdrkit"
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0 # cdrkit
+	select BR2_PACKAGE_CDRKIT
+	help
+	  Symlink mkisofs to genisoimage from the cdrkit package.
+
+comment "cdrkit needs a toolchain w/ headers >= 3.0"
+	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0
+
+config BR2_PACKAGE_DVDRW_TOOLS_XORRISO_BACKEND
+	bool "xorriso"
+	select BR2_PACKAGE_XORRISO
+	help
+	  Symlink mkisofs to xorrisofs from the xorriso package.
+
+endchoice
+endif

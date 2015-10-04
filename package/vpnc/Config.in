@@ -1,0 +1,13 @@
+config BR2_PACKAGE_VPNC
+	bool "vpnc"
+	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_LIBGCRYPT
+	select BR2_PACKAGE_LIBGPG_ERROR
+	help
+	  Client for Cisco VPN concentrator
+	  3000 Series VPN Concentrator
+	  IOS Routers
+	  PIX/ASA Zecurity Appliances
+	  Juniper/Netscreen
+
+	  http://www.unix-ag.uni-kl.de/~massar/vpnc

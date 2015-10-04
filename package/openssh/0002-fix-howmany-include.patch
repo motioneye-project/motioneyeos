@@ -1,0 +1,49 @@
+Update patch from 2fea21799223d41605556858a95b55e69e9960ca to openssh
+version 6.8p1
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+diff -Nura openssh-6.8p1.orig/openbsd-compat/bsd-poll.c openssh-6.8p1/openbsd-compat/bsd-poll.c
+--- openssh-6.8p1.orig/openbsd-compat/bsd-poll.c	2015-03-18 07:11:46.184620677 -0300
++++ openssh-6.8p1/openbsd-compat/bsd-poll.c	2015-03-18 07:12:29.120094555 -0300
+@@ -19,6 +19,7 @@
+ #include "includes.h"
+ #if !defined(HAVE_POLL)
+ 
++#include <sys/param.h>
+ #include <sys/types.h>
+ #include <sys/time.h>
+ #ifdef HAVE_SYS_SELECT_H
+diff -Nura openssh-6.8p1.orig/sshd.c openssh-6.8p1/sshd.c
+--- openssh-6.8p1.orig/sshd.c	2015-03-18 07:11:46.187620780 -0300
++++ openssh-6.8p1/sshd.c	2015-03-18 07:13:11.889562735 -0300
+@@ -44,6 +44,7 @@
+ 
+ #include "includes.h"
+ 
++#include <sys/param.h>
+ #include <sys/types.h>
+ #include <sys/ioctl.h>
+ #include <sys/socket.h>
+diff -Nura openssh-6.8p1.orig/ssh-keyscan.c openssh-6.8p1/ssh-keyscan.c
+--- openssh-6.8p1.orig/ssh-keyscan.c	2015-03-18 07:11:46.180620539 -0300
++++ openssh-6.8p1/ssh-keyscan.c	2015-03-18 07:13:32.092256248 -0300
+@@ -9,6 +9,7 @@
+ 
+ #include "includes.h"
+  
++#include <sys/param.h>
+ #include <sys/types.h>
+ #include "openbsd-compat/sys-queue.h"
+ #include <sys/resource.h>
+diff -Nura openssh-6.8p1.orig/ssh-pkcs11-helper.c openssh-6.8p1/ssh-pkcs11-helper.c
+--- openssh-6.8p1.orig/ssh-pkcs11-helper.c	2015-03-18 07:11:46.182620608 -0300
++++ openssh-6.8p1/ssh-pkcs11-helper.c	2015-03-18 07:13:43.620651993 -0300
+@@ -17,6 +17,7 @@
+ 
+ #include "includes.h"
+ 
++#include <sys/param.h>
+ #include <sys/types.h>
+ #ifdef HAVE_SYS_TIME_H
+ # include <sys/time.h>

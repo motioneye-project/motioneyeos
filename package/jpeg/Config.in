@@ -1,0 +1,43 @@
+config BR2_PACKAGE_JPEG
+	bool "jpeg support"
+	help
+	  Select the desired JPEG library provider.
+
+if BR2_PACKAGE_JPEG
+
+choice
+	prompt "jpeg variant"
+	default BR2_PACKAGE_JPEG_TURBO if (BR2_X86_CPU_HAS_MMX || BR2_ARM_CPU_HAS_NEON)
+	help
+	  Select the older stable version, or the newer developer version
+
+config BR2_PACKAGE_LIBJPEG
+	bool "jpeg"
+	select BR2_PACKAGE_HAS_JPEG
+	help
+	  The ubiquitous C library for manipulating JPEG images.
+
+	  http://www.ijg.org/
+
+config BR2_PACKAGE_JPEG_TURBO
+	bool "jpeg-turbo"
+	select BR2_PACKAGE_HAS_JPEG
+	help
+	  Libjpeg-turbo is a derivative of libjpeg that uses SIMD
+	  instructions (MMX, SSE2, NEON) to accelerate baseline JPEG
+	  compression and decompression on x86, x86-64, and ARM
+	  systems.
+
+	  http://www.libjpeg-turbo.org
+
+endchoice
+
+config BR2_PACKAGE_HAS_JPEG
+	bool
+
+config BR2_PACKAGE_PROVIDES_JPEG
+	string
+	default "libjpeg"    if BR2_PACKAGE_LIBJPEG
+	default "jpeg-turbo" if BR2_PACKAGE_JPEG_TURBO
+
+endif

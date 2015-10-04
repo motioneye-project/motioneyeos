@@ -1,0 +1,41 @@
+config BR2_PACKAGE_LIBGTK2
+	bool "libgtk2"
+	select BR2_PACKAGE_ATK
+	select BR2_PACKAGE_CAIRO
+	select BR2_PACKAGE_CAIRO_PS
+	select BR2_PACKAGE_CAIRO_PDF
+	select BR2_PACKAGE_CAIRO_SVG
+	select BR2_PACKAGE_LIBGLIB2
+	select BR2_PACKAGE_PANGO
+	select BR2_PACKAGE_GDK_PIXBUF
+	select BR2_PACKAGE_FONTCONFIG
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBXEXT
+	select BR2_PACKAGE_XLIB_LIBXRENDER
+	depends on BR2_PACKAGE_XORG7
+	depends on BR2_USE_WCHAR # glib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # glib2
+	depends on BR2_USE_MMU # glib2
+	depends on BR2_INSTALL_LIBSTDCPP # pango
+	depends on BR2_ARCH_HAS_ATOMICS # cairo
+	help
+	  The GTK+ version 2 graphical user interface library
+
+	  http://www.gtk.org/
+
+if BR2_PACKAGE_LIBGTK2
+
+config BR2_PACKAGE_LIBGTK2_DEMO
+	bool "Install libgtk2 demo program"
+	help
+	  The GTK+ source base contains a gtk-demo program. This
+	  option allows to install this program to the target.
+
+endif
+
+comment "libgtk2 needs a toolchain w/ wchar, threads, C++"
+	depends on BR2_USE_MMU
+	depends on BR2_ARCH_HAS_ATOMICS
+	depends on BR2_PACKAGE_XORG7
+	depends on !BR2_USE_WCHAR || !BR2_INSTALL_LIBSTDCPP || \
+		!BR2_TOOLCHAIN_HAS_THREADS

@@ -1,0 +1,29 @@
+From 19d568d7a58e88a6e0a43500175d731fb43f97cd Mon Sep 17 00:00:00 2001
+From: Mike Frysinger <vapier@gentoo.org>
+Date: Mon, 28 Jul 2014 23:01:23 -0400
+Subject: [PATCH 5/6] do not link with X libs when X is disabled
+
+URL: https://bugs.gentoo.org/517670
+---
+ src/lib/Makefile.am | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/src/lib/Makefile.am b/src/lib/Makefile.am
+index 64de98b..ea94991 100644
+--- a/src/lib/Makefile.am
++++ b/src/lib/Makefile.am
+@@ -86,7 +86,10 @@ AMD64_OBJS = $(AMD64_SRCS:.S=.lo)
+ 
+ EXTRA_DIST = $(MMX_SRCS) $(AMD64_SRCS) asm_loadimmq.S
+ 
+-MY_LIBS = -lXext -lX11 $(FREETYPE_LIBS) $(DLOPEN_LIBS) -lm
++MY_LIBS = $(FREETYPE_LIBS) $(DLOPEN_LIBS) -lm
++if BUILD_X11
++MY_LIBS += -lXext -lX11
++endif
+ 
+ if BUILD_MMX
+ libImlib2_la_LIBADD       = $(MMX_OBJS) $(MY_LIBS)
+-- 
+2.3.1
+

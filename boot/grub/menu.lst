@@ -1,0 +1,16 @@
+default		0
+timeout		10
+
+# Used when no splashimage is used
+color 		cyan/blue white/blue
+
+# Gets enabled/disabled depending on Grub support for splashimage
+splashimage	(hd0,0)/boot/grub/splash.xpm.gz
+
+# Used when a splashimage is enabled
+foreground 	000000
+background 	cccccc
+
+title Buildroot
+	root (hd0,0)
+	kernel /boot/bzImage rw root=/dev/sda1

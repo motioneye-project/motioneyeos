@@ -1,0 +1,8 @@
+config BR2_PACKAGE_IPSET
+	bool "ipset"
+	select BR2_PACKAGE_LIBMNL
+	help
+	  Utility to manage IP sets in the linux kernel.
+	  Requires a patched kernel or version >=2.6.39.
+
+	  http://ipset.netfilter.org/

@@ -1,0 +1,43 @@
+Use a python variable instead of hardcoding Python
+
+The nodejs build system uses python in a number of locations. However,
+there are some locations where it hardcodes 'python' as the Python
+interpreter. However, this causes problems when we need to use python2
+instead of just python.
+
+This patch fixes that by using the python variable already in place in
+the nodejs build system.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/deps/v8/tools/gyp/v8.gyp
+===================================================================
+--- a/deps/v8/tools/gyp/v8.gyp
++++ b/deps/v8/tools/gyp/v8.gyp
+@@ -792,7 +792,7 @@
+                 '<(SHARED_INTERMEDIATE_DIR)/libraries.cc',
+               ],
+               'action': [
+-                'python',
++                '<(python)',
+                 '../../tools/js2c.py',
+                 '<@(_outputs)',
+                 'CORE',
+@@ -810,7 +810,7 @@
+                 '<(SHARED_INTERMEDIATE_DIR)/experimental-libraries.cc',
+               ],
+               'action': [
+-                'python',
++                '<(python)',
+                 '../../tools/js2c.py',
+                 '<@(_outputs)',
+                 'EXPERIMENTAL',
+@@ -840,7 +840,7 @@
+                   '<(SHARED_INTERMEDIATE_DIR)/debug-support.cc',
+                 ],
+                 'action': [
+-                  'python',
++                  '<(python)',
+                   '../../tools/gen-postmortem-metadata.py',
+                   '<@(_outputs)',
+                   '<@(heapobject_files)'

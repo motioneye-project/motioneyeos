@@ -1,0 +1,8 @@
+config BR2_PACKAGE_PYTHON_PSUTIL
+	bool "python-psutil"
+	help
+	  psutil is a cross-platform library for retrieving
+	  information on running processes and system utilization
+	  (CPU, memory, disks, network) in Python.
+
+	  https://pypi.python.org/pypi/psutil

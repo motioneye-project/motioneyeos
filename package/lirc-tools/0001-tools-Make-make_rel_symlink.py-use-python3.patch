@@ -1,0 +1,46 @@
+From ae2e8cc85b6b4d2202e42d704dde8757ffd31da6 Mon Sep 17 00:00:00 2001
+From: Alec Leamas <leamas.alec@gmail.com>
+Date: Thu, 11 Dec 2014 04:44:49 +0100
+Subject: [PATCH] tools: Make make_rel_symlink.py use python3.
+
+Upstream patch:
+http://sourceforge.net/p/lirc/git/ci/ae2e8cc85b6b4d2202e42d704dde8757ffd31da6/
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+ tools/make_rel_symlink.py | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/tools/make_rel_symlink.py b/tools/make_rel_symlink.py
+index 5c893056f379..896637ff93e0 100755
+--- a/tools/make_rel_symlink.py
++++ b/tools/make_rel_symlink.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ import os
+ import os.path
+@@ -32,16 +32,16 @@ if sys.argv[1] == "-p":
+     sys.argv = sys.argv[ 1:]
+ 
+ if len( sys.argv ) != 3:
+-    print USAGE
++    print(USAGE)
+     sys.exit( 1 )
+ 
+ if  os.path.isdir(  sys.argv[2] ):
+-    print "Removing link target dir:" +  sys.argv[2]
++    print("Removing link target dir:" +  sys.argv[2])
+     shutil.rmtree( sys.argv[2])
+ 
+ link_path = relative_ln_s( sys.argv[1], sys.argv[2] )
+ if just_print:
+-    print link_path
++    print(link_path)
+ else:
+     os.chdir( os.path.dirname( sys.argv[2]))
+     target = os.path.basename( sys.argv[2])
+-- 
+2.1.4
+

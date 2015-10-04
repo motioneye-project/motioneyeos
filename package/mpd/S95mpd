@@ -1,0 +1,34 @@
+#!/bin/sh
+
+# Sanity checks
+test -f /usr/bin/mpd || exit 0
+test -f /etc/mpd.conf || exit 0
+
+start() {
+	echo -n "Starting mpd: "
+	start-stop-daemon --start --quiet --background --exec /usr/bin/mpd \
+		&& echo "OK" || echo "FAIL"
+}
+
+stop() {
+	echo -n "Stopping mpd: "
+	start-stop-daemon --stop --quiet --pidfile /var/run/mpd.pid \
+		&& echo "OK" || echo "FAIL"
+}
+
+case "$1" in
+	start)
+		start
+		;;
+	stop)
+		stop
+		;;
+	restart|reload)
+		stop
+		sleep 1
+		start
+		;;
+	*)
+		echo "Usage: $0 {start|stop|restart}"
+		exit 1
+esac

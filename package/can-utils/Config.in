@@ -1,0 +1,9 @@
+config BR2_PACKAGE_CAN_UTILS
+	bool "can-utils"
+	depends on BR2_USE_MMU # fork()
+	help
+	  SocketCAN is a set of open source CAN drivers and a
+	  networking stack.
+	  This package provides various tools for this stack.
+
+	  http://elinux.org/Can-utils

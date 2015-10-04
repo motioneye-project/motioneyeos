@@ -1,0 +1,86 @@
+From 0600966321c011c31edbb60945bbdca3fa34b7cb Mon Sep 17 00:00:00 2001
+From: Markos Chandras <markos.chandras@imgtec.com>
+Date: Mon, 25 Feb 2013 09:41:25 +0000
+Subject: [PATCH] buildsys: Add missing $(SYMBOL_PREFIX) to symbol names
+
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+Signed-off-by: Bernhard Reutner-Fischer <rep.dot.nop@gmail.com>
+---
+ Makerules                   |    2 +-
+ ldso/ldso/Makefile.in       |    2 +-
+ ldso/ldso/bfin/dl-startup.h |    5 +----
+ ldso/libdl/Makefile.in      |    2 +-
+ libpthread/nptl/Makefile.in |    2 +-
+ 5 files changed, 5 insertions(+), 8 deletions(-)
+
+diff --git a/Makerules b/Makerules
+index 60acaa8..28bbdef 100644
+--- a/Makerules
++++ b/Makerules
+@@ -300,7 +300,7 @@ define create-lds
+ 	-Wl,-z,relro -Wl,--hash-style=gnu -Wl,-z,defs \
+ 	-Wl,--verbose 2>&1 | LC_ALL=C \
+ 	sed -e '/^=========/,/^=========/!d;/^=========/d' \
+-	-e 's/\. = .* + SIZEOF_HEADERS;/& _begin = . - SIZEOF_HEADERS;/' > $@.lds
++	-e 's/\. = .* + SIZEOF_HEADERS;/& $(SYMBOL_PREFIX)_begin = . - SIZEOF_HEADERS;/' > $@.lds
+ endef
+ 
+ define link.so
+diff --git a/ldso/ldso/Makefile.in b/ldso/ldso/Makefile.in
+index eb1570a..91165c6 100644
+--- a/ldso/ldso/Makefile.in
++++ b/ldso/ldso/Makefile.in
+@@ -36,7 +36,7 @@ LDFLAGS-$(UCLIBC_LDSO_NAME).so := $(LDFLAGS)
+ else
+ LDFLAGS-$(UCLIBC_LDSO_NAME).so := $(LDFLAGS_NOSTRIP) -Wl,-z,defs
+ endif
+-LDFLAGS-$(UCLIBC_LDSO_NAME).so += -Wl,-e,_start -Wl,-z,now -Wl,-Bsymbolic \
++LDFLAGS-$(UCLIBC_LDSO_NAME).so += -Wl,-e,$(SYMBOL_PREFIX)_start -Wl,-z,now -Wl,-Bsymbolic \
+ 	-Wl,--export-dynamic $(CFLAG_-Wl--sort-common) -Wl,--discard-locals \
+ 	$(CFLAG_-Wl--discard-all) -Wl,--no-undefined
+ 
+diff --git a/ldso/ldso/bfin/dl-startup.h b/ldso/ldso/bfin/dl-startup.h
+index 76ae150..860b7c6 100644
+--- a/ldso/ldso/bfin/dl-startup.h
++++ b/ldso/ldso/bfin/dl-startup.h
+@@ -40,10 +40,7 @@ __asm__(
+ 	"	.text\n"
+ 	"	.global	__start\n"
+ 	"	.type	__start,@function\n"
+-	/* Build system expects a "_start" for the entry point;
+-	   provide it as it's free to do so with aliases.  */
+-	"	.set	_start, __start\n"
+-	"	.global	_start\n"
++	"	.hidden	__start\n"
+ 	"__start:\n"
+ 	"	call	.Lcall\n"
+ 	".Lcall:\n"
+diff --git a/ldso/libdl/Makefile.in b/ldso/libdl/Makefile.in
+index be236c8..edf95a6 100644
+--- a/ldso/libdl/Makefile.in
++++ b/ldso/libdl/Makefile.in
+@@ -23,7 +23,7 @@ LDFLAGS-$(UCLIBC_FORMAT_DSBT_ELF)-libdl.so := -Wl,--dsbt-index=3
+ LDFLAGS-libdl.so := $(LDFLAGS)
+ 
+ ifeq ($(LDSO_NO_CLEANUP),)
+-LDFLAGS-libdl.so += -Wl,-fini,dl_cleanup
++LDFLAGS-libdl.so += -Wl,-fini,$(SYMBOL_PREFIX)dl_cleanup
+ endif
+ 
+ LIBS-libdl.so := $(LIBS) $(ldso)
+diff --git a/libpthread/nptl/Makefile.in b/libpthread/nptl/Makefile.in
+index 158bcae..0008822 100644
+--- a/libpthread/nptl/Makefile.in
++++ b/libpthread/nptl/Makefile.in
+@@ -145,7 +145,7 @@ LDFLAGS-libpthread.so += $(LDFLAGS)
+ endif
+ 
+ LDFLAGS-libpthread.so += $(top_builddir)lib/$(UCLIBC_LDSO_NAME)-$(VERSION).so $(top_builddir)lib/libdl-$(VERSION).so \
+-	-Wl,-z,nodelete,-z,initfirst,-init=__pthread_initialize_minimal_internal
++	-Wl,-z,nodelete,-z,initfirst,-init=$(SYMBOL_PREFIX)__pthread_initialize_minimal_internal
+ 
+ LIBS-libpthread.so := $(LIBS)
+ 
+-- 
+1.7.10.4
+

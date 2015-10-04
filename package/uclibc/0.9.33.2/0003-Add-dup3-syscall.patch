@@ -1,0 +1,54 @@
+From 518bc50ae42540574bba360225c8a65b56b79148 Mon Sep 17 00:00:00 2001
+From: Jonas Bonn <jonas@southpole.se>
+Date: Tue, 6 Sep 2011 10:30:40 +0200
+Subject: [PATCH 3/8] Add dup3 syscall
+
+Signed-off-by: Jonas Bonn <jonas@southpole.se>
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ include/unistd.h                 |  4 ++++
+ libc/sysdeps/linux/common/dup3.c | 17 +++++++++++++++++
+ 2 files changed, 21 insertions(+)
+ create mode 100644 libc/sysdeps/linux/common/dup3.c
+
+diff --git a/include/unistd.h b/include/unistd.h
+index 1b2fd4d..f7d070b 100644
+--- a/include/unistd.h
++++ b/include/unistd.h
+@@ -513,6 +513,10 @@ extern int dup (int __fd) __THROW __wur;
+ extern int dup2 (int __fd, int __fd2) __THROW;
+ libc_hidden_proto(dup2)
+ 
++/* Duplicate FD to FD2, closing FD2 and making it open on the same file.  */
++extern int dup3 (int __fd, int __fd2, int __flags) __THROW;
++libc_hidden_proto(dup3)
++
+ /* NULL-terminated array of "NAME=VALUE" environment variables.  */
+ extern char **__environ;
+ #ifdef __USE_GNU
+diff --git a/libc/sysdeps/linux/common/dup3.c b/libc/sysdeps/linux/common/dup3.c
+new file mode 100644
+index 0000000..7b57438
+--- /dev/null
++++ b/libc/sysdeps/linux/common/dup3.c
+@@ -0,0 +1,17 @@
++/* vi: set sw=4 ts=4: */
++/*
++ * dup3() for uClibc
++ *
++ * Copyright (C) 2000-2006 Erik Andersen <andersen@uclibc.org>
++ *
++ * Licensed under the LGPL v2.1, see the file COPYING.LIB in this tarball.
++ */
++
++#include <sys/syscall.h>
++#include <unistd.h>
++
++
++#ifdef __NR_dup3
++_syscall3(int, dup3, int, oldfd, int, newfd, int, flags)
++libc_hidden_def(dup3)
++#endif
+-- 
+1.8.1.2
+

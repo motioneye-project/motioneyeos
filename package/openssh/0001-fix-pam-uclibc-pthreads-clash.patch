@@ -1,0 +1,44 @@
+When PAM is enabled, openssh makes its own static versions of pthreads
+functions.  But when built with a uclibc toolchain, pthreads.h gets
+indirectly included.  The clashing exported and static definitions of
+the pthreads functions then cause a compile error.  This patch fixes
+the problem by changing the static pthread function names with macros
+when the static functions are defined.
+
+Signed-off-by: Danomi Manchego <danomimanchego123@gmail.com>
+
+diff -urN openssh-6.1p1.orig/auth-pam.c openssh-6.1p1/auth-pam.c
+--- openssh-6.1p1.orig/auth-pam.c	2009-07-12 08:07:21.000000000 -0400
++++ openssh-6.1p1/auth-pam.c	2012-09-15 19:49:47.677288199 -0400
+@@ -166,6 +166,7 @@
+ 		sigdie("PAM: authentication thread exited uncleanly");
+ }
+ 
++#define pthread_exit pthread_exit_AVOID_UCLIBC_PTHREAD_CLASH
+ /* ARGSUSED */
+ static void
+ pthread_exit(void *value)
+@@ -173,6 +174,7 @@
+ 	_exit(0);
+ }
+ 
++#define pthread_create pthread_create_AVOID_UCLIBC_PTHREAD_CLASH
+ /* ARGSUSED */
+ static int
+ pthread_create(sp_pthread_t *thread, const void *attr,
+@@ -200,6 +202,7 @@
+ 	}
+ }
+ 
++#define pthread_cancel pthread_cancel_AVOID_UCLIBC_PTHREAD_CLASH
+ static int
+ pthread_cancel(sp_pthread_t thread)
+ {
+@@ -207,6 +210,7 @@
+ 	return (kill(thread, SIGTERM));
+ }
+ 
++#define pthread_join pthread_join_AVOID_UCLIBC_PTHREAD_CLASH
+ /* ARGSUSED */
+ static int
+ pthread_join(sp_pthread_t thread, void **value)

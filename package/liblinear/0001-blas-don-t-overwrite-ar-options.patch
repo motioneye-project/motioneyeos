@@ -1,0 +1,35 @@
+From cae4c3b80fee0f3637d70f6d33946888c8105637 Mon Sep 17 00:00:00 2001
+From: Romain Naour <romain.naour@openwide.fr>
+Date: Sat, 13 Dec 2014 17:16:58 +0100
+Subject: [PATCH 1/1] blas: don't overwrite ar options
+
+ar's rcv options get lost when AR is passed on
+the command line.
+
+Signed-off-by: Romain Naour <romain.naour@openwide.fr>
+---
+ blas/Makefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/blas/Makefile b/blas/Makefile
+index 895fd24..78cec9a 100644
+--- a/blas/Makefile
++++ b/blas/Makefile
+@@ -1,4 +1,4 @@
+-AR     = ar rcv
++AR     = ar
+ RANLIB = ranlib 
+ 
+ HEADERS = blas.h blasp.h
+@@ -8,7 +8,7 @@ CFLAGS = $(OPTFLAGS)
+ FFLAGS = $(OPTFLAGS)
+ 
+ blas: $(FILES) $(HEADERS)
+-	$(AR) blas.a $(FILES)  
++	$(AR) rcv blas.a $(FILES)  
+ 	$(RANLIB) blas.a
+ 
+ clean:
+-- 
+1.9.3
+

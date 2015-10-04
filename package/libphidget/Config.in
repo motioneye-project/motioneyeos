@@ -1,0 +1,26 @@
+config BR2_PACKAGE_LIBPHIDGET
+	bool "libphidget"
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libusb
+	depends on !BR2_STATIC_LIBS
+	select BR2_PACKAGE_LIBUSB
+	help
+	  The libphidget library provides an API for controlling Phidgets
+	  USB devices. The library translates API function calls to libusb
+	  function calls to control attached Phidgets devices that provide
+	  GPIO's, DAC's, accelerometers, servo motors, and other capabilities
+	  either singly or on combo devices.
+
+	  To use libphidget for controlling locally attached devices you
+	  need to set up the userspace USB device tree /dev/bus/usb. See
+	  file udev/99-phidgets.rules.
+
+	  The libphidget library also contains an API for sending commands
+	  to a local or remote phidgetwebservice using HTTP. The
+	  phidgetwebservice then translates HTTP requests to libphidget API
+	  function calls to control locally attached Phidgets devices.
+
+	  http://phidgets.com/
+
+comment "libphidget needs a toolchain w/ threads, dynamic library"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_STATIC_LIBS

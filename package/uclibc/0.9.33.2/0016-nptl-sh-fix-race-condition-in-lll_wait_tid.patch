@@ -1,0 +1,38 @@
+From ffd9e147b120e9c2bf30ba4861860f1bc59362c5 Mon Sep 17 00:00:00 2001
+From: Stas Sergeev <stsp@users.sourceforge.net>
+Date: Thu, 14 Jun 2012 01:00:02 +0200
+Subject: [PATCH] nptl: sh: fix race condition in lll_wait_tid
+
+Make a local copy of the tid value to avoid a race condition,
+as the value could have been changed to 0, thus using a pointer
+it would have been passed to the lll_futex_wait modified.
+
+Signed-off-by: Stas Sergeev <stsp@users.sourceforge.net>
+Signed-off-by: Carmelo Amoroso <carmelo.amoroso@st.com>
+(cherry picked from commit 0dcc13bf7a61b1d0708e5dd103d5515e0ffec79a)
+
+Signed-off-by: Carmelo Amoroso <carmelo.amoroso@st.com>
+---
+ libpthread/nptl/sysdeps/unix/sysv/linux/sh/lowlevellock.h |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/libpthread/nptl/sysdeps/unix/sysv/linux/sh/lowlevellock.h b/libpthread/nptl/sysdeps/unix/sysv/linux/sh/lowlevellock.h
+index d10cd61..b83d863 100644
+--- a/libpthread/nptl/sysdeps/unix/sysv/linux/sh/lowlevellock.h
++++ b/libpthread/nptl/sysdeps/unix/sysv/linux/sh/lowlevellock.h
+@@ -396,9 +396,9 @@ extern int __lll_unlock_wake (int *__futex, int private) attribute_hidden;
+ 
+ #define lll_wait_tid(tid) \
+   do {									      \
+-    __typeof (tid) *__tid = &(tid);					      \
+-    while (*__tid != 0)							      \
+-      lll_futex_wait (__tid, *__tid, LLL_SHARED);			      \
++    __typeof (tid) __tid;						      \
++    while ((__tid = (tid)) != 0)						      \
++      lll_futex_wait (&(tid), __tid, LLL_SHARED);			      \
+   } while (0)
+ 
+ extern int __lll_timedwait_tid (int *tid, const struct timespec *abstime)
+-- 
+1.7.10.4
+

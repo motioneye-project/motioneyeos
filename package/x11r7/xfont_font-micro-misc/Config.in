@@ -1,0 +1,4 @@
+config BR2_PACKAGE_XFONT_FONT_MICRO_MISC
+	bool "font-micro-misc"
+	help
+	  No description available

@@ -1,0 +1,81 @@
+Add support for static only build
+
+This patch adds support for a BUILD_SHARED_LIB variable that allows to
+enable/disable the build of the shared library, in order to support
+static-only builds.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/Makefile
+===================================================================
+--- a/Makefile
++++ b/Makefile
+@@ -85,6 +85,9 @@
+ # Build and install static library
+ BUILD_STATIC_LIB := 1
+ 
++# Build and install shared library
++BUILD_SHARED_LIB := 1
++
+ # Set these to add preprocessor or compiler flags, or use
+ # environment variables
+ # CFLAGS :=
+Index: b/lib/Module.mk
+===================================================================
+--- a/lib/Module.mk
++++ b/lib/Module.mk
+@@ -43,8 +43,14 @@
+ LIBSTLIBNAME := libsensors.a
+ LIBSHSONAME := libsensors.so.$(LIBMAINVER)
+ 
++ifeq ($(BUILD_SHARED_LIB),1)
+ LIBTARGETS := $(MODULE_DIR)/$(LIBSHLIBNAME) \
+               $(MODULE_DIR)/$(LIBSHSONAME) $(MODULE_DIR)/$(LIBSHBASENAME)
++LIBDEP_FOR_PROGS := $(LIBSHBASENAME)
++else
++LIBDEP_FOR_PROGS := $(LIBSTLIBNAME)
++endif
++
+ ifeq ($(BUILD_STATIC_LIB),1)
+ LIBTARGETS += $(MODULE_DIR)/$(LIBSTLIBNAME)
+ endif
+@@ -131,9 +137,11 @@
+ ifeq ($(BUILD_STATIC_LIB),1)
+ 	$(INSTALL) -m 644 $(LIB_DIR)/$(LIBSTLIBNAME) $(DESTDIR)$(LIBDIR)
+ endif
++ifeq ($(BUILD_SHARED_LIB),1)
+ 	$(INSTALL) -m 755 $(LIB_DIR)/$(LIBSHLIBNAME) $(DESTDIR)$(LIBDIR)
+ 	$(LN) $(LIBSHLIBNAME) $(DESTDIR)$(LIBDIR)/$(LIBSHSONAME)
+ 	$(LN) $(LIBSHSONAME) $(DESTDIR)$(LIBDIR)/$(LIBSHBASENAME)
++endif
+ 	@if [ -z "$(DESTDIR)" -a "$(LIBDIR)" != "/usr/lib" -a "$(LIBDIR)" != "/lib" ] ; then \
+ 	   if [ -e "/usr/lib/$(LIBSHSONAME)" -o -e "/usr/lib/$(LIBSHBASENAME)" ] ; then \
+ 	     echo '******************************************************************************' ; \
+Index: b/prog/sensord/Module.mk
+===================================================================
+--- a/prog/sensord/Module.mk
++++ b/prog/sensord/Module.mk
+@@ -41,7 +41,7 @@
+ REMOVESENSORDBIN := $(patsubst $(MODULE_DIR)/%,$(DESTDIR)$(SBINDIR)/%,$(PROGSENSORDTARGETS))
+ REMOVESENSORDMAN := $(patsubst $(MODULE_DIR)/%,$(DESTDIR)$(PROGSENSORDMAN8DIR)/%,$(PROGSENSORDMAN8FILES))
+ 
+-$(PROGSENSORDTARGETS): $(PROGSENSORDSOURCES:.c=.ro) lib/$(LIBSHBASENAME)
++$(PROGSENSORDTARGETS): $(PROGSENSORDSOURCES:.c=.ro) lib/$(LIBDEP_FOR_PROGS)
+ 	$(CC) $(EXLDFLAGS) -o $@ $(PROGSENSORDSOURCES:.c=.ro) -Llib -lsensors -lrrd
+ 
+ all-prog-sensord: $(PROGSENSORDTARGETS)
+Index: b/prog/sensors/Module.mk
+===================================================================
+--- a/prog/sensors/Module.mk
++++ b/prog/sensors/Module.mk
+@@ -39,8 +39,8 @@
+ 
+ LIBICONV := $(shell if /sbin/ldconfig -p | grep -q '/libiconv\.so$$' ; then echo \-liconv; else echo; fi)
+ 
+-$(PROGSENSORSTARGETS): $(PROGSENSORSSOURCES:.c=.ro) lib/$(LIBSHBASENAME)
+-	$(CC) $(EXLDFLAGS) -o $@ $(PROGSENSORSSOURCES:.c=.ro) $(LIBICONV) -Llib -lsensors
++$(PROGSENSORSTARGETS): $(PROGSENSORSSOURCES:.c=.ro) lib/$(LIBDEP_FOR_PROGS)
++	$(CC) $(EXLDFLAGS) -o $@ $(PROGSENSORSSOURCES:.c=.ro) $(LIBICONV) -Llib -lsensors -lm
+ 
+ all-prog-sensors: $(PROGSENSORSTARGETS)
+ user :: all-prog-sensors

@@ -1,0 +1,5 @@
+config BR2_PACKAGE_XAPP_XDBEDIZZY
+	bool "xdbedizzy"
+	select BR2_PACKAGE_XLIB_LIBXEXT
+	help
+	  X.Org xdbedizzy application

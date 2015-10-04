@@ -1,0 +1,22 @@
+#!/bin/sh
+
+case "$1" in
+	start)
+		echo -n "Starting ofono ... "
+		start-stop-daemon -S -q -m -b -p /var/run/ofonod.pid --exec /usr/sbin/ofonod -- -n
+		echo "done."
+		;;
+	stop)
+		echo -n "Stopping ofono ..."
+		start-stop-daemon -K -q -p /var/run/ofonod.pid
+		echo "done."
+		;;
+	restart)
+		$0 stop
+		sleep 1
+		$0 start
+		;;
+	*)
+		echo "usage: $0 {start|stop|restart}"
+		;;
+esac

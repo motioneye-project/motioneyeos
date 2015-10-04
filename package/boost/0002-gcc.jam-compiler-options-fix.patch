@@ -1,0 +1,37 @@
+From a891e48ed0b647b7bf550ad1d179398b23d0726e Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?J=C3=B6rg=20Krause?= <joerg.krause@embedded.rocks>
+Date: Sat, 2 May 2015 13:47:54 +0200
+Subject: [PATCH] gcc.jam compiler options fix
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Only PowerPC, SPARC, and x86 do support the -m32 and -m64 compiler options [1].
+
+Rather then excluding all architectures not supporting these options as it is
+done in commit c0634341d9ee2c02d3a55c91dafb988afc066c49 [2], include all
+architectures that do support them.
+
+[1] https://gcc.gnu.org/onlinedocs/gcc/Option-Summary.html
+[2] https://github.com/boostorg/build/commit/c0634341d9ee2c02d3a55c91dafb988afc066c49
+
+Signed-off-by: Jörg Krause <joerg.krause@embedded.rocks>
+---
+ src/tools/gcc.jam | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tools/build/src/tools/gcc.jam b/tools/build/src/tools/gcc.jam
+index db04534..fbe8ab0 100644
+--- a/tools/build/src/tools/gcc.jam
++++ b/tools/build/src/tools/gcc.jam
+@@ -451,7 +451,7 @@ rule setup-address-model ( targets * : sources * : properties * )
+         else
+         {
+             local arch = [ feature.get-values architecture : $(properties) ] ;
+-            if $(arch) != arm
++            if $(arch) = power || $(arch) = sparc || $(arch) = x86
+             {
+                 if $(model) = 32
+                 {
+--
+2.3.7

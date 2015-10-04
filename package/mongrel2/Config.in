@@ -1,0 +1,29 @@
+comment "mongrel2 needs a toolchain w/ C++, threads, wchar"
+	depends on BR2_UCLIBC_VERSION_SNAPSHOT || \
+		BR2_TOOLCHAIN_USES_GLIBC || \
+		BR2_arm
+	depends on !BR2_INSTALL_LIBSTDCPP || \
+		!BR2_TOOLCHAIN_HAS_THREADS || !BR2_USE_WCHAR
+
+config BR2_PACKAGE_MONGREL2
+	bool "mongrel2"
+	select BR2_PACKAGE_SQLITE
+	select BR2_PACKAGE_ZEROMQ
+	depends on BR2_INSTALL_LIBSTDCPP # zeromq
+	depends on BR2_TOOLCHAIN_HAS_THREADS # zeromq
+	depends on BR2_USE_WCHAR # zeromq -> util-linux
+	# {get,make,swap}context functions present in
+	# {e,}glibc and in uClibc's master branch. Source has arm workaround
+	depends on BR2_UCLIBC_VERSION_SNAPSHOT || \
+		BR2_TOOLCHAIN_USES_GLIBC || \
+		BR2_arm
+	help
+	  Mongrel2 is an application, language, and network architecture
+	  agnostic web server that focuses on web applications using
+	  modern browser technologies.
+
+	  Mongrel2 supports 17 languages and platforms, HTTP, Flash
+	  sockets, WebSockets, Long Polling, and many ways to deploy
+	  and hack on it.
+
+	  http://www.mongrel2.org

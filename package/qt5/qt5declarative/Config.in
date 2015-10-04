@@ -1,0 +1,25 @@
+config BR2_PACKAGE_QT5DECLARATIVE
+	bool "qt5declarative"
+	select BR2_PACKAGE_QT5XMLPATTERNS
+	select BR2_PACKAGE_QT5BASE
+	select BR2_PACKAGE_QT5BASE_GUI
+	depends on BR2_PACKAGE_QT5_JSCORE_AVAILABLE
+	help
+	  Qt is a cross-platform application and UI framework for
+	  developers using C++.
+
+	  This package corresponds to the qt5declarative module.
+
+	  http://qt.io
+
+if BR2_PACKAGE_QT5DECLARATIVE
+
+comment "quick module needs an OpenGL-capable backend"
+	depends on !BR2_PACKAGE_QT5_GL_AVAILABLE
+
+config BR2_PACKAGE_QT5DECLARATIVE_QUICK
+	bool "quick module"
+	select BR2_PACKAGE_QT5BASE_OPENGL
+	depends on BR2_PACKAGE_QT5_GL_AVAILABLE
+
+endif

@@ -1,0 +1,16 @@
+config BR2_PACKAGE_XAPP_XDM
+	bool "xdm"
+	depends on BR2_USE_MMU # fork()
+	# Runtime dependency: can't start an X server unless there is one
+	depends on BR2_PACKAGE_XSERVER_XORG_SERVER
+	select BR2_PACKAGE_XAPP_SESSREG
+	select BR2_PACKAGE_XAPP_XRDB
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBXAW
+	select BR2_PACKAGE_XLIB_LIBXDMCP
+	select BR2_PACKAGE_XLIB_LIBXINERAMA
+	select BR2_PACKAGE_XLIB_LIBXT
+	select BR2_PACKAGE_XPROTO_XINERAMAPROTO
+	select BR2_PACKAGE_XPROTO_XPROTO
+	help
+	  X.Org xdm application

@@ -1,0 +1,8 @@
+config BR2_PACKAGE_TINYHTTPD
+	bool "tinyhttpd"
+	depends on BR2_USE_MMU # fork()
+	help
+	  A relatively simple webserver written as a school project. It is
+	  exceedingly simple, threaded and handles basic CGI scripts.
+
+	  http://sourceforge.net/projects/tinyhttpd/

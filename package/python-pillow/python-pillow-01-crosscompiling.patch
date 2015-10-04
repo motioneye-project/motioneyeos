@@ -1,0 +1,94 @@
+diff -Naur python-pillow-2.4.0.orig/setup.cfg python-pillow-2.4.0.new/setup.cfg
+--- python-pillow-2.4.0.orig/setup.cfg	2014-04-01 18:34:28.000000000 +0300
++++ python-pillow-2.4.0.new/setup.cfg	2014-06-26 16:15:43.711930729 +0300
+@@ -3,3 +3,12 @@
+ tag_date = 0
+ tag_svn_revision = 0
+ 
++[build_ext]
++plat-name = linux-arm
++disable-webp = 
++disable-lcms = 
++disable-freetype =
++disable-jpeg2000 =
++disable-tcl = 
++disable-webpmux =
++disable-tiff = " 
+diff -Naur python-pillow-2.4.0.orig/setup.py python-pillow-2.4.0.new/setup.py
+--- python-pillow-2.4.0.orig/setup.py	2014-04-01 18:21:44.000000000 +0300
++++ python-pillow-2.4.0.new/setup.py	2014-06-26 16:20:38.494366591 +0300
+@@ -225,60 +225,6 @@
+             _add_directory(library_dirs, "/usr/X11/lib")
+             _add_directory(include_dirs, "/usr/X11/include")
+ 
+-        elif sys.platform.startswith("linux"):
+-            arch_tp = (plat.processor(), plat.architecture()[0])
+-            if arch_tp == ("x86_64","32bit"):
+-                # 32 bit build on 64 bit machine. 
+-                _add_directory(library_dirs, "/usr/lib/i386-linux-gnu")
+-            else:
+-                for platform_ in arch_tp:
+-
+-                    if not platform_:
+-                        continue
+-
+-                    if platform_ in ["x86_64", "64bit"]:
+-                        _add_directory(library_dirs, "/lib64")
+-                        _add_directory(library_dirs, "/usr/lib64")
+-                        _add_directory(library_dirs, "/usr/lib/x86_64-linux-gnu")
+-                        break
+-                    elif platform_ in ["i386", "i686", "32bit"]:
+-                        _add_directory(library_dirs, "/usr/lib/i386-linux-gnu")
+-                        break
+-                    elif platform_ in ["aarch64"]:
+-                        _add_directory(library_dirs, "/usr/lib64")
+-                        _add_directory(library_dirs, "/usr/lib/aarch64-linux-gnu")
+-                        break
+-                    elif platform_ in ["arm", "armv7l"]:
+-                        _add_directory(library_dirs, "/usr/lib/arm-linux-gnueabi")
+-                        break
+-                    elif platform_ in ["ppc64"]:
+-                        _add_directory(library_dirs, "/usr/lib64")
+-                        _add_directory(library_dirs, "/usr/lib/ppc64-linux-gnu")
+-                        _add_directory(library_dirs, "/usr/lib/powerpc64-linux-gnu")
+-                        break
+-                    elif platform_ in ["ppc"]:
+-                        _add_directory(library_dirs, "/usr/lib/ppc-linux-gnu")
+-                        _add_directory(library_dirs, "/usr/lib/powerpc-linux-gnu")
+-                        break
+-                    elif platform_ in ["s390x"]:
+-                        _add_directory(library_dirs, "/usr/lib64")
+-                        _add_directory(library_dirs, "/usr/lib/s390x-linux-gnu")
+-                        break
+-                    elif platform_ in ["s390"]:
+-                        _add_directory(library_dirs, "/usr/lib/s390-linux-gnu")
+-                        break
+-                else:
+-                    raise ValueError(
+-                        "Unable to identify Linux platform: `%s`" % platform_)
+-
+-            # XXX Kludge. Above /\ we brute force support multiarch. Here we
+-            # try Barry's more general approach. Afterward, something should
+-            # work ;-)
+-            self.add_multiarch_paths()
+-
+-        elif sys.platform.startswith("gnu"):
+-            self.add_multiarch_paths()
+-
+         elif sys.platform.startswith("netbsd"):
+                     _add_directory(library_dirs, "/usr/pkg/lib")
+                     _add_directory(include_dirs, "/usr/pkg/include")
+@@ -323,13 +269,6 @@
+             if os.path.isfile(os.path.join(tcl_dir, "tk.h")):
+                 _add_directory(include_dirs, tcl_dir)
+ 
+-        # standard locations
+-        _add_directory(library_dirs, "/usr/local/lib")
+-        _add_directory(include_dirs, "/usr/local/include")
+-
+-        _add_directory(library_dirs, "/usr/lib")
+-        _add_directory(include_dirs, "/usr/include")
+-
+         # on Windows, look for the OpenJPEG libraries in the location that
+         # the official installed puts them
+         if sys.platform == "win32":

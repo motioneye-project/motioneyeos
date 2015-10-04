@@ -1,0 +1,24 @@
+diff -uNr vlc-2.1.5.org/bin/Makefile.am vlc-2.1.5/bin/Makefile.am
+--- vlc-2.1.5.org/bin/Makefile.am	2013-12-03 10:12:34.000000000 +0100
++++ vlc-2.1.5/bin/Makefile.am	2014-08-03 12:30:06.722154518 +0200
+@@ -1,7 +1,7 @@
+ # Building vlc
+ #
+ bin_PROGRAMS = vlc
+-noinst_PROGRAMS = vlc-static
++noinst_PROGRAMS =
+ noinst_DATA =
+ vlclib_PROGRAMS = vlc-cache-gen
+ EXTRA_PROGRAMS = vlc-wrapper
+diff -uNr vlc-2.1.5.org/Makefile.am vlc-2.1.5/Makefile.am
+--- vlc-2.1.5.org/Makefile.am	2014-02-14 18:40:50.000000000 +0100
++++ vlc-2.1.5/Makefile.am	2014-08-03 12:29:52.059010766 +0200
+@@ -932,7 +932,7 @@
+ 	cd lib && $(MAKE) $(AM_MAKEFLAGS) libvlc.la
+ 
+ core: libvlc vlc$(EXEEXT)
+-	cd bin && $(MAKE) $(AM_MAKEFLAGS) vlc$(EXEEXT) vlc-static$(EXEEXT)
++	cd bin && $(MAKE) $(AM_MAKEFLAGS) vlc$(EXEEXT)
+ 
+ doc:
+ 	cd doc && $(MAKE) $(AM_MAKEFLAGS) doc

@@ -1,0 +1,31 @@
+config BR2_PACKAGE_KVMTOOL
+	bool "kvmtool"
+	depends on BR2_USE_MMU # guest simple init fork()
+	# No MADV_HUGEPAGE define in uClibc(-ng)
+	depends on (BR2_TOOLCHAIN_USES_GLIBC || BR2_TOOLCHAIN_USES_MUSL)
+	# Only mips big-endian seems to be supported (build breaks)
+	# Should work on powerpc64 but the build breaks with missing types
+	depends on BR2_aarch64 || BR2_arm || BR2_armeb || BR2_i386 || \
+		BR2_mips || BR2_x86_64
+	# libfdt is only required for DT architectures...
+	# ...but it's not able to build for static targets
+	depends on !(BR2_STATIC_LIBS && (BR2_aarch64 || BR2_arm || BR2_armeb))
+	select BR2_PACKAGE_DTC if BR2_aarch64 || BR2_arm || BR2_armeb
+	help
+	  kvmtool is a lightweight tool for hosting KVM guests.
+	  As a pure virtualization tool it only supports guests using
+	  the same architecture, though it supports running 32-bit guests
+	  on those 64-bit architectures that allow this.
+
+	  https://git.kernel.org/cgit/linux/kernel/git/will/kvmtool.git/tree/README
+
+comment "kvmtool needs a (e)glibc or musl toolchain"
+	depends on BR2_USE_MMU
+	depends on BR2_i386 || BR2_mips || BR2_x86_64
+	depends on !(BR2_TOOLCHAIN_USES_GLIBC || BR2_TOOLCHAIN_USES_MUSL)
+
+comment "kvmtool needs a (e)glibc or musl toolchain w/ dynamic library"
+	depends on BR2_USE_MMU
+	depends on BR2_aarch64 || BR2_arm || BR2_armeb
+	depends on !(BR2_TOOLCHAIN_USES_GLIBC || BR2_TOOLCHAIN_USES_MUSL) || \
+		BR2_STATIC_LIBS

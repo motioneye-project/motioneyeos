@@ -1,0 +1,17 @@
+config BR2_PACKAGE_P11_KIT
+	bool "p11-kit"
+	depends on !BR2_STATIC_LIBS
+	depends on BR2_USE_MMU
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	select BR2_PACKAGE_LIBFFI
+	select BR2_PACKAGE_LIBTASN1
+	help
+	  Provides a way to load and enumerate PKCS#11 modules.
+	  Provides a standard configuration setup for installing PKCS#11
+	  modules in such a way that they're discoverable.
+
+	  http://p11-glue.freedesktop.org/p11-kit.html
+
+comment "p11-kit needs a toolchain w/ threads, dynamic library"
+	depends on BR2_USE_MMU
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS

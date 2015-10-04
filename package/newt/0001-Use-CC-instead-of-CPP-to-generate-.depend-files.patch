@@ -1,0 +1,38 @@
+From 65754effe16506a7a0a04069c8b6e1281811604d Mon Sep 17 00:00:00 2001
+From: Samuel Martin <s.martin49@gmail.com>
+Date: Sat, 10 Jan 2015 11:54:10 +0100
+Subject: [PATCH newt 1/2] Use $(CC) instead of $(CPP) to generate .depend
+ files
+
+Use $(CC) instead of $(CPP) to generate .depend file because '$(CPP)
+-M' call does not support multiple input files.  This avoid the
+following error:
+
+make[1]: Entering directory `/opt/br/output/build/newt-0.51.0'
+/opt/br/output/host/usr/bin/arm-none-linux-gnueabi-cpp -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -D_GNU_SOURCE -M newt.c button.c form.c checkbox.c entry.c label.c listbox.c scrollbar.c textbox.c scale.c grid.c windows.c buttonbar.c checkboxtree.c > .depend
+arm-none-linux-gnueabi-cpp: too many input files
+make[1]: *** [depend] Error 1
+
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ Makefile.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile.in b/Makefile.in
+index 7989203..17853e0 100644
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -121,7 +121,7 @@ clean:
+ 		$(SHAREDDIR)/*.o *.$(SOEXT)*
+ 
+ depend:
+-	$(CPP) $(CFLAGS) $(CPPFLAGS) -M $(SOURCES) > .depend
++	$(CC) $(CFLAGS) $(CPPFLAGS) -M $(SOURCES) > .depend
+ 
+ $(SHAREDDIR):
+ 	mkdir -p $(SHAREDDIR)
+-- 
+2.1.0
+

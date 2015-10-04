@@ -1,0 +1,34 @@
+config BR2_PACKAGE_PCRE
+	bool "pcre"
+	help
+	  Perl Compatible Regular Expressions. By default, only the
+	  8-bits libpcre is built. To get the 16-bits and/or 32-bits
+	  variants libpcre16/libpcre32, use the package sub-options.
+
+	  http://www.pcre.org/
+
+if BR2_PACKAGE_PCRE
+
+config BR2_PACKAGE_PCRE_16
+	bool "16-bit pcre"
+	help
+	  This option builds the 16-bits pcre library, i.e 'libpcre16'
+
+config BR2_PACKAGE_PCRE_32
+	bool "32-bit pcre"
+	help
+	  This option builds the 32-bits pcre library, i.e 'libpcre32'
+
+config BR2_PACKAGE_PCRE_UTF
+	bool "UTF-8/16/32 support in pcre"
+	help
+	  This option builds the pcre library with UTF-8/16/32 support
+
+config BR2_PACKAGE_PCRE_UCP
+	bool "Unicode properties support in pcre"
+	select BR2_PACKAGE_PCRE_UTF
+	help
+	  This option builds the pcre library with Unicode properties
+	  support (implies UTF-8/16/32 support)'
+
+endif

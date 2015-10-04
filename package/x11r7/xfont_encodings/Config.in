@@ -1,0 +1,4 @@
+config BR2_PACKAGE_XFONT_ENCODINGS
+	bool "encodings"
+	help
+	  No description available

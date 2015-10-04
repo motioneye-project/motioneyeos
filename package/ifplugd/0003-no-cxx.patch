@@ -1,0 +1,17 @@
+[PATCH] ifplugd: configure: don't check for C++ compiler
+
+The configure script was checking for a C++ compiler (and erroring out
+if not found), even though it isn't used for anything.
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+diff -urpN ifplugd-0.28/configure.ac ifplugd-0.28.new/configure.ac
+--- ifplugd-0.28/configure.ac	2005-06-04 21:21:51.000000000 +0200
++++ ifplugd-0.28.new/configure.ac	2008-12-13 20:31:13.000000000 +0100
+@@ -33,7 +33,6 @@ if type -p stow > /dev/null && test -d /
+ fi
+ 
+ # Checks for programs.
+-AC_PROG_CXX
+ AC_PROG_CC
+ AC_PROG_CPP
+ AC_PROG_INSTALL

@@ -1,0 +1,189 @@
+From 479f8407c4822d2b872afb8bb14e5ab596714744 Mon Sep 17 00:00:00 2001
+From: Bernhard Reutner-Fischer <rep.dot.nop@gmail.com>
+Date: Thu, 17 Jan 2013 22:44:00 +0100
+Subject: [PATCH] statfs: support f_frsize
+
+closes bugzilla #5834
+
+Signed-off-by: Bernhard Reutner-Fischer <rep.dot.nop@gmail.com>
+---
+ libc/misc/statfs/fstatfs64.c        |    3 +++
+ libc/misc/statfs/internal_statvfs.c |    8 ++++++--
+ libc/misc/statfs/statfs64.c         |    3 +++
+ test/.gitignore                     |    3 +++
+ test/misc/Makefile.in               |    6 ++++++
+ test/misc/tst-statfs.c              |   33 +++++++++++++++++++++++++++++++++
+ test/misc/tst-statvfs.c             |   28 ++++++++++++++++++++++++++++
+ 7 files changed, 82 insertions(+), 2 deletions(-)
+ create mode 100644 test/misc/tst-statfs.c
+ create mode 100644 test/misc/tst-statvfs.c
+
+diff --git a/libc/misc/statfs/fstatfs64.c b/libc/misc/statfs/fstatfs64.c
+index 27bb8d6..42df1ae 100644
+--- a/libc/misc/statfs/fstatfs64.c
++++ b/libc/misc/statfs/fstatfs64.c
+@@ -43,6 +43,9 @@ int fstatfs64 (int fd, struct statfs64 *buf)
+     buf->f_files = buf32.f_files;
+     buf->f_ffree = buf32.f_ffree;
+     buf->f_fsid = buf32.f_fsid;
++#ifdef _STATFS_F_FRSIZE
++    buf->f_frsize = buf32.f_frsize;
++#endif
+     buf->f_namelen = buf32.f_namelen;
+     memcpy (buf->f_spare, buf32.f_spare, sizeof (buf32.f_spare));
+ 
+diff --git a/libc/misc/statfs/internal_statvfs.c b/libc/misc/statfs/internal_statvfs.c
+index 6075e9c..c1862b5 100644
+--- a/libc/misc/statfs/internal_statvfs.c
++++ b/libc/misc/statfs/internal_statvfs.c
+@@ -19,8 +19,12 @@
+ 
+   /* Now fill in the fields we have information for.  */
+   buf->f_bsize = fsbuf.f_bsize;
+-  /* Linux does not support f_frsize, so set it to the full block size.  */
++#ifdef _STATFS_F_FRSIZE
++  buf->f_frsize = fsbuf.f_frsize;
++#else
++  /* No support for f_frsize so set it to the full block size.  */
+   buf->f_frsize = fsbuf.f_bsize;
++#endif
+   buf->f_blocks = fsbuf.f_blocks;
+   buf->f_bfree = fsbuf.f_bfree;
+   buf->f_bavail = fsbuf.f_bavail;
+@@ -39,7 +43,7 @@
+   buf->__f_unused = 0;
+ #endif
+   buf->f_namemax = fsbuf.f_namelen;
+-  memset (buf->__f_spare, '\0', 6 * sizeof (int));
++  memset (buf->__f_spare, '\0', sizeof(buf->__f_spare));
+ 
+   /* What remains to do is to fill the fields f_favail and f_flag.  */
+ 
+diff --git a/libc/misc/statfs/statfs64.c b/libc/misc/statfs/statfs64.c
+index 0cc8595..35329bd 100644
+--- a/libc/misc/statfs/statfs64.c
++++ b/libc/misc/statfs/statfs64.c
+@@ -42,6 +42,9 @@ int statfs64 (const char *file, struct statfs64 *buf)
+     buf->f_ffree = buf32.f_ffree;
+     buf->f_fsid = buf32.f_fsid;
+     buf->f_namelen = buf32.f_namelen;
++#ifdef _STATFS_F_FRSIZE
++    buf->f_frsize = buf32.f_frsize;
++#endif
+     memcpy (buf->f_spare, buf32.f_spare, sizeof (buf32.f_spare));
+ 
+     return 0;
+diff --git a/test/.gitignore b/test/.gitignore
+index c892816..7234c48 100644
+--- a/test/.gitignore
++++ b/test/.gitignore
+@@ -148,6 +148,8 @@ misc/sem
+ misc/stdarg
+ misc/tst-scandir
+ misc/tst-seekdir
++misc/tst-statfs
++misc/tst-statvfs
+ misc/tst-utmp
+ mmap/mmap
+ mmap/mmap2
+@@ -254,6 +256,7 @@ stdio/64bit
+ stdio/fclose-loop
+ stdlib/ptytest
+ stdlib/qsort
++stdlib/testarc4random
+ stdlib/testatexit
+ stdlib/test-canon
+ stdlib/test-canon2
+diff --git a/test/misc/Makefile.in b/test/misc/Makefile.in
+index 2263211..9b74d22 100644
+--- a/test/misc/Makefile.in
++++ b/test/misc/Makefile.in
+@@ -9,6 +9,12 @@ CFLAGS_dirent64 := -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS
+ 
+ DODIFF_dirent    := 1
+ DODIFF_dirent64  := 1
++DODIFF_tst-statfs := 1
++DODIFF_tst-statvfs := 1
+ 
+ OPTS_bug-glob1   := $(PWD)
+ OPTS_tst-fnmatch := < tst-fnmatch.input
++
++MNTENTS = $(shell mount | while read dev on mp rest; do echo $$mp; done)
++OPTS_tst-statfs := $(MNTENTS)
++OPTS_tst-statvfs := $(MNTENTS)
+diff --git a/test/misc/tst-statfs.c b/test/misc/tst-statfs.c
+new file mode 100644
+index 0000000..44ab3aa
+--- /dev/null
++++ b/test/misc/tst-statfs.c
+@@ -0,0 +1,33 @@
++#define _FILE_OFFSET_BITS 64
++
++#include <sys/vfs.h>
++#include <errno.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++
++int
++main(int argc, char* argv[])
++{
++	struct statfs s;
++	int ret = 0, i;
++
++	for (i = 1; i < argc; i++) {
++		if (statfs(argv[i], &s) != 0) {
++			fprintf(stderr, "%s: %s: statfs failed. %s\n",
++				*argv, argv[i], strerror(errno));
++			exit(EXIT_FAILURE);
++		}
++		++ret;
++		printf("statfs %s:\n\tblocks=%lld\n\tblkfree=%lld\n\tbsize=%d\n",
++			argv[i], s.f_blocks, s.f_bfree, s.f_bsize);
++#ifdef _STATFS_F_FRSIZE
++		printf("\tfrsize=%lld\n", s.f_frsize);
++#elif defined __mips__
++		printf("\tfrsize=mips, unsupported?\n");
++#else
++# error no _STATFS_F_FRSIZE
++#endif
++	}
++	exit(ret ? EXIT_SUCCESS : EXIT_FAILURE);
++}
+diff --git a/test/misc/tst-statvfs.c b/test/misc/tst-statvfs.c
+new file mode 100644
+index 0000000..c1e8fde
+--- /dev/null
++++ b/test/misc/tst-statvfs.c
+@@ -0,0 +1,28 @@
++#define _FILE_OFFSET_BITS 64
++
++#include <sys/statvfs.h>
++#include <errno.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++
++int
++main(int argc, char* argv[])
++{
++	struct statvfs s;
++	int i;
++
++	for (i = 1; i < argc; i++) {
++		if (statvfs(argv[i], &s) != 0) {
++			fprintf(stderr, "%s: %s: statvfs failed. %s\n",
++				*argv, argv[i], strerror(errno));
++			exit(EXIT_FAILURE);
++		}
++		printf("statvfs %s:\n\tblocks=%lld\n\tblkfree=%lld\n\tbsize=%d\n",
++			argv[i], s.f_blocks, s.f_bfree, s.f_bsize);
++#if 1 // def _STATFS_F_FRSIZE
++		printf("\tfrsize=%lld\n", s.f_frsize);
++#endif
++	}
++	exit(EXIT_SUCCESS);
++}
+-- 
+1.7.10.4
+

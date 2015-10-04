@@ -1,0 +1,7 @@
+config BR2_PACKAGE_LESS
+	bool "less"
+	select BR2_PACKAGE_NCURSES
+	help
+	  Excellent text file viewer.
+
+	  http://www.greenwoodsoftware.com/

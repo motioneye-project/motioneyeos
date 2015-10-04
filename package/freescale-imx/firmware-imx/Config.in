@@ -1,0 +1,10 @@
+config BR2_PACKAGE_FIRMWARE_IMX
+	bool "firmware-imx"
+	depends on BR2_arm # Only relevant for i.MX
+	help
+	  Firmware blobs for the Freescale i.MX SoCs.
+
+	  It contains blobs for SDMA and VPU.
+
+	  This library is provided by Freescale as-is and doesn't have
+	  an upstream.

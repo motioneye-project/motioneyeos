@@ -1,0 +1,50 @@
+From 102c02de867bfe831b5366c89d66bcf170db962e Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Thu, 7 Feb 2013 22:26:56 +0100
+Subject: [PATCH] Fix installation location of libffi
+
+The libffi is currently declared as toolexeclib_LTLIBRARIES. In many
+cases, toolexeclib libraries will be installed in /usr/lib, so it
+doesn't make any difference.
+
+However, with multilib toolchains, they get installed in a
+subdirectory of /usr/lib/. For example, with a Sourcery CodeBench
+PowerPC toolchain, if the e500mc multilib variant is used, the libffi
+library gets installed in /usr/lib/te500mc/. This is due to the
+following code in the configure script:
+
+  multi_os_directory=`$CC -print-multi-os-directory`
+  case $multi_os_directory in
+    .) ;; # Avoid trailing /.
+    *) toolexeclibdir=$toolexeclibdir/$multi_os_directory ;;
+  esac
+
+Once the library is installed in /usr/lib/te500mc/, nothing works
+because this installation location is inconsistent with the
+installation location declared in libffi.pc.
+
+So, instead of using this bizarre toolexeclib_LTLIBRARIES, simply use
+the more standard lib_LTLIBRARIES, which ensures that the libffi
+library is always installed in /usr/lib.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ Makefile.am |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile.am b/Makefile.am
+index 6f669ca..b60bcc1 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -93,7 +93,7 @@ FLAGS_TO_PASS = $(AM_MAKEFLAGS)
+ 
+ MAKEOVERRIDES=
+ 
+-toolexeclib_LTLIBRARIES = libffi.la
++lib_LTLIBRARIES = libffi.la
+ noinst_LTLIBRARIES = libffi_convenience.la
+ 
+ libffi_la_SOURCES = src/prep_cif.c src/types.c \
+-- 
+1.7.9.5
+

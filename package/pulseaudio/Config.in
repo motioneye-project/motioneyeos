@@ -1,0 +1,37 @@
+config BR2_PACKAGE_PULSEAUDIO
+	bool "pulseaudio"
+	depends on BR2_USE_WCHAR
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_STATIC_LIBS
+	select BR2_PACKAGE_LIBTOOL
+	select BR2_PACKAGE_JSON_C
+	select BR2_PACKAGE_LIBSNDFILE
+	select BR2_PACKAGE_SPEEX
+	depends on BR2_USE_MMU # fork()
+	depends on BR2_ARCH_HAS_ATOMICS
+	help
+	  PulseAudio is a sound system for POSIX OSes, meaning that it
+	  is a proxy for your sound applications. It allows you to do
+	  advanced operations on your sound data as it passes between
+	  your application and your hardware. Things like transferring
+	  the audio to a different machine, changing the sample format
+	  or channel count and mixing several sounds into one are
+	  easily achieved using a sound server.
+
+	  http://pulseaudio.org
+
+if BR2_PACKAGE_PULSEAUDIO
+
+config BR2_PACKAGE_PULSEAUDIO_DAEMON
+	bool "start as a system daemon"
+	help
+	  PulseAudio can be started as a system daemon. This is not the
+	  recommended way of using PulseAudio unless you are building a
+	  headless system.
+
+endif
+
+comment "pulseaudio needs a toolchain w/ wchar, threads, dynamic library"
+	depends on BR2_USE_MMU
+	depends on BR2_ARCH_HAS_ATOMICS
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS

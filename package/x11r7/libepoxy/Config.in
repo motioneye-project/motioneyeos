@@ -1,0 +1,7 @@
+config BR2_PACKAGE_LIBEPOXY
+	bool "epoxy"
+	depends on BR2_PACKAGE_MESA3D
+	help
+	  Epoxy is a library for handling OpenGL function pointer management for you.
+
+	  https://github.com/anholt/libepoxy

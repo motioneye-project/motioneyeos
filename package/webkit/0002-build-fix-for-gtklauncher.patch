@@ -1,0 +1,51 @@
+Make gstreamer support conditional
+
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+
+From f1055f61bce46eccf8dc0aa017113a08d3d71944 Mon Sep 17 00:00:00 2001
+From: "commit-queue@webkit.org"
+ <commit-queue@webkit.org@268f45cc-cd09-0410-ab3c-d52691b4dbfc>
+Date: Fri, 15 Mar 2013 07:13:51 +0000
+Subject: [PATCH] Build fix for Tools/GtkLauncher/Programs_GtkLauncher-main.o
+ if gstreamer is not installed https://bugs.webkit.org/show_bug.cgi?id=112394
+
+Patch by Tobias Mueller <tobiasmue@gnome.org> on 2013-03-15
+Reviewed by Philippe Normand.
+
+* GtkLauncher/main.c:
+(main): Guard using the gstreamer function with #ifdef WTF_USE_GSTREAMER
+
+git-svn-id: http://svn.webkit.org/repository/webkit/trunk@145881 268f45cc-cd09-0410-ab3c-d52691b4dbfc
+---
+ Tools/ChangeLog          | 10 ++++++++++
+ Tools/GtkLauncher/main.c |  5 ++++-
+ 2 files changed, 14 insertions(+), 1 deletion(-)
+
+diff --git a/Tools/GtkLauncher/main.c b/Tools/GtkLauncher/main.c
+index 32baf4a..84c8833 100644
+--- a/Tools/GtkLauncher/main.c
++++ b/Tools/GtkLauncher/main.c
+@@ -28,7 +28,9 @@
+ #include "autotoolsconfig.h"
+ #include "LauncherInspectorWindow.h"
+ #include <errno.h>
++#ifdef WTF_USE_GSTREAMER
+ #include <gst/gst.h>
++#endif
+ #include <gtk/gtk.h>
+ #include <stdlib.h>
+ #include <string.h>
+@@ -489,8 +491,9 @@ int main(int argc, char* argv[])
+     GOptionContext *context = g_option_context_new(0);
+     g_option_context_add_main_entries(context, commandLineOptions, 0);
+     g_option_context_add_group(context, gtk_get_option_group(TRUE));
++#ifdef WTF_USE_GSTREAMER
+     g_option_context_add_group(context, gst_init_get_option_group());
+-
++#endif
+     webkitSettings = webkit_web_settings_new();
+     g_object_set(webkitSettings, "enable-developer-extras", TRUE, NULL);
+     if (!addWebSettingsGroupToContext(context, webkitSettings)) {
+-- 
+1.8.3.2
+

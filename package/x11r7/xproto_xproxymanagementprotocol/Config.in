@@ -1,0 +1,6 @@
+config BR2_PACKAGE_XPROTO_XPROXYMANAGEMENTPROTOCOL
+	bool "xproxymanagementprotocol"
+	help
+	  The Proxy Management Protocol is an ICE based protocol that
+	  provides a way for application servers to easily locate
+	  proxy services available to them.

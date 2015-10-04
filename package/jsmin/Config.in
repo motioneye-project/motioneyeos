@@ -1,0 +1,11 @@
+config BR2_PACKAGE_JSMIN
+	bool "jsmin"
+	help
+	  JSMin is a filter which removes comments and unnecessary
+	  whitespace from JavaScript files. It typically reduces
+	  filesize by half, resulting in faster downloads. It also
+	  encourages a more expressive programming style because it
+	  eliminates the download cost of clean, literate
+	  self-documentation.
+
+	  http://www.crockford.com/javascript/jsmin.html

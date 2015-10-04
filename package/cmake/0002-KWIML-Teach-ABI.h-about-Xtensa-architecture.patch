@@ -1,0 +1,30 @@
+From ded79a976e2b63bbfd7a63f27ec00bd071410e27 Mon Sep 17 00:00:00 2001
+From: Max Filippov <jcmvbkbc@gmail.com>
+Date: Tue, 17 Mar 2015 15:51:04 +0300
+Subject: [PATCH] KWIML: Teach ABI.h about Xtensa architecture
+
+Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
+---
+ Utilities/KWIML/ABI.h.in | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/Utilities/KWIML/ABI.h.in b/Utilities/KWIML/ABI.h.in
+index 21c9139..6300ada 100644
+--- a/Utilities/KWIML/ABI.h.in
++++ b/Utilities/KWIML/ABI.h.in
+@@ -432,6 +432,12 @@ suppression macro @KWIML@_ABI_NO_VERIFY was defined.
+ #  define @KWIML@_ABI_ENDIAN_ID @KWIML@_ABI_ENDIAN_ID_BIG
+ # endif
+ 
++/* Xtensa */
++#elif defined(__XTENSA_EB__)
++# define @KWIML@_ABI_ENDIAN_ID @KWIML@_ABI_ENDIAN_ID_BIG
++#elif defined(__XTENSA_EL__)
++# define @KWIML@_ABI_ENDIAN_ID @KWIML@_ABI_ENDIAN_ID_LITTLE
++
+ /* Unknown CPU */
+ #elif !defined(@KWIML@_ABI_NO_ERROR_ENDIAN)
+ # error "Byte order of target CPU unknown."
+-- 
+1.8.1.4
+

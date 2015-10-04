@@ -1,0 +1,14 @@
+config BR2_PACKAGE_CPPUNIT
+	bool "cppunit"
+	depends on BR2_INSTALL_LIBSTDCPP
+	# currently the static situation is not correctly detected.
+	depends on !BR2_STATIC_LIBS
+	help
+	  CppUnit is the C++ port of the famous JUnit framework for
+	  unit testing. Test output is in XML or text format for
+	  automatic testing and GUI based for supervised tests.
+
+	  http://www.freedesktop.org/wiki/Software/cppunit/
+
+comment "cppunit needs a toolchain w/ C++, dynamic library"
+	depends on !BR2_INSTALL_LIBSTDCPP || BR2_STATIC_LIBS

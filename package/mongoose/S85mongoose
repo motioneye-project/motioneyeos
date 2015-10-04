@@ -1,0 +1,41 @@
+#!/bin/sh
+#
+# Start/stop the mongoose HTTP server
+#
+
+set -e
+
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+NAME=mongoose
+DESC="Mongoose HTTP server"
+
+DAEMON=`which mongoose`
+OPTIONS="-document_root /var/www -listening_port 80"
+
+[ -e /etc/default/mongoose ] && . /etc/default/mongoose
+
+case "$1" in
+  start)
+	echo "Starting $DESC:"
+	start-stop-daemon -S -x "$DAEMON" -b -- $OPTIONS
+	echo "$NAME."
+	;;
+  stop)
+	echo -n "Stopping $DESC: "
+	start-stop-daemon -K -x "$DAEMON"
+	echo "$NAME."
+	;;
+  restart|force-reload)
+	echo -n "Restarting $DESC: "
+	start-stop-daemon -K -x "$DAEMON"
+	sleep 1
+	start-stop-daemon -S -x "$DAEMON" -b -- $OPTIONS
+	echo "$NAME."
+	;;
+  *)
+	echo "Usage: $0 {start|stop|restart|force-reload}" >&2
+	exit 1
+	;;
+esac
+
+exit 0

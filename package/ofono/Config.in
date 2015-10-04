@@ -1,0 +1,22 @@
+config BR2_PACKAGE_OFONO
+	bool "ofono"
+	depends on BR2_USE_WCHAR # gettext, libglib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # dbus, libglib2
+	depends on BR2_USE_MMU # dbus, libglib2
+	depends on !BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_NIOSII201405 # libcap-ng
+	depends on !BR2_STATIC_LIBS # dlopen()
+	select BR2_PACKAGE_LIBCAP_NG
+	select BR2_PACKAGE_DBUS
+	select BR2_PACKAGE_LIBGLIB2
+	select BR2_PACKAGE_MOBILE_BROADBAND_PROVIDER_INFO
+	help
+	  oFono is a free, open source project for mobile telephony
+	  (GSM/UMTS) applications. It uses high-level D-Bus API for
+	  use by telephony applications. It uses 3GPP standard.
+
+	  http://ofono.org/
+
+comment "ofono needs a toolchain w/ dynamic library, wchar, threads"
+	depends on BR2_USE_MMU
+	depends on BR2_STATIC_LIBS || !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_NIOSII201405

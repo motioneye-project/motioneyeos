@@ -1,0 +1,218 @@
+From 64dd780905ae339a0a57e4aba541799016816a1a Mon Sep 17 00:00:00 2001
+From: Darik Horn <dajhorn@vanadac.com>
+Date: Fri, 3 Oct 2014 13:30:24 -0400
+Subject: [PATCH] Create a non-forking softetherd for upstart and systemd.
+
+Implement a daemon that expects to be invoked by a new-style init like upstart
+or systemd as:
+
+	/usr/sbin/softetherd [vpnbridge|vpnclient|vpnserver]
+
+Alternatively, if the command line argument is empty, then use the
+`SOFTETHER_MODE` environment variable instead.
+
+Conflicts:
+	src/bin/hamcore/strtable_en.stb
+
+Taken from Github at
+https://github.com/dajhorn/SoftEtherVPN/commit/64dd780905ae339a0a57e4aba541799016816a1a.
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ configure.ac                    |   1 +
+ src/Makefile.am                 |   3 ++
+ src/bin/hamcore/strtable_en.stb |   1 +
+ src/softetherd/Makefile.am      |  28 ++++++++++
+ src/softetherd/softetherd.c     | 114 ++++++++++++++++++++++++++++++++++++++++
+ 5 files changed, 147 insertions(+)
+ create mode 100644 src/softetherd/Makefile.am
+ create mode 100644 src/softetherd/softetherd.c
+
+Index: b/configure.ac
+===================================================================
+--- a/configure.ac
++++ b/configure.ac
+@@ -36,6 +36,7 @@
+ 	src/vpnclient/Makefile
+ 	src/vpnbridge/Makefile
+ 	src/vpncmd/Makefile
++	src/softetherd/Makefile
+ ])
+ 
+ 
+Index: b/src/Makefile.am
+===================================================================
+--- a/src/Makefile.am
++++ b/src/Makefile.am
+@@ -27,3 +27,6 @@
+ 
+ # These are the final build products.
+ SUBDIRS += vpnserver vpnclient vpnbridge vpncmd
++
++# This is a daemon for upstart and systemd.
++SUBDIRS += softetherd
+Index: b/src/bin/hamcore/strtable_en.stb
+===================================================================
+--- a/src/bin/hamcore/strtable_en.stb
++++ b/src/bin/hamcore/strtable_en.stb
+@@ -1062,6 +1062,7 @@
+ 
+ 
+ # Concerning services (UNIX)
++UNIX_DAEMON_HELP		SoftEther VPN non-forking daemon for upstart and systemd.\nCommand Usage:\n %S vpnbridge  - Enable bridging features.\n %S vpnclient  - Enable client features.\n %S vpnserver  - Enable all features.\nThe parameter can be set in the SOFTETHER_MODE environment variable.\n\n
+ UNIX_SVC_HELP			%S service program\nCopyright (c) SoftEther VPN Project. All Rights Reserved.\n\n%S command usage:\n %S start  - Start the %S service.\n %S stop   - Stop the %S service if the service has been already started.\n\n
+ UNIX_SVC_STARTED		The %S service has been started.\n
+ UNIX_SVC_STOPPING		Stopping the %S service ...\n
+Index: b/src/softetherd/Makefile.am
+===================================================================
+--- /dev/null
++++ b/src/softetherd/Makefile.am
+@@ -0,0 +1,28 @@
++#  Copyright 2014 Darik Horn <dajhorn@vanadac.com>
++#
++#  This file is part of SoftEther.
++#
++#  SoftEther is free software: you can redistribute it and/or modify it under
++#  the terms of the GNU General Public License as published by the Free 
++#  Software Foundation, either version 2 of the License, or (at your option)
++#  any later version.
++#
++#  SoftEther is distributed in the hope that it will be useful, but WITHOUT ANY
++#  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
++#  FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
++#  details.
++#
++#  You should have received a copy of the GNU General Public License along with
++#  SoftEther.  If not, see <http://www.gnu.org/licenses/>.
++
++
++include $(top_srcdir)/autotools/softether.am
++
++sbin_PROGRAMS = \
++	softetherd
++
++softetherd_SOURCES = \
++	softetherd.c
++
++softetherd_LDADD = \
++	$(top_builddir)/src/libsoftether/libsoftether.la
+Index: b/src/softetherd/softetherd.c
+===================================================================
+--- /dev/null
++++ b/src/softetherd/softetherd.c
+@@ -0,0 +1,114 @@
++//  SoftEther VPN daemon for upstart and systemd.
++//
++//  Copyright 2014 Darik Horn <dajhorn@vanadac.com>
++//
++//  This file is part of SoftEther.
++//
++//  SoftEther is free software: you can redistribute it and/or modify it under
++//  the terms of the GNU General Public License as published by the Free 
++//  Software Foundation, either version 2 of the License, or (at your option)
++//  any later version.
++//
++//  SoftEther is distributed in the hope that it will be useful, but WITHOUT ANY
++//  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
++//  FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
++//  details.
++//
++//  You should have received a copy of the GNU General Public License along with
++//  SoftEther.  If not, see <http://www.gnu.org/licenses/>.
++
++
++#include <GlobalConst.h>
++
++#define	VPN_EXE
++
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <wchar.h>
++#include <stdarg.h>
++#include <time.h>
++#include <Mayaqua/Mayaqua.h>
++#include <Cedar/Cedar.h>
++
++void DaemonUsage(char *name)
++{
++	UniPrint(_UU("UNIX_DAEMON_HELP"), name, name, name);
++}
++
++
++void DaemonStartProcess()
++{
++	// This environment variable is exported by upstart.
++	char *upstart_job = getenv("UPSTART_JOB");
++
++	InitCedar();
++	StInit();
++	StStartServer(false);
++
++	// Notify upstart that softetherd is ready.
++	if (upstart_job != NULL)
++	{
++		unsetenv("UPSTART_JOB");
++		raise(SIGSTOP);
++	}
++}
++
++
++void DaemonStopProcess()
++{
++	StStopServer();
++	StFree();
++	FreeCedar();
++}
++
++
++int main(int argc, char *argv[])
++{
++	// This environment variable is sourced and exported by the init process from /etc/default/softether.
++	char *softether_mode = getenv("SOFTETHER_MODE");
++
++	InitMayaqua(false, false, argc, argv);
++
++	// Check for an explicit invocation. (eg: "/usr/sbin/softetherd vpnserver")
++	if (argc >= 2)
++	{
++		if (StrCmpi(argv[1], "vpnbridge") == 0
++		 || StrCmpi(argv[1], "vpnclient") == 0
++		 || StrCmpi(argv[1], "vpnserver") == 0)
++		{
++			UnixExecService(argv[1], DaemonStartProcess, DaemonStopProcess);
++			FreeMayaqua();
++			return 0;
++		}
++
++		// Exit status codes 150..199 are reserved for the application by the LSB.
++		fprintf(stderr, "Error: Unrecognized parameter: %s\n", argv[1]);
++		fflush(stderr);
++		FreeMayaqua();
++		return 150;
++	}
++
++	// Alternatively, use the environment variable.
++	if (softether_mode != NULL)
++	{
++		if (StrCmpi(softether_mode, "vpnbridge") == 0 
++		 || StrCmpi(softether_mode, "vpnclient") == 0
++		 || StrCmpi(softether_mode, "vpnserver") == 0)
++		{
++			UnixExecService(softether_mode, DaemonStartProcess, DaemonStopProcess);
++			FreeMayaqua();
++			return 0;
++		}
++
++		// Exit status codes 150..199 are reserved for the application by the LSB.
++		fprintf(stderr, "Error: Unrecognized environment variable: SOFTETHER_MODE=%s\n", softether_mode);
++		fflush(stderr);
++		FreeMayaqua();
++		return 151;
++	}
++
++	DaemonUsage(argv[0]);
++	FreeMayaqua();
++	return 3;
++}

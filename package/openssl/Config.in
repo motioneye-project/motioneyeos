@@ -1,0 +1,28 @@
+config BR2_PACKAGE_OPENSSL
+	bool "openssl"
+	select BR2_PACKAGE_ZLIB
+	help
+	  A collaborative effort to develop a robust, commercial-grade, fully
+	  featured, and Open Source toolkit implementing the Secure Sockets
+	  Layer (SSL v2/v3) and Transport Security (TLS v1) as well as a
+	  full-strength general-purpose cryptography library.
+
+	  http://www.openssl.org/
+
+	  Note: Some helper scripts need perl.
+
+if BR2_PACKAGE_OPENSSL
+
+config BR2_PACKAGE_OPENSSL_BIN
+	bool "openssl binary"
+	help
+	  Install the openssl binary and the associated helper scripts to the
+	  target file system. This is a command line tool for doing various
+	  cryptographic stuff.
+
+config BR2_PACKAGE_OPENSSL_ENGINES
+	bool "openssl additional engines"
+	help
+	  Install additional encryption engine libraries.
+
+endif

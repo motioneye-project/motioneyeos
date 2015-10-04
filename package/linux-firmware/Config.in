@@ -1,0 +1,262 @@
+config BR2_PACKAGE_LINUX_FIRMWARE
+	bool "linux-firmware"
+	help
+	  This package provides various binary firmware files (closed
+	  binary blobs) for such devices like LAN, WLAN cards etc.
+
+	  https://git.kernel.org/?p=linux/kernel/git/firmware/linux-firmware.git
+
+if BR2_PACKAGE_LINUX_FIRMWARE
+
+menu "Audio firmware"
+
+config BR2_PACKAGE_LINUX_FIRMWARE_INTEL_SST_DSP
+	bool "Intel SST DSP"
+	help
+	  Firmware files for Intel Baytrail SST DSP audio.
+
+endmenu # Audio
+
+menu "Video firmware"
+
+config BR2_PACKAGE_LINUX_FIRMWARE_RADEON
+	bool "AMD Radeon video card firmware"
+	help
+	  Firmware files for AMD Radeon video cards.
+
+endmenu # Video
+
+menu "WiFi firmware"
+
+config BR2_PACKAGE_LINUX_FIRMWARE_ATHEROS_6002
+	bool "Atheros 6002"
+	help
+	  Firmware files for the Atheros AR6002 chip
+
+config BR2_PACKAGE_LINUX_FIRMWARE_ATHEROS_6003
+	bool "Atheros 6003"
+	help
+	  Firmware files for the Atheros AR6003 chip
+
+config BR2_PACKAGE_LINUX_FIRMWARE_ATHEROS_6004
+	bool "Atheros 6004"
+	help
+	  Firmware files for the Atheros AR6004 chip
+
+config BR2_PACKAGE_LINUX_FIRMWARE_ATHEROS_7010
+	bool "Atheros 7010"
+	help
+	  Firmware files for the Atheros 7010 module
+
+config BR2_PACKAGE_LINUX_FIRMWARE_ATHEROS_9170
+	bool "Atheros 9170"
+	help
+	  Firmware files for the Atheros 9170 module
+
+config BR2_PACKAGE_LINUX_FIRMWARE_ATHEROS_9271
+	bool "Atheros 9271"
+	help
+	  Firmware files for the Atheros 9271 module
+
+config BR2_PACKAGE_LINUX_FIRMWARE_BRCM_BCM43XX
+	bool "Broadcom BRCM bcm43xx"
+	help
+	  Firmware files for the Broadcom bcm43xx SoftMAC and FullMAC.
+
+config BR2_PACKAGE_LINUX_FIRMWARE_BRCM_BCM43XXX
+	bool "Broadcom BRCM bcm43xxx"
+	help
+	  Firmware files for the Broadcom bcm43xxx, SoftMAC and FullMAC.
+
+config BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_3160
+	bool "Intel iwlwifi 3160"
+	select BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_NEED_REV
+	help
+	  Firmware files for the Intel Wifi 3160 devices supported by
+	  the iwlwifi kernel driver.
+
+config BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_5000
+	bool "Intel iwlwifi 5000"
+	help
+	  Firmware files for the Intel Wifi 5000 devices supported by
+	  the iwlwifi kernel driver.
+
+config BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_6000G2A
+	bool "Intel iwlwifi 6000G2A"
+	help
+	  Firmware files for the Intel Wifi 6000G2A devices supported by
+	  the iwlwifi kernel driver.
+
+config BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_7260
+	bool "Intel iwlwifi 7260"
+	select BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_NEED_REV
+	help
+	  Firmware files for the Intel Wifi 7260 devices supported by
+	  the iwlwifi kernel driver.
+
+config BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_7265
+	bool "Intel iwlwifi 7265"
+	select BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_NEED_REV
+	help
+	  Firmware files for the Intel Wifi 7265 devices supported by
+	  the iwlwifi kernel driver.
+
+config BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_NEED_REV
+	bool
+
+if BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_NEED_REV
+
+choice
+	bool "iwlwifi 3160/726x revision to use"
+	help
+	  Use revision 7 for kernel 3.10 to 3.12.
+	  Use revision 8 for kernel 3.13 to 3.15.
+	  Use revision 9 for kernel 3.16 onward.
+
+config BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_REV_7
+	prompt "revision 7"
+	depends on !BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_7265
+	help
+	  Use revision 7 for kernel 3.10 to 3.12.
+
+config BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_REV_8
+	prompt "revision 8"
+	help
+	  Use revision 8 for kernel 3.13 to 3.15.
+
+config BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_REV_9
+	prompt "revision 9"
+	help
+	  Use revision 9 for kernel 3.16 onward.
+
+endchoice
+
+config BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_REV
+	int
+	default 7 if BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_REV_7
+	default 8 if BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_REV_8
+	default 9 if BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_REV_9
+
+endif # iwlwifi 3160/7260
+
+config BR2_PACKAGE_LINUX_FIRMWARE_LIBERTAS_SD8686_V8
+	bool "Libertas SD 8686 v8"
+	help
+	  Firmware files (version 8) for the Marvell SD8686 module
+
+config BR2_PACKAGE_LINUX_FIRMWARE_LIBERTAS_SD8686_V9
+	bool "Libertas SD 8686 v9"
+	help
+	  Firmware files (version 9) for the Marvell SD8686 module
+
+config BR2_PACKAGE_LINUX_FIRMWARE_LIBERTAS_SD8688
+	bool "Libertas SD 8688"
+	help
+	  Firmware files for the Marvell SD8688 module
+
+config BR2_PACKAGE_LINUX_FIRMWARE_MWIFIEX_SD8787
+	bool "Marvell Wifi-Ex SD 8787"
+	help
+	  Firmware files for the Marvell Wifi-Ex 8787 module on SDIO.
+
+config BR2_PACKAGE_LINUX_FIRMWARE_RALINK_RT61
+	bool "Ralink rt2501/rt61"
+	help
+	  Ralink rt2501/rt61
+
+config BR2_PACKAGE_LINUX_FIRMWARE_RALINK_RT73
+	bool "Ralink rt73"
+	help
+	  Ralink rt73
+
+config BR2_PACKAGE_LINUX_FIRMWARE_RALINK_RT2XX
+	bool "Ralink rt27xx/rt28xx/rt30xx"
+	help
+	  Ralink rt27xx/rt28xx/rt30xx
+
+config BR2_PACKAGE_LINUX_FIRMWARE_RTL_81XX
+	bool "Realtek 81xx"
+	help
+	  Realtek 8188/8192
+
+config BR2_PACKAGE_LINUX_FIRMWARE_RTL_87XX
+	bool "Realtek 87xx"
+	help
+	  Realtek 8712/8723/8723be
+
+config BR2_PACKAGE_LINUX_FIRMWARE_RTL_88XX
+	bool "Realtek 88xx"
+	help
+	  Realtek rtl8821ae
+
+config BR2_PACKAGE_LINUX_FIRMWARE_TI_WL127X
+	bool "TI wl127x"
+	help
+	  Firmware files for WLAN and Bluetooth modules wl1271 and wl1273
+
+config BR2_PACKAGE_LINUX_FIRMWARE_TI_WL128X
+	bool "TI wl128x"
+	help
+	  Firmware files for WLAN and Bluetooth modules wl128x
+
+config BR2_PACKAGE_LINUX_FIRMWARE_TI_WL18XX
+	bool "TI wl18xx"
+	help
+	  Firmware files for WLAN and Bluetooth modules wl18xx
+
+endmenu
+
+menu "Ethernet firmware"
+
+config BR2_PACKAGE_LINUX_FIRMWARE_BNX2X
+	bool "Broadcom NetXtremeII"
+	help
+	  Firmware files for Broadcom NetXtreme 10Gb ethernet cards (bnx2x)
+
+config BR2_PACKAGE_LINUX_FIRMWARE_CXGB4_T4
+	bool "Chelsio T4"
+	help
+	  Firmware files for Chelsio T4 1Gb and 10Gb ethernet cards (cxgb4)
+
+config BR2_PACKAGE_LINUX_FIRMWARE_CXGB4_T5
+	bool "Chelsio T5"
+	help
+	  Firmware files for Chelsio T5 1Gb and 10Gb ethernet cards (cxgb4)
+
+config BR2_PACKAGE_LINUX_FIRMWARE_RTL_8169
+	bool "Realtek 8169"
+	help
+	  Firmware files for Realtek 8169 gigabit ethernet cards
+
+endmenu
+
+menu "DVB firmware"
+
+config BR2_PACKAGE_LINUX_FIRMWARE_AS102
+	bool "Abilis Systems as102"
+	help
+	  Firmware file for Abilis Systems single DVB-T receiver as102
+
+config BR2_PACKAGE_LINUX_FIRMWARE_DIB0700
+	bool "DiBcom dib0700"
+	help
+	  Firmware file for dib0700-based USB DVB tuner driver
+
+config BR2_PACKAGE_LINUX_FIRMWARE_ITETECH_IT9135
+	bool "ITEtech it9135"
+	help
+	  Firmware files for ITEtech it9135 (Ax and Bx) DVB-T USB tuner
+
+config BR2_PACKAGE_LINUX_FIRMWARE_H5_DRXK
+	bool "Terratec H5 DRX-K"
+	help
+	  Firmware file for Terratec H5 DRX-K based DVB tuner driver
+
+config BR2_PACKAGE_LINUX_FIRMWARE_XCx000
+	bool "Xceive/Cresta xc4000/xc5000/xc500c"
+	help
+	  Firmware file for xc4000/xc5000/xc5000c based DVB tuner driver
+
+endmenu
+
+endif

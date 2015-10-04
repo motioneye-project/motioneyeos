@@ -1,0 +1,7 @@
+config BR2_PACKAGE_NCDU
+	bool "ncdu"
+	select BR2_PACKAGE_NCURSES
+	help
+	  ncdu is a disk usage analyzer with an ncurses interface
+
+	  http://dev.yorhel.nl/ncdu

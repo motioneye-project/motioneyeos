@@ -1,0 +1,19 @@
+#!/bin/sh
+
+PATH=/bin:/usr/bin:/sbin:/usr/sbin
+motioneye_conf=/data/etc/motioneye.conf
+
+test -f $motioneye_conf || exit 0
+
+if grep 'log-level debug' $motioneye_conf >/dev/null; then
+    echo -n "Remounting boot partition read-write: "
+    mount -o remount,rw /boot
+    [ $? == 0 ] && echo "done" || echo "failed"
+
+    echo -n "Remounting root partition read-write: "
+    mount -o remount,rw /
+    [ $? == 0 ] && echo "done" || echo "failed"
+fi
+
+exit 0
+

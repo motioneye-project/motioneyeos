@@ -1,0 +1,40 @@
+From b2ac6e42f0790bbe1704c468e740cb26293579a7 Mon Sep 17 00:00:00 2001
+From: Peter Seiderer <ps.report@gmx.net>
+Date: Thu, 29 May 2014 21:29:18 +0200
+Subject: [PATCH] configure.ac: change fltk-config test to be more
+ crosscompile/buildroot friendly
+
+Change fltk-config usage as suggested by Thomas Petazzoni [1].
+
+[1] http://lists.busybox.net/pipermail/buildroot/2014-May/097607.html
+
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+---
+ configure.ac | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index e3ace75..e1f4b6e 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -112,12 +112,13 @@ dnl -------------------------
+ dnl
+ dnl For debugging and to be user friendly
+ AC_MSG_CHECKING([FLTK 1.3])
+-fltk_version="`fltk-config --version 2>/dev/null`"
++AC_PATH_PROG(FLTK_CONFIG,fltk-config)
++fltk_version="`$FLTK_CONFIG --version 2>/dev/null`"
+ case $fltk_version in
+   1.3.*) AC_MSG_RESULT(yes)
+-         LIBFLTK_CXXFLAGS=`fltk-config --cxxflags`
+-         LIBFLTK_CFLAGS=`fltk-config --cflags`
+-         LIBFLTK_LIBS=`fltk-config --ldflags`;;
++         LIBFLTK_CXXFLAGS=`$FLTK_CONFIG --cxxflags`
++         LIBFLTK_CFLAGS=`$FLTK_CONFIG --cflags`
++         LIBFLTK_LIBS=`$FLTK_CONFIG --ldflags`;;
+   ?*)    AC_MSG_RESULT(no)
+          AC_MSG_ERROR(FLTK 1.3 required; version found: $fltk_version);;
+   *)     AC_MSG_RESULT(no)
+-- 
+1.8.1.4
+

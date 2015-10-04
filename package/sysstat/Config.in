@@ -1,0 +1,41 @@
+config BR2_PACKAGE_SYSSTAT
+	bool "sysstat"
+	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE
+	# Uses fork()
+	depends on BR2_USE_MMU
+	help
+	  The sysstat utilities are a collection of performance
+	  monitoring tools for Linux. These include sar, sadf, mpstat,
+	  iostat, pidstat and sa tools.
+
+	  Some Features :
+
+	   * Input / Output and transfer rate statistics (global, per
+	     device, per partition, per network filesystem and per
+	     Linux task / PID)
+	   * CPU statistics (global, per CPU and per Linux task /
+	     PID), including support for virtualization architectures
+	   * Memory and swap space utilization statistics
+	   * Virtual memory, paging and fault statistics
+	   * Per-task (per-PID) memory and page fault statistics
+	   * Global CPU and page fault statistics for tasks and all
+	     their children
+	   * Process creation activity
+	   * Interrupt statistics (global, per CPU and per interrupt,
+	     including potential APIC interrupt sources)
+	   * Extensive network statistics: network interface activity
+	     (number of packets and kB received and transmitted per
+	     second, etc.) including failures from network devices;
+	     network traffic statistics for IP, TCP, ICMP and UDP
+	     protocols based on SNMPv2 standards; support for
+	     IPv6-related protocols.
+	   * NFS server and client activity
+	   * Socket statistics
+	   * Run queue and system load statistics
+	   * Kernel internal tables utilization statistics
+	   * System and per Linux task switching activity
+	   * Swapping statistics
+	   * TTY device activity
+	   * Power management statistics
+
+	  http://pagesperso-orange.fr/sebastien.godard/

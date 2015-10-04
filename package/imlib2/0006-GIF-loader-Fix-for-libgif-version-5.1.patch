@@ -1,0 +1,44 @@
+From aa16abfa6c0198668b6a4e101fde8b42ec9cdb68 Mon Sep 17 00:00:00 2001
+From: Heiko Becker <heirecka@exherbo.org>
+Date: Mon, 13 Oct 2014 17:41:25 +0200
+Subject: [PATCH 6/6] GIF loader: Fix for libgif version 5.1
+
+Summary:
+From giflib-5.1.0's NEWS:
+"A small change to the API: DGifClose() and EGifClose() now take a
+pointer-to-int second argument (like the corresponding openers)
+where a diagnostic code will be deposited when they return
+GIF_ERROR."
+
+Test Plan:
+I've built imlib2 against giflib-4.2.3 and 5.1.0 and opened a few
+gif files with feh.
+
+Reviewers: kwo
+
+Reviewed By: kwo
+
+Differential Revision: https://phab.enlightenment.org/D1529
+---
+ src/modules/loaders/loader_gif.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/src/modules/loaders/loader_gif.c b/src/modules/loaders/loader_gif.c
+index a39c860..c53f62c 100644
+--- a/src/modules/loaders/loader_gif.c
++++ b/src/modules/loaders/loader_gif.c
+@@ -193,7 +193,11 @@ load(ImlibImage * im, ImlibProgressFunction progress, char progress_granularity,
+    free(rows);
+ 
+  quit2:
++#if GIFLIB_MAJOR > 5 || (GIFLIB_MAJOR == 5 && GIFLIB_MINOR >= 1)
++   DGifCloseFile(gif, NULL);
++#else
+    DGifCloseFile(gif);
++#endif
+ 
+    return rc;
+ }
+-- 
+2.3.1
+

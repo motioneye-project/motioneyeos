@@ -1,0 +1,20 @@
+config BR2_PACKAGE_LIBNSS
+	bool "libnss"
+	select BR2_PACKAGE_LIBNSPR
+	select BR2_PACKAGE_SQLITE
+	select BR2_PACKAGE_ZLIB
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libnspr
+	depends on BR2_PACKAGE_LIBNSPR_ARCH_SUPPORT # libnspr
+	depends on !BR2_STATIC_LIBS
+	help
+	  Network Security Services (NSS) is a set of libraries designed
+	  to support development of security-enabled client and server
+	  applications. Applications built with NSS can support SSL v2
+	  and v3, TLS, PKCS #5, PKCS #7, PKCS #11, PKCS #12, S/MIME,
+	  and X.509 v3 certificates.
+
+	  http://www.mozilla.org/projects/security/pki/nss/
+
+comment "libnss needs a toolchain w/ threads, dynamic library"
+	depends on BR2_PACKAGE_LIBNSPR_ARCH_SUPPORT
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS

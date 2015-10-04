@@ -1,0 +1,55 @@
+Tweak PHP_SETUP_ICONV from aclocal/acinclude.m4 to not
+PHP_ADD_INCLUDE $ICONV_DIR/include since the tests use
+test instead of AC_TRY_LINK to find headers which is bad,
+specially when adding /usr and /usr/local to the mix.
+Do basically the same with ext/iconv/config.m4 by tweaking
+PHP_ICONV_H_PATH which, again, uses test and absolute paths.
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+[Gustavo: convert to nice m4 instead of patching configure]
+[Gustavo: update for 5.6.10]
+
+diff -Nura php-5.6.10.orig/acinclude.m4 php-5.6.10/acinclude.m4
+--- php-5.6.10.orig/acinclude.m4	2015-06-12 16:09:06.274355813 -0300
++++ php-5.6.10/acinclude.m4	2015-06-12 16:10:10.884544865 -0300
+@@ -2474,7 +2474,7 @@
+   dnl
+   if test "$found_iconv" = "no"; then
+ 
+-    for i in $PHP_ICONV /usr/local /usr; do
++    for i in $PHP_ICONV; do
+       if test -r $i/include/giconv.h; then
+         AC_DEFINE(HAVE_GICONV_H, 1, [ ])
+         ICONV_DIR=$i
+diff -Nura php-5.6.10.orig/ext/iconv/config.m4 php-5.6.10/ext/iconv/config.m4
+--- php-5.6.10.orig/ext/iconv/config.m4	2015-06-12 16:09:07.792407246 -0300
++++ php-5.6.10/ext/iconv/config.m4	2015-06-12 16:11:07.752471600 -0300
+@@ -14,28 +14,6 @@
+   ])
+ 
+   if test "$iconv_avail" != "no"; then
+-    if test -z "$ICONV_DIR"; then
+-      for i in /usr/local /usr; do
+-        if test -f "$i/include/iconv.h" || test -f "$i/include/giconv.h"; then
+-          PHP_ICONV_PREFIX="$i"
+-          break
+-        fi
+-      done
+-      if test -z "$PHP_ICONV_PREFIX"; then
+-        PHP_ICONV_PREFIX="/usr"
+-      fi
+-    else
+-      PHP_ICONV_PREFIX="$ICONV_DIR"
+-    fi
+-
+-    CFLAGS="-I$PHP_ICONV_PREFIX/include $CFLAGS"
+-    LDFLAGS="-L$PHP_ICONV_PREFIX/$PHP_LIBDIR $LDFLAGS"
+-
+-    if test -r "$PHP_ICONV_PREFIX/include/giconv.h"; then
+-      PHP_ICONV_H_PATH="$PHP_ICONV_PREFIX/include/giconv.h"
+-    else
+-      PHP_ICONV_H_PATH="$PHP_ICONV_PREFIX/include/iconv.h"
+-	fi
+ 
+     AC_MSG_CHECKING([if iconv is glibc's])
+     AC_TRY_LINK([#include <gnu/libc-version.h>],[gnu_get_libc_version();],

@@ -1,0 +1,39 @@
+From 29bfb6ac06b7304d326e3b70fc0209a702b89d83 Mon Sep 17 00:00:00 2001
+From: Baruch Siach <baruch@tkos.co.il>
+Subject: [PATCH] Revert "Use std namespace for snprintf."
+
+This reverts commit 1c58876185d2a4ed87dac4a54b82f607e74f55fd.
+
+std::snprintf() is only available in C++11, which is not provided by
+all compilers. Since the C library snprintf() can easily be used as a
+replacement on Linux systems, this patch changes jsoncpp to use the C
+library snprintf() instead of C++11 std::snprintf(), fixing the build error
+below:
+
+src/lib_json/json_writer.cpp:33:18: error: 'snprintf' is not a member of 'std'
+
+Upstream status: sent upstream
+package/jsoncpp/0001-Revert-Use-std-namespace-for-snprintf.patch
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+
+ src/lib_json/json_writer.cpp | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/src/lib_json/json_writer.cpp b/src/lib_json/json_writer.cpp
+index 83102fd2bb86..f7ad1e21bbc0 100644
+--- a/src/lib_json/json_writer.cpp
++++ b/src/lib_json/json_writer.cpp
+@@ -29,8 +29,6 @@
+ 
+ #if defined(_MSC_VER) && _MSC_VER < 1500 // VC++ 8.0 and below
+ #define snprintf _snprintf
+-#elif __cplusplus >= 201103L
+-#define snprintf std::snprintf
+ #endif
+ 
+ #if defined(_MSC_VER) && _MSC_VER >= 1400 // VC++ 8.0
+-- 
+2.1.4
+

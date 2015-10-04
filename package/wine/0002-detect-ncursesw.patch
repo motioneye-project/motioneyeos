@@ -1,0 +1,17 @@
+Detect libncursesw as well.
+Backport from upstream 8d4e1fa7d77636a88651c9d48a48d39fab931c49
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+diff -Nura wine-1.6.2.orig/configure.ac wine-1.6.2/configure.ac
+--- wine-1.6.2.orig/configure.ac	2015-05-01 09:24:24.741960685 -0300
++++ wine-1.6.2/configure.ac	2015-05-01 09:25:26.860069750 -0300
+@@ -1359,7 +1359,7 @@
+ CURSESLIBS=""
+ if test "$ac_cv_header_ncurses_h" = "yes"
+ then
+-    WINE_CHECK_SONAME(ncurses,waddch,[CURSESLIBS="-lncurses"])
++    WINE_CHECK_SONAME(ncurses,waddch,[CURSESLIBS="-lncurses"],,,[[libncursesw\\{0,1\\}]])
+ elif test "$ac_cv_header_curses_h" = "yes"
+ then
+     WINE_CHECK_SONAME(curses,waddch,[CURSESLIBS="-lcurses"])

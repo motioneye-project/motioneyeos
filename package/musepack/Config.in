@@ -1,0 +1,11 @@
+config BR2_PACKAGE_MUSEPACK
+	bool "musepack"
+	select BR2_PACKAGE_LIBCUEFILE
+	select BR2_PACKAGE_LIBREPLAYGAIN
+	help
+	  Musepack is an audio compression format with a strong emphasis
+	  on high quality. It's not lossless, but it is designed
+	  for transparency, so that you won't be able to hear differences
+	  between the original wave file and the much smaller MPC file.
+
+	  http://www.musepack.net/

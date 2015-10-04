@@ -1,0 +1,21 @@
+Preserve the cflags settings, because buildroot clobbers them.
+
+--- a/Makefile	2010-10-05 00:06:38.000000000 -0700
++++ b/Makefile	2010-10-05 00:15:27.000000000 -0700
+@@ -11,11 +11,14 @@ mandir ?= $(prefix)/usr/share/man
+ 
+ install_opts :=
+ 
+-CFLAGS += -Wall -std=gnu99 -DNP_ETC_DIR='"$(etcdir)"' \
++NETPLUG_CFLAGS += -Wall -std=gnu99 -DNP_ETC_DIR='"$(etcdir)"' \
+ 	-DNP_SCRIPT_DIR='"$(scriptdir)"' -ggdb3 -O3 -DNP_VERSION='"$(version)"'
+ 
++%.o: %.c
++	$(CC) $(NETPLUG_CFLAGS) $(CFLAGS) -c -o $@ $<
++
+ netplugd: config.o netlink.o lib.o if_info.o main.o
+-	$(CC) $(LDFLAGS) -o $@ $^
++	$(CC) $(LDFLAGS) -o $@ $(NETPLUG_CFLAGS) $^
+ 
+ install:
+ 	install -d $(install_opts) -m 755 \

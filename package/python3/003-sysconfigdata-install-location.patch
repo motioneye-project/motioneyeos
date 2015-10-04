@@ -1,0 +1,76 @@
+Change the install location of _sysconfigdata.py
+
+The _sysconfigdata.py module contains definitions that are needed when
+building Python modules. In cross-compilation mode, when building
+Python extensions for the target, we need to use the _sysconfigdata.py
+of the target Python while executing the host Python.
+
+However until now, the _sysconfigdata.py module was installed in
+build/lib.<arch>-<version> directory, together with a number of
+architecture-specific shared objects, which cannot be used with the
+host Python.
+
+To solve this problem, this patch moves _sysconfigdata.py to a
+separate location, build/sysconfigdata.<arch>-<version>/, and only
+this directory gets added to the PYTHONPATH of the host Python
+interpreter when building Python modules for the target.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/Makefile.pre.in
+===================================================================
+--- a/Makefile.pre.in
++++ b/Makefile.pre.in
+@@ -559,6 +559,9 @@
+ 		rm -f ./pybuilddir.txt ; \
+ 		exit 1 ; \
+ 	fi
++	echo `cat pybuilddir.txt`/sysconfigdata > pysysconfigdatadir.txt
++	mkdir -p `cat pysysconfigdatadir.txt`
++	cp `cat pybuilddir.txt`/_sysconfigdata.py `cat pysysconfigdatadir.txt`
+ 
+ # Build the shared modules
+ # Under GNU make, MAKEFLAGS are sorted and normalized; the 's' for
+@@ -1197,7 +1200,7 @@
+ 		else	true; \
+ 		fi; \
+ 	done
+-	@for i in $(srcdir)/Lib/*.py `cat pybuilddir.txt`/_sysconfigdata.py; \
++	@for i in $(srcdir)/Lib/*.py ; \
+ 	do \
+ 		if test -x $$i; then \
+ 			$(INSTALL_SCRIPT) $$i $(DESTDIR)$(LIBDEST); \
+@@ -1207,6 +1210,11 @@
+ 			echo $(INSTALL_DATA) $$i $(LIBDEST); \
+ 		fi; \
+ 	done
++	$(INSTALL_DATA) `cat pysysconfigdatadir.txt`/_sysconfigdata.py \
++		$(DESTDIR)$(LIBDEST)
++	mkdir -p $(DESTDIR)$(LIBDEST)/sysconfigdata
++	$(INSTALL_DATA) `cat pysysconfigdatadir.txt`/_sysconfigdata.py \
++		$(DESTDIR)$(LIBDEST)/sysconfigdata
+ 	@for d in $(LIBSUBDIRS); \
+ 	do \
+ 		a=$(srcdir)/Lib/$$d; \
+@@ -1533,7 +1541,7 @@
+ 	find build -name 'fficonfig.h' -exec rm -f {} ';' || true
+ 	find build -name '*.py' -exec rm -f {} ';' || true
+ 	find build -name '*.py[co]' -exec rm -f {} ';' || true
+-	-rm -f pybuilddir.txt
++	-rm -f pybuilddir.txt pysysconfigdatadir.txt
+ 	-rm -f Lib/lib2to3/*Grammar*.pickle
+ 	-rm -f Modules/_testembed Modules/_freeze_importlib
+ 
+Index: b/configure.ac
+===================================================================
+--- a/configure.ac
++++ b/configure.ac
+@@ -70,7 +70,7 @@
+ 	    AC_MSG_ERROR([python$PACKAGE_VERSION interpreter not found])
+ 	fi
+         AC_MSG_RESULT($interp)
+-	PYTHON_FOR_BUILD='_PYTHON_PROJECT_BASE=$(abs_builddir) _PYTHON_HOST_PLATFORM=$(_PYTHON_HOST_PLATFORM) PYTHONPATH=$(shell test -f pybuilddir.txt && echo $(abs_builddir)/`cat pybuilddir.txt`:)$(srcdir)/Lib:$(srcdir)/Lib/$(PLATDIR) '$interp
++	PYTHON_FOR_BUILD='_PYTHON_PROJECT_BASE=$(abs_builddir) _PYTHON_HOST_PLATFORM=$(_PYTHON_HOST_PLATFORM) PYTHONPATH=$(shell test -f pysysconfigdatadir.txt && echo $(abs_builddir)/`cat pysysconfigdatadir.txt`:)$(srcdir)/Lib:$(srcdir)/Lib/$(PLATDIR) '$interp
+     fi
+ elif test "$cross_compiling" = maybe; then
+     AC_MSG_ERROR([Cross compiling required --host=HOST-TUPLE and --build=ARCH])

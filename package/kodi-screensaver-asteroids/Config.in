@@ -1,0 +1,10 @@
+config BR2_PACKAGE_KODI_SCREENSAVER_ASTEROIDS
+	bool "kodi-screensaver-asteroids"
+	depends on BR2_PACKAGE_KODI_GL
+	help
+	  Asteroids screensaver for Kodi
+
+	  https://github.com/notspiff/screensaver.asteroids
+
+comment "kodi-screensaver-asteroids needs an OpenGL backend"
+	depends on !BR2_PACKAGE_KODI_GL

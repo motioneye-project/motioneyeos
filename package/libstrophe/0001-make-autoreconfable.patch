@@ -1,0 +1,13 @@
+Make the package autoreconfigurable
+
+Signed-off-by: Denis Bodor <lefinnois@lefinnois.net>
+
+diff -ur libstrophe.orig/Makefile.am libstrophe/Makefile.am
+--- libstrophe.orig/Makefile.am	2014-03-02 18:58:36.219753865 +0100
++++ libstrophe/Makefile.am	2014-03-02 18:58:02.739752477 +0100
+@@ -1,4 +1,4 @@
+-AUTOMAKE_OPTIONS = subdir-objects
++AUTOMAKE_OPTIONS = subdir-objects foreign
+ 
+ CFLAGS = -g -Wall
+ 

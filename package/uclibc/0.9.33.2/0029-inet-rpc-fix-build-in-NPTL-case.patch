@@ -1,0 +1,58 @@
+From 3a732cacd650bd39d86ac13ba0f57eee0df82d5a Mon Sep 17 00:00:00 2001
+From: Carmelo Amoroso <carmelo.amoroso@st.com>
+Date: Wed, 14 Mar 2012 15:21:36 +0100
+Subject: [PATCH] inet:rpc: fix build in !NPTL case
+
+__libc_once is not available / needed when multithreading support
+is not enabled, so authnone_create() calls authnone_create_once()
+directly.
+When LT.{old,new} is used instead of NPTL, it needs to explicitly
+include <bits/libc-lock.h> to get __libc_once to be visible.
+
+Signed-off-by: Carmelo Amoroso <carmelo.amoroso@st.com>
+---
+ libc/inet/rpc/auth_none.c   |    6 ++++++
+ libc/inet/rpc/rpc_private.h |    1 +
+ 2 files changed, 7 insertions(+)
+
+diff --git a/libc/inet/rpc/auth_none.c b/libc/inet/rpc/auth_none.c
+index d066f6b..70bee5b 100644
+--- a/libc/inet/rpc/auth_none.c
++++ b/libc/inet/rpc/auth_none.c
+@@ -68,7 +68,9 @@ struct authnone_private_s {
+ };
+ 
+ static struct authnone_private_s authnone_private;
++#ifdef __UCLIBC_HAS_THREADS__
+ __libc_once_define(static, authnone_private_guard);
++#endif
+ 
+ static void authnone_create_once (void);
+ 
+@@ -95,7 +97,11 @@ authnone_create_once (void)
+ AUTH *
+ authnone_create (void)
+ {
++#ifdef __UCLIBC_HAS_THREADS__
+   __libc_once (authnone_private_guard, authnone_create_once);
++#else
++  authnone_create_once();
++#endif
+   return &authnone_private.no_client;
+ }
+ libc_hidden_def(authnone_create)
+diff --git a/libc/inet/rpc/rpc_private.h b/libc/inet/rpc/rpc_private.h
+index e1214d2..38ade1c 100644
+--- a/libc/inet/rpc/rpc_private.h
++++ b/libc/inet/rpc/rpc_private.h
+@@ -12,6 +12,7 @@ extern u_long _create_xid (void) attribute_hidden;
+  */
+ #ifdef __UCLIBC_HAS_THREADS__
+ #include <pthread.h>
++#include <bits/libc-lock.h>
+ struct rpc_thread_variables {
+ 	fd_set		svc_fdset_s;		/* Global, rpc_common.c */
+ 	struct rpc_createerr rpc_createerr_s;	/* Global, rpc_common.c */
+-- 
+1.7.10.4
+

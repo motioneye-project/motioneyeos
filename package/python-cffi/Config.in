@@ -1,0 +1,9 @@
+config BR2_PACKAGE_PYTHON_CFFI
+	bool "python-cffi"
+	select BR2_PACKAGE_LIBFFI
+	help
+	  This is the Foreign Function Interface for Python calling C
+	  code. The aim of this project is to provide a convenient
+	  and reliable way of calling C code from Python.
+
+	  https://pypi.python.org/pypi/cffi

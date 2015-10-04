@@ -1,0 +1,11 @@
+config BR2_PACKAGE_SANE_BACKENDS
+	bool "sane-backends"
+	depends on BR2_USE_MMU # fork()
+	help
+	  SANE - Scanner Access Now Easy
+
+	  http://www.sane-project.org
+
+	  Backends are included automatically based on the libraries that have
+	  been selected: libusb, jpeg, tiff, avahi (with dbus and libglib2),
+	  and netsnmp.

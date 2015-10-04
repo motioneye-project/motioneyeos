@@ -1,0 +1,47 @@
+Do not build util/extract-strings
+
+Do not build util/extract-strings, as it will be built by host-libgtk3
+and installed in $(HOST_DIR)/usr/bin (thus avoiding the -lint linking
+issue with uClibc).
+
+Signed-off-by: Eric Le Bihan <eric.le.bihan.dev@free.fr>
+
+Index: gtk+-3.14.0/Makefile.am
+===================================================================
+--- gtk+-3.14.0.orig/Makefile.am	2014-09-22 05:17:44.000000000 +0200
++++ gtk+-3.14.0/Makefile.am	2014-09-25 16:08:32.000000000 +0200
+@@ -1,7 +1,7 @@
+ ## Makefile.am for GTK+
+ include $(top_srcdir)/Makefile.decl
+ 
+-SRC_SUBDIRS = util gdk gtk libgail-util modules demos tests testsuite examples
++SRC_SUBDIRS = gdk gtk libgail-util modules demos tests testsuite examples
+ SUBDIRS = po po-properties $(SRC_SUBDIRS) docs m4macros build
+ 
+ ACLOCAL_AMFLAGS = -I m4 ${ACLOCAL_FLAGS}
+Index: gtk+-3.14.0/gtk/Makefile.am
+===================================================================
+--- gtk+-3.14.0.orig/gtk/Makefile.am	2014-09-22 05:09:39.000000000 +0200
++++ gtk+-3.14.0/gtk/Makefile.am	2014-09-25 16:09:10.000000000 +0200
+@@ -1330,7 +1330,7 @@
+ 
+ %.ui.h: %.ui
+ 	$(AM_V_GEN) mkdir -p $(dir $@) \
+-	&& $(top_builddir)/util/extract-strings$(EXEEXT) $< > $@
++	&& extract-strings$(EXEEXT) $< > $@
+ 
+ #
+ # rules to generate built sources
+Index: gtk+-3.14.0/gtk/inspector/Makefile.am
+===================================================================
+--- gtk+-3.14.0.orig/gtk/inspector/Makefile.am	2014-09-04 20:11:33.000000000 +0200
++++ gtk+-3.14.0/gtk/inspector/Makefile.am	2014-09-25 16:09:48.000000000 +0200
+@@ -114,7 +114,7 @@
+ template_headers = $(templates:.ui=.ui.h)
+ 
+ %.ui.h : %.ui 
+-	$(AM_V_GEN) $(top_builddir)/util/extract-strings$(EXEEXT) $< > $@
++	$(AM_V_GEN) extract-strings$(EXEEXT) $< > $@
+ 
+ EXTRA_DIST += 				\
+ 	inspector.gresource.xml 	\

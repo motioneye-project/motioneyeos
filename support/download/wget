@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+# We want to catch any unexpected failure, and exit immediately
+set -e
+
+# Download helper for wget, to be called from the download wrapper script
+#
+# Call it as:
+#   .../wget [-q] OUT_FILE URL
+#
+# Environment:
+#   WGET     : the wget command to call
+
+verbose=
+while getopts :q OPT; do
+    case "${OPT}" in
+    q)  verbose=-q;;
+    \?) printf "unknown option '%s'\n" "${OPTARG}" >&2; exit 1;;
+    esac
+done
+shift $((OPTIND-1))
+
+output="${1}"
+url="${2}"
+
+${WGET} ${verbose} -O "${output}" "${url}"

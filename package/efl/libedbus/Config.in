@@ -1,0 +1,44 @@
+config BR2_PACKAGE_LIBEDBUS
+	bool "libedbus"
+	select BR2_PACKAGE_LIBEINA
+	select BR2_PACKAGE_LIBECORE
+	select BR2_PACKAGE_DBUS
+	depends on BR2_TOOLCHAIN_HAS_THREADS # dbus
+	depends on BR2_USE_MMU # dbus
+	help
+	  E_Dbus is a set of wrappers around D-Bus APIs so they can be
+	  easily used by EFL applications, automatically providing
+	  Ecore/main loop integration, as well as Eina data types.
+
+	  http://trac.enlightenment.org/e/wiki/E_Dbus
+
+if BR2_PACKAGE_LIBEDBUS
+
+config BR2_PACKAGE_LIBEDBUS_BLUEZ
+	bool "bluez support"
+	depends on !BR2_STATIC_LIBS # bluez_utils
+	depends on BR2_USE_WCHAR # bluez_utils -> glib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # bluez_utils -> glib2
+	select BR2_PACKAGE_BLUEZ_UTILS
+	help
+	  Bluetooth support.
+
+comment "bluez support needs a toolchain w/ wchar, threads, dynamic library"
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS
+
+config BR2_PACKAGE_LIBEDBUS_CONNMAN
+	bool "connman support"
+	depends on BR2_PACKAGE_CONNMAN
+	help
+	  Connection manager support.
+
+config BR2_PACKAGE_LIBEDBUS_NOTIFY
+	bool "notify support"
+	help
+	  Notify support.
+
+endif
+
+comment "libedbus needs a toolchain w/ threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_TOOLCHAIN_HAS_THREADS

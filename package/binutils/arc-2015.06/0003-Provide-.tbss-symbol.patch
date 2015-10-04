@@ -1,0 +1,70 @@
+From a6014a956a4f2263c28240bb9191bee8f924b5db Mon Sep 17 00:00:00 2001
+From: Claudiu Zissulescu <claziss@synopsys.com>
+Date: Tue, 28 Jul 2015 13:34:47 +0200
+Subject: [PATCH 2/2] Provide .tbss symbol
+
+---
+ ld/ChangeLog.ARC           | 14 +++++++++-----
+ ld/scripttempl/arclinux.sc |  2 +-
+ 2 files changed, 10 insertions(+), 6 deletions(-)
+
+diff --git a/ld/ChangeLog.ARC b/ld/ChangeLog.ARC
+index 0006bb3..fb5c717 100644
+--- a/ld/ChangeLog.ARC
++++ b/ld/ChangeLog.ARC
+@@ -1,8 +1,12 @@
++2015-07-28  Claudiu Zissulescu  <claziss@synopsys.com>
++
++	* scripttempl/arclinux.sc (.tbss): Provide the .tbss symbol.
++
+ 2015-07-23  Andrew Burgess  <andrew.burgess@embecosm.com>
+ 
+ 	* scripttempl/arclinux.sc (.tdata): Provide the .tdata symbol.
+ 
+-2015-03-26: Claudiu Zissulescu <claziss@synopsys.com>
++2015-03-26  Claudiu Zissulescu <claziss@synopsys.com>
+ 
+ 	* testsuite/ld-arc/sda_relocs.d: New file.
+ 	* testsuite/ld-arc/sda_relocs.ld: Likewise.
+@@ -13,21 +17,21 @@
+ 	* scripttempl/arclinux.sc: PROVIDE_HIDDEN .tdata (in case the
+ 	section won't be included).
+ 
+-2014-12-17: Claudiu Zissulescu <claziss@synopsys.com>
++2014-12-17  Claudiu Zissulescu  <claziss@synopsys.com>
+ 
+ 	* scripttempl/elfarcv2.sc: Update .startup section.
+ 
+-2014-12-08: Claudiu Zissulescu <claziss@synopsys.com>
++2014-12-08  Claudiu Zissulescu  <claziss@synopsys.com>
+ 
+ 	* emulparams/arcv2elf.sh :Add discarded sections.
+ 	* emulparams/arcv2elfb.sh: Likewise
+ 	* scripttempl/elfarcv2.sc: New sections.
+ 
+-2014-12-01: Claudiu Zissulescu <claziss@synopsys.com>
++2014-12-01  Claudiu Zissulescu  <claziss@synopsys.com>
+ 
+ 	* scripttempl/elfarcv2.sc: Align the start of the stack.
+ 
+-2014-11-27: Claudiu Zissulescu <claziss@synopsys.com>
++2014-11-27  Claudiu Zissulescu  <claziss@synopsys.com>
+ 
+ 	* Makefile.am: Add two new emulation scripts for ARCv2.
+ 	* configure.tgt: Likewise.
+diff --git a/ld/scripttempl/arclinux.sc b/ld/scripttempl/arclinux.sc
+index 1385b30..bef5336 100644
+--- a/ld/scripttempl/arclinux.sc
++++ b/ld/scripttempl/arclinux.sc
+@@ -327,7 +327,7 @@ cat <<EOF
+   /* TLS local dynamic uses .tdata as a reference point.  */
+   ${RELOCATING+${CREATE_SHLIB+PROVIDE_HIDDEN (.tdata = .);}}
+   .tdata	${RELOCATING-0} : { PROVIDE_HIDDEN(.tdata = .); *(.tdata${RELOCATING+ .tdata.* .gnu.linkonce.td.*}) }
+-  .tbss		${RELOCATING-0} : { *(.tbss${RELOCATING+ .tbss.* .gnu.linkonce.tb.*})${RELOCATING+ *(.tcommon)} }
++  .tbss		${RELOCATING-0} : { PROVIDE_HIDDEN(.tbss = .); *(.tbss${RELOCATING+ .tbss.* .gnu.linkonce.tb.*})${RELOCATING+ *(.tcommon)} }
+   .eh_frame     ${RELOCATING-0} : { KEEP (*(.eh_frame)) }
+   .gcc_except_table ${RELOCATING-0} : { *(.gcc_except_table) }
+   ${WRITABLE_RODATA+${RODATA}}
+-- 
+2.4.3
+

@@ -1,0 +1,8 @@
+config BR2_PACKAGE_PYTHON_BOTTLE
+	bool "python-bottle"
+	help
+	  Bottle is a fast, simple and lightweight WSGI micro web-framework
+	  for Python. It is distributed as a single file module and has no
+	  dependencies other than the Python Standard Library.
+
+	  http://bottlepy.org

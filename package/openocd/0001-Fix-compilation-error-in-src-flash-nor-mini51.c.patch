@@ -1,0 +1,30 @@
+From 893330638a26ea2868c6e7606047acf9b6fe31ea Mon Sep 17 00:00:00 2001
+From: Claudio Laurita <claudio.laurita@integrazionetotale.it>
+Date: Sun, 30 Nov 2014 17:30:36 +0100
+Subject: [PATCH 1/1] Fix compilation error in src/flash/nor/mini51.c
+
+0001-Fix-compilation-error-in-src-flash-nor-mini51.c.patch
+gcc complains about missing initialization of 
+local variable flash_size and compilation aborts
+
+Signed-off-by: Claudio Laurita <claudio.laurita@integrazionetotale.it>
+---
+ src/flash/nor/mini51.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/flash/nor/mini51.c b/src/flash/nor/mini51.c
+index 61aee5d..c7ba13a 100644
+--- a/src/flash/nor/mini51.c
++++ b/src/flash/nor/mini51.c
+@@ -397,7 +397,7 @@ static int mini51_write(struct flash_bank *bank, const uint8_t *buffer, uint32_t
+ 
+ static int mini51_probe(struct flash_bank *bank)
+ {
+-	uint32_t flash_size;
++	uint32_t flash_size = 0;
+ 	int retval;
+ 	int num_pages;
+ 	uint32_t offset = 0;
+-- 
+2.1.3
+

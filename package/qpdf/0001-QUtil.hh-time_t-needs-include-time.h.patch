@@ -1,0 +1,29 @@
+From 88ac4baf0a55ef15f298592fa344d8ddae26fa33 Mon Sep 17 00:00:00 2001
+From: Peter Korsgaard <peter@korsgaard.com>
+Date: Fri, 24 Apr 2015 19:58:41 +0200
+Subject: [PATCH] QUtil.hh: time_t needs #include <time.h>
+
+Fixes build on uClibc without threads:
+
+http://autobuild.buildroot.net/results/af8/af857caef0c622aa9cfb1859b344880971ff263c/build-end.log
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ include/qpdf/QUtil.hh | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/include/qpdf/QUtil.hh b/include/qpdf/QUtil.hh
+index 5c2e548..7f912e2 100644
+--- a/include/qpdf/QUtil.hh
++++ b/include/qpdf/QUtil.hh
+@@ -14,6 +14,7 @@
+ #include <list>
+ #include <stdexcept>
+ #include <stdio.h>
++#include <time.h>
+ 
+ class RandomDataProvider;
+ 
+-- 
+2.1.3
+

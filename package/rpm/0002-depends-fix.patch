@@ -1,0 +1,19 @@
+Bugfix included upstream
+
+diff -u --new-file --recursive rpm-5.2.0_vanilla/lib/depends.c rpm-5.2.0_depends-fix/lib/depends.c
+--- rpm-5.2.0_vanilla/lib/depends.c	2009-05-23 01:23:46.000000000 +0000
++++ rpm-5.2.0_depends-fix/lib/depends.c	2009-09-22 06:33:37.950783501 +0000
+@@ -2371,11 +2371,11 @@
+ 
+ 	memset(selected, 0, sizeof(*selected) * ts->orderCount);
+ 
+-      if ((requires = rpmteDS(p, RPMTAG_REQUIRENAME)) != NULL) {
+-
+ 	/* Avoid narcisstic relations. */
+ 	selected[rpmtsiOc(pi)] = 1;
+ 
++      if ((requires = rpmteDS(p, RPMTAG_REQUIRENAME)) != NULL) {
++
+ 	/* T2. Next "q <- p" relation. */
+ 
+ 	/* First, do pre-requisites. */

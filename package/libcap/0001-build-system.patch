@@ -1,0 +1,54 @@
+Avoid the libcap buildsys forcing CC/CFLAGS/LDFLAGS/AR/RANLIB
+Also install the shared lib +x
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+diff -Nura libcap-2.22.orig/libcap/Makefile libcap-2.22/libcap/Makefile
+--- libcap-2.22.orig/libcap/Makefile	2010-08-08 19:26:04.000000000 -0300
++++ libcap-2.22/libcap/Makefile	2011-12-14 11:33:51.761800334 -0300
+@@ -65,7 +65,7 @@
+ 	install -m 0644 include/sys/capability.h $(INCDIR)/sys
+ 	mkdir -p -m 0755 $(LIBDIR)
+ 	install -m 0644 $(STALIBNAME) $(LIBDIR)/$(STALIBNAME)
+-	install -m 0644 $(MINLIBNAME) $(LIBDIR)/$(MINLIBNAME)
++	install -m 0755 $(MINLIBNAME) $(LIBDIR)/$(MINLIBNAME)
+ 	ln -sf $(MINLIBNAME) $(LIBDIR)/$(MAJLIBNAME)
+ 	ln -sf $(MAJLIBNAME) $(LIBDIR)/$(LIBNAME)
+ ifeq ($(FAKEROOT),)
+diff -Nura libcap-2.22.orig/Make.Rules libcap-2.22/Make.Rules
+--- libcap-2.22.orig/Make.Rules	2011-07-24 23:18:23.000000000 -0300
++++ libcap-2.22/Make.Rules	2011-12-14 11:33:28.707278685 -0300
+@@ -47,25 +47,25 @@
+ KERNEL_HEADERS := $(topdir)/libcap/include
+ IPATH += -fPIC -I$(topdir)/libcap/include -I$(KERNEL_HEADERS)
+ 
+-CC := gcc
+-CFLAGS := -O2 -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64
+-BUILD_CC := $(CC)
+-BUILD_CFLAGS := $(CFLAGS) $(IPATH)
+-AR := ar
+-RANLIB := ranlib
++CC ?= gcc
++CFLAGS ?= -O2 -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64
++BUILD_CC ?= $(CC)
++BUILD_CFLAGS ?= $(CFLAGS) $(IPATH)
++AR ?= ar
++RANLIB ?= ranlib
+ DEBUG = -g #-DDEBUG
+ WARNINGS=-Wall -Wwrite-strings \
+         -Wpointer-arith -Wcast-qual -Wcast-align \
+         -Wstrict-prototypes -Wmissing-prototypes \
+         -Wnested-externs -Winline -Wshadow
+ LD=$(CC) -Wl,-x -shared
+-LDFLAGS := #-g
++LDFLAGS ?= #-g
+ 
+ SYSTEM_HEADERS = /usr/include
+ INCS=$(topdir)/libcap/include/sys/capability.h
+ LDFLAGS += -L$(topdir)/libcap
+ CFLAGS += -Dlinux $(WARNINGS) $(DEBUG)
+-PAM_CAP := $(shell if [ -f /usr/include/security/pam_modules.h ]; then echo yes ; else echo no ; fi)
++PAM_CAP = no
+ INDENT := $(shell if [ -n "$(which indent 2>/dev/null)" ]; then echo "| indent -kr" ; fi)
+ DYNAMIC := $(shell if [ ! -d "$(topdir)/.git" ]; then echo yes; fi)
+ LIBATTR := yes

@@ -1,0 +1,27 @@
+From bf646965f75cdad77a45fa3b0046e093b202b2ce Mon Sep 17 00:00:00 2001
+From: Gustavo Zacarias <gustavo@zacarias.com.ar>
+Date: Thu, 22 Jul 2010 12:42:10 -0300
+Subject: [PATCH] Make cpu number counter more reliable
+
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+---
+ iostat.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/iostat.c b/iostat.c
+index 13e2af7..5d74085 100644
+--- a/iostat.c
++++ b/iostat.c
+@@ -140,7 +140,7 @@ void get_number_of_cpus()
+ 
+ 	handle_error("Can't open /proc/cpuinfo", !ncpufp);
+ 	while (fgets(buffer, sizeof(buffer), ncpufp)) {
+-		if (!strncmp(buffer, "processor\t:", 11))
++		if (!strncasecmp(buffer, "processor\t", 10))
+ 			ncpu++;
+ 	}
+ 	fclose(ncpufp);
+-- 
+1.7.1
+

@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+# We want to catch any unexpected failure, and exit immediately
+set -e
+
+# Download helper for scp, to be called from the download wrapper script
+#
+# Call it as:
+#   .../scp [-q] OUT_FILE SRC_URL
+#
+# Environment:
+#   SCP       : the scp command to call
+
+verbose=
+while getopts :q OPT; do
+    case "${OPT}" in
+    q)  verbose=-q;;
+    \?) printf "unknown option '%s'\n" "${OPTARG}" >&2; exit 1;;
+    esac
+done
+shift $((OPTIND-1))
+
+output="${1}"
+url="${2}"
+
+${SCP} ${verbose} "${url}" "${output}"

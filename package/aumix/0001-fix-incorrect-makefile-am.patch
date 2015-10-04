@@ -1,0 +1,29 @@
+Aumix's src/Makefile.am incorrect adds @includedir@ to the list of
+include paths and @libdir@ to the list of libraries paths. This is
+incorrect, as @includedir@ and @libdir@ are respectively /usr/include
+and /usr/lib, even in cross-compilation mode.
+
+At the same time, use AM_CFLAGS instead of CFLAGS, as is done on the
+similar patch found in OpenEmbedded.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ src/Makefile.am |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+Index: aumix-2.8/src/Makefile.am
+===================================================================
+--- aumix-2.8.orig/src/Makefile.am
++++ aumix-2.8/src/Makefile.am
+@@ -7,9 +7,8 @@
+ 		mouse.c common.h curses.h gpm-xterm.h gtk.h interactive.h  \
+ 		mouse.h play.xpm record.xpm
+ localedir	= $(datadir)/locale
+-INCLUDES	= -I../intl -DLOCALEDIR=\"$(localedir)\" -I@includedir@
+-CFLAGS		= @CFLAGS@ @GLIB_CFLAGS@ @GTK_CFLAGS@
+-LDADD		= -L@libdir@
++INCLUDES	= -I../intl -DLOCALEDIR=\"$(localedir)\"
++AM_CFLAGS	= @CFLAGS@ @GLIB_CFLAGS@ @GTK_CFLAGS@
+ LIBS		= @LIBS@ @GTK_LIBS@ @INTLLIBS@
+ DEFS		= @DEFS@
+ 

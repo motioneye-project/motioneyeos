@@ -1,0 +1,38 @@
+#!/bin/sh
+#
+# Start lirc
+#
+# Support for remotes - Add remotes to /etc/lirc/lircd.conf.d/
+#
+
+start() {
+	echo -n "Starting lirc: "
+	mkdir -p /var/run/lirc
+	ln -sf /var/run/lirc/lircd /dev/lircd
+	start-stop-daemon -b -S -q -m -p /var/run/lirc.pid --exec /usr/sbin/lircd -- -n -O /etc/lirc/lirc_options.conf
+	echo "OK"
+}
+
+stop() {
+	echo -n "Stopping lirc: "
+	start-stop-daemon -K -q -p /var/run/lirc.pid
+	echo "OK"
+}
+
+case "$1" in
+  start)
+	start
+	;;
+  stop)
+	stop
+	;;
+  restart|reload)
+	stop
+	start
+	;;
+  *)
+	echo "Usage: $0 {start|stop|restart}"
+	exit 1
+esac
+
+exit $?

@@ -1,0 +1,19 @@
+Really fixes gcc-4.7 related compile error:
+../../include/beecrypt/c++/util/AbstractSet.h:59:27: error: 'containsAll' was not declared in this scope, and no declarations were found by argument-dependent lookup at the point of instantiation [-fpermissive]
+
+Downloaded from upstream bugtracker:
+http://sourceforge.net/p/beecrypt/patches/10/
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+
+--- a/include/beecrypt/c++/util/AbstractSet.h
++++ b/include/beecrypt/c++/util/AbstractSet.h
+@@ -56,7 +56,7 @@
+ 					if (c->size() != size())
+ 						return false;
+ 
+-					return containsAll(*c);
++					return this->containsAll(*c);
+ 				}
+ 				return false;
+ 			}

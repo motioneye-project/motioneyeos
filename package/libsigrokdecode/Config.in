@@ -1,0 +1,27 @@
+config BR2_PACKAGE_LIBSIGROKDECODE
+	bool "libsigrokdecode"
+	select BR2_PACKAGE_LIBGLIB2
+	select BR2_PACKAGE_PYTHON3
+	depends on !BR2_PACKAGE_PYTHON # python3
+	depends on BR2_USE_WCHAR # libglib2/python3
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libglib2/python3
+	depends on BR2_USE_MMU # libglib2/python3
+	depends on !BR2_STATIC_LIBS # python3
+	help
+	  Libsigrokdecode is a shared library written in C, which
+	  provides (streaming) protocol decoding functionality. Say
+	  yes here if you want to add this functionality to your
+	  buildroot-generated sigrok suite.
+
+	  This library is a part of the sigrok software suite.
+
+	  http://sigrok.org/wiki/Libsigrokdecode
+
+comment "libsigrokecode needs a toolchain w/ wchar, threads, dynamic library"
+	depends on BR2_USE_MMU
+	depends on !BR2_PACKAGE_PYTHON
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS
+
+comment "libsigrokdecode is not compatible with python"
+	depends on BR2_USE_MMU
+	depends on BR2_PACKAGE_PYTHON

@@ -1,0 +1,33 @@
+From 63c255f1f5d68363f49193aceed343e602dc8bdf Mon Sep 17 00:00:00 2001
+From: Maxime Hadjinlian <maxime.hadjinlian@gmail.com>
+Date: Thu, 26 Dec 2013 21:17:10 +0100
+Subject: [PATCH] Fixup include path
+
+Patch originally taken from :
+http://repository.timesys.com/buildsources/x/xbmc/xbmc-11.0/xbmc-11.0-fixups.patch
+
+Signed-off-by: Maxime Hadjinlian <maxime.hadjinlian@gmail.com>
+---
+ lib/enca/configure                           | 3 ---
+ lib/enca/configure.ac                        | 3 ---
+ lib/libdvd/libdvdread/misc/dvdread-config.sh | 6 +++---
+ lib/timidity/configure.in                    | 6 +++---
+ 4 files changed, 6 insertions(+), 12 deletions(-)
+
+diff --git a/lib/libdvd/libdvdread/misc/dvdread-config.sh b/lib/libdvd/libdvdread/misc/dvdread-config.sh
+index e170c7e..25ee893 100644
+--- a/lib/libdvd/libdvdread/misc/dvdread-config.sh
++++ b/lib/libdvd/libdvdread/misc/dvdread-config.sh
+@@ -48,9 +48,9 @@ if test "$echo_prefix" = "yes"; then
+ fi
+ 
+ if test "$echo_cflags" = "yes"; then
+-      echo -I$prefix/include $extracflags
++      echo $extracflags
+ fi
+ 
+ if test "$echo_libs" = "yes"; then
+-      echo -L$libdir $dvdreadlib
+-fi      
++      echo $dvdreadlib
++fi

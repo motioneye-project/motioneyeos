@@ -1,0 +1,107 @@
+menuconfig BR2_PACKAGE_GST_PLUGINS_BASE
+	bool "gst-plugins-base"
+	select BR2_PACKAGE_XLIB_LIBX11 if BR2_PACKAGE_XORG7
+	select BR2_PACKAGE_XLIB_LIBXEXT if BR2_PACKAGE_XORG7
+	select BR2_PACKAGE_XLIB_LIBXV if BR2_PACKAGE_XORG7
+	help
+	  A basic set of well-supported plug-ins for GStreamer.
+
+	  http://gstreamer.freedesktop.org/
+
+if BR2_PACKAGE_GST_PLUGINS_BASE
+
+comment "dependency-less plugins"
+
+config BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_ADDER
+	bool "adder"
+
+config BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_APP
+	bool "app"
+
+config BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_AUDIOCONVERT
+	bool "audioconvert (mandatory for audio playback)"
+	default y
+
+config BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_AUDIORATE
+	bool "audiorate"
+
+config BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_AUDIORESAMPLE
+	bool "audioresample (mandatory for audio playback)"
+	default y
+
+config BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_AUDIOTESTSRC
+	bool "audiotestsrc"
+
+config BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_ENCODING
+	bool "encoding"
+
+config BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_FFMPEGCOLORSPACE
+	bool "ffmpegcolorspace (mandatory for video playback)"
+	default y
+
+config BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_GDP
+	bool "gdp"
+
+config BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_PLAYBACK
+	bool "playback (mandatory)"
+	default y
+
+config BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_SUBPARSE
+	bool "subparse"
+
+config BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_TCP
+	bool "tcp"
+
+config BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_TYPEFIND
+	bool "typefind (mandatory)"
+	default y
+
+config BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_VIDEOTESTSRC
+	bool "videotestsrc"
+
+config BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_VIDEORATE
+	bool "videorate"
+
+config BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_VIDEOSCALE
+	bool "videoscale (mandatory for video playback)"
+	default y
+
+config BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_VOLUME
+	bool "volume (mandatory for audio playback)"
+	default y
+
+comment "plugins with external dependencies (there may be more available)"
+
+config BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_ALSA
+	bool "alsa (mandatory for audio playback)"
+	select BR2_PACKAGE_ALSA_LIB
+	select BR2_PACKAGE_ALSA_LIB_MIXER
+	select BR2_PACKAGE_ALSA_LIB_PCM
+
+config BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_OGG
+	bool "ogg (*.ogg audio/video)"
+	select BR2_PACKAGE_LIBOGG
+
+config BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_PANGO
+	bool "pango font renderer"
+	depends on BR2_INSTALL_LIBSTDCPP # pango -> freetype
+	depends on BR2_ARCH_HAS_ATOMICS # pango -> cairo
+	select BR2_PACKAGE_PANGO
+
+comment "pango plugin needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP
+	depends on BR2_ARCH_HAS_ATOMICS
+
+config BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_THEORA
+	bool "theora (*.ogg video)"
+	select BR2_PACKAGE_LIBTHEORA
+
+config BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_TREMOR
+	bool "tremor"
+	select BR2_PACKAGE_TREMOR
+
+config BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_VORBIS
+	bool "vorbis (*.ogg audio)"
+	select BR2_PACKAGE_LIBVORBIS
+
+endif

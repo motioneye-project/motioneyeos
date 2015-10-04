@@ -1,0 +1,25 @@
+Disable build of Python bindings, which requires the sipconfig module.
+
+Signed-off-by: Simon Dawson <spdawson@gmail.com>
+
+diff -Nurp a/Makefile.am b/Makefile.am
+--- a/Makefile.am	2008-11-12 01:27:31.000000000 +0000
++++ b/Makefile.am	2013-04-16 09:41:13.476002178 +0100
+@@ -1,4 +1,4 @@
+-SUBDIRS=src doc examples sip
++SUBDIRS=src doc examples
+ 
+ EXTRA_DIST = doxygen.conf.in Makefile.dist libserial.spec libserial.pc
+ 
+diff -Nurp a/Makefile.in b/Makefile.in
+--- a/Makefile.in	2008-11-12 01:28:14.000000000 +0000
++++ b/Makefile.in	2013-04-16 09:41:05.628013626 +0100
+@@ -197,7 +197,7 @@ sysconfdir = @sysconfdir@
+ target_alias = @target_alias@
+ top_builddir = @top_builddir@
+ top_srcdir = @top_srcdir@
+-SUBDIRS = src doc examples sip
++SUBDIRS = src doc examples
+ EXTRA_DIST = doxygen.conf.in Makefile.dist libserial.spec libserial.pc
+ pkgconfigdir = $(libdir)/pkgconfig
+ pkgconfig_DATA = libserial.pc

@@ -1,0 +1,62 @@
+#
+# Makefile.legacy - support for backward compatibility
+#
+# This file contains placeholders to detect backward-compatibility problems.
+# When a buildroot "API" feature is being deprecated, a rule should be added
+# here that issues an error when the old feature is used.
+#
+# This file is not included if BR2_DEPRECATED is selected, so it is possible
+# to bypass the errors (although that's usually a bad idea).
+
+ifeq ($(BR2_LEGACY),y)
+$(error "You have legacy configuration in your .config! Please check your configuration.")
+endif
+
+#
+# Legacy options from 2014.02
+#
+
+# The BUILDROOT_DL_DIR environment variable was renamed by BR2_DL_DIR. We
+# want to detect someone using the old variable, _except_ if also the new
+# variable was set. By the time we get here, however, we no longer have
+# access to the BR2_DL_DIR environment variable (because it has been overridden
+# by the .config inclusion). However, the environment variable (if defined) was
+# saved in DL_DIR, so we can use that.
+ifneq ($(BUILDROOT_DL_DIR),)
+ifneq ($(BUILDROOT_DL_DIR),$(DL_DIR))
+$(error "The BUILDROOT_DL_DIR environment variable was renamed to BR2_DL_DIR.")
+endif
+endif
+
+# If a script is using the deprecated BUILDROOT_CONFIG, make sure it fails.
+# Add some directories in front just in case someone used dirname on it.
+BUILDROOT_CONFIG_FAKE = /tmp/deprecated/The-BUILDROOT_CONFIG-environment-variable-was-renamed-to-BR2_CONFIG
+
+# Similar to above for BUILDROOT_CONFIG, but here we have no .config equivalent.
+ifneq ($(BUILDROOT_CONFIG),)
+ifneq ($(BUILDROOT_CONFIG),$(BR2_CONFIG))
+ifneq ($(BUILDROOT_CONFIG),$(BUILDROOT_CONFIG_FAKE))
+$(error "The BUILDROOT_CONFIG environment variable was renamed to BR2_CONFIG.")
+endif
+endif
+endif
+
+BUILDROOT_CONFIG = $(BUILDROOT_CONFIG_FAKE)
+export BUILDROOT_CONFIG
+
+#
+# Legacy options from 2012.08
+#
+
+host-pkg-config:
+	@$(call MESSAGE,host-pkg-config is replaced by host-pkgconf)
+	@$(call MESSAGE,please update your .mk files)
+	@false
+.PHONY: host-pkg-config
+
+#
+# Legacy options from 2012.05
+#
+GENTARGETS = $$(error The GENTARGETS macro no longer exists; use $$$$(eval $$$$(generic-package)) or $$$$(eval $$$$(host-generic-package)))
+AUTOTARGETS = $$(error The AUTOTARGETS macro no longer exists; use $$$$(eval $$$$(autotools-package)) or $$$$(eval $$$$(host-autotools-package)))
+CMAKETARGETS = $$(error The CMAKETARGETS macro no longer exists; use $$$$(eval $$$$(cmake-package)) or $$$$(eval $$$$(host-cmake-package)))

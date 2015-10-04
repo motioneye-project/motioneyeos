@@ -1,0 +1,10 @@
+config BR2_PACKAGE_KODI_SCREENSAVER_STARS
+	bool "kodi-screensaver-stars"
+	depends on BR2_PACKAGE_KODI_GL
+	help
+	  Starfield screensaver for Kodi
+
+	  https://github.com/notspiff/screensaver.stars
+
+comment "kodi-screensaver-starts needs an OpenGL backend"
+	depends on !BR2_PACKAGE_KODI_GL

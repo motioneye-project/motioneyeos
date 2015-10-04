@@ -1,0 +1,17 @@
+config BR2_PACKAGE_DAWGDIC
+	bool "dawgdic"
+	depends on BR2_INSTALL_LIBSTDCPP
+	help
+	  dawgdic provides a library for building and accessing
+	  dictionaries implemented with directed acyclic word graphs
+	  (DAWG). A dawg is constructed by minimizing a trie as a
+	  deterministic finite automaton (DFA), and thus the dawg has
+	  an advantage in memory usage. In addition, dawgdic uses a
+	  double-array as a base data structure, so its retrieval
+	  speed is as fast as that of Darts, a library for building
+	  and accessing double-array tries.
+
+	  https://github.com/stil/dawgdic
+
+comment "dawgdic needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP

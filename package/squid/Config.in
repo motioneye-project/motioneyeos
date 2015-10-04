@@ -1,0 +1,15 @@
+comment "squid needs a toolchain w/ C++, headers >= 3.0"
+	depends on BR2_USE_MMU
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0
+
+config BR2_PACKAGE_SQUID
+	bool "squid"
+	depends on BR2_INSTALL_LIBSTDCPP
+	# needs fork()
+	depends on BR2_USE_MMU
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0 # libcap
+	select BR2_PACKAGE_LIBCAP
+	help
+	  Caching proxy for the Web supporting HTTP, HTTPS, FTP, and more.
+
+	  http://www.squid-cache.org/

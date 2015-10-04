@@ -1,0 +1,27 @@
+--- HOWTO ---
+If your package uses config.guess and/or config.sub, then it probably
+relies on the autotools as its build system. In this case, you should
+use the autotools-package infrastructure, which will take care of updating
+the config.guess and/or config.sub files appropriately. See the
+Buildroot documentation for details about the autotools-package
+infrastructure.
+
+If for some reason your package does not use the autotools-package
+infrastructure, you can request the config.guess and/or config.sub
+files of your package to be updated by using:
+
+      $(call CONFIG_UPDATE,directory-of-your-package-sources)
+
+--- UPDATE ---
+GNU config is now managed in git, so to update:
+
+# git clone git://git.savannah.gnu.org/config.git
+# cp config/config.* .
+# for p in $(ls patches/*.patch); do patch -p1 < $p; done
+# rm -rf config
+
+Currently no patches are needed, but they may be needed again in the
+future.
+
+The current Buildroot version is based on the Git commit
+5e4de70bb0064d974a848fbe3a445d5dafaf7b48 of the config.git repository.

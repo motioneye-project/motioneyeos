@@ -1,0 +1,13 @@
+config BR2_PACKAGE_HARFBUZZ
+	bool "harfbuzz"
+	depends on BR2_INSTALL_LIBSTDCPP
+	help
+	  HarfBuzz is an OpenType text shaping engine
+
+	  http://www.freedesktop.org/wiki/Software/HarfBuzz/
+
+	  Harfbuzz can make optional use of cairo, freetype,
+	  glib2 and icu packages if they are selected.
+
+comment "harfbuzz needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP

@@ -1,0 +1,22 @@
+[PATCH] mplayer: fix --cc= parsing if the value contains equal signs (=)
+
+E.G. if -cc="$CROSS-gcc --sysroot=<SYSROOT>" is passed.
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ configure |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+Index: mplayer-32710/configure
+===================================================================
+--- mplayer-32710.orig/configure
++++ mplayer-32710/configure
+@@ -870,7 +870,7 @@
+     _target=$(echo $ac_option | cut -d '=' -f 2)
+     ;;
+   --cc=*)
+-    _cc=$(echo $ac_option | cut -d '=' -f 2)
++    _cc=$(echo $ac_option | cut -d '=' -f 2-)
+     ;;
+   --host-cc=*)
+     _host_cc=$(echo $ac_option | cut -d '=' -f 2)

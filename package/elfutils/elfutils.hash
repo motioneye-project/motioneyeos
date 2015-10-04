@@ -1,0 +1,3 @@
+# Locally calculated
+sha256  570c91a1783fa5386aaa2dfdd08dda1de777c2b63bf3b9c1437d635ffdd7a070  elfutils-0.161.tar.bz2
+sha256  bf0363d03e1e4668778eb4e7ddd10e405a22f753b3ad813a537fc01164d1e3fe  elfutils-portability-0.161.patch

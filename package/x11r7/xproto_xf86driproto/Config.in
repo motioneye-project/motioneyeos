@@ -1,0 +1,4 @@
+config BR2_PACKAGE_XPROTO_XF86DRIPROTO
+	bool "xf86driproto"
+	help
+	  X.Org XF86DRI protocol headers

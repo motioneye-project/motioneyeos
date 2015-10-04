@@ -1,0 +1,14 @@
+config BR2_PACKAGE_KODI_ADDON_XVDR
+	bool "kodi-addon-xvdr"
+	help
+	  This is a PVR add-on for Kodi to add VDR (http://tvdr.de/)
+	  as a TV/PVR Backend to Kodi.
+
+	  It adds support for Live TV watching, replaying of Recordings,
+	  programming Timers and EPG TV Guide to use on same computer or
+	  over the Network.
+
+	  https://github.com/pipelka/xbmc-addon-xvdr
+
+	  Note: since the VDR server is not packaged in Buildroot, using
+	  this addon requires that a remote VDR server be used.

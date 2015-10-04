@@ -1,0 +1,25 @@
+We need to build u-boot tools without a board configuration for the target.
+fw_env just uses config.h to define the default environment of the created
+image, so it really isn't mandatory.
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+diff --git a/tools/env/fw_env.h b/tools/env/fw_env.h
+index aff471b..dfe7439 100644
+--- a/tools/env/fw_env.h
++++ b/tools/env/fw_env.h
+@@ -5,14 +5,6 @@
+  * SPDX-License-Identifier:	GPL-2.0+
+  */
+ 
+-/* Pull in the current config to define the default environment */
+-#ifndef __ASSEMBLY__
+-#define __ASSEMBLY__ /* get only #defines from config.h */
+-#include <config.h>
+-#undef	__ASSEMBLY__
+-#else
+-#include <config.h>
+-#endif
+ 
+ /*
+  * To build the utility with the static configuration

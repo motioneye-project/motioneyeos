@@ -1,0 +1,62 @@
+From http://ftp.gnu.org/pub/gnu/readline/readline-6.3-patches/readline63-005
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+			   READLINE PATCH REPORT
+			   =====================
+
+Readline-Release: 6.3
+Patch-ID: readline63-005
+
+Bug-Reported-by:	Juergen Daubert <jue@jue.li>
+Bug-Reference-ID:	<20140303180430.GA7346@jue.netz>
+Bug-Reference-URL:	http://lists.gnu.org/archive/html/bug-readline/2014-03/msg00002.html
+
+Bug-Description:
+
+There are still applications using the deprecated Function/VFunction/etc.
+typedefs in rltypedefs.h.  This patch restores the typedefs, but attempts
+to mark them as deprecated using gcc/clang attributes.  Thanks to Max Horn
+for the suggestion.
+
+Patch (apply with `patch -p0'):
+
+*** a/readline-6.3-patched/rltypedefs.h	2011-03-26 14:53:31.000000000 -0400
+--- b/rltypedefs.h	2014-04-10 11:30:45.000000000 -0400
+***************
+*** 27,30 ****
+--- 27,49 ----
+  #endif
+  
++ /* Old-style, attempt to mark as deprecated in some way people will notice. */
++ 
++ #if !defined (_FUNCTION_DEF)
++ #  define _FUNCTION_DEF
++ 
++ #if defined(__GNUC__) || defined(__clang__)
++ typedef int Function () __attribute__ ((deprecated));
++ typedef void VFunction () __attribute__ ((deprecated));
++ typedef char *CPFunction () __attribute__ ((deprecated));
++ typedef char **CPPFunction () __attribute__ ((deprecated));
++ #else
++ typedef int Function ();
++ typedef void VFunction ();
++ typedef char *CPFunction ();
++ typedef char **CPPFunction ();
++ #endif
++ 
++ #endif /* _FUNCTION_DEF */
++ 
+  /* New style. */
+  
+*** a/readline-6.3/patchlevel	2013-11-15 08:11:11.000000000 -0500
+--- b/patchlevel	2014-03-21 08:28:40.000000000 -0400
+***************
+*** 1,3 ****
+  # Do not edit -- exists only for use by patch
+  
+! 4
+--- 1,3 ----
+  # Do not edit -- exists only for use by patch
+  
+! 5

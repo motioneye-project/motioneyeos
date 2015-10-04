@@ -1,0 +1,20 @@
+Patch forward-ported from OpenWRT.
+Don't check for buggy getaddrinfo() assume it's safe if it's present.
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+diff -Nura samba-3.6.8.orig/source3/configure samba-3.6.8/source3/configure
+--- samba-3.6.8.orig/source3/configure	2012-09-14 05:19:52.000000000 -0300
++++ samba-3.6.8/source3/configure	2012-09-25 20:31:57.861743235 -0300
+@@ -13269,10 +13269,7 @@
+ 	# see bug 5910, use our replacements if we detect
+ 	# a broken system.
+ 	if test "$cross_compiling" = yes; then :
+-  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+-as_fn_error $? "cannot run test program while cross compiling
+-See \`config.log' for more details" "$LINENO" 5; }
++		$as_echo "assuming valid getaddrinfo without bug 5910" >&2
+ else
+   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+ /* end confdefs.h.  */

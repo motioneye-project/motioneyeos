@@ -1,0 +1,4 @@
+file /etc/ppp/modem
+file /etc/ppp/options
+file /etc/ppp/auth
+connect "/usr/sbin/chat -v -t15 -f /etc/ppp/chatscripts/mobile.chat"

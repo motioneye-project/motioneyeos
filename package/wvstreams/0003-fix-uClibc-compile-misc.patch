@@ -1,0 +1,16 @@
+Fix wvstreams so that it builds with uClibc: const cast problem.
+
+Signed-off-by: Simon Dawson <spdawson@gmail.com>
+
+diff -Nurp a/crypto/wvx509.cc b/crypto/wvx509.cc
+--- a/crypto/wvx509.cc	2008-10-23 21:23:49.000000000 +0100
++++ b/crypto/wvx509.cc	2012-06-15 18:45:06.605899292 +0100
+@@ -1157,7 +1157,7 @@ WvString WvX509::get_extension(int nid)
+         
+         if (ext)
+         {
+-            X509V3_EXT_METHOD *method = X509V3_EXT_get(ext);
++          X509V3_EXT_METHOD *method = const_cast<X509V3_EXT_METHOD *>(X509V3_EXT_get(ext));
+             if (!method)
+             {
+                 WvDynBuf buf;

@@ -1,0 +1,39 @@
+From 37899eda9563d9134cb5864751b6432cabfaac3e Mon Sep 17 00:00:00 2001
+From: Will Newton <will.newton@linaro.org>
+Date: Tue, 21 May 2013 22:11:05 +0100
+Subject: [PATCH] Foundation/include/Poco/Platform.h: Add support for AArch64.
+
+Add support for big and little endian AArch64 preprocessor defines.
+---
+ Foundation/include/Poco/Platform.h | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/Foundation/include/Poco/Platform.h b/Foundation/include/Poco/Platform.h
+index f34f277..8ddb4cb 100644
+--- a/Foundation/include/Poco/Platform.h
++++ b/Foundation/include/Poco/Platform.h
+@@ -145,6 +145,7 @@
+ #define POCO_ARCH_S390    0x0c
+ #define POCO_ARCH_SH      0x0d
+ #define POCO_ARCH_NIOS2   0x0e
++#define POCO_ARCH_AARCH64 0x0f
+ 
+ 
+ #if defined(__ALPHA) || defined(__alpha) || defined(__alpha__) || defined(_M_ALPHA)
+@@ -207,7 +208,12 @@
+ 	#else
+ 		#define POCO_ARCH_BIG_ENDIAN 1
+ 	#endif
+-
++#elif defined(__AARCH64EL__)
++	#define POCO_ARCH POCO_ARCH_AARCH64
++	#define POCO_ARCH_LITTLE_ENDIAN 1
++#elif defined(__AARCH64EB__)
++	#define POCO_ARCH POCO_ARCH_AARCH64
++	#define POCO_ARCH_BIG_ENDIAN 1
+ #endif
+ 
+ 
+-- 
+1.8.1.4
+

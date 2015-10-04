@@ -1,0 +1,7 @@
+config BR2_PACKAGE_KODI_PVR_VDR_VNSI
+	bool "kodi-pvr-vdr-vnsi"
+	select BR2_PACKAGE_KODI_PLATFORM
+	help
+	  Kodi PVR addon VNSI
+
+	  https://github.com/kodi-pvr/pvr.vdr.vnsi

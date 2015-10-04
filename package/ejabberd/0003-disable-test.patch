@@ -1,0 +1,27 @@
+Description: remove testing with MySQL and PostgreSQL
+ Without this patch a test would be initiated after building ejabberd that
+ requires specially configured instances of MySQL and PostgreSQL to be up
+ and running.
+Author: Philipp Huebner <debalance@debian.org>
+
+Index: ejabberd/Makefile.in
+===================================================================
+diff --git a/Makefile.in b/Makefile.in
+index ffd1d30..835d611 100644
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -306,14 +306,8 @@ dialyzer: erlang_plt deps_plt ejabberd_plt
+ 	status=$$? ; if [ $$status -ne 2 ]; then exit $$status; else exit 0; fi
+ 
+ test:
+-	@echo "************************** NOTICE ***************************************"
+-	@cat test/README
+-	@echo "*************************************************************************"
+-	@cd priv && ln -sf ../sql
+-	$(REBAR) skip_deps=true ct
+ 
+ quicktest:
+-	$(REBAR) skip_deps=true ct suites=elixir
+ 
+ .PHONY: src edoc dialyzer Makefile TAGS clean clean-rel distclean rel \
+ 	install uninstall uninstall-binary uninstall-all translations deps test spec \

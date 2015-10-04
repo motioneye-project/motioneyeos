@@ -1,0 +1,33 @@
+From 3c5a93d0be4457120d17da70918f9eb8799d6c52 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Thu, 1 Jan 2015 22:33:34 +0100
+Subject: [PATCH] src/shared/ecc.c: include <config.h>
+
+The ecc.c file forgets to include <config.h>. This causes build
+failures with certain C libraries, because ecc.c uses O_CLOEXEC, which
+is only available when _GNU_SOURCE is defined. And _GNU_SOURCE gets
+defined by <config.h>, so it should be included.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ src/shared/ecc.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/src/shared/ecc.c b/src/shared/ecc.c
+index 33c4187..41be02b 100644
+--- a/src/shared/ecc.c
++++ b/src/shared/ecc.c
+@@ -24,6 +24,10 @@
+  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  */
+ 
++#ifdef HAVE_CONFIG_H
++#include <config.h>
++#endif
++
+ #include <fcntl.h>
+ #include <unistd.h>
+ #include <sys/types.h>
+-- 
+2.1.0
+

@@ -1,0 +1,14 @@
+config BR2_PACKAGE_GEOIP
+	bool "geoip"
+	help
+	  GeoIP is a C library that enables the user to find
+	  geographical and network information of an IP address.
+
+	  To use this library, you need to download MaxMind's free
+	  GeoLite or commercial GeoIP binary databases into the
+	  target's /usr/share/GeoIP directory in uncompressed form.
+
+	  Note that GeoIP2 / GeoLite2 are not supported by this
+	  library.
+
+	  https://github.com/maxmind/geoip-api-c

@@ -1,0 +1,41 @@
+Add a check for FE_DIVBYZERO
+
+Some architectures (namely Microblaze) do have fenv.h and
+feenableexcept, but they don't have the FE_DIVBYZERO definition. This
+patch adds a configure check for FE_DIVBYZERO, and only uses it if
+it's available.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/configure.ac
+===================================================================
+--- a/configure.ac
++++ b/configure.ac
+@@ -838,6 +838,11 @@
+    AC_DEFINE(HAVE_FEENABLEEXCEPT, 1, [Whether we have feenableexcept()])
+ fi
+ 
++AC_CHECK_DECL([FE_DIVBYZERO], [], [], [[#include <fenv.h>]])
++if test x$ac_cv_have_decl_FE_DIVBYZERO = xyes; then
++   AC_DEFINE(HAVE_FEDIVBYZERO, 1, [Whether we have FE_DIVBYZERO])
++fi
++
+ AC_CHECK_FUNC(gettimeofday, have_gettimeofday=yes, have_gettimeofday=no)
+ AC_CHECK_HEADER(sys/time.h, have_sys_time_h=yes, have_sys_time_h=no)
+ if test x$have_gettimeofday = xyes && test x$have_sys_time_h = xyes; then
+Index: b/test/utils.c
+===================================================================
+--- a/test/utils.c
++++ b/test/utils.c
+@@ -776,9 +776,11 @@
+ {
+ #ifdef HAVE_FENV_H
+ #ifdef HAVE_FEENABLEEXCEPT
++#ifdef HAVE_FE_DIVBYZERO
+     feenableexcept (FE_DIVBYZERO);
+ #endif
+ #endif
++#endif
+ }
+ 
+ void *

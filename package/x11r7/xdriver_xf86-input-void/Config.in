@@ -1,0 +1,11 @@
+config BR2_PACKAGE_XDRIVER_XF86_INPUT_VOID
+	bool "xf86-input-void"
+	# http://lists.x.org/archives/xorg-announce/2015-April/002585.html
+	# "It is just dead weight for any server released after 2007 or so.
+	#  Don't use it."
+	depends on BR2_DEPRECATED_SINCE_2015_05
+	select BR2_PACKAGE_XPROTO_INPUTPROTO
+	select BR2_PACKAGE_XPROTO_RANDRPROTO
+	select BR2_PACKAGE_XPROTO_XPROTO
+	help
+	  null input driver

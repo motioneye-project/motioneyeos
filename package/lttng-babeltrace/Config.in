@@ -1,0 +1,33 @@
+config BR2_PACKAGE_LTTNG_BABELTRACE
+	bool "lttng-babeltrace"
+	select BR2_PACKAGE_UTIL_LINUX
+	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
+	select BR2_PACKAGE_LIBGLIB2
+	depends on BR2_USE_WCHAR # libglib2, util-linux
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libglib2
+	depends on BR2_USE_MMU # libglib2
+	depends on BR2_UCLIBC_VERSION_SNAPSHOT || BR2_TOOLCHAIN_USES_GLIBC # posix_fallocate
+	help
+	  The Babeltrace project provides trace read and write
+	  libraries, as well as a trace converter application. Plugins
+	  can be created for any trace format to allow its conversion
+	  to/from another trace format.
+
+	  Babeltrace is the reference implementation of the Common
+	  Trace Format (see <http://diamon.org/docs/ctf/>). Babeltrace
+	  can decode and display LTTng traces, since the latter are
+	  written using the CTF format.
+
+	  Having this tool on the target is not mandatory. You can
+	  transfer the binary trace output from the target to your
+	  development workstation, and use babeltrace here. Buildroot
+	  automatically builds a host babeltrace in
+	  $(O)/host/usr/bin/babeltrace as a dependency of the
+	  lttng-tools package.
+
+	  http://www.efficios.com/babeltrace
+
+comment "lttng-babeltrace needs a uclibc snapshot or (e)glib toolchain w/ wchar, threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS \
+		|| !(BR2_UCLIBC_VERSION_SNAPSHOT || BR2_TOOLCHAIN_USES_GLIBC)

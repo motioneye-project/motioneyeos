@@ -1,0 +1,18 @@
+config BR2_PACKAGE_FILEMQ
+	bool "filemq"
+	select BR2_PACKAGE_OPENSSL
+	select BR2_PACKAGE_CZMQ
+	select BR2_PACKAGE_ZEROMQ
+	depends on BR2_INSTALL_LIBSTDCPP # zeromq
+	depends on BR2_USE_WCHAR # util-linux
+	depends on BR2_TOOLCHAIN_HAS_THREADS # zeromq
+	depends on BR2_USE_MMU # czmq
+	help
+	  FileMQ is a publish-subscribe file service based on 0MQ.
+
+	  http://github.com/zeromq/filemq
+
+comment "filemq needs a toolchain w/ C++, wchar, threads"
+	depends on BR2_USE_MMU
+	depends on !(BR2_INSTALL_LIBSTDCPP && BR2_USE_WCHAR && \
+		BR2_TOOLCHAIN_HAS_THREADS)

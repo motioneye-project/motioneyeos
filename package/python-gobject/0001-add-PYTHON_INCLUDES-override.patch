@@ -1,0 +1,32 @@
+[PATCH] m4/python.m4: add PYTHON_INCLUDES override for cross compilation
+
+As the configure script mixes up host/target python. Equivalent to the
+similar code in dbus-python.
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ m4/python.m4 |    4 ++++
+ 1 file changed, 4 insertions(+)
+
+Index: python-gobject-2.28.6/m4/python.m4
+===================================================================
+--- python-gobject-2.28.6.orig/m4/python.m4
++++ python-gobject-2.28.6/m4/python.m4
+@@ -43,6 +43,9 @@
+ [AC_REQUIRE([AM_PATH_PYTHON])
+ AC_MSG_CHECKING(for headers required to compile python extensions)
+ dnl deduce PYTHON_INCLUDES
++if test "${PYTHON_INCLUDES+set}" = set; then
++  AC_MSG_NOTICE([PYTHON_INCLUDES overridden to: $PYTHON_INCLUDES])
++else
+ py_prefix=`$PYTHON -c "import sys; sys.stdout.write(sys.prefix)"`
+ py_exec_prefix=`$PYTHON -c "import sys; sys.stdout.write(sys.exec_prefix)"`
+ PYTHON_CONFIG=`which $PYTHON`-config
+@@ -54,6 +57,7 @@
+   PYTHON_INCLUDES="$PYTHON_INCLUDES -I${py_exec_prefix}/include/python${PYTHON_VERSION}"
+ fi
+ fi
++fi
+ AC_SUBST(PYTHON_INCLUDES)
+ dnl check if the headers exist:
+ save_CPPFLAGS="$CPPFLAGS"

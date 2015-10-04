@@ -1,0 +1,66 @@
+Add an option to disable the tk module
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+
+---
+ Makefile.pre.in |   14 ++++++++++----
+ configure.in    |    9 +++++++++
+ 2 files changed, 19 insertions(+), 4 deletions(-)
+
+Index: b/Makefile.pre.in
+===================================================================
+--- a/Makefile.pre.in
++++ b/Makefile.pre.in
+@@ -960,7 +960,7 @@
+ 	plat-mac/lib-scriptpackages/SystemEvents \
+ 	plat-mac/lib-scriptpackages/Terminal
+ PLATMACPATH=:plat-mac:plat-mac/lib-scriptpackages
+-LIBSUBDIRS=	lib-tk site-packages \
++LIBSUBDIRS=	site-packages \
+ 		encodings compiler hotshot \
+ 		email email/mime \
+ 		ensurepip ensurepip/_bundled \
+@@ -974,8 +974,7 @@
+ 		lib-old \
+ 		curses $(MACHDEPS)
+ 
+-TESTSUBDIRS = lib-tk/test lib-tk/test/test_tkinter \
+-	lib-tk/test/test_ttk test test/audiodata test/capath test/data \
++TESTSUBDIRS = test test/audiodata test/capath test/data \
+ 	test/cjkencodings test/decimaltestdata test/xmltestdata \
+ 	test/imghdrdata \
+ 	test/subprocessdata \
+@@ -1009,6 +1008,12 @@
+ TESTSUBDIRS += sqlite3/test
+ endif
+ 
++ifeq (@TK@,yes)
++LIBSUBDIRS += lib-tk
++TESTSUBDIRS += lib-tk/test lib-tk/test/test_tkinter	\
++	      lib-tk/test/test_ttk
++endif
++
+ libinstall:	build_all $(srcdir)/Lib/$(PLATDIR) $(srcdir)/Modules/xxmodule.c
+ 	@for i in $(SCRIPTDIR) $(LIBDEST); \
+ 	do \
+Index: b/configure.ac
+===================================================================
+--- a/configure.ac
++++ b/configure.ac
+@@ -2642,6 +2642,15 @@
+    DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} _sqlite3"
+ fi
+ 
++AC_SUBST(TK)
++AC_ARG_ENABLE(tk,
++	AS_HELP_STRING([--disable-tk], [disable tk]),
++	[ TK="${enableval}" ], [ TK=yes ])
++
++if test "$TK" = "no"; then
++   DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} _tkinter"
++fi
++
+ AC_SUBST(PYDOC)
+ 
+ AC_ARG_ENABLE(pydoc,

@@ -1,0 +1,114 @@
+Disable module support in the statically linked version of slsh
+
+Adapt an upstream patch to make it apply on 2.3.0. Unnecessary changes
+have been ignored.
+
+Repository: git://git.jedsoft.org/git/slang.git
+Commit ID: 997c85f5cdb19802a5c97afe44e366a60f94a069
+Author: John E. Davis <jed@jedsoft.org>
+
+Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+---
+diff -rup a/slsh/Makefile.in b/slsh/Makefile.in
+--- a/slsh/Makefile.in	2014-12-09 10:04:44.084899944 +0000
++++ b/slsh/Makefile.in	2014-12-09 10:16:11.545897275 +0000
+@@ -1,9 +1,11 @@
+ #-*-sh-*-
+ CC		= @CC@
+ CFLAGS		= @CFLAGS@ @SLANG_DLL_CFLAGS@
+-LDFLAGS		= @LDFLAGS@ @DYNAMIC_LINK_FLAGS@
++LDFLAGS		= @LDFLAGS@
++DLINK_FLAGS	= @DYNAMIC_LINK_FLAGS@
+ CONFIG_DIR	= @CONFIG_DIR@
+ OBJDIR		= $(ARCH)objs
++SOBJDIR		= static_objs
+ SRCDIR		= $(CONFIG_DIR)/slsh
+ #---------------------------------------------------------------------------
+ # Installation location of the slang library
+@@ -19,7 +21,8 @@ SLANG_SRCINC	= -I@SRCDIR@
+ SLANG_ELFLIB	= -L@ELFDIR@#  for dynamically linked
+ SLANG_OBJLIB	= -L@OBJDIR@#  for statically linked
+ #---------------------------------------------------------------------------
+-OTHER_LIBS	= @TERMCAP@ @DYNAMIC_LINK_LIB@ @LIBS@ @M_LIB@
++DYNAMIC_LIBS	= @TERMCAP@ @DYNAMIC_LINK_LIB@ @LIBS@ @M_LIB@
++STATIC_LIBS	= @TERMCAP@ @LIBS@ @M_LIB@
+ RPATH		= @RPATH@
+ #----------------------------------------------------------------------------
+ INSTALL		= @INSTALL@
+@@ -69,29 +72,37 @@ DEST_SLSH_DOC_DIR= $(DESTDIR)$(SLSH_DOC_
+ #----------------------------------------------------------------------------
+ @SET_MAKE@
+ SHELL = /bin/sh
+-#INST_LIBS = $(RPATH) $(SLANG_INST_LIB) $(DEST_LIB_DIR) -lslang $(READLINE_LIB) $(OTHER_LIBS)
+-INST_LIBS = $(DEST_LIB_DIR) $(RPATH) $(SLANG_INST_LIB) -lslang $(READLINE_LIB) $(OTHER_LIBS)
++INST_LIBS = $(DEST_LIB_DIR) $(RPATH) $(SLANG_INST_LIB) -lslang $(READLINE_LIB) $(DYNAMIC_LIBS)
+ DEFS = -DSLSH_CONF_DIR='"$(SLSH_CONF_DIR)"' -DSLSH_PATH='"$(SLSH_LIB_DIR)"' \
+  -DSLSH_CONF_DIR_ENV='$(SLSH_CONF_DIR_ENV)' -DSLSH_LIB_DIR_ENV='$(SLSH_LIB_DIR_ENV)' \
+  -DSLSH_PATH_ENV='$(SLSH_PATH_ENV)'
+-SRC_LIBS = $(SLANG_ELFLIB) -lslang $(READLINE_LIB) $(OTHER_LIBS)
+-STATIC_SRC_LIBS = $(SLANG_OBJLIB) -lslang $(READLINE_LIB) $(OTHER_LIBS)
++SDEFS = $(DEFS) -DSLSH_STATIC
++SRC_LIBS = $(SLANG_ELFLIB) -lslang $(READLINE_LIB) $(DYNAMIC_LIBS)
++STATIC_SRC_LIBS = $(SLANG_OBJLIB) -lslang $(READLINE_LIB) $(STATIC_LIBS)
+ #
+ all: $(OBJDIR)/slsh_exe
+ slsh: $(OBJDIR)/slsh
+-static: $(OBJDIR)/slsh_static
+ $(OBJDIR)/slsh_exe: $(OBJDIR)/slsh.o $(OBJDIR)/readline.o
+-	$(CC) $(CFLAGS) $(OBJDIR)/slsh.o $(OBJDIR)/readline.o -o $(OBJDIR)/slsh_exe $(LDFLAGS) $(SRC_LIBS)
++	$(CC) $(CFLAGS) $(OBJDIR)/slsh.o $(OBJDIR)/readline.o -o $(OBJDIR)/slsh_exe $(LDFLAGS) $(DLINK_FLAGS) $(SRC_LIBS)
+ $(OBJDIR)/slsh: $(OBJDIR)/slsh.o $(OBJDIR)/readline.o
+-	$(CC) $(CFLAGS) $(OBJDIR)/slsh.o $(OBJDIR)/readline.o -o $(OBJDIR)/slsh $(LDFLAGS) $(SRC_LIBS)
++	$(CC) $(CFLAGS) $(OBJDIR)/slsh.o $(OBJDIR)/readline.o -o $(OBJDIR)/slsh $(LDFLAGS) $(DLINK_FLAGS) $(SRC_LIBS)
+ $(OBJDIR)/slsh.o: $(OBJDIR) slsh.c slsh.h config.h Makefile
+ 	cd $(OBJDIR) && $(CC) $(SLANG_SRCINC) $(CFLAGS) -c $(DEFS) $(SRCDIR)/slsh.c
+ $(OBJDIR)/readline.o: $(OBJDIR) readline.c slsh.h config.h Makefile
+ 	cd $(OBJDIR) && $(CC) $(SLANG_SRCINC) $(CFLAGS) -c $(DEFS) -DUSE_GNU_READLINE=$(GNU_READLINE) $(SRCDIR)/readline.c
+-$(OBJDIR)/slsh_static: $(OBJDIR)/slsh.o $(OBJDIR)/readline.o
+-	$(CC) $(CFLAGS) $(OBJDIR)/slsh.o $(OBJDIR)/readline.o -o $(OBJDIR)/slsh_static $(LDFLAGS) $(STATIC_SRC_LIBS)
+ $(OBJDIR):
+ 	-$(MKINSDIR) $(OBJDIR)
++#
++static: $(SOBJDIR)/slsh
++$(SOBJDIR)/slsh: $(SOBJDIR)/slsh.o $(SOBJDIR)/readline.o
++	$(CC) $(CFLAGS) $(SOBJDIR)/slsh.o $(SOBJDIR)/readline.o -o $(SOBJDIR)/slsh $(LDFLAGS) $(STATIC_SRC_LIBS)
++$(SOBJDIR)/slsh.o: $(SOBJDIR) slsh.c slsh.h config.h Makefile
++	cd $(SOBJDIR) && $(CC) $(SLANG_SRCINC) $(CFLAGS) -c $(SDEFS) $(SRCDIR)/slsh.c
++$(SOBJDIR)/readline.o: $(SOBJDIR) readline.c slsh.h config.h Makefile
++	cd $(SOBJDIR) && $(CC) $(SLANG_SRCINC) $(CFLAGS) -c $(SDEFS) -DUSE_GNU_READLINE=$(GNU_READLINE) $(SRCDIR)/readline.c
++$(SOBJDIR):
++	-$(MKINSDIR) $(SOBJDIR)
++#
+ config.h: ../src/config.h
+ 	cp ../src/config.h .
+ install_directories:
+@@ -158,7 +169,7 @@ install: slsh install_directories instal
+ 	$(INSTALL_DATA) doc/man/slsh.1 $(DEST_MAN_DIR)/
+ install-static: static install_directories install_lib_files install_rline_files \
+  install_scripts install_help install_docs
+-	$(INSTALL) $(OBJDIR)/slsh_static $(DEST_BIN_DIR)/slsh
++	$(INSTALL) $(SOBJDIR)/slsh $(DEST_BIN_DIR)/
+ 	$(INSTALL_DATA) etc/slsh.rc $(DEST_SLSH_CONF_DIR)/
+ 	echo 'prepend_to_slang_load_path("$(SLSH_LOCALLIB_DIR)");' >> $(DEST_SLSH_CONF_DIR)/slsh.rc
+ 	$(INSTALL_DATA) doc/man/slsh.1 $(DEST_MAN_DIR)/
+@@ -167,6 +178,7 @@ install-static: static install_directori
+ #---------------------------------------------------------------------------
+ clean:
+ 	-/bin/rm -f *~ $(OBJDIR)/slsh.o $(OBJDIR)/readline.o $(OBJDIR)/slsh $(OBJDIR)/slsh_exe scripts/*~ lib/*~
++	-/bin/rm -f $(SOBJDIR)/slsh.o $(SOBJDIR)/readline.o $(SOBJDIR)/slsh $(SOBJDIR)/slsh_exe
+ distclean: clean
+ 	-/bin/rm -f Makefile config.h
+ #
+diff -rup a/slsh/slsh.c b/slsh/slsh.c
+--- a/slsh/slsh.c	2014-09-18 04:02:24.000000000 +0100
++++ b/slsh/slsh.c	2014-12-09 10:17:04.602824146 +0000
+@@ -514,7 +514,9 @@ int main (int argc, char **argv)
+ 
+    if ((-1 == SLang_init_all ())
+        || (-1 == SLang_init_array_extra ())
++#ifndef SLSH_STATIC
+        || (-1 == SLang_init_import ()) /* dynamic linking */
++#endif
+        || (-1 == SLadd_intrin_fun_table (Intrinsics, NULL))
+        || (-1 == slsh_init_readline_intrinsics ()))
+      {
