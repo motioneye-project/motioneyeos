@@ -4,15 +4,12 @@
 #
 ################################################################################
 
-AUDIT_VERSION = 2.4.3
+AUDIT_VERSION = 2.4.4
 AUDIT_SITE = http://people.redhat.com/sgrubb/audit
 AUDIT_LICENSE = GPLv2
 AUDIT_LICENSE_FILES = COPYING
 
 AUDIT_INSTALL_STAGING = YES
-
-# Patching Makefile.am
-AUDIT_AUTORECONF = YES
 
 AUDIT_CONF_OPTS = --without-python --without-python3 --disable-zos-remote
 
