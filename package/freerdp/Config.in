@@ -1,5 +1,9 @@
 config BR2_PACKAGE_FREERDP
 	bool "freerdp"
+	# FreeRDP does not have a single C++ source file, however it
+	# insists on having a C++ compiler. Removing that requirement
+	# is a bit too much involving, so we just depend on it...
+	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_USE_WCHAR
 	depends on !BR2_STATIC_LIBS # uses dlfcn.h
 	depends on BR2_TOOLCHAIN_HAS_THREADS
@@ -79,6 +83,6 @@ config BR2_PACKAGE_FREERDP_CLIENT_WL
 
 endif
 
-comment "freerdp needs a toolchain w/ wchar, dynamic library, threads"
+comment "freerdp needs a toolchain w/ wchar, dynamic library, threads, C++"
 	depends on !BR2_USE_WCHAR || BR2_STATIC_LIBS \
-		|| !BR2_TOOLCHAIN_HAS_THREADS
+		|| !BR2_TOOLCHAIN_HAS_THREADS || !BR2_INSTALL_LIBSTDCPP
