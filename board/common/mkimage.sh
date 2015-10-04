@@ -26,14 +26,14 @@ trap cleanup EXIT
 BOOT_SRC=$IMG_DIR/boot
 BOOT=$IMG_DIR/.boot
 BOOT_IMG=$IMG_DIR/boot.img
-BOOT_SIZE="16" # MB
+BOOT_SIZE="20" # MB
 
 ROOT_SRC=$IMG_DIR/rootfs.tar
 ROOT=$IMG_DIR/.root
 ROOT_IMG=$IMG_DIR/root.img
-ROOT_SIZE="120" # MB
+ROOT_SIZE="180" # MB
 
-DISK_SIZE="140" # MB
+DISK_SIZE="220" # MB
 
 # boot filesystem
 msg "creating boot loop device"
