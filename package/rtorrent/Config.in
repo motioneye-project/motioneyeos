@@ -13,7 +13,7 @@ config BR2_PACKAGE_RTORRENT
 	help
 	  BitTorrent Client using libtorrent
 
-	  http://libtorrent.rakshasa.no/
+	  http://rtorrent.net/downloads/
 
 comment "rtorrent needs a toolchain w/ C++, threads, wchar"
 	depends on BR2_USE_MMU
