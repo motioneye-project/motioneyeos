@@ -9,6 +9,8 @@ allows us to easily pass the cross-compiler paths and flags from our
 qt5.mk.
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+[Arnout: remove ccache support]
+Signed-off-by: Arnout Vandecappelle (Essensium/Mind) <arnout@mind.be>
 
 Index: b/mkspecs/devices/linux-buildroot-g++/qmake.conf
 ===================================================================
@@ -18,8 +20,8 @@ Index: b/mkspecs/devices/linux-buildroot-g++/qmake.conf
 +include(../common/linux_device_pre.conf)
 +
 +# modifications to g++-unix.conf
-+QMAKE_CC                = $${BR_CCACHE} $${CROSS_COMPILE}gcc
-+QMAKE_CXX               = $${BR_CCACHE} $${CROSS_COMPILE}g++
++QMAKE_CC                = $${CROSS_COMPILE}gcc
++QMAKE_CXX               = $${CROSS_COMPILE}g++
 +
 +#modifications to gcc-base.conf
 +QMAKE_CFLAGS           += $${BR_COMPILER_CFLAGS}
