@@ -109,7 +109,7 @@ start() {
 
 stop() {
     echo -n "Shutting down motioneye: "
-    meyectl stopserver &>/dev/null && echo "done" || echo "failed"
+    meyectl stopserver -c $conf &>/dev/null && echo "done" || echo "failed"
     ps | grep motioneye | grep -v $$ | grep -v grep | tr -s ' ' | sed -e 's/^\s//' | cut -d ' ' -f 1 | xargs -r kill
 }
 
