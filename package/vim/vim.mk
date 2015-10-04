@@ -4,10 +4,9 @@
 #
 ################################################################################
 
-VIM_SITE = https://vim.googlecode.com/hg
-VIM_SITE_METHOD = hg
-# 7.4 release patchlevel 333
-VIM_VERSION = 8ae50e3ef8bf
+# 7.4 release patchlevel 889
+VIM_VERSION = 74b738d414b2895b3365e26ae3b7792eb82ccf47
+VIM_SITE = $(call github,vim,vim,$(VIM_VERSION))
 # Win over busybox vi since vim is more feature-rich
 VIM_DEPENDENCIES = \
 	ncurses $(if $(BR2_NEEDS_GETTEXT_IF_LOCALE),gettext) \
