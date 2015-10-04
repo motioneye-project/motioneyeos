@@ -375,6 +375,8 @@ BR_CACHE_DIR = $(call qstrip,$(BR2_CCACHE_DIR))
 export BR_CACHE_DIR
 HOSTCC := $(CCACHE) $(HOSTCC)
 HOSTCXX := $(CCACHE) $(HOSTCXX)
+else
+export BR_NO_CCACHE
 endif
 
 # Scripts in support/ or post-build scripts may need to reference

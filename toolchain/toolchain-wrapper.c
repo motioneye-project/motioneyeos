@@ -98,7 +98,7 @@ static void check_unsafe_path(const char *path, int paranoid)
 
 int main(int argc, char **argv)
 {
-	char **args, **cur;
+	char **args, **cur, **exec_args;
 	char *relbasedir, *absbasedir;
 	char *progpath = argv[0];
 	char *basename;
@@ -247,6 +247,13 @@ int main(int argc, char **argv)
 	/* finish with NULL termination */
 	*cur = NULL;
 
+	exec_args = args;
+#ifdef BR_CCACHE
+	if (getenv("BR_NO_CCACHE"))
+		/* Skip the ccache call */
+		exec_args++;
+#endif
+
 	/* Debug the wrapper to see actual arguments passed to
 	 * the compiler:
 	 * unset, empty, or 0: do not trace
@@ -257,14 +264,14 @@ int main(int argc, char **argv)
 		debug = atoi(env_debug);
 		if (debug > 0) {
 			fprintf(stderr, "Toolchain wrapper executing:");
-			for (i = 0; args[i]; i++)
+			for (i = 0; exec_args[i]; i++)
 				fprintf(stderr, "%s'%s'",
-					(debug == 2) ? "\n    " : " ", args[i]);
+					(debug == 2) ? "\n    " : " ", exec_args[i]);
 			fprintf(stderr, "\n");
 		}
 	}
 
-	if (execv(args[0], args))
+	if (execv(exec_args[0], exec_args))
 		perror(path);
 
 	free(args);
