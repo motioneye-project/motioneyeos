@@ -7,7 +7,7 @@ config BR2_PACKAGE_LIBTORRENT
 	help
 	  BitTorrent library written in C++ for *nix
 
-	  http://libtorrent.rakshasa.no/
+	  http://rtorrent.net/downloads/
 
 comment "libtorrent needs a toolchain w/ C++, threads"
 	depends on BR2_ARCH_HAS_ATOMICS
