@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-GDK_PIXBUF_VERSION_MAJOR = 2.30
-GDK_PIXBUF_VERSION = $(GDK_PIXBUF_VERSION_MAJOR).8
+GDK_PIXBUF_VERSION_MAJOR = 2.32
+GDK_PIXBUF_VERSION = $(GDK_PIXBUF_VERSION_MAJOR).1
 GDK_PIXBUF_SOURCE = gdk-pixbuf-$(GDK_PIXBUF_VERSION).tar.xz
 GDK_PIXBUF_SITE = http://ftp.gnome.org/pub/gnome/sources/gdk-pixbuf/$(GDK_PIXBUF_VERSION_MAJOR)
 GDK_PIXBUF_LICENSE = LGPLv2+
@@ -51,6 +51,12 @@ define GDK_PIXBUF_INSTALL_INIT_SYSV
 	$(INSTALL) -m 755 -D package/gdk-pixbuf/S26gdk-pixbuf \
 		$(TARGET_DIR)/etc/init.d/S26gdk-pixbuf
 endef
+
+# Tests don't build correctly with uClibc
+define GDK_PIXBUF_DISABLE_TESTS
+	$(SED) 's/ tests//' $(@D)/Makefile.in
+endef
+GDK_PIXBUF_POST_PATCH_HOOKS += GDK_PIXBUF_DISABLE_TESTS
 
 $(eval $(autotools-package))
 
