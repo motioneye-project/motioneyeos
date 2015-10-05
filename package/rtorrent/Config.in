@@ -6,14 +6,13 @@ config BR2_PACKAGE_RTORRENT
 	depends on BR2_USE_MMU # fork()
 	depends on BR2_ARCH_HAS_ATOMICS # libtorrent
 	select BR2_PACKAGE_LIBCURL
-	select BR2_PACKAGE_LIBSIGC
 	select BR2_PACKAGE_LIBTORRENT
 	select BR2_PACKAGE_NCURSES
 	select BR2_PACKAGE_OPENSSL
 	help
 	  BitTorrent Client using libtorrent
 
-	  http://rtorrent.net/downloads/
+	  https://github.com/rakshasa/rtorrent
 
 comment "rtorrent needs a toolchain w/ C++, threads, wchar"
 	depends on BR2_USE_MMU
