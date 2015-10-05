@@ -6,7 +6,7 @@
 
 LIBTORRENT_VERSION = 0.13.6
 LIBTORRENT_SITE = http://rtorrent.net/downloads
-LIBTORRENT_DEPENDENCIES = host-pkgconf libsigc \
+LIBTORRENT_DEPENDENCIES = host-pkgconf \
 	$(if $(BR2_PACKAGE_OPENSSL),openssl) \
 	$(if $(BR2_PACKAGE_ZLIB),zlib)
 LIBTORRENT_CONF_OPTS = --enable-aligned \
