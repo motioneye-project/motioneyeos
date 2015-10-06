@@ -473,11 +473,12 @@ STRIP_FIND_CMD += -type f \( -perm /111 -o -name '*.so*' \)
 # file exclusions:
 # - libpthread.so: a non-stripped libpthread shared library is needed for
 #   proper debugging of pthread programs using gdb.
+# - ld.so: a non-stripped dynamic linker library is needed for valgrind
 # - kernel modules (*.ko): do not function properly when stripped like normal
 #   applications and libraries. Normally kernel modules are already excluded
 #   by the executable permission check above, so the explicit exclusion is only
 #   done for kernel modules with incorrect permissions.
-STRIP_FIND_CMD += -not \( $(call findfileclauses,libpthread*.so* *.ko $(call qstrip,$(BR2_STRIP_EXCLUDE_FILES))) \) -print0
+STRIP_FIND_CMD += -not \( $(call findfileclauses,libpthread*.so* ld-*.so* *.ko $(call qstrip,$(BR2_STRIP_EXCLUDE_FILES))) \) -print0
 
 ifeq ($(BR2_ECLIPSE_REGISTER),y)
 define TOOLCHAIN_ECLIPSE_REGISTER
@@ -589,6 +590,11 @@ ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),y)
 	find $(TARGET_DIR)/lib -type f -name 'libpthread*.so*' | \
 		xargs -r $(STRIPCMD) $(STRIP_STRIP_DEBUG)
 endif
+
+# Valgrind needs ld.so with enough information, so only strip
+# debugging symbols.
+	find $(TARGET_DIR)/lib -type f -name 'ld-*.so*' | \
+		xargs -r $(STRIPCMD) $(STRIP_STRIP_DEBUG)
 
 	mkdir -p $(TARGET_DIR)/etc
 	# Mandatory configuration file and auxiliary cache directory
