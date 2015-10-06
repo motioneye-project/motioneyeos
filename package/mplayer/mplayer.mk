@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-MPLAYER_VERSION = 1.1.1
+MPLAYER_VERSION = 1.2
 MPLAYER_SOURCE = MPlayer-$(MPLAYER_VERSION).tar.xz
 MPLAYER_SITE = http://www.mplayerhq.hu/MPlayer/releases
 
@@ -107,7 +107,6 @@ MPLAYER_CONF_OPTS += --disable-libcdio
 ifeq ($(BR2_PACKAGE_LIBDVDREAD),y)
 MPLAYER_CONF_OPTS +=  \
 	--enable-dvdread \
-	--disable-dvdread-internal \
 	--with-dvdread-config=$(STAGING_DIR)/usr/bin/dvdread-config
 MPLAYER_DEPENDENCIES += libdvdread
 endif
@@ -160,7 +159,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_TREMOR),y)
 MPLAYER_DEPENDENCIES += tremor
-MPLAYER_CONF_OPTS += --disable-tremor-internal --enable-tremor
+MPLAYER_CONF_OPTS += --enable-tremor
 endif
 
 ifeq ($(BR2_PACKAGE_LIBVORBIS),y)
