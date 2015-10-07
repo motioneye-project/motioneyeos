@@ -203,6 +203,10 @@ else
 QT_CONFIGURE_OPTS += -static
 endif
 
+ifeq ($(BR2_STATIC_LIBS),y)
+QT_CONFIGURE_OPTS += -D QT_NO_DYNAMIC_LIBRARY
+endif
+
 ifeq ($(BR2_ENDIAN),"LITTLE")
 QT_CONFIGURE_OPTS += -little-endian
 else
