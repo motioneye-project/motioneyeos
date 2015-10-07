@@ -107,6 +107,16 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2015.11"
 
+config BR2_PACKAGE_MEDIA_CTL
+	bool "media-ctl package has been removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_LIBV4L
+	select BR2_PACKAGE_LIBV4L_UTILS
+	help
+	  media-ctl source and developement have been moved to
+	  v4l-utils since June 2014. For an up-to-date media-ctl
+	  version select BR2_PACKAGE_LIBV4L and BR2_PACKAGE_LIBV4L_UTILS.
+
 config BR2_PACKAGE_SCHIFRA
 	bool "schifra package has been removed"
 	select BR2_LEGACY
