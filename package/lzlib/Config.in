@@ -7,4 +7,4 @@ config BR2_PACKAGE_LZLIB
 	  functions and also to read/write gzip files using an
 	  interface similar to the base io package.
 
-	  http://luaforge.net/projects/lzlib/
+	  https://github.com/LuaDist/lzlib
