@@ -228,14 +228,12 @@ ifndef KBUILD_VERBOSE
 endif
 
 ifeq ($(KBUILD_VERBOSE),1)
-  quiet =
   Q =
 ifndef VERBOSE
   VERBOSE = 1
 endif
 export VERBOSE
 else
-  quiet = quiet_
   Q = @
 endif
 
@@ -247,7 +245,7 @@ SHELL := $(shell if [ -x "$$BASH" ]; then echo $$BASH; \
 # kconfig uses CONFIG_SHELL
 CONFIG_SHELL := $(SHELL)
 
-export SHELL CONFIG_SHELL quiet Q KBUILD_VERBOSE
+export SHELL CONFIG_SHELL Q KBUILD_VERBOSE
 
 ifndef HOSTAR
 HOSTAR := ar
