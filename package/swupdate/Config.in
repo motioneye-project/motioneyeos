@@ -24,7 +24,7 @@ config BR2_PACKAGE_SWUPDATE
 	    to the webserver.
 	  * Select BR2_PACKAGE_MTD if you want to use swupdate with UBI
 	    partitions.
-	  * Select BR2_PACKAGE_ZLIB if you want to deal with zip compressed
+	  * Select BR2_PACKAGE_ZLIB if you want to deal with gzip compressed
 	    archives.
 
 	  https://sbabic.github.io/swupdate
