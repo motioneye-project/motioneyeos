@@ -6,8 +6,8 @@ choice
 	help
 	  Specific CPU variant to use
 
-	  64bit cabable: 3, 4, 64, 64r2
-	  non-64bit capable: 1, 2, 32, 32r2
+	  64bit cabable: 64, 64r2
+	  non-64bit capable: 32, 32r2
 
 config BR2_mips_32
 	bool "mips 32"
@@ -65,10 +65,6 @@ config BR2_ARCH_HAS_ATOMICS
 	default y
 
 config BR2_GCC_TARGET_ARCH
-	default "mips1"		if BR2_mips_1
-	default "mips2"		if BR2_mips_2
-	default "mips3"		if BR2_mips_3
-	default "mips4"		if BR2_mips_4
 	default "mips32"	if BR2_mips_32
 	default "mips32r2"	if BR2_mips_32r2
 	default "mips64"	if BR2_mips_64
