@@ -45,17 +45,16 @@ config BR2_PACKAGE_GNURADIO_FEC
 
 config BR2_PACKAGE_GNURADIO_PYTHON
 	bool "python support"
+	depends on BR2_PACKAGE_PYTHON
 	depends on BR2_PACKAGE_PYTHON_NUMPY_ARCH_SUPPORTS
 	select BR2_PACKAGE_BOOST_PYTHON
-	select BR2_PACKAGE_PYTHON
 	select BR2_PACKAGE_PYTHON_NUMPY # runtime
 	help
 	  Enable python component
 
 config BR2_PACKAGE_GNURADIO_UTILS
 	bool "gr-utils support"
-	depends on BR2_PACKAGE_PYTHON_NUMPY_ARCH_SUPPORTS
-	select BR2_PACKAGE_GNURADIO_PYTHON
+	depends on BR2_PACKAGE_GNURADIO_PYTHON
 	help
 	  Misc python utilities
 
