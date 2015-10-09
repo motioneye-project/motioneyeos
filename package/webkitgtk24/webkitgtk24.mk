@@ -88,7 +88,7 @@ endif
 
 # ARM needs NEON for JIT
 # i386 & x86_64 don't seem to have any special requirements
-ifeq ($(BR2_ARM_ENABLE_NEON)$(BR2_i386)$(BR2_x86_64),y)
+ifeq ($(BR2_ARM_CPU_HAS_NEON)$(BR2_i386)$(BR2_x86_64),y)
 WEBKITGTK24_CONF_OPTS += --enable-jit
 else
 WEBKITGTK24_CONF_OPTS += --disable-jit
