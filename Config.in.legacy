@@ -1172,7 +1172,6 @@ config BR2_TARGET_TZ_ZONELIST
 
 config BR2_PACKAGE_TZDATA_ZONELIST
 	string "tzdata: the timezone list option has been renamed"
-	select BR2_LEGACY
 	help
 	  The option BR2_PACKAGE_TZDATA_ZONELIST has been renamed to
 	  BR2_TARGET_TZ_ZONELIST, and moved to the "System configuration"
@@ -1527,7 +1526,6 @@ config BR2_PACKAGE_MODULE_INIT_TOOLS
 
 config BR2_TARGET_UBOOT_CUSTOM_GIT_REPO_URL
 	string "u-boot: the git repository URL option has been renamed"
-	select BR2_LEGACY
 	help
 	  The option BR2_TARGET_UBOOT_CUSTOM_GIT_REPO_URL has
 	  been renamed to BR2_TARGET_UBOOT_CUSTOM_REPO_URL.
@@ -1542,7 +1540,6 @@ config BR2_TARGET_UBOOT_CUSTOM_GIT_REPO_URL_WRAP
 
 config BR2_TARGET_UBOOT_CUSTOM_GIT_VERSION
 	string "u-boot: the git repository version option has been renamed"
-	select BR2_LEGACY
 	help
 	  The option BR2_TARGET_UBOOT_CUSTOM_GIT_VERSION has
 	  been renamed to BR2_TARGET_UBOOT_CUSTOM_REPO_VERSION.
@@ -1557,7 +1554,6 @@ config BR2_TARGET_UBOOT_CUSTOM_GIT_VERSION_WRAP
 
 config BR2_LINUX_KERNEL_CUSTOM_GIT_REPO_URL
 	string "linux: the git repository URL option has been renamed"
-	select BR2_LEGACY
 	help
 	  The option BR2_LINUX_KERNEL_CUSTOM_GIT_REPO_URL has
 	  been renamed to
@@ -1573,7 +1569,6 @@ config BR2_LINUX_KERNEL_CUSTOM_GIT_REPO_URL_WRAP
 
 config BR2_LINUX_KERNEL_CUSTOM_GIT_VERSION
 	string "linux: the git repository version option has been renamed"
-	select BR2_LEGACY
 	help
 	  The option BR2_LINUX_KERNEL_CUSTOM_GIT_VERSION has
 	  been renamed to
