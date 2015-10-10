@@ -588,7 +588,7 @@ endif
 	source "package/python/Config.in"
 	source "package/python3/Config.in"
 if BR2_PACKAGE_PYTHON || BR2_PACKAGE_PYTHON3
-menu "external python modules"
+menu "External python modules"
 	source "package/python-alsaaudio/Config.in"
 	source "package/python-bottle/Config.in"
 	source "package/python-can/Config.in"
@@ -680,7 +680,7 @@ endif
 	source "package/ruby/Config.in"
 	source "package/tcl/Config.in"
 if BR2_PACKAGE_TCL
-menu "tcl libraries/modules"
+menu "Tcl libraries/modules"
 	source "package/expect/Config.in"
 	source "package/tcllib/Config.in"
 endmenu
