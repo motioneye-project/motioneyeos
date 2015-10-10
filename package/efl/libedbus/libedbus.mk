@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBEDBUS_VERSION = $(EFL_VERSION)
+LIBEDBUS_VERSION = 1.7.10
 LIBEDBUS_SOURCE = e_dbus-$(LIBEDBUS_VERSION).tar.bz2
 LIBEDBUS_SITE = http://download.enlightenment.org/releases
 LIBEDBUS_LICENSE = BSD-2c

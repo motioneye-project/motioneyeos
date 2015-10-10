@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBEVAS_GENERIC_LOADERS_VERSION = $(EFL_VERSION)
+LIBEVAS_GENERIC_LOADERS_VERSION = 1.7.10
 LIBEVAS_GENERIC_LOADERS_SOURCE = evas_generic_loaders-$(LIBEVAS_GENERIC_LOADERS_VERSION).tar.bz2
 LIBEVAS_GENERIC_LOADERS_SITE = http://download.enlightenment.org/releases
 LIBEVAS_GENERIC_LOADERS_LICENSE = GPLv2

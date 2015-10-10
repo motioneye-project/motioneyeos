@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBEIO_VERSION = $(EFL_VERSION)
+LIBEIO_VERSION = 1.7.10
 LIBEIO_SOURCE = eio-$(LIBEIO_VERSION).tar.bz2
 LIBEIO_SITE = http://download.enlightenment.org/releases
 LIBEIO_LICENSE = LGPLv2.1
