@@ -5,7 +5,7 @@ function usage() {
     echo "Usage: $0 [options...]" 1>&2
     echo ""
     echo "Available options:"
-    echo "    <-i image_file> - indicates the path to the image file (e.g. -i /home/user/Download/motioneyeos.img)"
+    echo "    <-i image_file> - indicates the path to the image file (e.g. -i /home/user/Download/motioneyeos.img.gz)"
     echo "    <-d sdcard_dev> - indicates the path to the sdcard block device (e.g. -d /dev/mmcblk0)"
     echo "    [-n ssid:psk] - sets the wireless network name and key (e.g. -n mynet:mykey1234)"
     echo "    [-s ip/cidr:gw:dns] - sets a static IP configuration instead of DHCP (e.g. -s 192.168.1.101/24:192.168.1.1:8.8.8.8)"
@@ -68,9 +68,15 @@ if ! [ -f $DISK_IMG ]; then
     exit 1
 fi
 
+if [[ $DISK_IMG == *.gz ]]; then
+    msg "decompressing the gzipped image"
+    gunzip -c $DISK_IMG > ${DISK_IMG::-3}
+    DISK_IMG=${DISK_IMG::-3}
+fi
+
 umount ${SDCARD_DEV}* 2>/dev/null || true
 msg "writing disk image to sdcard"
-dd if=$DISK_IMG of=$SDCARD_DEV bs=1048576
+dd if=$DISK_IMG of=$SDCARD_DEV bs=1048576 status=none
 sync
 
 if which partprobe > /dev/null 2>&1; then
