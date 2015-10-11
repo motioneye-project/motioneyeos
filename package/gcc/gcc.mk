@@ -142,7 +142,7 @@ endif
 
 # libsanitizer is broken for SPARC
 # https://bugs.busybox.net/show_bug.cgi?id=7951
-ifeq ($(BR2_sparc),y)
+ifeq ($(BR2_sparc)$(BR2_sparc64),y)
 HOST_GCC_COMMON_CONF_OPTS += --disable-libsanitizer
 endif
 
