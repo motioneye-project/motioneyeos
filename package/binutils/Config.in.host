@@ -10,11 +10,15 @@ choice
 	config BR2_BINUTILS_VERSION_2_23_X
 		depends on !BR2_aarch64 && !BR2_microblaze && \
 			   !BR2_powerpc64le && !BR2_nios2
+		# Unsupported for MIPS R6
+		depends on !BR2_mips_32r6 && !BR2_mips_64r6
 		bool "binutils 2.23.2"
 
 	config BR2_BINUTILS_VERSION_2_24_X
 		# supported, but broken on Nios-II and powerpc64le
 		depends on !BR2_nios2 && !BR2_powerpc64le
+		# Unsupported for MIPS R6
+		depends on !BR2_mips_32r6 && !BR2_mips_64r6
 		bool "binutils 2.24"
 
 	config BR2_BINUTILS_VERSION_2_25_X
