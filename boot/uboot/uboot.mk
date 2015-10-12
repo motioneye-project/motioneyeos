@@ -71,7 +71,13 @@ UBOOT_BIN = u-boot.bin
 UBOOT_BIN_IFT = $(UBOOT_BIN).ift
 endif
 
+# The kernel calls AArch64 'arm64', but U-Boot calls it just 'arm', so
+# we have to special case it.
+ifeq ($(KERNEL_ARCH),arm64)
+UBOOT_ARCH = arm
+else
 UBOOT_ARCH = $(KERNEL_ARCH)
+endif
 
 UBOOT_MAKE_OPTS += \
 	CROSS_COMPILE="$(TARGET_CROSS)" \
