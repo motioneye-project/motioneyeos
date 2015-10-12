@@ -326,6 +326,13 @@ else
 VLC_CONF_OPTS += --disable-speex
 endif
 
+ifeq ($(BR2_PACKAGE_TAGLIB),y)
+VLC_CONF_OPTS += --enable-taglib
+VLC_DEPENDENCIES += taglib
+else
+VLC_CONF_OPTS += --disable-taglib
+endif
+
 ifeq ($(BR2_PACKAGE_TREMOR),y)
 VLC_CONF_OPTS += --enable-tremor
 VLC_DEPENDENCIES += tremor
