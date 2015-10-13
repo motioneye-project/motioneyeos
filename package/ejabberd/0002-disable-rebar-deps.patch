@@ -6,7 +6,7 @@ Author: Philipp Huebner <debalance@debian.org>
 Index: ejabberd/Makefile.in
 ===================================================================
 diff --git a/Makefile.in b/Makefile.in
-index ffd1d30..09cb8d7 100644
+index f7b30d4..4ca4db3 100644
 --- a/Makefile.in
 +++ b/Makefile.in
 @@ -74,26 +74,11 @@ else
@@ -64,11 +64,11 @@ index ffd1d30..09cb8d7 100644
  	#
  	# Binary C programs
  	$(INSTALL) -d $(PBINDIR)
-@@ -173,7 +153,6 @@ install: all
+@@ -174,7 +154,6 @@ install: all
  	#
  	# Binary system libraries
  	$(INSTALL) -d $(SODIR)
 -	$(INSTALL) -m 644 $(DLLs) $(SODIR)
- 	-[ -f $(SODIR)/jiffy.so ] && (cd $(PRIVDIR); ln -s lib/jiffy.so; true)
- 	-[ -f $(SODIR)/sqlite3_drv.so ] && (cd $(PRIVDIR); ln -s lib/sqlite3_drv.so; true)
+ 	[ -f $(SODIR)/jiffy.so ] && (cd $(PRIVDIR); ln -s lib/jiffy.so; true) || true
+ 	[ -f $(SODIR)/sqlite3_drv.so ] && (cd $(PRIVDIR); ln -s lib/sqlite3_drv.so; true) || true
  	#

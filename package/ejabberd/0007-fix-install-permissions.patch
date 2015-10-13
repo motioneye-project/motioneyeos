@@ -7,7 +7,7 @@ Author: Johan Oudinet <johan.oudinet@gmail.com>
 Index: ejabberd/Makefile.in
 ===================================================================
 diff --git a/Makefile.in b/Makefile.in
-index ffd1d30..a60c5b7 100644
+index f7b30d4..84098a6 100644
 --- a/Makefile.in
 +++ b/Makefile.in
 @@ -114,10 +114,8 @@ DLLs := $(wildcard deps/*/priv/*.so) $(wildcard deps/*/priv/lib/*.so)
@@ -39,7 +39,7 @@ index ffd1d30..a60c5b7 100644
 +	$(INSTALL) -D ejabberdctl.example $(SBINDIR)/ejabberdctl
  	# Elixir binaries
  	[ -d $(BINDIR) ] || $(INSTALL) -d -m 755 $(BINDIR)
- 	-[ -f deps/elixir/bin/iex ] && $(INSTALL) -m 550 $(G_USER) deps/elixir/bin/iex $(BINDIR)/iex
+ 	[ -f deps/elixir/bin/iex ] && $(INSTALL) -m 550 $(G_USER) deps/elixir/bin/iex $(BINDIR)/iex || true
 @@ -165,9 +160,9 @@ install: all
  	#
  	# Binary C programs
@@ -50,13 +50,13 @@ index ffd1d30..a60c5b7 100644
 +	$(INSTALL) tools/captcha.sh $(PBINDIR)
 +	$(INSTALL) tools/joincluster $(PBINDIR)
 +	$(INSTALL) tools/leavecluster $(PBINDIR)
- 	-[ -f deps/p1_pam/priv/bin/epam ] \
- 		&& $(INSTALL) -m 750 $(O_USER) deps/p1_pam/priv/bin/epam $(PBINDIR)
- 	#
-@@ -184,29 +179,6 @@ install: all
+ 	[ -f deps/p1_pam/priv/bin/epam ] \
+ 		&& $(INSTALL) -m 750 $(O_USER) deps/p1_pam/priv/bin/epam $(PBINDIR) \
+ 		|| true
+@@ -185,29 +180,6 @@ install: all
  	# Copy lite.sql
- 	-[ -d deps/sqlite3 ] && $(INSTALL) -d $(SQLDIR)
- 	-[ -d deps/sqlite3 ] && $(INSTALL) -m 644 sql/lite.sql $(SQLDIR)
+ 	[ -d deps/sqlite3 ] && $(INSTALL) -d $(SQLDIR) || true
+ 	[ -d deps/sqlite3 ] && $(INSTALL) -m 644 sql/lite.sql $(SQLDIR) || true
 -	#
 -	# Spool directory
 -	$(INSTALL) -d -m 750 $(O_USER) $(SPOOLDIR)
@@ -82,3 +82,4 @@ index ffd1d30..a60c5b7 100644
 -	$(INSTALL) -m 644 COPYING $(DOCDIR)
  
  uninstall: uninstall-binary
+ 

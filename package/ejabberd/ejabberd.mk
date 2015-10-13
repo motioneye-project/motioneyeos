@@ -4,8 +4,9 @@
 #
 ################################################################################
 
-EJABBERD_VERSION = 15.06
-EJABBERD_SITE = $(call github,processone,ejabberd,$(EJABBERD_VERSION))
+EJABBERD_VERSION = 15.09
+EJABBERD_SOURCE = ejabberd-$(EJABBERD_VERSION).tgz
+EJABBERD_SITE = https://www.process-one.net/downloads/ejabberd/$(EJABBERD_VERSION)
 EJABBERD_LICENSE = GPLv2+ with OpenSSL exception
 EJABBERD_LICENSE_FILES = COPYING
 EJABBERD_DEPENDENCIES = getent openssl host-erlang-lager erlang-lager \
