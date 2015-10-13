@@ -22,6 +22,11 @@ else
 RNG_TOOLS_CONF_OPTS += --without-libgcrypt
 endif
 
+define RNG_TOOLS_INSTALL_INIT_SYSV
+	$(INSTALL) -D -m 755 package/rng-tools/S21rngd \
+		$(TARGET_DIR)/etc/init.d/S21rngd
+endef
+
 define RNG_TOOLS_INSTALL_INIT_SYSTEMD
 	$(INSTALL) -D -m 644 package/rng-tools/rngd.service \
 		$(TARGET_DIR)/usr/lib/systemd/system/rngd.service
