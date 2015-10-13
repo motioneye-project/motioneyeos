@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBV4L_VERSION = 1.6.3
+LIBV4L_VERSION = 1.8.0
 LIBV4L_SOURCE = v4l-utils-$(LIBV4L_VERSION).tar.bz2
 LIBV4L_SITE = http://linuxtv.org/downloads/v4l-utils
 LIBV4L_INSTALL_STAGING = YES
@@ -43,6 +43,20 @@ ifeq ($(BR2_PACKAGE_LIBV4L_UTILS),y)
 LIBV4L_CONF_OPTS += --enable-v4l-utils
 # clock_gettime is used, which is provided by librt for glibc < 2.17
 LIBV4L_LIBS += -lrt
+ifeq ($(BR2_PACKAGE_QT5BASE)$(BR2_PACKAGE_QT5BASE_GUI)$(BR2_PACKAGE_QT5BASE_WIDGETS),yyy)
+LIBV4L_CONF_OPTS += --enable-qv4l2
+LIBV4L_DEPENDENCIES += qt5base
+# protect against host version detection of moc-qt5/rcc-qt5/uic-qt5
+LIBV4L_CONF_ENV += \
+	ac_cv_prog_MOC=$(HOST_DIR)/usr/bin/moc \
+	ac_cv_prog_RCC=$(HOST_DIR)/usr/bin/rcc \
+	ac_cv_prog_UIC=$(HOST_DIR)/usr/bin/uic
+else ifeq ($(BR2_PACKAGE_QT_GUI_MODULE),y)
+LIBV4L_CONF_OPTS += --enable-qv4l2
+LIBV4L_DEPENDENCIES += qt
+else
+LIBV4L_CONF_OPTS += --disable-qv4l2
+endif
 else
 LIBV4L_CONF_OPTS += --disable-v4l-utils
 endif
