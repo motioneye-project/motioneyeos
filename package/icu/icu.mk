@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-ICU_VERSION = 55.1
+ICU_VERSION = 56.1
 ICU_SOURCE = icu4c-$(subst .,_,$(ICU_VERSION))-src.tgz
 ICU_SITE = http://download.icu-project.org/files/icu4c/$(ICU_VERSION)
 ICU_LICENSE = ICU License

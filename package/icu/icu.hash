@@ -1,2 +1,4 @@
-# From https://ssl.icu-project.org/files/icu4c/55.1/icu4c-src-55_1.md5
-md5	e2d523df79d6cb7855c2fbe284f4db29	icu4c-55_1-src.tgz
+# From https://ssl.icu-project.org/files/icu4c/56.1/icu4c-src-56_1.md5
+md5	c4a2d71ff56aec5ebfab2a3f059be99d	icu4c-56_1-src.tgz
+# Calculated based on the hash above
+sha256	3a64e9105c734dcf631c0b3ed60404531bce6c0f5a64bfe1a6402a4cc2314816	icu4c-56_1-src.tgz
