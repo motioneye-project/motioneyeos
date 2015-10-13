@@ -14,6 +14,13 @@ SANE_BACKENDS_INSTALL_STAGING = YES
 SANE_BACKENDS_CONF_OPTS = \
 	$(if $(BR2_TOOLCHAIN_HAS_THREADS),--enable-pthread,--disable-pthread)
 
+ifeq ($(BR2_INIT_SYSTEMD),y)
+SANE_BACKENDS_CONF_OPTS += --with-systemd
+SANE_BACKENDS_DEPENDENCIES += systemd
+else
+SANE_BACKENDS_CONF_OPTS += --without-systemd
+endif
+
 ifeq ($(BR2_PACKAGE_LIBUSB),y)
 SANE_BACKENDS_DEPENDENCIES += libusb
 SANE_BACKENDS_CONF_OPTS += --enable-libusb_1_0
@@ -50,5 +57,22 @@ define SANE_BACKENDS_DISABLE_DOCS
 endef
 
 SANE_BACKENDS_POST_CONFIGURE_HOOKS += SANE_BACKENDS_DISABLE_DOCS
+
+define SANE_BACKENDS_USERS
+	saned -1 saned -1 * /etc/sane.d - - Saned User
+endef
+
+define SANE_BACKENDS_INSTALL_INIT_SYSTEMD
+	$(INSTALL) -m 0644 -D package/sane-backends/saned.socket \
+		$(TARGET_DIR)/usr/lib/systemd/system/saned.socket
+	mkdir -p $(TARGET_DIR)/etc/systemd/system/socket.target.wants
+	ln -sf ../../../../usr/lib/systemd/system/saned.socket \
+		$(TARGET_DIR)/etc/systemd/system/socket.target.wants/saned.socket
+	$(INSTALL) -m 0644 -D package/sane-backends/saned@.service \
+		$(TARGET_DIR)/usr/lib/systemd/system/saned@.service
+	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
+	ln -sf ../../../../usr/lib/systemd/system/saned@.service \
+		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/saned@.service
+endef
 
 $(eval $(autotools-package))
