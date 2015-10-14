@@ -41,6 +41,8 @@ FFMPEG_CONF_OPTS = \
 	--enable-runtime-cpudetect \
 	--disable-hardcoded-tables \
 	--disable-memalign-hack \
+	--disable-mipsdspr1 \
+	--disable-mipsdspr2 \
 	--disable-msa \
 	--enable-hwaccels \
 	--disable-avisynth \
@@ -353,16 +355,6 @@ FFMPEG_CONF_OPTS += \
 else
 FFMPEG_CONF_OPTS += \
 	--disable-mips32r2
-endif
-
-ifeq ($(BR2_mips_64r2),y)
-FFMPEG_CONF_OPTS += \
-	--enable-mipsdspr1 \
-	--enable-mipsdspr2
-else
-FFMPEG_CONF_OPTS += \
-	--disable-mipsdspr1 \
-	--disable-mipsdspr2
 endif
 
 ifeq ($(BR2_POWERPC_CPU_HAS_ALTIVEC),y)
