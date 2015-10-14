@@ -9,6 +9,7 @@ SLANG_SITE = http://www.jedsoft.org/releases/slang
 SLANG_LICENSE = GPLv2+
 SLANG_LICENSE_FILES = COPYING
 SLANG_INSTALL_STAGING = YES
+SLANG_CONF_OPTS = --with-onig=no
 SLANG_MAKE = $(MAKE1)
 
 # Racy and we don't have/do libtermcap
