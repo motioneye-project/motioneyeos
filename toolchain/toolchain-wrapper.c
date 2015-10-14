@@ -143,10 +143,10 @@ int main(int argc, char **argv)
 
 	/* Fill in the relative paths */
 #ifdef BR_CROSS_PATH_REL
-	ret = snprintf(path, sizeof(path), "%s/" BR_CROSS_PATH_REL "/%s", absbasedir, basename);
+	ret = snprintf(path, sizeof(path), "%s/" BR_CROSS_PATH_REL "/%s" BR_CROSS_PATH_SUFFIX, absbasedir, basename);
 #elif defined(BR_CROSS_PATH_ABS)
-	ret = snprintf(path, sizeof(path), BR_CROSS_PATH_ABS "/%s", basename);
-#else /* BR_CROSS_PATH_SUFFIX */
+	ret = snprintf(path, sizeof(path), BR_CROSS_PATH_ABS "/%s" BR_CROSS_PATH_SUFFIX, basename);
+#else
 	ret = snprintf(path, sizeof(path), "%s/usr/bin/%s" BR_CROSS_PATH_SUFFIX, absbasedir, basename);
 #endif
 	if (ret >= sizeof(path)) {
