@@ -27,6 +27,19 @@ else
 MPLAYER_CONF_OPTS += --disable-big-endian
 endif
 
+ifeq ($(BR2_PACKAGE_ZLIB),y)
+MPLAYER_DEPENDENCIES += zlib
+MPLAYER_CONF_OPTS += \
+	--enable-decoder=apng \
+	--enable-encoder=apng \
+	--enable-decoder=tdsc
+else
+MPLAYER_CONF_OPTS += \
+	--disable-decoder=apng \
+	--disable-encoder=apng \
+	--disable-decoder=tdsc
+endif
+
 ifeq ($(BR2_PACKAGE_SDL),y)
 MPLAYER_CONF_OPTS += \
 	--enable-sdl \
