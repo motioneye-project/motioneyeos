@@ -1,0 +1,556 @@
+From 3e25e2167beb3936de3986fad9b6c9bdec82b81f Mon Sep 17 00:00:00 2001
+From: Eric S. Raymond <esr@thyrsus.com>
+Date: Fri, 02 Oct 2015 00:37:28 +0000
+Subject: Address  Savannah bug #46082 - Can't explicitly build with NMEA drivers.
+
+Upstream: http://git.savannah.gnu.org/cgit/gpsd.git/patch/?id=3e25e2167beb3936de3986fad9b6c9bdec82b81f
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+diff --git a/driver_evermore.c b/driver_evermore.c
+index ba10611..be040e8 100644
+--- a/driver_evermore.c
++++ b/driver_evermore.c
+@@ -385,12 +385,12 @@ static gps_mask_t evermore_parse_input(struct gps_device_t *session)
+ 			    session->lexer.outbuflen);
+ 	return st;
+     }
+-#ifdef NMEA_ENABLE
++#ifdef NMEA0183_ENABLE
+     else if (session->lexer.type == NMEA_PACKET) {
+ 	st = nmea_parse((char *)session->lexer.outbuffer, session);
+ 	return st;
+     }
+-#endif /* NMEA_ENABLE */
++#endif /* NMEA0183_ENABLE */
+     else
+ 	return 0;
+ }
+diff --git a/driver_italk.c b/driver_italk.c
+index c24c034..7bd47d1 100644
+--- a/driver_italk.c
++++ b/driver_italk.c
+@@ -384,10 +384,10 @@ static gps_mask_t italk_parse_input(struct gps_device_t *session)
+     if (session->lexer.type == ITALK_PACKET) {
+ 	return italk_parse(session, session->lexer.outbuffer,
+ 			   session->lexer.outbuflen);;
+-#ifdef NMEA_ENABLE
++#ifdef NMEA0183_ENABLE
+     } else if (session->lexer.type == NMEA_PACKET) {
+ 	return nmea_parse((char *)session->lexer.outbuffer, session);
+-#endif /* NMEA_ENABLE */
++#endif /* NMEA0183_ENABLE */
+     } else
+ 	return 0;
+ }
+diff --git a/driver_navcom.c b/driver_navcom.c
+index e34a8b8..081cee1 100644
+--- a/driver_navcom.c
++++ b/driver_navcom.c
+@@ -1150,10 +1150,10 @@ static gps_mask_t navcom_parse_input(struct gps_device_t *session)
+     if (session->lexer.type == NAVCOM_PACKET) {
+ 	return navcom_parse(session, session->lexer.outbuffer,
+ 			  session->lexer.outbuflen);
+-#ifdef NMEA_ENABLE
++#ifdef NMEA0183_ENABLE
+     } else if (session->lexer.type == NMEA_PACKET) {
+ 	return nmea_parse((char *)session->lexer.outbuffer, session);;
+-#endif /* NMEA_ENABLE */
++#endif /* NMEA0183_ENABLE */
+     } else
+ 	return 0;
+ }
+diff --git a/driver_nmea0183.c b/driver_nmea0183.c
+index 996ddfc..61aaa04 100644
+--- a/driver_nmea0183.c
++++ b/driver_nmea0183.c
+@@ -13,7 +13,7 @@
+ #include "gpsd.h"
+ #include "strfuncs.h"
+ 
+-#ifdef NMEA_ENABLE
++#ifdef NMEA0183_ENABLE
+ /**************************************************************************
+  *
+  * Parser helpers begin here
+@@ -1587,7 +1587,7 @@ gps_mask_t nmea_parse(char *sentence, struct gps_device_t * session)
+     return retval;
+ }
+ 
+-#endif /* NMEA_ENABLE */
++#endif /* NMEA0183_ENABLE */
+ 
+ void nmea_add_checksum(char *sentence)
+ /* add NMEA checksum to a possibly  *-terminated sentence */
+diff --git a/driver_oncore.c b/driver_oncore.c
+index a023529..f4338b7 100644
+--- a/driver_oncore.c
++++ b/driver_oncore.c
+@@ -468,10 +468,10 @@ static gps_mask_t oncore_parse_input(struct gps_device_t *session)
+     if (session->lexer.type == ONCORE_PACKET) {
+ 	return oncore_dispatch(session, session->lexer.outbuffer,
+ 			     session->lexer.outbuflen);
+-#ifdef NMEA_ENABLE
++#ifdef NMEA0183_ENABLE
+     } else if (session->lexer.type == NMEA_PACKET) {
+ 	return nmea_parse((char *)session->lexer.outbuffer, session);
+-#endif /* NMEA_ENABLE */
++#endif /* NMEA0183_ENABLE */
+     } else
+ 	return 0;
+ }
+diff --git a/driver_proto.c b/driver_proto.c
+index d6c61c8..f42cfcc 100644
+--- a/driver_proto.c
++++ b/driver_proto.c
+@@ -420,10 +420,10 @@ static gps_mask_t _proto__parse_input(struct gps_device_t *session)
+ {
+     if (session->lexer.type == _PROTO__PACKET) {
+ 	return _proto__dispatch(session, session->lexer.outbuffer, session->lexer.outbuflen);
+-#ifdef NMEA_ENABLE
++#ifdef NMEA0183_ENABLE
+     } else if (session->lexer.type == NMEA_PACKET) {
+ 	return nmea_parse((char *)session->lexer.outbuffer, session);
+-#endif /* NMEA_ENABLE */
++#endif /* NMEA0183_ENABLE */
+     } else
+ 	return 0;
+ }
+diff --git a/driver_sirf.c b/driver_sirf.c
+index e3699c8..945f6c1 100644
+--- a/driver_sirf.c
++++ b/driver_sirf.c
+@@ -1367,10 +1367,10 @@ static gps_mask_t sirfbin_parse_input(struct gps_device_t *session)
+     if (session->lexer.type == SIRF_PACKET) {
+ 	return sirf_parse(session, session->lexer.outbuffer,
+ 			session->lexer.outbuflen);
+-#ifdef NMEA_ENABLE
++#ifdef NMEA0183_ENABLE
+     } else if (session->lexer.type == NMEA_PACKET) {
+ 	return nmea_parse((char *)session->lexer.outbuffer, session);
+-#endif /* NMEA_ENABLE */
++#endif /* NMEA0183_ENABLE */
+     } else
+ 	return 0;
+ }
+diff --git a/driver_superstar2.c b/driver_superstar2.c
+index 6e197d3..bd4aab1 100644
+--- a/driver_superstar2.c
++++ b/driver_superstar2.c
+@@ -468,10 +468,10 @@ static gps_mask_t superstar2_parse_input(struct gps_device_t *session)
+     if (session->lexer.type == SUPERSTAR2_PACKET) {
+ 	return superstar2_dispatch(session, session->lexer.outbuffer,
+ 				   session->lexer.length);;
+-#ifdef NMEA_ENABLE
++#ifdef NMEA0183_ENABLE
+     } else if (session->lexer.type == NMEA_PACKET) {
+ 	return nmea_parse((char *)session->lexer.outbuffer, session);
+-#endif /* NMEA_ENABLE */
++#endif /* NMEA0183_ENABLE */
+     } else
+ 	return 0;
+ }
+diff --git a/driver_ubx.c b/driver_ubx.c
+index fe50946..41ff709 100644
+--- a/driver_ubx.c
++++ b/driver_ubx.c
+@@ -633,10 +633,10 @@ static gps_mask_t parse_input(struct gps_device_t *session)
+     if (session->lexer.type == UBX_PACKET) {
+ 	return ubx_parse(session, session->lexer.outbuffer,
+ 			 session->lexer.outbuflen);
+-#ifdef NMEA_ENABLE
++#ifdef NMEA0183_ENABLE
+     } else if (session->lexer.type == NMEA_PACKET) {
+ 	return nmea_parse((char *)session->lexer.outbuffer, session);
+-#endif /* NMEA_ENABLE */
++#endif /* NMEA0183_ENABLE */
+     } else
+ 	return 0;
+ }
+diff --git a/drivers.c b/drivers.c
+index edd6a7d..de5ce78 100644
+--- a/drivers.c
++++ b/drivers.c
+@@ -27,7 +27,7 @@ gps_mask_t generic_parse_input(struct gps_device_t *session)
+     else if (session->lexer.type == COMMENT_PACKET) {
+ 	gpsd_set_century(session);
+ 	return 0;
+-#ifdef NMEA_ENABLE
++#ifdef NMEA0183_ENABLE
+     } else if (session->lexer.type == NMEA_PACKET) {
+ 	const struct gps_type_t **dp;
+ 	gps_mask_t st = 0;
+@@ -61,7 +61,7 @@ gps_mask_t generic_parse_input(struct gps_device_t *session)
+ 	    }
+ 	}
+ 	return st;
+-#endif /* NMEA_ENABLE */
++#endif /* NMEA0183_ENABLE */
+     } else {
+ 	gpsd_log(&session->context->errout, LOG_SHOUT,
+ 		 "packet type %d fell through (should never happen): %s.\n",
+@@ -104,7 +104,7 @@ const struct gps_type_t driver_unknown = {
+ };
+ /* *INDENT-ON* */
+ 
+-#ifdef NMEA_ENABLE
++#ifdef NMEA0183_ENABLE
+ /**************************************************************************
+  *
+  * NMEA 0183
+@@ -144,14 +144,14 @@ static void nmea_event_hook(struct gps_device_t *session, event_t event)
+ 	 * unless there is actual following data.
+ 	 */
+ 	switch (session->lexer.counter) {
+-#ifdef NMEA_ENABLE
++#ifdef NMEA0183_ENABLE
+ 	case 0:
+ 	    /* probe for Garmin serial GPS -- expect $PGRMC followed by data */
+ 	    gpsd_log(&session->context->errout, LOG_PROG,
+ 		     "=> Probing for Garmin NMEA\n");
+ 	    (void)nmea_send(session, "$PGRMCE");
+ 	    break;
+-#endif /* NMEA_ENABLE */
++#endif /* NMEA0183_ENABLE */
+ #ifdef SIRF_ENABLE
+ 	case 1:
+ 	    /*
+@@ -181,7 +181,7 @@ static void nmea_event_hook(struct gps_device_t *session, event_t event)
+ 	    session->back_to_nmea = true;
+ 	    break;
+ #endif /* SIRF_ENABLE */
+-#ifdef NMEA_ENABLE
++#ifdef NMEA0183_ENABLE
+ 	case 2:
+ 	    /* probe for the FV-18 -- expect $PFEC,GPint followed by data */
+ 	    gpsd_log(&session->context->errout, LOG_PROG,
+@@ -194,7 +194,7 @@ static void nmea_event_hook(struct gps_device_t *session, event_t event)
+ 		     "=> Probing for Trimble Copernicus\n");
+ 	    (void)nmea_send(session, "$PTNLSNM,0139,01");
+ 	    break;
+-#endif /* NMEA_ENABLE */
++#endif /* NMEA0183_ENABLE */
+ #ifdef EVERMORE_ENABLE
+ 	case 4:
+ 	    gpsd_log(&session->context->errout, LOG_PROG,
+@@ -276,7 +276,7 @@ const struct gps_type_t driver_nmea0183 = {
+ };
+ /* *INDENT-ON* */
+ 
+-#if defined(GARMIN_ENABLE) && defined(NMEA_ENABLE)
++#if defined(GARMIN_ENABLE) && defined(NMEA0183_ENABLE)
+ /**************************************************************************
+  *
+  * Garmin NMEA
+@@ -377,7 +377,7 @@ const struct gps_type_t driver_garmin = {
+ #endif /* TIMEHINT_ENABLE */
+ };
+ /* *INDENT-ON* */
+-#endif /* GARMIN_ENABLE && NMEA_ENABLE */
++#endif /* GARMIN_ENABLE && NMEA0183_ENABLE */
+ 
+ #ifdef ASHTECH_ENABLE
+ /**************************************************************************
+@@ -641,7 +641,7 @@ static const struct gps_type_t driver_earthmate = {
+ /* *INDENT-ON* */
+ #endif /* EARTHMATE_ENABLE */
+ 
+-#endif /* NMEA_ENABLE */
++#endif /* NMEA0183_ENABLE */
+ 
+ #ifdef TNT_ENABLE
+ /**************************************************************************
+@@ -1351,10 +1351,10 @@ static gps_mask_t aivdm_analyze(struct gps_device_t *session)
+ 	    return ONLINE_SET | AIS_SET;
+ 	} else
+ 	    return ONLINE_SET;
+-#ifdef NMEA_ENABLE
++#ifdef NMEA0183_ENABLE
+     } else if (session->lexer.type == NMEA_PACKET) {
+ 	return nmea_parse((char *)session->lexer.outbuffer, session);
+-#endif /* NMEA_ENABLE */
++#endif /* NMEA0183_ENABLE */
+     } else
+ 	return 0;
+ }
+@@ -1548,7 +1548,7 @@ extern const struct gps_type_t driver_zodiac;
+ /* the point of this rigamarole is to not have to export a table size */
+ static const struct gps_type_t *gpsd_driver_array[] = {
+     &driver_unknown,
+-#ifdef NMEA_ENABLE
++#ifdef NMEA0183_ENABLE
+     &driver_nmea0183,
+ #ifdef ASHTECH_ENABLE
+     &driver_ashtech,
+@@ -1583,7 +1583,7 @@ static const struct gps_type_t *gpsd_driver_array[] = {
+ #ifdef AIVDM_ENABLE
+     &driver_aivdm,
+ #endif /* AIVDM_ENABLE */
+-#endif /* NMEA_ENABLE */
++#endif /* NMEA0183_ENABLE */
+ 
+ #ifdef EVERMORE_ENABLE
+     &driver_evermore,
+diff --git a/gpsd.h-tail b/gpsd.h-tail
+index 829a86e..b76e7ce 100644
+--- a/gpsd.h-tail
++++ b/gpsd.h-tail
+@@ -46,8 +46,8 @@
+ #if !defined(AIVDM_ENABLE) && defined(NMEA2000_ENABLE)
+ #define AIVDM_ENABLE
+ #endif
+-#if !defined(NMEA_ENABLE) && (defined(FV18_ENABLE) || defined(MTK3301_ENABLE) || defined(TNT_ENABLE) || defined(OCEANSERVER_ENABLE) || defined(GPSCLOCK_ENABLE) || defined(FURY_ENABLE))
+-#define NMEA_ENABLE
++#if !defined(NMEA0183_ENABLE) && (defined(FV18_ENABLE) || defined(MTK3301_ENABLE) || defined(TNT_ENABLE) || defined(OCEANSERVER_ENABLE) || defined(GPSCLOCK_ENABLE) || defined(FURY_ENABLE))
++#define NMEA0183_ENABLE
+ #endif
+ #ifdef EARTHMATE_ENABLE
+ #define ZODIAC_ENABLE
+@@ -485,7 +485,7 @@ struct gps_device_t {
+     int fixcnt;				/* count of fixes from this device */
+     struct gps_fix_t newdata;		/* where drivers put their data */
+     struct gps_fix_t oldfix;		/* previous fix for error modeling */
+-#ifdef NMEA_ENABLE
++#ifdef NMEA0183_ENABLE
+     struct {
+ 	unsigned short sats_used[MAXCHANNELS];
+ 	int part, await;		/* for tracking GSV parts */
+@@ -515,7 +515,7 @@ struct gps_device_t {
+ 	unsigned int cycle_enders;
+ 	bool cycle_continue;
+     } nmea;
+-#endif /* NMEA_ENABLE */
++#endif /* NMEA0183_ENABLE */
+     /*
+      * The rest of this structure is driver-specific private storage.
+      * Only put a driver's scratch storage in here if it is never
+diff --git a/gpsmon.c b/gpsmon.c
+index 58c8300..3b7a4fb 100644
+--- a/gpsmon.c
++++ b/gpsmon.c
+@@ -39,9 +39,9 @@ extern struct monitor_object_t garmin_mmt, garmin_bin_ser_mmt;
+ extern struct monitor_object_t italk_mmt, ubx_mmt, superstar2_mmt;
+ extern struct monitor_object_t fv18_mmt, gpsclock_mmt, mtk3301_mmt;
+ extern struct monitor_object_t oncore_mmt, tnt_mmt, aivdm_mmt;
+-#ifdef NMEA_ENABLE
++#ifdef NMEA0183_ENABLE
+ extern const struct gps_type_t driver_nmea0183;
+-#endif /* NMEA_ENABLE */
++#endif /* NMEA0183_ENABLE */
+ 
+ /* These are public */
+ struct gps_device_t session;
+@@ -76,11 +76,11 @@ const struct monitor_object_t json_mmt = {
+ #endif /* PASSTHROUGH_ENABLE */
+ 
+ static const struct monitor_object_t *monitor_objects[] = {
+-#ifdef NMEA_ENABLE
++#ifdef NMEA0183_ENABLE
+     &nmea_mmt,
+-#if defined(GARMIN_ENABLE) && defined(NMEA_ENABLE)
++#if defined(GARMIN_ENABLE) && defined(NMEA0183_ENABLE)
+     &garmin_mmt,
+-#endif /* GARMIN_ENABLE && NMEA_ENABLE */
++#endif /* GARMIN_ENABLE && NMEA0183_ENABLE */
+ #if defined(GARMIN_ENABLE) && defined(BINARY_ENABLE)
+     &garmin_bin_ser_mmt,
+ #endif /* defined(GARMIN_ENABLE) && defined(BINARY_ENABLE) */
+@@ -99,7 +99,7 @@ static const struct monitor_object_t *monitor_objects[] = {
+ #ifdef AIVDM_ENABLE
+     &aivdm_mmt,
+ #endif /* AIVDM_ENABLE */
+-#endif /* NMEA_ENABLE */
++#endif /* NMEA0183_ENABLE */
+ #if defined(SIRF_ENABLE) && defined(BINARY_ENABLE)
+     &sirf_mmt,
+ #endif /* defined(SIRF_ENABLE) && defined(BINARY_ENABLE) */
+@@ -561,11 +561,11 @@ static void select_packet_monitor(struct gps_device_t *device)
+      */
+     if (device->lexer.type != last_type) {
+ 	const struct gps_type_t *active_type = device->device_type;
+-#ifdef NMEA_ENABLE
++#ifdef NMEA0183_ENABLE
+ 	if (device->lexer.type == NMEA_PACKET
+ 	    && ((device->device_type->flags & DRIVER_STICKY) != 0))
+ 	    active_type = &driver_nmea0183;
+-#endif /* NMEA_ENABLE */
++#endif /* NMEA0183_ENABLE */
+ 	if (!switch_type(active_type))
+ 	    longjmp(terminate, TERM_DRIVER_SWITCH);
+ 	else {
+diff --git a/libgpsd_core.c b/libgpsd_core.c
+index a241e55..31fec2a 100644
+--- a/libgpsd_core.c
++++ b/libgpsd_core.c
+@@ -560,7 +560,7 @@ int gpsd_activate(struct gps_device_t *session, const int mode)
+ 	return session->gpsdata.gps_fd;
+     }
+ 
+-#ifdef NON_NMEA_ENABLE
++#ifdef NON_NMEA0183_ENABLE
+     /* if it's a sensor, it must be probed */
+     if ((session->servicetype == service_sensor) &&
+ 	(session->sourcetype != source_can)) {
+@@ -590,7 +590,7 @@ int gpsd_activate(struct gps_device_t *session, const int mode)
+ 		 "no probe matched...\n");
+     }
+ foundit:
+-#endif /* NON_NMEA_ENABLE */
++#endif /* NON_NMEA0183_ENABLE */
+ 
+     gpsd_clear(session);
+     gpsd_log(&session->context->errout, LOG_INF,
+diff --git a/monitor_nmea0183.c b/monitor_nmea0183.c
+index e664f9a..be48790 100644
+--- a/monitor_nmea0183.c
++++ b/monitor_nmea0183.c
+@@ -19,7 +19,7 @@
+ #include "gpsdclient.h"
+ #include "strfuncs.h"
+ 
+-#ifdef NMEA_ENABLE
++#ifdef NMEA0183_ENABLE
+ extern const struct gps_type_t driver_nmea0183;
+ 
+ static WINDOW *cookedwin, *nmeawin, *satwin, *gprmcwin, *gpggawin, *gpgsawin, *gpgstwin;
+@@ -390,7 +390,7 @@ static void monitor_nmea_send(const char *fmt, ...)
+  * display or implement device-specific commands.
+  */
+ 
+-#if defined(GARMIN_ENABLE) && defined(NMEA_ENABLE)
++#if defined(GARMIN_ENABLE) && defined(NMEA0183_ENABLE)
+ extern const struct gps_type_t driver_garmin;
+ 
+ const struct monitor_object_t garmin_mmt = {
+@@ -401,7 +401,7 @@ const struct monitor_object_t garmin_mmt = {
+     .min_y = 21,.min_x = 80,
+     .driver = &driver_garmin,
+ };
+-#endif /* GARMIN_ENABLE && NMEA_ENABLE */
++#endif /* GARMIN_ENABLE && NMEA0183_ENABLE */
+ 
+ #ifdef ASHTECH_ENABLE
+ extern const struct gps_type_t driver_ashtech;
+@@ -524,4 +524,4 @@ const struct monitor_object_t aivdm_mmt = {
+     .driver = &driver_aivdm,
+ };
+ #endif /* AIVDM_ENABLE */
+-#endif /* NMEA_ENABLE */
++#endif /* NMEA0183_ENABLE */
+diff --git a/packet.c b/packet.c
+index c8b64f5..4ba40e5 100644
+--- a/packet.c
++++ b/packet.c
+@@ -225,7 +225,7 @@ static bool nextstate(struct gps_lexer_t *lexer, unsigned char c)
+ 	    lexer->state = COMMENT_BODY;
+ 	    break;
+ 	}
+-#ifdef NMEA_ENABLE
++#ifdef NMEA0183_ENABLE
+ 	if (c == '$') {
+ 	    lexer->state = NMEA_DOLLAR;
+ 	    break;
+@@ -234,7 +234,7 @@ static bool nextstate(struct gps_lexer_t *lexer, unsigned char c)
+ 	    lexer->state = NMEA_BANG;
+ 	    break;
+ 	}
+-#endif /* NMEA_ENABLE */
++#endif /* NMEA0183_ENABLE */
+ #if defined(TNT_ENABLE) || defined(GARMINTXT_ENABLE) || defined(ONCORE_ENABLE)
+ 	if (c == '@') {
+ #ifdef RTCM104V2_ENABLE
+@@ -345,7 +345,7 @@ static bool nextstate(struct gps_lexer_t *lexer, unsigned char c)
+ 	else if (!isprint(c))
+ 	    return character_pushback(lexer, GROUND_STATE);
+ 	break;
+-#ifdef NMEA_ENABLE
++#ifdef NMEA0183_ENABLE
+     case NMEA_DOLLAR:
+ 	if (c == 'G')
+ 	    lexer->state = NMEA_PUB_LEAD;
+@@ -788,7 +788,7 @@ static bool nextstate(struct gps_lexer_t *lexer, unsigned char c)
+ 	else
+ 	    return character_pushback(lexer, GROUND_STATE);
+ 	break;
+-#endif /* NMEA_ENABLE */
++#endif /* NMEA0183_ENABLE */
+ #ifdef SIRF_ENABLE
+     case SIRF_LEADER_1:
+ 	if (c == 0xa2)
+@@ -1118,10 +1118,10 @@ static bool nextstate(struct gps_lexer_t *lexer, unsigned char c)
+     case UBX_RECOGNIZED:
+ 	if (c == 0xb5)
+ 	    lexer->state = UBX_LEADER_1;
+-#ifdef NMEA_ENABLE
++#ifdef NMEA0183_ENABLE
+ 	else if (c == '$')	/* LEA-5H can and will output NMEA and UBX back to back */
+ 	    lexer->state = NMEA_DOLLAR;
+-#endif /* NMEA_ENABLE */
++#endif /* NMEA0183_ENABLE */
+ #ifdef PASSTHROUGH_ENABLE
+ 	else if (c == '{')
+ 	    return character_pushback(lexer, JSON_LEADER);
+@@ -1526,7 +1526,7 @@ void packet_parse(struct gps_lexer_t *lexer)
+ 	    lexer->state = GROUND_STATE;
+ 	    break;
+ 	}
+-#ifdef NMEA_ENABLE
++#ifdef NMEA0183_ENABLE
+ 	else if (lexer->state == NMEA_RECOGNIZED) {
+ 	    /*
+ 	     * $PASHR packets have no checksum. Avoid the possibility
+@@ -1591,7 +1591,7 @@ void packet_parse(struct gps_lexer_t *lexer)
+ 	    packet_discard(lexer);
+ 	    break;
+ 	}
+-#endif /* NMEA_ENABLE */
++#endif /* NMEA0183_ENABLE */
+ #ifdef SIRF_ENABLE
+ 	else if (lexer->state == SIRF_RECOGNIZED) {
+ 	    unsigned char *trailer = lexer->inbufptr - 4;
+diff --git a/packet_states.h b/packet_states.h
+index 22dbccf..8839b98 100644
+--- a/packet_states.h
++++ b/packet_states.h
+@@ -4,7 +4,7 @@
+    COMMENT_BODY,	/* pound comment for a test load */
+    COMMENT_RECOGNIZED,	/* comment recognized */
+ 
+-#ifdef NMEA_ENABLE
++#ifdef NMEA0183_ENABLE
+    NMEA_DOLLAR,		/* we've seen first character of NMEA leader */
+    NMEA_BANG,		/* we've seen first character of an AIS message '!' */
+    NMEA_PUB_LEAD,	/* seen second character of NMEA G leader */
+@@ -37,7 +37,7 @@
+    TRANSDUCER_LEAD_1,	/* Generic transducer packet leader 'Y' */
+    BEIDOU_LEAD_1,	/* Beidou leader */
+    QZSS_LEAD_1,		/* Quasi-Zenith Satellite System leader */
+-#endif /* NMEA_ENABLE */
++#endif /* NMEA0183_ENABLE */
+ 
+    DLE_LEADER,		/* we've seen the TSIP/EverMore leader (DLE) */
+ 
+diff --git a/timebase.c b/timebase.c
+index 0b3192e..b2e7939 100644
+--- a/timebase.c
++++ b/timebase.c
+@@ -259,7 +259,7 @@ void gpsd_set_century(struct gps_device_t *session)
+     }
+ }
+ 
+-#ifdef NMEA_ENABLE
++#ifdef NMEA0183_ENABLE
+ timestamp_t gpsd_utc_resolve(struct gps_device_t *session)
+ /* resolve a UTC date, checking for rollovers */
+ {
+@@ -321,7 +321,7 @@ void gpsd_century_update(struct gps_device_t *session, int century)
+ 	session->context->valid &=~ CENTURY_VALID;
+     }
+ }
+-#endif /* NMEA_ENABLE */
++#endif /* NMEA0183_ENABLE */
+ 
+ timestamp_t gpsd_gpstime_resolve(struct gps_device_t *session,
+ 			 unsigned short week, double tow)
+--
+cgit v0.9.0.2
