@@ -28,7 +28,8 @@ define MUSL_CONFIGURE_CMDS
 			--host=$(GNU_TARGET_NAME) \
 			--prefix=/usr \
 			--libdir=/lib \
-			--disable-gcc-wrapper)
+			--disable-gcc-wrapper \
+			$(SHARED_STATIC_LIBS_OPTS))
 endef
 
 define MUSL_BUILD_CMDS
