@@ -18,10 +18,12 @@ GST1_PLUGINS_BASE_CONF_ENV =
 	FT2_CONFIG=/bin/false \
 	ac_cv_header_stdint_t="stdint.h"
 
+# gio_unix_2_0 is only used for tests
 GST1_PLUGINS_BASE_CONF_OPTS = \
 	--disable-examples \
 	--disable-oggtest \
 	--disable-vorbistest \
+	--disable-gio_unix_2_0 \
 	--disable-freetypetest \
 	--disable-valgrind
 
