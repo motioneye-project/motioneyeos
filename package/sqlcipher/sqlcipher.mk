@@ -15,7 +15,7 @@ SQLCIPHER_CONF_ENV = \
 
 SQLCIPHER_CONF_OPTS = \
 	--enable-threadsafe \
-	--with-tcl=$(HOST_DIR)/usr/lib
+	--disable-tcl
 
 SQLCIPHER_CFLAGS += -DSQLITE_HAS_CODEC # Required according to the README
 SQLCIPHER_CONF_ENV += LIBS="-lcrypto -lz"
