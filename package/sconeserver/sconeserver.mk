@@ -10,7 +10,7 @@ SCONESERVER_VERSION = 3b886c3dda6eda39bcb27472d29ed7fd3185ba1d
 SCONESERVER_SITE = $(call github,sconemad,sconeserver,$(SCONESERVER_VERSION))
 SCONESERVER_LICENSE = GPLv2+
 SCONESERVER_LICENSE_FILES = COPYING
-
+# For 0001-fix-ssl-libs-ordering.patch and configure isn't up to date
 SCONESERVER_AUTORECONF = YES
 SCONESERVER_DEPENDENCIES += pcre
 SCONESERVER_CONF_OPTS += --with-ip --with-local --with-ip6
@@ -50,7 +50,7 @@ SCONESERVER_CONF_OPTS += \
 	--with-sconesite-image \
 	--with-Magick++-config="$(STAGING_DIR)/usr/bin/Magick++-config"
 else
-SCONESERVER_CONF_OPTS += --without-sconesite-image
+SCONESERVER_CONF_OPTS += --without-sconesite-image --with-Magick++-config=no
 endif
 
 ifeq ($(BR2_PACKAGE_SCONESERVER_MYSQL),y)
