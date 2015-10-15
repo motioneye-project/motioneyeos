@@ -183,7 +183,9 @@ endif
 ifneq ($(BR2_DL_DIR),)
 DL_DIR := $(BR2_DL_DIR)
 endif
-
+ifneq ($(BR2_CCACHE_DIR),)
+BR_CACHE_DIR := $(BR2_CCACHE_DIR)
+endif
 
 # Need that early, before we scan packages
 # Avoids doing the $(or...) everytime
@@ -371,7 +373,7 @@ TARGET_DIR_WARNING_FILE = $(TARGET_DIR)/THIS_IS_NOT_YOUR_ROOT_FILESYSTEM
 
 ifeq ($(BR2_CCACHE),y)
 CCACHE := $(HOST_DIR)/usr/bin/ccache
-BR_CACHE_DIR = $(call qstrip,$(BR2_CCACHE_DIR))
+BR_CACHE_DIR ?= $(call qstrip,$(BR2_CCACHE_DIR))
 export BR_CACHE_DIR
 HOSTCC := $(CCACHE) $(HOSTCC)
 HOSTCXX := $(CCACHE) $(HOSTCXX)

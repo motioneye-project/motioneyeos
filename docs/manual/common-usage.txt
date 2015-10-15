@@ -84,6 +84,9 @@ to +make+ or set in the environment:
   configuration interface, so through the Buildroot +.config+ file; this
   is the recommended way of setting it.
   +
+* +BR2_CCACHE_DIR+ to override the directory where
+  Buildroot stores the cached files when using ccache.
+  +
 * +BR2_DL_DIR+ to override the directory in which
   Buildroot stores/retrieves downloaded files
   +
