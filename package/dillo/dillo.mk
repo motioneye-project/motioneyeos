@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-DILLO_VERSION = 3.0.4.1
+DILLO_VERSION = 3.0.5
 DILLO_SOURCE = dillo-$(DILLO_VERSION).tar.bz2
 DILLO_SITE = http://www.dillo.org/download
 DILLO_LICENSE = GPLv3+
