@@ -16,7 +16,10 @@ OFONO_DEPENDENCIES = \
 	libcap-ng \
 	mobile-broadband-provider-info
 
-OFONO_CONF_OPTS = --disable-test
+OFONO_CONF_OPTS = \
+	--disable-test \
+	--with-dbusconfdir=/etc \
+	$(if $(BR2_INIT_SYSTEMD),--with-systemdunitdir=/usr/lib/systemd/system)
 
 # N.B. Qualcomm QMI modem support requires O_CLOEXEC; so
 # make sure that it is defined.
