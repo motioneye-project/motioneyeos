@@ -14,4 +14,4 @@ config BR2_TARGET_ROOTFS_AXFS
 	  (v4.3-rc5), so the kernel has to be built with the axfs
 	  patches to be able to read it. Patches can be found at:
 
-	    https://github.com/jaredeh/axfs
+	  https://github.com/jaredeh/axfs
