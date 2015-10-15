@@ -22,12 +22,10 @@ GST1_PLUGINS_BAD_CONF_OPTS = \
 	--disable-directsound \
 	--disable-wsapi \
 	--disable-direct3d \
-	--disable-directdraw \
 	--disable-direct3d9 \
 	--disable-winks \
 	--disable-android_media \
 	--disable-apple_media \
-	--disable-osx_video \
 	--disable-sdltest \
 	--disable-wininet \
 	--disable-acm
@@ -35,10 +33,10 @@ GST1_PLUGINS_BAD_CONF_OPTS = \
 # Options which require currently unpackaged libraries
 GST1_PLUGINS_BAD_CONF_OPTS += \
 	--disable-avc \
-	--disable-quicktime \
 	--disable-opensles \
 	--disable-uvch264 \
 	--disable-voamrwbenc \
+	--disable-bs2b \
 	--disable-chromaprint \
 	--disable-dash \
 	--disable-dc1394 \
@@ -51,12 +49,12 @@ GST1_PLUGINS_BAD_CONF_OPTS += \
 	--disable-kate \
 	--disable-ladspa \
 	--disable-lv2 \
+	--disable-libde265 \
 	--disable-strp \
 	--disable-linsys \
 	--disable-modplug \
 	--disable-mimic \
 	--disable-mplex \
-	--disable-mythtv \
 	--disable-nas \
 	--disable-ofa \
 	--disable-openal \
@@ -81,7 +79,9 @@ GST1_PLUGINS_BAD_CONF_OPTS += \
 	--disable-spandsp \
 	--disable-gsettings \
 	--disable-sndio \
-	--disable-hls
+	--disable-hls \
+	--disable-gtk3 \
+	--disable-qt
 
 GST1_PLUGINS_BAD_DEPENDENCIES = gst1-plugins-base gstreamer1
 
@@ -261,6 +261,13 @@ else
 GST1_PLUGINS_BAD_CONF_OPTS += --disable-debugutils
 endif
 
+ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_DTLS),y)
+GST1_PLUGINS_BAD_CONF_OPTS += --enable-dtls
+GST1_PLUGINS_BAD_DEPENDENCIES += openssl
+else
+GST1_PLUGINS_BAD_CONF_OPTS += --disable-dtls
+endif
+
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_DVBSUBOVERLAY),y)
 GST1_PLUGINS_BAD_CONF_OPTS += --enable-dvbsuboverlay
 else
@@ -431,6 +438,12 @@ else
 GST1_PLUGINS_BAD_CONF_OPTS += --disable-nuvdemux
 endif
 
+ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_ONVIF),y)
+GST1_PLUGINS_BAD_CONF_OPTS += --enable-onvif
+else
+GST1_PLUGINS_BAD_CONF_OPTS += --disable-onvif
+endif
+
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_PATCHDETECT),y)
 GST1_PLUGINS_BAD_CONF_OPTS += --enable-patchdetect
 else
@@ -455,16 +468,16 @@ else
 GST1_PLUGINS_BAD_CONF_OPTS += --disable-rawparse
 endif
 
-ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_REAL),y)
-GST1_PLUGINS_BAD_CONF_OPTS += --enable-real
-else
-GST1_PLUGINS_BAD_CONF_OPTS += --disable-real
-endif
-
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_REMOVESILENCE),y)
 GST1_PLUGINS_BAD_CONF_OPTS += --enable-removesilence
 else
 GST1_PLUGINS_BAD_CONF_OPTS += --disable-removesilence
+endif
+
+ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_RTP),y)
+GST1_PLUGINS_BAD_CONF_OPTS += --enable-rtp
+else
+GST1_PLUGINS_BAD_CONF_OPTS += --disable-rtp
 endif
 
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_SDI),y)
@@ -743,6 +756,12 @@ GST1_PLUGINS_BAD_CONF_OPTS += --enable-hls
 GST1_PLUGINS_BAD_DEPENDENCIES += gnutls
 else
 GST1_PLUGINS_BAD_CONF_OPTS += --disable-hls
+endif
+
+ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_X265),y)
+GST1_PLUGINS_BAD_CONF_OPTS += --enable-x265
+else
+GST1_PLUGINS_BAD_CONF_OPTS += --disable-x265
 endif
 
 # Add GPL license if GPL licensed plugins enabled.

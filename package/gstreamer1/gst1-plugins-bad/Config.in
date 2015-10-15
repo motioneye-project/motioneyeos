@@ -219,6 +219,12 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_DEBUGUTILS
 	help
 	  Collection of elements that may or may not be useful for debugging
 
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_DTLS
+	bool "dtls"
+	select BR2_PACKAGE_OPENSSL
+	help
+	  DTLS plugin
+
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_DVBSUBOVERLAY
 	bool "dvdsuboverlay"
 	help
@@ -347,6 +353,9 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_MXF
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_NUVDEMUX
 	bool "nuvdemux"
 
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_ONVIF
+	bool "onvif"
+
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_PATCHDETECT
 	bool "patchdetect"
 
@@ -365,13 +374,13 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_RAWPARSE
 	help
 	  Parses byte streams into raw frames
 
-config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_REAL
-	bool "real"
-
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_REMOVESILENCE
 	bool "removesilence"
 	help
 	  Removes silence from an audio stream
+
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_RTP
+	bool "rtp"
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_SDI
 	bool "sdi"
@@ -574,6 +583,10 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_OPENCV
 comment "opencv plugin needs OpenCV-2.4"
 	depends on !BR2_PACKAGE_OPENCV
 
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_OPENH264
+	bool "openh264"
+	select BR2_PACKAGE_LIBOPENH264
+
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_OPUS
 	bool "opus"
 	select BR2_PACKAGE_OPUS
@@ -619,5 +632,10 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_HLS
 	select BR2_PACKAGE_GNUTLS
 	help
 	  Fragmented streaming plugins
+
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_X265
+	bool "x265"
+	help
+	  x265 plugin
 
 endif

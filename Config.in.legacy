@@ -107,6 +107,13 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2015.11"
 
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_REAL
+	bool "gst1-plugins-bad real plugin has been removed"
+	select BR2_LEGACY
+	help
+	  The real plugin from GStreamer 1 bad plugins has been
+	  removed.
+
 config BR2_PACKAGE_MEDIA_CTL
 	bool "media-ctl package has been removed"
 	select BR2_LEGACY
