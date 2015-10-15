@@ -29,7 +29,8 @@ define MUSL_CONFIGURE_CMDS
 			--prefix=/usr \
 			--libdir=/lib \
 			--disable-gcc-wrapper \
-			$(SHARED_STATIC_LIBS_OPTS))
+			--enable-static \
+			$(if $(BR2_STATIC_LIBS),--disable-shared,--enable-shared))
 endef
 
 define MUSL_BUILD_CMDS
