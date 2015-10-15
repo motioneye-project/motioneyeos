@@ -97,10 +97,5 @@ PANGO_DEPENDENCIES += xlib_libXft xlib_libXrender
 PANGO_CONF_OPTS += --with-xft
 endif
 
-define PANGO_INSTALL_INIT_SYSV
-	$(INSTALL) -m 755 -D package/pango/S25pango \
-		$(TARGET_DIR)/etc/init.d/S25pango
-endef
-
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
