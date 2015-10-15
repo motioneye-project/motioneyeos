@@ -1,3 +1,4 @@
-# From https://www.wireshark.org/download/SIGNATURES-1.12.7.txt
-md5	c8ae53f648b1dcbf6e74495401a0f1ab	wireshark-1.12.7.tar.bz2
-sha1	bed365bacfd0b5c653d8568ad25e52957659bd9f	wireshark-1.12.7.tar.bz2
+# From https://www.wireshark.org/download/SIGNATURES-1.12.8.txt
+sha1	d8c23120525a2f3505e822b7684e7367bcd0ba70	wireshark-1.12.8.tar.bz2
+# Calculated based on the hash above
+sha256	357e0a4e49525d80cdc740bb16539fcdb526ad38cc2ed6cabedafc9bdee5c7e7	wireshark-1.12.8.tar.bz2
