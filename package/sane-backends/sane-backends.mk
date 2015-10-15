@@ -39,6 +39,7 @@ SANE_BACKENDS_CONF_OPTS += --enable-avahi
 endif
 
 ifeq ($(BR2_PACKAGE_NETSNMP),y)
+SANE_BACKENDS_CONF_ENV += ac_cv_path_SNMP_CONFIG_PATH=$(STAGING_DIR)/usr/bin/net-snmp-config
 SANE_BACKENDS_DEPENDENCIES += netsnmp
 else
 SANE_BACKENDS_CONF_OPTS += --without-snmp
