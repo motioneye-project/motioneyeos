@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-JQ_VERSION = 1.4
-JQ_SITE = http://stedolan.github.io/jq/download/source
+JQ_VERSION = 1.5
+JQ_SITE = https://github.com/stedolan/jq/releases/download/jq-$(JQ_VERSION)
 JQ_LICENSE = MIT (code), CC-BY-3.0 (documentation)
 JQ_LICENSE_FILES = COPYING
 
