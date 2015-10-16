@@ -11,6 +11,10 @@ LIBV4L_INSTALL_STAGING = YES
 LIBV4L_DEPENDENCIES = host-pkgconf
 LIBV4L_CONF_OPTS = --disable-doxygen-doc
 
+# patch touches Makefile.am (and needs host-gettext for autoreconf)
+LIBV4L_AUTORECONF= YES
+LIBV4L_DEPENDENCIES = host-gettext
+
 # fix uclibc-ng configure/compile
 LIBV4L_CONF_ENV = ac_cv_prog_cc_c99='-std=gnu99'
 
@@ -43,6 +47,9 @@ ifeq ($(BR2_PACKAGE_LIBV4L_UTILS),y)
 LIBV4L_CONF_OPTS += --enable-v4l-utils
 # clock_gettime is used, which is provided by librt for glibc < 2.17
 LIBV4L_LIBS += -lrt
+ifeq ($(BR2_NEEDS_GETTEXT_IF_LOCALE),y)
+LIBV4L_DEPENDENCIES += gettext
+endif
 ifeq ($(BR2_PACKAGE_QT5BASE)$(BR2_PACKAGE_QT5BASE_GUI)$(BR2_PACKAGE_QT5BASE_WIDGETS),yyy)
 LIBV4L_CONF_OPTS += --enable-qv4l2
 LIBV4L_DEPENDENCIES += qt5base
