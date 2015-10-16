@@ -1,2 +1,2 @@
-# From https://polarssl.org/tech-updates/releases/polarssl-1.2.14-released
-sha256	d7cbd8314aa3a5441f6282d13d07df610f49b4bc678088b04188adf093d17d37	polarssl-1.2.14-gpl.tgz
+# From https://tls.mbed.org/tech-updates/releases/mbedtls-2.1.2-and-1.3.14-and-polarssl-1.2.17-released
+sha256	9301d4ebec3eb45bc9f28f2d79bfdb0c3dd351c386aa6cc66643e1b2be274d52	polarssl-1.2.17-gpl.tgz
