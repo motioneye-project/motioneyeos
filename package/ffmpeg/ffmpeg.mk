@@ -50,9 +50,11 @@ FFMPEG_CONF_OPTS = \
 	--disable-libopencore-amrnb \
 	--disable-libopencore-amrwb \
 	--disable-libopencv \
+	--disable-libcdio \
 	--disable-libdc1394 \
 	--disable-libfaac \
 	--disable-libgsm \
+	--disable-libilbc \
 	--disable-libnut \
 	--disable-libopenjpeg \
 	--disable-libschroedinger \
@@ -191,6 +193,13 @@ else
 FFMPEG_CONF_OPTS += --disable-bzlib
 endif
 
+ifeq ($(BR2_PACKAGE_FDK_AAC)$(BR2_PACKAGE_FFMPEG_NONFREE),yy)
+FFMPEG_CONF_OPTS += --enable-libfdk-aac
+FFMPEG_DEPENDENCIES += fdk-aac
+else
+FFMPEG_CONF_OPTS += --disable-libfdk-aac
+endif
+
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 # openssl isn't license compatible with GPL
 ifeq ($(BR2_PACKAGE_FFMPEG_GPL)x$(BR2_PACKAGE_FFMPEG_NONFREE),yx)
@@ -201,6 +210,20 @@ FFMPEG_DEPENDENCIES += openssl
 endif
 else
 FFMPEG_CONF_OPTS += --disable-openssl
+endif
+
+ifeq ($(BR2_PACKAGE_LIBDCADEC),y)
+FFMPEG_CONF_OPTS += --enable-libdcadec
+FFMPEG_DEPENDENCIES += libdcadec
+else
+FFMPEG_CONF_OPTS += --disable-libdcadec
+endif
+
+ifeq ($(BR2_PACKAGE_LIBOPENH264),y)
+FFMPEG_CONF_OPTS += --enable-libopenh264
+FFMPEG_DEPENDENCIES += libopenh264
+else
+FFMPEG_CONF_OPTS += --disable-libopenh264
 endif
 
 ifeq ($(BR2_PACKAGE_LIBVORBIS),y)
