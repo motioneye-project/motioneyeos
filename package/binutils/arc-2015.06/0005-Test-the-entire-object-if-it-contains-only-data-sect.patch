@@ -1,0 +1,35 @@
+From 5df50c61083165455aae5504c5c3566fa5ccebb1 Mon Sep 17 00:00:00 2001
+From: Claudiu Zissulescu <claziss@synopsys.com>
+Date: Fri, 16 Oct 2015 10:21:21 +0200
+Subject: [PATCH] Test the entire object if it contains only data sections.
+
+diff --git a/bfd/elf32-arc.c b/bfd/elf32-arc.c
+index 76bac6c..eb4f8e0 100644
+--- a/bfd/elf32-arc.c
++++ b/bfd/elf32-arc.c
+@@ -915,11 +915,9 @@ of opposite endian-ness"),
+       || bfd_get_flavour (obfd) != bfd_target_elf_flavour)
+     return TRUE;
+ 
+-  /* Check to see if the input BFD actually contains any sections.  If
+-     not, its flags may not have been initialised either, but it
+-     cannot actually cause any incompatiblity.  Do not short-circuit
+-     dynamic objects; their section list may be emptied by
+-     elf_link_add_object_symbols.  */
++  /* Check to see if the input BFD actually contains any sections.  Do
++     not short-circuit dynamic objects; their section list may be
++     emptied by elf_link_add_object_symbols.  */
+   if (!(ibfd->flags & DYNAMIC))
+     {
+       bfd_boolean null_input_bfd = TRUE;
+@@ -933,7 +931,6 @@ of opposite endian-ness"),
+ 	    only_data_sections = FALSE;
+ 
+ 	  null_input_bfd = FALSE;
+-	  break;
+ 	}
+ 
+       if (null_input_bfd || only_data_sections)
+-- 
+2.4.3
+
