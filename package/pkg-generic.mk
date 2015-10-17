@@ -55,6 +55,38 @@ define step_time
 endef
 GLOBAL_INSTRUMENTATION_HOOKS += step_time
 
+# Hooks to collect statistics about installed files
+
+# This hook will be called before the target installation of a
+# package. We store in a file named .br_filelist_before the list of
+# files currently installed in the target. Note that the MD5 is also
+# stored, in order to identify if the files are overwritten.
+define step_pkg_size_start
+	(cd $(TARGET_DIR) ; find . -type f -print0 | xargs -0 md5sum) | sort > \
+		$($(PKG)_DIR)/.br_filelist_before
+endef
+
+# This hook will be called after the target installation of a
+# package. We store in a file named .br_filelist_after the list of
+# files (and their MD5) currently installed in the target. We then do
+# a diff with the .br_filelist_before to compute the list of files
+# installed by this package.
+define step_pkg_size_end
+	(cd $(TARGET_DIR); find . -type f -print0 | xargs -0 md5sum) | sort > \
+		$($(PKG)_DIR)/.br_filelist_after
+	comm -13 $($(PKG)_DIR)/.br_filelist_before $($(PKG)_DIR)/.br_filelist_after | \
+		while read hash file ; do \
+			echo "$(1),$${file}" >> $(BUILD_DIR)/packages-file-list.txt ; \
+		done
+endef
+
+define step_pkg_size
+	$(if $(filter install-target,$(2)),\
+		$(if $(filter start,$(1)),$(call step_pkg_size_start,$(3))) \
+		$(if $(filter end,$(1)),$(call step_pkg_size_end,$(3))))
+endef
+GLOBAL_INSTRUMENTATION_HOOKS += step_pkg_size
+
 # User-supplied script
 ifneq ($(BR2_INSTRUMENTATION_SCRIPTS),)
 define step_user
