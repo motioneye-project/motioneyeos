@@ -12,6 +12,10 @@ WAVPACK_DEPENDENCIES = $(if $(BR2_ENABLE_LOCALE),,libiconv)
 WAVPACK_LICENSE = BSD-3c
 WAVPACK_LICENSE_FILES = COPYING
 
+ifeq ($(BR2_PACKAGE_LIBICONV),y)
+WAVPACK_CONF_OPTS += LIBS=-liconv
+endif
+
 # WavPack "autodetects" CPU type to enable ASM code. However, the assembly code
 # for ARM is written for ARMv7 only and building WavPack for an ARM-non-v7
 # architecture will fail. We explicitly enable ASM for the supported
