@@ -1,0 +1,10 @@
+config BR2_PACKAGE_DVBLAST
+	bool "dvblast"
+	select BR2_PACKAGE_BITSTREAM
+	select BR2_PACKAGE_LIBEV
+	depends on !BR2_bfin  # libev
+	help
+	  DVBlast is a simple and powerful MPEG-2/TS demux and
+	  streaming application.
+
+	  http://www.videolan.org/projects/dvblast.html
