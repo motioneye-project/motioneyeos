@@ -953,6 +953,7 @@ menu "Logging"
 endmenu
 
 menu "Multimedia"
+	source "package/bitstream/Config.in"
 	source "package/libass/Config.in"
 	source "package/libbluray/Config.in"
 	source "package/libdcadec/Config.in"

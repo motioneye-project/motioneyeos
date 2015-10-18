@@ -1,0 +1,8 @@
+config BR2_PACKAGE_BITSTREAM
+	bool "bitstream"
+	help
+	  biTStream is a set of C headers allowing a simpler access to
+	  binary structures such as specified by MPEG, DVB, IETF,
+	  SMPTE, IEEE, SCTE, etc.
+
+	  http://www.videolan.org/developers/bitstream.html
