@@ -449,19 +449,11 @@ strong hash yourself (preferably +sha256+, but not +md5+), and mention
 this in a comment line above the hashes.
 
 .Note
-If +libfoo+ is from GitHub (see xref:github-download-url[] for details), we
-can only accept a +.hash+ file if the package is a released (e.g. uploaded
-by the maintainer) tarball. Otherwise, the automatically generated tarball
-may change over time, and thus its hashes may be different each time it is
-downloaded, causing a +.hash+ mismatch for that tarball.
-
-.Note
 The number of spaces does not matter, so one can use spaces (or tabs) to
 properly align the different fields.
 
 The +none+ hash type is reserved to those archives downloaded from a
-repository, like a 'git clone', a 'subversion checkout'... or archives
-downloaded with the xref:github-download-url[github helper].
+repository, like a 'git clone', a 'subversion checkout'...
 
 The example below defines a +sha1+ and a +sha256+ published by upstream for
 the main +libfoo-1.2.3.tar.bz2+ tarball, an +md5+ from upstream and a
@@ -480,7 +472,7 @@ sha256 01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b libfoo-d
 # Locally computed:
 sha256 ff52101fb90bbfc3fe9475e425688c660f46216d7e751c4bbdb1dc85cdccacb9 libfoo-fix-blabla.patch
 
-# No hash for 1234, comes from the github-helper:
+# No hash for 1234:
 none   xxx                                                              libfoo-1234.tar.gz
 ----
 
