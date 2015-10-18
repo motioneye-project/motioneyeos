@@ -250,7 +250,6 @@ config BR2_PACKAGE_DIRECTFB_EXAMPLES_DRIVERTEST
 	  BR2_PACKAGE_DIRECTFB_EXAMPLES option now installs all
 	  examples.
 
-
 config BR2_PACKAGE_DIRECTFB_EXAMPLES_FIRE
 	bool "DirectFB example df_fire has been removed"
 	select BR2_LEGACY
