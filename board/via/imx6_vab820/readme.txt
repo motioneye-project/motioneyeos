@@ -25,14 +25,27 @@ When you are happy with the setup, run:
 The result of the build with the default settings should be these files:
 
   output/images
+  ├── boot.vfat
   ├── imx6q-vab820.dtb
+  ├── rootfs.ext2
+  ├── rootfs.ext4 -> rootfs.ext2
   ├── rootfs.tar
+  ├── sdcard.img
   ├── u-boot.imx
   └── uImage
 
+Copy the bootable `sdcard.img` onto an SD card with "dd":
 
-Set up your SD card
--------------------
+  $ sudo dd if=output/images/sdcard.img of=/dev/sdX bs=1M conv=fsync
+
+where "sdX" is the appropriate partition of your card.
+
+For details about the medium image layout, see the definition in
+`board/via/imx6_vab820/genimage.cfg`.
+
+
+Setting up your SD card manually
+--------------------------------
 
 *Important*: pay attention which partition you are modifying so you don't
 accidentally erase the wrong file system, e.g your host computer or your
