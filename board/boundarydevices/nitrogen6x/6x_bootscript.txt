@@ -1,7 +1,7 @@
 setenv bootargs ''
 
 a_script=0x10800000
-a_uImage=0x10800000
+a_zImage=0x10800000
 a_fdt=0x13000000
 
 setenv initrd_high 0xffffffff
@@ -20,7 +20,7 @@ if itest.s "x" == "x${dtbname}" ; then
 			dtbname=imx6sx-${board}-m4.dtb;
 		fi
 		a_script=0x80800000
-		a_uImage=0x80800000
+		a_zImage=0x80800000
 		a_fdt=0x83000000
 	else
 		dtbname=imx6q-${board}.dtb;
@@ -125,7 +125,7 @@ if itest.s "x" != "x${show_env}" ; then
 	printenv
 fi
 
-if load ${dtype} ${disk}:${bootpart} ${a_uImage} ${bootdir}/uImage ; then
-	bootm ${a_uImage} - ${a_fdt}
+if load ${dtype} ${disk}:${bootpart} ${a_zImage} ${bootdir}/zImage ; then
+	bootz ${a_zImage} - ${a_fdt}
 fi
 echo "Error loading kernel image"
