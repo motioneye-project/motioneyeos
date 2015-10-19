@@ -1,0 +1,61 @@
+From 12af8a575d1518d40416f83195049157c3a062a5 Mon Sep 17 00:00:00 2001
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Tue, 24 Feb 2015 15:25:40 +0000
+Subject: sna: udev integration depends on fstat and sys/stat.h
+
+src/sna/sna_driver.c: In function 'sna_handle_uevents':
+src/sna/sna_driver.c:759:2: error: implicit declaration of function 'fstat' [-Werror=implicit-function-declaration]
+
+Also take the opportunity to include udev support in the configure
+summary.
+
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+
+Upstream at: http://cgit.freedesktop.org/xorg/driver/xf86-video-intel/commit/?id=12af8a575d1518d40416f83195049157c3a062a5
+
+Signed-off-by: James Knight <james.knight@rockwellcollins.com>
+
+diff --git a/configure.ac b/configure.ac
+index 7476e2b..de3a4b3 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -197,11 +197,15 @@ AC_ARG_ENABLE(udev,
+ 
+ if test "x$UDEV" != "xno"; then
+ 	PKG_CHECK_MODULES(UDEV, [libudev], [udev="yes"], [udev="no"])
++	AC_CHECK_HEADERS([sys/stat.h], [], [udev="no"])
+ 	if test "x$UDEV" = "xyes" -a "x$udev" != "xyes"; then
+ 		AC_MSG_ERROR([udev support requested but not found (libudev)])
+ 	fi
+ 	if test "x$udev" = "xyes"; then
+ 		AC_DEFINE(HAVE_UDEV,1,[Enable udev-based monitor hotplug detection])
++		udev_msg=" yes"
++	else
++		udev_msg=" no"
+ 	fi
+ fi
+ 
+@@ -911,6 +915,7 @@ echo "  Support for Kernel Mode Setting? $KMS"
+ echo "  Support for legacy User Mode Setting (for i810)? $UMS"
+ echo "  Support for Direct Rendering Infrastructure:$dri_msg"
+ echo "  Support for Xv motion compensation (XvMC and libXvMC):$xvmc_msg"
++echo "  Support for display hotplug notifications (udev):$udev_msg"
+ echo "  Build additional tools and utilities?$tools_msg"
+ if test -n "$xp_msg"; then
+ echo "  Experimental support:$xp_msg"
+diff --git a/src/sna/sna_driver.c b/src/sna/sna_driver.c
+index 8c0d0b5..bc20ef0 100644
+--- a/src/sna/sna_driver.c
++++ b/src/sna/sna_driver.c
+@@ -740,6 +740,8 @@ sna_wakeup_handler(WAKEUPHANDLER_ARGS_DECL)
+ }
+ 
+ #if HAVE_UDEV
++#include <sys/stat.h>
++
+ static void
+ sna_handle_uevents(int fd, void *closure)
+ {
+-- 
+cgit v0.10.2
+

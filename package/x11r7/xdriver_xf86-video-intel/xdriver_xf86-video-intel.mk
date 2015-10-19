@@ -9,6 +9,8 @@ XDRIVER_XF86_VIDEO_INTEL_SOURCE = xf86-video-intel-$(XDRIVER_XF86_VIDEO_INTEL_VE
 XDRIVER_XF86_VIDEO_INTEL_SITE = http://xorg.freedesktop.org/releases/individual/driver
 XDRIVER_XF86_VIDEO_INTEL_LICENSE = MIT
 XDRIVER_XF86_VIDEO_INTEL_LICENSE_FILES = COPYING
+# We're patching configure.ac
+XDRIVER_XF86_VIDEO_INTEL_AUTORECONF = YES
 
 # this fixes a getline-related compilation error in src/sna/kgem.c
 XDRIVER_XF86_VIDEO_INTEL_CONF_ENV = \
