@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 GENIMAGE_CFG="board/wandboard/genimage.cfg"
 GENIMAGE_TMP="${BUILD_DIR}/genimage.tmp"
