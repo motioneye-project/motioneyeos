@@ -1,0 +1,88 @@
+From 4a48c65921b0f05b621aef5b902b6aa54811ad7a Mon Sep 17 00:00:00 2001
+From: Martin Bark <martin@barkynet.com>
+Date: Tue, 30 Jun 2015 09:44:33 +0100
+Subject: [PATCH 3/4] Use a python variable instead of hardcoding Python
+
+The nodejs build system uses python in a number of locations. However,
+there are some locations where it hardcodes 'python' as the Python
+interpreter. However, this causes problems when we need to use python2
+instead of just python.
+
+This patch fixes that by using the python variable already in place in
+the nodejs build system.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+[Martin: adapt to 0.12.5]
+Signed-off-by: Martin Bark <martin@barkynet.com>
+[yann.morin.1998@free.fr: adapat to 4.1.2]
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+---
+ deps/v8/tools/gyp/v8.gyp | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/deps/v8/tools/gyp/v8.gyp b/deps/v8/tools/gyp/v8.gyp
+index c703155..06c0b2b 100644
+--- a/deps/v8/tools/gyp/v8.gyp
++++ b/deps/v8/tools/gyp/v8.gyp
+@@ -1696,14 +1696,14 @@
+                       '<(PRODUCT_DIR)/natives_blob_host.bin',
+                     ],
+                     'action': [
+-                      'python', '<@(_inputs)', '<(PRODUCT_DIR)/natives_blob_host.bin'
++                      '<(python)', '<@(_inputs)', '<(PRODUCT_DIR)/natives_blob_host.bin'
+                     ],
+                   }, {
+                     'outputs': [
+                       '<(PRODUCT_DIR)/natives_blob.bin',
+                     ],
+                     'action': [
+-                      'python', '<@(_inputs)', '<(PRODUCT_DIR)/natives_blob.bin'
++                      '<(python)', '<@(_inputs)', '<(PRODUCT_DIR)/natives_blob.bin'
+                     ],
+                   }],
+                 ],
+@@ -1712,7 +1712,7 @@
+                   '<(PRODUCT_DIR)/natives_blob.bin',
+                 ],
+                 'action': [
+-                  'python', '<@(_inputs)', '<(PRODUCT_DIR)/natives_blob.bin'
++                  '<(python)', '<@(_inputs)', '<(PRODUCT_DIR)/natives_blob.bin'
+                 ],
+               }],
+             ],
+@@ -1812,7 +1812,7 @@
+             '<(SHARED_INTERMEDIATE_DIR)/libraries.cc',
+           ],
+           'action': [
+-            'python',
++            '<(python)',
+             '../../tools/js2c.py',
+             '<(SHARED_INTERMEDIATE_DIR)/libraries.cc',
+             'CORE',
+@@ -1838,7 +1838,7 @@
+             '<(SHARED_INTERMEDIATE_DIR)/experimental-libraries.cc',
+           ],
+           'action': [
+-            'python',
++            '<(python)',
+             '../../tools/js2c.py',
+             '<(SHARED_INTERMEDIATE_DIR)/experimental-libraries.cc',
+             'EXPERIMENTAL',
+@@ -1863,7 +1863,7 @@
+             '<(SHARED_INTERMEDIATE_DIR)/extras-libraries.cc',
+           ],
+           'action': [
+-            'python',
++            '<(python)',
+             '../../tools/js2c.py',
+             '<(SHARED_INTERMEDIATE_DIR)/extras-libraries.cc',
+             'EXTRAS',
+@@ -1900,7 +1900,7 @@
+               '<(SHARED_INTERMEDIATE_DIR)/debug-support.cc',
+             ],
+             'action': [
+-              'python',
++              '<(python)',
+               '../../tools/gen-postmortem-metadata.py',
+               '<@(_outputs)',
+               '<@(heapobject_files)'

@@ -1,0 +1,18 @@
+configure: fix ARM VFPv2
+
+The gcc -mfpu flag for VFPv2 is 'vfp', not 'vfpv2'.
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+
+diff -durN a/configure b/configure
+--- a/configure
++++ b/configure
+@@ -611,7 +611,7 @@
+     o['variables']['arm_fpu'] = 'vfpv3'
+     o['variables']['arm_version'] = '7'
+   else:
+-    o['variables']['arm_fpu'] = 'vfpv2'
++    o['variables']['arm_fpu'] = 'vfp'
+     o['variables']['arm_version'] = '6' if is_arch_armv6() else 'default'
+ 
+   o['variables']['arm_thumb'] = 0      # -marm
