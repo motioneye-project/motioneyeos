@@ -40,6 +40,10 @@ HOST_ERLANG_CONF_OPTS = --without-javac --with-ssl=$(HOST_DIR)/usr
 
 HOST_ERLANG_CONF_OPTS += --without-termcap
 
+ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),)
+ERLANG_CONF_OPTS += --disable-threads
+endif
+
 ifeq ($(BR2_PACKAGE_NCURSES),y)
 ERLANG_CONF_OPTS += --with-termcap
 ERLANG_DEPENDENCIES += ncurses
