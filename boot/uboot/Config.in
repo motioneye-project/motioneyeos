@@ -326,6 +326,14 @@ config BR2_TARGET_UBOOT_ZYNQ_IMAGE
 	  for u-boot-dtb.img file so this U-Boot format is required
 	  to be set.
 
+config BR2_TARGET_UBOOT_ALTERA_SOCFPGA_IMAGE_CRC
+	bool "CRC SPL image for Altera SoC FPGA"
+	depends on BR2_arm
+	depends on BR2_TARGET_UBOOT_SPL
+	help
+	  Generate SPL image fixed by the mkpimage tool to enable
+	  booting on the Altera SoC FPGA based platforms.
+
 menuconfig BR2_TARGET_UBOOT_ENVIMAGE
 	bool "Environment image"
 	help
