@@ -37,6 +37,7 @@ endif
 ifeq ($(BR2_PACKAGE_LIBESMTP),y)
 SYSLOG_NG_DEPENDENCIES += libesmtp
 SYSLOG_NG_CONF_OPTS += --enable-smtp
+SYSLOG_NG_CONF_OPTS += --with-libesmtp="$(STAGING_DIR)/usr"
 else
 SYSLOG_NG_CONF_OPTS += --disable-smtp
 endif
