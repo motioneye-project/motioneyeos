@@ -43,7 +43,8 @@ config BR2_x86_x1000
 	  lock prefix requiring that prefix must be stripped at build
 	  time.
 
-	  See https://en.wikipedia.org/wiki/Intel_Quark.
+	  See https://en.wikipedia.org/wiki/Intel_Quark
+
 config BR2_x86_i686
 	bool "i686"
 	depends on !BR2_x86_64
