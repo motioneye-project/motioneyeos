@@ -218,6 +218,12 @@ config BR2_PACKAGE_KODI_LIBSMBCLIENT
 	help
 	  Enable Samba support
 
+config BR2_PACKAGE_KODI_LIBSSH
+	bool "ssh"
+	select BR2_PACKAGE_LIBSSH
+	help
+	  Enable sftp virtual filesystem using libssh.
+
 config BR2_PACKAGE_KODI_LIBTHEORA
 	bool "theora"
 	select BR2_PACKAGE_LIBTHEORA
