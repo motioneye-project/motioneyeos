@@ -10,7 +10,7 @@ SED_LICENSE = GPLv3
 SED_LICENSE_FILES = COPYING
 
 SED_CONF_OPTS = \
-	--bindir=/usr/bin \
+	--bindir=/bin \
 	--libdir=/lib \
 	--libexecdir=/usr/lib \
 	--sysconfdir=/etc \
@@ -18,11 +18,5 @@ SED_CONF_OPTS = \
 	--mandir=/usr/share/man \
 	--infodir=/usr/share/info \
 	--include=$(STAGING_DIR)/usr/include
-
-define SED_MOVE_BINARY
-	mv $(TARGET_DIR)/usr/bin/sed $(TARGET_DIR)/bin/
-endef
-
-SED_POST_INSTALL_TARGET_HOOKS = SED_MOVE_BINARY
 
 $(eval $(autotools-package))
