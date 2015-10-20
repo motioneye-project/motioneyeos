@@ -86,15 +86,13 @@ LIBGLIB2_CONF_ENV += glib_cv_have_qsort_r=yes
 endif
 
 HOST_LIBGLIB2_CONF_OPTS = \
+	--disable-coverage \
 	--disable-dtrace \
+	--disable-fam \
+	--disable-libelf \
+	--disable-selinux \
 	--disable-systemtap \
-	--disable-gcov \
-	--disable-modular-tests
-
-LIBGLIB2_CONF_OPTS += --disable-modular-tests
-ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),)
-LIBGLIB2_CONF_OPTS += --with-threads=none --disable-threads
-endif
+	--disable-xattr
 
 LIBGLIB2_DEPENDENCIES = host-pkgconf host-libglib2 libffi zlib $(if $(BR2_NEEDS_GETTEXT),gettext) host-gettext
 
