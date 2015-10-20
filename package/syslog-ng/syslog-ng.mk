@@ -12,6 +12,12 @@ SYSLOG_NG_LICENSE_FILES = COPYING
 SYSLOG_NG_DEPENDENCIES = host-bison host-flex host-pkgconf \
 	eventlog libglib2 openssl pcre
 SYSLOG_NG_CONF_OPTS = --disable-manpages
+SYSLOG_NG_PATCH = \
+	https://github.com/dnsjts/syslog-ng/commit/7b2b673ae2640ce9ad396f538fc25acb6e4405ec.patch \
+	https://github.com/dnsjts/syslog-ng/commit/f10941e565d402e032948bb9711bfbab43eadd88.patch \
+	https://github.com/dnsjts/syslog-ng/commit/96a633ce3f46ed102f38115000730bad41c4ed65.patch \
+	https://github.com/dnsjts/syslog-ng/commit/00526014247bb63680e53c35d4a76d0dac989405.patch \
+	https://github.com/dnsjts/syslog-ng/commit/46b07ecaffc154aa7cc713409196020736fe4f33.patch
 
 # We override busybox's S01logging init script
 ifeq ($(BR2_PACKAGE_BUSYBOX),y)
