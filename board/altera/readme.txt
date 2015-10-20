@@ -1,4 +1,4 @@
-SoCkit
+SoCkit, SoC Development Kit
 
 Intro
 =====
@@ -6,8 +6,11 @@ Intro
 This is the buildroot board support for the Arrow SoCkit Evaluation Board
 and the Altera Cyclone 5 Development Board.
 
-A good source of information is :
+A good source of information for Arrow SoCkit:
 http://www.rocketboards.org/foswiki/Documentation/ArrowSoCKitEvaluationBoard
+
+More information about SoC DK:
+https://www.altera.com/products/boards_and_kits/dev-kits/altera/kit-cyclone-v-soc.html
 
 How it works
 ============
