@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-KODI_VERSION = 15.1-Isengard
+KODI_VERSION = 15.2-Isengard
 KODI_SITE = $(call github,xbmc,xbmc,$(KODI_VERSION))
 KODI_LICENSE = GPLv2
 KODI_LICENSE_FILES = LICENSE.GPL
