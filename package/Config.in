@@ -1457,6 +1457,7 @@ comment "Utilities"
 	source "package/logrotate/Config.in"
 	source "package/logsurfer/Config.in"
 	source "package/pinentry/Config.in"
+	source "package/ranger/Config.in"
 	source "package/screen/Config.in"
 	source "package/sudo/Config.in"
 if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
