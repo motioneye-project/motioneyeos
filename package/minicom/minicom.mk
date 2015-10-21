@@ -5,7 +5,7 @@
 ################################################################################
 
 MINICOM_VERSION = 2.7
-MINICOM_SITE = http://sources.buildroot.net
+MINICOM_SITE = https://alioth.debian.org/frs/download.php/file/3977
 MINICOM_LICENSE = GPLv2+
 MINICOM_LICENSE_FILES = COPYING
 
