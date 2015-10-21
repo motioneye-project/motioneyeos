@@ -147,6 +147,14 @@ QT5BASE_DEPENDENCIES   += $(if $(BR2_PACKAGE_QT5BASE_ICU),icu)
 
 QT5BASE_CONFIGURE_OPTS += $(if $(BR2_PACKAGE_QT5BASE_EXAMPLES),-make,-nomake) examples
 
+# gstreamer 0.10 support is broken in qt5multimedia
+ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BASE),y)
+QT5BASE_CONFIGURE_OPTS += -gstreamer 1.0
+QT5BASE_DEPENDENCIES   += gst1-plugins-base
+else
+QT5BASE_CONFIGURE_OPTS += -no-gstreamer
+endif
+
 # Build the list of libraries to be installed on the target
 QT5BASE_INSTALL_LIBS_y                                 += Qt5Core
 QT5BASE_INSTALL_LIBS_$(BR2_PACKAGE_QT5BASE_XCB)        += Qt5XcbQpa
