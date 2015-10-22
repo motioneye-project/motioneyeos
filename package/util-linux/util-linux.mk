@@ -29,7 +29,7 @@ UTIL_LINUX_CONF_OPTS += \
 # system depends on util-linux so we enable systemd support
 # (which needs systemd to be installed)
 UTIL_LINUX_CONF_OPTS += \
-	--without-systed \
+	--without-systemd \
 	--with-systemdsystemunitdir=no
 
 # We don't want the host-busybox dependency to be added automatically
