@@ -26,6 +26,12 @@ UTIL_LINUX_CONF_OPTS += \
 	--disable-makeinstall-chown \
 	--without-python
 
+# system depends on util-linux so we enable systemd support
+# (which needs systemd to be installed)
+UTIL_LINUX_CONF_OPTS += \
+	--without-systed \
+	--with-systemdsystemunitdir=no
+
 # We don't want the host-busybox dependency to be added automatically
 HOST_UTIL_LINUX_DEPENDENCIES = host-pkgconf
 
