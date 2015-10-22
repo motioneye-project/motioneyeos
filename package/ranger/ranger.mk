@@ -5,7 +5,7 @@
 ################################################################################
 
 RANGER_VERSION = 1.7.2
-RANGER_SITE = $(call github,hut,ranger,v$(RANGER_VERSION))
+RANGER_SITE = http://ranger.nongnu.org
 RANGER_SETUP_TYPE = distutils
 RANGER_LICENSE = GPLv3
 RANGER_LICENSE_FILES = AUTHORS
