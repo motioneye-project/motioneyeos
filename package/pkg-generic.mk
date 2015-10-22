@@ -341,6 +341,14 @@ endef
 
 define inner-generic-package
 
+# Ensure the package is only declared once, i.e. do not accept that a
+# package be re-defined by a br2-external tree
+ifneq ($(call strip,$(filter $(1),$(PACKAGES_ALL))),)
+$$(error Package '$(1)' defined a second time in '$(pkgdir)'; \
+	previous definition was in '$$($(2)_PKGDIR)')
+endif
+PACKAGES_ALL += $(1)
+
 # Define default values for various package-related variables, if not
 # already defined. For some variables (version, source, site and
 # subdir), if they are undefined, we try to see if a variable without
@@ -351,6 +359,7 @@ define inner-generic-package
 $(2)_TYPE                       =  $(4)
 $(2)_NAME			=  $(1)
 $(2)_RAWNAME			=  $$(patsubst host-%,%,$(1))
+$(2)_PKGDIR			=  $(pkgdir)
 
 # Keep the package version that may contain forward slashes in the _DL_VERSION
 # variable, then replace all forward slashes ('/') by underscores ('_') to
