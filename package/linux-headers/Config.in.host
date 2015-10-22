@@ -192,7 +192,7 @@ endchoice
 config BR2_DEFAULT_KERNEL_HEADERS
 	string
 	default "3.2.72"	if BR2_KERNEL_HEADERS_3_2
-	default "3.4.109"	if BR2_KERNEL_HEADERS_3_4
+	default "3.4.110"	if BR2_KERNEL_HEADERS_3_4
 	default "3.10.90"	if BR2_KERNEL_HEADERS_3_10
 	default "3.12.49"	if BR2_KERNEL_HEADERS_3_12
 	default "3.14.54"	if BR2_KERNEL_HEADERS_3_14
