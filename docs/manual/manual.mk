@@ -8,13 +8,10 @@ MANUAL_SOURCES = $(sort $(wildcard docs/manual/*.txt) $(wildcard docs/images/*))
 MANUAL_RESOURCES = $(TOPDIR)/docs/images
 
 # Our manual needs to generate lists
-# Packages included in BR2_EXTERNAL are not part of buildroot, so they
-# should not be included in the manual.
 define MANUAL_GEN_LISTS
 	$(Q)$(call MESSAGE,"Updating the manual lists...")
 	$(Q)$(COMMON_CONFIG_ENV) \
 		BR2_DEFCONFIG="" \
-		BR2_EXTERNAL=$(TOPDIR)/support/dummy-external \
 		TOPDIR=$(TOPDIR) \
 		O=$(@D) \
 		python -B $(TOPDIR)/support/scripts/gen-manual-lists.py
