@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-SUPERVISOR_VERSION = 3.0a12
+SUPERVISOR_VERSION = 3.1.3
 SUPERVISOR_SITE = http://pypi.python.org/packages/source/s/supervisor
 SUPERVISOR_LICENSE_FILES = LICENSES.txt
 SUPERVISOR_SETUP_TYPE = setuptools
