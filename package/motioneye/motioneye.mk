@@ -4,7 +4,7 @@
 #
 #############################################################
 
-MOTIONEYEOS_VERSION = 20151021
+MOTIONEYEOS_VERSION = 20151025
 MOTIONEYE_VERSION = 543038e034632a4eea84a7055a30965d7502dfff
 MOTIONEYE_SITE = $(call github,ccrisan,motioneye,$(MOTIONEYE_VERSION))
 MOTIONEYE_SOURCE = $(MOTIONEYE_VERSION).tar.gz
