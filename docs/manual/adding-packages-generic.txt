@@ -314,6 +314,10 @@ information is (assuming the package name is +libfoo+) :
   that have more than one leading component to strip, set this
   variable with the value to be passed to tar. Default: 1.
 
+* +LIBFOO_EXCLUDES+ is a space-separated list of patterns to exclude
+  when extracting the archive. Each item from that list is passed as
+  a tar's +--exclude+ option. By default, empty.
+
 * +LIBFOO_DEPENDENCIES+ lists the dependencies (in terms of package
   name) that are required for the current target package to
   compile. These dependencies are guaranteed to be compiled and
