@@ -635,7 +635,12 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_HLS
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_X265
 	bool "x265"
+	depends on BR2_INSTALL_LIBSTDCPP
+	select BR2_PACKAGE_X265
 	help
-	  x265 plugin
+	  x265 encoding plugin
+
+comment "x265 needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP
 
 endif
