@@ -53,7 +53,7 @@ define MOTIONEYE_INSTALL_TARGET_CMDS
     sed -r -i "s%enable_update=False%enable_update=True%" $(DST_DIR)/handlers.py
     
     # (re)compile all python modules
-    $($(PKG)_PYTHON_INTERPRETER) -m compileall -f $(DST_DIR)/*.py
+    $($(PKG)_PYTHON_INTERPRETER) -m compileall -d /usr/lib/python2.7/site-packages/motioneye -f $(DST_DIR)
 
     # meyectl
     echo -e '#!/bin/bash\n/usr/bin/python /usr/lib/python2.7/site-packages/motioneye/meyectl.pyc "$$@"' > $(TARGET_DIR)/usr/bin/meyectl
