@@ -407,7 +407,7 @@ def _set_streameye_settings(camera_id, s):
     main_config = config.get_main()
     username = main_config['@normal_username']
     password = main_config['@normal_password']
-    realm = 'motionEye'
+    realm = 'motionEyeOS'
 
     logging.debug('writing streameye settings to %s' % STREAMEYE_CONF)
     
@@ -452,9 +452,15 @@ def _set_streameye_settings(camera_id, s):
 # make streameye-related log files downloadable
 
 if _get_streameye_enabled():
-    import handlers
-    handlers.LogHandler.LOGS['streameye'] = (os.path.join(settings.LOG_PATH, 'streameye.log'),  'streameye.log')
-    handlers.LogHandler.LOGS['raspimjpeg'] = (os.path.join(settings.LOG_PATH, 'raspimjpeg.log'),  'raspimjpeg.log')
+    def _add_log_handlers():
+        import handlers
+        handlers.LogHandler.LOGS['streameye'] = (os.path.join(settings.LOG_PATH, 'streameye.log'),  'streameye.log')
+        handlers.LogHandler.LOGS['raspimjpeg'] = (os.path.join(settings.LOG_PATH, 'raspimjpeg.log'),  'raspimjpeg.log')
+    
+    # handlers.LogHandler is not yet available
+    # at the time streameyectl is imported
+    io_loop = IOLoop.instance()
+    io_loop.add_callback(_add_log_handlers)
 
     @additional_config
     def streamEyeLog():
