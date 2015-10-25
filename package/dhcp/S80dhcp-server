@@ -20,7 +20,6 @@ CFG_FILE="/etc/default/${NAME}"
 # Sanity checks
 test -f /usr/sbin/dhcpd || exit 0
 test -f /etc/dhcp/dhcpd.conf || exit 0
-test -n "$INTERFACES" || exit 0
 
 case "$1" in
 	start)
