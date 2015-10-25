@@ -43,7 +43,6 @@ case "$1" in
 		;;
 	restart | force-reload)
 		$0 stop
-		sleep 2
 		$0 start
 		;;
 	*)
