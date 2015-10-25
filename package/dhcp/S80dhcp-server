@@ -26,12 +26,12 @@ case "$1" in
 		printf "Starting DHCP server: "
 		test -d /var/lib/dhcp/ || mkdir -p /var/lib/dhcp/
 		test -f /var/lib/dhcp/dhcpd.leases || touch /var/lib/dhcp/dhcpd.leases
-		start-stop-daemon -S -x ${DAEMON} -- -q $OPTIONS $INTERFACES
+		start-stop-daemon -S -q -x ${DAEMON} -- -q $OPTIONS $INTERFACES
 		[ $? = 0 ] && echo "OK" || echo "FAIL"
 		;;
 	stop)
 		printf "Stopping DHCP server: "
-		start-stop-daemon -K -x ${DAEMON}
+		start-stop-daemon -K -q -x ${DAEMON}
 		[ $? = 0 ] && echo "OK" || echo "FAIL"
 		;;
 	restart | force-reload)
@@ -43,7 +43,7 @@ case "$1" in
 		fi
 		;;
 	*)
-		echo "Usage: /etc/init.d/dhcp-server {start|stop|restart|force-reload}"
+		echo "Usage: $0 {start|stop|restart|force-reload}"
 		exit 1
 esac
 
