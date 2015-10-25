@@ -89,9 +89,15 @@ endif
 BOOST_OPTS += toolset=gcc \
 	     threading=multi \
 	     abi=$(BOOST_ABI) \
-	     variant=$(if $(BR2_ENABLE_DEBUG),debug,release) \
-	     link=$(if $(BR2_STATIC_LIBS),static,shared) \
-	     runtime-link=$(if $(BR2_STATIC_LIBS),static,shared)
+	     variant=$(if $(BR2_ENABLE_DEBUG),debug,release)
+
+# By default, Boost build and installs both the shared and static
+# variants. Override that if we want static only or shared only.
+ifeq ($(BR2_STATIC_LIBS),y)
+BOOST_OPTS += link=static runtime-link=static
+else ifeq ($(BR2_SHARED_LIBS),y)
+BOOST_OPTS += link=shared runtime-link=shared
+endif
 
 ifeq ($(BR2_PACKAGE_BOOST_LOCALE),y)
 ifeq ($(BR2_TOOLCHAIN_USES_UCLIBC),y)
