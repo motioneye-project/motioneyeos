@@ -13,6 +13,10 @@ INTERFACES=""
 # Additional options that are passed to the DHCP relay daemon?
 OPTIONS=""
 
+# Read configuration variable file if it is present
+CFG_FILE="/etc/default/dhcrelay"
+[ -r "${CFG_FILE}" ] && . "${CFG_FILE}"
+
 # Sanity checks
 test -f /usr/sbin/dhcrelay || exit 0
 test -n "$INTERFACES" || exit 0
