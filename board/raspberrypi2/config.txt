@@ -7,4 +7,5 @@ over_voltage=0
 gpu_mem=128
 gpu_mem_256=128
 gpu_mem_512=128
+gpu_mem_1024=512
 disable_camera_led=0
