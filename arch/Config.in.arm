@@ -188,6 +188,7 @@ endchoice
 choice
 	prompt "Target ABI"
 	depends on BR2_arm || BR2_armeb
+	default BR2_ARM_EABIHF if BR2_ARM_CPU_HAS_VFPV2
 	default BR2_ARM_EABI
 	help
 	  Application Binary Interface to use. The Application Binary
