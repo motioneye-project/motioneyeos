@@ -7,6 +7,9 @@
 #       Separate multiple interfaces with spaces, e.g. "eth0 eth1".
 INTERFACES=""
 
+# Additional options that are passed to the DHCP server daemon?
+OPTIONS=""
+
 NAME="dhcpd"
 DAEMON="/usr/sbin/${NAME}"
 CFG_FILE="/etc/default/${NAME}"
@@ -24,7 +27,7 @@ case "$1" in
 		printf "Starting DHCP server: "
 		test -d /var/lib/dhcp/ || mkdir -p /var/lib/dhcp/
 		test -f /var/lib/dhcp/dhcpd.leases || touch /var/lib/dhcp/dhcpd.leases
-		start-stop-daemon -S -x ${DAEMON} -- -q $INTERFACES
+		start-stop-daemon -S -x ${DAEMON} -- -q $OPTIONS $INTERFACES
 		[ $? = 0 ] && echo "OK" || echo "FAIL"
 		;;
 	stop)
