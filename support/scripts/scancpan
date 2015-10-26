@@ -544,6 +544,9 @@ sub find_license_files {
         next if m|/|;
         push @license_files, $_ if m/(ARTISTIC|COPYING|COPYRIGHT|LICENSE)/i;
     }
+    if (scalar @license_files == 0 && $manifest =~ m/(README)[\n\s]/i) {
+        @license_files = ($1);
+    }
     return \@license_files;
 }
 
