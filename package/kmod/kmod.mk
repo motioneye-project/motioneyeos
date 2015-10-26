@@ -46,9 +46,16 @@ KMOD_LICENSE_FILES += COPYING
 # take precedence over busybox implementation
 KMOD_DEPENDENCIES += $(if $(BR2_PACKAGE_BUSYBOX),busybox)
 
+# /sbin is really /usr/sbin with merged /usr, so adjust relative symlink
+ifeq ($(BR2_ROOTFS_MERGED_USR),y)
+KMOD_BIN_PATH = ../bin/kmod
+else
+KMOD_BIN_PATH = ../usr/bin/kmod
+endif
+
 define KMOD_INSTALL_TOOLS
 	for i in depmod insmod lsmod modinfo modprobe rmmod; do \
-		ln -sf ../usr/bin/kmod $(TARGET_DIR)/sbin/$$i; \
+		ln -sf $(KMOD_BIN_PATH) $(TARGET_DIR)/sbin/$$i; \
 	done
 endef
 
