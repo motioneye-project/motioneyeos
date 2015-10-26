@@ -11,6 +11,8 @@ SYSLOG_NG_LICENSE = LGPLv2.1+ (syslog-ng core), GPLv2+ (modules)
 SYSLOG_NG_LICENSE_FILES = COPYING
 SYSLOG_NG_DEPENDENCIES = host-bison host-flex host-pkgconf \
 	eventlog libglib2 openssl pcre
+# rabbit-mq needs -lrt
+SYSLOG_NG_CONF_ENV = LIBS=-lrt
 SYSLOG_NG_CONF_OPTS = --disable-manpages
 SYSLOG_NG_PATCH = \
 	https://github.com/dnsjts/syslog-ng/commit/7b2b673ae2640ce9ad396f538fc25acb6e4405ec.patch \
