@@ -25,7 +25,7 @@ endif
 ifeq ($(BR2_PACKAGE_X265_CLI),y)
 X265_CONF_OPTS += -DENABLE_CLI=true
 else
-X265_CONF_OPTS += -DENABLE_CLI=else
+X265_CONF_OPTS += -DENABLE_CLI=false
 endif
 
 $(eval $(cmake-package))
