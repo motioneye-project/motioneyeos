@@ -12,6 +12,11 @@ GST1_VALIDATE_LICENSE_FILES = COPYING
 
 GST1_VALIDATE_CONF_OPTS = --disable-sphinx-doc
 
-GST1_VALIDATE_DEPENDENCIES = gstreamer1 gst1-plugins-base host-python python
+GST1_VALIDATE_DEPENDENCIES = \
+	gstreamer1 \
+	gst1-plugins-base \
+	host-python \
+	python \
+	$(if $(BR2_PACKAGE_CAIRO),cairo)
 
 $(eval $(autotools-package))
