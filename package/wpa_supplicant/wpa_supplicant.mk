@@ -45,6 +45,10 @@ endif
 # Trailing underscore on purpose to not enable CONFIG_EAPOL_TEST
 ifeq ($(BR2_PACKAGE_WPA_SUPPLICANT_EAP),y)
 WPA_SUPPLICANT_CONFIG_ENABLE += CONFIG_EAP_
+# uses dlopen()
+ifeq ($(BR2_STATIC_LIBS),y)
+WPA_SUPPLICANT_CONFIG_DISABLE += CONFIG_EAP_TNC
+endif
 else
 WPA_SUPPLICANT_CONFIG_DISABLE += CONFIG_EAP
 endif
