@@ -7,10 +7,11 @@ Fixes:
 
 Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
 
-diff -durN ipmiutil-2.9.5.orig/configure.ac ipmiutil-2.9.5/configure.ac
---- ipmiutil-2.9.5.orig/configure.ac	2015-04-06 12:23:01.020731749 +0200
-+++ ipmiutil-2.9.5/configure.ac	2015-04-06 12:24:31.181773510 +0200
-@@ -55,7 +55,7 @@
+diff --git a/configure.ac b/configure.ac
+index 344b27a71a35..41b6ea89167a 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -56,7 +56,7 @@ LIB_DIR="/usr/lib"
  isredhat=0
  init_scripts="scripts/ipmi_port.sh scripts/ipmiutil_evt scripts/ipmiutil_asy scripts/ipmiutil_wdt"
  projdir=`pwd`
@@ -19,7 +20,7 @@ diff -durN ipmiutil-2.9.5.orig/configure.ac ipmiutil-2.9.5/configure.ac
  os=Linux
  
  # ltmain.sh, config.sub, et al should have been created, but check to be sure.
-@@ -161,7 +161,7 @@
+@@ -162,7 +162,7 @@ AC_ARG_ENABLE([standalone],
  	LANPLUS_SAM="no"
  	LD_SAMX=""
  	CFLAGS="-O2"
