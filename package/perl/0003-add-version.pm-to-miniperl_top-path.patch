@@ -1,0 +1,16 @@
+add version.pm to miniperl_top path
+
+Fetch from: http://github.com/arsv/perl-cross/commit/f53a9f1b613b84396d174855f6c37bf04f76bae3
+See discussion: https://github.com/arsv/perl-cross/issues/18
+
+Signed-off-by: Francois Perrad <francois.perrad@gadz.org>
+
+--- a/miniperl_top
++++ b/miniperl_top
+@@ -39,4 +39,5 @@ exec $top/miniperl\
+ 	-I$top/dist/Carp/lib\
+ 	-I$top/cpan/podlators/lib\
+ 	-I$top/cpan/parent/lib\
++	-I$top/cpan/version/lib\
+ 	"$@"
+

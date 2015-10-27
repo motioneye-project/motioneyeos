@@ -3,6 +3,8 @@ which is in the default include path.
 
 Signed-off-by: Alex Suykov <alex.suykov@gmail.com>
 
+Fetch from: http://github.com/arsv/perl-cross/blob/master/cnf/diffs/dynaloader.patch
+
 --- a/ext/DynaLoader/hints/linux.pl
 +++ b/ext/DynaLoader/hints/linux.pl
 @@ -1,5 +1 @@
