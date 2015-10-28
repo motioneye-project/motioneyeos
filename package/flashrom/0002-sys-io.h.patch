@@ -5,7 +5,7 @@ However, its inclusion is conditional to the _GLIBC_ define. This is
 usually OK under Linux, since both glibc and uClibc define it (uclibc
 fakes being glibc).
 
-But the mus lC library does not impersonate glibc, so we're missing
+But the musl C library does not impersonate glibc, so we're missing
 including sys/io.h in this case.
 
 Change the include from checking _GLIBC_ to checking whether this is

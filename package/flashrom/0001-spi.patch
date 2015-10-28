@@ -5,7 +5,7 @@ so it must be included before it is used, by SPI_IOC_MESSAGE
 from linux/spi/spidev.h
 
 Fixes build errors with the musl C library, as seen in these
-Buidlroot autobuilder failures:
+Buildroot autobuilder failures:
 
     http://autobuild.buildroot.org/results/2a3/2a3744007c630c267575a638ebcd83a4b97644f5/build-end.log
     http://autobuild.buildroot.org/results/3de/3de936d9be79e151e66af15193084d82a0f2c04a/build-end.log
