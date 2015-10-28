@@ -106,6 +106,7 @@ NPM = $(TARGET_CONFIGURE_OPTS) \
 	npm_config_target_arch=$(NODEJS_CPU) \
 	npm_config_build_from_source=true \
 	npm_config_nodedir=$(BUILD_DIR)/nodejs-$(NODEJS_VERSION) \
+	npm_config_prefix=$(TARGET_DIR)/usr \
 	$(HOST_DIR)/usr/bin/npm
 
 #
@@ -116,17 +117,7 @@ define NODEJS_INSTALL_MODULES
 	# If you're having trouble with module installation, adding -d to the
 	# npm install call below and setting npm_config_rollback=false can both
 	# help in diagnosing the problem.
-	(cd $(TARGET_DIR)/usr/lib && mkdir -p node_modules && \
-		$(NPM) install $(NODEJS_MODULES_LIST) \
-	)
-
-	# Symlink all executables in $(TARGET_DIR)/usr/lib/node_modules/.bin to
-	# $(TARGET_DIR)/usr/bin so they are accessible from the command line
-	cd $(TARGET_DIR)/usr/bin; \
-	for f in ../../usr/lib/node_modules/.bin/*; do \
-		[ -f "$${f}" -a -x "$${f}" ] || continue; \
-		ln -sf "$${f}" "$${f##*/}" || exit 1; \
-	done
+	$(NPM) install -g $(NODEJS_MODULES_LIST)
 endef
 endif
 
