@@ -11,10 +11,7 @@ LIRC_TOOLS_LICENSE = GPLv2+
 LIRC_TOOLS_LICENSE_FILES = COPYING
 LIRC_TOOLS_DEPENDENCIES = host-pkgconf
 
-LIRC_TOOLS_CONF_OPTS = \
-	--without-x \
-	--enable-sandboxed \
-	--with-driver=userspace
+LIRC_TOOLS_CONF_OPTS = --without-x
 
 define LIRC_TOOLS_INSTALL_INIT_SYSV
 	$(INSTALL) -D -m 0755 package/lirc-tools/S25lircd \
