@@ -16,6 +16,7 @@ video:x:28:
 audio:x:29:
 tape:x:32:
 www-data:x:33:
+operator:x:37:
 utmp:x:43:
 plugdev:x:46:
 staff:x:50:
