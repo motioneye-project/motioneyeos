@@ -19,7 +19,8 @@ if [ -L /etc/dropbear \
         mkdir -p "$(readlink /etc/dropbear)"; \
     fi; \
 fi'
-ExecStart=/usr/sbin/dropbear -F -R
+EnvironmentFile=/etc/default/dropbear
+ExecStart=/usr/sbin/dropbear -F -R $DROPBEAR_ARGS
 ExecReload=/bin/kill -HUP $MAINPID
 
 [Install]
