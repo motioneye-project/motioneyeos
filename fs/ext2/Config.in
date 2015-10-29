@@ -45,12 +45,28 @@ config BR2_TARGET_ROOTFS_EXT2_LABEL
 	string "filesystem label"
 
 config BR2_TARGET_ROOTFS_EXT2_BLOCKS
-	int "size in blocks (leave at 0 for auto calculation)"
+	int "exact size in blocks (leave at 0 for auto calculation)"
 	default 0
 
 config BR2_TARGET_ROOTFS_EXT2_INODES
-	int "inodes (leave at 0 for auto calculation)"
+	int "exact number of inodes (leave at 0 for auto calculation)"
 	default 0
+
+config BR2_TARGET_ROOTFS_EXT2_EXTRA_BLOCKS
+	int "extra size in blocks" if BR2_TARGET_ROOTFS_EXT2_BLOCKS = 0
+	default 0
+	help
+	  Enter here the number of extra blocks of free space you
+	  want on your filesystem. By default, Buildroot will not
+	  leave much space free.
+
+config BR2_TARGET_ROOTFS_EXT2_EXTRA_INODES
+	int "extra inodes" if BR2_TARGET_ROOTFS_EXT2_INODES = 0
+	default 0
+	help
+	  Enter here the number of extra free inodes you want on
+	  your filesystem. By default, Buildroot will not leave
+	  many free inodes.
 
 config BR2_TARGET_ROOTFS_EXT2_RESBLKS
 	int "reserved blocks percentage"
