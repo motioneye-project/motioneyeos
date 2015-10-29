@@ -588,4 +588,11 @@ else
 GST_PLUGINS_BAD_CONF_OPTS += --disable-vp8
 endif
 
+ifeq ($(BR2_PACKAGE_GST_PLUGINS_BAD_ZBAR),y)
+GST_PLUGINS_BAD_CONF_OPTS += --enable-zbar
+GST_PLUGINS_BAD_DEPENDENCIES += zbar
+else
+GST_PLUGINS_BAD_CONF_OPTS += --disable-zbar
+endif
+
 $(eval $(autotools-package))

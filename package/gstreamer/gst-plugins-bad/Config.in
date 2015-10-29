@@ -319,4 +319,8 @@ config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_VP8
 	bool "vp8"
 	select BR2_PACKAGE_LIBVPX
 
+config BR2_PACKAGE_GST_PLUGINS_BAD_ZBAR
+	bool "zbar"
+	select BR2_PACKAGE_ZBAR
+
 endif
