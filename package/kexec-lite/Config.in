@@ -1,6 +1,6 @@
 config BR2_PACKAGE_KEXEC_LITE
 	bool "kexec-lite"
-	depends on BR2_powerpc || BR2_powerpc64
+	depends on BR2_powerpc || BR2_powerpc64 || BR2_powerpc64le
 	depends on !BR2_STATIC_LIBS # dtc, elfutils
 	depends on BR2_USE_WCHAR # elfutils
 	depends on BR2_TOOLCHAIN_USES_UCLIBC || BR2_TOOLCHAIN_USES_GLIBC # elfutils
