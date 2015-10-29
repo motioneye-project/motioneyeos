@@ -205,6 +205,10 @@ config BR2_LINUX_KERNEL_ZIMAGE
 		   BR2_powerpc64 || BR2_powerpc64le || BR2_sparc || \
 		   BR2_sh || BR2_sh64 || BR2_xtensa
 
+config BR2_LINUX_KERNEL_ZIMAGE_EPAPR
+	bool "zImage.epapr"
+	depends on BR2_powerpc64 || BR2_powerpc64le
+
 config BR2_LINUX_KERNEL_APPENDED_ZIMAGE
 	bool "zImage with appended DT"
 	depends on BR2_arm || BR2_armeb
