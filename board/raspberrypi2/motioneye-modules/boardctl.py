@@ -186,7 +186,7 @@ def gpuMem():
         'description': 'set the amount of memory reserved for the GPU (choose at least 96MB if you use the CSI camera board)',
         'type': 'number',
         'min': '16',
-        'max': '448',
+        'max': '944',
         'section': 'expertSettings',
         'advanced': True,
         'reboot': True,
