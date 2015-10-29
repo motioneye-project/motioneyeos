@@ -13,7 +13,7 @@ LIBV4L_CONF_OPTS = --disable-doxygen-doc
 
 # patch touches Makefile.am (and needs host-gettext for autoreconf)
 LIBV4L_AUTORECONF= YES
-LIBV4L_DEPENDENCIES = host-gettext
+LIBV4L_DEPENDENCIES += host-gettext
 
 # fix uclibc-ng configure/compile
 LIBV4L_CONF_ENV = ac_cv_prog_cc_c99='-std=gnu99'
