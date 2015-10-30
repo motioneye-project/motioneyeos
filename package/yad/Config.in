@@ -1,0 +1,13 @@
+config BR2_PACKAGE_YAD
+	bool "yad"
+	depends on BR2_PACKAGE_XORG7
+	depends on BR2_PACKAGE_LIBGTK2 || BR2_PACKAGE_LIBGTK3
+	help
+	  YAD (yet another dialog) is a tool for create graphical dialogs
+	  from shell scripts.
+
+	  http://sourceforge.net/projects/yad-dialog/
+
+comment "yad needs libgtk2 or libgtk3"
+	depends on BR2_PACKAGE_XORG7
+	depends on !BR2_PACKAGE_LIBGTK2 && !BR2_PACKAGE_LIBGTK3

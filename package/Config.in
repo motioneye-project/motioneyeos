@@ -292,6 +292,7 @@ comment "X applications"
 	source "package/xscreensaver/Config.in"
 	source "package/xterm/Config.in"
 	source "package/xvkbd/Config.in"
+	source "package/yad/Config.in"
 
 comment "X libraries and helper libraries"
 	source "package/libsexy/Config.in"
