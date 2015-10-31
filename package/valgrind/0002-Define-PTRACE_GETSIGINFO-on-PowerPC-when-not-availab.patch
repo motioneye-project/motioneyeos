@@ -1,4 +1,7 @@
-Define PTRACE_GETSIGINFO on PowerPC when not available
+From 7311686d6286972ff97cc18b2416a4cdd7fc5c7e Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Sat, 31 Oct 2015 12:15:24 +0100
+Subject: [PATCH] Define PTRACE_GETSIGINFO on PowerPC when not available
 
 uClibc 0.9.33.2 does not define PTRACE_GETSIGINFO in PowerPC. Even
 though Buildroot has a uClibc patch doing that, it doesn't solve the
@@ -8,12 +11,15 @@ PTRACE_GETSIGINFO on PowerPC to the right value, when such definition
 is not available from the C library.
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ coregrind/vgdb-invoker-ptrace.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-Index: b/coregrind/vgdb-invoker-ptrace.c
-===================================================================
+diff --git a/coregrind/vgdb-invoker-ptrace.c b/coregrind/vgdb-invoker-ptrace.c
+index d65f59a..bdefac2 100644
 --- a/coregrind/vgdb-invoker-ptrace.c
 +++ b/coregrind/vgdb-invoker-ptrace.c
-@@ -71,6 +71,12 @@
+@@ -72,6 +72,12 @@
  #   endif
  #endif
  
@@ -23,6 +29,9 @@ Index: b/coregrind/vgdb-invoker-ptrace.c
 +# endif
 +#endif
 +
- #if VEX_HOST_WORDSIZE == 8
- typedef Addr64 CORE_ADDR;
- #elif VEX_HOST_WORDSIZE == 4
+ // 32-bit or 64-bit wide, depending on primary architecture.
+ typedef Addr  CORE_ADDR;
+ typedef Addr  PTRACE_XFER_TYPE;
+-- 
+2.1.4
+
