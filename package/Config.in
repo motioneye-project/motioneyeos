@@ -1280,6 +1280,7 @@ endif
 	source "package/iptables/Config.in"
 	source "package/iptraf-ng/Config.in"
 	source "package/iputils/Config.in"
+	source "package/irssi/Config.in"
 	source "package/iw/Config.in"
 	source "package/janus-gateway/Config.in"
 	source "package/kismet/Config.in"

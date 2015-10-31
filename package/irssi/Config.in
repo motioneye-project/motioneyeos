@@ -1,0 +1,30 @@
+config BR2_PACKAGE_IRSSI
+	bool "irssi"
+	select BR2_PACKAGE_LIBGLIB2
+	select BR2_PACKAGE_NCURSES
+	depends on BR2_USE_WCHAR # libglib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libglib2
+	depends on BR2_USE_MMU # fork()
+	help
+	  Irssi is a terminal based IRC client for UNIX systems.
+
+	  http://irssi.org/
+
+if BR2_PACKAGE_IRSSI
+
+config BR2_PACKAGE_IRSSI_PROXY
+	bool "proxy module"
+	help
+	  Build the irssi proxy module, which allows an IRC connection
+	  to be shared among multiple clients.
+
+config BR2_PACKAGE_IRSSI_TRUE_COLOR
+	bool "true color support"
+	help
+	  Build with true color support in terminal.
+
+endif
+
+comment "irssi needs a toolchain w/ wchar, threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS

@@ -1,0 +1,46 @@
+From a9d2f9ca6edb7a958ecb606f7db2055caad26a1e Mon Sep 17 00:00:00 2001
+From: Rodrigo Rebello <rprebello@gmail.com>
+Date: Wed, 28 Oct 2015 13:38:21 -0200
+Subject: [PATCH 1/1] Fix quote around macro argument
+
+In m4/curses.m4, line 134, the 5th argument passed to AC_NCURSES was
+surrounded by '"' instead of '[' and ']'. Because of that, the expansion
+of AC_NCURSES in that case would produce the following line inside the
+configure script (note the repeated double quotes):
+
+  screen_manager=""ncurses on $withval/include""
+
+That would cause the following error when configure was executed with
+the "--with-ncurses=dir" argument:
+
+  ./configure: line 13468: on: command not found
+
+Although in the case above the error doesn't actually influence the
+build process ('screen_manager' isn't used anywhere in the script),
+trying to execute 'on' might be harmful if it corresponded to an
+existing command in the user's environment.
+
+Upstream-status: accepted, not yet released.
+https://github.com/irssi/irssi/pull/344
+
+Signed-off-by: Rodrigo Rebello <rprebello@gmail.com>
+---
+ m4/curses.m4 | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/m4/curses.m4 b/m4/curses.m4
+index 82b110f..41c0e6c 100644
+--- a/m4/curses.m4
++++ b/m4/curses.m4
+@@ -131,7 +131,7 @@ AC_DEFUN([AC_CHECK_CURSES],[
+ 	  if test x$withval = xno ; then
+ 		search_ncurses=false
+ 	  elif test x$withval != xyes ; then
+-		AC_NCURSES($withval/include, ncurses.h, -L$withval/lib -lncurses, -I$withval/include, "ncurses on $withval/include")
++		AC_NCURSES($withval/include, ncurses.h, -L$withval/lib -lncurses, -I$withval/include, [ncurses on $withval/include])
+ 	  fi
+ 	)
+ 
+-- 
+2.1.4
+
