@@ -83,6 +83,14 @@ define MOSQUITTO_INSTALL_INIT_SYSV
 		$(TARGET_DIR)/etc/init.d/S50mosquitto
 endef
 
+define MOSQUITTO_INSTALL_INIT_SYSTEMD
+	$(INSTALL) -D -m 644 package/mosquitto/mosquitto.service \
+		$(TARGET_DIR)/usr/lib/systemd/system/mosquitto.service
+	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
+	ln -fs ../../../../usr/lib/systemd/system/mosquitto.service \
+		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/mosquitto.service
+endef
+
 define MOSQUITTO_USERS
 	mosquitto -1 nogroup -1 * - - - Mosquitto user
 endef
