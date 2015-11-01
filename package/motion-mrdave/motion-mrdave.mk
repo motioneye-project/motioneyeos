@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-MOTION_MRDAVE_VERSION = 5c6f4be
+MOTION_MRDAVE_VERSION = 2caced3
 MOTION_MRDAVE_SITE = $(call github,mr-dave,motion,$(MOTION_MRDAVE_VERSION))
 MOTION_MRDAVE_CONF_OPTS = --without-pgsql --without-sdl --without-sqlite3 --without-mysql --with-ffmpeg=$(STAGING_DIR)/usr/lib \
         --with-ffmpeg-headers=$(STAGING_DIR)/usr/include                                     
