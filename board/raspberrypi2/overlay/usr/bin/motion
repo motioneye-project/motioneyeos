@@ -5,7 +5,7 @@ MOTION_MRDAVE="/usr/bin/motion-mrdave"
 MOTION_MMAL="/usr/bin/motion-mmal"
 
 if [ "$1" == "-h" ]; then
-    # when asked about version , always report MrDave's,
+    # when asked about version, always report MrDave's,
     # as it's the most featureful one
     motion=$MOTION_MRDAVE
 
@@ -32,5 +32,5 @@ fi
 
 echo "using motion binary $motion"
 
-exec $motion "$*"
+exec $motion "$@"
 

@@ -7,5 +7,5 @@ motion=$MOTION_MRDAVE
 
 echo "using motion binary $motion"
 
-exec $motion "$*"
+exec $motion "$@"
 
