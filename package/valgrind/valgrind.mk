@@ -9,8 +9,14 @@ VALGRIND_SITE = http://valgrind.org/downloads
 VALGRIND_SOURCE = valgrind-$(VALGRIND_VERSION).tar.bz2
 VALGRIND_LICENSE = GPLv2 GFDLv1.2
 VALGRIND_LICENSE_FILES = COPYING COPYING.DOCS
-VALGRIND_CONF_OPTS = --disable-tls --disable-ubsan
+VALGRIND_CONF_OPTS = --disable-ubsan
 VALGRIND_INSTALL_STAGING = YES
+
+ifeq ($(BR2_GCC_ENABLE_TLS),y)
+VALGRIND_CONF_OPTS += --enable-tls
+else
+VALGRIND_CONF_OPTS += --disable-tls
+endif
 
 # When Valgrind detects a 32-bit MIPS architecture, it forcibly adds
 # -march=mips32 to CFLAGS; when it detects a 64-bit MIPS architecture,
