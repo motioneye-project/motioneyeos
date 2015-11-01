@@ -63,6 +63,15 @@ config BR2_PACKAGE_WPA_SUPPLICANT_CLI
 	help
 	  Install wpa_cli command line utility
 
+config BR2_PACKAGE_WPA_SUPPLICANT_WPA_CLIENT_SO
+	depends on !BR2_STATIC_LIBS
+	bool "Install wpa_client shared library"
+	help
+	  Install libwpa_client.so.
+
+comment "wpa_client library needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS
+
 config BR2_PACKAGE_WPA_SUPPLICANT_PASSPHRASE
 	bool "Install wpa_passphrase binary"
 	help
