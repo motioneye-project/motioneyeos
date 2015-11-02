@@ -377,11 +377,17 @@ config BR2_ARM_INSTRUCTIONS_ARM
 config BR2_ARM_INSTRUCTIONS_THUMB
 	bool "Thumb"
 	depends on BR2_ARM_CPU_HAS_THUMB
+	# Thumb-1 and VFP are not compatible
+	depends on BR2_ARM_SOFT_FLOAT
 	help
 	  This option instructions the compiler to generate Thumb
 	  instructions, which allows to mix 16 bits instructions and
 	  32 bits instructions. This generally provides a much smaller
 	  compiled binary size.
+
+comment "Thumb1 is not compatible with VFP"
+	depends on BR2_ARM_CPU_HAS_THUMB
+	depends on !BR2_ARM_SOFT_FLOAT
 
 config BR2_ARM_INSTRUCTIONS_THUMB2
 	bool "Thumb2"
