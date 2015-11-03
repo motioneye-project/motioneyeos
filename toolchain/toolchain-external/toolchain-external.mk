@@ -483,6 +483,7 @@ TOOLCHAIN_EXTERNAL_EXCLUDES = usr/lib/locale/*
 # since it's actually a fairly special package, we need it to be moved
 # into TOOLCHAIN_EXTERNAL_INSTALL_DIR.
 define TOOLCHAIN_EXTERNAL_MOVE
+	rm -rf $(TOOLCHAIN_EXTERNAL_INSTALL_DIR)/*
 	mkdir -p $(TOOLCHAIN_EXTERNAL_INSTALL_DIR)
 	mv $(@D)/* $(TOOLCHAIN_EXTERNAL_INSTALL_DIR)/
 endef
