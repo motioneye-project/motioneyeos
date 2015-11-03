@@ -89,6 +89,10 @@ BOOST_OPTS += toolset=gcc \
 	     abi=$(BOOST_ABI) \
 	     variant=$(if $(BR2_ENABLE_DEBUG),debug,release)
 
+ifeq ($(BR2_sparc64),y)
+BOOST_OPTS += architecture=sparc instruction-set=ultrasparc
+endif
+
 # By default, Boost build and installs both the shared and static
 # variants. Override that if we want static only or shared only.
 ifeq ($(BR2_STATIC_LIBS),y)
