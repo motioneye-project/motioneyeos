@@ -1,0 +1,34 @@
+From 1e85892911bf016e9bb2a647b6584cdd806706f8 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Tue, 3 Nov 2015 15:32:23 +0100
+Subject: [PATCH] unistd: fix #if condition
+
+Commit dfa593d4d881116723a4401b466ea964fb12327b ("syncfs: add system
+call support") modified the #if condition around the definition of the
+syncfs() prototype in a way that doesn't build, causing build failures
+of any file including <unistd.h>:
+
+output/host/usr/powerpc-buildroot-linux-uclibc/sysroot/usr/include/unistd.h:988:14: error: #if with no expression
+ #if __USE_GNU
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ include/unistd.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/unistd.h b/include/unistd.h
+index 4701dab..40d6abd 100644
+--- a/include/unistd.h
++++ b/include/unistd.h
+@@ -1073,7 +1073,7 @@ extern char *getpass (const char *__prompt) __nonnull ((1));
+ extern int fsync (int __fd);
+ #endif /* Use BSD || X/Open || Unix98.  */
+ 
+-#if __USE_GNU
++#if defined __USE_GNU
+ /* Make all changes done to all files on the file system associated
+  *    with FD actually appear on disk.  */
+ extern int syncfs (int __fd) __THROW;
+-- 
+2.6.2
+
