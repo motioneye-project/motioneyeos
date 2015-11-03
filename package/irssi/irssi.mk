@@ -11,7 +11,7 @@ IRSSI_SOURCE = irssi-$(IRSSI_VERSION).tar.bz2
 IRSSI_SITE = http://pkgs.fedoraproject.org/repo/pkgs/irssi/$(IRSSI_SOURCE)/ecf64be47978d89a742b435a81cb47db
 IRSSI_LICENSE = GPLv2+
 IRSSI_LICENSE_FILES = COPYING
-IRSSI_DEPENDENCIES = libglib2 ncurses
+IRSSI_DEPENDENCIES = host-pkgconf libglib2 ncurses
 IRSSI_AUTORECONF = YES
 
 IRSSI_CONF_OPTS = \
