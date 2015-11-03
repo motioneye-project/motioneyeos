@@ -125,8 +125,8 @@ $(BUILD_DIR)/%/.stamp_extracted:
 # some packages have messed up permissions inside
 	$(Q)chmod -R +rw $(@D)
 	$(foreach hook,$($(PKG)_POST_EXTRACT_HOOKS),$(call $(hook))$(sep))
-	$(Q)touch $@
 	@$(call step_end,extract)
+	$(Q)touch $@
 
 # Rsync the source directory if the <pkg>_OVERRIDE_SRCDIR feature is
 # used.
@@ -165,8 +165,8 @@ $(BUILD_DIR)/%/.stamp_patched:
 	done; \
 	)
 	$(foreach hook,$($(PKG)_POST_PATCH_HOOKS),$(call $(hook))$(sep))
-	$(Q)touch $@
 	@$(call step_end,patch)
+	$(Q)touch $@
 
 # Check that all directories specified in BR2_GLOBAL_PATCH_DIR exist.
 $(foreach dir,$(call qstrip,$(BR2_GLOBAL_PATCH_DIR)),\
@@ -180,8 +180,8 @@ $(BUILD_DIR)/%/.stamp_configured:
 	$(foreach hook,$($(PKG)_PRE_CONFIGURE_HOOKS),$(call $(hook))$(sep))
 	$($(PKG)_CONFIGURE_CMDS)
 	$(foreach hook,$($(PKG)_POST_CONFIGURE_HOOKS),$(call $(hook))$(sep))
-	$(Q)touch $@
 	@$(call step_end,configure)
+	$(Q)touch $@
 
 # Build
 $(BUILD_DIR)/%/.stamp_built::
@@ -190,8 +190,8 @@ $(BUILD_DIR)/%/.stamp_built::
 	$(foreach hook,$($(PKG)_PRE_BUILD_HOOKS),$(call $(hook))$(sep))
 	+$($(PKG)_BUILD_CMDS)
 	$(foreach hook,$($(PKG)_POST_BUILD_HOOKS),$(call $(hook))$(sep))
-	$(Q)touch $@
 	@$(call step_end,build)
+	$(Q)touch $@
 
 # Install to host dir
 $(BUILD_DIR)/%/.stamp_host_installed:
@@ -200,8 +200,8 @@ $(BUILD_DIR)/%/.stamp_host_installed:
 	$(foreach hook,$($(PKG)_PRE_INSTALL_HOOKS),$(call $(hook))$(sep))
 	+$($(PKG)_INSTALL_CMDS)
 	$(foreach hook,$($(PKG)_POST_INSTALL_HOOKS),$(call $(hook))$(sep))
-	$(Q)touch $@
 	@$(call step_end,install-host)
+	$(Q)touch $@
 
 # Install to staging dir
 #
@@ -251,8 +251,8 @@ $(BUILD_DIR)/%/.stamp_staging_installed:
 				-e "s:@TOOLCHAIN_EXTERNAL_INSTALL_DIR@:$(TOOLCHAIN_EXTERNAL_INSTALL_DIR):g") \
 			-e "s:@STAGING_DIR@:$(STAGING_DIR):g" \
 			-e "s:@BASE_DIR@:$(BASE_DIR):g"
-	$(Q)touch $@
 	@$(call step_end,install-staging)
+	$(Q)touch $@
 
 # Install to images dir
 $(BUILD_DIR)/%/.stamp_images_installed:
@@ -261,8 +261,8 @@ $(BUILD_DIR)/%/.stamp_images_installed:
 	@$(call MESSAGE,"Installing to images directory")
 	+$($(PKG)_INSTALL_IMAGES_CMDS)
 	$(foreach hook,$($(PKG)_POST_INSTALL_IMAGES_HOOKS),$(call $(hook))$(sep))
-	$(Q)touch $@
 	@$(call step_end,install-image)
+	$(Q)touch $@
 
 # Install to target dir
 $(BUILD_DIR)/%/.stamp_target_installed:
@@ -278,8 +278,8 @@ $(BUILD_DIR)/%/.stamp_target_installed:
 	$(Q)if test -n "$($(PKG)_CONFIG_SCRIPTS)" ; then \
 		$(RM) -f $(addprefix $(TARGET_DIR)/usr/bin/,$($(PKG)_CONFIG_SCRIPTS)) ; \
 	fi
-	$(Q)touch $@
 	@$(call step_end,install-target)
+	$(Q)touch $@
 
 # Remove package sources
 $(BUILD_DIR)/%/.stamp_dircleaned:
