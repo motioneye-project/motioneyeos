@@ -65,6 +65,9 @@ config BR2_PACKAGE_BOOST_CHRONO
 config BR2_PACKAGE_BOOST_CONTAINER
 	bool "boost-container"
 
+# see
+# http://www.boost.org/doc/libs/1_59_0/libs/context/doc/html/context/architectures.html
+# for the list of supported architectures.
 config BR2_PACKAGE_BOOST_CONTEXT
 	bool "boost-context"
 	depends on (BR2_arm || BR2_armeb || BR2_i386 || BR2_mips || BR2_mipsel \
