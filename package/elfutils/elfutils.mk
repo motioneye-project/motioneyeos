@@ -16,9 +16,16 @@ ELFUTILS_PATCH = elfutils-portability-0.161.patch
 ELFUTILS_AUTORECONF = YES
 ELFUTILS_CONF_OPTS += --disable-werror
 
+ELFUTILS_CFLAGS = $(filter-out -D_FILE_OFFSET_BITS=64,$(TARGET_CFLAGS))
+
+# sparc64 needs -fPIC instead of -fpic
+ifeq ($(BR2_sparc64),y)
+ELFUTILS_CFLAGS += -fPIC
+endif
+
 # elfutils gets confused when lfs mode is forced, so don't
 ELFUTILS_CONF_ENV += \
-	CFLAGS="$(filter-out -D_FILE_OFFSET_BITS=64,$(TARGET_CFLAGS))" \
+	CFLAGS="$(ELFUTILS_CFLAGS)" \
 	CPPFLAGS="$(filter-out -D_FILE_OFFSET_BITS=64,$(TARGET_CPPFLAGS))"
 
 ELFUTILS_LDFLAGS = $(TARGET_LDFLAGS)
