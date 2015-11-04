@@ -495,6 +495,11 @@ endef
 
 In the action definitions, you can use the following variables:
 
+* +$(FOO_PKGDIR)+ contains the path to the directory containing the
+  +foo.mk+ and +Config.in+ files. This variable is useful when it is
+  necessary to install a file bundled in Buildroot, like a runtime
+  configuration file, a splashscren image...
+
 * +$(@D)+, which contains the directory in which the package source
   code has been uncompressed.
 
