@@ -798,6 +798,7 @@ menu "Crypto"
 	source "package/nettle/Config.in"
 	source "package/openssl/Config.in"
 	source "package/polarssl/Config.in"
+	source "package/trousers/Config.in"
 endmenu
 
 menu "Database"
