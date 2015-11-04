@@ -1,0 +1,19 @@
+config BR2_PACKAGE_GAUCHE
+	bool "gauche"
+	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL
+	depends on BR2_USE_MMU # fork()
+	depends on BR2_ARCH_HAS_ATOMICS
+	help
+	  Gauche is an R7RS Scheme implementation developed to be a
+	  handy script interpreter, which allows programmers and
+	  system administrators to write small to large scripts for
+	  their daily chores. Quick startup, built-in system
+	  interface, native multilingual support are some of its
+	  goals.
+
+	  http://practical-scheme.net/gauche/
+
+comment "gauche needs a toolchain w/ NPTL"
+	depends on BR2_USE_MMU
+	depends on BR2_ARCH_HAS_ATOMICS
+	depends on !BR2_TOOLCHAIN_HAS_THREADS_NPTL
