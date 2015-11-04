@@ -19,7 +19,7 @@ NGINX_CONF_OPTS = \
 
 # www-data user and group are used for nginx. Because these user and group
 # are already set by buildroot, it is not necessary to redefine them.
-# See system/skeleton/passwd
+# See system/skeleton/etc/passwd
 #   username: www-data    uid: 33
 #   groupname: www-data   gid: 33
 #
