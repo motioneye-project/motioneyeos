@@ -32,8 +32,16 @@ define PYTHON_WEB2PY_INSTALL_INIT_SYSTEMD
 		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/web2py.service
 endef
 
+# www-data user and group are used for web2py. Because these user and group
+# are already set by buildroot, it is not necessary to redefine them.
+# See system/skeleton/etc/passwd
+#   username: www-data    uid: 33
+#   groupname: www-data   gid: 33
+#
+# So, we just need to create the directories used by web2py with the right
+# ownership.
 define PYTHON_WEB2PY_PERMISSIONS
-	/var/www/web2py  r  750  www-data  www-data  -  -  -  -  -
+	/var/www/web2py  r  750  33  33  -  -  -  -  -
 endef
 
 $(eval $(generic-package))
