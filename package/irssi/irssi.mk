@@ -6,9 +6,7 @@
 
 IRSSI_VERSION = 0.8.17
 IRSSI_SOURCE = irssi-$(IRSSI_VERSION).tar.bz2
-# Official web site is down
-# IRSSI_SITE = http://irssi.org/files
-IRSSI_SITE = http://pkgs.fedoraproject.org/repo/pkgs/irssi/$(IRSSI_SOURCE)/ecf64be47978d89a742b435a81cb47db
+IRSSI_SITE = http://irssi.org/files
 IRSSI_LICENSE = GPLv2+
 IRSSI_LICENSE_FILES = COPYING
 IRSSI_DEPENDENCIES = host-pkgconf libglib2 ncurses
