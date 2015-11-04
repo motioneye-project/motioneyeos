@@ -26,7 +26,7 @@ else
 GIT_CONF_OPTS += --without-libpcre
 endif
 
-ifeq ($(BR2_PACKAGE_CURL),y)
+ifeq ($(BR2_PACKAGE_LIBCURL),y)
 GIT_DEPENDENCIES += libcurl
 GIT_CONF_OPTS += --with-curl
 else
