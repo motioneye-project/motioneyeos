@@ -217,6 +217,8 @@ define GPSD_INSTALL_STAGING_CMDS
 		install)
 endef
 
+# After installing the udev rule, make it writable so that this
+# package can be re-built/re-installed.
 ifeq ($(BR2_PACKAGE_HAS_UDEV),y)
 define GPSD_INSTALL_UDEV_RULES
 	(cd $(@D); \
@@ -225,6 +227,7 @@ define GPSD_INSTALL_UDEV_RULES
 		$(SCONS) \
 		$(GPSD_SCONS_OPTS) \
 		udev-install)
+	chmod u+w $(TARGET_DIR)/lib/udev/rules.d/25-gpsd.rules
 endef
 
 GPSD_POST_INSTALL_TARGET_HOOKS += GPSD_INSTALL_UDEV_RULES
