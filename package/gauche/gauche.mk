@@ -11,6 +11,15 @@ GAUCHE_LICENSE = BSD-3c, Boehm-gc, SRFI (srfi-11.scm), reload (reload.scm)
 GAUCHE_LICENSE_FILES = COPYING
 GAUCHE_DEPENDENCIES = host-gauche
 
+HOST_GAUCHE_CONF_OPTS = --without-zlib
+
+ifeq ($(BR2_PACKAGE_ZLIB),y)
+GAUCHE_CONF_OPTS += --with-zlib=$(STAGING_DIR)
+GAUCHE_DEPENDENCIES += zlib
+else
+GAUCHE_CONF_OPTS += --without-zlib
+endif
+
 # Detection of c99 support in configure fails without WCHAR. To enable
 # automatic detection of c99 support by configure, we need to enable
 # WCHAR in toolchain. But actually we do not need WCHAR at gauche
