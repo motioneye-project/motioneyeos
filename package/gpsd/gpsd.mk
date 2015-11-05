@@ -102,7 +102,7 @@ ifneq ($(BR2_PACKAGE_GPSD_MTK3301),y)
 GPSD_SCONS_OPTS += mtk3301=no
 endif
 ifneq ($(BR2_PACKAGE_GPSD_NMEA),y)
-GPSD_SCONS_OPTS += nmea=no
+GPSD_SCONS_OPTS += nmea0183=no
 endif
 ifneq ($(BR2_PACKAGE_GPSD_NTRIP),y)
 GPSD_SCONS_OPTS += ntrip=no
