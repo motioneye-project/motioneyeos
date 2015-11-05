@@ -645,7 +645,10 @@ define TOOLCHAIN_EXTERNAL_INSTALL_TARGET_LIBS
 	if test "$(BR2_TOOLCHAIN_EXTERNAL_GDB_SERVER_COPY)" = "y"; then \
 		$(call MESSAGE,"Copying gdbserver") ; \
 		gdbserver_found=0 ; \
-		for d in $${ARCH_SYSROOT_DIR}/usr $${ARCH_SYSROOT_DIR}/../debug-root/usr $${ARCH_SYSROOT_DIR}/usr/$${ARCH_LIB_DIR} ; do \
+		for d in $${ARCH_SYSROOT_DIR}/usr \
+			 $${ARCH_SYSROOT_DIR}/../debug-root/usr \
+			 $${ARCH_SYSROOT_DIR}/usr/$${ARCH_LIB_DIR} \
+			 $(TOOLCHAIN_EXTERNAL_INSTALL_DIR); do \
 			if test -f $${d}/bin/gdbserver ; then \
 				install -m 0755 -D $${d}/bin/gdbserver $(TARGET_DIR)/usr/bin/gdbserver ; \
 				gdbserver_found=1 ; \
