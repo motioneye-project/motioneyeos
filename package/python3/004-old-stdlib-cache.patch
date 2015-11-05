@@ -1,0 +1,78 @@
+python3: Fix pyc-only related runtime exceptions
+
+Python3 changes the pyc lookup strategy, ignoring the
+__pycache__ directory if the .py file is missing. Change
+install location to enable use of .pyc without their parent .py
+
+See http://www.python.org/dev/peps/pep-3147
+
+Signed-off-by: Daniel Nelson <daniel@sigpwr.com>
+
+Index: b/configure.ac
+===================================================================
+--- a/configure.ac
++++ b/configure.ac
+@@ -352,6 +352,23 @@
+ AC_SUBST(FRAMEWORKUNIXTOOLSPREFIX)
+ AC_SUBST(FRAMEWORKINSTALLAPPSPREFIX)
+ 
++STDLIB_CACHE_FLAGS=
++AC_MSG_CHECKING(for --enable-old-stdlib-cache)
++AC_ARG_ENABLE(old-stdlib-cache,
++    AS_HELP_STRING([--enable-old-stdlib-cache], [enable pre-pep3147 stdlib cache]),
++[
++    if test "$enableval" = "yes"
++    then
++        STDLIB_CACHE_FLAGS="-b"
++    else
++        STDLIB_CACHE_FLAGS="" 
++    fi
++],
++[
++    STDLIB_CACHE_FLAGS="" 
++])
++AC_SUBST(STDLIB_CACHE_FLAGS)
++
+ ##AC_ARG_WITH(dyld,
+ ##            AS_HELP_STRING([--with-dyld],
+ ##                           [Use (OpenStep|Rhapsody) dynamic linker]))
+Index: b/Makefile.pre.in
+===================================================================
+--- a/Makefile.pre.in
++++ b/Makefile.pre.in
+@@ -162,6 +162,9 @@
+ # Options to enable prebinding (for fast startup prior to Mac OS X 10.3)
+ OTHER_LIBTOOL_OPT=@OTHER_LIBTOOL_OPT@
+ 
++# Option to enable old-style precompiled stdlib
++STDLIB_CACHE_FLAGS=@STDLIB_CACHE_FLAGS@
++
+ # Environment to run shared python without installed libraries
+ RUNSHARED=       @RUNSHARED@
+ 
+@@ -1247,21 +1250,21 @@
+ 	fi
+ 	-PYTHONPATH=$(DESTDIR)$(LIBDEST)  $(RUNSHARED) \
+ 		$(PYTHON_FOR_BUILD) -Wi $(DESTDIR)$(LIBDEST)/compileall.py \
+-		-d $(LIBDEST) -f \
++		-d $(LIBDEST) -f $(STDLIB_CACHE_FLAGS) \
+ 		-x 'bad_coding|badsyntax|site-packages|lib2to3/tests/data' \
+ 		$(DESTDIR)$(LIBDEST)
+ 	-PYTHONPATH=$(DESTDIR)$(LIBDEST) $(RUNSHARED) \
+ 		$(PYTHON_FOR_BUILD) -Wi -O $(DESTDIR)$(LIBDEST)/compileall.py \
+-		-d $(LIBDEST) -f \
++		-d $(LIBDEST) -f $(STDLIB_CACHE_FLAGS) \
+ 		-x 'bad_coding|badsyntax|site-packages|lib2to3/tests/data' \
+ 		$(DESTDIR)$(LIBDEST)
+ 	-PYTHONPATH=$(DESTDIR)$(LIBDEST)  $(RUNSHARED) \
+ 		$(PYTHON_FOR_BUILD) -Wi $(DESTDIR)$(LIBDEST)/compileall.py \
+-		-d $(LIBDEST)/site-packages -f \
++		-d $(LIBDEST)/site-packages -f $(STDLIB_CACHE_FLAGS) \
+ 		-x badsyntax $(DESTDIR)$(LIBDEST)/site-packages
+ 	-PYTHONPATH=$(DESTDIR)$(LIBDEST) $(RUNSHARED) \
+ 		$(PYTHON_FOR_BUILD) -Wi -O $(DESTDIR)$(LIBDEST)/compileall.py \
+-		-d $(LIBDEST)/site-packages -f \
++		-d $(LIBDEST)/site-packages -f $(STDLIB_CACHE_FLAGS) \
+ 		-x badsyntax $(DESTDIR)$(LIBDEST)/site-packages
+ 	-PYTHONPATH=$(DESTDIR)$(LIBDEST) $(RUNSHARED) \
+ 		$(PYTHON_FOR_BUILD) -m lib2to3.pgen2.driver $(DESTDIR)$(LIBDEST)/lib2to3/Grammar.txt
