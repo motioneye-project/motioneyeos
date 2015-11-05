@@ -9,7 +9,7 @@ FASTD_SITE = git://git.universe-factory.net/fastd
 FASTD_LICENSE = BSD-2c
 FASTD_LICENSE_FILES = COPYRIGHT
 FASTD_CONF_OPTS = -DENABLE_LIBSODIUM=ON
-FASTD_DEPENDENCIES = libuecc libsodium libcap
+FASTD_DEPENDENCIES = host-bison host-pkgconf libuecc libsodium libcap
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 FASTD_CONF_OPTS += -DENABLE_OPENSSL=ON
