@@ -16,8 +16,9 @@
 # '*'. Pattern(s) describing the patch names you want to apply.
 #
 # The script will look recursively for patches from the patch directory. If a
-# file is named 'series' then only patches mentionned into it will be applied.
-# If not, the script will look for file names matching pattern(s). If the name
+# file named 'series' exists then the patches mentioned in it will be applied
+# as plain patches, regardless of their file name. If no 'series' file exists,
+# the script will look for file names matching pattern(s). If the name
 # ends with '.tar.*', '.tbz2' or '.tgz', the file is considered as an archive
 # and will be uncompressed into a directory named
 # '.patches-name_of_the_archive-unpacked'. It's the turn of this directory to
@@ -64,28 +65,32 @@ find ${builddir}/ '(' -name '*.rej' -o -name '.*.rej' ')' -print0 | \
 function apply_patch {
     path=$1
     patch=$2
-    case "$patch" in
-	*.gz)
-	type="gzip"; uncomp="gunzip -dc"; ;; 
-	*.bz)
-	type="bzip"; uncomp="bunzip -dc"; ;; 
-	*.bz2)
-	type="bzip2"; uncomp="bunzip2 -dc"; ;; 
-	*.xz)
-	type="xz"; uncomp="unxz -dc"; ;;
-	*.zip)
-	type="zip"; uncomp="unzip -d"; ;; 
-	*.Z)
-	type="compress"; uncomp="uncompress -c"; ;; 
-	*.diff*)
-	type="diff"; uncomp="cat"; ;;
-	*.patch*)
-	type="patch"; uncomp="cat"; ;;
-	*)
-	echo "Unsupported file type for ${path}/${patch}, skipping";
-	return 0
-	;;
-    esac
+    if [ "$3" ]; then
+        type="series"; uncomp="cat"
+    else
+        case "$patch" in
+	    *.gz)
+	    type="gzip"; uncomp="gunzip -dc"; ;;
+	    *.bz)
+	    type="bzip"; uncomp="bunzip -dc"; ;;
+	    *.bz2)
+	    type="bzip2"; uncomp="bunzip2 -dc"; ;;
+	    *.xz)
+	    type="xz"; uncomp="unxz -dc"; ;;
+	    *.zip)
+	    type="zip"; uncomp="unzip -d"; ;;
+	    *.Z)
+	    type="compress"; uncomp="uncompress -c"; ;;
+	    *.diff*)
+	    type="diff"; uncomp="cat"; ;;
+	    *.patch*)
+	    type="patch"; uncomp="cat"; ;;
+	    *)
+	    echo "Unsupported file type for ${path}/${patch}, skipping";
+	    return 0
+	    ;;
+        esac
+    fi
     if [ -z "$silent" ] ; then
 	echo ""
 	echo "Applying $patch using ${type}: "
@@ -111,7 +116,7 @@ function scan_patchdir {
     # to apply patches. Skip line starting with a dash.
     if [ -e "${path}/series" ] ; then
         for i in `grep -Ev "^#" ${path}/series 2> /dev/null` ; do
-            apply_patch "$path" "$i"
+            apply_patch "$path" "$i" series
         done
     else
         for i in `cd $path; ls -d $patches 2> /dev/null` ; do
