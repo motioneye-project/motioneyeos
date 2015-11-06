@@ -216,6 +216,7 @@ comment "Themes"
 endmenu
 
 menu "Games"
+	source "package/chocolate-doom/Config.in"
 	source "package/doom-wad/Config.in"
 	source "package/gnuchess/Config.in"
 	source "package/lbreakout2/Config.in"

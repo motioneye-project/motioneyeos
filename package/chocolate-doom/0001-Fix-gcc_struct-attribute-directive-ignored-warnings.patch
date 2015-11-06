@@ -1,0 +1,49 @@
+From d9c517d9a4e168c1f7ed28ad0eb9365d69f5ceb2 Mon Sep 17 00:00:00 2001
+From: Rodrigo Rebello <rprebello@gmail.com>
+Date: Thu, 22 Oct 2015 11:29:55 -0200
+Subject: [PATCH] Fix "`gcc_struct' attribute directive ignored" warnings
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Compilation for target architectures other than i386, x86_64 or PowerPC
+(e.g. ARM) caused multiple warnings like the following to appear:
+
+  doomdata.h:75:1: warning: ‘gcc_struct’ attribute directive ignored
+   } PACKEDATTR mapsidedef_t;
+   ^
+
+This was due to 'gcc_struct' being undefined for these architectures.
+Since that attribute was actually introduced by commit 87db726b9a9ae61ca
+to address the fact that -mms-bitfields became the default for GCC on
+Windows, limit it to that case.
+
+Upstream-status: accepted, not yet released.
+https://github.com/chocolate-doom/chocolate-doom/pull/629
+
+Signed-off-by: Rodrigo Rebello <rprebello@gmail.com>
+---
+ src/doomtype.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/src/doomtype.h b/src/doomtype.h
+index bf0a40e..77c026c 100644
+--- a/src/doomtype.h
++++ b/src/doomtype.h
+@@ -52,10 +52,10 @@
+ 
+ #ifdef __GNUC__
+ 
+-#ifdef __clang__
+-#define PACKEDATTR __attribute__((packed))
+-#else
++#if defined(_WIN32) && !defined(__clang__)
+ #define PACKEDATTR __attribute__((packed,gcc_struct))
++#else
++#define PACKEDATTR __attribute__((packed))
+ #endif
+ 
+ #else
+-- 
+2.1.4
+
