@@ -1,0 +1,41 @@
+#!/bin/sh
+
+gpio=35
+check_interval=30
+export=/sys/class/gpio/export
+read=/sys/class/gpio/gpio$gpio/value
+
+configure() {
+    echo $gpio > $export
+}
+
+watch() {
+    while true; do
+        if [ `cat $read` == "0" ]; then
+            logger -t brownout -s "low power supply voltage detected"
+        fi
+        sleep $check_interval
+    done
+}
+
+case "$1" in
+    start)
+        echo -n "Starting brownout detector: "
+        configure
+        watch &
+        echo "done"
+        ;;
+
+    stop)
+        echo -n "Stopping brownout detector: "
+        ps | grep brownout | grep -v $$ | grep -v grep | tr -s ' ' | sed -e 's/^\s//' | cut -d ' ' -f 1 | xargs -r kill
+        echo "done"
+        ;;
+
+    *)
+        echo $"Usage: $0 {start|stop|restart}"
+        exit 1
+esac
+
+exit $?
+
