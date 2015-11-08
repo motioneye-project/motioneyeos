@@ -1,9 +1,10 @@
-comment "mongrel2 needs a toolchain w/ C++, threads, wchar"
+comment "mongrel2 needs a toolchain w/ C++, threads, wchar, dynamic library"
 	depends on BR2_UCLIBC_VERSION_SNAPSHOT || \
 		BR2_TOOLCHAIN_USES_GLIBC || \
 		BR2_arm
 	depends on !BR2_INSTALL_LIBSTDCPP || \
-		!BR2_TOOLCHAIN_HAS_THREADS || !BR2_USE_WCHAR
+		!BR2_TOOLCHAIN_HAS_THREADS || !BR2_USE_WCHAR || \
+		BR2_STATIC_LIBS
 
 config BR2_PACKAGE_MONGREL2
 	bool "mongrel2"
@@ -12,6 +13,7 @@ config BR2_PACKAGE_MONGREL2
 	depends on BR2_INSTALL_LIBSTDCPP # zeromq
 	depends on BR2_TOOLCHAIN_HAS_THREADS # zeromq
 	depends on BR2_USE_WCHAR # zeromq -> util-linux
+	depends on !BR2_STATIC_LIBS # uses dlopen()
 	# {get,make,swap}context functions present in
 	# {e,}glibc and in uClibc's master branch. Source has arm workaround
 	depends on BR2_UCLIBC_VERSION_SNAPSHOT || \
