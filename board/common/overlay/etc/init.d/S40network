@@ -15,9 +15,7 @@ link_nego_timeout=10
 eth=eth0
 wlan=wlan0
 
-if [ -f $watch_conf ]; then
-    source $watch_conf
-fi
+test -r $watch_conf && source $watch_conf
 
 if [ -f $sys_static_conf ] && ! [ -f $static_conf ]; then
     mkdir -p $(dirname $static_conf)

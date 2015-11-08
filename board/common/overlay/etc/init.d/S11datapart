@@ -2,20 +2,13 @@
 
 DISK_DEV="/dev/mmcblk0"
 DATA_DEV="${DISK_DEV}p3"
-set +e
-
-# don't execute the script if kernel cmdline has "nodatapart" keyword
-if /bin/cat /proc/cmdline | /bin/grep "nodatapart"; then
-    exit;
-fi
-
 
 start() {
     echo "Setting up data partition"
 
-    # if the partition is not present, allocate it and issue a reboot
+    # if the data partition is not present, create and format it
     if ! [ -b $DATA_DEV ]; then
-        echo "Allocating data partition"
+        echo "Creating data partition"
         echo -e "n
     p
     3
@@ -24,18 +17,15 @@ start() {
     w
     " | /sbin/fdisk $DISK_DEV
         sync
-        sleep 1
-        echo b > /proc/sysrq-trigger
-    fi
+        partx -a $DISK_DEV &>/dev/null
 
-    # if the filesystem is not valid (not yet formatted), format it
-    if /usr/sbin/debugfs -R 'lcd /' $DATA_DEV 2>&1 | grep 'Bad magic'; then
         echo "Formatting data partition"
         mkfs.ext4 $DATA_DEV
+        
+        echo "Mounting data partition"
         mount /data
-
     fi
-
+    
     if df /dev/mmcblk0p3 >/dev/null 2>&1; then
         # make sure required directories exist
         mkdir -p /data/etc
@@ -45,6 +35,9 @@ start() {
         chmod 775 /data/output
         chmod 775 /data/media
         
+        # mount any partitions depending on data folders
+        mount -a
+
         # make sure a localtime symlink exists
         if ! [ -e /data/etc/localtime ]; then
             ln -s /usr/share/zoneinfo/UTC /data/etc/localtime
@@ -78,24 +71,11 @@ start() {
         sed -r -i 's/root:([^:]+):[[:digit:]]+:/root:\1::/' /data/etc/shadow # removes pwd expiration
         sed -r -i 's/admin:([^:]+):[[:digit:]]+:/admin:\1::/' /data/etc/shadow # removes pwd expiration
 
-        # mount binds
-        mount --rbind /data/output /home/ftp/sdcard
-        mount --rbind /data/media /home/ftp/storage
-        
         # copy common sys config files
         if [ -f /etc/watch.conf ] && ! [ -f /data/etc/watch.conf ]; then
             cp /etc/watch.conf /data/etc/watch.conf
         fi
     fi
-}
-
-stop() {
-    echo -n
-}
-
-restart() {
-    stop
-    start
 }
 
 case "$1" in
@@ -104,15 +84,11 @@ case "$1" in
         ;;
 
     stop)
-        stop
-        ;;
-
-    restart|reload)
-        restart
+        true
         ;;
 
     *)
-        echo "Usage: $0 {start|stop|restart}"
+        echo "Usage: $0 {start|stop}"
         exit 1
 esac
 

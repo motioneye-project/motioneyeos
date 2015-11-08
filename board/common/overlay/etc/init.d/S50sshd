@@ -6,7 +6,6 @@ conf="/etc/sshd_config"
 [ -f /usr/bin/ssh-keygen ] || exit 0
 
 # Create any missing keys
-mkdir -p /data/etc/ssh
 /usr/bin/ssh-keygen -A
 
 umask 077

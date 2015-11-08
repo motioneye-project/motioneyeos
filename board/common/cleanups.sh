@@ -37,7 +37,6 @@ rm -f $TARGET/sbin/fdformat
 rm -f $TARGET/sbin/ctrlaltdel
 rm -f $TARGET/bin/findmnt
 rm -f $TARGET/usr/bin/colcrt
-rm -f $TARGET/usr/sbin/partx
 rm -f $TARGET/sbin/fsfreeze
 rm -f $TARGET/usr/bin/colrm
 rm -f $TARGET/usr/sbin/addpart
