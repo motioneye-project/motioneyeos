@@ -159,6 +159,36 @@ config BR2_PACKAGE_LINUX_FIRMWARE_MWIFIEX_SD8787
 	help
 	  Firmware files for the Marvell Wifi-Ex 8787 module on SDIO.
 
+config BR2_PACKAGE_LINUX_FIRMWARE_MWIFIEX_SD8797
+	bool "Marvell Wifi-Ex SD 8797"
+	help
+	  Firmware files for the Marvell Wifi-Ex 8797 module on SDIO.
+
+config BR2_PACKAGE_LINUX_FIRMWARE_MWIFIEX_USB8797
+	bool "Marvell Wifi-Ex USB 8797"
+	help
+	  Firmware files for the Marvell Wifi-Ex 8797 module on USB.
+
+config BR2_PACKAGE_LINUX_FIRMWARE_MWIFIEX_SD8887
+	bool "Marvell Wifi-Ex SD 8887"
+	help
+	  Firmware files for the Marvell Wifi-Ex 8887 module on SDIO.
+
+config BR2_PACKAGE_LINUX_FIRMWARE_MWIFIEX_SD8897
+	bool "Marvell Wifi-Ex SD 8897"
+	help
+	  Firmware files for the Marvell Wifi-Ex 8897 module on SDIO.
+
+config BR2_PACKAGE_LINUX_FIRMWARE_MWIFIEX_USB8897
+	bool "Marvell Wifi-Ex USB 8897"
+	help
+	  Firmware files for the Marvell Wifi-Ex 8897 module on USB.
+
+config BR2_PACKAGE_LINUX_FIRMWARE_MWIFIEX_PCIE8897
+	bool "Marvell Wifi-Ex PCI-E 8897"
+	help
+	  Firmware files for the Marvell Wifi-Ex 8897 module on PCI-E.
+
 config BR2_PACKAGE_LINUX_FIRMWARE_RALINK_RT61
 	bool "Ralink rt2501/rt61"
 	help
