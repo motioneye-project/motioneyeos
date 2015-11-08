@@ -11,4 +11,6 @@ XDRIVER_XF86_VIDEO_SILICONMOTION_LICENSE = MIT
 XDRIVER_XF86_VIDEO_SILICONMOTION_LICENSE_FILES = COPYING
 XDRIVER_XF86_VIDEO_SILICONMOTION_DEPENDENCIES = xserver_xorg-server xproto_fontsproto xproto_randrproto xproto_renderproto xproto_videoproto xproto_xextproto xproto_xproto
 
+XDRIVER_XF86_VIDEO_SILICONMOTION_CONF_OPTS = --disable-selective-werror
+
 $(eval $(autotools-package))
