@@ -52,16 +52,6 @@ ifneq ($(firstword $(sort $(RUNNING_MAKE_VERSION) $(MIN_MAKE_VERSION))),$(MIN_MA
 $(error You have make '$(RUNNING_MAKE_VERSION)' installed. GNU make >= $(MIN_MAKE_VERSION) is required)
 endif
 
-export HOSTARCH := $(shell uname -m | \
-	sed -e s/i.86/x86/ \
-	    -e s/sun4u/sparc64/ \
-	    -e s/arm.*/arm/ \
-	    -e s/sa110/arm/ \
-	    -e s/ppc64/powerpc64/ \
-	    -e s/ppc/powerpc/ \
-	    -e s/macppc/powerpc/\
-	    -e s/sh.*/sh/)
-
 # Parallel execution of this Makefile is disabled because it changes
 # the packages building order, that can be a problem for two reasons:
 # - If a package has an unspecified optional dependency and that
@@ -292,6 +282,32 @@ HOSTRANLIB := $(shell which $(HOSTRANLIB) || type -p $(HOSTRANLIB) || echo ranli
 
 export HOSTAR HOSTAS HOSTCC HOSTCXX HOSTLD
 export HOSTCC_NOCCACHE HOSTCXX_NOCCACHE
+
+# Determine the userland we are running on.
+#
+# Note that, despite its name, we are not interested in the actual
+# architecture name. This is mostly used to determine whether some
+# of the binary tools (e.g. pre-built external toolchains) can run
+# on the current host. So we need to know if the userland we're
+# running on can actually run those toolchains.
+#
+# For example, a 64-bit prebuilt toolchain will not run on a 64-bit
+# kernel if the userland is 32-bit (e.g. in a chroot for example).
+#
+# So, we extract the first part of the tuple the host gcc was
+# configured to generate code for; we assume this is our userland.
+#
+export HOSTARCH := $(shell $(HOSTCC_NOCCACHE) -v 2>&1 | \
+	sed -e '/^Target: \([^-]*\).*/!d' \
+	    -e 's//\1/' \
+	    -e 's/i.86/x86/' \
+	    -e 's/sun4u/sparc64/' \
+	    -e 's/arm.*/arm/' \
+	    -e 's/sa110/arm/' \
+	    -e 's/ppc64/powerpc64/' \
+	    -e 's/ppc/powerpc/' \
+	    -e 's/macppc/powerpc/' \
+	    -e 's/sh.*/sh/' )
 
 HOSTCC_VERSION := $(shell $(HOSTCC_NOCCACHE) --version | \
 	sed -n -r 's/^.* ([0-9]*)\.([0-9]*)\.([0-9]*)[ ]*.*/\1 \2/p')
