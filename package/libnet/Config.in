@@ -1,0 +1,7 @@
+config BR2_PACKAGE_LIBNET
+	bool "libnet"
+	help
+	  libnet provides a portable framework for low-level network
+	  packet construction.
+
+	  http://sourceforge.net/projects/libnet-dev
