@@ -36,6 +36,10 @@ RUBY_CONF_ENV += ac_cv_func_dl_iterate_phdr=no
 RUBY_CONF_OPTS += --with-out-ext=fiddle
 endif
 
+ifeq ($(BR2_TOOLCHAIN_HAS_SSP),)
+RUBY_CONF_ENV += stack_protector=no
+endif
+
 # Force optionals to build before we do
 ifeq ($(BR2_PACKAGE_BERKELEYDB),y)
 RUBY_DEPENDENCIES += berkeleydb
