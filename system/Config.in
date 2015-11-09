@@ -179,6 +179,11 @@ config BR2_ROOTFS_SKELETON_CUSTOM_PATH
 	default "system/skeleton"
 	help
 	  Path to custom target skeleton.
+
+# dummy config so merged /usr workarounds can also be activated for
+# custom rootfs skeleton
+config BR2_ROOTFS_MERGED_USR
+
 endif
 
 if BR2_ROOTFS_SKELETON_DEFAULT
