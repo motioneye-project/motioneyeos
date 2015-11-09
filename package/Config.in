@@ -88,6 +88,7 @@ endif
 	source "package/mcelog/Config.in"
 	source "package/memstat/Config.in"
 	source "package/netperf/Config.in"
+	source "package/netsniff-ng/Config.in"
 	source "package/oprofile/Config.in"
 	source "package/pax-utils/Config.in"
 	source "package/pv/Config.in"
