@@ -8,4 +8,4 @@ graphical window is the framebuffer.
 Startup time is slow because of the SMP CPU emulation so be patient.
 This emulation is known to be flaky.
 
-Tested with QEMU 2.2.1
+Tested with QEMU 2.3.0

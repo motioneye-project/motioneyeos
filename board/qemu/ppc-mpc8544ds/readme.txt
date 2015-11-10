@@ -4,5 +4,4 @@ Run the emulation with:
 
 The login prompt will appear in the terminal that started Qemu.
 
-Tested with QEMU 2.0.2
-QEMU 2.1.x and 2.2.x are known broken.
+Tested with QEMU 2.3.0
