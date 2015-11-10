@@ -15,9 +15,9 @@ SKELETON_ADD_TOOLCHAIN_DEPENDENCY = NO
 
 ifeq ($(BR2_ROOTFS_SKELETON_CUSTOM),y)
 SKELETON_PATH = $(call qstrip,$(BR2_ROOTFS_SKELETON_CUSTOM_PATH))
-else
+else # ! custom skeleton
+
 SKELETON_PATH = system/skeleton
-endif
 
 ifeq ($(BR2_ROOTFS_MERGED_USR),y)
 define SKELETON_USR_SYMLINKS_OR_DIRS
@@ -32,6 +32,8 @@ define SKELETON_USR_SYMLINKS_OR_DIRS
 	$(INSTALL) -d -m 0755 $(TARGET_DIR)/lib
 endef
 endif
+
+endif # ! custom skeleton
 
 define SKELETON_INSTALL_TARGET_CMDS
 	rsync -a --ignore-times $(SYNC_VCS_EXCLUSIONS) \
