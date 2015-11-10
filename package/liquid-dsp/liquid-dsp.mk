@@ -34,6 +34,11 @@ ifeq ($(BR2_PACKAGE_FFTW_PRECISION_SINGLE),y)
 LIQUID_DSP_LDFLAGS += -lfftw3f
 endif
 
+# disable altivec, it has build issues
+ifeq ($(BR2_powerpc)$(BR2_powerpc64),y)
+LIQUID_DSP_CONF_OPTS += --enable-simdoverride
+endif
+
 ifeq ($(BR2_PACKAGE_FFTW_PRECISION_DOUBLE),y)
 LIQUID_DSP_LDFLAGS += -lfftw3
 endif
