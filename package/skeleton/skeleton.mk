@@ -14,7 +14,45 @@ SKELETON_SOURCE =
 SKELETON_ADD_TOOLCHAIN_DEPENDENCY = NO
 
 ifeq ($(BR2_ROOTFS_SKELETON_CUSTOM),y)
+
 SKELETON_PATH = $(call qstrip,$(BR2_ROOTFS_SKELETON_CUSTOM_PATH))
+
+ifeq ($(BR2_ROOTFS_MERGED_USR),y)
+
+# Ensure the user has prepared a merged /usr.
+#
+# Extract the inode numbers for all of those directories. In case any is
+# a symlink, we want to get the inode of the pointed-to directory, so we
+# append '/.' to be sure we get the target directory. Since the symlinks
+# can be anyway (/bin -> /usr/bin or /usr/bin -> /bin), we do that for
+# all of them.
+#
+SKELETON_LIB_INODE = $(shell stat -c '%i' $(SKELETON_PATH)/lib/.)
+SKELETON_BIN_INODE = $(shell stat -c '%i' $(SKELETON_PATH)/bin/.)
+SKELETON_SBIN_INODE = $(shell stat -c '%i' $(SKELETON_PATH)/sbin/.)
+SKELETON_USR_LIB_INODE = $(shell stat -c '%i' $(SKELETON_PATH)/usr/lib/.)
+SKELETON_USR_BIN_INODE = $(shell stat -c '%i' $(SKELETON_PATH)/usr/bin/.)
+SKELETON_USR_SBIN_INODE = $(shell stat -c '%i' $(SKELETON_PATH)/usr/sbin/.)
+
+ifneq ($(SKELETON_LIB_INODE),$(SKELETON_USR_LIB_INODE))
+SKELETON_CUSTOM_NOT_MERGED_USR += /lib
+endif
+ifneq ($(SKELETON_BIN_INODE),$(SKELETON_USR_BIN_INODE))
+SKELETON_CUSTOM_NOT_MERGED_USR += /bin
+endif
+ifneq ($(SKELETON_SBIN_INODE),$(SKELETON_USR_SBIN_INODE))
+SKELETON_CUSTOM_NOT_MERGED_USR += /sbin
+endif
+
+ifneq ($(SKELETON_CUSTOM_NOT_MERGED_USR),)
+$(error Use of systemd as an init system requires a merged /usr. \
+	However, the custom skeleton in $(SKELETON_PATH) is not \
+	using a merged /usr for the following directories: \
+	$(SKELETON_CUSTOM_NOT_MERGED_USR))
+endif
+
+endif # merged /usr
+
 else # ! custom skeleton
 
 SKELETON_PATH = system/skeleton
