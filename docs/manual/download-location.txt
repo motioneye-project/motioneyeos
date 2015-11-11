@@ -17,7 +17,7 @@ set, then the value of +BR2_DL_DIR+ in the Buildroot configuration is
 overridden. The following line should be added to +<~/.bashrc>+.
 
 -----------------
- $ export BR2_DL_DIR <shared download location>
+ export BR2_DL_DIR=<shared download location>
 -----------------
 
 The download location can also be set in the +.config+ file, with the
