@@ -77,6 +77,7 @@ config BR2_PACKAGE_MPD_FAAD2
 config BR2_PACKAGE_MPD_FFMPEG
 	bool "ffmpeg"
 	select BR2_PACKAGE_FFMPEG
+	depends on !BR2_nios2 # ffmpeg
 	help
 	  Enable ffmpeg input support.
 	  Select this if you want to play back files supported by

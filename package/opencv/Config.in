@@ -132,6 +132,7 @@ config BR2_PACKAGE_OPENCV_WITH_FFMPEG
 	select BR2_PACKAGE_BZIP2
 	select BR2_PACKAGE_FFMPEG
 	select BR2_PACKAGE_FFMPEG_SWSCALE
+	depends on !BR2_nios2 # ffmpeg
 	help
 	  Use ffmpeg from the target system.
 

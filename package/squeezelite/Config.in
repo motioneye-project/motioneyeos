@@ -21,8 +21,7 @@ config BR2_PACKAGE_SQUEEZELITE_FFMPEG
 	bool "Enable WMA and ALAC decoding"
 	default y
 	select BR2_PACKAGE_FFMPEG
-	depends on !BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_NIOSII201305 # ffmpeg
-	depends on !BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_NIOSII201405 # ffmpeg
+	depends on !BR2_nios2 # ffmpeg
 
 config BR2_PACKAGE_SQUEEZELITE_DSD
 	bool "Enable DSD decoding"
