@@ -6,7 +6,7 @@
 
 WINE_VERSION = 1.6.2
 WINE_SOURCE = wine-$(WINE_VERSION).tar.bz2
-WINE_SITE = http://downloads.sourceforge.net/project/wine/Source
+WINE_SITE = https://dl.winehq.org/wine/source/1.6
 WINE_LICENSE = LGPLv2.1+
 WINE_LICENSE_FILES = COPYING.LIB LICENSE
 WINE_DEPENDENCIES = host-bison host-flex host-wine
