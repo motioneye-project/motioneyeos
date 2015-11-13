@@ -18,6 +18,9 @@ IBRDTND_CONF_OPTS = \
 	--without-wifip2p \
 	--without-vmime
 
+# don't build documentation
+IBRDTND_CONF_ENV = PDFLATEX='no'
+
 ifeq ($(BR2_PACKAGE_LIBDAEMON),y)
 IBRDTND_CONF_OPTS += --enable-libdaemon
 IBRDTND_DEPENDENCIES += libdaemon
