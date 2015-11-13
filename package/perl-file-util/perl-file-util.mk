@@ -12,4 +12,3 @@ PERL_FILE_UTIL_LICENSE = Artistic or GPLv1+
 PERL_FILE_UTIL_LICENSE_FILES = COPYING LICENSE
 
 $(eval $(perl-package))
-$(eval $(host-perl-package))
