@@ -13,7 +13,7 @@ AXFSUTILS_DEPENDENCIES = host-zlib
 # The 'new' mkfs.axfs version requires GNUstep which is not a buildroot
 # prerequisite. The 'legacy' one works just as well without that requirement.
 define HOST_AXFSUTILS_BUILD_CMDS
-	$(HOST_MAKE_ENV) $(MAKE) -C $(@D)/mkfs.axfs-legacy
+	$(HOST_MAKE_ENV) $(HOST_CONFIGURE_OPTS) $(MAKE) -C $(@D)/mkfs.axfs-legacy
 endef
 
 define HOST_AXFSUTILS_INSTALL_CMDS
