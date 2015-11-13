@@ -186,7 +186,10 @@ menu "Filesystem and flash utilities"
 	source "package/xfsprogs/Config.in"
 endmenu
 
-menu "Fonts, icons, sounds and themes"
+menu "Fonts, cursors, icons, sounds and themes"
+
+comment "Cursors"
+	source "package/obsidian-cursors/Config.in"
 
 comment "Fonts"
 	source "package/bitstream-vera/Config.in"
