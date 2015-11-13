@@ -33,6 +33,29 @@ MYSQL_CONF_OPTS = \
 	--enable-thread-safe-client \
 	--disable-mysql-maintainer-mode
 
+# host-mysql only installs what is needed to build mysql, i.e. the
+# gen_lex_hash tool, and it only builds the parts that are needed to
+# create this tool
+HOST_MYSQL_DEPENDENCIES = host-zlib host-ncurses
+
+HOST_MYSQL_CONF_OPTS = \
+	--with-embedded-server \
+	--disable-mysql-maintainer-mode
+
+define HOST_MYSQL_BUILD_CMDS
+	$(MAKE) -C $(@D)/include my_config.h
+	$(MAKE) -C $(@D)/mysys libmysys.a
+	$(MAKE) -C $(@D)/strings libmystrings.a
+	$(MAKE) -C $(@D)/vio libvio.a
+	$(MAKE) -C $(@D)/dbug libdbug.a
+	$(MAKE) -C $(@D)/regex libregex.a
+	$(MAKE) -C $(@D)/sql gen_lex_hash
+endef
+
+define HOST_MYSQL_INSTALL_CMDS
+	$(INSTALL) -m 0755  $(@D)/sql/gen_lex_hash $(HOST_DIR)/usr/bin/
+endef
+
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 MYSQL_DEPENDENCIES += openssl
 endif
@@ -43,11 +66,6 @@ endif
 
 ifeq ($(BR2_PACKAGE_MYSQL_SERVER),y)
 MYSQL_DEPENDENCIES += host-mysql host-bison
-HOST_MYSQL_DEPENDENCIES = host-zlib host-ncurses
-
-HOST_MYSQL_CONF_OPTS = \
-	--with-embedded-server \
-	--disable-mysql-maintainer-mode
 
 MYSQL_CONF_OPTS += \
 	--localstatedir=/var/mysql \
@@ -73,20 +91,6 @@ MYSQL_CONF_OPTS += --with-debug=full
 else
 MYSQL_CONF_OPTS += --without-debug
 endif
-
-define HOST_MYSQL_BUILD_CMDS
-	$(MAKE) -C $(@D)/include my_config.h
-	$(MAKE) -C $(@D)/mysys libmysys.a
-	$(MAKE) -C $(@D)/strings libmystrings.a
-	$(MAKE) -C $(@D)/vio libvio.a
-	$(MAKE) -C $(@D)/dbug libdbug.a
-	$(MAKE) -C $(@D)/regex libregex.a
-	$(MAKE) -C $(@D)/sql gen_lex_hash
-endef
-
-define HOST_MYSQL_INSTALL_CMDS
-	$(INSTALL) -m 0755  $(@D)/sql/gen_lex_hash  $(HOST_DIR)/usr/bin/
-endef
 
 define MYSQL_USERS
 	mysql -1 nogroup -1 * /var/mysql - - MySQL daemon
