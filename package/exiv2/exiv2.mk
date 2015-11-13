@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-EXIV2_VERSION = 0.24
+EXIV2_VERSION = 0.25
 EXIV2_SITE = http://www.exiv2.org
 EXIV2_INSTALL_STAGING = YES
 
