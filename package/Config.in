@@ -189,6 +189,7 @@ endmenu
 menu "Fonts, cursors, icons, sounds and themes"
 
 comment "Cursors"
+	source "package/comix-cursors/Config.in"
 	source "package/obsidian-cursors/Config.in"
 
 comment "Fonts"
