@@ -1,31 +1,27 @@
 #!/bin/sh
 
-BOOT_LOG=/var/log/boot.log
-PID_FILE=/tmp/rc.pid
+boot_log=/var/log/boot.log
+pid_file=/tmp/rc.pid
 
-echo "---- shutting down ----" >> $BOOT_LOG
+source /etc/init.d/vars
+source /etc/init.d/functions
 
-# stop all init scripts in /etc/init.d
+echo "---- shutting down $os_name $os_version ----" >> $boot_log
+
+# stop all init scripts in /etc/init.d,
 # executing them in numerical order.
 (for i in /etc/init.d/S??*; do
     [ ! -f "$i" ] && continue
     [ -f /data/etc/no_$(basename $i) ] && continue
 
-    case "$i" in
-        *.sh) # Source shell script for speed.
-            (
-            trap - INT QUIT TSTP
-            set stop
-            . $i
-            )
-            ;;
-        *) # No sh extension, so fork subprocess.
-            $i stop
-            ;;
-    esac
-done& echo $! > $PID_FILE) | tee -a $BOOT_LOG &
+    (
+        trap - INT QUIT TSTP
+        set stop
+        . $i
+    )
+done& echo $! > $pid_file) | tee -a $boot_log &
 
-pid=$(cat $PID_FILE)
+pid=$(cat $pid_file)
 while kill -0 $pid 2>/dev/null; do
     sleep 1
 done

@@ -14,16 +14,7 @@
 # process   == program to run
 
 # Startup the system
-null::sysinit:/bin/mount -t proc proc /proc
-null::sysinit:/bin/mkdir -p /dev/pts
-null::sysinit:/bin/mkdir -p /dev/shm
-null::sysinit:/bin/mount --make-shared /
-null::sysinit:/bin/mount -a
-null::sysinit:/sbin/remountrw
-null::sysinit:/sbin/loadmodules
-# now run any rc scripts
 ::sysinit:/etc/init.d/rcS
-::sysinit:/sbin/userinit
 
 # Put a getty on the serial port
 tty1::respawn:/sbin/getty -L tty1 115200 vt100
@@ -34,6 +25,4 @@ tty1::respawn:/sbin/getty -L tty1 115200 vt100
 
 # Stuff to do before rebooting
 null::shutdown:/etc/init.d/rcK
-null::shutdown:/bin/umount -a -r
-null::shutdown:/sbin/swapoff -a
 

@@ -1,0 +1,22 @@
+#!/bin/bash
+
+case "$1" in
+    start)
+        if [ -r /data/etc/userinit.sh ]; then
+            echo -n "Executing user init script: "
+            /bin/bash /data/etc/userinit.sh
+            echo "done"
+        fi
+        ;;
+
+    stop)
+        true
+        ;;
+
+    *)
+        echo "Usage: $0 {start|stop}"
+        exit 1
+esac
+
+exit $?
+

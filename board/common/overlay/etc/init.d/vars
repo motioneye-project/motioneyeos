@@ -1,0 +1,6 @@
+#!/bin/bash
+
+source /etc/version
+board=$(cat /etc/board)
+board_sn=$(/etc/init.d/boardsn)
+
