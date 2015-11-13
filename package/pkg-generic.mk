@@ -87,6 +87,14 @@ define step_pkg_size
 endef
 GLOBAL_INSTRUMENTATION_HOOKS += step_pkg_size
 
+# This hook checks that host packages that need libraries that we build
+# have a proper DT_RPATH or DT_RUNPATH tag
+define check_host_rpath
+	$(if $(filter install-host,$(2)),\
+		$(if $(filter end,$(1)),support/scripts/check-host-rpath $(3) $(HOST_DIR)))
+endef
+GLOBAL_INSTRUMENTATION_HOOKS += check_host_rpath
+
 # User-supplied script
 ifneq ($(BR2_INSTRUMENTATION_SCRIPTS),)
 define step_user
