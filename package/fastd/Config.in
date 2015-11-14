@@ -2,6 +2,7 @@ config BR2_PACKAGE_FASTD
 	bool "fastd"
 	depends on BR2_USE_MMU # fork()
 	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0 # libcap
 	select BR2_PACKAGE_LIBUECC
 	select BR2_PACKAGE_LIBSODIUM
 	select BR2_PACKAGE_LIBCAP
@@ -21,6 +22,7 @@ config BR2_PACKAGE_FASTD_STATUS_SOCKET
 
 endif
 
-comment "fastd needs a toolchain w/ threads"
+comment "fastd needs a toolchain w/ threads, headers >= 3.0"
 	depends on BR2_USE_MMU
-	depends on !BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_TOOLCHAIN_HAS_THREADS \
+		|| !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0
