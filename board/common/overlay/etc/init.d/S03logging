@@ -1,26 +1,20 @@
-#!/bin/sh
-#
-# Start logging
-#
+#!/bin/bash
 
 case "$1" in
     start)
-	    echo -n "Starting logging: "
+	    msg_begin "Starting logging"
     	start-stop-daemon -b -S -q -m -p /var/run/syslogd.pid --exec /sbin/syslogd -- -n
-	    echo "done"
+	    msg_done
 	    ;;
 
     stop)
-	    echo -n "Stopping logging: "
+	    msg_begin "Stopping logging"
 	    start-stop-daemon -K -q -p /var/run/syslogd.pid
-    	echo "done"
-	    ;;
-
-    restart|reload)
+    	msg_done
 	    ;;
 
     *)
-	    echo "Usage: $0 {start|stop|restart}"
+	    echo "Usage: $0 {start|stop}"
     	exit 1
 esac
 

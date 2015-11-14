@@ -1,29 +1,22 @@
-#!/bin/sh
+#!/bin/bash
 
 sys_conf="/etc/motioneye.conf"
 conf="/data/etc/motioneye.conf"
+motion_conf="/data/etc/motion.conf"
 watch_timeout=120
 dev_v4l_by_id="/dev/v4l/by-id/"
 
 if [ -f $sys_conf ] && ! [ -f $conf ]; then
-    mkdir -p $(dirname $conf)
     cp $sys_conf $conf
 fi
 
-if [ -f "$conf" ]; then
-    opts=$(cat "$conf" | while read line; do echo "--$line"; done)
-    port=$(echo "$opts" | grep -oE 'port [[:digit:]]+' | cut -d ' ' -f 2)
-else
-    echo "configuration file not present"
-    exit 0
-fi
+test -f "$conf" || exit 0
+
+opts=$(cat "$conf" | while read line; do echo "--$line"; done)
+port=$(echo "$opts" | grep -oE 'port [[:digit:]]+' | cut -d ' ' -f 2)
 
 responsive() {
-    if wget -q -t 1 -T 2 -O - http://127.0.0.1:$port/static/img/motioneye-logo.svg >/dev/null 2>&1; then
-        return 0
-    else
-        return 1
-    fi
+    wget -q -t 1 -T 2 -O - http://127.0.0.1:$port/static/img/motioneye-logo.svg &>/dev/null && return 0 || return 1
 }
 
 watch() {
@@ -62,7 +55,7 @@ find_persistent_device() {
 }
 
 start() {
-    echo -n "Starting motioneye: "
+    msg_begin "Starting motioneye"
     meyectl startserver -b -c $conf -l
 
     count=0
@@ -74,16 +67,16 @@ start() {
         fi
 
         if [ $count -gt $watch_timeout ]; then
-            echo "failed"
-	    reboot
-            return
+            msg_fail
+            reboot
+            return 1
         fi
 
         count=$(($count + 1))
     done
 
     # add connected camera(s) with default settings
-    if responsive && ! [ -f /data/etc/motion.conf ]; then
+    if responsive && ! [ -f $motion_conf ]; then
         count=$(ls /dev/video* 2>/dev/null | wc -l)
         index=1
         for device in $(ls /dev/video* 2>/dev/null); do
@@ -104,18 +97,14 @@ start() {
 
     watch &
 
-    echo "done"
+    msg_done
 }
 
 stop() {
-    echo -n "Shutting down motioneye: "
-    meyectl stopserver -c $conf &>/dev/null && echo "done" || echo "failed"
+    msg_begin "Stopping motioneye"
+    meyectl stopserver -c $conf &>/dev/null
+    test $? == 0 && msg_done || msg_fail
     ps | grep motioneye | grep -v $$ | grep -v grep | tr -s ' ' | sed -e 's/^\s//' | cut -d ' ' -f 1 | xargs -r kill
-}
-
-restart() {
-    stop
-    start
 }
 
 case "$1" in
@@ -128,7 +117,8 @@ case "$1" in
         ;;
 
     restart)
-        restart
+        stop
+        start
         ;;
 
     *)

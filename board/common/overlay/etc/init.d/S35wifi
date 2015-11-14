@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 sys_conf="/etc/wpa_supplicant.conf"
 conf="/data/etc/wpa_supplicant.conf"
@@ -11,31 +11,19 @@ watch_conf="/data/etc/watch.conf"
 link_watch=yes
 link_watch_timeout=20
 
-if [ -f $watch_conf ]; then
-    source $watch_conf
-fi
+test -f $watch_conf && source $watch_conf
 
 if [ -f $sys_conf ] && ! [ -f $conf ]; then
-    mkdir -p $(dirname $conf)
     cp $sys_conf $conf
 fi
 
-if ! [ -f $conf ] || ! [ -s $conf ]; then
-    exit 0
-fi
+test -f $watch_conf || exit 0
 
-SSID=$(cat ${conf} | grep ssid | grep -v scan_ssid | cut -d '"' -f 2)
-
-if [ -z "$SSID" ]; then
-    exit 0
-fi
+ssid=$(cat $conf | grep ssid | grep -v scan_ssid | cut -d '"' -f 2)
+test -n "$ssid" || exit 0
 
 connected() {
-    if ip link show dev $iface 2>&1 | grep LOWER_UP > /dev/null 2>&1; then
-        return 0
-    else
-        return 1
-    fi
+    ip link show dev $iface 2>&1 | grep LOWER_UP &> /dev/null && return 0 || return 1
 }
 
 watch() {
@@ -57,7 +45,7 @@ watch() {
 }
 
 start() {
-    echo -n "Starting wpa_supplicant: "
+    msg_begin "Starting wpa_supplicant"
 
     # wait up to 5 seconds for interface
     count=0
@@ -65,13 +53,13 @@ start() {
         sleep 1
         count=$(($count + 1))
         if [ $count -ge 5 ]; then
-            echo "no device"
-            return
+            msg_fail "no device"
+            return 1
         fi
     done
 
-    iwconfig $iface power off > /dev/null 2>&1
-    $prog -i$iface -c$conf -D$driver -B > $log 2>&1
+    iwconfig $iface power off &> /dev/null
+    $prog -i$iface -c$conf -D$driver -B &> $log
     count=0
     while true; do
         sleep 1
@@ -81,9 +69,9 @@ start() {
         fi
 
         if [ $count -gt $link_watch_timeout ] || ! pidof wpa_supplicant > /dev/null; then
-            echo "failed"
+            msg_fail
             reboot
-            return
+            return 1
         fi
 
         count=$(($count + 1))
@@ -93,19 +81,14 @@ start() {
         watch &
     fi
 
-    echo "done"
+    msg_done
 }
 
 stop() {
-    echo -n "Shutting down wpa_supplicant: "
-    kill `pidof wpa_supplicant` 2>/dev/null
+    msg_begin "Stopping wpa_supplicant"
+    killall wpa_supplicant &>/dev/null
     ps | grep wifi | grep -v $$ | grep -v grep | tr -s ' ' | sed -e 's/^\s//' | cut -d ' ' -f 1 | xargs -r kill
-    echo "done"
-}
-
-restart() {
-    stop
-    start
+    msg_done
 }
 
 case "$1" in
@@ -118,7 +101,8 @@ case "$1" in
         ;;
         
     restart)
-        restart
+        stop
+        start
         ;;
     
     *)

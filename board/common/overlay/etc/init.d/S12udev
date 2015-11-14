@@ -1,24 +1,25 @@
-#!/bin/sh
+#!/bin/bash
 
-[ -f /etc/udev/udev.conf ] || exit 0
+test -f /etc/udev/udev.conf || exit 0
 
 source /etc/udev/udev.conf
 
 start() {
-    echo -n "Starting eudev: "
+    msg_begin "Starting eudev"
     echo '\000\000\000\000' > /proc/sys/kernel/hotplug
     /sbin/udevd --daemon
-    [ $? == 0 ] && echo "done" || echo "failed"
+    test $? == 0 && msg_done || msg_fail
+
     /sbin/udevadm trigger --type=subsystems --action=add
     /sbin/udevadm trigger --type=devices --action=add
     /sbin/udevadm settle --timeout=30
 }
 
 stop() {
-    echo -n "Stopping eudev: "
+    msg_begin "Stopping eudev"
     udevadm control --stop-exec-queue
-    killall udevd
-    [ $? == 0 ] && echo "done" || echo "failed"
+    killall udevd &>/dev/null
+    test $? == 0 && msg_done || msg_fail
 }
 
 case "$1" in
@@ -41,5 +42,5 @@ case "$1" in
         ;;
 esac
 
-exit 0
+exit $?
 

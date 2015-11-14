@@ -1,17 +1,18 @@
-#!/bin/sh 
-
-mkdir -p /data/etc/crontabs/
+#!/bin/bash
 
 start() {
-    echo -n "Starting crond: "
+    msg_begin "Starting crond"
+    
+    mkdir -p /data/etc/crontabs/
+
     /usr/sbin/crond
-    [ $? == 0 ] && echo "done" || echo "failed"
+    test $? == 0 && msg_done || msg_fail
 }
 
 stop() {
-    echo -n "Stopping crond: "
-    kill `pidof crond` 2>/dev/null
-    [ $? == 0 ] && echo "done" || echo "failed"
+    msg_begin "Stopping crond"
+    killall crond &>/dev/null
+    test $? == 0 && msg_done || msg_fail
 }
 
 case "$1" in

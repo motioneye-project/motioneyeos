@@ -18,7 +18,7 @@ echo "---- booting $os_name $os_version----" >> $boot_log
 # start all init scripts in /etc/init.d,
 # executing them in numerical order.
 (for i in /etc/init.d/S??*; do
-    [ ! -f "$i" ] && continue
+    [ ! -x "$i" ] && continue
     [ -f /data/etc/no_$(basename $i) ] && continue
 
     (

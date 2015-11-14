@@ -1,34 +1,26 @@
-#!/bin/sh
+#!/bin/bash
 
 conf="/etc/sshd_config"
 
-# Make sure the ssh-keygen program exists
-[ -f /usr/bin/ssh-keygen ] || exit 0
-
-# Create any missing keys
-/usr/bin/ssh-keygen -A
-
-umask 077
+test -f $conf || exit 0
 
 start() {
-    echo -n "Starting sshd: "
+    msg_begin "Starting sshd"
+    
+    # create any missing keys
+    /usr/bin/ssh-keygen -A
+    umask 077
     hostname=$(hostname)
     echo "Welcome to $hostname!" > /var/cache/sshd_banner
+
     /usr/sbin/sshd -f $conf
-    touch /var/lock/sshd
-    echo "done"
+    test $? == 0 && msg_done || msg_fail
 }
 
 stop() {
-    echo -n "Stopping sshd: "
-    killall sshd
-    rm -f /var/lock/sshd
-    echo "done"
-}
-
-restart() {
-    stop
-    start
+    msg_begin "Stopping sshd"
+    killall sshd &>/dev/null
+    test $? == 0 && msg_done || msg_fail
 }
 
 case "$1" in
@@ -38,6 +30,7 @@ case "$1" in
 
     stop)
         stop
+        start
         ;;
 
     restart|reload)

@@ -1,0 +1,41 @@
+#!/bin/bash
+
+sys_conf="/etc/os.conf"
+conf="/data/etc/os.conf"
+
+if [ -f $sys_conf ] && ! [ -f $conf ]; then
+    cp $sys_conf $conf
+fi
+
+if [ -f $conf ]; then
+    source $conf
+fi
+
+case "$1" in
+    start)
+        msg_begin "Mounting filesystems"
+        /bin/mount -a
+        test $? == 0 && msg_done || msg_fail
+
+        if [ "$os_debug" == "true" ]; then
+            msg_begin "Remounting boot partition read-write"
+            mount -o remount,rw /boot
+            test $? == 0 && msg_done || msg_fail
+
+            echo -n "Remounting root partition read-write: "
+            mount -o remount,rw /
+            test $? == 0 && msg_done || msg_fail
+        fi
+        ;;
+
+    stop)
+        true
+        ;;
+
+    *)
+        echo "Usage: $0 {start}"
+        exit 1
+esac
+
+exit $?
+

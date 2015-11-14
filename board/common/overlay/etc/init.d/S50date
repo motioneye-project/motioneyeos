@@ -1,16 +1,13 @@
-#!/bin/sh
+#!/bin/bash
 
 sys_conf="/etc/date.conf"
 conf="/data/etc/date.conf"
 
 if [ -f $sys_conf ] && ! [ -f $conf ]; then
-    mkdir -p $(dirname $conf)
     cp $sys_conf $conf
 fi
 
-if ! [ -f $conf ]; then
-    exit
-fi
+test -f $conf || exit 0
 
 date_timeout=10
 date_method=http
@@ -42,40 +39,40 @@ set_current_date_ntp() {
 }
 
 start_http() {
-    echo -n "Setting current date using http: "
+    msg_begin "Setting current date using http"
     set_current_date_http
-    [ $? == 0 ] && date || echo "failed"
+    test $? == 0 && msg_done $(date) || msg_fail
     
-    echo -n "Starting http date updater: "
+    msg_begin "Starting http date updater"
     while true; do
         sleep $date_interval
         set_current_date_http
     done &
-    [ $? == 0 ] && echo "done" || echo "failed"
+    msg_done
 }
 
 start_ntp() {
     mkdir -p /var/lib/ntp
     
-    echo -n "Setting current date using ntp: "
+    msg_begin "Setting current date using ntp"
     set_current_date_ntp
-    [ $? == 0 ] && date || echo "failed"
+    test $? == 0 && msg_done $(date) || msg_fail
 
-    echo -n "Starting ntpd: "
+    msg_begin "Starting ntpd"
     ntpd -g -c /etc/ntp.conf
-    [ $? == 0 ] && echo "done" || echo "failed"
+    test $? == 0 && msg_done || msg_fail
 }
 
 stop_http() {
-    echo -n "Shutting down date updater: "
+    msg_begin "Stopping date updater"
     ps | grep S60date | grep -v $$ | grep -v grep | tr -s ' ' | sed -e 's/^\s//' | cut -d ' ' -f 1 | xargs -r kill
-    [ $? == 0 ] && echo "done" || echo "failed"
+    test $? == 0 && msg_done || msg_fail
 }
 
 stop_ntp() {
-    echo -n "Shutting down ntpd: "
-    kill `pidof ntpd`&>/dev/null
-    [ $? == 0 ] && echo "done" || echo "failed"
+    msg_begin "Stopping ntpd"
+    killall ntpd &>/dev/null
+    test $? == 0 && msg_done || msg_fail
 }
 
 start() {
@@ -94,11 +91,6 @@ stop() {
     fi        
 }
 
-restart() {
-    stop
-    start
-}
-
 case "$1" in
     start)
         start
@@ -109,7 +101,8 @@ case "$1" in
         ;;
 
     restart)
-        restart
+        stop
+        start
         ;;
 
     *)

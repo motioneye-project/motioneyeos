@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 mkdir -p /var/lib/dhcp
 dh_conf="/var/cache/dhclient.conf"
@@ -66,22 +66,23 @@ start_lo() {
 }
 
 start_wlan() {
-    if ! ifconfig $wlan >/dev/null 2>&1; then
-        echo "$wlan: no device"
-        return
+    msg_begin "Configuring wireless network"
+    if ! ifconfig $wlan &>/dev/null; then
+        msg_fail "no device"
+        return 1
     fi
 
     if [ "$(cat /sys/class/net/$wlan/carrier 2>/dev/null)" != "1" ]; then
-        echo "$wlan: no link"
-        return
+        msg_fail "no link"
+        return 1
     fi
 
     if [ -n "$static_ip" ]; then
-        echo "$wlan: setting static IP to $static_ip"
+        msg_done $static_ip
         ifconfig $wlan $static_ip up
         static_ip="" # won't be used again
     else
-        echo "$wlan: starting dhclient"
+        msg_done dhcp
         dhclient -cf "$dh_conf" $wlan
     fi
 
@@ -91,13 +92,15 @@ start_wlan() {
 }
 
 start_eth() {
+    msg_begin "Configuring wired network"
+
     # wait up to 3 seconds for driver
     count=0
     while ! ifconfig $eth >/dev/null 2>&1; do
         sleep 1
         count=$(($count + 1))
         if [ $count -ge 3 ]; then
-            echo "$eth: no device"
+            msg_done "no device"
             return
         fi
     done
@@ -110,8 +113,8 @@ start_eth() {
     while [ "$(cat /sys/class/net/$eth/operstate 2>&1)" == "unknown" ]; do
         sleep 1
         count=$(($count + 1))
-        if [ $count -ge    3 ]; then
-            echo "$eth: no link"
+        if [ $count -ge 3 ]; then
+            msg_done "no link"
             return
         fi
     done
@@ -122,17 +125,17 @@ start_eth() {
         sleep 1
         count=$(($count + 1))
         if [ $count -ge $link_nego_timeout ]; then
-            echo "$eth: no link"
+            msg_done "no link"
             return
         fi
     done
 
     if [ -n "$static_ip" ]; then
-        echo "$eth: setting static IP to $static_ip"
+        msg_done $static_ip
         ifconfig $eth $static_ip up
         static_ip="" # won't be used again
     else
-        echo "$eth: starting dhclient"
+        msg_done dhcp
         dhclient -cf "$dh_conf" $eth
     fi
 
@@ -149,11 +152,13 @@ start() {
     hostname=$(hostname)
     echo "send host-name = \"$hostname\";" > /var/cache/dhclient.conf
 
+    ssid=$(cat /data/etc/wpa_supplicant.conf 2>&1 | grep ssid | grep -v scan_ssid | cut -d '"' -f 2)
+
     start_lo
-    start_wlan
+
+    test -n "$ssid" && start_wlan
     
     # if wifi or ppp connection configured, start eth in background
-    ssid=$(cat /data/etc/wpa_supplicant.conf 2>&1 | grep ssid | grep -v scan_ssid | cut -d '"' -f 2)
     if [ -n "$ssid" ] || [ -r /data/etc/ppp/modem ]; then
         start_eth &>/dev/null &
     else
@@ -161,36 +166,37 @@ start() {
     fi
 
     if [ -n "$static_gw" ]; then
-        echo "setting static gateway to $static_gw"
+        msg_begin "setting static gateway to $static_gw"
         ip route add default via $static_gw
+        test $? == 0 && msg_done || msg_fail
     fi
 
     if [ -n "$static_dns" ]; then
-        echo "setting static DNS server to $static_dns"
+        msg_begin "setting static DNS server to $static_dns"
         echo "nameserver $static_dns" > /etc/resolv.conf
+        test $? == 0 && msg_done || msg_fail
     fi
+}
 
-    # print the current network configuration
-    ifconfig -a
+stop() {
+    msg_begin "Stopping network"
+    killall dhclient &>/dev/null
+    ps | grep S40network | grep -v $$ | grep -v grep | tr -s ' ' | sed -e 's/^\s//' | cut -d ' ' -f 1 | xargs -r kill
+    msg_done
 }
 
 case "$1" in
     start)
-        echo -n "Starting network: "
         start
-        echo "done"
         ;;
 
     stop)
-        echo -n "Stopping network: "
-        killall dhclient
-        ps | grep S40network | grep -v $$ | grep -v grep | tr -s ' ' | sed -e 's/^\s//' | cut -d ' ' -f 1 | xargs -r kill
-        echo "done"
+        stop
         ;;
 
-    restart|reload)
-        "$0" stop
-        "$0" start
+    restart)
+        stop
+        start
         ;;
 
     *)

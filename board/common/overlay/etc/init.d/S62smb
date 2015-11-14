@@ -1,46 +1,34 @@
-#!/bin/sh
+#!/bin/bash
 
-[ -f /etc/samba/smb.conf ] || exit 0
-
-mkdir -p /var/log/samba
-mkdir -p /var/lib/samba/private
+test -f /etc/samba/smb.conf || exit 0
 
 start() {
-    echo -n "Setting smb admin password: "
-    if [ -f /data/etc/motion.conf ]; then
-        password=$(cat /data/etc/motion.conf | grep admin_password | cut -d ' ' -f 3)
-    fi
+    msg_begin "Setting smb admin password"
+    
+    mkdir -p /var/log/samba
+    mkdir -p /var/lib/samba/private
+
+    password=$(/etc/init.d/adminpw)
     echo -e "$password\n$password\n" | /usr/bin/smbpasswd -a admin -s > /dev/null
-    [ $? == 0 ] && echo "done" || echo "failed"
+    test $? == 0 && msg_done || msg_fail
 
-    echo -n "Starting smbd: "
+    msg_begin "Starting smbd"
     smbd -D
-    [ $? == 0 ] && echo "done" || echo "failed"
+    test $? == 0 && msg_done || msg_fail
 
-    echo -n "Starting nmbd: "
+    msg_begin "Starting nmbd"
     nmbd -D
-    [ $? == 0 ] && echo "done" || echo "failed"
+    test $? == 0 && msg_done || msg_fail
 }
 
 stop() {
-    echo -n "Shutting down smbd: "
-    kill -9 `pidof smbd` 2>/dev/null
-    [ $? == 0 ] && echo "done" || echo "failed"
+    msg_begin "Stopping smbd"
+    killall smbd &>/dev/null
+    test $? == 0 && msg_done || msg_fail
 
-    echo -n "Shutting down nmbd: "
-    kill -9 `pidof nmbd` 2>/dev/null
-    [ $? == 0 ] && echo "done" || echo "failed"
-}
-
-restart() {
-    stop
-    start
-}
-
-reload() {
-    echo -n "Reloading smb.conf file: "
-    kill -HUP `pidof smbd` 2>/dev/null
-    [ $? == 0 ] && echo "done" || echo "failed"
+    msg_begin "Stopping nmbd"
+    killall nmbd &>/dev/null
+    test $? == 0 && msg_done || msg_fail
 }
 
 case "$1" in
@@ -53,16 +41,14 @@ case "$1" in
         ;;
 
     restart)
-        restart
-        ;;
-
-    reload)
-        reload
+        stop
+        start
         ;;
 
     *)
-        echo "Usage: $0 {start|stop|restart|reload}"
+        echo "Usage: $0 {start|stop|restart}"
         exit 1
 esac
 
 exit $?
+

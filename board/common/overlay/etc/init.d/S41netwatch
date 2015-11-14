@@ -1,19 +1,13 @@
-#!/bin/sh
+#!/bin/bash
 
 watch_conf="/data/etc/watch.conf"
 netwatch_retries=3
 netwatch_timeout=5
 netwatch_interval=20
 
-if [ -f $watch_conf ]; then
-    source $watch_conf
-else
-    exit
-fi
+test -f $watch_conf && source $watch_conf || exit 0
 
-if [ -z "$netwatch_host" ] || [ -z "$netwatch_port" ]; then
-    exit
-fi
+test -z "$netwatch_host" || -z "$netwatch_port" && exit 0
 
 watch() {
     count=0
@@ -36,20 +30,20 @@ watch() {
 
 case "$1" in
     start)
-        echo -n "Starting netwatch: "
+        msg_begin "Starting netwatch"
         watch &
-        echo "done"
+        msg_done
         ;;
 
     stop)
-        echo -n "Stopping netwatch: "
+        msg_begin "Stopping netwatch"
         ps | grep netwatch | grep -v $$ | grep -v grep | tr -s ' ' | sed -e 's/^\s//' | cut -d ' ' -f 1 | xargs -r kill
-        echo "done"
+        msg_done
         ;;
 
-    restart|reload)
-        "$0" stop
-        "$0" start
+    restart)
+        stop
+        start
         ;;
         
     *)

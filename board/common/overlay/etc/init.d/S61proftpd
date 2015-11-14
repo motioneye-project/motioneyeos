@@ -1,20 +1,19 @@
-#!/bin/sh 
+#!/bin/bash
 
-[ -f /etc/proftpd.conf ] || exit 0
-
-mkdir -p /var/run/proftpd
-touch /var/log/wtmp
+test -f /etc/proftpd.conf || exit 0
 
 start() {
-    echo -n "Starting proftpd: "
+    msg_begin "Starting proftpd"
+    mkdir -p /var/run/proftpd
+    touch /var/log/wtmp
     /usr/sbin/proftpd &>/dev/null
-    [ $? == 0 ] && echo "done" || echo "failed"
+    test $? == 0 && msg_done || msg_fail
 }
 
 stop() {
-    echo -n "Stopping proftpd: "
-    kill -9 `pidof proftpd` 2>/dev/null
-    [ $? == 0 ] && echo "done" || echo "failed"
+    msg_begin "Stopping proftpd"
+    killall proftpd &>/dev/null
+    test $? == 0 && msg_done || msg_fail
 }
 
 case "$1" in

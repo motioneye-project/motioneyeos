@@ -14,6 +14,7 @@
 # process   == program to run
 
 # Startup the system
+::sysinit:/etc/init.d/mountsys
 ::sysinit:/etc/init.d/rcS
 
 # Put a getty on the serial port
@@ -24,5 +25,6 @@ tty1::respawn:/sbin/getty -L tty1 115200 vt100
 ::ctrlaltdel:/sbin/reboot
 
 # Stuff to do before rebooting
-null::shutdown:/etc/init.d/rcK
+::shutdown:/etc/init.d/rcK
+::shutdown:/bin/umount -a -r
 
