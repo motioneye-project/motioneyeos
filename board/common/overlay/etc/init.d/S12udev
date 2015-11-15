@@ -2,12 +2,14 @@
 
 test -f /etc/udev/udev.conf || exit 0
 
+test -n "$os_version" || source /etc/init.d/base
+
 source /etc/udev/udev.conf
 
 start() {
     msg_begin "Starting eudev"
     echo '\000\000\000\000' > /proc/sys/kernel/hotplug
-    /sbin/udevd --daemon
+    /sbin/udevd --daemon --resolve-names=never
     test $? == 0 && msg_done || msg_fail
 
     /sbin/udevadm trigger --type=subsystems --action=add

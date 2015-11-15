@@ -2,6 +2,8 @@
 
 test -f /etc/samba/smb.conf || exit 0
 
+test -n "$os_version" || source /etc/init.d/base
+
 start() {
     msg_begin "Setting smb admin password"
     

@@ -26,5 +26,5 @@ tty1::respawn:/sbin/getty -L tty1 115200 vt100
 
 # Stuff to do before rebooting
 ::shutdown:/etc/init.d/rcK
-::shutdown:/bin/umount -a -r
+null::shutdown:/bin/umount -a -r
 

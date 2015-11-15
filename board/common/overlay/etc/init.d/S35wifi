@@ -2,14 +2,21 @@
 
 sys_conf="/etc/wpa_supplicant.conf"
 conf="/data/etc/wpa_supplicant.conf"
+
 log="/var/log/wpa_supplicant.log"
 prog="/usr/sbin/wpa_supplicant"
 iface=wlan0
 driver=wext
 
+sys_watch_conf="/etc/watch.conf"
 watch_conf="/data/etc/watch.conf"
+
 link_watch=yes
 link_watch_timeout=20
+
+if [ -f $sys_watch_conf ] && ! [ -f $watch_conf ]; then
+    cp $sys_watch_conf $watch_conf
+fi
 
 test -f $watch_conf && source $watch_conf
 
@@ -17,10 +24,12 @@ if [ -f $sys_conf ] && ! [ -f $conf ]; then
     cp $sys_conf $conf
 fi
 
-test -f $watch_conf || exit 0
+test -f $conf || exit 0
 
 ssid=$(cat $conf | grep ssid | grep -v scan_ssid | cut -d '"' -f 2)
 test -n "$ssid" || exit 0
+
+test -n "$os_version" || source /etc/init.d/base
 
 connected() {
     ip link show dev $iface 2>&1 | grep LOWER_UP &> /dev/null && return 0 || return 1

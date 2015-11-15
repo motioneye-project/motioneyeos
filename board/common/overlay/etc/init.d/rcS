@@ -1,19 +1,12 @@
 #!/bin/sh
 
 boot_log=/var/log/boot.log
+tmp_boot_log=/tmp/boot.log
 pid_file=/tmp/rc.pid
 
-if ! [ -d /var/log ]; then
-    # at the very first boot,
-    # we won't have the /var/log directory
-    boot_log=/tmp/boot.log
-    tmp_log=yes
-fi
+source /etc/init.d/base
 
-source /etc/init.d/vars
-source /etc/init.d/functions
-
-echo "---- booting $os_name $os_version----" >> $boot_log
+echo "---- booting $os_name $os_version----" >> $tmp_boot_log
 
 # start all init scripts in /etc/init.d,
 # executing them in numerical order.
@@ -26,15 +19,12 @@ echo "---- booting $os_name $os_version----" >> $boot_log
         set start
         . $i
     )
-done& echo $! > $pid_file) | tee -a $boot_log &
+done& echo $! > $pid_file) | tee -a $tmp_boot_log &
 
 pid=$(cat $pid_file)
 while kill -0 $pid 2>/dev/null; do
     sleep 1
 done
 
-if [ -n "$tmp_log" ]; then
-    # persist the boot log at first boot
-    mv $boot_log /var/log
-fi
+test -d $(dirname $boot_log) && cat $tmp_boot_log >> $boot_log
 

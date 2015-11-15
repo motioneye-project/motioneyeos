@@ -43,7 +43,7 @@ define MOTIONEYE_INSTALL_TARGET_CMDS
         echo "        'motioneye': ('/var/log/motioneye.log', 'motioneye.log')," >> /tmp/handlers.py.new; \
         echo "        'messages': ('/var/log/messages', 'messages.log')," >> /tmp/handlers.py.new; \
         echo "        'boot': ('/var/log/boot.log', 'boot.log')," >> /tmp/handlers.py.new; \
-        echo "        'dmesg': ('dmesg', 'dmesg.log')," >> /tmp/handlers.py.new; \
+        echo "        'dmesg': ('dmesg -T', 'dmesg.log')," >> /tmp/handlers.py.new; \
         tail -n +$$(($$lineno + 2)) $(DST_DIR)/handlers.py >> /tmp/handlers.py.new; \
         mv /tmp/handlers.py.new $(DST_DIR)/handlers.py; \
     fi

@@ -4,11 +4,17 @@ conf="/etc/sshd_config"
 
 test -f $conf || exit 0
 
+test -n "$os_version" || source /etc/init.d/base
+
 start() {
     msg_begin "Starting sshd"
     
     # create any missing keys
-    /usr/bin/ssh-keygen -A
+    if ! /usr/bin/ssh-keygen -A >/dev/null; then
+        msg_fail
+        return 1
+    fi
+
     umask 077
     hostname=$(hostname)
     echo "Welcome to $hostname!" > /var/cache/sshd_banner
@@ -30,11 +36,11 @@ case "$1" in
 
     stop)
         stop
-        start
         ;;
 
-    restart|reload)
-        restart
+    restart)
+        stop
+        start
         ;;
 
     *)

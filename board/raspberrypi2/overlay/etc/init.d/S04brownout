@@ -1,9 +1,11 @@
-#!/bin/sh
+#!/bin/bash
 
 gpio=35
 check_interval=30
 export=/sys/class/gpio/export
 read=/sys/class/gpio/gpio$gpio/value
+
+test -n "$os_version" || source /etc/init.d/base
 
 configure() {
     echo $gpio > $export
@@ -20,20 +22,20 @@ watch() {
 
 case "$1" in
     start)
-        echo -n "Starting brownout detector: "
+        msg_begin "Starting brownout detector"
         configure
+        test $? == 0 && msg_done || msg_fail
         watch &
-        echo "done"
         ;;
 
     stop)
-        echo -n "Stopping brownout detector: "
+        msg_begin "Stopping brownout detector"
         ps | grep brownout | grep -v $$ | grep -v grep | tr -s ' ' | sed -e 's/^\s//' | cut -d ' ' -f 1 | xargs -r kill
-        echo "done"
+        test $? == 0 && msg_done || msg_fail
         ;;
 
     *)
-        echo $"Usage: $0 {start|stop|restart}"
+        echo $"Usage: $0 {start|stop}"
         exit 1
 esac
 

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+test -n "$os_version" || source /etc/init.d/base
+
 start() {
     msg_begin "Starting crond"
     

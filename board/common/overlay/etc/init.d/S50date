@@ -9,6 +9,8 @@ fi
 
 test -f $conf || exit 0
 
+test -n "$os_version" || source /etc/init.d/base
+
 date_timeout=10
 date_method=http
 date_host="google.com"
@@ -41,7 +43,7 @@ set_current_date_ntp() {
 start_http() {
     msg_begin "Setting current date using http"
     set_current_date_http
-    test $? == 0 && msg_done $(date) || msg_fail
+    test $? == 0 && msg_done "$(date)" || msg_fail
     
     msg_begin "Starting http date updater"
     while true; do
@@ -56,7 +58,7 @@ start_ntp() {
     
     msg_begin "Setting current date using ntp"
     set_current_date_ntp
-    test $? == 0 && msg_done $(date) || msg_fail
+    test $? == 0 && msg_done "$(date)" || msg_fail
 
     msg_begin "Starting ntpd"
     ntpd -g -c /etc/ntp.conf

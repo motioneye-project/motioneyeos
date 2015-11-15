@@ -3,13 +3,7 @@
 sys_conf="/etc/os.conf"
 conf="/data/etc/os.conf"
 
-if [ -f $sys_conf ] && ! [ -f $conf ]; then
-    cp $sys_conf $conf
-fi
-
-if [ -f $conf ]; then
-    source $conf
-fi
+test -n "$os_version" || source /etc/init.d/base
 
 case "$1" in
     start)
@@ -17,12 +11,20 @@ case "$1" in
         /bin/mount -a
         test $? == 0 && msg_done || msg_fail
 
+        if [ -f $sys_conf ] && ! [ -f $conf ]; then
+            cp $sys_conf $conf
+        fi
+
+        if [ -f $conf ]; then
+            source $conf
+        fi
+
         if [ "$os_debug" == "true" ]; then
             msg_begin "Remounting boot partition read-write"
             mount -o remount,rw /boot
             test $? == 0 && msg_done || msg_fail
 
-            echo -n "Remounting root partition read-write: "
+            msg_begin "Remounting root partition read-write: "
             mount -o remount,rw /
             test $? == 0 && msg_done || msg_fail
         fi

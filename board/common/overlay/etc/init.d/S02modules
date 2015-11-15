@@ -1,7 +1,9 @@
 #!/bin/bash
 
-sys_modules_file="/etc_modules"
-modules_file="/data/etc_modules"
+sys_modules_file="/etc/modules"
+modules_file="/data/etc/modules"
+
+test -n "$os_version" || source /etc/init.d/base
 
 case "$1" in
     start)

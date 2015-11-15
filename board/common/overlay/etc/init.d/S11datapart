@@ -5,6 +5,8 @@ data_dev="${disk_dev}p3"
 
 test -b $data_dev && exit 0
 
+test -n "$os_version" || source /etc/init.d/base
+
 case "$1" in
     start)
         msg_begin "Creating data partition"
@@ -13,13 +15,12 @@ case "$1" in
             3
             \n
             \n
-            w" | /sbin/fdisk $disk_dev >/dev/null
-        test $? == 0 && msg_done || msg_fail
-        sync
+            w" | /sbin/fdisk $disk_dev 2>&1 >/dev/null | grep -v "Device or resource busy" | grep -v '^$'
         partx -a $disk_dev &>/dev/null
+        test -b $data_dev && msg_done || msg_fail
 
         msg_begin "Formatting data partition"
-        mkfs.ext4 $data_dev
+        mkfs.ext4 -q $data_dev
         test $? == 0 && msg_done || msg_fail
         
         msg_begin "Mounting data partition"

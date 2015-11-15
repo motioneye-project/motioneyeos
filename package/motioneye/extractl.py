@@ -142,15 +142,13 @@ def _set_os_settings(s):
             line = line.strip()
             if not line:
                 continue
-    
+
             try:
-                name, _ = line.split(' ', 2)
+                name, _ = line.split('=', 2)
     
             except:
                 continue
             
-            name = name.replace('_', '-')
-    
             if name == 'os_prereleases':
                 lines[i] = 'os_prereleases="%s"' % str(s.pop('prereleases')).lower()
     
@@ -217,7 +215,7 @@ def _set_motioneye_settings(s):
     s = dict(s)
     s.setdefault('port', 80)
     s.setdefault('motionBinary', '/usr/bin/motion')
-    s.setdefault('debug', False)
+    debug = s.setdefault('debug', False) # value needed later
     s.setdefault('motion_keep_alive', False)
     
     logging.debug('writing motioneye settings to %s: ' % MOTIONEYE_CONF +
@@ -274,11 +272,11 @@ def _set_motioneye_settings(s):
             f.write(line)
 
     # also update debug in os.conf
-    if s['debug']:
-        cmd = "sed -r 's/os_debug=\"?false\"?/os_debug=\"true\"/'  %s" % OS_CONF
+    if debug:
+        cmd = "sed -i -r 's/os_debug=\"?false\"?/os_debug=\"true\"/'  %s" % OS_CONF
         
     else:
-        cmd = "sed -r 's/os_debug=\"?true\"?/os_debug=\"false\"/'  %s" % OS_CONF
+        cmd = "sed -i -r 's/os_debug=\"?true\"?/os_debug=\"false\"/'  %s" % OS_CONF
 
     if os.system(cmd):
         logging.error('failed to set debug flag in os.conf')
@@ -468,8 +466,8 @@ def prereleases():
         'type': 'bool',
         'section': 'expertSettings',
         'advanced': True,
-        'get': _get_motioneye_settings,
-        'set': _set_motioneye_settings,
+        'get': _get_os_settings,
+        'set': _set_os_settings,
         'get_set_dict': True
     }
 

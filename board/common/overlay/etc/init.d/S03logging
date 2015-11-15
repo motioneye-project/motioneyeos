@@ -1,21 +1,23 @@
 #!/bin/bash
 
+test -n "$os_version" || source /etc/init.d/base
+
 case "$1" in
     start)
-	    msg_begin "Starting logging"
-    	start-stop-daemon -b -S -q -m -p /var/run/syslogd.pid --exec /sbin/syslogd -- -n
-	    msg_done
-	    ;;
+        msg_begin "Starting syslogd"
+        syslogd
+        test $? == 0 && msg_done || msg_fail
+        ;;
 
     stop)
-	    msg_begin "Stopping logging"
-	    start-stop-daemon -K -q -p /var/run/syslogd.pid
-    	msg_done
-	    ;;
+        msg_begin "Stopping syslogd"
+        killall syslogd &>/dev/null
+        test $? == 0 && msg_done || msg_fail
+        ;;
 
     *)
-	    echo "Usage: $0 {start|stop}"
-    	exit 1
+        echo "Usage: $0 {start|stop}"
+        exit 1
 esac
 
 exit $?

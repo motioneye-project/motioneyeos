@@ -1,5 +1,7 @@
 #!/bin/bash
 
+test -n "$os_version" || source /etc/init.d/base
+
 case "$1" in
     start)
         # make sure root and admin users exist in shadow file
@@ -14,11 +16,7 @@ case "$1" in
 
         # set root and admin passwords
         password=$(/etc/init.d/adminpw)
-        if [ -z "$password" ]; then
-            echo "Setting empty root/admin password"
-        else
-            echo "Setting custom root/admin password"
-        fi
+        msg_begin "Setting root password"
 
         rm -f /data/etc/shadow+
         rm -f /data/etc/shadow-
@@ -28,6 +26,8 @@ case "$1" in
         
         sed -r -i 's/root:([^:]+):[[:digit:]]+:/root:\1::/' /data/etc/shadow # removes pwd expiration
         sed -r -i 's/admin:([^:]+):[[:digit:]]+:/admin:\1::/' /data/etc/shadow # removes pwd expiration
+        
+        msg_done
         ;;
 
     stop)

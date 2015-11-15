@@ -67,7 +67,7 @@ function stop() {
         sleep 1
         count=$(($count + 1))
     done
-    kill -KILL "$pid" &>/dev/null
+    kill -KILL "$pid" &>/dev/null || true
 }
 
 case "$1" in

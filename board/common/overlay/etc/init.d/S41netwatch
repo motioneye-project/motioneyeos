@@ -9,6 +9,8 @@ test -f $watch_conf && source $watch_conf || exit 0
 
 test -z "$netwatch_host" || -z "$netwatch_port" && exit 0
 
+test -n "$os_version" || source /etc/init.d/base
+
 watch() {
     count=0
     netwatch_retries=$(($netwatch_retries - 1))

@@ -18,11 +18,12 @@ wlan=wlan0
 test -r $watch_conf && source $watch_conf
 
 if [ -f $sys_static_conf ] && ! [ -f $static_conf ]; then
-    mkdir -p $(dirname $static_conf)
     cp $sys_static_conf $static_conf
 fi
 
 test -r $static_conf && source $static_conf
+
+test -n "$os_version" || source /etc/init.d/base
 
 watch_eth() {
     count=0

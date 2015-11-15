@@ -1,15 +1,8 @@
 #!/bin/bash
 
-# these aren't used in this file but
-# throughout various init scripts
-sys_watch_conf="/etc/watch.conf"
-watch_conf="/data/etc/watch.conf"
-
-if [ -f $sys_watch_conf ] && ! [ -f $watch_conf ]; then
-    cp $sys_watch_conf $watch_conf
-fi
-
 test -c /dev/watchdog || exit 0
+
+test -n "$os_version" || source /etc/init.d/base
 
 case "$1" in
     start)
