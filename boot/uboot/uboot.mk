@@ -72,9 +72,11 @@ UBOOT_BIN_IFT = $(UBOOT_BIN).ift
 endif
 
 # The kernel calls AArch64 'arm64', but U-Boot calls it just 'arm', so
-# we have to special case it.
+# we have to special case it. Similar for i386/x86_64 -> x86
 ifeq ($(KERNEL_ARCH),arm64)
 UBOOT_ARCH = arm
+else ifneq ($(filter $(KERNEL_ARCH),i386 x86_64),)
+UBOOT_ARCH = x86
 else
 UBOOT_ARCH = $(KERNEL_ARCH)
 endif
