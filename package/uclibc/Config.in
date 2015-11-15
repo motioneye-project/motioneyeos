@@ -18,7 +18,7 @@ config BR2_UCLIBC_VERSION_SUPPORTS_NPTL
 
 choice
 	prompt "uClibc C library Version"
-	default BR2_UCLIBC_VERSION_NG if !BR2_arc
+	default BR2_UCLIBC_VERSION_NG
 	help
 	  Select the version of uClibc you wish to use.
 
