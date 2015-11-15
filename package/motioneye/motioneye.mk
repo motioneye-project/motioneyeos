@@ -4,7 +4,6 @@
 #
 #############################################################
 
-MOTIONEYEOS_VERSION = 20151103
 MOTIONEYE_VERSION = 99ca42bb03448b6af15c1354b008278b5e316427
 MOTIONEYE_SITE = $(call github,ccrisan,motioneye,$(MOTIONEYE_VERSION))
 MOTIONEYE_SOURCE = $(MOTIONEYE_VERSION).tar.gz
@@ -17,6 +16,7 @@ DST_DIR = $(TARGET_DIR)/usr/lib/python2.7/site-packages/motioneye
 SHARE_DIR = $(TARGET_DIR)/usr/share/motioneye
 BOARD = $(shell basename $(BASE_DIR))
 BOARD_DIR = $(BASE_DIR)/../../board/$(BOARD)
+COMMON_DIR = $(BASE_DIR)/../../board/common
 
 
 define MOTIONEYE_INSTALL_TARGET_CMDS
@@ -49,7 +49,8 @@ define MOTIONEYE_INSTALL_TARGET_CMDS
     fi
 
     # version & update
-    sed -r -i "s%VERSION = .*%VERSION = '$(MOTIONEYEOS_VERSION)'%" $(DST_DIR)/__init__.py
+    source $(COMMON_DIR)/overlay/etc/version; \
+    sed -r -i "s%VERSION = .*%VERSION = '$$os_version'%" $(DST_DIR)/__init__.py
     sed -r -i "s%enable_update=False%enable_update=True%" $(DST_DIR)/handlers.py
     
     # (re)compile all python modules
