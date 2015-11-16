@@ -1,0 +1,58 @@
+From 7b93e98143c376ed09bfd30658b8641d4a36e77e Mon Sep 17 00:00:00 2001
+From: Rodrigo Rebello <rprebello@gmail.com>
+Date: Thu, 12 Nov 2015 12:04:28 -0200
+Subject: [PATCH] configure: use appropriate code fragment for
+ -fstack-protector checks
+Cc: qemu-trivial@nongnu.org
+
+The check for stack-protector support consisted in compiling and linking
+the test program below (output by function write_c_skeleton()) with the
+compiler flag -fstack-protector-strong first and then with
+-fstack-protector-all if the first one failed to work:
+
+  int main(void) { return 0; }
+
+This caused false positives when using certain toolchains in which the
+compiler accepts -fstack-protector-strong but no support is provided by
+the C library, since in this stack-protector variant the compiler emits
+canary code only for functions that meet specific conditions (local
+arrays, memory references to local variables, etc.) and the code
+fragment under test included none of them (hence no stack protection
+code generated, no link failure).
+
+This fix modifies the test program used for -fstack-protector checks to
+meet conditions which cause the compiler to generate canary code in all
+variants.
+
+Upstream status: sent
+https://patchwork.ozlabs.org/patch/543357/
+
+Signed-off-by: Rodrigo Rebello <rprebello@gmail.com>
+---
+ configure | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/configure b/configure
+index cd219d8..27d7b3c 100755
+--- a/configure
++++ b/configure
+@@ -1471,6 +1471,16 @@ for flag in $gcc_flags; do
+ done
+ 
+ if test "$stack_protector" != "no"; then
++  cat > $TMPC << EOF
++int main(int argc, char *argv[])
++{
++    char arr[64], *p = arr, *c = argv[0];
++    while (*c) {
++        *p++ = *c++;
++    }
++    return 0;
++}
++EOF
+   gcc_flags="-fstack-protector-strong -fstack-protector-all"
+   sp_on=0
+   for flag in $gcc_flags; do
+-- 
+2.1.4
+
