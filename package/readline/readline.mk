@@ -17,8 +17,12 @@ READLINE_LICENSE_FILES = COPYING
 define READLINE_PURGE_EXAMPLES
 	rm -rf $(TARGET_DIR)/usr/share/readline
 endef
-
 READLINE_POST_INSTALL_TARGET_HOOKS += READLINE_PURGE_EXAMPLES
+
+define READLINE_INSTALL_INPUTRC
+	$(INSTALL) -D -m 644 package/readline/inputrc $(TARGET_DIR)/etc/inputrc
+endef
+READLINE_POST_INSTALL_TARGET_HOOKS += READLINE_INSTALL_INPUTRC
 
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
