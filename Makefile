@@ -321,6 +321,7 @@ unexport ARCH
 unexport CC
 unexport CXX
 unexport CPP
+unexport RANLIB
 unexport CFLAGS
 unexport CXXFLAGS
 unexport GREP_OPTIONS
