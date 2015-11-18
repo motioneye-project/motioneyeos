@@ -1,0 +1,7 @@
+config BR2_PACKAGE_RABBITMQ_C
+	bool "rabbitmq-c"
+	help
+	  This is a C-language AMQP client library for use with v2.0+
+	  of the RabbitMQ broker.
+
+	  https://github.com/alanxz/rabbitmq-c
