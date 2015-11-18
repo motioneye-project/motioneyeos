@@ -16,12 +16,7 @@ HIDAPI_LICENSE_FILES = LICENSE.txt LICENSE-gpl3.txt LICENSE-bsd.txt LICENSE-orig
 
 HIDAPI_DEPENDENCIES = libusb
 
-# When eudev is used as the udev provider, libgudev is automatically
-# provided as it is part of eudev. However, when systemd is used as
-# the udev provider, libgudev is not provided, and needs to be built
-# separately. This is why we depend on the libgudev package only if
-# systemd is used.
-ifeq ($(BR2_INIT_SYSTEMD),y)
+ifeq ($(BR2_PACKAGE_LIBGUDEV),y)
 HIDAPI_DEPENDENCIES += libgudev
 endif
 
