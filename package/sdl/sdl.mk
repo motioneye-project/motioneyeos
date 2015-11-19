@@ -58,6 +58,15 @@ ifneq ($(BR2_USE_MMU),y)
 SDL_CONF_OPTS += --enable-dga=no
 endif
 
+# overwrite autodection (prevents confusion with host libpth version)
+ifeq ($(BR2_PACKAGE_LIBPTHSEM_COMPAT),y)
+SDL_CONF_OPTS += --enable-pth
+SDL_CONF_ENV += ac_cv_path_PTH_CONFIG=$(STAGING_DIR)/usr/bin/pth-config
+SDL_DEPENDENCIES += libpthsem
+else
+SDL_CONF_OPTS += --disable-pth
+endif
+
 ifeq ($(BR2_PACKAGE_TSLIB),y)
 SDL_DEPENDENCIES += tslib
 endif
