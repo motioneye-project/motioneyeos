@@ -2,7 +2,7 @@
 BR2_mips=y
 BR2_mips_32r2=y
 
-# filesystem
+# Filesystem
 BR2_TARGET_ROOTFS_EXT2=y
 # BR2_TARGET_ROOTFS_TAR is not set
 

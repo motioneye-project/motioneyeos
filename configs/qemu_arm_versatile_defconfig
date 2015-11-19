@@ -2,11 +2,10 @@
 BR2_arm=y
 BR2_arm926t=y
 
-# system
-BR2_TARGET_GENERIC_GETTY=y
+# System
 BR2_TARGET_GENERIC_GETTY_PORT="ttyAMA0"
 
-# filesystem
+# Filesystem
 BR2_TARGET_ROOTFS_EXT2=y
 # BR2_TARGET_ROOTFS_TAR is not set
 

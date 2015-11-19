@@ -5,6 +5,7 @@ BR2_XTENSA_CUSTOM_NAME="dc232b"
 BR2_XTENSA_CORE_NAME="lx60"
 BR2_XTENSA_OVERLAY_DIR="board/qemu/xtensa-lx60"
 
+# Patches
 BR2_GLOBAL_PATCH_DIR="board/qemu/xtensa-lx60"
 
 # System

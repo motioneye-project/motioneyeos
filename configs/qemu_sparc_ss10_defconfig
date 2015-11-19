@@ -2,9 +2,7 @@
 BR2_sparc=y
 BR2_sparc_v8=y
 
-BR2_GLOBAL_PATCH_DIR="board/qemu/sparc-ss10"
-
-# filesystem
+# Filesystem
 BR2_TARGET_ROOTFS_EXT2=y
 # BR2_TARGET_ROOTFS_TAR is not set
 

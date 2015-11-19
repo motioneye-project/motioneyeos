@@ -2,7 +2,7 @@
 BR2_powerpc=y
 BR2_powerpc_8548=y
 
-# filesystem
+# Filesystem
 # BR2_TARGET_ROOTFS_TAR is not set
 BR2_TARGET_ROOTFS_INITRAMFS=y
 
