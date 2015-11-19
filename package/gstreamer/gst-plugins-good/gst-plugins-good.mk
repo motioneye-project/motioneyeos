@@ -7,6 +7,8 @@
 GST_PLUGINS_GOOD_VERSION = 0.10.31
 GST_PLUGINS_GOOD_SOURCE = gst-plugins-good-$(GST_PLUGINS_GOOD_VERSION).tar.xz
 GST_PLUGINS_GOOD_SITE = http://gstreamer.freedesktop.org/src/gst-plugins-good
+GST_PLUGINS_GOOD_LICENSE = LGPLv2.1+
+GST_PLUGINS_GOOD_LICENSE_FILES = COPYING
 
 GST_PLUGINS_GOOD_CONF_OPTS = \
 	--disable-examples \
