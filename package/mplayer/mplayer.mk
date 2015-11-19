@@ -125,9 +125,10 @@ MPLAYER_CONF_OPTS +=  \
 MPLAYER_DEPENDENCIES += libdvdread
 endif
 
+# We intentionally don't pass --enable-dvdnav to let the autodetection
+# find which library to link with.
 ifeq ($(BR2_PACKAGE_LIBDVDNAV),y)
 MPLAYER_CONF_OPTS +=  \
-	--enable-dvdnav \
 	--with-dvdnav-config=$(STAGING_DIR)/usr/bin/dvdnav-config
 MPLAYER_DEPENDENCIES += libdvdnav
 endif
