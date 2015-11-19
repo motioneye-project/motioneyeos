@@ -1,0 +1,50 @@
+From e8acc16d455876855ac3e13efa5f24f1e93a42e0 Mon Sep 17 00:00:00 2001
+From: Gustavo Zacarias <gustavo@zacarias.com.ar>
+Date: Thu, 19 Nov 2015 10:41:30 -0300
+Subject: [PATCH] Fix compilation against linux 4.3
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Linux Crypto API changed to using aead_request_set_ad()
+instead of aead_request_set_assoc().
+
+Based on Horia Geantă's patch from
+https://mail.gna.org/public/cryptodev-linux-devel/2015-11/msg00002.html
+
+However we need to version-guard the change for older versions of the
+kernel to avoid the build from breaking for them.
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+---
+ cryptlib.h | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/cryptlib.h b/cryptlib.h
+index a0a8a63..f0c2736 100644
+--- a/cryptlib.h
++++ b/cryptlib.h
+@@ -1,6 +1,8 @@
+ #ifndef CRYPTLIB_H
+ # define CRYPTLIB_H
+ 
++#include <linux/version.h>
++
+ struct cipher_data {
+ 	int init; /* 0 uninitialized */
+ 	int blocksize;
+@@ -40,7 +42,11 @@ static inline void cryptodev_cipher_auth(struct cipher_data *cdata,
+ 					 struct scatterlist *sg1, size_t len)
+ {
+ 	/* for some reason we _have_ to call that even for zero length sgs */
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(4, 3, 0))
+ 	aead_request_set_assoc(cdata->async.arequest, len ? sg1 : NULL, len);
++#else
++	aead_request_set_ad(cdata->async.arequest, len);
++#endif
+ }
+ 
+ static inline void cryptodev_cipher_set_tag_size(struct cipher_data *cdata, int size)
+-- 
+2.4.10
+
