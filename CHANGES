@@ -1,3 +1,36 @@
+2015.11-rc2, Released November 19th, 2015
+
+	Fixes all over the tree.
+
+	LD_LIBRARY_PATH is no longer used to ensure host binaries find
+	their libraries, fixing issues on recent Fedora.
+
+	Toolchain fixes for powerpc e5500 / e6500. Fix for an issue
+	with ${TARGET}-cc after the move to use a toolchain wrapper
+	for the internal toolchain.
+
+	Appy-patches.sh now correctly applies all files listed in
+	series files.
+
+	Fixes for merged /usr handling when a custom skeleton is used.
+
+	Updated/fixed packages: axfsutils, boost, busybox, dhcp,
+	directfb, dropbear, ebtables, fastd, ffmpeg, gauche, gcc,
+	gettext, gst1-plugins-bad, hostapd, ibrdtnd, libcurl,
+	libecore, libgudev, libnss, libpng, libserial, libssh2,
+	libuecc, libxml2, linux-headers, liquid-dsp, ltris,
+	lua-periphery, minidlna, mongrel2, mpd, mpg123, mplayer,
+	mysql, opencv, opencv3, package, perl-file-util, php-ssh2,
+	polarssl, pulseaudio, python-protobuf, qemu, qt5base, ranger,
+	ruby, skeleton, slang, squeezelite, strongswan, tovid, uclibc,
+	ushare, wine, wpa_supplicant, x265,
+	xdriver_xf86-video-siliconmotion, zxing-cpp
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#4790: Running udhcpc on a system with NFS root kills NFS
+	#8456: Building host-pkgconf on Fedora 23 fails due to..
+
 2015.11-rc1, Released November, 7th 2015
 
 	Fixes all over the tree and new features.
