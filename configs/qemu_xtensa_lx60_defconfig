@@ -9,6 +9,7 @@ BR2_XTENSA_OVERLAY_DIR="board/qemu/xtensa-lx60"
 BR2_GLOBAL_PATCH_DIR="board/qemu/xtensa-lx60"
 
 # System
+BR2_SYSTEM_DHCP="eth0"
 BR2_TARGET_GENERIC_GETTY_PORT="ttyS0"
 
 # Filesystem

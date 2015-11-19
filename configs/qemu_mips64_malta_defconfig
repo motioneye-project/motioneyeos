@@ -2,6 +2,9 @@
 BR2_mips64=y
 BR2_MIPS_NABI64=y
 
+# System
+BR2_SYSTEM_DHCP="eth0"
+
 # Filesystem
 BR2_TARGET_ROOTFS_EXT2=y
 # BR2_TARGET_ROOTFS_TAR is not set

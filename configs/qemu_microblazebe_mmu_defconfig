@@ -3,6 +3,7 @@ BR2_microblaze=y
 BR2_microblazebe=y
 
 # System
+BR2_SYSTEM_DHCP="eth0"
 BR2_TARGET_GENERIC_GETTY_PORT="ttyUL0"
 
 # Filesystem
