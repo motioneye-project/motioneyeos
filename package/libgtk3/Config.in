@@ -40,6 +40,8 @@ config BR2_PACKAGE_LIBGTK3_X11
 config BR2_PACKAGE_LIBGTK3_WAYLAND
 	bool "GDK Wayland backend"
 	default y
+	# Needs a libgtk3 bump to match API level
+	depends on BROKEN
 	depends on BR2_PACKAGE_WAYLAND
 	select BR2_PACKAGE_LIBXKBCOMMON
 	help
