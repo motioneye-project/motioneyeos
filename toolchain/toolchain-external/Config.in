@@ -502,7 +502,7 @@ comment "Sourcery CodeBench toolchains are only available for MIPS/MIPS64 o32 an
 	depends on !BR2_STATIC_LIBS
 
 config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_NIOSII
-	bool "Sourcery CodeBench Nios-II 2014.05"
+	bool "Sourcery CodeBench Nios-II 2015.11"
 	depends on BR2_nios2
 	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86"
 	depends on !BR2_STATIC_LIBS
@@ -510,12 +510,12 @@ config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_NIOSII
 	select BR2_TOOLCHAIN_HAS_NATIVE_RPC
 	select BR2_INSTALL_LIBSTDCPP
 	select BR2_HOSTARCH_NEEDS_IA32_LIBS
-	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_12
-	select BR2_TOOLCHAIN_GCC_AT_LEAST_4_8
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_2
+	select BR2_TOOLCHAIN_GCC_AT_LEAST_5
 	help
 	  Sourcery CodeBench toolchain for the Nios-II architecture,
-	  from Mentor Graphics. It uses gcc 4.8.3, binutils 2.24.51,
-	  glibc 2.19.90, gdb 7.7.50 and kernel headers 3.12.
+	  from Mentor Graphics. It uses gcc 5.2, binutils 2.25.51,
+	  glibc 2.22, gdb 7.10.50 and kernel headers 4.2.
 
 config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_POWERPC201203
 	bool "Sourcery CodeBench PowerPC 2012.03"
