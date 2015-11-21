@@ -16,7 +16,7 @@ diff -durN tvheadend-c84bc2b72b462ef2dbed305f3fd0bb3fa5046fc3.orig/Makefile tvhe
  	$(ROOTDIR)/configure $(CONFIGURE_ARGS)
  
  # Binary
--${PROG}: check_config make_webui $(OBJS)
+-${PROG}: .config.mk make_webui $(OBJS)
 +${PROG}: make_webui $(OBJS)
  	$(CC) -o $@ $(OBJS) $(CFLAGS) $(LDFLAGS)
  
