@@ -417,6 +417,7 @@ endif
 	source "package/smartmontools/Config.in"
 	source "package/smstools3/Config.in"
 	source "package/snowball-hdmiservice/Config.in"
+	source "package/spi-tools/Config.in"
 	source "package/sredird/Config.in"
 	source "package/statserial/Config.in"
 	source "package/stm32flash/Config.in"
