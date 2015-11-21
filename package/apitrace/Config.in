@@ -10,6 +10,7 @@ config BR2_PACKAGE_APITRACE
 	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_6
 	depends on BR2_PACKAGE_XORG7
 	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_LIBPNG
 	help
 	  Trace and replay OpenGL and OpenGL ES APIs calls to/from a
 	  file. You may install apitrace GUI from your distribution to
