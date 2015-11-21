@@ -1,6 +1,9 @@
 config BR2_PACKAGE_BULLET
 	bool "bullet"
 	depends on BR2_INSTALL_LIBSTDCPP
+	# Affected by
+	# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=68476
+	depends on !BR2_microblaze
 	help
 	  Bullet is a Collision Detection and Rigid Body Dynamics
 	  Library.
@@ -9,3 +12,4 @@ config BR2_PACKAGE_BULLET
 
 comment "bullet needs a toolchain w/ C++"
 	depends on !BR2_INSTALL_LIBSTDCPP
+	depends on !BR2_microblaze
