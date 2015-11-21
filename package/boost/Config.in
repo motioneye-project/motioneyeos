@@ -3,8 +3,7 @@ comment "boost needs a toolchain w/ C++, threads, wchar"
 
 config BR2_PACKAGE_BOOST_ARCH_SUPPORTS
 	bool
-	default y if !BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_NIOSII201405 && \
-		!BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_NIOSII201305
+	default y if !BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_NIOSII
 
 config BR2_PACKAGE_BOOST
 	bool "boost"
