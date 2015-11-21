@@ -1,0 +1,32 @@
+From bba7b8e5fed79a7fecacf5468ade35a3ae0a0f8e Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?J=C3=B6rg=20Krause?= <joerg.krause@embedded.rocks>
+Date: Sat, 21 Nov 2015 23:51:43 +0100
+Subject: [PATCH 1/1] Makefile.am: fix static build with alsa
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Add ALSA_LIBS to MIXER_LIBS, otherwise building mpd in a static context fails
+with lot of undefined references to alsa-lib (libasound) required by
+src/mixer/plugins/AlsaMixerPlugin.cxx.
+
+Signed-off-by: Jörg Krause <joerg.krause@embedded.rocks>
+---
+ Makefile.am | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/Makefile.am b/Makefile.am
+index 89819de..307fcba 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -1219,6 +1219,7 @@ liboutput_plugins_a_SOURCES = \
+ 
+ MIXER_LIBS = \
+ 	libmixer_plugins.a \
++	$(ALSA_LIBS) \
+ 	$(PULSE_LIBS)
+ 
+ MIXER_API_SRC = \
+-- 
+2.6.2
+
