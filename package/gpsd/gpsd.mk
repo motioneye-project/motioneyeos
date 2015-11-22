@@ -39,8 +39,10 @@ GPSD_SCONS_OPTS += libgpsmm=no
 endif
 
 # prevents from triggering GCC ICE
+# A bug was reported to the gcc bug tracker:
+# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=68485
 ifeq ($(BR2_microblaze),y)
-GPSD_CFLAGS += -fno-expensive-optimizations
+GPSD_CFLAGS += -fno-expensive-optimizations -fno-schedule-insns
 endif
 
 # Enable or disable Qt binding
