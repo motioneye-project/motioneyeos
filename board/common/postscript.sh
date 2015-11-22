@@ -28,7 +28,6 @@ ln -s /tmp $TARGET/var/run
 ln -s /tmp $TARGET/var/spool
 ln -s /tmp $TARGET/var/tmp
 
-$COMMON_DIR/startup-scripts.sh
 $COMMON_DIR/cleanups.sh
 test -x $BOARD_DIR/cleanups.sh && test -x $BOARD_DIR/cleanups.sh || true
 

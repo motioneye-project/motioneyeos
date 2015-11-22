@@ -5,6 +5,9 @@ if [ -z "$TARGET" ]; then
     exit 1
 fi
 
+rm -f $TARGET/boot/.gitkeep
+
+# /etc stuff
 rm -rf $TARGET/etc/network/
 rm -rf $TARGET/etc/dhcp/
 rm -rf $TARGET/etc/ssh/
@@ -12,17 +15,23 @@ rm -rf $TARGET/etc/rc_keymaps
 rm -rf $TARGET/etc/default
 rm -rf $TARGET/etc/ctdb
 rm -rf $TARGET/etc/sudoers.d
-rm -rf $TARGET/usr/share/locale/*
 
 rm -f $TARGET/etc/rc_maps.cfg
 rm -f $TARGET/etc/udev/hwdb.d/20-pci-vendor-model.hwdb
 rm -f $TARGET/etc/motion-dist.conf
 rm -f $TARGET/etc/hostname
 rm -f $TARGET/etc/os-release
-rm -f $TARGET/boot/.gitkeep
+
+# /usr/share stuff
+rm -rf $TARGET/usr/share/bash-completion
+rm -rf $TARGET/usr/share/locale/*
+rm -rf $TARGET/usr/share/ffmpeg
+rm -rf $TARGET/usr/share/perl5
+rm -rf $TARGET/usr/share/common-lisp
 
 find $TARGET -name '*libmount*' | xargs rm -f
 
+# various binaries
 rm -f $TARGET/bin/more
 rm -f $TARGET/bin/wdctl
 rm -f $TARGET/usr/sbin/readprofile
@@ -142,6 +151,16 @@ rm -f $TARGET/usr/sbin/ctdb*
 rm -f $TARGET/usr/sbin/winbindd
 rm -f $TARGET/usr/share/perl5
 
+# unused python folders
 rm -rf $TARGET/usr/lib/python2.7/site-packages/samba
 rm -rf $TARGET/usr/lib/python2.7/ensurepip
+
+# unused startup scripts
+rm -f $TARGET/etc/init.d/S01logging
+rm -f $TARGET/etc/init.d/S15watchdog
+rm -f $TARGET/etc/init.d/S49ntp
+rm -f $TARGET/etc/init.d/S50proftpd
+rm -f $TARGET/etc/init.d/S20urandom
+rm -f $TARGET/etc/init.d/S80dhcp-relay
+rm -f $TARGET/etc/init.d/S80dhcp-server
 
