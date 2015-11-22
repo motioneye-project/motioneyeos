@@ -47,6 +47,12 @@ endif
 # a static build. We have to do the call to pkgconfig manually...
 OPROFILE_CONF_ENV += LIBS="`$(PKG_CONFIG_HOST_BINARY) --libs popt`"
 
+ifeq ($(BR2_STATIC_LIBS),)
+define OPROFILE_INSTALL_SHARED_LIBRARY
+	$(INSTALL) -m 755 $(@D)/libopagent/.libs/*.so* $(TARGET_DIR)/usr/lib/oprofile
+endef
+endif
+
 define OPROFILE_INSTALL_TARGET_CMDS
 	$(INSTALL) -d -m 755 $(TARGET_DIR)/usr/bin
 	$(INSTALL) -d -m 755 $(TARGET_DIR)/usr/share/oprofile
@@ -57,7 +63,7 @@ define OPROFILE_INSTALL_TARGET_CMDS
 	fi
 	$(INSTALL) -m 644 $(@D)/libregex/stl.pat $(TARGET_DIR)/usr/share/oprofile
 	$(INSTALL) -m 755 $(addprefix $(@D)/, $(OPROFILE_BINARIES)) $(TARGET_DIR)/usr/bin
-	$(INSTALL) -m 755 $(@D)/libopagent/.libs/*.so* $(TARGET_DIR)/usr/lib/oprofile
+	$(OPROFILE_INSTALL_SHARED_LIBRARY)
 endef
 
 $(eval $(autotools-package))
