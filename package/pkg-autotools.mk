@@ -214,12 +214,12 @@ else
 # installed.
 define $(2)_CONFIGURE_CMDS
 	(cd $$($$(PKG)_SRCDIR) && rm -rf config.cache; \
-	        $$(HOST_CONFIGURE_OPTS) \
-		CFLAGS="$$(HOST_CFLAGS)" \
-		LDFLAGS="$$(HOST_LDFLAGS)" \
-		$$($$(PKG)_CONF_ENV) \
-		CONFIG_SITE=/dev/null \
-		./configure \
+	$$(HOST_CONFIGURE_OPTS) \
+	CFLAGS="$$(HOST_CFLAGS)" \
+	LDFLAGS="$$(HOST_LDFLAGS)" \
+	$$($$(PKG)_CONF_ENV) \
+	CONFIG_SITE=/dev/null \
+	./configure \
 		--prefix="$$(HOST_DIR)/usr" \
 		--sysconfdir="$$(HOST_DIR)/etc" \
 		--localstatedir="$$(HOST_DIR)/var" \
