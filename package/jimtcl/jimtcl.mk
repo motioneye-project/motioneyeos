@@ -46,7 +46,11 @@ define JIMTCL_CONFIGURE_CMDS
 	)
 endef
 
+# -fPIC is mandatory to build shared libraries on certain architectures
+# (e.g. SPARC) and causes no harm or drawbacks on other architectures
 define JIMTCL_BUILD_CMDS
+	SH_CFLAGS="-fPIC" \
+	SHOBJ_CFLAGS="-fPIC" \
 	$(MAKE) -C $(@D)
 endef
 
