@@ -1,0 +1,40 @@
+config BR2_PACKAGE_ANDROID_TOOLS
+       bool "android-tools"
+       select BR2_PACKAGE_ANDROID_TOOLS_ADBD if \
+              !BR2_PACKAGE_ANDROID_TOOLS_FASTBOOT && \
+              !BR2_PACKAGE_ANDROID_TOOLS_ADB
+       help
+         This package contains the fastboot and adb utilities, that
+         can be used to interact with target devices using of these
+         protocols.
+
+if BR2_PACKAGE_ANDROID_TOOLS
+
+config BR2_PACKAGE_ANDROID_TOOLS_FASTBOOT
+       bool "fastboot"
+       select BR2_PACKAGE_LIBSELINUX
+       select BR2_PACKAGE_ZLIB
+       help
+         This option will build and install the fastboot utility for
+         the target, which can be used to reflash other target devices
+         implementing the fastboot protocol.
+
+config BR2_PACKAGE_ANDROID_TOOLS_ADB
+       bool "adb"
+       select BR2_PACKAGE_OPENSSL
+       select BR2_PACKAGE_ZLIB
+       help
+         This option will build and install the adb utility for the
+         target, which can be used to interact with other target
+         devices implementing the ADB protocol.
+
+config BR2_PACKAGE_ANDROID_TOOLS_ADBD
+       bool "adbd"
+       select BR2_PACKAGE_OPENSSL
+       select BR2_PACKAGE_ZLIB
+       help
+         This option will build and install the adbd utility for the
+         target, which can be used to interact with a host machine
+         implementing the ADB protocol.
+
+endif

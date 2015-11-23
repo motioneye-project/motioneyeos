@@ -1,0 +1,36 @@
+[PATCH] Fix build issue with uclibc
+
+Signed-off-by: Gary Bisson <gary.bisson@boundarydevices.com>
+---
+ core/adbd/adb_auth_client.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/core/adb/adb_auth_client.c b/core/adb/adb_auth_client.c
+index 0b4913e..068d837 100644
+--- a/core/adb/adb_auth_client.c
++++ b/core/adb/adb_auth_client.c
+@@ -72,7 +72,7 @@ static void read_keys(const char *file, struct listnode *list)
+         if (sep)
+             *sep = '\0';
+ 
+-        ret = __b64_pton(buf, (u_char *)&key->key, sizeof(key->key) + 4);
++        ret = b64_pton(buf, (u_char *)&key->key, sizeof(key->key) + 4);
+         if (ret != sizeof(key->key)) {
+             D("%s: Invalid base64 data ret=%d\n", file, ret);
+             free(key);
+diff --git a/core/adbd/adb_auth_client.c b/core/adbd/adb_auth_client.c
+index 0b4913e..068d837 100644
+--- a/core/adbd/adb_auth_client.c
++++ b/core/adbd/adb_auth_client.c
+@@ -72,7 +72,7 @@ static void read_keys(const char *file, struct listnode *list)
+         if (sep)
+             *sep = '\0';
+ 
+-        ret = __b64_pton(buf, (u_char *)&key->key, sizeof(key->key) + 4);
++        ret = b64_pton(buf, (u_char *)&key->key, sizeof(key->key) + 4);
+         if (ret != sizeof(key->key)) {
+             D("%s: Invalid base64 data ret=%d\n", file, ret);
+             free(key);
+-- 
+2.6.1
+

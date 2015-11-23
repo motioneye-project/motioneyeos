@@ -1,0 +1,26 @@
+config BR2_PACKAGE_HOST_ANDROID_TOOLS
+       bool "host android-tools"
+       select BR2_PACKAGE_ANDROID_TOOLS_ADB if \
+              !BR2_PACKAGE_ANDROID_TOOLS_FASTBOOT
+       help
+         This package contains the fastboot and adb utilities, that
+         can be used to interact with target devices using of these
+         protocols.
+
+if BR2_PACKAGE_HOST_ANDROID_TOOLS
+
+config BR2_PACKAGE_HOST_ANDROID_TOOLS_FASTBOOT
+       bool "fastboot"
+       help
+         This option will build and install the fastboot utility for
+         the host, which can be used to reflash target devices
+         implementing the fastboot protocol.
+
+config BR2_PACKAGE_HOST_ANDROID_TOOLS_ADB
+       bool "adb"
+       help
+         This option will build and install the adb utility for the
+         host, which can be used to interact with target devices
+         implementing the ADB protocol.
+
+endif
