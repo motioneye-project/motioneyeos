@@ -1,0 +1,81 @@
+From 4c83dd96d1f92627ecdb6b6ed80b8c278aea82f7 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?J=C3=B6rg=20Krause?= <joerg.krause@embedded.rocks>
+Date: Fri, 20 Nov 2015 19:51:50 +0100
+Subject: [PATCH] Allow building shared or static library only
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: Jörg Krause <joerg.krause@embedded.rocks>
+---
+ Makefile | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 7d63077..90c7059 100644
+--- a/Makefile
++++ b/Makefile
+@@ -57,6 +57,9 @@ LIBRARY_ARCHIVE = lib$(LIBRARY_NAME).a
+ CLIENT_TARGET   = $(LIBRARY_NAME)
+ TESTS_TARGET    = $(LIBRARY_NAME)-tests
+ 
++BUILD_SHARED   ?= yes
++BUILD_SHARED   ?= yes
++
+ CONFIG_FLAGS =
+ ifeq ($(CONFIG),debug)
+ 	CONFIG_FLAGS = -g -fno-inline -ftemplate-depth-1000
+@@ -71,7 +74,7 @@ ifneq (,$(findstring $(CONFIG),release loadtest))
+ 	CONFIG_FLAGS = -O3 -funroll-loops -ffast-math -finline-functions -fomit-frame-pointer -DNO_DEBUG_LOG -DNO_TRACE_LOG -DNDEBUG
+ endif
+ 
+-COMMON_FLAGS = -MMD -std=c++0x -pipe -Wall -fPIC \
++COMMON_FLAGS = -MMD -std=c++0x -pipe -Wall \
+ 	-DBUILD_ENV=$(CONFIG) \
+ 	-DBUILD_VERSION='"$(APP_VERSION)"' \
+ 	-DBUILD_VERSION_MAJOR=$(VERSION_MAJOR) \
+@@ -82,6 +85,15 @@ COMMON_FLAGS = -MMD -std=c++0x -pipe -Wall -fPIC \
+ 	-DBUILD_CLIENT_NAME='"$(CLIENT_TARGET)"' \
+ 	-I$(SRC_PATH)
+ 
++ifeq ($(BUILD_SHARED),yes)
++COMMON_FLAGS += -fPIC
++LIBRARY_TARGETS += $(LIBRARY_SHARED)
++endif
++
++ifeq ($(BUILD_STATIC),yes)
++LIBRARY_TARGETS += $(LIBRARY_ARCHIVE)
++endif
++
+ COMMON_LIBS = -lzmq
+ 
+ LIBRARY_LIBS =  
+@@ -125,9 +137,11 @@ check: $(LIBRARY_SHARED) $(LIBRARY_ARCHIVE) test
+ 
+ install:
+ 	install -m 644 $(ALL_LIBRARY_INCLUDES) $(INCLUDEDIR)/$(LIBRARY_DIR)
++ifeq ($(BUILD_SHARED),yes)
+ 	install -m 755 $(BUILD_PATH)/$(LIBRARY_SHARED).$(VERSION_MAJOR) $(LIBDIR)/$(LIBRARY_SHARED).$(APP_VERSION)
+ 	ln -sf $(LIBRARY_SHARED).$(APP_VERSION) $(LIBDIR)/$(LIBRARY_SHARED).$(VERSION_MAJOR)
+ 	ln -sf $(LIBRARY_SHARED).$(APP_VERSION) $(LIBDIR)/$(LIBRARY_SHARED)
++endif
+ 	if [ -f $(BUILD_PATH)/$(CLIENT_TARGET) ]; then install -m 755 $(BUILD_PATH)/$(CLIENT_TARGET) $(BINDIR); fi
+ 	$(LDCONFIG)
+ 	@echo "use make installcheck to test the install"
+@@ -148,7 +162,7 @@ clean:
+ 
+ client: $(CLIENT_TARGET)
+ 
+-library: $(LIBRARY_SHARED) $(LIBRARY_ARCHIVE)
++library: $(LIBRARY_TARGETS)
+ 
+ #
+ # BUILD Targets
+@@ -187,4 +201,3 @@ test: $(TESTS_TARGET)
+ $(OBJECT_PATH)/%.o: $(SRC_PATH)/%.cpp
+ 	-mkdir -p $(dir $@)
+ 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(COMMON_FLAGS) $(CONFIG_FLAGS) -c -o $@ $<
+-
+-- 
+2.6.2
+
