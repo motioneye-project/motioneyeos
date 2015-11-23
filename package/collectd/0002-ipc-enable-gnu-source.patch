@@ -1,0 +1,28 @@
+https://github.com/collectd/collectd/commit/3e3848349b753d78a0b1d19648fb394866856bda
+
+    ipc: enable _GNU_SOURCE to fix build with musl libc
+
+    This fixes compile the compile error:
+
+    > ipc.c:154:49: error: 'struct shm_info' has no member named 'used_ids'
+    >    ipc_submit_g("shm", "segments", NULL, shm_info.used_ids);
+    >                                                   ^
+
+    Fixes #1147
+
+Signed-off-by: Alex Suykov <alex.suykov@gmail.com>
+
+diff --git a/src/ipc.c b/src/ipc.c
+index 3763f24..b403847 100644
+--- a/src/ipc.c
++++ b/src/ipc.c
+@@ -32,6 +32,9 @@
+ #include "configfile.h"
+ 
+ #if KERNEL_LINUX
++  /* _GNU_SOURCE is needed for struct shm_info.used_ids on musl libc */
++# define _GNU_SOURCE
++
+   /* X/OPEN tells us to use <sys/{types,ipc,sem}.h> for semctl() */
+   /* X/OPEN tells us to use <sys/{types,ipc,msg}.h> for msgctl() */
+   /* X/OPEN tells us to use <sys/{types,ipc,shm}.h> for shmctl() */
