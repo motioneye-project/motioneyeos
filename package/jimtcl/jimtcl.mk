@@ -33,8 +33,8 @@ else
 JIMTCL_SHARED = --shared
 define JIMTCL_INSTALL_LIB
 	$(INSTALL) -m 0755 -D $(@D)/libjim.so.$(JIMTCL_VERSION) \
-		$(1)/usr/lib/libjim.$(JIMTCL_VERSION)
-	ln -s libjim.$(JIMTCL_VERSION) $(1)/usr/lib/libjim.so
+		$(1)/usr/lib/libjim.so.$(JIMTCL_VERSION)
+	ln -sf libjim.so.$(JIMTCL_VERSION) $(1)/usr/lib/libjim.so
 endef
 endif
 
