@@ -179,6 +179,10 @@ endef
 endif
 
 define QT5BASE_CONFIGURE_CMDS
+	$(INSTALL) -m 0644 -D $(QT5BASE_PKGDIR)/qmake.conf \
+		$(@D)/mkspecs/devices/linux-buildroot-g++/qmake.conf
+	$(INSTALL) -m 0644 -D $(QT5BASE_PKGDIR)/qplatformdefs.h \
+		$(@D)/mkspecs/devices/linux-buildroot-g++/qplatformdefs.h
 	$(QT5BASE_CONFIGURE_CONFIG_FILE)
 	(cd $(@D); \
 		$(TARGET_MAKE_ENV) \
