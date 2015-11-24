@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-KMOD_VERSION = 20
+KMOD_VERSION = 22
 KMOD_SOURCE = kmod-$(KMOD_VERSION).tar.xz
 KMOD_SITE = $(BR2_KERNEL_MIRROR)/linux/utils/kernel/kmod
 KMOD_INSTALL_STAGING = YES
