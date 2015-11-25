@@ -6,7 +6,7 @@ config BR2_PACKAGE_LIBPLIST
 	  libplist is a client for manipulating Apple Property List
 	  (.plist) files
 
-	  http://cgit.sukimashita.com/libplist.git
+	  http://www.libimobiledevice.org/
 
 comment "libplist needs a toolchain w/ C++"
 	depends on !BR2_INSTALL_LIBSTDCPP
