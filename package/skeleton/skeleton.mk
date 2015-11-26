@@ -57,27 +57,28 @@ else # ! custom skeleton
 
 SKELETON_PATH = system/skeleton
 
+endif # ! custom skeleton
+
+# This function handles the merged or non-merged /usr cases
 ifeq ($(BR2_ROOTFS_MERGED_USR),y)
 define SKELETON_USR_SYMLINKS_OR_DIRS
-	ln -snf usr/bin $(TARGET_DIR)/bin
-	ln -snf usr/sbin $(TARGET_DIR)/sbin
-	ln -snf usr/lib $(TARGET_DIR)/lib
+	ln -snf usr/bin $(1)/bin
+	ln -snf usr/sbin $(1)/sbin
+	ln -snf usr/lib $(1)/lib
 endef
 else
 define SKELETON_USR_SYMLINKS_OR_DIRS
-	$(INSTALL) -d -m 0755 $(TARGET_DIR)/bin
-	$(INSTALL) -d -m 0755 $(TARGET_DIR)/sbin
-	$(INSTALL) -d -m 0755 $(TARGET_DIR)/lib
+	$(INSTALL) -d -m 0755 $(1)/bin
+	$(INSTALL) -d -m 0755 $(1)/sbin
+	$(INSTALL) -d -m 0755 $(1)/lib
 endef
 endif
-
-endif # ! custom skeleton
 
 define SKELETON_INSTALL_TARGET_CMDS
 	rsync -a --ignore-times $(SYNC_VCS_EXCLUSIONS) \
 		--chmod=u=rwX,go=rX --exclude .empty --exclude '*~' \
 		$(SKELETON_PATH)/ $(TARGET_DIR)/
-	$(SKELETON_USR_SYMLINKS_OR_DIRS)
+	$(call SKELETON_USR_SYMLINKS_OR_DIRS,$(TARGET_DIR))
 	ln -snf lib $(TARGET_DIR)/$(LIB_SYMLINK)
 	ln -snf lib $(TARGET_DIR)/usr/$(LIB_SYMLINK)
 	$(INSTALL) -m 0644 support/misc/target-dir-warning.txt \
