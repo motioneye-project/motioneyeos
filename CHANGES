@@ -1,3 +1,16 @@
+2015.11-rc3, Released November 26th, 2015
+
+	Fixes all over the tree.
+
+	Updated/fixed packages:
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#6872: gpsd: disabled on microblaze
+	#8321: invalid opcode error with minidlna and ffmpeg
+	#8336: Default systemd configuration fails to boot correctly in 2015-08
+	#8446: rpi-userland failed to build with glibc 2.22
+
 2015.11-rc2, Released November 19th, 2015
 
 	Fixes all over the tree.
