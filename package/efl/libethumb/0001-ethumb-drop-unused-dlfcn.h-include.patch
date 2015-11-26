@@ -1,0 +1,28 @@
+From f7eeddc88ce67c248ebb1e6b8a3cb74d61de42b4 Mon Sep 17 00:00:00 2001
+From: Peter Korsgaard <peter@korsgaard.com>
+Date: Thu, 26 Nov 2015 22:07:24 +0100
+Subject: [PATCH] ethumb: drop unused dlfcn.h include
+
+ethumb includes dlfcn.h even though it isn't used, breaking builds with
+purely static toolchains.
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ src/lib/ethumb.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/src/lib/ethumb.c b/src/lib/ethumb.c
+index d1453a0..48c6a2d 100644
+--- a/src/lib/ethumb.c
++++ b/src/lib/ethumb.c
+@@ -58,7 +58,6 @@ void *alloca (size_t);
+ #include <sys/types.h>
+ #include <sys/stat.h>
+ #include <dirent.h>
+-#include <dlfcn.h>
+ #include <ctype.h>
+ 
+ #ifdef HAVE_XATTR
+-- 
+2.1.4
+
