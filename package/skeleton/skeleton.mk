@@ -13,6 +13,9 @@ SKELETON_SOURCE =
 # on skeleton.
 SKELETON_ADD_TOOLCHAIN_DEPENDENCY = NO
 
+# The skeleton also handles the merged /usr case in the sysroot
+SKELETON_INSTALL_STAGING = YES
+
 ifeq ($(BR2_ROOTFS_SKELETON_CUSTOM),y)
 
 SKELETON_PATH = $(call qstrip,$(BR2_ROOTFS_SKELETON_CUSTOM_PATH))
@@ -83,6 +86,21 @@ define SKELETON_INSTALL_TARGET_CMDS
 	ln -snf lib $(TARGET_DIR)/usr/$(LIB_SYMLINK)
 	$(INSTALL) -m 0644 support/misc/target-dir-warning.txt \
 		$(TARGET_DIR_WARNING_FILE)
+endef
+
+# For the staging dir, we don't really care about /bin and /sbin.
+# But for consistency with the target dir, and to simplify the code,
+# we still handle them for the merged or non-merged /usr cases.
+# Since the toolchain is not yet available, the staging is not yet
+# populated, so we need to create the directories in /usr
+define SKELETON_INSTALL_STAGING_CMDS
+	$(INSTALL) -d -m 0755 $(STAGING_DIR)/usr/lib
+	$(INSTALL) -d -m 0755 $(STAGING_DIR)/usr/bin
+	$(INSTALL) -d -m 0755 $(STAGING_DIR)/usr/sbin
+	$(INSTALL) -d -m 0755 $(STAGING_DIR)/usr/include
+	$(call SKELETON_USR_SYMLINKS_OR_DIRS,$(STAGING_DIR))
+	ln -snf lib $(STAGING_DIR)/$(LIB_SYMLINK)
+	ln -snf lib $(STAGING_DIR)/usr/$(LIB_SYMLINK)
 endef
 
 SKELETON_TARGET_GENERIC_HOSTNAME = $(call qstrip,$(BR2_TARGET_GENERIC_HOSTNAME))
