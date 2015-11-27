@@ -51,11 +51,11 @@ menu "Compressors and decompressors"
 if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	source "package/gzip/Config.in"
 endif
-	source "package/infozip/Config.in"
 	source "package/lz4/Config.in"
 	source "package/lzip/Config.in"
 	source "package/lzop/Config.in"
 	source "package/xz/Config.in"
+	source "package/zip/Config.in"
 endmenu
 
 menu "Debugging, profiling and benchmark"

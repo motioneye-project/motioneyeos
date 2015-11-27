@@ -105,6 +105,18 @@ comment "----------------------------------------------------"
 endif
 
 ###############################################################################
+comment "Legacy options removed in 2016.02"
+
+config BR2_PACKAGE_INFOZIP
+	bool "infozip option has been renamed to zip"
+	select BR2_LEGACY
+	select BR2_PACKAGE_ZIP
+	help
+	  Info-Zip's Zip package has been renamed from infozip to zip,
+	  to avoid ambiguities with Info-Zip's UnZip which has been added
+	  in the unzip package.
+
+###############################################################################
 comment "Legacy options removed in 2015.11"
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_REAL

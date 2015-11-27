@@ -1,5 +1,5 @@
-config BR2_PACKAGE_INFOZIP
-	bool "infozip"
+config BR2_PACKAGE_ZIP
+	bool "zip"
 	help
 	  Zip is a compression and file packaging/archive utility.
 	  Although highly compatible both with PKWARE's PKZIP and
