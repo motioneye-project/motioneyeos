@@ -20,9 +20,12 @@ endef
 
 # ARM in thumb mode breaks debugging with asm optimizations
 # Microblaze asm optimizations are broken in general
+# MIPS R6 asm is not yet supported
 ifeq ($(BR2_ENABLE_DEBUG)$(BR2_ARM_INSTRUCTIONS_THUMB)$(BR2_ARM_INSTRUCTIONS_THUMB2),yy)
 POLARSSL_POST_CONFIGURE_HOOKS += POLARSSL_DISABLE_ASM
 else ifeq ($(BR2_microblaze),y)
+POLARSSL_POST_CONFIGURE_HOOKS += POLARSSL_DISABLE_ASM
+else ifeq ($(BR2_mips_32r6)$(BR2_mips_64r6),y)
 POLARSSL_POST_CONFIGURE_HOOKS += POLARSSL_DISABLE_ASM
 endif
 
