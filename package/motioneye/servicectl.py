@@ -23,10 +23,10 @@ from config import additional_config, additional_section
 
 
 FTP_CONF = '/data/etc/proftpd.conf'
-FTP_DISABLE_FILE = '/data/etc/no_S70proftpd'
+FTP_DISABLE_FILE = '/data/etc/no_S61proftpd'
 SMB_CONF = '/data/etc/smb.conf'
-SMB_DISABLE_FILE = '/data/etc/no_S91smb'
-SSH_DISABLE_FILE = '/data/etc/no_S50sshd'
+SMB_DISABLE_FILE = '/data/etc/no_S62smb'
+SSH_DISABLE_FILE = '/data/etc/no_S60sshd'
 
 
 def _get_service_settings():
