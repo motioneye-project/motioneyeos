@@ -2,7 +2,18 @@
 
 	Fixes all over the tree.
 
-	Updated/fixed packages:
+	We have a new modern website!
+
+	Updated/fixed packages: apitrace, audiofile, autossh, bullet,
+	c-ares, collectd, conntrack-tools, cryptodev-linux, dropbear,
+	fastd, gmp, gpsd, gst-plugins-bad, gst-plugins-base,
+	gst-plugins-good, gst-plugins-ugly, gstreamer, gstreamer1,
+	guile, iodine, iproute2, jimtcl, kompexsqlite, libethumb,
+	libfreeimage, libgsasl, libgtk3, libxml2, localedef,
+	lttng-tools, macchanger, mongrel2, mpd, openntpd, openssl,
+	oprofile, pcre, qt5base, quagga, rpi-userland, sconeserver,
+	sdl, spidev_test, sqlite, strongswan, ustr, xapp_sessreg,
+	yajl, zmqpp
 
 	Issues resolved (http://bugs.uclibc.org):
 
