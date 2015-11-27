@@ -1,0 +1,23 @@
+Fix conflicting type qualifiers errors when building with musl.
+
+Signed-off-by: Sergio Prado <sergio.prado@e-labworks.com>
+---
+ host_applications/linux/apps/raspicam/RaspiVidYUV.c | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/host_applications/linux/apps/raspicam/RaspiVidYUV.c b/host_applications/linux/apps/raspicam/RaspiVidYUV.c
+index b340d63c913f..13e6a6ccf5bf 100644
+--- a/host_applications/linux/apps/raspicam/RaspiVidYUV.c
++++ b/host_applications/linux/apps/raspicam/RaspiVidYUV.c
+@@ -106,8 +106,6 @@ const int ABORT_INTERVAL = 100; // ms
+ /// Run/record forever
+ #define WAIT_METHOD_FOREVER        4
+ 
+-extern FILE *stderr, *stdout;
+-
+ int mmal_status_to_int(MMAL_STATUS_T status);
+ static void signal_handler(int signal_number);
+ 
+-- 
+1.9.1
+
