@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LUV_VERSION = 1.7.4-4
+LUV_VERSION = 1.7.4-5
 LUV_SITE = https://github.com/luvit/luv/releases/download/$(LUV_VERSION)
 LUV_LICENSE = Apache-2.0
 LUV_LICENSE_FILES = LICENSE.txt
