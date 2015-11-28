@@ -109,6 +109,10 @@ endef
 COREUTILS_POST_INSTALL_TARGET_HOOKS += COREUTILS_CLEANUP_BIN
 endif
 
+ifeq ($(BR2_STATIC_LIBS),y)
+COREUTILS_CONF_OPTS += --enable-no-install-program=stdbuf
+endif
+
 define COREUTILS_CLEANUP
 	# link for archaic shells
 	ln -fs test $(TARGET_DIR)/usr/bin/[
