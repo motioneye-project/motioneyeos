@@ -104,6 +104,13 @@ config BR2_arm1176jzf_s
 	select BR2_ARM_CPU_HAS_THUMB
 	select BR2_ARM_CPU_ARMV6
 	select BR2_ARCH_HAS_MMU_OPTIONAL
+config BR2_arm11mpcore
+	bool "mpcore"
+	select BR2_ARM_CPU_HAS_ARM
+	select BR2_ARM_CPU_MAYBE_HAS_VFPV2
+	select BR2_ARM_CPU_HAS_THUMB
+	select BR2_ARM_CPU_ARMV6
+	select BR2_ARCH_HAS_MMU_OPTIONAL
 config BR2_cortex_a5
 	bool "cortex-A5"
 	select BR2_ARM_CPU_HAS_ARM
@@ -430,6 +437,8 @@ config BR2_GCC_TARGET_CPU
 	default "arm1136jf-s"	if BR2_arm1136jf_s
 	default "arm1176jz-s"	if BR2_arm1176jz_s
 	default "arm1176jzf-s"	if BR2_arm1176jzf_s
+	default "mpcore"	if BR2_arm11mpcore && BR2_ARM_CPU_HAS_VFPV2
+	default "mpcorenovfp"	if BR2_arm11mpcore
 	default "cortex-a5"	if BR2_cortex_a5
 	default "cortex-a7"	if BR2_cortex_a7
 	default "cortex-a8"	if BR2_cortex_a8
