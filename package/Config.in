@@ -446,6 +446,7 @@ endif
 	source "package/ti-utils/Config.in"
 	source "package/triggerhappy/Config.in"
 	source "package/uboot-tools/Config.in"
+	source "package/ubus/Config.in"
 	source "package/udev/Config.in"
 	source "package/udisks/Config.in"
 	source "package/usb_modeswitch/Config.in"
