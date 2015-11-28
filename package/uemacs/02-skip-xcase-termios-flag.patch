@@ -1,0 +1,16 @@
+From termios(3): "XCASE (not in POSIX; not supported under Linux)".
+musl does not define it, and even if defined it's a no-op.
+
+Signed-off-by: Alex Suykov <alex.suykov@gmail.com>
+
+--- a/posix.c
++++ b/posix.c
+@@ -65,7 +65,7 @@
+ 	    ~(OPOST | ONLCR | OLCUC | OCRNL | ONOCR | ONLRET);
+ 
+ 	/* No signal handling, no echo etc */
+-	ntermios.c_lflag &= ~(ISIG | ICANON | XCASE | ECHO | ECHOE | ECHOK
++	ntermios.c_lflag &= ~(ISIG | ICANON | ECHO | ECHOE | ECHOK
+ 			      | ECHONL | NOFLSH | TOSTOP | ECHOCTL |
+ 			      ECHOPRT | ECHOKE | FLUSHO | PENDIN | IEXTEN);
+ 
