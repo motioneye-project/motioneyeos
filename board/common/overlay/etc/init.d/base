@@ -5,7 +5,7 @@ board_sn=$(/etc/init.d/boardsn)
 board_name=$(cat /etc/board)
 
 msg_begin() {
-    echo -n "* $1: "
+    echo -n " * $1: "
 }
 
 msg_done() {
