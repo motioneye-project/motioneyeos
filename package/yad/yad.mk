@@ -13,7 +13,7 @@ YAD_DEPENDENCIES = host-intltool host-pkgconf
 
 YAD_CONF_OPTS = --enable-html=no
 
-ifeq ($(BR2_PACKAGE_LIBGTK3),y)
+ifeq ($(BR2_PACKAGE_LIBGTK3_X11),y)
 YAD_DEPENDENCIES += libgtk3
 YAD_CONF_OPTS += --with-gtk=gtk3
 else
