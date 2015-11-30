@@ -8,6 +8,10 @@ NETSNIFF_NG_VERSION = v0.5.9
 NETSNIFF_NG_SITE = $(call github,netsniff-ng,netsniff-ng,$(NETSNIFF_NG_VERSION))
 NETSNIFF_NG_LICENSE = GPLv2
 NETSNIFF_NG_LICENSE_FILES = README COPYING
+# Prevent netsniff-ng configure script from finding a host installed nacl
+NETSNIFF_NG_CONF_ENV = \
+	NACL_INC_DIR=/dev/null \
+	NACL_LIB_DIR=/dev/null
 NETSNIFF_NG_DEPENDENCIES = \
 	libnl libpcap libcli libnetfilter_conntrack \
 	liburcu libnet
@@ -15,6 +19,7 @@ NETSNIFF_NG_DEPENDENCIES = \
 # hand-written configure script and makefile
 define NETSNIFF_NG_CONFIGURE_CMDS
 	(cd $(@D); \
+		$(NETSNIFF_NG_CONF_ENV) \
 		$(TARGET_CONFIGURE_ARGS) \
 		$(TARGET_CONFIGURE_OPTS) \
 		./configure \
