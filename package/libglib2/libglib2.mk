@@ -85,6 +85,11 @@ else
 LIBGLIB2_CONF_ENV += glib_cv_have_qsort_r=yes
 endif
 
+# glib/valgrind.h contains inline asm not compatible with thumb1
+ifeq ($(BR2_ARM_INSTRUCTIONS_THUMB),y)
+LIBGLIB2_CONF_ENV += CFLAGS="$(TARGET_CFLAGS) -marm"
+endif
+
 HOST_LIBGLIB2_CONF_OPTS = \
 	--disable-coverage \
 	--disable-dtrace \
