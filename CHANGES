@@ -1,3 +1,21 @@
+2015.11, Released November 30th, 2015
+
+	Minor fixes.
+
+	Merged/seperate /usr handling is now also performed for
+	staging so cross-gdb / gdbserver can find the libraries.
+
+	Updated/fixed packages: autossh, conntrack-tools, dcron,
+	espeak, gcc, glmark2, gpsd, gstreamer1, libglib2, libsigsegv,
+	libsoc, libv4l, minidlna, mongrel2, opencv, polarssl,
+	rpi-userland, rubix, skeleton, tovid, uemacs, valgrind, yad,
+	zmqpp
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#8441: Invalid directory for X11 fonts in target (RPi2)
+	#8491: libglib2 2.46.1 not Building for armv5 on 2015.11-rc3
+
 2015.11-rc3, Released November 26th, 2015
 
 	Fixes all over the tree.
