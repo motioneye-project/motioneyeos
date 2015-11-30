@@ -316,6 +316,7 @@ comment "X window managers"
 	source "package/fluxbox/Config.in"
 	source "package/matchbox/Config.in"
 	source "package/metacity/Config.in"
+	source "package/openbox/Config.in"
 endmenu
 
 menu "Hardware handling"
