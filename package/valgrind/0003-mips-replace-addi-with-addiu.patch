@@ -1,0 +1,51 @@
+mips: replace addi with addiu
+
+ADDI instruction has been removed in R6 so let's use ADDIU instead.
+
+This patch has been sent upstream:
+
+  https://bugs.kde.org/show_bug.cgi?id=356112
+
+Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+
+Index: valgrind/coregrind/m_dispatch/dispatch-mips32-linux.S
+===================================================================
+--- valgrind/coregrind/m_dispatch/dispatch-mips32-linux.S	(revision 15740)
++++ valgrind/coregrind/m_dispatch/dispatch-mips32-linux.S	(working copy)
+@@ -196,7 +196,7 @@
+         addu $13, $13, $14
+ 
+         lw $12, 0($13) /* t3 = VG_(tt_fast)[hash] :: ULong* */
+-        addi $13, $13, 4
++        addiu $13, $13, 4
+         lw $25, 0($13) /* little-endian, so comparing 1st 32bit word */
+         nop
+ 
+Index: valgrind/coregrind/m_libcsetjmp.c
+===================================================================
+--- valgrind/coregrind/m_libcsetjmp.c	(revision 15740)
++++ valgrind/coregrind/m_libcsetjmp.c	(working copy)
+@@ -594,7 +594,7 @@
+ /* Checking whether second argument is zero. */
+ "   bnez $a1, 1f                \n\t"
+ "   nop                         \n\t"
+-"   addi $a1, $a1, 1            \n\t"  /* We must return 1 if val=0. */
++"   addiu $a1, $a1, 1           \n\t"  /* We must return 1 if val=0. */
+ "1:                             \n\t"
+ "   move $v0, $a1               \n\t"  /* Return value of second argument. */
+ "   j    $ra                    \n\t"
+Index: valgrind/coregrind/m_trampoline.S
+===================================================================
+--- valgrind/coregrind/m_trampoline.S	(revision 15740)
++++ valgrind/coregrind/m_trampoline.S	(working copy)
+@@ -1254,8 +1254,8 @@
+       //la $a0, string
+       j strlen_cond
+    strlen_loop:
+-      addi $v0, $v0, 1
+-      addi $a0, $a0, 1
++      addiu $v0, $v0, 1
++      addiu $a0, $a0, 1
+    strlen_cond:
+       lbu $t0, ($a0)
+       bne $t0, $zero, strlen_loop
