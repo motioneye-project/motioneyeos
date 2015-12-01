@@ -7,15 +7,10 @@ Subject: [PATCH 2/2] Fix jimtcl auto configuration to force static library
  option in buildroot project.
 
 Signed-off-by: Claudio Laurita <claudio.laurita@integrazionetotale.it>
----
- jimtcl/auto.def | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/jimtcl/auto.def b/jimtcl/auto.def
-index ddb0c1e..929ade0 100644
 --- a/jimtcl/auto.def
 +++ b/jimtcl/auto.def
-@@ -181,12 +181,8 @@ if {[opt-bool references]} {
+@@ -194,12 +194,8 @@
      msg-result "Enabling references"
      define JIM_REFERENCES
  }
@@ -27,9 +22,6 @@ index ddb0c1e..929ade0 100644
 -}
 +msg-result "Building static library"
 +define JIM_STATICLIB
+ define LIBSOEXT [format [get-define SH_SOEXTVER] [format %.2f [expr {[get-define JIM_VERSION] / 100.0}]]]
  define JIM_INSTALL [opt-bool install-jim]
- 
- # Attributes of the extensions
--- 
-2.1.3
-
+ define JIM_DOCS [opt-bool docs]
