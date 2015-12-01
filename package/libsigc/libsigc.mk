@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-LIBSIGC_VERSION_MAJOR = 2.2
-LIBSIGC_VERSION = $(LIBSIGC_VERSION_MAJOR).11
+LIBSIGC_VERSION_MAJOR = 2.6
+LIBSIGC_VERSION = $(LIBSIGC_VERSION_MAJOR).2
 LIBSIGC_SOURCE = libsigc++-$(LIBSIGC_VERSION).tar.xz
 LIBSIGC_SITE = http://ftp.gnome.org/pub/GNOME/sources/libsigc++/$(LIBSIGC_VERSION_MAJOR)
 LIBSIGC_DEPENDENCIES = host-m4

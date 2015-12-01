@@ -4,24 +4,22 @@
 #
 ################################################################################
 
-GNUTLS_VERSION_MAJOR = 3.3
-GNUTLS_VERSION = $(GNUTLS_VERSION_MAJOR).18
+GNUTLS_VERSION_MAJOR = 3.4
+GNUTLS_VERSION = $(GNUTLS_VERSION_MAJOR).7
 GNUTLS_SOURCE = gnutls-$(GNUTLS_VERSION).tar.xz
 GNUTLS_SITE = ftp://ftp.gnutls.org/gcrypt/gnutls/v$(GNUTLS_VERSION_MAJOR)
 GNUTLS_LICENSE = GPLv3+ LGPLv2.1+
 GNUTLS_LICENSE_FILES = COPYING COPYING.LESSER
-GNUTLS_DEPENDENCIES = host-pkgconf nettle pcre \
-	$(if $(BR2_PACKAGE_P11_KIT),p11-kit) \
-	$(if $(BR2_PACKAGE_LIBIDN),libidn) \
-	$(if $(BR2_PACKAGE_LIBTASN1),libtasn1) \
-	$(if $(BR2_PACKAGE_ZLIB),zlib)
+GNUTLS_DEPENDENCIES = host-pkgconf libtasn1 nettle pcre
 GNUTLS_CONF_OPTS = \
-	--with-libnettle-prefix=$(STAGING_DIR)/usr \
-	--with-librt-prefix=$(STAGING_DIR) \
-	--disable-rpath \
 	--disable-doc \
 	--disable-guile \
-	--enable-local-libopts
+	--disable-libdane \
+	--disable-rpath \
+	--enable-local-libopts \
+	--with-libnettle-prefix=$(STAGING_DIR)/usr \
+	--with-librt-prefix=$(STAGING_DIR) \
+	--without-tpm
 GNUTLS_CONF_ENV = gl_cv_socket_ipv6=yes \
 	ac_cv_header_wchar_h=$(if $(BR2_USE_WCHAR),yes,no) \
 	gt_cv_c_wchar_t=$(if $(BR2_USE_WCHAR),yes,no) \
@@ -52,6 +50,27 @@ GNUTLS_CONF_OPTS += $(if $(BR2_USE_MMU),,--disable-crywrap)
 ifeq ($(BR2_PACKAGE_CRYPTODEV_LINUX),y)
 GNUTLS_CONF_OPTS += --enable-cryptodev
 GNUTLS_DEPENDENCIES += cryptodev-linux
+endif
+
+ifeq ($(BR2_PACKAGE_LIBIDN),y)
+GNUTLS_CONF_OPTS += --with-idn
+GNUTLS_DEPENDENCIES += libidn
+else
+GNUTLS_CONF_OPTS += --without-idn
+endif
+
+ifeq ($(BR2_PACKAGE_P11_KIT),y)
+GNUTLS_CONF_OPTS += --with-p11-kit
+GNUTLS_DEPENDENCIES += p11-kit
+else
+GNUTLS_CONF_OPTS += --without-p11-kit
+endif
+
+ifeq ($(BR2_PACKAGE_ZLIB),y)
+GNUTLS_CONF_OPTS += --with-zlib
+GNUTLS_DEPENDENCIES += zlib
+else
+GNUTLS_CONF_OPTS += --without-zlib
 endif
 
 # Some examples in doc/examples use wchar

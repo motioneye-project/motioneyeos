@@ -147,7 +147,17 @@ define PYTHON3_TOUCH_GRAMMAR_FILES
 	touch $(@D)/Include/graminit.h $(@D)/Python/graminit.c
 endef
 
+# This prevents the Python Makefile from regenerating the
+# Python/importlib.h header if Lib/importlib/_bootstrap.py has changed
+# because its generation is broken in a cross-compilation environment
+# and importlib.h is not used.
+
+define PYTHON3_TOUCH_IMPORTLIB_H
+	touch $(@D)/Python/importlib.h
+endef
+
 PYTHON3_POST_PATCH_HOOKS += PYTHON3_TOUCH_GRAMMAR_FILES
+PYTHON3_POST_PATCH_HOOKS += PYTHON3_TOUCH_IMPORTLIB_H
 
 #
 # Remove useless files. In the config/ directory, only the Makefile

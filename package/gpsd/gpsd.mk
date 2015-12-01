@@ -67,6 +67,12 @@ else
 GPSD_SCONS_OPTS += bluez=no
 endif
 
+# If pps-tools is available, build it before so the package can use it
+# (HAVE_SYS_TIMEPPS_H).
+ifeq ($(BR2_PACKAGE_PPS_TOOLS),y)
+GPSD_DEPENDENCIES += pps-tools
+endif
+
 ifeq ($(BR2_PACKAGE_DBUS_GLIB),y)
 GPSD_SCONS_OPTS += dbus_export=yes
 GPSD_DEPENDENCIES += dbus-glib

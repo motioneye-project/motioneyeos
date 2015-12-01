@@ -43,7 +43,7 @@ if [ -n "$(${GIT} ls-remote "${repo}" "${cset}" 2>&1)" ]; then
 fi
 if [ ${git_done} -eq 0 ]; then
     printf "Doing full clone\n"
-    ${GIT} clone ${verbose} --bare "${repo}" "${basename}"
+    ${GIT} clone ${verbose} --mirror "${repo}" "${basename}"
 fi
 
 GIT_DIR="${basename}" \

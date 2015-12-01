@@ -1,0 +1,29 @@
+Subject: [PATCH] topology: Add missing include sys/stat.h
+
+Necessary for proper definitions of S_IRUSR & co.  Otherwise it
+results in compile errors with old glibc:
+  parser.c: In function 'snd_tplg_build_file':
+  parser.c:262: error: 'S_IRUSR' undeclared (first use in this function)
+  parser.c:262: error: (Each undeclared identifier is reported only once
+  parser.c:262: error: for each function it appears in.)
+
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+---
+Status: upstream
+
+diff --git a/src/topology/parser.c b/src/topology/parser.c
+index 80a0ae0..18bb9c7 100644
+--- a/src/topology/parser.c
++++ b/src/topology/parser.c
+@@ -16,6 +16,7 @@
+            Liam Girdwood <liam.r.girdwood@linux.intel.com>
+ */
+ 
++#include <sys/stat.h>
+ #include "list.h"
+ #include "tplg_local.h"
+ 
+-- 
+1.7.11.7
+

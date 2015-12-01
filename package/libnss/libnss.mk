@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBNSS_VERSION = 3.20.1
+LIBNSS_VERSION = 3.21
 LIBNSS_SOURCE = nss-$(LIBNSS_VERSION).tar.gz
 LIBNSS_SITE = https://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_$(subst .,_,$(LIBNSS_VERSION))_RTM/src
 LIBNSS_DISTDIR = dist
@@ -19,6 +19,7 @@ LIBNSS_BUILD_VARS = \
 	NSPR_LIB_DIR=$(STAGING_DIR)/usr/lib \
 	BUILD_OPT=1 \
 	NS_USE_GCC=1 \
+	NSS_DISABLE_GTESTS=1 \
 	NSS_USE_SYSTEM_SQLITE=1 \
 	NSS_ENABLE_ECC=1 \
 	NATIVE_CC="$(HOSTCC)" \

@@ -50,6 +50,10 @@ config BR2_PACKAGE_ALSA_UTILS_APLAY
 	select BR2_PACKAGE_ALSA_LIB_PCM
 	bool "aplay/arecord"
 
+config BR2_PACKAGE_ALSA_UTILS_BAT
+	select BR2_PACKAGE_FFTW
+	bool "bat"
+
 config BR2_PACKAGE_ALSA_UTILS_IECSET
 	select BR2_PACKAGE_ALSA_LIB_PCM
 	bool "iecset"

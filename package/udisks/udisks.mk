@@ -22,12 +22,7 @@ UDISKS_DEPENDENCIES = 	\
 
 UDISKS_CONF_OPTS = --disable-remote-access --disable-man-pages
 
-# When eudev is used as the udev provider, libgudev is automatically
-# provided as it is part of eudev. However, when systemd is used as the
-# udev provider, libgudev is not provided, and needs to be built
-# separately. This is why we select the libgudev package only if systemd
-# is used.
-ifeq ($(BR2_PACKAGE_SYSTEMD),y)
+ifeq ($(BR2_PACKAGE_LIBGUDEV),y)
 UDISKS_DEPENDENCIES += libgudev
 endif
 

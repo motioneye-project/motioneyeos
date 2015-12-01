@@ -27,6 +27,15 @@ HOST_GCC_FINAL_SUBDIR = build
 
 HOST_GCC_FINAL_PRE_CONFIGURE_HOOKS += HOST_GCC_CONFIGURE_SYMLINK
 
+# We want to always build the static variants of all the gcc libraries,
+# of which libstdc++, libgomp, libmudflap...
+# To do so, we can not just pass --enable-static to override the generic
+# --disable-static flag, otherwise gcc fails to build some of those
+# libraries, see;
+#   http://lists.busybox.net/pipermail/buildroot/2013-October/080412.html
+#
+# So we must completely override the generic commands and provide our own.
+#
 define  HOST_GCC_FINAL_CONFIGURE_CMDS
 	(cd $(HOST_GCC_FINAL_SRCDIR) && rm -rf config.cache; \
 		$(HOST_CONFIGURE_OPTS) \

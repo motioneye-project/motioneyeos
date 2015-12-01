@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-NANO_VERSION = 2.4.2
+NANO_VERSION = 2.4.3
 NANO_SITE = $(BR2_GNU_MIRROR)/nano
 NANO_LICENSE = GPLv3+
 NANO_LICENSE_FILES = COPYING

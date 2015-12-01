@@ -63,7 +63,7 @@ ifeq ($(BR2_PACKAGE_DHCPCD),y)
 NETWORK_MANAGER_CONF_OPTS += --with-dhcpcd=/sbin/dhcpcd
 endif
 
-ifeq ($(BR2_INIT_SYSTEMD),y)
+ifeq ($(BR2_PACKAGE_LIBGUDEV),y)
 NETWORK_MANAGER_DEPENDENCIES += libgudev
 endif
 
