@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-VNSTAT_VERSION = 1.12
+VNSTAT_VERSION = 1.14
 VNSTAT_SITE = http://humdi.net/vnstat
 VNSTAT_LICENSE = GPLv2
 VNSTAT_LICENSE_FILES = COPYING
