@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-LIBHTTPPARSER_VERSION = v2.5.0
-LIBHTTPPARSER_SITE = $(call github,joyent,http-parser,$(LIBHTTPPARSER_VERSION))
+LIBHTTPPARSER_VERSION = v2.6.0
+LIBHTTPPARSER_SITE = $(call github,nodejs,http-parser,$(LIBHTTPPARSER_VERSION))
 LIBHTTPPARSER_INSTALL_STAGING = YES
 LIBHTTPPARSER_LICENSE = MIT
 LIBHTTPPARSER_LICENSE_FILES = LICENSE-MIT
