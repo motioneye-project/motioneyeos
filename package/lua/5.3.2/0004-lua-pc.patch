@@ -14,7 +14,7 @@ Index: b/etc/lua.pc
 +# grep '^V=' ../Makefile
 +V= 5.3
 +# grep '^R=' ../Makefile
-+R= 5.3.0
++R= 5.3.2
 +
 +# grep '^INSTALL_.*=' ../Makefile | sed 's/INSTALL_TOP/prefix/'
 +prefix= /usr
