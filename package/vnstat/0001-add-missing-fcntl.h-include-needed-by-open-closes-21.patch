@@ -1,0 +1,28 @@
+From a222434e096ce42c7937839f9666691f2b8a612f Mon Sep 17 00:00:00 2001
+From: Teemu Toivola <git@humdi.net>
+Date: Sat, 27 Jun 2015 18:29:22 +0300
+Subject: [PATCH] add missing fcntl.h include needed by open(), closes #21
+
+[Backport from upstream commit 964d7cd62b8626d51bf7ce06564aa9bd1d2b4d4c.
+Fixes undeclared symbol issues when building with musl.]
+
+Signed-off-by: Rodrigo Rebello <rprebello@gmail.com>
+---
+ src/common.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/common.h b/src/common.h
+index 7616e55..eb0b61f 100644
+--- a/src/common.h
++++ b/src/common.h
+@@ -22,6 +22,7 @@
+ #include <pwd.h>
+ #include <grp.h>
+ #include <libgen.h>
++#include <fcntl.h>
+ 
+ #if defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__) || defined(__APPLE__) || defined(__FreeBSD_kernel__)
+ #include <sys/param.h>
+-- 
+2.1.4
+
