@@ -14,7 +14,7 @@ main() {
     local file ret
 
     # Remove duplicate and trailing '/' for proper match
-    hostdir="$( sed -r -e 's:/+:/:g;' <<<"${hostdir}" )"
+    hostdir="$( sed -r -e 's:/+:/:g; s:/$::;' <<<"${hostdir}" )"
 
     ret=0
     while read file; do
