@@ -26,6 +26,7 @@ WIRESHARK_CONF_OPTS = \
 	--enable-static=no \
 	--with-gnutls=no \
 	--with-libsmi=no \
+	--with-lua=no \
 	--includedir=$(STAGING_DIR)/usr/include
 
 $(eval $(autotools-package))
