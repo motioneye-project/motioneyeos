@@ -62,6 +62,13 @@ else
 WIREHARK_CONF_OPTS += --without-c-ares
 endif
 
+ifeq ($(BR2_PACKAGE_GEOIP),y)
+WIRESHARK_CONF_OPTS += --with-geoip=$(STAGING_DIR)/usr
+WIRESHARK_DEPENDENCIES += geoip
+else
+WIRESHARK_CONF_OPTS += --without-geoip
+endif
+
 ifeq ($(BR2_PACKAGE_GNUTLS),y)
 WIRESHARK_CONF_OPTS += --with-gnutls=yes
 WIRESHARK_DEPENDENCIES += gnutls
