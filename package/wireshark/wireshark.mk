@@ -20,7 +20,6 @@ WIRESHARK_AUTORECONF = YES
 # wireshark adds -I$includedir to CFLAGS, causing host/target headers mixup.
 # Work around it by pointing includedir at staging
 WIRESHARK_CONF_OPTS = \
-	--disable-wireshark \
 	--without-krb5 \
 	--disable-usr-local \
 	--enable-static=no \
@@ -28,5 +27,34 @@ WIRESHARK_CONF_OPTS = \
 	--with-libsmi=no \
 	--with-lua=no \
 	--includedir=$(STAGING_DIR)/usr/include
+
+# wireshark GUI options
+ifeq ($(BR2_PACKAGE_LIBGTK3),y)
+WIRESHARK_CONF_OPTS += --with-gtk3=yes
+WIRESHARK_DEPENDENCIES += libgtk3
+else ifeq ($(BR2_PACKAGE_LIBGTK2),y)
+WIRESHARK_CONF_OPTS += --with-gtk2=yes
+WIRESHARK_DEPENDECIES += libgtk2
+else
+WIRESHARK_CONF_OPTS += --with-gtk3=no --with-gtk2=no
+endif
+
+# Qt4 needs accessibility, we don't support it
+ifeq ($(BR2_PACKAGE_QT5BASE_WIDGETS),y)
+WIRESHARK_CONF_OPTS += --with-qt=5
+WIRESHARK_DEPENDENCIES += qt5base
+# Seems it expects wrappers and passes a -qt=X parameter for version
+WIRESHARK_MAKE_OPTS += \
+	MOC="$(HOST_DIR)/usr/bin/moc" \
+	RCC="$(HOST_DIR)/usr/bin/rcc" \
+	UIC="$(HOST_DIR)/usr/bin/uic"
+else
+WIRESHARK_CONF_OPTS += --with-qt=no
+endif
+
+# No GUI at all
+ifeq ($(BR2_PACKAGE_LIBGTK2)$(BR2_PACKAGE_LIBGTK3)$(BR2_PACKAGE_QT5BASE_WIDGETS),)
+WIRESHARK_CONF_OPTS += --disable-wireshark
+endif
 
 $(eval $(autotools-package))
