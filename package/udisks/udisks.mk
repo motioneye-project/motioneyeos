@@ -18,13 +18,10 @@ UDISKS_DEPENDENCIES = 	\
 	polkit		\
 	parted		\
 	lvm2		\
-	libatasmart
+	libatasmart	\
+	libgudev
 
 UDISKS_CONF_OPTS = --disable-remote-access --disable-man-pages
-
-ifeq ($(BR2_PACKAGE_LIBGUDEV),y)
-UDISKS_DEPENDENCIES += libgudev
-endif
 
 ifeq ($(BR2_PACKAGE_UDISKS_LVM2),y)
 UDISKS_CONF_OPTS += --enable-lvm2

@@ -14,10 +14,6 @@ HIDAPI_AUTORECONF = YES
 HIDAPI_LICENSE = GPLv3 or BSD-3c or HIDAPI license
 HIDAPI_LICENSE_FILES = LICENSE.txt LICENSE-gpl3.txt LICENSE-bsd.txt LICENSE-orig.txt
 
-HIDAPI_DEPENDENCIES = libusb
-
-ifeq ($(BR2_PACKAGE_LIBGUDEV),y)
-HIDAPI_DEPENDENCIES += libgudev
-endif
+HIDAPI_DEPENDENCIES = libusb libgudev
 
 $(eval $(autotools-package))

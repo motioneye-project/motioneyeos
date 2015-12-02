@@ -12,12 +12,7 @@ config BR2_PACKAGE_UDISKS
 	select BR2_PACKAGE_PARTED
 	select BR2_PACKAGE_LVM2
 	select BR2_PACKAGE_LIBATASMART
-	# When eudev is used as the udev provider, libgudev is automatically
-	# provided as it is part of eudev. However, when systemd is used as
-	# the udev provider, libgudev is not provided, and needs to be built
-	# separately. This is why we select the libgudev package only if
-	# systemd is used.
-	select BR2_PACKAGE_LIBGUDEV if BR2_INIT_SYSTEMD
+	select BR2_PACKAGE_LIBGUDEV
 	help
 	  The udisks project provides
 

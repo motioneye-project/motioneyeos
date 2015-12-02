@@ -3,12 +3,7 @@ config BR2_PACKAGE_HIDAPI
 	depends on BR2_PACKAGE_HAS_UDEV
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libusb
 	select BR2_PACKAGE_LIBUSB
-	# When eudev is used as the udev provider, libgudev is
-	# automatically provided as it is part of eudev. However, when
-	# systemd is used as the udev provider, libgudev is not
-	# provided, and needs to be built separately. This is why we
-	# select the libgudev package only if systemd is used.
-	select BR2_PACKAGE_LIBGUDEV if BR2_INIT_SYSTEMD
+	select BR2_PACKAGE_LIBGUDEV
 	help
 	  HIDAPI is a multi-platform library which allows an application
 	  to interface with USB and Bluetooth HID-Class devices on
