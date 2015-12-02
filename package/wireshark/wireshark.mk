@@ -57,6 +57,13 @@ ifeq ($(BR2_PACKAGE_LIBGTK2)$(BR2_PACKAGE_LIBGTK3)$(BR2_PACKAGE_QT5BASE_WIDGETS)
 WIRESHARK_CONF_OPTS += --disable-wireshark
 endif
 
+ifeq ($(BR2_PACKAGE_C_ARES),y)
+WIRESHARK_CONF_OPTS += --with-c-ares=$(STAGING_DIR)/usr
+WIRESHARK_DEPENDENCIES += c-ares
+else
+WIREHARK_CONF_OPTS += --without-c-ares
+endif
+
 ifeq ($(BR2_PACKAGE_LIBNL),y)
 WIRESHARK_CONF_OPTS += --with-libnl
 WIRESHARK_DEPENDENCIES += libnl
