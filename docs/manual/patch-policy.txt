@@ -106,6 +106,10 @@ upstream SCM software to generate the patch set.
 Otherwise, concatenate the header with the output of the
 +diff -purN package-version.orig/ package-version/+ command.
 
+If you update an existing patch (e.g. when bumping the package version),
+make sure the existing From header and Signed-off-by tags are not
+removed, but do update the rest of the patch comment when appropriate.
+
 At the end, the patch should look like:
 
 ---------------
