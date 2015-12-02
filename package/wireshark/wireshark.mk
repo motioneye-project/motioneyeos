@@ -9,9 +9,8 @@ WIRESHARK_SOURCE = wireshark-$(WIRESHARK_VERSION).tar.bz2
 WIRESHARK_SITE = http://www.wireshark.org/download/src/all-versions
 WIRESHARK_LICENSE = wireshark license
 WIRESHARK_LICENSE_FILES = COPYING
-WIRESHARK_DEPENDENCIES = host-pkgconf libpcap libgcrypt libglib2
+WIRESHARK_DEPENDENCIES = host-pkgconf libpcap libglib2
 WIRESHARK_CONF_ENV = \
-	LIBGCRYPT_CONFIG=$(STAGING_DIR)/usr/bin/libgcrypt-config \
 	ac_cv_path_PCAP_CONFIG=$(STAGING_DIR)/usr/bin/pcap-config
 
 # patch touching configure.ac
@@ -62,6 +61,14 @@ WIRESHARK_CONF_OPTS += --with-c-ares=$(STAGING_DIR)/usr
 WIRESHARK_DEPENDENCIES += c-ares
 else
 WIREHARK_CONF_OPTS += --without-c-ares
+endif
+
+ifeq ($(BR2_PACKAGE_LIBGCRYPT),y)
+WIRESHARK_CONF_ENV = LIBGCRYPT_CONFIG=$(STAGING_DIR)/usr/bin/libgcrypt-config
+WIRESHARK_CONF_OPTS += --with-gcrypt=yes
+WIRESHARK_DEPENDENCIES += libgcrypt
+else
+WIRESHARK_CONF_OPTS += --with-gcrypt=no
 endif
 
 ifeq ($(BR2_PACKAGE_LIBNL),y)
