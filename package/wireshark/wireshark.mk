@@ -92,4 +92,11 @@ else
 WIRESHARK_CONF_OPTS += --without-libnl
 endif
 
+ifeq ($(BR2_PACKAGE_SBC),y)
+WIRESHARK_CONF_OPTS += --with-sbc=yes
+WIRESHARK_DEPENDENCIES += sbc
+else
+WIRESHARK_CONF_OPTS += --with-sbc=no
+endif
+
 $(eval $(autotools-package))
