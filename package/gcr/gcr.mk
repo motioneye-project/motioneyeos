@@ -8,7 +8,7 @@ GCR_VERSION_MAJOR = 3.18
 GCR_VERSION = $(GCR_VERSION_MAJOR).0
 GCR_SITE = http://ftp.acc.umu.se/pub/gnome/sources/gcr/$(GCR_VERSION_MAJOR)
 GCR_SOURCE = gcr-$(GCR_VERSION).tar.xz
-GCR_DEPENDENCIES = host-pkgconf libgcrypt libglib2 p11-kit
+GCR_DEPENDENCIES = host-intltool host-pkgconf libgcrypt libglib2 p11-kit
 GCR_INSTALL_STAGING = YES
 GCR_CONF_ENV = ac_cv_path_GNUPG=/usr/bin/gpg2
 GCR_CONF_OPTS = \
