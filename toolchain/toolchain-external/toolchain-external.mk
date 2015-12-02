@@ -237,6 +237,13 @@ TOOLCHAIN_EXTERNAL_CFLAGS += -msoft-float
 TOOLCHAIN_EXTERNAL_TOOLCHAIN_WRAPPER_ARGS += -DBR_SOFTFLOAT=1
 endif
 
+# musl does not provide a sys/queue.h implementation, so add the
+# netbsd-queue package that will install a sys/queue.h file in the
+# staging directory based on the NetBSD implementation.
+ifeq ($(BR2_TOOLCHAIN_USES_MUSL),y)
+TOOLCHAIN_EXTERNAL_DEPENDENCIES += netbsd-queue
+endif
+
 # The Linaro ARMhf toolchain expects the libraries in
 # {/usr,}/lib/arm-linux-gnueabihf, but Buildroot copies them to
 # {/usr,}/lib, so we need to create a symbolic link.
