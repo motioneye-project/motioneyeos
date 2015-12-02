@@ -22,7 +22,6 @@ WIRESHARK_CONF_OPTS = \
 	--without-krb5 \
 	--disable-usr-local \
 	--enable-static=no \
-	--with-gnutls=no \
 	--with-libsmi=no \
 	--with-lua=no \
 	--includedir=$(STAGING_DIR)/usr/include
@@ -61,6 +60,13 @@ WIRESHARK_CONF_OPTS += --with-c-ares=$(STAGING_DIR)/usr
 WIRESHARK_DEPENDENCIES += c-ares
 else
 WIREHARK_CONF_OPTS += --without-c-ares
+endif
+
+ifeq ($(BR2_PACKAGE_GNUTLS),y)
+WIRESHARK_CONF_OPTS += --with-gnutls=yes
+WIRESHARK_DEPENDENCIES += gnutls
+else
+WIRESHARK_CONF_OPTS += --with-gnutls=no
 endif
 
 ifeq ($(BR2_PACKAGE_LIBGCRYPT),y)
