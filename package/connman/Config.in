@@ -7,6 +7,7 @@ config BR2_PACKAGE_CONNMAN
 	depends on BR2_TOOLCHAIN_HAS_THREADS # dbus, libglib2
 	depends on BR2_USE_MMU # dbus, libglib2
 	depends on !BR2_STATIC_LIBS # needs dlopen()
+	depends on !BR2_sparc # needs atomic operation __sync_fetch_and_add
 	help
 	  The Connection Manager (ConnMan) project provides a daemon
 	  for managing internet connections within embedded devices
@@ -66,4 +67,5 @@ endif # BR2_PACKAGE_CONNMAN
 
 comment "connman needs a toolchain w/ wchar, threads, resolver, dynamic library"
 	depends on BR2_USE_MMU
+	depends on !BR2_sparc
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS
