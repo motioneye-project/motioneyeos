@@ -4,6 +4,7 @@ Date: Sat, 16 May 2015 18:53:51 +0200
 Subject: Dont waste time building manpages if we're not going to use em.
 
 Signed-off-by: Ryan Barnett <ryanbarnett3@gmail.com>
+[Gustavo: update for parallel-build]
 ---
  Makefile.org | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
@@ -16,8 +17,8 @@ index 60f07cc..976ceaf 100644
  dist_pem_h:
  	(cd crypto/pem; $(MAKE) -e $(BUILDENV) pem.h; $(MAKE) clean)
  
--install: all install_docs install_sw
-+install: all install_sw
+-install: install_docs install_sw
++install: install_sw
  
  install_sw:
  	@$(PERL) $(TOP)/util/mkdir-p.pl $(INSTALL_PREFIX)$(INSTALLTOP)/bin \
