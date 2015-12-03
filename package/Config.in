@@ -808,6 +808,7 @@ endmenu
 
 menu "Graphics"
 	source "package/atk/Config.in"
+	source "package/atkmm/Config.in"
 	source "package/bullet/Config.in"
 	source "package/cairo/Config.in"
 	source "package/cairomm/Config.in"
