@@ -1,4 +1,4 @@
 # From http://www.zsh.org/pub/MD5SUM
-md5	0e8ea3313300277a04cee80836507bae	zsh-5.1.1.tar.xz
+md5	afe96fde08b70e23c1cab1ca7a68fb34	zsh-5.2.tar.xz
 # Calculated based on the hash above
-sha256	74e9453b5470b3c0970f9f93cfd603d241c3d7b1968adc0e4b3951073e8d3dec	zsh-5.1.1.tar.xz
+sha256	f17916320ffaa844bbd7ce48ceeb5945fc5f3eff64b149b4229bbfbdf3795a9d	zsh-5.2.tar.xz
