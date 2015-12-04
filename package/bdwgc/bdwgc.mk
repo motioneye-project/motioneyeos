@@ -19,6 +19,9 @@ BDWGC_DEPENDENCIES = libatomic_ops host-pkgconf
 BDWGC_AUTORECONF = YES
 
 BDWGC_CFLAGS = $(TARGET_CFLAGS)
+ifeq ($(BR2_sparc),y)
+BDWGC_CFLAGS += -DAO_NO_SPARC_V9
+endif
 ifeq ($(BR2_STATIC_LIBS),y)
 BDWGC_CFLAGS += -DGC_NO_DLOPEN
 endif
