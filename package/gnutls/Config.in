@@ -14,6 +14,8 @@ if BR2_PACKAGE_GNUTLS
 
 config BR2_PACKAGE_GNUTLS_TOOLS
 	bool "install tools"
+	select BR2_PACKAGE_ARGP_STANDALONE \
+		if BR2_TOOLCHAIN_USES_UCLIBC || BR2_TOOLCHAIN_USES_MUSL
 	help
 	  Install GnuTLS command line tools for various cryptographic tasks.
 

@@ -44,6 +44,12 @@ ifeq ($(BR2_PACKAGE_GNUTLS_TOOLS),)
 GNUTLS_CONF_OPTS += --disable-crywrap
 endif
 
+# Prerequisite for crywrap
+ifeq ($(BR2_PACKAGE_ARGP_STANDALONE),y)
+GNUTLS_CONF_ENV += LIBS="-largp"
+GNUTLS_DEPENDENCIES += argp-standalone
+endif
+
 # libidn support for nommu must exclude the crywrap wrapper (uses fork)
 GNUTLS_CONF_OPTS += $(if $(BR2_USE_MMU),,--disable-crywrap)
 
