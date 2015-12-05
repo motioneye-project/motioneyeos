@@ -12,6 +12,8 @@ PIXMAN_LICENSE_FILES = COPYING
 
 PIXMAN_INSTALL_STAGING = YES
 PIXMAN_DEPENDENCIES = host-pkgconf
+
+# For 0001-Disable-tests.patch
 PIXMAN_AUTORECONF = YES
 
 # don't build gtk based demos
