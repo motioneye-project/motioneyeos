@@ -128,12 +128,6 @@ define BOOST_CONFIGURE_CMDS
 	echo "" >> $(@D)/user-config.jam
 endef
 
-define HOST_BOOST_CONFIGURE_CMDS
-	(cd $(@D) && ./bootstrap.sh $(HOST_BOOST_FLAGS))
-	echo "using gcc : `$(HOST_CC) -dumpversion` : $(HOSTCXX) : <cxxflags>\"$(HOST_CXXFLAGS)\" <linkflags>\"$(HOST_LDFLAGS)\" ;" > $(@D)/user-config.jam
-	echo "" >> $(@D)/user-config.jam
-endef
-
 define BOOST_INSTALL_TARGET_CMDS
 	(cd $(@D) && ./b2 -j$(PARALLEL_JOBS) -q \
 	--user-config=$(@D)/user-config.jam \
@@ -141,6 +135,21 @@ define BOOST_INSTALL_TARGET_CMDS
 	--prefix=$(TARGET_DIR)/usr \
 	--ignore-site-config \
 	--layout=$(BOOST_LAYOUT) install )
+endef
+
+define BOOST_INSTALL_STAGING_CMDS
+	(cd $(@D) && ./bjam -j$(PARALLEL_JOBS) -q \
+	--user-config=$(@D)/user-config.jam \
+	$(BOOST_OPTS) \
+	--prefix=$(STAGING_DIR)/usr \
+	--ignore-site-config \
+	--layout=$(BOOST_LAYOUT) install)
+endef
+
+define HOST_BOOST_CONFIGURE_CMDS
+	(cd $(@D) && ./bootstrap.sh $(HOST_BOOST_FLAGS))
+	echo "using gcc : `$(HOST_CC) -dumpversion` : $(HOSTCXX) : <cxxflags>\"$(HOST_CXXFLAGS)\" <linkflags>\"$(HOST_LDFLAGS)\" ;" > $(@D)/user-config.jam
+	echo "" >> $(@D)/user-config.jam
 endef
 
 define HOST_BOOST_BUILD_CMDS
@@ -158,15 +167,6 @@ define HOST_BOOST_INSTALL_CMDS
 	--prefix=$(HOST_DIR)/usr \
 	--ignore-site-config \
 	--layout=$(BOOST_LAYOUT) install )
-endef
-
-define BOOST_INSTALL_STAGING_CMDS
-	(cd $(@D) && ./bjam -j$(PARALLEL_JOBS) -q \
-	--user-config=$(@D)/user-config.jam \
-	$(BOOST_OPTS) \
-	--prefix=$(STAGING_DIR)/usr \
-	--ignore-site-config \
-	--layout=$(BOOST_LAYOUT) install)
 endef
 
 $(eval $(generic-package))
