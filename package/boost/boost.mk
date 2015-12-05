@@ -128,6 +128,14 @@ define BOOST_CONFIGURE_CMDS
 	echo "" >> $(@D)/user-config.jam
 endef
 
+define BOOST_BUILD_CMDS
+	(cd $(@D) && ./bjam -j$(PARALLEL_JOBS) -q \
+	--user-config=$(@D)/user-config.jam \
+	$(BOOST_OPTS) \
+	--ignore-site-config \
+	--layout=$(BOOST_LAYOUT))
+endef
+
 define BOOST_INSTALL_TARGET_CMDS
 	(cd $(@D) && ./b2 -j$(PARALLEL_JOBS) -q \
 	--user-config=$(@D)/user-config.jam \
