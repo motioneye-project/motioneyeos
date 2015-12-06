@@ -7,13 +7,21 @@
 GAWK_VERSION = 4.1.3
 GAWK_SOURCE = gawk-$(GAWK_VERSION).tar.xz
 GAWK_SITE = $(BR2_GNU_MIRROR)/gawk
-GAWK_DEPENDENCIES = host-gawk $(if $(BR2_PACKAGE_MPFR),mpfr)
+GAWK_DEPENDENCIES = host-gawk
 GAWK_LICENSE = GPLv3+
 GAWK_LICENSE_FILES = COPYING
 
 # Prefer full-blown gawk over busybox awk
 ifeq ($(BR2_PACKAGE_BUSYBOX),y)
 GAWK_DEPENDENCIES += busybox
+endif
+
+# --with-mpfr requires an argument so just let
+# configure find it automatically
+ifeq ($(BR2_PACKAGE_MPFR),y)
+GAWK_DEPENDENCIES += mpfr
+else
+GAWK_CONF_OPTS += --without-mpfr
 endif
 
 # We don't have a host-busybox, and we don't want to use readline or mpfr
