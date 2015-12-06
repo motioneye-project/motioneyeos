@@ -140,6 +140,7 @@ define $(2)_BUILD_CMDS
 	else \
 		$$(MAKE1) \
 			PERL_INC=$$(STAGING_DIR)/usr/lib/perl5/$$(PERL_VERSION)/$$(PERL_ARCHNAME)/CORE \
+			FIXIN=: \
 			$$($(2)_BUILD_OPTS) pure_all; \
 	fi
 endef
