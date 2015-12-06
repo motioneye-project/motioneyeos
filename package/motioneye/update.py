@@ -179,7 +179,7 @@ def perform_update(version):
     logging.info('updating to version %(version)s...' % {'version': version})
     
     logging.info('killing motioneye init script...')
-    os.system('kill $(pidof S95motioneye)')
+    os.system('kill $(pidof S85motioneye)')
 
     logging.info('stopping netwatch init script...')
     os.system('/etc/init.d/S41netwatch stop')
