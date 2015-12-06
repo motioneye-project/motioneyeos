@@ -24,6 +24,14 @@ else
 GAWK_CONF_OPTS += --without-mpfr
 endif
 
+# --with-readline requires an argument so just let
+# configure find it automatically
+ifeq ($(BR2_PACKAGE_READLINE),y)
+GAWK_DEPENDENCIES += readline
+else
+GAWK_CONF_OPTS += --without-readline
+endif
+
 # We don't have a host-busybox, and we don't want to use readline or mpfr
 HOST_GAWK_DEPENDENCIES =
 
