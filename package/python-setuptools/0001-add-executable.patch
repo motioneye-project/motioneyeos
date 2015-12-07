@@ -1,16 +1,30 @@
+From 9b3d307f8f6a1af88f3f810f5a6cf0835830e1e8 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?J=C3=B6rg=20Krause?= <joerg.krause@embedded.rocks>
+Date: Mon, 7 Dec 2015 01:14:33 +0100
+Subject: [PATCH 1/1] add executable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
 Add a new --executable option to distribute so that we can
 force the shebang line in installed python scripts.
 
 [Thomas: refresh for setuptools 5.8.]
+[Jörg: refresh for setuptools 18.7.1]
 
 Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Signed-off-by: Jörg Krause <joerg.krause@embedded.rocks>
+---
+ setuptools/command/install.py         | 2 ++
+ setuptools/command/install_scripts.py | 9 +++++++++
+ 2 files changed, 11 insertions(+)
 
-Index: b/setuptools/command/install.py
-===================================================================
+diff --git a/setuptools/command/install.py b/setuptools/command/install.py
+index d2bca2e..b60ef19 100644
 --- a/setuptools/command/install.py
 +++ b/setuptools/command/install.py
-@@ -16,6 +16,7 @@
+@@ -16,6 +16,7 @@ class install(orig.install):
      """Use easy_install to install the package, w/dependencies"""
  
      user_options = orig.install.user_options + [
@@ -18,7 +32,7 @@ Index: b/setuptools/command/install.py
          ('old-and-unmanageable', None, "Try not to use this!"),
          ('single-version-externally-managed', None,
           "used by system package builders to create 'flat' eggs"),
-@@ -31,6 +32,7 @@
+@@ -31,6 +32,7 @@ class install(orig.install):
  
      def initialize_options(self):
          orig.install.initialize_options(self)
@@ -26,11 +40,11 @@ Index: b/setuptools/command/install.py
          self.old_and_unmanageable = None
          self.single_version_externally_managed = None
  
-Index: b/setuptools/command/install_scripts.py
-===================================================================
+diff --git a/setuptools/command/install_scripts.py b/setuptools/command/install_scripts.py
+index be66cb2..07afaf8 100755
 --- a/setuptools/command/install_scripts.py
 +++ b/setuptools/command/install_scripts.py
-@@ -11,6 +11,13 @@
+@@ -11,6 +11,13 @@ class install_scripts(orig.install_scripts):
      def initialize_options(self):
          orig.install_scripts.initialize_options(self)
          self.no_ep = False
@@ -43,13 +57,16 @@ Index: b/setuptools/command/install_scripts.py
 +        )
  
      def run(self):
-         from setuptools.command.easy_install import get_script_args
-@@ -32,6 +39,8 @@
+         import setuptools.command.easy_install as ei
+@@ -31,6 +38,8 @@ class install_scripts(orig.install_scripts):
          )
          bs_cmd = self.get_finalized_command('build_scripts')
-         executable = getattr(bs_cmd, 'executable', sys_executable)
+         exec_param = getattr(bs_cmd, 'executable', None)
 +        if self.executable is not None:
-+            executable = self.executable
-         is_wininst = getattr(
-             self.get_finalized_command("bdist_wininst"), '_is_running', False
-         )
++            exec_param = self.executable
+         bw_cmd = self.get_finalized_command("bdist_wininst")
+         is_wininst = getattr(bw_cmd, '_is_running', False)
+         writer = ei.ScriptWriter
+-- 
+2.6.3
+
