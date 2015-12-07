@@ -26,4 +26,10 @@ repo="${2}"
 rev="${3}"
 basename="${4}"
 
-${BZR} export ${verbose} --root="${basename}/" --format=tgz "${output}" "${repo}" -r "${rev}"
+# Caller needs to single-quote its arguments to prevent them from
+# being expanded a second time (in case there are spaces in them)
+_bzr() {
+    eval ${BZR} "${@}"
+}
+
+_bzr export ${verbose} --root="'${basename}/'" --format=tgz "'${output}'" "'${repo}'" -r "'${rev}'"

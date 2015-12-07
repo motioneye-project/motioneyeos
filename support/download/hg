@@ -25,8 +25,14 @@ repo="${2}"
 cset="${3}"
 basename="${4}"
 
-${HG} clone ${verbose} --noupdate "${repo}" "${basename}"
+# Caller needs to single-quote its arguments to prevent them from
+# being expanded a second time (in case there are spaces in them)
+_hg() {
+    eval ${HG} "${@}"
+}
 
-${HG} archive ${verbose} --repository "${basename}" --type tgz \
-              --prefix "${basename}" --rev "${cset}" \
-              "${output}"
+_hg clone ${verbose} --noupdate "'${repo}'" "'${basename}'"
+
+_hg archive ${verbose} --repository "'${basename}'" --type tgz \
+            --prefix "'${basename}'" --rev "'${cset}'" \
+            "'${output}'"
