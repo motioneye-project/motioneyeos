@@ -1,0 +1,29 @@
+From 562f48bee3443bda0ac257f2b0c52a72208163e0 Mon Sep 17 00:00:00 2001
+From: Peter Seiderer <ps.report@gmx.net>
+Date: Mon, 7 Dec 2015 21:20:38 +0100
+Subject: [PATCH] Fix install file list.
+
+Fixes:
+  CMake Error at cmake_install.cmake:40 (file):
+    file INSTALL cannot find
+    ".../build/read-edid-3.0.2/COPYING".
+
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+---
+ CMakeLists.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 7bf4561..2b9bc86 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -13,5 +13,5 @@ endif ()
+ add_subdirectory (parse-edid)
+ 
+ INSTALL(FILES get-edid.1 DESTINATION share/man/man1)
+-INSTALL(FILES AUTHORS ChangeLog COPYING README DESTINATION
++INSTALL(FILES AUTHORS ChangeLog README DESTINATION
+ 	share/doc/read-edid)
+-- 
+2.1.4
+
