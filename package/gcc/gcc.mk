@@ -170,8 +170,14 @@ HOST_GCC_COMMON_CONF_OPTS += --with-mpc=$(HOST_DIR)/usr
 endif
 
 ifeq ($(BR2_GCC_ENABLE_GRAPHITE),y)
-HOST_GCC_COMMON_DEPENDENCIES += host-isl host-cloog
-HOST_GCC_COMMON_CONF_OPTS += --with-isl=$(HOST_DIR)/usr --with-cloog=$(HOST_DIR)/usr
+HOST_GCC_COMMON_DEPENDENCIES += host-isl
+HOST_GCC_COMMON_CONF_OPTS += --with-isl=$(HOST_DIR)/usr
+# gcc 5 doesn't need cloog any more, see
+# https://gcc.gnu.org/gcc-5/changes.html
+ifeq ($(BR2_TOOLCHAIN_GCC_AT_LEAST_5),)
+HOST_GCC_COMMON_DEPENDENCIES += host-cloog
+HOST_GCC_COMMON_CONF_OPTS += --with-cloog=$(HOST_DIR)/usr
+endif
 else
 HOST_GCC_COMMON_CONF_OPTS += --without-isl --without-cloog
 endif
