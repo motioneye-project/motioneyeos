@@ -57,4 +57,4 @@ config BR2_GDB_VERSION
 	default "7.7.1"    if BR2_GDB_VERSION_7_7
 	default "7.8.2"	   if BR2_GDB_VERSION_7_8
 	default "7.9.1"    if BR2_GDB_VERSION_7_9 || !BR2_PACKAGE_HOST_GDB
-	default "7.10"     if BR2_GDB_VERSION_7_10
+	default "7.10.1"   if BR2_GDB_VERSION_7_10
