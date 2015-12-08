@@ -42,7 +42,7 @@ choice
 	  Select the version of Node.js you wish to use.
 
 config BR2_BR2_PACKAGE_NODEJS_0_10_X
-	bool "v0.10.40"
+	bool "v0.10.41"
 
 config BR2_BR2_PACKAGE_NODEJS_0_12_X
 	bool "v0.12.7"
@@ -61,7 +61,7 @@ endchoice
 
 config BR2_PACKAGE_NODEJS_VERSION_STRING
 	string
-	default "0.10.40"	if BR2_BR2_PACKAGE_NODEJS_0_10_X
+	default "0.10.41"	if BR2_BR2_PACKAGE_NODEJS_0_10_X
 	default "0.12.7"	if BR2_BR2_PACKAGE_NODEJS_0_12_X
 	default "4.1.2"		if BR2_BR2_PACKAGE_NODEJS_4_X
 
