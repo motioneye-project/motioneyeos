@@ -1,0 +1,44 @@
+From ba6142dbaebe06738686da150043abbd1ef1fbf5 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?J=C3=B6rg=20Krause?= <joerg.krause@embedded.rocks>
+Date: Tue, 8 Dec 2015 21:22:45 +0100
+Subject: [PATCH] src: fix build error without OpenSSL support
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+PR #3890 [1] introduced the variable ALLOW_INSECURE_SERVER_DHPARAM defined
+in src/node_crypto.cc. However, if nodejs is built without OpenSSL support,
+the build fails:
+ error: ‘ALLOW_INSECURE_SERVER_DHPARAM’ was not declared in this scope
+       ALLOW_INSECURE_SERVER_DHPARAM = true;
+
+Fix this by using the preprocessor macro HAVE_OPENSSL to opt-out the use of
+ALLOW_INSECURE_SERVER_DHPARAM in non-OpenSSL builds.
+
+Patch status: Sent upstream [2]
+
+[1] https://github.com/nodejs/node/pull/3890
+[2] https://github.com/nodejs/node/pull/4201
+
+Signed-off-by: Jörg Krause <joerg.krause@embedded.rocks>
+---
+ src/node.cc | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/src/node.cc b/src/node.cc
+index 1da8328..e5239ac 100644
+--- a/src/node.cc
++++ b/src/node.cc
+@@ -3042,7 +3042,9 @@ static void ParseArgs(int* argc,
+       SSL3_ENABLE = true;
+ #endif
+     } else if (strcmp(arg, "--allow-insecure-server-dhparam") == 0) {
++#if HAVE_OPENSSL
+       ALLOW_INSECURE_SERVER_DHPARAM = true;
++#endif
+     } else if (strcmp(arg, "--help") == 0 || strcmp(arg, "-h") == 0) {
+       PrintHelp();
+       exit(0);
+-- 
+2.6.3
+

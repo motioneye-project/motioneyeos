@@ -45,7 +45,7 @@ config BR2_BR2_PACKAGE_NODEJS_0_10_X
 	bool "v0.10.41"
 
 config BR2_BR2_PACKAGE_NODEJS_0_12_X
-	bool "v0.12.7"
+	bool "v0.12.9"
 	depends on BR2_PACKAGE_NODEJS_V8_ARCH_SUPPORTS
 
 config BR2_BR2_PACKAGE_NODEJS_4_X
@@ -62,7 +62,7 @@ endchoice
 config BR2_PACKAGE_NODEJS_VERSION_STRING
 	string
 	default "0.10.41"	if BR2_BR2_PACKAGE_NODEJS_0_10_X
-	default "0.12.7"	if BR2_BR2_PACKAGE_NODEJS_0_12_X
+	default "0.12.9"	if BR2_BR2_PACKAGE_NODEJS_0_12_X
 	default "4.1.2"		if BR2_BR2_PACKAGE_NODEJS_4_X
 
 menu "Module Selection"
