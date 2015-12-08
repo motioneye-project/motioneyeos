@@ -1,0 +1,56 @@
+Upstream status: Merged
+Fetched from: https://git.lttng.org/?p=lttng-tools.git;a=commit;h=b8090274814e5f6a22cff0dd656e14769cc7a7df
+From b8090274814e5f6a22cff0dd656e14769cc7a7df Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?J=C3=A9r=C3=A9mie=20Galarneau?=
+ <jeremie.galarneau@efficios.com>
+Date: Wed, 30 Sep 2015 16:48:12 -0400
+Subject: [PATCH] Fix: Remove dependency on glibc 2.12 caused by
+ pthread_setname_np
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+prctl() can be used to set the same attribute set by
+pthread_setname_np, but doesn't introduce a dependency on a newer
+glibc. Using prctl(PR_SET_NAME) introduces a soft dependency on
+Linux 2.6.9. However, the worker won't fail to launch if the call
+fails as it is set out of convenience (debugger output).
+
+Signed-off-by: Jérémie Galarneau <jeremie.galarneau@efficios.com>
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+---
+ src/common/runas.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/src/common/runas.c b/src/common/runas.c
+index 3826c61..bc7356b 100644
+--- a/src/common/runas.c
++++ b/src/common/runas.c
+@@ -31,6 +31,7 @@
+ #include <sched.h>
+ #include <sys/signal.h>
+ #include <assert.h>
++#include <sys/prctl.h>
+ 
+ #include <common/common.h>
+ #include <common/utils.h>
+@@ -322,12 +323,11 @@ int run_as_worker(struct run_as_worker *worker)
+ 	memset(worker->procname, 0, proc_orig_len);
+ 	strncpy(worker->procname, DEFAULT_RUN_AS_WORKER_NAME, proc_orig_len);
+ 
+-	ret = pthread_setname_np(pthread_self(), DEFAULT_RUN_AS_WORKER_NAME);
++	ret = prctl(PR_SET_NAME, DEFAULT_RUN_AS_WORKER_NAME, 0, 0, 0);
+ 	if (ret) {
+-		errno = ret;
+-		ret = -1;
+-		PERROR("pthread_setname_np");
+-		return EXIT_FAILURE;
++		/* Don't fail as this is not essential. */
++		PERROR("prctl PR_SET_NAME");
++		ret = 0;
+ 	}
+ 
+ 	sendret.ret = 0;
+-- 
+2.6.3
+
