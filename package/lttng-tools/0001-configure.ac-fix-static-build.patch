@@ -1,0 +1,55 @@
+Upstream status: Merged
+Fetched from: https://git.lttng.org/?p=lttng-tools.git;a=commit;h=e9cee23a2e92694ba1347fd1242026d4c19413a8
+From e9cee23a2e92694ba1347fd1242026d4c19413a8 Mon Sep 17 00:00:00 2001
+From: Samuel Martin <s.martin49@gmail.com>
+Date: Sun, 22 Nov 2015 23:38:00 +0100
+Subject: [PATCH] configure.ac: fix static build
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+For static build, some extra LDFLAGS may be needed.
+
+Using PKG_CHECK_MODULES instead of AC_CHECK_LIB for librairy detection
+allows to get all these flags. Then, the LIBS variable can be extended
+with everything that is needed.
+
+So, use PKG_CHECK_MODULES for popt and uuid detection; which both depend
+on libintl.
+
+This changes fixes build failures triggered with Buildroot, e.g.:
+  http://autobuild.buildroot.net/results/0f1/0f1e015a0c5a5ac2beeb5011d31a1e0058a32a0d/build-end.log
+
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+Signed-off-by: Jérémie Galarneau <jeremie.galarneau@efficios.com>
+---
+ configure.ac | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 2c451e9..978e3bc 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -218,15 +218,17 @@ AC_CHECK_LIB([pthread], [pthread_create], [],
+ )
+ 
+ # Check libpopt
+-AC_CHECK_LIB([popt], [poptGetContext], [],
++PKG_CHECK_MODULES([POPT], [popt],
++	[LIBS="$LIBS $POPT_LIBS"],
+ 	[AC_MSG_ERROR([Cannot find libpopt. Use [LDFLAGS]=-Ldir to specify its location.])]
+ )
+ 
+ AM_PATH_XML2(2.7.6, true, AC_MSG_ERROR(No supported version of libxml2 found.))
+ 
+ # Check for libuuid
+-AC_CHECK_LIB([uuid], [uuid_generate],
++PKG_CHECK_MODULES([UUID], [uuid],
+ [
++	LIBS="$LIBS $UUID_LIBS"
+ 	AC_DEFINE_UNQUOTED([LTTNG_HAVE_LIBUUID], 1, [Has libuuid support.])
+ 	have_libuuid=yes
+ ],
+-- 
+2.6.3
+
