@@ -115,7 +115,13 @@ function scan_patchdir {
     # If there is a series file, use it instead of using ls sort order
     # to apply patches. Skip line starting with a dash.
     if [ -e "${path}/series" ] ; then
-        for i in `grep -Ev "^#" ${path}/series 2> /dev/null` ; do
+        # The format of a series file accepts a second field that is
+        # used to specify the number of directory components to strip
+        # when applying the patch, in the form -pN (N an integer >= 0)
+        # We assume this field to always be -p1 whether it is present
+        # or missing.
+        series_patches="`grep -Ev "^#" ${path}/series | cut -d ' ' -f1 2> /dev/null`"
+        for i in $series_patches; do
             apply_patch "$path" "$i" series
         done
     else
