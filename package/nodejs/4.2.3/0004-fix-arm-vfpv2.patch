@@ -1,0 +1,46 @@
+From 0b07d813adcfdc13ef6a0c56f88b864eb3dc4be9 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?J=C3=B6rg=20Krause?= <joerg.krause@embedded.rocks>
+Date: Tue, 8 Dec 2015 21:53:06 +0100
+Subject: [PATCH] configure: fix arm vfpv2
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+The gcc -mfpu flag for VFPv2 is 'vfp', not 'vfpv2' [1].
+
+Patch status: Sent upstream [2]
+
+[1] https://gcc.gnu.org/onlinedocs/gcc/ARM-Options.html
+[2] https://github.com/nodejs/node/pull/4202
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+[Jörg Krause: adapt to version 4.2.3]
+Signed-off-by: Jörg Krause <joerg.krause@embedded.rocks>
+---
+ configure | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/configure b/configure
+index d4aff36..c783bab 100755
+--- a/configure
++++ b/configure
+@@ -30,7 +30,7 @@ valid_os = ('win', 'mac', 'solaris', 'freebsd', 'openbsd', 'linux',
+ valid_arch = ('arm', 'arm64', 'ia32', 'mips', 'mipsel', 'ppc', 'ppc64', 'x32',
+               'x64', 'x86')
+ valid_arm_float_abi = ('soft', 'softfp', 'hard')
+-valid_arm_fpu = ('vfp', 'vfpv2', 'vfpv3', 'vfpv3-d16', 'neon')
++valid_arm_fpu = ('vfp', 'vfpv3', 'vfpv3-d16', 'neon')
+ valid_mips_arch = ('loongson', 'r1', 'r2', 'r6', 'rx')
+ valid_mips_fpu = ('fp32', 'fp64', 'fpxx')
+ valid_mips_float_abi = ('soft', 'hard')
+@@ -622,7 +622,7 @@ def configure_arm(o):
+   else:
+     arm_float_abi = 'default'
+
+-  arm_fpu = 'vfpv2'
++  arm_fpu = 'vfp'
+
+   if is_arch_armv7():
+     arm_fpu = 'vfpv3'
+--
+2.6.3
