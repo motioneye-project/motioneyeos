@@ -66,6 +66,18 @@ NODEJS_CPU = arm
 NODEJS_ARM_FP = $(call qstrip,$(BR2_GCC_TARGET_FLOAT_ABI))
 endif
 
+# MIPS architecture specific options
+ifeq ($(BR2_mips)$(BR2_mipsel),y)
+ifeq ($(BR2_mips_32r6),y)
+NODEJS_MIPS_ARCH_VARIANT = r6
+NODEJS_MIPS_FPU_MODE = fp64
+else ifeq ($(BR2_mips_32r2),y)
+NODEJS_MIPS_ARCH_VARIANT = r2
+else ifeq ($(BR2_mips_32),y)
+NODEJS_MIPS_ARCH_VARIANT = r1
+endif
+endif
+
 define NODEJS_CONFIGURE_CMDS
 	(cd $(@D); \
 		$(TARGET_CONFIGURE_OPTS) \
@@ -81,6 +93,8 @@ define NODEJS_CONFIGURE_CMDS
 		--without-etw \
 		--dest-cpu=$(NODEJS_CPU) \
 		$(if $(NODEJS_ARM_FP),--with-arm-float-abi=$(NODEJS_ARM_FP)) \
+		$(if $(NODEJS_MIPS_ARCH_VARIANT),--with-mips-arch-variant=$(NODEJS_MIPS_ARCH_VARIANT)) \
+		$(if $(NODEJS_MIPS_FPU_MODE),--with-mips-fpu-mode=$(NODEJS_MIPS_FPU_MODE)) \
 		--dest-os=linux \
 	)
 endef
