@@ -56,6 +56,8 @@ ifeq ($(BR2_i386),y)
 NODEJS_CPU = ia32
 else ifeq ($(BR2_x86_64),y)
 NODEJS_CPU = x64
+else ifeq ($(BR2_mips),y)
+NODEJS_CPU = mips
 else ifeq ($(BR2_mipsel),y)
 NODEJS_CPU = mipsel
 else ifeq ($(BR2_arm),y)
