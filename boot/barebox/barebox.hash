@@ -1,5 +1,5 @@
-# http://www.barebox.org/download/barebox-2015.11.0.tar.bz2.md5
-md5 05951fa64000f5baedfc1064dbcfcad0 barebox-2015.11.0.tar.bz2
+# http://www.barebox.org/download/barebox-2015.12.0.tar.bz2.md5
+md5 1ef8926cd2eadc39ce779b8377e7cfcc barebox-2015.12.0.tar.bz2
 
 # Locally calculated
-sha256 ea40cef0a5ef76c4d68e76ac0e5c71c758c563ffa48c08e0b284688ec6f9d422 barebox-2015.11.0.tar.bz2
+sha256 b0b7df82dafcc7aceeaa6285755855a71f6422c5a278949c717096f4ffd7f315 barebox-2015.12.0.tar.bz2
