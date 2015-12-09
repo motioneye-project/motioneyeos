@@ -1,0 +1,143 @@
+bat: Avoid local signal.h file
+
+Patch backported from upstream:
+
+  http://git.alsa-project.org/?p=alsa-utils.git;a=commit;h=3bf8e79c3bfee3ca14277aad3d9c406dfc053bbf
+
+Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+
+From 3bf8e79c3bfee3ca14277aad3d9c406dfc053bbf Mon Sep 17 00:00:00 2001
+From: Takashi Iwai <tiwai@suse.de>
+Date: Mon, 9 Nov 2015 14:04:11 +0100
+Subject: [PATCH 1/2] bat: Avoid local signal.h file
+
+The local header file named as "signal.h" causes mysterious compile
+error when built with an old glibc.
+ signal.h:27: error: conflicting types for 'sin_generator_init'
+ ./signal.h:27: error: previous declaration of 'sin_generator_init' was here
+ signal.h:28: error: conflicting types for 'sin_generator_next_sample'
+ ./signal.h:28: error: previous declaration of 'sin_generator_next_sample' was here
+ ....
+
+This turned out to be the conflict of signal.h; namely, pthread.h that
+is included before our local signal.h also includes "pthread.h".
+Since our local "signal.h" has a higher priority, it gets loaded
+instead of the expected pthread's one.  Then we load it again, and it
+screws up.
+
+Although it's basically a bug of pthread, it's anyway not good to have
+a header file conflicting with the standard header file.  So, let's
+name it more explicitly as specific to BAT, bat-signal.h, for avoiding
+such a conflict.
+
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+---
+ bat/Makefile.am  |  2 +-
+ bat/alsa.c       |  2 +-
+ bat/bat-signal.h | 30 ++++++++++++++++++++++++++++++
+ bat/signal.h     | 30 ------------------------------
+ 4 files changed, 32 insertions(+), 32 deletions(-)
+ create mode 100644 bat/bat-signal.h
+ delete mode 100644 bat/signal.h
+
+diff --git a/bat/Makefile.am b/bat/Makefile.am
+index 842ae6b..f0dc5ab 100644
+--- a/bat/Makefile.am
++++ b/bat/Makefile.am
+@@ -13,7 +13,7 @@ bat_SOURCES = \
+ 
+ noinst_HEADERS = \
+ 	common.h \
+-	signal.h \
++	bat-signal.h \
+ 	alsa.h \
+ 	convert.h \
+ 	analyze.h
+diff --git a/bat/alsa.c b/bat/alsa.c
+index 582c604..d31a633 100644
+--- a/bat/alsa.c
++++ b/bat/alsa.c
+@@ -27,7 +27,7 @@
+ 
+ #include "common.h"
+ #include "alsa.h"
+-#include "signal.h"
++#include "bat-signal.h"
+ 
+ struct pcm_container {
+ 	snd_pcm_t *handle;
+diff --git a/bat/bat-signal.h b/bat/bat-signal.h
+new file mode 100644
+index 0000000..a295517
+--- /dev/null
++++ b/bat/bat-signal.h
+@@ -0,0 +1,30 @@
++/*
++ * Copyright (C) 2015 Caleb Crome
++ * Copyright (C) 2013-2015 Intel Corporation
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ */
++
++/*
++ * Here's a generic sine wave generator that will work indefinitely
++ * for any frequency.
++ *
++ * Note:  the state & phasor are stored as doubles (and updated as
++ * doubles) because after a million samples the magnitude drifts a
++ * bit.  If we really need floats, it can be done with periodic
++ * renormalization of the state_real+state_imag magnitudes.
++ */
++
++int sin_generator_init(struct sin_generator *, float, float, float);
++float sin_generator_next_sample(struct sin_generator *);
++void sin_generator_vfill(struct sin_generator *, float *, int);
++int generate_sine_wave(struct bat *, int, void *);
+diff --git a/bat/signal.h b/bat/signal.h
+deleted file mode 100644
+index a295517..0000000
+--- a/bat/signal.h
++++ /dev/null
+@@ -1,30 +0,0 @@
+-/*
+- * Copyright (C) 2015 Caleb Crome
+- * Copyright (C) 2013-2015 Intel Corporation
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- */
+-
+-/*
+- * Here's a generic sine wave generator that will work indefinitely
+- * for any frequency.
+- *
+- * Note:  the state & phasor are stored as doubles (and updated as
+- * doubles) because after a million samples the magnitude drifts a
+- * bit.  If we really need floats, it can be done with periodic
+- * renormalization of the state_real+state_imag magnitudes.
+- */
+-
+-int sin_generator_init(struct sin_generator *, float, float, float);
+-float sin_generator_next_sample(struct sin_generator *);
+-void sin_generator_vfill(struct sin_generator *, float *, int);
+-int generate_sine_wave(struct bat *, int, void *);
+-- 
+2.4.10
+
