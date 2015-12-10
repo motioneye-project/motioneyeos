@@ -329,7 +329,9 @@ LINUX_FIRMWARE_FILES += \
 	brcm/bcm43xx-0.fw brcm/bcm43xx_hdr-0.fw \
 	brcm/bcm4329-fullmac-4.bin brcm/brcmfmac4329-sdio.bin \
 	brcm/brcmfmac4330-sdio.bin brcm/brcmfmac4334-sdio.bin \
-	brcm/brcmfmac4335-sdio.bin
+	brcm/brcmfmac4335-sdio.bin brcm/brcmfmac4339-sdio.bin \
+	brcm/brcmfmac4350-pcie.bin brcm/brcmfmac4354-sdio.bin \
+	brcm/brcmfmac4356-pcie.bin brcm/brcmfmac4371-pcie.bin
 LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENCE.broadcom_bcm43xx
 endif
 
