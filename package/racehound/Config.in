@@ -1,6 +1,5 @@
 config BR2_PACKAGE_RACEHOUND
 	bool "racehound"
-	select BR2_PACKAGE_ELFUTILS
 	depends on BR2_LINUX_KERNEL
 	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_14
 	depends on BR2_INSTALL_LIBSTDCPP
@@ -9,6 +8,8 @@ config BR2_PACKAGE_RACEHOUND
 	depends on BR2_TOOLCHAIN_USES_UCLIBC || BR2_TOOLCHAIN_USES_GLIBC # elfutils
 	# only x86/x86_64 supported
 	depends on BR2_i386 || BR2_x86_64
+	select BR2_PACKAGE_ELFUTILS
+	select BR2_LINUX_NEEDS_MODULES # not using kernel-module infra
 	help
 	  RaceHound can be used to detect data races in the Linux
 	  kernel on x86.
