@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-NMAP_VERSION = 7.00
+NMAP_VERSION = 7.01
 NMAP_SITE = http://nmap.org/dist
 NMAP_SOURCE = nmap-$(NMAP_VERSION).tar.bz2
 NMAP_DEPENDENCIES = libpcap pcre
