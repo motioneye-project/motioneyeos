@@ -22,12 +22,6 @@ TI_GFX_INSTALL_STAGING = YES
 
 TI_GFX_DEPENDENCIES = linux
 
-# We're building a kernel module without using the kernel-module infra,
-# so we need to tell we want module support in the kernel
-ifeq ($(BR2_PACKAGE_TI_GFX),y)
-LINUX_NEEDS_MODULES = y
-endif
-
 TI_GFX_PROVIDES = libegl libgles powervr
 
 ifeq ($(BR2_PACKAGE_TI_GFX_ES3),y)
