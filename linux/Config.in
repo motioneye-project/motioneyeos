@@ -8,6 +8,12 @@ config BR2_LINUX_KERNEL
 
 if BR2_LINUX_KERNEL
 
+# Packages that need to have a kernel with support for loadable modules,
+# but do not use the kernel-modules infrastructure, should select that
+# option.
+config BR2_LINUX_NEEDS_MODULES
+	bool
+
 #
 # Version selection. We provide the choice between:
 #
