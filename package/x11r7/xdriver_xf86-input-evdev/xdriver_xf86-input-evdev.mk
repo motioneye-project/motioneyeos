@@ -12,11 +12,11 @@ XDRIVER_XF86_INPUT_EVDEV_LICENSE_FILES = COPYING
 XDRIVER_XF86_INPUT_EVDEV_DEPENDENCIES = \
 	host-pkgconf \
 	libevdev \
+	mtdev \
 	xproto_inputproto \
 	xserver_xorg-server \
 	xproto_randrproto \
 	xproto_xproto \
-	udev \
-	$(if $(BR2_PACKAGE_MTDEV),mtdev)
+	udev
 
 $(eval $(autotools-package))
