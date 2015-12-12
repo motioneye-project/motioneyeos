@@ -27,7 +27,6 @@ WINE_CONF_OPTS = \
 	--without-hal \
 	--without-openal \
 	--without-opencl \
-	--without-osmesa \
 	--without-oss
 
 # Wine uses a wrapper around gcc, and uses the value of --host to
@@ -169,6 +168,13 @@ WINE_CONF_OPTS += --with-ldap
 WINE_DEPENDENCIES += openldap
 else
 WINE_CONF_OPTS += --without-ldap
+endif
+
+ifeq ($(BR2_PACKAGE_MESA3D_OSMESA),y)
+WINE_CONF_OPTS += --with-osmesa
+WINE_DEPENDENCIES += mesa3d
+else
+WINE_CONF_OPTS += --without-osmesa
 endif
 
 ifeq ($(BR2_PACKAGE_SANE_BACKENDS),y)
