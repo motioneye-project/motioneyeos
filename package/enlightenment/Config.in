@@ -1,5 +1,16 @@
 config BR2_PACKAGE_ENLIGHTENMENT
 	bool "enlightenment"
+	# libevas-generic-loaders-svg -> librsvg -> glib2 / pango
+	depends on BR2_USE_WCHAR
+	depends on BR2_INSTALL_LIBSTDCPP
+	# libedbus -> dbus
+	# libedbus -> glib2, libevas
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	# libedbus -> dbus, efl libraries
+	depends on BR2_USE_MMU
+	depends on BR2_PACKAGE_XORG7
+	# libevas-generic-loaders-svg -> librsvg -> pango -> cairo
+	depends on BR2_ARCH_HAS_ATOMICS
 	select BR2_PACKAGE_EFL
 	select BR2_PACKAGE_LIBECORE
 	select BR2_PACKAGE_LIBECORE_X
@@ -17,17 +28,6 @@ config BR2_PACKAGE_ENLIGHTENMENT
 	select BR2_PACKAGE_XCB_UTIL_KEYSYMS
 	select BR2_PACKAGE_LIBEVAS_GENERIC_LOADERS
 	select BR2_PACKAGE_LIBEVAS_GENERIC_LOADERS_SVG
-	# libevas-generic-loaders-svg -> librsvg -> glib2 / pango
-	depends on BR2_USE_WCHAR
-	depends on BR2_INSTALL_LIBSTDCPP
-	# libedbus -> dbus
-	# libedbus -> glib2, libevas
-	depends on BR2_TOOLCHAIN_HAS_THREADS
-	# libedbus -> dbus, efl libraries
-	depends on BR2_USE_MMU
-	depends on BR2_PACKAGE_XORG7
-	# libevas-generic-loaders-svg -> librsvg -> pango -> cairo
-	depends on BR2_ARCH_HAS_ATOMICS
 	help
 	  Enlightenment, also known simply as E, is a stacking window
 	  manager for the X Window System which can be used alone or
