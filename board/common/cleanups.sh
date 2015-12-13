@@ -60,7 +60,6 @@ rm -f $TARGET/usr/bin/hexdump
 rm -f $TARGET/sbin/swapoff
 rm -f $TARGET/usr/bin/rev
 rm -f $TARGET/sbin/chcpu
-rm -f $TARGET/sbin/hwclock
 rm -f $TARGET/usr/bin/tailf
 rm -f $TARGET/usr/bin/pg
 rm -f $TARGET/sbin/blkid
