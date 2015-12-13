@@ -24,6 +24,7 @@ WIRESHARK_CONF_OPTS = \
 	--enable-static=no \
 	--with-libsmi=no \
 	--with-lua=no \
+	--with-pcap=$(STAGING_DIR)/usr \
 	--includedir=$(STAGING_DIR)/usr/include
 
 # wireshark GUI options
