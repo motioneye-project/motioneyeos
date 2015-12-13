@@ -125,12 +125,7 @@ define MYSQL_REMOVE_TEST_PROGS
 	rm -rf $(TARGET_DIR)/usr/mysql-test $(TARGET_DIR)/usr/sql-bench
 endef
 
-define MYSQL_ADD_MYSQL_LIB_PATH
-	echo "/usr/lib/mysql" >> $(TARGET_DIR)/etc/ld.so.conf
-endef
-
 MYSQL_POST_INSTALL_TARGET_HOOKS += MYSQL_REMOVE_TEST_PROGS
-MYSQL_POST_INSTALL_TARGET_HOOKS += MYSQL_ADD_MYSQL_LIB_PATH
 
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
