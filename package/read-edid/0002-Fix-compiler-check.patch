@@ -1,0 +1,19 @@
+Fix compiler check
+
+By default CMake looks for c++ which the project does not need.
+
+Patch by Thomas:
+http://lists.busybox.net/pipermail/buildroot/2015-December/146865.html
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+
+diff -uNr read-edid-3.0.2.org/CMakeLists.txt read-edid-3.0.2/CMakeLists.txt
+--- read-edid-3.0.2.org/CMakeLists.txt	2014-02-05 17:27:26.000000000 +0100
++++ read-edid-3.0.2/CMakeLists.txt	2015-12-13 16:08:43.000000000 +0100
+@@ -1,5 +1,5 @@
+ cmake_minimum_required (VERSION 2.6)
+-project (read-edid)
++project (read-edid C)
+ 
+ option(I2CBUILD "Build I2C get-edid implementation" ON)
+ option(CLASSICBUILD "Build VBE get-edid implementation" ON)
