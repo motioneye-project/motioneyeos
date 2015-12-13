@@ -25,7 +25,6 @@ WINE_CONF_OPTS = \
 	--without-gphoto \
 	--without-gsm \
 	--without-hal \
-	--without-openal \
 	--without-opencl \
 	--without-oss
 
@@ -161,6 +160,13 @@ WINE_CONF_OPTS += --with-curses
 WINE_DEPENDENCIES += ncurses
 else
 WINE_CONF_OPTS += --without-curses
+endif
+
+ifeq ($(BR2_PACKAGE_OPENAL),y)
+WINE_CONF_OPTS += --with-openal
+WINE_DEPENDENCIES += openal
+else
+WINE_CONF_OPTS += --without-openal
 endif
 
 ifeq ($(BR2_PACKAGE_OPENLDAP),y)
