@@ -72,6 +72,3 @@ Index: mesa3d-demos-8.1.0/src/util/Makefile.am
  
  if HAVE_GLUT
  AM_CFLAGS += \
-diff -uNr mesa-demos-8.3.0.org/configure.ac mesa-demos-8.3.0/configure.ac
---- mesa-demos-8.3.0.org/configure.ac	2015-12-09 22:06:44.000000000 +0100
-+++ mesa-demos-8.3.0/configure.ac	2015-12-12 17:06:10.484295811 +0100
