@@ -7,7 +7,7 @@
 IPUTILS_VERSION = s20121011
 IPUTILS_SITE = http://www.skbuff.net/iputils
 IPUTILS_SOURCE = iputils-$(IPUTILS_VERSION).tar.bz2
-IPUTILS_LICENSE = GPLv2+ BSD-3c
+IPUTILS_LICENSE = GPLv2+, BSD-3c
 # Only includes a license file for BSD
 IPUTILS_LICENSE_FILES = ninfod/COPYING
 IPUTILS_DEPENDENCIES = openssl
