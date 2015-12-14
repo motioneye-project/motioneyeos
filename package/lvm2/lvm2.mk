@@ -8,7 +8,7 @@ LVM2_VERSION = 2.02.138
 LVM2_SOURCE = LVM2.$(LVM2_VERSION).tgz
 LVM2_SITE = ftp://sources.redhat.com/pub/lvm2/releases
 LVM2_INSTALL_STAGING = YES
-LVM2_LICENSE = GPLv2 LGPLv2.1
+LVM2_LICENSE = GPLv2, LGPLv2.1
 LVM2_LICENSE_FILES = COPYING COPYING.LIB
 
 # Make sure that binaries and libraries are installed with write
