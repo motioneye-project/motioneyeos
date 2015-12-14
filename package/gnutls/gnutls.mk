@@ -80,17 +80,11 @@ else
 GNUTLS_CONF_OPTS += --without-zlib
 endif
 
-# Some examples in doc/examples use wchar
-define GNUTLS_DISABLE_DOCS
-	$(SED) 's/ doc / /' $(@D)/Makefile.in
-endef
-
 define GNUTLS_DISABLE_TOOLS
 	$(SED) 's/\$$(PROGRAMS)//' $(@D)/src/Makefile.in
 	$(SED) 's/) install-exec-am/)/' $(@D)/src/Makefile.in
 endef
 
-GNUTLS_POST_PATCH_HOOKS += GNUTLS_DISABLE_DOCS
 GNUTLS_POST_PATCH_HOOKS += $(if $(BR2_PACKAGE_GNUTLS_TOOLS),,GNUTLS_DISABLE_TOOLS)
 
 $(eval $(autotools-package))
