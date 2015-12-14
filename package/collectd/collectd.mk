@@ -9,7 +9,7 @@ COLLECTD_SITE = http://collectd.org/files
 COLLECTD_SOURCE = collectd-$(COLLECTD_VERSION).tar.bz2
 COLLECTD_CONF_ENV = ac_cv_lib_yajl_yajl_alloc=yes
 COLLECTD_INSTALL_STAGING = YES
-COLLECTD_LICENSE = GPLv2 LGPLv2.1
+COLLECTD_LICENSE = GPLv2, LGPLv2.1
 COLLECTD_LICENSE_FILES = COPYING
 # For 0001-build-add-libavltree-libcommon-libheap-dependencies.patch
 COLLECTD_AUTORECONF = YES
