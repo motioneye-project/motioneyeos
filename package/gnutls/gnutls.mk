@@ -20,7 +20,8 @@ GNUTLS_CONF_OPTS = \
 	--enable-openssl-compatibility \
 	--with-libnettle-prefix=$(STAGING_DIR)/usr \
 	--with-librt-prefix=$(STAGING_DIR) \
-	--without-tpm
+	--without-tpm \
+	$(if $(BR2_PACKAGE_GNUTLS_TOOLS),--enable-tools,--disable-tools)
 GNUTLS_CONF_ENV = gl_cv_socket_ipv6=yes \
 	ac_cv_header_wchar_h=$(if $(BR2_USE_WCHAR),yes,no) \
 	gt_cv_c_wchar_t=$(if $(BR2_USE_WCHAR),yes,no) \
@@ -79,12 +80,5 @@ GNUTLS_DEPENDENCIES += zlib
 else
 GNUTLS_CONF_OPTS += --without-zlib
 endif
-
-define GNUTLS_DISABLE_TOOLS
-	$(SED) 's/\$$(PROGRAMS)//' $(@D)/src/Makefile.in
-	$(SED) 's/) install-exec-am/)/' $(@D)/src/Makefile.in
-endef
-
-GNUTLS_POST_PATCH_HOOKS += $(if $(BR2_PACKAGE_GNUTLS_TOOLS),,GNUTLS_DISABLE_TOOLS)
 
 $(eval $(autotools-package))
