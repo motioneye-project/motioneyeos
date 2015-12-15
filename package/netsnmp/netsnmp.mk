@@ -62,6 +62,11 @@ else
 NETSNMP_CONF_OPTS += --without-openssl
 endif
 
+# There's no option to forcibly enable or disable it
+ifeq ($(BR2_PACKAGE_PCIUTILS),y)
+NETSNMP_DEPENDENCIES += pciutils
+endif
+
 ifneq ($(BR2_PACKAGE_NETSNMP_ENABLE_MIBS),y)
 NETSNMP_CONF_OPTS += --disable-mib-loading
 NETSNMP_CONF_OPTS += --disable-mibs
