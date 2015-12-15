@@ -35,7 +35,6 @@ LIBEFL_GETTEXTIZE = YES
 # --disable-image-loader-webp: disable webp support.
 # --disable-sdl: disable sdl2 support.
 # --disable-systemd: disable systemd support.
-# --disable-wayland: disable wayland support.
 # --enable-lua-old: disable Elua and remove luajit dependency.
 # --with-opengl=none: disable opengl support.
 # --with-x11=none: remove dependency on X.org.
@@ -48,7 +47,6 @@ LIBEFL_CONF_OPTS = \
 	--disable-image-loader-webp \
 	--disable-sdl \
 	--disable-systemd \
-	--disable-wayland \
 	--enable-lua-old \
 	--with-opengl=none \
 	--with-x11=none
@@ -139,6 +137,13 @@ LIBEFL_CONF_OPTS += --with-crypto=gnutls \
 else
 LIBEFL_CONF_OPTS += --with-crypto=none
 endif # BR2_PACKAGE_OPENSSL
+
+ifeq ($(BR2_PACKAGE_WAYLAND),y)
+LIBEFL_DEPENDENCIES += wayland libxkbcommon
+LIBEFL_CONF_OPTS += --enable-wayland
+else
+LIBEFL_CONF_OPTS += --disable-wayland
+endif
 
 # Loaders that need external dependencies needs to be --enable-XXX=yes
 # otherwise the default is '=static'.
