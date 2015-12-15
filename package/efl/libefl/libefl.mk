@@ -30,7 +30,6 @@ LIBEFL_GETTEXTIZE = YES
 
 # Configure options:
 # --disable-cxx-bindings: disable C++11 bindings.
-# --disable-fb: disable frame buffer support.
 # --disable-image-loader-jp2k: disable JPEG 2000 support.
 # --disable-sdl: disable sdl2 support.
 # --disable-systemd: disable systemd support.
@@ -41,7 +40,6 @@ LIBEFL_CONF_OPTS = \
 	--with-edje-cc=$(HOST_DIR)/usr/bin/edje_cc \
 	--with-eolian-gen=$(HOST_DIR)/usr/bin/eolian_gen \
 	--disable-cxx-bindings \
-	--disable-fb \
 	--disable-image-loader-jp2k \
 	--disable-sdl \
 	--disable-systemd \
@@ -141,6 +139,12 @@ LIBEFL_DEPENDENCIES += wayland libxkbcommon
 LIBEFL_CONF_OPTS += --enable-wayland
 else
 LIBEFL_CONF_OPTS += --disable-wayland
+endif
+
+ifeq ($(BR2_PACKAGE_LIBEFL_FB),y)
+LIBEFL_CONF_OPTS += --enable-fb
+else
+LIBEFL_CONF_OPTS += --disable-fb
 endif
 
 # Loaders that need external dependencies needs to be --enable-XXX=yes

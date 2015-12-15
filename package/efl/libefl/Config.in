@@ -109,6 +109,11 @@ config BR2_PACKAGE_LIBEFL_HAS_RECOMMENDED_CONFIG
 comment "Warning: one of the recommended option for EFL is not enabled"
 	depends on !BR2_PACKAGE_LIBEFL_HAS_RECOMMENDED_CONFIG
 
+comment "libecore video support"
+
+config BR2_PACKAGE_LIBEFL_FB
+	bool "FB support"
+
 comment "libevas loaders"
 
 config BR2_PACKAGE_LIBEFL_PNG
