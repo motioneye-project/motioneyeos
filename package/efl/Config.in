@@ -18,7 +18,6 @@ if BR2_PACKAGE_EFL
 source "package/efl/libeina/Config.in"
 source "package/efl/libeet/Config.in"
 source "package/efl/libefl/Config.in"
-source "package/efl/libevas/Config.in"
 source "package/efl/libelementary/Config.in"
 
 endif # BR2_PACKAGE_EFL
