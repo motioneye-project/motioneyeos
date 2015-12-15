@@ -31,7 +31,6 @@ LIBEFL_GETTEXTIZE = YES
 # Configure options:
 # --disable-cxx-bindings: disable C++11 bindings.
 # --disable-fb: disable frame buffer support.
-# --disable-harfbuzz: disable harfbuzz support.
 # --disable-image-loader-jp2k: disable JPEG 2000 support.
 # --disable-image-loader-webp: disable webp support.
 # --disable-sdl: disable sdl2 support.
@@ -45,7 +44,6 @@ LIBEFL_CONF_OPTS = \
 	--with-eolian-gen=$(HOST_DIR)/usr/bin/eolian_gen \
 	--disable-cxx-bindings \
 	--disable-fb \
-	--disable-harfbuzz \
 	--disable-image-loader-jp2k \
 	--disable-image-loader-webp \
 	--disable-sdl \
@@ -107,6 +105,13 @@ LIBEFL_CONF_OPTS += --enable-pulseaudio
 LIBEFL_DEPENDENCIES += pulseaudio
 else
 LIBEFL_CONF_OPTS += --disable-pulseaudio
+endif
+
+ifeq ($(BR2_PACKAGE_HARFBUZZ),y)
+LIBEFL_DEPENDENCIES += harfbuzz
+LIBEFL_CONF_OPTS += --enable-harfbuzz
+else
+LIBEFL_CONF_OPTS += --disable-harfbuzz
 endif
 
 ifeq ($(BR2_PACKAGE_TSLIB),y)
