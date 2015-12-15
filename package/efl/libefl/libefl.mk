@@ -23,8 +23,9 @@ LIBEFL_INSTALL_STAGING = YES
 LIBEFL_DEPENDENCIES = host-pkgconf host-libefl dbus freetype jpeg lua udev \
 	util-linux zlib
 
-# regenerate the configure script:
-# https://phab.enlightenment.org/T2718
+# Regenerate the autotools:
+#  - to fix an issue in eldbus-codegen: https://phab.enlightenment.org/T2718
+#  - to remove dependency on libXp: https://phab.enlightenment.org/D3150
 LIBEFL_AUTORECONF = YES
 LIBEFL_GETTEXTIZE = YES
 
@@ -32,18 +33,18 @@ LIBEFL_GETTEXTIZE = YES
 # --disable-cxx-bindings: disable C++11 bindings.
 # --disable-sdl: disable sdl2 support.
 # --disable-systemd: disable systemd support.
+# --disable-xinput22: disable X11 XInput v2.2+ support.
 # --enable-lua-old: disable Elua and remove luajit dependency.
 # --with-opengl=none: disable opengl support.
-# --with-x11=none: remove dependency on X.org.
 LIBEFL_CONF_OPTS = \
 	--with-edje-cc=$(HOST_DIR)/usr/bin/edje_cc \
 	--with-eolian-gen=$(HOST_DIR)/usr/bin/eolian_gen \
 	--disable-cxx-bindings \
 	--disable-sdl \
 	--disable-systemd \
+	--disable-xinput22 \
 	--enable-lua-old \
-	--with-opengl=none \
-	--with-x11=none
+	--with-opengl=none
 
 # Disable untested configuration warning.
 ifeq ($(BR2_PACKAGE_LIBEFL_HAS_RECOMMENDED_CONFIG),)
@@ -143,6 +144,28 @@ ifeq ($(BR2_PACKAGE_LIBEFL_FB),y)
 LIBEFL_CONF_OPTS += --enable-fb
 else
 LIBEFL_CONF_OPTS += --disable-fb
+endif
+
+ifeq ($(BR2_PACKAGE_LIBEFL_X_XLIB),y)
+LIBEFL_CONF_OPTS += \
+	--with-x11=xlib \
+	--with-x=$(STAGING_DIR) \
+	--x-includes=$(STAGING_DIR)/usr/include \
+	--x-libraries=$(STAGING_DIR)/usr/lib
+
+LIBEFL_DEPENDENCIES += \
+	xlib_libX11 \
+	xlib_libXcomposite \
+	xlib_libXcursor \
+	xlib_libXdamage \
+	xlib_libXext \
+	xlib_libXinerama \
+	xlib_libXrandr \
+	xlib_libXrender \
+	xlib_libXScrnSaver \
+	xlib_libXtst
+else
+LIBEFL_CONF_OPTS += --with-x11=none
 endif
 
 # Loaders that need external dependencies needs to be --enable-XXX=yes
