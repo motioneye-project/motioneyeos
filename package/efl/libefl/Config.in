@@ -123,6 +123,13 @@ config BR2_PACKAGE_LIBEFL_PNG
 	  This enables the loader code that loads png files using
 	  libpng.
 
+config BR2_PACKAGE_LIBEFL_JP2K
+	bool "libevas jp2k loader"
+	select BR2_PACKAGE_OPENJPEG
+	help
+	  This enables the loader code that loads jp2k files using
+	  openjpeg.
+
 config BR2_PACKAGE_LIBEFL_JPEG
 	bool "libevas jpeg loader"
 	help

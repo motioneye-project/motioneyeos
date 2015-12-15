@@ -30,7 +30,6 @@ LIBEFL_GETTEXTIZE = YES
 
 # Configure options:
 # --disable-cxx-bindings: disable C++11 bindings.
-# --disable-image-loader-jp2k: disable JPEG 2000 support.
 # --disable-sdl: disable sdl2 support.
 # --disable-systemd: disable systemd support.
 # --enable-lua-old: disable Elua and remove luajit dependency.
@@ -40,7 +39,6 @@ LIBEFL_CONF_OPTS = \
 	--with-edje-cc=$(HOST_DIR)/usr/bin/edje_cc \
 	--with-eolian-gen=$(HOST_DIR)/usr/bin/eolian_gen \
 	--disable-cxx-bindings \
-	--disable-image-loader-jp2k \
 	--disable-sdl \
 	--disable-systemd \
 	--enable-lua-old \
@@ -176,6 +174,13 @@ LIBEFL_CONF_OPTS += --enable-image-loader-tiff=yes
 LIBEFL_DEPENDENCIES += tiff
 else
 LIBEFL_CONF_OPTS += --disable-image-loader-tiff
+endif
+
+ifeq ($(BR2_PACKAGE_LIBEFL_JP2K),y)
+LIBEFL_CONF_OPTS += --enable-image-loader-jp2k=yes
+LIBEFL_DEPENDENCIES += openjpeg
+else
+LIBEFL_CONF_OPTS += --disable-image-loader-jp2k
 endif
 
 ifeq ($(BR2_PACKAGE_LIBEFL_WEBP),y)
