@@ -21,7 +21,6 @@ source "package/efl/libeet/Config.in"
 source "package/efl/libefl/Config.in"
 source "package/efl/libevas/Config.in"
 source "package/efl/libelementary/Config.in"
-source "package/efl/libedbus/Config.in"
 
 endif # BR2_PACKAGE_EFL
 
