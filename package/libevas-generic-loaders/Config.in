@@ -1,14 +1,13 @@
 config BR2_PACKAGE_LIBEVAS_GENERIC_LOADERS
 	bool "libevas generic loaders"
 	depends on BR2_PACKAGE_EFL
-	select BR2_PACKAGE_LIBEINA
 	select BR2_PACKAGE_ZLIB
 	help
 	  These are additional "generic" loaders for Evas that are
 	  stand-alone executables that evas may run from its generic
 	  loader module.
 
-	  http://trac.enlightenment.org/e/wiki/Evas_Generic_Loaders
+	  https://www.enlightenment.org/
 
 if BR2_PACKAGE_LIBEVAS_GENERIC_LOADERS
 
