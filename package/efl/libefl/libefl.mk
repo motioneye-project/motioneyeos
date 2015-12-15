@@ -32,7 +32,6 @@ LIBEFL_GETTEXTIZE = YES
 # --disable-cxx-bindings: disable C++11 bindings.
 # --disable-fb: disable frame buffer support.
 # --disable-image-loader-jp2k: disable JPEG 2000 support.
-# --disable-image-loader-webp: disable webp support.
 # --disable-sdl: disable sdl2 support.
 # --disable-systemd: disable systemd support.
 # --enable-lua-old: disable Elua and remove luajit dependency.
@@ -44,7 +43,6 @@ LIBEFL_CONF_OPTS = \
 	--disable-cxx-bindings \
 	--disable-fb \
 	--disable-image-loader-jp2k \
-	--disable-image-loader-webp \
 	--disable-sdl \
 	--disable-systemd \
 	--enable-lua-old \
@@ -174,6 +172,13 @@ LIBEFL_CONF_OPTS += --enable-image-loader-tiff=yes
 LIBEFL_DEPENDENCIES += tiff
 else
 LIBEFL_CONF_OPTS += --disable-image-loader-tiff
+endif
+
+ifeq ($(BR2_PACKAGE_LIBEFL_WEBP),y)
+LIBEFL_CONF_OPTS += --enable-image-loader-webp=yes
+LIBEFL_DEPENDENCIES += webp
+else
+LIBEFL_CONF_OPTS += --disable-image-loader-webp
 endif
 
 $(eval $(autotools-package))
