@@ -237,17 +237,47 @@ for dep in dependencies:
         dict_deps[dep[0]] = []
     dict_deps[dep[0]].append(dep[1])
 
+# Basic cache for the results of the is_dep() function, in order to
+# optimize the execution time. The cache is a dict of dict of boolean
+# values. The key to the primary dict is "pkg", and the key of the
+# sub-dicts is "pkg2".
+is_dep_cache = {}
+
+def is_dep_cache_insert(pkg, pkg2, val):
+    try:
+        is_dep_cache[pkg].update({pkg2: val})
+    except KeyError:
+        is_dep_cache[pkg] = {pkg2: val}
+
+# Retrieves from the cache whether pkg2 is a transitive dependency
+# of pkg.
+# Note: raises a KeyError exception if the dependency is not known.
+def is_dep_cache_lookup(pkg, pkg2):
+    return is_dep_cache[pkg][pkg2]
+
 # This function return True if pkg is a dependency (direct or
 # transitive) of pkg2, dependencies being listed in the deps
 # dictionary. Returns False otherwise.
-def is_dep(pkg,pkg2,deps):
-    if pkg2 in deps:
+# This is the un-cached version.
+def is_dep_uncached(pkg,pkg2,deps):
+    try:
         for p in deps[pkg2]:
             if pkg == p:
                 return True
             if is_dep(pkg,p,deps):
                 return True
+    except KeyError:
+        pass
     return False
+
+# See is_dep_full() above; this is the cached version.
+def is_dep(pkg,pkg2,deps):
+    try:
+        return is_dep_cache_lookup(pkg, pkg2)
+    except KeyError:
+        val = is_dep_uncached(pkg, pkg2, deps)
+        is_dep_cache_insert(pkg, pkg2, val)
+        return val
 
 # This function eliminates transitive dependencies; for example, given
 # these dependency chain: A->{B,C} and B->{C}, the A->{C} dependency is
