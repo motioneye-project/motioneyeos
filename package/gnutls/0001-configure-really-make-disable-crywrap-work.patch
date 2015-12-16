@@ -1,0 +1,40 @@
+From 996b3741e8c7a5d19ae6c554e062f20c259f52d7 Mon Sep 17 00:00:00 2001
+From: Gustavo Zacarias <gustavo@zacarias.com.ar>
+Date: Mon, 14 Dec 2015 15:16:24 -0300
+Subject: [PATCH] configure: really make --disable-crywrap work
+
+The crywrap variable is set regardless of the state of enable_crywrap,
+hence --disable-crywrap never works.
+Just put the tests for crywrap deps inside the enable_crywrap
+conditional.
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+---
+Status: applied upstream.
+
+ configure.ac | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index e1d1df0..efacc30 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -836,11 +836,10 @@ AC_ARG_ENABLE(crywrap,
+ 
+ 
+  if test "x$enable_crywrap" != "xno" ; then
+-	AC_CHECK_FUNCS([argp_usage],[ac_argp=yes],[ac_argp=no])
+- fi
+-
+- if test "$ac_cv_func_daemon" != "no" && test "$ac_argp" != "no" && test "$with_libidn" != "no";then
+-  crywrap=yes
++   AC_CHECK_FUNCS([argp_usage],[ac_argp=yes],[ac_argp=no])
++   if test "$ac_cv_func_daemon" != "no" && test "$ac_argp" != "no" && test "$with_libidn" != "no";then
++     crywrap=yes
++   fi
+  fi
+ 
+ fi
+-- 
+2.4.10
+

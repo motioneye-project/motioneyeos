@@ -11,6 +11,9 @@ GNUTLS_SITE = ftp://ftp.gnutls.org/gcrypt/gnutls/v$(GNUTLS_VERSION_MAJOR)
 GNUTLS_LICENSE = GPLv3+, LGPLv2.1+
 GNUTLS_LICENSE_FILES = COPYING COPYING.LESSER
 GNUTLS_DEPENDENCIES = host-pkgconf libtasn1 nettle pcre
+# For 0001-configure-really-make-disable-crywrap-work.patch
+GNUTLS_AUTORECONF = YES
+GNUTLS_GETTEXTIZE = YES
 GNUTLS_CONF_OPTS = \
 	--disable-doc \
 	--disable-guile \
