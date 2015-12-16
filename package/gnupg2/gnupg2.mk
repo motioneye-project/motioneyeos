@@ -11,6 +11,10 @@ GNUPG2_LICENSE = GPLv3+
 GNUPG2_LICENSE_FILES = COPYING
 GNUPG2_DEPENDENCIES = zlib libgpg-error libgcrypt libassuan libksba libpthsem \
 	$(if $(BR2_PACKAGE_LIBICONV),libiconv)
+
+# Patching configure.ac and m4 macros, as well as Makefile.am
+GNUPG2_AUTORECONF = YES
+
 GNUPG2_CONF_OPTS = \
 	--disable-rpath --disable-regex --disable-doc \
 	--with-libgpg-error-prefix=$(STAGING_DIR)/usr \

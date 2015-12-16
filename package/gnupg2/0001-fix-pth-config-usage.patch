@@ -6,22 +6,19 @@ original one when reporting the version number. This patch to gnupg2's
 configure script adjusts the version checking to support this
 difference, since Buildroot uses pth-config from pthsem.
 
-We patch directly the configure script, because triggering the entire
-autoreconf dance for just a one byte change in the configure script
-seems a bit silly.
-
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+[yann.morin.1998@free.fr: adapt to patch m4 macro for autoreconfiguring]
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
 
-Index: b/configure
-===================================================================
---- a/configure
-+++ b/configure
-@@ -8346,7 +8346,7 @@
-   tmp=1.3.7
-   if test "$PTH_CONFIG" != "no"; then
+diff -durN gnupg2-2.0.29.orig/m4/gnupg-pth.m4 gnupg2-2.0.29/m4/gnupg-pth.m4
+--- gnupg2-2.0.29.orig/m4/gnupg-pth.m4	2015-09-08 14:39:24.000000000 +0200
++++ gnupg2-2.0.29/m4/gnupg-pth.m4	2015-12-16 18:30:54.336513493 +0100
+@@ -17,7 +17,7 @@
+ # Taken and modified from the m4 macros which come with Pth.
+ AC_DEFUN([GNUPG_PTH_VERSION_CHECK],
+   [
+-    _pth_version=`$PTH_CONFIG --version | awk 'NR==1 {print [$]3}'`
++    _pth_version=`$PTH_CONFIG --version | awk 'NR==1 {print [$]2}'`
+     _req_version="ifelse([$1],,1.2.0,$1)"
  
--    _pth_version=`$PTH_CONFIG --version | awk 'NR==1 {print $3}'`
-+    _pth_version=`$PTH_CONFIG --version | awk 'NR==1 {print $2}'`
-     _req_version="$tmp"
- 
-     { $as_echo "$as_me:${as_lineno-$LINENO}: checking for PTH - version >= $_req_version" >&5
+     AC_MSG_CHECKING(for PTH - version >= $_req_version)

@@ -1,0 +1,39 @@
+tests: really don't run tests in cross-compilation
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+
+diff -durN gnupg2-2.0.29.orig/tests/Makefile.am gnupg2-2.0.29/tests/Makefile.am
+--- gnupg2-2.0.29.orig/tests/Makefile.am	2015-09-08 14:39:24.000000000 +0200
++++ gnupg2-2.0.29/tests/Makefile.am	2015-12-16 18:27:55.778227183 +0100
+@@ -64,6 +64,7 @@
+ asschk_SOURCES = asschk.c
+ 
+ 
++if RUN_GPG_TESTS
+ all-local: inittests.stamp
+ 
+ clean-local:
+@@ -72,4 +73,5 @@
+ inittests.stamp: inittests
+ 	srcdir=$(srcdir) $(TESTS_ENVIRONMENT) $(srcdir)/inittests
+ 	echo timestamp >./inittests.stamp
++endif # RUN_GPG_TESTS
+ 
+diff -durN gnupg2-2.0.29.orig/tests/pkits/Makefile.am gnupg2-2.0.29/tests/pkits/Makefile.am
+--- gnupg2-2.0.29.orig/tests/pkits/Makefile.am	2015-09-01 08:52:21.000000000 +0200
++++ gnupg2-2.0.29/tests/pkits/Makefile.am	2015-12-16 18:44:06.422655594 +0100
+@@ -52,6 +52,7 @@
+ 
+ DISTCLEANFILES = pubring.kbx~ random_seed
+ 
++if RUN_GPG_TESTS
+ all-local: inittests.stamp
+ 
+ clean-local:
+@@ -71,5 +72,5 @@
+            elif test $$? -eq 77; then echo "- SKIP $$tst"; \
+ 	   fi; \
+          done
+-
++endif # RUN_GPG_TESTS
+ 
