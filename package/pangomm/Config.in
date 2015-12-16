@@ -15,7 +15,7 @@ config BR2_PACKAGE_PANGOMM
 
 	  http://www.gtkmm.org/
 
-comment "libpangomm needs a toolchain w/ C++, wchar, threads, gcc >= 4.8"
+comment "pangomm needs a toolchain w/ C++, wchar, threads, gcc >= 4.8"
 	depends on BR2_USE_MMU
 	depends on BR2_ARCH_HAS_ATOMICS
 	depends on !BR2_TOOLCHAIN_GCC_AT_LEAST_4_8 || !BR2_USE_WCHAR \
