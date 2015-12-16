@@ -28,7 +28,7 @@ ifeq ($(BR2_PACKAGE_FONTCONFIG),y)
 LIBASS_DEPENDENCIES += fontconfig
 LIBASS_CONF_OPTS += --enable-fontconfig
 else
-LIBASS_CONF_OPTS += --disable-fontconfig
+LIBASS_CONF_OPTS += --disable-fontconfig --disable-require-system-font-provider
 endif
 
 ifeq ($(BR2_PACKAGE_HARFBUZZ),y)
