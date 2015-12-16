@@ -6,12 +6,15 @@ Index: b/src/Makefile
 ===================================================================
 --- a/src/Makefile
 +++ b/src/Makefile
-@@ -78,7 +78,7 @@
+@@ -78,8 +78,9 @@ else
  endif
  
  # Additional libs for GNU libc.
 -ifneq ($(wildcard /usr/lib*/libcrypt.a),)
-+ifneq ($(wildcard $(SYSROOT)/usr/lib*/libcrypt.a),)
-   SULOGINLIBS	+= -lcrypt
+-  SULOGINLIBS	+= -lcrypt
++HAS_LIBCRYPT=$(shell f=`mktemp` && echo 'int main(void) {}' | $(CC) -o $$f -xc - -lcrypt >/dev/null 2>&1 && echo yes; rm -f $$f)
++ifeq ($(HAS_LIBCRYPT),yes)
++  SULOGINLIBS += -lcrypt
  endif
  
+ all:		$(BIN) $(SBIN) $(USRBIN)
