@@ -11,6 +11,6 @@ config BR2_PACKAGE_HASERL
 config BR2_PACKAGE_HASERL_WITH_LUA
 	bool "Lua support"
 	depends on BR2_PACKAGE_HASERL
-	select BR2_PACKAGE_LUA
+	depends on BR2_PACKAGE_LUA
 	help
 	  Enable Lua support for haserl
