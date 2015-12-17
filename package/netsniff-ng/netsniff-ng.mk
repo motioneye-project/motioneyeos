@@ -16,6 +16,18 @@ NETSNIFF_NG_DEPENDENCIES = \
 	libnl libpcap libcli libnetfilter_conntrack \
 	liburcu libnet
 
+ifeq ($(BR2_PACKAGE_GEOIP),y)
+NETSNIFF_NG_DEPENDENCIES += geoip
+endif
+
+ifeq ($(BR2_PACKAGE_NCURSES),y)
+NETSNIFF_NG_DEPENDENCIES += ncurses
+endif
+
+ifeq ($(BR2_PACKAGE_ZLIB),y)
+NETSNIFF_NG_DEPENDENCIES += zlib
+endif
+
 # hand-written configure script and makefile
 define NETSNIFF_NG_CONFIGURE_CMDS
 	(cd $(@D); \
