@@ -13,6 +13,14 @@ mkdir -p /run/nfs/sm
 mkdir -p /run/nfs/sm.bak
 touch /run/nfs/rmtab
 
+CFG_FILE=/etc/default/nfsd
+
+NR_THREADS=2
+if [ -f "${CFG_FILE}" ]; then
+    . "${CFG_FILE}"
+fi
+
+
 start() {
 	# Start daemons.
 	printf "Starting NFS statd: "
@@ -25,7 +33,7 @@ start() {
 	echo "done"
 
 	printf "Starting NFS daemon: "
-	rpc.nfsd 2
+	rpc.nfsd ${NR_THREADS}
 	echo "done"
 
 	printf "Starting NFS mountd: "
@@ -40,7 +48,7 @@ stop() {
 	killall -q rpc.mountd
 	echo "done"
 
-	echo "Shutting down NFS daemon: "
+	printf "Shutting down NFS daemon: "
 	kill -9 `pidof nfsd` 2>/dev/null
 	echo "done"
 
