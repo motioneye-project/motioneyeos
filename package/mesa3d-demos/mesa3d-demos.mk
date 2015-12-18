@@ -12,7 +12,6 @@ MESA3D_DEMOS_DEPENDENCIES = host-pkgconf
 MESA3D_DEMOS_LICENSE = MIT
 
 MESA3D_DEMOS_CONF_OPTS += \
-	--without-glut \
 	--disable-osmesa \
 	--disable-gles1
 
@@ -56,6 +55,19 @@ MESA3D_DEMOS_DEPENDENCIES += freetype
 MESA3D_DEMOS_CONF_OPTS += --enable-freetype2
 else
 MESA3D_DEMOS_CONF_OPTS += --disable-freetype2
+endif
+
+ifeq ($(BR2_PACKAGE_LIBFREEGLUT),y)
+MESA3D_DEMOS_DEPENDENCIES += libfreeglut
+MESA3D_DEMOS_CONF_OPTS += --with-glut=$(STAGING_DIR)/usr
+# osmesa support depends on glut
+ifeq ($(BR2_PACKAGE_MESA3D_OSMESA),y)
+MESA3D_DEMOS_CONF_OPTS += --enable-osmesa
+else
+MESA3D_DEMOS_CONF_OPTS += --disable-osmesa
+endif
+else
+MESA3D_DEMOS_CONF_OPTS += --without-glut --disable-osmesa
 endif
 
 ifeq ($(BR2_PACKAGE_WAYLAND),y)
