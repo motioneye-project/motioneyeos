@@ -122,6 +122,7 @@ menu "Development tools"
 	source "package/cmake/Config.in"
 	source "package/cppunit/Config.in"
 	source "package/cvs/Config.in"
+	source "package/cxxtest/Config.in"
 if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	source "package/diffutils/Config.in"
 	source "package/dos2unix/Config.in"
