@@ -40,14 +40,14 @@ LIBGDIPLUS_CONF_OPTS += --without-libexif
 endif
 
 ifeq ($(BR2_PACKAGE_JPEG),y)
-LIBGDIPLUS_CONF_OPTS += --with-libjpeg
+LIBGDIPLUS_CONF_OPTS += --with-libjpeg=$(STAGING_DIR)/usr
 LIBGDIPLUS_DEPENDENCIES += jpeg
 else
 LIBGDIPLUS_CONF_OPTS += --without-libjpeg
 endif
 
 ifeq ($(BR2_PACKAGE_TIFF),y)
-LIBGDIPLUS_CONF_OPTS += --with-libtiff
+LIBGDIPLUS_CONF_OPTS += --with-libtiff=$(STAGING_DIR)/usr
 LIBGDIPLUS_DEPENDENCIES += tiff
 else
 LIBGDIPLUS_CONF_OPTS += --without-libtiff
