@@ -416,7 +416,7 @@ config BR2_PACKAGE_QT_ARCH_SUPPORTS_WEBKIT
 	# The CodeSourcery SuperH toolchain fails to build Webkit,
 	# with an assertion failure in binutils.
 	default y if (BR2_sh4 || BR2_sh4eb || BR2_sh4a || BR2_sh4aeb) && \
-		!BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_SH201209
+		!BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_SH
 
 config BR2_PACKAGE_QT_WEBKIT
 	bool "WebKit Module"
