@@ -12,9 +12,9 @@ config BR2_PACKAGE_ENLIGHTENMENT
 	depends on BR2_PACKAGE_XORG7
 	# libevas-generic-loaders-svg -> librsvg -> pango -> cairo
 	depends on BR2_ARCH_HAS_ATOMICS
-	select BR2_PACKAGE_LIBEFL_X_XLIB
-	select BR2_PACKAGE_LIBEFL_JPEG # needed at runtime by enlightenment_start
-	select BR2_PACKAGE_LIBEFL_PNG # needed at runtime by enlightenment_start
+	select BR2_PACKAGE_EFL_X_XLIB
+	select BR2_PACKAGE_EFL_JPEG # needed at runtime by enlightenment_start
+	select BR2_PACKAGE_EFL_PNG # needed at runtime by enlightenment_start
 	select BR2_PACKAGE_ELEMENTARY
 	select BR2_PACKAGE_LIBEVAS_GENERIC_LOADERS
 	select BR2_PACKAGE_LIBEVAS_GENERIC_LOADERS_SVG

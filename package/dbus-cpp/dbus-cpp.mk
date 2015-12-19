@@ -28,7 +28,7 @@ DBUS_CPP_LICENSE_FILES = COPYING
 
 ifeq ($(BR2_PACKAGE_EFL),y)
 DBUS_CPP_CONF_OPTS += --enable-ecore
-DBUS_CPP_DEPENDENCIES += libefl
+DBUS_CPP_DEPENDENCIES += efl
 else
 DBUS_CPP_CONF_OPTS += --disable-ecore
 endif

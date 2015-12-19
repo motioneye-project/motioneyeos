@@ -12,7 +12,7 @@ LIBEVAS_GENERIC_LOADERS_LICENSE_FILES = COPYING
 
 LIBEVAS_GENERIC_LOADERS_INSTALL_STAGING = YES
 
-LIBEVAS_GENERIC_LOADERS_DEPENDENCIES = host-pkgconf libefl zlib
+LIBEVAS_GENERIC_LOADERS_DEPENDENCIES = host-pkgconf efl zlib
 
 # poppler >= 0.32 is not supported by the current version of
 # libevas-generic-loaders.

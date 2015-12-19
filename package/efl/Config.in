@@ -1,5 +1,5 @@
-config BR2_PACKAGE_LIBEFL
-	bool "libefl"
+config BR2_PACKAGE_EFL
+	bool "efl"
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_PACKAGE_HAS_UDEV # libudev
 	depends on BR2_PACKAGE_LUA # lua 5.1 or better
@@ -20,9 +20,9 @@ config BR2_PACKAGE_LIBEFL
 
 	  https://enlightenment.org
 
-if BR2_PACKAGE_LIBEFL
+if BR2_PACKAGE_EFL
 
-config BR2_PACKAGE_LIBEFL_BULLET
+config BR2_PACKAGE_EFL_BULLET
 	bool "Enable bullet support (recommended)"
 	select BR2_PACKAGE_BULLET
 	default y
@@ -34,7 +34,7 @@ config BR2_PACKAGE_LIBEFL_BULLET
 	  simply not tested so you are on your own in terms of
 	  ensuring everything works if you do this.
 
-config BR2_PACKAGE_LIBEFL_FONTCONFIG
+config BR2_PACKAGE_EFL_FONTCONFIG
 	bool "Enable fontconfig support (recommended)"
 	select BR2_PACKAGE_FONTCONFIG
 	default y
@@ -47,7 +47,7 @@ config BR2_PACKAGE_LIBEFL_FONTCONFIG
 	  lead to visual problems like missing text in many UI areas
 	  etc...
 
-config BR2_PACKAGE_LIBEFL_GSTREAMER1
+config BR2_PACKAGE_EFL_GSTREAMER1
 	bool "Enable gstreamer1 support (recommended)"
 	select BR2_PACKAGE_GSTREAMER1
 	select BR2_PACKAGE_GST1_PLUGINS_BASE
@@ -57,7 +57,7 @@ config BR2_PACKAGE_LIBEFL_GSTREAMER1
 	  your media support options and render some functionality as
 	  useless, leading to visible application bugs.
 
-config BR2_PACKAGE_LIBEFL_LIBFRIBIDI
+config BR2_PACKAGE_EFL_LIBFRIBIDI
 	bool "Enable libfribidi support (recommended)"
 	select BR2_PACKAGE_LIBFRIBIDI
 	default y
@@ -70,7 +70,7 @@ config BR2_PACKAGE_LIBEFL_LIBFRIBIDI
 	  so you may also trigger code paths with bugs that are never
 	  normally used.
 
-config BR2_PACKAGE_LIBEFL_LIBSNDFILE
+config BR2_PACKAGE_EFL_LIBSNDFILE
 	bool "Enable libsndfile support (recommended)"
 	select BR2_PACKAGE_LIBSNDFILE
 	default y
@@ -79,7 +79,7 @@ config BR2_PACKAGE_LIBEFL_LIBSNDFILE
 	  and may create bugs for you due to it creating untested code
 	  paths.  Reconsider disabling audio.
 
-config BR2_PACKAGE_LIBEFL_PULSEAUDIO
+config BR2_PACKAGE_EFL_PULSEAUDIO
 	bool "Enable pulseaudio support (recommended)"
 	depends on BR2_ARCH_HAS_ATOMICS # pulseaudio
 	select BR2_PACKAGE_PULSEAUDIO
@@ -93,7 +93,7 @@ config BR2_PACKAGE_LIBEFL_PULSEAUDIO
 	  NOTE: multisense support is automatically enabled with
 	  pulseaudio.
 
-config BR2_PACKAGE_LIBEFL_UTIL_LINUX_LIBMOUNT
+config BR2_PACKAGE_EFL_UTIL_LINUX_LIBMOUNT
 	bool "Enable libmount support (recommended)"
 	select BR2_PACKAGE_UTIL_LINUX_LIBMOUNT
 	default y
@@ -102,26 +102,26 @@ config BR2_PACKAGE_LIBEFL_UTIL_LINUX_LIBMOUNT
 	  devices etc... and disabling this will hurt support for
 	  Enlightenment and its filemanager.
 
-config BR2_PACKAGE_LIBEFL_HAS_RECOMMENDED_CONFIG
+config BR2_PACKAGE_EFL_HAS_RECOMMENDED_CONFIG
 	bool
-	default y if BR2_PACKAGE_LIBEFL_BULLET && \
-		BR2_PACKAGE_LIBEFL_FONTCONFIG && \
-		BR2_PACKAGE_LIBEFL_GSTREAMER1 && \
-		BR2_PACKAGE_LIBEFL_LIBFRIBIDI && \
-		BR2_PACKAGE_LIBEFL_LIBSNDFILE && \
-		BR2_PACKAGE_LIBEFL_PULSEAUDIO && \
-		BR2_PACKAGE_LIBEFL_UTIL_LINUX_LIBMOUNT
+	default y if BR2_PACKAGE_EFL_BULLET && \
+		BR2_PACKAGE_EFL_FONTCONFIG && \
+		BR2_PACKAGE_EFL_GSTREAMER1 && \
+		BR2_PACKAGE_EFL_LIBFRIBIDI && \
+		BR2_PACKAGE_EFL_LIBSNDFILE && \
+		BR2_PACKAGE_EFL_PULSEAUDIO && \
+		BR2_PACKAGE_EFL_UTIL_LINUX_LIBMOUNT
 
 
 comment "Warning: one of the recommended option for EFL is not enabled"
-	depends on !BR2_PACKAGE_LIBEFL_HAS_RECOMMENDED_CONFIG
+	depends on !BR2_PACKAGE_EFL_HAS_RECOMMENDED_CONFIG
 
 comment "libecore video support"
 
-config BR2_PACKAGE_LIBEFL_FB
+config BR2_PACKAGE_EFL_FB
 	bool "FB support"
 
-config BR2_PACKAGE_LIBEFL_X_XLIB
+config BR2_PACKAGE_EFL_X_XLIB
 	bool "X11 support (xlib)"
 	depends on BR2_PACKAGE_XORG7
 	select BR2_PACKAGE_XLIB_LIBX11
@@ -139,52 +139,52 @@ config BR2_PACKAGE_LIBEFL_X_XLIB
 
 comment "libevas loaders"
 
-config BR2_PACKAGE_LIBEFL_PNG
+config BR2_PACKAGE_EFL_PNG
 	bool "libevas png loader"
 	select BR2_PACKAGE_LIBPNG
 	help
 	  This enables the loader code that loads png files using
 	  libpng.
 
-config BR2_PACKAGE_LIBEFL_JP2K
+config BR2_PACKAGE_EFL_JP2K
 	bool "libevas jp2k loader"
 	select BR2_PACKAGE_OPENJPEG
 	help
 	  This enables the loader code that loads jp2k files using
 	  openjpeg.
 
-config BR2_PACKAGE_LIBEFL_JPEG
+config BR2_PACKAGE_EFL_JPEG
 	bool "libevas jpeg loader"
 	help
 	  This enables the loader code that loads jpeg files using
 	  libjpeg.
 
-config BR2_PACKAGE_LIBEFL_GIF
+config BR2_PACKAGE_EFL_GIF
 	bool "libevas gif loader"
 	select BR2_PACKAGE_GIFLIB
 	help
 	  This enables the loader code that loads gif files using
 	  libungif.
 
-config BR2_PACKAGE_LIBEFL_TIFF
+config BR2_PACKAGE_EFL_TIFF
 	bool "libevas tiff loader"
 	select BR2_PACKAGE_TIFF
 	help
 	  This enables the loader code that loads tiff files.
 
-config BR2_PACKAGE_LIBEFL_WEBP
+config BR2_PACKAGE_EFL_WEBP
 	bool "libevas webp image loader"
 	select BR2_PACKAGE_WEBP
 	help
 	  This enables the loader code that loads images using WebP.
 
-endif # BR2_PACKAGE_LIBEFL
+endif # BR2_PACKAGE_EFL
 
-comment "LIBEFL needs udev /dev management and a toolchain w/ C++, dynamic library, threads, wchar"
+comment "efl needs udev /dev management and a toolchain w/ C++, dynamic library, threads, wchar"
 	depends on !BR2_PACKAGE_HAS_UDEV || !BR2_INSTALL_LIBSTDCPP \
 		|| BR2_STATIC_LIBS || !BR2_TOOLCHAIN_HAS_THREADS || !BR2_USE_WCHAR
 	depends on BR2_USE_MMU
 
-comment "LIBEFL needs lua"
+comment "efl needs lua"
 	depends on !BR2_PACKAGE_LUA
 	depends on BR2_USE_MMU
