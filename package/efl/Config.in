@@ -16,7 +16,6 @@ menuconfig BR2_PACKAGE_EFL
 if BR2_PACKAGE_EFL
 
 source "package/efl/libefl/Config.in"
-source "package/efl/libelementary/Config.in"
 
 endif # BR2_PACKAGE_EFL
 
