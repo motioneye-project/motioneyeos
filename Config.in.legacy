@@ -145,6 +145,13 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2016.02"
 
+config BR2_PACKAGE_PYTHON_PYXML
+	bool "python-pyxml package has been removed"
+	select BR2_LEGACY
+	help
+	  PyXML is obsolete and its functionality is covered either via
+	  native Python XML support or python-lxml package.
+
 # BR2_ENABLE_SSP is still referenced in Config.in (default in choice)
 config BR2_ENABLE_SSP
 	bool "Stack Smashing protection now has different levels"
