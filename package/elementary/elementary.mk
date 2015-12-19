@@ -1,20 +1,20 @@
 ################################################################################
 #
-# libelementary
+# elementary
 #
 ################################################################################
 
-LIBELEMENTARY_VERSION = 1.15.2
-LIBELEMENTARY_SOURCE = elementary-$(LIBELEMENTARY_VERSION).tar.xz
-LIBELEMENTARY_SITE = http://download.enlightenment.org/rel/libs/elementary
-LIBELEMENTARY_LICENSE = LGPLv2.1
-LIBELEMENTARY_LICENSE_FILES = COPYING
+ELEMENTARY_VERSION = 1.15.2
+ELEMENTARY_SOURCE = elementary-$(ELEMENTARY_VERSION).tar.xz
+ELEMENTARY_SITE = http://download.enlightenment.org/rel/libs/elementary
+ELEMENTARY_LICENSE = LGPLv2.1
+ELEMENTARY_LICENSE_FILES = COPYING
 
-LIBELEMENTARY_INSTALL_STAGING = YES
+ELEMENTARY_INSTALL_STAGING = YES
 
-LIBELEMENTARY_DEPENDENCIES = host-pkgconf host-libefl host-libelementary libefl
+ELEMENTARY_DEPENDENCIES = host-pkgconf host-libefl host-elementary libefl
 
-LIBELEMENTARY_CONF_OPTS = \
+ELEMENTARY_CONF_OPTS = \
 	--with-edje-cc=$(HOST_DIR)/usr/bin/edje_cc \
 	--with-eet-eet=$(HOST_DIR)/usr/bin/eet \
 	--with-eolian-gen=$(HOST_DIR)/usr/bin/eolian_gen \
@@ -25,8 +25,8 @@ LIBELEMENTARY_CONF_OPTS = \
 
 # We need a host package in order to provide elm_prefs_cc and
 # elementary_codegen.
-HOST_LIBELEMENTARY_DEPENDENCIES = host-pkgconf host-libefl
-HOST_LIBELEMENTARY_CONF_OPTS = \
+HOST_ELEMENTARY_DEPENDENCIES = host-pkgconf host-libefl
+HOST_ELEMENTARY_CONF_OPTS = \
 	--with-edje-cc=$(HOST_DIR)/usr/bin/edje_cc \
 	--with-eet-eet=$(HOST_DIR)/usr/bin/eet \
 	--with-eolian-gen=$(HOST_DIR)/usr/bin/eolian_gen \

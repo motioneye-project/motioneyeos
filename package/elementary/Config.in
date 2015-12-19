@@ -1,5 +1,5 @@
-config BR2_PACKAGE_LIBELEMENTARY
-	bool "libelementary"
+config BR2_PACKAGE_ELEMENTARY
+	bool "elementary"
 	depends on BR2_PACKAGE_EFL
 	depends on BR2_TOOLCHAIN_HAS_THREADS # elm_store.c
 	depends on !BR2_STATIC_LIBS
@@ -10,6 +10,6 @@ config BR2_PACKAGE_LIBELEMENTARY
 
 	  https://enlightenment.org
 
-comment "libelementary needs a toolchain w/ threads, dynamic library"
+comment "elementary needs a toolchain w/ threads, dynamic library"
 	depends on BR2_PACKAGE_EFL
 	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS

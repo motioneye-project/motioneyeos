@@ -161,6 +161,14 @@ config BR2_PACKAGE_DIRECTFB_UNICHROME
 	  It doesn't build in the latest version and it's unlikely
 	  anyone has any use for it.
 
+config BR2_PACKAGE_LIBELEMENTARY
+	bool "libelementary has been renamed to elementary"
+	select BR2_LEGACY
+	select BR2_PACKAGE_ELEMENTARY
+	help
+	  The libelementary package has been renamed to match the upstream
+	  name.
+
 config BR2_PACKAGE_LIBEINA
 	bool "libeina package has been removed"
 	select BR2_LEGACY
