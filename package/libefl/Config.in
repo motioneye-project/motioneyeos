@@ -1,5 +1,12 @@
 config BR2_PACKAGE_LIBEFL
 	bool "libefl"
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_PACKAGE_HAS_UDEV # libudev
+	depends on BR2_PACKAGE_LUA # lua 5.1 or better
+	depends on BR2_TOOLCHAIN_HAS_THREADS # untested without threads
+	depends on BR2_USE_MMU
+	depends on BR2_USE_WCHAR # use wchar_t
+	depends on !BR2_STATIC_LIBS # dlfcn.h
 	select BR2_PACKAGE_DBUS
 	select BR2_PACKAGE_FREETYPE
 	select BR2_PACKAGE_JPEG # Emile needs libjpeg
@@ -172,3 +179,12 @@ config BR2_PACKAGE_LIBEFL_WEBP
 	  This enables the loader code that loads images using WebP.
 
 endif # BR2_PACKAGE_LIBEFL
+
+comment "LIBEFL needs udev /dev management and a toolchain w/ C++, dynamic library, threads, wchar"
+	depends on !BR2_PACKAGE_HAS_UDEV || !BR2_INSTALL_LIBSTDCPP \
+		|| BR2_STATIC_LIBS || !BR2_TOOLCHAIN_HAS_THREADS || !BR2_USE_WCHAR
+	depends on BR2_USE_MMU
+
+comment "LIBEFL needs lua"
+	depends on !BR2_PACKAGE_LUA
+	depends on BR2_USE_MMU

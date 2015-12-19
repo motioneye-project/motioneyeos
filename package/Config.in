@@ -253,6 +253,7 @@ endif
 	source "package/fbv/Config.in"
 	source "package/freerdp/Config.in"
 	source "package/imagemagick/Config.in"
+	source "package/libefl/Config.in"
 	source "package/linux-fusion/Config.in"
 	source "package/lite/Config.in"
 	source "package/mesa3d/Config.in"
@@ -269,7 +270,6 @@ endif
 	source "package/sdl2/Config.in"
 
 comment "Other GUIs"
-	source "package/efl/Config.in"
 	source "package/qt/Config.in"
 	source "package/qt5/Config.in"
 if BR2_PACKAGE_QT || BR2_PACKAGE_QT5

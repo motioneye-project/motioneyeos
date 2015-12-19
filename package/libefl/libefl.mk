@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBEFL_VERSION = $(EFL_VERSION)
+LIBEFL_VERSION = 1.15.2
 LIBEFL_SOURCE = efl-$(LIBEFL_VERSION).tar.xz
 LIBEFL_SITE = http://download.enlightenment.org/rel/libs/efl
 LIBEFL_LICENSE = BSD-2c, LGPLv2.1+, GPLv2+
