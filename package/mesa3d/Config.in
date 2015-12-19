@@ -76,6 +76,13 @@ config BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_SWRAST
 	  This is a software opengl implementation using the Gallium3D
 	  infrastructure.
 
+config BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_VIRGL
+	bool "Gallium virgl driver"
+	select BR2_PACKAGE_MESA3D_GALLIUM_DRIVER
+	help
+	  virgl is the 3D acceleration backend for the virtio-gpu
+	  shipping with qemu.
+
 comment "DRI drivers need X.Org"
 	depends on !BR2_PACKAGE_XORG7
 
