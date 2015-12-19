@@ -113,6 +113,13 @@ config BR2_PACKAGE_MESA3D_DRI_DRIVER_I965
 	help
 	  Support for i965-based Intel GPUs.
 
+config BR2_PACKAGE_MESA3D_DRI_DRIVER_NOUVEAU
+	bool "DRI nouveau driver"
+	select BR2_PACKAGE_MESA3D_DRI_DRIVER
+	select BR2_PACKAGE_LIBDRM_NOUVEAU
+	help
+	  Support for Nvidia-based GPUs.
+
 config BR2_PACKAGE_MESA3D_DRI_DRIVER_RADEON
 	bool "DRI radeon driver"
 	depends on BR2_i386 || BR2_x86_64
