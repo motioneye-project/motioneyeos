@@ -265,7 +265,6 @@ if BR2_PACKAGE_XORG7
 	endmenu
 	menu "X11R7 Utilities"
 		source package/x11r7/xutil_makedepend/Config.in
-		source package/x11r7/xutil_util-macros/Config.in
 		source package/x11r7/mcookie/Config.in
 	endmenu
 	menu "X11R7 Other data"
