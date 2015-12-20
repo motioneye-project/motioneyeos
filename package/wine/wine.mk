@@ -4,13 +4,13 @@
 #
 ################################################################################
 
-WINE_VERSION = 1.6.2
+WINE_VERSION = 1.8
 WINE_SOURCE = wine-$(WINE_VERSION).tar.bz2
-WINE_SITE = https://dl.winehq.org/wine/source/1.6
+WINE_SITE = https://dl.winehq.org/wine/source/1.8
 WINE_LICENSE = LGPLv2.1+
 WINE_LICENSE_FILES = COPYING.LIB LICENSE
 WINE_DEPENDENCIES = host-bison host-flex host-wine
-# For 0002-detect-ncursesw.patch
+# For 0001-sane-config-fix.patch
 WINE_AUTORECONF = YES
 
 # Wine needs its own directory structure and tools for cross compiling
@@ -120,6 +120,13 @@ else
 WINE_CONF_OPTS += --without-glu
 endif
 
+ifeq ($(BR2_PACKAGE_LIBPCAP),y)
+WINE_CONF_OPTS += --with-pcap
+WINE_DEPENDENCIES += libpcap
+else
+WINE_CONF_OPTS += --without-pcap
+endif
+
 ifeq ($(BR2_PACKAGE_LIBPNG),y)
 WINE_CONF_OPTS += --with-png
 WINE_DEPENDENCIES += libpng
@@ -181,6 +188,20 @@ WINE_CONF_OPTS += --with-osmesa
 WINE_DEPENDENCIES += mesa3d
 else
 WINE_CONF_OPTS += --without-osmesa
+endif
+
+ifeq ($(BR2_PACKAGE_PULSEAUDIO),y)
+WINE_CONF_OPTS += --with-pulse
+WINE_DEPENDENCIES += pulseaudio
+else
+WINE_CONF_OPTS += --without-pulse
+endif
+
+ifeq ($(BR2_PACKAGE_SAMBA4),y)
+WINE_CONF_OPTS += --with-netapi
+WINE_DEPENDENCIES += samba4
+else
+WINE_CONF_OPTS += --without-netapi
 endif
 
 ifeq ($(BR2_PACKAGE_SANE_BACKENDS),y)
@@ -282,6 +303,7 @@ endif
 define HOST_WINE_BUILD_CMDS
 	$(HOST_MAKE_ENV) $(MAKE) -C $(@D) \
 	  tools \
+	  tools/sfnt2fon \
 	  tools/widl \
 	  tools/winebuild \
 	  tools/winegcc \
@@ -318,11 +340,14 @@ HOST_WINE_CONF_OPTS += \
 	--without-jpeg \
 	--without-ldap \
 	--without-mpg123 \
+	--without-netapi \
 	--without-openal \
 	--without-opencl \
 	--without-opengl \
 	--without-osmesa \
 	--without-oss \
+	--without-pcap \
+	--without-pulse \
 	--without-png \
 	--without-sane \
 	--without-tiff \
