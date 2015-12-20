@@ -1,0 +1,14 @@
+config BR2_PACKAGE_LIBASPLIB
+	bool "libasplib"
+	depends on BR2_INSTALL_LIBSTDCPP
+	# needs <cpuid.h> from the compiler
+	depends on BR2_i386 || BR2_x86_64
+	help
+	  asplib (Achim's Signal Processing LIBrary), is a small and
+	  lightweight C++ library for digital signal processing.
+
+	  https://github.com/kodi-adsp/asplib
+
+comment "asplib needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP
+	depends on BR2_i386 || BR2_x86_64
