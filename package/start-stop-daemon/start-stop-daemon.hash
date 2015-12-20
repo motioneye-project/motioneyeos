@@ -1,2 +1,2 @@
-# From http://ftp.de.debian.org/debian/pool/main/d/dpkg/dpkg_1.16.15.dsc
-sha256	92bca9901ba2d9300be42f6de8dbea59b8367a918a2abeeb47d2176c9cf86b55	dpkg_1.16.15.tar.xz
+# From http://ftp.de.debian.org/debian/pool/main/d/dpkg/dpkg_1.18.3.dsc
+sha256	a40ffe38d7f36d858a752189a306433cfc52c7d15d7b98f61d9f9dd49e0e4807	dpkg_1.18.3.tar.xz
