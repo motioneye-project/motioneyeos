@@ -57,7 +57,6 @@ GST1_PLUGINS_BAD_CONF_OPTS += \
 	--disable-mplex \
 	--disable-nas \
 	--disable-ofa \
-	--disable-openal \
 	--disable-openexr \
 	--disable-openjpeg \
 	--disable-openni2 \
@@ -700,6 +699,13 @@ GST1_PLUGINS_BAD_CONF_OPTS += --enable-neon
 GST1_PLUGINS_BAD_DEPENDENCIES += neon
 else
 GST1_PLUGINS_BAD_CONF_OPTS += --disable-neon
+endif
+
+ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_OPENAL),y)
+GST1_PLUGINS_BAD_CONF_OPTS += --enable-openal
+GST1_PLUGINS_BAD_DEPENDENCIES += openal
+else
+GST1_PLUGINS_BAD_CONF_OPTS += --disable-openal
 endif
 
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_OPENCV),y)
