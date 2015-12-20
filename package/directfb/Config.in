@@ -61,11 +61,6 @@ config BR2_PACKAGE_DIRECTFB_ATI128
 	bool "compile ati128 graphics driver"
 	depends on BR2_i386 || BR2_x86_64
 
-config BR2_PACKAGE_DIRECTFB_CLE266
-	bool "compile cle266 graphics driver"
-	default y
-	depends on BR2_i386 || BR2_x86_64
-
 config BR2_PACKAGE_DIRECTFB_MATROX
 	bool "compile matrox graphics driver"
 	depends on BR2_i386 || BR2_x86_64
@@ -88,11 +83,6 @@ config BR2_PACKAGE_DIRECTFB_EP9X
 	  processors from Cirrus Logic.
 
 	  http://cirrus.com/en/products/arm9.html
-
-config BR2_PACKAGE_DIRECTFB_UNICHROME
-	bool "compile unichrome graphics driver"
-	default y
-	depends on BR2_i386 || BR2_x86_64
 
 config BR2_PACKAGE_DIRECTFB_I830
 	bool "compile i830 graphics driver"
