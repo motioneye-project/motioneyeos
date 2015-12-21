@@ -146,7 +146,7 @@ endif
 comment "Legacy options removed in 2016.02"
 
 config BR2_PACKAGE_DIRECTFB_CLE266
-	bool "cle266 driver for directfb"
+	bool "cle266 driver for directfb removed"
 	select BR2_LEGACY
 	help
 	  The cle266 directfb driver support has been removed.
@@ -154,7 +154,7 @@ config BR2_PACKAGE_DIRECTFB_CLE266
 	  anyone has any use for it.
 
 config BR2_PACKAGE_DIRECTFB_UNICHROME
-	bool "unichrome driver for directfb"
+	bool "unichrome driver for directfb removed"
 	select BR2_LEGACY
 	help
 	  The unichrome directfb driver support has been removed.
