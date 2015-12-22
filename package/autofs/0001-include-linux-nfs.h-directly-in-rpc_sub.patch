@@ -1,0 +1,33 @@
+Upstream-Status: Pending
+
+From 44bdce8c6ed9b30c1643e5981172a4f9025f013c Mon Sep 17 00:00:00 2001
+From: Andreas Oberritter <obi@opendreambox.org>
+Date: Wed, 13 Mar 2013 16:17:08 +0100
+Subject: [PATCH] autofs-5.0.7: include linux/nfs.h directly in rpc_subs.h
+
+Fixes compile error with uclibc. Glibc's nfs/nfs.h contains
+nothing but "#include linux/nfs.h". rpc_subs.h already includes
+other linux/nfs*.h files directly.
+
+Signed-off-by: Andreas Oberritter <obi@opendreambox.org>
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ include/rpc_subs.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/rpc_subs.h b/include/rpc_subs.h
+index b6d59f9..a2d9648 100644
+--- a/include/rpc_subs.h
++++ b/include/rpc_subs.h
+@@ -18,7 +18,7 @@
+ 
+ #include <rpc/rpc.h>
+ #include <rpc/pmap_prot.h>
+-#include <nfs/nfs.h>
++#include <linux/nfs.h>
+ #include <linux/nfs2.h>
+ #include <linux/nfs3.h>
+ 
+-- 
+1.7.10.4
+

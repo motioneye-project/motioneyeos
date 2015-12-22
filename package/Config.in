@@ -155,6 +155,7 @@ endif
 endmenu
 
 menu "Filesystem and flash utilities"
+	source "package/autofs/Config.in"
 	source "package/btrfs-progs/Config.in"
 	source "package/cifs-utils/Config.in"
 	source "package/cpio/Config.in"
