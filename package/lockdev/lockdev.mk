@@ -24,6 +24,12 @@ LOCKDEV_BUILD_ARGS = shared
 LOCKDEV_INSTALL_ARGS = install_run
 endif
 
+# Make the code believe we are using a C library compatible with
+# glibc, which for the purpose of lockdev is actually true.
+ifeq ($(BR2_TOOLCHAIN_USES_MUSL),y)
+LOCKDEV_BUILD_ARGS += CFLAGS="$(TARGET_CFLAGS) -D__GNU_LIBRARY__"
+endif
+
 ifeq ($(BR2_SHARED_STATIC_LIBS)$(BR2_SHARED_LIBS),y)
 define LOCKDEV_CREATE_LINKS_STAGING
 	ln -sf liblockdev.$(LOCKDEV_VERSION).so $(STAGING_DIR)/usr/lib/liblockdev.so
