@@ -49,6 +49,7 @@ endif
 ifeq ($(BR2_PACKAGE_CUPS),y)
 WINE_CONF_OPTS += --with-cups
 WINE_DEPENDENCIES += cups
+WINE_CONF_ENV += CUPS_CONFIG=$(STAGING_DIR)/usr/bin/cups-config
 else
 WINE_CONF_OPTS += --without-cups
 endif
@@ -73,6 +74,7 @@ WINE_CONF_OPTS += --with-freetype
 HOST_WINE_CONF_OPTS += --with-freetype
 WINE_DEPENDENCIES += freetype
 HOST_WINE_DEPENDENCIES += host-freetype
+WINE_CONF_ENV += FREETYPE_CONFIG=$(STAGING_DIR)/usr/bin/freetype-config
 else
 WINE_CONF_OPTS += --without-freetype
 HOST_WINE_CONF_OPTS += --without-freetype
@@ -144,6 +146,7 @@ endif
 ifeq ($(BR2_PACKAGE_LIBXML2),y)
 WINE_CONF_OPTS += --with-xml
 WINE_DEPENDENCIES += libxml2
+WINE_CONF_ENV += XML2_CONFIG=$(STAGING_DIR)/usr/bin/xml2-config
 else
 WINE_CONF_OPTS += --without-xml
 endif
@@ -151,6 +154,7 @@ endif
 ifeq ($(BR2_PACKAGE_LIBXSLT),y)
 WINE_CONF_OPTS += --with-xslt
 WINE_DEPENDENCIES += libxslt
+WINE_CONF_ENV += XSLT_CONFIG=$(STAGING_DIR)/usr/bin/xslt-config
 else
 WINE_CONF_OPTS += --without-xslt
 endif
