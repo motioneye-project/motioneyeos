@@ -46,6 +46,16 @@ This snippet creates the following make targets:
 and ensures that the source configuration file is copied to the build
 directory at the right moment.
 
+There are two options to specify a configuration file to use, either
++FOO_KCONFIG_FILE+ (as in the example, above) or +FOO_KCONFIG_DEFCONFIG+.
+It is mandatory to provide either, but not both:
+
+* +FOO_KCONFIG_FILE+ specifies the path to a defconfig or full-config file
+  to be used to configure the package.
+
+* +FOO_KCONFIG_DEFCONFIG+ specifies the defconfig 'make' rule to call to
+  configure the package.
+
 In addition to these minimally required lines, several optional variables can
 be set to suit the needs of the package under consideration:
 
