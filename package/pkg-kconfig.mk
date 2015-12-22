@@ -63,8 +63,12 @@ $$($(2)_KCONFIG_FILE) $$($(2)_KCONFIG_FRAGMENT_FILES): | $(1)-patch
 # full .config first. We use 'make oldconfig' because this can be safely
 # done even when the package does not support defconfigs.
 $$($(2)_DIR)/.config: $$($(2)_KCONFIG_FILE) $$($(2)_KCONFIG_FRAGMENT_FILES)
+	$$(if $$($(2)_KCONFIG_DEFCONFIG), \
+		$$($(2)_MAKE_ENV) $$(MAKE) -C $$($(2)_DIR) \
+			$$($(2)_KCONFIG_OPTS) $$($(2)_KCONFIG_DEFCONFIG), \
+		cp $$($(2)_KCONFIG_FILE) $$(@))
 	support/kconfig/merge_config.sh -m -O $$(@D) \
-		$$($(2)_KCONFIG_FILE) $$($(2)_KCONFIG_FRAGMENT_FILES)
+		$$(@) $$($(2)_KCONFIG_FRAGMENT_FILES)
 	$$(Q)yes "" | $$($(2)_MAKE_ENV) $$(MAKE) -C $$($(2)_DIR) \
 		$$($(2)_KCONFIG_OPTS) oldconfig
 
@@ -89,10 +93,14 @@ $$($(2)_TARGET_CONFIGURE): $$($(2)_DIR)/.stamp_kconfig_fixup_done
 # already called above, so we can effectively use this variable.
 ifeq ($$($$($(2)_KCONFIG_VAR)),y)
 
-# FOO_KCONFIG_FILE is required
 ifeq ($$(BR_BUILDING),y)
-ifeq ($$($(2)_KCONFIG_FILE),)
-$$(error Internal error: no value specified for $(2)_KCONFIG_FILE)
+# Either FOO_KCONFIG_FILE or FOO_KCONFIG_DEFCONFIG is required...
+ifeq ($$(or $$($(2)_KCONFIG_FILE),$$($(2)_KCONFIG_DEFCONFIG)),)
+$$(error Internal error: no value specified for $(2)_KCONFIG_FILE or $(2)_KCONFIG_DEFCONFIG)
+endif
+# ... but not both:
+ifneq ($$(and $$($(2)_KCONFIG_FILE),$$($(2)_KCONFIG_DEFCONFIG)),)
+$$(error Internal error: $(2)_KCONFIG_FILE and $(2)_KCONFIG_DEFCONFIG are mutually exclusive but both are defined)
 endif
 endif
 
@@ -160,6 +168,8 @@ $(1)-savedefconfig: $(1)-check-configuration-done
 $(1)-update-config: $(1)-check-configuration-done
 	@$$(if $$($(2)_KCONFIG_FRAGMENT_FILES), \
 		echo "Unable to perform $(1)-update-config when fragment files are set"; exit 1)
+	@$$(if $$($(2)_KCONFIG_DEFCONFIG), \
+		echo "Unable to perform $(1)-update-config when using a defconfig rule"; exit 1)
 	cp -f $$($(2)_DIR)/.config $$($(2)_KCONFIG_FILE)
 	touch --reference $$($(2)_DIR)/.config $$($(2)_KCONFIG_FILE)
 
@@ -170,6 +180,8 @@ $(1)-update-config: $(1)-check-configuration-done
 $(1)-update-defconfig: $(1)-savedefconfig
 	@$$(if $$($(2)_KCONFIG_FRAGMENT_FILES), \
 		echo "Unable to perform $(1)-update-defconfig when fragment files are set"; exit 1)
+	@$$(if $$($(2)_KCONFIG_DEFCONFIG), \
+		echo "Unable to perform $(1)-update-defconfig when using a defconfig rule"; exit 1)
 	cp -f $$($(2)_DIR)/defconfig $$($(2)_KCONFIG_FILE)
 	touch --reference $$($(2)_DIR)/.config $$($(2)_KCONFIG_FILE)
 
