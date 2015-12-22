@@ -1,0 +1,57 @@
+From 33d34a10fdc01c5716aebdb93c34fdfd7557adc0 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Tue, 22 Dec 2015 17:39:35 +0100
+Subject: [PATCH] Fix access to the dentry
+
+Since Linux 2.6.20, the dentry pointer is no longer stored in
+file->f_dentry, but in file->f_path.dentry. Until Linux 3.19, there
+was a compatibility macro which made the change transparent, but this
+macro has now been removed.
+
+Since we probably don't care about compatibility with kernels older
+than 2.6.20, this commit takes the simple approach of using
+file->f_path.dentry. This will work with any kernel >= 2.6.20.
+
+Submitted upstream at https://github.com/nicupavel/emlog/pull/3.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ emlog.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/emlog.c b/emlog.c
+index 41a67e2..1ef3d80 100644
+--- a/emlog.c
++++ b/emlog.c
+@@ -292,8 +292,8 @@ static ssize_t emlog_read(struct file *file, char __user *buffer,      /* The bu
+     struct emlog_info *einfo;
+ 
+     /* get the metadata about this emlog */
+-    if ((einfo = get_einfo(file->f_dentry->d_inode)) == NULL) {
+-        pr_err("can not fetch einfo for inode %ld.\n", (long)(file->f_dentry->d_inode->i_ino));
++    if ((einfo = get_einfo(file->f_path.dentry->d_inode)) == NULL) {
++        pr_err("can not fetch einfo for inode %ld.\n", (long)(file->f_path.dentry->d_inode->i_ino));
+         return -EIO;
+     }
+ 
+@@ -368,7 +368,7 @@ static ssize_t emlog_write(struct file *file,
+     struct emlog_info *einfo;
+ 
+     /* get the metadata about this emlog */
+-    if ((einfo = get_einfo(file->f_dentry->d_inode)) == NULL)
++    if ((einfo = get_einfo(file->f_path.dentry->d_inode)) == NULL)
+         return -EIO;
+ 
+     /* if the message is longer than the buffer, just take the beginning
+@@ -403,7 +403,7 @@ static unsigned int emlog_poll(struct file *file, struct poll_table_struct * wai
+     struct emlog_info *einfo;
+ 
+     /* get the metadata about this emlog */
+-    if ((einfo = get_einfo(file->f_dentry->d_inode)) == NULL)
++    if ((einfo = get_einfo(file->f_path.dentry->d_inode)) == NULL)
+         return -EIO;
+ 
+     poll_wait(file, EMLOG_READQ(einfo), wait);
+-- 
+2.6.4
+
