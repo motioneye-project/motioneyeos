@@ -1,3 +1,7 @@
+comment "udpcast needs a toolchain w/ threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
+
 config BR2_PACKAGE_UDPCAST
 	bool "udpcast"
 	depends on BR2_TOOLCHAIN_HAS_THREADS
@@ -7,10 +11,6 @@ config BR2_PACKAGE_UDPCAST
 	  be very handy for imaging drives over the network.
 
 	  http://www.udpcast.linux.lu/
-
-comment "udpcast needs a toolchain w/ threads"
-	depends on BR2_USE_MMU
-	depends on !BR2_TOOLCHAIN_HAS_THREADS
 
 if BR2_PACKAGE_UDPCAST
 
