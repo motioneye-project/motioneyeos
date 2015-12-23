@@ -248,6 +248,15 @@ config BR2_PACKAGE_INFOZIP
 	  to avoid ambiguities with Info-Zip's UnZip which has been added
 	  in the unzip package.
 
+config BR2_BR2_PACKAGE_NODEJS_4_X
+	bool "nodejs version 4.x has been removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_NODEJS
+	help
+	  nodejs version 4.x has been removed.  As an alternative,
+	  the latest nodejs version has been automatically selected in
+	  your configuration.
+
 ###############################################################################
 comment "Legacy options removed in 2015.11"
 

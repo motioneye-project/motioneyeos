@@ -1,0 +1,39 @@
+From 5b3dd2599ebde1846750aaf7c79576ad45246ffa Mon Sep 17 00:00:00 2001
+From: Martin Bark <martin@barkynet.com>
+Date: Tue, 8 Dec 2015 11:41:08 +0000
+Subject: [PATCH] Fix va_list not declared
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+When compiling with uClibc-ng the following error is seen.
+
+In file included from ../deps/v8/src/log-utils.cc:5:0:
+../deps/v8/src/log-utils.h:64:39: error: ‘va_list’ has not been declared
+     void AppendVA(const char* format, va_list args);
+
+This patch fixes the issue by adding the missing #include <cstdarg>.  Note
+that this fix has already be included upstream, see
+https://github.com/nodejs/node/blob/8a43a3d/deps/v8/src/log-utils.h
+
+Signed-off-by: Martin Bark <martin@barkynet.com>
+---
+ deps/v8/src/log-utils.h | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/deps/v8/src/log-utils.h b/deps/v8/src/log-utils.h
+index 87dab52..6714307 100644
+--- a/deps/v8/src/log-utils.h
++++ b/deps/v8/src/log-utils.h
+@@ -5,6 +5,8 @@
+ #ifndef V8_LOG_UTILS_H_
+ #define V8_LOG_UTILS_H_
+ 
++#include <cstdarg>
++
+ #include "src/allocation.h"
+ #include "src/base/platform/mutex.h"
+ #include "src/flags.h"
+-- 
+2.5.0
+

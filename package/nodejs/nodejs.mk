@@ -5,7 +5,7 @@
 ################################################################################
 
 NODEJS_VERSION = $(call qstrip,$(BR2_PACKAGE_NODEJS_VERSION_STRING))
-ifeq ($(BR2_BR2_PACKAGE_NODEJS_4_X),y)
+ifeq ($(BR2_PACKAGE_NODEJS_5_X),y)
 NODEJS_SOURCE = node-v$(NODEJS_VERSION).tar.xz
 else
 NODEJS_SOURCE = node-v$(NODEJS_VERSION).tar.gz
