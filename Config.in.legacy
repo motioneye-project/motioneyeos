@@ -248,6 +248,14 @@ config BR2_PACKAGE_INFOZIP
 	  to avoid ambiguities with Info-Zip's UnZip which has been added
 	  in the unzip package.
 
+config BR2_BR2_PACKAGE_NODEJS_0_10_X
+	bool "nodejs 0.10.x option renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_NODEJS
+	help
+	  nodejs 0.10.x option was named incorrectly and has been renamed
+	  to BR2_PACKAGE_NODEJS_0_10_X.
+
 config BR2_BR2_PACKAGE_NODEJS_0_12_X
 	bool "nodejs version 0.12.x has been removed"
 	select BR2_LEGACY

@@ -37,12 +37,12 @@ config BR2_PACKAGE_NODEJS_V8_ARCH_SUPPORTS
 
 choice
 	prompt "Node.js version"
-	default BR2_BR2_PACKAGE_NODEJS_0_10_X if BR2_ARM_CPU_ARMV5
+	default BR2_PACKAGE_NODEJS_0_10_X if BR2_ARM_CPU_ARMV5
 	default BR2_PACKAGE_NODEJS_5_X
 	help
 	  Select the version of Node.js you wish to use.
 
-config BR2_BR2_PACKAGE_NODEJS_0_10_X
+config BR2_PACKAGE_NODEJS_0_10_X
 	bool "v0.10.41"
 
 config BR2_PACKAGE_NODEJS_5_X
@@ -59,7 +59,7 @@ endchoice
 
 config BR2_PACKAGE_NODEJS_VERSION_STRING
 	string
-	default "0.10.41"	if BR2_BR2_PACKAGE_NODEJS_0_10_X
+	default "0.10.41"	if BR2_PACKAGE_NODEJS_0_10_X
 	default "5.3.0"		if BR2_PACKAGE_NODEJS_5_X
 
 menu "Module Selection"
