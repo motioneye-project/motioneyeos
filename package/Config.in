@@ -949,7 +949,7 @@ menu "Javascript"
 	source "package/flot/Config.in"
 	source "package/jquery/Config.in"
 if BR2_PACKAGE_JQUERY
-menu "external jQuery plugins"
+menu "External jQuery plugins"
 	source "package/jquery-datetimepicker/Config.in"
 	source "package/jquery-keyboard/Config.in"
 	source "package/jquery-mobile/Config.in"
