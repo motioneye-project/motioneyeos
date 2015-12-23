@@ -112,7 +112,7 @@ ifeq ($(BR2_TARGET_BAREBOX)$(BR_BUILDING),yy)
 # We must use the user-supplied kconfig value, because
 # BAREBOX_KCONFIG_DEFCONFIG will at least contain the
 # trailing _defconfig
-ifeq ($(or $(BAREBOX_KCONFIG_FILE),$(BAREBOX_KCONFIG_DEFCONFIG)),)
+ifeq ($(or $(BAREBOX_KCONFIG_FILE),$(call qstrip,$(BR2_TARGET_BAREBOX_BOARD_DEFCONFIG))),)
 $(error No Barebox config. Check your BR2_TARGET_BAREBOX_BOARD_DEFCONFIG or BR2_TARGET_BAREBOX_CUSTOM_CONFIG_FILE settings)
 endif
 endif

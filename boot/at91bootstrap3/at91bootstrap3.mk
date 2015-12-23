@@ -57,7 +57,7 @@ ifeq ($(BR2_TARGET_AT91BOOTSTRAP3_USE_DEFCONFIG),y)
 # We must use the user-supplied kconfig value, because
 # AT91BOOTSTRAP3_KCONFIG_DEFCONFIG will at least contain
 # the trailing _defconfig
-ifeq ($(AT91BOOTSTRAP3_KCONFIG_DEFCONFIG),)
+ifeq ($(call qstrip,$(BR2_TARGET_AT91BOOTSTRAP3_DEFCONFIG)),)
 $(error No at91bootstrap3 defconfig name specified, check your BR2_TARGET_AT91BOOTSTRAP3_DEFCONFIG setting)
 endif
 endif
