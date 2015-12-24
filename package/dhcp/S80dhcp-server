@@ -8,7 +8,7 @@
 INTERFACES=""
 
 # Allow a few customizations from a config file
-test -r /etc/default/dhcpd.conf && . /etc/default/dhcpd.conf
+test -r /etc/default/dhcpd && . /etc/default/dhcpd
 
 # Sanity checks
 test -f /usr/sbin/dhcpd || exit 0
