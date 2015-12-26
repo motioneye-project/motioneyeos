@@ -12,7 +12,9 @@ GETTEXT_LICENSE = LGPLv2.1+ (libintl), GPLv3+ (the rest)
 GETTEXT_LICENSE_FILES = COPYING gettext-runtime/intl/COPYING.LIB
 
 GETTEXT_DEPENDENCIES = $(if $(BR2_PACKAGE_LIBICONV),libiconv)
-HOST_GETTEXT_DEPENDENCIES = # we don't want the libiconv dependency
+
+# Avoid using the bundled subset of libxml2
+HOST_GETTEXT_DEPENDENCIES = host-libxml2
 
 GETTEXT_CONF_OPTS += \
 	--disable-libasprintf \
