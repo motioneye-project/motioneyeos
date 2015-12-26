@@ -185,6 +185,15 @@ config BR2_iwmmxt
 	select BR2_ARCH_HAS_MMU_OPTIONAL
 endchoice
 
+config BR2_ARM_ENABLE_NEON
+	bool "Enable NEON SIMD extension support"
+	depends on BR2_ARM_CPU_MAYBE_HAS_NEON
+	select BR2_ARM_CPU_HAS_NEON
+	help
+	  For some CPU cores, the NEON SIMD extension is optional.
+	  Select this option if you are certain your particular
+	  implementation has NEON support and you want to use it.
+
 choice
 	prompt "Target ABI"
 	depends on BR2_arm || BR2_armeb
@@ -239,15 +248,6 @@ config BR2_ARM_EABIHF
 	  likely the best choice.
 
 endchoice
-
-config BR2_ARM_ENABLE_NEON
-	bool "Enable NEON SIMD extension support"
-	depends on BR2_ARM_CPU_MAYBE_HAS_NEON
-	select BR2_ARM_CPU_HAS_NEON
-	help
-	  For some CPU cores, the NEON SIMD extension is optional.
-	  Select this option if you are certain your particular
-	  implementation has NEON support and you want to use it.
 
 choice
 	prompt "Floating point strategy"
