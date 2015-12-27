@@ -159,7 +159,13 @@ TARGET_CFLAGS += -msep-data
 TARGET_CXXFLAGS += -msep-data
 endif
 
-ifeq ($(BR2_ENABLE_SSP),y)
+ifeq ($(BR2_SSP_REGULAR),y)
+TARGET_CFLAGS += -fstack-protector
+TARGET_CXXFLAGS += -fstack-protector
+else ifeq ($(BR2_SSP_STRONG),y)
+TARGET_CFLAGS += -fstack-protector-strong
+TARGET_CXXFLAGS += -fstack-protector-strong
+else ifeq ($(BR2_SSP_ALL),y)
 TARGET_CFLAGS += -fstack-protector-all
 TARGET_CXXFLAGS += -fstack-protector-all
 endif

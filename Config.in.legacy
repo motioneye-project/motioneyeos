@@ -145,6 +145,14 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2016.02"
 
+# BR2_ENABLE_SSP is still referenced in Config.in (default in choice)
+config BR2_ENABLE_SSP
+	bool "Stack Smashing protection now has different levels"
+	help
+	  The protection offered by SSP can now be selected from different
+	  protection levels. Be sure to review the SSP level in the build
+	  options menu.
+
 config BR2_PACKAGE_DIRECTFB_CLE266
 	bool "cle266 driver for directfb removed"
 	select BR2_LEGACY
