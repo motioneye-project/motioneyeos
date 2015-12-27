@@ -10,7 +10,7 @@ VBOOT_UTILS_SITE_METHOD = git
 VBOOT_UTILS_LICENSE = BSD-3c
 VBOOT_UTILS_LICENSE_FILES = LICENSE
 
-HOST_VBOOT_UTILS_DEPENDENCIES = host-openssl host-pkgconf
+HOST_VBOOT_UTILS_DEPENDENCIES = host-openssl host-util-linux host-pkgconf
 
 # vboot_reference contains code that goes into bootloaders,
 # utilities intended for the target system, and a bunch of scripts
