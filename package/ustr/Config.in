@@ -1,6 +1,11 @@
 config BR2_PACKAGE_USTR
 	bool "ustr"
+	# unconditionally builds a shared library
+	depends on !BR2_STATIC_LIBS
 	help
 	  A small, safe string library.
 
 	  http://www.and.org/ustr/
+
+comment "ustr needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS
