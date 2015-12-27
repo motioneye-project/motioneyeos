@@ -200,6 +200,10 @@ config BR2_ARM_ENABLE_VFP
 	select BR2_ARM_CPU_HAS_VFPV4 if BR2_ARM_CPU_MAYBE_HAS_VFPV4
 	select BR2_ARM_CPU_HAS_VFPV3 if BR2_ARM_CPU_MAYBE_HAS_VFPV3
 	select BR2_ARM_CPU_HAS_VFPV2 if BR2_ARM_CPU_MAYBE_HAS_VFPV2
+	help
+	  For some CPU cores, the VFP extension is optional. Select
+	  this option if you are certain your particular
+	  implementation has VFP support and you want to use it.
 
 choice
 	prompt "Target ABI"
