@@ -421,28 +421,29 @@ def _set_streameye_settings(camera_id, s):
         for line in lines:
             f.write(line + '\n')
 
-    # a workaround to update the camera username and password
-    # since we cannot call set_camera() from here
-    if s['seAuthMode'] == 'basic':
-        url = 'http://%s:%s@127.0.0.1:%s/' % (username, password, s['sePort'])
-    
-    else:
-        url = 'http://127.0.0.1:%s/' % s['sePort']
-    
-    if 1 in config._camera_config_cache:
-        logging.debug('updating streaming authentication in config cache')
-        config._camera_config_cache[1]['@url'] = url
+    if 1 in config.get_camera_ids():
+        # a workaround to update the camera username and password
+        # since we cannot call set_camera() from here
+        if s['seAuthMode'] == 'basic':
+            url = 'http://%s:%s@127.0.0.1:%s/' % (username, password, s['sePort'])
+        
+        else:
+            url = 'http://127.0.0.1:%s/' % s['sePort']
+        
+        if 1 in config._camera_config_cache:
+            logging.debug('updating streaming authentication in config cache')
+            config._camera_config_cache[1]['@url'] = url
 
-    lines = config.get_camera(1, as_lines=True)
-    for i, line in enumerate(lines):
-        if line.startswith('# @url'):
-            lines[i] = '# @url %s' % url
+        lines = config.get_camera(1, as_lines=True)
+        for i, line in enumerate(lines):
+            if line.startswith('# @url'):
+                lines[i] = '# @url %s' % url
 
-    config_file = os.path.join(settings.CONF_PATH, config._CAMERA_CONFIG_FILE_NAME % {'id': 1})
-    logging.debug('updating streaming authentication in camera config file %s' % config_file)
-    with open(config_file, 'w') as f:
-        for line in lines:
-            f.write(line + '\n')
+        config_file = os.path.join(settings.CONF_PATH, config._CAMERA_CONFIG_FILE_NAME % {'id': 1})
+        logging.debug('updating streaming authentication in camera config file %s' % config_file)
+        with open(config_file, 'w') as f:
+            for line in lines:
+                f.write(line + '\n')
 
     logging.debug('restarting streameye')
     if os.system('streameye.sh restart'):
