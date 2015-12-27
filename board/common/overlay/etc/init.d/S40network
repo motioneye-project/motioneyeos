@@ -167,13 +167,13 @@ start() {
     fi
 
     if [ -n "$static_gw" ]; then
-        msg_begin "setting static gateway to $static_gw"
+        msg_begin "Setting static gateway to $static_gw"
         ip route add default via $static_gw
         test $? == 0 && msg_done || msg_fail
     fi
 
     if [ -n "$static_dns" ]; then
-        msg_begin "setting static DNS server to $static_dns"
+        msg_begin "Setting static DNS server to $static_dns"
         echo "nameserver $static_dns" > /etc/resolv.conf
         test $? == 0 && msg_done || msg_fail
     fi

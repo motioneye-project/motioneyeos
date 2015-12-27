@@ -3,7 +3,7 @@
 gpio=35
 check_interval=30
 export=/sys/class/gpio/export
-read=/sys/class/gpio/gpio$gpio/value
+readv=/sys/class/gpio/gpio$gpio/value
 
 test -n "$os_version" || source /etc/init.d/base
 
@@ -13,7 +13,7 @@ configure() {
 
 watch() {
     while true; do
-        if [ `cat $read` == "0" ]; then
+        if [ "$(cat $readv)" == "0" ]; then
             logger -t brownout -s "low power supply voltage detected"
         fi
         sleep $check_interval
