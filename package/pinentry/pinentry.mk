@@ -21,6 +21,13 @@ else
 PINENTRY_CONF_OPTS += --without-x
 endif
 
+ifeq ($(BR2_PACKAGE_LIBSECRET),y)
+PINENTRY_CONF_OPTS += --enable-libsecret
+PINENTRY_DEPENDENCIES += libsecret
+else
+PINENTRY_CONF_OPTS += --disable-libsecret
+endif
+
 # pinentry-ncurses backend
 ifeq ($(BR2_PACKAGE_PINENTRY_NCURSES),y)
 PINENTRY_CONF_OPTS += --enable-ncurses --with-ncurses-include-dir=none
