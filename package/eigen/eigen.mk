@@ -23,8 +23,8 @@ endif
 # Generate the .pc file at build time
 define EIGEN_BUILD_CMDS
 	sed -r -e 's,^Version: .*,Version: $(EIGEN_VERSION),' \
-	       -e 's,^Cflags: .*,Cflags: -I$(EIGEN_DEST_DIR),' \
-	       $(@D)/eigen3.pc.in >$(@D)/eigen3.pc
+		-e 's,^Cflags: .*,Cflags: -I$(EIGEN_DEST_DIR),' \
+		$(@D)/eigen3.pc.in >$(@D)/eigen3.pc
 endef
 
 # This package only consists of headers that need to be
@@ -35,7 +35,7 @@ define EIGEN_INSTALL_STAGING_CMDS
 	cp -a $(@D)/Eigen $(EIGEN_DEST_DIR)
 	$(EIGEN_INSTALL_UNSUPPORTED_MODULES_CMDS)
 	$(INSTALL) -D -m 0644 $(@D)/eigen3.pc \
-			      $(STAGING_DIR)/usr/lib/pkgconfig/eigen3.pc
+		$(STAGING_DIR)/usr/lib/pkgconfig/eigen3.pc
 endef
 
 $(eval $(generic-package))
