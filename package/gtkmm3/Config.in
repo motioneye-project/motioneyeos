@@ -1,5 +1,10 @@
 config BR2_PACKAGE_GTKMM3
 	bool "gtkmm3"
+	# Broken on existing external/internal nios2 toolchains,
+	# revisit when they are upgraded with at least Binutils >= 2.26
+	# and GCC >= 5.3.
+	# https://sourceware.org/bugzilla/show_bug.cgi?id=19405
+	depends on !BR2_nios2
 	depends on BR2_ARCH_HAS_ATOMICS # libcairomm/libgtk3/libpangomm -> cairo
 	depends on BR2_INSTALL_LIBSTDCPP # glibmm, libpangomm -> glibmm/pango
 	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_8 # C++11
