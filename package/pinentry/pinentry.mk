@@ -9,7 +9,9 @@ PINENTRY_SOURCE = pinentry-$(PINENTRY_VERSION).tar.bz2
 PINENTRY_SITE = ftp://ftp.gnupg.org/gcrypt/pinentry
 PINENTRY_LICENSE = GPLv2+
 PINENTRY_LICENSE_FILES = COPYING
-PINENTRY_DEPENDENCIES = $(if $(BR2_PACKAGE_LIBICONV),libiconv)
+PINENTRY_DEPENDENCIES = \
+	$(if $(BR2_PACKAGE_LIBICONV),libiconv) \
+	host-pkgconf
 PINENTRY_CONF_OPTS += --without-libcap       # requires PAM
 
 # build with X if available
