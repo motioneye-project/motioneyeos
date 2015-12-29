@@ -12,3 +12,7 @@ config BR2_PACKAGE_SUBVERSION
 	  Subversion is an open source version control system
 
 	  http://subversion.apache.org/
+
+comment "subversion needs a toolchain w/ dynamic library"
+	depends on BR2_USE_MMU
+	depends on BR2_STATIC_LIBS
