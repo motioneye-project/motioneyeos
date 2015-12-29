@@ -18,7 +18,7 @@ JANUS_GATEWAY_DEPENDENCIES = host-pkgconf libmicrohttpd jansson \
 JANUS_GATEWAY_AUTORECONF = YES
 
 define JANUS_GATEWAY_M4
-        mkdir -p $(@D)/m4
+	mkdir -p $(@D)/m4
 endef
 JANUS_GATEWAY_POST_PATCH_HOOKS += JANUS_GATEWAY_M4
 
