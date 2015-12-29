@@ -270,7 +270,7 @@ def is_dep_uncached(pkg,pkg2,deps):
         pass
     return False
 
-# See is_dep_full() above; this is the cached version.
+# See is_dep_uncached() above; this is the cached version.
 def is_dep(pkg,pkg2,deps):
     try:
         return is_dep_cache_lookup(pkg, pkg2)
