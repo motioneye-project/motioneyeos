@@ -7,7 +7,7 @@ config BR2_PACKAGE_LIBFUSE
 	help
 	  FUSE (Filesystem in UserSpacE)
 
-	  http://fuse.sourceforge.net/
+	  https://github.com/libfuse/libfuse
 
 comment "libfuse needs a toolchain w/ threads, dynamic library"
 	depends on BR2_USE_MMU
