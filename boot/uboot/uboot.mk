@@ -110,6 +110,7 @@ define UBOOT_COPY_OLD_LICENSE_FILE
 endef
 
 UBOOT_POST_EXTRACT_HOOKS += UBOOT_COPY_OLD_LICENSE_FILE
+UBOOT_POST_RSYNC_HOOKS += UBOOT_COPY_OLD_LICENSE_FILE
 
 # Prior to Buildroot 2015.05, only patch directories were supported. New
 # configurations use BR2_TARGET_UBOOT_PATCH instead.
