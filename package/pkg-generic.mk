@@ -186,7 +186,10 @@ $(BUILD_DIR)/%/.stamp_configured:
 # building a package, even if not enabled in the configuration, we
 # want to accept it.
 ifeq ($(MAKECMDGOALS),)
-	@if test "$($(PKG)_TYPE)" = "target" -a -z "$($($(PKG)_KCONFIG_VAR))" ; then \
+	@if test "$($(PKG)_TYPE)" = "target" \
+		-a "$($(PKG)_IS_VIRTUAL)" != "YES" \
+		-a -z "$($($(PKG)_KCONFIG_VAR))" ; \
+	then \
 		echo "ERROR: $($(PKG)_NAME) is in the dependency chain of a package that has" ; \
 		echo "added it to its _DEPENDENCIES variable (directly or indirectly)" ; \
 		echo "without selecting it from Config.in." ; \

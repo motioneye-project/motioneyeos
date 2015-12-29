@@ -41,6 +41,8 @@ $$(error No implementation selected for virtual package $(1). Configuration erro
 endif
 endif
 
+$(2)_IS_VIRTUAL = YES
+
 # A virtual package does not have any source associated
 $(2)_SOURCE =
 
