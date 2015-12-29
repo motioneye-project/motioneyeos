@@ -48,12 +48,14 @@ config BR2_PACKAGE_NODEJS_0_10_X
 config BR2_PACKAGE_NODEJS_5_X
 	bool "v5.3.0"
 	depends on BR2_PACKAGE_NODEJS_V8_ARCH_SUPPORTS
+	depends on BR2_HOST_GCC_AT_LEAST_4_8
 	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_8
 	depends on BR2_USE_WCHAR
 
 comment "v5.3.0 needs a toolchain w/ gcc >= 4.8, wchar"
 	depends on BR2_PACKAGE_NODEJS_V8_ARCH_SUPPORTS
 	depends on !BR2_TOOLCHAIN_GCC_AT_LEAST_4_8 || !BR2_USE_WCHAR
+	depends on BR2_HOST_GCC_AT_LEAST_4_8
 
 endchoice
 
