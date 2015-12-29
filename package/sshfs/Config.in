@@ -12,7 +12,7 @@ config BR2_PACKAGE_SSHFS
 	help
 	  FUSE filesystem client based on the SSH File Transfer Protocol.
 
-	  http://fuse.sourceforge.net/sshfs.html
+	  https://github.com/libfuse/sshfs
 
 comment "sshfs needs a toolchain w/ wchar, threads, dynamic library"
 	depends on BR2_USE_MMU
