@@ -36,7 +36,7 @@ define QT5WEBCHANNEL_INSTALL_STAGING_CMDS
 endef
 
 define QT5WEBCHANNEL_INSTALL_TARGET_JAVASCRIPT
-        $(INSTALL) -m 0644 -D $(@D)/src/webchannel/qwebchannel.js \
+	$(INSTALL) -m 0644 -D $(@D)/src/webchannel/qwebchannel.js \
 		$(TARGET_DIR)/var/www/qwebchannel.js
 endef
 
