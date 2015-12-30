@@ -11,7 +11,7 @@ MINIDLNA_LICENSE_FILES = COPYING LICENCE.miniupnpd
 
 MINIDLNA_DEPENDENCIES = \
 	$(if $(BR2_NEEDS_GETTEXT_IF_LOCALE),gettext) host-gettext \
-	ffmpeg flac libvorbis libogg libid3tag libexif libjpeg sqlite \
+	ffmpeg flac libvorbis libogg libid3tag libexif jpeg sqlite \
 	host-xutil_makedepend
 
 ifeq ($(BR2_STATIC_LIBS),y)
