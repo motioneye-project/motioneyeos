@@ -284,7 +284,7 @@ config BR2_PACKAGE_COLLECTD_MEMORY
 
 config BR2_PACKAGE_COLLECTD_MODBUS
 	bool "modbus"
-	select BR2_PACKAGE_MODBUS
+	select BR2_PACKAGE_LIBMODBUS
 	help
 	  Reads register values from a modbus "slave" via Modbus/TCP.
 
