@@ -595,7 +595,18 @@ comment "opencv plugin needs OpenCV-2.4"
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_OPENH264
 	bool "openh264"
+	depends on BR2_PACKAGE_LIBOPENH264_ARCH_SUPPORTS
+	depends on BR2_INSTALL_LIBSTDCPP # libopenh264
+	depends on !BR2_STATIC_LIBS # libopenh264
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libopenh264
 	select BR2_PACKAGE_LIBOPENH264
+	help
+	  OpenH264 based encoding/decoding plugin
+
+comment "openh264 plugin needs a toolchain w/ C++, dynamic library, threads"
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS || \
+		BR2_STATIC_LIBS
+	depends on BR2_PACKAGE_LIBOPENH264_ARCH_SUPPORTS
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_OPENJPEG
 	bool "openjpeg"
