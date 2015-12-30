@@ -31,8 +31,8 @@ sha256 1a9519e415a1e6892c760bf21f7e98f3a633a9d1c5bb8781a96d338e4dd62717  ia32-20
 sha256 cb4d071db8aefb8005fe72824b96568d93a50f5acd85bacf505a34fe2f265f70  amd-2015.11-36-x86_64-amd-linux-gnu-i686-pc-linux-gnu.tar.bz2
 sha256 a4de11669cddd4594f228db7bd38b0fed3c8692d1bac021739390b4c766bbd4f  amd-2015.11-36-x86_64-amd-linux-gnu.src.tar.bz2
 # Aarch64
-sha256 8ea78c5988b2bb507534f1ad46aa46659f66b39d55f2fc40e163a90b4195e70f  aarch64-2014.05-30-aarch64-linux-gnu-i686-pc-linux-gnu.tar.bz2
-sha256 fef1ba94b43f2aefe5634815745c1cb5442a12d12d98e653601392cb65517b7f  aarch64-2014.05-30-aarch64-linux-gnu.src.tar.bz2
+sha256 405aada821146755c5f2df566375c2a682456d6b8451ee47b88cf1a52b093676  aarch64-amd-2014.11-95-aarch64-amd-linux-gnu-i686-pc-linux-gnu.tar.bz2
+sha256 3f50dd6ee433eb5b6992a1071b988e50379a738f54f58722bc60081613764716  aarch64-amd-2014.11-95-aarch64-amd-linux-gnu.src.tar.bz2
 
 # ARM toolchains from Texas Instrument's Arago project
 # There is one source file that covers both binary distributions.
