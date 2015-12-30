@@ -43,4 +43,22 @@ else
 MBEDTLS_CONF_OPTS += -DENABLE_ZLIB_SUPPORT=OFF
 endif
 
+define MBEDTLS_DISABLE_ASM
+	$(SED) '/^#define MBEDTLS_AESNI_C/d' \
+		$(@D)/include/mbedtls/config.h
+	$(SED) '/^#define MBEDTLS_HAVE_ASM/d' \
+		$(@D)/include/mbedtls/config.h
+	$(SED) '/^#define MBEDTLS_PADLOCK_C/d' \
+		$(@D)/include/mbedtls/config.h
+endef
+
+# ARM in thumb mode breaks debugging with asm optimizations
+# Microblaze asm optimizations are broken in general
+# MIPS R6 asm is not yet supported
+ifeq ($(BR2_ENABLE_DEBUG)$(BR2_ARM_INSTRUCTIONS_THUMB)$(BR2_ARM_INSTRUCTIONS_THUMB2),yy)
+MBEDTLS_POST_CONFIGURE_HOOKS += MBEDTLS_DISABLE_ASM
+else ifeq ($(BR2_microblaze)$(BR2_mips_32r6)$(BR2_mips_64r6),y)
+MBEDTLS_POST_CONFIGURE_HOOKS += MBEDTLS_DISABLE_ASM
+endif
+
 $(eval $(cmake-package))
