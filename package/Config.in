@@ -907,6 +907,7 @@ menu "Graphics"
 endmenu
 
 menu "Hardware handling"
+	source "package/acsccid/Config.in"
 	source "package/bcm2835/Config.in"
 	source "package/c-periphery/Config.in"
 	source "package/ccid/Config.in"
