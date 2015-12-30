@@ -16,4 +16,9 @@ HIDAPI_LICENSE_FILES = LICENSE.txt LICENSE-gpl3.txt LICENSE-bsd.txt LICENSE-orig
 
 HIDAPI_DEPENDENCIES = libusb libgudev
 
+ifeq ($(BR2_PACKAGE_LIBICONV),y)
+HIDAPI_DEPENDENCIES += libiconv
+HIDAPI_CONF_ENV += LIBS="-liconv"
+endif
+
 $(eval $(autotools-package))
