@@ -22,6 +22,7 @@ BIND_CONF_ENV = \
 	BUILD_CC="$(TARGET_CC)" \
 	BUILD_CFLAGS="$(TARGET_CFLAGS)"
 BIND_CONF_OPTS = \
+	--with-libjson=no \
 	--with-randomdev=/dev/urandom \
 	--enable-epoll \
 	--with-libtool \
@@ -34,13 +35,6 @@ BIND_CONF_OPTS += --enable-linux-caps
 BIND_DEPENDENCIES += libcap
 else
 BIND_CONF_OPTS += --disable-linux-caps
-endif
-
-ifeq ($(BR2_PACKAGE_JSON_C),y)
-BIND_CONF_OPTS += --with-libjson=yes
-BIND_DEPENDENCIES += json-c
-else
-BIND_CONF_OPTS += --with-libjson=no
 endif
 
 ifeq ($(BR2_PACKAGE_LIBXML2),y)
