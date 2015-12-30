@@ -50,7 +50,7 @@ else
 DBUS_CONF_OPTS += --disable-selinux
 endif
 
-ifeq ($(BR2_PACKAGE_AUDIT),y)
+ifeq ($(BR2_PACKAGE_AUDIT)$(BR2_PACKAGE_LIBCAP_NG),yy)
 DBUS_CONF_OPTS += --enable-libaudit
 DBUS_DEPENDENCIES += audit libcap-ng
 else
