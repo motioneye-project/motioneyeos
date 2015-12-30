@@ -67,6 +67,7 @@ config BR2_PACKAGE_PHP_EXT_HASH
 
 config BR2_PACKAGE_PHP_EXT_MCRYPT
 	bool "mcrypt"
+	select BR2_PACKAGE_LIBMCRYPT
 	help
 	  mcrypt support
 
