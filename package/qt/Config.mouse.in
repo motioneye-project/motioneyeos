@@ -11,6 +11,11 @@ config BR2_PACKAGE_QT_MOUSE_LINUXINPUT
 
 config BR2_PACKAGE_QT_MOUSE_TSLIB
 	bool "tslib"
+	select BR2_PACKAGE_TSLIB
+	depends on !BR2_STATIC_LIBS # tslib
+
+comment "tslib support needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS
 
 config BR2_PACKAGE_QT_MOUSE_QVFB
 	bool "qvfb"
