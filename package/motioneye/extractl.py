@@ -466,6 +466,7 @@ def prereleases():
         'type': 'bool',
         'section': 'expertSettings',
         'advanced': True,
+        'reboot': True,
         'get': _get_os_settings,
         'set': _set_os_settings,
         'get_set_dict': True
