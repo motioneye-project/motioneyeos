@@ -202,6 +202,13 @@ else
 VLC_CONF_OPTS += --disable-mad
 endif
 
+ifeq ($(BR2_PACKAGE_LIBMATROSKA),y)
+VLC_CONF_OPTS += --enable-mkv
+VLC_DEPENDENCIES += libmatroska
+else
+VLC_CONF_OPTS += --disable-mkv
+endif
+
 ifeq ($(BR2_PACKAGE_LIBMODPLUG),y)
 VLC_CONF_OPTS += --enable-mod
 VLC_DEPENDENCIES += libmodplug
