@@ -604,20 +604,11 @@ endif
 # debugging symbols.
 	find $(TARGET_DIR)/lib -type f -name 'ld-*.so*' | \
 		xargs -r $(STRIPCMD) $(STRIP_STRIP_DEBUG)
-
+	test -f $(TARGET_DIR)/etc/ld.so.conf && \
+		{ echo "ERROR: we shouldn't have a /etc/ld.so.conf file"; exit 1; } || true
+	test -d $(TARGET_DIR)/etc/ld.so.conf.d && \
+		{ echo "ERROR: we shouldn't have a /etc/ld.so.conf.d directory"; exit 1; } || true
 	mkdir -p $(TARGET_DIR)/etc
-	# Mandatory configuration file and auxiliary cache directory
-	# for recent versions of ldconfig
-	touch $(TARGET_DIR)/etc/ld.so.conf
-	mkdir -p $(TARGET_DIR)/var/cache/ldconfig
-	if [ -x "$(TARGET_CROSS)ldconfig" ]; \
-	then \
-		$(TARGET_CROSS)ldconfig -r $(TARGET_DIR) \
-					-f $(TARGET_DIR)/etc/ld.so.conf; \
-	else \
-		/sbin/ldconfig -r $(TARGET_DIR) \
-			       -f $(TARGET_DIR)/etc/ld.so.conf; \
-	fi
 	( \
 		echo "NAME=Buildroot"; \
 		echo "VERSION=$(BR2_VERSION_FULL)"; \
