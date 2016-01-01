@@ -32,7 +32,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_JPEG),y)
 DILLO_CONF_OPTS += --enable-jpeg
-DILLO_DEPENDENCIES += libjpeg
+DILLO_DEPENDENCIES += jpeg
 else
 DILLO_CONF_OPTS += --disable-jpeg
 endif
