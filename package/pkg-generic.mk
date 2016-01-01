@@ -182,20 +182,6 @@ $(foreach dir,$(call qstrip,$(BR2_GLOBAL_PATCH_DIR)),\
 
 # Configure
 $(BUILD_DIR)/%/.stamp_configured:
-# Only trigger the check for default builds. If the user forces
-# building a package, even if not enabled in the configuration, we
-# want to accept it.
-ifeq ($(MAKECMDGOALS),)
-	@if test "$($(PKG)_TYPE)" = "target" \
-		-a "$($(PKG)_IS_VIRTUAL)" != "YES" \
-		-a -z "$($($(PKG)_KCONFIG_VAR))" ; \
-	then \
-		echo "ERROR: $($(PKG)_NAME) is in the dependency chain of a package that has" ; \
-		echo "added it to its _DEPENDENCIES variable (directly or indirectly)" ; \
-		echo "without selecting it from Config.in." ; \
-		exit 1 ; \
-	fi
-endif
 	@$(call step_start,configure)
 	@$(call MESSAGE,"Configuring")
 	$(foreach hook,$($(PKG)_PRE_CONFIGURE_HOOKS),$(call $(hook))$(sep))
