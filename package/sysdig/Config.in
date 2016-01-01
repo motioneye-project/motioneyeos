@@ -1,12 +1,12 @@
 config BR2_PACKAGE_SYSDIG
 	bool "sysdig"
-	select BR2_PACKAGE_ZLIB
-	select BR2_PACKAGE_LUAJIT
-	select BR2_PACKAGE_JSONCPP
 	depends on BR2_LINUX_KERNEL
 	depends on BR2_INSTALL_LIBSTDCPP # libjson
 	depends on BR2_PACKAGE_LUAJIT_ARCH_SUPPORTS
 	depends on !BR2_STATIC_LIBS # luajit
+	select BR2_PACKAGE_ZLIB
+	select BR2_PACKAGE_LUAJIT
+	select BR2_PACKAGE_JSONCPP
 	help
 	  Sysdig is open source, system-level exploration:
 	  capture system state and activity from a running Linux instance,
