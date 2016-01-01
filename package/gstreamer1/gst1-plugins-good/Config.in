@@ -276,7 +276,7 @@ config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_V4L2
 	help
 	  elements for Video 4 Linux
 
-comment "v4l2 needs toolchain w/ headers >= 3.0"
+comment "v4l2 needs a toolchain w/ headers >= 3.0"
 	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0
 
 config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_CAIRO
