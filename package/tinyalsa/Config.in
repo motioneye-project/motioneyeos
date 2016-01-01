@@ -13,5 +13,5 @@ config BR2_PACKAGE_TINYALSA
 
 	  https://github.com/tinyalsa/tinyalsa
 
-comment "tinyalsa needs toolchain w/ dynamic library"
+comment "tinyalsa needs a toolchain w/ dynamic library"
 	depends on BR2_STATIC_LIBS
