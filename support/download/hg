@@ -35,4 +35,4 @@ _hg clone ${verbose} --noupdate "'${repo}'" "'${basename}'"
 
 _hg archive ${verbose} --repository "'${basename}'" --type tgz \
             --prefix "'${basename}'" --rev "'${cset}'" \
-            "'${output}'"
+            - >"${output}"
