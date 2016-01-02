@@ -1,5 +1,6 @@
 config BR2_PACKAGE_TREMOR
 	bool "tremor (fixed point vorbis decoder)"
+	select BR2_PACKAGE_LIBOGG
 	help
 	  Tremor is a fixed point implementation of an Ogg Vorbis
 	  decoder. It provides a decoding API similar to libvorbis,
