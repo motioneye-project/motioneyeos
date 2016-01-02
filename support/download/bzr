@@ -32,4 +32,6 @@ _bzr() {
     eval ${BZR} "${@}"
 }
 
-_bzr export ${verbose} --root="'${basename}/'" --format=tgz "'${output}'" "'${repo}'" -r "'${rev}'"
+_bzr export ${verbose} --root="'${basename}/'" --format=tgz \
+    --per-file-timestamps - "'${repo}'" -r "'${rev}'" \
+    >"${output}"
