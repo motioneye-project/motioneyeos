@@ -1,18 +1,20 @@
-Add an option to disable the curses module
+From 42725aef353df06f760f0a47b80001187d04d8b4 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Wed, 23 Dec 2015 11:49:30 +0100
+Subject: [PATCH] Add an option to disable the curses module
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Signed-off-by: Samuel Martin <s.martin49@gmail.com>
-
 ---
- Makefile.pre.in |    6 +++++-
- configure.ac    |    9 +++++++++
+ Makefile.pre.in | 6 +++++-
+ configure.ac    | 9 +++++++++
  2 files changed, 14 insertions(+), 1 deletion(-)
 
-Index: b/Makefile.pre.in
-===================================================================
+diff --git a/Makefile.pre.in b/Makefile.pre.in
+index e492d7b..66b2c45 100644
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -1156,7 +1156,7 @@
+@@ -1153,7 +1153,7 @@ LIBSUBDIRS=	\
  		multiprocessing multiprocessing/dummy \
  		unittest \
  		venv venv/scripts venv/scripts/posix \
@@ -21,7 +23,7 @@ Index: b/Makefile.pre.in
  
  TESTSUBDIRS = 	test test/test_asyncio \
  		test/test_email test/test_email/data \
-@@ -1218,6 +1218,10 @@
+@@ -1215,6 +1215,10 @@ TESTSUBDIRS += tkinter/test tkinter/test/test_tkinter \
  	tkinter/test/test_ttk
  endif
  
@@ -32,11 +34,11 @@ Index: b/Makefile.pre.in
  ifeq (@TEST_MODULES@,yes)
  LIBSUBDIRS += $(TESTSUBDIRS)
  endif
-Index: b/configure.ac
-===================================================================
+diff --git a/configure.ac b/configure.ac
+index 7efd54f..e48f38e 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2693,6 +2693,15 @@
+@@ -2676,6 +2676,15 @@ if test "$TK" = "no"; then
     DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} _tkinter"
  fi
  
@@ -52,3 +54,6 @@ Index: b/configure.ac
  AC_SUBST(PYDOC)
  
  AC_ARG_ENABLE(pydoc,
+-- 
+2.6.4
+

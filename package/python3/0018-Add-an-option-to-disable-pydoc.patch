@@ -1,22 +1,24 @@
-Add an option to disable pydoc
+From 99ef88cb47a396e2c7005e59e50d34e0a60dd3cb Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Wed, 23 Dec 2015 11:47:11 +0100
+Subject: [PATCH] Add an option to disable pydoc
 
 It removes 0.5 MB of data from the target plus the pydoc script
 itself.
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Signed-off-by: Samuel Martin <s.martin49@gmail.com>
-
 ---
- Makefile.pre.in |    8 +++++++-
- configure.ac    |    5 +++++
- setup.py        |    9 +++++++--
+ Makefile.pre.in | 8 +++++++-
+ configure.ac    | 5 +++++
+ setup.py        | 9 +++++++--
  3 files changed, 19 insertions(+), 3 deletions(-)
 
-Index: b/Makefile.pre.in
-===================================================================
+diff --git a/Makefile.pre.in b/Makefile.pre.in
+index 12fae84..5e2333e 100644
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -1103,7 +1103,9 @@
+@@ -1100,7 +1100,9 @@ bininstall: altbininstall
  	-rm -f $(DESTDIR)$(BINDIR)/idle3
  	(cd $(DESTDIR)$(BINDIR); $(LN) -s idle$(VERSION) idle3)
  	-rm -f $(DESTDIR)$(BINDIR)/pydoc3
@@ -26,7 +28,7 @@ Index: b/Makefile.pre.in
  	-rm -f $(DESTDIR)$(BINDIR)/2to3
  	(cd $(DESTDIR)$(BINDIR); $(LN) -s 2to3-$(VERSION) 2to3)
  	-rm -f $(DESTDIR)$(BINDIR)/pyvenv
-@@ -1154,7 +1156,7 @@
+@@ -1151,7 +1153,7 @@ LIBSUBDIRS=	tkinter \
  		multiprocessing multiprocessing/dummy \
  		unittest \
  		venv venv/scripts venv/scripts/posix \
@@ -35,7 +37,7 @@ Index: b/Makefile.pre.in
  
  TESTSUBDIRS = 	tkinter/test tkinter/test/test_tkinter tkinter/test/test_ttk \
  		test test/test_asyncio \
-@@ -1198,6 +1200,10 @@
+@@ -1195,6 +1197,10 @@ TESTSUBDIRS = 	tkinter/test tkinter/test/test_tkinter tkinter/test/test_ttk \
  		test/test_importlib/import_ test/test_importlib/source \
  		unittest/test unittest/test/testmock
  
@@ -46,11 +48,11 @@ Index: b/Makefile.pre.in
  ifeq (@TEST_MODULES@,yes)
  LIBSUBDIRS += $(TESTSUBDIRS)
  endif
-Index: b/configure.ac
-===================================================================
+diff --git a/configure.ac b/configure.ac
+index b7a8836..2e75345 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2675,6 +2675,11 @@
+@@ -2658,6 +2658,11 @@ if test "$posix_threads" = "yes"; then
        AC_CHECK_FUNCS(pthread_atfork)
  fi
  
@@ -62,11 +64,11 @@ Index: b/configure.ac
  
  AC_SUBST(TEST_MODULES)
  
-Index: b/setup.py
-===================================================================
+diff --git a/setup.py b/setup.py
+index 8966779..69198db 100644
 --- a/setup.py
 +++ b/setup.py
-@@ -2200,6 +2200,12 @@
+@@ -2200,6 +2200,12 @@ def main():
      # turn off warnings when deprecated modules are imported
      import warnings
      warnings.filterwarnings("ignore",category=DeprecationWarning)
@@ -79,7 +81,7 @@ Index: b/setup.py
      setup(# PyPI Metadata (PEP 301)
            name = "Python",
            version = sys.version.split()[0],
-@@ -2224,8 +2230,7 @@
+@@ -2224,8 +2230,7 @@ def main():
            # If you change the scripts installed here, you also need to
            # check the PyBuildScripts command above, and change the links
            # created by the bininstall target in Makefile.pre.in
@@ -89,3 +91,6 @@ Index: b/setup.py
          )
  
  # --install-platlib
+-- 
+2.6.4
+

@@ -1,0 +1,67 @@
+From f218ef22019d4c03427113982edc42beddd05683 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Wed, 23 Dec 2015 11:49:01 +0100
+Subject: [PATCH] Add option to disable the sqlite3 module
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+---
+ Makefile.pre.in | 7 +++++--
+ configure.ac    | 9 +++++++++
+ 2 files changed, 14 insertions(+), 2 deletions(-)
+
+diff --git a/Makefile.pre.in b/Makefile.pre.in
+index 6656f48..433cac1 100644
+--- a/Makefile.pre.in
++++ b/Makefile.pre.in
+@@ -1144,7 +1144,6 @@ LIBSUBDIRS=	tkinter \
+ 		email email/mime \
+ 		ensurepip ensurepip/_bundled \
+ 		html json http dbm xmlrpc \
+-		sqlite3 \
+ 		logging csv wsgiref urllib \
+ 		ctypes ctypes/macholib \
+ 		idlelib idlelib/Icons \
+@@ -1186,7 +1185,6 @@ TESTSUBDIRS = 	tkinter/test tkinter/test/test_tkinter tkinter/test/test_ttk \
+ 		test/test_importlib/namespace_pkgs/project3/parent/child \
+                 test/test_importlib/namespace_pkgs/module_and_namespace_package \
+                 test/test_importlib/namespace_pkgs/module_and_namespace_package/a_test \
+-		sqlite3/test \
+ 		ctypes/test \
+ 		idlelib/idle_test \
+ 		distutils/tests \
+@@ -1207,6 +1205,11 @@ TESTSUBDIRS += lib2to3/tests			\
+ 	lib2to3/tests/data/fixers/myfixes
+ endif
+ 
++ifeq (@SQLITE3@,yes)
++LIBSUBDIRS += sqlite3
++TESTSUBDIRS += sqlite3/test
++endif
++
+ ifeq (@TEST_MODULES@,yes)
+ LIBSUBDIRS += $(TESTSUBDIRS)
+ endif
+diff --git a/configure.ac b/configure.ac
+index 0ed6b17..aaffbd6 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -2658,6 +2658,15 @@ if test "$posix_threads" = "yes"; then
+       AC_CHECK_FUNCS(pthread_atfork)
+ fi
+ 
++AC_SUBST(SQLITE3)
++AC_ARG_ENABLE(sqlite3,
++	AS_HELP_STRING([--disable-sqlite3], [disable sqlite3]),
++	[ SQLITE3="${enableval}" ], [ SQLITE3=yes ])
++
++if test "$SQLITE3" = "no" ; then
++   DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} _sqlite3"
++fi
++
+ AC_SUBST(PYDOC)
+ 
+ AC_ARG_ENABLE(pydoc,
+-- 
+2.6.4
+

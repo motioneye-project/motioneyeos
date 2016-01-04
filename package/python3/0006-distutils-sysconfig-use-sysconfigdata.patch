@@ -1,8 +1,21 @@
-Index: b/Lib/distutils/sysconfig.py
-===================================================================
+From bdb9cccdc2993e43af1e57ad3b8b0055bab64ba0 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Wed, 23 Dec 2015 11:32:23 +0100
+Subject: [PATCH] distutils/sysconfig: use sysconfigdata
+
+In order to make the use of sysconfig cross-compilation compatible,
+use _sysconfigdata.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ Lib/distutils/sysconfig.py | 37 ++++---------------------------------
+ 1 file changed, 4 insertions(+), 33 deletions(-)
+
+diff --git a/Lib/distutils/sysconfig.py b/Lib/distutils/sysconfig.py
+index a1452fe..1df20ad 100644
 --- a/Lib/distutils/sysconfig.py
 +++ b/Lib/distutils/sysconfig.py
-@@ -423,40 +423,11 @@
+@@ -423,40 +423,11 @@ def expand_makefile_vars(s, vars):
  _config_vars = None
  
  def _init_posix():
@@ -47,3 +60,6 @@ Index: b/Lib/distutils/sysconfig.py
  
  def _init_nt():
      """Initialize the module as appropriate for NT"""
+-- 
+2.6.4
+

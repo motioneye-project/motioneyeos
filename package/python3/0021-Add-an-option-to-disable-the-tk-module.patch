@@ -1,18 +1,20 @@
-Add an option to disable the tk module
+From 006bf215734ad63007de044fe7803f66f83a4d19 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Wed, 23 Dec 2015 11:49:14 +0100
+Subject: [PATCH] Add an option to disable the tk module
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Signed-off-by: Samuel Martin <s.martin49@gmail.com>
-
 ---
- Makefile.pre.in |   14 +++++++++++---
- configure.ac    |    9 +++++++++
- 2 files changed, 20 insertions(+), 3 deletions(-)
+ Makefile.pre.in | 11 ++++++++---
+ configure.ac    |  9 +++++++++
+ 2 files changed, 17 insertions(+), 3 deletions(-)
 
-Index: b/Makefile.pre.in
-===================================================================
+diff --git a/Makefile.pre.in b/Makefile.pre.in
+index 433cac1..e492d7b 100644
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -1140,7 +1140,7 @@
+@@ -1137,7 +1137,7 @@ PLATDIR=	plat-$(MACHDEP)
  EXTRAPLATDIR= @EXTRAPLATDIR@
  MACHDEPS=	$(PLATDIR) $(EXTRAPLATDIR)
  XMLLIBSUBDIRS=  xml xml/dom xml/etree xml/parsers xml/sax
@@ -21,7 +23,7 @@ Index: b/Makefile.pre.in
  		site-packages \
  		asyncio \
  		collections concurrent concurrent/futures encodings \
-@@ -1158,8 +1158,7 @@
+@@ -1155,8 +1155,7 @@ LIBSUBDIRS=	tkinter \
  		venv venv/scripts venv/scripts/posix \
  		curses $(MACHDEPS)
  
@@ -31,7 +33,7 @@ Index: b/Makefile.pre.in
  		test/test_email test/test_email/data \
  		test/test_json \
  		test/audiodata \
-@@ -1213,6 +1212,12 @@
+@@ -1210,6 +1209,12 @@ LIBSUBDIRS += sqlite3
  TESTSUBDIRS += sqlite3/test
  endif
  
@@ -44,11 +46,11 @@ Index: b/Makefile.pre.in
  ifeq (@TEST_MODULES@,yes)
  LIBSUBDIRS += $(TESTSUBDIRS)
  endif
-Index: b/configure.ac
-===================================================================
+diff --git a/configure.ac b/configure.ac
+index aaffbd6..7efd54f 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2684,6 +2684,15 @@
+@@ -2667,6 +2667,15 @@ if test "$SQLITE3" = "no" ; then
     DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} _sqlite3"
  fi
  
@@ -64,3 +66,6 @@ Index: b/configure.ac
  AC_SUBST(PYDOC)
  
  AC_ARG_ENABLE(pydoc,
+-- 
+2.6.4
+

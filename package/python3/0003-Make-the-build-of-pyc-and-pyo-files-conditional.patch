@@ -1,8 +1,23 @@
-Index: b/Makefile.pre.in
-===================================================================
+From 7c5338161263c290f18b1ff90859084d314be98c Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Wed, 23 Dec 2015 11:29:35 +0100
+Subject: [PATCH] Make the build of pyc and pyo files conditional
+
+This commit adds two new configure options: --disable-pyc-build and
+--disable-pyo-build to disable the compilation of pyc and pyo files
+respectively.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ Makefile.pre.in |  8 ++++++++
+ configure.ac    | 12 ++++++++++++
+ 2 files changed, 20 insertions(+)
+
+diff --git a/Makefile.pre.in b/Makefile.pre.in
+index 58dab28..f1bdd99 100644
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -1248,24 +1248,32 @@
+@@ -1245,24 +1245,32 @@ libinstall:	build_all $(srcdir)/Lib/$(PLATDIR) $(srcdir)/Modules/xxmodule.c
  		$(INSTALL_DATA) $(srcdir)/Modules/xxmodule.c \
  			$(DESTDIR)$(LIBDEST)/distutils/tests ; \
  	fi
@@ -35,11 +50,11 @@ Index: b/Makefile.pre.in
  	-PYTHONPATH=$(DESTDIR)$(LIBDEST) $(RUNSHARED) \
  		$(PYTHON_FOR_BUILD) -m lib2to3.pgen2.driver $(DESTDIR)$(LIBDEST)/lib2to3/Grammar.txt
  	-PYTHONPATH=$(DESTDIR)$(LIBDEST) $(RUNSHARED) \
-Index: b/configure.ac
-===================================================================
+diff --git a/configure.ac b/configure.ac
+index 7b491b4..f2c4705 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -939,6 +939,18 @@
+@@ -922,6 +922,18 @@ fi
  
  AC_MSG_CHECKING(LDLIBRARY)
  
@@ -58,3 +73,6 @@ Index: b/configure.ac
  # MacOSX framework builds need more magic. LDLIBRARY is the dynamic
  # library that we build, but we do not want to link against it (we
  # will find it with a -framework option). For this reason there is an
+-- 
+2.6.4
+

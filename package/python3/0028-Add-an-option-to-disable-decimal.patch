@@ -1,4 +1,7 @@
-Add an option to disable decimal
+From 8fee92a85c170ac4ce24dda5a960f24b83d6f103 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Wed, 23 Dec 2015 11:51:31 +0100
+Subject: [PATCH] Add an option to disable decimal
 
 This patch replaces the existing --with-system-libmpdec option with a
 --with-libmpdec={system,builtin,none} option, which allows to tell
@@ -7,12 +10,15 @@ the libmpdec builtin the Python sources, or no libmpdec at all.
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 ---
+ configure.ac | 17 ++++++++++++-----
+ setup.py     |  2 +-
+ 2 files changed, 13 insertions(+), 6 deletions(-)
 
-Index: b/configure.ac
-===================================================================
+diff --git a/configure.ac b/configure.ac
+index 0ba25e4..536b9b2 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2405,13 +2405,20 @@
+@@ -2388,13 +2388,20 @@ AC_SUBST(LIBFFI_INCLUDEDIR)
  AC_MSG_RESULT($with_system_ffi)
  
  # Check for use of the system libmpdec library
@@ -38,11 +44,11 @@ Index: b/configure.ac
  
  # Check for support for loadable sqlite extensions
  AC_MSG_CHECKING(for --enable-loadable-sqlite-extensions)
-Index: b/setup.py
-===================================================================
+diff --git a/setup.py b/setup.py
+index 3655e57..7f7627d 100644
 --- a/setup.py
 +++ b/setup.py
-@@ -1968,7 +1968,7 @@
+@@ -1968,7 +1968,7 @@ class PyBuildExt(build_ext):
      def _decimal_ext(self):
          extra_compile_args = []
          undef_macros = []
@@ -51,3 +57,6 @@ Index: b/setup.py
              include_dirs = []
              libraries = [':libmpdec.so.2']
              sources = ['_decimal/_decimal.c']
+-- 
+2.6.4
+

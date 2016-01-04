@@ -1,4 +1,7 @@
-Change the install location of _sysconfigdata.py
+From 2f706a2ba92c88f1c8288e34d1937b6ba0e0214c Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Wed, 23 Dec 2015 11:29:04 +0100
+Subject: [PATCH] Change the install location of _sysconfigdata.py
 
 The _sysconfigdata.py module contains definitions that are needed when
 building Python modules. In cross-compilation mode, when building
@@ -16,12 +19,16 @@ this directory gets added to the PYTHONPATH of the host Python
 interpreter when building Python modules for the target.
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ Makefile.pre.in | 12 ++++++++++--
+ configure.ac    |  2 +-
+ 2 files changed, 11 insertions(+), 3 deletions(-)
 
-Index: b/Makefile.pre.in
-===================================================================
+diff --git a/Makefile.pre.in b/Makefile.pre.in
+index 76aef28..58dab28 100644
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -559,6 +559,9 @@
+@@ -559,6 +559,9 @@ pybuilddir.txt: $(BUILDPYTHON)
  		rm -f ./pybuilddir.txt ; \
  		exit 1 ; \
  	fi
@@ -31,7 +38,7 @@ Index: b/Makefile.pre.in
  
  # Build the shared modules
  # Under GNU make, MAKEFLAGS are sorted and normalized; the 's' for
-@@ -1197,7 +1200,7 @@
+@@ -1197,7 +1200,7 @@ libinstall:	build_all $(srcdir)/Lib/$(PLATDIR) $(srcdir)/Modules/xxmodule.c
  		else	true; \
  		fi; \
  	done
@@ -40,7 +47,7 @@ Index: b/Makefile.pre.in
  	do \
  		if test -x $$i; then \
  			$(INSTALL_SCRIPT) $$i $(DESTDIR)$(LIBDEST); \
-@@ -1207,6 +1210,11 @@
+@@ -1207,6 +1210,11 @@ libinstall:	build_all $(srcdir)/Lib/$(PLATDIR) $(srcdir)/Modules/xxmodule.c
  			echo $(INSTALL_DATA) $$i $(LIBDEST); \
  		fi; \
  	done
@@ -52,7 +59,7 @@ Index: b/Makefile.pre.in
  	@for d in $(LIBSUBDIRS); \
  	do \
  		a=$(srcdir)/Lib/$$d; \
-@@ -1533,7 +1541,7 @@
+@@ -1533,7 +1541,7 @@ clean: pycremoval
  	find build -name 'fficonfig.h' -exec rm -f {} ';' || true
  	find build -name '*.py' -exec rm -f {} ';' || true
  	find build -name '*.py[co]' -exec rm -f {} ';' || true
@@ -61,11 +68,11 @@ Index: b/Makefile.pre.in
  	-rm -f Lib/lib2to3/*Grammar*.pickle
  	-rm -f Modules/_testembed Modules/_freeze_importlib
  
-Index: b/configure.ac
-===================================================================
+diff --git a/configure.ac b/configure.ac
+index a0d0afa..7b491b4 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -70,7 +70,7 @@
+@@ -70,7 +70,7 @@ if test "$cross_compiling" = yes; then
  	    AC_MSG_ERROR([python$PACKAGE_VERSION interpreter not found])
  	fi
          AC_MSG_RESULT($interp)
@@ -74,3 +81,6 @@ Index: b/configure.ac
      fi
  elif test "$cross_compiling" = maybe; then
      AC_MSG_ERROR([Cross compiling required --host=HOST-TUPLE and --build=ARCH])
+-- 
+2.6.4
+

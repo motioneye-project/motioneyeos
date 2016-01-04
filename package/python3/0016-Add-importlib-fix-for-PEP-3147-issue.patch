@@ -1,4 +1,7 @@
-Add importlib fix for PEP 3147 issue
+From 1153f503a38daf6388021575f1ad6ce8b702911b Mon Sep 17 00:00:00 2001
+From: Christophe Vu-Brugier <cvubrugier@fastmail.fm>
+Date: Wed, 23 Dec 2015 11:46:14 +0100
+Subject: [PATCH] Add importlib fix for PEP 3147 issue
 
 Python 3 has a new standard for installing .pyc file, called PEP
 3147. Unfortunately, this standard requires both the .py and .pyc
@@ -15,11 +18,15 @@ This effectively disables PEP 3147 for:
 * Packages built with automake that use the `py-compile` helper
 
 Signed-off-by: Christophe Vu-Brugier <cvubrugier@fastmail.fm>
+---
+ Lib/importlib/_bootstrap.py | 26 +++++---------------------
+ 1 file changed, 5 insertions(+), 21 deletions(-)
 
-diff -purN a/Lib/importlib/_bootstrap.py b/Lib/importlib/_bootstrap.py
---- a/Lib/importlib/_bootstrap.py	2015-02-25 12:27:44.000000000 +0100
-+++ b/Lib/importlib/_bootstrap.py	2015-08-27 17:33:26.167191059 +0200
-@@ -444,8 +444,6 @@ def cache_from_source(path, debug_overri
+diff --git a/Lib/importlib/_bootstrap.py b/Lib/importlib/_bootstrap.py
+index 5b91c05..a1755ec 100644
+--- a/Lib/importlib/_bootstrap.py
++++ b/Lib/importlib/_bootstrap.py
+@@ -444,8 +444,6 @@ def cache_from_source(path, debug_override=None):
      If debug_override is not None, then it must be a boolean and is used in
      place of sys.flags.optimize.
  
@@ -28,7 +35,7 @@ diff -purN a/Lib/importlib/_bootstrap.py b/Lib/importlib/_bootstrap.py
      """
      debug = not sys.flags.optimize if debug_override is None else debug_override
      if debug:
-@@ -454,33 +452,19 @@ def cache_from_source(path, debug_overri
+@@ -454,33 +452,19 @@ def cache_from_source(path, debug_override=None):
          suffixes = OPTIMIZED_BYTECODE_SUFFIXES
      head, tail = _path_split(path)
      base, sep, rest = tail.rpartition('.')
@@ -67,3 +74,6 @@ diff -purN a/Lib/importlib/_bootstrap.py b/Lib/importlib/_bootstrap.py
      return _path_join(head, base_filename + SOURCE_SUFFIXES[0])
  
  
+-- 
+2.6.4
+
