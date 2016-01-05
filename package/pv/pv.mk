@@ -17,6 +17,13 @@ PV_LICENSE_FILES = doc/COPYING
 # ensuring that host-gettext is built if gettext support is enabled;
 PV_DEPENDENCIES = $(if $(BR2_NEEDS_GETTEXT_IF_LOCALE),gettext host-gettext)
 
+# --relax linker option is enabled by default on sparc/sparc64
+# architectures, and it can't be used together with -r option, so
+# disable it.
+ifeq ($(BR2_sparc)$(BR2_sparc64),y)
+PV_LDFLAGS = "-Wl,--no-relax"
+endif
+
 # While 'pv' uses autoconf, it does not use automake for its
 # makefiles. It uses $(LD) $(LDFLAGS) to achieve partial linking, but
 # using 'ld' directly doesn't work well with some toolchain
@@ -25,6 +32,6 @@ PV_DEPENDENCIES = $(if $(BR2_NEEDS_GETTEXT_IF_LOCALE),gettext host-gettext)
 # ensure that 'gcc' is used to do these partial linking steps.
 PV_MAKE_OPTS = \
 	LD="$(TARGET_CC)" \
-	LDFLAGS="-Wl,-r -nostdlib"
+	LDFLAGS="-Wl,-r -nostdlib $(PV_LDFLAGS)"
 
 $(eval $(autotools-package))
