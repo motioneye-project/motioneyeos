@@ -1,0 +1,37 @@
+/dts-v1/;
+
+/ {
+    description = "Buildroot kernel for Chromebook Snow";
+    images {
+        kernel@1 {
+            description = "kernel";
+            data = /incbin/("zImage");
+            type = "kernel_noload";
+            arch = "arm";
+            os = "linux";
+            compression = "none";
+            load = <0>;
+            entry = <0>;
+            hash@1 {
+                algo = "sha1";
+            };
+        };
+        fdt@1{
+            description = "exynos5250-snow.dtb";
+            data = /incbin/("exynos5250-snow.dtb");
+            type = "flat_dt";
+            arch = "arm";
+            compression = "none";
+            hash@1 {
+                algo = "sha1";
+            };
+        };
+    };
+    configurations {
+        default = "conf@1";
+        conf@1{
+            kernel = "kernel@1";
+            fdt = "fdt@1";
+        };
+    };
+};

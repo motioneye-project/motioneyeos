@@ -1,0 +1,26 @@
+Some versions of u-boot for this Chromebook check for tpm node
+in the device tree and fail badly (reboot) if it is not found.
+
+While not exactly correct, it is much easier to patch the mainline
+device tree to match u-boot expectations than to fix u-boot on
+this device.
+
+See https://code.google.com/p/chromium/issues/detail?id=220169
+and https://lkml.org/lkml/2013/3/4/242
+
+Signed-off-by: Alex Suykov <alex.suykov@gmail.com>
+
+--- a/arch/arm/boot/dts/exynos5250-snow.dts
++++ b/arch/arm/boot/dts/exynos5250-snow.dts
+@@ -474,6 +474,11 @@
+ 	status = "okay";
+ 	samsung,i2c-sda-delay = <100>;
+ 	samsung,i2c-max-bus-freq = <66000>;
++
++	tpm {
++		compatible = "infineon,slb9635tt";
++		reg = <0x20>;
++	};
+ };
+ 
+ &i2c_5 {

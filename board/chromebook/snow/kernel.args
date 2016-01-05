@@ -1,0 +1,1 @@
+console=tty1 clk_ignore_unused root=/dev/mmcblk1p2 rootfstype=ext4 ro
