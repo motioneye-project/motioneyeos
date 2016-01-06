@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-EFL_VERSION = 1.15.2
+EFL_VERSION = 1.15.3
 EFL_SOURCE = efl-$(EFL_VERSION).tar.xz
 EFL_SITE = http://download.enlightenment.org/rel/libs/efl
 EFL_LICENSE = BSD-2c, LGPLv2.1+, GPLv2+
@@ -24,7 +24,6 @@ EFL_DEPENDENCIES = host-pkgconf host-efl dbus freetype jpeg lua udev \
 
 # Regenerate the autotools:
 #  - to fix an issue in eldbus-codegen: https://phab.enlightenment.org/T2718
-#  - to remove dependency on libXp: https://phab.enlightenment.org/D3150
 EFL_AUTORECONF = YES
 EFL_GETTEXTIZE = YES
 
