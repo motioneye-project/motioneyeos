@@ -89,18 +89,6 @@ ifeq ($(BR2_TARGET_UBOOT_NEEDS_DTC),y)
 UBOOT_DEPENDENCIES += host-dtc
 endif
 
-# Helper function to fill the U-Boot config.h file.
-# Argument 1: option name
-# Argument 2: option value
-# If the option value is empty, this function does nothing.
-define insert_define
-$(if $(call qstrip,$(2)),
-	@echo "#ifdef $(strip $(1))" >> $(@D)/include/config.h
-	@echo "#undef $(strip $(1))" >> $(@D)/include/config.h
-	@echo "#endif" >> $(@D)/include/config.h
-	@echo '#define $(strip $(1)) $(call qstrip,$(2))' >> $(@D)/include/config.h)
-endef
-
 # prior to u-boot 2013.10 the license info was in COPYING. Copy it so
 # legal-info finds it
 define UBOOT_COPY_OLD_LICENSE_FILE
