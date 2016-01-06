@@ -38,6 +38,11 @@ endif
 
 # bpf compiler support and nfsynproxy tool
 ifeq ($(BR2_PACKAGE_IPTABLES_BPF_NFSYNPROXY),y)
+# libpcap is tricky for static-only builds and needs help
+ifeq ($(BR2_STATIC_LIBS),y)
+IPTABLES_LIBS_FOR_STATIC_LINK += `$(STAGING_DIR)/usr/bin/pcap-config --static --additional-libs`
+IPTABLES_CONF_OPTS += LIBS="$(IPTABLES_LIBS_FOR_STATIC_LINK)"
+endif
 IPTABLES_CONF_OPTS += --enable-bpf-compiler --enable-nfsynproxy
 IPTABLES_DEPENDENCIES += libpcap
 else
