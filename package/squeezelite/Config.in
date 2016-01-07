@@ -3,6 +3,7 @@ config BR2_PACKAGE_SQUEEZELITE
 	depends on BR2_USE_WCHAR # flac
 	depends on BR2_TOOLCHAIN_HAS_THREADS # alsa-lib
 	depends on BR2_USE_MMU # mpg123
+	depends on !BR2_STATIC_LIBS # dlopen
 	select BR2_PACKAGE_ALSA_LIB
 	select BR2_PACKAGE_ALSA_LIB_MIXER
 	select BR2_PACKAGE_FLAC
@@ -35,6 +36,7 @@ config BR2_PACKAGE_SQUEEZELITE_VISEXPORT
 
 endif
 
-comment "squeezelite needs a toolchain w/ wchar, threads"
+comment "squeezelite needs a toolchain w/ wchar, threads, dynamic library"
 	depends on BR2_USE_MMU
-	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS \
+		|| BR2_STATIC_LIBS
