@@ -19,8 +19,7 @@ GST1_PLUGINS_UGLY_CONF_OPTS += \
 	--disable-amrwb \
 	--disable-cdio \
 	--disable-sidplay \
-	--disable-twolame \
-	--disable-x264
+	--disable-twolame
 
 GST1_PLUGINS_UGLY_DEPENDENCIES = gstreamer1 gst1-plugins-base
 
@@ -88,6 +87,14 @@ GST1_PLUGINS_UGLY_DEPENDENCIES += libmpeg2
 GST1_PLUGINS_ULGY_HAS_GPL_LICENSE = y
 else
 GST1_PLUGINS_UGLY_CONF_OPTS += --disable-mpeg2dec
+endif
+
+ifeq ($(BR2_PACKAGE_GST1_PLUGINS_UGLY_PLUGIN_X264),y)
+GST1_PLUGINS_UGLY_CONF_OPTS += --enable-x264
+GST1_PLUGINS_UGLY_DEPENDENCIES += x264
+GST1_PLUGINS_UGLY_HAS_GPL_LICENSE = y
+else
+GST1_PLUGINS_UGLY_CONF_OPTS += --disable-x264
 endif
 
 # Add GPL license if GPL plugins enabled.

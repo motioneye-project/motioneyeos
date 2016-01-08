@@ -67,6 +67,12 @@ config BR2_PACKAGE_GST1_PLUGINS_UGLY_PLUGIN_MPEG2DEC
 	help
 	  LibMpeg2 decoder
 
+config BR2_PACKAGE_GST1_PLUGINS_UGLY_PLUGIN_X264
+	bool "x264"
+	select BR2_PACKAGE_X264
+	help
+	  x264 encoder
+
 # Note: to get descriptions use the following.
 # # find . -name 'plugin-*.xml' | xargs grep -m 1 description
 endif
