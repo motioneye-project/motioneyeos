@@ -14,6 +14,7 @@ TPM_TOOLS_DEPENDENCIES = trousers openssl \
 	$(if $(BR2_NEEDS_GETTEXT_IF_LOCALE),gettext)
 # configure.in and lib/Makefile.am is patched
 TPM_TOOLS_AUTORECONF = YES
+TPM_TOOLS_GETTEXTIZE = YES
 
 TPM_TOOLS_CONF_OPTS = --disable-pkcs11-support
 
