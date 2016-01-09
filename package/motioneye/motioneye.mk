@@ -4,7 +4,7 @@
 #
 #############################################################
 
-MOTIONEYE_VERSION = fce758f
+MOTIONEYE_VERSION = 8c142b1b091aad180a61893630948913c814c3dd
 MOTIONEYE_SITE = $(call github,ccrisan,motioneye,$(MOTIONEYE_VERSION))
 MOTIONEYE_SOURCE = $(MOTIONEYE_VERSION).tar.gz
 MOTIONEYE_LICENSE = GPLv3
@@ -52,6 +52,9 @@ define MOTIONEYE_INSTALL_TARGET_CMDS
     source $(COMMON_DIR)/overlay/etc/version; \
     sed -r -i "s%VERSION = .*%VERSION = '$$os_version'%" $(DST_DIR)/__init__.py
     sed -r -i "s%enable_update=False%enable_update=True%" $(DST_DIR)/handlers.py
+    source package/motioneye/dropbox.keys; \
+    sed -i "s/dropbox_client_id_placeholder/$$CLIENT_ID/" $(DST_DIR)/uploadservices.py; \
+    sed -i "s/dropbox_client_secret_placeholder/$$CLIENT_SECRET/" $(DST_DIR)/uploadservices.py
     
     # (re)compile all python modules
     $($(PKG)_PYTHON_INTERPRETER) -m compileall -d /usr/lib/python2.7/site-packages/motioneye -f $(DST_DIR)
