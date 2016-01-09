@@ -24,7 +24,7 @@ case "$1" in
             mount -o remount,rw /boot
             test $? == 0 && msg_done || msg_fail
 
-            msg_begin "Remounting root partition read-write: "
+            msg_begin "Remounting root partition read-write"
             mount -o remount,rw /
             test $? == 0 && msg_done || msg_fail
         fi
