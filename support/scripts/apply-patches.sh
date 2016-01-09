@@ -69,41 +69,41 @@ function apply_patch {
         type="series"; uncomp="cat"
     else
         case "$patch" in
-	    *.gz)
-	    type="gzip"; uncomp="gunzip -dc"; ;;
-	    *.bz)
-	    type="bzip"; uncomp="bunzip -dc"; ;;
-	    *.bz2)
-	    type="bzip2"; uncomp="bunzip2 -dc"; ;;
-	    *.xz)
-	    type="xz"; uncomp="unxz -dc"; ;;
-	    *.zip)
-	    type="zip"; uncomp="unzip -d"; ;;
-	    *.Z)
-	    type="compress"; uncomp="uncompress -c"; ;;
-	    *.diff*)
-	    type="diff"; uncomp="cat"; ;;
-	    *.patch*)
-	    type="patch"; uncomp="cat"; ;;
-	    *)
-	    echo "Unsupported file type for ${path}/${patch}, skipping";
-	    return 0
-	    ;;
+            *.gz)
+            type="gzip"; uncomp="gunzip -dc"; ;;
+            *.bz)
+            type="bzip"; uncomp="bunzip -dc"; ;;
+            *.bz2)
+            type="bzip2"; uncomp="bunzip2 -dc"; ;;
+            *.xz)
+            type="xz"; uncomp="unxz -dc"; ;;
+            *.zip)
+            type="zip"; uncomp="unzip -d"; ;;
+            *.Z)
+            type="compress"; uncomp="uncompress -c"; ;;
+            *.diff*)
+            type="diff"; uncomp="cat"; ;;
+            *.patch*)
+            type="patch"; uncomp="cat"; ;;
+            *)
+            echo "Unsupported file type for ${path}/${patch}, skipping";
+            return 0
+            ;;
         esac
     fi
     if [ -z "$silent" ] ; then
-	echo ""
-	echo "Applying $patch using ${type}: "
+        echo ""
+        echo "Applying $patch using ${type}: "
     fi
     if [ ! -e "${path}/$patch" ] ; then
-	echo "Error: missing patch file ${path}/$patch"
-	exit 1
+        echo "Error: missing patch file ${path}/$patch"
+        exit 1
     fi
     echo $patch >> ${builddir}/.applied_patches_list
     ${uncomp} "${path}/$patch" | patch -g0 -p1 -E -d "${builddir}" -t -N $silent
     if [ $? != 0 ] ; then
         echo "Patch failed!  Please fix ${patch}!"
-	exit 1
+        exit 1
     fi
 }
 
