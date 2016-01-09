@@ -368,4 +368,8 @@ else
 VLC_CONF_OPTS += --without-x
 endif
 
+ifeq ($(BR2_PACKAGE_ZLIB),y)
+VLC_DEPENDENCIES += zlib
+endif
+
 $(eval $(autotools-package))
