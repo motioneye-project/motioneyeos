@@ -22,7 +22,7 @@ case "$1" in
         msg_begin "Formatting data partition"
         mkfs.ext4 -q $data_dev
         test $? == 0 && msg_done || msg_fail
-        
+
         msg_begin "Mounting data partition"
         mount /data
         test $? == 0 && msg_done || msg_fail
@@ -33,8 +33,8 @@ case "$1" in
         mkdir -m 775 /data/output
         mkdir -m 775 /data/media
         cp /etc/version /data/etc/version
-
         ln -s /usr/share/zoneinfo/UTC /data/etc/localtime
+        touch /data/etc/adjtime
         msg_done
 
         # mount other partitions depending on data
