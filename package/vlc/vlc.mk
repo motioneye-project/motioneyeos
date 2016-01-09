@@ -179,6 +179,13 @@ else
 VLC_CONF_OPTS += --disable-libass
 endif
 
+ifeq ($(BR2_PACKAGE_LIBBLURAY),y)
+VLC_CONF_OPTS += --enable-bluray
+VLC_DEPENDENCIES += libbluray
+else
+VLC_CONF_OPTS += --disable-bluray
+endif
+
 ifeq ($(BR2_PACKAGE_LIBDVBPSI),y)
 VLC_CONF_OPTS += --enable-dvbpsi
 VLC_DEPENDENCIES += libdvbpsi
