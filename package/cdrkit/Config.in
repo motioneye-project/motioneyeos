@@ -2,6 +2,7 @@ config BR2_PACKAGE_CDRKIT
 	# Needed for libbz
 	select BR2_PACKAGE_BZIP2
 	select BR2_PACKAGE_LIBCAP
+	select BR2_PACKAGE_ZLIB
 	depends on BR2_USE_MMU # fork
 	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0 # libcap
 	bool "cdrkit"
