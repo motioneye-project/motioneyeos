@@ -148,7 +148,7 @@ define SET_NETWORK_DHCP
 		echo ;                                               \
 		echo "auto $(NETWORK_DHCP_IFACE)";                   \
 		echo "iface $(NETWORK_DHCP_IFACE) inet dhcp";        \
-		echo "  pre-up /etc/network/nfs_check";              \
+		echo "	pre-up /etc/network/nfs_check";              \
 		echo "	wait-delay 15";                              \
 	) >> $(TARGET_DIR)/etc/network/interfaces
 	$(INSTALL) -m 0755 -D $(SKELETON_PKGDIR)/nfs_check \
