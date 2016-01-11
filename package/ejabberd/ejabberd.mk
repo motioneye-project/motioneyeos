@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-EJABBERD_VERSION = 15.09
+EJABBERD_VERSION = 15.11
 EJABBERD_SOURCE = ejabberd-$(EJABBERD_VERSION).tgz
 EJABBERD_SITE = https://www.process-one.net/downloads/ejabberd/$(EJABBERD_VERSION)
 EJABBERD_LICENSE = GPLv2+ with OpenSSL exception

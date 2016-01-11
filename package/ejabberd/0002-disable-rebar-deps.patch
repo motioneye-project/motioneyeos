@@ -6,10 +6,10 @@ Author: Philipp Huebner <debalance@debian.org>
 Index: ejabberd/Makefile.in
 ===================================================================
 diff --git a/Makefile.in b/Makefile.in
-index f7b30d4..4ca4db3 100644
+index 8dd6bf5..b9d783a 100644
 --- a/Makefile.in
 +++ b/Makefile.in
-@@ -74,26 +74,11 @@ else
+@@ -77,26 +77,11 @@ else
    INIT_USER=$(INSTALLUSER)
  endif
  
@@ -38,37 +38,39 @@ index f7b30d4..4ca4db3 100644
  xref: all
  	$(REBAR) skip_deps=true xref
  
-@@ -109,8 +94,6 @@ spec:
- 	$(ERL) -noinput +B -pa ebin -pa deps/*/ebin -eval \
- 	'case xml_gen:compile("tools/xmpp_codec.spec") of ok -> halt(0); _ -> halt(1) end.'
+@@ -129,13 +114,10 @@ endef
  
--DLLs := $(wildcard deps/*/priv/*.so) $(wildcard deps/*/priv/lib/*.so)
+ $(foreach file,$(DEPS_FILES_FILTERED) $(MAIN_FILES),$(eval $(call COPY_template,$(file))))
+ 
+-$(call TO_DEST,$(MAIN_DIRS) $(DEPS_DIRS)):
++$(call TO_DEST,$(MAIN_DIRS)):
+ 	$(INSTALL) -d $@
+ 
+-$(call TO_DEST,deps/p1_pam/priv/bin/epam): $(LIBDIR)/%: deps/% $(call TO_DEST,deps/p1_pam/priv/bin/)
+-	$(INSTALL) -m 750 $(O_USER) $< $@
 -
- install: all
+-copy-files: $(call TO_DEST,$(DEPS_FILES) $(MAIN_FILES))
++copy-files: $(call TO_DEST,$(MAIN_FILES))
+ 
+ install: all copy-files
  	#
- 	# Configuration files
-@@ -151,8 +134,6 @@ install: all
- 	$(INSTALL) -d $(BEAMDIR)
- 	$(INSTALL) -m 644 ebin/*.app $(BEAMDIR)
- 	$(INSTALL) -m 644 ebin/*.beam $(BEAMDIR)
--	$(INSTALL) -m 644 deps/*/ebin/*.app $(BEAMDIR)
--	$(INSTALL) -m 644 deps/*/ebin/*.beam $(BEAMDIR)
- 	# Install Elixir and Elixir dependancies
- 	-$(INSTALL) -m 644 deps/*/lib/*/ebin/*.app $(BEAMDIR)
- 	-$(INSTALL) -m 644 deps/*/lib/*/ebin/*.beam $(BEAMDIR)
-@@ -161,7 +142,6 @@ install: all
- 	# ejabberd header files
- 	$(INSTALL) -d $(INCLUDEDIR)
- 	$(INSTALL) -m 644 include/*.hrl $(INCLUDEDIR)
--	$(INSTALL) -m 644 deps/*/include/*.hrl $(INCLUDEDIR)
+@@ -172,10 +154,6 @@ install: all copy-files
+ 		-e "s*@installuser@*$(INIT_USER)*" ejabberd.init.template \
+ 		> ejabberd.init
+ 	chmod 755 ejabberd.init
+-	# Install Elixir and Elixir dependancies
+-	-$(INSTALL) -m 644 deps/*/lib/*/ebin/*.app $(BEAMDIR)
+-	-$(INSTALL) -m 644 deps/*/lib/*/ebin/*.beam $(BEAMDIR)
+-	rm -f $(BEAMDIR)/configure.beam
  	#
  	# Binary C programs
  	$(INSTALL) -d $(PBINDIR)
-@@ -174,7 +154,6 @@ install: all
- 	#
- 	# Binary system libraries
- 	$(INSTALL) -d $(SODIR)
--	$(INSTALL) -m 644 $(DLLs) $(SODIR)
- 	[ -f $(SODIR)/jiffy.so ] && (cd $(PRIVDIR); ln -s lib/jiffy.so; true) || true
- 	[ -f $(SODIR)/sqlite3_drv.so ] && (cd $(PRIVDIR); ln -s lib/sqlite3_drv.so; true) || true
- 	#
+@@ -266,8 +244,6 @@ TAGS:
+ 
+ Makefile: Makefile.in
+ 
+-deps := $(wildcard deps/*/ebin)
+-
+ dialyzer/erlang.plt:
+ 	@mkdir -p dialyzer
+ 	@dialyzer --build_plt --output_plt dialyzer/erlang.plt \
