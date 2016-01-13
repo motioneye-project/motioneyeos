@@ -19,6 +19,18 @@ PROCPS_NG_GETTEXTIZE = YES
 # wins the fight over who gets to have their utils actually installed.
 ifeq ($(BR2_PACKAGE_BUSYBOX),y)
 PROCPS_NG_DEPENDENCIES += busybox
+# Also overwrite the remaining busybox symlinks for tools which are now
+# provided by procps-ng and got installed in /usr/bin instead of /bin.
+# Currently these tools are only pidof and watch. We only need to do
+# this if the /usr/bin and /bin directories are not merged.
+ifeq ($(BR2_ROOTFS_MERGED_USR),)
+define PROCPS_NG_MOVE_BINARIES
+	for i in pidof watch; do \
+		mv $(TARGET_DIR)/usr/bin/$$i $(TARGET_DIR)/bin/; \
+	done
+endef
+PROCPS_NG_POST_INSTALL_TARGET_HOOKS += PROCPS_NG_MOVE_BINARIES
+endif
 endif
 
 ifeq ($(BR2_NEEDS_GETTEXT_IF_LOCALE),y)
@@ -40,8 +52,8 @@ PROCPS_NG_CONF_OPTS += \
 	--exec-prefix=/ \
 	--sysconfdir=/etc \
 	--libdir=/usr/lib \
-	--bindir=/usr/bin \
-	--sbindir=/usr/sbin
+	--bindir=/bin \
+	--sbindir=/sbin
 
 # Allows unicode characters to show in 'watch'
 ifeq ($(BR2_PACKAGE_NCURSES_WCHAR),y)
