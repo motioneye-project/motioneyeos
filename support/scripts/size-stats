@@ -191,7 +191,7 @@ def gen_packages_csv(pkgsizes, outputf):
         for (pkg, size) in pkgsizes.items():
             wr.writerow([pkg, size, "%.1f" % (float(size) / total * 100)])
 
-parser = argparse.ArgumentParser(description='Draw build time graphs')
+parser = argparse.ArgumentParser(description='Draw size statistics graphs')
 
 parser.add_argument("--builddir", '-i', metavar="BUILDDIR", required=True,
                     help="Buildroot output directory")
