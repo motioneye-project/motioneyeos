@@ -6,7 +6,7 @@
 case "$1" in
 	start)
 		printf "Starting openntpd: "
-		start-stop-daemon -S -x /usr/sbin/ntpd -- -p /run/ntpd.pid
+		start-stop-daemon -S -x /usr/sbin/ntpd -- -s -p /run/ntpd.pid
 		[ $? = 0 ] && echo "OK" || echo "FAIL"
 		;;
 	stop)
