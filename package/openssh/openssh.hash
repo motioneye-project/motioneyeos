@@ -1,4 +1,3 @@
 # Locally calculated after checking pgp signature
-# Also from http://www.openssh.com/txt/release-7.1 (sha256 is base64 encoded)
-# Decode with -> echo <encoded stuff>|base64 -d|hexdump -v -e '/1 "%02x"'
-sha256	fc0a6d2d1d063d5c66dffd952493d0cda256cad204f681de0f84ef85b2ad8428	openssh-7.1p1.tar.gz
+# Also from http://www.openssh.com/txt/release-7.1p2
+sha256	dd75f024dcf21e06a0d6421d582690bf987a1f6323e32ad6619392f3bfde6bbd	openssh-7.1p2.tar.gz
