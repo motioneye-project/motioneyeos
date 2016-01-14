@@ -37,4 +37,4 @@ Prepare the SD card for the Minnow Board MAX
  4. Enjoy
 
 Additional information about this board can be found at
-http://www.minnowboard.org/ or http://elinux.org/Minnowboard:MinnowMax.
+http://www.minnowboard.org/ or http://wiki.minnowboard.org/MinnowBoard_MAX
