@@ -23,8 +23,7 @@ UTIL_LINUX_CONF_ENV = scanf_cv_type_modifier=no \
 	$(if $(BR2_TOOLCHAIN_USES_UCLIBC),ac_cv_header_sys_timex_h=no)
 UTIL_LINUX_CONF_OPTS += \
 	--disable-rpath \
-	--disable-makeinstall-chown \
-	--without-python
+	--disable-makeinstall-chown
 
 # system depends on util-linux so we enable systemd support
 # (which needs systemd to be installed)
@@ -134,6 +133,19 @@ endif
 # a per-directory basis.
 ifeq ($(BR2_PACKAGE_UTIL_LINUX_BINARIES),)
 UTIL_LINUX_CONF_OPTS += --disable-all-programs
+endif
+
+# Install libmount Python bindings
+ifeq ($(BR2_PACKAGE_PYTHON)$(BR2_PACKAGE_PYTHON3),y)
+UTIL_LINUX_CONF_OPTS += --with-python
+UTIL_LINUX_DEPENDENCIES += $(if $(BR2_PACKAGE_PYTHON),python,python3)
+ifeq ($(BR2_PACKAGE_UTIL_LINUX_LIBMOUNT),y)
+UTIL_LINUX_CONF_OPTS += --enable-pylibmount
+else
+UTIL_LINUX_CONF_OPTS += --disable-pylibmount
+endif
+else
+UTIL_LINUX_CONF_OPTS += --without-python
 endif
 
 # Install PAM configuration files
