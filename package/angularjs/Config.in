@@ -1,4 +1,4 @@
-config BR2_PACKAGE_ANGULARJS
+menuconfig BR2_PACKAGE_ANGULARJS
 	bool "angularjs"
 	help
 	  AngularJS web application framework.
@@ -7,7 +7,7 @@ config BR2_PACKAGE_ANGULARJS
 
 if BR2_PACKAGE_ANGULARJS
 
-menuconfig BR2_ANGULARJS_MODULES
+config BR2_ANGULARJS_MODULES
 	bool "angularjs modules"
 	help
 	  Select which modules to install. If disabled, all modules
