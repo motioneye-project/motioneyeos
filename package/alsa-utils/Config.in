@@ -21,6 +21,10 @@ menu "ALSA utils selection"
 config BR2_PACKAGE_ALSA_UTILS_ALSACONF
 	bool "alsaconf"
 
+config BR2_PACKAGE_ALSA_UTILS_ACONNECT
+	bool "aconnect"
+	select BR2_PACKAGE_ALSA_LIB_SEQ
+
 config BR2_PACKAGE_ALSA_UTILS_ALSACTL
 	bool "alsactl"
 	default y
@@ -38,6 +42,9 @@ config BR2_PACKAGE_ALSA_UTILS_ALSAMIXER
 comment "alsamixer needs a toolchain w/ wchar"
 	depends on !BR2_USE_WCHAR
 
+config BR2_PACKAGE_ALSA_UTILS_ALSAUCM
+	bool "alsaucm"
+
 config BR2_PACKAGE_ALSA_UTILS_AMIDI
 	bool "amidi"
 	select BR2_PACKAGE_ALSA_LIB_RAWMIDI
@@ -50,21 +57,6 @@ config BR2_PACKAGE_ALSA_UTILS_AMIXER
 config BR2_PACKAGE_ALSA_UTILS_APLAY
 	bool "aplay/arecord"
 	select BR2_PACKAGE_ALSA_LIB_PCM
-
-config BR2_PACKAGE_ALSA_UTILS_BAT
-	bool "bat"
-	select BR2_PACKAGE_FFTW
-
-config BR2_PACKAGE_ALSA_UTILS_IECSET
-	bool "iecset"
-	select BR2_PACKAGE_ALSA_LIB_PCM
-
-config BR2_PACKAGE_ALSA_UTILS_ACONNECT
-	bool "aconnect"
-	select BR2_PACKAGE_ALSA_LIB_SEQ
-
-config BR2_PACKAGE_ALSA_UTILS_ALSAUCM
-	bool "alsaucm"
 
 config BR2_PACKAGE_ALSA_UTILS_APLAYMIDI
 	bool "aplaymidi"
@@ -81,6 +73,14 @@ config BR2_PACKAGE_ALSA_UTILS_ASEQDUMP
 config BR2_PACKAGE_ALSA_UTILS_ASEQNET
 	bool "aseqnet"
 	select BR2_PACKAGE_ALSA_LIB_SEQ
+
+config BR2_PACKAGE_ALSA_UTILS_BAT
+	bool "bat"
+	select BR2_PACKAGE_FFTW
+
+config BR2_PACKAGE_ALSA_UTILS_IECSET
+	bool "iecset"
+	select BR2_PACKAGE_ALSA_LIB_PCM
 
 config BR2_PACKAGE_ALSA_UTILS_SPEAKER_TEST
 	bool "speaker-test"
