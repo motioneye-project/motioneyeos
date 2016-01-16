@@ -1,0 +1,6 @@
+config BR2_PACKAGE_PYTHON_ECDSA
+	bool "python-ecdsa"
+	help
+	  ECDSA cryptographic signature library (pure python).
+
+	  http://github.com/warner/python-ecdsa
