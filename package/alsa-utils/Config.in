@@ -2,7 +2,7 @@ comment "alsa-utils needs a toolchain w/ threads, dynamic library"
 	depends on BR2_USE_MMU # fork
 	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS
 
-config BR2_PACKAGE_ALSA_UTILS
+menuconfig BR2_PACKAGE_ALSA_UTILS
 	bool "alsa-utils"
 	depends on BR2_USE_MMU # fork
 	depends on BR2_TOOLCHAIN_HAS_THREADS # alsa-lib
@@ -16,7 +16,6 @@ config BR2_PACKAGE_ALSA_UTILS
 	  http://www.alsa-project.org/
 
 if BR2_PACKAGE_ALSA_UTILS
-menu "ALSA utils selection"
 
 config BR2_PACKAGE_ALSA_UTILS_ALSACONF
 	bool "alsaconf"
@@ -91,7 +90,5 @@ config BR2_PACKAGE_ALSA_UTILS_IECSET
 config BR2_PACKAGE_ALSA_UTILS_SPEAKER_TEST
 	bool "speaker-test"
 	select BR2_PACKAGE_ALSA_LIB_PCM
-
-endmenu
 
 endif
