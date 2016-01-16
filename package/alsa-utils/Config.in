@@ -45,6 +45,9 @@ comment "alsamixer needs a toolchain w/ wchar"
 config BR2_PACKAGE_ALSA_UTILS_ALSAUCM
 	bool "alsaucm"
 
+config BR2_PACKAGE_ALSA_UTILS_ALSATPLG
+	bool "alsatplg"
+
 config BR2_PACKAGE_ALSA_UTILS_AMIDI
 	bool "amidi"
 	select BR2_PACKAGE_ALSA_LIB_RAWMIDI
