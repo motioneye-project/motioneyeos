@@ -5,7 +5,7 @@ Intro
 
 This default configuration will allow you to start experimenting with the
 buildroot environment for the OrangePi PC. With the current configuration
-it will bring-up the board, and allow access trough the serial console.
+it will bring-up the board, and allow access through the serial console.
 
 Unfortunately this boards processor is not yet supported by the
 mainline kernel, and therefore this default configuration is using a
