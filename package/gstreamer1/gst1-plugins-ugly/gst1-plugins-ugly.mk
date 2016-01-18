@@ -13,7 +13,7 @@ GST1_PLUGINS_UGLY_LICENSE = LGPLv2.1+
 
 GST1_PLUGINS_UGLY_CONF_OPTS = --disable-examples --disable-valgrind
 
-GST_PLUGINS_BAD1_CONF_OPTS += \
+GST1_PLUGINS_UGLY_CONF_OPTS += \
 	--disable-a52dec \
 	--disable-amrnb \
 	--disable-amrwb \
