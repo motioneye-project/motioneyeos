@@ -11,7 +11,8 @@ ALSA_UTILS_LICENSE = GPLv2
 ALSA_UTILS_LICENSE_FILES = COPYING
 ALSA_UTILS_INSTALL_STAGING = YES
 ALSA_UTILS_DEPENDENCIES = host-gettext host-pkgconf alsa-lib \
-	$(if $(BR2_PACKAGE_NCURSES),ncurses)
+	$(if $(BR2_PACKAGE_NCURSES),ncurses) \
+	$(if $(BR2_PACKAGE_LIBSAMPLERATE),libsamplerate)
 # Regenerate aclocal.m4 to pick the patched
 # version of alsa.m4 from alsa-lib
 ALSA_UTILS_AUTORECONF = YES
@@ -29,6 +30,12 @@ ALSA_UTILS_DEPENDENCIES += gettext
 ALSA_UTILS_CONF_ENV += LIBS=-lintl
 endif
 
+ifeq ($(BR2_PACKAGE_ALSA_UTILS_ALSALOOP),y)
+ALSA_UTILS_CONF_OPTS += --enable-alsaloop
+else
+ALSA_UTILS_CONF_OPTS += --disable-alsaloop
+endif
+
 ifneq ($(BR2_PACKAGE_ALSA_UTILS_ALSAMIXER),y)
 ALSA_UTILS_CONF_OPTS += --disable-alsamixer --disable-alsatest
 endif
@@ -42,6 +49,7 @@ endif
 
 ALSA_UTILS_TARGETS_$(BR2_PACKAGE_ALSA_UTILS_ALSACONF) += usr/sbin/alsaconf
 ALSA_UTILS_TARGETS_$(BR2_PACKAGE_ALSA_UTILS_ALSACTL) += usr/sbin/alsactl
+ALSA_UTILS_TARGETS_$(BR2_PACKAGE_ALSA_UTILS_ALSALOOP) += usr/bin/alsaloop
 ALSA_UTILS_TARGETS_$(BR2_PACKAGE_ALSA_UTILS_ALSAMIXER) += usr/bin/alsamixer
 ALSA_UTILS_TARGETS_$(BR2_PACKAGE_ALSA_UTILS_ALSATPLG) += usr/bin/alsatplg
 ALSA_UTILS_TARGETS_$(BR2_PACKAGE_ALSA_UTILS_AMIDI) += usr/bin/amidi

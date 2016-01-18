@@ -29,6 +29,9 @@ config BR2_PACKAGE_ALSA_UTILS_ALSACTL
 	bool "alsactl"
 	default y
 
+config BR2_PACKAGE_ALSA_UTILS_ALSALOOP
+	bool "alsaloop"
+
 config BR2_PACKAGE_ALSA_UTILS_ALSAMIXER
 	bool "alsamixer"
 	select BR2_PACKAGE_NCURSES
