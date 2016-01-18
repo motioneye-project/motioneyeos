@@ -4,9 +4,8 @@
 #
 ################################################################################
 
-LIBEVENT_VERSION_MAJOR = 2.0
-LIBEVENT_VERSION = $(LIBEVENT_VERSION_MAJOR).22-stable
-LIBEVENT_SITE = http://downloads.sourceforge.net/project/levent/libevent/libevent-$(LIBEVENT_VERSION_MAJOR)
+LIBEVENT_VERSION = 2.0.22-stable
+LIBEVENT_SITE = https://github.com/libevent/libevent/releases/download/release-$(LIBEVENT_VERSION)
 LIBEVENT_INSTALL_STAGING = YES
 LIBEVENT_LICENSE = BSD-3c, OpenBSD
 LIBEVENT_LICENSE_FILES = LICENSE
