@@ -1,7 +1,6 @@
 config BR2_PACKAGE_PYTHON_PYDAL
 	bool python-pydal
 	help
-
 	  pyDAL is a pure Python Database Abstraction Layer.  It
 	  dynamically generates the SQL in real time using the
 	  specified dialect for the database back end, so that you do
