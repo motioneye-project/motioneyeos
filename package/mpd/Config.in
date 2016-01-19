@@ -223,6 +223,11 @@ config BR2_PACKAGE_MPD_AO
 	help
 	  Enable libao output support.
 
+config BR2_PACKAGE_MPD_HTTPD_OUTPUT
+	bool "httpd output"
+	help
+	  Enable httpd output support.
+
 config BR2_PACKAGE_MPD_JACK2
 	bool "jack2"
 	depends on BR2_ARCH_HAS_ATOMICS
