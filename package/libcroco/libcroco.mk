@@ -14,7 +14,7 @@ LIBCROCO_CONFIG_SCRIPTS = croco-$(LIBCROCO_VERSION_MAJOR)-config
 # NEWS states that it's only LGPL
 # Source code says v2.1+ even though COPYING.LIB is v2
 LIBCROCO_LICENSE = LGPLv2.1+
-LIBCROSO_LICENSE_FILES = COPYING.LIB
+LIBCROCO_LICENSE_FILES = COPYING.LIB
 
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
