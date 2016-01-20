@@ -36,12 +36,6 @@ choice
 		depends on !BR2_nios2
 		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_14
 
-	config BR2_KERNEL_HEADERS_3_16
-		bool "Linux 3.16.x kernel headers"
-		depends on BR2_DEPRECATED_SINCE_2015_02
-		depends on !BR2_nios2
-		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_16
-
 	config BR2_KERNEL_HEADERS_3_17
 		bool "Linux 3.17.x kernel headers"
 		depends on BR2_DEPRECATED_SINCE_2015_05
@@ -213,7 +207,6 @@ config BR2_DEFAULT_KERNEL_HEADERS
 	default "3.10.94"	if BR2_KERNEL_HEADERS_3_10
 	default "3.12.52"	if BR2_KERNEL_HEADERS_3_12
 	default "3.14.58"	if BR2_KERNEL_HEADERS_3_14
-	default "3.16.7"	if BR2_KERNEL_HEADERS_3_16
 	default "3.17.8"	if BR2_KERNEL_HEADERS_3_17
 	default "3.18.25"	if BR2_KERNEL_HEADERS_3_18
 	default "3.19.8"	if BR2_KERNEL_HEADERS_3_19

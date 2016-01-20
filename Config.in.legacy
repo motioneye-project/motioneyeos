@@ -145,6 +145,16 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2016.02"
 
+config BR2_KERNEL_HEADERS_3_16
+	bool "kernel headers version 3.16.x are no longer supported"
+	select BR2_KERNEL_HEADERS_3_18
+	select BR2_LEGACY
+	help
+	Version 3.16.x of the Linux kernel headers have been deprecated
+	for more than four buildroot releases and are now removed.
+	As an alternative, version 3.18.x of the headers have been
+	automatically selected in your configuration.
+
 config BR2_PACKAGE_PYTHON_PYXML
 	bool "python-pyxml package has been removed"
 	select BR2_LEGACY
