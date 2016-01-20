@@ -297,7 +297,7 @@ export HOSTCC_NOCCACHE HOSTCXX_NOCCACHE
 # So, we extract the first part of the tuple the host gcc was
 # configured to generate code for; we assume this is our userland.
 #
-export HOSTARCH := $(shell $(HOSTCC_NOCCACHE) -v 2>&1 | \
+export HOSTARCH := $(shell LC_ALL=C $(HOSTCC_NOCCACHE) -v 2>&1 | \
 	sed -e '/^Target: \([^-]*\).*/!d' \
 	    -e 's//\1/' \
 	    -e 's/i.86/x86/' \
