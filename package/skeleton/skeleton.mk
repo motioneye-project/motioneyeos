@@ -77,13 +77,21 @@ define SKELETON_USR_SYMLINKS_OR_DIRS
 endef
 endif
 
+# We make a symlink lib32->lib or lib64->lib as appropriate
+# MIPS64/n32 requires lib32 even though it's a 64-bit arch.
+ifeq ($(BR2_ARCH_IS_64)$(BR2_MIPS_NABI32),y)
+SKELETON_LIB_SYMLINK = lib64
+else
+SKELETON_LIB_SYMLINK = lib32
+endif
+
 define SKELETON_INSTALL_TARGET_CMDS
 	rsync -a --ignore-times $(RSYNC_VCS_EXCLUSIONS) \
 		--chmod=u=rwX,go=rX --exclude .empty --exclude '*~' \
 		$(SKELETON_PATH)/ $(TARGET_DIR)/
 	$(call SKELETON_USR_SYMLINKS_OR_DIRS,$(TARGET_DIR))
-	ln -snf lib $(TARGET_DIR)/$(LIB_SYMLINK)
-	ln -snf lib $(TARGET_DIR)/usr/$(LIB_SYMLINK)
+	ln -snf lib $(TARGET_DIR)/$(SKELETON_LIB_SYMLINK)
+	ln -snf lib $(TARGET_DIR)/usr/$(SKELETON_LIB_SYMLINK)
 	$(INSTALL) -m 0644 support/misc/target-dir-warning.txt \
 		$(TARGET_DIR_WARNING_FILE)
 endef
@@ -99,8 +107,8 @@ define SKELETON_INSTALL_STAGING_CMDS
 	$(INSTALL) -d -m 0755 $(STAGING_DIR)/usr/sbin
 	$(INSTALL) -d -m 0755 $(STAGING_DIR)/usr/include
 	$(call SKELETON_USR_SYMLINKS_OR_DIRS,$(STAGING_DIR))
-	ln -snf lib $(STAGING_DIR)/$(LIB_SYMLINK)
-	ln -snf lib $(STAGING_DIR)/usr/$(LIB_SYMLINK)
+	ln -snf lib $(STAGING_DIR)/$(SKELETON_LIB_SYMLINK)
+	ln -snf lib $(STAGING_DIR)/usr/$(SKELETON_LIB_SYMLINK)
 endef
 
 SKELETON_TARGET_GENERIC_HOSTNAME = $(call qstrip,$(BR2_TARGET_GENERIC_HOSTNAME))
