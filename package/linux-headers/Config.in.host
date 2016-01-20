@@ -5,11 +5,16 @@ comment "Kernel Header Options"
 
 choice
 	prompt "Kernel Headers"
+	default BR2_KERNEL_HEADERS_AS_KERNEL if BR2_LINUX_KERNEL
 	default BR2_KERNEL_HEADERS_4_4
 	help
 	  Select the version of kernel header files you wish to use.
 	  You must select the correct set of header files to match
 	  the kernel you intend to use on your target system.
+
+	config BR2_KERNEL_HEADERS_AS_KERNEL
+		bool "Same as kernel"
+		depends on BR2_LINUX_KERNEL
 
 	config BR2_KERNEL_HEADERS_3_2
 		bool "Linux 3.2.x kernel headers"
@@ -87,7 +92,7 @@ config BR2_DEFAULT_KERNEL_VERSION
 
 choice
 	bool "Custom kernel headers series"
-	depends on BR2_KERNEL_HEADERS_VERSION
+	depends on BR2_KERNEL_HEADERS_VERSION || BR2_KERNEL_HEADERS_AS_KERNEL
 	default BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_REALLY_OLD
 	help
 	  Set to the kernel headers series you manually set above.

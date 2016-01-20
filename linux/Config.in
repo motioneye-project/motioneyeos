@@ -31,6 +31,7 @@ config BR2_LINUX_KERNEL_LATEST_VERSION
 
 config BR2_LINUX_KERNEL_SAME_AS_HEADERS
 	bool "Same as toolchain kernel headers"
+	depends on !BR2_KERNEL_HEADERS_AS_KERNEL
 	depends on BR2_TOOLCHAIN_BUILDROOT
 	help
 	  This option will re-use the same kernel sources as the one
