@@ -145,6 +145,13 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2016.02"
 
+config BR2_PACKAGE_CUPS_PDFTOPS
+	bool "Pdftops support has been removed from Cups"
+	select BR2_LEGACY
+	help
+	  Pdftops support has been removed from the cups package
+	  It is now part of the cups-filters package.
+
 config BR2_KERNEL_HEADERS_3_16
 	bool "kernel headers version 3.16.x are no longer supported"
 	select BR2_KERNEL_HEADERS_3_18
