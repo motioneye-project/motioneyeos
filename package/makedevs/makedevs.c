@@ -40,6 +40,8 @@ const char *bb_applet_name;
 uid_t recursive_uid;
 gid_t recursive_gid;
 unsigned int recursive_mode;
+#define PASSWD_PATH "etc/passwd"  /* MUST be relative */
+#define GROUP_PATH "etc/group"  /* MUST be relative */
 
 void bb_verror_msg(const char *s, va_list p)
 {
@@ -255,10 +257,20 @@ char *bb_get_chomped_line_from_file(FILE *file)
 long my_getpwnam(const char *name)
 {
 	struct passwd *myuser;
+	FILE *stream;
 
-	myuser  = getpwnam(name);
-	if (myuser==NULL)
-		bb_error_msg_and_die("unknown user name: %s", name);
+	stream = bb_xfopen(PASSWD_PATH, "r");
+	while(1) {
+		errno = 0;
+		myuser = fgetpwent(stream);
+		if (myuser == NULL)
+			bb_error_msg_and_die("unknown user name: %s", name);
+		if (errno)
+			bb_perror_msg_and_die("fgetpwent");
+		if (!strcmp(name, myuser->pw_name))
+			break;
+	}
+	fclose(stream);
 
 	return myuser->pw_uid;
 }
@@ -266,12 +278,22 @@ long my_getpwnam(const char *name)
 long my_getgrnam(const char *name)
 {
 	struct group *mygroup;
+	FILE *stream;
 
-	mygroup  = getgrnam(name);
-	if (mygroup==NULL)
-		bb_error_msg_and_die("unknown group name: %s", name);
+	stream = bb_xfopen(GROUP_PATH, "r");
+	while(1) {
+		errno = 0;
+		mygroup = fgetgrent(stream);
+		if (mygroup == NULL)
+			bb_error_msg_and_die("unknown group name: %s", name);
+		if (errno)
+			bb_perror_msg_and_die("fgetgrent");
+		if (!strcmp(name, mygroup->gr_name))
+			break;
+	}
+	fclose(stream);
 
-	return (mygroup->gr_gid);
+	return mygroup->gr_gid;
 }
 
 unsigned long get_ug_id(const char *s, long (*my_getxxnam)(const char *))
