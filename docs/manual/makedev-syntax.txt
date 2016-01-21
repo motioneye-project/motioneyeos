@@ -28,8 +28,10 @@ There are a few non-trivial blocks:
   * c: a character device file
   * b: a block device file
   * p: a named pipe
-- +mode+, +uid+ and +gid+ are the usual permissions settings (only
-  numerical values are allowed)
+- +mode+ are the usual permissions settings (only numerical values
+  are allowed)
+- +uid+ and +gid+ are the UID and GID to set on this file; can be
+  either numerical values or actual names
 - +major+ and +minor+ are here for device files, set to +-+ for other
   files
 - +start+, +inc+ and +count+ are for when you want to create a batch
@@ -37,19 +39,21 @@ There are a few non-trivial blocks:
   incrementing its counter by +inc+ until it reaches +count+
 
 Let's say you want to change the permissions of a given file; using
-this syntax, you will need to put:
+this syntax, you will need to write:
 
 ----
-/usr/bin/foobar f 644 0 0 - - - - -
+/usr/bin/foo f 755 0 0 - - - - -
+/usr/bin/bar f 755 root root - - - - -
+/data/buz f buz-user buz-group - - - - -
 ----
 
 Alternatively, if you want to change owner/permission of a directory
-recursively, you can put (to set UID to 123, GID to 456 and access
+recursively, you can write (to set UID to foo, GID to bar and access
 rights to rwxr-x--- for the directory /usr/share/myapp and all files
 and directories below it):
 
 ----
-/usr/share/myapp r 750 123 456 - - - - -
+/usr/share/myapp r 750 foo bar - - - - -
 ----
 
 On the other hand, if you want to create the device file +/dev/hda+
@@ -57,13 +61,13 @@ and the corresponding 15 files for the partitions, you will need for
 +/dev/hda+:
 
 ----
-/dev/hda b 640 0 0 3 0 0 0 -
+/dev/hda b 640 root root 3 0 0 0 -
 ----
 
 and then for device files corresponding to the partitions of
 +/dev/hda+, +/dev/hdaX+, +X+ ranging from 1 to 15:
 
 ----
-/dev/hda b 640 0 0 3 1 1 1 15
+/dev/hda b 640 root root 3 1 1 1 15
 ----
 

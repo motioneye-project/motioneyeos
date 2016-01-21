@@ -43,16 +43,16 @@ system is based on hand-written Makefiles or shell scripts.
 28:	$(INSTALL) -d -m 0755 $(TARGET_DIR)/etc/foo.d
 29: endef
 30:
-31: define LIBFOO_DEVICES
-32:	/dev/foo  c  666  0  0	42  0  -  -  -
+31: define LIBFOO_USERS
+32:	foo -1 libfoo -1 * - - - LibFoo daemon
 33: endef
 34:
-35: define LIBFOO_PERMISSIONS
-36:	/bin/foo  f  4755  0  0	 -  -  -  -  -
+35: define LIBFOO_DEVICES
+36:	/dev/foo  c  666  0  0	42  0  -  -  -
 37: endef
 38:
-39: define LIBFOO_USERS
-40:	foo -1 libfoo -1 * - - - LibFoo daemon
+39: define LIBFOO_PERMISSIONS
+40:	/bin/foo  f  4755  foo  libfoo	 -  -  -  -  -
 41: endef
 42:
 43: $(eval $(generic-package))
@@ -142,14 +142,14 @@ All these steps rely on the +$(@D)+ variable, which
 contains the directory where the source code of the package has been
 extracted.
 
-On line 31..33, we define a device-node file used by this package
+On lines 31..43, we define a user that is used by this package (e.g.
+to run a daemon as non-root) (+LIBFOO_USERS+).
+
+On line 35..37, we define a device-node file used by this package
 (+LIBFOO_DEVICES+).
 
-On line 35..37, we define the permissions to set to specific files
+On line 39..41, we define the permissions to set to specific files
 installed by this package (+LIBFOO_PERMISSIONS+).
-
-On lines 39..41, we define a user that is used by this package (e.g.
-to run a daemon as non-root) (+LIBFOO_USERS+).
 
 Finally, on line 43, we call the +generic-package+ function, which
 generates, according to the variables defined previously, all the
