@@ -3,6 +3,9 @@ From: Peter Seiderer <ps.report@gmx.net>
 Date: Fri, 16 Oct 2015 20:32:45 +0200
 Subject: [PATCH] dvb/keytable: fix missing libintl linking
 
+Patch upstream at
+http://git.linuxtv.org/v4l-utils.git/commit/?id=ceaec539b62d83ffb5fdb5231e574a6adef0bf83.
+
 Signed-off-by: Peter Seiderer <ps.report@gmx.net>
 ---
  utils/dvb/Makefile.am      | 8 ++++----

@@ -13,6 +13,9 @@ not available due to <locale.h> not being included.
 In order to fix this, we add ENABLE_NLS conditionals around the calls
 to these functions.
 
+Patch upstream at:
+http://git.linuxtv.org/v4l-utils.git/commit/?id=defad307a09c11ba989e6338bb0293c0e1acba87.
+
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 ---
  utils/dvb/dvb-fe-tool.c        | 2 ++

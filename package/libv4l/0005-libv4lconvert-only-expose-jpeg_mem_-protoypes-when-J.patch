@@ -25,6 +25,9 @@ only expose the prototypes when libv4l is implementing the functions
 (i.e when JPEG_LIB_VERSION < 80). When JPEG_LIB_VERSION >= 80, the
 prototypes will come from <jpeglib.h>.
 
+Patch upstream at:
+http://git.linuxtv.org/v4l-utils.git/commit/?id=0b33f4c87cb26644ea662455acbc1649858b151f.
+
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 ---
  lib/libv4lconvert/jpeg_memsrcdest.h | 4 ++++

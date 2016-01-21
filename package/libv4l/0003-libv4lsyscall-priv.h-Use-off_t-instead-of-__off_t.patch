@@ -11,6 +11,9 @@ but the mmap() manpage really uses off_t, not __off_t.
 Switching from __off_t to off_t allows the code to build properly with
 musl.
 
+Patch upstream at
+http://git.linuxtv.org/v4l-utils.git/commit/?id=a6ff0635f7ed3400eec25039b96002b60a44209b.
+
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 ---
  lib/libv4l1/v4l1compat.c               |  3 +--
