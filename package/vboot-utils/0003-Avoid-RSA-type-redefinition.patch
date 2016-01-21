@@ -1,0 +1,44 @@
+From 593407d2b3ea3b871d55ec399671e48c84b900a7 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Thu, 21 Jan 2016 22:01:37 +0100
+Subject: [PATCH] Avoid RSA type redefinition
+
+The host_key.h headers does:
+
+  typedef struct rsa_st RSA;
+
+But this type definition is already done by the OpenSSL headers.
+
+While such a type redefinition is legal with recent gcc versions, it
+doesn't build with older gcc versions such as gcc 4.4.
+
+To work around this problem, we instead use a forward declaration of
+"struct rsa_st", and change the only place where the RSA type was used
+by "struct rsa_st".
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ host/lib/include/host_key.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/host/lib/include/host_key.h b/host/lib/include/host_key.h
+index 9f98ccc..c2d01a5 100644
+--- a/host/lib/include/host_key.h
++++ b/host/lib/include/host_key.h
+@@ -12,11 +12,11 @@
+ #include "vboot_struct.h"
+ 
+ 
+-typedef struct rsa_st RSA;
++struct rsa_st;
+ 
+ /* Private key data */
+ typedef struct VbPrivateKey {
+-  RSA* rsa_private_key;  /* Private key data */
++  struct rsa_rt* rsa_private_key;  /* Private key data */
+   uint64_t algorithm;    /* Algorithm to use when signing */
+ } VbPrivateKey;
+ 
+-- 
+2.6.4
+
