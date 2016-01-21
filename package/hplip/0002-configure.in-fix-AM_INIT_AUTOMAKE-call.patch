@@ -1,0 +1,35 @@
+From a2de7e834417de68db10dc6f09d5810b06e6cbc8 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Thu, 21 Jan 2016 23:54:50 +0100
+Subject: [PATCH] configure.in: fix AM_INIT_AUTOMAKE call
+
+Uncomment the appropriate call to AM_INIT_AUTOMAKE so that the
+"foreign" option is passed, which avoids the need for creating various
+unneeded files when autoreconfiguring.
+
+Add the subdir-objects options since the main Makefile.am references
+files in subdirectories. This allows to silence a huge amount of
+warning when autoreconfiguring.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ configure.in | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/configure.in b/configure.in
+index 8b06428..680cad5 100755
+--- a/configure.in
++++ b/configure.in
+@@ -27,8 +27,7 @@
+ 
+ #AC_PREREQ(2.59)
+ AC_INIT([HP Linux Imaging and Printing], [3.15.11], [3.15.11], [hplip])
+-#AM_INIT_AUTOMAKE([1.9 foreign])
+-AM_INIT_AUTOMAKE
++AM_INIT_AUTOMAKE([1.9 foreign subdir-objects])
+ AC_DISABLE_STATIC
+ 
+ # Checks for programs.
+-- 
+2.6.4
+
