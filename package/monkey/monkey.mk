@@ -30,7 +30,7 @@ MONKEY_CONF_OPTS += --uclib-mode --no-backtrace
 endif
 
 ifeq ($(BR2_TOOLCHAIN_USES_MUSL),y)
-MONKEY_CONF_OPTS += --musl-mode
+MONKEY_CONF_OPTS += --musl-mode --no-backtrace
 endif
 
 ifeq ($(BR2_PACKAGE_MONKEY_SHARED),y)
