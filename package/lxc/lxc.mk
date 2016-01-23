@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-LXC_VERSION = 1.1.4
-LXC_SITE = https://linuxcontainers.org/downloads
+LXC_VERSION = 1.1.5
+LXC_SITE = https://linuxcontainers.org/downloads/lxc
 LXC_LICENSE = LGPLv2.1+
 LXC_LICENSE_FILES = COPYING
 LXC_DEPENDENCIES = libcap host-pkgconf

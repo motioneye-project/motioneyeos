@@ -1,2 +1,2 @@
-# Locally calculated after checking pgp signature
-sha256 8f072ea2001bc94389003d82a91902855edf16b609e06f0486a74e4b8973e5dc lxc-1.1.4.tar.gz
+# Locally calculated
+sha256	9588ad1b04e114ee7370f690c65131e28098b28d2521d97c73557d11897ed0be	lxc-1.1.5.tar.gz
