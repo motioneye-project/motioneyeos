@@ -19,8 +19,9 @@ endef
 define LIBHDHOMERUN_INSTALL_STAGING_CMDS
 	$(INSTALL) -D -m 0755 $(@D)/libhdhomerun.so \
 		$(STAGING_DIR)/usr/lib/libhdhomerun.so
+	mkdir -p $(STAGING_DIR)/usr/include/libhdhomerun/
 	$(INSTALL) -m 0644 $(@D)/*.h \
-		$(STAGING_DIR)/usr/include/
+		$(STAGING_DIR)/usr/include/libhdhomerun/
 endef
 
 define LIBHDHOMERUN_INSTALL_TARGET_CMDS
