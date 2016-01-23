@@ -1,0 +1,28 @@
+# HG changeset patch
+# User Adam Lackorzynski <adam@os.inf.tu-dresden.de>
+# Date 1432407431 -7200
+#      Sat May 23 20:57:11 2015 +0200
+# Node ID 8bf81e6a8e60e37c2dec9577a1be6357b8d56165
+# Parent  8c784c80c17aa7a346d982db23bca5df67302cda
+musl-libc compile fix
+
+By Felix Janda <felix.janda@posteo.de>:
+VC_MUSIC is enabled by default on linux and in dial.c the
+necessary header are only included for glibc. (The wrong conditional
+include has likely been introduced by the 2003-03-30 GNU/Hurd patch.)
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+[Taken from upstream Mercurial commit 8bf81e6a8e60]
+
+diff -r 8c784c80c17a -r 8bf81e6a8e60 src/dial.c
+--- a/src/dial.c	Sat May 23 20:56:29 2015 +0200
++++ b/src/dial.c	Sat May 23 20:57:11 2015 +0200
+@@ -39,7 +39,7 @@
+ #include "intl.h"
+ 
+ #ifdef VC_MUSIC
+-#  if defined(__GLIBC__)
++#  if defined(__linux__) || defined(__GLIBC__)
+ #    include <sys/ioctl.h>
+ #    include <sys/kd.h>
+ #    include <sys/time.h>
