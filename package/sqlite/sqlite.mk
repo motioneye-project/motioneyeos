@@ -47,7 +47,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_SQLITE_READLINE),y)
 SQLITE_DEPENDENCIES += ncurses readline
-SQLITE_CONF_OPTS += --with-readline-inc="-I$(STAGING_DIR)/usr/include"
+SQLITE_CONF_OPTS += --enable-readline
 else
 SQLITE_CONF_OPTS += --disable-readline
 endif
