@@ -1,16 +1,16 @@
 config BR2_PACKAGE_LTTNG_TOOLS
 	bool "lttng-tools"
-	select BR2_PACKAGE_LIBURCU
-	select BR2_PACKAGE_LIBXML2
-	select BR2_PACKAGE_POPT
-	select BR2_PACKAGE_UTIL_LINUX
-	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
 	# liburcu only works on some architectures and requires thread support
 	depends on BR2_PACKAGE_LIBURCU_ARCH_SUPPORTS
 	depends on !BR2_TOOLCHAIN_HAS_GCC_BUG_58595 # lttng-tools/gcc-4.{7,8}.x bug
 	depends on !BR2_TOOLCHAIN_HAS_GCC_BUG_58854 # liburcu/gcc-4.8.x bug
 	depends on BR2_USE_WCHAR # util-linux
 	depends on BR2_TOOLCHAIN_HAS_THREADS
+	select BR2_PACKAGE_LIBURCU
+	select BR2_PACKAGE_LIBXML2
+	select BR2_PACKAGE_POPT
+	select BR2_PACKAGE_UTIL_LINUX
+	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
 	help
 	  Userspace utilities for the LTTng 2.x tracing
 	  infrastructure.
