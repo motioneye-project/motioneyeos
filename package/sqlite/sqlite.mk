@@ -35,6 +35,8 @@ SQLITE_CONF_ENV = CFLAGS="$(TARGET_CFLAGS) $(SQLITE_CFLAGS)"
 
 ifeq ($(BR2_STATIC_LIBS),y)
 SQLITE_CONF_OPTS += --enable-dynamic-extensions=no
+else
+SQLITE_CONF_OPTS += --disable-static-shell
 endif
 
 ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),y)
