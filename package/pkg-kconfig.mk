@@ -72,6 +72,11 @@ $$($(2)_DIR)/.config: $$($(2)_KCONFIG_FILE) $$($(2)_KCONFIG_FRAGMENT_FILES)
 	$$(Q)yes "" | $$($(2)_MAKE_ENV) $$(MAKE) -C $$($(2)_DIR) \
 		$$($(2)_KCONFIG_OPTS) oldconfig
 
+# If _KCONFIG_FILE or _KCONFIG_FRAGMENT_FILES exists, this dependency is
+# already implied, but if we only have a _KCONFIG_DEFCONFIG we have to add
+# it explicitly. It doesn't hurt to always have it though.
+$$($(2)_DIR)/.config: | $(1)-patch
+
 # In order to get a usable, consistent configuration, some fixup may be needed.
 # The exact rules are specified by the package .mk file.
 define $(2)_FIXUP_DOT_CONFIG
