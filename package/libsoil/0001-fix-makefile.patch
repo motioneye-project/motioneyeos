@@ -5,9 +5,9 @@ http://anonscm.debian.org/cgit/pkg-games/libsoil.git/tree/debian/patches/linking
 
 Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
 
-diff -uNr "soil.org/projects/makefile/alternate Makefile.txt" "soil/projects/makefile/alternate Makefile.txt"
---- "soil.org/projects/makefile/alternate Makefile.txt"	2008-07-07 18:13:28.000000000 +0200
-+++ "soil/projects/makefile/alternate Makefile.txt"	2015-11-07 11:15:04.140106336 +0100
+diff -uNr soil.org/projects/makefile/alternate_Makefile.txt soil/projects/makefile/alternate_Makefile.txt
+--- soil.org/projects/makefile/alternate_Makefile.txt	2008-07-07 18:13:28.000000000 +0200
++++ soil/projects/makefile/alternate_Makefile.txt	2015-11-07 11:15:04.140106336 +0100
 @@ -1,8 +1,8 @@
  MAKE = make
 -CC = gcc
