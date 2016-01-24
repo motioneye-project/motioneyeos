@@ -12,10 +12,17 @@ config BR2_PACKAGE_LIBFTDI
 if BR2_PACKAGE_LIBFTDI
 
 config BR2_PACKAGE_LIBTFDI_CPP
-	depends on BR2_INSTALL_LIBSTDCPP
 	bool "C++ bindings"
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_PACKAGE_BOOST_ARCH_SUPPORTS
+	depends on BR2_USE_WCHAR
+	select BR2_PACKAGE_BOOST
 	help
 	  C++ bindings for libftdi
+
+comment "libftdi C++ bindings need a toolchain w/ wchar, C++"
+	depends on BR2_PACKAGE_BOOST_ARCH_SUPPORTS
+	depends on !BR2_USE_WCHAR || !BR2_INSTALL_LIBSTDCPP
 
 endif # BR2_PACKAGE_LIBFTDI
 
