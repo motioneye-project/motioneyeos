@@ -7,38 +7,9 @@ config BR2_PACKAGE_UCLIBC
 
 comment "uClibc Options"
 
-config BR2_UCLIBC_VERSION_SUPPORTS_LINUXTHREADS
-	bool
-
-config BR2_UCLIBC_VERSION_SUPPORTS_LINUXTHREADS_OLD
-	bool
-
-config BR2_UCLIBC_VERSION_SUPPORTS_NPTL
-	bool
-
-choice
-	prompt "uClibc C library Version"
-	default BR2_UCLIBC_VERSION_NG
-	help
-	  Select the version of uClibc you wish to use.
-
-	config BR2_UCLIBC_VERSION_NG
-		bool "uClibc-ng"
-		select BR2_UCLIBC_VERSION_SUPPORTS_LINUXTHREADS if BR2_m68k
-		select BR2_UCLIBC_VERSION_SUPPORTS_LINUXTHREADS_OLD \
-		       if BR2_m68k || BR2_arm || BR2_armeb
-		select BR2_UCLIBC_VERSION_SUPPORTS_NPTL \
-		       if !BR2_m68k && !BR2_x86_i386
-
-endchoice
-
-config BR2_UCLIBC_VERSION_STRING
-	string
-	default "1.0.11"		if BR2_UCLIBC_VERSION_NG
-
 config BR2_UCLIBC_CONFIG
 	string "uClibc configuration file to use?"
-	default "package/uclibc/uClibc-ng.config" if BR2_UCLIBC_VERSION_NG
+	default "package/uclibc/uClibc-ng.config"
 	help
 	  Some people may wish to use their own modified uClibc configuration
 	  file and will specify their config file location with this option.
@@ -76,9 +47,7 @@ config BR2_TOOLCHAIN_BUILDROOT_LOCALE
 
 choice
 	prompt "Thread library implementation"
-	default BR2_PTHREADS_NATIVE if BR2_UCLIBC_VERSION_SUPPORTS_NPTL
-	default BR2_PTHREADS_OLD if BR2_UCLIBC_VERSION_SUPPORTS_LINUXTHREADS_OLD
-	default BR2_PTHREADS if BR2_UCLIBC_VERSION_SUPPORTS_LINUXTHREADS
+	default BR2_PTHREADS_NATIVE
 	help
 	  Use this option to select the thread library implementation
 	  that should be used in your toolchain.
@@ -89,18 +58,18 @@ choice
 	config BR2_PTHREADS
 		bool "linuxthreads"
 		select BR2_TOOLCHAIN_HAS_THREADS
-		depends on BR2_UCLIBC_VERSION_SUPPORTS_LINUXTHREADS
+		depends on BR2_m68k
 
 	config BR2_PTHREADS_OLD
 		bool "linuxthreads (stable/old)"
 		select BR2_TOOLCHAIN_HAS_THREADS
-		depends on BR2_UCLIBC_VERSION_SUPPORTS_LINUXTHREADS_OLD
+		depends on BR2_m68k || BR2_arm || BR2_armeb
 
 	config BR2_PTHREADS_NATIVE
 		bool "Native POSIX Threading (NPTL)"
 		select BR2_TOOLCHAIN_HAS_THREADS
 		select BR2_TOOLCHAIN_HAS_THREADS_NPTL
-		depends on BR2_UCLIBC_VERSION_SUPPORTS_NPTL
+		depends on !BR2_m68k && !BR2_x86_i386
 endchoice
 
 config BR2_PTHREAD_DEBUG
