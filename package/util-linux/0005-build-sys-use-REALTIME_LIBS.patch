@@ -1,0 +1,41 @@
+From 9ed54668c15534a3b9d75e8a3e90b72ea426e596 Mon Sep 17 00:00:00 2001
+From: Karel Zak <kzak@redhat.com>
+Date: Fri, 9 Oct 2015 11:31:49 +0200
+Subject: [PATCH] build-sys: use REALTIME_LIBS
+
+Signed-off-by: Karel Zak <kzak@redhat.com>
+---
+ misc-utils/Makemodule.am | 2 +-
+ sys-utils/Makemodule.am  | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/misc-utils/Makemodule.am b/misc-utils/Makemodule.am
+index e801611..b96d18b 100644
+--- a/misc-utils/Makemodule.am
++++ b/misc-utils/Makemodule.am
+@@ -90,7 +90,7 @@ endif
+ if BUILD_UUIDD
+ usrsbin_exec_PROGRAMS += uuidd
+ dist_man_MANS += misc-utils/uuidd.8
+-uuidd_LDADD = $(LDADD) libuuid.la libcommon.la
++uuidd_LDADD = $(LDADD) libuuid.la libcommon.la $(REALTIME_LIBS)
+ uuidd_CFLAGS = $(DAEMON_CFLAGS) $(AM_CFLAGS) -I$(ul_libuuid_incdir)
+ uuidd_LDFLAGS = $(DAEMON_LDFLAGS) $(AM_LDFLAGS)
+ uuidd_SOURCES = misc-utils/uuidd.c
+
+diff --git a/sys-utils/Makemodule.am b/sys-utils/Makemodule.am
+index f306e65..3d28ff1 100644
+--- a/sys-utils/Makemodule.am
++++ b/sys-utils/Makemodule.am
+@@ -2,7 +2,7 @@ if BUILD_FLOCK
+ usrbin_exec_PROGRAMS += flock
+ dist_man_MANS += sys-utils/flock.1
+ flock_SOURCES = sys-utils/flock.c lib/monotonic.c lib/timer.c
+-flock_LDADD = $(LDADD) libcommon.la -lrt
++flock_LDADD = $(LDADD) libcommon.la $(REALTIME_LIBS)
+ endif
+
+ if BUILD_IPCMK
+-- 
+2.5.0
+
