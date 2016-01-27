@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-NGINX_VERSION = 1.8.0
+NGINX_VERSION = 1.8.1
 NGINX_SITE = http://nginx.org/download
 NGINX_LICENSE = BSD-2c
 NGINX_LICENSE_FILES = LICENSE
