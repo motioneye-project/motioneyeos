@@ -48,8 +48,9 @@ parser.add_argument("--depth", '-d', metavar="DEPTH", dest="depth", type=int, de
                     help="Limit the dependency graph to DEPTH levels; 0 means no limit.")
 parser.add_argument("--stop-on", "-s", metavar="PACKAGE", dest="stop_list", action="append",
                     help="Do not graph past this package (can be given multiple times)." \
-                       + " Can be a package name or a glob, or" \
-                       + " 'virtual' to stop on virtual packages.")
+                       + " Can be a package name or a glob, " \
+                       + " 'virtual' to stop on virtual packages, or " \
+                       + "'host' to stop on host packages.")
 parser.add_argument("--exclude", "-x", metavar="PACKAGE", dest="exclude_list", action="append",
                     help="Like --stop-on, but do not add PACKAGE to the graph.")
 parser.add_argument("--colours", "-c", metavar="COLOR_LIST", dest="colours",
@@ -401,10 +402,15 @@ def print_pkg_deps(depth, pkg):
             return
     if dict_version.get(pkg) == "virtual" and "virtual" in stop_list:
         return
+    if pkg.startswith("host-") and "host" in stop_list:
+        return
     if max_depth == 0 or depth < max_depth:
         for d in dict_deps[pkg]:
             if dict_version.get(d) == "virtual" \
                and "virtual" in exclude_list:
+                continue
+            if d.startswith("host-") \
+               and "host" in exclude_list:
                 continue
             add = True
             for p in exclude_list:
