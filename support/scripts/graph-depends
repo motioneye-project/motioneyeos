@@ -403,13 +403,12 @@ def print_pkg_deps(depth, pkg):
         return
     if max_depth == 0 or depth < max_depth:
         for d in dict_deps[pkg]:
+            if dict_version.get(d) == "virtual" \
+               and "virtual" in exclude_list:
+                continue
             add = True
             for p in exclude_list:
                 if fnmatch(d,p):
-                    add = False
-                    break
-                if dict_version.get(d) == "virtual" \
-                and "virtual" in exclude_list:
                     add = False
                     break
             if add:
