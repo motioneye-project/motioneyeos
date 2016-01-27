@@ -1,6 +1,3 @@
-# Locally calculated after checking pgp signature
-sha256	62333167b79afb0b25a843513288c67b59547acf653e8fbe62ee64e71ebd1587	uClibc-0.9.33.2.tar.xz
-
 # From http://www.uclibc-ng.org/
 sha256  2fdc6b9015f8049be0eb12a5e3e446de471fb80061115afd8d72ea582cb22b74        uClibc-ng-1.0.11.tar.xz
 
