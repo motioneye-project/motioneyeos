@@ -30,32 +30,15 @@ choice
 		select BR2_UCLIBC_VERSION_SUPPORTS_NPTL \
 		       if !BR2_m68k && !BR2_x86_i386
 
-	config BR2_UCLIBC_VERSION_SNAPSHOT
-		bool "daily snapshot"
-		select BR2_UCLIBC_VERSION_SUPPORTS_LINUXTHREADS if !BR2_xtensa
-		select BR2_UCLIBC_VERSION_SUPPORTS_LINUXTHREADS_OLD
-		select BR2_UCLIBC_VERSION_SUPPORTS_NPTL \
-		       if !BR2_x86_i386 && !BR2_xtensa
-		depends on !(BR2_arc || BR2_mips64 || BR2_mips64el)
-
 endchoice
-
-config BR2_USE_UCLIBC_SNAPSHOT
-	string "Date (yyyymmdd) of snapshot or 'snapshot' for latest"
-	default "snapshot"
-	depends on BR2_UCLIBC_VERSION_SNAPSHOT
-	help
-	  Use latest snapshot or one from a specific date?
 
 config BR2_UCLIBC_VERSION_STRING
 	string
 	default "1.0.11"		if BR2_UCLIBC_VERSION_NG
-	default BR2_USE_UCLIBC_SNAPSHOT	if BR2_UCLIBC_VERSION_SNAPSHOT
 
 config BR2_UCLIBC_CONFIG
 	string "uClibc configuration file to use?"
 	default "package/uclibc/uClibc-ng.config" if BR2_UCLIBC_VERSION_NG
-	default "package/uclibc/uClibc-snapshot.config" if BR2_UCLIBC_VERSION_SNAPSHOT
 	help
 	  Some people may wish to use their own modified uClibc configuration
 	  file and will specify their config file location with this option.
