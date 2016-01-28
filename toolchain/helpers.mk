@@ -154,8 +154,7 @@ copy_toolchain_sysroot = \
 	for i in etc $${ARCH_LIB_DIR} sbin usr usr/$${ARCH_LIB_DIR}; do \
 		if [ -d $${ARCH_SYSROOT_DIR}/$$i ] ; then \
 			rsync -au --chmod=u=rwX,go=rX --exclude 'usr/lib/locale' \
-				--exclude '/lib/' --exclude '/lib32/' \
-				--exclude '/lib64/' \
+				--include '/libexec*/' --exclude '/lib*/' \
 				$${ARCH_SYSROOT_DIR}/$$i/ $(STAGING_DIR)/$$i/ ; \
 		fi ; \
 	done ; \
