@@ -5,8 +5,8 @@
 ################################################################################
 
 CMAKE_VERSION_MAJOR = 3.4
-CMAKE_VERSION = $(CMAKE_VERSION_MAJOR).2
-CMAKE_SITE = http://www.cmake.org/files/v$(CMAKE_VERSION_MAJOR)
+CMAKE_VERSION = $(CMAKE_VERSION_MAJOR).3
+CMAKE_SITE = https://cmake.org/files/v$(CMAKE_VERSION_MAJOR)
 CMAKE_LICENSE = BSD-3c
 CMAKE_LICENSE_FILES = Copyright.txt
 
