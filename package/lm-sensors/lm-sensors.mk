@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LM_SENSORS_VERSION = 3.3.5
+LM_SENSORS_VERSION = 3.4.0
 LM_SENSORS_SOURCE = lm_sensors-$(LM_SENSORS_VERSION).tar.bz2
 LM_SENSORS_SITE = ftp://ftp.netroedge.com/pub/lm-sensors
 LM_SENSORS_INSTALL_STAGING = YES
