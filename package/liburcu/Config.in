@@ -6,7 +6,6 @@ config BR2_PACKAGE_LIBURCU_ARCH_SUPPORTS
 config BR2_PACKAGE_LIBURCU
 	bool "liburcu"
 	depends on BR2_PACKAGE_LIBURCU_ARCH_SUPPORTS
-	depends on !BR2_TOOLCHAIN_HAS_GCC_BUG_58854 # liburcu/gcc-4.8.x bug
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	help
 	  Userspace implementation of the Read-Copy-Update (RCU)
@@ -24,8 +23,4 @@ config BR2_PACKAGE_LIBURCU
 
 comment "liburcu needs a toolchain w/ threads"
 	depends on BR2_PACKAGE_LIBURCU_ARCH_SUPPORTS
-	depends on !BR2_TOOLCHAIN_HAS_GCC_BUG_58854 # liburcu/gcc-4.8.x bug
 	depends on !BR2_TOOLCHAIN_HAS_THREADS
-
-comment "liburcu needs a toolchain not affected by GCC bug 58854"
-	depends on BR2_TOOLCHAIN_HAS_GCC_BUG_58854

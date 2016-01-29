@@ -6,7 +6,6 @@ config BR2_PACKAGE_LTTNG_LIBUST
 	depends on BR2_USE_WCHAR # util-linux
 	# liburcu only works on some architectures and requires threads support"
 	depends on BR2_PACKAGE_LIBURCU_ARCH_SUPPORTS
-	depends on !BR2_TOOLCHAIN_HAS_GCC_BUG_58854 # liburcu/gcc-4.8.x bug
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on !BR2_STATIC_LIBS
 	help
@@ -20,8 +19,3 @@ config BR2_PACKAGE_LTTNG_LIBUST
 comment "lttng-libust needs a toolchain w/ dynamic library, wchar, threads"
 	depends on BR2_PACKAGE_LIBURCU_ARCH_SUPPORTS
 	depends on BR2_STATIC_LIBS || !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
-	depends on !BR2_TOOLCHAIN_HAS_GCC_BUG_58854 # liburcu/gcc-4.8.x bug
-
-comment "lttng-libust needs a toolchain not affected by GCC bug 58854"
-	depends on BR2_PACKAGE_LIBURCU_ARCH_SUPPORTS
-	depends on BR2_TOOLCHAIN_HAS_GCC_BUG_58854
