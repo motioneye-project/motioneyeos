@@ -7,4 +7,4 @@ config BR2_PACKAGE_IUCODE_TOOL
 	help
 	  Intel processor microcode tool
 
-	  https://gitorious.org/iucode-tool
+	  https://gitlab.com/iucode-tool
