@@ -5,7 +5,7 @@
 ################################################################################
 
 LIBOAUTH_VERSION = 1.0.3
-LIBOAUTH_SITE = http://liboauth.sourceforge.net/pool
+LIBOAUTH_SITE = http://downloads.sourceforge.net/project/liboauth
 LIBOAUTH_INSTALL_STAGING = YES
 LIBOAUTH_DEPENDENCIES += host-pkgconf openssl
 LIBOAUTH_LICENSE = MIT
