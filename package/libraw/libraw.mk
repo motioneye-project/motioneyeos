@@ -19,4 +19,11 @@ LIBRAW_CONF_OPTS += \
 LIBRAW_LICENSE = LGPLv2.1 or CDDL 1.0 or LibRaw Software License 27032010
 LIBRAW_LICENSE_FILES = LICENSE.LGPL LICENSE.CDDL LICENSE.LibRaw.pdf README
 
+ifeq ($(BR2_PACKAGE_JASPER),y)
+LIBRAW_CONF_OPTS += --enable-jasper
+LIBRAW_DEPENDENCIES += jasper
+else
+LIBRAW_CONF_OPTS += --disable-jasper
+endif
+
 $(eval $(autotools-package))
