@@ -12,7 +12,6 @@ LIBRAW_INSTALL_STAGING = YES
 LIBRAW_AUTORECONF = YES
 LIBRAW_CONF_OPTS += \
 	--disable-examples \
-	--disable-lcms \
 	--disable-openmp \
 	--disable-demosaic-pack-gpl2 \
 	--disable-demosaic-pack-gpl3
@@ -31,6 +30,13 @@ LIBRAW_CONF_OPTS += --enable-jpeg
 LIBRAW_DEPENDENCIES += jpeg
 else
 LIBRAW_CONF_OPTS += --disable-jpeg
+endif
+
+ifeq ($(BR2_PACKAGE_LCMS2),y)
+LIBRAW_CONF_OPTS += --enable-lcms
+LIBRAW_DEPENDENCIES += lcms2 host-pkgconf
+else
+LIBRAW_CONF_OPTS += --disable-lcms
 endif
 
 $(eval $(autotools-package))
