@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-FIO_VERSION = fio-2.1.4
+FIO_VERSION = fio-2.6
 FIO_SITE = git://git.kernel.dk/fio.git
 FIO_LICENSE = GPLv2 + special obligations
 FIO_LICENSE_FILES = LICENSE
