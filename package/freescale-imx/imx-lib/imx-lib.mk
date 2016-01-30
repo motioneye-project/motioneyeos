@@ -4,10 +4,10 @@
 #
 ################################################################################
 
-IMX_LIB_VERSION = $(FREESCALE_IMX_VERSION)
+IMX_LIB_VERSION = 5.1
 IMX_LIB_SITE = $(FREESCALE_IMX_SITE)
 IMX_LIB_LICENSE = LGPLv2.1+
-IMX_LIB_LICENSE_FILES = pxp/pxp_lib.h
+IMX_LIB_LICENSE_FILES = COPYING-LGPL-2.1
 
 IMX_LIB_INSTALL_STAGING = YES
 
