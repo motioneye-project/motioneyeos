@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-JQUERY_VALIDATION_VERSION = 1.12.0
+JQUERY_VALIDATION_VERSION = 1.14.0
 JQUERY_VALIDATION_SITE = http://jqueryvalidation.org/files
 JQUERY_VALIDATION_SOURCE = jquery-validation-$(JQUERY_VALIDATION_VERSION).zip
 JQUERY_VALIDATION_LICENSE = MIT
