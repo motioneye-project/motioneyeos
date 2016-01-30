@@ -4,4 +4,4 @@ config BR2_PACKAGE_LIBCUE
 	help
 	  CUE Sheet Parser Library
 
-	  http://libcue.sourceforge.net/
+	  https://github.com/lipnitsk/libcue
