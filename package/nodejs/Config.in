@@ -1,9 +1,10 @@
-comment "nodejs needs a toolchain w/ C++, dynamic library, threads"
+comment "nodejs needs a toolchain w/ C++, dynamic library, threads, gcc >= 4.8, wchar"
 	depends on BR2_USE_MMU
 	depends on BR2_arm || BR2_i386 || BR2_x86_64 || BR2_mipsel
 	depends on !BR2_MIPS_SOFT_FLOAT
 	depends on !BR2_ARM_CPU_ARMV4
-	depends on !BR2_INSTALL_LIBSTDCPP || BR2_STATIC_LIBS || !BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_INSTALL_LIBSTDCPP || BR2_STATIC_LIBS || !BR2_TOOLCHAIN_HAS_THREADS || \
+		!BR2_HOST_GCC_AT_LEAST_4_8 || !BR2_TOOLCHAIN_GCC_AT_LEAST_4_8 || !BR2_USE_WCHAR
 
 config BR2_PACKAGE_NODEJS
 	bool "nodejs"
@@ -13,6 +14,11 @@ config BR2_PACKAGE_NODEJS
 	depends on !BR2_MIPS_SOFT_FLOAT
 	# ARM needs BLX, so v5t+
 	depends on !BR2_ARM_CPU_ARMV4
+	# 0.10.x could be built without the following toolchain dependencies but
+	# simplify things by requiring these basic dependencies for all versions.
+	depends on BR2_HOST_GCC_AT_LEAST_4_8
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_8
+	depends on BR2_USE_WCHAR
 	# uses fork()
 	depends on BR2_USE_MMU
 	# uses dlopen(). On ARMv5, we could technically support static
@@ -35,34 +41,10 @@ config BR2_PACKAGE_NODEJS_V8_ARCH_SUPPORTS
 	# On ARM, at least ARMv6+ with VFPv2+ is needed
 	default y if !BR2_ARM_CPU_ARMV5 && BR2_ARM_CPU_HAS_VFPV2
 
-choice
-	prompt "Node.js version"
-	default BR2_PACKAGE_NODEJS_0_10_X if BR2_ARM_CPU_ARMV5
-	default BR2_PACKAGE_NODEJS_5_X
-	help
-	  Select the version of Node.js you wish to use.
-
-config BR2_PACKAGE_NODEJS_0_10_X
-	bool "v0.10.41"
-
-config BR2_PACKAGE_NODEJS_5_X
-	bool "v5.5.0"
-	depends on BR2_PACKAGE_NODEJS_V8_ARCH_SUPPORTS
-	depends on BR2_HOST_GCC_AT_LEAST_4_8
-	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_8
-	depends on BR2_USE_WCHAR
-
-comment "v5.5.0 needs a toolchain w/ gcc >= 4.8, wchar"
-	depends on BR2_PACKAGE_NODEJS_V8_ARCH_SUPPORTS
-	depends on !BR2_TOOLCHAIN_GCC_AT_LEAST_4_8 || !BR2_USE_WCHAR
-	depends on BR2_HOST_GCC_AT_LEAST_4_8
-
-endchoice
-
 config BR2_PACKAGE_NODEJS_VERSION_STRING
 	string
-	default "0.10.41"	if BR2_PACKAGE_NODEJS_0_10_X
-	default "5.5.0"		if BR2_PACKAGE_NODEJS_5_X
+	default "5.5.0"		if BR2_PACKAGE_NODEJS_V8_ARCH_SUPPORTS
+	default "0.10.41"
 
 menu "Module Selection"
 
