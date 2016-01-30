@@ -26,4 +26,11 @@ else
 LIBRAW_CONF_OPTS += --disable-jasper
 endif
 
+ifeq ($(BR2_PACKAGE_JPEG),y)
+LIBRAW_CONF_OPTS += --enable-jpeg
+LIBRAW_DEPENDENCIES += jpeg
+else
+LIBRAW_CONF_OPTS += --disable-jpeg
+endif
+
 $(eval $(autotools-package))
