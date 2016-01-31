@@ -4,7 +4,7 @@ config BR2_PACKAGE_OPENOBEX
 	  Free open source implementation of the Object Exchange (OBEX)
 	  protocol.
 
-	  http://www.openobex.org
+	  http://sourceforge.net/projects/openobex
 
 if BR2_PACKAGE_OPENOBEX
 
