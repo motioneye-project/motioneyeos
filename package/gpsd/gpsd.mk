@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-GPSD_VERSION = 3.15
+GPSD_VERSION = 3.16
 GPSD_SITE = http://download-mirror.savannah.gnu.org/releases/gpsd
 GPSD_LICENSE = BSD-3c
 GPSD_LICENSE_FILES = COPYING
