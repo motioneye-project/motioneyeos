@@ -1,0 +1,38 @@
+From 1b9ca481b2447154d12a7a94fe90c5b968ddf41c Mon Sep 17 00:00:00 2001
+From: Bernd Kuhls <bernd.kuhls@t-online.de>
+Date: Sat, 30 Jan 2016 20:01:05 +0100
+Subject: [PATCH 1/1] beaglelogic.h: fix build with musl libc
+
+This patch fixes a build error seen on the buildroot project:
+http://autobuild.buildroot.net/results/afc/afcea2068d5b0ba707aa90339401550602103ca7/
+
+Patch taken from
+https://github.com/dx9/ceph/commit/4f7bcabca7737c3f48f07ca2b4b1296c29e3358b
+which solved a similar problem.
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+Patch sent upstream:
+http://article.gmane.org/gmane.comp.debugging.sigrok.devel/1948
+
+ src/hardware/beaglelogic/beaglelogic.h | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/src/hardware/beaglelogic/beaglelogic.h b/src/hardware/beaglelogic/beaglelogic.h
+index 9015c61..165b386 100644
+--- a/src/hardware/beaglelogic/beaglelogic.h
++++ b/src/hardware/beaglelogic/beaglelogic.h
+@@ -28,6 +28,10 @@
+ #include <stdlib.h>
+ #include <unistd.h>
+ 
++#ifndef __STRING
++# define __STRING(x) #x
++#endif
++
+ /* BeagleLogic device node name */
+ #define BEAGLELOGIC_DEV_NODE        "/dev/beaglelogic"
+ #define BEAGLELOGIC_SYSFS_ATTR(a)   "/sys/devices/virtual/misc/beaglelogic/"\
+-- 
+2.7.0.rc3
+
