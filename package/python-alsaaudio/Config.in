@@ -11,4 +11,4 @@ config BR2_PACKAGE_PYTHON_ALSAAUDIO
 	  The PyAlsaAudio package contains bindings for the ALSA sound
 	  API.
 
-	  http://pyalsaaudio.sourceforge.net/
+	  http://larsimmisch.github.io/pyalsaaudio/
