@@ -90,8 +90,8 @@ If something goes wrong in the steps _3_ or _4_, then the build fails.
 
 === Format and licensing of the package patches
 
-Patches are released under the same license as the software that is
-modified.
+Patches are released under the same license as the software they apply
+to.
 
 A message explaining what the patch does, and why it is needed, should
 be added in the header commentary of the patch.
