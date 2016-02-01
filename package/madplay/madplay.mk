@@ -11,11 +11,6 @@ MADPLAY_LICENSE_FILES = COPYING COPYRIGHT
 MADPLAY_LIBTOOL_PATCH = NO
 MADPLAY_DEPENDENCIES = libmad libid3tag $(if $(BR2_PACKAGE_GETTEXT),gettext)
 
-# configure script misdetects musl gettext support
-ifeq ($(BR2_TOOLCHAIN_USES_MUSL),y)
-MADPLAY_CONF_ENV += gt_cv_func_gnugettext1_libc=yes
-endif
-
 # Check if ALSA is built, then we should configure after alsa-lib so
 # ./configure can find alsa-lib.
 ifeq ($(BR2_PACKAGE_MADPLAY_ALSA),y)
