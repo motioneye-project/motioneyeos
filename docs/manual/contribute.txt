@@ -182,10 +182,13 @@ _Please, do not attach patches to bugs, send them to the mailing list
 instead_.
 
 If you made some changes to Buildroot and you would like to contribute
-them to the Buildroot project, proceed as follows. Starting from the
-changes committed in your local git view, _rebase_ your development
-branch on top of the upstream tree before generating a patch set. To do
-so, run:
+them to the Buildroot project, proceed as follows.
+
+==== Preparing a patch series
+
+Starting from the changes committed in your local git view, _rebase_
+your development branch on top of the upstream tree before generating
+a patch set. To do so, run:
 
 ---------------------
 $ git fetch --all --tags
