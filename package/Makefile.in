@@ -340,6 +340,15 @@ else
 BR2_AC_CV_C_BIGENDIAN = ac_cv_c_bigendian=no
 endif
 
+# AM_GNU_GETTEXT misdetects musl gettext support.
+# musl currently implements api level 1 and 2 (basic + ngettext)
+# http://www.openwall.com/lists/musl/2015/04/16/3
+ifeq ($(BR2_TOOLCHAIN_USES_MUSL),y)
+BR2_GT_CV_FUNC_GNUGETTEXT_LIBC = \
+	gt_cv_func_gnugettext1_libc=yes
+	gt_cv_func_gnugettext2_libc=yes
+endif
+
 TARGET_CONFIGURE_ARGS = \
 	$(BR2_AC_CV_TRAP_CHECK) \
 	ac_cv_func_mmap_fixed_mapped=yes \
@@ -350,7 +359,8 @@ TARGET_CONFIGURE_ARGS = \
 	ac_cv_func_calloc_0_nonnull=yes \
 	ac_cv_func_realloc_0_nonnull=yes \
 	lt_cv_sys_lib_search_path_spec="" \
-	$(BR2_AC_CV_C_BIGENDIAN)
+	$(BR2_AC_CV_C_BIGENDIAN) \
+	$(BR2_GT_CV_FUNC_GNUGETTEXT_LIBC)
 
 ################################################################################
 
