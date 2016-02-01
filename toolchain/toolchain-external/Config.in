@@ -543,7 +543,7 @@ config BR2_TOOLCHAIN_EXTERNAL_LINARO_AARCH64
 
 # See note about Linar ARM/ARMEB toolchains, above.
 config BR2_TOOLCHAIN_EXTERNAL_LINARO_AARCH64
-	bool "Linaro AArch64 2015.08"
+	bool "Linaro AArch64 2015.11"
 	depends on BR2_aarch64
 	depends on BR2_HOSTARCH = "x86_64"
 	depends on !BR2_STATIC_LIBS
