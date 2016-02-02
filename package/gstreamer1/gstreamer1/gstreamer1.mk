@@ -41,8 +41,8 @@ GSTREAMER1_DEPENDENCIES = libglib2 host-pkgconf host-bison host-flex
 # updated to look in the correct location.
 # Add a symlink to the legacy location
 define GSTREAMER1_LEGACY_CGSTCONFIG_H
-	ln -srf $(STAGING_DIR)/usr/lib/gstreamer-1.0/include/gst/gstconfig.h \
-	       $(STAGING_DIR)/usr/include/gstreamer-1.0/gst/gstconfig.h
+	cd $(STAGING_DIR)/usr/include/gstreamer-1.0/gst && \
+		ln -sf ../../../lib/gstreamer-1.0/include/gst/gstconfig.h .
 endef
 GSTREAMER1_POST_INSTALL_STAGING_HOOKS += GSTREAMER1_LEGACY_CGSTCONFIG_H
 
