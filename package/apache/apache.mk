@@ -35,10 +35,6 @@ APACHE_CONF_OPTS = \
 	--disable-lua \
 	--disable-luajit
 
-ifeq ($(BR2_ARCH_HAS_ATOMICS),y)
-APACHE_CONF_OPTS += --enable-nonportable-atomics=yes
-endif
-
 ifeq ($(BR2_PACKAGE_LIBXML2),y)
 APACHE_DEPENDENCIES += libxml2
 # Apache wants the path to the header file, where it can find
