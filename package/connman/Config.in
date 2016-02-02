@@ -50,6 +50,7 @@ config BR2_PACKAGE_CONNMAN_LOOPBACK
 config BR2_PACKAGE_CONNMAN_NEARD
 	bool "enable neard support"
 	select BR2_PACKAGE_NEARD
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # neard
 
 config BR2_PACKAGE_CONNMAN_OFONO
 	bool "enable ofono support"
