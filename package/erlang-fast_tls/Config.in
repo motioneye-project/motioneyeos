@@ -1,0 +1,8 @@
+config BR2_PACKAGE_ERLANG_FAST_TLS
+	bool "erlang-fast_tls"
+	select BR2_PACKAGE_ERLANG_P1_UTILS
+	select BR2_PACKAGE_OPENSSL
+	help
+	  TLS / SSL OpenSSL-based native driver for Erlang / Elixir
+
+	  https://github.com/processone/fast_tls
