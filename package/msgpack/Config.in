@@ -1,7 +1,7 @@
 config BR2_PACKAGE_MSGPACK
 	bool "msgpack"
 	depends on BR2_INSTALL_LIBSTDCPP
-	depends on BR2_ARCH_HAS_ATOMICS
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
 	help
 	  MessagePack is an efficient binary serialization format.
 
@@ -11,5 +11,5 @@ config BR2_PACKAGE_MSGPACK
 	  http://msgpack.org/
 
 comment "msgpack needs a toolchain w/ C++"
-	depends on BR2_ARCH_HAS_ATOMICS
 	depends on !BR2_INSTALL_LIBSTDCPP
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
