@@ -14,6 +14,10 @@ OPENAL_INSTALL_STAGING = YES
 # We don't need the utilities, Distros don't ship them either
 OPENAL_CONF_OPTS += -DALSOFT_UTILS=OFF
 
+ifeq ($(BR2_TOOLCHAIN_GCC_AT_LEAST_4_8),y)
+OPENAL_CONF_OPTS += -DEXTRA_LIBS=atomic
+endif
+
 ifeq ($(BR2_PACKAGE_ALSA_LIB),y)
 OPENAL_DEPENDENCIES += alsa-lib
 OPENAL_CONF_OPTS += -DALSOFT_REQUIRE_ALSA=ON
