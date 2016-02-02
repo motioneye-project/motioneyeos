@@ -281,7 +281,6 @@ comment "v4l2 needs a toolchain w/ headers >= 3.0"
 
 config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_CAIRO
 	bool "cairo"
-	depends on BR2_ARCH_HAS_ATOMICS # cairo
 	select BR2_PACKAGE_CAIRO
 	select BR2_PACKAGE_CAIRO_PNG
 	help

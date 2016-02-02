@@ -4,7 +4,7 @@ config BR2_PACKAGE_PANGO
 	depends on BR2_TOOLCHAIN_HAS_THREADS # glib2
 	depends on BR2_USE_MMU # glib2
 	depends on BR2_INSTALL_LIBSTDCPP # freetype support
-	depends on BR2_ARCH_HAS_ATOMICS # cairo
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # harfbuzz
 	select BR2_PACKAGE_LIBGLIB2
 	select BR2_PACKAGE_EXPAT
 	select BR2_PACKAGE_CAIRO
@@ -24,6 +24,6 @@ config BR2_PACKAGE_PANGO
 
 comment "pango needs a toolchain w/ wchar, threads, C++"
 	depends on BR2_USE_MMU
-	depends on BR2_ARCH_HAS_ATOMICS
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || \
 		!BR2_INSTALL_LIBSTDCPP

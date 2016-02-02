@@ -69,7 +69,7 @@ config BR2_PACKAGE_OPENCV3_WITH_GTK
 
 comment "gtk2 support needs libgtk2"
 	depends on BR2_USE_MMU # libgtk2 -> glib2
-	depends on BR2_ARCH_HAS_ATOMICS # libgtk2 -> cairo
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
 	depends on !BR2_PACKAGE_LIBGTK2
 
 config BR2_PACKAGE_OPENCV3_WITH_GTK3
@@ -78,7 +78,7 @@ config BR2_PACKAGE_OPENCV3_WITH_GTK3
 
 comment "gtk3 support needs libgtk3"
 	depends on BR2_USE_MMU # libgtk3 -> glib2
-	depends on BR2_ARCH_HAS_ATOMICS # libgtk3 -> cairo
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
 	depends on !BR2_PACKAGE_LIBGTK3
 
 config BR2_PACKAGE_OPENCV3_WITH_QT

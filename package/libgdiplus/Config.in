@@ -8,7 +8,6 @@ config BR2_PACKAGE_LIBGDIPLUS
 	depends on BR2_USE_WCHAR # libglib2 -> gettext
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libglib2
 	depends on BR2_USE_MMU # libglib2
-	depends on BR2_ARCH_HAS_ATOMICS # cairo
 	help
 	  An Open Source implementation of the GDI+ API.
 
@@ -16,6 +15,5 @@ config BR2_PACKAGE_LIBGDIPLUS
 
 comment "libgdiplus needs a toolchain w/ wchar, threads"
 	depends on BR2_USE_MMU
-	depends on BR2_ARCH_HAS_ATOMICS
 	depends on BR2_PACKAGE_XORG7
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS

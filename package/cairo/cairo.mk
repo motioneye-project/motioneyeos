@@ -16,6 +16,12 @@ ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),)
 CAIRO_CONF_ENV += CPPFLAGS="$(TARGET_CPPFLAGS) -DCAIRO_NO_MUTEX=1"
 endif
 
+# cairo can use C++11 atomics when available, so we need to link with
+# libatomic for the architectures who need libatomic.
+ifeq ($(BR2_TOOLCHAIN_GCC_AT_LEAST_4_8),y)
+CAIRO_CONF_ENV += LIBS="-latomic"
+endif
+
 CAIRO_CONF_OPTS = \
 	--enable-trace=no \
 	--enable-interpreter=no

@@ -1,6 +1,7 @@
 config BR2_PACKAGE_HARFBUZZ
 	bool "harfbuzz"
 	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
 	help
 	  HarfBuzz is an OpenType text shaping engine
 
@@ -10,4 +11,5 @@ config BR2_PACKAGE_HARFBUZZ
 	  glib2 and icu packages if they are selected.
 
 comment "harfbuzz needs a toolchain w/ C++"
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
 	depends on !BR2_INSTALL_LIBSTDCPP
