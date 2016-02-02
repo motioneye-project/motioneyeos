@@ -307,3 +307,82 @@ config BR2_TOOLCHAIN_GCC_AT_LEAST
 	default "4.5"	if BR2_TOOLCHAIN_GCC_AT_LEAST_4_5
 	default "4.4"	if BR2_TOOLCHAIN_GCC_AT_LEAST_4_4
 	default "4.3"	if BR2_TOOLCHAIN_GCC_AT_LEAST_4_3
+
+config BR2_TOOLCHAIN_HAS_SYNC_1
+	bool
+	default y
+	depends on !BR2_x86_i386
+	depends on !BR2_bfin
+	depends on !BR2_microblaze
+	depends on !BR2_sparc
+	depends on !(BR2_arc && !BR2_ARC_ATOMIC_EXT)
+
+config BR2_TOOLCHAIN_HAS_SYNC_2
+	bool
+	default y if BR2_TOOLCHAIN_HAS_SYNC_1
+
+config BR2_TOOLCHAIN_HAS_SYNC_4
+	bool
+	default y
+	depends on !BR2_sparc
+	depends on !BR2_x86_i386
+	depends on !(BR2_arc && !BR2_ARC_ATOMIC_EXT)
+
+# The availability of __sync for 8-byte types on ARM is somewhat
+# complicated:
+#
+#  - It appeared in gcc starting with gcc 4.7.
+#
+#  - On ARMv7, there is no problem, it can be directly implemented in
+#    userspace.
+#
+#  - On < ARMv7, it requires help from the kernel. Unfortunately, the
+#    libgcc code implementing 8-byte __sync with the help from the
+#    kernel calls __write() when a failure occurs, which is a function
+#    internal to glibc, not available in uClibc and musl. This means
+#    that the 8-byte __sync operations are not available on < ARMv7
+#    with uClibc and musl. This problem was fixed as part of gcc
+#    PR68059, which was backported to the gcc 5 branch, but isn't yet
+#    part of any gcc 5.x release.
+#
+config BR2_TOOLCHAIN_ARM_HAS_SYNC_8
+	bool
+	default y
+	depends on BR2_arm || BR2_armeb
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_7
+	depends on BR2_TOOLCHAIN_USES_GLIBC || BR2_ARM_CPU_ARMV7A
+
+# 8-byte intrinsics available on most x86 CPUs, except a few old ones
+config BR2_TOOLCHAIN_X86_HAS_SYNC_8
+	bool
+	default y
+	depends on BR2_i386
+	depends on !BR2_x86_i386
+	depends on !BR2_x86_i486
+	depends on !BR2_x86_c3
+	depends on !BR2_x86_winchip_c6
+	depends on !BR2_x86_winchip2
+
+# 8-byte intrinsics available:
+#  - On all 64 bits architecture
+#  - On a certain combinations of ARM platforms
+#  - On certain x86 32 bits CPUs
+config BR2_TOOLCHAIN_HAS_SYNC_8
+	bool
+	default y if BR2_ARCH_IS_64
+	default y if BR2_TOOLCHAIN_ARM_HAS_SYNC_8
+	default y if BR2_TOOLCHAIN_X86_HAS_SYNC_8
+
+# __atomic intrinsics are available:
+# - with gcc 4.8, either through built-ins or libatomic, on all
+#   architectures
+# - with gcc 4.7, libatomic did not exist, so only built-ins are
+#   available. This means that __atomic can only be used in a subset
+#   of the architectures
+config BR2_TOOLCHAIN_HAS_ATOMIC
+	bool
+	default y if BR2_TOOLCHAIN_GCC_AT_LEAST_4_8
+	default y if BR2_TOOLCHAIN_GCC_AT_LEAST_4_7 && BR2_arm
+	default y if BR2_TOOLCHAIN_GCC_AT_LEAST_4_7 && BR2_armeb
+	default y if BR2_TOOLCHAIN_GCC_AT_LEAST_4_7 && BR2_xtensa
+	default y if BR2_TOOLCHAIN_GCC_AT_LEAST_4_7 && BR2_ARCH_IS_64
