@@ -44,6 +44,7 @@ config BR2_PACKAGE_WESTON_RDP
 	bool "RDP compositor"
 	depends on BR2_USE_WCHAR # freerdp
 	depends on BR2_USE_MMU # freerdp, libglib2
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
 	select BR2_PACKAGE_FREERDP
 	select BR2_PACKAGE_WESTON_HAS_COMPOSITOR
 	help
@@ -61,6 +62,7 @@ config BR2_PACKAGE_WESTON_RDP
 
 comment "RDP compositor needs a toolchain w/ wchar"
 	depends on BROKEN # needs FreeRDP master
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
 	depends on !BR2_USE_WCHAR
 
 # rpi-userland is an EGL/GLES provider, so we can't select it
