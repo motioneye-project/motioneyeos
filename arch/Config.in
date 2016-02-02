@@ -284,10 +284,6 @@ config BR2_GCC_TARGET_FLOAT_ABI
 config BR2_GCC_TARGET_MODE
 	string
 
-# If the architecture has atomic operations, select this:
-config BR2_ARCH_HAS_ATOMICS
-	bool
-
 # Must be selected by binary formats that support shared libraries.
 config BR2_BINFMT_SUPPORTS_SHARED
 	bool

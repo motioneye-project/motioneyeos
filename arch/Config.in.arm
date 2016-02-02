@@ -426,9 +426,6 @@ config BR2_ENDIAN
 	default "LITTLE" if BR2_arm
 	default "BIG"	 if BR2_armeb
 
-config BR2_ARCH_HAS_ATOMICS
-	default y
-
 config BR2_GCC_TARGET_CPU
 	default "arm920t"	if BR2_arm920t
 	default "arm922t"	if BR2_arm922t

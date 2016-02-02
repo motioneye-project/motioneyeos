@@ -5,6 +5,3 @@ config BR2_ARCH
 config BR2_ENDIAN
 	default "LITTLE" if BR2_aarch64
 	default "BIG"	 if BR2_aarch64_be
-
-config BR2_ARCH_HAS_ATOMICS
-	default y

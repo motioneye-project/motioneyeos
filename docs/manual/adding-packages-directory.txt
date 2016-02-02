@@ -274,11 +274,6 @@ use in the comment.
 ** Dependency symbol: +BR2_USE_MMU+
 ** Comment string: no comment to be added
 
-* Atomic instructions (whereby the architecture has instructions to
-  perform some operations atomically, like LOCKCMPXCHG on x86)
-** Dependency symbol: +BR2_ARCH_HAS_ATOMICS+
-** Comment string: no comment to be added
-
 * Gcc +__sync_*+ built-ins used for atomic operations. They are
   available in variants operating on 1 byte, 2 bytes, 4 bytes and 8
   bytes. Since different architectures support atomic operations on

@@ -21,9 +21,6 @@ config BR2_ARC_ATOMIC_EXT
 	bool "Atomic extension (LLOCK/SCOND instructions)"
 	default y if BR2_arc770d || BR2_archs38
 
-config BR2_ARCH_HAS_ATOMICS
-	default y if BR2_ARC_ATOMIC_EXT
-
 config BR2_ARCH
 	default "arc"	if BR2_arcle
 	default "arceb"	if BR2_arceb

@@ -54,6 +54,3 @@ config BR2_ENDIAN
 
 config BR2_ARCH
 	default "xtensa"	if BR2_xtensa
-
-config BR2_ARCH_HAS_ATOMICS
-	default y
