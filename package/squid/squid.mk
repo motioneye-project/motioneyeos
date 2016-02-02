@@ -41,12 +41,10 @@ SQUID_CONF_OPTS = \
 	--with-swapdir=/var/cache/squid/ \
 	--with-default-user=squid
 
-# Atomics in Squid use __sync_add_and_fetch_8, i.e a 64 bits atomic
-# operation. This atomic intrinsic is only available natively on
-# 64-bit architectures that have atomic operations. On 32-bit
-# architectures, it would be provided by libatomic, but Buildroot
-# typically doesn't provide it.
-ifeq ($(BR2_ARCH_HAS_ATOMICS)$(BR2_ARCH_IS_64),yy)
+# Atomics in Squid use __sync built-ins on 4 and 8 bytes. However, the
+# configure script tests them using AC_TRY_RUN, so we have to give
+# some hints.
+ifeq ($(BR2_TOOLCHAIN_HAS_SYNC_4)$(BR2_TOOLCHAIN_HAS_SYNC_8),yy)
 SQUID_CONF_ENV += squid_cv_gnu_atomics=yes
 else
 SQUID_CONF_ENV += squid_cv_gnu_atomics=no
