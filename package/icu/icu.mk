@@ -18,10 +18,10 @@ ICU_CONF_OPTS = \
 	--disable-samples \
 	--disable-tests
 
-# With gcc >= 4.7, icu prefers to use C++11 atomics, which rely on the
+# When available, icu prefers to use C++11 atomics, which rely on the
 # __atomic builtins. On certain architectures, this requires linking
-# with libatomic.
-ifeq ($(BR2_TOOLCHAIN_GCC_AT_LEAST_4_7),y)
+# with libatomic starting from gcc 4.8.
+ifeq ($(BR2_TOOLCHAIN_GCC_AT_LEAST_4_8),y)
 ICU_CONF_ENV += LIBS="-latomic"
 endif
 
