@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-YAD_VERSION = 0.31.2
+YAD_VERSION = 0.33.1
 YAD_SOURCE = yad-$(YAD_VERSION).tar.xz
 YAD_SITE = http://sourceforge.net/projects/yad-dialog/files
 YAD_LICENSE = GPLv3
