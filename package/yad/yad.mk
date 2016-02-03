@@ -10,7 +10,6 @@ YAD_SITE = http://sourceforge.net/projects/yad-dialog/files
 YAD_LICENSE = GPLv3
 YAD_LICENSE_FILES = COPYING
 YAD_DEPENDENCIES = host-intltool host-pkgconf
-
 YAD_CONF_OPTS = --enable-html=no
 
 ifeq ($(BR2_PACKAGE_LIBGTK3_X11),y)
