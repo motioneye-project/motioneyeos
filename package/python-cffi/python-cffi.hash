@@ -1,4 +1,4 @@
-# From https://pypi.python.org/pypi?:action=show_md5&digest=deeba7c1fd32a66f1db587988d760c11
-md5	deeba7c1fd32a66f1db587988d760c11	cffi-1.3.1.tar.gz
+# From https://pypi.python.org/pypi?:action=show_md5&digest=dec8441e67880494ee881305059af656
+md5  dec8441e67880494ee881305059af656  cffi-1.5.0.tar.gz
 # Calculated based on the hash above
-sha256	d45dd39a770b4afb591c82555f6a8bbc1ac7eb019eda9b621eee1a0a72201220	cffi-1.3.1.tar.gz
+sha256	 44f76f6c3fc654860821785192eca29bd66531af57d09b681e6d52584604a7e7  cffi-1.5.0.tar.gz
