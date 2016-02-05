@@ -145,6 +145,16 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2016.02"
 
+config BR2_LINUX_KERNEL_SAME_AS_HEADERS
+	bool "using the linux headers version for the kernel has been removed"
+	select BR2_LEGACY
+	help
+	  The option to use the version of the kernel headers for the
+	  kernel to build has been removed.
+
+	  There is now the converse, better-suited and more versatile
+	  option to use the kernel version for the linux headers.
+
 config BR2_PACKAGE_CUPS_PDFTOPS
 	bool "Pdftops support has been removed from Cups"
 	select BR2_LEGACY
