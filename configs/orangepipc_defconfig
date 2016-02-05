@@ -1,6 +1,8 @@
 BR2_arm=y
 BR2_cortex_a7=y
 BR2_ARM_FPU_VFPV4=y
+# Kernel is a pre-release of 4.5, so we do not yet have a _CUSTOM_4_5
+# option for the headers. Thus, we stick with the 4.4 headers for now.
 BR2_KERNEL_HEADERS_VERSION=y
 BR2_DEFAULT_KERNEL_VERSION="4.4"
 BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_4_4=y

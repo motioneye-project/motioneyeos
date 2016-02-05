@@ -16,8 +16,8 @@ BR2_PACKAGE_SUNXI_TOOLS=y
 BR2_PACKAGE_SUNXI_BOARDS=y
 BR2_PACKAGE_SUNXI_BOARDS_FEX_FILE="a10/cubieboard.fex"
 
-# Kernel headers
-BR2_KERNEL_HEADERS_3_4=y
+# Linux headers same as kernel, a 3.4 series
+BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_3_4=y
 
 # Kernel
 BR2_LINUX_KERNEL=y

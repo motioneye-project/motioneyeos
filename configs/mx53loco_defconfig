@@ -2,15 +2,15 @@
 BR2_arm=y
 BR2_cortex_a8=y
 
+# Linux headers same as kernel, a 2.6 series (so, no option selected)
+
 # System
-BR2_KERNEL_HEADERS_VERSION=y
-BR2_DEFAULT_KERNEL_VERSION="2.6.35"
 BR2_TARGET_GENERIC_GETTY_PORT="ttymxc0"
 
 # Filesystem
 BR2_TARGET_ROOTFS_EXT2=y
 
-# Bootloader
+# Bootloader
 BR2_TARGET_UBOOT=y
 BR2_TARGET_UBOOT_BOARDNAME="mx53loco"
 BR2_TARGET_UBOOT_CUSTOM_GIT=y

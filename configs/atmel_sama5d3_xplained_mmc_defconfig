@@ -1,11 +1,9 @@
 # Architecture
 BR2_arm=y
 BR2_cortex_a5=y
-
-# Toolchain configuration
 BR2_ARM_EABIHF=y
-BR2_KERNEL_HEADERS_VERSION=y
-BR2_DEFAULT_KERNEL_VERSION="3.18.8"
+
+# Linux headers same as kernel, a 3.18 series
 BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_3_18=y
 
 # Kernel configuration

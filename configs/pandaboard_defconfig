@@ -11,9 +11,7 @@ BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_DEVTMPFS=y
 BR2_TARGET_ROOTFS_EXT2=y
 # BR2_TARGET_ROOTFS_TAR is not set
 
-# Lock to 3.12 headers to avoid breaking with newer kernels
-BR2_KERNEL_HEADERS_VERSION=y
-BR2_DEFAULT_KERNEL_VERSION="3.12.2"
+# Linux headers same as kernel, a 3.12 series
 BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_3_12=y
 
 # Kernel

@@ -3,10 +3,10 @@ BR2_mipsel=y
 BR2_mips_32r2=y
 # BR2_MIPS_SOFT_FLOAT is not set
 
-# system
-BR2_KERNEL_HEADERS_VERSION=y
-BR2_DEFAULT_KERNEL_VERSION="3.18"
+# Linux headers same as kernel, a 3.18 series
 BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_3_18=y
+
+# system
 BR2_TARGET_GENERIC_GETTY_PORT="ttyS4"
 
 # kernel

@@ -6,9 +6,7 @@ BR2_x86_atom=y
 BR2_TARGET_GENERIC_GETTY_PORT="ttyPCH0"
 BR2_ROOTFS_POST_BUILD_SCRIPT="board/minnowboard/post-build.sh"
 
-# Lock to 3.8 headers
-BR2_KERNEL_HEADERS_VERSION=y
-BR2_DEFAULT_KERNEL_VERSION="3.8"
+# Linux headers same as kernel, a 3.8 series
 BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_3_8=y
 
 # Linux kernel

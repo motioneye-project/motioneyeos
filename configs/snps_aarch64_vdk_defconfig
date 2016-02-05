@@ -1,5 +1,6 @@
 BR2_aarch64=y
-BR2_KERNEL_HEADERS_3_18=y
+# Linux headers same as kernel, a 3.18 series
+BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_3_18=y
 BR2_TARGET_GENERIC_HOSTNAME="vdk-buildroot"
 BR2_TARGET_GENERIC_ISSUE="Welcome to SNPS VDK by Buildroot"
 BR2_LINUX_KERNEL=y

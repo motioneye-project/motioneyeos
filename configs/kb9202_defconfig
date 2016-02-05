@@ -5,9 +5,7 @@ BR2_arm920t=y
 # Filesystem
 BR2_TARGET_ROOTFS_TAR=y
 
-# Lock down headers to avoid breaking with new defaults
-BR2_KERNEL_HEADERS_VERSION=y
-BR2_DEFAULT_KERNEL_VERSION="2.6.38.8"
+# Linux headers same as kernel, a 2.6 series (so, no option selected)
 
 # Kernel
 BR2_LINUX_KERNEL=y

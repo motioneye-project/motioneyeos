@@ -2,7 +2,7 @@
 BR2_i386=y
 BR2_x86_i586=y
 
-# toolchain
+# Linux headers same as kernel, a 3.17 series
 BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_3_17=y
 
 # system
