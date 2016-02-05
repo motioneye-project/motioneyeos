@@ -79,7 +79,7 @@ SCONESERVER_CONF_OPTS += --without-rss
 endif
 
 ifeq ($(BR2_PACKAGE_SCONESERVER_LOCATION),y)
-SCONESERVER_DEPENDENCIES += gpsd
+SCONESERVER_DEPENDENCIES += host-pkgconf gpsd
 SCONESERVER_CONF_OPTS += --with-location
 else
 SCONESERVER_CONF_OPTS += --without-location
