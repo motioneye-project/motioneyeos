@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-MRAA_VERSION = v0.9.0
+MRAA_VERSION = v0.9.1
 MRAA_SITE = $(call github,intel-iot-devkit,mraa,$(MRAA_VERSION))
 MRAA_LICENSE = MIT
 MRAA_LICENSE_FILES = COPYING
