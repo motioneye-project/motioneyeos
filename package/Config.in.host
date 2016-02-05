@@ -1,5 +1,6 @@
 menu "Host utilities"
 
+	source "package/aespipe/Config.in.host"
 	source "package/checkpolicy/Config.in.host"
 	source "package/cramfs/Config.in.host"
 	source "package/dfu-util/Config.in.host"
