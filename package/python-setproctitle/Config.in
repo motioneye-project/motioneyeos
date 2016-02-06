@@ -1,0 +1,6 @@
+config BR2_PACKAGE_PYTHON_SETPROCTITLE
+	bool "python-setproctitle"
+	help
+	  A Python module to customize the process title.
+
+	  https://pypi.python.org/pypi/setproctitle
