@@ -735,6 +735,7 @@ menu "External python modules"
 	source "package/python-webpy/Config.in"
 	source "package/python-werkzeug/Config.in"
 	source "package/python-ws4py/Config.in"
+	source "package/python-wsaccel/Config.in"
 	source "package/python-zope-interface/Config.in"
 endmenu
 endif
