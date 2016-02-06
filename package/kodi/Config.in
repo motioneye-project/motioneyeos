@@ -215,6 +215,7 @@ config BR2_PACKAGE_KODI_LIBSMBCLIENT
 	bool "samba"
 	depends on BR2_TOOLCHAIN_USES_GLIBC
 	depends on BR2_TOOLCHAIN_HAS_NATIVE_RPC
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
 	select BR2_PACKAGE_SAMBA4
 	help
 	  Enable Samba support

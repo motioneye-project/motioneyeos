@@ -200,6 +200,7 @@ config BR2_PACKAGE_MPD_LIBSMBCLIENT
 	depends on BR2_TOOLCHAIN_USES_GLIBC
 	depends on !BR2_STATIC_LIBS
 	depends on BR2_TOOLCHAIN_HAS_NATIVE_RPC
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
 	select BR2_PACKAGE_SAMBA4
 	help
 	  Enable Samba support.
