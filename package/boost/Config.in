@@ -103,6 +103,7 @@ config BR2_PACKAGE_BOOST_IOSTREAMS
 
 config BR2_PACKAGE_BOOST_LOCALE
 	bool "boost-locale"
+	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
 
 config BR2_PACKAGE_BOOST_LOG
 	bool "boost-log"
