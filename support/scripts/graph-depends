@@ -313,6 +313,32 @@ def remove_transitive_deps(pkg,deps):
 def remove_mandatory_deps(pkg,deps):
     return [p for p in deps[pkg] if p not in ['toolchain', 'skeleton']]
 
+# This function will check that there is no loop in the dependency chain
+# As a side effect, it builds up the dependency cache.
+def check_circular_deps(deps):
+    def recurse(pkg):
+        if not pkg in list(deps.keys()):
+            return
+        if pkg in not_loop:
+            return
+        not_loop.append(pkg)
+        chain.append(pkg)
+        for p in deps[pkg]:
+            if p in chain:
+                sys.stderr.write("\nRecursion detected for  : %s\n" % (p))
+                while True:
+                    _p = chain.pop()
+                    sys.stderr.write("which is a dependency of: %s\n" % (_p))
+                    if p == _p:
+                        sys.exit(1)
+            recurse(p)
+        chain.pop()
+
+    not_loop = []
+    chain = []
+    for pkg in list(deps.keys()):
+        recurse(pkg)
+
 # This functions trims down the dependency list of all packages.
 # It applies in sequence all the dependency-elimination methods.
 def remove_extra_deps(deps):
@@ -324,6 +350,7 @@ def remove_extra_deps(deps):
             deps[pkg] = remove_transitive_deps(pkg,deps)
     return deps
 
+check_circular_deps(dict_deps)
 dict_deps = remove_extra_deps(dict_deps)
 dict_version = get_version([pkg for pkg in allpkgs
                                 if pkg != "all" and not pkg.startswith("root")])
