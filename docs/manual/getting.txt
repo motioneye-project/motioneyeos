@@ -19,13 +19,15 @@ If you want to setup an isolated buildroot environment on Linux or Mac
 Os X, paste this line onto your terminal:
 
 --------------------
-wget https://buildroot.org/downloads/Vagrantfile; vagrant up
+curl -O https://buildroot.org/downloads/Vagrantfile; vagrant up
 --------------------
 
 If you are on Windows, paste this into your powershell:
 
 --------------------
-(new-object System.Net.WebClient).DownloadFile("https://buildroot.org/downloads/Vagrantfile","Vagrantfile"); vagrant up
+(new-object System.Net.WebClient).DownloadFile(
+"https://buildroot.org/downloads/Vagrantfile","Vagrantfile");
+vagrant up
 --------------------
 
 If you want to follow development, you can use the daily snapshots or
