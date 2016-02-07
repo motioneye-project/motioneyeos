@@ -8,10 +8,6 @@
 
 PULSEVIEW_VERSION = 0.3.0
 PULSEVIEW_SITE = http://sigrok.org/download/source/pulseview
-# bug fixed upstream
-# http://article.gmane.org/gmane.comp.debugging.sigrok.devel/1950
-PULSEVIEW_PATCH = \
-	https://github.com/abraxa/pulseview/commit/dcfe0a01f72021aab961245d0ebcc9f8d4504b40.patch
 PULSEVIEW_LICENSE = GPLv3+
 PULSEVIEW_LICENSE_FILES = COPYING
 PULSEVIEW_DEPENDENCIES = libsigrok qt5base qt5svg boost
