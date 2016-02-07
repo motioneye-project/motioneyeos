@@ -38,6 +38,8 @@ max_depth = 0
 transitive = True
 
 parser = argparse.ArgumentParser(description="Graph packages dependencies")
+parser.add_argument("--check-only", "-C", dest="check_only", action="store_true", default=False,
+                    help="Only do the dependency checks (circular deps...)")
 parser.add_argument("--outfile", "-o", metavar="OUT_FILE", dest="outfile",
                     help="File in which to generate the dot representation")
 parser.add_argument("--package", '-p', metavar="PACKAGE",
@@ -62,9 +64,14 @@ parser.add_argument("--no-transitive", dest="transitive", action='store_false',
                     help="Draw (do not draw) transitive dependencies")
 args = parser.parse_args()
 
+check_only = args.check_only
+
 if args.outfile is None:
     outfile = sys.stdout
 else:
+    if check_only:
+        sys.stderr.write("don't specify outfile and check-only at the same time\n")
+        sys.exit(1)
     outfile = open(args.outfile, "wb")
 
 if args.package is None:
@@ -351,6 +358,9 @@ def remove_extra_deps(deps):
     return deps
 
 check_circular_deps(dict_deps)
+if check_only:
+    sys.exit(0)
+
 dict_deps = remove_extra_deps(dict_deps)
 dict_version = get_version([pkg for pkg in allpkgs
                                 if pkg != "all" and not pkg.startswith("root")])
