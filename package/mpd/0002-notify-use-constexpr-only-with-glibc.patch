@@ -1,0 +1,31 @@
+From 09830d448d6299a47fbccf39af6f325be5f2b514 Mon Sep 17 00:00:00 2001
+From: Max Kellermann <max@duempel.org>
+Date: Thu, 17 Sep 2015 22:56:35 +0200
+Subject: [PATCH] notify: use "constexpr" only with glibc
+
+The Mutex and Cond constructors are only "constexpr" with glibc, and
+this is what this #ifdef is about.
+
+[Thomas: taken from upstream commit 459a812a54509ebfd634a3df2998395c9cb5b98f.]
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ src/notify.hxx | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/src/notify.hxx b/src/notify.hxx
+index 1ee413f..c96390b 100644
+--- a/src/notify.hxx
++++ b/src/notify.hxx
+@@ -28,8 +28,7 @@ struct notify {
+ 	Cond cond;
+ 	bool pending;
+ 
+-#if !defined(WIN32) && !defined(__NetBSD__) && !defined(__BIONIC__) && \
+-	!defined(__HAIKU__)
++#ifdef __GLIBC__
+ 	constexpr
+ #endif
+ 	notify():pending(false) {}
+-- 
+2.6.4
+

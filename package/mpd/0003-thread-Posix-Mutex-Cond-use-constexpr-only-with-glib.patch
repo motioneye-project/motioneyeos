@@ -1,0 +1,97 @@
+From 42a5f0c4435757505bd515b68c2a27e8f7565f34 Mon Sep 17 00:00:00 2001
+From: Max Kellermann <max@duempel.org>
+Date: Tue, 25 Aug 2015 12:46:12 +0200
+Subject: [PATCH] thread/Posix{Mutex,Cond}: use "constexpr" only with glibc
+
+Apparently all other C libraries are not compatible with "constexpr".
+Those which are not will get a performance penalty, but at least they
+work at all.
+
+[Thomas: taken from upstream commit 75dff6445063d9b49cca126fd661c9abbd680977.]
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ src/thread/PosixCond.hxx  | 16 ++++++++--------
+ src/thread/PosixMutex.hxx | 16 ++++++++--------
+ 2 files changed, 16 insertions(+), 16 deletions(-)
+
+diff --git a/src/thread/PosixCond.hxx b/src/thread/PosixCond.hxx
+index b3fe204..73dbe02 100644
+--- a/src/thread/PosixCond.hxx
++++ b/src/thread/PosixCond.hxx
+@@ -1,5 +1,5 @@
+ /*
+- * Copyright (C) 2009-2013 Max Kellermann <max@duempel.org>
++ * Copyright (C) 2009-2015 Max Kellermann <max@duempel.org>
+  *
+  * Redistribution and use in source and binary forms, with or without
+  * modification, are permitted provided that the following conditions
+@@ -41,9 +41,13 @@ class PosixCond {
+ 	pthread_cond_t cond;
+ 
+ public:
+-#if defined(__NetBSD__) || defined(__BIONIC__)
+-	/* NetBSD's PTHREAD_COND_INITIALIZER is not compatible with
+-	   "constexpr" */
++#ifdef __GLIBC__
++	/* optimized constexpr constructor for pthread implementations
++	   that support it */
++	constexpr PosixCond():cond(PTHREAD_COND_INITIALIZER) {}
++#else
++	/* slow fallback for pthread implementations that are not
++	   compatible with "constexpr" */
+ 	PosixCond() {
+ 		pthread_cond_init(&cond, nullptr);
+ 	}
+@@ -51,10 +55,6 @@ public:
+ 	~PosixCond() {
+ 		pthread_cond_destroy(&cond);
+ 	}
+-#else
+-	/* optimized constexpr constructor for sane POSIX
+-	   implementations */
+-	constexpr PosixCond():cond(PTHREAD_COND_INITIALIZER) {}
+ #endif
+ 
+ 	PosixCond(const PosixCond &other) = delete;
+diff --git a/src/thread/PosixMutex.hxx b/src/thread/PosixMutex.hxx
+index 5805158..e0fd614 100644
+--- a/src/thread/PosixMutex.hxx
++++ b/src/thread/PosixMutex.hxx
+@@ -1,5 +1,5 @@
+ /*
+- * Copyright (C) 2009-2013 Max Kellermann <max@duempel.org>
++ * Copyright (C) 2009-2015 Max Kellermann <max@duempel.org>
+  *
+  * Redistribution and use in source and binary forms, with or without
+  * modification, are permitted provided that the following conditions
+@@ -41,9 +41,13 @@ class PosixMutex {
+ 	pthread_mutex_t mutex;
+ 
+ public:
+-#if defined(__NetBSD__) || defined(__BIONIC__)
+-	/* NetBSD's PTHREAD_MUTEX_INITIALIZER is not compatible with
+-	   "constexpr" */
++#ifdef __GLIBC__
++	/* optimized constexpr constructor for pthread implementations
++	   that support it */
++	constexpr PosixMutex():mutex(PTHREAD_MUTEX_INITIALIZER) {}
++#else
++	/* slow fallback for pthread implementations that are not
++	   compatible with "constexpr" */
+ 	PosixMutex() {
+ 		pthread_mutex_init(&mutex, nullptr);
+ 	}
+@@ -51,10 +55,6 @@ public:
+ 	~PosixMutex() {
+ 		pthread_mutex_destroy(&mutex);
+ 	}
+-#else
+-	/* optimized constexpr constructor for sane POSIX
+-	   implementations */
+-	constexpr PosixMutex():mutex(PTHREAD_MUTEX_INITIALIZER) {}
+ #endif
+ 
+ 	PosixMutex(const PosixMutex &other) = delete;
+-- 
+2.6.4
+

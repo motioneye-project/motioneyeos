@@ -1,0 +1,28 @@
+From f7d5081b727f69ae3a894a4a3310670a5d9ab077 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Fran=C3=A7ois=20Revol?= <revol@free.fr>
+Date: Thu, 17 Sep 2015 22:18:10 +0200
+Subject: [PATCH] notify: Don't use constexpr on Haiku
+
+[Thomas: taken from upstream commit bf73d0f9051fd5740c22bf6e5114ceb4535d548f.]
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ src/notify.hxx | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/src/notify.hxx b/src/notify.hxx
+index 3e62a01..1ee413f 100644
+--- a/src/notify.hxx
++++ b/src/notify.hxx
+@@ -28,7 +28,8 @@ struct notify {
+ 	Cond cond;
+ 	bool pending;
+ 
+-#if !defined(WIN32) && !defined(__NetBSD__) && !defined(__BIONIC__)
++#if !defined(WIN32) && !defined(__NetBSD__) && !defined(__BIONIC__) && \
++	!defined(__HAIKU__)
+ 	constexpr
+ #endif
+ 	notify():pending(false) {}
+-- 
+2.6.4
+
