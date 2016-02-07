@@ -184,6 +184,16 @@ endef
 
 LINUX_POST_PATCH_HOOKS += LINUX_APPLY_LOCAL_PATCHES
 
+# Older linux kernels use deprecated perl constructs in timeconst.pl
+# that were removed for perl 5.22+ so it breaks on newer distributions
+# Try a dry-run patch to see if this applies, if it does go ahead
+define LINUX_TRY_PATCH_TIMECONST
+	@if patch -p1 --dry-run -f -s -d $(@D) <$(LINUX_PKGDIR)/0001-timeconst.pl-Eliminate-Perl-warning.patch.conditional >/dev/null ; then \
+		$(APPLY_PATCHES) $(@D) $(LINUX_PKGDIR) 0001-timeconst.pl-Eliminate-Perl-warning.patch.conditional ; \
+	fi
+endef
+LINUX_POST_PATCH_HOOKS += LINUX_TRY_PATCH_TIMECONST
+
 ifeq ($(BR2_LINUX_KERNEL_USE_DEFCONFIG),y)
 LINUX_KCONFIG_DEFCONFIG = $(call qstrip,$(BR2_LINUX_KERNEL_DEFCONFIG))_defconfig
 else ifeq ($(BR2_LINUX_KERNEL_USE_CUSTOM_CONFIG),y)
