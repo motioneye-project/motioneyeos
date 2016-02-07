@@ -2,7 +2,7 @@ config BR2_PACKAGE_GUILE
 	bool "guile"
 	depends on !BR2_TOOLCHAIN_USES_MUSL # no strtol_l
 	depends on BR2_TOOLCHAIN_HAS_THREADS
-	depends on BR2_PACKAGE_LIBATOMIC_ARCH_SUPPORTS # bdwgc
+	depends on BR2_PACKAGE_LIBATOMIC_OPS_ARCH_SUPPORTS # bdwgc
 	depends on BR2_USE_WCHAR # libunistring
 	depends on !BR2_STATIC_LIBS
 	select BR2_PACKAGE_LIBUNISTRING
