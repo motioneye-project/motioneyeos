@@ -11,6 +11,7 @@ MPD_SITE = http://www.musicpd.org/download/mpd/$(MPD_VERSION_MAJOR)
 MPD_DEPENDENCIES = host-pkgconf boost libglib2
 MPD_LICENSE = GPLv2+
 MPD_LICENSE_FILES = COPYING
+MPD_AUTORECONF = YES
 
 # Some options need an explicit --disable or --enable
 
