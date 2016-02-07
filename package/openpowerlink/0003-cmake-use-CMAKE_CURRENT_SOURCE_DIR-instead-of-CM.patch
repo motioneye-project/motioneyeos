@@ -1,0 +1,154 @@
+From c354e8d9599aa02566c8acc341f3a2c73281483b Mon Sep 17 00:00:00 2001
+From: Romain Naour <romain.naour@openwide.fr>
+Date: Wed, 17 Sep 2014 13:27:44 +0200
+Subject: [PATCH] cmake: use CMAKE_CURRENT_SOURCE_DIR instead of
+ CMAKE_SOURCE_DIR
+
+The aim of this patch is to be able to call each subproject's CMakeLists.txt
+from a top-level CMakeLists.txt.
+
+This will help to build automatically the epl libraries, epl driver, unittests
+and demos.
+
+This patch has been submitted upstream:
+https://github.com/openPOWERLINK/openPOWERLINK_V2/pull/57
+
+Signed-off-by: Romain Naour <romain.naour@openwide.fr>
+---
+ drivers/linux/drv_daemon_pcap/CMakeLists.txt    | 6 +++---
+ drivers/linux/drv_kernelmod_edrv/CMakeLists.txt | 8 ++++----
+ hardware/CMakeLists.txt                         | 4 ++--
+ hardware/drivers/hostinterface/CMakeLists.txt   | 2 +-
+ hardware/drivers/openmac/CMakeLists.txt         | 4 ++--
+ unittests/CMakeLists.txt                        | 4 ++--
+ 6 files changed, 14 insertions(+), 14 deletions(-)
+
+diff --git a/drivers/linux/drv_daemon_pcap/CMakeLists.txt b/drivers/linux/drv_daemon_pcap/CMakeLists.txt
+index 4c3f933..9041e4d 100644
+--- a/drivers/linux/drv_daemon_pcap/CMakeLists.txt
++++ b/drivers/linux/drv_daemon_pcap/CMakeLists.txt
+@@ -57,8 +57,8 @@ MESSAGE(STATUS "Configuring ${EXE_NAME}")
+ ###############################################################################
+ # Set global directories
+ ###############################################################################
+-SET(OPLK_BASE_DIR ${CMAKE_SOURCE_DIR}/../../..)
+-SET(DRV_SOURCE_DIR ${CMAKE_SOURCE_DIR})
++SET(OPLK_BASE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../..)
++SET(DRV_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
+ SET(CONTRIB_SOURCE_DIR ${OPLK_BASE_DIR}/contrib)
+ SET(OPLK_INCLUDE_DIR ${OPLK_BASE_DIR}/stack/include)
+ SET(TOOLS_DIR ${OPLK_BASE_DIR}/tools)
+@@ -66,7 +66,7 @@ SET(TOOLS_DIR ${OPLK_BASE_DIR}/tools)
+ ###############################################################################
+ # Include CMake Modules
+ ###############################################################################
+-SET(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/../../cmake ${CMAKE_MODULE_PATH})
++SET(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../cmake ${CMAKE_MODULE_PATH})
+ 
+ # include standard cmake modules
+ INCLUDE(CMakeDependentOption)
+diff --git a/drivers/linux/drv_kernelmod_edrv/CMakeLists.txt b/drivers/linux/drv_kernelmod_edrv/CMakeLists.txt
+index 2ad1a0d..af85f86 100644
+--- a/drivers/linux/drv_kernelmod_edrv/CMakeLists.txt
++++ b/drivers/linux/drv_kernelmod_edrv/CMakeLists.txt
+@@ -75,7 +75,7 @@ SET_PROPERTY(CACHE CFG_POWERLINK_EDRV PROPERTY STRINGS 8139 82573 8255x i210 811
+ ################################################################################
+ # Set global directories
+ ################################################################################
+-SET(OPLK_BASE_DIR ${CMAKE_SOURCE_DIR}/../../..)
++SET(OPLK_BASE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../..)
+ SET(CONTRIB_SOURCE_DIR ${OPLK_BASE_DIR}/contrib)
+ SET(STACK_SOURCE_DIR ${OPLK_BASE_DIR}/stack/src)
+ SET(COMMON_SOURCE_DIR ${OPLK_BASE_DIR}/stack/src/common)
+@@ -152,10 +152,10 @@ IF(CFG_OPLK_MN)
+     ENDIF()
+     SET(MODULE_DEFS "${MODULE_DEFS} -DCONFIG_MN")
+     SET(MODULE_NAME "${MODULE_NAME}mn")
+-    INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/proj/mn)
++    INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/proj/mn)
+ ELSE()
+     SET(MODULE_NAME "${MODULE_NAME}cn")
+-    INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/proj/cn)
++    INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/proj/cn)
+ ENDIF()
+ 
+ ###############################################################################
+@@ -189,7 +189,7 @@ ENDFOREACH()
+ #
+ SET(MODULE_SOURCE_FILES
+     ${MODULE_SOURCE_FILES}
+-    ${CMAKE_SOURCE_DIR}/main.c
++    ${CMAKE_CURRENT_SOURCE_DIR}/main.c
+     ${CONTRIB_SOURCE_DIR}/trace/trace-printk.c
+     ${EDRV_SOURCE_DIR}/edrvcyclic.c
+     ${KERNEL_SOURCE_DIR}/ctrl/ctrlk.c
+diff --git a/hardware/CMakeLists.txt b/hardware/CMakeLists.txt
+index 218c4eb..3ba85ca 100644
+--- a/hardware/CMakeLists.txt
++++ b/hardware/CMakeLists.txt
+@@ -40,7 +40,7 @@ INCLUDE(reduceboardname)
+ 
+ ################################################################################
+ # Set paths
+-SET(OPLK_BASE_DIR ${CMAKE_SOURCE_DIR}/..)
++SET(OPLK_BASE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/..)
+ SET(OMETHLIB_BASE_DIR ${PROJECT_SOURCE_DIR}/drivers/openmac)
+ SET(OMETHLIB_BUILD_DIR ${PROJECT_BINARY_DIR}/drivers/openmac)
+ SET(HOSTIF_BASE_DIR ${PROJECT_SOURCE_DIR}/drivers/hostinterface)
+@@ -56,7 +56,7 @@ STRING(TOLOWER "${CMAKE_SYSTEM_PROCESSOR}" SYSTEM_PROCESSOR_DIR)
+ 
+ IF(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+   SET(CMAKE_INSTALL_PREFIX
+-    ${CMAKE_SOURCE_DIR}/lib/${SYSTEM_NAME_DIR}/${SYSTEM_PROCESSOR_DIR} CACHE PATH "openPOWERLINK hardware install prefix" FORCE
++    ${CMAKE_CURRENT_SOURCE_DIR}/lib/${SYSTEM_NAME_DIR}/${SYSTEM_PROCESSOR_DIR} CACHE PATH "openPOWERLINK hardware install prefix" FORCE
+     )
+ ENDIF()
+ 
+diff --git a/hardware/drivers/hostinterface/CMakeLists.txt b/hardware/drivers/hostinterface/CMakeLists.txt
+index 1a9d2aa..9c56c16 100644
+--- a/hardware/drivers/hostinterface/CMakeLists.txt
++++ b/hardware/drivers/hostinterface/CMakeLists.txt
+@@ -71,7 +71,7 @@ ELSE()
+     SET( HOSTIF_LIB_NAME "${HOSTIF_NAME}")
+ ENDIF()
+ 
+-SET(BOARDS_COMMON_DIR ${CMAKE_SOURCE_DIR}/boards/${BOARD_NAME}/common)
++SET(BOARDS_COMMON_DIR ${CMAKE_CURRENT_SOURCE_DIR}/boards/${BOARD_NAME}/common)
+ SET(EXAMPLE_BINARY_DIR ${CMAKE_BINARY_DIR}/boards/${BOARD_NAME}/${EXAMPLE_NAME})
+ 
+ ########################################################################
+diff --git a/hardware/drivers/openmac/CMakeLists.txt b/hardware/drivers/openmac/CMakeLists.txt
+index 560c0d9..d532996 100644
+--- a/hardware/drivers/openmac/CMakeLists.txt
++++ b/hardware/drivers/openmac/CMakeLists.txt
+@@ -55,8 +55,8 @@ ELSE()
+     SET(OMETH_LIB_NAME "${OMETH_NAME}")
+ ENDIF()
+ 
+-SET(BOARD_EXAMPLE_DIR ${CMAKE_SOURCE_DIR}/boards/${BOARD_NAME}/${EXAMPLE_NAME})
+-SET(BOARDS_COMMON_DIR ${CMAKE_SOURCE_DIR}/boards/${BOARD_NAME}/common)
++SET(BOARD_EXAMPLE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/boards/${BOARD_NAME}/${EXAMPLE_NAME})
++SET(BOARDS_COMMON_DIR ${CMAKE_CURRENT_SOURCE_DIR}/boards/${BOARD_NAME}/common)
+ SET(EXAMPLE_BINARY_DIR ${CMAKE_BINARY_DIR}/boards/${BOARD_NAME}/${EXAMPLE_NAME})
+ 
+ ########################################################################
+diff --git a/unittests/CMakeLists.txt b/unittests/CMakeLists.txt
+index 533d4e7..4460c2e 100644
+--- a/unittests/CMakeLists.txt
++++ b/unittests/CMakeLists.txt
+@@ -55,10 +55,10 @@ ENDMACRO(ADD_UNIT_TEST)
+ 
+ ################################################################################
+ # Set general directories
+-SET(OPLK_BASE_DIR ${CMAKE_SOURCE_DIR}/..)
++SET(OPLK_BASE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/..)
+ SET(OPLK_SOURCE_DIR ${OPLK_BASE_DIR}/stack/src)
+ SET(OPLK_INCLUDE_DIR ${OPLK_BASE_DIR}/stack/include)
+-SET(TEST_COMMON_SOURCE_DIR ${CMAKE_SOURCE_DIR}/common)
++SET(TEST_COMMON_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/common)
+ 
+ # We need a oplkcfg.h file for compiling the sources
+ # We are using the project for the complete MN library
+-- 
+2.4.3
+

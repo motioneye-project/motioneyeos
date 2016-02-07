@@ -145,6 +145,30 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2016.02"
 
+config BR2_PACKAGE_OPENPOWERLINK_DEBUG_LEVEL
+	bool "openpowerlink debug option has been removed"
+	select BR2_LEGACY
+	help
+	  This option depends on BR2_ENABLE_DEBUG which should not be used
+	  by packages anymore.
+
+config BR2_PACKAGE_OPENPOWERLINK_KERNEL_MODULE
+	bool "openpowerlink package has been updated"
+	select BR2_LEGACY
+	select BR2_PACKAGE_OPENPOWERLINK_STACK_KERNEL_STACK_LIB
+	help
+	  openpowerlink kernel modules are built if the
+	  kernel stack library is selected.
+
+config BR2_PACKAGE_OPENPOWERLINK_LIBPCAP
+	bool "openpowerlink package has been updated"
+	select BR2_LEGACY
+	select BR2_PACKAGE_OPENPOWERLINK_STACK_USERSPACE_DAEMON_LIB
+	help
+	  The user space support has been split in two part:
+	  - a monolitic user space library
+	  - a user spae deamon driver
+
 config BR2_LINUX_KERNEL_SAME_AS_HEADERS
 	bool "using the linux headers version for the kernel has been removed"
 	select BR2_LEGACY
