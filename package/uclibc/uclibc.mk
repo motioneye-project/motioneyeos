@@ -386,6 +386,7 @@ ifeq ($(BR2_UCLIBC_INSTALL_TEST_SUITE),y)
 define UCLIBC_BUILD_TEST_SUITE
 	$(MAKE1) -C $(@D) \
 		$(UCLIBC_MAKE_FLAGS) \
+		TEST_INSTALLED_UCLIBC=1 \
 		UCLIBC_ONLY=1 \
 		test_compile
 endef
