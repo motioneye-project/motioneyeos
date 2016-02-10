@@ -11,6 +11,13 @@ MC_LICENSE = GPLv3+
 MC_LICENSE_FILES = COPYING
 MC_DEPENDENCIES = libglib2 host-pkgconf
 
+ifeq ($(BR2_PACKAGE_LIBSSH2),y)
+MC_CONF_OPTS += --enable-vfs-sftp
+MC_DEPENDENCIES += libssh2
+else
+MC_CONF_OPTS += --disable-vfs-sftp
+endif
+
 # mc prefers slang, so use that if enabled, otherwise
 # fallback to using ncurses.
 # Either or both will be enabled, but we prefer slang.
