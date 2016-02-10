@@ -1,14 +1,21 @@
-Misc. Makefile cleanup and fix the VERSION definition.
+From fd7e584bd28bd541464f8cb6cc72e76de2347640 Mon Sep 17 00:00:00 2001
+From: Samuel Martin <s.martin49@gmail.com>
+Date: Mon, 8 Feb 2016 23:02:45 +0100
+Subject: [PATCH] Misc. Makefile cleanup and fix the VERSION definition.
 
 Signed-off-by: Samuel Martin <s.martin49@gmail.com>
-
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 ---
-diff -purN vpnc-0.5.3.orig/Makefile vpnc-0.5.3/Makefile
---- vpnc-0.5.3.orig/Makefile	2012-08-06 00:03:22.677914146 +0200
-+++ vpnc-0.5.3/Makefile	2012-08-06 00:06:58.506744901 +0200
+ Makefile | 40 +++++++++++++++++++---------------------
+ 1 file changed, 19 insertions(+), 21 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 9b96d83..1ca6459 100644
+--- a/Makefile
++++ b/Makefile
 @@ -19,21 +19,19 @@
  #
- # $Id: Makefile 312 2008-06-15 18:09:42Z Joerg Mayer $
+ # $Id$
  
 -DESTDIR=
 -PREFIX=/usr/local
@@ -60,7 +67,7 @@ diff -purN vpnc-0.5.3.orig/Makefile vpnc-0.5.3/Makefile
  
  ifeq ($(shell uname -s), SunOS)
  LDFLAGS += -lnsl -lresolv -lsocket
-@@ -84,7 +82,7 @@ cisco-decrypt : cisco-decrypt.o decrypt-
+@@ -81,7 +79,7 @@ cisco-decrypt : cisco-decrypt.o decrypt-utils.o
  	$(CC) -o $@ $^ $(LDFLAGS)
  
  .depend: $(SRCS) $(BINSRCS)
@@ -69,3 +76,6 @@ diff -purN vpnc-0.5.3.orig/Makefile vpnc-0.5.3/Makefile
  
  vpnc-debug.c vpnc-debug.h : isakmp.h enum2debug.pl
  	LC_ALL=C perl -w ./enum2debug.pl isakmp.h >vpnc-debug.c 2>vpnc-debug.h
+-- 
+2.6.4
+
