@@ -1,0 +1,41 @@
+From 8b035de4867db4fb8da41298224d92bf5b18e86f Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Wed, 10 Feb 2016 23:27:30 +0100
+Subject: [PATCH] Makefile: allow to override the version
+
+The mk-version script makes the assumption that the build process runs
+from a SVN checkout or a Git clone of the vpnc source code. However,
+this is not always the case, for example when you are building from a
+tarball, but inside a larger project that is versioned with Git.
+
+This is typically the case when building vpnc under a tool like
+Buildroot, or potentially other embedded Linux build system: the build
+system tool itself is versioned in Git, downloads tarballs of software
+components and builds them.
+
+In order to support such situations, this commit adjusts the Makefile
+to allow the VERSION variable to be overriden from the make command
+line.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+
+ Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile b/Makefile
+index f9a6781..e80ef17 100644
+--- a/Makefile
++++ b/Makefile
+@@ -57,7 +57,7 @@ OBJS = $(addsuffix .o,$(basename $(SRCS)))
+ CRYPTO_OBJS = $(addsuffix .o,$(basename $(CRYPTO_SRCS)))
+ BINOBJS = $(addsuffix .o,$(BINS))
+ BINSRCS = $(addsuffix .c,$(BINS))
+-VERSION := $(shell sh mk-version)
++VERSION ?= $(shell sh mk-version)
+ RELEASE_VERSION := $(shell cat VERSION)
+ 
+ CC ?= gcc
+-- 
+2.6.4
+

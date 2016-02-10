@@ -1,0 +1,45 @@
+From 014a8e04a0fa775b2ade78e5f7655a1453375884 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Wed, 10 Feb 2016 23:31:12 +0100
+Subject: [PATCH] Makefile: allow passing custom CFLAGS/CPPFLAGS
+
+vpnc's Makefile specifies some CFLAGS and CPPFLAGS value, but it may
+be needed to pass additional custom flags on the make command line. To
+make this possible, we switch from a plain += operator to the
+"override ... +=" operator.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+
+ Makefile | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index e80ef17..7ac225a 100644
+--- a/Makefile
++++ b/Makefile
+@@ -62,9 +62,9 @@ RELEASE_VERSION := $(shell cat VERSION)
+ 
+ CC ?= gcc
+ CFLAGS ?= -O3 -g
+-CFLAGS += -W -Wall -Wmissing-declarations -Wwrite-strings
+-CFLAGS +=  $(shell libgcrypt-config --cflags) $(CRYPTO_CFLAGS)
+-CPPFLAGS += -DVERSION=\"$(VERSION)\"
++override CFLAGS += -W -Wall -Wmissing-declarations -Wwrite-strings
++override CFLAGS +=  $(shell libgcrypt-config --cflags) $(CRYPTO_CFLAGS)
++override CPPFLAGS += -DVERSION=\"$(VERSION)\"
+ LDFLAGS ?= -g
+ LIBS += $(shell libgcrypt-config --libs) $(CRYPTO_LDADD)
+ 
+@@ -73,7 +73,7 @@ LIBS += -lnsl -lresolv -lsocket
+ endif
+ ifneq (,$(findstring Apple,$(shell $(CC) --version)))
+ # enabled in FSF GCC, disabled by default in Apple GCC
+-CFLAGS += -fstrict-aliasing -freorder-blocks -fsched-interblock
++override CFLAGS += -fstrict-aliasing -freorder-blocks -fsched-interblock
+ endif
+ 
+ all : $(BINS) vpnc.8
+-- 
+2.6.4
+
