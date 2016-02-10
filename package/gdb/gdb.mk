@@ -118,6 +118,13 @@ else
 GDB_CONF_OPTS += --without-expat
 endif
 
+ifeq ($(BR2_PACKAGE_XZ),y)
+GDB_CONF_OPTS += --with-lzma
+GDB_DEPENDENCIES += xz
+else
+GDB_CONF_OPTS += --without-lzma
+endif
+
 ifeq ($(BR2_PACKAGE_ZLIB),y)
 GDB_CONF_OPTS += --with-zlib
 GDB_DEPENDENCIES += zlib
