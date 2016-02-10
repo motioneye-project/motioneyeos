@@ -47,6 +47,10 @@ ifeq ($(BR2_PACKAGE_OPENSSL),y)
 LINKS_DEPENDENCIES += openssl
 endif
 
+ifeq ($(BR2_PACKAGE_XZ),y)
+LINKS_DEPENDENCIES += xz
+endif
+
 ifeq ($(BR2_PACKAGE_ZLIB),y)
 LINKS_DEPENDENCIES += zlib
 endif
