@@ -1,0 +1,11 @@
+config BR2_PACKAGE_WPAN_TOOLS
+	bool "wpan-tools"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	select BR2_PACKAGE_LIBNL
+	help
+	  Userspace tools for Linux IEEE 802.15.4 stack.
+
+	  http://wpan.cakelab.org/
+
+comment "wpan-tools needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
