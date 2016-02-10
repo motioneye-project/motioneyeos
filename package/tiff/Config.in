@@ -41,6 +41,10 @@ config BR2_PACKAGE_TIFF_ZLIB
 	select BR2_PACKAGE_ZLIB
 	default y
 
+config BR2_PACKAGE_TIFF_XZ
+	bool "XZ compression"
+	select BR2_PACKAGE_XZ
+
 config BR2_PACKAGE_TIFF_PIXARLOG
 	bool "Pixar log-format algorithm (requires Zlib)"
 	select BR2_PACKAGE_TIFF_ZLIB

@@ -49,6 +49,12 @@ else
 TIFF_DEPENDENCIES += zlib
 endif
 
+ifneq ($(BR2_PACKAGE_TIFF_XZ),y)
+TIFF_CONF_OPTS += --disable-lzma
+else
+TIFF_DEPENDENCIES += xz
+endif
+
 ifneq ($(BR2_PACKAGE_TIFF_PIXARLOG),y)
 TIFF_CONF_OPTS += --disable-pixarlog
 endif
