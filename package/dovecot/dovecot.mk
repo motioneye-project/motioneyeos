@@ -76,6 +76,13 @@ else
 DOVECOT_CONF_OPTS += --without-sqlite
 endif
 
+ifeq ($(BR2_PACKAGE_XZ),y)
+DOVECOT_CONF_OPTS += --with-lzma
+DOVECOT_DEPENDENCIES += xz
+else
+DOVECOT_CONF_OPTS += --without-lzma
+endif
+
 ifeq ($(BR2_PACKAGE_ZLIB),y)
 DOVECOT_CONF_OPTS += --with-zlib
 DOVECOT_DEPENDENCIES += zlib
