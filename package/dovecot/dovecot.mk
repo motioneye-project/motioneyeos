@@ -33,7 +33,7 @@ ifeq ($(BR2_PACKAGE_DOVECOT_MYSQL)$(BR2_PACKAGE_DOVECOT_SQLITE),)
 DOVECOT_CONF_OPTS += --without-sql
 endif
 
-ifeq ($(BR2_PACKAGE_DOVECOT_BZIP2),y)
+ifeq ($(BR2_PACKAGE_BZIP2),y)
 DOVECOT_CONF_OPTS += --with-bzlib
 DOVECOT_DEPENDENCIES += bzip2
 else
@@ -76,7 +76,7 @@ else
 DOVECOT_CONF_OPTS += --without-sqlite
 endif
 
-ifeq ($(BR2_PACKAGE_DOVECOT_ZLIB),y)
+ifeq ($(BR2_PACKAGE_ZLIB),y)
 DOVECOT_CONF_OPTS += --with-zlib
 DOVECOT_DEPENDENCIES += zlib
 else

@@ -13,12 +13,6 @@ config BR2_PACKAGE_DOVECOT
 
 if BR2_PACKAGE_DOVECOT
 
-config BR2_PACKAGE_DOVECOT_BZIP2
-	bool "bzip2 support"
-	select BR2_PACKAGE_BZIP2
-	help
-	  Enable bzip2 support.
-
 config BR2_PACKAGE_DOVECOT_MYSQL
 	bool "mysql support"
 	select BR2_PACKAGE_MYSQL
@@ -42,12 +36,6 @@ config BR2_PACKAGE_DOVECOT_SQLITE
 	select BR2_PACKAGE_SQLITE
 	help
 	  Enable SQLite support.
-
-config BR2_PACKAGE_DOVECOT_ZLIB
-	bool "zlib support"
-	select BR2_PACKAGE_ZLIB
-	help
-	  Enable zlib support.
 
 source package/dovecot-pigeonhole/Config.in
 

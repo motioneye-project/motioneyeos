@@ -145,6 +145,20 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2016.02"
 
+config BR2_PACKAGE_DOVECOT_BZIP2
+	bool "bzip2 support option has been removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_BZIP2
+	help
+	  Bzip2 support is built if the bzip2 package is selected.
+
+config BR2_PACKAGE_DOVECOT_ZLIB
+	bool "zlib support option has been removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_ZLIB
+	help
+	  Zlib support is built if the zlib package is selected.
+
 config BR2_PACKAGE_E2FSPROGS_FINDFS
 	bool "e2fsprogs findfs option has been removed"
 	select BR2_LEGACY
