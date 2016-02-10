@@ -39,6 +39,10 @@ ifeq ($(BR2_PACKAGE_BZIP2),y)
 LINKS_DEPENDENCIES += bzip2
 endif
 
+ifeq ($(BR2_PACKAGE_LIBEVENT),y)
+LINKS_DEPENDENCIES += libevent
+endif
+
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 LINKS_DEPENDENCIES += openssl
 endif
