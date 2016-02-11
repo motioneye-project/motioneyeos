@@ -1,0 +1,99 @@
+From 50859f3577418cc42f76e1319e699202a615bbe1 Mon Sep 17 00:00:00 2001
+From: Peter Seiderer <ps.report@gmx.net>
+Date: Sat, 31 Oct 2015 19:45:04 +0100
+Subject: [PATCH] Fixes for musl libc.
+
+- add musl libc detection (prevents configure error)
+- adjust preload and symbol names (based on the OpenWrt
+  patch, see [1])
+
+[1] https://dev.openwrt.org/browser/trunk/package/devel/valgrind/patches/200-musl_fix.patch?rev=46302
+
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+---
+ configure.ac             | 16 ++++++++++++++--
+ coregrind/vg_preloaded.c |  2 +-
+ include/pub_tool_redir.h |  9 ++++++++-
+ 3 files changed, 23 insertions(+), 4 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 8ab7f9b..e865bf5 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -1009,6 +1009,13 @@ if test x$VGCONF_PLATFORM_PRI_CAPS = xX86_SOLARIS \
+     GLIBC_VERSION="solaris"
+ fi
+ 
++# GLIBC_VERSION is empty if a musl libc is used, so use the toolchain tuple
++# in this case.
++if test x$GLIBC_VERSION = x; then
++    if $CC -dumpmachine | grep -q musl; then
++        GLIBC_VERSION=musl
++    fi
++fi
+ 
+ AC_MSG_CHECKING([the glibc version])
+ 
+@@ -1064,10 +1071,15 @@ case "${GLIBC_VERSION}" in
+ 	# DEFAULT_SUPP set in host_os switch-case above.
+ 	# No other suppression file is used.
+ 	;;
++     musl)
++	AC_MSG_RESULT(Musl)
++	AC_DEFINE([MUSL_LIBC], 1, [Define to 1 if you're using Musl libc])
++	# no DEFAULT_SUPP file yet for musl libc.
++	;;
+      2.0|2.1|*)
+ 	AC_MSG_RESULT([unsupported version ${GLIBC_VERSION}])
+-	AC_MSG_ERROR([Valgrind requires glibc version 2.2 or later,])
+-	AC_MSG_ERROR([Darwin libc, Bionic libc or Solaris libc])
++	AC_MSG_ERROR([Valgrind requires glibc version 2.2 or later, uClibc,])
++	AC_MSG_ERROR([musl libc, Darwin libc, Bionic libc or Solaris libc])
+ 	;;
+ esac
+ 
+diff --git a/coregrind/vg_preloaded.c b/coregrind/vg_preloaded.c
+index 2ea7a7a..7b51aba 100644
+--- a/coregrind/vg_preloaded.c
++++ b/coregrind/vg_preloaded.c
+@@ -56,7 +56,7 @@
+ void VG_NOTIFY_ON_LOAD(freeres)( void );
+ void VG_NOTIFY_ON_LOAD(freeres)( void )
+ {
+-#  if !defined(__UCLIBC__) \
++#  if !defined(__UCLIBC__) && !defined(MUSL_LIBC) \
+       && !defined(VGPV_arm_linux_android) \
+       && !defined(VGPV_x86_linux_android) \
+       && !defined(VGPV_mips32_linux_android) \
+diff --git a/include/pub_tool_redir.h b/include/pub_tool_redir.h
+index bac00d7..babcf9a 100644
+--- a/include/pub_tool_redir.h
++++ b/include/pub_tool_redir.h
+@@ -242,8 +242,11 @@
+ /* --- Soname of the standard C library. --- */
+ 
+ #if defined(VGO_linux) || defined(VGO_solaris)
++# if defined(MUSL_LIBC)
++#  define  VG_Z_LIBC_SONAME  libcZdZa              // libc.*
++#else
+ #  define  VG_Z_LIBC_SONAME  libcZdsoZa              // libc.so*
+-
++#endif
+ #elif defined(VGO_darwin) && (DARWIN_VERS <= DARWIN_10_6)
+ #  define  VG_Z_LIBC_SONAME  libSystemZdZaZddylib    // libSystem.*.dylib
+ 
+@@ -274,7 +277,11 @@
+ /* --- Soname of the pthreads library. --- */
+ 
+ #if defined(VGO_linux)
++# if defined(MUSL_LIBC)
++#  define  VG_Z_LIBPTHREAD_SONAME  libcZdZa              // libc.*
++#else
+ #  define  VG_Z_LIBPTHREAD_SONAME  libpthreadZdsoZd0     // libpthread.so.0
++#endif
+ #elif defined(VGO_darwin)
+ #  define  VG_Z_LIBPTHREAD_SONAME  libSystemZdZaZddylib  // libSystem.*.dylib
+ #elif defined(VGO_solaris)
+-- 
+2.1.4
+

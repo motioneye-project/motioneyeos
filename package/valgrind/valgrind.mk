@@ -12,6 +12,9 @@ VALGRIND_LICENSE_FILES = COPYING COPYING.DOCS
 VALGRIND_CONF_OPTS = --disable-ubsan
 VALGRIND_INSTALL_STAGING = YES
 
+# patch 0004-Fixes-for-musl-libc.patch touching configure.ac
+VALGRIND_AUTORECONF = YES
+
 ifeq ($(BR2_GCC_ENABLE_TLS),y)
 VALGRIND_CONF_OPTS += --enable-tls
 else
