@@ -1052,8 +1052,7 @@ config BR2_TOOLCHAIN_EXTRA_EXTERNAL_LIBS
 	help
 	  If your external toolchain provides extra libraries that
 	  need to be copied to the target filesystem, enter them
-	  here, separated by spaces. They will be copied to the
-	  target's /lib directory.
+	  here, separated by spaces.
 
 endif # BR2_TOOLCHAIN_EXTERNAL_CUSTOM
 
