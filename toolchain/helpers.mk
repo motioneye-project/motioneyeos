@@ -6,62 +6,15 @@
 # toolchain logic, and the glibc package, so care must be taken when
 # changing this function.
 #
-# Most toolchains (CodeSourcery ones) have their libraries either in
-# /lib or /usr/lib relative to their ARCH_SYSROOT_DIR, so we search
-# libraries in:
-#
-#  $${ARCH_LIB_DIR}
-#  usr/$${ARCH_LIB_DIR}
-#
-# Buildroot toolchains, however, have basic libraries in /lib, and
-# libstdc++/libgcc_s in /usr/<target-name>/lib(64), so we also need to
-# search libraries in:
-#
-#  usr/$(TOOLCHAIN_EXTERNAL_PREFIX)/$${ARCH_LIB_DIR}
-#
-# Linaro toolchains have most libraries in lib/<target-name>/, so we
-# need to search libraries in:
-#
-#  $${ARCH_LIB_DIR}/$(TOOLCHAIN_EXTERNAL_PREFIX)
-#
-# And recent Linaro toolchains have the GCC support libraries
-# (libstdc++, libgcc_s, etc.) into a separate directory, outside of
-# the sysroot, that we called the "SUPPORT_LIB_DIR", into which we
-# need to search as well.
-#
-# Thanks to ARCH_LIB_DIR we also take into account toolchains that
-# have the libraries in lib64 and usr/lib64.
-#
-# Please be very careful to check the major toolchain sources:
-# Buildroot, Crosstool-NG, CodeSourcery and Linaro before doing any
-# modification on the below logic.
-#
-# $1: arch specific sysroot directory
-# $2: support libraries directory (can be empty)
-# $3: library directory ('lib' or 'lib64') from which libraries must be copied
-# $4: library name
-# $5: destination directory of the libary, relative to $(TARGET_DIR)
+# $1: library name
 #
 copy_toolchain_lib_root = \
-	ARCH_SYSROOT_DIR="$(strip $1)"; \
-	SUPPORT_LIB_DIR="$(strip $2)" ; \
-	ARCH_LIB_DIR="$(strip $3)" ; \
-	LIB="$(strip $4)"; \
-	DESTDIR="$(strip $5)" ; \
+	LIB="$(strip $1)"; \
 \
-	for dir in \
-		$${ARCH_SYSROOT_DIR}/$${ARCH_LIB_DIR}/$(TOOLCHAIN_EXTERNAL_PREFIX) \
-		$${ARCH_SYSROOT_DIR}/usr/$(TOOLCHAIN_EXTERNAL_PREFIX)/$${ARCH_LIB_DIR} \
-		$${ARCH_SYSROOT_DIR}/$${ARCH_LIB_DIR} \
-		$${ARCH_SYSROOT_DIR}/usr/$${ARCH_LIB_DIR} \
-		$${SUPPORT_LIB_DIR} ; do \
-		LIBPATHS=`find $${dir} -maxdepth 1 -name "$${LIB}" 2>/dev/null` ; \
-		if test -n "$${LIBPATHS}" ; then \
-			break ; \
-		fi \
-	done ; \
-	mkdir -p $(TARGET_DIR)/$${DESTDIR}; \
+	LIBPATHS=`find -L $(STAGING_DIR) -name "$${LIB}" 2>/dev/null` ; \
 	for LIBPATH in $${LIBPATHS} ; do \
+		DESTDIR=`echo $${LIBPATH} | sed "s,^$(STAGING_DIR)/,," | xargs dirname` ; \
+		mkdir -p $(TARGET_DIR)/$${DESTDIR}; \
 		while true ; do \
 			LIBNAME=`basename $${LIBPATH}`; \
 			LIBDIR=`dirname $${LIBPATH}` ; \
