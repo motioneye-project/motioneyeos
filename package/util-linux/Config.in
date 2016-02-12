@@ -91,6 +91,11 @@ config BR2_PACKAGE_UTIL_LINUX_FDFORMAT
 	help
 	  Low-level format a floppy disk
 
+config BR2_PACKAGE_UTIL_LINUX_FINDFS
+	bool "findfs"
+	help
+	  Find a filesystem by label or UUID
+
 config BR2_PACKAGE_UTIL_LINUX_FSCK
 	bool "fsck"
 	help
