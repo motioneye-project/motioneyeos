@@ -145,6 +145,15 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2016.02"
 
+config BR2_PACKAGE_E2FSPROGS_FINDFS
+	bool "e2fsprogs findfs option has been removed"
+	select BR2_LEGACY
+	help
+	  This option attempted to enable findfs capabilities from
+	  e2fsprogs but has not worked since July 2015 (due to
+	  packaging changes). One can use BusyBox's findfs support or
+	  enable the BR2_PACKAGE_UTIL_LINUX_FINDFS option.
+
 config BR2_PACKAGE_OPENPOWERLINK_DEBUG_LEVEL
 	bool "openpowerlink debug option has been removed"
 	select BR2_LEGACY

@@ -59,11 +59,6 @@ config BR2_PACKAGE_E2FSPROGS_FILEFRAG
 	bool "filefrag"
 	default y
 
-config BR2_PACKAGE_E2FSPROGS_FINDFS
-	bool "findfs"
-	default y
-	select BR2_PACKAGE_E2FSPROGS_E2LABEL
-
 config BR2_PACKAGE_E2FSPROGS_FSCK
 	bool "fsck"
 	default y
