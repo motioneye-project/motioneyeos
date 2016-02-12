@@ -634,26 +634,31 @@ define TOOLCHAIN_EXTERNAL_INSTALL_TARGET_LIBS
 		for libs in $(USR_LIB_EXTERNAL_LIBS); do \
 			$(call copy_toolchain_lib_root,$${ARCH_SYSROOT_DIR},$${SUPPORT_LIB_DIR},$${ARCH_LIB_DIR},$$libs,/usr/lib); \
 		done ; \
-	fi ; \
-	if test "$(BR2_TOOLCHAIN_EXTERNAL_GDB_SERVER_COPY)" = "y"; then \
-		$(call MESSAGE,"Copying gdbserver") ; \
-		gdbserver_found=0 ; \
-		for d in $${ARCH_SYSROOT_DIR}/usr \
-			 $${ARCH_SYSROOT_DIR}/../debug-root/usr \
-			 $${ARCH_SYSROOT_DIR}/usr/$${ARCH_LIB_DIR} \
-			 $(TOOLCHAIN_EXTERNAL_INSTALL_DIR); do \
-			if test -f $${d}/bin/gdbserver ; then \
-				install -m 0755 -D $${d}/bin/gdbserver $(TARGET_DIR)/usr/bin/gdbserver ; \
-				gdbserver_found=1 ; \
-				break ; \
-			fi ; \
-		done ; \
-		if [ $${gdbserver_found} -eq 0 ] ; then \
-			echo "Could not find gdbserver in external toolchain" ; \
-			exit 1 ; \
-		fi ; \
 	fi
 endef
+
+ifeq ($(BR2_TOOLCHAIN_EXTERNAL_GDB_SERVER_COPY),y)
+define TOOLCHAIN_EXTERNAL_INSTALL_TARGET_GDBSERVER
+	$(Q)ARCH_SYSROOT_DIR="$(call toolchain_find_sysroot,$(TOOLCHAIN_EXTERNAL_CC) $(TOOLCHAIN_EXTERNAL_CFLAGS))" ; \
+	ARCH_LIB_DIR="$(call toolchain_find_libdir,$(TOOLCHAIN_EXTERNAL_CC) $(TOOLCHAIN_EXTERNAL_CFLAGS))" ; \
+	$(call MESSAGE,"Copying gdbserver") ; \
+	gdbserver_found=0 ; \
+	for d in $${ARCH_SYSROOT_DIR}/usr \
+		 $${ARCH_SYSROOT_DIR}/../debug-root/usr \
+		 $${ARCH_SYSROOT_DIR}/usr/$${ARCH_LIB_DIR} \
+		 $(TOOLCHAIN_EXTERNAL_INSTALL_DIR); do \
+		if test -f $${d}/bin/gdbserver ; then \
+			install -m 0755 -D $${d}/bin/gdbserver $(TARGET_DIR)/usr/bin/gdbserver ; \
+			gdbserver_found=1 ; \
+			break ; \
+		fi ; \
+	done ; \
+	if [ $${gdbserver_found} -eq 0 ] ; then \
+		echo "Could not find gdbserver in external toolchain" ; \
+		exit 1 ; \
+	fi
+endef
+endif
 
 define TOOLCHAIN_EXTERNAL_INSTALL_SYSROOT_LIBS
 	$(Q)SYSROOT_DIR="$(call toolchain_find_sysroot,$(TOOLCHAIN_EXTERNAL_CC))" ; \
@@ -804,6 +809,7 @@ endef
 define TOOLCHAIN_EXTERNAL_INSTALL_TARGET_CMDS
 	$(TOOLCHAIN_EXTERNAL_CREATE_TARGET_LIB_SYMLINK)
 	$(TOOLCHAIN_EXTERNAL_INSTALL_TARGET_LIBS)
+	$(TOOLCHAIN_EXTERNAL_INSTALL_TARGET_GDBSERVER)
 	$(TOOLCHAIN_EXTERNAL_INSTALL_BFIN_FDPIC)
 	$(TOOLCHAIN_EXTERNAL_INSTALL_BFIN_FLAT)
 	$(TOOLCHAIN_EXTERNAL_FIXUP_UCLIBCNG_LDSO)
