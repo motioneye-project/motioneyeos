@@ -16,7 +16,7 @@ if [ -z "$1" ]; then
     usage
 fi
 
-test "root" != "$USER" && exec sudo $0 "$@"
+if [[ $(id -u) -ne 0 ]]; then echo "Please run as root"; exit 1; fi
 
 function msg() {
     echo ":: $1"
