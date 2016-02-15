@@ -1,0 +1,29 @@
+From 8d189e73e660a637ae3f5a604448103ea42e397d Mon Sep 17 00:00:00 2001
+From: Martin Bark <martin@barkynet.com>
+Date: Fri, 12 Feb 2016 16:52:19 +0000
+Subject: [PATCH] ping: link against libm
+
+This commit links ping against libm because ping.c calls the math library
+function finite().
+
+Signed-off-by: Martin Bark <martin@barkynet.com>
+---
+ Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile b/Makefile
+index 8b37c42..fb80f6f 100644
+--- a/Makefile
++++ b/Makefile
+@@ -156,7 +156,7 @@ LIB_clockdiff = $(LIB_CAP)
+ DEF_ping_common = $(DEF_CAP) $(DEF_IDN)
+ DEF_ping6_common = $(DEF_CAP) $(DEF_IDN)
+ DEF_ping  = $(DEF_CAP) $(DEF_IDN) $(DEF_WITHOUT_IFADDRS)
+-LIB_ping  = $(LIB_CAP) $(LIB_IDN) $(LIB_RESOLV)
++LIB_ping  = $(LIB_CAP) $(LIB_IDN) $(LIB_RESOLV) -lm
+ 
+ ping: ping_common.o ping6_common.o
+ ping.o ping_common.o ping6_common.o: ping.h in6_flowlabel.h
+-- 
+2.7.0
+
