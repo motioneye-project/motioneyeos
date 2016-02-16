@@ -7,7 +7,7 @@ config BR2_PACKAGE_GRAPHITE2
 	  groups to provide cross-platform rendering for complex
 	  writing systems.
 
-	  http://sourceforge.net/projects/silgraphite/
+	  http://graphite.sil.org/
 
 comment "graphite2 needs a toolchain w/ C++, dynamic library"
 	depends on !BR2_INSTALL_LIBSTDCPP || BR2_STATIC_LIBS
