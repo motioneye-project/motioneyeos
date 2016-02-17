@@ -1,0 +1,34 @@
+From 212016f27dd581fd7bef1a44a3342c59619a4ec8 Mon Sep 17 00:00:00 2001
+From: Zoltan Gyarmati <mr.zoltan.gyarmati@gmail.com>
+Date: Wed, 27 Jan 2016 17:24:25 +0100
+Subject: [PATCH] fix "Error allocating memory for pkgDataFlags." compilation
+ error
+
+ This is backport of the upstream icu commit 38081
+(http://bugs.icu-project.org/trac/changeset/38081/icu/trunk), which is
+a fix to upstream icu bug #11959
+(http://bugs.icu-project.org/trac/ticket/11959)
+
+Signed-off-by: Zoltan Gyarmati <mr.zoltan.gyarmati@gmail.com>
+---
+ source/tools/toolutil/flagparser.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/source/tools/toolutil/flagparser.c b/source/tools/toolutil/flagparser.c
+index 5543415..57256c3 100644
+--- a/source/tools/toolutil/flagparser.c
++++ b/source/tools/toolutil/flagparser.c
+@@ -96,8 +96,8 @@ parseFlagsFile_cleanup:
+     uprv_free(buffer);
+ 
+     T_FileStream_close(f);
+-    
+-    if (U_FAILURE(*status)) {
++
++    if (U_FAILURE(*status) && *status != U_BUFFER_OVERFLOW_ERROR) {
+         return -1;
+     }
+ 
+-- 
+1.9.1
+
