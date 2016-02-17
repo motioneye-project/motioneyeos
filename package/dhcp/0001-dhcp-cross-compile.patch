@@ -1,0 +1,34 @@
+dhcp cross compile support integration
+
+Allow BINDCONFIG to be initialized in environment passed to configure.
+
+Allow archiver to be determined during configure.
+
+This patch is submitted upstream as part of a cross compiling enhancement
+suggestion to dhcp-suggest@isc.org. Reference ISC-Bugs #41502.
+
+Signed-off-by: Doug Kehn <rdkehn@yahoo.com>
+
+Index: dhcp-4.3.3-P1/configure.ac
+===================================================================
+--- dhcp-4.3.3-P1.orig/configure.ac
++++ dhcp-4.3.3-P1/configure.ac
+@@ -33,7 +33,7 @@ if test "$GCC" = "yes"; then
+ fi
+ 
+ # We can have some flags to pass to bind configure
+-BINDCONFIG=
++BINDCONFIG="$BINDCONFIG"
+ AC_SUBST(BINDCONFIG)
+ 
+ # POSIX doesn't include the IPv6 Advanced Socket API and glibc hides
+@@ -43,6 +43,9 @@ AC_SUBST(BINDCONFIG)
+ # Use this to define _GNU_SOURCE to pull in the IPv6 Advanced Socket API.
+ AC_USE_SYSTEM_EXTENSIONS
+ 
++AC_CHECK_TOOL(AR,ar)
++AC_SUBST(AR)
++
+ AC_PROG_RANLIB
+ AC_CONFIG_HEADERS([includes/config.h])
+ 
