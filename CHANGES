@@ -1,9 +1,10 @@
-2016.02, Not yet released
+2016.02-rc2, Released February 18th, 2016
 
 	Fixes all over the tree.
 
 	Toolchain: PR19405 backport to binutils 2.25.1 to fix NIOS ld
-	crash. glibc security patches for CVE-2014-8121, CVE-2015-1781
+	crash, backport of Xtensa .init/.fini literals handling.
+	glibc security patches for CVE-2014-8121, CVE-2015-1781
 	and CVE-2015-7547.
 
 	Defconfigs for Acmesystems Arietta g25 added.
