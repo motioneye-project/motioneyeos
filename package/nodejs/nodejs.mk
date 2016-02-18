@@ -5,11 +5,7 @@
 ################################################################################
 
 NODEJS_VERSION = $(call qstrip,$(BR2_PACKAGE_NODEJS_VERSION_STRING))
-ifeq ($(findstring 0.10.,$(NODEJS_VERSION)),)
 NODEJS_SOURCE = node-v$(NODEJS_VERSION).tar.xz
-else
-NODEJS_SOURCE = node-v$(NODEJS_VERSION).tar.gz
-endif
 NODEJS_SITE = http://nodejs.org/dist/v$(NODEJS_VERSION)
 NODEJS_DEPENDENCIES = host-python host-nodejs zlib \
 	$(call qstrip,$(BR2_PACKAGE_NODEJS_MODULES_ADDITIONAL_DEPS))
