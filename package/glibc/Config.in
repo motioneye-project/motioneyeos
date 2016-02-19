@@ -32,7 +32,7 @@ config BR2_PACKAGE_GLIBC
 
 choice
 	prompt "glibc version"
-	default BR2_GLIBC_VERSION_2_21
+	default BR2_GLIBC_VERSION_2_22
 
 config BR2_GLIBC_VERSION_2_21
 	bool "2.21"
