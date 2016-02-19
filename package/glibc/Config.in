@@ -39,7 +39,13 @@ config BR2_GLIBC_VERSION_2_21
 
 config BR2_GLIBC_VERSION_2_22
 	bool "2.22"
-	depends on !BR2_sparc # broken
+	# No support for pthread barriers on < v9 ISA
+	depends on !BR2_sparc
+
+config BR2_GLIBC_VERSION_2_23
+	bool "2.23"
+	# No support for pthread barriers on < v9 ISA
+	depends on !BR2_sparc
 
 endchoice
 
@@ -51,3 +57,4 @@ config BR2_GLIBC_VERSION_STRING
 	default "2.19-svnr25243" if BR2_EGLIBC_VERSION_2_19
 	default "2.21" if BR2_GLIBC_VERSION_2_21
 	default "2.22" if BR2_GLIBC_VERSION_2_22
+	default "2.23" if BR2_GLIBC_VERSION_2_23
