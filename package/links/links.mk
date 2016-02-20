@@ -40,7 +40,10 @@ LINKS_DEPENDENCIES += bzip2
 endif
 
 ifeq ($(BR2_PACKAGE_LIBEVENT),y)
+LINKS_CONF_OPTS += --with-libevent
 LINKS_DEPENDENCIES += libevent
+else
+LINKS_CONF_OPTS += --without-libevent
 endif
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
