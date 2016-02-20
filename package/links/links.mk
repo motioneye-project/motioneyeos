@@ -56,6 +56,13 @@ else
 LINKS_CONF_OPTS += --without-bzip2
 endif
 
+ifeq ($(BR2_PACKAGE_GPM),y)
+LINKS_CONF_OPTS += --with-gpm
+LINKS_DEPENDENCIES += gpm
+else
+LINKS_CONF_OPTS += --without-gpm
+endif
+
 ifeq ($(BR2_PACKAGE_LIBEVENT),y)
 LINKS_CONF_OPTS += --with-libevent
 LINKS_DEPENDENCIES += libevent
