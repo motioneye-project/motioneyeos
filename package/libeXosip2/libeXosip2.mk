@@ -20,6 +20,10 @@ ifeq ($(BR2_arc),y)
 LIBEXOSIP2_CONF_ENV += CFLAGS="$(TARGET_CFLAGS) -U__arc__"
 endif
 
+ifeq ($(BR2_PACKAGE_C_ARES),y)
+LIBEXOSIP2_DEPENDENCIES += c-ares
+endif
+
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 LIBEXOSIP2_DEPENDENCIES += openssl
 LIBEXOSIP2_CONF_OPTS += --enable-openssl
