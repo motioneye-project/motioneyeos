@@ -4,7 +4,9 @@
 #
 ################################################################################
 
-KODI_PVR_NEXTPVR_VERSION = 3a205e49b50baba605d3235f6613fdd36c1d3234
+# This cset is on the branch 'Jarvis'
+# When Kodi is updated, then this should be updated to the corresponding branch
+KODI_PVR_NEXTPVR_VERSION = 288d238a7d59e5957b87fe60775dfaaaed104007
 KODI_PVR_NEXTPVR_SITE = $(call github,kodi-pvr,pvr.nextpvr,$(KODI_PVR_NEXTPVR_VERSION))
 KODI_PVR_NEXTPVR_LICENSE = GPLv2+
 KODI_PVR_NEXTPVR_LICENSE_FILES = src/client.h
