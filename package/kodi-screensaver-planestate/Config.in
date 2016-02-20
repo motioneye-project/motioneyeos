@@ -1,0 +1,11 @@
+config BR2_PACKAGE_KODI_SCREENSAVER_PLANESTATE
+	bool "kodi-screensaver-planestate"
+	depends on BR2_PACKAGE_KODI_GL # libsoil
+	select BR2_PACKAGE_LIBSOIL
+	help
+	  PlaneState screensaver for Kodi
+
+	  https://github.com/notspiff/screensaver.planestate
+
+comment "planestate needs an OpenGL backend"
+	depends on !BR2_PACKAGE_KODI_GL
