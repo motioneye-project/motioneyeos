@@ -31,7 +31,10 @@ ifeq ($(BR2_PACKAGE_JPEG),y)
 LINKS_DEPENDENCIES += jpeg
 endif
 ifeq ($(BR2_PACKAGE_TIFF),y)
+LINKS_CONF_OPTS += --with-libtiff
 LINKS_DEPENDENCIES += tiff
+else
+LINKS_CONF_OPTS += --without-libtiff
 endif
 endif
 
