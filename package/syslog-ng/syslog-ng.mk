@@ -20,6 +20,13 @@ ifeq ($(BR2_PACKAGE_BUSYBOX),y)
 SYSLOG_NG_DEPENDENCIES += busybox
 endif
 
+ifeq ($(BR2_PACKAGE_LIBCAP),y)
+SYSLOG_NG_DEPENDENCIES += libcap
+SYSLOG_NG_CONF_OPTS += --enable-linux-caps
+else
+SYSLOG_NG_CONF_OPTS += --disable-linux-caps
+endif
+
 ifeq ($(BR2_PACKAGE_PYTHON),y)
 SYSLOG_NG_DEPENDENCIES += python
 SYSLOG_NG_CONF_OPTS += \
