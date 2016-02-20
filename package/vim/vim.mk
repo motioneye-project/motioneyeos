@@ -27,6 +27,13 @@ VIM_CONF_OPTS = --with-tlib=ncurses --enable-gui=no --without-x
 VIM_LICENSE = Charityware
 VIM_LICENSE_FILES = README.txt
 
+ifeq ($(BR2_PACKAGE_ACL),y)
+VIM_CONF_OPTS += --enable-acl
+VIM_DEPENDENCIES += acl
+else
+VIM_CONF_OPTS += --disable-acl
+endif
+
 ifeq ($(BR2_PACKAGE_GPM),y)
 VIM_CONF_OPTS += --enable-gpm
 VIM_DEPENDENCIES += gpm
