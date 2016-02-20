@@ -28,7 +28,10 @@ else
 LINKS_CONF_OPTS += --without-directfb
 endif
 ifeq ($(BR2_PACKAGE_JPEG),y)
+LINKS_CONF_OPTS += --with-libjpeg
 LINKS_DEPENDENCIES += jpeg
+else
+LINKS_CONF_OPTS += --without-libjpeg
 endif
 ifeq ($(BR2_PACKAGE_TIFF),y)
 LINKS_CONF_OPTS += --with-libtiff
