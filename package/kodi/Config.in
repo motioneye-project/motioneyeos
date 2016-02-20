@@ -239,6 +239,7 @@ menu "Audio decoder addons"
 endmenu
 
 menu "Audio DSP addons"
+	source "package/kodi-adsp-basic/Config.in"
 	source "package/kodi-adsp-freesurround/Config.in"
 endmenu
 
