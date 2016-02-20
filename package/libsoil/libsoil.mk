@@ -18,6 +18,10 @@ define LIBSOIL_EXTRACT_CMDS
 	mv $(@D)/Simple\ OpenGL\ Image\ Library/* $(@D)
 endef
 
+# gnu patch < v2.5.9 doesn't correctly handle spaces in file names,
+# and we want to patch the 'alternate Makefile.txt' file, so rename
+# the file (and patch the renamed file) for compatibility with older
+# distributions
 define REMOVE_SPACE_FROM_FILENAME
 	cd $(@D)/projects/makefile/ && \
 		mv "alternate Makefile.txt" alternate_Makefile.txt
