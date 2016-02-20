@@ -30,6 +30,7 @@ KODI_CONF_ENV = \
 
 KODI_CONF_OPTS +=  \
 	--with-ffmpeg=shared \
+	--disable-goom \
 	--disable-joystick \
 	--disable-openmax \
 	--disable-projectm \
@@ -114,12 +115,6 @@ KODI_CONF_OPTS += --enable-gles
 else
 KODI_CONF_OPTS += --disable-gles
 endif
-endif
-
-ifeq ($(BR2_PACKAGE_KODI_GOOM),y)
-KODI_CONF_OPTS += --enable-goom
-else
-KODI_CONF_OPTS += --disable-goom
 endif
 
 ifeq ($(BR2_PACKAGE_KODI_LIBUSB),y)

@@ -136,15 +136,6 @@ config BR2_PACKAGE_KODI_LIBBLURAY
 comment "libbluray support needs a toolchain w/ dynamic library"
 	depends on BR2_STATIC_LIBS
 
-config BR2_PACKAGE_KODI_GOOM
-	bool "goom screensaver"
-	depends on BR2_PACKAGE_KODI_GL
-	help
-	  Enable goom screensaver
-
-comment "goom needs an OpenGL backend"
-	depends on !BR2_PACKAGE_KODI_GL
-
 config BR2_PACKAGE_KODI_RSXS
 	bool "rsxs screensaver"
 	depends on BR2_PACKAGE_KODI_GL
@@ -308,6 +299,7 @@ menu "Screensavers"
 endmenu
 
 menu "Visualisations"
+	source "package/kodi-visualisation-goom/Config.in"
 	source "package/kodi-visualisation-shadertoy/Config.in"
 	source "package/kodi-visualisation-spectrum/Config.in"
 	source "package/kodi-visualisation-waveforhue/Config.in"
