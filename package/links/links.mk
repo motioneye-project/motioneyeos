@@ -33,6 +33,12 @@ LINKS_DEPENDENCIES += jpeg
 else
 LINKS_CONF_OPTS += --without-libjpeg
 endif
+ifeq ($(BR2_PACKAGE_LIBRSVG),y)
+LINKS_CONF_OPTS += --with-librsvg
+LINKS_DEPENDENCIES += librsvg
+else
+LINKS_CONF_OPTS += --without-librsvg
+endif
 ifeq ($(BR2_PACKAGE_TIFF),y)
 LINKS_CONF_OPTS += --with-libtiff
 LINKS_DEPENDENCIES += tiff
