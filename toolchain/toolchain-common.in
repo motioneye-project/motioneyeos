@@ -5,6 +5,10 @@
 # so put it here instead
 source "package/gdb/Config.in.host"
 
+# https://sourceware.org/bugzilla/show_bug.cgi?id=19405
+config BR2_TOOLCHAIN_HAS_BINUTILS_BUG_19405
+	bool
+
 config BR2_TOOLCHAIN_HAS_NATIVE_RPC
 	bool
 

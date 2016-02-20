@@ -225,12 +225,16 @@ config BR2_PACKAGE_OPENCV_WITH_QT
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_USE_MMU # qt
 	depends on BR2_PACKAGE_OPENCV_LIB_HIGHGUI
+	depends on !BR2_TOOLCHAIN_HAS_BINUTILS_BUG_19405 # Qt GUI module
 	select BR2_PACKAGE_QT
 	select BR2_PACKAGE_QT_STL
 	select BR2_PACKAGE_QT_GUI_MODULE
 	select BR2_PACKAGE_QT_TEST
 	help
 	  Use Qt with QtTest module and STL support
+
+comment "qt backend support needs a toolchain not affected by Binutils bug 19405"
+	depends on BR2_TOOLCHAIN_HAS_BINUTILS_BUG_19405
 
 config BR2_PACKAGE_OPENCV_WITH_TIFF
 	bool "tiff support"
