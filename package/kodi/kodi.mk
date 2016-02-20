@@ -35,6 +35,7 @@ KODI_CONF_OPTS +=  \
 	--disable-openmax \
 	--disable-projectm \
 	--disable-pulse \
+	--disable-rsxs \
 	--disable-vdpau \
 	--disable-vtbdecoder \
 	--enable-optimizations
@@ -89,24 +90,8 @@ ifeq ($(BR2_PACKAGE_KODI_GL),y)
 KODI_DEPENDENCIES += libglew libglu libgl xlib_libX11 xlib_libXext \
 	xlib_libXmu xlib_libXrandr xlib_libXt libdrm
 KODI_CONF_OPTS += --enable-gl --enable-x11 --disable-gles
-ifeq ($(BR2_PACKAGE_KODI_RSXS),y)
-# fix rsxs compile
-# gcc5: http://trac.kodi.tv/ticket/16006#comment:6
-# make sure target libpng-config is used, options taken from rsxs-0.9/acinclude.m4
-KODI_CONF_ENV += \
-	ac_cv_type__Bool=yes \
-	jm_cv_func_gettimeofday_clobber=no \
-	mac_cv_pkg_png=$(STAGING_DIR)/usr/bin/libpng-config \
-	mac_cv_pkg_cppflags="`$(STAGING_DIR)/usr/bin/libpng-config --I_opts --cppflags`" \
-	mac_cv_pkg_cxxflags="`$(STAGING_DIR)/usr/bin/libpng-config --ccopts`" \
-	mac_cv_pkg_ldflags="`$(STAGING_DIR)/usr/bin/libpng-config --L_opts --R_opts`" \
-	mac_cv_pkg_libs="`$(STAGING_DIR)/usr/bin/libpng-config --libs`"
-KODI_CONF_OPTS += --enable-rsxs
 else
-KODI_CONF_OPTS += --disable-rsxs
-endif
-else
-KODI_CONF_OPTS += --disable-gl --disable-rsxs --disable-x11
+KODI_CONF_OPTS += --disable-gl --disable-x11
 ifeq ($(BR2_PACKAGE_KODI_EGL_GLES),y)
 KODI_DEPENDENCIES += libegl libgles
 KODI_CONF_ENV += CXXFLAGS="$(TARGET_CXXFLAGS) `$(PKG_CONFIG_HOST_BINARY) --cflags --libs egl`"
@@ -224,7 +209,6 @@ endef
 KODI_PRE_CONFIGURE_HOOKS += KODI_BOOTSTRAP
 
 define KODI_CLEAN_UNUSED_ADDONS
-	rm -Rf $(TARGET_DIR)/usr/share/kodi/addons/screensaver.rsxs.plasma
 	rm -Rf $(TARGET_DIR)/usr/share/kodi/addons/visualization.milkdrop
 	rm -Rf $(TARGET_DIR)/usr/share/kodi/addons/visualization.projectm
 	rm -Rf $(TARGET_DIR)/usr/share/kodi/addons/visualization.itunes

@@ -1,0 +1,37 @@
+Fix cross-compilation
+
+Use the cross-compiler and not the host version.
+
+Patch sent upstream:
+https://github.com/notspiff/screensavers.rsxs/pull/5
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+
+diff -uNr screensavers.rsxs-195e0ec3fbbcb2ee2012cd560e42d05167f0f259.org/CMakeLists.txt screensavers.rsxs-195e0ec3fbbcb2ee2012cd560e42d05167f0f259/CMakeLists.txt
+--- screensavers.rsxs-195e0ec3fbbcb2ee2012cd560e42d05167f0f259.org/CMakeLists.txt	2015-03-19 12:20:23.000000000 +0100
++++ screensavers.rsxs-195e0ec3fbbcb2ee2012cd560e42d05167f0f259/CMakeLists.txt	2015-07-19 20:26:16.660481032 +0200
+@@ -33,6 +33,11 @@
+                     ${PROJECT_SOURCE_DIR}/${rsxs_dir}/src/skyrocket
+                     ${PROJECT_SOURCE_DIR}/${rsxs_dir}/src/solarwinds)
+                         
++
++get_filename_component( COMPILER_FILENAME "${CMAKE_C_COMPILER}" NAME )
++string( REGEX REPLACE "-[^-]+$" ""
++        TOOLCHAIN_NAME "${COMPILER_FILENAME}" )
++
+ include(ExternalProject)
+ set(update_command "")
+ if(BOOTSTRAP_IN_TREE OR NOT DEFINED BOOTSTRAP_IN_TREE)
+@@ -46,8 +51,11 @@
+   endif()
+ endif()
+ externalproject_add(rsxs SOURCE_DIR ${PROJECT_SOURCE_DIR}/${rsxs_dir}
+-                    CONFIGURE_COMMAND ${configure_start}
++                    CONFIGURE_COMMAND gl_cv_func_gettimeofday_clobber=no
++                                      ac_cv_func_malloc_0_nonnull=yes
++                                      ${configure_start}
+                                       --prefix=<INSTALL_DIR>
++                                      --host=${TOOLCHAIN_NAME}
+                                       --without-xscreensaver
+                                       --disable-cyclone
+                                       --disable-euphoria

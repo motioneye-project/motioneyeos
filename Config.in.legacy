@@ -145,6 +145,13 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2016.05"
 
+config BR2_PACKAGE_KODI_RSXS
+	bool "rsxs support in Kodi was moved to an addon"
+	select BR2_LEGACY
+	select BR2_PACKAGE_KODI_SCREENSAVER_RSXS
+	help
+	  rsxs support in Kodi was moved to an addon
+
 config BR2_PACKAGE_KODI_GOOM
 	bool "Goom support in Kodi was moved to an addon"
 	select BR2_LEGACY

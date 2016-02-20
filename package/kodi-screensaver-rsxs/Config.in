@@ -1,0 +1,10 @@
+config BR2_PACKAGE_KODI_SCREENSAVER_RSXS
+	bool "kodi-screensaver-rsxs"
+	depends on BR2_PACKAGE_KODI_GL # libglu
+	help
+	  RSXS screensaver add-ons for Kodi
+
+	  https://github.com/notspiff/screensavers.rsxs
+
+comment "kodi-screensaver-rsxs needs an OpenGL backend"
+	depends on !BR2_PACKAGE_KODI_GL
