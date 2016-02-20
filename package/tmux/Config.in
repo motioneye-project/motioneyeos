@@ -7,4 +7,4 @@ config BR2_PACKAGE_TMUX
 	  tmux is a terminal multiplexer, it enables a number of terminals
 	  (or windows) to be accessed and controlled from a single terminal.
 
-	  http://tmux.sourceforge.net/
+	  https://tmux.github.io/
