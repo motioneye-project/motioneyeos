@@ -52,7 +52,10 @@ LINKS_DEPENDENCIES += xz
 endif
 
 ifeq ($(BR2_PACKAGE_ZLIB),y)
+LINKS_CONF_OPTS += --with-zlib
 LINKS_DEPENDENCIES += zlib
+else
+LINKS_CONF_OPTS += --without-zlib
 endif
 
 $(eval $(autotools-package))
