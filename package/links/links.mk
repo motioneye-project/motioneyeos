@@ -48,7 +48,10 @@ LINKS_DEPENDENCIES += openssl
 endif
 
 ifeq ($(BR2_PACKAGE_XZ),y)
+LINKS_CONF_OPTS += --with-lzma
 LINKS_DEPENDENCIES += xz
+else
+LINKS_CONF_OPTS += --without-lzma
 endif
 
 ifeq ($(BR2_PACKAGE_ZLIB),y)
