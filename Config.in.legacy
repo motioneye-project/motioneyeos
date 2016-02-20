@@ -145,6 +145,13 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2016.05"
 
+config BR2_PACKAGE_KODI_WAVPACK
+	bool "wavpack"
+	select BR2_LEGACY
+	help
+	  wavpack support was removed in favour of ffmpeg:
+	  https://github.com/xbmc/xbmc/commit/7916902c9e6f7a523265594f3ad7f921f93f1cd4
+
 config BR2_PACKAGE_KODI_RSXS
 	bool "rsxs support in Kodi was moved to an addon"
 	select BR2_LEGACY

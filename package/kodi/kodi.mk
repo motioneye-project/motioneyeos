@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-KODI_VERSION = 15.2-Isengard
+KODI_VERSION = 16.0-Jarvis
 KODI_SITE = $(call github,xbmc,xbmc,$(KODI_VERSION))
 KODI_LICENSE = GPLv2
 KODI_LICENSE_FILES = LICENSE.GPL
@@ -12,8 +12,8 @@ KODI_LICENSE_FILES = LICENSE.GPL
 KODI_INSTALL_STAGING = YES
 KODI_DEPENDENCIES = host-gawk host-gettext host-gperf host-zip host-giflib \
 	host-libjpeg host-lzo host-nasm host-libpng host-swig
-KODI_DEPENDENCIES += boost bzip2 expat ffmpeg fontconfig freetype jasper jpeg \
-	libass libcdio libcurl libfribidi libgcrypt libmpeg2 \
+KODI_DEPENDENCIES += boost bzip2 expat ffmpeg fontconfig freetype giflib jasper jpeg \
+	libass libcdio libcrossguid libcurl libdcadec libfribidi libgcrypt libmpeg2 \
 	libogg libplist libpng libsamplerate libsquish libvorbis libxml2 \
 	libxslt lzo ncurses openssl pcre python readline sqlite taglib tiff \
 	tinyxml yajl zlib
@@ -30,12 +30,9 @@ KODI_CONF_ENV = \
 
 KODI_CONF_OPTS +=  \
 	--with-ffmpeg=shared \
-	--disable-goom \
 	--disable-joystick \
 	--disable-openmax \
-	--disable-projectm \
 	--disable-pulse \
-	--disable-rsxs \
 	--disable-vdpau \
 	--disable-vtbdecoder \
 	--enable-optimizations
@@ -176,10 +173,6 @@ ifeq ($(BR2_PACKAGE_KODI_LIRC),y)
 KODI_CONF_OPTS += --enable-lirc
 else
 KODI_CONF_OPTS += --disable-lirc
-endif
-
-ifeq ($(BR2_PACKAGE_KODI_WAVPACK),y)
-KODI_DEPENDENCIES += wavpack
 endif
 
 ifeq ($(BR2_PACKAGE_KODI_LIBTHEORA),y)
