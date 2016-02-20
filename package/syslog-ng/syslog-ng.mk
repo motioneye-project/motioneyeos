@@ -58,6 +58,10 @@ else
 SYSLOG_NG_CONF_OPTS += --disable-json
 endif
 
+ifeq ($(BR2_PACKAGE_UTIL_LINUX_LIBUUID),y)
+SYSLOG_NG_DEPENDENCIES += util-linux
+endif
+
 ifeq ($(BR2_INIT_SYSTEMD),y)
 SYSLOG_NG_DEPENDENCIES += systemd
 SYSLOG_NG_CONF_OPTS += \
