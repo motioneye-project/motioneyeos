@@ -58,7 +58,10 @@ LINKS_CONF_OPTS += --without-libevent
 endif
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
+LINKS_CONF_OPTS += --with-ssl --enable-ssl-pkgconfig
 LINKS_DEPENDENCIES += openssl
+else
+LINKS_CONF_OPTS += --without-ssl
 endif
 
 ifeq ($(BR2_PACKAGE_XZ),y)
