@@ -36,7 +36,10 @@ endif
 endif
 
 ifeq ($(BR2_PACKAGE_BZIP2),y)
+LINKS_CONF_OPTS += --with-bzip2
 LINKS_DEPENDENCIES += bzip2
+else
+LINKS_CONF_OPTS += --without-bzip2
 endif
 
 ifeq ($(BR2_PACKAGE_LIBEVENT),y)
