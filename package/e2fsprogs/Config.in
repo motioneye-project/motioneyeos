@@ -1,4 +1,3 @@
-
 config BR2_PACKAGE_E2FSPROGS
 	bool "e2fsprogs"
 	depends on BR2_USE_WCHAR # util-linux
