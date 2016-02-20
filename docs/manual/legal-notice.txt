@@ -74,6 +74,9 @@ file to inform you of relevant material that could not be saved.
 Here is a list of the licenses that are most widely used by packages in
 Buildroot, with the name used in the manifest files:
 
+* `AGPLv3`:
+  http://www.gnu.org/licenses/agpl-3.0.en.html[
+  GNU Affero General Public License, version 3];
 * `GPLv2`:
   http://www.gnu.org/licenses/old-licenses/gpl-2.0.html[
   GNU General Public License, version 2];
