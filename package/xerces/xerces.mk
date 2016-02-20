@@ -21,6 +21,13 @@ endef
 
 XERCES_POST_PATCH_HOOKS += XERCES_DISABLE_SAMPLES
 
+ifeq ($(BR2_PACKAGE_ICU),y)
+XERCES_CONF_OPTS += --with-icu=$(STAGING_DIR)/usr
+XERCES_DEPENDENCIES += icu
+else
+XERCES_CONF_OPTS += --without-icu
+endif
+
 ifeq ($(BR2_PACKAGE_LIBICONV),y)
 XERCES_CONF_ENV += LIBS=-liconv
 XERCES_DEPENDENCIES += libiconv
