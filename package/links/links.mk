@@ -36,6 +36,8 @@ LINKS_DEPENDENCIES += tiff
 else
 LINKS_CONF_OPTS += --without-libtiff
 endif
+else
+LINKS_CONF_OPTS += --disable-graphics
 endif
 
 ifeq ($(BR2_PACKAGE_BZIP2),y)
