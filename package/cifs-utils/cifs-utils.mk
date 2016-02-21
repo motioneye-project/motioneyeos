@@ -14,6 +14,10 @@ ifeq ($(BR2_STATIC_LIBS),y)
 CIFS_UTILS_CONF_OPTS += --disable-pie
 endif
 
+ifeq ($(BR2_PACKAGE_KEYUTILS),y)
+CIFS_UTILS_DEPENDENCIES += keyutils
+endif
+
 define CIFS_UTILS_NO_WERROR
 	$(SED) 's/-Werror//' $(@D)/Makefile.in
 endef
