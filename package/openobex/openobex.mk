@@ -36,7 +36,7 @@ OPENOBEX_CONF_OPTS += --disable-bluetooth
 endif
 
 ifeq ($(BR2_PACKAGE_OPENOBEX_LIBUSB),y)
-OPENOBEX_DEPENDENCIES += libusb
+OPENOBEX_DEPENDENCIES += libusb-compat
 OPENOBEX_CONF_OPTS += --with-usb=$(STAGING_DIR)
 else
 OPENOBEX_CONF_OPTS += --disable-usb
