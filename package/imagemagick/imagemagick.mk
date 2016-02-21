@@ -60,6 +60,13 @@ else
 IMAGEMAGICK_CONF_OPTS += --without-jpeg
 endif
 
+ifeq ($(BR2_PACKAGE_LCMS2),y)
+IMAGEMAGICK_CONF_OPTS += --with-lcms
+IMAGEMAGICK_DEPENDENCIES += lcms2
+else
+IMAGEMAGICK_CONF_OPTS += --without-lcms
+endif
+
 ifeq ($(BR2_PACKAGE_LIBPNG),y)
 IMAGEMAGICK_CONF_OPTS += --with-png
 IMAGEMAGICK_DEPENDENCIES += libpng
