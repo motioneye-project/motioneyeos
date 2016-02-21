@@ -93,6 +93,10 @@ else
 CAIRO_CONF_OPTS += --disable-vg
 endif
 
+ifeq ($(BR2_PACKAGE_LZO),y)
+CAIRO_DEPENDENCIES += lzo
+endif
+
 ifeq ($(BR2_PACKAGE_XORG7),y)
 CAIRO_CONF_OPTS += --enable-xlib --enable-xcb --with-x
 CAIRO_DEPENDENCIES += xlib_libX11 xlib_libXext
