@@ -27,6 +27,10 @@ else
 PURE_FTPD_CONF_OPTS += --without-capabilities
 endif
 
+ifeq ($(BR2_PACKAGE_LIBSODIUM),y)
+PURE_FTPD_DEPENDENCIES += libsodium
+endif
+
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 PURE_FTPD_CONF_OPTS += --with-tls
 PURE_FTPD_DEPENDENCIES += openssl
