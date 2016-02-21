@@ -185,4 +185,12 @@ define COLLECTD_INSTALL_TARGET_CMDS
 	rm -f $(TARGET_DIR)/usr/share/collectd/postgresql_default.conf
 endef
 
+define COLLECTD_INSTALL_INIT_SYSTEMD
+	$(INSTALL) -D -m 644 package/collectd/collectd.service \
+		$(TARGET_DIR)/usr/lib/systemd/system/collectd.service
+	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
+	ln -fs ../../../../usr/lib/systemd/system/collectd.service \
+		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/collectd.service
+endef
+
 $(eval $(autotools-package))
