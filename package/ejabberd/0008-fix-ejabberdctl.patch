@@ -1,10 +1,16 @@
-Description: fix ejabberdctl
- Change default values so ejabberdctl run commands as ejabberd user
- Also add a way for the user to change default values.
-Signed-off-by: Johan Oudinet <johan.oudinet@gmail.com>
+From dc6046d9eaef16dc4e9fcda2021219910bfea0de Mon Sep 17 00:00:00 2001
+From: Johan Oudinet <johan.oudinet@gmail.com>
+Date: Sun, 21 Feb 2016 11:03:58 -0500
+Subject: [PATCH] fix ejabberdctl
 
-Index: ejabberd/ejabberdctl.template
-===================================================================
+Change default values so ejabberdctl run commands as ejabberd user
+Also add a way for the user to change default values.
+
+Signed-off-by: Johan Oudinet <johan.oudinet@gmail.com>
+---
+ ejabberdctl.template | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
 diff --git a/ejabberdctl.template b/ejabberdctl.template
 index c7d76ef..a7afce1 100755
 --- a/ejabberdctl.template
@@ -23,3 +29,6 @@ index c7d76ef..a7afce1 100755
  # check the proper system user is used if defined
  if [ "$INSTALLUSER" != "" ] ; then
      EXEC_CMD="false"
+-- 
+2.5.0
+

@@ -1,13 +1,17 @@
-Description: fix install permissions
- Without this patch, the makefile will try to install directories and
- files with incompatible permissions for ejabberd, which run as an
- ejabberd user.
-Author: Johan Oudinet <johan.oudinet@gmail.com>
+From 0f4db8755263c0825b02b4197cdb64b11fb8c638 Mon Sep 17 00:00:00 2001
+From: Johan Oudinet <johan.oudinet@gmail.com>
+Date: Sun, 21 Feb 2016 11:03:16 -0500
+Subject: [PATCH] fix install permissions
 
-Index: ejabberd/Makefile.in
-===================================================================
+Without this patch, the makefile will try to install directories and
+files with incompatible permissions for ejabberd, which run as an
+ejabberd user.
+---
+ Makefile.in | 40 ++++++----------------------------------
+ 1 file changed, 6 insertions(+), 34 deletions(-)
+
 diff --git a/Makefile.in b/Makefile.in
-index b9d783a..6ec805a 100644
+index 9cd905f..442b851 100644
 --- a/Makefile.in
 +++ b/Makefile.in
 @@ -122,10 +122,8 @@ copy-files: $(call TO_DEST,$(MAIN_FILES))
@@ -77,3 +81,6 @@ index b9d783a..6ec805a 100644
  
  uninstall: uninstall-binary
  
+-- 
+2.5.0
+

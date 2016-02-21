@@ -1,0 +1,29 @@
+From a4910ec9257d0743e42c4b1650b6ef60196a013d Mon Sep 17 00:00:00 2001
+From: Philipp Huebner <debalance@debian.org>
+Date: Sun, 21 Feb 2016 10:52:53 -0500
+Subject: [PATCH] remove make targets for deps
+
+Without this patch, dependencies would be downloaded and compiled
+using rebar at build time.
+---
+ rebar.config.script | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/rebar.config.script b/rebar.config.script
+index 833595d..1b6177d 100644
+--- a/rebar.config.script
++++ b/rebar.config.script
+@@ -192,9 +192,7 @@ Config = [{erl_opts, Macros ++ HiPE ++ DebugInfo ++
+           {xref_checks, []},
+ 	  {xref_queries,
+ 	   [{"(XC - UC) || (XU - X - B - "
+-	     ++ string:join(CfgXrefs, " - ") ++ ")", []}]},
+-          {post_hooks, PostHooks ++ CfgPostHooks},
+-          {deps, AllDeps}] ++ ElixirConfig,
++	     ++ string:join(CfgXrefs, " - ") ++ ")", []}]}],
+ %%io:format("ejabberd configuration:~n  ~p~n", [Config]),
+ Config.
+ 
+-- 
+2.5.0
+

@@ -1,10 +1,14 @@
-Description: remove make targets for deps
- Without this patch, dependencies would be downloaded and compiled
- using rebar at build time.
-Author: Philipp Huebner <debalance@debian.org>
+From 9ab065047fab913b7250525a51b9c9ad6f3a3478 Mon Sep 17 00:00:00 2001
+From: Philipp Huebner <debalance@debian.org>
+Date: Sun, 21 Feb 2016 10:55:14 -0500
+Subject: [PATCH] remove make targets for deps
 
-Index: ejabberd/Makefile.in
-===================================================================
+Without this patch, dependencies would be downloaded and compiled
+using rebar at build time.
+---
+ Makefile.in | 32 ++++----------------------------
+ 1 file changed, 4 insertions(+), 28 deletions(-)
+
 diff --git a/Makefile.in b/Makefile.in
 index 8dd6bf5..b9d783a 100644
 --- a/Makefile.in
@@ -74,3 +78,6 @@ index 8dd6bf5..b9d783a 100644
  dialyzer/erlang.plt:
  	@mkdir -p dialyzer
  	@dialyzer --build_plt --output_plt dialyzer/erlang.plt \
+-- 
+2.5.0
+
