@@ -27,6 +27,7 @@ config BR2_PACKAGE_UTIL_LINUX_LIBMOUNT
 
 config BR2_PACKAGE_UTIL_LINUX_LIBSMARTCOLS
 	bool "libsmartcols"
+	depends on BR2_USE_MMU # fork
 	help
 	  Install libsmartcols.
 
