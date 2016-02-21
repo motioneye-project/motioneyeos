@@ -61,6 +61,10 @@ ifeq ($(BR2_PACKAGE_BUSYBOX),y)
 BINUTILS_DEPENDENCIES += busybox
 endif
 
+ifeq ($(BR2_PACKAGE_ZLIB),y)
+BINUTILS_DEPENDENCIES += zlib
+endif
+
 # "host" binutils should actually be "cross"
 # We just keep the convention of "host utility" for now
 HOST_BINUTILS_CONF_OPTS = \
