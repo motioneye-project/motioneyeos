@@ -17,8 +17,11 @@ SDL_SOUND_DEPENDENCIES += libiconv
 endif
 
 # optional dependencies
-ifeq ($(BR2_PACKAGE_FLAC),y)
-SDL_SOUND_DEPENDENCIES += flac # is only used if ogg is also enabled
+ifeq ($(BR2_PACKAGE_FLAC)$(BR2_PACKAGE_LIBOGG),yy)
+SDL_SOUND_CONF_OPTS += --enable-flac
+SDL_SOUND_DEPENDENCIES += flac libogg
+else
+SDL_SOUND_CONF_OPTS += --disable-flac
 endif
 
 ifeq ($(BR2_PACKAGE_LIBMODPLUG),y)
