@@ -23,6 +23,10 @@ OPENIPMI_CONF_OPTS = \
 	--with-python=no \
 	--with-swig=no
 
+ifeq ($(BR2_PACKAGE_GDBM),y)
+OPENIPMI_DEPENDENCIES += gdbm
+endif
+
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 OPENIPMI_DEPENDENCIES += openssl
 OPENIPMI_CONF_OPTS += --with-openssl=yes
