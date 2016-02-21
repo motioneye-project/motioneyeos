@@ -42,6 +42,13 @@ else
 PULSEAUDIO_CONF_OPTS += --with-database=simple
 endif
 
+ifeq ($(BR2_PACKAGE_JACK2),y)
+PULSEAUDIO_CONF_OPTS += --enable-jack
+PULSEAUDIO_DEPENDENCIES += jack2
+else
+PULSEAUDIO_CONF_OPTS += --disable-jack
+endif
+
 ifeq ($(BR2_PACKAGE_ORC),y)
 PULSEAUDIO_DEPENDENCIES += orc
 PULSEAUDIO_CONF_ENV += ORCC=$(HOST_DIR)/usr/bin/orcc
