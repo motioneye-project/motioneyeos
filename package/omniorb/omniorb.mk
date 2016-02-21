@@ -30,6 +30,13 @@ HOST_OMNIORB_CONF_OPTS = ac_cv_path_PYTHON=$(HOST_DIR)/usr/bin/python2
 OMNIORB_CONF_OPTS += --disable-longdouble
 HOST_OMNIORB_CONF_OPTS += --disable-longdouble
 
+ifeq ($(BR2_PACKAGE_OPENSSL),y)
+OMNIORB_CONF_OPTS += --with-openssl
+OMNIORB_DEPENDENCIES += openssl
+else
+OMNIORB_CONF_OPTS += --without-openssl
+endif
+
 ifeq ($(BR2_PACKAGE_ZLIB),y)
 OMNIORB_DEPENDENCIES += zlib
 endif
