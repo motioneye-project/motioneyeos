@@ -16,6 +16,10 @@ ifeq ($(BR2_PACKAGE_BUSYBOX),y)
 GAWK_DEPENDENCIES += busybox
 endif
 
+ifeq ($(BR2_PACKAGE_LIBSIGSEGV),y)
+GAWK_DEPENDENCIES += libsigsegv
+endif
+
 # --with-mpfr requires an argument so just let
 # configure find it automatically
 ifeq ($(BR2_PACKAGE_MPFR),y)
