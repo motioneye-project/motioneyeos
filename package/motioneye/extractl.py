@@ -17,14 +17,42 @@
 
 import logging
 import os.path
+import subprocess
 
 from config import additional_config
 
 
 MOTIONEYE_CONF = '/data/etc/motioneye.conf'
 OS_CONF = '/data/etc/os.conf'
+HOSTNAME_CONF = '/data/etc/hostname'
 DATE_CONF = '/data/etc/date.conf'
 
+
+def _get_hostname():
+    try:
+        with open(HOSTNAME_CONF) as f:
+            hostname = f.read().strip()
+            logging.debug('hostname %s read from %s' % (hostname, HOSTNAME_CONF))
+            return hostname
+
+    except:
+        return ''
+
+
+def _set_hostname(hostname):
+    if hostname:
+        with open(HOSTNAME_CONF, 'w') as f:
+            f.write(hostname)
+        
+        logging.debug('hostname %s written to %s' % (hostname, HOSTNAME_CONF))
+
+    else:
+        try:
+            os.remove(HOSTNAME_CONF)
+            logging.debug('hostname file %s removed' % HOSTNAME_CONF)
+        
+        except:
+            pass
 
 def _get_date_settings():
     date_method = 'http'
@@ -300,6 +328,22 @@ def _get_boot_log():
 
 def _get_dmesg_log():
     return '<a href="javascript:downloadFile(\'log/dmesg/\');">dmesg.log</a>'
+
+
+@additional_config
+def hostname():
+    return {
+        'label': 'Hostname',
+        'description': 'sets a custom hostname for the device (leave blank for default)',
+        'type': 'str',
+        'section': 'general',
+        'advanced': True,
+        'reboot': True,
+        'required': False,
+        'validate': '^[a-z0-9\-_]{0,15}$',
+        'get': _get_hostname,
+        'set': _set_hostname
+    }
 
 
 @additional_config
