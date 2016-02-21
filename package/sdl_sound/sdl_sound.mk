@@ -32,7 +32,10 @@ SDL_SOUND_CONF_OPTS += --disable-modplug
 endif
 
 ifeq ($(BR2_PACKAGE_LIBVORBIS),y)
+SDL_SOUND_CONF_OPTS += --enable-ogg
 SDL_SOUND_DEPENDENCIES += libvorbis
+else
+SDL_SOUND_CONF_OPTS += --disable-ogg
 endif
 
 ifeq ($(BR2_PACKAGE_SPEEX),y)
