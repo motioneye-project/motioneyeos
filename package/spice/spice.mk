@@ -14,6 +14,7 @@ SPICE_DEPENDENCIES =        \
 	alsa-lib            \
 	celt051             \
 	jpeg                \
+	libglib2            \
 	openssl             \
 	pixman              \
 	python-pyparsing    \
