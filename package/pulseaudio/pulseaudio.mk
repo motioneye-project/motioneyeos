@@ -29,7 +29,6 @@ PULSEAUDIO_DEPENDENCIES = \
 	$(if $(BR2_PACKAGE_AVAHI_DAEMON),avahi) \
 	$(if $(BR2_PACKAGE_DBUS),dbus) \
 	$(if $(BR2_PACKAGE_BLUEZ_UTILS),bluez_utils) \
-	$(if $(BR2_PACKAGE_HAS_UDEV),udev) \
 	$(if $(BR2_PACKAGE_OPENSSL),openssl) \
 	$(if $(BR2_PACKAGE_FFTW),fftw) \
 	$(if $(BR2_PACKAGE_WEBRTC_AUDIO_PROCESSING),webrtc-audio-processing) \
@@ -77,6 +76,13 @@ PULSEAUDIO_CONF_OPTS += --with-soxr
 PULSEAUDIO_DEPENDENCIES += libsoxr
 else
 PULSEAUDIO_CONF_OPTS += --without-soxr
+endif
+
+ifeq ($(BR2_PACKAGE_HAS_UDEV),y)
+PULSEAUDIO_CONF_OPTS += --enable-libudev
+PULSEAUDIO_DEPENDENCIES += udev
+else
+PULSEAUDIO_CONF_OPTS += --disable-libudev
 endif
 
 ifneq ($(BR2_INSTALL_LIBSTDCPP),y)
