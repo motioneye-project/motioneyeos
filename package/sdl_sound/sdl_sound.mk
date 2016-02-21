@@ -21,6 +21,13 @@ ifeq ($(BR2_PACKAGE_FLAC),y)
 SDL_SOUND_DEPENDENCIES += flac # is only used if ogg is also enabled
 endif
 
+ifeq ($(BR2_PACKAGE_LIBMODPLUG),y)
+SDL_SOUND_CONF_OPTS += --enable-modplug
+SDL_SOUND_DEPENDENCIES += libmodplug
+else
+SDL_SOUND_CONF_OPTS += --disable-modplug
+endif
+
 ifeq ($(BR2_PACKAGE_LIBVORBIS),y)
 SDL_SOUND_DEPENDENCIES += libvorbis
 endif
