@@ -15,4 +15,11 @@ LXC_CONF_OPTS = --disable-apparmor --with-distro=buildroot \
 	--disable-lua --disable-python \
 	$(if $(BR2_PACKAGE_BASH),,--disable-bash)
 
+ifeq ($(BR2_PACKAGE_LIBSECCOMP),y)
+LXC_CONF_OPTS += --enable-seccomp
+LXC_DEPENDENCIES += libseccomp
+else
+LXC_CONF_OPTS += --disable-seccomp
+endif
+
 $(eval $(autotools-package))
