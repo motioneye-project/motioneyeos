@@ -21,7 +21,8 @@ choice
 			&& !BR2_powerpc64le && !BR2_nios2
 		# Broken or unsupported ARM cores
 		depends on !BR2_cortex_a7 && !BR2_cortex_a12 && \
-			!BR2_cortex_a15 && !BR2_fa526 && !BR2_pj4
+			!BR2_cortex_a15 && !BR2_cortex_a17 && \
+			!BR2_fa526 && !BR2_pj4
 		# Broken or unsupported PPC cores
 		depends on !BR2_powerpc_e5500 && !BR2_powerpc_e6500 && \
 			!BR2_powerpc_power8
@@ -44,7 +45,7 @@ choice
 		depends on !BR2_microblaze && !BR2_aarch64 && !BR2_arc \
 			&& !BR2_powerpc64le && !BR2_nios2
 		# Broken or unsupported ARM cores
-		depends on !BR2_cortex_a12 && !BR2_pj4
+		depends on !BR2_cortex_a12 && !BR2_pj4 && !BR2_cortex_a17
 		# Broken or unsupported PPC cores
 		depends on !BR2_powerpc_e5500 && !BR2_powerpc_e6500 && \
 			!BR2_powerpc_power8
@@ -63,7 +64,7 @@ choice
 		depends on !BR2_microblaze && !BR2_arc \
 			&& !BR2_powerpc64le && !BR2_nios2
 		# Broken or unsupported ARM cores
-		depends on !BR2_cortex_a12
+		depends on !BR2_cortex_a12 && !BR2_cortex_a17
 		# Broken or unsupported PPC cores
 		depends on !BR2_powerpc_power8
 		# gcc-4.8.x + binutils-2.25 is broken for MIPS
@@ -86,6 +87,8 @@ choice
 		bool "gcc 4.9.x"
 		# Broken or unsupported architectures
 		depends on !BR2_arc
+		# Broken or unsupported ARM cores
+		depends on !BR2_cortex_a17
 		# Unsupported for MIPS R6
 		depends on !BR2_mips_32r6 && !BR2_mips_64r6
 		# PR60102 https://gcc.gnu.org/bugzilla/show_bug.cgi?id=60102
