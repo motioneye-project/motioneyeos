@@ -16,6 +16,12 @@ CHRONY_CONF_OPTS = \
 	--without-seccomp \
 	--without-tomcrypt
 
+ifeq ($(BR2_PACKAGE_LIBCAP),y)
+CHRONY_DEPENDENCIES += libcap
+else
+CHRONY_CONF_OPTS += --without-libcap
+endif
+
 ifeq ($(BR2_PACKAGE_LIBNSS),y)
 CHRONY_DEPENDENCIES += host-pkgconf libnss
 else
