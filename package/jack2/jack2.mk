@@ -14,6 +14,10 @@ ifeq ($(BR2_PACKAGE_OPUS),y)
 JACK2_DEPENDENCIES += opus
 endif
 
+ifeq ($(BR2_PACKAGE_READLINE),y)
+JACK2_DEPENDENCIES += readline
+endif
+
 define JACK2_CONFIGURE_CMDS
 	(cd $(@D); \
 		$(TARGET_CONFIGURE_OPTS)	\
