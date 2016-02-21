@@ -34,6 +34,10 @@ ifeq ($(BR2_PACKAGE_FONTCONFIG),y)
 DVDAUTHOR_DEPENDENCIES += fontconfig
 endif
 
+ifeq ($(BR2_PACKAGE_LIBFRIBIDI),y)
+DVDAUTHOR_DEPENDENCIES += libfribidi
+endif
+
 ifeq ($(BR2_PACKAGE_DVDAUTHOR_DVDUNAUTHOR),y)
 DVDAUTHOR_DEPENDENCIES += libdvdread
 DVDAUTHOR_CONF_OPTS += --enable-dvdunauthor
