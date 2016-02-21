@@ -26,6 +26,13 @@ else
 ZSH_CONF_OPTS += --disable-cap
 endif
 
+ifeq ($(BR2_PACKAGE_PCRE),y)
+ZSH_CONF_OPTS += --enable-pcre
+ZSH_DEPENDENCIES += pcre
+else
+ZSH_CONF_OPTS += --disable-pcre
+endif
+
 # Remove versioned zsh-x.y.z binary taking up space
 define ZSH_TARGET_INSTALL_FIXUPS
 	rm -f $(TARGET_DIR)/bin/zsh-$(ZSH_VERSION)
