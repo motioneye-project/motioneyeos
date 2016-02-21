@@ -27,6 +27,13 @@ else
 MEDIASTREAMER_CONF_OPTS += --disable-upnp
 endif
 
+ifeq ($(BR2_PACKAGE_LIBVPX),y)
+MEDIASTREAMER_CONF_OPTS += --enable-vp8
+MEDIASTREAMER_DEPENDENCIES += libvpx
+else
+MEDIASTREAMER_CONF_OPTS += --disable-vp8
+endif
+
 ifeq ($(BR2_PACKAGE_OPUS),y)
 MEDIASTREAMER_CONF_OPTS += --enable-opus
 MEDIASTREAMER_DEPENDENCIES += opus
