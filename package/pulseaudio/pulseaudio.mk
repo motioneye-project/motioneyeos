@@ -35,6 +35,12 @@ PULSEAUDIO_DEPENDENCIES = \
 	$(if $(BR2_PACKAGE_WEBRTC_AUDIO_PROCESSING),webrtc-audio-processing) \
 	$(if $(BR2_PACKAGE_SYSTEMD),systemd)
 
+ifeq ($(BR2_PACKAGE_GDBM),y)
+PULSEAUDIO_CONF_OPTS += --with-database=gdbm
+PULSEAUDIO_DEPENDENCIES += gdbm
+else
+PULSEAUDIO_CONF_OPTS += --with-database=simple
+endif
 
 ifeq ($(BR2_PACKAGE_ORC),y)
 PULSEAUDIO_DEPENDENCIES += orc
