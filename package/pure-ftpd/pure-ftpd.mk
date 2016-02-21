@@ -16,6 +16,10 @@ PURE_FTPD_CONF_OPTS = \
 	--with-puredb \
 	--with-rfc2640
 
+ifeq ($(BR2_PACKAGE_ELFUTILS),y)
+PURE_FTPD_DEPENDENCIES += elfutils
+endif
+
 ifeq ($(BR2_PACKAGE_LIBCAP),y)
 PURE_FTPD_CONF_OPTS += --with-capabilities
 PURE_FTPD_DEPENDENCIES += libcap
