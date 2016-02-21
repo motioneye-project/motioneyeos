@@ -27,6 +27,13 @@ else
 MEDIASTREAMER_CONF_OPTS += --disable-upnp
 endif
 
+ifeq ($(BR2_PACKAGE_OPUS),y)
+MEDIASTREAMER_CONF_OPTS += --enable-opus
+MEDIASTREAMER_DEPENDENCIES += opus
+else
+MEDIASTREAMER_CONF_OPTS += --disable-opus
+endif
+
 # portaudio backend needs speex as well
 ifeq ($(BR2_PACKAGE_PORTAUDIO)$(BR2_PACKAGE_SPEEX),yy)
 MEDIASTREAMER_CONF_OPTS += --enable-portaudio
