@@ -39,7 +39,10 @@ SDL_SOUND_CONF_OPTS += --disable-ogg
 endif
 
 ifeq ($(BR2_PACKAGE_SPEEX),y)
+SDL_SOUND_CONF_OPTS += --enable-speex
 SDL_SOUND_DEPENDENCIES += speex
+else
+SDL_SOUND_CONF_OPTS += --disable-speex
 endif
 
 SDL_SOUND_CONF_OPTS = \
