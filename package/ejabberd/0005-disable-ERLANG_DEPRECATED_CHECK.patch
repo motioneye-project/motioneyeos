@@ -1,6 +1,6 @@
-From 615eae56cabd7d15a8f62b6f50e598818932c9ca Mon Sep 17 00:00:00 2001
+From d43a65b112ec995a5ee52aca2a16e5cf9699d7c1 Mon Sep 17 00:00:00 2001
 From: Johan Oudinet <johan.oudinet@gmail.com>
-Date: Sun, 21 Feb 2016 11:02:33 -0500
+Date: Wed, 20 Jan 2016 08:16:26 -0500
 Subject: [PATCH] disable ERLANG_DEPRECATED_CHECK
 
 Without this patch, the configure will try to execute erlang to check
@@ -10,10 +10,10 @@ if it uses deprecated types. Assume the answer is false.
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/configure.ac b/configure.ac
-index 4b35d57..da87585 100644
+index cd1ab08..a4f1533 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -243,7 +243,7 @@ if test "$ENABLEUSER" != ""; then
+@@ -235,7 +235,7 @@ if test "$ENABLEUSER" != ""; then
    AC_SUBST([INSTALLUSER], [$ENABLEUSER])
  fi
  

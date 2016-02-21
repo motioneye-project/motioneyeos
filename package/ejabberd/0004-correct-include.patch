@@ -1,6 +1,6 @@
-From 9878a2cfb1a927f4b42f1c4d08df434084739626 Mon Sep 17 00:00:00 2001
+From 705a9ad229de49cd9cce226a2025716902455663 Mon Sep 17 00:00:00 2001
 From: Philipp Huebner <debalance@debian.org>
-Date: Sun, 21 Feb 2016 11:01:42 -0500
+Date: Wed, 20 Jan 2016 08:13:21 -0500
 Subject: [PATCH] correct include
 
 This part of the code was moved into it's own project and was packaged
@@ -13,7 +13,7 @@ necessary.
  3 files changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/src/mod_sip.erl b/src/mod_sip.erl
-index 1e4044b..4279b64 100644
+index c8c9533..7f188a0 100644
 --- a/src/mod_sip.erl
 +++ b/src/mod_sip.erl
 @@ -38,7 +38,7 @@
@@ -26,7 +26,7 @@ index 1e4044b..4279b64 100644
  %%%===================================================================
  %%% API
 diff --git a/src/mod_sip_proxy.erl b/src/mod_sip_proxy.erl
-index a0dff12..b5794fa 100644
+index bf297bc..d8b65cd 100644
 --- a/src/mod_sip_proxy.erl
 +++ b/src/mod_sip_proxy.erl
 @@ -40,7 +40,7 @@
@@ -39,7 +39,7 @@ index a0dff12..b5794fa 100644
  -define(SIGN_LIFETIME, 300). %% in seconds.
  
 diff --git a/src/mod_sip_registrar.erl b/src/mod_sip_registrar.erl
-index f6b3103..1061c88 100644
+index 44091ed..4d2ec82 100644
 --- a/src/mod_sip_registrar.erl
 +++ b/src/mod_sip_registrar.erl
 @@ -37,7 +37,7 @@

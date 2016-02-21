@@ -1,6 +1,6 @@
-From dc6046d9eaef16dc4e9fcda2021219910bfea0de Mon Sep 17 00:00:00 2001
+From 53d7d654026afa163a55b860e33c6901129e8dc1 Mon Sep 17 00:00:00 2001
 From: Johan Oudinet <johan.oudinet@gmail.com>
-Date: Sun, 21 Feb 2016 11:03:58 -0500
+Date: Wed, 20 Jan 2016 09:35:07 -0500
 Subject: [PATCH] fix ejabberdctl
 
 Change default values so ejabberdctl run commands as ejabberd user
@@ -12,7 +12,7 @@ Signed-off-by: Johan Oudinet <johan.oudinet@gmail.com>
  1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/ejabberdctl.template b/ejabberdctl.template
-index c7d76ef..a7afce1 100755
+index f65c21f..ff9225f 100755
 --- a/ejabberdctl.template
 +++ b/ejabberdctl.template
 @@ -14,9 +14,12 @@ SCRIPT_DIR=`cd ${0%/*} && pwd`
