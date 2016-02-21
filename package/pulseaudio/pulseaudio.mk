@@ -72,6 +72,13 @@ else
 PULSEAUDIO_CONF_OPTS += --disable-gtk3
 endif
 
+ifeq ($(BR2_PACKAGE_LIBSOXR),y)
+PULSEAUDIO_CONF_OPTS += --with-soxr
+PULSEAUDIO_DEPENDENCIES += libsoxr
+else
+PULSEAUDIO_CONF_OPTS += --without-soxr
+endif
+
 ifneq ($(BR2_INSTALL_LIBSTDCPP),y)
 # The optional webrtc echo canceller is written in C++, causing auto* to want
 # to link module-echo-cancel.so with CXX even if webrtc ISN'T used.
