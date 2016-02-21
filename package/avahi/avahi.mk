@@ -115,6 +115,10 @@ else
 AVAHI_CONF_OPTS += --disable-libdaemon
 endif
 
+ifeq ($(BR2_PACKAGE_LIBCAP),y)
+AVAHI_DEPENDENCIES += libcap
+endif
+
 ifeq ($(BR2_PACKAGE_AVAHI_DAEMON),y)
 AVAHI_DEPENDENCIES += expat
 AVAHI_CONF_OPTS += --with-xml=expat
