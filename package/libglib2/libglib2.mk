@@ -107,6 +107,13 @@ ifneq ($(BR2_ENABLE_LOCALE),y)
 LIBGLIB2_DEPENDENCIES += libiconv
 endif
 
+ifeq ($(BR2_PACKAGE_ELFUTILS),y)
+LIBGLIB2_CONF_OPTS += --enable-libelf
+LIBGLIB2_DEPENDENCIES += elfutils
+else
+LIBGLIB2_CONF_OPTS += --disable-libelf
+endif
+
 ifeq ($(BR2_PACKAGE_LIBICONV),y)
 LIBGLIB2_CONF_OPTS += --with-libiconv=gnu
 LIBGLIB2_DEPENDENCIES += libiconv
