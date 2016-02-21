@@ -20,6 +20,13 @@ else
 MEDIASTREAMER_CONF_OPTS += --disable-alsa
 endif
 
+ifeq ($(BR2_PACKAGE_LIBUPNP),y)
+MEDIASTREAMER_CONF_OPTS += --enable-upnp
+MEDIASTREAMER_DEPENDENCIES += libupnp
+else
+MEDIASTREAMER_CONF_OPTS += --disable-upnp
+endif
+
 # portaudio backend needs speex as well
 ifeq ($(BR2_PACKAGE_PORTAUDIO)$(BR2_PACKAGE_SPEEX),yy)
 MEDIASTREAMER_CONF_OPTS += --enable-portaudio
