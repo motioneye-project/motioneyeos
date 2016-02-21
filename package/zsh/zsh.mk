@@ -19,6 +19,13 @@ else
 ZSH_CONF_OPTS += --disable-gdbm
 endif
 
+ifeq ($(BR2_PACKAGE_LIBCAP),y)
+ZSH_CONF_OPTS += --enable-cap
+ZSH_DEPENDENCIES += libcap
+else
+ZSH_CONF_OPTS += --disable-cap
+endif
+
 # Remove versioned zsh-x.y.z binary taking up space
 define ZSH_TARGET_INSTALL_FIXUPS
 	rm -f $(TARGET_DIR)/bin/zsh-$(ZSH_VERSION)
