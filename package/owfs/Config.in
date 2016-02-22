@@ -1,0 +1,16 @@
+config BR2_PACKAGE_OWFS
+	bool "owfs"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	help
+	  OWFS is an easy way to use the powerful 1-wire system of
+	  Dallas/Maxim.
+
+	  OWFS is a simple and flexible program to monitor and control
+	  the physical environment. You can write scripts to read
+	  temperature, flash lights, write to an LCD, log and graph,
+	  etc.
+
+	  http://owfs.org/
+
+comment "owfs needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
