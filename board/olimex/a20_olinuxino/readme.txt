@@ -52,6 +52,7 @@ After building, you should get a tree like this:
     +-- rootfs.ext2
     +-- rootfs.ext4 -> rootfs.ext2
     +-- script.bin (lime_mali)
+    +-- sdcard.img (micro)
     +-- sun7i-a20-olinuxino-lime.dtb (lime, mainline)
     +-- sun7i-a20-olinuxino-lime2.dtb (lime2, mainline)
     +-- sun7i-a20-olinuxino-micro.dtb (micro, mainline)
@@ -60,8 +61,20 @@ After building, you should get a tree like this:
     `-- zImage
 
 
-How to write the SD card
-========================
+How to write the SD card - boards with sdcard.img
+=================================================
+
+The sdcard.img file is a complete bootable image ready to be written
+on the boot medium. To install it, simply copy the image to a uSD
+card:
+
+    # dd if=output/images/sdcard.img of=/dev/sdX
+
+Where 'sdX' is the device node of the uSD.
+
+
+How to write the SD card - other boards
+=======================================
 
 
 Prepare the SD card
