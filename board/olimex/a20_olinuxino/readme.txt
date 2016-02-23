@@ -3,12 +3,13 @@ A20-OLinuXino-LIME and A20-OLinuXino-MICRO
 Intro
 =====
 
-These are open hardware boards, both based an the AllWinners A20 SoC.
+These are open hardware boards, all based on the Allwinner A20 SoC.
 
 for more details about the boards see the following pages:
  - https://www.olimex.com/Products/OLinuXino/open-source-hardware
  - https://www.olimex.com/Products/OLinuXino/A20/A20-OLinuXino-MICRO/
  - https://www.olimex.com/Products/OLinuXino/A20/A20-OLinuXino-LIME/
+ - https://www.olimex.com/Products/OLinuXino/A20/A20-OLinuXino-LIME2/
 
 The following defconfigs are available:
  - olimex_a20_olinuxino_micro_defconfig
