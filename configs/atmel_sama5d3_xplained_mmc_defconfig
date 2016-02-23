@@ -1,7 +1,7 @@
 # Architecture
 BR2_arm=y
 BR2_cortex_a5=y
-BR2_ARM_EABIHF=y
+BR2_ARM_ENABLE_VFP=y
 
 # Linux headers same as kernel, a 3.18 series
 BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_3_18=y
