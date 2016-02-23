@@ -1,6 +1,6 @@
 # architecture
 BR2_arm=y
-BR2_arm1136jf_s_r0=y
+BR2_arm1136jf_s=y
 BR2_ARM_EABIHF=y
 
 # Linux headers same as kernel, a 3.15 series
