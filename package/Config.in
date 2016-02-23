@@ -1625,6 +1625,9 @@ endif
 	source "package/powerpc-utils/Config.in"
 if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	source "package/procps-ng/Config.in"
+endif
+	source "package/procrank_linux/Config.in"
+if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	source "package/psmisc/Config.in"
 endif
 	source "package/pwgen/Config.in"
