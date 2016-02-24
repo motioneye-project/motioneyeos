@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-LIBSSH_VERSION = 0.7.2
+LIBSSH_VERSION = 0.7.3
 LIBSSH_SOURCE = libssh-$(LIBSSH_VERSION).tar.xz
-LIBSSH_SITE = https://red.libssh.org/attachments/download/177
+LIBSSH_SITE = https://red.libssh.org/attachments/download/195
 LIBSSH_LICENSE = LGPLv2.1
 LIBSSH_LICENSE_FILES = COPYING
 LIBSSH_INSTALL_STAGING = YES
