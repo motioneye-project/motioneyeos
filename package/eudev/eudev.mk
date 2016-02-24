@@ -30,7 +30,7 @@ EUDEV_CONF_OPTS += --with-rootlibdir=/lib --enable-split-usr
 endif
 
 ifeq ($(BR2_PACKAGE_EUDEV_RULES_GEN),y)
-EUDEV_CONF_OPTS += --enable-rule_generator
+EUDEV_CONF_OPTS += --enable-rule-generator
 endif
 
 ifeq ($(BR2_PACKAGE_EUDEV_ENABLE_HWDB),y)
