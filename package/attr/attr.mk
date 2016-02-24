@@ -26,6 +26,11 @@ ATTR_INSTALL_TARGET_OPTS = 			\
 	exec_prefix=$(TARGET_DIR)/usr 		\
 	install install-lib
 
+HOST_ATTR_INSTALL_OPTS = \
+	prefix=$(HOST_DIR)/usr \
+	exec_prefix=$(HOST_DIR)/usr \
+	install-dev install-lib
+
 # The libdir variable in libattr.la is empty, so let's fix it. This is
 # probably due to attr not using automake, and not doing fully the
 # right thing with libtool.
@@ -37,3 +42,4 @@ endef
 ATTR_POST_INSTALL_STAGING_HOOKS += ATTR_FIX_LIBTOOL_LA_LIBDIR
 
 $(eval $(autotools-package))
+$(eval $(host-autotools-package))
