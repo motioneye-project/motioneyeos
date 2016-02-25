@@ -143,6 +143,12 @@ else
 SYSTEMD_CONF_OPTS += --disable-vconsole
 endif
 
+ifeq ($(BR2_PACKAGE_SYSTEMD_BOOTCHART),y)
+SYSTEMD_CONF_OPTS += --enable-bootchart
+else
+SYSTEMD_CONF_OPTS += --disable-bootchart
+endif
+
 ifeq ($(BR2_PACKAGE_SYSTEMD_NETWORKD),y)
 SYSTEMD_CONF_OPTS += --enable-networkd
 define SYSTEMD_INSTALL_RESOLVCONF_HOOK
