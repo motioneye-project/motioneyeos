@@ -137,6 +137,12 @@ else
 SYSTEMD_CONF_OPTS += --disable-binfmt
 endif
 
+ifeq ($(BR2_PACKAGE_SYSTEMD_VCONSOLE),y)
+SYSTEMD_CONF_OPTS += --enable-vconsole
+else
+SYSTEMD_CONF_OPTS += --disable-vconsole
+endif
+
 ifeq ($(BR2_PACKAGE_SYSTEMD_NETWORKD),y)
 SYSTEMD_CONF_OPTS += --enable-networkd
 define SYSTEMD_INSTALL_RESOLVCONF_HOOK
