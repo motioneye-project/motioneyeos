@@ -56,6 +56,9 @@ config BR2_PACKAGE_SYSTEMD
 	  The selection of other packages will enable some features:
 
 	  - acl package will add support for multi-seat.
+	  - xz package will add compression support in journal and coredump.
+	  - libgcrypt package will add support for journal sealing and
+	    DNSSEC verification in resolved.
 
 	  http://freedesktop.org/wiki/Software/systemd
 
@@ -63,14 +66,6 @@ if BR2_PACKAGE_SYSTEMD
 
 config BR2_PACKAGE_PROVIDES_UDEV
 	default "systemd"
-
-config BR2_PACKAGE_SYSTEMD_ALL_EXTRAS
-	bool "enable all extras"
-	select BR2_PACKAGE_XZ
-	select BR2_PACKAGE_LIBGCRYPT
-	help
-	  Enable extra features for Systemd: journal compression and
-	  signing.
 
 config BR2_PACKAGE_SYSTEMD_KDBUS
 	bool "enable kdbus support"

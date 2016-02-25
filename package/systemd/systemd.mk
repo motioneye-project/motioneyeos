@@ -80,16 +80,20 @@ else
 SYSTEMD_CONF_OPTS += --disable-kdbus
 endif
 
-ifeq ($(BR2_PACKAGE_SYSTEMD_ALL_EXTRAS),y)
-SYSTEMD_DEPENDENCIES += xz libgcrypt
+ifeq ($(BR2_PACKAGE_XZ),y)
+SYSTEMD_DEPENDENCIES += xz
+SYSTEMD_CONF_OPTS += --enable-xz
+else
+SYSTEMD_CONF_OPTS += --disable-xz
+endif
+
+ifeq ($(BR2_PACKAGE_LIBGCRYPT),y)
+SYSTEMD_DEPENDENCIES += libgcrypt
 SYSTEMD_CONF_OPTS += \
-	--enable-xz \
 	--enable-gcrypt	\
 	--with-libgcrypt-prefix=$(STAGING_DIR)/usr
 else
-SYSTEMD_CONF_OPTS += \
-	--disable-xz \
-	--disable-gcrypt
+SYSTEMD_CONF_OPTS += --disable-gcrypt
 endif
 
 ifeq ($(BR2_PACKAGE_SYSTEMD_JOURNAL_GATEWAY),y)

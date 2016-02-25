@@ -145,6 +145,16 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2016.02"
 
+config BR2_PACKAGE_SYSTEMD_ALL_EXTRAS
+	bool "systemd all extras option has been removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_XZ
+	select BR2_PACKAGE_LIBGCRYPT
+	help
+	  The systemd option to enable "all extras" has been
+	  removed. To get the same features, the libgcrypt and xz
+	  package should now be enabled.
+
 config BR2_GCC_VERSION_4_5_X
 	bool "gcc 4.5.x has been removed"
 	select BR2_LEGACY
