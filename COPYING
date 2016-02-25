@@ -1,3 +1,19 @@
+With the exceptions below, Buildroot is distributed under the terms of
+the GNU General Public License, reproduced below; either version 2 of
+the License, or (at your option) any later version.
+
+Some files in Buildroot contain a different license statement. Those
+files are licensed under the license contained in the file itself.
+
+Buildroot also bundles patch files, which are applied to the sources
+of the various packages. Those patches are not covered by the license
+of Buildroot. Instead, they are covered by the license of the software
+to which the patches are applied. When said software is available
+under multiple licenses, the Buildroot patches are only provided under
+the publicly accessible licenses.
+
+-----------------------------------------------------------------
+
 		    GNU GENERAL PUBLIC LICENSE
 		       Version 2, June 1991
 
