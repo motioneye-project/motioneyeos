@@ -660,13 +660,30 @@ define QT_INSTALL_TARGET_FONTS
 	mkdir -p $(TARGET_DIR)/usr/lib/fonts
 	cp -dpf $(QT_FONTS) $(TARGET_DIR)/usr/lib/fonts
 endef
+ifneq ($(BR2_PACKAGE_QT_FONT_MICRO)$(BR2_PACKAGE_QT_FONT_FIXED),)
+# as stated in the font source src/3rdparty/fonts/micro.bdf
+# source src/3rdparty/fonts/5x7.bdf and source src/3rdparty/fonts/6x13.bdf
+QT_LICENSE += , Public Domain (Micro/Fixed font)
 endif
+ifneq ($(BR2_PACKAGE_QT_FONT_HELVETICA)$(BR2_PACKAGE_QT_FONT_JAPANESE),)
+QT_LICENSE += , Adobe Helvetica license (Helvetica/Japanese fonts)
+QT_LICENSE_FILES += src/3rdparty/fonts/COPYING.Helvetica
+endif
+ifeq ($(BR2_PACKAGE_QT_FONT_UNIFONT),y)
+QT_LICENSE += , Freeware (Unifont font)
+QT_LICENSE_FILES += src/3rdparty/fonts/COPYRIGHT.Unifont
+endif
+endif # QT_FONTS
 
 ifeq ($(BR2_PACKAGE_QT_QTFREETYPE)$(BR2_PACKAGE_QT_SYSTEMFREETYPE),y)
 define QT_INSTALL_TARGET_FONTS_TTF
 	mkdir -p $(TARGET_DIR)/usr/lib/fonts
 	cp -dpf $(STAGING_DIR)/usr/lib/fonts/*.ttf $(TARGET_DIR)/usr/lib/fonts
 endef
+QT_LICENSE += , Bitstream license (DejaVu/Vera TrueType fonts)
+QT_LICENSE_FILES += src/3rdparty/fonts/COPYRIGHT.DejaVu \
+	src/3rdparty/fonts/README.DejaVu \
+	src/3rdparty/fonts/COPYRIGHT.Vera
 endif
 endif # BR2_PACKAGE_QT_EMBEDDED
 
