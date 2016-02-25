@@ -53,4 +53,10 @@ config BR2_PACKAGE_UBOOT_TOOLS_FWPRINTENV
 	  bootloader, which allows access to the U-Boot environment
 	  from Linux.
 
+config BR2_PACKAGE_UBOOT_TOOLS_DUMPIMAGE
+	bool "dumpimage"
+	help
+	  The dumpimage tool from Das U-Boot bootloader, which allows
+	  extraction of data from U-Boot images.
+
 endif
