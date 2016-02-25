@@ -76,6 +76,12 @@ else
 LIBDRM_CONF_OPTS += --disable-tegra-experimental-api
 endif
 
+ifeq ($(BR2_PACKAGE_LIBDRM_VC4),y)
+LIBDRM_CONF_OPTS += --enable-vc4
+else
+LIBDRM_CONF_OPTS += --disable-vc4
+endif
+
 ifeq ($(BR2_PACKAGE_HAS_UDEV),y)
 LIBDRM_CONF_OPTS += --enable-udev
 LIBDRM_DEPENDENCIES += udev

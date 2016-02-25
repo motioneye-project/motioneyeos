@@ -69,6 +69,12 @@ config BR2_PACKAGE_LIBDRM_TEGRA
 	help
 	  Install NVIDIA Tegra driver using an experimental API.
 
+config BR2_PACKAGE_LIBDRM_VC4
+	bool "vc4"
+	depends on BR2_arm
+	help
+	  Install vc4 (Raspberry Pi) driver.
+
 endmenu
 
 endif
