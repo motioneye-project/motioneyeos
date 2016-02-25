@@ -67,14 +67,20 @@ ifeq ($(BR2_PACKAGE_ERLANG_SMP),)
 ERLANG_CONF_OPTS += --disable-smp-support
 endif
 
-# Remove source, example, gs and wx files from the target
+# Remove source, example, gs and wx files from staging and target.
 ERLANG_REMOVE_PACKAGES = gs wx
 
 ifneq ($(BR2_PACKAGE_ERLANG_MEGACO),y)
 ERLANG_REMOVE_PACKAGES += megaco
 endif
 
-define ERLANG_REMOVE_UNUSED
+define ERLANG_REMOVE_STAGING_UNUSED
+	for package in $(ERLANG_REMOVE_PACKAGES); do \
+		rm -rf $(STAGING_DIR)/usr/lib/erlang/lib/$${package}-*; \
+	done
+endef
+
+define ERLANG_REMOVE_TARGET_UNUSED
 	find $(TARGET_DIR)/usr/lib/erlang -type d -name src -prune -exec rm -rf {} \;
 	find $(TARGET_DIR)/usr/lib/erlang -type d -name examples -prune -exec rm -rf {} \;
 	for package in $(ERLANG_REMOVE_PACKAGES); do \
@@ -82,7 +88,8 @@ define ERLANG_REMOVE_UNUSED
 	done
 endef
 
-ERLANG_POST_INSTALL_TARGET_HOOKS += ERLANG_REMOVE_UNUSED
+ERLANG_POST_INSTALL_STAGING_HOOKS += ERLANG_REMOVE_STAGING_UNUSED
+ERLANG_POST_INSTALL_TARGET_HOOKS += ERLANG_REMOVE_TARGET_UNUSED
 
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
