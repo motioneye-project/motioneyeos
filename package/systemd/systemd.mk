@@ -80,6 +80,13 @@ else
 SYSTEMD_CONF_OPTS += --disable-kdbus
 endif
 
+ifeq ($(BR2_PACKAGE_BZIP2),y)
+SYSTEMD_DEPENDENCIES += bzip2
+SYSTEMD_CONF_OPTS += --enable-bzip2
+else
+SYSTEMD_CONF_OPTS += --disable-bzip2
+endif
+
 ifeq ($(BR2_PACKAGE_XZ),y)
 SYSTEMD_DEPENDENCIES += xz
 SYSTEMD_CONF_OPTS += --enable-xz
