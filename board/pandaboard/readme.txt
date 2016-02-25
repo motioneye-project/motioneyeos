@@ -27,7 +27,7 @@ The result of the build with the default settings should be these files:
   ├── omap4-panda-a4.dtb
   ├── omap4-panda.dtb
   ├── omap4-panda-es.dtb
-  ├── rootfs.ext2
+  ├── rootfs.ext4
   ├── u-boot.img
   └── zImage
 
@@ -73,4 +73,4 @@ and u-boot.img to it.
 The last step is to copy the rootfs image to the sdcard's second
 partition using 'dd':
 
-  $ sudo dd if=rootfs.ext2 of=/dev/sdX2 bs=1M conv=fsync
+  $ sudo dd if=rootfs.ext4 of=/dev/sdX2 bs=1M conv=fsync
