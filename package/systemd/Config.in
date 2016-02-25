@@ -58,6 +58,7 @@ config BR2_PACKAGE_SYSTEMD
 	  - acl package will add support for multi-seat.
 	  - xz and/or l4 packages will add compression support in
 	    journal and coredump.
+	  - libcurl package will add support for systemd-journal-upload.
 	  - libgcrypt package will add support for journal sealing and
 	    DNSSEC verification in resolved.
 

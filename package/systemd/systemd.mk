@@ -108,6 +108,13 @@ else
 SYSTEMD_CONF_OPTS += --disable-zlib
 endif
 
+ifeq ($(BR2_PACKAGE_LIBCURL),y)
+SYSTEMD_DEPENDENCIES += libcurl
+SYSTEMD_CONF_OPTS += --enable-libcurl
+else
+SYSTEMD_CONF_OPTS += --disable-libcurl
+endif
+
 ifeq ($(BR2_PACKAGE_LIBGCRYPT),y)
 SYSTEMD_DEPENDENCIES += libgcrypt
 SYSTEMD_CONF_OPTS += \
