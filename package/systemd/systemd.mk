@@ -87,6 +87,13 @@ else
 SYSTEMD_CONF_OPTS += --disable-bzip2
 endif
 
+ifeq ($(BR2_PACKAGE_LZ4),y)
+SYSTEMD_DEPENDENCIES += lz4
+SYSTEMD_CONF_OPTS += --enable-lz4
+else
+SYSTEMD_CONF_OPTS += --disable-lz4
+endif
+
 ifeq ($(BR2_PACKAGE_XZ),y)
 SYSTEMD_DEPENDENCIES += xz
 SYSTEMD_CONF_OPTS += --enable-xz

@@ -56,7 +56,8 @@ config BR2_PACKAGE_SYSTEMD
 	  The selection of other packages will enable some features:
 
 	  - acl package will add support for multi-seat.
-	  - xz package will add compression support in journal and coredump.
+	  - xz and/or l4 packages will add compression support in
+	    journal and coredump.
 	  - libgcrypt package will add support for journal sealing and
 	    DNSSEC verification in resolved.
 
