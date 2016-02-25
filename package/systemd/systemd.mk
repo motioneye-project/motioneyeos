@@ -126,6 +126,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_SYSTEMD_JOURNAL_GATEWAY),y)
 SYSTEMD_DEPENDENCIES += libmicrohttpd
+SYSTEMD_CONF_OPTS += --enable-microhttpd
 else
 SYSTEMD_CONF_OPTS += --disable-microhttpd
 endif
