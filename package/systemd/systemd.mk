@@ -149,6 +149,12 @@ else
 SYSTEMD_CONF_OPTS += --disable-bootchart
 endif
 
+ifeq ($(BR2_PACKAGE_SYSTEMD_QUOTACHECK),y)
+SYSTEMD_CONF_OPTS += --enable-quotacheck
+else
+SYSTEMD_CONF_OPTS += --disable-quotacheck
+endif
+
 ifeq ($(BR2_PACKAGE_SYSTEMD_NETWORKD),y)
 SYSTEMD_CONF_OPTS += --enable-networkd
 define SYSTEMD_INSTALL_RESOLVCONF_HOOK
