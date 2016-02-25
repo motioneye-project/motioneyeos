@@ -11,7 +11,7 @@
 # and IPv6 updates.
 # http://www.spinics.net/lists/netdev/msg279881.html
 
-IPUTILS_VERSION = c8ff6feaf0442f8efd96ccb415770c54f9e84d47
+IPUTILS_VERSION = 3a86a2542c6fe29413c439bebeae11ec8a57ec7c
 IPUTILS_SITE = $(call github,iputils,iputils,$(IPUTILS_VERSION))
 IPUTILS_LICENSE = GPLv2+, BSD-3c, BSD-4c
 # Only includes a license file for BSD
