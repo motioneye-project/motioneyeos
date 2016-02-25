@@ -1,4 +1,4 @@
-#! /bin/sh -e
+#! /bin/sh
 ### BEGIN INIT INFO
 # Provides:           snmpd snmptrapd
 # Required-Start:     $network $local_fs
@@ -11,7 +11,6 @@
 #
 # Author:    Jochen Friedrich <jochen@scram.de>
 #
-set -e
 
 export PATH=/sbin:/usr/sbin:/bin:/usr/bin
 
