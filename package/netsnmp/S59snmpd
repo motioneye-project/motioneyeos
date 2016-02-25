@@ -38,39 +38,45 @@ if [ "$SNMPDCOMPAT" = "yes" ]; then
 fi
 
 start() {
-    printf "Starting network management services:"
     if [ "$SNMPDRUN" = "yes" -a -f /etc/snmp/snmpd.conf ]; then
+        printf "Starting SNMP daemon: "
         start-stop-daemon -q -S -x /usr/sbin/snmpd -- $SNMPDOPTS
-        printf " snmpd"
+        [ $? = 0 ] && echo "OK" || echo "FAIL"
     fi
+
     if [ "$TRAPDRUN" = "yes" -a -f /etc/snmp/snmptrapd.conf ]; then
+        printf "Starting SNMP trap daemon: "
         start-stop-daemon -q -S -x /usr/sbin/snmptrapd -- $TRAPDOPTS
-        printf " snmptrapd"
+        [ $? = 0 ] && echo "OK" || echo "FAIL"
     fi
-    echo "."
 }
 
 stop() {
-    printf "Stopping network management services:"
-    start-stop-daemon -q -K $ssd_oknodo -x /usr/sbin/snmpd
-    printf " snmpd"
-    start-stop-daemon -q -K $ssd_oknodo -x /usr/sbin/snmptrapd
-    printf " snmptrapd"
-    echo "."
-}
-
-reload() {
-    printf "Reloading network management services:"
     if [ "$SNMPDRUN" = "yes" -a -f /etc/snmp/snmpd.conf ]; then
-        start-stop-daemon -q -K -s 1 -p /var/run/snmpd.pid -x /usr/sbin/snmpd
-        printf " snmpd"
+        printf "Stopping SNMP daemon: "
+        start-stop-daemon -q -K $ssd_oknodo -x /usr/sbin/snmpd
+        [ $? = 0 ] && echo "OK" || echo "FAIL"
     fi
 
     if [ "$TRAPDRUN" = "yes" -a -f /etc/snmp/snmptrapd.conf ]; then
-        start-stop-daemon -q -K -s 1 -p /var/run/snmptrapd.pid -x /usr/sbin/snmptrapd
-        printf " snmptrapd"
+        printf "Stopping SNMP trap daemon: "
+        start-stop-daemon -q -K $ssd_oknodo -x /usr/sbin/snmptrapd
+        [ $? = 0 ] && echo "OK" || echo "FAIL"
     fi
-    echo "."
+}
+
+reload() {
+    if [ "$SNMPDRUN" = "yes" -a -f /etc/snmp/snmpd.conf ]; then
+        printf "Reloading SNMP daemon: "
+        start-stop-daemon -q -K -s 1 -p /var/run/snmpd.pid -x /usr/sbin/snmpd
+        [ $? = 0 ] && echo "OK" || echo "FAIL"
+    fi
+
+    if [ "$TRAPDRUN" = "yes" -a -f /etc/snmp/snmptrapd.conf ]; then
+        printf "Reloading SNMP trap daemon: "
+        start-stop-daemon -q -K -s 1 -p /var/run/snmptrapd.pid -x /usr/sbin/snmptrapd
+        [ $? = 0 ] && echo "OK" || echo "FAIL"
+    fi
 }
 
 case "$1" in
@@ -92,6 +98,7 @@ case "$1" in
     reload|force-reload)
         reload
         ;;
+
     *)
         echo "Usage: $0 {start|stop|restart|reload|force-reload}"
         exit 1
