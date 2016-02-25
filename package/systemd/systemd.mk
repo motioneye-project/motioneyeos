@@ -101,6 +101,13 @@ else
 SYSTEMD_CONF_OPTS += --disable-xz
 endif
 
+ifeq ($(BR2_PACKAGE_ZLIB),y)
+SYSTEMD_DEPENDENCIES += zlib
+SYSTEMD_CONF_OPTS += --enable-zlib
+else
+SYSTEMD_CONF_OPTS += --disable-zlib
+endif
+
 ifeq ($(BR2_PACKAGE_LIBGCRYPT),y)
 SYSTEMD_DEPENDENCIES += libgcrypt
 SYSTEMD_CONF_OPTS += \
