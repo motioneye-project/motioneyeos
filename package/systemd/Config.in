@@ -84,6 +84,14 @@ config BR2_PACKAGE_SYSTEMD_JOURNAL_GATEWAY
 
 	  http://www.freedesktop.org/software/systemd/man/systemd-journal-gatewayd.service.html
 
+config BR2_PACKAGE_SYSTEMD_BINFMT
+	bool "enable binfmt tool"
+	help
+	  systemd-binfmt is an early boot service that registers
+	  additional binary formats for executables in the kernel.
+
+	  http://www.freedesktop.org/software/systemd/man/systemd-binfmt.service.html
+
 config BR2_PACKAGE_SYSTEMD_NETWORKD
 	bool "enable network manager"
 	help

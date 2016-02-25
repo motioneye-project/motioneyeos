@@ -131,6 +131,12 @@ else
 SYSTEMD_CONF_OPTS += --disable-microhttpd
 endif
 
+ifeq ($(BR2_PACKAGE_SYSTEMD_BINFMT),y)
+SYSTEMD_CONF_OPTS += --enable-binfmt
+else
+SYSTEMD_CONF_OPTS += --disable-binfmt
+endif
+
 ifeq ($(BR2_PACKAGE_SYSTEMD_NETWORKD),y)
 SYSTEMD_CONF_OPTS += --enable-networkd
 define SYSTEMD_INSTALL_RESOLVCONF_HOOK
