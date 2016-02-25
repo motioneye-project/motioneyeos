@@ -16,7 +16,6 @@ IPUTILS_SITE = $(call github,iputils,iputils,$(IPUTILS_VERSION))
 IPUTILS_LICENSE = GPLv2+, BSD-3c, BSD-4c
 # Only includes a license file for BSD
 IPUTILS_LICENSE_FILES = ninfod/COPYING
-IPUTILS_DEPENDENCIES = openssl
 
 # Build after busybox so target ends up with this package's full
 # versions of the applications instead of busybox applets.
@@ -32,6 +31,13 @@ IPUTILS_MAKE_OPTS += USE_CAP=yes
 IPUTILS_DEPENDENCIES += libcap
 else
 IPUTILS_MAKE_OPTS += USE_CAP=no
+endif
+
+ifeq ($(BR2_PACKAGE_OPENSSL),y)
+IPUTILS_MAKE_OPTS += USE_CRYPTO=yes
+IPUTILS_DEPENDENCIES += openssl
+else
+IPUTILS_MAKE_OPTS += USE_CRYPTO=no
 endif
 
 define IPUTILS_BUILD_CMDS
