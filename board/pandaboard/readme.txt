@@ -28,49 +28,19 @@ The result of the build with the default settings should be these files:
   ├── omap4-panda.dtb
   ├── omap4-panda-es.dtb
   ├── rootfs.ext4
+  ├── sdcard.img
   ├── u-boot.img
   └── zImage
 
-Setting up your SD card
------------------------
+How to write the SD card
+------------------------
 
-*Important*: pay attention which partition you are modifying so you don't
-accidentally erase the wrong file system, e.g your host computer or your
-external storage!
+Once the build process is finished you will have an image called "sdcard.img"
+in the output/images/ directory.
 
-In the default setup you need to create two partitions on your SD card:
-a boot partition and a rootfs partition.
+Copy the bootable "sdcard.img" onto an SD card with "dd":
 
-The ROM code from OMAP processors need the SD card to be formatted with
-a special geometry in the partition table. To do that, you can use the
-shell script below (this script was extracted from
-http://elinux.org/Panda_How_to_MLO_%26_u-boot).
+  $ sudo dd if=output/images/sdcard.img of=/dev/sdX
 
-#!/bin/sh
-DRIVE=$1
-if [ -b "$DRIVE" ] ; then
-	dd if=/dev/zero of=$DRIVE bs=1024 count=1024
-	SIZE=`fdisk -l $DRIVE | grep Disk | awk '{print $5}'`
-	echo DISK SIZE - $SIZE bytes
-	CYLINDERS=`echo $SIZE/255/63/512 | bc`
-	echo CYLINDERS - $CYLINDERS
-	{
-	echo ,9,0x0C,*
-	echo ,,,-
-	} | sfdisk -D -H 255 -S 63 -C $CYLINDERS $DRIVE
-	mkfs.vfat -F 32 -n "boot" ${DRIVE}1
-	mke2fs -j -L "rootfs" ${DRIVE}2
-fi
-
-The next step is to mount the sdcard's first partition and copy MLO
-and u-boot.img to it.
-
-  $ sudo mkdir -p /mnt/sdcard
-  $ sudo mount /dev/sdX1 /mnt/sdcard
-  $ sudo cp MLO u-boot.img /mnt/sdcard
-  $ sudo umount /mnt/sdcard
-
-The last step is to copy the rootfs image to the sdcard's second
-partition using 'dd':
-
-  $ sudo dd if=rootfs.ext4 of=/dev/sdX2 bs=1M conv=fsync
+Where /dev/sdX is the device node of your SD card (may be /dev/mmcblkX
+instead depending on setup).
