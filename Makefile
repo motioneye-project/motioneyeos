@@ -94,7 +94,7 @@ noconfig_targets := menuconfig nconfig gconfig xconfig config oldconfig randconf
 # something else than one of the nobuild_targets.
 nobuild_targets := source source-check \
 	legal-info external-deps _external-deps \
-	clean distclean
+	clean distclean help
 ifeq ($(MAKECMDGOALS),)
 BR_BUILDING = y
 else ifneq ($(filter-out $(nobuild_targets),$(MAKECMDGOALS)),)
