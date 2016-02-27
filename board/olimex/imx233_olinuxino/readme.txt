@@ -6,10 +6,11 @@ one or more of: hostapd, iw, wireless_tools and/or wpa_supplicant.
 It also pulls up the console on the serial port, not on TV output.
 
 You'll need a spare MicroSD card with Freescale's special partition layout.
-This is basically two partitions:
+This is basically three partitions:
 
-1) Type 53, the bootstrap + bootloader/kernel partition, should be 16MB.
-2) Anything you like, for this example an ext2 partition, type 83 (linux).
+1) Type 53, the U-Boot partition, should be 16MB.
+2) VFAT, place the kernel uImage there
+3) Anything you like, for this example an ext2 partition, type 83 (linux).
 
 Assuming you see your MicroSD card as /dev/sdc you'd need to do, as root
 and from the buildroot project top level directory:
@@ -43,15 +44,31 @@ and from the buildroot project top level directory:
    p
    2
    <ENTER>
+   +5M
+   t
+   2
+   4
+   n
+   p
+   3
+   <ENTER>
    <ENTER>
    w
 
-4. Fill up the first (bootstrap + kernel) partition
-   # dd if=output/images/imx23_olinuxino_dev_linux.sb bs=512 of=/dev/sdc1 seek=4
+4. Fill up the first (U-Boot) partition
+   # dd if=output/images/u-boot.sd bs=512 of=/dev/sdc1
 
-5. Fill up the second (filesystem) partition
-   # dd if=output/images/rootfs.ext2 of=/dev/sdc2 bs=512
+5. Create VFAT Filesystem
+   # mkfs.vfat /dev/sdc2
 
-6. Remove the MicroSD card from your linux PC and put it into your olinuxino.
+6. Mount and copy output/images/uImage.imx23-olinuxino to the VFAT partition, rename to uImage
+   # mount /dev/sdc2 /mnt
+   # cp output/images/uImages/uImage.imx23-olinuxino /mnt/uImage
+   # umount /mnt
 
-7. Boot! You're done!
+7. Fill up the third (filesystem) partition
+   # dd if=output/images/rootfs.ext2 of=/dev/sdc3 bs=512
+
+8. Remove the MicroSD card from your linux PC and put it into your olinuxino.
+
+9. Boot! You're done!
