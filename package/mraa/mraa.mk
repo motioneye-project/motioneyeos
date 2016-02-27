@@ -20,6 +20,6 @@ MRAA_CONF_OPTS += \
 	-DIPK=OFF \
 	-DRPM=OFF \
 	-DENABLEEXAMPLES=OFF \
-	-DTESTS=OFF
+	-DBUILDTESTS=OFF
 
 $(eval $(cmake-package))
