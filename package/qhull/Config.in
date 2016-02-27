@@ -15,5 +15,4 @@ config BR2_PACKAGE_QHULL
 	  http://www.qhull.org
 
 comment "qhull needs a toolchain w/ C++, dynamic library"
-	depends on !BR2_INSTALL_LIBSTDCPP
-	depends on BR2_STATIC_LIBS
+	depends on !BR2_INSTALL_LIBSTDCPP || BR2_STATIC_LIBS
