@@ -1,3 +1,33 @@
+2016.02-rc3, Released February 27th, 2016
+
+	Fixes all over the tree.
+
+	Defconfigs: Ensure EABIhf is correctly enabled for ARM cores
+	where VFP is optional (but present on the specific hw). Fix
+	ARM variant selection for freescale_imx31_3stack_defconfig.
+
+	Ensure tarballs of downloaded git trees do not contain a
+	timestamp.
+
+	Clarify license of patches in COPYING.
+
+	Updated/fixed package: avahi, binutils, cairo, can-festival,
+	chrony, cifs-utils, dnsmasq, dvdauthor, e2fsprogs, efl,
+	erlang-rebar, eudev, fbterm, gawk, gnupg2, gnuradio, gpm,
+	gst1-plugins-good, hostapd, imagemagick, iproute2, iputils,
+	jack2, kexec, kismet, lftp, libarchive, libeXosip2, libfm,
+	libglib2, libsoil, libssh, libssh2, libuci, links, lshw, lxc,
+	mediastreamer, mono, mraa, mutt, nfs-utils, numactl, ofono,
+	omniorb, openipmi, openobex, patch, pax-utils, perf,
+	pulseaudio, pure-ftp, qhull, qt, quagga, quota, sdl_sound,
+	shairport-sync, spice, sysklogd, syslog-ng, trace-cmd,
+	trousers, tvheadend, util-linux, vim, webkitgtk24, wireshark,
+	wpa_supplicant, xerces, zsh
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#8651: libMonoPosixHelper.so wrong link reference in buildroot..
+
 2016.02-rc2, Released February 18th, 2016
 
 	Fixes all over the tree.
