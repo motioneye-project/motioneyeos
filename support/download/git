@@ -55,4 +55,4 @@ fi
 GIT_DIR="${basename}" \
 _git archive --prefix="'${basename}/'" -o "'${output}.tmp'" --format=tar "'${cset}'"
 
-gzip <"${output}.tmp" >"${output}"
+gzip -n <"${output}.tmp" >"${output}"
