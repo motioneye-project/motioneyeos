@@ -393,6 +393,13 @@ else
 VLC_CONF_OPTS += --disable-udev
 endif
 
+ifeq ($(BR2_PACKAGE_XCB_UTIL_KEYSYMS),y)
+VLC_CONF_OPTS += --enable-xcb
+VLC_DEPENDENCIES += xcb-util-keysyms
+else
+VLC_CONF_OPTS += --disable-xcb
+endif
+
 ifeq ($(BR2_PACKAGE_XLIB_LIBX11),y)
 VLC_CONF_OPTS += --with-x
 VLC_DEPENDENCIES += xlib_libX11
