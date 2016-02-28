@@ -251,6 +251,13 @@ else
 VLC_CONF_OPTS += --disable-svg --disable-svgdec
 endif
 
+ifeq ($(BR2_PACKAGE_LIBSSH2),y)
+VLC_CONF_OPTS += --enable-sftp
+VLC_DEPENDENCIES += libssh2
+else
+VLC_CONF_OPTS += --disable-sftp
+endif
+
 ifeq ($(BR2_PACKAGE_LIBSIDPLAY2),y)
 VLC_CONF_OPTS += --enable-sid
 VLC_DEPENDENCIES += libsidplay2
