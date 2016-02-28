@@ -272,6 +272,13 @@ else
 VLC_CONF_OPTS += --disable-upnp
 endif
 
+ifeq ($(BR2_PACKAGE_LIBVNCSERVER),y)
+VLC_CONF_OPTS += --enable-vnc
+VLC_DEPENDENCIES += libvncserver
+else
+VLC_CONF_OPTS += --disable-vnc
+endif
+
 ifeq ($(BR2_PACKAGE_LIBVORBIS),y)
 VLC_CONF_OPTS += --enable-vorbis
 VLC_DEPENDENCIES += libvorbis
