@@ -186,6 +186,13 @@ else
 VLC_CONF_OPTS += --disable-bluray
 endif
 
+ifeq ($(BR2_PACKAGE_LIBCDDB),y)
+VLC_CONF_OPTS += --enable-libcddb
+VLC_DEPENDENCIES += libcddb
+else
+VLC_CONF_OPTS += --disable-libcddb
+endif
+
 ifeq ($(BR2_PACKAGE_LIBDVBPSI),y)
 VLC_CONF_OPTS += --enable-dvbpsi
 VLC_DEPENDENCIES += libdvbpsi
