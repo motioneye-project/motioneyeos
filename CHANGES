@@ -67,6 +67,11 @@
 	A number of defconfigs have been extended to generate complete
 	system images using genimage.
 
+	Linux: Authomatically patch timeconst.pl for <3.9 kernels,
+	which isn't compatible with modern perl versions, breaking the
+	build when building on recent (Fedora 23, Debian
+	Testing/Unstable, ..) distributions.
+
 	Makedevs utility now accepts textual (non-numerical) user and
 	group names.
 
