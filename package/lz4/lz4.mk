@@ -22,8 +22,8 @@ define HOST_LZ4_BUILD_CMDS
 endef
 
 define HOST_LZ4_INSTALL_CMDS
-	$(MAKE) $(HOST_CONFIGURE_OPTS) DESTDIR=$(HOST_DIR) \
-		PREFIX=/usr install -C $(@D)
+	$(MAKE) $(HOST_CONFIGURE_OPTS) PREFIX=$(HOST_DIR)/usr \
+		install -C $(@D)
 endef
 
 define LZ4_BUILD_CMDS
