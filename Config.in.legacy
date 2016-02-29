@@ -143,7 +143,7 @@ comment "----------------------------------------------------"
 endif
 
 ###############################################################################
-comment "Legacy options removed in 2016.02"
+comment "Legacy options removed in 2016.05"
 
 config BR2_PACKAGE_SYSTEMD_ALL_EXTRAS
 	bool "systemd all extras option has been removed"
@@ -172,6 +172,9 @@ config BR2_PACKAGE_SQLITE_READLINE
 	  deciding itself depending on the enabled packages whether
 	  command-line editing should be enabled, it also also takes
 	  libedit into account.
+
+###############################################################################
+comment "Legacy options removed in 2016.02"
 
 config BR2_PACKAGE_OPENPOWERLINK_DEBUG_LEVEL
 	bool "openpowerlink debug option has been removed"
