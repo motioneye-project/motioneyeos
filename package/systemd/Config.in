@@ -100,7 +100,7 @@ config BR2_PACKAGE_SYSTEMD_TIMESYNCD
 	bool "enable SNTP client"
 	help
 	  systemd-timesyncd is a service that may be used to synchronize the
-	  local system clock with a Network Time Protocol Server.
+	  local system clock with a Network Time Protocol server.
 
 	  This simple NTP solution is an alternative to sntp/ntpd from the ntp
 	  package.
