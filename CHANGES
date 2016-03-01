@@ -1,3 +1,15 @@
+2016.02, Released March 1st, 2016
+
+	Minor fixes, mostly security related.
+
+	Circular dependency issue with same-as-kernel linux-headers
+	option fixed.
+
+	Updated/fixed packages: bluez5_utils, heirloom-mailx,
+	imx-gpu-viv, kodi-pvr-argustv, kodi-pvr-mediaportal-tvserver,
+	kodi-pvr-nextpvr, libfcgi, openssl, pifmrds, powerpc-utils,
+	python-m2crypto, slang, sox, squid, tn5250, xerces, zsh
+
 2016.02-rc3, Released February 27th, 2016
 
 	Fixes all over the tree.
