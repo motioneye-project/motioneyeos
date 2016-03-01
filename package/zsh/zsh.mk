@@ -28,6 +28,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_PCRE),y)
 ZSH_CONF_OPTS += --enable-pcre
+ZSH_CONF_ENV += ac_cv_prog_PCRECONF=$(STAGING_DIR)/usr/bin/pcre-config
 ZSH_DEPENDENCIES += pcre
 else
 ZSH_CONF_OPTS += --disable-pcre
