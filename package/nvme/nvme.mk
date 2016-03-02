@@ -7,7 +7,7 @@
 NVME_VERSION = v0.3
 NVME_SITE = $(call github,linux-nvme,nvme-cli,$(NVME_VERSION))
 NVME_LICENSE = GPLv2+
-NVME_LICENSE_FILES = COPYING
+NVME_LICENSE_FILES = LICENSE
 
 # LIBUDEV=1 means that libudev is _disabled_
 define NVME_BUILD_CMDS
