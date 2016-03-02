@@ -46,7 +46,7 @@ ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BASE),y)
 WEBKITGTK24_CONF_OPTS += \
 	--enable-video \
 	--enable-web-audio
-WEBKITGTK24_DEPENDENCIES += gst1-plugins-good
+WEBKITGTK24_DEPENDENCIES += gst1-plugins-base
 else
 WEBKITGTK24_CONF_OPTS += \
 	--disable-video \
