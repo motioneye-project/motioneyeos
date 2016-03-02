@@ -12,6 +12,11 @@ SDL_MIXER_LICENSE_FILES = COPYING
 
 SDL_MIXER_INSTALL_STAGING = YES
 SDL_MIXER_DEPENDENCIES = sdl
+
+# We're patching configure.in, so we need to autoreconf
+SDL_MIXER_AUTORECONF = YES
+SDL_MIXER_AUTORECONF_OPTS = -Iacinclude
+
 SDL_MIXER_CONF_OPTS = \
 	--without-x \
 	--with-sdl-prefix=$(STAGING_DIR)/usr \
