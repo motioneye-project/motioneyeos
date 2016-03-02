@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-SG3_UTILS_VERSION = 1.40
+SG3_UTILS_VERSION = 1.42
 SG3_UTILS_SOURCE = sg3_utils-$(SG3_UTILS_VERSION).tar.xz
 SG3_UTILS_SITE = http://sg.danny.cz/sg/p
 SG3_UTILS_LICENSE = BSD-3c
@@ -25,12 +25,12 @@ define SG3_UTILS_REMOVE_PROGS
 		get_lba_status ident inq logs luns map26 \
 		map sgm_dd modes opcodes sgp_dd persist prevent \
 		raw rbuf rdac read readcap read_block_limits \
-		read_buffer read_long reassign referrals \
+		read_attr read_buffer read_long reassign referrals \
 		rep_zones requests reset reset_wp rmsn rtpg safte sanitize \
 		sat_identify sat_phy_event sat_read_gplog sat_set_features \
 		scan senddiag ses ses_microcode start stpg sync test_rwbuf \
-		turs unmap verify vpd write_buffer write_long \
-		write_same write_verify wr_mode xcopy; do \
+		timestamp turs unmap verify vpd write_buffer write_long \
+		write_same write_verify wr_mode xcopy zone; do \
 		$(RM) $(TARGET_DIR)/usr/bin/sg_$${prog} ; \
 	done
 	for prog in \
