@@ -8,19 +8,13 @@ CHOCOLATE_DOOM_VERSION = 2.2.1
 CHOCOLATE_DOOM_SITE = http://www.chocolate-doom.org/downloads/$(CHOCOLATE_DOOM_VERSION)
 CHOCOLATE_DOOM_LICENSE = GPLv2+
 CHOCOLATE_DOOM_LICENSE_FILES = COPYING
-CHOCOLATE_DOOM_DEPENDENCIES = sdl sdl_mixer sdl_net
+CHOCOLATE_DOOM_DEPENDENCIES = host-pkgconf sdl sdl_mixer sdl_net
 
 # We're patching configure.ac, so we need to autoreconf
 CHOCOLATE_DOOM_AUTORECONF = YES
 
 # Avoid installing desktop entries, icons, etc.
 CHOCOLATE_DOOM_INSTALL_TARGET_OPTS = DESTDIR=$(TARGET_DIR) install-exec
-
-ifeq ($(BR2_STATIC_LIBS),y)
-# SDL_mixer uses symbols from SDL, but ends up after it on the link
-# cmdline. Fix it by forcing the SDL libs at the very end.
-CHOCOLATE_DOOM_CONF_ENV = LIBS="`$(STAGING_DIR)/usr/bin/sdl-config --static-libs`"
-endif
 
 CHOCOLATE_DOOM_CONF_OPTS = \
 	--disable-sdltest \
