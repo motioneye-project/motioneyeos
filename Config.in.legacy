@@ -143,6 +143,58 @@ comment "----------------------------------------------------"
 endif
 
 ###############################################################################
+comment "Legacy options removed in 2016.05"
+
+config BR2_PACKAGE_KODI_WAVPACK
+	bool "wavpack"
+	select BR2_LEGACY
+	help
+	  wavpack support was removed in favour of ffmpeg:
+	  https://github.com/xbmc/xbmc/commit/7916902c9e6f7a523265594f3ad7f921f93f1cd4
+
+config BR2_PACKAGE_KODI_RSXS
+	bool "rsxs support in Kodi was moved to an addon"
+	select BR2_LEGACY
+	select BR2_PACKAGE_KODI_SCREENSAVER_RSXS
+	help
+	  rsxs support in Kodi was moved to an addon
+
+config BR2_PACKAGE_KODI_GOOM
+	bool "Goom support in Kodi was moved to an addon"
+	select BR2_LEGACY
+	select BR2_PACKAGE_KODI_VISUALISATION_GOOM
+	help
+	  Goom support in Kodi was moved to an addon
+
+config BR2_PACKAGE_SYSTEMD_ALL_EXTRAS
+	bool "systemd all extras option has been removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_XZ
+	select BR2_PACKAGE_LIBGCRYPT
+	help
+	  The systemd option to enable "all extras" has been
+	  removed. To get the same features, the libgcrypt and xz
+	  package should now be enabled.
+
+config BR2_GCC_VERSION_4_5_X
+	bool "gcc 4.5.x has been removed"
+	select BR2_LEGACY
+	help
+	  The 4.5.x version of gcc has been removed. Use a newer
+	  version instead.
+
+config BR2_PACKAGE_SQLITE_READLINE
+	bool "command-line editing support was updated"
+	select BR2_PACKAGE_NCURSES
+	select BR2_PACKAGE_READLINE
+	select BR2_LEGACY
+	help
+	  This option was removed in favour of the sqlite package
+	  deciding itself depending on the enabled packages whether
+	  command-line editing should be enabled, it also also takes
+	  libedit into account.
+
+###############################################################################
 comment "Legacy options removed in 2016.02"
 
 config BR2_PACKAGE_DOVECOT_BZIP2

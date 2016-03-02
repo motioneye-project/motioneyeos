@@ -11,8 +11,8 @@
 # either version 2.1 of the License, or (at your option) any
 # later version.
 
-AVAHI_VERSION = 0.6.31
-AVAHI_SITE = http://www.avahi.org/download
+AVAHI_VERSION = 0.6.32
+AVAHI_SITE = https://github.com/lathiat/avahi/releases/download/v$(AVAHI_VERSION)
 AVAHI_LICENSE = LGPLv2.1+
 AVAHI_LICENSE_FILES = LICENSE
 AVAHI_INSTALL_STAGING = YES
@@ -220,13 +220,13 @@ define AVAHI_INSTALL_INIT_SYSV
 	$(AVAHI_INSTALL_DAEMON_INIT_SYSV)
 endef
 
+ifeq ($(BR2_PACKAGE_AVAHI_LIBDNSSD_COMPATIBILITY),y)
 # applications expects to be able to #include <dns_sd.h>
 define AVAHI_STAGING_INSTALL_LIBDNSSD_LINK
 	ln -sf avahi-compat-libdns_sd/dns_sd.h \
 		$(STAGING_DIR)/usr/include/dns_sd.h
 endef
 
-ifeq ($(BR2_PACKAGE_AVAHI_LIBDNSSD_COMPATIBILITY),y)
 AVAHI_POST_INSTALL_STAGING_HOOKS += AVAHI_STAGING_INSTALL_LIBDNSSD_LINK
 endif
 

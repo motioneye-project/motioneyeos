@@ -6,15 +6,17 @@ AC_PROG_CC already performs sanity checks. And unlike the removed
 checks, it does so in a way that supports cross compilation.
 
 Signed-off-by: Maarten ter Huurne <maarten@treewalker.org>
+[Ricardo: rebase on top of 4.3.1]
+Signed-off-by: Ricardo Martincoski <ricardo.martincoski@gmail.com>
 ---
- configure.in | 27 ---------------------------
+ configure.ac | 27 ---------------------------
  1 file changed, 27 deletions(-)
 
-diff --git a/configure.in b/configure.in
-index 87fd43b..572c2a3 100644
---- a/configure.in
-+++ b/configure.in
-@@ -47,31 +47,6 @@ AC_PROG_GCC_TRADITIONAL
+diff --git a/configure.ac b/configure.ac
+index ffe2e37..27690a6 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -48,31 +48,6 @@ AC_PROG_GCC_TRADITIONAL
  AC_ISC_POSIX
  AC_USE_SYSTEM_EXTENSIONS
  
@@ -46,7 +48,7 @@ index 87fd43b..572c2a3 100644
  AC_PROG_AWK
  
  AC_PROG_INSTALL
-@@ -1299,8 +1274,6 @@ fi
+@@ -1300,8 +1275,6 @@ fi
  dnl Ptx bug workaround -- insert -lc after -ltermcap
  test -n "$seqptx" && LIBS="-ltermcap -lc -lsocket -linet -lnsl -lsec -lseq"
  

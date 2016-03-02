@@ -20,8 +20,7 @@ else
 LIBCAP_HAVE_LIBATTR = no
 endif
 
-# we don't have host-attr
-HOST_LIBCAP_DEPENDENCIES =
+HOST_LIBCAP_DEPENDENCIES = host-attr
 
 ifeq ($(BR2_STATIC_LIBS),y)
 LIBCAP_MAKE_TARGET = libcap.a
@@ -67,12 +66,13 @@ define LIBCAP_INSTALL_TARGET_CMDS
 endef
 
 define HOST_LIBCAP_BUILD_CMDS
-	$(HOST_MAKE_ENV) $(HOST_CONFIGURE_OPTS) $(MAKE) -C $(@D) LIBATTR=no
+	$(HOST_MAKE_ENV) $(HOST_CONFIGURE_OPTS) $(MAKE) -C $(@D)\
+		LIBATTR=yes RAISE_SETFCAP=no
 endef
 
 define HOST_LIBCAP_INSTALL_CMDS
-	$(HOST_MAKE_ENV) $(MAKE) -C $(@D) LIBATTR=no DESTDIR=$(HOST_DIR) \
-		prefix=/usr lib=lib install
+	$(HOST_MAKE_ENV) $(MAKE) -C $(@D) DESTDIR=$(HOST_DIR) \
+		LIBATTR=yes RAISE_SETFCAP=no prefix=/usr lib=lib install
 endef
 
 $(eval $(generic-package))

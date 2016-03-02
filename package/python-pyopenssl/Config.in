@@ -1,0 +1,12 @@
+config BR2_PACKAGE_PYTHON_PYOPENSSL
+	bool "python-pyopenssl"
+	depends on BR2_INSTALL_LIBSTDCPP # python-cryptography
+	select BR2_PACKAGE_PYTHON_CRYPTOGRAPHY # runtime
+	select BR2_PACKAGE_PYTHON_SIX # runtime
+	help
+	  Python wrapper module around the OpenSSL library.
+
+	  https://github.com/pyca/pyopenssl
+
+comment "python-pyopenssl needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP

@@ -56,6 +56,11 @@ config BR2_PACKAGE_SYSTEMD
 	  The selection of other packages will enable some features:
 
 	  - acl package will add support for multi-seat.
+	  - xz and/or l4 packages will add compression support in
+	    journal and coredump.
+	  - libcurl package will add support for systemd-journal-upload.
+	  - libgcrypt package will add support for journal sealing and
+	    DNSSEC verification in resolved.
 
 	  http://freedesktop.org/wiki/Software/systemd
 
@@ -63,14 +68,6 @@ if BR2_PACKAGE_SYSTEMD
 
 config BR2_PACKAGE_PROVIDES_UDEV
 	default "systemd"
-
-config BR2_PACKAGE_SYSTEMD_ALL_EXTRAS
-	bool "enable all extras"
-	select BR2_PACKAGE_XZ
-	select BR2_PACKAGE_LIBGCRYPT
-	help
-	  Enable extra features for Systemd: journal compression and
-	  signing.
 
 config BR2_PACKAGE_SYSTEMD_KDBUS
 	bool "enable kdbus support"
@@ -87,6 +84,42 @@ config BR2_PACKAGE_SYSTEMD_JOURNAL_GATEWAY
 
 	  http://www.freedesktop.org/software/systemd/man/systemd-journal-gatewayd.service.html
 
+config BR2_PACKAGE_SYSTEMD_BINFMT
+	bool "enable binfmt tool"
+	help
+	  systemd-binfmt is an early boot service that registers
+	  additional binary formats for executables in the kernel.
+
+	  http://www.freedesktop.org/software/systemd/man/systemd-binfmt.service.html
+
+config BR2_PACKAGE_SYSTEMD_VCONSOLE
+	bool "enable vconsole tool"
+	help
+	  systemd-vconsole-setup is an early boot service that
+	  configures the virtual console font and console keymap.
+
+	  http://www.freedesktop.org/software/systemd/man/systemd-vconsole-setup.service.html
+
+config BR2_PACKAGE_SYSTEMD_BOOTCHART
+	bool "enable bootchart tool"
+	help
+	  systemd-bootchart is a tool, usually run at system startup,
+	  that collects the CPU load, disk load, memory usage, as well
+	  as per-process information from a running system. Collected
+	  results are output as an SVG graph.
+
+	  http://www.freedesktop.org/software/systemd/man/systemd-bootchart.html
+
+config BR2_PACKAGE_SYSTEMD_QUOTACHECK
+	bool "enable quotacheck tools"
+	help
+	  systemd-quotacheck is a service responsible for file system
+	  quota checks. It is run once at boot after all necessary
+	  file systems are mounted. It is pulled in only if at least
+	  one file system has quotas enabled.
+
+	  http://www.freedesktop.org/software/systemd/man/systemd-quotacheck.service.html
+
 config BR2_PACKAGE_SYSTEMD_NETWORKD
 	bool "enable network manager"
 	help
@@ -101,10 +134,9 @@ config BR2_PACKAGE_SYSTEMD_NETWORKD
 
 config BR2_PACKAGE_SYSTEMD_TIMESYNCD
 	bool "enable SNTP client"
-	depends on BR2_PACKAGE_SYSTEMD_NETWORKD
 	help
 	  systemd-timesyncd is a service that may be used to synchronize the
-	  local system clock with a Network Time Protocol Server.
+	  local system clock with a Network Time Protocol server.
 
 	  This simple NTP solution is an alternative to sntp/ntpd from the ntp
 	  package.

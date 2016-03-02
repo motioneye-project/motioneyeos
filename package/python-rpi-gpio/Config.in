@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PYTHON_RPI_GPIO
+	bool "python-rpi-gpio"
+	depends on BR2_arm
+	help
+	  A Python module to control the GPIO on a Raspberry Pi.
+
+	  http://sourceforge.net/p/raspberry-gpio-python

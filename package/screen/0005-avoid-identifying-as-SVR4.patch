@@ -12,15 +12,17 @@ workaround was added for, so all I could do is make an educated guess
 at the #defines its compiler would be likely to set.
 
 Signed-off-by: Maarten ter Huurne <maarten@treewalker.org>
+[Ricardo: rebase on top of 4.3.1]
+Signed-off-by: Ricardo Martincoski <ricardo.martincoski@gmail.com>
 ---
- configure.in | 14 ++++++++++++--
+ configure.ac | 14 ++++++++++++--
  1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/configure.in b/configure.in
-index f78f81f..181b7f9 100644
---- a/configure.in
-+++ b/configure.in
-@@ -178,14 +178,24 @@ AC_EGREP_CPP(yes,
+diff --git a/configure.ac b/configure.ac
+index 9cf7cee..e09e4cf 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -179,14 +179,24 @@ AC_EGREP_CPP(yes,
  #endif
  ], LIBS="$LIBS -lsocket -linet";seqptx=1)
  

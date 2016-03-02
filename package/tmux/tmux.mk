@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-TMUX_VERSION = 2.0
+TMUX_VERSION = 2.1
 TMUX_SITE = https://github.com/tmux/tmux/releases/download/$(TMUX_VERSION)
 TMUX_LICENSE = ISC
 TMUX_LICENSE_FILES = README

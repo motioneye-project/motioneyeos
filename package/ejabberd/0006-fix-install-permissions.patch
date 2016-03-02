@@ -1,0 +1,82 @@
+From ef847479778cc58818e066b87aa1789ba1c4148b Mon Sep 17 00:00:00 2001
+From: Johan Oudinet <johan.oudinet@gmail.com>
+Date: Wed, 20 Jan 2016 09:34:07 -0500
+Subject: [PATCH] fix install permissions
+
+Without this patch, the makefile will try to install directories and
+files with incompatible permissions for ejabberd, which run as an
+ejabberd user.
+
+Signed-off-by: Frank Hunleth <fhunleth@troodon-software.com>
+---
+ Makefile.in | 38 +++++---------------------------------
+ 1 file changed, 5 insertions(+), 33 deletions(-)
+
+diff --git a/Makefile.in b/Makefile.in
+index 2a6457c..0be4c50 100644
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -155,10 +155,8 @@ copy-files-sub: copy-files-sub2
+ install: all copy-files
+ 	#
+ 	# Configuration files
+-	$(INSTALL) -d -m 750 $(G_USER) $(ETCDIR)
+-	[ -f $(ETCDIR)/ejabberd.yml ] \
+-		&& $(INSTALL) -b -m 640 $(G_USER) ejabberd.yml.example $(ETCDIR)/ejabberd.yml-new \
+-		|| $(INSTALL) -b -m 640 $(G_USER) ejabberd.yml.example $(ETCDIR)/ejabberd.yml
++	$(INSTALL) -d $(ETCDIR)
++	$(INSTALL) -b -m 644 ejabberd.yml.example $(ETCDIR)/ejabberd.yml
+ 	$(SED) -e "s*{{rootdir}}*@prefix@*" \
+ 		-e "s*{{installuser}}*@INSTALLUSER@*" \
+ 		-e "s*{{bindir}}*@bindir@*" \
+@@ -168,14 +166,11 @@ install: all copy-files
+ 		-e "s*{{docdir}}*@docdir@*" \
+ 		-e "s*{{erl}}*@ERL@*" ejabberdctl.template \
+ 		> ejabberdctl.example
+-	[ -f $(ETCDIR)/ejabberdctl.cfg ] \
+-		&& $(INSTALL) -b -m 640 $(G_USER) ejabberdctl.cfg.example $(ETCDIR)/ejabberdctl.cfg-new \
+-		|| $(INSTALL) -b -m 640 $(G_USER) ejabberdctl.cfg.example $(ETCDIR)/ejabberdctl.cfg
+-	$(INSTALL) -b -m 644 $(G_USER) inetrc $(ETCDIR)/inetrc
++	$(INSTALL) -b -m 644 ejabberdctl.cfg.example $(ETCDIR)/ejabberdctl.cfg
++	$(INSTALL) -b -m 644 inetrc $(ETCDIR)/inetrc
+ 	#
+ 	# Administration script
+-	[ -d $(SBINDIR) ] || $(INSTALL) -d -m 755 $(SBINDIR)
+-	$(INSTALL) -m 550 $(G_USER) ejabberdctl.example $(SBINDIR)/ejabberdctl
++	$(INSTALL) -D ejabberdctl.example $(SBINDIR)/ejabberdctl
+ 	# Elixir binaries
+ 	[ -d $(BINDIR) ] || $(INSTALL) -d -m 755 $(BINDIR)
+ 	[ -f deps/elixir/bin/iex ] && $(INSTALL) -m 550 $(G_USER) deps/elixir/bin/iex $(BINDIR)/iex || true
+@@ -187,29 +182,6 @@ install: all copy-files
+ 		-e "s*@installuser@*$(INIT_USER)*" ejabberd.init.template \
+ 		> ejabberd.init
+ 	chmod 755 ejabberd.init
+-	#
+-	# Spool directory
+-	$(INSTALL) -d -m 750 $(O_USER) $(SPOOLDIR)
+-	$(CHOWN_COMMAND) -R @INSTALLUSER@ $(SPOOLDIR) >$(CHOWN_OUTPUT)
+-	chmod -R 750 $(SPOOLDIR)
+-	[ ! -f $(COOKIEFILE) ] || { $(CHOWN_COMMAND) @INSTALLUSER@ $(COOKIEFILE) >$(CHOWN_OUTPUT) ; chmod 400 $(COOKIEFILE) ; }
+-	#
+-	# ejabberdctl lock directory
+-	$(INSTALL) -d -m 750 $(O_USER) $(CTLLOCKDIR)
+-	$(CHOWN_COMMAND) -R @INSTALLUSER@ $(CTLLOCKDIR) >$(CHOWN_OUTPUT)
+-	chmod -R 750 $(CTLLOCKDIR)
+-	#
+-	# Log directory
+-	$(INSTALL) -d -m 750 $(O_USER) $(LOGDIR)
+-	$(CHOWN_COMMAND) -R @INSTALLUSER@ $(LOGDIR) >$(CHOWN_OUTPUT)
+-	chmod -R 750 $(LOGDIR)
+-	#
+-	# Documentation
+-	$(INSTALL) -d $(DOCDIR)
+-	[ -f doc/guide.html ] \
+-		&& $(INSTALL) -m 644 doc/guide.html $(DOCDIR) \
+-		|| echo "Documentation not included in sources"
+-	$(INSTALL) -m 644 COPYING $(DOCDIR)
+ 
+ uninstall: uninstall-binary
+ 
+-- 
+2.5.0
+

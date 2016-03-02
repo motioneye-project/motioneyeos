@@ -1,0 +1,42 @@
+From 29e4794ca396a8db8a468ec74559922d2af5a987 Mon Sep 17 00:00:00 2001
+From: Nicholas Marriott <nicholas.marriott@gmail.com>
+Date: Tue, 24 Nov 2015 18:46:50 +0000
+Subject: [PATCH] -sys/queue.h in proc.c, and nuke the unnecessary C++ header
+ guards stuff and sys/cdefs.h in vis.h (it causes problems on some platforms).
+ Reported by someone on GitHub, issue 212.
+
+---
+Backported from master upstream to fix musl build
+https://github.com/tmux/tmux/commit/7b085136a7291cbcdfcc53182fbd13aaca70306e
+
+proc.c does not exist on version 2.1
+
+Signed-off-by: Ricardo Martincoski <ricardo.martincoski@gmail.com>
+---
+ compat/vis.h | 5 -----
+ 1 file changed, 5 deletions(-)
+
+diff --git a/compat/vis.h b/compat/vis.h
+index 6795139..9f12d23 100644
+--- a/compat/vis.h
++++ b/compat/vis.h
+@@ -73,9 +73,6 @@
+  */
+ #define	UNVIS_END	1	/* no more characters */
+ 
+-#include <sys/cdefs.h>
+-
+-__BEGIN_DECLS
+ char	*vis(char *, int, int, int);
+ int	strvis(char *, const char *, int);
+ int	stravis(char **, const char *, int);
+@@ -85,6 +82,4 @@ int	strunvis(char *, const char *);
+ int	unvis(char *, char, int *, int);
+ ssize_t strnunvis(char *, const char *, size_t);
+ 
+-__END_DECLS
+-
+ #endif /* !_VIS_H_ */
+-- 
+1.9.1
+

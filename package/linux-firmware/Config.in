@@ -189,6 +189,11 @@ config BR2_PACKAGE_LINUX_FIRMWARE_MWIFIEX_PCIE8897
 	help
 	  Firmware files for the Marvell Wifi-Ex 8897 module on PCI-E.
 
+config BR2_PACKAGE_LINUX_FIRMWARE_MEDIATEK_MT7601U
+	bool "MediaTek MT7601U"
+	help
+	  MediaTek MT7601U
+
 config BR2_PACKAGE_LINUX_FIRMWARE_RALINK_RT61
 	bool "Ralink rt2501/rt61"
 	help

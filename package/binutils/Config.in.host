@@ -12,6 +12,8 @@ choice
 			   !BR2_powerpc64le && !BR2_nios2
 		# Unsupported for MIPS R6
 		depends on !BR2_mips_32r6 && !BR2_mips_64r6
+		# Unsupported ARM cores
+		depends on !BR2_cortex_a17
 		bool "binutils 2.23.2"
 
 	config BR2_BINUTILS_VERSION_2_24_X
@@ -19,6 +21,8 @@ choice
 		depends on !BR2_nios2 && !BR2_powerpc64le
 		# Unsupported for MIPS R6
 		depends on !BR2_mips_32r6 && !BR2_mips_64r6
+		# Unsupported ARM cores
+		depends on !BR2_cortex_a17
 		bool "binutils 2.24"
 
 	config BR2_BINUTILS_VERSION_2_25_X
