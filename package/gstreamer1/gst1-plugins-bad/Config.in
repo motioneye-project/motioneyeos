@@ -671,6 +671,7 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_X265
 	bool "x265"
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on !BR2_STATIC_LIBS
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # x265
 	select BR2_PACKAGE_X265
 	help
 	  x265 encoding plugin
