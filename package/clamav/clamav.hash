@@ -1,4 +1,4 @@
-# From http://sourceforge.net/projects/clamav/files/clamav/0.99/
-sha1	7834baf3ce4898dd856e652c9d0301a8e14b4615	clamav-0.99.tar.gz
-# Locally computed
-sha256	d2792c8cfadd685fffc40b2199679628815df031fd3149ccf961649fc8787ea9	clamav-0.99.tar.gz
+# From http://sourceforge.net/projects/clamav/files/clamav/0.99.1/
+sha1	9b9706b951fbb35cf6743ef497649fdf20f167f9	clamav-0.99.1.tar.gz
+# Calculated based on the hash above
+sha256	e144689122d3f91293808c82cbb06b7d3ac9eca7ae29564c5d148ffe7b25d58a	clamav-0.99.1.tar.gz
