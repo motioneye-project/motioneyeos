@@ -20,12 +20,18 @@ endif
 # nodejs build system is based on python, but only support python-2.6 or
 # python-2.7. So, we have to enforce PYTHON interpreter to be python2.
 define HOST_NODEJS_CONFIGURE_CMDS
+	# The build system directly calls python. Work around this by forcing python2
+	# into PATH. See https://github.com/nodejs/node/issues/2735
+	mkdir -p $(@D)/bin
+	ln -sf $(HOST_DIR)/usr/bin/python2 $(@D)/bin/python
+
 	# Build with the static, built-in OpenSSL which is supplied as part of
 	# the nodejs source distribution.  This is needed on the host because
 	# NPM is non-functional without it, and host-openssl isn't part of
 	# buildroot.
 	(cd $(@D); \
 		$(HOST_CONFIGURE_OPTS) \
+		PATH=$(@D)/bin:$(BR_PATH) \
 		PYTHON=$(HOST_DIR)/usr/bin/python2 \
 		$(HOST_DIR)/usr/bin/python2 ./configure \
 		--prefix=$(HOST_DIR)/usr \
@@ -39,13 +45,15 @@ endef
 define HOST_NODEJS_BUILD_CMDS
 	$(HOST_MAKE_ENV) PYTHON=$(HOST_DIR)/usr/bin/python2 \
 		$(MAKE) -C $(@D) \
-		$(HOST_CONFIGURE_OPTS)
+		$(HOST_CONFIGURE_OPTS) \
+		PATH=$(@D)/bin:$(BR_PATH)
 endef
 
 define HOST_NODEJS_INSTALL_CMDS
 	$(HOST_MAKE_ENV) PYTHON=$(HOST_DIR)/usr/bin/python2 \
 		$(MAKE) -C $(@D) install \
-		$(HOST_CONFIGURE_OPTS)
+		$(HOST_CONFIGURE_OPTS) \
+		PATH=$(@D)/bin:$(BR_PATH)
 endef
 
 ifeq ($(BR2_i386),y)
@@ -75,8 +83,12 @@ endif
 endif
 
 define NODEJS_CONFIGURE_CMDS
+	mkdir -p $(@D)/bin
+	ln -sf $(HOST_DIR)/usr/bin/python2 $(@D)/bin/python
+
 	(cd $(@D); \
 		$(TARGET_CONFIGURE_OPTS) \
+		PATH=$(@D)/bin:$(BR_PATH) \
 		LD="$(TARGET_CXX)" \
 		PYTHON=$(HOST_DIR)/usr/bin/python2 \
 		$(HOST_DIR)/usr/bin/python2 ./configure \
@@ -99,6 +111,7 @@ define NODEJS_BUILD_CMDS
 	$(TARGET_MAKE_ENV) PYTHON=$(HOST_DIR)/usr/bin/python2 \
 		$(MAKE) -C $(@D) \
 		$(TARGET_CONFIGURE_OPTS) \
+		PATH=$(@D)/bin:$(BR_PATH) \
 		LD="$(TARGET_CXX)"
 endef
 
@@ -138,6 +151,7 @@ define NODEJS_INSTALL_TARGET_CMDS
 		$(MAKE) -C $(@D) install \
 		DESTDIR=$(TARGET_DIR) \
 		$(TARGET_CONFIGURE_OPTS) \
+		PATH=$(@D)/bin:$(BR_PATH) \
 		LD="$(TARGET_CXX)"
 	$(NODEJS_INSTALL_MODULES)
 endef
