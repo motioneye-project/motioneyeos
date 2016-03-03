@@ -7,7 +7,7 @@ available from http://www.zedboard.org .
 
 Steps to create a working system for Zedboard:
 
-1) make zedboard_defconfig
+1) make zynq_zed_defconfig
 2) make
 3) copy files BOOT.BIN, u-boot-dtb.img, rootfs.cpio.uboot,
 	uImage, zynq-zed.dtb into your SD card

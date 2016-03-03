@@ -16,7 +16,7 @@ boot.bin file.
 If you already have the Xilinx tools installed, the following sequence
 will unpack, patch and build the rfs, kernel, uboot, and uboot-spl.
 
-make xilinx_zc706_defconfig
+make zynq_zc706_defconfig
 make uboot-patch
 cp ${XILINX_SDK_LIB}/hwplatform_templates/ZC706_hw_platform/ps7_init.{c,h} \
    output/build/uboot-xilinx-v2014.1/board/xilinx/zynq/
