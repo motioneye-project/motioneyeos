@@ -5,6 +5,7 @@ conf="/data/etc/motioneye.conf"
 motion_conf="/data/etc/motion.conf"
 watch_timeout=120
 dev_v4l_by_id="/dev/v4l/by-id/"
+media_dir="/data/output"
 
 if [ -f $sys_conf ] && ! [ -f $conf ]; then
     cp $sys_conf $conf
@@ -58,6 +59,8 @@ find_persistent_device() {
 
 start() {
     msg_begin "Starting motioneye"
+
+    mkdir -p $media_dir
     meyectl startserver -b -c $conf -l
 
     count=0
