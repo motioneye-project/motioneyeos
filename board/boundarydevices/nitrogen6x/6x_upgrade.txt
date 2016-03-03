@@ -7,7 +7,7 @@ offset=0x400
 a_uImage1=0x12000000
 a_uImage2=0x12400000
 
-if itest.s x6SX == "x$cpu" ; then
+if itest.s x6SX == "x${cpu}" || itest.s x7D == "x${cpu}"; then
 	a_uImage1=0x82000000
 	a_uImage2=0x82400000
 fi

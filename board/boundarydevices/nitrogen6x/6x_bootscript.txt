@@ -1,8 +1,19 @@
 setenv bootargs ''
 
-a_script=0x10800000
-a_zImage=0x10800000
-a_fdt=0x13000000
+if itest.s x6SX == "x${cpu}" || itest.s x7D == "x${cpu}"; then
+	a_script=0x80800000
+	a_zImage=0x80800000
+	a_fdt=0x83000000
+	m4=''
+	if itest.s "x1" == "x$m4enabled" ; then
+		run m4boot;
+		m4='-m4';
+	fi
+else
+	a_script=0x10800000
+	a_zImage=0x10800000
+	a_fdt=0x13000000
+fi
 
 setenv initrd_high 0xffffffff
 if itest.s "x" == "x${dtbname}" ; then
@@ -13,15 +24,9 @@ if itest.s "x" == "x${dtbname}" ; then
 	elif itest.s x6QP == "x${cpu}" ; then
 		dtbname=imx6qp-${board}.dtb;
 	elif itest.s x6SX == "x${cpu}" ; then
-		if itest.s "x1" != "x$m4enabled" ; then
-			dtbname=imx6sx-${board}.dtb;
-		else
-			run m4boot;
-			dtbname=imx6sx-${board}-m4.dtb;
-		fi
-		a_script=0x80800000
-		a_zImage=0x80800000
-		a_fdt=0x83000000
+		dtbname=imx6sx-${board}${m4}.dtb;
+	elif itest.s x7D == "x${cpu}" ; then
+		dtbname=imx7d-${board}${m4}.dtb;
 	else
 		dtbname=imx6q-${board}.dtb;
 	fi
@@ -46,10 +51,6 @@ else
 	echo "!!!! Error loading ${bootdir}${dtbname}";
 	exit;
 fi
-
-# first enable tfp410
-i2c dev 1
-i2c mw 38 8.1 bd
 
 cmd_xxx_present=
 fdt resize
