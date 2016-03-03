@@ -1,2 +1,2 @@
-# From https://lists.exim.org/lurker/message/20150726.143052.f70a32f0.en.html
-sha256	f1ccf2ce2ea51b7fbbf160e7e0e41d24ca401cf44a185128ad99ea04635fc456	exim-4.86.tar.bz2
+# Locally calculated after checking pgp signature
+sha256	7756deafd0583776e091f2efcba9b36203e668cf420d8876f314980803636eb3	exim-4.86.2.tar.bz2
