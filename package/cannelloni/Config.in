@@ -1,0 +1,15 @@
+config BR2_PACKAGE_CANNELLONI
+	bool "cannelloni"
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_USE_MMU # lksctp-tools
+	depends on BR2_TOOLCHAIN_HAS_THREADS # lksctp-tools
+	select BR2_PACKAGE_LKSCTP_TOOLS
+	help
+	  A SocketCAN over Ethernet tunnel. The tunnel supports both
+	  UDP and SCTP protocols.
+
+	  https://github.com/mguentner/cannelloni
+
+comment "cannelloni needs a toolchain w/ C++, threads"
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_USE_MMU
