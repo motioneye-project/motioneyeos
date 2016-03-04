@@ -64,8 +64,11 @@ define LUAJIT_INSTALL_SYMLINK
 endef
 LUAJIT_POST_INSTALL_TARGET_HOOKS += LUAJIT_INSTALL_SYMLINK
 
+# host-efl package needs host-luajit to be linked dynamically.
 define HOST_LUAJIT_BUILD_CMDS
-	$(MAKE) PREFIX="/usr" BUILDMODE=static -C $(@D) amalg
+	$(MAKE) PREFIX="/usr" BUILDMODE=dynamic \
+		TARGET_LDFLAGS="$(HOST_LDFLAGS)" \
+		-C $(@D) amalg
 endef
 
 define HOST_LUAJIT_INSTALL_CMDS
