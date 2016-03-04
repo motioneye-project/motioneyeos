@@ -1,0 +1,12 @@
+config BR2_PACKAGE_LIBPJSIP
+	bool "libpjsip"
+	depends on BR2_INSTALL_LIBSTDCPP
+	help
+	  PJSIP is a free and open source multimedia communication
+	  library written in C language implementing standard based
+	  protocols such as: SIP, SDP, RTP, STUN, TURN, and ICE.
+
+	  http://www.pjsip.org
+
+comment "libpjsip needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP

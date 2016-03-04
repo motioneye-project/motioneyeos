@@ -1,0 +1,5 @@
+# From http://www.pjsip.org/release/2.4.5/MD5SUM.TXT
+md5	f58b3485977b3a700256203a554b3869  pjproject-2.4.5.tar.bz2
+
+# Locally computed
+sha256	086f5e70dcaee312b66ddc24dac6ef85e6f1fec4eed00ff2915cebe0ee3cdd8d	pjproject-2.4.5.tar.bz2
