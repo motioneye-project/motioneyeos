@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LTP_TESTSUITE_VERSION = 20150903
+LTP_TESTSUITE_VERSION = 20160126
 LTP_TESTSUITE_SOURCE = ltp-full-$(LTP_TESTSUITE_VERSION).tar.xz
 LTP_TESTSUITE_SITE = https://github.com/linux-test-project/ltp/releases/download/$(LTP_TESTSUITE_VERSION)
 LTP_TESTSUITE_LICENSE = GPLv2, GPLv2+
@@ -37,5 +37,16 @@ LTP_TESTSUITE_CONF_ENV += \
 	CPPFLAGS="$(LTP_TESTSUITE_CPPFLAGS)" \
 	LIBS="$(LTP_TESTSUITE_LIBS)" \
 	SYSROOT="$(STAGING_DIR)"
+
+# Requires uClibc fts and bessel support, normally not enabled
+ifeq ($(BR2_TOOLCHAIN_USES_UCLIBC),y)
+define LTP_TESTSUITE_REMOVE_UNSUPPORTED
+        rm -rf $(@D)/testcases/kernel/controllers/cpuset/
+        rm -rf $(@D)/testcases/misc/math/float/bessel/
+        rm -f $(@D)/testcases/misc/math/float/float_bessel.c
+endef
+LTP_TESTSUITE_POST_PATCH_HOOKS += LTP_TESTSUITE_REMOVE_UNSUPPORTED
+endif
+
 
 $(eval $(autotools-package))

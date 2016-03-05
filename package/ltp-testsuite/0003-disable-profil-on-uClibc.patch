@@ -1,0 +1,27 @@
+uClibc-ng has no profil() support
+
+Signed-off-by: Waldemar Brodkorb <wbx@openadk.org>
+
+diff -Nur ltp-full-20160126.orig/testcases/kernel/syscalls/profil/profil01.c ltp-full-20160126/testcases/kernel/syscalls/profil/profil01.c
+--- ltp-full-20160126.orig/testcases/kernel/syscalls/profil/profil01.c	2016-01-26 13:35:25.000000000 +0100
++++ ltp-full-20160126/testcases/kernel/syscalls/profil/profil01.c	2016-03-05 01:00:07.328962536 +0100
+@@ -37,6 +37,9 @@
+ #define PROFIL_BUFLEN (32*1024)
+ 
+ char *TCID = "profil01";
++
++#if !defined(__UCLIBC__)
++
+ int TST_TOTAL = 1;
+ 
+ static volatile sig_atomic_t profil_done;
+@@ -124,3 +127,9 @@
+ 
+ 	tst_exit();
+ }
++#else /* systems that dont support profil */
++int main(void)
++{
++        tst_brkm(TCONF, NULL, "system doesn't have profil support");
++}
++#endif
