@@ -5,7 +5,7 @@ function usage() {
     echo "Usage: $0 [options...]" 1>&2
     echo ""
     echo "Available options:"
-    echo "    <-i image_file> - indicates the path to the image file (e.g. -i /home/user/Download/motioneyeos.img.gz)"
+    echo "    <-i image_file> - indicates the path to the image file (e.g. -i /home/user/Download/file.img.gz)"
     echo "    <-d sdcard_dev> - indicates the path to the sdcard block device (e.g. -d /dev/mmcblk0)"
     echo "    [-n ssid:psk] - sets the wireless network name and key (e.g. -n mynet:mykey1234)"
     echo "    [-s ip/cidr:gw:dns] - sets a static IP configuration instead of DHCP (e.g. -s 192.168.1.101/24:192.168.1.1:8.8.8.8)"
@@ -16,7 +16,7 @@ if [ -z "$1" ]; then
     usage
 fi
 
-if [[ $(id -u) -ne 0 ]]; then echo "Please run as root"; exit 1; fi
+if [[ $(id -u) -ne 0 ]]; then echo "please run as root"; exit 1; fi
 
 function msg() {
     echo ":: $1"
@@ -68,9 +68,11 @@ if ! [ -f $DISK_IMG ]; then
     exit 1
 fi
 
+gunzip=$(which unpigz || which gunzip)
+
 if [[ $DISK_IMG == *.gz ]]; then
     msg "decompressing the gzipped image"
-    gunzip -c $DISK_IMG > ${DISK_IMG::-3}
+    $gunzip -c $DISK_IMG > ${DISK_IMG::-3}
     DISK_IMG=${DISK_IMG::-3}
 fi
 

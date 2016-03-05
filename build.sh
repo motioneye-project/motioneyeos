@@ -11,6 +11,7 @@ board=$1
 target=${*:2}
 cd $(dirname $0)
 basedir=$(pwd)
+gzip=$(which pigz || which gzip)
 
 if [ "$board" == "all" ]; then
     boards=$(ls $basedir/configs/*_defconfig | grep -oE '\w+_defconfig$' | cut -d '_' -f 1)
@@ -45,7 +46,7 @@ elif [ "$target" == "mkrelease" ]; then
     date=$(date +%Y%m%d)
     mv $basedir/motioneyeos-$board.img  $basedir/motioneyeos-$board-$date.img
     rm -f $basedir/motioneyeos-$board-$date.img.gz
-    gzip $basedir/motioneyeos-$board-$date.img
+    $gzip $basedir/motioneyeos-$board-$date.img
 elif [ -n "$target" ]; then
     make O=$outputdir $target
 else
