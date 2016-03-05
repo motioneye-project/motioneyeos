@@ -54,7 +54,6 @@ config BR2_PACKAGE_CONNMAN_NEARD
 
 config BR2_PACKAGE_CONNMAN_OFONO
 	bool "enable ofono support"
-	depends on !BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_NIOSII # libcap-ng
 	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # ofono
 	select BR2_PACKAGE_OFONO
 
