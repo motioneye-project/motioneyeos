@@ -4,7 +4,8 @@
 #
 ################################################################################
 
-LINKS_VERSION = 2.9
+LINKS_VERSION = 2.12
+LINKS_SOURCE = links-$(LINKS_VERSION).tar.bz2
 LINKS_SITE = http://links.twibright.com/download
 LINKS_DEPENDENCIES = host-pkgconf
 LINKS_LICENSE = GPLv2+
@@ -27,23 +28,67 @@ else
 LINKS_CONF_OPTS += --without-directfb
 endif
 ifeq ($(BR2_PACKAGE_JPEG),y)
+LINKS_CONF_OPTS += --with-libjpeg
 LINKS_DEPENDENCIES += jpeg
+else
+LINKS_CONF_OPTS += --without-libjpeg
+endif
+ifeq ($(BR2_PACKAGE_LIBRSVG),y)
+LINKS_CONF_OPTS += --with-librsvg
+LINKS_DEPENDENCIES += librsvg
+else
+LINKS_CONF_OPTS += --without-librsvg
 endif
 ifeq ($(BR2_PACKAGE_TIFF),y)
+LINKS_CONF_OPTS += --with-libtiff
 LINKS_DEPENDENCIES += tiff
+else
+LINKS_CONF_OPTS += --without-libtiff
 endif
+else
+LINKS_CONF_OPTS += --disable-graphics
 endif
 
 ifeq ($(BR2_PACKAGE_BZIP2),y)
+LINKS_CONF_OPTS += --with-bzip2
 LINKS_DEPENDENCIES += bzip2
+else
+LINKS_CONF_OPTS += --without-bzip2
+endif
+
+ifeq ($(BR2_PACKAGE_GPM),y)
+LINKS_CONF_OPTS += --with-gpm
+LINKS_DEPENDENCIES += gpm
+else
+LINKS_CONF_OPTS += --without-gpm
+endif
+
+ifeq ($(BR2_PACKAGE_LIBEVENT),y)
+LINKS_CONF_OPTS += --with-libevent
+LINKS_DEPENDENCIES += libevent
+else
+LINKS_CONF_OPTS += --without-libevent
 endif
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
+LINKS_CONF_OPTS += --with-ssl --enable-ssl-pkgconfig
 LINKS_DEPENDENCIES += openssl
+else
+LINKS_CONF_OPTS += --without-ssl
+endif
+
+ifeq ($(BR2_PACKAGE_XZ),y)
+LINKS_CONF_OPTS += --with-lzma
+LINKS_DEPENDENCIES += xz
+else
+LINKS_CONF_OPTS += --without-lzma
 endif
 
 ifeq ($(BR2_PACKAGE_ZLIB),y)
+LINKS_CONF_OPTS += --with-zlib
 LINKS_DEPENDENCIES += zlib
+else
+LINKS_CONF_OPTS += --without-zlib
 endif
 
 $(eval $(autotools-package))

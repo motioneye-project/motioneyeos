@@ -16,8 +16,9 @@
 # '*'. Pattern(s) describing the patch names you want to apply.
 #
 # The script will look recursively for patches from the patch directory. If a
-# file is named 'series' then only patches mentionned into it will be applied.
-# If not, the script will look for file names matching pattern(s). If the name
+# file named 'series' exists then the patches mentioned in it will be applied
+# as plain patches, regardless of their file name. If no 'series' file exists,
+# the script will look for file names matching pattern(s). If the name
 # ends with '.tar.*', '.tbz2' or '.tgz', the file is considered as an archive
 # and will be uncompressed into a directory named
 # '.patches-name_of_the_archive-unpacked'. It's the turn of this directory to
@@ -64,41 +65,45 @@ find ${builddir}/ '(' -name '*.rej' -o -name '.*.rej' ')' -print0 | \
 function apply_patch {
     path=$1
     patch=$2
-    case "$patch" in
-	*.gz)
-	type="gzip"; uncomp="gunzip -dc"; ;; 
-	*.bz)
-	type="bzip"; uncomp="bunzip -dc"; ;; 
-	*.bz2)
-	type="bzip2"; uncomp="bunzip2 -dc"; ;; 
-	*.xz)
-	type="xz"; uncomp="unxz -dc"; ;;
-	*.zip)
-	type="zip"; uncomp="unzip -d"; ;; 
-	*.Z)
-	type="compress"; uncomp="uncompress -c"; ;; 
-	*.diff*)
-	type="diff"; uncomp="cat"; ;;
-	*.patch*)
-	type="patch"; uncomp="cat"; ;;
-	*)
-	echo "Unsupported file type for ${path}/${patch}, skipping";
-	return 0
-	;;
-    esac
+    if [ "$3" ]; then
+        type="series"; uncomp="cat"
+    else
+        case "$patch" in
+            *.gz)
+            type="gzip"; uncomp="gunzip -dc"; ;;
+            *.bz)
+            type="bzip"; uncomp="bunzip -dc"; ;;
+            *.bz2)
+            type="bzip2"; uncomp="bunzip2 -dc"; ;;
+            *.xz)
+            type="xz"; uncomp="unxz -dc"; ;;
+            *.zip)
+            type="zip"; uncomp="unzip -d"; ;;
+            *.Z)
+            type="compress"; uncomp="uncompress -c"; ;;
+            *.diff*)
+            type="diff"; uncomp="cat"; ;;
+            *.patch*)
+            type="patch"; uncomp="cat"; ;;
+            *)
+            echo "Unsupported file type for ${path}/${patch}, skipping";
+            return 0
+            ;;
+        esac
+    fi
     if [ -z "$silent" ] ; then
-	echo ""
-	echo "Applying $patch using ${type}: "
+        echo ""
+        echo "Applying $patch using ${type}: "
     fi
     if [ ! -e "${path}/$patch" ] ; then
-	echo "Error: missing patch file ${path}/$patch"
-	exit 1
+        echo "Error: missing patch file ${path}/$patch"
+        exit 1
     fi
     echo $patch >> ${builddir}/.applied_patches_list
     ${uncomp} "${path}/$patch" | patch -g0 -p1 -E -d "${builddir}" -t -N $silent
     if [ $? != 0 ] ; then
         echo "Patch failed!  Please fix ${patch}!"
-	exit 1
+        exit 1
     fi
 }
 
@@ -110,8 +115,14 @@ function scan_patchdir {
     # If there is a series file, use it instead of using ls sort order
     # to apply patches. Skip line starting with a dash.
     if [ -e "${path}/series" ] ; then
-        for i in `grep -Ev "^#" ${path}/series 2> /dev/null` ; do
-            apply_patch "$path" "$i"
+        # The format of a series file accepts a second field that is
+        # used to specify the number of directory components to strip
+        # when applying the patch, in the form -pN (N an integer >= 0)
+        # We assume this field to always be -p1 whether it is present
+        # or missing.
+        series_patches="`grep -Ev "^#" ${path}/series | cut -d ' ' -f1 2> /dev/null`"
+        for i in $series_patches; do
+            apply_patch "$path" "$i" series
         done
     else
         for i in `cd $path; ls -d $patches 2> /dev/null` ; do

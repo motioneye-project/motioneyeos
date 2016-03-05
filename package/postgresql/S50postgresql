@@ -12,12 +12,12 @@ if [ ! -f /var/lib/pgsql/PG_VERSION ]; then
 fi
 
 start() {
-	echo -n "Starting postgresql: "
+	printf "Starting postgresql: "
 	su - postgres -c '/usr/bin/pg_ctl start -w -D /var/lib/pgsql -l logfile'
 	echo "OK"
 }
 stop() {
-	echo -n "Stopping postgresql: "
+	printf "Stopping postgresql: "
 	su - postgres -c '/usr/bin/pg_ctl stop -D /var/lib/pgsql -m fast'
 	echo "OK"
 }

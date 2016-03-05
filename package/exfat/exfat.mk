@@ -4,22 +4,12 @@
 #
 ################################################################################
 
-EXFAT_VERSION = 1.1.0
-EXFAT_SITE = http://distfiles.gentoo.org/distfiles
+EXFAT_VERSION = 1.2.3
+EXFAT_SITE = https://github.com/relan/exfat/releases/download/v$(EXFAT_VERSION)
 EXFAT_SOURCE = fuse-exfat-$(EXFAT_VERSION).tar.gz
-EXFAT_DEPENDENCIES = host-scons libfuse
+EXFAT_DEPENDENCIES = libfuse host-pkgconf
 EXFAT_LICENSE = GPLv3+
 EXFAT_LICENSE_FILES = COPYING
+EXFAT_CFLAGS = $(TARGET_CFLAGS) -std=c99
 
-define EXFAT_BUILD_CMDS
-	(cd $(@D); \
-		$(TARGET_CONFIGURE_OPTS) CCFLAGS="$(TARGET_CFLAGS) -std=c99" $(SCONS))
-endef
-
-define EXFAT_INSTALL_TARGET_CMDS
-	(cd $(@D); \
-		$(TARGET_CONFIGURE_OPTS) CCFLAGS="$(TARGET_CFLAGS) -std=c99" $(SCONS) \
-		DESTDIR=$(TARGET_DIR)/usr/sbin install)
-endef
-
-$(eval $(generic-package))
+$(eval $(autotools-package))

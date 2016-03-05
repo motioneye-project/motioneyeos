@@ -8,13 +8,13 @@ WEBKITGTK24_VERSION = 2.4.9
 WEBKITGTK24_SITE = http://www.webkitgtk.org/releases
 WEBKITGTK24_SOURCE = webkitgtk-$(WEBKITGTK24_VERSION).tar.xz
 WEBKITGTK24_INSTALL_STAGING = YES
-WEBKITGTK24_LICENSE = LGPLv2+ BSD-2c
+WEBKITGTK24_LICENSE = LGPLv2+, BSD-2c
 WEBKITGTK24_LICENSE_FILES = \
 	Source/WebCore/LICENSE-APPLE \
 	Source/WebCore/LICENSE-LGPL-2
 WEBKITGTK24_DEPENDENCIES = host-ruby host-flex host-bison host-gperf \
-	enchant harfbuzz icu jpeg libcurl libgtk2 libsecret libsoup \
-	libxml2 libxslt sqlite webp
+	host-pkgconf enchant harfbuzz icu jpeg libcurl libgtk2 \
+	libsecret libsoup libxml2 libxslt sqlite webp
 
 WEBKITGTK24_DEPENDENCIES += \
 	$(if $(BR_PACKAGE_XLIB_LIBXCOMPOSITE),xlib_libXcomposite) \
@@ -69,6 +69,10 @@ WEBKITGTK24_CONF_OPTS += \
 	--enable-webgl \
 	--disable-glx
 WEBKITGTK24_DEPENDENCIES += libegl libgles
+# Some EGL/GLES implementations needs extra help (eg. rpi-userland)
+WEBKITGTK24_CONF_ENV += CPPFLAGS="$(TARGET_CPPFLAGS) \
+	`$(PKG_CONFIG_HOST_BINARY) --cflags egl` \
+	`$(PKG_CONFIG_HOST_BINARY) --clfags glesv2`"
 # No GL
 else
 WEBKITGTK24_CONF_OPTS += \
@@ -88,7 +92,7 @@ endif
 
 # ARM needs NEON for JIT
 # i386 & x86_64 don't seem to have any special requirements
-ifeq ($(BR2_ARM_ENABLE_NEON)$(BR2_i386)$(BR2_x86_64),y)
+ifeq ($(BR2_ARM_CPU_HAS_NEON)$(BR2_i386)$(BR2_x86_64),y)
 WEBKITGTK24_CONF_OPTS += --enable-jit
 else
 WEBKITGTK24_CONF_OPTS += --disable-jit

@@ -1,0 +1,51 @@
+From http://ftp.gnu.org/pub/gnu/bash/bash-4.3-patches/bash43-040
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacrias.com.ar>
+
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release:	4.3
+Patch-ID:	bash43-040
+
+Bug-Reported-by:	Jean Delvare <jdelvare@suse.de>
+Bug-Reference-ID:	<20150609180231.5f463695@endymion.delvare>
+Bug-Reference-URL:	http://lists.gnu.org/archive/html/bug-bash/2015-06/msg00033.html
+
+Bug-Description:
+
+There is a memory leak that occurs when bash expands an array reference on
+the rhs of an assignment statement.
+
+Patch (apply with `patch -p0'):
+
+*** a/bash-4.3-patched/subst.c	2014-10-01 12:57:47.000000000 -0400
+--- b/subst.c	2015-06-22 09:16:53.000000000 -0400
+***************
+*** 5783,5787 ****
+        if (pflags & PF_ASSIGNRHS)
+          {
+!           temp = array_variable_name (name, &tt, (int *)0);
+            if (ALL_ELEMENT_SUB (tt[0]) && tt[1] == ']')
+  	    temp = array_value (name, quoted|Q_DOUBLE_QUOTES, 0, &atype, &ind);
+--- 5783,5787 ----
+        if (pflags & PF_ASSIGNRHS)
+          {
+!           var = array_variable_part (name, &tt, (int *)0);
+            if (ALL_ELEMENT_SUB (tt[0]) && tt[1] == ']')
+  	    temp = array_value (name, quoted|Q_DOUBLE_QUOTES, 0, &atype, &ind);
+*** a/bash-4.3/patchlevel.h	2012-12-29 10:47:57.000000000 -0500
+--- b/patchlevel.h	2014-03-20 20:01:28.000000000 -0400
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 39
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 40
+  
+  #endif /* _PATCHLEVEL_H_ */

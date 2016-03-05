@@ -14,12 +14,12 @@ fi
 
 case "$1" in
   start)
-    echo -n "Starting $NAME: "
+    printf "Starting $NAME: "
     start-stop-daemon -S -q -x $DAEMON -- -g
     [ $? = 0 ] && echo "OK" || echo "FAIL"
     ;;
   stop)
-    echo -n "Stopping $NAME: "
+    printf "Stopping $NAME: "
     start-stop-daemon -K -q -n $NAME
     [ $? = 0 ] && echo "OK" || echo "FAIL"
     ;;

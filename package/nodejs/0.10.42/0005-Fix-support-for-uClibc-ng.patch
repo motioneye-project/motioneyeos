@@ -1,0 +1,33 @@
+From 1cc08f6ceacbb0e5ba1f4638ca3a97ac002d7792 Mon Sep 17 00:00:00 2001
+From: "Bark, Martin" <martin.bark@te.com>
+Date: Mon, 14 Dec 2015 13:26:10 +0000
+Subject: [PATCH 2/2] Fix support for uClibc-ng
+
+uClibc-ng is currently at v1.0.9.  The patch corrects the uClibc
+version test so that HAVE_IFADDRS_H is defined for uClibc versions
+after v0.9.32.
+
+Submitted upstream to libuv and accepted, see
+https://github.com/libuv/libuv/pull/653 and
+https://github.com/libuv/libuv/commit/c861972
+
+Signed-off-by: Bark, Martin <martin.bark@te.com>
+---
+ deps/uv/src/unix/linux-core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/deps/uv/src/unix/linux-core.c b/deps/uv/src/unix/linux-core.c
+index e6e6828..6cbbb71 100644
+--- a/deps/uv/src/unix/linux-core.c
++++ b/deps/uv/src/unix/linux-core.c
+@@ -39,7 +39,7 @@
+ #define HAVE_IFADDRS_H 1
+
+ #ifdef __UCLIBC__
+-# if __UCLIBC_MAJOR__ < 0 || __UCLIBC_MINOR__ < 9 || __UCLIBC_SUBLEVEL__ < 32
++# if __UCLIBC_MAJOR__ < 0 && __UCLIBC_MINOR__ < 9 && __UCLIBC_SUBLEVEL__ < 32
+ #  undef HAVE_IFADDRS_H
+ # endif
+ #endif
+--
+2.6.2

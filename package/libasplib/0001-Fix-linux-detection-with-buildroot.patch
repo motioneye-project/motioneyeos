@@ -1,0 +1,31 @@
+From 1dc4480e5157e7ac8eb0364446787128f0a156aa Mon Sep 17 00:00:00 2001
+From: Bernd Kuhls <bernd.kuhls@t-online.de>
+Date: Sun, 20 Dec 2015 22:25:52 +0100
+Subject: [PATCH 1/1] Fix linux detection with buildroot
+
+Inspired by
+http://lists.busybox.net/pipermail/buildroot/2015-July/133312.html
+
+Patch sent upstream: https://github.com/kodi-adsp/asplib/pull/2
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ asplib_utils/os/asplib_base_os.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/asplib_utils/os/asplib_base_os.h b/asplib_utils/os/asplib_base_os.h
+index a2d3b98..9a90b54 100644
+--- a/asplib_utils/os/asplib_base_os.h
++++ b/asplib_utils/os/asplib_base_os.h
+@@ -27,7 +27,7 @@
+   #define TARGET_WINDOWS
+ #endif
+   #include "windows/windows_definitions.h"
+-#elif defined(__gnu_linux__)
++#elif (defined(__gnu_linux__) || defined(__linux__))
+ #if !defined(TARGET_WINDOWS)
+   #define TARGET_LINUX
+ #endif
+-- 
+2.6.4
+

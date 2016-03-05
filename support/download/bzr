@@ -26,4 +26,28 @@ repo="${2}"
 rev="${3}"
 basename="${4}"
 
-${BZR} export ${verbose} --root="${basename}/" --format=tgz "${output}" "${repo}" -r "${rev}"
+# Caller needs to single-quote its arguments to prevent them from
+# being expanded a second time (in case there are spaces in them)
+_bzr() {
+    eval ${BZR} "${@}"
+}
+
+# --per-file-timestamps comes with bzr-2.2 (released August 2010),
+# so only pass it if bzr is recent enough. We compute versions as:
+# major*1000 + minor
+bzr_min_version=2002
+bzr_version=$(($(bzr --version |
+                 sed -r -n 's/^Bazaar \(bzr\) ([[:digit:]]+)\.([[:digit:]]+)\..*$/\1*1000+\2/p')
+             ))
+
+# If the version is recent enough, we can generate reproducible
+# archives; otherwise, we just hope for the best (as it would
+# be downloaded from the BR mirror if what we generate here does
+# not match the hash we have for it).
+if [ ${bzr_version} -ge ${bzr_min_version} ]; then
+    timestamp_opt="--per-file-timestamps"
+fi
+
+_bzr export ${verbose} --root="'${basename}/'" --format=tgz \
+    ${timestamp_opt} - "'${repo}'" -r "'${rev}'" \
+    >"${output}"

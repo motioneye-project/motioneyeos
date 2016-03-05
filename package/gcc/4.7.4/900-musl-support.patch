@@ -323,24 +323,6 @@ Index: b/gcc/configure
 ===================================================================
 --- a/gcc/configure
 +++ b/gcc/configure
-@@ -26791,6 +26791,9 @@
- else
-   gcc_cv_libc_provides_ssp=no
-     case "$target" in
-+       *-*-musl*)
-+         # All versions of musl provide stack protector
-+	 gcc_cv_libc_provides_ssp=yes;;
-        *-*-linux* | *-*-kfreebsd*-gnu | *-*-knetbsd*-gnu)
-       # glibc 2.4 and later provides __stack_chk_fail and
-       # either __stack_chk_guard, or TLS access to stack guard canary.
-@@ -26824,6 +26827,7 @@
- 	 # <http://gcc.gnu.org/ml/gcc/2008-10/msg00130.html>) and for now
- 	 # simply assert that glibc does provide this, which is true for all
- 	 # realistically usable GNU/Hurd configurations.
-+	 # All supported versions of musl provide it as well
- 	 gcc_cv_libc_provides_ssp=yes;;
-        *-*-darwin* | *-*-freebsd*)
- 	 ac_fn_c_check_func "$LINENO" "__stack_chk_fail" "ac_cv_func___stack_chk_fail"
 @@ -26906,6 +26910,9 @@
        gcc_cv_target_dl_iterate_phdr=no
      fi
@@ -355,24 +337,6 @@ Index: b/gcc/configure.ac
 ===================================================================
 --- a/gcc/configure.ac
 +++ b/gcc/configure.ac
-@@ -4669,6 +4669,9 @@
-       gcc_cv_libc_provides_ssp,
-       [gcc_cv_libc_provides_ssp=no
-     case "$target" in
-+       *-*-musl*)
-+         # All versions of musl provide stack protector
-+	 gcc_cv_libc_provides_ssp=yes;;
-        *-*-linux* | *-*-kfreebsd*-gnu | *-*-knetbsd*-gnu)
-       [# glibc 2.4 and later provides __stack_chk_fail and
-       # either __stack_chk_guard, or TLS access to stack guard canary.
-@@ -4702,6 +4705,7 @@
- 	 # <http://gcc.gnu.org/ml/gcc/2008-10/msg00130.html>) and for now
- 	 # simply assert that glibc does provide this, which is true for all
- 	 # realistically usable GNU/Hurd configurations.
-+	 # All supported versions of musl provide it as well
- 	 gcc_cv_libc_provides_ssp=yes;;
-        *-*-darwin* | *-*-freebsd*)
- 	 AC_CHECK_FUNC(__stack_chk_fail,[gcc_cv_libc_provides_ssp=yes],
 @@ -4767,6 +4771,9 @@
        gcc_cv_target_dl_iterate_phdr=no
      fi

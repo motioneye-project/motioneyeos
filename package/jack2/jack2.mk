@@ -10,6 +10,14 @@ JACK2_LICENSE = GPLv2+ (jack server), LGPLv2.1+ (jack library)
 JACK2_DEPENDENCIES = libsamplerate libsndfile alsa-lib host-python
 JACK2_INSTALL_STAGING = YES
 
+ifeq ($(BR2_PACKAGE_OPUS),y)
+JACK2_DEPENDENCIES += opus
+endif
+
+ifeq ($(BR2_PACKAGE_READLINE),y)
+JACK2_DEPENDENCIES += readline
+endif
+
 define JACK2_CONFIGURE_CMDS
 	(cd $(@D); \
 		$(TARGET_CONFIGURE_OPTS)	\

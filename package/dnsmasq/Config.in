@@ -38,7 +38,7 @@ config BR2_PACKAGE_DNSMASQ_IDN
 
 config BR2_PACKAGE_DNSMASQ_LUA
 	bool "Lua scripting support"
-	select BR2_PACKAGE_LUA
+	depends on BR2_PACKAGE_LUA
 	help
 	  Enable Lua scripting for dnsmasq
 

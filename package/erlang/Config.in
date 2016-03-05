@@ -1,14 +1,13 @@
-comment "erlang needs a toolchain w/ threads, shared library"
+comment "erlang needs a toolchain w/ dynamic library"
 	depends on BR2_USE_MMU # fork()
-	depends on BR2_PACKAGE_LIBATOMIC_ARCH_SUPPORTS
-	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS
+	depends on BR2_PACKAGE_LIBATOMIC_OPS_ARCH_SUPPORTS
+	depends on BR2_STATIC_LIBS
 
 config BR2_PACKAGE_ERLANG
 	bool "erlang"
 	depends on BR2_USE_MMU # fork()
-	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on !BR2_STATIC_LIBS
-	depends on BR2_PACKAGE_LIBATOMIC_ARCH_SUPPORTS
+	depends on BR2_PACKAGE_LIBATOMIC_OPS_ARCH_SUPPORTS
 	select BR2_PACKAGE_LIBATOMIC_OPS
 	help
 	  Erlang is a programming language used to build massively scalable

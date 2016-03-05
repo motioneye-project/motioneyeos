@@ -9,8 +9,9 @@ RNG_TOOLS_SITE = http://downloads.sourceforge.net/project/gkernel/rng-tools/$(RN
 RNG_TOOLS_LICENSE = GPLv2
 RNG_TOOLS_LICENSE_FILES = COPYING
 
-# Work around for uClibc's lack of argp_*() functions
-ifeq ($(BR2_TOOLCHAIN_USES_UCLIBC),y)
+# Work around for uClibc or musl toolchains which lack argp_*()
+# functions.
+ifeq ($(BR2_PACKAGE_ARGP_STANDALONE),y)
 RNG_TOOLS_CONF_ENV += LIBS="-largp"
 RNG_TOOLS_DEPENDENCIES += argp-standalone
 endif
@@ -20,6 +21,11 @@ RNG_TOOLS_DEPENDENCIES += libgcrypt
 else
 RNG_TOOLS_CONF_OPTS += --without-libgcrypt
 endif
+
+define RNG_TOOLS_INSTALL_INIT_SYSV
+	$(INSTALL) -D -m 755 package/rng-tools/S21rngd \
+		$(TARGET_DIR)/etc/init.d/S21rngd
+endef
 
 define RNG_TOOLS_INSTALL_INIT_SYSTEMD
 	$(INSTALL) -D -m 644 package/rng-tools/rngd.service \

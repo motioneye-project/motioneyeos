@@ -3,4 +3,4 @@ config BR2_PACKAGE_PYTHON_SERIAL
 	help
 	  python-serial is a Python library to access serial ports.
 
-	  http://pyserial.sf.net
+	  https://github.com/pyserial/pyserial

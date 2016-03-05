@@ -34,7 +34,7 @@ SDL_DEPENDENCIES += directfb
 SDL_CONF_OPTS += --enable-video-directfb=yes
 SDL_CONF_ENV = ac_cv_path_DIRECTFBCONFIG=$(STAGING_DIR)/usr/bin/directfb-config
 else
-SDL_CONF_OPTS = --enable-video-directfb=no
+SDL_CONF_OPTS += --enable-video-directfb=no
 endif
 
 ifeq ($(BR2_PACKAGE_SDL_QTOPIA),y)
@@ -56,6 +56,15 @@ endif
 
 ifneq ($(BR2_USE_MMU),y)
 SDL_CONF_OPTS += --enable-dga=no
+endif
+
+# overwrite autodection (prevents confusion with host libpth version)
+ifeq ($(BR2_PACKAGE_LIBPTHSEM_COMPAT),y)
+SDL_CONF_OPTS += --enable-pth
+SDL_CONF_ENV += ac_cv_path_PTH_CONFIG=$(STAGING_DIR)/usr/bin/pth-config
+SDL_DEPENDENCIES += libpthsem
+else
+SDL_CONF_OPTS += --disable-pth
 endif
 
 ifeq ($(BR2_PACKAGE_TSLIB),y)

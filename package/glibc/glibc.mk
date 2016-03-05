@@ -121,4 +121,34 @@ define GLIBC_INSTALL_TARGET_CMDS
 	done
 endef
 
+# MIPS R6 requires to have NaN2008 support which is currently not
+# supported by the Linux kernel. In order to prevent building the
+# glibc against kernels not having NaN2008 support on platforms that
+# requires it, glibc currently checks for an (inexisting) 10.0.0
+# kernel headers version.
+#
+# Since in practice the kernel support for NaN2008 is not really
+# required for things to work properly, we adjust the glibc check to
+# make it believe that NaN2008 support was added in the kernel
+# starting from version 4.0.0.
+#
+# In general the compatibility issues introduced by mis-matched NaN
+# encodings will not cause a problem as signalling NaNs are rarely used
+# in average code. For MIPS R6 there isn't actually any compatibility
+# issue as the hardware is always NaN2008 and software is always
+# NaN2008. The problem only comes from when older MIPS code is linked in
+# via a DSO and multiple NaN encodings are introduced. Since Buildroot
+# is intended to have all code built from source then this scenario is
+# highly unlikely. The failure mode, if it ever occurs, would be either
+# that a signalling NaN fails to raise an invalid operation exception or
+# (more likely) an ordinary NaN raises an invalid operation exception.
+ifeq ($(BR2_mips_32r6)$(BR2_mips_64r6),y)
+define GLIBC_FIX_MIPS_R6
+	$(SED) 's#10.0.0#4.0.0#' \
+		$(@D)/sysdeps/unix/sysv/linux/mips/configure \
+		$(@D)/sysdeps/unix/sysv/linux/mips/configure.ac
+endef
+GLIBC_POST_EXTRACT_HOOKS += GLIBC_FIX_MIPS_R6
+endif
+
 $(eval $(autotools-package))

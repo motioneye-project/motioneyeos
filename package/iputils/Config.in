@@ -6,4 +6,4 @@ config BR2_PACKAGE_IPUTILS
 	  This package is set of small useful utilities for Linux networking.
 	  It includes complete versions of ping, traceroute, etc.
 
-	  http://sourceforge.net/projects/iputils/
+	  https://github.com/iputils/iputils

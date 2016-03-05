@@ -1,4 +1,7 @@
-config BR2_PACKAGE_ALSA_LIB
+comment "alsa-lib needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
+
+menuconfig BR2_PACKAGE_ALSA_LIB
 	bool "alsa-lib"
 	# Temporary until
 	# https://bugtrack.alsa-project.org/alsa-bug/view.php?id=4913
@@ -15,9 +18,6 @@ config BR2_PACKAGE_ALSA_LIB
 
 	  http://www.alsa-project.org/
 
-comment "alsa-lib needs a toolchain w/ threads"
-	depends on !BR2_TOOLCHAIN_HAS_THREADS
-
 if BR2_PACKAGE_ALSA_LIB
 
 config BR2_PACKAGE_ALSA_LIB_PYTHON
@@ -28,8 +28,6 @@ config BR2_PACKAGE_ALSA_LIB_PYTHON
 	  Python will be built and libpython will be installed
 	  in the target directory
 	  http://www.alsa-project.org/
-
-menu "ALSA lib selection"
 
 config BR2_PACKAGE_ALSA_LIB_DEVDIR
 	string "directory with ALSA device files"
@@ -76,7 +74,5 @@ config BR2_PACKAGE_ALSA_LIB_ALISP
 config BR2_PACKAGE_ALSA_LIB_OLD_SYMBOLS
 	bool "old-symbols"
 	default y
-
-endmenu
 
 endif

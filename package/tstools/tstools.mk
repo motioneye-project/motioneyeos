@@ -4,10 +4,13 @@
 #
 ################################################################################
 
-TSTOOLS_VERSION = 1_11
-TSTOOLS_SITE = https://tstools.googlecode.com/files
-TSTOOLS_SOURCE = tstools-$(TSTOOLS_VERSION).tgz
-TSTOOLS_LICENSE = MPL v1.1
+# No releases or tags yet. Use the latest commit ID from master branch.
+TSTOOLS_VERSION = 08f6be304040e7b84760ac3920bcff4a563b6cd2
+TSTOOLS_SITE = $(call github,kynesim,tstools,$(TSTOOLS_VERSION))
+# tstools upstream doesn't contain any license file so far. See:
+# https://github.com/kynesim/tstools/issues/32
+TSTOOLS_LICENSE = MPLv1.1
+TSTOOLS_LICENSE_FILES =
 
 define TSTOOLS_BUILD_CMDS
 	$(TARGET_CONFIGURE_OPTS) LD="$(TARGET_CC)" $(TARGET_MAKE_ENV) \

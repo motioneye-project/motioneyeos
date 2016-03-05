@@ -1,0 +1,24 @@
+Add support of linenoise (replace readline)
+
+see discussion, http://lua-users.org/lists/lua-l/2010-03/msg00879.html
+
+Signed-off-by: Francois Perrad <francois.perrad@gadz.org>
+
+Index: b/src/lua.c
+===================================================================
+--- a/src/lua.c
++++ b/src/lua.c
+@@ -83,6 +83,13 @@
+ #define lua_saveline(L,line)	((void)L, add_history(line))
+ #define lua_freeline(L,b)	((void)L, free(b))
+ 
++#elif defined(LUA_USE_LINENOISE)
++
++#include <linenoise.h>
++#define lua_readline(L,b,p)	((void)L, ((b)=linenoise(p)) != NULL)
++#define lua_saveline(L,line)	((void)L, linenoiseHistoryAdd(line))
++#define lua_freeline(L,b)	((void)L, free(b))
++
+ #else				/* }{ */
+ 
+ #define lua_readline(L,b,p) \

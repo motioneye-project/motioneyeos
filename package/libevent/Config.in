@@ -3,4 +3,4 @@ config BR2_PACKAGE_LIBEVENT
 	help
 	  Userspace library for handling asynchronous notifications
 
-	  http://monkey.org/~provos/
+	  http://libevent.org

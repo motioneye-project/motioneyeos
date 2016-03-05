@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-IPMITOOL_VERSION = 1.8.14
+IPMITOOL_VERSION = 1.8.15
 IPMITOOL_SOURCE = ipmitool-$(IPMITOOL_VERSION).tar.bz2
 IPMITOOL_SITE = http://downloads.sourceforge.net/project/ipmitool/ipmitool/$(IPMITOOL_VERSION)
 IPMITOOL_LICENSE = BSD-3c

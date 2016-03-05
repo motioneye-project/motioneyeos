@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-MPG123_VERSION = 1.22.2
+MPG123_VERSION = 1.22.4
 MPG123_SOURCE = mpg123-$(MPG123_VERSION).tar.bz2
 MPG123_SITE = http://downloads.sourceforge.net/project/mpg123/mpg123/$(MPG123_VERSION)
 MPG123_CONF_OPTS = --disable-lfs-alias
@@ -67,6 +67,9 @@ ifeq ($(BR2_PACKAGE_ALSA_LIB),y)
 MPG123_AUDIO += alsa
 MPG123_CONF_OPTS += --with-default-audio=alsa
 MPG123_DEPENDENCIES += alsa-lib
+# configure script does NOT use pkg-config to figure out how to link
+# with alsa, breaking static linking as alsa uses pthreads
+MPG123_CONF_ENV += LIBS="`$(PKG_CONFIG_HOST_BINARY) --libs alsa`"
 endif
 
 MPG123_CONF_OPTS += --with-audio=$(subst $(space),$(comma),$(MPG123_AUDIO))

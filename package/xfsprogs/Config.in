@@ -12,6 +12,7 @@ config BR2_PACKAGE_XFSPROGS
 	depends on BR2_USE_WCHAR # util-linux
 	select BR2_PACKAGE_UTIL_LINUX
 	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
+	select BR2_PACKAGE_UTIL_LINUX_LIBBLKID
 	help
 	  The XFS file system utilities and libraries
 

@@ -5,7 +5,7 @@
 
 case "$1" in
   start)
-	echo -n "Starting ptpd: "
+	printf "Starting ptpd: "
 	start-stop-daemon -S -q -x /usr/sbin/ptpd -- -S
 	if [ $? != 0 ]; then
 		echo "FAILED"
@@ -15,7 +15,7 @@ case "$1" in
 	fi
 	;;
   stop)
-	echo -n "Stopping ptpd: "
+	printf "Stopping ptpd: "
 	start-stop-daemon -K -q -x /usr/sbin/ptpd
 	echo "OK"
 	;;

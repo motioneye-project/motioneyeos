@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-ICU_VERSION = 55.1
+ICU_VERSION = 56.1
 ICU_SOURCE = icu4c-$(subst .,_,$(ICU_VERSION))-src.tgz
 ICU_SITE = http://download.icu-project.org/files/icu4c/$(ICU_VERSION)
 ICU_LICENSE = ICU License
@@ -17,6 +17,14 @@ ICU_CONF_OPTS = \
 	--with-cross-build=$(HOST_ICU_DIR)/source \
 	--disable-samples \
 	--disable-tests
+
+# When available, icu prefers to use C++11 atomics, which rely on the
+# __atomic builtins. On certain architectures, this requires linking
+# with libatomic starting from gcc 4.8.
+ifeq ($(BR2_TOOLCHAIN_GCC_AT_LEAST_4_8),y)
+ICU_CONF_ENV += LIBS="-latomic"
+endif
+
 HOST_ICU_CONF_OPTS = \
 	--disable-samples \
 	--disable-tests \

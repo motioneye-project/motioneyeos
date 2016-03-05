@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-DBUS_VERSION = 1.8.20
+DBUS_VERSION = 1.10.6
 DBUS_SITE = http://dbus.freedesktop.org/releases/dbus
-DBUS_LICENSE = AFLv2.1 GPLv2+
+DBUS_LICENSE = AFLv2.1, GPLv2+
 DBUS_LICENSE_FILES = COPYING
 DBUS_INSTALL_STAGING = YES
 
@@ -17,7 +17,6 @@ endef
 define DBUS_USERS
 	dbus -1 dbus -1 * /var/run/dbus - dbus DBus messagebus user
 endef
-
 
 DBUS_DEPENDENCIES = host-pkgconf expat
 
@@ -51,7 +50,7 @@ else
 DBUS_CONF_OPTS += --disable-selinux
 endif
 
-ifeq ($(BR2_PACKAGE_AUDIT),y)
+ifeq ($(BR2_PACKAGE_AUDIT)$(BR2_PACKAGE_LIBCAP_NG),yy)
 DBUS_CONF_OPTS += --enable-libaudit
 DBUS_DEPENDENCIES += audit libcap-ng
 else
@@ -61,6 +60,9 @@ endif
 ifeq ($(BR2_PACKAGE_XLIB_LIBX11),y)
 DBUS_CONF_OPTS += --with-x
 DBUS_DEPENDENCIES += xlib_libX11
+ifeq ($(BR2_PACKAGE_XLIB_LIBSM),y)
+DBUS_DEPENDENCIES += xlib_libSM
+endif
 else
 DBUS_CONF_OPTS += --without-x
 endif

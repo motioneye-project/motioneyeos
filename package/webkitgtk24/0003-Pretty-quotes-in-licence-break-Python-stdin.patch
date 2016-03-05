@@ -1,0 +1,36 @@
+Pretty quotes in licence break Python stdin.
+
+This patch was submitted upstream in this bug report:
+
+https://bugs.webkit.org/show_bug.cgi?id=128971
+
+[Vincent: tweak the patch to make it apply on Buildroot]
+
+Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+
+Pretty quotes in licence break Python stdin.
+
+https://bugs.webkit.org/show_bug.cgi?id=128971
+
+--- a/Source/WebCore/xml/XMLViewer.css	2014-01-23 16:49:58.000000000 +0000
++++ b/Source/WebCore/xml/XMLViewer.css
+@@ -14,7 +14,7 @@
+  * distribution.
+  *
+  * THIS SOFTWARE IS PROVIDED BY GOOGLE INC. AND ITS CONTRIBUTORS
+- * “AS IS” AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
++ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+  * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL GOOGLE INC.
+  * OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+--- a/Source/WebCore/xml/XMLViewer.js	2014-01-23 16:49:58.000000000 +0000
++++ b/Source/WebCore/xml/XMLViewer.js
+@@ -15,7 +15,7 @@
+  * distribution.
+  *
+  * THIS SOFTWARE IS PROVIDED BY GOOGLE INC. AND ITS CONTRIBUTORS
+- * “AS IS” AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
++ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+  * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL GOOGLE INC.
+  * OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,

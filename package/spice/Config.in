@@ -1,4 +1,5 @@
 comment "spice server needs a toolchain w/ wchar, threads"
+	depends on BR2_i386 || BR2_x86_64
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
 
 comment "spice server depends on python (for pyparsing)"

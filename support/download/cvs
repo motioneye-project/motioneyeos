@@ -26,6 +26,12 @@ rev="${3}"
 rawname="${4}"
 basename="${5}"
 
+# Caller needs to single-quote its arguments to prevent them from
+# being expanded a second time (in case there are spaces in them)
+_cvs() {
+    eval ${CVS} "${@}"
+}
+
 if [[ ${rev} =~ ^[0-9] ]]; then
     # Date, because a tag or a branch cannot begin with a number
     select="-D"
@@ -34,8 +40,14 @@ else
     select="-r"
 fi
 
+# The absence of an initial : on ${repo} means access method undefined
+if [[ ! "${repo}" =~ ^: ]]; then
+   # defaults to anonymous pserver
+   repo=":pserver:anonymous@${repo}"
+fi
+
 export TZ=UTC
-${CVS} ${verbose} -z3 -d":pserver:anonymous@${repo}" \
-       co -d "${basename}" ${select} "${rev}" -P "${rawname}"
+_cvs ${verbose} -z3 -d"'${repo}'" \
+     co -d "'${basename}'" ${select} "'${rev}'" -P "'${rawname}'"
 
 tar czf "${output}" "${basename}"

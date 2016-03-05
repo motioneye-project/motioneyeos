@@ -1,0 +1,16 @@
+config BR2_PACKAGE_DVBLAST
+	bool "dvblast"
+	select BR2_PACKAGE_BITSTREAM
+	select BR2_PACKAGE_LIBEV
+	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
+	depends on !BR2_bfin  # libev
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	help
+	  DVBlast is a simple and powerful MPEG-2/TS demux and
+	  streaming application.
+
+	  http://www.videolan.org/projects/dvblast.html
+
+comment 'dvblast needs a toolchain w/ threads'
+	depends on !BR2_bfin  # libev
+	depends on !BR2_TOOLCHAIN_HAS_THREADS

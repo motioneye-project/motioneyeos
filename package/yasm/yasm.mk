@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-YASM_VERSION = 1.2.0
+YASM_VERSION = 1.3.0
 YASM_SITE = http://www.tortall.net/projects/yasm/releases
 
 define YASM_PRE_CONFIGURE_FIXUP

@@ -4,13 +4,17 @@
 #
 ################################################################################
 
-GNUPG2_VERSION = 2.0.28
+GNUPG2_VERSION = 2.0.29
 GNUPG2_SOURCE = gnupg-$(GNUPG2_VERSION).tar.bz2
 GNUPG2_SITE = ftp://ftp.gnupg.org/gcrypt/gnupg
 GNUPG2_LICENSE = GPLv3+
 GNUPG2_LICENSE_FILES = COPYING
 GNUPG2_DEPENDENCIES = zlib libgpg-error libgcrypt libassuan libksba libpthsem \
 	$(if $(BR2_PACKAGE_LIBICONV),libiconv)
+
+# Patching configure.ac and m4 macros, as well as Makefile.am
+GNUPG2_AUTORECONF = YES
+
 GNUPG2_CONF_OPTS = \
 	--disable-rpath --disable-regex --disable-doc \
 	--with-libgpg-error-prefix=$(STAGING_DIR)/usr \
@@ -32,6 +36,13 @@ GNUPG2_CONF_OPTS += --enable-bzip2 --with-bzip2=$(STAGING_DIR)
 GNUPG2_DEPENDENCIES += bzip2
 else
 GNUPG2_CONF_OPTS += --disable-bzip2
+endif
+
+ifeq ($(BR2_PACKAGE_LIBUSB_COMPAT),y)
+GNUPG2_CONF_OPTS += --enable-ccid-driver
+GNUPG2_DEPENDENCIES += libusb-compat
+else
+GNUPG2_CONF_OPTS += --disable-ccid-driver
 endif
 
 ifeq ($(BR2_PACKAGE_READLINE),y)

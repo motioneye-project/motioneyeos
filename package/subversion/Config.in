@@ -6,11 +6,13 @@ config BR2_PACKAGE_SUBVERSION
 	depends on !BR2_STATIC_LIBS
 	depends on BR2_USE_MMU # apr
 	select BR2_PACKAGE_EXPAT
-	select BR2_PACKAGE_NEON
-	select BR2_PACKAGE_NEON_XML
 	select BR2_PACKAGE_ZLIB
 	select BR2_PACKAGE_SQLITE
 	help
 	  Subversion is an open source version control system
 
 	  http://subversion.apache.org/
+
+comment "subversion needs a toolchain w/ dynamic library"
+	depends on BR2_USE_MMU
+	depends on BR2_STATIC_LIBS

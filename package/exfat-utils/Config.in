@@ -4,7 +4,7 @@ config BR2_PACKAGE_EXFAT_UTILS
 	help
 	  exFAT filesystem utilities.
 
-	  http://code.google.com/p/exfat/
+	  https://github.com/relan/exfat
 
 comment "exfat-utils needs a toolchain w/ wchar"
 	depends on !BR2_USE_WCHAR

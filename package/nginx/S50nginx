@@ -12,7 +12,7 @@ case "$1" in
 	start-stop-daemon -S -x /usr/sbin/nginx -p $PIDFILE
 	;;
   stop)
-	echo -n "Stopping nginx..."
+	printf "Stopping nginx..."
 	start-stop-daemon -K -o -p $PIDFILE
 	;;
   restart|reload)

@@ -11,12 +11,12 @@ DAEMON=/usr/libexec/nfc/$NAME
 
 case "$1" in
   start)
-    echo -n "Starting $NAME: "
+    printf "Starting $NAME: "
     start-stop-daemon -S -q -p /var/run/${NAME}.pid -x $DAEMON -- -d '*'
     echo "OK"
     ;;
   stop)
-    echo -n "Stopping $NAME: "
+    printf "Stopping $NAME: "
     start-stop-daemon -K -q -p /var/run/${NAME}.pid
     echo "OK"
     ;;

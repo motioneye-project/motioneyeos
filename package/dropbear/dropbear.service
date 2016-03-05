@@ -10,14 +10,17 @@ After=syslog.target network.target auditd.service
 #     replace the symlink with an actual directory
 ExecStartPre=/bin/sh -c '\
 if [ -L /etc/dropbear \
-     -a "$(readlink -f /etc/dropbear)" = "/var/run/dropbear" ]; then \
-    if rm -f /etc/dropbear; then \
+     -a "$(readlink /etc/dropbear)" = "/var/run/dropbear" ]; then \
+    if rm -f /etc/dropbear >/dev/null 2>&1; then \
         mkdir -p /etc/dropbear; \
     else \
-        mkdir -p $(readlink /etc/dropbear); \
+        echo "No persistent location to store SSH host keys. New keys will be"; \
+        echo "generated at each boot. Are you sure this is what you want to do?"; \
+        mkdir -p "$(readlink /etc/dropbear)"; \
     fi; \
 fi'
-ExecStart=/usr/sbin/dropbear -F -R
+EnvironmentFile=-/etc/default/dropbear
+ExecStart=/usr/sbin/dropbear -F -R $DROPBEAR_ARGS
 ExecReload=/bin/kill -HUP $MAINPID
 
 [Install]

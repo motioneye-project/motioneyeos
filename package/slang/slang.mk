@@ -9,6 +9,7 @@ SLANG_SITE = http://www.jedsoft.org/releases/slang
 SLANG_LICENSE = GPLv2+
 SLANG_LICENSE_FILES = COPYING
 SLANG_INSTALL_STAGING = YES
+SLANG_CONF_OPTS = --with-onig=no
 SLANG_MAKE = $(MAKE1)
 
 # Racy and we don't have/do libtermcap
@@ -39,6 +40,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_NCURSES),y)
 SLANG_DEPENDENCIES += ncurses
+SLANG_CONF_ENV += ac_cv_path_nc5config=$(STAGING_DIR)/usr/bin/ncurses5-config
 else
 SLANG_CONF_OPTS += ac_cv_path_nc5config=no
 endif
@@ -46,6 +48,9 @@ endif
 ifeq ($(BR2_PACKAGE_READLINE),y)
 SLANG_CONF_OPTS += --with-readline=gnu
 SLANG_DEPENDENCIES += readline
+ifeq ($(BR2_STATIC_LIBS),y)
+SLANG_CONF_ENV += LIBS="`$(STAGING_DIR)/usr/bin/ncurses5-config --libs`"
+endif
 endif
 
 ifeq ($(BR2_STATIC_LIBS),y)

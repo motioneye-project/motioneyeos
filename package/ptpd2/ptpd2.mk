@@ -4,10 +4,10 @@
 #
 ################################################################################
 
-PTPD2_VERSION = 2.3.0
-PTPD2_SITE = http://downloads.sourceforge.net/project/ptpd/ptpd/$(PTPD2_VERSION)
-PTPD2_SOURCE = ptpd-$(PTPD2_VERSION).tar.gz
+PTPD2_VERSION = ptpd-2.3.1
+PTPD2_SITE = $(call github,ptpd,ptpd,$(PTPD2_VERSION))
 PTPD2_DEPENDENCIES = libpcap
+PTPD2_CONF_OPTS = --with-pcap-config=$(STAGING_DIR)/usr/bin/pcap-config
 # configure not shipped
 PTPD2_AUTORECONF = YES
 PTPD2_LICENSE = BSD-2c

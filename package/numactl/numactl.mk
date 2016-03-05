@@ -4,13 +4,13 @@
 #
 ################################################################################
 
-NUMACTL_VERSION = 2.0.10
+NUMACTL_VERSION = 2.0.11
 NUMACTL_SITE = ftp://oss.sgi.com/www/projects/libnuma/download
+NUMACTL_PATCH = \
+	https://github.com/numactl/numactl/commit/3770bdc4fa7b9059db5cd2aa8bb09b50fa15e456.patch \
+	https://github.com/numactl/numactl/commit/31dc2951c758698bff060aeae8ffd8854616183b.patch
 NUMACTL_LICENSE = LGPLv2.1 (libnuma), GPLv2 (programs)
 NUMACTL_LICENSE_FILES = README
 NUMACTL_INSTALL_STAGING = YES
-
-# numactl tarball doesn't contain a pregenerated configure script.
-NUMACTL_AUTORECONF = YES
 
 $(eval $(autotools-package))

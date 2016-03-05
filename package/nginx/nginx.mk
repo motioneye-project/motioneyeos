@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-NGINX_VERSION = 1.8.0
+NGINX_VERSION = 1.8.1
 NGINX_SITE = http://nginx.org/download
 NGINX_LICENSE = BSD-2c
 NGINX_LICENSE_FILES = LICENSE
@@ -19,7 +19,7 @@ NGINX_CONF_OPTS = \
 
 # www-data user and group are used for nginx. Because these user and group
 # are already set by buildroot, it is not necessary to redefine them.
-# See system/skeleton/passwd
+# See system/skeleton/etc/passwd
 #   username: www-data    uid: 33
 #   groupname: www-data   gid: 33
 #

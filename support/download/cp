@@ -28,4 +28,10 @@ shift $((OPTIND-1))
 output="${1}"
 source="${2}"
 
-${LOCALFILES} ${verbose} "${source}" "${output}"
+# Caller needs to single-quote its arguments to prevent them from
+# being expanded a second time (in case there are spaces in them)
+_localfiles() {
+    eval ${LOCALFILES} "${@}"
+}
+
+_localfiles ${verbose} "'${source}'" "'${output}'"

@@ -91,7 +91,7 @@ endif
 # code size and performance, the linker can usually optimize away the
 # overhead when a call ends up within a certain range.
 #
-# Use text-section-literals for Xtensa globally.
+# Use auto-litpools for Xtensa globally.
 # Collecting literals into separate section can be advantageous if that
 # section is placed into DTCM at link time. This is applicable for code
 # running on bare metal, but makes no sense under linux, where userspace
@@ -100,7 +100,7 @@ endif
 # instruction can only access literals in 256 KBytes range.
 #
 ifeq ($(BR2_xtensa),y)
-TARGET_ABI += -mlongcalls -mtext-section-literals
+TARGET_ABI += -mlongcalls -mauto-litpools
 endif
 
 ifeq ($(BR2_arc)$(BR2_ARC_ATOMIC_EXT),yy)
@@ -110,22 +110,20 @@ endif
 STAGING_SUBDIR = usr/$(GNU_TARGET_NAME)/sysroot
 STAGING_DIR    = $(HOST_DIR)/$(STAGING_SUBDIR)
 
-TARGET_OPTIMIZATION := $(call qstrip,$(BR2_TARGET_OPTIMIZATION))
-
 ifeq ($(BR2_OPTIMIZE_0),y)
-TARGET_OPTIMIZATION += -O0
+TARGET_OPTIMIZATION = -O0
 endif
 ifeq ($(BR2_OPTIMIZE_1),y)
-TARGET_OPTIMIZATION += -O1
+TARGET_OPTIMIZATION = -O1
 endif
 ifeq ($(BR2_OPTIMIZE_2),y)
-TARGET_OPTIMIZATION += -O2
+TARGET_OPTIMIZATION = -O2
 endif
 ifeq ($(BR2_OPTIMIZE_3),y)
-TARGET_OPTIMIZATION += -O3
+TARGET_OPTIMIZATION = -O3
 endif
 ifeq ($(BR2_OPTIMIZE_S),y)
-TARGET_OPTIMIZATION += -Os
+TARGET_OPTIMIZATION = -Os
 endif
 ifeq ($(BR2_DEBUG_1),y)
 TARGET_DEBUGGING = -g1
@@ -161,7 +159,13 @@ TARGET_CFLAGS += -msep-data
 TARGET_CXXFLAGS += -msep-data
 endif
 
-ifeq ($(BR2_ENABLE_SSP),y)
+ifeq ($(BR2_SSP_REGULAR),y)
+TARGET_CFLAGS += -fstack-protector
+TARGET_CXXFLAGS += -fstack-protector
+else ifeq ($(BR2_SSP_STRONG),y)
+TARGET_CFLAGS += -fstack-protector-strong
+TARGET_CXXFLAGS += -fstack-protector-strong
+else ifeq ($(BR2_SSP_ALL),y)
 TARGET_CFLAGS += -fstack-protector-all
 TARGET_CXXFLAGS += -fstack-protector-all
 endif
@@ -185,14 +189,6 @@ TARGET_RANLIB   = $(TARGET_CROSS)ranlib
 TARGET_READELF  = $(TARGET_CROSS)readelf
 TARGET_OBJCOPY  = $(TARGET_CROSS)objcopy
 TARGET_OBJDUMP  = $(TARGET_CROSS)objdump
-
-TARGET_CC_NOCCACHE  := $(TARGET_CC)
-TARGET_CXX_NOCCACHE := $(TARGET_CXX)
-
-ifeq ($(BR2_CCACHE),y)
-TARGET_CC  := $(CCACHE) $(TARGET_CC)
-TARGET_CXX := $(CCACHE) $(TARGET_CXX)
-endif
 
 ifeq ($(BR2_STRIP_strip),y)
 STRIP_STRIP_DEBUG := --strip-debug
@@ -228,10 +224,6 @@ HOST_CFLAGS   ?= -O2
 HOST_CFLAGS   += $(HOST_CPPFLAGS)
 HOST_CXXFLAGS += $(HOST_CFLAGS)
 HOST_LDFLAGS  += -L$(HOST_DIR)/lib -L$(HOST_DIR)/usr/lib -Wl,-rpath,$(HOST_DIR)/usr/lib
-
-# hostcc version as an integer - E.G. 4.3.2 => 432
-HOSTCC_VERSION := $(shell $(HOSTCC_NOCCACHE) --version | \
-	sed -n 's/^.* \([0-9]*\)\.\([0-9]*\)\.\([0-9]*\)[ ]*.*$$/\1\2\3/p')
 
 # host-intltool should be executed with the system perl, so we save
 # the path to the system perl, before a host-perl built by Buildroot
@@ -306,12 +298,10 @@ HOST_CONFIGURE_OPTS = \
 	PKG_CONFIG="$(PKG_CONFIG_HOST_BINARY)" \
 	PKG_CONFIG_SYSROOT_DIR="/" \
 	PKG_CONFIG_LIBDIR="$(HOST_DIR)/usr/lib/pkgconfig:$(HOST_DIR)/usr/share/pkgconfig" \
-	LD_LIBRARY_PATH="$(HOST_DIR)/usr/lib$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 	INTLTOOL_PERL=$(PERL)
 
 HOST_MAKE_ENV = \
 	PATH=$(BR_PATH) \
-	LD_LIBRARY_PATH="$(HOST_DIR)/usr/lib$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 	PKG_CONFIG="$(PKG_CONFIG_HOST_BINARY)" \
 	PKG_CONFIG_SYSROOT_DIR="/" \
 	PKG_CONFIG_LIBDIR="$(HOST_DIR)/usr/lib/pkgconfig"
@@ -350,6 +340,15 @@ else
 BR2_AC_CV_C_BIGENDIAN = ac_cv_c_bigendian=no
 endif
 
+# AM_GNU_GETTEXT misdetects musl gettext support.
+# musl currently implements api level 1 and 2 (basic + ngettext)
+# http://www.openwall.com/lists/musl/2015/04/16/3
+ifeq ($(BR2_TOOLCHAIN_USES_MUSL),y)
+BR2_GT_CV_FUNC_GNUGETTEXT_LIBC = \
+	gt_cv_func_gnugettext1_libc=yes \
+	gt_cv_func_gnugettext2_libc=yes
+endif
+
 TARGET_CONFIGURE_ARGS = \
 	$(BR2_AC_CV_TRAP_CHECK) \
 	ac_cv_func_mmap_fixed_mapped=yes \
@@ -360,7 +359,8 @@ TARGET_CONFIGURE_ARGS = \
 	ac_cv_func_calloc_0_nonnull=yes \
 	ac_cv_func_realloc_0_nonnull=yes \
 	lt_cv_sys_lib_search_path_spec="" \
-	$(BR2_AC_CV_C_BIGENDIAN)
+	$(BR2_AC_CV_C_BIGENDIAN) \
+	$(BR2_GT_CV_FUNC_GNUGETTEXT_LIBC)
 
 ################################################################################
 

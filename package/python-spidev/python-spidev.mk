@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-PYTHON_SPIDEV_VERSION = 3.0
+PYTHON_SPIDEV_VERSION = 3.1
 PYTHON_SPIDEV_SOURCE = spidev-$(PYTHON_SPIDEV_VERSION).tar.gz
 PYTHON_SPIDEV_SITE = https://pypi.python.org/packages/source/s/spidev
 PYTHON_SPIDEV_SETUP_TYPE = distutils

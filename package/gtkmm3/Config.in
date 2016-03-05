@@ -1,0 +1,29 @@
+config BR2_PACKAGE_GTKMM3
+	bool "gtkmm3"
+	# Broken on existing external/internal nios2 toolchains,
+	# revisit when they are upgraded with at least Binutils >= 2.26
+	# and GCC >= 5.3.
+	# https://sourceware.org/bugzilla/show_bug.cgi?id=19405
+	depends on !BR2_nios2
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # pangomm, libgtk3 -> pango -> harfbuzz
+	depends on BR2_INSTALL_LIBSTDCPP # glibmm, libpangomm -> glibmm/pango
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_8 # C++11
+	depends on BR2_TOOLCHAIN_HAS_THREADS # *mm/libgtk3 -> libglib2
+	depends on BR2_USE_MMU # *mm/libgtk3 -> libglib2
+	depends on BR2_USE_WCHAR # *mm/libgtk3 -> libglib2
+	select BR2_PACKAGE_ATKMM
+	select BR2_PACKAGE_CAIROMM
+	select BR2_PACKAGE_GLIBMM
+	select BR2_PACKAGE_LIBGTK3
+	select BR2_PACKAGE_LIBSIGC
+	select BR2_PACKAGE_PANGOMM
+	help
+	  The gtkmm3 package is a set of C++ bindings for GTK 3.
+
+	  http://www.gtkmm.org/
+
+comment "gtkmm3 needs a toolchain w/ C++, wchar, threads, gcc >= 4.8"
+	depends on BR2_USE_MMU
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
+	depends on !BR2_TOOLCHAIN_GCC_AT_LEAST_4_8 || !BR2_USE_WCHAR \
+		|| !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS

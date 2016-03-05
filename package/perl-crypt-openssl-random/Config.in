@@ -3,8 +3,7 @@ config BR2_PACKAGE_PERL_CRYPT_OPENSSL_RANDOM
 	depends on !BR2_STATIC_LIBS
 	select BR2_PACKAGE_OPENSSL
 	help
-	  Routines for accessing the OpenSSL pseudo-random number generator
-	  using the openSSL libraries
+	  OpenSSL/LibreSSL pseudo-random number generator access
 
 	  http://sourceforge.net/projects/perl-openssl/
 

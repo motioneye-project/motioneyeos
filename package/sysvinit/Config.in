@@ -4,4 +4,4 @@ config BR2_PACKAGE_SYSVINIT
 	help
 	  /sbin/init - parent of all processes
 
-	  http://freshmeat.net/projects/sysvinit/
+	  http://savannah.nongnu.org/projects/sysvinit

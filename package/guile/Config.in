@@ -1,8 +1,10 @@
 config BR2_PACKAGE_GUILE
 	bool "guile"
+	depends on !BR2_TOOLCHAIN_USES_MUSL # no strtol_l
 	depends on BR2_TOOLCHAIN_HAS_THREADS
-	depends on BR2_PACKAGE_LIBATOMIC_ARCH_SUPPORTS # bdwgc
+	depends on BR2_PACKAGE_LIBATOMIC_OPS_ARCH_SUPPORTS # bdwgc
 	depends on BR2_USE_WCHAR # libunistring
+	depends on !BR2_STATIC_LIBS
 	select BR2_PACKAGE_LIBUNISTRING
 	select BR2_PACKAGE_LIBFFI
 	select BR2_PACKAGE_GMP
@@ -14,6 +16,7 @@ config BR2_PACKAGE_GUILE
 
 	  http://www.gnu.org/software/guile
 
-comment "guile needs a toolchain w/ threads, wchar"
-	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_USE_WCHAR
+comment "guile needs a uClibc or (e)glibc toolchain w/ threads, wchar, dynamic library"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_USE_WCHAR || \
+		BR2_STATIC_LIBS || BR2_TOOLCHAIN_USES_MUSL
 

@@ -1,9 +1,16 @@
-comment "mongrel2 needs a toolchain w/ C++, threads, wchar"
-	depends on BR2_UCLIBC_VERSION_SNAPSHOT || \
-		BR2_TOOLCHAIN_USES_GLIBC || \
-		BR2_arm
+# mongrel2 uses {get,make,swap}context() functions, which are
+# available in glibc for all architectures and in uClibc only for a
+# subset of the architectures
+config BR2_PACKAGE_MONGREL2_LIBC_SUPPORTS
+	bool
+	default y if BR2_TOOLCHAIN_USES_GLIBC
+	default y if BR2_TOOLCHAIN_USES_UCLIBC && \
+		(BR2_arm || BR2_armeb || BR2_i386 || BR2_mips || BR2_mipsel || BR2_mips64 || BR2_mips64el || BR2_x86_64)
+
+comment "mongrel2 needs a uClibc or glibc toolchain w/ C++, threads, wchar, dynamic library"
 	depends on !BR2_INSTALL_LIBSTDCPP || \
-		!BR2_TOOLCHAIN_HAS_THREADS || !BR2_USE_WCHAR
+		!BR2_TOOLCHAIN_HAS_THREADS || !BR2_USE_WCHAR || \
+		BR2_STATIC_LIBS || !BR2_PACKAGE_MONGREL2_LIBC_SUPPORTS
 
 config BR2_PACKAGE_MONGREL2
 	bool "mongrel2"
@@ -12,11 +19,8 @@ config BR2_PACKAGE_MONGREL2
 	depends on BR2_INSTALL_LIBSTDCPP # zeromq
 	depends on BR2_TOOLCHAIN_HAS_THREADS # zeromq
 	depends on BR2_USE_WCHAR # zeromq -> util-linux
-	# {get,make,swap}context functions present in
-	# {e,}glibc and in uClibc's master branch. Source has arm workaround
-	depends on BR2_UCLIBC_VERSION_SNAPSHOT || \
-		BR2_TOOLCHAIN_USES_GLIBC || \
-		BR2_arm
+	depends on !BR2_STATIC_LIBS # uses dlopen()
+	depends on BR2_PACKAGE_MONGREL2_LIBC_SUPPORTS
 	help
 	  Mongrel2 is an application, language, and network architecture
 	  agnostic web server that focuses on web applications using

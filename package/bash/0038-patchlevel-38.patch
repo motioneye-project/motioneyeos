@@ -1,0 +1,92 @@
+From http://ftp.gnu.org/pub/gnu/bash/bash-4.3-patches/bash43-038
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release:	4.3
+Patch-ID:	bash43-038
+
+Bug-Reported-by:	worley@alum.mit.edu (Dale R. Worley)
+Bug-Reference-ID:	<201406100051.s5A0pCeB014978@hobgoblin.ariadne.com>
+Bug-Reference-URL:	http://lists.gnu.org/archive/html/bug-bash/2014-06/msg00028.html
+
+Bug-Description:
+
+There are a number of instances where `time' is not recognized as a reserved
+word when the shell grammar says it should be.
+
+Patch (apply with `patch -p0'):
+
+*** a/bash-4.3-patched/parse.y	2014-04-07 11:56:12.000000000 -0400
+--- b/parse.y	2014-06-11 10:25:53.000000000 -0400
+***************
+*** 2819,2827 ****
+      case OR_OR:
+      case '&':
+      case DO:
+      case THEN:
+      case ELSE:
+      case '{':		/* } */
+!     case '(':		/* ) */
+      case BANG:		/* ! time pipeline */
+      case TIME:		/* time time pipeline */
+--- 2819,2832 ----
+      case OR_OR:
+      case '&':
++     case WHILE:
+      case DO:
++     case UNTIL:
++     case IF:
+      case THEN:
++     case ELIF:
+      case ELSE:
+      case '{':		/* } */
+!     case '(':		/* )( */
+!     case ')':		/* only valid in case statement */
+      case BANG:		/* ! time pipeline */
+      case TIME:		/* time time pipeline */
+*** a/bash-4.3-patched/y.tab.c	2014-10-05 13:52:50.000000000 -0400
+--- b/y.tab.c	2015-05-19 15:08:43.000000000 -0400
+***************
+*** 5131,5139 ****
+      case OR_OR:
+      case '&':
+      case DO:
+      case THEN:
+      case ELSE:
+      case '{':		/* } */
+!     case '(':		/* ) */
+      case BANG:		/* ! time pipeline */
+      case TIME:		/* time time pipeline */
+--- 5131,5144 ----
+      case OR_OR:
+      case '&':
++     case WHILE:
+      case DO:
++     case UNTIL:
++     case IF:
+      case THEN:
++     case ELIF:
+      case ELSE:
+      case '{':		/* } */
+!     case '(':		/* )( */
+!     case ')':		/* only valid in case statement */
+      case BANG:		/* ! time pipeline */
+      case TIME:		/* time time pipeline */
+*** a/bash-4.3/patchlevel.h	2012-12-29 10:47:57.000000000 -0500
+--- b/patchlevel.h	2014-03-20 20:01:28.000000000 -0400
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 37
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 38
+  
+  #endif /* _PATCHLEVEL_H_ */

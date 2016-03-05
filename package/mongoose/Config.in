@@ -3,7 +3,8 @@ config BR2_PACKAGE_MONGOOSE
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_USE_MMU # fork()
 	help
-	  Mongoose is a small and easy to use web server
+	  Mongoose is an embedded networking library, which can turn
+	  anything into a web server
 
 	  https://github.com/cesanta/mongoose
 

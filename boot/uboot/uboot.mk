@@ -12,8 +12,6 @@ UBOOT_LICENSE_FILES = Licenses/gpl-2.0.txt
 
 UBOOT_INSTALL_IMAGES = YES
 
-UBOOT_DEPENDENCIES += linux
-
 ifeq ($(UBOOT_VERSION),custom)
 # Handle custom U-Boot tarballs as specified by the configuration
 UBOOT_TARBALL = $(call qstrip,$(BR2_TARGET_UBOOT_CUSTOM_TARBALL_LOCATION))
@@ -73,23 +71,23 @@ UBOOT_BIN = u-boot.bin
 UBOOT_BIN_IFT = $(UBOOT_BIN).ift
 endif
 
+# The kernel calls AArch64 'arm64', but U-Boot calls it just 'arm', so
+# we have to special case it. Similar for i386/x86_64 -> x86
+ifeq ($(KERNEL_ARCH),arm64)
+UBOOT_ARCH = arm
+else ifneq ($(filter $(KERNEL_ARCH),i386 x86_64),)
+UBOOT_ARCH = x86
+else
 UBOOT_ARCH = $(KERNEL_ARCH)
+endif
 
 UBOOT_MAKE_OPTS += \
-	CROSS_COMPILE="$(CCACHE) $(TARGET_CROSS)" \
+	CROSS_COMPILE="$(TARGET_CROSS)" \
 	ARCH=$(UBOOT_ARCH)
 
-# Helper function to fill the U-Boot config.h file.
-# Argument 1: option name
-# Argument 2: option value
-# If the option value is empty, this function does nothing.
-define insert_define
-$(if $(call qstrip,$(2)),
-	@echo "#ifdef $(strip $(1))" >> $(@D)/include/config.h
-	@echo "#undef $(strip $(1))" >> $(@D)/include/config.h
-	@echo "#endif" >> $(@D)/include/config.h
-	@echo '#define $(strip $(1)) $(call qstrip,$(2))' >> $(@D)/include/config.h)
-endef
+ifeq ($(BR2_TARGET_UBOOT_NEEDS_DTC),y)
+UBOOT_DEPENDENCIES += host-dtc
+endif
 
 # prior to u-boot 2013.10 the license info was in COPYING. Copy it so
 # legal-info finds it
@@ -100,6 +98,7 @@ define UBOOT_COPY_OLD_LICENSE_FILE
 endef
 
 UBOOT_POST_EXTRACT_HOOKS += UBOOT_COPY_OLD_LICENSE_FILE
+UBOOT_POST_RSYNC_HOOKS += UBOOT_COPY_OLD_LICENSE_FILE
 
 # Prior to Buildroot 2015.05, only patch directories were supported. New
 # configurations use BR2_TARGET_UBOOT_PATCH instead.
@@ -137,13 +136,11 @@ define UBOOT_CONFIGURE_CMDS
 endef
 else ifeq ($(BR2_TARGET_UBOOT_BUILD_SYSTEM_KCONFIG),y)
 ifeq ($(BR2_TARGET_UBOOT_USE_DEFCONFIG),y)
-UBOOT_SOURCE_CONFIG = $(UBOOT_DIR)/configs/$(call qstrip,\
-	$(BR2_TARGET_UBOOT_BOARD_DEFCONFIG))_defconfig
+UBOOT_KCONFIG_DEFCONFIG = $(call qstrip,$(BR2_TARGET_UBOOT_BOARD_DEFCONFIG))_defconfig
 else ifeq ($(BR2_TARGET_UBOOT_USE_CUSTOM_CONFIG),y)
-UBOOT_SOURCE_CONFIG = $(call qstrip,$(BR2_TARGET_UBOOT_CUSTOM_CONFIG_FILE))
+UBOOT_KCONFIG_FILE = $(call qstrip,$(BR2_TARGET_UBOOT_CUSTOM_CONFIG_FILE))
 endif # BR2_TARGET_UBOOT_USE_DEFCONFIG
 
-UBOOT_KCONFIG_FILE = $(UBOOT_SOURCE_CONFIG)
 UBOOT_KCONFIG_EDITORS = menuconfig xconfig gconfig nconfig
 UBOOT_KCONFIG_OPTS = $(UBOOT_MAKE_OPTS)
 endif # BR2_TARGET_UBOOT_BUILD_SYSTEM_LEGACY

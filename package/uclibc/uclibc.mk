@@ -4,25 +4,11 @@
 #
 ################################################################################
 
-UCLIBC_VERSION = $(call qstrip,$(BR2_UCLIBC_VERSION_STRING))
-UCLIBC_SOURCE ?= uClibc-$(UCLIBC_VERSION).tar.bz2
+UCLIBC_VERSION = 1.0.12
+UCLIBC_SOURCE = uClibc-ng-$(UCLIBC_VERSION).tar.xz
+UCLIBC_SITE = http://downloads.uclibc-ng.org/releases/$(UCLIBC_VERSION)
 UCLIBC_LICENSE = LGPLv2.1+
 UCLIBC_LICENSE_FILES = COPYING.LIB
-
-ifeq ($(BR2_UCLIBC_VERSION_SNAPSHOT),y)
-UCLIBC_SITE = http://www.uclibc.org/downloads/snapshots
-BR_NO_CHECK_HASH_FOR += $(UCLIBC_SOURCE)
-else ifeq ($(BR2_UCLIBC_VERSION_NG),y)
-UCLIBC_SITE = http://downloads.uclibc-ng.org/releases/$(UCLIBC_VERSION)
-UCLIBC_SOURCE = uClibc-ng-$(UCLIBC_VERSION).tar.xz
-else ifeq ($(BR2_UCLIBC_VERSION_ARC_GIT),y)
-UCLIBC_SITE = $(call github,foss-for-synopsys-dwc-arc-processors,uClibc,$(UCLIBC_VERSION))
-UCLIBC_SOURCE = uClibc-$(UCLIBC_VERSION).tar.gz
-else
-UCLIBC_SITE = http://www.uclibc.org/downloads
-UCLIBC_SOURCE = uClibc-$(UCLIBC_VERSION).tar.xz
-endif
-
 UCLIBC_INSTALL_STAGING = YES
 
 # uclibc is part of the toolchain so disable the toolchain dependency
@@ -398,12 +384,11 @@ endef
 
 ifeq ($(BR2_UCLIBC_INSTALL_TEST_SUITE),y)
 define UCLIBC_BUILD_TEST_SUITE
-	$(MAKE1) -C $(@D)/test \
+	$(MAKE1) -C $(@D) \
 		$(UCLIBC_MAKE_FLAGS) \
-		ARCH_CFLAGS=-I$(STAGING_DIR)/usr/include \
-		UCLIBC_ONLY=1 \
 		TEST_INSTALLED_UCLIBC=1 \
-		compile
+		UCLIBC_ONLY=1 \
+		test_compile
 endef
 endif
 
@@ -431,21 +416,6 @@ define UCLIBC_INSTALL_UTILS_TARGET
 		ARCH="$(UCLIBC_TARGET_ARCH)" \
 		PREFIX=$(TARGET_DIR) \
 		utils install_utils
-endef
-endif
-
-# gcc produces binaries that use ld{64,}-uClibc.so.0 as the program
-# interpreter, but since uClibc-ng version is 1.0.0, it generates
-# ld{64,}-uClibc.so.1. In order to avoid changing gcc, we simply
-# create the necessary symbolic links here.
-ifeq ($(BR2_UCLIBC_VERSION_NG),y)
-define UCLIBC_INSTALL_LDSO_SYMLINKS
-	if [ -e $(TARGET_DIR)/lib/ld64-uClibc.so.1 ]; then \
-		(cd $(TARGET_DIR)/lib;ln -sf ld64-uClibc.so.1 ld64-uClibc.so.0) \
-	fi
-	if [ -e $(TARGET_DIR)/lib/ld-uClibc.so.1 ]; then \
-		(cd $(TARGET_DIR)/lib;ln -sf ld-uClibc.so.1 ld-uClibc.so.0) \
-	fi
 endef
 endif
 

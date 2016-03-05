@@ -23,6 +23,12 @@ LIBEDIT_POST_EXTRACT_HOOKS += LIBEDIT_FIXUP_M4_DIR
 # Doesn't really support !wchar, but support is disabled otherwise
 LIBEDIT_CONF_OPTS += --enable-widec
 
+# musl is ISO 10646 compliant but doesn't define __STDC_ISO_10646__,
+# so let's define it manually
+ifeq ($(BR2_TOOLCHAIN_USES_MUSL),y)
+LIBEDIT_CONF_OPTS += CFLAGS="$(TARGET_CFLAGS) -D__STDC_ISO_10646__=201103L"
+endif
+
 # Note: libbsd required for *vis functions, but works only with a toolchain
 # with __progname; otherwise, some features are disabled, as if libbsd was
 # missing entirely.

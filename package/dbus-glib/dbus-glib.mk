@@ -4,10 +4,10 @@
 #
 ################################################################################
 
-DBUS_GLIB_VERSION = 0.104
+DBUS_GLIB_VERSION = 0.106
 DBUS_GLIB_SITE = http://dbus.freedesktop.org/releases/dbus-glib
 DBUS_GLIB_INSTALL_STAGING = YES
-DBUS_GLIB_LICENSE = AFLv2.1 GPLv2+
+DBUS_GLIB_LICENSE = AFLv2.1, GPLv2+
 DBUS_GLIB_LICENSE_FILES = COPYING
 
 DBUS_GLIB_CONF_ENV = \

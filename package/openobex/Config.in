@@ -4,7 +4,7 @@ config BR2_PACKAGE_OPENOBEX
 	  Free open source implementation of the Object Exchange (OBEX)
 	  protocol.
 
-	  http://www.openobex.org
+	  http://sourceforge.net/projects/openobex
 
 if BR2_PACKAGE_OPENOBEX
 
@@ -22,8 +22,9 @@ comment "bluez support needs a toolchain w/ wchar, threads, dynamic library"
 
 config BR2_PACKAGE_OPENOBEX_LIBUSB
 	bool "enable libusb support"
-	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libusb
 	select BR2_PACKAGE_LIBUSB
+	select BR2_PACKAGE_LIBUSB_COMPAT
 
 comment "libusb support needs a toolchain w/ threads"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS

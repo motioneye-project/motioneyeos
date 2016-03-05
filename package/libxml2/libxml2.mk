@@ -4,10 +4,9 @@
 #
 ################################################################################
 
-LIBXML2_VERSION = 2.9.2
+LIBXML2_VERSION = 2.9.3
 LIBXML2_SITE = ftp://xmlsoft.org/libxml2
 LIBXML2_INSTALL_STAGING = YES
-LIBXML2_AUTORECONF = YES
 LIBXML2_LICENSE = MIT
 LIBXML2_LICENSE_FILES = COPYING
 LIBXML2_CONFIG_SCRIPTS = xml2-config

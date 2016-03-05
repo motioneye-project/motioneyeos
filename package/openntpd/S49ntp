@@ -5,12 +5,12 @@
 
 case "$1" in
 	start)
-		echo -n "Starting openntpd: "
-		start-stop-daemon -S -x /usr/sbin/ntpd -- -p /run/ntpd.pid
+		printf "Starting openntpd: "
+		start-stop-daemon -S -x /usr/sbin/ntpd -- -s -p /run/ntpd.pid
 		[ $? = 0 ] && echo "OK" || echo "FAIL"
 		;;
 	stop)
-		echo -n "Stopping openntpd: "
+		printf "Stopping openntpd: "
 		start-stop-daemon -K -q -p /run/ntpd.pid
 		[ $? = 0 ] && echo "OK" || echo "FAIL"
 		;;

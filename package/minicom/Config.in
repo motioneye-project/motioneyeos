@@ -5,11 +5,11 @@ config BR2_PACKAGE_MINICOM
 	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
 	select BR2_PACKAGE_NCURSES
 	help
-	  Minicom is a menu driven communications program.
-	  It emulates ANSI and VT102 terminals. It has a
-	  dialing directory and auto zmodem download.
+	  Minicom is a menu driven communications program. It emulates
+	  ANSI and VT102 terminals. It has a dialing directory and auto
+	  zmodem download.
 
-	  http://alioth.debian.org/projects/minicom
+	  http://alioth.debian.org/projects/minicom/
 
 comment "minicom needs a toolchain w/ wchar"
 	depends on BR2_USE_MMU

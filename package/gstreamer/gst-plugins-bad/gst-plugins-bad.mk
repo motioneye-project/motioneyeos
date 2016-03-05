@@ -7,6 +7,9 @@
 GST_PLUGINS_BAD_VERSION = 0.10.23
 GST_PLUGINS_BAD_SOURCE = gst-plugins-bad-$(GST_PLUGINS_BAD_VERSION).tar.xz
 GST_PLUGINS_BAD_SITE = http://gstreamer.freedesktop.org/src/gst-plugins-bad
+# COPYING.LIB is in fact v2, but most of the code is v2.1+
+GST_PLUGINS_BAD_LICENSE = LGPLv2.1+, GPLv2+
+GST_PLUGINS_BAD_LICENSE_FILES = COPYING.LIB COPYING
 
 GST_PLUGINS_BAD_CONF_OPTS = \
 	--disable-examples
@@ -583,6 +586,13 @@ GST_PLUGINS_BAD_CONF_OPTS += --enable-vp8
 GST_PLUGINS_BAD_DEPENDENCIES += libvpx
 else
 GST_PLUGINS_BAD_CONF_OPTS += --disable-vp8
+endif
+
+ifeq ($(BR2_PACKAGE_GST_PLUGINS_BAD_ZBAR),y)
+GST_PLUGINS_BAD_CONF_OPTS += --enable-zbar
+GST_PLUGINS_BAD_DEPENDENCIES += zbar
+else
+GST_PLUGINS_BAD_CONF_OPTS += --disable-zbar
 endif
 
 $(eval $(autotools-package))

@@ -4,14 +4,18 @@
 #
 ################################################################################
 
-TRACE_CMD_VERSION = trace-cmd-v2.3.2
+TRACE_CMD_VERSION = trace-cmd-v2.6
 TRACE_CMD_SITE = $(BR2_KERNEL_MIRROR)/scm/linux/kernel/git/rostedt/trace-cmd.git
 TRACE_CMD_SITE_METHOD = git
 TRACE_CMD_INSTALL_STAGING = YES
-TRACE_CMD_LICENSE = GPLv2 LGPLv2.1
+TRACE_CMD_LICENSE = GPLv2, LGPLv2.1
 TRACE_CMD_LICENSE_FILES = COPYING COPYING.LIB
 
 TRACE_CMD_DEPENDENCIES = host-pkgconf
+
+ifeq ($(BR2_PACKAGE_AUDIT),y)
+TRACE_CMD_DEPENDENCIES += audit
+endif
 
 ifeq ($(BR2_PACKAGE_PYTHON),y)
 TRACE_CMD_DEPENDENCIES += python host-swig

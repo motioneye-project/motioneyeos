@@ -3,14 +3,14 @@
 [ -f /usr/bin/input-event-daemon ] || exit 0
 
 start() {
-	echo -n "Starting input-event-daemon: "
+	printf "Starting input-event-daemon: "
 	input-event-daemon
 	echo "done"
 }
 
 
 stop() {
-	echo -n "Stopping input-event-daemon: "
+	printf "Stopping input-event-daemon: "
 	killall input-event-daemon
 	echo "done"
 }

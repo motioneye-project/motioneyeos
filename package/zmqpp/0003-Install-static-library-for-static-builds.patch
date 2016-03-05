@@ -1,0 +1,30 @@
+From 1637443262cc861a161fd7c734bc0610a340335b Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?J=C3=B6rg=20Krause?= <joerg.krause@embedded.rocks>
+Date: Mon, 23 Nov 2015 22:53:09 +0100
+Subject: [PATCH] Install static library for static builds
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: Jörg Krause <joerg.krause@embedded.rocks>
+---
+ Makefile | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/Makefile b/Makefile
+index 90c7059..abed6fa 100644
+--- a/Makefile
++++ b/Makefile
+@@ -142,6 +142,9 @@ ifeq ($(BUILD_SHARED),yes)
+ 	ln -sf $(LIBRARY_SHARED).$(APP_VERSION) $(LIBDIR)/$(LIBRARY_SHARED).$(VERSION_MAJOR)
+ 	ln -sf $(LIBRARY_SHARED).$(APP_VERSION) $(LIBDIR)/$(LIBRARY_SHARED)
+ endif
++ifeq ($(BUILD_STATIC),yes)
++	install -m 755 $(BUILD_PATH)/$(LIBRARY_ARCHIVE) $(LIBDIR)/$(LIBRARY_ARCHIVE)
++endif
+ 	if [ -f $(BUILD_PATH)/$(CLIENT_TARGET) ]; then install -m 755 $(BUILD_PATH)/$(CLIENT_TARGET) $(BINDIR); fi
+ 	$(LDCONFIG)
+ 	@echo "use make installcheck to test the install"
+-- 
+2.6.2
+

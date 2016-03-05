@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-PYTHON_WERKZEUG_VERSION = 0.10
+PYTHON_WERKZEUG_VERSION = 0.11.3
 PYTHON_WERKZEUG_SOURCE = Werkzeug-$(PYTHON_WERKZEUG_VERSION).tar.gz
 PYTHON_WERKZEUG_SITE = http://pypi.python.org/packages/source/W/Werkzeug
 PYTHON_WERKZEUG_SETUP_TYPE = setuptools

@@ -19,6 +19,7 @@ BEECRYPT_CONF_OPTS = \
 
 ifeq ($(BR2_PACKAGE_BEECRYPT_CPP),y)
 BEECRYPT_DEPENDENCIES += icu
+BEECRYPT_CONF_OPTS += --with-cplusplus
 else
 BEECRYPT_CONF_OPTS += --without-cplusplus
 

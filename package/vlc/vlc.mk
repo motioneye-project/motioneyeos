@@ -54,6 +54,7 @@ VLC_CONF_OPTS += \
 	--disable-mfx \
 	--disable-vdpau \
 	--disable-addonmanagermodules \
+	--enable-run-as-root \
 
 # Building static and shared doesn't work, so force static off.
 ifeq ($(BR2_STATIC_LIBS),)
@@ -153,9 +154,13 @@ else
 VLC_CONF_OPTS += --disable-gles2
 endif
 
-ifeq ($(BR2_PACKAGE_OPENCV),y)
+ifeq ($(BR2_PACKAGE_OPENCV)$(BR2_PACKAGE_OPENCV3),y)
 VLC_CONF_OPTS += --enable-opencv
+ifeq ($(BR2_PACKAGE_OPENCV),y)
 VLC_DEPENDENCIES += opencv
+else
+VLC_DEPENDENCIES += opencv3
+endif
 else
 VLC_CONF_OPTS += --disable-opencv
 endif
@@ -174,6 +179,20 @@ else
 VLC_CONF_OPTS += --disable-libass
 endif
 
+ifeq ($(BR2_PACKAGE_LIBBLURAY),y)
+VLC_CONF_OPTS += --enable-bluray
+VLC_DEPENDENCIES += libbluray
+else
+VLC_CONF_OPTS += --disable-bluray
+endif
+
+ifeq ($(BR2_PACKAGE_LIBDVBPSI),y)
+VLC_CONF_OPTS += --enable-dvbpsi
+VLC_DEPENDENCIES += libdvbpsi
+else
+VLC_CONF_OPTS += --disable-dvbpsi
+endif
+
 ifeq ($(BR2_PACKAGE_LIBGCRYPT),y)
 VLC_CONF_OPTS += --enable-libgcrypt
 VLC_DEPENDENCIES += libgcrypt
@@ -188,6 +207,13 @@ VLC_CONF_OPTS += --enable-mad
 VLC_DEPENDENCIES += libmad
 else
 VLC_CONF_OPTS += --disable-mad
+endif
+
+ifeq ($(BR2_PACKAGE_LIBMATROSKA),y)
+VLC_CONF_OPTS += --enable-mkv
+VLC_DEPENDENCIES += libmatroska
+else
+VLC_CONF_OPTS += --disable-mkv
 endif
 
 ifeq ($(BR2_PACKAGE_LIBMODPLUG),y)
@@ -321,6 +347,13 @@ else
 VLC_CONF_OPTS += --disable-speex
 endif
 
+ifeq ($(BR2_PACKAGE_TAGLIB),y)
+VLC_CONF_OPTS += --enable-taglib
+VLC_DEPENDENCIES += taglib
+else
+VLC_CONF_OPTS += --disable-taglib
+endif
+
 ifeq ($(BR2_PACKAGE_TREMOR),y)
 VLC_CONF_OPTS += --enable-tremor
 VLC_DEPENDENCIES += tremor
@@ -340,6 +373,10 @@ VLC_CONF_OPTS += --with-x
 VLC_DEPENDENCIES += xlib_libX11
 else
 VLC_CONF_OPTS += --without-x
+endif
+
+ifeq ($(BR2_PACKAGE_ZLIB),y)
+VLC_DEPENDENCIES += zlib
 endif
 
 $(eval $(autotools-package))

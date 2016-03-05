@@ -1,0 +1,111 @@
+From 87369a8d190a182ee087cec5164e4c9586b0d80e Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Wed, 28 Oct 2015 09:27:47 +0100
+Subject: [PATCH] libv4lsyscall-priv.h: Use off_t instead of __off_t
+
+__off_t is a kernel internal symbol, which happens to be user-visible
+with glibc, but not necessarily with other C libraries such as
+musl. In v4l-utils code, it's mainly used for the mmap() prototype,
+but the mmap() manpage really uses off_t, not __off_t.
+
+Switching from __off_t to off_t allows the code to build properly with
+musl.
+
+Patch upstream at
+http://git.linuxtv.org/v4l-utils.git/commit/?id=a6ff0635f7ed3400eec25039b96002b60a44209b.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ lib/libv4l1/v4l1compat.c               |  3 +--
+ lib/libv4l2/v4l2convert.c              |  5 ++---
+ lib/libv4lconvert/libv4lsyscall-priv.h | 11 +++--------
+ 3 files changed, 6 insertions(+), 13 deletions(-)
+
+diff --git a/lib/libv4l1/v4l1compat.c b/lib/libv4l1/v4l1compat.c
+index 97e8c4e..e5c9e56 100644
+--- a/lib/libv4l1/v4l1compat.c
++++ b/lib/libv4l1/v4l1compat.c
+@@ -29,7 +29,6 @@
+ #include <stdarg.h>
+ #include <fcntl.h>
+ #include <libv4l1.h>
+-#include "../libv4lconvert/libv4lsyscall-priv.h" /* for __off_t */
+ 
+ #include <sys/ioctl.h>
+ #include <sys/mman.h>
+@@ -119,7 +118,7 @@ LIBV4L_PUBLIC ssize_t read(int fd, void *buffer, size_t n)
+ }
+ 
+ LIBV4L_PUBLIC void *mmap(void *start, size_t length, int prot, int flags, int fd,
+-		__off_t offset)
++		off_t offset)
+ {
+ 	return v4l1_mmap(start, length, prot, flags, fd, offset);
+ }
+diff --git a/lib/libv4l2/v4l2convert.c b/lib/libv4l2/v4l2convert.c
+index a6dc30e..7b7e253 100644
+--- a/lib/libv4l2/v4l2convert.c
++++ b/lib/libv4l2/v4l2convert.c
+@@ -39,7 +39,6 @@
+ #include <string.h>
+ #include <sys/ioctl.h>
+ #include <sys/mman.h>
+-#include "../libv4lconvert/libv4lsyscall-priv.h"
+ #include <linux/videodev2.h>
+ #include <libv4l2.h>
+ 
+@@ -151,14 +150,14 @@ LIBV4L_PUBLIC ssize_t read(int fd, void *buffer, size_t n)
+ }
+ 
+ LIBV4L_PUBLIC void *mmap(void *start, size_t length, int prot, int flags, int fd,
+-		__off_t offset)
++		off_t offset)
+ {
+ 	return v4l2_mmap(start, length, prot, flags, fd, offset);
+ }
+ 
+ #if defined(linux) && defined(__GLIBC__)
+ LIBV4L_PUBLIC void *mmap64(void *start, size_t length, int prot, int flags, int fd,
+-		__off64_t offset)
++		off64_t offset)
+ {
+ 	return v4l2_mmap(start, length, prot, flags, fd, offset);
+ }
+diff --git a/lib/libv4lconvert/libv4lsyscall-priv.h b/lib/libv4lconvert/libv4lsyscall-priv.h
+index f548fb2..f87eff4 100644
+--- a/lib/libv4lconvert/libv4lsyscall-priv.h
++++ b/lib/libv4lconvert/libv4lsyscall-priv.h
+@@ -59,11 +59,6 @@
+ #define	_IOC_SIZE(cmd) IOCPARM_LEN(cmd)
+ #define	MAP_ANONYMOUS MAP_ANON
+ #define	MMAP2_PAGE_SHIFT 0
+-typedef off_t __off_t;
+-#endif
+-
+-#if defined(ANDROID)
+-typedef off_t __off_t;
+ #endif
+ 
+ #undef SYS_OPEN
+@@ -95,15 +90,15 @@ typedef off_t __off_t;
+ #if defined(__FreeBSD__)
+ #define SYS_MMAP(addr, len, prot, flags, fd, off) \
+ 	__syscall(SYS_mmap, (void *)(addr), (size_t)(len), \
+-			(int)(prot), (int)(flags), (int)(fd), (__off_t)(off))
++			(int)(prot), (int)(flags), (int)(fd), (off_t)(off))
+ #elif defined(__FreeBSD_kernel__)
+ #define SYS_MMAP(addr, len, prot, flags, fd, off) \
+ 	syscall(SYS_mmap, (void *)(addr), (size_t)(len), \
+-			(int)(prot), (int)(flags), (int)(fd), (__off_t)(off))
++			(int)(prot), (int)(flags), (int)(fd), (off_t)(off))
+ #else
+ #define SYS_MMAP(addr, len, prot, flags, fd, off) \
+ 	syscall(SYS_mmap2, (void *)(addr), (size_t)(len), \
+-			(int)(prot), (int)(flags), (int)(fd), (__off_t)((off) >> MMAP2_PAGE_SHIFT))
++			(int)(prot), (int)(flags), (int)(fd), (off_t)((off) >> MMAP2_PAGE_SHIFT))
+ #endif
+ 
+ #define SYS_MUNMAP(addr, len) \
+-- 
+2.6.2
+

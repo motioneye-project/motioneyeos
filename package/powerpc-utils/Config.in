@@ -1,5 +1,10 @@
+comment "powerpc-utils tools needs a toolchain w/ dynamic library"
+	depends on BR2_powerpc || BR2_powerpc64 || BR2_powerpc64le
+	depends on BR2_STATIC_LIBS
+
 config BR2_PACKAGE_POWERPC_UTILS
 	bool "powerpc-utils"
+	depends on !BR2_STATIC_LIBS # dlfcn.h
 	depends on BR2_powerpc || BR2_powerpc64 || BR2_powerpc64le
 	select BR2_PACKAGE_ZLIB
 	help

@@ -4,6 +4,7 @@
 #
 ################################################################################
 
+# Make sure this remains the same version as the gmock one
 GTEST_VERSION = 1.7.0
 GTEST_SOURCE = gtest-$(GTEST_VERSION).zip
 GTEST_SITE = http://googletest.googlecode.com/files

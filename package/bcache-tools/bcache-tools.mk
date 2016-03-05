@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-BCACHE_TOOLS_VERSION = v1.0.7
+BCACHE_TOOLS_VERSION = v1.0.8
 BCACHE_TOOLS_SITE = $(call github,g2p,bcache-tools,$(BCACHE_TOOLS_VERSION))
 BCACHE_TOOLS_LICENSE = GPLv2
 BCACHE_TOOLS_LICENSE_FILES = COPYING

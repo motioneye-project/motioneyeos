@@ -1,7 +1,6 @@
 comment "gpsd needs a toolchain w/ threads, dynamic library"
 	depends on BR2_USE_MMU
 	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS
-	depends on !BR2_microblaze
 
 config BR2_PACKAGE_GPSD
 	bool "gpsd"
@@ -10,8 +9,6 @@ config BR2_PACKAGE_GPSD
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	# Always tries to build a shared library
 	depends on !BR2_STATIC_LIBS
-	# triggers gcc ice
-	depends on !BR2_microblaze
 	help
 	  gpsd is a service daemon that monitors one or more GPSes or AIS
 	  receivers attached to a host computer through serial or USB ports,

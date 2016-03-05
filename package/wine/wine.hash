@@ -1,3 +1,2 @@
-# From http://sourceforge.net/projects/wine/files/Source/
-md5	0f6c56f86befe38e219090915f81f48a	wine-1.6.2.tar.bz2
-sha1	574b9ccedbf213622b7ee55f715764673fc27692	wine-1.6.2.tar.bz2
+# Locally calculated after checking pgp signature
+sha256 f33b45c18112b2071fbf9edee0e8c575407f9e2a9855ca4ee918ed33efa7c6f4 wine-1.8.tar.bz2

@@ -2,6 +2,7 @@ config BR2_PACKAGE_QHULL
 	bool "qhull"
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on !BR2_STATIC_LIBS
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_4 # needs gcc >= 4.4
 	help
 	  Qhull computes the convex hull, Delaunay triangulation,
 	  Voronoi diagram, halfspace intersection about a point,
@@ -14,6 +15,5 @@ config BR2_PACKAGE_QHULL
 
 	  http://www.qhull.org
 
-comment "qhull needs a toolchain w/ C++, dynamic library"
-	depends on !BR2_INSTALL_LIBSTDCPP
-	depends on BR2_STATIC_LIBS
+comment "qhull needs a toolchain w/ C++, dynamic library, gcc >= 4.4"
+	depends on !BR2_INSTALL_LIBSTDCPP || BR2_STATIC_LIBS || !BR2_TOOLCHAIN_GCC_AT_LEAST_4_4

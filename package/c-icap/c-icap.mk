@@ -6,7 +6,7 @@
 
 C_ICAP_VERSION = 0.3.5
 C_ICAP_SOURCE = c_icap-$(C_ICAP_VERSION).tar.gz
-C_ICAP_SITE = http://downloads.sourceforge.net/c-icap/
+C_ICAP_SITE = http://downloads.sourceforge.net/c-icap
 C_ICAP_LICENSE = LGPLv2.1+
 C_ICAP_LICENSE_FILES = COPYING
 C_ICAP_INSTALL_STAGING = YES

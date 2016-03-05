@@ -42,6 +42,13 @@ else
 LIBARCHIVE_CONF_OPTS += --disable-xattr
 endif
 
+ifeq ($(BR2_PACKAGE_BZIP2),y)
+LIBARCHIVE_CONF_OPTS += --with-bz2lib
+LIBARCHIVE_DEPENDENCIES += bzip2
+else
+LIBARCHIVE_CONF_OPTS += --without-bz2lib
+endif
+
 ifeq ($(BR2_PACKAGE_EXPAT),y)
 LIBARCHIVE_DEPENDENCIES += expat
 else

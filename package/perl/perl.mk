@@ -4,18 +4,18 @@
 #
 ################################################################################
 
-PERL_VERSION_MAJOR = 20
-PERL_VERSION = 5.$(PERL_VERSION_MAJOR).2
+PERL_VERSION_MAJOR = 22
+PERL_VERSION = 5.$(PERL_VERSION_MAJOR).1
 PERL_SITE = http://www.cpan.org/src/5.0
 PERL_SOURCE = perl-$(PERL_VERSION).tar.bz2
 PERL_LICENSE = Artistic or GPLv1+
 PERL_LICENSE_FILES = Artistic Copying README
 PERL_INSTALL_STAGING = YES
 
-PERL_CROSS_VERSION = 0.9.7
-PERL_CROSS_BASE_VERSION = 5.$(PERL_VERSION_MAJOR).2
+PERL_CROSS_VERSION = 1.0.2
+PERL_CROSS_BASE_VERSION = 5.$(PERL_VERSION_MAJOR).1
 # DO NOT refactor with the github helper (the result is not the same)
-PERL_CROSS_SITE = http://raw.github.com/arsv/perl-cross/releases
+PERL_CROSS_SITE = https://github.com/arsv/perl-cross/releases/download/$(PERL_CROSS_VERSION)
 PERL_CROSS_SOURCE = perl-$(PERL_CROSS_BASE_VERSION)-cross-$(PERL_CROSS_VERSION).tar.gz
 PERL_EXTRA_DOWNLOADS = $(PERL_CROSS_SITE)/$(PERL_CROSS_SOURCE)
 
@@ -45,13 +45,12 @@ PERL_DEPENDENCIES += gdbm
 endif
 
 # We have to override LD, because an external multilib toolchain ld is not
-# wrapped to provide the required sysroot options.  We also can't use ccache
-# because the configure script doesn't support it.
+# wrapped to provide the required sysroot options.
 PERL_CONF_OPTS = \
 	--target=$(GNU_TARGET_NAME) \
 	--target-tools-prefix=$(TARGET_CROSS) \
 	--prefix=/usr \
-	-Dld="$(TARGET_CC_NOCCACHE)" \
+	-Dld="$(TARGET_CC)" \
 	-Dccflags="$(TARGET_CFLAGS)" \
 	-Dldflags="$(TARGET_LDFLAGS) -lm" \
 	-Dmydomain="" \

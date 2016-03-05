@@ -13,7 +13,7 @@ config BR2_PACKAGE_GVFS
 	  all applications using the gio API. It also supports exposing
 	  the gvfs mounts to non-gio applications using fuse.
 
-	  http://en.wikipedia.org/wiki/GVFS
+	  https://wiki.gnome.org/action/show/Projects/gvfs
 
 comment "gvfs needs a toolchain w/ wchar, threads"
 	depends on BR2_USE_MMU

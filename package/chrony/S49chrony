@@ -6,11 +6,11 @@
 
 case "$1" in
   start)
-	echo "Starting chrony: "
+	printf "Starting chrony: "
 	chronyd && echo "OK" || echo "FAIL"
 	;;
   stop)
-	echo -n "Stopping chrony: "
+	printf "Stopping chrony: "
 	killall chronyd && echo "OK" || echo "FAIL"
 	;;
   restart|reload)

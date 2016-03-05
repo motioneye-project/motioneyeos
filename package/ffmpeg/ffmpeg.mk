@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-FFMPEG_VERSION = 2.7.2
-FFMPEG_SOURCE = ffmpeg-$(FFMPEG_VERSION).tar.bz2
+FFMPEG_VERSION = 2.8.6
+FFMPEG_SOURCE = ffmpeg-$(FFMPEG_VERSION).tar.xz
 FFMPEG_SITE = http://ffmpeg.org/releases
 FFMPEG_INSTALL_STAGING = YES
 
@@ -41,6 +41,8 @@ FFMPEG_CONF_OPTS = \
 	--enable-runtime-cpudetect \
 	--disable-hardcoded-tables \
 	--disable-memalign-hack \
+	--disable-mipsdspr1 \
+	--disable-mipsdspr2 \
 	--disable-msa \
 	--enable-hwaccels \
 	--disable-avisynth \
@@ -48,16 +50,14 @@ FFMPEG_CONF_OPTS = \
 	--disable-libopencore-amrnb \
 	--disable-libopencore-amrwb \
 	--disable-libopencv \
+	--disable-libcdio \
 	--disable-libdc1394 \
 	--disable-libfaac \
 	--disable-libgsm \
-	--disable-libmp3lame \
+	--disable-libilbc \
 	--disable-libnut \
 	--disable-libopenjpeg \
-	--disable-librtmp \
 	--disable-libschroedinger \
-	--disable-libspeex \
-	--disable-libtheora \
 	--disable-libvo-aacenc \
 	--disable-libvo-amrwbenc \
 	--disable-symver \
@@ -193,6 +193,18 @@ else
 FFMPEG_CONF_OPTS += --disable-bzlib
 endif
 
+ifeq ($(BR2_PACKAGE_FDK_AAC)$(BR2_PACKAGE_FFMPEG_NONFREE),yy)
+FFMPEG_CONF_OPTS += --enable-libfdk-aac
+FFMPEG_DEPENDENCIES += fdk-aac
+else
+FFMPEG_CONF_OPTS += --disable-libfdk-aac
+endif
+
+ifeq ($(BR2_PACKAGE_GNUTLS),y)
+FFMPEG_CONF_OPTS += --enable-gnutls --disable-openssl
+FFMPEG_DEPENDENCIES += gnutls
+else
+FFMPEG_CONF_OPTS += --disable-gnutls
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 # openssl isn't license compatible with GPL
 ifeq ($(BR2_PACKAGE_FFMPEG_GPL)x$(BR2_PACKAGE_FFMPEG_NONFREE),yx)
@@ -203,6 +215,21 @@ FFMPEG_DEPENDENCIES += openssl
 endif
 else
 FFMPEG_CONF_OPTS += --disable-openssl
+endif
+endif
+
+ifeq ($(BR2_PACKAGE_LIBDCADEC),y)
+FFMPEG_CONF_OPTS += --enable-libdcadec
+FFMPEG_DEPENDENCIES += libdcadec
+else
+FFMPEG_CONF_OPTS += --disable-libdcadec
+endif
+
+ifeq ($(BR2_PACKAGE_LIBOPENH264),y)
+FFMPEG_CONF_OPTS += --enable-libopenh264
+FFMPEG_DEPENDENCIES += libopenh264
+else
+FFMPEG_CONF_OPTS += --disable-libopenh264
 endif
 
 ifeq ($(BR2_PACKAGE_LIBVORBIS),y)
@@ -234,6 +261,62 @@ else
 FFMPEG_CONF_OPTS += --disable-libvpx
 endif
 
+ifeq ($(BR2_PACKAGE_LIBASS),y)
+FFMPEG_CONF_OPTS += --enable-libass
+FFMPEG_DEPENDENCIES += libass
+else
+FFMPEG_CONF_OPTS += --disable-libass
+endif
+
+ifeq ($(BR2_PACKAGE_LIBBLURAY),y)
+FFMPEG_CONF_OPTS += --enable-libbluray
+FFMPEG_DEPENDENCIES += libbluray
+else
+FFMPEG_CONF_OPTS += --disable-libbluray
+endif
+
+ifeq ($(BR2_PACKAGE_RTMPDUMP),y)
+FFMPEG_CONF_OPTS += --enable-librtmp
+FFMPEG_DEPENDENCIES += rtmpdump
+else
+FFMPEG_CONF_OPTS += --disable-librtmp
+endif
+
+ifeq ($(BR2_PACKAGE_LAME),y)
+FFMPEG_CONF_OPTS += --enable-libmp3lame
+FFMPEG_DEPENDENCIES += lame
+else
+FFMPEG_CONF_OPTS += --disable-libmp3lame
+endif
+
+ifeq ($(BR2_PACKAGE_LIBMODPLUG),y)
+FFMPEG_CONF_OPTS += --enable-libmodplug
+FFMPEG_DEPENDENCIES += libmodplug
+else
+FFMPEG_CONF_OPTS += --disable-libmodplug
+endif
+
+ifeq ($(BR2_PACKAGE_SPEEX),y)
+FFMPEG_CONF_OPTS += --enable-libspeex
+FFMPEG_DEPENDENCIES += speex
+else
+FFMPEG_CONF_OPTS += --disable-libspeex
+endif
+
+ifeq ($(BR2_PACKAGE_LIBTHEORA),y)
+FFMPEG_CONF_OPTS += --enable-libtheora
+FFMPEG_DEPENDENCIES += libtheora
+else
+FFMPEG_CONF_OPTS += --disable-libtheora
+endif
+
+ifeq ($(BR2_PACKAGE_WAVPACK),y)
+FFMPEG_CONF_OPTS += --enable-libwavpack
+FFMPEG_DEPENDENCIES += wavpack
+else
+FFMPEG_CONF_OPTS += --disable-libwavpack
+endif
+
 # ffmpeg freetype support require fenv.h which is only
 # available/working on glibc.
 # The microblaze variant doesn't provide the needed exceptions
@@ -256,6 +339,13 @@ FFMPEG_CONF_OPTS += --enable-libx264
 FFMPEG_DEPENDENCIES += x264
 else
 FFMPEG_CONF_OPTS += --disable-libx264
+endif
+
+ifeq ($(BR2_PACKAGE_X265)$(BR2_PACKAGE_FFMPEG_GPL),yy)
+FFMPEG_CONF_OPTS += --enable-libx265
+FFMPEG_DEPENDENCIES += x265
+else
+FFMPEG_CONF_OPTS += --disable-libx265
 endif
 
 ifeq ($(BR2_X86_CPU_HAS_MMX),y)
@@ -355,16 +445,6 @@ FFMPEG_CONF_OPTS += \
 	--disable-mips32r2
 endif
 
-ifeq ($(BR2_mips_64r2),y)
-FFMPEG_CONF_OPTS += \
-	--enable-mipsdspr1 \
-	--enable-mipsdspr2
-else
-FFMPEG_CONF_OPTS += \
-	--disable-mipsdspr1 \
-	--disable-mipsdspr2
-endif
-
 ifeq ($(BR2_POWERPC_CPU_HAS_ALTIVEC),y)
 FFMPEG_CONF_OPTS += --enable-altivec
 else
@@ -377,13 +457,13 @@ else
 FFMPEG_CONF_OPTS += --disable-pic
 endif
 
-FFMPEG_CONF_OPTS += $(call qstrip,$(BR2_PACKAGE_FFMPEG_EXTRACONF))
-
 ifneq ($(call qstrip,$(BR2_GCC_TARGET_CPU)),)
 FFMPEG_CONF_OPTS += --cpu=$(BR2_GCC_TARGET_CPU)
 else ifneq ($(call qstrip,$(BR2_GCC_TARGET_ARCH)),)
 FFMPEG_CONF_OPTS += --cpu=$(BR2_GCC_TARGET_ARCH)
 endif
+
+FFMPEG_CONF_OPTS += $(call qstrip,$(BR2_PACKAGE_FFMPEG_EXTRACONF))
 
 # Override FFMPEG_CONFIGURE_CMDS: FFmpeg does not support --target and others
 define FFMPEG_CONFIGURE_CMDS

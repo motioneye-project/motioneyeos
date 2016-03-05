@@ -1,0 +1,36 @@
+From 83bf4762e42a4d4a5c077f48d8f5715c9147d9b8 Mon Sep 17 00:00:00 2001
+From: Aurelien Jacobs <aurel@gnuage.org>
+Date: Mon, 1 Feb 2016 22:37:36 +0100
+Subject: [PATCH] beaglelogic: use standard # operator instead of ugly __STRING
+ macro
+
+Also note that the __ namespace is reserved by POSIX for its private
+usage, so user land software should never rely on any kind of API
+with a __ prefix.
+
+Signed-off-by: Aurelien Jacobs <aurel@gnuage.org>
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+Patch downloaded from upstream git:
+http://sigrok.org/gitweb/?p=libsigrok.git;a=commit;h=83bf4762e42a4d4a5c077f48d8f5715c9147d9b8
+
+ src/hardware/beaglelogic/beaglelogic.h | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/src/hardware/beaglelogic/beaglelogic.h b/src/hardware/beaglelogic/beaglelogic.h
+index 9015c61..96713ba 100644
+--- a/src/hardware/beaglelogic/beaglelogic.h
++++ b/src/hardware/beaglelogic/beaglelogic.h
+@@ -30,8 +30,7 @@
+ 
+ /* BeagleLogic device node name */
+ #define BEAGLELOGIC_DEV_NODE        "/dev/beaglelogic"
+-#define BEAGLELOGIC_SYSFS_ATTR(a)   "/sys/devices/virtual/misc/beaglelogic/"\
+-					__STRING(a)
++#define BEAGLELOGIC_SYSFS_ATTR(a)   "/sys/devices/virtual/misc/beaglelogic/" #a
+ 
+ /* Reproduced verbatim from beaglelogic.h in the kernel tree until the kernel
+  * module hits the mainline. Contains the ABI, so DO NOT TOUCH this section */
+-- 
+2.6.2
+

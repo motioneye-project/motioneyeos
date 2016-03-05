@@ -19,7 +19,7 @@ mkrundir() {
 case "$1" in
     start)
         mkrundir || exit 1
-        echo -n "Starting ejabberd... "
+        printf "Starting ejabberd... "
         "$CTL" start
         # Wait until ejabberd is up and running.
         if "$CTL" started; then
@@ -29,7 +29,7 @@ case "$1" in
         fi
         ;;
     stop)
-        echo -n "Stopping ejabberd... "
+        printf "Stopping ejabberd... "
         "$CTL" stop > /dev/null
         if [ $? -eq 3 ] || "$CTL" stopped; then
             echo "OK"

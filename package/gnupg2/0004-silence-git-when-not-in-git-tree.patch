@@ -1,0 +1,26 @@
+configure: silence autoreconf when not in a git tree
+
+When autoreconfiguring ourside of a git tree, the output is verbose
+with git errors.
+
+Silence that by consigning stderr to oblivion.
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+
+diff -durN gnupg2-2.0.29.orig/configure.ac gnupg2-2.0.29/configure.ac
+--- gnupg2-2.0.29.orig/configure.ac	2015-09-08 14:39:24.000000000 +0200
++++ gnupg2-2.0.29/configure.ac	2015-12-16 18:34:47.099493863 +0100
+@@ -33,11 +33,11 @@
+ # flag indicating a development version (mym4_isgit).  Note that the
+ # m4 processing is done by autoconf and not during the configure run.
+ m4_define([mym4_revision],
+-          m4_esyscmd([git rev-parse --short HEAD | tr -d '\n\r']))
++          m4_esyscmd([git rev-parse --short HEAD 2>/dev/null | tr -d '\n\r']))
+ m4_define([mym4_revision_dec],
+           m4_esyscmd_s([echo $((0x$(echo ]mym4_revision[|head -c 4)))]))
+ m4_define([mym4_betastring],
+-          m4_esyscmd_s([git describe --match 'gnupg-2.[0-9].*[0-9]' --long|\
++          m4_esyscmd_s([git describe --match 'gnupg-2.[0-9].*[0-9]' --long 2>/dev/null |\
+                         awk -F- '$3!=0{print"-beta"$3}']))
+ m4_define([mym4_isgit],m4_if(mym4_betastring,[],[no],[yes]))
+ m4_define([mym4_full_version],[mym4_version[]mym4_betastring])

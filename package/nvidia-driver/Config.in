@@ -76,6 +76,7 @@ comment "nvidia kernel module needs a kernel to be built"
 config BR2_PACKAGE_NVIDIA_DRIVER_MODULE
 	bool "nvidia kernel module"
 	depends on BR2_LINUX_KERNEL
+	select BR2_LINUX_NEEDS_MODULES # not using kernel-module infra
 	help
 	  Build the nvidia.ko kernel module.
 

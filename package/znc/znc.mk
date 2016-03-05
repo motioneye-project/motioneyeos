@@ -4,25 +4,18 @@
 #
 ################################################################################
 
-ZNC_VERSION = b396cafdb249544164ed02942a5babba59e519a3
-ZNC_SITE = $(call github,znc,znc,$(ZNC_VERSION))
+ZNC_VERSION = 1.6.2
+ZNC_SITE = http://znc.in/releases
 ZNC_LICENSE = Apache-2.0
 ZNC_LICENSE_FILES = LICENSE
-ZNC_DEPENDENCIES = host-pkgconf host-autoconf host-automake
+ZNC_DEPENDENCIES = host-pkgconf
 ZNC_CONF_OPTS = --disable-perl
-
-# The standard <pkg>_AUTORECONF = YES invocation doesn't work for this
-# package, because it does not use automake in a normal way.
-define ZNC_RUN_AUTOGEN
-	cd $(@D) && PATH=$(BR_PATH) ./autogen.sh
-endef
-ZNC_PRE_CONFIGURE_HOOKS += ZNC_RUN_AUTOGEN
 
 ifeq ($(BR2_PACKAGE_ICU),y)
 ZNC_DEPENDENCIES += icu
-ZNC_CONF_OPTS += --enable-icu
+ZNC_CONF_OPTS += --enable-charset
 else
-ZNC_CONF_OPTS += --disable-icu
+ZNC_CONF_OPTS += --disable-charset
 endif
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)

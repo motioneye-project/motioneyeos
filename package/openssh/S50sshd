@@ -12,13 +12,13 @@
 umask 077
 
 start() {
-	echo -n "Starting sshd: "
+	printf "Starting sshd: "
 	/usr/sbin/sshd
 	touch /var/lock/sshd
 	echo "OK"
 }
 stop() {
-	echo -n "Stopping sshd: "
+	printf "Stopping sshd: "
 	killall sshd
 	rm -f /var/lock/sshd
 	echo "OK"

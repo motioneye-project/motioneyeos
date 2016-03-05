@@ -1,0 +1,56 @@
+From 2abf7d2e5c533bf4d7407c2c8057a329cd49a3cd Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?J=C3=B6rg=20Krause?= <joerg.krause@embedded.rocks>
+Date: Tue, 24 Nov 2015 21:57:27 +0100
+Subject: [PATCH 1/1] Fix pkg-config for static linking
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Static linking userspace programs such as MPD against libaudiofile fails if
+FLAC is available, because libaudiofile is linked against FLAC, but this isn't
+expressed in the pkg-config file:
+
+[..]
+arm-buildroot-linux-uclibcgnueabi/sysroot/usr/lib/libaudiofile.a(FLAC.o): In function `FLACDecoder::reset2()':
+FLAC.cpp:(.text+0x58): undefined reference to `FLAC__stream_decoder_seek_absolute'
+/home/buildroot/build/instance-1/output/host/usr/arm-buildroot-linux-uclibcgnueabi/sysroot/usr/lib/libaudiofile.a(FLAC.o): In function `FLACEncoder::sync2()':
+FLAC.cpp:(.text+0x88): undefined reference to `FLAC__stream_encoder_finish'
+/home/buildroot/build/instance-1/output/host/usr/arm-buildroot-linux-uclibcgnueabi/sysroot/usr/lib/libaudiofile.a(FLAC.o): In function `FLACDecoder::~FLACDecoder()':
+FLAC.cpp:(.text+0xc4): undefined reference to `FLAC__stream_decoder_delete'
+/home/buildroot/build/instance-1/output/host/usr/arm-buildroot-linux-uclibcgnueabi/sysroot/usr/lib/libaudiofile.a(FLAC.o): In function `FLACEncoder::~FLACEncoder()':
+FLAC.cpp:(.text+0x164): undefined reference to `FLAC__stream_encoder_delete'
+/home/buildroot/build/instance-1/output/host/usr/arm-buildroot-linux-uclibcgnueabi/sysroot/usr/lib/libaudiofile.a(FLAC.o): In function `FLACDecoder::runPull()':
+[..]
+
+The Libs.private field is specifically designed for such usage:
+
+From pkg-config documentation:
+
+  Libs.private:
+
+     This line should list any private libraries in use.  Private
+     libraries are libraries which are not exposed through your
+     library, but are needed in the case of static linking.
+
+Therefore, this patch adds a reference to FLAC as well as to lcov in the
+Libs.private field of the pkg-config file.
+
+Signed-off-by: Jörg Krause <joerg.krause@embedded.rocks>
+---
+ audiofile.pc.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/audiofile.pc.in b/audiofile.pc.in
+index ad5956a..d6055ef 100644
+--- a/audiofile.pc.in
++++ b/audiofile.pc.in
+@@ -8,5 +8,5 @@ Description: audiofile
+ Requires:
+ Version: @VERSION@
+ Libs: -L${libdir} -laudiofile
+-Libs.private: -lm
++Libs.private: @FLAC_LIBS@ @COVERAGE_LIBS@ -lm
+ Cflags: -I${includedir}
+-- 
+2.6.2
+

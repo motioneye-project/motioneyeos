@@ -3,8 +3,8 @@ Fix compilation error with musl-based toolchain
 linux_sysfs.c:751:15: error: 'PATH_MAX' undeclared (first use in this function)
      char name[PATH_MAX];
 
-Patch already sent upstream by Felix Janda
-http://lists.x.org/archives/xorg-devel/2014-December/044723.html
+Patch applied upstream:
+http://cgit.freedesktop.org/xorg/lib/libpciaccess/commit/?id=8ea3af620a2d4ad5648917b4a0ef2b23ff566774
 
 Signed-off-by: Felix Janda <felix.janda at posteo.de>
 Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>

@@ -13,21 +13,102 @@ SKELETON_SOURCE =
 # on skeleton.
 SKELETON_ADD_TOOLCHAIN_DEPENDENCY = NO
 
+# The skeleton also handles the merged /usr case in the sysroot
+SKELETON_INSTALL_STAGING = YES
+
 ifeq ($(BR2_ROOTFS_SKELETON_CUSTOM),y)
-SKELETON_PATH = $(BR2_ROOTFS_SKELETON_CUSTOM_PATH)
-else
+
+SKELETON_PATH = $(call qstrip,$(BR2_ROOTFS_SKELETON_CUSTOM_PATH))
+
+ifeq ($(BR2_ROOTFS_MERGED_USR),y)
+
+# Ensure the user has prepared a merged /usr.
+#
+# Extract the inode numbers for all of those directories. In case any is
+# a symlink, we want to get the inode of the pointed-to directory, so we
+# append '/.' to be sure we get the target directory. Since the symlinks
+# can be anyway (/bin -> /usr/bin or /usr/bin -> /bin), we do that for
+# all of them.
+#
+SKELETON_LIB_INODE = $(shell stat -c '%i' $(SKELETON_PATH)/lib/.)
+SKELETON_BIN_INODE = $(shell stat -c '%i' $(SKELETON_PATH)/bin/.)
+SKELETON_SBIN_INODE = $(shell stat -c '%i' $(SKELETON_PATH)/sbin/.)
+SKELETON_USR_LIB_INODE = $(shell stat -c '%i' $(SKELETON_PATH)/usr/lib/.)
+SKELETON_USR_BIN_INODE = $(shell stat -c '%i' $(SKELETON_PATH)/usr/bin/.)
+SKELETON_USR_SBIN_INODE = $(shell stat -c '%i' $(SKELETON_PATH)/usr/sbin/.)
+
+ifneq ($(SKELETON_LIB_INODE),$(SKELETON_USR_LIB_INODE))
+SKELETON_CUSTOM_NOT_MERGED_USR += /lib
+endif
+ifneq ($(SKELETON_BIN_INODE),$(SKELETON_USR_BIN_INODE))
+SKELETON_CUSTOM_NOT_MERGED_USR += /bin
+endif
+ifneq ($(SKELETON_SBIN_INODE),$(SKELETON_USR_SBIN_INODE))
+SKELETON_CUSTOM_NOT_MERGED_USR += /sbin
+endif
+
+ifneq ($(SKELETON_CUSTOM_NOT_MERGED_USR),)
+$(error Use of systemd as an init system requires a merged /usr. \
+	However, the custom skeleton in $(SKELETON_PATH) is not \
+	using a merged /usr for the following directories: \
+	$(SKELETON_CUSTOM_NOT_MERGED_USR))
+endif
+
+endif # merged /usr
+
+else # ! custom skeleton
+
 SKELETON_PATH = system/skeleton
+
+endif # ! custom skeleton
+
+# This function handles the merged or non-merged /usr cases
+ifeq ($(BR2_ROOTFS_MERGED_USR),y)
+define SKELETON_USR_SYMLINKS_OR_DIRS
+	ln -snf usr/bin $(1)/bin
+	ln -snf usr/sbin $(1)/sbin
+	ln -snf usr/lib $(1)/lib
+endef
+else
+define SKELETON_USR_SYMLINKS_OR_DIRS
+	$(INSTALL) -d -m 0755 $(1)/bin
+	$(INSTALL) -d -m 0755 $(1)/sbin
+	$(INSTALL) -d -m 0755 $(1)/lib
+endef
+endif
+
+# We make a symlink lib32->lib or lib64->lib as appropriate
+# MIPS64/n32 requires lib32 even though it's a 64-bit arch.
+ifeq ($(BR2_ARCH_IS_64)$(BR2_MIPS_NABI32),y)
+SKELETON_LIB_SYMLINK = lib64
+else
+SKELETON_LIB_SYMLINK = lib32
 endif
 
 define SKELETON_INSTALL_TARGET_CMDS
-	rsync -a --ignore-times $(SYNC_VCS_EXCLUSIONS) \
+	rsync -a --ignore-times $(RSYNC_VCS_EXCLUSIONS) \
 		--chmod=u=rwX,go=rX --exclude .empty --exclude '*~' \
 		$(SKELETON_PATH)/ $(TARGET_DIR)/
+	$(call SKELETON_USR_SYMLINKS_OR_DIRS,$(TARGET_DIR))
+	ln -snf lib $(TARGET_DIR)/$(SKELETON_LIB_SYMLINK)
+	ln -snf lib $(TARGET_DIR)/usr/$(SKELETON_LIB_SYMLINK)
 	$(INSTALL) -m 0644 support/misc/target-dir-warning.txt \
 		$(TARGET_DIR_WARNING_FILE)
-	ln -snf lib $(TARGET_DIR)/$(LIB_SYMLINK)
-	mkdir -p $(TARGET_DIR)/usr
-	ln -snf lib $(TARGET_DIR)/usr/$(LIB_SYMLINK)
+endef
+
+# For the staging dir, we don't really care about /bin and /sbin.
+# But for consistency with the target dir, and to simplify the code,
+# we still handle them for the merged or non-merged /usr cases.
+# Since the toolchain is not yet available, the staging is not yet
+# populated, so we need to create the directories in /usr
+define SKELETON_INSTALL_STAGING_CMDS
+	$(INSTALL) -d -m 0755 $(STAGING_DIR)/usr/lib
+	$(INSTALL) -d -m 0755 $(STAGING_DIR)/usr/bin
+	$(INSTALL) -d -m 0755 $(STAGING_DIR)/usr/sbin
+	$(INSTALL) -d -m 0755 $(STAGING_DIR)/usr/include
+	$(call SKELETON_USR_SYMLINKS_OR_DIRS,$(STAGING_DIR))
+	ln -snf lib $(STAGING_DIR)/$(SKELETON_LIB_SYMLINK)
+	ln -snf lib $(STAGING_DIR)/usr/$(SKELETON_LIB_SYMLINK)
 endef
 
 SKELETON_TARGET_GENERIC_HOSTNAME = $(call qstrip,$(BR2_TARGET_GENERIC_HOSTNAME))
@@ -75,7 +156,11 @@ define SET_NETWORK_DHCP
 		echo ;                                               \
 		echo "auto $(NETWORK_DHCP_IFACE)";                   \
 		echo "iface $(NETWORK_DHCP_IFACE) inet dhcp";        \
+		echo "	pre-up /etc/network/nfs_check";              \
+		echo "	wait-delay 15";                              \
 	) >> $(TARGET_DIR)/etc/network/interfaces
+	$(INSTALL) -m 0755 -D $(SKELETON_PKGDIR)/nfs_check \
+		$(TARGET_DIR)/etc/network/nfs_check
 endef
 endif
 

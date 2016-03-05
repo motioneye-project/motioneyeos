@@ -1,0 +1,94 @@
+From f03c7987c234a81f7e4274b26bab07318357a2a5 Mon Sep 17 00:00:00 2001
+From: Sergio Prado <sergio.prado@e-labworks.com>
+Date: Fri, 25 Dec 2015 20:09:21 -0200
+Subject: [PATCH] Remove inline for read_data and write_data
+
+read_data and write_data functions are declared with inline, but
+their definition is not in a .h file. This is causing errors when
+linking:
+
+tcsps.c:(.text+0x4ac): undefined reference to `read_data'
+tcsps.c:(.text+0x1888): undefined reference to `write_data'
+...
+
+Partial backport of upstream commit
+3297fcdf5ac0df868778e976b8b59e35542c1ee2.
+
+Signed-off-by: Sergio Prado <sergio.prado@e-labworks.com>
+---
+ src/include/tcsps.h    | 5 -----
+ src/tcs/ps/ps_utils.c  | 8 --------
+ src/tspi/ps/ps_utils.c | 4 ++--
+ 3 files changed, 2 insertions(+), 15 deletions(-)
+
+diff --git a/src/include/tcsps.h b/src/include/tcsps.h
+index 87542965877d..dcd5db469822 100644
+--- a/src/include/tcsps.h
++++ b/src/include/tcsps.h
+@@ -23,13 +23,8 @@ int		   get_file();
+ int		   put_file(int);
+ void		   close_file(int);
+ void		   ps_destroy();
+-#ifdef SOLARIS
+ TSS_RESULT  read_data(int, void *, UINT32);
+ TSS_RESULT  write_data(int, void *, UINT32);
+-#else
+-inline TSS_RESULT  read_data(int, void *, UINT32);
+-inline TSS_RESULT  write_data(int, void *, UINT32);
+-#endif
+ int		   write_key_init(int, UINT32, UINT32, UINT32);
+ TSS_RESULT	   cache_key(UINT32, UINT16, TSS_UUID *, TSS_UUID *, UINT16, UINT32, UINT32);
+ TSS_RESULT	   UnloadBlob_KEY_PS(UINT16 *, BYTE *, TSS_KEY *);
+diff --git a/src/tcs/ps/ps_utils.c b/src/tcs/ps/ps_utils.c
+index 2e7f502b9599..35ac89f8fc12 100644
+--- a/src/tcs/ps/ps_utils.c
++++ b/src/tcs/ps/ps_utils.c
+@@ -42,11 +42,7 @@
+ struct key_disk_cache *key_disk_cache_head = NULL;
+
+
+-#ifdef SOLARIS
+ TSS_RESULT
+-#else
+-inline TSS_RESULT
+-#endif
+ read_data(int fd, void *data, UINT32 size)
+ {
+	int rc;
+@@ -64,11 +60,7 @@ read_data(int fd, void *data, UINT32 size)
+ }
+
+
+-#ifdef SOLARIS
+ TSS_RESULT
+-#else
+-inline TSS_RESULT
+-#endif
+ write_data(int fd, void *data, UINT32 size)
+ {
+	int rc;
+diff --git a/src/tspi/ps/ps_utils.c b/src/tspi/ps/ps_utils.c
+index aac40a147314..83259141d375 100644
+--- a/src/tspi/ps/ps_utils.c
++++ b/src/tspi/ps/ps_utils.c
+@@ -22,7 +22,7 @@
+ #include "tspps.h"
+ #include "tsplog.h"
+
+-inline TSS_RESULT
++TSS_RESULT
+ read_data(int fd, void *data, UINT32 size)
+ {
+	int rc;
+@@ -39,7 +39,7 @@ read_data(int fd, void *data, UINT32 size)
+	return TSS_SUCCESS;
+ }
+
+-inline TSS_RESULT
++TSS_RESULT
+ write_data(int fd, void *data, UINT32 size)
+ {
+	int rc;
+--
+1.9.1
+

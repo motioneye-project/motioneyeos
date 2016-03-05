@@ -1,5 +1,5 @@
-# From upstream URL: http://nodejs.org/dist/v0.10.40/SHASUMS256.txt
-sha256	bae79c2fd959aebe1629af36077bebbb760128db753da226d2344cd91499149f  node-v0.10.40.tar.gz
+# From upstream URL: http://nodejs.org/dist/v0.10.42/SHASUMS256.txt
+sha256  9b4cc1b5bc397d80dfe217625b04bb6212a3b5a8b1e0eb36000a30d7ae567b8a  node-v0.10.42.tar.xz
 
-# From upstream URL: http://nodejs.org/dist/v0.12.7/SHASUMS256.txt
-sha256	b23d64df051c9c969b0c583f802d5d71de342e53067127a5061415be7e12f39d  node-v0.12.7.tar.gz
+# From upstream URL: http://nodejs.org/dist/v5.5.0/SHASUMS256.txt
+sha256  9c46b4dc9548e43826f71f6571f56e39783c456b9516045b496ea73321731e22  node-v5.5.0.tar.xz

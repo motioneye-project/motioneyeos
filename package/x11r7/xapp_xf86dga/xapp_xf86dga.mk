@@ -12,9 +12,6 @@ XAPP_XF86DGA_LICENSE_FILES = COPYING
 XAPP_XF86DGA_DEPENDENCIES = \
 	host-pkgconf \
 	xlib_libX11 \
-	xlib_libXxf86dga \
-	xlib_libXt \
-	xlib_libXaw \
-	xlib_libXmu
+	xlib_libXxf86dga
 
 $(eval $(autotools-package))

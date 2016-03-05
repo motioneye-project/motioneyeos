@@ -1,6 +1,0 @@
-config BR2_PACKAGE_LIBEINA
-	bool "libeina"
-	help
-	  Eina is a tiny library to handle data types (list, hash, etc.)
-
-	  http://trac.enlightenment.org/e/wiki/Eina

@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-IMAGEMAGICK_VERSION = 6.9.1-8
+IMAGEMAGICK_VERSION = 6.9.3-3
 IMAGEMAGICK_SOURCE = ImageMagick-$(IMAGEMAGICK_VERSION).tar.xz
 IMAGEMAGICK_SITE = http://www.imagemagick.org/download/releases
 IMAGEMAGICK_LICENSE = Apache-2.0
@@ -60,6 +60,13 @@ else
 IMAGEMAGICK_CONF_OPTS += --without-jpeg
 endif
 
+ifeq ($(BR2_PACKAGE_LCMS2),y)
+IMAGEMAGICK_CONF_OPTS += --with-lcms
+IMAGEMAGICK_DEPENDENCIES += lcms2
+else
+IMAGEMAGICK_CONF_OPTS += --without-lcms
+endif
+
 ifeq ($(BR2_PACKAGE_LIBPNG),y)
 IMAGEMAGICK_CONF_OPTS += --with-png
 IMAGEMAGICK_DEPENDENCIES += libpng
@@ -96,6 +103,13 @@ IMAGEMAGICK_CONF_OPTS += --with-fftw
 IMAGEMAGICK_DEPENDENCIES += fftw
 else
 IMAGEMAGICK_CONF_OPTS += --without-fftw
+endif
+
+ifeq ($(BR2_PACKAGE_WEBP),y)
+IMAGEMAGICK_CONF_OPTS += --with-webp
+IMAGEMAGICK_DEPENDENCIES += webp
+else
+IMAGEMAGICK_CONF_OPTS += --without-webp
 endif
 
 ifeq ($(BR2_PACKAGE_ZLIB),y)

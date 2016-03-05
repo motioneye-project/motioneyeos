@@ -4,31 +4,36 @@
 #
 ################################################################################
 
-RRDTOOL_VERSION = 1.2.30
+RRDTOOL_VERSION = 1.5.5
 RRDTOOL_SITE = http://oss.oetiker.ch/rrdtool/pub
 RRDTOOL_LICENSE = GPLv2+ with FLOSS license exceptions as explained in COPYRIGHT
-RRDTOOL_LICENSE_FILES = COPYING COPYRIGHT
-
-RRDTOOL_DEPENDENCIES = host-pkgconf freetype libart libpng zlib
+RRDTOOL_LICENSE_FILES = COPYRIGHT LICENSE
+RRDTOOL_DEPENDENCIES = host-pkgconf libglib2
+# For 0001-Add-configure-option-to-disable-documentation.patch
 RRDTOOL_AUTORECONF = YES
+RRDTOOL_GETTEXTIZE = YES
 RRDTOOL_INSTALL_STAGING = YES
-RRDTOOL_CONF_ENV = \
-	rd_cv_ieee_works=yes \
-	rd_cv_null_realloc=nope \
-	ac_cv_func_mmap_fixed_mapped=yes
 RRDTOOL_CONF_OPTS = \
+	--disable-examples \
+	--disable-libdbi \
+	--disable-librados \
+	--disable-libwrap \
+	--disable-lua \
 	--disable-perl \
 	--disable-python \
 	--disable-ruby \
-	--disable-tcl \
-	--program-transform-name='' \
-	$(if $(BR2_TOOLCHAIN_HAS_THREADS),,--disable-pthread)
-RRDTOOL_MAKE = $(MAKE1)
+	--disable-tcl
 
-define RRDTOOL_REMOVE_EXAMPLES
-	rm -rf $(TARGET_DIR)/usr/share/rrdtool/examples
-endef
+ifeq ($(BR2_PACKAGE_RRDTOOL_RRDGRAPH),y)
+RRDTOOL_DEPENDENCIES += cairo pango
+else
+RRDTOOL_CONF_OPTS += --disable-rrd_graph
+endif
 
-RRDTOOL_POST_INSTALL_TARGET_HOOKS += RRDTOOL_REMOVE_EXAMPLES
+ifeq ($(BR2_PACKAGE_LIBXML2),y)
+RRDTOOL_DEPENDENCIES += libxml2
+else
+RRDTOOL_CONF_OPTS += --disable-rrd_restore
+endif
 
 $(eval $(autotools-package))

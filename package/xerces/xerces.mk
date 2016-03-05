@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-XERCES_VERSION = 3.1.2
+XERCES_VERSION = 3.1.3
 XERCES_SOURCE = xerces-c-$(XERCES_VERSION).tar.xz
 XERCES_SITE = http://archive.apache.org/dist/xerces/c/3/sources
 XERCES_LICENSE = Apache-2.0
@@ -20,6 +20,13 @@ define XERCES_DISABLE_SAMPLES
 endef
 
 XERCES_POST_PATCH_HOOKS += XERCES_DISABLE_SAMPLES
+
+ifeq ($(BR2_PACKAGE_ICU),y)
+XERCES_CONF_OPTS += --with-icu=$(STAGING_DIR)/usr
+XERCES_DEPENDENCIES += icu
+else
+XERCES_CONF_OPTS += --without-icu
+endif
 
 ifeq ($(BR2_PACKAGE_LIBICONV),y)
 XERCES_CONF_ENV += LIBS=-liconv

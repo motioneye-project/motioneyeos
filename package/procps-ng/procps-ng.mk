@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-PROCPS_NG_VERSION = 3.3.10
+PROCPS_NG_VERSION = 3.3.11
 PROCPS_NG_SOURCE = procps-ng-$(PROCPS_NG_VERSION).tar.xz
 PROCPS_NG_SITE = http://downloads.sourceforge.net/project/procps-ng/Production
 PROCPS_NG_LICENSE = GPLv2+, libproc and libps LGPLv2+
@@ -33,15 +33,9 @@ else
 PROCPS_NG_CONF_OPTS += --without-systemd
 endif
 
-# We need this to make procps-ng binaries installed in $(TARGET_DIR)/usr
-# instead of $(TARGET_DIR)/usr/usr
-PROCPS_NG_CONF_OPTS += \
-	--prefix=/usr \
-	--exec-prefix=/ \
-	--sysconfdir=/etc \
-	--libdir=/usr/lib \
-	--bindir=/usr/bin \
-	--sbindir=/usr/sbin
+# Make sure binaries get installed in /bin, so that they overwrite
+# their busybox counterparts.
+PROCPS_NG_CONF_OPTS += --exec-prefix=/
 
 # Allows unicode characters to show in 'watch'
 ifeq ($(BR2_PACKAGE_NCURSES_WCHAR),y)

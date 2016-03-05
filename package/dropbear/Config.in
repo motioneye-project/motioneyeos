@@ -4,6 +4,15 @@ config BR2_PACKAGE_DROPBEAR
 	help
 	  A small SSH 2 server designed for small memory environments.
 
+	  Note that dropbear requires a per-device unique host key. The
+	  key will be generated when dropbear starts, but it is not
+	  persistent over reboot (if you have a read-only rootfs) or
+	  upgrade (if you have a read-write rootfs). To make the key
+	  persistent, replace /etc/dropbear with a symlink to a
+	  directory on a persistent, writeable filesystem.
+	  Alternatively, mount a persistent unionfs over your root
+	  filesystem.
+
 	  http://matt.ucc.asn.au/dropbear/dropbear.html
 
 if BR2_PACKAGE_DROPBEAR

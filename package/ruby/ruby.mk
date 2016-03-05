@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-RUBY_VERSION_MAJOR = 2.2
-RUBY_VERSION = $(RUBY_VERSION_MAJOR).2
-RUBY_VERSION_EXT = 2.2.0
+RUBY_VERSION_MAJOR = 2.3
+RUBY_VERSION = $(RUBY_VERSION_MAJOR).0
+RUBY_VERSION_EXT = 2.3.0
 RUBY_SITE = http://cache.ruby-lang.org/pub/ruby/$(RUBY_VERSION_MAJOR)
 RUBY_SOURCE = ruby-$(RUBY_VERSION).tar.xz
 RUBY_DEPENDENCIES = host-pkgconf host-ruby
@@ -30,10 +30,14 @@ endif
 RUBY_CONF_ENV = CFLAGS="$(RUBY_CFLAGS)"
 
 ifeq ($(BR2_bfin),y)
-RUBY_CONF_ENV = ac_cv_func_dl_iterate_phdr=no
+RUBY_CONF_ENV += ac_cv_func_dl_iterate_phdr=no
 # Blackfin doesn't have FFI closure support, needed by the fiddle
 # extension.
 RUBY_CONF_OPTS += --with-out-ext=fiddle
+endif
+
+ifeq ($(BR2_TOOLCHAIN_HAS_SSP),)
+RUBY_CONF_ENV += stack_protector=no
 endif
 
 # Force optionals to build before we do

@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PYTHON_BACKPORTS_ABC
+	bool "python-backports-abc"
+	help
+	  A backport of recent additions to the 'collections.abc'
+	  module.
+
+	  https://pypi.python.org/pypi/backports_abc

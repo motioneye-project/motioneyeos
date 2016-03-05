@@ -1,14 +1,12 @@
 config BR2_PACKAGE_WIRESHARK
 	bool "wireshark"
 	select BR2_PACKAGE_LIBPCAP
-	select BR2_PACKAGE_LIBGCRYPT
 	select BR2_PACKAGE_LIBGLIB2
 	depends on BR2_USE_MMU # fork(), glib2
 	depends on BR2_USE_WCHAR # glib2
 	depends on BR2_TOOLCHAIN_HAS_THREADS # glib2
 	help
-	  Network traffic sniffer and protocol decoder. Currently only tshark,
-	  the console interface, is enabled.
+	  Network traffic sniffer and protocol decoder.
 
 	  http://www.wireshark.org
 

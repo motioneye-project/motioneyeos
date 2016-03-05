@@ -1,9 +1,9 @@
 if BR2_TOOLCHAIN_BUILDROOT_EGLIBC
 
-# For legal-info
 config BR2_PACKAGE_EGLIBC
 	bool
 	default y
+	select BR2_PACKAGE_LINUX_HEADERS
 
 choice
 	prompt "eglibc version"
@@ -25,23 +25,21 @@ endif
 
 if BR2_TOOLCHAIN_BUILDROOT_GLIBC
 
-# For legal-info
 config BR2_PACKAGE_GLIBC
 	bool
 	default y
+	select BR2_PACKAGE_LINUX_HEADERS
 
 choice
 	prompt "glibc version"
-	default BR2_GLIBC_VERSION_2_20
-
-config BR2_GLIBC_VERSION_2_20
-	depends on !BR2_nios2
-	# Broken see https://bugs.busybox.net/show_bug.cgi?id=7941
-	depends on !BR2_sparc
-	bool "2.20"
+	default BR2_GLIBC_VERSION_2_21
 
 config BR2_GLIBC_VERSION_2_21
 	bool "2.21"
+
+config BR2_GLIBC_VERSION_2_22
+	bool "2.22"
+	depends on !BR2_sparc # broken
 
 endchoice
 
@@ -51,5 +49,5 @@ config BR2_GLIBC_VERSION_STRING
 	string
 	default "2.18-svnr23787" if BR2_EGLIBC_VERSION_2_18
 	default "2.19-svnr25243" if BR2_EGLIBC_VERSION_2_19
-	default "2.20" if BR2_GLIBC_VERSION_2_20
 	default "2.21" if BR2_GLIBC_VERSION_2_21
+	default "2.22" if BR2_GLIBC_VERSION_2_22

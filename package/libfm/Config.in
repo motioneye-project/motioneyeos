@@ -9,7 +9,7 @@ config BR2_PACKAGE_LIBFM
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libglib2
 	depends on BR2_USE_MMU # libglib2
 	depends on BR2_INSTALL_LIBSTDCPP # libgtk2
-	depends on BR2_ARCH_HAS_ATOMICS # libgtk2
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # libgtk2 -> pango -> harfbuzz
 	help
 	  A glib/gio-based library providing some file management
 	  utilities and related-widgets missing in gtk+/glib. This is
@@ -23,6 +23,6 @@ config BR2_PACKAGE_LIBFM
 
 comment "libfm needs X.org and a toolchain w/ wchar, threads, C++"
 	depends on BR2_USE_MMU
-	depends on BR2_ARCH_HAS_ATOMICS
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
 	depends on !BR2_USE_WCHAR || !BR2_INSTALL_LIBSTDCPP || \
 		!BR2_TOOLCHAIN_HAS_THREADS || !BR2_PACKAGE_XORG7

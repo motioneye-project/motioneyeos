@@ -1,0 +1,32 @@
+From fbd1393858719c7bda7d251f742950c1bc691ea8 Mon Sep 17 00:00:00 2001
+From: Kohei Takahashi <flast@flast.jp>
+Date: Wed, 6 Jan 2016 19:39:55 +0900
+Subject: [PATCH] Qualify std:: for isnan in some situation.
+
+Because isnan is implemented as a macro and libstdc++ undef it within
+<cmath> (at least FreeBSD 10).
+
+Backported from fbd1393858719c7bda7d251f742950c1bc691ea8
+
+[Jörg Krause: adjust pathes to match sourceforge release tarball]
+Signed-off-by: Jörg Krause <joerg.krause@embedded.rocks>
+
+---
+ boost/math/special_functions/fpclassify.hpp | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/boost/math/special_functions/fpclassify.hpp b/boost/math/special_functions/fpclassify.hpp
+index 58fad13..d83e111 100644
+--- a/boost/math/special_functions/fpclassify.hpp
++++ b/boost/math/special_functions/fpclassify.hpp
+@@ -133,6 +133,10 @@ inline bool is_nan_helper(T, const boost::false_type&)
+ #if defined(BOOST_MATH_HAS_QUADMATH_H)
+ inline bool is_nan_helper(__float128 f, const boost::true_type&) { return ::isnanq(f); }
+ inline bool is_nan_helper(__float128 f, const boost::false_type&) { return ::isnanq(f); }
++#elif defined(BOOST_GNU_STDLIB) && BOOST_GNU_STDLIB && \
++      _GLIBCXX_USE_C99_MATH && !_GLIBCXX_USE_C99_FP_MACROS_DYNAMIC
++inline bool is_nan_helper(__float128 f, const boost::true_type&) { return std::isnan(static_cast<double>(f)); }
++inline bool is_nan_helper(__float128 f, const boost::false_type&) { return std::isnan(static_cast<double>(f)); }
+ #else
+ inline bool is_nan_helper(__float128 f, const boost::true_type&) { return ::isnan(static_cast<double>(f)); }
+ inline bool is_nan_helper(__float128 f, const boost::false_type&) { return ::isnan(static_cast<double>(f)); }

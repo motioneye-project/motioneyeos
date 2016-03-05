@@ -1,3 +1,7 @@
+comment "tcl needs a toolchain w/ threads, dynamic library"
+	depends on BR2_USE_MMU
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS
+
 config BR2_PACKAGE_TCL
 	bool "tcl"
 	# fork()
@@ -10,10 +14,6 @@ config BR2_PACKAGE_TCL
 	  TCL (Tool Command Language) is a simple textual language.
 
 	  http://www.tcl.tk
-
-comment "tcl needs a toolchain w/ threads, dynamic library"
-	depends on BR2_USE_MMU
-	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS
 
 if BR2_PACKAGE_TCL
 

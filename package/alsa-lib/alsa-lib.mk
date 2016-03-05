@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-ALSA_LIB_VERSION = 1.0.29
+ALSA_LIB_VERSION = 1.1.0
 ALSA_LIB_SOURCE = alsa-lib-$(ALSA_LIB_VERSION).tar.bz2
 ALSA_LIB_SITE = ftp://ftp.alsa-project.org/pub/lib
 ALSA_LIB_LICENSE = LGPLv2.1+
@@ -20,7 +20,9 @@ ALSA_LIB_CONF_OPTS = \
 
 # Can't build with static & shared at the same time (1.0.25+)
 ifeq ($(BR2_STATIC_LIBS),y)
-ALSA_LIB_CONF_OPTS += --enable-shared=no
+ALSA_LIB_CONF_OPTS += \
+	--enable-shared=no \
+	--without-libdl
 else
 ALSA_LIB_CONF_OPTS += --enable-static=no
 endif

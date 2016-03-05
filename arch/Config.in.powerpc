@@ -164,9 +164,6 @@ config BR2_ENDIAN
 	default "BIG"    if BR2_powerpc || BR2_powerpc64
 	default "LITTLE" if BR2_powerpc64le
 
-config BR2_ARCH_HAS_ATOMICS
-	default y
-
 config BR2_GCC_TARGET_CPU
 	default "401"		if BR2_powerpc_401
 	default "403"		if BR2_powerpc_403
@@ -200,6 +197,8 @@ config BR2_GCC_TARGET_CPU
 	default "e300c2"	if BR2_powerpc_e300c2
 	default "e300c3"	if BR2_powerpc_e300c3
 	default "e500mc"	if BR2_powerpc_e500mc
+	default "e5500"		if BR2_powerpc_e5500
+	default "e6500"		if BR2_powerpc_e6500
 	default "power4"	if BR2_powerpc_power4
 	default "power5"	if BR2_powerpc_power5
 	default "power6"	if BR2_powerpc_power6

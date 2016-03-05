@@ -4,14 +4,14 @@
 #
 
 start() {
-	echo -n "Starting redis: "
+	printf "Starting redis: "
 	umask 077
 	start-stop-daemon -S -q -c redis:redis -b \
 		--exec /usr/bin/redis-server -- /etc/redis.conf
 	[ $? = 0 ] && echo "OK" || echo "FAIL"
 }
 stop() {
-	echo -n "Stopping redis: "
+	printf "Stopping redis: "
 	/usr/bin/redis-cli shutdown
 	[ $? = 0 ] && echo "OK" || echo "FAIL"
 }

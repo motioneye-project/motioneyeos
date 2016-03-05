@@ -22,9 +22,9 @@ diff --git a/src/libinput-private.h b/src/libinput-private.h
 index b36dc95..98f91b3 100644
 --- a/src/libinput-private.h
 +++ b/src/libinput-private.h
-@@ -179,15 +179,15 @@ struct libinput_event_listener {
- typedef void (*libinput_source_dispatch_t)(void *data);
+@@ -259,12 +259,12 @@
  
+ typedef void (*libinput_source_dispatch_t)(void *data);
  
 -#define log_debug(li_, ...) log_msg((li_), LIBINPUT_LOG_PRIORITY_DEBUG, __VA_ARGS__)
 -#define log_info(li_, ...) log_msg((li_), LIBINPUT_LOG_PRIORITY_INFO, __VA_ARGS__)
@@ -39,17 +39,22 @@ index b36dc95..98f91b3 100644
 +#define log_bug_libinput(li_, ...) libinput_log_msg((li_), LIBINPUT_LOG_PRIORITY_ERROR, "libinput bug: " __VA_ARGS__)
 +#define log_bug_client(li_, ...) libinput_log_msg((li_), LIBINPUT_LOG_PRIORITY_ERROR, "client bug: " __VA_ARGS__)
  
+ #define log_debug_ratelimit(li_, r_, ...) log_msg_ratelimit((li_), (r_), LIBINPUT_LOG_PRIORITY_DEBUG, __VA_ARGS__)
+ #define log_info_ratelimit(li_, r_, ...) log_msg_ratelimit((li_), (r_), LIBINPUT_LOG_PRIORITY_INFO, __VA_ARGS__)
+@@ -281,7 +281,7 @@
+ 	LIBINPUT_ATTRIBUTE_PRINTF(4, 5);
+ 
  void
 -log_msg(struct libinput *libinput,
 +libinput_log_msg(struct libinput *libinput,
  	enum libinput_log_priority priority,
- 	const char *format, ...);
- 
+ 	const char *format, ...)
+ 	LIBINPUT_ATTRIBUTE_PRINTF(3, 4);
 diff --git a/src/libinput.c b/src/libinput.c
 index 279cce0..5748e5e 100644
 --- a/src/libinput.c
 +++ b/src/libinput.c
-@@ -107,7 +107,7 @@ log_msg_va(struct libinput *libinput,
+@@ -155,7 +155,7 @@
  }
  
  void
@@ -58,6 +63,15 @@ index 279cce0..5748e5e 100644
  	enum libinput_log_priority priority,
  	const char *format, ...)
  {
+@@ -184,7 +184,7 @@
+ 	va_end(args);
+ 
+ 	if (state == RATELIMIT_THRESHOLD)
+-		log_msg(libinput,
++		libinput_log_msg(libinput,
+ 			priority,
+ 			"WARNING: log rate limit exceeded (%d msgs per %dms). Discarding future messages.\n",
+ 			ratelimit->burst,
 -- 
 2.1.2
 

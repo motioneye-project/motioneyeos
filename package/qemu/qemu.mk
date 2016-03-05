@@ -4,10 +4,10 @@
 #
 ################################################################################
 
-QEMU_VERSION = 2.3.0
+QEMU_VERSION = 2.5.0
 QEMU_SOURCE = qemu-$(QEMU_VERSION).tar.bz2
 QEMU_SITE = http://wiki.qemu.org/download
-QEMU_LICENSE = GPLv2 LGPLv2.1 MIT BSD-3c BSD-2c Others/BSD-1c
+QEMU_LICENSE = GPLv2, LGPLv2.1, MIT, BSD-3c, BSD-2c, Others/BSD-1c
 QEMU_LICENSE_FILES = COPYING COPYING.LIB
 # NOTE: there is no top-level license file for non-(L)GPL licenses;
 #       the non-(L)GPL license texts are specified in the affected
@@ -197,7 +197,6 @@ define QEMU_CONFIGURE_CMDS
 			--disable-curses                \
 			--disable-curl                  \
 			--disable-bluez                 \
-			--disable-guest-base            \
 			--disable-uuid                  \
 			--disable-vde                   \
 			--disable-linux-aio             \
@@ -207,7 +206,6 @@ define QEMU_CONFIGURE_CMDS
 			--disable-rbd                   \
 			--disable-libiscsi              \
 			--disable-usb-redir             \
-			--disable-smartcard-nss         \
 			--disable-strip                 \
 			--disable-seccomp               \
 			--disable-sparse                \

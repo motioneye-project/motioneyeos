@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-DROPBEAR_VERSION = 2015.67
+DROPBEAR_VERSION = 2015.71
 DROPBEAR_SITE = http://matt.ucc.asn.au/dropbear/releases
 DROPBEAR_SOURCE = dropbear-$(DROPBEAR_VERSION).tar.bz2
 DROPBEAR_LICENSE = MIT, BSD-2c-like, BSD-2c
@@ -93,7 +93,7 @@ define DROPBEAR_INSTALL_TARGET_CMDS
 	for f in $(DROPBEAR_TARGET_BINS); do \
 		ln -snf ../sbin/dropbear $(TARGET_DIR)/usr/bin/$$f ; \
 	done
-	ln -snf ../var/run/dropbear $(TARGET_DIR)/etc/dropbear
+	ln -snf /var/run/dropbear $(TARGET_DIR)/etc/dropbear
 endef
 
 $(eval $(autotools-package))

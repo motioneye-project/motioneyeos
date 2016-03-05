@@ -2,10 +2,19 @@ config BR2_PACKAGE_DIRECTFB
 	bool "directfb"
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_5
+	depends on !BR2_TOOLCHAIN_USES_MUSL # sigval_t issue
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
 	select BR2_PACKAGE_FREETYPE
 	select BR2_PACKAGE_ZLIB
 	help
-	  http://www.directfb.org/
+	  DirectFB (Direct Frame Buffer) is a set of graphics APIs implemented
+	  on top of the Linux Frame Buffer (fbdev) abstraction layer. It is an
+	  alternative to X11 with a smaller memory footprint that still has an
+	  integrated windowing system. As of 4 October 2015, DirectFB's website
+	  http://www.directfb.org/ is down. See alternative site listed below.
+
+	  http://elinux.org/DirectFB
 
 if BR2_PACKAGE_DIRECTFB
 
@@ -44,21 +53,18 @@ config BR2_PACKAGE_DIRECTFB_TRACE
 	help
 	  Enable call tracing for DirectFB applications
 
-config BR2_PACKAGE_DIRECTFB_XSERVER
-	bool "build with X server backend"
-	depends on BR2_PACKAGE_XORG7
+config BR2_PACKAGE_DIRECTFB_DIVINE
+	bool "divine"
+	help
+	  Enable the DiVine feature (virtual input)
 
-config BR2_PACKAGE_DIRECTFB_UNIQUE
-	bool "enable unique window manager"
-	depends on BR2_UNIMPLEMENTED
+config BR2_PACKAGE_DIRECTFB_SAWMAN
+	bool "sawman"
+	help
+	  Enable the SawMan feature (window manager)
 
 config BR2_PACKAGE_DIRECTFB_ATI128
 	bool "compile ati128 graphics driver"
-	depends on BR2_i386 || BR2_x86_64
-
-config BR2_PACKAGE_DIRECTFB_CLE266
-	bool "compile cle266 graphics driver"
-	default y
 	depends on BR2_i386 || BR2_x86_64
 
 config BR2_PACKAGE_DIRECTFB_MATROX
@@ -83,11 +89,6 @@ config BR2_PACKAGE_DIRECTFB_EP9X
 	  processors from Cirrus Logic.
 
 	  http://cirrus.com/en/products/arm9.html
-
-config BR2_PACKAGE_DIRECTFB_UNICHROME
-	bool "compile unichrome graphics driver"
-	default y
-	depends on BR2_i386 || BR2_x86_64
 
 config BR2_PACKAGE_DIRECTFB_I830
 	bool "compile i830 graphics driver"
@@ -122,6 +123,10 @@ config BR2_PACKAGE_DIRECTFB_GIF
 	bool "enable GIF support"
 	default y
 
+config BR2_PACKAGE_DIRECTFB_TIFF
+	bool "enable TIFF support"
+	select BR2_PACKAGE_TIFF
+
 config BR2_PACKAGE_DIRECTFB_IMLIB2
 	bool "enable IMLIB2 support"
 	select BR2_PACKAGE_IMLIB2
@@ -142,7 +147,6 @@ config BR2_PACKAGE_DIRECTFB_PNG
 
 config BR2_PACKAGE_DIRECTFB_SVG
 	bool "enable SVG support"
-	depends on BR2_ARCH_HAS_ATOMICS # cairo
 	default y
 	select BR2_PACKAGE_LIBSVG_CAIRO
 
@@ -157,5 +161,7 @@ config BR2_PACKAGE_DIRECTFB_TESTS
 
 endif # BR2_PACKAGE_DIRECTFB
 
-comment "directfb needs a toolchain w/ C++, threads"
-	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_INSTALL_LIBSTDCPP
+comment "directfb needs a (e)glibc or uClibc toolchain w/ C++, threads, gcc >= 4.5"
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_INSTALL_LIBSTDCPP || \
+		!BR2_TOOLCHAIN_GCC_AT_LEAST_4_5 || BR2_TOOLCHAIN_USES_MUSL

@@ -13,6 +13,10 @@ INTERFACES=""
 # Additional options that are passed to the DHCP relay daemon?
 OPTIONS=""
 
+# Read configuration variable file if it is present
+CFG_FILE="/etc/default/dhcrelay"
+[ -r "${CFG_FILE}" ] && . "${CFG_FILE}"
+
 # Sanity checks
 test -f /usr/sbin/dhcrelay || exit 0
 test -n "$INTERFACES" || exit 0
@@ -28,22 +32,21 @@ DHCRELAYPID=/var/run/dhcrelay.pid
 
 case "$1" in
 	start)
-		echo -n "Starting DHCP relay: "
-		start-stop-daemon -S -x /usr/sbin/dhcrelay -- -q $OPTIONS $IFCMD $SERVERS
+		printf "Starting DHCP relay: "
+		start-stop-daemon -S -q -x /usr/sbin/dhcrelay -- -q $OPTIONS $IFCMD $SERVERS
 		[ $? = 0 ] && echo "OK" || echo "FAIL"
 		;;
 	stop)
-		echo -n "Stopping DHCP relay: "
-		start-stop-daemon -K -x /usr/sbin/dhcrelay
+		printf "Stopping DHCP relay: "
+		start-stop-daemon -K -q -x /usr/sbin/dhcrelay
 		[ $? = 0 ] && echo "OK" || echo "FAIL"
 		;;
 	restart | force-reload)
 		$0 stop
-		sleep 2
 		$0 start
 		;;
 	*)
-		echo "Usage: /etc/init.d/dhcp-relay {start|stop|restart|force-reload}"
+		echo "Usage: $0 {start|stop|restart|force-reload}"
 		exit 1
 esac
 

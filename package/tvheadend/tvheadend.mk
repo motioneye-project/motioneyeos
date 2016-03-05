@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-TVHEADEND_VERSION = d9cf931f9f7242f070ae990c4765cbdd5276fd66
+TVHEADEND_VERSION = 1aa0073be39119f5d0d79212e6c83c470904a161
 TVHEADEND_SITE = $(call github,tvheadend,tvheadend,$(TVHEADEND_VERSION))
 TVHEADEND_LICENSE = GPLv3+
 TVHEADEND_LICENSE_FILES = LICENSE.md
@@ -16,6 +16,13 @@ TVHEADEND_DEPENDENCIES = \
 
 ifeq ($(BR2_PACKAGE_AVAHI),y)
 TVHEADEND_DEPENDENCIES += avahi
+endif
+
+ifeq ($(BR2_PACKAGE_DBUS),y)
+TVHEADEND_DEPENDENCIES += dbus
+TVHEADEND_CONF_OPTS += --enable-dbus-1
+else
+TVHEADEND_CONF_OPTS += --disable-dbus-1
 endif
 
 ifeq ($(BR2_PACKAGE_FFMPEG),y)
@@ -30,6 +37,13 @@ TVHEADEND_DEPENDENCIES += libdvbcsa
 TVHEADEND_CONF_OPTS += --enable-dvbcsa
 else
 TVHEADEND_CONF_OPTS += --disable-dvbcsa
+endif
+
+ifeq ($(BR2_PACKAGE_LIBHDHOMERUN),y)
+TVHEADEND_DEPENDENCIES += libhdhomerun
+TVHEADEND_CONF_OPTS += --enable-hdhomerun_client
+else
+TVHEADEND_CONF_OPTS += --disable-hdhomerun_client
 endif
 
 ifeq ($(BR2_PACKAGE_LIBICONV),y)
@@ -67,6 +81,7 @@ define TVHEADEND_CONFIGURE_CMDS
 			--enable-dvbscan			\
 			--enable-bundle				\
 			--disable-libffmpeg_static		\
+			--disable-hdhomerun_static		\
 			$(TVHEADEND_CONF_OPTS)			\
 	)
 endef

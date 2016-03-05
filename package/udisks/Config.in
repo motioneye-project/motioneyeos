@@ -12,6 +12,7 @@ config BR2_PACKAGE_UDISKS
 	select BR2_PACKAGE_PARTED
 	select BR2_PACKAGE_LVM2
 	select BR2_PACKAGE_LIBATASMART
+	select BR2_PACKAGE_LIBGUDEV
 	help
 	  The udisks project provides
 

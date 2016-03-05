@@ -15,7 +15,7 @@ si6::sysinit:/etc/init.d/rcS
 # S0:1:respawn:/sbin/getty -L ttyS0 115200 vt100 # GENERIC_SERIAL
 
 # Stuff to do for the 3-finger salute
-ca::ctrlaltdel:/sbin/reboot
+#ca::ctrlaltdel:/sbin/reboot
 
 # Stuff to do before rebooting
 shd0:06:wait:/etc/init.d/rcK

@@ -4,14 +4,14 @@
 #
 ################################################################################
 
-MPLAYER_VERSION = 1.1.1
+MPLAYER_VERSION = 1.2
 MPLAYER_SOURCE = MPlayer-$(MPLAYER_VERSION).tar.xz
 MPLAYER_SITE = http://www.mplayerhq.hu/MPlayer/releases
-
+MPLAYER_DEPENDENCIES = host-pkgconf
+MPLAYER_LICENSE = GPLv2
+MPLAYER_LICENSE_FILES = LICENSE Copyright
 MPLAYER_CFLAGS = $(TARGET_CFLAGS)
 MPLAYER_LDFLAGS = $(TARGET_LDFLAGS)
-
-MPLAYER_DEPENDENCIES += host-pkgconf
 
 # mplayer needs pcm+mixer support, but configure fails to check for it
 ifeq ($(BR2_PACKAGE_ALSA_LIB)$(BR2_PACKAGE_ALSA_LIB_MIXER)$(BR2_PACKAGE_ALSA_LIB_PCM),yyy)
@@ -25,6 +25,19 @@ ifeq ($(BR2_ENDIAN),"BIG")
 MPLAYER_CONF_OPTS += --enable-big-endian
 else
 MPLAYER_CONF_OPTS += --disable-big-endian
+endif
+
+ifeq ($(BR2_PACKAGE_ZLIB),y)
+MPLAYER_DEPENDENCIES += zlib
+MPLAYER_CONF_OPTS += \
+	--enable-decoder=apng \
+	--enable-encoder=apng \
+	--enable-decoder=tdsc
+else
+MPLAYER_CONF_OPTS += \
+	--disable-decoder=apng \
+	--disable-encoder=apng \
+	--disable-decoder=tdsc
 endif
 
 ifeq ($(BR2_PACKAGE_SDL),y)
@@ -104,17 +117,18 @@ endif
 # https://github.com/pld-linux/mplayer/blob/master/mplayer-libcdio.patch
 MPLAYER_CONF_OPTS += --disable-libcdio
 
+# We intentionally don't pass --enable-dvdread, to let the
+# autodetection find which library to link with.
 ifeq ($(BR2_PACKAGE_LIBDVDREAD),y)
 MPLAYER_CONF_OPTS +=  \
-	--enable-dvdread \
-	--disable-dvdread-internal \
 	--with-dvdread-config=$(STAGING_DIR)/usr/bin/dvdread-config
 MPLAYER_DEPENDENCIES += libdvdread
 endif
 
+# We intentionally don't pass --enable-dvdnav to let the autodetection
+# find which library to link with.
 ifeq ($(BR2_PACKAGE_LIBDVDNAV),y)
 MPLAYER_CONF_OPTS +=  \
-	--enable-dvdnav \
 	--with-dvdnav-config=$(STAGING_DIR)/usr/bin/dvdnav-config
 MPLAYER_DEPENDENCIES += libdvdnav
 endif
@@ -160,12 +174,13 @@ endif
 
 ifeq ($(BR2_PACKAGE_TREMOR),y)
 MPLAYER_DEPENDENCIES += tremor
-MPLAYER_CONF_OPTS += --disable-tremor-internal --enable-tremor
+MPLAYER_CONF_OPTS += --enable-tremor
 endif
 
+# We intentionally don't pass --enable-libvorbis, to let the
+# autodetection find which library to link with.
 ifeq ($(BR2_PACKAGE_LIBVORBIS),y)
 MPLAYER_DEPENDENCIES += libvorbis
-MPLAYER_CONF_OPTS += --enable-libvorbis
 endif
 
 ifeq ($(BR2_PACKAGE_LIBMAD),y)
@@ -247,6 +262,13 @@ ifeq ($(BR2_i386),y)
 MPLAYER_CFLAGS += -fomit-frame-pointer
 endif
 
+ifeq ($(BR2_X86_CPU_HAS_MMX),y)
+MPLAYER_CONF_OPTS += --yasm=$(HOST_DIR)/usr/bin/yasm
+MPLAYER_DEPENDENCIES += host-yasm
+else
+MPLAYER_CONF_OPTS += --yasm=''
+endif
+
 define MPLAYER_CONFIGURE_CMDS
 	(cd $(@D); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
@@ -261,7 +283,6 @@ define MPLAYER_CONFIGURE_CMDS
 		--charset=UTF-8 \
 		--extra-cflags="$(MPLAYER_CFLAGS)" \
 		--extra-ldflags="$(MPLAYER_LDFLAGS)" \
-		--yasm='' \
 		--enable-fbdev \
 		$(MPLAYER_CONF_OPTS) \
 		--enable-cross-compile \

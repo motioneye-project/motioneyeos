@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-LESS_VERSION = 458
-LESS_SITE = http://www.greenwoodsoftware.com/less
+LESS_VERSION = 481
+LESS_SITE = $(BR2_GNU_MIRROR)/less
 LESS_LICENSE = GPLv3+
 LESS_LICENSE_FILES = COPYING
 # Build after busybox, full-blown is better

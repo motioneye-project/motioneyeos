@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBGLEW_VERSION = 1.10.0
+LIBGLEW_VERSION = 1.13.0
 LIBGLEW_SOURCE = glew-$(LIBGLEW_VERSION).tgz
 LIBGLEW_SITE = http://sourceforge.net/projects/glew/files/glew/$(LIBGLEW_VERSION)
 LIBGLEW_LICENSE = BSD-3c, MIT

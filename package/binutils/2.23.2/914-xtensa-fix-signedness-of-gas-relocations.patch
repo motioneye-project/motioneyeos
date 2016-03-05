@@ -1,0 +1,47 @@
+From 6c7c5c477ef9ccf2d2548cf2ac3cec9bd3c9c5b6 Mon Sep 17 00:00:00 2001
+From: Max Filippov <jcmvbkbc@gmail.com>
+Date: Tue, 2 Feb 2016 17:11:38 +0300
+Subject: [PATCH] xtensa: fix signedness of gas relocations
+
+Change 1058c7532d0b "Use signed data type for R_XTENSA_DIFF* relocation
+offsets." changed signedness of BFD_RELOC_XTENSA_DIFF* relocations
+substituted for BFD_RELOC_*. This made it impossible to encode arbitrary
+8-, 16- and 32-bit values, which broke e.g. debug info encoding by .loc
+directive. Revert this part and add test.
+
+gas/
+2016-02-03  Max Filippov  <jcmvbkbc@gmail.com>
+	* config/tc-xtensa.c (md_apply_fix): Mark BFD_RELOC_XTENSA_DIFF*
+	substitutions for BFD_RELOC_* as unsigned.
+
+Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
+---
+ gas/config/tc-xtensa.c           |  6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/gas/config/tc-xtensa.c b/gas/config/tc-xtensa.c
+index a119871..36a06cc 100644
+--- a/gas/config/tc-xtensa.c
++++ b/gas/config/tc-xtensa.c
+@@ -5961,15 +5961,15 @@ md_apply_fix (fixS *fixP, valueT *valP, segT seg)
+ 	    {
+ 	    case BFD_RELOC_8:
+ 	      fixP->fx_r_type = BFD_RELOC_XTENSA_DIFF8;
+-	      fixP->fx_signed = 1;
++	      fixP->fx_signed = 0;
+ 	      break;
+ 	    case BFD_RELOC_16:
+ 	      fixP->fx_r_type = BFD_RELOC_XTENSA_DIFF16;
+-	      fixP->fx_signed = 1;
++	      fixP->fx_signed = 0;
+ 	      break;
+ 	    case BFD_RELOC_32:
+ 	      fixP->fx_r_type = BFD_RELOC_XTENSA_DIFF32;
+-	      fixP->fx_signed = 1;
++	      fixP->fx_signed = 0;
+ 	      break;
+ 	    default:
+ 	      break;
+-- 
+2.1.4
+

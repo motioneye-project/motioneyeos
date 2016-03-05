@@ -1,0 +1,56 @@
+config BR2_PACKAGE_SWUPDATE
+	bool "swupdate"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_USE_MMU # fork()
+	# swupdate requires a parser and uses libconfig as default
+	select BR2_PACKAGE_LIBCONFIG if !BR2_PACKAGE_JSON_C && !BR2_PACKAGE_LUA_5_2
+	help
+	  swupdate provides a reliable way to update the software on an
+	  embedded system.
+
+	  swupdate is highly configurable to fit the targets requirements and
+	  to minimize the footprint. The provided default configuration file
+	  BR2_PACKAGE_SWUPDATE_CONFIG will enable swupdate with an embedded
+	  webserver, a parser and a handler for raw NAND or NOR flash.
+
+	  The default configuration file builds a reasonable firmware update
+	  system with minimal external dependencies in my mind. If you like to
+	  use your own modified configuration, you have to select the
+	  necessary packages manually:
+
+	  * Select BR2_PACKAGE_LUA_5_2 if you want to have Lua support.
+	  * Select BR2_LIBCURL if you want to use the download feature.
+	  * Select BR2_PACKAGE_OPENSSL is you want to add encryptions support
+	    to the webserver.
+	  * Select BR2_PACKAGE_MTD if you want to use swupdate with UBI
+	    partitions.
+	  * Select BR2_PACKAGE_ZLIB if you want to deal with gzip compressed
+	    archives.
+
+	  https://sbabic.github.io/swupdate
+
+if BR2_PACKAGE_SWUPDATE
+
+config BR2_PACKAGE_SWUPDATE_CONFIG
+	string "swupdate configuration file"
+	default "package/swupdate/swupdate.config"
+	help
+	  Path to the swupdate configuration file.
+
+	  I you wish to use your own modified swupdate configuration file
+	  specify the config file location with this option.
+
+config BR2_PACKAGE_SWUPDATE_INSTALL_WEBSITE
+	bool "install default website"
+	default y
+	help
+	  Install the provided website to /var/www/swupdate.
+
+	  This is necessary if you want to run swupdate with the embedded
+	  webserver and do not provide an own website to be installed to
+	  /var/www/swupdate.
+endif
+
+comment "swupdate needs a toolchain w/ threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_TOOLCHAIN_HAS_THREADS

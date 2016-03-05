@@ -10,6 +10,4 @@ config BR2_PACKAGE_READ_EDID
 	  which turns the raw binary information into an
 	  XF86Config-compatible monitor section.
 
-	  Notice that the get-edid tool is only available on x86.
-
 	  http://polypux.org/projects/read-edid/

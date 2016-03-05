@@ -1,0 +1,21 @@
+#!/bin/sh
+
+# In case we have a slow-to-appear interface (e.g. eth-over-USB),
+# and we need to configure it, wait until it appears, but not too
+# long either. IF_WAIT_DELAY is in seconds.
+
+if [ "${IF_WAIT_DELAY}" -a ! -e "/sys/class/net/${IFACE}" ]; then
+    printf "Waiting for interface %s to appear" "${IFACE}"
+    while [ ${IF_WAIT_DELAY} -gt 0 ]; do
+        if [ -e "/sys/class/net/${IFACE}" ]; then
+            printf "\n"
+            exit 0
+        fi
+        sleep 1
+        printf "."
+        : $((IF_WAIT_DELAY -= 1))
+    done
+    printf " timeout!\n"
+    exit 1
+fi
+

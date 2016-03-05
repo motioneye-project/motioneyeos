@@ -9,7 +9,7 @@ config BR2_PACKAGE_EXFAT
 	  A full-featured exFAT file system implementation for GNU/Linux
 	  and other Unix-like systems as a FUSE module.
 
-	  http://code.google.com/p/exfat/
+	  https://github.com/relan/exfat
 
 comment "exfat needs a toolchain w/ wchar, threads, dynamic library"
 	depends on BR2_USE_MMU

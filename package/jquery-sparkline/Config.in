@@ -1,6 +1,5 @@
 config BR2_PACKAGE_JQUERY_SPARKLINE
-	bool "jQuery-Sparkline"
-	select BR2_PACKAGE_JQUERY
+	bool "jquery-sparkline"
 	help
 	  This jQuery plugin generates sparklines (small inline
 	  charts) directly in the browser using data supplied either

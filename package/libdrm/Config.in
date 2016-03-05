@@ -22,42 +22,52 @@ config BR2_PACKAGE_LIBDRM_INTEL
 	select BR2_PACKAGE_LIBPCIACCESS
 	depends on BR2_i386 || BR2_x86_64
 	help
-	  installs intel graphics driver
+	  Install intel graphics driver.
 
 config BR2_PACKAGE_LIBDRM_RADEON
 	bool "radeon"
 	help
-	  install AMD/ATI graphics driver
+	  Install AMD/ATI graphics driver.
+
+config BR2_PACKAGE_LIBDRM_AMDGPU
+	bool "amdgpu"
+	help
+	  Install AMD GPU driver.
 
 config BR2_PACKAGE_LIBDRM_NOUVEAU
 	bool "nouveau"
-	depends on BR2_i386 || BR2_x86_64
 	help
-	  install Nvidia graphics driver
+	  Install NVIDIA graphics driver.
 
 config BR2_PACKAGE_LIBDRM_VMWGFX
 	bool "vmwgfx"
 	depends on BR2_i386 || BR2_x86_64
 	help
-	  installs Vmware graphics driver
+	  Installs Vmware graphics driver.
 
 config BR2_PACKAGE_LIBDRM_OMAP
 	bool "omap (experimental)"
 	depends on BR2_arm
 	help
-	  install the TI OMAP driver using an experimental API.
+	  Install the TI OMAP driver using an experimental API.
 
 config BR2_PACKAGE_LIBDRM_EXYNOS
 	bool "exynos (experimental)"
 	depends on BR2_arm
 	help
-	  installs Samsung Exynos driver using an experimental API.
+	  Install Samsung Exynos driver using an experimental API.
 
 config BR2_PACKAGE_LIBDRM_FREEDRENO
-	bool "freedreno (experimental)"
+	bool "freedreno"
+	depends on BR2_arm || BR2_aarch64 || BR2_aarch64_be
+	help
+	  Install Qualcomm Snapdragon driver.
+
+config BR2_PACKAGE_LIBDRM_TEGRA
+	bool "tegra (experimental)"
 	depends on BR2_arm
 	help
-	  install Qualcomm Snapdragon driver using an experimental API.
+	  Install NVIDIA Tegra driver using an experimental API.
 
 endmenu
 

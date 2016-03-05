@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LFTP_VERSION = 4.6.3a
+LFTP_VERSION = 4.6.4
 LFTP_SOURCE = lftp-$(LFTP_VERSION).tar.xz
 LFTP_SITE = http://lftp.yar.ru/ftp
 LFTP_LICENSE = GPLv3+
@@ -15,6 +15,10 @@ LFTP_DEPENDENCIES = readline zlib host-pkgconf
 
 ifneq ($(BR2_STATIC_LIBS),y)
 LFTP_CONF_OPTS += --with-modules
+endif
+
+ifeq ($(BR2_PACKAGE_EXPAT)$(BR2_PACKAGE_LFTP_PROTO_HTTP),yy)
+LFTP_DEPENDENCIES += expat
 endif
 
 ifeq ($(BR2_PACKAGE_GNUTLS),y)

@@ -40,48 +40,48 @@ fi
 
 case "$1" in
   start)
-    echo -n "Starting network management services:"
+    printf "Starting network management services:"
     if [ "$SNMPDRUN" = "yes" -a -f /etc/snmp/snmpd.conf ]; then
       start-stop-daemon -q -S -x /usr/sbin/snmpd -- $SNMPDOPTS
-      echo -n " snmpd"
+      printf " snmpd"
     fi
     if [ "$TRAPDRUN" = "yes" -a -f /etc/snmp/snmptrapd.conf ]; then
       start-stop-daemon -q -S -x /usr/sbin/snmptrapd -- $TRAPDOPTS
-      echo -n " snmptrapd"
+      printf " snmptrapd"
     fi
     echo "."
     ;;
   stop)
-    echo -n "Stopping network management services:"
+    printf "Stopping network management services:"
     start-stop-daemon -q -K $ssd_oknodo -x /usr/sbin/snmpd
-    echo -n " snmpd"
+    printf " snmpd"
     start-stop-daemon -q -K $ssd_oknodo -x /usr/sbin/snmptrapd
-    echo -n " snmptrapd"
+    printf " snmptrapd"
     echo "."
     ;;
   restart)
-    echo -n "Restarting network management services:"
+    printf "Restarting network management services:"
     start-stop-daemon -q -K $ssd_oknodo -x /usr/sbin/snmpd
     start-stop-daemon -q -K $ssd_oknodo -x /usr/sbin/snmptrapd
     # Allow the daemons time to exit completely.
     sleep 2
     if [ "$SNMPDRUN" = "yes" -a -f /etc/snmp/snmpd.conf ]; then
       start-stop-daemon -q -S -x /usr/sbin/snmpd -- $SNMPDOPTS
-      echo -n " snmpd"
+      printf " snmpd"
     fi
     if [ "$TRAPDRUN" = "yes" -a -f /etc/snmp/snmptrapd.conf ]; then
       # Allow snmpd time to start up.
       sleep 1
       start-stop-daemon -q -S -x /usr/sbin/snmptrapd -- $TRAPDOPTS
-      echo -n " snmptrapd"
+      printf " snmptrapd"
     fi
     echo "."
     ;;
   reload|force-reload)
-    echo -n "Reloading network management services:"
+    printf "Reloading network management services:"
     if [ "$SNMPDRUN" = "yes" -a -f /etc/snmp/snmpd.conf ]; then
       start-stop-daemon -q -K -s 1 -p /var/run/snmpd.pid -x /usr/sbin/snmpd
-      echo -n " snmpd"
+      printf " snmpd"
     fi
     echo "."
     ;;

@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-PYTHON_PSUTIL_VERSION = 2.1.3
+PYTHON_PSUTIL_VERSION = 3.4.2
 PYTHON_PSUTIL_SOURCE = psutil-$(PYTHON_PSUTIL_VERSION).tar.gz
 PYTHON_PSUTIL_SITE = http://pypi.python.org/packages/source/p/psutil
 PYTHON_PSUTIL_SETUP_TYPE = setuptools

@@ -5,8 +5,10 @@
 ################################################################################
 
 OPENIPMI_VERSION = 2.0.21
-OPENIPMI_SITE = http://sourceforge.net/projects/openipmi/files/OpenIPMI%202.0%20Library/
+OPENIPMI_SITE = http://sourceforge.net/projects/openipmi/files/OpenIPMI%202.0%20Library
 OPENIPMI_SOURCE = OpenIPMI-2.0.21.tar.gz
+OPENIPMI_PATCH = \
+	http://sourceforge.net/p/openipmi/patches/26/attachment/0001-ui-use-standard-uint32_t.patch
 OPENIPMI_LICENSE = LGPLv2+, GPLv2+, BSD-3c
 OPENIPMI_LICENSE_FILES = COPYING.LIB COPYING COPYING.BSD
 OPENIPMI_DEPENDENCIES = popt ncurses host-pkgconf
@@ -20,6 +22,10 @@ OPENIPMI_CONF_OPTS = \
 	--with-perl=no \
 	--with-python=no \
 	--with-swig=no
+
+ifeq ($(BR2_PACKAGE_GDBM),y)
+OPENIPMI_DEPENDENCIES += gdbm
+endif
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 OPENIPMI_DEPENDENCIES += openssl

@@ -1,6 +1,8 @@
 config BR2_PACKAGE_LIBSSH2
 	bool "libssh2"
 	select BR2_PACKAGE_LIBGCRYPT if !BR2_PACKAGE_OPENSSL
+	# Triggers the _gp link issue
+	depends on !BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_NIOSII
 	help
 	  libssh2 is a client-side C library implementing the SSH2
 	  protocol as defined by Internet Drafts: SECSH-TRANS(22),

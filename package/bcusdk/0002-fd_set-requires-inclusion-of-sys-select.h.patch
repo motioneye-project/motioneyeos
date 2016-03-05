@@ -1,0 +1,31 @@
+From 2541ee3d709803096b17e45610ccc1404e2e5eee Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Sat, 8 Aug 2015 17:46:34 +0200
+Subject: [PATCH] fd_set requires inclusion of <sys/select.h>
+
+According to POSIX.1-2001, the definition fd_set and related macros is
+in <sys/select.h>, so it should be included in files using fd_set to
+make the code compatible with all standard C libraries.
+
+Submitted upstream: https://sourceforge.net/p/bcusdk/patches/3/
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ eibd/examples/common.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/eibd/examples/common.h b/eibd/examples/common.h
+index 51fc514..f038da1 100644
+--- a/eibd/examples/common.h
++++ b/eibd/examples/common.h
+@@ -20,6 +20,7 @@
+ #include <stdlib.h>
+ #include <errno.h>
+ #include <unistd.h>
++#include <sys/select.h>
+ #include "eibclient.h"
+ 
+ /** unsigned char*/
+-- 
+2.5.0
+

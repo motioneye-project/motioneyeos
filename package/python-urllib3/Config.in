@@ -1,0 +1,9 @@
+config BR2_PACKAGE_PYTHON_URLLIB3
+	bool "python-urllib3"
+	select BR2_PACKAGE_PYTHON_ZLIB if BR2_PACKAGE_PYTHON # runtime
+	select BR2_PACKAGE_PYTHON3_ZLIB if BR2_PACKAGE_PYTHON3 # runtime
+	help
+	  Python HTTP library with thread-safe connection pooling, file
+	  post support, sanity friendly, and more.
+
+	  http://urllib3.readthedocs.org/

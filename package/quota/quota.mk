@@ -18,6 +18,13 @@ QUOTA_DEPENDENCIES += gettext
 QUOTA_LIBS += -lintl
 endif
 
+ifeq ($(BR2_PACKAGE_E2FSPROGS),y)
+QUOTA_DEPENDENCIES += e2fsprogs
+QUOTA_CONF_OPTS += --enable-ext2direct
+else
+QUOTA_CONF_OPTS += --disable-ext2direct
+endif
+
 ifeq ($(BR2_PACKAGE_LIBTIRPC),y)
 QUOTA_DEPENDENCIES += libtirpc host-pkgconf
 QUOTA_CFLAGS += `$(PKG_CONFIG_HOST_BINARY) --cflags libtirpc`

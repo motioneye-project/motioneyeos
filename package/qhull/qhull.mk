@@ -4,8 +4,9 @@
 #
 ################################################################################
 
-QHULL_VERSION = 60d55819729d7b49391dde0271e15a56c70992b9
-QHULL_SITE = git://gitorious.org/qhull/qhull.git
+QHULL_VERSION = 7.2.0
+QHULL_SITE = http://www.qhull.org/download
+QHULL_SOURCE = qhull-2015-src-$(QHULL_VERSION).tgz
 QHULL_INSTALL_STAGING = YES
 QHULL_LICENSE = BSD-Style
 QHULL_LICENSE_FILES = COPYING.txt

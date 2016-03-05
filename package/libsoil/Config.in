@@ -1,0 +1,12 @@
+config BR2_PACKAGE_LIBSOIL
+	bool "libsoil"
+	depends on BR2_PACKAGE_HAS_LIBGL
+	depends on !BR2_STATIC_LIBS
+	help
+	  SOIL is a tiny C library used primarily for uploading
+	  textures into OpenGL.
+
+	  http://www.lonesock.net/soil.html
+
+comment "libsoil needs an OpenGL backend and a toolchain w/ dynamic library"
+	depends on !BR2_PACKAGE_HAS_LIBGL || BR2_STATIC_LIBS

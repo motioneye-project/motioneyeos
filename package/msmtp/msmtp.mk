@@ -4,12 +4,13 @@
 #
 ################################################################################
 
-MSMTP_VERSION = 1.6.1
+MSMTP_VERSION = 1.6.2
 MSMTP_SITE = http://downloads.sourceforge.net/project/msmtp/msmtp/$(MSMTP_VERSION)
 MSMTP_SOURCE = msmtp-$(MSMTP_VERSION).tar.xz
 MSMTP_DEPENDENCIES = host-pkgconf
 MSMTP_CONF_OPTS = \
 	--without-libidn \
+	--disable-gai-idn \
 	--without-libgsasl
 MSMTP_LICENSE = GPLv3+
 MSMTP_LICENSE_FILES = COPYING

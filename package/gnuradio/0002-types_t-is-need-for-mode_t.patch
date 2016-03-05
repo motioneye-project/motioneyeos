@@ -1,0 +1,19 @@
+To avoid :
+error: 'mode_t' has not been declared
+sys/types.h must be included 
+
+Signed-off-by: Gwenhael Goavec-Merou <gwenhael.goavec-merou@trabucayre.com>
+---
+Index: gnuradio-3.7.5/gnuradio-runtime/include/gnuradio/logger.h.in
+===================================================================
+--- gnuradio-3.7.5.orig/gnuradio-runtime/include/gnuradio/logger.h.in
++++ gnuradio-3.7.5/gnuradio-runtime/include/gnuradio/logger.h.in
+@@ -44,6 +44,8 @@
+ 
+ #ifdef _MSC_VER
+ typedef unsigned short mode_t;
++#else
++#include <sys/types.h>
+ #endif
+ 
+ #include <gnuradio/api.h>

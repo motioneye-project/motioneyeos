@@ -4,29 +4,26 @@
 #
 ################################################################################
 
-HARFBUZZ_VERSION = 1.0.1
+HARFBUZZ_VERSION = 1.1.3
 HARFBUZZ_SITE = http://www.freedesktop.org/software/harfbuzz/release
 HARFBUZZ_SOURCE = harfbuzz-$(HARFBUZZ_VERSION).tar.bz2
 HARFBUZZ_LICENSE = MIT, ISC (ucdn library)
 HARFBUZZ_LICENSE_FILES = COPYING src/hb-ucdn/COPYING
 HARFBUZZ_INSTALL_STAGING = YES
-HARFBUZZ_CONF_OPTS = --without-coretext --without-uniscribe --without-graphite2
+HARFBUZZ_CONF_OPTS = --with-coretext=no --with-uniscribe=no
 
 # freetype & glib2 support required by host-pango
 HOST_HARFBUZZ_DEPENDENCIES = \
 	host-freetype \
 	host-libglib2
 HOST_HARFBUZZ_CONF_OPTS = \
-	--without-corext \
-	--without-uniscribe \
-	--without-graphite2 \
+	--with-coretext=no \
+	--with-uniscribe=no \
+	--with-graphite2=no \
 	--with-cairo=no \
 	--with-icu=no \
 	--with-freetype=yes \
 	--with-glib=yes
-
-# beta libtool version and patching Makefile.am
-HARFBUZZ_AUTORECONF = YES
 
 ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),y)
 # forgets to link test programs with -pthread breaking static link
@@ -45,6 +42,13 @@ HARFBUZZ_DEPENDENCIES += freetype
 HARFBUZZ_CONF_OPTS += --with-freetype=yes
 else
 HARFBUZZ_CONF_OPTS += --with-freetype=no
+endif
+
+ifeq ($(BR2_PACKAGE_GRAPHITE2),y)
+HARFBUZZ_DEPENDENCIES += graphite2
+HARFBUZZ_CONF_OPTS += --with-graphite2=yes
+else
+HARFBUZZ_CONF_OPTS += --with-graphite2=no
 endif
 
 ifeq ($(BR2_PACKAGE_LIBGLIB2),y)

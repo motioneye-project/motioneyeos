@@ -4,13 +4,13 @@
 #
 
 start() {
-	echo -n "Starting rpcbind: "
+	printf "Starting rpcbind: "
 	umask 077
 	start-stop-daemon -S -q -p /var/run/rpcbind.pid --exec /usr/bin/rpcbind
 	echo "OK"
 }
 stop() {
-	echo -n "Stopping rpcbind daemon: "
+	printf "Stopping rpcbind daemon: "
 	start-stop-daemon -K -q -p /var/run/rpcbind.pid
 	echo "OK"
 }

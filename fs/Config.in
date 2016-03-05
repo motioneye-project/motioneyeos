@@ -1,5 +1,6 @@
 menu "Filesystem images"
 
+source "fs/axfs/Config.in"
 source "fs/cloop/Config.in"
 source "fs/cpio/Config.in"
 source "fs/cramfs/Config.in"

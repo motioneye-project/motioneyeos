@@ -6,8 +6,8 @@ choice
 	help
 	  Specific CPU variant to use
 
-	  64bit cabable: 3, 4, 64, 64r2
-	  non-64bit capable: 1, 2, 32, 32r2
+	  64bit cabable: 64, 64r2, 64r6
+	  non-64bit capable: 32, 32r2, 32r6
 
 config BR2_mips_32
 	bool "mips 32"
@@ -15,11 +15,17 @@ config BR2_mips_32
 config BR2_mips_32r2
 	bool "mips 32r2"
 	depends on !BR2_ARCH_IS_64
+config BR2_mips_32r6
+	bool "mips 32r6"
+	depends on !BR2_ARCH_IS_64
 config BR2_mips_64
 	bool "mips 64"
 	depends on BR2_ARCH_IS_64
 config BR2_mips_64r2
 	bool "mips 64r2"
+	depends on BR2_ARCH_IS_64
+config BR2_mips_64r6
+	bool "mips 64r6"
 	depends on BR2_ARCH_IS_64
 endchoice
 
@@ -61,18 +67,13 @@ config BR2_ENDIAN
 	default "LITTLE"	if BR2_mipsel || BR2_mips64el
 	default "BIG" 	    	if BR2_mips || BR2_mips64
 
-config BR2_ARCH_HAS_ATOMICS
-	default y
-
 config BR2_GCC_TARGET_ARCH
-	default "mips1"		if BR2_mips_1
-	default "mips2"		if BR2_mips_2
-	default "mips3"		if BR2_mips_3
-	default "mips4"		if BR2_mips_4
 	default "mips32"	if BR2_mips_32
 	default "mips32r2"	if BR2_mips_32r2
+	default "mips32r6"	if BR2_mips_32r6
 	default "mips64"	if BR2_mips_64
 	default "mips64r2"	if BR2_mips_64r2
+	default "mips64r6"	if BR2_mips_64r6
 
 config BR2_MIPS_OABI32
 	bool

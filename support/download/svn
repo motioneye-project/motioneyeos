@@ -25,6 +25,12 @@ repo="${2}"
 rev="${3}"
 basename="${4}"
 
-${SVN} export ${verbose} "${repo}@${rev}" "${basename}"
+# Caller needs to single-quote its arguments to prevent them from
+# being expanded a second time (in case there are spaces in them)
+_svn() {
+    eval ${SVN} "${@}"
+}
+
+_svn export ${verbose} "'${repo}@${rev}'" "'${basename}'"
 
 tar czf "${output}" "${basename}"

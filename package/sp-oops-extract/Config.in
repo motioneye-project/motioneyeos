@@ -1,0 +1,6 @@
+config BR2_PACKAGE_SP_OOPS_EXTRACT
+	bool "sp-oops-extract"
+	help
+	  A tool for extracting OOPS/panic logs from MTD.
+
+	  http://maemo.org/packages/view/sp-oops-extract/

@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-TRINITY_VERSION = v1.5
+TRINITY_VERSION = v1.6
 TRINITY_SITE = $(call github,kernelslacker,trinity,$(TRINITY_VERSION))
 TRINITY_LICENSE = GPLv2
 TRINITY_LICENSE_FILES = COPYING

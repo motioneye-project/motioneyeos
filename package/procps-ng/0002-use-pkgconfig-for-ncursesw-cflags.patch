@@ -6,6 +6,7 @@ Status: contacted one of the maintainers on sf.net
 (ticket submission closed to the public, no other way of contacting them).
 
 Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+[Bernd: Rebased for version 3.3.11]
 
 diff -Nura procps-ng-3.3.10.orig/configure.ac procps-ng-3.3.10/configure.ac
 --- procps-ng-3.3.10.orig/configure.ac	2015-04-07 19:21:55.729819952 -0300
@@ -31,14 +32,14 @@ diff -Nura procps-ng-3.3.10.orig/configure.ac procps-ng-3.3.10/configure.ac
 diff -Nura procps-ng-3.3.10.orig/Makefile.am procps-ng-3.3.10/Makefile.am
 --- procps-ng-3.3.10.orig/Makefile.am	2015-04-07 19:21:55.655817434 -0300
 +++ procps-ng-3.3.10/Makefile.am	2015-04-07 19:32:54.516238136 -0300
-@@ -83,6 +83,7 @@
- slabtop_LDADD = @NCURSES_LIBS@
- watch_SOURCES = watch.c $(top_srcdir)/lib/strutils.c $(top_srcdir)/lib/fileutils.c
- watch_LDADD = @WATCH_NCURSES_LIBS@
+@@ -97,6 +97,7 @@
+ slabtop_LDADD = $(LDADD) @NCURSES_LIBS@
+ watch_SOURCES = watch.c lib/strutils.c lib/fileutils.c
+ watch_LDADD = $(LDADD) @WATCH_NCURSES_LIBS@
 +watch_CFLAGS = @WATCH_NCURSES_CFLAGS@
- endif
- 
- if BUILD_SKILL
+ top_top_SOURCES = \
+ 	top/top.h \
+ 	top/top.c \
 diff -Nura procps-ng-3.3.10.orig/watch.c procps-ng-3.3.10/watch.c
 --- procps-ng-3.3.10.orig/watch.c	2015-04-07 19:21:55.707819203 -0300
 +++ procps-ng-3.3.10/watch.c	2015-04-07 19:22:27.323895083 -0300

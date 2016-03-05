@@ -4,25 +4,33 @@
 #
 
 CONFIG=/etc/inadyn.conf
-VR_INADYN=/var/run/inadyn
 
 # check if CONFIG exists, print message & exit if it doesn't
 [ ! -f $CONFIG ] && ( echo "The config file "$CONFIG" is missing...exiting now." && exit 2 )
 
-# check if VR_INADYN exists, create it if not
-[ ! -d $VR_INADYN ] && mkdir -p $VR_INADYN
+# Allow a few customizations from a config file. Especially inadyn
+# must be explicitly enabled by adding ENABLED="yes" in this file.
+test -r /etc/default/inadyn && . /etc/default/inadyn
 
 case "$1" in
 	start)
-		echo "Starting inadyn: "
-		start-stop-daemon -S -x /usr/bin/inadyn
+		printf "Starting inadyn: "
+		if test "${ENABLED}" != "yes" ; then
+		    echo "SKIPPED"
+		    exit 0
+		fi
+		start-stop-daemon -b -q -S -p /var/run/inadyn.pid -x /usr/sbin/inadyn
 		[ $? = 0 ] && echo "OK" || echo "FAIL"
 		;;
 	stop)
-		echo  "Stopping inadyn: "
-		start-stop-daemon -q -K -x /usr/bin/inadyn
+		printf "Stopping inadyn: "
+		if test "${ENABLED}" != "yes" ; then
+		    echo "SKIPPED"
+		    exit 0
+		fi
+		start-stop-daemon -q -K -p /var/run/inadyn.pid -x /usr/sbin/inadyn
 		[ $? = 0 ] && echo "OK" || echo "FAIL"
-		rm -f /var/run/inadyn/inadyn.pid
+		rm -f /var/run/inadyn.pid
 		;;
 	restart)
 		"$0" stop

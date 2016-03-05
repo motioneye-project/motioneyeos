@@ -70,8 +70,8 @@ comment "glx not supported with rpi-userland"
 
 comment "glx needs the opengl API and modular X.org"
 	depends on !BR2_PACKAGE_RPI_USERLAND && \
-			(!BR2_PACKAGE_GST1_PLUGINS_BAD_LIB_OPENGL_OPENGL || \
-			!BR2_PACKAGE_XSERVER_XORG_SERVER_MODULAR)
+		(!BR2_PACKAGE_GST1_PLUGINS_BAD_LIB_OPENGL_OPENGL || \
+		!BR2_PACKAGE_XSERVER_XORG_SERVER_MODULAR)
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_LIB_OPENGL_EGL
 	bool "egl"
@@ -82,7 +82,7 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_LIB_OPENGL_EGL
 
 comment "egl needs an API and an EGL backend"
 	depends on !BR2_PACKAGE_GST1_PLUGINS_BAD_LIB_OPENGL_HAS_API || \
-			!BR2_PACKAGE_HAS_LIBEGL
+		!BR2_PACKAGE_HAS_LIBEGL
 
 comment "Window systems"
 
@@ -104,8 +104,8 @@ comment "x11 not supported with rpi-userland"
 
 comment "x11 needs a platform and X.org"
 	depends on !BR2_PACKAGE_RPI_USERLAND && \
-			(!BR2_PACKAGE_GST1_PLUGINS_BAD_LIB_OPENGL_HAS_PLATFORM || \
-			!BR2_PACKAGE_XORG7)
+		(!BR2_PACKAGE_GST1_PLUGINS_BAD_LIB_OPENGL_HAS_PLATFORM || \
+		!BR2_PACKAGE_XORG7)
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_LIB_OPENGL_WAYLAND
 	bool "wayland"
@@ -116,7 +116,7 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_LIB_OPENGL_WAYLAND
 
 comment "wayland needs the egl platform and the wayland package"
 	depends on !BR2_PACKAGE_GST1_PLUGINS_BAD_LIB_OPENGL_EGL || \
-			!BR2_PACKAGE_WAYLAND
+		!BR2_PACKAGE_WAYLAND
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_LIB_OPENGL_DISPMANX
 	bool "dispmanx"
@@ -129,7 +129,7 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_LIB_OPENGL_DISPMANX
 
 comment "dispmanx needs the egl platform and rpi-userland"
 	depends on !BR2_PACKAGE_GST1_PLUGINS_BAD_LIB_OPENGL_EGL || \
-			!BR2_PACKAGE_RPI_USERLAND
+		!BR2_PACKAGE_RPI_USERLAND
 
 endif
 
@@ -218,6 +218,12 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_DEBUGUTILS
 	bool "debugutils"
 	help
 	  Collection of elements that may or may not be useful for debugging
+
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_DTLS
+	bool "dtls"
+	select BR2_PACKAGE_OPENSSL
+	help
+	  DTLS plugin
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_DVBSUBOVERLAY
 	bool "dvdsuboverlay"
@@ -347,6 +353,9 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_MXF
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_NUVDEMUX
 	bool "nuvdemux"
 
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_ONVIF
+	bool "onvif"
+
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_PATCHDETECT
 	bool "patchdetect"
 
@@ -365,13 +374,13 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_RAWPARSE
 	help
 	  Parses byte streams into raw frames
 
-config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_REAL
-	bool "real"
-
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_REMOVESILENCE
 	bool "removesilence"
 	help
 	  Removes silence from an audio stream
+
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_RTP
+	bool "rtp"
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_SDI
 	bool "sdi"
@@ -492,15 +501,13 @@ comment "decklink needs a toolchain w/ C++"
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_DIRECTFB
 	bool "directfb"
-	select BR2_PACKAGE_DIRECTFB
-	depends on BR2_TOOLCHAIN_HAS_THREADS
-	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_PACKAGE_DIRECTFB
+	default y
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_WAYLAND
 	bool "wayland"
-	depends on !BR2_STATIC_LIBS # wayland
-	depends on BR2_TOOLCHAIN_HAS_THREADS # wayland
-	select BR2_PACKAGE_WAYLAND
+	depends on BR2_PACKAGE_WAYLAND
+	default y
 	help
 	  Wayland Video Sink
 
@@ -555,16 +562,59 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_NEON
 	help
 	  lib neon http client src
 
-config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_OPENCV
-	bool "opencv"
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_OPENAL
+	bool "openal"
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL
-	depends on BROKEN # gst1-plugin-opencv does not (yet) support opencv >=3.x
+	depends on BR2_PAKCAGE_OPENAL_ARCH_SUPPORTS
+	select BR2_PACKAGE_OPENAL
+
+comment "openal plugin needs a toolchain w/ NPTL, C++"
+	depends on BR2_PAKCAGE_OPENAL_ARCH_SUPPORTS
+	depends on !BR2_TOOLCHAIN_HAS_THREADS_NPTL \
+		|| !BR2_INSTALL_LIBSTDCPP
+
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_OPENCV
+	bool "opencv"
+	depends on BR2_PACKAGE_OPENCV
+	# Remove the following opencv modules when gstreamer fixes the
+	# problem of including the old "cv.h" header
+	# bug: https://bugzilla.gnome.org/show_bug.cgi?id=725163
+	select BR2_PACKAGE_OPENCV_LIB_CALIB3D
+	select BR2_PACKAGE_OPENCV_LIB_CONTRIB
+	select BR2_PACKAGE_OPENCV_LIB_FEATURES2D
+	select BR2_PACKAGE_OPENCV_LIB_FLANN
+	select BR2_PACKAGE_OPENCV_LIB_IMGPROC
+	select BR2_PACKAGE_OPENCV_LIB_LEGACY
+	select BR2_PACKAGE_OPENCV_LIB_ML
+	select BR2_PACKAGE_OPENCV_LIB_OBJDETECT
+	select BR2_PACKAGE_OPENCV_LIB_VIDEO
 	help
 	  GStreamer OpenCV Plugins
 
-comment "opencv plugin needs a toolchain w/ C++, NPTL"
-	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS_NPTL
+comment "opencv plugin needs OpenCV-2.4"
+	depends on !BR2_PACKAGE_OPENCV
+
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_OPENH264
+	bool "openh264"
+	depends on BR2_PACKAGE_LIBOPENH264_ARCH_SUPPORTS
+	depends on BR2_INSTALL_LIBSTDCPP # libopenh264
+	depends on !BR2_STATIC_LIBS # libopenh264
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libopenh264
+	select BR2_PACKAGE_LIBOPENH264
+	help
+	  OpenH264 based encoding/decoding plugin
+
+comment "openh264 plugin needs a toolchain w/ C++, dynamic library, threads"
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS || \
+		BR2_STATIC_LIBS
+	depends on BR2_PACKAGE_LIBOPENH264_ARCH_SUPPORTS
+
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_OPENJPEG
+	bool "openjpeg"
+	select BR2_PACKAGE_OPENJPEG
+	help
+	  GStreamer OpenJPEG plugin
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_OPUS
 	bool "opus"
@@ -575,14 +625,14 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_OPUS
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_RSVG
 	bool "rsvg"
 	depends on BR2_INSTALL_LIBSTDCPP # librsvg -> pango
-	depends on BR2_ARCH_HAS_ATOMICS # librsvg -> cairo
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # librsvg -> pango -> harfbuzz
 	select BR2_PACKAGE_LIBRSVG
 	help
 	  RSVG plugin library
 
 comment "rsvg plugin needs a toolchain w/ C++"
 	depends on !BR2_INSTALL_LIBSTDCPP
-	depends on BR2_ARCH_HAS_ATOMICS
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_GL
 	bool "gl"
@@ -603,13 +653,29 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_SNDFILE
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_DVB
 	bool "dvb"
 	select BR2_PACKAGE_DTV_SCAN_TABLES
+	# FEC_2_5 / QAM_4_NR definitions
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_7
 	help
 	  DVB elements
+
+comment "dvb needs a toolchain w/ headers >= 3.7"
+	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_7
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_HLS
 	bool "hls"
 	select BR2_PACKAGE_GNUTLS
 	help
 	  Fragmented streaming plugins
+
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_X265
+	bool "x265"
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on !BR2_STATIC_LIBS
+	select BR2_PACKAGE_X265
+	help
+	  x265 encoding plugin
+
+comment "x265 needs a toolchain w/ C++, dynamic library"
+	depends on !BR2_INSTALL_LIBSTDCPP || BR2_STATIC_LIBS
 
 endif

@@ -13,5 +13,6 @@ GZIP_CONF_OPTS = --exec-prefix=/
 GZIP_DEPENDENCIES = $(if $(BR2_PACKAGE_BUSYBOX),busybox)
 GZIP_LICENSE = GPLv3+
 GZIP_LICENSE_FILES = COPYING
+GZIP_CONF_ENV += gl_cv_func_fflush_stdin=yes
 
 $(eval $(autotools-package))

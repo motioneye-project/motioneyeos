@@ -1,0 +1,60 @@
+From 4c0893221e2978854174806f7e14f7643eea32e7 Mon Sep 17 00:00:00 2001
+From: Peter Korsgaard <peter@korsgaard.com>
+Date: Thu, 20 Nov 2014 13:24:59 +0100
+Subject: [PATCH] Misc/python-config.sh.in: ensure sed invocations only match
+ beginning of strings
+
+The build/real prefix handling using sed breaks if build != real and the
+standard include / lib directories are used ($prefix/include and $prefix/lib).
+
+E.G.
+
+prefix_build="/usr", libdir="$prefix/lib", includedir="$prefix/include".
+
+If this gets installed with make DESTDIR="/foo" install, then we end up with
+prefix_real = prefix = "/foo/usr" as expected, but
+includedir="/foo/foo/usr/include" and libdir="/foo/foo/usr/lib" because of
+the double sed invocation (prefix is already expanded).  Work around it by
+ensuring we only match the beginning of the string.
+
+Submitted upstream: http://bugs.python.org/issue22907
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ Misc/python-config.sh.in | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/Misc/python-config.sh.in b/Misc/python-config.sh.in
+index 64c81e5..f75eec5 100644
+--- a/Misc/python-config.sh.in
++++ b/Misc/python-config.sh.in
+@@ -29,12 +29,12 @@ prefix_real=$(installed_prefix "$0")
+ 
+ # Use sed to fix paths from their built-to locations to their installed-to
+ # locations.
+-prefix=$(echo "$prefix_build" | sed "s#$prefix_build#$prefix_real#")
++prefix=$(echo "$prefix_build" | sed "s#^$prefix_build#$prefix_real#")
+ exec_prefix_build="@exec_prefix@"
+-exec_prefix=$(echo "$exec_prefix_build" | sed "s#$exec_prefix_build#$prefix_real#")
+-includedir=$(echo "@includedir@" | sed "s#$prefix_build#$prefix_real#")
+-libdir=$(echo "@libdir@" | sed "s#$prefix_build#$prefix_real#")
+-CFLAGS=$(echo "@CFLAGS@" | sed "s#$prefix_build#$prefix_real#")
++exec_prefix=$(echo "$exec_prefix_build" | sed "s#^$exec_prefix_build#$prefix_real#")
++includedir=$(echo "@includedir@" | sed "s#^$prefix_build#$prefix_real#")
++libdir=$(echo "@libdir@" | sed "s#^$prefix_build#$prefix_real#")
++CFLAGS=$(echo "@CFLAGS@" | sed "s#^$prefix_build#$prefix_real#")
+ VERSION="@VERSION@"
+ LIBM="@LIBM@"
+ LIBC="@LIBC@"
+@@ -48,7 +48,7 @@ OPT="@OPT@"
+ PY_ENABLE_SHARED="@PY_ENABLE_SHARED@"
+ LDVERSION="@LDVERSION@"
+ LIBDEST=${prefix}/lib/python${VERSION}
+-LIBPL=$(echo "@LIBPL@" | sed "s#$prefix_build#$prefix_real#")
++LIBPL=$(echo "@LIBPL@" | sed "s#^$prefix_build#$prefix_real#")
+ SO="@SO@"
+ PYTHONFRAMEWORK="@PYTHONFRAMEWORK@"
+ INCDIR="-I$includedir/python${VERSION}${ABIFLAGS}"
+-- 
+2.6.4
+

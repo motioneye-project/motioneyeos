@@ -6,16 +6,16 @@ Author: Philipp Huebner <debalance@debian.org>
 Index: ejabberd/rebar.config.script
 ===================================================================
 diff --git a/rebar.config.script b/rebar.config.script
-index b4dfaa3..9152c12 100644
+index 633433c..646a15a 100644
 --- a/rebar.config.script
 +++ b/rebar.config.script
-@@ -183,9 +183,7 @@ Config = [{erl_opts, Macros ++ HiPE ++ DebugInfo ++
+@@ -187,9 +187,7 @@ Config = [{erl_opts, Macros ++ HiPE ++ DebugInfo ++
            {xref_checks, []},
  	  {xref_queries,
  	   [{"(XC - UC) || (XU - X - B - "
 -	     ++ string:join(CfgXrefs, " - ") ++ ")", []}]},
 -          {post_hooks, PostHooks ++ CfgPostHooks},
--          {deps, Deps ++ CfgDeps}] ++ ElixirConfig,
+-          {deps, AllDeps}] ++ ElixirConfig,
 +	     ++ string:join(CfgXrefs, " - ") ++ ")", []}]}],
  %%io:format("ejabberd configuration:~n  ~p~n", [Config]),
  Config.

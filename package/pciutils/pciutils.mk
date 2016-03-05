@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-PCIUTILS_VERSION = 3.3.1
+PCIUTILS_VERSION = 3.4.1
 PCIUTILS_SITE = $(BR2_KERNEL_MIRROR)/software/utils/pciutils
 PCIUTILS_SOURCE = pciutils-$(PCIUTILS_VERSION).tar.xz
 PCIUTILS_INSTALL_STAGING = YES
@@ -17,7 +17,7 @@ PCIUTILS_MAKE_OPTS = \
 	LDFLAGS="$(TARGET_LDFLAGS)" \
 	RANLIB=$(TARGET_RANLIB) \
 	AR=$(TARGET_AR) \
-	PCIUTILS_DNS=no
+	DNS=no
 
 ifeq ($(BR2_PACKAGE_HAS_UDEV),y)
 PCIUTILS_DEPENDENCIES += udev

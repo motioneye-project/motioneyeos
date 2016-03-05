@@ -1,0 +1,30 @@
+comment "ubus needs a toolchain w/ dynamic library"
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
+        depends on BR2_STATIC_LIBS
+
+config BR2_PACKAGE_UBUS
+	bool "ubus"
+	select BR2_PACKAGE_LIBUBOX
+	select BR2_PACKAGE_JSON_C
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # json-c
+	depends on !BR2_STATIC_LIBS # libubox
+	help
+	  IPC/RPC bus that allows communication between processes.
+
+	  It consists of few parts including a daemon (ubusd), a library
+	  (libubus) and a command line interface (ubus). Although created
+	  for the OpenWRT project, it can be used as a general IPC/RPC
+	  mechanism in other projects.
+
+	  * Select BR2_PACKAGE_LUA_5_1 if you want to have Lua support.
+
+	  https://wiki.openwrt.org/doc/techref/ubus
+
+if BR2_PACKAGE_UBUS
+
+config BR2_PACKAGE_UBUS_EXAMPLES
+	bool "build and install ubus examples"
+	help
+	  Build and install client and server ubus examples.
+
+endif

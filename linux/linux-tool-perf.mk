@@ -27,6 +27,19 @@ PERF_MAKE_FLAGS = \
 	WERROR=0 \
 	ASCIIDOC=
 
+# We need to pass an argument to ld for setting the endianness when
+# building it for MIPS architecture, otherwise the default one will
+# always be used (which is big endian) and the compilation for little
+# endian will always fail showing an error like this one:
+#  LD    foo.o
+# mips-linux-gnu-ld: foo.o: compiled for a little endian system and
+# target is big endian
+ifeq ($(BR2_mips)$(BR2_mips64),y)
+PERF_MAKE_FLAGS += LD="$(TARGET_LD) -EB"
+else ifeq ($(BR2_mipsel)$(BR2_mips64el),y)
+PERF_MAKE_FLAGS += LD="$(TARGET_LD) -EL"
+endif
+
 # The call to backtrace() function fails for ARC, because for some
 # reason the unwinder from libgcc returns early. Thus the usage of
 # backtrace() should be disabled in perf explicitly: at build time
@@ -84,4 +97,5 @@ define PERF_INSTALL_TARGET_CMDS
 	$(TARGET_MAKE_ENV) $(MAKE1) $(PERF_MAKE_FLAGS) \
 		-C $(@D)/tools/perf O=$(@D)/tools/perf/ install
 	$(RM) -rf $(TARGET_DIR)/usr/libexec/perf-core/scripts/
+	$(RM) -rf $(TARGET_DIR)/usr/libexec/perf-core/tests/
 endef

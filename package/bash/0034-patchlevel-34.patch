@@ -1,0 +1,94 @@
+From http://ftp.gnu.org/pub/gnu/bash/bash-4.3-patches/bash43-034
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release:	4.3
+Patch-ID:	bash43-034
+
+Bug-Reported-by:	Dreamcat4 <dreamcat4@gmail.com>
+Bug-Reference-ID:	<CAN39uTpAEs2GFu4ebC_SfSVMRTh-DJ9YanrY4BZZ3OO+CCHjng@mail.gmail.com>
+Bug-Reference-URL:	http://lists.gnu.org/archive/html/bug-bash/2015-05/msg00001.html
+
+Bug-Description:
+
+If neither the -f nor -v options is supplied to unset, and a name argument is
+found to be a function and unset, subsequent name arguments are not treated as
+variables before attempting to unset a function by that name.
+
+Patch (apply with `patch -p0'):
+
+*** a/bash-4.3-patched/builtins/set.def	2013-04-19 07:20:34.000000000 -0400
+--- b/builtins/set.def	2015-05-05 13:25:36.000000000 -0400
+***************
+*** 752,758 ****
+--- 797,805 ----
+  {
+    int unset_function, unset_variable, unset_array, opt, nameref, any_failed;
++   int global_unset_func, global_unset_var;
+    char *name;
+  
+    unset_function = unset_variable = unset_array = nameref = any_failed = 0;
++   global_unset_func = global_unset_var = 0;
+  
+    reset_internal_getopt ();
+***************
+*** 762,769 ****
+  	{
+  	case 'f':
+! 	  unset_function = 1;
+  	  break;
+  	case 'v':
+! 	  unset_variable = 1;
+  	  break;
+  	case 'n':
+--- 809,816 ----
+  	{
+  	case 'f':
+! 	  global_unset_func = 1;
+  	  break;
+  	case 'v':
+! 	  global_unset_var = 1;
+  	  break;
+  	case 'n':
+***************
+*** 778,782 ****
+    list = loptend;
+  
+!   if (unset_function && unset_variable)
+      {
+        builtin_error (_("cannot simultaneously unset a function and a variable"));
+--- 825,829 ----
+    list = loptend;
+  
+!   if (global_unset_func && global_unset_var)
+      {
+        builtin_error (_("cannot simultaneously unset a function and a variable"));
+***************
+*** 796,799 ****
+--- 843,849 ----
+        name = list->word->word;
+  
++       unset_function = global_unset_func;
++       unset_variable = global_unset_var;
++ 
+  #if defined (ARRAY_VARS)
+        unset_array = 0;
+
+*** a/bash-4.3/patchlevel.h	2012-12-29 10:47:57.000000000 -0500
+--- b/patchlevel.h	2014-03-20 20:01:28.000000000 -0400
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 33
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 34
+  
+  #endif /* _PATCHLEVEL_H_ */

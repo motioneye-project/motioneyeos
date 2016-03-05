@@ -1,0 +1,29 @@
+From c2a49cbc635d8dc894763624c061be5ae8a1a01c Mon Sep 17 00:00:00 2001
+From: Guenter Obiltschnig <guenter.obiltschnig@appinf.com>
+Date: Mon, 30 Mar 2015 16:21:01 +0200
+Subject: [PATCH] add missing LIBPREFIX definition
+
+Backport from upstream commit c2a49cbc635d8dc894763624c061be5ae8a1a01c
+to ensure libraries are properly installed.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ Makefile | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/Makefile b/Makefile
+index 49318a3..7ee99d8 100644
+--- a/Makefile
++++ b/Makefile
+@@ -20,6 +20,8 @@ ifndef POCO_BUILD
+ export POCO_BUILD=$(POCO_BASE)
+ endif
+ 
++LIBPREFIX ?= lib
++
+ .PHONY: poco all libexecs cppunit tests samples cleans clean distclean install
+ 
+ # TESTS and SAMPLES are set in config.make
+-- 
+2.6.2
+

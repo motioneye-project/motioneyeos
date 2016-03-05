@@ -1,0 +1,56 @@
+From e4ef92852023f4e2f192d3c47220dc75930a615c Mon Sep 17 00:00:00 2001
+From: Gustavo Zacarias <gustavo@zacarias.com.ar>
+Date: Fri, 11 Sep 2015 16:41:31 -0300
+Subject: [PATCH] build: improve stack protector check
+
+Testing a toolchain for proper -fstack-protector must go beyond ensuring
+the compiler and linker accept the option.
+If the test C program does nothing with the stack then guards aren't
+inserted and/or are optimized away giving the false impression that it
+works when in fact the libc might not support it.
+
+Update the check to a program that uses the stack, hence making a link
+fail if proper support isn't available, for example in non-ssp enabled
+uclibc toolchains like this:
+
+test.c:(.text.startup+0x64): undefined reference to `__stack_chk_fail'
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+---
+ buildtools/wafsamba/samba_autoconf.py | 20 +++++++++++++++++---
+ 1 file changed, 17 insertions(+), 3 deletions(-)
+
+diff --git a/buildtools/wafsamba/samba_autoconf.py b/buildtools/wafsamba/samba_autoconf.py
+index c5f132c..ef34b00 100644
+--- a/buildtools/wafsamba/samba_autoconf.py
++++ b/buildtools/wafsamba/samba_autoconf.py
+@@ -657,9 +657,23 @@ def SAMBA_CONFIG_H(conf, path=None):
+     if not IN_LAUNCH_DIR(conf):
+         return
+ 
+-    if conf.CHECK_CFLAGS(['-fstack-protector']) and conf.CHECK_LDFLAGS(['-fstack-protector']):
+-        conf.ADD_CFLAGS('-fstack-protector')
+-        conf.ADD_LDFLAGS('-fstack-protector')
++    # we need to build real code that can't be optimized away to test
++    if conf.check(fragment='''
++        #include <stdio.h>
++
++        int main(void)
++        {
++            char t[100000];
++            while (fgets(t, sizeof(t), stdin));
++            return 0;
++        }
++        ''',
++        execute=0,
++        ccflags='-fstack-protector',
++        ldflags='-fstack-protector',
++        msg='Checking if toolchain accepts -fstack-protector'):
++            conf.ADD_CFLAGS('-fstack-protector')
++            conf.ADD_LDFLAGS('-fstack-protector')
+ 
+     if Options.options.debug:
+         conf.ADD_CFLAGS('-g', testflags=True)
+-- 
+2.4.6
+

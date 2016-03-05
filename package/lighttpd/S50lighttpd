@@ -4,12 +4,12 @@
 #
 
 start() {
-	echo -n "Starting lighttpd: "
+	printf "Starting lighttpd: "
 	start-stop-daemon -S -q -p /var/run/lighttpd.pid --exec /usr/sbin/lighttpd -- -f /etc/lighttpd/lighttpd.conf
 	echo "OK"
 }
 stop() {
-	echo -n "Stopping lighttpd: "
+	printf "Stopping lighttpd: "
 	start-stop-daemon -K -q -p /var/run/lighttpd.pid
 	echo "OK"
 }

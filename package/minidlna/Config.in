@@ -9,12 +9,10 @@ config BR2_PACKAGE_MINIDLNA
 	select BR2_PACKAGE_LIBOGG
 	select BR2_PACKAGE_LIBID3TAG # selects zlib
 	select BR2_PACKAGE_LIBEXIF
-	select BR2_PACKAGE_LIBJPEG
+	select BR2_PACKAGE_JPEG
 	select BR2_PACKAGE_SQLITE
 	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE
-	# Triggers the _gp link issue in nios2
-	depends on !BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_NIOSII201305
-	depends on !BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_NIOSII201405
+	depends on !BR2_nios2 # ffmpeg
 	help
 	  MiniDLNA (aka ReadyDLNA) is server software with the aim of being
 	  fully compliant with DLNA/UPnP-AV clients.
@@ -23,4 +21,5 @@ config BR2_PACKAGE_MINIDLNA
 
 comment "minidlna needs a toolchain w/ threads, wchar"
 	depends on BR2_USE_MMU
+	depends on !BR2_nios2
 	depends on !(BR2_TOOLCHAIN_HAS_THREADS && BR2_USE_WCHAR)

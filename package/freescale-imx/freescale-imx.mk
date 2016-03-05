@@ -4,7 +4,6 @@
 #
 ################################################################################
 
-FREESCALE_IMX_VERSION = 3.10.53-1.1.0
 FREESCALE_IMX_SITE = http://www.freescale.com/lgfiles/NMG/MAD/YOCTO
 
 # Helper for self-extracting binaries distributed by Freescale.

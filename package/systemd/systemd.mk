@@ -4,9 +4,8 @@
 #
 ################################################################################
 
-SYSTEMD_VERSION = 221
-SYSTEMD_SITE = http://www.freedesktop.org/software/systemd
-SYSTEMD_SOURCE = systemd-$(SYSTEMD_VERSION).tar.xz
+SYSTEMD_VERSION = 228
+SYSTEMD_SITE = $(call github,systemd,systemd,v$(SYSTEMD_VERSION))
 SYSTEMD_LICENSE = LGPLv2.1+, GPLv2+ (udev), Public Domain (few source files, see README)
 SYSTEMD_LICENSE_FILES = LICENSE.GPL2 LICENSE.LGPL2.1 README
 SYSTEMD_INSTALL_STAGING = YES
@@ -28,20 +27,15 @@ endif
 
 SYSTEMD_CONF_OPTS += \
 	--with-rootprefix= \
-	--with-rootlibdir=/lib \
 	--enable-static=no \
 	--disable-manpages \
 	--disable-selinux \
 	--disable-pam \
 	--disable-libcryptsetup \
-	--with-dbuspolicydir=/etc/dbus-1/system.d \
-	--with-dbussessionservicedir=/usr/share/dbus-1/services \
-	--with-dbussystemservicedir=/usr/share/dbus-1/system-services \
-	--enable-split-usr \
 	--disable-efi \
 	--disable-gnuefi \
+	--disable-ldconfig \
 	--disable-tests \
-	--disable-dbus \
 	--without-python
 
 SYSTEMD_CFLAGS = $(TARGET_CFLAGS) -fno-lto
@@ -50,6 +44,11 @@ SYSTEMD_CFLAGS = $(TARGET_CFLAGS) -fno-lto
 SYSTEMD_CONF_ENV = \
 	CFLAGS="$(SYSTEMD_CFLAGS)" \
 	ac_cv_path_KMOD=/usr/bin/kmod
+
+define SYSTEMD_RUN_INTLTOOLIZE
+	cd $(@D) && $(HOST_DIR)/usr/bin/intltoolize --force --automake
+endef
+SYSTEMD_PRE_CONFIGURE_HOOKS += SYSTEMD_RUN_INTLTOOLIZE
 
 ifeq ($(BR2_PACKAGE_SYSTEMD_COMPAT),y)
 SYSTEMD_CONF_OPTS += --enable-compat-libs
@@ -147,23 +146,10 @@ define SYSTEMD_INSTALL_MACHINEID_HOOK
 	touch $(TARGET_DIR)/etc/machine-id
 endef
 
-define SYSTEMD_SANITIZE_PATH_IN_UNITS
-	find $(TARGET_DIR)/lib/systemd/system -name '*.service' \
-		-exec $(SED) 's,$(HOST_DIR),,g' {} \;
-endef
-
-# Disable ldconfig.service, as /sbin/ldconfig is not available when the
-# target is built with a glibc-based toolchain.
-define SYSTEMD_DISABLE_LDCONFIG_SERVICE_HOOK
-	rm -f $(TARGET_DIR)/lib/systemd/system/sysinit.target.wants/ldconfig.service
-endef
-
 SYSTEMD_POST_INSTALL_TARGET_HOOKS += \
 	SYSTEMD_INSTALL_INIT_HOOK \
 	SYSTEMD_INSTALL_MACHINEID_HOOK \
-	SYSTEMD_INSTALL_RESOLVCONF_HOOK \
-	SYSTEMD_DISABLE_LDCONFIG_SERVICE_HOOK \
-	SYSTEMD_SANITIZE_PATH_IN_UNITS
+	SYSTEMD_INSTALL_RESOLVCONF_HOOK
 
 define SYSTEMD_USERS
 	systemd-journal -1 systemd-journal -1 * /var/log/journal - - Journal

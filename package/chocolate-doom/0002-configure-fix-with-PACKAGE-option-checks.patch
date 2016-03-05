@@ -1,0 +1,67 @@
+From fd12fa91aa8e35dbd3ffa5bfe055baf6bde0cd63 Mon Sep 17 00:00:00 2001
+From: Rodrigo Rebello <rprebello@gmail.com>
+Date: Thu, 22 Oct 2015 15:28:11 -0200
+Subject: [PATCH] configure: fix --with-PACKAGE option checks
+
+Options of the form --with-PACKAGE[=yes] (e.g. --with-libpng), when
+passed to configure, were being treated as though --without-PACKAGE had
+been given.
+
+Although the intention is to have configure check and use PACKAGE by
+default if it's available, thus requiring the user to pass an option
+only if PACKAGE must NOT be used, there are times when the opposite
+might be desired (i.e. the user wants to indicate PACKAGE MUST be used).
+Moreover, allowing --with-PACKAGE and behaving as if --without-PACKAGE
+had been specified is in itself quite confusing.
+
+Fix that by testing the result of 'with_PACKAGE' in configure.ac and
+acting accordingly instead of blindly assuming a 'no'.
+
+Upstream-status: accepted, not yet released.
+https://github.com/chocolate-doom/chocolate-doom/pull/630
+
+Signed-off-by: Rodrigo Rebello <rprebello@gmail.com>
+---
+ configure.ac | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index ee97fe2..7b03485 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -80,7 +80,14 @@ AC_SDL_MAIN_WORKAROUND([
+         [Build without libsamplerate @<:@default=check@:>@]),
+     [],
+     [
+-        AC_CHECK_LIB(samplerate, src_new)
++        [with_libsamplerate=check]
++    ])
++    AS_IF([test "x$with_libsamplerate" != xno], [
++        AC_CHECK_LIB(samplerate, src_new, [], [
++            AS_IF([test "x$with_libsamplerate" != xcheck], [AC_MSG_FAILURE(
++                [--with-libsamplerate was given, but test for libsamplerate failed])
++            ])
++        ])
+     ])
+     # Check for libpng.
+     AC_ARG_WITH([libpng],
+@@ -88,8 +95,15 @@ AC_SDL_MAIN_WORKAROUND([
+         [Build without libpng @<:@default=check@:>@]),
+     [],
+     [
++        [with_libpng=check]
++    ])
++    AS_IF([test "x$with_libpng" != xno], [
+         AC_CHECK_LIB(z, zlibVersion)
+-        AC_CHECK_LIB(png, png_get_io_ptr)
++        AC_CHECK_LIB(png, png_get_io_ptr, [], [
++            AS_IF([test "x$with_libpng" != xcheck], [AC_MSG_FAILURE(
++                [--with-libpng was given, but test for libpng failed])
++            ])
++        ])
+     ])
+     AC_CHECK_LIB(m, log)
+ 
+-- 
+2.1.4
+

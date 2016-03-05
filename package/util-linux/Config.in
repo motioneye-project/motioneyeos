@@ -1,4 +1,4 @@
-config BR2_PACKAGE_UTIL_LINUX
+menuconfig BR2_PACKAGE_UTIL_LINUX
 	bool "util-linux"
 	depends on BR2_USE_WCHAR
 	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE
@@ -27,6 +27,7 @@ config BR2_PACKAGE_UTIL_LINUX_LIBMOUNT
 
 config BR2_PACKAGE_UTIL_LINUX_LIBSMARTCOLS
 	bool "libsmartcols"
+	depends on BR2_USE_MMU # fork
 	help
 	  Install libsmartcols.
 
@@ -52,11 +53,6 @@ config BR2_PACKAGE_UTIL_LINUX_AGETTY
 	help
 	  Alternative linux getty
 
-config BR2_PACKAGE_UTIL_LINUX_ARCH
-	bool "arch"
-	help
-	  Print machine architecture
-
 config BR2_PACKAGE_UTIL_LINUX_BFS
 	bool "bfs"
 	help
@@ -66,24 +62,20 @@ config BR2_PACKAGE_UTIL_LINUX_CHFN_CHSH
 	bool "chfn/chsh"
 	depends on (BR2_ENABLE_LOCALE && BR2_USE_WCHAR) # linux-pam
 	depends on !BR2_STATIC_LIBS
+	depends on !BR2_TOOLCHAIN_USES_MUSL # linux-pam
 	select BR2_PACKAGE_LINUX_PAM
 	help
 	  Change login shell, real user name and information
 
-comment "chfn/chsh needs a toolchain w/ wchar, locale, dynamic library"
+comment "chfn/chsh needs a uClibc or (e)glibc toolchain w/ wchar, locale, dynamic library"
 	depends on !(BR2_ENABLE_LOCALE && BR2_USE_WCHAR) \
-		|| BR2_STATIC_LIBS
+		|| BR2_STATIC_LIBS || BR2_TOOLCHAIN_USES_MUSL
 
 config BR2_PACKAGE_UTIL_LINUX_CRAMFS
 	bool "cramfs utilities"
 	select BR2_PACKAGE_ZLIB
 	help
 	  Build fsck.cramfs and mkfs.cramfs
-
-config BR2_PACKAGE_UTIL_LINUX_DDATE
-	bool "ddate"
-	help
-	  Convert Gregorian dates to Discordian dates
 
 config BR2_PACKAGE_UTIL_LINUX_EJECT
 	bool "eject"
@@ -99,6 +91,11 @@ config BR2_PACKAGE_UTIL_LINUX_FDFORMAT
 	bool "fdformat"
 	help
 	  Low-level format a floppy disk
+
+config BR2_PACKAGE_UTIL_LINUX_FINDFS
+	bool "findfs"
+	help
+	  Find a filesystem by label or UUID
 
 config BR2_PACKAGE_UTIL_LINUX_FSCK
 	bool "fsck"
@@ -120,17 +117,23 @@ config BR2_PACKAGE_UTIL_LINUX_LAST
 	help
 	  Show a listing of last logged in users
 
+config BR2_PACKAGE_UTIL_LINUX_LINE
+	bool "line"
+	help
+	  Read one line
+
 config BR2_PACKAGE_UTIL_LINUX_LOGIN_UTILS
 	bool "login utilities"
 	depends on (BR2_ENABLE_LOCALE && BR2_USE_WCHAR) # linux-pam
 	depends on !BR2_STATIC_LIBS
+	depends on !BR2_TOOLCHAIN_USES_MUSL # linux-pam
 	select BR2_PACKAGE_LINUX_PAM
 	help
 	  Build login utilities (last, login, su, sulogin)
 
-comment "login utilities needs a toolchain w/ wchar, locale, dynamic library"
+comment "login utilities needs a uClibc or (e)glibc toolchain w/ wchar, locale, dynamic library"
 	depends on !(BR2_ENABLE_LOCALE && BR2_USE_WCHAR) \
-		|| BR2_STATIC_LIBS
+		|| BR2_STATIC_LIBS || BR2_TOOLCHAIN_USES_MUSL
 
 config BR2_PACKAGE_UTIL_LINUX_LOSETUP
 	bool "losetup"
@@ -146,15 +149,6 @@ config BR2_PACKAGE_UTIL_LINUX_MINIX
 	bool "minix"
 	help
 	  Minix filesystem support
-
-config BR2_PACKAGE_UTIL_LINUX_NSENTER
-	bool "nsenter"
-	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0
-	help
-	  Enter the namespaces of another process.
-
-comment "nsenter needs a toolchain w/ headers >= 3.0"
-	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0
 
 config BR2_PACKAGE_UTIL_LINUX_MORE
 	bool "more"
@@ -182,15 +176,24 @@ config BR2_PACKAGE_UTIL_LINUX_NOLOGIN
 	help
 	  Politely refuse a login
 
-config BR2_PACKAGE_UTIL_LINUX_PIVOT_ROOT
-	bool "pivot_root"
+config BR2_PACKAGE_UTIL_LINUX_NSENTER
+	bool "nsenter"
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0
 	help
-	  Change the root filesystem
+	  Enter the namespaces of another process.
+
+comment "nsenter needs a toolchain w/ headers >= 3.0"
+	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0
 
 config BR2_PACKAGE_UTIL_LINUX_PARTX
 	bool "partition utilities"
 	help
 	  Partition tools (addpart, delpart, partx)
+
+config BR2_PACKAGE_UTIL_LINUX_PIVOT_ROOT
+	bool "pivot_root"
+	help
+	  Change the root filesystem
 
 config BR2_PACKAGE_UTIL_LINUX_RAW
 	bool "raw"
@@ -214,7 +217,7 @@ config BR2_PACKAGE_UTIL_LINUX_SCHEDUTILS
 
 config BR2_PACKAGE_UTIL_LINUX_SETPRIV
 	bool "setpriv"
-	depends on !BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_NIOSII201405 # libcap-ng
+	depends on !BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_NIOSII # libcap-ng
 	select BR2_PACKAGE_LIBCAP_NG
 	help
 	  Run a program with different Linux privilege settings
@@ -229,6 +232,12 @@ config BR2_PACKAGE_UTIL_LINUX_SWITCH_ROOT
 	bool "switch_root"
 	help
 	  Switch to another filesystem as the root of the mount tree
+
+config BR2_PACKAGE_UTIL_LINUX_TUNELP
+	bool "tunelp"
+	select BR2_PACKAGE_NCURSES
+	help
+	  Set various parameters for the lp device
 
 config BR2_PACKAGE_UTIL_LINUX_UL
 	bool "ul"

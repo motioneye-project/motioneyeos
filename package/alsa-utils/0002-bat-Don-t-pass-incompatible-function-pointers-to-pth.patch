@@ -1,0 +1,61 @@
+bat: Don't pass incompatible function pointers to pthread_cleanup_push()
+
+Patch backported from upstream:
+
+  http://git.alsa-project.org/?p=alsa-utils.git;a=commit;h=ed0cce1b6061aade0077982cb5d22fa68ddffd2f
+
+Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+
+From ed0cce1b6061aade0077982cb5d22fa68ddffd2f Mon Sep 17 00:00:00 2001
+From: Takashi Iwai <tiwai@suse.de>
+Date: Mon, 9 Nov 2015 14:09:50 +0100
+Subject: [PATCH 2/2] bat: Don't pass incompatible function pointers to
+ pthread_cleanup_push()
+
+pthread_cleanup_push() takes a function pointer for void (void *).
+Although it may work in most cases, we shouldn't pass an incompatible
+function pointer there, as some old gcc complains:
+  alsa.c:560: warning: initialization from incompatible pointer type
+  alsa.c:562: warning: initialization from incompatible pointer type
+
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+---
+ bat/alsa.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
+
+diff --git a/bat/alsa.c b/bat/alsa.c
+index d31a633..5eaa25b 100644
+--- a/bat/alsa.c
++++ b/bat/alsa.c
+@@ -505,6 +505,16 @@ static int read_from_pcm_loop(FILE *fp, int count,
+ 	return 0;
+ }
+ 
++static void pcm_cleanup(void *p)
++{
++	snd_pcm_close(p);
++}
++
++static void file_cleanup(void *p)
++{
++	fclose(p);
++}
++
+ /**
+  * Record
+  */
+@@ -557,9 +567,9 @@ void *record_alsa(struct bat *bat)
+ 
+ 	pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);
+ 	pthread_setcanceltype(PTHREAD_CANCEL_DEFERRED, NULL);
+-	pthread_cleanup_push(snd_pcm_close, sndpcm.handle);
++	pthread_cleanup_push(pcm_cleanup, sndpcm.handle);
+ 	pthread_cleanup_push(free, sndpcm.buffer);
+-	pthread_cleanup_push(fclose, fp);
++	pthread_cleanup_push(file_cleanup, fp);
+ 
+ 	err = write_wav_header(fp, &wav, bat);
+ 	if (err != 0) {
+-- 
+2.4.10
+

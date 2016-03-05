@@ -40,15 +40,22 @@ endif
 
 # Grub2 is kind of special: it considers CC, LD and so on to be the
 # tools to build the native tools (i.e to be executed on the build
-# machine), and uses TARGET_CC, TARGET_CFLAGS, TARGET_CPPFLAGS to
-# build the bootloader itself.
+# machine), and uses TARGET_CC, TARGET_CFLAGS, TARGET_CPPFLAGS,
+# TARGET_LDFLAGS to build the bootloader itself. However, to add to
+# the confusion, it also uses NM, OBJCOPY and STRIP to build the
+# bootloader itself; none of these are used to build the native
+# tools.
 
 GRUB2_CONF_ENV = \
 	$(HOST_CONFIGURE_OPTS) \
 	CPP="$(HOSTCC) -E" \
 	TARGET_CC="$(TARGET_CC)" \
 	TARGET_CFLAGS="$(TARGET_CFLAGS)" \
-	TARGET_CPPFLAGS="$(TARGET_CPPFLAGS)"
+	TARGET_CPPFLAGS="$(TARGET_CPPFLAGS)" \
+	TARGET_LDFLAGS="$(TARGET_LDFLAGS)" \
+	NM="$(TARGET_NM)" \
+	OBJCOPY="$(TARGET_OBJCOPY)" \
+	STRIP="$(TARGET_STRIP)"
 
 GRUB2_CONF_OPTS = \
 	--target=$(GRUB2_TARGET) \

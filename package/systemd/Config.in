@@ -55,7 +55,6 @@ config BR2_PACKAGE_SYSTEMD
 
 	  The selection of other packages will enable some features:
 
-	  - libglib2 package will add support for gudev.
 	  - acl package will add support for multi-seat.
 
 	  http://freedesktop.org/wiki/Software/systemd

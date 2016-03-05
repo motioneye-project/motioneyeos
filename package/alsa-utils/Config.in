@@ -1,11 +1,12 @@
-comment "alsa-utils needs a toolchain w/ threads"
+comment "alsa-utils needs a toolchain w/ threads, dynamic library"
 	depends on BR2_USE_MMU # fork
-	depends on !BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS
 
-config BR2_PACKAGE_ALSA_UTILS
+menuconfig BR2_PACKAGE_ALSA_UTILS
 	bool "alsa-utils"
 	depends on BR2_USE_MMU # fork
 	depends on BR2_TOOLCHAIN_HAS_THREADS # alsa-lib
+	depends on !BR2_STATIC_LIBS # uses dlfcn.h
 	select BR2_PACKAGE_ALSA_LIB
 	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE
 	help
@@ -15,14 +16,20 @@ config BR2_PACKAGE_ALSA_UTILS
 	  http://www.alsa-project.org/
 
 if BR2_PACKAGE_ALSA_UTILS
-menu "ALSA utils selection"
 
 config BR2_PACKAGE_ALSA_UTILS_ALSACONF
 	bool "alsaconf"
 
+config BR2_PACKAGE_ALSA_UTILS_ACONNECT
+	bool "aconnect"
+	select BR2_PACKAGE_ALSA_LIB_SEQ
+
 config BR2_PACKAGE_ALSA_UTILS_ALSACTL
 	bool "alsactl"
 	default y
+
+config BR2_PACKAGE_ALSA_UTILS_ALSALOOP
+	bool "alsaloop"
 
 config BR2_PACKAGE_ALSA_UTILS_ALSAMIXER
 	bool "alsamixer"
@@ -37,50 +44,51 @@ config BR2_PACKAGE_ALSA_UTILS_ALSAMIXER
 comment "alsamixer needs a toolchain w/ wchar"
 	depends on !BR2_USE_WCHAR
 
-config BR2_PACKAGE_ALSA_UTILS_AMIDI
-	select BR2_PACKAGE_ALSA_LIB_RAWMIDI
-	select BR2_PACKAGE_ALSA_LIB_SEQ
-	bool "amidi"
-
-config BR2_PACKAGE_ALSA_UTILS_AMIXER
-	select BR2_PACKAGE_ALSA_LIB_MIXER
-	bool "amixer"
-
-config BR2_PACKAGE_ALSA_UTILS_APLAY
-	select BR2_PACKAGE_ALSA_LIB_PCM
-	bool "aplay/arecord"
-
-config BR2_PACKAGE_ALSA_UTILS_IECSET
-	select BR2_PACKAGE_ALSA_LIB_PCM
-	bool "iecset"
-
-config BR2_PACKAGE_ALSA_UTILS_ACONNECT
-	select BR2_PACKAGE_ALSA_LIB_SEQ
-	bool "aconnect"
-
 config BR2_PACKAGE_ALSA_UTILS_ALSAUCM
 	bool "alsaucm"
 
-config BR2_PACKAGE_ALSA_UTILS_APLAYMIDI
+config BR2_PACKAGE_ALSA_UTILS_ALSATPLG
+	bool "alsatplg"
+
+config BR2_PACKAGE_ALSA_UTILS_AMIDI
+	bool "amidi"
+	select BR2_PACKAGE_ALSA_LIB_RAWMIDI
 	select BR2_PACKAGE_ALSA_LIB_SEQ
+
+config BR2_PACKAGE_ALSA_UTILS_AMIXER
+	bool "amixer"
+	select BR2_PACKAGE_ALSA_LIB_MIXER
+
+config BR2_PACKAGE_ALSA_UTILS_APLAY
+	bool "aplay/arecord"
+	select BR2_PACKAGE_ALSA_LIB_PCM
+
+config BR2_PACKAGE_ALSA_UTILS_APLAYMIDI
 	bool "aplaymidi"
+	select BR2_PACKAGE_ALSA_LIB_SEQ
 
 config BR2_PACKAGE_ALSA_UTILS_ARECORDMIDI
-	select BR2_PACKAGE_ALSA_LIB_SEQ
 	bool "arecordmidi"
+	select BR2_PACKAGE_ALSA_LIB_SEQ
 
 config BR2_PACKAGE_ALSA_UTILS_ASEQDUMP
-	select BR2_PACKAGE_ALSA_LIB_SEQ
 	bool "aseqdump"
+	select BR2_PACKAGE_ALSA_LIB_SEQ
 
 config BR2_PACKAGE_ALSA_UTILS_ASEQNET
-	select BR2_PACKAGE_ALSA_LIB_SEQ
 	bool "aseqnet"
+	select BR2_PACKAGE_ALSA_LIB_SEQ
+
+config BR2_PACKAGE_ALSA_UTILS_BAT
+	bool "bat"
+	select BR2_PACKAGE_FFTW
+
+config BR2_PACKAGE_ALSA_UTILS_IECSET
+	bool "iecset"
+	select BR2_PACKAGE_ALSA_LIB_PCM
 
 config BR2_PACKAGE_ALSA_UTILS_SPEAKER_TEST
-	select BR2_PACKAGE_ALSA_LIB_PCM
 	bool "speaker-test"
-
-endmenu
+	select BR2_PACKAGE_ALSA_LIB_PCM
 
 endif

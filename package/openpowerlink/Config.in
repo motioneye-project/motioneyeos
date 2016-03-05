@@ -1,5 +1,4 @@
 comment "openpowerlink needs a toolchain w/ C++, threads"
-	depends on BR2_USE_MMU
 	depends on BR2_i386 || BR2_x86_64
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS
 
@@ -8,111 +7,106 @@ config BR2_PACKAGE_OPENPOWERLINK
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_i386 || BR2_x86_64
-	depends on BR2_USE_MMU # qt
 	help
-	  openPOWERLINK is an Open Source Industrial Ethernet
-	  stack implementing the POWERLINK protocol for Managing Node
-	  (MN, POWERLINK Master) and Controlled Node (CN, POWERLINK Slave).
+	  openPOWERLINK is an Open Source Industrial Ethernet stack
+	  implementing the POWERLINK protocol for Managing Node (MN,
+	  POWERLINK Master) and Controlled Node (CN, POWERLINK Slave).
 
 	  It is provided by
 	  SYSTEC electronic (http://www.systec-electronic.com),
 	  B&R (http://www.br-automation.com) and
 	  Kalycito (http://www.kalycito.com).
 
-	  https://sourceforge.net/projects/openpowerlink/
+	  http://openpowerlink.sourceforge.net/web/
 
 if BR2_PACKAGE_OPENPOWERLINK
 
 choice
-	prompt "stack implementation"
+	prompt "MN/CN mode"
 
-config BR2_PACKAGE_OPENPOWERLINK_LIBPCAP
-	bool "userspace stack"
-	select BR2_PACKAGE_LIBPCAP
+config BR2_PACKAGE_OPENPOWERLINK_MN
+	bool "Managing Node"
 	help
-	  The Linux userspace implementation of the openPOWERLINK stack provides
-	  all functions for a software based POWERLINK solution running as Linux
-	  userspace application. The stack uses the libpcap library for accessing
-	  the network interface and is therefore totally independant of the used
-	  network card and driver.
+	  Enable Managing Node (master) mode
 
-config BR2_PACKAGE_OPENPOWERLINK_KERNEL_MODULE
-	bool "kernel stack"
-	depends on BR2_LINUX_KERNEL
+config BR2_PACKAGE_OPENPOWERLINK_CN
+	bool "Controlled Node"
 	help
-	  The openPOWERLINK stack may be implemented as Linux kernel module.
-	  This solution provides the best performance, but is limited to the
-	  available openPOWERLINK network drivers.
-	  You may select BR2_PACKAGE_PCIUTILS for lscpi,
-	  and BR2_PACKAGE_PROCPS for ps command.
-	  These commands are used in EplLoad and EplUndload scripts.
+	  Enable Controlled Node (slave) mode
 
 endchoice
 
-if BR2_PACKAGE_OPENPOWERLINK_KERNEL_MODULE
+choice
+	prompt "stack type"
+
+config BR2_PACKAGE_OPENPOWERLINK_STACK_MONOLITHIC_USER_STACK_LIB
+	bool "linked into application"
+	select BR2_PACKAGE_LIBPCAP
+	help
+	  Compile a monolithic openPOWERLINK library. The library
+	  contains an Ethernet driver which is using the PCAP library
+	  for accessing the network. No kernel-side driver is needed.
+
+config BR2_PACKAGE_OPENPOWERLINK_STACK_USERSPACE_DAEMON_LIB
+	bool "user-space pcap daemon"
+	select BR2_PACKAGE_LIBPCAP
+	select BR2_PACKAGE_OPENPOWERLINK_PCAP_DAEMON
+	help
+	  Compile openPOWERLINK application library which contains the
+	  interface to a Linux user space driver, and the Linux user
+	  space driver. It is used for implementing a multi-process
+	  solution where the openPOWERLINK layer is running as a
+	  separate Linux user space daemon (i.e. a PCAP based user
+	  space daemon).  No kernel-side stack is needed.
+
+config BR2_PACKAGE_OPENPOWERLINK_STACK_KERNEL_STACK_LIB
+	bool "kernel-space driver"
+	depends on BR2_LINUX_KERNEL
+	help
+	  Compile openPOWERLINK application library which contains the
+	  interface to a Linux kernel space driver. This will also
+	  build and install a Linux kernel module openPOWERLINK
+	  driver.
+
+comment "openpowerlink kernel stack needs a Linux kernel to be built"
+	depends on !BR2_LINUX_KERNEL
+
+endchoice
+
+if BR2_PACKAGE_OPENPOWERLINK_STACK_KERNEL_STACK_LIB
 
 choice
 	prompt "select Ethernet Powerlink Driver"
 
-config BR2_PACKAGE_OPENPOWERLINK_82573
+config BR2_PACKAGE_OPENPOWERLINK_KERNEL_DRIVER_82573
 	bool "Intel 82573"
 
-config BR2_PACKAGE_OPENPOWERLINK_8255x
+config BR2_PACKAGE_OPENPOWERLINK_KERNEL_DRIVER_8255x
 	bool "Intel 8255x"
 
-config BR2_PACKAGE_OPENPOWERLINK_I210
+config BR2_PACKAGE_OPENPOWERLINK_KERNEL_DRIVER_I210
 	bool "Intel I210"
 
-config BR2_PACKAGE_OPENPOWERLINK_RTL8139
+config BR2_PACKAGE_OPENPOWERLINK_KERNEL_DRIVER_RTL8111
+	bool "Realtek RTL-8111/8168"
+
+config BR2_PACKAGE_OPENPOWERLINK_KERNEL_DRIVER_RTL8139
 	bool "Realtek RTL-8139"
 
 endchoice
 
-endif
+endif # BR2_PACKAGE_OPENPOWERLINK_STACK_KERNEL_STACK_LIB
 
-choice
-	prompt "Select MN/CN mode"
-
-	config BR2_PACKAGE_OPENPOWERLINK_MN
-	bool "MN"
-	help
-	  Enable Managing Node mode
-
-	config BR2_PACKAGE_OPENPOWERLINK_CN
-	bool "CN"
-	help
-	  Enable Controlled Node mode
-
-endchoice
-
-menu "openpowerlink demos"
+menu "demos"
 
 config BR2_PACKAGE_OPENPOWERLINK_DEMO_MN_CONSOLE
 	bool "console MN demo"
 	depends on BR2_PACKAGE_OPENPOWERLINK_MN
 
-config BR2_PACKAGE_OPENPOWERLINK_DEMO_MN_QT
-	bool "qt MN demo"
-	depends on BR2_PACKAGE_OPENPOWERLINK_MN
-	depends on BR2_INSTALL_LIBSTDCPP
-	select BR2_PACKAGE_QT
-	select BR2_PACKAGE_QT_STL
-
 config BR2_PACKAGE_OPENPOWERLINK_DEMO_CN_CONSOLE
 	bool "console CN demo"
-	depends on !BR2_PACKAGE_OPENPOWERLINK_MN
-
-config BR2_PACKAGE_OPENPOWERLINK_DEMO_LINUX_KERNEL
-	bool "kernel demo"
-	depends on BR2_PACKAGE_OPENPOWERLINK_KERNEL_MODULE
-	depends on BR2_PACKAGE_OPENPOWERLINK_MN
+	depends on BR2_PACKAGE_OPENPOWERLINK_CN
 
 endmenu
 
-config BR2_PACKAGE_OPENPOWERLINK_DEBUG_LEVEL
-	string "debug level for openpowerlink stack"
-	default "0xEC000000L"
-	help
-	  Debug level to be used for openPOWERLINK debugging functions.
-
-endif
+endif # BR2_PACKAGE_OPENPOWERLINK

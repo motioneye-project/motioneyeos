@@ -10,7 +10,7 @@ SPOOL=/var/spool/sms
 
 start()
 {
-	echo -n "Starting $NAME: "
+	printf "Starting $NAME: "
 	mkdir -p $SPOOL/outgoing
 	mkdir -p $SPOOL/incoming
 	mkdir -p $SPOOL/checked
@@ -19,7 +19,7 @@ start()
 
 stop()
 {
-	echo -n "Stopping $NAME: "
+	printf "Stopping $NAME: "
 	start-stop-daemon -K -q -p $PIDFILE && echo "OK" || echo "Failed"
 	rm -f $PIDFILE
 }

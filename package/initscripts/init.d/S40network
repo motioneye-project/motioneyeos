@@ -12,7 +12,7 @@ case "$1" in
 	/sbin/ifup -a
 	;;
   stop)
-	echo -n "Stopping network..."
+	printf "Stopping network..."
 	/sbin/ifdown -a
 	;;
   restart|reload)

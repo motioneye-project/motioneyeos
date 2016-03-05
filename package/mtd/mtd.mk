@@ -17,14 +17,17 @@ MTD_DEPENDENCIES = zlib lzo
 endif
 
 ifeq ($(BR2_PACKAGE_MTD_MKFSUBIFS),y)
-MTD_DEPENDENCIES += util-linux zlib lzo
+MTD_DEPENDENCIES += util-linux zlib lzo host-pkgconf
+define MTD_ADD_MISSING_LINTL
+	$(SED) "/^LDLIBS_mkfs\.ubifs/ s%$$% `$(PKG_CONFIG_HOST_BINARY) --libs uuid`%" \
+		$(@D)/Makefile
+endef
+MTD_POST_PATCH_HOOKS += MTD_ADD_MISSING_LINTL
 endif
 
 ifeq ($(BR2_PACKAGE_BUSYBOX),y)
 MTD_DEPENDENCIES += busybox
 endif
-
-MTD_MAKE_OPTS = WITHOUT_LARGEFILE=1
 
 # If extended attributes are required, the acl package must
 # also be enabled which will also include the attr package.
@@ -65,6 +68,7 @@ MTD_TARGETS_$(BR2_PACKAGE_MTD_FTL_FORMAT)	+= ftl_format
 MTD_TARGETS_$(BR2_PACKAGE_MTD_JFFS2DUMP)	+= jffs2dump
 MTD_TARGETS_$(BR2_PACKAGE_MTD_MKFSJFFS2)	+= mkfs.jffs2
 MTD_TARGETS_$(BR2_PACKAGE_MTD_MTD_DEBUG)	+= mtd_debug
+MTD_TARGETS_$(BR2_PACKAGE_MTD_MTDPART)		+= mtdpart
 MTD_TARGETS_$(BR2_PACKAGE_MTD_NANDDUMP)		+= nanddump
 MTD_TARGETS_$(BR2_PACKAGE_MTD_NANDTEST)		+= nandtest
 MTD_TARGETS_$(BR2_PACKAGE_MTD_NANDWRITE)	+= nandwrite

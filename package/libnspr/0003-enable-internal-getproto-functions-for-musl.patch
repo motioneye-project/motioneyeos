@@ -1,0 +1,35 @@
+From c950bcf9cc7bdc68ed9751a1b7d04f4b4c2a9fb0 Mon Sep 17 00:00:00 2001
+From: Sergio Prado <sergio.prado@e-labworks.com>
+Date: Tue, 5 Jan 2016 21:15:34 -0200
+Subject: [PATCH] enable internal getproto functions for musl
+
+Musl toolchains does not have getprotobyname_r and getprotobynumber_r
+functions and need its internal implementation.
+
+Patch backported from Alpine Linux commit
+a162da839db0d3f8be94a5c1ad2e2e54e691c38a.
+
+Signed-off-by: Sergio Prado <sergio.prado@e-labworks.com>
+---
+ nspr/pr/src/misc/prnetdb.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
+
+diff --git a/nspr/pr/src/misc/prnetdb.c b/nspr/pr/src/misc/prnetdb.c
+index b86248f863f0..dc83a5615f45 100644
+--- a/nspr/pr/src/misc/prnetdb.c
++++ b/nspr/pr/src/misc/prnetdb.c
+@@ -61,10 +61,7 @@ PRLock *_pr_dnsLock = NULL;
+ #define _PR_HAVE_GETPROTO_R_POINTER
+ #endif
+ 
+-#if defined(SOLARIS) || (defined(BSDI) && defined(_REENTRANT)) \
+-	|| (defined(LINUX) && defined(_REENTRANT) \
+-        && !(defined(__GLIBC__) && __GLIBC__ >= 2) \
+-        && !defined(ANDROID))
++#if defined(SOLARIS) || (defined(BSDI) && defined(_REENTRANT))
+ #define _PR_HAVE_GETPROTO_R
+ #define _PR_HAVE_GETPROTO_R_POINTER
+ #endif
+-- 
+1.9.1
+

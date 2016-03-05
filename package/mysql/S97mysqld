@@ -7,16 +7,20 @@ case "$1" in
 			mysql_install_db --user=mysql --ldata=/var/mysql
 		fi
 
+		# mysqld runs as user mysql, but /run is only writable by root
+		# so create a subdirectory for mysql.
+		install -d -o mysql -g root -m 0700 /run/mysql
+
 		# We don't use start-stop-daemon because mysqld has
 		# its own wrapper script.
-		echo -n "Starting mysql..."
-		/usr/bin/mysqld_safe --pid-file=/var/run/mysqld.pid &
+		printf "Starting mysql..."
+		/usr/bin/mysqld_safe --pid-file=/run/mysql/mysqld.pid &
 		echo "done."
 		;;
 	stop)
-		echo -n "Stopping mysql..."
-		if test -f /var/run/mysqld.pid ; then
-			kill `cat /var/run/mysqld.pid`
+		printf "Stopping mysql..."
+		if test -f /run/mysql/mysqld.pid ; then
+			kill `cat /run/mysql/mysqld.pid`
 		fi
 		echo "done."
 		;;

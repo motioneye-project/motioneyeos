@@ -3,8 +3,7 @@ comment "boost needs a toolchain w/ C++, threads, wchar"
 
 config BR2_PACKAGE_BOOST_ARCH_SUPPORTS
 	bool
-	default y if !BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_NIOSII201405 && \
-		!BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_NIOSII201305
+	default y if !BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_NIOSII
 
 config BR2_PACKAGE_BOOST
 	bool "boost"
@@ -65,10 +64,22 @@ config BR2_PACKAGE_BOOST_CHRONO
 config BR2_PACKAGE_BOOST_CONTAINER
 	bool "boost-container"
 
+# see
+# http://www.boost.org/doc/libs/1_59_0/libs/context/doc/html/context/architectures.html
+# for the list of supported architectures. Sparc pretends to be
+# supported, but it doesn't build.
 config BR2_PACKAGE_BOOST_CONTEXT
 	bool "boost-context"
 	depends on (BR2_arm || BR2_armeb || BR2_i386 || BR2_mips || BR2_mipsel \
-			|| BR2_powerpc || BR2_sparc || BR2_x86_64)
+			|| BR2_powerpc || BR2_x86_64)
+
+config BR2_PACKAGE_BOOST_COROUTINE
+	bool "boost-coroutine"
+	depends on BR2_PACKAGE_BOOST_CONTEXT
+
+config BR2_PACKAGE_BOOST_COROUTINE2
+	bool "boost-coroutine2"
+	depends on BR2_PACKAGE_BOOST_CONTEXT
 
 config BR2_PACKAGE_BOOST_DATE_TIME
 	bool "boost-date_time"
@@ -92,6 +103,7 @@ config BR2_PACKAGE_BOOST_IOSTREAMS
 
 config BR2_PACKAGE_BOOST_LOCALE
 	bool "boost-locale"
+	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
 
 config BR2_PACKAGE_BOOST_LOG
 	bool "boost-log"

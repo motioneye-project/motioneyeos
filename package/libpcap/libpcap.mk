@@ -55,8 +55,8 @@ else
 LIBPCAP_CONF_OPTS += --without-libnl
 endif
 
-# microblaze needs -fPIC instead of -fpic
-ifeq ($(BR2_microblaze),y)
+# microblaze/sparc64 need -fPIC instead of -fpic
+ifeq ($(BR2_microblaze)$(BR2_sparc64),y)
 LIBPCAP_CFLAGS += -fPIC
 endif
 

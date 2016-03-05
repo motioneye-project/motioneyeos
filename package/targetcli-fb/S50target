@@ -6,7 +6,7 @@
 start() {
 	local ret
 
-	echo -n "Restoring target configuration: "
+	printf "Restoring target configuration: "
 	/usr/bin/targetctl restore >/dev/null 2>&1
 	ret=$?
 	echo "done"
@@ -17,7 +17,7 @@ start() {
 stop() {
 	local ret
 
-	echo -n "Clearing target configuration: "
+	printf "Clearing target configuration: "
 	/usr/bin/targetctl clear >/dev/null 2>&1
 	ret=$?
 	echo "done"

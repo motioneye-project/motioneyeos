@@ -84,6 +84,7 @@ config BR2_PACKAGE_OPENOCD_AICE
 
 config BR2_PACKAGE_OPENOCD_VSLLINK
 	bool "Versaloon-Link JTAG Programmer"
+	select BR2_PACKAGE_LIBUSB
 	select BR2_PACKAGE_LIBUSB_COMPAT
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libusb-compat -> libusb
 	help
@@ -92,6 +93,7 @@ config BR2_PACKAGE_OPENOCD_VSLLINK
 
 config BR2_PACKAGE_OPENOCD_USBPROG
 	bool "USBProg JTAG Programmer"
+	select BR2_PACKAGE_LIBUSB
 	select BR2_PACKAGE_LIBUSB_COMPAT
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libusb-compat -> libusb
 	help
@@ -100,6 +102,7 @@ config BR2_PACKAGE_OPENOCD_USBPROG
 
 config BR2_PACKAGE_OPENOCD_RLINK
 	bool "Raisonance RLink JTAG Programmer"
+	select BR2_PACKAGE_LIBUSB
 	select BR2_PACKAGE_LIBUSB_COMPAT
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libusb-compat -> libusb
 	help
@@ -108,6 +111,7 @@ config BR2_PACKAGE_OPENOCD_RLINK
 
 config BR2_PACKAGE_OPENOCD_ARMEW
 	bool "Olimex ARM-JTAG-EW Programmer"
+	select BR2_PACKAGE_LIBUSB
 	select BR2_PACKAGE_LIBUSB_COMPAT
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libusb-compat -> libusb
 	help
@@ -123,7 +127,6 @@ config BR2_PACKAGE_OPENOCD_FT2XXX
 	bool "FT2232 based devices (DEPRECATED)"
 	select BR2_PACKAGE_LIBFTDI1
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libftdi -> libusb
-	depends on BR2_ARCH_HAS_ATOMICS
 	help
 	  (DEPRECATED) Enable building support for FT2232
 	  based devices using the libftdi library
@@ -137,7 +140,6 @@ config BR2_PACKAGE_OPENOCD_UBLASTER
 	bool "Altera USB-Blaster"
 	select BR2_PACKAGE_LIBFTDI1
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libftdi -> libusb
-	depends on BR2_ARCH_HAS_ATOMICS
 	help
 	  Enable building support for the Altera USB-Blaster
 	  using the libftdi driver, opensource alternate of
@@ -178,7 +180,6 @@ config BR2_PACKAGE_OPENOCD_PRESTO
 	bool "ASIX Presto Programmer"
 	select BR2_PACKAGE_LIBFTDI1
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libftdi -> libusb
-	depends on BR2_ARCH_HAS_ATOMICS
 	help
 	  Enable building support for ASIX Presto Programmer
 	  using the libftdi driver
@@ -186,9 +187,9 @@ config BR2_PACKAGE_OPENOCD_PRESTO
 config BR2_PACKAGE_OPENOCD_OPENJTAG
 	bool "OpenJTAG Programmer"
 	select BR2_PACKAGE_LIBFTDI1
+	select BR2_PACKAGE_LIBUSB
 	select BR2_PACKAGE_LIBUSB_COMPAT # needs usb.h
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libftdi -> libusb
-	depends on BR2_ARCH_HAS_ATOMICS
 	help
 	  Enable building support for the OpenJTAG Programmer
 	  with ftdi driver

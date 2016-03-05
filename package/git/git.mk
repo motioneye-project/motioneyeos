@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-GIT_VERSION = 2.4.5
+GIT_VERSION = 2.6.4
 GIT_SOURCE = git-$(GIT_VERSION).tar.xz
 GIT_SITE = https://www.kernel.org/pub/software/scm/git
 GIT_LICENSE = GPLv2 LGPLv2.1+
@@ -26,9 +26,11 @@ else
 GIT_CONF_OPTS += --without-libpcre
 endif
 
-ifeq ($(BR2_PACKAGE_CURL),y)
+ifeq ($(BR2_PACKAGE_LIBCURL),y)
 GIT_DEPENDENCIES += libcurl
 GIT_CONF_OPTS += --with-curl
+GIT_CONF_ENV +=	\
+	ac_cv_prog_curl_config=$(STAGING_DIR)/usr/bin/$(LIBCURL_CONFIG_SCRIPTS)
 else
 GIT_CONF_OPTS += --without-curl
 endif
@@ -57,7 +59,7 @@ endif
 
 # assume yes for these tests, configure will bail out otherwise
 # saying error: cannot run test program while cross compiling
-GIT_CONF_ENV = \
+GIT_CONF_ENV += \
 	ac_cv_fread_reads_directories=yes \
 	ac_cv_snprintf_returns_bogus=yes LIBS='$(GIT_CONF_ENV_LIBS)'
 

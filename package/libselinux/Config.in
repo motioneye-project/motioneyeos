@@ -4,6 +4,8 @@ config BR2_PACKAGE_LIBSELINUX
 	select BR2_PACKAGE_PCRE
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on !BR2_STATIC_LIBS
+	# Toolchain issue: "fixup not contained within frag"
+	depends on !BR2_arc
 	help
 	  libselinux is the runtime SELinux library that provides
 	  interfaces (e.g. library functions for the SELinux kernel
@@ -16,4 +18,5 @@ config BR2_PACKAGE_LIBSELINUX
 	  http://selinuxproject.org/page/Main_Page
 
 comment "libselinux needs a toolchain w/ threads, dynamic library"
+	depends on !BR2_arc
 	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS

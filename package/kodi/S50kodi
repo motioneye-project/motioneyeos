@@ -9,12 +9,12 @@ KODI_ARGS="--standalone -fs -n"
 PIDFILE=/var/run/kodi.pid
 
 start() {
-	echo -n "Starting Kodi: "
+	printf "Starting Kodi: "
 	start-stop-daemon -S -q -b -m -p $PIDFILE --exec $BIN -- $KODI $KODI_ARGS
 	[ $? = 0 ] && echo "OK" || echo "FAIL"
 }
 stop() {
-	echo -n "Stopping Kodi: "
+	printf "Stopping Kodi: "
 	start-stop-daemon -K -q -p $PIDFILE
 	[ $? = 0 ] && echo "OK" || echo "FAIL"
 }

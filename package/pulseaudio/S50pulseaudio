@@ -5,13 +5,13 @@
 
 
 start() {
-	echo -n "Starting pulseaudio: "
+	printf "Starting pulseaudio: "
 	umask 077
 	/usr/bin/pulseaudio --system --daemonize
 	echo "OK"
 }
 stop() {
-	echo -n "Stopping pulseaudio: "
+	printf "Stopping pulseaudio: "
 	pulseaudio --kill
 	echo "OK"
 }

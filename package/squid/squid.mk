@@ -5,8 +5,8 @@
 ################################################################################
 
 SQUID_VERSION_MAJOR = 3.5
-SQUID_VERSION = $(SQUID_VERSION_MAJOR).6
-SQUID_SOURCE = squid-$(SQUID_VERSION).tar.xz
+SQUID_VERSION = $(SQUID_VERSION_MAJOR).15
+SQUID_SOURCE = squid-$(SQUID_VERSION).tar.bz2
 SQUID_SITE = http://www.squid-cache.org/Versions/v3/$(SQUID_VERSION_MAJOR)
 SQUID_LICENSE = GPLv2+
 SQUID_LICENSE_FILES = COPYING
@@ -41,12 +41,10 @@ SQUID_CONF_OPTS = \
 	--with-swapdir=/var/cache/squid/ \
 	--with-default-user=squid
 
-# Atomics in Squid use __sync_add_and_fetch_8, i.e a 64 bits atomic
-# operation. This atomic intrinsic is only available natively on
-# 64-bit architectures that have atomic operations. On 32-bit
-# architectures, it would be provided by libatomic, but Buildroot
-# typically doesn't provide it.
-ifeq ($(BR2_ARCH_HAS_ATOMICS)$(BR2_ARCH_IS_64),yy)
+# Atomics in Squid use __sync built-ins on 4 and 8 bytes. However, the
+# configure script tests them using AC_TRY_RUN, so we have to give
+# some hints.
+ifeq ($(BR2_TOOLCHAIN_HAS_SYNC_4)$(BR2_TOOLCHAIN_HAS_SYNC_8),yy)
 SQUID_CONF_ENV += squid_cv_gnu_atomics=yes
 else
 SQUID_CONF_ENV += squid_cv_gnu_atomics=no
@@ -90,7 +88,7 @@ define SQUID_INSTALL_INIT_SYSV
 endef
 
 define SQUID_INSTALL_INIT_SYSTEMD
-	$(INSTALL) -D -m 0644 $(@D)/tools/squid.service \
+	$(INSTALL) -D -m 0644 $(@D)/tools/systemd/squid.service \
 		$(TARGET_DIR)/usr/lib/systemd/system/squid.service
 	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
 	ln -sf ../../../..//usr/lib/systemd/system/squid.service \

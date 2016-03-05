@@ -9,7 +9,7 @@
 BINUTILS_VERSION = $(call qstrip,$(BR2_BINUTILS_VERSION))
 ifeq ($(BINUTILS_VERSION),)
 ifeq ($(BR2_arc),y)
-BINUTILS_VERSION = arc-2015.06
+BINUTILS_VERSION = arc-2015.12
 else
 BINUTILS_VERSION = 2.24
 endif
@@ -30,8 +30,8 @@ BINUTILS_LICENSE = GPLv3+, libiberty LGPLv2.1+
 BINUTILS_LICENSE_FILES = COPYING3 COPYING.LIB
 
 ifeq ($(BINUTILS_FROM_GIT),y)
-BINUTILS_DEPENDENCIES += host-texinfo host-flex host-bison
-HOST_BINUTILS_DEPENDENCIES += host-texinfo host-flex host-bison
+BINUTILS_DEPENDENCIES += host-flex host-bison
+HOST_BINUTILS_DEPENDENCIES += host-flex host-bison
 endif
 
 # When binutils sources are fetched from the binutils-gdb repository,
@@ -61,6 +61,10 @@ ifeq ($(BR2_PACKAGE_BUSYBOX),y)
 BINUTILS_DEPENDENCIES += busybox
 endif
 
+ifeq ($(BR2_PACKAGE_ZLIB),y)
+BINUTILS_DEPENDENCIES += zlib
+endif
+
 # "host" binutils should actually be "cross"
 # We just keep the convention of "host utility" for now
 HOST_BINUTILS_CONF_OPTS = \
@@ -73,6 +77,12 @@ HOST_BINUTILS_CONF_OPTS = \
 	--enable-poison-system-directories \
 	$(BINUTILS_DISABLE_GDB_CONF_OPTS) \
 	$(BINUTILS_EXTRA_CONFIG_OPTIONS)
+
+# binutils run configure script of subdirs at make time, so ensure
+# our TARGET_CONFIGURE_ARGS are taken into consideration for those
+define BINUTILS_BUILD_CMDS
+	$(TARGET_MAKE_ENV) $(TARGET_CONFIGURE_ARGS) $(MAKE) -C $(@D)
+endef
 
 # We just want libbfd, libiberty and libopcodes,
 # not the full-blown binutils in staging

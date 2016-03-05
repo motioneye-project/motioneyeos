@@ -15,7 +15,7 @@ config BR2_PACKAGE_LIBGTK3
 	depends on BR2_TOOLCHAIN_HAS_THREADS # glib2
 	depends on BR2_USE_MMU # glib2
 	depends on BR2_INSTALL_LIBSTDCPP # pango
-	depends on BR2_ARCH_HAS_ATOMICS # cairo
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # pango -> harfbuzz
 	help
 	  The GTK+ version 3 graphical user interface library
 
@@ -40,6 +40,8 @@ config BR2_PACKAGE_LIBGTK3_X11
 config BR2_PACKAGE_LIBGTK3_WAYLAND
 	bool "GDK Wayland backend"
 	default y
+	# Needs a libgtk3 bump to match API level
+	depends on BROKEN
 	depends on BR2_PACKAGE_WAYLAND
 	select BR2_PACKAGE_LIBXKBCOMMON
 	help
@@ -82,6 +84,6 @@ endif
 
 comment "libgtk3 needs a toolchain w/ wchar, threads, C++"
 	depends on BR2_USE_MMU
-	depends on BR2_ARCH_HAS_ATOMICS
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
 	depends on !BR2_USE_WCHAR || !BR2_INSTALL_LIBSTDCPP || \
 		!BR2_TOOLCHAIN_HAS_THREADS

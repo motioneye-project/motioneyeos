@@ -74,7 +74,6 @@ E2FSPROGS_TXTTARGETS_ = \
 	usr/sbin/mkfs.ext4dev \
 	usr/sbin/fsck.ext[234] \
 	usr/sbin/fsck.ext4dev \
-	usr/sbin/findfs \
 	usr/sbin/tune2fs
 
 define E2FSPROGS_TARGET_REMOVE_UNNEEDED
@@ -106,9 +105,16 @@ ifeq ($(BR2_PACKAGE_E2FSPROGS_E2FSCK),y)
 E2FSPROGS_POST_INSTALL_TARGET_HOOKS += E2FSPROGS_TARGET_E2FSCK_SYMLINKS
 endif
 
-# Remove busybox tune2fs and e2label, since we want the e2fsprogs full
-# blown variants to take precedence, but they are not installed in the
-# same location.
+# If BusyBox is included, its configuration may supply its own variant
+# of ext2-related tools. Since Buildroot desires having full blown
+# variants take precedence (in this case, e2fsprogs), we want to remove
+# BusyBox's variant of e2fsprogs provided binaries. e2fsprogs targets
+# /usr/{bin,sbin} where BusyBox targets /{bin,sbin}. We will attempt to
+# remove BusyBox-generated ext2-related tools from /{bin,sbin}. We need
+# to do this in the pre-install stage to ensure we do not accidentally
+# remove e2fsprogs's binaries in usr-merged environments (ie. if they
+# are removed, they would be re-installed in this package's install
+# stage).
 ifeq ($(BR2_PACKAGE_BUSYBOX),y)
 E2FSPROGS_DEPENDENCIES += busybox
 
@@ -119,7 +125,7 @@ define E2FSPROGS_REMOVE_BUSYBOX_APPLETS
 	$(RM) -f $(TARGET_DIR)/sbin/tune2fs
 	$(RM) -f $(TARGET_DIR)/sbin/e2label
 endef
-E2FSPROGS_POST_INSTALL_TARGET_HOOKS += E2FSPROGS_REMOVE_BUSYBOX_APPLETS
+E2FSPROGS_PRE_INSTALL_TARGET_HOOKS += E2FSPROGS_REMOVE_BUSYBOX_APPLETS
 endif
 
 define E2FSPROGS_TARGET_TUNE2FS_SYMLINK
@@ -128,14 +134,6 @@ endef
 
 ifeq ($(BR2_PACKAGE_E2FSPROGS_TUNE2FS),y)
 E2FSPROGS_POST_INSTALL_TARGET_HOOKS += E2FSPROGS_TARGET_TUNE2FS_SYMLINK
-endif
-
-define E2FSPROGS_TARGET_FINDFS_SYMLINK
-	ln -sf e2label $(TARGET_DIR)/usr/sbin/findfs
-endef
-
-ifeq ($(BR2_PACKAGE_E2FSPROGS_FINDFS),y)
-E2FSPROGS_POST_INSTALL_TARGET_HOOKS += E2FSPROGS_TARGET_FINDFS_SYMLINK
 endif
 
 # systemd really wants to have fsck in /sbin

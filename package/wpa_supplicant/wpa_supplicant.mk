@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-WPA_SUPPLICANT_VERSION = 2.4
+WPA_SUPPLICANT_VERSION = 2.5
 WPA_SUPPLICANT_SITE = http://hostap.epitest.fi/releases
-WPA_SUPPLICANT_LICENSE = GPLv2/BSD-3c
+WPA_SUPPLICANT_LICENSE = BSD-3c
 WPA_SUPPLICANT_LICENSE_FILES = README
 WPA_SUPPLICANT_CONFIG = $(WPA_SUPPLICANT_DIR)/wpa_supplicant/.config
 WPA_SUPPLICANT_SUBDIR = wpa_supplicant
@@ -14,6 +14,9 @@ WPA_SUPPLICANT_DBUS_OLD_SERVICE = fi.epitest.hostap.WPASupplicant
 WPA_SUPPLICANT_DBUS_NEW_SERVICE = fi.w1.wpa_supplicant1
 WPA_SUPPLICANT_CFLAGS = $(TARGET_CFLAGS) -I$(STAGING_DIR)/usr/include/libnl3/
 WPA_SUPPLICANT_LDFLAGS = $(TARGET_LDFLAGS)
+
+# install the wpa_client library
+WPA_SUPPLICANT_INSTALL_STAGING = YES
 
 WPA_SUPPLICANT_CONFIG_EDITS =
 
@@ -32,7 +35,7 @@ WPA_SUPPLICANT_CONFIG_DISABLE = \
 # libnl-3 needs -lm (for rint) and -lpthread if linking statically
 # And library order matters hence stick -lnl-3 first since it's appended
 # in the wpa_supplicant Makefiles as in LIBS+=-lnl-3 ... thus failing
-ifeq ($(BR2_PACKAGE_LIBNL),y)
+ifeq ($(BR2_PACKAGE_WPA_SUPPLICANT_NL80211),y)
 ifeq ($(BR2_STATIC_LIBS),y)
 WPA_SUPPLICANT_LIBS += -lnl-3 -lm -lpthread
 endif
@@ -45,6 +48,10 @@ endif
 # Trailing underscore on purpose to not enable CONFIG_EAPOL_TEST
 ifeq ($(BR2_PACKAGE_WPA_SUPPLICANT_EAP),y)
 WPA_SUPPLICANT_CONFIG_ENABLE += CONFIG_EAP_
+# uses dlopen()
+ifeq ($(BR2_STATIC_LIBS),y)
+WPA_SUPPLICANT_CONFIG_DISABLE += CONFIG_EAP_TNC
+endif
 else
 WPA_SUPPLICANT_CONFIG_DISABLE += CONFIG_EAP
 endif
@@ -113,6 +120,22 @@ WPA_SUPPLICANT_DEPENDENCIES += readline
 WPA_SUPPLICANT_CONFIG_ENABLE += CONFIG_READLINE
 endif
 
+ifeq ($(BR2_PACKAGE_WPA_SUPPLICANT_WPA_CLIENT_SO),y)
+WPA_SUPPLICANT_CONFIG_SET += CONFIG_BUILD_WPA_CLIENT_SO
+define WPA_SUPPLICANT_INSTALL_WPA_CLIENT_SO
+	$(INSTALL) -m 0644 -D $(@D)/$(WPA_SUPPLICANT_SUBDIR)/libwpa_client.so \
+		$(TARGET_DIR)/usr/lib/libwpa_client.so
+	$(INSTALL) -m 0644 -D $(@D)/src/common/wpa_ctrl.h \
+		$(TARGET_DIR)/usr/include/wpa_ctrl.h
+endef
+define WPA_SUPPLICANT_INSTALL_STAGING_WPA_CLIENT_SO
+	$(INSTALL) -m 0644 -D $(@D)/$(WPA_SUPPLICANT_SUBDIR)/libwpa_client.so \
+		$(STAGING_DIR)/usr/lib/libwpa_client.so
+	$(INSTALL) -m 0644 -D $(@D)/src/common/wpa_ctrl.h \
+		$(STAGING_DIR)/usr/include/wpa_ctrl.h
+endef
+endif
+
 define WPA_SUPPLICANT_CONFIGURE_CMDS
 	cp $(@D)/wpa_supplicant/defconfig $(WPA_SUPPLICANT_CONFIG)
 	sed -i $(patsubst %,-e 's/^#\(%\)/\1/',$(WPA_SUPPLICANT_CONFIG_ENABLE)) \
@@ -155,6 +178,10 @@ define WPA_SUPPLICANT_INSTALL_DBUS
 endef
 endif
 
+define WPA_SUPPLICANT_INSTALL_STAGING_CMDS
+	$(WPA_SUPPLICANT_INSTALL_STAGING_WPA_CLIENT_SO)
+endef
+
 define WPA_SUPPLICANT_INSTALL_TARGET_CMDS
 	$(INSTALL) -m 0755 -D $(@D)/$(WPA_SUPPLICANT_SUBDIR)/wpa_supplicant \
 		$(TARGET_DIR)/usr/sbin/wpa_supplicant
@@ -163,6 +190,7 @@ define WPA_SUPPLICANT_INSTALL_TARGET_CMDS
 	$(WPA_SUPPLICANT_INSTALL_CLI)
 	$(WPA_SUPPLICANT_INSTALL_PASSPHRASE)
 	$(WPA_SUPPLICANT_INSTALL_DBUS)
+	$(WPA_SUPPLICANT_INSTALL_WPA_CLIENT_SO)
 endef
 
 define WPA_SUPPLICANT_INSTALL_INIT_SYSTEMD

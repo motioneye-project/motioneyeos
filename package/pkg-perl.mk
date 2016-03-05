@@ -39,7 +39,15 @@ PERL_RUN = PERL5LIB= $(HOST_DIR)/usr/bin/perl
 
 define inner-perl-package
 
+# Target packages need both the perl interpreter on the target (for
+# runtime) and the perl interpreter on the host (for
+# compilation). However, host packages only need the perl
+# interpreter on the host.
+ifeq ($(4),target)
+$(2)_DEPENDENCIES += host-perl perl
+else
 $(2)_DEPENDENCIES += host-perl
+endif
 
 #
 # Configure step. Only define it if not already defined by the package
@@ -132,6 +140,7 @@ define $(2)_BUILD_CMDS
 	else \
 		$$(MAKE1) \
 			PERL_INC=$$(STAGING_DIR)/usr/lib/perl5/$$(PERL_VERSION)/$$(PERL_ARCHNAME)/CORE \
+			FIXIN=: \
 			$$($(2)_BUILD_OPTS) pure_all; \
 	fi
 endef

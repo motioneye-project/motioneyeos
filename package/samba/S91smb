@@ -15,12 +15,12 @@ mkdir -p /var/run/samba
 RETVAL=0
 
 start() {
-	echo -n "Starting SMB services: "
+	printf "Starting SMB services: "
 	smbd -D
 	RETVAL=$?
 	echo "done"
 
-	echo -n "Starting NMB services: "
+	printf "Starting NMB services: "
 	nmbd -D
 	RETVAL2=$?
 	echo "done"
@@ -31,13 +31,13 @@ start() {
 }	
 
 stop() {
-	echo -n "Shutting down SMB services: "
+	printf "Shutting down SMB services: "
 	kill -9 `pidof smbd`
 	RETVAL=$?
 	rm -f /var/run/samba/smbd.pid
 	echo "done"
 
-	echo -n "Shutting down NMB services: "
+	printf "Shutting down NMB services: "
 	kill -9 `pidof nmbd`
 	RETVAL2=$?
 	rm -f /var/run/samba/nmbd.pid
@@ -53,7 +53,7 @@ restart() {
 }	
 
 reload() {
-        echo -n "Reloading smb.conf file: "
+        printf "Reloading smb.conf file: "
 	kill -HUP `pidof smbd`
 	RETVAL=$?
 	echo "done"

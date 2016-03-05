@@ -1,0 +1,40 @@
+add lua.pc
+
+Signed-off-by: Francois Perrad <francois.perrad@gadz.org>
+
+Index: b/etc/lua.pc
+===================================================================
+--- /dev/null
++++ b/etc/lua.pc
+@@ -0,0 +1,31 @@
++# lua.pc -- pkg-config data for Lua
++
++# vars from install Makefile
++
++# grep '^V=' ../Makefile
++V= 5.3
++# grep '^R=' ../Makefile
++R= 5.3.2
++
++# grep '^INSTALL_.*=' ../Makefile | sed 's/INSTALL_TOP/prefix/'
++prefix= /usr
++INSTALL_BIN= ${prefix}/bin
++INSTALL_INC= ${prefix}/include
++INSTALL_LIB= ${prefix}/lib
++INSTALL_MAN= ${prefix}/man/man1
++INSTALL_LMOD= ${prefix}/share/lua/${V}
++INSTALL_CMOD= ${prefix}/lib/lua/${V}
++
++# canonical vars
++exec_prefix=${prefix}
++libdir=${exec_prefix}/lib
++includedir=${prefix}/include
++
++Name: Lua
++Description: An Extensible Extension Language
++Version: ${R}
++Requires: 
++Libs: -L${libdir} -llua -lm
++Cflags: -I${includedir}
++
++# (end of lua.pc)

@@ -6,7 +6,7 @@
 
 PYTHON_PILLOW_VERSION = 2.4.0
 PYTHON_PILLOW_SOURCE = Pillow-$(PYTHON_PILLOW_VERSION).zip
-PYTHON_PILLOW_SITE = https://pypi.python.org/packages/source/P/Pillow/
+PYTHON_PILLOW_SITE = https://pypi.python.org/packages/source/P/Pillow
 PYTHON_PILLOW_DEPENDENCIES = python zlib freetype jpeg host-python-setuptools
 PYTHON_PILLOW_SETUP_TYPE = setuptools
 

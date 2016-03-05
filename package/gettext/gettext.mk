@@ -4,15 +4,17 @@
 #
 ################################################################################
 
-GETTEXT_VERSION = 0.19.5.1
+GETTEXT_VERSION = 0.19.7
 GETTEXT_SITE = $(BR2_GNU_MIRROR)/gettext
 GETTEXT_SOURCE = gettext-$(GETTEXT_VERSION).tar.xz
 GETTEXT_INSTALL_STAGING = YES
-GETTEXT_LICENSE = GPLv2+
-GETTEXT_LICENSE_FILES = COPYING
+GETTEXT_LICENSE = LGPLv2.1+ (libintl), GPLv3+ (the rest)
+GETTEXT_LICENSE_FILES = COPYING gettext-runtime/intl/COPYING.LIB
 
 GETTEXT_DEPENDENCIES = $(if $(BR2_PACKAGE_LIBICONV),libiconv)
-HOST_GETTEXT_DEPENDENCIES = # we don't want the libiconv dependency
+
+# Avoid using the bundled subset of libxml2
+HOST_GETTEXT_DEPENDENCIES = host-libxml2
 
 GETTEXT_CONF_OPTS += \
 	--disable-libasprintf \

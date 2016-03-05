@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-SOFTETHER_VERSION = 18b120e5f747a84d26302ec706f6c1c91d642ace
+SOFTETHER_VERSION = 4b65e251f240d0b36c704acd598f4ceb07c41413
 SOFTETHER_SITE = $(call github,SoftEtherVPN,SoftEtherVPN,$(SOFTETHER_VERSION))
 SOFTETHER_PATCH = \
 	https://github.com/dajhorn/SoftEtherVPN/commit/c5e5d7e93c6f3302adf5821c29c4efdb7630e418.patch \

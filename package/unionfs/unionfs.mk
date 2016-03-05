@@ -4,9 +4,10 @@
 #
 ################################################################################
 
-UNIONFS_VERSION = 0.26
-UNIONFS_SITE = http://podgorny.cz/unionfs-fuse/releases
-UNIONFS_SOURCE = unionfs-fuse-$(UNIONFS_VERSION).tar.xz
+UNIONFS_VERSION = 1.0
+UNIONFS_SITE = $(call github,rpodgorny,unionfs-fuse,v$(UNIONFS_VERSION))
+UNIONFS_PATCH = \
+	http://git.alpinelinux.org/cgit/aports/plain/main/unionfs-fuse/0001-include-asm-ioctl.h-for-_IOC_SIZE.patch
 UNIONFS_DEPENDENCIES = libfuse host-pkgconf
 UNIONFS_LICENSE = BSD-3c
 UNIONFS_LICENSE_FILES = LICENSE

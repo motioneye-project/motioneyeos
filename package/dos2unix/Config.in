@@ -1,0 +1,7 @@
+config BR2_PACKAGE_DOS2UNIX
+	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE
+	bool "dos2unix"
+	help
+	  dos2unix converts text file line endings between CRLF and LF
+
+	  http://waterlan.home.xs4all.nl/dos2unix.html

@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-OPEN_PLC_UTILS_VERSION = 1f6e7e372b313cf570aa63314037588ed01ec0de
+OPEN_PLC_UTILS_VERSION = 05ef40c0a2949cfaf1c3230e10679fbcf912d174
 OPEN_PLC_UTILS_SITE = $(call github,qca,open-plc-utils,$(OPEN_PLC_UTILS_VERSION))
 OPEN_PLC_UTILS_LICENSE = BSD-3c
 OPEN_PLC_UTILS_LICENSE_FILES = LICENSE

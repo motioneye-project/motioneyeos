@@ -4,9 +4,8 @@
 #
 ################################################################################
 
-SREDIRD_VERSION = 2.2.1-1.1
-SREDIRD_SOURCE = sredird_$(SREDIRD_VERSION).tar.gz
-SREDIRD_SITE = http://snapshot.debian.org/archive/debian/20141023T043132Z/pool/main/s/sredird
+SREDIRD_VERSION = 2.2.2
+SREDIRD_SITE = http://www.ibiblio.org/pub/Linux/system/serial
 SREDIRD_LICENSE = GPLv2+
 SREDIRD_LICENSE_FILES = COPYING
 

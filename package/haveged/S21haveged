@@ -4,12 +4,12 @@
 
 case "$1" in
 	start)
-		echo -n "Starting haveged: "
+		printf "Starting haveged: "
 		start-stop-daemon -S -x /usr/sbin/haveged -- -w 1024 -r 0
 		[ $? = 0 ] && echo "OK" || echo "FAIL"
 		;;
 	stop)
-		echo -n "Stopping haveged: "
+		printf "Stopping haveged: "
 		start-stop-daemon -K -x /usr/sbin/haveged
 		[ $? = 0 ] && echo "OK" || echo "FAIL"
 		;;

@@ -4,10 +4,8 @@
 #
 ################################################################################
 
-POCO_VERSION_MAJOR = 1.4.6
-POCO_VERSION = $(POCO_VERSION_MAJOR)p1
-POCO_SOURCE = poco-$(POCO_VERSION)-all.tar.gz
-POCO_SITE = http://downloads.sourceforge.net/project/poco/sources/poco-$(POCO_VERSION_MAJOR)
+POCO_VERSION = poco-1.6.1-release
+POCO_SITE = $(call github,pocoproject,poco,$(POCO_VERSION))
 POCO_LICENSE = Boost-v1.0
 POCO_LICENSE_FILES = LICENSE
 POCO_INSTALL_STAGING = YES
@@ -41,7 +39,7 @@ endif
 
 define POCO_CONFIGURE_CMDS
 	(cd $(@D); ./configure \
-		--config=Linux-CrossEnv	\
+		--config=Linux		\
 		--prefix=/usr		\
 		--omit="$(POCO_OMIT)"	\
 		$(POCO_CONF_OPTS)	\
@@ -51,7 +49,7 @@ define POCO_CONFIGURE_CMDS
 endef
 
 define POCO_BUILD_CMDS
-	$(MAKE1) POCO_TARGET_OSARCH=$(ARCH) CROSSENV=$(TARGET_CROSS) \
+	$(MAKE1) POCO_TARGET_OSARCH=$(ARCH) CROSS_COMPILE=$(TARGET_CROSS) \
 		MYSQL_LIBDIR=$(STAGING_DIR)/usr/lib/mysql \
 		MYSQL_INCDIR=$(STAGING_DIR)/usr/include/mysql -C $(@D)
 endef

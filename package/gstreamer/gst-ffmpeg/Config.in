@@ -1,5 +1,8 @@
 config BR2_PACKAGE_GST_FFMPEG
 	bool "gst-ffmpeg"
+	# Unsupported for MIPS R6. It bundles a version of libav which
+	# doesn't have support for MIPS R6.
+	depends on !BR2_mips_32r6 && !BR2_mips_64r6
 	select BR2_PACKAGE_GST_PLUGINS_BASE
 	help
 	  GStreamer plugin containing one plugin with a set of elements using

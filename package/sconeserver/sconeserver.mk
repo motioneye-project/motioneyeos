@@ -4,16 +4,17 @@
 #
 ################################################################################
 
-# Release 0.6.0 doesn't build cleanly, so use a recent
-# Git commit.
-SCONESERVER_VERSION = 3b886c3dda6eda39bcb27472d29ed7fd3185ba1d
+SCONESERVER_VERSION = c4b8e14f6e9e06cbff5b4195f69d6fce9391a1cd
 SCONESERVER_SITE = $(call github,sconemad,sconeserver,$(SCONESERVER_VERSION))
 SCONESERVER_LICENSE = GPLv2+
 SCONESERVER_LICENSE_FILES = COPYING
-
+# fetching from Git, we need to generate the configure script
 SCONESERVER_AUTORECONF = YES
 SCONESERVER_DEPENDENCIES += pcre
-SCONESERVER_CONF_OPTS += --with-ip --with-local --with-ip6
+# disable markdown module because its git submodule cmark
+# https://github.com/sconemad/sconeserver/tree/master/markdown
+# has no cross-compile support provided by the sconeserver build system
+SCONESERVER_CONF_OPTS += --with-ip --with-local --with-ip6 --without-markdown
 
 # Sconeserver configure script fails to find the libxml2 headers.
 ifeq ($(BR2_PACKAGE_LIBXML2),y)
@@ -50,7 +51,7 @@ SCONESERVER_CONF_OPTS += \
 	--with-sconesite-image \
 	--with-Magick++-config="$(STAGING_DIR)/usr/bin/Magick++-config"
 else
-SCONESERVER_CONF_OPTS += --without-sconesite-image
+SCONESERVER_CONF_OPTS += --without-sconesite-image --with-Magick++-config=no
 endif
 
 ifeq ($(BR2_PACKAGE_SCONESERVER_MYSQL),y)
@@ -78,7 +79,7 @@ SCONESERVER_CONF_OPTS += --without-rss
 endif
 
 ifeq ($(BR2_PACKAGE_SCONESERVER_LOCATION),y)
-SCONESERVER_DEPENDENCIES += gpsd
+SCONESERVER_DEPENDENCIES += host-pkgconf gpsd
 SCONESERVER_CONF_OPTS += --with-location
 else
 SCONESERVER_CONF_OPTS += --without-location

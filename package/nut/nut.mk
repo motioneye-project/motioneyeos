@@ -50,8 +50,11 @@ else
 NUT_CONF_OPTS += --without-cgi
 endif
 
-# libltdl (libtool) is needed for nut-scanner
-ifeq ($(BR2_PACKAGE_LIBTOOL),y)
+# nut-scanner needs libltdl, which is a wrapper arounf dlopen/dlsym,
+# so is not available for static-only builds.
+# There is no flag to directly enable/disable nut-scanner, it's done
+# via the --enable/disable-libltdl flag.
+ifeq ($(BR2_STATIC_LIBS):$(BR2_PACKAGE_LIBTOOL),:y)
 NUT_DEPENDENCIES += libtool
 NUT_CONF_OPTS += --with-libltdl
 else

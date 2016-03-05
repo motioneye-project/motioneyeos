@@ -12,6 +12,16 @@ LIBVIPS_LICENSE = LGPLv2.1+
 LIBVIPS_LICENSE_FILES = COPYING
 # We're patching gtk-doc.make, so need to autoreconf
 LIBVIPS_AUTORECONF = YES
+
+# Sparc64 compile fails, for all optimization levels except -O0. To
+# fix the problem, use -O0 with no optimization instead. Bug reported
+# upstream at https://gcc.gnu.org/bugzilla/show_bug.cgi?id=69038.
+ifeq ($(BR2_sparc64),y)
+LIBVIPS_CXXFLAGS += -O0
+endif
+
+LIBVIPS_CONF_ENV += CXXFLAGS="$(TARGET_CXXFLAGS) $(LIBVIPS_CXXFLAGS)"
+
 LIBVIPS_CONF_OPTS = \
 	--disable-introspection \
 	--without-dmalloc \

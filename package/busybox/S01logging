@@ -4,14 +4,14 @@
 #
 
 start() {
-	echo -n "Starting logging: "
+	printf "Starting logging: "
 	start-stop-daemon -b -S -q -m -p /var/run/syslogd.pid --exec /sbin/syslogd -- -n
 	start-stop-daemon -b -S -q -m -p /var/run/klogd.pid --exec /sbin/klogd -- -n
 	echo "OK"
 }
 
 stop() {
-	echo -n "Stopping logging: "
+	printf "Stopping logging: "
 	start-stop-daemon -K -q -p /var/run/syslogd.pid
 	start-stop-daemon -K -q -p /var/run/klogd.pid
 	echo "OK"

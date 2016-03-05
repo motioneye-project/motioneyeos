@@ -1,0 +1,14 @@
+config BR2_PACKAGE_ASSIMP
+	bool "assimp"
+	depends on BR2_INSTALL_LIBSTDCPP
+	select BR2_PACKAGE_ZLIB
+	help
+	  Open Asset Import Library (assimp) is a portable Open Source
+	  library to import various well-known 3D model formats in a uniform
+	  manner. The most recent version also knows how to export 3d files
+	  and is therefore suitable as a general-purpose 3D model converter.
+
+	  http://www.assimp.org
+
+comment "assimp needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP

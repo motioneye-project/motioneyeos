@@ -15,15 +15,14 @@ Index: aumix-2.8/src/Makefile.am
 ===================================================================
 --- aumix-2.8.orig/src/Makefile.am
 +++ aumix-2.8/src/Makefile.am
-@@ -7,9 +7,8 @@
+@@ -9,9 +9,8 @@
  		mouse.c common.h curses.h gpm-xterm.h gtk.h interactive.h  \
  		mouse.h play.xpm record.xpm
  localedir	= $(datadir)/locale
 -INCLUDES	= -I../intl -DLOCALEDIR=\"$(localedir)\" -I@includedir@
--CFLAGS		= @CFLAGS@ @GLIB_CFLAGS@ @GTK_CFLAGS@
--LDADD		= -L@libdir@
 +INCLUDES	= -I../intl -DLOCALEDIR=\"$(localedir)\"
-+AM_CFLAGS	= @CFLAGS@ @GLIB_CFLAGS@ @GTK_CFLAGS@
- LIBS		= @LIBS@ @GTK_LIBS@ @INTLLIBS@
+ AM_CFLAGS	= @CFLAGS@ @GLIB_CFLAGS@ @GTK_CFLAGS@
+-LDADD		= -L@libdir@
+ LIBS		= @LIBS@ @GTK_LIBS@ @LIBINTL@
  DEFS		= @DEFS@
  

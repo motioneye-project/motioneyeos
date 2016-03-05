@@ -1,12 +1,15 @@
-The vivante headers pull in X11 defines which break eglconvenience
+Some EGL headers pull in X11 defines which break eglconvenience
 
 * Adds a missing include to qeglplatformcontext.cpp
 * Fix namespace collision on CursorShape, pulled in from X11/X.h
 * Do not pass MESA_EGL_NO_X11_HEADERS when xcb is use
+* Reorder includes to have the X11-header the last include
 
 [based on patch from Yocto project]
 Signed-off-by: Jérôme Pouiller <jezz@sysmic.org>
-
+Updated to fix issue in qeglplatformscreen (reorder includes, see also
+http://lists.qt-project.org/pipermail/development/2013-March/010511.html)
+Signed-off-by: Marc Andre <marc.andre@netline.ch>
 
 diff -Nuar a/src/platformsupport/eglconvenience/eglconvenience.pri b/src/platformsupport/eglconvenience/eglconvenience.pri
 --- a/src/platformsupport/eglconvenience/eglconvenience.pri	2014-08-07 16:53:50.038277168 -0400
@@ -60,5 +63,20 @@ diff -Nuar a/src/platformsupport/eglconvenience/qeglplatformcontext.cpp b/src/pl
 +#include "qeglplatformcursor_p.h"
  #include "qeglplatformscreen_p.h"
  
+ QT_BEGIN_NAMESPACE
+--- qtbase-opensource-src-5.5.0.orig/src/platformsupport/eglconvenience/qeglplatformscreen.cpp	2015-09-01 14:46:57.116883353 +0200
++++ qtbase-opensource-src-5.5.0/src/platformsupport/eglconvenience/qeglplatformscreen.cpp	2015-09-01 14:47:36.560882333 +0200
+@@ -31,11 +31,11 @@
+ **
+ ****************************************************************************/
+
+-#include "qeglplatformscreen_p.h"
+-#include "qeglplatformwindow_p.h"
+ #include <QtGui/qwindow.h>
+ #include <qpa/qwindowsysteminterface.h>
+ #include <QtPlatformSupport/private/qopenglcompositor_p.h>
++#include "qeglplatformscreen_p.h"
++#include "qeglplatformwindow_p.h"
+
  QT_BEGIN_NAMESPACE
  

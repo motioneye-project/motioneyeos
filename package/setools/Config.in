@@ -7,10 +7,12 @@ config BR2_PACKAGE_SETOOLS
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on !BR2_STATIC_LIBS
 	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_USE_WCHAR
 	# bfin: infamous _ symbol prefix issue
 	# nios2: triggers some toolchain issue "No symbol version
 	# section for versioned symbol"
-	depends on !BR2_nios2 && !BR2_bfin
+	# arc: libselinux not available
+	depends on !BR2_nios2 && !BR2_bfin && !BR2_arc
 	help
 	  SETools is an open source project designed to facilitate
 	  SELinux policy analysis. The primary tools are:
@@ -24,7 +26,9 @@ config BR2_PACKAGE_SETOOLS
 	   * secmds - command-line tools to analyze and search SELinux
 	     policy.
 
-comment "setools needs a toolchain w/ threads, C++, dynamic library"
+	  https://github.com/TresysTechnology/setools3/wiki
+
+comment "setools needs a toolchain w/ threads, C++, wchar, dynamic library"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS \
-		|| !BR2_INSTALL_LIBSTDCPP
-	depends on !BR2_nios2 && !BR2_bfin
+		|| !BR2_USE_WCHAR || !BR2_INSTALL_LIBSTDCPP
+	depends on !BR2_nios2 && !BR2_bfin && !BR2_arc

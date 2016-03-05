@@ -67,6 +67,12 @@ config BR2_PACKAGE_NTP_NTPSNMPD
 	help
 	  Install ntpsnmpd NTP SNMP MIB agent.
 
+config BR2_PACKAGE_NTP_NTPTIME
+	bool "ntptime"
+	help
+	  The ntptime utility program is used to read and set kernel time
+	  variables.
+
 config BR2_PACKAGE_NTP_NTPTRACE
 	bool "ntptrace"
 	depends on BR2_PACKAGE_PERL

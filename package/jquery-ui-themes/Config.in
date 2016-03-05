@@ -1,5 +1,5 @@
 config BR2_PACKAGE_JQUERY_UI_THEMES
-	bool "jQuery UI themes"
+	bool "jquery-ui-themes"
 	depends on BR2_PACKAGE_JQUERY_UI
 	help
 	  Themes for jQuery UI.

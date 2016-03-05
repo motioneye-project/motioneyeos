@@ -5,7 +5,7 @@
 ################################################################################
 
 DOVECOT_VERSION_MAJOR = 2.2
-DOVECOT_VERSION = $(DOVECOT_VERSION_MAJOR).18
+DOVECOT_VERSION = $(DOVECOT_VERSION_MAJOR).21
 DOVECOT_SITE = http://www.dovecot.org/releases/$(DOVECOT_VERSION_MAJOR)
 DOVECOT_INSTALL_STAGING = YES
 DOVECOT_LICENSE = LGPLv2.1
@@ -33,7 +33,7 @@ ifeq ($(BR2_PACKAGE_DOVECOT_MYSQL)$(BR2_PACKAGE_DOVECOT_SQLITE),)
 DOVECOT_CONF_OPTS += --without-sql
 endif
 
-ifeq ($(BR2_PACKAGE_DOVECOT_BZIP2),y)
+ifeq ($(BR2_PACKAGE_BZIP2),y)
 DOVECOT_CONF_OPTS += --with-bzlib
 DOVECOT_DEPENDENCIES += bzip2
 else
@@ -76,7 +76,21 @@ else
 DOVECOT_CONF_OPTS += --without-sqlite
 endif
 
-ifeq ($(BR2_PACKAGE_DOVECOT_ZLIB),y)
+ifeq ($(BR2_PACKAGE_LZ4),y)
+DOVECOT_CONF_OPTS += --with-lz4
+DOVECOT_DEPENDENCIES += lz4
+else
+DOVECOT_CONF_OPTS += --without-lz4
+endif
+
+ifeq ($(BR2_PACKAGE_XZ),y)
+DOVECOT_CONF_OPTS += --with-lzma
+DOVECOT_DEPENDENCIES += xz
+else
+DOVECOT_CONF_OPTS += --without-lzma
+endif
+
+ifeq ($(BR2_PACKAGE_ZLIB),y)
 DOVECOT_CONF_OPTS += --with-zlib
 DOVECOT_DEPENDENCIES += zlib
 else

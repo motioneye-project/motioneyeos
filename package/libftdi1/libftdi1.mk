@@ -6,7 +6,7 @@
 
 LIBFTDI1_VERSION = 1.2
 LIBFTDI1_SOURCE = libftdi1-$(LIBFTDI1_VERSION).tar.bz2
-LIBFTDI1_SITE = http://www.intra2net.com/en/developer/libftdi/download/
+LIBFTDI1_SITE = http://www.intra2net.com/en/developer/libftdi/download
 LIBFTDI1_INSTALL_STAGING = YES
 LIBFTDI1_DEPENDENCIES = libusb
 LIBFTDI1_LICENSE = LGPLv2 (libftdi1), GPLv2 with exception (ftdipp1)

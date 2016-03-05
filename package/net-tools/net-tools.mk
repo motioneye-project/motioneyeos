@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-NET_TOOLS_VERSION = 3eb367aedf1280f35105ede465c350a39b55fa91
+NET_TOOLS_VERSION = 3f170bff115303e92319791cbd56371e33dcbf6d
 NET_TOOLS_SITE = git://git.code.sf.net/p/net-tools/code
 NET_TOOLS_DEPENDENCIES = $(if $(BR2_NEEDS_GETTEXT_IF_LOCALE),gettext)
 NET_TOOLS_LDFLAGS = $(TARGET_LDFLAGS) \

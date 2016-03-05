@@ -8,7 +8,7 @@
 # http://sourceforge.net/p/mjpg-streamer/code/commit_browser
 # oliv3r forked the repo to add support for 3.16 and 3.17 kernels:
 # http://sourceforge.net/p/mjpg-streamer/patches/14/
-MJPG_STREAMER_VERSION = 730b5bcdc378b6a201131c6c2620eedbe0f6eb30
+MJPG_STREAMER_VERSION = bbf32fddfd02a9e072e89e83a5b33e6ca0a7bd4b
 MJPG_STREAMER_SITE = $(call github,oliv3r,mjpg-streamer,$(MJPG_STREAMER_VERSION))
 MJPG_STREAMER_LICENSE = GPLv2+
 MJPG_STREAMER_LICENSE_FILES = LICENSE

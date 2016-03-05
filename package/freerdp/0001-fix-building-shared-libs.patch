@@ -1,0 +1,26 @@
+winpr/tools: fix building shared libs
+
+libwinpr-makecert-tool.a is used to build libxfreerdp-server.so, so even
+if we are building a static libwinpr-makecert-tool.a library, we need to
+build it with -fPIC.
+
+Patch and commit log suggested by Samuel MARTIN.
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+Cc: Samuel Martin <s.martin49@gmail.com>
+
+diff -durN freerdp-440916eae2e07463912d5fe507677e67096eb083.orig/winpr/tools/makecert/CMakeLists.txt freerdp-440916eae2e07463912d5fe507677e67096eb083/winpr/tools/makecert/CMakeLists.txt
+--- freerdp-440916eae2e07463912d5fe507677e67096eb083.orig/winpr/tools/makecert/CMakeLists.txt	2014-08-25 06:52:43.000000000 -0700
++++ freerdp-440916eae2e07463912d5fe507677e67096eb083/winpr/tools/makecert/CMakeLists.txt	2014-10-24 15:39:39.600319523 -0700
+@@ -37,4 +37,11 @@
+ add_subdirectory(cli)
+ 
+ set_property(TARGET ${MODULE_NAME} PROPERTY FOLDER "WinPR/Tools")
++
++if(BUILD_SHARED_LIBS)
++	# build libwinpr-makecert-tool.a with PIC because it is used to build
++	# the shared library libxfreerdp-server.so.
++	set_property(TARGET ${MODULE_NAME} PROPERTY POSITION_INDEPENDENT_CODE TRUE)
++endif()
++
+ export_complex_library(LIBNAME ${MODULE_NAME})

@@ -1,6 +1,5 @@
 config BR2_PACKAGE_JQUERY_UI
-	bool "jQuery UI"
-	select BR2_PACKAGE_JQUERY
+	bool "jquery-ui"
 	help
 	  jQuery UI provides abstractions for low-level interaction and
 	  animation, advanced effects and high-level, themeable widgets,

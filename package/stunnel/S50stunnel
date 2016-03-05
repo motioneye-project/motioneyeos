@@ -1,13 +1,13 @@
 #!/bin/sh
 
 start() {
-  echo -n "Starting stunnel: "
+  printf "Starting stunnel: "
   start-stop-daemon -S -q -p /var/run/stunnel.pid --exec /usr/bin/stunnel
   [ $? = 0 ] && echo "OK" || echo "FAIL"
 }
 
 stop() {
-  echo -n "Stopping stunnel: "
+  printf "Stopping stunnel: "
   start-stop-daemon -K -q -p /var/run/stunnel.pid
   [ $? = 0 ] && echo "OK" || echo "FAIL"
 }

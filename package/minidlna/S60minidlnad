@@ -4,14 +4,14 @@
 #
 
 start() {
-	echo -n "Starting minidlna: "
+	printf "Starting minidlna: "
 	umask 077
 	start-stop-daemon -S -q -p /var/run/minidlna/minidlna.pid \
-		--exec /usr/sbin/minidlnad
+		--exec /usr/sbin/minidlnad -- "$@"
 	[ $? = 0 ] && echo "OK" || echo "FAIL"
 }
 stop() {
-	echo -n "Stopping minidlna: "
+	printf "Stopping minidlna: "
 	start-stop-daemon -K -q -p /var/run/minidlna/minidlna.pid
 	[ $? = 0 ] && echo "OK" || echo "FAIL"
 }
@@ -19,7 +19,7 @@ restart() {
 	stop
 	# Sleep needed for minidlna to restart properly
 	sleep 1
-	start
+	start "$@"
 }
 
 case "$1" in
@@ -32,8 +32,11 @@ case "$1" in
   restart|reload)
 	restart
 	;;
+  force-reload)
+	restart -R
+	;;
   *)
-	echo "Usage: $0 {start|stop|restart}"
+	echo "Usage: $0 {start|stop|restart|force-reload}"
 	exit 1
 esac
 

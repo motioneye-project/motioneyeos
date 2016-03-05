@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-NBD_VERSION = 3.11
+NBD_VERSION = 3.13
 NBD_SOURCE = nbd-$(NBD_VERSION).tar.xz
 NBD_SITE = http://downloads.sourceforge.net/project/nbd/nbd/$(NBD_VERSION)
 NBD_CONF_OPTS = --enable-lfs

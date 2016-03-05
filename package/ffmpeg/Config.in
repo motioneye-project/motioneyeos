@@ -1,8 +1,7 @@
 menuconfig BR2_PACKAGE_FFMPEG
 	bool "ffmpeg"
-	# fenv.h lacks FE_INVALID, FE_OVERFLOW & FE_UNDERFLOW
-	depends on !BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_NIOSII201305
-	depends on !BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_NIOSII201405
+	# fenv.h lacks FE_INVALID, FE_OVERFLOW & FE_UNDERFLOW on nios2
+	depends on !BR2_nios2
 	help
 	  FFmpeg is a complete, cross-platform solution to record, convert
 	  and stream audio and video.

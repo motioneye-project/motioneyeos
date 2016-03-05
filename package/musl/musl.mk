@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-MUSL_VERSION = 1.1.10
+MUSL_VERSION = 1.1.12
 MUSL_SITE = http://www.musl-libc.org/releases
 MUSL_LICENSE = MIT
 MUSL_LICENSE_FILES = COPYRIGHT
@@ -12,6 +12,11 @@ MUSL_LICENSE_FILES = COPYRIGHT
 # Before musl is configured, we must have the first stage
 # cross-compiler and the kernel headers
 MUSL_DEPENDENCIES = host-gcc-initial linux-headers
+
+# musl does not provide a sys/queue.h implementation, so add the
+# netbsd-queue package that will install a sys/queue.h file in the
+# staging directory based on the NetBSD implementation.
+MUSL_DEPENDENCIES += netbsd-queue
 
 # musl is part of the toolchain so disable the toolchain dependency
 MUSL_ADD_TOOLCHAIN_DEPENDENCY = NO
@@ -28,7 +33,9 @@ define MUSL_CONFIGURE_CMDS
 			--host=$(GNU_TARGET_NAME) \
 			--prefix=/usr \
 			--libdir=/lib \
-			--disable-gcc-wrapper)
+			--disable-gcc-wrapper \
+			--enable-static \
+			$(if $(BR2_STATIC_LIBS),--disable-shared,--enable-shared))
 endef
 
 define MUSL_BUILD_CMDS

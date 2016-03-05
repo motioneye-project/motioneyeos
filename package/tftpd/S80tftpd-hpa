@@ -4,9 +4,9 @@ OPTIONS="-c -l -s /var/lib/tftpboot"
 
 set -e
 
-PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
 DESC="HPA's tftpd"
-NAME=in.tftpd
+NAME=tftpd
 DAEMON=/usr/sbin/$NAME
 PIDFILE=/var/run/$NAME.pid
 SCRIPTNAME=/etc/init.d/S80tftpd-hpa
@@ -37,12 +37,12 @@ d_reload() {
 
 case "$1" in
   start)
-	echo -n "Starting $DESC: "
+	printf "Starting $DESC: "
 	d_start
 	echo "done"
 	;;
   stop)
-	echo -n "Stopping $DESC: "
+	printf "Stopping $DESC: "
 	d_stop
 	echo "done"
 	;;
@@ -55,7 +55,7 @@ case "$1" in
 	#	If the daemon responds to changes in its config file
 	#	directly anyway, make this an "exit 0".
 	#
-	# echo -n "Reloading $DESC configuration..."
+	# printf "Reloading $DESC configuration..."
 	# d_reload
 	# echo "done."
   #;;
@@ -65,7 +65,7 @@ case "$1" in
 	#	option to the "reload" entry above. If not, "force-reload" is
 	#	just the same as "restart".
 	#
-	echo -n "Restarting $DESC: "
+	printf "Restarting $DESC: "
 	d_stop
 	sleep 1
 	d_start

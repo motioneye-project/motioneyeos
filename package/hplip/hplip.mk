@@ -4,10 +4,10 @@
 #
 ################################################################################
 
-HPLIP_VERSION = 3.13.10
+HPLIP_VERSION = 3.15.11
 HPLIP_SITE = http://downloads.sourceforge.net/hplip/hplip
 HPLIP_AUTORECONF = YES
-HPLIP_DEPENDENCIES = cups libusb jpeg
+HPLIP_DEPENDENCIES = cups libusb jpeg host-pkgconf
 HPLIP_LICENSE = GPLv2 BSD-3c MIT
 HPLIP_LICENSE_FILES = COPYING
 
@@ -25,9 +25,7 @@ HPLIP_CONF_OPTS = \
 	--disable-foomatic-drv-install \
 	--disable-foomatic-rip-hplip-install \
 	--enable-new-hpcups \
-	--enable-lite-build \
-	--with-sysroot=$(STAGING_DIR) \
-	--includedir=$(STAGING_DIR)/usr/include
+	--enable-lite-build
 
 ifeq ($(BR2_PACKAGE_DBUS),y)
 HPLIP_CONF_OPTS += --enable-dbus-build
@@ -41,13 +39,5 @@ define HPLIP_POST_INSTALL_TARGET_FIXUP
 	cp $(@D)/data/models/* $(TARGET_DIR)/usr/share/hplip/data/models
 endef
 HPLIP_POST_INSTALL_TARGET_HOOKS += HPLIP_POST_INSTALL_TARGET_FIXUP
-
-define HPLIP_PRE_CONFIGURE_FIXUP
-	touch $(@D)/AUTHORS
-	touch $(@D)/ChangeLog
-	touch $(@D)/NEWS
-	touch $(@D)/README
-endef
-HPLIP_PRE_CONFIGURE_HOOKS += HPLIP_PRE_CONFIGURE_FIXUP
 
 $(eval $(autotools-package))

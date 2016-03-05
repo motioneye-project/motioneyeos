@@ -7,4 +7,4 @@ config BR2_PACKAGE_LZ4
 	  in multiple GB/s per core, typically reaching RAM speed limits
 	  on multi-core systems.
 
-	  https://code.google.com/p/lz4/
+	  http://www.lz4.org/

@@ -6,7 +6,7 @@
 
 MONKEY_VERSION_MAJOR = 1.5
 MONKEY_VERSION = $(MONKEY_VERSION_MAJOR).6
-MONKEY_SITE = http://monkey-project.com/releases/$(MONKEY_VERSION_MAJOR)/
+MONKEY_SITE = http://monkey-project.com/releases/$(MONKEY_VERSION_MAJOR)
 MONKEY_LICENSE = Apache-2.0
 MONKEY_LICENSE_FILES = LICENSE
 
@@ -30,7 +30,7 @@ MONKEY_CONF_OPTS += --uclib-mode --no-backtrace
 endif
 
 ifeq ($(BR2_TOOLCHAIN_USES_MUSL),y)
-MONKEY_CONF_OPTS += --musl-mode
+MONKEY_CONF_OPTS += --musl-mode --no-backtrace
 endif
 
 ifeq ($(BR2_PACKAGE_MONKEY_SHARED),y)

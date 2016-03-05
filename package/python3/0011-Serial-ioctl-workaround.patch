@@ -1,0 +1,33 @@
+From f67b0073a30eb83d42a2ead0a62020dfe5db8d1e Mon Sep 17 00:00:00 2001
+From: Baruch Siach <baruch@tkos.co.il>
+Date: Wed, 23 Dec 2015 11:44:02 +0100
+Subject: [PATCH] Serial ioctl() workaround
+
+The ioctls.h of some architectures (notably xtensa) references structs from
+linux/serial.h. Make sure to include this header as well.
+
+Also, undef TIOCTTYGSTRUCT that require reference to internal kernel tty_struct,
+but isn't actually referenced in modern kernels.
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+ Modules/termios.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/Modules/termios.c b/Modules/termios.c
+index b78d33e..58b0444 100644
+--- a/Modules/termios.c
++++ b/Modules/termios.c
+@@ -9,7 +9,9 @@
+ #endif
+ 
+ #include <termios.h>
++#include <linux/serial.h>
+ #include <sys/ioctl.h>
++#undef TIOCTTYGSTRUCT
+ 
+ /* HP-UX requires that this be included to pick up MDCD, MCTS, MDSR,
+  * MDTR, MRI, and MRTS (appearantly used internally by some things
+-- 
+2.6.4
+

@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-OPUS_VERSION = 1.1
+OPUS_VERSION = 1.1.2
 OPUS_SITE = http://downloads.xiph.org/releases/opus
 OPUS_LICENSE = BSD-3c
 OPUS_LICENSE_FILES = COPYING

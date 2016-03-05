@@ -1,5 +1,7 @@
 config BR2_PACKAGE_JSON_C
 	bool "json-c"
+	# uses __sync_val_compare_and_swap_4
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
 	help
 	  JSON-C - A JSON implementation in C
 

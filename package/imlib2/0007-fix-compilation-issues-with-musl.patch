@@ -1,0 +1,31 @@
+From bdfa1169c549122a8dc848b84469458101adeb20 Mon Sep 17 00:00:00 2001
+From: Brendan Heading <brendanheading@gmail.com>
+Date: Mon, 3 Aug 2015 12:44:55 +0100
+Subject: [PATCH 1/1] fix compilation issues with musl
+
+Using time_t strictly requires time.h to be included.
+
+NOTE I've stuck to the convention on this project where most of the
+files appear to pick up most of their headers by including "common.h".
+
+Upstream-status: pending
+Signed-off-by: Brendan Heading <brendanheading@gmail.com>
+---
+ src/lib/common.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/lib/common.h b/src/lib/common.h
+index 798965f..9053826 100644
+--- a/src/lib/common.h
++++ b/src/lib/common.h
+@@ -9,6 +9,7 @@
+ #include <config.h>
+ #include <string.h>
+ #include <math.h>
++#include <time.h>
+ #ifdef WITH_DMALLOC
+ #include <dmalloc.h>
+ #endif
+-- 
+2.4.3
+

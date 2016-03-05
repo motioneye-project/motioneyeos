@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-GIFLIB_VERSION = 5.1.1
+GIFLIB_VERSION = 5.1.2
 GIFLIB_SOURCE = giflib-$(GIFLIB_VERSION).tar.bz2
 GIFLIB_SITE = http://downloads.sourceforge.net/project/giflib
 GIFLIB_INSTALL_STAGING = YES

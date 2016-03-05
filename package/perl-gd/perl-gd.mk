@@ -7,7 +7,7 @@
 PERL_GD_VERSION = 2.53
 PERL_GD_SOURCE = GD-$(PERL_GD_VERSION).tar.gz
 PERL_GD_SITE = $(BR2_CPAN_MIRROR)/authors/id/L/LD/LDS
-PERL_GD_DEPENDENCIES = perl zlib libpng freetype gd
+PERL_GD_DEPENDENCIES = zlib libpng freetype gd
 PERL_GD_LICENSE = Artistic-2.0 or GPLv1+
 PERL_GD_LICENSE_FILES = LICENSE
 

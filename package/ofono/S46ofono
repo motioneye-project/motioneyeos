@@ -2,12 +2,12 @@
 
 case "$1" in
 	start)
-		echo -n "Starting ofono ... "
+		printf "Starting ofono ... "
 		start-stop-daemon -S -q -m -b -p /var/run/ofonod.pid --exec /usr/sbin/ofonod -- -n
 		echo "done."
 		;;
 	stop)
-		echo -n "Stopping ofono ..."
+		printf "Stopping ofono ..."
 		start-stop-daemon -K -q -p /var/run/ofonod.pid
 		echo "done."
 		;;

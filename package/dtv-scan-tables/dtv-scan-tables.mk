@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-DTV_SCAN_TABLES_VERSION = f2053b34a5ac6f263edc22888b0db4b1fa563fe4
+DTV_SCAN_TABLES_VERSION = 6da0f5e851dd5e51e43b87136228a88705a7ba69
 DTV_SCAN_TABLES_SITE = http://git.linuxtv.org/cgit.cgi/dtv-scan-tables.git
 DTV_SCAN_TABLES_SITE_METHOD = git
 
@@ -14,7 +14,7 @@ DTV_SCAN_TABLES_SITE_METHOD = git
 # However, the package prominently contains the COPYING and COPYING.LIB
 # license files (respectively for the GPLv2 and the LGPLv2.1), so we use
 # that as the licensing information.
-DTV_SCAN_TABLES_LICENSE = GPLv2 LGPLv2.1
+DTV_SCAN_TABLES_LICENSE = GPLv2, LGPLv2.1
 DTV_SCAN_TABLES_LICENSE_FILES = COPYING COPYING.LGPL
 
 define DTV_SCAN_TABLES_INSTALL_TARGET_CMDS

@@ -1,0 +1,41 @@
+config BR2_PACKAGE_LIBEVAS_GENERIC_LOADERS
+	bool "libevas generic loaders"
+	depends on BR2_PACKAGE_EFL
+	select BR2_PACKAGE_ZLIB
+	help
+	  These are additional "generic" loaders for Evas that are
+	  stand-alone executables that evas may run from its generic
+	  loader module.
+
+	  https://www.enlightenment.org/
+
+if BR2_PACKAGE_LIBEVAS_GENERIC_LOADERS
+
+config BR2_PACKAGE_LIBEVAS_GENERIC_LOADERS_LIBRAW
+	bool "libraw loader"
+	depends on BR2_INSTALL_LIBSTDCPP # libraw
+	select BR2_PACKAGE_LIBRAW
+	help
+	  This option enables the Evas generic Libraw loader
+
+comment "libraw loader needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP
+
+config BR2_PACKAGE_LIBEVAS_GENERIC_LOADERS_SVG
+	bool "SVG loader"
+	depends on BR2_USE_MMU # librsvg -> glib2
+	depends on BR2_USE_WCHAR # librsvg -> glib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # librsvg -> glib2
+	depends on BR2_INSTALL_LIBSTDCPP # librsvg -> pango
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # librsvg -> pango -> harfbuzz
+	select BR2_PACKAGE_LIBRSVG
+	select BR2_PACKAGE_CAIRO
+	help
+	  This option enables the Evas generic SVG loader
+
+comment "SVG loader needs a toolchain w/ wchar, threads, C++"
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
+	depends on BR2_USE_MMU
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || !BR2_INSTALL_LIBSTDCPP
+
+endif

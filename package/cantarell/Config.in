@@ -1,0 +1,7 @@
+config BR2_PACKAGE_CANTARELL
+	bool "cantarell"
+	help
+	  The Cantarell font family is a contemporary Humanist
+	  sans serif designed for on-screen reading.
+
+	  https://wiki.gnome.org/Projects/CantarellFonts

@@ -4,13 +4,16 @@
 #
 ################################################################################
 
-PIXMAN_VERSION = 0.32.6
+PIXMAN_VERSION = 0.34.0
+PIXMAN_SOURCE = pixman-$(PIXMAN_VERSION).tar.bz2
 PIXMAN_SITE = http://xorg.freedesktop.org/releases/individual/lib
 PIXMAN_LICENSE = MIT
 PIXMAN_LICENSE_FILES = COPYING
 
 PIXMAN_INSTALL_STAGING = YES
 PIXMAN_DEPENDENCIES = host-pkgconf
+
+# For 0001-Disable-tests.patch
 PIXMAN_AUTORECONF = YES
 
 # don't build gtk based demos
@@ -25,8 +28,13 @@ endif
 # toolchain gets confused about TLS access through GOT (PIC), so disable TLS
 # movhi	r4, %got_hiadj(%tls_ldo(fast_path_cache))
 # {standard input}:172: Error: bad expression
-ifeq ($(BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_NIOSII201405),y)
+ifeq ($(BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_NIOSII),y)
 PIXMAN_CONF_ENV += CFLAGS="$(TARGET_CFLAGS) -DPIXMAN_NO_TLS"
+endif
+
+# Altivec detection isn't reliable for CS toolchains
+ifeq ($(BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_POWERPC),y)
+PIXMAN_CONF_OPTS += --disable-vmx
 endif
 
 $(eval $(autotools-package))

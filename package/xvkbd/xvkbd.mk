@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-XVKBD_VERSION = 3.2
-XVKBD_SITE = http://homepage3.nifty.com/tsato/xvkbd
+XVKBD_VERSION = 3.7
+XVKBD_SITE = http://t-sato.in.coocan.jp/xvkbd
 XVKBD_LICENSE = GPLv2+
 XVKBD_LICENSE_FILES = README
 

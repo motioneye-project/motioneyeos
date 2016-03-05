@@ -1,0 +1,47 @@
+From 2fb04c2245167e247b95400112b5dbea12fcb206 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Wed, 30 Dec 2015 20:02:29 +0100
+Subject: [PATCH] hidtest: dont' use a C++ source file, since it's pure C
+
+This allows to build the test program with toolchains that don't have
+C++ support.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ hidtest/Makefile.am                | 6 +++---
+ hidtest/{hidtest.cpp => hidtest.c} | 0
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+ rename hidtest/{hidtest.cpp => hidtest.c} (100%)
+
+diff --git a/hidtest/Makefile.am b/hidtest/Makefile.am
+index d278644..5f52c3f 100644
+--- a/hidtest/Makefile.am
++++ b/hidtest/Makefile.am
+@@ -4,17 +4,17 @@ AM_CPPFLAGS = -I$(top_srcdir)/hidapi/
+ if OS_LINUX
+ noinst_PROGRAMS = hidtest-libusb hidtest-hidraw
+ 
+-hidtest_hidraw_SOURCES = hidtest.cpp
++hidtest_hidraw_SOURCES = hidtest.c
+ hidtest_hidraw_LDADD = $(top_builddir)/linux/libhidapi-hidraw.la
+ 
+-hidtest_libusb_SOURCES = hidtest.cpp
++hidtest_libusb_SOURCES = hidtest.c
+ hidtest_libusb_LDADD = $(top_builddir)/libusb/libhidapi-libusb.la
+ else
+ 
+ # Other OS's
+ noinst_PROGRAMS = hidtest
+ 
+-hidtest_SOURCES = hidtest.cpp
++hidtest_SOURCES = hidtest.c
+ hidtest_LDADD = $(top_builddir)/$(backend)/libhidapi.la
+ 
+ endif
+diff --git a/hidtest/hidtest.cpp b/hidtest/hidtest.c
+similarity index 100%
+rename from hidtest/hidtest.cpp
+rename to hidtest/hidtest.c
+-- 
+2.6.4
+

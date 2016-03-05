@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-APACHE_VERSION = 2.4.16
+APACHE_VERSION = 2.4.18
 APACHE_SOURCE = httpd-$(APACHE_VERSION).tar.bz2
 APACHE_SITE = http://archive.apache.org/dist/httpd
 APACHE_LICENSE = Apache-2.0
@@ -34,10 +34,6 @@ APACHE_CONF_OPTS = \
 	--with-mpm=worker \
 	--disable-lua \
 	--disable-luajit
-
-ifeq ($(BR2_ARCH_HAS_ATOMICS),y)
-APACHE_CONF_OPTS += --enable-nonportable-atomics=yes
-endif
 
 ifeq ($(BR2_PACKAGE_LIBXML2),y)
 APACHE_DEPENDENCIES += libxml2

@@ -4,8 +4,12 @@
 #
 ################################################################################
 
-LSHW_VERSION = B.02.16
+LSHW_VERSION = B.02.17
 LSHW_SITE = http://ezix.org/software/files
+LSHW_PATCH = \
+	http://git.alpinelinux.org/cgit/aports/plain/testing/lshw/basename-limits-long-bits.patch \
+	http://git.alpinelinux.org/cgit/aports/plain/testing/lshw/no-private-uint.patch \
+	https://github.com/lyonel/lshw/commit/988f5449791ebf869ab9fa7520463dab4eae3404.patch
 LSHW_LICENSE = GPLv2
 LSHW_LICENSE_FILES = COPYING
 

@@ -1,0 +1,22 @@
+Always use the fallback behaviour for determining the version number
+
+When built from within buildroot the micropython build process detects
+that it is inside a git repository and ends up using the buildroot
+version number instead of the correct micropython version number.
+
+Signed-off-by: Chris Packham <judge.packham@gmail.com>
+---
+diff -Naur micropython-v1.4.5-old/py/makeversionhdr.py micropython-v1.4.5/py/makeversionhdr.py
+--- micropython-v1.4.5-old/py/makeversionhdr.py	2015-08-12 00:42:30.000000000 +1200
++++ micropython-v1.4.5/py/makeversionhdr.py	2015-09-16 10:21:06.698962836 +1200
+@@ -70,9 +70,7 @@
+ 
+ def make_version_header(filename):
+     # Get version info using git, with fallback to docs/conf.py
+-    info = get_version_info_from_git()
+-    if info is None:
+-        info = get_version_info_from_docs_conf()
++    info = get_version_info_from_docs_conf()
+ 
+     git_tag, git_hash, ver = info
+ 

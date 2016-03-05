@@ -237,21 +237,6 @@ index 60b9bb3..c951218 100755
  uninstall:
  	cd ${BIN}; rm -f ${TOOLS}
  	cd ${MAN}; rm -f ${PAGES}
-diff --git a/scripts/Makefile b/scripts/Makefile
-index c9a785a..022e5f9 100755
---- a/scripts/Makefile
-+++ b/scripts/Makefile
-@@ -30,8 +30,8 @@ all compile:
- install:
- scripts:
- manuals:
--	test -d ${MAN} || install -m ${DIR_PERM} -o ${OWNER} -g ${GROUP} -d ${MAN}
--	install -m ${MAN_PERM} -o ${OWNER} -g ${GROUP} ${PAGES} ${MAN}
-+	test -d ${MAN} || install -m ${DIR_PERM} -d ${MAN}
-+	install -m ${MAN_PERM} ${PAGES} ${MAN}
- library:
- uninstall:
- clean:
 diff --git a/serial/Makefile b/serial/Makefile
 index c25f1a6..6420d4a 100755
 --- a/serial/Makefile

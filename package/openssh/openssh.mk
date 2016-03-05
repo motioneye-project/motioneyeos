@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-OPENSSH_VERSION = 6.9p1
+OPENSSH_VERSION = 7.1p2
 OPENSSH_SITE = http://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable
 OPENSSH_LICENSE = BSD-3c BSD-2c Public Domain
 OPENSSH_LICENSE_FILES = LICENCE
@@ -24,6 +24,10 @@ endef
 
 # uClibc toolchain for ARC doesn't support PIE at the moment
 ifeq ($(BR2_arc),y)
+OPENSSH_CONF_OPTS += --without-pie
+endif
+# PIE and static does not work on Linux
+ifeq ($(BR2_STATIC_LIBS),y)
 OPENSSH_CONF_OPTS += --without-pie
 endif
 

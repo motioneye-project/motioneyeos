@@ -7,7 +7,6 @@ config BR2_PACKAGE_ICU
 	# file, and it cannot easily be changed to generate FLAT
 	# format.
 	depends on !BR2_BINFMT_FLAT
-	depends on BR2_ARCH_HAS_ATOMICS
 	help
 	  International Components for Unicode.
 
@@ -28,6 +27,5 @@ endif
 
 comment "icu needs a toolchain w/ C++, wchar, threads"
 	depends on !BR2_BINFMT_FLAT
-	depends on BR2_ARCH_HAS_ATOMICS
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR || \
 		!BR2_TOOLCHAIN_HAS_THREADS

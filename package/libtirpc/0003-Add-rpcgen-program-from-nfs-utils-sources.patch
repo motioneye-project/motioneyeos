@@ -87,7 +87,7 @@ index 0000000..2277b6f
 +	$(CPPFLAGS_FOR_BUILD) $(AM_CFLAGS) $(CFLAGS_FOR_BUILD)
 +LINK = $(CC_FOR_BUILD) $(AM_CFLAGS) $(CFLAGS_FOR_BUILD) $(AM_LDFLAGS) $(LDFLAGS_FOR_BUILD) -o $@
 +
-+bin_PROGRAMS = rpcgen
++noinst_PROGRAMS = rpcgen
 +
 +rpcgen_SOURCES = \
 +	rpc_clntout.c \

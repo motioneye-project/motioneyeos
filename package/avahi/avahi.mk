@@ -68,9 +68,21 @@ AVAHI_CONF_ENV = \
 	avahi_cv_sys_cxx_works=yes \
 	DATADIRNAME=share
 
+# Note: even if we have Gtk2 and Gtk3 support in Buildroot, we
+# explicitly disable support for them, in order to avoid the following
+# circular dependencies:
+#
+#  avahi -> libglade -> libgtk2 -> cups -> avahi
+#  avahi -> libgtk3 -> cups -> avahi
+#
+# Since Gtk2 and Gtk3 in Avahi are only used for some example/demo
+# programs, we decided to disable their support to solve the circular
+# dependency.
 AVAHI_CONF_OPTS = \
 	--disable-qt3 \
 	--disable-qt4 \
+	--disable-gtk \
+	--disable-gtk3 \
 	--disable-gdbm \
 	--disable-pygtk \
 	--disable-mono \
@@ -103,6 +115,10 @@ else
 AVAHI_CONF_OPTS += --disable-libdaemon
 endif
 
+ifeq ($(BR2_PACKAGE_LIBCAP),y)
+AVAHI_DEPENDENCIES += libcap
+endif
+
 ifeq ($(BR2_PACKAGE_AVAHI_DAEMON),y)
 AVAHI_DEPENDENCIES += expat
 AVAHI_CONF_OPTS += --with-xml=expat
@@ -124,19 +140,6 @@ ifeq ($(BR2_PACKAGE_LIBGLIB2),y)
 AVAHI_DEPENDENCIES += libglib2
 else
 AVAHI_CONF_OPTS += --disable-glib --disable-gobject
-endif
-
-ifeq ($(BR2_PACKAGE_LIBGLADE),y)
-AVAHI_DEPENDENCIES += libglade
-else
-AVAHI_CONF_OPTS += --disable-gtk
-endif
-
-ifeq ($(BR2_PACKAGE_LIBGTK3),y)
-AVAHI_DEPENDENCIES += libgtk3
-AVAHI_CONF_OPTS += --enable-gtk3
-else
-AVAHI_CONF_OPTS += --disable-gtk3
 endif
 
 ifeq ($(BR2_PACKAGE_PYTHON),y)

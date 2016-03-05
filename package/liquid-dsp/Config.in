@@ -1,0 +1,28 @@
+comment "liquid-dsp requires a (e)glibc/musl toolchain w/ dynamic library"
+	depends on !BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_POWERPC
+	depends on !(BR2_TOOLCHAIN_USES_GLIBC || BR2_TOOLCHAIN_USES_MUSL) || BR2_STATIC_LIBS
+
+config BR2_PACKAGE_LIQUID_DSP
+	bool "liquid-dsp"
+	depends on BR2_TOOLCHAIN_USES_GLIBC || BR2_TOOLCHAIN_USES_MUSL
+	depends on !BR2_STATIC_LIBS
+	# These result in internal compiler error
+	depends on !BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_POWERPC
+	help
+	  Liquid-DSP is a free and open-source signal processing
+	  library for software-defined radios written in C.  Its
+	  purpose is to provide a set of extensible DSP modules that
+	  do no rely on external dependencies or cumbersome
+	  frameworks.
+
+	  http://liquidsdr.org/
+
+if BR2_PACKAGE_LIQUID_DSP
+
+config BR2_PACKAGE_LIQUID_DSP_FAST
+	bool "optimize for speed over accuracy"
+	depends on !BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_SH
+	help
+	  Optimize for speed over accuracy.
+
+endif

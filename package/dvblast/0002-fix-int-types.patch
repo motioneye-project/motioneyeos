@@ -1,0 +1,24 @@
+Standard integer types are uintXX_t not u_intXX_t
+
+This fixes the build with the musl C library.
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+
+diff -durN dvblast-3.0.orig/dvblast.h dvblast-3.0/dvblast.h
+--- dvblast-3.0.orig/dvblast.h	2015-10-05 17:51:14.000000000 +0200
++++ dvblast-3.0/dvblast.h	2015-10-30 16:29:25.586125193 +0100
+@@ -49,10 +49,10 @@
+  * Raw udp packet structure with flexible-array payload
+  *****************************************************************************/
+ struct udpheader { // FAVOR_BSD hell ...
+-  u_int16_t source;
+-  u_int16_t dest;
+-  u_int16_t len;
+-  u_int16_t check;
++  uint16_t source;
++  uint16_t dest;
++  uint16_t len;
++  uint16_t check;
+ };
+ 
+ #if defined(__FreeBSD__) || defined(__APPLE__)

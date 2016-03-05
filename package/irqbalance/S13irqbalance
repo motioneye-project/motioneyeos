@@ -9,7 +9,7 @@ PID="/var/run/irqbalance.pid"
 
 case "$1" in
     start)
-	echo -n "Starting irqbalance: "
+	printf "Starting irqbalance: "
 	start-stop-daemon -S -q -x $EXEC -- $ARGS
 	if [ $? != 0 ]; then
 	    echo "FAILED"
@@ -20,7 +20,7 @@ case "$1" in
 	pidof irqbalance > $PID
 	;;
     stop)
-	echo -n "Stopping irqbalance: "
+	printf "Stopping irqbalance: "
 	start-stop-daemon -K -q -p $PID
 	echo "OK"
 	;;
