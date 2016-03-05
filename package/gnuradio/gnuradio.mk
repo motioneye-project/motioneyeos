@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-GNURADIO_VERSION = 3.7.5
-GNURADIO_SITE = http://gnuradio.org/redmine/attachments/download/792
+GNURADIO_VERSION = 3.7.9.1
+GNURADIO_SITE = http://gnuradio.org/releases/gnuradio
 GNURADIO_LICENSE = GPLv3+
 GNURADIO_LICENSE_FILES = COPYING
 
