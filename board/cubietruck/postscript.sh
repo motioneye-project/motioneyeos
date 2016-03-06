@@ -2,9 +2,6 @@
 
 UBOOT_HOST_DIR=$TARGET/../build/host-uboot-tools-*
 
-# copy System.map
-cp $TARGET/../build/linux-*/System.map $TARGET/System.map
-
 cp $IMG_DIR/uImage $BOOT_DIR
 cp $IMG_DIR/sun7i-a20-cubietruck.dtb $BOOT_DIR
 

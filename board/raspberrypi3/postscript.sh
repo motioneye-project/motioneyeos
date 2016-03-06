@@ -2,9 +2,6 @@
 
 RPI_FW_DIR=$TARGET/../images/rpi-firmware
 
-# copy System.map
-cp $TARGET/../build/linux-*/System.map $TARGET/System.map
-
 cp $BOARD_DIR/config.txt $BOOT_DIR
 cp $BOARD_DIR/cmdline.txt $BOOT_DIR
 cp $BOARD_DIR/fwupdater.gz $BOOT_DIR

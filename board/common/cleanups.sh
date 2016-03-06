@@ -15,8 +15,9 @@ rm -rf $TARGET/etc/rc_keymaps/
 rm -rf $TARGET/etc/default/
 rm -rf $TARGET/etc/ctdb/
 rm -rf $TARGET/etc/sudoers.d/
-
-rm -rf $TARGET/data/*
+rm -rf $TARGET/etc/ssl/man
+rm -rf $TARGET/etc/ssl/misc
+rm -rf $TARGET/etc/ssl/private
 
 rm -f $TARGET/etc/rc_maps.cfg
 rm -f $TARGET/etc/udev/hwdb.d/20-pci-vendor-model.hwdb
@@ -31,7 +32,7 @@ rm -rf $TARGET/usr/share/ffmpeg/
 rm -rf $TARGET/usr/share/perl5/
 rm -rf $TARGET/usr/share/common-lisp/
 
-find $TARGET -name '*libmount*' | xargs rm -f
+find $TARGET -name '*libmount*' | xargs rm -rf
 
 # various binaries
 rm -f $TARGET/bin/more
@@ -40,6 +41,9 @@ rm -f $TARGET/usr/sbin/readprofile
 rm -f $TARGET/sbin/nologin
 rm -f $TARGET/bin/mountpoint
 rm -f $TARGET/sbin/ldattach
+rm -f $TARGET/usr/sbin/ldattach
+rm -f $TARGET/sbin/slattach
+rm -f $TARGET/sbin/plipconfig
 rm -f $TARGET/sbin/fstrim
 rm -f $TARGET/usr/sbin/rtcwake
 rm -f $TARGET/bin/lsblk
@@ -100,6 +104,9 @@ rm -f $TARGET/usr/bin/uuidgen
 rm -f $TARGET/usr/bin/getopt
 rm -f $TARGET/bin/isosize
 rm -f $TARGET/usr/sbin/fdformat
+rm -f $TARGET/usr/bin/linux32
+rm -f $TARGET/usr/bin/linux64
+rm -f $TARGET/usr/bin/uname26
 
 rm -f $TARGET/usr/bin/slogin
 rm -f $TARGET/usr/bin/ssh-keyscan
@@ -109,6 +116,7 @@ rm -f $TARGET/usr/bin/ssh-agent
 rm -f $TARGET/usr/libexec/ssh-keysign
 rm -f $TARGET/usr/libexec/ssh-pkcs11-helper
 rm -f $TARGET/usr/libexec/rmt
+rm -rf $TARGET/libexec
 
 # samba4 unneeded stuff
 rm -f $TARGET/usr/bin/cifsdd
@@ -167,4 +175,7 @@ rm -f $TARGET/etc/init.d/S20urandom
 rm -f $TARGET/etc/init.d/S80dhcp-relay
 rm -f $TARGET/etc/init.d/S80dhcp-server
 rm -f $TARGET/etc/init.d/S91smb
+
+# other unwanted dirs
+rm -rf $TARGET/data/*
 

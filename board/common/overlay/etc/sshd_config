@@ -1,7 +1,6 @@
 Port 22
 ListenAddress 0.0.0.0
 
-HostKey /data/etc/ssh_host_key
 HostKey /data/etc/ssh_host_rsa_key
 HostKey /data/etc/ssh_host_dsa_key
 HostKey /data/etc/ssh_host_ecdsa_key

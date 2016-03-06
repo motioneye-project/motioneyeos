@@ -1,8 +1,5 @@
 #!/bin/sh
 
-# copy System.map
-cp $TARGET/../build/linux-*/System.map $TARGET/System.map
-
 # boot directory
 mkdir -p $BOOT_DIR
 
