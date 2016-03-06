@@ -44,7 +44,7 @@ this syntax, you will need to write:
 ----
 /usr/bin/foo f 755 0 0 - - - - -
 /usr/bin/bar f 755 root root - - - - -
-/data/buz f buz-user buz-group - - - - -
+/data/buz f 644 buz-user buz-group - - - - -
 ----
 
 Alternatively, if you want to change owner/permission of a directory
