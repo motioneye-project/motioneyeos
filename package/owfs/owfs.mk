@@ -17,8 +17,11 @@ OWFS_LICENSE = GPLv2+, LGPLv2 (owtcl)
 OWFS_LICENSE_FILES = COPYING COPYING.LIB
 
 ifeq ($(BR2_PACKAGE_LIBFUSE),y)
-OWFS_CONF_OPTS += --enable-owfs
 OWFS_DEPENDENCIES += libfuse
+OWFS_CONF_OPTS += \
+	--enable-owfs \
+	--with-fuseinclude=$(STAGING_DIR)/usr/include \
+	--with-fuselib=$(STAGING_DIR)/usr/lib
 else
 OWFS_CONF_OPTS += --disable-owfs
 endif
