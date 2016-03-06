@@ -29,7 +29,7 @@ endif
 WEBKITGTK24_CONF_ENV = ac_cv_path_icu_config=$(STAGING_DIR)/usr/bin/icu-config
 
 # Some 32-bit architectures need libatomic support for 64-bit ops
-ifeq ($(BR2_i386)$(BR2_mips)$(BR2_mipsel)$(BR2_sh),y)
+ifeq ($(BR2_TOOLCHAIN_HAS_LIBATOMIC),y)
 WEBKITGTK24_CONF_ENV += LIBS="-latomic"
 endif
 
