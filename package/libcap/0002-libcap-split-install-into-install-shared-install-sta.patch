@@ -1,15 +1,20 @@
-libcap: split install into install-shared/install-static
+From 8d7339169b9a5df2082731fe5468923be4be39af Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Sun, 6 Mar 2016 22:53:24 +0100
+Subject: [PATCH] libcap: split install into install-shared/install-static
 
 In order to support static only builds, split the install target into
 install-shared and install-static targets.
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+[yann.morin.1998@free.fr: install the .pc file in the common rule]
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
 
-Index: b/libcap/Makefile
-===================================================================
+diff --git a/libcap/Makefile b/libcap/Makefile
+index 97fea3f..7ac45dd 100644
 --- a/libcap/Makefile
 +++ b/libcap/Makefile
-@@ -60,11 +60,17 @@
+@@ -70,19 +70,25 @@ $(MINLIBNAME): $(OBJS)
  cap_text.o: cap_text.c $(USE_GPERF_OUTPUT) $(INCLS)
  	$(CC) $(CFLAGS) $(IPATH) $(INCLUDE_GPERF_OUTPUT) -c $< -o $@
  
@@ -19,6 +24,8 @@ Index: b/libcap/Makefile
 +install-common:
  	mkdir -p -m 0755 $(INCDIR)/sys
  	install -m 0644 include/sys/capability.h $(INCDIR)/sys
++	mkdir -p -m 0755 $(PKGCONFIGDIR)
++	install -m 0644 libcap.pc $(PKGCONFIGDIR)/libcap.pc
  	mkdir -p -m 0755 $(LIBDIR)
 +
 +install-static: install-common
@@ -28,3 +35,14 @@ Index: b/libcap/Makefile
  	install -m 0755 $(MINLIBNAME) $(LIBDIR)/$(MINLIBNAME)
  	ln -sf $(MINLIBNAME) $(LIBDIR)/$(MAJLIBNAME)
  	ln -sf $(MAJLIBNAME) $(LIBDIR)/$(LIBNAME)
+ ifeq ($(FAKEROOT),)
+ 	-/sbin/ldconfig
+ endif
+-	mkdir -p -m 0755 $(PKGCONFIGDIR)
+-	install -m 0644 libcap.pc $(PKGCONFIGDIR)/libcap.pc
+ 
+ clean:
+ 	$(LOCALCLEAN)
+-- 
+1.9.1
+
