@@ -3,10 +3,14 @@
 # Start logging
 #
 
+SYSLOGD_ARGS=-n
+KLOGD_ARGS=-n
+[ -r /etc/default/logging ] && . /etc/default/logging
+
 start() {
 	printf "Starting logging: "
-	start-stop-daemon -b -S -q -m -p /var/run/syslogd.pid --exec /sbin/syslogd -- -n
-	start-stop-daemon -b -S -q -m -p /var/run/klogd.pid --exec /sbin/klogd -- -n
+	start-stop-daemon -b -S -q -m -p /var/run/syslogd.pid --exec /sbin/syslogd -- $SYSLOGD_ARGS
+	start-stop-daemon -b -S -q -m -p /var/run/klogd.pid --exec /sbin/klogd -- $KLOGD_ARGS
 	echo "OK"
 }
 
