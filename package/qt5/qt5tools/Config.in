@@ -26,6 +26,7 @@ config BR2_PACKAGE_QT5TOOLS_PIXELTOOL
 
 config BR2_PACKAGE_QT5TOOLS_QTDIAG
 	bool "qtdiag"
+	select BR2_PACKAGE_QT5BASE_GUI
 	help
 	  Compile and install the qtdiag program.
 
