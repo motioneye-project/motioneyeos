@@ -1,0 +1,14 @@
+disable split-stack for non-thread builds
+
+Signed-off-by: Waldemar Brodkorb <wbx@openadk.org>
+
+diff -Nur gcc-4.9.3.orig/libgcc/config/t-stack gcc-4.9.3/libgcc/config/t-stack
+--- gcc-4.9.3.orig/libgcc/config/t-stack	2010-10-01 21:31:49.000000000 +0200
++++ gcc-4.9.3/libgcc/config/t-stack	2016-03-07 01:34:32.000000000 +0100
+@@ -1,4 +1,6 @@
+ # Makefile fragment to provide generic support for -fsplit-stack.
+ # This should be used in config.host for any host which supports
+ # -fsplit-stack.
++ifeq ($(enable_threads),yes)
+ LIB2ADD_ST += $(srcdir)/generic-morestack.c $(srcdir)/generic-morestack-thread.c
++endif
