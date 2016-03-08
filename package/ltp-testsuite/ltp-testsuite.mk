@@ -41,9 +41,9 @@ LTP_TESTSUITE_CONF_ENV += \
 # Requires uClibc fts and bessel support, normally not enabled
 ifeq ($(BR2_TOOLCHAIN_USES_UCLIBC),y)
 define LTP_TESTSUITE_REMOVE_UNSUPPORTED
-        rm -rf $(@D)/testcases/kernel/controllers/cpuset/
-        rm -rf $(@D)/testcases/misc/math/float/bessel/
-        rm -f $(@D)/testcases/misc/math/float/float_bessel.c
+	rm -rf $(@D)/testcases/kernel/controllers/cpuset/
+	rm -rf $(@D)/testcases/misc/math/float/bessel/
+	rm -f $(@D)/testcases/misc/math/float/float_bessel.c
 endef
 LTP_TESTSUITE_POST_PATCH_HOOKS += LTP_TESTSUITE_REMOVE_UNSUPPORTED
 endif
