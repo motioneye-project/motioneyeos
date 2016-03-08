@@ -30,7 +30,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_ZEROMQ_PGM),y)
 ZEROMQ_DEPENDENCIES += host-pkgconf openpgm
-ZEROMQ_CONF_OPTS += --with-system-pgm
+ZEROMQ_CONF_OPTS += --with-pgm
 endif
 
 # ZeroMQ uses libsodium if it's available.
