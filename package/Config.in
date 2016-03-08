@@ -1449,6 +1449,7 @@ endif
 	source "package/nginx/Config.in"
 	source "package/ngircd/Config.in"
 	source "package/ngrep/Config.in"
+	source "package/nload/Config.in"
 	source "package/nmap/Config.in"
 	source "package/noip/Config.in"
 	source "package/ntp/Config.in"
