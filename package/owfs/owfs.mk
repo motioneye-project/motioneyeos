@@ -15,6 +15,7 @@ OWFS_AUTORECONF = YES
 # owtcl license is declared in module/ownet/c/src/include/ow_functions.h
 OWFS_LICENSE = GPLv2+, LGPLv2 (owtcl)
 OWFS_LICENSE_FILES = COPYING COPYING.LIB
+OWFS_INSTALL_STAGING = YES
 
 ifeq ($(BR2_PACKAGE_LIBFUSE),y)
 OWFS_DEPENDENCIES += libfuse
