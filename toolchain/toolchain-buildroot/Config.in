@@ -110,6 +110,7 @@ config BR2_TOOLCHAIN_BUILDROOT_LIBC
 	default "musl"	 if BR2_TOOLCHAIN_BUILDROOT_MUSL
 
 source "package/linux-headers/Config.in"
+source "package/musl/Config.in"
 source "package/uclibc/Config.in"
 source "package/glibc/Config.in"
 source "package/binutils/Config.in.host"
