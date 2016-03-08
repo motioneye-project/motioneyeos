@@ -1,0 +1,55 @@
+From: Baruch Siach <baruch@tkos.co.il>
+Date: Tue, 8 Mar 2016 14:25:34 +0200
+Subject: [PATCH] Fix: build failure when __GLIBC_PREREQ is missing
+
+The musl C library does not provide the __GLIBC_PREREQ macro. Instead of
+relying on glibc version test, check directly for the availability of
+epoll_create1().
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Patch status: sent upstream rebased on master branch
+(http://lists.lttng.org/pipermail/lttng-dev/2016-March/025593.html)
+
+ configure.ac             | 2 +-
+ src/common/compat/poll.h | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 66d83b60b017..4fc1160c9a08 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -70,7 +70,7 @@ AC_CHECK_FUNCS([ \
+ 	gethostbyname gethostname getpagesize localtime_r memchr memset \
+ 	mkdir munmap putenv realpath rmdir socket strchr strcspn strdup \
+ 	strncasecmp strndup strpbrk strrchr strstr strtol strtoul \
+-	strtoull \
++	strtoull epoll_create1 \
+ ])
+ 
+ # Babeltrace viewer check
+diff --git a/src/common/compat/poll.h b/src/common/compat/poll.h
+index 699901848dc1..84f25d5c85aa 100644
+--- a/src/common/compat/poll.h
++++ b/src/common/compat/poll.h
+@@ -73,7 +73,7 @@ enum {
+ 	LPOLLNVAL = EPOLLHUP,
+ 	LPOLLRDHUP = EPOLLRDHUP,
+ 	/* Close on exec feature of epoll */
+-#if __GLIBC_PREREQ(2, 9)
++#if defined(HAVE_EPOLL_CREATE1) && defined(EPOLL_CLOEXEC)
+ 	LTTNG_CLOEXEC = EPOLL_CLOEXEC,
+ #else
+ 	/*
+@@ -127,7 +127,7 @@ extern int compat_epoll_create(struct lttng_poll_event *events,
+ #define lttng_poll_create(events, size, flags) \
+ 	compat_epoll_create(events, size, flags)
+ 
+-#if __GLIBC_PREREQ(2, 9)
++#if defined(HAVE_EPOLL_CREATE1) && defined(EPOLL_CLOEXEC)
+ static inline int compat_glibc_epoll_create(int size __attribute__((unused)),
+ 		int flags)
+ {
+-- 
+2.7.0
+
