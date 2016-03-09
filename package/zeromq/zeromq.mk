@@ -28,6 +28,13 @@ ifeq ($(BR2_STATIC_LIBS),y)
 ZEROMQ_CONF_OPTS += LIBS=-lstdc++
 endif
 
+ifeq ($(BR2_PACKAGE_ZEROMQ_NORM),y)
+ZEROMQ_CONF_OPTS += --with-norm
+ZEROMQ_DEPENDENCIES += norm
+else
+ZEROMQ_CONF_OPTS += --without-norm
+endif
+
 ifeq ($(BR2_PACKAGE_ZEROMQ_PGM),y)
 ZEROMQ_DEPENDENCIES += host-pkgconf openpgm
 ZEROMQ_CONF_OPTS += --with-pgm
