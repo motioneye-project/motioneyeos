@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-PANGOMM_VERSION_MAJOR = 2.39
+PANGOMM_VERSION_MAJOR = 2.38
 PANGOMM_VERSION = $(PANGOMM_VERSION_MAJOR).1
 PANGOMM_SOURCE = pangomm-$(PANGOMM_VERSION).tar.xz
 PANGOMM_SITE = http://ftp.gnome.org/pub/gnome/sources/pangomm/$(PANGOMM_VERSION_MAJOR)
