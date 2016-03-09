@@ -4,14 +4,14 @@
 #
 ################################################################################
 
-WESTON_VERSION = 1.8.0
+WESTON_VERSION = 1.10.0
 WESTON_SITE = http://wayland.freedesktop.org/releases
 WESTON_SOURCE = weston-$(WESTON_VERSION).tar.xz
 WESTON_LICENSE = MIT
 WESTON_LICENSE_FILES = COPYING
 
-WESTON_DEPENDENCIES = host-pkgconf wayland libxkbcommon pixman libpng \
-	jpeg mtdev udev cairo libinput
+WESTON_DEPENDENCIES = host-pkgconf wayland wayland-protocols \
+	libxkbcommon pixman libpng jpeg mtdev udev cairo libinput
 
 WESTON_CONF_OPTS = \
 	--with-dtddir=$(STAGING_DIR)/usr/share/wayland \
@@ -24,6 +24,9 @@ WESTON_CONF_OPTS = \
 	--disable-headless-compositor \
 	--disable-weston-launch \
 	--disable-colord
+
+WESTON_MAKE_OPTS = \
+	WAYLAND_PROTOCOLS_DATADIR=$(STAGING_DIR)/usr/share/wayland-protocols
 
 ifeq ($(BR2_PACKAGE_LIBUNWIND),y)
 WESTON_DEPENDENCIES += libunwind
