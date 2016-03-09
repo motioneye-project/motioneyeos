@@ -332,11 +332,11 @@ config BR2_TARGET_UBOOT_ZYNQ_IMAGE
 	depends on BR2_TARGET_UBOOT_SPL
 	depends on BR2_TARGET_UBOOT_FORMAT_DTB_IMG
 	help
-	 Generate the BOOT.BIN file from U-Boot's SPL. The image
-	 boots the Xilinx Zynq chip without any FPGA bitstream.
-	 A bitstream can be loaded by the U-Boot. The SPL searchs
-	 for u-boot-dtb.img file so this U-Boot format is required
-	 to be set.
+	  Generate the BOOT.BIN file from U-Boot's SPL. The image
+	  boots the Xilinx Zynq chip without any FPGA bitstream.
+	  A bitstream can be loaded by the U-Boot. The SPL searchs
+	  for u-boot-dtb.img file so this U-Boot format is required
+	  to be set.
 
 menuconfig BR2_TARGET_UBOOT_ENVIMAGE
 	bool "Environment image"
