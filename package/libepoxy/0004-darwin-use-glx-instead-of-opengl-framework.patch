@@ -1,0 +1,95 @@
+From d010922282580a32dfebcda12ee1c307b3ef6005 Mon Sep 17 00:00:00 2001
+From: Jeremy Huddleston Sequoia <jeremyhu@apple.com>
+Date: Mon, 18 Jan 2016 09:49:55 -0800
+Subject: [PATCH 4/4] darwin: Use GLX instead of OpenGL.framework if it is the
+ current context
+
+Also makes a stab at similar support for Win32
+
+anholt/libepoxy#63
+
+Signed-off-by: Jeremy Huddleston Sequoia <jeremyhu@apple.com>
+Fetched from pull #81 on github for libepoxy:
+https://github.com/anholt/libepoxy/pull/81/commits
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+---
+ src/dispatch_common.c | 29 ++++++++++++++++-------------
+ 1 file changed, 16 insertions(+), 13 deletions(-)
+
+diff --git a/src/dispatch_common.c b/src/dispatch_common.c
+index 163d348..cb9f76a 100644
+--- a/src/dispatch_common.c
++++ b/src/dispatch_common.c
+@@ -482,16 +482,20 @@ epoxy_glx_dlsym(const char *name)
+ void *
+ epoxy_gl_dlsym(const char *name)
+ {
+-#ifdef _WIN32
++#if defined(_WIN32) || defined(__APPLE__)
++if (!epoxy_current_context_is_glx()) {
++# if defined(_WIN32)
+     return do_dlsym(&api.gl_handle, "OPENGL32", name, true);
+-#elif defined(__APPLE__)
++# elif defined(__APPLE__)
+     return do_dlsym(&api.gl_handle,
+                     "/System/Library/Frameworks/OpenGL.framework/Versions/Current/OpenGL",
+                     name, true);
+-#else
++# endif
++}
++#endif
++
+     /* There's no library for desktop GL support independent of GLX. */
+     return epoxy_glx_dlsym(name);
+-#endif
+ }
+ 
+ void *
+@@ -615,7 +619,7 @@ epoxy_get_bootstrap_proc_address(const char *name)
+      */
+ #if PLATFORM_HAS_GLX
+     if (api.glx_handle && glXGetCurrentContext())
+-        return epoxy_gl_dlsym(name);
++        return epoxy_glx_dlsym(name);
+ #endif
+ 
+     /* If epoxy hasn't loaded any API-specific library yet, try to
+@@ -644,22 +648,17 @@ epoxy_get_bootstrap_proc_address(const char *name)
+     }
+ #endif /* PLATFORM_HAS_EGL */
+ 
+-    /* Fall back to GLX */
++    /* Fall back to the platform default */
+     return epoxy_gl_dlsym(name);
+ }
+ 
+ void *
+ epoxy_get_proc_address(const char *name)
+ {
+-#ifdef _WIN32
+-    return wglGetProcAddress(name);
+-#elif defined(__APPLE__)
+-    return epoxy_gl_dlsym(name);
+-#else
+ #if PLATFORM_HAS_GLX
+     if (epoxy_current_context_is_glx()) {
+         return glXGetProcAddressARB((const GLubyte *)name);
+-    } else
++    }
+ #endif /* PLATFORM_HAS_GLX */
+ #if PLATFORM_HAS_EGL
+     {
+@@ -674,8 +673,12 @@ epoxy_get_proc_address(const char *name)
+         }
+     }
+ #endif /* PLATFORM_HAS_EGL */
++#if defined(_WIN32)
++    return wglGetProcAddress(name);
++#elif defined(__APPLE__)
++    return epoxy_gl_dlsym(name);
++#endif
+     errx(1, "Couldn't find current GLX or EGL context.\n");
+-#endif /* _WIN32 | __APPLE__*/
+ }
+ 
+ WRAPPER_VISIBILITY (void)
