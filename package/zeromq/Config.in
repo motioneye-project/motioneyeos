@@ -34,6 +34,6 @@ config BR2_PACKAGE_ZEROMQ_PGM
 	help
 	  Add support for Pragmatic General Multicast protocol (RFC 3208)
 	  implemented either over raw IP packets or UDP datagrams
-	  (encapsulated PGM). This requires OpenPGM library.
+	  (encapsulated PGM).
 
 endif
