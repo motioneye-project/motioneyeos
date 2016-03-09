@@ -44,5 +44,12 @@ endef
 ICU_POST_PATCH_HOOKS += ICU_COPY_CUSTOM_DATA
 endif
 
+define ICU_REMOVE_DEV_FILES
+	rm -f $(addprefix $(TARGET_DIR)/usr/bin/,derb genbrk gencfu gencnval gendict genrb icuinfo makeconv uconv)
+	rm -f $(addprefix $(TARGET_DIR)/usr/sbin/,genccode gencmn gennorm2 gensprep icupkg)
+	rm -rf $(TARGET_DIR)/usr/share/icu
+endef
+ICU_POST_INSTALL_TARGET_HOOKS += ICU_REMOVE_DEV_FILES
+
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
