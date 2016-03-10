@@ -13,9 +13,6 @@ config BR2_PACKAGE_FIO
 	# fio uses fallocate() which becomes fallocate64() while compiling with
 	# largefile support, but fallocate64() is not available on nios2
 	depends on !BR2_nios2
-	# does not build on SuperH, issue reported upstream:
-	# https://github.com/axboe/fio/issues/154
-	depends on !BR2_sh
 	help
 	  fio is an I/O tool meant to be used both for benchmark
 	  and stress/hardware verification.
@@ -25,5 +22,5 @@ config BR2_PACKAGE_FIO
 comment "fio needs a toolchain w/ dynamic library, threads"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS
 	depends on BR2_TOOLCHAIN_HAS_SYNC_4
-	depends on !BR2_nios2 && !BR2_sh
+	depends on !BR2_nios2
 	depends on BR2_USE_MMU
