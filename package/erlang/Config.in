@@ -1,14 +1,20 @@
+config BR2_PACKAGE_ERLANG_ARCH_SUPPORTS
+	bool
+	# see HOWTO/INSTALL.md for Erlang's supported platforms
+	# when using its native atomic ops implementation
+	default y if BR2_i386 || BR2_x86_64 || BR2_powerpc || \
+		BR2_sparc_v9 || BR2_arm || BR2_aarch64
+
 comment "erlang needs a toolchain w/ dynamic library"
 	depends on BR2_USE_MMU # fork()
-	depends on BR2_PACKAGE_LIBATOMIC_OPS_ARCH_SUPPORTS
+	depends on BR2_PACKAGE_ERLANG_ARCH_SUPPORTS
 	depends on BR2_STATIC_LIBS
 
 config BR2_PACKAGE_ERLANG
 	bool "erlang"
 	depends on BR2_USE_MMU # fork()
 	depends on !BR2_STATIC_LIBS
-	depends on BR2_PACKAGE_LIBATOMIC_OPS_ARCH_SUPPORTS
-	select BR2_PACKAGE_LIBATOMIC_OPS
+	depends on BR2_PACKAGE_ERLANG_ARCH_SUPPORTS
 	help
 	  Erlang is a programming language used to build massively scalable
 	  soft real-time systems with requirements on high availability.
