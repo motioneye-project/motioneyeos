@@ -29,9 +29,15 @@ config BR2_PACKAGE_PYTHON_CROSSBAR
 	select BR2_PACKAGE_PYTHON_TWISTED
 	select BR2_PACKAGE_PYTHON_UJSON
 	select BR2_PACKAGE_PYTHON_WSACCEL
+	depends on BR2_INSTALL_LIBSTDCPP # python-msgpack -> msgpack
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # python-msgpack -> msgpack
 	help
 	  Crossbar.io is an open-source WAMP application router that
 	  allows to build advanced applications from loosely-coupled
 	  components that can talk in real-time with each other.
 
 	  https://pypi.python.org/pypi/crossbar
+
+comment "python-crossbar needs a toolchain w/ C++"
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
+	depends on !BR2_INSTALL_LIBSTDCPP
