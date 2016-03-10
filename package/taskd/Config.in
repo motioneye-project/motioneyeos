@@ -1,0 +1,15 @@
+config BR2_PACKAGE_TASKD
+	bool "taskd"
+	depends on BR2_USE_WCHAR # gnutls, util-linux
+	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_GNUTLS
+	select BR2_PACKAGE_UTIL_LINUX
+	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
+	help
+	  Task management synchronization daemon.
+
+	  http://taskwarrior.org/
+
+comment "taskd needs a toolchain w/ wchar"
+	depends on BR2_USE_MMU
+	depends on !BR2_USE_WCHAR
