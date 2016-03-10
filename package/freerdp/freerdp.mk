@@ -248,9 +248,9 @@ FREERDP_POST_INSTALL_TARGET_HOOKS += FREERDP_CLEANUP
 # can start a server.
 define FREERDP_INSTALL_KEYS
 	$(INSTALL) -m 0644 -D $(@D)/server/Sample/server.key \
-		      $(TARGET_DIR)/etc/freerdp/keys/server.key
+		$(TARGET_DIR)/etc/freerdp/keys/server.key
 	$(INSTALL) -m 0644 -D $(@D)/server/Sample/server.crt \
-		      $(TARGET_DIR)/etc/freerdp/keys/server.crt
+		$(TARGET_DIR)/etc/freerdp/keys/server.crt
 endef
 FREERDP_POST_INSTALL_TARGET_HOOKS += FREERDP_INSTALL_KEYS
 
