@@ -13,5 +13,4 @@ config BR2_PACKAGE_PYTHON_MSGPACK
 
 comment "python-msgpack needs a toolchain w/ C++"
 	depends on BR2_TOOLCHAIN_HAS_SYNC_4
-	depends on BR2_PACKAGE_PYTHON
 	depends on !BR2_INSTALL_LIBSTDCPP
