@@ -98,9 +98,11 @@ else
 MPLAYER_CONF_OPTS += --disable-termcap
 endif
 
-ifeq ($(BR2_PACKAGE_SAMBA_SMBCLIENT),y)
+# mplayer doesn't pick up libsmbclient cflags
+ifeq ($(BR2_PACKAGE_SAMBA4),y)
+MPLAYER_CFLAGS += `$(PKG_CONFIG_HOST_BINARY) --cflags smbclient`
 MPLAYER_CONF_OPTS += --enable-smb
-MPLAYER_DEPENDENCIES += samba
+MPLAYER_DEPENDENCIES += samba4
 else
 MPLAYER_CONF_OPTS += --disable-smb
 endif
