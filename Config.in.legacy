@@ -145,6 +145,13 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2016.05"
 
+config BR2_PACKAGE_XDRIVER_XF86_INPUT_VOID
+	bool "xf86-input-void removed"
+	select BR2_LEGACY
+	help
+	  The xf86-input-void package has been removed, there's no need
+	  for it in any modern (post-2007) xorg server.
+
 config BR2_KERNEL_HEADERS_3_17
 	bool "kernel headers version 3.17.x are no longer supported"
 	select BR2_KERNEL_HEADERS_3_18
