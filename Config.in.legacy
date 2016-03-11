@@ -145,6 +145,13 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2016.05"
 
+config BR2_GDB_VERSION_7_7
+	bool "gdb 7.7 has been removed"
+	select BR2_LEGACY
+	help
+	  The 7.7 version of gdb has been removed. Use a newer version
+	  instead.
+
 config BR2_PACKAGE_FOOMATIC_FILTERS
 	bool "foomatic-filters"
 	select BR2_LEGACY
