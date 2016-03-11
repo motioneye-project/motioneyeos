@@ -6,7 +6,6 @@ comment "samba4 needs a toolchain w/ RPC, wchar, dynamic library, threads"
 
 config BR2_PACKAGE_SAMBA4
 	bool "samba4"
-	depends on !BR2_PACKAGE_SAMBA
 	depends on BR2_USE_MMU # fork()
 	depends on BR2_USE_WCHAR # e2fsprogs
 	depends on BR2_TOOLCHAIN_HAS_NATIVE_RPC
