@@ -145,6 +145,13 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2016.05"
 
+config BR2_TARGET_UBOOT_CUSTOM_PATCH_DIR
+	bool "uboot custom patch dir removed"
+	select BR2_LEGACY
+	help
+	  The uboot custom patch directory option has been removed. Use
+	  the improved BR2_TARGET_UBOOT_PATCH option instead.
+
 config BR2_PACKAGE_XDRIVER_XF86_INPUT_VOID
 	bool "xf86-input-void removed"
 	select BR2_LEGACY

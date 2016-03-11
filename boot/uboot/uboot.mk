@@ -100,16 +100,6 @@ endef
 UBOOT_POST_EXTRACT_HOOKS += UBOOT_COPY_OLD_LICENSE_FILE
 UBOOT_POST_RSYNC_HOOKS += UBOOT_COPY_OLD_LICENSE_FILE
 
-# Prior to Buildroot 2015.05, only patch directories were supported. New
-# configurations use BR2_TARGET_UBOOT_PATCH instead.
-ifneq ($(call qstrip,$(BR2_TARGET_UBOOT_CUSTOM_PATCH_DIR)),)
-define UBOOT_APPLY_CUSTOM_PATCHES
-	$(APPLY_PATCHES) $(@D) $(BR2_TARGET_UBOOT_CUSTOM_PATCH_DIR) \*.patch
-endef
-
-UBOOT_POST_PATCH_HOOKS += UBOOT_APPLY_CUSTOM_PATCHES
-endif
-
 # Analogous code exists in linux/linux.mk. Basically, the generic
 # package infrastructure handles downloading and applying remote
 # patches. Local patches are handled depending on whether they are
