@@ -75,6 +75,19 @@ else
 PERF_MAKE_FLAGS += NO_LIBELF=1 NO_DWARF=1
 endif
 
+ifeq ($(BR2_PACKAGE_ZLIB),y)
+PERF_DEPENDENCIES += zlib
+else
+PERF_MAKE_FLAGS += NO_ZLIB=1
+endif
+
+# lzma is provided by xz
+ifeq ($(BR2_PACKAGE_XZ),y)
+PERF_DEPENDENCIES += xz
+else
+PERF_MAKE_FLAGS += NO_LZMA=1
+endif
+
 # We really do not want to build the perf documentation, because it
 # has stringent requirement on the documentation generation tools,
 # like xmlto and asciidoc), which may be lagging behind on some
