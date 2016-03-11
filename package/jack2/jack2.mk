@@ -32,6 +32,15 @@ JACK2_DEPENDENCIES += dbus
 JACK2_CONF_OPTS += --dbus
 endif
 
+# Even though it advertises support for celt-0.5.x, jack2 really
+# requires celt >= 0.5.2 but we only have 0.5.1.3 and we cannot
+# upgrade, so we do not add a dependency to celt051, which it can't
+# find anyway as it looks for celt.pc but we only have celt-51.pc.
+
+# The dependency against eigen is only useful in conjunction with
+# gtkiostream, which we do not have, so we don't need to depend on
+# eigen.
+
 define JACK2_CONFIGURE_CMDS
 	(cd $(@D); \
 		$(TARGET_CONFIGURE_OPTS)	\
