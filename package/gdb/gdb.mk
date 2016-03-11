@@ -120,6 +120,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_XZ),y)
 GDB_CONF_OPTS += --with-lzma
+GDB_CONF_OPTS += --with-liblzma-prefix=$(STAGING_DIR)/usr
 GDB_DEPENDENCIES += xz
 else
 GDB_CONF_OPTS += --without-lzma
