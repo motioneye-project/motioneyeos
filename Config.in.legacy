@@ -145,6 +145,12 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2016.05"
 
+config BR2_PACKAGE_FOOMATIC_FILTERS
+	bool "foomatic-filters"
+	select BR2_LEGACY
+	help
+	  The foomatic-filters package was removed.
+
 config BR2_PACKAGE_SAMBA
 	bool "samba"
 	select BR2_LEGACY
