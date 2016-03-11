@@ -18,14 +18,15 @@ PERF_MAKE_FLAGS = \
 	$(LINUX_MAKE_FLAGS) \
 	JOBS=$(PARALLEL_JOBS) \
 	ARCH=$(PERF_ARCH) \
+	DESTDIR=$(TARGET_DIR) \
+	prefix=/usr \
+	WERROR=0 \
 	NO_LIBAUDIT=1 \
 	NO_NEWT=1 \
 	NO_GTK2=1 \
 	NO_LIBPERL=1 \
 	NO_LIBPYTHON=1 \
-	DESTDIR=$(TARGET_DIR) \
-	prefix=/usr \
-	WERROR=0
+	NO_LIBBIONIC=1
 
 # We need to pass an argument to ld for setting the endianness when
 # building it for MIPS architecture, otherwise the default one will
@@ -52,14 +53,20 @@ endif
 
 ifeq ($(BR2_PACKAGE_SLANG),y)
 PERF_DEPENDENCIES += slang
+else
+PERF_MAKE_FLAGS += NO_SLANG=1
 endif
 
 ifeq ($(BR2_PACKAGE_LIBUNWIND),y)
 PERF_DEPENDENCIES += libunwind
+else
+PERF_MAKE_FLAGS += NO_LIBUNWIND=1
 endif
 
 ifeq ($(BR2_PACKAGE_NUMACTL),y)
 PERF_DEPENDENCIES += numactl
+else
+PERF_MAKE_FLAGS += NO_LIBNUMA=1
 endif
 
 ifeq ($(BR2_PACKAGE_ELFUTILS),y)
