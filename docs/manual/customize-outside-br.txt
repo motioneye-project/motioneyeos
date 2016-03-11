@@ -107,3 +107,17 @@ And then in +$(BR2_EXTERNAL)/package/package1+ and
    output of +make list-defconfigs+ and allow them to be loaded with the
    normal +make <name>_defconfig+ command. They will be visible under the
    +User-provided configs+' label in the 'make list-defconfigs' output.
+
+Additionally, an +external.mk+ file may define the +help-custom+ make
+rule, to document custom make targets specific to this +BR2_EXTERNAL+
+tree. The help is completely free-form.
+
+------
+help-custom:
+    @echo 'Here goes your local help, where you may'
+    @echo 'describe some custom rules:'
+    @echo '  my-rule       - do something'
+    @echo '  my-other-rule - do something else'
+    @echo
+    @echo 'Please contact support@company.com in case of problem.'
+------
