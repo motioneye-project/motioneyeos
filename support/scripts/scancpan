@@ -552,10 +552,10 @@ sub find_license_files {
 }
 
 sub fetch {
-    my ($name, $need_target, $need_host) = @_;
+    my ($name, $need_target, $need_host, $top) = @_;
     $need_target{$name} = $need_target if $need_target;
     $need_host{$name} = $need_host if $need_host;
-    unless ($dist{$name}) {
+    unless ($dist{$name} && !$top) {
         say qq{fetch ${name}} unless $quiet;
         my $result = $mcpan->release( distribution => $name );
         $dist{$name} = $result;
@@ -570,19 +570,19 @@ sub fetch {
             next if $modname eq q{perl};
             next if $modname =~ m|^Alien|;
             next if $modname =~ m|^Win32|;
-            next if !$test && $modname =~ m|^Test|;
+            next if !($test && $top) && $modname =~ m|^Test|;
             next if Module::CoreList::is_core( $modname, undef, $] );
             # we could use the host Module::CoreList data, because host perl and
             # target perl have the same major version
             next if ${$dep}{phase} eq q{develop};
-            next if !$test && ${$dep}{phase} eq q{test};
+            next if !($test && $top) && ${$dep}{phase} eq q{test};
             my $distname = $mcpan->module( $modname )->{distribution};
             if (${$dep}{phase} eq q{runtime}) {
                 if (${$dep}{relationship} eq q{requires}) {
                     $runtime{$distname} = 1;
                 }
                 else {
-                    $optional{$distname} = 1 if $recommend;
+                    $optional{$distname} = 1 if $recommend && $top;
                 }
             }
             else { # configure, build
@@ -608,7 +608,7 @@ sub fetch {
 
 foreach my $distname (@ARGV) {
     # Command-line's distributions
-    fetch( $distname, !!$target, !!$host );
+    fetch( $distname, !!$target, !!$host, 1 );
 }
 say scalar keys %dist, q{ packages fetched.} unless $quiet;
 
