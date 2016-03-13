@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-TVHEADEND_VERSION = 1aa0073be39119f5d0d79212e6c83c470904a161
+TVHEADEND_VERSION = 3927788bb71ad0041a00d0daa35fae1cb6355b55
 TVHEADEND_SITE = $(call github,tvheadend,tvheadend,$(TVHEADEND_VERSION))
 TVHEADEND_LICENSE = GPLv3+
 TVHEADEND_LICENSE_FILES = LICENSE.md
@@ -77,6 +77,7 @@ define TVHEADEND_CONFIGURE_CMDS
 			--prefix=/usr				\
 			--arch="$(ARCH)"			\
 			--cpu="$(BR2_GCC_TARGET_CPU)"		\
+			--nowerror				\
 			--python="$(HOST_DIR)/usr/bin/python"	\
 			--enable-dvbscan			\
 			--enable-bundle				\
