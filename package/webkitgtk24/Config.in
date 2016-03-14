@@ -51,6 +51,13 @@ config BR2_PACKAGE_WEBKITGTK24
 
 if BR2_PACKAGE_WEBKITGTK24
 
+config BR2_PACKAGE_WEBKITGTK24_HTTPS
+	bool "HTTPS support"
+	select BR2_PACKAGE_CA_CERTIFICATES # runtime
+	select BR2_PACKAGE_LIBSOUP_SSL
+	help
+	  Enable HTTPS protocol support.
+
 config BR2_PACKAGE_WEBKITGTK24_MULTIMEDIA
 	bool "multimedia support"
 	select BR2_PACKAGE_GSTREAMER1
