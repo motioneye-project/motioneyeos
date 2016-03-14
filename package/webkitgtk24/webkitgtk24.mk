@@ -42,11 +42,11 @@ WEBKITGTK24_CONF_OPTS = \
 	--disable-gtk-doc-html \
 	--disable-wayland-target
 
-ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BASE),y)
+ifeq ($(BR2_PACKAGE_WEBKITGTK24_MULTIMEDIA),y)
 WEBKITGTK24_CONF_OPTS += \
 	--enable-video \
 	--enable-web-audio
-WEBKITGTK24_DEPENDENCIES += gst1-plugins-base
+WEBKITGTK24_DEPENDENCIES += gstreamer1 gst1-libav gst1-plugins-base gst1-plugins-good
 else
 WEBKITGTK24_CONF_OPTS += \
 	--disable-video \
