@@ -10,14 +10,17 @@ SHARED_MIME_INFO_SITE = http://freedesktop.org/~hadess
 SHARED_MIME_INFO_INSTALL_STAGING = YES
 SHARED_MIME_INFO_CONF_ENV = XMLLINT=$(HOST_DIR)/usr/bin/xmllint
 SHARED_MIME_INFO_DEPENDENCIES = host-shared-mime-info libxml2 libglib2
-SHARED_MIME_INFO_CONF_OPTS = --disable-update-mimedb
+SHARED_MIME_INFO_CONF_OPTS = \
+	--disable-update-mimedb \
+	--disable-default-make-check
+HOST_SHARED_MIME_INFO_CONF_OPTS = \
+	--disable-update-mimedb \
+	--disable-default-make-check
 SHARED_MIME_INFO_LICENSE = GPLv2
 SHARED_MIME_INFO_LICENSE_FILES = COPYING
 
 HOST_SHARED_MIME_INFO_DEPENDENCIES = \
 	host-pkgconf host-intltool host-libxml2 host-libglib2
-
-HOST_SHARED_MIME_INFO_CONF_OPTS = --disable-update-mimedb
 
 define SHARED_MIME_INFO_INSTALL_TARGET_CMDS
 	$(HOST_MAKE_ENV) $(SHARED_MIME_INFO_HOST_BINARY) $(STAGING_DIR)/usr/share/mime
