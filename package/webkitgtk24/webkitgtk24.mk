@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-WEBKITGTK24_VERSION = 2.4.9
+WEBKITGTK24_VERSION = 2.4.10
 WEBKITGTK24_SITE = http://www.webkitgtk.org/releases
 WEBKITGTK24_SOURCE = webkitgtk-$(WEBKITGTK24_VERSION).tar.xz
 WEBKITGTK24_INSTALL_STAGING = YES
