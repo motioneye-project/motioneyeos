@@ -522,6 +522,7 @@ define TOOLCHAIN_EXTERNAL_CONFIGURE_CMDS
 	else \
 		$(call check_glibc,$${SYSROOT_DIR}) ; \
 	fi
+	$(Q)$(call check_toolchain_ssp,$(TOOLCHAIN_EXTERNAL_CC))
 endef
 
 # With the musl C library, the libc.so library directly plays the role
