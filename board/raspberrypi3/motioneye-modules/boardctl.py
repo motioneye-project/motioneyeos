@@ -139,17 +139,17 @@ def _set_board_settings(s):
     if 'gpu_mem' not in seen:
         lines.append('gpu_mem=%s' % s['gpuMem'])
 
-    if 'arm_freq' not in seen:
-        lines.append('arm_freq=%s' % arm_freq)
+    #if 'arm_freq' not in seen:
+    #    lines.append('arm_freq=%s' % arm_freq)
 
-    if 'gpu_freq' not in seen:
-        lines.append('gpu_freq=%s' % gpu_freq)
+    #if 'gpu_freq' not in seen:
+    #    lines.append('gpu_freq=%s' % gpu_freq)
 
-    if 'sdram_freq' not in seen:
-        lines.append('sdram_freq=%s' % sdram_freq)
+    #if 'sdram_freq' not in seen:
+    #    lines.append('sdram_freq=%s' % sdram_freq)
 
-    if 'over_voltage' not in seen:
-        lines.append('over_voltage=%s' % over_voltage)
+    #if 'over_voltage' not in seen:
+    #    lines.append('over_voltage=%s' % over_voltage)
 
     if 'disable_camera_led' not in seen:
         lines.append('disable_camera_led=%s' % ['1', '0'][s['cameraLed']])
