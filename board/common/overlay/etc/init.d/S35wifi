@@ -79,7 +79,6 @@ start() {
 
         if [ $count -gt $link_watch_timeout ] || ! pidof wpa_supplicant > /dev/null; then
             msg_fail
-            reboot
             return 1
         fi
 
@@ -119,5 +118,7 @@ case "$1" in
         exit 1
 esac
 
-exit $?
+# continue after an unsuccessfull wifi start
+# as we may still have an ethernet connection available
+exit 0
 

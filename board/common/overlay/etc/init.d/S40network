@@ -102,7 +102,7 @@ start_eth() {
         count=$(($count + 1))
         if [ $count -ge 3 ]; then
             msg_done "no device"
-            return
+            return 1
         fi
     done
 
@@ -116,7 +116,7 @@ start_eth() {
         count=$(($count + 1))
         if [ $count -ge 3 ]; then
             msg_done "no link"
-            return
+            return 1
         fi
     done
 
@@ -127,7 +127,7 @@ start_eth() {
         count=$(($count + 1))
         if [ $count -ge $link_nego_timeout ]; then
             msg_done "no link"
-            return
+            return 1
         fi
     done
 
@@ -157,13 +157,20 @@ start() {
 
     start_lo
 
-    test -n "$ssid" && start_wlan
+    test -n "$ssid" && start_wlan && wlan_ok="ok"
     
-    # if wifi or ppp connection configured, start eth in background
-    if [ -n "$ssid" ] || [ -r /data/etc/ppp/modem ]; then
+    test -r /data/etc/ppp/modem && ppp_ok="ok" # TODO actually test the ppp link
+    
+    # if wifi or ppp link ok, start eth in background
+    if [ "$wlan_ok" == "ok" ] || [ "$ppp_ok" == "ok" ]; then
         start_eth &>/dev/null &
     else
-        start_eth
+        start_eth && eth_ok="ok"
+    fi
+    
+    if [ "$eth_ok" != "ok" ] && [ "$wlan_ok" != "ok" ] && [ "$ppp_ok" != "ok" ]; then
+        reboot
+        return 1
     fi
 
     if [ -n "$static_gw" ]; then
