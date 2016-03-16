@@ -39,13 +39,9 @@ choice
 
 config BR2_PACKAGE_DVDRW_TOOLS_CDRKIT_BACKEND
 	bool "cdrkit"
-	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0 # cdrkit
 	select BR2_PACKAGE_CDRKIT
 	help
 	  Symlink mkisofs to genisoimage from the cdrkit package.
-
-comment "cdrkit needs a toolchain w/ headers >= 3.0"
-	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0
 
 config BR2_PACKAGE_DVDRW_TOOLS_XORRISO_BACKEND
 	bool "xorriso"
