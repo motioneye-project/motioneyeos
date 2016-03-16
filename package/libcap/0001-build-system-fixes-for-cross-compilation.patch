@@ -1,19 +1,19 @@
-From 7f48413ef1688df0d7fc25e477f4e6c0c55edfac Mon Sep 17 00:00:00 2001
+From d8d70559a279706c206761dfaf665d2197934123 Mon Sep 17 00:00:00 2001
 From: Gustavo Zacarias <gustavo@zacarias.com.ar>
 Date: Sun, 6 Mar 2016 22:52:02 +0100
 Subject: [PATCH] build-system: fixes for cross-compilation
 
 Avoid the libcap buildsys forcing CC/CFLAGS/LDFLAGS/AR/RANLIB
-Also install the shared lib +x
 
 Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+[yann.morin.1998@free.fr: dont chmod +x the shared lib]
 Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
 
 diff --git a/Make.Rules b/Make.Rules
-index ec1c474..8a8fc50 100644
+index 8347b26..8a07a3f 100644
 --- a/Make.Rules
 +++ b/Make.Rules
-@@ -48,25 +48,25 @@ MINOR=24
+@@ -48,26 +48,26 @@ MINOR=25
  KERNEL_HEADERS := $(topdir)/libcap/include/uapi
  IPATH += -fPIC -I$(KERNEL_HEADERS) -I$(topdir)/libcap/include
  
@@ -37,6 +37,7 @@ index ec1c474..8a8fc50 100644
  LD=$(CC) -Wl,-x -shared
 -LDFLAGS := #-g
 +LDFLAGS ?= #-g
+ BUILD_GPERF := $(shell which gperf >/dev/null 2>/dev/null && echo yes)
  
  SYSTEM_HEADERS = /usr/include
  INCS=$(topdir)/libcap/include/sys/capability.h
@@ -44,22 +45,9 @@ index ec1c474..8a8fc50 100644
  CFLAGS += -Dlinux $(WARNINGS) $(DEBUG)
 -PAM_CAP := $(shell if [ -f /usr/include/security/pam_modules.h ]; then echo yes ; else echo no ; fi)
 +PAM_CAP = no
- INDENT := $(shell if [ -n "$(which indent 2>/dev/null)" ]; then echo "| indent -kr" ; fi)
+ INDENT := $(shell if [ -n "$$(which indent 2>/dev/null)" ]; then echo "| indent -kr" ; fi)
  DYNAMIC := $(shell if [ ! -d "$(topdir)/.git" ]; then echo yes; fi)
- LIBATTR := yes
-diff --git a/libcap/Makefile b/libcap/Makefile
-index 20ab00f..97fea3f 100644
---- a/libcap/Makefile
-+++ b/libcap/Makefile
-@@ -75,7 +75,7 @@ install: all
- 	install -m 0644 include/sys/capability.h $(INCDIR)/sys
- 	mkdir -p -m 0755 $(LIBDIR)
- 	install -m 0644 $(STALIBNAME) $(LIBDIR)/$(STALIBNAME)
--	install -m 0644 $(MINLIBNAME) $(LIBDIR)/$(MINLIBNAME)
-+	install -m 0755 $(MINLIBNAME) $(LIBDIR)/$(MINLIBNAME)
- 	ln -sf $(MINLIBNAME) $(LIBDIR)/$(MAJLIBNAME)
- 	ln -sf $(MAJLIBNAME) $(LIBDIR)/$(LIBNAME)
- ifeq ($(FAKEROOT),)
+ 
 -- 
 1.9.1
 
