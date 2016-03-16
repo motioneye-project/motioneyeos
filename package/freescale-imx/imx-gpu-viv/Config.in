@@ -62,6 +62,7 @@ config BR2_PACKAGE_PROVIDES_LIBOPENVG
 config BR2_PACKAGE_IMX_GPU_VIV_APITRACE
 	bool "install apitrace tools"
 	select BR2_PACKAGE_IMX_GPU_VIV_G2D
+	select BR2_PACKAGE_LIBPNG
 	help
 	  Copy the apitrace tool to the target. Apitrace consists
 	  of a set of tools to trace, replay and/or inspect OpenGL,
