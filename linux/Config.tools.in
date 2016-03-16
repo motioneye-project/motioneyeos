@@ -26,4 +26,26 @@ config BR2_LINUX_KERNEL_TOOL_PERF
 
 	  https://perf.wiki.kernel.org/
 
+config BR2_LINUX_KERNEL_TOOL_SELFTESTS
+	bool"selftests"
+	depends on BR2_PACKAGE_BUSYBOX_SHOW_OTHERS # bash
+	depends on BR2_USE_MMU  # bash
+	select BR2_PACKAGE_BASH # runtime
+	select BR2_PACKAGE_POPT
+	select BR2_PACKAGE_LIBCAP_NG
+	help
+	  Build and install (to /usr/lib/kselftests) kernel selftests.
+
+	  Use of this option implies you know the process of using and
+	  compiling the kernel selftests. The Makefile to build and
+	  install these is very noisy and may appear to cause your
+	  build to fail for strange reasons.
+
+	  This is very much a use at your risk option and may not work
+	  for every setup or every architecture.
+
+comment "selftests needs BR2_PACKAGE_BUSYBOX_SHOW_OTHERS"
+	depends on BR2_USE_MMU
+	depends on !BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
+
 endmenu
