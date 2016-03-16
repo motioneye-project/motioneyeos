@@ -32,6 +32,7 @@ menu "Host utilities"
 	source "package/uboot-tools/Config.in.host"
 	source "package/util-linux/Config.in.host"
 	source "package/vboot-utils/Config.in.host"
+	source "package/xorriso/Config.in.host"
 	source "package/zip/Config.in.host"
 
 endmenu
