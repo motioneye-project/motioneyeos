@@ -26,6 +26,20 @@ LINUX_PAM_DEPENDENCIES += gettext
 LINUX_PAM_MAKE_OPTS += LIBS=-lintl
 endif
 
+ifeq ($(BR2_PACKAGE_LIBSELINUX),y)
+LINUX_PAM_CONF_OPTS += --enable-selinux
+LINUX_PAM_DEPENDENCIES += libselinux
+else
+LINUX_PAM_CONF_OPTS += --disable-selinux
+endif
+
+ifeq ($(BR2_PACKAGE_AUDIT),y)
+LINUX_PAM_CONF_OPTS += --enable-audit
+LINUX_PAM_DEPENDENCIES += audit
+else
+LINUX_PAM_CONF_OPTS += --disable-audit
+endif
+
 # Install default pam config (deny everything except login)
 define LINUX_PAM_INSTALL_CONFIG
 	$(INSTALL) -m 0644 -D package/linux-pam/login.pam \
