@@ -15,9 +15,11 @@ LINKNX_CONF_OPTS = \
 	--without-log4cpp \
 	--without-pth-test \
 	--with-pth=$(STAGING_DIR)/usr \
-	--disable-smtp
+	--disable-smtp \
+	--with-libcurl=$(STAGING_DIR)/usr/bin/curl-config
 
-LINKNX_DEPENDENCIES = libpthsem $(if $(BR2_PACKAGE_ARGP_STANDALONE),argp-standalone)
+LINKNX_DEPENDENCIES = libpthsem libcurl \
+	$(if $(BR2_PACKAGE_ARGP_STANDALONE),argp-standalone)
 
 # This is needed to make autoreconf happy
 define LINKNX_CREATE_MISSING_FILES
@@ -30,13 +32,6 @@ LINKNX_CONF_OPTS += --with-mysql=$(STAGING_DIR)/usr/bin/mysql_config
 LINKNX_DEPENDENCIES += mysql
 else
 LINKNX_CONF_OPTS += --without-mysql
-endif
-
-ifeq ($(BR2_PACKAGE_LIBCURL),y)
-LINKNX_CONF_OPTS += --with-libcurl=$(STAGING_DIR)/usr/bin/curl-config
-LINKNX_DEPENDENCIES += libcurl
-else
-LINKNX_CONF_OPTS += --without-libcurl
 endif
 
 $(eval $(autotools-package))
