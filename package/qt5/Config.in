@@ -49,5 +49,4 @@ source "package/qt5/qt5x11extras/Config.in"
 source "package/qt5/qt5xmlpatterns/Config.in"
 comment "legacy compatibility"
 source "package/qt5/qt5script/Config.in"
-source "package/qt5/qt5webkit-examples/Config.in"
 endif

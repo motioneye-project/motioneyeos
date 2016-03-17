@@ -145,6 +145,13 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2016.05"
 
+config BR2_PACKAGE_QT5WEBKIT_EXAMPLES
+	bool "qt5webkit-examples package removed"
+	select BR2_LEGACY
+	help
+	  The qt5webkit-examples package has been removed, since it
+	  was removed from upstream starting from Qt 5.6.
+
 config BR2_PACKAGE_QT5WEBKIT
 	bool "qt5webkit package removed"
 	select BR2_LEGACY
