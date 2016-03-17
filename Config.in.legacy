@@ -145,6 +145,13 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2016.05"
 
+config BR2_PACKAGE_QT5QUICK1
+	bool "qt5quick1 package removed"
+	select BR2_LEGACY
+	help
+	  The qt5quick1 package has been removed, since it was removed
+	  from upstream starting from Qt 5.6.
+
 config BR2_TARGET_UBOOT_CUSTOM_PATCH_DIR
 	bool "uboot custom patch dir removed"
 	select BR2_LEGACY
