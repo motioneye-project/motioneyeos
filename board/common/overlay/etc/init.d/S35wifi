@@ -66,6 +66,8 @@ start() {
             return 1
         fi
     done
+    
+    module=$(basename $(readlink /sys/class/net/$iface/device/driver/module 2>/dev/null) 2>/dev/null)
 
     iwconfig $iface power off &> /dev/null
     $prog -i$iface -c$conf -D$driver -B &> $log
@@ -78,7 +80,7 @@ start() {
         fi
 
         if [ $count -gt $link_watch_timeout ] || ! pidof wpa_supplicant > /dev/null; then
-            msg_fail
+            test -n "$module" && msg_fail "failed ($module)"|| msg_fail
             return 1
         fi
 
@@ -89,7 +91,7 @@ start() {
         watch &
     fi
 
-    msg_done
+    test -n "$module" && msg_done "done ($module)"|| msg_done
 }
 
 stop() {
