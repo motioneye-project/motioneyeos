@@ -52,6 +52,9 @@ config BR2_ARM_CPU_ARMV6
 config BR2_ARM_CPU_ARMV7A
 	bool
 
+config BR2_ARM_CPU_ARMV7M
+	bool
+
 choice
 	prompt "Target Architecture Variant"
 	depends on BR2_arm || BR2_armeb
@@ -171,6 +174,7 @@ config BR2_cortex_m3
 	bool "cortex-M3"
 	select BR2_ARM_CPU_HAS_THUMB
 	select BR2_ARM_CPU_HAS_THUMB2
+	select BR2_ARM_CPU_ARMV7M
 config BR2_fa526
 	bool "fa526/626"
 	select BR2_ARM_CPU_HAS_ARM
