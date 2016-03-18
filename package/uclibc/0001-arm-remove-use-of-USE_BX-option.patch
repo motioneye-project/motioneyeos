@@ -1,0 +1,53 @@
+From 5ae09aacbe8b959a36cde130c36547456b7ec8d3 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Thu, 17 Mar 2016 22:40:19 +0100
+Subject: [PATCH] arm: remove use of USE_BX option
+
+There is no need to have an option for this: knowing whether BX is
+available or not is easy. If you have an ARM > v4 or ARMv4T, then BX
+is available, otherwise it's not. This logic is the one used in glibc:
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ libc/sysdeps/linux/arm/bits/arm_bx.h | 10 ++++------
+ libc/sysdeps/linux/arm/clone.S       |  2 +-
+ 2 files changed, 5 insertions(+), 7 deletions(-)
+
+diff --git a/libc/sysdeps/linux/arm/bits/arm_bx.h b/libc/sysdeps/linux/arm/bits/arm_bx.h
+index 2c29089..1c775b6 100644
+--- a/libc/sysdeps/linux/arm/bits/arm_bx.h
++++ b/libc/sysdeps/linux/arm/bits/arm_bx.h
+@@ -23,13 +23,11 @@
+ #error Please include features.h first
+ #endif /* features.h not yet included */
+ 
+-#if defined(__USE_BX__)
+-# if (__ARM_ARCH <= 4 && !defined __ARM_ARCH_4T__)
+-#  error Use of BX was requested, but is not available on the target processor.
+-# endif /* ARCH level */
+-#endif /* __USE_BX__ */
++#if __ARM_ARCH > 4 || defined (__ARM_ARCH_4T__)
++# define ARCH_HAS_BX
++#endif
+ 
+-#if defined(__USE_BX__) && (__ARM_ARCH > 4 || (__ARM_ARCH == 4 && defined __ARM_ARCH_4T__))
++#if defined(ARCH_HAS_BX)
+ # define BX(reg)	bx reg
+ # define BXC(cond, reg)	bx##cond reg
+ #else
+diff --git a/libc/sysdeps/linux/arm/clone.S b/libc/sysdeps/linux/arm/clone.S
+index b4c7d8a..fd7590d 100644
+--- a/libc/sysdeps/linux/arm/clone.S
++++ b/libc/sysdeps/linux/arm/clone.S
+@@ -69,7 +69,7 @@ __clone:
+ 
+ 	@ pick the function arg and call address off the stack and execute
+ 	ldr	r0, [sp, #4]
+-#if defined(__USE_BX__)
++#if defined(ARCH_HAS_BX)
+ 	ldr	r1, [sp]
+ 	bl	2f	@ blx r1
+ #else
+-- 
+2.6.4
+

@@ -1,0 +1,34 @@
+From 14628e02c40df1229c242270e0e2794f30aeed80 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Thu, 17 Mar 2016 22:46:36 +0100
+Subject: [PATCH] arm: remove USE_LDREXSTREX
+
+The USE_LDREXSTREX option is no longer needed, get rid of it.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ extra/Configs/Config.arm | 8 --------
+ 1 file changed, 8 deletions(-)
+
+diff --git a/extra/Configs/Config.arm b/extra/Configs/Config.arm
+index 6090ead..0825c42 100644
+--- a/extra/Configs/Config.arm
++++ b/extra/Configs/Config.arm
+@@ -27,14 +27,6 @@ config CONFIG_ARM_EABI
+ 
+ config COMPILE_IN_THUMB_MODE
+ 	bool "Build using Thumb mode"
+-	select USE_LDREXSTREX
+ 	help
+ 	  Say 'y' here to force building uClibc in thumb mode.
+ 	  Say 'n' to use your compiler's default mode.
+-
+-config USE_LDREXSTREX
+-	bool "Use load-store exclusive ASM ops (not supported in SmartFusion)"
+-	depends on COMPILE_IN_THUMB_MODE
+-	default n
+-	help
+-	  Say 'y' to use LDREX/STREX ASM ops.
+-- 
+2.6.4
+

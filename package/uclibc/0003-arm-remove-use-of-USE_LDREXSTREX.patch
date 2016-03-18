@@ -1,0 +1,49 @@
+From 45d2eadc3ff8234ed09fe1870dd7ed4144223ecd Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Thu, 17 Mar 2016 22:45:23 +0100
+Subject: [PATCH] arm: remove use of USE_LDREXSTREX
+
+Whenever Thumb2 is available, ldrex/strex are available, so we can
+simply rely on __thumb2__ to determine whether ldrex/strex should be
+used, without requiring a Config.in option.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ libpthread/linuxthreads.old/sysdeps/arm/pt-machine.h | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
+
+diff --git a/libpthread/linuxthreads.old/sysdeps/arm/pt-machine.h b/libpthread/linuxthreads.old/sysdeps/arm/pt-machine.h
+index 2b877f9..fc17e9b 100644
+--- a/libpthread/linuxthreads.old/sysdeps/arm/pt-machine.h
++++ b/libpthread/linuxthreads.old/sysdeps/arm/pt-machine.h
+@@ -28,8 +28,7 @@
+ # define PT_EI __extern_always_inline
+ #endif
+ 
+-#if defined(__thumb__)
+-#if defined(__USE_LDREXSTREX__)
++#if defined(__thumb2__)
+ PT_EI long int ldrex(int *spinlock)
+ {
+ 	long int ret;
+@@ -63,7 +62,7 @@ testandset (int *spinlock)
+   return ret;
+ }
+ 
+-#else /* __USE_LDREXSTREX__ */
++#elif defined(__thumb__)
+ 
+ /* This will not work on ARM1 or ARM2 because SWP is lacking on those
+    machines.  Unfortunately we have no way to detect this at compile
+@@ -88,7 +87,7 @@ PT_EI long int testandset (int *spinlock)
+ 	: "0"(1), "r"(spinlock));
+   return ret;
+ }
+-#endif
++
+ #else /* __thumb__ */
+ 
+ PT_EI long int testandset (int *spinlock);
+-- 
+2.6.4
+
