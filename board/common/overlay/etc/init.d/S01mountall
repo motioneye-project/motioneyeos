@@ -5,29 +5,39 @@ conf="/data/etc/os.conf"
 
 test -n "$os_version" || source /etc/init.d/base
 
-case "$1" in
-    start)
-        msg_begin "Mounting filesystems"
-        /bin/mount -a
+mount_fs() {
+    msg_begin "Mounting filesystems"
+    /bin/mount -a
+    test $? == 0 && msg_done || msg_fail
+
+    if [ -f $sys_conf ] && ! [ -f $conf ]; then
+        cp $sys_conf $conf
+    fi
+
+    if [ -f $conf ]; then
+        source $conf
+    fi
+
+    if [ "$os_debug" == "true" ]; then
+        msg_begin "Remounting boot partition read-write"
+        mount -o remount,rw /boot
         test $? == 0 && msg_done || msg_fail
 
-        if [ -f $sys_conf ] && ! [ -f $conf ]; then
-            cp $sys_conf $conf
-        fi
+        msg_begin "Remounting root partition read-write"
+        mount -o remount,rw /
+        test $? == 0 && msg_done || msg_fail
+    fi
+}
 
-        if [ -f $conf ]; then
-            source $conf
-        fi
+mk_tty_login() {
+    test -z "$os_tty_login" && os_tty_login=tty1
+    ln -sf /dev/$os_tty_login /dev/ttylogin
+}
 
-        if [ "$os_debug" == "true" ]; then
-            msg_begin "Remounting boot partition read-write"
-            mount -o remount,rw /boot
-            test $? == 0 && msg_done || msg_fail
-
-            msg_begin "Remounting root partition read-write"
-            mount -o remount,rw /
-            test $? == 0 && msg_done || msg_fail
-        fi
+case "$1" in
+    start)
+        mount_fs
+        mk_tty_login
         ;;
 
     stop)

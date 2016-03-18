@@ -17,9 +17,8 @@
 ::sysinit:/etc/init.d/mountsys
 ::sysinit:/etc/init.d/rcS
 
-# Put a getty on the serial port
-tty1::respawn:/sbin/getty -L tty1 115200 vt100
-#ttyS0::respawn:/sbin/getty -L ttyS0 115200 vt100
+# Start a getty for local login
+ttylogin::respawn:/sbin/getty -L ttylogin 115200 vt100
 
 # Stuff to do for the 3-finger salute
 ::ctrlaltdel:/sbin/reboot
