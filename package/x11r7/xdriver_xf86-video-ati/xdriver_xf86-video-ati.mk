@@ -22,7 +22,7 @@ XDRIVER_XF86_VIDEO_ATI_DEPENDENCIES = \
 	xproto_xproto \
 	xserver_xorg-server
 
-ifeq ($(BR2_PACKAGE_LIBEPOXY),y)
+ifeq ($(BR2_PACKAGE_XPROTO_DRI3PROTO)$(BR2_PACKAGE_LIBEPOXY),yy)
 XDRIVER_XF86_VIDEO_ATI_CONF_OPTS = --enable-glamor
 else
 XDRIVER_XF86_VIDEO_ATI_CONF_OPTS = --disable-glamor
