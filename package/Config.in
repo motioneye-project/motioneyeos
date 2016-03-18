@@ -293,6 +293,7 @@ comment "QT libraries and helper libraries"
 	source "package/quazip/Config.in"
 	source "package/qwt/Config.in"
 endif
+	source "package/tekui/Config.in"
 	source "package/weston/Config.in"
 	source "package/x11r7/Config.in"
 
