@@ -8,6 +8,6 @@ config BR2_PACKAGE_PRBOOM
 	help
 	  PrBoom is a Doom client which allows you to play the good old game on
 	  newer hardware. It even supports higher resolution and better
-	  rendring, while still keeping the old style alive.
+	  rendering, while still keeping the old style alive.
 
 	  http://prboom.sourceforge.net/
