@@ -1,17 +1,24 @@
+From c0950d73c8aa13f057707fb7933c65c147349376 Mon Sep 17 00:00:00 2001
+From: Lauren Post <lauren.post@freescale.com>
+Date: Tue, 22 Mar 2016 22:08:25 +0100
+Subject: [PATCH] Add ARM support into xf86drm.h
+
+This provides support for Xorg interface.  Without this the vivante
+samples will hang during close requiring a reboot
+
 [Adapted from yocto project]
-
-Add ARM support into xf86drm.h.  This provides support for Xorg interface.
-Without this the vivante samples will hang during close requiring a reboot
-
 Upstream-Status: Pending
-
 Signed-off-by: Lauren Post <lauren.post@freescale.com>
 Signed-off-by: Evan Kotara <evan.kotara@freescale.com>
+---
+ xf86drm.h | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
 diff --git a/xf86drm.h b/xf86drm.h
+index 481d882..1cc0075 100644
 --- a/xf86drm.h
 +++ b/xf86drm.h
-@@ -461,6 +461,23 @@ do {	register unsigned int __old __asm("
+@@ -469,6 +469,23 @@ do {	register unsigned int __old __asm("o0");		\
  		: "cr0", "memory");			\
  	} while (0)
  
@@ -35,3 +42,6 @@ diff --git a/xf86drm.h b/xf86drm.h
  #endif /* architecture */
  #endif /* __GNUC__ >= 2 */
  
+-- 
+2.6.4
+
