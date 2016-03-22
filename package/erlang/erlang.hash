@@ -1,3 +1,3 @@
 # md5 from http://www.erlang.org/download/MD5, sha256 locally computed
-md5	ebb226d51f89ec54cc83ce5d417ce55e	otp_src_18.2.1.tar.gz
-sha256	82d76ebfeeda5db64ea5b0f1a04aa0e9ac63380b278722e0e6052249bd3fe39a  otp_src_18.2.1.tar.gz
+md5	7e4ff32f97c36fb3dab736f8d481830b	otp_src_18.3.tar.gz
+sha256	fdab8129a1cb935db09f1832e3a7d511a4aeb2b9bb3602ca6a7ccb9730d5c9c3	otp_src_18.3.tar.gz
