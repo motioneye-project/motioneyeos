@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-LIBGLIB2_VERSION_MAJOR = 2.46
-LIBGLIB2_VERSION = $(LIBGLIB2_VERSION_MAJOR).2
+LIBGLIB2_VERSION_MAJOR = 2.48
+LIBGLIB2_VERSION = $(LIBGLIB2_VERSION_MAJOR).0
 LIBGLIB2_SOURCE = glib-$(LIBGLIB2_VERSION).tar.xz
 LIBGLIB2_SITE = http://ftp.gnome.org/pub/gnome/sources/glib/$(LIBGLIB2_VERSION_MAJOR)
 LIBGLIB2_LICENSE = LGPLv2+
@@ -97,11 +97,18 @@ HOST_LIBGLIB2_CONF_OPTS = \
 	--disable-libelf \
 	--disable-selinux \
 	--disable-systemtap \
-	--disable-xattr
+	--disable-xattr \
+	--with-pcre=system
 
-LIBGLIB2_DEPENDENCIES = host-pkgconf host-libglib2 libffi zlib $(if $(BR2_NEEDS_GETTEXT),gettext) host-gettext
+LIBGLIB2_DEPENDENCIES = \
+	host-pkgconf host-libglib2 host-gettext \
+	libffi pcre zlib $(if $(BR2_NEEDS_GETTEXT),gettext)
 
-HOST_LIBGLIB2_DEPENDENCIES = host-pkgconf host-libffi host-zlib host-gettext
+HOST_LIBGLIB2_DEPENDENCIES = \
+	host-gettext host-libffi host-pcre host-pkgconf host-zlib
+
+LIBGLIB2_CONF_OPTS = \
+	--with-pcre=system
 
 ifneq ($(BR2_ENABLE_LOCALE),y)
 LIBGLIB2_DEPENDENCIES += libiconv
@@ -117,13 +124,6 @@ endif
 ifeq ($(BR2_PACKAGE_LIBICONV),y)
 LIBGLIB2_CONF_OPTS += --with-libiconv=gnu
 LIBGLIB2_DEPENDENCIES += libiconv
-endif
-
-ifeq ($(BR2_PACKAGE_PCRE),y)
-LIBGLIB2_CONF_OPTS += --with-pcre=system
-LIBGLIB2_DEPENDENCIES += pcre
-else
-LIBGLIB2_CONF_OPTS += --with-pcre=internal
 endif
 
 # Purge gdb-related files
