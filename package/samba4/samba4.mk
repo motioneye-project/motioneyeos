@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-SAMBA4_VERSION = 4.3.6
+SAMBA4_VERSION = 4.4.0
 SAMBA4_SITE = http://ftp.samba.org/pub/samba/stable
 SAMBA4_SOURCE = samba-$(SAMBA4_VERSION).tar.gz
 SAMBA4_INSTALL_STAGING = YES
@@ -13,6 +13,7 @@ SAMBA4_LICENSE_FILES = COPYING
 SAMBA4_DEPENDENCIES = \
 	host-e2fsprogs host-heimdal host-python \
 	e2fsprogs popt python zlib \
+	$(if $(BR2_PACKAGE_LIBAIO),libaio) \
 	$(if $(BR2_PACKAGE_LIBBSD),libbsd) \
 	$(if $(BR2_PACKAGE_LIBCAP),libcap) \
 	$(if $(BR2_PACKAGE_READLINE),readline)
@@ -30,13 +31,6 @@ SAMBA4_CONF_OPTS += --enable-cups
 SAMBA4_DEPENDENCIES += cups
 else
 SAMBA4_CONF_OPTS += --disable-cups
-endif
-
-ifeq ($(BR2_PACKAGE_LIBAIO),y)
-SAMBA4_CONF_OPTS += --with-aio-support
-SAMBA4_DEPENDENCIES += libaio
-else
-SAMBA4_CONF_OPTS += --without-aio-support
 endif
 
 ifeq ($(BR2_PACKAGE_DBUS)$(BR2_PACKAGE_AVAHI_DAEMON),yy)
