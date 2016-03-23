@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-LIBGTK3_VERSION_MAJOR = 3.18
-LIBGTK3_VERSION = $(LIBGTK3_VERSION_MAJOR).9
+LIBGTK3_VERSION_MAJOR = 3.20
+LIBGTK3_VERSION = $(LIBGTK3_VERSION_MAJOR).0
 LIBGTK3_SOURCE = gtk+-$(LIBGTK3_VERSION).tar.xz
 LIBGTK3_SITE = http://ftp.gnome.org/pub/gnome/sources/gtk+/$(LIBGTK3_VERSION_MAJOR)
 LIBGTK3_LICENSE = LGPLv2+
@@ -24,6 +24,10 @@ LIBGTK3_CONF_OPTS = \
 	--enable-gtk2-dependency \
 	--disable-introspection
 
+# Override pkg-config pkgdatadir variable, it needs the prefix
+LIBGTK3_MAKE_OPTS = \
+	WAYLAND_PROTOCOLS_DATADIR=$(STAGING_DIR)/usr/share/wayland-protocols
+
 LIBGTK3_DEPENDENCIES = host-pkgconf host-libgtk3 atk libglib2 cairo pango gdk-pixbuf libepoxy
 
 ifeq ($(BR2_PACKAGE_LIBGTK3_X11),y)
@@ -38,7 +42,7 @@ LIBGTK3_CONF_OPTS += --disable-x11-backend
 endif
 
 ifeq ($(BR2_PACKAGE_LIBGTK3_WAYLAND),y)
-LIBGTK3_DEPENDENCIES += wayland libxkbcommon
+LIBGTK3_DEPENDENCIES += wayland wayland-protocols libxkbcommon
 LIBGTK3_CONF_OPTS += --enable-wayland-backend
 else
 LIBGTK3_CONF_OPTS += --disable-wayland-backend

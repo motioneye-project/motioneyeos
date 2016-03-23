@@ -66,6 +66,7 @@ config BR2_PACKAGE_LIBGTK3_WAYLAND
 	default y
 	depends on BR2_PACKAGE_MESA3D_OPENGL_EGL
 	select BR2_PACKAGE_WAYLAND
+	select BR2_PACKAGE_WAYLAND_PROTOCOLS
 	select BR2_PACKAGE_LIBXKBCOMMON
 	help
 	  This enables the Wayland backend for GDK.
