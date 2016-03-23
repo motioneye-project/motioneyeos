@@ -11,6 +11,9 @@ GDK_PIXBUF_SITE = http://ftp.gnome.org/pub/gnome/sources/gdk-pixbuf/$(GDK_PIXBUF
 GDK_PIXBUF_LICENSE = LGPLv2+
 GDK_PIXBUF_LICENSE_FILES = COPYING
 GDK_PIXBUF_INSTALL_STAGING = YES
+GDK_PIXBUF_DEPENDENCIES = \
+	host-gdk-pixbuf host-libglib2 host-pkgconf \
+	$(if $(BR2_ENABLE_LOCALE),,libiconv)
 
 GDK_PIXBUF_CONF_ENV = \
 	ac_cv_path_GLIB_GENMARSHAL=$(LIBGLIB2_HOST_BINARY) \
@@ -43,14 +46,19 @@ GDK_PIXBUF_CONF_OPTS += --with-x11
 GDK_PIXBUF_DEPENDENCIES += xlib_libX11
 endif
 
-GDK_PIXBUF_DEPENDENCIES += \
-	$(if $(BR2_ENABLE_LOCALE),,libiconv) \
-	host-pkgconf libglib2
-
-define GDK_PIXBUF_INSTALL_INIT_SYSV
-	$(INSTALL) -m 755 -D package/gdk-pixbuf/S26gdk-pixbuf \
-		$(TARGET_DIR)/etc/init.d/S26gdk-pixbuf
+# gdk-pixbuf requires the loaders.cache file populated to work properly
+# Rather than doing so at runtime, since the fs can be read-only, do so
+# here after building and installing to target.
+# And since the cache file will contain absolute target directory names
+# we need to sanitize (strip) them.
+define GDK_PIXBUF_UPDATE_CACHE
+	GDK_PIXBUF_MODULEDIR=$(TARGET_DIR)/usr/lib/gdk-pixbuf-2.0/2.10.0/loaders \
+		$(HOST_DIR)/usr/bin/gdk-pixbuf-query-loaders \
+		> $(TARGET_DIR)/usr/lib/gdk-pixbuf-2.0/2.10.0/loaders.cache
+	$(SED) "s,$(TARGET_DIR),,g" \
+		$(TARGET_DIR)/usr/lib/gdk-pixbuf-2.0/2.10.0/loaders.cache
 endef
+GDK_PIXBUF_POST_INSTALL_TARGET_HOOKS += GDK_PIXBUF_UPDATE_CACHE
 
 # Tests don't build correctly with uClibc
 define GDK_PIXBUF_DISABLE_TESTS
