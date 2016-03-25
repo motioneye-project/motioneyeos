@@ -431,6 +431,12 @@ else
 GST1_PLUGINS_BAD_CONF_OPTS += --disable-mxf
 endif
 
+ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_NETSIM),y)
+GST1_PLUGINS_BAD_CONF_OPTS += --enable-netsim
+else
+GST1_PLUGINS_BAD_CONF_OPTS += --disable-netsim
+endif
+
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_NUVDEMUX),y)
 GST1_PLUGINS_BAD_CONF_OPTS += --enable-nuvdemux
 else
@@ -537,6 +543,12 @@ ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_VIDEOFILTERS),y)
 GST1_PLUGINS_BAD_CONF_OPTS += --enable-videofilters
 else
 GST1_PLUGINS_BAD_CONF_OPTS += --disable-videofilters
+endif
+
+ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_VIDEOFRAME_AUDIOLEVEL),y)
+GST1_PLUGINS_BAD_CONF_OPTS += --enable-videoframe_audiolevel
+else
+GST1_PLUGINS_BAD_CONF_OPTS += --disable-videoframe_audiolevel
 endif
 
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_VIDEOMEASURE),y)

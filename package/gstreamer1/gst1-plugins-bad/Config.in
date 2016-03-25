@@ -350,6 +350,9 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_MXF
 	help
 	  MXF plugin library
 
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_NETSIM
+	bool "netsim"
+
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_NUVDEMUX
 	bool "nuvdemux"
 
@@ -425,6 +428,11 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_VIDEOFILTERS
 	bool "videofilters"
 	help
 	  Video filters in gst-plugins-bad
+
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_VIDEOFRAME_AUDIOLEVEL
+	bool "videoframe_audiolevel"
+	help
+	  videoframe_audiolevel
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_VIDEOMEASURE
 	bool "videomeasure"
