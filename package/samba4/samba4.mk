@@ -48,7 +48,6 @@ SAMBA4_CONF_OPTS += --without-fam
 endif
 
 ifeq ($(BR2_PACKAGE_GETTEXT),y)
-SAMBA4_CONF_OPTS += --with-gettext=$(STAGING_DIR)/usr
 SAMBA4_DEPENDENCIES += gettext
 else
 SAMBA4_CONF_OPTS += --without-gettext
