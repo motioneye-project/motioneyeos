@@ -51,6 +51,7 @@ endif
 # here after building and installing to target.
 # And since the cache file will contain absolute target directory names
 # we need to sanitize (strip) them.
+ifeq ($(BR2_STATIC_LIBS),)
 define GDK_PIXBUF_UPDATE_CACHE
 	GDK_PIXBUF_MODULEDIR=$(TARGET_DIR)/usr/lib/gdk-pixbuf-2.0/2.10.0/loaders \
 		$(HOST_DIR)/usr/bin/gdk-pixbuf-query-loaders \
@@ -59,6 +60,7 @@ define GDK_PIXBUF_UPDATE_CACHE
 		$(TARGET_DIR)/usr/lib/gdk-pixbuf-2.0/2.10.0/loaders.cache
 endef
 GDK_PIXBUF_POST_INSTALL_TARGET_HOOKS += GDK_PIXBUF_UPDATE_CACHE
+endif
 
 # Tests don't build correctly with uClibc
 define GDK_PIXBUF_DISABLE_TESTS
