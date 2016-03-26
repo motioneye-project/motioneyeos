@@ -85,6 +85,7 @@ LIBGTK2_CONF_OPTS += --without-libtiff
 endif
 
 ifeq ($(BR2_PACKAGE_CUPS),y)
+LIBGTK2_CONF_OPTS += CUPS_CONFIG="$(STAGING_DIR)/usr/bin/cups-config"
 LIBGTK2_DEPENDENCIES += cups
 else
 LIBGTK2_CONF_OPTS += --disable-cups
