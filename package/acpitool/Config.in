@@ -1,0 +1,11 @@
+config BR2_PACKAGE_ACPITOOL
+	bool "acpitool"
+	depends on BR2_INSTALL_LIBSTDCPP
+	help
+	  A small, convenient command-line ACPI client with a lot of
+	  features for Linux
+
+	  http://acpitool.sourceforge.net
+
+comment "acpitool needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP
