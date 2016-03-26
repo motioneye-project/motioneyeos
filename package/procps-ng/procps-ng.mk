@@ -35,7 +35,11 @@ endif
 
 # Make sure binaries get installed in /bin, so that they overwrite
 # their busybox counterparts.
-PROCPS_NG_CONF_OPTS += --exec-prefix=/
+# Make sure libprocps.pc is installed in STAGING_DIR/usr/lib/pkgconfig/
+# otherwise it's installed in STAGING_DIR/lib/pkgconfig/ breaking
+# pkg-config --libs libprocps.
+PROCPS_NG_CONF_OPTS += --exec-prefix=/ \
+	--libdir=/usr/lib
 
 # Allows unicode characters to show in 'watch'
 ifeq ($(BR2_PACKAGE_NCURSES_WCHAR),y)
