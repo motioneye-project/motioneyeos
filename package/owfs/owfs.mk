@@ -23,6 +23,14 @@ OWFS_CONF_OPTS += \
 	--enable-owfs \
 	--with-fuseinclude=$(STAGING_DIR)/usr/include \
 	--with-fuselib=$(STAGING_DIR)/usr/lib
+define OWFS_INSTALL_FUSE_INIT_SYSV
+	$(INSTALL) -D -m 0755 $(OWFS_PKGDIR)S30owfs \
+		$(TARGET_DIR)/etc/init.d/S30owfs
+endef
+define OWFS_CREATE_MOUNTPOINT
+	mkdir -p $(TARGET_DIR)/dev/1wire
+endef
+OWFS_POST_INSTALL_TARGET_HOOKS += OWFS_CREATE_MOUNTPOINT
 else
 OWFS_CONF_OPTS += --disable-owfs
 endif
@@ -69,5 +77,11 @@ ifeq ($(BR2_STATIC_LIBS),y)
 # zeroconf support uses dlopen()
 OWFS_CONF_OPTS += --disable-zero
 endif
+
+define OWFS_INSTALL_INIT_SYSV
+	$(INSTALL) -D -m 0755 $(OWFS_PKGDIR)S25owserver \
+		$(TARGET_DIR)/etc/init.d/S25owserver
+	$(OWFS_INSTALL_FUSE_INIT_SYSV)
+endef
 
 $(eval $(autotools-package))
