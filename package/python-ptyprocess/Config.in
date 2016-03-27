@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PYTHON_PTYPROCESS
+	bool "python-ptyprocess"
+	help
+	  Launch a subprocess in a pseudo terminal (pty), and interact
+	  with both the process and its pty.
+
+	  https://github.com/pexpect/ptyprocess
