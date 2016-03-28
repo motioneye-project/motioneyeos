@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-MEDIASTREAMER_VERSION = 2.9.0
+MEDIASTREAMER_VERSION = 2.12.1
 MEDIASTREAMER_SITE = http://download.savannah.nongnu.org/releases/linphone/mediastreamer
 MEDIASTREAMER_INSTALL_STAGING = YES
 MEDIASTREAMER_DEPENDENCIES = host-intltool host-pkgconf ortp host-gettext
