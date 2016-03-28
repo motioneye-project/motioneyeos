@@ -4,11 +4,14 @@
 #
 ################################################################################
 
-PYTHON_M2CRYPTO_VERSION = 0.22.5
+PYTHON_M2CRYPTO_VERSION = 0.23.0
 PYTHON_M2CRYPTO_SITE = http://pypi.python.org/packages/source/M/M2Crypto
 PYTHON_M2CRYPTO_SOURCE = M2Crypto-$(PYTHON_M2CRYPTO_VERSION).tar.gz
 PYTHON_M2CRYPTO_SETUP_TYPE = setuptools
 HOST_PYTHON_M2CRYPTO_DEPENDENCIES = host-openssl host-swig
+
+PYTHON_M2CRYPTO_LICENSE = MIT
+PYTHON_M2CRYPTO_LICENSE_FILES = LICENCE
 
 # We need to use python2 because m2crypto is not python3 compliant.
 HOST_PYTHON_M2CRYPTO_NEEDS_HOST_PYTHON = python2
