@@ -243,6 +243,7 @@ config BR2_PACKAGE_OPENCV3_WITH_FFMPEG
 	bool "ffmpeg support"
 	select BR2_PACKAGE_BZIP2
 	select BR2_PACKAGE_FFMPEG
+	select BR2_PACKAGE_FFMPEG_AVRESAMPLE
 	select BR2_PACKAGE_FFMPEG_SWSCALE
 	depends on !BR2_nios2 # ffmpeg
 	help
