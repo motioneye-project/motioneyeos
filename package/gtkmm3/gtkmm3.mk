@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-GTKMM3_VERSION_MAJOR = 3.18
+GTKMM3_VERSION_MAJOR = 3.20
 GTKMM3_VERSION = $(GTKMM3_VERSION_MAJOR).0
 GTKMM3_SOURCE = gtkmm-$(GTKMM3_VERSION).tar.xz
 GTKMM3_SITE = http://ftp.gnome.org/pub/gnome/sources/gtkmm/$(GTKMM3_VERSION_MAJOR)
