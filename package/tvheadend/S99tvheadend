@@ -21,6 +21,11 @@ ARGS="-f"
 [ -z "${TVH_HTSP_PORT}" ] || ARGS="${ARGS} -e ${TVH_HTSP_PORT}"
 [ "${TVH_DEBUG}" = "1"  ] && ARGS="${ARGS} -s"
 
+# If first run, start in wizard mode
+if [ -z "$(ls -1 /home/tvheadend/.hts/tvheadend/accesscontrol/ 2>/dev/null)" ]; then
+    ARGS="${ARGS} -C"
+fi
+
 case "$1" in
     start)
         printf "Starting TVHeadend daemon: "
