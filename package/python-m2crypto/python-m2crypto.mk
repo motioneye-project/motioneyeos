@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-PYTHON_M2CRYPTO_VERSION = 0.23.0
+PYTHON_M2CRYPTO_VERSION = 0.24.0
 PYTHON_M2CRYPTO_SITE = http://pypi.python.org/packages/source/M/M2Crypto
 PYTHON_M2CRYPTO_SOURCE = M2Crypto-$(PYTHON_M2CRYPTO_VERSION).tar.gz
 PYTHON_M2CRYPTO_SETUP_TYPE = setuptools
