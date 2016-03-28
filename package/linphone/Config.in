@@ -2,10 +2,8 @@ config BR2_PACKAGE_LINPHONE
 	bool "linphone"
 	select BR2_PACKAGE_LIBEXOSIP2
 	select BR2_PACKAGE_SPEEX
-	select BR2_PACKAGE_ORTP
-	select BR2_PACKAGE_MEDIASTREAMER
-	depends on BR2_INSTALL_LIBSTDCPP # mediastreamer
-	depends on BR2_TOOLCHAIN_HAS_THREADS # ortp
+	depends on BR2_INSTALL_LIBSTDCPP # mediastreamer (bundled)
+	depends on BR2_TOOLCHAIN_HAS_THREADS # ortp (bundled)
 	depends on BR2_USE_MMU # libeXosip2
 	help
 	  Linphone is an internet phone or Voice Over IP phone (VoIP).
