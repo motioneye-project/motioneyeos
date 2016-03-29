@@ -109,4 +109,11 @@ else
 WESTON_CONF_OPTS += --disable-lcms
 endif
 
+ifeq ($(BR2_PACKAGE_SYSTEMD),y)
+WESTON_CONF_OPTS += --enable-systemd-login --enable-systemd-notify
+WESTON_DEPENDENCIES += systemd
+else
+WESTON_CONF_OPTS += --disable-systemd-login --disable-systemd-notify
+endif
+
 $(eval $(autotools-package))
