@@ -101,4 +101,11 @@ else
 WESTON_CONF_OPTS += --disable-vaapi-recorder
 endif
 
+ifeq ($(BR2_PACKAGE_LCMS2),y)
+WESTON_CONF_OPTS += --enable-lcms
+WESTON_DEPENDENCIES += lcms2
+else
+WESTON_CONF_OPTS += --disable-lcms
+endif
+
 $(eval $(autotools-package))
