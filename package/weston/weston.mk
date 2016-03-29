@@ -26,6 +26,13 @@ WESTON_CONF_OPTS = \
 WESTON_MAKE_OPTS = \
 	WAYLAND_PROTOCOLS_DATADIR=$(STAGING_DIR)/usr/share/wayland-protocols
 
+ifeq ($(BR2_PACKAGE_DBUS),y)
+WESTON_CONF_OPTS += --enable-dbus
+WESTON_DEPENDENCIES += dbus
+else
+WESTON_CONF_OPTS += --disable-dbus
+endif
+
 # weston-launch must be u+s root in order to work properly
 ifeq ($(BR2_PACKAGE_LINUX_PAM),y)
 define WESTON_PERMISSIONS
