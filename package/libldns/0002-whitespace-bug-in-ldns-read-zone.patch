@@ -1,20 +1,19 @@
-Dwonloaded from
-http://anonscm.debian.org/cgit/pkg-nlnetlabs/ldns.git/tree/debian/patches/fix-whitespace-bug-in-ldns-read-zone.patch
-
-which is a backport from
-http://git.nlnetlabs.nl/ldns/commit/?h=develop&id=d6037a22fbedb8ef3a22de4107e4eaa36840865b
-
-Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
-
-From d6037a22fbedb8ef3a22de4107e4eaa36840865b Mon Sep 17 00:00:00 2001
+From 055ea6aef77058f651b5571d98d2d9458821a977 Mon Sep 17 00:00:00 2001
 From: Matthijs Mekking <matthijs@nlnetlabs.nl>
 Date: Wed, 18 Jun 2014 09:55:17 +0200
-Subject: whitespace bug in ldns-read-zone
+Subject: [PATCH] whitespace bug in ldns-read-zone
 
+[Backport from upstream commit d6037a22fbedb8ef3a22de4107e4eaa36840865b]
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
 ---
---- ldns.orig/rr.c
-+++ ldns/rr.c
-@@ -670,6 +670,18 @@ ldns_rr_new_question_frm_str(ldns_rr **n
+ rr.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
+
+diff --git a/rr.c b/rr.c
+index cfee170..e530702 100644
+--- a/rr.c
++++ b/rr.c
+@@ -670,6 +670,18 @@ ldns_rr_new_question_frm_str(ldns_rr **newrr, const char *str,
  	                                    true);
  }
  
@@ -33,7 +32,7 @@ Subject: whitespace bug in ldns-read-zone
  ldns_status
  ldns_rr_new_frm_fp(ldns_rr **newrr, FILE *fp, uint32_t *ttl, ldns_rdf **origin, ldns_rdf **prev)
  {
-@@ -745,6 +757,9 @@ ldns_rr_new_frm_fp_l(ldns_rr **newrr, FI
+@@ -745,6 +757,9 @@ ldns_rr_new_frm_fp_l(ldns_rr **newrr, FILE *fp, uint32_t *default_ttl, ldns_rdf
  		s = LDNS_STATUS_SYNTAX_TTL;
  	} else if (strncmp(line, "$INCLUDE", 8) == 0) {
  		s = LDNS_STATUS_SYNTAX_INCLUDE;
@@ -43,3 +42,6 @@ Subject: whitespace bug in ldns-read-zone
  	} else {
  		if (origin && *origin) {
  			s = ldns_rr_new_frm_str(&rr, (const char*) line, ttl, *origin, prev);
+-- 
+2.6.4
+

@@ -1,13 +1,12 @@
-From 168ee09a4bf184947798c3ee3ac99b6651470d64 Mon Sep 17 00:00:00 2001
+From d8a3da12be085fbc92e3d4d4d084c328fc37485a Mon Sep 17 00:00:00 2001
 From: Willem Toorop <willem@nlnetlabs.nl>
 Date: Thu, 27 Nov 2014 16:21:54 +0100
-Subject: let doxyparse output manpage generation issues
+Subject: [PATCH] let doxyparse output manpage generation issues
 
-This patch fixes a build error with perl 5.22.
-
+[Backport from upstream commit
+168ee09a4bf184947798c3ee3ac99b6651470d64, fixes the build with Perl
+5.22.]
 Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
-Patch backported from upstream commit:
-http://git.nlnetlabs.nl/ldns/commit/?h=develop&id=168ee09a4bf184947798c3ee3ac99b6651470d64
 ---
  doc/doxyparse.pl | 45 ++++++++++++++++++++++++++++++++++++++-------
  1 file changed, 38 insertions(+), 7 deletions(-)
@@ -113,5 +112,5 @@ index 96a1732..a09b2e8 100755
 +
 +exit ($report_errors and $errors != 0);
 -- 
-cgit v0.11.2
+2.6.4
 
