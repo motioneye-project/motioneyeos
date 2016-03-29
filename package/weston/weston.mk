@@ -75,4 +75,11 @@ else
 WESTON_CONF_OPTS += --disable-rpi-compositor
 endif # BR2_PACKAGE_WESTON_RPI
 
+ifeq ($(BR2_PACKAGE_LIBVA),y)
+WESTON_CONF_OPTS += --enable-vaapi-recorder
+WESTON_DEPENDENIES += libva
+else
+WESTON_CONF_OPTS += --disable-vaapi-recorder
+endif
+
 $(eval $(autotools-package))
