@@ -15,7 +15,6 @@ WESTON_DEPENDENCIES = host-pkgconf wayland wayland-protocols \
 
 WESTON_CONF_OPTS = \
 	--with-dtddir=$(STAGING_DIR)/usr/share/wayland \
-	--disable-egl \
 	--disable-simple-egl-clients \
 	--disable-xwayland \
 	--disable-x11-compositor \
@@ -27,6 +26,14 @@ WESTON_CONF_OPTS = \
 
 WESTON_MAKE_OPTS = \
 	WAYLAND_PROTOCOLS_DATADIR=$(STAGING_DIR)/usr/share/wayland-protocols
+
+# Needs wayland-egl, which normally only mesa provides
+ifeq ($(BR2_PACKAGE_HAS_LIBEGL)$(BR2_PACKAGE_MESA3D_OPENGL_EGL),yy)
+WESTON_CONF_OPTS += --enable-egl
+WESTON_DEPENDENCIES += libegl
+else
+WESTON_CONF_OPTS += --disable-egl
+endif
 
 ifeq ($(BR2_PACKAGE_LIBUNWIND),y)
 WESTON_DEPENDENCIES += libunwind
@@ -53,7 +60,6 @@ WESTON_CONF_OPTS += --enable-rpi-compositor \
 	--disable-resize-optimization \
 	--disable-setuid-install \
 	--disable-xwayland-test \
-	--disable-simple-egl-clients \
 	WESTON_NATIVE_BACKEND=rpi-backend.so
 else
 WESTON_CONF_OPTS += --disable-rpi-compositor
