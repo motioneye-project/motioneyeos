@@ -63,6 +63,12 @@ config BR2_LINUX_KERNEL_CUSTOM_HG
 	  This option allows Buildroot to get the Linux kernel source
 	  code from a Mercurial repository.
 
+config BR2_LINUX_KERNEL_CUSTOM_SVN
+	bool "Custom Subversion repository"
+	help
+	  This option allows Buildroot to get the Linux kernel source
+	  code from a Subversion repository.
+
 config BR2_LINUX_KERNEL_CUSTOM_LOCAL
 	bool "Local directory"
 	help
@@ -79,7 +85,7 @@ config BR2_LINUX_KERNEL_CUSTOM_TARBALL_LOCATION
 	string "URL of custom kernel tarball"
 	depends on BR2_LINUX_KERNEL_CUSTOM_TARBALL
 
-if BR2_LINUX_KERNEL_CUSTOM_GIT || BR2_LINUX_KERNEL_CUSTOM_HG
+if BR2_LINUX_KERNEL_CUSTOM_GIT || BR2_LINUX_KERNEL_CUSTOM_HG || BR2_LINUX_KERNEL_CUSTOM_SVN
 
 config BR2_LINUX_KERNEL_CUSTOM_REPO_URL
 	string "URL of custom repository"
@@ -91,7 +97,7 @@ config BR2_LINUX_KERNEL_CUSTOM_REPO_VERSION
 	default BR2_LINUX_KERNEL_CUSTOM_GIT_VERSION \
 		if BR2_LINUX_KERNEL_CUSTOM_GIT_VERSION != ""  # legacy
 	help
-	  Revision to use in the typical format used by Git/Mercurial
+	  Revision to use in the typical format used by Git/Mercurial/Subversion
 	  E.G. a sha id, a tag, branch, ..
 
 endif
@@ -109,7 +115,7 @@ config BR2_LINUX_KERNEL_VERSION
 		if BR2_LINUX_KERNEL_CUSTOM_VERSION
 	default "custom" if BR2_LINUX_KERNEL_CUSTOM_TARBALL
 	default BR2_LINUX_KERNEL_CUSTOM_REPO_VERSION \
-		if BR2_LINUX_KERNEL_CUSTOM_GIT || BR2_LINUX_KERNEL_CUSTOM_HG
+		if BR2_LINUX_KERNEL_CUSTOM_GIT || BR2_LINUX_KERNEL_CUSTOM_HG || BR2_LINUX_KERNEL_CUSTOM_SVN
 	default "custom" if BR2_LINUX_KERNEL_CUSTOM_LOCAL
 
 #
