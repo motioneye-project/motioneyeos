@@ -20,11 +20,25 @@ WESTON_CONF_OPTS = \
 	--disable-x11-compositor \
 	--disable-wayland-compositor \
 	--disable-headless-compositor \
-	--disable-weston-launch \
-	--disable-colord
+	--disable-colord \
+	--disable-setuid-install
 
 WESTON_MAKE_OPTS = \
 	WAYLAND_PROTOCOLS_DATADIR=$(STAGING_DIR)/usr/share/wayland-protocols
+
+# weston-launch must be u+s root in order to work properly
+ifeq ($(BR2_PACKAGE_LINUX_PAM),y)
+define WESTON_PERMISSIONS
+	/usr/bin/weston-launch f 4755 0 0 - - - - -
+endef
+define WESTON_USERS
+	- - weston-launch -1 - - - - Weston launcher group
+endef
+WESTON_CONF_OPTS += --enable-weston-launch
+WESTON_DEPENDENCIES += linux-pam
+else
+WESTON_CONF_OPTS += --disable-weston-launch
+endif
 
 # Needs wayland-egl, which normally only mesa provides
 ifeq ($(BR2_PACKAGE_HAS_LIBEGL)$(BR2_PACKAGE_MESA3D_OPENGL_EGL),yy)
@@ -68,7 +82,6 @@ ifeq ($(BR2_PACKAGE_WESTON_RPI),y)
 WESTON_DEPENDENCIES += rpi-userland
 WESTON_CONF_OPTS += --enable-rpi-compositor \
 	--disable-resize-optimization \
-	--disable-setuid-install \
 	--disable-xwayland-test \
 	WESTON_NATIVE_BACKEND=rpi-backend.so
 else
