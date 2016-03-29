@@ -18,7 +18,6 @@ WESTON_CONF_OPTS = \
 	--disable-simple-egl-clients \
 	--disable-xwayland \
 	--disable-x11-compositor \
-	--disable-drm-compositor \
 	--disable-wayland-compositor \
 	--disable-headless-compositor \
 	--disable-weston-launch \
@@ -54,6 +53,15 @@ WESTON_CONF_OPTS += \
 	WESTON_NATIVE_BACKEND=fbdev-backend.so
 else
 WESTON_CONF_OPTS += --disable-fbdev-compositor
+endif
+
+ifeq ($(BR2_PACKAGE_WESTON_DRM),y)
+WESTON_CONF_OPTS += \
+	--enable-drm-compositor \
+	WESTON_NATIVE_BACKEND=drm-backend.so
+WESTON_DEPENDENCIES += libdrm
+else
+WESTON_CONF_OPTS += --disable-drm-compositor
 endif
 
 ifeq ($(BR2_PACKAGE_WESTON_RPI),y)

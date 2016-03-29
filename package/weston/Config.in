@@ -37,6 +37,16 @@ if BR2_PACKAGE_WESTON
 config BR2_PACKAGE_WESTON_HAS_COMPOSITOR
 	bool
 
+config BR2_PACKAGE_WESTON_DRM
+	bool "DRM compositor"
+	depends on BR2_PACKAGE_MESA3D_OPENGL_EGL
+	select BR2_PACKAGE_LIBDRM
+	select BR2_PACKAGE_WESTON_HAS_COMPOSITOR
+
+# Uses libgbm from mesa3d
+comment "DRM compositor needs an OpenGL EGL backend provided by mesa3d"
+	depends on !BR2_PACKAGE_MESA3D_OPENGL_EGL
+
 config BR2_PACKAGE_WESTON_FBDEV
 	bool "fbdev compositor"
 
