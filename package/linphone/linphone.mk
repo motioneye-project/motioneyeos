@@ -8,7 +8,7 @@ LINPHONE_VERSION_MAJOR = 3.6
 LINPHONE_VERSION = $(LINPHONE_VERSION_MAJOR).1
 LINPHONE_SITE = http://download-mirror.savannah.gnu.org/releases/linphone/$(LINPHONE_VERSION_MAJOR).x/sources
 LINPHONE_CONF_OPTS = \
-	--disable-strict
+	--disable-strict --disable-video
 # configure is out of sync causing deplibs linking issues
 LINPHONE_AUTORECONF = YES
 LINPHONE_INSTALL_STAGING = YES
@@ -34,6 +34,8 @@ LINPHONE_CONF_OPTS += --disable-gtk_ui
 endif
 
 # needed for bundled mediastreamer2
+LINPHONE_DEPENDENCIES += host-intltool host-gettext
+
 ifeq ($(BR2_PACKAGE_LIBV4L),y)
 LINPHONE_CONF_OPTS += --enable-libv4l1 --enable-libv4l2
 LINPHONE_DEPENDENCIES += libv4l
