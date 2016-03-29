@@ -116,4 +116,11 @@ else
 WESTON_CONF_OPTS += --disable-systemd-login --disable-systemd-notify
 endif
 
+ifeq ($(BR2_PACKAGE_LIBXML2),y)
+WESTON_CONF_OPTS += --enable-junit-xml
+WESTON_DEPENDENCIES += libxml2
+else
+WESTON_CONF_OPTS += --disable-junit-xml
+endif
+
 $(eval $(autotools-package))
