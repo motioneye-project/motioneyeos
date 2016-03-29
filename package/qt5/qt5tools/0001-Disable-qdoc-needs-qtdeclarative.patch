@@ -1,0 +1,30 @@
+From acdb24783322bb6e69df61cf04df2b2e47a06ad2 Mon Sep 17 00:00:00 2001
+From: Peter Seiderer <ps.report@gmx.net>
+Date: Tue, 29 Mar 2016 13:37:09 +0200
+Subject: [PATCH] Disable qdoc (needs qtdeclarative).
+
+Fixes:
+
+  Project ERROR: Unknown module(s) in QT: qmldevtools-private
+  Makefile:63: recipe for target 'sub-qdoc-qmake_all' failed
+
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+---
+ src/src.pro | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/src/src.pro b/src/src.pro
+index 387d54f..494898f 100644
+--- a/src/src.pro
++++ b/src/src.pro
+@@ -14,7 +14,6 @@ qtHaveModule(widgets) {
+ }
+ 
+ SUBDIRS += linguist \
+-    qdoc \
+     qtplugininfo
+ if(!android|android_app):!ios: SUBDIRS += qtpaths
+ 
+-- 
+2.1.4
+
