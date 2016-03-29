@@ -1,0 +1,31 @@
+From 9720f6f7fdae210aa6d87d97324abd32e103dd16 Mon Sep 17 00:00:00 2001
+From: Willem Toorop <willem@nlnetlabs.nl>
+Date: Thu, 27 Nov 2014 16:50:33 +0100
+Subject: [PATCH] Comment out debugging remnants
+
+[Backport from upstream commit
+a0a943d504debb05ce4d62ea81c2d218a6cc8727, needed for a following patch
+fixing the build with Perl 5.10.]
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ doc/doxyparse.pl | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/doc/doxyparse.pl b/doc/doxyparse.pl
+index a09b2e8..3f7897f 100755
+--- a/doc/doxyparse.pl
++++ b/doc/doxyparse.pl
+@@ -79,8 +79,8 @@ if (defined $options{'m'}) {
+ 			my @parts = split /[\t ]*\|[\t ]*/, $_;
+ 			$functions = shift @parts;
+ 			$see_also = join ', ', @parts;
+-			print "{$functions}\n";
+-			print "{$see_also}\n";
++			#print "{$functions}\n";
++			#print "{$see_also}\n";
+ 			my @funcs = split /[\t ]*,[\t ]*/, $functions;
+ 			my @also = split /[\t ]*,[\t ]*/, $see_also;
+ 			$manpages{$funcs[0]} = \@funcs;
+-- 
+2.6.4
+
