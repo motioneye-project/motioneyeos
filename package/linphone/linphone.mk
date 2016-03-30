@@ -36,6 +36,13 @@ endif
 # needed for bundled mediastreamer2
 LINPHONE_DEPENDENCIES += host-intltool host-gettext
 
+ifeq ($(BR2_PACKAGE_ALSA_LIB_MIXER)$(BR2_PACKAGE_ALSA_LIB_PCM),yy)
+LINPHONE_CONF_OPTS += --enable-alsa
+LINPHONE_DEPENDENCIES += alsa-lib
+else
+LINPHONE_CONF_OPTS += --disable-alsa
+endif
+
 ifeq ($(BR2_PACKAGE_LIBV4L),y)
 LINPHONE_CONF_OPTS += --enable-libv4l1 --enable-libv4l2
 LINPHONE_DEPENDENCIES += libv4l
