@@ -32,21 +32,16 @@ HOST_TCL_CONF_OPTS = \
 # I haven't found a good way to force pkgs to not build
 # or configure without just removing the entire pkg directory.
 define HOST_TCL_REMOVE_PACKAGES
-	rm -fr $(@D)/pkgs/sqlite[0-9].[0-9].[0-9] \
-		$(@D)/pkgs/tdbc[0-9].[0-9].[0-9] \
-		$(@D)/pkgs/tdbcmysql[0-9].[0-9].[0-9] \
-		$(@D)/pkgs/tdbcodbc[0-9].[0-9].[0-9] \
-		$(@D)/pkgs/tdbcpostgres[0-9].[0-9].[0-9] \
-		$(@D)/pkgs/tdbcsqlite3-[0-9].[0-9].[0-9]
+	rm -fr $(@D)/pkgs/sqlite3* $(@D)/pkgs/tdbc*
 endef
 HOST_TCL_PRE_CONFIGURE_HOOKS += HOST_TCL_REMOVE_PACKAGES
 define TCL_REMOVE_PACKAGES
-	rm -fr $(if $(BR2_PACKAGE_SQLITE),,$(@D)/pkgs/sqlite[0-9].[0-9].[0-9]) \
-		$(if $(BR2_PACKAGE_SQLITE),,$(@D)/pkgs/tdbc[0-9].[0-9].[0-9]) \
-		$(@D)/pkgs/tdbcmysql[0-9].[0-9].[0-9] \
-		$(@D)/pkgs/tdbcodbc[0-9].[0-9].[0-9] \
-		$(@D)/pkgs/tdbcpostgres[0-9].[0-9].[0-9] \
-		$(if $(BR2_PACKAGE_SQLITE),,$(@D)/pkgs/tdbcsqlite3-[0-9].[0-9].[0-9])
+	rm -fr $(if $(BR2_PACKAGE_SQLITE),,$(@D)/pkgs/sqlite3*) \
+		$(if $(BR2_PACKAGE_SQLITE),,$(@D)/pkgs/tdbc1*) \
+		$(@D)/pkgs/tdbcmysql* \
+		$(@D)/pkgs/tdbcodbc* \
+		$(@D)/pkgs/tdbcpostgres* \
+		$(if $(BR2_PACKAGE_SQLITE),,$(@D)/pkgs/tdbcsqlite3*)
 endef
 TCL_PRE_CONFIGURE_HOOKS += TCL_REMOVE_PACKAGES
 
