@@ -34,7 +34,7 @@ HOST_TCL_PRE_CONFIGURE_HOOKS += HOST_TCL_REMOVE_PACKAGES
 # We remove the bundled sqlite as we prefer to not use bundled stuff at all.
 define TCL_REMOVE_PACKAGES
 	rm -fr $(@D)/pkgs/sqlite3* \
-		$(@D)/pkgs/tdbcmysql* \
+		$(if $(BR2_PACKAGE_MYSQL),,$(@D)/pkgs/tdbcmysql*) \
 		$(@D)/pkgs/tdbcodbc* \
 		$(@D)/pkgs/tdbcpostgres* \
 		$(if $(BR2_PACKAGE_SQLITE),,$(@D)/pkgs/tdbcsqlite3*)
@@ -72,7 +72,8 @@ define TCL_REMOVE_EXTRA
 endef
 TCL_POST_INSTALL_TARGET_HOOKS += TCL_REMOVE_EXTRA
 
-TCL_DEPENDENCIES = $(if $(BR2_PACKAGE_SQLITE),sqlite)
+TCL_DEPENDENCIES = $(if $(BR2_PACKAGE_SQLITE),sqlite) \
+	$(if $(BR2_PACKAGE_MYSQL),mysql)
 HOST_TCL_DEPENDENCIES =
 
 $(eval $(autotools-package))
