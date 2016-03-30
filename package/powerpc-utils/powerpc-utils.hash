@@ -1,3 +1,2 @@
-# From http://sourceforge.net/projects/powerpc-utils/files/powerpc-utils/
-sha1	975c668e8eaedd5222a7870e82ce295d06dfe649	powerpc-utils-1.2.24.tar.gz
-md5	f492a72f2d4522eba5d9b329c84b3ed3	powerpc-utils-1.2.24.tar.gz
+# Locally calculated
+sha256 657790a4aea7f3e4649a454b4c384e255145bff9b9c5e40402170603980a6736 powerpc-utils-v1.3.1.tar.gz

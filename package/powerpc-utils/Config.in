@@ -10,7 +10,7 @@ config BR2_PACKAGE_POWERPC_UTILS
 	help
 	  System utilities for PowerPC machines.
 
-	  http://sourceforge.net/projects/powerpc-utils/
+	  https://github.com/nfont/powerpc-utils
 
 if BR2_PACKAGE_POWERPC_UTILS
 
@@ -18,7 +18,6 @@ config BR2_PACKAGE_POWERPC_UTILS_RTAS
 	bool "RTAS support"
 	select BR2_PACKAGE_LIBRTAS
 	depends on BR2_TOOLCHAIN_USES_GLIBC
-	default y
 	help
 	  Enable support for functions that require RTAS.
 
