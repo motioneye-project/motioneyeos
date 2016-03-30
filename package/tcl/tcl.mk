@@ -36,7 +36,7 @@ define TCL_REMOVE_PACKAGES
 	rm -fr $(@D)/pkgs/sqlite3* \
 		$(if $(BR2_PACKAGE_MYSQL),,$(@D)/pkgs/tdbcmysql*) \
 		$(@D)/pkgs/tdbcodbc* \
-		$(@D)/pkgs/tdbcpostgres* \
+		$(if $(BR2_PACKAGE_POSTGRESQL),,$(@D)/pkgs/tdbcpostgres*) \
 		$(if $(BR2_PACKAGE_SQLITE),,$(@D)/pkgs/tdbcsqlite3*)
 endef
 TCL_PRE_CONFIGURE_HOOKS += TCL_REMOVE_PACKAGES
@@ -73,7 +73,8 @@ endef
 TCL_POST_INSTALL_TARGET_HOOKS += TCL_REMOVE_EXTRA
 
 TCL_DEPENDENCIES = $(if $(BR2_PACKAGE_SQLITE),sqlite) \
-	$(if $(BR2_PACKAGE_MYSQL),mysql)
+	$(if $(BR2_PACKAGE_MYSQL),mysql) \
+	$(if $(BR2_PACKAGE_POSTGRESQL),postgresql)
 HOST_TCL_DEPENDENCIES =
 
 $(eval $(autotools-package))
