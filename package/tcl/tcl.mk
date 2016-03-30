@@ -14,15 +14,10 @@ TCL_SUBDIR = unix
 TCL_INSTALL_STAGING = YES
 TCL_AUTORECONF = YES
 
-# Note that --with-system-sqlite will only make a difference
-# in the sqlite package (which gets removed if sqlite not
-# configured).  Don't need to worry about conditionally including
-# it in the configure options
 TCL_CONF_OPTS = \
 	--disable-symbols \
 	--disable-langinfo \
-	--disable-framework \
-	--with-system-sqlite
+	--disable-framework
 
 HOST_TCL_CONF_OPTS = \
 	--disable-symbols \
@@ -35,9 +30,10 @@ define HOST_TCL_REMOVE_PACKAGES
 	rm -fr $(@D)/pkgs/sqlite3* $(@D)/pkgs/tdbc*
 endef
 HOST_TCL_PRE_CONFIGURE_HOOKS += HOST_TCL_REMOVE_PACKAGES
+
+# We remove the bundled sqlite as we prefer to not use bundled stuff at all.
 define TCL_REMOVE_PACKAGES
-	rm -fr $(if $(BR2_PACKAGE_SQLITE),,$(@D)/pkgs/sqlite3*) \
-		$(if $(BR2_PACKAGE_SQLITE),,$(@D)/pkgs/tdbc1*) \
+	rm -fr $(@D)/pkgs/sqlite3* \
 		$(@D)/pkgs/tdbcmysql* \
 		$(@D)/pkgs/tdbcodbc* \
 		$(@D)/pkgs/tdbcpostgres* \
