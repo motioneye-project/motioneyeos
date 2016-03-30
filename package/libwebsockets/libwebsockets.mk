@@ -13,6 +13,15 @@ LIBWEBSOCKETS_INSTALL_STAGING = YES
 LIBWEBSOCKETS_CONF_OPTS = -DLWS_WITHOUT_TESTAPPS=ON -DLWS_IPV6=ON
 LIBWEBSOCKETS_PATCH = https://github.com/warmcat/libwebsockets/commit/9eec5e4470397632af035c429295a41b74bd0585.patch
 
+# If LWS_MAX_SMP=1, then there is no code related to pthreads compiled
+# in the library. If unset, LWS_MAX_SMP defaults to 32 and a small
+# amount of pthread mutex code is built into the library.
+ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),)
+LIBWEBSOCKETS_CONF_OPTS += -DLWS_MAX_SMP=1
+else
+LIBWEBSOCKETS_CONF_OPTS += -DLWS_MAX_SMP=
+endif
+
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 LIBWEBSOCKETS_DEPENDENCIES += openssl host-openssl
 LIBWEBSOCKETS_CONF_OPTS += -DLWS_WITH_SSL=ON
