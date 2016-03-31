@@ -173,6 +173,7 @@ config BR2_LINUX_KERNEL_UBOOT_IMAGE
 
 choice
 	prompt "Kernel binary format"
+	default BR2_LINUX_KERNEL_ZIMAGE if BR2_arm || BR2_armeb
 
 config BR2_LINUX_KERNEL_UIMAGE
 	bool "uImage"
