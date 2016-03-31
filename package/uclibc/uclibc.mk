@@ -88,6 +88,16 @@ define UCLIBC_ARM_BINFMT_FLAT
 endef
 endif
 
+# context functions are written with ARM instructions. Therefore, if
+# we are using a Thumb2-only platform (i.e, Cortex-M), they must be
+# disabled. Thumb1 platforms are not a problem, since they all also
+# support the ARM instructions.
+ifeq ($(BR2_ARM_INSTRUCTIONS_THUMB2):$(BR2_ARM_CPU_HAS_ARM),y:)
+define UCLIBC_ARM_NO_CONTEXT_FUNCS
+	$(call KCONFIG_DISABLE_OPT,UCLIBC_HAS_CONTEXT_FUNCS,$(@D)/.config)
+endef
+endif
+
 endif # arm
 
 #
@@ -361,6 +371,7 @@ define UCLIBC_KCONFIG_FIXUP_CMDS
 	$(UCLIBC_ARC_PAGE_SIZE_CONFIG)
 	$(UCLIBC_ARM_ABI_CONFIG)
 	$(UCLIBC_ARM_BINFMT_FLAT)
+	$(UCLIBC_ARM_NO_CONTEXT_FUNCS)
 	$(UCLIBC_MIPS_ABI_CONFIG)
 	$(UCLIBC_MIPS_ISA_CONFIG)
 	$(UCLIBC_SH_TYPE_CONFIG)
