@@ -336,6 +336,7 @@ menu "Firmware"
 	source "package/rpi-firmware/Config.in"
 	source "package/sunxi-boards/Config.in"
 	source "package/ux500-firmware/Config.in"
+	source "package/wilc1000-firmware/Config.in"
 	source "package/zd1211-firmware/Config.in"
 endmenu
 	source "package/a10disp/Config.in"
