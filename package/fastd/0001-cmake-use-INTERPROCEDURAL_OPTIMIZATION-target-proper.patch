@@ -15,27 +15,12 @@ have very few space left on devices with only 4 MB flash memory.
 
 Signed-off-by: Alexander Dahl <post@lespocky.de>
 ---
- cmake/CMakeFindBinUtils.cmake |  7 -------
- cmake/checks.cmake            | 14 --------------
- src/CMakeLists.txt            |  9 +++++++++
- 3 files changed, 9 insertions(+), 21 deletions(-)
- delete mode 100644 cmake/CMakeFindBinUtils.cmake
+ cmake/checks.cmake | 14 --------------
+ src/CMakeLists.txt |  9 +++++++++
+ 2 files changed, 9 insertions(+), 14 deletions(-)
 
-diff --git a/cmake/CMakeFindBinUtils.cmake b/cmake/CMakeFindBinUtils.cmake
-deleted file mode 100644
-index 753577a..0000000
---- a/cmake/CMakeFindBinUtils.cmake
-+++ /dev/null
-@@ -1,7 +0,0 @@
--if(CMAKE_COMPILER_IS_GNUCC)
--  find_program(CMAKE_AR NAMES ${_CMAKE_TOOLCHAIN_PREFIX}gcc-ar HINTS ${_CMAKE_TOOLCHAIN_LOCATION})
--  find_program(CMAKE_NM NAMES ${_CMAKE_TOOLCHAIN_PREFIX}gcc-nm HINTS ${_CMAKE_TOOLCHAIN_LOCATION})
--  find_program(CMAKE_RANLIB NAMES ${_CMAKE_TOOLCHAIN_PREFIX}gcc-ranlib HINTS ${_CMAKE_TOOLCHAIN_LOCATION})
--endif(CMAKE_COMPILER_IS_GNUCC)
--
--include(${CMAKE_ROOT}/Modules/CMakeFindBinUtils.cmake)
 diff --git a/cmake/checks.cmake b/cmake/checks.cmake
-index f9f0399..3c1f38b 100644
+index 27c073f..8a671a1 100644
 --- a/cmake/checks.cmake
 +++ b/cmake/checks.cmake
 @@ -10,20 +10,6 @@ if(ARCH_X86 OR ARCH_X86_64)
@@ -60,13 +45,13 @@ index f9f0399..3c1f38b 100644
  #include <sys/types.h>
  #include <sys/socket.h>
 diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
-index e7dd5d1..4991656 100644
+index 829b3ab..7612b40 100644
 --- a/src/CMakeLists.txt
 +++ b/src/CMakeLists.txt
-@@ -47,6 +47,15 @@ add_executable(fastd
+@@ -48,6 +48,15 @@ add_executable(fastd
  set_property(TARGET fastd PROPERTY COMPILE_FLAGS "${FASTD_CFLAGS}")
- set_property(TARGET fastd PROPERTY LINK_FLAGS "${PTHREAD_LDFLAGS} ${UECC_LDFLAGS_OTHER} ${NACL_LDFLAGS_OTHER} ${OPENSSL_CRYPTO_LDFLAGS_OTHER} ${JSONC_LDFLAGS_OTHER} ${LDFLAGS_LTO}")
- set_property(TARGET fastd APPEND PROPERTY INCLUDE_DIRECTORIES ${CAP_INCLUDE_DIR} ${NACL_INCLUDE_DIRS} ${JSONC_INCLUDE_DIRS})
+ set_property(TARGET fastd PROPERTY LINK_FLAGS "${PTHREAD_LDFLAGS} ${LIBUECC_LDFLAGS_OTHER} ${NACL_LDFLAGS_OTHER} ${JSON_C_LDFLAGS_OTHER} ${LDFLAGS_LTO}")
+ set_property(TARGET fastd APPEND PROPERTY INCLUDE_DIRECTORIES ${LIBCAP_INCLUDE_DIR} ${NACL_INCLUDE_DIRS} ${JSON_C_INCLUDE_DIR})
 +if(ENABLE_LTO)
 +	set_target_properties(fastd PROPERTIES
 +		INTERPROCEDURAL_OPTIMIZATION ON
@@ -76,7 +61,7 @@ index e7dd5d1..4991656 100644
 +		INTERPROCEDURAL_OPTIMIZATION OFF
 +	)
 +endif(ENABLE_LTO)
- target_link_libraries(fastd protocols methods ciphers macs ${RT_LIBRARY} ${CAP_LIBRARY} ${UECC_LIBRARIES} ${NACL_LIBRARIES} ${OPENSSL_CRYPTO_LIBRARIES} ${JSONC_LIBRARIES})
+ target_link_libraries(fastd protocols methods ciphers macs ${RT_LIBRARY} ${LIBCAP_LIBRARY} ${LIBUECC_LIBRARIES} ${NACL_LIBRARIES} ${OPENSSL_CRYPTO_LIBRARY} ${JSON_C_LIBRARIES})
  
  add_dependencies(fastd version)
 -- 
