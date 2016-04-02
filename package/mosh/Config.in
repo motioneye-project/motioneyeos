@@ -1,6 +1,6 @@
-comment "mosh needs a toolchain w/ C++, threads, dynamic library"
+comment "mosh needs a toolchain w/ C++, threads, dynamic library, wchar"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_INSTALL_LIBSTDCPP \
-		|| BR2_STATIC_LIBS
+		|| BR2_STATIC_LIBS || !BR2_USE_WCHAR
 	depends on BR2_PACKAGE_PROTOBUF_ARCH_SUPPORTS
 
 config BR2_PACKAGE_MOSH
@@ -9,6 +9,7 @@ config BR2_PACKAGE_MOSH
 	depends on BR2_INSTALL_LIBSTDCPP # protobuf
 	depends on BR2_TOOLCHAIN_HAS_THREADS # protobuf
 	depends on !BR2_STATIC_LIBS # protobuf
+	depends on BR2_USE_WCHAR
 	select BR2_PACKAGE_PROTOBUF
 	select BR2_PACKAGE_NCURSES
 	select BR2_PACKAGE_OPENSSL
