@@ -43,6 +43,7 @@ endif
 
 define QT5CONNECTIVITY_INSTALL_TARGET_CMDS
 	cp -dpf $(STAGING_DIR)/usr/lib/libQt5Bluetooth.so.* $(TARGET_DIR)/usr/lib
+	cp -dpf $(STAGING_DIR)/usr/bin/sdpscanner $(TARGET_DIR)/usr/bin
 	$(QT5CONNECTIVITY_INSTALL_TARGET_QMLS)
 endef
 
