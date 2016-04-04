@@ -1,4 +1,4 @@
-# From http://download.strongswan.org/strongswan-5.3.5.tar.bz2.md5
-md5	a2f9ea185f27e7f8413d4cd2ee61efe4	strongswan-5.3.5.tar.bz2
+# From http://download.strongswan.org/strongswan-5.4.0.tar.bz2.md5
+md5	9d7c77b0da9b69f859624897e5e9ebbf	strongswan-5.4.0.tar.bz2
 # Calculated based on the hash above
-sha256	2c84b663da652b1ff180a1a73c24a3d7b9fc4b9b8ba6bd07f94a1e33092e6350	strongswan-5.3.5.tar.bz2
+sha256	f8288faaea6a9cd8a7d413c0b76b7922be5da3dfcd01fd05cb30d2c55d3bbe89	strongswan-5.4.0.tar.bz2
