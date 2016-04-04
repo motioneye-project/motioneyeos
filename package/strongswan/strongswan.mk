@@ -71,15 +71,10 @@ STRONGSWAN_DEPENDENCIES += \
 	$(if $(BR2_PACKAGE_MYSQL),mysql)
 endif
 
-ifeq ($(BR2_PACKAGE_IPTABLES),y)
-STRONGSWAN_DEPENDENCIES += iptables
+# disable connmark/forecast until net/if.h vs. linux/if.h conflict resolved
+# problem exist since linux 4.5 header changes
 STRONGSWAN_CONF_OPTS += \
-	--enable-connmark \
-	--enable-forecast
-else
-STRONGSWAN_COF_OPTS += \
 	--disable-connmark \
 	--disable-forecast
-endif
 
 $(eval $(autotools-package))
