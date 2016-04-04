@@ -1,0 +1,8 @@
+config BR2_PACKAGE_FLANNEL
+	bool "flannel"
+	depends on BR2_PACKAGE_HOST_GO_ARCH_SUPPORTS
+	help
+	  Flannel is a virtual network that gives a subnet to each
+	  host for use with container runtimes.
+
+	  https://github.com/coreos/flannel
