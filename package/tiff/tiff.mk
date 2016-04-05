@@ -15,6 +15,14 @@ TIFF_CONF_OPTS = \
 
 TIFF_DEPENDENCIES = host-pkgconf
 
+HOST_TIFF_CONF_OPTS = \
+	--disable-cxx \
+	--without-x \
+	--disable-zlib \
+	--disable-lzma \
+	--disable-jpeg
+HOST_TIFF_DEPENDENCIES = host-pkgconf
+
 ifneq ($(BR2_PACKAGE_TIFF_CCITT),y)
 TIFF_CONF_OPTS += --disable-ccitt
 endif
@@ -81,3 +89,4 @@ endif
 TIFF_MAKE = $(MAKE) SUBDIRS="$(TIFF_SUBDIRS)"
 
 $(eval $(autotools-package))
+$(eval $(host-autotools-package))
