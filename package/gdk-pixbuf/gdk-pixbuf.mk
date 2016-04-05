@@ -14,6 +14,7 @@ GDK_PIXBUF_INSTALL_STAGING = YES
 GDK_PIXBUF_DEPENDENCIES = \
 	host-gdk-pixbuf host-libglib2 host-pkgconf \
 	libglib2 $(if $(BR2_ENABLE_LOCALE),,libiconv)
+HOST_GDK_PIXBUF_DEPENDENCIES = host-libpng host-pkgconf host-libglib2
 
 GDK_PIXBUF_CONF_ENV = \
 	ac_cv_path_GLIB_GENMARSHAL=$(LIBGLIB2_HOST_BINARY) \
@@ -28,17 +29,21 @@ GDK_PIXBUF_DEPENDENCIES += libpng
 endif
 
 ifneq ($(BR2_PACKAGE_JPEG),y)
+HOST_GDK_PIXBUF_CONF_OPTS += --without-libjpeg
 GDK_PIXBUF_CONF_OPTS += --without-libjpeg
 else
 GDK_PIXBUF_DEPENDENCIES += jpeg
+HOST_GDK_PIXBUF_DEPENDENCIES += host-libjpeg
 endif
 
 ifneq ($(BR2_PACKAGE_TIFF),y)
 GDK_PIXBUF_CONF_OPTS += --without-libtiff
+HOST_GDK_PIXBUF_CONF_OPTS += --without-libtiff
 else
-GDK_PIXBUF_DEPENDENCIES += tiff host-pkgconf
+GDK_PIXBUF_DEPENDENCIES += tiff
 GDK_PIXBUF_CONF_ENV += \
 	LIBS="`$(PKG_CONFIG_HOST_BINARY) --libs libtiff-4`"
+HOST_GDK_PIXBUF_DEPENDENCIES += host-tiff
 endif
 
 ifeq ($(BR2_PACKAGE_XLIB_LIBX11),y)
@@ -49,14 +54,14 @@ endif
 # gdk-pixbuf requires the loaders.cache file populated to work properly
 # Rather than doing so at runtime, since the fs can be read-only, do so
 # here after building and installing to target.
-# And since the cache file will contain absolute target directory names
-# we need to sanitize (strip) them.
+# And since the cache file will contain absolute host directory names we
+# need to sanitize (strip) them.
 ifeq ($(BR2_STATIC_LIBS),)
 define GDK_PIXBUF_UPDATE_CACHE
-	GDK_PIXBUF_MODULEDIR=$(TARGET_DIR)/usr/lib/gdk-pixbuf-2.0/2.10.0/loaders \
+	GDK_PIXBUF_MODULEDIR=$(HOST_DIR)/usr/lib/gdk-pixbuf-2.0/2.10.0/loaders \
 		$(HOST_DIR)/usr/bin/gdk-pixbuf-query-loaders \
 		> $(TARGET_DIR)/usr/lib/gdk-pixbuf-2.0/2.10.0/loaders.cache
-	$(SED) "s,$(TARGET_DIR),,g" \
+	$(SED) "s,$(HOST_DIR),,g" \
 		$(TARGET_DIR)/usr/lib/gdk-pixbuf-2.0/2.10.0/loaders.cache
 endef
 GDK_PIXBUF_POST_INSTALL_TARGET_HOOKS += GDK_PIXBUF_UPDATE_CACHE
@@ -69,11 +74,4 @@ endef
 GDK_PIXBUF_POST_PATCH_HOOKS += GDK_PIXBUF_DISABLE_TESTS
 
 $(eval $(autotools-package))
-
-HOST_GDK_PIXBUF_CONF_OPTS = \
-	--without-libjpeg \
-	--without-libtiff
-
-HOST_GDK_PIXBUF_DEPENDENCIES = host-libpng host-pkgconf host-libglib2
-
 $(eval $(host-autotools-package))
