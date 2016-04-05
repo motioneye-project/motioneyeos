@@ -1,0 +1,64 @@
+From 782ffa564236b79d49a88e63da65ac01b6f2cfc1 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Sun, 12 Jun 2016 22:57:02 +0200
+Subject: [PATCH] Add missing <sys/types.h> includes
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+<sys/types.h> is needed for the definition of off_t, otherwise building
+with uClibc fails with:
+
+In file included from cfgfile.c:17:0:
+cfgfile.h:25:87: error: unknown type name ‘off_t’
+ int archive_read_all_data(struct archive *a, struct archive_entry *ae, char **buffer, off_t max_size, off_t *size_read);
+                                                                                       ^
+cfgfile.h:25:103: error: unknown type name ‘off_t’
+ int archive_read_all_data(struct archive *a, struct archive_entry *ae, char **buffer, off_t max_size, off_t *size_read);
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ src/cfgfile.h | 1 +
+ src/mmc.h     | 1 +
+ src/util.h    | 1 +
+ 3 files changed, 3 insertions(+)
+
+diff --git a/src/cfgfile.h b/src/cfgfile.h
+index 1a6ffbb..8982b1d 100644
+--- a/src/cfgfile.h
++++ b/src/cfgfile.h
+@@ -17,6 +17,7 @@
+ #ifndef CFGFILE_H
+ #define CFGFILE_H
+ 
++#include <sys/types.h>
+ #include <confuse.h>
+ 
+ struct archive;
+diff --git a/src/mmc.h b/src/mmc.h
+index 56f85eb..626570a 100644
+--- a/src/mmc.h
++++ b/src/mmc.h
+@@ -20,6 +20,7 @@
+ #include <stddef.h>
+ #include <stdio.h>
+ #include <stdint.h>
++#include <sys/types.h>
+ 
+ #define MMC_DEVICE_PATH_LEN 32
+ 
+diff --git a/src/util.h b/src/util.h
+index 83f82ec..23359c1 100644
+--- a/src/util.h
++++ b/src/util.h
+@@ -20,6 +20,7 @@
+ #include <stdbool.h>
+ #include <stdio.h>
+ #include <stdint.h>
++#include <sys/types.h>
+ 
+ struct tm;
+ 
+-- 
+2.7.4
+
