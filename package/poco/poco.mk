@@ -9,6 +9,7 @@ POCO_SITE = $(call github,pocoproject,poco,$(POCO_VERSION))
 POCO_LICENSE = Boost-v1.0
 POCO_LICENSE_FILES = LICENSE
 POCO_INSTALL_STAGING = YES
+POCO_PATCH = https://github.com/pocoproject/poco/commit/30159aea4b3f6421da9d74a8bf22aad6d3bf26b4.patch
 
 POCO_DEPENDENCIES = zlib pcre					\
 	$(if $(BR2_PACKAGE_POCO_XML),expat)			\
