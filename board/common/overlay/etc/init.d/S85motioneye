@@ -3,7 +3,10 @@
 sys_conf="/etc/motioneye.conf"
 conf="/data/etc/motioneye.conf"
 motion_conf="/data/etc/motion.conf"
-watch_timeout=120
+watch_conf="/data/etc/watch.conf"
+
+meyewatch_timeout=120
+meyewatch_disable=""
 dev_v4l_by_id="/dev/v4l/by-id/"
 media_dir="/data/output"
 
@@ -12,6 +15,8 @@ if [ -f $sys_conf ] && ! [ -f $conf ]; then
 fi
 
 test -f "$conf" || exit 0
+
+test -r $watch_conf && source $watch_conf
 
 test -n "$os_version" || source /etc/init.d/base
 
@@ -29,10 +34,10 @@ watch() {
         if responsive; then
             count=0
         else
-            if [ $count -lt $watch_timeout ]; then
+            if [ $count -lt $meyewatch_timeout ]; then
                 count=$(($count + 5))
             else
-                logger -t motioneye -s "not responding for $watch_timeout seconds, rebooting"
+                logger -t motioneye -s "not responding for $meyewatch_timeout seconds, rebooting"
                 reboot
             fi
         fi
@@ -71,9 +76,9 @@ start() {
             break
         fi
 
-        if [ $count -gt $watch_timeout ]; then
+        if [ $count -gt $meyewatch_timeout ]; then
             msg_fail
-            reboot
+            test -z "$meyewatch_disable" && reboot
             return 1
         fi
 
@@ -100,7 +105,9 @@ start() {
         done
     fi
 
-    watch &
+    if [ -z "$meyewatch_disable" ]; then
+        watch &
+    fi
 
     msg_done
 }
