@@ -83,6 +83,8 @@ start() {
     else
         start_ntp
     fi
+
+    echo "system date is $(date '+%Y-%m-%d %H:%M:%S')" > /dev/kmsg
 }
 
 stop() {
