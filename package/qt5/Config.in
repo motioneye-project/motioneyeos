@@ -49,6 +49,8 @@ source "package/qt5/qt5webchannel/Config.in"
 source "package/qt5/qt5websockets/Config.in"
 source "package/qt5/qt5x11extras/Config.in"
 source "package/qt5/qt5xmlpatterns/Config.in"
+comment "technology preview"
+source "package/qt5/qt5quickcontrols2/Config.in"
 comment "legacy compatibility"
 source "package/qt5/qt5script/Config.in"
 endif
