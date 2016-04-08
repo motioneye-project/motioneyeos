@@ -29,30 +29,14 @@ Original patch taken from
 http://git.alpinelinux.org/cgit/aports/tree/main/iproute2/musl-fixes.patch.
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+[Gustavo: drop ipt_kernel_headers.h chunk since no longer necessary]
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
 ---
- include/libiptc/ipt_kernel_headers.h | 2 --
  include/linux/if_bridge.h            | 1 -
  include/linux/netfilter.h            | 2 --
  include/linux/xfrm.h                 | 1 -
- 4 files changed, 6 deletions(-)
+ 3 files changed, 4 deletions(-)
 
-diff --git a/include/libiptc/ipt_kernel_headers.h b/include/libiptc/ipt_kernel_headers.h
-index 7e87828..9566be5 100644
---- a/include/libiptc/ipt_kernel_headers.h
-+++ b/include/libiptc/ipt_kernel_headers.h
-@@ -15,12 +15,10 @@
- #else /* libc5 */
- #include <sys/socket.h>
- #include <linux/ip.h>
--#include <linux/in.h>
- #include <linux/if.h>
- #include <linux/icmp.h>
- #include <linux/tcp.h>
- #include <linux/udp.h>
- #include <linux/types.h>
--#include <linux/in6.h>
- #endif
- #endif
 diff --git a/include/linux/if_bridge.h b/include/linux/if_bridge.h
 index ee197a3..f823aa4 100644
 --- a/include/linux/if_bridge.h
