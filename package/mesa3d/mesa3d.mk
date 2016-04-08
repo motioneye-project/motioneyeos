@@ -17,6 +17,8 @@ MESA3D_INSTALL_STAGING = YES
 MESA3D_PROVIDES =
 
 MESA3D_DEPENDENCIES = \
+	host-bison \
+	host-flex \
 	expat \
 	libdrm
 
