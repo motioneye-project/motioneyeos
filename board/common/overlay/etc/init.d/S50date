@@ -1,10 +1,15 @@
 #!/bin/bash
 
 sys_conf="/etc/date.conf"
+boot_conf="/boot/date.conf"
 conf="/data/etc/date.conf"
 
-if [ -f $sys_conf ] && ! [ -f $conf ]; then
-    cp $sys_conf $conf
+if ! [ -f $conf ]; then
+    if [ -f $boot_conf ]; then
+        cp $boot_conf $conf
+    elif [ -f $sys_conf ]; then
+        cp $sys_conf $conf
+    fi
 fi
 
 test -f $conf || exit 0

@@ -1,6 +1,7 @@
 #!/bin/bash
 
 sys_conf="/etc/ppp/default"
+boot_conf="/boot/ppp/default"
 conf="/data/etc/ppp"
 
 prog="/usr/sbin/pppd"
@@ -11,8 +12,12 @@ watch_conf="/data/etc/watch.conf"
 
 test -f $watch_conf && source $watch_conf
 
-if [ -d $sys_conf ] && ! [ -d $conf ]; then
-    cp -r $sys_conf $conf
+if ! [ -d $conf ]; then
+    if [ -d $boot_conf ]; then
+        cp -r $boot_conf $conf
+    elif [ -d $sys_conf ]; then
+        cp -r $sys_conf $conf
+    fi
 fi
 
 test -f $conf/modem || exit 0

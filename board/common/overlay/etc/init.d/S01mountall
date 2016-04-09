@@ -1,6 +1,7 @@
 #!/bin/bash
 
 sys_conf="/etc/os.conf"
+boot_conf="/boot/os.conf"
 conf="/data/etc/os.conf"
 
 test -n "$os_version" || source /etc/init.d/base
@@ -10,8 +11,12 @@ mount_fs() {
     /bin/mount -a
     test $? == 0 && msg_done || msg_fail
 
-    if [ -f $sys_conf ] && ! [ -f $conf ]; then
-        cp $sys_conf $conf
+    if ! [ -f $conf ]; then
+        if [ -f $boot_conf ]; then
+            cp $boot_conf $conf
+        elif [ -f $sys_conf ]; then
+            cp $sys_conf $conf
+        fi
     fi
 
     if [ -f $conf ]; then

@@ -1,6 +1,7 @@
 #!/bin/bash
 
 sys_conf="/etc/wpa_supplicant.conf"
+boot_conf="/boot/wpa_supplicant.conf"
 conf="/data/etc/wpa_supplicant.conf"
 
 log="/var/log/wpa_supplicant.log"
@@ -9,19 +10,28 @@ iface=wlan0
 driver=wext
 
 sys_watch_conf="/etc/watch.conf"
+boot_watch_conf="/etc/watch.conf"
 watch_conf="/data/etc/watch.conf"
 
 link_watch=yes
 link_watch_timeout=20
 
-if [ -f $sys_watch_conf ] && ! [ -f $watch_conf ]; then
-    cp $sys_watch_conf $watch_conf
+if ! [ -f $watch_conf ]; then
+    if [ -f $boot_watch_conf ]; then
+        cp $boot_watch_conf $watch_conf
+    elif [ -f $sys_watch_conf ]; then
+        cp $sys_watch_conf $watch_conf
+    fi
 fi
 
 test -f $watch_conf && source $watch_conf
 
-if [ -f $sys_conf ] && ! [ -f $conf ]; then
-    cp $sys_conf $conf
+if ! [ -f $conf ]; then
+    if [ -f $boot_conf ]; then
+        cp $boot_conf $conf
+    elif [ -f $sys_conf ]; then
+        cp $sys_conf $conf
+    fi
 fi
 
 test -f $conf || exit 0

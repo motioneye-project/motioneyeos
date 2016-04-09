@@ -1,6 +1,7 @@
 #!/bin/bash
 
 sys_conf="/etc/motioneye.conf"
+boot_conf="/boot/motioneye.conf"
 conf="/data/etc/motioneye.conf"
 motion_conf="/data/etc/motion.conf"
 watch_conf="/data/etc/watch.conf"
@@ -10,8 +11,12 @@ meyewatch_disable=""
 dev_v4l_by_id="/dev/v4l/by-id/"
 media_dir="/data/output"
 
-if [ -f $sys_conf ] && ! [ -f $conf ]; then
-    cp $sys_conf $conf
+if  ! [ -f $conf ]; then
+    if [ -f $boot_conf ]; then
+        cp $boor_conf $conf
+    elif [ -f $sys_conf ]; then
+        cp $sys_conf $conf
+    fi
 fi
 
 test -f "$conf" || exit 0
