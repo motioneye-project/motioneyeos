@@ -10,6 +10,9 @@ IPMITOOL_SITE = http://downloads.sourceforge.net/project/ipmitool/ipmitool/$(IPM
 IPMITOOL_LICENSE = BSD-3c
 IPMITOOL_LICENSE_FILES = COPYING
 
+# Patching configure.ac
+IPMITOOL_AUTORECONF = YES
+
 ifeq ($(BR2_PACKAGE_IPMITOOL_LANPLUS),y)
 IPMITOOL_DEPENDENCIES += openssl
 else

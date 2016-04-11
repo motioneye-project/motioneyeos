@@ -1,0 +1,60 @@
+From 7d1863b47877129376f37613d29d3a5ba084af66 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?J=C3=B6rg=20Krause?= <joerg.krause@embedded.rocks>
+Date: Sat, 2 Apr 2016 19:45:14 +0200
+Subject: [PATCH 2/3] Avoid wchar_t redefinition
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+The musl C library does not define _WCHAR_T. Use autoconf to check for wchar_t.
+
+Upstream status: Pending
+https://sourceforge.net/p/ipmitool/mailman/message/35007331/
+
+Signed-off-by: Jörg Krause <joerg.krause@embedded.rocks>
+---
+ configure.ac             | 2 ++
+ src/plugins/imb/imbapi.h | 7 ++++++-
+ 2 files changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index 1d74fcf..c2ba1eb 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -22,6 +22,8 @@ AC_CHECK_HEADERS([stdlib.h string.h sys/ioctl.h sys/stat.h unistd.h paths.h])
+ AC_CHECK_HEADERS([arpa/inet.h fcntl.h netdb.h netinet/in.h sys/socket.h])
+ AC_CHECK_HEADERS([sys/byteorder.h byteswap.h])
+ 
++AC_CHECK_TYPES([wchar_t])
++
+ AC_C_CONST
+ AC_C_INLINE
+ AC_C_BIGENDIAN
+diff --git a/src/plugins/imb/imbapi.h b/src/plugins/imb/imbapi.h
+index 74975c6..ead8956 100644
+--- a/src/plugins/imb/imbapi.h
++++ b/src/plugins/imb/imbapi.h
+@@ -35,6 +35,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  *----------------------------------------------------------------------*/
+ #ifndef	_WINDEFS_H
+ #define	_WINDEFS_H
++
++#if HAVE_CONFIG_H
++# include <config.h>
++#endif
++
+ #ifndef FALSE
+ #define FALSE   0
+ #endif
+@@ -46,7 +51,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ #endif
+ #ifndef WIN32   
+ /* WIN32 defines this in stdio.h */
+-#ifndef _WCHAR_T
++#if !defined(HAVE_WCHAR_T)
+ #define _WCHAR_T
+ typedef long    wchar_t;
+ #endif
+-- 
+2.8.0
+
