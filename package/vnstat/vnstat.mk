@@ -8,11 +8,12 @@ VNSTAT_VERSION = 1.15
 VNSTAT_SITE = http://humdi.net/vnstat
 VNSTAT_LICENSE = GPLv2
 VNSTAT_LICENSE_FILES = COPYING
+VNSTAT_DEPENDENCIES = host-pkgconf
 # We're patching configure.ac, so we need to autoreconf
 VNSTAT_AUTORECONF = YES
 
 ifeq ($(BR2_PACKAGE_GD)$(BR2_PACKAGE_LIBPNG),yy)
-VNSTAT_DEPENDENCIES = gd
+VNSTAT_DEPENDENCIES += gd
 VNSTAT_CONF_OPTS = --enable-image-output
 else
 VNSTAT_CONF_OPTS = --disable-image-output
