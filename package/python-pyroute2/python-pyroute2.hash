@@ -1,3 +1,3 @@
-# md5 from https://pypi.python.org/pypi?:action=show_md5&digest=1c780304d18461611fe9ffaf7582bd82, sha256 locally computed
-md5     1c780304d18461611fe9ffaf7582bd82  pyroute2-0.3.16.tar.gz
-sha256  670fe054d2f262e0d679b3bb25094e0a508b67a8c5df5d45be9d1482d191b7b5  pyroute2-0.3.16.tar.gz
+# md5 from https://pypi.python.org/pypi?:action=show_md5&digest=459b4020073b767cc129e360dabbd2d7, sha256 locally computed
+md5     459b4020073b767cc129e360dabbd2d7  pyroute2-0.3.20.tar.gz
+sha256  ed28856753b941d4277b2f14b89c9edec35be4c97e1831f900fe4ce6fc12161b  pyroute2-0.3.20.tar.gz
