@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-MUTT_VERSION = 1.5.24
+MUTT_VERSION = 1.6.0
 MUTT_SITE = https://bitbucket.org/mutt/mutt/downloads
 MUTT_LICENSE = GPLv2+
 MUTT_LICENSE_FILES = GPL
