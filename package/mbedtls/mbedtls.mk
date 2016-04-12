@@ -23,6 +23,9 @@ define MBEDTLS_ENABLE_THREADING
 		$(@D)/include/mbedtls/config.h
 endef
 MBEDTLS_POST_PATCH_HOOKS += MBEDTLS_ENABLE_THREADING
+ifeq ($(BR2_STATIC_LIBS),y)
+MBEDTLS_CONF_OPTS += -DLINK_WITH_PTHREAD=ON
+endif
 endif
 
 ifeq ($(BR2_STATIC_LIBS),y)
