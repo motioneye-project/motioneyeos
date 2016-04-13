@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-RACEHOUND_VERSION = f3375911019607a0cb6a15bf68fa62dadd6b790b
+RACEHOUND_VERSION = f09f06fcc3c77c8c5541be3ba5be80aa8148ce0c
 RACEHOUND_SITE = $(call github,winnukem,racehound,$(RACEHOUND_VERSION))
 RACEHOUND_LICENSE = GPLv2
 RACEHOUND_LICENSE_FILES = LICENSE
