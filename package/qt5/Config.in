@@ -54,4 +54,5 @@ comment "technology preview"
 source "package/qt5/qt5quickcontrols2/Config.in"
 comment "legacy compatibility"
 source "package/qt5/qt5script/Config.in"
+source "package/qt5/qt5webkit/Config.in"
 endif

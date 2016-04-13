@@ -1,0 +1,34 @@
+From 5dd4bb67cfce812fd7686e43616e2069f354a7df Mon Sep 17 00:00:00 2001
+From: Allan Sandfeld Jensen <allan.jensen@theqtcompany.com>
+Date: Mon, 22 Feb 2016 10:57:32 +0100
+Subject: [PATCH] Fix linking with libpthread
+
+WebKit use libpthread directly but is depending on other qt modules
+causing it to be linked against, which might break unless -lpthread
+is last. Instead just add it explicitly after the static libraries.
+
+Upstream-Status: Backport from 5.7 branch
+
+Change-Id: I2b95cff2c96373f8dce6f95052c4fccbe1982b33
+Reviewed-by: Simon Hausmann <simon.hausmann@theqtcompany.com>
+Signed-off-by: Jonathan Liu <net147@gmail.com>
+Signed-off-by: Gary Bisson <gary.bisson@boundarydevices.com>
+---
+ Tools/qmake/mkspecs/features/default_post.prf | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/Tools/qmake/mkspecs/features/default_post.prf b/Tools/qmake/mkspecs/features/default_post.prf
+index 67276b7..39bb3f7 100644
+--- a/Tools/qmake/mkspecs/features/default_post.prf
++++ b/Tools/qmake/mkspecs/features/default_post.prf
+@@ -201,6 +201,7 @@ needToLink() {
+         linkAgainstLibrary($$library, $$eval(WEBKIT.$${library_identifier}.root_source_dir))
+         LIBS += $$eval(WEBKIT.$${library_identifier}.dependent_libs)
+     }
++    posix:!darwin: LIBS += -lpthread
+ }
+ 
+ creating_module {
+-- 
+2.7.1
+

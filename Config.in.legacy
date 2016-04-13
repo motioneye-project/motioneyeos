@@ -152,13 +152,6 @@ config BR2_PACKAGE_QT5WEBKIT_EXAMPLES
 	  The qt5webkit-examples package has been removed, since it
 	  was removed from upstream starting from Qt 5.6.
 
-config BR2_PACKAGE_QT5WEBKIT
-	bool "qt5webkit package removed"
-	select BR2_LEGACY
-	help
-	  The qt5webkit package has been removed, since it was removed
-	  from upstream starting from Qt 5.6.
-
 config BR2_PACKAGE_QT5QUICK1
 	bool "qt5quick1 package removed"
 	select BR2_LEGACY
