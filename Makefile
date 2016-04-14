@@ -343,6 +343,8 @@ ifeq ($(BR2_HAVE_DOT_CONFIG),y)
 unexport CROSS_COMPILE
 unexport ARCH
 unexport CC
+unexport LD
+unexport AR
 unexport CXX
 unexport CPP
 unexport RANLIB
