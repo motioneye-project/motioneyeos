@@ -1,11 +1,15 @@
-How to get started with the MinnowBoard
-========================================
+How to get started with the MinnowBoard (MAX)
+=============================================
 
 1. Build
 
   Apply the defconfig:
 
   $ make minnowboard_defconfig
+
+  Or, for the Minnowboard MAX board:
+
+  $ make minnowboard_max_defconfig
 
   Add any additional packages required and build:
 
