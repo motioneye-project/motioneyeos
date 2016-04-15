@@ -1,0 +1,32 @@
+From ded9afa688184b3240a92c2b8f114c545a09bc3f Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Sat, 12 Mar 2016 23:14:41 +0100
+Subject: [PATCH] ARM: stm32f249-disco: don't force init= in /chosen/bootargs
+
+There is no reason to override the kernel's default init= value, as
+this breaks userspace that assumes the kernel default of /init is
+used. Since stm32 is often used with a minimal bootloader
+(afboot-stm32) that doesn't provide any mechanism to override the DTB,
+we need to adjust the kernel command line in the Device Tree source.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ arch/arm/boot/dts/stm32f429-disco.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm/boot/dts/stm32f429-disco.dts b/arch/arm/boot/dts/stm32f429-disco.dts
+index f0b731d..2bae81c 100644
+--- a/arch/arm/boot/dts/stm32f429-disco.dts
++++ b/arch/arm/boot/dts/stm32f429-disco.dts
+@@ -53,7 +53,7 @@
+ 	compatible = "st,stm32f429i-disco", "st,stm32f429";
+ 
+ 	chosen {
+-		bootargs = "root=/dev/ram rdinit=/linuxrc";
++		bootargs = "root=/dev/ram";
+ 		stdout-path = "serial0:115200n8";
+ 	};
+ 
+-- 
+2.6.4
+
