@@ -1,0 +1,28 @@
+From 7d67f4be6e1b4d08126023c3902e3fc39488bbf9 Mon Sep 17 00:00:00 2001
+From: Lee Jones <lee.jones@linaro.org>
+Date: Tue, 16 Feb 2016 13:56:13 +0000
+Subject: [PATCH] ARM: configs: Add new config fragment to change RAM start
+ point
+
+Rather than duplicate a defconfig for each difference
+between platforms, we can choose to pick a basic defconfig and
+manipulate it at run-time using config fragments.  Here we're
+adding a new fragment to over-ride the RAM start point to 0x0.
+
+Cc: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Lee Jones <lee.jones@linaro.org>
+---
+ arch/arm/configs/dram_0x00000000.config | 1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 arch/arm/configs/dram_0x00000000.config
+
+diff --git a/arch/arm/configs/dram_0x00000000.config b/arch/arm/configs/dram_0x00000000.config
+new file mode 100644
+index 0000000..db96dcb
+--- /dev/null
++++ b/arch/arm/configs/dram_0x00000000.config
+@@ -0,0 +1 @@
++CONFIG_DRAM_BASE=0x00000000
+-- 
+2.6.4
+
