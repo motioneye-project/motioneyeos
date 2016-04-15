@@ -84,6 +84,17 @@ config BR2_PACKAGE_SYSTEMD_JOURNAL_GATEWAY
 
 	  http://www.freedesktop.org/software/systemd/man/systemd-journal-gatewayd.service.html
 
+config BR2_PACKAGE_SYSTEMD_HWDB
+	bool "enable hwdb installation"
+	default y
+	help
+	  Enables hardware database installation to /usr/lib/udev/hwdb.d
+
+	  Disabling this option improves first boot time (or every boot
+	  time in case of initramfs images) and saves several MB space.
+
+	  https://www.freedesktop.org/software/systemd/man/hwdb.html
+
 config BR2_PACKAGE_SYSTEMD_BINFMT
 	bool "enable binfmt tool"
 	help

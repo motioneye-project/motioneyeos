@@ -129,6 +129,12 @@ else
 SYSTEMD_CONF_OPTS += --disable-microhttpd
 endif
 
+ifeq ($(BR2_PACKAGE_SYSTEMD_HWDB),y)
+SYSTEMD_CONF_OPTS += --enable-hwdb
+else
+SYSTEMD_CONF_OPTS += --disable-hwdb
+endif
+
 ifeq ($(BR2_PACKAGE_SYSTEMD_BINFMT),y)
 SYSTEMD_CONF_OPTS += --enable-binfmt
 else
