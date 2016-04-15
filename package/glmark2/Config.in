@@ -7,6 +7,7 @@ config BR2_PACKAGE_GLMARK2_EGL_GLES
 config BR2_PACKAGE_GLMARK2_GL
 	bool
 	default y
+	depends on BR2_PACKAGE_HAS_LIBGL
 	depends on BR2_PACKAGE_MESA3D_DRI_DRIVER
 
 comment "glmark2 needs an OpenGL or an openGL ES and EGL backend provided by mesa3d"
