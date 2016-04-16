@@ -968,7 +968,6 @@ endif
 	@echo '  source-check           - check selected packages for valid download URLs'
 	@echo '  external-deps          - list external packages used'
 	@echo '  legal-info             - generate info about license compliance'
-	@echo '  help-custom            - print help about custom actions (if any)'
 	@echo
 	@echo '  make V=0|1             - 0 => quiet build (default), 1 => verbose build'
 	@echo '  make O=dir             - Locate all output files in "dir", including .config'
@@ -976,12 +975,6 @@ endif
 	@echo 'For further details, see README, generate the Buildroot manual, or consult'
 	@echo 'it on-line at http://buildroot.org/docs.html'
 	@echo
-
-# This rule does nothing, it is expected to be overloaded by
-# a br2-external tree or a local.mk . However, it must exist,
-# as we reference it in the main help, above. Making the rule
-# .PHONY does not work.
-help-custom:
 
 list-defconfigs:
 	@echo 'Built-in configs:'
