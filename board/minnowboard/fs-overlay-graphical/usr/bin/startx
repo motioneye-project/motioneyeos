@@ -1,0 +1,6 @@
+#!/bin/sh
+
+# Simplified custom startx script, which starts
+# the X server on vt7.
+
+xinit -- vt7
