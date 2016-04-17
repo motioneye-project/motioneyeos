@@ -145,6 +145,12 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2016.05"
 
+config BR2_x86_i386
+	bool "x86 i386 support removed"
+	help
+	  The support for the i386 processors of the x86 architecture
+	  has been removed.
+
 config BR2_PACKAGE_QT5WEBKIT_EXAMPLES
 	bool "qt5webkit-examples package removed"
 	select BR2_LEGACY

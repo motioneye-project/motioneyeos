@@ -615,8 +615,7 @@ config BR2_TOOLCHAIN_EXTERNAL_MUSL_CROSS
 	bool "Musl 1.1.12 toolchain (experimental)"
 	depends on (BR2_arm && BR2_ARM_EABI) || \
 		(BR2_arm && BR2_ARM_EABIHF && !BR2_ARM_CPU_ARMV4) || \
-		(BR2_armeb && BR2_ARM_EABI) || \
-		(BR2_i386 && !BR2_x86_i386) || \
+		(BR2_armeb && BR2_ARM_EABI) || BR2_i386 || \
 		(BR2_mips && !BR2_SOFT_FLOAT) || \
 		BR2_mipsel || (BR2_powerpc && BR2_powerpc_CLASSIC) || \
 		BR2_sh4 || BR2_sh4eb || \
