@@ -16,7 +16,8 @@ GUTENPRINT_AUTORECONF = YES
 
 GUTENPRINT_DEPENDENCIES = \
 	cups host-pkgconf \
-	$(if $(BR2_PACKAGE_LIBICONV),libiconv)
+	$(if $(BR2_PACKAGE_LIBICONV),libiconv) \
+	$(if $(BR2_PACKAGE_LIBUSB),libusb)
 
 # host-gutenprint is needed to generate XML as part of compilation
 # the program that generates the xml also links against libgutenprint
