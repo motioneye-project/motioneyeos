@@ -255,4 +255,8 @@ else
 FREESWITCH_CONF_OPTS += --disable-core-odbc-support
 endif
 
+ifeq ($(BR2_PACKAGE_XZ),y)
+FREESWITCH_DEPENDENCIES += xz
+endif
+
 $(eval $(autotools-package))
