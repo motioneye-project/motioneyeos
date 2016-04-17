@@ -73,7 +73,7 @@ else:
     if check_only:
         sys.stderr.write("don't specify outfile and check-only at the same time\n")
         sys.exit(1)
-    outfile = open(args.outfile, "wb")
+    outfile = open(args.outfile, "w")
 
 if args.package is None:
     mode = MODE_FULL
