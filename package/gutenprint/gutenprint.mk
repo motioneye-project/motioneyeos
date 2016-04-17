@@ -11,7 +11,7 @@ GUTENPRINT_SOURCE = gutenprint-$(GUTENPRINT_VERSION).tar.bz2
 GUTENPRINT_LICENSE = GPLv2+
 GUTENPRINT_LICENSE_FILES = COPYING
 
-# Needed, as we touch Makefile.am
+# Needed, as we touch Makefile.am and configure.ac
 GUTENPRINT_AUTORECONF = YES
 
 GUTENPRINT_DEPENDENCIES = \
