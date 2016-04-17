@@ -20,7 +20,7 @@ config BR2_PACKAGE_GSTREAMER1_PARSE
 	bool "enable command-line parser"
 	default y
 	help
-	  Enable command line parser for gstreamer. This may incrase the CPu
+	  Enable command line parser for gstreamer. This may increase the CPU
 	  overhead by a small amount.
 
 config BR2_PACKAGE_GSTREAMER1_TRACE
