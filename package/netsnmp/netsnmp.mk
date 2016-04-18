@@ -67,6 +67,11 @@ ifeq ($(BR2_PACKAGE_PCIUTILS),y)
 NETSNMP_DEPENDENCIES += pciutils
 endif
 
+# For ucd-snmp/lmsensorsMib
+ifeq ($(BR2_PACKAGE_LM_SENSORS),y)
+NETSNMP_DEPENDENCIES += lm-sensors
+endif
+
 ifneq ($(BR2_PACKAGE_NETSNMP_ENABLE_MIBS),y)
 NETSNMP_CONF_OPTS += --disable-mib-loading
 NETSNMP_CONF_OPTS += --disable-mibs
