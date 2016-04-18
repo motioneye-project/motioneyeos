@@ -23,6 +23,13 @@ config BR2_PACKAGE_OPENCV_LIB_CALIB3D
 config BR2_PACKAGE_OPENCV_LIB_CONTRIB
 	bool "contrib"
 	default y
+	# modules/contrib/CMakeLists.txt
+	select BR2_PACKAGE_OPENCV_LIB_CALIB3D
+	select BR2_PACKAGE_OPENCV_LIB_FEATURES2D
+	select BR2_PACKAGE_OPENCV_LIB_IMGPROC
+	select BR2_PACKAGE_OPENCV_LIB_ML
+	select BR2_PACKAGE_OPENCV_LIB_OBJDETECT
+	select BR2_PACKAGE_OPENCV_LIB_VIDEO
 	help
 	  Include opencv_contrib module into the OpenCV build.
 
@@ -46,6 +53,8 @@ config BR2_PACKAGE_OPENCV_LIB_GPU
 config BR2_PACKAGE_OPENCV_LIB_HIGHGUI
 	bool "highgui"
 	default y
+	# modules/highgui/CMakeLists.txt
+	select BR2_PACKAGE_OPENCV_LIB_IMGPROC
 	help
 	  Include opencv_highgui module into the OpenCV build.
 
@@ -58,6 +67,10 @@ config BR2_PACKAGE_OPENCV_LIB_IMGPROC
 config BR2_PACKAGE_OPENCV_LIB_LEGACY
 	bool "legacy"
 	default y
+	# modules/legacy/CMakeLists.txt
+	select BR2_PACKAGE_OPENCV_LIB_CALIB3D
+	select BR2_PACKAGE_OPENCV_LIB_ML
+	select BR2_PACKAGE_OPENCV_LIB_VIDEO
 	help
 	  Include opencv_legacy module into the OpenCV build.
 
@@ -75,6 +88,8 @@ config BR2_PACKAGE_OPENCV_LIB_NONFREE
 config BR2_PACKAGE_OPENCV_LIB_OBJDETECT
 	bool "objdetect"
 	default y
+	# modules/objdetect/CMakeLists.txt
+	select BR2_PACKAGE_OPENCV_LIB_IMGPROC
 	help
 	  Include opencv_objdetect module into the OpenCV build.
 
