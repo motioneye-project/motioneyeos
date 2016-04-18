@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-RP_PPPOE_VERSION = 3.11
+RP_PPPOE_VERSION = 3.12
 RP_PPPOE_SITE = http://www.roaringpenguin.com/files/download
 RP_PPPOE_LICENSE = GPLv2
 RP_PPPOE_LICENSE_FILES = doc/LICENSE
