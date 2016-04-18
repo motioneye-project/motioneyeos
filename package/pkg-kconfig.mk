@@ -87,7 +87,7 @@ define $(2)_FIXUP_DOT_CONFIG
 endef
 
 $$($(2)_DIR)/.stamp_kconfig_fixup_done: $$($(2)_DIR)/.config
-	$$(call $(2)_FIXUP_DOT_CONFIG)
+	$$($(2)_FIXUP_DOT_CONFIG)
 
 # Before running configure, the configuration file should be present and fixed
 $$($(2)_TARGET_CONFIGURE): $$($(2)_DIR)/.stamp_kconfig_fixup_done
@@ -139,7 +139,7 @@ $$($(2)_DIR)/.kconfig_editor_%: $$($(2)_DIR)/.stamp_kconfig_fixup_done
 		$$($(2)_KCONFIG_OPTS) $$(*)
 	rm -f $$($(2)_DIR)/.stamp_{kconfig_fixup_done,configured,built}
 	rm -f $$($(2)_DIR)/.stamp_{target,staging,images}_installed
-	$$(call $(2)_FIXUP_DOT_CONFIG)
+	$$($(2)_FIXUP_DOT_CONFIG)
 
 # Saving back the configuration
 #
