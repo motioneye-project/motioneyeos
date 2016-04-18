@@ -1,19 +1,15 @@
-comment "gst1-imx needs an imx-specific Linux kernel to be built"
-	depends on BR2_arm && !BR2_LINUX_KERNEL
-
 config BR2_PACKAGE_GST1_IMX
 	bool "gst1-imx"
-	depends on BR2_LINUX_KERNEL
 	depends on BR2_arm # Only relevant for i.MX
 	select BR2_PACKAGE_GST1_PLUGINS_BASE
 	help
 	  This is a set of GStreamer 1.0 plugins for plugins for Freescale's
 	  i.MX platforms, which make use of the i.MX multimedia capabilities.
 
-	  This software supports only the i.MX6 SoC family and requires a
-	  kernel that includes the i.MX6 specific headers to be built.
+	  This software supports only the i.MX6 SoC family.
 
-	  The IPU and PXP plugins are always built.
+	  The IPU and PXP plugins are built when an imx-specific kernel is
+	  enabled.
 	  The V4L2 plugin is built when BR2_PACKAGE_GST1_PLUGINS_BAD is enabled.
 	  The VPU plugin is built when BR2_PACKAGE_LIBIMXVPUAPI is enabled.
 	  The EGL plugin is built when BR2_PACKAGE_IMX_GPU_VIV is enabled.
