@@ -5,7 +5,6 @@ config BR2_PACKAGE_CANNELLONI
 	depends on BR2_USE_MMU # lksctp-tools
 	depends on BR2_TOOLCHAIN_HAS_THREADS # lksctp-tools
 	depends on !BR2_STATIC_LIBS # lksctp-tools
-	select BR2_PACKAGE_LKSCTP_TOOLS
 	help
 	  A SocketCAN over Ethernet tunnel. The tunnel supports both
 	  UDP and SCTP protocols.
