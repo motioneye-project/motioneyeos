@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LINUX_FIRMWARE_VERSION = bbe4917c054eb0a73e250c6363341e3bf6725839
+LINUX_FIRMWARE_VERSION = b0668886def608d352cd0263a7ef04e64e25574a
 LINUX_FIRMWARE_SITE = http://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git
 LINUX_FIRMWARE_SITE_METHOD = git
 
