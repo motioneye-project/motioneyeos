@@ -70,7 +70,6 @@ config BR2_PACKAGE_LINUX_FIRMWARE_BRCM_BCM43XXX
 
 config BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_3160
 	bool "Intel iwlwifi 3160"
-	select BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_NEED_REV
 	help
 	  Firmware files for the Intel Wifi 3160 devices supported by
 	  the iwlwifi kernel driver.
@@ -89,55 +88,15 @@ config BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_6000G2A
 
 config BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_7260
 	bool "Intel iwlwifi 7260"
-	select BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_NEED_REV
 	help
 	  Firmware files for the Intel Wifi 7260 devices supported by
 	  the iwlwifi kernel driver.
 
 config BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_7265
 	bool "Intel iwlwifi 7265"
-	select BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_NEED_REV
 	help
 	  Firmware files for the Intel Wifi 7265 devices supported by
 	  the iwlwifi kernel driver.
-
-config BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_NEED_REV
-	bool
-
-if BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_NEED_REV
-
-choice
-	bool "iwlwifi 3160/726x revision to use"
-	help
-	  Use revision 7 for kernel 3.10 to 3.12.
-	  Use revision 8 for kernel 3.13 to 3.15.
-	  Use revision 9 for kernel 3.16 onward.
-
-config BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_REV_7
-	prompt "revision 7"
-	depends on !BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_7265
-	help
-	  Use revision 7 for kernel 3.10 to 3.12.
-
-config BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_REV_8
-	prompt "revision 8"
-	help
-	  Use revision 8 for kernel 3.13 to 3.15.
-
-config BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_REV_9
-	prompt "revision 9"
-	help
-	  Use revision 9 for kernel 3.16 onward.
-
-endchoice
-
-config BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_REV
-	int
-	default 7 if BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_REV_7
-	default 8 if BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_REV_8
-	default 9 if BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_REV_9
-
-endif # iwlwifi 3160/7260
 
 config BR2_PACKAGE_LINUX_FIRMWARE_LIBERTAS_SD8686_V8
 	bool "Libertas SD 8686 v8"
