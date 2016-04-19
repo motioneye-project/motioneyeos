@@ -37,6 +37,9 @@ endif
 ifeq ($(ARCH),arm)
 OPENSSL_TARGET_ARCH = armv4
 endif
+ifeq ($(ARCH),aarch64)
+OPENSSL_TARGET_ARCH = aarch64
+endif
 ifeq ($(ARCH),powerpc)
 # 4xx cores seem to have trouble with openssl's ASM optimizations
 ifeq ($(BR2_powerpc_401)$(BR2_powerpc_403)$(BR2_powerpc_405)$(BR2_powerpc_405fp)$(BR2_powerpc_440)$(BR2_powerpc_440fp),)
