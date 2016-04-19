@@ -10,14 +10,29 @@ This guide covers the following configurations:
  - atmel_sama5d3xek_defconfig (sama5d31, sama5d33, sama5d34, sama5d35,
    sama5d36)
  - atmel_sama5d3_xplained_defconfig
+ - atmel_sama5d3_xplained_dev_defconfig
  - atmel_sama5d3_xplained_mmc_defconfig
+ - atmel_sama5d3_xplained_mmc_dev_defconfig
  - atmel_sama5d4ek_defconfig
  - atmel_sama5d4_xplained_defconfig
+ - atmel_sama5d4_xplained_dev_defconfig
  - atmel_sama5d4_xplained_mmc_defconfig
+ - atmel_sama5d4_xplained_mmc_dev_defconfig
  - atmel_sama5d2_xplained_mmc_defconfig
+ - atmel_sama5d2_xplained_mmc_dev_defconfig
 
 These configurations will use AT91Bootstrap, u-boot and a linux kernel from
 the git trees maintained by Atmel.
+
+The configurations labeled as 'dev' provide a development rootfs with tools to
+tests the features of the SoC:
+- ALSA tools to test audio
+- FFMPEG to record video from the ISI/ISC
+- I2C, SPI, CAN, etc. tools
+- modetest for LCD screens, HDMI
+- Wilc1000 firmware for the Atmel Wireless sdio module
+- SSH for convenience
+- GDB/GDB server for debug
 
 Configuring and building Buildroot
 ==================================
