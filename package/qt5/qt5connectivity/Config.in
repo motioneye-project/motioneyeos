@@ -1,13 +1,9 @@
 config BR2_PACKAGE_QT5CONNECTIVITY
 	bool "qt5connectivity"
-	select BR2_PACKAGE_BLUEZ_UTILS
 	select BR2_PACKAGE_QT5BASE
 	select BR2_PACKAGE_QT5BASE_CONCURRENT
 	select BR2_PACKAGE_QT5BASE_DBUS
-	depends on !BR2_STATIC_LIBS # bluez_utils
-	depends on BR2_USE_WCHAR # bluez_utils
-	depends on BR2_TOOLCHAIN_HAS_THREADS # bluez_utils
-	depends on BR2_USE_MMU # bluez_utils
+	depends on BR2_PACKAGE_NEARD || BR2_PACKAGE_BLUEZ_UTILS
 	help
 	  Qt is a cross-platform application and UI framework for
 	  developers using C++.
@@ -16,6 +12,5 @@ config BR2_PACKAGE_QT5CONNECTIVITY
 
 	  http://qt.io
 
-comment "qt5connectivity needs a toolchain w/ wchar, threads, dynamic library"
-	depends on BR2_USE_MMU
-	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS
+comment "qt5connectivity needs neard and/or bluez_utils"
+	depends on !BR2_PACKAGE_NEARD && !BR2_PACKAGE_BLUEZ_UTILS
