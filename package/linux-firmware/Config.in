@@ -92,6 +92,12 @@ config BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_6000G2A
 	  Firmware files for the Intel Wifi 6000G2A devices supported by
 	  the iwlwifi kernel driver.
 
+config BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_6000G2B
+	bool "Intel iwlwifi 6000G2B"
+	help
+	  Firmware files for the Intel Wifi 6000G2B devices supported by
+	  the iwlwifi kernel driver.
+
 config BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_7260
 	bool "Intel iwlwifi 7260"
 	help
