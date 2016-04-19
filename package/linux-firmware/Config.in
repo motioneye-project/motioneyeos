@@ -98,6 +98,15 @@ config BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_7265
 	  Firmware files for the Intel Wifi 7265 devices supported by
 	  the iwlwifi kernel driver.
 
+config BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_7265D
+	bool "Intel iwlwifi 7265D"
+	# needed for old kernel versions, where the non-D and D
+	# firmwares were the same
+	select BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_7265
+	help
+	  Firmware files for the Intel Wifi 7265D devices supported by
+	  the iwlwifi kernel driver.
+
 config BR2_PACKAGE_LINUX_FIRMWARE_LIBERTAS_SD8686_V8
 	bool "Libertas SD 8686 v8"
 	help
