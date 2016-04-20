@@ -28,6 +28,11 @@ WESTON_CONF_OPTS = \
 WESTON_MAKE_OPTS = \
 	WAYLAND_PROTOCOLS_DATADIR=$(STAGING_DIR)/usr/share/wayland-protocols
 
+# Uses VIDIOC_EXPBUF, only available from 3.8+
+ifeq ($(BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_8),)
+WESTON_CONF_OPTS += --disable-simple-dmabuf-v4l-client
+endif
+
 ifeq ($(BR2_PACKAGE_DBUS),y)
 WESTON_CONF_OPTS += --enable-dbus
 WESTON_DEPENDENCIES += dbus
