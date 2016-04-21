@@ -149,10 +149,12 @@ HOST_LIBGTK3_DEPENDENCIES = \
 	host-libglib2 \
 	host-libpng \
 	host-gdk-pixbuf \
-	host-pkgconf
+	host-pkgconf \
+	host-librsvg
 
 HOST_LIBGTK3_CFLAGS = \
-	`$(HOST_DIR)/usr/bin/pkgconf --cflags --libs gdk-pixbuf-2.0`
+	`$(HOST_DIR)/usr/bin/pkgconf --cflags --libs gdk-pixbuf-2.0` \
+	`$(HOST_DIR)/usr/bin/pkgconf --cflags --libs gio-2.0`
 
 define HOST_LIBGTK3_CONFIGURE_CMDS
 	echo "#define GETTEXT_PACKAGE \"gtk30\"" >> $(@D)/gtk/config.h
@@ -165,11 +167,17 @@ define HOST_LIBGTK3_BUILD_CMDS
 		$(@D)/gtk/updateiconcache.c \
 		$(HOST_LIBGTK3_CFLAGS) \
 		-o $(@D)/gtk/gtk-update-icon-cache
+	$(HOSTCC) $(HOST_CFLAGS) $(HOST_LDFLAGS) \
+		$(@D)/gtk/encodesymbolic.c \
+		$(HOST_LIBGTK3_CFLAGS) \
+		-o $(@D)/gtk/gtk-encode-symbolic-svg
 endef
 
 define HOST_LIBGTK3_INSTALL_CMDS
 	$(INSTALL) -D -m 0755 $(@D)/gtk/gtk-update-icon-cache \
 		$(HOST_DIR)/usr/bin/gtk-update-icon-cache
+	$(INSTALL) -D -m 0755 $(@D)/gtk/gtk-encode-symbolic-svg \
+		$(HOST_DIR)/usr/bin/gtk-encode-symbolic-svg
 endef
 
 $(eval $(autotools-package))
