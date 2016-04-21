@@ -1,0 +1,16 @@
+config BR2_PACKAGE_EFIBOOTMGR
+	bool "efibootmgr"
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_12 # efivar
+	depends on BR2_TOOLCHAIN_USES_GLIBC # efivar
+	select BR2_PACKAGE_EFIVAR
+	help
+	  A Linux user-space application to modify the Intel Extensible
+	  Firmware Interface (EFI) Boot Manager. This application can create
+	  and destroy boot entries, change the boot order, change the next
+	  running boot option, and more.
+
+	  https://github.com/rhinstaller/efibootmgr
+
+comment "efibootmgr requires an (e)glibc toolchain w/ headers >= 3.12"
+	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_12 || \
+		!BR2_TOOLCHAIN_USES_GLIBC
