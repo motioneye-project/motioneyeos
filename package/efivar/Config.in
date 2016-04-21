@@ -1,0 +1,15 @@
+config BR2_PACKAGE_EFIVAR
+	bool "efivar"
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_12 # linux/nvme.h
+	# doesn't build with uclibc due to lack of uchar.h
+	# doesn't build with musl due to lack of __bswap_constant_16
+	depends on BR2_TOOLCHAIN_USES_GLIBC
+	select BR2_PACKAGE_POPT
+	help
+	  Tools and libraries to manipulate EFI variables
+
+	  https://github.com/rhinstaller/efivar
+
+comment "efivar requires an (e)glibc toolchain w/ headers >= 3.12"
+	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_12 || \
+		!BR2_TOOLCHAIN_USES_GLIBC
