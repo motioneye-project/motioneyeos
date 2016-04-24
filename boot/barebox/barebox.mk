@@ -143,3 +143,4 @@ endef
 barebox-package=$(call inner-barebox-package,$(call UPPERCASE,$(pkgname)))
 
 include boot/barebox/barebox/barebox.mk
+include boot/barebox/barebox-aux/barebox-aux.mk

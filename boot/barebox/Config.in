@@ -66,4 +66,20 @@ endif
 
 source boot/barebox/barebox/Config.in
 
+menuconfig BR2_TARGET_BAREBOX_AUX
+	bool "Build barebox with an auxiliary config"
+	help
+	  Build barebox with an auxiliary configuration.
+
+	  Useful for building an SPL (Secondary Program Loader) in
+	  addition to the traditional TPL (Tertiary Program Loader),
+	  such as the X-Loader or MLO for Texas Instruments
+	  processors.
+
+if BR2_TARGET_BAREBOX_AUX
+
+source boot/barebox/barebox-aux/Config.in
+
+endif
+
 endif
