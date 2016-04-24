@@ -356,7 +356,8 @@ endif
 
 ifneq ($(LINUX_FIRMWARE_FILES),)
 define LINUX_FIRMWARE_INSTALL_FILES
-	$(TAR) c -C $(@D) $(sort $(LINUX_FIRMWARE_FILES)) | \
+	cd $(@D) ; \
+	$(TAR) c $(sort $(LINUX_FIRMWARE_FILES)) | \
 		$(TAR) x -C $(TARGET_DIR)/lib/firmware
 endef
 endif
