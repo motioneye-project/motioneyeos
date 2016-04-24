@@ -5,9 +5,6 @@ BR2_arm926t=y
 # Linux headers same as kernel, a 3.9 series
 BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_3_9=y
 
-# System
-BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_DEVTMPFS=y
-
 # Packages
 BR2_PACKAGE_HOST_SAM_BA=y
 
