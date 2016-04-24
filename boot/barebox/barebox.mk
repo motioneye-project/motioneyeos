@@ -91,8 +91,12 @@ define BAREBOX_BUILD_CMDS
 	$(BAREBOX_BUILD_CUSTOM_ENV)
 endef
 
+BAREBOX_IMAGE_FILE = $(call qstrip,$(BR2_TARGET_BAREBOX_IMAGE_FILE))
+
 define BAREBOX_INSTALL_IMAGES_CMDS
-	if test -h $(@D)/barebox-flash-image ; then \
+	if test -n "$(BAREBOX_IMAGE_FILE)"; then \
+		cp -L $(@D)/$(BAREBOX_IMAGE_FILE) $(BINARIES_DIR) ; \
+	elif test -h $(@D)/barebox-flash-image ; then \
 		cp -L $(@D)/barebox-flash-image $(BINARIES_DIR)/barebox.bin ; \
 	else \
 		cp $(@D)/barebox.bin $(BINARIES_DIR);\
