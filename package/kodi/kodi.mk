@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-KODI_VERSION = 16.0-Jarvis
+KODI_VERSION = 16.1-Jarvis
 KODI_SITE = $(call github,xbmc,xbmc,$(KODI_VERSION))
 KODI_LICENSE = GPLv2
 KODI_LICENSE_FILES = LICENSE.GPL
