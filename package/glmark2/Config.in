@@ -21,7 +21,3 @@ config BR2_PACKAGE_GLMARK2
 	  glmark2 is an OpenGL 2.0 and ES 2.0 benchmark.
 
 	  https://github.com/glmark2/glmark2
-
-comment "glmark2 needs udev /dev management and a toolchain w/ C++, NPTL"
-	depends on !BR2_INSTALL_LIBSTDCPP || \
-		!BR2_TOOLCHAIN_HAS_THREADS_NPTL || !BR2_PACKAGE_HAS_UDEV
