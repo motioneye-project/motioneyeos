@@ -1,0 +1,63 @@
+From 1702cdfe45c9bdd7dacfc8f27a49f89fcd1d02c3 Mon Sep 17 00:00:00 2001
+From: Michael Joost <mehl@michael-joost.de>
+Date: Mon, 18 Nov 2013 16:11:26 +0100
+Subject: Remove fallback for _XEatDataWords, require libX11 1.6 for it
+
+_XEatDataWords was orignally introduced with the May 2013 security
+patches, and in order to ease the process of delivering those,
+fallback versions of _XEatDataWords were included in the X extension
+library patches so they could be applied to older versions that didn't
+have libX11 1.6 yet.   Now that we're past that hurdle, we can drop
+the fallbacks and just require libX11 1.6 for building new versions
+of the extension libraries.
+
+Reviewed-by: Alan Coopersmith <alan.coopersmith@oracle.com>
+Signed-off-by: Alan Coopersmith <alan.coopersmith@oracle.com>
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+(downloaded from upstream commit:
+ https://cgit.freedesktop.org/xorg/lib/libXfixes/commit/?id=1702cdfe45c9bdd7dacfc8f27a49f89fcd1d02c3)
+diff --git a/configure.ac b/configure.ac
+index f85bd72..2a59af8 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -55,13 +55,7 @@ FIXESEXT_VERSION=[`echo $VERSION | sed 's/^\([0-9][0-9]*\.[0-9][0-9]*\).*$/\1/'`
+ AC_SUBST(FIXESEXT_VERSION)
+ 
+ # Obtain compiler/linker options for depedencies
+-PKG_CHECK_MODULES(FIXESEXT, xproto [fixesproto >= $FIXESEXT_VERSION] xextproto x11)
+-
+-# Check for _XEatDataWords function that may be patched into older Xlib releases
+-SAVE_LIBS="$LIBS"
+-LIBS="$FIXESEXT_LIBS"
+-AC_CHECK_FUNCS([_XEatDataWords])
+-LIBS="$SAVE_LIBS"
++PKG_CHECK_MODULES(FIXESEXT, xproto [fixesproto >= $FIXESEXT_VERSION] xextproto [x11 >= 1.6])
+ 
+ 
+ AC_CONFIG_FILES([Makefile
+diff --git a/src/Xfixesint.h b/src/Xfixesint.h
+index 7bf5bfd..8a4d5fd 100644
+--- a/src/Xfixesint.h
++++ b/src/Xfixesint.h
+@@ -60,18 +60,4 @@ XFixesFindDisplay (Display *dpy);
+ #define XFixesSimpleCheckExtension(dpy,i) \
+   if (!XFixesHasExtension(i)) { return; }
+ 
+-#ifndef HAVE__XEATDATAWORDS
+-#include <X11/Xmd.h>  /* for LONG64 on 64-bit platforms */
+-#include <limits.h>
+-
+-static inline void _XEatDataWords(Display *dpy, unsigned long n)
+-{
+-# ifndef LONG64
+-    if (n >= (ULONG_MAX >> 2))
+-        _XIOError(dpy);
+-# endif
+-    _XEatData (dpy, n << 2);
+-}
+-#endif
+-
+ #endif /* _XFIXESINT_H_ */
+-- 
+cgit v0.10.2
+
