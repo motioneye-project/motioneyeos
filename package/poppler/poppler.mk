@@ -75,7 +75,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_OPENJPEG),y)
 POPPLER_DEPENDENCIES += openjpeg
-POPPLER_CONF_OPTS += --enable-libopenjpeg=openjpeg1
+POPPLER_CONF_OPTS += --enable-libopenjpeg
 else
 POPPLER_CONF_OPTS += --enable-libopenjpeg=none
 endif
