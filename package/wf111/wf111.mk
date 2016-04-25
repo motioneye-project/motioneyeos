@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-WF111_VERSION = 5.2.2-r1
+WF111_VERSION = 5.2.2-r2
 WF111_SITE_METHOD = file
 WF111_SITE = $(call qstrip,$(BR2_PACKAGE_WF111_TARBALL_PATH))
 WF111_DEPENDENCIES = linux
