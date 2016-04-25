@@ -11,15 +11,6 @@
 #
 ################################################################################
 
-# Helper to extract the make rule specified in $(2) from all the make rules
-# of the package specified in $(1).
-# Returns a non-empty string (the rule itself) if the rule exists; returns
-# an empty string if the rule does not exist.
-define KCONFIG_RULES
-	$($(1)_KCONFIG_MAKE) -pn config 2>/dev/null | \
-	sed -r -e '/^$(2):/!d'
-endef
-
 ################################################################################
 # inner-kconfig-package -- generates the make targets needed to support a
 # kconfig package
@@ -69,33 +60,18 @@ $$($(2)_KCONFIG_FILE) $$($(2)_KCONFIG_FRAGMENT_FILES): | $(1)-patch
 $(2)_KCONFIG_MAKE = \
 	$$($(2)_MAKE_ENV) $$(MAKE) -C $$($(2)_DIR) $$($(2)_KCONFIG_OPTS)
 
-# The correct way to regenerate a .config file is to use 'make olddefconfig'.
-# For historical reasons, the target name was 'oldnoconfig' between Linux kernel
-# versions 2.6.36 and 3.6, and remains as an alias in later versions.
-# In older versions, and in some other projects that use kconfig, the target is
-# not supported at all, and we use 'yes "" | make oldconfig' as a fallback
-# only, as this can fail in complex cases.
-define $(2)_REGEN_DOT_CONFIG
-	$$(Q)if [ "`$$(call KCONFIG_RULES,$(2),olddefconfig)`" ]; then \
-		$$($(2)_KCONFIG_MAKE) olddefconfig || exit 1; \
-	elif [ "`$$(call KCONFIG_RULES,$(2),oldnoconfig)`" ]; then \
-		$$($(2)_KCONFIG_MAKE) oldnoconfig || exit 1; \
-	else \
-		(yes "" | $$($(2)_KCONFIG_MAKE) oldconfig) || exit 1; \
-	fi
-endef
-
 # The specified source configuration file and any additional configuration file
 # fragments are merged together to .config, after the package has been patched.
 # Since the file could be a defconfig file it needs to be expanded to a
-# full .config first.
+# full .config first. We use 'make oldconfig' because this can be safely
+# done even when the package does not support defconfigs.
 $$($(2)_DIR)/.config: $$($(2)_KCONFIG_FILE) $$($(2)_KCONFIG_FRAGMENT_FILES)
 	$$(Q)$$(if $$($(2)_KCONFIG_DEFCONFIG), \
 		$$($(2)_KCONFIG_MAKE) $$($(2)_KCONFIG_DEFCONFIG), \
 		cp $$($(2)_KCONFIG_FILE) $$(@))
 	$$(Q)support/kconfig/merge_config.sh -m -O $$(@D) \
 		$$(@) $$($(2)_KCONFIG_FRAGMENT_FILES)
-	$$($(2)_REGEN_DOT_CONFIG)
+	$$(Q)yes "" | $$($(2)_KCONFIG_MAKE) oldconfig
 
 # If _KCONFIG_FILE or _KCONFIG_FRAGMENT_FILES exists, this dependency is
 # already implied, but if we only have a _KCONFIG_DEFCONFIG we have to add
@@ -106,7 +82,7 @@ $$($(2)_DIR)/.config: | $(1)-patch
 # The exact rules are specified by the package .mk file.
 define $(2)_FIXUP_DOT_CONFIG
 	$$($(2)_KCONFIG_FIXUP_CMDS)
-	$$($(2)_REGEN_DOT_CONFIG)
+	$$(Q)yes "" | $$($(2)_KCONFIG_MAKE) oldconfig
 	$$(Q)touch $$($(2)_DIR)/.stamp_kconfig_fixup_done
 endef
 
