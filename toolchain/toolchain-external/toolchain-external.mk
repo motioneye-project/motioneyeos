@@ -691,7 +691,7 @@ define TOOLCHAIN_EXTERNAL_INSTALL_SYSROOT_LIBS_BFIN_FDPIC
 	fi ; \
 	$(call copy_toolchain_sysroot,$${FDPIC_SYSROOT_DIR},$${FDPIC_SYSROOT_DIR},,$${FDPIC_LIB_DIR},$${FDPIC_SUPPORT_LIB_DIR})
 endef
-define TOOLCHAIN_EXTERNAL_INSTALL_BFIN_FDPIC
+define TOOLCHAIN_EXTERNAL_INSTALL_TARGET_BFIN_FDPIC
 	$(Q)$(call MESSAGE,"Install external toolchain FDPIC libraries to target...") ; \
 	for libs in $(TOOLCHAIN_EXTERNAL_LIBS); do \
 		$(call copy_toolchain_lib_root,$$libs); \
@@ -706,7 +706,7 @@ endif
 # according to the index in name "libN.so". Index 1 is reserved for
 # the standard C library. Customer libraries can use 4 and above.
 ifeq ($(BR2_BFIN_INSTALL_FLAT_SHARED),y)
-define TOOLCHAIN_EXTERNAL_INSTALL_BFIN_FLAT
+define TOOLCHAIN_EXTERNAL_INSTALL_TARGET_BFIN_FLAT
 	$(Q)$(call MESSAGE,"Install external toolchain FLAT libraries to target...") ; \
 	FLAT_EXTERNAL_CC=$(dir $(TOOLCHAIN_EXTERNAL_CC))../../bfin-uclinux/bin/bfin-uclinux-gcc ; \
 	FLAT_LIBC_A_LOCATION=`$${FLAT_EXTERNAL_CC} $(TOOLCHAIN_EXTERNAL_CFLAGS) -mid-shared-library -print-file-name=libc`; \
@@ -789,8 +789,8 @@ define TOOLCHAIN_EXTERNAL_INSTALL_TARGET_CMDS
 	$(TOOLCHAIN_EXTERNAL_CREATE_TARGET_LIB_SYMLINK)
 	$(TOOLCHAIN_EXTERNAL_INSTALL_TARGET_LIBS)
 	$(TOOLCHAIN_EXTERNAL_INSTALL_TARGET_GDBSERVER)
-	$(TOOLCHAIN_EXTERNAL_INSTALL_BFIN_FDPIC)
-	$(TOOLCHAIN_EXTERNAL_INSTALL_BFIN_FLAT)
+	$(TOOLCHAIN_EXTERNAL_INSTALL_TARGET_BFIN_FDPIC)
+	$(TOOLCHAIN_EXTERNAL_INSTALL_TARGET_BFIN_FLAT)
 	$(TOOLCHAIN_EXTERNAL_FIXUP_UCLIBCNG_LDSO)
 endef
 
