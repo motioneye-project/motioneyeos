@@ -1,4 +1,4 @@
-From 3e4c0ce8c2b4c9dad6b7ce11f017f3f639fdab27 Mon Sep 17 00:00:00 2001
+From 425b25993ef58d07aa18c5d4938876a90e22c47a Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?J=C3=B6rg=20Krause?= <joerg.krause@embedded.rocks>
 Date: Sat, 9 Apr 2016 23:24:27 +0200
 Subject: [PATCH] Link with shared libyajl in a shared build
@@ -18,6 +18,8 @@ this fix also to all other build targets who are linking against the library.
 Upstream status: Pending
 https://github.com/lloyd/yajl/pull/187
 
+[Update: align with commit 302563539dacb284576a443401cdfd061eb2e1e8 and remove
+ linking with libm from test/api/CMakeLists.txt]
 Signed-off-by: Jörg Krause <joerg.krause@embedded.rocks>
 ---
  example/CMakeLists.txt      | 7 ++++++-
@@ -75,18 +77,18 @@ index 52a9bee..7629094 100644
  # In some environments, we must explicitly link libm (like qnx,
  # thanks @shahbag)
 diff --git a/test/api/CMakeLists.txt b/test/api/CMakeLists.txt
-index e0ce2f6..9adebdc 100644
+index cd65a54..0c9debf 100644
 --- a/test/api/CMakeLists.txt
 +++ b/test/api/CMakeLists.txt
 @@ -21,5 +21,9 @@ LINK_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR}/../../${YAJL_DIST_NAME}/lib)
  FOREACH (test ${TESTS})
    GET_FILENAME_COMPONENT(testProg ${test} NAME_WE)
    ADD_EXECUTABLE(${testProg} ${test})
--  TARGET_LINK_LIBRARIES(${testProg} yajl m)
+-  TARGET_LINK_LIBRARIES(${testProg} yajl)
 +  IF(BUILD_SHARED_LIBS)
-+    TARGET_LINK_LIBRARIES(${testProg} yajl m)
++    TARGET_LINK_LIBRARIES(${testProg} yajl)
 +  ELSE()
-+    TARGET_LINK_LIBRARIES(${testProg} yajl_s m)
++    TARGET_LINK_LIBRARIES(${testProg} yajl_s)
 +  ENDIF()
  ENDFOREACH()
 diff --git a/test/parsing/CMakeLists.txt b/test/parsing/CMakeLists.txt

@@ -1,0 +1,34 @@
+From b08fe001e3d3f3564ef298e62342f07080807f7a Mon Sep 17 00:00:00 2001
+From: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+Date: Wed, 28 Oct 2015 15:45:10 +0000
+Subject: [PATCH] Let the shared and the static library have the same name
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+The will be differentiated by the extension (.so or .a).
+
+Fetched from:
+https://github.com/vriera/yajl/commit/6d09f11b8fd358cab0e31b965327e64a599f9ce9
+
+Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+Signed-off-by: Jörg Krause <joerg.krause@embedded.rocks>
+---
+ src/CMakeLists.txt | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+index 99cf9e9..1a900d3 100644
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -36,6 +36,7 @@ SET (shareDir ${CMAKE_CURRENT_BINARY_DIR}/../${YAJL_DIST_NAME}/share/pkgconfig)
+ SET(LIBRARY_OUTPUT_PATH ${libDir})
+ 
+ ADD_LIBRARY(yajl_s STATIC ${SRCS} ${HDRS} ${PUB_HDRS})
++SET_TARGET_PROPERTIES(yajl_s PROPERTIES OUTPUT_NAME yajl)
+ 
+ ADD_LIBRARY(yajl SHARED ${SRCS} ${HDRS} ${PUB_HDRS})
+ 
+-- 
+2.8.0
+
