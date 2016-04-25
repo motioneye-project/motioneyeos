@@ -15,5 +15,7 @@ config BR2_PACKAGE_XDRIVER_XF86_VIDEO_OPENCHROME
 	  Openchrome, A free and Open Source video driver for the VIA/S3G
 	  UniChrome and UniChrome Pro graphics chipsets.
 
+	  https://www.freedesktop.org/wiki/Openchrome/
+
 comment "xf86-video-openchrome needs mesa3d"
 	depends on !BR2_PACKAGE_MESA3D
