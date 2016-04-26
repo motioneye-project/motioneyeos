@@ -15,6 +15,7 @@ IPMITOOL_AUTORECONF = YES
 
 ifeq ($(BR2_PACKAGE_IPMITOOL_LANPLUS),y)
 IPMITOOL_DEPENDENCIES += openssl
+IPMITOOL_CONF_OPTS += --enable-intf-lanplus
 else
 IPMITOOL_CONF_OPTS += --disable-intf-lanplus
 endif
