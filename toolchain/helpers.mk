@@ -348,9 +348,12 @@ check_cross_compiler_exists = \
 	fi
 
 #
-# Check for toolchains known not to work with Buildroot. For now, we
-# only check for Angstrom toolchains, by looking at the vendor part of
-# the host tuple.
+# Check for toolchains known not to work with Buildroot.
+# - For the Angstrom toolchains, we check by looking at the vendor part of
+#   the host tuple.
+# - Exclude distro-class toolchains which are not relocatable.
+# - Exclude broken toolchains which return "libc.a" with -print-file-name.
+# - Exclude toolchains which doesn't support --sysroot option.
 #
 # $1: cross-gcc path
 #
