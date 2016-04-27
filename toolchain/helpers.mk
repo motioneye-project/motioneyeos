@@ -371,6 +371,11 @@ check_unusable_toolchain = \
 		echo "and contain a lot of pre-built libraries that would conflict with"; \
 		echo "the ones Buildroot wants to build."; \
 		exit 1; \
+	fi; \
+	libc_a_path=`$${__CROSS_CC} -print-file-name=libc.a` ; \
+	if test "$${libc_a_path}" = "libc.a" ; then \
+		echo "Unable to detect the toolchain sysroot, Buildroot cannot use this toolchain." ; \
+		exit 1 ; \
 	fi
 
 #
