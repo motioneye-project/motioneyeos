@@ -376,6 +376,11 @@ check_unusable_toolchain = \
 	if test "$${libc_a_path}" = "libc.a" ; then \
 		echo "Unable to detect the toolchain sysroot, Buildroot cannot use this toolchain." ; \
 		exit 1 ; \
+	fi ; \
+	sysroot_dir="$(call toolchain_find_sysroot,$${__CROSS_CC})" ; \
+	if test -z "$${sysroot_dir}" ; then \
+		echo "External toolchain doesn't support --sysroot. Cannot use." ; \
+		exit 1 ; \
 	fi
 
 #
