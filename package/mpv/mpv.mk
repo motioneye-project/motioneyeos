@@ -187,7 +187,7 @@ endif
 # wayland support
 ifeq ($(BR2_PACKAGE_WAYLAND),y)
 MPV_CONF_OPTS += --enable-wayland
-MPV_DEPENDENCIES += wayland
+MPV_DEPENDENCIES += libxkbcommon wayland
 else
 MPV_CONF_OPTS += --disable-wayland
 endif
