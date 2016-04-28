@@ -6,7 +6,7 @@ config BR2_PACKAGE_MPV
 	select BR2_PACKAGE_FFMPEG
 	select BR2_PACKAGE_FFMPEG_SWSCALE
 	select BR2_PACKAGE_ZLIB
-	# Select xkbcommon for wayland to avoid being misterious
+	# Select xkbcommon for wayland to avoid being mysterious
 	select BR2_PACKAGE_LIBXKBCOMMON if BR2_PACKAGE_WAYLAND
 	help
 	  mpv is a fork of mplayer2 and MPlayer. It shares some features
