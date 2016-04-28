@@ -52,7 +52,8 @@ MPV_CONF_OPTS += --disable-gbm
 endif
 
 # jack support
-ifeq ($(BR2_PACKAGE_JACK2),y)
+# It also requires 64-bit sync intrinsics
+ifeq ($(BR2_TOOLCHAIN_HAS_SYNC_8)$(BR2_PACKAGE_JACK2),yy)
 MPV_CONF_OPTS += --enable-jack
 MPV_DEPENDENCIES += jack2
 else
@@ -166,10 +167,11 @@ endif
 
 # SDL support
 # Both can't be used at the same time, prefer newer API
-ifeq ($(BR2_PACKAGE_SDL2),y)
+# It also requires 64-bit sync intrinsics
+ifeq ($(BR2_TOOLCHAIN_HAS_SYNC_8)$(BR2_PACKAGE_SDL2),yy)
 MPV_CONF_OPTS += --enable-sdl2 --disable-sdl1
 MPV_DEPENDENCIES += sdl2
-else ifeq ($(BR2_PACKAGE_SDL),y)
+else ifeq ($(BR2_TOOLCHAIN_HAS_SYNC_8)$(BR2_PACKAGE_SDL),yy)
 MPV_CONF_OPTS += --enable-sdl1 --disable-sdl2
 MPV_DEPENDENCIES += sdl
 else
