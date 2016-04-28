@@ -177,9 +177,15 @@ MPV_CONF_OPTS += --disable-sdl1 --disable-sdl2
 endif
 
 # va-api support
+# This requires one or more of the egl-drm, wayland, x11 backends
+# For now we support wayland and x11
 ifeq ($(BR2_PACKAGE_LIBVA),y)
+ifneq ($(BR2_PACKAGE_WAYLAND)$(BR2_PACKAGE_XLIB_LIBX11),)
 MPV_CONF_OPTS += --enable-vaapi
 MPV_DEPENDENCIES += libva
+else
+MPV_CONF_OPTS += --disable-vaapi
+endif
 else
 MPV_CONF_OPTS += --disable-vaapi
 endif
