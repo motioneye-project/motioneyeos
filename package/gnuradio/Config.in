@@ -67,7 +67,7 @@ config BR2_PACKAGE_GNURADIO_UTILS
 	help
 	  Misc python utilities
 
-comment "gr-fft, -filter, -analog, -channels, -digital, -trellis, -pager depends fftw's single precision"
+comment "gr-fft, -filter, -analog, -channels, -digital, -trellis, -pager, -qtgui depends fftw's single precision"
 	depends on !BR2_PACKAGE_FFTW_PRECISION_SINGLE
 
 if BR2_PACKAGE_FFTW_PRECISION_SINGLE
@@ -107,6 +107,16 @@ config BR2_PACKAGE_GNURADIO_PAGER
 	select BR2_PACKAGE_GNURADIO_ANALOG
 	help
 	  FLEX pager decoder implementation blocks
+
+config BR2_PACKAGE_GNURADIO_QTGUI
+	bool "gr-qtgui"
+	depends on BR2_PACKAGE_PYTHON_PYQT
+	depends on BR2_PACKAGE_QWT
+	depends on BR2_PACKAGE_QT_STL
+	select BR2_PACKAGE_GNURADIO_FFT
+	select BR2_PACKAGE_GNURADIO_FILTER
+	help
+	  GNU Radio Qt scopes
 
 config BR2_PACKAGE_GNURADIO_TRELLIS
 	bool "gr-trellis support"
