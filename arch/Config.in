@@ -94,7 +94,7 @@ config BR2_i386
 
 config BR2_m68k
 	bool "m68k"
-	select BR2_ARCH_HAS_MMU_MANDATORY
+	# MMU support is set by the subarchitecture file, arch/Config.in.m68k
 	help
 	  Motorola 68000 family microprocessor
 	  http://en.wikipedia.org/wiki/M68k

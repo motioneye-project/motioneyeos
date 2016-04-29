@@ -101,6 +101,21 @@ endif
 endif # arm
 
 #
+# m68k/coldfire definitions
+#
+
+ifeq ($(UCLIBC_TARGET_ARCH),m68k)
+
+# disable DOPIC for flat without separate data
+ifeq ($(BR2_BINFMT_FLAT_ONE),y)
+define UCLIBC_M68K_BINFMT_FLAT
+	$(call KCONFIG_DISABLE_OPT,DOPIC,$(@D)/.config)
+endef
+endif
+
+endif # m68k/coldfire
+
+#
 # MIPS definitions
 #
 
@@ -372,6 +387,7 @@ define UCLIBC_KCONFIG_FIXUP_CMDS
 	$(UCLIBC_ARM_ABI_CONFIG)
 	$(UCLIBC_ARM_BINFMT_FLAT)
 	$(UCLIBC_ARM_NO_CONTEXT_FUNCS)
+	$(UCLIBC_M68K_BINFMT_FLAT)
 	$(UCLIBC_MIPS_ABI_CONFIG)
 	$(UCLIBC_MIPS_ISA_CONFIG)
 	$(UCLIBC_SH_TYPE_CONFIG)
