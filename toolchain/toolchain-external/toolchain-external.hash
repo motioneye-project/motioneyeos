@@ -12,11 +12,6 @@ sha256 e16a5b1e41d7ff1e74161f9405182001bc8d1360d89564e73911032e6966cc0d  arm-201
 # NiosII
 sha256 e43899fd950e5d06e90c2eb01527c626240b6b4a603cbbeb532fad9fb8ea58c3  sourceryg++-2015.11-130-nios2-linux-gnu-i686-pc-linux-gnu.tar.bz2
 sha256 c412375ba3f93bafc9225de22366fa5b3f4d073ef856cf19595237ddb0815e6d  sourceryg++-2015.11-130-nios2-linux-gnu.src.tar.bz2
-# PowerPC
-sha256 525e1f53abbf65c2974ae9af762c45bb38520fe5fc50e968a23fe6a18e9eec04  freescale-2011.03-38-powerpc-linux-gnu-i686-pc-linux-gnu.tar.bz2
-sha256 fe45a1d2725e1b9f0ec7b8041c923e01f461da01b298caad537854ec1c61e211  freescale-2011.03-38-powerpc-linux-gnu.src.tar.bz2
-sha256 d6c94587d546197836e7e1a6909f6aabfa5879e91f501ab03088a6887cc242fc  mentor-2012.03-71-powerpc-mentor-linux-gnu-i686-pc-linux-gnu.tar.bz2
-sha256 4964938da0108a9a5bcc295b0f504a3804021e6e6e596509ee085d9143711b50  mentor-2012.03-71-powerpc-mentor-linux-gnu.src.tar.bz2
 # SuperH
 sha256 59d6766fde244931aa52db01433d5acd051998762a931121c5fc109536a1a802  renesas-2012.09-61-sh-linux-gnu-i686-pc-linux-gnu.tar.bz2
 sha256 e2e58c10e52395d5d35157e35f85233f713c6f9223a652dfc56194cfd2eed004  renesas-2012.09-61-sh-linux-gnu.src.tar.bz2

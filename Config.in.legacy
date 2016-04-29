@@ -145,6 +145,24 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2016.05"
 
+config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_POWERPC
+	bool "PowerPC Sourcery toolchain has been removed"
+	select BR2_LEGACY
+	help
+	  The Sourcery CodeBench toolchain for the PowerPC
+	  architecture has been removed, as it was very old, not
+	  maintained, and causing numerous build failures with modern
+	  userspace packages.
+
+config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_POWERPC_E500V2
+	bool "PowerPC Sourcery E500v2 toolchain has been removed"
+	select BR2_LEGACY
+	help
+	  The Sourcery CodeBench toolchain for the PowerPC E500v2
+	  architecture has been removed, as it was very old, not
+	  maintained, and causing numerous build failures with modern
+	  userspace packages.
+
 config BR2_x86_i386
 	bool "x86 i386 support removed"
 	help
