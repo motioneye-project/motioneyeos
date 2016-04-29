@@ -30,6 +30,12 @@ config BR2_PACKAGE_GNURADIO
 
 if BR2_PACKAGE_GNURADIO
 
+config BR2_PACKAGE_GNURADIO_AUDIO
+	bool "gr-audio"
+	depends on BR2_PACKAGE_ALSA_LIB || BR2_PACKAGE_PORTAUDIO
+	help
+	  Add audio source/sink to GNU Radio
+
 config BR2_PACKAGE_GNURADIO_BLOCKS
 	bool "blocks support"
 	help
