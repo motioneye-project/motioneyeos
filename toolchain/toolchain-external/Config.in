@@ -768,6 +768,10 @@ choice
 	  Set to the gcc version that is used by your external
 	  toolchain.
 
+config BR2_TOOLCHAIN_EXTERNAL_GCC_6
+	bool "6.x"
+	select BR2_TOOLCHAIN_GCC_AT_LEAST_6
+
 config BR2_TOOLCHAIN_EXTERNAL_GCC_5
 	bool "5.x"
 	select BR2_TOOLCHAIN_GCC_AT_LEAST_5
