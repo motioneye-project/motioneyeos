@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-PYTHON3_VERSION_MAJOR = 3.4
-PYTHON3_VERSION = $(PYTHON3_VERSION_MAJOR).3
+PYTHON3_VERSION_MAJOR = 3.5
+PYTHON3_VERSION = $(PYTHON3_VERSION_MAJOR).1
 PYTHON3_SOURCE = Python-$(PYTHON3_VERSION).tar.xz
 PYTHON3_SITE = http://python.org/ftp/python/$(PYTHON3_VERSION)
 PYTHON3_LICENSE = Python software foundation license v2, others
@@ -36,8 +36,7 @@ HOST_PYTHON3_CONF_OPTS += 	\
 	--enable-unicodedata	\
 	--disable-test-modules	\
 	--disable-idle3		\
-	--disable-ossaudiodev	\
-	--disable-pyo-build
+	--disable-ossaudiodev
 
 # Make sure that LD_LIBRARY_PATH overrides -rpath.
 # This is needed because libpython may be installed at the same time that
@@ -136,28 +135,23 @@ PYTHON3_CONF_OPTS += \
 	--disable-lib2to3	\
 	--disable-tk		\
 	--disable-nis		\
-	--disable-idle3		\
-	--disable-pyo-build
+	--disable-idle3
 
-# This is needed to make sure the Python build process doesn't try to
-# regenerate those files with the pgen program. Otherwise, it builds
-# pgen for the target, and tries to run it on the host.
-
-define PYTHON3_TOUCH_GRAMMAR_FILES
-	touch $(@D)/Include/graminit.h $(@D)/Python/graminit.c
+# Python builds two tools to generate code: 'pgen' and
+# '_freeze_importlib'. Unfortunately, for the target Python, they are
+# built for the target, while we need to run them at build time. So
+# when installing host-python, we copy them to
+# $(HOST_DIR)/usr/bin. And then, when building the target python
+# package, we tell the configure script where they are located.
+define HOST_PYTHON3_INSTALL_TOOLS
+	cp $(@D)/Parser/pgen $(HOST_DIR)/usr/bin/python-pgen
+	cp $(@D)/Programs/_freeze_importlib $(HOST_DIR)/usr/bin/python-freeze-importlib
 endef
+HOST_PYTHON3_POST_INSTALL_HOOKS += HOST_PYTHON3_INSTALL_TOOLS
 
-# This prevents the Python Makefile from regenerating the
-# Python/importlib.h header if Lib/importlib/_bootstrap.py has changed
-# because its generation is broken in a cross-compilation environment
-# and importlib.h is not used.
-
-define PYTHON3_TOUCH_IMPORTLIB_H
-	touch $(@D)/Python/importlib.h
-endef
-
-PYTHON3_POST_PATCH_HOOKS += PYTHON3_TOUCH_GRAMMAR_FILES
-PYTHON3_POST_PATCH_HOOKS += PYTHON3_TOUCH_IMPORTLIB_H
+PYTHON3_CONF_ENV += \
+	PGEN_FOR_BUILD=$(HOST_DIR)/usr/bin/python-pgen \
+	FREEZE_IMPORTLIB_FOR_BUILD=$(HOST_DIR)/usr/bin/python-freeze-importlib
 
 #
 # Remove useless files. In the config/ directory, only the Makefile
@@ -219,15 +213,25 @@ $(eval $(autotools-package))
 $(eval $(host-autotools-package))
 
 ifeq ($(BR2_PACKAGE_PYTHON3_PYC_ONLY),y)
-define PYTHON3_FINALIZE_TARGET
+define PYTHON3_REMOVE_PY_FILES
 	find $(TARGET_DIR)/usr/lib/python$(PYTHON3_VERSION_MAJOR) -name '*.py' -print0 | xargs -0 rm -f
 endef
+TARGET_FINALIZE_HOOKS += PYTHON3_REMOVE_PY_FILES
 endif
 
 ifeq ($(BR2_PACKAGE_PYTHON3_PY_ONLY),y)
-define PYTHON3_FINALIZE_TARGET
+define PYTHON3_REMOVE_PYC_FILES
 	find $(TARGET_DIR)/usr/lib/python$(PYTHON3_VERSION_MAJOR) -name '*.pyc' -print0 | xargs -0 rm -f
 endef
+TARGET_FINALIZE_HOOKS += PYTHON3_REMOVE_PYC_FILES
 endif
 
-TARGET_FINALIZE_HOOKS += PYTHON3_FINALIZE_TARGET
+# In all cases, we don't want to keep the optimized .opt-1.pyc and
+# .opt-2.pyc files, since they can't work without their non-optimized
+# variant.
+ifeq ($(BR2_PACKAGE_PYTHON3),y)
+define PYTHON3_REMOVE_OPTIMIZED_PYC_FILES
+	find $(TARGET_DIR)/usr/lib/python$(PYTHON3_VERSION_MAJOR) -name '*.opt-1.pyc' -print0 -o -name '*.opt-2.pyc' -print0 | xargs -0 rm -f
+endef
+TARGET_FINALIZE_HOOKS += PYTHON3_REMOVE_OPTIMIZED_PYC_FILES
+endif
