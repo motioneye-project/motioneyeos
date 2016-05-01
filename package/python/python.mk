@@ -230,3 +230,11 @@ define PYTHON_REMOVE_PYC_FILES
 endef
 TARGET_FINALIZE_HOOKS += PYTHON_REMOVE_PYC_FILES
 endif
+
+# In all cases, we don't want to keep the optimized .pyo files
+ifeq ($(BR2_PACKAGE_PYTHON),y)
+define PYTHON_REMOVE_PYO_FILES
+	find $(TARGET_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR) -name '*.pyo' -print0 | xargs -0 --no-run-if-empty rm -f
+endef
+TARGET_FINALIZE_HOOKS += PYTHON_REMOVE_PYO_FILES
+endif
