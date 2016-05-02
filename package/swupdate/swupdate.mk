@@ -4,22 +4,28 @@
 #
 ################################################################################
 
-SWUPDATE_VERSION = 2015.07
+SWUPDATE_VERSION = 2016.04
 SWUPDATE_SITE = $(call github,sbabic,swupdate,$(SWUPDATE_VERSION))
 SWUPDATE_LICENSE = GPLv2+, MIT, Public Domain
 SWUPDATE_LICENSE_FILES = COPYING
-SWUPDATE_PATCH = \
-	https://github.com/sbabic/swupdate/commit/5a5ef5909f5da5b2070d58ffaee924bb8e6a51e1.patch \
-	https://github.com/sbabic/swupdate/commit/f26577423eb65728fcd10f78f9978dd07d51dcb9.patch
 
-# swupdate bundles its own version of mongoose (version 3.8) and
-# lsqlite3 (version 0.8)
+# Upstream patch to fix build without MTD support
+SWUPDATE_PATCH = https://github.com/sbabic/swupdate/commit/69c0e66994f01ce1bf2299fbce86aee7a1baa37b.patch
+
+# swupdate bundles its own version of mongoose (version 3.8)
 
 ifeq ($(BR2_PACKAGE_JSON_C),y)
 SWUPDATE_DEPENDENCIES += json-c
 SWUPDATE_MAKE_ENV += HAVE_JSON_C=y
 else
 SWUPDATE_MAKE_ENV += HAVE_JSON_C=n
+endif
+
+ifeq ($(BR2_PACKAGE_LIBARCHIVE),y)
+SWUPDATE_DEPENDENCIES += libarchive
+SWUPDATE_MAKE_ENV += HAVE_LIBARCHIVE=y
+else
+SWUPDATE_MAKE_ENV += HAVE_LIBARCHIVE=n
 endif
 
 ifeq ($(BR2_PACKAGE_LIBCONFIG),y)
@@ -36,8 +42,8 @@ else
 SWUPDATE_MAKE_ENV += HAVE_LIBCURL=n
 endif
 
-ifeq ($(BR2_PACKAGE_LUA_5_2),y)
-SWUPDATE_DEPENDENCIES += lua
+ifeq ($(BR2_PACKAGE_LUA),y)
+SWUPDATE_DEPENDENCIES += lua host-pkgconf
 SWUPDATE_MAKE_ENV += HAVE_LUA=y
 else
 SWUPDATE_MAKE_ENV += HAVE_LUA=n
@@ -59,6 +65,13 @@ SWUPDATE_MAKE_ENV += HAVE_LIBCRYPTO=y
 else
 SWUPDATE_MAKE_ENV += HAVE_LIBSSL=n
 SWUPDATE_MAKE_ENV += HAVE_LIBCRYPTO=n
+endif
+
+ifeq ($(BR2_PACKAGE_UBOOT_TOOLS),y)
+SWUPDATE_DEPENDENCIES += uboot-tools
+SWUPDATE_MAKE_ENV += HAVE_LIBUBOOTENV=y
+else
+SWUPDATE_MAKE_ENV += HAVE_LIBUBOOTENV=n
 endif
 
 ifeq ($(BR2_PACKAGE_ZLIB),y)
