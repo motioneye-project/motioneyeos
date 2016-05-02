@@ -60,7 +60,8 @@ After building, you should obtain this tree:
     |   +-- cmdline.txt
     |   +-- config.txt
     |   +-- fixup.dat
-    |   `-- start.elf
+    |   +-- start.elf
+    |   `-- overlays/               [3]
     +-- sdcard.img
     `-- zImage
 
@@ -68,6 +69,11 @@ After building, you should obtain this tree:
     model you are using.
 
 [2] This is the mkknlimg DT-marked kernel.
+
+[3] Only for the Raspberry Pi 3 Model (overlay pi3-miniuart-bt is needed
+    to enable the RPi3 serial console otherwise occupied by the bluetooth
+    chip). Alternative would be to disable the serial console in cmdline.txt
+    and /etc/inittab.
 
 How to write the SD card
 ========================
