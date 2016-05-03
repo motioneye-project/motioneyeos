@@ -1,0 +1,19 @@
+Don't forcibly strip binaries, we do so on our own.
+Also using strip rather than $(STRIP) is bad when cross-compiling.
+
+Patch status: notified upstream.
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+diff -Nura lft-3.74.orig/Makefile.in lft-3.74/Makefile.in
+--- lft-3.74.orig/Makefile.in	2016-05-03 14:11:30.965530923 -0300
++++ lft-3.74/Makefile.in	2016-05-03 14:11:42.120918849 -0300
+@@ -50,8 +50,6 @@
+ 
+ install: lft lft.8 whob whob.8
+ 	@echo "LFT and WhoB"
+-	@echo "  \_Stripping binaries"
+-	@strip lft whob
+ 	@echo "  \_Copying files to their intended destinations"
+ 	@test -d $(DESTDIR)$(bindir)/. || $(MKDIR) $(DESTDIR)$(bindir)
+ 	$(INSTALL) lft $(DESTDIR)$(bindir)/lft

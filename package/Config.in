@@ -1426,6 +1426,7 @@ endif
 	source "package/kismet/Config.in"
 	source "package/knock/Config.in"
 	source "package/leafnode2/Config.in"
+	source "package/lft/Config.in"
 	source "package/lftp/Config.in"
 	source "package/lighttpd/Config.in"
 	source "package/linknx/Config.in"
