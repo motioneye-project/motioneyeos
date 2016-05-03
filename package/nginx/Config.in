@@ -36,8 +36,8 @@ config BR2_PACKAGE_NGINX_HTTP_SSL_MODULE
 	help
 	  Enable ngx_http_ssl_module
 
-config BR2_PACKAGE_NGINX_HTTP_SPDY_MODULE
-	bool "ngx_http_spdy_module"
+config BR2_PACKAGE_NGINX_HTTP_V2_MODULE
+	bool "ngx_http_v2_module"
 	select BR2_PACKAGE_ZLIB
 	help
 	  Enable ngx_http_spdy_module

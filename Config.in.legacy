@@ -145,6 +145,16 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2016.05"
 
+config BR2_PACKAGE_NGINX_HTTP_SPDY_MODULE
+	bool "nginx http spdy module removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_NGINX_HTTP_V2_MODULE
+	help
+	  The ngx_http_spdy_module has been superseded by the
+	  ngx_http_v2_module since nginx v1.9.5.  The
+	  ngx_http_v2_module modules has been automatically selected
+	  in your configuration.
+
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_RTP
 	bool "gst1-plugins-bad rtp plugin moved to good"
 	select BR2_LEGACY

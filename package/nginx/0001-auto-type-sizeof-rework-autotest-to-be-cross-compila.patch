@@ -13,6 +13,8 @@ Signed-off-by: Samuel Martin <s.martin49@gmail.com>
 Refresh for 1.8.0.
 
 Signed-off-by: Danomi Manchego <danomimanchego123@gmail.com>
+[martin@barkynet.com: Updated for 1.10.0]
+Signed-off-by: Martin Bark <martin@barkynet.com>
 ---
  auto/types/sizeof | 42 ++++++++++++++++++++++++++++--------------
  1 file changed, 28 insertions(+), 14 deletions(-)
@@ -30,7 +32,7 @@ index a5f66bb..c6f31ec 100644
  
  #include <sys/types.h>
  #include <sys/time.h>
-@@ -25,29 +25,43 @@ $NGX_INCLUDE_UNISTD_H
+@@ -25,22 +25,40 @@ $NGX_INCLUDE_UNISTD_H
  $NGX_INCLUDE_INTTYPES_H
  $NGX_INCLUDE_AUTO_CONFIG_H
  
@@ -80,13 +82,6 @@ index a5f66bb..c6f31ec 100644
      echo " $ngx_size bytes"
  fi
  
--
--rm -rf $NGX_AUTOTEST*
--
--
- case $ngx_size in
-     4)
-         ngx_max_value=2147483647
 -- 
 1.9.1
 
