@@ -354,6 +354,14 @@ config BR2_PACKAGE_NGINX_STREAM_UPSTREAM_ZONE_MODULE
 
 endif #BR2_PACKAGE_NGINX_STREAM
 
+config BR2_PACKAGE_NGINX_DEBUG
+	bool "debug logging"
+	help
+	  Enable debug logging. The debug level should be set with
+	  the error_log directive. For example
+
+	  error_log /var/log/nginx/error.log debug;
+
 comment "misc. modules"
 
 config BR2_PACKAGE_NGINX_SELECT_MODULE
