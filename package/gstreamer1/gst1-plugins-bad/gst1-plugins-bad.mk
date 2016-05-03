@@ -479,12 +479,6 @@ else
 GST1_PLUGINS_BAD_CONF_OPTS += --disable-removesilence
 endif
 
-ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_RTP),y)
-GST1_PLUGINS_BAD_CONF_OPTS += --enable-rtp
-else
-GST1_PLUGINS_BAD_CONF_OPTS += --disable-rtp
-endif
-
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_SDI),y)
 GST1_PLUGINS_BAD_CONF_OPTS += --enable-sdi
 else

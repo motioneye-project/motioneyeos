@@ -145,6 +145,13 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2016.05"
 
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_RTP
+	bool "gst1-plugins-bad rtp plugin moved to good"
+	select BR2_LEGACY
+	help
+	  The rtp plugin has been moved from gst1-plugins-base to
+	  gst1-plugins-good.
+
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_MPG123
 	bool "gst1-plugins-bad mpg123 plugin moved to ugly"
 	select BR2_LEGACY
