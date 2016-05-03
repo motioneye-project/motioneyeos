@@ -304,6 +304,49 @@ config BR2_PACKAGE_NGINX_MAIL_SMTP_MODULE
 
 endif #BR2_PACKAGE_NGINX_MAIL
 
+config BR2_PACKAGE_NGINX_STREAM
+	bool "stream proxy modules"
+
+if BR2_PACKAGE_NGINX_STREAM
+
+config BR2_PACKAGE_NGINX_STREAM_SSL_MODULE
+	bool "ngx_stream_ssl_module"
+	select BR2_PACKAGE_OPENSSL
+	help
+	  Enable ngx_stream_ssl_module
+
+config BR2_PACKAGE_NGINX_STREAM_LIMIT_CONN_MODULE
+	bool "ngx_stream_limit_conn_module"
+	default y
+	help
+	  Enable ngx_stream_limit_conn_module
+
+config BR2_PACKAGE_NGINX_STREAM_ACCESS_MODULE
+	bool "ngx_stream_access_module"
+	default y
+	help
+	  Enable ngx_stream_access_module
+
+config BR2_PACKAGE_NGINX_STREAM_UPSTREAM_HASH_MODULE
+	bool "ngx_stream_upstream_hash_module"
+	default y
+	help
+	  Enable ngx_stream_upstream_hash_module
+
+config BR2_PACKAGE_NGINX_STREAM_UPSTREAM_LEAST_CONN_MODULE
+	bool "ngx_stream_upstream_least_conn_module"
+	default y
+	help
+	  Enable ngx_stream_upstream_least_conn_module
+
+config BR2_PACKAGE_NGINX_STREAM_UPSTREAM_ZONE_MODULE
+	bool "ngx_stream_upstream_zone_module"
+	default y
+	help
+	  Enable ngx_stream_upstream_zone_module
+
+endif #BR2_PACKAGE_NGINX_STREAM
+
 comment "misc. modules"
 
 config BR2_PACKAGE_NGINX_SELECT_MODULE
