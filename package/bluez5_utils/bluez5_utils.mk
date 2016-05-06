@@ -79,4 +79,10 @@ else
 BLUEZ5_UTILS_CONF_OPTS += --disable-systemd
 endif
 
+define BLUEZ5_UTILS_INSTALL_INIT_SYSTEMD
+	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/
+	ln -fs ../../../../usr/lib/systemd/system/bluetooth.service \
+		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/bluetooth.service
+endef
+
 $(eval $(autotools-package))
