@@ -1,2 +1,3 @@
-# Locally computed:
-sha256  a8046804a0dfae090234bbb90fc560a6cc11a208b3d048b55244c79c1945c17f  Twisted-15.5.0.tar.bz2
+# md5 from https://pypi.python.org/pypi?:action=show_md5&digest=266a085f5ce3fbc060818bd00bd6a888, sha256 locally computed
+md5     266a085f5ce3fbc060818bd00bd6a888 Twisted-16.1.1.tar.bz2
+sha256  fe7d001d9a803ed26cd0fd2f69fa4212ff025f3af6ef1a559d905fe551ab04e9  Twisted-16.1.1.tar.bz2
