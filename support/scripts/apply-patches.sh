@@ -63,8 +63,12 @@ find ${builddir}/ '(' -name '*.rej' -o -name '.*.rej' ')' -print0 | \
     xargs -0 -r rm -f
 
 function apply_patch {
-    path=$1
-    patch=$2
+    path="${1%%/}"
+    patch="${2}"
+    case "${path}" in
+        /*) ;;
+        *)  path="$PWD/${path}";;
+    esac
     if [ "$3" ]; then
         type="series"; uncomp="cat"
     else
@@ -99,7 +103,7 @@ function apply_patch {
         echo "Error: missing patch file ${path}/$patch"
         exit 1
     fi
-    echo $patch >> ${builddir}/.applied_patches_list
+    echo "${path}/${patch}" >> ${builddir}/.applied_patches_list
     ${uncomp} "${path}/$patch" | patch -g0 -p1 -E -d "${builddir}" -t -N $silent
     if [ $? != 0 ] ; then
         echo "Patch failed!  Please fix ${patch}!"
@@ -141,6 +145,7 @@ function scan_patchdir {
     fi
 }
 
+touch ${builddir}/.applied_patches_list
 scan_patchdir "$patchdir" "$patchpattern"
 
 # Check for rejects...
