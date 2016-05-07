@@ -103,6 +103,14 @@ function apply_patch {
         echo "Error: missing patch file ${path}/$patch"
         exit 1
     fi
+    existing="$(grep -E "/${patch}\$" ${builddir}/.applied_patches_list)"
+    if [ -n "${existing}" ]; then
+        echo "Error: duplicate filename '${patch}'"
+        echo "Conflicting files are:"
+        echo "  already applied: ${existing}"
+        echo "  to be applied  : ${path}/${patch}"
+        exit 1
+    fi
     echo "${path}/${patch}" >> ${builddir}/.applied_patches_list
     ${uncomp} "${path}/$patch" | patch -g0 -p1 -E -d "${builddir}" -t -N $silent
     if [ $? != 0 ] ; then
