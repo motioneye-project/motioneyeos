@@ -482,6 +482,8 @@ endif
 
 $(2)_REDISTRIBUTE		?= YES
 
+$(2)_REDIST_SOURCES_DIR = $$(REDIST_SOURCES_DIR_$$(call UPPERCASE,$(4)))/$$($(2)_RAW_BASE_NAME)
+
 # When a target package is a toolchain dependency set this variable to
 # 'NO' so the 'toolchain' dependency is not added to prevent a circular
 # dependency
@@ -807,7 +809,7 @@ endif
 # Save the source tarball
 	$$(Q)support/scripts/hardlink-or-copy \
 		$$(DL_DIR)/$$($(2)_ACTUAL_SOURCE_TARBALL) \
-		$$(REDIST_SOURCES_DIR_$$(call UPPERCASE,$(4)))
+		$$($(2)_REDIST_SOURCES_DIR)
 endif # redistribute
 
 endif # other packages
