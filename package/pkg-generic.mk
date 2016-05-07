@@ -804,10 +804,12 @@ ifeq ($$($(2)_REDISTRIBUTE),YES)
 ifneq ($$($(2)_ACTUAL_SOURCE_TARBALL),$$($(2)_SOURCE))
 	$$(call DOWNLOAD,$$($(2)_ACTUAL_SOURCE_SITE)/$$($(2)_ACTUAL_SOURCE_TARBALL))
 endif
-# Save the source tarball
-	$$(Q)support/scripts/hardlink-or-copy \
-		$$(DL_DIR)/$$($(2)_ACTUAL_SOURCE_TARBALL) \
-		$$($(2)_REDIST_SOURCES_DIR)
+# Save the source tarball and any extra downloads, but not
+# patches, as they are handled specially afterwards.
+	$$(foreach e,$$($(2)_ACTUAL_SOURCE_TARBALL) $$(notdir $$($(2)_EXTRA_DOWNLOADS)),\
+		$$(Q)support/scripts/hardlink-or-copy \
+			$$(DL_DIR)/$$(e) \
+			$$($(2)_REDIST_SOURCES_DIR)$$(sep))
 # Save patches and generate the series file
 	$$(Q)while read f; do \
 		support/scripts/hardlink-or-copy \
