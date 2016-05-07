@@ -33,3 +33,4 @@ BR2_PACKAGE_HOST_MTOOLS=y
 # filesystem / image
 BR2_ROOTFS_POST_IMAGE_SCRIPT="board/freescale/imx6ulevk/post-image.sh"
 BR2_TARGET_ROOTFS_EXT2=y
+BR2_TARGET_ROOTFS_EXT2_4=y
