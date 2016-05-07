@@ -749,12 +749,10 @@ $(2)_MANIFEST_LICENSE_FILES = $$($(2)_LICENSE_FILES)
 endif
 $(2)_MANIFEST_LICENSE_FILES ?= not saved
 
-# If the package declares _LICENSE_FILES, we need to extract it,
-# for overriden, local or normal remote packages alike, whether
-# we want to redistribute it or not.
-ifneq ($$($(2)_LICENSE_FILES),)
+# We need to extract and patch a package to be able to retrieve its
+# license files (if any) and the list of patches applied to it (if
+# any).
 $(1)-legal-info: $(1)-patch
-endif
 
 # We only save the sources of packages we want to redistribute, that are
 # non-overriden (local or true override).
@@ -810,6 +808,13 @@ endif
 	$$(Q)support/scripts/hardlink-or-copy \
 		$$(DL_DIR)/$$($(2)_ACTUAL_SOURCE_TARBALL) \
 		$$($(2)_REDIST_SOURCES_DIR)
+# Save patches and generate the series file
+	$$(Q)while read f; do \
+		support/scripts/hardlink-or-copy \
+			$$$${f} \
+			$$($(2)_REDIST_SOURCES_DIR) || exit 1; \
+		printf "%s\n" "$$$${f##*/}" >>$$($(2)_REDIST_SOURCES_DIR)/series || exit 1; \
+	done <$$($(2)_DIR)/.applied_patches_list
 endif # redistribute
 
 endif # other packages
