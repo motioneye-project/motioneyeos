@@ -189,6 +189,7 @@ config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_POWERPC_E500V2
 
 config BR2_x86_i386
 	bool "x86 i386 support removed"
+	select BR2_LEGACY
 	help
 	  The support for the i386 processors of the x86 architecture
 	  has been removed.
