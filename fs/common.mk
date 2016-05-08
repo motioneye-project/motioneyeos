@@ -26,7 +26,7 @@
 # In terms of configuration option, this macro assumes that the
 # BR2_TARGET_ROOTFS_$(FSTYPE) config option allows to enable/disable
 # the generation of a filesystem image of a particular type. If
-# configura options BR2_TARGET_ROOTFS_$(FSTYPE)_GZIP,
+# the configuration options BR2_TARGET_ROOTFS_$(FSTYPE)_GZIP,
 # BR2_TARGET_ROOTFS_$(FSTYPE)_BZIP2 or
 # BR2_TARGET_ROOTFS_$(FSTYPE)_LZMA exist and are enabled, then the
 # macro will automatically generate a compressed filesystem image.
