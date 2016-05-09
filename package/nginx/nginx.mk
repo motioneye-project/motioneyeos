@@ -8,6 +8,7 @@ NGINX_VERSION = 1.10.0
 NGINX_SITE = http://nginx.org/download
 NGINX_LICENSE = BSD-2c
 NGINX_LICENSE_FILES = LICENSE
+NGINX_DEPENDENCIES = host-pkgconf
 
 NGINX_CONF_OPTS = \
 	--crossbuild=Linux::$(BR2_ARCH) \
@@ -118,8 +119,6 @@ endif
 ifeq ($(BR2_PACKAGE_NGINX_HTTP_XSLT_MODULE),y)
 NGINX_DEPENDENCIES += libxml2 libxslt
 NGINX_CONF_OPTS += --with-http_xslt_module
-NGINX_CONF_ENV += \
-	ngx_feature_path_libxslt=$(STAGING_DIR)/usr/include/libxml2
 endif
 
 ifeq ($(BR2_PACKAGE_NGINX_HTTP_IMAGE_FILTER_MODULE),y)
@@ -236,7 +235,9 @@ endef
 NGINX_PRE_CONFIGURE_HOOKS += NGINX_DISABLE_WERROR
 
 define NGINX_CONFIGURE_CMDS
-	cd $(@D) ; $(NGINX_CONF_ENV) ./configure $(NGINX_CONF_OPTS)
+	cd $(@D) ; $(NGINX_CONF_ENV) \
+		PKG_CONFIG="$(PKG_CONFIG_HOST_BINARY)" \
+		./configure $(NGINX_CONF_OPTS)
 endef
 
 define NGINX_BUILD_CMDS
