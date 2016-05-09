@@ -14,7 +14,6 @@ NGINX_CONF_OPTS = \
 	--crossbuild=Linux::$(BR2_ARCH) \
 	--with-cc="$(TARGET_CC)" \
 	--with-cpp="$(TARGET_CC)" \
-	--with-cc-opt="$(TARGET_CFLAGS)" \
 	--with-ld-opt="$(TARGET_LDFLAGS)" \
 	--with-ipv6
 
@@ -36,7 +35,6 @@ NGINX_CONF_ENV += \
 	ngx_force_c99_have_variadic_macros=yes \
 	ngx_force_gcc_have_variadic_macros=yes \
 	ngx_force_gcc_have_atomic=yes \
-	ngx_force_have_libatomic=no \
 	ngx_force_have_epoll=yes \
 	ngx_force_have_sendfile=yes \
 	ngx_force_have_sendfile64=yes \
@@ -67,6 +65,17 @@ NGINX_CONF_OPTS += \
 NGINX_CONF_OPTS += \
 	$(if $(BR2_PACKAGE_NGINX_FILE_AIO),--with-file-aio) \
 	$(if $(BR2_PACKAGE_NGINX_THREADS),--with-threads)
+
+ifeq ($(BR2_PACKAGE_LIBATOMIC_OPS),y)
+NGINX_DEPENDENCIES += libatomic_ops
+NGINX_CONF_OPTS += --with-libatomic
+NGINX_CONF_ENV += ngx_force_have_libatomic=yes
+ifeq ($(BR2_sparc_v8)$(BR2_sparc_leon3),y)
+NGINX_CFLAGS += "-DAO_NO_SPARC_V9"
+endif
+else
+NGINX_CONF_ENV += ngx_force_have_libatomic=no
+endif
 
 ifeq ($(BR2_PACKAGE_PCRE),y)
 NGINX_DEPENDENCIES += pcre
@@ -238,7 +247,8 @@ define NGINX_CONFIGURE_CMDS
 	cd $(@D) ; $(NGINX_CONF_ENV) \
 		PKG_CONFIG="$(PKG_CONFIG_HOST_BINARY)" \
 		GDLIB_CONFIG=$(STAGING_DIR)/usr/bin/gdlib-config \
-		./configure $(NGINX_CONF_OPTS)
+		./configure $(NGINX_CONF_OPTS) \
+			--with-cc-opt="$(TARGET_CFLAGS) $(NGINX_CFLAGS)"
 endef
 
 define NGINX_BUILD_CMDS
