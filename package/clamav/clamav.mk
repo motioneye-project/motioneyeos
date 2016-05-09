@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-CLAMAV_VERSION = 0.99.1
-CLAMAV_SITE = http://sourceforge.net/projects/clamav/files/clamav/$(CLAMAV_VERSION)
+CLAMAV_VERSION = 0.99.2
+CLAMAV_SITE = https://www.clamav.net/downloads/production
 CLAMAV_LICENSE = GPLv2
 CLAMAV_LICENSE_FILES = COPYING COPYING.bzip2 COPYING.file COPYING.getopt \
 	COPYING.LGPL COPYING.llvm COPYING.lzma COPYING.pcre COPYING.regex \
