@@ -11,7 +11,7 @@ PHP_GEOIP_CONF_OPTS = --with-php-config=$(STAGING_DIR)/usr/bin/php-config \
 # phpize does the autoconf magic
 PHP_GEOIP_DEPENDENCIES = geoip php host-autoconf
 PHP_GEOIP_LICENSE = PHP
-PHP_GEOIP_LICENSE_FILES = LICENSE
+PHP_GEOIP_LICENSE_FILES = geoip.c
 
 define PHP_GEOIP_PHPIZE
 	(cd $(@D); \
