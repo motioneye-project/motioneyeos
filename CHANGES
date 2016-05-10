@@ -1,3 +1,78 @@
+2016.05-rc1, Released May 10th, 2016
+
+	Fixes all over the tree and new features.
+
+	Architectures: new ARM variants: Cortex A17 and M4, improved
+	nonmmu (cortex-M) support, m68k has been re-enabled with
+	support for ColdFire. For x86, support for the i386 variant
+	has been dropped.
+
+	Toolchain: Add GCC 6 support, remove GCC 4.5, mark GCC 4.7 as
+	deprecated. Go programming language support, Add Binutils 2.26
+	support. Old Sourcery PowerPC external toolchains removed,
+	Sourcery MIPS 2016.06-8, AMD64 2015.11-139, NiosII 2015.11-130
+	added, Linaro ARM/ARMeb/Aarch64 toolchains updated.
+
+	New defconfigs: Firefly RK3288, Boundary Devices i.MX7 Nitrogen7,
+	STM32F429 and STM32F469 Discovery boards, Hardkernel ODROID-C2,
+	Raspberry Pi Zero and Raspberry Pi 3. Some Qemu defconfigs were
+	added for m68k, eXtensa-nommu and ColdFire.
+
+	Linux: use zImage by default on ARM, subversion repository
+	support (for u-boot as well).
+
+	New packages: aer-inject, android-tools, cannelloni,
+	cbootimage, cgroupfs-mount, connman-gtk, crudini, dt,
+	gmrender-resurrect, flannel, font-awesome, freeswitch, go,
+	go-bootstrap, gr-osmosdr, granite, i7z, imx-uuc,
+	kodi-adsp-basic, kodi-adsp-freesurround,
+	kodi-audiodecoder-opus, kodi-pvr-hdhomerun,
+	kodi-screensaver-asterwave, kodi-screensaver-cpblobs,
+	kodi-screensaver-matrixtrails, kodi-screensaver-planestate,
+	kodi-screensaver-rsxs, kodi-visualisation-fishbmc,
+	kodi-visualisation-fountain, kodi-visualisation-goom, libgee,
+	libimxvpuapi, libpjsip, libtomcrypt, libtommath, libusbgx,
+	lksctp-tools, mali-t76x, mkpimage, mpv, msr-tools, nload,
+	norm, nvme, owfs, pound, privoxy, procrank_linux, putty,
+	python-autobahn, python-characteristic, python-crossbar,
+	python-cryptography, python-iniparse, python-iowait,
+	python-lmdb, python-pexpect, python-ptyprocess,
+	python-pyasn-modules, python-pygments, python-pymysql,
+	python-pynacl, python-pyopenssl, python-pysocks,
+	python-pytrie, python-rpi-gpio, python-service-identity,
+	python-setproctitle, python-shutilwhich, python-treq,
+	python-txaio, python-ujson, python-wsaccel, qt5canvas3d,
+	qt5location, qt5quickcontrols2, qt5serialbus, qt5tools,
+	raptor, scrub, taskd, tegrarcm, turbolua, valijson,
+	wayland-protocols, webkitgtk, wilc1000-firmware, wpan-tools,
+	xdriver_xf86-video-amdgpu
+
+	Removed packages: foomatic-filters, python-m2crypto,
+	qt5quick1, qt5webkit-examples, samba, xdriver_xf86-input-void
+
+	Issues resolved (http://bugs.buildroot.org):
+
+	#6830: Qt5: no fonts are installed
+	#7562: musl buildroot-toolchain and BR2_MIPS_SOFT_FLOAT break
+	#7580: Invalid filesystem in Pandaboard defconfig
+	#8346: wf111 package removes all kernel module dependencies
+	#8436: xserver_xorg-server Segmentation fault
+	#8736: IPV6 forced on in busybox
+	#8746: At startup system stops with 'cannot set terminal proces..
+	#8751: make fail [fio does not build on sh]
+	#8766: Compiling host-gcc-final-4.9.3 broken on i386
+	#8771: make savedefconfig modifies sources
+	#8781: Unable to build uboot for imx28evk
+	#8786: gdb fails to build with xz and expat support at the same
+	#8801: Compilation of Buildroot 2016.2 for Raspberry Pi with...
+	#8806: Buildroot 2016.2 for Raspberry Pi requires that ext4...
+	#8836: Can't select Vim in menuconfig
+	#8851: Make sure fio can compile with libaio support if it...
+	#8861: With buildroot 2016.02 trying to build for corei7-avx
+	       fails while trying to build host-binutils
+	#8866: Making an USB flash bootable with extlinux build with
+	        buildroot does not work
+
 2016.02, Released March 1st, 2016
 
 	Minor fixes, mostly security related.
