@@ -45,7 +45,7 @@ Index: b/libstdc++-v3/include/bits/basic_string.h
 ===================================================================
 --- a/libstdc++-v3/include/bits/basic_string.h
 +++ b/libstdc++-v3/include/bits/basic_string.h
-@@ -2811,7 +2811,7 @@
+@@ -2809,7 +2809,7 @@
  _GLIBCXX_END_NAMESPACE_VERSION
  } // namespace
  
@@ -262,7 +262,7 @@ Index: b/libstdc++-v3/include/c_global/cstdio
 ===================================================================
 --- a/libstdc++-v3/include/c_global/cstdio
 +++ b/libstdc++-v3/include/c_global/cstdio
-@@ -138,7 +138,7 @@
+@@ -139,7 +139,7 @@
    using ::vsprintf;
  } // namespace
  
