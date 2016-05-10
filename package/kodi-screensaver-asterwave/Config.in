@@ -1,6 +1,6 @@
 config BR2_PACKAGE_KODI_SCREENSAVER_ASTERWAVE
 	bool "kodi-screensaver-asterwave"
-	depends on BR2_PACKAGE_KODI_GL # libsoil
+	depends on BR2_PACKAGE_HAS_LIBGL # libglu, libsoil
 	select BR2_PACKAGE_LIBGLU
 	select BR2_PACKAGE_LIBSOIL
 	help
@@ -9,4 +9,4 @@ config BR2_PACKAGE_KODI_SCREENSAVER_ASTERWAVE
 	  https://github.com/notspiff/screensaver.asterwave
 
 comment "kodi-screensaver-asterwave needs OpenGL"
-	depends on !BR2_PACKAGE_KODI_GL
+	depends on !BR2_PACKAGE_HAS_LIBGL

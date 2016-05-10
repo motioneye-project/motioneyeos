@@ -1,6 +1,6 @@
 config BR2_PACKAGE_KODI_SCREENSAVER_CPBLOBS
 	bool "kodi-screensaver-cpblobs"
-	depends on BR2_PACKAGE_KODI_GL # libsoil
+	depends on BR2_PACKAGE_HAS_LIBGL # libsoil
 	select BR2_PACKAGE_LIBSOIL
 	help
 	  CpBlobs screensaver for Kodi
@@ -8,4 +8,4 @@ config BR2_PACKAGE_KODI_SCREENSAVER_CPBLOBS
 	  https://github.com/notspiff/screensaver.cpblobs
 
 comment "kodi-screensaver-cpblobs needs OpenGL"
-	depends on !BR2_PACKAGE_KODI_GL
+	depends on !BR2_PACKAGE_HAS_LIBGL

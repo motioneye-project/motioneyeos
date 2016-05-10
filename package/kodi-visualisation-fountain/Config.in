@@ -1,6 +1,6 @@
 config BR2_PACKAGE_KODI_VISUALISATION_FOUNTAIN
 	bool "kodi-visualisation-fountain"
-	depends on BR2_PACKAGE_KODI_GL # libsoil
+	depends on BR2_PACKAGE_HAS_LIBGL # libsoil
 	select BR2_PACKAGE_LIBSOIL
 	help
 	  Fountain visualization for Kodi
@@ -8,4 +8,4 @@ config BR2_PACKAGE_KODI_VISUALISATION_FOUNTAIN
 	  https://github.com/notspiff/visualization.fountain
 
 comment "kodi-visualisation-fountain needs OpenGL"
-	depends on !BR2_PACKAGE_KODI_GL
+	depends on !BR2_PACKAGE_HAS_LIBGL
