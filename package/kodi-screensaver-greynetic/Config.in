@@ -6,5 +6,5 @@ config BR2_PACKAGE_KODI_SCREENSAVER_GREYNETIC
 
 	  https://github.com/notspiff/screensaver.greynetic
 
-comment "kodi-screensaver-greynetic needs an OpenGL backend"
+comment "kodi-screensaver-greynetic needs OpenGL"
 	depends on !BR2_PACKAGE_KODI_GL

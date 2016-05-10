@@ -7,5 +7,5 @@ config BR2_PACKAGE_KODI_SCREENSAVER_CPBLOBS
 
 	  https://github.com/notspiff/screensaver.cpblobs
 
-comment "cpblobs needs an OpenGL backend"
+comment "kodi-screensaver-cpblobs needs OpenGL"
 	depends on !BR2_PACKAGE_KODI_GL

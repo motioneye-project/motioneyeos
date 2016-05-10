@@ -7,5 +7,5 @@ config BR2_PACKAGE_KODI_VISUALISATION_FOUNTAIN
 
 	  https://github.com/notspiff/visualization.fountain
 
-comment "fountain needs an OpenGL backend"
+comment "kodi-visualisation-fountain needs OpenGL"
 	depends on !BR2_PACKAGE_KODI_GL

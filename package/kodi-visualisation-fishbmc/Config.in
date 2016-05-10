@@ -6,5 +6,5 @@ config BR2_PACKAGE_KODI_VISUALISATION_FISHBMC
 
 	  https://github.com/notspiff/visualization.fishbmc
 
-comment "fishbmc needs an OpenGL backend"
+comment "kodi-visualisation-fishbmc needs OpenGL"
 	depends on !BR2_PACKAGE_KODI_GL

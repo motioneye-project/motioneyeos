@@ -6,5 +6,5 @@ config BR2_PACKAGE_KODI_VISUALISATION_GOOM
 
 	  https://github.com/notspiff/visualization.goom
 
-comment "kodi-visualization-goom needs an OpenGL backend"
+comment "kodi-visualization-goom needs OpenGL"
 	depends on !BR2_PACKAGE_KODI_GL

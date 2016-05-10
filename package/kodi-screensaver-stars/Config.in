@@ -6,5 +6,5 @@ config BR2_PACKAGE_KODI_SCREENSAVER_STARS
 
 	  https://github.com/notspiff/screensaver.stars
 
-comment "kodi-screensaver-starts needs an OpenGL backend"
+comment "kodi-screensaver-stars needs OpenGL"
 	depends on !BR2_PACKAGE_KODI_GL

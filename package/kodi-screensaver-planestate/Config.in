@@ -7,5 +7,5 @@ config BR2_PACKAGE_KODI_SCREENSAVER_PLANESTATE
 
 	  https://github.com/notspiff/screensaver.planestate
 
-comment "planestate needs an OpenGL backend"
+comment "kodi-screensaver-planestate needs OpenGL"
 	depends on !BR2_PACKAGE_KODI_GL

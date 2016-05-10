@@ -6,5 +6,5 @@ config BR2_PACKAGE_KODI_SCREENSAVER_BIOGENESIS
 
 	  https://github.com/notspiff/screensaver.biogenesis
 
-comment "kodi-screensaver-biogenesis needs an OpenGL backend"
+comment "kodi-screensaver-biogenesis needs OpenGL"
 	depends on !BR2_PACKAGE_KODI_GL

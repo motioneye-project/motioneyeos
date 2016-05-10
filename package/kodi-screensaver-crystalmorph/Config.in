@@ -6,5 +6,5 @@ config BR2_PACKAGE_KODI_SCREENSAVER_CRYSTALMORPH
 
 	  https://github.com/notspiff/screensaver.crystalmorph
 
-comment "kodi-screensaver-crystalmorph needs an OpenGL backend"
+comment "kodi-screensaver-crystalmorph needs OpenGL"
 	depends on !BR2_PACKAGE_KODI_GL

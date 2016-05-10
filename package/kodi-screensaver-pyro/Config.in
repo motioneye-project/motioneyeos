@@ -6,5 +6,5 @@ config BR2_PACKAGE_KODI_SCREENSAVER_PYRO
 
 	  https://github.com/notspiff/screensaver.pyro
 
-comment "kodi-screensaver-pyro needs an OpenGL backend"
+comment "kodi-screensaver-pyro needs OpenGL"
 	depends on !BR2_PACKAGE_KODI_GL

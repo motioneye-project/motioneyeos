@@ -7,5 +7,5 @@ config BR2_PACKAGE_KODI_SCREENSAVER_MATRIXTRAILS
 
 	  https://github.com/notspiff/screensaver.matrixtrails
 
-comment "matrixtrails needs an OpenGL backend"
+comment "kodi-screensaver-matrixtrails needs OpenGL"
 	depends on !BR2_PACKAGE_KODI_GL

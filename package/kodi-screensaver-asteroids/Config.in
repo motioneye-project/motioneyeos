@@ -6,5 +6,5 @@ config BR2_PACKAGE_KODI_SCREENSAVER_ASTEROIDS
 
 	  https://github.com/notspiff/screensaver.asteroids
 
-comment "kodi-screensaver-asteroids needs an OpenGL backend"
+comment "kodi-screensaver-asteroids needs OpenGL"
 	depends on !BR2_PACKAGE_KODI_GL
