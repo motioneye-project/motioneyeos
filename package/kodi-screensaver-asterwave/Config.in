@@ -1,6 +1,7 @@
 config BR2_PACKAGE_KODI_SCREENSAVER_ASTERWAVE
 	bool "kodi-screensaver-asterwave"
 	depends on BR2_PACKAGE_KODI_GL # libsoil
+	select BR2_PACKAGE_LIBGLU
 	select BR2_PACKAGE_LIBSOIL
 	help
 	  AsterWave screensaver for Kodi
