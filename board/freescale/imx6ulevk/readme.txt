@@ -20,7 +20,7 @@ Build all components:
 
 You will find in ./output/images/ the following files:
   - imx6ul-14x14-evk.dtb
-  - rootfs.ext2
+  - rootfs.ext4
   - rootfs.tar
   - sdcard.img
   - u-boot.imx
