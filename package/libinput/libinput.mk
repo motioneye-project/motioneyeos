@@ -18,7 +18,7 @@ ifeq ($(BR2_PACKAGE_LIBGTK3),y)
 LIBINPUT_CONF_OPTS += --enable-event-gui
 LIBINPUT_DEPENDENCIES += libgtk3
 else
-LIBINOUT_CONF_OPTS += --disable-event-gui
+LIBINPUT_CONF_OPTS += --disable-event-gui
 endif
 
 $(eval $(autotools-package))
