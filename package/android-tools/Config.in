@@ -1,8 +1,12 @@
 config BR2_PACKAGE_ANDROID_TOOLS
 	bool "android-tools"
+	# adb/adbd needs mmu
 	select BR2_PACKAGE_ANDROID_TOOLS_ADBD if \
 	      !BR2_PACKAGE_ANDROID_TOOLS_FASTBOOT && \
-	      !BR2_PACKAGE_ANDROID_TOOLS_ADB
+	      !BR2_PACKAGE_ANDROID_TOOLS_ADB && \
+	      BR2_USE_MMU
+	select BR2_PACKAGE_ANDROID_TOOLS_FASTBOOT if \
+	      !BR2_USE_MMU
 	help
 	  This package contains the fastboot and adb utilities, that
 	  can be used to interact with target devices using of these
@@ -21,6 +25,7 @@ config BR2_PACKAGE_ANDROID_TOOLS_FASTBOOT
 
 config BR2_PACKAGE_ANDROID_TOOLS_ADB
 	bool "adb"
+	depends on BR2_USE_MMU # uses fork()
 	select BR2_PACKAGE_OPENSSL
 	select BR2_PACKAGE_ZLIB
 	help
@@ -30,6 +35,7 @@ config BR2_PACKAGE_ANDROID_TOOLS_ADB
 
 config BR2_PACKAGE_ANDROID_TOOLS_ADBD
 	bool "adbd"
+	depends on BR2_USE_MMU # uses fork()
 	select BR2_PACKAGE_OPENSSL
 	select BR2_PACKAGE_ZLIB
 	help
