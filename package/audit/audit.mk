@@ -46,7 +46,6 @@ define AUDIT_INSTALL_INIT_SYSTEMD
 	ln -fs ../../../../usr/lib/systemd/system/auditd.service \
 		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/auditd.service
 
-	mkdir -p $(TARGET_DIR)/usr/lib/tmpfiles.d
 	$(INSTALL) -D -m 644 package/audit/audit_tmpfiles.conf \
 		$(TARGET_DIR)/usr/lib/tmpfiles.d/audit.conf
 endef
