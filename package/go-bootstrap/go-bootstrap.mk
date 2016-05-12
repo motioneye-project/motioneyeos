@@ -23,7 +23,8 @@ HOST_GO_BOOTSTRAP_MAKE_ENV = \
 	GOOS=linux \
 	GOROOT_FINAL="$(HOST_GO_BOOTSTRAP_ROOT)" \
 	GOROOT="$(@D)" \
-	GOBIN="$(@D)/bin"
+	GOBIN="$(@D)/bin" \
+	CGO_ENABLED=0
 
 define HOST_GO_BOOTSTRAP_BUILD_CMDS
 	cd $(@D)/src && $(HOST_GO_BOOTSTRAP_MAKE_ENV) ./make.bash
