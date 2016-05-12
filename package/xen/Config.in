@@ -1,0 +1,44 @@
+config BR2_PACKAGE_XEN
+	bool "xen"
+	# needs "dmb" on ARM, so ARM >= v7
+	depends on BR2_ARM_CPU_ARMV7A || BR2_aarch64
+	select BR2_PACKAGE_XEN_HYPERVISOR if !BR2_PACKAGE_XEN_TOOLS
+	help
+	  This package builds the Xen hypervisor and toolstack.
+
+	  http://www.xenproject.org/
+
+if BR2_PACKAGE_XEN
+
+config BR2_PACKAGE_XEN_HYPERVISOR
+	bool "Xen hypervisor"
+	help
+	  The Xen binaries are avaliable in /usr/lib/xen/
+	  See http://wiki.xenproject.org/wiki/Getting_Started for using the
+	  Xen hypervisor.
+
+config BR2_PACKAGE_XEN_TOOLS
+	bool "Xen tools"
+	depends on !BR2_STATIC_LIBS # dtc (libfdt)
+	depends on BR2_PACKAGE_LIBAIO_ARCH_SUPPORTS
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libglib2
+	depends on BR2_USE_WCHAR # libglib2, util-linux
+	select BR2_PACKAGE_DTC
+	select BR2_PACKAGE_LIBAIO
+	select BR2_PACKAGE_LIBGLIB2
+	select BR2_PACKAGE_NCURSES
+	select BR2_PACKAGE_OPENSSL
+	select BR2_PACKAGE_PIXMAN
+	select BR2_PACKAGE_UTIL_LINUX
+	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
+	select BR2_PACKAGE_YAJL
+	select BR2_PACKAGE_ARGP_STANDALONE if !BR2_TOOLCHAIN_USES_GLIBC
+	help
+	  The Xen tools can be accessed by the xl command.
+
+comment "xen tools need a toolchain w/ wchar, threads, dynamic library"
+	depends on BR2_PACKAGE_LIBAIO_ARCH_SUPPORTS
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || \
+		BR2_STATIC_LIBS
+
+endif

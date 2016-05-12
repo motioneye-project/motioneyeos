@@ -1711,6 +1711,7 @@ endif
 	source "package/tpm-tools/Config.in"
 	source "package/unscd/Config.in"
 	source "package/util-linux/Config.in"
+	source "package/xen/Config.in"
 endmenu
 
 menu "Text editors and viewers"
