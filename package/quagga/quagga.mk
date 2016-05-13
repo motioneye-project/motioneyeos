@@ -10,7 +10,15 @@ QUAGGA_SITE = http://download.savannah.gnu.org/releases/quagga
 QUAGGA_DEPENDENCIES = host-gawk
 QUAGGA_LICENSE = GPLv2+
 QUAGGA_LICENSE_FILES = COPYING
-QUAGGA_CONF_OPTS = --program-transform-name=''
+
+# We need to override the sysconf and localstate directories so that
+# quagga can create files as the quagga user without extra
+# intervention
+QUAGGA_CONF_OPTS = \
+	--program-transform-name='' \
+	--sysconfdir=/etc/quagga \
+	--localstatedir=/var/run/quagga
+
 # 0002-configure-fix-static-linking-with-readline.patch
 QUAGGA_AUTORECONF = YES
 
@@ -33,6 +41,20 @@ QUAGGA_CONF_OPTS += $(if $(BR2_PACKAGE_QUAGGA_ISISD),--enable-isisd,--disable-is
 QUAGGA_CONF_OPTS += $(if $(BR2_PACKAGE_QUAGGA_BGP_ANNOUNCE),--enable-bgp-announce,--disable-bgp-announce)
 QUAGGA_CONF_OPTS += $(if $(BR2_PACKAGE_QUAGGA_TCP_ZERBRA),--enable-tcp-zebra,--disable-tcp-zebra)
 
+define QUAGGA_USERS
+	quagga -1 quagga -1 * - - - Quagga priv drop user
+endef
+
+# Set the permissions of /etc/quagga such that quagga (through vtysh)
+# can save the configuration - set the folder recursively as the files
+# need to be 600, and then set the folder (non-recursively) to 755 so
+# it can used.  Quagga also needs to write to the folder as it moves
+# and creates, rather than overwriting.
+define QUAGGA_PERMISSIONS
+	/etc/quagga r 600 quagga quagga - - - - -
+	/etc/quagga d 755 quagga quagga - - - - -
+endef
+
 ifeq ($(BR2_PACKAGE_QUAGGA_SNMP),y)
 QUAGGA_CONF_ENV += ac_cv_path_NETSNMP_CONFIG=$(STAGING_DIR)/usr/bin/net-snmp-config
 QUAGGA_CONF_OPTS += --enable-snmp=agentx
@@ -49,5 +71,10 @@ endif
 ifeq ($(BR2_arc),y)
 QUAGGA_CONF_OPTS += --disable-pie
 endif
+
+define QUAGGA_INSTALL_INIT_SYSTEMD
+	$(INSTALL) -D -m 644 package/quagga/quagga_tmpfiles.conf \
+		$(TARGET_DIR)/usr/lib/tmpfiles.d/quagga.conf
+endef
 
 $(eval $(autotools-package))
