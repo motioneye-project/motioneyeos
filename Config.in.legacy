@@ -145,6 +145,17 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2016.05"
 
+config BR2_PACKAGE_OPENVPN_CRYPTO_POLARSSL
+	bool "openvpn polarssl crypto backend removed"
+	select BR2_LEGACY
+	help
+	  The OpenVPN polarssl crypto backend option has been removed.
+	  Version from 2.3.10 onwards need polarssl >= 1.3.8 but aren't
+	  compatible with mbedtls (polarssl) series 2.x which is the
+	  version provided in buildroot. And both can't coexist.
+	  It now uses OpenSSL as the only option.
+
+
 config BR2_PACKAGE_NGINX_HTTP_SPDY_MODULE
 	bool "nginx http spdy module removed"
 	select BR2_LEGACY
