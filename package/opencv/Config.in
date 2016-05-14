@@ -58,8 +58,12 @@ config BR2_PACKAGE_OPENCV_LIB_GPU
 	select BR2_PACKAGE_OPENCV_LIB_OBJDETECT
 	select BR2_PACKAGE_OPENCV_LIB_PHOTO
 	select BR2_PACKAGE_OPENCV_LIB_VIDEO
+	depends on !BR2_STATIC_LIBS
 	help
 	  Include opencv_gpu module into the OpenCV build.
+
+comment "gpu module needs a toolchain w/ dynamic libraries"
+	depends on BR2_STATIC_LIBS
 
 config BR2_PACKAGE_OPENCV_LIB_HIGHGUI
 	bool "highgui"
@@ -168,12 +172,20 @@ config BR2_PACKAGE_OPENCV_LIB_VIDEOSTAB
 	help
 	  Include opencv_videostab module into the OpenCV build.
 
+if !BR2_STATIC_LIBS
+
 comment "Test sets"
+
 config BR2_PACKAGE_OPENCV_BUILD_TESTS
 	bool "build tests"
 
 config BR2_PACKAGE_OPENCV_BUILD_PERF_TESTS
 	bool "build performance tests"
+
+endif
+
+comment "Tests sets need a toolchain w/ dynamic libraries"
+	depends on BR2_STATIC_LIBS
 
 comment "3rd party support"
 
