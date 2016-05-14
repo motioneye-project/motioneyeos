@@ -1,12 +1,14 @@
 config BR2_PACKAGE_ANDROID_TOOLS
 	bool "android-tools"
-	# adb/adbd needs mmu
+	# Technically, fastboot could build on noMMU systems. But
+	# since we need at least one of the three sub-options enabled,
+	# and adb/adbd can't be built on noMMU systems, and fastboot
+	# has some complicated dependencies, we simply make the whole
+	# package not available on noMMU platforms.
+	depends on BR2_USE_MMU
 	select BR2_PACKAGE_ANDROID_TOOLS_ADBD if \
 	      !BR2_PACKAGE_ANDROID_TOOLS_FASTBOOT && \
-	      !BR2_PACKAGE_ANDROID_TOOLS_ADB && \
-	      BR2_USE_MMU
-	select BR2_PACKAGE_ANDROID_TOOLS_FASTBOOT if \
-	      !BR2_USE_MMU
+	      !BR2_PACKAGE_ANDROID_TOOLS_ADB
 	help
 	  This package contains the fastboot and adb utilities, that
 	  can be used to interact with target devices using of these
@@ -18,10 +20,17 @@ config BR2_PACKAGE_ANDROID_TOOLS_FASTBOOT
 	bool "fastboot"
 	select BR2_PACKAGE_LIBSELINUX
 	select BR2_PACKAGE_ZLIB
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libselinux
+	depends on !BR2_STATIC_LIBS # libselinux
+	depends on !BR2_arc # libselinux
 	help
 	  This option will build and install the fastboot utility for
 	  the target, which can be used to reflash other target devices
 	  implementing the fastboot protocol.
+
+comment "fastboot needs a toolchain w/ threads, dynamic library"
+	depends on !BR2_arc
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS
 
 config BR2_PACKAGE_ANDROID_TOOLS_ADB
 	bool "adb"
