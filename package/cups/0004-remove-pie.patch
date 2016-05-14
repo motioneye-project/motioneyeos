@@ -1,0 +1,21 @@
+Remove PIE flags from the build
+
+Generating a statically linked binary built with PIE requires the
+Scrt1.o file, which isn't part of Buildroot uClibc toolchains. To
+solve this, we simply disable the PIE flags.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/Makedefs.in
+===================================================================
+--- a/Makedefs.in
++++ b/Makedefs.in
+@@ -142,7 +142,7 @@
+ IPPFIND_MAN	=	@IPPFIND_MAN@
+ LDFLAGS		=	-L../cgi-bin -L../cups -L../filter -L../ppdc \
+ 			-L../scheduler @LDARCHFLAGS@ \
+-			@LDFLAGS@ @RELROFLAGS@ @PIEFLAGS@ $(OPTIM)
++			@LDFLAGS@ @RELROFLAGS@ $(OPTIM)
+ LINKCUPS	=	@LINKCUPS@ $(LIBGSSAPI) $(DNSSDLIBS) $(LIBZ)
+ LINKCUPSIMAGE	=	@LINKCUPSIMAGE@
+ LIBS		=	$(LINKCUPS) $(COMMONLIBS)
