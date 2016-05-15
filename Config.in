@@ -694,8 +694,8 @@ config BR2_COMPILER_PARANOID_UNSAFE_PATH
 	  unsafe paths are encountered.
 
 	  Note that this mechanism is available for both the internal
-	  toolchain (through gcc and binutils patches) and external
-	  toolchain backends (through the external toolchain wrapper).
+	  toolchain (through the toolchain wrapper and binutils patches)
+	  and external toolchain backends (through the toolchain wrapper).
 
 endmenu
 
