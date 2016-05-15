@@ -1,7 +1,7 @@
 config BR2_PACKAGE_HOST_ANDROID_TOOLS
 	bool "host android-tools"
-	select BR2_PACKAGE_ANDROID_TOOLS_ADB if \
-		!BR2_PACKAGE_ANDROID_TOOLS_FASTBOOT
+	select BR2_PACKAGE_HOST_ANDROID_TOOLS_ADB if \
+		!BR2_PACKAGE_HOST_ANDROID_TOOLS_FASTBOOT
 	help
 	  This package contains the fastboot and adb utilities, that
 	  can be used to interact with target devices using of these
