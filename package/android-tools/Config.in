@@ -6,6 +6,7 @@ config BR2_PACKAGE_ANDROID_TOOLS
 	# has some complicated dependencies, we simply make the whole
 	# package not available on noMMU platforms.
 	depends on BR2_USE_MMU
+	depends on BR2_TOOLCHAIN_HAS_THREADS
 	select BR2_PACKAGE_ANDROID_TOOLS_ADBD if \
 	      !BR2_PACKAGE_ANDROID_TOOLS_FASTBOOT && \
 	      !BR2_PACKAGE_ANDROID_TOOLS_ADB
@@ -53,3 +54,7 @@ config BR2_PACKAGE_ANDROID_TOOLS_ADBD
 	  implementing the ADB protocol.
 
 endif
+
+comment "android-tools needs a toolchain w/ threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
