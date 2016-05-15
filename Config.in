@@ -683,6 +683,7 @@ menu "Advanced"
 
 config BR2_COMPILER_PARANOID_UNSAFE_PATH
 	bool "paranoid check of library/header paths"
+	default y
 	help
 	  By default, when this option is disabled, when the Buildroot
 	  cross-compiler will encounter an unsafe library or header
