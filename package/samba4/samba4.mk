@@ -165,6 +165,9 @@ define SAMBA4_INSTALL_INIT_SYSTEMD
 		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/smb.service
 	ln -sf ../../../../usr/lib/systemd/system/winbind.service \
 		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/winbind.service
+	$(INSTALL) -D -m 644 $(@D)/packaging/systemd/samba.conf.tmp \
+		$(TARGET_DIR)/etc/tmpfiles.d/samba.conf
+	printf "d /var/log/samba  755 root root\n" >>$(TARGET_DIR)/etc/tmpfiles.d/samba.conf
 endef
 
 $(eval $(generic-package))
