@@ -1,0 +1,34 @@
+From 0df21f54942dc82ddde4095824e7b65efb96d261 Mon Sep 17 00:00:00 2001
+From: Peter Hutterer <peter.hutterer@who-t.net>
+Date: Mon, 16 May 2016 13:32:07 +1000
+Subject: [PATCH] Add configure.ac check for static_assert
+
+Part of C11, defined via assert.h.
+
+Signed-off-by: Peter Hutterer <peter.hutterer@who-t.net>
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Patch status: suggested upstream
+(https://lists.freedesktop.org/archives/wayland-devel/2016-May/028881.html)
+
+ configure.ac | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/configure.ac b/configure.ac
+index 602a86026544..28a5197cfa2e 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -55,6 +55,10 @@ AC_CHECK_DECL(TFD_CLOEXEC,[],
+ AC_CHECK_DECL(CLOCK_MONOTONIC,[],
+ 	      [AC_MSG_ERROR("CLOCK_MONOTONIC is needed to compile libinput")],
+ 	      [[#include <time.h>]])
++AC_CHECK_DECL(static_assert, [],
++	      [AC_DEFINE(static_assert(...), [/* */], [noop static_assert() replacement]),
++              AC_MSG_RESULT([no])],
++	      [[#include <assert.h>]])
+ 
+ PKG_PROG_PKG_CONFIG()
+ PKG_CHECK_MODULES(MTDEV, [mtdev >= 1.1.0])
+-- 
+2.8.1
+

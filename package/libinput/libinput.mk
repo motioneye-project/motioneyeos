@@ -13,6 +13,8 @@ LIBINPUT_LICENSE = MIT
 LIBINPUT_LICENSE_FILES = COPYING
 # Tests need fork, so just disable them everywhere.
 LIBINPUT_CONF_OPTS = --disable-tests --disable-libwacom
+# Patching configure.ac
+LIBINPUT_AUTORECONF = YES
 
 ifeq ($(BR2_PACKAGE_LIBGTK3),y)
 LIBINPUT_CONF_OPTS += --enable-event-gui
