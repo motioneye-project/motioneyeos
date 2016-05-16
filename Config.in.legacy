@@ -143,6 +143,16 @@ comment "----------------------------------------------------"
 endif
 
 ###############################################################################
+comment "Legacy options removed in 2016.08"
+
+config BR2_GDB_VERSION_7_8
+	bool "gdb 7.8 has been removed"
+	select BR2_LEGACY
+	help
+	  The 7.8 version of gdb has been removed. Use a newer version
+	  instead.
+
+###############################################################################
 comment "Legacy options removed in 2016.05"
 
 config BR2_PACKAGE_NGINX_HTTP_SPDY_MODULE
