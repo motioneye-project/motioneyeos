@@ -1,2 +1,2 @@
-# Hash from http://lists.freedesktop.org/archives/input-tools/2016-January/001240.html
-sha256 7b2ae1a0c7f9f7a96198ddc8fd167f090f233d6cbd8168b847e4f968445132d3 libevdev-1.4.6.tar.xz
+# Hash from https://lists.freedesktop.org/archives/input-tools/2016-May/001301.html
+sha256 17630821a57e6e3f02e01ade836f24068df9bd530067091152b0d468c3a86f40 libevdev-1.5.1.tar.xz
