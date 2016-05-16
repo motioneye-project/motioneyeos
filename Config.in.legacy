@@ -145,6 +145,14 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2016.08"
 
+config BR2_TOOLCHAIN_BUILDROOT_EGLIBC
+	bool "eglibc support has been removed"
+	select BR2_LEGACY
+	help
+	  The eglibc project no longer exists, as it has been merged
+	  back into the glibc project. Therefore, support for eglibc
+	  has been removed, and glibc should be used instead.
+
 config BR2_GDB_VERSION_7_8
 	bool "gdb 7.8 has been removed"
 	select BR2_LEGACY

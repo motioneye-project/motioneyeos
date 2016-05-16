@@ -42,26 +42,6 @@ config BR2_TOOLCHAIN_BUILDROOT_UCLIBC
 
 	  http://uclibc.org
 
-config BR2_TOOLCHAIN_BUILDROOT_EGLIBC
-	bool "eglibc"
-	depends on BR2_arm        || BR2_armeb    || BR2_aarch64    || \
-		   BR2_aarch64_be || BR2_i386     || BR2_mips       || \
-		   BR2_mipsel     || BR2_mips64   || BR2_mips64el   || \
-		   BR2_powerpc    || BR2_sh       || BR2_sh64       || \
-		   BR2_sparc      || BR2_x86_64   || BR2_microblaze || \
-		   BR2_powerpc64
-	depends on BR2_USE_MMU
-	depends on !BR2_STATIC_LIBS
-	depends on BR2_DEPRECATED_SINCE_2015_08
-	select BR2_TOOLCHAIN_USES_GLIBC
-	# our eglibc.mk enables RPC support
-	select BR2_TOOLCHAIN_HAS_NATIVE_RPC
-	help
-	  This option selects eglibc as the C library for the
-	  cross-compilation toolchain.
-
-	  http://eglibc.org
-
 config BR2_TOOLCHAIN_BUILDROOT_GLIBC
 	bool "glibc"
 	depends on BR2_arm         || BR2_armeb      || BR2_aarch64 || \
@@ -107,9 +87,6 @@ endchoice
 config BR2_TOOLCHAIN_BUILDROOT_LIBC
 	string
 	default "uclibc" if BR2_TOOLCHAIN_BUILDROOT_UCLIBC
-	# Both glibc and eglibc are handled by the package called
-	# 'glibc'
-	default "glibc"  if BR2_TOOLCHAIN_BUILDROOT_EGLIBC
 	default "glibc"  if BR2_TOOLCHAIN_BUILDROOT_GLIBC
 	default "musl"	 if BR2_TOOLCHAIN_BUILDROOT_MUSL
 
