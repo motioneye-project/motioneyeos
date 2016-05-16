@@ -1,7 +1,7 @@
 From 71939b727a8fa9f722934700948a5b68960f6183 Mon Sep 17 00:00:00 2001
 From: Samuel Martin <s.martin49@gmail.com>
 Date: Thu, 29 May 2014 18:52:10 +0200
-Subject: [PATCH 3/5] auto/*: set ngx_feature_run_force_result for each feature
+Subject: [PATCH] auto/*: set ngx_feature_run_force_result for each feature
  requiring run test
 
 Each feature requiring a run test has a matching preset variable (called

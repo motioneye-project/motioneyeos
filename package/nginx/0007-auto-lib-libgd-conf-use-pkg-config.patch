@@ -1,7 +1,7 @@
 From fd9885fe5fef5826034547ca6be7299863f99769 Mon Sep 17 00:00:00 2001
 From: Martin Bark <martin@barkynet.com>
 Date: Fri, 6 May 2016 14:48:49 +0100
-Subject: [PATCH 7/8] auto/lib/libgd/conf: use pkg-config
+Subject: [PATCH] auto/lib/libgd/conf: use pkg-config
 
 Change to using pkg-config to find the path to libgd and its
 dependencies.

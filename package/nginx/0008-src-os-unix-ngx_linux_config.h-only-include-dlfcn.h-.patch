@@ -1,7 +1,7 @@
 From 8dc9dffc1f99ac951865f3135dfb5061a08d1f85 Mon Sep 17 00:00:00 2001
 From: Martin Bark <martin@barkynet.com>
 Date: Fri, 6 May 2016 16:29:17 +0100
-Subject: [PATCH 8/8] src/os/unix/ngx_linux_config.h: only include dlfcn.h if
+Subject: [PATCH] src/os/unix/ngx_linux_config.h: only include dlfcn.h if
  available
 
 Signed-off-by: Martin Bark <martin@barkynet.com>

@@ -1,7 +1,7 @@
 From 756556d127da291cad8a2c007a89124a692aef7f Mon Sep 17 00:00:00 2001
 From: Martin Bark <martin@barkynet.com>
 Date: Fri, 6 May 2016 14:48:31 +0100
-Subject: [PATCH 6/8] auto/lib/openssl/conf: use pkg-config
+Subject: [PATCH] auto/lib/openssl/conf: use pkg-config
 
 Change to using pkg-config to find the path to openssl and its
 dependencies.
