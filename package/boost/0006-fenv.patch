@@ -1,0 +1,37 @@
+Disable fenv.h in certain configurations
+
+The boost build system does not properly test whether fenv.h is
+available, and if it is, if it supports all the features used by
+Boost. This causes build failures with uClibc (reported upstream at
+https://svn.boost.org/trac/boost/ticket/11756) but also with glibc on
+specific architectures that don't have a full fenv implementation,
+such as NIOSII or Microblaze.
+
+To address this, we forcefully disable the use of fenv support in the
+affected configurations.
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+[Thomas: add Microblaze/NIOSII exclusions.]
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/boost/config/platform/linux.hpp
+===================================================================
+--- a/boost/config/platform/linux.hpp
++++ b/boost/config/platform/linux.hpp
+@@ -47,6 +47,16 @@
+ #endif
+ 
+ //
++// uClibc has no support for fenv.h, and also a few architectures
++// don't have fenv.h support at all (or incomplete support) even with
++// glibc.
++
++//
++#if defined(__UCLIBC__) || defined(__nios2__) || defined(__microblaze__)
++#  define BOOST_NO_FENV_H
++#endif
++
++//
+ // If glibc is past version 2 then we definitely have
+ // gettimeofday, earlier versions may or may not have it:
+ //
