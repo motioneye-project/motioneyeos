@@ -108,6 +108,8 @@ endif
 # libGL is only provided for a full xorg stack
 ifeq ($(BR2_PACKAGE_XORG7),y)
 MESA3D_PROVIDES += libgl
+else
+MESA3D_POST_INSTALL_STAGING_HOOKS += MESA3D_REMOVE_OPENGL_PC
 endif
 MESA3D_CONF_OPTS += \
 	--enable-shared-glapi \
