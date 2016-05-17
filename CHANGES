@@ -1,3 +1,24 @@
+2016.05-rc2, Released May 17th, 2016
+
+	Fixes all over the tree.
+
+	Rootfs overlay handling now refuses to overwrite
+	/{usr,bin,sbin,lib} symlinks from BR2_ROOTFS_MERGED_USR option
+	even if these directories are present in the overlay.
+
+	External toolchain: Unbreak user provided libraries deployment
+	(BR2_TOOLCHAIN_EXTRA_EXTERNAL_LIBS) handling after refactoring.
+
+	QEMU coldfire: Fix for signal handling kernel issue, enable
+	networking support.
+
+	Updated/fixed packages: android-tools, assimp, boost, gcc,
+	glibc, glmark2, gmrender-resurrect, go, go-bootstrap, iputils,
+	jack2, kodi-screensaver-asterwave, kodi-screensaver-rsxs,
+	kodi-visualisation-shadertoy, libarchive, libinput, libpjsip,
+	mali-t76x, mtr, nginx, opencv, openvpn, python-coherence,
+	qt5multimeda, quagga, samba4, sg3-utils, stress-ng, turbolua
+
 2016.05-rc1, Released May 10th, 2016
 
 	Fixes all over the tree and new features.
