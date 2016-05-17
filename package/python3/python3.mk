@@ -78,10 +78,6 @@ ifeq ($(BR2_PACKAGE_PYTHON3_PYC_ONLY),y)
 PYTHON3_CONF_OPTS += --enable-old-stdlib-cache
 endif
 
-ifeq ($(BR2_PACKAGE_PYTHON3_PY_ONLY),y)
-PYTHON3_CONF_OPTS += --disable-pyc-build
-endif
-
 ifeq ($(BR2_PACKAGE_PYTHON3_SQLITE),y)
 PYTHON3_DEPENDENCIES += sqlite
 else
@@ -135,7 +131,8 @@ PYTHON3_CONF_OPTS += \
 	--disable-lib2to3	\
 	--disable-tk		\
 	--disable-nis		\
-	--disable-idle3
+	--disable-idle3		\
+	--disable-pyc-build
 
 # Python builds two tools to generate code: 'pgen' and
 # '_freeze_importlib'. Unfortunately, for the target Python, they are
@@ -212,6 +209,17 @@ PYTHON3_PATH = $(TARGET_DIR)/usr/lib/python$(PYTHON3_VERSION_MAJOR)/sysconfigdat
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
 
+define PYTHON3_CREATE_PYC_FILES
+	PYTHONPATH="$(PYTHON3_PATH)" \
+	$(HOST_DIR)/usr/bin/python$(PYTHON3_VERSION_MAJOR) \
+		support/scripts/pycompile.py \
+		$(TARGET_DIR)/usr/lib/python$(PYTHON3_VERSION_MAJOR)
+endef
+
+ifeq ($(BR2_PACKAGE_PYTHON3_PYC_ONLY)$(BR2_PACKAGE_PYTHON3_PY_PYC),y)
+TARGET_FINALIZE_HOOKS += PYTHON3_CREATE_PYC_FILES
+endif
+
 ifeq ($(BR2_PACKAGE_PYTHON3_PYC_ONLY),y)
 define PYTHON3_REMOVE_PY_FILES
 	find $(TARGET_DIR)/usr/lib/python$(PYTHON3_VERSION_MAJOR) -name '*.py' -print0 | \
@@ -220,6 +228,8 @@ endef
 TARGET_FINALIZE_HOOKS += PYTHON3_REMOVE_PY_FILES
 endif
 
+# Normally, *.pyc files should not have been compiled, but just in
+# case, we make sure we remove all of them.
 ifeq ($(BR2_PACKAGE_PYTHON3_PY_ONLY),y)
 define PYTHON3_REMOVE_PYC_FILES
 	find $(TARGET_DIR)/usr/lib/python$(PYTHON3_VERSION_MAJOR) -name '*.pyc' -print0 | \
