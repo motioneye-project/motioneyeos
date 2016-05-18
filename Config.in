@@ -512,6 +512,16 @@ config BR2_OPTIMIZE_3
 	  and also turns on the -finline-functions, -funswitch-loops and
 	  -fgcse-after-reload options.
 
+config BR2_OPTIMIZE_G
+	bool "optimize for debugging"
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_8
+	help
+	  Optimize for debugging. This enables optimizations that do not
+	  interfere with debugging. It should be the optimization level of
+	  choice for the standard edit-compile-debug cycle, offering a
+	  reasonable level of optimization while maintaining fast compilation
+	  and a good debugging experience.
+
 config BR2_OPTIMIZE_S
 	bool "optimize for size"
 	help
