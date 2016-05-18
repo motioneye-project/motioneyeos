@@ -1,5 +1,6 @@
 config BR2_PACKAGE_QT5SERIALBUS
 	bool "qt5serialbus"
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_6 # CAN FD
 	select BR2_PACKAGE_QT5BASE
 	select BR2_PACKAGE_QT5SERIALPORT
 	help
@@ -9,3 +10,6 @@ config BR2_PACKAGE_QT5SERIALBUS
 	  This package corresponds to the qt5serialbus module.
 
 	  http://qt.io
+
+comment "qt5serialbus needs headers >= 3.6"
+	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_6
