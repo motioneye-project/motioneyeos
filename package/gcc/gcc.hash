@@ -10,5 +10,6 @@ sha512  9ac57377a6975fc7adac704ec81355262b9f537def6955576753b87715470a20ee6a2a31
 sha512  d619847383405fd389f5a2d7225f97fedb01f81478dbb8339047ccba7561a5c20045ab500a8744bffd19ea51892ce09fc37f862f2cfcb42de0f0f8cd8f8da37a  gcc-5.3.0.tar.bz2
 # From ftp://gcc.gnu.org/pub/gcc/releases/gcc-6.1.0/sha512.sum
 sha512  eeed3e2018b8c012aabce419e8d718fde701e5c3c179b4486c61ba46e5736eecc8fccdd18b01fcd973a42c6ad3116dbbe2ee247fe3757d622d373f93ebaf8d2e  gcc-6.1.0.tar.bz2
-# No hash for the ARC variant, comes from the github-helper:
-none  xxx  gcc-arc-2016.03-rc2.tar.gz
+
+# Locally calculated (fetched from Github)
+sha512  65b1eef5f8ca26941dd9b5e1bcaf4ce285cc95429eeb92b4088663577bcdb2392f9712925f38666d94207fecd244579336f753a13de1f90e5169b21d8a73bef3  gcc-arc-2016.03.tar.gz
