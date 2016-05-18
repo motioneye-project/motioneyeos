@@ -1,3 +1,4 @@
+
 ################################################################################
 #
 # fmc
@@ -18,7 +19,15 @@ FMC_MAKE_OPTS = \
 	LIBXML2_HEADER_PATH="$(STAGING_DIR)/usr/include/libxml2" \
 	TCLAP_HEADER_PATH="$(STAGING_DIR)/usr/include"
 
+ifeq ($(BR2_powerpc64),y)
+FMC_MAKE_OPTS += M64BIT=1
+endif
+
+# fmc's platform is the same as fmlib's.
+FMC_PLATFORM = $(call qstrip,$(BR2_PACKAGE_FMLIB_PLATFORM))
+
 define FMC_BUILD_CMDS
+	$(SED) "s:P4080:$(FMC_PLATFORM):g" $(@D)/source/Makefile
 	# The linking step has dependency issues so using MAKE1
 	$(TARGET_MAKE_ENV) $(MAKE1) $(FMC_MAKE_OPTS) -C $(@D)/source
 endef
