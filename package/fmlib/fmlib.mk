@@ -21,15 +21,16 @@ FMLIB_MAKE_OPTS = \
 	KERNEL_SRC="$(LINUX_DIR)" \
 	PREFIX="$(STAGING_DIR)/usr"
 
-ifeq ($(BR2_powerpc_e500mc),y)
-FMLIB_ARCHTYPE = ppce500mc
-endif
+FMLIB_ARCHTYPE = $(call qstrip,$(BR2_PACKAGE_FMLIB_ARCHTYPE))
+FMLIB_PLATFORM = $(call qstrip,$(BR2_PACKAGE_FMLIB_PLATFORM))
 
 define FMLIB_BUILD_CMDS
+	$(SED) "s:P4080:$(FMLIB_PLATFORM):g" $(@D)/Makefile
 	$(TARGET_MAKE_ENV) $(MAKE) $(FMLIB_MAKE_OPTS) -C $(@D) libfm-$(FMLIB_ARCHTYPE).a
 endef
 
 define FMLIB_INSTALL_STAGING_CMDS
+	rm $(STAGING_DIR)/usr/lib/libfm.a -f
 	$(FMLIB_MAKE_ENV) $(MAKE) $(FMLIB_MAKE_OPTS) -C $(@D) install-libfm-$(FMLIB_ARCHTYPE)
 endef
 
