@@ -62,6 +62,15 @@ config BR2_PACKAGE_E2FSPROGS_FSCK
 	bool "fsck"
 	default y
 
+config BR2_PACKAGE_E2FSPROGS_FUSE2FS
+	bool "fuse2fs"
+	depends on !BR2_STATIC_LIBS # libfuse
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libfuse
+	select BR2_PACKAGE_LIBFUSE
+
+comment "fuse2fs needs a toolchain w/ threads, dynamic library"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS
+
 config BR2_PACKAGE_E2FSPROGS_LOGSAVE
 	bool "logsave"
 	default y
