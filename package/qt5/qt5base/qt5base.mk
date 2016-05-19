@@ -7,6 +7,7 @@
 QT5BASE_VERSION = $(QT5_VERSION)
 QT5BASE_SITE = $(QT5_SITE)
 QT5BASE_SOURCE = qtbase-opensource-src-$(QT5BASE_VERSION).tar.xz
+QT5BASE_PATCH = https://github.com/qtproject/qtbase/commit/b8f98d956501dfa4ce03a137f15d404930a56066.patch
 
 QT5BASE_DEPENDENCIES = host-pkgconf zlib pcre
 QT5BASE_INSTALL_STAGING = YES
