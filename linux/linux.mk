@@ -216,6 +216,20 @@ LINUX_KCONFIG_OPTS = $(LINUX_MAKE_FLAGS)
 # If no package has yet set it, set it from the Kconfig option
 LINUX_NEEDS_MODULES ?= $(BR2_LINUX_NEEDS_MODULES)
 
+# Make sure the Linux kernel is built with the right endianness. Not
+# all architectures support
+# CONFIG_CPU_BIG_ENDIAN/CONFIG_CPU_LITTLE_ENDIAN in Linux, but the
+# option will be thrown away and ignored if it doesn't exist.
+ifeq ($(BR2_ENDIAN),"BIG")
+define LINUX_FIXUP_CONFIG_ENDIANNESS
+	$(call KCONFIG_ENABLE_OPT,CONFIG_CPU_BIG_ENDIAN,$(@D)/.config)
+endef
+else
+define LINUX_FIXUP_CONFIG_ENDIANNESS
+	$(call KCONFIG_ENABLE_OPT,CONFIG_CPU_LITTLE_ENDIAN,$(@D)/.config)
+endef
+endif
+
 define LINUX_KCONFIG_FIXUP_CMDS
 	$(if $(LINUX_NEEDS_MODULES),
 		$(call KCONFIG_ENABLE_OPT,CONFIG_MODULES,$(@D)/.config))
@@ -223,6 +237,7 @@ define LINUX_KCONFIG_FIXUP_CMDS
 	$(foreach opt, $(LINUX_COMPRESSION_OPT_),
 		$(call KCONFIG_DISABLE_OPT,$(opt),$(@D)/.config)
 	)
+	$(LINUX_FIXUP_CONFIG_ENDIANNESS)
 	$(if $(BR2_arm)$(BR2_armeb),
 		$(call KCONFIG_ENABLE_OPT,CONFIG_AEABI,$(@D)/.config))
 	$(if $(BR2_TARGET_ROOTFS_CPIO),
