@@ -71,7 +71,6 @@ GST1_PLUGINS_BAD_CONF_OPTS += \
 	--disable-gme \
 	--disable-xvid \
 	--disable-vdpau \
-	--disable-sbc \
 	--disable-schro \
 	--disable-zbar \
 	--disable-rtmp \
@@ -741,6 +740,13 @@ GST1_PLUGINS_BAD_CONF_OPTS += --enable-rsvg
 GST1_PLUGINS_BAD_DEPENDENCIES += librsvg
 else
 GST1_PLUGINS_BAD_CONF_OPTS += --disable-rsvg
+endif
+
+ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_SBC),y)
+GST1_PLUGINS_BAD_CONF_OPTS += --enable-sbc
+GST1_PLUGINS_BAD_DEPENDENCIES += sbc
+else
+GST1_PLUGINS_BAD_CONF_OPTS += --disable-sbc
 endif
 
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_SDL),y)

@@ -638,6 +638,10 @@ comment "rsvg plugin needs a toolchain w/ C++"
 	depends on !BR2_INSTALL_LIBSTDCPP
 	depends on BR2_TOOLCHAIN_HAS_SYNC_4
 
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_SBC
+	bool "sbc"
+	select BR2_PACKAGE_SBC
+
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_SDL
 	bool "sdl"
 	select BR2_PACKAGE_SDL
