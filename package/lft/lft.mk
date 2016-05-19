@@ -5,8 +5,7 @@
 ################################################################################
 
 LFT_VERSION = 3.74
-# Download from pwhois.org is form-wrapped resulting in ugly filename
-LFT_SITE = https://fossies.org/linux/privat
+LFT_SITE = http://pwhois.org/get
 LFT_DEPENDENCIES = libpcap
 LFT_LICENSE = VOSTROM Public License for Open Source
 LFT_LICENSE_FILES = COPYING
