@@ -18,6 +18,7 @@ start() {
     umask 077
     hostname=$(hostname)
     echo "Welcome to $hostname!" > /var/cache/sshd_banner
+    sync
 
     /usr/sbin/sshd -f $conf
     test $? == 0 && msg_done || msg_fail

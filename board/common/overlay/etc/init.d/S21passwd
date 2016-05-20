@@ -26,7 +26,8 @@ case "$1" in
         
         sed -r -i 's/root:([^:]+):[[:digit:]]+:/root:\1::/' /data/etc/shadow # removes pwd expiration
         sed -r -i 's/admin:([^:]+):[[:digit:]]+:/admin:\1::/' /data/etc/shadow # removes pwd expiration
-        
+        sync
+
         msg_done
         ;;
 

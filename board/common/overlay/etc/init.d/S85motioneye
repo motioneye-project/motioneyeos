@@ -108,6 +108,8 @@ start() {
             curl -s -m 60 --data "$body" "http://127.0.0.1:$port$loc&_signature=$signature" > /dev/null
             index=$(($index + 1))
         done
+        
+        sync
     fi
 
     if [ -z "$meyewatch_disable" ]; then

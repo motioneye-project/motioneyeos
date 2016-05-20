@@ -35,6 +35,7 @@ case "$1" in
         cp /etc/version /data/etc/version
         ln -s /usr/share/zoneinfo/UTC /data/etc/localtime
         touch /data/etc/adjtime
+        sync
         msg_done
 
         # mount other partitions depending on data
