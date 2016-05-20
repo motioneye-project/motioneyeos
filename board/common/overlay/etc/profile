@@ -24,6 +24,7 @@ if [ "$PS1" ]; then
     export PAGER="/usr/bin/less"
     export EDITOR="/usr/bin/nano"
     export INPUTRC="/etc/inputrc"
+    export TERM=linux
 fi;
 
 if [ -f /data/etc/profile ]; then
