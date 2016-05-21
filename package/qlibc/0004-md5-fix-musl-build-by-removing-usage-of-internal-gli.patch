@@ -1,0 +1,60 @@
+From fe45b18f777b1414aee908f08f56a5730a00dbb5 Mon Sep 17 00:00:00 2001
+From: Bernd Kuhls <bernd.kuhls@t-online.de>
+Date: Sat, 21 May 2016 09:59:56 +0200
+Subject: [PATCH 1/1] md5: fix musl build by removing usage of internal glibc
+ header sys/cdefs.h
+
+As suggested in musl FAQ:
+http://wiki.musl-libc.org/wiki/FAQ#Q:_I.27m_trying_to_compile_something_against_musl_and_I_get_error_messages_about_sys.2Fcdefs.h
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+(Patch for master branch sent upstream:
+ https://github.com/wolkykim/qlibc/pull/53,
+ this patch is a backport for v2.1.6)
+---
+ src/internal/md5/md5.h  | 10 ++++++----
+ src/internal/md5/md5c.c |  1 -
+ 2 files changed, 6 insertions(+), 5 deletions(-)
+
+diff --git a/src/internal/md5/md5.h b/src/internal/md5/md5.h
+index cbfa7ca..8e726fe 100644
+--- a/src/internal/md5/md5.h
++++ b/src/internal/md5/md5.h
+@@ -35,9 +35,9 @@ typedef struct MD5Context {
+     unsigned char buffer[64];	/* input buffer */
+ } MD5_CTX;
+ 
+-#include <sys/cdefs.h>
+-
+-__BEGIN_DECLS
++#ifdef __cplusplus
++extern "C" {
++#endif
+ void   MD5Init (MD5_CTX *);
+ void   MD5Update (MD5_CTX *, const unsigned char *, unsigned int);
+ void   MD5Final (unsigned char[16], MD5_CTX *);
+@@ -45,6 +45,8 @@ char * MD5End(MD5_CTX *, char *);
+ char * MD5File(const char *, char *);
+ char * MD5FileChunk(const char *, char *, off_t, off_t);
+ char * MD5Data(const unsigned char *, unsigned int, char *);
+-__END_DECLS
++#ifdef __cplusplus
++}
++#endif
+ 
+ #endif /* Q_MD5_H */
+diff --git a/src/internal/md5/md5c.c b/src/internal/md5/md5c.c
+index de9e47f..040bf5e 100644
+--- a/src/internal/md5/md5c.c
++++ b/src/internal/md5/md5c.c
+@@ -26,7 +26,6 @@
+  * edited for clarity and style only.
+  */
+ 
+-#include <sys/cdefs.h>
+ #include <sys/types.h>
+ #include <string.h>
+ #include "md5.h"
+-- 
+2.8.1
+
