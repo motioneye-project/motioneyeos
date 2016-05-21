@@ -9,8 +9,7 @@ http://wiki.musl-libc.org/wiki/FAQ#Q:_I.27m_trying_to_compile_something_against_
 
 Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
 (Patch for master branch sent upstream:
- https://github.com/wolkykim/qlibc/pull/53,
- this patch is a backport for v2.1.6)
+ https://github.com/wolkykim/qlibc/pull/53)
 ---
  src/internal/md5/md5.h  | 10 ++++++----
  src/internal/md5/md5c.c |  1 -
@@ -21,7 +20,7 @@ index cbfa7ca..8e726fe 100644
 --- a/src/internal/md5/md5.h
 +++ b/src/internal/md5/md5.h
 @@ -35,9 +35,9 @@ typedef struct MD5Context {
-     unsigned char buffer[64];	/* input buffer */
+     unsigned char buffer[64]; /* input buffer */
  } MD5_CTX;
  
 -#include <sys/cdefs.h>
@@ -30,9 +29,9 @@ index cbfa7ca..8e726fe 100644
 +#ifdef __cplusplus
 +extern "C" {
 +#endif
- void   MD5Init (MD5_CTX *);
- void   MD5Update (MD5_CTX *, const unsigned char *, unsigned int);
- void   MD5Final (unsigned char[16], MD5_CTX *);
+ void MD5Init(MD5_CTX *);
+ void MD5Update(MD5_CTX *, const unsigned char *, unsigned int);
+ void MD5Final(unsigned char[16], MD5_CTX *);
 @@ -45,6 +45,8 @@ char * MD5End(MD5_CTX *, char *);
  char * MD5File(const char *, char *);
  char * MD5FileChunk(const char *, char *, off_t, off_t);
