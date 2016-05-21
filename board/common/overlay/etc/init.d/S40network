@@ -92,7 +92,7 @@ start_wlan() {
         dhclient -cf "$dh_conf" $wlan
     fi
 
-    if [ "$ip_watch" == "yes" ]; then
+    if [ "$ip_watch" == "yes" ] && ip addr show dev $wlan | grep inet &>/dev/null; then
         watch_ip $wlan &
     fi
 }
@@ -149,7 +149,7 @@ start_eth() {
         watch_eth &
     fi
 
-    if [ "$ip_watch" == "yes" ]; then
+    if [ "$ip_watch" == "yes" ] && ip addr show dev $eth | grep inet &>/dev/null; then
         watch_ip $eth &
     fi
 }
