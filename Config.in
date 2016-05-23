@@ -225,10 +225,12 @@ config BR2_BACKUP_SITE
 
 config BR2_KERNEL_MIRROR
 	string "Kernel.org mirror"
-	default "https://www.kernel.org/pub"
+	default "https://cdn.kernel.org/pub"
 	help
-	  kernel.org is mirrored on a number of servers around the world.
-	  The following allows you to select your preferred mirror.
+	  kernel.org is mirrored on a number of servers around the
+	  world.  The following allows you to select your preferred
+	  mirror. By default, a CDN is used, which automatically
+	  redirects to a mirror geographically close to you.
 
 	  Have a look on the kernel.org site for a list of mirrors, then enter
 	  the URL to the base directory.  Examples:
