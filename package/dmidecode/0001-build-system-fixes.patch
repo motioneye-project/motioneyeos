@@ -21,10 +21,10 @@ Index: b/Makefile
 +override CFLAGS  += \
 +	-W -Wall -Wshadow -Wstrict-prototypes -Wpointer-arith -Wcast-qual \
 +        -Wcast-align -Wwrite-strings -Wmissing-prototypes -Winline -Wundef
- #CFLAGS += -DBIGENDIAN
- #CFLAGS += -DALIGNMENT_WORKAROUND
  
-@@ -23,7 +24,7 @@
+ # Let lseek and mmap support 64-bit wide offsets
+ CFLAGS += -D_FILE_OFFSET_BITS=64
+@@ -27,7 +28,7 @@ CFLAGS += -O2
  #CFLAGS += -g
  
  # Pass linker flags here

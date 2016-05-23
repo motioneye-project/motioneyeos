@@ -1,2 +1,2 @@
-# Locally calculated after checking pgp signature
-sha256	5a8214b99c1762f4510bd92baa279336e5fed6e5cd2e418d46d95a4ecc783922	dmidecode-2.12.tar.gz
+# http://http.debian.net/debian/pool/main/d/dmidecode/dmidecode_3.0-2.dsc
+sha256	7ec35bb193729c1d593a1460b59d82d24b89102ab23fd0416e6cf4325d077e45	dmidecode-3.0.tar.xz
