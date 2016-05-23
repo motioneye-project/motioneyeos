@@ -1,0 +1,39 @@
+From 3055eb3da9d0a202c1a975f7db0c8370a09a30bc Mon Sep 17 00:00:00 2001
+From: "Joseph D. Gaeddert" <joseph@liquidsdr.org>
+Date: Thu, 25 Feb 2016 17:47:07 -0500
+Subject: [PATCH] math/poly: wrapping isnan in T_ABS to help compilation w/
+ certain gcc versions
+
+This is an upstreamed patch backported from here:
+
+https://github.com/jgaeddert/liquid-dsp/commit/3055eb3da9d0a202c1a975f7db0c8370a09a30bc
+
+It fixes the following error:
+
+src/math/src/poly.findroots.c: In function
+'polyc_findroots_bairstow_recursion':
+src/math/src/poly.findroots.c:305:9: error: non-floating-point argument
+in call to function '__builtin_isnan'
+         if (isnan(du) || isnan(dv)) {
+
+Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+---
+ src/math/src/poly.findroots.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/math/src/poly.findroots.c b/src/math/src/poly.findroots.c
+index 21b5756..e000ee8 100644
+--- a/src/math/src/poly.findroots.c
++++ b/src/math/src/poly.findroots.c
+@@ -302,7 +302,7 @@ void POLY(_findroots_bairstow_recursion)(T *          _p,
+ #endif
+ 
+         // adjust u, v
+-        if (isnan(du) || isnan(dv)) {
++        if (isnan(T_ABS(du)) || isnan(T_ABS(dv))) {
+             u *= 0.5f;
+             v *= 0.5f;
+         } else {
+-- 
+2.7.3
+
