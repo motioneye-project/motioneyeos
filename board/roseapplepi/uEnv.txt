@@ -1,0 +1,3 @@
+# no ramdisk
+ramdisk_addr_r=-
+bootargs=clk_ignore_unused root=/dev/mmcblk0p2
