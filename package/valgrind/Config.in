@@ -8,6 +8,7 @@ config BR2_PACKAGE_VALGRIND
 		   BR2_powerpc || BR2_powerpc64 || BR2_powerpc64le || \
 		   BR2_x86_64
 	depends on !BR2_STATIC_LIBS
+	depends on !BR2_MIPS_SOFT_FLOAT
 	help
 	  Tool for debugging and profiling Linux programs.
 
