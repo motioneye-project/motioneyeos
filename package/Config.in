@@ -614,6 +614,7 @@ if BR2_PACKAGE_PHP
 if !BR2_STATIC_LIBS
 menu "External php extensions"
 	source "package/php-geoip/Config.in"
+	source "package/php-gnupg/Config.in"
 	source "package/php-imagick/Config.in"
 	source "package/php-zmq/Config.in"
 endmenu
