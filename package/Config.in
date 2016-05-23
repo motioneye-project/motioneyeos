@@ -618,6 +618,7 @@ menu "External php extensions"
 	source "package/php-imagick/Config.in"
 	source "package/php-memcached/Config.in"
 	source "package/php-ssh2/Config.in"
+	source "package/php-yaml/Config.in"
 	source "package/php-zmq/Config.in"
 endmenu
 endif
