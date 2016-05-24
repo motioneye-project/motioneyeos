@@ -2,6 +2,7 @@ config BR2_PACKAGE_USTR
 	bool "ustr"
 	# unconditionally builds a shared library
 	depends on !BR2_STATIC_LIBS
+	depends on !BR2_TOOLCHAIN_USES_MUSL # broken vsnprintf detection
 	help
 	  A small, safe string library.
 
@@ -9,3 +10,4 @@ config BR2_PACKAGE_USTR
 
 comment "ustr needs a toolchain w/ dynamic library"
 	depends on BR2_STATIC_LIBS
+	depends on !BR2_TOOLCHAIN_USES_MUSL
