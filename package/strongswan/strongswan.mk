@@ -35,6 +35,10 @@ STRONGSWAN_CONF_OPTS += \
 	--enable-vici=$(if $(BR2_PACKAGE_STRONGSWAN_VICI),yes,no) \
 	--enable-swanctl=$(if $(BR2_PACKAGE_STRONGSWAN_VICI),yes,no)
 
+ifeq ($(BR2_TOOLCHAIN_HAS_LIBATOMIC),y)
+STRONGSWAN_CONF_ENV += LIBS='-latomic'
+endif
+
 ifeq ($(BR2_PACKAGE_STRONGSWAN_EAP),y)
 STRONGSWAN_CONF_OPTS += \
 	--enable-eap-sim \
