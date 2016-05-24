@@ -48,8 +48,7 @@ SKELETON_CUSTOM_NOT_MERGED_USR += /sbin
 endif
 
 ifneq ($(SKELETON_CUSTOM_NOT_MERGED_USR),)
-$(error Use of systemd as an init system requires a merged /usr. \
-	However, the custom skeleton in $(SKELETON_PATH) is not \
+$(error The custom skeleton in $(SKELETON_PATH) is not \
 	using a merged /usr for the following directories: \
 	$(SKELETON_CUSTOM_NOT_MERGED_USR))
 endif
