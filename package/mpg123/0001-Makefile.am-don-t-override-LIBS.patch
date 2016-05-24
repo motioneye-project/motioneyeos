@@ -1,0 +1,46 @@
+From 25c2e71c9ce762561eeacd35bf432c6692c0fb44 Mon Sep 17 00:00:00 2001
+From: Peter Korsgaard <peter@korsgaard.com>
+Date: Tue, 24 May 2016 17:34:32 +0200
+Subject: [PATCH] Makefile.am: don't override LIBS
+
+Patch status: posted upstream
+https://sourceforge.net/p/mpg123/mailman/message/35111696/
+
+The recent build system change broke custom LIBS handling. As opposed to the
+other internal variables, LIBS can be provided by the user when running
+configure, E.G.:
+
+LIBS="-lfoo -lbar" ./configure ..
+
+This is correctly used by the configure checks, but doesn't end up in the
+Makefile any more because of this override - Breaking static builds where
+the configure script needs a bit of help to link with -lpthread when
+alsa/portaudio is used (as those use pthreads internally).
+
+Fixes the following build issues from the Buildroot autobuilders:
+
+http://autobuild.buildroot.net/?reason=mpg123-1.23.3
+
+(see https://git.buildroot.net/buildroot/tree/package/mpg123/mpg123.mk for
+the build logic)
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ Makefile.am | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/Makefile.am b/Makefile.am
+index d695a3b..863f59f 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -9,7 +9,6 @@
+ ACLOCAL_AMFLAGS = -I m4
+ bin_PROGRAMS =
+ EXTRA_PROGRAMS =
+-LIBS =
+ EXTRA_DIST =
+ pkglib_LTLIBRARIES =
+ lib_LTLIBRARIES =
+-- 
+2.7.0
+

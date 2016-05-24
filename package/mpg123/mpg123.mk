@@ -12,6 +12,8 @@ MPG123_INSTALL_STAGING = YES
 MPG123_LICENSE = LGPLv2.1
 MPG123_LICENSE_FILES = COPYING
 MPG123_DEPENDENCIES = host-pkgconf
+# 0001-Makefile.am-don-t-override-LIBS.patch patches Makefile.am
+MPG123_AUTORECONF = YES
 
 MPG123_CPU = $(if $(BR2_SOFT_FLOAT),generic_nofpu,generic_fpu)
 
