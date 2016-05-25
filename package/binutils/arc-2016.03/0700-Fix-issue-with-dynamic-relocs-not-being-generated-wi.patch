@@ -1,0 +1,34 @@
+From e59d8728f2fd57938ff28bb48cb47ddc7dbf8271 Mon Sep 17 00:00:00 2001
+From: Cupertino Miranda <cmiranda@synopsys.com>
+Date: Tue, 24 May 2016 18:00:28 +0200
+Subject: [PATCH] Fix issue with dynamic relocs not being generated with -pie.
+
+---
+ bfd/elf32-arc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/bfd/elf32-arc.c b/bfd/elf32-arc.c
+index c2d05e4..00af1a5 100644
+--- a/bfd/elf32-arc.c
++++ b/bfd/elf32-arc.c
+@@ -1492,7 +1492,7 @@ elf_arc_relocate_section (bfd *		   output_bfd,
+ 	  case R_ARC_32_ME:
+ 	  case R_ARC_PC32:
+ 	  case R_ARC_32_PCREL:
+-	    if (bfd_link_pic (info) && !bfd_link_pie (info)
++	    if ((bfd_link_pic (info) || bfd_link_pie (info))
+ 		&& ((r_type != R_ARC_PC32 && r_type != R_ARC_32_PCREL)
+ 		    || (h != NULL
+ 			&& h->dynindx != -1
+@@ -1774,7 +1774,7 @@ elf_arc_check_relocs (bfd *		         abfd,
+ 	    /* FALLTHROUGH */
+ 	  case R_ARC_PC32:
+ 	  case R_ARC_32_PCREL:
+-	    if (bfd_link_pic (info) && !bfd_link_pie (info)
++	    if ((bfd_link_pic (info) || bfd_link_pie (info))
+ 		&& ((r_type != R_ARC_PC32 && r_type != R_ARC_32_PCREL)
+ 		    || (h != NULL
+ 			&& h->dynindx != -1
+-- 
+2.5.5
+
