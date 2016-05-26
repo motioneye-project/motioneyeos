@@ -1,3 +1,24 @@
+2016.05-rc3, Released May 26th, 2016
+
+	Fixes all over the tree.
+
+	Tweaks for SSP handling for external toolchains.
+
+	Updated/fixed packages: aircrack-ng, bluez5_utils, connman,
+	cups, erlang-p1-stringprep, expat, ffmpeg, flann, flannel, go,
+	gst1-libav, hidapi, hplip, iptraf-ng, jamvm, kodi,
+	kodi-screensaver-matrixtrails, libcurl, libepoxy, libgpgme,
+	libsemanage, libxslt, liquid-dsp, ltris, lxc, mesa3d, midori,
+	mpg123, mtr, openpgm, openpowerlink, oprofile, php,
+	postgresql, putty, python-service-identity, python-treq,
+	qlibc, qt5serialbus, ruby, stress-ng, strongswan, time, tinc,
+	ustr, valgrind, webkitgtk, libxml2, xorriso,
+	xserver_xorg-server
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#8936: Aircrack-ng - Alot of missing dependencies
+
 2016.05-rc2, Released May 17th, 2016
 
 	Fixes all over the tree.
