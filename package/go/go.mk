@@ -35,6 +35,15 @@ endif
 HOST_GO_DEPENDENCIES = host-go-bootstrap
 HOST_GO_ROOT = $(HOST_DIR)/usr/lib/go
 
+# For the convienience of target packages.
+HOST_GO_TOOLDIR = $(HOST_GO_ROOT)/pkg/tool/linux_$(GO_GOARCH)
+HOST_GO_TARGET_ENV = \
+	GOARCH=$(GO_GOARCH) \
+	GOROOT="$(HOST_GO_ROOT)" \
+	CC=$(TARGET_CC) \
+	CXX=$(TARGET_CXX) \
+	GOTOOLDIR="$(HOST_GO_TOOLDIR)"
+
 # The go build system doesn't have the notion of cross compiling, but just the
 # notion of architecture.  When the host and target architectures are different
 # it expects to be given a target cross compiler in CC_FOR_TARGET.  When the
