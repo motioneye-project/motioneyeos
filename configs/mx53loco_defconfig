@@ -11,7 +11,13 @@ BR2_TARGET_GENERIC_GETTY_PORT="ttymxc0"
 # patches
 BR2_GLOBAL_PATCH_DIR="board/freescale/imx53loco/patches/"
 
+# required tools to create the SD card image
+BR2_PACKAGE_HOST_DOSFSTOOLS=y
+BR2_PACKAGE_HOST_GENIMAGE=y
+BR2_PACKAGE_HOST_MTOOLS=y
+
 # Filesystem
+BR2_ROOTFS_POST_IMAGE_SCRIPT="board/freescale/imx53loco/post-image.sh"
 BR2_TARGET_ROOTFS_EXT2=y
 BR2_TARGET_ROOTFS_EXT2_4=y
 

@@ -1,1 +1,0 @@
-../create-boot-sd.sh
