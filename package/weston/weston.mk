@@ -18,7 +18,6 @@ WESTON_DEPENDENCIES = host-pkgconf wayland wayland-protocols \
 
 WESTON_CONF_OPTS = \
 	--with-dtddir=$(STAGING_DIR)/usr/share/wayland \
-	--disable-wayland-compositor \
 	--disable-headless-compositor \
 	--disable-colord \
 	--disable-setuid-install
