@@ -19,7 +19,6 @@ WESTON_DEPENDENCIES = host-pkgconf wayland wayland-protocols \
 WESTON_CONF_OPTS = \
 	--with-dtddir=$(STAGING_DIR)/usr/share/wayland \
 	--disable-xwayland \
-	--disable-x11-compositor \
 	--disable-wayland-compositor \
 	--disable-headless-compositor \
 	--disable-colord \
@@ -102,6 +101,15 @@ WESTON_CONF_OPTS += --enable-rpi-compositor \
 else
 WESTON_CONF_OPTS += --disable-rpi-compositor
 endif # BR2_PACKAGE_WESTON_RPI
+
+ifeq ($(BR2_PACKAGE_WESTON_X11),y)
+WESTON_CONF_OPTS += \
+	--enable-x11-compositor \
+	WESTON_NATIVE_BACKEND=x11-backend.so
+WESTON_DEPENDENCIES += libxcb xlib_libX11
+else
+WESTON_CONF_OPTS += --disable-x11-compositor
+endif
 
 ifeq ($(BR2_PACKAGE_LIBVA),y)
 WESTON_CONF_OPTS += --enable-vaapi-recorder
