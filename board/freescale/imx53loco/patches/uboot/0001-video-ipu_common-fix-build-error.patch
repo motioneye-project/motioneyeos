@@ -1,0 +1,47 @@
+From c510f2e436008e55a50b063f2180cb1e63984224 Mon Sep 17 00:00:00 2001
+From: Peng Fan <van.freenix@gmail.com>
+Date: Thu, 28 Apr 2016 10:07:53 +0800
+Subject: [PATCH] video: ipu_common: fix build error
+
+Some toolchains fail to build
+"clk->rate = (u64)(clk->parent->rate * 16) / div;"
+And the cast usage is wrong.
+
+Use the following code to fix the issue,
+"
+  do_div(parent_rate, div);
+  clk->rate = parent_rate;
+"
+
+Reported-by: Peter Robinson <pbrobinson@gmail.com>
+Signed-off-by: Peng Fan <van.freenix@gmail.com>
+Cc: Stefano Babic <sbabic@denx.de>
+Cc: Fabio Estevam <fabio.estevam@nxp.com>
+Cc: Tom Rini <trini@konsulko.com>
+Cc: Anatolij Gustschin <agust@denx.de>
+Cc: Peter Robinson <pbrobinson@gmail.com>
+Reviewed-by: Tom Rini <trini@konsulko.com>
+Tested-by: Peter Robinson <pbrobinson@gmail.com>
+Signed-off-by: Fabio Estevam <festevam@gmail.com>
+---
+ drivers/video/ipu_common.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/video/ipu_common.c b/drivers/video/ipu_common.c
+index 36d4b23..5676a0f 100644
+--- a/drivers/video/ipu_common.c
++++ b/drivers/video/ipu_common.c
+@@ -352,7 +352,9 @@ static int ipu_pixel_clk_set_rate(struct clk *clk, unsigned long rate)
+ 	 */
+ 	__raw_writel((div / 16) << 16, DI_BS_CLKGEN1(clk->id));
+ 
+-	clk->rate = (u64)(clk->parent->rate * 16) / div;
++	do_div(parent_rate, div);
++
++	clk->rate = parent_rate;
+ 
+ 	return 0;
+ }
+-- 
+1.9.1
+
