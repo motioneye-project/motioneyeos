@@ -13,6 +13,7 @@ BR2_GLOBAL_PATCH_DIR="board/freescale/imx53loco/patches/"
 
 # Filesystem
 BR2_TARGET_ROOTFS_EXT2=y
+BR2_TARGET_ROOTFS_EXT2_4=y
 
 # Bootloader
 BR2_TARGET_UBOOT=y
