@@ -21,8 +21,8 @@ if BR2_PACKAGE_SQUEEZELITE
 config BR2_PACKAGE_SQUEEZELITE_FFMPEG
 	bool "Enable WMA and ALAC decoding"
 	default y
+	depends on BR2_PACKAGE_FFMPEG_ARCH_SUPPORTS
 	select BR2_PACKAGE_FFMPEG
-	depends on !BR2_nios2 # ffmpeg
 
 config BR2_PACKAGE_SQUEEZELITE_DSD
 	bool "Enable DSD decoding"
