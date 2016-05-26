@@ -35,6 +35,14 @@ endif
 HOST_GO_DEPENDENCIES = host-go-bootstrap
 HOST_GO_ROOT = $(HOST_DIR)/usr/lib/go
 
+# The go build system doesn't have the notion of cross compiling, but just the
+# notion of architecture.  When the host and target architectures are different
+# it expects to be given a target cross compiler in CC_FOR_TARGET.  When the
+# architectures are the same it will use CC_FOR_TARGET for both host and target
+# compilation.  To work around this limitation build and install a set of
+# compiler and tool binaries built with CC_FOR_TARGET set to the host compiler.
+# Also, the go build system is not compatible with ccache, so use
+# HOSTCC_NOCCACHE.  See https://github.com/golang/go/issues/11685.
 HOST_GO_MAKE_ENV = \
 	GOROOT_BOOTSTRAP=$(HOST_GO_BOOTSTRAP_ROOT) \
 	GOROOT_FINAL=$(HOST_GO_ROOT) \
@@ -44,16 +52,29 @@ HOST_GO_MAKE_ENV = \
 	$(if $(GO_GOARM),GOARM=$(GO_GOARM)) \
 	GOOS=linux \
 	CGO_ENABLED=1 \
+	CC=$(HOSTCC_NOCCACHE)
+
+HOST_GO_TARGET_CC = \
 	CC_FOR_TARGET=$(TARGET_CC) \
 	CXX_FOR_TARGET=$(TARGET_CXX)
 
+HOST_GO_HOST_CC = \
+	CC_FOR_TARGET=$(HOSTCC_NOCCACHE) \
+	CXX_FOR_TARGET=$(HOSTCC_NOCCACHE)
+
+HOST_GO_TMP = $(@D)/host-go-tmp
+
 define HOST_GO_BUILD_CMDS
-	cd $(@D)/src && $(HOST_GO_MAKE_ENV) ./make.bash
+	cd $(@D)/src && $(HOST_GO_MAKE_ENV) $(HOST_GO_HOST_CC) ./make.bash
+	mkdir -p $(HOST_GO_TMP)
+	mv $(@D)/pkg/tool $(HOST_GO_TMP)/
+	mv $(@D)/bin/ $(HOST_GO_TMP)/
+	cd $(@D)/src && $(HOST_GO_MAKE_ENV) $(HOST_GO_TARGET_CC) ./make.bash
 endef
 
 define HOST_GO_INSTALL_CMDS
-	$(INSTALL) -D -m 0755 $(@D)/bin/go $(HOST_GO_ROOT)/bin/go
-	$(INSTALL) -D -m 0755 $(@D)/bin/gofmt $(HOST_GO_ROOT)/bin/gofmt
+	$(INSTALL) -D -m 0755 $(HOST_GO_TMP)/bin/go $(HOST_GO_ROOT)/bin/go
+	$(INSTALL) -D -m 0755 $(HOST_GO_TMP)/bin/gofmt $(HOST_GO_ROOT)/bin/gofmt
 
 	ln -sf ../lib/go/bin/go $(HOST_DIR)/usr/bin/
 	ln -sf ../lib/go/bin/gofmt $(HOST_DIR)/usr/bin/
@@ -62,7 +83,7 @@ define HOST_GO_INSTALL_CMDS
 
 	mkdir -p $(HOST_GO_ROOT)/pkg
 	cp -a $(@D)/pkg/include $(@D)/pkg/linux_* $(HOST_GO_ROOT)/pkg/
-	cp -a $(@D)/pkg/tool $(HOST_GO_ROOT)/pkg/
+	cp -a $(HOST_GO_TMP)/tool $(HOST_GO_ROOT)/pkg/
 
 	# There is a known issue which requires the go sources to be installed
 	# https://golang.org/issue/2775
