@@ -38,6 +38,10 @@ endif
 
 ifeq ($(BR2_TARGET_UBOOT_FORMAT_ELF),y)
 UBOOT_BIN = u-boot
+# To make elf usable for debuging on ARC use special target
+ifeq ($(BR2_arc),y)
+UBOOT_MAKE_TARGET = mdbtrick
+endif
 else ifeq ($(BR2_TARGET_UBOOT_FORMAT_KWB),y)
 UBOOT_BIN = u-boot.kwb
 UBOOT_MAKE_TARGET = $(UBOOT_BIN)
