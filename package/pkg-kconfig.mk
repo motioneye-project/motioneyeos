@@ -143,7 +143,8 @@ endif
 # nconfig, gconfig, xconfig).
 # So we simply remove our PATH and PKG_CONFIG_* variables.
 $(2)_CONFIGURATOR_MAKE_ENV = \
-	$$(filter-out PATH=% PKG_CONFIG=% PKG_CONFIG_SYSROOT_DIR=% PKG_CONFIG_LIBDIR=%,$$($(2)_MAKE_ENV))
+	$$(filter-out PATH=% PKG_CONFIG=% PKG_CONFIG_SYSROOT_DIR=% PKG_CONFIG_LIBDIR=%,$$($(2)_MAKE_ENV)) \
+	PKG_CONFIG_PATH="$(HOST_PKG_CONFIG_PATH)"
 
 # Configuration editors (menuconfig, ...)
 #
