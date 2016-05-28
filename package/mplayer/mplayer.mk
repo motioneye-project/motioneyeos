@@ -268,10 +268,62 @@ MPLAYER_CFLAGS += -fomit-frame-pointer
 endif
 
 ifeq ($(BR2_X86_CPU_HAS_MMX),y)
-MPLAYER_CONF_OPTS += --yasm=$(HOST_DIR)/usr/bin/yasm
+MPLAYER_CONF_OPTS += \
+	--enable-mmx \
+	--yasm=$(HOST_DIR)/usr/bin/yasm
 MPLAYER_DEPENDENCIES += host-yasm
 else
-MPLAYER_CONF_OPTS += --yasm=''
+MPLAYER_CONF_OPTS += \
+	--disable-mmx \
+	--yasm=''
+endif
+
+ifeq ($(BR2_X86_CPU_HAS_SSE),y)
+MPLAYER_CONF_OPTS += --enable-sse
+else
+MPLAYER_CONF_OPTS += --disable-sse
+endif
+
+ifeq ($(BR2_X86_CPU_HAS_SSE2),y)
+MPLAYER_CONF_OPTS += --enable-sse2
+else
+MPLAYER_CONF_OPTS += --disable-sse2
+endif
+
+ifeq ($(BR2_X86_CPU_HAS_SSE3),y)
+MPLAYER_CONF_OPTS += --enable-sse3
+else
+MPLAYER_CONF_OPTS += --disable-sse3
+endif
+
+ifeq ($(BR2_X86_CPU_HAS_SSSE3),y)
+MPLAYER_CONF_OPTS += --enable-ssse3
+else
+MPLAYER_CONF_OPTS += --disable-ssse3
+endif
+
+ifeq ($(BR2_X86_CPU_HAS_SSE4),y)
+MPLAYER_CONF_OPTS += --enable-sse4
+else
+MPLAYER_CONF_OPTS += --disable-sse4
+endif
+
+ifeq ($(BR2_X86_CPU_HAS_SSE42),y)
+MPLAYER_CONF_OPTS += --enable-sse42
+else
+MPLAYER_CONF_OPTS += --disable-sse42
+endif
+
+ifeq ($(BR2_X86_CPU_HAS_AVX),y)
+MPLAYER_CONF_OPTS += --enable-avx
+else
+MPLAYER_CONF_OPTS += --disable-avx
+endif
+
+ifeq ($(BR2_X86_CPU_HAS_AVX2),y)
+MPLAYER_CONF_OPTS += --enable-avx2
+else
+MPLAYER_CONF_OPTS += --disable-avx2
 endif
 
 define MPLAYER_CONFIGURE_CMDS
