@@ -254,6 +254,10 @@ ifeq ($(BR2_ARM_CPU_ARMV6)$(BR2_ARM_CPU_ARMV7A),y)
 MPLAYER_CONF_OPTS += --enable-armv6
 endif
 
+ifeq ($(BR2_aarch64),y)
+MPLAYER_CONF_OPTS += --enable-armv8
+endif
+
 ifeq ($(BR2_ARM_SOFT_FLOAT),)
 ifeq ($(BR2_ARM_CPU_HAS_NEON),y)
 MPLAYER_CONF_OPTS += --enable-neon
