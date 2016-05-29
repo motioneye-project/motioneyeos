@@ -1,0 +1,63 @@
+From 670d0961a823df0db28f39a354430f3dc2519418 Mon Sep 17 00:00:00 2001
+From: Samuel Martin <s.martin49@gmail.com>
+Date: Sat, 28 May 2016 12:53:33 +0200
+Subject: [PATCH] configure: fix uuid support detection on static build
+
+This change adds uuid support detection using pkg-config, before falling
+back on default AC_CHECK_LIB calls.
+
+Using flags from pkg-config is useful for static build, because they
+also include dependency flags; whereas
+
+AC_CHECK_LIB function achieves its test by trying to link against the
+requested library, without taking care of its dependency
+requirements/flags. Therefore, in case of static build, it can fail on
+the uuid detection like [1], because the uuid's dependency flags
+(regarding gettext) are missing.
+Instead, using pkg-config to do the check will take care of getting and
+setting all required flags.
+
+This change adds uuid detection using pkg-config helper before falling
+back on the standard AC_CHECK_LIB detection for platforms missing
+pkg-config.
+
+This issue [1] has been triggered on Buildroot farms.
+
+[1] http://autobuild.buildroot.net/results/43b/43b98ddf9eb44152ed9ac4a98d887af14831d8da/build-end.log
+
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+---
+ configure.ac | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/configure.ac b/configure.ac
+index 632fe39..b344fa8 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -65,6 +65,15 @@ esac
+ AM_CONDITIONAL([BABELTRACE_BUILD_WITH_MINGW], [test "x$MINGW32" = "xyes"])
+ 
+ # Check for libuuid
++PKG_CHECK_MODULES([UUID], [uuid],
++[
++	LIBS="${UUID_LIBS} ${LIBS}"
++	CFLAGS="${CFLAGS} ${UUID_CFLAGS}"
++	AC_DEFINE_UNQUOTED([BABELTRACE_HAVE_LIBUUID], 1, [Has libuuid support.])
++	have_libuuid=yes
++],
++[
++# try detecting libuuid without pkg-config
+ AC_CHECK_LIB([uuid], [uuid_generate],
+ [
+ 	AC_DEFINE_UNQUOTED([BABELTRACE_HAVE_LIBUUID], 1, [Has libuuid support.])
+@@ -83,6 +92,7 @@ AC_CHECK_LIB([uuid], [uuid_generate],
+ 			AC_MSG_ERROR([Cannot find libuuid uuid_generate nor libc uuid_create. Use [LDFLAGS]=-Ldir to specify their location.])
+ 		fi
+ 	])
++])
+ ]
+ )
+ AM_CONDITIONAL([BABELTRACE_BUILD_WITH_LIBUUID], [test "x$have_libuuid" = "xyes"])
+-- 
+2.8.3
+
