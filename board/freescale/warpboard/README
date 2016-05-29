@@ -29,7 +29,7 @@ Update uboot
  => env default -f -a
  => saveenv
 
-- Run the DFU toocommand in U-Boot:
+- Run the DFU command in U-Boot:
  => dfu 0 mmc 0
 
 - Transfer U-Boot into flash by running this command in host side:
@@ -42,7 +42,7 @@ Update uboot
 Update linux & rootfs
 =====================
 
-Run the 'ums' command from the u6Boot prompt to mount the eMMC as mass
+Run the 'ums' command from the U-Boot prompt to mount the eMMC as mass
 storage and update zImage, device tree (imx6sl-warp.dtb) and rootfs
 file (rootfs.tar) :
 
