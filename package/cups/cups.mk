@@ -13,6 +13,12 @@ CUPS_INSTALL_STAGING = YES
 CUPS_INSTALL_STAGING_OPTS = DESTDIR=$(STAGING_DIR) DSTROOT=$(STAGING_DIR) install
 CUPS_INSTALL_TARGET_OPTS = DESTDIR=$(TARGET_DIR) DSTROOT=$(TARGET_DIR) install
 
+# Using autoconf, not autoheader, so we cannot use AUTORECONF = YES.
+define CUPS_RUN_AUTOCONF
+	cd $(@D); $(HOST_DIR)/usr/bin/autoconf -f
+endef
+CUPS_PRE_CONFIGURE_HOOKS += CUPS_RUN_AUTOCONF
+
 CUPS_CONF_OPTS = \
 	--without-perl \
 	--without-java \
@@ -21,6 +27,7 @@ CUPS_CONF_OPTS = \
 	--libdir=/usr/lib
 CUPS_CONFIG_SCRIPTS = cups-config
 CUPS_DEPENDENCIES = \
+	host-autoconf \
 	$(if $(BR2_PACKAGE_ZLIB),zlib)
 
 ifeq ($(BR2_PACKAGE_SYSTEMD),y)
