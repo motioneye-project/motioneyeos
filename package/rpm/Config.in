@@ -2,8 +2,13 @@ comment "rpm needs a toolchain w/ threads"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_USE_MMU # fork()
 
+comment "rpm needs a toolchain w/ gcc >= 5"
+	depends on !BR2_TOOLCHAIN_GCC_AT_LEAST_5 && BR2_sh
+
 config BR2_PACKAGE_RPM
 	bool "rpm"
+	# triggers internal compiler error
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_5 || !BR2_sh
 	depends on BR2_TOOLCHAIN_HAS_THREADS # beecrypt
 	depends on BR2_USE_MMU # fork()
 	select BR2_PACKAGE_BEECRYPT
