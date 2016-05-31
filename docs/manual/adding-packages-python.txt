@@ -161,6 +161,55 @@ possible to customize what is done in any particular step:
   default Python one. However, using this method should be restricted
   to very specific cases. Do not use it in the general case.
 
+[[scanpypi]]
+
+==== Generating a +python-package+ from a PyPI repository
+
+If the Python package for which you would like to create a Buildroot
+package is available on PyPI, you may want to use the +scanpypi+ tool
+located in +support/scripts+ to automate the process.
+
+You can find the list of existing PyPI packages
+https://pypi.python.org[here].
+
++scanpypi+ requires Python's +setuptools+ package to be installed on
+your host.
+
+When at the root of your buildroot directory just do :
+
+-----------------------
+./support/script/scanpypi foo bar -o package
+-----------------------
+
+This will generate packages +python-foo+ and +python-bar+ in the package
+folder if they exist on https://pypi.python.org.
+
+Find the +external python modules+ menu and insert your package inside.
+Keep in mind that the items inside a menu should be in alphabetical order.
+
+Please keep in mind that you'll most likely have to manually check the
+package for any mistakes as there are things that cannot be guessed by
+the generator (e.g.  dependencies on any of the python core modules
+such as BR2_PACKAGE_PYTHON_ZLIB).  Also, please take note that the
+license and license files are guessed and must be checked. You also
+need to manually add the package to the +package/Config.in+ file.
+
+If your Buildroot package is not in the official Buildroot tree but in
+a +BR2_EXTERNAL+ tree, use the -o flag as follows:
+
+-----------------------
+./support/script/scanpypi foo bar -o other_package_dir
+-----------------------
+
+This will generate packages +python-foo+ and +python-bar+ in the
++other_package_directory+ instead of +package+.
+
+Option +-h+ will list the available options:
+
+-----------------------
+./support/script/scanpypi -h
+-----------------------
+
 [[python-package-cffi-backend]]
 
 ==== +python-package+ CFFI backend
