@@ -22,6 +22,14 @@ MESA3D_DEPENDENCIES = \
 	expat \
 	libdrm
 
+# The Sourcery MIPS toolchain has a special (non-upstream) feature to
+# have "compact exception handling", which unfortunately breaks with
+# mesa3d, so we disable it here by passing -mno-compact-eh.
+ifeq ($(BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_MIPS),y)
+MESA3D_CONF_ENV += CFLAGS="$(TARGET_CFLAGS) -mno-compact-eh"
+MESA3D_CONF_ENV += CXXFLAGS="$(TARGET_CXXFLAGS) -mno-compact-eh"
+endif
+
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 MESA3D_DEPENDENCIES += openssl
 MESA3D_CONF_OPTS += --with-sha1=libcrypto
