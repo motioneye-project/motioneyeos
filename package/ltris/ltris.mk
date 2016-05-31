@@ -17,12 +17,12 @@ LTRIS_CONF_ENV = \
 
 ifeq ($(BR2_PACKAGE_LTRIS_AUDIO),y)
 LTRIS_DEPENDENCIES += sdl_mixer host-pkgconf
-LTRIS_CONF_OPTS += --enable-audio=yes
+LTRIS_CONF_OPTS += --enable-sound
 # configure script does NOT use pkg-config to figure out how to link
 # with sdl_mixer, breaking static linking as sdl_mixer can use libmad
 LTRIS_LIBS += `$(PKG_CONFIG_HOST_BINARY) --libs SDL_mixer`
 else
-LTRIS_CONF_OPTS += --disable-audio
+LTRIS_CONF_OPTS += --disable-sound
 endif
 
 ifeq ($(BR2_NEEDS_GETTEXT_IF_LOCALE),y)
