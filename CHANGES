@@ -1,3 +1,16 @@
+2016.05, Released May 31st, 2016
+
+	Minor fixes.
+
+	External toolchain: Fix for symlink handling when copying
+	links to target.
+
+	Updated/fixed packages: gcc, grantlee, gst-ffmpeg,
+	ipsec-tools, iptraf-ng, libcurl, libdrm, libsigsegv, ltris,
+	lttng-babeltrace, mbedtls, mesa3d, moarvm, mplayer, mtools,
+	net-tools, openpowerlink, pulseview, rpm, tinyalsa,
+	xdriver_xf86-video-fbturbo, xserver_xorg-server
+
 2016.05-rc3, Released May 26th, 2016
 
 	Fixes all over the tree.
