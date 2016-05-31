@@ -23,6 +23,11 @@ config BR2_PACKAGE_HOST_GDB_PYTHON
 	help
 	  This option enables the Python support in the cross gdb.
 
+config BR2_PACKAGE_HOST_GDB_SIM
+	bool "Simulator support"
+	help
+	  This option enables the simulator support in the cross gdb.
+
 choice
 	prompt "GDB debugger Version"
 	depends on !BR2_arc
