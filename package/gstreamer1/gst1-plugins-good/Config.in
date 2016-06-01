@@ -279,6 +279,14 @@ config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_V4L2
 comment "v4l2 needs a toolchain w/ headers >= 3.0"
 	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0
 
+config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_V4L2_PROBE
+	bool "v4l2-probe (m2m)"
+	depends on BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_V4L2
+	help
+	  Enables the V4L2 probe at plugin load time. This enables
+	  support for v4l2 transform devices, such as m2m
+	  devices. These plugins are registered as v4l2videoNconvert
+
 config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_CAIRO
 	bool "cairo"
 	select BR2_PACKAGE_CAIRO

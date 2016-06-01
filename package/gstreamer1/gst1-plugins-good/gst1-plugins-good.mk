@@ -323,6 +323,12 @@ else
 GST1_PLUGINS_GOOD_CONF_OPTS += --disable-gst_v4l2
 endif
 
+ifeq ($(BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_V4L2_PROBE),y)
+GST1_PLUGINS_GOOD_CONF_OPTS += --enable-v4l2-probe
+else
+GST1_PLUGINS_GOOD_CONF_OPTS += --disable-v4l2-probe
+endif
+
 ifeq ($(BR2_PACKAGE_XORG7),y)
 GST1_PLUGINS_GOOD_DEPENDENCIES += xlib_libX11 xlib_libXext xlib_libXv
 GST1_PLUGINS_GOOD_CONF_OPTS += \
