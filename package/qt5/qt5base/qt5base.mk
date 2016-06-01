@@ -20,7 +20,6 @@ QT5BASE_INSTALL_STAGING = YES
 #    want to use the one packaged in Buildroot
 QT5BASE_CONFIGURE_OPTS += \
 	-optimized-qmake \
-	-no-kms \
 	-no-cups \
 	-no-nis \
 	-no-iconv \
@@ -28,6 +27,14 @@ QT5BASE_CONFIGURE_OPTS += \
 	-system-pcre \
 	-no-pch \
 	-shared
+
+# Uses libgbm from mesa3d
+ifeq ($(BR2_PACKAGE_MESA3D_OPENGL_EGL),y)
+QT5BASE_CONFIGURE_OPTS += -kms -gbm
+QT5BASE_DEPENDENCIES += mesa3d
+else
+QT5BASE_CONFIGURE_OPTS += -no-kms
+endif
 
 ifeq ($(BR2_ENABLE_DEBUG),y)
 QT5BASE_CONFIGURE_OPTS += -debug
