@@ -17,6 +17,10 @@ WEBP_CONF_OPTS += \
 	--with-tiffincludedir=$(STAGING_DIR)/usr/include \
 	--with-tifflibdir=$(STAGING_DIR)/usr/lib
 
+ifeq ($(BR2_PACKAGE_WEBP_DEMUX),y)
+WEBP_CONF_OPTS += --enable-libwebpdemux
+endif
+
 ifeq ($(BR2_PACKAGE_LIBPNG),y)
 WEBP_DEPENDENCIES += libpng
 WEBP_CONF_ENV += ac_cv_path_LIBPNG_CONFIG=$(STAGING_DIR)/usr/bin/libpng-config
