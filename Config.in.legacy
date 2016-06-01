@@ -145,6 +145,13 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2016.08"
 
+config BR2_PTHREADS_OLD
+	bool "linuxthreads (stable/old)"
+	select BR2_LEGACY
+	help
+	  Linuxthreads have been reworked, BR2_PTHREADS_OLD is now
+	  BR2_PTHREADS and the old BR2_PTHREADS - LT.new got removed.
+
 config BR2_BINUTILS_VERSION_2_23_X
 	bool "binutils 2.23 removed"
 	select BR2_LEGACY

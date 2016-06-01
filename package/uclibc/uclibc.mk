@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-UCLIBC_VERSION = 1.0.14
+UCLIBC_VERSION = 1.0.15
 UCLIBC_SOURCE = uClibc-ng-$(UCLIBC_VERSION).tar.xz
 UCLIBC_SITE = http://downloads.uclibc-ng.org/releases/$(UCLIBC_VERSION)
 UCLIBC_LICENSE = LGPLv2.1+
@@ -328,29 +328,19 @@ endif
 ifeq ($(BR2_PTHREADS_NONE),y)
 define UCLIBC_THREAD_CONFIG
 	$(call KCONFIG_DISABLE_OPT,UCLIBC_HAS_THREADS,$(@D)/.config)
-	$(call KCONFIG_DISABLE_OPT,LINUXTHREADS,$(@D)/.config)
-	$(call KCONFIG_DISABLE_OPT,LINUXTHREADS_OLD,$(@D)/.config)
+	$(call KCONFIG_DISABLE_OPT,UCLIBC_HAS_LINUXTHREADS,$(@D)/.config)
 	$(call KCONFIG_DISABLE_OPT,UCLIBC_HAS_THREADS_NATIVE,$(@D)/.config)
 endef
 else ifeq ($(BR2_PTHREADS),y)
 define UCLIBC_THREAD_CONFIG
 	$(call KCONFIG_ENABLE_OPT,UCLIBC_HAS_THREADS,$(@D)/.config)
-	$(call KCONFIG_ENABLE_OPT,LINUXTHREADS_NEW,$(@D)/.config)
-	$(call KCONFIG_DISABLE_OPT,LINUXTHREADS_OLD,$(@D)/.config)
-	$(call KCONFIG_DISABLE_OPT,UCLIBC_HAS_THREADS_NATIVE,$(@D)/.config)
-endef
-else ifeq ($(BR2_PTHREADS_OLD),y)
-define UCLIBC_THREAD_CONFIG
-	$(call KCONFIG_ENABLE_OPT,UCLIBC_HAS_THREADS,$(@D)/.config)
-	$(call KCONFIG_DISABLE_OPT,LINUXTHREADS_NEW,$(@D)/.config)
-	$(call KCONFIG_ENABLE_OPT,LINUXTHREADS_OLD,$(@D)/.config)
+	$(call KCONFIG_ENABLE_OPT,UCLIBC_HAS_LINUXTHREADS,$(@D)/.config)
 	$(call KCONFIG_DISABLE_OPT,UCLIBC_HAS_THREADS_NATIVE,$(@D)/.config)
 endef
 else ifeq ($(BR2_PTHREADS_NATIVE),y)
 define UCLIBC_THREAD_CONFIG
 	$(call KCONFIG_ENABLE_OPT,UCLIBC_HAS_THREADS,$(@D)/.config)
-	$(call KCONFIG_DISABLE_OPT,LINUXTHREADS_NEW,$(@D)/.config)
-	$(call KCONFIG_DISABLE_OPT,LINUXTHREADS_OLD,$(@D)/.config)
+	$(call KCONFIG_DISABLE_OPT,UCLIBC_HAS_LINUXTHREADS,$(@D)/.config)
 	$(call KCONFIG_ENABLE_OPT,UCLIBC_HAS_THREADS_NATIVE,$(@D)/.config)
 endef
 endif

@@ -48,7 +48,7 @@ config BR2_TOOLCHAIN_BUILDROOT_LOCALE
 choice
 	prompt "Thread library implementation"
 	default BR2_PTHREADS_NATIVE
-	default BR2_PTHREADS_OLD if !BR2_USE_MMU
+	default BR2_PTHREADS if !BR2_USE_MMU
 	help
 	  Use this option to select the thread library implementation
 	  that should be used in your toolchain.
@@ -58,11 +58,6 @@ choice
 
 	config BR2_PTHREADS
 		bool "linuxthreads"
-		select BR2_TOOLCHAIN_HAS_THREADS
-		depends on BR2_m68k
-
-	config BR2_PTHREADS_OLD
-		bool "linuxthreads (stable/old)"
 		select BR2_TOOLCHAIN_HAS_THREADS
 		depends on BR2_m68k || BR2_arm || BR2_armeb || BR2_xtensa
 
@@ -76,7 +71,7 @@ endchoice
 
 config BR2_PTHREAD_DEBUG
 	bool "Thread library debugging"
-	depends on BR2_PTHREADS || BR2_PTHREADS_OLD || BR2_PTHREADS_NATIVE
+	depends on BR2_PTHREADS || BR2_PTHREADS_NATIVE
 	select BR2_TOOLCHAIN_HAS_THREADS_DEBUG
 	help
 	  Build the thread library with debugging enabled.
