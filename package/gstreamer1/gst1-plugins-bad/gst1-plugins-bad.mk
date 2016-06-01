@@ -71,7 +71,6 @@ GST1_PLUGINS_BAD_CONF_OPTS += \
 	--disable-gme \
 	--disable-xvid \
 	--disable-vdpau \
-	--disable-sbc \
 	--disable-schro \
 	--disable-zbar \
 	--disable-rtmp \
@@ -590,18 +589,6 @@ endif
 
 # Plugins with dependencies
 
-ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_SHM),y)
-GST1_PLUGINS_BAD_CONF_OPTS += --enable-shm
-else
-GST1_PLUGINS_BAD_CONF_OPTS += --disable-shm
-endif
-
-ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_VCD),y)
-GST1_PLUGINS_BAD_CONF_OPTS += --enable-vcd
-else
-GST1_PLUGINS_BAD_CONF_OPTS += --disable-vcd
-endif
-
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_APEXSINK),y)
 GST1_PLUGINS_BAD_CONF_OPTS += --enable-apexsink
 GST1_PLUGINS_BAD_DEPENDENCIES += openssl
@@ -614,13 +601,6 @@ GST1_PLUGINS_BAD_CONF_OPTS += --enable-assrender
 GST1_PLUGINS_BAD_DEPENDENCIES += libass
 else
 GST1_PLUGINS_BAD_CONF_OPTS += --disable-assrender
-endif
-
-ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_VOAACENC),y)
-GST1_PLUGINS_BAD_CONF_OPTS += --enable-voaacenc
-GST1_PLUGINS_BAD_DEPENDENCIES += vo-aacenc
-else
-GST1_PLUGINS_BAD_CONF_OPTS += --disable-voaacenc
 endif
 
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_BZ2),y)
@@ -650,18 +630,18 @@ else
 GST1_PLUGINS_BAD_CONF_OPTS += --disable-decklink
 endif
 
-ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_WEBP),y)
-GST1_PLUGINS_BAD_CONF_OPTS += --enable-webp
-GST1_PLUGINS_BAD_DEPENDENCIES += webp
-else
-GST1_PLUGINS_BAD_CONF_OPTS += --disable-webp
-endif
-
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_DIRECTFB),y)
 GST1_PLUGINS_BAD_CONF_OPTS += --enable-directfb
 GST1_PLUGINS_BAD_DEPENDENCIES += directfb
 else
 GST1_PLUGINS_BAD_CONF_OPTS += --disable-directfb
+endif
+
+ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_DVB),y)
+GST1_PLUGINS_BAD_CONF_OPTS += --enable-dvb
+GST1_PLUGINS_BAD_DEPENDENCIES += dtv-scan-tables
+else
+GST1_PLUGINS_BAD_CONF_OPTS += --disable-dvb
 endif
 
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_FAAD),y)
@@ -676,6 +656,19 @@ ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_FBDEV),y)
 GST1_PLUGINS_BAD_CONF_OPTS += --enable-fbdev
 else
 GST1_PLUGINS_BAD_CONF_OPTS += --disable-fbdev
+endif
+
+ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_GL),y)
+GST1_PLUGINS_BAD_CONF_OPTS += --enable-gl
+else
+GST1_PLUGINS_BAD_CONF_OPTS += --disable-gl
+endif
+
+ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_HLS),y)
+GST1_PLUGINS_BAD_CONF_OPTS += --enable-hls
+GST1_PLUGINS_BAD_DEPENDENCIES += gnutls
+else
+GST1_PLUGINS_BAD_CONF_OPTS += --disable-hls
 endif
 
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_LIBMMS),y)
@@ -749,10 +742,11 @@ else
 GST1_PLUGINS_BAD_CONF_OPTS += --disable-rsvg
 endif
 
-ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_GL),y)
-GST1_PLUGINS_BAD_CONF_OPTS += --enable-gl
+ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_SBC),y)
+GST1_PLUGINS_BAD_CONF_OPTS += --enable-sbc
+GST1_PLUGINS_BAD_DEPENDENCIES += sbc
 else
-GST1_PLUGINS_BAD_CONF_OPTS += --disable-gl
+GST1_PLUGINS_BAD_CONF_OPTS += --disable-sbc
 endif
 
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_SDL),y)
@@ -763,6 +757,12 @@ else
 GST1_PLUGINS_BAD_CONF_OPTS += --disable-sdl
 endif
 
+ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_SHM),y)
+GST1_PLUGINS_BAD_CONF_OPTS += --enable-shm
+else
+GST1_PLUGINS_BAD_CONF_OPTS += --disable-shm
+endif
+
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_SNDFILE),y)
 GST1_PLUGINS_BAD_CONF_OPTS += --enable-sndfile
 GST1_PLUGINS_BAD_DEPENDENCIES += libsndfile
@@ -770,18 +770,24 @@ else
 GST1_PLUGINS_BAD_CONF_OPTS += --disable-sndfile
 endif
 
-ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_DVB),y)
-GST1_PLUGINS_BAD_CONF_OPTS += --enable-dvb
-GST1_PLUGINS_BAD_DEPENDENCIES += dtv-scan-tables
+ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_VCD),y)
+GST1_PLUGINS_BAD_CONF_OPTS += --enable-vcd
 else
-GST1_PLUGINS_BAD_CONF_OPTS += --disable-dvb
+GST1_PLUGINS_BAD_CONF_OPTS += --disable-vcd
 endif
 
-ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_HLS),y)
-GST1_PLUGINS_BAD_CONF_OPTS += --enable-hls
-GST1_PLUGINS_BAD_DEPENDENCIES += gnutls
+ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_VOAACENC),y)
+GST1_PLUGINS_BAD_CONF_OPTS += --enable-voaacenc
+GST1_PLUGINS_BAD_DEPENDENCIES += vo-aacenc
 else
-GST1_PLUGINS_BAD_CONF_OPTS += --disable-hls
+GST1_PLUGINS_BAD_CONF_OPTS += --disable-voaacenc
+endif
+
+ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_WEBP),y)
+GST1_PLUGINS_BAD_CONF_OPTS += --enable-webp
+GST1_PLUGINS_BAD_DEPENDENCIES += webp
+else
+GST1_PLUGINS_BAD_CONF_OPTS += --disable-webp
 endif
 
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_X265),y)

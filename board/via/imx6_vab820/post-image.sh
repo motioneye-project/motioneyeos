@@ -1,6 +1,7 @@
 #!/bin/bash
 
-GENIMAGE_CFG="board/via/imx6_vab820/genimage.cfg"
+BOARD_DIR="$(dirname $0)"
+GENIMAGE_CFG="${BOARD_DIR}/genimage.cfg"
 GENIMAGE_TMP="${BUILD_DIR}/genimage.tmp"
 
 rm -rf "${GENIMAGE_TMP}"

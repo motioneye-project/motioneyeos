@@ -163,8 +163,7 @@ HOST_GDB_CONF_OPTS = \
 	--enable-threads \
 	--disable-werror \
 	--without-included-gettext \
-	$(GDB_DISABLE_BINUTILS_CONF_OPTS) \
-	--disable-sim
+	$(GDB_DISABLE_BINUTILS_CONF_OPTS)
 
 ifeq ($(BR2_PACKAGE_HOST_GDB_TUI),y)
 HOST_GDB_CONF_OPTS += --enable-tui
@@ -177,6 +176,20 @@ HOST_GDB_CONF_OPTS += --with-python=$(HOST_DIR)/usr/bin/python2
 HOST_GDB_DEPENDENCIES += host-python
 else
 HOST_GDB_CONF_OPTS += --without-python
+endif
+
+# workaround a bug if in-tree build is used for bfin sim
+define HOST_GDB_BFIN_SIM_WORKAROUND
+	$(RM) $(@D)/sim/common/tconfig.h
+endef
+
+ifeq ($(BR2_PACKAGE_HOST_GDB_SIM),y)
+HOST_GDB_CONF_OPTS += --enable-sim
+ifeq ($(BR2_bfin),y)
+HOST_GDB_PRE_CONFIGURE_HOOKS += HOST_GDB_BFIN_SIM_WORKAROUND
+endif
+else
+HOST_GDB_CONF_OPTS += --disable-sim
 endif
 
 # legacy $arch-linux-gdb symlink

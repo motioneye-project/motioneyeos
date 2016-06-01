@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-UBOOT_TOOLS_VERSION = 2016.03
+UBOOT_TOOLS_VERSION = 2016.05
 UBOOT_TOOLS_SOURCE = u-boot-$(UBOOT_TOOLS_VERSION).tar.bz2
 UBOOT_TOOLS_SITE = ftp://ftp.denx.de/pub/u-boot
 UBOOT_TOOLS_LICENSE = GPLv2+
@@ -21,6 +21,7 @@ define UBOOT_TOOLS_BUILD_CMDS
 		CROSS_COMPILE="$(TARGET_CROSS)"	\
 		CFLAGS="$(TARGET_CFLAGS)"	\
 		LDFLAGS="$(TARGET_LDFLAGS)"	\
+		STRIP=$(TARGET_STRIP)		\
 		CROSS_BUILD_TOOLS=y		\
 		CONFIG_FIT_SIGNATURE=$(BR2_PACKAGE_UBOOT_TOOLS_MKIMAGE_FIT_SIGNATURE_SUPPORT) \
 		tools-only
@@ -28,6 +29,7 @@ define UBOOT_TOOLS_BUILD_CMDS
 		CROSS_COMPILE="$(TARGET_CROSS)"	\
 		CFLAGS="$(TARGET_CFLAGS)"	\
 		LDFLAGS="$(TARGET_LDFLAGS)"	\
+		STRIP=$(TARGET_STRIP)		\
 		env no-dot-config-targets=env
 endef
 

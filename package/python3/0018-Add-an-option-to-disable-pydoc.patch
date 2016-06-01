@@ -1,4 +1,4 @@
-From 99ef88cb47a396e2c7005e59e50d34e0a60dd3cb Mon Sep 17 00:00:00 2001
+From a83b79b964700604de386800f86e5a55f53a0e17 Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Date: Wed, 23 Dec 2015 11:47:11 +0100
 Subject: [PATCH] Add an option to disable pydoc
@@ -15,10 +15,10 @@ Signed-off-by: Samuel Martin <s.martin49@gmail.com>
  3 files changed, 19 insertions(+), 3 deletions(-)
 
 diff --git a/Makefile.pre.in b/Makefile.pre.in
-index 12fae84..5e2333e 100644
+index d4c771a..a98ad65 100644
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -1100,7 +1100,9 @@ bininstall: altbininstall
+@@ -1134,7 +1134,9 @@ bininstall: altbininstall
  	-rm -f $(DESTDIR)$(BINDIR)/idle3
  	(cd $(DESTDIR)$(BINDIR); $(LN) -s idle$(VERSION) idle3)
  	-rm -f $(DESTDIR)$(BINDIR)/pydoc3
@@ -28,7 +28,7 @@ index 12fae84..5e2333e 100644
  	-rm -f $(DESTDIR)$(BINDIR)/2to3
  	(cd $(DESTDIR)$(BINDIR); $(LN) -s 2to3-$(VERSION) 2to3)
  	-rm -f $(DESTDIR)$(BINDIR)/pyvenv
-@@ -1151,7 +1153,7 @@ LIBSUBDIRS=	tkinter \
+@@ -1184,7 +1186,7 @@ LIBSUBDIRS=	tkinter \
  		multiprocessing multiprocessing/dummy \
  		unittest \
  		venv venv/scripts venv/scripts/posix \
@@ -37,7 +37,7 @@ index 12fae84..5e2333e 100644
  
  TESTSUBDIRS = 	tkinter/test tkinter/test/test_tkinter tkinter/test/test_ttk \
  		test test/test_asyncio \
-@@ -1195,6 +1197,10 @@ TESTSUBDIRS = 	tkinter/test tkinter/test/test_tkinter tkinter/test/test_ttk \
+@@ -1233,6 +1235,10 @@ TESTSUBDIRS = 	tkinter/test tkinter/test/test_tkinter tkinter/test/test_ttk \
  		test/test_importlib/import_ test/test_importlib/source \
  		unittest/test unittest/test/testmock
  
@@ -49,10 +49,10 @@ index 12fae84..5e2333e 100644
  LIBSUBDIRS += $(TESTSUBDIRS)
  endif
 diff --git a/configure.ac b/configure.ac
-index b7a8836..2e75345 100644
+index 9f3d226..e9b6d6f 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2658,6 +2658,11 @@ if test "$posix_threads" = "yes"; then
+@@ -2894,6 +2894,11 @@ if test "$posix_threads" = "yes"; then
        AC_CHECK_FUNCS(pthread_atfork)
  fi
  
@@ -65,10 +65,10 @@ index b7a8836..2e75345 100644
  AC_SUBST(TEST_MODULES)
  
 diff --git a/setup.py b/setup.py
-index 8966779..69198db 100644
+index 3feca04..137911d 100644
 --- a/setup.py
 +++ b/setup.py
-@@ -2200,6 +2200,12 @@ def main():
+@@ -2220,6 +2220,12 @@ def main():
      # turn off warnings when deprecated modules are imported
      import warnings
      warnings.filterwarnings("ignore",category=DeprecationWarning)
@@ -81,7 +81,7 @@ index 8966779..69198db 100644
      setup(# PyPI Metadata (PEP 301)
            name = "Python",
            version = sys.version.split()[0],
-@@ -2224,8 +2230,7 @@ def main():
+@@ -2244,8 +2250,7 @@ def main():
            # If you change the scripts installed here, you also need to
            # check the PyBuildScripts command above, and change the links
            # created by the bininstall target in Makefile.pre.in

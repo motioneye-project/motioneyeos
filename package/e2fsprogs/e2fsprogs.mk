@@ -4,17 +4,19 @@
 #
 ################################################################################
 
-E2FSPROGS_VERSION = 1.42.13
+E2FSPROGS_VERSION = 1.43
 E2FSPROGS_SOURCE = e2fsprogs-$(E2FSPROGS_VERSION).tar.xz
 E2FSPROGS_SITE = $(BR2_KERNEL_MIRROR)/linux/kernel/people/tytso/e2fsprogs/v$(E2FSPROGS_VERSION)
 E2FSPROGS_LICENSE = GPLv2, libuuid BSD-3c, libss and libet MIT-like with advertising clause
-E2FSPROGS_LICENSE_FILES = COPYING lib/uuid/COPYING lib/ss/mit-sipb-copyright.h lib/et/internal.h
+E2FSPROGS_LICENSE_FILES = NOTICE lib/uuid/COPYING lib/ss/mit-sipb-copyright.h lib/et/internal.h
 E2FSPROGS_INSTALL_STAGING = YES
 E2FSPROGS_INSTALL_STAGING_OPTS = DESTDIR=$(STAGING_DIR) install-libs
+E2FSPROGS_DEPENDENCIES = host-pkgconf util-linux
 
 # e4defrag doesn't build on older systems like RHEL5.x, and we don't
 # need it on the host anyway.
-HOST_E2FSPROGS_CONF_OPTS += --disable-defrag
+# Disable fuse2fs as well to avoid carrying over deps, and it's unused
+HOST_E2FSPROGS_CONF_OPTS += --disable-defrag --disable-fuse2fs
 
 E2FSPROGS_CONF_OPTS = \
 	$(if $(BR2_STATIC_LIBS),,--enable-elf-shlibs) \
@@ -30,6 +32,13 @@ E2FSPROGS_CONF_OPTS = \
 	--disable-testio-debug \
 	--disable-rpath
 
+ifeq ($(BR2_PACKAGE_E2FSPROGS_FUSE2FS),y)
+E2FSPROGS_CONF_OPTS += --enable-fuse2fs
+E2FSPROGS_DEPENDENCIES += libfuse
+else
+E2FSPROGS_CONF_OPTS += --disable-fuse2fs
+endif
+
 ifeq ($(BR2_nios2),y)
 E2FSPROGS_CONF_ENV += ac_cv_func_fallocate=no
 endif
@@ -39,8 +48,6 @@ ifeq ($(BR2_NEEDS_GETTEXT_IF_LOCALE),y)
 # link against it, otherwise static linking fails
 E2FSPROGS_CONF_ENV += LIBS=-lintl
 endif
-
-E2FSPROGS_DEPENDENCIES = host-pkgconf util-linux
 
 E2FSPROGS_MAKE_OPTS = \
 	LDCONFIG=true

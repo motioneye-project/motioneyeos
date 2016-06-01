@@ -143,7 +143,8 @@ PYTHON_CONF_OPTS += \
 	--disable-tk		\
 	--disable-nis		\
 	--disable-dbm		\
-	--disable-pyo-build
+	--disable-pyo-build	\
+	--disable-pyc-build
 
 # This is needed to make sure the Python build process doesn't try to
 # regenerate those files with the pgen program. Otherwise, it builds
@@ -217,16 +218,40 @@ PYTHON_PATH = $(TARGET_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR)/sysconfigdata/
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
 
+define PYTHON_CREATE_PYC_FILES
+	PYTHONPATH="$(PYTHON_PATH)" \
+	$(HOST_DIR)/usr/bin/python$(PYTHON_VERSION_MAJOR) \
+		support/scripts/pycompile.py \
+		$(TARGET_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR)
+endef
+
+ifeq ($(BR2_PACKAGE_PYTHON_PYC_ONLY)$(BR2_PACKAGE_PYTHON_PY_PYC),y)
+TARGET_FINALIZE_HOOKS += PYTHON_CREATE_PYC_FILES
+endif
+
 ifeq ($(BR2_PACKAGE_PYTHON_PYC_ONLY),y)
-define PYTHON_FINALIZE_TARGET
-	find $(TARGET_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR) -name '*.py' -print0 | xargs -0 rm -f
+define PYTHON_REMOVE_PY_FILES
+	find $(TARGET_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR) -name '*.py' -print0 | \
+		xargs -0 --no-run-if-empty rm -f
 endef
+TARGET_FINALIZE_HOOKS += PYTHON_REMOVE_PY_FILES
 endif
 
+# Normally, *.pyc files should not have been compiled, but just in
+# case, we make sure we remove all of them.
 ifeq ($(BR2_PACKAGE_PYTHON_PY_ONLY),y)
-define PYTHON_FINALIZE_TARGET
-	find $(TARGET_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR) -name '*.pyc' -print0 | xargs -0 rm -f
+define PYTHON_REMOVE_PYC_FILES
+	find $(TARGET_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR) -name '*.pyc' -print0 | \
+		xargs -0 --no-run-if-empty rm -f
 endef
+TARGET_FINALIZE_HOOKS += PYTHON_REMOVE_PYC_FILES
 endif
 
-TARGET_FINALIZE_HOOKS += PYTHON_FINALIZE_TARGET
+# In all cases, we don't want to keep the optimized .pyo files
+ifeq ($(BR2_PACKAGE_PYTHON),y)
+define PYTHON_REMOVE_PYO_FILES
+	find $(TARGET_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR) -name '*.pyo' -print0 | \
+		xargs -0 --no-run-if-empty rm -f
+endef
+TARGET_FINALIZE_HOOKS += PYTHON_REMOVE_PYO_FILES
+endif

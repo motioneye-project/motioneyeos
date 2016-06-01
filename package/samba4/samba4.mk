@@ -118,16 +118,6 @@ define SAMBA4_INSTALL_TARGET_CMDS
 	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) DESTDIR=$(TARGET_DIR) install
 endef
 
-# Samba just installs .py files so the purge causes problems with some tools
-ifeq ($(BR2_PACKAGE_PYTHON_PYC_ONLY),y)
-define SAMBA4_BUILD_PYC_FILES
-	PYTHONPATH="$(PYTHON_PATH)" \
-		$(HOST_DIR)/usr/bin/python -c "import compileall; \
-		compileall.compile_dir('$(TARGET_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR)/site-packages/samba')"
-endef
-SAMBA4_POST_INSTALL_TARGET_HOOKS += SAMBA4_BUILD_PYC_FILES
-endif
-
 ifeq ($(BR2_PACKAGE_SAMBA4_AD_DC),)
 SAMBA4_CONF_OPTS += --without-ad-dc
 endif

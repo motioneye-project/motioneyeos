@@ -1,0 +1,29 @@
+From 89cdc83307f61422db21cc7965ea294862c128bf Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fabrice.fontaine@orange.com>
+Date: Mon, 30 May 2016 10:37:42 +0200
+Subject: [PATCH 2/2] Ensure correct git repository path
+
+Add "--git-dir ./.git" to ensure the correct git repository path is used (this
+fix a bug when trying to add openzwave to buildroot build system)
+
+Signed-off-by: Fabrice Fontaine <fabrice.fontaine@orange.com>
+---
+ cpp/build/support.mk | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/cpp/build/support.mk b/cpp/build/support.mk
+index 3f74c7e..f529b25 100644
+--- a/cpp/build/support.mk
++++ b/cpp/build/support.mk
+@@ -29,7 +29,7 @@ GIT		:= $(shell which git)
+ ifeq ($(GIT),)
+ VERSION_REV ?= 0
+ else
+-GITVERSION	:= $(shell $(GIT) describe --long --tags --dirty 2>/dev/null | sed s/^v//)
++GITVERSION	:= $(shell $(GIT) --git-dir ./.git describe --long --tags --dirty 2>/dev/null | sed s/^v//)
+ ifeq ($(GITVERSION),)
+ GITVERSION	:= $(VERSION_MAJ).$(VERSION_MIN).-1
+ VERSION_REV	:= 0
+-- 
+2.7.4
+

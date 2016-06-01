@@ -4,7 +4,8 @@
 #
 ################################################################################
 
-DMIDECODE_VERSION = 2.12
+DMIDECODE_VERSION = 3.0
+DMIDECODE_SOURCE = dmidecode-$(DMIDECODE_VERSION).tar.xz
 DMIDECODE_SITE = http://download.savannah.gnu.org/releases/dmidecode
 DMIDECODE_LICENSE = GPLv2+
 DMIDECODE_LICENSE_FILES = LICENSE

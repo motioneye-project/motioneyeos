@@ -1,4 +1,4 @@
-From 2cac07af643d989b352cccc3b96d86ed269df9b1 Mon Sep 17 00:00:00 2001
+From 45f482813de828415906e6a416c9c35450c38da7 Mon Sep 17 00:00:00 2001
 From: Christophe Vu-Brugier <cvubrugier@fastmail.fm>
 Date: Wed, 23 Dec 2015 11:44:30 +0100
 Subject: [PATCH] Do not adjust the shebang of Python scripts for

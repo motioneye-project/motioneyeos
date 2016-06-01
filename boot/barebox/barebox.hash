@@ -1,5 +1,5 @@
-# http://www.barebox.org/download/barebox-2016.04.0.tar.bz2.md5
-md5 178150b9d7fa9a27db513a629b9200c2 barebox-2016.04.0.tar.bz2
+# http://www.barebox.org/download/barebox-2016.05.0.tar.bz2.md5
+md5 4df21ad084faa54ea0310288c7b03049 barebox-2016.05.0.tar.bz2
 
 # Locally calculated
-sha256 ad2618a7df5fe5e923d8fd4c8d99f95a8b44166ff7d016bba73e5cb677802027 barebox-2016.04.0.tar.bz2
+sha256 e3a85fd0d9b4c92421258ba38f5bee112ec9dcae87246c93a2353c62bf16d988 barebox-2016.05.0.tar.bz2

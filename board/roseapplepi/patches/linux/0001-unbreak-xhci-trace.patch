@@ -1,0 +1,31 @@
+[PATCH] unbreak xhci-trace compilation
+
+When commit 84a99f6fc5d4 (xhci: add traces for debug messages in
+xhci_address_device) was backported to the owl tree as part of commit
+5b2ea66f15396 (usb: add owl usb driver), the specific CFLAGS needed for
+xhci-trace.c were missed, causing build breakage:
+
+  CC      drivers/usb/host/xhci-trace.o
+In file included from drivers/usb/host/xhci-trace.h:151:0,
+                 from drivers/usb/host/xhci-trace.c:15:
+include/trace/define_trace.h:79:43: fatal error: ./xhci-trace.h: No such file or directory
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ drivers/usb/host/Makefile |    3 +++
+ 1 file changed, 3 insertions(+)
+
+Index: linux-59dbf6a4998e967eb9c6bdcc9b506c0d96acb26b/drivers/usb/host/Makefile
+===================================================================
+--- linux-59dbf6a4998e967eb9c6bdcc9b506c0d96acb26b.orig/drivers/usb/host/Makefile
++++ linux-59dbf6a4998e967eb9c6bdcc9b506c0d96acb26b/drivers/usb/host/Makefile
+@@ -4,6 +4,9 @@
+ 
+ ccflags-$(CONFIG_USB_DEBUG) := -DDEBUG
+ 
++# tell define_trace.h where to find the xhci trace header
++CFLAGS_xhci-trace.o := -I$(src)
++
+ isp1760-y := isp1760-hcd.o isp1760-if.o
+ 
+ fhci-y := fhci-hcd.o fhci-hub.o fhci-q.o

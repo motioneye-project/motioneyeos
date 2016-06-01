@@ -1,0 +1,27 @@
+Don't pollute incdir with absolute directories, it's bad when
+cross-compiling.
+Patch configure directly since autoreconf isn't clean.
+
+Patch status: notified upstream.
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+diff -Nura lft-3.74.orig/configure lft-3.74/configure
+--- lft-3.74.orig/configure	2016-05-03 14:11:30.964530888 -0300
++++ lft-3.74/configure	2016-05-03 14:12:45.038106775 -0300
+@@ -5732,15 +5732,6 @@
+ 
+ 
+ 
+-for incdir in /usr/local/include /usr/include
+-do
+-  if test -d $incdir/pcap
+-  then
+-    CFLAGS="$CFLAGS -I$incdir/pcap"
+-    CPPFLAGS="$CFLAGS -I$incdir/pcap"
+-  fi
+-done
+-
+ cat >conftest.$ac_ext <<_ACEOF
+ /* confdefs.h.  */
+ _ACEOF

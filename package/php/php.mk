@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-PHP_VERSION = 5.6.22
+PHP_VERSION = 7.0.7
 PHP_SITE = http://www.php.net/distributions
 PHP_SOURCE = php-$(PHP_VERSION).tar.xz
 PHP_INSTALL_STAGING = YES
@@ -178,11 +178,7 @@ PHP_CONF_OPTS += --with-readline=$(STAGING_DIR)/usr
 PHP_DEPENDENCIES += readline
 endif
 
-### Native MySQL extensions
-ifeq ($(BR2_PACKAGE_PHP_EXT_MYSQL),y)
-PHP_CONF_OPTS += --with-mysql=$(STAGING_DIR)/usr
-PHP_DEPENDENCIES += mysql
-endif
+### Native SQL extensions
 ifeq ($(BR2_PACKAGE_PHP_EXT_MYSQLI),y)
 PHP_CONF_OPTS += --with-mysqli=$(STAGING_DIR)/usr/bin/mysql_config
 PHP_DEPENDENCIES += mysql

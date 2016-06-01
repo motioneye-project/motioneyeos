@@ -4,10 +4,8 @@
 #
 ################################################################################
 
-PHP_SSH2_VERSION = 0.12
-PHP_SSH2_SOURCE = ssh2-$(PHP_SSH2_VERSION).tgz
-# pecl.php.net returns html with db connect failed
-PHP_SSH2_SITE = http://sources.buildroot.net
+PHP_SSH2_VERSION = aa1739ac26c2177d33ab8d064021032bdc2c3a40
+PHP_SSH2_SITE = $(call github,php,pecl-networking-ssh2,$(PHP_SSH2_VERSION))
 PHP_SSH2_CONF_OPTS = --with-php-config=$(STAGING_DIR)/usr/bin/php-config \
 	--with-ssh2=$(STAGING_DIR)/usr
 # phpize does the autoconf magic

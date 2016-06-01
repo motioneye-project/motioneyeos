@@ -38,7 +38,7 @@ choice
 	  Select the specific U-Boot version you want to use
 
 config BR2_TARGET_UBOOT_LATEST_VERSION
-	bool "2016.03"
+	bool "2016.05"
 
 config BR2_TARGET_UBOOT_CUSTOM_VERSION
 	bool "Custom version"
@@ -86,7 +86,7 @@ endif
 
 config BR2_TARGET_UBOOT_VERSION
 	string
-	default "2016.03"	if BR2_TARGET_UBOOT_LATEST_VERSION
+	default "2016.05"	if BR2_TARGET_UBOOT_LATEST_VERSION
 	default BR2_TARGET_UBOOT_CUSTOM_VERSION_VALUE \
 		if BR2_TARGET_UBOOT_CUSTOM_VERSION
 	default "custom"	if BR2_TARGET_UBOOT_CUSTOM_TARBALL
@@ -348,9 +348,13 @@ menuconfig BR2_TARGET_UBOOT_ENVIMAGE
 if BR2_TARGET_UBOOT_ENVIMAGE
 
 config BR2_TARGET_UBOOT_ENVIMAGE_SOURCE
-	string "Source file for environment"
+	string "Source files for environment"
 	help
-	  Text file describing the environment.
+	  Text files describing the environment. Files should have
+	  lines of the form var=value, one per line. Blank lines and
+	  lines starting with a # are ignored.
+
+	  Multiple source files are concatenated in the order listed.
 
 config BR2_TARGET_UBOOT_ENVIMAGE_SIZE
 	string "Size of environment"

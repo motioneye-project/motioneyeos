@@ -143,6 +143,31 @@ comment "----------------------------------------------------"
 endif
 
 ###############################################################################
+comment "Legacy options removed in 2016.08"
+
+config BR2_BINUTILS_VERSION_2_23_X
+	bool "binutils 2.23 removed"
+	select BR2_LEGACY
+	help
+	  Binutils 2.23 has been removed, using a newer version is
+	  recommended.
+
+config BR2_TOOLCHAIN_BUILDROOT_EGLIBC
+	bool "eglibc support has been removed"
+	select BR2_LEGACY
+	help
+	  The eglibc project no longer exists, as it has been merged
+	  back into the glibc project. Therefore, support for eglibc
+	  has been removed, and glibc should be used instead.
+
+config BR2_GDB_VERSION_7_8
+	bool "gdb 7.8 has been removed"
+	select BR2_LEGACY
+	help
+	  The 7.8 version of gdb has been removed. Use a newer version
+	  instead.
+
+###############################################################################
 comment "Legacy options removed in 2016.05"
 
 config BR2_PACKAGE_OPENVPN_CRYPTO_POLARSSL
@@ -913,11 +938,9 @@ config BR2_PACKAGE_KODI_PVR_ADDONS
 config BR2_BINUTILS_VERSION_2_23_2
 	bool "binutils 2.23 option renamed"
 	select BR2_LEGACY
-	select BR2_BINUTILS_VERSION_2_23_X
 	help
-	  The binutils version option has been renamed to match the
-	  same patchlevel logic used by gcc. The new option is now
-	  BR2_BINUTILS_VERSION_2_23_X.
+	  Binutils 2.23.2 has been removed, using a newer version is
+	  recommended.
 
 config BR2_BINUTILS_VERSION_2_24
 	bool "binutils 2.24 option renamed"

@@ -23,22 +23,27 @@ config BR2_PACKAGE_HOST_GDB_PYTHON
 	help
 	  This option enables the Python support in the cross gdb.
 
+config BR2_PACKAGE_HOST_GDB_SIM
+	bool "Simulator support"
+	help
+	  This option enables the simulator support in the cross gdb.
+
 choice
 	prompt "GDB debugger Version"
 	depends on !BR2_arc
 	depends on !BR2_microblaze
-	default BR2_GDB_VERSION_7_9
+	default BR2_GDB_VERSION_7_10
 	help
 	  Select the version of gdb you wish to use.
-
-	config BR2_GDB_VERSION_7_8
-		bool "gdb 7.8.x"
 
 	config BR2_GDB_VERSION_7_9
 		bool "gdb 7.9.x"
 
 	config BR2_GDB_VERSION_7_10
 		bool "gdb 7.10.x"
+
+	config BR2_GDB_VERSION_7_11
+		bool "gdb 7.11.x"
 
 endchoice
 
@@ -48,8 +53,8 @@ endif
 config BR2_GDB_VERSION
 	string
 	depends on BR2_PACKAGE_GDB || BR2_PACKAGE_HOST_GDB
-	default "arc-2015.12-gdb" if BR2_arc
+	default "arc-2016.03-gdb" if BR2_arc
 	default "6be65fb56ea6694a9260733a536a023a1e2d4d57" if BR2_microblaze
-	default "7.8.2"	   if BR2_GDB_VERSION_7_8
-	default "7.9.1"    if BR2_GDB_VERSION_7_9 || !BR2_PACKAGE_HOST_GDB
-	default "7.10.1"   if BR2_GDB_VERSION_7_10
+	default "7.9.1"    if BR2_GDB_VERSION_7_9
+	default "7.10.1"   if BR2_GDB_VERSION_7_10 || !BR2_PACKAGE_HOST_GDB
+	default "7.11"	   if BR2_GDB_VERSION_7_11

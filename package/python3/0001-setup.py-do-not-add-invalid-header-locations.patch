@@ -1,4 +1,4 @@
-From 03a4c313f42ea1bbdfc4c64a285b3930766c2b23 Mon Sep 17 00:00:00 2001
+From d6093bad6c700312ff7ff4a7bb15c815dda6f46b Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Date: Wed, 23 Dec 2015 11:28:34 +0100
 Subject: [PATCH] setup.py: do not add invalid header locations
@@ -28,10 +28,10 @@ Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
  1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/setup.py b/setup.py
-index 2779658..d3bf8e5 100644
+index da67731..dbd2a3c 100644
 --- a/setup.py
 +++ b/setup.py
-@@ -493,7 +493,8 @@ class PyBuildExt(build_ext):
+@@ -511,7 +511,8 @@ class PyBuildExt(build_ext):
                          add_dir_to_list(dir_list, directory)
  
          if os.path.normpath(sys.base_prefix) != '/usr' \
