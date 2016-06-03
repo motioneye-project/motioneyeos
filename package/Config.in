@@ -1016,6 +1016,7 @@ menu "Hardware handling"
 	source "package/pcsc-lite/Config.in"
 	source "package/tslib/Config.in"
 	source "package/urg/Config.in"
+	source "package/wiringpi/Config.in"
 endmenu
 
 menu "Javascript"
