@@ -7,6 +7,20 @@ config BR2_PACKAGE_HOST_UBOOT_TOOLS
 
 if BR2_PACKAGE_HOST_UBOOT_TOOLS
 
+config BR2_PACKAGE_HOST_UBOOT_TOOLS_FIT_SUPPORT
+	bool "Flattened Image Tree (FIT) support"
+	select BR2_PACKAGE_HOST_DTC
+	help
+	  Enables support for Flattened Image Tree (FIT).
+
+	  This option allows to boot the new uImage structrure,
+	  Flattened Image Tree. FIT is formally a FDT, which can include
+	  images of various types (kernel, FDT blob, ramdisk, etc.)
+	  in a single blob. To boot this new uImage structure,
+	  pass the address of the blob to the "bootm" command.
+
+if BR2_PACKAGE_HOST_UBOOT_TOOLS_FIT_SUPPORT
+
 config BR2_PACKAGE_HOST_UBOOT_TOOLS_FIT_SIGNATURE_SUPPORT
 	bool "FIT signature verification support"
 	help
@@ -22,5 +36,7 @@ config BR2_PACKAGE_HOST_UBOOT_TOOLS_FIT_SIGNATURE_SUPPORT
 	  later. Provided that the private key is kept secret and the
 	  public key is stored in a non-volatile place, any image can
 	  be verified in this way.
+
+endif
 
 endif

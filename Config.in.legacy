@@ -145,6 +145,20 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2016.08"
 
+config BR2_PACKAGE_UBOOT_TOOLS_MKIMAGE_FIT_SIGNATURE_SUPPORT
+	bool "FIT support in uboot-tools has been refactored"
+	select BR2_LEGACY
+	select BR2_PACKAGE_DTC
+	select BR2_PACKAGE_DTC_PROGRAMS
+	select BR2_PACKAGE_UBOOT_TOOLS_FIT_SUPPORT
+	select BR2_PACKAGE_UBOOT_TOOLS_FIT_SIGNATURE_SUPPORT
+	select BR2_PACKAGE_UBOOT_TOOLS_MKIMAGE
+	help
+	  This option has been removed in favor of a more fine-grained
+	  configuration, which is recommended. Selecting this option
+	  enables FIT and FIT signature support for the target packages.
+	  It will also select the dtc and openssl packages.
+
 config BR2_PTHREADS_OLD
 	bool "linuxthreads (stable/old)"
 	select BR2_LEGACY
