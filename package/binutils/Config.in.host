@@ -8,8 +8,8 @@ choice
 	  Select the version of binutils you wish to use.
 
 	config BR2_BINUTILS_VERSION_2_24_X
-		# supported, but broken on Nios-II and powerpc64le
-		depends on !BR2_nios2 && !BR2_powerpc64le
+		# supported, but broken on Nios-II, Blackfin and powerpc64le
+		depends on !BR2_nios2 && !BR2_powerpc64le && !BR2_bfin
 		# Unsupported for MIPS R6
 		depends on !BR2_mips_32r6 && !BR2_mips_64r6
 		# Unsupported ARM cores
@@ -18,6 +18,8 @@ choice
 
 	config BR2_BINUTILS_VERSION_2_25_X
 		bool "binutils 2.25.1"
+		# supported but broken on Blackfin
+		depends on !BR2_bfin
 
 	config BR2_BINUTILS_VERSION_2_26_X
 		bool "binutils 2.26.1"
