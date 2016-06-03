@@ -43,6 +43,12 @@ ifeq ($(BR2_nios2),y)
 E2FSPROGS_CONF_ENV += ac_cv_func_fallocate=no
 endif
 
+# Some programs are built for the host, but use definitions guessed by
+# the configure script (i.e with the cross-compiler). Help them by
+# saying that <sys/stat.h> is available on the host, which is needed
+# for util/subst.c to build properly.
+E2FSPROGS_CONF_ENV += BUILD_CFLAGS="-DHAVE_SYS_STAT_H"
+
 ifeq ($(BR2_NEEDS_GETTEXT_IF_LOCALE),y)
 # util-linux libuuid pulls in libintl if needed, so ensure we also
 # link against it, otherwise static linking fails
