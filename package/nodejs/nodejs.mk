@@ -26,6 +26,9 @@ endif
 
 ifeq ($(BR2_PACKAGE_ICU),y)
 NODEJS_DEPENDENCIES += icu
+NODEJS_CONF_OPTS += --with-intl=system-icu
+else
+NODEJS_CONF_OPTS += --with-intl=none
 endif
 
 # nodejs build system is based on python, but only support python-2.6 or
@@ -105,7 +108,6 @@ define NODEJS_CONFIGURE_CMDS
 		$(HOST_DIR)/usr/bin/python2 ./configure \
 		--prefix=/usr \
 		$(if $(BR2_PACKAGE_OPENSSL),--shared-openssl,--without-ssl) \
-		$(if $(BR2_PACKAGE_ICU),--with-intl=system-icu,--with-intl=none) \
 		$(if $(BR2_PACKAGE_NODEJS_NPM),,--without-npm) \
 		--dest-cpu=$(NODEJS_CPU) \
 		$(if $(NODEJS_ARM_FP),--with-arm-float-abi=$(NODEJS_ARM_FP)) \
