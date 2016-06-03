@@ -89,6 +89,13 @@ choice
 
 endchoice
 
+# Indicates if GCC for architecture supports --with-{arch,cpu,..}  to
+# set default CFLAGS, otherwise values will be used by toolchain
+# wrapper.
+config BR2_GCC_ARCH_HAS_CONFIGURABLE_DEFAULTS
+	bool
+	default y if !BR2_bfin
+
 config BR2_GCC_SUPPORTS_FINEGRAINEDMTUNE
 	bool
 	default y
