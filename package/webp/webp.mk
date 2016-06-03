@@ -19,6 +19,8 @@ WEBP_CONF_OPTS += \
 
 ifeq ($(BR2_PACKAGE_WEBP_DEMUX),y)
 WEBP_CONF_OPTS += --enable-libwebpdemux
+else
+WEBP_CONF_OPTS += --disable-libwebpdemux
 endif
 
 ifeq ($(BR2_PACKAGE_LIBPNG),y)

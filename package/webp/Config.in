@@ -6,10 +6,13 @@ config BR2_PACKAGE_WEBP
 
 	  https://developers.google.com/speed/webp/
 
+if BR2_PACKAGE_WEBP
+
 config BR2_PACKAGE_WEBP_DEMUX
 	bool "webpdemux"
-	depends on BR2_PACKAGE_WEBP
 	help
-	  "Demux" is a part of WebPMux for extraction and manipulation of an
-	  extended format WebP file, which can have features like color profile,
-	  metadata and animation.
+	  Demux is a part of WebPMux for extraction and manipulation
+	  of an extended format WebP file, which can have features
+	  like color profile, metadata and animation.
+
+endif
