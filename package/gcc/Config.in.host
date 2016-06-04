@@ -151,9 +151,7 @@ config BR2_GCC_ENABLE_LIBMUDFLAP
 	# There are architectures, or specific configurations for
 	# which mudflap is not supported.
 	depends on !BR2_ARM_INSTRUCTIONS_THUMB && !BR2_powerpc_SPE
-	depends on !BR2_GCC_VERSION_4_9_X
-	depends on !BR2_GCC_VERSION_5_X
-	depends on !BR2_GCC_VERSION_6_X
+	depends on !BR2_TOOLCHAIN_GCC_AT_LEAST_4_9
 	help
 	  libmudflap is a gcc library used for the mudflap pointer
 	  debugging functionality. It is only needed if you intend to
