@@ -59,14 +59,14 @@ choice
 	config BR2_PTHREADS
 		bool "linuxthreads"
 		select BR2_TOOLCHAIN_HAS_THREADS
-		depends on BR2_m68k || BR2_arm || BR2_armeb || BR2_xtensa
+		depends on BR2_m68k || BR2_microblaze || BR2_arm || BR2_armeb || BR2_xtensa
 
 	config BR2_PTHREADS_NATIVE
 		bool "Native POSIX Threading (NPTL)"
 		select BR2_TOOLCHAIN_HAS_THREADS
 		select BR2_TOOLCHAIN_HAS_THREADS_NPTL
 		depends on BR2_USE_MMU
-		depends on !BR2_m68k
+		depends on !BR2_m68k && !BR2_microblaze
 endchoice
 
 config BR2_PTHREAD_DEBUG
@@ -121,6 +121,7 @@ config BR2_UCLIBC_TARGET_ARCH
 	default "arc"	   if BR2_arcle || BR2_arceb
 	default "arm"	   if BR2_arm	|| BR2_armeb
 	default "m68k"	   if BR2_m68k
+	default "microblaze"   if BR2_microblaze
 	default "mips"	   if BR2_mips || BR2_mipsel || BR2_mips64 || BR2_mips64el
 	default "powerpc"  if BR2_powerpc
 	default "sh"	   if BR2_sh

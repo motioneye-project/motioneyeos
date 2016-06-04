@@ -1,0 +1,24 @@
+Add dynamic linker support for uClibc
+
+Signed-off-by: Waldemar Brodkorb <wbx@uclibc-ng.org>
+
+diff -Nur gcc-5.3.0.orig/gcc/config/microblaze/linux.h gcc-5.3.0/gcc/config/microblaze/linux.h
+--- gcc-5.3.0.orig/gcc/config/microblaze/linux.h	2015-05-28 16:08:19.000000000 +0200
++++ gcc-5.3.0/gcc/config/microblaze/linux.h	2016-05-13 09:21:01.579262885 +0200
+@@ -28,7 +28,15 @@
+ #undef TLS_NEEDS_GOT
+ #define TLS_NEEDS_GOT 1
+ 
+-#define DYNAMIC_LINKER "/lib/ld.so.1"
++#define GLIBC_DYNAMIC_LINKER	"/lib/ld.so.1"
++#define UCLIBC_DYNAMIC_LINKER "/lib/ld-uClibc.so.0"
++
++#if DEFAULT_LIBC == LIBC_UCLIBC
++#define DYNAMIC_LINKER UCLIBC_DYNAMIC_LINKER
++#else
++#define DYNAMIC_LINKER GLIBC_DYNAMIC_LINKER
++#endif
++
+ #undef  SUBTARGET_EXTRA_SPECS
+ #define SUBTARGET_EXTRA_SPECS \
+   { "dynamic_linker", DYNAMIC_LINKER }
