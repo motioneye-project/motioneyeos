@@ -114,6 +114,9 @@ comment "boost-log needs a toolchain w/ NPTL"
 config BR2_PACKAGE_BOOST_MATH
 	bool "boost-math"
 
+config BR2_PACKAGE_BOOST_METAPARSE
+	bool "boost-metaparse"
+
 config BR2_PACKAGE_BOOST_MPI
 	bool "boost-mpi"
 
