@@ -914,6 +914,10 @@ ifeq ($$(patsubst %/,ERROR,$$($(2)_SITE)),ERROR)
 $$(error $(2)_SITE ($$($(2)_SITE)) cannot have a trailing slash)
 endif
 
+ifneq ($$($(2)_HELP_CMDS),)
+HELP_PACKAGES += $(2)
+endif
+
 endif # $(2)_KCONFIG_VAR
 endef # inner-generic-package
 

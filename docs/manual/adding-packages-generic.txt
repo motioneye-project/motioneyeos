@@ -497,6 +497,12 @@ different steps of the build process.
   systemd is selected as the init system in the configuration, only
   +LIBFOO_INSTALL_INIT_SYSTEMD+ will be run).
 
+* +LIBFOO_HELP_CMDS+ lists the actions to print the package help, which
+  is included to the main +make help+ output. These commands can print
+  anything in any format.
+  This is seldom used, as packages rarely have custom rules. *Do not use
+  this variable*, unless you really know that you need to print help.
+
 The preferred way to define these variables is:
 
 ----------------------
