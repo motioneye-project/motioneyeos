@@ -21,4 +21,8 @@ XDRIVER_XF86_VIDEO_TDFX_DEPENDENCIES = \
 	xproto_xproto \
 	xserver_xorg-server
 
+ifeq ($(BR2_PACKAGE_MESA3D_DRI_DRIVER),)
+XDRIVER_XF86_VIDEO_TDFX_CONF_OPTS = --disable-dri
+endif
+
 $(eval $(autotools-package))
