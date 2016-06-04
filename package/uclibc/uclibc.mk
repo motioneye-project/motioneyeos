@@ -11,6 +11,10 @@ UCLIBC_LICENSE = LGPLv2.1+
 UCLIBC_LICENSE_FILES = COPYING.LIB
 UCLIBC_INSTALL_STAGING = YES
 
+define UCLIBC_HELP_CMDS
+	@echo '  uclibc-menuconfig      - Run uClibc menuconfig'
+endef
+
 # uclibc is part of the toolchain so disable the toolchain dependency
 UCLIBC_ADD_TOOLCHAIN_DEPENDENCY = NO
 
