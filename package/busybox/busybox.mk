@@ -10,6 +10,10 @@ BUSYBOX_SOURCE = busybox-$(BUSYBOX_VERSION).tar.bz2
 BUSYBOX_LICENSE = GPLv2
 BUSYBOX_LICENSE_FILES = LICENSE
 
+define BUSYBOX_HELP_CMDS
+	@echo '  busybox-menuconfig     - Run BusyBox menuconfig'
+endef
+
 BUSYBOX_CFLAGS = \
 	$(TARGET_CFLAGS)
 
