@@ -1,4 +1,4 @@
-From 42a95209c5650662b86d222678ec14e7edfae156 Mon Sep 17 00:00:00 2001
+From 9cd93aeecbca62db278f2fe4a2c0a2f6fd04924b Mon Sep 17 00:00:00 2001
 From: Romain Naour <romain.naour@gmail.com>
 Date: Wed, 25 May 2016 13:26:49 +0200
 Subject: [PATCH] veth: avoid kernel header issue with musl
@@ -16,7 +16,6 @@ http://autobuild.buildroot.org/results/2ca/2ca04bb046263e479e7597867b56469893d3c
 Upsteam status: pending
 https://github.com/OpenAutomationTechnologies/openPOWERLINK_V2/pull/120
 
-[Rebase on v2.2.2]
 [1] http://wiki.musl-libc.org/wiki/FAQ#Q:_why_am_i_getting_.22error:_redefinition_of_struct_ethhdr.2Ftcphdr.2Fetc.22_.3F
 [2] https://git.musl-libc.org/cgit/musl/tree/include/net/ethernet.h?h=v1.1.14#n35
 [3] https://git.musl-libc.org/cgit/musl/tree/include/net/ethernet.h?h=v1.1.14#n48
@@ -27,7 +26,7 @@ Signed-off-by: Romain Naour <romain.naour@gmail.com>
  1 file changed, 6 insertions(+), 7 deletions(-)
 
 diff --git a/stack/src/kernel/veth/veth-linuxuser.c b/stack/src/kernel/veth/veth-linuxuser.c
-index 2a0bdd0..2bfaa87 100644
+index d70566c..ddcf950 100644
 --- a/stack/src/kernel/veth/veth-linuxuser.c
 +++ b/stack/src/kernel/veth/veth-linuxuser.c
 @@ -61,7 +61,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
@@ -51,14 +50,14 @@ index 2a0bdd0..2bfaa87 100644
  
      // replace the MAC address of the POWERLINK Ethernet interface with virtual
      // Ethernet MAC address before forwarding it into the virtual Ethernet interface
--    if (OPLK_MEMCMP(pFrameInfo_p->pFrame->aDstMac, vethInstance_l.macAdrs, ETHER_ADDR_LEN) == 0)
-+    if (OPLK_MEMCMP(pFrameInfo_p->pFrame->aDstMac, vethInstance_l.macAdrs, ETH_ALEN) == 0)
+-    if (OPLK_MEMCMP(pFrameInfo_p->frame.pBuffer->aDstMac, vethInstance_l.macAdrs, ETHER_ADDR_LEN) == 0)
++    if (OPLK_MEMCMP(pFrameInfo_p->frame.pBuffer->aDstMac, vethInstance_l.macAdrs, ETH_ALEN) == 0)
      {
--        OPLK_MEMCPY(pFrameInfo_p->pFrame->aDstMac, vethInstance_l.tapMacAdrs, ETHER_ADDR_LEN);
-+        OPLK_MEMCPY(pFrameInfo_p->pFrame->aDstMac, vethInstance_l.tapMacAdrs, ETH_ALEN);
+-        OPLK_MEMCPY(pFrameInfo_p->frame.pBuffer->aDstMac, vethInstance_l.tapMacAdrs, ETHER_ADDR_LEN);
++        OPLK_MEMCPY(pFrameInfo_p->frame.pBuffer->aDstMac, vethInstance_l.tapMacAdrs, ETH_ALEN);
      }
  
-     nwrite = write(vethInstance_l.fd, pFrameInfo_p->pFrame, pFrameInfo_p->frameSize);
+     nwrite = write(vethInstance_l.fd, pFrameInfo_p->frame.pBuffer, pFrameInfo_p->frameSize);
 @@ -302,7 +301,7 @@ to be used as a thread which does a blocking read in a while loop.
  //------------------------------------------------------------------------------
  static void* vethRecvThread(void* pArg_p)
@@ -84,7 +83,7 @@ index 2a0bdd0..2bfaa87 100644
 -                    OPLK_MEMCPY(&buffer[6], pInstance->macAdrs, ETHER_ADDR_LEN);
 +                    OPLK_MEMCPY(&buffer[6], pInstance->macAdrs, ETH_ALEN);
  
-                     frameInfo.pFrame = (tPlkFrame *)buffer;
+                     frameInfo.frame.pBuffer = (tPlkFrame *)buffer;
                      frameInfo.frameSize = nread;
 -- 
 2.5.5

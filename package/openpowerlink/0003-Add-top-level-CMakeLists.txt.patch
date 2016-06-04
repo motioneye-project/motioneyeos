@@ -1,6 +1,6 @@
-From 6f4bcf829efe5ce31592003e049606ae1de05e90 Mon Sep 17 00:00:00 2001
-From: Romain Naour <romain.naour@openwide.fr>
-Date: Wed, 12 Aug 2015 11:24:24 +0200
+From 1b92df6f8283e15b6877f7cd70063648727fc88b Mon Sep 17 00:00:00 2001
+From: Romain Naour <romain.naour@gmail.com>
+Date: Wed, 25 May 2016 15:59:20 +0200
 Subject: [PATCH] Add top level CMakeLists.txt
 
 This CMakeLists.txt can be used to build openpowerlink
@@ -23,21 +23,23 @@ http://autobuild.buildroot.net/results/da4/da445b65cb136d71577f04e3a17fdb2ef6302
 This patch has not been accepted by upstream:
 https://github.com/openPOWERLINK/openPOWERLINK_V2/pull/57
 
-Signed-off-by: Romain Naour <romain.naour@openwide.fr>
+Add PCIe support (v2.3.2)
+
+Signed-off-by: Romain Naour <romain.naour@gmail.com>
 ---
- CMakeLists.txt                               | 36 +++++++++++++++
+ CMakeLists.txt                               | 42 +++++++++++++++++
  apps/common/cmake/findoplklib.cmake          | 68 +++++++++++++++-------------
  apps/common/cmake/linkoplklib.cmake          |  2 +-
  drivers/linux/drv_daemon_pcap/CMakeLists.txt | 12 +++--
- 4 files changed, 83 insertions(+), 35 deletions(-)
+ 4 files changed, 89 insertions(+), 35 deletions(-)
  create mode 100644 CMakeLists.txt
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
 new file mode 100644
-index 0000000..96e3d0f
+index 0000000..28d4e7a
 --- /dev/null
 +++ b/CMakeLists.txt
-@@ -0,0 +1,36 @@
+@@ -0,0 +1,42 @@
 +
 +CMAKE_MINIMUM_REQUIRED (VERSION 2.8.7)
 +
@@ -47,11 +49,17 @@ index 0000000..96e3d0f
 +    ADD_SUBDIRECTORY("stack")
 +ENDIF (CFG_OPLK_LIB)
 +
-+#### Linux kernel module  ####
++#### Linux kernel Ethernet module  ####
 +
 +IF (CFG_KERNEL_DRIVERS)
 +    ADD_SUBDIRECTORY("drivers/linux/drv_kernelmod_edrv")
 +ENDIF (CFG_KERNEL_DRIVERS)
++
++#### Linux kernel PCIe module  ####
++
++IF (CFG_KERNEL_PCIE_DRIVERS)
++    ADD_SUBDIRECTORY("drivers/linux/drv_kernelmod_pcie")
++ENDIF (CFG_KERNEL_PCIE_DRIVERS)
 +
 +#### Pcap userspace driver  ####
 +
@@ -75,10 +83,10 @@ index 0000000..96e3d0f
 +    ADD_SUBDIRECTORY("apps/demo_mn_qt")
 +ENDIF (CFG_DEMO_MN_QT)
 diff --git a/apps/common/cmake/findoplklib.cmake b/apps/common/cmake/findoplklib.cmake
-index 1bf570e..79ea35b 100644
+index aa427a6..e6a802e 100644
 --- a/apps/common/cmake/findoplklib.cmake
 +++ b/apps/common/cmake/findoplklib.cmake
-@@ -81,36 +81,42 @@ MACRO(FIND_OPLK_LIBRARY OPLK_NODE_TYPE)
+@@ -89,36 +89,42 @@ MACRO(FIND_OPLK_LIBRARY OPLK_NODE_TYPE)
      # Set oplk library directory
      SET(OPLKLIB_DIR ${OPLK_BASE_DIR}/stack/lib/${SYSTEM_NAME_DIR}/${SYSTEM_PROCESSOR_DIR})
  
