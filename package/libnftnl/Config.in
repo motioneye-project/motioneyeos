@@ -1,9 +1,9 @@
-comment "libnftnl needs a toolchain w/ headers >= 3.1"
-	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_1
+comment "libnftnl needs a toolchain w/ headers >= 3.12"
+	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_12
 
 config BR2_PACKAGE_LIBNFTNL
 	bool "libnftnl"
-	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_1
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_12
 	select BR2_PACKAGE_LIBMNL
 	help
 	  libnftnl is a userspace library providing a low-level
