@@ -68,6 +68,18 @@ config BR2_PACKAGE_OPENPOWERLINK_STACK_KERNEL_STACK_LIB
 	  build and install a Linux kernel module openPOWERLINK
 	  driver.
 
+config BR2_PACKAGE_OPENPOWERLINK_STACK_KERNEL_PCIE_STACK_LIB
+	bool "kernel-space PCIe driver"
+	depends on BR2_LINUX_KERNEL
+	depends on BR2_PACKAGE_OPENPOWERLINK_MN # MN support only
+	help
+	  Compile openPOWERLINK application library which contains the
+	  interface to a Linux kernel PCIe interface driver. The kernel
+	  part of the openPOWERLINK stack is located on an external PCIe
+	  device. The status/control and data exchange between the
+	  application and kernel stack is handled by the PCIe interface
+	  driver.
+
 comment "openpowerlink kernel stack needs a Linux kernel to be built"
 	depends on !BR2_LINUX_KERNEL
 
@@ -96,6 +108,10 @@ config BR2_PACKAGE_OPENPOWERLINK_KERNEL_DRIVER_RTL8139
 endchoice
 
 endif # BR2_PACKAGE_OPENPOWERLINK_STACK_KERNEL_STACK_LIB
+
+config BR2_PACKAGE_OPENPOWERLINK_KERNEL_PCIE_DRIVER
+	depends on BR2_PACKAGE_OPENPOWERLINK_STACK_KERNEL_PCIE_STACK_LIB
+	bool "PCIe Powerlink Driver"
 
 menu "demos"
 

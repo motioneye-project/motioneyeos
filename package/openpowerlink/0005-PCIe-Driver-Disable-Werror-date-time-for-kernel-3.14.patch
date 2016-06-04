@@ -1,0 +1,35 @@
+From cfd85e15957305b461a3553afe1710590b9e01cd Mon Sep 17 00:00:00 2001
+From: Romain Naour <romain.naour@gmail.com>
+Date: Sat, 4 Jun 2016 01:14:24 +0200
+Subject: [PATCH] PCIe Driver: Disable Werror=date-time for kernel >= 3.14
+
+Avoid a build error due to __DATE__ and __TIME___ being used in
+oplk driver. Just disable the warning with -Wno-date-time.
+
+See da76c94059ed799689ad3283ddcb32d5ace175a0
+
+Upstream status: pending
+https://github.com/OpenAutomationTechnologies/openPOWERLINK_V2/pull/123
+
+Signed-off-by: Romain Naour <romain.naour@gmail.com>
+---
+ drivers/linux/drv_kernelmod_pcie/CMakeLists.txt | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/linux/drv_kernelmod_pcie/CMakeLists.txt b/drivers/linux/drv_kernelmod_pcie/CMakeLists.txt
+index d16e2fb..9b119e7 100644
+--- a/drivers/linux/drv_kernelmod_pcie/CMakeLists.txt
++++ b/drivers/linux/drv_kernelmod_pcie/CMakeLists.txt
+@@ -45,6 +45,9 @@ MESSAGE(STATUS "CMAKE_SYSTEM_PROCESSOR is ${CMAKE_SYSTEM_PROCESSOR}")
+ STRING(TOLOWER "${CMAKE_SYSTEM_NAME}" SYSTEM_NAME_DIR)
+ STRING(TOLOWER "${CMAKE_SYSTEM_PROCESSOR}" SYSTEM_PROCESSOR_DIR)
+ 
++# Since 3.14 kernel Werror=date-time is automatically used if the compiler supports it.
++SET(MODULE_DEFS "${MODULE_DEFS} -Wno-date-time")
++
+ ################################################################################
+ # Configuration options
+ 
+-- 
+2.5.5
+

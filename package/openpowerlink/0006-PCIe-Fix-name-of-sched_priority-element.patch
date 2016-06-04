@@ -1,0 +1,52 @@
+From 98a4d9b805300511ee87596803a02a5a9376b806 Mon Sep 17 00:00:00 2001
+From: Romain Naour <romain.naour@gmail.com>
+Date: Sat, 4 Jun 2016 11:47:41 +0200
+Subject: [PATCH] PCIe: Fix name of sched_priority element
+
+commit 6212747994ff00c06d7285777ea194e725e62011 and
+3d18c96d3f3be40fc87effba1c982d9607f33712 already removed
+__sched_priority since it's non POSIX compliant.
+
+Upstream status: Pending
+https://github.com/OpenAutomationTechnologies/openPOWERLINK_V2/pull/124
+
+Signed-off-by: Romain Naour <romain.naour@gmail.com>
+---
+ stack/src/user/event/eventucal-linuxpcie.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/stack/src/user/event/eventucal-linuxpcie.c b/stack/src/user/event/eventucal-linuxpcie.c
+index 1eceb8a..b287d5c 100644
+--- a/stack/src/user/event/eventucal-linuxpcie.c
++++ b/stack/src/user/event/eventucal-linuxpcie.c
+@@ -162,11 +162,11 @@ tOplkError eventucal_init(void)
+     if (pthread_create(&instance_l.kernelEventThreadId, NULL, k2uEventFetchThread, NULL) != 0)
+         goto Exit;
+ 
+-    schedParam.__sched_priority = KERNEL_EVENT_FETCH_THREAD_PRIORITY;
++    schedParam.sched_priority = KERNEL_EVENT_FETCH_THREAD_PRIORITY;
+     if (pthread_setschedparam(instance_l.kernelEventThreadId, SCHED_FIFO, &schedParam) != 0)
+     {
+         DEBUG_LVL_ERROR_TRACE("%s(): couldn't set K2U thread scheduling parameters! %d\n",
+-                              __func__, schedParam.__sched_priority);
++                              __func__, schedParam.sched_priority);
+     }
+ 
+ #if (defined(__GLIBC__) && __GLIBC__ >= 2 && __GLIBC_MINOR__ >= 12)
+@@ -177,11 +177,11 @@ tOplkError eventucal_init(void)
+     if (pthread_create(&instance_l.processEventThreadId, NULL, eventProcessThread, NULL) != 0)
+         goto Exit;
+ 
+-    schedParam.__sched_priority = EVENT_PROCESS_THREAD_PRIORITY;
++    schedParam.sched_priority = EVENT_PROCESS_THREAD_PRIORITY;
+     if (pthread_setschedparam(instance_l.processEventThreadId, SCHED_FIFO, &schedParam) != 0)
+     {
+         DEBUG_LVL_ERROR_TRACE("%s(): couldn't set event process thread scheduling parameters! %d\n",
+-                              __func__, schedParam.__sched_priority);
++                              __func__, schedParam.sched_priority);
+     }
+ 
+ #if (defined(__GLIBC__) && __GLIBC__ >= 2 && __GLIBC_MINOR__ >= 12)
+-- 
+2.5.5
+
