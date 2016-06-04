@@ -174,6 +174,14 @@ MPLAYER_DEPENDENCIES += libmpeg2
 MPLAYER_CONF_OPTS += --disable-libmpeg2-internal
 endif
 
+# We intentionally don't pass --enable-mpg123, to let the
+# autodetection find which library to link with.
+ifeq ($(BR2_PACKAGE_MPG123),y)
+MPLAYER_DEPENDENCIES += mpg123
+else
+MPLAYER_CONF_OPTS += --disable-mpg123
+endif
+
 ifeq ($(BR2_PACKAGE_TREMOR),y)
 MPLAYER_DEPENDENCIES += tremor
 MPLAYER_CONF_OPTS += --enable-tremor
