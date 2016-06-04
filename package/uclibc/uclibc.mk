@@ -444,11 +444,11 @@ endef
 
 ifeq ($(BR2_UCLIBC_INSTALL_TEST_SUITE),y)
 define UCLIBC_BUILD_TEST_SUITE
-	$(MAKE1) -C $(@D) \
+	$(MAKE) -C $(@D) \
 		$(UCLIBC_MAKE_FLAGS) \
 		TEST_INSTALLED_UCLIBC=1 \
 		UCLIBC_ONLY=1 \
-		test_compile
+		test_compile test_gen
 endef
 endif
 
@@ -464,8 +464,7 @@ ifeq ($(BR2_UCLIBC_INSTALL_TEST_SUITE),y)
 define UCLIBC_INSTALL_TEST_SUITE
 	mkdir -p $(TARGET_DIR)/root/uClibc
 	cp -rdpf $(@D)/test $(TARGET_DIR)/root/uClibc
-	$(INSTALL) -D -m 0644 $(@D)/Rules.mak $(TARGET_DIR)/root/uClibc/Rules.mak
-	$(INSTALL) -D -m 0644 $(@D)/.config $(TARGET_DIR)/root/uClibc/.config
+	find $(TARGET_DIR)/root/uClibc -name \*.o -exec rm {} \;
 endef
 endif
 

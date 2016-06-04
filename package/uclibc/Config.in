@@ -98,8 +98,6 @@ config BR2_UCLIBC_INSTALL_UTILS
 
 config BR2_UCLIBC_INSTALL_TEST_SUITE
 	bool "Compile and install uClibc tests"
-	select BR2_PACKAGE_MAKE
-	depends on BR2_USE_MMU # make
 	help
 	  Enabling this option will compile and install the uClibc test suite.
 	  This is useful if you want to check if the uClibc library is working
@@ -107,7 +105,7 @@ config BR2_UCLIBC_INSTALL_TEST_SUITE
 
 	  The test suite will be installed into /root/uClibc directory. To run
 	  the test suite enter the /root/uClibc/test directory and type
-	  "make UCLIBC_ONLY=1 CC=/bin/true check".
+	  "sh uclibcng-testrunner.sh".
 
 	  See the /root/uClibc/test/README for additional information.
 
