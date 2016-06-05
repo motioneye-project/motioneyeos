@@ -4,8 +4,7 @@
 #
 ################################################################################
 
-# 7.4 release patchlevel 889
-VIM_VERSION = 74b738d414b2895b3365e26ae3b7792eb82ccf47
+VIM_VERSION = v7.4.1902
 VIM_SITE = $(call github,vim,vim,$(VIM_VERSION))
 # Win over busybox vi since vim is more feature-rich
 VIM_DEPENDENCIES = \
