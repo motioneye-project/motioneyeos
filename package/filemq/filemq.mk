@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-FILEMQ_VERSION = acf6c0e003fee938994ad803aa7b78245dca57ba
+FILEMQ_VERSION = e59951489045825d6fc5bdc6a5a5ecf1abf51943
 FILEMQ_SITE = $(call github,zeromq,filemq,$(FILEMQ_VERSION))
 
 FILEMQ_AUTORECONF = YES
