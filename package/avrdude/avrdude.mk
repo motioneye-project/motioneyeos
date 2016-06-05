@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-AVRDUDE_VERSION = eabe067c4527bc2eedc5db9288ef5cf1818ec720
+AVRDUDE_VERSION = ad04c429a90f4c34f000ea4ae11db2705915a31f
 AVRDUDE_SITE = $(call github,kcuzner,avrdude,$(AVRDUDE_VERSION))
 AVRDUDE_LICENSE = GPLv2+
 AVRDUDR_LICENSE_FILES = avrdude/COPYING
