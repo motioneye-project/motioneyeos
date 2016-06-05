@@ -1,15 +1,11 @@
 #!/bin/bash
 
-gpio=35
 check_interval=30
-export=/sys/class/gpio/export
-readv=/sys/class/gpio/gpio$gpio/value
+readv=/sys/class/leds/led1/brightness
+
+test -e "$readv" || exit 0
 
 test -n "$os_version" || source /etc/init.d/base
-
-configure() {
-    echo $gpio > $export
-}
 
 watch() {
     while true; do
@@ -23,9 +19,8 @@ watch() {
 case "$1" in
     start)
         msg_begin "Starting brownout detector"
-        configure
-        test $? == 0 && msg_done || msg_fail
         watch &
+        test $? == 0 && msg_done || msg_fail
         ;;
 
     stop)
