@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-PHP_GEOIP_VERSION = 1fd53288458100e9e30acf5a62bc9ef8426513d3
+PHP_GEOIP_VERSION = ebb68228ad94298a305710f701b2ade9acff985d
 PHP_GEOIP_SITE = $(call github,php7-extensions,ext-php7-geoip,$(PHP_GEOIP_VERSION))
 PHP_GEOIP_CONF_OPTS = --with-php-config=$(STAGING_DIR)/usr/bin/php-config \
 	--with-geoip=$(STAGING_DIR)/usr
