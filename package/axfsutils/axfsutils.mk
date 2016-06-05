@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-AXFSUTILS_VERSION = f26ae785e33df76f658b71ef2cfbc7f511ff875d
+AXFSUTILS_VERSION = 64886703fdff6cfc64eb20fbe7d7295bbeec867b
 AXFSUTILS_SITE = $(call github,jaredeh,axfs,$(AXFSUTILS_VERSION))
 AXFSUTILS_LICENSE = GPLv2
 AXFSUTILS_LICENSE_FILES = mkfs.axfs-legacy/COPYING
