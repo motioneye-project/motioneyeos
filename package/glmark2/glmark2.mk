@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-GLMARK2_VERSION = 499aa81a68fb4c8aac1c80f0d6a4cce05941c4cc
+GLMARK2_VERSION = fa71af2dfab711fac87b9504b6fc9862f44bf72a
 GLMARK2_SITE = $(call github,glmark2,glmark2,$(GLMARK2_VERSION))
 GLMARK2_LICENSE = GPLv3+ SGIv1
 GLMARK2_LICENSE_FILES = COPYING COPYING.SGI
