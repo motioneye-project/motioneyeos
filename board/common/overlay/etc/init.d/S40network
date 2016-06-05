@@ -83,6 +83,10 @@ start_wlan() {
         return 1
     fi
 
+    if [ -n "$mtu" ]; then
+        ip link set mtu $mtu dev $wlan
+    fi
+
     if [ -n "$static_ip" ]; then
         msg_done $static_ip
         ifconfig $wlan $static_ip up
@@ -125,7 +129,7 @@ start_eth() {
         fi
     done
 
-    # wait up to link_nego_timeout seconds for link
+    # wait up to $link_nego_timeout seconds for link
     count=0
     while [ "$(cat /sys/class/net/$eth/carrier 2>&1)" != "1" ]; do
         sleep 1
@@ -135,6 +139,10 @@ start_eth() {
             return 1
         fi
     done
+    
+    if [ -n "$mtu" ]; then
+        ip link set mtu $mtu dev $eth
+    fi
 
     if [ -n "$static_ip" ]; then
         msg_done $static_ip
