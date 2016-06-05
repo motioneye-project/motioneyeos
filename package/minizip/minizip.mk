@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-MINIZIP_VERSION = 977afb22966e6ab0ee401293a8e85fe808133f9a
+MINIZIP_VERSION = 5f56dd81d94bd7028f7dc05d7d14112697c30241
 MINIZIP_SITE = $(call github,nmoinvaz,minizip,$(MINIZIP_VERSION))
 MINIZIP_DEPENDENCIES = zlib
 MINIZIP_AUTORECONF = YES
