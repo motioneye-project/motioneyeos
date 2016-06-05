@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBSHAIRPLAY_VERSION = 64d59e3087f829006d091fa0d114efb50972a2bf
+LIBSHAIRPLAY_VERSION = ce80e005908f41d0e6fde1c4a21e9cb8ee54007b
 LIBSHAIRPLAY_SITE = $(call github,juhovh,shairplay,$(LIBSHAIRPLAY_VERSION))
 LIBSHAIRPLAY_INSTALL_STAGING = YES
 LIBSHAIRPLAY_AUTORECONF = YES
