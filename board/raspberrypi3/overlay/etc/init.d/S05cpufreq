@@ -18,7 +18,7 @@ configure() {
 
 case "$1" in
     start)
-        msg_begin "Configuring CPU Frequency"
+        msg_begin "Configuring CPU frequency"
         configure
         test $? == 0 && msg_done || msg_fail
         ;;
