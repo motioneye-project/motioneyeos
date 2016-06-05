@@ -19,6 +19,8 @@ import logging
 import os.path
 import re
 
+from collections import OrderedDict
+
 from config import additional_config
 
 
@@ -120,12 +122,32 @@ def _set_ip_settings(s):
         for octet in mask.split('.'):
             binary_str += bin(int(octet))[2:].zfill(8)
         cidr = str(len(binary_str.rstrip('0')))
+    
+    current_settings = OrderedDict()
+    if os.path.exists(STATIC_IP_CONF):
+        with open(STATIC_IP_CONF, 'r') as f:
+            for line in f:
+                line = line.strip().split('=', 1)
+                if len(line) != 2:
+                    continue
+                key, value = line
+                if key.startswith('#'):
+                    current_settings[key.strip('#')] = (value, False)
 
-    comment = '#' if type == 'dhcp' else ''
+                else:
+                    current_settings[key] = (value, True)
+
+    enabled = type != 'dhcp'
+    current_settings['static_ip'] = ('"%s/%s"' % (ip, cidr), enabled)
+    current_settings['static_gw'] = ('"%s"' % gw, enabled)
+    current_settings['static_dns'] = ('"%s"' % dns, enabled)
+
     with open(STATIC_IP_CONF, 'w') as f:
-        f.write(comment + 'static_ip="%s/%s"\n' % (ip, cidr))
-        f.write(comment + 'static_gw="%s"\n' % gw)
-        f.write(comment + 'static_dns="%s"\n' % dns)
+        for key, value in current_settings.items():
+            (value, enabled) = value
+            if not enabled:
+                key = '#' + key
+            f.write('%s=%s\n' % (key, value))
 
 
 @additional_config
