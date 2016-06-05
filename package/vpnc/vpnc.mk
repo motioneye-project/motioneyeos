@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-VPNC_VERSION = 024aa17a0a86716cac0db185b44bf07ba4f8c135
+VPNC_VERSION = b1243d29e0c00312ead038b04a2cf5e2fa31d740
 VPNC_SITE = $(call github,ndpgroup,vpnc,$(VPNC_VERSION))
 VPNC_LICENSE = GPLv2+
 VPNC_LICENSE_FILES = COPYING
