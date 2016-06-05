@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-ZLOG_VERSION = ca6162be1608839e99c6388c28488c51ccf98e4a
+ZLOG_VERSION = 6ddb9bbf3ff0123e701bf60996f351576ebe9c00
 ZLOG_SITE = $(call github,HardySimpson,zlog,$(ZLOG_VERSION))
 ZLOG_LICENSE = LGPLv2.1
 ZLOG_LICENSE_FILES = COPYING
