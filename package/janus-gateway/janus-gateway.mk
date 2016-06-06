@@ -26,8 +26,8 @@ JANUS_GATEWAY_CONF_OPTS = \
 	--disable-data-channels \
 	--disable-rabbitmq
 
-ifeq ($(BR2_PACKAGE_LIBWEBSOCK),y)
-JANUS_GATEWAY_DEPENDENCIES += libwebsock
+ifeq ($(BR2_PACKAGE_LIBWEBSOCKETS),y)
+JANUS_GATEWAY_DEPENDENCIES += libwebsockets
 JANUS_GATEWAY_CONF_OPTS += --enable-websockets
 else
 JANUS_GATEWAY_CONF_OPTS += --disable-websockets
