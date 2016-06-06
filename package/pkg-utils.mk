@@ -104,6 +104,43 @@ define sep
 
 endef
 
+PERCENT = %
+QUOTE = '
+# ' # Meh... syntax-highlighting
+
+# This macro properly escapes a command string, then prints it with printf:
+#
+#   - first, backslash '\' are self-escaped, so that they do not escape
+#     the following char and so that printf properly outputs a backslash;
+#
+#   - next, single quotes are escaped by closing an existing one, adding
+#     an escaped one, and re-openning a new one (see below for the reason);
+#
+#   - then '%' signs are self-escaped so that the printf does not interpret
+#     them as a format specifier, in case the variable contains an actual
+#     printf with a format;
+#
+#   - finally, $(sep) is replaced with the literal '\n' so that make does
+#     not break on the so-expanded variable, but so that the printf does
+#     correctly output an LF.
+#
+# Note: this must be escaped in this order to avoid over-escaping the
+# previously escaped elements.
+#
+# Once everything has been escaped, it is passed between single quotes
+# (that's why the single-quotes are escaped they way they are, above,
+# and why the dollar sign is not escaped) to printf(1). A trailing
+# newline is apended, too.
+#
+# Note: leading or trailing spaces are *not* stripped.
+#
+define PRINTF
+	printf '$(subst $(sep),\n,\
+			$(subst $(PERCENT),$(PERCENT)$(PERCENT),\
+				$(subst $(QUOTE),$(QUOTE)\$(QUOTE)$(QUOTE),\
+					$(subst \,\\,$(1)))))\n'
+endef
+
 # check-deprecated-variable -- throw an error on deprecated variables
 # example:
 #   $(eval $(call check-deprecated-variable,FOO_MAKE_OPT,FOO_MAKE_OPTS))
