@@ -26,7 +26,7 @@ endif
 
 define ROOTFS_SQUASHFS_CMD
 	$(HOST_DIR)/usr/bin/mksquashfs $(TARGET_DIR) $@ -noappend \
-		$(ROOTFS_SQUASHFS_ARGS) && \
+		$(ROOTFS_SQUASHFS_ARGS)
 	chmod 0644 $@
 endef
 
