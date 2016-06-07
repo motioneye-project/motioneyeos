@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-CHRONY_VERSION = 2.3
+CHRONY_VERSION = 2.4
 CHRONY_SITE = http://download.tuxfamily.org/chrony
 CHRONY_LICENSE = GPLv2
 CHRONY_LICENSE_FILES = COPYING
