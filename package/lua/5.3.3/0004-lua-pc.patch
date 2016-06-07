@@ -14,7 +14,7 @@ Index: b/etc/lua.pc
 +# grep '^V=' ../Makefile
 +V= 5.3
 +# grep '^R=' ../Makefile
-+R= 5.3.2
++R= 5.3.3
 +
 +# grep '^INSTALL_.*=' ../Makefile | sed 's/INSTALL_TOP/prefix/'
 +prefix= /usr
@@ -33,7 +33,7 @@ Index: b/etc/lua.pc
 +Name: Lua
 +Description: An Extensible Extension Language
 +Version: ${R}
-+Requires: 
++Requires:
 +Libs: -L${libdir} -llua -lm
 +Cflags: -I${includedir}
 +
