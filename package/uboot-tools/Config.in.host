@@ -13,7 +13,7 @@ config BR2_PACKAGE_HOST_UBOOT_TOOLS_FIT_SUPPORT
 	help
 	  Enables support for Flattened Image Tree (FIT).
 
-	  This option allows to boot the new uImage structrure,
+	  This option allows to boot the new uImage structure,
 	  Flattened Image Tree. FIT is formally a FDT, which can include
 	  images of various types (kernel, FDT blob, ramdisk, etc.)
 	  in a single blob. To boot this new uImage structure,
