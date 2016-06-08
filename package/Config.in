@@ -1083,6 +1083,7 @@ menu "Logging"
 	source "package/liblog4c-localtime/Config.in"
 	source "package/liblogging/Config.in"
 	source "package/log4cplus/Config.in"
+	source "package/log4cpp/Config.in"
 	source "package/log4cxx/Config.in"
 	source "package/zlog/Config.in"
 endmenu
