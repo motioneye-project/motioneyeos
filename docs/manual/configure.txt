@@ -81,9 +81,9 @@ by itself a cross-compilation toolchain, before building the userspace
 applications and libraries for your target embedded system.
 
 This backend supports several C libraries:
-http://www.uclibc.org[uClibc], the
+http://www.uclibc.org[uClibc],
 http://www.gnu.org/software/libc/libc.html[glibc] and
-http://www.eglibc.org[eglibc].
+http://www.musl-libc.org[musl].
 
 Once you have selected this backend, a number of options appear. The
 most important ones allow to:
