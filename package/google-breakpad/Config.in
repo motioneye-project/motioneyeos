@@ -29,6 +29,6 @@ config BR2_PACKAGE_GOOGLE_BREAKPAD
 
 	  http://code.google.com/p/google-breakpad/
 
-comment "google-breakpad requires an (e)glibc toolchain w/ C++ enabled"
+comment "google-breakpad requires a glibc toolchain w/ C++ enabled"
 	depends on BR2_PACKAGE_GOOGLE_BREAKPAD_ARCH_SUPPORTS
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_USES_GLIBC

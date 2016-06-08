@@ -1,4 +1,4 @@
-comment "apitrace needs a (e)glibc toolchain w/ C++, gcc >= 4.6"
+comment "apitrace needs a glibc toolchain w/ C++, gcc >= 4.6"
 	depends on BR2_PACKAGE_XORG7
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_USES_GLIBC \
 		|| !BR2_TOOLCHAIN_GCC_AT_LEAST_4_6

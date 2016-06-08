@@ -4,7 +4,7 @@ comment "armadillo needs a toolchain w/ C++"
 	depends on !BR2_powerpc
 	depends on !BR2_bfin
 
-comment "armadillo needs an (e)glibc toolchain w/ C++"
+comment "armadillo needs a glibc toolchain w/ C++"
 	depends on BR2_powerpc
 	depends on !BR2_INSTALL_LIBSTDCPP || BR2_TOOLCHAIN_USES_UCLIBC
 

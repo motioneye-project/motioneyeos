@@ -67,7 +67,7 @@ config BR2_PACKAGE_UTIL_LINUX_CHFN_CHSH
 	help
 	  Change login shell, real user name and information
 
-comment "chfn/chsh needs a uClibc or (e)glibc toolchain w/ wchar, locale, dynamic library"
+comment "chfn/chsh needs a uClibc or glibc toolchain w/ wchar, locale, dynamic library"
 	depends on !(BR2_ENABLE_LOCALE && BR2_USE_WCHAR) \
 		|| BR2_STATIC_LIBS || BR2_TOOLCHAIN_USES_MUSL
 
@@ -131,7 +131,7 @@ config BR2_PACKAGE_UTIL_LINUX_LOGIN_UTILS
 	help
 	  Build login utilities (last, login, su, sulogin)
 
-comment "login utilities needs a uClibc or (e)glibc toolchain w/ wchar, locale, dynamic library"
+comment "login utilities needs a uClibc or glibc toolchain w/ wchar, locale, dynamic library"
 	depends on !(BR2_ENABLE_LOCALE && BR2_USE_WCHAR) \
 		|| BR2_STATIC_LIBS || BR2_TOOLCHAIN_USES_MUSL
 

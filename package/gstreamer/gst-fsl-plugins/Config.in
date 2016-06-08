@@ -1,7 +1,7 @@
 comment "gst-fsl-plugins needs an imx-specific Linux kernel to be built"
 	depends on BR2_arm && !BR2_LINUX_KERNEL
 
-comment "gst-fsl-plugins needs an (e)glibc toolchain"
+comment "gst-fsl-plugins needs a glibc toolchain"
 	depends on BR2_arm
 	depends on !BR2_TOOLCHAIN_USES_GLIBC
 

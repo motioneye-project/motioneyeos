@@ -19,12 +19,12 @@ config BR2_PACKAGE_KVMTOOL
 
 	  https://git.kernel.org/cgit/linux/kernel/git/will/kvmtool.git/tree/README
 
-comment "kvmtool needs a (e)glibc or musl toolchain"
+comment "kvmtool needs a glibc or musl toolchain"
 	depends on BR2_USE_MMU
 	depends on BR2_i386 || BR2_mips || BR2_x86_64
 	depends on !(BR2_TOOLCHAIN_USES_GLIBC || BR2_TOOLCHAIN_USES_MUSL)
 
-comment "kvmtool needs a (e)glibc or musl toolchain w/ dynamic library"
+comment "kvmtool needs a glibc or musl toolchain w/ dynamic library"
 	depends on BR2_USE_MMU
 	depends on BR2_aarch64 || BR2_arm || BR2_armeb
 	depends on !(BR2_TOOLCHAIN_USES_GLIBC || BR2_TOOLCHAIN_USES_MUSL) || \

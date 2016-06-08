@@ -3,7 +3,7 @@ if BR2_TOOLCHAIN_EXTERNAL
 choice
 	prompt "Toolchain"
 
-comment "(e)glibc toolchains only available with shared lib support"
+comment "glibc toolchains only available with shared lib support"
 	depends on BR2_STATIC_LIBS
 
 comment "Linaro toolchains available for Cortex-A + EABIhf"
@@ -926,7 +926,7 @@ config BR2_TOOLCHAIN_EXTERNAL_CUSTOM_GLIBC
 	  toolchain with eglibc configured to exclude key features may
 	  cause build failures to some packages.
 
-comment "(e)glibc only available with shared lib support"
+comment "glibc only available with shared lib support"
 	depends on BR2_STATIC_LIBS
 
 config BR2_TOOLCHAIN_EXTERNAL_CUSTOM_MUSL

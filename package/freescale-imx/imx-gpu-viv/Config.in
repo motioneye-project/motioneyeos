@@ -1,4 +1,4 @@
-comment "imx-gpu-viv needs an (e)glibc toolchain with armhf enabled"
+comment "imx-gpu-viv needs a glibc toolchain with armhf enabled"
 	depends on BR2_arm
 	depends on !BR2_TOOLCHAIN_USES_GLIBC || !BR2_ARM_EABIHF
 

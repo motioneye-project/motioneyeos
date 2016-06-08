@@ -1,4 +1,4 @@
-comment "nvidia-driver needs an (e)glibc toolchain"
+comment "nvidia-driver needs a glibc toolchain"
 	depends on BR2_i386 || BR2_x86_64
 	depends on !BR2_TOOLCHAIN_USES_GLIBC
 

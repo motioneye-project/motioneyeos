@@ -11,6 +11,6 @@ config BR2_PACKAGE_EFIBOOTMGR
 
 	  https://github.com/rhinstaller/efibootmgr
 
-comment "efibootmgr requires an (e)glibc toolchain w/ headers >= 3.12"
+comment "efibootmgr requires a glibc toolchain w/ headers >= 3.12"
 	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_12 || \
 		!BR2_TOOLCHAIN_USES_GLIBC

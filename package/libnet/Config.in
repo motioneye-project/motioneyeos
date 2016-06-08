@@ -8,5 +8,5 @@ config BR2_PACKAGE_LIBNET
 
 	  http://sourceforge.net/projects/libnet-dev
 
-comment "libnet needs a (e)glibc or uClibc toolchain"
+comment "libnet needs a glibc or uClibc toolchain"
 	depends on BR2_TOOLCHAIN_USES_MUSL

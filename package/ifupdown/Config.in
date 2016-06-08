@@ -13,7 +13,7 @@ config BR2_PACKAGE_IFUPDOWN
 
 	  https://tracker.debian.org/pkg/ifupdown
 
-comment "ifupdown needs an (e)glibc or musl toolchain w/ headers >= 3.0"
+comment "ifupdown needs a glibc or musl toolchain w/ headers >= 3.0"
 	depends on BR2_USE_MMU
 	depends on BR2_TOOLCHAIN_USES_UCLIBC || \
 		!BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0

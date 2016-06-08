@@ -1,4 +1,4 @@
-comment "python-pam needs a uClibc or (e)glibc toolchain w/ wchar, locale, dynamic library"
+comment "python-pam needs a uClibc or glibc toolchain w/ wchar, locale, dynamic library"
 	depends on BR2_PACKAGE_PYTHON
 	depends on !BR2_ENABLE_LOCALE || !BR2_USE_WCHAR || BR2_STATIC_LIBS || \
 		BR2_TOOLCHAIN_USES_MUSL

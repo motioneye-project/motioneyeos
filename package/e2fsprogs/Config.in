@@ -51,7 +51,7 @@ config BR2_PACKAGE_E2FSPROGS_E4DEFRAG
 	depends on !BR2_nios2 # fallocate not implemented
 	depends on !BR2_TOOLCHAIN_USES_UCLIBC # sync_file_range not impl
 
-comment "e4defrag needs an (e)glibc or musl toolchain"
+comment "e4defrag needs a glibc or musl toolchain"
 	depends on BR2_TOOLCHAIN_USES_UCLIBC
 
 config BR2_PACKAGE_E2FSPROGS_FILEFRAG

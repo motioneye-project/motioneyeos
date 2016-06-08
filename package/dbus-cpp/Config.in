@@ -13,7 +13,7 @@ config BR2_PACKAGE_DBUS_CPP
 
 	  http://sourceforge.net/projects/dbus-cplusplus/
 
-comment "dbus-c++ needs a uClibc or (e)glibc toolchain w/ C++, threads"
+comment "dbus-c++ needs a uClibc or glibc toolchain w/ C++, threads"
 	depends on BR2_USE_MMU
 	depends on BR2_PACKAGE_DBUS
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS \

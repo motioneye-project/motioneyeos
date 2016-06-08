@@ -113,7 +113,7 @@ HOST_GCC_FINAL_POST_BUILD_HOOKS += TOOLCHAIN_BUILD_WRAPPER
 # -cc symlink to the wrapper is not created.
 HOST_GCC_FINAL_POST_INSTALL_HOOKS += HOST_GCC_INSTALL_WRAPPER_AND_SIMPLE_SYMLINKS
 
-# In gcc 4.7.x, the ARM EABIhf library loader path for (e)glibc was not
+# In gcc 4.7.x, the ARM EABIhf library loader path for glibc was not
 # correct, so we create a symbolic link to make things work
 # properly. eglibc installs the library loader as ld-linux-armhf.so.3,
 # but gcc creates binaries that reference ld-linux.so.3.

@@ -1,4 +1,4 @@
-comment "elfutils needs a uClibc or (e)glibc toolchain w/ wchar, dynamic library"
+comment "elfutils needs a uClibc or glibc toolchain w/ wchar, dynamic library"
 	depends on !BR2_bfin
 	depends on !BR2_USE_WCHAR || BR2_STATIC_LIBS \
 		|| !(BR2_TOOLCHAIN_USES_UCLIBC || BR2_TOOLCHAIN_USES_GLIBC)

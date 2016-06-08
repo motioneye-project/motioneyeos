@@ -64,6 +64,6 @@ endchoice
 
 endif
 
-comment "sunxi-mali needs an (e)glibc toolchain"
+comment "sunxi-mali needs a glibc toolchain"
 	depends on BR2_arm
 	depends on !BR2_TOOLCHAIN_USES_GLIBC

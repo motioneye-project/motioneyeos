@@ -1,4 +1,4 @@
-comment "clapack needs an (e)glibc toolchain"
+comment "clapack needs a glibc toolchain"
 	depends on BR2_powerpc
 	depends on !BR2_TOOLCHAIN_USES_GLIBC
 

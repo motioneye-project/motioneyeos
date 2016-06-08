@@ -10,6 +10,6 @@ config BR2_PACKAGE_EFIVAR
 
 	  https://github.com/rhinstaller/efivar
 
-comment "efivar requires an (e)glibc toolchain w/ headers >= 3.12"
+comment "efivar requires a glibc toolchain w/ headers >= 3.12"
 	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_12 || \
 		!BR2_TOOLCHAIN_USES_GLIBC

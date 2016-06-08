@@ -10,5 +10,5 @@ config BR2_PACKAGE_LIBSIGSEGV
 
 	  http://libsigsegv.sourceforge.net/
 
-comment "libsigsegv needs an (e)glibc toolchain"
+comment "libsigsegv needs a glibc toolchain"
 	depends on (BR2_powerpc || BR2_sh) && BR2_TOOLCHAIN_USES_UCLIBC

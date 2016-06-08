@@ -4,7 +4,7 @@ config BR2_PACKAGE_KODI_ARCH_SUPPORTS
 		&& BR2_PACKAGE_FFMPEG_ARCH_SUPPORTS \
 		&& BR2_TOOLCHAIN_HAS_SYNC_8
 
-comment "kodi needs a uClibc or (e)glibc toolchain w/ C++, threads, wchar, dynamic library, gcc >= 4.7, host gcc >= 4.6"
+comment "kodi needs a uClibc or glibc toolchain w/ C++, threads, wchar, dynamic library, gcc >= 4.7, host gcc >= 4.6"
 	depends on BR2_PACKAGE_KODI_ARCH_SUPPORTS
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS \
 		|| !BR2_USE_WCHAR || BR2_STATIC_LIBS \
@@ -187,7 +187,7 @@ config BR2_PACKAGE_KODI_LIBSHAIRPLAY
 	  Enable Shairport support.
 	  Select this if you want to stream content from an Apple device.
 
-comment "samba support needs a (e)glibc or uClibc toolchain w/ RPC"
+comment "samba support needs a glibc or uClibc toolchain w/ RPC"
 	depends on (!BR2_TOOLCHAIN_USES_GLIBC && \
 		!BR2_TOOLCHAIN_USES_UCLIBC) || !BR2_TOOLCHAIN_HAS_NATIVE_RPC
 

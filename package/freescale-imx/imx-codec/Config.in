@@ -8,6 +8,6 @@ config BR2_PACKAGE_IMX_CODEC
 	  This library is provided by NXP as-is and doesn't have
 	  an upstream.
 
-comment "imx-codec needs an (e)glibc toolchain"
+comment "imx-codec needs a glibc toolchain"
 	depends on BR2_arm
 	depends on !BR2_TOOLCHAIN_USES_GLIBC

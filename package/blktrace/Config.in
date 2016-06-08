@@ -11,5 +11,5 @@ config BR2_PACKAGE_BLKTRACE
 
 	  http://git.kernel.dk/?p=blktrace.git;a=summary
 
-comment "blktrace needs a (e)glibc or musl toolchain"
+comment "blktrace needs a glibc or musl toolchain"
 	depends on !(BR2_TOOLCHAIN_USES_GLIBC || BR2_TOOLCHAIN_USES_MUSL)

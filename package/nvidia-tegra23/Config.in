@@ -32,7 +32,7 @@ source "package/nvidia-tegra23/nvidia-tegra23-binaries/Config.in"
 source "package/nvidia-tegra23/nvidia-tegra23-codecs/Config.in"
 endif
 
-comment "nvidia-tegra23 needs Xorg <= 1.14 and a (e)glibc toolchain w/ EABIhf"
+comment "nvidia-tegra23 needs Xorg <= 1.14 and a glibc toolchain w/ EABIhf"
 	depends on BR2_cortex_a9
 	depends on !BR2_ARM_EABIHF || !BR2_TOOLCHAIN_USES_GLIBC \
 		|| !BR2_PACKAGE_XORG7 || !BR2_PACKAGE_XSERVER_XORG_SERVER_VIDEODRV_ABI_14
