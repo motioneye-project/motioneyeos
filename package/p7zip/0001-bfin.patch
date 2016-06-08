@@ -1,0 +1,19 @@
+Add support for blackfin arch.
+
+Fixes compilation error:
+../../../../CPP/myWindows/mySplitCommandLine.cpp:99:8: error: #error ENDIANNESS
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+(Patch sent upstream: https://sourceforge.net/p/p7zip/patches/33/
+
+diff -uNr p7zip_15.14.1.org/C/CpuArch.h p7zip_15.14.1/C/CpuArch.h
+--- p7zip_15.14.1.org/C/CpuArch.h	2016-02-17 07:27:16.000000000 +0100
++++ p7zip_15.14.1/C/CpuArch.h	2016-06-08 19:47:49.000000000 +0200
+@@ -66,6 +66,7 @@
+     || defined(__MIPSEL__) \
+     || defined(__MIPSEL) \
+     || defined(_MIPSEL) \
++    || defined(__BFIN__) \
+     || (defined(__BYTE_ORDER__) && (__BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__))
+   #define MY_CPU_LE
+ #endif
