@@ -1,0 +1,6 @@
+config BR2_PACKAGE_PYTHON_PYTZ
+	bool "python-pytz"
+	help
+	  World timezone definitions, modern and historical.
+
+	  http://pythonhosted.org/pytz
