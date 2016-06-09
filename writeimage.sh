@@ -7,6 +7,7 @@ function usage() {
     echo "Available options:"
     echo "    <-i image_file> - indicates the path to the image file (e.g. -i /home/user/Download/file.img.gz)"
     echo "    <-d sdcard_dev> - indicates the path to the sdcard block device (e.g. -d /dev/mmcblk0)"
+    echo "    [-m modem:apn:user:pwd:pin] - configures the mobile network modem (e.g. -m ttyUSB0:internet)"
     echo "    [-n ssid:psk] - sets the wireless network name and key (e.g. -n mynet:mykey1234)"
     echo "    [-s ip/cidr:gw:dns] - sets a static IP configuration instead of DHCP (e.g. -s 192.168.1.101/24:192.168.1.1:8.8.8.8)"
     exit 1
@@ -29,6 +30,14 @@ while getopts "a:d:f:h:i:ln:o:p:s:w" o; do
             ;;
         i)
             DISK_IMG=$OPTARG
+            ;;
+        m)
+            IFS=":" SETTINGS=($OPTARG)
+            MODEM=${SETTINGS[0]}
+            APN=${SETTINGS[1]}
+            MUSER=${SETTINGS[2]}
+            MPWD=${SETTINGS[3]}
+            PIN=${SETTINGS[4]}
             ;;
         n)
             IFS=":" NETWORK=($OPTARG)
@@ -113,6 +122,25 @@ if [ -n "$SSID" ]; then
         echo "    psk=\"$PSK\"" >> $conf
     fi
     echo -e "}\n" >> $conf
+fi
+
+# modem
+if [ -n "$MODEM" ]; then
+    msg "creating mobile network configuration"
+    conf=$BOOT/ppp
+    mkdir -p $conf
+    echo $MODEM > $conf/modem
+    echo "AT+CGDCONT=1,\"IP\",\"$APN\"" > $conf/apn
+    echo > $conf/extra
+    echo > $conf/auth
+    echo > $conf/pin
+    if [ -n "$MUSER" ]; then
+        echo "user \"$MUSER\"" > $conf/auth
+        echo "password \"$MPWD\"" >> $conf/auth
+    fi
+    if [ -n "$PIN" ]; then
+        echo "AT+CPIN=$PIN" > $conf/pin
+    fi
 fi
 
 # static ip

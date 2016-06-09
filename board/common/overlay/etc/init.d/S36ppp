@@ -1,7 +1,7 @@
 #!/bin/bash
 
 sys_conf="/etc/ppp/default"
-boot_conf="/boot/ppp/default"
+boot_conf="/boot/ppp"
 conf="/data/etc/ppp"
 
 prog="/usr/sbin/pppd"
@@ -20,7 +20,8 @@ if ! [ -d $conf ]; then
     fi
 fi
 
-test -f $conf/modem || exit 0
+test -e $conf/modem || exit 0
+test -e $conf/apn || exit 0
 
 test -n "$os_version" || source /etc/init.d/base
 
@@ -47,26 +48,10 @@ watch() {
 }
 
 start() {
-    if [ -s $conf/usb_modeswitch ]; then
-        IFS=: venprod=($(cat $conf/usb_modeswitch))
-        vendor=${venprod[0]}
-        product=${venprod[1]}
-        # wait for usb device
-        if [ -n "$vendor" ] && [ -n "$product" ]; then
-            msg_begin "Starting usb_modeswitch"
-            count=0
-            while true; do
-                if lsusb | grep $vendor:$product >/dev/null 2>&1 || [ $count -gt $link_watch_timeout ]; then
-                    break
-                fi
-
-                count=$(($count + 1))
-                sleep 1
-            done
-            /usr/sbin/usb_modeswitch -c /etc/usb_modeswitch.conf -v $vendor -p $product > /var/log/usb_modeswitch.log 2>&1
-            msg_done
-        fi
-    fi
+    test -e $conf/auth || touch $conf/auth
+    test -e $conf/extra || touch $conf/extra
+    test -e $conf/pin || touch $conf/pin
+    mknod /dev/ppp c 108 0 &>/dev/null
 
     msg_begin "Starting pppd"
 
@@ -84,7 +69,7 @@ start() {
 
     if ! [ -e /dev/$modem ]; then
         msg_fail "modem /dev/$modem not present"
-        return 1
+        return
     fi
 
     $prog call $provider
@@ -98,8 +83,7 @@ start() {
 
         if [ $count -gt $link_watch_timeout ] || ! pidof pppd > /dev/null; then
             msg_fail
-            reboot
-            return 1
+            return
         fi
 
         count=$(($count + 1))
