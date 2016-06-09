@@ -4,8 +4,9 @@
 #
 ################################################################################
 
-IPERF3_VERSION = 3.1.2
-IPERF3_SITE = $(call github,esnet,iperf,$(IPERF3_VERSION))
+IPERF3_VERSION = 3.1.3
+IPERF3_SITE = http://downloads.es.net/pub/iperf
+IPERF3_SOURCE = iperf-$(IPERF3_VERSION).tar.gz
 IPERF3_LICENSE = BSD-3c, BSD-2c, MIT
 IPERF3_LICENSE_FILES = LICENSE
 
