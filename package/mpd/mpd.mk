@@ -13,6 +13,9 @@ MPD_LICENSE = GPLv2+
 MPD_LICENSE_FILES = COPYING
 MPD_AUTORECONF = YES
 
+# Fix GCC 6 issue (https://bugs.musicpd.org/view.php?id=4524)
+MPD_PATCH = https://github.com/MaxKellermann/MPD/commit/aa5d05eaa4d482aa8f8df954335d0aba151eeff9.patch
+
 # Some options need an explicit --disable or --enable
 
 # Zeroconf support depends on libdns_sd from avahi.

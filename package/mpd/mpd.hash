@@ -1,2 +1,3 @@
 # Locally calculated after checking pgp signature
 sha256  0cb9a223894b038ce966ce6d651d9b3ea3bdc7d7b9bec8d1e9e7e091cbc29b8b  mpd-0.19.15.tar.xz
+sha256  cb9a31889a3d01f373ad154dc4c0d13ca866d69bc02b3acd9f18727a756e78cb  aa5d05eaa4d482aa8f8df954335d0aba151eeff9.patch
