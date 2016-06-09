@@ -27,11 +27,14 @@ else
 NODEJS_CONF_OPTS += --without-ssl
 endif
 
+# 0.10.x does not have icu support
+ifeq ($(findstring 0.10.,$(NODEJS_VERSION)),)
 ifeq ($(BR2_PACKAGE_ICU),y)
 NODEJS_DEPENDENCIES += icu
 NODEJS_CONF_OPTS += --with-intl=system-icu
 else
 NODEJS_CONF_OPTS += --with-intl=none
+endif
 endif
 
 ifneq ($(BR2_PACKAGE_NODEJS_NPM),y)
