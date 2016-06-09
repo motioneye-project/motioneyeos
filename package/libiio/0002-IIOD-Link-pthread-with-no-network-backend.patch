@@ -1,0 +1,30 @@
+From 8dcb6c3f60123511d77b9fc7e4e22ae710e7d2f4 Mon Sep 17 00:00:00 2001
+From: Matthew Fornero <mfornero@mathworks.com>
+Date: Wed, 8 Jun 2016 20:03:56 -0400
+Subject: [PATCH] IIOD: Link pthread with no network backend
+
+If iiod is built without the network backend, CMake will not link in
+pthreads. Update the CMake configuration to accomodate this case.
+
+Signed-off-by: Matthew Fornero <mfornero@mathworks.com>
+---
+ CMakeLists.txt |    3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 70f61f0..20fa9f1 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -56,6 +56,9 @@ IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+ 	if (WITH_IIOD AND NOT WITH_LOCAL_BACKEND)
+ 		message(SEND_ERROR "IIOD can only be enabled if the local backend is enabled")
+ 	endif()
++	if (WITH_IIOD)
++		set(NEED_THREADS 1)
++	endif()
+ endif()
+ 
+ option(ENABLE_IPV6 "Define if you want to enable IPv6 support" ON)
+-- 
+1.7.10.4
+
