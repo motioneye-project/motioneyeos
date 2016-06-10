@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBIMXVPUAPI_VERSION = 0.10.1
+LIBIMXVPUAPI_VERSION = 0.10.2
 LIBIMXVPUAPI_SITE = $(call github,Freescale,libimxvpuapi,$(LIBIMXVPUAPI_VERSION))
 LIBIMXVPUAPI_LICENSE = LGPLv2.1+
 LIBIMXVPUAPI_LICENSE_FILES = LICENSE
