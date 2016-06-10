@@ -23,7 +23,7 @@ function msg() {
     echo ":: $1"
 }
 
-while getopts "a:d:f:h:i:ln:o:p:s:w" o; do
+while getopts "a:d:f:h:i:lm:n:o:p:s:w" o; do
     case "$o" in
         d)
             SDCARD_DEV=$OPTARG
