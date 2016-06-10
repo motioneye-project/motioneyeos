@@ -16,10 +16,6 @@ $(shell support/dependencies/check-host-$(1).sh $(2))
 endef
 -include $(sort $(wildcard support/dependencies/check-host-*.mk))
 
-ifeq ($(BR2_STRIP_sstrip),y)
-DEPENDENCIES_HOST_PREREQ += host-sstrip
-endif
-
 ifeq ($(BR2_CCACHE),y)
 DEPENDENCIES_HOST_PREREQ += host-ccache
 endif
