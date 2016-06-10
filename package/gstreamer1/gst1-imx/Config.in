@@ -14,6 +14,6 @@ config BR2_PACKAGE_GST1_IMX
 	  The VPU plugin is built when BR2_PACKAGE_LIBIMXVPUAPI is enabled.
 	  The EGL plugin is built when BR2_PACKAGE_IMX_GPU_VIV is enabled.
 	  The G2D plugin is built when BR2_PACKAGE_IMX_GPU_VIV_G2D is enabled.
-	  The MP3 plugin is built when BR2_PACKAGE_LIBFSLCODEC is enabled.
+	  The MP3 plugin is built when BR2_PACKAGE_IMX_CODEC is enabled.
 
 	  https://github.com/Freescale/gstreamer-imx

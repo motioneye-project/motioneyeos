@@ -49,6 +49,7 @@ config BR2_PACKAGE_FREESCALE_IMX_HAS_VPU
 		BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX53 || \
 		BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX6Q
 
+source "package/freescale-imx/imx-codec/Config.in"
 source "package/freescale-imx/imx-kobs/Config.in"
 source "package/freescale-imx/imx-lib/Config.in"
 source "package/freescale-imx/imx-uuc/Config.in"

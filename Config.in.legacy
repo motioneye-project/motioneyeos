@@ -145,6 +145,13 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2016.08"
 
+config BR2_PACKAGE_LIBFSLCODEC
+	bool "libfslcodec has been renamed to imx-codec"
+	select BR2_LEGACY
+	select BR2_PACKAGE_IMX_CODEC
+	help
+	  The libfslcodec has been renamed to match the renamed package.
+
 config BR2_PACKAGE_UBOOT_TOOLS_MKIMAGE_FIT_SIGNATURE_SUPPORT
 	bool "FIT support in uboot-tools has been refactored"
 	select BR2_LEGACY

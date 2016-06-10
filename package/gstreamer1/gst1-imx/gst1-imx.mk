@@ -30,8 +30,8 @@ ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD),y)
 GST1_IMX_DEPENDENCIES += gst1-plugins-bad
 endif
 
-ifeq ($(BR2_PACKAGE_LIBFSLCODEC),y)
-GST1_IMX_DEPENDENCIES += libfslcodec
+ifeq ($(BR2_PACKAGE_IMX_CODEC),y)
+GST1_IMX_DEPENDENCIES += imx-codec
 endif
 
 ifeq ($(BR2_PACKAGE_LIBIMXVPUAPI),y)

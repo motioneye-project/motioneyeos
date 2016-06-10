@@ -9,12 +9,12 @@ config BR2_PACKAGE_GST_FSL_PLUGINS
 	bool "gst-fsl-plugins"
 	depends on BR2_LINUX_KERNEL
 	depends on BR2_arm # Only relevant for i.MX
-	depends on BR2_TOOLCHAIN_USES_GLIBC # libfslcodec
+	depends on BR2_TOOLCHAIN_USES_GLIBC # imx-codec
 	select BR2_PACKAGE_GST_PLUGINS_BASE
 	select BR2_PACKAGE_LIBFSLVPUWRAP if BR2_PACKAGE_FREESCALE_IMX_HAS_VPU
 	select BR2_PACKAGE_IMX_LIB
 	select BR2_PACKAGE_LIBFSLPARSER
-	select BR2_PACKAGE_LIBFSLCODEC
+	select BR2_PACKAGE_IMX_CODEC
 	select BR2_PACKAGE_FREESCALE_IMX
 	help
 	  GStreamer plugins for hardware-accelerated audio and video
