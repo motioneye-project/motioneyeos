@@ -19,7 +19,7 @@ GST_FSL_PLUGINS_DEPENDENCIES += host-pkgconf gstreamer gst-plugins-base \
 	imx-lib imx-parser imx-codec
 
 ifeq ($(BR2_PACKAGE_FREESCALE_IMX_HAS_VPU),y)
-GST_FSL_PLUGINS_DEPENDENCIES += libfslvpuwrap
+GST_FSL_PLUGINS_DEPENDENCIES += imx-vpuwrap
 endif
 
 GST_FSL_PLUGINS_CONF_ENV = \

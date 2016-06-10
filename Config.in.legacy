@@ -145,6 +145,13 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2016.08"
 
+config BR2_PACKAGE_LIBFSLVPUWRAP
+	bool "libfslvpuwrap has been renamed to imx-vpuwrap"
+	select BR2_LEGACY
+	select BR2_PACKAGE_IMX_VPUWRAP
+	help
+	  The libfslvpuwrap has been renamed to match the renamed package.
+
 config BR2_PACKAGE_LIBFSLPARSER
 	bool "libfslparser has been renamed to imx-parser"
 	select BR2_LEGACY

@@ -53,8 +53,8 @@ KODI_CONF_ENV += INCLUDES="-I$(STAGING_DIR)/usr/include/interface/vcos/pthreads 
 	LIBS="-lvcos -lvchostif"
 endif
 
-ifeq ($(BR2_PACKAGE_LIBFSLVPUWRAP),y)
-KODI_DEPENDENCIES += libfslvpuwrap
+ifeq ($(BR2_PACKAGE_IMX_VPUWRAP),y)
+KODI_DEPENDENCIES += imx-vpuwrap
 KODI_CONF_OPTS += --enable-codec=imxvpu
 endif
 
