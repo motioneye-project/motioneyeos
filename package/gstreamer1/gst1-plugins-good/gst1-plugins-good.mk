@@ -30,8 +30,7 @@ GST1_PLUGINS_GOOD_CONF_OPTS += \
 	--disable-jack \
 	--disable-libdv \
 	--disable-dv1394 \
-	--disable-shout2 \
-	--disable-taglib
+	--disable-shout2
 
 GST1_PLUGINS_GOOD_DEPENDENCIES = gstreamer1 gst1-plugins-base
 
