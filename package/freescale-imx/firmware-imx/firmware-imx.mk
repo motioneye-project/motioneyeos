@@ -4,12 +4,11 @@
 #
 ################################################################################
 
-FIRMWARE_IMX_VERSION = 5.3
+FIRMWARE_IMX_VERSION = 5.4
 FIRMWARE_IMX_SITE = $(FREESCALE_IMX_SITE)
 FIRMWARE_IMX_SOURCE = firmware-imx-$(FIRMWARE_IMX_VERSION).bin
 
-FIRMWARE_IMX_LICENSE = Freescale Semiconductor Software License Agreement, \
-	Atheros license (ath6k)
+FIRMWARE_IMX_LICENSE = NXP Semiconductor Software License Agreement
 FIRMWARE_IMX_LICENSE_FILES = EULA COPYING
 FIRMWARE_IMX_REDISTRIBUTE = NO
 
