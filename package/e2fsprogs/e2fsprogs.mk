@@ -155,14 +155,5 @@ ifeq ($(BR2_PACKAGE_E2FSPROGS_TUNE2FS),y)
 E2FSPROGS_POST_INSTALL_TARGET_HOOKS += E2FSPROGS_TARGET_TUNE2FS_SYMLINK
 endif
 
-# systemd really wants to have fsck in /sbin
-define E2FSPROGS_TARGET_FSCK_SYMLINK
-	ln -sf ../usr/sbin/fsck $(TARGET_DIR)/sbin/fsck
-endef
-
-ifeq ($(BR2_PACKAGE_E2FSPROGS_FSCK),y)
-E2FSPROGS_POST_INSTALL_TARGET_HOOKS += E2FSPROGS_TARGET_FSCK_SYMLINK
-endif
-
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
