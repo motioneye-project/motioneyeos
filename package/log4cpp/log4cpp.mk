@@ -11,7 +11,7 @@ LOG4CPP_SITE = http://downloads.sourceforge.net/project/log4cpp/log4cpp-1.1.x%20
 LOG4CPP_SUBDIR = log4cpp
 # The "or later" is indicated in the HTML documentation
 LOG4CPP_LICENSE = LGPLv2.1+
-LOG4CPP_LICENSE_FILES = COPYING
+LOG4CPP_LICENSE_FILES = log4cpp/COPYING
 LOG4CPP_INSTALL_STAGING = YES
 
 # The default <pkg>_CONFIG_SCRIPTS handling does not apply
