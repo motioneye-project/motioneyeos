@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-XCB_UTIL_CURSOR_VERSION = 0.1.2
+XCB_UTIL_CURSOR_VERSION = 0.1.3
 XCB_UTIL_CURSOR_SITE = http://xcb.freedesktop.org/dist
 XCB_UTIL_CURSOR_SOURCE = xcb-util-cursor-$(XCB_UTIL_CURSOR_VERSION).tar.bz2
 XCB_UTIL_CURSOR_LICENSE = MIT
