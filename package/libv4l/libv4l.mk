@@ -47,6 +47,10 @@ else
 LIBV4L_CONF_OPTS += --without-libudev
 endif
 
+ifeq ($(BR2_PACKAGE_LIBGLU),y)
+LIBV4L_DEPENDENCIES += libglu
+endif
+
 ifeq ($(BR2_PACKAGE_LIBV4L_UTILS),y)
 LIBV4L_CONF_OPTS += --enable-v4l-utils
 # clock_gettime is used, which is provided by librt for glibc < 2.17
