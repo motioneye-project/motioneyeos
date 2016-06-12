@@ -99,4 +99,21 @@ else
 LIBARCHIVE_CONF_OPTS += --without-lzma
 endif
 
+# The only user of host-libarchive needs zlib support
+HOST_LIBARCHIVE_DEPENDENCIES = host-zlib
+HOST_LIBARCHIVE_CONF_OPTS = \
+	--disable-bsdtar \
+	--disable-bsdcpio \
+	--disable-acl \
+	--disable-xattr \
+	--without-bz2lib \
+	--without-expat \
+	--without-libiconv-prefix \
+	--without-xml2 \
+	--without-lzo2 \
+	--without-nettle \
+	--without-openssl \
+	--without-lzma
+
 $(eval $(autotools-package))
+$(eval $(host-autotools-package))
