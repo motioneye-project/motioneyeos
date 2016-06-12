@@ -1,1 +1,2 @@
+14 3 * * * /usr/sbin/logrotate /etc/logrotate.conf
 
