@@ -30,7 +30,7 @@ define FMLIB_BUILD_CMDS
 endef
 
 define FMLIB_INSTALL_STAGING_CMDS
-	rm $(STAGING_DIR)/usr/lib/libfm.a -f
+	$(RM) $(STAGING_DIR)/usr/lib/libfm.a
 	$(FMLIB_MAKE_ENV) $(MAKE) $(FMLIB_MAKE_OPTS) -C $(@D) install-libfm-$(FMLIB_ARCHTYPE)
 endef
 
