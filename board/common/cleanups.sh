@@ -18,6 +18,7 @@ rm -rf $TARGET/etc/sudoers.d/
 rm -rf $TARGET/etc/ssl/man
 rm -rf $TARGET/etc/ssl/misc
 rm -rf $TARGET/etc/ssl/private
+rm -rf $TARGET/etc/logrotate.d
 
 rm -f $TARGET/etc/rc_maps.cfg
 rm -f $TARGET/etc/udev/hwdb.d/20-pci-vendor-model.hwdb
@@ -107,7 +108,19 @@ rm -f $TARGET/usr/sbin/fdformat
 rm -f $TARGET/usr/bin/linux32
 rm -f $TARGET/usr/bin/linux64
 rm -f $TARGET/usr/bin/uname26
-
+rm -f $TARGET/bin/zcat
+rm -f $TARGET/bin/zcmp
+rm -f $TARGET/bin/zdiff
+rm -f $TARGET/bin/zegrep
+rm -f $TARGET/bin/zfgrep
+rm -f $TARGET/bin/zforce
+rm -f $TARGET/bin/zgrep
+rm -f $TARGET/bin/zless
+rm -f $TARGET/bin/zmore
+rm -f $TARGET/bin/znew
+rm -f $TARGET/bin/gzexe
+rm -f $TARGET/bin/uncompress
+rm -f $TARGET/usr/bin/v4l2-compliance
 rm -f $TARGET/usr/bin/slogin
 rm -f $TARGET/usr/bin/ssh-keyscan
 rm -f $TARGET/usr/bin/ssh-add
