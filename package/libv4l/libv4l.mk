@@ -36,6 +36,10 @@ else
 LIBV4L_CONF_OPTS += --without-jpeg
 endif
 
+ifeq ($(BR2_PACKAGE_HAS_LIBGL),y)
+LIBV4L_DEPENDENCIES += libgl
+endif
+
 ifeq ($(BR2_PACKAGE_HAS_UDEV),y)
 LIBV4L_CONF_OPTS += --with-libudev
 LIBV4L_DEPENDENCIES += udev
