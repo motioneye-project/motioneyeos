@@ -15,3 +15,4 @@ LIBSODIUM_CONF_OPTS += --disable-pie
 endif
 
 $(eval $(autotools-package))
+$(eval $(host-autotools-package))
