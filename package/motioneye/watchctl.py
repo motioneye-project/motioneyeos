@@ -173,15 +173,6 @@ def watchLinkTimeout():
 
 
 @additional_config
-def watchLinkSeparator():
-    return {
-        'type': 'separator',
-        'section': 'expertSettings',
-        'advanced': True
-    }
-
-
-@additional_config
 def watchConnect():
     return {
         'label': 'Connectivity Watch',

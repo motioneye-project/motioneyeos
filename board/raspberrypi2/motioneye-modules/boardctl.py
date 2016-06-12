@@ -24,6 +24,29 @@ import streameyectl
 
 
 CONFIG_TXT = '/boot/config.txt'
+MONITOR = '/data/etc/monitor_1'
+
+MONITOR_SCRIPT = '''#!/bin/bash
+
+net_tmp=/tmp/netspeed.tmp 
+temp=$(($(cat /sys/devices/virtual/thermal/thermal_zone0/temp) / 1000))
+load=$(cat /proc/loadavg | cut -d ' ' -f 2)
+recv=$(cat /proc/net/dev | grep -v 'lo:' | tr -s ' ' | cut -d ' ' -f 3 | tail +3 | awk '{s+=$1} END {print s}')
+send=$(cat /proc/net/dev | grep -v 'lo:' | tr -s ' ' | cut -d ' ' -f 11 | tail +3 | awk '{s+=$1} END {print s}')
+total=$(($recv + $send))
+
+if [ -e $net_tmp ]; then
+    prev_total=$(cat $net_tmp)
+    speed=$(($total - $prev_total))
+else
+    speed=0
+fi
+
+echo $total > $net_tmp
+speed=$(($speed / 1024))
+
+echo -n "$temp&deg;|$load|${speed}kB/s"
+'''
 
 OVERCLOCK = {
     700: '700|250|400|0',
@@ -164,6 +187,30 @@ def _set_board_settings(s):
             f.write(line)
 
 
+def _get_sys_mon():
+    return os.access(MONITOR, os.X_OK)
+
+
+def _set_sys_mon(sys_mon):
+    if sys_mon:
+        if os.access(MONITOR, os.X_OK):
+            pass
+        
+        else:
+            if os.path.exists(MONITOR):
+                os.system('chmod +x %s' % MONITOR)
+            
+            else:
+                with open(MONITOR, 'w') as f:
+                    f.write(MONITOR_SCRIPT)
+                
+                os.system('chmod +x %s' % MONITOR)
+
+    else:
+        if os.access(MONITOR, os.X_OK):
+            os.system('chmod -x %s' % MONITOR)
+
+
 @additional_config
 def boardSeparator():
     return {
@@ -225,5 +272,19 @@ def overclock():
         'get': _get_board_settings,
         'set': _set_board_settings,
         'get_set_dict': True
+    }
+
+
+@additional_config
+def sysMon():
+    return {
+        'label': 'Enable System Monitoring',
+        'description': 'when this is enabled, system monitoring info will be overlaid on top of the first camera frame',
+        'type': 'bool',
+        'section': 'expertSettings',
+        'advanced': True,
+        'reboot': False,
+        'get': _get_sys_mon,
+        'set': _set_sys_mon
     }
 
