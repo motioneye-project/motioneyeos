@@ -336,6 +336,9 @@ QT_DEPENDENCIES += libgles libegl
 QT_CFLAGS += `$(PKG_CONFIG_HOST_BINARY) --cflags egl`
 QT_CXXFLAGS += `$(PKG_CONFIG_HOST_BINARY) --cflags egl`
 QT_LDFLAGS += `$(PKG_CONFIG_HOST_BINARY) --libs egl`
+else ifeq ($(BR2_PACKAGE_QT_OPENGL_GL_DESKTOP),y)
+QT_CONFIGURE_OPTS += -opengl desktop
+QT_DEPENDENCIES += libgl
 else
 QT_CONFIGURE_OPTS += -no-opengl
 endif
