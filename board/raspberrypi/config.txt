@@ -1,8 +1,0 @@
-arm_freq=700
-core_freq=250
-sdram_freq=400
-over_voltage=0
-gpu_mem=128
-gpu_mem_256=128
-gpu_mem_512=128
-

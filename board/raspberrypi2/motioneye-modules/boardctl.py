@@ -60,7 +60,7 @@ OVERCLOCK = {
 def _get_board_settings():
     gpu_mem = 128
     camera_led = True
-    arm_freq = 700
+    arm_freq = 1001
 
     if os.path.exists(CONFIG_TXT):
         logging.debug('reading board settings from %s' % CONFIG_TXT)

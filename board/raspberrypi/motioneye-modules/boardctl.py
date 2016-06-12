@@ -17,6 +17,7 @@
 
 import logging
 import os.path
+import subprocess
 
 from config import additional_config
 
@@ -53,13 +54,27 @@ OVERCLOCK = {
     800: '800|250|400|0',
     900: '900|250|450|0',
     950: '950|250|450|0',
-    1000: '1000|500|600|6'
+    1000: '1000|500|600|6',
+    1001: '1001|300|450|6'
 }
+
+def _is_pi_zero():
+    try:
+        subprocess.check_call('grep -q "^Revision\s*:\s*[ 123][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F]09[0-9a-fA-F]$" /proc/cpuinfo', shell=True)
+        return True
+    
+    except:
+        return False
+
 
 def _get_board_settings():
     gpu_mem = 128
     camera_led = True
-    arm_freq = 700
+    if _is_pi_zero():
+        arm_freq = 1001
+    
+    else:
+        arm_freq = 700
 
     if os.path.exists(CONFIG_TXT):
         logging.debug('reading board settings from %s' % CONFIG_TXT)
@@ -268,7 +283,8 @@ def overclock():
             ('800|250|400|0', 'modest (800/250/400/0)'),
             ('900|250|450|0', 'medium (900/250/450/0)'),
             ('950|250|450|0', 'high (950/250/450/0)'),
-            ('1000|500|600|6', 'turbo (1000/500/600/6)')
+            ('1000|500|600|6', 'turbo (1000/500/600/6)'),
+            ('1001|300|450|6', 'PiZero (1000/300/450/6)'),
         ],
         'section': 'expertSettings',
         'advanced': True,
