@@ -16,6 +16,7 @@ IPTABLES_LICENSE_FILES = COPYING
 IPTABLES_CONF_OPTS = --libexecdir=/usr/lib --with-kernel=$(STAGING_DIR)/usr \
 	$(if $(BR2_STATIC_LIBS),,--disable-static)
 # For 0002-iptables-add-xtables-config-parser.h-to-BUILT_SOURCES.patch
+# and 0003-extensions-added-AR-substitution.patch
 IPTABLES_AUTORECONF = YES
 
 # For connlabel match
