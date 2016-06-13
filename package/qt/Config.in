@@ -354,6 +354,7 @@ config BR2_PACKAGE_QT_OPENGL
 	bool "OpenGL support"
 	depends on (BR2_PACKAGE_HAS_LIBGL && BR2_PACKAGE_QT_X11) || \
 		   (BR2_PACKAGE_HAS_LIBEGL && BR2_PACKAGE_HAS_LIBGLES)
+	default y
 	help
 	  This option enables OpenGL support.
 
