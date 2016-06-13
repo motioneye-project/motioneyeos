@@ -56,8 +56,14 @@ define DMALLOC_INSTALL_STAGING_CMDS
 		-C $(@D) install
 endef
 
-define DMALLOC_INSTALL_TARGET_CMDS
+ifeq ($(BR2_STATIC_LIBS),)
+define DMALLOC_INSTALL_SHARED_LIB
 	cp -dpf $(STAGING_DIR)/usr/lib/libdmalloc*.so $(TARGET_DIR)/usr/lib
+endef
+endif
+
+define DMALLOC_INSTALL_TARGET_CMDS
+	$(DMALLOC_INSTALL_SHARED_LIB)
 	cp -dpf $(STAGING_DIR)/usr/bin/dmalloc $(TARGET_DIR)/usr/bin/dmalloc
 endef
 
