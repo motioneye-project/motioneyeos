@@ -1,0 +1,37 @@
+Do not use the non-standard <sys/cdefs.h> header
+
+<sys/cdefs.h> is glibc-specific, and should be used only internally by
+glibc, not by external libraries/programs. It is not available in all
+standard C libraries.
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+(Patch sent upstream: https://sourceforge.net/p/linknx/patches/21/)
+
+diff -uNr linknx-0.0.1.32.org/include/eibclient.h linknx-0.0.1.32/include/eibclient.h
+--- linknx-0.0.1.32.org/include/eibclient.h	2007-10-11 01:55:33.000000000 +0200
++++ linknx-0.0.1.32/include/eibclient.h	2016-01-23 23:21:17.315006629 +0100
+@@ -27,11 +27,12 @@
+ #ifndef EIBCLIENT_H
+ #define EIBCLIENT_H
+ 
+-#include "sys/cdefs.h"
+ #include "stdint.h"
+ #include <pthsem.h>
+ 
+-__BEGIN_DECLS;
++#ifdef __cplusplus
++extern "C" {
++#endif
+ 
+ #include "eibloadresult.h"
+ 
+@@ -705,5 +706,8 @@
+  */
+ int EIB_LoadImage_async (EIBConnection * con, const uint8_t * image, int len);
+ 
+-__END_DECLS
++#ifdef __cplusplus
++}
++#endif
++
+ #endif
