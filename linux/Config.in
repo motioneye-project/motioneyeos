@@ -142,6 +142,14 @@ choice
 config BR2_LINUX_KERNEL_USE_DEFCONFIG
 	bool "Using an in-tree defconfig file"
 
+config BR2_LINUX_KERNEL_USE_ARCH_DEFAULT_CONFIG
+	bool "Use the architecture default configuration"
+	help
+	  This option will use the default configuration for the
+	  selected architecture. I.e, it is equivalent to running
+	  "make ARCH=<foo> defconfig". This is useful on architectures
+	  that have a single defconfig file, such as ARM64.
+
 config BR2_LINUX_KERNEL_USE_CUSTOM_CONFIG
 	bool "Using a custom (def)config file"
 
