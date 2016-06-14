@@ -13,6 +13,7 @@ LOG4CPP_SUBDIR = log4cpp
 LOG4CPP_LICENSE = LGPLv2.1+
 LOG4CPP_LICENSE_FILES = log4cpp/COPYING
 LOG4CPP_INSTALL_STAGING = YES
+LOG4CPP_CONF_OPTS = --enable-doxygen=no --enable-dot=no
 
 # The default <pkg>_CONFIG_SCRIPTS handling does not apply
 define LOG4CPP_STAGING_CONFIG_SCRIPT_FIXUP
