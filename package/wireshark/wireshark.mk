@@ -99,4 +99,11 @@ else
 WIRESHARK_CONF_OPTS += --with-sbc=no
 endif
 
+define WIRESHARK_REMOVE_DOCS
+	find $(TARGET_DIR)/usr/share/wireshark -name '*.txt' -print0 \
+		-o -name '*.html' -print0 | xargs -0 rm -f
+endef
+
+WIRESHARK_POST_INSTALL_TARGET_HOOKS += WIRESHARK_REMOVE_DOCS
+
 $(eval $(autotools-package))
