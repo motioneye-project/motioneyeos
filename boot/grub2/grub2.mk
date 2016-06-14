@@ -62,7 +62,7 @@ GRUB2_CONF_OPTS = \
 	--with-platform=$(GRUB2_PLATFORM) \
 	--disable-grub-mkfont \
 	--enable-efiemu=no \
-	--enable-liblzma=no \
+	ac_cv_lib_lzma_lzma_code=no \
 	--enable-device-mapper=no \
 	--enable-libzfs=no \
 	--disable-werror
