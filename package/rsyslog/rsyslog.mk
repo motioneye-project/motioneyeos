@@ -22,6 +22,13 @@ ifeq ($(BR2_PACKAGE_BUSYBOX),y)
 RSYSLOG_DEPENDENCIES += busybox
 endif
 
+ifeq ($(BR2_PACKAGE_GNUTLS),y)
+RSYSLOG_DEPENDENCIES += gnutls
+RSYSLOG_CONF_OPTS += --enable-gnutls
+else
+RSYSLOG_CONF_OPTS += --disable-gnutls
+endif
+
 ifeq ($(BR2_PACKAGE_LIBEE),y)
 RSYSLOG_DEPENDENCIES += libee
 endif
