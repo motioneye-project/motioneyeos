@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-IMAGEMAGICK_VERSION = 6.9.4-6
+IMAGEMAGICK_VERSION = 7.0.2-0
 IMAGEMAGICK_SOURCE = ImageMagick-$(IMAGEMAGICK_VERSION).tar.xz
 IMAGEMAGICK_SITE = http://www.imagemagick.org/download/releases
 IMAGEMAGICK_LICENSE = Apache-2.0
@@ -12,7 +12,7 @@ IMAGEMAGICK_LICENSE_FILES = LICENSE
 
 IMAGEMAGICK_INSTALL_STAGING = YES
 IMAGEMAGICK_CONFIG_SCRIPTS = \
-	$(addsuffix -config,Magick MagickCore MagickWand Wand)
+	$(addsuffix -config,MagickCore MagickWand)
 
 ifeq ($(BR2_INSTALL_LIBSTDCPP)$(BR2_USE_WCHAR),yy)
 IMAGEMAGICK_CONFIG_SCRIPTS += Magick++-config
@@ -23,16 +23,19 @@ IMAGEMAGICK_CONF_ENV = ac_cv_sys_file_offset_bits=64
 IMAGEMAGICK_CONF_OPTS = \
 	--program-transform-name='s,,,' \
 	--disable-openmp \
-	--without-perl \
-	--without-wmf \
-	--without-openexr \
-	--without-jp2 \
-	--without-jbig \
-	--without-gvc \
 	--without-djvu \
 	--without-dps \
-	--without-gslib \
+	--without-flif \
 	--without-fpx \
+	--without-gslib \
+	--without-gvc \
+	--without-jbig \
+	--without-jp2 \
+	--without-lqr \
+	--without-openexr \
+	--without-perl \
+	--without-raqm \
+	--without-wmf \
 	--without-x
 
 IMAGEMAGICK_DEPENDENCIES = host-pkgconf
