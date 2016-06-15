@@ -92,6 +92,13 @@ else
 IMAGEMAGICK_CONF_OPTS += --without-xml
 endif
 
+ifeq ($(BR2_PACKAGE_PANGO),y)
+IMAGEMAGICK_CONF_OPTS += --with-pango
+IMAGEMAGICK_DEPENDENCIES += pango
+else
+IMAGEMAGICK_CONF_OPTS += --without-pango
+endif
+
 ifeq ($(BR2_PACKAGE_TIFF),y)
 IMAGEMAGICK_CONF_OPTS += --with-tiff
 IMAGEMAGICK_DEPENDENCIES += tiff
