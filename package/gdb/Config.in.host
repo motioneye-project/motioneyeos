@@ -25,6 +25,7 @@ config BR2_PACKAGE_HOST_GDB_PYTHON
 
 config BR2_PACKAGE_HOST_GDB_SIM
 	bool "Simulator support"
+	depends on !BR2_arc
 	help
 	  This option enables the simulator support in the cross gdb.
 
