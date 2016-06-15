@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-TZDATA_VERSION = 2016d
+TZDATA_VERSION = 2016e
 TZDATA_SOURCE = tzdata$(TZDATA_VERSION).tar.gz
 TZDATA_SITE = http://www.iana.org/time-zones/repository/releases
 TZDATA_STRIP_COMPONENTS = 0
