@@ -106,6 +106,13 @@ else
 IMAGEMAGICK_CONF_OPTS += --without-tiff
 endif
 
+ifeq ($(BR2_PACKAGE_XZ),y)
+IMAGEMAGICK_CONF_OPTS += --with-lzma
+IMAGEMAGICK_DEPENDENCIES += xz
+else
+IMAGEMAGICK_CONF_OPTS += --without-lzma
+endif
+
 ifeq ($(BR2_PACKAGE_FFTW),y)
 # configure script misdetects these leading to build errors
 IMAGEMAGICK_CONF_ENV += ac_cv_func_creal=yes ac_cv_func_cimag=yes
