@@ -1,0 +1,6 @@
+boot_file=zImage
+fdt_file=imx6q-apalis_v1_0-ixora.dtb
+sdargs=ip=off root=/dev/mmcblk1p1 rw,noatime rootfstype=ext4 rootwait
+sddtbload=ext2load mmc 2:1 ${fdt_addr_r} boot/${fdt_file}
+sdkernelload=ext2load mmc 2:1 ${kernel_addr_r} boot/${boot_file}
+bootcmd=run setup; setenv bootargs ${defargs} ${sdargs} ${setupargs} ${vidargs}; echo Booting from SD card...; run sddtbload; run sdkernelload; bootz ${kernel_addr_r} - ${fdt_addr_r}
