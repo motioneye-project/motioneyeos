@@ -471,7 +471,7 @@ unshift @INC, sub {
 } # END OF FATPACK CODE
 
 
-use 5.022;      # same major version as target perl
+use 5.010;
 use strict;
 use warnings;
 use Fatal qw(open close);
@@ -483,6 +483,19 @@ use Module::CoreList;
 use HTTP::Tiny;
 use Safe;
 use MetaCPAN::API::Tiny;
+
+# Below, 5.022 should be aligned with the version of perl actually
+# bundled in Buildroot:
+die <<"MSG" if $] < 5.022;
+This script needs a host perl with the same major version as Buildroot target perl.
+
+Your current host perl is:
+    $^X
+    version $]
+
+You may install a local one by running:
+    perlbrew install perl-5.22.2
+MSG
 
 my ($help, $man, $quiet, $force, $recommend, $test, $host);
 my $target = 1;
@@ -745,10 +758,6 @@ __END__
 support/scripts/scancpan Try-Tiny Moo
 
 =head1 SYNOPSIS
-
-curl -kL http://install.perlbrew.pl | bash
-
-perlbrew install perl-5.18.2
 
 supports/scripts/scancpan [options] [distname ...]
 

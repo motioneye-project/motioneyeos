@@ -4,6 +4,7 @@
 #
 ################################################################################
 
+# When updating the version here, also update support/scripts/scancpan
 PERL_VERSION_MAJOR = 22
 PERL_VERSION = 5.$(PERL_VERSION_MAJOR).2
 PERL_SITE = http://www.cpan.org/src/5.0
