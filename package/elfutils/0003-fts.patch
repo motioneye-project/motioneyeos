@@ -24,13 +24,15 @@ already provided by the C library.
 
 Based on the former patch by Thomas Petazzoni.
 
+[Vincent: tweak patch for 0.166]
+
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
 
 diff -Nrup a/configure.ac b/configure.ac
---- a/configure.ac	2015-01-06 11:37:38.397891424 +0000
-+++ b/configure.ac	2015-01-06 11:40:53.568258759 +0000
-@@ -266,6 +266,10 @@ AC_ARG_ENABLE([progs],
+--- a/configure.ac	2016-06-17 14:47:03.561704498 +0100
++++ b/configure.ac	2016-06-17 14:52:35.038200412 +0100
+@@ -259,6 +259,10 @@ AC_ARG_ENABLE([progs],
  	enable_progs=yes)
  AM_CONDITIONAL(ENABLE_PROGS, test "$enable_progs" = yes)
  
@@ -38,12 +40,12 @@ diff -Nrup a/configure.ac b/configure.ac
 +	AC_DEFINE([HAVE_FTS_H], [], [Define if <fts.h> is available in C library]))
 +AM_CONDITIONAL(HAVE_FTS, test "$ac_cv_header_fts_h" = yes)
 +
- dnl Test for zlib and bzlib, gives ZLIB/BZLIB .am
- dnl conditional and config.h USE_ZLIB/USE_BZLIB #define.
+ dnl zlib is mandatory.
  save_LIBS="$LIBS"
+ LIBS=
 diff -Nrup a/libdwfl/fts.c b/libdwfl/fts.c
 --- a/libdwfl/fts.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/libdwfl/fts.c	2015-01-06 11:42:13.481640322 +0000
++++ b/libdwfl/fts.c	2016-06-17 14:57:26.649912084 +0100
 @@ -0,0 +1,1095 @@
 +/*-
 + * Copyright (c) 1990, 1993, 1994
@@ -1142,7 +1144,7 @@ diff -Nrup a/libdwfl/fts.c b/libdwfl/fts.c
 +}
 diff -Nrup a/libdwfl/fts_.h b/libdwfl/fts_.h
 --- a/libdwfl/fts_.h	1970-01-01 01:00:00.000000000 +0100
-+++ b/libdwfl/fts_.h	2015-01-06 11:42:13.481640322 +0000
++++ b/libdwfl/fts_.h	2016-06-17 14:58:42.003387566 +0100
 @@ -0,0 +1,131 @@
 +/*
 + * Copyright (c) 1989, 1993
@@ -1276,8 +1278,8 @@ diff -Nrup a/libdwfl/fts_.h b/libdwfl/fts_.h
 +
 +#endif /* fts.h */
 diff -Nrup a/libdwfl/linux-kernel-modules.c b/libdwfl/linux-kernel-modules.c
---- a/libdwfl/linux-kernel-modules.c	2014-11-22 22:43:52.000000000 +0000
-+++ b/libdwfl/linux-kernel-modules.c	2015-01-06 11:44:25.610924805 +0000
+--- a/libdwfl/linux-kernel-modules.c	2016-03-02 16:25:38.000000000 +0000
++++ b/libdwfl/linux-kernel-modules.c	2016-06-17 14:59:50.267724089 +0100
 @@ -29,7 +29,11 @@
  /* We include this before config.h because it can't handle _FILE_OFFSET_BITS.
     Everything we need here is fine if its declarations just come first.  */
@@ -1291,9 +1293,9 @@ diff -Nrup a/libdwfl/linux-kernel-modules.c b/libdwfl/linux-kernel-modules.c
  #include <config.h>
  
 diff -Nrup a/libdwfl/Makefile.am b/libdwfl/Makefile.am
---- a/libdwfl/Makefile.am	2014-06-17 19:51:09.000000000 +0100
-+++ b/libdwfl/Makefile.am	2015-01-06 11:45:25.442959369 +0000
-@@ -79,6 +79,9 @@ endif
+--- a/libdwfl/Makefile.am	2016-01-12 12:49:19.000000000 +0000
++++ b/libdwfl/Makefile.am	2016-06-17 15:01:03.492157569 +0100
+@@ -77,6 +77,9 @@ endif
  if LZMA
  libdwfl_a_SOURCES += lzma.c
  endif
