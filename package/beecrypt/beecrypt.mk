@@ -17,6 +17,11 @@ BEECRYPT_CONF_OPTS = \
 	--without-python \
 	--disable-openmp
 
+# disable optimized m68k assembly as it doesn't compile for coldfire
+ifeq ($(BR2_m68k_cf),y)
+BEECRYPT_CONF_OPTS += --enable-debug
+endif
+
 ifeq ($(BR2_PACKAGE_BEECRYPT_CPP),y)
 BEECRYPT_DEPENDENCIES += icu
 BEECRYPT_CONF_OPTS += --with-cplusplus
