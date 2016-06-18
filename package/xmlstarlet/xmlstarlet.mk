@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-XMLSTARLET_VERSION = 1.5.0
+XMLSTARLET_VERSION = 1.6.1
 XMLSTARLET_SITE = http://downloads.sourceforge.net/project/xmlstar/xmlstarlet/$(XMLSTARLET_VERSION)
 XMLSTARLET_LICENSE = MIT
 XMLSTARLET_LICENSE_FILES = COPYING
