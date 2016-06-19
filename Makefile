@@ -24,6 +24,11 @@
 # You shouldn't need to mess with anything beyond this point...
 #--------------------------------------------------------------
 
+# we want bash as shell
+SHELL := $(shell if [ -x "$$BASH" ]; then echo $$BASH; \
+	 else if [ -x /bin/bash ]; then echo /bin/bash; \
+	 else echo sh; fi; fi)
+
 # Trick for always running with a fixed umask
 UMASK = 0022
 ifneq ($(shell umask),$(UMASK))
@@ -226,11 +231,6 @@ export VERBOSE
 else
   Q = @
 endif
-
-# we want bash as shell
-SHELL := $(shell if [ -x "$$BASH" ]; then echo $$BASH; \
-	 else if [ -x /bin/bash ]; then echo /bin/bash; \
-	 else echo sh; fi; fi)
 
 # kconfig uses CONFIG_SHELL
 CONFIG_SHELL := $(SHELL)
