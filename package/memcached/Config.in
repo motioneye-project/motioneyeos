@@ -2,6 +2,7 @@ config BR2_PACKAGE_MEMCACHED
 	bool "memcached"
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_USE_MMU # fork()
+	depends on BR2_TOOLCHAIN_HAS_SYNC_8
 	select BR2_PACKAGE_LIBEVENT
 	help
 	  Memcached is an in-memory key-value store for small chunks
@@ -13,3 +14,4 @@ config BR2_PACKAGE_MEMCACHED
 comment "memcached needs a toolchain w/ threads"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_USE_MMU
+	depends on BR2_TOOLCHAIN_HAS_SYNC_8
