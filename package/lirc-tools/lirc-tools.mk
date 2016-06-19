@@ -22,6 +22,10 @@ ifeq ($(BR2_PACKAGE_HAS_UDEV),y)
 LIRC_TOOLS_DEPENDENCIES += udev
 endif
 
+ifeq ($(BR2_PACKAGE_ALSA_LIB),y)
+LIRC_TOOLS_DEPENDENCIES += alsa-lib
+endif
+
 ifeq ($(BR2_PACKAGE_LIBUSB_COMPAT),y)
 LIRC_TOOLS_DEPENDENCIES += libusb-compat
 endif
