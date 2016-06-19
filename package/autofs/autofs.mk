@@ -14,6 +14,7 @@ AUTOFS_DEPENDENCIES = host-flex host-bison
 # autofs looks on the build machine for the path of modprobe, so tell
 # it explicitly where it will be located on the target.
 AUTOFS_CONF_ENV = \
+	ac_cv_path_KRB5_CONFIG=no \
 	ac_cv_path_MODPROBE=/sbin/modprobe
 
 # instead of looking in the PATH like any reasonable package, autofs
@@ -24,7 +25,8 @@ AUTOFS_CONF_OPTS = \
 	--enable-ignore-busy \
 	--without-openldap \
 	--without-sasl \
-	--with-path="$(BR_PATH)"
+	--with-path="$(BR_PATH)" \
+	--with-hesiod=no
 
 AUTOFS_MAKE_ENV = DONTSTRIP=1
 
