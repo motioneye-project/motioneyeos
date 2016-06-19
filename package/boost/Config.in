@@ -115,6 +115,8 @@ config BR2_PACKAGE_BOOST_MATH
 	bool "boost-math"
 
 config BR2_PACKAGE_BOOST_METAPARSE
+	depends on BR2_USE_MMU # boost-test
+	select BR2_PACKAGE_BOOST_TEST
 	bool "boost-metaparse"
 
 config BR2_PACKAGE_BOOST_MPI
