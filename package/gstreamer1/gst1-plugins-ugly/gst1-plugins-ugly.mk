@@ -59,6 +59,10 @@ GST1_PLUGINS_UGLY_CONF_OPTS += --disable-realmedia
 endif
 
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_UGLY_PLUGIN_DVDREAD),y)
+# configure does not use pkg-config to detect libdvdread
+ifeq ($(BR2_PACKAGE_LIBDVDCSS)$(BR2_STATIC_LIBS),yy)
+GST1_PLUGINS_UGLY_CONF_ENV += LIBS="-ldvdcss"
+endif
 GST1_PLUGINS_UGLY_CONF_OPTS += --enable-dvdread
 GST1_PLUGINS_UGLY_DEPENDENCIES += libdvdread
 GST1_PLUGINS_UGLY_HAS_GPL_LICENSE = y
