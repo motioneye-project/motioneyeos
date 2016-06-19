@@ -30,6 +30,10 @@ ifeq ($(BR2_PACKAGE_LIBUSB_COMPAT),y)
 LIRC_TOOLS_DEPENDENCIES += libusb-compat
 endif
 
+ifeq ($(BR2_PACKAGE_PORTAUDIO),y)
+LIRC_TOOLS_DEPENDENCIES += portaudio
+endif
+
 define LIRC_TOOLS_INSTALL_INIT_SYSV
 	$(INSTALL) -D -m 0755 package/lirc-tools/S25lircd \
 		$(TARGET_DIR)/etc/init.d/S25lircd
