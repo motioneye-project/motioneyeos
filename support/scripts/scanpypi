@@ -525,6 +525,11 @@ class BuildrootPackage():
         help_lines = textwrap.wrap(self.metadata['info']['summary'],
                                    initial_indent='\t  ',
                                    subsequent_indent='\t  ')
+
+        # make sure a help text is terminated with a full stop
+        if help_lines[-1][-1] != '.':
+            help_lines[-1] += '.'
+
         # \t + two spaces is 3 char long
         help_lines.append('')
         help_lines.append('\t  ' + self.metadata['info']['home_page'])
