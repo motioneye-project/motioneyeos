@@ -23,6 +23,9 @@ How to get started with the MinnowBoard (MAX)
 
   $ dd if=output/images/sdcard.img of=/dev/mmcblk0; sync
 
+  The system starts two consoles: one on the serial port
+  and one on HDMI.
+
 3. Enjoy
 
 Additional information about this board can be found at
