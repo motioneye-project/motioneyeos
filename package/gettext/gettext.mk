@@ -60,12 +60,6 @@ endef
 
 GETTEXT_POST_INSTALL_TARGET_HOOKS += GETTEXT_REMOVE_UNNEEDED
 
-define GETTEXT_GETTEXTIZE_EYE_CANDY
-	$(SED) '/Press Return\|read dummy/d' $(HOST_DIR)/usr/bin/gettextize
-endef
-
-HOST_GETTEXT_POST_INSTALL_HOOKS += GETTEXT_GETTEXTIZE_EYE_CANDY
-
 # Force build with NLS support, otherwise libintl is not built
 # This is needed because some packages (eg. libglib2) requires
 # locales, but do not properly depend on BR2_ENABLE_LOCALE, and
