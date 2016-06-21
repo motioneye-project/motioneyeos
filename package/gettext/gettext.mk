@@ -75,6 +75,16 @@ define HOST_GETTEXT_GETTEXTIZE_CONFIRMATION
 endef
 HOST_GETTEXT_POST_INSTALL_HOOKS += HOST_GETTEXT_GETTEXTIZE_CONFIRMATION
 
+# autoreconf expects gettextize to install ABOUT-NLS, but it only gets
+# installed by gettext-runtime which we don't build/install for the
+# host, so do it manually
+define HOST_GETTEXT_ADD_ABOUT_NLS
+	$(INSTALL) -m 0644 $(@D)/$(HOST_GETTEXT_SUBDIR)/ABOUT-NLS \
+		$(HOST_DIR)/usr/share/gettext/ABOUT-NLS
+endef
+
+HOST_GETTEXT_POST_INSTALL_HOOKS += HOST_GETTEXT_ADD_ABOUT_NLS
+
 GETTEXTIZE = $(HOST_CONFIGURE_OPTS) AUTOM4TE=$(HOST_DIR)/usr/bin/autom4te $(HOST_DIR)/usr/bin/gettextize -f
 
 $(eval $(autotools-package))
