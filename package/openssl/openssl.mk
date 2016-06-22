@@ -34,7 +34,8 @@ OPENSSL_DEPENDENCIES += ocf-linux
 endif
 
 # Some architectures are optimized in OpenSSL
-ifeq ($(ARCH),arm)
+# Doesn't work for thumb-only (Cortex-M?)
+ifeq ($(BR2_ARM_CPU_HAS_ARM),y)
 OPENSSL_TARGET_ARCH = armv4
 endif
 ifeq ($(ARCH),aarch64)
