@@ -1,1 +1,1 @@
-/proc/mounts
+../proc/self/mounts
