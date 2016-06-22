@@ -54,4 +54,9 @@ BLUEZ_UTILS_CONF_OPTS +=	\
 	--disable-usb
 endif
 
+# PIE is broken for m68k
+ifeq ($(BR2_m68k),y)
+BLUEZ_UTILS_CONF_OPTS += --disable-pie
+endif
+
 $(eval $(autotools-package))
