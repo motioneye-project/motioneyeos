@@ -77,3 +77,10 @@ others, use the following variables:
 
 * +$(SRCDIR)+: the path to the overridden source directory
 * +$(@D)+: the path to the build directory
+
+==== Target-finalize hook
+
+Packages may also register hooks in +LIBFOO_TARGET_FINALIZE_HOOKS+.
+These hooks are run after all packages are built, but before the
+filesystem images are generated. They are seldom used, and your
+package probably do not need them.
