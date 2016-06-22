@@ -217,7 +217,7 @@ define PYTHON3_CREATE_PYC_FILES
 endef
 
 ifeq ($(BR2_PACKAGE_PYTHON3_PYC_ONLY)$(BR2_PACKAGE_PYTHON3_PY_PYC),y)
-TARGET_FINALIZE_HOOKS += PYTHON3_CREATE_PYC_FILES
+PYTHON3_TARGET_FINALIZE_HOOKS += PYTHON3_CREATE_PYC_FILES
 endif
 
 ifeq ($(BR2_PACKAGE_PYTHON3_PYC_ONLY),y)
@@ -225,7 +225,7 @@ define PYTHON3_REMOVE_PY_FILES
 	find $(TARGET_DIR)/usr/lib/python$(PYTHON3_VERSION_MAJOR) -name '*.py' -print0 | \
 		xargs -0 --no-run-if-empty rm -f
 endef
-TARGET_FINALIZE_HOOKS += PYTHON3_REMOVE_PY_FILES
+PYTHON3_TARGET_FINALIZE_HOOKS += PYTHON3_REMOVE_PY_FILES
 endif
 
 # Normally, *.pyc files should not have been compiled, but just in
@@ -235,16 +235,14 @@ define PYTHON3_REMOVE_PYC_FILES
 	find $(TARGET_DIR)/usr/lib/python$(PYTHON3_VERSION_MAJOR) -name '*.pyc' -print0 | \
 		xargs -0 --no-run-if-empty rm -f
 endef
-TARGET_FINALIZE_HOOKS += PYTHON3_REMOVE_PYC_FILES
+PYTHON3_TARGET_FINALIZE_HOOKS += PYTHON3_REMOVE_PYC_FILES
 endif
 
 # In all cases, we don't want to keep the optimized .opt-1.pyc and
 # .opt-2.pyc files, since they can't work without their non-optimized
 # variant.
-ifeq ($(BR2_PACKAGE_PYTHON3),y)
 define PYTHON3_REMOVE_OPTIMIZED_PYC_FILES
 	find $(TARGET_DIR)/usr/lib/python$(PYTHON3_VERSION_MAJOR) -name '*.opt-1.pyc' -print0 -o -name '*.opt-2.pyc' -print0 | \
 		xargs -0 --no-run-if-empty rm -f
 endef
-TARGET_FINALIZE_HOOKS += PYTHON3_REMOVE_OPTIMIZED_PYC_FILES
-endif
+PYTHON3_TARGET_FINALIZE_HOOKS += PYTHON3_REMOVE_OPTIMIZED_PYC_FILES
