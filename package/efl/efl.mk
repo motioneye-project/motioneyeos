@@ -19,8 +19,8 @@ EFL_LICENSE_FILES = \
 
 EFL_INSTALL_STAGING = YES
 
-EFL_DEPENDENCIES = host-pkgconf host-efl dbus freetype jpeg lua udev \
-	util-linux zlib
+EFL_DEPENDENCIES = host-pkgconf host-efl host-luajit dbus freetype \
+	jpeg luajit udev util-linux zlib
 
 # Regenerate the autotools:
 #  - to fix an issue in eldbus-codegen: https://phab.enlightenment.org/T2718
@@ -29,19 +29,20 @@ EFL_GETTEXTIZE = YES
 
 # Configure options:
 # --disable-cxx-bindings: disable C++11 bindings.
+# --disable-lua-old: build elua for the target.
 # --disable-sdl: disable sdl2 support.
 # --disable-systemd: disable systemd support.
 # --disable-xinput22: disable X11 XInput v2.2+ support.
-# --enable-lua-old: disable Elua and remove luajit dependency.
 # --with-opengl=none: disable opengl support.
 EFL_CONF_OPTS = \
 	--with-edje-cc=$(HOST_DIR)/usr/bin/edje_cc \
+	--with-elua=$(HOST_DIR)/usr/bin/elua \
 	--with-eolian-gen=$(HOST_DIR)/usr/bin/eolian_gen \
 	--disable-cxx-bindings \
+	--disable-lua-old \
 	--disable-sdl \
 	--disable-systemd \
 	--disable-xinput22 \
-	--enable-lua-old \
 	--with-opengl=none
 
 # Disable untested configuration warning.
@@ -227,7 +228,7 @@ $(eval $(autotools-package))
 # * host-freetype: for libevas
 # * host-libglib2: for libecore
 # * host-libjpeg, host-libpng: for libevas image loader
-# * host-lua: disable luajit dependency
+# * host-luajit for Elua tool for the host
 HOST_EFL_DEPENDENCIES = \
 	host-pkgconf \
 	host-dbus \
@@ -235,7 +236,7 @@ HOST_EFL_DEPENDENCIES = \
 	host-libglib2 \
 	host-libjpeg \
 	host-libpng \
-	host-lua \
+	host-luajit \
 	host-zlib
 
 # Configure options:
@@ -246,10 +247,10 @@ HOST_EFL_DEPENDENCIES = \
 # --disable-gstreamer1: remove dependency on gtreamer 1.0.
 # --disable-libeeze: remove libudev dependency.
 # --disable-libmount: remove dependency on host-util-linux libmount.
+# --disable-lua-old: build elua for the host.
 # --disable-physics: remove Bullet dependency.
 # --enable-image-loader-gif=no: disable Gif dependency.
 # --enable-image-loader-tiff=no: disable Tiff dependency.
-# --enable-lua-old: disable Elua and remove luajit dependency.
 # --with-crypto=none: remove dependencies on openssl or gnutls.
 # --with-x11=none: remove dependency on X.org.
 #   Yes I really know what I am doing.
@@ -261,13 +262,13 @@ HOST_EFL_CONF_OPTS += \
 	--disable-gstreamer1 \
 	--disable-libeeze \
 	--disable-libmount \
+	--disable-lua-old \
 	--disable-multisense \
 	--disable-physics \
 	--enable-image-loader-gif=no \
 	--enable-image-loader-jpeg=yes \
 	--enable-image-loader-png=yes \
 	--enable-image-loader-tiff=no \
-	--enable-lua-old \
 	--with-crypto=none \
 	--with-glib=yes \
 	--with-opengl=none \
