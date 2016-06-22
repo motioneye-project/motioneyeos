@@ -1,0 +1,97 @@
+From fe7a451e5accf78c16ac9e65381d257924b266ed Mon Sep 17 00:00:00 2001
+From: "Dmitry V. Levin" <ldv@altlinux.org>
+Date: Fri, 17 Jun 2016 03:02:46 +0300
+Subject: [PATCH] btrfs: provide fallback definitions for
+ BTRFS_IOC_QUOTA_RESCAN*
+
+<linux/btrfs.h> was introduced in linux v3.9-rc1 while some
+of btrfs ioctls were added later, e.g. BTRFS_IOC_QUOTA_RESCAN
+and BTRFS_IOC_QUOTA_RESCAN_STATUS in v3.10-rc2,
+or BTRFS_IOC_QUOTA_RESCAN_WAIT in v3.11-rc1.
+
+* btrfs.c [!BTRFS_IOC_QUOTA_RESCAN]
+(struct btrfs_ioctl_quota_rescan_args): New structure.
+(BTRFS_IOC_QUOTA_RESCAN, BTRFS_IOC_QUOTA_RESCAN_STATUS): New macros.
+[!BTRFS_IOC_QUOTA_RESCAN_WAIT] (BTRFS_IOC_QUOTA_RESCAN_WAIT): New macro.
+* tests/btrfs.c: Likewise.
+
+Reported-by: Li Er <phoooyb@gmail.com>
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Patch status: upstream commit fe7a451e5accf78c16ac9e65381d257924b266ed
+
+ btrfs.c       | 18 ++++++++++++++++--
+ tests/btrfs.c | 14 ++++++++++++++
+ 2 files changed, 30 insertions(+), 2 deletions(-)
+
+diff --git a/btrfs.c b/btrfs.c
+index 04c71fc3480d..f94565bc4e6b 100644
+--- a/btrfs.c
++++ b/btrfs.c
+@@ -83,6 +83,20 @@ struct btrfs_ioctl_defrag_range_args {
+ # define BTRFS_FIRST_FREE_OBJECTID 256ULL
+ #endif
+ 
++#ifndef BTRFS_IOC_QUOTA_RESCAN
++struct btrfs_ioctl_quota_rescan_args {
++	uint64_t flags, progress, reserved[6];
++};
++# define BTRFS_IOC_QUOTA_RESCAN _IOW(BTRFS_IOCTL_MAGIC, 44, \
++					struct btrfs_ioctl_quota_rescan_args)
++# define BTRFS_IOC_QUOTA_RESCAN_STATUS _IOR(BTRFS_IOCTL_MAGIC, 45, \
++					struct btrfs_ioctl_quota_rescan_args)
++#endif
++
++#ifndef BTRFS_IOC_QUOTA_RESCAN_WAIT
++# define BTRFS_IOC_QUOTA_RESCAN_WAIT _IO(BTRFS_IOCTL_MAGIC, 46)
++#endif
++
+ #ifndef BTRFS_IOC_GET_FEATURES
+ # define BTRFS_IOC_GET_FEATURES _IOR(BTRFS_IOCTL_MAGIC, 57, \
+ 					struct btrfs_ioctl_feature_flags)
+@@ -1024,7 +1038,7 @@ MPERS_PRINTER_DECL(int, btrfs_ioctl,
+ 		if (umove_or_printaddr(tcp, arg, &args))
+ 			break;
+ 
+-		tprintf("{flags=%" PRI__u64 "}", args.flags);
++		tprintf("{flags=%" PRIu64 "}", (uint64_t) args.flags);
+ 		break;
+ 	}
+ 
+@@ -1038,7 +1052,7 @@ MPERS_PRINTER_DECL(int, btrfs_ioctl,
+ 		if (umove_or_printaddr(tcp, arg, &args))
+ 			break;
+ 
+-		tprintf("{flags=%" PRI__u64 ", progress=", args.flags);
++		tprintf("{flags=%" PRIu64 ", progress=", (uint64_t) args.flags);
+ 		btrfs_print_objectid(args.progress);
+ 		tprints("}");
+ 		break;
+diff --git a/tests/btrfs.c b/tests/btrfs.c
+index 4014c883c301..45aa08fc4e44 100644
+--- a/tests/btrfs.c
++++ b/tests/btrfs.c
+@@ -72,6 +72,20 @@ const unsigned char uuid_reference[BTRFS_UUID_SIZE] = {
+ 
+ const char uuid_reference_string[] = "01234567-89ab-cdef-fedc-ba9876543210";
+ 
++#ifndef BTRFS_IOC_QUOTA_RESCAN
++struct btrfs_ioctl_quota_rescan_args {
++	uint64_t flags, progress, reserved[6];
++};
++# define BTRFS_IOC_QUOTA_RESCAN _IOW(BTRFS_IOCTL_MAGIC, 44, \
++					struct btrfs_ioctl_quota_rescan_args)
++# define BTRFS_IOC_QUOTA_RESCAN_STATUS _IOR(BTRFS_IOCTL_MAGIC, 45, \
++					struct btrfs_ioctl_quota_rescan_args)
++#endif
++
++#ifndef BTRFS_IOC_QUOTA_RESCAN_WAIT
++# define BTRFS_IOC_QUOTA_RESCAN_WAIT _IO(BTRFS_IOCTL_MAGIC, 46)
++#endif
++
+ #ifndef BTRFS_IOC_GET_FEATURES
+ # define BTRFS_IOC_GET_FEATURES _IOR(BTRFS_IOCTL_MAGIC, 57, \
+                                    struct btrfs_ioctl_feature_flags)
+-- 
+2.8.1
+
