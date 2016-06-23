@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-SSHFS_VERSION = 2.7
-SSHFS_SITE = https://github.com/libfuse/sshfs/releases/download/sshfs-$(SSHFS_VERSION)
+SSHFS_VERSION = 2.8
+SSHFS_SITE = https://github.com/libfuse/sshfs/releases/download/sshfs_$(SSHFS_VERSION)
 SSHFS_LICENSE = GPLv2
 SSHFS_LICENSE_FILES = COPYING
 SSHFS_DEPENDENCIES = \
