@@ -79,10 +79,10 @@ PULSEAUDIO_CONF_OPTS += --without-soxr
 endif
 
 ifeq ($(BR2_PACKAGE_HAS_UDEV),y)
-PULSEAUDIO_CONF_OPTS += --enable-libudev
+PULSEAUDIO_CONF_OPTS += --enable-udev
 PULSEAUDIO_DEPENDENCIES += udev
 else
-PULSEAUDIO_CONF_OPTS += --disable-libudev
+PULSEAUDIO_CONF_OPTS += --disable-udev
 endif
 
 ifneq ($(BR2_INSTALL_LIBSTDCPP),y)
