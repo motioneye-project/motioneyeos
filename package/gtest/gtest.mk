@@ -31,7 +31,7 @@ define GTEST_INSTALL_STAGING_CMDS
 	$(INSTALL) -D -m 0755 $(@D)/libgtest_main.a $(STAGING_DIR)/usr/lib/libgtest_main.a
 	$(INSTALL) -d -m 0755 $(STAGING_DIR)/usr/include/gtest/
 	cp -rp $(@D)/include/gtest/* $(STAGING_DIR)/usr/include/gtest/
-	$(INSTALL) -D -m 0644 packages/gtest/gtest.pc \
+	$(INSTALL) -D -m 0644 package/gtest/gtest.pc \
 		$(STAGING_DIR)/usr/lib/pkgconfig/gtest.pc
 	# Generate the gtest-config script manually, since the CMake
 	# build system is not doing it.
