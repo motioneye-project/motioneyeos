@@ -11,4 +11,16 @@ LIBSOC_LICENSE_FILES = LICENCE
 LIBSOC_AUTORECONF = YES
 LIBSOC_INSTALL_STAGING = YES
 
+# Install Python 2 bindings
+ifeq ($(BR2_PACKAGE_PYTHON),y)
+LIBSOC_DEPENDENCIES += python
+LIBSOC_CONF_OPTS += --enable-python=2
+# Install Python 3 bindings
+else ifeq ($(BR2_PACKAGE_PYTHON3),y)
+LIBSOC_DEPENDENCIES += python3
+LIBSOC_CONF_OPTS += --enable-python=3
+else
+LIBSOC_CONF_OPTS += --disable-python
+endif
+
 $(eval $(autotools-package))
