@@ -1,0 +1,11 @@
+config BR2_PACKAGE_JEMALLOC
+	bool "jemalloc"
+	depends on !BR2_STATIC_LIBS
+	help
+	 This library providing a malloc(3) implementation that emphasizes
+	 fragmentation avoidance and scalable concurrency support.
+
+	 http://www.canonware.com/jemalloc/
+
+comment "jemalloc needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS
