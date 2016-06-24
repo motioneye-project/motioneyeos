@@ -31,10 +31,11 @@ define EFIVAR_BUILD_CMDS
 	# makeguids is an internal host tool and must be built separately with
 	# $(HOST_CC), otherwise it gets cross-built.
 	$(HOST_MAKE_ENV) $(HOST_CONFIGURE_OPTS) \
-		CFLAGS="$(HOST_CFLAGS) -std=c99" \
-		$(MAKE) -C $(@D)/src makeguids
+		CFLAGS="$(HOST_CFLAGS) -std=gnu99" \
+		$(MAKE) -C $(@D)/src gcc_cflags=  makeguids
 
 	$(TARGET_MAKE_ENV) $(TARGET_CONFIGURE_OPTS) $(MAKE1) -C $(@D) \
+		AR=$(TARGET_AR) NM=$(TARGET_NM) RANLIB=$(TARGET_RANLIB) \
 		$(EFIVAR_MAKE_OPTS) \
 		all
 endef
