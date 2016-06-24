@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-QT5WEBKIT_VERSION = d2ff5a085572b1ee24dcb42ae107063f3142d14e
+QT5WEBKIT_VERSION = b889f460280ad98c89ede179bd3b9ce9cb02002b
 # Using GitHub since it supports downloading tarballs from random commits.
 # The http://code.qt.io/cgit/qt/qtwebkit.git/ repo doesn't allow to do so.
 QT5WEBKIT_SITE = $(call github,qtproject,qtwebkit,$(QT5WEBKIT_VERSION))
