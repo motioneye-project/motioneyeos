@@ -312,11 +312,6 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_LIBRFB
 	help
 	  Connects to a VNC server and decodes RFB stream
 
-config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_LIVEADDER
-	bool "liveadder"
-	help
-	  Adds multiple live discontinuous streams
-
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_MIDI
 	bool "midi"
 	help

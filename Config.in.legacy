@@ -145,6 +145,14 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2016.08"
 
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_LIVEADDER
+	bool "gst1-plugins-bad liveadder plugin removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_AUDIOMIXER
+	help
+	  The functionality of the liveadder plugin of the
+	  gst1-plugins-bad package has been merged into audiomixer.
+
 config BR2_PACKAGE_LIBFSLVPUWRAP
 	bool "libfslvpuwrap has been renamed to imx-vpuwrap"
 	select BR2_LEGACY
