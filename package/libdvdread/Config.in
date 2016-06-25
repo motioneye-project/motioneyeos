@@ -1,5 +1,6 @@
 config BR2_PACKAGE_LIBDVDREAD
 	bool "libdvdread"
+	select BR2_PACKAGE_LIBDVDCSS
 	help
 	  libdvdread provides a simple foundation for reading
 	  DVD-Video images.
