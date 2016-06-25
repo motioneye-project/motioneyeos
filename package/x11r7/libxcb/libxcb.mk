@@ -19,5 +19,9 @@ LIBXCB_DEPENDENCIES = \
 LIBXCB_CONF_OPTS = --with-doxygen=no
 HOST_LIBXCB_CONF_OPTS = --with-doxygen=no
 
+# libxcb is not python3 friendly, so force the python interpreter
+HOST_LIBXCB_CONF_OPTS += ac_cv_path_PYTHON=$(HOST_DIR)/usr/bin/python2
+LIBXCB_CONF_OPTS += ac_cv_path_PYTHON=$(HOST_DIR)/usr/bin/python2
+
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
