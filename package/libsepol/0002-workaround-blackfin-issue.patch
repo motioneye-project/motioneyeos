@@ -8,17 +8,19 @@ symbols are visible in the final DSO, which is not a problem for
 proper execution, it just isn't as clean.
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Signed-off-by: Adam Duskett <Aduskett@gmail.com>
 
 Index: b/src/dso.h
 ===================================================================
 --- a/src/dso.h
 +++ b/src/dso.h
-@@ -1,7 +1,7 @@
- #ifndef _SELINUX_DSO_H
- #define _SELINUX_DSO_H	1
+@@ -5,7 +5,7 @@
+     #define DISABLE_SYMVER 1
+ #endif
  
 -#ifdef SHARED
 +#if defined(SHARED) && !defined(__bfin__)
  # define hidden __attribute__ ((visibility ("hidden")))
  # define hidden_proto(fct) __hidden_proto (fct, fct##_internal)
  # define __hidden_proto(fct, internal)	\
+
