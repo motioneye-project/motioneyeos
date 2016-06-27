@@ -106,8 +106,8 @@ ifeq ($(BR2_sparc_v8)$(BR2_sparc_leon3),y)
 HOST_GCC_COMMON_CONF_OPTS += --disable-libitm
 endif
 
-# gcc 4.6.x quadmath requires wchar
-ifneq ($(BR2_TOOLCHAIN_BUILDROOT_WCHAR),y)
+# quadmath support requires wchar
+ifeq ($(BR2_USE_WCHAR),)
 HOST_GCC_COMMON_CONF_OPTS += --disable-libquadmath
 endif
 
