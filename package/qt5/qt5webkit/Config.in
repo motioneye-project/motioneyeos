@@ -23,6 +23,6 @@ config BR2_PACKAGE_QT5WEBKIT
 	  http://qt.io
 
 comment "qt5webkit needs a toolchain w/ dynamic library"
-        depends on BR2_STATIC_LIBS
-        depends on BR2_PACKAGE_QT5_JSCORE_AVAILABLE
-        depends on !BR2_BINFMT_FLAT
+	depends on BR2_STATIC_LIBS
+	depends on BR2_PACKAGE_QT5_JSCORE_AVAILABLE
+	depends on !BR2_BINFMT_FLAT
