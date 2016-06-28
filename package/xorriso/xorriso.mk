@@ -12,12 +12,12 @@ HOST_XORRISO_DEPENDENCIES =
 # Disable everything until we actually need those feature, and add the correct
 # host-libraries
 HOST_XORRISO_CONF_OPTS = \
-        --disable-zlib \
-        --disable-bzip2 \
-        --disable-libcdio \
-        --disable-libreadline \
-        --disable-libedit \
-        --disable-libacl
+	--disable-zlib \
+	--disable-bzip2 \
+	--disable-libcdio \
+	--disable-libreadline \
+	--disable-libedit \
+	--disable-libacl
 
 ifeq ($(BR2_PACKAGE_LIBICONV),y)
 XORRISO_DEPENDENCIES += libiconv
