@@ -1,0 +1,37 @@
+From 785fe675d5602e51a559b06861d543c7d37a380c Mon Sep 17 00:00:00 2001
+From: Yegor Yefremov <yegorslists@googlemail.com>
+Date: Wed, 4 May 2016 09:26:22 +0200
+Subject: [PATCH] Don't require backports.ssl_match_hostname on Python 2.7.9
+ and newer
+
+As Python 3.2 support was dropped one can check 2.7.x dependency only.
+
+Tornado running on Python 2.7.9+ doesn't need this backported package,
+but some Python packages like circus check package dependencies at
+runtime and insist on having backports.ssl_match_hostname installed,
+though they don't even use this particular feature.
+
+So checking for exact version makes life of package maintainer easier
+especially on embedded Linux distributions like Buildroot.
+
+Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
+---
+ setup.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/setup.py b/setup.py
+index c13eeed..0c24e70 100644
+--- a/setup.py
++++ b/setup.py
+@@ -129,7 +129,7 @@ if setuptools is not None:
+     if sys.version_info < (2, 7):
+         # Only needed indirectly, for singledispatch.
+         install_requires.append('ordereddict')
+-    if sys.version_info < (3, 2):
++    if sys.version_info < (2, 7, 9):
+         install_requires.append('backports.ssl_match_hostname')
+     if sys.version_info < (3, 4):
+         install_requires.append('singledispatch')
+-- 
+2.8.1
+
