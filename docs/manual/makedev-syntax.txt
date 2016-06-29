@@ -71,3 +71,33 @@ and then for device files corresponding to the partitions of
 /dev/hda b 640 root root 3 1 1 1 15
 ----
 
+Extended attributes are supported if
++BR2_ROOTFS_DEVICE_TABLE_SUPPORTS_EXTENDED_ATTRIBUTES+ is enabled.
+This is done by adding a line starting with +|xattr+ after
+the line describing the file. Right now, only capability
+is supported as extended attribute.
+
+|=====================
+| \|xattr | capability
+|=====================
+
+- +|xattr+ is a "flag" that indicate an extended attribute
+- +capability+ is a capability to add to the previous file
+
+If you want to add the capability cap_sys_admin to the binary foo,
+you will write :
+
+----
+/usr/bin/foo f 755 root root - - - - -
+|xattr cap_sys_admin+eip
+----
+
+You can add several capabilities to a file by using several +|xattr+ lines.
+If you want to add the capability cap_sys_admin and cap_net_admin to the
+binary foo, you will write :
+
+----
+/usr/bin/foo f 755 root root - - - - -
+|xattr cap_sys_admin+eip
+|xattr cap_net_admin+eip
+----

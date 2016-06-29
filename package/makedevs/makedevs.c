@@ -35,6 +35,9 @@
 #include <sys/sysmacros.h>     /* major() and minor() */
 #endif
 #include <ftw.h>
+#ifdef EXTENDED_ATTRIBUTES
+#include <sys/capability.h>
+#endif /* EXTENDED_ATTRIBUTES */
 
 const char *bb_applet_name;
 uid_t recursive_uid;
@@ -349,6 +352,49 @@ char *concat_path_file(const char *path, const char *filename)
 	return outbuf;
 }
 
+#ifdef EXTENDED_ATTRIBUTES
+int bb_set_xattr(const char *fpath, const char *xattr)
+{
+	cap_t cap, cap_file, cap_new;
+	char *cap_file_text, *cap_new_text;
+	ssize_t length;
+
+	cap = cap_from_text(xattr);
+	if (cap == NULL)
+		bb_perror_msg_and_die("cap_from_text failed for %s", xattr);
+
+	cap_file = cap_get_file(fpath);
+	if (cap_file == NULL) {
+		/* if no capability was set before, we initialize cap_file */
+		if (errno != ENODATA)
+			bb_perror_msg_and_die("cap_get_file failed on %s", fpath);
+
+		cap_file = cap_init();
+		if (!cap_file)
+			bb_perror_msg_and_die("cap_init failed");
+	}
+
+	if ((cap_file_text = cap_to_text(cap_file, &length)) == NULL)
+		bb_perror_msg_and_die("cap_to_name failed on %s", fpath);
+
+	bb_xasprintf(&cap_new_text, "%s %s", cap_file_text, xattr);
+
+	if ((cap_new = cap_from_text(cap_new_text)) == NULL)
+		bb_perror_msg_and_die("cap_from_text failed on %s", cap_new_text);
+
+	if (cap_set_file(fpath, cap_new) == -1)
+		bb_perror_msg_and_die("cap_set_file failed for %s (xattr = %s)", fpath, xattr);
+
+	cap_free(cap);
+	cap_free(cap_file);
+	cap_free(cap_file_text);
+	cap_free(cap_new);
+	cap_free(cap_new_text);
+
+	return 0;
+}
+#endif /* EXTENDED_ATTRIBUTES */
+
 void bb_show_usage(void)
 {
 	fprintf(stderr, "%s: [-d device_table] rootdir\n\n", bb_applet_name);
@@ -413,6 +459,7 @@ int main(int argc, char **argv)
 	int opt;
 	FILE *table = stdin;
 	char *rootdir = NULL;
+	char *full_name = NULL;
 	char *line = NULL;
 	int linenum = 0;
 	int ret = EXIT_SUCCESS;
@@ -454,14 +501,29 @@ int main(int argc, char **argv)
 		unsigned int count = 0;
 		unsigned int increment = 0;
 		unsigned int start = 0;
+		char xattr[255];
 		char name[4096];
 		char user[41];
 		char group[41];
-		char *full_name;
 		uid_t uid;
 		gid_t gid;
 
 		linenum++;
+
+		if (1 == sscanf(line, "|xattr %254s", xattr)) {
+#ifdef EXTENDED_ATTRIBUTES
+			if (!full_name)
+				bb_error_msg_and_die("line %d should be after a file\n", linenum);
+
+			if (bb_set_xattr(full_name, xattr) < 0)
+				bb_error_msg_and_die("can't set cap %s on file %s\n", xattr, full_name);
+#else
+			bb_error_msg_and_die("line %d not supported: '%s'\nDid you forget to enable "
+					     "BR2_ROOTFS_DEVICE_TABLE_SUPPORTS_EXTENDED_ATTRIBUTES?\n",
+					     linenum, line);
+#endif /* EXTENDED_ATTRIBUTES */
+			continue;
+		}
 
 		if ((2 > sscanf(line, "%4095s %c %o %40s %40s %u %u %u %u %u", name,
 						&type, &mode, user, group, &major,
@@ -487,6 +549,13 @@ int main(int argc, char **argv)
 		} else {
 			uid = getuid();
 		}
+
+		/*
+		 * free previous full name
+		 * we don't de-allocate full_name at the end of the parsing,
+		 * because we may need it if the next line is an xattr.
+		 */
+		free(full_name);
 		full_name = concat_path_file(rootdir, name);
 
 		if (type == 'd') {
@@ -585,7 +654,6 @@ int main(int argc, char **argv)
 		}
 loop:
 		free(line);
-		free(full_name);
 	}
 	fclose(table);
 

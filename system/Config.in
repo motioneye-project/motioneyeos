@@ -162,6 +162,11 @@ config BR2_ROOTFS_STATIC_DEVICE_TABLE
 	  See package/makedevs/README for details on the usage and
 	  syntax of these files.
 
+config BR2_ROOTFS_DEVICE_TABLE_SUPPORTS_EXTENDED_ATTRIBUTES
+	bool "support extended attributes in device tables"
+	help
+	  Support extended attributes handling in device tables
+
 choice
 	prompt "Root FS skeleton"
 
