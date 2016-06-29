@@ -788,6 +788,7 @@ menu "External python modules"
 	source "package/python-wsaccel/Config.in"
 	source "package/python-xlrd/Config.in"
 	source "package/python-xlsxwriter/Config.in"
+	source "package/python-xlutils/Config.in"
 	source "package/python-xlwt/Config.in"
 	source "package/python-zope-interface/Config.in"
 endmenu
