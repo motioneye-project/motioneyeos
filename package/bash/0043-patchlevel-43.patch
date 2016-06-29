@@ -1,0 +1,63 @@
+From http://ftp.gnu.org/pub/gnu/bash/bash-4.3-patches/bash43-043
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release:	4.3
+Patch-ID:	bash43-043
+
+Bug-Reported-by:	lolilolicon <lolilolicon@gmail.com>
+Bug-Reference-ID:	<CAMtVo_MF16KWanCB4C8WxA88Qt26zWsvV6V7+_U2fM0E6tCDxw@mail.gmail.com>
+Bug-Reference-URL:	http://lists.gnu.org/archive/html/bug-bash/2014-08/msg00040.html
+
+Bug-Description:
+
+When the lastpipe option is enabled, the last component can contain nested
+pipelines and cause a segmentation fault under certain circumestances.
+
+Patch (apply with `patch -p0'):
+
+*** a/execute_cmd.c	2014-07-30 10:26:52.000000000 -0400
+--- b/execute_cmd.c	2014-08-15 08:55:24.000000000 -0400
+***************
+*** 2406,2412 ****
+      {
+  #if defined (JOB_CONTROL)
+!       append_process (savestring (the_printed_command), dollar_dollar_pid, exec_result, lastpipe_jid);
+! #endif
+        lstdin = wait_for (lastpid);
+  #if defined (JOB_CONTROL)
+        /* If wait_for removes the job from the jobs table, use result of last
+--- 2433,2447 ----
+      {
+  #if defined (JOB_CONTROL)
+!       if (INVALID_JOB (lastpipe_jid) == 0)
+!         {
+!           append_process (savestring (the_printed_command_except_trap), dollar_dollar_pid, exec_result, lastpipe_jid);
+!           lstdin = wait_for (lastpid);
+!         }
+!       else
+!         lstdin = wait_for_single_pid (lastpid);		/* checks bgpids list */
+! #else
+        lstdin = wait_for (lastpid);
++ #endif
++ 
+  #if defined (JOB_CONTROL)
+        /* If wait_for removes the job from the jobs table, use result of last
+*** a/patchlevel.h	2012-12-29 10:47:57.000000000 -0500
+--- b/patchlevel.h	2014-03-20 20:01:28.000000000 -0400
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 42
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 43
+  
+  #endif /* _PATCHLEVEL_H_ */

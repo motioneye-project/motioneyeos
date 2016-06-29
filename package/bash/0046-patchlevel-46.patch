@@ -1,0 +1,59 @@
+From http://ftp.gnu.org/pub/gnu/bash/bash-4.3-patches/bash43-046
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release:	4.3
+Patch-ID:	bash43-046
+
+Bug-Reported-by:	Sergey Tselikh <stselikh@gmail.com>
+Bug-Reference-ID:	<20150816110235.91f3e12e3f20d20cdaad963e@gmail.com>
+Bug-Reference-URL:	http://lists.gnu.org/archive/html/bug-bash/2015-08/msg00080.html
+
+Bug-Description:
+
+An incorrect conversion from an indexed to associative array can result in a
+core dump.
+
+Patch (apply with `patch -p0'):
+
+*** a/subst.c	2015-08-13 11:32:54.000000000 -0400
+--- b/subst.c	2015-08-18 10:13:59.000000000 -0400
+***************
+*** 9562,9566 ****
+  	  opts[opti] = '\0';
+  	  if (opti > 0)
+! 	    make_internal_declare (tlist->word->word, opts);
+  
+  	  t = do_word_assignment (tlist->word, 0);
+--- 9562,9573 ----
+  	  opts[opti] = '\0';
+  	  if (opti > 0)
+! 	    {
+! 	      t = make_internal_declare (tlist->word->word, opts);
+! 	      if (t != EXECUTION_SUCCESS)
+! 		{
+! 		  last_command_exit_value = t;
+! 		  exp_jump_to_top_level (DISCARD);
+! 		}
+! 	    }
+  
+  	  t = do_word_assignment (tlist->word, 0);
+
+*** a/patchlevel.h	2012-12-29 10:47:57.000000000 -0500
+--- b/patchlevel.h	2014-03-20 20:01:28.000000000 -0400
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 45
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 46
+  
+  #endif /* _PATCHLEVEL_H_ */
