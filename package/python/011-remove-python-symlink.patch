@@ -12,7 +12,7 @@ Index: b/Makefile.pre.in
 ===================================================================
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -974,17 +974,11 @@
+@@ -974,17 +974,10 @@
  		echo "Creating directory $(LIBPC)"; \
  		$(INSTALL) -d -m $(DIRMODE) $(DESTDIR)$(LIBPC); \
  	fi
@@ -20,7 +20,7 @@ Index: b/Makefile.pre.in
 -	then rm -f $(DESTDIR)$(BINDIR)/$(PYTHON); \
 -	else true; \
 -	fi
- 	(cd $(DESTDIR)$(BINDIR); $(LN) -s python2$(EXE) $(PYTHON))
+-	(cd $(DESTDIR)$(BINDIR); $(LN) -s python2$(EXE) $(PYTHON))
  	-rm -f $(DESTDIR)$(BINDIR)/python2$(EXE)
  	(cd $(DESTDIR)$(BINDIR); $(LN) -s python$(VERSION)$(EXE) python2$(EXE))
  	-rm -f $(DESTDIR)$(BINDIR)/python2-config
