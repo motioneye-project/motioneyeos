@@ -297,6 +297,8 @@ endif
 	source "package/x11r7/Config.in"
 
 comment "X applications"
+	depends on BR2_PACKAGE_XORG7
+
 	source "package/alsamixergui/Config.in"
 	source "package/apitrace/Config.in"
 	source "package/dillo/Config.in"
@@ -322,10 +324,14 @@ comment "X applications"
 	source "package/yad/Config.in"
 
 comment "X libraries and helper libraries"
+	depends on BR2_PACKAGE_XORG7
+
 	source "package/libsexy/Config.in"
 	source "package/x11r7/xkeyboard-config/Config.in"
 
 comment "X window managers"
+	depends on BR2_PACKAGE_XORG7
+
 	source "package/enlightenment/Config.in"
 	source "package/fluxbox/Config.in"
 	source "package/matchbox/Config.in"
