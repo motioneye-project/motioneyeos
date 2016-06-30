@@ -8,8 +8,15 @@ DOMOTICZ_VERSION = 3.4834
 DOMOTICZ_SITE = $(call github,domoticz,domoticz,$(DOMOTICZ_VERSION))
 DOMOTICZ_LICENSE = GPLv3
 DOMOTICZ_LICENSE_FILES = License.txt
-DOMOTICZ_DEPENDENCIES = boost host-pkgconf libcurl lua mosquitto openssl \
-        sqlite zlib
+DOMOTICZ_DEPENDENCIES = \
+	boost \
+	host-pkgconf \
+	libcurl \
+	lua \
+	mosquitto \
+	openssl \
+	sqlite \
+	zlib
 
 # Due to the dependency on mosquitto, domoticz depends on
 # !BR2_STATIC_LIBS so set USE_STATIC_BOOST to OFF
