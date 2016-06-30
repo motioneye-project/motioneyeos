@@ -466,8 +466,6 @@ class BuildrootPackage():
         lines += self.__create_mk_download_info()
         lines += self.__create_mk_setup()
         lines += self.__create_mk_license()
-        if self.pkg_req:
-            lines += self.__create_mk_requirements()
 
         lines.append('\n')
         lines.append('$(eval $(python-package))')
@@ -518,7 +516,7 @@ class BuildrootPackage():
         lines.append(bool_line)
         if self.pkg_req:
             for dep in self.pkg_req:
-                dep_line = '\tselect BR2_PACKAGE_{req}\n'.format(
+                dep_line = '\tselect BR2_PACKAGE_{req} # runtime\n'.format(
                     req=dep.upper().replace('-', '_'))
                 lines.append(dep_line)
 
