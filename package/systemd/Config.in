@@ -253,6 +253,17 @@ config BR2_PACKAGE_SYSTEMD_COREDUMP
 
 	  http://www.freedesktop.org/software/systemd/man/systemd-coredump.html
 
+config BR2_PACKAGE_SYSTEMD_POLKIT
+	bool "enable polkit support"
+	select BR2_PACKAGE_POLKIT
+	help
+	  If enabled, systemd is built with polkit support and policy
+	  files for its services are generated and installed. It is
+	  useful for allowing unprivileged processes to speak to
+	  systemd's many privileged processes.
+
+	  http://wiki.freedesktop.org/www/Software/polkit/
+
 config BR2_PACKAGE_SYSTEMD_NETWORKD
 	bool "enable network manager"
 	help

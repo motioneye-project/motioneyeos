@@ -237,6 +237,12 @@ else
 SYSTEMD_CONF_OPTS += --disable-coredump
 endif
 
+ifeq ($(BR2_PACKAGE_SYSTEMD_POLKIT),y)
+SYSTEMD_CONF_OPTS += --enable-polkit
+else
+SYSTEMD_CONF_OPTS += --disable-polkit
+endif
+
 ifeq ($(BR2_PACKAGE_SYSTEMD_NETWORKD),y)
 SYSTEMD_CONF_OPTS += --enable-networkd
 define SYSTEMD_INSTALL_RESOLVCONF_HOOK
