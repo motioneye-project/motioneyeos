@@ -64,6 +64,13 @@ else
 SYSTEMD_CONF_OPTS += --disable-acl
 endif
 
+ifeq ($(BR2_PACKAGE_AUDIT),y)
+SYSTEMD_CONF_OPTS += --enable-audit
+SYSTEMD_DEPENDENCIES += audit
+else
+SYSTEMD_CONF_OPTS += --disable-audit
+endif
+
 ifeq ($(BR2_PACKAGE_LIBSECCOMP),y)
 SYSTEMD_CONF_OPTS += --enable-seccomp
 SYSTEMD_DEPENDENCIES += libseccomp
