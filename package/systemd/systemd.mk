@@ -207,6 +207,12 @@ else
 SYSTEMD_CONF_OPTS += --disable-machined
 endif
 
+ifeq ($(BR2_PACKAGE_SYSTEMD_IMPORTD),y)
+SYSTEMD_CONF_OPTS += --enable-importd
+else
+SYSTEMD_CONF_OPTS += --disable-importd
+endif
+
 ifeq ($(BR2_PACKAGE_SYSTEMD_NETWORKD),y)
 SYSTEMD_CONF_OPTS += --enable-networkd
 define SYSTEMD_INSTALL_RESOLVCONF_HOOK
