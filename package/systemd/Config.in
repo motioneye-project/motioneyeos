@@ -314,4 +314,12 @@ config BR2_PACKAGE_SYSTEMD_SMACK_SUPPORT
 	  When this feature is enabled, Systemd mounts smackfs and manages
 	  security labels for sockets.
 
+config BR2_PACKAGE_SYSTEMD_HIBERNATE
+	bool "enable hibernation support"
+	help
+	  When this features is enabled, additional tools and services
+	  are built to support suspending and resuming the system.
+
+	  http://www.freedesktop.org/software/systemd/man/systemd-sleep.html
+
 endif

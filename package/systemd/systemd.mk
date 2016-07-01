@@ -277,6 +277,12 @@ else
 SYSTEMD_CONF_OPTS += --disable-smack
 endif
 
+ifeq ($(BR2_PACKAGE_SYSTEMD_HIBERNATE),y)
+SYSTEMD_CONF_OPTS += --enable-hibernate
+else
+SYSTEMD_CONF_OPTS += --disable-hibernate
+endif
+
 # mq_getattr needs -lrt
 SYSTEMD_MAKE_OPTS += LIBS=-lrt
 SYSTEMD_MAKE_OPTS += LDFLAGS+=-ldl
