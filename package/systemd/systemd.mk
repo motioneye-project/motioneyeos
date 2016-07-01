@@ -73,6 +73,13 @@ else
 SYSTEMD_CONF_OPTS += --disable-audit
 endif
 
+ifeq ($(BR2_PACKAGE_LIBIDN),y)
+SYSTEMD_CONF_OPTS += --enable-libidn
+SYSTEMD_DEPENDENCIES += libidn
+else
+SYSTEMD_CONF_OPTS += --disable-libidn
+endif
+
 ifeq ($(BR2_PACKAGE_LIBSECCOMP),y)
 SYSTEMD_CONF_OPTS += --enable-seccomp
 SYSTEMD_DEPENDENCIES += libseccomp
