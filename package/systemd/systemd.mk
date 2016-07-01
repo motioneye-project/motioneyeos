@@ -141,8 +141,14 @@ endif
 ifeq ($(BR2_PACKAGE_SYSTEMD_JOURNAL_GATEWAY),y)
 SYSTEMD_DEPENDENCIES += libmicrohttpd
 SYSTEMD_CONF_OPTS += --enable-microhttpd
+ifeq ($(BR2_PACKAGE_LIBQRENCODE),y)
+SYSTEMD_CONF_OPTS += --enable-qrencode
+SYSTEMD_DEPENDENCIES += libqrencode
 else
-SYSTEMD_CONF_OPTS += --disable-microhttpd
+SYSTEMD_CONF_OPTS += --disable-qrencode
+endif
+else
+SYSTEMD_CONF_OPTS += --disable-microhttpd --disable-qrencode
 endif
 
 ifeq ($(BR2_PACKAGE_SYSTEMD_HWDB),y)
