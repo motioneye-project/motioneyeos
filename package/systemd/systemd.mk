@@ -36,6 +36,7 @@ SYSTEMD_CONF_OPTS += \
 	--disable-gnuefi \
 	--disable-ldconfig \
 	--disable-tests \
+	--disable-coverage \
 	--with-default-dnssec=no \
 	--without-python
 
