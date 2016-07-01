@@ -213,6 +213,12 @@ else
 SYSTEMD_CONF_OPTS += --disable-importd
 endif
 
+ifeq ($(BR2_PACKAGE_SYSTEMD_HOSTNAMED),y)
+SYSTEMD_CONF_OPTS += --enable-hostnamed
+else
+SYSTEMD_CONF_OPTS += --disable-hostnamed
+endif
+
 ifeq ($(BR2_PACKAGE_SYSTEMD_NETWORKD),y)
 SYSTEMD_CONF_OPTS += --enable-networkd
 define SYSTEMD_INSTALL_RESOLVCONF_HOOK

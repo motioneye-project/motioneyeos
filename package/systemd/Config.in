@@ -216,6 +216,15 @@ config BR2_PACKAGE_SYSTEMD_IMPORTD
 
 	  http://www.freedesktop.org/software/systemd/man/machinectl.html#Image%20Transfer%20Commands
 
+config BR2_PACKAGE_SYSTEMD_HOSTNAMED
+	bool "enable hostname daemon"
+	default y
+	help
+	  systemd-hostnamed is a system service that may be used as a
+	  mechanism to change the system's hostname.
+
+	  http://www.freedesktop.org/software/systemd/man/systemd-hostnamed.service.html
+
 config BR2_PACKAGE_SYSTEMD_NETWORKD
 	bool "enable network manager"
 	help
