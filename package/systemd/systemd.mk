@@ -283,10 +283,6 @@ else
 SYSTEMD_CONF_OPTS += --disable-hibernate
 endif
 
-# mq_getattr needs -lrt
-SYSTEMD_MAKE_OPTS += LIBS=-lrt
-SYSTEMD_MAKE_OPTS += LDFLAGS+=-ldl
-
 define SYSTEMD_INSTALL_INIT_HOOK
 	ln -fs ../lib/systemd/systemd $(TARGET_DIR)/sbin/init
 	ln -fs ../bin/systemctl $(TARGET_DIR)/sbin/halt
