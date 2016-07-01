@@ -41,7 +41,7 @@ _git() {
 git_done=0
 if [ -n "$(_git ls-remote "'${repo}'" "'${cset}'" 2>&1)" ]; then
     printf "Doing shallow clone\n"
-    if _git clone ${verbose} --depth 1 -b "'${cset}'" --bare "'${repo}'" "'${basename}'"; then
+    if _git clone ${verbose} --depth 1 -b "'${cset}'" "'${repo}'" "'${basename}'"; then
         git_done=1
     else
         printf "Shallow clone failed, falling back to doing a full clone\n"
@@ -49,10 +49,25 @@ if [ -n "$(_git ls-remote "'${repo}'" "'${cset}'" 2>&1)" ]; then
 fi
 if [ ${git_done} -eq 0 ]; then
     printf "Doing full clone\n"
-    _git clone ${verbose} --mirror "'${repo}'" "'${basename}'"
+    _git clone ${verbose} "'${repo}'" "'${basename}'"
 fi
 
-GIT_DIR="${basename}" \
+pushd "${basename}" >/dev/null
+
+# Try to get the special refs exposed by some forges (pull-requests for
+# github, changes for gerrit...). There is no easy way to know whether
+# the cset the user passed us is such a special ref or a tag or a sha1
+# or whatever else. We'll eventually fail at checking out that cset,
+# below, if there is an issue anyway. Since most of the cset we're gonna
+# have to clone are not such special refs, consign the output to oblivion
+# so as not to alarm unsuspecting users, but still trace it as a warning.
+if ! _git fetch origin "'${cset}:${cset}'" >/dev/null 2>&1; then
+    printf "Could not fetch special ref '%s'; assuming it is not special.\n" "${cset}"
+fi
+
 _git archive --prefix="'${basename}/'" -o "'${output}.tmp'" --format=tar "'${cset}'"
+
+# Not really required, but here for consistency
+popd >/dev/null
 
 gzip -n <"${output}.tmp" >"${output}"
