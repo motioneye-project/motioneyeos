@@ -31,6 +31,7 @@ SYSTEMD_CONF_OPTS += \
 	--disable-manpages \
 	--disable-selinux \
 	--disable-pam \
+	--disable-ima \
 	--disable-libcryptsetup \
 	--disable-efi \
 	--disable-gnuefi \
