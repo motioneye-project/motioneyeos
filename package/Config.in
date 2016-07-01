@@ -410,6 +410,7 @@ endif
 	source "package/iucode-tool/Config.in"
 	source "package/kbd/Config.in"
 	source "package/lcdproc/Config.in"
+	source "package/libuio/Config.in"
 	source "package/libump/Config.in"
 	source "package/linux-backports/Config.in"
 	source "package/lirc-tools/Config.in"
