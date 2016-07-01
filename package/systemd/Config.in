@@ -177,6 +177,14 @@ config BR2_PACKAGE_SYSTEMD_BACKLIGHT
 
 	  http://www.freedesktop.org/software/systemd/man/systemd-backlight@.service.html
 
+config BR2_PACKAGE_SYSTEMD_RFKILL
+	bool "enable rfkill tools"
+	help
+	  systemd-rfkill is a service that restores the RF kill switch
+	  state at early boot and saves it at shutdown.
+
+	  http://www.freedesktop.org/software/systemd/man/systemd-rfkill@.service.html
+
 config BR2_PACKAGE_SYSTEMD_NETWORKD
 	bool "enable network manager"
 	help

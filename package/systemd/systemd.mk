@@ -189,6 +189,12 @@ else
 SYSTEMD_CONF_OPTS += --disable-backlight
 endif
 
+ifeq ($(BR2_PACKAGE_SYSTEMD_RFKILL),y)
+SYSTEMD_CONF_OPTS += --enable-rfkill
+else
+SYSTEMD_CONF_OPTS += --disable-rfkill
+endif
+
 ifeq ($(BR2_PACKAGE_SYSTEMD_NETWORKD),y)
 SYSTEMD_CONF_OPTS += --enable-networkd
 define SYSTEMD_INSTALL_RESOLVCONF_HOOK
