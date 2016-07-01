@@ -231,6 +231,12 @@ else
 SYSTEMD_CONF_OPTS += --disable-localed
 endif
 
+ifeq ($(BR2_PACKAGE_SYSTEMD_COREDUMP),y)
+SYSTEMD_CONF_OPTS += --enable-coredump
+else
+SYSTEMD_CONF_OPTS += --disable-coredump
+endif
+
 ifeq ($(BR2_PACKAGE_SYSTEMD_NETWORKD),y)
 SYSTEMD_CONF_OPTS += --enable-networkd
 define SYSTEMD_INSTALL_RESOLVCONF_HOOK
@@ -289,6 +295,7 @@ SYSTEMD_POST_INSTALL_TARGET_HOOKS += \
 	SYSTEMD_INSTALL_RESOLVCONF_HOOK
 
 define SYSTEMD_USERS
+	systemd-coredump -1 systemd-coredump -1 * /var/lib/systemd/coredump - - Core Dumper
 	systemd-journal -1 systemd-journal -1 * /var/log/journal - - Journal
 	systemd-journal-gateway -1 systemd-journal-gateway -1 * /var/log/journal - - Journal Gateway
 	systemd-journal-remote -1 systemd-journal-remote -1 * /var/log/journal/remote - - Journal Remote
