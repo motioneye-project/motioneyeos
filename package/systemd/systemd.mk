@@ -87,6 +87,13 @@ else
 SYSTEMD_CONF_OPTS += --disable-seccomp
 endif
 
+ifeq ($(BR2_PACKAGE_LIBXKBCOMMON),y)
+SYSTEMD_CONF_OPTS += --enable-xkbcommon
+SYSTEMD_DEPENDENCIES += libxkbcommon
+else
+SYSTEMD_CONF_OPTS += --disable-xkbcommon
+endif
+
 ifeq ($(BR2_PACKAGE_SYSTEMD_KDBUS),y)
 SYSTEMD_CONF_OPTS += --enable-kdbus
 else
