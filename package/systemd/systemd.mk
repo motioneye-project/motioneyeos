@@ -177,6 +177,12 @@ else
 SYSTEMD_CONF_OPTS += --disable-firstboot
 endif
 
+ifeq ($(BR2_PACKAGE_SYSTEMD_RANDOMSEED),y)
+SYSTEMD_CONF_OPTS += --enable-randomseed
+else
+SYSTEMD_CONF_OPTS += --disable-randomseed
+endif
+
 ifeq ($(BR2_PACKAGE_SYSTEMD_NETWORKD),y)
 SYSTEMD_CONF_OPTS += --enable-networkd
 define SYSTEMD_INSTALL_RESOLVCONF_HOOK
