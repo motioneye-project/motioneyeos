@@ -10,6 +10,18 @@ CMAKE_SITE = https://cmake.org/files/v$(CMAKE_VERSION_MAJOR)
 CMAKE_LICENSE = BSD-3c
 CMAKE_LICENSE_FILES = Copyright.txt
 
+# CMake is a particular package:
+# * CMake can be built using the generic infrastructure or the cmake one.
+#   Since Buildroot has no requirement regarding the host system cmake
+#   program presence, it uses the generic infrastructure to build the
+#   host-cmake package, then the (target-)cmake package can be built
+#   using the cmake infrastructure;
+# * CMake bundles its dependencies within its sources. This is the
+#   reason why the host-cmake package has no dependencies:, whereas
+#   the (target-)cmake package has a lot of dependencies, using only
+#   the system-wide libraries instead of rebuilding and statically
+#   linking with the ones bundled into the CMake sources.
+
 CMAKE_DEPENDENCIES = zlib jsoncpp libcurl libarchive expat bzip2 xz
 
 CMAKE_CONF_OPTS = \
