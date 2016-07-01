@@ -225,6 +225,12 @@ else
 SYSTEMD_CONF_OPTS += --disable-timedated
 endif
 
+ifeq ($(BR2_PACKAGE_SYSTEMD_LOCALED),y)
+SYSTEMD_CONF_OPTS += --enable-localed
+else
+SYSTEMD_CONF_OPTS += --disable-localed
+endif
+
 ifeq ($(BR2_PACKAGE_SYSTEMD_NETWORKD),y)
 SYSTEMD_CONF_OPTS += --enable-networkd
 define SYSTEMD_INSTALL_RESOLVCONF_HOOK

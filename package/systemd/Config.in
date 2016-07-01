@@ -235,6 +235,15 @@ config BR2_PACKAGE_SYSTEMD_TIMEDATED
 
 	  http://www.freedesktop.org/software/systemd/man/systemd-timedated.service.html
 
+config BR2_PACKAGE_SYSTEMD_LOCALED
+	bool "enable locale daemon"
+	help
+	  systemd-localed is a system service that may be used as
+	  mechanism to change the system locale settings, as well as
+	  the console key mapping and default X11 key mapping.
+
+	  http://www.freedesktop.org/software/systemd/man/systemd-localed.service.html
+
 config BR2_PACKAGE_SYSTEMD_NETWORKD
 	bool "enable network manager"
 	help
