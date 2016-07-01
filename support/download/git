@@ -65,9 +65,20 @@ if ! _git fetch origin "'${cset}:${cset}'" >/dev/null 2>&1; then
     printf "Could not fetch special ref '%s'; assuming it is not special.\n" "${cset}"
 fi
 
-_git archive --prefix="'${basename}/'" -o "'${output}.tmp'" --format=tar "'${cset}'"
+# Checkout the required changeset.
+_git checkout -q "'${cset}'"
 
-# Not really required, but here for consistency
+# Get date of commit to generate a reproducible archive.
+# %cD is RFC2822, so it's fully qualified, with TZ and all.
+date="$( _git show --no-patch --pretty=format:%cD )"
+
+# We do not need the .git dir and other gitfiles to generate the tarball
+find . \( -name .git -o -name .gitmodules -o -name .gitignore \) \
+       -exec rm -rf {} +
+
 popd >/dev/null
 
-gzip -n <"${output}.tmp" >"${output}"
+# Generate the archive, sort with the C locale so that it is reproducible
+tar cf - --numeric-owner --owner=0 --group=0 --mtime="${date}" \
+         -T <(find "${basename}" -not -type d |LC_ALL=C sort) \
+|gzip -n >"${output}"
