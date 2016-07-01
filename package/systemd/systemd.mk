@@ -201,6 +201,12 @@ else
 SYSTEMD_CONF_OPTS += --disable-logind
 endif
 
+ifeq ($(BR2_PACKAGE_SYSTEMD_MACHINED),y)
+SYSTEMD_CONF_OPTS += --enable-machined
+else
+SYSTEMD_CONF_OPTS += --disable-machined
+endif
+
 ifeq ($(BR2_PACKAGE_SYSTEMD_NETWORKD),y)
 SYSTEMD_CONF_OPTS += --enable-networkd
 define SYSTEMD_INSTALL_RESOLVCONF_HOOK

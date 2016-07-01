@@ -192,6 +192,15 @@ config BR2_PACKAGE_SYSTEMD_LOGIND
 
 	  http://www.freedesktop.org/software/systemd/man/systemd-logind.service.html
 
+config BR2_PACKAGE_SYSTEMD_MACHINED
+	bool "enable machine daemon"
+	help
+	  systemd-machined is a system service that keeps track of
+	  virtual machines and containers, and processes belonging to
+	  them.
+
+	  http://www.freedesktop.org/software/systemd/man/systemd-machined.service.html
+
 config BR2_PACKAGE_SYSTEMD_NETWORKD
 	bool "enable network manager"
 	help
