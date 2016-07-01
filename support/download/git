@@ -6,15 +6,20 @@ set -e
 # Download helper for git, to be called from the download wrapper script
 #
 # Call it as:
-#   .../git [-q] OUT_FILE REPO_URL CSET BASENAME
+#   .../git [-q] [-r] OUT_FILE REPO_URL CSET BASENAME
+#
+#   -q  Be quiet.
+#   -r  Clone and archive sub-modules.
 #
 # Environment:
 #   GIT      : the git command to call
 
 verbose=
-while getopts :q OPT; do
+recurse=0
+while getopts :qr OPT; do
     case "${OPT}" in
     q)  verbose=-q; exec >/dev/null;;
+    r)  recurse=1;;
     \?) printf "unknown option '%s'\n" "${OPTARG}" >&2; exit 1;;
     esac
 done
@@ -65,12 +70,18 @@ if ! _git fetch origin "'${cset}:${cset}'" >/dev/null 2>&1; then
     printf "Could not fetch special ref '%s'; assuming it is not special.\n" "${cset}"
 fi
 
-# Checkout the required changeset.
+# Checkout the required changeset, so that we can update the required
+# submodules.
 _git checkout -q "'${cset}'"
 
 # Get date of commit to generate a reproducible archive.
 # %cD is RFC2822, so it's fully qualified, with TZ and all.
 date="$( _git show --no-patch --pretty=format:%cD )"
+
+# There might be submodules, so fetch them.
+if [ ${recurse} -eq 1 ]; then
+    _git submodule update --init --recursive
+fi
 
 # We do not need the .git dir and other gitfiles to generate the tarball
 find . \( -name .git -o -name .gitmodules -o -name .gitignore \) \
