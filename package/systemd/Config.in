@@ -142,6 +142,14 @@ config BR2_PACKAGE_SYSTEMD_TMPFILES
 
 	  http://www.freedesktop.org/software/systemd/man/systemd-tmpfiles.html
 
+config BR2_PACKAGE_SYSTEMD_SYSUSERS
+	bool "enable sysusers support"
+	help
+	  systemd-sysusers creates system users and groups, based on
+	  the file format and location specified in sysusers.d(5).
+
+	  http://www.freedesktop.org/software/systemd/man/systemd-sysusers.html
+
 config BR2_PACKAGE_SYSTEMD_NETWORKD
 	bool "enable network manager"
 	help
