@@ -76,6 +76,7 @@ export BR_NO_CHECK_HASH_FOR =
 define DOWNLOAD_GIT
 	$(EXTRA_ENV) $(DL_WRAPPER) -b git \
 		-o $(DL_DIR)/$($(PKG)_SOURCE) \
+		$(if $($(PKG)_GIT_SUBMODULES),-r) \
 		$(QUIET) \
 		-- \
 		$($(PKG)_SITE) \
