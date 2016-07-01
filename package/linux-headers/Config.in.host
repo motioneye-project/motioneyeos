@@ -106,7 +106,6 @@ config BR2_DEFAULT_KERNEL_VERSION
 choice
 	bool "Custom kernel headers series"
 	depends on BR2_KERNEL_HEADERS_VERSION || BR2_KERNEL_HEADERS_AS_KERNEL
-	default BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_REALLY_OLD
 	help
 	  Specify the kernel headers series you manually selected, above.
 
