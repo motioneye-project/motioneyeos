@@ -27,6 +27,7 @@ endif
 
 SYSTEMD_CONF_OPTS += \
 	--with-rootprefix= \
+	--enable-blkid \
 	--enable-static=no \
 	--disable-manpages \
 	--disable-selinux \
