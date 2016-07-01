@@ -169,6 +169,14 @@ config BR2_PACKAGE_SYSTEMD_RANDOMSEED
 
 	  http://www.freedesktop.org/software/systemd/man/systemd-random-seed.service.html
 
+config BR2_PACKAGE_SYSTEMD_BACKLIGHT
+	bool "enable backlight support"
+	help
+	  systemd-backlight is a service that restores the display
+	  backlight brightness at early boot and saves it at shutdown.
+
+	  http://www.freedesktop.org/software/systemd/man/systemd-backlight@.service.html
+
 config BR2_PACKAGE_SYSTEMD_NETWORKD
 	bool "enable network manager"
 	help
