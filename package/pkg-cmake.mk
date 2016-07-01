@@ -142,6 +142,10 @@ endef
 endif
 endif
 
+# Since some CMake modules (even upstream ones) use pgk_check_modules
+# primitives to find {C,LD}FLAGS, add it to the dependency list.
+$(2)_DEPENDENCIES += host-pkgconf
+
 $(2)_DEPENDENCIES += host-cmake
 
 #
