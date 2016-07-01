@@ -185,6 +185,13 @@ config BR2_PACKAGE_SYSTEMD_RFKILL
 
 	  http://www.freedesktop.org/software/systemd/man/systemd-rfkill@.service.html
 
+config BR2_PACKAGE_SYSTEMD_LOGIND
+	bool "enable login daemon"
+	help
+	  systemd-logind is a system service that manages user logins.
+
+	  http://www.freedesktop.org/software/systemd/man/systemd-logind.service.html
+
 config BR2_PACKAGE_SYSTEMD_NETWORKD
 	bool "enable network manager"
 	help

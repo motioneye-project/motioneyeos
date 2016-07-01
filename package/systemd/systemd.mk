@@ -195,6 +195,12 @@ else
 SYSTEMD_CONF_OPTS += --disable-rfkill
 endif
 
+ifeq ($(BR2_PACKAGE_SYSTEMD_LOGIND),y)
+SYSTEMD_CONF_OPTS += --enable-logind
+else
+SYSTEMD_CONF_OPTS += --disable-logind
+endif
+
 ifeq ($(BR2_PACKAGE_SYSTEMD_NETWORKD),y)
 SYSTEMD_CONF_OPTS += --enable-networkd
 define SYSTEMD_INSTALL_RESOLVCONF_HOOK
