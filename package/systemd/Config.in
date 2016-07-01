@@ -131,6 +131,17 @@ config BR2_PACKAGE_SYSTEMD_QUOTACHECK
 
 	  http://www.freedesktop.org/software/systemd/man/systemd-quotacheck.service.html
 
+config BR2_PACKAGE_SYSTEMD_TMPFILES
+	bool "enable tmpfiles support"
+	default y
+	help
+	  systemd-tmpfiles creates, deletes, and cleans up volatile
+	  and temporary files and directories, based on the
+	  configuration file format and location specified in
+	  tmpfiles.d(5).
+
+	  http://www.freedesktop.org/software/systemd/man/systemd-tmpfiles.html
+
 config BR2_PACKAGE_SYSTEMD_NETWORKD
 	bool "enable network manager"
 	help
