@@ -150,6 +150,15 @@ config BR2_PACKAGE_SYSTEMD_SYSUSERS
 
 	  http://www.freedesktop.org/software/systemd/man/systemd-sysusers.html
 
+config BR2_PACKAGE_SYSTEMD_FIRSTBOOT
+	bool "enable firstboot support"
+	default y
+	help
+	  systemd-firstboot initializes the most basic system settings
+	  interactively on the first boot.
+
+	  http://www.freedesktop.org/software/systemd/man/systemd-firstboot.html
+
 config BR2_PACKAGE_SYSTEMD_NETWORKD
 	bool "enable network manager"
 	help
