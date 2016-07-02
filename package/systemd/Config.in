@@ -111,16 +111,6 @@ config BR2_PACKAGE_SYSTEMD_VCONSOLE
 
 	  http://www.freedesktop.org/software/systemd/man/systemd-vconsole-setup.service.html
 
-config BR2_PACKAGE_SYSTEMD_BOOTCHART
-	bool "enable bootchart tool"
-	help
-	  systemd-bootchart is a tool, usually run at system startup,
-	  that collects the CPU load, disk load, memory usage, as well
-	  as per-process information from a running system. Collected
-	  results are output as an SVG graph.
-
-	  http://www.freedesktop.org/software/systemd/man/systemd-bootchart.html
-
 config BR2_PACKAGE_SYSTEMD_QUOTACHECK
 	bool "enable quotacheck tools"
 	help
