@@ -27,9 +27,6 @@ else
 PAX_UTILS_CONF_OPTS += --without-seccomp
 endif
 
-# libcap is only useful for pspax (a running system)
-HOST_PAX_UTILS_DEPENDENCIES =
-
 # lddtree and symtree need bash
 ifeq ($(BR2_PACKAGE_BASH),)
 define PAX_UTILS_REMOVE_BASH_TOOLS
