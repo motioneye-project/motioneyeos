@@ -13,6 +13,7 @@ XCB_PROTO_LICENSE_FILES = COPYING
 XCB_PROTO_INSTALL_STAGING = YES
 
 XCB_PROTO_DEPENDENCIES = host-python
+HOST_XCB_PROTO_DEPENDENCIES = host-python
 
 # xcbincludedir/pythondir is used by E.G. libxcb at build time to find the
 # xml / python files, so ensure these expand to their full (host) paths
