@@ -11,6 +11,8 @@ XLIB_LIBXAU_LICENSE = MIT
 XLIB_LIBXAU_LICENSE_FILES = COPYING
 XLIB_LIBXAU_INSTALL_STAGING = YES
 XLIB_LIBXAU_DEPENDENCIES = host-pkgconf xutil_util-macros xproto_xproto
+HOST_XLIB_LIBXAU_DEPENDENCIES = \
+	host-pkgconf host-xutil_util-macros host-xproto_xproto
 
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
