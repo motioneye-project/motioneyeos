@@ -17,10 +17,14 @@ config BR2_PACKAGE_LIBIIO_LOCAL_BACKEND
 
 config BR2_PACKAGE_LIBIIO_NETWORK_BACKEND
 	bool "Network backend"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
 	select BR2_PACKAGE_LIBXML2
 	default y
 	help
 	  Enable the network backend of the library.
+
+comment "IIO Network backend needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
 
 config BR2_PACKAGE_LIBIIO_IIOD
 	bool "IIO Daemon"
