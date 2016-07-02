@@ -38,6 +38,11 @@ config BR2_PACKAGE_WPA_SUPPLICANT_AP_SUPPORT
 	  making it bigger but dispensing the need for a separate hostapd
 	  binary in some applications hence being smaller overall.
 
+config BR2_PACKAGE_WPA_SUPPLICANT_AUTOSCAN
+	bool "Enable autoscan"
+	help
+	  Enable support for the autoscan feature (allow periodic scan)
+
 config BR2_PACKAGE_WPA_SUPPLICANT_EAP
 	bool "Enable EAP"
 	help
