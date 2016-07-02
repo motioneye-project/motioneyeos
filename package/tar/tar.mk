@@ -16,7 +16,6 @@ TAR_LICENSE_FILES = COPYING
 # Prefer full-blown tar over buybox's version
 ifeq ($(BR2_PACKAGE_BUSYBOX),y)
 TAR_DEPENDENCIES += busybox
-HOST_TAR_DEPENDENCIES =
 endif
 
 ifeq ($(BR2_PACKAGE_ACL),y)
