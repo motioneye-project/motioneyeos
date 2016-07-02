@@ -57,6 +57,7 @@ def _set_hostname(hostname):
 def _get_date_settings():
     date_method = 'http'
     date_host = 'google.com'
+    date_ntp_server = ''
     date_timeout = 10
     date_interval = 900
 
@@ -84,6 +85,9 @@ def _get_date_settings():
 
                 elif name == 'date_host':
                     date_host = value
+                    
+                elif name == 'date_ntp_server':
+                    date_ntp_server = value
 
                 elif name == 'date_timeout':
                     date_timeout = int(value)
@@ -94,11 +98,12 @@ def _get_date_settings():
     s = {
         'dateMethod': date_method,
         'dateHost': date_host,
+        'dateNtpServer': date_ntp_server,
         'dateTimeout': date_timeout,
         'dateInterval': date_interval
     }
     
-    logging.debug('date settings: method=%(dateMethod)s, host=%(dateHost)s, timeout=%(dateTimeout)s, interval=%(dateInterval)s' % s)
+    logging.debug('date settings: method=%(dateMethod)s, host=%(dateHost)s, ntp_server=%(dateNtpServer)s, timeout=%(dateTimeout)s, interval=%(dateInterval)s' % s)
     
     return s
 
@@ -106,15 +111,17 @@ def _get_date_settings():
 def _set_date_settings(s):
     s.setdefault('dateMethod', 'http')
     s.setdefault('dateHost', 'google.com')
+    s.setdefault('dateNtpServer', '')
     s.setdefault('dateTimeout', 10)
     s.setdefault('dateInterval', 900)
 
     logging.debug('writing date settings to %s: ' % DATE_CONF +
-            'method=%(dateMethod)s, host=%(dateHost)s, timeout=%(dateTimeout)s, interval=%(dateInterval)s' % s)
+            'method=%(dateMethod)s, host=%(dateHost)s, ntp_server=%(dateNtpServer)s, timeout=%(dateTimeout)s, interval=%(dateInterval)s' % s)
 
     with open(DATE_CONF, 'w') as f:
         f.write('date_method=%s\n' % s['dateMethod'])
         f.write('date_host=%s\n' % s['dateHost'])
+        f.write('date_ntp_server=%s\n' % s['dateNtpServer'])
         f.write('date_timeout=%s\n' % s['dateTimeout'])
         f.write('date_interval=%s\n' % s['dateInterval'])
 
@@ -411,10 +418,27 @@ def dateHost():
 
 
 @additional_config
+def dateNtpServer():
+    return {
+        'label': 'NTP Server',
+        'description': 'sets a custom NTP server (leave blank to use the default server)',
+        'type': 'str',
+        'section': 'expertSettings',
+        'advanced': True,
+        'reboot': True,
+        'required': False,
+        'depends': ['dateMethod==ntp'],
+        'get': _get_date_settings,
+        'set': _set_date_settings,
+        'get_set_dict': True
+    }
+
+
+@additional_config
 def dateTimeout():
     return {
         'label': 'Date Updating Timeout',
-        'description': 'sets the timeout for the HTTP request',
+        'description': 'sets the number of seconds to wait when requesting the date/time',
         'type': 'number',
         'min': 1,
         'max': 3600,
@@ -423,7 +447,6 @@ def dateTimeout():
         'advanced': True,
         'reboot': True,
         'required': True,
-        'depends': ['dateMethod==http'],
         'get': _get_date_settings,
         'set': _set_date_settings,
         'get_set_dict': True
