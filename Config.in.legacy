@@ -145,13 +145,6 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2016.08"
 
-config BR2_PACKAGE_SYSTEMD_BOOTCHART
-	bool "systemd-bootchart option has been removed"
-	help
-	  From systemd v230, bootchart is not part of the systemd
-	  source anymore.  It is now living in its own repository, a
-	  new package must be added.
-
 config BR2_PACKAGE_SYSTEMD_COMPAT
 	bool "systemd compatibility libraries have been removed"
 	help

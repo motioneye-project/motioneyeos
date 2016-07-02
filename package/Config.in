@@ -1724,6 +1724,7 @@ if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	source "package/syslog-ng/Config.in"
 endif
 	source "package/systemd/Config.in"
+	source "package/systemd-bootchart/Config.in"
 if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	source "package/sysvinit/Config.in"
 	source "package/tar/Config.in"
