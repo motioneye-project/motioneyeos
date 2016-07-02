@@ -54,12 +54,6 @@ define SYSTEMD_RUN_INTLTOOLIZE
 endef
 SYSTEMD_PRE_CONFIGURE_HOOKS += SYSTEMD_RUN_INTLTOOLIZE
 
-ifeq ($(BR2_PACKAGE_SYSTEMD_COMPAT),y)
-SYSTEMD_CONF_OPTS += --enable-compat-libs
-else
-SYSTEMD_CONF_OPTS += --disable-compat-libs
-endif
-
 ifeq ($(BR2_PACKAGE_ACL),y)
 SYSTEMD_CONF_OPTS += --enable-acl
 SYSTEMD_DEPENDENCIES += acl

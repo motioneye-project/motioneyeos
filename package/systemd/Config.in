@@ -311,19 +311,6 @@ config BR2_PACKAGE_SYSTEMD_TIMESYNCD
 
 	  http://www.freedesktop.org/software/systemd/man/systemd-timesyncd.html
 
-config BR2_PACKAGE_SYSTEMD_COMPAT
-	bool "enable compatibility libraries"
-	help
-	  Since systemd 209, the following libraries have been merged into
-	  libsystemd.so:
-
-	  - libsystemd-daemon
-	  - libsystemd-id128
-	  - libsystemd-journal
-	  - libsystemd-login
-
-	  This option enables the installation of compatibility *.pc files.
-
 config BR2_PACKAGE_SYSTEMD_SMACK_SUPPORT
 	bool "enable SMACK support"
 	select BR2_PACKAGE_ATTR
