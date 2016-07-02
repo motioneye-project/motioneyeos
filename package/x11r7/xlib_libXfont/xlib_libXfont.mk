@@ -11,9 +11,14 @@ XLIB_LIBXFONT_LICENSE = MIT
 XLIB_LIBXFONT_LICENSE_FILES = COPYING
 XLIB_LIBXFONT_AUTORECONF = YES
 XLIB_LIBXFONT_INSTALL_STAGING = YES
-XLIB_LIBXFONT_DEPENDENCIES = freetype xlib_libfontenc xlib_xtrans xproto_fontsproto xproto_xproto xfont_encodings
-XLIB_LIBXFONT_CONF_OPTS = --disable-devel-docs
 
+XLIB_LIBXFONT_DEPENDENCIES = freetype xlib_libfontenc xlib_xtrans xproto_fontsproto xproto_xproto xfont_encodings
+
+HOST_XLIB_LIBXFONT_DEPENDENCIES = \
+	host-freetype host-xlib_libfontenc host-xlib_xtrans \
+	host-xproto_fontsproto host-xproto_xproto host-xfont_encodings
+
+XLIB_LIBXFONT_CONF_OPTS = --disable-devel-docs
 HOST_XLIB_LIBXFONT_CONF_OPTS = --disable-devel-docs
 
 ifeq ($(BR2_microblaze),y)
