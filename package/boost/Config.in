@@ -154,6 +154,9 @@ config BR2_PACKAGE_BOOST_THREAD
 config BR2_PACKAGE_BOOST_TIMER
 	bool "boost-timer"
 
+config BR2_PACKAGE_BOOST_TYPE_ERASURE
+	bool "boost-type_erasure"
+
 config BR2_PACKAGE_BOOST_WAVE
 	bool "boost-wave"
 
