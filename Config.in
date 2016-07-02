@@ -730,14 +730,14 @@ endmenu
 
 config BR2_REPRODUCIBLE
 	bool "Make the build reproducible (experimental)"
-        help
-          This option will remove all sources of non-reproducibility
-          from the build process. For a given Buildroot configuration,
-          this allows to generate exactly identical binaries from one
-          build to the other, including on different machines.
+	help
+	  This option will remove all sources of non-reproducibility
+	  from the build process. For a given Buildroot configuration,
+	  this allows to generate exactly identical binaries from one
+	  build to the other, including on different machines.
 
-          This is labeled as an experimental feature, as not all
-          packages behave properly to ensure reproducibility.
+	  This is labeled as an experimental feature, as not all
+	  packages behave properly to ensure reproducibility.
 
 endmenu
 
