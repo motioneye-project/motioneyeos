@@ -159,15 +159,6 @@ $(2)_INSTALL_OPTS                ?= install
 $(2)_INSTALL_STAGING_OPTS	?= DESTDIR=$$(STAGING_DIR) install
 $(2)_INSTALL_TARGET_OPTS		?= DESTDIR=$$(TARGET_DIR) install
 
-# This must be repeated from inner-generic-package, otherwise we get an empty
-# _DEPENDENCIES if _AUTORECONF is YES.  Also filter the result of _AUTORECONF
-# and _GETTEXTIZE away from the non-host rule
-ifeq ($(4),host)
-$(2)_DEPENDENCIES ?= $$(filter-out host-automake host-autoconf host-libtool \
-				host-gettext host-skeleton host-toolchain $(1),\
-    $$(patsubst host-host-%,host-%,$$(addprefix host-,$$($(3)_DEPENDENCIES))))
-endif
-
 #
 # Configure step. Only define it if not already defined by the package
 # .mk file. And take care of the differences between host and target

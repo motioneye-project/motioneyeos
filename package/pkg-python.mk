@@ -138,21 +138,6 @@ else
 $$(error "Invalid $(2)_SETUP_TYPE. Valid options are 'distutils' or 'setuptools'")
 endif
 
-# The below statement intends to calculate the dependencies of host
-# packages by derivating them from the dependencies of the
-# corresponding target package, after adding the 'host-' prefix in
-# front of the dependencies.
-#
-# However it must be repeated from inner-generic-package, as we need
-# to exclude the python, host-python and host-python-setuptools
-# packages, which are added below in the list of dependencies
-# depending on the package characteristics, and shouldn't be derived
-# automatically from the dependencies of the corresponding target
-# package.
-ifeq ($(4),host)
-$(2)_DEPENDENCIES ?= $$(filter-out host-python host-python3 host-python-setuptools host-skeleton host-toolchain $(1),$$(patsubst host-host-%,host-%,$$(addprefix host-,$$($(3)_DEPENDENCIES))))
-endif
-
 # Target packages need both the python interpreter on the target (for
 # runtime) and the python interpreter on the host (for
 # compilation). However, host packages only need the python
