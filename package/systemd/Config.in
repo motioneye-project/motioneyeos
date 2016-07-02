@@ -277,6 +277,7 @@ config BR2_PACKAGE_SYSTEMD_POLKIT
 
 config BR2_PACKAGE_SYSTEMD_NETWORKD
 	bool "enable network manager"
+	default y
 	help
 	  systemd-networkd is a system service that manages networks.
 	  It detects and configures network devices as they appear, as well as
