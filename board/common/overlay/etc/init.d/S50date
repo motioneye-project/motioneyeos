@@ -4,11 +4,23 @@ sys_conf="/etc/date.conf"
 boot_conf="/boot/date.conf"
 conf="/data/etc/date.conf"
 
+sys_ntp_conf="/etc/ntp.conf"
+boot_ntp_conf="/boot/ntp.conf"
+ntp_conf="/data/etc/ntp.conf"
+
 if ! [ -f $conf ]; then
     if [ -f $boot_conf ]; then
         cp $boot_conf $conf
     elif [ -f $sys_conf ]; then
         cp $sys_conf $conf
+    fi
+fi
+
+if ! [ -f $ntp_conf ]; then
+    if [ -f $boot_ntp_conf ]; then
+        cp $boot_ntp_conf $ntp_conf
+    elif [ -f $sys_ntp_conf ]; then
+        cp $sys_ntp_conf $ntp_conf
     fi
 fi
 
@@ -42,7 +54,7 @@ set_current_date_http() {
 }
 
 set_current_date_ntp() {
-    cat /etc/ntp.conf | grep server | head -n 1 | cut -d ' ' -f 2 | xargs ntpdate -t $date_timeout -s
+    cat $ntp_conf | grep server | head -n 1 | cut -d ' ' -f 2 | xargs ntpdate -t $date_timeout -s
 }
 
 start_http() {
@@ -60,13 +72,24 @@ start_http() {
 
 start_ntp() {
     mkdir -p /var/lib/ntp
-    
+
+    cat $ntp_conf | grep -v iburst > ${ntp_conf}.tmp
+
+    if [ -n "$date_ntp_server" ]; then
+        echo "server $date_ntp_server iburst" > $ntp_conf
+    else
+        cat $sys_ntp_conf | grep iburst > $ntp_conf
+    fi
+
+    cat ${ntp_conf}.tmp >> $ntp_conf
+    rm ${ntp_conf}.tmp
+
     msg_begin "Setting current date using ntp"
     set_current_date_ntp
     test $? == 0 && msg_done "$(date)" || msg_fail
 
     msg_begin "Starting ntpd"
-    ntpd -g -c /etc/ntp.conf
+    ntpd -g -c $ntp_conf
     test $? == 0 && msg_done || msg_fail
 }
 
