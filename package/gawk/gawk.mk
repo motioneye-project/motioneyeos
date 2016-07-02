@@ -36,9 +36,6 @@ else
 GAWK_CONF_OPTS += --without-readline
 endif
 
-# We don't have a host-busybox, and we don't want to use readline or mpfr
-HOST_GAWK_DEPENDENCIES =
-
 HOST_GAWK_CONF_OPTS = --without-readline --without-mpfr
 
 define GAWK_CREATE_SYMLINK
