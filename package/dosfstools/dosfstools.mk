@@ -12,9 +12,6 @@ DOSFSTOOLS_LICENSE_FILES = COPYING
 DOSFSTOOLS_CONF_OPTS = --enable-compat-symlinks --exec-prefix=/
 HOST_DOSFSTOOLS_CONF_OPTS = --enable-compat-symlinks
 
-# Avoid target dosfstools dependencies, no host-libiconv
-HOST_DOSFSTOOLS_DEPENDENCIES =
-
 ifeq ($(BR2_PACKAGE_HAS_UDEV),y)
 DOSFSTOOLS_CONF_OPTS += --with-udev
 DOSFSTOOLS_DEPENDENCIES += udev
