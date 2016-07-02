@@ -49,7 +49,6 @@ endef
 # We have no host sources to get, since we already
 # bundle the script we want to install.
 HOST_RPI_FIRMWARE_SOURCE =
-HOST_RPI_FIRMWARE_DEPENDENCIES =
 
 define HOST_RPI_FIRMWARE_INSTALL_CMDS
 	$(INSTALL) -D -m 0755 package/rpi-firmware/mkknlimg $(HOST_DIR)/usr/bin/mkknlimg
