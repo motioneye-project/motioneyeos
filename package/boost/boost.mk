@@ -11,8 +11,6 @@ BOOST_INSTALL_STAGING = YES
 BOOST_LICENSE = Boost Software License 1.0
 BOOST_LICENSE_FILES = LICENSE_1_0.txt
 
-HOST_BOOST_DEPENDENCIES =
-
 # keep host variant as minimal as possible
 HOST_BOOST_FLAGS = --without-icu \
 	--without-libraries=$(subst $(space),$(comma),atomic chrono context \
