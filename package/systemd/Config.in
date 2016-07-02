@@ -287,6 +287,17 @@ config BR2_PACKAGE_SYSTEMD_NETWORKD
 
 	  http://www.freedesktop.org/software/systemd/man/systemd-networkd.html
 
+config BR2_PACKAGE_SYSTEMD_RESOLVED
+	bool "enable resolve daemon"
+	default y
+	help
+	  systemd-resolved is a system service that provides network
+	  name resolution to local applications. It implements a
+	  caching and validating DNS/DNSSEC stub resolver, as well as
+	  an LLMNR resolver and responder.
+
+	  http://www.freedesktop.org/software/systemd/man/systemd-resolved.html
+
 config BR2_PACKAGE_SYSTEMD_TIMESYNCD
 	bool "enable SNTP client"
 	help

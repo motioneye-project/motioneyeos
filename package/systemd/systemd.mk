@@ -296,6 +296,12 @@ define SYSTEMD_INSTALL_SERVICE_NETWORK
 endef
 endif
 
+ifeq ($(BR2_PACKAGE_SYSTEMD_RESOLVED),y)
+SYSTEMD_CONF_OPTS += --enable-resolved
+else
+SYSTEMD_CONF_OPTS += --disable-resolved
+endif
+
 ifeq ($(BR2_PACKAGE_SYSTEMD_TIMESYNCD),y)
 SYSTEMD_CONF_OPTS += --enable-timesyncd
 define SYSTEMD_INSTALL_SERVICE_TIMESYNC
