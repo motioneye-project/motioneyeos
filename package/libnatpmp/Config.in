@@ -1,0 +1,16 @@
+config BR2_PACKAGE_LIBNATPMP
+	bool "libnatpmp"
+	depends on !BR2_BINFMT_FLAT
+	depends on !BR2_STATIC_LIBS
+	help
+	  libnatpmp is an attempt to make a portable and fully compliant
+	  implementation of the NAT-PMP protocol for the client side. It
+	  is based on non blocking sockets and all calls of the API are
+	  asynchronous. It is therefore very easy to integrate the
+	  NAT-PMP code to any event driven code.
+
+	  http://miniupnp.free.fr/libnatpmp.html
+
+comment "libnatpmp needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS
+	depends on !BR2_BINFMT_FLAT
