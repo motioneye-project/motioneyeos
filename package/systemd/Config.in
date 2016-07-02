@@ -225,6 +225,17 @@ config BR2_PACKAGE_SYSTEMD_HOSTNAMED
 
 	  http://www.freedesktop.org/software/systemd/man/systemd-hostnamed.service.html
 
+config BR2_PACKAGE_SYSTEMD_MYHOSTNAME
+	bool "enable myhostname NSS plugin"
+	default y
+	help
+	  nss-myhostname is a plug-in module for the GNU Name Service
+	  Switch (NSS) functionality of the GNU C Library (glibc),
+	  primarily providing hostname resolution for the locally
+	  configured system hostname as returned by gethostname(2).
+
+	  http://www.freedesktop.org/software/systemd/man/nss-myhostname.html
+
 config BR2_PACKAGE_SYSTEMD_TIMEDATED
 	bool "enable timedate daemon"
 	default y

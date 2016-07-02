@@ -249,6 +249,12 @@ else
 SYSTEMD_CONF_OPTS += --disable-hostnamed
 endif
 
+ifeq ($(BR2_PACKAGE_SYSTEMD_MYHOSTNAME),y)
+SYSTEMD_CONF_OPTS += --enable-myhostname
+else
+SYSTEMD_CONF_OPTS += --disable-myhostname
+endif
+
 ifeq ($(BR2_PACKAGE_SYSTEMD_TIMEDATED),y)
 SYSTEMD_CONF_OPTS += --enable-timedated
 else
