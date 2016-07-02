@@ -299,7 +299,8 @@ config BR2_PACKAGE_SYSTEMD_RESOLVED
 	  http://www.freedesktop.org/software/systemd/man/systemd-resolved.html
 
 config BR2_PACKAGE_SYSTEMD_TIMESYNCD
-	bool "enable SNTP client"
+	bool "enable timesync daemon"
+	default y
 	help
 	  systemd-timesyncd is a service that may be used to synchronize the
 	  local system clock with a Network Time Protocol server.
