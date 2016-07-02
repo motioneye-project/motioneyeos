@@ -4,4 +4,4 @@ config BR2_PACKAGE_LIBGPG_ERROR
 	  Libgpg-error is a small library with error codes and
 	  descriptions shared by most GnuPG related software.
 
-	  ftp://gd.tuwien.ac.at/privacy/gnupg/libgpg-error
+	  https://www.gnupg.org/related_software/libgpg-error
