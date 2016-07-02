@@ -23,6 +23,18 @@ XLIB_LIBX11_DEPENDENCIES = \
 	xproto_xf86bigfontproto \
 	host-xproto_xproto
 
+HOST_XLIB_LIBX11_DEPENDENCIES = \
+	host-libxcb \
+	host-xutil_util-macros \
+	host-xlib_xtrans \
+	host-xlib_libXau \
+	host-xlib_libXdmcp \
+	host-xproto_kbproto \
+	host-xproto_xproto \
+	host-xproto_xextproto \
+	host-xproto_inputproto \
+	host-xproto_xf86bigfontproto
+
 XLIB_LIBX11_CONF_OPTS = \
 	--disable-malloc0returnsnull \
 	--with-xcb \
