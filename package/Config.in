@@ -335,6 +335,7 @@ menu "Firmware"
 	source "package/zd1211-firmware/Config.in"
 endmenu
 	source "package/a10disp/Config.in"
+	source "package/acpica/Config.in"
 	source "package/acpid/Config.in"
 	source "package/acpitool/Config.in"
 	source "package/aer-inject/Config.in"
