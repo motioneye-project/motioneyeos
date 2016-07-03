@@ -34,7 +34,6 @@ PULSEAUDIO_DEPENDENCIES = \
 	$(if $(BR2_PACKAGE_BLUEZ_UTILS),bluez_utils) \
 	$(if $(BR2_PACKAGE_OPENSSL),openssl) \
 	$(if $(BR2_PACKAGE_FFTW),fftw) \
-	$(if $(BR2_PACKAGE_WEBRTC_AUDIO_PROCESSING),webrtc-audio-processing) \
 	$(if $(BR2_PACKAGE_SYSTEMD),systemd)
 
 ifeq ($(BR2_PACKAGE_GDBM),y)
@@ -86,6 +85,13 @@ PULSEAUDIO_CONF_OPTS += --enable-udev
 PULSEAUDIO_DEPENDENCIES += udev
 else
 PULSEAUDIO_CONF_OPTS += --disable-udev
+endif
+
+ifeq ($(BR2_PACKAGE_WEBRTC_AUDIO_PROCESSING),y)
+PULSEAUDIO_CONF_OPTS += --enable-webrtc-aec
+PULSEAUDIO_DEPENDENCIES += webrtc-audio-processing
+else
+PULSEAUDIO_CONF_OPTS += --disable-webrtc-aec
 endif
 
 ifneq ($(BR2_INSTALL_LIBSTDCPP),y)
