@@ -18,7 +18,7 @@ PULSEAUDIO_CONF_OPTS = \
 # Make sure we don't detect libatomic_ops. Indeed, since pulseaudio
 # requires json-c, which needs 4 bytes __sync builtins, there should
 # be no need for pulseaudio to rely on libatomic_ops.
-PULSE_AUDIO_CONF_ENV += \
+PULSEAUDIO_CONF_ENV += \
 	ac_cv_header_atomic_ops_h=no
 
 # 0002-webrtc-C-11-is-only-required-for-WebRTC-support.patch
