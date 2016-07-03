@@ -419,3 +419,13 @@ config BR2_TOOLCHAIN_HAS_ATOMIC
 	default y if BR2_TOOLCHAIN_GCC_AT_LEAST_4_7 && BR2_armeb
 	default y if BR2_TOOLCHAIN_GCC_AT_LEAST_4_7 && BR2_xtensa
 	default y if BR2_TOOLCHAIN_GCC_AT_LEAST_4_7 && BR2_ARCH_IS_64
+
+# - libquadmath is not needed/available on all architectures (but gcc
+#   correctly handles this already).
+# - At least, libquadmath is available on:
+#   - i*86
+#   - x86_64
+# - When available, libquadmath requires wchar support.
+config BR2_TOOLCHAIN_HAS_LIBQUADMATH
+	bool
+	default y if BR2_i386 || BR2_x86_64
