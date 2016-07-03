@@ -21,6 +21,9 @@ PULSEAUDIO_CONF_OPTS = \
 PULSE_AUDIO_CONF_ENV += \
 	ac_cv_header_atomic_ops_h=no
 
+# 0002-webrtc-C-11-is-only-required-for-WebRTC-support.patch
+PULSEAUDIO_AUTORECONF = YES
+
 PULSEAUDIO_DEPENDENCIES = \
 	host-pkgconf libtool json-c libsndfile speex host-intltool \
 	$(if $(BR2_PACKAGE_LIBSAMPLERATE),libsamplerate) \
