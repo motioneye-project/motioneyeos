@@ -2,6 +2,7 @@ config BR2_PACKAGE_LIBBDPLUS
 	bool "libbdplus"
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on !BR2_STATIC_LIBS
+	select BR2_PACKAGE_LIBGCRYPT
 	help
 	  libbdplus is a research project to implement the BD+ System
 	  Specifications.
