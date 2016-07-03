@@ -310,6 +310,12 @@ information is (assuming the package name is +libfoo+) :
      the package source code. Buildroot copies the contents of the
      source directory into the package's build directory.
 
+* +LIBFOO_GIT_SUBMODULES+, when +LIBFOO_SITE_METHOD=git+, will create
+  an archive with the git submodules in the repository.
+  Note that we try not to use such git submodules when they contain
+  bundled libraries, in which case we prefer to use those libraries
+  from their own package.
+
 * +LIBFOO_STRIP_COMPONENTS+ is the number of leading components
   (directories) that tar must strip from file names on extraction.
   The tarball for most packages has one leading component named
