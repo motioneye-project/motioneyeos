@@ -454,6 +454,38 @@ config BR2_ROOTFS_POST_BUILD_SCRIPT
 	  argument. Make sure the exit code of those scripts are 0, otherwise
 	  make will stop after calling them.
 
+config BR2_ROOTFS_POST_FAKEROOT_SCRIPT
+	string "Custom scripts to run inside the fakeroot environment"
+	default ""
+	help
+	  Specify a space-separated list of scripts to be run at the end
+	  of the fakeroot script right before the image(s) are actually
+	  generated.
+
+	  This gives users the opportunity to do customisations of the
+	  content of the rootfs, which would otherwise require root
+	  rigths.
+
+	  These scripts are called with the target directory name as
+	  first argument. The build will fail on the first scripts that
+	  exits with a non-zero exit code.
+
+	  Note that Buildroot already provides mechanisms to customise
+	  the content of the rootfs:
+
+	    - BR2_ROOTFS_STATIC_DEVICE_TABLE
+	        to create arbitrary entries statically in /dev
+
+	    - BR2_ROOTFS_DEVICE_TABLE
+	        to set arbitrary permissions as well as extended attributes
+	        (such as capabilities) on files and directories,
+
+	    - BR2_ROOTFS_USERS_TABLES:
+	        to create arbitrary users and their home directories
+
+	  It is highly recommended to use those mechanisms if possible,
+	  rather than using custom fakeroot scripts.
+
 config BR2_ROOTFS_POST_IMAGE_SCRIPT
 	string "Custom scripts to run after creating filesystem images"
 	default ""
@@ -473,8 +505,10 @@ config BR2_ROOTFS_POST_IMAGE_SCRIPT
 	  source directory as the current directory.
 
 config BR2_ROOTFS_POST_SCRIPT_ARGS
-	string "Extra post-{build,image} arguments"
-	depends on BR2_ROOTFS_POST_BUILD_SCRIPT != "" || BR2_ROOTFS_POST_IMAGE_SCRIPT != ""
+	string "Extra arguments passed to custom scripts"
+	depends on BR2_ROOTFS_POST_BUILD_SCRIPT != "" \
+		|| BR2_ROOTFS_POST_FAKEROOT_SCRIPT != "" \
+		|| BR2_ROOTFS_POST_IMAGE_SCRIPT != ""
 	help
 	  Pass these additional arguments to each post-build or post-image
 	  scripts.
