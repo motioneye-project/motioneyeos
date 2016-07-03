@@ -61,9 +61,19 @@ endif
 ifeq ($(HOST_QEMU_ARCH),sh4aeb)
 HOST_QEMU_ARCH = sh4eb
 endif
-HOST_QEMU_TARGETS = $(HOST_QEMU_ARCH)-linux-user
 
-ifeq ($(BR2_PACKAGE_HOST_QEMU),y)
+ifeq ($(BR2_PACKAGE_HOST_QEMU_SYSTEM_MODE),y)
+HOST_QEMU_TARGETS += $(HOST_QEMU_ARCH)-softmmu
+HOST_QEMU_OPTS += --enable-system --enable-fdt
+HOST_QEMU_DEPENDENCIES += host-dtc
+else
+HOST_QEMU_OPTS += --disable-system
+endif
+
+ifeq ($(BR2_PACKAGE_HOST_QEMU_LINUX_USER_MODE),y)
+HOST_QEMU_TARGETS += $(HOST_QEMU_ARCH)-linux-user
+HOST_QEMU_OPTS += --enable-linux-user
+
 HOST_QEMU_HOST_SYSTEM_TYPE = $(shell uname -s)
 ifneq ($(HOST_QEMU_HOST_SYSTEM_TYPE),Linux)
 $(error "qemu-user can only be used on Linux hosts")
@@ -84,12 +94,16 @@ HOST_QEMU_COMPARE_VERSION = $(shell test $(HOST_QEMU_HOST_SYSTEM_VERSION) -ge $(
 # built with kernel headers that are older or the same as the kernel
 # version running on the host machine.
 #
+
 ifeq ($(BR_BUILDING),y)
 ifneq ($(HOST_QEMU_COMPARE_VERSION),OK)
 $(error "Refusing to build qemu-user: target Linux version newer than host's.")
 endif
-endif
-endif
+endif # BR_BUILDING
+
+else # BR2_PACKAGE_HOST_QEMU_LINUX_USER_MODE
+HOST_QEMU_OPTS += --disable-linux-user
+endif # BR2_PACKAGE_HOST_QEMU_LINUX_USER_MODE
 
 define HOST_QEMU_CONFIGURE_CMDS
 	cd $(@D); $(HOST_CONFIGURE_OPTS) ./configure    \
@@ -100,7 +114,8 @@ define HOST_QEMU_CONFIGURE_CMDS
 		--host-cc="$(HOSTCC)"                   \
 		--python=$(HOST_DIR)/usr/bin/python2    \
 		--extra-cflags="$(HOST_CFLAGS)"         \
-		--extra-ldflags="$(HOST_LDFLAGS)"
+		--extra-ldflags="$(HOST_LDFLAGS)"       \
+		$(HOST_QEMU_OPTS)
 endef
 
 define HOST_QEMU_BUILD_CMDS
