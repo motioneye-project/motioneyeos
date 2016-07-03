@@ -4,9 +4,6 @@
 #
 ################################################################################
 
-# source included in buildroot
-SKELETON_SOURCE =
-
 # The skeleton can't depend on the toolchain, since all packages depends on the
 # skeleton and the toolchain is a target package, as is skeleton.
 # Hence, skeleton would depends on the toolchain and the toolchain would depend
