@@ -1,5 +1,6 @@
 config BR2_PACKAGE_BABELD
 	bool "babeld"
+	depends on BR2_USE_MMU # fork()
 	help
 	  Babel is a loop-avoiding distance-vector routing protocol for IPv6
 	  and IPv4 with fast convergence properties.
