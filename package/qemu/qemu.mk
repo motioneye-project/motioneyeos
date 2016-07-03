@@ -105,6 +105,11 @@ else # BR2_PACKAGE_HOST_QEMU_LINUX_USER_MODE
 HOST_QEMU_OPTS += --disable-linux-user
 endif # BR2_PACKAGE_HOST_QEMU_LINUX_USER_MODE
 
+ifeq ($(BR2_PACKAGE_HOST_QEMU_VDE2),y)
+HOST_QEMU_OPTS += --enable-vde
+HOST_QEMU_DEPENDENCIES += host-vde2
+endif
+
 define HOST_QEMU_CONFIGURE_CMDS
 	cd $(@D); $(HOST_CONFIGURE_OPTS) ./configure    \
 		--target-list="$(HOST_QEMU_TARGETS)"    \

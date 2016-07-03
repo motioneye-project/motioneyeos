@@ -31,4 +31,11 @@ config BR2_PACKAGE_HOST_QEMU_LINUX_USER_MODE
 	  Enables the build of the user-land emulator, which allows to
 	  run user-space applications.
 
+config BR2_PACKAGE_HOST_QEMU_VDE2
+	bool "VDE2 support"
+	help
+	  Enables VDE2 support. VDE2 stands for Virtual Distributed
+	  Ethernet and can be used to create virtual switches to
+	  "plug" both physical and virtual machines in them.
+
 endif
