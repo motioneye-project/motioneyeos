@@ -17,7 +17,7 @@ LIBXCB_DEPENDENCIES = \
 	host-xcb-proto host-python host-pkgconf
 HOST_LIBXCB_DEPENDENCIES = \
 	host-libxslt host-libpthread-stubs host-xcb-proto host-xlib_libXdmcp \
-	host-xlib_libXau host-xcb-proto host-python host-pkgconf
+	host-xlib_libXau host-python host-pkgconf
 
 LIBXCB_CONF_OPTS = --with-doxygen=no
 HOST_LIBXCB_CONF_OPTS = --with-doxygen=no
