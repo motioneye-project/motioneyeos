@@ -7,7 +7,6 @@
 # source included in the package
 # came from barebox's repository:
 # http://git.pengutronix.de/?p=barebox.git;a=blob;f=scripts/socfpga_mkimage.c;h=1a7a66d98841e9f52c3ea49c651286aa1412c9a5;hb=HEAD
-HOST_MKPIMAGE_SOURCE =
 HOST_MKPIMAGE_LICENSE = GPLv2
 
 define HOST_MKPIMAGE_BUILD_CMDS
