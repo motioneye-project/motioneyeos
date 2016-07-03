@@ -43,7 +43,7 @@ else
 LVM2_CONF_OPTS += --disable-applib
 endif
 
-ifeq ($(BR2_arc),y)
+ifeq ($(BR2_arc)$(BR2_m68k),y)
 LVM2_CONF_ENV += ac_cv_flag_HAVE_PIE=no
 endif
 
