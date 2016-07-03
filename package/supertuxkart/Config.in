@@ -1,0 +1,34 @@
+config BR2_PACKAGE_SUPERTUXKART
+	bool "supertuxkart"
+	depends on BR2_USE_MMU # fork()
+	depends on BR2_INSTALL_LIBSTDCPP # openal
+	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL # openal
+	depends on BR2_PACKAGE_OPENAL_ARCH_SUPPORTS # openal
+	depends on BR2_PACKAGE_HAS_LIBGL
+	depends on BR2_PACKAGE_XORG7
+	depends on !BR2_TOOLCHAIN_USES_MUSL
+	select BR2_PACKAGE_JPEG
+	select BR2_PACKAGE_LIBCURL
+	select BR2_PACKAGE_LIBGLU
+	select BR2_PACKAGE_LIBOGG
+	select BR2_PACKAGE_LIBPNG
+	select BR2_PACKAGE_LIBVORBIS
+	select BR2_PACKAGE_OPENAL
+	select BR2_PACKAGE_XLIB_LIBXRANDR
+	select BR2_PACKAGE_ZLIB
+	help
+	  Karts. Nitro. Action! SuperTuxKart is a free 3D arcade kart
+	  racer with multiple karts, tracks and modes you can play.
+	  Beat the evil Nolok by any means necessary, and make the
+	  mascot kingdom safe once again!
+
+	  http://supertuxkart.sourceforge.net/Main_Page
+
+comment "supertuxkart needs an OpenGL backend, a uClibc or glibc toolchain w/ NPTL, C++"
+	depends on BR2_USE_MMU
+	depends on BR2_PACKAGE_OPENAL_ARCH_SUPPORTS
+	depends on BR2_PACKAGE_XORG7
+	depends on !BR2_TOOLCHAIN_HAS_THREADS_NPTL \
+		|| !BR2_INSTALL_LIBSTDCPP \
+		|| !BR2_PACKAGE_HAS_LIBGL \
+		|| BR2_TOOLCHAIN_USES_MUSL

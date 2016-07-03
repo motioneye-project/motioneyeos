@@ -1,0 +1,39 @@
+From fe71624eb39e0bc302a7603c79503fb12667dc2b Mon Sep 17 00:00:00 2001
+From: Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
+Date: Sun, 3 Jul 2016 15:16:59 -0300
+Subject: [PATCH 2/2] irrlicht: Fix boolean return type for jpeglib's callback
+
+Building on certain toolchains can fail due to returning an integer
+instead of TRUE. In any case, only {TRUE,FALSE} should be used
+as 'boolean' jpeglib type. Fix this by returning TRUE.
+
+  CImageLoaderJPG.cpp: In static member function 'static boolean
+  irr::video::CImageLoaderJPG::fill_input_buffer(j_decompress_ptr)':
+  CImageLoaderJPG.cpp:69:9: error: invalid conversion from 'int' to 'boolean'
+  [-fpermissive]
+
+Signed-off-by: Romain Naour <romain.naour@smile.fr>
+Signed-off-by: Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
+---
+Fix sent upstream as part of pull:
+https://github.com/supertuxkart/stk-code/pull/2554
+
+ lib/irrlicht/source/Irrlicht/CImageLoaderJPG.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/lib/irrlicht/source/Irrlicht/CImageLoaderJPG.cpp b/lib/irrlicht/source/Irrlicht/CImageLoaderJPG.cpp
+index 8fc5222a1e9b..1811f31dd28f 100644
+--- a/lib/irrlicht/source/Irrlicht/CImageLoaderJPG.cpp
++++ b/lib/irrlicht/source/Irrlicht/CImageLoaderJPG.cpp
+@@ -66,7 +66,7 @@ void CImageLoaderJPG::init_source (j_decompress_ptr cinfo)
+ boolean CImageLoaderJPG::fill_input_buffer (j_decompress_ptr cinfo)
+ {
+ 	// DO NOTHING
+-	return 1;
++	return TRUE;
+ }
+ 
+ 
+-- 
+2.9.0
+
