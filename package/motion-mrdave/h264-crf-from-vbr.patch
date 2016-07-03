@@ -1,0 +1,26 @@
+From e65ea2454d6dcc759e2f4fd38548f6844a2c820b Mon Sep 17 00:00:00 2001
+From: Calin Crisan <ccrisan@gmail.com>
+Date: Sun, 3 Jul 2016 19:49:06 +0300
+Subject: [PATCH] h264 codec: set crf option based on configured vbr
+
+---
+ ffmpeg.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/ffmpeg.c b/ffmpeg.c
+index df2b47e..ed192ca 100644
+--- a/ffmpeg.c
++++ b/ffmpeg.c
+@@ -295,7 +295,11 @@ struct ffmpeg *ffmpeg_open(char *ffmpeg_video_codec, char *filename,
+     if (c->codec_id == MY_CODEC_ID_H264 ||
+         c->codec_id == MY_CODEC_ID_HEVC){
+         av_dict_set(&opts, "preset", "ultrafast", 0);
+-        av_dict_set(&opts, "crf", "18", 0);
++
++        /* transform vbr (2 - 31) into crf (0 - 51) by scaling */
++        char crf[4];
++        snprintf(crf, 4, "%d", (int) ((vbr - 2) * 1.758));
++
+         av_dict_set(&opts, "tune", "zerolatency", 0);
+     }
+     if (strcmp(ffmpeg_video_codec, "ffv1") == 0) c->strict_std_compliance = -2;
