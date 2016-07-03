@@ -4,7 +4,8 @@
 #
 ################################################################################
 
-SUNXI_MALI_VERSION = d343311efc8db166d8371b28494f0f27b6a58724
+# last sha1 character dropped to ensure unique filename
+SUNXI_MALI_VERSION = d343311efc8db166d8371b28494f0f27b6a5872
 SUNXI_MALI_SITE = https://github.com/linux-sunxi/sunxi-mali
 SUNXI_MALI_SITE_METHOD = git
 
