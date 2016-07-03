@@ -17,7 +17,7 @@ CFG_FILE=/etc/default/nfsd
 
 NR_THREADS=2
 if [ -f "${CFG_FILE}" ]; then
-    . "${CFG_FILE}"
+	. "${CFG_FILE}"
 fi
 
 
@@ -66,23 +66,23 @@ stop() {
 
 # See how we were called.
 case "$1" in
-  start)
-	start
-	;;
-  stop)
-	stop
-	;;
-  restart)
-	stop
-	start
-	;;
-  reload)
-	/usr/sbin/exportfs -r
-	touch /var/lock/subsys/nfs
-	;;
-  *)
-	echo "Usage: $0 {start|stop|restart|reload}"
-	exit 1
+	start)
+		start
+		;;
+	stop)
+		stop
+		;;
+	restart)
+		stop
+		start
+		;;
+	reload)
+		/usr/sbin/exportfs -r
+		touch /var/lock/subsys/nfs
+		;;
+	*)
+		echo "Usage: $0 {start|stop|restart|reload}"
+		exit 1
 esac
 
 exit 0
