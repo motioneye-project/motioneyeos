@@ -4,7 +4,6 @@
 #
 ################################################################################
 
-TZ_SOURCE =
 TZ_DEPENDENCIES = host-tzdata host-tzdump
 TZ_LICENSE = Public domain
 
