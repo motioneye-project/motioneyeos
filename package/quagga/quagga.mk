@@ -75,6 +75,8 @@ endif
 define QUAGGA_INSTALL_INIT_SYSTEMD
 	$(INSTALL) -D -m 644 package/quagga/quagga_tmpfiles.conf \
 		$(TARGET_DIR)/usr/lib/tmpfiles.d/quagga.conf
+	$(INSTALL) -D -m 644 package/quagga/quagga@.service \
+		$(TARGET_DIR)/usr/lib/systemd/system/quagga@.service
 endef
 
 $(eval $(autotools-package))
