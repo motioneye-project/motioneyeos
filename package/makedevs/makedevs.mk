@@ -4,11 +4,6 @@
 #
 ################################################################################
 
-# source included in buildroot
-MAKEDEVS_SOURCE =
-HOST_MAKEDEVS_SOURCE =
-
-MAKEDEVS_VERSION = buildroot-$(BR2_VERSION)
 MAKEDEVS_LICENSE = GPLv2
 
 HOST_MAKEDEVS_CFLAGS = $(HOST_CFLAGS)
