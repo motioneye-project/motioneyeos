@@ -99,8 +99,8 @@ mkdir -p $BOOT
 
 if [ `uname` == "Darwin" ]; then
     BOOT_DEV=${SDCARD_DEV}s1 # e.g. /dev/disk4s1
-    diskutil unmountDisk ${SDCARD_DEV}
-    mount -ft msdos $BOOT_DEV $BOOT
+    umount ${SDCARD_DEV}* 2>/dev/null || true
+    mount_msdos $BOOT_DEV $BOOT
 else # assuming Linux
     BOOT_DEV=${SDCARD_DEV}p1 # e.g. /dev/mmcblk0p1
     if ! [ -e ${SDCARD_DEV}p1 ]; then
@@ -158,3 +158,4 @@ umount $BOOT
 rmdir $BOOT
 
 msg "you can now remove the sdcard"
+
