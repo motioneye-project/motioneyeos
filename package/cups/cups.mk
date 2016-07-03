@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-CUPS_VERSION = 2.1.2
-CUPS_SOURCE = cups-$(CUPS_VERSION)-source.tar.bz2
-CUPS_SITE = http://www.cups.org/software/$(CUPS_VERSION)
+CUPS_VERSION = 2.1.4
+CUPS_SOURCE = cups-$(CUPS_VERSION)-source.tar.gz
+CUPS_SITE = https://github.com/apple/cups/releases/download/release-$(CUPS_VERSION)
 CUPS_LICENSE = GPLv2 LGPLv2
 CUPS_LICENSE_FILES = LICENSE.txt
 CUPS_INSTALL_STAGING = YES
