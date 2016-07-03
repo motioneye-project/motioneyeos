@@ -43,12 +43,6 @@ endif
 
 $(2)_IS_VIRTUAL = YES
 
-# A virtual package does not have any source associated
-$(2)_SOURCE =
-
-# Fake a version string, so it looks nicer in the build log
-$(2)_VERSION = virtual
-
 # Add dependency against the provider
 $(2)_DEPENDENCIES += $$(call qstrip,$$(BR2_PACKAGE_PROVIDES_$(2)))
 
