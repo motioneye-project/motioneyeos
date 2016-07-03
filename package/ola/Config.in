@@ -26,6 +26,7 @@ menu "bindings and interface"
 
 config BR2_PACKAGE_OLA_WEB
 	bool "http interface"
+	depends on BR2_PACKAGE_LIBGPG_ERROR_ARCH_SUPPORTS # libgcrypt, libmicrohttpd
 	select BR2_PACKAGE_LIBMICROHTTPD
 	help
 	  Build OLA with browser interface.

@@ -1,5 +1,6 @@
 config BR2_PACKAGE_LIBAACS
 	bool "libaacs"
+	depends on BR2_PACKAGE_LIBGPG_ERROR_ARCH_SUPPORTS # libgcrypt
 	depends on !BR2_STATIC_LIBS
 	select BR2_PACKAGE_LIBGCRYPT
 	help
