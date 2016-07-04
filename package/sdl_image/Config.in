@@ -11,47 +11,47 @@ menuconfig BR2_PACKAGE_SDL_IMAGE
 if BR2_PACKAGE_SDL_IMAGE
 
 config BR2_PACKAGE_SDL_IMAGE_BMP
-	bool "enable BMP file format support"
+	bool "BMP support"
 	default y
 
 config BR2_PACKAGE_SDL_IMAGE_GIF
-	bool "enable GIF file format support"
+	bool "GIF support"
 
 config BR2_PACKAGE_SDL_IMAGE_JPEG
-	bool "enable JPEG file format support"
+	bool "JPEG support"
 	select BR2_PACKAGE_JPEG
 
 config BR2_PACKAGE_SDL_IMAGE_LBM
-	bool "enable LBM file format support"
+	bool "LBM support"
 
 config BR2_PACKAGE_SDL_IMAGE_PCX
-	bool "enable PCX file format support"
+	bool "PCX support"
 
 config BR2_PACKAGE_SDL_IMAGE_PNG
-	bool "enable PNG file format support"
+	bool "PNG support"
 	select BR2_PACKAGE_LIBPNG
 
 config BR2_PACKAGE_SDL_IMAGE_PNM
-	bool "enable PNM file format support"
+	bool "PNM support"
 
 config BR2_PACKAGE_SDL_IMAGE_TARGA
-	bool "enable TARGA format support"
+	bool "TARGA support"
 
 config BR2_PACKAGE_SDL_IMAGE_TIFF
-	bool "enable TIFF file format support"
+	bool "TIFF support"
 	select BR2_PACKAGE_TIFF
 
 config BR2_PACKAGE_SDL_IMAGE_WEBP
-	bool "enable WEBP file format support"
+	bool "WEBP support"
 	select BR2_PACKAGE_WEBP
 
 config BR2_PACKAGE_SDL_IMAGE_XCF
-	bool "enable XCF file format support"
+	bool "XCF support"
 
 config BR2_PACKAGE_SDL_IMAGE_XPM
-	bool "enable XPM format support"
+	bool "XPM support"
 
 config BR2_PACKAGE_SDL_IMAGE_XV
-	bool "enable XV file format support"
+	bool "XV support"
 
 endif
