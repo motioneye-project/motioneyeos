@@ -62,10 +62,6 @@ else
 ALSA_LIB_CONF_OPTS += --disable-python
 endif
 
-ifeq ($(BR2_SOFT_FLOAT),y)
-ALSA_LIB_CONF_OPTS += --with-softfloat
-endif
-
 ifeq ($(BR2_bfin),y)
 # blackfin external toolchains don't have versionsort. Fake it using alphasort
 # instead
