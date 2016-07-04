@@ -46,8 +46,6 @@ config BR2_PACKAGE_NODEJS_VERSION_STRING
 	default "6.2.1"		if BR2_PACKAGE_NODEJS_V8_ARCH_SUPPORTS
 	default "0.10.45"
 
-menu "Module Selection"
-
 config BR2_PACKAGE_NODEJS_NPM
 	bool "NPM for the target"
 	select BR2_PACKAGE_OPENSSL
@@ -101,7 +99,5 @@ config BR2_PACKAGE_NODEJS_MODULES_ADDITIONAL_DEPS
 	  https://github.com/jiangmiao/node-curl), you could then specify
 	  'libcurl' here, to ensure that buildroot builds the libcurl package,
 	  and does so before building your node modules.
-
-endmenu
 
 endif
