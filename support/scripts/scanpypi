@@ -482,15 +482,14 @@ class BuildrootPackage():
         print('Creating {filename}...'.format(filename=path_to_hash))
         lines = []
         if self.used_url['md5_digest']:
-            md5_comment = '# md5 from {url}\n'.format(url=self.metadata_url)
+            md5_comment = '# md5 from {url}, sha256 locally computed\n'.format(
+		url=self.metadata_url)
             lines.append(md5_comment)
             hash_line = '{method}\t{digest}  {filename}\n'.format(
                 method='md5',
                 digest=self.used_url['md5_digest'],
                 filename=self.filename)
             lines.append(hash_line)
-        sha256_comment = '# sha256 calculated by scanpypi\n'
-        lines.append(sha256_comment)
         digest = hashlib.sha256(self.as_string).hexdigest()
         hash_line = '{method}\t{digest}  {filename}\n'.format(
             method='sha256',
