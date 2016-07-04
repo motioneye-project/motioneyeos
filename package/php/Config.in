@@ -9,8 +9,6 @@ config BR2_PACKAGE_PHP
 
 if BR2_PACKAGE_PHP
 
-source "package/php/Config.ext"
-
 config BR2_PACKAGE_PHP_CLI
 	bool
 
@@ -65,5 +63,7 @@ config BR2_PACKAGE_PHP_SAPI_CLI_FPM
 	  Command line and PHP-FPM (FastCGI Process Manager)
 
 endchoice
+
+source "package/php/Config.ext"
 
 endif
