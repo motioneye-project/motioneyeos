@@ -18,11 +18,6 @@ config BR2_PACKAGE_LIBDRM_ENABLE_ATOMIC
 	bool
 	select BR2_PACKAGE_LIBATOMIC_OPS if !BR2_TOOLCHAIN_HAS_SYNC_4
 
-config BR2_PACKAGE_LIBDRM_INSTALL_TESTS
-	bool "Install test programs"
-	help
-	  This option allows to install the libdrm test programs.
-
 menu "DRM Drivers"
 
 config BR2_PACKAGE_LIBDRM_INTEL
@@ -98,6 +93,11 @@ config BR2_PACKAGE_LIBDRM_VC4
 	  Install vc4 (Raspberry Pi) driver.
 
 endmenu
+
+config BR2_PACKAGE_LIBDRM_INSTALL_TESTS
+	bool "Install test programs"
+	help
+	  This option allows to install the libdrm test programs.
 
 endif
 
