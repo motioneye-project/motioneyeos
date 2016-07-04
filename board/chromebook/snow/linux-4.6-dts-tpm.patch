@@ -10,9 +10,9 @@ and https://lkml.org/lkml/2013/3/4/242
 
 Signed-off-by: Alex Suykov <alex.suykov@gmail.com>
 
---- a/arch/arm/boot/dts/exynos5250-snow.dts
-+++ b/arch/arm/boot/dts/exynos5250-snow.dts
-@@ -474,6 +474,11 @@
+--- a/arch/arm/boot/dts/exynos5250-snow-common.dtsi
++++ b/arch/arm/boot/dts/exynos5250-snow-common.dtsi
+@@ -466,6 +466,11 @@
  	status = "okay";
  	samsung,i2c-sda-delay = <100>;
  	samsung,i2c-max-bus-freq = <66000>;
@@ -24,3 +24,4 @@ Signed-off-by: Alex Suykov <alex.suykov@gmail.com>
  };
  
  &i2c_5 {
+
