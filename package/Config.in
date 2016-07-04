@@ -54,17 +54,13 @@ endmenu
 
 menu "Compressors and decompressors"
 	source "package/bzip2/Config.in"
-if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	source "package/gzip/Config.in"
-endif
 	source "package/lz4/Config.in"
 	source "package/lzip/Config.in"
 	source "package/lzop/Config.in"
 	source "package/p7zip/Config.in"
 	source "package/unrar/Config.in"
-if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	source "package/unzip/Config.in"
-endif
 	source "package/xz/Config.in"
 	source "package/zip/Config.in"
 endmenu
@@ -89,9 +85,7 @@ menu "Debugging, profiling and benchmark"
 	source "package/kyua/Config.in"
 	source "package/latencytop/Config.in"
 	source "package/lmbench/Config.in"
-if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	source "package/lsof/Config.in"
-endif
 	source "package/ltp-testsuite/Config.in"
 	source "package/ltrace/Config.in"
 	source "package/lttng-babeltrace/Config.in"
@@ -130,32 +124,22 @@ menu "Development tools"
 	source "package/cppunit/Config.in"
 	source "package/cvs/Config.in"
 	source "package/cxxtest/Config.in"
-if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	source "package/diffutils/Config.in"
 	source "package/dos2unix/Config.in"
 	source "package/findutils/Config.in"
-endif
 	source "package/flex/Config.in"
-if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	source "package/gawk/Config.in"
-endif
 	source "package/gettext/Config.in"
 	source "package/git/Config.in"
 	source "package/gperf/Config.in"
-if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	source "package/grep/Config.in"
-endif
 	source "package/intltool/Config.in"
 	source "package/jq/Config.in"
 	source "package/libtool/Config.in"
 	source "package/make/Config.in"
-if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	source "package/patch/Config.in"
-endif
 	source "package/pkgconf/Config.in"
-if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	source "package/sed/Config.in"
-endif
 	source "package/sstrip/Config.in"
 	source "package/subversion/Config.in"
 	source "package/tree/Config.in"
@@ -259,9 +243,7 @@ comment "Graphic libraries"
 	source "package/elementary/Config.in"
 	source "package/fbdump/Config.in"
 	source "package/fbgrab/Config.in"
-if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	source "package/fbset/Config.in"
-endif
 	source "package/fb-test-app/Config.in"
 	source "package/fbterm/Config.in"
 	source "package/fbv/Config.in"
@@ -369,9 +351,7 @@ endmenu
 	source "package/dbus-glib/Config.in"
 	source "package/dbus-python/Config.in"
 	source "package/dbus-triggerd/Config.in"
-if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	source "package/devmem2/Config.in"
-endif
 	source "package/dmidecode/Config.in"
 	source "package/dmraid/Config.in"
 	source "package/dtv-scan-tables/Config.in"
@@ -395,9 +375,7 @@ endif
 	source "package/gpsd/Config.in"
 	source "package/gptfdisk/Config.in"
 	source "package/gvfs/Config.in"
-if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	source "package/hdparm/Config.in"
-endif
 	source "package/hwdata/Config.in"
 	source "package/hwloc/Config.in"
 	source "package/i2c-tools/Config.in"
@@ -1425,9 +1403,7 @@ menu "Networking applications"
 	source "package/crda/Config.in"
 	source "package/ctorrent/Config.in"
 	source "package/cups/Config.in"
-if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	source "package/dhcp/Config.in"
-endif
 	source "package/dhcpcd/Config.in"
 	source "package/dhcpdump/Config.in"
 	source "package/dnsmasq/Config.in"
@@ -1452,13 +1428,9 @@ endif
 	source "package/httping/Config.in"
 	source "package/ibrdtn-tools/Config.in"
 	source "package/ibrdtnd/Config.in"
-if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	source "package/ifplugd/Config.in"
-endif
 	source "package/iftop/Config.in"
-if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	source "package/ifupdown/Config.in"
-endif
 	source "package/igh-ethercat/Config.in"
 	source "package/igmpproxy/Config.in"
 	source "package/inadyn/Config.in"
@@ -1502,16 +1474,12 @@ endif
 	source "package/ncftp/Config.in"
 	source "package/ndisc6/Config.in"
 	source "package/netatalk/Config.in"
-if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	source "package/netcat/Config.in"
 	source "package/netcat-openbsd/Config.in"
-endif
 	source "package/netplug/Config.in"
 	source "package/netsnmp/Config.in"
 	source "package/netstat-nat/Config.in"
-if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	source "package/net-tools/Config.in"
-endif
 	source "package/network-manager/Config.in"
 	source "package/nfacct/Config.in"
 	source "package/nftables/Config.in"
@@ -1571,9 +1539,7 @@ endif
 	source "package/tcpdump/Config.in"
 	source "package/tcping/Config.in"
 	source "package/tcpreplay/Config.in"
-if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	source "package/tftpd/Config.in"
-endif
 	source "package/thttpd/Config.in"
 	source "package/tinc/Config.in"
 	source "package/tinyhttpd/Config.in"
@@ -1590,10 +1556,8 @@ endif
 	source "package/vpnc/Config.in"
 	source "package/vsftpd/Config.in"
 	source "package/vtun/Config.in"
-if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	source "package/wget/Config.in"
 	source "package/whois/Config.in"
-endif
 	source "package/wireless-regdb/Config.in"
 	source "package/wireless_tools/Config.in"
 	source "package/wireshark/Config.in"
@@ -1621,9 +1585,7 @@ comment "http://buildroot.org/manual.html#faq-no-binary-packages"
 comment "-------------------------------------------------------"
 	source "package/ipkg/Config.in"
 	source "package/opkg/Config.in"
-if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	source "package/rpm/Config.in"
-endif
 endmenu
 
 menu "Real-Time"
@@ -1637,11 +1599,9 @@ endmenu
 
 menu "Shell and utilities"
 comment "Shells"
-if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	source "package/bash/Config.in"
 	source "package/dash/Config.in"
 	source "package/zsh/Config.in"
-endif
 comment "Utilities"
 	source "package/at/Config.in"
 	source "package/ccrypt/Config.in"
@@ -1659,13 +1619,9 @@ comment "Utilities"
 	source "package/ranger/Config.in"
 	source "package/screen/Config.in"
 	source "package/sudo/Config.in"
-if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	source "package/time/Config.in"
-endif
 	source "package/tmux/Config.in"
-if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	source "package/which/Config.in"
-endif
 	source "package/xmlstarlet/Config.in"
 	source "package/xxhash/Config.in"
 endmenu
@@ -1675,15 +1631,11 @@ menu "System tools"
 	source "package/android-tools/Config.in"
 	source "package/attr/Config.in"
 	source "package/audit/Config.in"
-if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	source "package/bootutils/Config.in"
 	source "package/coreutils/Config.in"
-endif
 	source "package/cpuload/Config.in"
-if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	source "package/dcron/Config.in"
 	source "package/debianutils/Config.in"
-endif
 	source "package/cgroupfs-mount/Config.in"
 	source "package/dsp-tools/Config.in"
 	source "package/efibootmgr/Config.in"
@@ -1707,36 +1659,24 @@ endif
 	source "package/openvmtools/Config.in"
 	source "package/polkit/Config.in"
 	source "package/powerpc-utils/Config.in"
-if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	source "package/procps-ng/Config.in"
-endif
 	source "package/procrank_linux/Config.in"
-if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	source "package/psmisc/Config.in"
-endif
 	source "package/pwgen/Config.in"
 	source "package/quota/Config.in"
-if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	source "package/rsyslog/Config.in"
-endif
 	source "package/scrub/Config.in"
 	source "package/scrypt/Config.in"
 	source "package/smack/Config.in"
-if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	source "package/start-stop-daemon/Config.in"
-endif
 	source "package/supervisor/Config.in"
 	source "package/swupdate/Config.in"
-if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	source "package/sysklogd/Config.in"
 	source "package/syslog-ng/Config.in"
-endif
 	source "package/systemd/Config.in"
 	source "package/systemd-bootchart/Config.in"
-if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	source "package/sysvinit/Config.in"
 	source "package/tar/Config.in"
-endif
 	source "package/tpm-tools/Config.in"
 	source "package/unscd/Config.in"
 	source "package/util-linux/Config.in"
@@ -1746,15 +1686,11 @@ endmenu
 menu "Text editors and viewers"
 	source "package/ed/Config.in"
 	source "package/joe/Config.in"
-if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	source "package/less/Config.in"
-endif
 	source "package/mc/Config.in"
 	source "package/nano/Config.in"
 	source "package/uemacs/Config.in"
-if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	source "package/vim/Config.in"
-endif
 endmenu
 
 endmenu

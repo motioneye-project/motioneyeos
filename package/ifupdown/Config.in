@@ -4,6 +4,7 @@ config BR2_PACKAGE_IFUPDOWN
 	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0 # iproute2
 	# Default/our uclibc lacks wordexp()
 	depends on !BR2_TOOLCHAIN_USES_UCLIBC
+	depends on BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	# runtime for ip binary
 	select BR2_PACKAGE_IPROUTE2 if !BR2_PACKAGE_BUSYBOX
 	# runtime for run-parts
@@ -17,3 +18,4 @@ comment "ifupdown needs a glibc or musl toolchain w/ headers >= 3.0"
 	depends on BR2_USE_MMU
 	depends on BR2_TOOLCHAIN_USES_UCLIBC || \
 		!BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0
+	depends on BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
