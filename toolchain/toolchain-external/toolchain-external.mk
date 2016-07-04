@@ -729,9 +729,9 @@ define TOOLCHAIN_EXTERNAL_INSTALL_TARGET_BFIN_FLAT
 endef
 endif
 
-# Build toolchain wrapper for preprocessor, C and C++ compiler and setup
-# symlinks for everything else. Skip gdb symlink when we are building our
-# own gdb to prevent two gdb's in output/host/usr/bin.
+# Build toolchain wrapper for preprocessor, C, C++ and Fortran compilers
+# and setup symlinks for everything else. Skip gdb symlink when we are
+# building our own gdb to prevent two gdb's in output/host/usr/bin.
 # The LTO support in gcc creates wrappers for ar, ranlib and nm which load
 # the lto plugin. These wrappers are called *-gcc-ar, *-gcc-ranlib, and
 # *-gcc-nm and should be used instead of the real programs when -flto is
@@ -746,7 +746,7 @@ define TOOLCHAIN_EXTERNAL_INSTALL_WRAPPER
 		*-ar|*-ranlib|*-nm) \
 			ln -sf $$(echo $$i | sed 's%^$(HOST_DIR)%../..%') .; \
 			;; \
-		*cc|*cc-*|*++|*++-*|*cpp) \
+		*cc|*cc-*|*++|*++-*|*cpp|*-gfortran) \
 			ln -sf toolchain-wrapper $$base; \
 			;; \
 		*gdb|*gdbtui) \
