@@ -15,8 +15,6 @@ config BR2_PACKAGE_NFS_UTILS
 
 if BR2_PACKAGE_NFS_UTILS
 
-menu "NFS utilities selection"
-
 config BR2_PACKAGE_NFS_UTILS_RPCDEBUG
 	bool "rpcdebug"
 	help
@@ -31,7 +29,5 @@ config BR2_PACKAGE_NFS_UTILS_RPC_RQUOTAD
 	bool "rpc.rquotad"
 	help
 	  NFS remote quota server
-
-endmenu
 
 endif
