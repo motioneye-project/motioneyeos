@@ -3,7 +3,7 @@ comment "ola needs a toolchain w/ C++, threads, wchar, dynamic library"
 		|| !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS
 	depends on BR2_PACKAGE_PROTOBUF_ARCH_SUPPORTS
 
-config BR2_PACKAGE_OLA
+menuconfig BR2_PACKAGE_OLA
 	bool "ola (open lighting architecture)"
 	select BR2_PACKAGE_PROTOBUF
 	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
@@ -22,7 +22,7 @@ config BR2_PACKAGE_OLA
 
 if BR2_PACKAGE_OLA
 
-menu "bindings and interface"
+comment "bindings and interface"
 
 config BR2_PACKAGE_OLA_WEB
 	bool "http interface"
@@ -43,9 +43,7 @@ config BR2_PACKAGE_OLA_SLP
 	help
 	  Build OLA with slp tools.
 
-endmenu
-
-menu "tests and examples"
+comment "tests and examples"
 
 config BR2_PACKAGE_OLA_EXAMPLES
 	bool "examples"
@@ -59,9 +57,7 @@ config BR2_PACKAGE_OLA_RDM_TESTS
 	help
 	  Build OLA RDM tests.
 
-endmenu
-
-menu "plugin selections"
+comment "plugin selections"
 
 config BR2_PACKAGE_OLA_PLUGIN_E131
 	bool "acn E131"
@@ -130,7 +126,5 @@ config BR2_PACKAGE_OLA_PLUGIN_USBPRO
 	select BR2_PACKAGE_LIBUSB
 	help
 	  Build UsbPro plugin for OLA.
-
-endmenu
 
 endif
