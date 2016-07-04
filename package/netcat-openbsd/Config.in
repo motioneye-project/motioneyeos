@@ -21,4 +21,3 @@ config BR2_PACKAGE_NETCAT_OPENBSD
 comment "netcat-openbsd needs a glibc toolchain w/ threads"
 	depends on BR2_PACKAGE_LIBBSD_ARCH_SUPPORTS
 	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_TOOLCHAIN_USES_GLIBC
-~
