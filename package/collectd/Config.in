@@ -1,4 +1,4 @@
-config BR2_PACKAGE_COLLECTD
+menuconfig BR2_PACKAGE_COLLECTD
 	bool "collectd"
 	# Uses fork()
 	depends on BR2_USE_MMU
@@ -39,6 +39,7 @@ config BR2_PACKAGE_COLLECTD_VALUE
 	bool "value"
 	help
 	  Select values by their data sources' values.
+
 endmenu
 
 menu "misc plugins"
