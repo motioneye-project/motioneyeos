@@ -331,17 +331,20 @@ choice
 
 config BR2_BINFMT_FLAT_ONE
 	bool "One memory region"
+	depends on !BR2_m68k
 	help
 	  All segments are linked into one memory region.
 
 config BR2_BINFMT_FLAT_SEP_DATA
 	bool "Separate data and code region"
+	depends on BR2_m68k || BR2_bfin
 	help
 	  Allow for the data and text segments to be separated and placed in
 	  different regions of memory.
 
 config BR2_BINFMT_FLAT_SHARED
 	bool "Shared binary"
+	depends on BR2_m68k || BR2_bfin
 	# Even though this really generates shared binaries, there is no libdl
 	# and dlopen() cannot be used. So packages that require shared
 	# libraries cannot be built. Therefore, we don't select
