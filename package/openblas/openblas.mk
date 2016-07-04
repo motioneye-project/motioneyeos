@@ -19,9 +19,10 @@ OPENBLAS_MAKE_OPTS += CROSS=1
 # Set OpenBLAS target
 OPENBLAS_MAKE_OPTS += TARGET=$(BR2_PACKAGE_OPENBLAS_TARGET)
 
-# Disable fortran by default until we add BR2_TOOLCHAIN_HAS_FORTRAN
-# hidden symbol to our toolchain infrastructure
+# When Fortran is not available, only build the C version of BLAS
+ifeq ($(BR2_TOOLCHAIN_HAS_FORTRAN),)
 OPENBLAS_MAKE_OPTS += ONLY_CBLAS=1
+endif
 
 # Enable/Disable multi-threading (not for static-only since it uses dlfcn.h)
 ifeq ($(BR2_TOOLCHAIN_HAS_THREADS):$(BR2_STATIC_LIBS),y:)
