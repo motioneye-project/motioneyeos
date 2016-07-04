@@ -36,7 +36,8 @@ IMAGEMAGICK_CONF_OPTS = \
 	--without-perl \
 	--without-raqm \
 	--without-wmf \
-	--without-x
+	--without-x \
+	--with-gs-font-dir=/usr/share/fonts/gs
 
 IMAGEMAGICK_DEPENDENCIES = host-pkgconf
 
