@@ -1,4 +1,4 @@
-config BR2_PACKAGE_GD
+menuconfig BR2_PACKAGE_GD
 	bool "gd"
 	help
 	  GD is a graphics library. It allows your code to quickly
@@ -11,8 +11,6 @@ config BR2_PACKAGE_GD
 	  https://libgd.github.io/
 
 if BR2_PACKAGE_GD
-
-menu "gd tools"
 
 config BR2_PACKAGE_GD_ANNOTATE
 	bool "annotate"
@@ -56,7 +54,5 @@ config BR2_PACKAGE_GD_PNGTOGD2
 config BR2_PACKAGE_GD_WEBPNG
 	bool "webpng"
 	select BR2_PACKAGE_LIBPNG
-
-endmenu
 
 endif
