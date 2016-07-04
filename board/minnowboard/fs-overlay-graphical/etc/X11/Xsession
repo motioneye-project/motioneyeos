@@ -1,0 +1,7 @@
+# Start a terminal on the top left corner
+xterm -geom 80x30+0+0 &
+
+# OpenGL demo
+glmark2 &
+
+exec /usr/bin/openbox-session
