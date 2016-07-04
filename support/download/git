@@ -83,9 +83,9 @@ if [ ${recurse} -eq 1 ]; then
     _git submodule update --init --recursive
 fi
 
-# We do not need the .git dir and other gitfiles to generate the tarball
-find . \( -name .git -o -name .gitmodules -o -name .gitignore \) \
-       -exec rm -rf {} +
+# We do not need the .git dir; we keep other .git files, in case they
+# are the only files in their directory.
+rm -rf .git
 
 popd >/dev/null
 
