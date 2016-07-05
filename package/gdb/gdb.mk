@@ -11,11 +11,13 @@ GDB_SOURCE = gdb-$(GDB_VERSION).tar.xz
 ifeq ($(BR2_arc),y)
 GDB_SITE = $(call github,foss-for-synopsys-dwc-arc-processors,binutils-gdb,$(GDB_VERSION))
 GDB_SOURCE = gdb-$(GDB_VERSION).tar.gz
+GDB_FROM_GIT = y
 endif
 
 ifeq ($(BR2_microblaze),y)
 GDB_SITE = $(call github,Xilinx,gdb,$(GDB_VERSION))
 GDB_SOURCE = gdb-$(GDB_VERSION).tar.gz
+GDB_FROM_GIT = y
 endif
 
 GDB_LICENSE = GPLv2+, LGPLv2+, GPLv3+, LGPLv3+
@@ -46,18 +48,10 @@ GDB_PRE_PATCH_HOOKS += GDB_XTENSA_PRE_PATCH
 HOST_GDB_PRE_PATCH_HOOKS += GDB_XTENSA_PRE_PATCH
 endif
 
-# Prevent gdb to build the documentation
-define GDB_DISABLE_DOC
-	$(SED) '/^SUBDIRS =/ s/doc//' $(@D)/gdb/Makefile.in
-	if test -e $(@D)/bfd/doc/Makefile.in ; then \
-		$(SED) 's/^INFO_DEPS =.*$$/INFO_DEPS =/' $(@D)/bfd/doc/Makefile.in ; \
-	fi
-	if test -e $(@D)/gprof/Makefile.in ; then \
-		$(SED) 's/^INFO_DEPS =.*$$/INFO_DEPS =/' $(@D)/gprof/Makefile.in ; \
-	fi
-endef
-GDB_PRE_CONFIGURE_HOOKS += GDB_DISABLE_DOC
-HOST_GDB_PRE_CONFIGURE_HOOKS += GDB_DISABLE_DOC
+ifeq ($(GDB_FROM_GIT),y)
+GDB_DEPENDENCIES += host-texinfo
+HOST_GDB_DEPENDENCIES += host-texinfo
+endif
 
 # When gdb sources are fetched from the binutils-gdb repository, they
 # also contain the binutils sources, but binutils shouldn't be built,
