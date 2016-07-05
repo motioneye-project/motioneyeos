@@ -11,6 +11,9 @@ SPHINXBASE_LICENSE = BSD-2c
 # 5prealpha tarballs". The license is contained in the copyright notice at the
 # top of each source file. For example:
 SPHINXBASE_LICENSE_FILES = src/libsphinxbase/util/bio.c
+
+SPHINXBASE_DEPENDENCIES = host-bison
+
 SPHINXBASE_CONF_OPTS = --without-python --without-lapack
 
 $(eval $(autotools-package))
