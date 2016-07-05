@@ -1,0 +1,26 @@
+From d052d263600549979a6219a59e85af80eeafc6d2 Mon Sep 17 00:00:00 2001
+From: Paul Cercueil <paul.cercueil@analog.com>
+Date: Tue, 5 Jul 2016 12:12:41 +0200
+Subject: [PATCH] lock.c: Don't include <pthread.h> if NO_THREADS is defined
+
+Signed-off-by: Paul Cercueil <paul.cercueil@analog.com>
+---
+ lock.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/lock.c b/lock.c
+index 39248ab..00eb9d9 100644
+--- a/lock.c
++++ b/lock.c
+@@ -18,7 +18,7 @@
+ 
+ #ifdef _WIN32
+ #include <windows.h>
+-#else
++#elif !defined(NO_THREADS)
+ #include <pthread.h>
+ #endif
+ 
+-- 
+2.8.1
+
