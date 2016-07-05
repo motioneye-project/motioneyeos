@@ -49,8 +49,8 @@ HOST_GDB_PRE_PATCH_HOOKS += GDB_XTENSA_PRE_PATCH
 endif
 
 ifeq ($(GDB_FROM_GIT),y)
-GDB_DEPENDENCIES += host-texinfo
-HOST_GDB_DEPENDENCIES += host-texinfo
+GDB_DEPENDENCIES += host-texinfo host-flex host-bison
+HOST_GDB_DEPENDENCIES += host-texinfo host-flex host-bison
 endif
 
 # When gdb sources are fetched from the binutils-gdb repository, they
