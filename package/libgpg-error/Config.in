@@ -21,27 +21,27 @@ config BR2_PACKAGE_LIBGPG_ERROR
 
 config BR2_PACKAGE_LIBGPG_ERROR_SYSCFG
 	string
-	default "aarch64-unkown-linux-gnu" \
+	default "aarch64-unknown-linux-gnu" \
 		if BR2_aarch64 || BR2_aarch64_eb
 	default "arm-unknown-linux-gnueabi" \
 		if BR2_arm || BR2_armeb
 	default "i686-pc-linux-gnu" \
 		if BR2_i386
-	default "mips-unkown-linux-gnu" \
+	default "mips-unknown-linux-gnu" \
 		if BR2_mips || BR2_mipsel
-	default "mips64el-unkown-linux-gnuabi64" \
+	default "mips64el-unknown-linux-gnuabi64" \
 		if BR2_mips64 || BR2_mips64el
-	default "m68k-unkown-linux-gnu" \
+	default "m68k-unknown-linux-gnu" \
 		if BR2_m68k
 	default "nios2-unknown-linux-gnu" \
 		if BR2_nios2
-	default "powerpc-unkown-linux-gnu" \
+	default "powerpc-unknown-linux-gnu" \
 		if BR2_powerpc
-	default "powerpc64-unkown-linux-gnu" \
+	default "powerpc64-unknown-linux-gnu" \
 		if BR2_powerpc64 || BR2_powerpc64le
-	default "sh4-unkown-linux-gnu" \
+	default "sh4-unknown-linux-gnu" \
 		if BR2_sh4 || BR2_sh4eb || BR2_sh4a || BR2_sh4aeb
-	default "sparc-unkown-linux-gnu" \
+	default "sparc-unknown-linux-gnu" \
 		if BR2_sparc
 	default "sparc64-unknown-linux-gnu" \
 		if BR2_sparc64
