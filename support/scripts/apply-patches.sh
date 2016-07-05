@@ -31,6 +31,8 @@
 # applied. The list of the patches applied is stored in '.applied_patches_list'
 # file in the build directory.
 
+set -e
+
 silent=
 if [ "$1" = "-s" ] ; then
     # add option to be used by the patch tool
@@ -103,7 +105,7 @@ function apply_patch {
         echo "Error: missing patch file ${path}/$patch"
         exit 1
     fi
-    existing="$(grep -E "/${patch}\$" ${builddir}/.applied_patches_list)"
+    existing="$(grep -E "/${patch}\$" ${builddir}/.applied_patches_list || true)"
     if [ -n "${existing}" ]; then
         echo "Error: duplicate filename '${patch}'"
         echo "Conflicting files are:"
