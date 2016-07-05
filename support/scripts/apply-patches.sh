@@ -31,9 +31,6 @@
 # applied. The list of the patches applied is stored in '.applied_patches_list'
 # file in the build directory.
 
-# We want to catch any unexpected failure, and exit immediately.
-set -e
-
 silent=
 if [ "$1" = "-s" ] ; then
     # add option to be used by the patch tool
