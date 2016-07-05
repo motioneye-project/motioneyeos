@@ -37,6 +37,13 @@ endif
 # also need ncurses.
 HOST_GDB_DEPENDENCIES = host-expat host-ncurses
 
+# Starting with gdb 7.10, gdb wants to re-generate its documentation.
+# We were trying to avoid that by patching the Makefiles, but it wasn't
+# working in all situations. So, we simply add a dependency on
+# host-texinfo in all case.
+GDB_DEPENDENCIES += host-texinfo
+HOST_GDB_DEPENDENCIES += host-texinfo
+
 # Apply the Xtensa specific patches
 XTENSA_CORE_NAME = $(call qstrip, $(BR2_XTENSA_CORE_NAME))
 ifneq ($(XTENSA_CORE_NAME),)
@@ -49,8 +56,8 @@ HOST_GDB_PRE_PATCH_HOOKS += GDB_XTENSA_PRE_PATCH
 endif
 
 ifeq ($(GDB_FROM_GIT),y)
-GDB_DEPENDENCIES += host-texinfo host-flex host-bison
-HOST_GDB_DEPENDENCIES += host-texinfo host-flex host-bison
+GDB_DEPENDENCIES += host-flex host-bison
+HOST_GDB_DEPENDENCIES += host-flex host-bison
 endif
 
 # When gdb sources are fetched from the binutils-gdb repository, they
