@@ -5,3 +5,11 @@ config BR2_PACKAGE_HOST_GO_ARCH_SUPPORTS
 	depends on !BR2_ARM_CPU_ARMV4
 	# MIPS R6 support in Go has not yet been developed.
 	depends on !BR2_mips_64r6
+
+config BR2_PACKAGE_HOST_GO_CGO_LINKING_SUPPORTS
+	bool
+	default y
+	depends on BR2_PACKAGE_HOST_GO_ARCH_SUPPORTS
+	# Go doesn't support CGO linking on MIPS64x platforms
+	# See: https://github.com/karalabe/xgo/issues/46
+	depends on !BR2_mips64 && !BR2_mips64el
