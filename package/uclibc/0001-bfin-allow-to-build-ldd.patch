@@ -1,0 +1,29 @@
+From 10f469f6ce1a0c14e4506c42e47e15aa83be2eef Mon Sep 17 00:00:00 2001
+From: Waldemar Brodkorb <wbx@uclibc-ng.org>
+Date: Wed, 6 Jul 2016 06:08:51 +0200
+Subject: [PATCH] bfin: allow to build ldd
+
+Signed-off-by: Waldemar Brodkorb <wbx@uclibc-ng.org>
+---
+ utils/ldd.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/utils/ldd.c b/utils/ldd.c
+index f6413c6..5d2c8f4 100644
+--- a/utils/ldd.c
++++ b/utils/ldd.c
+@@ -35,6 +35,11 @@
+ #define ELFCLASSM      ELFCLASS32
+ #endif
+
++#if defined(__bfin__)
++#define MATCH_MACHINE(x) (x == EM_BLACKFIN)
++#define ELFCLASSM      ELFCLASS32
++#endif
++
+ #if defined(__s390__)
+ #define MATCH_MACHINE(x) (x == EM_S390)
+ #define ELFCLASSM	ELFCLASS32
+--
+2.1.4
+
