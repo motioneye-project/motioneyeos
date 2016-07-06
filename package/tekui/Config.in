@@ -17,5 +17,5 @@ config BR2_PACKAGE_TEKUI
 	  http://tekui.neoscientists.org/
 
 comment "tekui needs a Lua interpreter and a toolchain w/ threads, dynamic library"
-	depends on !BR2_PACKAGE_HAS_LUAINTERPRETER || !BR2_TOOLCHAIN_HAS_THREADS ||
+	depends on !BR2_PACKAGE_HAS_LUAINTERPRETER || !BR2_TOOLCHAIN_HAS_THREADS || \
 		BR2_STATIC_LIBS

@@ -203,7 +203,7 @@ ifeq ($(BR2_TARGET_UBOOT_ZYNQ_IMAGE),y)
 define UBOOT_GENERATE_ZYNQ_IMAGE
 	$(HOST_DIR)/usr/bin/python2 \
 		$(HOST_DIR)/usr/bin/zynq-boot-bin.py \
-		-u $(@D)/$(firstword $(call qstrip,$(BR2_TARGET_UBOOT_SPL_NAME)) \
+		-u $(@D)/$(firstword $(call qstrip,$(BR2_TARGET_UBOOT_SPL_NAME))) \
 		-o $(BINARIES_DIR)/BOOT.BIN
 endef
 UBOOT_DEPENDENCIES += host-zynq-boot-bin
