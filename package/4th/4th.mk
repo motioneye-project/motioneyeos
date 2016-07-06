@@ -35,6 +35,8 @@ define 4TH_INSTALL_STAGING_CMDS
 endef
 
 define 4TH_INSTALL_TARGET_CMDS
+	mkdir -p $(TARGET_DIR)/usr/bin
+	mkdir -p $(TARGET_DIR)/usr/lib
 	$(4TH_MAKE_ENV) $(MAKE) -C $(@D)/sources mostlyinstall \
 		BINARIES=$(TARGET_DIR)/usr/bin \
 		LIBRARIES=$(TARGET_DIR)/usr/lib
@@ -54,6 +56,8 @@ define HOST_4TH_BUILD_CMDS
 endef
 
 define HOST_4TH_INSTALL_CMDS
+	mkdir -p $(HOST_DIR)/usr/bin
+	mkdir -p $(HOST_DIR)/usr/lib
 	$(MAKE) -C $(@D)/sources mostlyinstall \
 		BINARIES=$(HOST_DIR)/usr/bin \
 		LIBRARIES=$(HOST_DIR)/usr/lib
