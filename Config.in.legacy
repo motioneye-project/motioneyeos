@@ -148,7 +148,7 @@ comment "Legacy options removed in 2016.08"
 config BR2_PACKAGE_SYSTEMD_COMPAT
 	bool "systemd compatibility libraries have been removed"
 	help
-	  The systemd option te enable the compatibility libraries has
+	  The systemd option to enable the compatibility libraries has
 	  been removed. Theses libraries have been useless since a few
 	  version, and have been fully dropped from the source since
 	  v230.
