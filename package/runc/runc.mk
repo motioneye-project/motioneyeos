@@ -25,7 +25,7 @@ RUNC_GOTAGS = cgo static_build
 
 ifeq ($(BR2_PACKAGE_LIBSECCOMP),y)
 RUNC_GOTAGS += seccomp
-RUNC_DEPENDENCIES += libseccomp
+RUNC_DEPENDENCIES += libseccomp host-pkgconf
 endif
 
 define RUNC_CONFIGURE_CMDS
