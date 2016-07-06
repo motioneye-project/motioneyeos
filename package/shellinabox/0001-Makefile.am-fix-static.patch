@@ -1,0 +1,15 @@
+Makefile: disable always building statically.
+
+Signed-off-by:  "Olivier Singla" <olivier.singla@gmail.com>
+
+--- shellinabox-2.19/Makefile.am.orig	2016-07-03 20:46:42.655784211 -0400
++++ shellinabox-2.19/Makefile.am	2016-07-03 20:46:50.582801842 -0400
+@@ -126,7 +126,7 @@
+ 
+ shellinaboxd_LDADD   = liblogging.la                                          \
+                        libhttp.la
+-shellinaboxd_LDFLAGS = -static
++shellinaboxd_LDFLAGS =
+ ## Added this for compatibility with older versions of autoconf/automake
+ docdir               = ${datadir}/doc/${PACKAGE}
+ 
