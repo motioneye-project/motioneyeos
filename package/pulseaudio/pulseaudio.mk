@@ -94,21 +94,6 @@ else
 PULSEAUDIO_CONF_OPTS += --disable-webrtc-aec
 endif
 
-ifneq ($(BR2_INSTALL_LIBSTDCPP),y)
-# The optional webrtc echo canceller is written in C++, causing auto* to want
-# to link module-echo-cancel.so with CXX even if webrtc ISN'T used.
-# If we don't have C++ support enabled in BR, CXX will point to /bin/false,
-# which makes configure think we aren't able to create C++ .so files
-# (arguable true), breaking the build when it tries to install the .so
-# workaround it by patching up the libtool invocations to use C mode instead
-define PULSEAUDIO_FORCE_CC
-	$(SED) 's/--tag=CXX/--tag=CC/g' -e 's/(CXXLD)/(CCLD)/g' \
-		$(@D)/src/Makefile.in
-endef
-
-PULSEAUDIO_POST_PATCH_HOOKS += PULSEAUDIO_FORCE_CC
-endif
-
 # neon intrinsics not available with float-abi=soft
 ifeq ($(BR2_ARM_SOFT_FLOAT),)
 ifeq ($(BR2_ARM_CPU_HAS_NEON),y)
