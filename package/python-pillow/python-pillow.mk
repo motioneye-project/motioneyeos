@@ -33,7 +33,7 @@ else
 PYTHON_PILLOW_BUILD_OPTS += --disable-jpeg2000
 endif
 
-ifeq ($(BR2_PACKAGE_ZLIB),y)
+ifeq ($(BR2_PACKAGE_TIFF),y)
 PYTHON_PILLOW_DEPENDENCIES += tiff
 PYTHON_PILLOW_BUILD_OPTS += --enable-tiff
 else
