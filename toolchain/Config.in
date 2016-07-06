@@ -42,6 +42,10 @@ choice
 config BR2_TOOLCHAIN_BUILDROOT
 	bool "Buildroot toolchain"
 	select BR2_TOOLCHAIN_HAS_SHADOW_PASSWORDS
+	depends on !BR2_bf606
+	depends on !BR2_bf607
+	depends on !BR2_bf608
+	depends on !BR2_bf609
 
 config BR2_TOOLCHAIN_EXTERNAL
 	bool "External toolchain"
