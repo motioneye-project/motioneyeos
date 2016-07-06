@@ -5,6 +5,7 @@ config BR2_PACKAGE_TEKUI
 	select BR2_PACKAGE_LUAEXPAT		# runtime only
 	select BR2_PACKAGE_LUASOCKET		# runtime only
 	select BR2_PACKAGE_LUAPOSIX		# runtime only
+	depends on !BR2_STATIC_LIBS
 	depends on BR2_PACKAGE_HAS_LUAINTERPRETER
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	help
@@ -15,5 +16,6 @@ config BR2_PACKAGE_TEKUI
 
 	  http://tekui.neoscientists.org/
 
-comment "TekUI needs a Lua interpreter and a toolchain w/ threads"
-	depends on !BR2_PACKAGE_HAS_LUAINTERPRETER || !BR2_TOOLCHAIN_HAS_THREADS
+comment "tekui needs a Lua interpreter and a toolchain w/ threads, dynamic library"
+	depends on !BR2_PACKAGE_HAS_LUAINTERPRETER || !BR2_TOOLCHAIN_HAS_THREADS ||
+		BR2_STATIC_LIBS
