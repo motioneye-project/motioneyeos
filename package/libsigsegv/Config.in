@@ -3,6 +3,7 @@ config BR2_PACKAGE_LIBSIGSEGV
 	depends on !BR2_xtensa
 	depends on !BR2_arc # no ucontext_i.sym file
 	depends on !BR2_microblaze
+	depends on !BR2_m68k # unknown type name 'ucontext_t'
 	# No ucontext support in uclibc for powerpc and superh
 	depends on !((BR2_powerpc || BR2_sh) && BR2_TOOLCHAIN_USES_UCLIBC)
 	help
