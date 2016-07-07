@@ -265,7 +265,7 @@ config BR2_PACKAGE_QT_SYSTEMJPEG
 config BR2_PACKAGE_QT_QTJPEG
 	bool "Use Qt bundled libjpeg"
 	help
-	  Link against libjpeg proveded with Qt
+	  Link against libjpeg provided with Qt
 endchoice
 
 choice
