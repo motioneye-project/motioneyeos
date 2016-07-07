@@ -14,16 +14,19 @@
 4TH_DEPENDENCIES = host-4th
 4TH_INSTALL_STAGING = YES
 
+4TH_CFLAGS = $(TARGET_CFLAGS) -DUNIX -fsigned-char
+
 ifeq ($(BR2_STATIC_LIBS),y)
 4TH_MAKE_ENV = STATIC=1
 else
 4TH_MAKE_ENV = SHARED=1
+4TH_CFLAGS += -fPIC
 endif
 
 define 4TH_BUILD_CMDS
 	$(4TH_MAKE_ENV) $(MAKE) -C $(@D)/sources all \
 		CROSS="$(TARGET_CROSS)" \
-		CFLAGS="$(TARGET_CFLAGS) -DUNIX -fsigned-char" \
+		CFLAGS="$(4TH_CFLAGS)" \
 		FOURTH=$(HOST_DIR)/usr/bin/4th
 endef
 
