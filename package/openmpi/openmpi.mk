@@ -20,6 +20,8 @@ OPENMPI_CONF_OPTS = --disable-vt
 ifeq ($(BR2_TOOLCHAIN_HAS_FORTRAN),y)
 ifeq ($(BR2_mips)$(BR2_mipsel),y)
 OPENMPI_FORTRAN_CONF_CACHE = package/openmpi/openmpi-mips32-fortran.cache
+else ifeq ($(BR2_mips64)$(BR2_mips64el),y)
+OPENMPI_FORTRAN_CONF_CACHE = package/openmpi/openmpi-mips64-fortran.cache
 endif
 endif
 
