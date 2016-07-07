@@ -10,7 +10,7 @@ CIFS_UTILS_SITE = http://ftp.samba.org/pub/linux-cifs/cifs-utils
 CIFS_UTILS_LICENSE = GPLv3+
 CIFS_UTILS_LICENSE_FILES = COPYING
 
-ifeq ($(BR2_STATIC_LIBS),y)
+ifneq ($(BR2_STATIC_LIBS)$(BR2_m68k),)
 CIFS_UTILS_CONF_OPTS += --disable-pie
 endif
 
