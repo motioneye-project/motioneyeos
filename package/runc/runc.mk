@@ -15,7 +15,8 @@ RUNC_GOPATH = "$(@D)/Godeps/_workspace"
 RUNC_MAKE_ENV = $(HOST_GO_TARGET_ENV) \
 	CGO_ENABLED=1 \
 	GOBIN="$(@D)/bin" \
-	GOPATH="$(RUNC_GOPATH)"
+	GOPATH="$(RUNC_GOPATH)" \
+	PATH=$(BR_PATH)
 
 RUNC_GLDFLAGS = \
 	-X main.gitCommit=$(RUNC_VERSION) \
