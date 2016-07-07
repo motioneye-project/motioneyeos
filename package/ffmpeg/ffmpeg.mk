@@ -36,7 +36,6 @@ FFMPEG_CONF_OPTS = \
 	--enable-mdct \
 	--enable-rdft \
 	--disable-crystalhd \
-	--disable-vdpau \
 	--disable-dxva2 \
 	--enable-runtime-cpudetect \
 	--disable-hardcoded-tables \
@@ -245,6 +244,13 @@ FFMPEG_CONF_OPTS += --enable-vaapi
 FFMPEG_DEPENDENCIES += libva
 else
 FFMPEG_CONF_OPTS += --disable-vaapi
+endif
+
+ifeq ($(BR2_PACKAGE_LIBVDPAU),y)
+FFMPEG_CONF_OPTS += --enable-vdpau
+FFMPEG_DEPENDENCIES += libvdpau
+else
+FFMPEG_CONF_OPTS += --disable-vdpau
 endif
 
 ifeq ($(BR2_PACKAGE_OPUS),y)
