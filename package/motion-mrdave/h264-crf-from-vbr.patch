@@ -1,7 +1,7 @@
 From e65ea2454d6dcc759e2f4fd38548f6844a2c820b Mon Sep 17 00:00:00 2001
 From: Calin Crisan <ccrisan@gmail.com>
 Date: Sun, 3 Jul 2016 19:49:06 +0300
-Subject: [PATCH] h264 codec: set crf option based on configured vbr
+Subject: [PATCH 1/2] h264 codec: set crf option based on configured vbr
 
 ---
  ffmpeg.c | 6 +++++-
@@ -17,10 +17,37 @@ index df2b47e..ed192ca 100644
          av_dict_set(&opts, "preset", "ultrafast", 0);
 -        av_dict_set(&opts, "crf", "18", 0);
 +
-+        /* transform vbr (2 - 31) into crf (0 - 51) by scaling */
++        /* transforrm vbr (2 - 31) into crf (0 - 51) by scaling */
 +        char crf[4];
 +        snprintf(crf, 4, "%d", (int) ((vbr - 2) * 1.758));
 +
          av_dict_set(&opts, "tune", "zerolatency", 0);
      }
      if (strcmp(ffmpeg_video_codec, "ffv1") == 0) c->strict_std_compliance = -2;
+
+From b4138ee0ddc8a7b76b82eb1c80e5d5216dfcb8ce Mon Sep 17 00:00:00 2001
+From: Calin Crisan <ccrisan@gmail.com>
+Date: Wed, 6 Jul 2016 16:58:09 +0300
+Subject: [PATCH 2/2] h264 codec: fixed crf from vbr: the vbr range is actually
+ 1 to 32767
+
+---
+ ffmpeg.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/ffmpeg.c b/ffmpeg.c
+index ed192ca..0f80a09 100644
+--- a/ffmpeg.c
++++ b/ffmpeg.c
+@@ -296,9 +296,9 @@ struct ffmpeg *ffmpeg_open(char *ffmpeg_video_codec, char *filename,
+         c->codec_id == MY_CODEC_ID_HEVC){
+         av_dict_set(&opts, "preset", "ultrafast", 0);
+ 
+-        /* transforrm vbr (2 - 31) into crf (0 - 51) by scaling */
++        /* transform vbr (1 - 32767) into crf (0 - 51) by scaling */
+         char crf[4];
+-        snprintf(crf, 4, "%d", (int) ((vbr - 2) * 1.758));
++        snprintf(crf, 4, "%d", (int) ((vbr - 1) * 51.0 / 32766));
+ 
+         av_dict_set(&opts, "tune", "zerolatency", 0);
+     }
