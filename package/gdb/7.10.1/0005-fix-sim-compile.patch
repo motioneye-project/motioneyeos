@@ -1,0 +1,16 @@
+Fix compile on older systems with gcc 4.4.x.
+
+Signed-off-by: Waldemar Brodkorb <wbx@openadk.org>
+
+diff -Nur gdb-7.10.1.orig//sim/common/sim-base.h gdb-7.10.1/sim/common/sim-base.h
+--- gdb-7.10.1.orig//sim/common/sim-base.h	2015-05-13 13:03:56.000000000 -0500
++++ gdb-7.10.1/sim/common/sim-base.h	2016-07-08 07:44:17.000000000 -0500
+@@ -72,8 +72,6 @@
+ #define INVALID_INSTRUCTION_ADDRESS ((address_word)0 - 1)
+ #endif
+ 
+-/* TODO: Probably should just delete SIM_CPU.  */
+-typedef struct _sim_cpu SIM_CPU;
+ typedef struct _sim_cpu sim_cpu;
+ 
+ #include "sim-module.h"
