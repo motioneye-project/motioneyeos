@@ -1104,6 +1104,7 @@ endmenu
 menu "Multimedia"
 	source "package/bitstream/Config.in"
 	source "package/libaacs/Config.in"
+	source "package/libamcodec/Config.in"
 	source "package/libass/Config.in"
 	source "package/libbdplus/Config.in"
 	source "package/libbluray/Config.in"
