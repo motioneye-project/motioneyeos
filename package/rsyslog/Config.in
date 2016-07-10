@@ -7,7 +7,9 @@ config BR2_PACKAGE_RSYSLOG
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_USE_MMU # fork()
 	depends on !BR2_STATIC_LIBS # modules
-	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # libfastjson
+	# Propagate the exact same dependency from libfastjson,
+	# even though rsyslog already depends on threads for itself:
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4 || BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	help
 	  Rsyslog is a powerful and flexible syslog implementation
