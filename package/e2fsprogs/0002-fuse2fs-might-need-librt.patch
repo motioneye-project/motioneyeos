@@ -6,6 +6,8 @@ Subject: [PATCH] fuse2fs: might need librt
 It uses clock_gettime() which in older glibc versions is in librt.
 
 Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+[yann.morin.1998@free.fr: properly expand it in the Makefile]
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
 ---
 Patch status: sent to linux-ext4 ML
 
@@ -43,6 +45,19 @@ index 43e3c7e..070a6e3 100644
  
  journal.o: $(srcdir)/../debugfs/journal.c
  	$(E) "	CC $@"
+diff --git a/misc/Makefile.in b/misc/Makefile.in
+index 43e3c7e..070a6e3 100644
+--- a/misc/Makefile.in
++++ b/misc/Makefile.in
+@@ -32,6 +32,8 @@
+ 
+ @FUSE_CMT@FUSE_PROG= fuse2fs
+ 
++CLOCK_GETTIME_LIB = @CLOCK_GETTIME_LIB@
++
+ SPROGS=		mke2fs badblocks tune2fs dumpe2fs $(BLKID_PROG) logsave \
+ 			$(E2IMAGE_PROG) @FSCK_PROG@ e2undo
+ USPROGS=	mklost+found filefrag e2freefrag $(UUIDD_PROG) \
 -- 
 2.7.3
 
