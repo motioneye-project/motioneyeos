@@ -1,0 +1,36 @@
+From 666f12f60f7d7936af932bf513bc0e9c5c5158f9 Mon Sep 17 00:00:00 2001
+From: Ricardo Martincoski <ricardo.martincoski@gmail.com>
+Date: Sat, 9 Jul 2016 22:48:34 -0300
+Subject: [PATCH] Allow to override ncurses*-config path
+
+This will be used when cross-compiling with ncurses*-config generated for the
+target, using constructs like
+htop_ncurses_config_script=/path/to/ncurses5-config
+
+Signed-off-by: Ricardo Martincoski <ricardo.martincoski@gmail.com>
+---
+Patch sent upstream: https://github.com/hishamhm/htop/pull/524
+---
+ configure.ac | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index fa32359..790a7f4 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -147,7 +147,11 @@ fi
+ # HTOP_CHECK_SCRIPT(LIBNAME, FUNCTION, DEFINE, CONFIG_SCRIPT, ELSE_PART)
+ m4_define([HTOP_CHECK_SCRIPT],
+ [
+-   htop_config_script=$([$4] --libs 2> /dev/null)
++   if test ! -z "$htop_[$1]_config_script"; then
++      htop_config_script=$($htop_[$1]_config_script --libs 2> /dev/null)
++   else
++      htop_config_script=$([$4] --libs 2> /dev/null)
++   fi
+    htop_script_success=no
+    htop_save_LDFLAGS="$LDFLAGS"
+    if test ! "x$htop_config_script" = x; then
+-- 
+2.9.0
+
