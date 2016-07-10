@@ -38,7 +38,7 @@ MESA3D_DEPENDENCIES += libgcrypt
 MESA3D_CONF_OPTS += --with-sha1=libgcrypt
 endif
 
-ifeq ($(BR2_PACKAGE_HAS_LIBUDEV),y)
+ifeq ($(BR2_PACKAGE_HAS_UDEV),y)
 MESA3D_DEPENDENCIES += udev
 MESA3D_CONF_OPTS += --disable-sysfs
 else
