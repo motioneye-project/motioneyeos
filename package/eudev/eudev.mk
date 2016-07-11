@@ -14,13 +14,14 @@ EUDEV_INSTALL_STAGING = YES
 # mq_getattr is in librt
 EUDEV_CONF_ENV += LIBS=-lrt
 
-EUDEV_CONF_OPTS =		\
-	--disable-manpages	\
-	--sbindir=/sbin		\
-	--libexecdir=/lib	\
-	--with-firmware-path=/lib/firmware	\
-	--disable-introspection			\
-	--enable-libkmod
+EUDEV_CONF_OPTS = \
+	--disable-manpages \
+	--sbindir=/sbin \
+	--libexecdir=/lib \
+	--with-firmware-path=/lib/firmware \
+	--disable-introspection \
+	--enable-kmod \
+	--enable-blkid
 
 EUDEV_DEPENDENCIES = host-gperf host-pkgconf util-linux kmod
 EUDEV_PROVIDES = udev
