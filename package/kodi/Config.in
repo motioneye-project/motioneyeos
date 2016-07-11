@@ -222,6 +222,9 @@ config BR2_PACKAGE_KODI_LIBTHEORA
 
 config BR2_PACKAGE_KODI_LIBUSB
 	bool "usb"
+	# https://github.com/xbmc/xbmc/blob/Jarvis/configure.ac#L1554
+	# "if libudev is available, we don't need libusb"
+	depends on !BR2_PACKAGE_HAS_UDEV
 	select BR2_PACKAGE_LIBUSB
 	select BR2_PACKAGE_LIBUSB_COMPAT
 	help
