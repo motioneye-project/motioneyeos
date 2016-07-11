@@ -22,12 +22,7 @@ define OPENSSH_USERS
 	sshd -1 sshd -1 * - - - SSH drop priv user
 endef
 
-# uClibc toolchain for ARC doesn't support PIE at the moment
-ifeq ($(BR2_arc),y)
-OPENSSH_CONF_OPTS += --without-pie
-endif
-# PIE and static does not work on Linux
-ifeq ($(BR2_STATIC_LIBS),y)
+ifeq ($(BR2_TOOLCHAIN_SUPPORTS_PIE),)
 OPENSSH_CONF_OPTS += --without-pie
 endif
 

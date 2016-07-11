@@ -41,7 +41,7 @@ else
 PURE_FTPD_CONF_OPTS += --without-tls
 endif
 
-ifeq ($(BR2_arc),y)
+ifeq ($(BR2_TOOLCHAIN_SUPPORTS_PIE),)
 PURE_FTPD_CONF_ENV += ax_cv_check_cflags___fPIE=no ax_cv_check_ldflags___fPIE=no
 endif
 

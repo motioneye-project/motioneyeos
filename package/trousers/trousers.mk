@@ -23,8 +23,7 @@ endif
 # workaround.
 TROUSERS_CONF_OPTS += --disable-usercheck
 
-# uClibc toolchain for ARC doesn't support PIE at the moment
-ifeq ($(BR2_arc),y)
+ifeq ($(BR2_TOOLCHAIN_SUPPORTS_PIE),)
 TROUSERS_CONF_ENV += \
 	ax_cv_check_cflags___fPIE__DPIE=no \
 	ax_cv_check_ldflags___pie=no

@@ -68,7 +68,7 @@ else
 QUAGGA_CONF_OPTS += --disable-vtysh
 endif
 
-ifeq ($(BR2_arc),y)
+ifeq ($(BR2_TOOLCHAIN_SUPPORTS_PIE),)
 QUAGGA_CONF_OPTS += --disable-pie
 endif
 

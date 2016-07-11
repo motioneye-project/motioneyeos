@@ -54,8 +54,7 @@ BLUEZ_UTILS_CONF_OPTS +=	\
 	--disable-usb
 endif
 
-# PIE is broken for m68k
-ifeq ($(BR2_m68k),y)
+ifeq ($(BR2_TOOLCHAIN_SUPPORTS_PIE),)
 BLUEZ_UTILS_CONF_OPTS += --disable-pie
 endif
 
