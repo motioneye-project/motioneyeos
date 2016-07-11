@@ -10,13 +10,54 @@ KODI_LICENSE = GPLv2
 KODI_LICENSE_FILES = LICENSE.GPL
 # needed for binary addons
 KODI_INSTALL_STAGING = YES
-KODI_DEPENDENCIES = host-gawk host-gettext host-gperf host-zip host-giflib \
-	host-libjpeg host-lzo host-nasm host-libpng host-swig
-KODI_DEPENDENCIES += boost bzip2 expat ffmpeg fontconfig freetype giflib jasper jpeg \
-	libass libcdio libcrossguid libcurl libdcadec libfribidi libgcrypt libmpeg2 \
-	libogg libplist libpng libsamplerate libsquish libvorbis libxml2 \
-	libxslt lzo ncurses openssl pcre python readline sqlite taglib tiff \
-	tinyxml yajl zlib
+KODI_DEPENDENCIES = \
+	boost \
+	bzip2 \
+	expat \
+	ffmpeg \
+	fontconfig \
+	freetype \
+	giflib \
+	host-gawk \
+	host-gettext \
+	host-giflib \
+	host-gperf \
+	host-libjpeg \
+	host-libpng \
+	host-lzo \
+	host-nasm \
+	host-swig \
+	host-zip \
+	jasper \
+	jpeg \
+	libass \
+	libcdio \
+	libcrossguid \
+	libcurl \
+	libdcadec \
+	libfribidi \
+	libgcrypt \
+	libmpeg2 \
+	libogg \
+	libplist \
+	libpng \
+	libsamplerate \
+	libsquish \
+	libvorbis \
+	libxml2 \
+	libxslt \
+	lzo \
+	ncurses \
+	openssl \
+	pcre \
+	python \
+	readline \
+	sqlite \
+	taglib \
+	tiff \
+	tinyxml \
+	yajl \
+	zlib
 
 KODI_CONF_ENV = \
 	PYTHON_VERSION="$(PYTHON_VERSION_MAJOR)" \
