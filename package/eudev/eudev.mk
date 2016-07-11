@@ -42,13 +42,6 @@ else
 EUDEV_CONF_OPTS += --disable-hwdb
 endif
 
-ifeq ($(BR2_PACKAGE_LIBGLIB2),y)
-EUDEV_CONF_OPTS += --enable-gudev
-EUDEV_DEPENDENCIES += libglib2
-else
-EUDEV_CONF_OPTS += --disable-gudev
-endif
-
 ifeq ($(BR2_PACKAGE_LIBSELINUX),y)
 EUDEV_CONF_OPTS += --enable-selinux
 EUDEV_DEPENDENCIES += libselinux
