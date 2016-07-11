@@ -236,6 +236,16 @@ config BR2_PACKAGE_KODI_LIBVA
 	help
 	  Enable libva support.
 
+config BR2_PACKAGE_KODI_LIBVDPAU
+	bool "vdpau"
+	depends on BR2_PACKAGE_XORG7
+	select BR2_PACKAGE_LIBVDPAU
+	help
+	  Enable libvdpau support.
+
+comment "libvdpau support needs X.org"
+	depends on !BR2_PACKAGE_XORG7
+
 config BR2_PACKAGE_KODI_UPNP
 	bool "upnp"
 	help

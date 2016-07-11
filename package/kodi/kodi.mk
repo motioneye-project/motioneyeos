@@ -74,7 +74,6 @@ KODI_CONF_OPTS +=  \
 	--disable-joystick \
 	--disable-openmax \
 	--disable-pulse \
-	--disable-vdpau \
 	--disable-vtbdecoder \
 	--enable-optimizations
 
@@ -241,6 +240,13 @@ KODI_DEPENDENCIES += mesa3d libva
 KODI_CONF_OPTS += --enable-vaapi
 else
 KODI_CONF_OPTS += --disable-vaapi
+endif
+
+ifeq ($(BR2_PACKAGE_KODI_LIBVDPAU),y)
+KODI_DEPENDENCIES += libvdpau
+KODI_CONF_OPTS += --enable-vdpau
+else
+KODI_CONF_OPTS += --disable-vdpau
 endif
 
 ifeq ($(BR2_PACKAGE_KODI_UPNP),y)
