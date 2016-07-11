@@ -86,6 +86,14 @@ else
 KODI_CONF_OPTS += --disable-mysql
 endif
 
+ifeq ($(BR2_PACKAGE_KODI_NONFREE),y)
+KODI_CONF_OPTS += --enable-non-free
+KODI_LICENSE := $(KODI_LICENSE), unrar
+KODI_LICENSE_FILES += lib/UnrarXLib/license.txt
+else
+KODI_CONF_OPTS += --disable-non-free
+endif
+
 ifeq ($(BR2_PACKAGE_RPI_USERLAND),y)
 KODI_DEPENDENCIES += rpi-userland
 KODI_CONF_OPTS += --with-platform=raspberry-pi --enable-player=omxplayer
