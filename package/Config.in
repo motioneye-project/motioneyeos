@@ -264,6 +264,7 @@ comment "Graphic libraries"
 	source "package/sdl_ttf/Config.in"
 	source "package/sdl2/Config.in"
 	source "package/sdl2_gfx/Config.in"
+	source "package/sdl2_image/Config.in"
 
 comment "Other GUIs"
 	source "package/qt/Config.in"
