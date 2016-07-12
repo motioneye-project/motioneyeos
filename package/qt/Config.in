@@ -302,6 +302,11 @@ config BR2_PACKAGE_QT_QTTIFF
 	bool "Use Qt bundled libtiff"
 endchoice
 
+config BR2_PACKAGE_QT_ACCESSIBILITY
+	bool "Enable accessibility support"
+	help
+	  This enables and compiles the accessibility support.
+
 endif # BR2_PACKAGE_QT_GUI_MODULE
 
 choice

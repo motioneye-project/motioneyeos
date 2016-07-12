@@ -258,6 +258,12 @@ else
 QT_CONFIGURE_OPTS += -no-libmng
 endif
 
+ifeq ($(BR2_PACKAGE_QT_ACCESSIBILITY),y)
+QT_CONFIGURE_OPTS += -accessibility
+else
+QT_CONFIGURE_OPTS += -no-accessibility
+endif
+
 ifeq ($(BR2_PACKAGE_QT_QTZLIB),y)
 QT_CONFIGURE_OPTS += -qt-zlib
 else
@@ -520,7 +526,6 @@ define QT_CONFIGURE_CMDS
 		-no-xinerama \
 		-no-cups \
 		-no-nis \
-		-no-accessibility \
 		-no-separate-debug-info \
 		-prefix /usr \
 		-plugindir /usr/lib/qt/plugins \
