@@ -263,6 +263,7 @@ comment "Graphic libraries"
 	source "package/sdl_sound/Config.in"
 	source "package/sdl_ttf/Config.in"
 	source "package/sdl2/Config.in"
+	source "package/sdl2_gfx/Config.in"
 
 comment "Other GUIs"
 	source "package/qt/Config.in"
