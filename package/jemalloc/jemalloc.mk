@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-JEMALLOC_VERSION = 4.2.0
+JEMALLOC_VERSION = 4.2.1
 JEMALLOC_SOURCE = jemalloc-$(JEMALLOC_VERSION).tar.bz2
 JEMALLOC_SITE = http://www.canonware.com/download/jemalloc
 JEMALLOC_LICENSE = BSD-2c
