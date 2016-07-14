@@ -159,4 +159,9 @@ config BR2_PACKAGE_MTD_UBIBLOCK
 	bool "ubiblock"
 	default y
 
+config BR2_PACKAGE_MTD_INTEGCK
+	bool "integck"
+	help
+	  Install the integck test program.
+
 endif
