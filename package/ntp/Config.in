@@ -19,6 +19,12 @@ config BR2_PACKAGE_NTP_NTP_KEYGEN
 	help
 	  Create a NTP host key
 
+config BR2_PACKAGE_NTP_NTP_SHM_CLK
+	bool "SHM clock support"
+	help
+	  Compile ntp with support for a SHM clock attached through
+	  shared memory.
+
 config BR2_PACKAGE_NTP_NTP_WAIT
 	bool "ntp-wait"
 	depends on BR2_PACKAGE_PERL
