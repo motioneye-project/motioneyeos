@@ -8,7 +8,12 @@ config BR2_PACKAGE_TI_GFX
 	select BR2_PACKAGE_FBSET if !BR2_PACKAGE_BUSYBOX # Runtime dependency only
 	select BR2_LINUX_NEEDS_MODULES # not using kernel-module infra
 	help
-	  Graphics libraries for TI boards.
+	  Graphics libraries for TI boards using SGX acceleration.
+
+	  Supports OMAP35xx, DM37xx/AM37xx, DM816x, DM814x, AM335x and
+	  AM43xx.
+
+	  For newer CPUs or kernels use the ti-sgx-{km,um} packages.
 
 	  http://downloads.ti.com/dsps/dsps_public_sw/gfxsdk/
 
