@@ -104,4 +104,9 @@ config BR2_PACKAGE_WESTON_XWAYLAND
 comment "XWayland support needs libepoxy and X.org enabled"
 	depends on !BR2_PACKAGE_XORG7 || !BR2_PACKAGE_LIBEPOXY
 
+config BR2_PACKAGE_WESTON_DEMO_CLIENTS
+	bool "demo clients"
+	help
+	  This enables the installation of Weston's demo clients.
+
 endif

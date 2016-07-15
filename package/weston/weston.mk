@@ -142,4 +142,10 @@ else
 WESTON_CONF_OPTS += --disable-junit-xml
 endif
 
+ifeq ($(BR2_PACKAGE_WESTON_DEMO_CLIENTS),y)
+WESTON_CONF_OPTS += --enable-demo-clients-install
+else
+WESTON_CONF_OPTS += --disable-demo-clients-install
+endif
+
 $(eval $(autotools-package))
