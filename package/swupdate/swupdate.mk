@@ -4,13 +4,10 @@
 #
 ################################################################################
 
-SWUPDATE_VERSION = 2016.04
+SWUPDATE_VERSION = 2016.07
 SWUPDATE_SITE = $(call github,sbabic,swupdate,$(SWUPDATE_VERSION))
 SWUPDATE_LICENSE = GPLv2+, MIT, Public Domain
 SWUPDATE_LICENSE_FILES = COPYING
-
-# Upstream patch to fix build without MTD support
-SWUPDATE_PATCH = https://github.com/sbabic/swupdate/commit/69c0e66994f01ce1bf2299fbce86aee7a1baa37b.patch
 
 # swupdate bundles its own version of mongoose (version 3.8)
 
