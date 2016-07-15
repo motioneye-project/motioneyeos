@@ -1,5 +1,5 @@
 config BR2_PACKAGE_SDL2_GFX
-	bool "SDL2_gfx"
+	bool "sdl2_gfx"
 	depends on BR2_PACKAGE_SDL2
 	help
 	  The SDL2_gfx library is an extension to the SDL2 library

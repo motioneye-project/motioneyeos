@@ -1,5 +1,5 @@
 config BR2_PACKAGE_SDL2_IMAGE
-	bool "SDL2_image"
+	bool "sdl2_image"
 	depends on BR2_PACKAGE_SDL2
 	help
 	  SDL2_image is an image file loading library. It loads images

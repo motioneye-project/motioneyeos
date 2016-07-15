@@ -1,5 +1,5 @@
 config BR2_PACKAGE_SDL2_TTF
-	bool "SDL2_TTF"
+	bool "sdl2_ttf"
 	depends on BR2_PACKAGE_SDL2
 	select BR2_PACKAGE_FREETYPE
 	help
