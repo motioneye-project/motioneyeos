@@ -13,6 +13,7 @@ source "boot/lpc32xxcdl/Config.in"
 source "boot/mxs-bootlets/Config.in"
 source "boot/s500-bootloader/Config.in"
 source "boot/syslinux/Config.in"
+source "boot/ts4800-mbrboot/Config.in"
 source "boot/uboot/Config.in"
 source "boot/xloader/Config.in"
 
