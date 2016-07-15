@@ -234,6 +234,12 @@ NGINX_CONF_OPTS += \
 
 endif # BR2_PACKAGE_NGINX_STREAM
 
+# external modules
+ifeq ($(BR2_PACKAGE_NGINX_UPLOAD),y)
+NGINX_CONF_OPTS += $(addprefix --add-module=,$(NGINX_UPLOAD_DIR))
+NGINX_DEPENDENCIES += nginx-upload
+endif
+
 # Debug logging
 NGINX_CONF_OPTS += $(if $(BR2_PACKAGE_NGINX_DEBUG),--with-debug)
 

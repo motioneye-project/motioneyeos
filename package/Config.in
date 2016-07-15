@@ -1499,6 +1499,11 @@ menu "Networking applications"
 	source "package/nfacct/Config.in"
 	source "package/nftables/Config.in"
 	source "package/nginx/Config.in"
+if BR2_PACKAGE_NGINX
+menu "External nginx modules"
+	source "package/nginx-upload/Config.in"
+endmenu
+endif
 	source "package/ngircd/Config.in"
 	source "package/ngrep/Config.in"
 	source "package/nload/Config.in"
