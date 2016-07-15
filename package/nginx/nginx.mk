@@ -156,6 +156,11 @@ else
 NGINX_CONF_OPTS += --without-http_gzip_module
 endif
 
+ifeq ($(BR2_PACKAGE_NGINX_NAXSI),y)
+NGINX_DEPENDENCIES += nginx-naxsi
+NGINX_CONF_OPTS += --add-module=$(NGINX_NAXSI_DIR)/naxsi_src
+endif
+
 ifeq ($(BR2_PACKAGE_NGINX_HTTP_REWRITE_MODULE),y)
 NGINX_DEPENDENCIES += pcre
 else

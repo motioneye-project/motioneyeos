@@ -1501,6 +1501,7 @@ menu "Networking applications"
 	source "package/nginx/Config.in"
 if BR2_PACKAGE_NGINX
 menu "External nginx modules"
+	source "package/nginx-naxsi/Config.in"
 	source "package/nginx-upload/Config.in"
 endmenu
 endif
