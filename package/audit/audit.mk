@@ -58,4 +58,11 @@ define AUDIT_INSTALL_CLEANUP
 endef
 AUDIT_POST_INSTALL_TARGET_HOOKS += AUDIT_INSTALL_CLEANUP
 
+HOST_AUDIT_CONF_OPTS = \
+	--without-python \
+	--without-python3 \
+	--disable-zos-remote \
+	--without-libcap-ng
+
 $(eval $(autotools-package))
+$(eval $(host-autotools-package))
