@@ -2,8 +2,7 @@ comment "ti-sgx-um needs the ti-sgx-km driver"
 	depends on !BR2_PACKAGE_TI_SGX_KM
 
 comment "ti-sgx-um needs a glibc toolchain w/ threads"
-	depends on !BR2_TOOLCHAIN_USES_GLIBC ||
-		!BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_TOOLCHAIN_USES_GLIBC || !BR2_TOOLCHAIN_HAS_THREADS
 
 config BR2_PACKAGE_TI_SGX_UM
 	bool "ti-sgx-um"
