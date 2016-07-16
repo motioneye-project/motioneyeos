@@ -32,7 +32,7 @@ VDE2_CONF_OPTS = \
 	--disable-python        \
 	--disable-profile       \
 	--disable-kernel-switch \
-	--enable-tuntap         \
+	--enable-tuntap
 
 # Package does not build in parallel due to improper make rules
 VDE2_MAKE = $(MAKE1)
@@ -44,7 +44,7 @@ HOST_VDE2_CONF_OPTS = \
 	--disable-python        \
 	--disable-profile       \
 	--disable-kernel-switch \
-	--enable-tuntap         \
+	--enable-tuntap
 
 HOST_VDE2_MAKE = $(MAKE1)
 
