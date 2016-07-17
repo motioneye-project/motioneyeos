@@ -17,6 +17,12 @@ ifeq ($(BR2_ROOTFS_SKELETON_CUSTOM),y)
 
 SKELETON_PATH = $(call qstrip,$(BR2_ROOTFS_SKELETON_CUSTOM_PATH))
 
+ifeq ($(BR_BUILDING),y)
+ifeq ($(SKELETON_PATH),)
+$(error No path specified for the custom skeleton)
+endif
+endif
+
 ifeq ($(BR2_ROOTFS_MERGED_USR),y)
 
 # Ensure the user has prepared a merged /usr.

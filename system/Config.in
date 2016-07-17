@@ -184,9 +184,9 @@ config BR2_ROOTFS_SKELETON_CUSTOM
 endchoice
 
 if BR2_ROOTFS_SKELETON_CUSTOM
+
 config BR2_ROOTFS_SKELETON_CUSTOM_PATH
 	string "custom target skeleton path"
-	default "system/skeleton"
 	help
 	  Path to custom target skeleton.
 
