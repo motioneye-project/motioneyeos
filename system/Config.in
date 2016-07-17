@@ -1,5 +1,33 @@
 menu "System configuration"
 
+choice
+	prompt "Root FS skeleton"
+
+config BR2_ROOTFS_SKELETON_DEFAULT
+	bool "default target skeleton"
+	help
+	  Use default target skeleton
+
+config BR2_ROOTFS_SKELETON_CUSTOM
+	bool "custom target skeleton"
+	help
+	  Use custom target skeleton.
+
+endchoice
+
+if BR2_ROOTFS_SKELETON_CUSTOM
+
+config BR2_ROOTFS_SKELETON_CUSTOM_PATH
+	string "custom target skeleton path"
+	help
+	  Path to custom target skeleton.
+
+# dummy config so merged /usr workarounds can also be activated for
+# custom rootfs skeleton
+config BR2_ROOTFS_MERGED_USR
+
+endif
+
 config BR2_TARGET_GENERIC_HOSTNAME
 	string "System hostname"
 	default "buildroot"
@@ -167,34 +195,6 @@ config BR2_ROOTFS_DEVICE_TABLE_SUPPORTS_EXTENDED_ATTRIBUTES
 	bool "support extended attributes in device tables"
 	help
 	  Support extended attributes handling in device tables
-
-choice
-	prompt "Root FS skeleton"
-
-config BR2_ROOTFS_SKELETON_DEFAULT
-	bool "default target skeleton"
-	help
-	  Use default target skeleton
-
-config BR2_ROOTFS_SKELETON_CUSTOM
-	bool "custom target skeleton"
-	help
-	  Use custom target skeleton.
-
-endchoice
-
-if BR2_ROOTFS_SKELETON_CUSTOM
-
-config BR2_ROOTFS_SKELETON_CUSTOM_PATH
-	string "custom target skeleton path"
-	help
-	  Path to custom target skeleton.
-
-# dummy config so merged /usr workarounds can also be activated for
-# custom rootfs skeleton
-config BR2_ROOTFS_MERGED_USR
-
-endif
 
 if BR2_ROOTFS_SKELETON_DEFAULT
 
