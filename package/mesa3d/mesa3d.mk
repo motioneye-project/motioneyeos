@@ -36,6 +36,9 @@ MESA3D_CONF_OPTS += --with-sha1=libcrypto
 else ifeq ($(BR2_PACKAGE_LIBGCRYPT),y)
 MESA3D_DEPENDENCIES += libgcrypt
 MESA3D_CONF_OPTS += --with-sha1=libgcrypt
+else ifeq ($(BR2_PACKAGE_LIBSHA1),y)
+MESA3D_DEPENDENCIES += libsha1
+MESA3D_CONF_OPTS += --with-sha1=libsha1
 endif
 
 ifeq ($(BR2_PACKAGE_HAS_UDEV),y)
