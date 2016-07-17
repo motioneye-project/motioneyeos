@@ -26,6 +26,8 @@ config BR2_PACKAGE_BUSYBOX_CONFIG_FRAGMENT_FILES
 	  A space-separated list of configuration fragment files,
 	  that will be merged to the main BusyBox configuration file.
 
+# This option is not an option of Busybox, it can be selected even
+# if Busybox is not enabled.
 config BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	bool "Show packages that are also provided by busybox"
 	help
@@ -75,8 +77,10 @@ endif
 
 if !BR2_PACKAGE_BUSYBOX # kconfig doesn't support else
 
-# add dummy config so the stuff with busybox alternatives are shown
-# when busybox is disabled
+# This option is not an option of Busybox, it can be selected even if
+# Busybox is not enabled. This dummy option ensures that packages that
+# depend on BR2_PACKAGE_BUSYBOX_SHOW_OTHERS are visible when Busybox
+# is disabled.
 config BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	default y
 endif
