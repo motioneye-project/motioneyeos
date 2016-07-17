@@ -357,9 +357,6 @@ config BR2_TARGET_GENERIC_REMOUNT_ROOTFS_RW
 	  read-only.
 	  If unsure, say Y.
 
-endif # BR2_ROOTFS_SKELETON_DEFAULT
-
-
 config BR2_SYSTEM_DHCP
 	string "Network interface to configure through DHCP"
 	default ""
@@ -378,6 +375,8 @@ comment "automatic network configuration via DHCP is not compatible with network
 
 comment "automatic network configuration via DHCP needs ifupdown or busybox"
 	depends on !(BR2_PACKAGE_BUSYBOX || BR2_PACKAGE_IFUPDOWN)
+
+endif # BR2_ROOTFS_SKELETON_DEFAULT
 
 config BR2_TARGET_TZ_INFO
 	bool "Install timezone info"
