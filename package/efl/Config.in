@@ -121,6 +121,18 @@ config BR2_PACKAGE_EFL_HAS_RECOMMENDED_CONFIG
 comment "Warning: one of the recommended option for EFL is not enabled"
 	depends on !BR2_PACKAGE_EFL_HAS_RECOMMENDED_CONFIG
 
+config BR2_PACKAGE_EFL_EOLIAN_CPP
+	bool "Enable Eolian C++ bindings"
+	depends on BR2_HOST_GCC_AT_LEAST_4_8 # Eolian (host) needs C++11
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_8 # Eolian needs C++11
+	help
+	  Eolian is an EO object parser and code generator.
+	  With this option enabled Eolian will handle automatic generation
+	  of EFL bindings for the C++11 language.
+
+comment "Eolian needs host and target gcc >= 4.8"
+	depends on !BR2_HOST_GCC_AT_LEAST_4_8 || !BR2_TOOLCHAIN_GCC_AT_LEAST_4_8
+
 comment "libecore video support"
 
 config BR2_PACKAGE_EFL_FB
