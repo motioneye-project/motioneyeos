@@ -33,5 +33,11 @@ HOST_ELEMENTARY_CONF_OPTS = \
 	--with-doxygen=no \
 	--disable-elementary-test
 
+# Use Eolian C++ parser only if enabled in the efl stack.
+ifeq ($(BR2_PACKAGE_EFL_EOLIAN_CPP),y)
+ELEMENTARY_CONF_OPTS += --with-eolian-cxx=$(HOST_DIR)/usr/bin/eolian_cxx
+HOST_ELEMENTARY_CONF_OPTS += --with-eolian-cxx=$(HOST_DIR)/usr/bin/eolian_cxx
+endif
+
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
