@@ -1,6 +1,5 @@
 config BR2_PACKAGE_DOMOTICZ
 	bool "domoticz"
-	depends on BR2_PACKAGE_BOOST_ARCH_SUPPORTS # boost
 	depends on BR2_USE_MMU # mosquitto
 	depends on !BR2_STATIC_LIBS # mosquitto
 	depends on BR2_TOOLCHAIN_HAS_THREADS
@@ -26,7 +25,6 @@ config BR2_PACKAGE_DOMOTICZ
 	  http://domoticz.com
 
 comment "domoticz needs lua >= 5.2 and a toolchain w/ C++, threads, wchar, dynamic library"
-	depends on BR2_PACKAGE_BOOST_ARCH_SUPPORTS
 	depends on BR2_USE_MMU
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS || \
 		!BR2_USE_WCHAR || BR2_STATIC_LIBS || \
