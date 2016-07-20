@@ -20,6 +20,7 @@ config BR2_PACKAGE_EFL
 	select BR2_PACKAGE_UTIL_LINUX
 	# libblkid is part of required tools, see EFL's README.
 	select BR2_PACKAGE_UTIL_LINUX_LIBBLKID
+	select BR2_PACKAGE_ZLIB
 	help
 	  Enlightenment Foundation Libraries
 
