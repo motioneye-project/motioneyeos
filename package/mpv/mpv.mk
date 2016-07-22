@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-MPV_VERSION = 0.18.0
+MPV_VERSION = 0.18.1
 MPV_WAF_VERSION = 1.8.12
 MPV_SITE = https://github.com/mpv-player/mpv/archive
 MPV_SOURCE = v$(MPV_VERSION).tar.gz
