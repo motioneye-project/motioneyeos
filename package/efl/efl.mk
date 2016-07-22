@@ -25,7 +25,6 @@ EFL_DEPENDENCIES = host-pkgconf host-efl host-luajit dbus freetype \
 # Configure options:
 # --disable-lua-old: build elua for the target.
 # --disable-sdl: disable sdl2 support.
-# --disable-systemd: disable systemd support.
 # --disable-xinput22: disable X11 XInput v2.2+ support.
 # --with-opengl=none: disable opengl support.
 EFL_CONF_OPTS = \
@@ -34,7 +33,6 @@ EFL_CONF_OPTS = \
 	--with-eolian-gen=$(HOST_DIR)/usr/bin/eolian_gen \
 	--disable-lua-old \
 	--disable-sdl \
-	--disable-systemd \
 	--disable-xinput22 \
 	--with-opengl=none
 
@@ -55,6 +53,13 @@ EFL_DEPENDENCIES += util-linux
 EFL_CONF_OPTS += --enable-libmount
 else
 EFL_CONF_OPTS += --disable-libmount
+endif
+
+ifeq ($(BR2_PACKAGE_SYSTEMD),y)
+EFL_CONF_OPTS += --enable-systemd
+EFL_DEPENDENCIES += systemd
+else
+EFL_CONF_OPTS += --disable-systemd
 endif
 
 ifeq ($(BR2_PACKAGE_FONTCONFIG),y)
