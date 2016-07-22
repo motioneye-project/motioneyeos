@@ -22,8 +22,14 @@ ENLIGHTENMENT_CONF_OPTS = \
 	--with-edje-cc=$(HOST_DIR)/usr/bin/edje_cc \
 	--with-eet-eet=$(HOST_DIR)/usr/bin/eet \
 	--disable-pam \
-	--disable-rpath \
-	--disable-systemd
+	--disable-rpath
+
+ifeq ($(BR2_PACKAGE_SYSTEMD),y)
+ENLIGHTENMENT_CONF_OPTS += --enable-systemd
+ENLIGHTENMENT_DEPENDENCIES += systemd
+else
+ENLIGHTENMENT_CONF_OPTS += --disable-systemd
+endif
 
 # uClibc has an old incomplete sys/ptrace.h for powerpc & sparc
 ifeq ($(BR2_TOOLCHAIN_USES_UCLIBC)$(BR2_powerpc)$(BR2_sparc),yy)
