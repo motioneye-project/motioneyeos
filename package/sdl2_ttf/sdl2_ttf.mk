@@ -14,4 +14,17 @@ SDL2_TTF_DEPENDENCIES = sdl2 freetype host-pkgconf
 SDL2_TTF_CONF_ENV = \
 	FREETYPE_CONFIG=$(STAGING_DIR)/usr/bin/freetype-config
 
+# x-includes and x-libraries must be set for cross-compiling
+# By default x_includes and x_libraries contains unsafe paths.
+# (/usr/include and /usr/lib)
+ifeq ($(BR2_PACKAGE_SDL2_X11),y)
+SDL2_TTF_CONF_OPTS += \
+	--with-x \
+	--x-includes=$(STAGING_DIR)/usr/include \
+	--x-libraries=$(STAGING_DIR)/usr/lib
+else
+SDL2_TTF_CONF_OPTS += \
+	--without-x
+endif
+
 $(eval $(autotools-package))
