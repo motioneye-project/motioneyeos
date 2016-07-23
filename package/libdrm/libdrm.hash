@@ -1,2 +1,2 @@
-# From https://lists.x.org/archives/xorg-announce/2016-July/002700.html
-sha256	09510cbc75adba7e84fd3ec86586fd352a787fd534a63377de9e19ff85280b33	libdrm-2.4.69.tar.bz2
+# From https://lists.freedesktop.org/archives/dri-devel/2016-July/113899.html
+sha256	b17d4b39ed97ca0e4cffa0db06ff609e617bac94646ec38e8e0579d530540e7b	libdrm-2.4.70.tar.bz2
