@@ -13,6 +13,10 @@ ifeq ($(BR2_PACKAGE_LIBAIO),y)
 FIO_DEPENDENCIES += libaio
 endif
 
+ifeq ($(BR2_PACKAGE_NUMACTL),y)
+FIO_DEPENDENCIES += numactl
+endif
+
 ifeq ($(BR2_PACKAGE_ZLIB),y)
 FIO_DEPENDENCIES += zlib
 endif
