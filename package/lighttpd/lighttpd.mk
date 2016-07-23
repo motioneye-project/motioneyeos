@@ -11,6 +11,8 @@ LIGHTTPD_SITE = http://download.lighttpd.net/lighttpd/releases-$(LIGHTTPD_VERSIO
 LIGHTTPD_LICENSE = BSD-3c
 LIGHTTPD_LICENSE_FILES = COPYING
 LIGHTTPD_DEPENDENCIES = host-pkgconf
+# For 0002-autobuild-clock_gettime-lrt-with-glibc-2.17.patch
+LIGHTTPD_AUTORECONF = YES
 LIGHTTPD_CONF_OPTS = \
 	--libdir=/usr/lib/lighttpd \
 	--libexecdir=/usr/lib
