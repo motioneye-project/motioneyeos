@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-BMON_VERSION = 3.7
+BMON_VERSION = 3.9
 BMON_SITE = https://github.com/tgraf/bmon/releases/download/v$(BMON_VERSION)
 BMON_DEPENDENCIES = host-pkgconf libconfuse libnl ncurses
 BMON_CONF_ENV = ac_cv_prog_cc_c99='-std=gnu99'
