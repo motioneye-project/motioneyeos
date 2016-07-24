@@ -19,8 +19,11 @@ RUNC_MAKE_ENV = $(HOST_GO_TARGET_ENV) \
 	PATH=$(BR_PATH)
 
 RUNC_GLDFLAGS = \
-	-X main.gitCommit=$(RUNC_VERSION) \
-	-extldflags '-static'
+	-X main.gitCommit=$(RUNC_VERSION)
+
+ifeq ($(BR2_STATIC_LIBS),y)
+FLANNEL_GLDFLAGS += -extldflags '-static'
+endif
 
 RUNC_GOTAGS = cgo static_build
 
