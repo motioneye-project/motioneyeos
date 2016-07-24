@@ -224,6 +224,10 @@ else
 FFMPEG_CONF_OPTS += --disable-libdcadec
 endif
 
+ifeq ($(BR2_PACKAGE_FFMPEG_GPL)$(BR2_PACKAGE_LIBEBUR128),yy)
+FFMPEG_DEPENDENCIES += libebur128
+endif
+
 ifeq ($(BR2_PACKAGE_LIBOPENH264),y)
 FFMPEG_CONF_OPTS += --enable-libopenh264
 FFMPEG_DEPENDENCIES += libopenh264
