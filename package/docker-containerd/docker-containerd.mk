@@ -18,8 +18,11 @@ DOCKER_CONTAINERD_MAKE_ENV = $(HOST_GO_TARGET_ENV) \
 	GOPATH="$(DOCKER_CONTAINERD_GOPATH)"
 
 DOCKER_CONTAINERD_GLDFLAGS = \
-	-X github.com/docker/containerd.GitCommit=$(DOCKER_CONTAINERD_VERSION) \
-	-extldflags '-static'
+	-X github.com/docker/containerd.GitCommit=$(DOCKER_CONTAINERD_VERSION)
+
+ifeq ($(BR2_STATIC_LIBS),y)
+DOCKER_CONTAINERD_GLDFLAGS += -extldflags '-static'
+endif
 
 define DOCKER_CONTAINERD_CONFIGURE_CMDS
 	mkdir -p $(DOCKER_CONTAINERD_GOPATH)/src/github.com/docker
