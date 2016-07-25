@@ -10,6 +10,10 @@ ELEMENTARY_SITE = http://download.enlightenment.org/rel/libs/elementary
 ELEMENTARY_LICENSE = LGPLv2.1
 ELEMENTARY_LICENSE_FILES = COPYING
 
+# 0001-lib-remove-.eo.h-files-from-includesub_HEADERS.patch
+ELEMENTARY_AUTORECONF = YES
+ELEMENTARY_GETTEXTIZE = YES
+
 ELEMENTARY_INSTALL_STAGING = YES
 
 ELEMENTARY_DEPENDENCIES = host-pkgconf host-efl host-elementary efl
