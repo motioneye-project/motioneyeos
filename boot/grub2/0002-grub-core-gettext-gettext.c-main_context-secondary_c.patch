@@ -1,0 +1,39 @@
+From f30c692c1f9ef0e93bee2b408a24baa017f1ca9d Mon Sep 17 00:00:00 2001
+From: Vladimir Serbinenko <phcoder@gmail.com>
+Date: Thu, 7 Nov 2013 01:01:47 +0100
+Subject: [PATCH] 	* grub-core/gettext/gettext.c (main_context),
+ (secondary_context): 	Define after defining type and not before.
+
+[Thomas: backport from upstream commit
+f30c692c1f9ef0e93bee2b408a24baa017f1ca9d, and remove ChangeLog
+modifications to avoid conflicts.]
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ grub-core/gettext/gettext.c | 4 ++--
+ 2 files changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/grub-core/gettext/gettext.c b/grub-core/gettext/gettext.c
+index df73570..4880cef 100644
+--- a/grub-core/gettext/gettext.c
++++ b/grub-core/gettext/gettext.c
+@@ -34,8 +34,6 @@ GRUB_MOD_LICENSE ("GPLv3+");
+    http://www.gnu.org/software/autoconf/manual/gettext/MO-Files.html .
+ */
+ 
+-static struct grub_gettext_context main_context, secondary_context;
+-
+ static const char *(*grub_gettext_original) (const char *s);
+ 
+ struct grub_gettext_msg
+@@ -69,6 +67,8 @@ struct grub_gettext_context
+   struct grub_gettext_msg *grub_gettext_msg_list;
+ };
+ 
++static struct grub_gettext_context main_context, secondary_context;
++
+ #define MO_MAGIC_NUMBER 		0x950412de
+ 
+ static grub_err_t
+-- 
+2.7.4
+
