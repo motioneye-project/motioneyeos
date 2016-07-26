@@ -426,6 +426,7 @@ endmenu
 	source "package/owl-linux/Config.in"
 	source "package/parted/Config.in"
 	source "package/pciutils/Config.in"
+	source "package/pdbg/Config.in"
 	source "package/picocom/Config.in"
 	source "package/pifmrds/Config.in"
 	source "package/powertop/Config.in"
