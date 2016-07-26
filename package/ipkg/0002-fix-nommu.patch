@@ -1,0 +1,24 @@
+libbb: fix no MMU build
+
+uClibc-ng defines __ARCH_HAS_MMU__ for ARM or m68k because these
+architectures may potentially have MMU. The code should test for
+__ARCH_USE_MMU__, which indicates if the MMU is really in use. But
+since the configure script detects the presence of fork(), using
+HAVE_FORK directly is a better solution.
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Patch status: no active upstream
+
+diff -Nuar ipkg-0.99.163-orig/libbb/libbb.h ipkg-0.99.163/libbb/libbb.h
+--- ipkg-0.99.163-orig/libbb/libbb.h	2006-02-06 10:13:02.000000000 +0200
++++ ipkg-0.99.163/libbb/libbb.h	2016-07-26 13:50:09.296988855 +0300
+@@ -341,7 +341,7 @@
+ #define CONSOLE_DEV "/dev/console"
+ 
+ /* Cope with mmu-less systems somewhat gracefully */
+-#if defined(__UCLIBC__) && !defined(__ARCH_HAS_MMU__)
++#if !defined(HAVE_FORK)
+ #define fork	vfork
+ #endif
+ 
