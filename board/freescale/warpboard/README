@@ -9,7 +9,9 @@ Build all components:
 
 You will find in ./output/images/ the following files:
   - imx6sl-warp.dtb
+  - rootfs.ext4
   - rootfs.tar
+  - sdcard.img
   - u-boot.imx
   - zImage
 
@@ -42,14 +44,16 @@ Update uboot
 Update linux & rootfs
 =====================
 
-Run the 'ums' command from the U-Boot prompt to mount the eMMC as mass
-storage and update zImage, device tree (imx6sl-warp.dtb) and rootfs
-file (rootfs.tar) :
+Run the 'ums' command from the U-Boot prompt to mount the eMMC as USB mass
+storage:
 
 => ums 0 mmc 0
 
-Put the zImage and DTB files in the warp-vfat partition and extract as
-root the rootfs.tar tarball in the warp-rootfs partition.
+And then flash the sdcard.img into the eMMC:
+
+  dd if=output/images/sdcard.img of=/dev/<your-sd-device>
+
+*** WARNING! This will destroy all the eMMC content. Use it with care! ***
 
 Using bluetooth
 ================
