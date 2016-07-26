@@ -220,6 +220,7 @@ menu "Games"
 	source "package/prboom/Config.in"
 	source "package/rubix/Config.in"
 	source "package/sl/Config.in"
+	source "package/stella/Config.in"
 	source "package/supertuxkart/Config.in"
 endmenu
 
