@@ -30,6 +30,16 @@ else
 LIBARCHIVE_CONF_OPTS += --disable-bsdcpio
 endif
 
+ifeq ($(BR2_PACKAGE_LIBARCHIVE_BSDCAT),y)
+ifeq ($(BR2_STATIC_LIBS),y)
+LIBARCHIVE_CONF_OPTS += --enable-bsdcat=static
+else
+LIBARCHIVE_CONF_OPTS += --enable-bsdcat=shared
+endif
+else
+LIBARCHIVE_CONF_OPTS += --disable-bsdcat
+endif
+
 ifeq ($(BR2_PACKAGE_ACL),y)
 LIBARCHIVE_DEPENDENCIES += acl
 else
@@ -105,6 +115,7 @@ HOST_LIBARCHIVE_DEPENDENCIES = host-zlib
 HOST_LIBARCHIVE_CONF_OPTS = \
 	--disable-bsdtar \
 	--disable-bsdcpio \
+	--disable-bsdcat \
 	--disable-acl \
 	--disable-xattr \
 	--without-bz2lib \
