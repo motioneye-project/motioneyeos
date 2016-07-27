@@ -13,6 +13,14 @@ IMX_CODEC_LICENSE = NXP Semiconductor Software License Agreement, BSD-3c (flac, 
 IMX_CODEC_LICENSE_FILES = EULA COPYING
 IMX_CODEC_REDISTRIBUTE = NO
 
+ifeq ($(BR2_ARM_EABIHF),y)
+IMX_CODEC_CONF_OPTS += --enable-fhw
+endif
+
+ifeq ($(BR2_PACKAGE_IMX_VPU),y)
+IMX_CODEC_CONF_OPTS += --enable-vpu
+endif
+
 define IMX_CODEC_EXTRACT_CMDS
 	$(call FREESCALE_IMX_EXTRACT_HELPER,$(DL_DIR)/$(IMX_CODEC_SOURCE))
 endef
