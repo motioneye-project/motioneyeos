@@ -1594,6 +1594,7 @@ endif
 	source "package/vpnc/Config.in"
 	source "package/vsftpd/Config.in"
 	source "package/vtun/Config.in"
+	source "package/wavemon/Config.in"
 	source "package/wget/Config.in"
 	source "package/whois/Config.in"
 	source "package/wireless-regdb/Config.in"
