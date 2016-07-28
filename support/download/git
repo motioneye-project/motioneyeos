@@ -76,7 +76,7 @@ _git checkout -q "'${cset}'"
 
 # Get date of commit to generate a reproducible archive.
 # %cD is RFC2822, so it's fully qualified, with TZ and all.
-date="$( _git show --no-patch --pretty=format:%cD )"
+date="$( _git log -1 --pretty=format:%cD )"
 
 # There might be submodules, so fetch them.
 if [ ${recurse} -eq 1 ]; then
