@@ -1,0 +1,12 @@
+config BR2_PACKAGE_GTKSOURCEVIEW
+	bool "gtksourceview"
+	depends on BR2_PACKAGE_LIBGTK3
+	select BR2_PACKAGE_LIBXML2
+	help
+	  GtkSourceView is a portable C library that extends the
+	  standard GTK+ framework for multiline text editing with
+	  support for configurable syntax highlighting, unlimited
+	  undo/redo, search and replace, a completion framework,
+	  printing and other features typical of a source code editor.
+
+	  https://projects.gnome.org/gtksourceview
