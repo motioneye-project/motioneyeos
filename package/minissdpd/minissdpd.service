@@ -1,0 +1,12 @@
+[Unit]
+Description=SSDP managing daemon
+After=network.target
+
+[Service]
+Environment="IFACE=eth0"
+EnvironmentFile=/etc/default/minissdpd
+ExecStart=/usr/sbin/minissdpd -i $IFACE
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
