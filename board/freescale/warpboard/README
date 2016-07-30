@@ -66,4 +66,14 @@ $ hciconfig hci0 up
 Using Wifi
 ==========
 
-$ ifconfig wlan0 up
+Enable the wireless_utils and wpa_suplicant packages, and then run:
+
+# modprobe brcmfmac
+# iwconfig wlan0 essid ACCESSPOINTNAME
+# wpa_passphrase ACCESSPOINTNAME > /etc/wpa.conf
+(enter the wifi password and press enter)
+# wpa_supplicant -Dwext -iwlan0 -c /etc/wpa.conf &
+# udhcpc -i wlan0
+# ping buildroot.org
+
+Enjoy!
