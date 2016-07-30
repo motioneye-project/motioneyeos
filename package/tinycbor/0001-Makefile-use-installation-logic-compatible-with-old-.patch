@@ -1,0 +1,59 @@
+From 1d92e2a4af056466dcbefd09750bce07cf1085ed Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Sat, 30 Jul 2016 18:42:53 +0200
+Subject: [PATCH] Makefile: use installation logic compatible with old make
+ version
+
+The installation logic used by the Makefile causes a problem with old
+make versions, such as make 3.81. Indeed, the rule "$(DESTDIR)%/" gets
+matched even for targets like "$(DESTDIR)$(libdir)/libtinycbor.a". Due
+to this, with those old make versions, tinycbor.a is installed as a
+directory, and the library is never copied:
+
+make[1]: Entering directory `/home/test/outputs/b1305500555cbb5b959e5be11dee5cf75907f0ce/output/build/tinycbor-v0.3.1'
+install -d /home/test/outputs/b1305500555cbb5b959e5be11dee5cf75907f0ce/output/target/usr/bin/cbordump
+install -d /home/test/outputs/b1305500555cbb5b959e5be11dee5cf75907f0ce/output/target/usr/lib/libtinycbor.a
+install -d /home/test/outputs/b1305500555cbb5b959e5be11dee5cf75907f0ce/output/target/usr/lib/pkgconfig/tinycbor.pc
+install -d /home/test/outputs/b1305500555cbb5b959e5be11dee5cf75907f0ce/output/target/usr/include/tinycbor/cbor.h
+install -d /home/test/outputs/b1305500555cbb5b959e5be11dee5cf75907f0ce/output/target/usr/include/tinycbor/cborjson.h
+make[1]: Leaving directory `/home/test/outputs/b1305500555cbb5b959e5be11dee5cf75907f0ce/output/build/tinycbor-v0.3.1'
+
+To address this, we create the destination directory directly within
+the per-file make targets.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ Makefile | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 0692f6b..94beaf8 100644
+--- a/Makefile
++++ b/Makefile
+@@ -123,15 +123,17 @@ $(PACKAGE).tar.gz: | .git
+ $(PACKAGE).zip: | .git
+ 	GIT_DIR=$(SRCDIR).git $(GIT_ARCHIVE) --format=zip -o "$(PACKAGE).zip" HEAD
+ 
+-$(DESTDIR)%/:
+-	$(INSTALL) -d $@
+-$(DESTDIR)$(libdir)/%: lib/% | $(DESTDIR)$(libdir)/
++$(DESTDIR)$(libdir)/%: lib/%
++	$(INSTALL) -d $(@D)
+ 	$(INSTALL_DATA) $< $@
+-$(DESTDIR)$(bindir)/%: bin/% | $(DESTDIR)$(bindir)/
++$(DESTDIR)$(bindir)/%: bin/%
++	$(INSTALL) -d $(@D)
+ 	$(INSTALL_PROGRAM) $< $@
+-$(DESTDIR)$(pkgconfigdir)/%: % | $(DESTDIR)$(pkgconfigdir)/
++$(DESTDIR)$(pkgconfigdir)/%: %
++	$(INSTALL) -d $(@D)
+ 	$(INSTALL_DATA) $< $@
+-$(DESTDIR)$(includedir)/tinycbor/%: src/% | $(DESTDIR)$(includedir)/tinycbor/
++$(DESTDIR)$(includedir)/tinycbor/%: src/%
++	$(INSTALL) -d $(@D)
+ 	$(INSTALL_DATA) $< $@
+ 
+ install-strip:
+-- 
+2.7.4
+
