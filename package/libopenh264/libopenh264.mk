@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBOPENH264_VERSION = v1.4.0
+LIBOPENH264_VERSION = v1.5.0
 LIBOPENH264_SITE = $(call github,cisco,openh264,$(LIBOPENH264_VERSION))
 LIBOPENH264_LICENSE = BSD-2c
 LIBOPENH264_LICENSE_FILES = LICENSE
