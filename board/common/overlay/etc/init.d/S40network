@@ -34,7 +34,7 @@ watch_eth() {
     count=0
     while true; do
         sleep 5
-        if mii-tool $eth 2>&1 | grep "link ok" > /dev/null; then
+        if [ "$(cat /sys/class/net/$eth/operstate 2>/dev/null)" == "up" ]; then
             count=0
         else
             if [ $count -lt $link_watch_timeout ]; then
