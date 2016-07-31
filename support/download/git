@@ -92,6 +92,8 @@ rm -rf .git
 popd >/dev/null
 
 # Generate the archive, sort with the C locale so that it is reproducible
+find "${basename}" -not -type d >"${basename}.list"
+LC_ALL=C sort <"${basename}.list" >"${basename}.list.sorted"
 tar cf - --numeric-owner --owner=0 --group=0 --mtime="${date}" \
-         -T <(find "${basename}" -not -type d |LC_ALL=C sort) \
-|gzip -n >"${output}"
+         -T "${basename}.list.sorted" >"${output}.tar"
+gzip -n <"${output}.tar" >"${output}"
