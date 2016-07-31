@@ -12,6 +12,8 @@ config BR2_PACKAGE_CLAPACK
 	# because of the "_" symbol prefix:
 	# http://autobuild.buildroot.net/results/a28df0ba10803e6e54c2f8160bbd8190cba4d690/
 	depends on !BR2_bfin
+	# assembler: Error: value out of range
+	depends on !BR2_m68k_cf
 	help
 	  BLAS and LAPACK C implementation (f2c'ed version of).
 
