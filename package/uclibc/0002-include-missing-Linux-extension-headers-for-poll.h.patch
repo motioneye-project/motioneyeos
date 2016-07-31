@@ -1,0 +1,71 @@
+From 7a575d98449780a95fc4004b179a2ea0dcd0f468 Mon Sep 17 00:00:00 2001
+From: Waldemar Brodkorb <wbx@uclibc-ng.org>
+Date: Sun, 31 Jul 2016 13:22:00 +0200
+Subject: [PATCH] include missing Linux extension headers for poll.h
+
+This was found by Buildroot autobuilders for m68k.
+
+Signed-off-by: Waldemar Brodkorb <wbx@uclibc-ng.org>
+---
+ libc/sysdeps/linux/c6x/bits/poll.h        | 7 +++++++
+ libc/sysdeps/linux/m68k/bits/poll.h       | 7 +++++++
+ libc/sysdeps/linux/microblaze/bits/poll.h | 7 +++++++
+ 3 files changed, 21 insertions(+)
+
+diff --git a/libc/sysdeps/linux/c6x/bits/poll.h b/libc/sysdeps/linux/c6x/bits/poll.h
+index 1d845eb..4c984cc 100644
+--- a/libc/sysdeps/linux/c6x/bits/poll.h
++++ b/libc/sysdeps/linux/c6x/bits/poll.h
+@@ -34,6 +34,13 @@
+ # define POLLWRBAND	0x100		/* Priority data may be written.  */
+ #endif
+ 
++#ifdef __USE_GNU
++/* These are extensions for Linux.  */
++# define POLLMSG	0x400
++# define POLLREMOVE	0x1000
++# define POLLRDHUP	0x2000
++#endif
++
+ /* Event types always implicitly polled for.  These bits need not be set in
+    `events', but they will appear in `revents' to indicate the status of
+    the file descriptor.  */
+diff --git a/libc/sysdeps/linux/m68k/bits/poll.h b/libc/sysdeps/linux/m68k/bits/poll.h
+index 1d845eb..4c984cc 100644
+--- a/libc/sysdeps/linux/m68k/bits/poll.h
++++ b/libc/sysdeps/linux/m68k/bits/poll.h
+@@ -34,6 +34,13 @@
+ # define POLLWRBAND	0x100		/* Priority data may be written.  */
+ #endif
+ 
++#ifdef __USE_GNU
++/* These are extensions for Linux.  */
++# define POLLMSG	0x400
++# define POLLREMOVE	0x1000
++# define POLLRDHUP	0x2000
++#endif
++
+ /* Event types always implicitly polled for.  These bits need not be set in
+    `events', but they will appear in `revents' to indicate the status of
+    the file descriptor.  */
+diff --git a/libc/sysdeps/linux/microblaze/bits/poll.h b/libc/sysdeps/linux/microblaze/bits/poll.h
+index 9b284c8..27c3219 100644
+--- a/libc/sysdeps/linux/microblaze/bits/poll.h
++++ b/libc/sysdeps/linux/microblaze/bits/poll.h
+@@ -34,6 +34,13 @@
+ # define POLLWRBAND	0x0200		/* Priority data may be written.  */
+ #endif
+ 
++#ifdef __USE_GNU
++/* These are extensions for Linux.  */
++# define POLLMSG	0x400
++# define POLLREMOVE	0x1000
++# define POLLRDHUP	0x2000
++#endif
++
+ /* Event types always implicitly polled for.  These bits need not be set in
+    `events', but they will appear in `revents' to indicate the status of
+    the file descriptor.  */
+-- 
+2.7.4 (Apple Git-66)
+
