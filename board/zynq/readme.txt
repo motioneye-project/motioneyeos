@@ -11,11 +11,11 @@ board even if it is not listed above.  Major Zynq-based boards are supported by
 U-Boot, and their Device Trees are merged in Linux Kernel.  If your board is the
 case, booting the kernel is a piece of cake.  All you need to do is to change:
  - Kernel Device Tree file name (BR2_LINUX_KERNEL_INTREE_DTS_NAME)
- - U-Boot board defconfig (BR2_TARGET_UBOOT_BOARDNAME)
+ - U-Boot board defconfig (BR2_TARGET_UBOOT_BOARD_KCONFIG)
 
 Steps to create a working system for a Zynq board:
 
-1) Configuration (do one of the followings)
+1) Configuration (do one of the following)
     make zynq_zc706_defconfig     (ZC706)
     make zynq_zed_defconfig       (Zedboard)
     make zynq_microzed_defconfig  (MicroZed)
