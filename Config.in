@@ -652,7 +652,7 @@ config BR2_STATIC_LIBS
 	bool "static only"
 	help
 	  Build and use only static libraries. No shared libraries will
-	  be instaled on the target. This potentially increases your
+	  be installed on the target. This potentially increases your
 	  code size and should only be used if you know what you are
 	  doing. Note that some packages may not be available when this
 	  option is enabled, due to their need for dynamic library
