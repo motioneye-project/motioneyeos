@@ -11,5 +11,7 @@ LIBDVDNAV_INSTALL_STAGING = YES
 LIBDVDNAV_DEPENDENCIES = libdvdread host-pkgconf
 LIBDVDNAV_LICENSE = GPLv2+
 LIBDVDNAV_LICENSE_FILES = COPYING
+# 0001-do-not-match-nios2-as-os2.patch
+LIBDVDNAV_AUTORECONF = YES
 
 $(eval $(autotools-package))
