@@ -159,5 +159,8 @@ config BR2_PACKAGE_BOOST_TYPE_ERASURE
 
 config BR2_PACKAGE_BOOST_WAVE
 	bool "boost-wave"
+	# limitation of assembler for coldfire
+	# error: Tried to convert PC relative branch to absolute jump
+	depends on !BR2_m68k_cf
 
 endif
