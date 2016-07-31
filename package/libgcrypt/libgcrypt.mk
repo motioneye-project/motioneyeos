@@ -18,6 +18,11 @@ LIBGCRYPT_CONF_ENV = \
 LIBGCRYPT_CONF_OPTS = \
 	--with-gpg-error-prefix=$(STAGING_DIR)/usr
 
+# Libgcrypt doesn't support assembly for coldfire
+ifeq ($(BR2_m68k_cf),y)
+LIBGCRYPT_CONF_OPTS += --disable-asm
+endif
+
 # Code doesn't build in thumb mode
 ifeq ($(BR2_arm),y)
 LIBGCRYPT_CONF_ENV += CFLAGS="$(patsubst -mthumb,,$(TARGET_CFLAGS))"
