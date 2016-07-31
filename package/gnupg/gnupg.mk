@@ -13,6 +13,11 @@ GNUPG_DEPENDENCIES = zlib ncurses $(if $(BR2_PACKAGE_LIBICONV),libiconv)
 GNUPG_CONF_ENV = ac_cv_sys_symbol_underscore=no
 GNUPG_CONF_OPTS = --disable-rpath --enable-minimal --disable-regex
 
+# gnupg doesn't support assembly for coldfire
+ifeq ($(BR2_m68k_cf),y)
+GNUPG_CONF_OPTS += --disable-asm
+endif
+
 ifeq ($(BR2_PACKAGE_BZIP2),y)
 GNUPG_CONF_OPTS += --enable-bzip2
 GNUPG_DEPENDENCIES += bzip2
