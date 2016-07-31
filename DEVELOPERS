@@ -1578,4 +1578,5 @@ F:	package/python-configobj/
 F:	package/python-iniparse/
 F:	package/qjson/
 F:	package/quazip/
+F:	package/shapelib/
 F:	package/tinc/
