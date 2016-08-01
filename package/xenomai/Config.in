@@ -1,8 +1,8 @@
 config BR2_PACKAGE_XENOMAI_ARCH_SUPPORTS
 	bool
 	default y
-	depends on BR2_i386 || BR2_x86_64 || BR2_arm || \
-		   BR2_bfin || BR2_powerpc || BR2_sh4
+	depends on BR2_i386 || BR2_x86_64 || (BR2_arm && !BR2_ARM_CPU_ARMV7M) || \
+		BR2_bfin || BR2_powerpc || BR2_sh4
 
 comment "xenomai needs a toolchain w/ threads"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS
