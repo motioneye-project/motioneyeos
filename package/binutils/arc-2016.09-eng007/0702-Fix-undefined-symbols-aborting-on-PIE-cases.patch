@@ -1,0 +1,30 @@
+From 5bc929f1609ddcc1180d9f004dd0064fa1f351ca Mon Sep 17 00:00:00 2001
+From: Cupertino Miranda <cmiranda@synopsys.com>
+Date: Fri, 22 Jul 2016 13:53:35 +0200
+Subject: [PATCH 702/703] Fix undefined symbols aborting on PIE cases.
+
+In the context of STAR 9000925001.
+Extended check instruction to validate for this case.
+
+Signed-off-by: Cupertino Miranda <cmiranda@synopsys.com>
+Signed-off-by: Vlad Zakharov <vzakhar@synopsys.com>
+---
+ bfd/elf32-arc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/bfd/elf32-arc.c b/bfd/elf32-arc.c
+index a0533f2..f4e1521 100644
+--- a/bfd/elf32-arc.c
++++ b/bfd/elf32-arc.c
+@@ -1359,7 +1359,7 @@ elf_arc_relocate_section (bfd *		          output_bfd,
+ 
+ 		  reloc_data.should_relocate = TRUE;
+ 		}
+-	      else if (!bfd_link_pic (info))
++	      else if (!bfd_link_pic (info) || bfd_link_executable (info))
+ 		(*info->callbacks->undefined_symbol)
+ 		  (info, h->root.root.string, input_bfd, input_section,
+ 		   rel->r_offset, TRUE);
+-- 
+2.5.5
+

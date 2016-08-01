@@ -1,0 +1,26 @@
+From d10d05e66fd2f8431a08ceaf8b655bc47ce13a21 Mon Sep 17 00:00:00 2001
+From: Cupertino Miranda <cmiranda@synopsys.com>
+Date: Tue, 26 Jul 2016 17:34:05 +0200
+Subject: [PATCH 703/703] Fixed issue in tvheadend package.
+
+Signed-off-by: Cupertino Miranda <cmiranda@synopsys.com>
+Signed-off-by: Vlad Zakharov <vzakhar@synopsys.com>
+---
+ bfd/elf32-arc.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/bfd/elf32-arc.c b/bfd/elf32-arc.c
+index f4e1521..857b7b6 100644
+--- a/bfd/elf32-arc.c
++++ b/bfd/elf32-arc.c
+@@ -1747,7 +1747,6 @@ elf_arc_check_relocs (bfd *			 abfd,
+ 	    if ((bfd_link_pic (info))
+ 		&& ((r_type != R_ARC_PC32 && r_type != R_ARC_32_PCREL)
+ 		    || (h != NULL
+-			&& h->dynindx != -1
+ 			&& (!info->symbolic || !h->def_regular))))
+ 	      {
+ 		if (sreloc == NULL)
+-- 
+2.5.5
+

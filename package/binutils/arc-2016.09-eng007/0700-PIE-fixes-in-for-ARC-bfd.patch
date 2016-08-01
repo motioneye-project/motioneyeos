@@ -1,0 +1,289 @@
+From f73e79e550cd92dcdd002b62931d11c79db50115 Mon Sep 17 00:00:00 2001
+From: Cupertino Miranda <cmiranda@synopsys.com>
+Date: Wed, 13 Jul 2016 18:04:20 +0200
+Subject: [PATCH 700/703] PIE fixes in for ARC bfd.
+
+Signed-off-by: Cupertino Miranda <cmiranda@synopsys.com>
+Signed-off-by: Vlad Zakharov <vzakhar@synopsys.com>
+---
+ bfd/elf-bfd.h   |   1 +
+ bfd/elf32-arc.c | 187 ++++++++++++++++++++++++++++++++++++++++++++------------
+ 2 files changed, 149 insertions(+), 39 deletions(-)
+
+diff --git a/bfd/elf-bfd.h b/bfd/elf-bfd.h
+index bb3371f..fbe0464 100644
+--- a/bfd/elf-bfd.h
++++ b/bfd/elf-bfd.h
+@@ -444,6 +444,7 @@ enum elf_target_id
+ {
+   AARCH64_ELF_DATA = 1,
+   ALPHA_ELF_DATA,
++  ARC_ELF_DATA,
+   ARM_ELF_DATA,
+   AVR_ELF_DATA,
+   BFIN_ELF_DATA,
+diff --git a/bfd/elf32-arc.c b/bfd/elf32-arc.c
+index 00828be..17670f0 100644
+--- a/bfd/elf32-arc.c
++++ b/bfd/elf32-arc.c
+@@ -301,6 +301,92 @@ struct arc_reloc_map
+   unsigned char		    elf_reloc_val;
+ };
+ 
++/* ARC ELF linker hash entry.  */
++struct elf_arc_link_hash_entry
++{
++  struct elf_link_hash_entry root;
++
++  /* Track dynamic relocs copied for this symbol.  */
++  struct elf_dyn_relocs *dyn_relocs;
++};
++
++/* ARC ELF linker hash table.  */
++struct elf_arc_link_hash_table
++{
++  struct elf_link_hash_table elf;
++
++  /* Short-cuts to get to dynamic linker sections.  */
++  asection *srelbss;
++};
++
++static struct bfd_hash_entry *
++elf_arc_link_hash_newfunc (struct bfd_hash_entry *entry,
++			   struct bfd_hash_table *table,
++			   const char *string)
++{
++  /* Allocate the structure if it has not already been allocated by a
++     subclass.  */
++  if (entry == NULL)
++    {
++      entry = (struct bfd_hash_entry *)
++	  bfd_hash_allocate (table,
++			     sizeof (struct elf_arc_link_hash_entry));
++      if (entry == NULL)
++	return entry;
++    }
++
++  /* Call the allocation method of the superclass.  */
++  entry = _bfd_elf_link_hash_newfunc (entry, table, string);
++  if (entry != NULL)
++    {
++      struct elf_arc_link_hash_entry *eh;
++
++      eh = (struct elf_arc_link_hash_entry *) entry;
++      eh->dyn_relocs = NULL;
++    }
++
++  return entry;
++}
++
++/* Destroy an ARC ELF linker hash table.  */
++/*
++static void
++elf_arc_link_hash_table_free (bfd *obfd)
++{
++  _bfd_elf_link_hash_table_free (obfd);
++}
++*/
++
++/* Create an X86-64 ELF linker hash table.  */
++
++static struct bfd_link_hash_table *
++arc_elf_link_hash_table_create (bfd *abfd)
++{
++  struct elf_arc_link_hash_table *ret;
++
++  ret = (struct elf_arc_link_hash_table *) bfd_zmalloc (sizeof (*ret));
++  if (ret == NULL)
++    return NULL;
++
++  if (!_bfd_elf_link_hash_table_init (&ret->elf, abfd,
++				      elf_arc_link_hash_newfunc,
++				      sizeof (struct elf_arc_link_hash_entry),
++				      ARC_ELF_DATA))
++    {
++      free (ret);
++      return NULL;
++    }
++
++  ret->srelbss = NULL;
++
++  ret->elf.init_got_refcount.refcount = 0;
++  ret->elf.init_got_refcount.glist = NULL;
++  ret->elf.init_got_offset.offset = 0;
++  ret->elf.init_got_offset.glist = NULL;
++
++  return &ret->elf.root;
++}
++
+ #define ARC_RELOC_HOWTO(TYPE, VALUE, SIZE, BITSIZE, RELOC_FUNCTION, OVERFLOW, FORMULA) \
+   { BFD_RELOC_##TYPE, R_##TYPE },
+ static const struct arc_reloc_map arc_reloc_map[] =
+@@ -1317,7 +1403,7 @@ elf_arc_relocate_section (bfd *		          output_bfd,
+ 	  case R_ARC_32_ME:
+ 	  case R_ARC_PC32:
+ 	  case R_ARC_32_PCREL:
+-	    if ((bfd_link_pic (info))// || bfd_link_pie (info))
++	    if ((bfd_link_pic (info))
+ 		&& ((r_type != R_ARC_PC32 && r_type != R_ARC_32_PCREL)
+ 		    || (h != NULL
+ 			&& h->dynindx != -1
+@@ -1470,6 +1556,49 @@ elf_arc_relocate_section (bfd *		          output_bfd,
+   return TRUE;
+ }
+ 
++#define elf_arc_hash_table(p) \
++    (elf_hash_table_id ((struct elf_link_hash_table *) ((p)->hash)) \
++  == ARC_ELF_DATA ? ((struct elf_arc_link_hash_table *) ((p)->hash)) : NULL)
++
++/* Create .plt, .rela.plt, .got, .got.plt, .rela.got, .dynbss, and
++   .rela.bss sections in DYNOBJ, and set up shortcuts to them in our
++   hash table.  */
++
++static bfd_boolean
++arc_elf_create_dynamic_sections (bfd *dynobj,
++				    struct bfd_link_info *info)
++{
++  struct elf_arc_link_hash_table *htab;
++
++  if (!_bfd_elf_create_dynamic_sections (dynobj, info))
++    return FALSE;
++
++  htab = elf_arc_hash_table (info);
++  if (htab == NULL)
++    return FALSE;
++
++  if (bfd_link_executable (info))
++    {
++      /* Always allow copy relocs for building executables.  */
++      asection *s = bfd_get_linker_section (dynobj, ".rela.bss");
++      if (s == NULL)
++	{
++	  const struct elf_backend_data *bed = get_elf_backend_data (dynobj);
++	  s = bfd_make_section_anyway_with_flags (dynobj,
++						  ".rela.bss",
++						  (bed->dynamic_sec_flags
++						   | SEC_READONLY));
++	  if (s == NULL
++	      || ! bfd_set_section_alignment (dynobj, s,
++					      bed->s->log_file_align))
++	    return FALSE;
++	}
++      htab->srelbss = s;
++    }
++
++  return TRUE;
++}
++
+ static struct dynamic_sections
+ arc_create_dynamic_sections (bfd * abfd, struct bfd_link_info *info)
+ {
+@@ -1615,7 +1744,7 @@ elf_arc_check_relocs (bfd *			 abfd,
+ 	    /* FALLTHROUGH */
+ 	  case R_ARC_PC32:
+ 	  case R_ARC_32_PCREL:
+-	    if ((bfd_link_pic (info))// || bfd_link_pie (info))
++	    if ((bfd_link_pic (info))
+ 		&& ((r_type != R_ARC_PC32 && r_type != R_ARC_32_PCREL)
+ 		    || (h != NULL
+ 			&& h->dynindx != -1
+@@ -1967,14 +2096,14 @@ elf_arc_adjust_dynamic_symbol (struct bfd_link_info *info,
+      .rela.bss section we are going to use.  */
+   if ((h->root.u.def.section->flags & SEC_ALLOC) != 0)
+     {
+-      asection *srel;
++      struct elf_arc_link_hash_table *arc_htab = elf_arc_hash_table (info);
+ 
+-      srel = bfd_get_section_by_name (dynobj, ".rela.bss");
+-      BFD_ASSERT (srel != NULL);
+-      srel->size += sizeof (Elf32_External_Rela);
++      BFD_ASSERT (arc_htab->srelbss != NULL);
++      arc_htab->srelbss->size += sizeof (Elf32_External_Rela);
+       h->needs_copy = 1;
+     }
+ 
++  /* TODO: Move this also to arc_hash_table.  */
+   s = bfd_get_section_by_name (dynobj, ".dynbss");
+   BFD_ASSERT (s != NULL);
+ 
+@@ -2020,17 +2149,21 @@ elf_arc_finish_dynamic_symbol (bfd * output_bfd,
+ 
+   if (h->needs_copy)
+     {
++      struct elf_arc_link_hash_table *arc_htab = elf_arc_hash_table (info);
++
++      if (h->dynindx == -1
++	  || (h->root.type != bfd_link_hash_defined
++	      && h->root.type != bfd_link_hash_defweak)
++	  || arc_htab->srelbss == NULL)
++	abort ();
++
+       bfd_vma rel_offset = (h->root.u.def.value
+ 			    + h->root.u.def.section->output_section->vma
+ 			    + h->root.u.def.section->output_offset);
+ 
+-      asection *srelbss
+-	= bfd_get_section_by_name (h->root.u.def.section->owner,
+-				 ".rela.bss");
+-
+-      bfd_byte * loc = srelbss->contents
+-	+ (srelbss->reloc_count * sizeof (Elf32_External_Rela));
+-      srelbss->reloc_count++;
++      bfd_byte * loc = arc_htab->srelbss->contents
++	+ (arc_htab->srelbss->reloc_count * sizeof (Elf32_External_Rela));
++      arc_htab->srelbss->reloc_count++;
+ 
+       Elf_Internal_Rela rel;
+       rel.r_addend = 0;
+@@ -2394,31 +2527,6 @@ const struct elf_size_info arc_elf32_size_info =
+ 
+ #define elf_backend_size_info		arc_elf32_size_info
+ 
+-static struct bfd_link_hash_table *
+-arc_elf_link_hash_table_create (bfd *abfd)
+-{
+-  struct elf_link_hash_table *htab;
+-
+-  htab = bfd_zmalloc (sizeof (*htab));
+-  if (htab == NULL)
+-    return NULL;
+-
+-  if (!_bfd_elf_link_hash_table_init (htab, abfd,
+-				      _bfd_elf_link_hash_newfunc,
+-				      sizeof (struct elf_link_hash_entry),
+-				      GENERIC_ELF_DATA))
+-    {
+-      free (htab);
+-      return NULL;
+-    }
+-
+-  htab->init_got_refcount.refcount = 0;
+-  htab->init_got_refcount.glist = NULL;
+-  htab->init_got_offset.offset = 0;
+-  htab->init_got_offset.glist = NULL;
+-  return (struct bfd_link_hash_table *) htab;
+-}
+-
+ /* Hook called by the linker routine which adds symbols from an object
+    file.  */
+ 
+@@ -2444,6 +2552,7 @@ elf_arc_add_symbol_hook (bfd * abfd,
+ #define TARGET_BIG_SYM	    arc_elf32_be_vec
+ #define TARGET_BIG_NAME     "elf32-bigarc"
+ #define ELF_ARCH	    bfd_arch_arc
++#define ELF_TARGET_ID	    ARC_ELF_DATA
+ #define ELF_MACHINE_CODE    EM_ARC_COMPACT
+ #define ELF_MACHINE_ALT1    EM_ARC_COMPACT2
+ #define ELF_MAXPAGESIZE     0x2000
+@@ -2462,7 +2571,7 @@ elf_arc_add_symbol_hook (bfd * abfd,
+ 
+ #define elf_backend_relocate_section	     elf_arc_relocate_section
+ #define elf_backend_check_relocs	     elf_arc_check_relocs
+-#define elf_backend_create_dynamic_sections  _bfd_elf_create_dynamic_sections
++#define elf_backend_create_dynamic_sections  arc_elf_create_dynamic_sections
+ 
+ #define elf_backend_reloc_type_class		elf32_arc_reloc_type_class
+ 
+-- 
+2.5.5
+
