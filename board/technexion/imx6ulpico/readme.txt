@@ -56,4 +56,15 @@ To boot your newly created system:
   emulator at 115200 bps, 8n1;
 - power on the board.
 
+Using Wifi
+==========
+
+# modprobe brcmfmac
+# iwconfig wlan0 essid ACCESSPOINTNAME
+# wpa_passphrase ACCESSPOINTNAME > /etc/wpa.conf
+(enter the wifi password and press enter)
+# wpa_supplicant -Dwext -iwlan0 -c /etc/wpa.conf &
+# udhcpc -i wlan0
+# ping buildroot.org
+
 Enjoy!
