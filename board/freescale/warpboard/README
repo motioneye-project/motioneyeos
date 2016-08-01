@@ -66,8 +66,6 @@ $ hciconfig hci0 up
 Using Wifi
 ==========
 
-Enable the wireless_utils and wpa_suplicant packages, and then run:
-
 # modprobe brcmfmac
 # iwconfig wlan0 essid ACCESSPOINTNAME
 # wpa_passphrase ACCESSPOINTNAME > /etc/wpa.conf
