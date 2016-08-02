@@ -35,4 +35,9 @@ LLDPD_CONF_OPTS = \
 	$(if $(BR2_PACKAGE_LLDPD_DOT3),--enable-dot3,--disable-dot3) \
 	$(if $(BR2_PACKAGE_LLDPD_CUSTOM_TLV),--enable-custom,--disable-custom)
 
+define LLDPD_INSTALL_INIT_SYSV
+	$(INSTALL) -D -m 0755 package/lldpd/S60lldpd \
+		$(TARGET_DIR)/etc/init.d/S60lldpd
+endef
+
 $(eval $(autotools-package))
