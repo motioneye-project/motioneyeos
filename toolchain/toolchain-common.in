@@ -51,7 +51,7 @@ config BR2_ENABLE_LOCALE_PURGE
 
 config BR2_ENABLE_LOCALE_WHITELIST
 	string "Locales to keep"
-	default "C en_US de fr"
+	default "C en_US"
 	depends on BR2_ENABLE_LOCALE_PURGE
 	help
 	  Whitespace seperated list of locales to allow on target.
