@@ -4,11 +4,13 @@
 #
 ################################################################################
 
-LLDPD_VERSION = 0.7.19
+LLDPD_VERSION = 0.9.4
 LLDPD_SITE = http://media.luffy.cx/files/lldpd
 LLDPD_DEPENDENCIES = host-pkgconf libevent
 LLDPD_LICENSE = ISC
 LLDPD_LICENSE_FILES = README.md
+# 0001-build-make-generation-of-atom-glue-compatible-with-o.patch
+LLDPD_AUTORECONF = YES
 
 # Detection of c99 support in configure fails without WCHAR. To enable
 # automatic detection of c99 support by configure, we need to enable
