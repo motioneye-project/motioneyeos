@@ -17,6 +17,10 @@ ifeq ($(BR2_PACKAGE_PYTHON3),y)
 I2C_TOOLS_DEPENDENCIES += python3
 endif
 
+ifeq ($(BR2_PACKAGE_BUSYBOX),y)
+I2C_TOOLS_DEPENDENCIES += busybox
+endif
+
 # Build/install steps mirror the distutil python package type in the python package
 # infrastructure
 ifeq ($(BR2_PACKAGE_PYTHON)$(BR2_PACKAGE_PYTHON3),y)
