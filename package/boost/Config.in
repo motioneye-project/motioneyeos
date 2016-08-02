@@ -65,8 +65,8 @@ config BR2_PACKAGE_BOOST_CONTAINER
 # supported, but it doesn't build.
 config BR2_PACKAGE_BOOST_CONTEXT
 	bool "boost-context"
-	depends on (BR2_arm || BR2_armeb || BR2_i386 || BR2_mips || BR2_mipsel \
-			|| BR2_powerpc || BR2_x86_64)
+	depends on ((BR2_arm || BR2_armeb) && BR2_ARM_CPU_HAS_ARM) || \
+		BR2_i386 || BR2_mips || BR2_mipsel || BR2_powerpc || BR2_x86_64
 
 config BR2_PACKAGE_BOOST_COROUTINE
 	bool "boost-coroutine"
