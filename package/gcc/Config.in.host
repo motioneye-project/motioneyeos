@@ -104,7 +104,7 @@ config BR2_GCC_VERSION
 	string
 	default "4.7.4"     if BR2_GCC_VERSION_4_7_X
 	default "4.8.5"     if BR2_GCC_VERSION_4_8_X
-	default "4.9.3"     if BR2_GCC_VERSION_4_9_X
+	default "4.9.4"     if BR2_GCC_VERSION_4_9_X
 	default "5.4.0"     if BR2_GCC_VERSION_5_X
 	default "6.1.0" if BR2_GCC_VERSION_6_X
 	default "arc-2016.09-eng007" if BR2_GCC_VERSION_4_8_ARC

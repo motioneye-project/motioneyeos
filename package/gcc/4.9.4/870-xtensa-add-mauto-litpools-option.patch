@@ -48,8 +48,8 @@ Changes to ChangeLogs and documentation are dropped.
  gcc/config/xtensa/xtensa.opt     |  4 ++++
  7 files changed, 54 insertions(+), 20 deletions(-)
 
-diff --git a/gcc/config/xtensa/constraints.md b/gcc/config/xtensa/constraints.md
-index 30f4c1f..773d4f9 100644
+Index: b/gcc/config/xtensa/constraints.md
+===================================================================
 --- a/gcc/config/xtensa/constraints.md
 +++ b/gcc/config/xtensa/constraints.md
 @@ -111,6 +111,11 @@
@@ -64,11 +64,11 @@ index 30f4c1f..773d4f9 100644
  ;; Memory constraints.  Do not use define_memory_constraint here.  Doing so
  ;; causes reload to force some constants into the constant pool, but since
  ;; the Xtensa constant pool can only be accessed with L32R instructions, it
-diff --git a/gcc/config/xtensa/elf.h b/gcc/config/xtensa/elf.h
-index e59bede..12056f7 100644
+Index: b/gcc/config/xtensa/elf.h
+===================================================================
 --- a/gcc/config/xtensa/elf.h
 +++ b/gcc/config/xtensa/elf.h
-@@ -48,7 +48,9 @@ along with GCC; see the file COPYING3.  If not see
+@@ -48,7 +48,9 @@
    %{mtarget-align:--target-align} \
    %{mno-target-align:--no-target-align} \
    %{mlongcalls:--longcalls} \
@@ -79,11 +79,11 @@ index e59bede..12056f7 100644
  
  #undef LIB_SPEC
  #define LIB_SPEC "-lc -lsim -lc -lhandlers-sim -lhal"
-diff --git a/gcc/config/xtensa/linux.h b/gcc/config/xtensa/linux.h
-index 675aacf..5b0243a 100644
+Index: b/gcc/config/xtensa/linux.h
+===================================================================
 --- a/gcc/config/xtensa/linux.h
 +++ b/gcc/config/xtensa/linux.h
-@@ -42,7 +42,9 @@ along with GCC; see the file COPYING3.  If not see
+@@ -42,7 +42,9 @@
    %{mtarget-align:--target-align} \
    %{mno-target-align:--no-target-align} \
    %{mlongcalls:--longcalls} \
@@ -94,8 +94,8 @@ index 675aacf..5b0243a 100644
  
  #define GLIBC_DYNAMIC_LINKER "/lib/ld.so.1"
  
-diff --git a/gcc/config/xtensa/predicates.md b/gcc/config/xtensa/predicates.md
-index e02209e..d7dfa11 100644
+Index: b/gcc/config/xtensa/predicates.md
+===================================================================
 --- a/gcc/config/xtensa/predicates.md
 +++ b/gcc/config/xtensa/predicates.md
 @@ -142,7 +142,8 @@
@@ -108,11 +108,11 @@ index e02209e..d7dfa11 100644
  			    && GET_MODE_SIZE (mode) % UNITS_PER_WORD == 0")))))
  
  ;; Accept the floating point constant 1 in the appropriate mode.
-diff --git a/gcc/config/xtensa/xtensa.c b/gcc/config/xtensa/xtensa.c
-index eb039ba..206ff80 100644
+Index: b/gcc/config/xtensa/xtensa.c
+===================================================================
 --- a/gcc/config/xtensa/xtensa.c
 +++ b/gcc/config/xtensa/xtensa.c
-@@ -501,6 +501,9 @@ xtensa_valid_move (machine_mode mode, rtx *operands)
+@@ -477,6 +477,9 @@
      {
        int dst_regnum = xt_true_regnum (operands[0]);
  
@@ -121,8 +121,8 @@ index eb039ba..206ff80 100644
 +
        /* The stack pointer can only be assigned with a MOVSP opcode.  */
        if (dst_regnum == STACK_POINTER_REGNUM)
- 	return !TARGET_WINDOWED_ABI
-@@ -1069,7 +1072,7 @@ xtensa_emit_move_sequence (rtx *operands, machine_mode mode)
+ 	return (mode == SImode
+@@ -1044,7 +1047,7 @@
  	  return 1;
  	}
  
@@ -131,7 +131,7 @@ index eb039ba..206ff80 100644
  	{
  	  src = force_const_mem (SImode, src);
  	  operands[1] = src;
-@@ -2449,6 +2452,20 @@ print_operand (FILE *file, rtx x, int letter)
+@@ -2428,6 +2431,20 @@
  	}
        break;
  
@@ -152,11 +152,11 @@ index eb039ba..206ff80 100644
      default:
        if (GET_CODE (x) == REG || GET_CODE (x) == SUBREG)
  	fprintf (file, "%s", reg_names[xt_true_regnum (x)]);
-diff --git a/gcc/config/xtensa/xtensa.md b/gcc/config/xtensa/xtensa.md
-index 6d84384..0e673a3 100644
+Index: b/gcc/config/xtensa/xtensa.md
+===================================================================
 --- a/gcc/config/xtensa/xtensa.md
 +++ b/gcc/config/xtensa/xtensa.md
-@@ -761,8 +761,8 @@
+@@ -799,8 +799,8 @@
  })
  
  (define_insn "movsi_internal"
@@ -167,7 +167,7 @@ index 6d84384..0e673a3 100644
    "xtensa_valid_move (SImode, operands)"
    "@
     movi.n\t%0, %x1
-@@ -774,15 +774,16 @@
+@@ -812,15 +812,16 @@
     mov\t%0, %1
     movsp\t%0, %1
     movi\t%0, %x1
@@ -186,7 +186,7 @@ index 6d84384..0e673a3 100644
  
  ;; 16-bit Integer moves
  
-@@ -796,21 +797,22 @@
+@@ -834,21 +835,22 @@
  })
  
  (define_insn "movhi_internal"
@@ -213,7 +213,7 @@ index 6d84384..0e673a3 100644
  
  ;; 8-bit Integer moves
  
-@@ -881,7 +883,7 @@
+@@ -919,7 +921,7 @@
  	(match_operand:SF 1 "general_operand" ""))]
    ""
  {
@@ -222,7 +222,7 @@ index 6d84384..0e673a3 100644
      operands[1] = force_const_mem (SFmode, operands[1]);
  
    if ((!register_operand (operands[0], SFmode)
-@@ -896,8 +898,8 @@
+@@ -934,8 +936,8 @@
  })
  
  (define_insn "movsf_internal"
@@ -233,7 +233,7 @@ index 6d84384..0e673a3 100644
    "((register_operand (operands[0], SFmode)
       || register_operand (operands[1], SFmode))
      && !(FP_REG_P (xt_true_regnum (operands[0]))
-@@ -912,13 +914,14 @@
+@@ -950,13 +952,14 @@
     mov\t%0, %1
     wfr\t%0, %1
     rfr\t%0, %1
@@ -250,7 +250,7 @@ index 6d84384..0e673a3 100644
  
  (define_insn "*lsiu"
    [(set (match_operand:SF 0 "register_operand" "=f")
-@@ -991,7 +994,7 @@
+@@ -997,7 +1000,7 @@
  	(match_operand:DF 1 "general_operand" ""))]
    ""
  {
@@ -259,7 +259,7 @@ index 6d84384..0e673a3 100644
      operands[1] = force_const_mem (DFmode, operands[1]);
  
    if (!register_operand (operands[0], DFmode)
-@@ -1002,8 +1005,8 @@
+@@ -1008,8 +1011,8 @@
  })
  
  (define_insn_and_split "movdf_internal"
@@ -270,11 +270,11 @@ index 6d84384..0e673a3 100644
    "register_operand (operands[0], DFmode)
     || register_operand (operands[1], DFmode)"
    "#"
-diff --git a/gcc/config/xtensa/xtensa.opt b/gcc/config/xtensa/xtensa.opt
-index 2fd6cee..21c6e96 100644
+Index: b/gcc/config/xtensa/xtensa.opt
+===================================================================
 --- a/gcc/config/xtensa/xtensa.opt
 +++ b/gcc/config/xtensa/xtensa.opt
-@@ -38,6 +38,10 @@ mtext-section-literals
+@@ -38,6 +38,10 @@
  Target
  Intersperse literal pools with code in the text section
  
@@ -285,6 +285,3 @@ index 2fd6cee..21c6e96 100644
  mserialize-volatile
  Target Report Mask(SERIALIZE_VOLATILE)
  -mno-serialize-volatile	Do not serialize volatile memory references with MEMW instructions
--- 
-1.8.1.4
-

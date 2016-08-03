@@ -14,19 +14,19 @@ Forward port to gcc 4.5.1 by Gustavo Zacarias <gustavo@zacarias.com.ar>
  libgcc/configure.ac |   21 +++++++++++++++++++++
  3 files changed, 56 insertions(+), 1 deletion(-)
 
-Index: gcc-4.8.0/libgcc/Makefile.in
+Index: b/libgcc/Makefile.in
 ===================================================================
---- gcc-4.8.0.orig/libgcc/Makefile.in	2013-02-04 20:06:20.000000000 +0100
-+++ gcc-4.8.0/libgcc/Makefile.in	2013-03-24 09:12:43.000000000 +0100
-@@ -41,6 +41,7 @@
- decimal_float = @decimal_float@
+--- a/libgcc/Makefile.in
++++ b/libgcc/Makefile.in
+@@ -42,6 +42,7 @@
+ enable_vtable_verify = @enable_vtable_verify@
  enable_decimal_float = @enable_decimal_float@
  fixed_point = @fixed_point@
 +LIBGCC_LIBM = @LIBGCC_LIBM@
  
  host_noncanonical = @host_noncanonical@
  target_noncanonical = @target_noncanonical@
-@@ -927,9 +928,10 @@
+@@ -943,9 +944,10 @@
  		@multilib_dir@,$(MULTIDIR),$(subst \
  		@shlib_objs@,$(objects) libgcc.a,$(subst \
  		@shlib_base_name@,libgcc_s,$(subst \
@@ -38,10 +38,10 @@ Index: gcc-4.8.0/libgcc/Makefile.in
  
  libunwind$(SHLIB_EXT): $(libunwind-s-objects) $(extra-parts)
  	# @multilib_flags@ is still needed because this may use
-Index: gcc-4.8.0/libgcc/configure
+Index: b/libgcc/configure
 ===================================================================
---- gcc-4.8.0.orig/libgcc/configure	2012-11-05 00:08:42.000000000 +0100
-+++ gcc-4.8.0/libgcc/configure	2013-03-24 09:12:43.000000000 +0100
+--- a/libgcc/configure
++++ b/libgcc/configure
 @@ -564,6 +564,7 @@
  tmake_file
  sfp_machine_header
@@ -50,7 +50,7 @@ Index: gcc-4.8.0/libgcc/configure
  set_have_cc_tls
  vis_hide
  fixed_point
-@@ -4481,6 +4482,37 @@
+@@ -4535,6 +4536,37 @@
  	fi
  fi
  
@@ -88,11 +88,11 @@ Index: gcc-4.8.0/libgcc/configure
  
  # Conditionalize the makefile for this target machine.
  tmake_file_=
-Index: gcc-4.8.0/libgcc/configure.ac
+Index: b/libgcc/configure.ac
 ===================================================================
---- gcc-4.8.0.orig/libgcc/configure.ac	2012-10-15 15:10:30.000000000 +0200
-+++ gcc-4.8.0/libgcc/configure.ac	2013-03-24 09:12:43.000000000 +0100
-@@ -326,6 +326,27 @@
+--- a/libgcc/configure.ac
++++ b/libgcc/configure.ac
+@@ -357,6 +357,27 @@
  fi
  AC_SUBST(set_have_cc_tls)
  

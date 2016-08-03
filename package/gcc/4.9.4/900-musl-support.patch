@@ -60,7 +60,7 @@ Index: b/gcc/config.gcc
      *)
        tm_defines="$tm_defines DEFAULT_LIBC=LIBC_GLIBC"
        ;;
-@@ -2322,6 +2325,10 @@
+@@ -2338,6 +2341,10 @@
  	    powerpc*-*-linux*paired*)
  		tm_file="${tm_file} rs6000/750cl.h" ;;
  	esac
@@ -308,7 +308,7 @@ Index: b/gcc/config/microblaze/linux.h
 ===================================================================
 --- a/gcc/config/microblaze/linux.h
 +++ b/gcc/config/microblaze/linux.h
-@@ -25,7 +25,23 @@
+@@ -28,7 +28,23 @@
  #undef TLS_NEEDS_GOT
  #define TLS_NEEDS_GOT 1
  
@@ -337,7 +337,7 @@ Index: b/gcc/config/rs6000/linux64.h
 ===================================================================
 --- a/gcc/config/rs6000/linux64.h
 +++ b/gcc/config/rs6000/linux64.h
-@@ -375,17 +375,23 @@
+@@ -371,17 +371,23 @@
  #endif
  #define UCLIBC_DYNAMIC_LINKER32 "/lib/ld-uClibc.so.0"
  #define UCLIBC_DYNAMIC_LINKER64 "/lib/ld64-uClibc.so.0"
@@ -452,7 +452,7 @@ Index: b/gcc/configure
 ===================================================================
 --- a/gcc/configure
 +++ b/gcc/configure
-@@ -27449,6 +27453,9 @@
+@@ -27601,6 +27601,9 @@
        gcc_cv_target_dl_iterate_phdr=no
      fi
      ;;
@@ -466,7 +466,7 @@ Index: b/gcc/configure.ac
 ===================================================================
 --- a/gcc/configure.ac
 +++ b/gcc/configure.ac
-@@ -5108,6 +5112,9 @@
+@@ -5173,6 +5173,9 @@
        gcc_cv_target_dl_iterate_phdr=no
      fi
      ;;
@@ -588,7 +588,7 @@ Index: b/libstdc++-v3/configure.host
 ===================================================================
 --- a/libstdc++-v3/configure.host
 +++ b/libstdc++-v3/configure.host
-@@ -264,6 +264,13 @@
+@@ -266,6 +266,13 @@
      os_include_dir="os/bsd/freebsd"
      ;;
    gnu* | linux* | kfreebsd*-gnu | knetbsd*-gnu)
@@ -602,7 +602,7 @@ Index: b/libstdc++-v3/configure.host
      if [ "$uclibc" = "yes" ]; then
        os_include_dir="os/uclibc"
      elif [ "$bionic" = "yes" ]; then
-@@ -272,6 +279,9 @@
+@@ -274,6 +281,9 @@
        os_include_dir="os/gnu-linux"
      fi
      ;;

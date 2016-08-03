@@ -24,11 +24,11 @@ Backported from: r228450
  create mode 100644 gcc/config/xtensa/uclinux.h
  create mode 100644 gcc/config/xtensa/uclinux.opt
 
-diff --git a/gcc/config.gcc b/gcc/config.gcc
-index c52f5a8..56797bd 100644
+Index: b/gcc/config.gcc
+===================================================================
 --- a/gcc/config.gcc
 +++ b/gcc/config.gcc
-@@ -2995,6 +2995,11 @@ xtensa*-*-linux*)
+@@ -2871,6 +2871,11 @@
  	tm_file="${tm_file} dbxelf.h elfos.h gnu-user.h linux.h glibc-stdint.h xtensa/linux.h"
  	tmake_file="${tmake_file} xtensa/t-xtensa"
  	;;
@@ -40,9 +40,8 @@ index c52f5a8..56797bd 100644
  am33_2.0-*-linux*)
  	tm_file="mn10300/mn10300.h dbxelf.h elfos.h gnu-user.h linux.h glibc-stdint.h mn10300/linux.h"
  	gas=yes gnu_ld=yes
-diff --git a/gcc/config/xtensa/uclinux.h b/gcc/config/xtensa/uclinux.h
-new file mode 100644
-index 0000000..4606020
+Index: b/gcc/config/xtensa/uclinux.h
+===================================================================
 --- /dev/null
 +++ b/gcc/config/xtensa/uclinux.h
 @@ -0,0 +1,69 @@
@@ -115,9 +114,8 @@ index 0000000..4606020
 +
 +#undef DBX_REGISTER_NUMBER
 +
-diff --git a/gcc/config/xtensa/uclinux.opt b/gcc/config/xtensa/uclinux.opt
-new file mode 100644
-index 0000000..95ef777
+Index: b/gcc/config/xtensa/uclinux.opt
+===================================================================
 --- /dev/null
 +++ b/gcc/config/xtensa/uclinux.opt
 @@ -0,0 +1,32 @@
@@ -153,11 +151,11 @@ index 0000000..95ef777
 +Driver JoinedOrMissing
 +
 +; This comment is to ensure we retain the blank line above.
-diff --git a/libgcc/config.host b/libgcc/config.host
-index 2c64756..2ee92c1 100644
+Index: b/libgcc/config.host
+===================================================================
 --- a/libgcc/config.host
 +++ b/libgcc/config.host
-@@ -1295,6 +1295,11 @@ xtensa*-*-linux*)
+@@ -1213,6 +1213,11 @@
  	tmake_file="$tmake_file xtensa/t-xtensa xtensa/t-linux t-slibgcc-libgcc"
  	md_unwind_header=xtensa/linux-unwind.h
  	;;
@@ -169,6 +167,3 @@ index 2c64756..2ee92c1 100644
  am33_2.0-*-linux*)
  	# Don't need crtbeginT.o from *-*-linux* default.
  	extra_parts="crtbegin.o crtend.o crtbeginS.o crtendS.o"
--- 
-1.8.1.4
-

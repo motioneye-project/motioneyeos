@@ -1,8 +1,8 @@
-Index: gcc-4.8.0/gcc/config/arm/linux-elf.h
+Index: b/gcc/config/arm/linux-elf.h
 ===================================================================
---- gcc-4.8.0.orig/gcc/config/arm/linux-elf.h	2013-01-10 21:38:27.000000000 +0100
-+++ gcc-4.8.0/gcc/config/arm/linux-elf.h	2013-03-23 17:40:00.000000000 +0100
-@@ -55,7 +55,7 @@
+--- a/gcc/config/arm/linux-elf.h
++++ b/gcc/config/arm/linux-elf.h
+@@ -60,7 +60,7 @@
     %{shared:-lc} \
     %{!shared:%{profile:-lc_p}%{!profile:-lc}}"
  
@@ -11,10 +11,10 @@ Index: gcc-4.8.0/gcc/config/arm/linux-elf.h
  
  #define GLIBC_DYNAMIC_LINKER "/lib/ld-linux.so.2"
  
-Index: gcc-4.8.0/libgcc/config/arm/t-linux
+Index: b/libgcc/config/arm/t-linux
 ===================================================================
---- gcc-4.8.0.orig/libgcc/config/arm/t-linux	2012-03-22 16:14:46.000000000 +0100
-+++ gcc-4.8.0/libgcc/config/arm/t-linux	2013-03-23 17:40:54.000000000 +0100
+--- a/libgcc/config/arm/t-linux
++++ b/libgcc/config/arm/t-linux
 @@ -1,6 +1,11 @@
  LIB1ASMSRC = arm/lib1funcs.S
  LIB1ASMFUNCS = _udivsi3 _divsi3 _umodsi3 _modsi3 _dvmd_lnx _clzsi2 _clzdi2 \

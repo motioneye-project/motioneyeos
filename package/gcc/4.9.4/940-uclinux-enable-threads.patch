@@ -4,10 +4,11 @@ https://gcc.gnu.org/bugzilla/show_bug.cgi?id=71721
 
 Signed-off-by: Waldemar Brodkorb <wbx@openadk.org>
 
-diff -Nur gcc-4.9.3.orig/gcc/config.gcc gcc-4.9.3/gcc/config.gcc
---- gcc-4.9.3.orig/gcc/config.gcc	2015-05-21 22:50:59.000000000 +0200
-+++ gcc-4.9.3/gcc/config.gcc	2016-06-30 22:05:21.338233965 +0200
-@@ -807,6 +807,9 @@
+Index: b/gcc/config.gcc
+===================================================================
+--- a/gcc/config.gcc
++++ b/gcc/config.gcc
+@@ -810,6 +810,9 @@
  *-*-uclinux*)
    extra_options="$extra_options gnu-user.opt"
    use_gcc_stdint=wrap
