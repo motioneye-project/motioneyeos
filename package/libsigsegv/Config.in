@@ -9,7 +9,7 @@ config BR2_PACKAGE_LIBSIGSEGV
 	help
 	  Library for handling page faults in user mode.
 
-	  http://libsigsegv.sourceforge.net/
+	  http://www.gnu.org/software/libsigsegv/
 
 comment "libsigsegv needs a glibc toolchain"
 	depends on (BR2_powerpc || BR2_sh) && BR2_TOOLCHAIN_USES_UCLIBC
