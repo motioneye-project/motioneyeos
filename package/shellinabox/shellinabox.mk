@@ -20,4 +20,10 @@ SHELLINABOX_CONF_OPTS = \
 	--disable-runtime-loading \
 	--enable-ssl
 
+# musl's implementation of utmpx is a dummy one, and some aspects of
+# it cause build failures in shellinabox
+ifeq ($(BR2_TOOLCHAIN_USES_MUSL),y)
+SHELLINABOX_CONF_ENV += ac_cv_header_utmpx_h=no
+endif
+
 $(eval $(autotools-package))
