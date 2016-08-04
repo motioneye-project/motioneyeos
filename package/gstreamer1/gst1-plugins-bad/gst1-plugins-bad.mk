@@ -650,7 +650,19 @@ endif
 
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_HLS),y)
 GST1_PLUGINS_BAD_CONF_OPTS += --enable-hls
-GST1_PLUGINS_BAD_DEPENDENCIES += gnutls
+
+ifeq ($(BR2_PACKAGE_NETTLE),y)
+GST1_PLUGINS_BAD_DEPENDENCIES += nettle
+GST1_PLUGINS_BAD_CONF_OPTS += --with-hls-crypto=nettle
+else ifeq ($(BR2_PACKAGE_LIBGCRYPT),y)
+GST1_PLUGINS_BAD_DEPENDENCIES += libgcrypt
+GST1_PLUGINS_BAD_CONF_OPTS += --with-hls-crypto=libgcrypt \
+	--with-libgcrypt-prefix=$(STAGING_DIR)/usr
+else
+GST1_PLUGINS_BAD_DEPENDENCIES += openssl
+GST1_PLUGINS_BAD_CONF_OPTS += --with-hls-crypto=openssl
+endif
+
 else
 GST1_PLUGINS_BAD_CONF_OPTS += --disable-hls
 endif

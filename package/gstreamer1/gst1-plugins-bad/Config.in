@@ -530,7 +530,7 @@ comment "gl needs the gst1-plugins-bad opengl library"
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_HLS
 	bool "hls"
-	select BR2_PACKAGE_GNUTLS
+	select BR2_PACKAGE_NETTLE if !(BR2_PACKAGE_LIBGCRYPT || BR2_PACKAGE_OPENSSL)
 	help
 	  Fragmented streaming plugins
 
