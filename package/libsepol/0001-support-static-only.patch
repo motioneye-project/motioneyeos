@@ -30,8 +30,12 @@ index db6c2ba..0006285 100644
  
 
  $(LIBA):  $(OBJS)
-@@ -70,7 +74,11 @@ install: all
- 	install -m 755 $(LIBSO) $(SHLIBDIR)
+@@ -66,11 +70,13 @@
+ install: all
+ 	test -d $(LIBDIR) || install -m 755 -d $(LIBDIR)
+ 	install -m 644 $(LIBA) $(LIBDIR)
+-	test -d $(SHLIBDIR) || install -m 755 -d $(SHLIBDIR)
+-	install -m 755 $(LIBSO) $(SHLIBDIR)
  	test -d $(LIBDIR)/pkgconfig || install -m 755 -d $(LIBDIR)/pkgconfig
  	install -m 644 $(LIBPC) $(LIBDIR)/pkgconfig
 +ifeq ($(STATIC),)
