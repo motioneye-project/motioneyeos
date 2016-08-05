@@ -29,17 +29,23 @@ endif
 KMSXX_LIBS = kms++ kms++util
 
 define KMSXX_INSTALL_TARGET_CMDS
-	$(foreach l,$(KMSXX_LIBS),\
-		$(INSTALL) -D -m 0755 $(@D)/lib/lib$(l).so \
-			$(TARGET_DIR)/usr/lib/lib$(l).so
+	$(if $(BR2_SHARED_LIBS)$(BR2_SHARED_STATIC_LIBS),
+		$(foreach l,$(KMSXX_LIBS),\
+			$(INSTALL) -D -m 0755 $(@D)/lib/lib$(l).so \
+				$(TARGET_DIR)/usr/lib/lib$(l).so
+		)
 	)
 	$(KMSXX_INSTALL_TARGET_TESTS)
 endef
 
 define KMSXX_INSTALL_STAGING_CMDS
 	$(foreach l,$(KMSXX_LIBS),\
-		$(INSTALL) -D -m 0755 $(@D)/lib/lib$(l).so \
-			$(STAGING_DIR)/usr/lib/lib$(l).so
+		$(if $(BR2_SHARED_LIBS)$(BR2_SHARED_STATIC_LIBS),
+			$(INSTALL) -D -m 0755 $(@D)/lib/lib$(l).so \
+				$(STAGING_DIR)/usr/lib/lib$(l).so)
+		$(if $(BR2_STATIC_LIBS)$(BR2_SHARED_STATIC_LIBS),
+			$(INSTALL) -D -m 0755 $(@D)/lib/lib$(l).a \
+				$(STAGING_DIR)/usr/lib/lib$(l).a)
 		mkdir -p $(STAGING_DIR)/usr/include/$(l)
 		cp -dpfr $(@D)/$(l)/inc/$(l)/* $(STAGING_DIR)/usr/include/$(l)/
 	)
