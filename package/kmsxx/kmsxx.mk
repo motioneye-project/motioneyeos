@@ -39,8 +39,8 @@ endef
 define KMSXX_INSTALL_STAGING_CMDS
 	$(foreach l,$(KMSXX_LIBS),\
 		$(INSTALL) -D -m 0755 $(@D)/lib/lib$(l).so \
-			$(STAGING_DIR)/usr/lib/lib$(l).so ; \
-		mkdir -p $(STAGING_DIR)/usr/include/$(l) ; \
+			$(STAGING_DIR)/usr/lib/lib$(l).so
+		mkdir -p $(STAGING_DIR)/usr/include/$(l)
 		cp -dpfr $(@D)/$(l)/inc/$(l)/* $(STAGING_DIR)/usr/include/$(l)/
 	)
 endef
