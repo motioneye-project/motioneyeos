@@ -17,6 +17,10 @@ OWFS_LICENSE = GPLv2+, LGPLv2 (owtcl)
 OWFS_LICENSE_FILES = COPYING COPYING.LIB
 OWFS_INSTALL_STAGING = YES
 
+# owfs PHP support is not PHP 7 compliant
+# https://sourceforge.net/p/owfs/support-requests/32/
+OWFS_CONF_OPTS += --disable-owphp --without-php
+
 ifeq ($(BR2_PACKAGE_LIBFUSE),y)
 OWFS_DEPENDENCIES += libfuse
 OWFS_CONF_OPTS += \
@@ -47,13 +51,6 @@ OWFS_CONF_OPTS += --enable-avahi
 OWFS_DEPENDENCIES += avahi
 else
 OWFS_CONF_OPTS += --disable-avahi
-endif
-
-ifeq ($(BR2_PACKAGE_PHP),y)
-OWFS_CONF_OPTS += --enable-owphp --with-php --with-phpconfig=$(STAGING_DIR)/usr/bin/php-config
-OWFS_DEPENDENCIES += php host-swig
-else
-OWFS_CONF_OPTS += --disable-owphp --without-php
 endif
 
 # setup.py isn't python3 compliant
