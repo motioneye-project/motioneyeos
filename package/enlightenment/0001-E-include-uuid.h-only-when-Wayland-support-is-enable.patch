@@ -1,0 +1,39 @@
+From 368c4c7cc5722b2edfe98fb3a8999f8f01bc9b56 Mon Sep 17 00:00:00 2001
+From: Romain Naour <romain.naour@gmail.com>
+Date: Fri, 5 Aug 2016 21:14:46 +0200
+Subject: [PATCH] E: include uuid.h only when Wayland support is enabled.
+
+libuuid is checked only when Wayland support is enabled and
+uuid_t uuid is guarded by HAVE_WAYLAND.
+
+So move include uuid.h below a HAVE_WAYLAND.
+
+Signed-off-by: Romain Naour <romain.naour@gmail.com>
+---
+ src/bin/e_pixmap.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/src/bin/e_pixmap.c b/src/bin/e_pixmap.c
+index 2bd94a7..0b01473 100644
+--- a/src/bin/e_pixmap.c
++++ b/src/bin/e_pixmap.c
+@@ -2,6 +2,7 @@
+ 
+ #ifdef HAVE_WAYLAND
+ # include "e_comp_wl.h"
++# include <uuid.h>
+ # ifndef EGL_TEXTURE_FORMAT
+ #  define EGL_TEXTURE_FORMAT		0x3080
+ # endif
+@@ -13,8 +14,6 @@
+ # include "e_comp_x.h"
+ #endif
+ 
+-#include <uuid.h>
+-
+ static Eina_Hash *pixmaps[2] = {NULL};
+ static Eina_Hash *aliases[2] = {NULL};
+ 
+-- 
+2.5.5
+
