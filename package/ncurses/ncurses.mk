@@ -57,6 +57,7 @@ NCURSES_LIBS-$(BR2_PACKAGE_NCURSES_TARGET_FORM) += form
 
 NCURSES_TERMINFO_FILES = \
 	a/ansi \
+	l/linux \
 	p/putty \
 	p/putty-vt100 \
 	s/screen \
