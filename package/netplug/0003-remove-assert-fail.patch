@@ -1,0 +1,51 @@
+Remove __assert_fail()
+
+The netplug code uses the assert() macro in various places. In glibc
+internally, assert() uses a function called __assert_fail() to print a
+message and abort. Relying on internal glibc details, netplug
+re-defines __assert_fail() in the hope that it will get called instead
+of glibc internal version.
+
+This attempt:
+
+ * Doesn't work with uClibc, which doesn't use any __assert_fail()
+   function at all. It doesn't fail to build, but it is entirely
+   useless.
+
+ * Fails to build with musl, which also defines __assert_fail(), but
+   with a different prototype.
+
+We simply remove the __assert_fail() implementation, so that the C
+library implementation of assert() just does its normal work. The only
+functionality lost is that the message is displayed on the standard
+output rather than in netplug's logs (and this was only working with
+glibc anyway).
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/lib.c
+===================================================================
+--- a/lib.c
++++ b/lib.c
+@@ -199,21 +199,6 @@
+     return x;
+ }
+ 
+-
+-void
+-__assert_fail(const char *assertion, const char *file,
+-              unsigned int line, const char *function)
+-{
+-    do_log(LOG_CRIT, "%s:%u: %s%sAssertion `%s' failed",
+-           file, line,
+-           function ? function : "",
+-           function ? ": " : "",
+-           assertion);
+-
+-    abort();
+-}
+-
+-
+ /*
+  * Local variables:
+  * c-file-style: "stroustrup"
