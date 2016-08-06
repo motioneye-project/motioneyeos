@@ -1,4 +1,4 @@
-setenv bootargs console=tty1 root=/dev/mmcblk0p2 rootwait panic=10 earlyprintk quiet loglevel=1 ${extra}
+setenv bootargs console=tty1 root=/dev/mmcblk0p2 rootwait panic=10 earlyprintk quiet loglevel=1 ipv6.disable=1 ${extra}
 fatload mmc 0 0x49000000 sun7i-a20-cubietruck.dtb
 fatload mmc 0 0x46000000 uImage
 setenv fdt_high ffffffff
