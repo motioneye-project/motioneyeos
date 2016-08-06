@@ -3,6 +3,8 @@ config BR2_PACKAGE_BLKTRACE
 	# Uses posix_spawn()
 	depends on BR2_TOOLCHAIN_USES_GLIBC || BR2_TOOLCHAIN_USES_MUSL
 	depends on BR2_PACKAGE_LIBAIO_ARCH_SUPPORTS
+	# issue: hidden symbol `_rest32gpr_30_x` is referenced by DSO
+	depends on !BR2_powerpc
 	select BR2_PACKAGE_LIBAIO
 	help
 	  blktrace is a block layer IO tracing mechanism which provides
@@ -13,4 +15,5 @@ config BR2_PACKAGE_BLKTRACE
 
 comment "blktrace needs a glibc or musl toolchain"
 	depends on BR2_PACKAGE_LIBAIO_ARCH_SUPPORTS
+	depends on !BR2_powerpc
 	depends on !(BR2_TOOLCHAIN_USES_GLIBC || BR2_TOOLCHAIN_USES_MUSL)
