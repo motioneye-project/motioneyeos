@@ -1,0 +1,25 @@
+config BR2_PACKAGE_VDR
+	bool "vdr"
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on !BR2_STATIC_LIBS
+	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL
+	depends on !BR2_TOOLCHAIN_USES_MUSL # _nl_msg_cat_cntr
+	depends on BR2_USE_MMU # fork()
+	depends on BR2_USE_WCHAR
+	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT
+	select BR2_PACKAGE_FONTCONFIG
+	select BR2_PACKAGE_FREETYPE
+	select BR2_PACKAGE_JPEG
+	select BR2_PACKAGE_LIBCAP
+	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
+	help
+	  This project describes how to build your own digital
+	  satellite receiver and Video Disk Recorder.
+
+	  http://www.tvdr.de
+
+comment "vdr needs a glibc or uClibc toolchain w/ C++, dynamic library, NPTL, wchar"
+	depends on BR2_USE_MMU
+	depends on !BR2_INSTALL_LIBSTDCPP || BR2_STATIC_LIBS || \
+		!BR2_TOOLCHAIN_HAS_THREADS_NPTL || \
+		BR2_TOOLCHAIN_USES_MUSL || !BR2_USE_WCHAR
