@@ -1,2 +1,6 @@
 # http://www.lttng.org/files/lttng-ust/lttng-ust-2.7.1.tar.bz2.sha1
 sha1  597ebecb885debb58c263de57f30b1096d4eefc6  lttng-ust-2.7.1.tar.bz2
+
+# Locally computed
+sha1  2e79c98e458b2e052930fb81441e6ca8377a2ed7 787364e8bac9a146f9d65c763633c2b75eb76463.patch
+sha1  cf77ec415111f77573be7917d9b62d8e49dc6304 30307a67b48641875b122d8f832bbfb454e95d92.patch
