@@ -15,6 +15,7 @@ NTP_CONF_OPTS = \
 	--with-shared \
 	--program-transform-name=s,,, \
 	--disable-tickadj \
+	--disable-debugging \
 	--with-yielding-select=yes \
 	--disable-local-libevent
 # 0002-ntp-syscalls-fallback.patch
