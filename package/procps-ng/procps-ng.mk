@@ -47,4 +47,10 @@ PROCPS_NG_CONF_OPTS += \
 	--enable-watch8bit
 endif
 
+# numa support requires libdl, so explicitly disable it when
+# BR2_STATIC_LIBS=y
+ifeq ($(BR2_STATIC_LIBS),y)
+PROCPS_NG_CONF_OPTS += --disable-numa
+endif
+
 $(eval $(autotools-package))
