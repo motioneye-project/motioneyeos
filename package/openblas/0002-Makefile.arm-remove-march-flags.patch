@@ -1,0 +1,73 @@
+From 71b9e9b7f080c464777d07bd1a917a1c449d2ef8 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Sun, 7 Aug 2016 23:20:00 +0200
+Subject: [PATCH] Makefile.arm: remove -march flags
+
+The provided -march flags, especially for ARMv5 and ARMv6 may not
+necessarily match the needed ones: for ARMv5, it might be armv5,
+armv5te, armv5t, etc. If the wrong one is used, the incorrect toolchain
+sysroot can be used in a multilib toolchain.
+
+Therefore, let the user building OpenBLAS pass the appropriate -march
+flag.
+
+The other flags, such as -mfpu=vfp or -mfloat-abi=hard are kept, as they
+are actually required for the build to proceed (OpenBLAS uses VFP
+instructions, and assume an EABIhf ABI).
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ Makefile.arm | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
+
+diff --git a/Makefile.arm b/Makefile.arm
+index 62bf275..c0d6ab8 100644
+--- a/Makefile.arm
++++ b/Makefile.arm
+@@ -1,31 +1,31 @@
+ # ifeq logical or
+ ifeq ($(CORE), $(filter $(CORE),CORTEXA9 CORTEXA15))
+ ifeq ($(OSNAME), Android)
+-CCOMMON_OPT += -marm -mfpu=neon  -mfloat-abi=hard -march=armv7-a
+-FCOMMON_OPT += -marm -mfpu=neon  -mfloat-abi=hard -march=armv7-a
++CCOMMON_OPT += -marm -mfpu=neon  -mfloat-abi=hard
++FCOMMON_OPT += -marm -mfpu=neon  -mfloat-abi=hard
+ else
+-CCOMMON_OPT += -marm -mfpu=vfpv3  -mfloat-abi=hard -march=armv7-a
+-FCOMMON_OPT += -marm -mfpu=vfpv3  -mfloat-abi=hard -march=armv7-a
++CCOMMON_OPT += -marm -mfpu=vfpv3  -mfloat-abi=hard
++FCOMMON_OPT += -marm -mfpu=vfpv3  -mfloat-abi=hard
+ endif
+ endif
+ 
+ ifeq ($(CORE), ARMV7)
+ ifeq ($(OSNAME), Android)
+-CCOMMON_OPT += -marm -mfpu=neon  -mfloat-abi=hard -march=armv7-a -Wl,--no-warn-mismatch
+-FCOMMON_OPT += -marm -mfpu=neon  -mfloat-abi=hard -march=armv7-a -Wl,--no-warn-mismatch
++CCOMMON_OPT += -marm -mfpu=neon  -mfloat-abi=hard -Wl,--no-warn-mismatch
++FCOMMON_OPT += -marm -mfpu=neon  -mfloat-abi=hard -Wl,--no-warn-mismatch
+ else
+-CCOMMON_OPT += -marm -mfpu=vfpv3  -mfloat-abi=hard -march=armv7-a
+-FCOMMON_OPT += -marm -mfpu=vfpv3  -mfloat-abi=hard -march=armv7-a
++CCOMMON_OPT += -marm -mfpu=vfpv3  -mfloat-abi=hard
++FCOMMON_OPT += -marm -mfpu=vfpv3  -mfloat-abi=hard
+ endif
+ endif
+ 
+ ifeq ($(CORE), ARMV6)
+-CCOMMON_OPT += -marm -mfpu=vfp -mfloat-abi=hard  -march=armv6
+-FCOMMON_OPT += -marm -mfpu=vfp -mfloat-abi=hard  -march=armv6
++CCOMMON_OPT += -marm -mfpu=vfp -mfloat-abi=hard
++FCOMMON_OPT += -marm -mfpu=vfp -mfloat-abi=hard
+ endif
+ 
+ 
+ ifeq ($(CORE), ARMV5)
+-CCOMMON_OPT += -marm -march=armv5
+-FCOMMON_OPT += -marm -march=armv5
++CCOMMON_OPT += -marm
++FCOMMON_OPT += -marm
+ endif
+-- 
+2.7.4
+

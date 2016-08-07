@@ -32,11 +32,22 @@ config BR2_PACKAGE_OPENBLAS_DEFAULT_TARGET
 	# I6400 is built with MSA support which is only available in Codescape toolchains
 	default "I6400"        if BR2_mips_64r6 && BR2_TOOLCHAIN_EXTERNAL_CODESCAPE_IMG_MIPS
 	default "SPARC"        if BR2_sparc
-	default "CORTEXA15"    if BR2_cortex_a15
-	default "CORTEXA9"     if BR2_cortex_a9
+	# Cortex-A15 always have a VFPv4
+	default "CORTEXA15"    if (BR2_cortex_a15 && BR2_ARM_EABIHF)
+	# Cortex-A9 have an optional VFPv3, so we need to make sure it
+	# is available
+	default "CORTEXA9"     if (BR2_cortex_a9 && BR2_ARM_EABIHF && \
+				   BR2_ARM_CPU_HAS_VFPV3)
 	default "ARMV5"        if BR2_ARM_CPU_ARMV5
-	default "ARMV6"        if BR2_ARM_CPU_ARMV6
-	default "ARMV7"        if BR2_ARM_CPU_ARMV7A
+	# On ARMv6, OpenBLAS assumes that a VFP is available, and
+	# EABIhf is used
+	default "ARMV6"        if (BR2_ARM_CPU_ARMV6 && BR2_ARM_EABIHF && \
+				   BR2_ARM_CPU_HAS_VFPV2)
+	# On ARMv7, OpenBLAS assumes that a full VFPv3+ is available
+	# (and not the more limited D16 variant), and that EABIhf is
+	# used.
+	default "ARMV7"        if (BR2_ARM_CPU_ARMV7A && BR2_ARM_EABIHF && \
+				   BR2_ARM_CPU_HAS_VFPV3)
 	default "ARMV8"        if BR2_aarch64 || BR2_aarch64_be
 	help
 	  OpenBLAS target CPU. See TargetList.txt in the source tree for
