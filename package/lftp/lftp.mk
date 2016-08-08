@@ -16,8 +16,6 @@ LFTP_DEPENDENCIES = readline zlib host-pkgconf
 # Help lftp finding readline and zlib
 LFTP_CONF_OPTS = \
 	--with-readline=$(STAGING_DIR)/usr \
-	--with-readline-inc=$(STAGING_DIR)/usr/include/readline \
-	--with-readline-lib=$(STAGING_DIR)/usr/lib \
 	--with-zlib=$(STAGING_DIR)/usr
 
 ifneq ($(BR2_STATIC_LIBS),y)
