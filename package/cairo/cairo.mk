@@ -12,6 +12,11 @@ CAIRO_SITE = http://cairographics.org/releases
 CAIRO_INSTALL_STAGING = YES
 CAIRO_AUTORECONF = YES
 
+# relocation truncated to fit: R_68K_GOT16O
+ifeq ($(BR2_m68k_cf),y)
+CAIRO_CONF_ENV += CFLAGS="$(TARGET_CFLAGS) -mxgot"
+endif
+
 ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),)
 CAIRO_CONF_ENV += CPPFLAGS="$(TARGET_CPPFLAGS) -DCAIRO_NO_MUTEX=1"
 endif
