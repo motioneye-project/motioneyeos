@@ -9,7 +9,8 @@ LFTP_SOURCE = lftp-$(LFTP_VERSION).tar.xz
 LFTP_SITE = http://lftp.yar.ru/ftp
 LFTP_LICENSE = GPLv3+
 LFTP_LICENSE_FILES = COPYING
-# Needed so that our libtool patch applies properly
+# Needed so that our libtool patch applies properly, and for patch
+# 0001-fix-static-link-with-readline.patch.
 LFTP_AUTORECONF = YES
 LFTP_DEPENDENCIES = readline zlib host-pkgconf
 
