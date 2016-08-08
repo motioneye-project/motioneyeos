@@ -25,6 +25,11 @@ GNUPLOT_CONF_OPTS = \
 	--without-latex \
 	--without-cairo
 
+# relocation truncated to fit: R_68K_GOT16O
+ifeq ($(BR2_m68k_cf),y)
+GNUPLOT_CONF_ENV += CFLAGS="$(TARGET_CFLAGS) -mxgot"
+endif
+
 ifeq ($(BR2_PACKAGE_GD)$(BR2_PACKAGE_LIBPNG),yy)
 GNUPLOT_CONF_OPTS += --with-gd
 GNUPLOT_DEPENDENCIES += gd
