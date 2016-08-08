@@ -1,7 +1,7 @@
+comment "Kernel Header Options"
+
 config BR2_PACKAGE_HOST_LINUX_HEADERS
 	bool
-
-comment "Kernel Header Options"
 
 choice
 	prompt "Kernel Headers"

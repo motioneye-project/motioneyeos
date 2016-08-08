@@ -1,3 +1,5 @@
+comment "Host GDB Options"
+
 config BR2_PACKAGE_HOST_GDB
 	bool "Build cross gdb for the host"
 	# When the external toolchain gdbserver is used, we shouldn't

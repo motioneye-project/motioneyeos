@@ -2,6 +2,8 @@
 
 if BR2_TOOLCHAIN_BUILDROOT
 
+comment "Toolchain Buildroot Options"
+
 config BR2_TOOLCHAIN_BUILDROOT_VENDOR
 	string "custom toolchain vendor name"
 	default "buildroot"
@@ -17,8 +19,6 @@ config BR2_TOOLCHAIN_BUILDROOT_VENDOR
 	  identical. The value can not be empty either.
 
 	  If you're not sure, just leave the default "buildroot" value.
-
-source "package/linux-headers/Config.in.host"
 
 choice
 	prompt "C library"
@@ -89,6 +89,7 @@ config BR2_TOOLCHAIN_BUILDROOT_LIBC
 	default "glibc"  if BR2_TOOLCHAIN_BUILDROOT_GLIBC
 	default "musl"	 if BR2_TOOLCHAIN_BUILDROOT_MUSL
 
+source "package/linux-headers/Config.in.host"
 source "package/linux-headers/Config.in"
 source "package/musl/Config.in"
 source "package/uclibc/Config.in"

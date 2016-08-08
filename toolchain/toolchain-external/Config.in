@@ -1,5 +1,7 @@
 if BR2_TOOLCHAIN_EXTERNAL
 
+comment "Toolchain External Options"
+
 choice
 	prompt "Toolchain"
 
