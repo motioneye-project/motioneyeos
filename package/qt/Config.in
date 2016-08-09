@@ -126,6 +126,7 @@ config BR2_PACKAGE_QT_CONFIG_FILE
 config BR2_PACKAGE_QT_QT3SUPPORT
 	bool "Compatibility with Qt3"
 	depends on BR2_PACKAGE_QT_GUI_MODULE
+	select BR2_PACKAGE_QT_SQL_MODULE
 	help
 	  Turns on support for older Qt3. This will create an additional
 	  library with proxy code and increase the space required on target.
