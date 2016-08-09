@@ -1,12 +1,21 @@
+From 7a4168062fbab2e33ef9a42bca9f87a5921afac2 Mon Sep 17 00:00:00 2001
+From: Gustavo Zacarias <gustavo@zacarias.com.ar>
+Date: Tue, 9 Aug 2016 11:49:56 +0200
+Subject: [PATCH] acinclude.m4: don't unset variables
+
 Unsetting ac_cv_{func,lib}_* is bad, you can't feed the configure cache.
 Terminate them with extreme prejudice.
 
 Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+---
+ acinclude.m4 | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff -Nura php-5.6.8.orig/acinclude.m4 php-5.6.8/acinclude.m4
---- php-5.6.8.orig/acinclude.m4	2015-04-15 20:05:57.000000000 +0200
-+++ php-5.6.8/acinclude.m4	2015-05-18 20:03:50.833099001 +0200
-@@ -1897,8 +1897,6 @@
+diff --git a/acinclude.m4 b/acinclude.m4
+index 28506b6..af4aa06 100644
+--- a/acinclude.m4
++++ b/acinclude.m4
+@@ -1898,8 +1898,6 @@ define([phpshift],[ifelse(index([$@],[,]),-1,,[substr([$@],incr(index([$@],[,]))
  dnl
  AC_DEFUN([PHP_CHECK_FUNC_LIB],[
    ifelse($2,,:,[
@@ -15,7 +24,7 @@ diff -Nura php-5.6.8.orig/acinclude.m4 php-5.6.8/acinclude.m4
    unset found
    AC_CHECK_LIB($2, $1, [found=yes], [
      AC_CHECK_LIB($2, __$1, [found=yes], [found=no])
-@@ -1930,8 +1928,6 @@
+@@ -1931,8 +1929,6 @@ dnl in the default libraries and as a fall back in the specified library.
  dnl Defines HAVE_func and HAVE_library if found and adds the library to LIBS.
  dnl
  AC_DEFUN([PHP_CHECK_FUNC],[
@@ -24,3 +33,6 @@ diff -Nura php-5.6.8.orig/acinclude.m4 php-5.6.8/acinclude.m4
    unset found
    
    AC_CHECK_FUNC($1, [found=yes],[ AC_CHECK_FUNC(__$1,[found=yes],[found=no]) ])
+-- 
+2.7.4
+

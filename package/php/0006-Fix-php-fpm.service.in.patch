@@ -1,4 +1,4 @@
-From bb19125781c0794da9a63fee62e263ff4efff661 Mon Sep 17 00:00:00 2001
+From 1a8714d0b56e06301b3c261eaef93d897ec5d834 Mon Sep 17 00:00:00 2001
 From: Floris Bos <bos@je-eigen-domein.nl>
 Date: Fri, 1 May 2015 15:28:55 +0200
 Subject: [PATCH] Fix php-fpm.service.in
@@ -31,5 +31,5 @@ index a2df30e..c135f04 100644
  
  [Install]
 -- 
-2.1.4
+2.7.4
 
