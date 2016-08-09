@@ -1,0 +1,33 @@
+From 1ca05ebb7cb63607d14983948105dd1483ea6b65 Mon Sep 17 00:00:00 2001
+From: Gary Bisson <gary.bisson@boundarydevices.com>
+Date: Tue, 9 Aug 2016 10:26:15 +0200
+Subject: [PATCH] v4l2src: Add V4L2_PIX_FMT_XRGB555X check
+
+Since this format was added in kernel 3.18, any prior version will
+fail to compile.
+
+Issue reported by Buildroot autobuilder with 3.10 kernel headers:
+http://autobuild.buildroot.net/results/b46/b460a770c8f4e992d29dde8fe37fc23a949937f2/
+
+Signed-off-by: Gary Bisson <gary.bisson@boundarydevices.com>
+---
+ src/v4l2src/v4l2src.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/src/v4l2src/v4l2src.c b/src/v4l2src/v4l2src.c
+index c77ae49..12b392a 100644
+--- a/src/v4l2src/v4l2src.c
++++ b/src/v4l2src/v4l2src.c
+@@ -447,7 +447,9 @@ static GstCaps *gst_imx_v4l2src_caps_for_current_setup(GstImxV4l2VideoSrc *v4l2s
+ 		case V4L2_PIX_FMT_RGB555:
+ 			gst_fmt = GST_VIDEO_FORMAT_RGB15;
+ 			break;
++#ifdef V4L2_PIX_FMT_XRGB555X
+ 		case V4L2_PIX_FMT_XRGB555X:
++#endif
+ 		case V4L2_PIX_FMT_RGB555X:
+ 			gst_fmt = GST_VIDEO_FORMAT_BGR15;
+ 			break;
+-- 
+2.8.1
+
