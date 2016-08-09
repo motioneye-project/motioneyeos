@@ -66,7 +66,7 @@ def build_package_dict(builddir):
     filesdict = {}
     with open(os.path.join(builddir, "build", "packages-file-list.txt")) as filelistf:
         for l in filelistf.readlines():
-            pkg, fpath = l.split(",")
+            pkg, fpath = l.split(",", 1)
             # remove the initial './' in each file path
             fpath = fpath.strip()[2:]
             fullpath = os.path.join(builddir, "target", fpath)
