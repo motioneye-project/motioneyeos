@@ -418,9 +418,8 @@ config BR2_GENERATE_LOCALE
 
 config BR2_TARGET_TZ_INFO
 	bool "Install timezone info"
-	# No timezone for musl; only for uClibc or glibc.
-	depends on BR2_TOOLCHAIN_USES_GLIBC || BR2_TOOLCHAIN_USES_UCLIBC
 	select BR2_PACKAGE_TZDATA if BR2_TOOLCHAIN_USES_GLIBC
+	select BR2_PACKAGE_TZDATA if BR2_TOOLCHAIN_USES_MUSL
 	select BR2_PACKAGE_TZ if BR2_TOOLCHAIN_USES_UCLIBC
 	help
 	  Say 'y' here to install timezone info.
