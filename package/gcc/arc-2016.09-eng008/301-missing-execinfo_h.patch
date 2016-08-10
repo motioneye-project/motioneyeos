@@ -1,7 +1,7 @@
-Index: gcc-4.8.0/boehm-gc/include/gc.h
+Index: b/boehm-gc/include/gc.h
 ===================================================================
---- gcc-4.8.0.orig/boehm-gc/include/gc.h	2007-04-23 23:10:09.000000000 +0200
-+++ gcc-4.8.0/boehm-gc/include/gc.h	2013-03-23 17:39:20.000000000 +0100
+--- a/boehm-gc/include/gc.h
++++ b/boehm-gc/include/gc.h
 @@ -503,7 +503,7 @@
  #if defined(__linux__) || defined(__GLIBC__)
  # include <features.h>
