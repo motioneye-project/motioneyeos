@@ -1,0 +1,28 @@
+From dd091c8af163213e12aa92f61bc4916e0f102633 Mon Sep 17 00:00:00 2001
+From: Nikos Mavrogiannopoulos <nmav@redhat.com>
+Date: Tue, 26 Jul 2016 08:45:33 +0200
+Subject: [PATCH] configure: don't add -Werror to build flags
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+---
+Patch status: upstream
+
+ configure.ac | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 7a14e04..066f5fe 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -70,8 +70,6 @@ AC_ARG_ENABLE([gcc-warnings],
+ )
+ 
+ if test "$gl_gcc_warnings" = yes; then
+-  gl_WARN_ADD([-Werror], [WERROR_CFLAGS])
+-
+   nw="$nw -Wsystem-headers"         # Don't let system headers trigger warnings
+   nw="$nw -Wc++-compat"             # We don't care strongly about C++ compilers
+   nw="$nw -Wtraditional"            # Warns on #elif which we use often
+-- 
+2.7.3
+
