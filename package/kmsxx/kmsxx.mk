@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-KMSXX_VERSION = a706f157b86e90696808025db01de99646d51a77
+KMSXX_VERSION = bd5f6471e619a6ba2987bc7f66ef78a531f94d6c
 KMSXX_SITE = $(call github,tomba,kmsxx,$(KMSXX_VERSION))
 KMSXX_LICENSE = MPLv2.0
 KMSXX_LICENSE_FILES = LICENSE
