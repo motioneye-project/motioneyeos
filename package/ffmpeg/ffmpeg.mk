@@ -441,6 +441,7 @@ else
 FFMPEG_CONF_OPTS += --disable-neon
 endif
 
+ifeq ($(BR2_mips)$(BR2_mipsel)$(BR2_mips64)$(BR2_mips64el),y)
 ifeq ($(BR2_MIPS_SOFT_FLOAT),y)
 FFMPEG_CONF_OPTS += --disable-mipsfpu
 else
@@ -454,6 +455,7 @@ else
 FFMPEG_CONF_OPTS += \
 	--disable-mips32r2
 endif
+endif # MIPS
 
 ifeq ($(BR2_POWERPC_CPU_HAS_ALTIVEC),y)
 FFMPEG_CONF_OPTS += --enable-altivec
