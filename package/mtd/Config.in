@@ -161,6 +161,7 @@ config BR2_PACKAGE_MTD_UBIBLOCK
 
 config BR2_PACKAGE_MTD_INTEGCK
 	bool "integck"
+	depends on BR2_USE_MMU # fork()
 	help
 	  Install the integck test program.
 
