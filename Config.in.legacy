@@ -145,6 +145,14 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2016.11"
 
+config BR2_GCC_VERSION_4_8_ARC
+	bool "gcc arc option renamed"
+	select BR2_LEGACY
+	select BR2_GCC_VERSION_ARC
+	help
+	  The option that selects the gcc version for the ARC
+	  architecture has been renamed to BR2_GCC_VERSION_ARC.
+
 config BR2_KERNEL_HEADERS_4_0
 	bool "kernel headers version 4.0.x are no longer supported"
 	select BR2_KERNEL_HEADERS_3_18

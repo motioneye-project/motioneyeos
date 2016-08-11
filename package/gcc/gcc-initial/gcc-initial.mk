@@ -29,7 +29,7 @@ HOST_GCC_INITIAL_PRE_CONFIGURE_HOOKS += HOST_GCC_CONFIGURE_SYMLINK
 # available (--with-newlib is passed, and therefore inhibit_libc is
 # defined), it tries to use the C library for the libgmon
 # library. Since it's not needed in gcc-initial, we disabled it here.
-ifeq ($(BR2_GCC_VERSION_4_8_ARC),y)
+ifeq ($(BR2_GCC_VERSION_ARC),y)
 define HOST_GCC_INITIAL_DISABLE_LIBGMON
 	$(SED) 's/crtbeginS.o libgmon.a crtg.o/crtbeginS.o crtg.o/' \
 		$(@D)/libgcc/config.host
