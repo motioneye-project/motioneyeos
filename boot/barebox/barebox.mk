@@ -61,6 +61,8 @@ else ifeq ($$(KERNEL_ARCH),x86_64)
 $(1)_ARCH = x86
 else ifeq ($$(KERNEL_ARCH),powerpc)
 $(1)_ARCH = ppc
+else ifeq ($$(KERNEL_ARCH),arm64)
+$(1)_ARCH = arm
 else
 $(1)_ARCH = $$(KERNEL_ARCH)
 endif
