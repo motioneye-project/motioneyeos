@@ -8,6 +8,7 @@ XEN_VERSION = 4.6.0
 XEN_SITE = http://bits.xensource.com/oss-xen/release/$(XEN_VERSION)
 XEN_LICENSE = GPLv2
 XEN_LICENSE_FILES = COPYING
+XEN_DEPENDENCIES = host-python
 
 # Calculate XEN_ARCH
 ifeq ($(ARCH),aarch64)
@@ -17,6 +18,8 @@ XEN_ARCH = arm32
 endif
 
 XEN_CONF_OPTS = --disable-ocamltools
+
+XEN_CONF_ENV = PYTHON=$(HOST_DIR)/usr/bin/python2
 XEN_MAKE_ENV = \
 	XEN_TARGET_ARCH=$(XEN_ARCH) \
 	CROSS_COMPILE=$(TARGET_CROSS) \
