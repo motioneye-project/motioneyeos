@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-XEN_VERSION = 4.6.0
+XEN_VERSION = 4.7.0
 XEN_SITE = http://bits.xensource.com/oss-xen/release/$(XEN_VERSION)
 XEN_LICENSE = GPLv2
 XEN_LICENSE_FILES = COPYING
