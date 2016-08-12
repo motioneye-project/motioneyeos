@@ -16,10 +16,10 @@ Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
  libweston/compositor-rdp.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/libweston/compositor-rdp.c b/libweston/compositor-rdp.c
+diff --git a/src/compositor-rdp.c b/src/compositor-rdp.c
 index 11f5f05..ee81300 100644
---- a/libweston/compositor-rdp.c
-+++ b/libweston/compositor-rdp.c
+--- a/src/compositor-rdp.c
++++ b/src/compositor-rdp.c
 @@ -58,7 +58,7 @@
  #	define NSC_RESET(C, W, H) nsc_context_reset(C, W, H)
  #	define RFX_RESET(C, W, H) rfx_context_reset(C, W, H)
