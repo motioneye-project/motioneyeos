@@ -1,6 +1,7 @@
 config BR2_PACKAGE_SYSTEMD_BOOTCHART
 	bool "systemd-bootchart"
 	depends on BR2_INIT_SYSTEMD
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_17
 	help
 	  systemd-bootchart is a tool, usually run at system startup,
 	  that collects the CPU load, disk load, memory usage, as well
@@ -19,3 +20,7 @@ config BR2_PACKAGE_SYSTEMD_BOOTCHART
 	  these options are enabled.
 
 	  http://www.freedesktop.org/software/systemd/man/systemd-bootchart.html
+
+comment "systemd-bootchart needs a toolchain w/ headers >= 3.17"
+	depends on BR2_INIT_SYSTEMD
+	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_17
