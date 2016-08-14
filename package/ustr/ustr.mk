@@ -23,5 +23,7 @@ USTR_INSTALL_STAGING = YES
 # 'all-shared' to the default 'all' rule.
 USTR_MAKE_OPTS = all all-shared
 
+USTR_MAKE_OPTS += LDCONFIG=/bin/true
+
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
