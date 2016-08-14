@@ -9,12 +9,13 @@ AXEL_SITE = http://sources.buildroot.net
 AXEL_LICENSE = GPLv2+
 AXEL_LICENSE_FILES = COPYING
 
-AXEL_LDFLAGS = -lpthread
-
 ifeq ($(BR2_NEEDS_GETTEXT_IF_LOCALE),y)
 AXEL_DEPENDENCIES += gettext
 AXEL_LDFLAGS += -lintl
 endif
+
+# -lintl may use symbols from -lpthread
+AXEL_LDFLAGS += -lpthread
 
 ifneq ($(BR2_ENABLE_LOCALE),y)
 AXEL_DISABLE_I18N = --i18n=0
