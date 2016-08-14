@@ -1,6 +1,7 @@
 config BR2_PACKAGE_OPENVPN
 	bool "openvpn"
 	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_OPENSSL
 	help
 	  OpenVPN is a full-featured SSL VPN solution which can
 	  accomodate a wide range of configurations, including road
@@ -32,25 +33,5 @@ config BR2_PACKAGE_OPENVPN_PWSAVE
 	help
 	  Allow --askpass and --auth-user-pass passwords to be read
 	  from a file.
-
-choice
-	prompt "Crypto backend"
-	default BR2_PACKAGE_OPENVPN_CRYPTO_OPENSSL
-	help
-	  Select the cryptographic library to use.
-
-	config BR2_PACKAGE_OPENVPN_CRYPTO_OPENSSL
-	bool "OpenSSL"
-	select BR2_PACKAGE_OPENSSL
-	help
-	  Enable TLS-based key exchange and OpenSSL crypto support.
-
-	config BR2_PACKAGE_OPENVPN_CRYPTO_POLARSSL
-	bool "PolarSSL"
-	select BR2_PACKAGE_POLARSSL
-	help
-	  Enable TLS-based key exchange and PolarSSL crypto support.
-
-endchoice
 
 endif

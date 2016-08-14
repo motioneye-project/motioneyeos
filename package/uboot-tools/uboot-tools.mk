@@ -4,11 +4,12 @@
 #
 ################################################################################
 
-UBOOT_TOOLS_VERSION = 2016.01
+UBOOT_TOOLS_VERSION = 2016.03
 UBOOT_TOOLS_SOURCE = u-boot-$(UBOOT_TOOLS_VERSION).tar.bz2
 UBOOT_TOOLS_SITE = ftp://ftp.denx.de/pub/u-boot
 UBOOT_TOOLS_LICENSE = GPLv2+
 UBOOT_TOOLS_LICENSE_FILES = Licenses/gpl-2.0.txt
+UBOOT_TOOLS_INSTALL_STAGING = YES
 
 define UBOOT_TOOLS_CONFIGURE_CMDS
 	mkdir -p $(@D)/include/config
@@ -52,10 +53,25 @@ define UBOOT_TOOLS_INSTALL_FWPRINTENV
 endef
 endif
 
+ifeq ($(BR2_PACKAGE_UBOOT_TOOLS_DUMPIMAGE),y)
+define UBOOT_TOOLS_INSTALL_DUMPIMAGE
+	$(INSTALL) -m 0755 -D $(@D)/tools/dumpimage $(TARGET_DIR)/usr/sbin/dumpimage
+endef
+endif
+
+define UBOOT_TOOLS_INSTALL_LIBUBOOTENV
+endef
+
+define UBOOT_TOOLS_INSTALL_STAGING_CMDS
+	$(INSTALL) -D -m 0755 $(@D)/tools/env/lib.a $(STAGING_DIR)/usr/lib/libubootenv.a
+	$(INSTALL) -D -m 0644 $(@D)/tools/env/fw_env.h $(STAGING_DIR)/usr/include/fw_env.h
+endef
+
 define UBOOT_TOOLS_INSTALL_TARGET_CMDS
 	$(UBOOT_TOOLS_INSTALL_MKIMAGE)
 	$(UBOOT_TOOLS_INSTALL_MKENVIMAGE)
 	$(UBOOT_TOOLS_INSTALL_FWPRINTENV)
+	$(UBOOT_TOOLS_INSTALL_DUMPIMAGE)
 endef
 
 ifeq ($(BR2_PACKAGE_HOST_UBOOT_TOOLS_FIT_SIGNATURE_SUPPORT),y)
@@ -79,6 +95,7 @@ endef
 define HOST_UBOOT_TOOLS_INSTALL_CMDS
 	$(INSTALL) -m 0755 -D $(@D)/tools/mkimage $(HOST_DIR)/usr/bin/mkimage
 	$(INSTALL) -m 0755 -D $(@D)/tools/mkenvimage $(HOST_DIR)/usr/bin/mkenvimage
+	$(INSTALL) -m 0755 -D $(@D)/tools/dumpimage $(HOST_DIR)/usr/bin/dumpimage
 endef
 
 $(eval $(generic-package))

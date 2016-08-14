@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-PYTHON_MISTUNE_VERSION = 0.7.1
+PYTHON_MISTUNE_VERSION = 0.7.2
 PYTHON_MISTUNE_SOURCE = mistune-$(PYTHON_MISTUNE_VERSION).tar.gz
 PYTHON_MISTUNE_SITE = http://pypi.python.org/packages/source/m/mistune
 PYTHON_MISTUNE_LICENSE = BSD-3c

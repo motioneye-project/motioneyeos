@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBCURL_VERSION = 7.47.1
+LIBCURL_VERSION = 7.49.1
 LIBCURL_SOURCE = curl-$(LIBCURL_VERSION).tar.bz2
 LIBCURL_SITE = http://curl.haxx.se/download
 LIBCURL_DEPENDENCIES = host-pkgconf \
@@ -40,10 +40,12 @@ else ifeq ($(BR2_PACKAGE_LIBNSS),y)
 LIBCURL_CONF_OPTS += --with-nss=$(STAGING_DIR)/usr
 LIBCURL_CONF_ENV += CPPFLAGS="$(TARGET_CPPFLAGS) `$(PKG_CONFIG_HOST_BINARY) nspr nss --cflags`"
 LIBCURL_DEPENDENCIES += libnss
+else ifeq ($(BR2_PACKAGE_MBEDTLS),y)
+LIBCURL_CONF_OPTS += --with-mbedtls=$(STAGING_DIR)/usr
+LIBCURL_DEPENDENCIES += mbedtls
 else
-# polarssl support needs 1.3.x
 LIBCURL_CONF_OPTS += --without-ssl --without-gnutls \
-	--without-polarssl --without-nss
+	--without-polarssl --without-nss --without-mbedtls
 endif
 
 ifeq ($(BR2_PACKAGE_C_ARES),y)

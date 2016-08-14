@@ -22,7 +22,7 @@ config BR2_PACKAGE_TVHEADEND
 	  https://www.lonelycoder.com/redmine/projects/tvheadend/
 
 	  Note:
-	    - a default user has been created to log in the web configuration
-	      GUI: admin/admin; you can change it at your discretion at runtime.
+	    - on first run, tvheadend will start in wizard mode; the webUI
+	      is available on port 9981.
 	    - if you want Avahi support, you'll need to enable:
 	          Avahi, D-Bus, libdaemon

@@ -4,15 +4,16 @@
 #
 ################################################################################
 
-OPENVPN_VERSION = 2.3.9
+OPENVPN_VERSION = 2.3.11
 OPENVPN_SOURCE = openvpn-$(OPENVPN_VERSION).tar.xz
 OPENVPN_SITE = http://swupdate.openvpn.net/community/releases
-OPENVPN_DEPENDENCIES = host-pkgconf
+OPENVPN_DEPENDENCIES = host-pkgconf openssl
 OPENVPN_LICENSE = GPLv2
 OPENVPN_LICENSE_FILES = COPYRIGHT.GPL
 OPENVPN_CONF_OPTS = \
 	--disable-plugin-auth-pam \
 	--enable-iproute2 \
+	--with-crypto-library=openssl \
 	$(if $(BR2_STATIC_LIBS),--disable-plugins)
 OPENVPN_CONF_ENV = IFCONFIG=/sbin/ifconfig \
 	NETSTAT=/bin/netstat \
@@ -45,16 +46,6 @@ ifeq ($(BR2_PACKAGE_OPENVPN_PWSAVE),y)
 OPENVPN_CONF_OPTS += --enable-password-save
 else
 OPENVPN_CONF_OPTS += --disable-password-save
-endif
-
-ifeq ($(BR2_PACKAGE_OPENVPN_CRYPTO_OPENSSL),y)
-OPENVPN_CONF_OPTS += --with-crypto-library=openssl
-OPENVPN_DEPENDENCIES += openssl
-endif
-
-ifeq ($(BR2_PACKAGE_OPENVPN_CRYPTO_POLARSSL),y)
-OPENVPN_CONF_OPTS += --with-crypto-library=polarssl
-OPENVPN_DEPENDENCIES += polarssl
 endif
 
 define OPENVPN_INSTALL_TARGET_CMDS

@@ -5,6 +5,10 @@
 # so put it here instead
 source "package/gdb/Config.in.host"
 
+# https://sourceware.org/bugzilla/show_bug.cgi?id=19405
+config BR2_TOOLCHAIN_HAS_BINUTILS_BUG_19405
+	bool
+
 config BR2_TOOLCHAIN_HAS_NATIVE_RPC
 	bool
 
@@ -233,10 +237,15 @@ config BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_4
 	bool
 	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_3
 
+config BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_5
+	bool
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_4
+
 # This order guarantees that the highest version is set, as kconfig
 # stops affecting a value on the first matching default.
 config BR2_TOOLCHAIN_HEADERS_AT_LEAST
 	string
+	default "4.5"  if BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_5
 	default "4.4"  if BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_4
 	default "4.3"  if BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_3
 	default "4.2"  if BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_2
@@ -295,10 +304,15 @@ config BR2_TOOLCHAIN_GCC_AT_LEAST_5
 	bool
 	select BR2_TOOLCHAIN_GCC_AT_LEAST_4_9
 
+config BR2_TOOLCHAIN_GCC_AT_LEAST_6
+	bool
+	select BR2_TOOLCHAIN_GCC_AT_LEAST_5
+
 # This order guarantees that the highest version is set, as kconfig
 # stops affecting a value on the first matching default.
 config BR2_TOOLCHAIN_GCC_AT_LEAST
 	string
+	default "6"	if BR2_TOOLCHAIN_GCC_AT_LEAST_6
 	default "5"	if BR2_TOOLCHAIN_GCC_AT_LEAST_5
 	default "4.9"	if BR2_TOOLCHAIN_GCC_AT_LEAST_4_9
 	default "4.8"	if BR2_TOOLCHAIN_GCC_AT_LEAST_4_8
@@ -311,7 +325,6 @@ config BR2_TOOLCHAIN_GCC_AT_LEAST
 config BR2_TOOLCHAIN_HAS_SYNC_1
 	bool
 	default y
-	depends on !BR2_x86_i386
 	depends on !BR2_bfin
 	depends on !BR2_microblaze
 	depends on !BR2_sparc
@@ -325,7 +338,6 @@ config BR2_TOOLCHAIN_HAS_SYNC_4
 	bool
 	default y
 	depends on !BR2_sparc
-	depends on !BR2_x86_i386
 	depends on !(BR2_arc && !BR2_ARC_ATOMIC_EXT)
 
 # The availability of __sync for 8-byte types on ARM is somewhat
@@ -357,7 +369,6 @@ config BR2_TOOLCHAIN_X86_HAS_SYNC_8
 	bool
 	default y
 	depends on BR2_i386
-	depends on !BR2_x86_i386
 	depends on !BR2_x86_i486
 	depends on !BR2_x86_c3
 	depends on !BR2_x86_winchip_c6
@@ -373,15 +384,30 @@ config BR2_TOOLCHAIN_HAS_SYNC_8
 	default y if BR2_TOOLCHAIN_ARM_HAS_SYNC_8
 	default y if BR2_TOOLCHAIN_X86_HAS_SYNC_8
 
+# libatomic is available since gcc 4.8, when thread support is
+# enabled.
+config BR2_TOOLCHAIN_HAS_LIBATOMIC
+	bool
+	default y if BR2_TOOLCHAIN_GCC_AT_LEAST_4_8 && \
+		BR2_TOOLCHAIN_HAS_THREADS
+
 # __atomic intrinsics are available:
 # - with gcc 4.8, either through built-ins or libatomic, on all
-#   architectures
+#   architectures. Since we don't want to separate the cases where
+#   libatomic is needed vs. not needed, we simplify thing and only
+#   support situations where libatomic is available, even if on some
+#   architectures libatomic is not strictly needed as all __atomic
+#   intrinsics might be built-in. The only case where libatomic is
+#   missing entirely is when the toolchain does not have support for
+#   threads. However, a package that does not need threads but still
+#   uses atomics is quite a corner case, which does not warrant the
+#   added complexity.
 # - with gcc 4.7, libatomic did not exist, so only built-ins are
 #   available. This means that __atomic can only be used in a subset
 #   of the architectures
 config BR2_TOOLCHAIN_HAS_ATOMIC
 	bool
-	default y if BR2_TOOLCHAIN_GCC_AT_LEAST_4_8
+	default y if BR2_TOOLCHAIN_HAS_LIBATOMIC
 	default y if BR2_TOOLCHAIN_GCC_AT_LEAST_4_7 && BR2_arm
 	default y if BR2_TOOLCHAIN_GCC_AT_LEAST_4_7 && BR2_armeb
 	default y if BR2_TOOLCHAIN_GCC_AT_LEAST_4_7 && BR2_xtensa

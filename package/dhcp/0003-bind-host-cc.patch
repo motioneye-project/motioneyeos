@@ -1,0 +1,40 @@
+ensure host compiler is used
+
+dns/Makefile.in patch is derived from:
+http://wiki.beyondlogic.org/patches/dhcp-4.3.0b1.bind_arm-linux-gnueabi.patch
+
+This patch is already accepted upstream and will be included in the next
+release:
+--[snip]--
+From Francis Dupont via RT <dhcp-suggest@isc.org>
+To   rdkehn@yahoo.com 
+
+Message body
+It was fixed on the master branch sometimes ago.
+Quoting master RELNOTES:
+
+- Made the embedded bind libraries able to be cross compiled
+  (please refer to the bind9 documentation to learn how to cross
+  compile DHCP and its bind library dependency).
+  [ISC-Bugs #38836]
+
+This is in the Changes since 4.3.3 so for the next release.
+--[snip]--
+
+Signed-off-by: Doug Kehn <rdkehn@yahoo.com>
+
+Index: dhcp-4.3.3-P1/bind/bind-9.9.7-P3/lib/export/dns/Makefile.in
+===================================================================
+--- dhcp-4.3.3-P1.orig/bind/bind-9.9.7-P3/lib/export/dns/Makefile.in
++++ dhcp-4.3.3-P1/bind/bind-9.9.7-P3/lib/export/dns/Makefile.in
+@@ -168,7 +168,9 @@ code.h:	gen
+ 	./gen -s ${srcdir} > code.h
+ 
+ gen: ${srcdir}/gen.c
+-	${CC} ${ALL_CFLAGS} ${LDFLAGS} -o $@ ${srcdir}/gen.c ${LIBS}
++	${BUILD_CC} ${BUILD_CFLAGS} -I${top_srcdir}/lib/isc/include \
++		${BUILD_CPPFLAGS} ${BUILD_LDFLAGS} -o $@ ${srcdir}/gen.c \
++		${BUILD_LIBS}
+ 
+ #We don't need rbtdb64 for this library
+ #rbtdb64.@O@: rbtdb.c

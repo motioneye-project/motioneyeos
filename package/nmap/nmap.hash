@@ -1,2 +1,2 @@
-# Locally calculated after checking pgp signature
-sha256 cf1fcd2643ba2ef52f47acb3c18e52fa12a4ae4b722804da0e54560704627705  nmap-7.01.tar.bz2
+# From https://nmap.org/dist/sigs/nmap-7.12.tar.bz2.digest.txt
+sha256	63df082a87c95a189865d37304357405160fc6333addcf5b84204c95e0539b04	nmap-7.12.tar.bz2

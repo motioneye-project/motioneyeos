@@ -7,8 +7,8 @@ Signed-off-by: Gwenhael Goavec-Merou <gwenhael.goavec-merou@trabucayre.com>
 ---
 Index: gnuradio-3.7.5/volk/cmake/VolkBoost.cmake
 ===================================================================
---- gnuradio-3.7.5.orig/volk/cmake/VolkBoost.cmake
-+++ gnuradio-3.7.5/volk/cmake/VolkBoost.cmake
+--- gnuradio-3.7.5.orig/volk/cmake/Modules/VolkBoost.cmake
++++ gnuradio-3.7.5/volk/cmake/Modules/VolkBoost.cmake
 @@ -29,7 +29,6 @@ set(__INCLUDED_VOLK_BOOST_CMAKE TRUE)
  set(BOOST_REQUIRED_COMPONENTS
      filesystem
@@ -21,20 +21,21 @@ Index: gnuradio-3.7.5/volk/lib/CMakeLists.txt
 ===================================================================
 --- gnuradio-3.7.5.orig/volk/lib/CMakeLists.txt
 +++ gnuradio-3.7.5/volk/lib/CMakeLists.txt
-@@ -540,8 +540,9 @@ endif(ENABLE_STATIC_LIBS)
+@@ -580,7 +580,10 @@
+ ########################################################################
  # Build the QA test application
  ########################################################################
- 
+-if(ENABLE_TESTING)
++
 +find_package(Boost "1.35" COMPONENTS "unit_test_framework")
++
++if(ENABLE_TESTING AND BUILD_TEST)
  
--if(Boost_FOUND)
-+if(Boost_FOUND AND BUILD_TEST)
+     #include Boost headers
+     include_directories(${Boost_INCLUDE_DIRS})
+@@ -597,4 +600,4 @@
+         TARGET_DEPS volk
+     )
  
-     set_source_files_properties(
-         ${CMAKE_CURRENT_SOURCE_DIR}/testqa.cc PROPERTIES
-@@ -558,4 +559,4 @@ if(Boost_FOUND)
-     target_link_libraries(test_all volk ${Boost_LIBRARIES})
-     add_test(qa_volk_test_all test_all)
- 
--endif(Boost_FOUND)
-+endif(Boost_FOUND AND BUILD_TEST)
+-endif(ENABLE_TESTING)
++endif(ENABLE_TESTING AND BUILD_TEST)

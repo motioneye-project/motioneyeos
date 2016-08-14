@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-OMNIORB_VERSION = 4.2.0
+OMNIORB_VERSION = 4.2.1
 OMNIORB_SITE = http://downloads.sourceforge.net/project/omniorb/omniORB/omniORB-$(OMNIORB_VERSION)
 OMNIORB_SOURCE = omniORB-$(OMNIORB_VERSION).tar.bz2
 OMNIORB_INSTALL_STAGING = YES
@@ -12,9 +12,6 @@ OMNIORB_LICENSE = GPL2+, LGPLv2.1+
 OMNIORB_LICENSE_FILES = COPYING COPYING.LIB
 OMNIORB_DEPENDENCIES = host-omniorb
 HOST_OMNIORB_DEPENDENCIES = host-python
-
-# 0001-uclinux-is-also-linux.patch touches configure.ac
-OMNIORB_AUTORECONF = YES
 
 # omniorb is not python3 friendly, so force the python interpreter
 OMNIORB_CONF_OPTS = ac_cv_path_PYTHON=$(HOST_DIR)/usr/bin/python2

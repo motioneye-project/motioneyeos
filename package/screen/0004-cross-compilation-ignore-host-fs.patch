@@ -3,15 +3,17 @@ Date: Sun, 14 Sep 2014 07:10:59 +0200
 Subject: When cross-compiling, skip checks that look in the host file system
 
 Signed-off-by: Maarten ter Huurne <maarten@treewalker.org>
+[Ricardo: rebase on top of 4.3.1]
+Signed-off-by: Ricardo Martincoski <ricardo.martincoski@gmail.com>
 ---
- configure.in | 23 +++++++++++++++++++----
+ configure.ac | 23 +++++++++++++++++++----
  1 file changed, 19 insertions(+), 4 deletions(-)
 
-diff --git a/configure.in b/configure.in
-index d53a079..79aa56d 100644
---- a/configure.in
-+++ b/configure.in
-@@ -84,7 +84,7 @@ AC_ARG_ENABLE(socket-dir,
+diff --git a/configure.ac b/configure.ac
+index c4b7cd4..9cf7cee 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -85,7 +85,7 @@ AC_ARG_ENABLE(socket-dir,
  dnl
  dnl    ****  special unix variants  ****
  dnl
@@ -20,7 +22,7 @@ index d53a079..79aa56d 100644
    AC_DEFINE(ISC) LIBS="$LIBS -linet"
  fi
  
-@@ -95,10 +95,11 @@ dnl AC_DEFINE(OSF1)	# this disables MIPS again....
+@@ -96,10 +96,11 @@ dnl AC_DEFINE(OSF1)	# this disables MIPS again....
  dnl fi
  dnl fi
  
@@ -33,7 +35,7 @@ index d53a079..79aa56d 100644
  AC_CHECKING(for MIPS)
  if test -f /lib/libmld.a || test -f /usr/lib/libmld.a || test -f /usr/lib/cmplrs/cc/libmld.a; then
  oldlibs="$LIBS"
-@@ -122,6 +123,7 @@ AC_DEFINE(USE_WAIT2) LIBS="$LIBS -lbsd" ; CC="$CC -I/usr/include/bsd"
+@@ -123,6 +124,7 @@ AC_DEFINE(USE_WAIT2) LIBS="$LIBS -lbsd" ; CC="$CC -I/usr/include/bsd"
  ))
  fi
  fi
@@ -41,7 +43,7 @@ index d53a079..79aa56d 100644
  
  
  AC_CHECKING(for Ultrix)
-@@ -131,7 +133,7 @@ AC_EGREP_CPP(yes,
+@@ -132,7 +134,7 @@ AC_EGREP_CPP(yes,
  #endif
  ], ULTRIX=1)
  
@@ -50,7 +52,7 @@ index d53a079..79aa56d 100644
  oldlibs="$LIBS"
  LIBS="$LIBS -lpyr"
  AC_CHECKING(Pyramid OSX)
-@@ -678,17 +680,21 @@ AC_TRY_LINK(extern short ospeed;,ospeed=5;,,AC_DEFINE(NEED_OSPEED))
+@@ -679,17 +681,21 @@ AC_TRY_LINK(extern short ospeed;,ospeed=5;,,AC_DEFINE(NEED_OSPEED))
  dnl
  dnl    ****  PTY specific things  ****
  dnl
@@ -72,7 +74,7 @@ index d53a079..79aa56d 100644
  
  AC_CHECK_FUNCS(getpt)
  
-@@ -698,6 +704,7 @@ AC_CHECK_FUNCS(openpty,,
+@@ -699,6 +705,7 @@ AC_CHECK_FUNCS(openpty,,
  [AC_CHECK_LIB(util,openpty, [AC_DEFINE(HAVE_OPENPTY)] [LIBS="$LIBS -lutil"])])
  fi
  
@@ -80,7 +82,7 @@ index d53a079..79aa56d 100644
  AC_CHECKING(for ptyranges)
  if test -d /dev/ptym ; then
  pdir='/dev/ptym'
-@@ -721,6 +728,7 @@ p1=`echo $ptys | tr ' ' '\012' | sed -e 's/^.*\(.\)$/\1/g'  | sort -u | tr -d '\
+@@ -722,6 +729,7 @@ p1=`echo $ptys | tr ' ' '\012' | sed -e 's/^.*\(.\)$/\1/g'  | sort -u | tr -d '\
  AC_DEFINE_UNQUOTED(PTYRANGE0,"$p0")
  AC_DEFINE_UNQUOTED(PTYRANGE1,"$p1")
  fi
@@ -88,7 +90,7 @@ index d53a079..79aa56d 100644
  
  dnl    ****  pty mode/group handling ****
  dnl
-@@ -868,14 +876,16 @@ fi
+@@ -869,14 +877,16 @@ fi
  dnl
  dnl    ****  loadav  ****
  dnl
@@ -106,7 +108,7 @@ index d53a079..79aa56d 100644
  olibs="$LIBS"
  LIBS="$LIBS -lkvm"
  AC_CHECKING(getloadavg with -lkvm)
-@@ -1093,13 +1103,18 @@ dnl    ****  libraries  ****
+@@ -1094,13 +1104,18 @@ dnl    ****  libraries  ****
  dnl
  
  AC_CHECKING(for crypt and sec libraries)

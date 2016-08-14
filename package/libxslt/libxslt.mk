@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBXSLT_VERSION = 1.1.28
+LIBXSLT_VERSION = 1.1.29
 LIBXSLT_SITE = ftp://xmlsoft.org/libxslt
 LIBXSLT_INSTALL_STAGING = YES
 LIBXSLT_LICENSE = MIT
@@ -14,7 +14,8 @@ LIBXSLT_CONF_OPTS = \
 	--with-gnu-ld \
 	--without-debug \
 	--without-python \
-	--with-libxml-prefix=$(STAGING_DIR)/usr/
+	--with-libxml-prefix=$(STAGING_DIR)/usr/ \
+	--with-libxml-libs-prefix=$(STAGING_DIR)/usr/lib
 LIBXSLT_CONFIG_SCRIPTS = xslt-config
 LIBXSLT_DEPENDENCIES = libxml2
 

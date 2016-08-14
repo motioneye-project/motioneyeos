@@ -111,6 +111,7 @@ config BR2_PACKAGE_GST1_PLUGINS_BASE_PLUGIN_ALSA
 	select BR2_PACKAGE_ALSA_LIB
 	select BR2_PACKAGE_ALSA_LIB_MIXER
 	select BR2_PACKAGE_ALSA_LIB_PCM
+	select BR2_PACKAGE_ALSA_LIB_SEQ
 	help
 	  ALSA plugin library
 
@@ -125,6 +126,12 @@ config BR2_PACKAGE_GST1_PLUGINS_BASE_PLUGIN_OGG
 	select BR2_PACKAGE_LIBOGG
 	help
 	  ogg stream manipulation (info about ogg: http://xiph.org)
+
+config BR2_PACKAGE_GST1_PLUGINS_BASE_PLUGIN_OPUS
+	bool "opus"
+	select BR2_PACKAGE_OPUS
+	help
+	  Opus codec for speech and audio.
 
 config BR2_PACKAGE_GST1_PLUGINS_BASE_PLUGIN_PANGO
 	bool "pango font renderer"

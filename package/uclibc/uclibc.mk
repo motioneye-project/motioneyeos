@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-UCLIBC_VERSION = 1.0.12
+UCLIBC_VERSION = 1.0.14
 UCLIBC_SOURCE = uClibc-ng-$(UCLIBC_VERSION).tar.xz
 UCLIBC_SITE = http://downloads.uclibc-ng.org/releases/$(UCLIBC_VERSION)
 UCLIBC_LICENSE = LGPLv2.1+
@@ -75,22 +75,45 @@ define UCLIBC_ARM_ABI_CONFIG
 	$(call KCONFIG_ENABLE_OPT,CONFIG_ARM_EABI,$(@D)/.config)
 endef
 
-# Thumb build is broken with threads, build in ARM mode
-ifeq ($(BR2_ARM_INSTRUCTIONS_THUMB)$(BR2_TOOLCHAIN_HAS_THREADS),yy)
+# Thumb1 build is broken with threads with old gcc versions (4.7 and
+# 4.8). Since all cores supporting Thumb1 also support ARM, we use ARM
+# code in this case.
+ifeq ($(BR2_GCC_VERSION_4_7_X)$(BR2_GCC_VERSION_4_8_X):$(BR2_ARM_INSTRUCTIONS_THUMB)$(BR2_TOOLCHAIN_HAS_THREADS),y:yy)
 UCLIBC_EXTRA_CFLAGS += -marm
 endif
 
-ifeq ($(BR2_UCLIBC_ARM_BX),y)
-define UCLIBC_ARM_BX_CONFIG
-	$(call KCONFIG_ENABLE_OPT,USE_BX,$(@D)/.config)
+ifeq ($(BR2_BINFMT_FLAT),y)
+define UCLIBC_ARM_BINFMT_FLAT
+	$(call KCONFIG_DISABLE_OPT,DOPIC,$(@D)/.config)
 endef
-else
-define UCLIBC_ARM_BX_CONFIG
-	$(call KCONFIG_DISABLE_OPT,USE_BX,$(@D)/.config)
+endif
+
+# context functions are written with ARM instructions. Therefore, if
+# we are using a Thumb2-only platform (i.e, Cortex-M), they must be
+# disabled. Thumb1 platforms are not a problem, since they all also
+# support the ARM instructions.
+ifeq ($(BR2_ARM_INSTRUCTIONS_THUMB2):$(BR2_ARM_CPU_HAS_ARM),y:)
+define UCLIBC_ARM_NO_CONTEXT_FUNCS
+	$(call KCONFIG_DISABLE_OPT,UCLIBC_HAS_CONTEXT_FUNCS,$(@D)/.config)
 endef
 endif
 
 endif # arm
+
+#
+# m68k/coldfire definitions
+#
+
+ifeq ($(UCLIBC_TARGET_ARCH),m68k)
+
+# disable DOPIC for flat without separate data
+ifeq ($(BR2_BINFMT_FLAT_ONE),y)
+define UCLIBC_M68K_BINFMT_FLAT
+	$(call KCONFIG_DISABLE_OPT,DOPIC,$(@D)/.config)
+endef
+endif
+
+endif # m68k/coldfire
 
 #
 # MIPS definitions
@@ -362,7 +385,9 @@ define UCLIBC_KCONFIG_FIXUP_CMDS
 	$(UCLIBC_ARC_TYPE_CONFIG)
 	$(UCLIBC_ARC_PAGE_SIZE_CONFIG)
 	$(UCLIBC_ARM_ABI_CONFIG)
-	$(UCLIBC_ARM_BX_CONFIG)
+	$(UCLIBC_ARM_BINFMT_FLAT)
+	$(UCLIBC_ARM_NO_CONTEXT_FUNCS)
+	$(UCLIBC_M68K_BINFMT_FLAT)
 	$(UCLIBC_MIPS_ABI_CONFIG)
 	$(UCLIBC_MIPS_ISA_CONFIG)
 	$(UCLIBC_SH_TYPE_CONFIG)

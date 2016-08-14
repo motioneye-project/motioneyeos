@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-LIBGTK3_VERSION_MAJOR = 3.14
-LIBGTK3_VERSION = $(LIBGTK3_VERSION_MAJOR).15
+LIBGTK3_VERSION_MAJOR = 3.20
+LIBGTK3_VERSION = $(LIBGTK3_VERSION_MAJOR).4
 LIBGTK3_SOURCE = gtk+-$(LIBGTK3_VERSION).tar.xz
 LIBGTK3_SITE = http://ftp.gnome.org/pub/gnome/sources/gtk+/$(LIBGTK3_VERSION_MAJOR)
 LIBGTK3_LICENSE = LGPLv2+
@@ -24,7 +24,11 @@ LIBGTK3_CONF_OPTS = \
 	--enable-gtk2-dependency \
 	--disable-introspection
 
-LIBGTK3_DEPENDENCIES = host-pkgconf host-libgtk3 atk libglib2 cairo pango gdk-pixbuf
+# Override pkg-config pkgdatadir variable, it needs the prefix
+LIBGTK3_MAKE_OPTS = \
+	WAYLAND_PROTOCOLS_DATADIR=$(STAGING_DIR)/usr/share/wayland-protocols
+
+LIBGTK3_DEPENDENCIES = host-pkgconf host-libgtk3 atk libglib2 cairo pango gdk-pixbuf libepoxy
 
 ifeq ($(BR2_PACKAGE_LIBGTK3_X11),y)
 LIBGTK3_DEPENDENCIES += fontconfig xlib_libX11 xlib_libXext xlib_libXrender xlib_libXi
@@ -38,7 +42,7 @@ LIBGTK3_CONF_OPTS += --disable-x11-backend
 endif
 
 ifeq ($(BR2_PACKAGE_LIBGTK3_WAYLAND),y)
-LIBGTK3_DEPENDENCIES += wayland libxkbcommon
+LIBGTK3_DEPENDENCIES += wayland wayland-protocols libxkbcommon
 LIBGTK3_CONF_OPTS += --enable-wayland-backend
 else
 LIBGTK3_CONF_OPTS += --disable-wayland-backend
@@ -136,8 +140,7 @@ LIBGTK3_POST_INSTALL_TARGET_HOOKS += LIBGTK3_COMPILE_GLIB_SCHEMAS
 # for both native and target builds).
 #
 # But no native version of libintl is available (the functions are
-# provided by glibc). So gtk-update-icon-cache will not build, and
-# extract-strings neither.
+# provided by glibc). So gtk-update-icon-cache will not build.
 #
 # As a workaround, we build gtk-update-icon-cache on our own, set
 # --enable-gtk2-dependency=yes and force './configure' to use our version.
@@ -146,10 +149,12 @@ HOST_LIBGTK3_DEPENDENCIES = \
 	host-libglib2 \
 	host-libpng \
 	host-gdk-pixbuf \
-	host-pkgconf
+	host-pkgconf \
+	host-librsvg
 
 HOST_LIBGTK3_CFLAGS = \
-	`$(HOST_DIR)/usr/bin/pkgconf --cflags --libs gdk-pixbuf-2.0`
+	`$(HOST_DIR)/usr/bin/pkgconf --cflags --libs gdk-pixbuf-2.0` \
+	`$(HOST_DIR)/usr/bin/pkgconf --cflags --libs gio-2.0`
 
 define HOST_LIBGTK3_CONFIGURE_CMDS
 	echo "#define GETTEXT_PACKAGE \"gtk30\"" >> $(@D)/gtk/config.h
@@ -163,17 +168,27 @@ define HOST_LIBGTK3_BUILD_CMDS
 		$(HOST_LIBGTK3_CFLAGS) \
 		-o $(@D)/gtk/gtk-update-icon-cache
 	$(HOSTCC) $(HOST_CFLAGS) $(HOST_LDFLAGS) \
-		$(@D)/util/extract-strings.c \
+		$(@D)/gtk/encodesymbolic.c \
 		$(HOST_LIBGTK3_CFLAGS) \
-		-o $(@D)/util/extract-strings
+		-o $(@D)/gtk/gtk-encode-symbolic-svg
 endef
 
 define HOST_LIBGTK3_INSTALL_CMDS
 	$(INSTALL) -D -m 0755 $(@D)/gtk/gtk-update-icon-cache \
 		$(HOST_DIR)/usr/bin/gtk-update-icon-cache
-	$(INSTALL) -D -m 0755 $(@D)/util/extract-strings \
-		$(HOST_DIR)/usr/bin/extract-strings
+	$(INSTALL) -D -m 0755 $(@D)/gtk/gtk-encode-symbolic-svg \
+		$(HOST_DIR)/usr/bin/gtk-encode-symbolic-svg
 endef
+
+# Create icon-theme.cache for each of the icon directories/themes
+# It's not strictly necessary but speeds up lookups
+ifeq ($(BR2_PACKAGE_LIBGTK3),y)
+define LIBGTK3_UPDATE_ICON_CACHE
+	find $(TARGET_DIR)/usr/share/icons -maxdepth 1 -mindepth 1 -type d \
+		-exec $(HOST_DIR)/usr/bin/gtk-update-icon-cache {} \;
+endef
+TARGET_FINALIZE_HOOKS += LIBGTK3_UPDATE_ICON_CACHE
+endif
 
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))

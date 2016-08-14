@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-GCR_VERSION_MAJOR = 3.18
+GCR_VERSION_MAJOR = 3.20
 GCR_VERSION = $(GCR_VERSION_MAJOR).0
 GCR_SITE = http://ftp.acc.umu.se/pub/gnome/sources/gcr/$(GCR_VERSION_MAJOR)
 GCR_SOURCE = gcr-$(GCR_VERSION).tar.xz

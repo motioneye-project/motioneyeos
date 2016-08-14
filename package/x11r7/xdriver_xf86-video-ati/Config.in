@@ -1,7 +1,6 @@
 config BR2_PACKAGE_XDRIVER_XF86_VIDEO_ATI
 	bool "xf86-video-ati"
 	depends on BR2_PACKAGE_MESA3D
-	depends on BR2_TOOLCHAIN_HAS_THREADS # libdrm -> libpthread-stubs
 	select BR2_PACKAGE_LIBDRM
 	select BR2_PACKAGE_LIBDRM_RADEON
 	select BR2_PACKAGE_MESA3D_DRI_DRIVER_RADEON

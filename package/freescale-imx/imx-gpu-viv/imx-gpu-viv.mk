@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-IMX_GPU_VIV_BASE_VERSION = 5.0.11.p7.1
+IMX_GPU_VIV_BASE_VERSION = 5.0.11.p7.4
 ifeq ($(BR2_ARM_EABIHF),y)
 IMX_GPU_VIV_VERSION = $(IMX_GPU_VIV_BASE_VERSION)-hfp
 else
@@ -80,6 +80,7 @@ define IMX_GPU_VIV_INSTALL_STAGING_CMDS
 endef
 
 ifeq ($(BR2_PACKAGE_IMX_GPU_VIV_APITRACE),y)
+IMX_GPU_VIV_DEPENDENCIES += libpng
 ifeq ($(IMX_GPU_VIV_LIB_TARGET),x11)
 define IMX_GPU_VIV_INSTALL_APITRACE
 	cp -dpfr $(@D)/apitrace/x11/usr/bin/* $(TARGET_DIR)/usr/bin/

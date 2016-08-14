@@ -1,7 +1,7 @@
 From ef72be22ad6d58e230f75553d80b470b80c3303a Mon Sep 17 00:00:00 2001
 From: Samuel Martin <s.martin49@gmail.com>
 Date: Sun, 4 May 2014 00:40:49 +0200
-Subject: [PATCH 2/5] auto/feature: add mechanism allowing to force feature run
+Subject: [PATCH] auto/feature: add mechanism allowing to force feature run
  test result
 
 Whenever a feature needs to run a test, the ngx_feature_run_force_result

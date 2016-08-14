@@ -1,0 +1,10 @@
+config BR2_PACKAGE_KODI_VISUALISATION_FISHBMC
+	bool "kodi-visualisation-fishbmc"
+	depends on BR2_PACKAGE_HAS_LIBGL
+	help
+	  Fische visualiser for Kodi
+
+	  https://github.com/notspiff/visualization.fishbmc
+
+comment "kodi-visualisation-fishbmc needs OpenGL"
+	depends on !BR2_PACKAGE_HAS_LIBGL

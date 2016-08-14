@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-WEBKITGTK24_VERSION = 2.4.9
+WEBKITGTK24_VERSION = 2.4.10
 WEBKITGTK24_SITE = http://www.webkitgtk.org/releases
 WEBKITGTK24_SOURCE = webkitgtk-$(WEBKITGTK24_VERSION).tar.xz
 WEBKITGTK24_INSTALL_STAGING = YES
@@ -29,7 +29,7 @@ endif
 WEBKITGTK24_CONF_ENV = ac_cv_path_icu_config=$(STAGING_DIR)/usr/bin/icu-config
 
 # Some 32-bit architectures need libatomic support for 64-bit ops
-ifeq ($(BR2_i386)$(BR2_mips)$(BR2_mipsel)$(BR2_sh),y)
+ifeq ($(BR2_TOOLCHAIN_HAS_LIBATOMIC),y)
 WEBKITGTK24_CONF_ENV += LIBS="-latomic"
 endif
 
@@ -42,11 +42,11 @@ WEBKITGTK24_CONF_OPTS = \
 	--disable-gtk-doc-html \
 	--disable-wayland-target
 
-ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BASE),y)
+ifeq ($(BR2_PACKAGE_WEBKITGTK24_MULTIMEDIA),y)
 WEBKITGTK24_CONF_OPTS += \
 	--enable-video \
 	--enable-web-audio
-WEBKITGTK24_DEPENDENCIES += gst1-plugins-good
+WEBKITGTK24_DEPENDENCIES += gstreamer1 gst1-libav gst1-plugins-base gst1-plugins-good
 else
 WEBKITGTK24_CONF_OPTS += \
 	--disable-video \

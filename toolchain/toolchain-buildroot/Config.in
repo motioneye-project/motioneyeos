@@ -68,9 +68,8 @@ config BR2_TOOLCHAIN_BUILDROOT_GLIBC
 		   BR2_aarch64_be  || BR2_i386       || BR2_mips    || \
 		   BR2_mipsel      || BR2_mips64     || BR2_mips64el|| \
 		   BR2_powerpc     || BR2_powerpc64  || BR2_powerpc64le || \
-		   BR2_sh          || BR2_sh64       || BR2_sparc   || \
-		   BR2_sparc64     || BR2_x86_64     || BR2_microblaze || \
-		   BR2_nios2
+		   BR2_sh          || BR2_sh64       || BR2_sparc64 || \
+		   BR2_x86_64      || BR2_microblaze || BR2_nios2
 	depends on BR2_USE_MMU
 	depends on !BR2_STATIC_LIBS
 	depends on !BR2_powerpc_SPE
@@ -84,6 +83,7 @@ config BR2_TOOLCHAIN_BUILDROOT_GLIBC
 	  http://www.gnu.org/software/libc/
 
 comment "(e)glibc only available with shared lib support"
+	depends on BR2_USE_MMU
 	depends on BR2_STATIC_LIBS
 
 config BR2_TOOLCHAIN_BUILDROOT_MUSL
@@ -94,6 +94,9 @@ config BR2_TOOLCHAIN_BUILDROOT_MUSL
 	depends on !BR2_powerpc_SPE # not supported, build breaks
 	# Unsupported for MIPS R6
 	depends on !BR2_mips_32r6 && !BR2_mips_64r6
+	# sh2 nommu is supported by musl, but we don't have support
+	# for it in Buildroot.
+	depends on BR2_USE_MMU
 	select BR2_TOOLCHAIN_USES_MUSL
 	help
 	  This option selects musl as the C library for the
@@ -111,6 +114,7 @@ config BR2_TOOLCHAIN_BUILDROOT_LIBC
 	default "musl"	 if BR2_TOOLCHAIN_BUILDROOT_MUSL
 
 source "package/linux-headers/Config.in"
+source "package/musl/Config.in"
 source "package/uclibc/Config.in"
 source "package/glibc/Config.in"
 source "package/binutils/Config.in.host"

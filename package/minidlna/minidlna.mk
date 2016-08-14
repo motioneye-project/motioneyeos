@@ -14,17 +14,8 @@ MINIDLNA_DEPENDENCIES = \
 	ffmpeg flac libvorbis libogg libid3tag libexif jpeg sqlite \
 	host-xutil_makedepend
 
-ifeq ($(BR2_STATIC_LIBS),y)
-# the configure script / Makefile forgets to link with some of the dependent
-# libraries breaking static linking, so help it along
-MINIDLNA_PKGCONFIG_DEPS = libavcodec libexif vorbis sqlite3
-MINIDLNA_STATIC_LIBS += `$(PKG_CONFIG_HOST_BINARY) --libs $(MINIDLNA_PKGCONFIG_DEPS)`
-MINIDLNA_STATIC_LIBS += $(if $(BR2_NEEDS_GETTEXT_IF_LOCALE),-lintl)
-MINIDLNA_CONF_ENV += LIBS="$(MINIDLNA_STATIC_LIBS)"
-else
 MINIDLNA_CONF_OPTS = \
 	--disable-static
-endif
 
 define MINIDLNA_INSTALL_CONF
 	$(INSTALL) -D -m 644 $(@D)/minidlna.conf $(TARGET_DIR)/etc/minidlna.conf

@@ -332,7 +332,7 @@ Index: b/gcc/config/mips/linux.h
 +#define MUSL_DYNAMIC_LINKER_E "%{EL:el}"
 +#endif
 +#undef MUSL_DYNAMIC_LINKER
-+#define MUSL_DYNAMIC_LINKER "/lib/ld-musl-mips" MUSL_DYNAMIC_LINKER_E ".so.1"
++#define MUSL_DYNAMIC_LINKER "/lib/ld-musl-mips" MUSL_DYNAMIC_LINKER_E "%{msoft-float:-sf}.so.1"
 Index: b/gcc/config/rs6000/linux64.h
 ===================================================================
 --- a/gcc/config/rs6000/linux64.h

@@ -1,3 +1,2 @@
-# From http://sourceforge.net/projects/mpg123/files/mpg123/1.22.4/
-md5	2dfafae3bbc532b4c8b04a77c6a6de89	mpg123-1.22.4.tar.bz2
-sha1	6ca59baceeebe361cc508214ba725a56d4fea743	mpg123-1.22.4.tar.bz2
+# Locally calculated after checking pgp signature
+sha256	5c431da7e7446fae586c9207772dc0038ce2bfe75f0274a7933d1b4a7d84e6c6	mpg123-1.23.3.tar.bz2

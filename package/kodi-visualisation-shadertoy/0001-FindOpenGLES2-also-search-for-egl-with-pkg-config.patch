@@ -17,15 +17,15 @@ diff --git a/CMakeLists.txt b/CMakeLists.txt
 index 8b084cf..81bbe27 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -24,7 +24,7 @@ else()
+@@ -35,7 +35,7 @@
+     endif()
    endif()
- endif()
  
--include_directories(${OpenGL_INCLUDE_DIR}
-+include_directories(${OpenGL_INCLUDE_DIR} ${OpenGLES2_INCLUDE_DIRS}
-                     ${GLEW_INCLUDE_DIR}
-                     ${KODI_INCLUDE_DIR}
-                     ${PROJECT_SOURCE_DIR}/lib/kissfft
+-  include_directories(${OpenGL_INCLUDE_DIR}
++  include_directories(${OpenGL_INCLUDE_DIR} ${OpenGLES2_INCLUDE_DIRS}
+                       ${GLEW_INCLUDE_DIR}
+                       ${KODI_INCLUDE_DIR}
+                       ${platform_INCLUDE_DIRS}
 diff --git a/FindOpenGLES2.cmake b/FindOpenGLES2.cmake
 index e1b7d21..2a9ce0d 100644
 --- a/FindOpenGLES2.cmake

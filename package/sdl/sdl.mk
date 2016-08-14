@@ -80,6 +80,7 @@ SDL_DEPENDENCIES += mesa3d
 endif
 
 SDL_CONF_OPTS += \
+	--disable-rpath \
 	--enable-pulseaudio=no \
 	--disable-arts \
 	--disable-esd \
@@ -95,14 +96,6 @@ HOST_SDL_CONF_OPTS += \
 	--disable-video-ps3
 
 SDL_CONFIG_SCRIPTS = sdl-config
-
-# Remove the -Wl,-rpath option.
-define SDL_FIXUP_SDL_CONFIG
-	$(SED) 's%-Wl,-rpath,\$${libdir}%%' \
-		$(STAGING_DIR)/usr/bin/sdl-config
-endef
-
-SDL_POST_INSTALL_STAGING_HOOKS += SDL_FIXUP_SDL_CONFIG
 
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))

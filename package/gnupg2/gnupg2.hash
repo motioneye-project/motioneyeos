@@ -1,2 +1,4 @@
-# From https://lists.gnu.org/archive/html/info-gnu/2015-09/msg00001.html
-sha1 87eb0df18f9953675f979405a1af10ab6c5322b3  gnupg-2.0.29.tar.bz2
+# From https://lists.gnupg.org/pipermail/gnupg-announce/2016q1/000385.html
+sha1	a9f024588c356a55e2fd413574bfb55b2e18794a	gnupg-2.0.30.tar.bz2
+# Calculated based on the hash above
+sha256	e329785a4f366ba5d72c2c678a7e388b0892ac8440c2f4e6810042123c235d71	gnupg-2.0.30.tar.bz2

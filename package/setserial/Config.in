@@ -3,4 +3,4 @@ config BR2_PACKAGE_SETSERIAL
 	# Uses fork()
 	depends on BR2_USE_MMU
 	help
-	     Setserial : configuration of serial ports
+	  Setserial : configuration of serial ports

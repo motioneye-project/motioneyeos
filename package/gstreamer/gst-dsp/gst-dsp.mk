@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-GST_DSP_VERSION = 0.10.2
-GST_DSP_SITE = http://gst-dsp.googlecode.com/files
+GST_DSP_VERSION = v0.10.2
+GST_DSP_SITE = $(call github,felipec,gst-dsp,$(GST_DSP_VERSION))
 
 define GST_DSP_BUILD_CMDS
 	$(TARGET_CONFIGURE_OPTS) $(MAKE) -C $(@D) -e

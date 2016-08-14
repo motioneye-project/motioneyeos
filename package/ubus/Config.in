@@ -1,6 +1,6 @@
 comment "ubus needs a toolchain w/ dynamic library"
 	depends on BR2_TOOLCHAIN_HAS_SYNC_4
-        depends on BR2_STATIC_LIBS
+	depends on BR2_STATIC_LIBS
 
 config BR2_PACKAGE_UBUS
 	bool "ubus"

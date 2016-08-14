@@ -1,0 +1,18 @@
+config BR2_PACKAGE_TURBOLUA
+	bool "turbolua"
+	depends on BR2_PACKAGE_LUAJIT
+	help
+	  Turbo.lua is a framework built for LuaJIT 2 to simplify the
+	  task of building fast and scalable network applications. It
+	  uses a event-driven, non-blocking, no thread design to deliver
+	  excellent performance and minimal footprint to high-load
+	  applications while also providing excellent support for
+	  embedded uses. The toolkit can be used for HTTP REST API’s,
+	  traditional dynamic web pages through templating, open
+	  connections like WebSockets, or just as high level building
+	  blocks for native speed network applications.
+
+	  http://www.turbolua.org
+
+comment "turbolua needs LuaJIT"
+	depends on !BR2_PACKAGE_LUAJIT

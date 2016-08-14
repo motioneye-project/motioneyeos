@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBDRM_VERSION = 2.4.66
+LIBDRM_VERSION = 2.4.68
 LIBDRM_SOURCE = libdrm-$(LIBDRM_VERSION).tar.bz2
 LIBDRM_SITE = http://dri.freedesktop.org/libdrm
 LIBDRM_LICENSE = MIT
@@ -21,9 +21,16 @@ LIBDRM_CONF_OPTS = \
 
 LIBDRM_CONF_ENV = ac_cv_prog_cc_c99='-std=gnu99'
 
+ifeq ($(BR2_PACKAGE_LIBATOMIC_OPS),y)
+LIBDRM_DEPENDENCIES += libatomic_ops
+ifeq ($(BR2_sparc_v8)$(BR2_sparc_leon3),y)
+LIBDRM_CONF_ENV += CFLAGS="$(TARGET_CFLAGS) -DAO_NO_SPARC_V9"
+endif
+endif
+
 ifeq ($(BR2_PACKAGE_LIBDRM_INTEL),y)
 LIBDRM_CONF_OPTS += --enable-intel
-LIBDRM_DEPENDENCIES += libatomic_ops libpciaccess
+LIBDRM_DEPENDENCIES += libpciaccess
 else
 LIBDRM_CONF_OPTS += --disable-intel
 endif
@@ -74,6 +81,12 @@ ifeq ($(BR2_PACKAGE_LIBDRM_TEGRA),y)
 LIBDRM_CONF_OPTS += --enable-tegra-experimental-api
 else
 LIBDRM_CONF_OPTS += --disable-tegra-experimental-api
+endif
+
+ifeq ($(BR2_PACKAGE_LIBDRM_VC4),y)
+LIBDRM_CONF_OPTS += --enable-vc4
+else
+LIBDRM_CONF_OPTS += --disable-vc4
 endif
 
 ifeq ($(BR2_PACKAGE_HAS_UDEV),y)

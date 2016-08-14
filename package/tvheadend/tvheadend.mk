@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-TVHEADEND_VERSION = 1aa0073be39119f5d0d79212e6c83c470904a161
+TVHEADEND_VERSION = cd9f07fb865e5700156546ee326fbaf42ee99cf8
 TVHEADEND_SITE = $(call github,tvheadend,tvheadend,$(TVHEADEND_VERSION))
 TVHEADEND_LICENSE = GPLv3+
 TVHEADEND_LICENSE_FILES = LICENSE.md
@@ -77,10 +77,11 @@ define TVHEADEND_CONFIGURE_CMDS
 			--prefix=/usr				\
 			--arch="$(ARCH)"			\
 			--cpu="$(BR2_GCC_TARGET_CPU)"		\
+			--nowerror				\
 			--python="$(HOST_DIR)/usr/bin/python"	\
 			--enable-dvbscan			\
 			--enable-bundle				\
-			--disable-libffmpeg_static		\
+			--disable-ffmpeg_static			\
 			--disable-hdhomerun_static		\
 			$(TVHEADEND_CONF_OPTS)			\
 	)
@@ -106,14 +107,8 @@ TVHEADEND_POST_INSTALL_TARGET_HOOKS += TVHEADEND_CLEAN_SHARE
 #----------------------------------------------------------------------------
 # To run tvheadend, we need:
 #  - a startup script, and its config file
-#  - a default DB with a tvheadend admin
-#  - a non-root user to run as
-define TVHEADEND_INSTALL_DB
-	$(INSTALL) -D -m 0600 package/tvheadend/accesscontrol.1     \
-		$(TARGET_DIR)/home/tvheadend/.hts/tvheadend/accesscontrol/1
-	chmod -R go-rwx $(TARGET_DIR)/home/tvheadend
-endef
-TVHEADEND_POST_INSTALL_TARGET_HOOKS += TVHEADEND_INSTALL_DB
+#  - a non-root user to run as, and a home for it that is not accessible
+#    to the other users (because there will be crendentials in there)
 
 define TVHEADEND_INSTALL_INIT_SYSV
 	$(INSTALL) -D package/tvheadend/etc.default.tvheadend $(TARGET_DIR)/etc/default/tvheadend
@@ -122,6 +117,9 @@ endef
 
 define TVHEADEND_USERS
 	tvheadend -1 tvheadend -1 * /home/tvheadend - video TVHeadend daemon
+endef
+define TVHEADEND_PERMISSIONS
+	/home/tvheadend r 0700 tvheadend tvheadend - - - - -
 endef
 
 $(eval $(generic-package))

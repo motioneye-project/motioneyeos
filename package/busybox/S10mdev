@@ -8,6 +8,8 @@ case "$1" in
 	echo "Starting mdev..."
 	echo /sbin/mdev >/proc/sys/kernel/hotplug
 	/sbin/mdev -s
+	# coldplug modules
+	find /sys/ -name modalias | xargs sort -u | xargs modprobe -abq
 	;;
   stop)
 	;;

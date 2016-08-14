@@ -13,6 +13,7 @@ TOR_AUTORECONF = YES
 
 TOR_CONF_OPTS = \
 	--disable-gcc-hardening \
+	--disable-unittests \
 	--with-libevent-dir=$(STAGING_DIR)/usr \
 	--with-openssl-dir=$(STAGING_DIR)/usr \
 	--with-zlib-dir=$(STAGING_DIR)/usr

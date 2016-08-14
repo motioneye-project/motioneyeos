@@ -1,2 +1,3 @@
-# Locally computed:
-sha256  3d11454f4283c8f771d8dbd5eb6b5f2bbd9d94d9f77d68bab89e35d98b67ab31  acpid-2.0.22.tar.xz
+# From https://sourceforge.net/projects/acpid2/files/
+md5	e41bdf628e122edb4342fca432ea7db9	acpid-2.0.27.tar.xz
+sha1	aabf129499f99b3c14e7a9f5b5ec717b0913e9c8	acpid-2.0.27.tar.xz

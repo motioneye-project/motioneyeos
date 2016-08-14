@@ -1,0 +1,9 @@
+config BR2_PACKAGE_WAYLAND_PROTOCOLS
+	bool "wayland-protocols"
+	# Not really... but useless otherwise
+	depends on BR2_PACKAGE_WAYLAND
+	help
+	  Wayland protocols that adds functionality not available in
+	  the Wayland core protocol.
+
+	  http://wayland.freedesktop.org/

@@ -18,7 +18,7 @@ config BR2_PACKAGE_SWUPDATE
 	  use your own modified configuration, you have to select the
 	  necessary packages manually:
 
-	  * Select BR2_PACKAGE_LUA_5_2 if you want to have Lua support.
+	  * Select BR2_PACKAGE_LUA if you want to have Lua support.
 	  * Select BR2_LIBCURL if you want to use the download feature.
 	  * Select BR2_PACKAGE_OPENSSL is you want to add encryptions support
 	    to the webserver.
@@ -26,6 +26,8 @@ config BR2_PACKAGE_SWUPDATE
 	    partitions.
 	  * Select BR2_PACKAGE_ZLIB if you want to deal with gzip compressed
 	    archives.
+	  * Select BR2_PACKAGE_UBOOT_TOOLS and BR2_PACKAGE_ZLIB to add support
+	    for setting the U-Boot environment.
 
 	  https://sbabic.github.io/swupdate
 

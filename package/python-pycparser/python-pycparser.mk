@@ -11,4 +11,5 @@ PYTHON_PYCPARSER_SETUP_TYPE = setuptools
 PYTHON_PYCPARSER_LICENSE = BSD-3c
 PYTHON_PYCPARSER_LICENSE_FILES = LICENSE
 
+$(eval $(python-package))
 $(eval $(host-python-package))

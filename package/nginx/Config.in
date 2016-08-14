@@ -1,6 +1,7 @@
 menuconfig BR2_PACKAGE_NGINX
 	bool "nginx"
 	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_LIBATOMIC_OPS if BR2_sparc_v8 || BR2_sparc_leon3
 	help
 	  nginx is an HTTP and reverse proxy server, as well as a mail proxy
 	  server.
@@ -17,6 +18,13 @@ config BR2_PACKAGE_NGINX_FILE_AIO
 	# https://bugs.launchpad.net/linaro-aarch64/+bug/1160013
 	depends on !BR2_aarch64
 	depends on !BR2_arc
+
+config BR2_PACKAGE_NGINX_THREADS
+	bool "thread pool support"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+
+comment "thread pool support needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
 
 config BR2_PACKAGE_NGINX_HTTP
 	bool "http server"
@@ -36,8 +44,8 @@ config BR2_PACKAGE_NGINX_HTTP_SSL_MODULE
 	help
 	  Enable ngx_http_ssl_module
 
-config BR2_PACKAGE_NGINX_HTTP_SPDY_MODULE
-	bool "ngx_http_spdy_module"
+config BR2_PACKAGE_NGINX_HTTP_V2_MODULE
+	bool "ngx_http_v2_module"
 	select BR2_PACKAGE_ZLIB
 	help
 	  Enable ngx_http_spdy_module
@@ -303,6 +311,57 @@ config BR2_PACKAGE_NGINX_MAIL_SMTP_MODULE
 	  Enable ngx_mail_smtp_module
 
 endif #BR2_PACKAGE_NGINX_MAIL
+
+config BR2_PACKAGE_NGINX_STREAM
+	bool "stream proxy modules"
+
+if BR2_PACKAGE_NGINX_STREAM
+
+config BR2_PACKAGE_NGINX_STREAM_SSL_MODULE
+	bool "ngx_stream_ssl_module"
+	select BR2_PACKAGE_OPENSSL
+	help
+	  Enable ngx_stream_ssl_module
+
+config BR2_PACKAGE_NGINX_STREAM_LIMIT_CONN_MODULE
+	bool "ngx_stream_limit_conn_module"
+	default y
+	help
+	  Enable ngx_stream_limit_conn_module
+
+config BR2_PACKAGE_NGINX_STREAM_ACCESS_MODULE
+	bool "ngx_stream_access_module"
+	default y
+	help
+	  Enable ngx_stream_access_module
+
+config BR2_PACKAGE_NGINX_STREAM_UPSTREAM_HASH_MODULE
+	bool "ngx_stream_upstream_hash_module"
+	default y
+	help
+	  Enable ngx_stream_upstream_hash_module
+
+config BR2_PACKAGE_NGINX_STREAM_UPSTREAM_LEAST_CONN_MODULE
+	bool "ngx_stream_upstream_least_conn_module"
+	default y
+	help
+	  Enable ngx_stream_upstream_least_conn_module
+
+config BR2_PACKAGE_NGINX_STREAM_UPSTREAM_ZONE_MODULE
+	bool "ngx_stream_upstream_zone_module"
+	default y
+	help
+	  Enable ngx_stream_upstream_zone_module
+
+endif #BR2_PACKAGE_NGINX_STREAM
+
+config BR2_PACKAGE_NGINX_DEBUG
+	bool "debug logging"
+	help
+	  Enable debug logging. The debug level should be set with
+	  the error_log directive. For example
+
+	  error_log /var/log/nginx/error.log debug;
 
 comment "misc. modules"
 

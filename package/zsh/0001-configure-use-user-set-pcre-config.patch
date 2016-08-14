@@ -1,0 +1,33 @@
+From: Baruch Siach <baruch@tkos.co.il>
+Date: Thu, 3 Mar 2016 23:14:39 +0200
+Subject: [PATCH] configure: use user set pcre-config
+
+Setting a non default configuration script location is common practice when
+cross compiling, since the target library might need different flags. zsh
+configure scripts allows the user to set pcre-config location but doesn't
+actually use it. Fix this.
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Patch status: sent upstream
+(http://www.zsh.org/mla/workers/2016/msg00619.html)
+
+ configure.ac | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index c3bd713c126a..9947b16066b6 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -925,7 +925,7 @@ fi
+ if test x$enable_pcre = xyes; then
+ dnl pcre-config should probably be employed here
+ dnl AC_SEARCH_LIBS(pcre_compile, pcre)
+-  LIBS="`pcre-config --libs` $LIBS"
++  LIBS="`$ac_cv_prog_PCRECONF --libs` $LIBS"
+ fi
+ 
+ dnl ---------------------
+-- 
+2.7.0
+

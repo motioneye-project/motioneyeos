@@ -16,7 +16,7 @@ SYSLINUX_INSTALL_IMAGES = YES
 SYSLINUX_DEPENDENCIES = host-nasm host-util-linux host-upx
 
 ifeq ($(BR2_TARGET_SYSLINUX_LEGACY_BIOS),y)
-SYSLINUX_TARGET = bios
+SYSLINUX_TARGET += bios
 endif
 
 # The syslinux build system must be forced to use Buildroot's gnu-efi
@@ -30,7 +30,7 @@ else
 SYSLINUX_EFI_BITS = efi32
 endif # 64-bit
 SYSLINUX_DEPENDENCIES += gnu-efi
-SYSLINUX_TARGET = $(SYSLINUX_EFI_BITS)
+SYSLINUX_TARGET += $(SYSLINUX_EFI_BITS)
 SYSLINUX_EFI_ARGS = \
 	EFIINC=$(STAGING_DIR)/usr/include/efi \
 	LIBDIR=$(STAGING_DIR)/usr/lib \

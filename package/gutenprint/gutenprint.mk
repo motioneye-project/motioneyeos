@@ -5,18 +5,19 @@
 ################################################################################
 
 GUTENPRINT_VERSION_MAJOR = 5.2
-GUTENPRINT_VERSION = $(GUTENPRINT_VERSION_MAJOR).9
+GUTENPRINT_VERSION = $(GUTENPRINT_VERSION_MAJOR).11
 GUTENPRINT_SITE = http://downloads.sourceforge.net/project/gimp-print/gutenprint-$(GUTENPRINT_VERSION_MAJOR)/$(GUTENPRINT_VERSION)
 GUTENPRINT_SOURCE = gutenprint-$(GUTENPRINT_VERSION).tar.bz2
 GUTENPRINT_LICENSE = GPLv2+
 GUTENPRINT_LICENSE_FILES = COPYING
 
-# Needed, as we touch Makefile.am
+# Needed, as we touch Makefile.am and configure.ac
 GUTENPRINT_AUTORECONF = YES
 
 GUTENPRINT_DEPENDENCIES = \
 	cups host-pkgconf \
-	$(if $(BR2_PACKAGE_LIBICONV),libiconv)
+	$(if $(BR2_PACKAGE_LIBICONV),libiconv) \
+	$(if $(BR2_PACKAGE_LIBUSB),libusb)
 
 # host-gutenprint is needed to generate XML as part of compilation
 # the program that generates the xml also links against libgutenprint
@@ -44,8 +45,7 @@ GUTENPRINT_CONF_OPTS = \
 # USE_PREGEN_XMLI18N_TMP_H is added by our patch
 GUTENPRINT_MAKE_ENV = BR2_USE_PREGEN_XMLI18N_TMP_H=$(HOST_DIR)/usr/include/xmli18n-tmp.h
 
-# We have no host dependencies
-HOST_GUTENPRINT_DEPENDENCIES =
+HOST_GUTENPRINT_DEPENDENCIES = host-pkgconf
 # The host-gutenprint shall create the required header
 HOST_GUTENPRINT_MAKE_ENV =
 

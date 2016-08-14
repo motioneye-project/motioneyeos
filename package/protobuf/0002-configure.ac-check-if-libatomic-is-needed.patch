@@ -1,0 +1,34 @@
+From f020fe05a20dfcd16cd7df833dcf3cdeef770538 Mon Sep 17 00:00:00 2001
+From: Carlos Santos <casantos@datacom.ind.br>
+Date: Thu, 11 Feb 2016 10:58:35 -0200
+Subject: [PATCH 2/2] configure.ac: check if libatomic is needed
+
+Compilation of protobuf for PowerPC and SPARC may fail due to missing
+references to __atomic_fetch_add_4 and __atomic_compare_exchange_4.
+
+The __atomic_*() intrinsics for all sizes are provided by libatomic when
+gcc is >= 4.8. This can be achieved by adding this to configure.ac:
+
+    AC_SEARCH_LIBS([__atomic_fetch_add_4], [atomic])
+
+Signed-off-by: Carlos Santos <casantos@datacom.ind.br>
+---
+ configure.ac | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/configure.ac b/configure.ac
+index c07067c..88d4a0d 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -139,6 +139,8 @@ AM_CONDITIONAL([USE_EXTERNAL_PROTOC], [test "$with_protoc" != "no"])
+ ACX_PTHREAD
+ AC_CXX_STL_HASH
+ 
++AC_SEARCH_LIBS([__atomic_load_4], [atomic])
++
+ case "$target_os" in
+   mingw* | cygwin* | win*)
+     ;;
+-- 
+2.5.0
+

@@ -43,8 +43,8 @@ config BR2_PACKAGE_NODEJS_V8_ARCH_SUPPORTS
 
 config BR2_PACKAGE_NODEJS_VERSION_STRING
 	string
-	default "5.5.0"		if BR2_PACKAGE_NODEJS_V8_ARCH_SUPPORTS
-	default "0.10.42"
+	default "6.1.0"		if BR2_PACKAGE_NODEJS_V8_ARCH_SUPPORTS
+	default "0.10.45"
 
 menu "Module Selection"
 

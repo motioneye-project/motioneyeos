@@ -12,6 +12,8 @@ config BR2_PACKAGE_QT53D
 
 	  This package corresponds to the qt53d module.
 
+	  Enable the assimp package to gain the assimp sceneparser plugin.
+
 	  http://doc.qt.io/qt-5/qt3d-index.html
 
 comment "qt53d module needs an OpenGL-capable backend"

@@ -22,6 +22,7 @@ config BR2_TOOLCHAIN_EXTERNAL_LINARO_ARM
 	depends on BR2_ARM_EABIHF
 	depends on !BR2_STATIC_LIBS
 	select BR2_TOOLCHAIN_EXTERNAL_GLIBC
+	select BR2_TOOLCHAIN_HAS_SSP
 	select BR2_TOOLCHAIN_HAS_NATIVE_RPC
 	select BR2_INSTALL_LIBSTDCPP
 	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_1
@@ -37,20 +38,21 @@ config BR2_TOOLCHAIN_EXTERNAL_LINARO_ARM
 
 # See the note above.
 config BR2_TOOLCHAIN_EXTERNAL_LINARO_ARM
-	bool "Linaro ARM 2015.11"
+	bool "Linaro ARM 2016.02"
 	depends on BR2_arm
 	depends on BR2_ARM_CPU_ARMV7A
 	depends on BR2_HOSTARCH = "x86_64"
 	depends on BR2_ARM_EABIHF
 	depends on !BR2_STATIC_LIBS
 	select BR2_TOOLCHAIN_EXTERNAL_GLIBC
+	select BR2_TOOLCHAIN_HAS_SSP
 	select BR2_TOOLCHAIN_HAS_NATIVE_RPC
 	select BR2_INSTALL_LIBSTDCPP
 	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_0
 	select BR2_TOOLCHAIN_GCC_AT_LEAST_5
 	help
 	  Linaro toolchain for the ARM architecture. It uses Linaro
-	  GCC 2015.08 (based on gcc 5.1), Linaro GDB 2015.08 (based on
+	  GCC 2016.02 (based on gcc 5.3), Linaro GDB 2016.02 (based on
 	  GDB 7.10), glibc 2.21, Binutils 2015.10 (based on 2.25). It
 	  generates code that runs on all Cortex-A profile devices,
 	  but tuned for the Cortex-A9. The code generated is Thumb 2,
@@ -66,6 +68,7 @@ config BR2_TOOLCHAIN_EXTERNAL_LINARO_ARMEB
 	depends on BR2_ARM_EABIHF
 	depends on !BR2_STATIC_LIBS
 	select BR2_TOOLCHAIN_EXTERNAL_GLIBC
+	select BR2_TOOLCHAIN_HAS_SSP
 	select BR2_TOOLCHAIN_HAS_NATIVE_RPC
 	select BR2_INSTALL_LIBSTDCPP
 	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_1
@@ -81,21 +84,22 @@ config BR2_TOOLCHAIN_EXTERNAL_LINARO_ARMEB
 
 # See the note above.
 config BR2_TOOLCHAIN_EXTERNAL_LINARO_ARMEB
-	bool "Linaro armeb 2015.11"
+	bool "Linaro armeb 2016.02"
 	depends on BR2_armeb
 	depends on BR2_ARM_CPU_ARMV7A
 	depends on BR2_HOSTARCH = "x86_64"
 	depends on BR2_ARM_EABIHF
 	depends on !BR2_STATIC_LIBS
 	select BR2_TOOLCHAIN_EXTERNAL_GLIBC
+	select BR2_TOOLCHAIN_HAS_SSP
 	select BR2_TOOLCHAIN_HAS_NATIVE_RPC
 	select BR2_INSTALL_LIBSTDCPP
 	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_0
 	select BR2_TOOLCHAIN_GCC_AT_LEAST_5
 	help
 	  Linaro toolchain for the ARM big endian architecture. It
-	  uses Linaro GCC 2015.08 (based on gcc 5.1), Linaro GDB
-	  2015.08 (based on GDB 7.10), glibc 2.21, Binutils 2015.10
+	  uses Linaro GCC 2016.02 (based on gcc 5.3), Linaro GDB
+	  2016.02 (based on GDB 7.10), glibc 2.21, Binutils 2015.10
 	  (based on 2.25). It generates code that runs on all Cortex-A
 	  profile devices, but tuned for the Cortex-A9. The code
 	  generated is Thumb 2, with the hard floating point calling
@@ -108,6 +112,7 @@ config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_ARM
 	depends on BR2_ARM_EABI
 	depends on !BR2_STATIC_LIBS
 	select BR2_TOOLCHAIN_EXTERNAL_GLIBC
+	select BR2_TOOLCHAIN_HAS_SSP
 	select BR2_TOOLCHAIN_HAS_NATIVE_RPC
 	select BR2_INSTALL_LIBSTDCPP
 	select BR2_HOSTARCH_NEEDS_IA32_LIBS
@@ -143,6 +148,7 @@ config BR2_TOOLCHAIN_EXTERNAL_ARAGO_ARMV7A
 	depends on BR2_ARM_CPU_HAS_VFPV3
 	depends on !BR2_STATIC_LIBS
 	select BR2_TOOLCHAIN_EXTERNAL_GLIBC
+	select BR2_TOOLCHAIN_HAS_SSP
 	select BR2_TOOLCHAIN_HAS_NATIVE_RPC
 	select BR2_INSTALL_LIBSTDCPP
 	select BR2_HOSTARCH_NEEDS_IA32_LIBS
@@ -166,6 +172,7 @@ config BR2_TOOLCHAIN_EXTERNAL_ARAGO_ARMV5TE
 	depends on BR2_ARM_EABI
 	depends on !BR2_STATIC_LIBS
 	select BR2_TOOLCHAIN_EXTERNAL_GLIBC
+	select BR2_TOOLCHAIN_HAS_SSP
 	select BR2_TOOLCHAIN_HAS_NATIVE_RPC
 	select BR2_INSTALL_LIBSTDCPP
 	select BR2_HOSTARCH_NEEDS_IA32_LIBS
@@ -178,22 +185,23 @@ config BR2_TOOLCHAIN_EXTERNAL_ARAGO_ARMV5TE
 	  This toolchain uses software-floating point.
 
 config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_MIPS
-	bool "Sourcery CodeBench MIPS 2015.11"
+	bool "Sourcery CodeBench MIPS 2016.05"
 	depends on BR2_mips || BR2_mipsel || BR2_mips64 || BR2_mips64el
 	depends on BR2_mips_32r2 || BR2_mips_64r2
 	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86"
 	depends on !BR2_MIPS_NABI32
 	depends on !BR2_STATIC_LIBS
 	select BR2_TOOLCHAIN_EXTERNAL_GLIBC
+	select BR2_TOOLCHAIN_HAS_SSP
 	select BR2_TOOLCHAIN_HAS_NATIVE_RPC
 	select BR2_INSTALL_LIBSTDCPP
 	select BR2_HOSTARCH_NEEDS_IA32_LIBS
-	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_2
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_4
 	select BR2_TOOLCHAIN_GCC_AT_LEAST_5
 	help
 	  Sourcery CodeBench toolchain for the MIPS architecture, from
-	  Mentor Graphics. It uses gcc 5.2, binutils 2.25.51, glibc
-	  2.22, uClibc 0.9.30 and gdb 7.10.50, kernel headers 4.2. It
+	  Mentor Graphics. It uses gcc 5.3, binutils 2.25.51, glibc
+	  2.23, uClibc 0.9.30 and gdb 7.10.50, kernel headers 4.4.1. It
 	  has support for the following variants:
 	    - MIPS32r2 - Big-Endian, 2008 NaN, O32
 	      Select MIPS (big endian) core
@@ -269,99 +277,138 @@ comment "Sourcery CodeBench toolchains are only available for MIPS/MIPS64 o32 an
 	depends on !BR2_STATIC_LIBS
 
 config BR2_TOOLCHAIN_EXTERNAL_CODESCAPE_IMG_MIPS
-	bool "Codescape IMG GNU Linux Toolchain 2015.06"
+	bool "Codescape IMG GNU Linux Toolchain 2015.10"
 	depends on BR2_mips || BR2_mipsel || BR2_mips64 || BR2_mips64el
 	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86"
-	depends on !BR2_MIPS_SOFT_FLOAT
-	depends on BR2_mips_32r6 || BR2_mips_64r6
+	depends on BR2_mips_32r6 || (BR2_mips_64r6 && !BR2_MIPS_SOFT_FLOAT)
 	select BR2_TOOLCHAIN_EXTERNAL_GLIBC
 	select BR2_INSTALL_LIBSTDCPP
 	select BR2_HOSTARCH_NEEDS_IA32_LIBS
 	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_0
 	select BR2_TOOLCHAIN_GCC_AT_LEAST_4_9
 	help
-	  Codescape IMG GNU Linux Toolchain 2015.06 for the MIPS
+	  Codescape IMG GNU Linux Toolchain 2015.10 for the MIPS
 	  architecture, from Imagination Technologies. It uses gcc
 	  4.9.2, binutils 2.24.90, glibc 2.20, gdb 7.9.1 and kernel
 	  headers 4.0. It has support for the following variants:
-	    - MIPS32r6 - Big-Endian, o32
+	    - MIPS32r6 - Big-Endian, Hard-Float, 2008 NaN, o32 ABI
 	      Select 'MIPS (big endian)' Target Architecture
 	      Select 'mips 32r6' Target Architecture Variant
-	    - MIPS32r6 - Little-Endian, o32
+	      Disable 'Use soft-float'
+	    - MIPS32r6 - Big-Endian, Soft-Float, 2008 NaN, o32 ABI
+	      Select 'MIPS (big endian)' Target Architecture
+	      Select 'mips 32r6' Target Architecture Variant
+	      Enable 'Use soft-float'
+	    - MIPS32r6 - Little-Endian, Hard-Float, 2008 NaN, o32 ABI
 	      Select 'MIPS (little endian)' Target Architecture
 	      Select 'mips 32r6' Target Architecture Variant
-	    - MIPS32r6 - Little-Endian, o32, microMIPS
+	      Disable 'Use soft-float'
+	    - MIPS32r6 - Little-Endian, Soft-Float, 2008 NaN, o32 ABI
 	      Select 'MIPS (little endian)' Target Architecture
 	      Select 'mips 32r6' Target Architecture Variant
+	      Enable 'Use soft-float'
+	    - MIPS32r6 - Little-Endian, Hard-Float, 2008 NaN, o32 ABI, microMIPS
+	      Select 'MIPS (little endian)' Target Architecture
+	      Select 'mips 32r6' Target Architecture Variant
+	      Disable 'Use soft-float'
 	      Set BR2_TARGET_OPTIMIZATION to '-mmicromips'
-	    - MIPS64r6 - Big-Endian, n32
+	    - MIPS32r6 - Little-Endian, Soft-Float, 2008 NaN, o32 ABI, microMIPS
+	      Select 'MIPS (little endian)' Target Architecture
+	      Select 'mips 32r6' Target Architecture Variant
+	      Enable 'Use soft-float'
+	      Set BR2_TARGET_OPTIMIZATION to '-mmicromips'
+	    - MIPS64r6 - Big-Endian, Hard-Float, 2008 NaN, n32 ABI
 	      Select 'MIPS64 (big endian)' Target Architecture
 	      Select 'mips 64r6' Target Architecture Variant
 	      Select 'n32' Target ABI
-	    - MIPS64r6 - Little-Endian, n32
+	      Disable 'Use soft-float'
+	    - MIPS64r6 - Little-Endian, Hard-Float, 2008 NaN, n32 ABI
 	      Select 'MIPS64 (little endian)' Target Architecture
 	      Select 'mips 64r6' Target Architecture Variant
 	      Select 'n32' Target ABI
-	    - MIPS64r6 - Big-Endian, n64
+	      Disable 'Use soft-float'
+	    - MIPS64r6 - Big-Endian, Hard-Float, 2008 NaN, n64 ABI
 	      Select 'MIPS64 (big endian)' Target Architecture
 	      Select 'mips 64r6' Target Architecture Variant
 	      Select 'n64' Target ABI
-	    - MIPS64r6 - Little-Endian, n64
+	      Disable 'Use soft-float'
+	    - MIPS64r6 - Little-Endian, Hard-Float, 2008 NaN, n64 ABI
 	      Select 'MIPS64 (little endian)' Target Architecture
 	      Select 'mips 64r6' Target Architecture Variant
 	      Select 'n64' Target ABI
-
+	      Disable 'Use soft-float'
 
 config BR2_TOOLCHAIN_EXTERNAL_CODESCAPE_MTI_MIPS
-	bool "Codescape MTI GNU Linux Toolchain 2015.06"
+	bool "Codescape MTI GNU Linux Toolchain 2015.10"
 	depends on BR2_mips || BR2_mipsel || BR2_mips64 || BR2_mips64el
 	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86"
-	depends on !BR2_MIPS_SOFT_FLOAT
-	depends on BR2_mips_32r2 || BR2_mips_64r2
+	depends on BR2_mips_32r2 || (BR2_mips_64r2 && !BR2_MIPS_SOFT_FLOAT)
 	select BR2_TOOLCHAIN_EXTERNAL_GLIBC
 	select BR2_INSTALL_LIBSTDCPP
 	select BR2_HOSTARCH_NEEDS_IA32_LIBS
 	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_0
 	select BR2_TOOLCHAIN_GCC_AT_LEAST_4_9
 	help
-	  Codescape MTI GNU Linux Toolchain 2015.06 for the MIPS
+	  Codescape MTI GNU Linux Toolchain 2015.10 for the MIPS
 	  architecture, from Imagination Technologies. It uses gcc
 	  4.9.2, binutils 2.24.90, glibc 2.20, gdb 7.9.1 and kernel
 	  headers 4.0. It has support for the following variants:
-	    - MIPS32r2 - Big-Endian, o32
+	    - MIPS32r2 - Big-Endian, Hard-Float, Legacy NaN, o32 ABI
 	      Select 'MIPS (big endian)' Target Architecture
 	      Select 'mips 32r2' Target Architecture Variant
-	    - MIPS32r2 - Little-Endian, o32
-	      Select 'MIPS (little endian)' Target Architecture
-	      Select 'mips 32r2' Target Architecture Variant
-	    - MIPS32r2 - Big-Endian, 2008 NaN, o32
+	      Disable 'Use soft-float'
+	    - MIPS32r2 - Big-Endian, Hard-Float, 2008 NaN, o32 ABI
 	      Select 'MIPS (big endian)' Target Architecture
 	      Select 'mips 32r2' Target Architecture Variant
+	      Disable 'Use soft-float'
 	      Set BR2_TARGET_OPTIMIZATION to '-mnan=2008'
-	    - MIPS32r2 - Little-Endian, 2008 NaN, o32
+	    - MIPS32r2 - Big-Endian, Soft-Float, Legacy NaN, o32 ABI
+	      Select 'MIPS (big endian)' Target Architecture
+	      Select 'mips 32r2' Target Architecture Variant
+	      Enable 'Use soft-float'
+	    - MIPS32r2 - Little-Endian, Hard-Float, Legacy NaN, o32 ABI
 	      Select 'MIPS (little endian)' Target Architecture
 	      Select 'mips 32r2' Target Architecture Variant
-	      Set BR2_TARGET_OPTIMIZATION to '-mnan=2008'
-	    - MIPS32r2 - Little-Endian, o32, microMIPS
+	      Disable 'Use soft-float'
+	    - MIPS32r2 - Little-Endian, Hard-Float, 2008 NaN, o32 ABI
 	      Select 'MIPS (little endian)' Target Architecture
 	      Select 'mips 32r2' Target Architecture Variant
+	      Disable 'Use soft-float'
+	      Set BR2_TARGET_OPTIMIZATION to '-mnan=2008'
+	    - MIPS32r2 - Little-Endian, Soft-Float, Legacy NaN, o32 ABI
+	      Select 'MIPS (little endian)' Target Architecture
+	      Select 'mips 32r2' Target Architecture Variant
+	      Enable 'Use soft-float'
+	    - MIPS32r2 - Little-Endian, Hard-Float, 2008 NaN, o32 ABI, microMIPS
+	      Select 'MIPS (little endian)' Target Architecture
+	      Select 'mips 32r2' Target Architecture Variant
+	      Enable 'Use soft-float'
 	      Set BR2_TARGET_OPTIMIZATION to '-mmicromips'
-	    - MIPS64r2 - Big-Endian, n32
+	    - MIPS32r2 - Little-Endian, Soft-Float, Legacy NaN, o32 ABI, microMIPS
+	      Select 'MIPS (little endian)' Target Architecture
+	      Select 'mips 32r2' Target Architecture Variant
+	      Disable 'Use soft-float'
+	      Set BR2_TARGET_OPTIMIZATION to '-mmicromips'
+	    - MIPS64r2 - Big-Endian, Hard-Float, Legacy NaN, n32 ABI
 	      Select 'MIPS64 (big endian)' Target Architecture
 	      Select 'mips 64r2' Target Architecture Variant
 	      Select 'n32' Target ABI
-	    - MIPS64r2 - Little-Endian, n32
+	      Disable 'Use soft-float'
+	    - MIPS64r2 - Little-Endian, Hard-Float, Legacy NaN, n32 ABI
 	      Select 'MIPS64 (little endian)' Target Architecture
 	      Select 'mips 64r2' Target Architecture Variant
 	      Select 'n32' Target ABI
-	    - MIPS64r2 - Big-Endian, n64
+	      Disable 'Use soft-float'
+	    - MIPS64r2 - Big-Endian, Hard-Float, Legacy NaN, n64 ABI
 	      Select 'MIPS64 (big endian)' Target Architecture
 	      Select 'mips 64r2' Target Architecture Variant
 	      Select 'n64' Target ABI
-	    - MIPS64r2 - Little-Endian, n64
+	      Disable 'Use soft-float'
+	    - MIPS64r2 - Little-Endian, Hard-Float, Legacy NaN, n64 ABI
 	      Select 'MIPS64 (little endian)' Target Architecture
 	      Select 'mips 64r2' Target Architecture Variant
 	      Select 'n64' Target ABI
+	      Disable 'Use soft-float'
 
 config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_NIOSII
 	bool "Sourcery CodeBench Nios-II 2015.11"
@@ -369,67 +416,17 @@ config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_NIOSII
 	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86"
 	depends on !BR2_STATIC_LIBS
 	select BR2_TOOLCHAIN_EXTERNAL_GLIBC
+	select BR2_TOOLCHAIN_HAS_SSP
 	select BR2_TOOLCHAIN_HAS_NATIVE_RPC
 	select BR2_INSTALL_LIBSTDCPP
 	select BR2_HOSTARCH_NEEDS_IA32_LIBS
 	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_2
 	select BR2_TOOLCHAIN_GCC_AT_LEAST_5
+	select BR2_TOOLCHAIN_HAS_BINUTILS_BUG_19405 # based-on binutils-2.25.1
 	help
 	  Sourcery CodeBench toolchain for the Nios-II architecture,
 	  from Mentor Graphics. It uses gcc 5.2, binutils 2.25.51,
 	  glibc 2.22, gdb 7.10.50 and kernel headers 4.2.
-
-config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_POWERPC_E500V2
-	bool "Sourcery CodeBench PowerPC 2012.03 (e500v2 only)"
-	depends on BR2_powerpc
-	depends on BR2_powerpc_8548 # e500v2 support only
-	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86"
-	depends on !BR2_STATIC_LIBS
-	select BR2_TOOLCHAIN_EXTERNAL_GLIBC
-	select BR2_TOOLCHAIN_HAS_NATIVE_RPC
-	select BR2_INSTALL_LIBSTDCPP
-	select BR2_HOSTARCH_NEEDS_IA32_LIBS
-	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_2
-	select BR2_TOOLCHAIN_GCC_AT_LEAST_4_6
-	help
-	  Sourcery CodeBench toolchain for the PowerPC architecture,
-	  from Mentor Graphics. It uses gcc 4.6.3, binutils 2.21.53,
-	  glibc 2.15, gdb 7.2.50 and kernel headers 3.2.10. It has
-	  support for the following variants:
-	    - e500v2 glibc, SPE, 32 bits
-
-config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_POWERPC
-	bool "Sourcery CodeBench PowerPC 2011.03"
-	depends on BR2_powerpc
-	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86"
-	depends on !BR2_STATIC_LIBS
-	select BR2_TOOLCHAIN_EXTERNAL_GLIBC
-	select BR2_TOOLCHAIN_HAS_NATIVE_RPC
-	select BR2_INSTALL_LIBSTDCPP
-	select BR2_HOSTARCH_NEEDS_IA32_LIBS
-	# kernel headers: 2.6.38
-	select BR2_TOOLCHAIN_GCC_AT_LEAST_4_5
-	help
-	  Sourcery CodeBench toolchain for the PowerPC architecture,
-	  from Mentor Graphics. It uses gcc 4.5.2, binutils 2.20.51,
-	  glibc 2.13, gdb 7.2.50 and kernel headers 2.6.38. It has
-	  support for the following variants:
-	    - 603 glibc, 32 bits
-	      Select a generic PowerPC core
-	      Disable BR2_SOFT_FLOAT
-	    - 603 soft float glibc, 32 bits
-	      Select a generic PowerPC core
-	      Enable BR2_SOFT_FLOAT
-	    - e600 altivec glibc, 32 bits
-	      Set BR2_TARGET_OPTIMIZATION to -te600
-	    - e500v1 glibc, 32 bits
-	      Set BR2_TARGET_OPTIMIZATION to -te500v1
-	    - e500v2 glibc, 32 bits
-	      Set BR2_TARGET_OPTIMIZATION to -te500v2
-	    - e500mc glibc, 32 bits
-	      Set BR2_TARGET_OPTIMIZATION to -te500mc
-	    - 970 glibc hard-float, 64 bits
-	      Set BR2_TARGET_OPTIMIZATION to -m64
 
 config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_SH
 	bool "Sourcery CodeBench SH 2012.09"
@@ -437,6 +434,7 @@ config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_SH
 	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86"
 	depends on !BR2_STATIC_LIBS
 	select BR2_TOOLCHAIN_EXTERNAL_GLIBC
+	select BR2_TOOLCHAIN_HAS_SSP
 	select BR2_TOOLCHAIN_HAS_NATIVE_RPC
 	select BR2_INSTALL_LIBSTDCPP
 	select BR2_HOSTARCH_NEEDS_IA32_LIBS
@@ -463,6 +461,7 @@ config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_AMD64
 	depends on !BR2_STATIC_LIBS
 	depends on BR2_x86_jaguar || BR2_x86_steamroller
 	select BR2_TOOLCHAIN_EXTERNAL_GLIBC
+	select BR2_TOOLCHAIN_HAS_SSP
 	select BR2_TOOLCHAIN_HAS_NATIVE_RPC
 	select BR2_INSTALL_LIBSTDCPP
 	select BR2_HOSTARCH_NEEDS_IA32_LIBS
@@ -488,6 +487,7 @@ config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_X86
 	depends on !BR2_x86_jaguar
 	depends on !BR2_x86_steamroller
 	select BR2_TOOLCHAIN_EXTERNAL_GLIBC
+	select BR2_TOOLCHAIN_HAS_SSP
 	select BR2_TOOLCHAIN_HAS_NATIVE_RPC
 	select BR2_INSTALL_LIBSTDCPP
 	select BR2_HOSTARCH_NEEDS_IA32_LIBS
@@ -533,6 +533,7 @@ config BR2_TOOLCHAIN_EXTERNAL_LINARO_AARCH64
 	depends on BR2_HOSTARCH = "x86"
 	depends on !BR2_STATIC_LIBS
 	select BR2_TOOLCHAIN_EXTERNAL_GLIBC
+	select BR2_TOOLCHAIN_HAS_SSP
 	select BR2_INSTALL_LIBSTDCPP
 	select BR2_TOOLCHAIN_HAS_NATIVE_RPC
 	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_7
@@ -543,11 +544,12 @@ config BR2_TOOLCHAIN_EXTERNAL_LINARO_AARCH64
 
 # See note about Linaro ARM/ARMEB toolchains, above.
 config BR2_TOOLCHAIN_EXTERNAL_LINARO_AARCH64
-	bool "Linaro AArch64 2015.11"
+	bool "Linaro AArch64 2016.02"
 	depends on BR2_aarch64
 	depends on BR2_HOSTARCH = "x86_64"
 	depends on !BR2_STATIC_LIBS
 	select BR2_TOOLCHAIN_EXTERNAL_GLIBC
+	select BR2_TOOLCHAIN_HAS_SSP
 	select BR2_INSTALL_LIBSTDCPP
 	select BR2_TOOLCHAIN_HAS_NATIVE_RPC
 	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_0
@@ -557,40 +559,45 @@ config BR2_TOOLCHAIN_EXTERNAL_LINARO_AARCH64
 	  http://www.linaro.org/engineering/armv8/
 
 config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_AARCH64
-	bool "CodeSourcery AArch64 2014.05"
+	bool "CodeSourcery AArch64 2014.11"
 	depends on BR2_aarch64
 	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86"
 	depends on !BR2_STATIC_LIBS
 	select BR2_TOOLCHAIN_EXTERNAL_GLIBC
+	select BR2_TOOLCHAIN_HAS_SSP
 	select BR2_INSTALL_LIBSTDCPP
 	select BR2_HOSTARCH_NEEDS_IA32_LIBS
 	select BR2_TOOLCHAIN_HAS_NATIVE_RPC
-	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_13
-	select BR2_TOOLCHAIN_GCC_AT_LEAST_4_8
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_16
+	select BR2_TOOLCHAIN_GCC_AT_LEAST_4_9
 	help
 	  Sourcery CodeBench toolchain for the AArch64 architecture,
-	  from Mentor Graphics. It uses gcc 4.8.3, binutils 2.24,
-	  glibc 2.18, gdb 7.7.50 and kernel headers 3.13.
+	  from Mentor Graphics. It uses gcc 4.9.1, binutils
+	  2.24.51.20140217, glibc 2.20, gdb 7.7.50 and kernel headers
+	  3.16.2.
 
 config BR2_TOOLCHAIN_EXTERNAL_MUSL_CROSS
-	bool "Musl 1.1.6 toolchain (experimental)"
+	bool "Musl 1.1.12 toolchain (experimental)"
 	depends on (BR2_arm && BR2_ARM_EABI) || \
 		(BR2_arm && BR2_ARM_EABIHF && !BR2_ARM_CPU_ARMV4) || \
-		(BR2_armeb && BR2_ARM_EABI) || \
-		(BR2_i386 && !BR2_x86_i386) || BR2_microblazebe || BR2_mips || \
-		BR2_mipsel || (BR2_powerpc && BR2_powerpc_CLASSIC) || BR2_x86_64
+		(BR2_armeb && BR2_ARM_EABI) || BR2_i386 || \
+		(BR2_mips && !BR2_SOFT_FLOAT) || \
+		BR2_mipsel || (BR2_powerpc && BR2_powerpc_CLASSIC) || \
+		BR2_sh4 || BR2_sh4eb || \
+		BR2_x86_64
 	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86"
 	# Unsupported for MIPS R6
 	depends on !BR2_mips_32r6 && !BR2_mips_64r6
 	select BR2_TOOLCHAIN_EXTERNAL_MUSL
+	select BR2_TOOLCHAIN_HAS_SSP
 	select BR2_INSTALL_LIBSTDCPP
 	select BR2_HOSTARCH_NEEDS_IA32_LIBS
 	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_12
-	select BR2_TOOLCHAIN_GCC_AT_LEAST_4_9
+	select BR2_TOOLCHAIN_GCC_AT_LEAST_5
 	help
 	  Toolchain based on the Musl C library, provided by the
-	  musl-cross project. It uses gcc 4.9.2, binutils 2.25 and
-	  musl 1.1.6. It does not have a cross debugger included.
+	  musl-cross project. It uses gcc 5.3, binutils 2.25.1 and
+	  musl 1.1.12. It does not have a cross debugger included.
 
 	  The ARM soft-float toolchain is built for ARMv4t, while the
 	  ARM hard-float toolchain is built for ARMv5t.
@@ -677,11 +684,9 @@ config BR2_TOOLCHAIN_EXTERNAL_PREFIX
 	default "arm-arago-linux-gnueabi" if BR2_TOOLCHAIN_EXTERNAL_ARAGO_ARMV7A
 	default "arm-arago-linux-gnueabi" if BR2_TOOLCHAIN_EXTERNAL_ARAGO_ARMV5TE
 	default "aarch64-linux-gnu"      if BR2_TOOLCHAIN_EXTERNAL_LINARO_AARCH64
-	default "aarch64-linux-gnu"      if BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_AARCH64
+	default "aarch64-amd-linux-gnu"  if BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_AARCH64
 	default "mips-linux-gnu"         if BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_MIPS
 	default "nios2-linux-gnu"        if BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_NIOSII
-	default "powerpc-linux-gnu"      if BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_POWERPC
-	default "powerpc-mentor-linux-gnu" if BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_POWERPC_E500V2
 	default "sh-linux-gnu"           if BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_SH
 	default "i686-pc-linux-gnu"	 if BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_X86
 	default "x86_64-amd-linux-gnu"   if BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_AMD64
@@ -693,12 +698,12 @@ config BR2_TOOLCHAIN_EXTERNAL_PREFIX
 	default "mips-mti-linux-gnu"     if BR2_TOOLCHAIN_EXTERNAL_CODESCAPE_MTI_MIPS
 	default "armeb-linux-musleabi"	 if BR2_TOOLCHAIN_EXTERNAL_MUSL_CROSS && BR2_armeb
 	default "i486-linux-musl"	 if BR2_TOOLCHAIN_EXTERNAL_MUSL_CROSS && BR2_i386
-	default "microblaze-linux-musl"	 if BR2_TOOLCHAIN_EXTERNAL_MUSL_CROSS && BR2_microblazebe
 	default "mips-linux-musl"	 if BR2_TOOLCHAIN_EXTERNAL_MUSL_CROSS && (BR2_mips && !BR2_SOFT_FLOAT)
-	default "mips-sf-linux-musl"	 if BR2_TOOLCHAIN_EXTERNAL_MUSL_CROSS && (BR2_mips && BR2_SOFT_FLOAT)
 	default "mipsel-linux-musl"	 if BR2_TOOLCHAIN_EXTERNAL_MUSL_CROSS && (BR2_mipsel && !BR2_SOFT_FLOAT)
 	default "mipsel-sf-linux-musl"	 if BR2_TOOLCHAIN_EXTERNAL_MUSL_CROSS && (BR2_mipsel && BR2_SOFT_FLOAT)
 	default "powerpc-linux-musl"     if BR2_TOOLCHAIN_EXTERNAL_MUSL_CROSS && BR2_powerpc
+	default "sh4-linux-musl"         if BR2_TOOLCHAIN_EXTERNAL_MUSL_CROSS && BR2_sh4
+	default "sh4eb-linux-musl"       if BR2_TOOLCHAIN_EXTERNAL_MUSL_CROSS && BR2_sh4eb
 	default "x86_64-linux-musl"	 if BR2_TOOLCHAIN_EXTERNAL_MUSL_CROSS && BR2_x86_64
 	default BR2_TOOLCHAIN_EXTERNAL_CUSTOM_PREFIX \
 					 if BR2_TOOLCHAIN_EXTERNAL_CUSTOM
@@ -724,6 +729,10 @@ choice
 	help
 	  Set to the gcc version that is used by your external
 	  toolchain.
+
+config BR2_TOOLCHAIN_EXTERNAL_GCC_6
+	bool "6.x"
+	select BR2_TOOLCHAIN_GCC_AT_LEAST_6
 
 config BR2_TOOLCHAIN_EXTERNAL_GCC_5
 	bool "5.x"
@@ -775,6 +784,10 @@ choice
 	    M = ( LINUX_VERSION_CODE >> 16 ) & 0xFF
 	    m = ( LINUX_VERSION_CODE >> 8  ) & 0xFF
 	    p = ( LINUX_VERSION_CODE >> 0  ) & 0xFF
+
+config BR2_TOOLCHAIN_EXTERNAL_HEADERS_4_5
+	bool "4.5.x"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_5
 
 config BR2_TOOLCHAIN_EXTERNAL_HEADERS_4_4
 	bool "4.4.x"
@@ -972,16 +985,18 @@ config BR2_TOOLCHAIN_EXTERNAL_HAS_THREADS_NPTL
 
 endif # BR2_TOOLCHAIN_EXTERNAL_HAS_THREADS
 
+endif # BR2_TOOLCHAIN_EXTERNAL_CUSTOM_UCLIBC
+
 config BR2_TOOLCHAIN_EXTERNAL_HAS_SSP
 	bool "Toolchain has SSP support?"
 	select BR2_TOOLCHAIN_HAS_SSP
+	default y if BR2_TOOLCHAIN_EXTERNAL_GLIBC
+	default y if BR2_TOOLCHAIN_EXTERNAL_MUSL
 	help
 	  Selection this option if your external toolchain has Stack
 	  Smashing Protection support enabled. If you don't know,
 	  leave the default value, Buildroot will tell you if it's
 	  correct or not.
-
-endif # BR2_TOOLCHAIN_EXTERNAL_CUSTOM_UCLIBC
 
 config BR2_TOOLCHAIN_EXTERNAL_INET_RPC
 	bool "Toolchain has RPC support?"
@@ -1006,8 +1021,7 @@ config BR2_TOOLCHAIN_EXTRA_EXTERNAL_LIBS
 	help
 	  If your external toolchain provides extra libraries that
 	  need to be copied to the target filesystem, enter them
-	  here, separated by spaces. They will be copied to the
-	  target's /lib directory.
+	  here, separated by spaces.
 
 endif # BR2_TOOLCHAIN_EXTERNAL_CUSTOM
 

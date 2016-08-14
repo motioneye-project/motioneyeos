@@ -4,9 +4,8 @@
 #
 ################################################################################
 
-ELF2FLT_VERSION = f859213b18a67fcfc09961267e0a1122d35186f4
-ELF2FLT_SITE = http://cgit.openadk.org/cgi/cgit/elf2flt.git
-ELF2FLT_SITE_METHOD = git
+ELF2FLT_VERSION = 9dbc458c6122c495bbdec8dc975a15c9d39e5ff2
+ELF2FLT_SITE = $(call github,uclinux-dev,elf2flt,$(ELF2FLT_VERSION))
 ELF2FLT_LICENSE = GPLv2+
 ELF2FLT_LICENSE_FILES = LICENSE.TXT
 
@@ -19,7 +18,8 @@ HOST_ELF2FLT_CONF_OPTS = \
 	--with-binutils-include-dir=$(HOST_BINUTILS_DIR)/include/ \
 	--with-libbfd=$(HOST_BINUTILS_DIR)/bfd/libbfd.a \
 	--with-libiberty=$(HOST_BINUTILS_DIR)/libiberty/libiberty.a \
-	--target=$(GNU_TARGET_NAME)
+	--target=$(GNU_TARGET_NAME) \
+	--disable-werror
 
 HOST_ELF2FLT_LIBS = -lz
 

@@ -5,7 +5,7 @@
 ################################################################################
 
 LIBGTK2_VERSION_MAJOR = 2.24
-LIBGTK2_VERSION = $(LIBGTK2_VERSION_MAJOR).29
+LIBGTK2_VERSION = $(LIBGTK2_VERSION_MAJOR).30
 LIBGTK2_SOURCE = gtk+-$(LIBGTK2_VERSION).tar.xz
 LIBGTK2_SITE = http://ftp.gnome.org/pub/gnome/sources/gtk+/$(LIBGTK2_VERSION_MAJOR)
 LIBGTK2_INSTALL_STAGING = YES
@@ -85,6 +85,7 @@ LIBGTK2_CONF_OPTS += --without-libtiff
 endif
 
 ifeq ($(BR2_PACKAGE_CUPS),y)
+LIBGTK2_CONF_OPTS += CUPS_CONFIG="$(STAGING_DIR)/usr/bin/cups-config"
 LIBGTK2_DEPENDENCIES += cups
 else
 LIBGTK2_CONF_OPTS += --disable-cups

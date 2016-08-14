@@ -2,9 +2,8 @@ menuconfig BR2_PACKAGE_MESA3D
 	bool "mesa3d"
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on !BR2_STATIC_LIBS
+	depends on BR2_TOOLCHAIN_HAS_SYNC_1
 	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL
-	# Triggers the _gp link issue in nios2
-	depends on !BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_NIOSII
 	select BR2_PACKAGE_LIBDRM
 	select BR2_PACKAGE_EXPAT
 	select BR2_PACKAGE_XPROTO_DRI2PROTO if BR2_PACKAGE_XORG7
@@ -29,13 +28,14 @@ config BR2_PACKAGE_MESA3D_GALLIUM_DRIVER
 
 config BR2_PACKAGE_MESA3D_DRI_DRIVER
 	select BR2_PACKAGE_MESA3D_DRIVER
-	select BR2_PACKAGE_HAS_LIBGL
+	select BR2_PACKAGE_HAS_LIBGL if BR2_PACKAGE_XORG7
 	select BR2_PACKAGE_XLIB_LIBXSHMFENCE if BR2_PACKAGE_XPROTO_DRI3PROTO
 	select BR2_PACKAGE_XPROTO_PRESENTPROTO if BR2_PACKAGE_XPROTO_DRI3PROTO
 	bool
 
 config BR2_PACKAGE_PROVIDES_LIBGL
-	default "mesa3d" if BR2_PACKAGE_MESA3D_DRI_DRIVER
+	default "mesa3d" if BR2_PACKAGE_MESA3D_DRI_DRIVER && \
+		BR2_PACKAGE_XORG7
 
 config BR2_PACKAGE_MESA3D_DRIVER
 	bool
@@ -79,6 +79,16 @@ config BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_SWRAST
 	  This is a software opengl implementation using the Gallium3D
 	  infrastructure.
 
+config BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_VC4
+	bool "Gallium vc4 driver"
+	depends on BR2_arm
+	select BR2_PACKAGE_MESA3D_GALLIUM_DRIVER
+	select BR2_PACKAGE_LIBDRM_VC4
+	select BR2_PACKAGE_MESA3D_NEEDS_XA
+	help
+	  Driver for Broadcom VC4 (rpi2/3) GPUs.
+	  It requires a vanilla 4.5+ kernel with drm vc4 (open) support.
+
 config BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_VIRGL
 	bool "Gallium virgl driver"
 	select BR2_PACKAGE_MESA3D_GALLIUM_DRIVER
@@ -86,11 +96,6 @@ config BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_VIRGL
 	help
 	  virgl is the 3D acceleration backend for the virtio-gpu
 	  shipping with qemu.
-
-comment "DRI drivers need X.Org"
-	depends on !BR2_PACKAGE_XORG7
-
-if BR2_PACKAGE_XORG7
 
 comment "DRI drivers"
 
@@ -131,8 +136,6 @@ config BR2_PACKAGE_MESA3D_DRI_DRIVER_RADEON
 	help
 	  Legacy Radeon driver for R100 series GPUs.
 
-endif # BR2_PACKAGE_XORG7
-
 comment "Off-screen Rendering"
 
 config BR2_PACKAGE_MESA3D_OSMESA
@@ -169,6 +172,6 @@ config BR2_PACKAGE_PROVIDES_LIBGLES
 endif # BR2_PACKAGE_MESA3D
 
 comment "mesa3d needs a toolchain w/ C++, NPTL, dynamic library"
-	depends on !BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_NIOSII
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS_NPTL || \
 		BR2_STATIC_LIBS
+	depends on BR2_TOOLCHAIN_HAS_SYNC_1

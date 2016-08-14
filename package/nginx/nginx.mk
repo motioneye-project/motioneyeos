@@ -4,16 +4,16 @@
 #
 ################################################################################
 
-NGINX_VERSION = 1.8.1
+NGINX_VERSION = 1.10.0
 NGINX_SITE = http://nginx.org/download
 NGINX_LICENSE = BSD-2c
 NGINX_LICENSE_FILES = LICENSE
+NGINX_DEPENDENCIES = host-pkgconf
 
 NGINX_CONF_OPTS = \
 	--crossbuild=Linux::$(BR2_ARCH) \
 	--with-cc="$(TARGET_CC)" \
 	--with-cpp="$(TARGET_CC)" \
-	--with-cc-opt="$(TARGET_CFLAGS)" \
 	--with-ld-opt="$(TARGET_LDFLAGS)" \
 	--with-ipv6
 
@@ -35,7 +35,6 @@ NGINX_CONF_ENV += \
 	ngx_force_c99_have_variadic_macros=yes \
 	ngx_force_gcc_have_variadic_macros=yes \
 	ngx_force_gcc_have_atomic=yes \
-	ngx_force_have_libatomic=no \
 	ngx_force_have_epoll=yes \
 	ngx_force_have_sendfile=yes \
 	ngx_force_have_sendfile64=yes \
@@ -64,7 +63,19 @@ NGINX_CONF_OPTS += \
 	--http-uwsgi-temp-path=/var/tmp/nginx/uwsgi
 
 NGINX_CONF_OPTS += \
-	$(if $(BR2_PACKAGE_NGINX_FILE_AIO),--with-file-aio)
+	$(if $(BR2_PACKAGE_NGINX_FILE_AIO),--with-file-aio) \
+	$(if $(BR2_PACKAGE_NGINX_THREADS),--with-threads)
+
+ifeq ($(BR2_PACKAGE_LIBATOMIC_OPS),y)
+NGINX_DEPENDENCIES += libatomic_ops
+NGINX_CONF_OPTS += --with-libatomic
+NGINX_CONF_ENV += ngx_force_have_libatomic=yes
+ifeq ($(BR2_sparc_v8)$(BR2_sparc_leon3),y)
+NGINX_CFLAGS += "-DAO_NO_SPARC_V9"
+endif
+else
+NGINX_CONF_ENV += ngx_force_have_libatomic=no
+endif
 
 ifeq ($(BR2_PACKAGE_PCRE),y)
 NGINX_DEPENDENCIES += pcre
@@ -104,9 +115,9 @@ else
 NGINX_CONF_OPTS += --without-http-cache
 endif
 
-ifeq ($(BR2_PACKAGE_NGINX_HTTP_SPDY_MODULE),y)
+ifeq ($(BR2_PACKAGE_NGINX_HTTP_V2_MODULE),y)
 NGINX_DEPENDENCIES += zlib
-NGINX_CONF_OPTS += --with-http_spdy_module
+NGINX_CONF_OPTS += --with-http_v2_module
 endif
 
 ifeq ($(BR2_PACKAGE_NGINX_HTTP_SSL_MODULE),y)
@@ -117,8 +128,6 @@ endif
 ifeq ($(BR2_PACKAGE_NGINX_HTTP_XSLT_MODULE),y)
 NGINX_DEPENDENCIES += libxml2 libxslt
 NGINX_CONF_OPTS += --with-http_xslt_module
-NGINX_CONF_ENV += \
-	ngx_feature_path_libxslt=$(STAGING_DIR)/usr/include/libxml2
 endif
 
 ifeq ($(BR2_PACKAGE_NGINX_HTTP_IMAGE_FILTER_MODULE),y)
@@ -193,6 +202,7 @@ endif # BR2_PACKAGE_NGINX_HTTP
 
 # mail modules
 ifeq ($(BR2_PACKAGE_NGINX_MAIL),y)
+NGINX_CONF_OPTS += --with-mail
 
 ifeq ($(BR2_PACKAGE_NGINX_MAIL_SSL_MODULE),y)
 NGINX_DEPENDENCIES += openssl
@@ -206,6 +216,27 @@ NGINX_CONF_OPTS += \
 
 endif # BR2_PACKAGE_NGINX_MAIL
 
+# stream modules
+ifeq ($(BR2_PACKAGE_NGINX_STREAM),y)
+NGINX_CONF_OPTS += --with-stream
+
+ifeq ($(BR2_PACKAGE_NGINX_STREAM_SSL_MODULE),y)
+NGINX_DEPENDENCIES += openssl
+NGINX_CONF_OPTS += --with-stream_ssl_module
+endif
+
+NGINX_CONF_OPTS += \
+	$(if $(BR2_PACKAGE_NGINX_STREAM_LIMIT_CONN_MODULE),,--without-stream_limit_conn_module) \
+	$(if $(BR2_PACKAGE_NGINX_STREAM_ACCESS_MODULE),,--without-stream_access_module) \
+	$(if $(BR2_PACKAGE_NGINX_STREAM_UPSTREAM_HASH_MODULE),,--without-stream_upstream_hash_module) \
+	$(if $(BR2_PACKAGE_NGINX_STREAM_UPSTREAM_LEAST_CONN_MODULE),,--without-stream_upstream_least_conn_module) \
+	$(if $(BR2_PACKAGE_NGINX_STREAM_UPSTREAM_ZONE_MODULE),,--without-stream_upstream_zone_module)
+
+endif # BR2_PACKAGE_NGINX_STREAM
+
+# Debug logging
+NGINX_CONF_OPTS += $(if $(BR2_PACKAGE_NGINX_DEBUG),--with-debug)
+
 define NGINX_DISABLE_WERROR
 	$(SED) 's/-Werror//g' -i $(@D)/auto/cc/*
 endef
@@ -213,7 +244,11 @@ endef
 NGINX_PRE_CONFIGURE_HOOKS += NGINX_DISABLE_WERROR
 
 define NGINX_CONFIGURE_CMDS
-	cd $(@D) ; $(NGINX_CONF_ENV) ./configure $(NGINX_CONF_OPTS)
+	cd $(@D) ; $(NGINX_CONF_ENV) \
+		PKG_CONFIG="$(PKG_CONFIG_HOST_BINARY)" \
+		GDLIB_CONFIG=$(STAGING_DIR)/usr/bin/gdlib-config \
+		./configure $(NGINX_CONF_OPTS) \
+			--with-cc-opt="$(TARGET_CFLAGS) $(NGINX_CFLAGS)"
 endef
 
 define NGINX_BUILD_CMDS

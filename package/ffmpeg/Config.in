@@ -1,7 +1,12 @@
+config BR2_PACKAGE_FFMPEG_ARCH_SUPPORTS
+	bool
+	# fenv.h lacks FE_INVALID, FE_OVERFLOW & FE_UNDERFLOW on nios2
+	# ffmpeg's configure script only supports mips64 (r1) variant
+	default y if !BR2_nios2 && !BR2_mips_64r2 && !BR2_mips_64r6
+
 menuconfig BR2_PACKAGE_FFMPEG
 	bool "ffmpeg"
-	# fenv.h lacks FE_INVALID, FE_OVERFLOW & FE_UNDERFLOW on nios2
-	depends on !BR2_nios2
+	depends on BR2_PACKAGE_FFMPEG_ARCH_SUPPORTS
 	help
 	  FFmpeg is a complete, cross-platform solution to record, convert
 	  and stream audio and video.

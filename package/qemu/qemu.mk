@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-QEMU_VERSION = 2.5.0
+QEMU_VERSION = 2.5.1.1
 QEMU_SOURCE = qemu-$(QEMU_VERSION).tar.bz2
 QEMU_SITE = http://wiki.qemu.org/download
 QEMU_LICENSE = GPLv2, LGPLv2.1, MIT, BSD-3c, BSD-2c, Others/BSD-1c
@@ -23,7 +23,6 @@ HOST_QEMU_DEPENDENCIES = host-pkgconf host-python host-zlib host-libglib2 host-p
 #       arm             arm
 #       armeb           armeb
 #       bfin            not supported
-#       i386            i386
 #       i486            i386
 #       i586            i386
 #       i686            i386

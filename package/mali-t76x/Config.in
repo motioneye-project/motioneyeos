@@ -1,0 +1,28 @@
+config BR2_PACKAGE_MALI_T76X
+	bool "mali-t76x"
+	select BR2_PACKAGE_MESA3D_HEADERS
+	select BR2_PACKAGE_HAS_LIBEGL
+	select BR2_PACKAGE_HAS_LIBGLES
+	depends on BR2_TOOLCHAIN_USES_GLIBC
+	depends on BR2_ARM_EABIHF
+	depends on BR2_arm
+	help
+	  Install the binary user-space components for the ARM Mali Midgard
+	  T76X GPU. This package requires a kernel with the ARM Mali Midgard
+	  GPU Kernel Drivers enabled.
+
+	  Source: http://malideveloper.arm.com/resources/drivers/
+
+if BR2_PACKAGE_MALI_T76X
+
+config BR2_PACKAGE_PROVIDES_LIBEGL
+	default "mali-t76x"
+
+config BR2_PACKAGE_PROVIDES_LIBGLES
+	default "mali-t76x"
+
+endif
+
+comment "mali-t76x needs an (e)glibc toolchain with armhf enabled"
+	depends on BR2_arm
+	depends on !BR2_TOOLCHAIN_USES_GLIBC || !BR2_ARM_EABIHF

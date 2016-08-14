@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-OPENSSL_VERSION = 1.0.2g
+OPENSSL_VERSION = 1.0.2h
 OPENSSL_SITE = http://www.openssl.org/source
 OPENSSL_LICENSE = OpenSSL or SSLeay
 OPENSSL_LICENSE_FILES = LICENSE
@@ -37,6 +37,9 @@ endif
 ifeq ($(ARCH),arm)
 OPENSSL_TARGET_ARCH = armv4
 endif
+ifeq ($(ARCH),aarch64)
+OPENSSL_TARGET_ARCH = aarch64
+endif
 ifeq ($(ARCH),powerpc)
 # 4xx cores seem to have trouble with openssl's ASM optimizations
 ifeq ($(BR2_powerpc_401)$(BR2_powerpc_403)$(BR2_powerpc_405)$(BR2_powerpc_405fp)$(BR2_powerpc_440)$(BR2_powerpc_440fp),)
@@ -51,11 +54,6 @@ OPENSSL_TARGET_ARCH = ppc64le
 endif
 ifeq ($(ARCH),x86_64)
 OPENSSL_TARGET_ARCH = x86_64
-endif
-
-# Workaround for bug #3445
-ifeq ($(BR2_x86_i386),y)
-OPENSSL_TARGET_ARCH = generic32 386
 endif
 
 define HOST_OPENSSL_CONFIGURE_CMDS

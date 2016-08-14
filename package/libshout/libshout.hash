@@ -1,2 +1,3 @@
-# From http://downloads.xiph.org/releases/libshout/SHA256SUMS
-sha256	cf3c5f6b4a5e3fcfbe09fb7024aa88ad4099a9945f7cb037ec06bcee7a23926e	libshout-2.3.1.tar.gz
+# From https://gitweb.gentoo.org/repo/gentoo.git/tree/media-libs/libshout/Manifest
+# hash from http://downloads.xiph.org/releases/libshout/SHA256SUMS is wrong!
+sha256	f3acb8dec26f2dbf6df778888e0e429a4ce9378a9d461b02a7ccbf2991bbf24d	libshout-2.4.1.tar.gz

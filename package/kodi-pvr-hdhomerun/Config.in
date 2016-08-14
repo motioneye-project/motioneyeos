@@ -1,0 +1,9 @@
+config BR2_PACKAGE_KODI_PVR_HDHOMERUN
+	bool "kodi-pvr-hdhomerun"
+	select BR2_PACKAGE_JSONCPP
+	select BR2_PACKAGE_KODI_PLATFORM
+	select BR2_PACKAGE_LIBHDHOMERUN
+	help
+	  Kodi's HDHomeRun client addon
+
+	  https://github.com/kodi-pvr/pvr.hdhomerun

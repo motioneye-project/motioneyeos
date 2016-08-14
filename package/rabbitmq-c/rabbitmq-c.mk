@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-RABBITMQ_C_VERSION = 0.7.1
-RABBITMQ_C_SITE = https://github.com/alanxz/rabbitmq-c/releases/download/v$(RABBITMQ_C_VERSION)
+RABBITMQ_C_VERSION = v0.8.0
+RABBITMQ_C_SITE = $(call github,alanxz,rabbitmq-c,$(RABBITMQ_C_VERSION))
 RABBITMQ_C_LICENSE = MIT
 RABBITMQ_C_LICENSE_FILES = LICENSE-MIT
 RABBITMQ_C_INSTALL_STAGING = YES

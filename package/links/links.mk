@@ -22,6 +22,9 @@ LINKS_CONF_OPTS += --without-x
 endif
 ifeq ($(BR2_PACKAGE_DIRECTFB),y)
 LINKS_CONF_ENV = ac_cv_path_DIRECTFB_CONFIG=$(STAGING_DIR)/usr/bin/directfb-config
+ifeq ($(BR2_STATIC_LIBS),y)
+LINKS_CONF_ENV += LIBS=-lstdc++
+endif
 LINKS_CONF_OPTS += --with-directfb
 LINKS_DEPENDENCIES += directfb
 else

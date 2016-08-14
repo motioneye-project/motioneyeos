@@ -350,6 +350,9 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_MXF
 	help
 	  MXF plugin library
 
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_NETSIM
+	bool "netsim"
+
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_NUVDEMUX
 	bool "nuvdemux"
 
@@ -379,8 +382,11 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_REMOVESILENCE
 	help
 	  Removes silence from an audio stream
 
-config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_RTP
-	bool "rtp"
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_RTMP
+	bool "rtmp"
+	select BR2_PACKAGE_RTMPDUMP
+	help
+	  RTMP plugin
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_SDI
 	bool "sdi"
@@ -425,6 +431,11 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_VIDEOFILTERS
 	bool "videofilters"
 	help
 	  Video filters in gst-plugins-bad
+
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_VIDEOFRAME_AUDIOLEVEL
+	bool "videoframe_audiolevel"
+	help
+	  videoframe_audiolevel
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_VIDEOMEASURE
 	bool "videomeasure"
@@ -545,13 +556,6 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_MPEG2ENC
 	help
 	  High-quality MPEG-1/2 video encoder
 
-config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_MPG123
-	bool "mpg123"
-	select BR2_PACKAGE_MPG123
-	depends on BR2_USE_MMU # mpg123
-	help
-	  mp3 decoding based on the mpg123 library
-
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_MUSEPACK
 	bool "musepack"
 	select BR2_PACKAGE_MUSEPACK
@@ -671,6 +675,7 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_X265
 	bool "x265"
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on !BR2_STATIC_LIBS
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # x265
 	select BR2_PACKAGE_X265
 	help
 	  x265 encoding plugin

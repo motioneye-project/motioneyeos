@@ -5,7 +5,7 @@
 ################################################################################
 
 TCL_VERSION_MAJOR = 8.6
-TCL_VERSION = $(TCL_VERSION_MAJOR).3
+TCL_VERSION = $(TCL_VERSION_MAJOR).5
 TCL_SOURCE = tcl$(TCL_VERSION)-src.tar.gz
 TCL_SITE = http://downloads.sourceforge.net/project/tcl/Tcl/$(TCL_VERSION)
 TCL_LICENSE = tcl license
@@ -14,15 +14,10 @@ TCL_SUBDIR = unix
 TCL_INSTALL_STAGING = YES
 TCL_AUTORECONF = YES
 
-# Note that --with-system-sqlite will only make a difference
-# in the sqlite package (which gets removed if sqlite not
-# configured).  Don't need to worry about conditionally including
-# it in the configure options
 TCL_CONF_OPTS = \
 	--disable-symbols \
 	--disable-langinfo \
-	--disable-framework \
-	--with-system-sqlite
+	--disable-framework
 
 HOST_TCL_CONF_OPTS = \
 	--disable-symbols \
@@ -32,21 +27,17 @@ HOST_TCL_CONF_OPTS = \
 # I haven't found a good way to force pkgs to not build
 # or configure without just removing the entire pkg directory.
 define HOST_TCL_REMOVE_PACKAGES
-	rm -fr $(@D)/pkgs/sqlite[0-9].[0-9].[0-9] \
-		$(@D)/pkgs/tdbc[0-9].[0-9].[0-9] \
-		$(@D)/pkgs/tdbcmysql[0-9].[0-9].[0-9] \
-		$(@D)/pkgs/tdbcodbc[0-9].[0-9].[0-9] \
-		$(@D)/pkgs/tdbcpostgres[0-9].[0-9].[0-9] \
-		$(@D)/pkgs/tdbcsqlite3-[0-9].[0-9].[0-9]
+	rm -fr $(@D)/pkgs/sqlite3* $(@D)/pkgs/tdbc*
 endef
 HOST_TCL_PRE_CONFIGURE_HOOKS += HOST_TCL_REMOVE_PACKAGES
+
+# We remove the bundled sqlite as we prefer to not use bundled stuff at all.
 define TCL_REMOVE_PACKAGES
-	rm -fr $(if $(BR2_PACKAGE_SQLITE),,$(@D)/pkgs/sqlite[0-9].[0-9].[0-9]) \
-		$(if $(BR2_PACKAGE_SQLITE),,$(@D)/pkgs/tdbc[0-9].[0-9].[0-9]) \
-		$(@D)/pkgs/tdbcmysql[0-9].[0-9].[0-9] \
-		$(@D)/pkgs/tdbcodbc[0-9].[0-9].[0-9] \
-		$(@D)/pkgs/tdbcpostgres[0-9].[0-9].[0-9] \
-		$(if $(BR2_PACKAGE_SQLITE),,$(@D)/pkgs/tdbcsqlite3-[0-9].[0-9].[0-9])
+	rm -fr $(@D)/pkgs/sqlite3* \
+		$(if $(BR2_PACKAGE_MYSQL),,$(@D)/pkgs/tdbcmysql*) \
+		$(@D)/pkgs/tdbcodbc* \
+		$(if $(BR2_PACKAGE_POSTGRESQL),,$(@D)/pkgs/tdbcpostgres*) \
+		$(if $(BR2_PACKAGE_SQLITE),,$(@D)/pkgs/tdbcsqlite3*)
 endef
 TCL_PRE_CONFIGURE_HOOKS += TCL_REMOVE_PACKAGES
 
@@ -81,7 +72,9 @@ define TCL_REMOVE_EXTRA
 endef
 TCL_POST_INSTALL_TARGET_HOOKS += TCL_REMOVE_EXTRA
 
-TCL_DEPENDENCIES = $(if $(BR2_PACKAGE_SQLITE),sqlite)
+TCL_DEPENDENCIES = $(if $(BR2_PACKAGE_SQLITE),sqlite) \
+	$(if $(BR2_PACKAGE_MYSQL),mysql) \
+	$(if $(BR2_PACKAGE_POSTGRESQL),postgresql)
 HOST_TCL_DEPENDENCIES =
 
 $(eval $(autotools-package))

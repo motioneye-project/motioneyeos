@@ -158,7 +158,9 @@ ifndef $(2)_BUILD_CMDS
 define $(2)_BUILD_CMDS
 	(cd $$(@D); \
 		CC="$$(TARGET_CC)" \
+		CXX="$$(TARGET_CXX)" \
 		CFLAGS="$$(TARGET_CFLAGS)" \
+		CXXFLAGS="$$(TARGET_CXXFLAGS)" \
 		LDFLAGS="$$(TARGET_LDFLAGS)" \
 		$$(REBAR_TARGET_DEPS_ENV) \
 		$$(TARGET_MAKE_ENV) \

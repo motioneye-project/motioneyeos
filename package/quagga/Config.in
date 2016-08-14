@@ -24,11 +24,6 @@ config BR2_PACKAGE_QUAGGA_TCP_ZEBRA
 	  You'll want this enabled if zebra and the protocol daemon(s) run
 	  on different hosts.
 
-config BR2_PACKAGE_QUAGGA_BABELD
-	bool "BABEL protocol"
-	help
-	  Build babeld daemon.
-
 config BR2_PACKAGE_QUAGGA_BGPD
 	bool "BPGv4+ protocol"
 	help
@@ -47,10 +42,6 @@ config BR2_PACKAGE_QUAGGA_OSPFD
 	bool "OSPFv2 protocol"
 	help
 	  Build ospfd daemon.
-
-config BR2_PACKAGE_QUAGGA_OPAQUE_LSA
-	bool "OSPF Opaque-LSA with OSPFAPI support (RFC2370)"
-	depends on BR2_PACKAGE_QUAGGA_OSPFD
 
 config BR2_PACKAGE_QUAGGA_OSPF6D
 	bool "OSPFv3 (IPv6) protocol"

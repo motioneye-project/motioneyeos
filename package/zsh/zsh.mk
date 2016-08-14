@@ -9,6 +9,8 @@ ZSH_SITE = http://www.zsh.org/pub
 ZSH_SOURCE = zsh-$(ZSH_VERSION).tar.xz
 ZSH_DEPENDENCIES = ncurses
 ZSH_CONF_OPTS = --bindir=/bin
+# Patching configure.ac
+ZSH_AUTORECONF = YES
 ZSH_LICENSE = MIT-like
 ZSH_LICENSE_FILES = LICENCE
 

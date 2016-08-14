@@ -48,6 +48,7 @@ config BR2_TOOLCHAIN_BUILDROOT_LOCALE
 choice
 	prompt "Thread library implementation"
 	default BR2_PTHREADS_NATIVE
+	default BR2_PTHREADS_OLD if !BR2_USE_MMU
 	help
 	  Use this option to select the thread library implementation
 	  that should be used in your toolchain.
@@ -63,13 +64,14 @@ choice
 	config BR2_PTHREADS_OLD
 		bool "linuxthreads (stable/old)"
 		select BR2_TOOLCHAIN_HAS_THREADS
-		depends on BR2_m68k || BR2_arm || BR2_armeb
+		depends on BR2_m68k || BR2_arm || BR2_armeb || BR2_xtensa
 
 	config BR2_PTHREADS_NATIVE
 		bool "Native POSIX Threading (NPTL)"
 		select BR2_TOOLCHAIN_HAS_THREADS
 		select BR2_TOOLCHAIN_HAS_THREADS_NPTL
-		depends on !BR2_m68k && !BR2_x86_i386
+		depends on BR2_USE_MMU
+		depends on !BR2_m68k
 endchoice
 
 config BR2_PTHREAD_DEBUG
@@ -139,11 +141,6 @@ config BR2_UCLIBC_ARC_TYPE
 	default "ARC_CPU_700"	if BR2_arc770d
 	default "ARC_CPU_HS"	if BR2_archs38
 
-config BR2_UCLIBC_ARM_BX
-	bool
-	depends on BR2_UCLIBC_TARGET_ARCH = "arm"
-	default y if (BR2_ARM_CPU_HAS_THUMB || BR2_ARM_CPU_HAS_THUMB2)
-
 config BR2_UCLIBC_MIPS_ABI
 	string
 	depends on BR2_UCLIBC_TARGET_ARCH = "mips"
@@ -179,7 +176,6 @@ config BR2_UCLIBC_POWERPC_TYPE
 config BR2_UCLIBC_X86_TYPE
 	string
 	depends on BR2_UCLIBC_TARGET_ARCH = "i386"
-	default "386"        if BR2_x86_i386
 	default "486"        if BR2_x86_i486
 	default "586"        if BR2_x86_i586
 	default "586MMX"     if BR2_x86_pentium_mmx

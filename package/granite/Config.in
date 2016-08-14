@@ -1,0 +1,18 @@
+config BR2_PACKAGE_GRANITE
+	bool "granite"
+	depends on BR2_USE_WCHAR
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_USE_MMU # fork()
+	depends on BR2_PACKAGE_LIBGTK3
+	select BR2_PACKAGE_LIBGEE
+	select BR2_PACKAGE_LIBGLIB2
+	help
+	  An extension to GTK+ that provides several useful widgets and
+	  classes to ease application development.
+
+	  https://launchpad.net/granite
+
+comment "granite needs libgtk3 and a toolchain w/ wchar, threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_PACKAGE_LIBGTK3 || !BR2_USE_WCHAR \
+		|| !BR2_TOOLCHAIN_HAS_THREADS

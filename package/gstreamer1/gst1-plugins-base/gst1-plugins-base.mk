@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-GST1_PLUGINS_BASE_VERSION = 1.6.3
+GST1_PLUGINS_BASE_VERSION = 1.8.1
 GST1_PLUGINS_BASE_SOURCE = gst-plugins-base-$(GST1_PLUGINS_BASE_VERSION).tar.xz
 GST1_PLUGINS_BASE_SITE = http://gstreamer.freedesktop.org/src/gst-plugins-base
 GST1_PLUGINS_BASE_INSTALL_STAGING = YES
@@ -174,6 +174,13 @@ GST1_PLUGINS_BASE_CONF_OPTS += --enable-ivorbis
 GST1_PLUGINS_BASE_DEPENDENCIES += tremor
 else
 GST1_PLUGINS_BASE_CONF_OPTS += --disable-ivorbis
+endif
+
+ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BASE_PLUGIN_OPUS),y)
+GST1_PLUGINS_BASE_CONF_OPTS += --enable-opus
+GST1_PLUGINS_BASE_DEPENDENCIES += opus
+else
+GST1_PLUGINS_BASE_CONF_OPTS += --disable-opus
 endif
 
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BASE_PLUGIN_OGG),y)

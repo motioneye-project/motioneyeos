@@ -1,0 +1,21 @@
+Removed header Include path from the configure file as path was
+from the host, which is wrong for the cross compilation.
+Upstream: None
+
+Signed-off-by: Nitin Mendiratta <nitin.mendiratta@rockwellcollins.com>
+
+diff --git a/configure.ac b/configure.ac
+index 10ff870..27b9957 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -1145,9 +1145,7 @@ have_lininn=no
+ have_inn_parsedate=no
+ 
+ oCPPFLAGS="$CPPFLAGS"
+-if test -d /usr/include/inn; then
+-  CPPFLAGS="$CPPFLAGS -I/usr/include/inn"
+-fi
++
+ AC_CHECK_HEADER(libinn.h)
+ CPPFLAGS="$oCPPFLAGS"
+ 

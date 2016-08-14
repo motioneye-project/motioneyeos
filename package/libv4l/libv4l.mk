@@ -4,16 +4,12 @@
 #
 ################################################################################
 
-LIBV4L_VERSION = 1.8.1
+LIBV4L_VERSION = 1.10.0
 LIBV4L_SOURCE = v4l-utils-$(LIBV4L_VERSION).tar.bz2
 LIBV4L_SITE = http://linuxtv.org/downloads/v4l-utils
 LIBV4L_INSTALL_STAGING = YES
 LIBV4L_DEPENDENCIES = host-pkgconf
 LIBV4L_CONF_OPTS = --disable-doxygen-doc
-
-# patch touches Makefile.am (and needs host-gettext for autoreconf)
-LIBV4L_AUTORECONF= YES
-LIBV4L_DEPENDENCIES += host-gettext
 
 # fix uclibc-ng configure/compile
 LIBV4L_CONF_ENV = ac_cv_prog_cc_c99='-std=gnu99'

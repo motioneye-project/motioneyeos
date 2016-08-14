@@ -754,14 +754,11 @@ $(1)-legal-info: $(1)-patch
 endif
 
 # We only save the sources of packages we want to redistribute, that are
-# non-local, and non-overriden. So only store, in the manifest, the tarball
-# name of those packages.
+# non-overriden (local or true override).
 ifeq ($$($(2)_REDISTRIBUTE),YES)
-ifneq ($$($(2)_SITE_METHOD),local)
-ifneq ($$($(2)_SITE_METHOD),override)
+ifeq ($$($(2)_OVERRIDE_SRCDIR),)
 # Packages that have a tarball need it downloaded beforehand
 $(1)-legal-info: $(1)-source $$(REDIST_SOURCES_DIR_$$(call UPPERCASE,$(4)))
-endif
 endif
 endif
 

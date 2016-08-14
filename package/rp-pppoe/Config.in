@@ -1,6 +1,12 @@
+comment "rp-pppoe needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS
+	depends on BR2_USE_MMU
+
 config BR2_PACKAGE_RP_PPPOE
 	bool "rp-pppoe"
-	depends on BR2_PACKAGE_PPPD
+	depends on !BR2_STATIC_LIBS
+	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_PPPD
 	help
 	  An implementation of the Point-to-point protocol over Ethernet.
 	  Has userspace client and server deamons. You likely only need

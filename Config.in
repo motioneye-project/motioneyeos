@@ -18,6 +18,35 @@ config BR2_EXTERNAL
 	string
 	option env="BR2_EXTERNAL"
 
+# Hidden config symbols for packages to check system gcc version
+config BR2_HOST_GCC_VERSION
+	string
+	option env="HOST_GCC_VERSION"
+
+config BR2_HOST_GCC_AT_LEAST_4_6
+	bool
+	default y if BR2_HOST_GCC_VERSION = "4 6"
+
+config BR2_HOST_GCC_AT_LEAST_4_7
+	bool
+	default y if BR2_HOST_GCC_VERSION = "4 7"
+	select BR2_HOST_GCC_AT_LEAST_4_6
+
+config BR2_HOST_GCC_AT_LEAST_4_8
+	bool
+	default y if BR2_HOST_GCC_VERSION = "4 8"
+	select BR2_HOST_GCC_AT_LEAST_4_7
+
+config BR2_HOST_GCC_AT_LEAST_4_9
+	bool
+	default y if BR2_HOST_GCC_VERSION = "4 9"
+	select BR2_HOST_GCC_AT_LEAST_4_8
+
+config BR2_HOST_GCC_AT_LEAST_5
+	bool
+	default y if BR2_HOST_GCC_VERSION = "5"
+	select BR2_HOST_GCC_AT_LEAST_4_9
+
 # Hidden boolean selected by packages in need of Java in order to build
 # (example: xbmc)
 config BR2_NEEDS_HOST_JAVA
@@ -165,8 +194,10 @@ config BR2_PRIMARY_SITE
 	  Primary site to download from. If this option is set then buildroot
 	  will try to download package source first from this site and try the
 	  default if the file is not found.
-	  Valid URIs are URIs recognized by $(WGET) and scp URIs of the form
-	  scp://[user@]host:path.
+	  Valid URIs are:
+	    - URIs recognized by $(WGET)
+	    - local URIs of the form file://absolutepath
+	    - scp URIs of the form scp://[user@]host:path.
 
 config BR2_PRIMARY_SITE_ONLY
 	bool "Only allow downloads from primary download site"
@@ -286,6 +317,33 @@ config BR2_CCACHE_INITIAL_SETUP
 
 	  These initial settings are applied after ccache has been compiled.
 
+config BR2_CCACHE_USE_BASEDIR
+	bool "Use relative paths"
+	default y
+	help
+	  Allow ccache to convert absolute paths within the output
+	  directory into relative paths.
+
+	  During the build, many -I include directives are given with
+	  an absolute path. These absolute paths end up in the hashes
+	  that are computed by ccache. Therefore, when you build from a
+	  different directory, the hash will be different and the
+	  cached object will not be used.
+
+	  To improve cache performance, set this option to y. This
+	  allows ccache to rewrite absolute paths within the output
+	  directory into relative paths. Note that only paths within
+	  the output directory will be rewritten; therefore, if you
+	  change BR2_HOST_DIR to point outside the output directory and
+	  subsequently move it to a different location, this will lead
+	  to cache misses.
+
+	  This option has as a result that the debug information in the
+	  object files also has only relative paths. Therefore, make
+	  sure you cd to the build directory before starting gdb. See
+	  the section "COMPILING IN DIFFERENT DIRECTORIES" in the
+	  ccache manual for more information.
+
 endif
 
 config BR2_DEPRECATED
@@ -296,19 +354,23 @@ config BR2_DEPRECATED
 
 if BR2_DEPRECATED
 
-config BR2_DEPRECATED_SINCE_2014_08
-	bool
-	default y
-
-config BR2_DEPRECATED_SINCE_2015_02
-	bool
-	default y
-
 config BR2_DEPRECATED_SINCE_2015_05
 	bool
 	default y
 
 config BR2_DEPRECATED_SINCE_2015_08
+	bool
+	default y
+
+config BR2_DEPRECATED_SINCE_2015_11
+	bool
+	default y
+
+config BR2_DEPRECATED_SINCE_2016_02
+	bool
+	default y
+
+config BR2_DEPRECATED_SINCE_2016_05
 	bool
 	default y
 
@@ -493,12 +555,13 @@ config BR2_GOOGLE_BREAKPAD_INCLUDE_FILES
 
 endif
 
-config BR2_ENABLE_SSP
+choice
 	bool "build code with Stack Smashing Protection"
+	default BR2_SSP_ALL if BR2_ENABLE_SSP # legacy
 	depends on BR2_TOOLCHAIN_HAS_SSP
 	help
-	  Enable stack smashing protection support using GCCs
-	  -fstack-protector-all option.
+	  Enable stack smashing protection support using GCC's
+	  -fstack-protector option family.
 
 	  See http://www.linuxfromscratch.org/hints/downloads/files/ssp.txt
 	  for details.
@@ -507,7 +570,43 @@ config BR2_ENABLE_SSP
 	  support. This is always the case for glibc and eglibc
 	  toolchain, but is optional in uClibc toolchains.
 
-comment "enabling Stack Smashing Protection requires support in the toolchain"
+config BR2_SSP_NONE
+	bool "None"
+	help
+	  Disable stack-smashing protection.
+
+config BR2_SSP_REGULAR
+	bool "-fstack-protector"
+	help
+	  Emit extra code to check for buffer overflows, such as stack
+	  smashing attacks. This is done by adding a guard variable to
+	  functions with vulnerable objects. This includes functions
+	  that call alloca, and functions with buffers larger than 8
+	  bytes. The guards are initialized when a function is entered
+	  and then checked when the function exits. If a guard check
+	  fails, an error message is printed and the program exits.
+
+config BR2_SSP_STRONG
+	bool "-fstack-protector-strong"
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_9
+	help
+	  Like -fstack-protector but includes additional functions to be
+	  protected - those that have local array definitions, or have
+	  references to local frame addresses.
+
+comment "Stack Smashing Protection strong needs a toolchain w/ gcc >= 4.9"
+	depends on !BR2_TOOLCHAIN_GCC_AT_LEAST_4_9
+
+config BR2_SSP_ALL
+	bool "-fstack-protector-all"
+	help
+	  Like -fstack-protector except that all functions are
+	  protected. This option might have a significant performance
+	  impact on the compiled binaries.
+
+endchoice
+
+comment "Stack Smashing Protection needs a toolchain w/ SSP"
 	depends on !BR2_TOOLCHAIN_HAS_SSP
 
 choice
@@ -595,8 +694,8 @@ config BR2_COMPILER_PARANOID_UNSAFE_PATH
 	  unsafe paths are encountered.
 
 	  Note that this mechanism is available for both the internal
-	  toolchain (through gcc and binutils patches) and external
-	  toolchain backends (through the external toolchain wrapper).
+	  toolchain (through the toolchain wrapper and binutils patches)
+	  and external toolchain backends (through the toolchain wrapper).
 
 endmenu
 

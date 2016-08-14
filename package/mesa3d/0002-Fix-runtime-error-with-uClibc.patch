@@ -25,8 +25,8 @@ patch: http://lists.busybox.net/pipermail/buildroot/2015-March/123410.html
 Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
 ---
 diff -uNr mesa-10.5.3.org/src/glsl/nir/nir_constant_expressions.c mesa-10.5.3/src/glsl/nir/nir_constant_expressions.c
---- mesa-10.5.3.org/src/glsl/nir/nir_constant_expressions.c	2015-04-12 23:31:29.000000000 +0200
-+++ mesa-10.5.3/src/glsl/nir/nir_constant_expressions.c	2015-04-13 19:59:37.819786541 +0200
+--- mesa-10.5.3.org/src/compiler/nir/nir_constant_expressions.c	2015-04-12 23:31:29.000000000 +0200
++++ mesa-10.5.3/src/compiler/nir/nir_constant_expressions.c	2015-04-13 19:59:37.819786541 +0200
 @@ -48,6 +48,18 @@
  }
  #endif

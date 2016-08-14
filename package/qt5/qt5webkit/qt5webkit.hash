@@ -1,2 +1,2 @@
-# Hash from: http://download.qt.io/official_releases/qt/5.5/5.5.1/submodules/qtwebkit-opensource-src-5.5.1.tar.xz.mirrorlist
-sha256 77583f9dbd3e6ad874386df71b165dc3ce88efdabbc6e5d97a959ee2187d6d69 qtwebkit-opensource-src-5.5.1.tar.xz
+# locally computed
+sha256 1c79843ef32313312290d4fe0b87256a9129dc44d62b01789a692981edf4d8ab  qt5webkit-d2ff5a085572b1ee24dcb42ae107063f3142d14e.tar.gz

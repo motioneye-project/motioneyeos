@@ -2,6 +2,11 @@ config BR2_TARGET_SYSLINUX
 	bool "syslinux"
 	depends on BR2_i386 || BR2_x86_64
 	select BR2_HOSTARCH_NEEDS_IA32_COMPILER
+	# Make sure at least one of the flavors is installed
+	select BR2_TARGET_SYSLINUX_ISOLINUX \
+		if !BR2_TARGET_SYSLINUX_PXELINUX && \
+		   !BR2_TARGET_SYSLINUX_MBR && \
+		   !BR2_TARGET_SYSLINUX_EFI
 	help
 	  The syslinux bootloader for x86 systems.
 	  This includes: syslinux, pxelinux, extlinux.
@@ -13,25 +18,22 @@ if BR2_TARGET_SYSLINUX
 config BR2_TARGET_SYSLINUX_LEGACY_BIOS
 	bool
 
-choice
-	bool "Image to install"
-
 config BR2_TARGET_SYSLINUX_ISOLINUX
-	bool "isolinux"
+	bool "install isolinux"
 	select BR2_TARGET_SYSLINUX_LEGACY_BIOS
 	help
 	  Install the legacy-BIOS 'isolinux' image, to boot off
 	  optical media (CDROM, DVD.)
 
 config BR2_TARGET_SYSLINUX_PXELINUX
-	bool "pxelinux"
+	bool "install pxelinux"
 	select BR2_TARGET_SYSLINUX_LEGACY_BIOS
 	help
 	  Install the legacy-BIOS 'pxelinux' image, to boot off
 	  the network using PXE.
 
 config BR2_TARGET_SYSLINUX_MBR
-	bool "mbr"
+	bool "install mbr"
 	select BR2_TARGET_SYSLINUX_LEGACY_BIOS
 	help
 	  Install the legacy-BIOS 'mbr' image, to boot off a
@@ -39,12 +41,11 @@ config BR2_TARGET_SYSLINUX_MBR
 	  or 'syslinux').
 
 config BR2_TARGET_SYSLINUX_EFI
-	bool "efi"
+	bool "install efi"
 	select BR2_PACKAGE_GNU_EFI
 	help
 	  Install the 'efi' image, to boot from an EFI environment.
 
-endchoice
 
 if BR2_TARGET_SYSLINUX_LEGACY_BIOS
 

@@ -1,0 +1,5 @@
+# From http://pkgs.fedoraproject.org/repo/pkgs/dt/dt-source-v18.32.tar.gz
+# (directory name is md5 hash)
+md5	3054aeaaba047a1dbe90c2132a382ee2	dt-source-v18.32.tar.gz
+# Calculated based on the hash above
+sha256	10d164676e918a4d07f233bcd11e4cb6bfd1052c996182cd1827ccd0c063fcc6	dt-source-v18.32.tar.gz

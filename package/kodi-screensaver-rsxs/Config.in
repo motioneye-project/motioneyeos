@@ -1,0 +1,12 @@
+config BR2_PACKAGE_KODI_SCREENSAVER_RSXS
+	bool "kodi-screensaver-rsxs"
+	depends on BR2_PACKAGE_HAS_LIBGL # libglu
+	depends on BR2_PACKAGE_XORG7 # xlib_libXmu
+	select BR2_PACKAGE_XLIB_LIBXMU
+	help
+	  RSXS screensaver add-ons for Kodi
+
+	  https://github.com/notspiff/screensavers.rsxs
+
+comment "kodi-screensaver-rsxs depends on X.org and needs OpenGL"
+	depends on !BR2_PACKAGE_XORG7 || !BR2_PACKAGE_HAS_LIBGL

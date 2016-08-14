@@ -333,7 +333,7 @@ config BR2_PACKAGE_COLLECTD_OPENLDAP
 	  Read monitoring information from OpenLDAP's cn=Monitor subtree.
 
 comment "openldap support needs a toolchain w/ wchar"
-        depends on !BR2_USE_WCHAR
+	depends on !BR2_USE_WCHAR
 
 config BR2_PACKAGE_COLLECTD_OPENVPN
 	bool "openvpn"
@@ -385,7 +385,7 @@ config BR2_PACKAGE_COLLECTD_SMART
 	  and bad sectors.
 
 comment "SMART requires udev to be enabled"
-        depends on !BR2_PACKAGE_HAS_UDEV
+	depends on !BR2_PACKAGE_HAS_UDEV
 
 config BR2_PACKAGE_COLLECTD_STATSD
 	bool "StatsD"

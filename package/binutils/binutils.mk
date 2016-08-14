@@ -11,7 +11,7 @@ ifeq ($(BINUTILS_VERSION),)
 ifeq ($(BR2_arc),y)
 BINUTILS_VERSION = arc-2015.12
 else
-BINUTILS_VERSION = 2.24
+BINUTILS_VERSION = 2.25.1
 endif
 endif # BINUTILS_VERSION
 
@@ -50,6 +50,10 @@ BINUTILS_CONF_OPTS = \
 	--enable-install-libiberty \
 	$(BINUTILS_DISABLE_GDB_CONF_OPTS) \
 	$(BINUTILS_EXTRA_CONFIG_OPTIONS)
+
+ifeq ($(BR2_STATIC_LIBS),y)
+BINUTILS_CONF_OPTS += --disable-plugins
+endif
 
 # Don't build documentation. It takes up extra space / build time,
 # and sometimes needs specific makeinfo versions to work

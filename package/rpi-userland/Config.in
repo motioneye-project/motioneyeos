@@ -38,6 +38,11 @@ config BR2_PACKAGE_RPI_USERLAND_START_VCFILED
 	  vcfiled is a daemon serving files to VideoCore from the host file
 	  system.
 
+config BR2_PACKAGE_RPI_USERLAND_HELLO
+	bool "hello_pi examples"
+	help
+	  Install the hello-pi examples to test the HW (GPU, camera...)
+
 endif
 
 comment "rpi-userland needs a toolchain w/ C++, threads, dynamic library"

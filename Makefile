@@ -41,7 +41,7 @@ else # umask
 all:
 
 # Set and export the version string
-export BR2_VERSION := 2016.02
+export BR2_VERSION := 2016.05
 
 # Save running make version since it's clobbered by the make package
 RUNNING_MAKE_VERSION := $(MAKE_VERSION)
@@ -69,7 +69,7 @@ endif
 .NOTPARALLEL:
 
 # absolute path
-TOPDIR := $(shell pwd)
+TOPDIR := $(CURDIR)
 CONFIG_CONFIG_IN = Config.in
 CONFIG = support/kconfig
 DATE := $(shell date +%Y%m%d)
@@ -343,6 +343,8 @@ ifeq ($(BR2_HAVE_DOT_CONFIG),y)
 unexport CROSS_COMPILE
 unexport ARCH
 unexport CC
+unexport LD
+unexport AR
 unexport CXX
 unexport CPP
 unexport RANLIB
@@ -581,7 +583,10 @@ define PURGE_LOCALES
 	do \
 		for langdir in $$dir/*; \
 		do \
-			grep -qx $${langdir##*/} $(LOCALE_WHITELIST) || rm -rf $$langdir; \
+			if [ -e "$${langdir}" ]; \
+			then \
+				grep -qx "$${langdir##*/}" $(LOCALE_WHITELIST) || rm -rf $$langdir; \
+			fi \
 		done; \
 	done
 	if [ -d $(TARGET_DIR)/usr/share/X11/locale ]; \
@@ -655,7 +660,7 @@ endif
 
 	@$(foreach d, $(call qstrip,$(BR2_ROOTFS_OVERLAY)), \
 		$(call MESSAGE,"Copying overlay $(d)"); \
-		rsync -a --ignore-times $(RSYNC_VCS_EXCLUSIONS) \
+		rsync -a --ignore-times --keep-dirlinks $(RSYNC_VCS_EXCLUSIONS) \
 			--chmod=u=rwX,go=rX --exclude .empty --exclude '*~' \
 			$(d)/ $(TARGET_DIR)$(sep))
 

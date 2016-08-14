@@ -1,0 +1,12 @@
+config BR2_PACKAGE_AER_INJECT
+	bool "aer-inject"
+	help
+	  aer-inject allows to inject PCIE AER errors on the software
+	  level into a running Linux kernel. This is intended for
+	  validation of the PCIE driver error recovery handler and
+	  PCIE AER core handler.
+
+	  Requires a new Linux kernel with PCIE AER error injection
+	  patches.
+
+	  https://git.kernel.org/cgit/linux/kernel/git/gong.chen/aer-inject.git/

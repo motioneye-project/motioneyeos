@@ -31,6 +31,10 @@ SETOOLS_CONF_OPTS = \
 	--with-sepol-devel="$(STAGING_DIR)/usr" \
 	--with-selinux-devel="$(STAGING_DIR)/usr"
 
+ifeq ($(BR2_sparc64):$(BR2_STATIC_LIBS),y:)
+SETOOLS_CONF_ENV += CFLAGS="$(TARGET_CFLAGS) -fPIC"
+endif
+
 HOST_SETOOLS_DEPENDENCIES = host-libselinux host-libsepol host-sqlite \
 	host-libxml2 host-bzip2 host-bison
 

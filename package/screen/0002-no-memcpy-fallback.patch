@@ -12,9 +12,11 @@ for the case that bcopy and memmove are unusable, removing the memcpy
 option should not break any systems.
 
 Signed-off-by: Maarten ter Huurne <maarten@treewalker.org>
+[Ricardo: rebase on top of 4.3.1]
+Signed-off-by: Ricardo Martincoski <ricardo.martincoski@gmail.com>
 ---
  acconfig.h   |  3 +--
- configure.in | 18 +-----------------
+ configure.ac | 18 +-----------------
  os.h         |  8 ++------
  osdef.h.in   | 10 +---------
  4 files changed, 5 insertions(+), 34 deletions(-)
@@ -40,11 +42,11 @@ index 2e46985..9b0b9d4 100644
  #undef USEMEMMOVE
  
  /*
-diff --git a/configure.in b/configure.in
-index 572c2a3..ff9606d 100644
---- a/configure.in
-+++ b/configure.in
-@@ -1144,7 +1144,7 @@ AC_TRY_LINK(,[getttyent();], AC_DEFINE(GETTTYENT))
+diff --git a/configure.ac b/configure.ac
+index 27690a6..b8e3bec 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -1145,7 +1145,7 @@ AC_TRY_LINK(,[getttyent();], AC_DEFINE(GETTTYENT))
  AC_CHECKING(fdwalk)
  AC_TRY_LINK([#include <stdlib.h>], [fdwalk(NULL, NULL);],AC_DEFINE(HAVE_FDWALK))
  
@@ -53,7 +55,7 @@ index 572c2a3..ff9606d 100644
  AC_TRY_RUN([
  main() {
    char buf[10];
-@@ -1174,22 +1174,6 @@ main() {
+@@ -1175,22 +1175,6 @@ main() {
    exit(0); /* libc version works properly.  */
  }], AC_DEFINE(USEMEMMOVE))
  
@@ -77,7 +79,7 @@ index 572c2a3..ff9606d 100644
  
  AC_MSG_CHECKING(for vsprintf)
 diff --git a/os.h b/os.h
-index 55de249..6838ec0 100644
+index e827ac9..0b41fb9 100644
 --- a/os.h
 +++ b/os.h
 @@ -142,12 +142,8 @@ extern int errno;

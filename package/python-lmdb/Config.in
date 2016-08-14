@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PYTHON_LMDB
+	bool "python-lmdb"
+	select BR2_PACKAGE_PYTHON_CFFI # runtime
+	help
+	  Universal Python binding for the LMDB 'Lightning' Database.
+
+	  https://pypi.python.org/pypi/lmdb

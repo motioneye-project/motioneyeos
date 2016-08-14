@@ -1,0 +1,30 @@
+From 3377ea57f5d333d65d44a1130161396782389e88 Mon Sep 17 00:00:00 2001
+From: Tim Kosse <tim.kosse@filezilla-project.org>
+Date: Tue, 11 Aug 2015 09:43:34 +0200
+Subject: [PATCH] Fix  __uint128_t compile error on MinGW.
+
+MinGW has __uint128_t, but not __uint64_t.
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Patch status: upstream commit 3377ea57f5
+
+ sshbn.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/sshbn.h b/sshbn.h
+index a043241eea67..9366f614ae4c 100644
+--- a/sshbn.h
++++ b/sshbn.h
+@@ -26,7 +26,7 @@
+  * using the same 'two machine registers' kind of code generation that
+  * 32-bit targets use for 64-bit ints. If we have one of these, we can
+  * use a 64-bit BignumInt and a 128-bit BignumDblInt. */
+-typedef __uint64_t BignumInt;
++typedef unsigned long long BignumInt;
+ typedef __uint128_t BignumDblInt;
+ #define BIGNUM_INT_MASK  0xFFFFFFFFFFFFFFFFULL
+ #define BIGNUM_TOP_BIT   0x8000000000000000ULL
+-- 
+2.8.1
+

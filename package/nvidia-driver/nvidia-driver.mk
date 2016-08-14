@@ -144,7 +144,7 @@ endif # BR2_PACKAGE_NVIDIA_DRIVER_MODULE == y
 # no-version symlink, so we can link to them at build time.
 define NVIDIA_DRIVER_INSTALL_LIBS
 	for libpath in $(addsuffix .so.$(NVIDIA_DRIVER_VERSION),$(NVIDIA_DRIVER_LIBS)) \
-	           $(NVIDIA_DRIVER_LIBS_NO_VERSION); \
+		$(NVIDIA_DRIVER_LIBS_NO_VERSION); \
 	do \
 		libname="$${libpath##*/}"; \
 		$(INSTALL) -D -m 0644 $(@D)/$${libpath} $(1)/usr/lib/$${libname}; \

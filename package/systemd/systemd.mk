@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-SYSTEMD_VERSION = 228
+SYSTEMD_VERSION = 229
 SYSTEMD_SITE = $(call github,systemd,systemd,v$(SYSTEMD_VERSION))
 SYSTEMD_LICENSE = LGPLv2.1+, GPLv2+ (udev), Public Domain (few source files, see README)
 SYSTEMD_LICENSE_FILES = LICENSE.GPL2 LICENSE.LGPL2.1 README
@@ -76,22 +76,80 @@ else
 SYSTEMD_CONF_OPTS += --disable-kdbus
 endif
 
-ifeq ($(BR2_PACKAGE_SYSTEMD_ALL_EXTRAS),y)
-SYSTEMD_DEPENDENCIES += xz libgcrypt
-SYSTEMD_CONF_OPTS += \
-	--enable-xz \
-	--enable-gcrypt	\
-	--with-libgcrypt-prefix=$(STAGING_DIR)/usr
+ifeq ($(BR2_PACKAGE_BZIP2),y)
+SYSTEMD_DEPENDENCIES += bzip2
+SYSTEMD_CONF_OPTS += --enable-bzip2
 else
+SYSTEMD_CONF_OPTS += --disable-bzip2
+endif
+
+ifeq ($(BR2_PACKAGE_LZ4),y)
+SYSTEMD_DEPENDENCIES += lz4
+SYSTEMD_CONF_OPTS += --enable-lz4
+else
+SYSTEMD_CONF_OPTS += --disable-lz4
+endif
+
+ifeq ($(BR2_PACKAGE_XZ),y)
+SYSTEMD_DEPENDENCIES += xz
+SYSTEMD_CONF_OPTS += --enable-xz
+else
+SYSTEMD_CONF_OPTS += --disable-xz
+endif
+
+ifeq ($(BR2_PACKAGE_ZLIB),y)
+SYSTEMD_DEPENDENCIES += zlib
+SYSTEMD_CONF_OPTS += --enable-zlib
+else
+SYSTEMD_CONF_OPTS += --disable-zlib
+endif
+
+ifeq ($(BR2_PACKAGE_LIBCURL),y)
+SYSTEMD_DEPENDENCIES += libcurl
+SYSTEMD_CONF_OPTS += --enable-libcurl
+else
+SYSTEMD_CONF_OPTS += --disable-libcurl
+endif
+
+ifeq ($(BR2_PACKAGE_LIBGCRYPT),y)
+SYSTEMD_DEPENDENCIES += libgcrypt
 SYSTEMD_CONF_OPTS += \
-	--disable-xz \
-	--disable-gcrypt
+	--enable-gcrypt	\
+	--with-libgcrypt-prefix=$(STAGING_DIR)/usr \
+	--with-libgpg-error-prefix=$(STAGING_DIR)/usr
+else
+SYSTEMD_CONF_OPTS += --disable-gcrypt
 endif
 
 ifeq ($(BR2_PACKAGE_SYSTEMD_JOURNAL_GATEWAY),y)
 SYSTEMD_DEPENDENCIES += libmicrohttpd
+SYSTEMD_CONF_OPTS += --enable-microhttpd
 else
 SYSTEMD_CONF_OPTS += --disable-microhttpd
+endif
+
+ifeq ($(BR2_PACKAGE_SYSTEMD_BINFMT),y)
+SYSTEMD_CONF_OPTS += --enable-binfmt
+else
+SYSTEMD_CONF_OPTS += --disable-binfmt
+endif
+
+ifeq ($(BR2_PACKAGE_SYSTEMD_VCONSOLE),y)
+SYSTEMD_CONF_OPTS += --enable-vconsole
+else
+SYSTEMD_CONF_OPTS += --disable-vconsole
+endif
+
+ifeq ($(BR2_PACKAGE_SYSTEMD_BOOTCHART),y)
+SYSTEMD_CONF_OPTS += --enable-bootchart
+else
+SYSTEMD_CONF_OPTS += --disable-bootchart
+endif
+
+ifeq ($(BR2_PACKAGE_SYSTEMD_QUOTACHECK),y)
+SYSTEMD_CONF_OPTS += --enable-quotacheck
+else
+SYSTEMD_CONF_OPTS += --disable-quotacheck
 endif
 
 ifeq ($(BR2_PACKAGE_SYSTEMD_NETWORKD),y)
@@ -169,6 +227,7 @@ endef
 
 ifneq ($(call qstrip,$(BR2_TARGET_GENERIC_GETTY_PORT)),)
 # systemd needs getty.service for VTs and serial-getty.service for serial ttys
+# also patch the file to use the correct baud-rate, the default baudrate is 115200 so look for that
 define SYSTEMD_INSTALL_SERVICE_TTY
 	if echo $(BR2_TARGET_GENERIC_GETTY_PORT) | egrep -q 'tty[0-9]*$$'; \
 	then \
@@ -177,7 +236,11 @@ define SYSTEMD_INSTALL_SERVICE_TTY
 		SERVICE="serial-getty"; \
 	fi; \
 	ln -fs ../../../../lib/systemd/system/$${SERVICE}@.service \
-		$(TARGET_DIR)/etc/systemd/system/getty.target.wants/$${SERVICE}@$(BR2_TARGET_GENERIC_GETTY_PORT).service
+		$(TARGET_DIR)/etc/systemd/system/getty.target.wants/$${SERVICE}@$(BR2_TARGET_GENERIC_GETTY_PORT).service; \
+	if [ $(call qstrip,$(BR2_TARGET_GENERIC_GETTY_BAUDRATE)) -gt 0 ] ; \
+	then \
+		$(SED) 's,115200,$(BR2_TARGET_GENERIC_GETTY_BAUDRATE),' $(TARGET_DIR)/lib/systemd/system/$${SERVICE}@.service; \
+	fi
 endef
 endif
 

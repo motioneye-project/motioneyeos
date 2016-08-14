@@ -3,6 +3,8 @@ config BR2_PACKAGE_GST_FFMPEG
 	# Unsupported for MIPS R6. It bundles a version of libav which
 	# doesn't have support for MIPS R6.
 	depends on !BR2_mips_32r6 && !BR2_mips_64r6
+	# triggers https://gcc.gnu.org/bugzilla/show_bug.cgi?id=65151 on sh
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_5 || !BR2_sh
 	select BR2_PACKAGE_GST_PLUGINS_BASE
 	help
 	  GStreamer plugin containing one plugin with a set of elements using
@@ -23,3 +25,6 @@ config BR2_PACKAGE_GST_FFMPEG_GPL
 	  be under GPL.
 
 endif
+
+comment "gst-ffmpeg needs a toolchain w/ gcc >= 5"
+	depends on !BR2_TOOLCHAIN_GCC_AT_LEAST_5 && BR2_sh

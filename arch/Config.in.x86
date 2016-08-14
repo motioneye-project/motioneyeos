@@ -25,9 +25,6 @@ choice
 	help
 	  Specific CPU variant to use
 
-config BR2_x86_i386
-	bool "i386"
-	depends on !BR2_x86_64
 config BR2_x86_i486
 	bool "i486"
 	depends on !BR2_x86_64
@@ -210,7 +207,6 @@ config BR2_x86_winchip2
 endchoice
 
 config BR2_ARCH
-	default "i386"		if BR2_x86_i386
 	default "i486"		if BR2_x86_i486
 	default "i586"		if BR2_x86_i586
 	default "i586"		if BR2_x86_x1000
@@ -230,6 +226,8 @@ config BR2_ARCH
 	default "i686"		if BR2_x86_nocona && BR2_i386
 	default "i686"		if BR2_x86_core2 && BR2_i386
 	default "i686"		if BR2_x86_corei7 && BR2_i386
+	default "i686"		if BR2_x86_corei7_avx && BR2_i386
+	default "i686"		if BR2_x86_corei7_avx2 && BR2_i386
 	default "i686"		if BR2_x86_atom && BR2_i386
 	default "i686"		if BR2_x86_opteron && BR2_i386
 	default "i686"		if BR2_x86_opteron_sse3 && BR2_i386
@@ -246,7 +244,6 @@ config BR2_ENDIAN
 	default "LITTLE"
 
 config BR2_GCC_TARGET_ARCH
-	default "i386"		if BR2_x86_i386
 	default "i486"		if BR2_x86_i486
 	default "i586"		if BR2_x86_i586
 	default "i586"		if BR2_x86_x1000

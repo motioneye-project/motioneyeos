@@ -8,13 +8,6 @@ config BR2_PACKAGE_SQLITE
 
 if BR2_PACKAGE_SQLITE
 
-config BR2_PACKAGE_SQLITE_READLINE
-	bool "Command-line editing"
-	select BR2_PACKAGE_NCURSES
-	select BR2_PACKAGE_READLINE
-	help
-	  Enable command-line editing. This requires ncurses and readline.
-
 config BR2_PACKAGE_SQLITE_STAT3
 	bool "Additional query optimizations (stat3)"
 	help

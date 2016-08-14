@@ -1,0 +1,27 @@
+#!/bin/sh
+
+NAME=uuc
+DAEMON=/usr/bin/$NAME
+
+case "$1" in
+    start)
+	printf "Starting $NAME: "
+	start-stop-daemon -S -q -b -p /var/run/${NAME}.pid -x $DAEMON
+	[ $? = 0 ] && echo "OK" || echo "FAIL"
+	;;
+    stop)
+	printf "Stopping $NAME: "
+	start-stop-daemon -K -q -p /var/run/${NAME}.pid
+	[ $? = 0 ] && echo "OK" || echo "FAIL"
+	;;
+    restart|reload)
+	$0 stop
+	sleep 1
+	$0 start
+	;;
+    *)
+	echo "Usage: $0 {start|stop|restart}"
+	exit 1
+esac
+
+exit $?

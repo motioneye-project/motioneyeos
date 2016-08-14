@@ -1,0 +1,12 @@
+config BR2_PACKAGE_PRIVOXY
+	bool "privoxy"
+	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_PCRE
+	select BR2_PACKAGE_ZLIB
+	help
+	  A non-caching web proxy with advanced filtering capabilities
+	  for enhancing privacy, modifying web page data and HTTP
+	  headers, controlling access, and removing ads and other
+	  obnoxious Internet junk.
+
+	  http://www.privoxy.org/

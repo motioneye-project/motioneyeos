@@ -1,2 +1,2 @@
-# From http://lists.x.org/archives/xorg-announce/2013-May/002220.html
-sha1	1f7b23d4ed53417eda5c6730486b36812f469295	xf86-video-openchrome-0.3.3.tar.bz2
+# Locally computed
+sha256	73e7966d01d0d644d3b9204e8bfc106cb99069c58e981626e7352f2693e3e927	xf86-video-openchrome-0.4.0.tar.bz2

@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-STRONGSWAN_VERSION = 5.3.5
+STRONGSWAN_VERSION = 5.4.0
 STRONGSWAN_SOURCE = strongswan-$(STRONGSWAN_VERSION).tar.bz2
 STRONGSWAN_SITE = http://download.strongswan.org
 STRONGSWAN_LICENSE = GPLv2+
@@ -34,6 +34,10 @@ STRONGSWAN_CONF_OPTS += \
 	--enable-scripts=$(if $(BR2_PACKAGE_STRONGSWAN_SCRIPTS),yes,no) \
 	--enable-vici=$(if $(BR2_PACKAGE_STRONGSWAN_VICI),yes,no) \
 	--enable-swanctl=$(if $(BR2_PACKAGE_STRONGSWAN_VICI),yes,no)
+
+ifeq ($(BR2_TOOLCHAIN_HAS_LIBATOMIC),y)
+STRONGSWAN_CONF_ENV += LIBS='-latomic'
+endif
 
 ifeq ($(BR2_PACKAGE_STRONGSWAN_EAP),y)
 STRONGSWAN_CONF_OPTS += \
@@ -71,15 +75,10 @@ STRONGSWAN_DEPENDENCIES += \
 	$(if $(BR2_PACKAGE_MYSQL),mysql)
 endif
 
-ifeq ($(BR2_PACKAGE_IPTABLES),y)
-STRONGSWAN_DEPENDENCIES += iptables
+# disable connmark/forecast until net/if.h vs. linux/if.h conflict resolved
+# problem exist since linux 4.5 header changes
 STRONGSWAN_CONF_OPTS += \
-	--enable-connmark \
-	--enable-forecast
-else
-STRONGSWAN_COF_OPTS += \
 	--disable-connmark \
 	--disable-forecast
-endif
 
 $(eval $(autotools-package))

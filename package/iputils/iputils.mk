@@ -11,12 +11,11 @@
 # and IPv6 updates.
 # http://www.spinics.net/lists/netdev/msg279881.html
 
-IPUTILS_VERSION = c8ff6feaf0442f8efd96ccb415770c54f9e84d47
+IPUTILS_VERSION = 31d947cf7156cf78d3f57e0bd82b33e6f6ece6b4
 IPUTILS_SITE = $(call github,iputils,iputils,$(IPUTILS_VERSION))
 IPUTILS_LICENSE = GPLv2+, BSD-3c, BSD-4c
 # Only includes a license file for BSD
 IPUTILS_LICENSE_FILES = ninfod/COPYING
-IPUTILS_DEPENDENCIES = openssl
 
 # Build after busybox so target ends up with this package's full
 # versions of the applications instead of busybox applets.
@@ -32,6 +31,27 @@ IPUTILS_MAKE_OPTS += USE_CAP=yes
 IPUTILS_DEPENDENCIES += libcap
 else
 IPUTILS_MAKE_OPTS += USE_CAP=no
+endif
+
+ifeq ($(BR2_PACKAGE_LIBGCRYPT),y)
+IPUTILS_MAKE_OPTS += USE_GCRYPT=yes
+IPUTILS_DEPENDENCIES += libgcrypt
+else
+IPUTILS_MAKE_OPTS += USE_GCRYPT=no
+endif
+
+ifeq ($(BR2_PACKAGE_NETTLE),y)
+IPUTILS_MAKE_OPTS += USE_NETTLE=yes
+IPUTILS_DEPENDENCIES += nettle
+else
+IPUTILS_MAKE_OPTS += USE_NETTLE=no
+endif
+
+ifeq ($(BR2_PACKAGE_OPENSSL),y)
+IPUTILS_MAKE_OPTS += USE_CRYPTO=yes
+IPUTILS_DEPENDENCIES += openssl
+else
+IPUTILS_MAKE_OPTS += USE_CRYPTO=no
 endif
 
 define IPUTILS_BUILD_CMDS

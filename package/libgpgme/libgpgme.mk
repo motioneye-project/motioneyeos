@@ -23,7 +23,9 @@ LIBGPGME_CONF_OPTS = --with-gpg=/usr/bin/gpg \
 
 # Handle argp-standalone or it errors out during build
 ifeq ($(BR2_PACKAGE_ARGP_STANDALONE),y)
-LIBGPGME_CONF_ENV += LIBS="-largp"
+# musl libc does not define error_t in errno.h, but argp.h does.
+# Assume we have error_t to avoid collision with the argp.h error_t.
+LIBGPGME_CONF_ENV += LIBS="-largp" ac_cv_type_error_t=yes
 LIBGPGME_DEPENDENCIES += argp-standalone
 endif
 

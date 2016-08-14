@@ -1,5 +1,6 @@
 config BR2_PACKAGE_X264
 	bool "x264"
+	depends on !BR2_TOOLCHAIN_EXTERNAL_BLACKFIN_UCLINUX # madvise()
 	help
 	  x264 is a free software library and application for
 	  encoding video streams into the H.264/MPEG-4 AVC

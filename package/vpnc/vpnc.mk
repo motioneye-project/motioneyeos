@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-VPNC_VERSION = 0.5.3
-VPNC_SITE = http://www.unix-ag.uni-kl.de/~massar/vpnc
+VPNC_VERSION = 70f1211f6f26e87e374d66f9a986e855215b8e3e
+VPNC_SITE = $(call github,ndpgroup,vpnc,$(VPNC_VERSION))
 VPNC_LICENSE = GPLv2+
 VPNC_LICENSE_FILES = COPYING
 

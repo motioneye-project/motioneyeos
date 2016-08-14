@@ -1,0 +1,37 @@
+config BR2_PACKAGE_GR_OSMOSDR
+	bool "gr-osmosdr"
+	depends on BR2_PACKAGE_GNURADIO
+	select BR2_PACKAGE_GNURADIO_BLOCKS
+	help
+	  GNU Radio block for interfacing with various radio hardware
+
+if BR2_PACKAGE_GR_OSMOSDR
+
+config BR2_PACKAGE_GR_OSMOSDR_PYTHON
+	bool "python support"
+	depends on BR2_PACKAGE_GNURADIO_PYTHON
+	help
+	  Enable Python support
+
+config BR2_PACKAGE_GR_OSMOSDR_IQFILE
+	bool "IQ File Source support"
+	help
+	  Enable IQ File Source support
+
+config BR2_PACKAGE_GR_OSMOSDR_RTLSDR
+	bool "Osmocom RTLSDR support"
+	select BR2_PACKAGE_LIBRTLSDR
+	help
+	  Enable Osmocom RTLSDR support
+
+config BR2_PACKAGE_GR_OSMOSDR_RTLSDR_TCP
+	bool "RTLSDR TCP Client support"
+	help
+	  Enable RTLSDR TCP client support
+
+config BR2_PACKAGE_GR_OSMOSDR_RFSPACE
+	bool "RFSPACE Receivers support"
+	help
+	  Enable RFSPACE Receivers support
+
+endif

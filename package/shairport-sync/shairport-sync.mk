@@ -4,13 +4,12 @@
 #
 ################################################################################
 
-SHAIRPORT_SYNC_VERSION = 2.8.0
+SHAIRPORT_SYNC_VERSION = 2.8.3
 SHAIRPORT_SYNC_SITE = $(call github,mikebrady,shairport-sync,$(SHAIRPORT_SYNC_VERSION))
 
 SHAIRPORT_SYNC_LICENSE = MIT, BSD-3c
 SHAIRPORT_SYNC_LICENSE_FILES = LICENSES
 SHAIRPORT_SYNC_DEPENDENCIES = alsa-lib libconfig libdaemon popt host-pkgconf
-SHAIRPORT_SYNC_PATCH = https://github.com/mikebrady/shairport-sync/commit/8e8a0ee7ab0db61dc46735a1206843fe943ffc61.patch
 
 # git clone, no configure
 SHAIRPORT_SYNC_AUTORECONF = YES

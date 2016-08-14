@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-PYTHON_PYCRYPTO_VERSION = 2.6
+PYTHON_PYCRYPTO_VERSION = 2.6.1
 PYTHON_PYCRYPTO_SOURCE = pycrypto-$(PYTHON_PYCRYPTO_VERSION).tar.gz
 PYTHON_PYCRYPTO_SITE = http://ftp.dlitz.net/pub/dlitz/crypto/pycrypto
 PYTHON_PYCRYPTO_SETUP_TYPE = distutils
@@ -22,6 +22,7 @@ define PYTHON_PYCRYPTO_RENAME_LICENSE
 	mv $(@D)/LEGAL/copy/LICENSE.orig $(@D)/LEGAL/copy/LICENSE.original
 endef
 PYTHON_PYCRYPTO_POST_EXTRACT_HOOKS += PYTHON_PYCRYPTO_RENAME_LICENSE
+HOST_PYTHON_PYCRYPTO_POST_EXTRACT_HOOKS += PYTHON_PYCRYPTO_RENAME_LICENSE
 PYTHON_PYCRYPTO_LICENSE_FILES += LEGAL/copy/LICENSE.original
 
 PYTHON_PYCRYPTO_DEPENDENCIES = gmp
@@ -44,3 +45,4 @@ define PYTHON_PYCRYPTO_CONFIGURE_CMDS
 endef
 
 $(eval $(python-package))
+$(eval $(host-python-package))

@@ -1,0 +1,24 @@
+bind cross compile support integration
+
+Pass system types from dhcp configure to bind configure.
+
+This patch is submitted upstream as part of a cross compiling enhancement
+suggestion to dhcp-suggest@isc.org. Reference ISC-Bugs #41502.
+
+Signed-off-by: Doug Kehn <rdkehn@yahoo.com>
+
+Index: dhcp-4.3.3-P1/bind/Makefile.in
+===================================================================
+--- dhcp-4.3.3-P1.orig/bind/Makefile.in
++++ dhcp-4.3.3-P1/bind/Makefile.in
+@@ -30,7 +30,9 @@ bindconfig = --disable-kqueue --disable-
+ 	--without-openssl --without-libxml2 --enable-exportlib \
+ 	--with-gssapi=no --enable-threads=no @BINDCONFIG@ \
+ 	--with-export-includedir=${binddir}/include \
+-	--with-export-libdir=${binddir}/lib
++	--with-export-libdir=${binddir}/lib \
++	--target=@target_alias@ --host=@host_alias@ \
++	--build=@build_alias@
+ 
+ @BIND_ATF_FALSE@cleandirs = ./lib ./include
+ @BIND_ATF_TRUE@cleandirs = ./lib ./include ./atf

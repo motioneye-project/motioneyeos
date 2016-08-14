@@ -1,0 +1,4 @@
+# from https://get.videolan.org/multicat/2.1/multicat-2.1.tar.bz2.md5
+md5 2e3ecd8dee64f5bd32a61733d4cc2226 multicat-2.1.tar.bz2
+# locally calculated
+sha256 5eabe8d9a3dde452b2d348683cc7da213680551a9d4059c356f7319c6aa9b3d1 multicat-2.1.tar.bz2

@@ -27,13 +27,25 @@ config BR2_PACKAGE_ZEROMQ
 
 if BR2_PACKAGE_ZEROMQ
 
+comment "norm support needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS
+
+config BR2_PACKAGE_ZEROMQ_NORM
+	bool "NORM support"
+	depends on !BR2_STATIC_LIBS
+	select BR2_PACKAGE_NORM
+	help
+	  Add support for NACK-Oriented Reliable Multicast (RFC 5740)
+	  protocol.
+
 config BR2_PACKAGE_ZEROMQ_PGM
 	bool "PGM/EPGM support"
-	depends on !BR2_TOOLCHAIN_EXTERNAL_BLACKFIN_UCLINUX # openpgm
+	depends on BR2_TOOLCHAIN_HAS_SYNC_2
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
 	select BR2_PACKAGE_OPENPGM
 	help
 	  Add support for Pragmatic General Multicast protocol (RFC 3208)
 	  implemented either over raw IP packets or UDP datagrams
-	  (encapsulated PGM). This requires OpenPGM library.
+	  (encapsulated PGM).
 
 endif

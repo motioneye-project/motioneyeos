@@ -1,7 +1,7 @@
 From 08617a8d29ee22831175697555558fec8f52772c Mon Sep 17 00:00:00 2001
 From: Samuel Martin <s.martin49@gmail.com>
 Date: Sun, 1 Jun 2014 16:05:04 +0200
-Subject: [PATCH 5/5] auto/unix: make sys_nerr guessing cross-friendly
+Subject: [PATCH] auto/unix: make sys_nerr guessing cross-friendly
 
 This patch replaces the default sys_nerr runtest with a test done at
 buildtime.

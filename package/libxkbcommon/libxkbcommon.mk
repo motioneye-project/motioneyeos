@@ -4,12 +4,11 @@
 #
 ################################################################################
 
-LIBXKBCOMMON_VERSION = 0.5.0
+LIBXKBCOMMON_VERSION = 0.6.1
 LIBXKBCOMMON_SITE = http://xkbcommon.org/download
 LIBXKBCOMMON_SOURCE = libxkbcommon-$(LIBXKBCOMMON_VERSION).tar.xz
 LIBXKBCOMMON_LICENSE = MIT/X11
-LIBXKBCOMMON_LICENSE_FILES = COPYING
-
+LIBXKBCOMMON_LICENSE_FILES = LICENSE
 LIBXKBCOMMON_INSTALL_STAGING = YES
 LIBXKBCOMMON_DEPENDENCIES = host-bison host-flex
 # uses C99 features

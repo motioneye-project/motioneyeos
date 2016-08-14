@@ -1,6 +1,7 @@
 config BR2_PACKAGE_EJABBERD
 	bool "ejabberd"
 	depends on BR2_PACKAGE_ERLANG
+	depends on BR2_INSTALL_LIBSTDCPP # stringprep
 	select BR2_PACKAGE_ERLANG_LAGER
 	select BR2_PACKAGE_ERLANG_P1_CACHE_TAB
 	select BR2_PACKAGE_ERLANG_P1_ICONV
@@ -18,5 +19,5 @@ config BR2_PACKAGE_EJABBERD
 
 	  http://www.ejabberd.im
 
-comment "ejabberd needs erlang"
-	depends on !BR2_PACKAGE_ERLANG
+comment "ejabberd needs erlang, toolchain w/ C++"
+	depends on !BR2_PACKAGE_ERLANG || !BR2_INSTALL_LIBSTDCPP

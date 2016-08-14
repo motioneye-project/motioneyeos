@@ -8,7 +8,7 @@ OPKG_VERSION = v0.3.1
 OPKG_SITE = http://git.yoctoproject.org/git/opkg
 OPKG_SITE_METHOD = git
 # Uses PKG_CHECK_MODULES() in configure.ac
-OPKG_DEPENDENCIES = host-pkgconf
+OPKG_DEPENDENCIES = host-pkgconf libarchive
 OPKG_LICENSE = GPLv2+
 OPKG_LICENSE_FILES = COPYING
 OPKG_INSTALL_STAGING = YES

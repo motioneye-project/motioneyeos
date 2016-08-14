@@ -1,0 +1,53 @@
+From 2a3f56502b52375c3bf113cf92adfa99bad6b488 Mon Sep 17 00:00:00 2001
+From: Jouni Malinen <jouni@qca.qualcomm.com>
+Date: Tue, 5 Apr 2016 23:55:48 +0300
+Subject: [PATCH] Reject SET commands with newline characters in the string
+ values
+
+Many of the global configuration parameters are written as strings
+without filtering and if there is an embedded newline character in the
+value, unexpected configuration file data might be written.
+
+This fixes an issue where wpa_supplicant could have updated the
+configuration file global parameter with arbitrary data from the control
+interface or D-Bus interface. While those interfaces are supposed to be
+accessible only for trusted users/applications, it may be possible that
+an untrusted user has access to a management software component that
+does not validate the value of a parameter before passing it to
+wpa_supplicant.
+
+This could allow such an untrusted user to inject almost arbitrary data
+into the configuration file. Such configuration file could result in
+wpa_supplicant trying to load a library (e.g., opensc_engine_path,
+pkcs11_engine_path, pkcs11_module_path, load_dynamic_eap) from user
+controlled location when starting again. This would allow code from that
+library to be executed under the wpa_supplicant process privileges.
+
+Signed-off-by: Jouni Malinen <jouni@qca.qualcomm.com>
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Patch status: upstream (2a3f56502b52375c3bf113cf92adfa99bad6b488)
+
+ wpa_supplicant/config.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/wpa_supplicant/config.c b/wpa_supplicant/config.c
+index 69152efdea1a..d9a1603f6d7e 100644
+--- a/wpa_supplicant/config.c
++++ b/wpa_supplicant/config.c
+@@ -3764,6 +3764,12 @@ static int wpa_global_config_parse_str(const struct global_parse_data *data,
+ 		return -1;
+ 	}
+ 
++	if (has_newline(pos)) {
++		wpa_printf(MSG_ERROR, "Line %d: invalid %s value with newline",
++			   line, data->name);
++		return -1;
++	}
++
+ 	tmp = os_strdup(pos);
+ 	if (tmp == NULL)
+ 		return -1;
+-- 
+2.8.1
+

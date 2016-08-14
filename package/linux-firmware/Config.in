@@ -70,9 +70,14 @@ config BR2_PACKAGE_LINUX_FIRMWARE_BRCM_BCM43XXX
 
 config BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_3160
 	bool "Intel iwlwifi 3160"
-	select BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_NEED_REV
 	help
 	  Firmware files for the Intel Wifi 3160 devices supported by
+	  the iwlwifi kernel driver.
+
+config BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_3168
+	bool "Intel iwlwifi 3168"
+	help
+	  Firmware files for the Intel Wifi 3168 devices supported by
 	  the iwlwifi kernel driver.
 
 config BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_5000
@@ -87,57 +92,44 @@ config BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_6000G2A
 	  Firmware files for the Intel Wifi 6000G2A devices supported by
 	  the iwlwifi kernel driver.
 
+config BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_6000G2B
+	bool "Intel iwlwifi 6000G2B"
+	help
+	  Firmware files for the Intel Wifi 6000G2B devices supported by
+	  the iwlwifi kernel driver.
+
 config BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_7260
 	bool "Intel iwlwifi 7260"
-	select BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_NEED_REV
 	help
 	  Firmware files for the Intel Wifi 7260 devices supported by
 	  the iwlwifi kernel driver.
 
 config BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_7265
 	bool "Intel iwlwifi 7265"
-	select BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_NEED_REV
 	help
 	  Firmware files for the Intel Wifi 7265 devices supported by
 	  the iwlwifi kernel driver.
 
-config BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_NEED_REV
-	bool
-
-if BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_NEED_REV
-
-choice
-	bool "iwlwifi 3160/726x revision to use"
+config BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_7265D
+	bool "Intel iwlwifi 7265D"
+	# needed for old kernel versions, where the non-D and D
+	# firmwares were the same
+	select BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_7265
 	help
-	  Use revision 7 for kernel 3.10 to 3.12.
-	  Use revision 8 for kernel 3.13 to 3.15.
-	  Use revision 9 for kernel 3.16 onward.
+	  Firmware files for the Intel Wifi 7265D devices supported by
+	  the iwlwifi kernel driver.
 
-config BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_REV_7
-	prompt "revision 7"
-	depends on !BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_7265
+config BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_8000C
+	bool "Intel iwlwifi 8000C"
 	help
-	  Use revision 7 for kernel 3.10 to 3.12.
+	  Firmware files for the Intel Wifi 8000C devices supported by
+	  the iwlwifi kernel driver.
 
-config BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_REV_8
-	prompt "revision 8"
+config BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_8265
+	bool "Intel iwlwifi 8265"
 	help
-	  Use revision 8 for kernel 3.13 to 3.15.
-
-config BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_REV_9
-	prompt "revision 9"
-	help
-	  Use revision 9 for kernel 3.16 onward.
-
-endchoice
-
-config BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_REV
-	int
-	default 7 if BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_REV_7
-	default 8 if BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_REV_8
-	default 9 if BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_REV_9
-
-endif # iwlwifi 3160/7260
+	  Firmware files for the Intel Wifi 8265 devices supported by
+	  the iwlwifi kernel driver.
 
 config BR2_PACKAGE_LINUX_FIRMWARE_LIBERTAS_SD8686_V8
 	bool "Libertas SD 8686 v8"
@@ -188,6 +180,11 @@ config BR2_PACKAGE_LINUX_FIRMWARE_MWIFIEX_PCIE8897
 	bool "Marvell Wifi-Ex 8897 PCI-E"
 	help
 	  Firmware files for the Marvell Wifi-Ex 8897 module on PCI-E.
+
+config BR2_PACKAGE_LINUX_FIRMWARE_MEDIATEK_MT7601U
+	bool "MediaTek MT7601U"
+	help
+	  MediaTek MT7601U
 
 config BR2_PACKAGE_LINUX_FIRMWARE_RALINK_RT61
 	bool "Ralink rt2501/rt61"

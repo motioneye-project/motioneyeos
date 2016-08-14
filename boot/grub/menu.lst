@@ -13,4 +13,4 @@ background 	cccccc
 
 title Buildroot
 	root (hd0,0)
-	kernel /boot/bzImage rw root=/dev/sda1
+	kernel /boot/bzImage rw root=/dev/sda1 rootwait

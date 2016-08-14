@@ -1,11 +1,17 @@
 config BR2_PACKAGE_KODI_ARCH_SUPPORTS
 	bool
-	default y if (BR2_arm || (BR2_mipsel && BR2_TOOLCHAIN_USES_GLIBC) || BR2_i386 || BR2_x86_64) && BR2_PACKAGE_BOOST_ARCH_SUPPORTS
+	default y if (BR2_arm || (BR2_mipsel && BR2_TOOLCHAIN_USES_GLIBC) || BR2_i386 || BR2_x86_64) \
+		&& BR2_PACKAGE_FFMPEG_ARCH_SUPPORTS \
+		&& BR2_PACKAGE_BOOST_ARCH_SUPPORTS \
+		&& BR2_TOOLCHAIN_HAS_SYNC_8
 
-comment "kodi needs a toolchain w/ C++, threads, wchar, dynamic library"
+comment "kodi needs a uClibc or (e)glibc toolchain w/ C++, threads, wchar, dynamic library, gcc >= 4.7, host gcc >= 4.6"
 	depends on BR2_PACKAGE_KODI_ARCH_SUPPORTS
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS \
-		|| !BR2_USE_WCHAR || BR2_STATIC_LIBS
+		|| !BR2_USE_WCHAR || BR2_STATIC_LIBS \
+		|| !BR2_HOST_GCC_AT_LEAST_4_6 \
+		|| !BR2_TOOLCHAIN_GCC_AT_LEAST_4_7 \
+		|| BR2_TOOLCHAIN_USES_MUSL
 	depends on BR2_USE_MMU
 
 config BR2_PACKAGE_KODI_EGL_GLES
@@ -31,6 +37,16 @@ comment "kodi requires an OpenGL ES and EGL backend"
 
 menuconfig BR2_PACKAGE_KODI
 	bool "kodi"
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_HOST_GCC_AT_LEAST_4_6
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_7
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_TOOLCHAIN_USES_MUSL
+	depends on BR2_PACKAGE_KODI_EGL_GLES || BR2_PACKAGE_KODI_GL
+	depends on BR2_USE_MMU # python
+	depends on BR2_USE_WCHAR
+	depends on !BR2_STATIC_LIBS # python
+	depends on BR2_PACKAGE_KODI_ARCH_SUPPORTS
 	select BR2_NEEDS_HOST_JAVA
 	select BR2_PACKAGE_BOOST
 	select BR2_PACKAGE_BOOST_THREAD
@@ -42,11 +58,14 @@ menuconfig BR2_PACKAGE_KODI
 	select BR2_PACKAGE_FFMPEG_SWSCALE
 	select BR2_PACKAGE_FONTCONFIG
 	select BR2_PACKAGE_FREETYPE
+	select BR2_PACKAGE_GIFLIB
 	select BR2_PACKAGE_JASPER
 	select BR2_PACKAGE_JPEG
 	select BR2_PACKAGE_LIBASS
 	select BR2_PACKAGE_LIBCDIO
+	select BR2_PACKAGE_LIBCROSSGUID
 	select BR2_PACKAGE_LIBCURL
+	select BR2_PACKAGE_LIBDCADEC
 	select BR2_PACKAGE_LIBFRIBIDI
 	select BR2_PACKAGE_LIBGLEW if BR2_PACKAGE_KODI_GL
 	select BR2_PACKAGE_LIBGLU if BR2_PACKAGE_KODI_GL
@@ -81,19 +100,10 @@ menuconfig BR2_PACKAGE_KODI
 	select BR2_PACKAGE_TIFF
 	select BR2_PACKAGE_TINYXML
 	select BR2_PACKAGE_LIBDRM if BR2_PACKAGE_KODI_GL
-	select BR2_PACKAGE_XLIB_LIBXMU if BR2_PACKAGE_KODI_GL # needed by rsxs screensaver
 	select BR2_PACKAGE_XLIB_LIBXRANDR if BR2_PACKAGE_KODI_GL
-	select BR2_PACKAGE_XLIB_LIBXT if BR2_PACKAGE_KODI_GL # needed by rsxs screensaver
 	select BR2_PACKAGE_YAJL
 	select BR2_PACKAGE_ZLIB
 	select BR2_TOOLCHAIN_GLIBC_GCONV_LIBS_COPY if BR2_TOOLCHAIN_USES_GLIBC # runtime UTF conversion support
-	depends on BR2_INSTALL_LIBSTDCPP
-	depends on BR2_TOOLCHAIN_HAS_THREADS
-	depends on BR2_PACKAGE_KODI_EGL_GLES || BR2_PACKAGE_KODI_GL
-	depends on BR2_USE_MMU # python
-	depends on BR2_USE_WCHAR
-	depends on !BR2_STATIC_LIBS # python
-	depends on BR2_PACKAGE_KODI_ARCH_SUPPORTS
 	help
 	  Kodi is an award-winning free and open source (GPL) software
 	  media player and entertainment hub for digital media.
@@ -112,7 +122,6 @@ config BR2_PACKAGE_KODI_ALSA_LIB
 
 config BR2_PACKAGE_KODI_AVAHI
 	bool "avahi"
-	depends on !BR2_STATIC_LIBS # avahi
 	select BR2_PACKAGE_AVAHI
 	select BR2_PACKAGE_AVAHI_DAEMON
 	help
@@ -128,45 +137,20 @@ config BR2_PACKAGE_KODI_DBUS
 config BR2_PACKAGE_KODI_LIBBLURAY
 	bool "blu-ray"
 	select BR2_PACKAGE_LIBBLURAY
-	depends on !BR2_STATIC_LIBS
 	help
 	  Enable Blu-ray input support.
 	  Select this if you want to play back Blu-ray content.
 
-comment "libbluray support needs a toolchain w/ dynamic library"
-	depends on BR2_STATIC_LIBS
-
-config BR2_PACKAGE_KODI_GOOM
-	bool "goom screensaver"
-	depends on BR2_PACKAGE_KODI_GL
-	help
-	  Enable goom screensaver
-
-comment "goom needs an OpenGL backend"
-	depends on !BR2_PACKAGE_KODI_GL
-
-config BR2_PACKAGE_KODI_RSXS
-	bool "rsxs screensaver"
-	depends on BR2_PACKAGE_KODI_GL
-	help
-	  Enable goom screensaver
-
-comment "rsxs needs an OpenGL backend"
-	depends on !BR2_PACKAGE_KODI_GL
-
 config BR2_PACKAGE_KODI_LIBCEC
 	bool "hdmi cec"
-	depends on !BR2_STATIC_LIBS # libcec
 	depends on BR2_PACKAGE_HAS_UDEV
-	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_7 # libcec
 	select BR2_PACKAGE_LIBCEC
 	help
 	  Enable CEC (Consumer Electronics Control) support.
 	  Select this if you want Kodi to support HDMI CEC.
 
-comment "hdmi cec support needs udev /dev management and a toolchain w/ dynamic library"
-	depends on BR2_STATIC_LIBS || !BR2_PACKAGE_HAS_UDEV || \
-		!BR2_TOOLCHAIN_GCC_AT_LEAST_4_7
+comment "hdmi cec support needs udev /dev management"
+	depends on !BR2_PACKAGE_HAS_UDEV
 
 config BR2_PACKAGE_KODI_LIRC
 	bool "lirc"
@@ -199,21 +183,18 @@ config BR2_PACKAGE_KODI_RTMPDUMP
 
 config BR2_PACKAGE_KODI_LIBSHAIRPLAY
 	bool "shairport"
-	depends on !BR2_STATIC_LIBS # libshairplay -> avahi
 	select BR2_PACKAGE_LIBSHAIRPLAY
 	help
 	  Enable Shairport support.
 	  Select this if you want to stream content from an Apple device.
 
-comment "shairport support needs a toolchain w/ dynamic library"
-	depends on BR2_STATIC_LIBS
-
-comment "samba support needs an (e)glibc toolchain w/ RPC"
-	depends on !BR2_TOOLCHAIN_USES_GLIBC || !BR2_TOOLCHAIN_HAS_NATIVE_RPC
+comment "samba support needs a (e)glibc or uClibc toolchain w/ RPC"
+	depends on (!BR2_TOOLCHAIN_USES_GLIBC && \
+		!BR2_TOOLCHAIN_USES_UCLIBC) || !BR2_TOOLCHAIN_HAS_NATIVE_RPC
 
 config BR2_PACKAGE_KODI_LIBSMBCLIENT
 	bool "samba"
-	depends on BR2_TOOLCHAIN_USES_GLIBC
+	depends on BR2_TOOLCHAIN_USES_GLIBC || BR2_TOOLCHAIN_USES_UCLIBC
 	depends on BR2_TOOLCHAIN_HAS_NATIVE_RPC
 	depends on BR2_TOOLCHAIN_HAS_SYNC_4
 	select BR2_PACKAGE_SAMBA4
@@ -243,19 +224,8 @@ config BR2_PACKAGE_KODI_LIBUSB
 config BR2_PACKAGE_KODI_LIBVA
 	bool "va"
 	select BR2_PACKAGE_LIBVA
-	depends on !BR2_STATIC_LIBS
 	help
 	  Enable libva support.
-
-comment "libva support needs a toolchain w/ dynamic library"
-	depends on BR2_STATIC_LIBS
-
-config BR2_PACKAGE_KODI_WAVPACK
-	bool "wavpack"
-	select BR2_PACKAGE_WAVPACK
-	help
-	  Enable WAV input support.
-	  Select this if you want to play back WV files.
 
 config BR2_PACKAGE_KODI_OPTICALDRIVE
 	bool
@@ -263,11 +233,17 @@ config BR2_PACKAGE_KODI_OPTICALDRIVE
 menu "Audio decoder addons"
 	source "package/kodi-audiodecoder-modplug/Config.in"
 	source "package/kodi-audiodecoder-nosefart/Config.in"
+	source "package/kodi-audiodecoder-opus/Config.in"
 	source "package/kodi-audiodecoder-sidplay/Config.in"
 	source "package/kodi-audiodecoder-snesapu/Config.in"
 	source "package/kodi-audiodecoder-stsound/Config.in"
 	source "package/kodi-audiodecoder-timidity/Config.in"
 	source "package/kodi-audiodecoder-vgmstream/Config.in"
+endmenu
+
+menu "Audio DSP addons"
+	source "package/kodi-adsp-basic/Config.in"
+	source "package/kodi-adsp-freesurround/Config.in"
 endmenu
 
 menu "Audio encoder addons"
@@ -283,6 +259,7 @@ menu "PVR addons"
 	source "package/kodi-pvr-dvblink/Config.in"
 	source "package/kodi-pvr-dvbviewer/Config.in"
 	source "package/kodi-pvr-filmon/Config.in"
+	source "package/kodi-pvr-hdhomerun/Config.in"
 	source "package/kodi-pvr-hts/Config.in"
 	source "package/kodi-pvr-iptvsimple/Config.in"
 	source "package/kodi-pvr-mediaportal-tvserver/Config.in"
@@ -299,15 +276,23 @@ endmenu
 
 menu "Screensavers"
 	source "package/kodi-screensaver-asteroids/Config.in"
+	source "package/kodi-screensaver-asterwave/Config.in"
 	source "package/kodi-screensaver-biogenesis/Config.in"
+	source "package/kodi-screensaver-cpblobs/Config.in"
 	source "package/kodi-screensaver-crystalmorph/Config.in"
 	source "package/kodi-screensaver-greynetic/Config.in"
+	source "package/kodi-screensaver-matrixtrails/Config.in"
 	source "package/kodi-screensaver-pingpong/Config.in"
+	source "package/kodi-screensaver-planestate/Config.in"
 	source "package/kodi-screensaver-pyro/Config.in"
+	source "package/kodi-screensaver-rsxs/Config.in"
 	source "package/kodi-screensaver-stars/Config.in"
 endmenu
 
 menu "Visualisations"
+	source "package/kodi-visualisation-fishbmc/Config.in"
+	source "package/kodi-visualisation-fountain/Config.in"
+	source "package/kodi-visualisation-goom/Config.in"
 	source "package/kodi-visualisation-shadertoy/Config.in"
 	source "package/kodi-visualisation-spectrum/Config.in"
 	source "package/kodi-visualisation-waveforhue/Config.in"

@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-CAIRO_VERSION = 1.14.4
+CAIRO_VERSION = 1.14.6
 CAIRO_SOURCE = cairo-$(CAIRO_VERSION).tar.xz
 CAIRO_LICENSE = LGPLv2.1+
 CAIRO_LICENSE_FILES = COPYING
@@ -18,7 +18,7 @@ endif
 
 # cairo can use C++11 atomics when available, so we need to link with
 # libatomic for the architectures who need libatomic.
-ifeq ($(BR2_TOOLCHAIN_GCC_AT_LEAST_4_8),y)
+ifeq ($(BR2_TOOLCHAIN_HAS_LIBATOMIC),y)
 CAIRO_CONF_ENV += LIBS="-latomic"
 endif
 
@@ -79,11 +79,17 @@ else
 CAIRO_CONF_OPTS += --disable-gobject
 endif
 
+# Can use GL or GLESv2 but not both
+ifeq ($(BR2_PACKAGE_HAS_LIBGL),y)
+CAIRO_CONF_OPTS += --enable-gl --disable-glesv2
+CAIRO_DEPENDENCIES += libgl
+else
 ifeq ($(BR2_PACKAGE_HAS_LIBGLES),y)
-CAIRO_CONF_OPTS += --enable-glesv2
+CAIRO_CONF_OPTS += --disable-gl --enable-glesv2
 CAIRO_DEPENDENCIES += libgles
 else
-CAIRO_CONF_OPTS += --disable-glesv2
+CAIRO_CONF_OPTS += --disable-gl --disable-glesv2
+endif
 endif
 
 ifeq ($(BR2_PACKAGE_HAS_LIBOPENVG),y)
