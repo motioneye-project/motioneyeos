@@ -21,6 +21,11 @@ endif
 ifeq ($(BR2_PACKAGE_E2FSPROGS),y)
 QUOTA_DEPENDENCIES += e2fsprogs
 QUOTA_CONF_OPTS += --enable-ext2direct
+# quote does not use pkg-config to find e2fsprogs, so it does not know it
+# may require -pthreads in case of static build
+ifeq ($(BR2_STATIC_LIBS)$(BR2_TOOLCHAIN_HAS_THREADS),yy)
+QUOTA_LIBS += -pthread
+endif
 else
 QUOTA_CONF_OPTS += --disable-ext2direct
 endif
