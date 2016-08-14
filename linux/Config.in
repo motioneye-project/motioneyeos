@@ -18,10 +18,9 @@ config BR2_LINUX_NEEDS_MODULES
 # Version selection. We provide the choice between:
 #
 #  1. A single fairly recent stable kernel version
-#  2. In case an internal toolchain has been built, the same kernel
-#     version as the kernel headers
-#  3. A custom stable version
-#  4. A custom tarball
+#  2. A custom stable version
+#  3. A custom tarball
+#  4. A set of custom repository locations
 #
 choice
 	prompt "Kernel version"
