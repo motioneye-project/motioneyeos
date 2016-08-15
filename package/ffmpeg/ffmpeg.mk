@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-FFMPEG_VERSION = 2.8.7
+FFMPEG_VERSION = 3.1.2
 FFMPEG_SOURCE = ffmpeg-$(FFMPEG_VERSION).tar.xz
 FFMPEG_SITE = http://ffmpeg.org/releases
 FFMPEG_INSTALL_STAGING = YES
@@ -40,7 +40,7 @@ FFMPEG_CONF_OPTS = \
 	--enable-runtime-cpudetect \
 	--disable-hardcoded-tables \
 	--disable-memalign-hack \
-	--disable-mipsdspr1 \
+	--disable-mipsdsp \
 	--disable-mipsdspr2 \
 	--disable-msa \
 	--enable-hwaccels \
@@ -57,7 +57,6 @@ FFMPEG_CONF_OPTS = \
 	--disable-libnut \
 	--disable-libopenjpeg \
 	--disable-libschroedinger \
-	--disable-libvo-aacenc \
 	--disable-libvo-amrwbenc \
 	--disable-symver \
 	--disable-doc
@@ -215,13 +214,6 @@ endif
 else
 FFMPEG_CONF_OPTS += --disable-openssl
 endif
-endif
-
-ifeq ($(BR2_PACKAGE_LIBDCADEC),y)
-FFMPEG_CONF_OPTS += --enable-libdcadec
-FFMPEG_DEPENDENCIES += libdcadec
-else
-FFMPEG_CONF_OPTS += --disable-libdcadec
 endif
 
 ifeq ($(BR2_PACKAGE_FFMPEG_GPL)$(BR2_PACKAGE_LIBEBUR128),yy)
@@ -443,14 +435,6 @@ ifeq ($(BR2_MIPS_SOFT_FLOAT),y)
 FFMPEG_CONF_OPTS += --disable-mipsfpu
 else
 FFMPEG_CONF_OPTS += --enable-mipsfpu
-endif
-
-ifeq ($(BR2_mips_32r2),y)
-FFMPEG_CONF_OPTS += \
-	--enable-mips32r2
-else
-FFMPEG_CONF_OPTS += \
-	--disable-mips32r2
 endif
 
 ifeq ($(BR2_POWERPC_CPU_HAS_ALTIVEC),y)
