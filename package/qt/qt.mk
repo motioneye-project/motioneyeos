@@ -429,6 +429,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_QT_WEBKIT),y)
 QT_CONFIGURE_OPTS += -webkit
+QT_DEPENDENCIES += gstreamer gst-plugins-base
 else
 QT_CONFIGURE_OPTS += -no-webkit
 endif

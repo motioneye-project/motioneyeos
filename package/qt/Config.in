@@ -469,15 +469,23 @@ config BR2_PACKAGE_QT_WEBKIT
 	depends on BR2_PACKAGE_QT_NETWORK
 	depends on BR2_PACKAGE_QT_ARCH_SUPPORTS_WEBKIT
 	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL # needs pthread_getattr_np()
+	depends on BR2_PACKAGE_GSTREAMER
+	select BR2_PACKAGE_GST_PLUGINS_BASE
+	select BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_APP
 	help
 	  Build the WebKit module.
 	  If unsure, say n.
 
-comment "WebKit needs shared library/NPTL toolchain/script/gui/network support"
-	depends on !(BR2_PACKAGE_QT_SCRIPT && BR2_PACKAGE_QT_SHARED && \
-		BR2_PACKAGE_QT_GUI_MODULE && BR2_PACKAGE_QT_NETWORK)
-	depends on !BR2_TOOLCHAIN_HAS_THREADS_NPTL
+comment "WebKit needs a toolchain w/ dynamic library, NPTL"
 	depends on BR2_PACKAGE_QT_ARCH_SUPPORTS_WEBKIT
+	depends on !BR2_TOOLCHAIN_HAS_THREADS_NPTL || BR2_STATIC_LIB
+
+comment "WebKit needs QtShared/Script/Gui/Network and Gstreamer 0.10"
+	depends on BR2_PACKAGE_QT_ARCH_SUPPORTS_WEBKIT
+	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL && !BR2_STATIC_LIB
+	depends on !BR2_PACKAGE_QT_SCRIPT     || !BR2_PACKAGE_QT_SHARED   \
+		|| !BR2_PACKAGE_QT_GUI_MODULE || !BR2_PACKAGE_QT_NETWORK  \
+		|| !BR2_PACKAGE_GSTREAMER
 
 config BR2_PACKAGE_QT_STL
 	bool "STL support"
