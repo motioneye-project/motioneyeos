@@ -48,7 +48,6 @@ FFMPEG_CONF_OPTS = \
 	--disable-frei0r \
 	--disable-libopencore-amrnb \
 	--disable-libopencore-amrwb \
-	--disable-libopencv \
 	--disable-libcdio \
 	--disable-libdc1394 \
 	--disable-libfaac \
@@ -247,6 +246,15 @@ FFMPEG_CONF_OPTS += --enable-vdpau
 FFMPEG_DEPENDENCIES += libvdpau
 else
 FFMPEG_CONF_OPTS += --disable-vdpau
+endif
+
+# To avoid a circular dependency only use opencv if opencv itself does
+# not depend on ffmpeg.
+ifeq ($(BR2_PACKAGE_OPENCV_LIB_IMGPROC)x$(BR2_PACKAGE_OPENCV_WITH_FFMPEG),yx)
+FFMPEG_CONF_OPTS += --enable-libopencv
+FFMPEG_DEPENDENCIES += opencv
+else
+FFMPEG_CONF_OPTS += --disable-libopencv
 endif
 
 ifeq ($(BR2_PACKAGE_OPUS),y)
