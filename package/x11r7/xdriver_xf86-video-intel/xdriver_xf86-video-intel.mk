@@ -10,9 +10,11 @@ XDRIVER_XF86_VIDEO_INTEL_LICENSE = MIT
 XDRIVER_XF86_VIDEO_INTEL_LICENSE_FILES = COPYING
 XDRIVER_XF86_VIDEO_INTEL_AUTORECONF = YES
 
-# this fixes a getline-related compilation error in src/sna/kgem.c
+# -D_GNU_SOURCE fixes a getline-related compile error in src/sna/kgem.c
+# We force -O2 regardless of the optimization level chosen by the user,
+# as compiling this package is known to be broken with -Os.
 XDRIVER_XF86_VIDEO_INTEL_CONF_ENV = \
-	CFLAGS="$(TARGET_CFLAGS) -D_GNU_SOURCE"
+	CFLAGS="$(TARGET_CFLAGS) -D_GNU_SOURCE -O2"
 
 XDRIVER_XF86_VIDEO_INTEL_CONF_OPTS = \
 	--disable-xvmc \
