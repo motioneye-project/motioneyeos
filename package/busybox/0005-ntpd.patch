@@ -1,0 +1,20 @@
+From upstream: https://busybox.net/downloads/fixes-1.25.0/
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+--- busybox-1.25.0/networking/ntpd.c
++++ busybox-1.25.0-ntpd/networking/ntpd.c
+@@ -2051,6 +2051,13 @@ recv_and_process_client_pkt(void /*int f
+ 		goto bail;
+ 	}
+ 
++	/* Respond only to client and symmetric active packets */
++	if ((msg.m_status & MODE_MASK) != MODE_CLIENT
++	 && (msg.m_status & MODE_MASK) != MODE_SYM_ACT
++	) {
++		goto bail;
++	}
++
+ 	query_status = msg.m_status;
+ 	query_xmttime = msg.m_xmttime;
+ 
