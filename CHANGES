@@ -1,3 +1,32 @@
+2016.08-rc2, Released August 17th, 2016
+
+	Fixes all over the tree.
+
+	Toolchain: disable broken C++ support for internal blackfin
+	toolchains, ARC toolchain bumped to arc-2016.09-eng008 (GCC 6)
+	to fix various issues.
+
+	System: Zoneinfo is available for the musl C library as well.
+
+	Updated/fixed packages: am33x-cm3, axel, barebox, bdwgc,
+	blktrace, cairo, dante, enlightenment, fbterm, ffmpeg, flex,
+	fontconfig, gcc, gmp, gnuplot, gnuradio, gst1-imx, hidapi,
+	inotify_tools, iproute2, kmsxx, lftp, libaio, libcofi,
+	libical, libpjsip, libsidplay2, libunwindow, libxml2,
+	linux-zigbee, lttng-libust, mpv, mtd, ncdu, netplug, ntp,
+	openblas, openipmi, owfs, php, poco, procps, qt, quota,
+	sg3_utils, spidev_test, systemd-bootchart, thrift,
+	uboot-tools, uclibc, webrtc-audio-processing, wayland, weston,
+	xdriver_xf86-video-savage, xserver_xorg-server, xen
+
+	Issues resolved (http://bugs.buildroot.org):
+
+	#9136: make graph-size fails with "ValueError: too many values to..
+	#9151: qt: fix build with ALSA >= 1.1.x
+	#9156: qt: Fix missing runtime Qt3Support dependency
+	#9161: modsetting patch not applied to xserver 1.18.4
+	#9166: Missing overlays directory in VFAT image for raspberry pi 3
+
 2016.08-rc1, Released August 6th, 2016
 
 	Fixes all over the tree and new features.
