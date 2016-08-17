@@ -331,7 +331,6 @@ choice
 
 config BR2_BINFMT_FLAT_ONE
 	bool "One memory region"
-	depends on !BR2_m68k
 	help
 	  All segments are linked into one memory region.
 
