@@ -1,0 +1,21 @@
+config BR2_PACKAGE_KVM_UNIT_TESTS
+	bool "kvm-unit-tests"
+	depends on BR2_arm || BR2_i386 || BR2_powerpc64 || \
+		BR2_powerpc64le || BR2_x86_64
+	help
+	  kvm-unit-tests is a project as old as KVM. As its name
+	  suggests, it's purpose is to provide unit tests for KVM. The
+	  unit tests are tiny guest operating systems that generally
+	  execute only tens of lines of C and assembler test code in
+	  order to obtain its PASS/FAIL result. Unit tests provide KVM
+	  and virt hardware functional testing by targeting the
+	  features through minimal implementations of their use per
+	  the hardware specification. The simplicity of unit tests
+	  make them easy to verify they are correct, easy to maintain,
+	  and easy to use in timing measurements. Unit tests are also
+	  often used for quick and dirty bug reproducers. The
+	  reproducers may then be kept as regression tests.  It's
+	  strongly encouraged that patches implementing new KVM
+	  features are submitted with accompanying unit tests.
+
+	  http://www.linux-kvm.org/page/KVM-unit-tests
