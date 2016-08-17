@@ -41,9 +41,9 @@ There you will find:
   +host-sources/+ subdirectories for target and host packages respectively.
   The source code for packages that set +<PKG>_REDISTRIBUTE = NO+ will not be
   saved.
-  Patches applied to some packages by Buildroot are distributed with the
-  Buildroot sources and are not duplicated in the +sources/+ and +host-sources/+
-  subdirectories.
+  Patches that were applied are also saved, along with a file named +series+
+  that lists the patches in the order they were applied. Patches are under the
+  same license as the files that they modify.
 * A manifest file (one for host and one for target packages) listing the
   configured packages, their version, license and related information.
   Some of this information might not be defined in Buildroot; such items are
