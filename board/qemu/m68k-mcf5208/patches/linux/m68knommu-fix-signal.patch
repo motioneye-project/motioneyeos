@@ -1,0 +1,45 @@
+m68knommu: fix user a5 register being overwritten
+
+On no-MMU systems the application a5 register can be overwitten with the
+address of the process data segment when processing application signals.
+For flat format applications compiled with full absolute relocation this
+effectively corrupts the a5 register on signal processing - and this very
+quickly leads to process crash and often takes out the whole system with
+a panic as well.
+
+This has no effect on flat format applications compiled with the more
+common PIC methods (such as -msep-data). These format applications reserve
+a5 for the pointer to the data segment anyway - so it doesn't change it.
+
+A long time ago the a5 register was used in the code packed into the user
+stack to enable signal return processing. And so it had to be restored on
+end of signal cleanup processing back to the original a5 user value. This
+was historically done by saving away a5 in the sigcontext structure. At
+some point (a long time back it seems) the a5 restore process was changed
+and it was hard coded to put the user data segment address directly into a5.
+Which is ok for the common PIC compiled application case, but breaks the
+full relocation application code.
+
+We no longer use this type of signal handling mechanism and so we don't
+need to do anything special to save and restore a5 at all now. So remove the
+code that hard codes a5 to the address of the user data segment.
+
+Signed-off-by: Greg Ungerer <gerg@linux-m68k.org>
+---
+ arch/m68k/kernel/signal.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/arch/m68k/kernel/signal.c b/arch/m68k/kernel/signal.c
+index 2dcee3a..9202f82 100644
+--- a/arch/m68k/kernel/signal.c
++++ b/arch/m68k/kernel/signal.c
+@@ -213,7 +213,6 @@ static inline int frame_extra_sizes(int f)
+ 
+ static inline void adjustformat(struct pt_regs *regs)
+ {
+-	((struct switch_stack *)regs - 1)->a5 = current->mm->start_data;
+ 	/*
+ 	 * set format byte to make stack appear modulo 4, which it will
+ 	 * be when doing the rte
+-- 
+1.9.1
