@@ -12,6 +12,14 @@ LLDPD_LICENSE_FILES = README.md
 # 0001-build-make-generation-of-atom-glue-compatible-with-o.patch
 LLDPD_AUTORECONF = YES
 
+ifeq ($(BR2_PACKAGE_CHECK),y)
+LLDPD_DEPENDENCIES += check
+endif
+
+ifeq ($(BR2_PACKAGE_VALGRIND),y)
+LLDPD_DEPENDENCIES += valgrind
+endif
+
 # Detection of c99 support in configure fails without WCHAR. To enable
 # automatic detection of c99 support by configure, we need to enable
 # WCHAR in toolchain. But actually we do not need WCHAR at lldpd
