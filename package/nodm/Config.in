@@ -5,6 +5,7 @@ config BR2_PACKAGE_NODM
 	depends on !BR2_STATIC_LIBS # linux-pam
 	depends on !BR2_TOOLCHAIN_USES_MUSL # linux-pam
 	depends on !BR2_TOOLCHAIN_USES_UCLIBC # needs wordexp.h
+	depends on BR2_USE_MMU # linux-pam
 	select BR2_PACKAGE_XLIB_LIBX11
 	select BR2_PACKAGE_LINUX_PAM
 	help

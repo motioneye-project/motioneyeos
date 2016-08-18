@@ -11,6 +11,7 @@ config BR2_PACKAGE_LINUX_PAM
 	# for details.
 	depends on !BR2_STATIC_LIBS
 	depends on !BR2_TOOLCHAIN_USES_MUSL # linux-pam
+	depends on BR2_USE_MMU # fork()
 	help
 	  A Security Framework that Provides Authentication for Applications
 
