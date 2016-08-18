@@ -14,7 +14,12 @@ ELFUTILS_DEPENDENCIES = zlib
 
 # We patch configure.ac
 ELFUTILS_AUTORECONF = YES
-ELFUTILS_CONF_OPTS += --disable-werror
+
+# Pass a custom program prefix to avoid a naming conflict between
+# elfutils binaries and binutils binaries.
+ELFUTILS_CONF_OPTS += \
+	--disable-werror \
+	--program-prefix="eu-"
 
 # elfutils gets confused when lfs mode is forced, so don't
 ELFUTILS_CFLAGS = $(filter-out -D_FILE_OFFSET_BITS=64,$(TARGET_CFLAGS))
