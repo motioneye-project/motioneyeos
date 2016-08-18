@@ -246,11 +246,13 @@ TOOLCHAIN_EXTERNAL_CFLAGS += -msoft-float
 TOOLCHAIN_EXTERNAL_TOOLCHAIN_WRAPPER_ARGS += -DBR_SOFTFLOAT=1
 endif
 
-# musl does not provide a sys/queue.h implementation, so add the
-# netbsd-queue package that will install a sys/queue.h file in the
-# staging directory based on the NetBSD implementation.
+# musl does not provide an implementation for sys/queue.h or sys/cdefs.h.
+# So, add the musl-compat-headers package that will install those files,
+# into the staging directory:
+#   sys/queue.h:  header from NetBSD
+#   sys/cdefs.h:  minimalist header bundled in Buildroot
 ifeq ($(BR2_TOOLCHAIN_USES_MUSL),y)
-TOOLCHAIN_EXTERNAL_DEPENDENCIES += netbsd-queue
+TOOLCHAIN_EXTERNAL_DEPENDENCIES += musl-compat-headers
 endif
 
 # The Linaro toolchain expects the libraries in

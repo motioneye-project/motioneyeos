@@ -1324,7 +1324,7 @@ endif
 	source "package/mpfr/Config.in"
 	source "package/msgpack/Config.in"
 	source "package/mtdev2tuio/Config.in"
-	source "package/netbsd-queue/Config.in"
+	source "package/musl-compat-headers/Config.in"
 	source "package/openblas/Config.in"
 	source "package/orc/Config.in"
 	source "package/p11-kit/Config.in"
