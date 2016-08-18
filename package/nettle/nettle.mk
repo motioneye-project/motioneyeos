@@ -13,6 +13,8 @@ NETTLE_LICENSE_FILES = COPYING.LESSERv3 COPYINGv2
 # don't include openssl support for (unused) examples as it has problems
 # with static linking
 NETTLE_CONF_OPTS = --disable-openssl
+# For 0002-fix-CVE-2016-6489.patch
+NETTLE_AUTORECONF = YES
 
 # ARM assembly requires v6+ ISA
 ifeq ($(BR2_ARM_CPU_ARMV4)$(BR2_ARM_CPU_ARMV5)$(BR2_ARM_CPU_ARMV7M),y)
