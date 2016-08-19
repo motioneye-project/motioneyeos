@@ -1,0 +1,61 @@
+From e626f4ca5169036a0042e55e58aca2bb5cc19ad7 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Fri, 19 Aug 2016 22:39:17 +0200
+Subject: [PATCH] Use autoconf checks for strndup and asprintf
+
+The current code in config.c can provide its own implementation of
+asprintf() and strndup() if not provided by the system. However, in
+order to decide if they should be provided, the check done is:
+
+ #if !defined(name_of_function)
+
+which only works if the function is actually defined as a macro, which
+is not necessarily the case.
+
+Therefore, we replace this logic by a proper AC_CHECK_FUNCS() check in
+the configure script.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ config.c     | 4 ++--
+ configure.ac | 2 ++
+ 2 files changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/config.c b/config.c
+index 8731348..8741e48 100644
+--- a/config.c
++++ b/config.c
+@@ -45,7 +45,7 @@
+ #include "asprintf.c"
+ #endif
+ 
+-#if !defined(asprintf) && !defined(_FORTIFY_SOURCE)
++#if !defined(HAVE_ASPRINTF) && !defined(_FORTIFY_SOURCE)
+ #include <stdarg.h>
+ 
+ int asprintf(char **string_ptr, const char *format, ...)
+@@ -78,7 +78,7 @@ int asprintf(char **string_ptr, const char *format, ...)
+ 
+ #endif
+ 
+-#if !defined(strndup)
++#if !defined(HAVE_STRNDUP)
+ char *strndup(const char *s, size_t n)
+ {
+        size_t nAvail;
+diff --git a/configure.ac b/configure.ac
+index 5c83d20..51da52a 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -18,6 +18,8 @@ AC_SYS_LARGEFILE
+ AC_CHECK_LIB([popt],[poptParseArgvString],,
+   AC_MSG_ERROR([libpopt required but not found]))
+ 
++AC_CHECK_FUNCS([strndup asprintf])
++
+ dnl Needed for out-of-source builds
+ mkdir -p test
+ 
+-- 
+2.7.4
+
