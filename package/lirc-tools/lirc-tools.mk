@@ -13,6 +13,7 @@ LIRC_TOOLS_DEPENDENCIES = host-libxslt host-pkgconf host-python3
 LIRC_TOOLS_INSTALL_STAGING = YES
 # 0001-lib-use-proper-linking-method-to-avoid-parallel-buil.patch
 # 0003-Don-t-build-commandir-unless-we-have-usb.h-191.patch
+# 0004-configure-check-for-clock_gettime-in-librt.patch
 LIRC_TOOLS_AUTORECONF = YES
 
 LIRC_TOOLS_CONF_ENV = XSLTPROC=yes
