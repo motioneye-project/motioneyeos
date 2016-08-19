@@ -120,9 +120,6 @@ config BR2_EXTRA_GCC_CONFIG_OPTIONS
 config BR2_TOOLCHAIN_BUILDROOT_CXX
 	bool "Enable C++ support"
 	select BR2_INSTALL_LIBSTDCPP
-	# C++ support currently broken for Blackfin, under
-	# investigation.
-	depends on !BR2_bfin
 	help
 	  Enable this option if you want your toolchain to support the
 	  C++ language and you want C++ libraries to be installed on

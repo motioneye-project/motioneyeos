@@ -1,0 +1,74 @@
+From ae9c3e354440c4a0f105a9eabfb2f77be085ebc1 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Thu, 18 Aug 2016 17:59:16 +0200
+Subject: [PATCH] libgcc/mkmap-symver: support skip_underscore
+
+Some platforms, such as Blackfin, have a special prefix for assembly
+symbols as opposed to C symbols. For this reason, a function named
+"foo()" in C will in fact be visible as a symbol called "_foo" in the
+ELF binary.
+
+The current linker version script logic in libgcc doesn't take into
+account this situation properly. The Blackfin specific
+libgcc/config/bfin/libgcc-glibc.ver has an additional "_" in front of
+every symbol so that it matches the output of "nm" (which gets parsed to
+produce the final linker version script). But due to this additional
+"_", ld no longer matches with the symbols since "ld" does the matching
+with the original symbol name, not the one prefixed with "_".
+
+Due to this, none of the symbols in libgcc/config/bfin/libgcc-glibc.ver
+are actually matched with symbols in libgcc. This causes all libgcc
+symbols to be left as "LOCAL", which causes lots of "undefined
+reference" whenever some C or C++ code that calls a function of libgcc
+is compiled.
+
+To address this, this commit introduces a "skip_underscore" variable to
+the mkmap-symver script. It tells mkmap-symver to ignore the leading
+underscore from the "nm" output.
+
+Note that this new argument is different from the existing
+"leading_underscore" argument, which *adds* an additional underscore to
+the generated linker version script.
+
+Having this functionality paves the way to using the generic linker
+version information for Blackfin, instead of using a custom one.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ libgcc/ChangeLog        | 5 +++++
+ libgcc/mkmap-symver.awk | 6 +++++-
+ 2 files changed, 10 insertions(+), 1 deletion(-)
+
+diff --git a/libgcc/ChangeLog b/libgcc/ChangeLog
+index 6559564..129e43f 100644
+--- a/libgcc/ChangeLog
++++ b/libgcc/ChangeLog
+@@ -1,3 +1,8 @@
++2016-08-19  Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
++
++	PR gcc/74748
++	* libgcc/mkmap-symver.awk: add support for skip_underscore
++
+ 2016-04-27  Release Manager
+ 
+ 	* GCC 6.1.0 released.
+diff --git a/libgcc/mkmap-symver.awk b/libgcc/mkmap-symver.awk
+index 266832a..30bb179 100644
+--- a/libgcc/mkmap-symver.awk
++++ b/libgcc/mkmap-symver.awk
+@@ -47,7 +47,11 @@ state == "nm" && ($1 == "U" || $2 == "U") {
+ 
+ state == "nm" && NF == 3 {
+   split ($3, s, "@")
+-  def[s[1]] = 1;
++  if (skip_underscore)
++      symname = substr(s[1], 2);
++  else
++      symname = s[1];
++  def[symname] = 1;
+   sawsymbol = 1;
+   next;
+ }
+-- 
+2.7.4
+
