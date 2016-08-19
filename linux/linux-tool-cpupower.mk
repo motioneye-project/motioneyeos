@@ -6,10 +6,12 @@
 
 LINUX_TOOLS += cpupower
 
-CPUPOWER_DEPENDENCIES = pciutils
+CPUPOWER_DEPENDENCIES = pciutils $(if $(BR2_NEEDS_GETTEXT),gettext)
 
 CPUPOWER_MAKE_OPTS = CROSS=$(TARGET_CROSS) \
 	CPUFREQ_BENCH=false \
+	NLS=false \
+	$(if $(BR2_NEEDS_GETTEXT),LDFLAGS=-lintl) \
 	DEBUG=false
 
 define CPUPOWER_BUILD_CMDS
