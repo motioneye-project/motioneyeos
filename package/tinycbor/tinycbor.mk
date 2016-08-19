@@ -9,6 +9,12 @@ TINYCBOR_SITE = $(call github,01org,tinycbor,$(TINYCBOR_VERSION))
 TINYCBOR_LICENSE = MIT
 TINYCBOR_LICENSE_FILES = LICENSE
 
+# This patch fixes the issue on unnamed union which are not supported by some
+# targets like blackfin
+# This patch is currently in dev branch and will be a part of v0.4
+TINYCBOR_PATCH = \
+	https://github.com/01org/tinycbor/commit/ede7f1431ae06c9086f2a83a57bd7832d99280e3.patch
+
 TINYCBOR_DEPENDENCIES = host-pkgconf
 TINYCBOR_INSTALL_STAGING = YES
 
