@@ -41,6 +41,11 @@ QT_CFLAGS = $(TARGET_CFLAGS)
 QT_CXXFLAGS = $(TARGET_CXXFLAGS)
 QT_LDFLAGS = $(TARGET_LDFLAGS)
 
+# Qt WebKit build fails when gcc-6 is used for build, because
+# 'std::auto_ptr' is deprecated starting from gcc 6.x. So, we have to
+# use an older c++ standard to prevent build failure
+QT_CXXFLAGS += -std=gnu++98
+
 # Qt has some assembly function that are not present in thumb1 mode:
 # Error: selected processor does not support Thumb mode `swp r3,r7,[r4]'
 # so, we desactivate thumb mode
