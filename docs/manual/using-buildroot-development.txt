@@ -8,7 +8,7 @@ it, configure, compile and install the software component found inside
 this tarball. The source code is extracted in
 +output/build/<package>-<version>+, which is a temporary directory:
 whenever +make clean+ is used, this directory is entirely removed, and
-re-recreated at the next +make+ invocation. Even when a Git or
+re-created at the next +make+ invocation. Even when a Git or
 Subversion repository is used as the input for the package source
 code, Buildroot creates a tarball out of it, and then behaves as it
 normally does with tarballs.
