@@ -1,0 +1,33 @@
+From 0f1b4bb65abe0e36e9e4b9813e45192223509de8 Mon Sep 17 00:00:00 2001
+From: Ralf Nolden <nolden@kde.org>
+Date: Tue, 17 May 2016 12:57:17 +0200
+Subject: [PATCH] Remove libudev dependency from kms.pro
+
+To compile the kms qpa plugin, only libdrm is needed.
+Remove the libudev dependency for the compile check to enable
+building of the qpa plugin on platforms where libudev is not present
+such as BSD systems (but where KMS works)
+
+Change-Id: Icd0be70a8949578a6158d523428706890a9674eb
+Reviewed-by: Laszlo Agocs <laszlo.agocs@theqtcompany.com>
+Reviewed-by: Oswald Buddenhagen <oswald.buddenhagen@theqtcompany.com>
+
+Upstream: https://code.qt.io/cgit/qt/qtbase.git/patch/?id=72492735b7b7770808fcc9fe067e8f03fab827fc
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+---
+ config.tests/qpa/kms/kms.pro | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/config.tests/qpa/kms/kms.pro b/config.tests/qpa/kms/kms.pro
+index 1fb7367..5147bc8 100644
+--- a/config.tests/qpa/kms/kms.pro
++++ b/config.tests/qpa/kms/kms.pro
+@@ -1,4 +1,4 @@
+ SOURCES = kms.cpp
+ CONFIG += link_pkgconfig
+-PKGCONFIG += libdrm libudev
++PKGCONFIG += libdrm
+ CONFIG -= qt
+-- 
+2.8.1
+
