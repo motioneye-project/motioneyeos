@@ -38,6 +38,19 @@ else ifeq ($(BR2_SHARED_LIBS),y)
 OPENBLAS_MAKE_OPTS += NO_STATIC=1
 endif
 
+# binutils version <= 2.23.2 has a bug
+# (https://sourceware.org/bugzilla/show_bug.cgi?id=14887) where
+# whitespaces in ARM register specifications such as [ r1, #12 ] or [
+# r2 ] cause the assembler to reject the code. Since there are
+# numerous instances of such cases in the code, we use sed rather than
+# a patch. We simply replace [ foobar ] by [foobar] to work around the
+# problem.
+define OPENBLAS_FIXUP_ARM_ASSEMBLY
+	$(SED) 's%\[\s*%\[%;s%\s*\]%\]%' $(@D)/kernel/arm/*.S
+endef
+
+OPENBLAS_POST_PATCH_HOOKS += OPENBLAS_FIXUP_ARM_ASSEMBLY
+
 define OPENBLAS_BUILD_CMDS
 	$(TARGET_MAKE_ENV) $(MAKE) $(OPENBLAS_MAKE_OPTS) \
 		-C $(@D)
