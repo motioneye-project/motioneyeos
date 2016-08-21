@@ -32,3 +32,13 @@ After building, you should get a tree like this:
   ├── u-boot.img
   ├── uEnv.txt
   └── zImage
+
+How to write the microSD card
+=============================
+
+Once the build process is finished you will have an image called "sdcard.img"
+in the output/images/ directory.
+
+Copy the bootable "sdcard.img" onto an SD card with "dd":
+
+  $ sudo dd if=output/images/sdcard.img of=/dev/sdX
