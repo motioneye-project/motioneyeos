@@ -336,7 +336,12 @@ config BR2_BINFMT_FLAT_ONE
 
 config BR2_BINFMT_FLAT_SEP_DATA
 	bool "Separate data and code region"
-	depends on BR2_m68k || BR2_bfin
+	# this FLAT binary type technically exists on m68k, but fails
+	# to build numerous packages: due to architecture limitation,
+	# big functions cannot be built in this mode. They cause build
+	# failures such as "Tried to convert PC relative branch to
+	# absolute jump" or "error: value -yyyyy out of range".
+	depends on BR2_bfin
 	help
 	  Allow for the data and text segments to be separated and placed in
 	  different regions of memory.
