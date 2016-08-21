@@ -12,7 +12,7 @@ TROUSERS_LICENSE_FILES = LICENSE
 TROUSERS_INSTALL_STAGING = YES
 # Need autoreconf because of a patch touching configure.in and Makefile.am
 TROUSERS_AUTORECONF = YES
-TROUSERS_DEPENDENCIES = openssl
+TROUSERS_DEPENDENCIES = host-pkgconf openssl
 
 ifeq ($(BR2_PACKAGE_LIBICONV),y)
 TROUSERS_DEPENDENCIES += libiconv
