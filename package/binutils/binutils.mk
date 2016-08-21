@@ -71,6 +71,12 @@ endif
 BINUTILS_CONF_ENV += ac_cv_prog_MAKEINFO=missing
 HOST_BINUTILS_CONF_ENV += ac_cv_prog_MAKEINFO=missing
 
+# gcc bug with Os/O2/O3, PR77311
+# error: unable to find a register to spill in class 'CCREGS'
+ifeq ($(BR2_bfin),y)
+BINUTILS_CONF_ENV += CFLAGS="$(TARGET_CFLAGS) -O1"
+endif
+
 # Install binutils after busybox to prefer full-blown utilities
 ifeq ($(BR2_PACKAGE_BUSYBOX),y)
 BINUTILS_DEPENDENCIES += busybox
