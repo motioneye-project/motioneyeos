@@ -24,7 +24,7 @@ Bare PC sample config
 
   Write the image to a pendrive:
 
-  $ dd if=output/images/sdcard.img of=/dev/sdc; sync
+  $ dd if=output/images/disk.img of=/dev/sdc; sync
 
   Once it's done insert it into the target PC and boot.
 
