@@ -128,6 +128,15 @@ define  AMD_CATALYST_INSTALL_CMDLINE_TOOLS
 endef
 endif
 
+ifeq ($(BR2_PACKAGE_AMD_CATALYST_CCCLE), y)
+define AMD_CATALYST_INSTALL_CCCLE
+	$(INSTALL) -m 0755 $(AMD_CATALYST_ARCH_DIR)/usr/X11R6/bin/amdcccle \
+		$(TARGET_DIR)/usr/bin/amdcccle
+	$(INSTALL) -m 0755 $(AMD_CATALYST_ARCH_DIR)/usr/sbin/amdnotifyui \
+		$(TARGET_DIR)/usr/sbin/amdnotifyui
+endef
+endif
+
 define AMD_CATALYST_INSTALL_STAGING_CMDS
 	$(call AMD_CATALYST_INSTALL_STAGING_XORG)
 endef
@@ -135,6 +144,7 @@ endef
 define AMD_CATALYST_INSTALL_TARGET_CMDS
 	$(call AMD_CATALYST_INSTALL_XORG)
 	$(call AMD_CATALYST_INSTALL_CMDLINE_TOOLS)
+	$(call AMD_CATALYST_INSTALL_CCCLE)
 endef
 
 $(eval $(generic-package))
