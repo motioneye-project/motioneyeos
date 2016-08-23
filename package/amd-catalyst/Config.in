@@ -73,4 +73,10 @@ config BR2_PACKAGE_AMD_CATALYST_MODULE
 	help
 	  Builds and install the fglrx kernel module
 
+config BR2_PACKAGE_AMD_CATALYST_OPENCL
+	bool "OpenCL support"
+	help
+	  Installs the OpenCL binary blobs and the ICD profile
+	  for GPGPU computing.
+
 endif # BR2_PACKAGE_AMD_CATALYST

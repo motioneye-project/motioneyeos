@@ -41,6 +41,29 @@ AMD_CATALYST_POST_PATCH_HOOKS += AMD_CATALYST_PREPARE_MODULE
 $(eval $(kernel-module))
 endif
 
+ifeq ($(BR2_PACKAGE_AMD_CATALYST_OPENCL),y)
+
+AMD_CATALYST_OCL_SUFFIX = $(if $(BR2_x86_64),64,32)
+AMD_CATALYST_OPENCL_FILES = \
+	libOpenCL.so.1 \
+	libaticalcl.so \
+	libamdocl$(AMD_CATALYST_OCL_SUFFIX).so \
+	libamdocl12cl$(AMD_CATALYST_OCL_SUFFIX).so
+
+define AMD_CATALYST_INSTALL_OPENCL
+	$(foreach f,$(AMD_CATALYST_OPENCL_FILES), \
+		$(INSTALL) -D -m 0755 $(AMD_CATALYST_ARCH_DIR)/usr/lib$(AMD_CATALYST_LIB_SUFFIX)/$(f) $(TARGET_DIR)/usr/lib/$(f)
+	)
+	ln -sf libOpenCL.so.1 \
+		$(TARGET_DIR)/usr/lib/libOpenCL.so
+	$(INSTALL) -m 0755 $(AMD_CATALYST_ARCH_DIR)/usr/bin/clinfo \
+		$(TARGET_DIR)/usr/bin/clinfo
+	$(INSTALL) -D -m 0644 $(AMD_CATALYST_ARCH_DIR)/etc/OpenCL/vendors/amdocl$(AMD_CATALYST_OCL_SUFFIX).icd \
+		$(TARGET_DIR)/etc/OpenCL/vendors/amdocl$(AMD_CATALYST_OCL_SUFFIX).icd
+endef
+
+endif
+
 ifeq ($(BR2_PACKAGE_AMD_CATALYST_XORG), y)
 
 # GL headers are needed by any package that wants to use libgl, so they need to
@@ -145,6 +168,7 @@ define AMD_CATALYST_INSTALL_TARGET_CMDS
 	$(call AMD_CATALYST_INSTALL_XORG)
 	$(call AMD_CATALYST_INSTALL_CMDLINE_TOOLS)
 	$(call AMD_CATALYST_INSTALL_CCCLE)
+	$(call AMD_CATALYST_INSTALL_OPENCL)
 endef
 
 $(eval $(generic-package))
