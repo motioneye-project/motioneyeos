@@ -26,6 +26,8 @@ repo="${2}"
 rev="${3}"
 basename="${4}"
 
+shift 4 # Get rid of our options
+
 # Caller needs to single-quote its arguments to prevent them from
 # being expanded a second time (in case there are spaces in them)
 _bzr() {
@@ -49,5 +51,5 @@ if [ ${bzr_version} -ge ${bzr_min_version} ]; then
 fi
 
 _bzr export ${verbose} --root="'${basename}/'" --format=tgz \
-    ${timestamp_opt} - "'${repo}'" -r "'${rev}'" \
+    ${timestamp_opt} - "${@}" "'${repo}'" -r "'${rev}'" \
     >"${output}"

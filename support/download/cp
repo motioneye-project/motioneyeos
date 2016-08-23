@@ -28,10 +28,12 @@ shift $((OPTIND-1))
 output="${1}"
 source="${2}"
 
+shift 2 # Get rid of our options
+
 # Caller needs to single-quote its arguments to prevent them from
 # being expanded a second time (in case there are spaces in them)
 _localfiles() {
     eval ${LOCALFILES} "${@}"
 }
 
-_localfiles ${verbose} "'${source}'" "'${output}'"
+_localfiles ${verbose} "${@}""'${source}'" "'${output}'"
