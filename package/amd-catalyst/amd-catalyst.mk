@@ -109,12 +109,32 @@ endef
 
 endif
 
+ifeq ($(BR2_PACKAGE_AMD_CATALYST_CMDLINE_TOOLS), y)
+AMD_CATALYST_CMDLINE_TOOLS_FILES = \
+	atiode \
+	atiodcli \
+	fgl_glxgears \
+	aticonfig \
+	amd-console-helper \
+	fglrxinfo
+
+define  AMD_CATALYST_INSTALL_CMDLINE_TOOLS
+	$(INSTALL) -m 0755 $(AMD_CATALYST_ARCH_DIR)/usr/sbin/atieventsd \
+		$(TARGET_DIR)/usr/sbin
+	$(foreach f,$(AMD_CATALYST_CMDLINE_TOOLS_FILES), \
+		$(INSTALL) -D -m 0755 $(AMD_CATALYST_ARCH_DIR)/usr/X11R6/bin/$(f) \
+			$(TARGET_DIR)/usr/bin/$(f)
+	)
+endef
+endif
+
 define AMD_CATALYST_INSTALL_STAGING_CMDS
 	$(call AMD_CATALYST_INSTALL_STAGING_XORG)
 endef
 
 define AMD_CATALYST_INSTALL_TARGET_CMDS
 	$(call AMD_CATALYST_INSTALL_XORG)
+	$(call AMD_CATALYST_INSTALL_CMDLINE_TOOLS)
 endef
 
 $(eval $(generic-package))

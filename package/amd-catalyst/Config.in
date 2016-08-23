@@ -40,6 +40,11 @@ if BR2_PACKAGE_AMD_CATALYST_XORG
 config BR2_PACKAGE_PROVIDES_LIBGL
 	default "amd-catalyst"
 
+config BR2_PACKAGE_AMD_CATALYST_CMDLINE_TOOLS
+	bool "command-line configuration tools"
+	help
+	  Build and install the AMD command line tools.
+
 endif
 
 comment "amd-catalyst kernel module needs a kernel to be built"
