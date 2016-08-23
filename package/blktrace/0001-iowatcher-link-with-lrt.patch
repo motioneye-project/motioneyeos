@@ -1,0 +1,31 @@
+From 80d87b99d72034441ea4fbab81f5c80c1ef3b067 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Tue, 23 Aug 2016 16:36:14 +0200
+Subject: [PATCH] iowatcher: link with -lrt
+
+Some C libraries (notably uClibc) have the posix_spawn*() functions in
+librt, so let's link iowatcher with -lrt.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Upstream-status: merged
+ (http://git.kernel.org/cgit/linux/kernel/git/axboe/blktrace.git/commit/?id=d1ab783430f5a832e973ed9a293da146c04c6702)
+---
+ iowatcher/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/iowatcher/Makefile b/iowatcher/Makefile
+index 7b5101c..502476d 100644
+--- a/iowatcher/Makefile
++++ b/iowatcher/Makefile
+@@ -19,7 +19,7 @@ all: $(ALL)
+ 	$(CC) -o $*.o -c $(ALL_CFLAGS) $<
+ 
+ iowatcher: blkparse.o plot.o main.o tracers.o mpstat.o fio.o
+-	$(CC) $(ALL_CFLAGS) -o $@ $(filter %.o,$^) -lm
++	$(CC) $(ALL_CFLAGS) -o $@ $(filter %.o,$^) -lm -lrt
+ 
+ depend:
+ 	@$(CC) -MM $(ALL_CFLAGS) *.c 1> .depend
+-- 
+2.7.4
+
