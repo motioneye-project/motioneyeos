@@ -1,0 +1,33 @@
+From 7120f00015570a2e4d9b6532731960d509c71cba Mon Sep 17 00:00:00 2001
+From: Alberto Milone <alberto.milone@canonical.com>
+Date: Thu, 17 Sep 2015 15:48:30 +0200
+Subject: [PATCH] Use fpregs_active instead of has_fpu
+
+This is for Linux 4.2
+
+Thanks to Tim Gardner for the patch.
+
+Signed-off-by: Romain Perier <romain.perier@free-electrons.com>
+---
+ common/lib/modules/fglrx/build_mod/firegl_public.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/common/lib/modules/fglrx/build_mod/firegl_public.c b/common/lib/modules/fglrx/build_mod/firegl_public.c
+index 749ea51..4c1f9a5 100755
+--- a/common/lib/modules/fglrx/build_mod/firegl_public.c
++++ b/common/lib/modules/fglrx/build_mod/firegl_public.c
+@@ -6528,7 +6528,11 @@ void ATI_API_CALL KCL_fpu_begin(void)
+     /* The thread structure is changed with the commit below for kernel 3.3:
+      * https://github.com/torvalds/linux/commit/7e16838d94b566a17b65231073d179bc04d590c8
+      */
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(4,2,0)
++    if (cur_task->thread.fpu.fpregs_active)
++#else
+     if (cur_task->thread.fpu.has_fpu)
++#endif
+ #else
+     if (cur_task->thread.has_fpu)
+ #endif
+-- 
+2.8.1
+
