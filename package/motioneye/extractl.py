@@ -368,7 +368,7 @@ def hostname():
         'advanced': True,
         'reboot': True,
         'required': False,
-        'validate': '^[a-z0-9\-_]{0,15}$',
+        'validate': '^[a-z0-9\-_.]{0,64}$',
         'get': _get_hostname,
         'set': _set_hostname
     }
