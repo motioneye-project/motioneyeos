@@ -32,8 +32,8 @@ MONITOR_SCRIPT = '''#!/bin/bash
 net_tmp=/tmp/netspeed.tmp 
 temp=$(($(cat /sys/devices/virtual/thermal/thermal_zone0/temp) / 1000))
 load=$(cat /proc/loadavg | cut -d ' ' -f 2)
-recv=$(cat /proc/net/dev | grep -v 'lo:' | tr -s ' ' | cut -d ' ' -f 3 | tail +3 | awk '{s+=$1} END {print s}')
-send=$(cat /proc/net/dev | grep -v 'lo:' | tr -s ' ' | cut -d ' ' -f 11 | tail +3 | awk '{s+=$1} END {print s}')
+recv=$(cat /proc/net/dev | grep -v 'lo:' | tr -s ' ' | cut -d ' ' -f 3 | tail -n +3 | awk '{s+=$1} END {print s}')
+send=$(cat /proc/net/dev | grep -v 'lo:' | tr -s ' ' | cut -d ' ' -f 11 | tail -n +3 | awk '{s+=$1} END {print s}')
 total=$(($recv + $send))
 
 if [ -e $net_tmp ]; then

@@ -31,8 +31,8 @@ MONITOR_SCRIPT = '''#!/bin/bash
 net_tmp=/tmp/netspeed.tmp 
 temp=$(($(cat /sys/devices/virtual/thermal/thermal_zone0/temp) / 1000))
 load=$(cat /proc/loadavg | cut -d ' ' -f 2)
-recv=$(cat /proc/net/dev | grep -v 'lo:' | tr -s ' ' | cut -d ' ' -f 3 | tail +3 | awk '{s+=$1} END {print s}')
-send=$(cat /proc/net/dev | grep -v 'lo:' | tr -s ' ' | cut -d ' ' -f 11 | tail +3 | awk '{s+=$1} END {print s}')
+recv=$(cat /proc/net/dev | grep -v 'lo:' | tr -s ' ' | cut -d ' ' -f 3 | tail -n +3 | awk '{s+=$1} END {print s}')
+send=$(cat /proc/net/dev | grep -v 'lo:' | tr -s ' ' | cut -d ' ' -f 11 | tail -n +3 | awk '{s+=$1} END {print s}')
 total=$(($recv + $send))
 
 if [ -e $net_tmp ]; then
@@ -88,15 +88,12 @@ def _get_board_settings():
                 elif name == 'disable_camera_led':
                     camera_led = value == '0'
     
-    #overclock = OVERCLOCK.get(arm_freq, '700|250|400|0')
 
     s = {
         'gpuMem': gpu_mem,
-        #'overclock': overclock,
         'cameraLed': camera_led
     }
 
-    #logging.debug('board settings: gpu_mem=%(gpuMem)s, overclock=%(overclock)s, camera_led=%(cameraLed)s' % s)
     logging.debug('board settings: gpu_mem=%(gpuMem)s, camera_led=%(cameraLed)s' % s)
 
     return s
@@ -104,7 +101,6 @@ def _get_board_settings():
 
 def _set_board_settings(s):
     s.setdefault('gpuMem', 128)
-    #s.setdefault('overclock', '700|250|400|0')
     s.setdefault('cameraLed', True)
     
     old_settings = _get_board_settings()
@@ -113,12 +109,9 @@ def _set_board_settings(s):
 
     seen = set()
 
-    #logging.debug('writing board settings to %s: ' % CONFIG_TXT + 
-    #        'gpu_mem=%(gpuMem)s, overclock=%(overclock)s, camera_led=%(cameraLed)s' % s)
     logging.debug('writing board settings to %s: ' % CONFIG_TXT + 
             'gpu_mem=%(gpuMem)s, camera_led=%(cameraLed)s' % s)
     
-    #arm_freq, gpu_freq, sdram_freq, over_voltage = s['overclock'].split('|')
 
     lines = []
     if os.path.exists(CONFIG_TXT):
@@ -143,18 +136,6 @@ def _set_board_settings(s):
 
             if name == 'gpu_mem':
                 lines[i] = '%s=%s' % (name, s['gpuMem'])
-
-            #elif name == 'arm_freq':
-            #    lines[i] = 'arm_freq=%s' % arm_freq
-            #    
-            #elif name in ['gpu_freq', 'core_freq']:
-            #    lines[i] = '%s=%s' % (name, gpu_freq)
-            #    
-            #elif name == 'sdram_freq':
-            #    lines[i] = 'sdram_freq=%s' % sdram_freq
-            #    
-            #elif name == 'over_voltage':
-            #    lines[i] = 'over_voltage=%s' % over_voltage
                 
             elif name == 'disable_camera_led':
                 lines[i] = 'disable_camera_led=%s' % ['1', '0'][s['cameraLed']]
@@ -162,17 +143,9 @@ def _set_board_settings(s):
     if 'gpu_mem' not in seen:
         lines.append('gpu_mem=%s' % s['gpuMem'])
 
-    #if 'arm_freq' not in seen:
-    #    lines.append('arm_freq=%s' % arm_freq)
 
-    #if 'gpu_freq' not in seen:
-    #    lines.append('gpu_freq=%s' % gpu_freq)
 
-    #if 'sdram_freq' not in seen:
-    #    lines.append('sdram_freq=%s' % sdram_freq)
 
-    #if 'over_voltage' not in seen:
-    #    lines.append('over_voltage=%s' % over_voltage)
 
     if 'disable_camera_led' not in seen:
         lines.append('disable_camera_led=%s' % ['1', '0'][s['cameraLed']])
@@ -255,27 +228,6 @@ def cameraLed():
     }
 
 
-#@additional_config
-#def overclock():
-#    return {
-#        'label': 'Overclocking',
-#        'description': 'choose an overclocking preset for your Raspberry PI',
-#        'type': 'choices',
-#        'choices': [
-#            ('700|250|400|0', 'none (700/250/400/0)'),
-#            ('800|250|400|0', 'modest (800/250/400/0)'),
-#            ('900|250|450|0', 'medium (900/250/450/0)'),
-#            ('950|250|450|0', 'high (950/250/450/0)'),
-#            ('1000|500|600|6', 'turbo (1000/500/600/6)'),
-#            ('1001|500|500|2', 'Pi2 (1000/500/500/2)')
-#        ],
-#        'section': 'expertSettings',
-#        'advanced': True,
-#        'reboot': True,
-#        'get': _get_board_settings,
-#        'set': _set_board_settings,
-#        'get_set_dict': True
-#    }
 
 
 @additional_config
