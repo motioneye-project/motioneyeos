@@ -726,8 +726,6 @@ config BR2_COMPILER_PARANOID_UNSAFE_PATH
 	  toolchain (through the toolchain wrapper and binutils patches)
 	  and external toolchain backends (through the toolchain wrapper).
 
-endmenu
-
 config BR2_REPRODUCIBLE
 	bool "Make the build reproducible (experimental)"
 	help
@@ -738,6 +736,8 @@ config BR2_REPRODUCIBLE
 
 	  This is labeled as an experimental feature, as not all
 	  packages behave properly to ensure reproducibility.
+
+endmenu
 
 endmenu
 
