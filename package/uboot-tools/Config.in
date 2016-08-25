@@ -22,7 +22,7 @@ config BR2_PACKAGE_UBOOT_TOOLS_FIT_SUPPORT
 	  pass the address of the blob to the "bootm" command.
 
 comment "u-boot tools FIT support needs a toolchain w/ dynamic library"
-	depends on !BR2_STATIC_LIBS
+	depends on BR2_STATIC_LIBS
 
 if BR2_PACKAGE_UBOOT_TOOLS_FIT_SUPPORT
 
