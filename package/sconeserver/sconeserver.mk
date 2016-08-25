@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-SCONESERVER_VERSION = bbb384404575f8a3ef31c1ec41218b621b66ab27
+SCONESERVER_VERSION = d659468cd164e6a6cc12932cc6780566b04f8328
 SCONESERVER_SITE = $(call github,sconemad,sconeserver,$(SCONESERVER_VERSION))
 SCONESERVER_LICENSE = GPLv2+
 SCONESERVER_LICENSE_FILES = COPYING
