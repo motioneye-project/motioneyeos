@@ -182,9 +182,8 @@ start() {
     fi
     
     if [ "$eth_ok" != "ok" ] && [ "$wlan_ok" != "ok" ] && [ "$ppp_ok" != "ok" ]; then
-        logger -t ethernet -s "no network connection available"        
-        reboot
-        return 1
+        logger -t ethernet -s "no network connection available"
+        test "$watch_link" == "yes" && return 1 || return 0
     fi
 
     if [ -n "$static_gw" ]; then

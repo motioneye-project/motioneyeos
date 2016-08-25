@@ -17,8 +17,9 @@ show_gateway() {
 }
 
 show_dns() {
-    dns=$(cat /etc/resolv.conf | grep nameserver | cut -d ' ' -f 2)
-    test -n "$gateway" && msg_info "DNS server address is $dns"
+    test -r /etc/resolv.conf || return
+    dns=$(cat /etc/resolv.conf | grep nameserver | head -n 1 | cut -d ' ' -f 2)
+    test -n "$dns" && msg_info "DNS server address is $dns"
 }
 
 case "$1" in
