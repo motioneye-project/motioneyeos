@@ -1,7 +1,7 @@
-From 5409696dfcbb05d6e4e67e74c97487b1987639e1 Mon Sep 17 00:00:00 2001
+From f0da50118f7bd01ed7fa97e75b790a8232d8d4dc Mon Sep 17 00:00:00 2001
 From: Rahul Bedarkar <rahul.bedarkar@imgtec.com>
 Date: Thu, 25 Aug 2016 17:23:38 +0530
-Subject: [PATCH 1/1] add proper check for detecting header <execinfo.h>
+Subject: [PATCH] add proper check for detecting header <execinfo.h>
 
 domoticz.cpp currently assumes that on GNU/Linux systems header
 <execinfo.h> is available. But that is not true. Since it provided by
@@ -25,11 +25,11 @@ Signed-off-by: Rahul Bedarkar <rahul.bedarkar@imgtec.com>
  main/domoticz.cpp | 2 +-
  2 files changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/CMakeLists.txt b/CMakeLists.txt
-index d3113f4..ef32f7b 100644
+Index: b/CMakeLists.txt
+===================================================================
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -61,6 +61,13 @@ SET(EXECUTABLE_OUTPUT_PATH "" CACHE INTERNAL
+@@ -61,6 +61,13 @@
    "Where to put the executables for Domoticz"
    )
  
@@ -43,8 +43,8 @@ index d3113f4..ef32f7b 100644
  #set(CMAKE_EXE_LINKER_FLAGS "-static")
  
  # Macro for setting up precompiled headers. Usage:
-diff --git a/main/domoticz.cpp b/main/domoticz.cpp
-index 69d2ef6..c52e5ac 100644
+Index: b/main/domoticz.cpp
+===================================================================
 --- a/main/domoticz.cpp
 +++ b/main/domoticz.cpp
 @@ -44,7 +44,7 @@
@@ -56,6 +56,3 @@ index 69d2ef6..c52e5ac 100644
  #include <execinfo.h>
  static void dumpstack(void) {
  	// Notes :
--- 
-2.6.2
-
