@@ -7,6 +7,9 @@
 LIBRAW_VERSION = 0.17.1
 LIBRAW_SOURCE = LibRaw-$(LIBRAW_VERSION).tar.gz
 LIBRAW_SITE = http://www.libraw.org/data
+LIBRAW_PATCH = \
+	https://anonscm.debian.org/cgit/pkg-phototools/libraw.git/plain/debian/patches/0001-Fix_gcc6_narrowing_conversion.patch?id=d890937aaca6359df45a66b35e547c94ca564823
+
 LIBRAW_INSTALL_STAGING = YES
 # we patch configure.ac
 LIBRAW_AUTORECONF = YES
