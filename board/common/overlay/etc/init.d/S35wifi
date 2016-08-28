@@ -6,7 +6,6 @@ conf="/data/etc/wpa_supplicant.conf"
 
 log="/var/log/wpa_supplicant.log"
 prog="/usr/sbin/wpa_supplicant"
-iface=wlan0
 driver=wext
 
 sys_watch_conf="/etc/watch.conf"
@@ -40,9 +39,12 @@ ssid=$(cat $conf | grep ssid | grep -v scan_ssid | cut -d '"' -f 2)
 test -n "$ssid" || exit 0
 
 test -n "$os_version" || source /etc/init.d/base
+test -n "$os_debug" || source /etc/init.d/conf
+
+test "$os_networkless" == "true" && exit 0
 
 connected() {
-    ip link show dev $iface 2>&1 | grep LOWER_UP &> /dev/null && return 0 || return 1
+    ip link show dev $os_wlan 2>&1 | grep LOWER_UP &> /dev/null && return 0 || return 1
 }
 
 watch() {
@@ -68,7 +70,7 @@ start() {
 
     # wait up to 5 seconds for interface
     count=0
-    while ! ifconfig $iface >/dev/null 2>&1; do
+    while ! ifconfig $os_wlan >/dev/null 2>&1; do
         sleep 1
         count=$(($count + 1))
         if [ $count -ge 5 ]; then
@@ -77,10 +79,10 @@ start() {
         fi
     done
     
-    module=$(basename $(readlink /sys/class/net/$iface/device/driver/module 2>/dev/null) 2>/dev/null)
+    module=$(basename $(readlink /sys/class/net/$os_wlan/device/driver/module 2>/dev/null) 2>/dev/null)
 
-    iwconfig $iface power off &> /dev/null
-    $prog -i$iface -c$conf -D$driver -B &> $log
+    iwconfig $os_wlan power off &> /dev/null
+    $prog -i$os_wlan -c$conf -D$driver -B &> $log
     count=0
     while true; do
         sleep 1

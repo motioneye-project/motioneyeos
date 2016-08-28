@@ -10,6 +10,9 @@ test -f $watch_conf && source $watch_conf || exit 0
 test -z "$netwatch_host" || -z "$netwatch_port" && exit 0
 
 test -n "$os_version" || source /etc/init.d/base
+test -n "$os_debug" || source /etc/init.d/conf
+
+test "$os_networkless" == "true" && exit 0
 
 watch() {
     count=0

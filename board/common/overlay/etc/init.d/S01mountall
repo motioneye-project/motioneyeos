@@ -1,37 +1,21 @@
 #!/bin/bash
 
-sys_conf="/etc/os.conf"
-boot_conf="/boot/os.conf"
-conf="/data/etc/os.conf"
-
 test -n "$os_version" || source /etc/init.d/base
 
 mount_fs() {
     msg_begin "Mounting filesystems"
     /bin/mount -a
     test $? == 0 && msg_done || msg_fail
+}
 
-    if ! [ -f $conf ]; then
-        if [ -f $boot_conf ]; then
-            cp $boot_conf $conf
-        elif [ -f $sys_conf ]; then
-            cp $sys_conf $conf
-        fi
-    fi
+remount_rw() {
+    msg_begin "Remounting boot partition read-write"
+    mount -o remount,rw /boot
+    test $? == 0 && msg_done || msg_fail
 
-    if [ -f $conf ]; then
-        source $conf
-    fi
-
-    if [ "$os_debug" == "true" ]; then
-        msg_begin "Remounting boot partition read-write"
-        mount -o remount,rw /boot
-        test $? == 0 && msg_done || msg_fail
-
-        msg_begin "Remounting root partition read-write"
-        mount -o remount,rw /
-        test $? == 0 && msg_done || msg_fail
-    fi
+    msg_begin "Remounting root partition read-write"
+    mount -o remount,rw /
+    test $? == 0 && msg_done || msg_fail
 }
 
 mk_tty_login() {
@@ -42,6 +26,8 @@ mk_tty_login() {
 case "$1" in
     start)
         mount_fs
+        test -n "$os_debug" || source /etc/init.d/conf
+        test "$os_debug" == "true" && remount_rw
         mk_tty_login
         ;;
 
