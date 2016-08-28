@@ -12,9 +12,6 @@ sys_watch_conf="/etc/watch.conf"
 boot_watch_conf="/boot/watch.conf"
 watch_conf="/data/etc/watch.conf"
 
-link_watch=yes
-link_watch_timeout=20
-
 if ! [ -f $watch_conf ]; then
     if [ -f $boot_watch_conf ]; then
         cp $boot_watch_conf $watch_conf
@@ -23,7 +20,7 @@ if ! [ -f $watch_conf ]; then
     fi
 fi
 
-test -f $watch_conf && source $watch_conf
+source $watch_conf
 
 if ! [ -f $conf ]; then
     if [ -f $boot_conf ]; then
@@ -99,7 +96,7 @@ start() {
         count=$(($count + 1))
     done
 
-    if [ "$link_watch" == "yes" ]; then
+    if [ "$link_watch" == "true" ]; then
         watch &
     fi
 

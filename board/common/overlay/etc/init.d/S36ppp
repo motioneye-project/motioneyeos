@@ -9,7 +9,7 @@ provider="mobile"
 
 watch_conf="/data/etc/watch.conf"
 
-test -f $watch_conf && source $watch_conf
+source $watch_conf
 
 if ! [ -d $conf ]; then
     if [ -d $boot_conf ]; then
@@ -101,7 +101,7 @@ start() {
         count=$(($count + 1))
     done
 
-    if [ "$link_watch" == "yes" ]; then
+    if [ "$link_watch" == "true" ]; then
         watch &
     fi
 

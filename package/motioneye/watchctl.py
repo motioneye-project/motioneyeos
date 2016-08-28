@@ -57,7 +57,7 @@ def _get_watch_settings():
                     continue
 
                 if name == 'link_watch':
-                    watch_link = (value == 'yes') and not comment
+                    watch_link = (value == 'true') and not comment
                 
                 elif name == 'link_watch_timeout':
                     watch_link_timeout = int(value)
@@ -115,10 +115,10 @@ def _set_watch_settings(s):
     
 
     with open(WATCH_CONF, 'w') as f:
-        f.write('link_watch=%s\n' % ['no', 'yes'][s['watchLink']])
+        f.write('link_watch=%s\n' % ['"false"', '"true"'][s['watchLink']])
         f.write('link_watch_timeout=%s\n' % s['watchLinkTimeout'])
         f.write('\n')
-        f.write('ip_watch=%s\n' % ['no', 'yes'][s['watchLink']])
+        f.write('ip_watch=%s\n' % ['"false"', '"true"'][s['watchLink']])
         f.write('ip_watch_timeout=%s\n' % s['watchLinkTimeout'])
         f.write('\n')
         f.write('%snetwatch_host=%s\n' % (('#' if not s['watchConnect'] else ''), s['watchConnectHost']))

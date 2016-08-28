@@ -7,13 +7,9 @@ boot_static_conf="/boot/static_ip.conf"
 static_conf="/data/etc/static_ip.conf"
 watch_conf="/data/etc/watch.conf"
 
-link_watch=yes
-link_watch_timeout=20
-ip_watch=yes
-ip_watch_timeout=40
 link_nego_timeout=10
 
-test -r $watch_conf && source $watch_conf
+source $watch_conf
 
 if ! [ -f $static_conf ]; then
     if [ -f $boot_static_conf ]; then
@@ -94,7 +90,7 @@ start_wlan() {
         dhclient -cf "$dh_conf" $os_wlan
     fi
 
-    if [ "$ip_watch" == "yes" ] && ip addr show dev $os_wlan | grep inet &>/dev/null; then
+    if [ "$ip_watch" == "true" ] && ip addr show dev $os_wlan | grep inet &>/dev/null; then
         watch_ip $os_wlan &
     fi
 }
@@ -104,7 +100,7 @@ start_eth() {
 
     # wait for driver
     w=3
-    test "$link_watch" == "yes" || w=1
+    test "$link_watch" == "true" || w=1
     count=0
     while ! ifconfig $os_eth >/dev/null 2>&1; do
         sleep 1
@@ -120,7 +116,7 @@ start_eth() {
 
     # wait for operstate
     w=3
-    test "$link_watch" == "yes" || w=1
+    test "$link_watch" == "true" || w=1
     count=0
     while [ "$(cat /sys/class/net/$os_eth/operstate 2>&1)" == "unknown" ]; do
         sleep 1
@@ -132,7 +128,7 @@ start_eth() {
     done
 
     # wait for link
-    test "$link_watch" == "yes" || link_nego_timeout=3
+    test "$link_watch" == "true" || link_nego_timeout=3
     count=0
     while [ "$(cat /sys/class/net/$os_eth/carrier 2>&1)" != "1" ]; do
         sleep 1
@@ -156,11 +152,11 @@ start_eth() {
         dhclient -cf "$dh_conf" $os_eth
     fi
 
-    if [ "$link_watch" == "yes" ]; then
+    if [ "$link_watch" == "true" ]; then
         watch_eth &
     fi
 
-    if [ "$ip_watch" == "yes" ] && ip addr show dev $os_eth | grep inet &>/dev/null; then
+    if [ "$ip_watch" == "true" ] && ip addr show dev $os_eth | grep inet &>/dev/null; then
         watch_ip $os_eth &
     fi
 }
@@ -186,7 +182,7 @@ start() {
     fi
     
     if [ "$eth_ok" != "ok" ] && [ "$wlan_ok" != "ok" ] && [ "$ppp_ok" != "ok" ]; then
-        if [ "$link_watch" == "yes" ]; then
+        if [ "$link_watch" == "true" ]; then
             logger -t ethernet -s "no network connection available, rebooting"
             reboot
             return 1
