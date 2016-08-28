@@ -100,7 +100,6 @@ start_eth() {
 
     # wait for driver
     w=3
-    test "$link_watch" == "true" || w=1
     count=0
     while ! ifconfig $os_eth >/dev/null 2>&1; do
         sleep 1
@@ -116,7 +115,6 @@ start_eth() {
 
     # wait for operstate
     w=3
-    test "$link_watch" == "true" || w=1
     count=0
     while [ "$(cat /sys/class/net/$os_eth/operstate 2>&1)" == "unknown" ]; do
         sleep 1
@@ -128,7 +126,7 @@ start_eth() {
     done
 
     # wait for link
-    test "$link_watch" == "true" || link_nego_timeout=3
+    test "$link_watch" == "true" || link_nego_timeout=5
     count=0
     while [ "$(cat /sys/class/net/$os_eth/carrier 2>&1)" != "1" ]; do
         sleep 1
