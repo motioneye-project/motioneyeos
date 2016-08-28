@@ -135,6 +135,7 @@ def _set_board_settings(s):
 
             if name == 'gpu_mem':
                 lines[i] = '%s=%s' % (name, s['gpuMem'])
+
             elif name == 'disable_camera_led':
                 lines[i] = 'disable_camera_led=%s' % ['1', '0'][s['cameraLed']]
 
