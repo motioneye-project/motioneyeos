@@ -1,6 +1,7 @@
 #!/bin/bash
 
 test -n "$os_version" || source /etc/init.d/base
+test -n "$os_debug" || source /etc/init.d/conf
 
 msg_info() {
     echo " # $1"
@@ -17,15 +18,16 @@ show_gateway() {
 }
 
 show_dns() {
-    dns=$(cat /etc/resolv.conf | grep nameserver | cut -d ' ' -f 2)
-    test -n "$gateway" && msg_info "DNS server address is $dns"
+    test -r /etc/resolv.conf || return
+    dns=$(cat /etc/resolv.conf | grep nameserver | head -n 1 | cut -d ' ' -f 2)
+    test -n "$dns" && msg_info "DNS server address is $dns"
 }
 
 case "$1" in
     start)
-        show_iface_ip_addr eth0
-        show_iface_ip_addr wlan0
-        show_iface_ip_addr ppp0
+        show_iface_ip_addr $os_eth
+        show_iface_ip_addr $os_wlan
+        show_iface_ip_addr $os_ppp
         show_gateway
         show_dns
         ;;

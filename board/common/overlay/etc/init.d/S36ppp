@@ -5,12 +5,11 @@ boot_conf="/boot/ppp"
 conf="/data/etc/ppp"
 
 prog="/usr/sbin/pppd"
-dev="ppp0"
 provider="mobile"
 
 watch_conf="/data/etc/watch.conf"
 
-test -f $watch_conf && source $watch_conf
+source $watch_conf
 
 if ! [ -d $conf ]; then
     if [ -d $boot_conf ]; then
@@ -24,9 +23,12 @@ test -e $conf/modem || exit 0
 test -e $conf/apn || exit 0
 
 test -n "$os_version" || source /etc/init.d/base
+test -n "$os_debug" || source /etc/init.d/conf
+
+test "$os_networkless" == "true" && exit 0
 
 connected() {
-    ifconfig | grep $dev &>/dev/null 2>&1 && return 0 || return 1
+    ifconfig | grep $os_ppp &>/dev/null 2>&1 && return 0 || return 1
 }
 
 watch() {
@@ -99,7 +101,7 @@ start() {
         count=$(($count + 1))
     done
 
-    if [ "$link_watch" == "yes" ]; then
+    if [ "$link_watch" == "true" ]; then
         watch &
     fi
 

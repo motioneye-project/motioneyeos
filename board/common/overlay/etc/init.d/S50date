@@ -27,7 +27,10 @@ fi
 test -f $conf || exit 0
 
 test -n "$os_version" || source /etc/init.d/base
+test -n "$os_debug" || source /etc/init.d/conf
 
+has_net_conn || exit 0
+    
 date_timeout=10
 date_method=http
 date_host="google.com"

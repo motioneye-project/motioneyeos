@@ -7,16 +7,9 @@ boot_static_conf="/boot/static_ip.conf"
 static_conf="/data/etc/static_ip.conf"
 watch_conf="/data/etc/watch.conf"
 
-link_watch=yes
-link_watch_timeout=20
-ip_watch=yes
-ip_watch_timeout=40
-
 link_nego_timeout=10
-eth=eth0
-wlan=wlan0
 
-test -r $watch_conf && source $watch_conf
+source $watch_conf
 
 if ! [ -f $static_conf ]; then
     if [ -f $boot_static_conf ]; then
@@ -29,12 +22,13 @@ fi
 test -r $static_conf && source $static_conf
 
 test -n "$os_version" || source /etc/init.d/base
+test -n "$os_debug" || source /etc/init.d/conf
 
 watch_eth() {
     count=0
     while true; do
         sleep 5
-        if [ "$(cat /sys/class/net/$eth/operstate 2>/dev/null)" == "up" ]; then
+        if [ "$(cat /sys/class/net/$os_eth/operstate 2>/dev/null)" == "up" ]; then
             count=0
         else
             if [ $count -lt $link_watch_timeout ]; then
@@ -73,65 +67,68 @@ start_lo() {
 
 start_wlan() {
     msg_begin "Configuring wireless network"
-    if ! ifconfig $wlan &>/dev/null; then
+    if ! ifconfig $os_wlan &>/dev/null; then
         msg_fail "no device"
         return 1
     fi
 
-    if [ "$(cat /sys/class/net/$wlan/carrier 2>/dev/null)" != "1" ]; then
+    if [ "$(cat /sys/class/net/$os_wlan/carrier 2>/dev/null)" != "1" ]; then
         msg_fail "no link"
         return 1
     fi
 
     if [ -n "$mtu" ]; then
-        ip link set mtu $mtu dev $wlan
+        ip link set mtu $mtu dev $os_wlan
     fi
 
     if [ -n "$static_ip" ]; then
         msg_done $static_ip
-        ifconfig $wlan $static_ip up
+        ifconfig $os_wlan $static_ip up
         static_ip="" # won't be used again
     else
         msg_done dhcp
-        dhclient -cf "$dh_conf" $wlan
+        dhclient -cf "$dh_conf" $os_wlan
     fi
 
-    if [ "$ip_watch" == "yes" ] && ip addr show dev $wlan | grep inet &>/dev/null; then
-        watch_ip $wlan &
+    if [ "$ip_watch" == "true" ] && ip addr show dev $os_wlan | grep inet &>/dev/null; then
+        watch_ip $os_wlan &
     fi
 }
 
 start_eth() {
     msg_begin "Configuring wired network"
 
-    # wait up to 3 seconds for driver
+    # wait for driver
+    w=3
     count=0
-    while ! ifconfig $eth >/dev/null 2>&1; do
+    while ! ifconfig $os_eth >/dev/null 2>&1; do
         sleep 1
         count=$(($count + 1))
-        if [ $count -ge 3 ]; then
+        if [ $count -ge $w ]; then
             msg_done "no device"
             return 1
         fi
     done
 
     # bring it up
-    ifconfig $eth up
+    ifconfig $os_eth up
 
-    # wait up to 3 seconds for operstate
+    # wait for operstate
+    w=3
     count=0
-    while [ "$(cat /sys/class/net/$eth/operstate 2>&1)" == "unknown" ]; do
+    while [ "$(cat /sys/class/net/$os_eth/operstate 2>&1)" == "unknown" ]; do
         sleep 1
         count=$(($count + 1))
-        if [ $count -ge 3 ]; then
+        if [ $count -ge $w ]; then
             msg_done "no link"
             return 1
         fi
     done
 
-    # wait up to $link_nego_timeout seconds for link
+    # wait for link
+    test "$link_watch" == "true" || link_nego_timeout=5
     count=0
-    while [ "$(cat /sys/class/net/$eth/carrier 2>&1)" != "1" ]; do
+    while [ "$(cat /sys/class/net/$os_eth/carrier 2>&1)" != "1" ]; do
         sleep 1
         count=$(($count + 1))
         if [ $count -ge $link_nego_timeout ]; then
@@ -141,24 +138,24 @@ start_eth() {
     done
     
     if [ -n "$mtu" ]; then
-        ip link set mtu $mtu dev $eth
+        ip link set mtu $mtu dev $os_eth
     fi
 
     if [ -n "$static_ip" ]; then
         msg_done $static_ip
-        ifconfig $eth $static_ip up
+        ifconfig $os_eth $static_ip up
         static_ip="" # won't be used again
     else
         msg_done dhcp
-        dhclient -cf "$dh_conf" $eth
+        dhclient -cf "$dh_conf" $os_eth
     fi
 
-    if [ "$link_watch" == "yes" ]; then
+    if [ "$link_watch" == "true" ]; then
         watch_eth &
     fi
 
-    if [ "$ip_watch" == "yes" ] && ip addr show dev $eth | grep inet &>/dev/null; then
-        watch_ip $eth &
+    if [ "$ip_watch" == "true" ] && ip addr show dev $os_eth | grep inet &>/dev/null; then
+        watch_ip $os_eth &
     fi
 }
 
@@ -166,10 +163,11 @@ start() {
     hostname=$(hostname)
     echo "send host-name = \"$hostname\";" > /var/cache/dhclient.conf
 
-    ssid=$(cat /data/etc/wpa_supplicant.conf 2>&1 | grep ssid | grep -v scan_ssid | cut -d '"' -f 2)
-
     start_lo
 
+    test "$os_networkless" == "true" && return 0
+
+    ssid=$(cat /data/etc/wpa_supplicant.conf 2>&1 | grep ssid | grep -v scan_ssid | cut -d '"' -f 2)
     test -n "$ssid" && start_wlan && wlan_ok="ok"
     
     test -r /data/etc/ppp/modem && ppp_ok="ok" # TODO actually test the ppp link
@@ -182,9 +180,14 @@ start() {
     fi
     
     if [ "$eth_ok" != "ok" ] && [ "$wlan_ok" != "ok" ] && [ "$ppp_ok" != "ok" ]; then
-        logger -t ethernet -s "no network connection available"        
-        reboot
-        return 1
+        if [ "$link_watch" == "true" ]; then
+            logger -t ethernet -s "no network connection available, rebooting"
+            reboot
+            return 1
+        else
+            logger -t ethernet -s "no network connection available"
+            return 0
+        fi
     fi
 
     if [ -n "$static_gw" ]; then

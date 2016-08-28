@@ -3,6 +3,9 @@
 test -f /etc/samba/smb.conf || exit 0
 
 test -n "$os_version" || source /etc/init.d/base
+test -n "$os_debug" || source /etc/init.d/conf
+
+has_net_conn || exit 0
 
 start() {
     msg_begin "Setting smb admin password"

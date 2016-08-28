@@ -111,7 +111,6 @@ def _set_board_settings(s):
 
     logging.debug('writing board settings to %s: ' % CONFIG_TXT + 
             'gpu_mem=%(gpuMem)s, camera_led=%(cameraLed)s' % s)
-    
 
     lines = []
     if os.path.exists(CONFIG_TXT):
@@ -136,16 +135,11 @@ def _set_board_settings(s):
 
             if name == 'gpu_mem':
                 lines[i] = '%s=%s' % (name, s['gpuMem'])
-                
             elif name == 'disable_camera_led':
                 lines[i] = 'disable_camera_led=%s' % ['1', '0'][s['cameraLed']]
 
     if 'gpu_mem' not in seen:
         lines.append('gpu_mem=%s' % s['gpuMem'])
-
-
-
-
 
     if 'disable_camera_led' not in seen:
         lines.append('disable_camera_led=%s' % ['1', '0'][s['cameraLed']])
@@ -226,8 +220,6 @@ def cameraLed():
         'set': _set_board_settings,
         'get_set_dict': True
     }
-
-
 
 
 @additional_config

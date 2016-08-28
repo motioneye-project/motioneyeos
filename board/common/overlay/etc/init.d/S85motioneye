@@ -7,7 +7,7 @@ motion_conf="/data/etc/motion.conf"
 watch_conf="/data/etc/watch.conf"
 
 meyewatch_timeout=120
-meyewatch_disable=""
+meyewatch_disable="false"
 dev_v4l_by_id="/dev/v4l/by-id/"
 media_dir="/data/output"
 
@@ -83,7 +83,7 @@ start() {
 
         if [ $count -gt $meyewatch_timeout ]; then
             msg_fail
-            test -z "$meyewatch_disable" && reboot
+            test "$meyewatch_disable" == "false" && reboot
             return 1
         fi
 
@@ -112,7 +112,7 @@ start() {
         sync
     fi
 
-    if [ -z "$meyewatch_disable" ]; then
+    if [ "$meyewatch_disable" == "false" ]; then
         watch &
     fi
 
