@@ -1,4 +1,4 @@
-# From http://www.webkitgtk.org/releases/webkitgtk-2.12.3.tar.xz.sha1
-sha1	d6a0d598c09d2d56ba0862f8d9206e89d75317cb	webkitgtk-2.12.3.tar.xz
+# From http://www.webkitgtk.org/releases/webkitgtk-2.12.4.tar.xz.sha1
+sha1	ebfe6015d81129b6a13a9596d065c54e9c1b93f6	webkitgtk-2.12.4.tar.xz
 # Calculated based on the hash above
-sha256	173cbb9a2eca23eee52e99965483ab25aa9c0569ef5b57041fc0c129cc26c307	webkitgtk-2.12.3.tar.xz
+sha256	424d3177599abbc1eb1a1ad7928dd280a62006e992f2fada2e059375a9609a77	webkitgtk-2.12.4.tar.xz
