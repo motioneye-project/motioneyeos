@@ -13,6 +13,10 @@ LIBAIO_LICENSE_FILES = COPYING
 
 LIBAIO_CONFIGURE_OPTS = $(TARGET_CONFIGURE_OPTS)
 
+ifeq ($(BR2_STATIC_LIBS),y)
+LIBAIO_CONFIGURE_OPTS += ENABLE_SHARED=0
+endif
+
 # On PowerPC, a weird toolchain issue causes -Os builds to produce
 # references to hidden symbols, so we're forcing -O2
 ifeq ($(BR2_powerpc),y)
