@@ -80,7 +80,21 @@ static char *predef_args[] = {
 #endif
 };
 
-static void check_unsafe_path(const char *path, int paranoid)
+/* Check if path is unsafe for cross-compilation. Unsafe paths are those
+ * pointing to the standard native include or library paths.
+ *
+ * We print the arguments leading to the failure. For some options, gcc
+ * accepts the path to be concatenated to the argument (e.g. -I/foo/bar)
+ * or separated (e.g. -I /foo/bar). In the first case, we need only print
+ * the argument as it already contains the path (arg_has_path), while in
+ * the second case we need to print both (!arg_has_path).
+ *
+ * If paranoid, exit in error instead of just printing a warning.
+ */
+static void check_unsafe_path(const char *arg,
+			      const char *path,
+			      int paranoid,
+			      int arg_has_path)
 {
 	char **c;
 	static char *unsafe_paths[] = {
@@ -88,14 +102,17 @@ static void check_unsafe_path(const char *path, int paranoid)
 	};
 
 	for (c = unsafe_paths; *c != NULL; c++) {
-		if (!strncmp(path, *c, strlen(*c))) {
-			fprintf(stderr, "%s: %s: unsafe header/library path used in cross-compilation: '%s'\n",
-				program_invocation_short_name,
-				paranoid ? "ERROR" : "WARNING", path);
-			if (paranoid)
-				exit(1);
+		if (strncmp(path, *c, strlen(*c)))
 			continue;
-		}
+		fprintf(stderr,
+			"%s: %s: unsafe header/library path used in cross-compilation: '%s%s%s'\n",
+			program_invocation_short_name,
+			paranoid ? "ERROR" : "WARNING",
+			arg,
+			arg_has_path ? "" : "' '", /* close single-quote, space, open single-quote */
+			arg_has_path ? "" : path); /* so that arg and path are properly quoted. */
+		if (paranoid)
+			exit(1);
 	}
 }
 
@@ -237,9 +254,9 @@ int main(int argc, char **argv)
 			i++;
 			if (i == argc)
 				continue;
-			check_unsafe_path(argv[i], paranoid);
+			check_unsafe_path(argv[i-1], argv[i], paranoid, 0);
 		} else {
-			check_unsafe_path(argv[i] + 2, paranoid);
+			check_unsafe_path(argv[i], argv[i] + 2, paranoid, 1);
 		}
 	}
 
