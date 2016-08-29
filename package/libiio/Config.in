@@ -53,12 +53,17 @@ config BR2_PACKAGE_LIBIIO_IIOD
 	bool "IIO Daemon"
 	select BR2_PACKAGE_LIBIIO_LOCAL_BACKEND
 	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_bfin
 	default y
 	help
 	  Install the IIO Daemon.
 
 comment "IIO Daemon needs a toolchain w/ threads"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_bfin
+
+comment "IIO Daemon is not yet available on Blackfin"
+	depends on BR2_bfin
 
 config BR2_PACKAGE_LIBIIO_TESTS
 	bool "Install test programs"
