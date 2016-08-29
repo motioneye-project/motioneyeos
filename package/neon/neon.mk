@@ -28,7 +28,7 @@ NEON_CONF_OPTS += --without-ssl
 endif
 
 ifeq ($(BR2_PACKAGE_NEON_EXPAT),y)
-NEON_CONF_OPTS += --with-expat=$(STAGING_DIR)/usr/lib/libexpat.la
+NEON_CONF_OPTS += --with-expat=yes
 NEON_DEPENDENCIES += expat
 else
 NEON_CONF_OPTS += --with-expat=no
