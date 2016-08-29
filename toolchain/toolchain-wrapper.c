@@ -80,6 +80,26 @@ static char *predef_args[] = {
 #endif
 };
 
+struct unsafe_opt_s {
+	const char *arg;
+	size_t     len;
+};
+
+/* Unsafe options are options that specify a potentialy unsafe path,
+ * that will be checked by check_unsafe_path(), below.
+ *
+ * sizeof() on a string literal includes the terminating \0.
+ */
+#define UNSAFE_OPT(o) { #o, sizeof(#o)-1 }
+static const struct unsafe_opt_s unsafe_opts[] = {
+	UNSAFE_OPT(-I),
+	UNSAFE_OPT(-idirafter),
+	UNSAFE_OPT(-iquote),
+	UNSAFE_OPT(-isystem),
+	UNSAFE_OPT(-L),
+	{ NULL, 0 },
+};
+
 /* Check if path is unsafe for cross-compilation. Unsafe paths are those
  * pointing to the standard native include or library paths.
  *
@@ -239,24 +259,23 @@ int main(int argc, char **argv)
 
 	/* Check for unsafe library and header paths */
 	for (i = 1; i < argc; i++) {
-
-		/* Skip options that do not start with -I and -L */
-		if (strncmp(argv[i], "-I", 2) && strncmp(argv[i], "-L", 2))
-			continue;
-
-		/* We handle two cases: first the case where -I/-L and
-		 * the path are separated by one space and therefore
-		 * visible as two separate options, and then the case
-		 * where they are stuck together forming one single
-		 * option.
-		 */
-		if (argv[i][2] == '\0') {
-			i++;
-			if (i == argc)
+		const struct unsafe_opt_s *opt;
+		for (opt=unsafe_opts; opt->arg; opt++ ) {
+			/* Skip any non-unsafe option. */
+			if (strncmp(argv[i], opt->arg, opt->len))
 				continue;
-			check_unsafe_path(argv[i-1], argv[i], paranoid, 0);
-		} else {
-			check_unsafe_path(argv[i], argv[i] + 2, paranoid, 1);
+
+			/* Handle both cases:
+			 *  - path is a separate argument,
+			 *  - path is concatenated with option.
+			 */
+			if (argv[i][opt->len] == '\0') {
+				i++;
+				if (i == argc)
+					break;
+				check_unsafe_path(argv[i-1], argv[i], paranoid, 0);
+			} else
+				check_unsafe_path(argv[i], argv[i] + opt->len, paranoid, 1);
 		}
 	}
 
