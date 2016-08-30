@@ -1,0 +1,31 @@
+From 4a6d35237f96d07f3a783c874933f87bf14f93e0 Mon Sep 17 00:00:00 2001
+From: "Yann E. MORIN" <yann.morin.1998@free.fr>
+Date: Sun, 28 Aug 2016 16:26:04 +0200
+Subject: [PATCH] importd/export-raw: needs missing.h for O_TMPFILE
+
+O_TMPFILE may be missing from the system headers, so use our fallback
+definition.
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+---
+Backported from upstream:
+    https://github.com/systemd/systemd/commit/4a6d35237f96d07f3a783c874933f87bf14f93e0
+---
+ src/import/export-raw.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/import/export-raw.c b/src/import/export-raw.c
+index db06e11..6136b67 100644
+--- a/src/import/export-raw.c
++++ b/src/import/export-raw.c
+@@ -34,6 +34,7 @@
+ #include "fd-util.h"
+ #include "fileio.h"
+ #include "import-common.h"
++#include "missing.h"
+ #include "ratelimit.h"
+ #include "string-util.h"
+ #include "util.h"
+-- 
+2.7.4
+

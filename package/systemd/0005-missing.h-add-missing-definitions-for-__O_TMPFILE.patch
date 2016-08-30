@@ -1,0 +1,63 @@
+From daad709a7c13c0fac73e407528f96cc876c09629 Mon Sep 17 00:00:00 2001
+From: "Yann E. MORIN" <yann.morin.1998@free.fr>
+Date: Sun, 28 Aug 2016 17:26:42 +0200
+Subject: [PATCH] missing.h: add missing definitions for __O_TMPFILE
+
+Currently, a missing __O_TMPFILE was only defined for i386 and x86_64,
+leaving any other architectures with an "old" toolchain fail miserably
+at build time:
+    src/import/export-raw.c: In function 'reflink_snapshot':
+    src/import/export-raw.c:271:26: error: 'O_TMPFILE' undeclared (first use in this function)
+             new_fd = open(d, O_TMPFILE|O_CLOEXEC|O_NOCTTY|O_RDWR, 0600);
+                              ^
+
+__O_TMPFILE (and O_TMPFILE) are available since glibc 2.19. However, a
+lot of existing toolchains are still using glibc-2.18, and some even
+before that, and it is not really possible to update those toolchains.
+
+Instead of defining it only for i386 and x86_64, define __O_TMPFILE
+with the specific values for those archs where it is different from the
+generic value. Use the values as found in the Linux kernel (v4.8-rc3,
+current as of time of commit).
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+---
+Backported from upstream:
+    https://github.com/systemd/systemd/commit/daad709a7c13c0fac73e407528f96cc876c09629
+---
+ src/basic/missing.h | 17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
+
+diff --git a/src/basic/missing.h b/src/basic/missing.h
+index f8e0966..13ff51c 100644
+--- a/src/basic/missing.h
++++ b/src/basic/missing.h
+@@ -537,12 +537,21 @@ struct btrfs_ioctl_quota_ctl_args {
+ #  define DRM_IOCTL_DROP_MASTER _IO('d', 0x1f)
+ #endif
+ 
+-#if defined(__i386__) || defined(__x86_64__)
+-
+-/* The precise definition of __O_TMPFILE is arch specific, so let's
+- * just define this on x86 where we know the value. */
++/* The precise definition of __O_TMPFILE is arch specific; use the
++ * values defined by the kernel (note: some are hexa, some are octal,
++ * duplicated as-is from the kernel definitions):
++ * - alpha, parisc, sparc: each has a specific value;
++ * - others: they use the "generic" value.
++ */
+ 
+ #ifndef __O_TMPFILE
++#if defined(__alpha__)
++#define __O_TMPFILE     0100000000
++#elif defined(__parisc__) || defined(__hppa__)
++#define __O_TMPFILE     0400000000
++#elif defined(__sparc__) || defined(__sparc64__)
++#define __O_TMPFILE     0x2000000
++#else
+ #define __O_TMPFILE     020000000
+ #endif
+ 
+-- 
+2.7.4
+
