@@ -5,7 +5,7 @@
 ################################################################################
 
 ALLJOYN_TCL_REV = 16.04
-ALLJOYN_TCL_VERSION = $(ALLJOYN_TCL_REV).00
+ALLJOYN_TCL_VERSION = $(ALLJOYN_TCL_REV).00a
 ALLJOYN_TCL_SOURCE = ajtcl-$(ALLJOYN_TCL_VERSION)-src.tar.gz
 ALLJOYN_TCL_SITE = \
 	https://mirrors.kernel.org/allseenalliance/alljoyn/$(ALLJOYN_TCL_REV)
