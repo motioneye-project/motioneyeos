@@ -133,10 +133,13 @@ ifeq ($(BR2_sparc)$(BR2_sparc64),y)
 HOST_GCC_COMMON_CONF_OPTS += --disable-libsanitizer
 endif
 
-ifeq ($(BR2_GCC_ENABLE_TLS),y)
-HOST_GCC_COMMON_CONF_OPTS += --enable-tls
-else
+# TLS support is not needed on uClibc/no-thread and
+# uClibc/linux-threads, otherwise, for all other situations (glibc,
+# musl and uClibc/NPTL), we need it.
+ifeq ($(BR2_TOOLCHAIN_BUILDROOT_UCLIBC)$(BR2_PTHREADS)$(BR2_PTHREADS_NONE),yy)
 HOST_GCC_COMMON_CONF_OPTS += --disable-tls
+else
+HOST_GCC_COMMON_CONF_OPTS += --enable-tls
 endif
 
 ifeq ($(BR2_GCC_ENABLE_LTO),y)
