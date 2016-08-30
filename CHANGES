@@ -1,3 +1,42 @@
+2016.08-rc3, Released August 29th, 2016
+
+	Fixes all over the tree.
+
+	Toolchain: C++ support for the internal blackfin toolchain
+	re-enabled.
+
+	Architecture: Default to bf532 CPU variant for blackfin,
+	Fix flat one memory region support for m68k and disable flat
+	seperate data support because of compatibility issues.
+
+	Defconfigs: Minnowboard and Raspberrypi: Fix errors with
+	post-build scripts when systemd is used.
+	Zynq microzed/zc706/zed: Fix u-booot configuration.
+
+	netbsd-queue package extended and renamed to
+	musl-compat-headers. With this, a number of musl compatibility
+	patches are no longer needed.
+
+	Updated/fixed packages: aircrack-ng, android-tools, babeld,
+	bcusdk, binutils, boa, busybox, connman, cpupower,
+	docker-engine, domoticz, elf2flt, ffmpeg, fwup, gcc,
+	glib-networking, gnupg, hplip, igd2-for-linux, imagemagick,
+	imx-uuc, iputils, jack2, kismet, kmsxx, libaio, libamcodec,
+	libconfuse, libffi, libfreeimage, libgcrypt, libgpg-error,
+	libiio, libraw, libsepol, libserialport, libxmlrpc, linknx,
+	linux-pam, lirc-tools, lldpd, logrotate, lshw, musl, ncurses,
+	neon, nettle, norm, ntfs-3g, openblas, openmpi, openswan,
+	pinentry, pixman, protobuf, python-meld3, qlibc, qt, qt5base,
+	quagga, rpcbind, rt-tests, runc, sane-backends, sconeserver,
+	squeezelite, stella, tftpd, tinycbor, tinydtls, trace-cmd,
+	trousers, tstools, uboot-tools, uclibc, ulogd, ustr, vlc,
+	webkitgtk, wireshark, xdriver_xf86-video-intel
+
+	Issues resolved (http://bugs.buildroot.org):
+
+	#9101: Error on support/download/git with system git older than 1.8.4
+	#9181: Compiling linux kernel fails if BR2_LINUX_KERNEL_TOOL_CPU..
+
 2016.08-rc2, Released August 17th, 2016
 
 	Fixes all over the tree.
