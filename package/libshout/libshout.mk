@@ -28,4 +28,11 @@ else
 LIBSHOUT_CONF_OPTS += --disable-speex
 endif
 
+ifeq ($(BR2_PACKAGE_OPENSSL),y)
+LIBSHOUT_CONF_OPTS += --with-openssl
+LIBSHOUT_DEPENDENCIES += openssl
+else
+LIBSHOUT_CONF_OPTS += --without-openssl
+endif
+
 $(eval $(autotools-package))
