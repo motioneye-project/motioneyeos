@@ -195,6 +195,13 @@ else
 MPD_CONF_OPTS += --disable-pulse
 endif
 
+ifeq ($(BR2_PACKAGE_MPD_SHOUTCAST),y)
+MPD_DEPENDENCIES += libshout
+MPD_CONF_OPTS += --enable-shout
+else
+MPD_CONF_OPTS += --disable-shout
+endif
+
 ifeq ($(BR2_PACKAGE_MPD_SOUNDCLOUD),y)
 MPD_DEPENDENCIES += yajl
 MPD_CONF_OPTS += --enable-soundcloud

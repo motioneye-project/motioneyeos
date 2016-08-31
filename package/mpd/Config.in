@@ -262,6 +262,12 @@ comment "pulseaudio support needs a toolchain w/ dynamic library"
 	depends on BR2_TOOLCHAIN_HAS_SYNC_4
 	depends on BR2_STATIC_LIBS
 
+config BR2_PACKAGE_MPD_SHOUTCAST
+	bool "shoutcast"
+	select BR2_PACKAGE_LIBSHOUT
+	help
+	  Enable shoutcast streaming output support.
+
 comment "Miscellaneous plugins"
 
 config BR2_PACKAGE_MPD_AVAHI_SUPPORT
