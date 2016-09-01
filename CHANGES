@@ -1,3 +1,17 @@
+2016.08, Released Septermber 1st, 2016
+
+	Minor fixes.
+
+	Toolchain: ARC tools updated to arc-2016.09-eng010.
+
+	Updated/fixed packages: libshout, luajit, mpd, mplayer
+
+	Issues resolved (http://bugs.buildroot.org):
+
+	#7520: CodeSourcery toolchain ARM: C++11 std::exception_ptr..
+	#8341: Getting EGL Error: Could not create the egl surface:..
+	#9121: gst1-imx for i.MX6 compile failed, cannot find PXP, ..
+
 2016.08-rc3, Released August 29th, 2016
 
 	Fixes all over the tree.
