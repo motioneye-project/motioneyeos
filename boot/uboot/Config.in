@@ -137,9 +137,7 @@ config BR2_TARGET_UBOOT_NEEDS_DTC
 	  Select this option if your U-Boot board configuration
 	  requires the Device Tree compiler to be available.
 
-choice
-	prompt "U-Boot binary format"
-	default BR2_TARGET_UBOOT_FORMAT_BIN
+menu "U-Boot binary format"
 
 config BR2_TARGET_UBOOT_FORMAT_AIS
 	bool "u-boot.ais"
@@ -150,6 +148,7 @@ config BR2_TARGET_UBOOT_FORMAT_AIS
 
 config BR2_TARGET_UBOOT_FORMAT_BIN
 	bool "u-boot.bin"
+	default y
 
 config BR2_TARGET_UBOOT_FORMAT_DTB_IMG
 	bool "u-boot-dtb.img"
@@ -252,18 +251,20 @@ config BR2_TARGET_UBOOT_FORMAT_CUSTOM
 	help
 	  On some platforms, the standard U-Boot binary is not called
 	  u-boot.bin, but u-boot<something>.bin. If this is your case,
-	  you should select this option and specify the correct name
+	  you should select this option and specify the correct name(s)
 	  in BR2_TARGET_UBOOT_FORMAT_CUSTOM_NAME.
 
-endchoice
-
 config BR2_TARGET_UBOOT_FORMAT_CUSTOM_NAME
-	string "U-Boot binary format: custom name"
+	string "U-Boot binary format: custom names"
 	depends on BR2_TARGET_UBOOT_FORMAT_CUSTOM
 	help
-	  Specify the correct name of the output binary created by
-	  U-Boot, if it is not one of the default names. For example:
+	  In case the U-Boot binary for the target platform is not among
+	  the default names, one or more custom names can be listed here.
+	  Use space to separate multiple names.
+	  Example:
 	  u-boot_magic.bin
+
+endmenu
 
 config BR2_TARGET_UBOOT_OMAP_IFT
 	depends on BR2_TARGET_UBOOT_FORMAT_BIN
