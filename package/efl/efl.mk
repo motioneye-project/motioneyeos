@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-EFL_VERSION = 1.17.2
+EFL_VERSION = 1.18.0
 EFL_SOURCE = efl-$(EFL_VERSION).tar.xz
 EFL_SITE = http://download.enlightenment.org/rel/libs/efl
 EFL_LICENSE = BSD-2c, LGPLv2.1+, GPLv2+
@@ -24,16 +24,26 @@ EFL_DEPENDENCIES = host-pkgconf host-efl host-luajit dbus freetype \
 
 # Configure options:
 # --disable-lua-old: build elua for the target.
+# --disable-poppler: disable poppler image loader.
 # --disable-sdl: disable sdl2 support.
+# --disable-spectre: disable spectre image loader.
 # --disable-xinput22: disable X11 XInput v2.2+ support.
 # --with-opengl=none: disable opengl support.
+# --with-doxygen: disable doxygen documentation
 EFL_CONF_OPTS = \
 	--with-edje-cc=$(HOST_DIR)/usr/bin/edje_cc \
+	--with-eet-eet=$(HOST_DIR)/usr/bin/eet \
+	--with-eldbus_codegen=$(HOST_DIR)/usr/bin/eldbus-codegen \
+	--with-elementary-codegen=$(HOST_DIR)/usr/bin/elementary_codegen \
+	--with-elm-prefs-cc=$(HOST_DIR)/usr/bin/elm_prefs_cc \
 	--with-elua=$(HOST_DIR)/usr/bin/elua \
 	--with-eolian-gen=$(HOST_DIR)/usr/bin/eolian_gen \
 	--disable-lua-old \
+	--disable-poppler \
 	--disable-sdl \
+	--disable-spectre \
 	--disable-xinput22 \
+	--with-doxygen=no \
 	--with-opengl=none
 
 # Disable untested configuration warning.
@@ -217,6 +227,20 @@ else
 EFL_CONF_OPTS += --disable-image-loader-webp
 endif
 
+ifeq ($(BR2_PACKAGE_EFL_LIBRAW),y)
+EFL_DEPENDENCIES += libraw
+EFL_CONF_OPTS += --enable-libraw
+else
+EFL_CONF_OPTS += --disable-libraw
+endif
+
+ifeq ($(BR2_PACKAGE_EFL_SVG),y)
+EFL_DEPENDENCIES += librsvg cairo
+EFL_CONF_OPTS += --enable-librsvg
+else
+EFL_CONF_OPTS += --disable-librsvg
+endif
+
 $(eval $(autotools-package))
 
 ################################################################################
@@ -254,9 +278,12 @@ HOST_EFL_DEPENDENCIES = \
 # --disable-libmount: remove dependency on host-util-linux libmount.
 # --disable-lua-old: build elua for the host.
 # --disable-physics: remove Bullet dependency.
+# --disable-poppler: disable poppler image loader.
+# --disable-spectre: disable spectre image loader.
 # --enable-image-loader-gif=no: disable Gif dependency.
 # --enable-image-loader-tiff=no: disable Tiff dependency.
 # --with-crypto=none: remove dependencies on openssl or gnutls.
+# --with-doxygen: disable doxygen documentation
 # --with-x11=none: remove dependency on X.org.
 #   Yes I really know what I am doing.
 HOST_EFL_CONF_OPTS += \
@@ -266,14 +293,20 @@ HOST_EFL_CONF_OPTS += \
 	--disable-gstreamer1 \
 	--disable-libeeze \
 	--disable-libmount \
+	--disable-libraw \
+	--disable-librsvg \
 	--disable-lua-old \
 	--disable-multisense \
 	--disable-physics \
+	--disable-poppler \
+	--disable-spectre \
+	--disable-xcf \
 	--enable-image-loader-gif=no \
 	--enable-image-loader-jpeg=yes \
 	--enable-image-loader-png=yes \
 	--enable-image-loader-tiff=no \
 	--with-crypto=none \
+	--with-doxygen=no \
 	--with-glib=yes \
 	--with-opengl=none \
 	--with-x11=none \

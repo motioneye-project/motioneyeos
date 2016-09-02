@@ -199,6 +199,20 @@ config BR2_PACKAGE_EFL_WEBP
 	help
 	  This enables the loader code that loads images using WebP.
 
+config BR2_PACKAGE_EFL_LIBRAW
+	bool "libraw loader"
+	select BR2_PACKAGE_LIBRAW
+	help
+	  This option enables the Evas generic Libraw loader
+
+config BR2_PACKAGE_EFL_SVG
+	bool "SVG loader"
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # librsvg -> pango -> harfbuzz
+	select BR2_PACKAGE_LIBRSVG
+	select BR2_PACKAGE_CAIRO
+	help
+	  This option enables the Evas generic SVG loader
+
 endif # BR2_PACKAGE_EFL
 
 comment "efl needs udev /dev management and a toolchain w/ C++, dynamic library, gcc >= 4.7, threads, wchar"
