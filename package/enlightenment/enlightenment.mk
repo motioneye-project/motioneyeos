@@ -19,6 +19,7 @@ ENLIGHTENMENT_DEPENDENCIES = \
 ENLIGHTENMENT_CONF_OPTS = \
 	--with-edje-cc=$(HOST_DIR)/usr/bin/edje_cc \
 	--with-eet-eet=$(HOST_DIR)/usr/bin/eet \
+	--with-eldbus_codegen=$(HOST_DIR)/usr/bin/eldbus-codegen \
 	--disable-pam \
 	--disable-rpath
 
