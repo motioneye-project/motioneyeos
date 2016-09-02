@@ -10,7 +10,7 @@ TERMINOLOGY_SITE = https://download.enlightenment.org/rel/apps/terminology
 TERMINOLOGY_LICENSE = BSD-2c
 TERMINOLOGY_LICENSE_FILES = COPYING
 
-TERMINOLOGY_DEPENDENCIES = efl elementary host-pkgconf
+TERMINOLOGY_DEPENDENCIES = efl host-pkgconf
 TERMINOLOGY_CONF_OPTS = --with-edje-cc=$(HOST_DIR)/usr/bin/edje_cc
 
 $(eval $(autotools-package))
