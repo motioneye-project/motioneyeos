@@ -15,8 +15,7 @@ config BR2_PACKAGE_ENLIGHTENMENT
 	select BR2_PACKAGE_EFL_X_XLIB
 	select BR2_PACKAGE_EFL_JPEG # needed at runtime by enlightenment_start
 	select BR2_PACKAGE_EFL_PNG # needed at runtime by enlightenment_start
-	select BR2_PACKAGE_LIBEVAS_GENERIC_LOADERS
-	select BR2_PACKAGE_LIBEVAS_GENERIC_LOADERS_SVG
+	select BR2_PACKAGE_EFL_SVG
 	select BR2_PACKAGE_XCB_UTIL_KEYSYMS
 	help
 	  Enlightenment, also known simply as E, is a stacking window
