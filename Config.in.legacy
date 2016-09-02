@@ -145,6 +145,14 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2016.11"
 
+config BR2_PACKAGE_LIBEVAS_GENERIC_LOADERS
+	bool "libevas-generic-loaders package removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_EFL
+	help
+	  With EFL 1.18, libevas-generic-loaders is now provided by the efl
+	  package.
+
 config BR2_PACKAGE_ELEMENTARY
 	bool "elementary package removed"
 	select BR2_LEGACY
