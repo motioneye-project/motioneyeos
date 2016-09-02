@@ -7,6 +7,9 @@
 MANUAL_SOURCES = $(sort $(wildcard docs/manual/*.txt) $(wildcard docs/images/*))
 MANUAL_RESOURCES = $(TOPDIR)/docs/images
 
+# Ensure the kconfig snippet is generated (for MANUAL_GEN_LISTS, below):
+MANUAL_DEPENDENCIES += prepare-kconfig
+
 # Our manual needs to generate lists
 define MANUAL_GEN_LISTS
 	$(Q)$(call MESSAGE,"Updating the manual lists...")

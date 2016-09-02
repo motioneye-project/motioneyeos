@@ -1,4 +1,4 @@
-From 24fd7f81f9966071717f6a0effe8190310f1b393 Mon Sep 17 00:00:00 2001
+From e626f4ca5169036a0042e55e58aca2bb5cc19ad7 Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Date: Fri, 19 Aug 2016 22:39:17 +0200
 Subject: [PATCH] Use autoconf checks for strndup and asprintf
@@ -22,7 +22,7 @@ Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
  2 files changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/config.c b/config.c
-index dbbf563..2209afd 100644
+index 8731348..8741e48 100644
 --- a/config.c
 +++ b/config.c
 @@ -45,7 +45,7 @@
@@ -44,18 +44,18 @@ index dbbf563..2209afd 100644
  {
         size_t nAvail;
 diff --git a/configure.ac b/configure.ac
-index e655b85..73b98da 100644
+index 5c83d20..51da52a 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -13,6 +13,8 @@ AC_STRUCT_ST_BLOCKS
+@@ -18,6 +18,8 @@ AC_SYS_LARGEFILE
  AC_CHECK_LIB([popt],[poptParseArgvString],,
    AC_MSG_ERROR([libpopt required but not found]))
  
 +AC_CHECK_FUNCS([strndup asprintf])
 +
- AC_ARG_WITH([selinux],
-   [AS_HELP_STRING([--with-selinux],
-     [support handling SELinux contexts (yes,no,check) @<:@default=check@:>@])],
+ dnl Needed for out-of-source builds
+ mkdir -p test
+ 
 -- 
 2.7.4
 

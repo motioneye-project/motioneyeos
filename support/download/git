@@ -30,6 +30,8 @@ repo="${2}"
 cset="${3}"
 basename="${4}"
 
+shift 4 # Get rid of our options
+
 # Caller needs to single-quote its arguments to prevent them from
 # being expanded a second time (in case there are spaces in them)
 _git() {
@@ -46,7 +48,7 @@ _git() {
 git_done=0
 if [ -n "$(_git ls-remote "'${repo}'" "'${cset}'" 2>&1)" ]; then
     printf "Doing shallow clone\n"
-    if _git clone ${verbose} --depth 1 -b "'${cset}'" "'${repo}'" "'${basename}'"; then
+    if _git clone ${verbose} "${@}" --depth 1 -b "'${cset}'" "'${repo}'" "'${basename}'"; then
         git_done=1
     else
         printf "Shallow clone failed, falling back to doing a full clone\n"
@@ -54,7 +56,7 @@ if [ -n "$(_git ls-remote "'${repo}'" "'${cset}'" 2>&1)" ]; then
 fi
 if [ ${git_done} -eq 0 ]; then
     printf "Doing full clone\n"
-    _git clone ${verbose} "'${repo}'" "'${basename}'"
+    _git clone ${verbose} "${@}" "'${repo}'" "'${basename}'"
 fi
 
 pushd "${basename}" >/dev/null

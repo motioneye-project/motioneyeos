@@ -81,7 +81,8 @@ define DOWNLOAD_GIT
 		-- \
 		$($(PKG)_SITE) \
 		$($(PKG)_DL_VERSION) \
-		$($(PKG)_BASE_NAME)
+		$($(PKG)_BASE_NAME) \
+		$($(PKG)_DL_OPTS)
 endef
 
 # TODO: improve to check that the given PKG_DL_VERSION exists on the remote
@@ -97,7 +98,8 @@ define DOWNLOAD_BZR
 		-- \
 		$($(PKG)_SITE) \
 		$($(PKG)_DL_VERSION) \
-		$($(PKG)_BASE_NAME)
+		$($(PKG)_BASE_NAME) \
+		$($(PKG)_DL_OPTS)
 endef
 
 define SOURCE_CHECK_BZR
@@ -112,7 +114,8 @@ define DOWNLOAD_CVS
 		$(call stripurischeme,$(call qstrip,$($(PKG)_SITE))) \
 		$($(PKG)_DL_VERSION) \
 		$($(PKG)_RAWNAME) \
-		$($(PKG)_BASE_NAME)
+		$($(PKG)_BASE_NAME) \
+		$($(PKG)_DL_OPTS)
 endef
 
 # Not all CVS servers support ls/rls, use login to see if we can connect
@@ -127,7 +130,8 @@ define DOWNLOAD_SVN
 		-- \
 		$($(PKG)_SITE) \
 		$($(PKG)_DL_VERSION) \
-		$($(PKG)_BASE_NAME)
+		$($(PKG)_BASE_NAME) \
+		$($(PKG)_DL_OPTS)
 endef
 
 define SOURCE_CHECK_SVN
@@ -143,7 +147,8 @@ define DOWNLOAD_SCP
 		-H $(PKGDIR)/$($(PKG)_RAWNAME).hash \
 		$(QUIET) \
 		-- \
-		'$(call stripurischeme,$(call qstrip,$(1)))'
+		'$(call stripurischeme,$(call qstrip,$(1)))' \
+		$($(PKG)_DL_OPTS)
 endef
 
 define SOURCE_CHECK_SCP
@@ -157,7 +162,8 @@ define DOWNLOAD_HG
 		-- \
 		$($(PKG)_SITE) \
 		$($(PKG)_DL_VERSION) \
-		$($(PKG)_BASE_NAME)
+		$($(PKG)_BASE_NAME) \
+		$($(PKG)_DL_OPTS)
 endef
 
 # TODO: improve to check that the given PKG_DL_VERSION exists on the remote
@@ -172,7 +178,8 @@ define DOWNLOAD_WGET
 		-H $(PKGDIR)/$($(PKG)_RAWNAME).hash \
 		$(QUIET) \
 		-- \
-		'$(call qstrip,$(1))'
+		'$(call qstrip,$(1))' \
+		$($(PKG)_DL_OPTS)
 endef
 
 define SOURCE_CHECK_WGET
@@ -185,7 +192,8 @@ define DOWNLOAD_LOCALFILES
 		-H $(PKGDIR)/$($(PKG)_RAWNAME).hash \
 		$(QUIET) \
 		-- \
-		$(call stripurischeme,$(call qstrip,$(1)))
+		$(call stripurischeme,$(call qstrip,$(1))) \
+		$($(PKG)_DL_OPTS)
 endef
 
 define SOURCE_CHECK_LOCALFILES

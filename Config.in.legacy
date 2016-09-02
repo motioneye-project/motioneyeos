@@ -143,6 +143,18 @@ comment "----------------------------------------------------"
 endif
 
 ###############################################################################
+comment "Legacy options removed in 2016.11"
+
+config BR2_LINUX_KERNEL_CUSTOM_LOCAL
+	bool "Linux kernel local directory option removed"
+	help
+	  The option to select a local directory as the source of the Linux
+	  kernel has been removed. It hurts reproducibility of builds.
+
+	  In case you were using this option during development of your
+	  Linux kernel, use the override mechanism instead.
+
+###############################################################################
 comment "Legacy options removed in 2016.08"
 
 config BR2_PACKAGE_SYSTEMD_COMPAT

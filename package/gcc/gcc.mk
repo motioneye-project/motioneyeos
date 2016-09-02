@@ -133,10 +133,13 @@ ifeq ($(BR2_sparc)$(BR2_sparc64),y)
 HOST_GCC_COMMON_CONF_OPTS += --disable-libsanitizer
 endif
 
-ifeq ($(BR2_GCC_ENABLE_TLS),y)
-HOST_GCC_COMMON_CONF_OPTS += --enable-tls
-else
+# TLS support is not needed on uClibc/no-thread and
+# uClibc/linux-threads, otherwise, for all other situations (glibc,
+# musl and uClibc/NPTL), we need it.
+ifeq ($(BR2_TOOLCHAIN_BUILDROOT_UCLIBC)$(BR2_PTHREADS)$(BR2_PTHREADS_NONE),yy)
 HOST_GCC_COMMON_CONF_OPTS += --disable-tls
+else
+HOST_GCC_COMMON_CONF_OPTS += --enable-tls
 endif
 
 ifeq ($(BR2_GCC_ENABLE_LTO),y)
@@ -229,6 +232,16 @@ ifeq ($(BR2_powerpc_SPE),y)
 HOST_GCC_COMMON_CONF_OPTS += \
 	--enable-e500_double \
 	--with-long-double-128
+endif
+
+# PowerPC64 big endian by default uses the elfv1 ABI, and PowerPC 64
+# little endian by default uses the elfv2 ABI. However, musl has
+# decided to use the elfv2 ABI for both, so we force the elfv2 ABI for
+# Power64 big endian when the selected C library is musl.
+ifeq ($(BR2_TOOLCHAIN_USES_MUSL)$(BR2_powerpc64),yy)
+HOST_GCC_COMMON_CONF_OPTS += \
+	--with-abi=elfv2 \
+	--without-long-double-128
 endif
 
 HOST_GCC_COMMON_TOOLCHAIN_WRAPPER_ARGS += -DBR_CROSS_PATH_SUFFIX='".br_real"'

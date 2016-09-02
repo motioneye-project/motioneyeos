@@ -15,12 +15,6 @@ VALGRIND_INSTALL_STAGING = YES
 # patch 0004-Fixes-for-musl-libc.patch touching configure.ac
 VALGRIND_AUTORECONF = YES
 
-ifeq ($(BR2_GCC_ENABLE_TLS),y)
-VALGRIND_CONF_OPTS += --enable-tls
-else
-VALGRIND_CONF_OPTS += --disable-tls
-endif
-
 # When Valgrind detects a 32-bit MIPS architecture, it forcibly adds
 # -march=mips32 to CFLAGS; when it detects a 64-bit MIPS architecture,
 # it forcibly adds -march=mips64. This causes Valgrind to be built

@@ -150,6 +150,7 @@ comment "Additional API Support"
 config BR2_PACKAGE_MESA3D_OPENGL_EGL
 	bool "OpenGL EGL"
 	select BR2_PACKAGE_HAS_LIBEGL
+	select BR2_PACKAGE_HAS_LIBEGL_WAYLAND
 	help
 	  Use the Khronos EGL APIs. EGL is a window manager for OpenGL applications
 	  similar to GLX, for X, and WGL, for Windows.
