@@ -1,0 +1,31 @@
+From 06ce096dabd8a29c72dc0bc5110d2c4867baa490 Mon Sep 17 00:00:00 2001
+From: Alessio Sergi <al3hex@gmail.com>
+Date: Fri, 6 May 2016 18:18:18 +0200
+Subject: [PATCH] src/device_info.c: Fix undefined PATH_MAX under musl
+
+In musl libc, PATH_MAX is defined in <limits.h>.
+
+Status: pending
+https://github.com/dosfstools/dosfstools/pull/27
+
+[Romain: add patch status]
+Signed-off-by: Romain Naour <romain.naour@gmail.com>
+---
+ src/device_info.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/device_info.c b/src/device_info.c
+index f5d11ac..cd57388 100644
+--- a/src/device_info.c
++++ b/src/device_info.c
+@@ -17,6 +17,7 @@
+ */
+ 
+ 
++#include <limits.h>
+ #include <stdint.h>
+ #include <stdbool.h>
+ #include <sys/types.h>
+-- 
+2.5.5
+
