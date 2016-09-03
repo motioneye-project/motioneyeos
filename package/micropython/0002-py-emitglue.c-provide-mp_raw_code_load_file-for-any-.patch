@@ -1,0 +1,27 @@
+From 4177e71862a2817d2555abd8d0bc9a8a361dad8a Mon Sep 17 00:00:00 2001
+From: Chris Packham <chris.packham@alliedtelesis.co.nz>
+Date: Sat, 3 Sep 2016 20:44:12 +1200
+Subject: [PATCH] py/emitglue.c: provide mp_raw_code_load_file for any unix
+ architecture
+
+Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
+---
+ py/emitglue.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/py/emitglue.c b/py/emitglue.c
+index 1b9992b..2e79d5f 100644
+--- a/py/emitglue.c
++++ b/py/emitglue.c
+@@ -381,7 +381,7 @@ mp_raw_code_t *mp_raw_code_load_mem(const byte *buf, size_t len) {
+ // here we define mp_raw_code_load_file depending on the port
+ // TODO abstract this away properly
+ 
+-#if defined(__i386__) || defined(__x86_64__) || defined(__aarch64__) || (defined(__arm__) && (defined(__unix__)))
++#if defined(__i386__) || defined(__x86_64__) || defined(__aarch64__) || defined(__unix__)
+ // unix file reader
+ 
+ #include <sys/stat.h>
+-- 
+2.9.2.518.ged577c6.dirty
+
