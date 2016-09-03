@@ -1,0 +1,16 @@
+Don't do -Werror it breaks builds on some scenarios with trivialities.
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+diff -Nura lxc-lxc-1.0.4/configure.ac lxc-lxc-1.0.4.orig/configure.ac
+--- lxc-lxc-1.0.4.orig/configure.ac	2014-07-04 10:31:19.821029891 -0300
++++ lxc-lxc-1.0.4/configure.ac	2014-06-13 14:07:45.000000000 -0300
+@@ -560,7 +560,7 @@
+ LXC_CHECK_TLS
+ 
+ if test "x$GCC" = "xyes"; then
+-	CFLAGS="$CFLAGS -Wall -Werror"
++	CFLAGS="$CFLAGS -Wall"
+ fi
+ 
+ # Files requiring some variable expansion
