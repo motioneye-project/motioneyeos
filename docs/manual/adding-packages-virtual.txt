@@ -83,9 +83,6 @@ On line 3, we select +BR2_PACKAGE_HAS_SOMETHING_VIRTUAL+, and on line 11, we
 set the value of +BR2_PACKAGE_PROVIDES_SOMETHING_VIRTUAL+ to the name of the
 provider, but only if it is selected.
 
-See xref:virtual-package-list[] for the symbols to select if you implement
-a new provider for an existing virtual package.
-
 ==== Provider's +.mk+ file
 
 The +.mk+ file should also declare an additional variable
@@ -98,9 +95,6 @@ packages it is an implementation of:
 
 Of course, do not forget to add the proper build and runtime dependencies for
 this package!
-
-See xref:virtual-package-list[] for the names of virtual packages to provide
-if you implement a new provider for an existing virtual package.
 
 ==== Notes on depending on a virtual package
 
