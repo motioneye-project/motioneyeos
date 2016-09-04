@@ -77,6 +77,13 @@ ifeq ($(BR2_bfin),y)
 BINUTILS_CONF_ENV += CFLAGS="$(TARGET_CFLAGS) -O1"
 endif
 
+# Workaround a build issue with -Os for ARM Cortex-M cpus.
+# (Binutils 2.25.1 and 2.26.1)
+# https://sourceware.org/bugzilla/show_bug.cgi?id=20552
+ifeq ($(BR2_ARM_CPU_ARMV7M)$(BR2_OPTIMIZE_S),yy)
+BINUTILS_CONF_ENV += CFLAGS="$(TARGET_CFLAGS) -O2"
+endif
+
 # Install binutils after busybox to prefer full-blown utilities
 ifeq ($(BR2_PACKAGE_BUSYBOX),y)
 BINUTILS_DEPENDENCIES += busybox
