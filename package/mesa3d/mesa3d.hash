@@ -1,2 +1,2 @@
-# From https://lists.freedesktop.org/archives/mesa-announce/2016-July/000227.html
-sha256	bab24fb79f78c876073527f515ed871fc9c81d816f66c8a0b051d8d653896389	mesa-12.0.1.tar.xz
+# From https://cgit.freedesktop.org/mesa/mesa/plain/docs/relnotes/12.0.2.html
+sha256 d957a5cc371dcd7ff2aa0d87492f263aece46f79352f4520039b58b1f32552cb  mesa-12.0.2.tar.xz
