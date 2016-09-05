@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LEVELDB_VERSION = v1.18
+LEVELDB_VERSION = v1.19
 LEVELDB_SITE = $(call github,google,leveldb,$(LEVELDB_VERSION))
 LEVELDB_LICENSE = BSD-3c
 LEVELDB_LICENSE_FILES = LICENSE

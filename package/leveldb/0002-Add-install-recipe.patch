@@ -15,10 +15,10 @@ diff --git a/Makefile b/Makefile
 index 2bd2cad..530f2c3 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -225,3 +225,19 @@ else
- .c.o:
- 	$(CC) $(CFLAGS) -c $< -o $@
- endif
+@@ -412,3 +412,19 @@ else
+ 
+ $(SHARED_OUTDIR)/%.o: %.c
+ 	$(CC) $(CFLAGS) $(PLATFORM_SHARED_CFLAGS) -c $< -o $@
 +
 +INSTALL_ROOT = /
 +INSTALL_PREFIX= usr/local
