@@ -6,7 +6,7 @@
 
 GST1_VALIDATE_VERSION = 1.8.3
 GST1_VALIDATE_SOURCE = gst-validate-$(GST1_VALIDATE_VERSION).tar.xz
-GST1_VALIDATE_SITE = http://gstreamer.freedesktop.org/src/gst-validate
+GST1_VALIDATE_SITE = https://gstreamer.freedesktop.org/src/gst-validate
 GST1_VALIDATE_LICENSE = LGPLv2.1+
 GST1_VALIDATE_LICENSE_FILES = COPYING
 
