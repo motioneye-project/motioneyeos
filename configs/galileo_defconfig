@@ -1,6 +1,6 @@
 BR2_x86_x1000=y
-# Linux headers same as kernel, a 3.8 series
-BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_3_8=y
+# Linux headers same as kernel, a 3.14 series
+BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_3_14=y
 # Binutils 2.25 is required as this enables stripping the LOCK prefix
 BR2_BINUTILS_VERSION_2_25_X=y
 BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_MDEV=y
@@ -11,10 +11,10 @@ BR2_ROOTFS_POST_BUILD_SCRIPT="board/intel/galileo/post-build.sh"
 BR2_ROOTFS_POST_IMAGE_SCRIPT="board/intel/galileo/post-image.sh"
 BR2_LINUX_KERNEL=y
 BR2_LINUX_KERNEL_CUSTOM_GIT=y
-BR2_LINUX_KERNEL_CUSTOM_REPO_URL="https://github.com/mdr78/Linux-x1000.git"
-BR2_LINUX_KERNEL_CUSTOM_REPO_VERSION="d1a51d55dc67022be6c2d15163ce6dd28540042f"
+BR2_LINUX_KERNEL_CUSTOM_REPO_URL="https://github.com/padraigconnolly/Linux-x1000.git"
+BR2_LINUX_KERNEL_CUSTOM_REPO_VERSION="ceeb288e39a4ba10643dec9ffb91baabf313f7d1"
 BR2_LINUX_KERNEL_USE_CUSTOM_CONFIG=y
-BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE="board/intel/galileo/linux-3.8.config"
+BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE="board/intel/galileo/linux-3.14.config"
 BR2_LINUX_KERNEL_INSTALL_TARGET=y
 BR2_TARGET_ROOTFS_EXT2=y
 BR2_TARGET_ROOTFS_EXT2_4=y
