@@ -12,7 +12,7 @@ LXC_DEPENDENCIES = libcap host-pkgconf
 # we're patching configure.ac
 LXC_AUTORECONF = YES
 LXC_CONF_OPTS = --disable-apparmor --with-distro=buildroot \
-	--disable-lua --disable-python \
+	--disable-lua --disable-python --disable-werror \
 	$(if $(BR2_PACKAGE_BASH),,--disable-bash)
 
 ifeq ($(BR2_PACKAGE_LIBSECCOMP),y)

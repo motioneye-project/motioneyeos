@@ -1,0 +1,49 @@
+From e9f34eb4e25fc18411121c4e55557530ddc1f49c Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?J=C3=A9r=C3=B4me=20Pouiller?= <jezz@sysmic.org>
+Date: Sun, 4 Sep 2016 09:35:44 +0200
+Subject: [PATCH] configure: add --disable-werror
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+-Werror may break builds on some scenarios with trivialities
+(especially during developments).
+
+Upstream status: accepted (https://github.com/lxc/lxc/pull/1168)
+
+Signed-off-by: Jérôme Pouiller <jezz@sysmic.org>
+---
+ configure.ac | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index 39e313a..0103579 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -152,6 +152,11 @@ if test "x$with_systemdsystemunitdir" != "xno"; then
+   AC_SUBST([SYSTEMD_UNIT_DIR], [$with_systemdsystemunitdir])
+ fi
+ 
++AC_ARG_ENABLE([werror],
++	[AC_HELP_STRING([--disable-werror],
++	[do not treat warnings as errors])],
++	[], [enable_werror=yes])
++
+ # Allow enabling deprecated executables
+ AC_ARG_ENABLE([deprecated],
+ 	[AC_HELP_STRING([--enable-deprecated],
+@@ -630,7 +635,10 @@ AC_PROG_SED
+ LXC_CHECK_TLS
+ 
+ if test "x$GCC" = "xyes"; then
+-	CFLAGS="$CFLAGS -Wall -Werror"
++	CFLAGS="$CFLAGS -Wall"
++	if test "x$enable_werror" = "xyes"; then
++		CFLAGS="$CFLAGS -Werror"
++	fi
+ fi
+ 
+ # Files requiring some variable expansion
+-- 
+2.8.1
+
