@@ -22,28 +22,10 @@ symbols in libgcc, and therefore all libgcc symbols were marked as
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 ---
- libgcc/ChangeLog                    |    6 +
  libgcc/config/bfin/libgcc-glibc.ver | 1894 +----------------------------------
  libgcc/config/bfin/t-linux          |    3 +-
- 3 files changed, 10 insertions(+), 1893 deletions(-)
+ 2 files changed, 4 insertions(+), 1893 deletions(-)
 
-diff --git a/libgcc/ChangeLog b/libgcc/ChangeLog
-index 129e43f..36c0194 100644
---- a/libgcc/ChangeLog
-+++ b/libgcc/ChangeLog
-@@ -1,6 +1,12 @@
- 2016-08-19  Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
- 
- 	PR gcc/74748
-+	* libgcc/config/bfin/libgcc-glibc.ver, libgcc/config/bfin/t-linux:
-+	use generic linker version information on Blackfin.
-+
-+2016-08-19  Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-+
-+	PR gcc/74748
- 	* libgcc/mkmap-symver.awk: add support for skip_underscore
- 
- 2016-04-27  Release Manager
 diff --git a/libgcc/config/bfin/libgcc-glibc.ver b/libgcc/config/bfin/libgcc-glibc.ver
 index b1bd2df..2af3df7 100644
 --- a/libgcc/config/bfin/libgcc-glibc.ver
