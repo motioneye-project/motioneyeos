@@ -95,25 +95,25 @@ endif
 # We name it 'GNUmakefile' so that GNU make will use it instead of
 # the existing 'Makefile'.
 define PERF_DISABLE_DOCUMENTATION
-	if [ -f $(@D)/tools/perf/Documentation/Makefile ]; then \
-		printf "%%:\n\t@:\n" >$(@D)/tools/perf/Documentation/GNUmakefile; \
+	if [ -f $(LINUX_DIR)/tools/perf/Documentation/Makefile ]; then \
+		printf "%%:\n\t@:\n" >$(LINUX_DIR)/tools/perf/Documentation/GNUmakefile; \
 	fi
 endef
 LINUX_POST_PATCH_HOOKS += PERF_DISABLE_DOCUMENTATION
 
 # O must be redefined here to overwrite the one used by Buildroot for
-# out of tree build. We build perf in $(@D)/tools/perf/ and not just
-# $(@D) so that it isn't built in the root directory of the kernel
+# out of tree build. We build perf in $(LINUX_DIR)/tools/perf/ and not just
+# $(LINUX_DIR) so that it isn't built in the root directory of the kernel
 # sources.
 define PERF_BUILD_CMDS
-	$(Q)if test ! -f $(@D)/tools/perf/Makefile ; then \
+	$(Q)if test ! -f $(LINUX_DIR)/tools/perf/Makefile ; then \
 		echo "Your kernel version is too old and does not have the perf tool." ; \
 		echo "At least kernel 2.6.31 must be used." ; \
 		exit 1 ; \
 	fi
 	$(Q)if test "$(BR2_PACKAGE_ELFUTILS)" = "" ; then \
-		if ! grep -q NO_LIBELF $(@D)/tools/perf/Makefile* ; then \
-			if ! test -r $(@D)/tools/perf/config/Makefile ; then \
+		if ! grep -q NO_LIBELF $(LINUX_DIR)/tools/perf/Makefile* ; then \
+			if ! test -r $(LINUX_DIR)/tools/perf/config/Makefile ; then \
 				echo "The perf tool in your kernel cannot be built without libelf." ; \
 				echo "Either upgrade your kernel to >= 3.7, or enable the elfutils package." ; \
 				exit 1 ; \
@@ -121,14 +121,14 @@ define PERF_BUILD_CMDS
 		fi \
 	fi
 	$(TARGET_MAKE_ENV) $(MAKE1) $(PERF_MAKE_FLAGS) \
-		-C $(@D)/tools/perf O=$(@D)/tools/perf/
+		-C $(LINUX_DIR)/tools/perf O=$(LINUX_DIR)/tools/perf/
 endef
 
 # After installation, we remove the Perl and Python scripts from the
 # target.
 define PERF_INSTALL_TARGET_CMDS
 	$(TARGET_MAKE_ENV) $(MAKE1) $(PERF_MAKE_FLAGS) \
-		-C $(@D)/tools/perf O=$(@D)/tools/perf/ install
+		-C $(LINUX_DIR)/tools/perf O=$(LINUX_DIR)/tools/perf/ install
 	$(RM) -rf $(TARGET_DIR)/usr/libexec/perf-core/scripts/
 	$(RM) -rf $(TARGET_DIR)/usr/libexec/perf-core/tests/
 endef

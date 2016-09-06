@@ -23,8 +23,8 @@ SELFTESTS_MAKE_FLAGS = \
 	ARCH=$(SELFTESTS_ARCH)
 
 # O must be redefined here to overwrite the one used by Buildroot for
-# out of tree build. We build the selftests in $(@D)/tools/selftests and
-# not just $(@D) so that it isn't built in the root directory of the kernel
+# out of tree build. We build the selftests in $(LINUX_DIR)/tools/selftests and
+# not just $(LINUX_DIR) so that it isn't built in the root directory of the kernel
 # sources.
 #
 # The headers_install step here is important as some kernel selftests use a
@@ -33,14 +33,14 @@ SELFTESTS_MAKE_FLAGS = \
 # The headers_install target will install the kernel headers locally inside
 # the Linux build dir
 define SELFTESTS_BUILD_CMDS
-	$(TARGET_MAKE_ENV) $(MAKE1) -C $(@D) $(SELFTESTS_MAKE_FLAGS) \
+	$(TARGET_MAKE_ENV) $(MAKE1) -C $(LINUX_DIR) $(SELFTESTS_MAKE_FLAGS) \
 		headers_install
-	$(TARGET_MAKE_ENV) $(MAKE1) -C $(@D)/tools/testing/selftests \
-		$(SELFTESTS_MAKE_FLAGS) O=$(@D)/tools/testing/selftests
+	$(TARGET_MAKE_ENV) $(MAKE1) -C $(LINUX_DIR)/tools/testing/selftests \
+		$(SELFTESTS_MAKE_FLAGS) O=$(LINUX_DIR)/tools/testing/selftests
 endef
 
 define SELFTESTS_INSTALL_TARGET_CMDS
-	$(TARGET_MAKE_ENV) $(MAKE1) -C $(@D)/tools/testing/selftests \
-		$(SELFTESTS_MAKE_FLAGS) O=$(@D)/tools/testing/selftests \
+	$(TARGET_MAKE_ENV) $(MAKE1) -C $(LINUX_DIR)/tools/testing/selftests \
+		$(SELFTESTS_MAKE_FLAGS) O=$(LINUX_DIR)/tools/testing/selftests \
 		INSTALL_PATH=$(TARGET_DIR)/usr/lib/kselftests install
 endef

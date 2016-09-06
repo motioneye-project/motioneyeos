@@ -145,6 +145,30 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2016.11"
 
+config BR2_LINUX_KERNEL_TOOL_CPUPOWER
+	bool "linux-tool cpupower"
+	depends on BR2_LINUX_KERNEL
+	select BR2_LEGACY
+	select BR2_PACKAGE_LINUX_TOOLS_CPUPOWER
+	help
+	  Linux tool cpupower option was renamed.
+
+config BR2_LINUX_KERNEL_TOOL_PERF
+	bool "linux-tool perf"
+	depends on BR2_LINUX_KERNEL
+	select BR2_LEGACY
+	select BR2_PACKAGE_LINUX_TOOLS_PERF
+	help
+	  Linux tool perf option was renamed.
+
+config BR2_LINUX_KERNEL_TOOL_SELFTESTS
+	bool "linux-tool selftests"
+	depends on BR2_LINUX_KERNEL
+	select BR2_LEGACY
+	select BR2_PACKAGE_LINUX_TOOLS_SELFTESTS
+	help
+	  Linux tool selftests option was renamed.
+
 config BR2_GCC_VERSION_4_8_ARC
 	bool "gcc arc option renamed"
 	select BR2_LEGACY

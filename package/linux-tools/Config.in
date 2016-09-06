@@ -1,9 +1,15 @@
 menu "Linux Kernel Tools"
 
-config BR2_LINUX_KERNEL_TOOL_CPUPOWER
+# No prompt, this is sourced by linux/Config.in as this
+# is no real package and really belongs to the kernel.
+config BR2_PACKAGE_LINUX_TOOLS
+	bool
+
+config BR2_PACKAGE_LINUX_TOOLS_CPUPOWER
 	bool "cpupower"
 	depends on !BR2_bfin # pciutils
 	depends on BR2_USE_WCHAR || !BR2_NEEDS_GETTEXT # gettext
+	select BR2_PACKAGE_LINUX_TOOLS
 	select BR2_PACKAGE_PCIUTILS
 	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT
 	help
@@ -14,8 +20,9 @@ comment "cpupower needs a toolchain w/ wchar"
 	depends on !BR2_bfin
 	depends on !BR2_USE_WCHAR && BR2_NEEDS_GETTEXT
 
-config BR2_LINUX_KERNEL_TOOL_PERF
+config BR2_PACKAGE_LINUX_TOOLS_PERF
 	bool "perf"
+	select BR2_PACKAGE_LINUX_TOOLS
 	help
 	  perf (sometimes "Perf Events" or perf tools, originally
 	  "Performance Counters for Linux") - is a performance
@@ -32,10 +39,11 @@ config BR2_LINUX_KERNEL_TOOL_PERF
 
 	  https://perf.wiki.kernel.org/
 
-config BR2_LINUX_KERNEL_TOOL_SELFTESTS
+config BR2_PACKAGE_LINUX_TOOLS_SELFTESTS
 	bool"selftests"
 	depends on BR2_PACKAGE_BUSYBOX_SHOW_OTHERS # bash
 	depends on BR2_USE_MMU  # bash
+	select BR2_PACKAGE_LINUX_TOOLS
 	select BR2_PACKAGE_BASH # runtime
 	select BR2_PACKAGE_POPT
 	select BR2_PACKAGE_LIBCAP_NG

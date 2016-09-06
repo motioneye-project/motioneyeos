@@ -400,7 +400,7 @@ config BR2_LINUX_KERNEL_INSTALL_TARGET
 source "linux/Config.ext.in"
 
 # Linux tools
-source "linux/Config.tools.in"
+source "package/linux-tools/Config.in"
 
 endif # BR2_LINUX_KERNEL
 
