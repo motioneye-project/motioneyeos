@@ -1,17 +1,16 @@
-# Minimal SD card image for the Freescale's i.MX25 PDK board
+# Minimal SD card image for the Freescale boards Template
 #
-# We mimic the .sdcard Freescale's image format for i.MX25:
+# We mimic the .sdcard Freescale's image format:
 # * the SD card must have 1 kB free space at the beginning,
 # * U-Boot is dumped as is,
-# * a FAT partition at offset 8 MB is containing zImage and dtbs,
-# * a single root filesystem partition is required (Ext4 in this case).
+# * a FAT partition at offset 8 MB is containing zImage/uImage and DTB files
+# * a single root filesystem partition is required (ext2, ext3 or ext4)
 #
 
 image boot.vfat {
   vfat {
     files = {
-      "imx25-pdk.dtb",
-      "zImage"
+      %FILES%
     }
   }
   size = 16M
@@ -36,6 +35,6 @@ image sdcard.img {
 
   partition rootfs {
     partition-type = 0x83
-    image = "rootfs.ext4"
+    image = "rootfs.ext2"
   }
 }
