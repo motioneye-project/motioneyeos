@@ -7,6 +7,9 @@ Disable the new pngfix and png-fix-itxt tools: they take up space, fail
 to build on some oddball toolchain configurations and aren't
 expected/needed in a non-interactive embedded system.
 
+[Julien: update for 1.6.25]
+Signed-off-by: Julien Boibessot <julien.boibessot@armadeus.com>
+
 Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
 ---
  Makefile.am | 2 +-
@@ -32,7 +35,7 @@ index a66f6aa..4e67782 100644
 +++ b/Makefile.in
 @@ -104,7 +104,7 @@ check_PROGRAMS = pngtest$(EXEEXT) pngunknown$(EXEEXT) \
  	pngstest$(EXEEXT) pngvalid$(EXEEXT) pngimage$(EXEEXT) \
- 	$(am__EXEEXT_1)
+ 	pngcp$(EXEEXT) $(am__EXEEXT_1)
  @HAVE_CLOCK_GETTIME_TRUE@am__append_1 = timepng
 -bin_PROGRAMS = pngfix$(EXEEXT) png-fix-itxt$(EXEEXT)
 +bin_PROGRAMS =

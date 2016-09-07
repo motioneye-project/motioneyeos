@@ -12,6 +12,9 @@ Original patch by: Sonic Zhang <sonic.zhang@analog.com>
 [Gustavo: update for 1.6.22]
 Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
 
+[Julien: update for 1.6.25]
+Signed-off-by: Julien Boibessot <julien.boibessot@armadeus.com>
+
 Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
 ---
  Makefile.am | 2 +-
@@ -22,7 +25,7 @@ diff --git a/Makefile.am b/Makefile.am
 index 3430dca..db6a7a2 100644
 --- a/Makefile.am
 +++ b/Makefile.am
-@@ -236,7 +236,7 @@ contrib/tools/pngfix.o: pnglibconf.h
+@@ -245,7 +245,7 @@ contrib/tools/pngfix.o: pnglibconf.h
  # interfering with the symbol file format.
  SYMBOL_CFLAGS = -DPNGLIB_LIBNAME='PNG@PNGLIB_MAJOR@@PNGLIB_MINOR@_0'\
  		-DPNGLIB_VERSION='@PNGLIB_VERSION@'\
@@ -35,13 +38,13 @@ diff --git a/Makefile.in b/Makefile.in
 index 4e67782..5f468d9 100644
 --- a/Makefile.in
 +++ b/Makefile.in
-@@ -754,7 +754,7 @@ SUFFIXES = .chk .out
+@@ -766,7 +766,7 @@ SUFFIXES = .chk .out
  # interfering with the symbol file format.
  SYMBOL_CFLAGS = -DPNGLIB_LIBNAME='PNG@PNGLIB_MAJOR@@PNGLIB_MINOR@_0' \
  	-DPNGLIB_VERSION='@PNGLIB_VERSION@' \
 -	-DSYMBOL_PREFIX='$(SYMBOL_PREFIX)' -DPNG_NO_USE_READ_MACROS \
 +	-DSYMBOL_PREFIX='' -DPNG_NO_USE_READ_MACROS \
- 	-DPNG_BUILDING_SYMBOL_TABLE $(am__append_6)
+ 	-DPNG_BUILDING_SYMBOL_TABLE $(am__append_7)
  
  # EXT_LIST is a list of the possibly library directory extensions, this exists
 -- 
