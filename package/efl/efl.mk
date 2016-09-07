@@ -152,6 +152,13 @@ else
 EFL_CONF_OPTS += --disable-wayland
 endif
 
+ifeq ($(BR2_PACKAGE_EFL_ELPUT),y)
+EFL_CONF_OPTS += --enable-elput
+EFL_DEPENDENCIES += libinput libxkbcommon
+else
+EFL_CONF_OPTS += --disable-elput
+endif
+
 ifeq ($(BR2_PACKAGE_EFL_FB),y)
 EFL_CONF_OPTS += --enable-fb
 else
