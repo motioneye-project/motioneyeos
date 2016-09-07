@@ -62,12 +62,16 @@ To determine the device associated to the SD card have a look in the
 
   cat /proc/partitions
 
-Run the following script as root on your SD card. This will partition the card
-and copy the bootloader, kernel, DTBs and root filesystem as needed.
+Buildroot prepares a bootable "sdcard.img" image in the output/images/
+directory, ready to be dumped on a microSD card. Launch the following
+command as root:
+
+  dd if=./output/images/sdcard.img of=/dev/<your-microsd-device>
 
 *** WARNING! The script will destroy all the card content. Use with care! ***
 
-  ./board/freescale/create-boot-sd.sh <your-sd-device>
+For details about the medium image layout, see the definition in
+board/freescale/common/genimage.cfg.template.
 
 Boot the SABRE board
 ====================
