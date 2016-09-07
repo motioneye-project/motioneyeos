@@ -14,3 +14,6 @@ config BR2_PACKAGE_PUGIXML
 
 	  http://pugixml.org/
 	  https://github.com/zeux/pugixml
+
+comment "pugixml needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP
