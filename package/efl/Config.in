@@ -155,6 +155,34 @@ config BR2_PACKAGE_EFL_X_XLIB
 	select BR2_PACKAGE_XLIB_LIBXTST
 	select BR2_PACKAGE_XPROTO_GLPROTO
 
+choice
+	bool "OpenGL support"
+	help
+	  libevas can be configured to use HW acceleration with OpenGL or
+	  OpenGL ES.
+
+config BR2_PACKAGE_EFL_OPENGL
+	bool "OpenGL"
+	depends on BR2_PACKAGE_HAS_LIBGL
+	depends on BR2_PACKAGE_XORG7
+	select BR2_PACKAGE_EFL_X_XLIB
+
+comment "OpenGL support needs X11 and an OpenGL provider"
+	depends on !BR2_PACKAGE_HAS_LIBGL || !BR2_PACKAGE_XORG7
+
+config BR2_PACKAGE_EFL_OPENGLES
+	bool "OpenGL ES (w/ EGL)"
+	depends on BR2_PACKAGE_HAS_LIBEGL
+	depends on BR2_PACKAGE_HAS_LIBGLES
+
+comment "OpenGL ES support needs an OpenGL ES w/ EGL provider"
+	depends on !BR2_PACKAGE_HAS_LIBGLES || !BR2_PACKAGE_HAS_LIBEGL
+
+config BR2_PACKAGE_EFL_OPENGL_NONE
+	bool "none"
+
+endchoice # OpenGL support
+
 comment "libevas loaders"
 
 config BR2_PACKAGE_EFL_PNG
