@@ -33,10 +33,10 @@ BINUTILS_DEPENDENCIES += host-flex host-bison host-texinfo
 HOST_BINUTILS_DEPENDENCIES += host-flex host-bison host-texinfo
 endif
 
-# The .info files in the 2.26 tarball have an incorrect timestamp, so
-# binutils tries to re-generate them. In order to avoid the dependency
-# on host-texinfo, we simply update the timestamps.
-ifeq ($(BR2_BINUTILS_VERSION_2_26_X),y)
+# The .info files in the >= 2.26 tarball have an incorrect timestamp,
+# so binutils tries to re-generate them. In order to avoid the
+# dependency on host-texinfo, we simply update the timestamps.
+ifeq ($(BR2_BINUTILS_VERSION_2_26_X)$(BR2_BINUTILS_VERSION_2_27_X),y)
 define BINUTILS_FIXUP_INFO_TIMESTAMPS
 	find $(@D) -name '*.info' -exec touch {} \;
 endef
