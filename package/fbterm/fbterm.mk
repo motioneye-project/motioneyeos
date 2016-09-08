@@ -5,7 +5,7 @@
 ################################################################################
 
 FBTERM_VERSION = 1.7.0
-FBTERM_SITE = http://fbterm.googlecode.com/files
+FBTERM_SITE = https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/fbterm
 FBTERM_LICENSE = GPLv2+
 FBTERM_LICENSE_FILES = COPYING
 FBTERM_DEPENDENCIES = fontconfig liberation
