@@ -4,7 +4,7 @@ config BR2_PACKAGE_FDK_AAC
 	# These are the architectures supported by FDK AAC
 	depends on BR2_i386 || BR2_x86_64 || BR2_arm || BR2_armeb || \
 		   BR2_mips || BR2_mipsel || BR2_mips64 || BR2_mips64el || \
-		   BR2_powerpc || BR2_sh || BR2_sh64
+		   BR2_powerpc || BR2_sh
 
 	help
 	  The Fraunhofer FDK AAC Codec Library for Android ("FDK AAC Codec")
@@ -17,4 +17,4 @@ comment "fdk-aac needs a toolchain w/ C++"
 	depends on !BR2_INSTALL_LIBSTDCPP
 	depends on BR2_i386 || BR2_x86_64 || BR2_arm || BR2_armeb || \
 		   BR2_mips || BR2_mipsel || BR2_mips64 || BR2_mips64el || \
-		   BR2_powerpc || BR2_sh || BR2_sh64
+		   BR2_powerpc || BR2_sh

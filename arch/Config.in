@@ -197,16 +197,6 @@ config BR2_sh
 	  http://www.hitachi.com/
 	  http://en.wikipedia.org/wiki/SuperH
 
-config BR2_sh64
-	bool "SuperH64"
-	depends on BR2_DEPRECATED_SINCE_2015_05
-	select BR2_ARCH_HAS_MMU_MANDATORY
-	help
-	  SuperH64 (or SH) is a 64-bit reduced instruction set computer (RISC)
-	  instruction set architecture (ISA) developed by Hitachi.
-	  http://www.hitachi.com/
-	  http://en.wikipedia.org/wiki/SuperH
-
 config BR2_sparc
 	bool "SPARC"
 	select BR2_ARCH_HAS_MMU_MANDATORY
@@ -396,7 +386,7 @@ if BR2_powerpc || BR2_powerpc64 || BR2_powerpc64le
 source "arch/Config.in.powerpc"
 endif
 
-if BR2_sh || BR2_sh64
+if BR2_sh
 source "arch/Config.in.sh"
 endif
 

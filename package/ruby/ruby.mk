@@ -24,7 +24,7 @@ RUBY_CFLAGS = $(TARGET_CFLAGS)
 # With some SuperH toolchains (like Sourcery CodeBench 2012.09), ruby fails to
 # build with 'pcrel too far'. This seems to be caused by the -Os option we pass
 # by default. To fix the problem, use standard -O2 optimization instead.
-ifeq ($(BR2_sh)$(BR2_sh64),y)
+ifeq ($(BR2_sh),y)
 RUBY_CFLAGS += -O2
 endif
 RUBY_CONF_ENV = CFLAGS="$(RUBY_CFLAGS)"

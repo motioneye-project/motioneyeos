@@ -179,7 +179,7 @@ config BR2_LINUX_KERNEL_UIMAGE
 	bool "uImage"
 	depends on BR2_arc || BR2_arm || BR2_armeb || BR2_bfin || \
 		   BR2_powerpc || BR2_powerpc64 || BR2_powerpc64le || \
-		   BR2_sh || BR2_sh64 || BR2_mips || BR2_mipsel || \
+		   BR2_sh || BR2_mips || BR2_mipsel || \
 		   BR2_mips64 || BR2_mips64el
 	select BR2_LINUX_KERNEL_UBOOT_IMAGE
 
@@ -198,7 +198,7 @@ config BR2_LINUX_KERNEL_ZIMAGE
 	bool "zImage"
 	depends on BR2_arm || BR2_armeb || BR2_powerpc || \
 		   BR2_powerpc64 || BR2_powerpc64le || BR2_sparc || \
-		   BR2_sh || BR2_sh64 || BR2_xtensa
+		   BR2_sh || BR2_xtensa
 
 config BR2_LINUX_KERNEL_ZIMAGE_EPAPR
 	bool "zImage.epapr"
@@ -235,7 +235,7 @@ config BR2_LINUX_KERNEL_LINUX_BIN
 
 config BR2_LINUX_KERNEL_VMLINUX_BIN
 	bool "vmlinux.bin"
-	depends on BR2_mips || BR2_mipsel || BR2_sh || BR2_sh64
+	depends on BR2_mips || BR2_mipsel || BR2_sh
 
 config BR2_LINUX_KERNEL_VMLINUX
 	bool "vmlinux"
