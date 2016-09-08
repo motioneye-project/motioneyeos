@@ -19,7 +19,7 @@ config BR2_PACKAGE_GTEST
 	  This package allows running testsuites on the target which
 	  might be advantageous in certain cases.
 
-	  http://code.google.com/p/googletest/
+	  https://github.com/google/googletest
 
 comment "gtest needs a toolchain w/ C++, wchar, threads"
 	depends on BR2_USE_MMU
