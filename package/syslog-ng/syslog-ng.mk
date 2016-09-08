@@ -69,6 +69,13 @@ ifeq ($(BR2_PACKAGE_UTIL_LINUX_LIBUUID),y)
 SYSLOG_NG_DEPENDENCIES += util-linux
 endif
 
+ifeq ($(BR2_PACKAGE_LIBNET),y)
+SYSLOG_NG_DEPENDENCIES += libnet
+SYSLOG_NG_CONF_OPTS += --enable-spoof-source
+else
+SYSLOG_NG_CONF_OPTS += --disable-spoof-source
+endif
+
 ifeq ($(BR2_INIT_SYSTEMD),y)
 SYSLOG_NG_DEPENDENCIES += systemd
 SYSLOG_NG_CONF_OPTS += \
