@@ -19,6 +19,7 @@ PHP_CONF_OPTS = \
 	--disable-all \
 	--without-pear \
 	--with-config-file-path=/etc \
+	--disable-phpdbg \
 	--disable-rpath
 PHP_CONF_ENV = \
 	ac_cv_func_strcasestr=yes \
