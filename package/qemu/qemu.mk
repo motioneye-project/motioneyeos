@@ -110,16 +110,19 @@ HOST_QEMU_OPTS += --enable-vde
 HOST_QEMU_DEPENDENCIES += host-vde2
 endif
 
+# Override CPP, as it expects to be able to call it like it'd
+# call the compiler.
 define HOST_QEMU_CONFIGURE_CMDS
-	cd $(@D); $(HOST_CONFIGURE_OPTS) ./configure    \
-		--target-list="$(HOST_QEMU_TARGETS)"    \
-		--prefix="$(HOST_DIR)/usr"              \
-		--interp-prefix=$(STAGING_DIR)          \
-		--cc="$(HOSTCC)"                        \
-		--host-cc="$(HOSTCC)"                   \
-		--python=$(HOST_DIR)/usr/bin/python2    \
-		--extra-cflags="$(HOST_CFLAGS)"         \
-		--extra-ldflags="$(HOST_LDFLAGS)"       \
+	cd $(@D); $(HOST_CONFIGURE_OPTS) CPP="$(HOSTCC) -E" \
+		./configure \
+		--target-list="$(HOST_QEMU_TARGETS)" \
+		--prefix="$(HOST_DIR)/usr" \
+		--interp-prefix=$(STAGING_DIR) \
+		--cc="$(HOSTCC)" \
+		--host-cc="$(HOSTCC)" \
+		--python=$(HOST_DIR)/usr/bin/python2 \
+		--extra-cflags="$(HOST_CFLAGS)" \
+		--extra-ldflags="$(HOST_LDFLAGS)" \
 		$(HOST_QEMU_OPTS)
 endef
 
