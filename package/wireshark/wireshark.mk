@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-WIRESHARK_VERSION = 2.0.5
+WIRESHARK_VERSION = 2.2.0
 WIRESHARK_SOURCE = wireshark-$(WIRESHARK_VERSION).tar.bz2
 WIRESHARK_SITE = http://www.wireshark.org/download/src/all-versions
 WIRESHARK_LICENSE = wireshark license
@@ -20,7 +20,6 @@ WIRESHARK_AUTORECONF = YES
 # Work around it by pointing includedir at staging
 WIRESHARK_CONF_OPTS = \
 	--without-krb5 \
-	--disable-usr-local \
 	--enable-static=no \
 	--with-libsmi=no \
 	--with-lua=no \
@@ -29,13 +28,13 @@ WIRESHARK_CONF_OPTS = \
 
 # wireshark GUI options
 ifeq ($(BR2_PACKAGE_LIBGTK3),y)
-WIRESHARK_CONF_OPTS += --with-gtk3=yes
+WIRESHARK_CONF_OPTS += --with-gtk=3
 WIRESHARK_DEPENDENCIES += libgtk3
 else ifeq ($(BR2_PACKAGE_LIBGTK2),y)
-WIRESHARK_CONF_OPTS += --with-gtk2=yes
+WIRESHARK_CONF_OPTS += --with-gtk=2
 WIRESHARK_DEPENDECIES += libgtk2
 else
-WIRESHARK_CONF_OPTS += --with-gtk3=no --with-gtk2=no
+WIRESHARK_CONF_OPTS += --with-gtk=no
 endif
 
 # Qt4 needs accessibility, we don't support it
