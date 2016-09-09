@@ -56,16 +56,6 @@ choice
 		depends on !BR2_nios2
 		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_18
 
-	config BR2_KERNEL_HEADERS_3_19
-		bool "Linux 3.19.x kernel headers"
-		depends on BR2_DEPRECATED_SINCE_2015_08
-		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_19
-
-	config BR2_KERNEL_HEADERS_4_0
-		bool "Linux 4.0.x kernel headers"
-		depends on BR2_DEPRECATED_SINCE_2015_08
-		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_0
-
 	config BR2_KERNEL_HEADERS_4_1
 		bool "Linux 4.1.x kernel headers"
 		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_1
