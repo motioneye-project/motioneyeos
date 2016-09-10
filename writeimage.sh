@@ -86,7 +86,7 @@ fi
 
 umount ${SDCARD_DEV}* 2>/dev/null || true
 msg "writing disk image to sdcard"
-dd if=$DISK_IMG of=$SDCARD_DEV bs=1048576
+dd if=$DISK_IMG of=$SDCARD_DEV bs=1048576 status=progress
 sync
 
 if which partprobe > /dev/null 2>&1; then
