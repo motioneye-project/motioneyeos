@@ -26,6 +26,16 @@ config BR2_PACKAGE_LINUX_FIRMWARE_RADEON
 
 endmenu # Video
 
+menu "Bluetooth firmware"
+
+config BR2_PACKAGE_LINUX_FIRMWARE_IBT
+	bool "Intel Wireless Bluetooth"
+	help
+	  Firmware files for Intel 3160/7260/7265/8260/8265 Wireless
+	  bluetooth support.
+
+endmenu # Bluetooth
+
 menu "WiFi firmware"
 
 config BR2_PACKAGE_LINUX_FIRMWARE_ATHEROS_6002
