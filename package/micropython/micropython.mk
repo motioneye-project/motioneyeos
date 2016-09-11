@@ -9,7 +9,8 @@ MICROPYTHON_SITE = $(call github,micropython,micropython,$(MICROPYTHON_VERSION))
 MICROPYTHON_LICENSE = MIT
 MICROPYTHON_LICENSE_FILES = LICENSE
 MICROPYTHON_DEPENDENCIES = host-pkgconf libffi
-MICROPYTHON_PATCH = https://github.com/micropython/micropython/commit/8c6856d2e76c5865d9f30cad2c51615d4a1a1418.patch
+MICROPYTHON_PATCH = https://github.com/micropython/micropython/commit/8c6856d2e76c5865d9f30cad2c51615d4a1a1418.patch \
+	https://github.com/micropython/micropython/commit/a50b26e4b00ed094aa1ac74eac2fc2d8eb9ea1ed.patch
 
 # Use fallback implementation for exception handling on architectures that don't
 # have explicit support.
