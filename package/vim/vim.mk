@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-VIM_VERSION = v7.4.1902
+VIM_VERSION = v8.0.0001
 VIM_SITE = $(call github,vim,vim,$(VIM_VERSION))
 # Win over busybox vi since vim is more feature-rich
 VIM_DEPENDENCIES = \
