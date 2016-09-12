@@ -64,6 +64,8 @@ include::debugging-buildroot.txt[]
 
 include::contribute.txt[]
 
+include::developers.txt[]
+
 = Appendix
 
 include::appendix.txt[]

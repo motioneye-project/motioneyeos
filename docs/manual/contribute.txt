@@ -258,6 +258,12 @@ removed, preferably with the upstream commit ID. Also any other
 required changes should be explained explicitly, like configure
 options that no longer exist or are no longer needed.
 
+If you are interested in getting notified of build failures and of
+further changes in the packages you added or modified, please add
+yourself to the DEVELOPERS file. This should be done in a separate
+patch of the series. See xref:DEVELOPERS[the DEVELOPERS file] for more
+information.
+
 ==== Preparing a patch series
 
 Starting from the changes committed in your local git view, _rebase_
@@ -284,8 +290,9 @@ Once patch files are generated, you can review/edit the commit message
 before submitting them, using your favorite text editor.
 
 Buildroot provides a handy tool to know to whom your patches should be
-sent, called +get-developers+. This tool reads your patches and
-outputs the appropriate +git send-email+ command to use:
+sent, called +get-developers+ (see xref:DEVELOPERS[] for more
+information). This tool reads your patches and outputs the appropriate
++git send-email+ command to use:
 
 ---------------------
 $ ./support/scripts/get-developers outgoing/*
