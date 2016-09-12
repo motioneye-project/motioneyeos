@@ -145,6 +145,22 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2016.11"
 
+config BR2_PACKAGE_PHP_SAPI_CLI_CGI
+	bool "PHP CGI and CLI options are now seperate"
+	select BR2_PACKAGE_PHP_SAPI_CLI
+	select BR2_PACKAGE_PHP_SAPI_CGI
+	help
+	  The PHP Interface options have been split up into a
+	  separate option for each interface.
+
+config BR2_PACKAGE_PHP_SAPI_CLI_FPM
+	bool "PHP CLI and FPM options are now separate"
+	select BR2_PACKAGE_PHP_SAPI_CLI
+	select BR2_PACKAGE_PHP_SAPI_FPM
+	help
+	  The PHP Interface options have been split up into a
+	  separate option for each interface.
+
 config BR2_PACKAGE_WVSTREAMS
 	bool "wvstreams removed"
 	select BR2_LEGACY
