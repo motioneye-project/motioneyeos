@@ -1,0 +1,33 @@
+From 6cfd9c14ced26c8220f7f7ea99610cbdbfb9eba7 Mon Sep 17 00:00:00 2001
+From: Theo Debrouwere <theo.debrouwere@skynet.be>
+Date: Mon, 12 Sep 2016 09:38:56 +0200
+Subject: [PATCH] Bugfix: check if cxx_long_long_type is present before
+ applying it.
+
+Check if cxx_long_long_type is present in the list of compiler features
+before adding it as a target_compile_feature.
+
+Patch was backported from
+https://github.com/zeux/pugixml/commit/4dbb5646196a4a3cc94097f1473ef11d1d44df11
+
+Signed-off-by: Theo Debrouwere <theo.debrouwere@skynet.be>
+---
+ scripts/CMakeLists.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/scripts/CMakeLists.txt b/scripts/CMakeLists.txt
+index 40a7ab0..6403753 100644
+--- a/scripts/CMakeLists.txt
++++ b/scripts/CMakeLists.txt
+@@ -26,7 +26,7 @@ else()
+ endif()
+ 
+ # Enable C++11 long long for compilers that are capable of it
+-if(NOT ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION} STRLESS 3.1)
++if(NOT ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION} STRLESS 3.1 AND ";${CMAKE_CXX_COMPILE_FEATURES};" MATCHES ";cxx_long_long_type;")
+ 	target_compile_features(pugixml PUBLIC cxx_long_long_type)
+ endif()
+ 
+-- 
+2.9.3
+
