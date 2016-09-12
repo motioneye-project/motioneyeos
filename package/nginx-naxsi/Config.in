@@ -1,5 +1,6 @@
 config BR2_PACKAGE_NGINX_NAXSI
 	bool "nginx-naxsi"
+	select BR2_PACKAGE_PCRE
 	help
 	  NAXSI means Nginx Anti XSS & SQL Injection.
 
