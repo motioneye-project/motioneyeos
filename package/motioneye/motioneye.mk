@@ -4,7 +4,7 @@
 #
 #############################################################
 
-MOTIONEYE_VERSION = c4b0deacb236fc9ba631a0c25b5d739e1ba4ce89
+MOTIONEYE_VERSION = 8ff732d42d198bf3467e9a87847fcf2c476c04cb
 MOTIONEYE_SITE = $(call github,ccrisan,motioneye,$(MOTIONEYE_VERSION))
 MOTIONEYE_SOURCE = $(MOTIONEYE_VERSION).tar.gz
 MOTIONEYE_LICENSE = GPLv3
