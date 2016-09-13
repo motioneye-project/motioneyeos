@@ -211,6 +211,11 @@ PHP_DEPENDENCIES += unixodbc
 endif
 endif
 
+ifneq ($(BR2_PACKAGE_PHP_EXT_MYSQLI)$(BR2_PACKAGE_PHP_EXT_PDO_MYSQL),)
+# Set default MySQL unix socket to what the MySQL server is using by default
+PHP_CONF_OPTS += --with-mysql-sock=$(MYSQL_SOCKET)
+endif
+
 define PHP_DISABLE_PCRE_JIT
 	$(SED) '/^#define SUPPORT_JIT/d' $(@D)/ext/pcre/pcrelib/config.h
 endef
