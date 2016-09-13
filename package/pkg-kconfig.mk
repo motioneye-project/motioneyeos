@@ -118,6 +118,12 @@ $$($(2)_DIR)/.stamp_kconfig_fixup_done: $$($(2)_DIR)/.config
 # Before running configure, the configuration file should be present and fixed
 $$($(2)_TARGET_CONFIGURE): $$($(2)_DIR)/.stamp_kconfig_fixup_done
 
+# Force olddefconfig again on -reconfigure
+$(1)-clean-for-reconfigure: $(1)-clean-kconfig-for-reconfigure
+
+$(1)-clean-kconfig-for-reconfigure:
+	rm -f $$($(2)_DIR)/.stamp_kconfig_fixup_done
+
 # Only enable the foo-*config targets when the package is actually enabled.
 # Note: the variable $(2)_KCONFIG_VAR is not related to the kconfig
 # infrastructure, but defined by pkg-generic.mk. The generic infrastructure is
