@@ -9,7 +9,7 @@ case "$1" in
 
 		# mysqld runs as user mysql, but /run is only writable by root
 		# so create a subdirectory for mysql.
-		install -d -o mysql -g root -m 0700 /run/mysql
+		install -d -o mysql -g root -m 0755 /run/mysql
 
 		# We don't use start-stop-daemon because mysqld has
 		# its own wrapper script.

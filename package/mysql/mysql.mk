@@ -14,6 +14,9 @@ MYSQL_AUTORECONF = YES
 MYSQL_LICENSE = GPLv2
 MYSQL_LICENSE_FILES = README COPYING
 
+# Unix socket. This variable can also be consulted by other buildroot packages
+MYSQL_SOCKET = /run/mysql/mysql.sock
+
 MYSQL_CONF_ENV = \
 	ac_cv_sys_restartable_syscalls=yes \
 	ac_cv_path_PS=/bin/ps \
@@ -31,6 +34,7 @@ MYSQL_CONF_OPTS = \
 	--without-readline \
 	--with-low-memory \
 	--enable-thread-safe-client \
+	--with-unix-socket-path=$(MYSQL_SOCKET) \
 	--disable-mysql-maintainer-mode
 
 # host-mysql only installs what is needed to build mysql, i.e. the
