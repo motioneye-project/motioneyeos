@@ -146,6 +146,13 @@ else
 UTIL_LINUX_CONF_OPTS += --without-python
 endif
 
+ifeq ($(BR2_PACKAGE_READLINE),y)
+UTIL_LINUX_CONF_OPTS += --with-readline
+UTIL_LINUX_DEPENDENCIES += readline
+else
+UTIL_LINUX_CONF_OPTS += --without-readline
+endif
+
 # Install PAM configuration files
 ifeq ($(BR2_PACKAGE_UTIL_LINUX_LOGIN_UTILS),y)
 define UTIL_LINUX_INSTALL_PAMFILES
