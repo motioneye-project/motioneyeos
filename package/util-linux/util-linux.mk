@@ -153,6 +153,13 @@ else
 UTIL_LINUX_CONF_OPTS += --without-readline
 endif
 
+ifeq ($(BR2_PACKAGE_AUDIT),y)
+UTIL_LINUX_CONF_OPTS += --with-audit
+UTIL_LINUX_DEPENDENCIES += audit
+else
+UTIL_LINUX_CONF_OPTS += --without-audit
+endif
+
 # Install PAM configuration files
 ifeq ($(BR2_PACKAGE_UTIL_LINUX_LOGIN_UTILS),y)
 define UTIL_LINUX_INSTALL_PAMFILES
