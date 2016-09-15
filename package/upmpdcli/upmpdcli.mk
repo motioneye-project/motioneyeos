@@ -9,6 +9,9 @@ UPMPDCLI_SITE = http://www.lesbonscomptes.com/upmpdcli/downloads
 UPMPDCLI_LICENSE = GPLv2+
 UPMPDCLI_LICENSE_FILES = COPYING
 UPMPDCLI_DEPENDENCIES = libmpdclient libupnpp libmicrohttpd jsoncpp
+# touching configure.ac in
+#   0001-fix-jsoncpp-detection.patch
+UPMPDCLI_AUTORECONF = YES
 
 ifeq ($(BR2_STATIC_LIBS),y)
 # Upmpdcli forgets to take the dependencies of libupnpp into
