@@ -16,8 +16,8 @@ OPENAL_LICENSE = LGPLv2+
 OPENAL_LICENSE_FILES = COPYING
 OPENAL_INSTALL_STAGING = YES
 
-# We don't need the utilities, Distros don't ship them either
-OPENAL_CONF_OPTS += -DALSOFT_UTILS=OFF
+# We don't need examples, tests and utilities, Distros don't ship them either
+OPENAL_CONF_OPTS += -DALSOFT_UTILS=OFF -DALSOFT_EXAMPLES=OFF -DALSOFT_TESTS=OFF
 
 ifeq ($(BR2_TOOLCHAIN_GCC_AT_LEAST_4_8),y)
 OPENAL_CONF_OPTS += -DEXTRA_LIBS=atomic
