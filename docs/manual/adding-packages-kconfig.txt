@@ -75,3 +75,9 @@ be set to suit the needs of the package under consideration:
   configuration file after copying it or running a kconfig editor. Such
   commands may be needed to ensure a configuration consistent with other
   configuration of Buildroot, for example. By default, empty.
+
+* +FOO_KCONFIG_DOTCONFIG+: path (with filename) of the +.config+ file,
+  relative to the package source tree. The default, +.config+, should
+  be well suited for all packages that use the standard kconfig
+  infrastructure as inherited from the Linux kernel; some packages use
+  a derivative of kconfig that use a different location.
