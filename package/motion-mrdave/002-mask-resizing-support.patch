@@ -1,0 +1,103 @@
+From 787fad43fe1ef9e80b23a8ee7542ad5f5906e7ec Mon Sep 17 00:00:00 2001
+From: Calin Crisan <ccrisan@gmail.com>
+Date: Sat, 17 Sep 2016 21:18:46 +0300
+Subject: [PATCH] automatically resize mask image if size differs from that of
+ the captured image
+
+---
+ motion_guide.html |  4 ++--
+ picture.c         | 43 ++++++++++++++++++++++++++++---------------
+ 2 files changed, 30 insertions(+), 17 deletions(-)
+
+diff --git a/motion_guide.html b/motion_guide.html
+index e127b2c..4526324 100644
+--- a/motion_guide.html
++++ b/motion_guide.html
+@@ -2559,8 +2559,8 @@
+ </ul> 
+ <p></p>
+ The full path and filename for the masking pgm file.  
+-This picture MUST have the same width and height as the frames being 
+-captured and be in binary format.
++If needed, the mask will be resized to match the width and height of the frames being 
++captured.
+ If you have one or more areas of the camera image in which you do NOT want motion detected (e.g. a tree that 
+ moves in the wind or a corner of the picture where you can see cars/pedestrians passing by) you need a mask file. 
+ This file is a picture that you create in your favorite photo editing program. The areas that you want detected must 
+diff --git a/picture.c b/picture.c
+index 81be8f3..7ca4d7e 100644
+--- a/picture.c
++++ b/picture.c
+@@ -963,9 +963,9 @@ void put_picture(struct context *cnt, char *file, unsigned char *image, int ftyp
+  */
+ unsigned char *get_pgm(FILE *picture, int width, int height)
+ {
+-    int x = 0 , y = 0, maxval;
++    int x, y, mask_width, mask_height, maxval;
+     char line[256];
+-    unsigned char *image;
++    unsigned char *image, *resized_image;
+ 
+     line[255] = 0;
+ 
+@@ -986,18 +986,12 @@ unsigned char *get_pgm(FILE *picture, int width, int height)
+         if (!fgets(line, 255, picture))
+             return NULL;
+ 
+-    /* Check size */
+-    if (sscanf(line, "%d %d", &x, &y) != 2) {
++    /* Read image size */
++    if (sscanf(line, "%d %d", &mask_width, &mask_height) != 2) {
+         MOTION_LOG(ERR, TYPE_ALL, SHOW_ERRNO, "%s: Failed reading size in pgm file");
+         return NULL;
+     }
+ 
+-    if (x != width || y != height) {
+-        MOTION_LOG(ERR, TYPE_ALL, SHOW_ERRNO, "%s: Wrong image size %dx%d should be %dx%d",
+-                   x, y, width, height);
+-        return NULL;
+-    }
+-
+     /* Maximum value */
+     line[0] = '#';
+     while (line[0] == '#')
+@@ -1011,15 +1005,34 @@ unsigned char *get_pgm(FILE *picture, int width, int height)
+ 
+     /* Read data */
+ 
+-    image = mymalloc(width * height);
++    image = mymalloc(mask_width * mask_height);
+ 
+-    for (y = 0; y < height; y++) {
+-        if ((int)fread(&image[y * width], 1, width, picture) != width)
++    for (y = 0; y < mask_height; y++) {
++        if ((int)fread(&image[y * mask_width], 1, mask_width, picture) != mask_width)
+             MOTION_LOG(ERR, TYPE_ALL, SHOW_ERRNO, "%s: Failed reading image data from pgm file");
+ 
+-        for (x = 0; x < width; x++)
+-            image[y * width + x] = (int)image[y * width + x] * 255 / maxval;
++        for (x = 0; x < mask_width; x++)
++            image[y * mask_width + x] = (int)image[y * mask_width + x] * 255 / maxval;
++
++    }
++
++    /* Resize mask if required */
++    if (mask_width != width || mask_height != height) {
++        MOTION_LOG(NTC, TYPE_ALL, NO_ERRNO, "%s: Mask needs resizing from %dx%d to %dx%d",
++                   mask_width, mask_height, width, height);
++
++        resized_image = mymalloc(width * height);
++
++        for (y = 0; y < height; y++) {
++            for (x = 0; x < width; x++) {
++                resized_image[y * width + x] = image[
++                        (mask_height - 1) * y / (height - 1) * mask_width + 
++                        (mask_width  - 1) * x / (width  - 1)];
++            }
++        }
+ 
++        free(image);
++        image = resized_image;
+     }
+ 
+     return image;
