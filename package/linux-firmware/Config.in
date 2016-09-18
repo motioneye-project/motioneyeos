@@ -171,6 +171,11 @@ config BR2_PACKAGE_LINUX_FIRMWARE_MWIFIEX_USB8797
 	help
 	  Firmware files for the Marvell Wifi-Ex 8797 module on USB.
 
+config BR2_PACKAGE_LINUX_FIRMWARE_MWIFIEX_USB8801
+	bool "Marvell Wifi-Ex 8801 USB"
+	help
+	  Firmware files for the Marvell Wifi-Ex 8801 module on USB.
+
 config BR2_PACKAGE_LINUX_FIRMWARE_MWIFIEX_SD8887
 	bool "Marvell Wifi-Ex 8887 SDIO"
 	help
