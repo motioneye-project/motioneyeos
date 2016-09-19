@@ -1,0 +1,42 @@
+# 2.4 GHz, 20 MHz BW mode
+manfid=0x2d0
+prodid=0x0726
+vendid=0x14e4
+devid=0x43e2
+boardtype=0x0726
+boardrev=0x1202
+boardnum=22
+macaddr=00:90:4c:c5:12:38
+sromrev=11
+boardflags=0x00404201
+boardflags3=0x08000000
+xtalfreq=37400
+nocrc=1
+ag0=0
+aa2g=1
+ccode=ALL
+#pa0itssit=0x20
+extpagain2g=0
+pa2ga0=-168,7161,-820
+AvVmid_c0=0x0,0xc8
+cckpwroffset0=5
+maxp2ga0=90
+#txpwrbckof=6
+cckbw202gpo=0
+legofdmbw202gpo=0x66111111
+mcsbw202gpo=0x77711111
+propbw202gpo=0xdd
+ofdmdigfilttype=18
+ofdmdigfilttypebe=18
+papdmode=1
+papdvalidtest=1
+pacalidx2g=48
+papdepsoffset=-22
+papdendidx=58
+il0macaddr=00:90:4c:c5:12:38
+wl0id=0x431b
+#muxenab=0x10
+#BT COEX deferral limit setting
+#btc_params 8 45000
+#btc_params 10 20000
+#spurconfig=0x3
