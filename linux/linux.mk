@@ -384,6 +384,10 @@ define LINUX_INSTALL_IMAGES_CMDS
 	$(call LINUX_INSTALL_DTB,$(BINARIES_DIR))
 endef
 
+ifeq ($(BR2_STRIP_strip),y)
+LINUX_MAKE_FLAGS += INSTALL_MOD_STRIP=1
+endif
+
 define LINUX_INSTALL_TARGET_CMDS
 	$(LINUX_INSTALL_KERNEL_IMAGE_TO_TARGET)
 	# Install modules and remove symbolic links pointing to build
