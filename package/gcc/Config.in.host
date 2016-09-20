@@ -9,7 +9,7 @@ config BR2_GCC_SUPPORTS_GRAPHITE
 choice
 	prompt "GCC compiler Version"
 	default BR2_GCC_VERSION_ARC if BR2_arc
-	default BR2_GCC_VERSION_4_9_X
+	default BR2_GCC_VERSION_5_X
 	help
 	  Select the version of gcc you wish to use.
 
