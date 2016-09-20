@@ -117,13 +117,14 @@ UTIL_LINUX_CONF_OPTS += \
 	$(if $(BR2_PACKAGE_UTIL_LINUX_WRITE),--enable-write,--disable-write) \
 	$(if $(BR2_PACKAGE_UTIL_LINUX_ZRAMCTL),--enable-zramctl,--disable-zramctl)
 
-# In the host version of util-linux, we so far only require libuuid,
-# and none of the util-linux utilities, so we disable all of them, unless
-# BR2_PACKAGE_HOST_UTIL_LINUX is set
+# In the host version of util-linux, we only require libuuid and
+# libmount (plus libblkid as an indirect dependency of libmount).
+# So disable all of the programs, unless BR2_PACKAGE_HOST_UTIL_LINUX is set
 
 HOST_UTIL_LINUX_CONF_OPTS += \
+	--enable-libblkid \
+	--enable-libmount \
 	--enable-libuuid \
-	--disable-libblkid --disable-libmount \
 	--without-ncurses
 
 ifeq ($(BR2_PACKAGE_HOST_UTIL_LINUX),y)
