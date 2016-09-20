@@ -4,6 +4,7 @@ config BR2_PACKAGE_CIRCUS
 	depends on BR2_USE_WCHAR # pyzmq -> zeromq
 	depends on BR2_INSTALL_LIBSTDCPP # pyzmq -> zeromq
 	depends on BR2_TOOLCHAIN_HAS_THREADS # pyzmq -> zeromq
+	depends on !BR2_TOOLCHAIN_USES_MUSL # python-psutil
 	select BR2_PACKAGE_PYTHON_IOWAIT # runtime
 	select BR2_PACKAGE_PYTHON_PSUTIL # runtime
 	select BR2_PACKAGE_PYTHON_PYZMQ # runtime
@@ -15,7 +16,7 @@ config BR2_PACKAGE_CIRCUS
 
 	  https://circus.readthedocs.org/en/latest/
 
-comment "circus needs Python and a toolchain w/ C++, wchar, threads"
+comment "circus needs Python and a uClibc or glibc toolchain w/ C++, wchar, threads"
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR || \
-		!BR2_TOOLCHAIN_HAS_THREADS || \
+		!BR2_TOOLCHAIN_HAS_THREADS || BR2_TOOLCHAIN_USES_MUSL \
 		!(BR2_PACKAGE_PYTHON || BR2_PACKAGE_PYTHON3)
