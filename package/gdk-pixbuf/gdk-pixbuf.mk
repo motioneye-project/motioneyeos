@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-GDK_PIXBUF_VERSION_MAJOR = 2.34
+GDK_PIXBUF_VERSION_MAJOR = 2.36
 GDK_PIXBUF_VERSION = $(GDK_PIXBUF_VERSION_MAJOR).0
 GDK_PIXBUF_SOURCE = gdk-pixbuf-$(GDK_PIXBUF_VERSION).tar.xz
 GDK_PIXBUF_SITE = http://ftp.gnome.org/pub/gnome/sources/gdk-pixbuf/$(GDK_PIXBUF_VERSION_MAJOR)
