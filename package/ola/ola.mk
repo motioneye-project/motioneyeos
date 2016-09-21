@@ -40,7 +40,8 @@ HOST_OLA_CONF_OPTS = \
 	--disable-examples \
 	--disable-unittests \
 	--disable-doxygen-html \
-	--disable-doxygen-doc
+	--disable-doxygen-doc \
+	--disable-fatal-warnings
 
 # On the host side, we only need ola_protoc_plugin, so build and install this
 # only.
