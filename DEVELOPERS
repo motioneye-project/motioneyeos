@@ -812,8 +812,7 @@ F:	package/libcddb/
 F:	package/libmodbus/
 F:	package/ltris/
 F:	package/opentyrian/
-F:	package/pygame/
-F:	package/smtools3/
+F:	package/python-pygame/
 
 N:	Julien Corjon <corjon.j@ecagroup.com>
 F:	package/qt5/
@@ -1182,11 +1181,9 @@ F:	package/vnstat/
 N:	Romain Naour <romain.naour@gmail.com>
 F:	package/bullet/
 F:	package/efl/
-F:	package/elementary/
 F:	package/enlightenment/
 F:	package/expedite/
 F:	package/iqvlinux/
-F:	package/libevas-generic-loaders/
 F:	package/liblinear/
 F:	package/mcelog/
 F:	package/openpowerlink/
