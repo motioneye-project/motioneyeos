@@ -10,4 +10,4 @@ config BR2_PACKAGE_PYTHON_PSUTIL
 	  https://pypi.python.org/pypi/psutil
 
 comment "python-psutil needs a uClibc or glibc toolchain"
-	depends BR2_TOOLCHAIN_USES_MUSL
+	depends on BR2_TOOLCHAIN_USES_MUSL
