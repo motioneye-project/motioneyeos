@@ -5,8 +5,8 @@ import getdeveloperlib
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('patches', metavar='P', type=str, nargs='*',
-                        help='list of patches')
+    parser.add_argument('patches', metavar='P', type=argparse.FileType('r'), nargs='*',
+                        help='list of patches (use - to read patches from stdin)')
     parser.add_argument('-a', dest='architecture', action='store',
                         help='find developers in charge of this architecture')
     parser.add_argument('-p', dest='package', action='store',

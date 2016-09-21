@@ -16,19 +16,18 @@ def analyze_patch(patch):
     removed by the patch."""
     files = set()
     infras = set()
-    with open(patch, "r") as f:
-        for line in f:
-            # If the patch is adding a package, find which infra it is
-            m = FIND_INFRA_IN_PATCH.match(line)
-            if m:
-                infras.add(m.group(2))
-            if not line.startswith("+++ "):
-                continue
-            line.strip()
-            fname = line[line.find("/") + 1 : ].strip()
-            if fname == "dev/null":
-                continue
-            files.add(fname)
+    for line in patch:
+        # If the patch is adding a package, find which infra it is
+        m = FIND_INFRA_IN_PATCH.match(line)
+        if m:
+            infras.add(m.group(2))
+        if not line.startswith("+++ "):
+            continue
+        line.strip()
+        fname = line[line.find("/") + 1 : ].strip()
+        if fname == "dev/null":
+            continue
+        files.add(fname)
     return (files, infras)
 
 FIND_INFRA_IN_MK = re.compile("^\$\(eval \$\((host-)?([^-]*)-package\)\)$")
