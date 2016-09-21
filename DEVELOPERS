@@ -1225,7 +1225,10 @@ F:	package/clapack/
 F:	package/cwiid/
 F:	package/flite/
 F:	package/nginx/
+F:	package/opencv/
+F:	package/opencv3/
 F:	package/openobex/
+F:	package/pkg-cmake.mk
 F:	package/python-numpy/
 F:	package/scrub/
 F:	package/urg/
