@@ -282,6 +282,9 @@ F:	package/micropython-lib/
 F:	package/syslog-ng/
 
 N:	Christian Stewart <christian@paral.in>
+F:	linux/linux-ext-aufs.mk
+F:	package/aufs/
+F:	package/aufs-util/
 F:	package/batman-adv/
 F:	package/docker-containerd/
 F:	package/docker-engine/
@@ -316,6 +319,9 @@ F:	package/ustr/
 N:	Cédric Chépied <cedric.chepied@gmail.com>
 F:	package/znc/
 
+N:	Cyril Bur <cyrilbur@gmail.com>
+F:	package/kvm-unit-tests
+
 N:	Dagg Stompler <daggs@gmx.com>
 F:	package/libamcodec/
 F:	package/odroid-mali/
@@ -339,6 +345,7 @@ F:	package/libftdi1/
 N:	Danomi Manchego <danomimanchego123@gmail.com>
 F:	package/cjson/
 F:	package/jq/
+F:	package/libwebsockets/
 F:	package/ljsyscall/
 F:	package/lua-cjson/
 F:	package/luaexpat/
@@ -393,6 +400,7 @@ F:	package/hicolor-icon-theme/
 F:	package/jemalloc/
 F:	package/ninja/
 F:	package/smack/
+F:	package/xvisor/
 
 N:	Eric Limpens <limpens@gmail.com>
 F:	package/pifmrds/
@@ -425,7 +433,9 @@ F:	package/openbox/
 F:	package/supertuxkart/
 
 N:	Fabio Estevam <festevam@gmail.com>
+F:	board/warp7/
 F:	configs/freescale_imx*
+F:	configs/warp7_defconfig
 
 N:	Fabio Porcedda <fabio.porcedda@gmail.com>
 F:	package/netsurf-buildsystem/
@@ -440,6 +450,8 @@ F:	package/alljoyn-base/
 F:	package/alljoyn-tcl/
 F:	package/alljoyn-tcl-base/
 F:	package/gtksourceview/
+F:	package/gssdp/
+F:	package/gupnp/
 F:	package/gupnp-dlna/
 F:	package/gupnp-tools/
 F:	package/igd2-for-linux/
@@ -577,6 +589,7 @@ F:	package/gpsd/
 F:	package/granite/
 F:	package/graphite2/
 F:	package/gsettings-desktop-schemas/
+F:	package/gstreamer1/
 F:	package/hans/
 F:	package/haveged/
 F:	package/heimdal/
@@ -647,6 +660,7 @@ F:	package/obsidian-cursors/
 F:	package/ocf-linux/
 F:	package/opencore-amr/
 F:	package/openswan/
+F:	package/openvpn/
 F:	package/opusfile/
 F:	package/p11-kit/
 F:	package/p910nd/
@@ -843,6 +857,7 @@ F:	package/libupnpp/
 F:	package/luv/
 F:	package/luvi/
 F:	package/mp4v2/
+F:	package/mpd/
 F:	package/shairport-sync/
 F:	package/swupdate/
 F:	package/upmpdcli/
@@ -879,6 +894,7 @@ F:	package/exim/
 F:	package/libpjsip/
 F:	package/qpid-proton/
 F:	package/rtl8188eu/
+F:	package/snmppp/
 F:	package/stm32flash/
 F:	package/unzip/
 F:	support/legal-info/
@@ -901,6 +917,7 @@ N:	Mamatha Inamdar <mamatha4@linux.vnet.ibm.com>
 F:	package/nvme/
 
 N:	Manuel Vögele <develop@manuel-voegele.de>
+F:	package/python-pyqt5/
 F:	package/python-requests-toolbelt/
 
 N:	Marcin Bis <marcin@bis.org.pl>
@@ -928,6 +945,11 @@ F:	package/ca-certificates/
 
 N:	Martin Hicks <mort@bork.org>
 F:	package/cryptsetup/
+
+N:	Mathieu Audat <mathieu.audat@savoirfairelinux.com>
+F:	board/technologic/ts4900/
+F:	configs/ts4900_defconfig
+F:	package/ts4900-fpga/
 
 N:	Matt Weber <matthew.weber@rockwellcollins.com>
 F:	package/bc/
@@ -1089,9 +1111,12 @@ N:	Pedro Aguilar <paguilar@paguilar.org>
 F:	package/libunistring/
 
 N:	Peter Korsgaard <peter@korsgaard.com>
+F:	board/orangepi/
+F:	configs/orangepipc_defconfig
 F:	package/flickcurl/
 F:	package/libfastjson/
 F:	package/lzop/
+F:	package/mosquitto/
 F:	package/python-alsaaudio/
 F:	package/python-enum/
 F:	package/python-enum34/
@@ -1102,6 +1127,8 @@ F:	package/triggerhappy/
 F:	package/wpa_supplicant/
 
 N:	Peter Seiderer <ps.report@gmx.net>
+F:	board/raspberrypi/
+F:	configs/raspberrypi3_defconfig
 F:	package/assimp/
 F:	package/bcm2835/
 F:	package/dejavu/
@@ -1109,6 +1136,7 @@ F:	package/dillo/
 F:	package/edid-decode/
 F:	package/ghostscript-fonts/
 F:	package/gstreamer1/gst1-validate/
+F:	package/libevdev/
 F:	package/log4cplus/
 F:	package/postgresql/
 F:	package/qt5/qt53d/
@@ -1147,6 +1175,9 @@ F:	package/libvips/
 N:	Pieterjan Camerlynck <pieterjan.camerlynck@gmail.com>
 F:	package/libdvbpsi/
 F:	package/mraa/
+
+N:	Piotr Nakraszewicz <piotr.nakraszewicz@imgtec.com>
+F:	package/gstreamer1/gst1-rtsp-server/
 
 N:	Qais Yousef <Qais.Yousef@imgtec.com>
 F:	package/bellagio/
@@ -1192,6 +1223,9 @@ F:	package/openpowerlink/
 F:	package/stress-ng/
 F:	package/terminology/
 F:	package/xenomai/
+
+N:	Romain Perier <romain.perier@free-electrons.com>
+F:	package/amd-catalyst/
 
 N:	Ryan Barnett <ryan.barnett@rockwellcollins.com>
 F:	package/atftp/
@@ -1352,6 +1386,9 @@ N:	Sébastien Szymanski <sebastien.szymanski@armadeus.com>
 F:	package/mmc-utils/
 F:	package/python-flask-jsonrpc/
 F:	package/python-flask-login/
+
+N:	Theo Debrouwere <t.debrouwere@televic.com>
+F:	package/pugixml/
 
 N:	Thierry Bultel <tbultel@free.fr>
 F:	package/mpd-mpc/
@@ -1523,6 +1560,7 @@ F:	package/libseccomp/
 F:	package/mesa3d-headers/
 F:	package/mke2img/
 F:	package/nut/
+F:	package/nvidia-driver/
 F:	package/omxplayer/
 F:	package/python-pyparsing/
 F:	package/pkg-download.mk
