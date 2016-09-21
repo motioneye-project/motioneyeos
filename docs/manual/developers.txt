@@ -5,8 +5,8 @@
 == DEVELOPERS file and get-developers
 
 The main Buildroot directory contains a file named +DEVELOPERS+ that
-list the developers involved with various areas of Buildroot. Thanks to
-this file, the +get-developer+ tool allows to:
+lists the developers involved with various areas of Buildroot. Thanks
+to this file, the +get-developer+ tool allows to:
 
 - Calculate the list of developers to whom patches should be sent, by
   parsing the patches and matching the modified files with the
