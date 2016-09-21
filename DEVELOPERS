@@ -872,6 +872,8 @@ F:	package/ti-sgx-km/
 F:	package/ti-sgx-um/
 
 N:	Luca Ceresoli <luca@lucaceresoli.net>
+F:	board/olimex/a20_olinuxino/
+F:	configs/olimex_a20_olinuxino_*
 F:	package/agentpp/
 F:	package/exim/
 F:	package/libpjsip/
