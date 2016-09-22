@@ -1,4 +1,4 @@
-Acmesystems Arietta G25
+Acme Systems Arietta G25
 
 Intro
 =====
@@ -13,8 +13,8 @@ documentation on http://www.acmesystems.it/arietta.
 Build instructions
 ==================
 
-To build an image for the arietta g25 choose the configuration
-corresponding to the arietta variant.
+To build an image for the Arietta G25 choose the configuration
+corresponding to the Arietta variant.
 
 For 128MB RAM variant type:
 
@@ -24,7 +24,11 @@ else for 256MB RAM variant type:
 
 $ make acmesystems_arietta_g25_256mb_defconfig
 
-then:
+To customize the configuration chosen type:
+
+$ make menuconfig
+
+When you are ready to start building Buildroot type:
 
 $ make
 
@@ -38,7 +42,7 @@ Copy the bootable "sdcard.img" onto an SD card with "dd":
 
   $ sudo dd if=output/images/sdcard.img of=/dev/sdX
 
-Insert the microSD card into the arietta slot and power it.
+Insert the microSD card into the Arietta slot and power it.
 
 The image just built is fairly basic and the only output
 you will get is on serial console, please consider to use a DPI
