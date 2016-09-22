@@ -1,51 +1,44 @@
+Acme Systems Aria G25
+
 Build instructions
 ==================
 
-As a regular user configure and then build:
+To build an image for the Aria G25 choose the configuration
+corresponding to the Aria variant.
 
-$ make acmesystems_aria_g25_128mb_defconfig (128MB RAM variant)
-  or...
-$ make acmesystems_aria_g25_256mb_defconfig (256MB RAM variant)
+For 128MB RAM variant type:
+
+$ make acmesystems_aria_g25_128mb_defconfig
+
+else for 256MB RAM variant type:
+
+$ make acmesystems_aria_g25_256mb_defconfig
+
+To customize the configuration choosed type:
+
+$ make menuconfig
+
+When you are ready to start building Buildroot type:
 
 $ make
 
-Writing to the MicroSD card
-===========================
+How to write the microSD card
+=============================
 
-Assuming your Aria G25 baseboard has a MicroSD socket, for example with
-the Terra baseboard, you'll need a blank MicroSD (obviously) initialized
-in a particular way to be able to boot from it.
+Once the build process is finished you will have an image called
+"sdcard.img" in the output/images/ directory.
 
-Assuming the card is seen as /dev/sdb in your PC/laptop/other device
-you'll need to run the following commands as root or via sudo.
+Write the bootable SD card image "sdcard.img" onto an SD card with
+"dd" command:
 
-Make sure all of the card partitions are unmounted before starting.
+  $ sudo dd if=output/images/sdcard.img of=/dev/sdX
 
-First we'll need to create two partitions:
+Assuming your Aria G25 baseboard has a MicroSD socket, for example
+with the Terra baseboard, insert the microSD card into the baseboard
+slot and power it.
 
-# sfdisk -uM /dev/sdb <<EOF
-,32,6
-;
-EOF
+To get the kernel log messages you can use a DPI cable
+(http://www.acmesystems.it/DPI)
 
-Then we'll need to create the empty filesystems:
-
-# mkdosfs -n SD_BOOT /dev/sdb1
-# mkfs.ext4 -L SD_ROOT /dev/sdb2
-
-We'll populate the first partition (boot) with the relevant files:
-
-# mount /dev/sdb1 /mnt
-# cp output/images/at91bootstrap.bin /mnt/BOOT.BIN
-# cp output/images/zImage /mnt
-# cp output/images/at91-ariag25.dtb /mnt
-# umount /mnt
-
-And the root filesystem afterwards:
-
-# mount /dev/sdb2 /mnt
-# tar -C /mnt output/images/rootfs.tar
-# umount /mnt
-
-You're done, insert the MicroSD card in the slot and enjoy.
-
+You can find additional informations, tutorials and a very
+comprehensive documentation on http://www.acmesystems.it/aria.
