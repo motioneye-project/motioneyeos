@@ -1,3 +1,4 @@
 bootpart=0:1
 bootdir=
-uenvcmd=run loadimage;run loadramdisk;run findfdt;run loadfdt;run ramboot
+bootargs=console=ttyO0,115200n8 root=/dev/mmcblk0p2 rw rootfstype=ext4 rootwait
+uenvcmd=run loadimage;run loadfdt;printenv bootargs;bootz ${loadaddr} - ${fdtaddr};

@@ -1,0 +1,16 @@
+This patch keeps the debugSS clock alive, it clocks the JTAG macro and enables
+access to the SoC via JTAG after the kernel booted.
+
+Signed-off-by: Lothar Felten <lothar.felten@gmail.com>
+---
+diff -Naur linux-orig/arch/arm/mach-omap2/omap_hwmod_33xx_data.c linux-52c4aa7cdb93d61f8008f380135beaf7b8fa6593/arch/arm/mach-omap2/omap_hwmod_33xx_data.c
+--- linux-orig/arch/arm/mach-omap2/omap_hwmod_33xx_data.c	2015-10-02 17:30:56.000000000 +0200
++++ linux-52c4aa7cdb93d61f8008f380135beaf7b8fa6593/arch/arm/mach-omap2/omap_hwmod_33xx_data.c	2016-08-15 11:28:55.017617612 +0200
+@@ -208,6 +208,7 @@
+ 	.name		= "debugss",
+ 	.class		= &am33xx_debugss_hwmod_class,
+ 	.clkdm_name	= "l3_aon_clkdm",
++	.flags		= (HWMOD_INIT_NO_IDLE|HWMOD_INIT_NO_RESET), /* keep debugSS clock alive for JTAG */
+ 	.main_clk	= "trace_clk_div_ck",
+ 	.prcm		= {
+ 		.omap4	= {
