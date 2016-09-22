@@ -10,24 +10,22 @@
 #
 # So, all tools refer to $(LINUX_DIR) instead of $(@D).
 
+# Note: we need individual tools .mk files to be included *before* this one
+# to guarantee that each tool has a chance to register itself before we build
+# the list of build and install hooks, below.
+#
+# This is currently guaranteed by the naming of each file:
+# - they get included by the top-level Makefile, with $(sort $(wildcard ...))
+# - make's $(sort) function will aways sort in the C locale
+# - the files names correctly sort out in the C locale so that each tool's
+#   .mk file is included before this one.
+
 # We only need the kernel to be extracted, not actually built
 LINUX_TOOLS_PATCH_DEPENDENCIES = linux
 
 # Install Linux kernel tools in the staging directory since some tools
 # may install shared libraries and headers (e.g. cpupower).
 LINUX_TOOLS_INSTALL_STAGING = YES
-
-# Include all our tools definitions.
-#
-# Note: our package infrastructure uses the full-path of the last-scanned
-# Makefile to determine what package we're currently defining, using the
-# last directory component in the path. As such, including other Makefile,
-# like below, before we call one of the *-package macro is usally not
-# working.
-# However, since the files we include here are in the same directory as
-# the current Makefile, we are OK. But this is a hard requirement: files
-# included here *must* be in the same directory!
-include $(sort $(wildcard package/linux-tools/linux-tool-*.mk))
 
 LINUX_TOOLS_DEPENDENCIES += $(foreach tool,$(LINUX_TOOLS),\
 	$(if $(BR2_PACKAGE_LINUX_TOOLS_$(call UPPERCASE,$(tool))),\
