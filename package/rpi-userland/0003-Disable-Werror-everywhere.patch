@@ -1,0 +1,171 @@
+From 67924a43d52862a7b4c9076d49071449313fea85 Mon Sep 17 00:00:00 2001
+From: Peter Seiderer <ps.report@gmx.net>
+Date: Thu, 22 Sep 2016 22:59:11 +0200
+Subject: [PATCH] Disable Werror everywhere
+
+With gcc-5.1, some constructs that were previously accepted (but wrong)
+are now considered warnings, and thus -Werror makes them errors.
+
+Ditch -Werror altoghether.
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+
+[Rebased for rpi-userland-a1b89e91f393c7134b4cdc36431f863bb3333163]
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+---
+ host_applications/android/apps/vidtex/CMakeLists.txt | 2 +-
+ host_applications/linux/apps/gencmd/CMakeLists.txt   | 2 +-
+ host_applications/linux/apps/raspicam/CMakeLists.txt | 2 +-
+ host_applications/linux/apps/smem/CMakeLists.txt     | 2 +-
+ host_applications/linux/libs/bcm_host/CMakeLists.txt | 2 +-
+ host_applications/linux/libs/sm/CMakeLists.txt       | 2 +-
+ interface/mmal/CMakeLists.txt                        | 2 +-
+ interface/vcos/CMakeLists.txt                        | 2 +-
+ interface/vcos/pthreads/CMakeLists.txt               | 2 +-
+ interface/vmcs_host/CMakeLists.txt                   | 2 +-
+ interface/vmcs_host/linux/vcfiled/CMakeLists.txt     | 2 +-
+ 11 files changed, 11 insertions(+), 11 deletions(-)
+
+diff --git a/host_applications/android/apps/vidtex/CMakeLists.txt b/host_applications/android/apps/vidtex/CMakeLists.txt
+index 1f705ef..37d037d 100644
+--- a/host_applications/android/apps/vidtex/CMakeLists.txt
++++ b/host_applications/android/apps/vidtex/CMakeLists.txt
+@@ -1,6 +1,6 @@
+ cmake_minimum_required(VERSION 2.8)
+ 
+-SET(COMPILE_DEFINITIONS -Werror -Wall)
++SET(COMPILE_DEFINITIONS  -Wall)
+ include_directories(${PROJECT_SOURCE_DIR}/host_applications/linux/libs/bcm_host/include)
+ 
+ set (VIDTEX_SOURCES
+diff --git a/host_applications/linux/apps/gencmd/CMakeLists.txt b/host_applications/linux/apps/gencmd/CMakeLists.txt
+index f95d1a1..034bf20 100644
+--- a/host_applications/linux/apps/gencmd/CMakeLists.txt
++++ b/host_applications/linux/apps/gencmd/CMakeLists.txt
+@@ -4,7 +4,7 @@ if (WIN32)
+    set(VCOS_PLATFORM win32)
+ else ()
+    set(VCOS_PLATFORM pthreads)
+-   add_definitions(-Wall -Werror)
++   add_definitions(-Wall )
+ endif ()
+ 
+ include_directories( ../../../.. 
+diff --git a/host_applications/linux/apps/raspicam/CMakeLists.txt b/host_applications/linux/apps/raspicam/CMakeLists.txt
+index 2afc145..04e446f 100644
+--- a/host_applications/linux/apps/raspicam/CMakeLists.txt
++++ b/host_applications/linux/apps/raspicam/CMakeLists.txt
+@@ -1,7 +1,7 @@
+ 
+ # raspistill/raspivid/raspiyuv
+ 
+-SET(COMPILE_DEFINITIONS -Werror)
++SET(COMPILE_DEFINITIONS )
+ 
+ include_directories(${PROJECT_SOURCE_DIR}/host_applications/linux/libs/bcm_host/include)
+ include_directories(${PROJECT_SOURCE_DIR}/host_applications/linux/apps/raspicam/)
+diff --git a/host_applications/linux/apps/smem/CMakeLists.txt b/host_applications/linux/apps/smem/CMakeLists.txt
+index 0fa8328..f0d1e77 100644
+--- a/host_applications/linux/apps/smem/CMakeLists.txt
++++ b/host_applications/linux/apps/smem/CMakeLists.txt
+@@ -4,7 +4,7 @@ get_filename_component (VIDEOCORE_ROOT ../../../.. ABSOLUTE)
+ include (${VIDEOCORE_ROOT}/makefiles/cmake/global_settings.cmake)
+ 
+ if (NOT WIN32)
+-   add_definitions(-Wall -Werror)
++   add_definitions(-Wall )
+ endif ()
+ 
+ include_directories (
+diff --git a/host_applications/linux/libs/bcm_host/CMakeLists.txt b/host_applications/linux/libs/bcm_host/CMakeLists.txt
+index 1f29ead..fb78cea 100644
+--- a/host_applications/linux/libs/bcm_host/CMakeLists.txt
++++ b/host_applications/linux/libs/bcm_host/CMakeLists.txt
+@@ -3,7 +3,7 @@ if (WIN32)
+    set(VCOS_PLATFORM win32)
+ else ()
+    set(VCOS_PLATFORM pthreads)
+-   add_definitions(-Wall -Werror)
++   add_definitions(-Wall )
+ endif ()
+ 
+ include_directories( ../../../.. 
+diff --git a/host_applications/linux/libs/sm/CMakeLists.txt b/host_applications/linux/libs/sm/CMakeLists.txt
+index c6bf764..4bca0b0 100644
+--- a/host_applications/linux/libs/sm/CMakeLists.txt
++++ b/host_applications/linux/libs/sm/CMakeLists.txt
+@@ -3,7 +3,7 @@ if (WIN32)
+    set(VCOS_PLATFORM win32)
+ else ()
+    set(VCOS_PLATFORM pthreads)
+-   add_definitions(-Wall -Werror)
++   add_definitions(-Wall )
+ endif ()
+ 
+ include_directories( ../../../..
+diff --git a/interface/mmal/CMakeLists.txt b/interface/mmal/CMakeLists.txt
+index 37ae757..78b24a9 100644
+--- a/interface/mmal/CMakeLists.txt
++++ b/interface/mmal/CMakeLists.txt
+@@ -3,7 +3,7 @@ if (NOT DEFINED LIBRARY_TYPE)
+ set(LIBRARY_TYPE SHARED)
+ endif (NOT DEFINED LIBRARY_TYPE)
+ 
+-add_definitions(-Wall -Werror)
++add_definitions(-Wall )
+ 
+ add_library(mmal SHARED util/mmal_util.c)
+ 
+diff --git a/interface/vcos/CMakeLists.txt b/interface/vcos/CMakeLists.txt
+index 23a8d72..988b104 100644
+--- a/interface/vcos/CMakeLists.txt
++++ b/interface/vcos/CMakeLists.txt
+@@ -43,7 +43,7 @@ foreach (header ${HEADERS})
+ endforeach ()
+ 
+ if (CMAKE_COMPILER_IS_GNUCC)
+-   add_definitions (-ggdb -Werror -Wall)
++   add_definitions (-ggdb  -Wall)
+ endif ()
+ 
+ if (CMAKE_COMPILER_2005)
+diff --git a/interface/vcos/pthreads/CMakeLists.txt b/interface/vcos/pthreads/CMakeLists.txt
+index 1d81ca3..b35cd8e 100644
+--- a/interface/vcos/pthreads/CMakeLists.txt
++++ b/interface/vcos/pthreads/CMakeLists.txt
+@@ -1,7 +1,7 @@
+ # MSVC5 does not fully support C99, enabling declaration-after-statement
+ # warnings allows a common MSVC5 build error to be detected in Linux builds.
+ if (CMAKE_COMPILER_IS_GNUCC)
+-   set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Werror -Wdeclaration-after-statement")
++   set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall  -Wdeclaration-after-statement")
+    add_definitions (-D_GNU_SOURCE)
+ endif ()
+ 
+diff --git a/interface/vmcs_host/CMakeLists.txt b/interface/vmcs_host/CMakeLists.txt
+index 0b3adc9..c5156d8 100755
+--- a/interface/vmcs_host/CMakeLists.txt
++++ b/interface/vmcs_host/CMakeLists.txt
+@@ -2,7 +2,7 @@
+ # interface/vmcs_host
+ 
+ # not working in release build
+-# add_definitions(-Werror)
++# add_definitions()
+ 
+ # vc_vchi_gencmd.c has a type-punning problem in vc_gencmd_read_response
+ add_definitions(-fno-strict-aliasing)
+diff --git a/interface/vmcs_host/linux/vcfiled/CMakeLists.txt b/interface/vmcs_host/linux/vcfiled/CMakeLists.txt
+index aed0e83..d834b3f 100644
+--- a/interface/vmcs_host/linux/vcfiled/CMakeLists.txt
++++ b/interface/vmcs_host/linux/vcfiled/CMakeLists.txt
+@@ -1,5 +1,5 @@
+ 
+-add_definitions(-Werror)
++add_definitions()
+ 
+ # vcfiled - serves files to videocore. used for media handlers from
+ # OpenMAX/IL and loading VLLs.
+-- 
+2.8.1
+

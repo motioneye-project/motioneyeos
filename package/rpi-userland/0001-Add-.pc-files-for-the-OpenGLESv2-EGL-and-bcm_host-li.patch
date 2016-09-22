@@ -1,14 +1,16 @@
-From 853d7486a98e38eb78d48b2dcb1dda36610575b4 Mon Sep 17 00:00:00 2001
+From 4824be8986c2b6ef0b0bd2b32bc99c4ba6406640 Mon Sep 17 00:00:00 2001
 From: "Yann E. MORIN" <yann.morin.1998@free.fr>
 Date: Sat, 24 Jan 2015 19:44:14 +0100
-Subject: [PATCH] Add .pc files for the OpenGLESv2, EGL and bcm_host
- libraries
+Subject: [PATCH] Add .pc files for the OpenGLESv2, EGL and bcm_host libraries
 
 Those pkg-config files make it easier for Qt5 to find those libraries
 and the appropriate link flags.
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+
+[Rebased for rpi-userland-a1b89e91f393c7134b4cdc36431f863bb3333163]
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
 ---
  host_applications/linux/libs/bcm_host/CMakeLists.txt |  4 ++++
  host_applications/linux/libs/bcm_host/bcm_host.pc.in | 10 ++++++++++
@@ -49,10 +51,10 @@ index 0000000..d40d350
 +Libs: -L${libdir} -lbcm_host -lvcos -lvchiq_arm
 +Cflags: -I${includedir} -I${includedir}/interface/vmcs_host/linux -I${includedir}/interface/vcos/pthreads -DUSE_VCHIQ_ARM
 diff --git a/interface/khronos/CMakeLists.txt b/interface/khronos/CMakeLists.txt
-index c437291..ec5a605 100644
+index 4231af4..2844ebd 100644
 --- a/interface/khronos/CMakeLists.txt
 +++ b/interface/khronos/CMakeLists.txt
-@@ -74,3 +74,11 @@ target_link_libraries(OpenVG EGL)
+@@ -74,6 +74,14 @@ target_link_libraries(OpenVG EGL)
  
  install(TARGETS EGL GLESv2 OpenVG WFC khrn_client DESTINATION lib)
  install(TARGETS EGL_static GLESv2_static khrn_static DESTINATION lib)
@@ -64,6 +66,9 @@ index c437291..ec5a605 100644
 +  "${CMAKE_CURRENT_BINARY_DIR}/glxx/glesv2.pc" @ONLY)
 +install(FILES "${CMAKE_CURRENT_BINARY_DIR}/glxx/glesv2.pc"
 +  DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig")
+ 
+ # recommended names to use to avoid conflicts with mesa libs
+ add_library(brcmEGL ${SHARED} ${EGL_SOURCE})
 diff --git a/interface/khronos/egl/egl.pc.in b/interface/khronos/egl/egl.pc.in
 new file mode 100644
 index 0000000..5868706
@@ -98,5 +103,5 @@ index 0000000..2f58eed
 +Libs: -L${libdir} -lGLESv2
 +Cflags: -I${includedir}/
 -- 
-1.9.1
+2.8.1
 
