@@ -27,7 +27,7 @@ LINUX_TOOLS_INSTALL_STAGING = YES
 # However, since the files we include here are in the same directory as
 # the current Makefile, we are OK. But this is a hard requirement: files
 # included here *must* be in the same directory!
-include $(sort $(wildcard package/linux-tools/linux-ext-*.mk))
+include $(sort $(wildcard package/linux-tools/linux-tool-*.mk))
 
 LINUX_TOOLS_DEPENDENCIES += $(foreach tool,$(LINUX_TOOLS),\
 	$(if $(BR2_PACKAGE_LINUX_TOOLS_$(call UPPERCASE,$(tool))),\
