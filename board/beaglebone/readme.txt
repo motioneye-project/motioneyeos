@@ -10,6 +10,8 @@ EEPROM. The configuration is based on the
 ti-processor-sdk-02.00.00.00. Device tree blobs for beaglebone
 variants and the evm-sk are built too.
 
+For Qt5 support support use the beaglebone_qt5_defconfig.
+
 How to build it
 ===============
 
