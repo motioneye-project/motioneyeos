@@ -26,6 +26,9 @@
 #   infrastructure, and will be CC'ed on all patches that add or
 #   modify packages that use this infrastructure.
 
+N:	Abhilash Tuse <abhilash.tuse@imgtec.com>
+F:	package/gstreamer1/gst1-rtsp-server/
+
 N:	Adam Duskett <aduskett@gmail.com>
 F:	package/nginx-naxsi/
 
@@ -1175,9 +1178,6 @@ F:	package/libvips/
 N:	Pieterjan Camerlynck <pieterjan.camerlynck@gmail.com>
 F:	package/libdvbpsi/
 F:	package/mraa/
-
-N:	Piotr Nakraszewicz <piotr.nakraszewicz@imgtec.com>
-F:	package/gstreamer1/gst1-rtsp-server/
 
 N:	Qais Yousef <Qais.Yousef@imgtec.com>
 F:	package/bellagio/
