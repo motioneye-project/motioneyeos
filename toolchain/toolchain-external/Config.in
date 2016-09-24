@@ -87,7 +87,7 @@ config BR2_TOOLCHAIN_EXTERNAL_LINARO_ARMEB
 
 # See the note above.
 config BR2_TOOLCHAIN_EXTERNAL_LINARO_ARMEB
-	bool "Linaro armeb 2016.02"
+	bool "Linaro armeb 2016.05"
 	depends on BR2_armeb
 	depends on BR2_ARM_CPU_ARMV7A
 	depends on BR2_HOSTARCH = "x86_64"
@@ -101,8 +101,8 @@ config BR2_TOOLCHAIN_EXTERNAL_LINARO_ARMEB
 	select BR2_TOOLCHAIN_GCC_AT_LEAST_5
 	help
 	  Linaro toolchain for the ARM big endian architecture. It
-	  uses Linaro GCC 2016.02 (based on gcc 5.3), Linaro GDB
-	  2016.02 (based on GDB 7.10), glibc 2.21, Binutils 2015.10
+	  uses Linaro GCC 2016.05 (based on gcc 5.3.1), Linaro GDB
+	  2016.05 (based on GDB 7.11.1), glibc 2.21, Binutils 2016.05
 	  (based on 2.25). It generates code that runs on all Cortex-A
 	  profile devices, but tuned for the Cortex-A9. The code
 	  generated is Thumb 2, with the hard floating point calling
