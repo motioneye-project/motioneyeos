@@ -77,12 +77,6 @@ comment "RDP compositor needs a toolchain w/ wchar, C++"
 	depends on BR2_TOOLCHAIN_HAS_SYNC_4
 	depends on !BR2_USE_WCHAR || !BR2_INSTALL_LIBSTDCPP
 
-# rpi-userland is an EGL/GLES provider, so we can't select it
-config BR2_PACKAGE_WESTON_RPI
-	bool "RPi compositor"
-	depends on BR2_PACKAGE_RPI_USERLAND
-	select BR2_PACKAGE_WESTON_HAS_COMPOSITOR
-
 config BR2_PACKAGE_WESTON_X11
 	bool "X11 compositor"
 	depends on BR2_PACKAGE_XORG7

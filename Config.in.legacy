@@ -145,6 +145,14 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2016.11"
 
+config BR2_PACKAGE_WESTON_RPI
+	bool "Weston propietary RPI support is gone"
+	select BR2_LEGACY
+	help
+	  Upstream decided the propietary (rpi-userland) weston composer
+	  support wasn't worth the effort so it was removed. Switch to
+	  the open VC4 support.
+
 config BR2_LINUX_KERNEL_TOOL_CPUPOWER
 	bool "linux-tool cpupower"
 	depends on BR2_LINUX_KERNEL
