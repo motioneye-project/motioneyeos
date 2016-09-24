@@ -1,0 +1,39 @@
+From 22e03ef8a9e3adcbc6b2f16c3cc98e4e14443eed Mon Sep 17 00:00:00 2001
+From: Bernd Kuhls <bernd.kuhls@t-online.de>
+Date: Sat, 24 Sep 2016 17:51:22 +0200
+Subject: [PATCH 1/1] CMakeLists.txt: Do not add libdl to LINKER_LIBS for
+ static builds
+
+Without this patch -ldl is present in opencv.pc which breaks OpenCV
+detection by ffmpeg, detected by buildroot autobuilders:
+
+http://autobuild.buildroot.net/results/765/7657e01481995a4f0d725467e935a83928a59a04//ffmpeg-3.1.3/config.log
+
+/home/peko/autobuild/instance-1/output/host/opt/ext-toolchain/bin/../lib/gcc/arm-buildroot-linux-uclibcgnueabi/4.9.4/../../../../arm-buildroot-linux-uclibcgnueabi/bin/ld: cannot find -ldl
+
+Patch sent upstream: https://github.com/opencv/opencv/pull/7337
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ CMakeLists.txt | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 007b80d..99b047d 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -457,7 +457,10 @@ if(UNIX)
+     elseif(${CMAKE_SYSTEM_NAME} MATCHES "QNX")
+       set(OPENCV_LINKER_LIBS ${OPENCV_LINKER_LIBS} m)
+     else()
+-      set(OPENCV_LINKER_LIBS ${OPENCV_LINKER_LIBS} dl m pthread rt)
++      if(BUILD_SHARED_LIBS)
++        set(OPENCV_LINKER_LIBS ${OPENCV_LINKER_LIBS} dl)
++      endif()
++      set(OPENCV_LINKER_LIBS ${OPENCV_LINKER_LIBS} m pthread rt)
+     endif()
+   else()
+     set(HAVE_LIBPTHREAD YES)
+-- 
+2.9.3
+
