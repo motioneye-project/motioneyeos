@@ -8,6 +8,7 @@ config BR2_PACKAGE_XVISOR_ARCH_SUPPORTS
 menuconfig BR2_PACKAGE_XVISOR
 	bool "xvisor"
 	depends on BR2_PACKAGE_XVISOR_ARCH_SUPPORTS
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_9
 	help
 	  Xvisor is an open-source type-1 hypervisor, which aims at providing
 	  a monolithic, light-weight, portable, and flexible virtualization
@@ -61,3 +62,7 @@ config BR2_PACKAGE_XVISOR_BUILD_TEST_DTB
 	  Build test device-tree blobs for popular boards.
 
 endif
+
+comment "xvisor needs a toolchain w/ gcc >= 4.9"
+	depends on !BR2_TOOLCHAIN_GCC_AT_LEAST_4_9
+	depends on BR2_PACKAGE_XVISOR_ARCH_SUPPORTS
