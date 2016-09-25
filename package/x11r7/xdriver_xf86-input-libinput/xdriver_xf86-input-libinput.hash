@@ -1,2 +1,2 @@
-# From https://lists.x.org/archives/xorg-announce/2016-April/002687.html
-sha256	6c5d30dc7c8b8ae34261340e1dc9cbb8ef435078e084b8ef507527a8a21af477	xf86-input-libinput-0.19.0.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2016-September/002705.html
+sha256 c7f1c9406f4af2dc28b6ed3c7cb9fe9d79e9a548c0bba823fbaba20795cd010d  xf86-input-libinput-0.19.1.tar.bz2
