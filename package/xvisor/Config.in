@@ -1,8 +1,13 @@
-menuconfig BR2_PACKAGE_XVISOR
-	bool "xvisor"
+config BR2_PACKAGE_XVISOR_ARCH_SUPPORTS
+	bool
+	default y
 	depends on BR2_USE_MMU
 	depends on BR2_arm || BR2_aarch64 || BR2_x86_64
 	depends on !BR2_ARM_CPU_ARMV4 && !BR2_ARM_CPU_ARMV7M
+
+menuconfig BR2_PACKAGE_XVISOR
+	bool "xvisor"
+	depends on BR2_PACKAGE_XVISOR_ARCH_SUPPORTS
 	help
 	  Xvisor is an open-source type-1 hypervisor, which aims at providing
 	  a monolithic, light-weight, portable, and flexible virtualization
