@@ -1,0 +1,17 @@
+config BR2_PACKAGE_MOTION
+	bool "motion"
+	depends on BR2_USE_MMU # fork()
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	select BR2_PACKAGE_JPEG
+	help
+	  Motion is a program that monitors the video signal from
+	  cameras. It is able to detect if a significant part of
+	  the picture has changed; in other words, it can detect motion.
+
+	  libv4l has to be selected to be able to use a local camera.
+
+	  https://motion-project.github.io
+
+comment "motion needs a toolchain w/ threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
