@@ -19,7 +19,7 @@ You will find in output/images/ the following files:
   - imx7s-warp.dtb
   - rootfs.ext4
   - rootfs.tar
-  - emmc.img
+  - sdcard.img
   - u-boot.imx
   - zImage
 
@@ -37,11 +37,11 @@ To determine the device associated to the eMMC have a look in the
 
   cat /proc/partitions
 
-Buildroot prepares a bootable "emmc.img" image in the output/images/
+Buildroot prepares a bootable "sdcard.img" image in the output/images/
 directory, ready to be dumped into the eMMC. Launch the following
 command:
 
-sudo dd if=output/images/emmc.img of=/dev/<your-emmc-device>
+sudo dd if=output/images/sdcard.img of=/dev/<your-emmc-device>
 
 *** WARNING! This will destroy all the eMMC content. Use it with care! ***
 
@@ -77,7 +77,7 @@ Use the default environment variables:
 => saveenv
 => ums 0 mmc 0
 
-sudo dd if=output/images/emmc.img of=/dev/<your-emmc-device>
+sudo dd if=output/images/sdcard.img of=/dev/<your-emmc-device>
 
 Put warp7 back in eMMC boot mode by placing switch 2 in the lower position
 and reboot the board.
