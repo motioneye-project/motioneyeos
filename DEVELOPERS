@@ -1185,6 +1185,9 @@ N:	Pieterjan Camerlynck <pieterjan.camerlynck@gmail.com>
 F:	package/libdvbpsi/
 F:	package/mraa/
 
+N:	Pranit Sirsat <Pranit.Sirsat@imgtec.com>
+F:	package/paho-mqtt-c/
+
 N:	Qais Yousef <Qais.Yousef@imgtec.com>
 F:	package/bellagio/
 
