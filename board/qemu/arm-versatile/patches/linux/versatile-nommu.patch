@@ -1,0 +1,30 @@
+From b7c1666813424d329868335c8faf8886b0f85b6c Mon Sep 17 00:00:00 2001
+From: Greg Ungerer <gerg@linux-m68k.org>
+Date: Thu, 11 Aug 2016 21:33:11 +1000
+Subject: [PATCH] arm: fix versatile platform to work in no-MMU mode
+
+If CONFIG_MMU is disabled then do not carry out the virtual memory address
+translation for IO devices.
+
+With this fix in place we can run the ARM Versatile board (including its
+qemu emulation) as a no-MMU Linux system.
+
+Signed-off-by: Greg Ungerer <gerg@linux-m68k.org>
+Signed-off-by: Waldemar Brodkorb <wbx@openadk.org>
+
+diff -Nur linux-4.4.17.orig/arch/arm/mach-versatile/include/mach/hardware.h linux-4.4.17/arch/arm/mach-versatile/include/mach/hardware.h
+--- linux-4.4.17.orig/arch/arm/mach-versatile/include/mach/hardware.h	2016-08-10 11:49:43.000000000 +0200
++++ linux-4.4.17/arch/arm/mach-versatile/include/mach/hardware.h	2016-08-25 23:19:03.691716292 +0200
+@@ -30,8 +30,12 @@
+ #define VERSATILE_PCI_VIRT_BASE		(void __iomem *)0xe8000000ul
+ #define VERSATILE_PCI_CFG_VIRT_BASE	(void __iomem *)0xe9000000ul
+ 
++#ifdef CONFIG_MMU
+ /* macro to get at MMIO space when running virtually */
+ #define IO_ADDRESS(x)		(((x) & 0x0fffffff) + (((x) >> 4) & 0x0f000000) + 0xf0000000)
++#else
++#define IO_ADDRESS(x)		(x)
++#endif
+ 
+ #define __io_address(n)		((void __iomem __force *)IO_ADDRESS(n))
+ 
