@@ -1,0 +1,38 @@
+[PATCH] ensure internal print operations are declared before use
+
+Stock rapidxml-1.13 does not allow implementers of the
+`rapidxml_print.hpp` header to build under GCC 4.7 (or newer) due to
+compliation issues. This is a result of "Name lookup changes" introduced
+in GCC 4.7 [1]. The following adds forward declarations required to
+compile with GCC 4.7+.
+
+This issue has been mentioned upstream [2], but it has yet to be fixed
+in official sources.
+
+[1]: https://gcc.gnu.org/gcc-4.7/porting_to.html
+[2]: https://sourceforge.net/p/rapidxml/bugs/16/
+
+Signed-off-by: James Knight <james.knight@rockwellcollins.com>
+
+Index: b/rapidxml_print.hpp
+===================================================================
+--- a/rapidxml_print.hpp
++++ b/rapidxml_print.hpp
+@@ -101,7 +101,16 @@
+ 
+         ///////////////////////////////////////////////////////////////////////////
+         // Internal printing operations
+-    
++
++        template<class OutIt, class Ch> inline OutIt print_cdata_node(OutIt out, const xml_node<Ch> *node, int flags, int indent);
++        template<class OutIt, class Ch> inline OutIt print_children(OutIt out, const xml_node<Ch> *node, int flags, int indent);
++        template<class OutIt, class Ch> inline OutIt print_comment_node(OutIt out, const xml_node<Ch> *node, int flags, int indent);
++        template<class OutIt, class Ch> inline OutIt print_data_node(OutIt out, const xml_node<Ch> *node, int flags, int indent);
++        template<class OutIt, class Ch> inline OutIt print_declaration_node(OutIt out, const xml_node<Ch> *node, int flags, int indent);
++        template<class OutIt, class Ch> inline OutIt print_doctype_node(OutIt out, const xml_node<Ch> *node, int flags, int indent);
++        template<class OutIt, class Ch> inline OutIt print_element_node(OutIt out, const xml_node<Ch> *node, int flags, int indent);
++        template<class OutIt, class Ch> inline OutIt print_pi_node(OutIt out, const xml_node<Ch> *node, int flags, int indent);
++
+         // Print node
+         template<class OutIt, class Ch>
+         inline OutIt print_node(OutIt out, const xml_node<Ch> *node, int flags, int indent)
