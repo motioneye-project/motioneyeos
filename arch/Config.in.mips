@@ -24,27 +24,27 @@ choice
 	  non-64bit capable: 32, 32r2, 32r6
 
 config BR2_mips_32
-	bool "mips 32"
+	bool "Generic MIPS32"
 	depends on !BR2_ARCH_IS_64
 	select BR2_MIPS_CPU_MIPS32
 config BR2_mips_32r2
-	bool "mips 32r2"
+	bool "Generic MIPS32R2"
 	depends on !BR2_ARCH_IS_64
 	select BR2_MIPS_CPU_MIPS32R2
 config BR2_mips_32r6
-	bool "mips 32r6"
+	bool "Generic MIPS32R6"
 	depends on !BR2_ARCH_IS_64
 	select BR2_MIPS_CPU_MIPS32R6
 config BR2_mips_64
-	bool "mips 64"
+	bool "Generic MIPS64"
 	depends on BR2_ARCH_IS_64
 	select BR2_MIPS_CPU_MIPS64
 config BR2_mips_64r2
-	bool "mips 64r2"
+	bool "Generic MIPS64R2"
 	depends on BR2_ARCH_IS_64
 	select BR2_MIPS_CPU_MIPS64R2
 config BR2_mips_64r6
-	bool "mips 64r6"
+	bool "Generic MIPS64R6"
 	depends on BR2_ARCH_IS_64
 	select BR2_MIPS_CPU_MIPS64R6
 endchoice
