@@ -79,6 +79,10 @@ config BR2_mips_i6400
 	bool "I6400"
 	depends on BR2_ARCH_IS_64
 	select BR2_MIPS_CPU_MIPS64R6
+config BR2_mips_p6600
+	bool "P6600"
+	depends on BR2_ARCH_IS_64
+	select BR2_MIPS_CPU_MIPS64R6
 endchoice
 
 
@@ -133,6 +137,7 @@ config BR2_GCC_TARGET_ARCH
 	default "mips64r5"	if BR2_mips_64r5
 	default "mips64r6"	if BR2_mips_64r6
 	default "i6400"		if BR2_mips_i6400
+	default "p6600"		if BR2_mips_p6600
 
 config BR2_MIPS_OABI32
 	bool
