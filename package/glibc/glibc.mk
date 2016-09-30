@@ -136,7 +136,7 @@ endef
 # highly unlikely. The failure mode, if it ever occurs, would be either
 # that a signalling NaN fails to raise an invalid operation exception or
 # (more likely) an ordinary NaN raises an invalid operation exception.
-ifeq ($(BR2_mips_32r6)$(BR2_mips_64r6),y)
+ifeq ($(BR2_MIPS_CPU_MIPS32R6)$(BR2_MIPS_CPU_MIPS64R6),y)
 define GLIBC_FIX_MIPS_R6
 	$(SED) 's#10.0.0#4.0.0#' \
 		$(@D)/sysdeps/unix/sysv/linux/mips/configure \

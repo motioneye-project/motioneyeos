@@ -96,12 +96,12 @@ endif
 
 # MIPS architecture specific options
 ifeq ($(BR2_mips)$(BR2_mipsel),y)
-ifeq ($(BR2_mips_32r6),y)
+ifeq ($(BR2_MIPS_CPU_MIPS32R6),y)
 NODEJS_MIPS_ARCH_VARIANT = r6
 NODEJS_MIPS_FPU_MODE = fp64
-else ifeq ($(BR2_mips_32r2),y)
+else ifeq ($(BR2_MIPS_CPU_MIPS32R2),y)
 NODEJS_MIPS_ARCH_VARIANT = r2
-else ifeq ($(BR2_mips_32),y)
+else ifeq ($(BR2_MIPS_CPU_MIPS32),y)
 NODEJS_MIPS_ARCH_VARIANT = r1
 endif
 endif

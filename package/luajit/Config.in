@@ -4,7 +4,7 @@ config BR2_PACKAGE_LUAJIT_ARCH_SUPPORTS
 		(BR2_x86_64 && BR2_HOSTARCH='x86_64') || \
 		BR2_powerpc || BR2_arm || BR2_armeb || \
 		((BR2_mips || BR2_mipsel) && !BR2_MIPS_SOFT_FLOAT && \
-		!BR2_mips_32r6 && !BR2_mips_64r6)
+		!BR2_MIPS_CPU_MIPS32R6 && !BR2_MIPS_CPU_MIPS64R6)
 
 config BR2_PACKAGE_LUAJIT
 	bool "luajit"

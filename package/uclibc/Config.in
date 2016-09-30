@@ -145,9 +145,9 @@ config BR2_UCLIBC_MIPS_ABI
 config BR2_UCLIBC_MIPS_ISA
 	string
 	depends on BR2_UCLIBC_TARGET_ARCH = "mips"
-	default "MIPS32" if BR2_mips_32
-	default "MIPS32R2" if BR2_mips_32r2
-	default "MIPS64" if BR2_mips_64
+	default "MIPS32" if BR2_MIPS_CPU_MIPS32
+	default "MIPS32R2" if BR2_MIPS_CPU_MIPS32R2
+	default "MIPS64" if BR2_MIPS_CPU_MIPS64
 
 config BR2_UCLIBC_SH_TYPE
 	string
