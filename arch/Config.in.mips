@@ -1,3 +1,17 @@
+# mips default CPU ISAs
+config BR2_MIPS_CPU_MIPS32
+	bool
+config BR2_MIPS_CPU_MIPS32R2
+	bool
+config BR2_MIPS_CPU_MIPS32R6
+	bool
+config BR2_MIPS_CPU_MIPS64
+	bool
+config BR2_MIPS_CPU_MIPS64R2
+	bool
+config BR2_MIPS_CPU_MIPS64R6
+	bool
+
 choice
 	prompt "Target Architecture Variant"
 	depends on BR2_mips || BR2_mipsel || BR2_mips64 || BR2_mips64el
