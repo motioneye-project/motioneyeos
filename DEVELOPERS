@@ -442,6 +442,8 @@ F:	package/supertuxkart/
 N:	Fabio Estevam <festevam@gmail.com>
 F:	board/warp7/
 F:	configs/freescale_imx*
+F:	configs/imx6ulpico_defconfig
+F:	configs/mx6cubox_defconfig
 F:	configs/warp7_defconfig
 
 N:	Fabio Porcedda <fabio.porcedda@gmail.com>
