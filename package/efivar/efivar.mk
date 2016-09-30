@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-EFIVAR_VERSION = 0.23
+EFIVAR_VERSION = 28
 EFIVAR_SITE = $(call github,rhinstaller,efivar,$(EFIVAR_VERSION))
 EFIVAR_LICENSE = LGPLv2.1
 EFIVAR_LICENSE_FILES = COPYING
