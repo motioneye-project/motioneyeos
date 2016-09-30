@@ -3,6 +3,8 @@ config BR2_MIPS_CPU_MIPS32
 	bool
 config BR2_MIPS_CPU_MIPS32R2
 	bool
+config BR2_MIPS_CPU_MIPS32R5
+	bool
 config BR2_MIPS_CPU_MIPS32R6
 	bool
 config BR2_MIPS_CPU_MIPS64
@@ -21,7 +23,7 @@ choice
 	  Specific CPU variant to use
 
 	  64bit cabable: 64, 64r2, 64r6
-	  non-64bit capable: 32, 32r2, 32r6
+	  non-64bit capable: 32, 32r2, 32r5, 32r6
 
 config BR2_mips_32
 	bool "Generic MIPS32"
@@ -31,6 +33,10 @@ config BR2_mips_32r2
 	bool "Generic MIPS32R2"
 	depends on !BR2_ARCH_IS_64
 	select BR2_MIPS_CPU_MIPS32R2
+config BR2_mips_32r5
+	bool "Generic MIPS32R5"
+	depends on !BR2_ARCH_IS_64
+	select BR2_MIPS_CPU_MIPS32R5
 config BR2_mips_32r6
 	bool "Generic MIPS32R6"
 	depends on !BR2_ARCH_IS_64
@@ -90,6 +96,7 @@ config BR2_ENDIAN
 config BR2_GCC_TARGET_ARCH
 	default "mips32"	if BR2_mips_32
 	default "mips32r2"	if BR2_mips_32r2
+	default "mips32r5"	if BR2_mips_32r5
 	default "mips32r6"	if BR2_mips_32r6
 	default "mips64"	if BR2_mips_64
 	default "mips64r2"	if BR2_mips_64r2
