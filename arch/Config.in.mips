@@ -55,6 +55,10 @@ config BR2_mips_m5101
 	bool "M5101"
 	depends on !BR2_ARCH_IS_64
 	select BR2_MIPS_CPU_MIPS32R5
+config BR2_mips_p5600
+	bool "P5600"
+	depends on !BR2_ARCH_IS_64
+	select BR2_MIPS_CPU_MIPS32R5
 config BR2_mips_64
 	bool "Generic MIPS64"
 	depends on BR2_ARCH_IS_64
@@ -123,6 +127,7 @@ config BR2_GCC_TARGET_ARCH
 	default "interaptiv"	if BR2_mips_interaptiv
 	default "m5100"		if BR2_mips_m5100
 	default "m5101"		if BR2_mips_m5101
+	default "p5600"		if BR2_mips_p5600
 	default "mips64"	if BR2_mips_64
 	default "mips64r2"	if BR2_mips_64r2
 	default "mips64r5"	if BR2_mips_64r5
