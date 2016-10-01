@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-SNAPPY_VERSION = 1ff9be9b8fafc8528ca9e055646f5932aa5db9c4
+SNAPPY_VERSION = 32d6d7d8a2ef328a2ee1dd40f072e21f4983ebda
 SNAPPY_SITE = $(call github,google,snappy,$(SNAPPY_VERSION))
 SNAPPY_LICENSE = BSD-3c
 SNAPPY_LICENSE_FILES = COPYING
