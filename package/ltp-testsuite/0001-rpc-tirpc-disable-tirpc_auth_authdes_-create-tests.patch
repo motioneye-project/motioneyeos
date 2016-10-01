@@ -1,4 +1,7 @@
-rpc-tirpc: disable tirpc_auth_authdes_*create tests
+From 9bbadb7ece1b068465279e7248b3439d443054a6 Mon Sep 17 00:00:00 2001
+From: Erico Nunes <nunes.erico@gmail.com>
+Date: Fri, 30 Sep 2016 17:43:08 +0200
+Subject: [PATCH] rpc-tirpc: disable tirpc_auth_authdes_*create tests
 
 Due to Buildroot patch 0007-Disable-DES-authentification-support.patch on
 libtirpc, this library is built without method authdes_create. Any code
@@ -9,6 +12,8 @@ just disable the problematic tests.
 
 Upstream-status: not applicable
 Signed-off-by: Thomas De Schampheleire <thomas.de.schampheleire@gmail.com>
+[Erico: Rebase for ltp 20160920]
+Signed-off-by: Erico Nunes <nunes.erico@gmail.com>
 ---
  testcases/network/rpc/rpc-tirpc/tests_pack/rpc_suite/tirpc/Makefile | 4 ++++
  1 file changed, 4 insertions(+)
@@ -27,5 +32,5 @@ index 45bc8a6..c04a088 100644
 +
  include $(top_srcdir)/include/mk/generic_trunk_target.mk
 -- 
-1.9.5
+2.7.4
 
