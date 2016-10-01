@@ -21,6 +21,10 @@ else
 LTP_TESTSUITE_CONF_OPTS += --without-modules
 endif
 
+# We change the prefix to a custom one, otherwise we get scripts and
+# directories directly in /usr, such as /usr/runalltests.sh
+LTP_TESTSUITE_CONF_OPTS += --prefix=/usr/lib/ltp-testsuite
+
 # Needs libcap with file attrs which needs attr, so both required
 ifeq ($(BR2_PACKAGE_LIBCAP)$(BR2_PACKAGE_ATTR),yy)
 LTP_TESTSUITE_DEPENDENCIES += libcap
