@@ -72,7 +72,7 @@ DRC_CHOICES = [
     ('off', 'Off'),
     ('low', 'Low'),
     ('medium', 'Medium'),
-    ('hight', 'High')
+    ('high', 'High')
 ]
 
 IMXFX_CHOICES = [
@@ -288,6 +288,7 @@ def _set_motioneye_add_remove_cameras(enabled):
 
 def _get_raspimjpeg_settings(camera_id):
     s = {
+        'preview': False,
         'brightness': 50,
         'contrast': 0,
         'saturation': 0,
@@ -300,6 +301,7 @@ def _get_raspimjpeg_settings(camera_id):
         'metering': 'average',
         'drc': 'off',
         'vstab': False,
+        'denoise': False,
         'imxfx': 'none',
         'width': 640,
         'height': 480,
@@ -307,7 +309,11 @@ def _get_raspimjpeg_settings(camera_id):
         'vflip': False,
         'hflip': False,
         'framerate': 15,
-        'quality': 25
+        'quality': 25,
+        'zoomx': 0,
+        'zoomy': 0,
+        'zoomw': 100,
+        'zoomh': 100
     }
     
     if os.path.exists(RASPIMJPEG_CONF):
@@ -338,6 +344,19 @@ def _get_raspimjpeg_settings(camera_id):
                     
                 elif value == 'true':
                     value = True
+                
+                if name == 'zoom':
+                    try:
+                        parts = value.split(',')
+                        s['zoomx'] = int(float(parts[0]) * 100)
+                        s['zoomy'] = int(float(parts[1]) * 100)
+                        s['zoomw'] = int(float(parts[2]) * 100)
+                        s['zoomh'] = int(float(parts[3]) * 100)
+                    
+                    except:
+                        logging.error('failed to parse zoom setting "%s"' % value)
+
+                    continue
 
                 s[name] = value
                     
@@ -357,6 +376,10 @@ def _set_raspimjpeg_settings(camera_id, s):
     
     s['width'] = int(s['resolution'].split('x')[0])
     s['height'] = int(s.pop('resolution').split('x')[1])
+    
+    s['zoom'] = '%.2f,%.2f,%.2f,%.2f' % (
+            s.pop('zoomx') / 100.0, s.pop('zoomy') / 100.0,
+            s.pop('zoomw') / 100.0, s.pop('zoomh') / 100.0)
 
     s['contrast'] = s['contrast'] * 2 - 100
     s['saturation'] = s['saturation'] * 2 - 100
@@ -760,6 +783,124 @@ def seQuality():
 
 
 @additional_config
+def seZoomx():
+    if not _get_streameye_enabled():
+        return None
+
+    return {
+        'label': 'Zoom X',
+        'description': 'sets the horizontal zoom offset',
+        'type': 'range',
+        'min': 0,
+        'max': 80,
+        'snap': 2,
+        'ticksnum': 5,
+        'decimals': 0,
+        'unit': '%',
+        'section': 'device',
+        'advanced': True,
+        'camera': True,
+        'required': True,
+        'get': _get_raspimjpeg_settings,
+        'set': _set_raspimjpeg_settings,
+        'get_set_dict': True
+    }
+
+
+@additional_config
+def seZoomy():
+    if not _get_streameye_enabled():
+        return None
+
+    return {
+        'label': 'Zoom Y',
+        'description': 'sets the vertical zoom offset',
+        'type': 'range',
+        'min': 0,
+        'max': 80,
+        'snap': 2,
+        'ticksnum': 5,
+        'decimals': 0,
+        'unit': '%',
+        'section': 'device',
+        'advanced': True,
+        'camera': True,
+        'required': True,
+        'get': _get_raspimjpeg_settings,
+        'set': _set_raspimjpeg_settings,
+        'get_set_dict': True
+    }
+
+
+@additional_config
+def seZoomw():
+    if not _get_streameye_enabled():
+        return None
+
+    return {
+        'label': 'Zoom Width',
+        'description': 'sets the zoom width',
+        'type': 'range',
+        'min': 20,
+        'max': 100,
+        'snap': 2,
+        'ticksnum': 5,
+        'decimals': 0,
+        'unit': '%',
+        'section': 'device',
+        'advanced': True,
+        'camera': True,
+        'required': True,
+        'get': _get_raspimjpeg_settings,
+        'set': _set_raspimjpeg_settings,
+        'get_set_dict': True
+    }
+
+
+@additional_config
+def seZoomh():
+    if not _get_streameye_enabled():
+        return None
+
+    return {
+        'label': 'Zoom Height',
+        'description': 'sets the zoom height',
+        'type': 'range',
+        'min': 20,
+        'max': 100,
+        'snap': 2,
+        'ticksnum': 5,
+        'decimals': 0,
+        'unit': '%',
+        'section': 'device',
+        'advanced': True,
+        'camera': True,
+        'required': True,
+        'get': _get_raspimjpeg_settings,
+        'set': _set_raspimjpeg_settings,
+        'get_set_dict': True
+    }
+
+
+@additional_config
+def sePreview():
+    if not _get_streameye_enabled():
+        return None
+
+    return {
+        'label': 'HDMI Preview',
+        'description': 'enable this if you want to see the preview on an HDMI-connected monitor',
+        'type': 'bool',
+        'section': 'device',
+        'advanced': True,
+        'camera': True,
+        'get': _get_raspimjpeg_settings,
+        'set': _set_raspimjpeg_settings,
+        'get_set_dict': True
+    }
+
+
+@additional_config
 def streamEyeCameraSeparator3():
     return {
         'type': 'separator',
@@ -782,31 +923,6 @@ def seIso():
         'max': 800,
         'snap': 1,
         'ticksnum': 8,
-        'decimals': 0,
-        'unit': '',
-        'section': 'device',
-        'advanced': True,
-        'camera': True,
-        'required': True,
-        'get': _get_raspimjpeg_settings,
-        'set': _set_raspimjpeg_settings,
-        'get_set_dict': True
-    }
-
-
-@additional_config
-def seEv():
-    if not _get_streameye_enabled():
-        return None
-
-    return {
-        'label': 'EV Compensation',
-        'description': 'sets a desired EV compensation level for this camera',
-        'type': 'range',
-        'min': -25,
-        'max': 25,
-        'snap': 1,
-        'ticksnum': 11,
         'decimals': 0,
         'unit': '',
         'section': 'device',
@@ -861,6 +977,31 @@ def seExposure():
         'description': 'sets a desired exposure mode for this camera',
         'type': 'choices',
         'choices': EXPOSURE_CHOICES,
+        'section': 'device',
+        'advanced': True,
+        'camera': True,
+        'required': True,
+        'get': _get_raspimjpeg_settings,
+        'set': _set_raspimjpeg_settings,
+        'get_set_dict': True
+    }
+
+
+@additional_config
+def seEv():
+    if not _get_streameye_enabled():
+        return None
+
+    return {
+        'label': 'Exposure Compensation',
+        'description': 'sets a desired exposure compensation for this camera',
+        'type': 'range',
+        'min': -25,
+        'max': 25,
+        'snap': 1,
+        'ticksnum': 11,
+        'decimals': 0,
+        'unit': '',
         'section': 'device',
         'advanced': True,
         'camera': True,
@@ -939,6 +1080,25 @@ def seVstab():
     return {
         'label': 'Video Stabilization',
         'description': 'enables or disables video stabilization for this camera',
+        'type': 'bool',
+        'section': 'device',
+        'advanced': True,
+        'camera': True,
+        'required': True,
+        'get': _get_raspimjpeg_settings,
+        'set': _set_raspimjpeg_settings,
+        'get_set_dict': True
+    }
+
+
+@additional_config
+def seDenoise():
+    if not _get_streameye_enabled():
+        return None
+
+    return {
+        'label': 'Denoise',
+        'description': 'enables image denoising',
         'type': 'bool',
         'section': 'device',
         'advanced': True,
