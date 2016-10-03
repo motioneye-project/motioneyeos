@@ -167,7 +167,6 @@ rm -f $TARGET/usr/bin/smbtree
 rm -f $TARGET/usr/bin/smnotify
 rm -f $TARGET/usr/bin/tdb*
 rm -f $TARGET/usr/bin/testparm
-rm -f $TARGET/usr/bin/tvservice
 rm -f $TARGET/usr/bin/wbinfo
 rm -f $TARGET/usr/sbin/ctdb*
 rm -f $TARGET/usr/sbin/winbindd
