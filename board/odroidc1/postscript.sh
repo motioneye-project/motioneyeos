@@ -11,3 +11,15 @@ cp $BOARD_DIR/boot.ini $BOOT_DIR
 
 # disable software updating
 sed -i 's/enable_update true/enable_update false/' $TARGET/etc/motioneye.conf
+
+# fix some lib dirs
+if ! [ -L $TARGET/lib/arm-linux-gnueabihf ]; then
+    mv $TARGET/lib/arm-linux-gnueabihf/* $TARGET/lib
+    rmdir $TARGET/lib/arm-linux-gnueabihf
+    ln -s /lib $TARGET/lib/arm-linux-gnueabihf
+fi
+
+if ! [ -L $TARGET/usr/lib/arm-linux-gnueabihf ]; then
+    ln -s /usr/lib $TARGET/usr/lib/arm-linux-gnueabihf
+fi
+
