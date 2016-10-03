@@ -1,4 +1,3 @@
-# From https://pypi.python.org/pypi?:action=show_md5&digest=defd153ed901089f5aeac6eb066d5ef7
-md5     defd153ed901089f5aeac6eb066d5ef7  cryptography-1.3.4.tar.gz
-# Calculated based on the hash above
-sha256  423ff890c01be7c70dbfeaa967eeef5146f1a43a5f810ffdc07b178e48a105a9  cryptography-1.3.4.tar.gz
+# md5 from https://pypi.python.org/pypi/cryptography/json, sha256 locally computed
+md5	f977a6ddb38b071213c0157fc77c62ab  cryptography-1.5.2.tar.gz
+sha256	eb8875736734e8e870b09be43b17f40472dc189b1c422a952fa8580768204832  cryptography-1.5.2.tar.gz
