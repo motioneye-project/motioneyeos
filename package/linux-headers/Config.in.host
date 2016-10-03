@@ -6,7 +6,7 @@ comment "Kernel Header Options"
 choice
 	prompt "Kernel Headers"
 	default BR2_KERNEL_HEADERS_AS_KERNEL if BR2_LINUX_KERNEL
-	default BR2_KERNEL_HEADERS_4_7
+	default BR2_KERNEL_HEADERS_4_8
 	help
 	  Select the kernel version to get headers from.
 
@@ -85,6 +85,10 @@ choice
 	config BR2_KERNEL_HEADERS_4_7
 		bool "Linux 4.7.x kernel headers"
 		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_7
+
+	config BR2_KERNEL_HEADERS_4_8
+		bool "Linux 4.8.x kernel headers"
+		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_8
 
 	config BR2_KERNEL_HEADERS_VERSION
 		bool "Manually specified Linux version"
@@ -244,4 +248,5 @@ config BR2_DEFAULT_KERNEL_HEADERS
 	default "4.5.7"		if BR2_KERNEL_HEADERS_4_5
 	default "4.6.7"		if BR2_KERNEL_HEADERS_4_6
 	default "4.7.6"		if BR2_KERNEL_HEADERS_4_7
+	default "4.8"		if BR2_KERNEL_HEADERS_4_8
 	default BR2_DEFAULT_KERNEL_VERSION if BR2_KERNEL_HEADERS_VERSION
