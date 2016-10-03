@@ -1,4 +1,3 @@
-# From https://pypi.python.org/pypi/bottle/0.12.7
-md5	ed0b83c9dbbdbde784e7c652d61c59f4	bottle-0.12.7.tar.gz
-# Calculated based on the hash above
-sha256	e3ea2191f06ca51af45bf6ca41ed2d1b2d809ceda0876466879fe205be7b2073	bottle-0.12.7.tar.gz
+# md5 from https://pypi.python.org/pypi/bottle/json, sha256 locally computed
+md5	f5850258a86224a791171e8ecbb66d99  bottle-0.12.9.tar.gz
+sha256	fe0a24b59385596d02df7ae7845fe7d7135eea73799d03348aeb9f3771500051  bottle-0.12.9.tar.gz
