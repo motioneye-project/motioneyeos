@@ -1,0 +1,311 @@
+From 0f6c7b874d2cc1d0ba500190f4c3d16eabb5d711 Mon Sep 17 00:00:00 2001
+From: Marcin Niestroj <m.niestroj@grinn-global.com>
+Date: Tue, 5 Jul 2016 14:59:28 +0200
+Subject: [PATCH 1/2] ARM: imx6ul: Add support for liteSOM
+
+liteSOM is a System On Module (http://grinn-global.com/litesom/). It
+can't exists on its own, but will be used as part of other boards.
+
+Hardware specification:
+ * NXP i.MX6UL processor
+ * 256M or 512M DDR3 memory
+ * optional eMMC (uSDHC2)
+
+Here we treat SOM similar to SOC, so we place it inside arch/arm/mach-*
+directory and make it possible to reuse initialization code (i.e. DDR,
+eMMC init) for all boards that use it.
+
+Signed-off-by: Marcin Niestroj <m.niestroj@grinn-global.com>
+---
+ arch/arm/Kconfig                             |   2 +
+ arch/arm/Makefile                            |   1 +
+ arch/arm/mach-litesom/Kconfig                |   6 +
+ arch/arm/mach-litesom/Makefile               |   6 +
+ arch/arm/mach-litesom/include/mach/litesom.h |  16 +++
+ arch/arm/mach-litesom/litesom.c              | 200 +++++++++++++++++++++++++++
+ 6 files changed, 231 insertions(+)
+ create mode 100644 arch/arm/mach-litesom/Kconfig
+ create mode 100644 arch/arm/mach-litesom/Makefile
+ create mode 100644 arch/arm/mach-litesom/include/mach/litesom.h
+ create mode 100644 arch/arm/mach-litesom/litesom.c
+
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index e63309a..bf5ac39 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -917,6 +917,8 @@ source "arch/arm/mach-keystone/Kconfig"
+ 
+ source "arch/arm/mach-kirkwood/Kconfig"
+ 
++source "arch/arm/mach-litesom/Kconfig"
++
+ source "arch/arm/mach-mvebu/Kconfig"
+ 
+ source "arch/arm/cpu/armv7/mx7/Kconfig"
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index 42093c2..3e804d7 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -58,6 +58,7 @@ machine-$(CONFIG_ARCH_HIGHBANK)		+= highbank
+ machine-$(CONFIG_ARCH_KEYSTONE)		+= keystone
+ # TODO: rename CONFIG_KIRKWOOD -> CONFIG_ARCH_KIRKWOOD
+ machine-$(CONFIG_KIRKWOOD)		+= kirkwood
++machine-$(CONFIG_LITESOM)		+= litesom
+ machine-$(CONFIG_ARCH_MESON)		+= meson
+ machine-$(CONFIG_ARCH_MVEBU)		+= mvebu
+ # TODO: rename CONFIG_TEGRA -> CONFIG_ARCH_TEGRA
+diff --git a/arch/arm/mach-litesom/Kconfig b/arch/arm/mach-litesom/Kconfig
+new file mode 100644
+index 0000000..9b7f36d
+--- /dev/null
++++ b/arch/arm/mach-litesom/Kconfig
+@@ -0,0 +1,6 @@
++config LITESOM
++	bool
++	select MX6UL
++	select DM
++	select DM_THERMAL
++	select SUPPORT_SPL
+diff --git a/arch/arm/mach-litesom/Makefile b/arch/arm/mach-litesom/Makefile
+new file mode 100644
+index 0000000..b15eb64
+--- /dev/null
++++ b/arch/arm/mach-litesom/Makefile
+@@ -0,0 +1,6 @@
++# (C) Copyright 2016 Grinn
++#
++# SPDX-License-Identifier:	GPL-2.0+
++#
++
++obj-y  := litesom.o
+diff --git a/arch/arm/mach-litesom/include/mach/litesom.h b/arch/arm/mach-litesom/include/mach/litesom.h
+new file mode 100644
+index 0000000..6833949
+--- /dev/null
++++ b/arch/arm/mach-litesom/include/mach/litesom.h
+@@ -0,0 +1,16 @@
++/*
++ * Copyright (C) 2016 Grinn
++ *
++ * SPDX-License-Identifier:	GPL-2.0+
++ */
++
++#ifndef __ARCH_ARM_MACH_LITESOM_SOM_H__
++#define __ARCH_ARM_MACH_LITESOM_SOM_H__
++
++int litesom_mmc_init(bd_t *bis);
++
++#ifdef CONFIG_SPL_BUILD
++void litesom_init_f(void);
++#endif
++
++#endif
+diff --git a/arch/arm/mach-litesom/litesom.c b/arch/arm/mach-litesom/litesom.c
+new file mode 100644
+index 0000000..ac2eccf
+--- /dev/null
++++ b/arch/arm/mach-litesom/litesom.c
+@@ -0,0 +1,200 @@
++/*
++ * Copyright (C) 2015-2016 Freescale Semiconductor, Inc.
++ * Copyright (C) 2016 Grinn
++ *
++ * SPDX-License-Identifier:	GPL-2.0+
++ */
++
++#include <asm/arch/clock.h>
++#include <asm/arch/iomux.h>
++#include <asm/arch/imx-regs.h>
++#include <asm/arch/crm_regs.h>
++#include <asm/arch/mx6ul_pins.h>
++#include <asm/arch/mx6-pins.h>
++#include <asm/arch/sys_proto.h>
++#include <asm/gpio.h>
++#include <asm/imx-common/iomux-v3.h>
++#include <asm/imx-common/boot_mode.h>
++#include <asm/io.h>
++#include <common.h>
++#include <fsl_esdhc.h>
++#include <linux/sizes.h>
++#include <mmc.h>
++
++DECLARE_GLOBAL_DATA_PTR;
++
++#define USDHC_PAD_CTRL (PAD_CTL_PKE | PAD_CTL_PUE |		\
++	PAD_CTL_PUS_22K_UP  | PAD_CTL_SPEED_LOW |		\
++	PAD_CTL_DSE_80ohm   | PAD_CTL_SRE_FAST  | PAD_CTL_HYS)
++
++int dram_init(void)
++{
++	gd->ram_size = imx_ddr_size();
++
++	return 0;
++}
++
++static iomux_v3_cfg_t const emmc_pads[] = {
++	MX6_PAD_NAND_RE_B__USDHC2_CLK | MUX_PAD_CTRL(USDHC_PAD_CTRL),
++	MX6_PAD_NAND_WE_B__USDHC2_CMD | MUX_PAD_CTRL(USDHC_PAD_CTRL),
++	MX6_PAD_NAND_DATA00__USDHC2_DATA0 | MUX_PAD_CTRL(USDHC_PAD_CTRL),
++	MX6_PAD_NAND_DATA01__USDHC2_DATA1 | MUX_PAD_CTRL(USDHC_PAD_CTRL),
++	MX6_PAD_NAND_DATA02__USDHC2_DATA2 | MUX_PAD_CTRL(USDHC_PAD_CTRL),
++	MX6_PAD_NAND_DATA03__USDHC2_DATA3 | MUX_PAD_CTRL(USDHC_PAD_CTRL),
++	MX6_PAD_NAND_DATA04__USDHC2_DATA4 | MUX_PAD_CTRL(USDHC_PAD_CTRL),
++	MX6_PAD_NAND_DATA05__USDHC2_DATA5 | MUX_PAD_CTRL(USDHC_PAD_CTRL),
++	MX6_PAD_NAND_DATA06__USDHC2_DATA6 | MUX_PAD_CTRL(USDHC_PAD_CTRL),
++	MX6_PAD_NAND_DATA07__USDHC2_DATA7 | MUX_PAD_CTRL(USDHC_PAD_CTRL),
++
++	/* RST_B */
++	MX6_PAD_NAND_ALE__GPIO4_IO10 | MUX_PAD_CTRL(NO_PAD_CTRL),
++};
++
++#ifdef CONFIG_FSL_ESDHC
++static struct fsl_esdhc_cfg emmc_cfg = {USDHC2_BASE_ADDR, 0, 8};
++
++#define EMMC_PWR_GPIO	IMX_GPIO_NR(4, 10)
++
++int litesom_mmc_init(bd_t *bis)
++{
++	int ret;
++
++	/* eMMC */
++	imx_iomux_v3_setup_multiple_pads(emmc_pads, ARRAY_SIZE(emmc_pads));
++	gpio_direction_output(EMMC_PWR_GPIO, 0);
++	udelay(500);
++	gpio_direction_output(EMMC_PWR_GPIO, 1);
++	emmc_cfg.sdhc_clk = mxc_get_clock(MXC_ESDHC2_CLK);
++
++	ret = fsl_esdhc_initialize(bis, &emmc_cfg);
++	if (ret) {
++		printf("Warning: failed to initialize mmc dev 1 (eMMC)\n");
++		return ret;
++	}
++
++	return 0;
++}
++#endif
++
++#ifdef CONFIG_SPL_BUILD
++#include <libfdt.h>
++#include <spl.h>
++#include <asm/arch/mx6-ddr.h>
++
++
++static struct mx6ul_iomux_grp_regs mx6_grp_ioregs = {
++	.grp_addds = 0x00000030,
++	.grp_ddrmode_ctl = 0x00020000,
++	.grp_b0ds = 0x00000030,
++	.grp_ctlds = 0x00000030,
++	.grp_b1ds = 0x00000030,
++	.grp_ddrpke = 0x00000000,
++	.grp_ddrmode = 0x00020000,
++	.grp_ddr_type = 0x000c0000,
++};
++
++static struct mx6ul_iomux_ddr_regs mx6_ddr_ioregs = {
++	.dram_dqm0 = 0x00000030,
++	.dram_dqm1 = 0x00000030,
++	.dram_ras = 0x00000030,
++	.dram_cas = 0x00000030,
++	.dram_odt0 = 0x00000030,
++	.dram_odt1 = 0x00000030,
++	.dram_sdba2 = 0x00000000,
++	.dram_sdclk_0 = 0x00000030,
++	.dram_sdqs0 = 0x00000030,
++	.dram_sdqs1 = 0x00000030,
++	.dram_reset = 0x00000030,
++};
++
++static struct mx6_mmdc_calibration mx6_mmcd_calib = {
++	.p0_mpwldectrl0 = 0x00000000,
++	.p0_mpdgctrl0 = 0x41570155,
++	.p0_mprddlctl = 0x4040474A,
++	.p0_mpwrdlctl = 0x40405550,
++};
++
++struct mx6_ddr_sysinfo ddr_sysinfo = {
++	.dsize = 0,
++	.cs_density = 20,
++	.ncs = 1,
++	.cs1_mirror = 0,
++	.rtt_wr = 2,
++	.rtt_nom = 1,		/* RTT_Nom = RZQ/2 */
++	.walat = 0,		/* Write additional latency */
++	.ralat = 5,		/* Read additional latency */
++	.mif3_mode = 3,		/* Command prediction working mode */
++	.bi_on = 1,		/* Bank interleaving enabled */
++	.sde_to_rst = 0x10,	/* 14 cycles, 200us (JEDEC default) */
++	.rst_to_cke = 0x23,	/* 33 cycles, 500us (JEDEC default) */
++	.ddr_type = DDR_TYPE_DDR3,
++	.refsel = 0,		/* Refresh cycles at 64KHz */
++	.refr = 1,		/* 2 refresh commands per refresh cycle */
++};
++
++static struct mx6_ddr3_cfg mem_ddr = {
++	.mem_speed = 800,
++	.density = 4,
++	.width = 16,
++	.banks = 8,
++	.rowaddr = 15,
++	.coladdr = 10,
++	.pagesz = 2,
++	.trcd = 1375,
++	.trcmin = 4875,
++	.trasmin = 3500,
++};
++
++static void ccgr_init(void)
++{
++	struct mxc_ccm_reg *ccm = (struct mxc_ccm_reg *)CCM_BASE_ADDR;
++
++	writel(0xFFFFFFFF, &ccm->CCGR0);
++	writel(0xFFFFFFFF, &ccm->CCGR1);
++	writel(0xFFFFFFFF, &ccm->CCGR2);
++	writel(0xFFFFFFFF, &ccm->CCGR3);
++	writel(0xFFFFFFFF, &ccm->CCGR4);
++	writel(0xFFFFFFFF, &ccm->CCGR5);
++	writel(0xFFFFFFFF, &ccm->CCGR6);
++	writel(0xFFFFFFFF, &ccm->CCGR7);
++}
++
++static void spl_dram_init(void)
++{
++	unsigned long ram_size;
++
++	mx6ul_dram_iocfg(mem_ddr.width, &mx6_ddr_ioregs, &mx6_grp_ioregs);
++	mx6_dram_cfg(&ddr_sysinfo, &mx6_mmcd_calib, &mem_ddr);
++
++	/*
++	 * Get actual RAM size, so we can adjust DDR row size for <512M
++	 * memories
++	 */
++	ram_size = get_ram_size((void *)CONFIG_SYS_SDRAM_BASE, SZ_512M);
++	if (ram_size < SZ_512M) {
++		mem_ddr.rowaddr = 14;
++		mx6_dram_cfg(&ddr_sysinfo, &mx6_mmcd_calib, &mem_ddr);
++	}
++}
++
++void litesom_init_f(void)
++{
++	ccgr_init();
++
++	/* setup AIPS and disable watchdog */
++	arch_cpu_init();
++
++#ifdef CONFIG_BOARD_EARLY_INIT_F
++	board_early_init_f();
++#endif
++
++	/* setup GP timer */
++	timer_init();
++
++	/* UART clocks enabled and gd valid - init serial console */
++	preloader_console_init();
++
++	/* DDR initialization */
++	spl_dram_init();
++}
++#endif
+-- 
+2.10.0
+

@@ -1,0 +1,621 @@
+From 31fcf28e63781d2de1bc0f5f2bce1e72cac4961e Mon Sep 17 00:00:00 2001
+From: Marcin Niestroj <m.niestroj@grinn-global.com>
+Date: Fri, 16 Sep 2016 14:44:27 +0200
+Subject: [PATCH 2/2] board/liteboard: Add support for liteBoard
+
+liteBoard is a development board which uses liteSOM as its base.
+
+Hardware specification:
+ * liteSOM (i.MX6UL, DRAM, eMMC)
+ * Ethernet PHY (id 0)
+ * USB host (usb_otg1)
+ * MicroSD slot (uSDHC1)
+
+Signed-off-by: Marcin Niestroj <m.niestroj@grinn-global.com>
+---
+ arch/arm/cpu/armv7/mx6/Kconfig    |   5 +
+ board/grinn/liteboard/Kconfig     |  12 ++
+ board/grinn/liteboard/MAINTAINERS |   6 +
+ board/grinn/liteboard/Makefile    |   6 +
+ board/grinn/liteboard/README      |  31 +++++
+ board/grinn/liteboard/board.c     | 270 ++++++++++++++++++++++++++++++++++++++
+ configs/liteboard_defconfig       |  22 ++++
+ include/configs/liteboard.h       | 174 ++++++++++++++++++++++++
+ 8 files changed, 526 insertions(+)
+ create mode 100644 board/grinn/liteboard/Kconfig
+ create mode 100644 board/grinn/liteboard/MAINTAINERS
+ create mode 100644 board/grinn/liteboard/Makefile
+ create mode 100644 board/grinn/liteboard/README
+ create mode 100644 board/grinn/liteboard/board.c
+ create mode 100644 configs/liteboard_defconfig
+ create mode 100644 include/configs/liteboard.h
+
+diff --git a/arch/arm/cpu/armv7/mx6/Kconfig b/arch/arm/cpu/armv7/mx6/Kconfig
+index 4214ab5..e24d0a1 100644
+--- a/arch/arm/cpu/armv7/mx6/Kconfig
++++ b/arch/arm/cpu/armv7/mx6/Kconfig
+@@ -144,6 +144,10 @@ config TARGET_PICO_IMX6UL
+ 	bool "PICO-IMX6UL-EMMC"
+ 	select MX6UL
+ 
++config TARGET_LITEBOARD
++	bool "Grinn liteBoard (i.MX6UL)"
++	select LITESOM
++
+ config TARGET_PLATINUM_PICON
+ 	bool "platinum-picon"
+ 	select SUPPORT_SPL
+@@ -222,6 +226,7 @@ source "board/freescale/mx6slevk/Kconfig"
+ source "board/freescale/mx6sxsabresd/Kconfig"
+ source "board/freescale/mx6sxsabreauto/Kconfig"
+ source "board/freescale/mx6ul_14x14_evk/Kconfig"
++source "board/grinn/liteboard/Kconfig"
+ source "board/phytec/pcm058/Kconfig"
+ source "board/gateworks/gw_ventana/Kconfig"
+ source "board/kosagi/novena/Kconfig"
+diff --git a/board/grinn/liteboard/Kconfig b/board/grinn/liteboard/Kconfig
+new file mode 100644
+index 0000000..e035872
+--- /dev/null
++++ b/board/grinn/liteboard/Kconfig
+@@ -0,0 +1,12 @@
++if TARGET_LITEBOARD
++
++config SYS_BOARD
++	default "liteboard"
++
++config SYS_VENDOR
++	default "grinn"
++
++config SYS_CONFIG_NAME
++	default "liteboard"
++
++endif
+diff --git a/board/grinn/liteboard/MAINTAINERS b/board/grinn/liteboard/MAINTAINERS
+new file mode 100644
+index 0000000..b4474f1
+--- /dev/null
++++ b/board/grinn/liteboard/MAINTAINERS
+@@ -0,0 +1,6 @@
++LITEBOARD
++M:	Marcin Niestroj <m.niestroj@grinn-global.com>
++S:	Maintained
++F:	board/grinn/liteboard/
++F:	include/configs/liteboard.h
++F:	configs/liteboard_defconfig
+diff --git a/board/grinn/liteboard/Makefile b/board/grinn/liteboard/Makefile
+new file mode 100644
+index 0000000..e2492d6
+--- /dev/null
++++ b/board/grinn/liteboard/Makefile
+@@ -0,0 +1,6 @@
++# (C) Copyright 2016 Grinn
++#
++# SPDX-License-Identifier:	GPL-2.0+
++#
++
++obj-y  := board.o
+diff --git a/board/grinn/liteboard/README b/board/grinn/liteboard/README
+new file mode 100644
+index 0000000..bee0394
+--- /dev/null
++++ b/board/grinn/liteboard/README
+@@ -0,0 +1,31 @@
++How to use U-Boot on Grinn's liteBoard
++--------------------------------------
++
++- Build U-Boot for liteBoard:
++
++$ make mrproper
++$ make liteboard_defconfig
++$ make
++
++This will generate the SPL image called SPL and the u-boot.img.
++
++- Flash the SPL image into the micro SD card:
++
++sudo dd if=SPL of=/dev/mmcblk0 bs=1k seek=1; sync
++
++- Flash the u-boot.img image into the micro SD card:
++
++sudo dd if=u-boot.img of=/dev/mmcblk0 bs=1k seek=69; sync
++
++- Jumper settings:
++
++S1: 0 1 0 1 1 1
++
++where 0 means bottom position and 1 means top position (from the
++switch label numbers reference).
++
++- Insert the micro SD card in the board.
++
++- Connect USB cable between liteBoard and the PC for the power and console.
++
++- U-Boot messages should come up.
+diff --git a/board/grinn/liteboard/board.c b/board/grinn/liteboard/board.c
+new file mode 100644
+index 0000000..89d525a
+--- /dev/null
++++ b/board/grinn/liteboard/board.c
+@@ -0,0 +1,270 @@
++/*
++ * Copyright (C) 2015-2016 Freescale Semiconductor, Inc.
++ * Copyright (C) 2016 Grinn
++ *
++ * SPDX-License-Identifier:	GPL-2.0+
++ */
++
++#include <asm/arch/clock.h>
++#include <asm/arch/iomux.h>
++#include <asm/arch/imx-regs.h>
++#include <asm/arch/crm_regs.h>
++#include <asm/arch/mx6ul_pins.h>
++#include <asm/arch/mx6-pins.h>
++#include <asm/arch/sys_proto.h>
++#include <asm/gpio.h>
++#include <asm/imx-common/iomux-v3.h>
++#include <asm/imx-common/boot_mode.h>
++#include <asm/io.h>
++#include <common.h>
++#include <fsl_esdhc.h>
++#include <linux/sizes.h>
++#include <linux/fb.h>
++#include <mach/litesom.h>
++#include <miiphy.h>
++#include <mmc.h>
++#include <netdev.h>
++#include <usb.h>
++#include <usb/ehci-ci.h>
++
++DECLARE_GLOBAL_DATA_PTR;
++
++#define UART_PAD_CTRL  (PAD_CTL_PKE | PAD_CTL_PUE |		\
++	PAD_CTL_PUS_100K_UP | PAD_CTL_SPEED_MED |		\
++	PAD_CTL_DSE_40ohm   | PAD_CTL_SRE_FAST  | PAD_CTL_HYS)
++
++#define USDHC_PAD_CTRL (PAD_CTL_PKE | PAD_CTL_PUE |		\
++	PAD_CTL_PUS_22K_UP  | PAD_CTL_SPEED_LOW |		\
++	PAD_CTL_DSE_80ohm   | PAD_CTL_SRE_FAST  | PAD_CTL_HYS)
++
++#define ENET_PAD_CTRL  (PAD_CTL_PUS_100K_UP | PAD_CTL_PUE |     \
++	PAD_CTL_SPEED_HIGH   |                                   \
++	PAD_CTL_DSE_48ohm   | PAD_CTL_SRE_FAST)
++
++#define MDIO_PAD_CTRL  (PAD_CTL_PUS_100K_UP | PAD_CTL_PUE |     \
++	PAD_CTL_DSE_48ohm   | PAD_CTL_SRE_FAST | PAD_CTL_ODE)
++
++#define ENET_CLK_PAD_CTRL  (PAD_CTL_DSE_40ohm   | PAD_CTL_SRE_FAST)
++
++static iomux_v3_cfg_t const uart1_pads[] = {
++	MX6_PAD_UART1_TX_DATA__UART1_DCE_TX | MUX_PAD_CTRL(UART_PAD_CTRL),
++	MX6_PAD_UART1_RX_DATA__UART1_DCE_RX | MUX_PAD_CTRL(UART_PAD_CTRL),
++};
++
++static iomux_v3_cfg_t const sd_pads[] = {
++	MX6_PAD_SD1_CLK__USDHC1_CLK | MUX_PAD_CTRL(USDHC_PAD_CTRL),
++	MX6_PAD_SD1_CMD__USDHC1_CMD | MUX_PAD_CTRL(USDHC_PAD_CTRL),
++	MX6_PAD_SD1_DATA0__USDHC1_DATA0 | MUX_PAD_CTRL(USDHC_PAD_CTRL),
++	MX6_PAD_SD1_DATA1__USDHC1_DATA1 | MUX_PAD_CTRL(USDHC_PAD_CTRL),
++	MX6_PAD_SD1_DATA2__USDHC1_DATA2 | MUX_PAD_CTRL(USDHC_PAD_CTRL),
++	MX6_PAD_SD1_DATA3__USDHC1_DATA3 | MUX_PAD_CTRL(USDHC_PAD_CTRL),
++
++	/* CD */
++	MX6_PAD_UART1_RTS_B__GPIO1_IO19 | MUX_PAD_CTRL(NO_PAD_CTRL),
++};
++
++#ifdef CONFIG_FEC_MXC
++static iomux_v3_cfg_t const fec1_pads[] = {
++	MX6_PAD_GPIO1_IO06__ENET1_MDIO | MUX_PAD_CTRL(MDIO_PAD_CTRL),
++	MX6_PAD_GPIO1_IO07__ENET1_MDC | MUX_PAD_CTRL(ENET_PAD_CTRL),
++	MX6_PAD_ENET1_TX_DATA0__ENET1_TDATA00 | MUX_PAD_CTRL(ENET_PAD_CTRL),
++	MX6_PAD_ENET1_TX_DATA1__ENET1_TDATA01 | MUX_PAD_CTRL(ENET_PAD_CTRL),
++	MX6_PAD_ENET1_TX_EN__ENET1_TX_EN | MUX_PAD_CTRL(ENET_PAD_CTRL),
++	MX6_PAD_ENET1_TX_CLK__ENET1_REF_CLK1 | MUX_PAD_CTRL(ENET_CLK_PAD_CTRL),
++	MX6_PAD_ENET1_RX_DATA0__ENET1_RDATA00 | MUX_PAD_CTRL(ENET_PAD_CTRL),
++	MX6_PAD_ENET1_RX_DATA1__ENET1_RDATA01 | MUX_PAD_CTRL(ENET_PAD_CTRL),
++	MX6_PAD_ENET1_RX_ER__ENET1_RX_ER | MUX_PAD_CTRL(ENET_PAD_CTRL),
++	MX6_PAD_ENET1_RX_EN__ENET1_RX_EN | MUX_PAD_CTRL(ENET_PAD_CTRL),
++};
++
++static void setup_iomux_fec(void)
++{
++	imx_iomux_v3_setup_multiple_pads(fec1_pads, ARRAY_SIZE(fec1_pads));
++}
++#endif
++
++static void setup_iomux_uart(void)
++{
++	imx_iomux_v3_setup_multiple_pads(uart1_pads, ARRAY_SIZE(uart1_pads));
++}
++
++#ifdef CONFIG_FSL_ESDHC
++static struct fsl_esdhc_cfg sd_cfg = {USDHC1_BASE_ADDR, 0, 4};
++
++#define SD_CD_GPIO	IMX_GPIO_NR(1, 19)
++
++static int mmc_get_env_devno(void)
++{
++	u32 soc_sbmr = readl(SRC_BASE_ADDR + 0x4);
++	int dev_no;
++	u32 bootsel;
++
++	bootsel = (soc_sbmr & 0x000000FF) >> 6;
++
++	/* If not boot from sd/mmc, use default value */
++	if (bootsel != 1)
++		return CONFIG_SYS_MMC_ENV_DEV;
++
++	/* BOOT_CFG2[3] and BOOT_CFG2[4] */
++	dev_no = (soc_sbmr & 0x00001800) >> 11;
++
++	return dev_no;
++}
++
++int board_mmc_getcd(struct mmc *mmc)
++{
++	struct fsl_esdhc_cfg *cfg = (struct fsl_esdhc_cfg *)mmc->priv;
++	int ret = 0;
++
++	switch (cfg->esdhc_base) {
++	case USDHC1_BASE_ADDR:
++		ret = !gpio_get_value(SD_CD_GPIO);
++		break;
++	case USDHC2_BASE_ADDR:
++		ret = 1;
++		break;
++	}
++
++	return ret;
++}
++
++int board_mmc_init(bd_t *bis)
++{
++	int ret;
++
++	/* SD */
++	imx_iomux_v3_setup_multiple_pads(sd_pads, ARRAY_SIZE(sd_pads));
++	gpio_direction_input(SD_CD_GPIO);
++	sd_cfg.sdhc_clk = mxc_get_clock(MXC_ESDHC_CLK);
++
++	ret = fsl_esdhc_initialize(bis, &sd_cfg);
++	if (ret) {
++		printf("Warning: failed to initialize mmc dev 0 (SD)\n");
++		return ret;
++	}
++
++	return litesom_mmc_init(bis);
++}
++
++static int check_mmc_autodetect(void)
++{
++	char *autodetect_str = getenv("mmcautodetect");
++
++	if ((autodetect_str != NULL) &&
++	    (strcmp(autodetect_str, "yes") == 0)) {
++		return 1;
++	}
++
++	return 0;
++}
++
++void board_late_mmc_init(void)
++{
++	char cmd[32];
++	char mmcblk[32];
++	u32 dev_no = mmc_get_env_devno();
++
++	if (!check_mmc_autodetect())
++		return;
++
++	setenv_ulong("mmcdev", dev_no);
++
++	/* Set mmcblk env */
++	sprintf(mmcblk, "/dev/mmcblk%dp2 rootwait rw",
++		dev_no);
++	setenv("mmcroot", mmcblk);
++
++	sprintf(cmd, "mmc dev %d", dev_no);
++	run_command(cmd, 0);
++}
++#endif
++
++#ifdef CONFIG_FEC_MXC
++int board_eth_init(bd_t *bis)
++{
++	setup_iomux_fec();
++
++	return fecmxc_initialize(bis);
++}
++
++static int setup_fec(void)
++{
++	struct iomuxc *const iomuxc_regs = (struct iomuxc *)IOMUXC_BASE_ADDR;
++	int ret;
++
++	/* Use 50M anatop loopback REF_CLK1 for ENET1, clear gpr1[13],
++	   set gpr1[17]*/
++	clrsetbits_le32(&iomuxc_regs->gpr[1], IOMUX_GPR1_FEC1_MASK,
++			IOMUX_GPR1_FEC1_CLOCK_MUX1_SEL_MASK);
++
++	ret = enable_fec_anatop_clock(0, ENET_50MHZ);
++	if (ret)
++		return ret;
++
++	enable_enet_clk(1);
++
++	return 0;
++}
++#endif
++
++#ifdef CONFIG_USB_EHCI_MX6
++int board_usb_phy_mode(int port)
++{
++	return USB_INIT_HOST;
++}
++#endif
++
++int board_early_init_f(void)
++{
++	setup_iomux_uart();
++
++	return 0;
++}
++
++int board_init(void)
++{
++	/* Address of boot parameters */
++	gd->bd->bi_boot_params = PHYS_SDRAM + 0x100;
++
++#ifdef	CONFIG_FEC_MXC
++	setup_fec();
++#endif
++
++	return 0;
++}
++
++#ifdef CONFIG_CMD_BMODE
++static const struct boot_mode board_boot_modes[] = {
++	/* 4 bit bus width */
++	{"sd",   MAKE_CFGVAL(0x42, 0x20, 0x00, 0x00)},
++	{"emmc", MAKE_CFGVAL(0x40, 0x28, 0x00, 0x00)},
++	{NULL,	 0},
++};
++#endif
++
++int board_late_init(void)
++{
++#ifdef CONFIG_CMD_BMODE
++	add_board_boot_modes(board_boot_modes);
++#endif
++
++#ifdef CONFIG_ENV_IS_IN_MMC
++	board_late_mmc_init();
++#endif
++
++	return 0;
++}
++
++int checkboard(void)
++{
++	puts("Board: Grinn liteBoard\n");
++
++	return 0;
++}
++
++#ifdef CONFIG_SPL_BUILD
++void board_init_f(ulong dummy)
++{
++	litesom_init_f();
++}
++#endif
+diff --git a/configs/liteboard_defconfig b/configs/liteboard_defconfig
+new file mode 100644
+index 0000000..f853461
+--- /dev/null
++++ b/configs/liteboard_defconfig
+@@ -0,0 +1,22 @@
++CONFIG_ARM=y
++CONFIG_ARCH_MX6=y
++CONFIG_TARGET_LITEBOARD=y
++CONFIG_SPL=y
++CONFIG_SYS_EXTRA_OPTIONS="IMX_CONFIG=arch/arm/imx-common/spl_sd.cfg"
++CONFIG_BOOTDELAY=1
++CONFIG_HUSH_PARSER=y
++CONFIG_CMD_BOOTZ=y
++# CONFIG_CMD_IMLS is not set
++CONFIG_CMD_MEMTEST=y
++CONFIG_CMD_MMC=y
++CONFIG_CMD_USB=y
++CONFIG_CMD_GPIO=y
++CONFIG_CMD_DHCP=y
++CONFIG_CMD_PING=y
++CONFIG_CMD_CACHE=y
++CONFIG_CMD_EXT2=y
++CONFIG_CMD_EXT4=y
++CONFIG_CMD_EXT4_WRITE=y
++CONFIG_CMD_FAT=y
++CONFIG_CMD_FS_GENERIC=y
++CONFIG_OF_LIBFDT=y
+diff --git a/include/configs/liteboard.h b/include/configs/liteboard.h
+new file mode 100644
+index 0000000..19b961f
+--- /dev/null
++++ b/include/configs/liteboard.h
+@@ -0,0 +1,174 @@
++/*
++ * Copyright (C) 2015 Freescale Semiconductor, Inc.
++ * Copyright (C) 2016 Grinn
++ *
++ * Configuration settings for the Grinn liteBoard (i.MX6UL).
++ *
++ * SPDX-License-Identifier:	GPL-2.0+
++ */
++#ifndef __LITEBOARD_CONFIG_H
++#define __LITEBOARD_CONFIG_H
++
++#include <asm/arch/imx-regs.h>
++#include <linux/sizes.h>
++#include "mx6_common.h"
++
++/* SPL options */
++#define CONFIG_SPL_LIBCOMMON_SUPPORT
++#define CONFIG_SPL_MMC_SUPPORT
++#include "imx6_spl.h"
++
++/* Size of malloc() pool */
++#define CONFIG_SYS_MALLOC_LEN		(16 * SZ_1M)
++
++#define CONFIG_BOARD_EARLY_INIT_F
++#define CONFIG_BOARD_LATE_INIT
++
++#define CONFIG_MXC_UART
++#define CONFIG_MXC_UART_BASE		UART1_BASE
++
++/* MMC Configs */
++#ifdef CONFIG_FSL_USDHC
++#define CONFIG_SYS_FSL_ESDHC_ADDR	USDHC1_BASE_ADDR
++#endif
++
++#define CONFIG_DEFAULT_FDT_FILE		"imx6ul-liteboard.dtb"
++
++#define CONFIG_SYS_MMC_IMG_LOAD_PART	1
++
++#define CONFIG_EXTRA_ENV_SETTINGS \
++	"script=boot.scr\0" \
++	"image=zImage\0" \
++	"console=ttymxc0\0" \
++	"fdt_high=0xffffffff\0" \
++	"initrd_high=0xffffffff\0" \
++	"fdt_file=" CONFIG_DEFAULT_FDT_FILE "\0" \
++	"fdt_addr=0x83000000\0" \
++	"boot_fdt=try\0" \
++	"ip_dyn=yes\0" \
++	"mmcdev="__stringify(CONFIG_SYS_MMC_ENV_DEV)"\0" \
++	"mmcpart=" __stringify(CONFIG_SYS_MMC_IMG_LOAD_PART) "\0" \
++	"mmcroot=" CONFIG_MMCROOT " rootwait rw\0" \
++	"mmcautodetect=yes\0" \
++	"mmcargs=setenv bootargs console=${console},${baudrate} " \
++		"root=${mmcroot}\0" \
++	"loadbootscript=" \
++		"fatload mmc ${mmcdev}:${mmcpart} ${loadaddr} ${script};\0" \
++	"bootscript=echo Running bootscript from mmc ...; " \
++		"source\0" \
++	"loadimage=fatload mmc ${mmcdev}:${mmcpart} ${loadaddr} ${image}\0" \
++	"loadfdt=fatload mmc ${mmcdev}:${mmcpart} ${fdt_addr} ${fdt_file}\0" \
++	"mmcboot=echo Booting from mmc ...; " \
++		"run mmcargs; " \
++		"if test ${boot_fdt} = yes || test ${boot_fdt} = try; then " \
++			"if run loadfdt; then " \
++				"bootz ${loadaddr} - ${fdt_addr}; " \
++			"else " \
++				"if test ${boot_fdt} = try; then " \
++					"bootz; " \
++				"else " \
++					"echo WARN: Cannot load the DT; " \
++				"fi; " \
++			"fi; " \
++		"else " \
++			"bootz; " \
++		"fi;\0" \
++	"netargs=setenv bootargs console=${console},${baudrate} " \
++		"root=/dev/nfs " \
++	"ip=dhcp nfsroot=${serverip}:${nfsroot},v3,tcp\0" \
++	"netboot=echo Booting from net ...; " \
++		"run netargs; " \
++		"if test ${ip_dyn} = yes; then " \
++			"setenv get_cmd dhcp; " \
++		"else " \
++			"setenv get_cmd tftp; " \
++		"fi; " \
++		"${get_cmd} ${image}; " \
++		"if test ${boot_fdt} = yes || test ${boot_fdt} = try; then " \
++			"if ${get_cmd} ${fdt_addr} ${fdt_file}; then " \
++				"bootz ${loadaddr} - ${fdt_addr}; " \
++			"else " \
++				"if test ${boot_fdt} = try; then " \
++					"bootz; " \
++				"else " \
++					"echo WARN: Cannot load the DT; " \
++				"fi; " \
++			"fi; " \
++		"else " \
++			"bootz; " \
++		"fi;\0"
++
++#define CONFIG_BOOTCOMMAND \
++	   "mmc dev ${mmcdev};" \
++	   "if mmc rescan; then " \
++		   "if run loadbootscript; then " \
++			   "run bootscript; " \
++		   "else " \
++			   "if run loadimage; then " \
++				   "run mmcboot; " \
++			   "else run netboot; " \
++			   "fi; " \
++		   "fi; " \
++	   "else run netboot; fi"
++
++/* Miscellaneous configurable options */
++#define CONFIG_SYS_MEMTEST_START	0x80000000
++#define CONFIG_SYS_MEMTEST_END		(CONFIG_SYS_MEMTEST_START + SZ_128M)
++
++#define CONFIG_SYS_LOAD_ADDR		CONFIG_LOADADDR
++#define CONFIG_SYS_HZ			1000
++
++#define CONFIG_CMDLINE_EDITING
++#define CONFIG_STACKSIZE		SZ_128K
++
++/* Physical Memory Map */
++#define CONFIG_NR_DRAM_BANKS		1
++#define PHYS_SDRAM			MMDC0_ARB_BASE_ADDR
++
++#define CONFIG_SYS_SDRAM_BASE		PHYS_SDRAM
++#define CONFIG_SYS_INIT_RAM_ADDR	IRAM_BASE_ADDR
++#define CONFIG_SYS_INIT_RAM_SIZE	IRAM_SIZE
++
++#define CONFIG_SYS_INIT_SP_OFFSET \
++	(CONFIG_SYS_INIT_RAM_SIZE - GENERATED_GBL_DATA_SIZE)
++#define CONFIG_SYS_INIT_SP_ADDR \
++	(CONFIG_SYS_INIT_RAM_ADDR + CONFIG_SYS_INIT_SP_OFFSET)
++
++/* FLASH and environment organization */
++#define CONFIG_ENV_SIZE			SZ_8K
++#define CONFIG_ENV_IS_IN_MMC
++#define CONFIG_ENV_OFFSET		(8 * SZ_64K)
++#define CONFIG_SYS_MMC_ENV_DEV		0
++#define CONFIG_SYS_MMC_ENV_PART		0
++#define CONFIG_MMCROOT			"/dev/mmcblk0p2"
++
++#define CONFIG_CMD_BMODE
++
++/* USB Configs */
++#ifdef CONFIG_CMD_USB
++#define CONFIG_USB_EHCI
++#define CONFIG_USB_EHCI_MX6
++#define CONFIG_USB_STORAGE
++#define CONFIG_EHCI_HCD_INIT_AFTER_RESET
++#define CONFIG_MXC_USB_PORTSC  (PORT_PTS_UTMI | PORT_PTS_PTW)
++#define CONFIG_MXC_USB_FLAGS   0
++#define CONFIG_USB_MAX_CONTROLLER_COUNT 1
++#endif
++
++#ifdef CONFIG_CMD_NET
++#define CONFIG_FEC_MXC
++#define CONFIG_MII
++#define CONFIG_FEC_ENET_DEV		0
++
++#define IMX_FEC_BASE			ENET_BASE_ADDR
++#define CONFIG_FEC_MXC_PHYADDR		0x0
++#define CONFIG_FEC_XCV_TYPE		RMII
++#define CONFIG_ETHPRIME			"FEC"
++
++#define CONFIG_PHYLIB
++#define CONFIG_PHY_SMSC
++#endif
++
++#define CONFIG_IMX_THERMAL
++
++#endif
+-- 
+2.10.0
+
