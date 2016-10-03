@@ -1,4 +1,3 @@
-# md5 from https://pypi.python.org/pypi/pathvalidate/json
-md5	d3d89abc6c053b4182be29c23beccf26  pathvalidate-0.4.2.tar.gz
-# sha256 calculated locally
-sha256	4316cf5f862b70efd7792b98f46871592b80924840da69a28df1921d7702fcf9  pathvalidate-0.4.2.tar.gz
+# md5 from https://pypi.python.org/pypi/pathvalidate/json, sha256 locally computed
+md5	1ea321c363fb5f55451473071db30d28  pathvalidate-0.7.1.tar.gz
+sha256	4d701cfc8b380ed39252e29ce972a54dd18ce1dbe5cd8758162480d8bd673e5d  pathvalidate-0.7.1.tar.gz
