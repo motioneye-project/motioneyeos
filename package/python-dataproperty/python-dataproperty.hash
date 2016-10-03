@@ -1,4 +1,3 @@
-# md5 from https://pypi.python.org/pypi/dataproperty/json
-md5	7ad4dabb5469bb3f150dd1018680119c  DataProperty-0.7.1.tar.gz
-# sha256 calculated by scanpypi
-sha256	2d53019e6ca7b95511ec733ea57dc108d916d2dd0818d88d1b7c0e06854a2d2e  DataProperty-0.7.1.tar.gz
+# md5 from https://pypi.python.org/pypi/dataproperty/json, sha256 locally computed
+md5	9d910f0994b892df260977146f9a2bd1  DataProperty-0.9.0.tar.gz
+sha256	02ab30a4873eeb1c538cc54552c9f9ef226b3243b7546e8317c583550960319d  DataProperty-0.9.0.tar.gz
