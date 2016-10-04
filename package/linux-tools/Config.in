@@ -32,6 +32,15 @@ config BR2_PACKAGE_LINUX_TOOLS_GPIO
 
 	  These tools are available only from kernel version 4.8.
 
+config BR2_PACKAGE_LINUX_TOOLS_IIO
+	bool "iio"
+	select BR2_PACKAGE_LINUX_TOOLS
+	help
+	  iio is a collection of tools to get information about,
+	  control and monitor iio devices present on system.
+
+	  These tools are available only from kernel version 4.7.
+
 config BR2_PACKAGE_LINUX_TOOLS_PERF
 	bool "perf"
 	select BR2_PACKAGE_LINUX_TOOLS
