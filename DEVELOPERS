@@ -418,6 +418,7 @@ F:	package/acpica/
 F:	package/acpitool/
 F:	package/efibootmgr/
 F:	package/efivar/
+F:	package/fwts/
 F:	package/spi-tools/
 F:	package/xdotool/
 
