@@ -20,6 +20,18 @@ comment "cpupower needs a toolchain w/ wchar"
 	depends on !BR2_bfin
 	depends on !BR2_USE_WCHAR && BR2_NEEDS_GETTEXT
 
+config BR2_PACKAGE_LINUX_TOOLS_GPIO
+	bool "gpio"
+	select BR2_PACKAGE_LINUX_TOOLS
+	help
+	  gpio is a collection of tools to get information about,
+	  control and monitor gpios present on system.
+
+	  These tools use new gpio ABI which will deprecate sysfs gpio
+	  interface in the future.
+
+	  These tools are available only from kernel version 4.8.
+
 config BR2_PACKAGE_LINUX_TOOLS_PERF
 	bool "perf"
 	select BR2_PACKAGE_LINUX_TOOLS
