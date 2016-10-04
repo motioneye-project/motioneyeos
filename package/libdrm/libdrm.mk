@@ -65,6 +65,12 @@ else
 LIBDRM_CONF_OPTS += --disable-omap-experimental-api
 endif
 
+ifeq ($(BR2_PACKAGE_LIBDRM_ETNAVIV),y)
+LIBDRM_CONF_OPTS += --enable-etnaviv-experimental-api
+else
+LIBDRM_CONF_OPTS += --disable-etnaviv-experimental-api
+endif
+
 ifeq ($(BR2_PACKAGE_LIBDRM_EXYNOS),y)
 LIBDRM_CONF_OPTS += --enable-exynos-experimental-api
 else

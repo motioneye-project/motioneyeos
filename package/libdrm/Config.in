@@ -62,6 +62,14 @@ config BR2_PACKAGE_LIBDRM_OMAP
 	help
 	  Install the TI OMAP driver using an experimental API.
 
+config BR2_PACKAGE_LIBDRM_ETNAVIV
+	bool "etnaviv (experimental)"
+	depends on BR2_arm
+	depends on BR2_PACKAGE_LIBDRM_HAS_ATOMIC
+	select BR2_PACKAGE_LIBDRM_ENABLE_ATOMIC
+	help
+	  Install the Etnaviv/Vivante driver using an experimental API.
+
 config BR2_PACKAGE_LIBDRM_EXYNOS
 	bool "exynos (experimental)"
 	depends on BR2_arm
