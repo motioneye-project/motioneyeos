@@ -1,3 +1,3 @@
-# md5 from https://pypi.python.org/pypi/Twisted/json, sha256 locally computed.
-md5     8b35a88d5f1a4bfd762a008968fddabf  Twisted-16.2.0.tar.bz2
-sha256  a090e8dc675e97fb20c3bb5f8114ae94169f4e29fd3b3cbede35705fd3cdbd79  Twisted-16.2.0.tar.bz2
+# md5 from https://pypi.python.org/pypi/twisted/json, sha256 locally computed
+md5	c6d09bdd681f538369659111f079c29d  Twisted-16.4.1.tar.bz2
+sha256	1d8d73f006c990744effb35588359fd44d43608649ac0b6b7edc71176e88e816  Twisted-16.4.1.tar.bz2
