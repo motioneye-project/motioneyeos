@@ -1,3 +1,2 @@
-# md5 from https://pypi.python.org/pypi/rtslib-fb/json, sha256 locally computed
-md5	f8a2c55cea6de95968fc0dd49beeef6f  rtslib-fb-2.1.58.tar.gz
-sha256	5806f9903557907787abd9c8b9dffb2b312e6c5e3ff40d50d26b10c37b118d47  rtslib-fb-2.1.58.tar.gz
+# locally computed
+sha256  d5d81a78046b4c228d29ba88d9950e0f63858e5fcf601e3d0f8bf107fbaadc03  python-rtslib-fb-v2.1.fb57.tar.gz
