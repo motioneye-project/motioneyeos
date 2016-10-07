@@ -48,6 +48,9 @@ UBOOT_MAKE_TARGET += mdbtrick
 endif
 endif
 
+# Call 'make all' unconditionally
+UBOOT_MAKE_TARGET += all
+
 ifeq ($(BR2_TARGET_UBOOT_FORMAT_KWB),y)
 UBOOT_BINS += u-boot.kwb
 UBOOT_MAKE_TARGET += u-boot.kwb
@@ -68,7 +71,7 @@ endif
 
 ifeq ($(BR2_TARGET_UBOOT_FORMAT_DTB_IMG),y)
 UBOOT_BINS += u-boot-dtb.img
-UBOOT_MAKE_TARGET += all u-boot-dtb.img
+UBOOT_MAKE_TARGET += u-boot-dtb.img
 endif
 
 ifeq ($(BR2_TARGET_UBOOT_FORMAT_IMG),y)
