@@ -30,6 +30,12 @@ BOOT_WRAPPER_AARCH64_CONF_OPTS = \
 	--with-kernel-dir=$(LINUX_DIR) \
 	--with-cmdline=$(BR2_TARGET_BOOT_WRAPPER_AARCH64_BOOTARGS)
 
+ifeq ($(BR2_TARGET_BOOT_WRAPPER_AARCH64_PSCI),y)
+BOOT_WRAPPER_AARCH64_CONF_OPTS += --enable-psci
+else
+BOOT_WRAPPER_AARCH64_CONF_OPTS += --disable-psci
+endif
+
 # We need to convince the configure script that the Linux kernel tree
 # exists, as well as the DTB and the kernel Image. Even though those
 # are available on the build machine, the configure script uses
