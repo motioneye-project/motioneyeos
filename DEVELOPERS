@@ -1203,6 +1203,9 @@ F:	package/gupnp-av/
 N:	Renaud Aubin <root@renaud.io>
 F:	package/libhttpparser/
 
+N:	Ricardo Martincoski <ricardo.martincoski@datacom.ind.br>
+F:	package/atop/
+
 N:	Rhys Williams <github@wilberforce.co.nz>
 F:	package/lirc-tools/
 
