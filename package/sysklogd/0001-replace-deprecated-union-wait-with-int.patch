@@ -1,0 +1,25 @@
+From 86fe87cdf097e6286e76eadcc9c11c79be6258f2 Mon Sep 17 00:00:00 2001
+From: Ryan Coe <bluemrp9@gmail.com>
+Date: Fri, 7 Oct 2016 19:42:40 -0700
+Subject: [PATCH 1/1] replace deprecated union wait with int
+
+Signed-off-by: Ryan Coe <bluemrp9@gmail.com>
+---
+ syslogd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/syslogd.c b/syslogd.c
+index ea73ea5da5e935bb8cab328559f950cd3afc2d20..ace96c8be40f50d123120c0586a384a298212245 100644
+--- a/syslogd.c
++++ b/syslogd.c
+@@ -2094,7 +2094,7 @@ void reapchild()
+	(void) signal(SIGCHLD, reapchild);	/* reset signal handler -ASP */
+	wait ((int *)0);
+ #else
+-	union wait status;
++	int status;
+
+	while (wait3(&status, WNOHANG, (struct rusage *) NULL) > 0)
+		;
+--
+2.9.3
