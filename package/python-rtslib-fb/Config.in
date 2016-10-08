@@ -6,4 +6,4 @@ config BR2_PACKAGE_PYTHON_RTSLIB_FB
 	  the LIO generic SCSI target, present in 3.x Linux kernel
 	  versions.
 
-	  https://github.com/agrover/rtslib-fb
+	  https://github.com/open-iscsi/rtslib-fb
