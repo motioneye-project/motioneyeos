@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-WINE_VERSION = 1.8.4
+WINE_VERSION = 1.8.5
 WINE_SOURCE = wine-$(WINE_VERSION).tar.bz2
 WINE_SITE = https://dl.winehq.org/wine/source/1.8
 WINE_LICENSE = LGPLv2.1+
