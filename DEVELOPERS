@@ -1532,6 +1532,8 @@ N:	Waldemar Brodkorb <wbx@openadk.org>
 F:	arch/Config.in.bfin
 F:	arch/Config.in.sparc
 F:	arch/Config.in.m68k
+F:	package/uclibc/
+F:	package/mksh/
 
 N:	Waldemar Rymarkiewicz <waldemar.rymarkiewicz@tieto.com>
 F:	package/ccid/
