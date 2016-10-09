@@ -98,6 +98,12 @@ config BR2_PACKAGE_PYTHON3_PYEXPAT
 	help
 	  pyexpat and xml libraries for Python3.
 
+config BR2_PACKAGE_PYTHON3_XZ
+	bool "xz module"
+	select BR2_PACKAGE_XZ
+	help
+	  xz (a.k.a lzma) module for Python3
+
 config BR2_PACKAGE_PYTHON3_ZLIB
 	bool "zlib module"
 	select BR2_PACKAGE_ZLIB
