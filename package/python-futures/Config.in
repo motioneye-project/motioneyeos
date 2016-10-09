@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PYTHON_FUTURES
+	bool "python-futures"
+	depends on BR2_PACKAGE_PYTHON # not needed for python3
+	help
+	  Backport of the concurrent.futures package from Python 3.2.
+
+	  https://github.com/agronholm/pythonfutures
