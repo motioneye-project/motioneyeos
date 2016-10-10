@@ -105,7 +105,12 @@ LIBGLIB2_DEPENDENCIES = \
 	libffi pcre util-linux zlib $(if $(BR2_NEEDS_GETTEXT),gettext)
 
 HOST_LIBGLIB2_DEPENDENCIES = \
-	host-gettext host-libffi host-pcre host-pkgconf host-zlib
+	host-gettext \
+	host-libffi \
+	host-pcre \
+	host-pkgconf \
+	host-util-linux \
+	host-zlib
 
 LIBGLIB2_CONF_OPTS = \
 	--with-pcre=system
