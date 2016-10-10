@@ -235,7 +235,16 @@ F:	package/perl-www-robotrules/
 F:	package/pixman/
 F:	package/pound/
 F:	package/pure-ftpd/
+F:	package/python-couchdb/
+F:	package/python-cssutils/
+F:	package/python-futures/
+F:	package/python-mwclient/
+F:	package/python-mwscrape/
+F:	package/python-mwscrape2slob/
 F:	package/python-mako/
+F:	package/python-pyicu/
+F:	package/python-pylru/
+F:	package/python-slob/
 F:	package/rtmpdump/
 F:	package/softether/
 F:	package/taglib/
