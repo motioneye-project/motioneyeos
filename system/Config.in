@@ -509,7 +509,7 @@ config BR2_ROOTFS_POST_FAKEROOT_SCRIPT
 
 	  This gives users the opportunity to do customisations of the
 	  content of the rootfs, which would otherwise require root
-	  rigths.
+	  rights.
 
 	  These scripts are called with the target directory name as
 	  first argument. The build will fail on the first scripts that
