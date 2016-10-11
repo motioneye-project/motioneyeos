@@ -518,6 +518,7 @@ N:	Frank Hunleth <fhunleth@troodon-software.com>
 F:	package/am335x-pru-package/
 F:	package/libdmtx/
 F:	package/libsodium/
+F:	package/php-amqp/
 F:	package/python-cherrypy/
 F:	package/sane-backends/
 F:	package/ucl/
