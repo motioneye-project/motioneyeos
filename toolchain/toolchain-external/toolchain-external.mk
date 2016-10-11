@@ -257,14 +257,6 @@ ifeq ($(BR2_TOOLCHAIN_USES_MUSL),y)
 TOOLCHAIN_EXTERNAL_DEPENDENCIES += musl-compat-headers
 endif
 
-# The Linaro toolchain expects the libraries in
-# {/usr,}/lib/<tuple>, but Buildroot copies them to
-# {/usr,}/lib, so we need to create a symbolic link.
-define TOOLCHAIN_EXTERNAL_LINARO_SYMLINK
-	ln -snf . $(TARGET_DIR)/lib/$(TOOLCHAIN_EXTERNAL_PREFIX)
-	ln -snf . $(TARGET_DIR)/usr/lib/$(TOOLCHAIN_EXTERNAL_PREFIX)
-endef
-
 # The Codescape toolchain uses a sysroot layout that places them
 # side-by-side instead of nested like multilibs. A symlink is needed
 # much like for the nested sysroots which are handled in
