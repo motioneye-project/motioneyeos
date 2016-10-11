@@ -15,6 +15,11 @@ TINYCBOR_LICENSE_FILES = LICENSE
 TINYCBOR_PATCH = \
 	https://github.com/01org/tinycbor/commit/ede7f1431ae06c9086f2a83a57bd7832d99280e3.patch
 
+# This patch fixes the issue on cjson detection
+# This patch is currently in dev branch and will be a part of v0.4
+TINYCBOR_PATCH += \
+	https://github.com/01org/tinycbor/commit/ad09b6af11fc8b6391041973783785cfe1559d63.patch
+
 TINYCBOR_DEPENDENCIES = host-pkgconf
 TINYCBOR_INSTALL_STAGING = YES
 
