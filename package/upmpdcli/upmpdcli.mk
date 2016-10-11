@@ -4,15 +4,11 @@
 #
 ################################################################################
 
-UPMPDCLI_VERSION = 1.2.2
+UPMPDCLI_VERSION = 1.2.8
 UPMPDCLI_SITE = http://www.lesbonscomptes.com/upmpdcli/downloads
 UPMPDCLI_LICENSE = GPLv2+
 UPMPDCLI_LICENSE_FILES = COPYING
 UPMPDCLI_DEPENDENCIES = host-pkgconf libmpdclient libupnpp libmicrohttpd jsoncpp
-# touching configure.ac and Makefile.am in
-#   0001-fix-jsoncpp-detection.patch
-#   0002-use-pkg-config-for-libupnpp.patch
-UPMPDCLI_AUTORECONF = YES
 
 # Upmpdcli only runs if user upmpdcli exists
 define UPMPDCLI_USERS
