@@ -4,16 +4,12 @@
 #
 ################################################################################
 
-LIBUPNPP_VERSION = 0.15.0
+LIBUPNPP_VERSION = 0.15.1
 LIBUPNPP_SITE = http://www.lesbonscomptes.com/upmpdcli/downloads
 LIBUPNPP_LICENSE = GPLv2+
 LIBUPNPP_LICENSE_FILES = COPYING
 LIBUPNPP_INSTALL_STAGING = YES
 LIBUPNPP_DEPENDENCIES = expat libcurl libupnp
-# touching configure.ac in:
-#   0001-Check-for-std-future.patch
-#   0002-Add-pkg-config-file.patch
-LIBUPNPP_AUTORECONF = YES
 
 # configure script fails to link against the dependencies of libupnp
 # and libcurl causing detection to fail when statically linking
