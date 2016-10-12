@@ -18,7 +18,7 @@ SYSTEMD_BOOTCHART_AUTORECONF = YES
 SYSTEMD_BOOTCHART_CONF_OPTS = --disable-man
 
 define SYSTEMD_BOOTCHART_INTLTOOLIZE
-        cd $(@D) && $(HOST_DIR)/usr/bin/intltoolize --force --automake
+	cd $(@D) && $(HOST_DIR)/usr/bin/intltoolize --force --automake
 endef
 SYSTEMD_BOOTCHART_PRE_CONFIGURE_HOOKS = SYSTEMD_BOOTCHART_INTLTOOLIZE
 
