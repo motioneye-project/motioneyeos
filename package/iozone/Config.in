@@ -10,4 +10,4 @@ config BR2_PACKAGE_IOZONE
 
 comment "iozone needs a toolchain w/ NPTL"
 	depends on BR2_USE_MMU
-        depends on !BR2_TOOLCHAIN_HAS_THREADS_NPTL
+	depends on !BR2_TOOLCHAIN_HAS_THREADS_NPTL
