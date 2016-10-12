@@ -27,11 +27,11 @@ VDE2_AUTORECONF = YES
 #       in future commits.
 VDE2_CONF_OPTS = \
 	--disable-cryptcab \
-       --disable-experimental \
-       --disable-kernel-switch \
+	--disable-experimental \
+	--disable-kernel-switch \
 	--disable-pcap \
 	--disable-profile \
-       --disable-python \
+	--disable-python \
 	--enable-tuntap
 
 # Package does not build in parallel due to improper make rules
@@ -39,11 +39,11 @@ VDE2_MAKE = $(MAKE1)
 
 HOST_VDE2_CONF_OPTS = \
 	--disable-cryptcab \
-       --disable-experimental \
-       --disable-kernel-switch \
+	--disable-experimental \
+	--disable-kernel-switch \
 	--disable-pcap \
 	--disable-profile \
-       --disable-python \
+	--disable-python \
 	--enable-tuntap
 
 HOST_VDE2_MAKE = $(MAKE1)
