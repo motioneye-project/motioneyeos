@@ -28,6 +28,13 @@ else
 POPPLER_CONF_OPTS += --enable-cms=none
 endif
 
+ifeq ($(BR2_PACKAGE_CAIRO)$(BR2_PACKAGE_LIBGLIB2),yy)
+POPPLER_CONF_OPTS += --enable-poppler-glib
+POPPLER_DEPENDENCIES += libglib2
+else
+POPPLER_CONF_OPTS += --disable-poppler-glib
+endif
+
 ifeq ($(BR2_PACKAGE_TIFF),y)
 POPPLER_CONF_OPTS += --enable-libtiff
 # Help poppler to find libtiff in static linking scenarios
