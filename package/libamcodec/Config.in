@@ -9,6 +9,6 @@ config BR2_PACKAGE_LIBAMCODEC
 	depends on !BR2_STATIC_LIBS # dlfcn.h
 	select BR2_PACKAGE_ALSA_LIB
 	help
-	    Interface library for Amlogic media codecs
+	  Interface library for Amlogic media codecs
 
-	    https://github.com/mdrjr/c2_aml_libs.git
+	  https://github.com/mdrjr/c2_aml_libs.git
