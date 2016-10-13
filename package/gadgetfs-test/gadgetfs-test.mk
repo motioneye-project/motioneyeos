@@ -15,11 +15,11 @@ GADGETFS_TEST_MAKEOPTS += USE_AIO=y
 endif
 
 define GADGETFS_TEST_BUILD_CMDS
-	$(MAKE) -C $(@D) $(GADGETFS_TEST_MAKEOPTS)
+	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) $(GADGETFS_TEST_MAKEOPTS)
 endef
 
 define GADGETFS_TEST_INSTALL_TARGET_CMDS
-	$(MAKE) -C $(@D) DESTDIR=$(TARGET_DIR) prefix=/usr install
+	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) DESTDIR=$(TARGET_DIR) prefix=/usr install
 endef
 
 $(eval $(generic-package))
