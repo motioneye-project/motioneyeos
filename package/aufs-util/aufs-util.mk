@@ -46,14 +46,14 @@ define AUFS_UTIL_BUILD_CMDS
 		CPPFLAGS="$(AUFS_UTIL_HOST_CPPFLAGS)" \
 		HOSTCC="$(HOSTCC)" HOSTLD="$(HOSTLD)" \
 		INSTALL="$(INSTALL)" c2sh c2tmac
-	$(MAKE1) -C $(@D) \
+	$(TARGET_MAKE_ENV) $(MAKE1) -C $(@D) \
 		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(AUFS_UTIL_CPPFLAGS)" \
 		INSTALL="$(INSTALL)" all
 endef
 
 define AUFS_UTIL_INSTALL_TARGET_CMDS
-	$(MAKE) -C $(@D) INSTALL="$(INSTALL)" DESTDIR="$(TARGET_DIR)" install
+	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) INSTALL="$(INSTALL)" DESTDIR="$(TARGET_DIR)" install
 endef
 
 $(eval $(generic-package))
