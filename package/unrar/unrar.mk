@@ -11,13 +11,13 @@ UNRAR_LICENSE = unrar
 UNRAR_LICENSE_FILES = license.txt
 
 define UNRAR_BUILD_CMDS
-	$(MAKE) CXX="$(TARGET_CXX)" STRIP="/bin/true" \
+	$(TARGET_MAKE_ENV) $(MAKE) CXX="$(TARGET_CXX)" STRIP="/bin/true" \
 		CXXFLAGS="$(TARGET_CXXFLAGS) -pthread" \
 		LDFLAGS="$(TARGET_LDFLAGS) -pthread" -C $(@D)
 endef
 
 define UNRAR_INSTALL_TARGET_CMDS
-	$(MAKE) -C $(@D) DESTDIR=$(TARGET_DIR)/usr install
+	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) DESTDIR=$(TARGET_DIR)/usr install
 endef
 
 $(eval $(generic-package))
