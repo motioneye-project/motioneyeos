@@ -14,6 +14,13 @@ POPPLER_INSTALL_STAGING = YES
 POPPLER_CONF_OPTS = --with-font-configuration=fontconfig \
 	--enable-xpdf-headers
 
+ifeq ($(BR2_PACKAGE_CAIRO),y)
+POPPLER_CONF_OPTS += --enable-cairo-output
+POPPLER_DEPENDENCIES += cairo
+else
+POPLER_CONF_OPTS += --disable-cairo-output
+endif
+
 ifeq ($(BR2_PACKAGE_LCMS2),y)
 POPPLER_CONF_OPTS += --enable-cms=lcms2
 POPPLER_DEPENDENCIES += lcms2
