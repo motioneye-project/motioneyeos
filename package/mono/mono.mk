@@ -4,12 +4,12 @@
 #
 ################################################################################
 
-MONO_VERSION = 4.4.2.11
+MONO_VERSION = 4.6.0.245
 MONO_SITE = http://download.mono-project.com/sources/mono
 MONO_SOURCE = mono-$(MONO_VERSION).tar.bz2
-MONO_LICENSE = GPLv2 or MIT (compiler, tools), LGPLv2 (runtime libs), MIT (class libs) or commercial
-MONO_LICENSE_FILES = LICENSE COPYING.LIB mcs/COPYING.LIB mcs/COPYING \
-	eglib/COPYING external/Newtonsoft.Json/Tools/7-zip/copying.txt
+MONO_LICENSE = GPLv2 or MIT (compiler, tools), MIT (libs) or commercial
+MONO_LICENSE_FILES = LICENSE mcs/COPYING eglib/COPYING \
+	external/Newtonsoft.Json/Tools/7-zip/copying.txt
 MONO_INSTALL_STAGING = YES
 
 ## Mono native
@@ -22,7 +22,7 @@ MONO_CONF_OPTS = --disable-gtk-doc \
 	--with-mcs-docs=no \
 	--with-moonlight=no \
 	--with-ikvm-native=no \
-	--enable-minimal=aot,profiler,debug \
+	--enable-minimal=profiler,debug \
 	--disable-mcs-build \
 	--enable-static
 
@@ -49,7 +49,7 @@ HOST_MONO_CONF_OPTS = --disable-gtk-doc \
 	--with-moonlight=no \
 	--disable-libraries \
 	--with-ikvm-native=no \
-	--enable-minimal=aot,profiler,debug \
+	--enable-minimal=profiler,debug \
 	--enable-static
 
 # ensure monolite is used
