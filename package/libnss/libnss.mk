@@ -45,12 +45,12 @@ endif
 endif
 
 define LIBNSS_BUILD_CMDS
-	$(MAKE1) -C $(@D)/nss coreconf \
+	$(TARGET_MAKE_ENV) $(MAKE1) -C $(@D)/nss coreconf \
 		SOURCE_MD_DIR=$(@D)/$(LIBNSS_DISTDIR) \
 		DIST=$(@D)/$(LIBNSS_DISTDIR) \
 		CHECKLOC= \
 		$(LIBNSS_BUILD_VARS)
-	$(MAKE1) -C $(@D)/nss lib/dbm all \
+	$(TARGET_MAKE_ENV) $(MAKE1) -C $(@D)/nss lib/dbm all \
 		SOURCE_MD_DIR=$(@D)/$(LIBNSS_DISTDIR) \
 		DIST=$(@D)/$(LIBNSS_DISTDIR) \
 		CHECKLOC= \
