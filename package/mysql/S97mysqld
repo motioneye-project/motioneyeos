@@ -1,10 +1,15 @@
 #!/bin/sh
 
+MYSQL_DIR="/var/mysql"
+MYSQL_USER="mysql"
+
+[ -r /etc/default/mysql ] && . /etc/default/mysql
+
 case "$1" in
 	start)
-		if [ ! -d /var/mysql/mysql ] ; then
+		if [ ! -d $MYSQL_DIR/mysql ] ; then
 			echo "Creating MySQL system tables..."
-			mysql_install_db --user=mysql --ldata=/var/mysql
+			mysql_install_db --user=$MYSQL_USER --ldata=$MYSQL_DIR
 		fi
 
 		# mysqld runs as user mysql, but /run is only writable by root
