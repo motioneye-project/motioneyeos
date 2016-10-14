@@ -147,16 +147,11 @@ $(if $(BASE_DIR),, $(error output directory "$(O)" does not exist))
 # on the command line, therefore the file is re-created every time make is run.
 #
 # When BR2_EXTERNAL is set to an empty value (e.g. explicitly in command
-# line), the .br-external file is removed and we point to
-# support/dummy-external. This makes sure we can unconditionally include the
-# Config.in and external.mk from the BR2_EXTERNAL directory. In this case,
-# override is necessary so the user can clear BR2_EXTERNAL from the command
-# line, but the dummy path is still used internally.
+# line), the .br-external file is removed.
 
 BR2_EXTERNAL_FILE = $(BASE_DIR)/.br-external
 -include $(BR2_EXTERNAL_FILE)
 ifeq ($(BR2_EXTERNAL),)
-  override BR2_EXTERNAL = support/dummy-external
   $(shell rm -f $(BR2_EXTERNAL_FILE))
 else
   _BR2_EXTERNAL = $(shell cd $(BR2_EXTERNAL) >/dev/null 2>&1 && pwd)
@@ -165,6 +160,7 @@ else
   endif
   override BR2_EXTERNAL := $(_BR2_EXTERNAL)
   $(shell echo BR2_EXTERNAL ?= $(BR2_EXTERNAL) > $(BR2_EXTERNAL_FILE))
+  BR2_EXTERNAL_MK = $(BR2_EXTERNAL)/external.mk
 endif
 
 # To make sure that the environment variable overrides the .config option,
@@ -457,7 +453,8 @@ include boot/common.mk
 include linux/linux.mk
 include fs/common.mk
 
-include $(BR2_EXTERNAL)/external.mk
+# Nothing to include if no BR2_EXTERNAL tree in use
+include $(BR2_EXTERNAL_MK)
 
 # Now we are sure we have all the packages scanned and defined. We now
 # check for each package in the list of enabled packages, that all its

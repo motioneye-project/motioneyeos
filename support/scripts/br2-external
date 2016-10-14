@@ -19,9 +19,11 @@ main() {
     # Forget options; keep only positional args
     shift $((OPTIND-1))
 
-    if [ ${#} -ne 1 ]; then
-        error "need exactly one br2-external tree to be specified\n"
+    # Accept 0 or 1 br2-external tree.
+    if [ ${#} -gt 1 ]; then
+        error "only zero or one br2-external tree allowed.\n"
     fi
+
     br2_ext="${1}"
 
     if [ -z "${ofile}" ]; then
@@ -38,6 +40,11 @@ main() {
 do_validate() {
     local br2_ext="${1}"
 
+    # No br2-external tree is valid
+    if [ -z "${br2_ext}" ]; then
+        return
+    fi
+
     if [ ! -d "${br2_ext}" ]; then
         error "'%s': no such file or directory\n" "${br2_ext}"
     fi
@@ -52,12 +59,17 @@ do_validate() {
 do_kconfig() {
     printf '#\n# Automatically generated file; DO NOT EDIT.\n#\n'
     printf '\n'
+
+    if [ -z "${BR2_EXT}" ]; then
+        printf '# No br2-external tree defined.\n'
+        return
+    fi
+
     printf 'config BR2_EXTERNAL\n'
     printf '\tstring\n'
     printf '\tdefault "%s"\n' "${BR2_EXT}"
     printf '\n'
     printf 'menu "User-provided options"\n'
-    printf '\tdepends on BR2_EXTERNAL != "support/dummy-external"\n'
     printf '\n'
     printf 'source "%s/Config.in"\n' "${BR2_EXT}"
     printf '\n'
