@@ -4,9 +4,12 @@
 [[br2-external-converting]]
 == Converting old br2-external trees
 
-Buildroot 2016.11 introduced a backward-incompatible change in the way
-br2-external trees are handled. A minor change has to be made: adding
-a name to your br2-external tree, see xref:outside-br-custom[].
+Before Buildroot 2016.11, it was possible to use only one br2-external
+tree at once. With Buildroot 2016.11 came the possibility to use more
+than one simultaneously (for details, see xref:outside-br-custom[]).
+
+This however means that older br2-external trees are not usable as-is.
+A minor change has to be made: adding a name to your br2-external tree.
 
 This can be done very easily in just a few steps:
 
