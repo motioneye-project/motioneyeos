@@ -235,8 +235,10 @@ export PERL=$(shell which perl)
 # finds this perl module by exporting the proper value for PERL5LIB.
 export PERL5LIB=$(HOST_DIR)/usr/lib/perl
 
+TARGET_MAKE_ENV = PATH=$(BR_PATH)
+
 TARGET_CONFIGURE_OPTS = \
-	PATH=$(BR_PATH) \
+	$(TARGET_MAKE_ENV) \
 	AR="$(TARGET_AR)" \
 	AS="$(TARGET_AS)" \
 	LD="$(TARGET_LD)" \
@@ -275,11 +277,17 @@ TARGET_CONFIGURE_OPTS = \
 	STAGING_DIR="$(STAGING_DIR)" \
 	INTLTOOL_PERL=$(PERL)
 
-TARGET_MAKE_ENV = PATH=$(BR_PATH)
 
+HOST_MAKE_ENV = \
+	PATH=$(BR_PATH) \
+	PKG_CONFIG="$(PKG_CONFIG_HOST_BINARY)" \
+	PKG_CONFIG_SYSROOT_DIR="/" \
+	PKG_CONFIG_ALLOW_SYSTEM_CFLAGS=1 \
+	PKG_CONFIG_ALLOW_SYSTEM_LIBS=1 \
+	PKG_CONFIG_LIBDIR="$(HOST_DIR)/usr/lib/pkgconfig:$(HOST_DIR)/usr/share/pkgconfig"
 
 HOST_CONFIGURE_OPTS = \
-	PATH=$(BR_PATH) \
+	$(HOST_MAKE_ENV) \
 	AR="$(HOSTAR)" \
 	AS="$(HOSTAS)" \
 	LD="$(HOSTLD)" \
@@ -294,18 +302,7 @@ HOST_CONFIGURE_OPTS = \
 	CFLAGS="$(HOST_CFLAGS)" \
 	CXXFLAGS="$(HOST_CXXFLAGS)" \
 	LDFLAGS="$(HOST_LDFLAGS)" \
-	PKG_CONFIG_ALLOW_SYSTEM_CFLAGS=1 \
-	PKG_CONFIG_ALLOW_SYSTEM_LIBS=1 \
-	PKG_CONFIG="$(PKG_CONFIG_HOST_BINARY)" \
-	PKG_CONFIG_SYSROOT_DIR="/" \
-	PKG_CONFIG_LIBDIR="$(HOST_DIR)/usr/lib/pkgconfig:$(HOST_DIR)/usr/share/pkgconfig" \
 	INTLTOOL_PERL=$(PERL)
-
-HOST_MAKE_ENV = \
-	PATH=$(BR_PATH) \
-	PKG_CONFIG="$(PKG_CONFIG_HOST_BINARY)" \
-	PKG_CONFIG_SYSROOT_DIR="/" \
-	PKG_CONFIG_LIBDIR="$(HOST_DIR)/usr/lib/pkgconfig"
 
 # This is extra environment we can not export ourselves (eg. because some
 # packages use that variable internally, eg. uboot), so we have to
