@@ -767,9 +767,9 @@ $$($(2)_TARGET_DIRCLEAN):		PKG=$(2)
 # kernel case, the bootloaders case, and the normal packages case.
 ifeq ($(1),linux)
 $(2)_KCONFIG_VAR = BR2_LINUX_KERNEL
-else ifneq ($$(filter boot/% $$(if $$(BR2_EXTERNAL_NAME),$$(BR2_EXTERNAL_$$(BR2_EXTERNAL_NAME)_PATH)/boot/%),$(pkgdir)),)
+else ifneq ($$(filter boot/% $$(foreach dir,$$(BR2_EXTERNAL_DIRS),$$(dir)/boot/%),$(pkgdir)),)
 $(2)_KCONFIG_VAR = BR2_TARGET_$(2)
-else ifneq ($$(filter toolchain/% $$(if $$(BR2_EXTERNAL_NAME),$$(BR2_EXTERNAL_$$(BR2_EXTERNAL_NAME)_PATH)/toolchain/%),$(pkgdir)),)
+else ifneq ($$(filter toolchain/% $$(foreach dir,$$(BR2_EXTERNAL_DIRS),$$(dir)/toolchain/%),$(pkgdir)),)
 $(2)_KCONFIG_VAR = BR2_$(2)
 else
 $(2)_KCONFIG_VAR = BR2_PACKAGE_$(2)
