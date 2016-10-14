@@ -46,6 +46,10 @@ endef
 $(eval $(call caseconvert-helper,UPPERCASE,$(join $(addsuffix :,$([FROM])),$([TO]))))
 $(eval $(call caseconvert-helper,LOWERCASE,$(join $(addsuffix :,$([TO])),$([FROM]))))
 
+# Reverse the orders of words in a list. Again, inspired by the gmsl
+# 'reverse' macro.
+reverse = $(if $(1),$(call reverse,$(wordlist 2,$(words $(1)),$(1))) $(firstword $(1)))
+
 # Sanitize macro cleans up generic strings so it can be used as a filename
 # and in rules. Particularly useful for VCS version strings, that can contain
 # slashes, colons (OK in filenames but not in rules), and spaces.

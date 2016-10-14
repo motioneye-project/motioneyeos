@@ -169,5 +169,6 @@ And then in +$(BR2_EXTERNAL_FOO_42_PATH)/package/package1+ and
 +
 .Note:
 If a defconfig file is present in more than one br2-external tree, then
-   the first one is used. It is not possible to override a defconfig
-   bundled in Buildroot.
+   the one from the last br2-external tree is used. It is thus possible
+   to override a defconfig bundled in Buildroot or another br2-external
+   tree.
