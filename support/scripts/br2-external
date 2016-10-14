@@ -6,12 +6,14 @@ declare BR2_EXT
 
 main() {
     local OPT OPTARG
-    local br2_ext ofile
+    local br2_ext ofile ofmt
 
-    while getopts :ho: OPT; do
+    while getopts :hkmo: OPT; do
         case "${OPT}" in
         h)  help; exit 0;;
         o)  ofile="${OPTARG}";;
+        k)  ofmt="kconfig";;
+        m)  ofmt="mk";;
         :)  error "option '%s' expects a mandatory argument\n" "${OPTARG}";;
         \?) error "unknown option '%s'\n" "${OPTARG}";;
         esac
@@ -26,17 +28,31 @@ main() {
 
     br2_ext="${1}"
 
+    case "${ofmt}" in
+    mk|kconfig)
+        ;;
+    *)  error "no output format specified (-m/-k)\n";;
+    esac
     if [ -z "${ofile}" ]; then
         error "no output file specified (-o)\n"
     fi
 
+    exec >"${ofile}"
+
     do_validate "${br2_ext}"
 
-    do_kconfig >"${ofile}"
+    do_${ofmt}
 }
 
 # Validates the br2-external tree passed as argument. Makes it cannonical
 # and store it in global variable BR2_EXT.
+#
+# Note: since this script is always first called from Makefile context
+# to generate the Makefile fragment before it is called to generate the
+# Kconfig snippet, we're sure that any error in do_validate will be
+# interpreted in Makefile context. Going up to generating the Kconfig
+# snippet means that there were no error.
+#
 do_validate() {
     local br2_ext="${1}"
 
@@ -53,6 +69,26 @@ do_validate() {
     fi
 
     BR2_EXT="$(cd "${br2_ext}"; pwd -P )"
+}
+
+# Generate the .mk snippet that defines makefile variables
+# for the br2-external tree
+do_mk() {
+    local BR2_EXT="${1}"
+
+    printf '#\n# Automatically generated file; DO NOT EDIT.\n#\n'
+    printf '\n'
+
+    printf 'BR2_EXTERNAL ?= %s\n' "${BR2_EXT}"
+    printf 'BR2_EXTERNAL_MK =\n'
+    printf '\n'
+
+    if [ -z "${BR2_EXT}" ]; then
+        printf '# No br2-external tree defined.\n'
+        return
+    fi
+
+    printf 'BR2_EXTERNAL_MK = %s/external.mk\n' "${BR2_EXT}"
 }
 
 # Generate the kconfig snippet for the br2-external tree.
@@ -79,14 +115,26 @@ do_kconfig() {
 help() {
     cat <<-_EOF_
 	Usage:
-	    ${my_name} -o FILE PATH
+	    ${my_name} <-m|-k> -o FILE PATH
 
-	${my_name} generates the kconfig snippet to include the configuration
-	options specified in the br2-external tree passed as positional argument.
+	With -m, ${my_name} generates the makefile fragment that defines
+	variables related to the br2-external tree passed as positional
+	argument.
+
+	With -k, ${my_name} generates the kconfig snippet to include the
+	configuration options specified in the br2-external tree passed
+	as positional argument.
+
+	Using -k and -m together is not possible. The last one wins.
 
 	Options:
+	    -m  Generate the makefile fragment.
+
+	    -k  Generate the kconfig snippet.
+
 	    -o FILE
-	        FILE in which to generate the kconfig snippet.
+	        FILE in which to generate the kconfig snippet or makefile
+	        fragment.
 
 	Returns:
 	    0   If no error
@@ -94,7 +142,7 @@ help() {
 	_EOF_
 }
 
-error() { local fmt="${1}"; shift; printf "%s: ${fmt}" "${my_name}" "${@}" >&2; exit 1; }
+error() { local fmt="${1}"; shift; printf "BR2_EXTERNAL_ERROR = ${fmt}" "${@}"; exit 1; }
 
 my_name="${0##*/}"
 main "${@}"

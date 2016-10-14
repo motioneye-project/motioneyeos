@@ -143,24 +143,19 @@ $(if $(BASE_DIR),, $(error output directory "$(O)" does not exist))
 # Handling of BR2_EXTERNAL.
 #
 # The value of BR2_EXTERNAL is stored in .br-external in the output directory.
-# On subsequent invocations of make, it is read in. It can still be overridden
-# on the command line, therefore the file is re-created every time make is run.
-#
-# When BR2_EXTERNAL is set to an empty value (e.g. explicitly in command
-# line), the .br-external file is removed.
+# The location of the external.mk makefile fragment is computed in that file.
+# On subsequent invocations of make, this file is read in. BR2_EXTERNAL can
+# still be overridden on the command line, therefore the file is re-created
+# every time make is run.
 
-BR2_EXTERNAL_FILE = $(BASE_DIR)/.br-external
+BR2_EXTERNAL_FILE = $(BASE_DIR)/.br-external.mk
 -include $(BR2_EXTERNAL_FILE)
-ifeq ($(BR2_EXTERNAL),)
-  $(shell rm -f $(BR2_EXTERNAL_FILE))
-else
-  _BR2_EXTERNAL = $(shell cd $(BR2_EXTERNAL) >/dev/null 2>&1 && pwd)
-  ifeq ($(_BR2_EXTERNAL),)
-    $(error BR2_EXTERNAL='$(BR2_EXTERNAL)' does not exist, relative to $(TOPDIR))
-  endif
-  override BR2_EXTERNAL := $(_BR2_EXTERNAL)
-  $(shell echo BR2_EXTERNAL ?= $(BR2_EXTERNAL) > $(BR2_EXTERNAL_FILE))
-  BR2_EXTERNAL_MK = $(BR2_EXTERNAL)/external.mk
+$(shell support/scripts/br2-external \
+	-m -o '$(BR2_EXTERNAL_FILE)' $(BR2_EXTERNAL))
+BR2_EXTERNAL_ERROR =
+include $(BR2_EXTERNAL_FILE)
+ifneq ($(BR2_EXTERNAL_ERROR),)
+$(error $(BR2_EXTERNAL_ERROR))
 endif
 
 # To make sure that the environment variable overrides the .config option,
@@ -876,7 +871,7 @@ endif
 # value of BR2_EXTERNAL is changed.
 .PHONY: $(BUILD_DIR)/.br2-external.in
 $(BUILD_DIR)/.br2-external.in: $(BUILD_DIR)
-	$(Q)support/scripts/br2-external -o "$(@)" $(BR2_EXTERNAL)
+	$(Q)support/scripts/br2-external -k -o "$(@)" $(BR2_EXTERNAL)
 
 # printvars prints all the variables currently defined in our
 # Makefiles. Alternatively, if a non-empty VARS variable is passed,
