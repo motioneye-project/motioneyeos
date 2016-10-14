@@ -67,8 +67,7 @@ config BR2_TARGET_BAREBOX_AUX_CUSTOM_EMBEDDED_ENV_PATH
 	  invalid. This option sets the barebox Kconfig option
 	  CONFIG_DEFAULT_ENVIRONMENT_PATH to the specified path. This
 	  way it is possible to use Buildroot variables like
-	  BR2_EXTERNAL, TOPDIR etc. to refer to the custom
-	  environment.
+	  TOPDIR etc. to refer to the custom environment.
 
 	  Depending on your setup, the custom embedded environment
 	  will probably be based on either the content of the

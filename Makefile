@@ -448,6 +448,14 @@ include boot/common.mk
 include linux/linux.mk
 include fs/common.mk
 
+# If using a br2-external tree, the BR2_EXTERNAL_$(NAME)_PATH variable
+# is also present in the .config file. Since .config is included after
+# we defined BR2_EXTERNAL_$(NAME)_PATH in the Makefile, the value in
+# that variable is quoted. We just include the generated Makefile fragment
+# .br2-external.mk a third time, which will set that variable to the
+# un-quoted value.
+include $(BR2_EXTERNAL_FILE)
+
 # Nothing to include if no BR2_EXTERNAL tree in use
 include $(BR2_EXTERNAL_MK)
 
@@ -763,7 +771,6 @@ COMMON_CONFIG_ENV = \
 	KCONFIG_AUTOHEADER=$(BUILD_DIR)/buildroot-config/autoconf.h \
 	KCONFIG_TRISTATE=$(BUILD_DIR)/buildroot-config/tristate.config \
 	BR2_CONFIG=$(BR2_CONFIG) \
-	BR2_EXTERNAL=$(BR2_EXTERNAL) \
 	HOST_GCC_VERSION="$(HOSTCC_VERSION)" \
 	BUILD_DIR=$(BUILD_DIR) \
 	SKIP_LEGACY=
@@ -842,7 +849,7 @@ define percent_defconfig
 	@$$(COMMON_CONFIG_ENV) BR2_DEFCONFIG=$(1)/configs/$$@ \
 		$$< --defconfig=$(1)/configs/$$@ $$(CONFIG_CONFIG_IN)
 endef
-$(eval $(foreach d,$(TOPDIR) $(BR2_EXTERNAL),$(call percent_defconfig,$(d))$(sep)))
+$(eval $(foreach d,$(TOPDIR) $(if $(BR2_EXTERNAL_NAME),$(BR2_EXTERNAL_$(BR2_EXTERNAL_NAME)_PATH)),$(call percent_defconfig,$(d))$(sep)))
 
 savedefconfig: $(BUILD_DIR)/buildroot-config/conf prepare-kconfig
 	@$(COMMON_CONFIG_ENV) $< \
@@ -969,11 +976,13 @@ list-defconfigs:
 	@echo 'Built-in configs:'
 	@$(foreach b, $(sort $(notdir $(wildcard $(TOPDIR)/configs/*_defconfig))), \
 	  printf "  %-35s - Build for %s\\n" $(b) $(b:_defconfig=);)
-ifneq ($(wildcard $(BR2_EXTERNAL)/configs/*_defconfig),)
+ifneq ($(BR2_EXTERNAL_NAME),)
+ifneq ($(wildcard $(BR2_EXTERNAL_$(BR2_EXTERNAL_NAME)_PATH)/configs/*_defconfig),)
 	@echo
 	@echo 'User-provided configs:'
-	@$(foreach b, $(sort $(notdir $(wildcard $(BR2_EXTERNAL)/configs/*_defconfig))), \
+	@$(foreach b, $(sort $(notdir $(wildcard $(BR2_EXTERNAL_$(BR2_EXTERNAL_NAME)_PATH)/configs/*_defconfig))), \
 	  printf "  %-35s - Build for %s\\n" $(b) $(b:_defconfig=);)
+endif
 endif
 	@echo
 
@@ -994,7 +1003,7 @@ print-version:
 	@echo $(BR2_VERSION_FULL)
 
 include docs/manual/manual.mk
--include $(BR2_EXTERNAL)/docs/*/*.mk
+-include $(if $(BR2_EXTERNAL_NAME),$(BR2_EXTERNAL_$(BR2_EXTERNAL_NAME)_PATH)/docs/*/*.mk)
 
 .PHONY: $(noconfig_targets)
 

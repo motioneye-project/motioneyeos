@@ -1,7 +1,8 @@
 #!/bin/bash
 set -e
 
-# The location of the br2-external tree, once validated.
+# The name and location of the br2-external tree, once validated.
+declare BR2_NAME
 declare BR2_EXT
 
 main() {
@@ -55,6 +56,7 @@ main() {
 #
 do_validate() {
     local br2_ext="${1}"
+    local br2_name n
 
     # No br2-external tree is valid
     if [ -z "${br2_ext}" ]; then
@@ -67,6 +69,20 @@ do_validate() {
     if [ ! -r "${br2_ext}" -o ! -x "${br2_ext}" ]; then
         error "'%s': permission denied\n" "${br2_ext}"
     fi
+    if [ ! -f "${br2_ext}/external.desc" ]; then
+        error "'%s': does not have a name (in 'external.desc')\n" "${br2_ext}"
+    fi
+    br2_name="$(sed -r -e '/^name: +(.*)$/!d; s//\1/' "${br2_ext}/external.desc")"
+    if [ -z "${br2_name}" ]; then
+        error "'%s/external.desc': does not define the name\n" "${br2_ext}"
+    fi
+    # Only ASCII chars in [A-Za-z0-9_] are permitted
+    n="$(sed -r -e 's/[A-Za-z0-9_]//g' <<<"${br2_name}" )"
+    if [ -n "${n}" ]; then
+        # Escape '$' so that it gets printed
+        error "'%s': name '%s' contains invalid chars: '%s'\n" \
+            "${br2_ext}" "${br2_name//\$/\$\$}" "${n//\$/\$\$}"
+    fi
     if [ ! -f "${br2_ext}/external.mk" ]; then
         error "'%s/external.mk': no such file or directory\n" "${br2_ext}"
     fi
@@ -74,27 +90,29 @@ do_validate() {
         error "'%s/Config.in': no such file or directory\n" "${br2_ext}"
     fi
 
+    BR2_NAME="${br2_name}"
     BR2_EXT="$(cd "${br2_ext}"; pwd -P )"
 }
 
 # Generate the .mk snippet that defines makefile variables
 # for the br2-external tree
 do_mk() {
-    local BR2_EXT="${1}"
-
     printf '#\n# Automatically generated file; DO NOT EDIT.\n#\n'
     printf '\n'
 
     printf 'BR2_EXTERNAL ?= %s\n' "${BR2_EXT}"
+    printf 'BR2_EXTERNAL_NAME = \n'
     printf 'BR2_EXTERNAL_MK =\n'
     printf '\n'
 
-    if [ -z "${BR2_EXT}" ]; then
+    if [ -z "${BR2_NAME}" ]; then
         printf '# No br2-external tree defined.\n'
         return
     fi
 
+    printf 'BR2_EXTERNAL_NAME = %s\n' "${BR2_NAME}"
     printf 'BR2_EXTERNAL_MK = %s/external.mk\n' "${BR2_EXT}"
+    printf 'BR2_EXTERNAL_%s_PATH = %s\n' "${BR2_NAME}" "${BR2_EXT}"
 }
 
 # Generate the kconfig snippet for the br2-external tree.
@@ -102,18 +120,20 @@ do_kconfig() {
     printf '#\n# Automatically generated file; DO NOT EDIT.\n#\n'
     printf '\n'
 
-    if [ -z "${BR2_EXT}" ]; then
+    if [ -z "${BR2_NAME}" ]; then
         printf '# No br2-external tree defined.\n'
         return
     fi
 
-    printf 'config BR2_EXTERNAL\n'
+    printf 'menu "User-provided options"\n'
+    printf '\n'
+    printf 'comment "%s (in %s)"\n' "${BR2_NAME}" "${BR2_EXT}"
+    printf '\n'
+    printf 'config BR2_EXTERNAL_%s_PATH\n' "${BR2_NAME}"
     printf '\tstring\n'
     printf '\tdefault "%s"\n' "${BR2_EXT}"
     printf '\n'
-    printf 'menu "User-provided options"\n'
-    printf '\n'
-    printf 'source "%s/Config.in"\n' "${BR2_EXT}"
+    printf 'source "$BR2_EXTERNAL_%s_PATH/Config.in"\n' "${BR2_NAME}"
     printf '\n'
     printf "endmenu # User-provided options\n"
 }
