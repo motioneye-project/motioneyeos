@@ -4,6 +4,7 @@ set -e
 # The names and locations of the br2-external trees, once validated.
 declare -a BR2_EXT_NAMES
 declare -A BR2_EXT_PATHS
+declare -A BR2_EXT_DESCS
 
 # URL to manual for help in converting old br2-external trees.
 # Escape '#' so that make does not consider it a comment.
@@ -67,7 +68,7 @@ do_validate() {
 
 do_validate_one() {
     local br2_ext="${1}"
-    local br2_name n
+    local br2_name br2_desc n
 
     if [ ! -d "${br2_ext}" ]; then
         error "'%s': no such file or directory\n" "${br2_ext}"
@@ -94,6 +95,7 @@ do_validate_one() {
         error "'%s': name '%s' is already used in '%s'\n" \
             "${br2_ext}" "${br2_name}" "${BR2_EXT_PATHS["${br2_name}"]}"
     fi
+    br2_desc="$(sed -r -e '/^desc: +(.*)$/!d; s//\1/' "${br2_ext}/external.desc")"
     if [ ! -f "${br2_ext}/external.mk" ]; then
         error "'%s/external.mk': no such file or directory\n" "${br2_ext}"
     fi
@@ -104,6 +106,7 @@ do_validate_one() {
     # Register this br2-external tree
     BR2_EXT_NAMES+=( "${br2_name}" )
     BR2_EXT_PATHS["${br2_name}"]="${br2_ext}"
+    BR2_EXT_DESCS["${br2_name}"]="${br2_desc:-${br2_name}}"
 }
 
 # Generate the .mk snippet that defines makefile variables
@@ -135,10 +138,12 @@ do_mk() {
     fi
 
     for br2_name in "${BR2_EXT_NAMES[@]}"; do
+        br2_desc="${BR2_EXT_DESCS["${br2_name}"]}"
         br2_ext="${BR2_EXT_PATHS["${br2_name}"]}"
         printf '\n'
         printf 'BR2_EXTERNAL_NAMES += %s\n' "${br2_name}"
         printf 'BR2_EXTERNAL_%s_PATH = %s\n' "${br2_name}" "${br2_ext}"
+        printf 'BR2_EXTERNAL_%s_DESC = %s\n' "${br2_name}" "${br2_desc}"
         printf 'BR2_EXTERNAL_DIRS += %s\n' "${br2_ext}"
         printf 'BR2_EXTERNAL_MKS += %s/external.mk\n' "${br2_ext}"
     done
@@ -160,11 +165,12 @@ do_kconfig() {
     printf '\n'
 
     for br2_name in "${BR2_EXT_NAMES[@]}"; do
+        br2_desc="${BR2_EXT_DESCS["${br2_name}"]}"
         br2_ext="${BR2_EXT_PATHS["${br2_name}"]}"
         if [ ${#BR2_EXT_NAMES[@]} -gt 1 ]; then
-            printf 'menu "%s"\n' "${br2_name}"
+            printf 'menu "%s"\n' "${br2_desc}"
         fi
-        printf 'comment "%s (in %s)"\n' "${br2_name}" "${br2_ext}"
+        printf 'comment "%s (in %s)"\n' "${br2_desc}" "${br2_ext}"
         printf 'config BR2_EXTERNAL_%s_PATH\n' "${br2_name}"
         printf '\tstring\n'
         printf '\tdefault "%s"\n' "${br2_ext}"

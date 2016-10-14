@@ -980,7 +980,7 @@ define list-defconfigs
 		[ -f "$${defconfig}" ] || continue; \
 		if $${first}; then \
 			if [ "$(2)" ]; then \
-				printf "External configs in $(2):\n"; \
+				printf 'External configs in "$(call qstrip,$(2))":\n'; \
 			else \
 				printf "Built-in configs:\n"; \
 			fi; \
@@ -997,7 +997,8 @@ endef
 list-defconfigs:
 	$(call list-defconfigs,$(TOPDIR))
 	$(foreach name,$(BR2_EXTERNAL_NAMES),\
-		$(call list-defconfigs,$(BR2_EXTERNAL_$(name)_PATH),$(name))$(sep))
+		$(call list-defconfigs,$(BR2_EXTERNAL_$(name)_PATH),\
+			$(BR2_EXTERNAL_$(name)_DESC))$(sep))
 
 release: OUT = buildroot-$(BR2_VERSION)
 
