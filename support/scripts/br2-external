@@ -5,6 +5,10 @@ set -e
 declare BR2_NAME
 declare BR2_EXT
 
+# URL to manual for help in converting old br2-external trees.
+# Escape '#' so that make does not consider it a comment.
+MANUAL_URL='https://buildroot.org/manual/manual.html\#br2-external-converting'
+
 main() {
     local OPT OPTARG
     local br2_ext ofile ofmt
@@ -70,7 +74,8 @@ do_validate() {
         error "'%s': permission denied\n" "${br2_ext}"
     fi
     if [ ! -f "${br2_ext}/external.desc" ]; then
-        error "'%s': does not have a name (in 'external.desc')\n" "${br2_ext}"
+        error "'%s': does not have a name (in 'external.desc'). See %s\n" \
+            "${br2_ext}" "${MANUAL_URL}"
     fi
     br2_name="$(sed -r -e '/^name: +(.*)$/!d; s//\1/' "${br2_ext}/external.desc")"
     if [ -z "${br2_name}" ]; then

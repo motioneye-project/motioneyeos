@@ -1,0 +1,36 @@
+// -*- mode:doc; -*-
+// vim: set syntax=asciidoc:
+
+[[br2-external-converting]]
+== Converting old br2-external trees
+
+Buildroot 2016.11 introduced a backward-incompatible change in the way
+br2-external trees are handled. A minor change has to be made: adding
+a name to your br2-external tree, see xref:outside-br-custom[].
+
+This can be done very easily in just a few steps:
+
+ * First, create a new file named +external.desc+, at the root of your
+   br2-external tree, with a single line defining the name of your
+   br2-external tree:
++
+----
+$ echo 'name: NAME_OF_YOUR_TREE' >external.desc
+----
++
+.Note
+Be careful when choosing a name: It has to be unique and be made
+with only ASCII characters from the set +[A-Za-z0-9_]+.
+
+ * Then, change every occurence of +BR2_EXTERNAL+ in your br2-external
+   tree with the new variable:
++
+----
+$ find . -type f | xargs sed -i 's/BR2_EXTERNAL/BR2_EXTERNAL_NAME_OF_YOUR_TREE_PATH/g'
+----
+
+Now, your br2-external tree can be used with Buildroot 2016.11 onward.
+
+.Note:
+This change makes your br2-external tree incompatible with Buildroot
+before 2016.11.

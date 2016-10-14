@@ -33,6 +33,11 @@ If it is passed as a relative path, it is important to note that it is
 interpreted relative to the main Buildroot source directory, *not* to
 the Buildroot output directory.
 
+.Note:
+If using an br2-external tree from before Buildroot 2016.11, you need to
+convert it before you can use it with Buildroot 2016.11 onward. See
+xref:br2-external-converting[] for help on doing so.
+
 Some examples:
 
 -----
