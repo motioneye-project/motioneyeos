@@ -879,7 +879,7 @@ endif
 # value of BR2_EXTERNAL is changed.
 .PHONY: $(BUILD_DIR)/.br2-external.in
 $(BUILD_DIR)/.br2-external.in: $(BUILD_DIR)
-	@touch $@
+	$(Q)support/scripts/br2-external -o "$(@)" $(BR2_EXTERNAL)
 
 # printvars prints all the variables currently defined in our
 # Makefiles. Alternatively, if a non-empty VARS variable is passed,

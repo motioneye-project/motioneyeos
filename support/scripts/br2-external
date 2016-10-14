@@ -1,0 +1,88 @@
+#!/bin/bash
+set -e
+
+# The location of the br2-external tree, once validated.
+declare BR2_EXT
+
+main() {
+    local OPT OPTARG
+    local br2_ext ofile
+
+    while getopts :ho: OPT; do
+        case "${OPT}" in
+        h)  help; exit 0;;
+        o)  ofile="${OPTARG}";;
+        :)  error "option '%s' expects a mandatory argument\n" "${OPTARG}";;
+        \?) error "unknown option '%s'\n" "${OPTARG}";;
+        esac
+    done
+    # Forget options; keep only positional args
+    shift $((OPTIND-1))
+
+    if [ ${#} -ne 1 ]; then
+        error "need exactly one br2-external tree to be specified\n"
+    fi
+    br2_ext="${1}"
+
+    if [ -z "${ofile}" ]; then
+        error "no output file specified (-o)\n"
+    fi
+
+    do_validate "${br2_ext}"
+
+    do_kconfig >"${ofile}"
+}
+
+# Validates the br2-external tree passed as argument. Makes it cannonical
+# and store it in global variable BR2_EXT.
+do_validate() {
+    local br2_ext="${1}"
+
+    if [ ! -d "${br2_ext}" ]; then
+        error "'%s': no such file or directory\n" "${br2_ext}"
+    fi
+    if [ ! -r "${br2_ext}" -o ! -x "${br2_ext}" ]; then
+        error "'%s': permission denied\n" "${br2_ext}"
+    fi
+
+    BR2_EXT="$(cd "${br2_ext}"; pwd -P )"
+}
+
+# Generate the kconfig snippet for the br2-external tree.
+do_kconfig() {
+    printf '#\n# Automatically generated file; DO NOT EDIT.\n#\n'
+    printf '\n'
+    printf 'config BR2_EXTERNAL\n'
+    printf '\tstring\n'
+    printf '\tdefault "%s"\n' "${BR2_EXT}"
+    printf '\n'
+    printf 'menu "User-provided options"\n'
+    printf '\tdepends on BR2_EXTERNAL != "support/dummy-external"\n'
+    printf '\n'
+    printf 'source "%s/Config.in"\n' "${BR2_EXT}"
+    printf '\n'
+    printf "endmenu # User-provided options\n"
+}
+
+help() {
+    cat <<-_EOF_
+	Usage:
+	    ${my_name} -o FILE PATH
+
+	${my_name} generates the kconfig snippet to include the configuration
+	options specified in the br2-external tree passed as positional argument.
+
+	Options:
+	    -o FILE
+	        FILE in which to generate the kconfig snippet.
+
+	Returns:
+	    0   If no error
+	    !0  If any error
+	_EOF_
+}
+
+error() { local fmt="${1}"; shift; printf "%s: ${fmt}" "${my_name}" "${@}" >&2; exit 1; }
+
+my_name="${0##*/}"
+main "${@}"

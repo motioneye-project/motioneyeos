@@ -14,10 +14,6 @@ config BR2_HOSTARCH
 	string
 	option env="HOSTARCH"
 
-config BR2_EXTERNAL
-	string
-	option env="BR2_EXTERNAL"
-
 config BR2_BUILD_DIR
 	string
 	option env="BUILD_DIR"
@@ -728,12 +724,5 @@ source "boot/Config.in"
 source "package/Config.in.host"
 
 source "Config.in.legacy"
-
-menu "User-provided options"
-	depends on BR2_EXTERNAL != "support/dummy-external"
-
-source "$BR2_EXTERNAL/Config.in"
-
-endmenu
 
 source "$BR2_BUILD_DIR/.br2-external.in"
