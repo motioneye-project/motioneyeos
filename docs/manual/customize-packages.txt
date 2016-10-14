@@ -14,8 +14,9 @@ packages in a project-specific directory.
 
 As shown in xref:customize-dir-structure[], the recommended location for
 project-specific packages is +package/<company>/+. If you are using the
-+BR2_EXTERNAL+ feature (see xref:outside-br-custom[]) the recommended
-location is +$(BR2_EXTERNAL)/package/+.
+br2-external tree feature (see xref:outside-br-custom[]) the recommended
+location is to put them in a sub-directory named +package/+ in your
+br2-external tree.
 
 However, Buildroot will not be aware of the packages in this location,
 unless we perform some additional steps. As explained in
@@ -37,14 +38,6 @@ have only one extra directory level below +package/<company>/+):
 include $(sort $(wildcard package/<company>/*/*.mk))
 -----
 
-If you are using +BR2_EXTERNAL+, create a file
-+$(BR2_EXTERNAL)/external.mk+ with following contents (again assuming only
-one extra level):
-
------
-include $(sort $(wildcard $(BR2_EXTERNAL)/package/*/*.mk))
------
-
 For the +Config.in+ files, create a file +package/<company>/Config.in+
 that includes the +Config.in+ files of all your packages. An exhaustive
 list has to be provided since wildcards are not supported in the source command of kconfig.
@@ -59,13 +52,5 @@ Include this new file +package/<company>/Config.in+ from
 +package/Config.in+, preferably in a company-specific menu to make
 merges with future Buildroot versions easier.
 
-If you are using +BR2_EXTERNAL+, create a file
-+$(BR2_EXTERNAL)/Config.in+ with similar contents:
-
------
-source "$BR2_EXTERNAL/package/package1/Config.in"
-source "$BR2_EXTERNAL/package/package2/Config.in"
------
-
-You do not have to add an include for this +$(BR2_EXTERNAL)/Config.in+
-file as it is included automatically.
+If using a br2-external tree, refer to xref:outside-br-custom[] for how
+to fill in those files.

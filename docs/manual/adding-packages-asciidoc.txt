@@ -19,9 +19,9 @@ Although Buildroot only contains one document written in AsciiDoc, there
 is, as for packages, an infrastructure for rendering documents using the
 AsciiDoc syntax.
 
-Also as for packages, the AsciiDoc infrastructure is available from
-xref:outside-br-custom[BR2_EXTERNAL]. This allows documentation for a
-BR2_EXTERNAL tree to match the Buildroot documentation, as it will be
+Also as for packages, the AsciiDoc infrastructure is available from a
+xref:outside-br-custom[br2-external tree]. This allows documentation for
+a br2-external tree to match the Buildroot documentation, as it will be
 rendered to the same formats and use the same layout and theme.
 
 ==== +asciidoc-document+ tutorial

@@ -13,7 +13,8 @@ section.
 
 Orthogonal to this directory structure, you can choose _where_ you place
 this structure itself: either inside the Buildroot tree, or outside of
-it using +BR2_EXTERNAL+. Both options are valid, the choice is up to you.
+it using a br2-external tree. Both options are valid, the choice is up
+to you.
 
 -----
 +-- board/
@@ -38,8 +39,8 @@ it using +BR2_EXTERNAL+. Both options are valid, the choice is up to you.
 |
 +-- package/
 |   +-- <company>/
-|       +-- Config.in (if not using BR2_EXTERNAL)
-|       +-- <company>.mk (if not using BR2_EXTERNAL)
+|       +-- Config.in (if not using a br2-external tree)
+|       +-- <company>.mk (if not using a br2-external tree)
 |       +-- package1/
 |       |    +-- Config.in
 |       |    +-- package1.mk
@@ -47,14 +48,14 @@ it using +BR2_EXTERNAL+. Both options are valid, the choice is up to you.
 |           +-- Config.in
 |           +-- package2.mk
 |
-+-- Config.in (if using BR2_EXTERNAL)
-+-- external.mk (if using BR2_EXTERNAL)
++-- Config.in (if using a br2-external tree)
++-- external.mk (if using a br2-external tree)
 ------
 
 Details on the files shown above are given further in this chapter.
 
 Note: if you choose to place this structure outside of the Buildroot
-tree using +BR2_EXTERNAL+, the <company> and possibly <boardname>
+tree but in a br2-external tree, the <company> and possibly <boardname>
 components may be superfluous and can be left out.
 
 ==== Implementing layered customizations

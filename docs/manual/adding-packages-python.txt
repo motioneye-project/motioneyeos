@@ -195,7 +195,7 @@ license and license files are guessed and must be checked. You also
 need to manually add the package to the +package/Config.in+ file.
 
 If your Buildroot package is not in the official Buildroot tree but in
-a +BR2_EXTERNAL+ tree, use the -o flag as follows:
+a br2-external tree, use the -o flag as follows:
 
 -----------------------
 ./support/script/scanpypi foo bar -o other_package_dir
