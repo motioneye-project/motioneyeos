@@ -39,9 +39,9 @@ HOST_GDB_DEPENDENCIES = host-expat host-ncurses
 
 # Disable building documentation
 GDB_MAKE_OPTS += MAKEINFO=true
-GDB_INSTALL_TARGET_OPTS += MAKEINFO=true
+GDB_INSTALL_TARGET_OPTS += MAKEINFO=true DESTDIR=$(TARGET_DIR) install
 HOST_GDB_MAKE_OPTS += MAKEINFO=true
-HOST_GDB_INSTALL_OPTS += MAKEINFO=true
+HOST_GDB_INSTALL_OPTS += MAKEINFO=true install
 
 # Apply the Xtensa specific patches
 XTENSA_CORE_NAME = $(call qstrip, $(BR2_XTENSA_CORE_NAME))
