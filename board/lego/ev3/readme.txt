@@ -16,11 +16,8 @@ See:
 
 The buildroot configuration uses the Linux kernel of the ev3dev project.
 See:
-- http://botbench.com/blog/2013/07/31/lego-mindstorms-ev3-source-code-available/
-- https://github.com/mindboards/ev3sources
-
-Note that the EV3 configuration uses gcc 4.7, as the boot is broken with gcc
-4.8.
+- https://github.com/ev3dev/ev3-kernel/
+- http://www.ev3dev.org/
 
 How it works
 ============
@@ -61,13 +58,12 @@ After building, you should obtain this tree:
     ├── rootfs.ext3 -> rootfs.ext2
     └── uImage
 
-
 Prepare your SDcard
 ===================
 
 The following µSD card layout is recommended:
 
-- First partition formated with a FAT filesystem, containing the uImage.
+- First partition formatted with a FAT filesystem, containing the uImage.
 - Second partition formatted as ext2 or ext3, containing the root filesystem.
 
 Create the SDcard partition table
