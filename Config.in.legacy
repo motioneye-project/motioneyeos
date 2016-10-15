@@ -145,6 +145,14 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2016.11"
 
+config BR2_PACKAGE_KODI_ADDON_XVDR
+	bool "kodi-addon-xvdr removed"
+	select BR2_LEGACY
+	help
+	  According to the github project page:
+	  https://github.com/pipelka/xbmc-addon-xvdr
+	  this package is discontinued.
+
 config BR2_PACKAGE_IPKG
 	bool "ipkg removed"
 	select BR2_LEGACY
@@ -1366,11 +1374,12 @@ config BR2_PACKAGE_STRONGSWAN_TOOLS
 	  deprecated.
 
 config BR2_PACKAGE_XBMC_ADDON_XVDR
-	bool "xbmc options have been renamed"
+	bool "xbmc-addon-xvdr removed"
 	select BR2_LEGACY
-	select BR2_PACKAGE_KODI_ADDON_XVDR
 	help
-	  The XBMC media center project was renamed to Kodi entertainment center
+	  According to the github project page:
+	  https://github.com/pipelka/xbmc-addon-xvdr
+	  this package is discontinued.
 
 config BR2_PACKAGE_XBMC_PVR_ADDONS
 	bool "xbmc options have been renamed"

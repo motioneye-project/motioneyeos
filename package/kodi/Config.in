@@ -279,7 +279,6 @@ menu "Audio encoder addons"
 endmenu
 
 menu "PVR addons"
-	source "package/kodi-addon-xvdr/Config.in"
 	source "package/kodi-pvr-argustv/Config.in"
 	source "package/kodi-pvr-dvblink/Config.in"
 	source "package/kodi-pvr-dvbviewer/Config.in"
