@@ -21,7 +21,6 @@ QT5BASE_INSTALL_STAGING = YES
 QT5BASE_CONFIGURE_OPTS += \
 	-optimized-qmake \
 	-no-cups \
-	-no-nis \
 	-no-iconv \
 	-system-zlib \
 	-system-pcre \
