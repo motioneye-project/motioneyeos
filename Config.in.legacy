@@ -145,6 +145,14 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2016.11"
 
+config BR2_PACKAGE_IPKG
+	bool "ipkg removed"
+	select BR2_LEGACY
+	help
+	  ipkg dates back to the early 2000s when Compaq started the
+	  handhelds.org project and it hasn't seen development since 2006.
+	  Use opkg as a replacement.
+
 config BR2_GCC_VERSION_4_7_X
 	bool "gcc 4.7.x support removed"
 	select BR2_LEGACY

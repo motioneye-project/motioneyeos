@@ -1,7 +1,0 @@
-config BR2_PACKAGE_IPKG
-	bool "ipkg"
-	depends on BR2_DEPRECATED_SINCE_2016_08
-	help
-	  The Itsy Package Installer from handhelds.org
-
-	  http://www.handhelds.org
