@@ -145,6 +145,13 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2016.11"
 
+config BR2_PACKAGE_TORSMO
+	bool "torsmo removed"
+	select BR2_LEGACY
+	help
+	  torsmo has been unmaintained for a long time, and nobody
+	  seems to be interested in it.
+
 config BR2_PACKAGE_SSTRIP
 	bool "sstrip removed"
 	select BR2_LEGACY
