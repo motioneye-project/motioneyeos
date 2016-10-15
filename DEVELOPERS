@@ -718,6 +718,7 @@ F:	package/webkitgtk/
 F:	package/webkitgtk24/
 F:	package/whois/
 F:	package/wireshark/
+F:	package/wpa_supplicant/
 F:	package/wpan-tools/
 F:	package/x11r7/xdriver_xf86-video-qxl/
 F:	package/xtables-addons/
@@ -1147,7 +1148,6 @@ F:	package/python-ipaddr/
 F:	package/python-pam/
 F:	package/python-psutil/
 F:	package/triggerhappy/
-F:	package/wpa_supplicant/
 
 N:	Peter Seiderer <ps.report@gmx.net>
 F:	board/raspberrypi/
