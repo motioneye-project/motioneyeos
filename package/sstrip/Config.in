@@ -1,8 +1,0 @@
-config BR2_PACKAGE_SSTRIP
-	bool "sstrip"
-	depends on BR2_DEPRECATED_SINCE_2016_08
-	help
-	  Small utility that removes a few bytes from an executable that
-	  strip leaves behind.
-
-	  http://www.muppetlabs.com/~breadbox/software/elfkickers.html

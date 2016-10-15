@@ -145,6 +145,15 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2016.11"
 
+config BR2_PACKAGE_SSTRIP
+	bool "sstrip removed"
+	select BR2_LEGACY
+	help
+	  sstrip is unmaintained and potentially harmful. It doesn't
+	  save so much compared to normal binutils strip, and there is
+	  a big risk of binaries that don't work. Use normal strip
+	  instead.
+
 config BR2_KERNEL_HEADERS_4_3
 	bool "kernel headers version 4.3.x are no longer supported"
 	select BR2_KERNEL_HEADERS_4_1
