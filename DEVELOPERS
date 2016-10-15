@@ -1585,6 +1585,7 @@ F:	package/libedit/
 F:	package/libinput/
 F:	package/libiscsi/
 F:	package/libseccomp/
+F:	package/linux-tools/
 F:	package/mesa3d-headers/
 F:	package/mke2img/
 F:	package/nut/
@@ -1596,11 +1597,15 @@ F:	package/slirp/
 F:	package/snappy/
 F:	package/spice/
 F:	package/spice-protocol/
+F:	package/systemd/
+F:	package/systemd-bootchart/
 F:	package/tmux/
 F:	package/tvheadend/
 F:	package/usbredir/
 F:	package/vde2/
 F:	package/w_scan/
+F:	package/wayland/
+F:	package/weston/
 F:	support/download/
 
 N:	Yegor Yefremov <yegorslists@googlemail.com>
