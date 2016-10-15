@@ -145,6 +145,13 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2016.11"
 
+config BR2_PACKAGE_WVDIAL
+	bool "wvdial removed"
+	select BR2_LEGACY
+	help
+	  wvdial is not maintained anymore since about 2009. It also
+	  doesn't build anymore with recent compilers (GCC 5+).
+
 config BR2_PACKAGE_WEBKITGTK24
 	bool "webkitgtk 2.4.x removed"
 	select BR2_LEGACY
