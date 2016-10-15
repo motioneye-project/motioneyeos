@@ -145,6 +145,15 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2016.11"
 
+config BR2_PACKAGE_WEBKITGTK24
+	bool "webkitgtk 2.4.x removed"
+	select BR2_LEGACY
+	help
+	  This legacy package only existed because some other packages
+	  depended on that specific version of webkitgtk. However, the
+	  other packages have been fixed. webkitgtk 2.4 is full of
+	  security issues so it needs to be removed.
+
 config BR2_PACKAGE_TORSMO
 	bool "torsmo removed"
 	select BR2_LEGACY

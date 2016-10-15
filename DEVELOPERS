@@ -715,7 +715,6 @@ F:	package/vorbis-tools/
 F:	package/wavpack/
 F:	package/wayland-protocols/
 F:	package/webkitgtk/
-F:	package/webkitgtk24/
 F:	package/whois/
 F:	package/wireshark/
 F:	package/wpa_supplicant/
