@@ -75,19 +75,7 @@ define legal-manifest # pkg, version, license, license-files, source, url, {HOST
 	echo '"$(1)","$(2)","$(3)","$(4)","$(5)","$(6)"' >>$(LEGAL_MANIFEST_CSV_$(7))
 endef
 
-define legal-license-header # pkg, license-file, {HOST|TARGET}
-	printf "$(LEGAL_INFO_SEPARATOR)\n\t$(1):\
-		$(2)\n$(LEGAL_INFO_SEPARATOR)\n\n\n" >>$(LEGAL_LICENSES_TXT_$(3))
-endef
-
-define legal-license-nofiles # pkg, {HOST|TARGET}
-	$(call legal-license-header,$(1),unknown license file(s),$(2))
-endef
-
 define legal-license-file # pkg, filename, file-fullpath, {HOST|TARGET}
-	$(call legal-license-header,$(1),$(2) file,$(4)) && \
-	cat $(3) >>$(LEGAL_LICENSES_TXT_$(4)) && \
-	echo >>$(LEGAL_LICENSES_TXT_$(4)) && \
 	mkdir -p $(LICENSE_FILES_DIR_$(4))/$(1)/$(dir $(2)) && \
 	cp $(3) $(LICENSE_FILES_DIR_$(4))/$(1)/$(2)
 endef
