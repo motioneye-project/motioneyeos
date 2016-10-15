@@ -145,6 +145,14 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2016.11"
 
+config BR2_BINUTILS_VERSION_2_24_X
+	bool "binutils version 2.24 support removed"
+	select BR2_LEGACY
+	help
+	  Support for binutils version 2.24 has been removed. The
+	  current default version (2.26 or later) has been selected
+	  instead.
+
 config BR2_PACKAGE_WESTON_RPI
 	bool "Weston propietary RPI support is gone"
 	select BR2_LEGACY
