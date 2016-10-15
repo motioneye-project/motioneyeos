@@ -60,16 +60,6 @@ choice
 		bool "Linux 4.1.x kernel headers"
 		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_1
 
-	config BR2_KERNEL_HEADERS_4_2
-		bool "Linux 4.2.x kernel headers"
-		depends on BR2_DEPRECATED_SINCE_2016_02
-		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_2
-
-	config BR2_KERNEL_HEADERS_4_3
-		bool "Linux 4.3.x kernel headers"
-		depends on BR2_DEPRECATED_SINCE_2016_05
-		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_3
-
 	config BR2_KERNEL_HEADERS_4_4
 		bool "Linux 4.4.x kernel headers"
 		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_4
@@ -242,8 +232,6 @@ config BR2_DEFAULT_KERNEL_HEADERS
 	default "3.19.8"	if BR2_KERNEL_HEADERS_3_19
 	default "4.0.9"		if BR2_KERNEL_HEADERS_4_0
 	default "4.1.34"	if BR2_KERNEL_HEADERS_4_1
-	default "4.2.8"		if BR2_KERNEL_HEADERS_4_2
-	default "4.3.6"		if BR2_KERNEL_HEADERS_4_3
 	default "4.4.24"	if BR2_KERNEL_HEADERS_4_4
 	default "4.5.7"		if BR2_KERNEL_HEADERS_4_5
 	default "4.6.7"		if BR2_KERNEL_HEADERS_4_6

@@ -145,6 +145,26 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2016.11"
 
+config BR2_KERNEL_HEADERS_4_3
+	bool "kernel headers version 4.3.x are no longer supported"
+	select BR2_KERNEL_HEADERS_4_1
+	select BR2_LEGACY
+	help
+	  Version 4.3.x of the Linux kernel headers are no longer
+	  maintained upstream and are now removed. As an alternative,
+	  version 4.1.x of the headers have been automatically
+	  selected in your configuration.
+
+config BR2_KERNEL_HEADERS_4_2
+	bool "kernel headers version 4.2.x are no longer supported"
+	select BR2_KERNEL_HEADERS_4_1
+	select BR2_LEGACY
+	help
+	  Version 4.2.x of the Linux kernel headers are no longer
+	  maintained upstream and are now removed. As an alternative,
+	  version 4.1.x of the headers have been automatically
+	  selected in your configuration.
+
 config BR2_PACKAGE_KODI_ADDON_XVDR
 	bool "kodi-addon-xvdr removed"
 	select BR2_LEGACY
