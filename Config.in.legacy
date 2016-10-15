@@ -145,6 +145,13 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2016.11"
 
+config BR2_GCC_VERSION_4_7_X
+	bool "gcc 4.7.x support removed"
+	select BR2_LEGACY
+	help
+	  Support for gcc version 4.7.x has been removed. The current
+	  default version (4.9.x or later) has been selected instead.
+
 config BR2_BINUTILS_VERSION_2_24_X
 	bool "binutils version 2.24 support removed"
 	select BR2_LEGACY

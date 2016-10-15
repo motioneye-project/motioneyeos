@@ -113,10 +113,9 @@ define UCLIBC_ARM_ABI_CONFIG
 	$(call KCONFIG_ENABLE_OPT,CONFIG_ARM_EABI,$(@D)/.config)
 endef
 
-# Thumb1 build is broken with threads with old gcc versions (4.7 and
-# 4.8). Since all cores supporting Thumb1 also support ARM, we use ARM
-# code in this case.
-ifeq ($(BR2_GCC_VERSION_4_7_X)$(BR2_GCC_VERSION_4_8_X):$(BR2_ARM_INSTRUCTIONS_THUMB)$(BR2_TOOLCHAIN_HAS_THREADS),y:yy)
+# Thumb1 build is broken with threads with old gcc versions (< 4.8). Since
+# all cores supporting Thumb1 also support ARM, we use ARM code in this case.
+ifeq ($(BR2_GCC_VERSION_4_8_X)$(BR2_ARM_INSTRUCTIONS_THUMB)$(BR2_TOOLCHAIN_HAS_THREADS),yyy)
 UCLIBC_EXTRA_CFLAGS += -marm
 endif
 

@@ -13,32 +13,6 @@ choice
 	help
 	  Select the version of gcc you wish to use.
 
-	config BR2_GCC_VERSION_4_7_X
-		bool "gcc 4.7.x"
-		depends on BR2_DEPRECATED_SINCE_2016_05
-		# Broken or unsupported architectures
-		depends on !BR2_microblaze && !BR2_aarch64 && !BR2_arc \
-			&& !BR2_powerpc64le && !BR2_nios2 && !BR2_bfin
-		# Broken or unsupported ARM cores
-		depends on !BR2_cortex_a12 && !BR2_pj4 && !BR2_cortex_a17
-		# Broken or unsupported PPC cores
-		depends on !BR2_powerpc_e5500 && !BR2_powerpc_e6500 && \
-			!BR2_powerpc_power8
-		# SPARC -mcpu=leon3 appeared in gcc 4.8.x
-		depends on !BR2_sparc_leon3
-		# Broken or unsupported x86 cores
-		depends on !BR2_x86_jaguar && !BR2_x86_steamroller
-		# Unsupported MIPS cores
-		depends on !BR2_mips_interaptiv
-		# Unsupported for MIPS R5
-		depends on !BR2_MIPS_CPU_MIPS32R5 && !BR2_MIPS_CPU_MIPS64R5
-		# Unsupported for MIPS R6
-		depends on !BR2_MIPS_CPU_MIPS32R6 && !BR2_MIPS_CPU_MIPS64R6
-		# musl ppc64 unsupported
-		depends on !(BR2_TOOLCHAIN_USES_MUSL && (BR2_powerpc64 || BR2_powerpc64el))
-		select BR2_GCC_NEEDS_MPC
-		select BR2_TOOLCHAIN_GCC_AT_LEAST_4_7
-
 	config BR2_GCC_VERSION_4_8_X
 		bool "gcc 4.8.x"
 		# Broken or unsupported architectures
@@ -133,7 +107,6 @@ config BR2_GCC_SUPPORTS_FINEGRAINEDMTUNE
 
 config BR2_GCC_VERSION
 	string
-	default "4.7.4"     if BR2_GCC_VERSION_4_7_X
 	default "4.8.5"     if BR2_GCC_VERSION_4_8_X
 	default "4.9.4"     if BR2_GCC_VERSION_4_9_X
 	default "5.4.0"     if BR2_GCC_VERSION_5_X
