@@ -361,36 +361,6 @@ config BR2_CCACHE_USE_BASEDIR
 
 endif
 
-config BR2_DEPRECATED
-	bool "Show options and packages that are deprecated or obsolete"
-	help
-	  This option shows outdated/obsolete versions of packages and
-	  options that are otherwise hidden.
-
-if BR2_DEPRECATED
-
-config BR2_DEPRECATED_SINCE_2015_11
-	bool
-	default y
-
-config BR2_DEPRECATED_SINCE_2016_02
-	bool
-	default y
-
-config BR2_DEPRECATED_SINCE_2016_05
-	bool
-	default y
-
-config BR2_DEPRECATED_SINCE_2016_08
-	bool
-	default y
-
-config BR2_DEPRECATED_SINCE_2016_11
-	bool
-	default y
-
-endif
-
 config BR2_ENABLE_DEBUG
 	bool "build packages with debugging symbols"
 	help
