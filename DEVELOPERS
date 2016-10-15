@@ -1451,8 +1451,7 @@ F:	package/cmake/
 F:	package/cramfs/
 F:	package/dmidecode/
 F:	package/flashrom/
-F:	package/gcc/gcc-final/
-F:	package/gcc/gcc-initial/
+F:	package/gcc/
 F:	package/genext2fs/
 F:	package/genromfs/
 F:	package/getent/
