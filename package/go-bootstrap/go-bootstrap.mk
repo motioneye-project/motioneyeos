@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-GO_BOOTSTRAP_VERSION = 1.4.2
+GO_BOOTSTRAP_VERSION = 1.4.3
 GO_BOOTSTRAP_SITE = https://storage.googleapis.com/golang
 GO_BOOTSTRAP_SOURCE = go$(GO_BOOTSTRAP_VERSION).src.tar.gz
 
