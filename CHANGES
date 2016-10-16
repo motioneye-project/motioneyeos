@@ -3,7 +3,8 @@
 	CMake support:
 
 	The toolchainfile.cmake file now provides a definition of the
-	CMAKE_BUILD_TYPE variable.
+	CMAKE_BUILD_TYPE variable. The toolchainfile.cmake also no
+	longer passes the compiler/linker flags defined by Buildroot.
 
 2016.08, Released September 1st, 2016
 
