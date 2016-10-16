@@ -82,6 +82,7 @@ endef
 HOST_GCC_COMMON_DEPENDENCIES = \
 	host-binutils \
 	host-gmp \
+	host-mpc \
 	host-mpfr \
 	$(if $(BR2_BINFMT_FLAT),host-elf2flt)
 
@@ -93,6 +94,7 @@ HOST_GCC_COMMON_CONF_OPTS = \
 	--disable-libssp \
 	--disable-multilib \
 	--with-gmp=$(HOST_DIR)/usr \
+	--with-mpc=$(HOST_DIR)/usr \
 	--with-mpfr=$(HOST_DIR)/usr \
 	--with-pkgversion="Buildroot $(BR2_VERSION_FULL)" \
 	--with-bugurl="http://bugs.buildroot.net/"
@@ -159,11 +161,6 @@ HOST_GCC_COMMON_CONF_OPTS += \
 	--disable-libatomic
 else
 HOST_GCC_COMMON_CONF_OPTS += --enable-threads
-endif
-
-ifeq ($(BR2_GCC_NEEDS_MPC),y)
-HOST_GCC_COMMON_DEPENDENCIES += host-mpc
-HOST_GCC_COMMON_CONF_OPTS += --with-mpc=$(HOST_DIR)/usr
 endif
 
 ifeq ($(BR2_GCC_ENABLE_GRAPHITE),y)
