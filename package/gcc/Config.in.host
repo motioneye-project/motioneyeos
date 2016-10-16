@@ -38,8 +38,8 @@ choice
 		bool "gcc arc (6.x)"
 		# Only supported architecture
 		depends on BR2_arc
+		select BR2_GCC_SUPPORTS_GRAPHITE
 		select BR2_TOOLCHAIN_GCC_AT_LEAST_6
-
 
 	config BR2_GCC_VERSION_4_9_X
 		bool "gcc 4.9.x"
