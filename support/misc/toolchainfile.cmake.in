@@ -13,6 +13,21 @@ string(REPLACE "/usr/share/buildroot" "" RELOCATED_HOST_DIR ${CMAKE_CURRENT_LIST
 set(CMAKE_SYSTEM_NAME Linux)
 set(CMAKE_SYSTEM_PROCESSOR @@CMAKE_SYSTEM_PROCESSOR@@)
 
+# Set the {C,CXX}FLAGS appended by CMake depending on the build type
+# defined by Buildroot. CMake defaults these variables with -g and/or
+# -O options, and they are appended at the end of the argument list,
+# so the Buildroot options are overridden. Therefore these variables
+# have to be cleared, so that the options passed in CMAKE_C_FLAGS do
+# apply.
+#
+# Note:
+#   if the project forces some of these flag variables, Buildroot is
+#   screwed up and there is nothing Buildroot can do about that :(
+set(CMAKE_C_FLAGS_DEBUG "" CACHE STRING "Debug CFLAGS")
+set(CMAKE_CXX_FLAGS_DEBUG "" CACHE STRING "Debug CXXFLAGS")
+set(CMAKE_C_FLAGS_RELEASE " -DNEBUG" CACHE STRING "Release CFLAGS")
+set(CMAKE_CXX_FLAGS_RELEASE " -DNEBUG" CACHE STRING "Release CXXFLAGS")
+
 # Build type from the Buildroot configuration
 set(CMAKE_BUILD_TYPE @@CMAKE_BUILD_TYPE@@ CACHE STRING "Buildroot build configuration")
 
@@ -34,6 +49,8 @@ set(ENV{PKG_CONFIG_SYSROOT_DIR} "${RELOCATED_HOST_DIR}/@@STAGING_SUBDIR@@")
 set(CMAKE_C_COMPILER "${RELOCATED_HOST_DIR}/@@TARGET_CC@@")
 set(CMAKE_CXX_COMPILER "${RELOCATED_HOST_DIR}/@@TARGET_CXX@@")
 if(@@TOOLCHAIN_HAS_FORTRAN@@)
+  set(CMAKE_Fortran_FLAGS_DEBUG "" CACHE STRING "Debug CFLAGS")
+  set(CMAKE_Fortran_FLAGS_RELEASE " -DNEBUG" CACHE STRING "Release CFLAGS")
   set(CMAKE_Fortran_FLAGS "@@TARGET_FCFLAGS@@ ${CMAKE_Fortran_FLAGS}" CACHE STRING "Buildroot FCFLAGS")
   set(CMAKE_Fortran_COMPILER "${RELOCATED_HOST_DIR}/@@TARGET_FC@@")
 endif()
