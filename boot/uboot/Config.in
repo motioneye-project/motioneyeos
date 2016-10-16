@@ -137,6 +137,14 @@ config BR2_TARGET_UBOOT_NEEDS_DTC
 	  Select this option if your U-Boot board configuration
 	  requires the Device Tree compiler to be available.
 
+config BR2_TARGET_UBOOT_NEEDS_OPENSSL
+	bool "U-Boot needs OpenSSL"
+	help
+	  Select this option if your U-Boot board configuration
+	  requires OpenSSL to be available on the host. This is
+	  typically the case when the board configuration has
+	  CONFIG_FIT_SIGNATURE enabled.
+
 menu "U-Boot binary format"
 
 config BR2_TARGET_UBOOT_FORMAT_AIS
