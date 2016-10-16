@@ -1262,6 +1262,9 @@ F:	package/python-pysnmp-apps/
 F:	package/python-pysnmp-mibs/
 F:	package/python-tornado/
 
+N:	Ryan Coe <bluemrp9@gmail.com>
+F:	package/libite/
+
 N:	Ryan Wilkins <ryan@deadfrog.net>
 F:	package/biosdevname/
 
