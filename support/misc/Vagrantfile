@@ -12,7 +12,7 @@ VM_MEMORY=2048
 VM_CORES=1
 
 Vagrant.configure('2') do |config|
-	config.vm.box = 'ubuntu/trusty64'
+	config.vm.box = 'bento/ubuntu-16.04'
 
 	config.vm.provider :vmware_fusion do |v, override|
 		v.vmx['memsize'] = VM_MEMORY
@@ -44,10 +44,13 @@ Vagrant.configure('2') do |config|
 	config.vm.provision 'shell', inline:
 		"sudo dpkg --add-architecture i386
 		sudo apt-get -q update
+		sudo apt-get purge -q -y snapd lxcfs lxd ubuntu-core-launcher snap-confine
+		sudo apt-get -q -y upgrade
 		sudo apt-get -q -y install build-essential libncurses5-dev \
-			git bzr cvs mercurial subversion libc6:i386 unzip
+			git bzr cvs mercurial subversion libc6:i386 unzip bc
 		sudo apt-get -q -y autoremove
-		sudo apt-get -q -y clean"
+		sudo apt-get -q -y clean
+		sudo update-locale LC_ALL=C"
 
 	config.vm.provision 'shell', privileged: false, inline:
 		"echo 'Downloading and extracting buildroot #{RELEASE}'
