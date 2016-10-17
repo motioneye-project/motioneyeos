@@ -4,11 +4,18 @@
 #
 ################################################################################
 
-INADYN_VERSION = 1.99.12
-INADYN_SITE = https://github.com/troglobit/inadyn/releases/download/$(INADYN_VERSION)
-INADYN_SOURCE = inadyn-$(INADYN_VERSION).tar.xz
+INADYN_VERSION = v2.0
+INADYN_SITE = $(call github,troglobit,inadyn,$(INADYN_VERSION))
 INADYN_LICENSE = GPLv2+
 INADYN_LICENSE_FILES = COPYING
+INADYN_AUTORECONF = YES
+INADYN_DEPENDENCIES = host-pkgconf libconfuse libite
+
+# Needed for autoreconf to work properly, see ./autogen.sh
+define INADYN_FIXUP_M4_DIR
+	mkdir $(@D)/m4
+endef
+INADYN_POST_EXTRACT_HOOKS += INADYN_FIXUP_M4_DIR
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 INADYN_CONF_OPTS += --enable-openssl
