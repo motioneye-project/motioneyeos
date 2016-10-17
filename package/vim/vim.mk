@@ -49,15 +49,15 @@ endif
 
 define VIM_INSTALL_TARGET_CMDS
 	cd $(@D)/src; \
-		$(MAKE) DESTDIR=$(TARGET_DIR) installvimbin; \
-		$(MAKE) DESTDIR=$(TARGET_DIR) installtools; \
-		$(MAKE) DESTDIR=$(TARGET_DIR) installlinks
+		$(TARGET_MAKE_ENV) $(MAKE) DESTDIR=$(TARGET_DIR) installvimbin; \
+		$(TARGET_MAKE_ENV) $(MAKE) DESTDIR=$(TARGET_DIR) installtools; \
+		$(TARGET_MAKE_ENV) $(MAKE) DESTDIR=$(TARGET_DIR) installlinks
 endef
 
 define VIM_INSTALL_RUNTIME_CMDS
 	cd $(@D)/src; \
-		$(MAKE) DESTDIR=$(TARGET_DIR) installrtbase; \
-		$(MAKE) DESTDIR=$(TARGET_DIR) installmacros
+		$(TARGET_MAKE_ENV) $(MAKE) DESTDIR=$(TARGET_DIR) installrtbase; \
+		$(TARGET_MAKE_ENV) $(MAKE) DESTDIR=$(TARGET_DIR) installmacros
 endef
 
 define VIM_REMOVE_DOCS
