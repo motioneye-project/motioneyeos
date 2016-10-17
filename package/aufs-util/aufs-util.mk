@@ -41,7 +41,7 @@ AUFS_UTIL_POST_PATCH_HOOKS += AUFS_UTIL_REMOVE_RDU64
 
 # First, we build the host tools, needed to build the target tools.
 define AUFS_UTIL_BUILD_CMDS
-	$(MAKE) -C $(@D) \
+	$(HOST_MAKE_ENV) $(MAKE) -C $(@D) \
 		$(HOST_CONFIGURE_OPTS) \
 		CPPFLAGS="$(AUFS_UTIL_HOST_CPPFLAGS)" \
 		HOSTCC="$(HOSTCC)" HOSTLD="$(HOSTLD)" \
