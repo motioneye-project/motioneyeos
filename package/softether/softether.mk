@@ -34,9 +34,9 @@ HOST_SOFTETHER_DEPENDENCIES = host-pkgconf host-openssl host-readline
 # target build creates the file hamcore.se2 which needs the host variant of
 # hamcorebuilder, for details see http://www.vpnusers.com/viewtopic.php?p=5426
 define HOST_SOFTETHER_BUILD_CMDS
-	$(MAKE) -C $(@D)/src/Mayaqua
-	$(MAKE) -C $(@D)/src/Cedar
-	$(MAKE) -C $(@D)/src/hamcorebuilder
+	$(HOST_MAKE_ENV) $(MAKE) -C $(@D)/src/Mayaqua
+	$(HOST_MAKE_ENV) $(MAKE) -C $(@D)/src/Cedar
+	$(HOST_MAKE_ENV) $(MAKE) -C $(@D)/src/hamcorebuilder
 endef
 
 define HOST_SOFTETHER_INSTALL_CMDS
