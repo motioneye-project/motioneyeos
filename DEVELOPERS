@@ -1229,6 +1229,10 @@ F:	package/gssdp/
 F:	package/gupnp/
 F:	package/gupnp-av/
 
+N:	Rahul Jain <rahul.jain@imgtec.com>
+F:	package/uhttpd/
+F:	package/ustream-ssl/
+
 N:	Renaud Aubin <root@renaud.io>
 F:	package/libhttpparser/
 
