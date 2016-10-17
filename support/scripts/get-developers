@@ -74,7 +74,7 @@ def __main__():
 
         result = "--to buildroot@buildroot.org"
         for dev in matching_devs:
-            result += " --to \"%s\"" % dev
+            result += " --cc \"%s\"" % dev
 
         if result != "":
             print("git send-email %s" % result)
