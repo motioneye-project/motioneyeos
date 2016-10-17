@@ -109,10 +109,11 @@ endif
 # Include some helper macros and variables
 include support/misc/utils.mk
 
+# Set O variable if not already done on the command line;
+# or avoid confusing packages that can use the O=<dir> syntax for out-of-tree
+# build by preventing it from being forwarded to sub-make calls.
 ifneq ("$(origin O)", "command line")
 O := output
-CONFIG_DIR := $(TOPDIR)
-NEED_WRAPPER =
 else
 # other packages might also support Linux-style out of tree builds
 # with the O=<dir> syntax (E.G. BusyBox does). As make automatically
@@ -125,9 +126,16 @@ MAKEOVERRIDES =
 # Unfortunately some packages don't look at origin (E.G. uClibc 0.9.31+)
 # To really make O go away, we have to override it.
 override O := $(O)
-CONFIG_DIR := $(O)
 # we need to pass O= everywhere we call back into the toplevel makefile
 EXTRAMAKEARGS = O=$(O)
+endif
+
+# Set variables related to in-tree or out-of-tree build.
+ifeq ($(O),output)
+CONFIG_DIR := $(TOPDIR)
+NEED_WRAPPER =
+else
+CONFIG_DIR := $(O)
 NEED_WRAPPER = y
 endif
 
