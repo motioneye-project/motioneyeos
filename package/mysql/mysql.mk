@@ -47,13 +47,13 @@ HOST_MYSQL_CONF_OPTS = \
 	--disable-mysql-maintainer-mode
 
 define HOST_MYSQL_BUILD_CMDS
-	$(MAKE) -C $(@D)/include my_config.h
-	$(MAKE) -C $(@D)/mysys libmysys.a
-	$(MAKE) -C $(@D)/strings libmystrings.a
-	$(MAKE) -C $(@D)/vio libvio.a
-	$(MAKE) -C $(@D)/dbug libdbug.a
-	$(MAKE) -C $(@D)/regex libregex.a
-	$(MAKE) -C $(@D)/sql gen_lex_hash
+	$(HOST_MAKE_ENV) $(MAKE) -C $(@D)/include my_config.h
+	$(HOST_MAKE_ENV) $(MAKE) -C $(@D)/mysys libmysys.a
+	$(HOST_MAKE_ENV) $(MAKE) -C $(@D)/strings libmystrings.a
+	$(HOST_MAKE_ENV) $(MAKE) -C $(@D)/vio libvio.a
+	$(HOST_MAKE_ENV) $(MAKE) -C $(@D)/dbug libdbug.a
+	$(HOST_MAKE_ENV) $(MAKE) -C $(@D)/regex libregex.a
+	$(HOST_MAKE_ENV) $(MAKE) -C $(@D)/sql gen_lex_hash
 endef
 
 define HOST_MYSQL_INSTALL_CMDS
