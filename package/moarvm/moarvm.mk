@@ -29,19 +29,19 @@ MOARVM_CONF_OPTS += --big-endian
 endif
 
 define MOARVM_CONFIGURE_CMDS
-	(cd $(@D); perl Configure.pl $(MOARVM_CONF_OPTS))
+	(cd $(@D); $(TARGET_MAKE_ENV) perl Configure.pl $(MOARVM_CONF_OPTS))
 endef
 
 define MOARVM_BUILD_CMDS
-	$(MAKE) -C $(@D)
+	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D)
 endef
 
 define MOARVM_INSTALL_STAGING_CMDS
-	$(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
+	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
 endef
 
 define MOARVM_INSTALL_TARGET_CMDS
-	$(MAKE) -C $(@D) DESTDIR=$(TARGET_DIR) install
+	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) DESTDIR=$(TARGET_DIR) install
 endef
 
 $(eval $(generic-package))
