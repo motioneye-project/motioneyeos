@@ -20,7 +20,7 @@ define HOST_LZIP_CONFIGURE_CMDS
 endef
 
 define LZIP_BUILD_CMDS
-	$(MAKE) -C $(@D)
+	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D)
 endef
 
 define HOST_LZIP_BUILD_CMDS
@@ -28,7 +28,7 @@ define HOST_LZIP_BUILD_CMDS
 endef
 
 define LZIP_INSTALL_TARGET_CMDS
-	$(MAKE) -C $(@D) DESTDIR=$(TARGET_DIR) install
+	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) DESTDIR=$(TARGET_DIR) install
 endef
 
 define HOST_LZIP_INSTALL_CMDS
