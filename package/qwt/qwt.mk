@@ -54,13 +54,13 @@ endef
 # that when building with qmake, -L$(STAGING_DIR)/usr/lib is used and
 # not -L/usr/lib.
 define QWT_INSTALL_STAGING_CMDS
-	$(MAKE) -C $(@D) install INSTALL_ROOT=$(STAGING_DIR)
+	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) install INSTALL_ROOT=$(STAGING_DIR)
 	$(SED) "s%QWT_INSTALL_PREFIX = .*%QWT_INSTALL_PREFIX = $(STAGING_DIR)/usr%" \
 		$(STAGING_DIR)/usr/mkspecs/features/qwtconfig.pri
 endef
 
 define QWT_INSTALL_TARGET_CMDS
-	$(MAKE) -C $(@D) install INSTALL_ROOT=$(TARGET_DIR)
+	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) install INSTALL_ROOT=$(TARGET_DIR)
 	rm -Rf $(TARGET_DIR)/usr/mkspecs
 endef
 
