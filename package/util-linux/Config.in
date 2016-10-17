@@ -259,6 +259,7 @@ config BR2_PACKAGE_UTIL_LINUX_PARTX
 	bool "partition utilities"
 	depends on BR2_USE_MMU # fork()
 	select BR2_PACKAGE_UTIL_LINUX_LIBBLKID
+	select BR2_PACKAGE_UTIL_LINUX_LIBSMARTCOLS
 	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
 	help
 	  Partition utilities (addpart, delpart, partx)
