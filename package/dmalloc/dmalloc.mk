@@ -48,7 +48,7 @@ DMALLOC_POST_PATCH_HOOKS += DMALLOC_POST_PATCH
 
 # both DESTDIR and PREFIX are ignored..
 define DMALLOC_INSTALL_STAGING_CMDS
-	$(MAKE) includedir="$(STAGING_DIR)/usr/include" \
+	$(TARGET_MAKE_ENV) $(MAKE) includedir="$(STAGING_DIR)/usr/include" \
 		bindir="$(STAGING_DIR)/usr/bin" \
 		libdir="$(STAGING_DIR)/usr/lib" \
 		shlibdir="$(STAGING_DIR)/usr/lib" \
