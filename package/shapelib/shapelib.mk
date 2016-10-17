@@ -15,11 +15,11 @@ define SHAPELIB_BUILD_CMDS
 endef
 
 define SHAPELIB_INSTALL_STAGING_CMDS
-	$(MAKE) -C $(@D) PREFIX=$(STAGING_DIR)/usr/ lib_install
+	$(TARGET_CONFIGURE_OPTS) $(MAKE) -C $(@D) PREFIX=$(STAGING_DIR)/usr/ lib_install
 endef
 
 define SHAPELIB_INSTALL_TARGET_CMDS
-	$(MAKE) -C $(@D) PREFIX=$(TARGET_DIR)/usr/ bin_install
+	$(TARGET_CONFIGURE_OPTS) $(MAKE) -C $(@D) PREFIX=$(TARGET_DIR)/usr/ bin_install
 endef
 
 $(eval $(generic-package))
