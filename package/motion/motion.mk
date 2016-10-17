@@ -54,6 +54,9 @@ endif
 ifeq ($(BR2_PACKAGE_SDL),y)
 MOTION_DEPENDENCIES += sdl
 MOTION_CONF_OPTS += --with-sdl=$(STAGING_DIR)/usr
+# overwrite ac_cv_path_CONFIG_SDL in case sdl development is
+# installed on the host
+MOTION_CONF_ENV += ac_cv_path_CONFIG_SDL=$(STAGING_DIR)/usr/bin/sdl-config
 else
 MOTION_CONF_OPTS += --without-sdl
 endif
