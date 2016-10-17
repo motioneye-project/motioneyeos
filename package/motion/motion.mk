@@ -44,11 +44,11 @@ endif
 ifeq ($(BR2_PACKAGE_POSTGRESQL),y)
 MOTION_DEPENDENCIES += postgresql
 MOTION_CONF_OPTS += \
-	--with-postgresql \
+	--with-pgsql \
 	--with-pgsql-include=$(STAGING_DIR)/usr/include \
 	--with-pgsql-lib=$(STAGING_DIR)/usr/lib
 else
-MOTION_CONF_OPTS += --without-postgresql
+MOTION_CONF_OPTS += --without-pgsql
 endif
 
 ifeq ($(BR2_PACKAGE_SDL),y)
