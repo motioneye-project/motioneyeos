@@ -1263,6 +1263,7 @@ F:	package/python-pysnmp-mibs/
 F:	package/python-tornado/
 
 N:	Ryan Coe <bluemrp9@gmail.com>
+F:	package/inadyn/
 F:	package/libite/
 
 N:	Ryan Wilkins <ryan@deadfrog.net>
