@@ -81,7 +81,7 @@ define DOWNLOAD_GIT
 		-- \
 		$($(PKG)_SITE) \
 		$($(PKG)_DL_VERSION) \
-		$($(PKG)_BASE_NAME) \
+		$($(PKG)_RAW_BASE_NAME) \
 		$($(PKG)_DL_OPTS)
 endef
 
@@ -98,7 +98,7 @@ define DOWNLOAD_BZR
 		-- \
 		$($(PKG)_SITE) \
 		$($(PKG)_DL_VERSION) \
-		$($(PKG)_BASE_NAME) \
+		$($(PKG)_RAW_BASE_NAME) \
 		$($(PKG)_DL_OPTS)
 endef
 
@@ -114,7 +114,7 @@ define DOWNLOAD_CVS
 		$(call stripurischeme,$(call qstrip,$($(PKG)_SITE))) \
 		$($(PKG)_DL_VERSION) \
 		$($(PKG)_RAWNAME) \
-		$($(PKG)_BASE_NAME) \
+		$($(PKG)_RAW_BASE_NAME) \
 		$($(PKG)_DL_OPTS)
 endef
 
@@ -130,7 +130,7 @@ define DOWNLOAD_SVN
 		-- \
 		$($(PKG)_SITE) \
 		$($(PKG)_DL_VERSION) \
-		$($(PKG)_BASE_NAME) \
+		$($(PKG)_RAW_BASE_NAME) \
 		$($(PKG)_DL_OPTS)
 endef
 
@@ -162,7 +162,7 @@ define DOWNLOAD_HG
 		-- \
 		$($(PKG)_SITE) \
 		$($(PKG)_DL_VERSION) \
-		$($(PKG)_BASE_NAME) \
+		$($(PKG)_RAW_BASE_NAME) \
 		$($(PKG)_DL_OPTS)
 endef
 
