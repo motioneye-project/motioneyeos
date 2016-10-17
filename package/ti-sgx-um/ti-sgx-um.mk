@@ -15,11 +15,11 @@ TI_SGX_UM_INSTALL_STAGING = YES
 TI_SGX_UM_DEPENDENCIES = libdrm
 
 define TI_SGX_UM_INSTALL_STAGING_CMDS
-	$(MAKE) -C $(@D) DISCIMAGE=$(STAGING_DIR) install
+	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) DISCIMAGE=$(STAGING_DIR) install
 endef
 
 define TI_SGX_UM_INSTALL_TARGET_CMDS
-	$(MAKE) -C $(@D) DISCIMAGE=$(TARGET_DIR) install
+	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) DISCIMAGE=$(TARGET_DIR) install
 endef
 
 # libs use the following file for configuration
