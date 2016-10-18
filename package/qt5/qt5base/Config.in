@@ -180,7 +180,7 @@ config BR2_PACKAGE_QT5BASE_DIRECTFB
 	bool "directfb support"
 	depends on BR2_PACKAGE_DIRECTFB
 
-comment "directfb backend if directb is enabled"
+comment "directfb backend available if directfb is enabled"
 	depends on !BR2_PACKAGE_DIRECTFB
 
 config BR2_PACKAGE_QT5BASE_XCB
