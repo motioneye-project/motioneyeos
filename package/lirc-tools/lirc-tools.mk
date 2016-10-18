@@ -4,16 +4,14 @@
 #
 ################################################################################
 
-LIRC_TOOLS_VERSION = 0.9.4
+LIRC_TOOLS_VERSION = 0.9.4b
 LIRC_TOOLS_SOURCE = lirc-$(LIRC_TOOLS_VERSION).tar.bz2
 LIRC_TOOLS_SITE = http://downloads.sourceforge.net/project/lirc/LIRC/$(LIRC_TOOLS_VERSION)
 LIRC_TOOLS_LICENSE = GPLv2+
 LIRC_TOOLS_LICENSE_FILES = COPYING
 LIRC_TOOLS_DEPENDENCIES = host-libxslt host-pkgconf host-python3
 LIRC_TOOLS_INSTALL_STAGING = YES
-# 0001-lib-use-proper-linking-method-to-avoid-parallel-buil.patch
-# 0003-Don-t-build-commandir-unless-we-have-usb.h-191.patch
-# 0004-configure-check-for-clock_gettime-in-librt.patch
+# 0002-configure-check-for-clock_gettime-in-librt.patch
 LIRC_TOOLS_AUTORECONF = YES
 
 LIRC_TOOLS_CONF_ENV = XSLTPROC=yes
