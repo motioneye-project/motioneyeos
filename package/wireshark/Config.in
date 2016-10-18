@@ -8,7 +8,7 @@ config BR2_PACKAGE_WIRESHARK
 	help
 	  Network traffic sniffer and protocol decoder.
 
-	  http://www.wireshark.org
+	  https://www.wireshark.org
 
 comment "wireshark needs a toolchain w/ wchar, threads"
 	depends on BR2_USE_MMU

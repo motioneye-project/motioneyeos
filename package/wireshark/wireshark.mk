@@ -6,7 +6,7 @@
 
 WIRESHARK_VERSION = 2.2.1
 WIRESHARK_SOURCE = wireshark-$(WIRESHARK_VERSION).tar.bz2
-WIRESHARK_SITE = http://www.wireshark.org/download/src/all-versions
+WIRESHARK_SITE = https://www.wireshark.org/download/src/all-versions
 WIRESHARK_LICENSE = wireshark license
 WIRESHARK_LICENSE_FILES = COPYING
 WIRESHARK_DEPENDENCIES = host-pkgconf libpcap libglib2
