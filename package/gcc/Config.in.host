@@ -63,7 +63,8 @@ choice
 		depends on !(BR2_TOOLCHAIN_USES_MUSL && (BR2_powerpc64 || BR2_powerpc64el))
 		# Unsupported MIPS cores
 		depends on !BR2_mips_interaptiv && !BR2_mips_m5100 && \
-			!BR2_mips_m5101 && !BR2_mips_i6400 && !BR2_mips_p6600
+			!BR2_mips_m5101 && !BR2_mips_m6201 && !BR2_mips_i6400 && \
+			!BR2_mips_p6600
 		# musl mips64 unsupported
 		depends on !(BR2_TOOLCHAIN_USES_MUSL && (BR2_mips64 || BR2_mips64el))
 		select BR2_TOOLCHAIN_GCC_AT_LEAST_5
@@ -73,7 +74,7 @@ choice
 		# Broken or unsupported architectures
 		depends on !BR2_arc
 		# Unsupported MIPS cores
-		depends on !BR2_mips_p6600
+		depends on !BR2_mips_m6201 && !BR2_mips_p6600
 		select BR2_TOOLCHAIN_GCC_AT_LEAST_6
 
 endchoice
