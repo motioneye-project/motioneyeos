@@ -41,6 +41,7 @@ endif
 ifeq ($(BR2_PACKAGE_QT5BASE_WIDGETS),y)
 WIRESHARK_CONF_OPTS += --with-qt=5
 WIRESHARK_DEPENDENCIES += qt5base
+WIRESHARK_CONF_ENV += ac_cv_path_QTCHOOSER=""
 # Seems it expects wrappers and passes a -qt=X parameter for version
 WIRESHARK_MAKE_OPTS += \
 	MOC="$(HOST_DIR)/usr/bin/moc" \
