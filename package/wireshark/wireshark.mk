@@ -32,7 +32,7 @@ WIRESHARK_CONF_OPTS += --with-gtk=3
 WIRESHARK_DEPENDENCIES += libgtk3
 else ifeq ($(BR2_PACKAGE_LIBGTK2),y)
 WIRESHARK_CONF_OPTS += --with-gtk=2
-WIRESHARK_DEPENDECIES += libgtk2
+WIRESHARK_DEPENDENCIES += libgtk2
 else
 WIRESHARK_CONF_OPTS += --with-gtk=no
 endif
