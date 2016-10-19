@@ -8,7 +8,7 @@ declare -A BR2_EXT_DESCS
 
 # URL to manual for help in converting old br2-external trees.
 # Escape '#' so that make does not consider it a comment.
-MANUAL_URL='https://buildroot.org/manual/manual.html\#br2-external-converting'
+MANUAL_URL='https://buildroot.org/manual.html\#br2-external-converting'
 
 main() {
     local OPT OPTARG
