@@ -120,7 +120,8 @@ Since it is possible to use multiple br2-external trees at once, this
    and is used when displaying information about a br2-external tree (e.g.
    above the list of defconfig files, or as the prompt in the menuconfig);
    as such, it should relatively brief (40 chars is probably a good upper
-   limit).
+   limit). The description is available in the +BR2_EXTERNAL_$(NAME)_DESC+
+   variable.
 
 Examples of names and the corresponding +BR2_EXTERNAL_$(NAME)_PATH+
 variables:
@@ -129,6 +130,12 @@ variables:
   * +BAR_42+ -> +BR2_EXTERNAL_BAR_42_PATH+
 
 In the following examples, it is assumed the name to be set to +BAR_42+.
+
+.Note:
+Both +BR2_EXTERNAL_$(NAME)_PATH+ and `BR2_EXTERNAL_$(NAME)_DESC` are
+  available in the Kconfig files and the Makefiles. They are also
+  exported in the environment so are available in post-build, post-image
+  and in-fakeroot scripts.
 
 ===== The +Config.in+ and +external.mk+ files
 
