@@ -33,7 +33,7 @@ BIND_CONF_OPTS = \
 	--enable-filter-aaaa
 
 ifeq ($(BR2_PACKAGE_ZLIB),y)
-BIND_CONF_OPTS += --with-zlib
+BIND_CONF_OPTS += --with-zlib=$(STAGING_DIR)/usr/include
 BIND_DEPENDENCIES += zlib
 else
 BIND_CONF_OPTS += --without-zlib
