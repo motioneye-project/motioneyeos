@@ -1,0 +1,39 @@
+From 492e240a651e3d32b84cac66e4675ee99dcbe05a Mon Sep 17 00:00:00 2001
+From: Jackie Huang <jackie.huang@windriver.com>
+Date: Thu, 13 Oct 2016 13:41:43 +0800
+Subject: [PATCH] ppp: fix building with linux-4.8
+
+Fix a build error when using the linux-4.8 headers that results in:
+
+In file included from pppoe.h:87:0,
+                 from plugin.c:29:
+../usr/include/netinet/in.h:211:8: note: originally defined here
+ struct in6_addr
+        ^~~~~~~~
+In file included from ../usr/include/linux/if_pppol2tp.h:20:0,
+                 from ../usr/include/linux/if_pppox.h:26,
+                 from plugin.c:52:
+../usr/include/linux/in6.h:49:8: error: redefinition of 'struct sockaddr_in6'
+ struct sockaddr_in6 {
+        ^~~~~~~~~~~~
+
+Signed-off-by: Jackie Huang <jackie.huang@windriver.com>
+[Thomas: downloaded from https://github.com/paulusmack/ppp/pull/69.]
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ pppd/plugins/rp-pppoe/pppoe.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/pppd/plugins/rp-pppoe/pppoe.h b/pppd/plugins/rp-pppoe/pppoe.h
+index 9ab2eee..96d2794 100644
+--- a/pppd/plugins/rp-pppoe/pppoe.h
++++ b/pppd/plugins/rp-pppoe/pppoe.h
+@@ -84,7 +84,7 @@ typedef unsigned long UINT32_t;
+ #include <linux/if_ether.h>
+ #endif
+ 
+-#include <netinet/in.h>
++#include <linux/in.h>
+ 
+ #ifdef HAVE_NETINET_IF_ETHER_H
+ #include <sys/types.h>
