@@ -78,7 +78,7 @@ WIRESHARK_CONF_OPTS += --with-gnutls=no
 endif
 
 ifeq ($(BR2_PACKAGE_LIBGCRYPT),y)
-WIRESHARK_CONF_ENV = LIBGCRYPT_CONFIG=$(STAGING_DIR)/usr/bin/libgcrypt-config
+WIRESHARK_CONF_ENV += LIBGCRYPT_CONFIG=$(STAGING_DIR)/usr/bin/libgcrypt-config
 WIRESHARK_CONF_OPTS += --with-gcrypt=yes
 WIRESHARK_DEPENDENCIES += libgcrypt
 else
