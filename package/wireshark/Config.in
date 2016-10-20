@@ -10,6 +10,8 @@ config BR2_PACKAGE_WIRESHARK
 
 	  https://www.wireshark.org
 
+if BR2_PACKAGE_WIRESHARK
+
 config BR2_PACKAGE_WIRESHARK_QT
 	bool
 	default y
@@ -22,6 +24,8 @@ config BR2_PACKAGE_WIRESHARK_GUI
 	default y if BR2_PACKAGE_LIBGTK2
 	default y if BR2_PACKAGE_LIBGTK3
 	default y if BR2_PACKAGE_WIRESHARK_QT
+
+endif # BR2_PACKAGE_WIRESHARK
 
 comment "wireshark needs a toolchain w/ wchar, threads"
 	depends on BR2_USE_MMU
