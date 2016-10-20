@@ -2,8 +2,6 @@ config BR2_PACKAGE_WIRESHARK
 	bool "wireshark"
 	select BR2_PACKAGE_LIBPCAP
 	select BR2_PACKAGE_LIBGLIB2
-	select BR2_PACKAGE_QT5TOOLS if BR2_PACKAGE_QT5BASE_WIDGETS
-	select BR2_PACKAGE_QT5TOOLS_LINGUIST_TOOLS if BR2_PACKAGE_QT5BASE_WIDGETS
 	depends on BR2_USE_MMU # fork(), glib2
 	depends on BR2_USE_WCHAR # glib2
 	depends on BR2_TOOLCHAIN_HAS_THREADS # glib2
@@ -11,6 +9,19 @@ config BR2_PACKAGE_WIRESHARK
 	  Network traffic sniffer and protocol decoder.
 
 	  https://www.wireshark.org
+
+config BR2_PACKAGE_WIRESHARK_QT
+	bool
+	default y
+	depends on BR2_PACKAGE_QT5BASE_WIDGETS
+	depends on BR2_PACKAGE_QT5TOOLS
+	select BR2_PACKAGE_QT5TOOLS_LINGUIST_TOOLS
+
+config BR2_PACKAGE_WIRESHARK_GUI
+	bool
+	default y if BR2_PACKAGE_LIBGTK2
+	default y if BR2_PACKAGE_LIBGTK3
+	default y if BR2_PACKAGE_WIRESHARK_QT
 
 comment "wireshark needs a toolchain w/ wchar, threads"
 	depends on BR2_USE_MMU

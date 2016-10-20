@@ -38,7 +38,7 @@ WIRESHARK_CONF_OPTS += --with-gtk=no
 endif
 
 # Qt4 needs accessibility, we don't support it
-ifeq ($(BR2_PACKAGE_QT5BASE_WIDGETS),y)
+ifeq ($(BR2_PACKAGE_WIRESHARK_QT),y)
 WIRESHARK_CONF_OPTS += --with-qt=5
 WIRESHARK_DEPENDENCIES += qt5base qt5tools
 WIRESHARK_CONF_ENV += ac_cv_path_QTCHOOSER=""
@@ -52,7 +52,7 @@ WIRESHARK_CONF_OPTS += --with-qt=no
 endif
 
 # No GUI at all
-ifeq ($(BR2_PACKAGE_LIBGTK2)$(BR2_PACKAGE_LIBGTK3)$(BR2_PACKAGE_QT5BASE_WIDGETS),)
+ifeq ($(BR2_PACKAGE_WIRESHARK_GUI),)
 WIRESHARK_CONF_OPTS += --disable-wireshark
 endif
 
