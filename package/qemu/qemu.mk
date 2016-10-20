@@ -196,11 +196,14 @@ else
 QEMU_OPTS += --disable-fdt
 endif
 
+# Override CPP, as it expects to be able to call it like it'd
+# call the compiler.
 define QEMU_CONFIGURE_CMDS
 	( cd $(@D);                                     \
 		LIBS='$(QEMU_LIBS)'                     \
 		$(TARGET_CONFIGURE_OPTS)                \
 		$(TARGET_CONFIGURE_ARGS)                \
+		CPP="$(TARGET_CC) -E"			\
 		$(QEMU_VARS)                            \
 		./configure                             \
 			--prefix=/usr                   \
