@@ -1,0 +1,35 @@
+arm: add iomem.h and phys_to_virt.h
+
+Fixes build for arm.
+
+This patch is equivalent to upstream commit 1574ff1aae4f3 (arm: include
+phys_to_virt.h and iomem.h in distribution) when applied to the tarball.
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+
+---
+diff -Nuar kexec-tools-2.0.13-orig/kexec/arch/arm/iomem.h kexec-tools-2.0.13/kexec/arch/arm/iomem.h
+--- kexec-tools-2.0.13-orig/kexec/arch/arm/iomem.h	1970-01-01 02:00:00.000000000 +0200
++++ kexec-tools-2.0.13/kexec/arch/arm/iomem.h	2016-10-21 09:45:27.495689269 +0300
+@@ -0,0 +1,9 @@
++#ifndef IOMEM_H
++#define IOMEM_H
++
++#define SYSTEM_RAM		"System RAM\n"
++#define SYSTEM_RAM_BOOT		"System RAM (boot alias)\n"
++#define CRASH_KERNEL		"Crash kernel\n"
++#define CRASH_KERNEL_BOOT	"Crash kernel (boot alias)\n"
++
++#endif
+diff -Nuar kexec-tools-2.0.13-orig/kexec/arch/arm/phys_to_virt.h kexec-tools-2.0.13/kexec/arch/arm/phys_to_virt.h
+--- kexec-tools-2.0.13-orig/kexec/arch/arm/phys_to_virt.h	1970-01-01 02:00:00.000000000 +0200
++++ kexec-tools-2.0.13/kexec/arch/arm/phys_to_virt.h	2016-10-21 09:45:27.495689269 +0300
+@@ -0,0 +1,8 @@
++#ifndef PHYS_TO_VIRT_H
++#define PHYS_TO_VIRT_H
++
++#include <stdint.h>
++
++extern uint64_t phys_offset;
++
++#endif
