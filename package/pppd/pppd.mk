@@ -18,7 +18,7 @@ PPPD_TARGET_BINS = chat pppd pppdump pppstats
 PPPD_RADIUS_CONF = \
 	dictionary dictionary.ascend dictionary.compat \
 	dictionary.merit dictionary.microsoft \
-	issue port-id-map realms server radiusclient.conf
+	issue port-id-map realms servers radiusclient.conf
 
 ifeq ($(BR2_PACKAGE_PPPD_FILTER),y)
 PPPD_DEPENDENCIES += libpcap
