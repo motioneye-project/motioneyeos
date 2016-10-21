@@ -210,6 +210,10 @@ endef
 #
 # E.G. use like this:
 # $(call DOWNLOAD,$(FOO_SITE))
+#
+# For PRIMARY and BACKUP site, any ? in the URL is replaced by %3F. A ? in
+# the URL is used to separate query arguments, but the PRIMARY and BACKUP
+# sites serve just plain files.
 ################################################################################
 
 define DOWNLOAD
@@ -226,7 +230,7 @@ define DOWNLOAD_INNER
 		case "$(call geturischeme,$(BR2_PRIMARY_SITE))" in \
 			file) $(call $(3)_LOCALFILES,$(BR2_PRIMARY_SITE)/$(2),$(2)) && exit ;; \
 			scp) $(call $(3)_SCP,$(BR2_PRIMARY_SITE)/$(2),$(2)) && exit ;; \
-			*) $(call $(3)_WGET,$(BR2_PRIMARY_SITE)/$(2),$(2)) && exit ;; \
+			*) $(call $(3)_WGET,$(BR2_PRIMARY_SITE)/$(subst ?,%3F,$(2)),$(2)) && exit ;; \
 		esac ; \
 	fi ; \
 	if test "$(BR2_PRIMARY_SITE_ONLY)" = "y" ; then \
@@ -245,7 +249,7 @@ define DOWNLOAD_INNER
 		esac ; \
 	fi ; \
 	if test -n "$(call qstrip,$(BR2_BACKUP_SITE))" ; then \
-		$(call $(3)_WGET,$(BR2_BACKUP_SITE)/$(2),$(2)) && exit ; \
+		$(call $(3)_WGET,$(BR2_BACKUP_SITE)/$(subst ?,%3F,$(2)),$(2)) && exit ; \
 	fi ; \
 	exit 1
 endef
