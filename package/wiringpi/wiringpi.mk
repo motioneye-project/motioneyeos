@@ -4,16 +4,8 @@
 #
 ################################################################################
 
-# original site is down (2016-06-03)
-#
-# WIRINGPI_VERSION = 2.31
-# WIRINGPI_SITE = git://git.drogon.net/wiringPi
-#
-# so change to alternative location (verifyed that commit 78b5c323
-# has the same content as local copy of wiringpi-2.31.tar.gz)
-#
-WIRINGPI_VERSION = 78b5c323b74de782df58ee558c249e4e4fadd25f
-WIRINGPI_SITE = $(call github,WiringPi,WiringPi,$(WIRINGPI_VERSION))
+WIRINGPI_VERSION = 2.32
+WIRINGPI_SITE = git://git.drogon.net/wiringPi
 
 WIRINGPI_LICENSE = LGPLv3+
 WIRINGPI_LICENSE_FILES = COPYING.LESSER
