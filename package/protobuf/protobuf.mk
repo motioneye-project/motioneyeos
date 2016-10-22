@@ -4,6 +4,9 @@
 #
 ################################################################################
 
+# When bumping this package, make sure to also verify if the
+# python-protobuf package still works, as they share the same
+# version/site variables.
 PROTOBUF_VERSION = v3.0.0
 PROTOBUF_SITE = $(call github,google,protobuf,$(PROTOBUF_VERSION))
 PROTOBUF_LICENSE = BSD-3c
