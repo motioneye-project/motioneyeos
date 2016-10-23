@@ -63,6 +63,10 @@ parser.add_argument("--transitive", dest="transitive", action='store_true',
                     default=False)
 parser.add_argument("--no-transitive", dest="transitive", action='store_false',
                     help="Draw (do not draw) transitive dependencies")
+parser.add_argument("--direct", dest="direct", action='store_true', default=True,
+                    help="Draw direct dependencies (the default)")
+parser.add_argument("--reverse", dest="direct", action='store_false',
+                    help="Draw reverse dependencies")
 args = parser.parse_args()
 
 check_only = args.check_only
@@ -94,6 +98,16 @@ else:
     exclude_list = args.exclude_list
 
 transitive = args.transitive
+
+if args.direct:
+    rule = "show-depends"
+    arrow_dir = "forward"
+else:
+    if mode == MODE_FULL:
+        sys.stderr.write("--reverse needs a package\n")
+        sys.exit(1)
+    rule = "show-rdepends"
+    arrow_dir = "back"
 
 # Get the colours: we need exactly three colours,
 # so no need not split more than 4
@@ -151,7 +165,7 @@ def get_depends(pkgs):
     sys.stderr.write("Getting dependencies for %s\n" % pkgs)
     cmd = ["make", "-s", "--no-print-directory" ]
     for pkg in pkgs:
-        cmd.append("%s-show-depends" % pkg)
+        cmd.append("%s-%s" % (pkg, rule))
     p = subprocess.Popen(cmd, stdout=subprocess.PIPE, universal_newlines=True)
     output = p.communicate()[0]
     if p.returncode != 0:
@@ -418,7 +432,7 @@ def print_pkg_deps(depth, pkg):
                     add = False
                     break
             if add:
-                outfile.write("%s -> %s\n" % (pkg_node_name(pkg), pkg_node_name(d)))
+                outfile.write("%s -> %s [dir=%s]\n" % (pkg_node_name(pkg), pkg_node_name(d), arrow_dir))
                 print_pkg_deps(depth+1, d)
 
 # Start printing the graph data
