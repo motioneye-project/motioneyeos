@@ -55,6 +55,10 @@ else
 ERLANG_CONF_OPTS += --without-ssl
 endif
 
+ifeq ($(BR2_PACKAGE_UNIXODBC),y)
+ERLANG_DEPENDENCIES += unixodbc
+endif
+
 ifeq ($(BR2_PACKAGE_ZLIB),y)
 ERLANG_CONF_OPTS += --enable-shared-zlib
 ERLANG_DEPENDENCIES += zlib
