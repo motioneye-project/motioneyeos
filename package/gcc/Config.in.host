@@ -48,6 +48,8 @@ choice
 		depends on !BR2_MIPS_CPU_MIPS32R5 && !BR2_MIPS_CPU_MIPS64R5
 		# Unsupported for MIPS R6
 		depends on !BR2_MIPS_CPU_MIPS32R6 && !BR2_MIPS_CPU_MIPS64R6
+		# musl microblaze unsupported
+		depends on !(BR2_TOOLCHAIN_USES_MUSL && (BR2_microblazeel || BR2_microblazebe))
 		# musl ppc64 unsupported
 		depends on !(BR2_TOOLCHAIN_USES_MUSL && (BR2_powerpc64 || BR2_powerpc64el))
 		# musl mips64 unsupported
@@ -73,6 +75,7 @@ choice
 		bool "gcc 6.x"
 		# Broken or unsupported architectures
 		depends on !BR2_arc
+		depends on !BR2_microblaze
 		# Unsupported MIPS cores
 		depends on !BR2_mips_m6201 && !BR2_mips_p6600
 		select BR2_TOOLCHAIN_GCC_AT_LEAST_6

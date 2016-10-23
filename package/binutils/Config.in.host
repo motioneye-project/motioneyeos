@@ -17,6 +17,8 @@ choice
 
 	config BR2_BINUTILS_VERSION_2_27_X
 		bool "binutils 2.27"
+		# supported but broken on Microblaze
+		depends on !BR2_microblaze
 
 endchoice
 
