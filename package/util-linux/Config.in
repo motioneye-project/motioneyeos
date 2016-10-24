@@ -252,6 +252,7 @@ comment "nsenter needs a toolchain w/ headers >= 3.0"
 config BR2_PACKAGE_UTIL_LINUX_PG
 	bool "pg"
 	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_NCURSES
 	help
 	  Browse pagewise through text files
 
