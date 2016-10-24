@@ -1,0 +1,28 @@
+From 543308f6c46cf2edf8a524bc9c631e472570fe72 Mon Sep 17 00:00:00 2001
+From: Waldemar Brodkorb <wbx@uclibc-ng.org>
+Date: Mon, 24 Oct 2016 05:15:07 +0200
+Subject: [PATCH] linuxthreads: add back signal.h
+
+Somehow this got removed with f1d7505e40654a185843bdc8f1cf1fd00ab55c04.
+
+Reported-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Signed-off-by: Waldemar Brodkorb <wbx@uclibc-ng.org>
+---
+ libpthread/linuxthreads/sysdeps/pthread/pthread.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/libpthread/linuxthreads/sysdeps/pthread/pthread.h b/libpthread/linuxthreads/sysdeps/pthread/pthread.h
+index cf043b5..cc13a52 100644
+--- a/libpthread/linuxthreads/sysdeps/pthread/pthread.h
++++ b/libpthread/linuxthreads/sysdeps/pthread/pthread.h
+@@ -20,6 +20,7 @@
+ #include <sched.h>
+ #include <time.h>
+ 
++#include <signal.h>
+ #include <bits/pthreadtypes.h>
+ #include <bits/initspin.h>
+ 
+-- 
+2.1.4
+
