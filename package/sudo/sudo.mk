@@ -37,6 +37,13 @@ else
 SUDO_CONF_OPTS += --disable-zlib
 endif
 
+ifeq ($(BR2_PACKAGE_OPENLDAP),y)
+SUDO_DEPENDENCIES += openldap
+SUDO_CONF_OPTS += --with-ldap
+else
+SUDO_CONF_OPTS += --without-ldap
+endif
+
 # mksigname/mksiglist needs to run on build host to generate source files
 define SUDO_BUILD_MKSIGNAME_MKSIGLIST_HOST
 	$(MAKE) $(HOST_CONFIGURE_OPTS) \
