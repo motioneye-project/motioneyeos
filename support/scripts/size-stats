@@ -88,11 +88,20 @@ def build_package_dict(builddir):
 def build_package_size(filesdict, builddir):
     pkgsize = collections.defaultdict(int)
 
+    seeninodes = set()
     for root, _, files in os.walk(os.path.join(builddir, "target")):
         for f in files:
             fpath = os.path.join(root, f)
             if os.path.islink(fpath):
                 continue
+
+            st = os.stat(fpath)
+            if st.st_ino in seeninodes:
+                # hard link
+                continue
+            else:
+                seeninodes.add(st.st_ino)
+
             frelpath = os.path.relpath(fpath, os.path.join(builddir, "target"))
             if not frelpath in filesdict:
                 print("WARNING: %s is not part of any package" % frelpath)
@@ -100,7 +109,7 @@ def build_package_size(filesdict, builddir):
             else:
                 pkg = filesdict[frelpath][0]
 
-            pkgsize[pkg] += os.path.getsize(fpath)
+            pkgsize[pkg] += st.st_size
 
     return pkgsize
 
