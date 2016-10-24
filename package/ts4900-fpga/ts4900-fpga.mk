@@ -10,9 +10,6 @@ TS4900_FPGA_SITE = ftp://ftp.embeddedarm.com/ts-socket-macrocontrollers/ts-4900-
 # No license file provided, Yocto recipe from the vendor claims MIT.
 # https://github.com/embeddedarm/meta-ts/blob/f31860f1204b64f765a5380d3b93a2cf18234f90/recipes-extras/ts4900-fpga/ts4900-fpga.bb#L6
 
-TS4900_FPGA_INSTALL_IMAGES = NO
-TS4900_FPGA_INSTALL_TARGET = YES
-
 define TS4900_FPGA_EXTRACT_CMDS
 	cp $(DL_DIR)/$(TS4900_FPGA_SOURCE) $(@D)
 endef
