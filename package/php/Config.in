@@ -2,7 +2,9 @@ config BR2_PACKAGE_PHP
 	bool "php"
 	select BR2_PACKAGE_PHP_SAPI_CGI if \
 	       !BR2_PACKAGE_PHP_SAPI_CLI && \
-	       !BR2_PACKAGE_PHP_SAPI_FPM
+	       !BR2_PACKAGE_PHP_SAPI_FPM &&  \
+	       BR2_USE_MMU
+	select BR2_PACKAGE_PHP_SAPI_CLI if !BR2_USE_MMU
 	help
 	  PHP  is a widely-used general-purpose scripting
 	  language that is especially suited for Web development
