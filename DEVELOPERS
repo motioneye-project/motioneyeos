@@ -520,6 +520,7 @@ F:	package/libdmtx/
 F:	package/libsodium/
 F:	package/php-amqp/
 F:	package/python-cherrypy/
+F:	package/rabbitmq-server/
 F:	package/sane-backends/
 F:	package/ucl/
 F:	package/upx/
