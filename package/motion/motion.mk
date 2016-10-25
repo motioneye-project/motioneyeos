@@ -4,21 +4,13 @@
 #
 ################################################################################
 
-MOTION_VERSION = release-3.4.1
+MOTION_VERSION = release-4.0.1
 MOTION_SITE = $(call github,Motion-Project,motion,$(MOTION_VERSION))
 MOTION_LICENSE = GPLv2
 MOTION_LICENSE_FILES = COPYING
 MOTION_DEPENDENCIES = host-pkgconf jpeg
-# From git and configure.ac is patched
+# From git
 MOTION_AUTORECONF = YES
-
-# This patch fixes detection of sqlite when cross-compiling
-MOTION_PATCH = \
-	https://github.com/Motion-Project/motion/commit/709f626b7ef83a2bb3ef1f77205276207ab27196.patch
-
-# This patch adds --with-sdl=[DIR] option to fix detection of sdl-config
-MOTION_PATCH += \
-	https://github.com/Motion-Project/motion/commit/72193ccaff83fcb074c9aaa37c5691a8d8a18c7c.patch
 
 # motion does not use any specific function of jpeg-turbo, so just relies on
 # jpeg selection
