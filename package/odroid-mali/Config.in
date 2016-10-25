@@ -20,6 +20,15 @@ config BR2_PACKAGE_PROVIDES_LIBGLES
 
 endif
 
+config BR2_PACKAGE_ODROID_MALI_X11
+	bool
+	depends on BR2_aarch64 # No 32 bit version available
+	select BR2_PACKAGE_LIBDRM
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBXDAMAGE
+	select BR2_PACKAGE_XLIB_LIBXEXT
+	select BR2_PACKAGE_XLIB_LIBXFIXES
+
 comment "odroid-mali needs a glibc toolchain"
 	depends on BR2_aarch64 || BR2_ARM_EABIHF
 	depends on !BR2_TOOLCHAIN_USES_GLIBC
