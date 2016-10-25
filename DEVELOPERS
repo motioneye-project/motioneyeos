@@ -254,6 +254,7 @@ F:	package/transmission/
 F:	package/tvheadend/
 F:	package/unixodbc/
 F:	package/vdr/
+F:	package/vdr-plugin-vnsiserver/
 F:	package/vlc/
 F:	package/vnstat/
 F:	package/x11r7/
