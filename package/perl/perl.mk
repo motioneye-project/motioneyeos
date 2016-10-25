@@ -33,6 +33,12 @@ define PERL_CROSS_EXTRACT
 endef
 PERL_POST_EXTRACT_HOOKS += PERL_CROSS_EXTRACT
 
+# Even though perl is not an autotools-package, it uses config.sub and
+# config.guess. Up-to-date versions of these files may be needed to build perl
+# on newer host architectures, so we borrow the hook which updates them from the
+# autotools infrastructure.
+PERL_POST_PATCH_HOOKS += UPDATE_CONFIG_HOOK
+
 define PERL_CROSS_SET_POD
 	$(SED) s/$(PERL_CROSS_OLD_POD)/$(PERL_CROSS_NEW_POD)/g $(@D)/Makefile
 endef
