@@ -7,6 +7,7 @@ config BR2_PACKAGE_RSYSLOG
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_USE_MMU # fork()
 	depends on !BR2_STATIC_LIBS # modules
+	depends on !BR2_TOOLCHAIN_USES_MUSL # GLOB_BRACE
 	# Propagate the exact same dependency from libfastjson,
 	# even though rsyslog already depends on threads for itself:
 	depends on BR2_TOOLCHAIN_HAS_SYNC_4 || BR2_TOOLCHAIN_HAS_THREADS
@@ -16,8 +17,9 @@ config BR2_PACKAGE_RSYSLOG
 
 	  http://www.rsyslog.com
 
-comment "rsyslog needs a toolchain w/ threads, dynamic library"
+comment "rsyslog needs a uClibc or glibc toolchain w/ threads, dynamic library"
 	depends on BR2_USE_MMU
 	depends on BR2_TOOLCHAIN_HAS_SYNC_4
-	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS \
+		|| BR2_TOOLCHAIN_USES_MUSL
 	depends on BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
