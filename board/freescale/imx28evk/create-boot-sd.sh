@@ -71,7 +71,7 @@ sync
 
 # Copy the bootloader at offset 2048
 # (We need to skip the partition table in the .sd, too.)
-dd if=output/images/u-boot.sd of=${DEV}1 bs=1M
+dd if=output/images/u-boot.sd of=${PART1} bs=1M
 
 # Prepare a temp dir for mounting partitions
 TMPDIR=$(mktemp -d)
