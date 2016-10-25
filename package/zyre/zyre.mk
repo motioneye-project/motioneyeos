@@ -11,6 +11,7 @@ ZYRE_LICENSE_FILES = LICENSE
 ZYRE_INSTALL_STAGING = YES
 ZYRE_DEPENDENCIES = czmq zeromq host-pkgconf
 ZYRE_AUTORECONF = YES
+ZYRE_CONF_OPTS = --without-docs
 
 define ZYRE_CREATE_CONFIG_DIR
 	mkdir -p $(@D)/config
