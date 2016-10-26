@@ -51,6 +51,7 @@ endif
 ifeq ($(BR2_PACKAGE_LIBNL),y)
 LIBPCAP_DEPENDENCIES += libnl
 LIBPCAP_CFLAGS += "-I$(STAGING_DIR)/usr/include/libnl3"
+LIBPCAP_CONF_OPTS += --with-libnl=$(STAGING_DIR)/usr
 else
 LIBPCAP_CONF_OPTS += --without-libnl
 endif
