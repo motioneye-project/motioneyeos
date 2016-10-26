@@ -1,5 +1,6 @@
 config BR2_PACKAGE_KVM_UNIT_TESTS
 	bool "kvm-unit-tests"
+	select BR2_HOSTARCH_NEEDS_IA32_COMPILER if BR2_x86_64=y
 	depends on BR2_arm || BR2_i386 || BR2_powerpc64 || \
 		BR2_powerpc64le || BR2_x86_64
 	help

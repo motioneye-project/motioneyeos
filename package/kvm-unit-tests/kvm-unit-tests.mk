@@ -28,8 +28,15 @@ endif
 
 KVM_UNIT_TESTS_CONF_OPTS =\
 	--arch="$(KERNEL_ARCH)" \
-	--cross-prefix="$(TARGET_CROSS)" \
 	--endian="$(KVM_UNIT_TESTS_ENDIAN)"
+
+# For all architectures but x86-64, we use the target
+# compiler. However, for x86-64, we use the host compiler, as
+# kvm-unit-tests builds 32 bit code, which Buildroot toolchains for
+# x86-64 cannot do.
+ifneq ($(BR2_x86_64),y)
+KVM_UNIT_TESTS_CONF_OPTS += --cross-prefix="$(TARGET_CROSS)"
+endif
 
 define KVM_UNIT_TESTS_CONFIGURE_CMDS
 	cd $(@D) && ./configure $(KVM_UNIT_TESTS_CONF_OPTS)
