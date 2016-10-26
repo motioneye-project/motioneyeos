@@ -63,6 +63,8 @@ watch() {
 }
 
 start() {
+    test -n "$os_country" && iw reg set $os_country
+
     msg_begin "Starting wpa_supplicant"
 
     # wait up to 5 seconds for interface
