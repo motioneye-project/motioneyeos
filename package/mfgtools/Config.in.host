@@ -1,0 +1,10 @@
+config BR2_PACKAGE_HOST_MFGTOOLS
+	bool "host mfgtools"
+	depends on BR2_arm
+	help
+	  This package contains the Freescale manufacturing tool.
+	  It is designed to program firmware to i.MX boards during
+	  production. The communication is done over USB using the
+	  Freescale UTP protocol.
+
+	  https://github.com/NXPmicro/mfgtools
