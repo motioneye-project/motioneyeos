@@ -106,7 +106,6 @@ config BR2_PACKAGE_SYSTEMD_COREDUMP
 
 config BR2_PACKAGE_SYSTEMD_FIRSTBOOT
 	bool "enable firstboot support"
-	default y
 	help
 	  systemd-firstboot initializes the most basic system settings
 	  interactively on the first boot.
