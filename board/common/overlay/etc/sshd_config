@@ -14,4 +14,4 @@ Banner /var/cache/sshd_banner
 
 UsePrivilegeSeparation sandbox
 Subsystem sftp /usr/libexec/sftp-server
-
+IPQoS cs0 cs0
