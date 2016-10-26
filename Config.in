@@ -23,9 +23,14 @@ config BR2_HOST_GCC_VERSION
 	string
 	option env="HOST_GCC_VERSION"
 
+config BR2_HOST_GCC_AT_LEAST_4_5
+	bool
+	default y if BR2_HOST_GCC_VERSION = "4 5"
+
 config BR2_HOST_GCC_AT_LEAST_4_6
 	bool
 	default y if BR2_HOST_GCC_VERSION = "4 6"
+	select BR2_HOST_GCC_AT_LEAST_4_5
 
 config BR2_HOST_GCC_AT_LEAST_4_7
 	bool
