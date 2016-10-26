@@ -31,7 +31,7 @@ TI_SGX_KM_SUBDIR = eurasia_km/eurasiacon/build/linux2/$(TI_SGX_KM_PLATFORM_NAME)
 
 define TI_SGX_KM_BUILD_CMDS
 	$(TARGET_MAKE_ENV) $(MAKE) $(TI_SGX_KM_MAKE_OPTS) \
-		 -C $(@D)/$(TI_SGX_KM_SUBDIR)
+		-C $(@D)/$(TI_SGX_KM_SUBDIR)
 endef
 
 define TI_SGX_KM_INSTALL_TARGET_CMDS
