@@ -534,6 +534,7 @@ F:	configs/nitrogen*
 F:	package/freescale-imx/
 F:	package/gstreamer1/gst1-imx/
 F:	package/libimxvpuapi/
+F:	package/mfgtools/
 F:	package/sshpass/
 
 N:	Geoff Levand <geoff@infradead.org>
