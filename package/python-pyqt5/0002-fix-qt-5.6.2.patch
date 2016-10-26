@@ -1,0 +1,28 @@
+Fix the build with Qt 5.6.2
+
+Building PyQt 5.7 with versions of Qt older than Qt 5.7 is supposed to
+work, but currently fails in practice. In fact, this is due to the
+fact that the %Timeline variable in QtCoremod.sip didn't contain the
+5.6.2 Qt version, so if this version was used, PyQt was assuming it
+was the later version 5.7, and therefore started enabling APIs only
+available in Qt 5.7, causing build failures when building against Qt
+5.6.2.
+
+Adding Qt_5_6_2 to the timeline fixes this problem. This fix was
+suggested by Phil Thompson <phil@riverbankcomputing.com>.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: PyQt5_gpl-5.7/sip/QtCore/QtCoremod.sip
+===================================================================
+--- PyQt5_gpl-5.7.orig/sip/QtCore/QtCoremod.sip	2016-07-25 15:55:37.000000000 +0200
++++ PyQt5_gpl-5.7/sip/QtCore/QtCoremod.sip	2016-10-26 15:45:43.577153825 +0200
+@@ -22,7 +22,7 @@
+ 
+ %Module(name=PyQt5.QtCore, call_super_init=True, default_VirtualErrorHandler=PyQt5, keyword_arguments="Optional", version=1)
+ 
+-%Timeline {Qt_5_0_0 Qt_5_0_1 Qt_5_0_2 Qt_5_1_0 Qt_5_1_1 Qt_5_2_0 Qt_5_2_1 Qt_5_3_0 Qt_5_3_1 Qt_5_3_2 Qt_5_4_0 Qt_5_4_1 Qt_5_4_2 Qt_5_5_0 Qt_5_5_1 Qt_5_6_0 Qt_5_6_1 Qt_5_7_0}
++%Timeline {Qt_5_0_0 Qt_5_0_1 Qt_5_0_2 Qt_5_1_0 Qt_5_1_1 Qt_5_2_0 Qt_5_2_1 Qt_5_3_0 Qt_5_3_1 Qt_5_3_2 Qt_5_4_0 Qt_5_4_1 Qt_5_4_2 Qt_5_5_0 Qt_5_5_1 Qt_5_6_0 Qt_5_6_1 Qt_5_6_2 Qt_5_7_0}
+ 
+ %Platforms {WS_X11 WS_WIN WS_MACX}
+ 
