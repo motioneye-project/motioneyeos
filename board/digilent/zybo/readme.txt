@@ -58,12 +58,12 @@ in the output/images/ directory.
 
 The first partition is a FAT32 partition created at the beginning of the SD Card
 that contains the following files :
-	/BOOT.BIN
-	/zynq-zybo.dtb
+    /BOOT.BIN
+    /zynq-zybo.dtb
     /uEnv.txt
     /system.bit
-	/uImage
-	/u-boot-dtb.img
+    /uImage
+    /u-boot-dtb.img
 
 The second partition is an ext4 partition that contains the root filesystem.
 
