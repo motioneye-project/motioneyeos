@@ -1,3 +1,2 @@
-# From http://sourceforge.net/projects/bridge/files/bridge/
-md5	ec7b381160b340648dede58c31bb2238	bridge-utils-1.5.tar.gz
-sha1	19d2a58cd3a70f971aa931b40256174a847e60d6	bridge-utils-1.5.tar.gz
+# From https://www.kernel.org/pub/linux/utils/net/bridge-utils/sha256sums.asc
+sha256 cc67efb5d5fb8928a6569b3fade2b4042ec17da04678dab127d96b46489e26c8 bridge-utils-1.6.tar.xz
