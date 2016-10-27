@@ -17,7 +17,7 @@ RABBITMQ_SERVER_LICENSE_FILES = LICENSE-MPL-RabbitMQ \
 				LICENSE-MIT-Mochi LICENSE-MIT-Mochiweb \
 				LICENSE-MIT-Sammy060 LICENSE-MIT-SockJS \
 				LICENSE-MPL2
-RABBITMQ_SERVER_DEPENDENCIES = erlang libxslt
+RABBITMQ_SERVER_DEPENDENCIES = host-libxslt host-zip erlang libxslt
 RABBITMQ_SERVER_TARGET_BINS = rabbitmq-plugins rabbitmq-server rabbitmqctl rabbitmq-env rabbitmq-defaults
 
 define RABBITMQ_SERVER_BUILD_CMDS
