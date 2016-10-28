@@ -11,9 +11,10 @@ POSTGRESQL_LICENSE = PostgreSQL
 POSTGRESQL_LICENSE_FILES = COPYRIGHT
 POSTGRESQL_INSTALL_STAGING = YES
 POSTGRESQL_CONFIG_SCRIPTS = pg_config
-POSTGRESQL_CONF_ENV = ac_cv_type_struct_sockaddr_in6=yes \
-		      pgac_cv_snprintf_long_long_int_modifier="%lld" \
-		      pgac_cv_snprintf_size_t_support=yes
+POSTGRESQL_CONF_ENV = \
+	ac_cv_type_struct_sockaddr_in6=yes \
+	pgac_cv_snprintf_long_long_int_modifier="%lld" \
+	pgac_cv_snprintf_size_t_support=yes
 POSTGRESQL_CONF_OPTS = --disable-rpath
 
 ifeq ($(BR2_TOOLCHAIN_USES_UCLIBC),y)
