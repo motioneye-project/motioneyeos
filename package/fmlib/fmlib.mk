@@ -31,7 +31,7 @@ endef
 
 define FMLIB_INSTALL_STAGING_CMDS
 	$(RM) $(STAGING_DIR)/usr/lib/libfm.a
-	$(FMLIB_MAKE_ENV) $(MAKE) $(FMLIB_MAKE_OPTS) -C $(@D) install-libfm-$(FMLIB_ARCHTYPE)
+	$(TARGET_MAKE_ENV) $(MAKE) $(FMLIB_MAKE_OPTS) -C $(@D) install-libfm-$(FMLIB_ARCHTYPE)
 endef
 
 $(eval $(generic-package))
