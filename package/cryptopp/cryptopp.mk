@@ -20,11 +20,11 @@ HOST_CRYPTOPP_MAKE_OPTS = \
 	CXXFLAGS="$(HOST_CXXFLAGS) -fPIC"
 
 define HOST_CRYPTOPP_BUILD_CMDS
-	$(MAKE) -C $(@D) $(HOST_CRYPTOPP_MAKE_OPTS) shared
+	$(HOST_MAKE_ENV) $(MAKE) -C $(@D) $(HOST_CRYPTOPP_MAKE_OPTS) shared
 endef
 
 define HOST_CRYPTOPP_INSTALL_CMDS
-	$(MAKE) -C $(@D) PREFIX=$(HOST_DIR)/usr install
+	$(HOST_MAKE_ENV) $(MAKE) -C $(@D) PREFIX=$(HOST_DIR)/usr install
 endef
 
 $(eval $(host-generic-package))
