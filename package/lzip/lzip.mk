@@ -10,7 +10,7 @@ LZIP_LICENSE = GPLv3+
 LZIP_LICENSE_FILES = COPYING
 
 define LZIP_CONFIGURE_CMDS
-	(cd $(@D); ./configure --prefix=/usr \
+	(cd $(@D); $(TARGET_MAKE_ENV) ./configure --prefix=/usr \
 		$(TARGET_CONFIGURE_OPTS) )
 endef
 
