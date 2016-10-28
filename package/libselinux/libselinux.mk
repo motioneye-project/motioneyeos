@@ -23,15 +23,18 @@ LIBSELINUX_MAKE_OPTS = \
 define LIBSELINUX_BUILD_CMDS
 	# DESTDIR is needed during the compile to compute library and
 	# header paths.
-	$(MAKE) -C $(@D) $(LIBSELINUX_MAKE_OPTS) DESTDIR=$(STAGING_DIR) all
+	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) \
+		$(LIBSELINUX_MAKE_OPTS) DESTDIR=$(STAGING_DIR) all
 endef
 
 define LIBSELINUX_INSTALL_STAGING_CMDS
-	$(MAKE) -C $(@D) $(LIBSELINUX_MAKE_OPTS) DESTDIR=$(STAGING_DIR) install
+	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) \
+		$(LIBSELINUX_MAKE_OPTS) DESTDIR=$(STAGING_DIR) install
 endef
 
 define LIBSELINUX_INSTALL_TARGET_CMDS
-	$(MAKE) -C $(@D) $(LIBSELINUX_MAKE_OPTS) DESTDIR=$(TARGET_DIR) install
+	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) \
+		$(LIBSELINUX_MAKE_OPTS) DESTDIR=$(TARGET_DIR) install
 	# Create the selinuxfs mount point
 	if [ ! -d "$(TARGET_DIR)/selinux" ]; then mkdir $(TARGET_DIR)/selinux; fi
 	if ! grep -q "selinuxfs" $(TARGET_DIR)/etc/fstab; then \
