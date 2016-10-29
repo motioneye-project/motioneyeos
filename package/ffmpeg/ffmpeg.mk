@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-FFMPEG_VERSION = 3.1.5
+FFMPEG_VERSION = 3.2
 FFMPEG_SOURCE = ffmpeg-$(FFMPEG_VERSION).tar.xz
 FFMPEG_SITE = http://ffmpeg.org/releases
 FFMPEG_INSTALL_STAGING = YES
@@ -50,7 +50,6 @@ FFMPEG_CONF_OPTS = \
 	--disable-libopencore-amrwb \
 	--disable-libcdio \
 	--disable-libdc1394 \
-	--disable-libfaac \
 	--disable-libgsm \
 	--disable-libilbc \
 	--disable-libnut \
