@@ -24,7 +24,6 @@ NETWORK_MANAGER_CONF_ENV = \
 
 
 NETWORK_MANAGER_CONF_OPTS = \
-	--mandir=$(STAGING_DIR)/usr/man/ \
 	--disable-tests \
 	--disable-qt \
 	--disable-more-warnings \
