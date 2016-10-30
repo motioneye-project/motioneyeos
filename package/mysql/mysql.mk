@@ -7,7 +7,7 @@
 MYSQL_VERSION_MAJOR = 5.1
 MYSQL_VERSION = $(MYSQL_VERSION_MAJOR).73
 MYSQL_SOURCE = mysql-$(MYSQL_VERSION).tar.gz
-MYSQL_SITE = http://downloads.skysql.com/archives/mysql-$(MYSQL_VERSION_MAJOR)
+MYSQL_SITE = http://dev.mysql.com/get/Downloads/MySQL-$(MYSQL_VERSION_MAJOR)
 MYSQL_INSTALL_STAGING = YES
 MYSQL_DEPENDENCIES = readline ncurses
 MYSQL_AUTORECONF = YES
