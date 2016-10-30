@@ -1,0 +1,27 @@
+From e9ec9634207e4c2eea6d268ee29b57e687c1f178 Mon Sep 17 00:00:00 2001
+From: Jens Georg <mail@jensge.org>
+Date: Sun, 16 Oct 2016 21:51:39 +0200
+Subject: av-cp: Fix compiling when using recent GUPnP-AV
+
+Include gupnp.h ourselves, gupnp-av.h doesn't drag it in anymore
+
+Signed-off-by: Jens Georg <mail@jensge.org>
+---
+ src/av-cp/playlist-treeview.h | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/src/av-cp/playlist-treeview.h b/src/av-cp/playlist-treeview.h
+index 8637ae8..16b131e 100644
+--- a/src/av-cp/playlist-treeview.h
++++ b/src/av-cp/playlist-treeview.h
+@@ -23,6 +23,8 @@
+ 
+ #include <config.h>
+ #include <gtk/gtk.h>
++
++#include <libgupnp/gupnp.h>
+ #include <libgupnp-av/gupnp-av.h>
+ 
+ typedef void (* MetadataFunc) (const char *metadata,
+-- 
+cgit v0.12
