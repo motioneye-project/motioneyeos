@@ -5,15 +5,15 @@
 ################################################################################
 
 MPV_VERSION = 0.20.0
-MPV_WAF_VERSION = 1.8.12
 MPV_SITE = https://github.com/mpv-player/mpv/archive
 MPV_SOURCE = v$(MPV_VERSION).tar.gz
-MPV_EXTRA_DOWNLOADS = https://waf.io/waf-$(MPV_WAF_VERSION)
 MPV_DEPENDENCIES = \
 	host-pkgconf ffmpeg zlib \
 	$(if $(BR2_PACKAGE_LIBICONV),libiconv)
 MPV_LICENSE = GPLv2+
 MPV_LICENSE_FILES = LICENSE
+
+MPV_NEEDS_EXTERNAL_WAF = YES
 
 # Some of these options need testing and/or tweaks
 MPV_CONF_OPTS = \
@@ -235,28 +235,4 @@ else
 MPV_CONF_OPTS += --disable-x11
 endif
 
-define MPV_COPY_WAF
-	$(INSTALL) -m 0755 $(DL_DIR)/waf-$(MPV_WAF_VERSION) $(@D)/waf
-endef
-MPV_POST_EXTRACT_HOOKS += MPV_COPY_WAF
-
-define MPV_CONFIGURE_CMDS
-	cd $(@D); \
-		$(TARGET_CONFIGURE_OPTS) \
-		./waf configure $(MPV_CONF_OPTS)
-endef
-
-define MPV_BUILD_CMDS
-	cd $(@D); \
-		$(TARGET_MAKE_ENV) \
-		./waf build
-endef
-
-define MPV_INSTALL_TARGET_CMDS
-	cd $(@D); \
-		$(TARGET_MAKE_ENV) \
-		DESTDIR=$(TARGET_DIR) \
-		./waf install
-endef
-
-$(eval $(generic-package))
+$(eval $(waf-package))
