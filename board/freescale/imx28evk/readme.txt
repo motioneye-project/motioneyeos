@@ -32,12 +32,11 @@ To determine the device associated to the SD card have a look in the
 
   cat /proc/partitions
 
-Run the following script as root on your SD card. This will partition the card
-and copy the bootloader, kernel and root filesystem as needed.
+Then, run the following command as root:
 
-*** WARNING! The script will destroy all the card content. Use with care! ***
+*** WARNING! The command will destroy all the card content. Use with care! ***
 
-  ./board/freescale/imx28evk/create-boot-sd.sh <your-sd-device>
+ sudo dd if=output/images/sdcard.img of=/dev/<your-microsd-device>
 
 Boot the i.MX28 EVK board
 =========================
