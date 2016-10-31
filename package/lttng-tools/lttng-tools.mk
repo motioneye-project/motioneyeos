@@ -13,11 +13,7 @@ LTTNG_TOOLS_CONF_OPTS += --with-xml-prefix=$(STAGING_DIR)/usr
 # Patching configure.ac
 LTTNG_TOOLS_AUTORECONF = YES
 
-# The host-lttng-babeltrace technically isn't a required build
-# dependency. However, having the babeltrace utilities built for the
-# host is very useful, since those tools allow to convert the binary
-# trace format into an human readable format.
-LTTNG_TOOLS_DEPENDENCIES = liburcu libxml2 popt host-lttng-babeltrace util-linux
+LTTNG_TOOLS_DEPENDENCIES = liburcu libxml2 popt util-linux
 
 ifeq ($(BR2_PACKAGE_LTTNG_LIBUST),y)
 LTTNG_TOOLS_CONF_OPTS += --enable-lttng-ust
