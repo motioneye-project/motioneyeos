@@ -1285,6 +1285,7 @@ F:	package/qdecoder/
 F:	package/qlibc/
 
 N:	Sam Bobroff <sam.bobroff@au1.ibm.com>
+F:	arch/Config.in.powerpc
 F:	package/librtas/
 
 N:	Samuel Martin <s.martin49@gmail.com>
