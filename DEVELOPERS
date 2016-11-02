@@ -1198,7 +1198,12 @@ F:	package/libassuan/
 F:	package/libgpgme/
 
 N:	Philippe Proulx <eeppeliteloop@gmail.com>
+F:	package/lttng-babeltrace/
+F:	package/lttng-libust/
+F:	package/lttng-modules/
+F:	package/lttng-tools/
 F:	package/python-ipython/
+F:	package/liburcu/
 
 N:	Pierre Floury <pierre.floury@gmail.com>
 F:	package/trace-cmd/
@@ -1476,15 +1481,10 @@ F:	package/libcap/
 F:	package/libffi/
 F:	package/libsha1/
 F:	package/libtirpc/
-F:	package/liburcu/
 F:	package/libxkbcommon/
 F:	package/libxml-parser-perl/
 F:	package/localedef/
 F:	package/log4cxx/
-F:	package/lttng-babeltrace/
-F:	package/lttng-libust/
-F:	package/lttng-modules/
-F:	package/lttng-tools/
 F:	package/monit/
 F:	package/mpdecimal/
 F:	package/msmtp/
