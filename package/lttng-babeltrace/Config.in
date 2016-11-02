@@ -20,8 +20,10 @@ config BR2_PACKAGE_LTTNG_BABELTRACE
 
 	  Having this tool on the target is not mandatory. You can
 	  transfer the binary trace output from the target to your
-	  development workstation, and use babeltrace here. Babeltrace
-	  is packaged for all major Linux distributions.
+	  development workstation, and use babeltrace here.
+
+	  See the lttng-babeltrace host utility to install Babeltrace
+	  on the host.
 
 	  http://diamon.org/babeltrace
 

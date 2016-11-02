@@ -13,6 +13,7 @@ LTTNG_BABELTRACE_DEPENDENCIES = popt util-linux libglib2 host-pkgconf
 LTTNG_BABELTRACE_CONF_OPTS += --disable-debug-info
 HOST_LTTNG_BABELTRACE_DEPENDENCIES = \
 	host-popt host-util-linux host-libglib2 host-pkgconf
+HOST_LTTNG_BABELTRACE_CONF_OPTS += --disable-debug-info
 
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
