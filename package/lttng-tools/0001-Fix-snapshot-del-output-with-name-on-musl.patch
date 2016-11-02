@@ -1,0 +1,32 @@
+From: mjeanson@efficios.com Michael Jeanson
+Date: Wed, 15 Jun 2016 17:18:02 -0400
+Subject: [lttng-dev] [PATCH] Fix: snapshot del-output with name on musl
+
+Some implementations of strtol() like the one in musl will
+return EINVAL in perror when no valid number was found in
+the string.
+
+Signed-off-by: Michael Jeanson <mjeanson@efficios.com>
+[Philippe: grabbed from the mailing list:
+    https://lists.lttng.org/pipermail/lttng-dev/2016-June/026192.html
+ and adapted to 2.8.2.]
+Signed-off-by: Philippe Proulx <eeppeliteloop@gmail.com>
+---
+ src/bin/lttng/commands/snapshot.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/bin/lttng/commands/snapshot.c b/src/bin/lttng/commands/snapshot.c
+index d948226..00aa5b7 100644
+--- a/src/bin/lttng/commands/snapshot.c
++++ b/src/bin/lttng/commands/snapshot.c
+@@ -447,7 +447,7 @@ static int cmd_del_output(int argc, const char **argv)
+
+ 	errno = 0;
+ 	id = strtol(argv[1], &name, 10);
+-	if (id == 0 && errno == 0) {
++	if (id == 0 && (errno == 0 || errno == EINVAL)) {
+ 		if (lttng_opt_mi) {
+ 			ret = mi_del_output(UINT32_MAX, name);
+ 		} else {
+--
+2.7.4

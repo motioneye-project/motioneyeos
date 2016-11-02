@@ -1,0 +1,30 @@
+From fc743b22fc26eab9f9dbf48e4505ed2394924bba Mon Sep 17 00:00:00 2001
+From: Michael Jeanson <mjeanson@efficios.com>
+Date: Mon, 13 Jun 2016 18:44:17 -0400
+Subject: [PATCH lttng-tools] Fix: strerror_r behavior is glibc specific
+
+Signed-off-by: Michael Jeanson <mjeanson@efficios.com>
+[Philippe: grabbed from the mailing list:
+    https://lists.lttng.org/pipermail/lttng-dev/2016-June/026194.html
+]
+Signed-off-by: Philippe Proulx <eeppeliteloop@gmail.com>
+---
+ src/common/error.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/common/error.h b/src/common/error.h
+index 0fbd3a2..e8c811e 100644
+--- a/src/common/error.h
++++ b/src/common/error.h
+@@ -198,7 +198,7 @@ static inline void __lttng_print_check_abort(enum lttng_error_level type)
+ 
+ #define _PERROR(fmt, args...) _ERRMSG("PERROR", PRINT_ERR, fmt, ## args)
+ 
+-#if !defined(__linux__) || ((_POSIX_C_SOURCE >= 200112L || _XOPEN_SOURCE >= 600) && !defined(_GNU_SOURCE))
++#if !defined(__GLIBC__) || ((_POSIX_C_SOURCE >= 200112L || _XOPEN_SOURCE >= 600) && !defined(_GNU_SOURCE))
+ 
+ /*
+  * Version using XSI strerror_r.
+-- 
+2.7.4
+

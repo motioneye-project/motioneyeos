@@ -1,2 +1,6 @@
+# From http://lttng.org/files/lttng-tools/lttng-tools-2.8.2.tar.bz2.{md5,sha1}
+md5     cac8d64111711ae1b632d0dc12fe92c1  lttng-tools-2.8.2.tar.bz2
+sha1    870874ba9644691de8e564a1fa1459aa5fef42ba  lttng-tools-2.8.2.tar.bz2
+
 # Locally generated
-sha256  0c799fb21dfa42475feaa1507ded934608b2e531039b46c40e944a5b81c7b21c  lttng-tools-2.7.1.tar.bz2
+sha256  a07e00e9519dad2577d9330bcaf040ab3dc1b289fbcb8c702c39d520422e7565  lttng-tools-2.8.2.tar.bz2
