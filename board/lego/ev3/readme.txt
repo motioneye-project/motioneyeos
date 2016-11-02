@@ -25,9 +25,13 @@ How it works
 Boot process :
 --------------
 
-The u-boot on-board the EV3 brick has provision to boot a Linux kernel from the
-external µSD card. It will try to load a uImage from the first µSD card
-partition, which must be formatted with a FAT filesystem.
+The EV3 boots from an EEPROM. This loads whatever is on the built-in 16MB flash
+(usually U-Boot) and runs it. The U-Boot from the official LEGO firmware and
+mainline U-Boot will attempt to boot a Linux kernel from the external µSD card.
+It will try to load a uImage (and optional boot.scr) from the first µSD card
+partition, which must be formatted with a FAT filesystem. If no µSD is found or
+it does not contain a uImage file, then the EV3 will boot the uImage from the
+built-in 16MB flash.
 
 How to build it
 ===============
@@ -54,73 +58,25 @@ Result of the build
 After building, you should obtain this tree:
 
     output/images/
+    ├── boot.vfat
+    ├── flash.bin
     ├── rootfs.ext2
     ├── rootfs.ext3 -> rootfs.ext2
+    ├── rootfs.squashfs
+    ├── sdcard.img
+    ├── u-boot.bin
     └── uImage
 
-Prepare your SDcard
-===================
+Installation
+============
 
-The following µSD card layout is recommended:
-
-- First partition formatted with a FAT filesystem, containing the uImage.
-- Second partition formatted as ext2 or ext3, containing the root filesystem.
-
-Create the SDcard partition table
-----------------------------------
-
-Determine the device associated to the SD card :
-
-  $ cat /proc/partitions
-
-Let's assume it is /dev/mmcblk0 :
-
-  $ sudo fdisk /dev/mmcblk0
-
-Delete all previous partitions by creating a new disklabel with 'o', then
-create the new partition table, using these options, pressing enter after each
-one:
-
-  * n p 1 2048 +10M t c
-  * n p 2 22528 +256M
-
-Using the 'p' option, the SD card's partition must look like this :
-
-Device          Boot  Start     End  Blocks  Id System
-/dev/mmcblk0p1         2048   22527   10240   c  W95 FAT32 (LBA)
-/dev/mmcblk0p2        22528  546815  262144  83  Linux
-
-Then write the partition table using 'w' and exit.
-
-Make partition one a DOS partition :
-
-  $ sudo mkfs.vfat /dev/mmcblk0p1
-
-Install the binaries to the SDcard
-----------------------------------
-
-Remember your binaries are located in output/images/, go inside that directory :
-
-  $ cd output/images
-
-Copy the Linux kernel:
-
-  $ sudo mkdir /mnt/sdcard
-  $ sudo mount /dev/mmcblk0p1 /mnt/sdcard
-  $ sudo cp uImage /mnt/sdcard
-  $ sudo umount /mnt/sdcard
-
-Copy the rootfs :
-
-  $ sudo dd if=rootfs.ext3 of=/dev/mmcblk0p2 bs=1M
-  $ sync
-
-It's Done!
+You can use either flash.bin or the sdcard.img. To load flash.bin, use the
+official Lego Mindstorms EV3 programming software firmware update tool to load
+the image. To use sdcard.img, use a disk writing tool such as Etcher or dd to
+write the image to the µSD card.
 
 Finish
 ======
-
-Eject your µSD card, insert it in your Lego EV3, and power it up.
 
 To have a serial console, you will need a proper USB to Lego serial port
 adapter plugged into the EV3 sensors port 1.
