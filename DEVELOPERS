@@ -536,6 +536,7 @@ F:	package/gstreamer1/gst1-imx/
 F:	package/libimxvpuapi/
 F:	package/mfgtools/
 F:	package/sshpass/
+F:	package/x11r7/xdriver_xf86-video-imx-viv/
 
 N:	Geoff Levand <geoff@infradead.org>
 F:	package/flannel/
