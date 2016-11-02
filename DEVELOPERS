@@ -387,6 +387,12 @@ F:	package/openldap/
 N:	David du Colombier <0intro@gmail.com>
 F:	package/x264/
 
+N:	David Lechner <david@lechnology.com>
+F:	board/lego/ev3/
+F:	configs/lego_ev3_defconfig
+F:	linux/linux-ext-ev3dev-linux-drivers.mk
+F:	package/ev3dev-linux-drivers/
+
 N:	Davide Viti <zinosat@tiscali.it>
 F:	package/flann/
 F:	package/python-paho-mqtt/
