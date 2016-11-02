@@ -18,6 +18,9 @@ config BR2_PACKAGE_LTTNG_BABELTRACE
 	  can decode and display LTTng traces, since the latter are
 	  written using the CTF format.
 
+	  To get support for debugging information, enable the
+	  elfutils package.
+
 	  Having this tool on the target is not mandatory. You can
 	  transfer the binary trace output from the target to your
 	  development workstation, and use babeltrace here.
