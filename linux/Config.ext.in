@@ -46,6 +46,16 @@ config BR2_LINUX_KERNEL_EXT_RTAI
 	  RTAI Kernel part.
 
 #-------------------------------------------------------------------------------
+# ev3dev Linux drivers
+config BR2_LINUX_KERNEL_EXT_EV3DEV_LINUX_DRIVERS
+	bool "ev3dev Linux drivers"
+	select BR2_PACKAGE_EV3DEV_LINUX_DRIVERS
+	help
+	  Linux drivers for LEGO MINDSTORMS EV3 from the ev3dev project.
+
+	  https://github.com/ev3dev/lego-linux-drivers
+
+#-------------------------------------------------------------------------------
 # fbtft
 config BR2_LINUX_KERNEL_EXT_FBTFT
 	bool "FB TFT drivers"
