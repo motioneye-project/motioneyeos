@@ -4,8 +4,7 @@ Intro
 =====
 
 This is the buildroot basic board support for the Lego Mindstorms EV3
-programmable brick. No support for sensors and drivers is provided for the
-moment.
+programmable brick.
 
 The Lego Mindstorms EV3 brick comprises a Texas Instruments AM1808 SoC, with
 an ARM 926EJ-S main processor running at 300 MHz.
@@ -17,6 +16,7 @@ See:
 The buildroot configuration uses the Linux kernel of the ev3dev project.
 See:
 - https://github.com/ev3dev/ev3-kernel/
+- https://github.com/ev3dev/lego-linux-drivers/
 - http://www.ev3dev.org/
 
 How it works
