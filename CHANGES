@@ -93,6 +93,7 @@
 
 	#7802: host-python build hangs compiling getbuildinfo.o
 	#8206: mplayer uses host xorg development files
+	#8516: mkcubiecard.sh uses outdated sfdisk switch -D
 	#8536: Building sudo with PAM results in unusable sudo
 	#8646: check-host-rpath script returns false positives when rpath
 	       contains symlink
