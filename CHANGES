@@ -74,7 +74,7 @@
 	vdr, vdr-plugin-vnsiserver, vexpress-firmware, xvisor, iio and
 	gpio linux tools.
 
-	Removed packages: binutils 2.24, gcc 4.7, ipkg,
+	Removed packages: binutils 2.24, fakeroot, gcc 4.7, ipkg,
 	kodi-addon-xvdr, libgail, sstrip, torsmo, webkit, webkitgtk24,
 	wvdial, wvstreams.
 
