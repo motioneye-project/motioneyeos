@@ -1,0 +1,140 @@
+From 24e5409190820a14e4d097924b1acaab62bb3b99 Mon Sep 17 00:00:00 2001
+From: Baruch Siach <baruch@tkos.co.il>
+Date: Sun, 30 Oct 2016 18:12:00 +0200
+Subject: [PATCH] libbridge: fix headers conflict with musl libc
+
+Don't including kernel headers directly to avoid headers conflict like:
+
+In file included from .../sysroot/usr/include/linux/if_bridge.h:18:0,
+                 from libbridge.h:26,
+                 from libbridge_if.c:26:
+.../sysroot/usr/include/linux/in6.h:32:8: error: redefinition of ‘struct in6_addr’
+ struct in6_addr {
+        ^
+In file included from libbridge.h:24:0,
+                 from libbridge_if.c:26:
+.../sysroot/usr/include/netinet/in.h:23:8: note: originally defined here
+ struct in6_addr {
+        ^
+
+Instead copy the required linux/if_bridge.h definitions into
+libbridge_private.h.
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Patch status: Nacked
+(https://lists.linuxfoundation.org/pipermail/bridge/2016-November/010107.html)
+---
+ libbridge/libbridge.h         |  1 -
+ libbridge/libbridge_private.h | 83 ++++++++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 82 insertions(+), 2 deletions(-)
+
+diff --git a/libbridge/libbridge.h b/libbridge/libbridge.h
+index ff047f933cd6..18b40cd90413 100644
+--- a/libbridge/libbridge.h
++++ b/libbridge/libbridge.h
+@@ -23,7 +23,6 @@
+ #include <sys/socket.h>
+ #include <netinet/in.h>
+ #include <linux/if.h>
+-#include <linux/if_bridge.h>
+ 
+ /* defined in net/if.h but that conflicts with linux/if.h... */
+ extern unsigned int if_nametoindex (const char *__ifname);
+diff --git a/libbridge/libbridge_private.h b/libbridge/libbridge_private.h
+index 99a511dae00a..565025b7bccb 100644
+--- a/libbridge/libbridge_private.h
++++ b/libbridge/libbridge_private.h
+@@ -24,7 +24,88 @@
+ #include <linux/sockios.h>
+ #include <sys/time.h>
+ #include <sys/ioctl.h>
+-#include <linux/if_bridge.h>
++
++/* From linux/if_ether.h */
++#ifndef ETH_ALEN
++#define ETH_ALEN	6
++#endif
++
++/* From linux/if_bridge.h */
++#ifndef BRCTL_GET_VERSION
++#define BRCTL_GET_VERSION 0
++#define BRCTL_GET_BRIDGES 1
++#define BRCTL_ADD_BRIDGE 2
++#define BRCTL_DEL_BRIDGE 3
++#define BRCTL_ADD_IF 4
++#define BRCTL_DEL_IF 5
++#define BRCTL_GET_BRIDGE_INFO 6
++#define BRCTL_GET_PORT_LIST 7
++#define BRCTL_SET_BRIDGE_FORWARD_DELAY 8
++#define BRCTL_SET_BRIDGE_HELLO_TIME 9
++#define BRCTL_SET_BRIDGE_MAX_AGE 10
++#define BRCTL_SET_AGEING_TIME 11
++#define BRCTL_SET_GC_INTERVAL 12
++#define BRCTL_GET_PORT_INFO 13
++#define BRCTL_SET_BRIDGE_STP_STATE 14
++#define BRCTL_SET_BRIDGE_PRIORITY 15
++#define BRCTL_SET_PORT_PRIORITY 16
++#define BRCTL_SET_PATH_COST 17
++#define BRCTL_GET_FDB_ENTRIES 18
++
++#define BR_STATE_DISABLED 0
++#define BR_STATE_LISTENING 1
++#define BR_STATE_LEARNING 2
++#define BR_STATE_FORWARDING 3
++#define BR_STATE_BLOCKING 4
++
++struct __bridge_info {
++	__u64 designated_root;
++	__u64 bridge_id;
++	__u32 root_path_cost;
++	__u32 max_age;
++	__u32 hello_time;
++	__u32 forward_delay;
++	__u32 bridge_max_age;
++	__u32 bridge_hello_time;
++	__u32 bridge_forward_delay;
++	__u8 topology_change;
++	__u8 topology_change_detected;
++	__u8 root_port;
++	__u8 stp_enabled;
++	__u32 ageing_time;
++	__u32 gc_interval;
++	__u32 hello_timer_value;
++	__u32 tcn_timer_value;
++	__u32 topology_change_timer_value;
++	__u32 gc_timer_value;
++};
++
++struct __port_info {
++	__u64 designated_root;
++	__u64 designated_bridge;
++	__u16 port_id;
++	__u16 designated_port;
++	__u32 path_cost;
++	__u32 designated_cost;
++	__u8 state;
++	__u8 top_change_ack;
++	__u8 config_pending;
++	__u8 unused0;
++	__u32 message_age_timer_value;
++	__u32 forward_delay_timer_value;
++	__u32 hold_timer_value;
++};
++
++struct __fdb_entry {
++	__u8 mac_addr[ETH_ALEN];
++	__u8 port_no;
++	__u8 is_local;
++	__u32 ageing_timer_value;
++	__u8 port_hi;
++	__u8 pad0;
++	__u16 unused;
++};
++#endif /* BRCTL_GET_VERSION */
+ 
+ #define MAX_BRIDGES	1024
+ #define MAX_PORTS	1024
+-- 
+2.10.1
+
