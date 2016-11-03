@@ -520,6 +520,18 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_FBDEV
 	help
 	  Linux framebuffer video sink
 
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_FDK_AAC
+	bool "fdk-aac"
+	select BR2_PACKAGE_FDK_AAC
+	depends on BR2_PACKAGE_FDK_AAC_ARCH_SUPPORTS
+	depends on BR2_INSTALL_LIBSTDCPP
+	help
+	  MPEG AAC encoder/decoder
+
+comment "fdk-aac needs a toolchain w/ C++"
+	depends on BR2_PACKAGE_FDK_AAC_ARCH_SUPPORTS
+	depends on !BR2_INSTALL_LIBSTDCPP
+
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_GL
 	bool "gl"
 	default y
