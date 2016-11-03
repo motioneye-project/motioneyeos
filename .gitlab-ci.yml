@@ -66,6 +66,9 @@ at91sam9g20dfc_defconfig: *defconfig
 at91sam9g45m10ek_defconfig: *defconfig
 at91sam9rlek_defconfig: *defconfig
 at91sam9x5ek_defconfig: *defconfig
+at91sam9x5ek_dev_defconfig: *defconfig
+at91sam9x5ek_mmc_defconfig: *defconfig
+at91sam9x5ek_mmc_dev_defconfig: *defconfig
 atmel_sama5d2_xplained_mmc_defconfig: *defconfig
 atmel_sama5d2_xplained_mmc_dev_defconfig: *defconfig
 atmel_sama5d3_xplained_defconfig: *defconfig
