@@ -2,25 +2,61 @@
 
 	Fixes all over the tree and new features.
 
+	It is now possible to specify multiple BR2_EXTERNAL
+	directories. The required files in a BR2_EXTERNAL directory
+	have changed to accomodate this feature. Refer to the
+	documentation for details of how to update them. External
+	trees now have a name and a description. Also, it is possible
+	to override a defconfig in the external tree.
+
+	The default skeleton now uses UID 65534 for the "nobody"
+	user instead of UID 99, like most distros do. See
+	https://lwn.net/Articles/695478/ for a complete discussion.
+	Programs and configuration files that explicitly refer to UID
+	99 will have to be updated.
+
+	When the build environment already has a suitable cmake version
+	(3.1 or later), that one will be used instead of building
+	host-cmake. This can speed up the build significantly.
+
+	The ExtUtils::MakeMaker perl module is now required in the
+	build environment.
+
+	An additional check is done during the build that files are
+	not installed in the output directory within the output
+	directory. This happens e.g. when the target directory is
+	contained both in --prefix and in DESTDIR. The build will
+	terminate with an error message that specifies which package
+	and which file caused the failure.
+
+	The concept of "deprecated packages" and the BR2_DEPRECATED
+	option have been removed. Instead, packages are removed
+	immediately. Packages are only removed when they don't work
+	for some reason. If you still need a removed package and
+	you have a solution for the problem(s) that caused the
+	removal, please contribute it.
+
 	Architecture: support for sh64 removed, improved support for
-	MIPS core selection,
+	MIPS core selection.
 
 	Toolchain: support for musl powerpc64le, mips64 and mipsr6
 	toolchains, ARC toolchain components updates, gcc 6.x series
 	bumped to 6.2.0, default binutils version switched to 2.26,
 	default gcc version switched to gcc 5.x, Linaro toolchains
-	updated, uclibc-ng bumped to 1.0.19.
-
-	Core infrastructure: support for multiple BR2_EXTERNAL
-	directories.
+	updated, uclibc-ng bumped to 1.0.19. GCC is now always built
+	with TLS support. Checking of unsafe compiler options (that
+	point to host directories) has been extended with -isystem,
+	-idirafter and -iquote.
 
 	Package infrastructure: new variable $(PKG)_DL_OPTS, addition
 	of <pkg>-show-rdepends to list reverse dependencies, and
-	<pkg>-graph-rdepends to graph reverse dependencies.
+	<pkg>-graph-rdepends to graph reverse dependencies. Linux tools
+	are now in a separate linux-tools package instead of in the
+	kernel build. Fakeroot has been replaced by pseudo.
 
 	CMake support: the toolchainfile.cmake file now provides a
 	definition of the CMAKE_BUILD_TYPE variable. The
-	toolchainfile.cmake also no longer passes the compiler/linker
+	toolchainfile.cmake also no longer forces the compiler/linker
 	flags defined by Buildroot.
 
 	New defconfigs: WaRP7, Solidrun's MX6 Cubox/Hummingboard,
@@ -40,10 +76,15 @@
 
 	Removed packages: binutils 2.24, gcc 4.7, ipkg,
 	kodi-addon-xvdr, libgail, sstrip, torsmo, webkit, webkitgtk24,
-	wvdial, wvstreams,
+	wvdial, wvstreams.
 
 	Documentation: the list of packages that was present in the
 	Buildroot manual has been removed.
+
+	Legal info: the "licenses.txt" file that concatenates all
+	license texts is no longer generated - it was not considered
+	useful. The manifest.csv contains an empty cell instead of
+	"not saved" when no license file is available.
 
 	Other: addition of a DEVELOPERS file listing developers taking
 	care of packages or architectures.
