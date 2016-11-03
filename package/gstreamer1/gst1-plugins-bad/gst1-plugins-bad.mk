@@ -517,6 +517,12 @@ else
 GST1_PLUGINS_BAD_CONF_OPTS += --disable-stereo
 endif
 
+ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_TIMECODE),y)
+GST1_PLUGINS_BAD_CONF_OPTS += --enable-timecode
+else
+GST1_PLUGINS_BAD_CONF_OPTS += --disable-timecode
+endif
+
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_TTA),y)
 GST1_PLUGINS_BAD_CONF_OPTS += --enable-tta
 else
