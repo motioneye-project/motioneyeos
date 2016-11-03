@@ -23,13 +23,13 @@
 	toolchainfile.cmake also no longer passes the compiler/linker
 	flags defined by Buildroot.
 
-	New defconfigs: warp7, Solidrun's MX6 Cubox/Hummingboard,
+	New defconfigs: WaRP7, Solidrun's MX6 Cubox/Hummingboard,
 	TS-4900, Grinn's liteBoard, Udoo MX6Q/DL, Qemu ARM noMMU,
-	BeagleBone Qt5 demo, Digilent Zybo.
+	BeagleBone Qt5 demo, Digilent Zybo, FriendlyARM Nanopi NEO.
 
 	New packages: arm-trusted-firmware, amd-catalyst, atop, aufs,
 	aufs-util, fwts, gst1-rtsp-server, libglob, libite, mfgtools,
-	mksh, motion, paho-mqtt-c, php-amqp, python-couchdb,
+	mksh, motion, paho-mqtt-c, php-amqp, pseudo, python-couchdb,
 	python-crcmod, python-cssutils, python-docutils,
 	python-futures, python-mwclient, python-mwscrape,
 	python-mwscrape2slob, python-pyelftools, python-pyicu,
@@ -67,6 +67,7 @@
 	#8946: Valgrind fails to build with stack protection turned on
 	#9021: Kodi - Broken: Illegal instruction (core dumped)
 	#9096: rootfs.ubi not created
+	#9111: glibc 2.23: libmvec.so not copied
 	#9176: minnowboard : USB not mounted
 	#9196: raspberry pi 3 default build seem broken
 	#9201: Permission denied make: *** [core-dependencies] Error 126 in
@@ -88,6 +89,7 @@
 	#9371: openssl: download failes with "Only allow downloads from primary
 	       download site" + local server
 	#9381: check-host-rpath issues
+	#9386: ubinize fails with or without custom config
 
 2016.08, Released September 1st, 2016
 
