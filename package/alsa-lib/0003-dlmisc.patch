@@ -36,10 +36,11 @@ diff --git a/modules/mixer/simple/sbasedl.c b/modules/mixer/simple/sbasedl.c
  #include <fcntl.h>
  #include <sys/ioctl.h>
  #include <math.h>
-+#ifdef HAVE_LIBDL
++#include "config.h"
++#ifdef HAVE_DLFCN
  #include <dlfcn.h>
 +#endif
- #include "config.h"
+-#include "config.h"
  #include "asoundlib.h"
  #include "mixer_abst.h"
 diff --git a/src/mixer/simple_abst.c b/src/mixer/simple_abst.c
@@ -49,9 +50,10 @@ diff --git a/src/mixer/simple_abst.c b/src/mixer/simple_abst.c
  #include <fcntl.h>
  #include <sys/ioctl.h>
  #include <math.h>
-+#ifdef HAVE_LIBDL
++#include "config.h"
++#ifdef HAVE_DLFCN
  #include <dlfcn.h>
 +#endif
- #include "config.h"
+-#include "config.h"
  #include "asoundlib.h"
  #include "mixer_simple.h"
