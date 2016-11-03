@@ -1,4 +1,4 @@
-From ded9f83ef3bcb4c688da80354c179543e4862e52 Mon Sep 17 00:00:00 2001
+From 4e8aa3a9e1696e5e02ff0a3ae5a72f034ee60c2f Mon Sep 17 00:00:00 2001
 From: Romain Naour <romain.naour@gmail.com>
 Date: Wed, 25 May 2016 15:57:10 +0200
 Subject: [PATCH] install the stack libraries to "lib" subdirectory
@@ -36,109 +36,132 @@ refactoring is needed to fix this properly.
 
 [1] http://sourceforge.net/p/openpowerlink/discussion/newbie/thread/3f13af65/#8f80/a50a/4649/f07c
 
+[rebase on v2.5.0]
 Signed-off-by: Romain Naour <romain.naour@gmail.com>
 ---
+ stack/proj/linux/liboplkcn-sim/CMakeLists.txt           | 2 +-
  stack/proj/linux/liboplkcn/CMakeLists.txt               | 2 +-
  stack/proj/linux/liboplkcnapp-kernelintf/CMakeLists.txt | 2 +-
  stack/proj/linux/liboplkcnapp-userintf/CMakeLists.txt   | 2 +-
  stack/proj/linux/liboplkcndrv-pcap/CMakeLists.txt       | 2 +-
+ stack/proj/linux/liboplkmn-sim/CMakeLists.txt           | 2 +-
  stack/proj/linux/liboplkmn/CMakeLists.txt               | 2 +-
  stack/proj/linux/liboplkmnapp-kernelintf/CMakeLists.txt | 2 +-
- stack/proj/linux/liboplkmnapp-kernelpcie/CMakeLists.txt | 2 +-
+ stack/proj/linux/liboplkmnapp-kernelpcp/CMakeLists.txt  | 2 +-
  stack/proj/linux/liboplkmnapp-userintf/CMakeLists.txt   | 2 +-
  stack/proj/linux/liboplkmndrv-pcap/CMakeLists.txt       | 2 +-
- 9 files changed, 9 insertions(+), 9 deletions(-)
+ 11 files changed, 11 insertions(+), 11 deletions(-)
 
+diff --git a/stack/proj/linux/liboplkcn-sim/CMakeLists.txt b/stack/proj/linux/liboplkcn-sim/CMakeLists.txt
+index 73b641d..b8b5c9d 100644
+--- a/stack/proj/linux/liboplkcn-sim/CMakeLists.txt
++++ b/stack/proj/linux/liboplkcn-sim/CMakeLists.txt
+@@ -96,4 +96,4 @@ ADD_LIBRARY(${LIB_NAME} ${LIB_TYPE} ${LIB_SOURCES})
+ TARGET_LINK_LIBRARIES(${LIB_NAME} ${ARCH_LIBRARIES})
+ SET_PROPERTY(TARGET ${LIB_NAME} PROPERTY COMPILE_DEFINITIONS_DEBUG DEBUG;DEF_DEBUG_LVL=${CFG_DEBUG_LVL})
+ SET_PROPERTY(TARGET ${LIB_NAME} PROPERTY DEBUG_POSTFIX "_d")
+-INSTALL(TARGETS ${LIB_NAME} ARCHIVE DESTINATION . LIBRARY DESTINATION .)
++INSTALL(TARGETS ${LIB_NAME} ARCHIVE DESTINATION lib LIBRARY DESTINATION lib)
 diff --git a/stack/proj/linux/liboplkcn/CMakeLists.txt b/stack/proj/linux/liboplkcn/CMakeLists.txt
-index c700d9d..b891553 100644
+index 323eafc..459124a 100644
 --- a/stack/proj/linux/liboplkcn/CMakeLists.txt
 +++ b/stack/proj/linux/liboplkcn/CMakeLists.txt
-@@ -94,4 +94,4 @@ ADD_LIBRARY(${LIB_NAME} ${LIB_TYPE} ${LIB_SOURCES})
+@@ -90,4 +90,4 @@ ADD_LIBRARY(${LIB_NAME} ${LIB_TYPE} ${LIB_SOURCES})
  TARGET_LINK_LIBRARIES(${LIB_NAME} ${ARCH_LIBRARIES})
  SET_PROPERTY(TARGET ${LIB_NAME} PROPERTY COMPILE_DEFINITIONS_DEBUG DEBUG;DEF_DEBUG_LVL=${CFG_DEBUG_LVL})
  SET_PROPERTY(TARGET ${LIB_NAME} PROPERTY DEBUG_POSTFIX "_d")
 -INSTALL(TARGETS ${LIB_NAME} ARCHIVE DESTINATION . LIBRARY DESTINATION .)
 +INSTALL(TARGETS ${LIB_NAME} ARCHIVE DESTINATION lib LIBRARY DESTINATION lib)
 diff --git a/stack/proj/linux/liboplkcnapp-kernelintf/CMakeLists.txt b/stack/proj/linux/liboplkcnapp-kernelintf/CMakeLists.txt
-index 03752df..7b1050c 100644
+index f8b1850..c16194a 100644
 --- a/stack/proj/linux/liboplkcnapp-kernelintf/CMakeLists.txt
 +++ b/stack/proj/linux/liboplkcnapp-kernelintf/CMakeLists.txt
-@@ -87,4 +87,4 @@ ADD_LIBRARY(${LIB_NAME} ${LIB_TYPE} ${LIB_SOURCES})
+@@ -83,4 +83,4 @@ ADD_LIBRARY(${LIB_NAME} ${LIB_TYPE} ${LIB_SOURCES})
  TARGET_LINK_LIBRARIES(${LIB_NAME} ${ARCH_LIBRARIES})
  SET_PROPERTY(TARGET ${LIB_NAME} PROPERTY COMPILE_DEFINITIONS_DEBUG DEBUG;DEF_DEBUG_LVL=${CFG_DEBUG_LVL})
  SET_PROPERTY(TARGET ${LIB_NAME} PROPERTY DEBUG_POSTFIX "_d")
 -INSTALL(TARGETS ${LIB_NAME} ARCHIVE DESTINATION . LIBRARY DESTINATION .)
 +INSTALL(TARGETS ${LIB_NAME} ARCHIVE DESTINATION lib LIBRARY DESTINATION lib)
 diff --git a/stack/proj/linux/liboplkcnapp-userintf/CMakeLists.txt b/stack/proj/linux/liboplkcnapp-userintf/CMakeLists.txt
-index bcc4273..8ca5b7e 100644
+index 0f07e63..0074616 100644
 --- a/stack/proj/linux/liboplkcnapp-userintf/CMakeLists.txt
 +++ b/stack/proj/linux/liboplkcnapp-userintf/CMakeLists.txt
-@@ -87,4 +87,4 @@ ADD_LIBRARY(${LIB_NAME} ${LIB_TYPE} ${LIB_SOURCES})
+@@ -83,4 +83,4 @@ ADD_LIBRARY(${LIB_NAME} ${LIB_TYPE} ${LIB_SOURCES})
  TARGET_LINK_LIBRARIES(${LIB_NAME} ${ARCH_LIBRARIES})
  SET_PROPERTY(TARGET ${LIB_NAME} PROPERTY COMPILE_DEFINITIONS_DEBUG DEBUG;DEF_DEBUG_LVL=${CFG_DEBUG_LVL})
  SET_PROPERTY(TARGET ${LIB_NAME} PROPERTY DEBUG_POSTFIX "_d")
 -INSTALL(TARGETS ${LIB_NAME} ARCHIVE DESTINATION . LIBRARY DESTINATION .)
 +INSTALL(TARGETS ${LIB_NAME} ARCHIVE DESTINATION lib LIBRARY DESTINATION lib)
 diff --git a/stack/proj/linux/liboplkcndrv-pcap/CMakeLists.txt b/stack/proj/linux/liboplkcndrv-pcap/CMakeLists.txt
-index 440f02c..6ffcbe9 100644
+index d0dad78..ee0fdec 100644
 --- a/stack/proj/linux/liboplkcndrv-pcap/CMakeLists.txt
 +++ b/stack/proj/linux/liboplkcndrv-pcap/CMakeLists.txt
-@@ -77,4 +77,4 @@ ADD_LIBRARY(${LIB_NAME} ${LIB_TYPE} ${LIB_SOURCES})
+@@ -76,4 +76,4 @@ ADD_LIBRARY(${LIB_NAME} ${LIB_TYPE} ${LIB_SOURCES})
+ TARGET_LINK_LIBRARIES(${LIB_NAME} ${ARCH_LIBRARIES})
+ SET_PROPERTY(TARGET ${LIB_NAME} PROPERTY COMPILE_DEFINITIONS_DEBUG DEBUG;DEF_DEBUG_LVL=${CFG_DEBUG_LVL})
+ SET_PROPERTY(TARGET ${LIB_NAME} PROPERTY DEBUG_POSTFIX "_d")
+-INSTALL(TARGETS ${LIB_NAME} ARCHIVE DESTINATION . LIBRARY DESTINATION .)
++INSTALL(TARGETS ${LIB_NAME} ARCHIVE DESTINATION lib LIBRARY DESTINATION lib)
+diff --git a/stack/proj/linux/liboplkmn-sim/CMakeLists.txt b/stack/proj/linux/liboplkmn-sim/CMakeLists.txt
+index eb6396a..5beaa07 100644
+--- a/stack/proj/linux/liboplkmn-sim/CMakeLists.txt
++++ b/stack/proj/linux/liboplkmn-sim/CMakeLists.txt
+@@ -91,4 +91,4 @@ ADD_LIBRARY(${LIB_NAME} ${LIB_TYPE} ${LIB_SOURCES})
  TARGET_LINK_LIBRARIES(${LIB_NAME} ${ARCH_LIBRARIES})
  SET_PROPERTY(TARGET ${LIB_NAME} PROPERTY COMPILE_DEFINITIONS_DEBUG DEBUG;DEF_DEBUG_LVL=${CFG_DEBUG_LVL})
  SET_PROPERTY(TARGET ${LIB_NAME} PROPERTY DEBUG_POSTFIX "_d")
 -INSTALL(TARGETS ${LIB_NAME} ARCHIVE DESTINATION . LIBRARY DESTINATION .)
 +INSTALL(TARGETS ${LIB_NAME} ARCHIVE DESTINATION lib LIBRARY DESTINATION lib)
 diff --git a/stack/proj/linux/liboplkmn/CMakeLists.txt b/stack/proj/linux/liboplkmn/CMakeLists.txt
-index a8850b8..d762d4c 100644
+index cf7927f..6b19557 100644
 --- a/stack/proj/linux/liboplkmn/CMakeLists.txt
 +++ b/stack/proj/linux/liboplkmn/CMakeLists.txt
-@@ -93,4 +93,4 @@ ADD_LIBRARY(${LIB_NAME} ${LIB_TYPE} ${LIB_SOURCES})
+@@ -89,4 +89,4 @@ ADD_LIBRARY(${LIB_NAME} ${LIB_TYPE} ${LIB_SOURCES})
  TARGET_LINK_LIBRARIES(${LIB_NAME} ${ARCH_LIBRARIES})
  SET_PROPERTY(TARGET ${LIB_NAME} PROPERTY COMPILE_DEFINITIONS_DEBUG DEBUG;DEF_DEBUG_LVL=${CFG_DEBUG_LVL})
  SET_PROPERTY(TARGET ${LIB_NAME} PROPERTY DEBUG_POSTFIX "_d")
 -INSTALL(TARGETS ${LIB_NAME} ARCHIVE DESTINATION . LIBRARY DESTINATION .)
 +INSTALL(TARGETS ${LIB_NAME} ARCHIVE DESTINATION lib LIBRARY DESTINATION lib)
 diff --git a/stack/proj/linux/liboplkmnapp-kernelintf/CMakeLists.txt b/stack/proj/linux/liboplkmnapp-kernelintf/CMakeLists.txt
-index f2606a3..f71b182 100644
+index 9daa2df..bfccb25 100644
 --- a/stack/proj/linux/liboplkmnapp-kernelintf/CMakeLists.txt
 +++ b/stack/proj/linux/liboplkmnapp-kernelintf/CMakeLists.txt
-@@ -86,4 +86,4 @@ ADD_LIBRARY(${LIB_NAME} ${LIB_TYPE} ${LIB_SOURCES})
+@@ -82,4 +82,4 @@ ADD_LIBRARY(${LIB_NAME} ${LIB_TYPE} ${LIB_SOURCES})
  TARGET_LINK_LIBRARIES(${LIB_NAME} ${ARCH_LIBRARIES})
  SET_PROPERTY(TARGET ${LIB_NAME} PROPERTY COMPILE_DEFINITIONS_DEBUG DEBUG;DEF_DEBUG_LVL=${CFG_DEBUG_LVL})
  SET_PROPERTY(TARGET ${LIB_NAME} PROPERTY DEBUG_POSTFIX "_d")
 -INSTALL(TARGETS ${LIB_NAME} ARCHIVE DESTINATION . LIBRARY DESTINATION .)
 +INSTALL(TARGETS ${LIB_NAME} ARCHIVE DESTINATION lib LIBRARY DESTINATION lib)
-diff --git a/stack/proj/linux/liboplkmnapp-kernelpcie/CMakeLists.txt b/stack/proj/linux/liboplkmnapp-kernelpcie/CMakeLists.txt
-index 9362ad8..1d5fb6d 100644
---- a/stack/proj/linux/liboplkmnapp-kernelpcie/CMakeLists.txt
-+++ b/stack/proj/linux/liboplkmnapp-kernelpcie/CMakeLists.txt
-@@ -88,4 +88,4 @@ ADD_LIBRARY(${LIB_NAME} ${LIB_TYPE} ${LIB_SOURCES})
+diff --git a/stack/proj/linux/liboplkmnapp-kernelpcp/CMakeLists.txt b/stack/proj/linux/liboplkmnapp-kernelpcp/CMakeLists.txt
+index 0135f46..83128eb 100644
+--- a/stack/proj/linux/liboplkmnapp-kernelpcp/CMakeLists.txt
++++ b/stack/proj/linux/liboplkmnapp-kernelpcp/CMakeLists.txt
+@@ -91,4 +91,4 @@ ADD_LIBRARY(${LIB_NAME} ${LIB_TYPE} ${LIB_SOURCES})
  TARGET_LINK_LIBRARIES(${LIB_NAME} ${ARCH_LIBRARIES})
  SET_PROPERTY(TARGET ${LIB_NAME} PROPERTY COMPILE_DEFINITIONS_DEBUG DEBUG;DEF_DEBUG_LVL=${CFG_DEBUG_LVL})
  SET_PROPERTY(TARGET ${LIB_NAME} PROPERTY DEBUG_POSTFIX "_d")
 -INSTALL(TARGETS ${LIB_NAME} ARCHIVE DESTINATION . LIBRARY DESTINATION .)
 +INSTALL(TARGETS ${LIB_NAME} ARCHIVE DESTINATION lib LIBRARY DESTINATION lib)
 diff --git a/stack/proj/linux/liboplkmnapp-userintf/CMakeLists.txt b/stack/proj/linux/liboplkmnapp-userintf/CMakeLists.txt
-index 6741eef..042cbcf 100644
+index cd97882..aaaa526 100644
 --- a/stack/proj/linux/liboplkmnapp-userintf/CMakeLists.txt
 +++ b/stack/proj/linux/liboplkmnapp-userintf/CMakeLists.txt
-@@ -86,4 +86,4 @@ ADD_LIBRARY(${LIB_NAME} ${LIB_TYPE} ${LIB_SOURCES})
+@@ -82,4 +82,4 @@ ADD_LIBRARY(${LIB_NAME} ${LIB_TYPE} ${LIB_SOURCES})
  TARGET_LINK_LIBRARIES(${LIB_NAME} ${ARCH_LIBRARIES})
  SET_PROPERTY(TARGET ${LIB_NAME} PROPERTY COMPILE_DEFINITIONS_DEBUG DEBUG;DEF_DEBUG_LVL=${CFG_DEBUG_LVL})
  SET_PROPERTY(TARGET ${LIB_NAME} PROPERTY DEBUG_POSTFIX "_d")
 -INSTALL(TARGETS ${LIB_NAME} ARCHIVE DESTINATION . LIBRARY DESTINATION .)
 +INSTALL(TARGETS ${LIB_NAME} ARCHIVE DESTINATION lib LIBRARY DESTINATION lib)
 diff --git a/stack/proj/linux/liboplkmndrv-pcap/CMakeLists.txt b/stack/proj/linux/liboplkmndrv-pcap/CMakeLists.txt
-index b4dd41b..cf875ca 100644
+index 7e1a820..82205c2 100644
 --- a/stack/proj/linux/liboplkmndrv-pcap/CMakeLists.txt
 +++ b/stack/proj/linux/liboplkmndrv-pcap/CMakeLists.txt
-@@ -80,4 +80,4 @@ ADD_LIBRARY(${LIB_NAME} ${LIB_TYPE} ${LIB_SOURCES})
+@@ -79,4 +79,4 @@ ADD_LIBRARY(${LIB_NAME} ${LIB_TYPE} ${LIB_SOURCES})
  TARGET_LINK_LIBRARIES(${LIB_NAME} ${ARCH_LIBRARIES})
  SET_PROPERTY(TARGET ${LIB_NAME} PROPERTY COMPILE_DEFINITIONS_DEBUG DEBUG;DEF_DEBUG_LVL=${CFG_DEBUG_LVL})
  SET_PROPERTY(TARGET ${LIB_NAME} PROPERTY DEBUG_POSTFIX "_d")
 -INSTALL(TARGETS ${LIB_NAME} ARCHIVE DESTINATION . LIBRARY DESTINATION .)
 +INSTALL(TARGETS ${LIB_NAME} ARCHIVE DESTINATION lib LIBRARY DESTINATION lib)
 -- 
-2.5.5
+2.8.1
 

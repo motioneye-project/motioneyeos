@@ -1,4 +1,4 @@
-From 1b92df6f8283e15b6877f7cd70063648727fc88b Mon Sep 17 00:00:00 2001
+From 7f81c74726aec4aef6bd93ee644200ab34375437 Mon Sep 17 00:00:00 2001
 From: Romain Naour <romain.naour@gmail.com>
 Date: Wed, 25 May 2016 15:59:20 +0200
 Subject: [PATCH] Add top level CMakeLists.txt
@@ -83,10 +83,10 @@ index 0000000..28d4e7a
 +    ADD_SUBDIRECTORY("apps/demo_mn_qt")
 +ENDIF (CFG_DEMO_MN_QT)
 diff --git a/apps/common/cmake/findoplklib.cmake b/apps/common/cmake/findoplklib.cmake
-index aa427a6..e6a802e 100644
+index f7e710f..b8b04c5 100644
 --- a/apps/common/cmake/findoplklib.cmake
 +++ b/apps/common/cmake/findoplklib.cmake
-@@ -89,36 +89,42 @@ MACRO(FIND_OPLK_LIBRARY OPLK_NODE_TYPE)
+@@ -85,36 +85,42 @@ MACRO(FIND_OPLK_LIBRARY OPLK_NODE_TYPE)
      # Set oplk library directory
      SET(OPLKLIB_DIR ${OPLK_BASE_DIR}/stack/lib/${SYSTEM_NAME_DIR}/${SYSTEM_PROCESSOR_DIR})
  
@@ -174,7 +174,7 @@ index 49aab66..d9fd418 100644
              TARGET_LINK_LIBRARIES(${EXECUTABLE_NAME} optimized ${OPLKLIB})
          ENDIF()
 diff --git a/drivers/linux/drv_daemon_pcap/CMakeLists.txt b/drivers/linux/drv_daemon_pcap/CMakeLists.txt
-index 2702abd..81bb598 100644
+index 1ef9353..e720834 100644
 --- a/drivers/linux/drv_daemon_pcap/CMakeLists.txt
 +++ b/drivers/linux/drv_daemon_pcap/CMakeLists.txt
 @@ -104,9 +104,15 @@ ENDIF()
@@ -197,5 +197,5 @@ index 2702abd..81bb598 100644
  
  SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -pedantic -std=c99 -pthread -fno-strict-aliasing")
 -- 
-2.5.5
+2.8.1
 
