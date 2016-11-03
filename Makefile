@@ -35,11 +35,6 @@ SHELL := $(shell if [ -x "$$BASH" ]; then echo $$BASH; \
 ifneq ("$(origin O)", "command line")
 O := $(CURDIR)/output
 else
-# Other packages might also support Linux-style out of tree builds
-# with the O=<dir> syntax (E.G. BusyBox does). As make automatically
-# forwards command line variable definitions those packages get very
-# confused. Fix this by telling make to not do so.
-MAKEOVERRIDES :=
 # Strangely enough O is still passed to submakes with MAKEOVERRIDES
 # (with make 3.81 atleast), the only thing that changes is the output
 # of the origin function (command line -> environment).
@@ -154,6 +149,13 @@ BR_BUILDING = y
 else ifneq ($(filter-out $(nobuild_targets),$(MAKECMDGOALS)),)
 BR_BUILDING = y
 endif
+
+# We call make recursively to build packages. The command-line overrides that
+# are passed to Buildroot don't apply to those package build systems. In
+# particular, we don't want to pass down the O=<dir> option for out-of-tree
+# builds, because the value specified on the command line will not be correct
+# for packages.
+MAKEOVERRIDES :=
 
 # Include some helper macros and variables
 include support/misc/utils.mk
