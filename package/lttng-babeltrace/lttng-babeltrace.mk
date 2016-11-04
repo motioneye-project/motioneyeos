@@ -14,7 +14,9 @@ HOST_LTTNG_BABELTRACE_DEPENDENCIES = \
 	host-popt host-util-linux host-libglib2 host-pkgconf
 HOST_LTTNG_BABELTRACE_CONF_OPTS += --disable-debug-info
 
-# For 0002-m4-ax_lib_elfutils.m4-add-cache-variable.patch
+# For:
+#   0002-m4-ax_lib_elfutils.m4-add-cache-variable.patch
+#   0003-fix-uuid-support-detection-on-static-build.patch
 LTTNG_BABELTRACE_AUTORECONF = YES
 
 ifeq ($(BR2_PACKAGE_ELFUTILS),y)
