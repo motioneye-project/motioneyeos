@@ -30,6 +30,13 @@ else
 SUDO_CONF_OPTS += --without-pam
 endif
 
+ifeq ($(BR2_PACKAGE_ZLIB),y)
+SUDO_CONF_OPTS += --enable-zlib
+SUDO_DEPENDENCIES += zlib
+else
+SUDO_CONF_OPTS += --disable-zlib
+endif
+
 # mksigname/mksiglist needs to run on build host to generate source files
 define SUDO_BUILD_MKSIGNAME_MKSIGLIST_HOST
 	$(MAKE) $(HOST_CONFIGURE_OPTS) \
