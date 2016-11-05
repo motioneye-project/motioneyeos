@@ -143,6 +143,23 @@ comment "----------------------------------------------------"
 endif
 
 ###############################################################################
+comment "Legacy options removed in 2017.02"
+
+config BR2_PACKAGE_SNOWBALL_HDMISERVICE
+	bool "snowball-hdmiservice removed"
+	select BR2_LEGACY
+	help
+	  We no longer have support for the Snowball platform in
+	  Buildroot, so this package was no longer useful.
+
+config BR2_PACKAGE_SNOWBALL_INIT
+	bool "snowball-init removed"
+	select BR2_LEGACY
+	help
+	  We no longer have support for the Snowball platform in
+	  Buildroot, so this package was no longer useful.
+
+###############################################################################
 comment "Legacy options removed in 2016.11"
 
 config BR2_PACKAGE_PHP_SAPI_CLI_CGI
