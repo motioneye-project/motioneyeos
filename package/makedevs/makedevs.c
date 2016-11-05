@@ -599,6 +599,8 @@ int main(int argc, char **argv)
 		} else
 		{
 			dev_t rdev;
+			unsigned i;
+			char *full_name_inc;
 
 			if (type == 'p') {
 				mode |= S_IFIFO;
@@ -614,43 +616,24 @@ int main(int argc, char **argv)
 				goto loop;
 			}
 
-			if (count > 0) {
-				int i;
-				char *full_name_inc;
-
-				full_name_inc = xmalloc(strlen(full_name) + 8);
-				for (i = 0; i < count; i++) {
-					sprintf(full_name_inc, "%s%d", full_name, start + i);
-					rdev = makedev(major, minor + i * increment);
-					if (mknod(full_name_inc, mode, rdev) == -1) {
-						bb_perror_msg("line %d: Couldnt create node %s", linenum, full_name_inc);
-						ret = EXIT_FAILURE;
-					}
-					else if (chown(full_name_inc, uid, gid) == -1) {
-						bb_perror_msg("line %d: chown failed for %s", linenum, full_name_inc);
-						ret = EXIT_FAILURE;
-					}
-					if ((mode != -1) && (chmod(full_name_inc, mode) < 0)){
-						bb_perror_msg("line %d: chmod failed for %s", linenum, full_name_inc);
-						ret = EXIT_FAILURE;
-					}
-				}
-				free(full_name_inc);
-			} else {
-				rdev = makedev(major, minor);
-				if (mknod(full_name, mode, rdev) == -1) {
-					bb_perror_msg("line %d: Couldnt create node %s", linenum, full_name);
+			full_name_inc = xmalloc(strlen(full_name) + sizeof(int)*3 + 2);
+			if (count)
+				count--;
+			for (i = start; i <= start + count; i++) {
+				sprintf(full_name_inc, count ? "%s%u" : "%s", full_name, i);
+				rdev = makedev(major, minor + (i - start) * increment);
+				if (mknod(full_name_inc, mode, rdev) < 0) {
+					bb_perror_msg("line %d: can't create node %s", linenum, full_name_inc);
 					ret = EXIT_FAILURE;
-				}
-				else if (chown(full_name, uid, gid) == -1) {
-					bb_perror_msg("line %d: chown failed for %s", linenum, full_name);
+				} else if (chown(full_name_inc, uid, gid) < 0) {
+					bb_perror_msg("line %d: can't chown %s", linenum, full_name_inc);
 					ret = EXIT_FAILURE;
-				}
-				if ((mode != -1) && (chmod(full_name, mode) < 0)){
-					bb_perror_msg("line %d: chmod failed for %s", linenum, full_name);
+				} else if (chmod(full_name_inc, mode) < 0) {
+					bb_perror_msg("line %d: can't chmod %s", linenum, full_name_inc);
 					ret = EXIT_FAILURE;
 				}
 			}
+			free(full_name_inc);
 		}
 loop:
 		free(line);
