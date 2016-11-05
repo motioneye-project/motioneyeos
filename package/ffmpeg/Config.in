@@ -2,7 +2,8 @@ config BR2_PACKAGE_FFMPEG_ARCH_SUPPORTS
 	bool
 	# fenv.h lacks FE_INVALID, FE_OVERFLOW & FE_UNDERFLOW on nios2
 	# No support for ARMv7-M in the ARM assembly logic
-	default y if !BR2_nios2 && !BR2_ARM_CPU_ARMV7M
+	# Microblaze build affected by gcc PR71124 (infinite loop)
+	default y if !BR2_nios2 && !BR2_ARM_CPU_ARMV7M && !BR2_microblaze
 
 menuconfig BR2_PACKAGE_FFMPEG
 	bool "ffmpeg"
