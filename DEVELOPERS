@@ -569,14 +569,6 @@ F:	package/libsrtp/
 F:	package/libwebsock/
 F:	package/sofia-sip/
 
-N:	Gregory Hermant <gregory.hermant@calao-systems.com>
-F:	package/bcusdk/
-F:	package/dfu-util/
-F:	package/libpthsem/
-F:	package/linknx/
-F:	package/snowball-hdmiservice/
-F:	package/ux500-firmware/
-
 N:	Guillaume Gardet <guillaume.gardet@oliseo.fr>
 F:	package/c-icap/
 F:	package/c-icap-modules/
