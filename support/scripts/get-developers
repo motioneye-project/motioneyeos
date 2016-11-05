@@ -42,7 +42,7 @@ def __main__():
     if args.check:
         files = getdeveloperlib.check_developers(devs)
         for f in files:
-            print f
+            print(f)
 
     # Handle the architecture action
     if args.architecture is not None:
