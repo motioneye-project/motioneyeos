@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-PSEUDO_VERSION = 7abc9396731149df5eaf43c84fed4f3053b64de6
+PSEUDO_VERSION = 45eca34c754d416a38bee90fb2d3c110a0b6cc5f
 PSEUDO_SITE = https://git.yoctoproject.org/git/pseudo
 PSEUDO_SITE_METHOD = git
 
