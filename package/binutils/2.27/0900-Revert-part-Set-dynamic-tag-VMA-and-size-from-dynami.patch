@@ -1,0 +1,36 @@
+From c646b02fdcae5f37bd88f33a0c4683ef13ad5c82 Mon Sep 17 00:00:00 2001
+From: Alan Modra <amodra@gmail.com>
+Date: Mon, 31 Oct 2016 12:46:38 +1030
+Subject: [PATCH] Revert part "Set dynamic tag VMA and size from dynamic
+ section when possible"
+
+	PR 20748
+	* elf32-microblaze.c (microblaze_elf_finish_dynamic_sections): Revert
+	2016-05-13 change.
+
+Signed-off-by: Alan Modra <amodra@gmail.com>
+Signed-off-by: Waldemar Brodkorb <wbx@uclibc-ng.org>
+
+diff --git a/bfd/elf32-microblaze.c b/bfd/elf32-microblaze.c
+index 477e7b3..5c66808 100644
+--- a/bfd/elf32-microblaze.c
++++ b/bfd/elf32-microblaze.c
+@@ -3396,13 +3396,13 @@ microblaze_elf_finish_dynamic_sections (bfd *output_bfd,
+             {
+               asection *s;
+ 
+-              s = bfd_get_linker_section (dynobj, name);
++              s = bfd_get_section_by_name (output_bfd, name);
+               if (s == NULL)
+                 dyn.d_un.d_val = 0;
+               else
+                 {
+                   if (! size)
+-                    dyn.d_un.d_ptr = s->output_section->vma + s->output_offset;
++                    dyn.d_un.d_ptr = s->vma;
+                   else
+                     dyn.d_un.d_val = s->size;
+                 }
+-- 
+2.1.4
+
