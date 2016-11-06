@@ -43,7 +43,7 @@ command as root:
 *** WARNING! This will destroy all the card content. Use with care! ***
 
 For details about the medium image layout, see the definition in
-board/freescale/common/genimage.cfg.template.
+board/freescale/common/imx/genimage.cfg.template.
 
 Boot the i.MX6UL EVK board
 =========================

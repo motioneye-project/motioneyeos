@@ -35,7 +35,7 @@ main()
 	local GENIMAGE_TMP="${BUILD_DIR}/genimage.tmp"
 
 	sed -e "s/%FILES%/${FILES}/" \
-		board/freescale/common/genimage.cfg.template > ${GENIMAGE_CFG}
+		board/freescale/common/imx/genimage.cfg.template > ${GENIMAGE_CFG}
 
 	rm -rf "${GENIMAGE_TMP}"
 
