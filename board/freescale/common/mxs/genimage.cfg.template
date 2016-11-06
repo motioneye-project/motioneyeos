@@ -1,0 +1,39 @@
+# Minimal SD card image for the Freescale MX23/MX28 Template
+#
+# We mimic the .sdcard Freescale's MX23/MX28 image format:
+# * u-boot.sb is placed at offset 1M,
+# * a FAT partition at offset 16 MB is containing zImage/uImage and DTB files
+# * a single root filesystem partition is required (ext2, ext3 or ext4)
+#
+
+image boot.vfat {
+	vfat {
+		files = {
+			%FILES%
+		}
+	}
+	size = 16M
+}
+
+image sdcard.img {
+	hdimage {
+	}
+
+	partition u-boot {
+		partition-type = 0x53
+		image = "u-boot.sd"
+		offset = 1M
+		size = 16M
+	}
+
+	partition kernel {
+		partition-type = 0xC
+		bootable = "true"
+		image = "boot.vfat"
+	}
+
+	partition rootfs {
+		partition-type = 0x83
+		image = "rootfs.ext2"
+	}
+}
