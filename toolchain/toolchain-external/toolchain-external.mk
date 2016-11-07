@@ -56,19 +56,6 @@ define TOOLCHAIN_EXTERNAL_FIXUP_CMDS
 	rm -rf $(@D)/arago-2011.09/
 endef
 TOOLCHAIN_EXTERNAL_POST_EXTRACT_HOOKS += TOOLCHAIN_EXTERNAL_FIXUP_CMDS
-else ifeq ($(BR2_TOOLCHAIN_EXTERNAL_SYNOPSYS_ARC),y)
-TOOLCHAIN_EXTERNAL_SITE = https://github.com/foss-for-synopsys-dwc-arc-processors/toolchain/releases/download/arc-2014.12
-ifeq ($(BR2_arc750d)$(BR2_arc770d),y)
-TOOLCHAIN_EXTERNAL_SYNOPSYS_CORE = arc700
-else
-TOOLCHAIN_EXTERNAL_SYNOPSYS_CORE = archs
-endif
-ifeq ($(BR2_arcle),y)
-TOOLCHAIN_EXTERNAL_SYNOPSYS_ENDIANESS = le
-else
-TOOLCHAIN_EXTERNAL_SYNOPSYS_ENDIANESS = be
-endif
-TOOLCHAIN_EXTERNAL_SOURCE = arc_gnu_2014.12_prebuilt_uclibc_$(TOOLCHAIN_EXTERNAL_SYNOPSYS_ENDIANESS)_$(TOOLCHAIN_EXTERNAL_SYNOPSYS_CORE)_linux_install.tar.gz
 endif
 
 # Some toolchain vendors have a regular file naming pattern.
