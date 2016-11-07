@@ -1,0 +1,9 @@
+if BR2_TOOLCHAIN_EXTERNAL_CODESCAPE_MTI_MIPS
+
+config BR2_TOOLCHAIN_EXTERNAL_PREFIX
+	default "mips-mti-linux-gnu"
+
+config BR2_PACKAGE_PROVIDES_TOOLCHAIN_EXTERNAL
+	default "toolchain-external-codescape-mti-mips"
+
+endif

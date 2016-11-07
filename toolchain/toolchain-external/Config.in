@@ -28,6 +28,7 @@ source "toolchain/toolchain-external/toolchain-external-blackfin-uclinux/Config.
 # MIPS (use codesourcery toolchain by default)
 source "toolchain/toolchain-external/toolchain-external-codesourcery-mips/Config.in"
 source "toolchain/toolchain-external/toolchain-external-codescape-img-mips/Config.in"
+source "toolchain/toolchain-external/toolchain-external-codescape-mti-mips/Config.in"
 
 config BR2_TOOLCHAIN_EXTERNAL_ARAGO_ARMV7A
 	bool "Arago ARMv7 2011.09"
@@ -73,80 +74,6 @@ config BR2_TOOLCHAIN_EXTERNAL_ARAGO_ARMV5TE
 	  4.5.3, binutils 2.20.1, glibc 2.12, gdb 7.2.
 
 	  This toolchain uses software-floating point.
-
-config BR2_TOOLCHAIN_EXTERNAL_CODESCAPE_MTI_MIPS
-	bool "Codescape MTI GNU Linux Toolchain 2016.05"
-	depends on BR2_mips || BR2_mipsel || BR2_mips64 || BR2_mips64el
-	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86"
-	depends on BR2_MIPS_CPU_MIPS32R2 || (BR2_MIPS_CPU_MIPS64R2 && !BR2_MIPS_SOFT_FLOAT) || \
-		BR2_MIPS_CPU_MIPS32R5 || (BR2_MIPS_CPU_MIPS64R5 && !BR2_MIPS_SOFT_FLOAT)
-	select BR2_TOOLCHAIN_EXTERNAL_GLIBC
-	select BR2_INSTALL_LIBSTDCPP
-	select BR2_HOSTARCH_NEEDS_IA32_LIBS
-	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_0
-	select BR2_TOOLCHAIN_GCC_AT_LEAST_4_9
-	select BR2_TOOLCHAIN_HAS_FORTRAN
-	help
-	  Codescape MTI GNU Linux Toolchain 2015.10 for the MIPS
-	  architecture, from Imagination Technologies. It uses gcc
-	  4.9.2, binutils 2.24.90, glibc 2.20, gdb 7.9.1 and kernel
-	  headers 4.0. It has support for the following variants:
-	    - MIPS32r2 - Big-Endian, Hard-Float, Legacy NaN, o32 ABI
-	      Select 'MIPS (big endian)' Target Architecture
-	      Select 'mips 32r2' Target Architecture Variant
-	      Disable 'Use soft-float'
-	    - MIPS32r2 - Big-Endian, Hard-Float, 2008 NaN, o32 ABI
-	      Select 'MIPS (big endian)' Target Architecture
-	      Select 'mips 32r2' Target Architecture Variant
-	      Disable 'Use soft-float'
-	      Set BR2_TARGET_OPTIMIZATION to '-mnan=2008'
-	    - MIPS32r2 - Big-Endian, Soft-Float, Legacy NaN, o32 ABI
-	      Select 'MIPS (big endian)' Target Architecture
-	      Select 'mips 32r2' Target Architecture Variant
-	      Enable 'Use soft-float'
-	    - MIPS32r2 - Little-Endian, Hard-Float, Legacy NaN, o32 ABI
-	      Select 'MIPS (little endian)' Target Architecture
-	      Select 'mips 32r2' Target Architecture Variant
-	      Disable 'Use soft-float'
-	    - MIPS32r2 - Little-Endian, Hard-Float, 2008 NaN, o32 ABI
-	      Select 'MIPS (little endian)' Target Architecture
-	      Select 'mips 32r2' Target Architecture Variant
-	      Disable 'Use soft-float'
-	      Set BR2_TARGET_OPTIMIZATION to '-mnan=2008'
-	    - MIPS32r2 - Little-Endian, Soft-Float, Legacy NaN, o32 ABI
-	      Select 'MIPS (little endian)' Target Architecture
-	      Select 'mips 32r2' Target Architecture Variant
-	      Enable 'Use soft-float'
-	    - MIPS32r2 - Little-Endian, Hard-Float, 2008 NaN, o32 ABI, microMIPS
-	      Select 'MIPS (little endian)' Target Architecture
-	      Select 'mips 32r2' Target Architecture Variant
-	      Enable 'Use soft-float'
-	      Set BR2_TARGET_OPTIMIZATION to '-mmicromips'
-	    - MIPS32r2 - Little-Endian, Soft-Float, Legacy NaN, o32 ABI, microMIPS
-	      Select 'MIPS (little endian)' Target Architecture
-	      Select 'mips 32r2' Target Architecture Variant
-	      Disable 'Use soft-float'
-	      Set BR2_TARGET_OPTIMIZATION to '-mmicromips'
-	    - MIPS64r2 - Big-Endian, Hard-Float, Legacy NaN, n32 ABI
-	      Select 'MIPS64 (big endian)' Target Architecture
-	      Select 'mips 64r2' Target Architecture Variant
-	      Select 'n32' Target ABI
-	      Disable 'Use soft-float'
-	    - MIPS64r2 - Little-Endian, Hard-Float, Legacy NaN, n32 ABI
-	      Select 'MIPS64 (little endian)' Target Architecture
-	      Select 'mips 64r2' Target Architecture Variant
-	      Select 'n32' Target ABI
-	      Disable 'Use soft-float'
-	    - MIPS64r2 - Big-Endian, Hard-Float, Legacy NaN, n64 ABI
-	      Select 'MIPS64 (big endian)' Target Architecture
-	      Select 'mips 64r2' Target Architecture Variant
-	      Select 'n64' Target ABI
-	      Disable 'Use soft-float'
-	    - MIPS64r2 - Little-Endian, Hard-Float, Legacy NaN, n64 ABI
-	      Select 'MIPS64 (little endian)' Target Architecture
-	      Select 'mips 64r2' Target Architecture Variant
-	      Select 'n64' Target ABI
-	      Disable 'Use soft-float'
 
 config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_NIOSII
 	bool "Sourcery CodeBench Nios-II 2016.05"
@@ -359,7 +286,6 @@ config BR2_TOOLCHAIN_EXTERNAL_PREFIX
 	default "x86_64-amd-linux-gnu"   if BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_AMD64
 	default "arm-linux-musleabi"	 if BR2_TOOLCHAIN_EXTERNAL_MUSL_CROSS && BR2_arm && BR2_ARM_EABI
 	default "arm-linux-musleabihf"	 if BR2_TOOLCHAIN_EXTERNAL_MUSL_CROSS && BR2_arm && BR2_ARM_EABIHF
-	default "mips-mti-linux-gnu"     if BR2_TOOLCHAIN_EXTERNAL_CODESCAPE_MTI_MIPS
 	default "armeb-linux-musleabi"	 if BR2_TOOLCHAIN_EXTERNAL_MUSL_CROSS && BR2_armeb
 	default "i486-linux-musl"	 if BR2_TOOLCHAIN_EXTERNAL_MUSL_CROSS && BR2_i386
 	default "mips-linux-musl"	 if BR2_TOOLCHAIN_EXTERNAL_MUSL_CROSS && (BR2_mips && !BR2_SOFT_FLOAT)
@@ -415,6 +341,7 @@ source "toolchain/toolchain-external/toolchain-external-blackfin-uclinux/Config.
 # MIPS
 source "toolchain/toolchain-external/toolchain-external-codesourcery-mips/Config.in.options"
 source "toolchain/toolchain-external/toolchain-external-codescape-img-mips/Config.in.options"
+source "toolchain/toolchain-external/toolchain-external-codescape-mti-mips/Config.in.options"
 
 if BR2_TOOLCHAIN_EXTERNAL_CUSTOM
 
