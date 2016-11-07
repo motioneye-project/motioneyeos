@@ -1647,6 +1647,7 @@ F:	package/modem-manager/
 F:	package/nuttcp/
 F:	package/parted/
 F:	package/python*
+F:	package/ser2net/
 F:	package/socketcand/
 F:	package/qt5/qt5serialbus/
 F:	package/sdparm/
