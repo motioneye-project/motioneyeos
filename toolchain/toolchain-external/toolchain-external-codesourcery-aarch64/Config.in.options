@@ -1,0 +1,9 @@
+if BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_AARCH64
+
+config BR2_TOOLCHAIN_EXTERNAL_PREFIX
+	default "aarch64-amd-linux-gnu"
+
+config BR2_PACKAGE_PROVIDES_TOOLCHAIN_EXTERNAL
+	default "toolchain-external-codesourcery-aarch64"
+
+endif

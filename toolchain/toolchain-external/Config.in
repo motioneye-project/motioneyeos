@@ -13,6 +13,7 @@ comment "glibc toolchains only available with shared lib support"
 
 # Aarch64 (use Linaro toolchain by default)
 source "toolchain/toolchain-external/toolchain-external-linaro-aarch64/Config.in"
+source "toolchain/toolchain-external/toolchain-external-codesourcery-aarch64/Config.in"
 
 comment "Linaro toolchains available for Cortex-A + EABIhf"
 	depends on BR2_arm || BR2_armeb
@@ -491,24 +492,6 @@ config BR2_TOOLCHAIN_EXTERNAL_BLACKFIN_UCLINUX
 	  Toolchain for the Blackfin architecture, from
 	  http://blackfin.uclinux.org.
 
-config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_AARCH64
-	bool "CodeSourcery AArch64 2014.11"
-	depends on BR2_aarch64
-	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86"
-	depends on !BR2_STATIC_LIBS
-	select BR2_TOOLCHAIN_EXTERNAL_GLIBC
-	select BR2_TOOLCHAIN_HAS_SSP
-	select BR2_INSTALL_LIBSTDCPP
-	select BR2_HOSTARCH_NEEDS_IA32_LIBS
-	select BR2_TOOLCHAIN_HAS_NATIVE_RPC
-	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_16
-	select BR2_TOOLCHAIN_GCC_AT_LEAST_4_9
-	help
-	  Sourcery CodeBench toolchain for the AArch64 architecture,
-	  from Mentor Graphics. It uses gcc 4.9.1, binutils
-	  2.24.51.20140217, glibc 2.20, gdb 7.7.50 and kernel headers
-	  3.16.2.
-
 config BR2_TOOLCHAIN_EXTERNAL_MUSL_CROSS
 	bool "Musl 1.1.12 toolchain"
 	depends on (BR2_arm && BR2_ARM_EABI && BR2_USE_MMU) || \
@@ -618,7 +601,6 @@ config BR2_TOOLCHAIN_EXTERNAL_PREFIX
 	default "arm-none-linux-gnueabi" if BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_ARM
 	default "arm-arago-linux-gnueabi" if BR2_TOOLCHAIN_EXTERNAL_ARAGO_ARMV7A
 	default "arm-arago-linux-gnueabi" if BR2_TOOLCHAIN_EXTERNAL_ARAGO_ARMV5TE
-	default "aarch64-amd-linux-gnu"  if BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_AARCH64
 	default "mips-linux-gnu"         if BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_MIPS
 	default "nios2-linux-gnu"        if BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_NIOSII
 	default "sh-linux-gnu"           if BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_SH
@@ -670,6 +652,7 @@ config BR2_PACKAGE_PROVIDES_TOOLCHAIN_EXTERNAL
 
 # Aarch64
 source "toolchain/toolchain-external/toolchain-external-linaro-aarch64/Config.in.options"
+source "toolchain/toolchain-external/toolchain-external-codesourcery-aarch64/Config.in.options"
 
 if BR2_TOOLCHAIN_EXTERNAL_CUSTOM
 
