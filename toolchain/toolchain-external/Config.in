@@ -17,6 +17,7 @@ source "toolchain/toolchain-external/toolchain-external-codesourcery-aarch64/Con
 
 # ARM (use Linaro toolchain by default)
 source "toolchain/toolchain-external/toolchain-external-linaro-arm/Config.in"
+source "toolchain/toolchain-external/toolchain-external-codesourcery-arm/Config.in"
 
 comment "Linaro toolchains available for Cortex-A + EABIhf"
 	depends on BR2_armeb
@@ -44,40 +45,6 @@ config BR2_TOOLCHAIN_EXTERNAL_LINARO_ARMEB
 	  profile devices, but tuned for the Cortex-A9. The code
 	  generated is Thumb 2, with the hard floating point calling
 	  convention, and uses the VFPv3-D16 FPU instructions.
-
-config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_ARM
-	bool "Sourcery CodeBench ARM 2014.05"
-	depends on BR2_arm
-	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86"
-	depends on BR2_ARM_EABI
-	depends on !BR2_STATIC_LIBS
-	select BR2_TOOLCHAIN_EXTERNAL_GLIBC
-	select BR2_TOOLCHAIN_HAS_SSP
-	select BR2_TOOLCHAIN_HAS_NATIVE_RPC
-	select BR2_INSTALL_LIBSTDCPP
-	select BR2_HOSTARCH_NEEDS_IA32_LIBS
-	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_13
-	select BR2_TOOLCHAIN_GCC_AT_LEAST_4_8
-	help
-	  Sourcery CodeBench toolchain for the ARM architecture, from
-	  Mentor Graphics. It uses gcc 4.8.3, binutils 2.24.51, glibc
-	  2.18 and gdb 7.7.50, kernel headers 3.13. It has support
-	  for the following variants:
-	    - ARMv5TE, little endian, soft-float, glibc
-	      Select ARM926T, ARM10T, XScale or another ARMv5 core
-	      Select BR2_SOFT_FLOAT
-	    - ARMv4T, little endian, soft-float, glibc
-	      Select ARM720T, ARM920T, ARM922T or another ARMv4 core
-	      Select BR2_SOFT_FLOAT
-	    - ARMv7-A, Thumb 2, little endian, soft-float, glibc
-	      Select Cortex-A8, Cortex-A9 or another ARMv7-A core
-	      Select BR2_SOFT_FLOAT
-	      Set BR2_TARGET_OPTIMIZATION to -mthumb
-
-comment "Sourcery CodeBench toolchains available for the EABI ABI"
-	depends on BR2_arm
-	depends on !BR2_ARM_EABI
-	depends on !BR2_STATIC_LIBS
 
 config BR2_TOOLCHAIN_EXTERNAL_ARAGO_ARMV7A
 	bool "Arago ARMv7 2011.09"
@@ -577,7 +544,6 @@ config BR2_TOOLCHAIN_EXTERNAL_PREFIX
 	default "arc-linux"		 if BR2_TOOLCHAIN_EXTERNAL_SYNOPSYS_ARC && BR2_arcle
 	default "arceb-linux"		 if BR2_TOOLCHAIN_EXTERNAL_SYNOPSYS_ARC && BR2_arceb
 	default "armeb-linux-gnueabihf"	 if BR2_TOOLCHAIN_EXTERNAL_LINARO_ARMEB
-	default "arm-none-linux-gnueabi" if BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_ARM
 	default "arm-arago-linux-gnueabi" if BR2_TOOLCHAIN_EXTERNAL_ARAGO_ARMV7A
 	default "arm-arago-linux-gnueabi" if BR2_TOOLCHAIN_EXTERNAL_ARAGO_ARMV5TE
 	default "mips-linux-gnu"         if BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_MIPS
@@ -635,6 +601,7 @@ source "toolchain/toolchain-external/toolchain-external-codesourcery-aarch64/Con
 
 # ARM
 source "toolchain/toolchain-external/toolchain-external-linaro-arm/Config.in.options"
+source "toolchain/toolchain-external/toolchain-external-codesourcery-arm/Config.in.options"
 
 if BR2_TOOLCHAIN_EXTERNAL_CUSTOM
 
