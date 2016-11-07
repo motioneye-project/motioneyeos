@@ -1,0 +1,5 @@
+config BR2_TOOLCHAIN_EXTERNAL_CUSTOM
+	bool "Custom toolchain"
+	help
+	  Use this option to use a custom toolchain pre-installed on
+	  your system.
